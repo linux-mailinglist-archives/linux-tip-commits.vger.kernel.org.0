@@ -2,48 +2,48 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E04584CB7
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  7 Aug 2019 15:20:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B327984CE9
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  7 Aug 2019 15:28:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387975AbfHGNTS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 7 Aug 2019 09:19:18 -0400
-Received: from terminus.zytor.com ([198.137.202.136]:43121 "EHLO
+        id S2388200AbfHGN2X (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 7 Aug 2019 09:28:23 -0400
+Received: from terminus.zytor.com ([198.137.202.136]:56939 "EHLO
         terminus.zytor.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387970AbfHGNTS (ORCPT
+        with ESMTP id S2388172AbfHGN2W (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 7 Aug 2019 09:19:18 -0400
+        Wed, 7 Aug 2019 09:28:22 -0400
 Received: from terminus.zytor.com (localhost [127.0.0.1])
-        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x77DJBf72695406
+        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x77DSEfm2699315
         (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-        Wed, 7 Aug 2019 06:19:11 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x77DJBf72695406
+        Wed, 7 Aug 2019 06:28:14 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x77DSEfm2699315
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-        s=2019071901; t=1565183952;
-        bh=MnPPyHF/3DqdV3ltYydc8rzca+L7XLy3cRk7ClNghso=;
+        s=2019071901; t=1565184495;
+        bh=V1LLR+ahDFpMwCEKlzp5Zaz0cWKllC31+XDp4QdxRMk=;
         h=Date:From:Cc:Reply-To:In-Reply-To:References:To:Subject:From;
-        b=RkOGCASfqMd0l1Fi/Z/ojE/MbkM9vDdcu4/U7qhKNrUPtIytylR8uK0Yy8Yx6NW+I
-         alDS3PRZmz0Wb59H84znfKjbjnC1tp9RZpFSXsNKFnHua0jFewZBozOEicfXyNp5dh
-         1VTgXjHQoI3wTm2gzcehL12hUOs1czXC/zw1GpX7x++Fmn3DRkqcnWHpOVnN4YxZnt
-         kgikS5Sx2OzPJ1N1vU7nCtUEwZvPryu0Be9miGRffrknSvmrWvKQew80B+QRe9zHgH
-         hs/Ndmh4yUw+DTQ3Mk4yWLeJOdhdzSeoLoXLOd42OUy59C/RrhHYAhnqpW6xqXsza2
-         dwyc0mQzTOXRQ==
+        b=YFcefxxuSruRTDrU9BU0TptZbLj+/PefQBff5N5rseyHa1JDQhdcSqUryplYmsCLI
+         S44KKdy1CWSK+nvsOlIL5yh77E063uxDV7mWa84UO4VwgittJLMmAKEEQ8ks/ihStf
+         owl08OC91QBNco7j5UIYTbDfMm+qw/ufLLHH+fKm1uKYSbkBQcHH00UxcGgJmXozeW
+         zb6jkLPjjkxRbDwoXSS5v+JJrn9jPz3PhkB8t+Zom1JOkHd5jPIUwztqb0gb9CZNgG
+         87bJdqhn8ws62mHfA/OjF9TSE2jo/8XbRBy7PYzQ/TPmi5CoxbYi6O2N8gxcLTy/mz
+         EfZBrVbaZct3Q==
 Received: (from tipbot@localhost)
-        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x77DJAs62695403;
-        Wed, 7 Aug 2019 06:19:10 -0700
-Date:   Wed, 7 Aug 2019 06:19:10 -0700
+        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x77DSEs72699312;
+        Wed, 7 Aug 2019 06:28:14 -0700
+Date:   Wed, 7 Aug 2019 06:28:14 -0700
 X-Authentication-Warning: terminus.zytor.com: tipbot set sender to tipbot@zytor.com using -f
 From:   tip-bot for John Hubbard <tipbot@zytor.com>
-Message-ID: <tip-610666f0581557944c3abec93a7c125b8303442c@git.kernel.org>
-Cc:     mingo@kernel.org, jhubbard@nvidia.com, tglx@linutronix.de,
-        linux-kernel@vger.kernel.org, hpa@zytor.com
-Reply-To: linux-kernel@vger.kernel.org, hpa@zytor.com, tglx@linutronix.de,
-          jhubbard@nvidia.com, mingo@kernel.org
+Message-ID: <tip-a156cadef2fe445ac423670eace517b39a01ccd0@git.kernel.org>
+Cc:     jhubbard@nvidia.com, linux-kernel@vger.kernel.org, hpa@zytor.com,
+        tglx@linutronix.de, mingo@kernel.org
+Reply-To: jhubbard@nvidia.com, linux-kernel@vger.kernel.org,
+          tglx@linutronix.de, mingo@kernel.org, hpa@zytor.com
 In-Reply-To: <20190731054627.5627-2-jhubbard@nvidia.com>
 References: <20190731054627.5627-2-jhubbard@nvidia.com>
 To:     linux-tip-commits@vger.kernel.org
 Subject: [tip:x86/boot] x86/boot: Save fields explicitly, zero out
  everything else
-Git-Commit-ID: 610666f0581557944c3abec93a7c125b8303442c
+Git-Commit-ID: a156cadef2fe445ac423670eace517b39a01ccd0
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot.git.kernel.org>
 Robot-Unsubscribe: Contact <mailto:hpa@kernel.org> to get blacklisted from
@@ -61,18 +61,18 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-Commit-ID:  610666f0581557944c3abec93a7c125b8303442c
-Gitweb:     https://git.kernel.org/tip/610666f0581557944c3abec93a7c125b8303442c
+Commit-ID:  a156cadef2fe445ac423670eace517b39a01ccd0
+Gitweb:     https://git.kernel.org/tip/a156cadef2fe445ac423670eace517b39a01ccd0
 Author:     John Hubbard <jhubbard@nvidia.com>
 AuthorDate: Tue, 30 Jul 2019 22:46:27 -0700
 Committer:  Thomas Gleixner <tglx@linutronix.de>
-CommitDate: Wed, 7 Aug 2019 15:16:04 +0200
+CommitDate: Wed, 7 Aug 2019 15:22:53 +0200
 
 x86/boot: Save fields explicitly, zero out everything else
 
-Recent gcc compilers (gcc 9.1) generate warnings about an
-out of bounds memset, if you trying memset across several fields
-of a struct. This generated a couple of warnings on x86_64 builds.
+Recent gcc compilers (gcc 9.1) generate warnings about an out of bounds
+memset, if the memset goes accross several fields of a struct. This
+generated a couple of warnings on x86_64 builds in sanitize_boot_params().
 
 Fix this by explicitly saving the fields in struct boot_params
 that are intended to be preserved, and zeroing all the rest.
@@ -82,7 +82,6 @@ Suggested-by: H. Peter Anvin <hpa@zytor.com>
 Signed-off-by: John Hubbard <jhubbard@nvidia.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Link: https://lkml.kernel.org/r/20190731054627.5627-2-jhubbard@nvidia.com
-
 ---
  arch/x86/include/asm/bootparam_utils.h | 63 ++++++++++++++++++++++++++--------
  1 file changed, 48 insertions(+), 15 deletions(-)
