@@ -2,50 +2,49 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A80C86087
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  8 Aug 2019 13:02:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 38A038663E
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  8 Aug 2019 17:50:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730722AbfHHLBV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 8 Aug 2019 07:01:21 -0400
-Received: from terminus.zytor.com ([198.137.202.136]:47203 "EHLO
+        id S1732698AbfHHPug (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 8 Aug 2019 11:50:36 -0400
+Received: from terminus.zytor.com ([198.137.202.136]:35633 "EHLO
         terminus.zytor.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726721AbfHHLBU (ORCPT
+        with ESMTP id S1728380AbfHHPug (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 8 Aug 2019 07:01:20 -0400
+        Thu, 8 Aug 2019 11:50:36 -0400
 Received: from terminus.zytor.com (localhost [127.0.0.1])
-        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x78B16cd3128445
+        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x78FoDj93231487
         (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-        Thu, 8 Aug 2019 04:01:06 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x78B16cd3128445
+        Thu, 8 Aug 2019 08:50:13 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x78FoDj93231487
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-        s=2019071901; t=1565262066;
-        bh=PfxstGCABas8L6TL/1R8TcMt3vHSJNWYWZFOgVM8s5w=;
+        s=2019071901; t=1565279413;
+        bh=2EhV3UUchDNp7G9rPc3u23hbunHjf9oyCF/tDuNK5QQ=;
         h=Date:From:Cc:Reply-To:In-Reply-To:References:To:Subject:From;
-        b=ia3j+Iciuta3/9m13m0sYDaXNe6oLkSVviZrGMdTaVtGXMELRQ28PbTmc5FX9clZc
-         sZgSvKC1kZ/O0PqyoRrU3us1wlWF6ZoxgPdZyjuO5D46p8ElvLA/XmJC6Zh/kBvlzb
-         SZ3+ltO1sBCURq9fPUo38B4wug5kPgr9oExQiYHBeskUCQ9dwiRka9SuFx1NJK6q05
-         0OTp/Qf4It1nqGeB5YjibfWz4AxC7hnRakSaBMD8s8ipzZ6j/mEkBbK7wRUGwHrzp+
-         GkMv798+crDcCNnC+ManiYTjLIw8jD4qHILOCaCOiwf1snSK2FR3HNdU9p8EUfn/ZW
-         nA7fNO3XhQL2g==
+        b=ghlYQWDidQ5C9HX1EyGcxqpOPAg2moJuNNm3vuCj7bBYDmwQW4kIKu2UlOBklX9WV
+         a35vl+I/o7SOvnHVHDxpAmfZe9X1kuTZhY11ND63usEf+qi1Hz5xEjNIqoo2RE7sU8
+         DBeBciCgFRaZg0DoHH4K6vSvwavOlQ/7BNcIhbkWbkA0+LICqimtNLmDIa/mgirrQn
+         K1mcevIixzDnKyf5RMYqgWgAwBd4A8UcXlhQn/kUqU5HihOYMmLhBZ14hHfEoKWlZd
+         JWfO3gZtGXhci1X+q5HV48xxlSzcpZS0gvCd3ibUZVw31nbQYaZN6a1ReVllz2uIw+
+         0ZFkiCqSiCjog==
 Received: (from tipbot@localhost)
-        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x78B15qv3128442;
-        Thu, 8 Aug 2019 04:01:05 -0700
-Date:   Thu, 8 Aug 2019 04:01:05 -0700
+        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x78FoCPI3231480;
+        Thu, 8 Aug 2019 08:50:12 -0700
+Date:   Thu, 8 Aug 2019 08:50:12 -0700
 X-Authentication-Warning: terminus.zytor.com: tipbot set sender to tipbot@zytor.com using -f
-From:   tip-bot for Phil Auld <tipbot@zytor.com>
-Message-ID: <tip-6b8fd01b21f5f2701b407a7118f236ba4c41226d@git.kernel.org>
-Cc:     tglx@linutronix.de, mingo@redhat.com, linux-kernel@vger.kernel.org,
-        hpa@zytor.com, mingo@kernel.org, peterz@infradead.org,
-        vincent.guittot@linaro.org, pauld@redhat.com
-Reply-To: pauld@redhat.com, vincent.guittot@linaro.org, hpa@zytor.com,
-          linux-kernel@vger.kernel.org, peterz@infradead.org,
-          mingo@redhat.com, tglx@linutronix.de, mingo@kernel.org
-In-Reply-To: <20190801133749.11033-1-pauld@redhat.com>
-References: <20190801133749.11033-1-pauld@redhat.com>
+From:   tip-bot for Valdis Kletnieks <tipbot@zytor.com>
+Message-ID: <tip-b6ff24f7b5101101ff897dfdde3f37924e676bc2@git.kernel.org>
+Cc:     mingo@kernel.org, valdis.kletnieks@vt.edu, tglx@linutronix.de,
+        tony.luck@intel.com, linux-kernel@vger.kernel.org, bp@suse.de,
+        hpa@zytor.com, lkp@intel.com
+Reply-To: hpa@zytor.com, lkp@intel.com, bp@suse.de,
+          linux-kernel@vger.kernel.org, tony.luck@intel.com,
+          tglx@linutronix.de, valdis.kletnieks@vt.edu, mingo@kernel.org
+In-Reply-To: <7053.1565218556@turing-police>
+References: <7053.1565218556@turing-police>
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip:sched/core] sched/fair: Use rq_lock/unlock in
- online_fair_sched_group
-Git-Commit-ID: 6b8fd01b21f5f2701b407a7118f236ba4c41226d
+Subject: [tip:ras/core] RAS: Build debugfs.o only when enabled in Kconfig
+Git-Commit-ID: b6ff24f7b5101101ff897dfdde3f37924e676bc2
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot.git.kernel.org>
 Robot-Unsubscribe: Contact <mailto:hpa@kernel.org> to get blacklisted from
@@ -63,70 +62,48 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-Commit-ID:  6b8fd01b21f5f2701b407a7118f236ba4c41226d
-Gitweb:     https://git.kernel.org/tip/6b8fd01b21f5f2701b407a7118f236ba4c41226d
-Author:     Phil Auld <pauld@redhat.com>
-AuthorDate: Thu, 1 Aug 2019 09:37:49 -0400
-Committer:  Peter Zijlstra <peterz@infradead.org>
-CommitDate: Thu, 8 Aug 2019 09:09:31 +0200
+Commit-ID:  b6ff24f7b5101101ff897dfdde3f37924e676bc2
+Gitweb:     https://git.kernel.org/tip/b6ff24f7b5101101ff897dfdde3f37924e676bc2
+Author:     Valdis Kletnieks <valdis.kletnieks@vt.edu>
+AuthorDate: Thu, 8 Aug 2019 16:32:27 +0200
+Committer:  Borislav Petkov <bp@suse.de>
+CommitDate: Thu, 8 Aug 2019 17:44:02 +0200
 
-sched/fair: Use rq_lock/unlock in online_fair_sched_group
+RAS: Build debugfs.o only when enabled in Kconfig
 
-Enabling WARN_DOUBLE_CLOCK in /sys/kernel/debug/sched_features causes
-warning to fire in update_rq_clock. This seems to be caused by onlining
-a new fair sched group not using the rq lock wrappers.
+In addition, the 0day bot reported this build error:
 
-  [] rq->clock_update_flags & RQCF_UPDATED
-  [] WARNING: CPU: 5 PID: 54385 at kernel/sched/core.c:210 update_rq_clock+0xec/0x150
+  >> drivers/ras/debugfs.c:10:5: error: redefinition of 'ras_userspace_consumers'
+      int ras_userspace_consumers(void)
+          ^~~~~~~~~~~~~~~~~~~~~~~
+     In file included from drivers/ras/debugfs.c:3:0:
+     include/linux/ras.h:14:19: note: previous definition of 'ras_userspace_consumers' was here
+      static inline int ras_userspace_consumers(void) { return 0; }
+                      ^~~~~~~~~~~~~~~~~~~~~~~
 
-  [] Call Trace:
-  []  online_fair_sched_group+0x53/0x100
-  []  cpu_cgroup_css_online+0x16/0x20
-  []  online_css+0x1c/0x60
-  []  cgroup_apply_control_enable+0x231/0x3b0
-  []  cgroup_mkdir+0x41b/0x530
-  []  kernfs_iop_mkdir+0x61/0xa0
-  []  vfs_mkdir+0x108/0x1a0
-  []  do_mkdirat+0x77/0xe0
-  []  do_syscall_64+0x55/0x1d0
-  []  entry_SYSCALL_64_after_hwframe+0x44/0xa9
+for a riscv-specific .config where CONFIG_DEBUG_FS is not set. Fix all
+that by making debugfs.o depend on that define.
 
-Using the wrappers in online_fair_sched_group instead of the raw locking
-removes this warning.
+ [ bp: Rewrite commit message. ]
 
-Signed-off-by: Phil Auld <pauld@redhat.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Vincent Guittot <vincent.guittot@linaro.org>
-Cc: Ingo Molnar <mingo@kernel.org>
-Link: https://lkml.kernel.org/r/20190801133749.11033-1-pauld@redhat.com
+Reported-by: kbuild test robot <lkp@intel.com>
+Signed-off-by: Valdis Kletnieks <valdis.kletnieks@vt.edu>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Cc: Tony Luck <tony.luck@intel.com>
+Cc: linux-edac@vger.kernel.org
+Cc: x86@kernel.org
+Link: http://lkml.kernel.org/r/7053.1565218556@turing-police
 ---
- kernel/sched/fair.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/ras/Makefile | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 19c58599e967..d9407517dae9 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -10281,18 +10281,18 @@ err:
- void online_fair_sched_group(struct task_group *tg)
- {
- 	struct sched_entity *se;
-+	struct rq_flags rf;
- 	struct rq *rq;
- 	int i;
- 
- 	for_each_possible_cpu(i) {
- 		rq = cpu_rq(i);
- 		se = tg->se[i];
--
--		raw_spin_lock_irq(&rq->lock);
-+		rq_lock(rq, &rf);
- 		update_rq_clock(rq);
- 		attach_entity_cfs_rq(se);
- 		sync_throttle(tg, i);
--		raw_spin_unlock_irq(&rq->lock);
-+		rq_unlock(rq, &rf);
- 	}
- }
- 
+diff --git a/drivers/ras/Makefile b/drivers/ras/Makefile
+index ef6777e14d3d..6f0404f50107 100644
+--- a/drivers/ras/Makefile
++++ b/drivers/ras/Makefile
+@@ -1,3 +1,4 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+-obj-$(CONFIG_RAS)	+= ras.o debugfs.o
++obj-$(CONFIG_RAS)	+= ras.o
++obj-$(CONFIG_DEBUG_FS)	+= debugfs.o
+ obj-$(CONFIG_RAS_CEC)	+= cec.o
