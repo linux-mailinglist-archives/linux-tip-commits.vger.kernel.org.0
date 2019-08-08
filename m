@@ -2,53 +2,51 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D3DD386B54
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  8 Aug 2019 22:21:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2639086B5F
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  8 Aug 2019 22:22:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404653AbfHHUVK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 8 Aug 2019 16:21:10 -0400
-Received: from terminus.zytor.com ([198.137.202.136]:33467 "EHLO
+        id S2404794AbfHHUWN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 8 Aug 2019 16:22:13 -0400
+Received: from terminus.zytor.com ([198.137.202.136]:39069 "EHLO
         terminus.zytor.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404629AbfHHUVK (ORCPT
+        with ESMTP id S2404763AbfHHUWM (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 8 Aug 2019 16:21:10 -0400
+        Thu, 8 Aug 2019 16:22:12 -0400
 Received: from terminus.zytor.com (localhost [127.0.0.1])
-        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x78KKs6T3321503
+        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x78KLgVw3321806
         (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-        Thu, 8 Aug 2019 13:20:55 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x78KKs6T3321503
+        Thu, 8 Aug 2019 13:21:42 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x78KLgVw3321806
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-        s=2019071901; t=1565295656;
-        bh=jB9lJFazloCBsP9ogNel+3Ue7cq3GA01L+pcSkwUcfU=;
+        s=2019071901; t=1565295703;
+        bh=GCHPCeR8uPQ94Nk8i1XY9/BC/5YRP6Xm+sy/I3HF908=;
         h=Date:From:Cc:Reply-To:In-Reply-To:References:To:Subject:From;
-        b=LZ1gJNnWXV2dFuNttDFxqtZEiXdxxufLD5kv0U39ucCLBOq9kinUpFHw1y9Ql12tm
-         SfVavbfgHoKyg4stW6sOKt24GIxYHBmxNRJjV1FEHJ4AlhjH0VSzsCCiyymq2PD8sW
-         z5rywwj/P/bKwHX4HhMFFqWqHO9JQHkO1VlP1NV4ncbQxAzKn8iB3HgKYa41QSoC2V
-         XjMTFiEaaJ/lB4CkSpGGt3XNaufBnJzfWiHBhKbR5Iu4H6+iPirg1Dj5sjmquhNUuF
-         k/v31FfjvBqMxCcNXcLOcBHd4d7Wbr7iGNcQGwILhgnop1BSaM8waPgbu8UHgFEkES
-         xaqrqvq/OFt2A==
+        b=4oRtsUKfr33hs/C7cbm6reSwuIYp0j9PQfWl2udwXdkHrNbWlVzd4mT84myO5dVyx
+         gy8AJZailxBzOaplyGfiQKue2iXFa19Uk0YDu728YiIaNr9iY3FwzMhjtvvfFwXhrI
+         7IlUHgMBrwVyZwGdNw0LgMPAXXJzEpVuolYta6l4lU0IriN1pwRzCUUvnSEKDPkdLq
+         uroeLY6TOsfpeUaxHwNLHS2v39c3QHTO7CucEEE3aB1my2vbD9SMVBM2midaphrmGh
+         T9ZZmz0KapsITq3CRPVJBWRvYyNiU/FnIl05zceN/on4TjslFrO0w9mfr8qE+HYrND
+         jDOnlu4gKroZA==
 Received: (from tipbot@localhost)
-        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x78KKsuh3321498;
-        Thu, 8 Aug 2019 13:20:54 -0700
-Date:   Thu, 8 Aug 2019 13:20:54 -0700
+        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x78KLe6B3321792;
+        Thu, 8 Aug 2019 13:21:40 -0700
+Date:   Thu, 8 Aug 2019 13:21:40 -0700
 X-Authentication-Warning: terminus.zytor.com: tipbot set sender to tipbot@zytor.com using -f
-From:   tip-bot for Ian Rogers <tipbot@zytor.com>
-Message-ID: <tip-fa37bab6d7154658d8a35920513f9396587754cc@git.kernel.org>
-Cc:     ak@linux.intel.com, irogers@google.com,
-        linux-kernel@vger.kernel.org, mingo@kernel.org, acme@redhat.com,
-        jolsa@redhat.com, eranian@google.com, namhyung@kernel.org,
-        alexander.shishkin@linux.intel.com, peterz@infradead.org,
-        tglx@linutronix.de, hpa@zytor.com
-Reply-To: namhyung@kernel.org, hpa@zytor.com, linux-kernel@vger.kernel.org,
-          jolsa@redhat.com, eranian@google.com, acme@redhat.com,
-          alexander.shishkin@linux.intel.com, peterz@infradead.org,
-          tglx@linutronix.de, ak@linux.intel.com, irogers@google.com,
-          mingo@kernel.org
-In-Reply-To: <20190731225441.233800-1-irogers@google.com>
-References: <20190731225441.233800-1-irogers@google.com>
+From:   tip-bot for Thomas Richter <tipbot@zytor.com>
+Message-ID: <tip-12a6d2940b5f02b4b9f71ce098e3bb02bc24a9ea@git.kernel.org>
+Cc:     tglx@linutronix.de, tmricht@linux.ibm.com, brueckner@linux.ibm.com,
+        linux-kernel@vger.kernel.org, hpa@zytor.com,
+        heiko.carstens@de.ibm.com, mingo@kernel.org, acme@redhat.com,
+        stli@linux.ibm.com, gor@linux.ibm.com
+Reply-To: tglx@linutronix.de, brueckner@linux.ibm.com,
+          tmricht@linux.ibm.com, linux-kernel@vger.kernel.org,
+          stli@linux.ibm.com, acme@redhat.com, gor@linux.ibm.com,
+          hpa@zytor.com, mingo@kernel.org, heiko.carstens@de.ibm.com
+In-Reply-To: <20190724122703.3996-1-tmricht@linux.ibm.com>
+References: <20190724122703.3996-1-tmricht@linux.ibm.com>
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip:perf/urgent] perf tools: Fix include paths in ui directory
-Git-Commit-ID: fa37bab6d7154658d8a35920513f9396587754cc
+Subject: [tip:perf/urgent] perf record: Fix module size on s390
+Git-Commit-ID: 12a6d2940b5f02b4b9f71ce098e3bb02bc24a9ea
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot.git.kernel.org>
 Robot-Unsubscribe: Contact <mailto:hpa@kernel.org> to get blacklisted from
@@ -66,67 +64,145 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-Commit-ID:  fa37bab6d7154658d8a35920513f9396587754cc
-Gitweb:     https://git.kernel.org/tip/fa37bab6d7154658d8a35920513f9396587754cc
-Author:     Ian Rogers <irogers@google.com>
-AuthorDate: Wed, 31 Jul 2019 15:54:41 -0700
+Commit-ID:  12a6d2940b5f02b4b9f71ce098e3bb02bc24a9ea
+Gitweb:     https://git.kernel.org/tip/12a6d2940b5f02b4b9f71ce098e3bb02bc24a9ea
+Author:     Thomas Richter <tmricht@linux.ibm.com>
+AuthorDate: Wed, 24 Jul 2019 14:27:02 +0200
 Committer:  Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitDate: Thu, 8 Aug 2019 15:41:11 -0300
 
-perf tools: Fix include paths in ui directory
+perf record: Fix module size on s390
 
-These paths point to the wrong location but still work because they get
-picked up by a -I flag that happens to direct to the correct file. Fix
-paths to point to the correct location without -I flags.
+On s390 the modules loaded in memory have the text segment located after
+the GOT and Relocation table. This can be seen with this output:
 
-Signed-off-by: Ian Rogers <irogers@google.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Jiri Olsa <jolsa@redhat.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Stephane Eranian <eranian@google.com>
-Link: http://lkml.kernel.org/r/20190731225441.233800-1-irogers@google.com
+  [root@m35lp76 perf]# fgrep qeth /proc/modules
+  qeth 151552 1 qeth_l2, Live 0x000003ff800b2000
+  ...
+  [root@m35lp76 perf]# cat /sys/module/qeth/sections/.text
+  0x000003ff800b3990
+  [root@m35lp76 perf]#
+
+There is an offset of 0x1990 bytes. The size of the qeth module is
+151552 bytes (0x25000 in hex).
+
+The location of the GOT/relocation table at the beginning of a module is
+unique to s390.
+
+commit 203d8a4aa6ed ("perf s390: Fix 'start' address of module's map")
+adjusts the start address of a module in the map structures, but does
+not adjust the size of the modules. This leads to overlapping of module
+maps as this example shows:
+
+[root@m35lp76 perf] # ./perf report -D
+     0 0 0xfb0 [0xa0]: PERF_RECORD_MMAP -1/0: [0x3ff800b3990(0x25000)
+          @ 0]:  x /lib/modules/.../qeth.ko.xz
+     0 0 0x1050 [0xb0]: PERF_RECORD_MMAP -1/0: [0x3ff800d85a0(0x8000)
+          @ 0]:  x /lib/modules/.../ip6_tables.ko.xz
+
+The module qeth.ko has an adjusted start address modified to b3990, but
+its size is unchanged and the module ends at 0x3ff800d8990.  This end
+address overlaps with the next modules start address of 0x3ff800d85a0.
+
+When the size of the leading GOT/Relocation table stored in the
+beginning of the text segment (0x1990 bytes) is subtracted from module
+qeth end address, there are no overlaps anymore:
+
+   0x3ff800d8990 - 0x1990 = 0x0x3ff800d7000
+
+which is the same as
+
+   0x3ff800b2000 + 0x25000 = 0x0x3ff800d7000.
+
+To fix this issue, also adjust the modules size in function
+arch__fix_module_text_start(). Add another function parameter named size
+and reduce the size of the module when the text segment start address is
+changed.
+
+Output after:
+     0 0 0xfb0 [0xa0]: PERF_RECORD_MMAP -1/0: [0x3ff800b3990(0x23670)
+          @ 0]:  x /lib/modules/.../qeth.ko.xz
+     0 0 0x1050 [0xb0]: PERF_RECORD_MMAP -1/0: [0x3ff800d85a0(0x7a60)
+          @ 0]:  x /lib/modules/.../ip6_tables.ko.xz
+
+Reported-by: Stefan Liebler <stli@linux.ibm.com>
+Signed-off-by: Thomas Richter <tmricht@linux.ibm.com>
+Acked-by: Heiko Carstens <heiko.carstens@de.ibm.com>
+Cc: Hendrik Brueckner <brueckner@linux.ibm.com>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: stable@vger.kernel.org
+Fixes: 203d8a4aa6ed ("perf s390: Fix 'start' address of module's map")
+Link: http://lkml.kernel.org/r/20190724122703.3996-1-tmricht@linux.ibm.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/ui/browser.c      | 9 +++++----
- tools/perf/ui/tui/progress.c | 2 +-
- 2 files changed, 6 insertions(+), 5 deletions(-)
+ tools/perf/arch/s390/util/machine.c | 14 +++++++++++++-
+ tools/perf/util/machine.c           |  3 ++-
+ tools/perf/util/machine.h           |  2 +-
+ 3 files changed, 16 insertions(+), 3 deletions(-)
 
-diff --git a/tools/perf/ui/browser.c b/tools/perf/ui/browser.c
-index f80c51d53565..d227d74b28f8 100644
---- a/tools/perf/ui/browser.c
-+++ b/tools/perf/ui/browser.c
-@@ -1,7 +1,8 @@
- // SPDX-License-Identifier: GPL-2.0
--#include "../string2.h"
--#include "../config.h"
--#include "../../perf.h"
-+#include "../util/util.h"
-+#include "../util/string2.h"
-+#include "../util/config.h"
-+#include "../perf.h"
- #include "libslang.h"
- #include "ui.h"
- #include "util.h"
-@@ -14,7 +15,7 @@
- #include "browser.h"
- #include "helpline.h"
- #include "keysyms.h"
--#include "../color.h"
-+#include "../util/color.h"
- #include <linux/ctype.h>
- #include <linux/zalloc.h>
+diff --git a/tools/perf/arch/s390/util/machine.c b/tools/perf/arch/s390/util/machine.c
+index a19690a17291..de26b1441a48 100644
+--- a/tools/perf/arch/s390/util/machine.c
++++ b/tools/perf/arch/s390/util/machine.c
+@@ -7,7 +7,7 @@
+ #include "api/fs/fs.h"
+ #include "debug.h"
  
-diff --git a/tools/perf/ui/tui/progress.c b/tools/perf/ui/tui/progress.c
-index bc134b82829d..5a24dd3ce4db 100644
---- a/tools/perf/ui/tui/progress.c
-+++ b/tools/perf/ui/tui/progress.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
- #include <linux/kernel.h>
--#include "../cache.h"
-+#include "../../util/cache.h"
- #include "../progress.h"
- #include "../libslang.h"
- #include "../ui.h"
+-int arch__fix_module_text_start(u64 *start, const char *name)
++int arch__fix_module_text_start(u64 *start, u64 *size, const char *name)
+ {
+ 	u64 m_start = *start;
+ 	char path[PATH_MAX];
+@@ -17,6 +17,18 @@ int arch__fix_module_text_start(u64 *start, const char *name)
+ 	if (sysfs__read_ull(path, (unsigned long long *)start) < 0) {
+ 		pr_debug2("Using module %s start:%#lx\n", path, m_start);
+ 		*start = m_start;
++	} else {
++		/* Successful read of the modules segment text start address.
++		 * Calculate difference between module start address
++		 * in memory and module text segment start address.
++		 * For example module load address is 0x3ff8011b000
++		 * (from /proc/modules) and module text segment start
++		 * address is 0x3ff8011b870 (from file above).
++		 *
++		 * Adjust the module size and subtract the GOT table
++		 * size located at the beginning of the module.
++		 */
++		*size -= (*start - m_start);
+ 	}
+ 
+ 	return 0;
+diff --git a/tools/perf/util/machine.c b/tools/perf/util/machine.c
+index cf826eca3aaf..83b2fbbeeb90 100644
+--- a/tools/perf/util/machine.c
++++ b/tools/perf/util/machine.c
+@@ -1378,6 +1378,7 @@ static int machine__set_modules_path(struct machine *machine)
+ 	return map_groups__set_modules_path_dir(&machine->kmaps, modules_path, 0);
+ }
+ int __weak arch__fix_module_text_start(u64 *start __maybe_unused,
++				u64 *size __maybe_unused,
+ 				const char *name __maybe_unused)
+ {
+ 	return 0;
+@@ -1389,7 +1390,7 @@ static int machine__create_module(void *arg, const char *name, u64 start,
+ 	struct machine *machine = arg;
+ 	struct map *map;
+ 
+-	if (arch__fix_module_text_start(&start, name) < 0)
++	if (arch__fix_module_text_start(&start, &size, name) < 0)
+ 		return -1;
+ 
+ 	map = machine__findnew_module_map(machine, start, name);
+diff --git a/tools/perf/util/machine.h b/tools/perf/util/machine.h
+index f70ab98a7bde..7aa38da26427 100644
+--- a/tools/perf/util/machine.h
++++ b/tools/perf/util/machine.h
+@@ -222,7 +222,7 @@ struct symbol *machine__find_kernel_symbol_by_name(struct machine *machine,
+ 
+ struct map *machine__findnew_module_map(struct machine *machine, u64 start,
+ 					const char *filename);
+-int arch__fix_module_text_start(u64 *start, const char *name);
++int arch__fix_module_text_start(u64 *start, u64 *size, const char *name);
+ 
+ int machine__load_kallsyms(struct machine *machine, const char *filename);
+ 
