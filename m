@@ -2,48 +2,51 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6755684CF3
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  7 Aug 2019 15:29:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A73B85AD2
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  8 Aug 2019 08:31:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388079AbfHGN3K (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 7 Aug 2019 09:29:10 -0400
-Received: from terminus.zytor.com ([198.137.202.136]:46645 "EHLO
+        id S1731257AbfHHGbe (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 8 Aug 2019 02:31:34 -0400
+Received: from terminus.zytor.com ([198.137.202.136]:35949 "EHLO
         terminus.zytor.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387982AbfHGN3K (ORCPT
+        with ESMTP id S1730678AbfHHGbd (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 7 Aug 2019 09:29:10 -0400
+        Thu, 8 Aug 2019 02:31:33 -0400
 Received: from terminus.zytor.com (localhost [127.0.0.1])
-        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x77DT0tU2699386
+        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x786VIBC3013592
         (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-        Wed, 7 Aug 2019 06:29:00 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x77DT0tU2699386
+        Wed, 7 Aug 2019 23:31:18 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x786VIBC3013592
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-        s=2019071901; t=1565184540;
-        bh=vlGMZafSUwhnnkknP0oAFVc3rI8uT6Wj0pvYag4NIWo=;
+        s=2019071901; t=1565245878;
+        bh=OnRdDif2XqLH5UEH4/KlNGhdeyLoxKF3RQndw6EbQ0w=;
         h=Date:From:Cc:Reply-To:In-Reply-To:References:To:Subject:From;
-        b=1JXyZH8pKN9j0GX5lGJjbgPAQzc93c+it7qlXJxN/y0GQ6dK84xX69UOAgaiIF/CE
-         Aps2HOd3qaQgx2sq5PKrqugHbMP8P6YmZbn2zQDUvfQAVUODhQl11tDUAySRqN1i86
-         NPXZdgzQH44fSgiAB/w3WewVNnguolGA6CvX7ytPQmNZMWy1sgcnVYIjFlEEjMCRwE
-         6N9a3FMxP3Cy4wT6eJMlgMbFzo09gTRI757ekySG9vx5tOH6wDWDDskO4dggonE+Qh
-         7xQZ+8czcO+yYutV/HmILoFnDUIG2MINlm6nEA+VrpghNFvarIr58kj9l4vbBYGZoH
-         iX66Z63vJNGnQ==
+        b=IjPYZ6ETjGPCtOc4gF9FtVNJ4xqwX1hIwu//Nlo1QxW7YMji1O4yYTT6DV28bUQYE
+         AK9Rh4RI9dey+P0ecimbaTg1m5CHTWXCq+9awYzKiwTbJ5MuuwGJzfsl05iyitZFQj
+         rHa6JNTuo5dmrFLn4+Cf8Oa86K/iEU6dr9j7+Of6bWIj84tixGHOw56RCm0qc3VPiq
+         DbiLu0HZFJ7IguE1u2CWkxpVGAdjwQ4iMbi6eGHOV1yNxmNucCl3NefOD1v6N6AuRz
+         tLRnyaMYhxJfJsE031nbgH3yY/f1+mqw8b2lcWh8gl8rmQWMSZwdVD2/18lM26RdTt
+         97c4lQcm6NA/A==
 Received: (from tipbot@localhost)
-        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x77DSxGM2699383;
-        Wed, 7 Aug 2019 06:28:59 -0700
-Date:   Wed, 7 Aug 2019 06:28:59 -0700
+        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x786VIKE3013589;
+        Wed, 7 Aug 2019 23:31:18 -0700
+Date:   Wed, 7 Aug 2019 23:31:18 -0700
 X-Authentication-Warning: terminus.zytor.com: tipbot set sender to tipbot@zytor.com using -f
-From:   tip-bot for Sean Christopherson <tipbot@zytor.com>
-Message-ID: <tip-6444b40eeda4f78f57b255dd7ecb8d3e5936eea2@git.kernel.org>
-Cc:     sean.j.christopherson@intel.com, mingo@kernel.org,
-        linux-kernel@vger.kernel.org, hpa@zytor.com, tglx@linutronix.de
-Reply-To: mingo@kernel.org, sean.j.christopherson@intel.com, hpa@zytor.com,
-          tglx@linutronix.de, linux-kernel@vger.kernel.org
-In-Reply-To: <20190805212134.12001-1-sean.j.christopherson@intel.com>
-References: <20190805212134.12001-1-sean.j.christopherson@intel.com>
+From:   tip-bot for Nick Desaulniers <tipbot@zytor.com>
+Message-ID: <tip-4ce97317f41d38584fb93578e922fcd19e535f5b@git.kernel.org>
+Cc:     adelva@google.com, vaibhavrustagi@google.com,
+        linux-kernel@vger.kernel.org, hpa@zytor.com,
+        ndesaulniers@google.com, tglx@linutronix.de, mingo@kernel.org,
+        manojgupta@google.com
+Reply-To: vaibhavrustagi@google.com, linux-kernel@vger.kernel.org,
+          adelva@google.com, ndesaulniers@google.com, hpa@zytor.com,
+          mingo@kernel.org, tglx@linutronix.de, manojgupta@google.com
+In-Reply-To: <20190807221539.94583-1-ndesaulniers@google.com>
+References: <20190807221539.94583-1-ndesaulniers@google.com>
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip:x86/apic] x86/apic: Annotate global config variables as
- "read-only after init"
-Git-Commit-ID: 6444b40eeda4f78f57b255dd7ecb8d3e5936eea2
+Subject: [tip:x86/urgent] x86/purgatory: Do not use __builtin_memcpy and
+ __builtin_memset
+Git-Commit-ID: 4ce97317f41d38584fb93578e922fcd19e535f5b
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot.git.kernel.org>
 Robot-Unsubscribe: Contact <mailto:hpa@kernel.org> to get blacklisted from
@@ -61,114 +64,133 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-Commit-ID:  6444b40eeda4f78f57b255dd7ecb8d3e5936eea2
-Gitweb:     https://git.kernel.org/tip/6444b40eeda4f78f57b255dd7ecb8d3e5936eea2
-Author:     Sean Christopherson <sean.j.christopherson@intel.com>
-AuthorDate: Mon, 5 Aug 2019 14:21:34 -0700
+Commit-ID:  4ce97317f41d38584fb93578e922fcd19e535f5b
+Gitweb:     https://git.kernel.org/tip/4ce97317f41d38584fb93578e922fcd19e535f5b
+Author:     Nick Desaulniers <ndesaulniers@google.com>
+AuthorDate: Wed, 7 Aug 2019 15:15:32 -0700
 Committer:  Thomas Gleixner <tglx@linutronix.de>
-CommitDate: Wed, 7 Aug 2019 15:24:21 +0200
+CommitDate: Thu, 8 Aug 2019 08:25:52 +0200
 
-x86/apic: Annotate global config variables as "read-only after init"
+x86/purgatory: Do not use __builtin_memcpy and __builtin_memset
 
-Mark the APIC's global config variables that are constant after boot as
-__ro_after_init to help document that the majority of the APIC config is
-not changed at runtime, and to harden the kernel a smidge.
+Implementing memcpy and memset in terms of __builtin_memcpy and
+__builtin_memset is problematic.
 
-Signed-off-by: Sean Christopherson <sean.j.christopherson@intel.com>
+GCC at -O2 will replace calls to the builtins with calls to memcpy and
+memset (but will generate an inline implementation at -Os).  Clang will
+replace the builtins with these calls regardless of optimization level.
+$ llvm-objdump -dr arch/x86/purgatory/string.o | tail
+
+0000000000000339 memcpy:
+     339: 48 b8 00 00 00 00 00 00 00 00 movabsq $0, %rax
+                000000000000033b:  R_X86_64_64  memcpy
+     343: ff e0                         jmpq    *%rax
+
+0000000000000345 memset:
+     345: 48 b8 00 00 00 00 00 00 00 00 movabsq $0, %rax
+                0000000000000347:  R_X86_64_64  memset
+     34f: ff e0
+
+Such code results in infinite recursion at runtime. This is observed
+when doing kexec.
+
+Instead, reuse an implementation from arch/x86/boot/compressed/string.c.
+This requires to implement a stub function for warn(). Also, Clang may
+lower memcmp's that compare against 0 to bcmp's, so add a small definition,
+too. See also: commit 5f074f3e192f ("lib/string.c: implement a basic bcmp")
+
+Fixes: 8fc5b4d4121c ("purgatory: core purgatory functionality")
+Reported-by: Vaibhav Rustagi <vaibhavrustagi@google.com>
+Debugged-by: Vaibhav Rustagi <vaibhavrustagi@google.com>
+Debugged-by: Manoj Gupta <manojgupta@google.com>
+Suggested-by: Alistair Delva <adelva@google.com>
+Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20190805212134.12001-1-sean.j.christopherson@intel.com
+Tested-by: Vaibhav Rustagi <vaibhavrustagi@google.com>
+Cc: stable@vger.kernel.org
+Link: https://bugs.chromium.org/p/chromium/issues/detail?id=984056
+Link: https://lkml.kernel.org/r/20190807221539.94583-1-ndesaulniers@google.com
 
 ---
- arch/x86/kernel/apic/apic.c | 26 +++++++++++++-------------
- 1 file changed, 13 insertions(+), 13 deletions(-)
+ arch/x86/boot/string.c         |  8 ++++++++
+ arch/x86/purgatory/Makefile    |  3 +++
+ arch/x86/purgatory/purgatory.c |  6 ++++++
+ arch/x86/purgatory/string.c    | 23 -----------------------
+ 4 files changed, 17 insertions(+), 23 deletions(-)
 
-diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
-index 831274e3c09f..3a31875bd0a3 100644
---- a/arch/x86/kernel/apic/apic.c
-+++ b/arch/x86/kernel/apic/apic.c
-@@ -65,10 +65,10 @@ unsigned int num_processors;
- unsigned disabled_cpus;
- 
- /* Processor that is doing the boot up */
--unsigned int boot_cpu_physical_apicid = -1U;
-+unsigned int boot_cpu_physical_apicid __ro_after_init = -1U;
- EXPORT_SYMBOL_GPL(boot_cpu_physical_apicid);
- 
--u8 boot_cpu_apic_version;
-+u8 boot_cpu_apic_version __ro_after_init;
- 
- /*
-  * The highest APIC ID seen during enumeration.
-@@ -85,13 +85,13 @@ physid_mask_t phys_cpu_present_map;
-  * disable_cpu_apicid=<int>, mostly used for the kdump 2nd kernel to
-  * avoid undefined behaviour caused by sending INIT from AP to BSP.
-  */
--static unsigned int disabled_cpu_apicid __read_mostly = BAD_APICID;
-+static unsigned int disabled_cpu_apicid __ro_after_init = BAD_APICID;
- 
- /*
-  * This variable controls which CPUs receive external NMIs.  By default,
-  * external NMIs are delivered only to the BSP.
-  */
--static int apic_extnmi = APIC_EXTNMI_BSP;
-+static int apic_extnmi __ro_after_init = APIC_EXTNMI_BSP;
- 
- /*
-  * Map cpu index to physical APIC ID
-@@ -114,7 +114,7 @@ EXPORT_EARLY_PER_CPU_SYMBOL(x86_cpu_to_acpiid);
- DEFINE_EARLY_PER_CPU_READ_MOSTLY(int, x86_cpu_to_logical_apicid, BAD_APICID);
- 
- /* Local APIC was disabled by the BIOS and enabled by the kernel */
--static int enabled_via_apicbase;
-+static int enabled_via_apicbase __ro_after_init;
- 
- /*
-  * Handle interrupt mode configuration register (IMCR).
-@@ -172,23 +172,23 @@ static __init int setup_apicpmtimer(char *s)
- __setup("apicpmtimer", setup_apicpmtimer);
- #endif
- 
--unsigned long mp_lapic_addr;
--int disable_apic;
-+unsigned long mp_lapic_addr __ro_after_init;
-+int disable_apic __ro_after_init;
- /* Disable local APIC timer from the kernel commandline or via dmi quirk */
- static int disable_apic_timer __initdata;
- /* Local APIC timer works in C2 */
--int local_apic_timer_c2_ok;
-+int local_apic_timer_c2_ok __ro_after_init;
- EXPORT_SYMBOL_GPL(local_apic_timer_c2_ok);
- 
- /*
-  * Debug level, exported for io_apic.c
-  */
--int apic_verbosity;
-+int apic_verbosity __ro_after_init;
- 
--int pic_mode;
-+int pic_mode __ro_after_init;
- 
- /* Have we found an MP table */
--int smp_found_config;
-+int smp_found_config __ro_after_init;
- 
- static struct resource lapic_resource = {
- 	.name = "Local APIC",
-@@ -199,7 +199,7 @@ unsigned int lapic_timer_period = 0;
- 
- static void apic_pm_activate(void);
- 
--static unsigned long apic_phys;
-+static unsigned long apic_phys __ro_after_init;
- 
- /*
-  * Get the LAPIC version
-@@ -1278,7 +1278,7 @@ void __init sync_Arb_IDs(void)
- 			APIC_INT_LEVELTRIG | APIC_DM_INIT);
+diff --git a/arch/x86/boot/string.c b/arch/x86/boot/string.c
+index 401e30ca0a75..8272a4492844 100644
+--- a/arch/x86/boot/string.c
++++ b/arch/x86/boot/string.c
+@@ -37,6 +37,14 @@ int memcmp(const void *s1, const void *s2, size_t len)
+ 	return diff;
  }
  
--enum apic_intr_mode_id apic_intr_mode;
-+enum apic_intr_mode_id apic_intr_mode __ro_after_init;
- 
- static int __init apic_intr_mode_select(void)
++/*
++ * Clang may lower `memcmp == 0` to `bcmp == 0`.
++ */
++int bcmp(const void *s1, const void *s2, size_t len)
++{
++	return memcmp(s1, s2, len);
++}
++
+ int strcmp(const char *str1, const char *str2)
  {
+ 	const unsigned char *s1 = (const unsigned char *)str1;
+diff --git a/arch/x86/purgatory/Makefile b/arch/x86/purgatory/Makefile
+index 3cf302b26332..91ef244026d2 100644
+--- a/arch/x86/purgatory/Makefile
++++ b/arch/x86/purgatory/Makefile
+@@ -6,6 +6,9 @@ purgatory-y := purgatory.o stack.o setup-x86_$(BITS).o sha256.o entry64.o string
+ targets += $(purgatory-y)
+ PURGATORY_OBJS = $(addprefix $(obj)/,$(purgatory-y))
+ 
++$(obj)/string.o: $(srctree)/arch/x86/boot/compressed/string.c FORCE
++	$(call if_changed_rule,cc_o_c)
++
+ $(obj)/sha256.o: $(srctree)/lib/sha256.c FORCE
+ 	$(call if_changed_rule,cc_o_c)
+ 
+diff --git a/arch/x86/purgatory/purgatory.c b/arch/x86/purgatory/purgatory.c
+index 6d8d5a34c377..b607bda786f6 100644
+--- a/arch/x86/purgatory/purgatory.c
++++ b/arch/x86/purgatory/purgatory.c
+@@ -68,3 +68,9 @@ void purgatory(void)
+ 	}
+ 	copy_backup_region();
+ }
++
++/*
++ * Defined in order to reuse memcpy() and memset() from
++ * arch/x86/boot/compressed/string.c
++ */
++void warn(const char *msg) {}
+diff --git a/arch/x86/purgatory/string.c b/arch/x86/purgatory/string.c
+deleted file mode 100644
+index 01ad43873ad9..000000000000
+--- a/arch/x86/purgatory/string.c
++++ /dev/null
+@@ -1,23 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-only
+-/*
+- * Simple string functions.
+- *
+- * Copyright (C) 2014 Red Hat Inc.
+- *
+- * Author:
+- *       Vivek Goyal <vgoyal@redhat.com>
+- */
+-
+-#include <linux/types.h>
+-
+-#include "../boot/string.c"
+-
+-void *memcpy(void *dst, const void *src, size_t len)
+-{
+-	return __builtin_memcpy(dst, src, len);
+-}
+-
+-void *memset(void *dst, int c, size_t len)
+-{
+-	return __builtin_memset(dst, c, len);
+-}
