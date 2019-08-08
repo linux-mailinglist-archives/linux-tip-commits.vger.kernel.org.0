@@ -2,50 +2,48 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BE0E485AD9
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  8 Aug 2019 08:32:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E83485B16
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  8 Aug 2019 08:53:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731443AbfHHGcY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 8 Aug 2019 02:32:24 -0400
-Received: from terminus.zytor.com ([198.137.202.136]:50087 "EHLO
+        id S1731035AbfHHGwS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 8 Aug 2019 02:52:18 -0400
+Received: from terminus.zytor.com ([198.137.202.136]:55957 "EHLO
         terminus.zytor.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725817AbfHHGcX (ORCPT
+        with ESMTP id S1730943AbfHHGwS (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 8 Aug 2019 02:32:23 -0400
+        Thu, 8 Aug 2019 02:52:18 -0400
 Received: from terminus.zytor.com (localhost [127.0.0.1])
-        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x786W2rN3013649
+        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x786q6Y73020017
         (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-        Wed, 7 Aug 2019 23:32:02 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x786W2rN3013649
+        Wed, 7 Aug 2019 23:52:06 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x786q6Y73020017
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-        s=2019071901; t=1565245923;
-        bh=VswMpHWj24ULQnUBPrNnj+j7MNQWdOP+qKX2/mk60D0=;
+        s=2019071901; t=1565247126;
+        bh=X8IaFASAX4PNtkoNcQqu1RVvB8EK57wuV23coB9N5gQ=;
         h=Date:From:Cc:Reply-To:In-Reply-To:References:To:Subject:From;
-        b=snfI2scraBP8d+ZCZQLgOfGvDiGnPQOl5xvoQ7enyUAjelJgfiM7pmwQABJG5qRB0
-         CUAUrzu2uiL+JRjEh36KTe9xNtIhFlewO4SmrlN6BmbcIqOUnNn6HhcTa+f/56Q3gR
-         ElBCl87MvNtmDK5xm2Amw6y9w6QvPoe2RJcetpBB7h6FoqIoPW/HHL0ypwwVWKFFGH
-         UVLeEY33j4/MyvN/BnTijMlREaoY2v0qv3BHHN9i2dx6UzWwbEUxI2qB0p/Hw+UnhM
-         LSaJKNK2Ya2K2YI3R5rsJm9tlbBF023uipSHtXM3oJ0xJUMgp3wsDrOETnmrNfJsJM
-         SCZPWeItg9pCQ==
+        b=LULD5ZqNV0LGTUqip1L9v+3rkGqmFTU063EteFgruRHLHxMovb+LO54AM6qLOGyzE
+         5afMO1J+CogCvYCpug/3TxOLup+8DDrVjnczHRscTGVDRxLZDhOAsf7pg0j3cnNF0U
+         HddeVwOwONhG61ntvGx3hkI7qBh6/w0xMkhsZuFZM+MhdBaxxFH7dtl93Sru3uBh7d
+         dUCoCg+mKQvR5e+OhNAnbv2au79rDMb6LNajLd0wudspzCr+l+JMtQHL8AC7L8fNz2
+         hqhjurN4R0aViABSwaflIzVMbxYU00W7qvO54gwgqiWzWByIB0ED0fMO+tbnyqfpe+
+         FNWntxMMcVydw==
 Received: (from tipbot@localhost)
-        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x786W2XH3013646;
-        Wed, 7 Aug 2019 23:32:02 -0700
-Date:   Wed, 7 Aug 2019 23:32:02 -0700
+        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x786q5SC3020014;
+        Wed, 7 Aug 2019 23:52:05 -0700
+Date:   Wed, 7 Aug 2019 23:52:05 -0700
 X-Authentication-Warning: terminus.zytor.com: tipbot set sender to tipbot@zytor.com using -f
-From:   tip-bot for Nick Desaulniers <tipbot@zytor.com>
-Message-ID: <tip-b059f801a937d164e03b33c1848bb3dca67c0b04@git.kernel.org>
-Cc:     hpa@zytor.com, peterz@infradead.org, tglx@linutronix.de,
-        mingo@kernel.org, ndesaulniers@google.com,
-        linux-kernel@vger.kernel.org, vaibhavrustagi@google.com
-Reply-To: vaibhavrustagi@google.com, linux-kernel@vger.kernel.org,
-          ndesaulniers@google.com, mingo@kernel.org, tglx@linutronix.de,
-          peterz@infradead.org, hpa@zytor.com
-In-Reply-To: <20190807221539.94583-2-ndesaulniers@google.com>
-References: <20190807221539.94583-2-ndesaulniers@google.com>
+From:   tip-bot for Ming Lei <tipbot@zytor.com>
+Message-ID: <tip-491beed3b102b6e6c0e7734200661242226e3933@git.kernel.org>
+Cc:     linux-kernel@vger.kernel.org, ming.lei@redhat.com,
+        tglx@linutronix.de, hpa@zytor.com, mingo@kernel.org
+Reply-To: ming.lei@redhat.com, linux-kernel@vger.kernel.org,
+          tglx@linutronix.de, hpa@zytor.com, mingo@kernel.org
+In-Reply-To: <20190805011906.5020-1-ming.lei@redhat.com>
+References: <20190805011906.5020-1-ming.lei@redhat.com>
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip:x86/urgent] x86/purgatory: Use CFLAGS_REMOVE rather than reset
- KBUILD_CFLAGS
-Git-Commit-ID: b059f801a937d164e03b33c1848bb3dca67c0b04
+Subject: [tip:irq/urgent] genirq/affinity: Create affinity mask for single
+ vector
+Git-Commit-ID: 491beed3b102b6e6c0e7734200661242226e3933
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot.git.kernel.org>
 Robot-Unsubscribe: Contact <mailto:hpa@kernel.org> to get blacklisted from
@@ -63,81 +61,57 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-Commit-ID:  b059f801a937d164e03b33c1848bb3dca67c0b04
-Gitweb:     https://git.kernel.org/tip/b059f801a937d164e03b33c1848bb3dca67c0b04
-Author:     Nick Desaulniers <ndesaulniers@google.com>
-AuthorDate: Wed, 7 Aug 2019 15:15:33 -0700
+Commit-ID:  491beed3b102b6e6c0e7734200661242226e3933
+Gitweb:     https://git.kernel.org/tip/491beed3b102b6e6c0e7734200661242226e3933
+Author:     Ming Lei <ming.lei@redhat.com>
+AuthorDate: Mon, 5 Aug 2019 09:19:06 +0800
 Committer:  Thomas Gleixner <tglx@linutronix.de>
-CommitDate: Thu, 8 Aug 2019 08:25:53 +0200
+CommitDate: Thu, 8 Aug 2019 08:47:55 +0200
 
-x86/purgatory: Use CFLAGS_REMOVE rather than reset KBUILD_CFLAGS
+genirq/affinity: Create affinity mask for single vector
 
-KBUILD_CFLAGS is very carefully built up in the top level Makefile,
-particularly when cross compiling or using different build tools.
-Resetting KBUILD_CFLAGS via := assignment is an antipattern.
+Since commit c66d4bd110a1f8 ("genirq/affinity: Add new callback for
+(re)calculating interrupt sets"), irq_create_affinity_masks() returns
+NULL in case of single vector. This change has caused regression on some
+drivers, such as lpfc.
 
-The comment above the reset mentions that -pg is problematic.  Other
-Makefiles use `CFLAGS_REMOVE_file.o = $(CC_FLAGS_FTRACE)` when
-CONFIG_FUNCTION_TRACER is set. Prefer that pattern to wiping out all of
-the important KBUILD_CFLAGS then manually having to re-add them. Seems
-also that __stack_chk_fail references are generated when using
-CONFIG_STACKPROTECTOR or CONFIG_STACKPROTECTOR_STRONG.
+The problem is that single vector requests can happen in some generic cases:
 
-Fixes: 8fc5b4d4121c ("purgatory: core purgatory functionality")
-Reported-by: Vaibhav Rustagi <vaibhavrustagi@google.com>
-Suggested-by: Peter Zijlstra <peterz@infradead.org>
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
+  1) kdump kernel
+
+  2) irq vectors resource is close to exhaustion.
+
+If in that situation the affinity mask for a single vector is not created,
+every caller has to handle the special case.
+
+There is no reason why the mask cannot be created, so remove the check for
+a single vector and create the mask.
+
+Fixes: c66d4bd110a1f8 ("genirq/affinity: Add new callback for (re)calculating interrupt sets")
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Vaibhav Rustagi <vaibhavrustagi@google.com>
 Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20190807221539.94583-2-ndesaulniers@google.com
+Link: https://lkml.kernel.org/r/20190805011906.5020-1-ming.lei@redhat.com
 
 ---
- arch/x86/purgatory/Makefile | 33 ++++++++++++++++++++++++++++-----
- 1 file changed, 28 insertions(+), 5 deletions(-)
+ kernel/irq/affinity.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/purgatory/Makefile b/arch/x86/purgatory/Makefile
-index 91ef244026d2..8901a1f89cf5 100644
---- a/arch/x86/purgatory/Makefile
-+++ b/arch/x86/purgatory/Makefile
-@@ -20,11 +20,34 @@ KCOV_INSTRUMENT := n
- 
- # Default KBUILD_CFLAGS can have -pg option set when FTRACE is enabled. That
- # in turn leaves some undefined symbols like __fentry__ in purgatory and not
--# sure how to relocate those. Like kexec-tools, use custom flags.
--
--KBUILD_CFLAGS := -fno-strict-aliasing -Wall -Wstrict-prototypes -fno-zero-initialized-in-bss -fno-builtin -ffreestanding -c -Os -mcmodel=large
--KBUILD_CFLAGS += -m$(BITS)
--KBUILD_CFLAGS += $(call cc-option,-fno-PIE)
-+# sure how to relocate those.
-+ifdef CONFIG_FUNCTION_TRACER
-+CFLAGS_REMOVE_sha256.o		+= $(CC_FLAGS_FTRACE)
-+CFLAGS_REMOVE_purgatory.o	+= $(CC_FLAGS_FTRACE)
-+CFLAGS_REMOVE_string.o		+= $(CC_FLAGS_FTRACE)
-+CFLAGS_REMOVE_kexec-purgatory.o	+= $(CC_FLAGS_FTRACE)
-+endif
-+
-+ifdef CONFIG_STACKPROTECTOR
-+CFLAGS_REMOVE_sha256.o		+= -fstack-protector
-+CFLAGS_REMOVE_purgatory.o	+= -fstack-protector
-+CFLAGS_REMOVE_string.o		+= -fstack-protector
-+CFLAGS_REMOVE_kexec-purgatory.o	+= -fstack-protector
-+endif
-+
-+ifdef CONFIG_STACKPROTECTOR_STRONG
-+CFLAGS_REMOVE_sha256.o		+= -fstack-protector-strong
-+CFLAGS_REMOVE_purgatory.o	+= -fstack-protector-strong
-+CFLAGS_REMOVE_string.o		+= -fstack-protector-strong
-+CFLAGS_REMOVE_kexec-purgatory.o	+= -fstack-protector-strong
-+endif
-+
-+ifdef CONFIG_RETPOLINE
-+CFLAGS_REMOVE_sha256.o		+= $(RETPOLINE_CFLAGS)
-+CFLAGS_REMOVE_purgatory.o	+= $(RETPOLINE_CFLAGS)
-+CFLAGS_REMOVE_string.o		+= $(RETPOLINE_CFLAGS)
-+CFLAGS_REMOVE_kexec-purgatory.o	+= $(RETPOLINE_CFLAGS)
-+endif
- 
- $(obj)/purgatory.ro: $(PURGATORY_OBJS) FORCE
- 		$(call if_changed,ld)
+diff --git a/kernel/irq/affinity.c b/kernel/irq/affinity.c
+index 4352b08ae48d..6fef48033f96 100644
+--- a/kernel/irq/affinity.c
++++ b/kernel/irq/affinity.c
+@@ -251,11 +251,9 @@ irq_create_affinity_masks(unsigned int nvecs, struct irq_affinity *affd)
+ 	 * Determine the number of vectors which need interrupt affinities
+ 	 * assigned. If the pre/post request exhausts the available vectors
+ 	 * then nothing to do here except for invoking the calc_sets()
+-	 * callback so the device driver can adjust to the situation. If there
+-	 * is only a single vector, then managing the queue is pointless as
+-	 * well.
++	 * callback so the device driver can adjust to the situation.
+ 	 */
+-	if (nvecs > 1 && nvecs > affd->pre_vectors + affd->post_vectors)
++	if (nvecs > affd->pre_vectors + affd->post_vectors)
+ 		affvecs = nvecs - affd->pre_vectors - affd->post_vectors;
+ 	else
+ 		affvecs = 0;
