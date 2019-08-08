@@ -2,53 +2,49 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7EB6686072
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  8 Aug 2019 12:56:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 654FA86074
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  8 Aug 2019 12:56:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726721AbfHHK4A (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 8 Aug 2019 06:56:00 -0400
-Received: from terminus.zytor.com ([198.137.202.136]:44755 "EHLO
+        id S1731030AbfHHK4p (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 8 Aug 2019 06:56:45 -0400
+Received: from terminus.zytor.com ([198.137.202.136]:58933 "EHLO
         terminus.zytor.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732082AbfHHK4A (ORCPT
+        with ESMTP id S1730747AbfHHK4o (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 8 Aug 2019 06:56:00 -0400
+        Thu, 8 Aug 2019 06:56:44 -0400
 Received: from terminus.zytor.com (localhost [127.0.0.1])
-        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x78Atik03127366
+        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x78AuUBs3127504
         (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-        Thu, 8 Aug 2019 03:55:45 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x78Atik03127366
+        Thu, 8 Aug 2019 03:56:30 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x78AuUBs3127504
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-        s=2019071901; t=1565261745;
-        bh=NG2wsUcW2YaTJ2LhVOLqnaSfqPi5EFOBk2xW+xZ/nYc=;
-        h=Date:From:Cc:Reply-To:In-Reply-To:References:To:Subject:From;
-        b=UCVmX1tiPScQyc1zWVOcgkoT3VM5BCo65QcjqcLIRgJsqtgnTq4UCokfqnI8YrFqu
-         879zyf0HKueLGDQ4c4ZQXxJ4glo+RzGKW+P0YHsK3YiJKdvGflPvD+vDQ2uw/GXq8r
-         6cLqwKwQOHPCzpG5im6u8ohBkTAU9qEjwsL4anV7vleza3REnKHQ1+b9Q8Ad03AyK4
-         025f6Wgtv488DHpi6WJXYw1KTLlhD4tc33ZA/x/H7aQTZoWxboqCV4K89QsuRV+xmZ
-         2DqyAq0rdRq91Imh6aiiZs8ZGZKL7/TXX+v431RAqS2EJSbnF44Eom2Jc/TgTPf6zp
-         kmom4bLJPdiEA==
+        s=2019071901; t=1565261790;
+        bh=roVLySAD0N/pZmT2piLY3SP6E2Nwc2F6XVYG7/bN4kI=;
+        h=Date:From:Cc:Reply-To:To:Subject:From;
+        b=Z5PyraY5oPcAoX8/i+Hwzf8S05hFWG/KY38K4nl/UBnmQnz3lMCb8LjMQmClil2Ou
+         IXOJx0rHefitV28VLtF+i8GpLJvlXaSDJcc2y8w306e745m00nJ4A659Eddn1X9HiD
+         MjHpLA+hkx7OCkHIgfC7yD4gm2wGKk/AMobp/Qtk3wIAeC0n+Rp/XWjYMsru39em1S
+         2uULe2UC3xrjtnzyDZHG0IbgLZOxQ03LpMkUFlS1tK3YjfdnxRlglmmf8LDDxMVxgH
+         CqwLAkK//MQE+FDjlCFMmklefrbZQCj6p0MI+BzVERTeN1uEBIIyb7B3O0iPo9xD/z
+         4GFfH5Vv/vD/Q==
 Received: (from tipbot@localhost)
-        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x78Atimq3127363;
-        Thu, 8 Aug 2019 03:55:44 -0700
-Date:   Thu, 8 Aug 2019 03:55:44 -0700
+        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x78AuThr3127501;
+        Thu, 8 Aug 2019 03:56:29 -0700
+Date:   Thu, 8 Aug 2019 03:56:29 -0700
 X-Authentication-Warning: terminus.zytor.com: tipbot set sender to tipbot@zytor.com using -f
 From:   tip-bot for Peter Zijlstra <tipbot@zytor.com>
-Message-ID: <tip-f95d4eaee6d0207bff2dc93371133d31227d4cfb@git.kernel.org>
-Cc:     aaron.lwe@gmail.com, valentin.schneider@arm.com, pauld@redhat.com,
-        peterz@infradead.org, hpa@zytor.com, jdesfossez@digitalocean.com,
-        linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@kernel.org,
-        naravamudan@digitalocean.com
-Reply-To: linux-kernel@vger.kernel.org, tglx@linutronix.de,
-          naravamudan@digitalocean.com, mingo@kernel.org,
-          jdesfossez@digitalocean.com, hpa@zytor.com, pauld@redhat.com,
-          peterz@infradead.org, valentin.schneider@arm.com,
-          aaron.lwe@gmail.com
-In-Reply-To: <38c61d5240553e043c27c5e00b9dd0d184dd6081.1559129225.git.vpillai@digitalocean.com>
-References: <38c61d5240553e043c27c5e00b9dd0d184dd6081.1559129225.git.vpillai@digitalocean.com>
+Message-ID: <tip-10e7071b2f491b0fb981717ea0a585c441906ede@git.kernel.org>
+Cc:     aaron.lwe@gmail.com, peterz@infradead.org, hpa@zytor.com,
+        naravamudan@digitalocean.com, valentin.schneider@arm.com,
+        pauld@redhat.com, mingo@kernel.org, tglx@linutronix.de,
+        jdesfossez@digitalocean.com
+Reply-To: jdesfossez@digitalocean.com, linux-kernel@vger.kernel.org,
+          tglx@linutronix.de, mingo@kernel.org, pauld@redhat.com,
+          naravamudan@digitalocean.com, valentin.schneider@arm.com,
+          hpa@zytor.com, aaron.lwe@gmail.com, peterz@infradead.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip:sched/core] sched/{rt,deadline}: Fix set_next_task vs
- pick_next_task
-Git-Commit-ID: f95d4eaee6d0207bff2dc93371133d31227d4cfb
+Subject: [tip:sched/core] sched: Rework CPU hotplug task selection
+Git-Commit-ID: 10e7071b2f491b0fb981717ea0a585c441906ede
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot.git.kernel.org>
 Robot-Unsubscribe: Contact <mailto:hpa@kernel.org> to get blacklisted from
@@ -67,21 +63,22 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-Commit-ID:  f95d4eaee6d0207bff2dc93371133d31227d4cfb
-Gitweb:     https://git.kernel.org/tip/f95d4eaee6d0207bff2dc93371133d31227d4cfb
+Commit-ID:  10e7071b2f491b0fb981717ea0a585c441906ede
+Gitweb:     https://git.kernel.org/tip/10e7071b2f491b0fb981717ea0a585c441906ede
 Author:     Peter Zijlstra <peterz@infradead.org>
-AuthorDate: Wed, 29 May 2019 20:36:40 +0000
+AuthorDate: Tue, 6 Aug 2019 15:13:17 +0200
 Committer:  Peter Zijlstra <peterz@infradead.org>
 CommitDate: Thu, 8 Aug 2019 09:09:30 +0200
 
-sched/{rt,deadline}: Fix set_next_task vs pick_next_task
+sched: Rework CPU hotplug task selection
 
-Because pick_next_task() implies set_curr_task() and some of the
-details haven't mattered too much, some of what _should_ be in
-set_curr_task() ended up in pick_next_task, correct this.
+The CPU hotplug task selection is the only place where we used
+put_prev_task() on a task that is not current. While looking at that,
+it occured to me that we can simplify all that by by using a custom
+pick loop.
 
-This prepares the way for a pick_next_task() variant that does not
-affect the current state; allowing remote picking.
+Since we don't need to put current, we can do away with the fake task
+too.
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Cc: Aaron Lu <aaron.lwe@gmail.com>
@@ -90,117 +87,73 @@ Cc: mingo@kernel.org
 Cc: Phil Auld <pauld@redhat.com>
 Cc: Julien Desfossez <jdesfossez@digitalocean.com>
 Cc: Nishanth Aravamudan <naravamudan@digitalocean.com>
-Link: https://lkml.kernel.org/r/38c61d5240553e043c27c5e00b9dd0d184dd6081.1559129225.git.vpillai@digitalocean.com
 ---
- kernel/sched/deadline.c | 22 +++++++++++-----------
- kernel/sched/rt.c       | 26 +++++++++++++-------------
- 2 files changed, 24 insertions(+), 24 deletions(-)
+ kernel/sched/core.c  | 32 ++++++++++++++------------------
+ kernel/sched/sched.h |  1 +
+ 2 files changed, 15 insertions(+), 18 deletions(-)
 
-diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
-index 039dde2b1dac..2dc2784b196c 100644
---- a/kernel/sched/deadline.c
-+++ b/kernel/sched/deadline.c
-@@ -1727,12 +1727,20 @@ static void start_hrtick_dl(struct rq *rq, struct task_struct *p)
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 9a821ff68502..364b6d7da2be 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -6082,21 +6082,22 @@ static void calc_load_migrate(struct rq *rq)
+ 		atomic_long_add(delta, &calc_load_tasks);
  }
- #endif
  
--static inline void set_next_task(struct rq *rq, struct task_struct *p)
-+static void set_next_task_dl(struct rq *rq, struct task_struct *p)
+-static void put_prev_task_fake(struct rq *rq, struct task_struct *prev)
++static struct task_struct *__pick_migrate_task(struct rq *rq)
  {
- 	p->se.exec_start = rq_clock_task(rq);
+-}
++	const struct sched_class *class;
++	struct task_struct *next;
  
- 	/* You can't push away the running task */
- 	dequeue_pushable_dl_task(rq, p);
-+
-+	if (hrtick_enabled(rq))
-+		start_hrtick_dl(rq, p);
-+
-+	if (rq->curr->sched_class != &dl_sched_class)
-+		update_dl_rq_load_avg(rq_clock_pelt(rq), rq, 0);
-+
-+	deadline_queue_push_tasks(rq);
- }
+-static const struct sched_class fake_sched_class = {
+-	.put_prev_task = put_prev_task_fake,
+-};
++	for_each_class(class) {
++		next = class->pick_next_task(rq, NULL, NULL);
++		if (next) {
++			next->sched_class->put_prev_task(rq, next);
++			return next;
++		}
++	}
  
- static struct sched_dl_entity *pick_next_dl_entity(struct rq *rq,
-@@ -1791,15 +1799,7 @@ pick_next_task_dl(struct rq *rq, struct task_struct *prev, struct rq_flags *rf)
- 
- 	p = dl_task_of(dl_se);
- 
--	set_next_task(rq, p);
--
--	if (hrtick_enabled(rq))
--		start_hrtick_dl(rq, p);
--
--	deadline_queue_push_tasks(rq);
--
--	if (rq->curr->sched_class != &dl_sched_class)
--		update_dl_rq_load_avg(rq_clock_pelt(rq), rq, 0);
-+	set_next_task_dl(rq, p);
- 
- 	return p;
- }
-@@ -1846,7 +1846,7 @@ static void task_fork_dl(struct task_struct *p)
- 
- static void set_curr_task_dl(struct rq *rq)
- {
--	set_next_task(rq, rq->curr);
-+	set_next_task_dl(rq, rq->curr);
- }
- 
- #ifdef CONFIG_SMP
-diff --git a/kernel/sched/rt.c b/kernel/sched/rt.c
-index a532558a5176..40bb71004325 100644
---- a/kernel/sched/rt.c
-+++ b/kernel/sched/rt.c
-@@ -1498,12 +1498,22 @@ static void check_preempt_curr_rt(struct rq *rq, struct task_struct *p, int flag
- #endif
- }
- 
--static inline void set_next_task(struct rq *rq, struct task_struct *p)
-+static inline void set_next_task_rt(struct rq *rq, struct task_struct *p)
- {
- 	p->se.exec_start = rq_clock_task(rq);
- 
- 	/* The running task is never eligible for pushing */
- 	dequeue_pushable_task(rq, p);
-+
-+	/*
-+	 * If prev task was rt, put_prev_task() has already updated the
-+	 * utilization. We only care of the case where we start to schedule a
-+	 * rt task
-+	 */
-+	if (rq->curr->sched_class != &rt_sched_class)
-+		update_rt_rq_load_avg(rq_clock_pelt(rq), rq, 0);
-+
-+	rt_queue_push_tasks(rq);
- }
- 
- static struct sched_rt_entity *pick_next_rt_entity(struct rq *rq,
-@@ -1577,17 +1587,7 @@ pick_next_task_rt(struct rq *rq, struct task_struct *prev, struct rq_flags *rf)
- 
- 	p = _pick_next_task_rt(rq);
- 
--	set_next_task(rq, p);
--
--	rt_queue_push_tasks(rq);
--
+-static struct task_struct fake_task = {
 -	/*
--	 * If prev task was rt, put_prev_task() has already updated the
--	 * utilization. We only care of the case where we start to schedule a
--	 * rt task
+-	 * Avoid pull_{rt,dl}_task()
 -	 */
--	if (rq->curr->sched_class != &rt_sched_class)
--		update_rt_rq_load_avg(rq_clock_pelt(rq), rq, 0);
-+	set_next_task_rt(rq, p);
+-	.prio = MAX_PRIO + 1,
+-	.sched_class = &fake_sched_class,
+-};
++	/* The idle class should always have a runnable task */
++	BUG();
++}
  
- 	return p;
- }
-@@ -2356,7 +2356,7 @@ static void task_tick_rt(struct rq *rq, struct task_struct *p, int queued)
+ /*
+  * Migrate all tasks from the rq, sleeping tasks will be migrated by
+@@ -6139,12 +6140,7 @@ static void migrate_tasks(struct rq *dead_rq, struct rq_flags *rf)
+ 		if (rq->nr_running == 1)
+ 			break;
  
- static void set_curr_task_rt(struct rq *rq)
+-		/*
+-		 * pick_next_task() assumes pinned rq->lock:
+-		 */
+-		next = pick_next_task(rq, &fake_task, rf);
+-		BUG_ON(!next);
+-		put_prev_task(rq, next);
++		next = __pick_migrate_task(rq);
+ 
+ 		/*
+ 		 * Rules for changing task_struct::cpus_mask are holding
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index ea48aa5daeee..b3449d0dd7f0 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -1751,6 +1751,7 @@ struct sched_class {
+ 
+ static inline void put_prev_task(struct rq *rq, struct task_struct *prev)
  {
--	set_next_task(rq, rq->curr);
-+	set_next_task_rt(rq, rq->curr);
++	WARN_ON_ONCE(rq->curr != prev);
+ 	prev->sched_class->put_prev_task(rq, prev);
  }
  
- static unsigned int get_rr_interval_rt(struct rq *rq, struct task_struct *task)
