@@ -2,45 +2,46 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AFE5D8605A
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  8 Aug 2019 12:49:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 99D6C8605F
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  8 Aug 2019 12:52:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731038AbfHHKt2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 8 Aug 2019 06:49:28 -0400
-Received: from terminus.zytor.com ([198.137.202.136]:58979 "EHLO
+        id S1731755AbfHHKwV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 8 Aug 2019 06:52:21 -0400
+Received: from terminus.zytor.com ([198.137.202.136]:41441 "EHLO
         terminus.zytor.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730678AbfHHKt1 (ORCPT
+        with ESMTP id S1731054AbfHHKwU (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 8 Aug 2019 06:49:27 -0400
+        Thu, 8 Aug 2019 06:52:20 -0400
 Received: from terminus.zytor.com (localhost [127.0.0.1])
-        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x78AnBAk3125791
+        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x78Aq6iF3126671
         (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-        Thu, 8 Aug 2019 03:49:11 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x78AnBAk3125791
+        Thu, 8 Aug 2019 03:52:06 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x78Aq6iF3126671
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-        s=2019071901; t=1565261351;
-        bh=U3Tgbs962kQvNHyxCQiC7WO4y3EUD/5J2eWvr15DwNQ=;
+        s=2019071901; t=1565261526;
+        bh=lIIHE/fFUrz66us/6Nq/KuXggEWKdiTw8TFdSzS0pLc=;
         h=Date:From:Cc:Reply-To:To:Subject:From;
-        b=Mrx/EtONmu12sFCDdxNEJ277e4rVNMk1CZGW1hVVMWEJYDaiFNL/9c44wYteLOWjv
-         ebFQpwe4WC4sjb7D5mNuUkVpPHScIA4/0tnQQd3EC1FVGyUiEUuEZ+lTQUnd454eS0
-         h1wuCcLfPXZXmNehYMDWlcvMEfpfxahesoFWVPGwyPaDzMPpKiJmntJs2+obkqMrds
-         UYO2W9AlvnNlNPSc5A1HFTmeZ3W405wd2sSPR48az7ujV9DHEPx5oNVAsEEgQqLyBx
-         WxY8jCpHuM7G3a5Ga96EAKBDLk3aFgp2Aka+pRl802zyn+WvNUbUQCaTabLVKUSRgn
-         K3EqXUZ+QHVLQ==
+        b=bBmfgNJ6WOD7guENwhE31F94o6VOVBAPWp7nOvkz8iv1xa4o3BrAr9qCYxIhP6BFa
+         ADFSNzCTyH99D0tUoGRwEAa+Q9cZakagmjmCd/aByI4ird3OVhS63QpR6zXrue9R4O
+         ClNejG+vPUoGDRcojV+zD1NGcNu/quFz1uCUsO/H0SZLgauWWvIXKOc3CDnhD4xFZl
+         FRGZklIbw+uqGmMlR5Tb0iZWn/MvmM8E3q3PegfyLJoX1qBVYj1Axnha9olTxwhAXM
+         ea6fl7kilyahLt2nVG2HJ8Mj3le/WGgOLkJ0iGdQw/3DCsjvIjSFsF+Z4uf601XTXd
+         FSUQYfqaeXjkg==
 Received: (from tipbot@localhost)
-        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x78AnA2h3125786;
-        Thu, 8 Aug 2019 03:49:10 -0700
-Date:   Thu, 8 Aug 2019 03:49:10 -0700
+        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x78Aq55W3126668;
+        Thu, 8 Aug 2019 03:52:05 -0700
+Date:   Thu, 8 Aug 2019 03:52:05 -0700
 X-Authentication-Warning: terminus.zytor.com: tipbot set sender to tipbot@zytor.com using -f
 From:   tip-bot for Peter Zijlstra <tipbot@zytor.com>
-Message-ID: <tip-e57d143091f1c0b1a98140a4d2e63e113afb62c0@git.kernel.org>
-Cc:     peterz@infradead.org, tglx@linutronix.de, mingo@kernel.org,
-        hpa@zytor.com
-Reply-To: peterz@infradead.org, linux-kernel@vger.kernel.org,
-          hpa@zytor.com, mingo@kernel.org, tglx@linutronix.de
+Message-ID: <tip-130d9c331bc59a8733b47c58ef197a2b1fa3ed43@git.kernel.org>
+Cc:     juri.lelli@redhat.com, tglx@linutronix.de, peterz@infradead.org,
+        paulmck@linux.ibm.com, hpa@zytor.com, mingo@kernel.org
+Reply-To: mingo@kernel.org, hpa@zytor.com, linux-kernel@vger.kernel.org,
+          paulmck@linux.ibm.com, peterz@infradead.org, tglx@linutronix.de,
+          juri.lelli@redhat.com
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip:locking/core] mutex: Fix up mutex_waiter usage
-Git-Commit-ID: e57d143091f1c0b1a98140a4d2e63e113afb62c0
+Subject: [tip:sched/core] rcu/tree: Fix SCHED_FIFO params
+Git-Commit-ID: 130d9c331bc59a8733b47c58ef197a2b1fa3ed43
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot.git.kernel.org>
 Robot-Unsubscribe: Contact <mailto:hpa@kernel.org> to get blacklisted from
@@ -58,85 +59,44 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-Commit-ID:  e57d143091f1c0b1a98140a4d2e63e113afb62c0
-Gitweb:     https://git.kernel.org/tip/e57d143091f1c0b1a98140a4d2e63e113afb62c0
+Commit-ID:  130d9c331bc59a8733b47c58ef197a2b1fa3ed43
+Gitweb:     https://git.kernel.org/tip/130d9c331bc59a8733b47c58ef197a2b1fa3ed43
 Author:     Peter Zijlstra <peterz@infradead.org>
-AuthorDate: Thu, 8 Aug 2019 08:47:14 +0200
+AuthorDate: Thu, 1 Aug 2019 12:42:06 +0200
 Committer:  Peter Zijlstra <peterz@infradead.org>
-CommitDate: Thu, 8 Aug 2019 09:09:25 +0200
+CommitDate: Thu, 8 Aug 2019 09:09:30 +0200
 
-mutex: Fix up mutex_waiter usage
+rcu/tree: Fix SCHED_FIFO params
 
-The patch moving bits into mutex.c was a little too much; by also
-moving struct mutex_waiter a few less common CONFIGs would no longer
-build.
+A rather embarrasing mistake had us call sched_setscheduler() before
+initializing the parameters passed to it.
 
-Fixes: 5f35d5a66b3e ("locking/mutex: Make __mutex_owner static to mutex.c")
+Fixes: 1a763fd7c633 ("rcu/tree: Call setschedule() gp ktread to SCHED_FIFO outside of atomic region")
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Paul E. McKenney <paulmck@linux.ibm.com>
+Cc: Juri Lelli <juri.lelli@redhat.com>
 ---
- include/linux/mutex.h  | 13 +++++++++++++
- kernel/locking/mutex.c | 13 -------------
- kernel/locking/mutex.h |  2 --
- 3 files changed, 13 insertions(+), 15 deletions(-)
+ kernel/rcu/tree.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/mutex.h b/include/linux/mutex.h
-index eb8c62aba263..aca8f36dfac9 100644
---- a/include/linux/mutex.h
-+++ b/include/linux/mutex.h
-@@ -65,6 +65,19 @@ struct mutex {
- #endif
- };
- 
-+/*
-+ * This is the control structure for tasks blocked on mutex,
-+ * which resides on the blocked task's kernel stack:
-+ */
-+struct mutex_waiter {
-+	struct list_head	list;
-+	struct task_struct	*task;
-+	struct ww_acquire_ctx	*ww_ctx;
-+#ifdef CONFIG_DEBUG_MUTEXES
-+	void			*magic;
-+#endif
-+};
-+
- #ifdef CONFIG_DEBUG_MUTEXES
- 
- #define __DEBUG_MUTEX_INITIALIZER(lockname)				\
-diff --git a/kernel/locking/mutex.c b/kernel/locking/mutex.c
-index b4bcb0236d7a..468a9b8422e3 100644
---- a/kernel/locking/mutex.c
-+++ b/kernel/locking/mutex.c
-@@ -36,19 +36,6 @@
- # include "mutex.h"
- #endif
- 
--/*
-- * This is the control structure for tasks blocked on mutex,
-- * which resides on the blocked task's kernel stack:
-- */
--struct mutex_waiter {
--	struct list_head	list;
--	struct task_struct	*task;
--	struct ww_acquire_ctx	*ww_ctx;
--#ifdef CONFIG_DEBUG_MUTEXES
--	void			*magic;
--#endif
--};
--
- void
- __mutex_init(struct mutex *lock, const char *name, struct lock_class_key *key)
- {
-diff --git a/kernel/locking/mutex.h b/kernel/locking/mutex.h
-index 7cde5c6d414e..1c2287d3fa71 100644
---- a/kernel/locking/mutex.h
-+++ b/kernel/locking/mutex.h
-@@ -19,8 +19,6 @@
- #define debug_mutex_unlock(lock)			do { } while (0)
- #define debug_mutex_init(lock, name, key)		do { } while (0)
- 
--struct mutex_waiter;
--
- static inline void
- debug_mutex_lock_common(struct mutex *lock, struct mutex_waiter *waiter)
- {
+diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
+index eb764c24bc4d..5efdce756fdf 100644
+--- a/kernel/rcu/tree.c
++++ b/kernel/rcu/tree.c
+@@ -3234,13 +3234,13 @@ static int __init rcu_spawn_gp_kthread(void)
+ 	t = kthread_create(rcu_gp_kthread, NULL, "%s", rcu_state.name);
+ 	if (WARN_ONCE(IS_ERR(t), "%s: Could not start grace-period kthread, OOM is now expected behavior\n", __func__))
+ 		return 0;
+-	if (kthread_prio)
++	if (kthread_prio) {
++		sp.sched_priority = kthread_prio;
+ 		sched_setscheduler_nocheck(t, SCHED_FIFO, &sp);
++	}
+ 	rnp = rcu_get_root();
+ 	raw_spin_lock_irqsave_rcu_node(rnp, flags);
+ 	rcu_state.gp_kthread = t;
+-	if (kthread_prio)
+-		sp.sched_priority = kthread_prio;
+ 	raw_spin_unlock_irqrestore_rcu_node(rnp, flags);
+ 	wake_up_process(t);
+ 	rcu_spawn_nocb_kthreads();
