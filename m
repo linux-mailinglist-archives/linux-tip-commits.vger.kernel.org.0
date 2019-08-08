@@ -2,46 +2,46 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 99D6C8605F
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  8 Aug 2019 12:52:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D7E586060
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  8 Aug 2019 12:53:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731755AbfHHKwV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 8 Aug 2019 06:52:21 -0400
-Received: from terminus.zytor.com ([198.137.202.136]:41441 "EHLO
+        id S1731054AbfHHKxM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 8 Aug 2019 06:53:12 -0400
+Received: from terminus.zytor.com ([198.137.202.136]:48291 "EHLO
         terminus.zytor.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731054AbfHHKwU (ORCPT
+        with ESMTP id S1726721AbfHHKxL (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 8 Aug 2019 06:52:20 -0400
+        Thu, 8 Aug 2019 06:53:11 -0400
 Received: from terminus.zytor.com (localhost [127.0.0.1])
-        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x78Aq6iF3126671
+        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x78Aqp8R3126753
         (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-        Thu, 8 Aug 2019 03:52:06 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x78Aq6iF3126671
+        Thu, 8 Aug 2019 03:52:51 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x78Aqp8R3126753
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-        s=2019071901; t=1565261526;
-        bh=lIIHE/fFUrz66us/6Nq/KuXggEWKdiTw8TFdSzS0pLc=;
+        s=2019071901; t=1565261571;
+        bh=4a8c+YhUsYrUJvzUdA0tmb2VO0OfNsXRzfUv0n3jYoc=;
         h=Date:From:Cc:Reply-To:To:Subject:From;
-        b=bBmfgNJ6WOD7guENwhE31F94o6VOVBAPWp7nOvkz8iv1xa4o3BrAr9qCYxIhP6BFa
-         ADFSNzCTyH99D0tUoGRwEAa+Q9cZakagmjmCd/aByI4ird3OVhS63QpR6zXrue9R4O
-         ClNejG+vPUoGDRcojV+zD1NGcNu/quFz1uCUsO/H0SZLgauWWvIXKOc3CDnhD4xFZl
-         FRGZklIbw+uqGmMlR5Tb0iZWn/MvmM8E3q3PegfyLJoX1qBVYj1Axnha9olTxwhAXM
-         ea6fl7kilyahLt2nVG2HJ8Mj3le/WGgOLkJ0iGdQw/3DCsjvIjSFsF+Z4uf601XTXd
-         FSUQYfqaeXjkg==
+        b=YE5l8N59amlUR4bELb8YRfC/fzoZXAyXID7YtVavar526/Thz2lDr4gljTudxTlXk
+         2muS6T2XLqgGhU3TVIQ4BxixJf/g+q/o8qAg39wS8phNqT2aajkCC9ypeGQUaEInQg
+         ppnpzb8g0yHY+/Lwxwrdm5mUoSaX514JbU2VjMVoUmY9ddnhC2NUDSuvzp1nmShwuj
+         OvHzTC8Zav0HTYybVWc0BuDsr37Dk+GY+atEAsg+i1OkqgJAbyaz5A8T7QYvPI7XLD
+         dNWL3ug7Dfqzs7D+XQHNnZjiyH1numjPXe2s60EqQuNSNCygWDCzMIBDS0sDQHH6dZ
+         z0A0KfClwg48g==
 Received: (from tipbot@localhost)
-        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x78Aq55W3126668;
-        Thu, 8 Aug 2019 03:52:05 -0700
-Date:   Thu, 8 Aug 2019 03:52:05 -0700
+        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x78AqokK3126750;
+        Thu, 8 Aug 2019 03:52:50 -0700
+Date:   Thu, 8 Aug 2019 03:52:50 -0700
 X-Authentication-Warning: terminus.zytor.com: tipbot set sender to tipbot@zytor.com using -f
 From:   tip-bot for Peter Zijlstra <tipbot@zytor.com>
-Message-ID: <tip-130d9c331bc59a8733b47c58ef197a2b1fa3ed43@git.kernel.org>
-Cc:     juri.lelli@redhat.com, tglx@linutronix.de, peterz@infradead.org,
-        paulmck@linux.ibm.com, hpa@zytor.com, mingo@kernel.org
-Reply-To: mingo@kernel.org, hpa@zytor.com, linux-kernel@vger.kernel.org,
-          paulmck@linux.ibm.com, peterz@infradead.org, tglx@linutronix.de,
-          juri.lelli@redhat.com
+Message-ID: <tip-139d025cda1da5484e7287b35c019fe1dcf9b650@git.kernel.org>
+Cc:     mathieu.desnoyers@efficios.com, riel@surriel.com, mingo@kernel.org,
+        tglx@linutronix.de, hpa@zytor.com, peterz@infradead.org
+Reply-To: peterz@infradead.org, linux-kernel@vger.kernel.org,
+          mathieu.desnoyers@efficios.com, mingo@kernel.org,
+          riel@surriel.com, tglx@linutronix.de, hpa@zytor.com
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip:sched/core] rcu/tree: Fix SCHED_FIFO params
-Git-Commit-ID: 130d9c331bc59a8733b47c58ef197a2b1fa3ed43
+Subject: [tip:sched/core] sched: Clean up active_mm reference counting
+Git-Commit-ID: 139d025cda1da5484e7287b35c019fe1dcf9b650
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot.git.kernel.org>
 Robot-Unsubscribe: Contact <mailto:hpa@kernel.org> to get blacklisted from
@@ -59,44 +59,123 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-Commit-ID:  130d9c331bc59a8733b47c58ef197a2b1fa3ed43
-Gitweb:     https://git.kernel.org/tip/130d9c331bc59a8733b47c58ef197a2b1fa3ed43
+Commit-ID:  139d025cda1da5484e7287b35c019fe1dcf9b650
+Gitweb:     https://git.kernel.org/tip/139d025cda1da5484e7287b35c019fe1dcf9b650
 Author:     Peter Zijlstra <peterz@infradead.org>
-AuthorDate: Thu, 1 Aug 2019 12:42:06 +0200
+AuthorDate: Mon, 29 Jul 2019 16:05:15 +0200
 Committer:  Peter Zijlstra <peterz@infradead.org>
 CommitDate: Thu, 8 Aug 2019 09:09:30 +0200
 
-rcu/tree: Fix SCHED_FIFO params
+sched: Clean up active_mm reference counting
 
-A rather embarrasing mistake had us call sched_setscheduler() before
-initializing the parameters passed to it.
+The current active_mm reference counting is confusing and sub-optimal.
 
-Fixes: 1a763fd7c633 ("rcu/tree: Call setschedule() gp ktread to SCHED_FIFO outside of atomic region")
+Rewrite the code to explicitly consider the 4 separate cases:
+
+    user -> user
+
+	When switching between two user tasks, all we need to consider
+	is switch_mm().
+
+    user -> kernel
+
+	When switching from a user task to a kernel task (which
+	doesn't have an associated mm) we retain the last mm in our
+	active_mm. Increment a reference count on active_mm.
+
+  kernel -> kernel
+
+	When switching between kernel threads, all we need to do is
+	pass along the active_mm reference.
+
+  kernel -> user
+
+	When switching between a kernel and user task, we must switch
+	from the last active_mm to the next mm, hoping of course that
+	these are the same. Decrement a reference on the active_mm.
+
+The code keeps a different order, because as you'll note, both 'to
+user' cases require switch_mm().
+
+And where the old code would increment/decrement for the 'kernel ->
+kernel' case, the new code observes this is a neutral operation and
+avoids touching the reference count.
+
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Paul E. McKenney <paulmck@linux.ibm.com>
-Cc: Juri Lelli <juri.lelli@redhat.com>
+Reviewed-by: Rik van Riel <riel@surriel.com>
+Reviewed-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: luto@kernel.org
 ---
- kernel/rcu/tree.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ kernel/sched/core.c | 49 ++++++++++++++++++++++++++++++-------------------
+ 1 file changed, 30 insertions(+), 19 deletions(-)
 
-diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
-index eb764c24bc4d..5efdce756fdf 100644
---- a/kernel/rcu/tree.c
-+++ b/kernel/rcu/tree.c
-@@ -3234,13 +3234,13 @@ static int __init rcu_spawn_gp_kthread(void)
- 	t = kthread_create(rcu_gp_kthread, NULL, "%s", rcu_state.name);
- 	if (WARN_ONCE(IS_ERR(t), "%s: Could not start grace-period kthread, OOM is now expected behavior\n", __func__))
- 		return 0;
--	if (kthread_prio)
-+	if (kthread_prio) {
-+		sp.sched_priority = kthread_prio;
- 		sched_setscheduler_nocheck(t, SCHED_FIFO, &sp);
-+	}
- 	rnp = rcu_get_root();
- 	raw_spin_lock_irqsave_rcu_node(rnp, flags);
- 	rcu_state.gp_kthread = t;
--	if (kthread_prio)
--		sp.sched_priority = kthread_prio;
- 	raw_spin_unlock_irqrestore_rcu_node(rnp, flags);
- 	wake_up_process(t);
- 	rcu_spawn_nocb_kthreads();
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 46f3ca9e392a..b4a44bc84749 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -3214,12 +3214,8 @@ static __always_inline struct rq *
+ context_switch(struct rq *rq, struct task_struct *prev,
+ 	       struct task_struct *next, struct rq_flags *rf)
+ {
+-	struct mm_struct *mm, *oldmm;
+-
+ 	prepare_task_switch(rq, prev, next);
+ 
+-	mm = next->mm;
+-	oldmm = prev->active_mm;
+ 	/*
+ 	 * For paravirt, this is coupled with an exit in switch_to to
+ 	 * combine the page table reload and the switch backend into
+@@ -3228,22 +3224,37 @@ context_switch(struct rq *rq, struct task_struct *prev,
+ 	arch_start_context_switch(prev);
+ 
+ 	/*
+-	 * If mm is non-NULL, we pass through switch_mm(). If mm is
+-	 * NULL, we will pass through mmdrop() in finish_task_switch().
+-	 * Both of these contain the full memory barrier required by
+-	 * membarrier after storing to rq->curr, before returning to
+-	 * user-space.
++	 * kernel -> kernel   lazy + transfer active
++	 *   user -> kernel   lazy + mmgrab() active
++	 *
++	 * kernel ->   user   switch + mmdrop() active
++	 *   user ->   user   switch
+ 	 */
+-	if (!mm) {
+-		next->active_mm = oldmm;
+-		mmgrab(oldmm);
+-		enter_lazy_tlb(oldmm, next);
+-	} else
+-		switch_mm_irqs_off(oldmm, mm, next);
+-
+-	if (!prev->mm) {
+-		prev->active_mm = NULL;
+-		rq->prev_mm = oldmm;
++	if (!next->mm) {                                // to kernel
++		enter_lazy_tlb(prev->active_mm, next);
++
++		next->active_mm = prev->active_mm;
++		if (prev->mm)                           // from user
++			mmgrab(prev->active_mm);
++		else
++			prev->active_mm = NULL;
++	} else {                                        // to user
++		/*
++		 * sys_membarrier() requires an smp_mb() between setting
++		 * rq->curr and returning to userspace.
++		 *
++		 * The below provides this either through switch_mm(), or in
++		 * case 'prev->active_mm == next->mm' through
++		 * finish_task_switch()'s mmdrop().
++		 */
++
++		switch_mm_irqs_off(prev->active_mm, next->mm, next);
++
++		if (!prev->mm) {                        // from kernel
++			/* will mmdrop() in finish_task_switch(). */
++			rq->prev_mm = prev->active_mm;
++			prev->active_mm = NULL;
++		}
+ 	}
+ 
+ 	rq->clock_update_flags &= ~(RQCF_ACT_SKIP|RQCF_REQ_SKIP);
