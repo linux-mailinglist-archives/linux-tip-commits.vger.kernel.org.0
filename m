@@ -2,49 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 38A038663E
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  8 Aug 2019 17:50:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F36D86B33
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  8 Aug 2019 22:16:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732698AbfHHPug (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 8 Aug 2019 11:50:36 -0400
-Received: from terminus.zytor.com ([198.137.202.136]:35633 "EHLO
+        id S2404578AbfHHUQj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 8 Aug 2019 16:16:39 -0400
+Received: from terminus.zytor.com ([198.137.202.136]:39521 "EHLO
         terminus.zytor.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728380AbfHHPug (ORCPT
+        with ESMTP id S2404515AbfHHUQj (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 8 Aug 2019 11:50:36 -0400
+        Thu, 8 Aug 2019 16:16:39 -0400
 Received: from terminus.zytor.com (localhost [127.0.0.1])
-        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x78FoDj93231487
+        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x78KGBTR3320822
         (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-        Thu, 8 Aug 2019 08:50:13 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x78FoDj93231487
+        Thu, 8 Aug 2019 13:16:12 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x78KGBTR3320822
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-        s=2019071901; t=1565279413;
-        bh=2EhV3UUchDNp7G9rPc3u23hbunHjf9oyCF/tDuNK5QQ=;
+        s=2019071901; t=1565295372;
+        bh=KlHhAHW4UWN4ntQ6v/zsL83YuSZGT1anxQXQaCLdSpg=;
         h=Date:From:Cc:Reply-To:In-Reply-To:References:To:Subject:From;
-        b=ghlYQWDidQ5C9HX1EyGcxqpOPAg2moJuNNm3vuCj7bBYDmwQW4kIKu2UlOBklX9WV
-         a35vl+I/o7SOvnHVHDxpAmfZe9X1kuTZhY11ND63usEf+qi1Hz5xEjNIqoo2RE7sU8
-         DBeBciCgFRaZg0DoHH4K6vSvwavOlQ/7BNcIhbkWbkA0+LICqimtNLmDIa/mgirrQn
-         K1mcevIixzDnKyf5RMYqgWgAwBd4A8UcXlhQn/kUqU5HihOYMmLhBZ14hHfEoKWlZd
-         JWfO3gZtGXhci1X+q5HV48xxlSzcpZS0gvCd3ibUZVw31nbQYaZN6a1ReVllz2uIw+
-         0ZFkiCqSiCjog==
+        b=ro+Mx/KoYopwwl+AR3SVIvINLf71Qj2YCsy5gzA1wQTrJCBGExN+J4luXoYQlVEZh
+         85gPdSjMkhq9XRVOoz1SZmy197H4BxHswysNB/OlkdXKnMaJgHS2E7Yslmi5n8CTBO
+         X/jetJHyFoWhPrZKYv8Hl0+2kWIi1v3hNIlLycklD7VKVpBAbJWfWZIEkOw2Ymb+Jq
+         5b42oWNc+nNg1tNiyumxzEfSqZdrOJCvuPfbOYytlttctM6WfChLHtVw6zfKH5eSJY
+         Q0DZiPyj/DEVwk+po/7o9LGRYPiSiE3HCfIAfb/vMxqDH9SYqwj8Ox6ZiaVCyuZORs
+         YJI+ZNqMwCZ8Q==
 Received: (from tipbot@localhost)
-        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x78FoCPI3231480;
-        Thu, 8 Aug 2019 08:50:12 -0700
-Date:   Thu, 8 Aug 2019 08:50:12 -0700
+        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x78KGBNM3320819;
+        Thu, 8 Aug 2019 13:16:11 -0700
+Date:   Thu, 8 Aug 2019 13:16:11 -0700
 X-Authentication-Warning: terminus.zytor.com: tipbot set sender to tipbot@zytor.com using -f
-From:   tip-bot for Valdis Kletnieks <tipbot@zytor.com>
-Message-ID: <tip-b6ff24f7b5101101ff897dfdde3f37924e676bc2@git.kernel.org>
-Cc:     mingo@kernel.org, valdis.kletnieks@vt.edu, tglx@linutronix.de,
-        tony.luck@intel.com, linux-kernel@vger.kernel.org, bp@suse.de,
-        hpa@zytor.com, lkp@intel.com
-Reply-To: hpa@zytor.com, lkp@intel.com, bp@suse.de,
-          linux-kernel@vger.kernel.org, tony.luck@intel.com,
-          tglx@linutronix.de, valdis.kletnieks@vt.edu, mingo@kernel.org
-In-Reply-To: <7053.1565218556@turing-police>
-References: <7053.1565218556@turing-police>
+From:   tip-bot for Jiri Olsa <tipbot@zytor.com>
+Message-ID: <tip-6bbfe4e602691b90ac866712bd4c43c51e546a60@git.kernel.org>
+Cc:     jolsa@kernel.org, ak@linux.intel.com,
+        alexander.shishkin@linux.intel.com, linux-kernel@vger.kernel.org,
+        peterz@infradead.org, namhyung@kernel.org, tglx@linutronix.de,
+        sathnaga@linux.vnet.ibm.com, mpetlan@redhat.com, acme@redhat.com,
+        mingo@kernel.org, hpa@zytor.com
+Reply-To: alexander.shishkin@linux.intel.com, hpa@zytor.com,
+          mingo@kernel.org, acme@redhat.com, mpetlan@redhat.com,
+          sathnaga@linux.vnet.ibm.com, tglx@linutronix.de,
+          ak@linux.intel.com, namhyung@kernel.org,
+          linux-kernel@vger.kernel.org, jolsa@kernel.org,
+          peterz@infradead.org
+In-Reply-To: <20190801142642.28004-1-jolsa@kernel.org>
+References: <20190801142642.28004-1-jolsa@kernel.org>
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip:ras/core] RAS: Build debugfs.o only when enabled in Kconfig
-Git-Commit-ID: b6ff24f7b5101101ff897dfdde3f37924e676bc2
+Subject: [tip:perf/urgent] perf bench numa: Fix cpu0 binding
+Git-Commit-ID: 6bbfe4e602691b90ac866712bd4c43c51e546a60
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot.git.kernel.org>
 Robot-Unsubscribe: Contact <mailto:hpa@kernel.org> to get blacklisted from
@@ -62,48 +67,58 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-Commit-ID:  b6ff24f7b5101101ff897dfdde3f37924e676bc2
-Gitweb:     https://git.kernel.org/tip/b6ff24f7b5101101ff897dfdde3f37924e676bc2
-Author:     Valdis Kletnieks <valdis.kletnieks@vt.edu>
-AuthorDate: Thu, 8 Aug 2019 16:32:27 +0200
-Committer:  Borislav Petkov <bp@suse.de>
-CommitDate: Thu, 8 Aug 2019 17:44:02 +0200
+Commit-ID:  6bbfe4e602691b90ac866712bd4c43c51e546a60
+Gitweb:     https://git.kernel.org/tip/6bbfe4e602691b90ac866712bd4c43c51e546a60
+Author:     Jiri Olsa <jolsa@kernel.org>
+AuthorDate: Thu, 1 Aug 2019 16:26:42 +0200
+Committer:  Arnaldo Carvalho de Melo <acme@redhat.com>
+CommitDate: Thu, 1 Aug 2019 11:34:13 -0300
 
-RAS: Build debugfs.o only when enabled in Kconfig
+perf bench numa: Fix cpu0 binding
 
-In addition, the 0day bot reported this build error:
+Michael reported an issue with perf bench numa failing with binding to
+cpu0 with '-0' option.
 
-  >> drivers/ras/debugfs.c:10:5: error: redefinition of 'ras_userspace_consumers'
-      int ras_userspace_consumers(void)
-          ^~~~~~~~~~~~~~~~~~~~~~~
-     In file included from drivers/ras/debugfs.c:3:0:
-     include/linux/ras.h:14:19: note: previous definition of 'ras_userspace_consumers' was here
-      static inline int ras_userspace_consumers(void) { return 0; }
-                      ^~~~~~~~~~~~~~~~~~~~~~~
+  # perf bench numa mem -p 3 -t 1 -P 512 -s 100 -zZcm0 --thp 1 -M 1 -ddd
+  # Running 'numa/mem' benchmark:
 
-for a riscv-specific .config where CONFIG_DEBUG_FS is not set. Fix all
-that by making debugfs.o depend on that define.
+   # Running main, "perf bench numa numa-mem -p 3 -t 1 -P 512 -s 100 -zZcm0 --thp 1 -M 1 -ddd"
+  binding to node 0, mask: 0000000000000001 => -1
+  perf: bench/numa.c:356: bind_to_memnode: Assertion `!(ret)' failed.
+  Aborted (core dumped)
 
- [ bp: Rewrite commit message. ]
+This happens when the cpu0 is not part of node0, which is the benchmark
+assumption and we can see that's not the case for some powerpc servers.
 
-Reported-by: kbuild test robot <lkp@intel.com>
-Signed-off-by: Valdis Kletnieks <valdis.kletnieks@vt.edu>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Cc: Tony Luck <tony.luck@intel.com>
-Cc: linux-edac@vger.kernel.org
-Cc: x86@kernel.org
-Link: http://lkml.kernel.org/r/7053.1565218556@turing-police
+Using correct node for cpu0 binding.
+
+Reported-by: Michael Petlan <mpetlan@redhat.com>
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Andi Kleen <ak@linux.intel.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>
+Link: http://lkml.kernel.org/r/20190801142642.28004-1-jolsa@kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- drivers/ras/Makefile | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tools/perf/bench/numa.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/ras/Makefile b/drivers/ras/Makefile
-index ef6777e14d3d..6f0404f50107 100644
---- a/drivers/ras/Makefile
-+++ b/drivers/ras/Makefile
-@@ -1,3 +1,4 @@
- # SPDX-License-Identifier: GPL-2.0-only
--obj-$(CONFIG_RAS)	+= ras.o debugfs.o
-+obj-$(CONFIG_RAS)	+= ras.o
-+obj-$(CONFIG_DEBUG_FS)	+= debugfs.o
- obj-$(CONFIG_RAS_CEC)	+= cec.o
+diff --git a/tools/perf/bench/numa.c b/tools/perf/bench/numa.c
+index a640ca7aaada..513cb2f2fa32 100644
+--- a/tools/perf/bench/numa.c
++++ b/tools/perf/bench/numa.c
+@@ -379,8 +379,10 @@ static u8 *alloc_data(ssize_t bytes0, int map_flags,
+ 
+ 	/* Allocate and initialize all memory on CPU#0: */
+ 	if (init_cpu0) {
+-		orig_mask = bind_to_node(0);
+-		bind_to_memnode(0);
++		int node = numa_node_of_cpu(0);
++
++		orig_mask = bind_to_node(node);
++		bind_to_memnode(node);
+ 	}
+ 
+ 	bytes = bytes0 + HPSIZE;
