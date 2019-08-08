@@ -2,54 +2,50 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F36D86B33
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  8 Aug 2019 22:16:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05B6486B3A
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  8 Aug 2019 22:17:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404578AbfHHUQj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 8 Aug 2019 16:16:39 -0400
-Received: from terminus.zytor.com ([198.137.202.136]:39521 "EHLO
+        id S2404619AbfHHURO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 8 Aug 2019 16:17:14 -0400
+Received: from terminus.zytor.com ([198.137.202.136]:60907 "EHLO
         terminus.zytor.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404515AbfHHUQj (ORCPT
+        with ESMTP id S2404505AbfHHURO (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 8 Aug 2019 16:16:39 -0400
+        Thu, 8 Aug 2019 16:17:14 -0400
 Received: from terminus.zytor.com (localhost [127.0.0.1])
-        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x78KGBTR3320822
+        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x78KH2Qr3320867
         (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-        Thu, 8 Aug 2019 13:16:12 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x78KGBTR3320822
+        Thu, 8 Aug 2019 13:17:02 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x78KH2Qr3320867
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-        s=2019071901; t=1565295372;
-        bh=KlHhAHW4UWN4ntQ6v/zsL83YuSZGT1anxQXQaCLdSpg=;
-        h=Date:From:Cc:Reply-To:In-Reply-To:References:To:Subject:From;
-        b=ro+Mx/KoYopwwl+AR3SVIvINLf71Qj2YCsy5gzA1wQTrJCBGExN+J4luXoYQlVEZh
-         85gPdSjMkhq9XRVOoz1SZmy197H4BxHswysNB/OlkdXKnMaJgHS2E7Yslmi5n8CTBO
-         X/jetJHyFoWhPrZKYv8Hl0+2kWIi1v3hNIlLycklD7VKVpBAbJWfWZIEkOw2Ymb+Jq
-         5b42oWNc+nNg1tNiyumxzEfSqZdrOJCvuPfbOYytlttctM6WfChLHtVw6zfKH5eSJY
-         Q0DZiPyj/DEVwk+po/7o9LGRYPiSiE3HCfIAfb/vMxqDH9SYqwj8Ox6ZiaVCyuZORs
-         YJI+ZNqMwCZ8Q==
+        s=2019071901; t=1565295422;
+        bh=YHzO+rxceAKaS+8pRZnoYFfwJtlfkCsZwZ8KWSe3oFg=;
+        h=Date:From:Cc:Reply-To:To:Subject:From;
+        b=E+5wdSiauD9p2py2xXm4XitdMjO25lCVAuV70uHbQHYVknkuW/0rMsQOQPvKnoQ9D
+         2kynjUEwo3KNLRpcmSC/qGyLgOUI5QgH8gy/tnvKPMFZ87Plm0dxLA0lXK8jGRdYs0
+         l7jf8Ydyv4Cth+fK8bk2Otsz4Xus7G5+eFG8F+MqbILID1Gmrg84vb2oS0P8r96Ggy
+         3pHjhON/xDfAjepo9dfm30vX09+qDLEnuTSoDG8S/Uyq6d83A3wp3bP32DuIAzf3kq
+         NVQK8U8XpD8CglpwdJx1aVRLSPyQAoT6SxUhrIJPIcqrEvvcRWV/WHidMAhnBNgm+Y
+         4jwvr2ZOGJx0w==
 Received: (from tipbot@localhost)
-        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x78KGBNM3320819;
-        Thu, 8 Aug 2019 13:16:11 -0700
-Date:   Thu, 8 Aug 2019 13:16:11 -0700
+        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x78KH1D83320862;
+        Thu, 8 Aug 2019 13:17:01 -0700
+Date:   Thu, 8 Aug 2019 13:17:01 -0700
 X-Authentication-Warning: terminus.zytor.com: tipbot set sender to tipbot@zytor.com using -f
-From:   tip-bot for Jiri Olsa <tipbot@zytor.com>
-Message-ID: <tip-6bbfe4e602691b90ac866712bd4c43c51e546a60@git.kernel.org>
-Cc:     jolsa@kernel.org, ak@linux.intel.com,
-        alexander.shishkin@linux.intel.com, linux-kernel@vger.kernel.org,
-        peterz@infradead.org, namhyung@kernel.org, tglx@linutronix.de,
-        sathnaga@linux.vnet.ibm.com, mpetlan@redhat.com, acme@redhat.com,
-        mingo@kernel.org, hpa@zytor.com
-Reply-To: alexander.shishkin@linux.intel.com, hpa@zytor.com,
-          mingo@kernel.org, acme@redhat.com, mpetlan@redhat.com,
-          sathnaga@linux.vnet.ibm.com, tglx@linutronix.de,
-          ak@linux.intel.com, namhyung@kernel.org,
-          linux-kernel@vger.kernel.org, jolsa@kernel.org,
-          peterz@infradead.org
-In-Reply-To: <20190801142642.28004-1-jolsa@kernel.org>
-References: <20190801142642.28004-1-jolsa@kernel.org>
+From:   tip-bot for Arnaldo Carvalho de Melo <tipbot@zytor.com>
+Message-ID: <tip-unbr5a5efakobfr6rhxq99ta@git.kernel.org>
+Cc:     namhyung@kernel.org, mingo@kernel.org, acme@redhat.com,
+        hpa@zytor.com, tglx@linutronix.de, adrian.hunter@intel.com,
+        linux-kernel@vger.kernel.org, jolsa@kernel.org,
+        songliubraving@fb.com
+Reply-To: adrian.hunter@intel.com, linux-kernel@vger.kernel.org,
+          jolsa@kernel.org, songliubraving@fb.com, acme@redhat.com,
+          mingo@kernel.org, namhyung@kernel.org, hpa@zytor.com,
+          tglx@linutronix.de
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip:perf/urgent] perf bench numa: Fix cpu0 binding
-Git-Commit-ID: 6bbfe4e602691b90ac866712bd4c43c51e546a60
+Subject: [tip:perf/urgent] perf annotate: Fix printing of unaugmented
+ disassembled instructions from BPF
+Git-Commit-ID: 85127775a65fc58e69af0c44513937d471ccbe7b
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot.git.kernel.org>
 Robot-Unsubscribe: Contact <mailto:hpa@kernel.org> to get blacklisted from
@@ -67,58 +63,61 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-Commit-ID:  6bbfe4e602691b90ac866712bd4c43c51e546a60
-Gitweb:     https://git.kernel.org/tip/6bbfe4e602691b90ac866712bd4c43c51e546a60
-Author:     Jiri Olsa <jolsa@kernel.org>
-AuthorDate: Thu, 1 Aug 2019 16:26:42 +0200
+Commit-ID:  85127775a65fc58e69af0c44513937d471ccbe7b
+Gitweb:     https://git.kernel.org/tip/85127775a65fc58e69af0c44513937d471ccbe7b
+Author:     Arnaldo Carvalho de Melo <acme@redhat.com>
+AuthorDate: Tue, 6 Aug 2019 11:24:09 -0300
 Committer:  Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitDate: Thu, 1 Aug 2019 11:34:13 -0300
+CommitDate: Thu, 8 Aug 2019 15:40:56 -0300
 
-perf bench numa: Fix cpu0 binding
+perf annotate: Fix printing of unaugmented disassembled instructions from BPF
 
-Michael reported an issue with perf bench numa failing with binding to
-cpu0 with '-0' option.
+The code to disassemble BPF programs uses binutil's disassembling
+routines, and those use in turn fprintf to print to a memstream FILE,
+adding a newline at the end of each line, which ends up confusing the
+TUI routines called from:
 
-  # perf bench numa mem -p 3 -t 1 -P 512 -s 100 -zZcm0 --thp 1 -M 1 -ddd
-  # Running 'numa/mem' benchmark:
+  annotate_browser__write()
+    annotate_line__write()
+      annotate_browser__printf()
+        ui_browser__vprintf()
+          SLsmg_vprintf()
 
-   # Running main, "perf bench numa numa-mem -p 3 -t 1 -P 512 -s 100 -zZcm0 --thp 1 -M 1 -ddd"
-  binding to node 0, mask: 0000000000000001 => -1
-  perf: bench/numa.c:356: bind_to_memnode: Assertion `!(ret)' failed.
-  Aborted (core dumped)
+The SLsmg_vprintf() function in the slang library gets confused with the
+terminating newline, so make the disasm_line__parse() function that
+parses the lines produced by the BPF specific disassembler (that uses
+binutil's libopcodes) and the lines produced by the objdump based
+disassembler used for everything else (and that doesn't adds this
+terminating newline) trim the end of the line in addition of the
+beginning.
 
-This happens when the cpu0 is not part of node0, which is the benchmark
-assumption and we can see that's not the case for some powerpc servers.
+This way when disasm_line->ops.raw, i.e. for instructions without a
+special scnprintf() method, we'll not have that \n getting in the way of
+filling the screen right after the instruction with spaces to avoid
+leaving what was on the screen before and thus garbling the annotation
+screen, breaking scrolling, etc.
 
-Using correct node for cpu0 binding.
-
-Reported-by: Michael Petlan <mpetlan@redhat.com>
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Andi Kleen <ak@linux.intel.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>
-Link: http://lkml.kernel.org/r/20190801142642.28004-1-jolsa@kernel.org
+Cc: Song Liu <songliubraving@fb.com>
+Fixes: 6987561c9e86 ("perf annotate: Enable annotation of BPF programs")
+Link: https://lkml.kernel.org/n/tip-unbr5a5efakobfr6rhxq99ta@git.kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/bench/numa.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ tools/perf/util/annotate.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/bench/numa.c b/tools/perf/bench/numa.c
-index a640ca7aaada..513cb2f2fa32 100644
---- a/tools/perf/bench/numa.c
-+++ b/tools/perf/bench/numa.c
-@@ -379,8 +379,10 @@ static u8 *alloc_data(ssize_t bytes0, int map_flags,
+diff --git a/tools/perf/util/annotate.c b/tools/perf/util/annotate.c
+index ac9ad2330f93..163536720149 100644
+--- a/tools/perf/util/annotate.c
++++ b/tools/perf/util/annotate.c
+@@ -1122,7 +1122,7 @@ static int disasm_line__parse(char *line, const char **namep, char **rawp)
+ 		goto out;
  
- 	/* Allocate and initialize all memory on CPU#0: */
- 	if (init_cpu0) {
--		orig_mask = bind_to_node(0);
--		bind_to_memnode(0);
-+		int node = numa_node_of_cpu(0);
-+
-+		orig_mask = bind_to_node(node);
-+		bind_to_memnode(node);
- 	}
+ 	(*rawp)[0] = tmp;
+-	*rawp = skip_spaces(*rawp);
++	*rawp = strim(*rawp);
  
- 	bytes = bytes0 + HPSIZE;
+ 	return 0;
+ 
