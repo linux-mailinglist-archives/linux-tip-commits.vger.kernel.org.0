@@ -2,130 +2,95 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FBBF86B73
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  8 Aug 2019 22:23:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E3F287FB3
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  9 Aug 2019 18:21:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404930AbfHHUXb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 8 Aug 2019 16:23:31 -0400
-Received: from terminus.zytor.com ([198.137.202.136]:47097 "EHLO
-        terminus.zytor.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404588AbfHHUXa (ORCPT
+        id S2436883AbfHIQVc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 9 Aug 2019 12:21:32 -0400
+Received: from foss.arm.com ([217.140.110.172]:49872 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726421AbfHIQVc (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 8 Aug 2019 16:23:30 -0400
-Received: from terminus.zytor.com (localhost [127.0.0.1])
-        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x78KNIVp3322002
-        (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-        Thu, 8 Aug 2019 13:23:19 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x78KNIVp3322002
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-        s=2019071901; t=1565295799;
-        bh=vlmUvT48LKXae2dZomJin9M81+LvHmMIwvmFTd/bI8s=;
-        h=Date:From:Cc:Reply-To:In-Reply-To:References:To:Subject:From;
-        b=J4pBFJTtnnaxioFKfJ9bOjSdRQm2SOT2c0xgI4GXzQD+0lEeVXbrawvsUyse5GHHr
-         d0RenWVZ6QdrWKeBaBPY750yazT0WtVthwWHsIs7sviIwu8HkKcZTBJBygXuljQhmv
-         BvNVdecfTnbhga6/GyW543IVJ7ZST0w6IYUtys8uFOco6EsZVroGhA8nF3RPGu5P3q
-         CcK/gzwsDPlMCaZR8g7W8b9VV3gsQbM8TIRIBJPzp1mHMsJy/n+Eu8C6E2EB3lMWrj
-         zGFthD/tcZ2LWz5VHNaLv/wdfD1I1aUiCuZycY/W+T2OQ9dve9eQk43M73afa4r3uw
-         0FvB5A9cU6o5A==
-Received: (from tipbot@localhost)
-        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x78KNIkm3321999;
-        Thu, 8 Aug 2019 13:23:18 -0700
-Date:   Thu, 8 Aug 2019 13:23:18 -0700
-X-Authentication-Warning: terminus.zytor.com: tipbot set sender to tipbot@zytor.com using -f
-From:   tip-bot for Jin Yao <tipbot@zytor.com>
-Message-ID: <tip-8e6e5bea2e34c61291d00cb3f47560341aa84bc3@git.kernel.org>
-Cc:     yao.jin@linux.intel.com, ak@linux.intel.com, peterz@infradead.org,
-        kan.liang@linux.intel.com, alexander.shishkin@linux.intel.com,
-        linux-kernel@vger.kernel.org, hpa@zytor.com, mingo@kernel.org,
-        yao.jin@intel.com, acme@redhat.com, tglx@linutronix.de,
-        jolsa@kernel.org
-Reply-To: hpa@zytor.com, mingo@kernel.org, linux-kernel@vger.kernel.org,
-          alexander.shishkin@linux.intel.com, jolsa@kernel.org,
-          tglx@linutronix.de, yao.jin@intel.com, acme@redhat.com,
-          ak@linux.intel.com, yao.jin@linux.intel.com,
-          kan.liang@linux.intel.com, peterz@infradead.org
-In-Reply-To: <20190729072755.2166-1-yao.jin@linux.intel.com>
-References: <20190729072755.2166-1-yao.jin@linux.intel.com>
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip:perf/urgent] perf pmu-events: Fix missing
- "cpu_clk_unhalted.core" event
-Git-Commit-ID: 8e6e5bea2e34c61291d00cb3f47560341aa84bc3
-X-Mailer: tip-git-log-daemon
-Robot-ID: <tip-bot.git.kernel.org>
-Robot-Unsubscribe: Contact <mailto:hpa@kernel.org> to get blacklisted from
- these emails
+        Fri, 9 Aug 2019 12:21:32 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 314DE15A2;
+        Fri,  9 Aug 2019 09:21:32 -0700 (PDT)
+Received: from [0.0.0.0] (e107985-lin.cambridge.arm.com [10.1.194.38])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BD9AB3F575;
+        Fri,  9 Aug 2019 09:21:26 -0700 (PDT)
+Subject: Re: [tip:sched/core] sched/fair: Use rq_lock/unlock in
+ online_fair_sched_group
+To:     pauld@redhat.com, vincent.guittot@linaro.org, hpa@zytor.com,
+        linux-kernel@vger.kernel.org, peterz@infradead.org,
+        mingo@redhat.com, tglx@linutronix.de, mingo@kernel.org,
+        linux-tip-commits@vger.kernel.org
+References: <20190801133749.11033-1-pauld@redhat.com>
+ <tip-6b8fd01b21f5f2701b407a7118f236ba4c41226d@git.kernel.org>
+From:   Dietmar Eggemann <dietmar.eggemann@arm.com>
+Message-ID: <dfc8f652-ca98-e30a-546f-e6a2df36e33a@arm.com>
+Date:   Fri, 9 Aug 2019 18:21:22 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset=UTF-8
-Content-Disposition: inline
-X-Spam-Status: No, score=-0.3 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        DATE_IN_FUTURE_96_Q,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF
-        autolearn=no autolearn_force=no version=3.4.2
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on terminus.zytor.com
+In-Reply-To: <tip-6b8fd01b21f5f2701b407a7118f236ba4c41226d@git.kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-Commit-ID:  8e6e5bea2e34c61291d00cb3f47560341aa84bc3
-Gitweb:     https://git.kernel.org/tip/8e6e5bea2e34c61291d00cb3f47560341aa84bc3
-Author:     Jin Yao <yao.jin@linux.intel.com>
-AuthorDate: Mon, 29 Jul 2019 15:27:55 +0800
-Committer:  Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitDate: Thu, 8 Aug 2019 15:41:37 -0300
+On 8/8/19 1:01 PM, tip-bot for Phil Auld wrote:
 
-perf pmu-events: Fix missing "cpu_clk_unhalted.core" event
+[...]
 
-The events defined in pmu-events JSON are parsed and added into perf
-tool. For fixed counters, we handle the encodings between JSON and perf
-by using a static array fixed[].
+> diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+> index 19c58599e967..d9407517dae9 100644
+> --- a/kernel/sched/fair.c
+> +++ b/kernel/sched/fair.c
+> @@ -10281,18 +10281,18 @@ err:
+>  void online_fair_sched_group(struct task_group *tg)
+>  {
+>  	struct sched_entity *se;
+> +	struct rq_flags rf;
+>  	struct rq *rq;
+>  	int i;
+>  
+>  	for_each_possible_cpu(i) {
+>  		rq = cpu_rq(i);
+>  		se = tg->se[i];
+> -
+> -		raw_spin_lock_irq(&rq->lock);
+> +		rq_lock(rq, &rf);
+>  		update_rq_clock(rq);
+>  		attach_entity_cfs_rq(se);
+>  		sync_throttle(tg, i);
+> -		raw_spin_unlock_irq(&rq->lock);
+> +		rq_unlock(rq, &rf);
+>  	}
+>  }
 
-But the fixed[] has missed an important event "cpu_clk_unhalted.core".
+Shouldn't this be:
 
-For example, on the Tremont platform,
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index d9407517dae9..1054d2cf6aaa 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -10288,11 +10288,11 @@ void online_fair_sched_group(struct task_group
+*tg)
+        for_each_possible_cpu(i) {
+                rq = cpu_rq(i);
+                se = tg->se[i];
+-               rq_lock(rq, &rf);
++               rq_lock_irq(rq, &rf);
+                update_rq_clock(rq);
+                attach_entity_cfs_rq(se);
+                sync_throttle(tg, i);
+-               rq_unlock(rq, &rf);
++               rq_unlock_irq(rq, &rf);
+        }
+ }
 
-  [root@localhost ~]# perf stat -e cpu_clk_unhalted.core -a
-  event syntax error: 'cpu_clk_unhalted.core'
-                       \___ parser error
-
-With this patch, the event cpu_clk_unhalted.core can be parsed.
-
-  [root@localhost perf]# ./perf stat -e cpu_clk_unhalted.core -a -vvv
-  ------------------------------------------------------------
-  perf_event_attr:
-    type                             4
-    size                             112
-    config                           0x3c
-    sample_type                      IDENTIFIER
-    read_format                      TOTAL_TIME_ENABLED|TOTAL_TIME_RUNNING
-    disabled                         1
-    inherit                          1
-    exclude_guest                    1
-  ------------------------------------------------------------
-...
-
-Signed-off-by: Jin Yao <yao.jin@linux.intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Jin Yao <yao.jin@intel.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: http://lkml.kernel.org/r/20190729072755.2166-1-yao.jin@linux.intel.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
----
- tools/perf/pmu-events/jevents.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/tools/perf/pmu-events/jevents.c b/tools/perf/pmu-events/jevents.c
-index 1a91a197cafb..d413761621b0 100644
---- a/tools/perf/pmu-events/jevents.c
-+++ b/tools/perf/pmu-events/jevents.c
-@@ -453,6 +453,7 @@ static struct fixed {
- 	{ "inst_retired.any_p", "event=0xc0" },
- 	{ "cpu_clk_unhalted.ref", "event=0x0,umask=0x03" },
- 	{ "cpu_clk_unhalted.thread", "event=0x3c" },
-+	{ "cpu_clk_unhalted.core", "event=0x3c" },
- 	{ "cpu_clk_unhalted.thread_any", "event=0x3c,any=1" },
- 	{ NULL, NULL},
- };
+Currently, you should get a 'inconsistent lock state' warning with
+CONFIG_PROVE_LOCKING.
