@@ -2,83 +2,134 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6493689A93
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 12 Aug 2019 11:56:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E6A789E9D
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 12 Aug 2019 14:41:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727510AbfHLJ4Q (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 12 Aug 2019 05:56:16 -0400
-Received: from foss.arm.com ([217.140.110.172]:47226 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727324AbfHLJ4Q (ORCPT
+        id S1726469AbfHLMlK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 12 Aug 2019 08:41:10 -0400
+Received: from terminus.zytor.com ([198.137.202.136]:46441 "EHLO
+        terminus.zytor.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726458AbfHLMlK (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 12 Aug 2019 05:56:16 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E56A715A2;
-        Mon, 12 Aug 2019 02:56:15 -0700 (PDT)
-Received: from [0.0.0.0] (e107985-lin.cambridge.arm.com [10.1.194.38])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5AA6A3F718;
-        Mon, 12 Aug 2019 02:56:14 -0700 (PDT)
-Subject: Re: [tip:sched/core] sched/fair: Use rq_lock/unlock in
- online_fair_sched_group
-To:     Phil Auld <pauld@redhat.com>
-Cc:     vincent.guittot@linaro.org, hpa@zytor.com,
-        linux-kernel@vger.kernel.org, peterz@infradead.org,
-        mingo@redhat.com, tglx@linutronix.de, mingo@kernel.org,
-        linux-tip-commits@vger.kernel.org
-References: <20190801133749.11033-1-pauld@redhat.com>
- <tip-6b8fd01b21f5f2701b407a7118f236ba4c41226d@git.kernel.org>
- <dfc8f652-ca98-e30a-546f-e6a2df36e33a@arm.com>
- <20190809172837.GB18727@pauld.bos.csb>
-From:   Dietmar Eggemann <dietmar.eggemann@arm.com>
-Message-ID: <d711ee53-48ca-47f5-df23-0593cc0f3347@arm.com>
-Date:   Mon, 12 Aug 2019 11:56:12 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        Mon, 12 Aug 2019 08:41:10 -0400
+Received: from terminus.zytor.com (localhost [127.0.0.1])
+        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x7CCeiuT907213
+        (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
+        Mon, 12 Aug 2019 05:40:45 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x7CCeiuT907213
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+        s=2019071901; t=1565613645;
+        bh=6EJ1Y6U2Bpj16fxidRk8tEE7trYYoImAflL2stbAik4=;
+        h=Date:From:Cc:Reply-To:To:Subject:From;
+        b=xyEE35RiEAVb5jAd4XJ7p/ONKZnR0xr3uXmtqp7pHJv9xd7t9Cm1z0rY9x49GYvqO
+         55cmXYOpWIErdK7JDfNjx+PrSbouynS9TwO5R4Z/tRoe4ShqfTtTJqvV2WhMKKq/u+
+         bM5q89sqeDqzmuz3wuYds76xGH2xNv3EY0rp6zPzMeP4gYOD1f2mMKvYGFAbr0CWL3
+         GpjjrEOH3JHowwOZayCfdgk0X40yT37KRilCJGosCk4uR9TYVpDO9Ez06IHn58OZc8
+         2jxx7AZXFWFic2jelbFqbTULKZa/dNKA38+Ig5J/GDX43DDw50CGXPSYVYplYL5P2t
+         j9yZ+SXVwh/NQ==
+Received: (from tipbot@localhost)
+        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x7CCeiBC907210;
+        Mon, 12 Aug 2019 05:40:44 -0700
+Date:   Mon, 12 Aug 2019 05:40:44 -0700
+X-Authentication-Warning: terminus.zytor.com: tipbot set sender to tipbot@zytor.com using -f
+From:   tip-bot for Hans de Goede <tipbot@zytor.com>
+Message-ID: <tip-b61fbc887af7a13a1c90c84c1feaeb4c9780e1e2@git.kernel.org>
+Cc:     hpa@zytor.com, ard.biesheuvel@linaro.org,
+        jarkko.sakkinen@linux.intel.com, mingo@kernel.org,
+        mjg59@google.com, hdegoede@redhat.com, tglx@linutronix.de
+Reply-To: hpa@zytor.com, ard.biesheuvel@linaro.org,
+          jarkko.sakkinen@linux.intel.com, mingo@kernel.org,
+          linux-kernel@vger.kernel.org, mjg59@google.com,
+          hdegoede@redhat.com, tglx@linutronix.de
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip:efi/urgent] efi-stub: Fix get_efi_config_table on mixed-mode
+ setups
+Git-Commit-ID: b61fbc887af7a13a1c90c84c1feaeb4c9780e1e2
+X-Mailer: tip-git-log-daemon
+Robot-ID: <tip-bot.git.kernel.org>
+Robot-Unsubscribe: Contact <mailto:hpa@kernel.org> to get blacklisted from
+ these emails
 MIME-Version: 1.0
-In-Reply-To: <20190809172837.GB18727@pauld.bos.csb>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Disposition: inline
+X-Spam-Status: No, score=-0.2 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        DATE_IN_FUTURE_96_Q,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF
+        autolearn=no autolearn_force=no version=3.4.2
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on terminus.zytor.com
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On 8/9/19 7:28 PM, Phil Auld wrote:
-> On Fri, Aug 09, 2019 at 06:21:22PM +0200 Dietmar Eggemann wrote:
->> On 8/8/19 1:01 PM, tip-bot for Phil Auld wrote:
+Commit-ID:  b61fbc887af7a13a1c90c84c1feaeb4c9780e1e2
+Gitweb:     https://git.kernel.org/tip/b61fbc887af7a13a1c90c84c1feaeb4c9780e1e2
+Author:     Hans de Goede <hdegoede@redhat.com>
+AuthorDate: Wed, 7 Aug 2019 23:59:03 +0200
+Committer:  Ard Biesheuvel <ard.biesheuvel@linaro.org>
+CommitDate: Mon, 12 Aug 2019 11:58:35 +0300
 
-[...]
+efi-stub: Fix get_efi_config_table on mixed-mode setups
 
->> Shouldn't this be:
->>
->> diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
->> index d9407517dae9..1054d2cf6aaa 100644
->> --- a/kernel/sched/fair.c
->> +++ b/kernel/sched/fair.c
->> @@ -10288,11 +10288,11 @@ void online_fair_sched_group(struct task_group
->> *tg)
->>         for_each_possible_cpu(i) {
->>                 rq = cpu_rq(i);
->>                 se = tg->se[i];
->> -               rq_lock(rq, &rf);
->> +               rq_lock_irq(rq, &rf);
->>                 update_rq_clock(rq);
->>                 attach_entity_cfs_rq(se);
->>                 sync_throttle(tg, i);
->> -               rq_unlock(rq, &rf);
->> +               rq_unlock_irq(rq, &rf);
->>         }
->>  }
->>
->> Currently, you should get a 'inconsistent lock state' warning with
->> CONFIG_PROVE_LOCKING.
-> 
-> Yes, indeed. Sorry about that. Maybe it can be fixed in tip before 
-> it gets any farther?  Or do we need a new patch?
+Fix get_efi_config_table using the wrong structs when booting a
+64 bit kernel on 32 bit firmware.
 
-I think Peter is on holiday so maybe you can send a new patch and ask
-Ingo or Thomas to replace your original patch on tip sched/core?
+Fixes: 82d736ac56d7 ("Abstract out support for locating an EFI config table")
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Acked-By: Matthew Garrett <mjg59@google.com>
+Reviewed-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Acked-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+---
+ drivers/firmware/efi/libstub/efi-stub-helper.c | 38 ++++++++++++++++++--------
+ 1 file changed, 27 insertions(+), 11 deletions(-)
 
-
-
+diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
+index 1db780c0f07b..3caae7f2cf56 100644
+--- a/drivers/firmware/efi/libstub/efi-stub-helper.c
++++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
+@@ -927,17 +927,33 @@ fail:
+ 	return status;
+ }
+ 
++#define GET_EFI_CONFIG_TABLE(bits)					\
++static void *get_efi_config_table##bits(efi_system_table_t *_sys_table,	\
++					efi_guid_t guid)		\
++{									\
++	efi_system_table_##bits##_t *sys_table;				\
++	efi_config_table_##bits##_t *tables;				\
++	int i;								\
++									\
++	sys_table = (typeof(sys_table))_sys_table;			\
++	tables = (typeof(tables))(unsigned long)sys_table->tables;	\
++									\
++	for (i = 0; i < sys_table->nr_tables; i++) {			\
++		if (efi_guidcmp(tables[i].guid, guid) != 0)		\
++			continue;					\
++									\
++		return (void *)(unsigned long)tables[i].table;		\
++	}								\
++									\
++	return NULL;							\
++}
++GET_EFI_CONFIG_TABLE(32)
++GET_EFI_CONFIG_TABLE(64)
++
+ void *get_efi_config_table(efi_system_table_t *sys_table, efi_guid_t guid)
+ {
+-	efi_config_table_t *tables = (efi_config_table_t *)sys_table->tables;
+-	int i;
+-
+-	for (i = 0; i < sys_table->nr_tables; i++) {
+-		if (efi_guidcmp(tables[i].guid, guid) != 0)
+-			continue;
+-
+-		return (void *)tables[i].table;
+-	}
+-
+-	return NULL;
++	if (efi_is_64bit())
++		return get_efi_config_table64(sys_table, guid);
++	else
++		return get_efi_config_table32(sys_table, guid);
+ }
