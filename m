@@ -2,48 +2,48 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 02A6589EEC
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 12 Aug 2019 14:55:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DAF1189EFB
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 12 Aug 2019 14:58:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726760AbfHLMzK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 12 Aug 2019 08:55:10 -0400
-Received: from terminus.zytor.com ([198.137.202.136]:38649 "EHLO
+        id S1726603AbfHLM6M (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 12 Aug 2019 08:58:12 -0400
+Received: from terminus.zytor.com ([198.137.202.136]:42157 "EHLO
         terminus.zytor.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726458AbfHLMzK (ORCPT
+        with ESMTP id S1726219AbfHLM6M (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 12 Aug 2019 08:55:10 -0400
+        Mon, 12 Aug 2019 08:58:12 -0400
 Received: from terminus.zytor.com (localhost [127.0.0.1])
-        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x7CCt2FV912556
+        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x7CCw4rY913410
         (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-        Mon, 12 Aug 2019 05:55:03 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x7CCt2FV912556
+        Mon, 12 Aug 2019 05:58:04 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x7CCw4rY913410
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-        s=2019071901; t=1565614503;
-        bh=e0XeqREdmjtlsxYNmoBWWlkE7ITelU6OmSaYjy9hmkA=;
+        s=2019071901; t=1565614684;
+        bh=/vWIPuqqcmV4ncD4F+mnVPU92vCEwG4t02RLeeViSfU=;
         h=Date:From:Cc:Reply-To:In-Reply-To:References:To:Subject:From;
-        b=b5j3AeW4Pw2v1YtAP92c+RvJkMLsCSB9BxqcQ41A+0t62AIeknnHucvsxuTyj3Vt8
-         kPnT5hjYkl532a8x4f+SKBWcYw34Ti69DQjeXEQVt9o4tl0blJkbtdNhWbSpt648pp
-         f+/bXqcjTIaAbglGqipkl0T2zTVQn/oQMUhrNq7mCKC9Le2LTLr/zpRYQeCa0jlCez
-         2DHt//gGvJG6I3KIhnfJa71sChCKQqpJ/Gpygp7mAAhIbP2inNjiYYrs0n5gJ5sHiN
-         GDRjfOC/pXeBNa4On/spX44wG0cQGAn+dInBA1vL3SXIlsfz+sTXaklNjQCoVtKeaB
-         wJVAh+3gGxtWw==
+        b=qvbz5QY8ds08x0AekT7VQjP7fQrSICH4nQzgvjeFR1+mShT0Mi4K9M+X4SJ7Ks+Bb
+         wBeBEuqbBaM+fMUjncxZZdLm9bFLM3du3zbhqnKMoKCux7gDSAimiryqwuSXyswajT
+         aQAZyDGSkY5dLto+/t7G6apbDyzakb8Cg/5ibzFoU6B7C+tvEMMLvheilpElwf95Za
+         cvK24cwmfi4YhJOKB6x0N5ygY+lTPeWiix07JNg6uJiAHCSQoQsiUPs6dAGEg//WYZ
+         0Vrqigo9xocKAPL+T65ZhYEnRQuILUF/P84Z/BsZdZZpF4+ALaBLGoYQXK1Mc0uZDg
+         KM7aZTW+A06jQ==
 Received: (from tipbot@localhost)
-        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x7CCt2kw912553;
-        Mon, 12 Aug 2019 05:55:02 -0700
-Date:   Mon, 12 Aug 2019 05:55:02 -0700
+        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x7CCw4MN913407;
+        Mon, 12 Aug 2019 05:58:04 -0700
+Date:   Mon, 12 Aug 2019 05:58:04 -0700
 X-Authentication-Warning: terminus.zytor.com: tipbot set sender to tipbot@zytor.com using -f
-From:   tip-bot for Fenghua Yu <tipbot@zytor.com>
-Message-ID: <tip-e7409258845a0f64967f8377e99294d438137537@git.kernel.org>
-Cc:     linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@kernel.org,
-        valdis.kletnieks@vt.edu, hpa@zytor.com, fenghua.yu@intel.com
-Reply-To: hpa@zytor.com, mingo@kernel.org, fenghua.yu@intel.com,
-          linux-kernel@vger.kernel.org, tglx@linutronix.de,
-          valdis.kletnieks@vt.edu
-In-Reply-To: <1565401237-60936-1-git-send-email-fenghua.yu@intel.com>
-References: <1565401237-60936-1-git-send-email-fenghua.yu@intel.com>
+From:   tip-bot for Vlastimil Babka <tipbot@zytor.com>
+Message-ID: <tip-2e1da13fba4cb529c2c8c1d9f657690d1e853d7d@git.kernel.org>
+Cc:     vbabka@suse.cz, tglx@linutronix.de, linux-kernel@vger.kernel.org,
+        mingo@kernel.org, hpa@zytor.com
+Reply-To: vbabka@suse.cz, tglx@linutronix.de, mingo@kernel.org,
+          linux-kernel@vger.kernel.org, hpa@zytor.com
+In-Reply-To: <20190807130258.22185-1-vbabka@suse.cz>
+References: <20190807130258.22185-1-vbabka@suse.cz>
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip:x86/urgent] x86/umwait: Fix error handling in umwait_init()
-Git-Commit-ID: e7409258845a0f64967f8377e99294d438137537
+Subject: [tip:x86/mm] x86/kconfig: Remove X86_DIRECT_GBPAGES dependency on
+ !DEBUG_PAGEALLOC
+Git-Commit-ID: 2e1da13fba4cb529c2c8c1d9f657690d1e853d7d
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot.git.kernel.org>
 Robot-Unsubscribe: Contact <mailto:hpa@kernel.org> to get blacklisted from
@@ -61,124 +61,39 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-Commit-ID:  e7409258845a0f64967f8377e99294d438137537
-Gitweb:     https://git.kernel.org/tip/e7409258845a0f64967f8377e99294d438137537
-Author:     Fenghua Yu <fenghua.yu@intel.com>
-AuthorDate: Fri, 9 Aug 2019 18:40:37 -0700
+Commit-ID:  2e1da13fba4cb529c2c8c1d9f657690d1e853d7d
+Gitweb:     https://git.kernel.org/tip/2e1da13fba4cb529c2c8c1d9f657690d1e853d7d
+Author:     Vlastimil Babka <vbabka@suse.cz>
+AuthorDate: Wed, 7 Aug 2019 15:02:58 +0200
 Committer:  Thomas Gleixner <tglx@linutronix.de>
-CommitDate: Mon, 12 Aug 2019 14:51:13 +0200
+CommitDate: Mon, 12 Aug 2019 14:52:30 +0200
 
-x86/umwait: Fix error handling in umwait_init()
+x86/kconfig: Remove X86_DIRECT_GBPAGES dependency on !DEBUG_PAGEALLOC
 
-Currently, failure of cpuhp_setup_state() is ignored and the syscore ops
-and the control interfaces can still be added even after the failure. But,
-this error handling will cause a few issues:
+These days CONFIG_DEBUG_PAGEALLOC just compiles in the code that has to be
+enabled on boot time, or with an extra config option, and only then are the
+large page based direct mappings disabled.
 
-1. The CPUs may have different values in the IA32_UMWAIT_CONTROL
-   MSR because there is no way to roll back the control MSR on
-   the CPUs which already set the MSR before the failure.
+Therefore remove the config dependency, allowing 1GB direct mappings with
+debug_pagealloc compiled in but not enabled.
 
-2. If the sysfs interface is added successfully, there will be a mismatch
-   between the global control value and the control MSR:
-   - The interface shows the default global control value. But,
-     the control MSR is not set to the value because the CPU online
-     function, which is supposed to set the MSR to the value,
-     is not installed.
-   - If the sysadmin changes the global control value through
-     the interface, the control MSR on all current online CPUs is
-     set to the new value. But, the control MSR on newly onlined CPUs
-     after the value change will not be set to the new value due to
-     lack of the CPU online function.
-
-3. On resume from suspend/hibernation, the boot CPU restores the control
-   MSR to the global control value through the syscore ops. But, the
-   control MSR on all APs is not set due to lake of the CPU online
-   function.
-
-To solve the issues and enforce consistent behavior on the failure
-of the CPU hotplug setup, make the following changes:
-
-1. Cache the original control MSR value which is configured by
-   hardware or BIOS before kernel boot. This value is likely to
-   be 0. But it could be a different number as well. Cache the
-   control MSR only once before the MSR is changed.
-2. Add the CPU offline function so that the MSR is restored to the
-   original control value on all CPUs on the failure.
-3. On the failure, exit from cpumait_init() so that the syscore ops
-   and the control interfaces are not added.
-
-Reported-by: Valdis Kletnieks <valdis.kletnieks@vt.edu>
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Fenghua Yu <fenghua.yu@intel.com>
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/1565401237-60936-1-git-send-email-fenghua.yu@intel.com
-
+Link: https://lkml.kernel.org/r/20190807130258.22185-1-vbabka@suse.cz
 ---
- arch/x86/kernel/cpu/umwait.c | 39 ++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 38 insertions(+), 1 deletion(-)
+ arch/x86/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/cpu/umwait.c b/arch/x86/kernel/cpu/umwait.c
-index 6a204e7336c1..32b4dc9030aa 100644
---- a/arch/x86/kernel/cpu/umwait.c
-+++ b/arch/x86/kernel/cpu/umwait.c
-@@ -17,6 +17,12 @@
-  */
- static u32 umwait_control_cached = UMWAIT_CTRL_VAL(100000, UMWAIT_C02_ENABLE);
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 222855cc0158..58eae28c3dd6 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -1503,7 +1503,7 @@ config X86_5LEVEL
  
-+/*
-+ * Cache the original IA32_UMWAIT_CONTROL MSR value which is configured by
-+ * hardware or BIOS before kernel boot.
-+ */
-+static u32 orig_umwait_control_cached __ro_after_init;
-+
- /*
-  * Serialize access to umwait_control_cached and IA32_UMWAIT_CONTROL MSR in
-  * the sysfs write functions.
-@@ -52,6 +58,23 @@ static int umwait_cpu_online(unsigned int cpu)
- 	return 0;
- }
- 
-+/*
-+ * The CPU hotplug callback sets the control MSR to the original control
-+ * value.
-+ */
-+static int umwait_cpu_offline(unsigned int cpu)
-+{
-+	/*
-+	 * This code is protected by the CPU hotplug already and
-+	 * orig_umwait_control_cached is never changed after it caches
-+	 * the original control MSR value in umwait_init(). So there
-+	 * is no race condition here.
-+	 */
-+	wrmsr(MSR_IA32_UMWAIT_CONTROL, orig_umwait_control_cached, 0);
-+
-+	return 0;
-+}
-+
- /*
-  * On resume, restore IA32_UMWAIT_CONTROL MSR on the boot processor which
-  * is the only active CPU at this time. The MSR is set up on the APs via the
-@@ -185,8 +208,22 @@ static int __init umwait_init(void)
- 	if (!boot_cpu_has(X86_FEATURE_WAITPKG))
- 		return -ENODEV;
- 
-+	/*
-+	 * Cache the original control MSR value before the control MSR is
-+	 * changed. This is the only place where orig_umwait_control_cached
-+	 * is modified.
-+	 */
-+	rdmsrl(MSR_IA32_UMWAIT_CONTROL, orig_umwait_control_cached);
-+
- 	ret = cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "umwait:online",
--				umwait_cpu_online, NULL);
-+				umwait_cpu_online, umwait_cpu_offline);
-+	if (ret < 0) {
-+		/*
-+		 * On failure, the control MSR on all CPUs has the
-+		 * original control value.
-+		 */
-+		return ret;
-+	}
- 
- 	register_syscore_ops(&umwait_syscore_ops);
- 
+ config X86_DIRECT_GBPAGES
+ 	def_bool y
+-	depends on X86_64 && !DEBUG_PAGEALLOC
++	depends on X86_64
+ 	---help---
+ 	  Certain kernel features effectively disable kernel
+ 	  linear 1 GB mappings (even if the CPU otherwise
