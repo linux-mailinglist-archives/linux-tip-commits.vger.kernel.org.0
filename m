@@ -2,49 +2,50 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E6A789E9D
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 12 Aug 2019 14:41:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 603B789ECB
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 12 Aug 2019 14:52:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726469AbfHLMlK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 12 Aug 2019 08:41:10 -0400
-Received: from terminus.zytor.com ([198.137.202.136]:46441 "EHLO
+        id S1728517AbfHLMw2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 12 Aug 2019 08:52:28 -0400
+Received: from terminus.zytor.com ([198.137.202.136]:57435 "EHLO
         terminus.zytor.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726458AbfHLMlK (ORCPT
+        with ESMTP id S1726219AbfHLMw2 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 12 Aug 2019 08:41:10 -0400
+        Mon, 12 Aug 2019 08:52:28 -0400
 Received: from terminus.zytor.com (localhost [127.0.0.1])
-        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x7CCeiuT907213
+        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x7CCq5qj911603
         (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-        Mon, 12 Aug 2019 05:40:45 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x7CCeiuT907213
+        Mon, 12 Aug 2019 05:52:05 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x7CCq5qj911603
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-        s=2019071901; t=1565613645;
-        bh=6EJ1Y6U2Bpj16fxidRk8tEE7trYYoImAflL2stbAik4=;
-        h=Date:From:Cc:Reply-To:To:Subject:From;
-        b=xyEE35RiEAVb5jAd4XJ7p/ONKZnR0xr3uXmtqp7pHJv9xd7t9Cm1z0rY9x49GYvqO
-         55cmXYOpWIErdK7JDfNjx+PrSbouynS9TwO5R4Z/tRoe4ShqfTtTJqvV2WhMKKq/u+
-         bM5q89sqeDqzmuz3wuYds76xGH2xNv3EY0rp6zPzMeP4gYOD1f2mMKvYGFAbr0CWL3
-         GpjjrEOH3JHowwOZayCfdgk0X40yT37KRilCJGosCk4uR9TYVpDO9Ez06IHn58OZc8
-         2jxx7AZXFWFic2jelbFqbTULKZa/dNKA38+Ig5J/GDX43DDw50CGXPSYVYplYL5P2t
-         j9yZ+SXVwh/NQ==
+        s=2019071901; t=1565614325;
+        bh=/bsntWjVZfImfzcAidw6AqiGCqtrKOJA5xIxNE3KE38=;
+        h=Date:From:Cc:Reply-To:In-Reply-To:References:To:Subject:From;
+        b=MFGjidgYHnRptP4j4A+xUuLQakdlBKAeoXGOIkZOCZvzhojLNt56q9FRF5HHrFurt
+         wiYOkQG4w1tXF3raEDgSn+lghtDz20/q+4KR6qgvp6jez/gjxUKk4hTOzSHbUx7bWr
+         a5TrLunfROAMNhLEmdDdF88+lxFRNOZy5jmB+qG1jjA5oKJw15DZofLFf+RmnI6HP6
+         yRGNVF7c0YMBPADgJ91R594akdZGsraD/CR+CHr41SOLQuNznspGZRJRs2mA7NodcK
+         OtskiXRX903FX4A7F4P4FMjDdAAM7hPDwbyQkKU3f3Zry+4EyNkmZveS8F3vc2w9Eq
+         M8NolsgciccPA==
 Received: (from tipbot@localhost)
-        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x7CCeiBC907210;
-        Mon, 12 Aug 2019 05:40:44 -0700
-Date:   Mon, 12 Aug 2019 05:40:44 -0700
+        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x7CCq46H911600;
+        Mon, 12 Aug 2019 05:52:04 -0700
+Date:   Mon, 12 Aug 2019 05:52:04 -0700
 X-Authentication-Warning: terminus.zytor.com: tipbot set sender to tipbot@zytor.com using -f
-From:   tip-bot for Hans de Goede <tipbot@zytor.com>
-Message-ID: <tip-b61fbc887af7a13a1c90c84c1feaeb4c9780e1e2@git.kernel.org>
-Cc:     hpa@zytor.com, ard.biesheuvel@linaro.org,
-        jarkko.sakkinen@linux.intel.com, mingo@kernel.org,
-        mjg59@google.com, hdegoede@redhat.com, tglx@linutronix.de
-Reply-To: hpa@zytor.com, ard.biesheuvel@linaro.org,
-          jarkko.sakkinen@linux.intel.com, mingo@kernel.org,
-          linux-kernel@vger.kernel.org, mjg59@google.com,
-          hdegoede@redhat.com, tglx@linutronix.de
+From:   tip-bot for Phil Auld <tipbot@zytor.com>
+Message-ID: <tip-a46d14eca7b75fffe35603aa8b81df654353d80f@git.kernel.org>
+Cc:     pauld@redhat.com, tglx@linutronix.de, mingo@redhat.com,
+        peterz@infradead.org, vincent.guittot@linaro.org, mingo@kernel.org,
+        linux-kernel@vger.kernel.org, hpa@zytor.com
+Reply-To: peterz@infradead.org, mingo@redhat.com, tglx@linutronix.de,
+          pauld@redhat.com, hpa@zytor.com, linux-kernel@vger.kernel.org,
+          mingo@kernel.org, vincent.guittot@linaro.org
+In-Reply-To: <20190801133749.11033-1-pauld@redhat.com>
+References: <20190801133749.11033-1-pauld@redhat.com>
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip:efi/urgent] efi-stub: Fix get_efi_config_table on mixed-mode
- setups
-Git-Commit-ID: b61fbc887af7a13a1c90c84c1feaeb4c9780e1e2
+Subject: [tip:sched/core] sched/fair: Use rq_lock/unlock in
+ online_fair_sched_group
+Git-Commit-ID: a46d14eca7b75fffe35603aa8b81df654353d80f
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot.git.kernel.org>
 Robot-Unsubscribe: Contact <mailto:hpa@kernel.org> to get blacklisted from
@@ -62,74 +63,73 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-Commit-ID:  b61fbc887af7a13a1c90c84c1feaeb4c9780e1e2
-Gitweb:     https://git.kernel.org/tip/b61fbc887af7a13a1c90c84c1feaeb4c9780e1e2
-Author:     Hans de Goede <hdegoede@redhat.com>
-AuthorDate: Wed, 7 Aug 2019 23:59:03 +0200
-Committer:  Ard Biesheuvel <ard.biesheuvel@linaro.org>
-CommitDate: Mon, 12 Aug 2019 11:58:35 +0300
+Commit-ID:  a46d14eca7b75fffe35603aa8b81df654353d80f
+Gitweb:     https://git.kernel.org/tip/a46d14eca7b75fffe35603aa8b81df654353d80f
+Author:     Phil Auld <pauld@redhat.com>
+AuthorDate: Thu, 1 Aug 2019 09:37:49 -0400
+Committer:  Thomas Gleixner <tglx@linutronix.de>
+CommitDate: Mon, 12 Aug 2019 14:45:34 +0200
 
-efi-stub: Fix get_efi_config_table on mixed-mode setups
+sched/fair: Use rq_lock/unlock in online_fair_sched_group
 
-Fix get_efi_config_table using the wrong structs when booting a
-64 bit kernel on 32 bit firmware.
+Enabling WARN_DOUBLE_CLOCK in /sys/kernel/debug/sched_features causes
+warning to fire in update_rq_clock. This seems to be caused by onlining
+a new fair sched group not using the rq lock wrappers.
 
-Fixes: 82d736ac56d7 ("Abstract out support for locating an EFI config table")
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Acked-By: Matthew Garrett <mjg59@google.com>
-Reviewed-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Acked-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+  [] rq->clock_update_flags & RQCF_UPDATED
+  [] WARNING: CPU: 5 PID: 54385 at kernel/sched/core.c:210 update_rq_clock+0xec/0x150
+
+  [] Call Trace:
+  []  online_fair_sched_group+0x53/0x100
+  []  cpu_cgroup_css_online+0x16/0x20
+  []  online_css+0x1c/0x60
+  []  cgroup_apply_control_enable+0x231/0x3b0
+  []  cgroup_mkdir+0x41b/0x530
+  []  kernfs_iop_mkdir+0x61/0xa0
+  []  vfs_mkdir+0x108/0x1a0
+  []  do_mkdirat+0x77/0xe0
+  []  do_syscall_64+0x55/0x1d0
+  []  entry_SYSCALL_64_after_hwframe+0x44/0xa9
+
+Using the wrappers in online_fair_sched_group instead of the raw locking
+removes this warning.
+
+[ tglx: Use rq_*lock_irq() ]
+
+Signed-off-by: Phil Auld <pauld@redhat.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Vincent Guittot <vincent.guittot@linaro.org>
+Cc: Ingo Molnar <mingo@kernel.org>
+Link: https://lkml.kernel.org/r/20190801133749.11033-1-pauld@redhat.com
 ---
- drivers/firmware/efi/libstub/efi-stub-helper.c | 38 ++++++++++++++++++--------
- 1 file changed, 27 insertions(+), 11 deletions(-)
+ kernel/sched/fair.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
-index 1db780c0f07b..3caae7f2cf56 100644
---- a/drivers/firmware/efi/libstub/efi-stub-helper.c
-+++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
-@@ -927,17 +927,33 @@ fail:
- 	return status;
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 19c58599e967..1054d2cf6aaa 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -10281,18 +10281,18 @@ err:
+ void online_fair_sched_group(struct task_group *tg)
+ {
+ 	struct sched_entity *se;
++	struct rq_flags rf;
+ 	struct rq *rq;
+ 	int i;
+ 
+ 	for_each_possible_cpu(i) {
+ 		rq = cpu_rq(i);
+ 		se = tg->se[i];
+-
+-		raw_spin_lock_irq(&rq->lock);
++		rq_lock_irq(rq, &rf);
+ 		update_rq_clock(rq);
+ 		attach_entity_cfs_rq(se);
+ 		sync_throttle(tg, i);
+-		raw_spin_unlock_irq(&rq->lock);
++		rq_unlock_irq(rq, &rf);
+ 	}
  }
  
-+#define GET_EFI_CONFIG_TABLE(bits)					\
-+static void *get_efi_config_table##bits(efi_system_table_t *_sys_table,	\
-+					efi_guid_t guid)		\
-+{									\
-+	efi_system_table_##bits##_t *sys_table;				\
-+	efi_config_table_##bits##_t *tables;				\
-+	int i;								\
-+									\
-+	sys_table = (typeof(sys_table))_sys_table;			\
-+	tables = (typeof(tables))(unsigned long)sys_table->tables;	\
-+									\
-+	for (i = 0; i < sys_table->nr_tables; i++) {			\
-+		if (efi_guidcmp(tables[i].guid, guid) != 0)		\
-+			continue;					\
-+									\
-+		return (void *)(unsigned long)tables[i].table;		\
-+	}								\
-+									\
-+	return NULL;							\
-+}
-+GET_EFI_CONFIG_TABLE(32)
-+GET_EFI_CONFIG_TABLE(64)
-+
- void *get_efi_config_table(efi_system_table_t *sys_table, efi_guid_t guid)
- {
--	efi_config_table_t *tables = (efi_config_table_t *)sys_table->tables;
--	int i;
--
--	for (i = 0; i < sys_table->nr_tables; i++) {
--		if (efi_guidcmp(tables[i].guid, guid) != 0)
--			continue;
--
--		return (void *)tables[i].table;
--	}
--
--	return NULL;
-+	if (efi_is_64bit())
-+		return get_efi_config_table64(sys_table, guid);
-+	else
-+		return get_efi_config_table32(sys_table, guid);
- }
