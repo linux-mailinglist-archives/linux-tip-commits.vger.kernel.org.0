@@ -2,50 +2,48 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 603B789ECB
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 12 Aug 2019 14:52:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02A6589EEC
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 12 Aug 2019 14:55:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728517AbfHLMw2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 12 Aug 2019 08:52:28 -0400
-Received: from terminus.zytor.com ([198.137.202.136]:57435 "EHLO
+        id S1726760AbfHLMzK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 12 Aug 2019 08:55:10 -0400
+Received: from terminus.zytor.com ([198.137.202.136]:38649 "EHLO
         terminus.zytor.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726219AbfHLMw2 (ORCPT
+        with ESMTP id S1726458AbfHLMzK (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 12 Aug 2019 08:52:28 -0400
+        Mon, 12 Aug 2019 08:55:10 -0400
 Received: from terminus.zytor.com (localhost [127.0.0.1])
-        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x7CCq5qj911603
+        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x7CCt2FV912556
         (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-        Mon, 12 Aug 2019 05:52:05 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x7CCq5qj911603
+        Mon, 12 Aug 2019 05:55:03 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x7CCt2FV912556
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-        s=2019071901; t=1565614325;
-        bh=/bsntWjVZfImfzcAidw6AqiGCqtrKOJA5xIxNE3KE38=;
+        s=2019071901; t=1565614503;
+        bh=e0XeqREdmjtlsxYNmoBWWlkE7ITelU6OmSaYjy9hmkA=;
         h=Date:From:Cc:Reply-To:In-Reply-To:References:To:Subject:From;
-        b=MFGjidgYHnRptP4j4A+xUuLQakdlBKAeoXGOIkZOCZvzhojLNt56q9FRF5HHrFurt
-         wiYOkQG4w1tXF3raEDgSn+lghtDz20/q+4KR6qgvp6jez/gjxUKk4hTOzSHbUx7bWr
-         a5TrLunfROAMNhLEmdDdF88+lxFRNOZy5jmB+qG1jjA5oKJw15DZofLFf+RmnI6HP6
-         yRGNVF7c0YMBPADgJ91R594akdZGsraD/CR+CHr41SOLQuNznspGZRJRs2mA7NodcK
-         OtskiXRX903FX4A7F4P4FMjDdAAM7hPDwbyQkKU3f3Zry+4EyNkmZveS8F3vc2w9Eq
-         M8NolsgciccPA==
+        b=b5j3AeW4Pw2v1YtAP92c+RvJkMLsCSB9BxqcQ41A+0t62AIeknnHucvsxuTyj3Vt8
+         kPnT5hjYkl532a8x4f+SKBWcYw34Ti69DQjeXEQVt9o4tl0blJkbtdNhWbSpt648pp
+         f+/bXqcjTIaAbglGqipkl0T2zTVQn/oQMUhrNq7mCKC9Le2LTLr/zpRYQeCa0jlCez
+         2DHt//gGvJG6I3KIhnfJa71sChCKQqpJ/Gpygp7mAAhIbP2inNjiYYrs0n5gJ5sHiN
+         GDRjfOC/pXeBNa4On/spX44wG0cQGAn+dInBA1vL3SXIlsfz+sTXaklNjQCoVtKeaB
+         wJVAh+3gGxtWw==
 Received: (from tipbot@localhost)
-        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x7CCq46H911600;
-        Mon, 12 Aug 2019 05:52:04 -0700
-Date:   Mon, 12 Aug 2019 05:52:04 -0700
+        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x7CCt2kw912553;
+        Mon, 12 Aug 2019 05:55:02 -0700
+Date:   Mon, 12 Aug 2019 05:55:02 -0700
 X-Authentication-Warning: terminus.zytor.com: tipbot set sender to tipbot@zytor.com using -f
-From:   tip-bot for Phil Auld <tipbot@zytor.com>
-Message-ID: <tip-a46d14eca7b75fffe35603aa8b81df654353d80f@git.kernel.org>
-Cc:     pauld@redhat.com, tglx@linutronix.de, mingo@redhat.com,
-        peterz@infradead.org, vincent.guittot@linaro.org, mingo@kernel.org,
-        linux-kernel@vger.kernel.org, hpa@zytor.com
-Reply-To: peterz@infradead.org, mingo@redhat.com, tglx@linutronix.de,
-          pauld@redhat.com, hpa@zytor.com, linux-kernel@vger.kernel.org,
-          mingo@kernel.org, vincent.guittot@linaro.org
-In-Reply-To: <20190801133749.11033-1-pauld@redhat.com>
-References: <20190801133749.11033-1-pauld@redhat.com>
+From:   tip-bot for Fenghua Yu <tipbot@zytor.com>
+Message-ID: <tip-e7409258845a0f64967f8377e99294d438137537@git.kernel.org>
+Cc:     linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@kernel.org,
+        valdis.kletnieks@vt.edu, hpa@zytor.com, fenghua.yu@intel.com
+Reply-To: hpa@zytor.com, mingo@kernel.org, fenghua.yu@intel.com,
+          linux-kernel@vger.kernel.org, tglx@linutronix.de,
+          valdis.kletnieks@vt.edu
+In-Reply-To: <1565401237-60936-1-git-send-email-fenghua.yu@intel.com>
+References: <1565401237-60936-1-git-send-email-fenghua.yu@intel.com>
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip:sched/core] sched/fair: Use rq_lock/unlock in
- online_fair_sched_group
-Git-Commit-ID: a46d14eca7b75fffe35603aa8b81df654353d80f
+Subject: [tip:x86/urgent] x86/umwait: Fix error handling in umwait_init()
+Git-Commit-ID: e7409258845a0f64967f8377e99294d438137537
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot.git.kernel.org>
 Robot-Unsubscribe: Contact <mailto:hpa@kernel.org> to get blacklisted from
@@ -63,73 +61,124 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-Commit-ID:  a46d14eca7b75fffe35603aa8b81df654353d80f
-Gitweb:     https://git.kernel.org/tip/a46d14eca7b75fffe35603aa8b81df654353d80f
-Author:     Phil Auld <pauld@redhat.com>
-AuthorDate: Thu, 1 Aug 2019 09:37:49 -0400
+Commit-ID:  e7409258845a0f64967f8377e99294d438137537
+Gitweb:     https://git.kernel.org/tip/e7409258845a0f64967f8377e99294d438137537
+Author:     Fenghua Yu <fenghua.yu@intel.com>
+AuthorDate: Fri, 9 Aug 2019 18:40:37 -0700
 Committer:  Thomas Gleixner <tglx@linutronix.de>
-CommitDate: Mon, 12 Aug 2019 14:45:34 +0200
+CommitDate: Mon, 12 Aug 2019 14:51:13 +0200
 
-sched/fair: Use rq_lock/unlock in online_fair_sched_group
+x86/umwait: Fix error handling in umwait_init()
 
-Enabling WARN_DOUBLE_CLOCK in /sys/kernel/debug/sched_features causes
-warning to fire in update_rq_clock. This seems to be caused by onlining
-a new fair sched group not using the rq lock wrappers.
+Currently, failure of cpuhp_setup_state() is ignored and the syscore ops
+and the control interfaces can still be added even after the failure. But,
+this error handling will cause a few issues:
 
-  [] rq->clock_update_flags & RQCF_UPDATED
-  [] WARNING: CPU: 5 PID: 54385 at kernel/sched/core.c:210 update_rq_clock+0xec/0x150
+1. The CPUs may have different values in the IA32_UMWAIT_CONTROL
+   MSR because there is no way to roll back the control MSR on
+   the CPUs which already set the MSR before the failure.
 
-  [] Call Trace:
-  []  online_fair_sched_group+0x53/0x100
-  []  cpu_cgroup_css_online+0x16/0x20
-  []  online_css+0x1c/0x60
-  []  cgroup_apply_control_enable+0x231/0x3b0
-  []  cgroup_mkdir+0x41b/0x530
-  []  kernfs_iop_mkdir+0x61/0xa0
-  []  vfs_mkdir+0x108/0x1a0
-  []  do_mkdirat+0x77/0xe0
-  []  do_syscall_64+0x55/0x1d0
-  []  entry_SYSCALL_64_after_hwframe+0x44/0xa9
+2. If the sysfs interface is added successfully, there will be a mismatch
+   between the global control value and the control MSR:
+   - The interface shows the default global control value. But,
+     the control MSR is not set to the value because the CPU online
+     function, which is supposed to set the MSR to the value,
+     is not installed.
+   - If the sysadmin changes the global control value through
+     the interface, the control MSR on all current online CPUs is
+     set to the new value. But, the control MSR on newly onlined CPUs
+     after the value change will not be set to the new value due to
+     lack of the CPU online function.
 
-Using the wrappers in online_fair_sched_group instead of the raw locking
-removes this warning.
+3. On resume from suspend/hibernation, the boot CPU restores the control
+   MSR to the global control value through the syscore ops. But, the
+   control MSR on all APs is not set due to lake of the CPU online
+   function.
 
-[ tglx: Use rq_*lock_irq() ]
+To solve the issues and enforce consistent behavior on the failure
+of the CPU hotplug setup, make the following changes:
 
-Signed-off-by: Phil Auld <pauld@redhat.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+1. Cache the original control MSR value which is configured by
+   hardware or BIOS before kernel boot. This value is likely to
+   be 0. But it could be a different number as well. Cache the
+   control MSR only once before the MSR is changed.
+2. Add the CPU offline function so that the MSR is restored to the
+   original control value on all CPUs on the failure.
+3. On the failure, exit from cpumait_init() so that the syscore ops
+   and the control interfaces are not added.
+
+Reported-by: Valdis Kletnieks <valdis.kletnieks@vt.edu>
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Fenghua Yu <fenghua.yu@intel.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Vincent Guittot <vincent.guittot@linaro.org>
-Cc: Ingo Molnar <mingo@kernel.org>
-Link: https://lkml.kernel.org/r/20190801133749.11033-1-pauld@redhat.com
----
- kernel/sched/fair.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Link: https://lkml.kernel.org/r/1565401237-60936-1-git-send-email-fenghua.yu@intel.com
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 19c58599e967..1054d2cf6aaa 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -10281,18 +10281,18 @@ err:
- void online_fair_sched_group(struct task_group *tg)
- {
- 	struct sched_entity *se;
-+	struct rq_flags rf;
- 	struct rq *rq;
- 	int i;
+---
+ arch/x86/kernel/cpu/umwait.c | 39 ++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 38 insertions(+), 1 deletion(-)
+
+diff --git a/arch/x86/kernel/cpu/umwait.c b/arch/x86/kernel/cpu/umwait.c
+index 6a204e7336c1..32b4dc9030aa 100644
+--- a/arch/x86/kernel/cpu/umwait.c
++++ b/arch/x86/kernel/cpu/umwait.c
+@@ -17,6 +17,12 @@
+  */
+ static u32 umwait_control_cached = UMWAIT_CTRL_VAL(100000, UMWAIT_C02_ENABLE);
  
- 	for_each_possible_cpu(i) {
- 		rq = cpu_rq(i);
- 		se = tg->se[i];
--
--		raw_spin_lock_irq(&rq->lock);
-+		rq_lock_irq(rq, &rf);
- 		update_rq_clock(rq);
- 		attach_entity_cfs_rq(se);
- 		sync_throttle(tg, i);
--		raw_spin_unlock_irq(&rq->lock);
-+		rq_unlock_irq(rq, &rf);
- 	}
++/*
++ * Cache the original IA32_UMWAIT_CONTROL MSR value which is configured by
++ * hardware or BIOS before kernel boot.
++ */
++static u32 orig_umwait_control_cached __ro_after_init;
++
+ /*
+  * Serialize access to umwait_control_cached and IA32_UMWAIT_CONTROL MSR in
+  * the sysfs write functions.
+@@ -52,6 +58,23 @@ static int umwait_cpu_online(unsigned int cpu)
+ 	return 0;
  }
+ 
++/*
++ * The CPU hotplug callback sets the control MSR to the original control
++ * value.
++ */
++static int umwait_cpu_offline(unsigned int cpu)
++{
++	/*
++	 * This code is protected by the CPU hotplug already and
++	 * orig_umwait_control_cached is never changed after it caches
++	 * the original control MSR value in umwait_init(). So there
++	 * is no race condition here.
++	 */
++	wrmsr(MSR_IA32_UMWAIT_CONTROL, orig_umwait_control_cached, 0);
++
++	return 0;
++}
++
+ /*
+  * On resume, restore IA32_UMWAIT_CONTROL MSR on the boot processor which
+  * is the only active CPU at this time. The MSR is set up on the APs via the
+@@ -185,8 +208,22 @@ static int __init umwait_init(void)
+ 	if (!boot_cpu_has(X86_FEATURE_WAITPKG))
+ 		return -ENODEV;
+ 
++	/*
++	 * Cache the original control MSR value before the control MSR is
++	 * changed. This is the only place where orig_umwait_control_cached
++	 * is modified.
++	 */
++	rdmsrl(MSR_IA32_UMWAIT_CONTROL, orig_umwait_control_cached);
++
+ 	ret = cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "umwait:online",
+-				umwait_cpu_online, NULL);
++				umwait_cpu_online, umwait_cpu_offline);
++	if (ret < 0) {
++		/*
++		 * On failure, the control MSR on all CPUs has the
++		 * original control value.
++		 */
++		return ret;
++	}
+ 
+ 	register_syscore_ops(&umwait_syscore_ops);
  
