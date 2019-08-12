@@ -2,48 +2,45 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DAF1189EFB
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 12 Aug 2019 14:58:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98E9C8A3F0
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 12 Aug 2019 19:04:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726603AbfHLM6M (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 12 Aug 2019 08:58:12 -0400
-Received: from terminus.zytor.com ([198.137.202.136]:42157 "EHLO
+        id S1726457AbfHLREZ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 12 Aug 2019 13:04:25 -0400
+Received: from terminus.zytor.com ([198.137.202.136]:44155 "EHLO
         terminus.zytor.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726219AbfHLM6M (ORCPT
+        with ESMTP id S1726334AbfHLREZ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 12 Aug 2019 08:58:12 -0400
+        Mon, 12 Aug 2019 13:04:25 -0400
 Received: from terminus.zytor.com (localhost [127.0.0.1])
-        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x7CCw4rY913410
+        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x7CH4CDf993686
         (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-        Mon, 12 Aug 2019 05:58:04 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x7CCw4rY913410
+        Mon, 12 Aug 2019 10:04:12 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x7CH4CDf993686
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-        s=2019071901; t=1565614684;
-        bh=/vWIPuqqcmV4ncD4F+mnVPU92vCEwG4t02RLeeViSfU=;
-        h=Date:From:Cc:Reply-To:In-Reply-To:References:To:Subject:From;
-        b=qvbz5QY8ds08x0AekT7VQjP7fQrSICH4nQzgvjeFR1+mShT0Mi4K9M+X4SJ7Ks+Bb
-         wBeBEuqbBaM+fMUjncxZZdLm9bFLM3du3zbhqnKMoKCux7gDSAimiryqwuSXyswajT
-         aQAZyDGSkY5dLto+/t7G6apbDyzakb8Cg/5ibzFoU6B7C+tvEMMLvheilpElwf95Za
-         cvK24cwmfi4YhJOKB6x0N5ygY+lTPeWiix07JNg6uJiAHCSQoQsiUPs6dAGEg//WYZ
-         0Vrqigo9xocKAPL+T65ZhYEnRQuILUF/P84Z/BsZdZZpF4+ALaBLGoYQXK1Mc0uZDg
-         KM7aZTW+A06jQ==
+        s=2019071901; t=1565629452;
+        bh=qiqqkqRa9CnfcEbv8qVEU22fBAfhw9pXw+CwU1hjMS8=;
+        h=Date:From:Cc:Reply-To:To:Subject:From;
+        b=1mm+7FsMussrdL9jXtlUwzcpf8ME6FiHPmWJZgwqDl0f6OPHQV8hAqXqmxT229uoX
+         DYg0zjAdM6gHRP4c/wdLrc9SYLv8mGQ3fSjYHfRca8Ajy83Do0jDVZrjJPj4dqZ+ut
+         nYeNw5ipT2XlHPdQrvn0YpEJeUiXy3SFujRGVGXvpstXcKZk9k1XhG5rm3jiGkwrTY
+         zX5iGgYCZYScXsXMvc+CNScs6AytBncuNFhoKXrif2Epjc0yuMzfgHetpEJLMFpA1J
+         EHAayQUuJhH5wvBzTrlpBrPnC0QHLYRqtmnJjKHNm0EULeSJkOBWOTfVTVsJDVVaen
+         NNBBKTNKfPDyg==
 Received: (from tipbot@localhost)
-        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x7CCw4MN913407;
-        Mon, 12 Aug 2019 05:58:04 -0700
-Date:   Mon, 12 Aug 2019 05:58:04 -0700
+        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x7CH4CbJ993683;
+        Mon, 12 Aug 2019 10:04:12 -0700
+Date:   Mon, 12 Aug 2019 10:04:12 -0700
 X-Authentication-Warning: terminus.zytor.com: tipbot set sender to tipbot@zytor.com using -f
-From:   tip-bot for Vlastimil Babka <tipbot@zytor.com>
-Message-ID: <tip-2e1da13fba4cb529c2c8c1d9f657690d1e853d7d@git.kernel.org>
-Cc:     vbabka@suse.cz, tglx@linutronix.de, linux-kernel@vger.kernel.org,
-        mingo@kernel.org, hpa@zytor.com
-Reply-To: vbabka@suse.cz, tglx@linutronix.de, mingo@kernel.org,
-          linux-kernel@vger.kernel.org, hpa@zytor.com
-In-Reply-To: <20190807130258.22185-1-vbabka@suse.cz>
-References: <20190807130258.22185-1-vbabka@suse.cz>
+From:   tip-bot for Ard Biesheuvel <tipbot@zytor.com>
+Message-ID: <tip-e55f31a599478fb06a5a5d95e019e963322535cb@git.kernel.org>
+Cc:     hpa@zytor.com, tglx@linutronix.de, ard.biesheuvel@linaro.org,
+        mingo@kernel.org
+Reply-To: linux-kernel@vger.kernel.org, hpa@zytor.com, tglx@linutronix.de,
+          ard.biesheuvel@linaro.org, mingo@kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip:x86/mm] x86/kconfig: Remove X86_DIRECT_GBPAGES dependency on
- !DEBUG_PAGEALLOC
-Git-Commit-ID: 2e1da13fba4cb529c2c8c1d9f657690d1e853d7d
+Subject: [tip:efi/core] efi: x86: move efi_is_table_address() into arch/x86
+Git-Commit-ID: e55f31a599478fb06a5a5d95e019e963322535cb
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot.git.kernel.org>
 Robot-Unsubscribe: Contact <mailto:hpa@kernel.org> to get blacklisted from
@@ -61,39 +58,184 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-Commit-ID:  2e1da13fba4cb529c2c8c1d9f657690d1e853d7d
-Gitweb:     https://git.kernel.org/tip/2e1da13fba4cb529c2c8c1d9f657690d1e853d7d
-Author:     Vlastimil Babka <vbabka@suse.cz>
-AuthorDate: Wed, 7 Aug 2019 15:02:58 +0200
-Committer:  Thomas Gleixner <tglx@linutronix.de>
-CommitDate: Mon, 12 Aug 2019 14:52:30 +0200
+Commit-ID:  e55f31a599478fb06a5a5d95e019e963322535cb
+Gitweb:     https://git.kernel.org/tip/e55f31a599478fb06a5a5d95e019e963322535cb
+Author:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
+AuthorDate: Tue, 25 Jun 2019 15:36:45 +0200
+Committer:  Ard Biesheuvel <ard.biesheuvel@linaro.org>
+CommitDate: Thu, 8 Aug 2019 11:01:48 +0300
 
-x86/kconfig: Remove X86_DIRECT_GBPAGES dependency on !DEBUG_PAGEALLOC
+efi: x86: move efi_is_table_address() into arch/x86
 
-These days CONFIG_DEBUG_PAGEALLOC just compiles in the code that has to be
-enabled on boot time, or with an extra config option, and only then are the
-large page based direct mappings disabled.
+The function efi_is_table_address() and the associated array of table
+pointers is specific to x86. Since we will be adding some more x86
+specific tables, let's move this code out of the generic code first.
 
-Therefore remove the config dependency, allowing 1GB direct mappings with
-debug_pagealloc compiled in but not enabled.
-
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20190807130258.22185-1-vbabka@suse.cz
+Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
 ---
- arch/x86/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/include/asm/efi.h  |  5 +++++
+ arch/x86/mm/ioremap.c       |  1 +
+ arch/x86/platform/efi/efi.c | 33 +++++++++++++++++++++++++++++++++
+ drivers/firmware/efi/efi.c  | 33 ---------------------------------
+ include/linux/efi.h         |  7 -------
+ 5 files changed, 39 insertions(+), 40 deletions(-)
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 222855cc0158..58eae28c3dd6 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -1503,7 +1503,7 @@ config X86_5LEVEL
+diff --git a/arch/x86/include/asm/efi.h b/arch/x86/include/asm/efi.h
+index 606a4b6a9812..43a82e59c59d 100644
+--- a/arch/x86/include/asm/efi.h
++++ b/arch/x86/include/asm/efi.h
+@@ -242,6 +242,7 @@ static inline bool efi_is_64bit(void)
+ 		__efi_early()->runtime_services), __VA_ARGS__)
  
- config X86_DIRECT_GBPAGES
- 	def_bool y
--	depends on X86_64 && !DEBUG_PAGEALLOC
-+	depends on X86_64
- 	---help---
- 	  Certain kernel features effectively disable kernel
- 	  linear 1 GB mappings (even if the CPU otherwise
+ extern bool efi_reboot_required(void);
++extern bool efi_is_table_address(unsigned long phys_addr);
+ 
+ #else
+ static inline void parse_efi_setup(u64 phys_addr, u32 data_len) {}
+@@ -249,6 +250,10 @@ static inline bool efi_reboot_required(void)
+ {
+ 	return false;
+ }
++static inline  bool efi_is_table_address(unsigned long phys_addr)
++{
++	return false;
++}
+ #endif /* CONFIG_EFI */
+ 
+ #endif /* _ASM_X86_EFI_H */
+diff --git a/arch/x86/mm/ioremap.c b/arch/x86/mm/ioremap.c
+index 63e99f15d7cf..a39dcdb5ae34 100644
+--- a/arch/x86/mm/ioremap.c
++++ b/arch/x86/mm/ioremap.c
+@@ -19,6 +19,7 @@
+ 
+ #include <asm/set_memory.h>
+ #include <asm/e820/api.h>
++#include <asm/efi.h>
+ #include <asm/fixmap.h>
+ #include <asm/pgtable.h>
+ #include <asm/tlbflush.h>
+diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
+index a7189a3b4d70..8d9be97a5607 100644
+--- a/arch/x86/platform/efi/efi.c
++++ b/arch/x86/platform/efi/efi.c
+@@ -64,6 +64,25 @@ static efi_config_table_type_t arch_tables[] __initdata = {
+ 	{NULL_GUID, NULL, NULL},
+ };
+ 
++static const unsigned long * const efi_tables[] = {
++	&efi.mps,
++	&efi.acpi,
++	&efi.acpi20,
++	&efi.smbios,
++	&efi.smbios3,
++	&efi.sal_systab,
++	&efi.boot_info,
++	&efi.hcdp,
++	&efi.uga,
++	&efi.uv_systab,
++	&efi.fw_vendor,
++	&efi.runtime,
++	&efi.config_table,
++	&efi.esrt,
++	&efi.properties_table,
++	&efi.mem_attr_table,
++};
++
+ u64 efi_setup;		/* efi setup_data physical address */
+ 
+ static int add_efi_memmap __initdata;
+@@ -1049,3 +1068,17 @@ static int __init arch_parse_efi_cmdline(char *str)
+ 	return 0;
+ }
+ early_param("efi", arch_parse_efi_cmdline);
++
++bool efi_is_table_address(unsigned long phys_addr)
++{
++	unsigned int i;
++
++	if (phys_addr == EFI_INVALID_TABLE_ADDR)
++		return false;
++
++	for (i = 0; i < ARRAY_SIZE(efi_tables); i++)
++		if (*(efi_tables[i]) == phys_addr)
++			return true;
++
++	return false;
++}
+diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+index ad3b1f4866b3..cbdbdbc8f9eb 100644
+--- a/drivers/firmware/efi/efi.c
++++ b/drivers/firmware/efi/efi.c
+@@ -57,25 +57,6 @@ struct efi __read_mostly efi = {
+ };
+ EXPORT_SYMBOL(efi);
+ 
+-static unsigned long *efi_tables[] = {
+-	&efi.mps,
+-	&efi.acpi,
+-	&efi.acpi20,
+-	&efi.smbios,
+-	&efi.smbios3,
+-	&efi.sal_systab,
+-	&efi.boot_info,
+-	&efi.hcdp,
+-	&efi.uga,
+-	&efi.uv_systab,
+-	&efi.fw_vendor,
+-	&efi.runtime,
+-	&efi.config_table,
+-	&efi.esrt,
+-	&efi.properties_table,
+-	&efi.mem_attr_table,
+-};
+-
+ struct mm_struct efi_mm = {
+ 	.mm_rb			= RB_ROOT,
+ 	.mm_users		= ATOMIC_INIT(2),
+@@ -964,20 +945,6 @@ int efi_status_to_err(efi_status_t status)
+ 	return err;
+ }
+ 
+-bool efi_is_table_address(unsigned long phys_addr)
+-{
+-	unsigned int i;
+-
+-	if (phys_addr == EFI_INVALID_TABLE_ADDR)
+-		return false;
+-
+-	for (i = 0; i < ARRAY_SIZE(efi_tables); i++)
+-		if (*(efi_tables[i]) == phys_addr)
+-			return true;
+-
+-	return false;
+-}
+-
+ static DEFINE_SPINLOCK(efi_mem_reserve_persistent_lock);
+ static struct linux_efi_memreserve *efi_memreserve_root __ro_after_init;
+ 
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index f87fabea4a85..60a6242765d8 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -1211,8 +1211,6 @@ static inline bool efi_enabled(int feature)
+ 	return test_bit(feature, &efi.flags) != 0;
+ }
+ extern void efi_reboot(enum reboot_mode reboot_mode, const char *__unused);
+-
+-extern bool efi_is_table_address(unsigned long phys_addr);
+ #else
+ static inline bool efi_enabled(int feature)
+ {
+@@ -1226,11 +1224,6 @@ efi_capsule_pending(int *reset_type)
+ {
+ 	return false;
+ }
+-
+-static inline bool efi_is_table_address(unsigned long phys_addr)
+-{
+-	return false;
+-}
+ #endif
+ 
+ extern int efi_status_to_err(efi_status_t status);
