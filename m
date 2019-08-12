@@ -2,48 +2,48 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3548F8A581
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 12 Aug 2019 20:19:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB9148A66C
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 12 Aug 2019 20:40:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726236AbfHLSTQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 12 Aug 2019 14:19:16 -0400
-Received: from terminus.zytor.com ([198.137.202.136]:42959 "EHLO
+        id S1726721AbfHLSkM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 12 Aug 2019 14:40:12 -0400
+Received: from terminus.zytor.com ([198.137.202.136]:39333 "EHLO
         terminus.zytor.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726185AbfHLSTQ (ORCPT
+        with ESMTP id S1726463AbfHLSkM (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 12 Aug 2019 14:19:16 -0400
+        Mon, 12 Aug 2019 14:40:12 -0400
 Received: from terminus.zytor.com (localhost [127.0.0.1])
-        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x7CIJ44S1015897
+        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x7CIe4mL1022863
         (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-        Mon, 12 Aug 2019 11:19:04 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x7CIJ44S1015897
+        Mon, 12 Aug 2019 11:40:04 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x7CIe4mL1022863
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-        s=2019071901; t=1565633945;
-        bh=efP7XqhGzykMkOAX6h2fCl47Xp9KPIgLDTW9CGFRZYc=;
+        s=2019071901; t=1565635204;
+        bh=VVkFdFVroGhyDmjRnt7VReyMUDVmBw2IDP2RscEgPX4=;
         h=Date:From:Cc:Reply-To:In-Reply-To:References:To:Subject:From;
-        b=mfq2CS4ZoONKBOZA1/s+mb4POda0y/f5aeh4LcndUVzwTkXfb+JnKdNM9A1qeOUeh
-         yJ837ckqZs6VH+zo17DXA2TUNgIBpsY7CV4RTPjbgSmyQ3rLynTnvP/oW8mESMqAbO
-         2RZN3dBr+H2noepQ15gxJlaK/n8hDbSgKBbrMtshjPDw7itueNmXwvWpYq8UiJ8lOI
-         N5poWFPpz51zQxhm5IYdJcOfNElrsaYGMkYkEmHA4Tak5B2eSB/uAMq2D+N5whU60i
-         OWGZkDQMqESEDmvCl7SA08E+s2yPxqJclPo8a2Pf3st9STIaOuN4XO9nI1j/aB1liy
-         Ej5s1fg0Oj+Ow==
+        b=w5anBHodtsn7EumhnQjtsZ4bEfoZwttNwSnsOC1z3UM6TIrxJzd7hO2TxRw75DfLe
+         V97UKhKDTrDM1HdfM+vnLAws2Ht9C1AtFVEeesb6RERHUvFBI9XdXTELgpTBGqe+DS
+         NeaUV0A+fcND2hk29Ewjas42ysBiniumFYs5F1RqDYfXBvXvp7VKvOpn/DKFK79NLs
+         iSyExCsbobq8D0tRt5cz6+rXS4WWwDKyuQDXfMGl5nm7F7wuEjN8Dtd7LkHCbhorGA
+         oeAdTkA3IHgtL8CGUE8Ti/+5nsCOuOCu2Wh+7M6kq1PmSTStneIh9dakts1xPsrrE9
+         5DTvYRNwznoeQ==
 Received: (from tipbot@localhost)
-        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x7CIJ4m61015894;
-        Mon, 12 Aug 2019 11:19:04 -0700
-Date:   Mon, 12 Aug 2019 11:19:04 -0700
+        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x7CIe40I1022859;
+        Mon, 12 Aug 2019 11:40:04 -0700
+Date:   Mon, 12 Aug 2019 11:40:04 -0700
 X-Authentication-Warning: terminus.zytor.com: tipbot set sender to tipbot@zytor.com using -f
-From:   tip-bot for Rikard Falkeborn <tipbot@zytor.com>
-Message-ID: <tip-f6fabe25f01cb09db51644780193f5ea6c44e04e@git.kernel.org>
-Cc:     mingo@kernel.org, rikard.falkeborn@gmail.com, tglx@linutronix.de,
-        linux-kernel@vger.kernel.org, keescook@chromium.org, hpa@zytor.com
-Reply-To: rikard.falkeborn@gmail.com, hpa@zytor.com,
-          linux-kernel@vger.kernel.org, tglx@linutronix.de,
-          keescook@chromium.org, mingo@kernel.org
-In-Reply-To: <20190811184938.1796-2-rikard.falkeborn@gmail.com>
-References: <20190811184938.1796-2-rikard.falkeborn@gmail.com>
+From:   tip-bot for Borislav Petkov <tipbot@zytor.com>
+Message-ID: <tip-5785675dfef4f9edcee66edef7b3af21618d2707@git.kernel.org>
+Cc:     bp@suse.de, hpa@zytor.com, tglx@linutronix.de, mingo@kernel.org,
+        linux-kernel@vger.kernel.org
+Reply-To: linux-kernel@vger.kernel.org, mingo@kernel.org,
+          tglx@linutronix.de, hpa@zytor.com, bp@suse.de
+In-Reply-To: <20190811154036.29805-1-bp@alien8.de>
+References: <20190811154036.29805-1-bp@alien8.de>
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip:x86/boot] x86/boot: Use common BUILD_BUG_ON
-Git-Commit-ID: f6fabe25f01cb09db51644780193f5ea6c44e04e
+Subject: [tip:x86/urgent] x86/apic/32: Fix yet another implicit fallthrough
+ warning
+Git-Commit-ID: 5785675dfef4f9edcee66edef7b3af21618d2707
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot.git.kernel.org>
 Robot-Unsubscribe: Contact <mailto:hpa@kernel.org> to get blacklisted from
@@ -52,80 +52,55 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset=UTF-8
 Content-Disposition: inline
-X-Spam-Status: No, score=1.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        DATE_IN_FUTURE_96_Q,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        FREEMAIL_FORGED_REPLYTO autolearn=no autolearn_force=no version=3.4.2
-X-Spam-Level: *
+X-Spam-Status: No, score=-0.2 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        DATE_IN_FUTURE_96_Q,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF
+        autolearn=no autolearn_force=no version=3.4.2
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on terminus.zytor.com
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-Commit-ID:  f6fabe25f01cb09db51644780193f5ea6c44e04e
-Gitweb:     https://git.kernel.org/tip/f6fabe25f01cb09db51644780193f5ea6c44e04e
-Author:     Rikard Falkeborn <rikard.falkeborn@gmail.com>
-AuthorDate: Sun, 11 Aug 2019 20:49:36 +0200
+Commit-ID:  5785675dfef4f9edcee66edef7b3af21618d2707
+Gitweb:     https://git.kernel.org/tip/5785675dfef4f9edcee66edef7b3af21618d2707
+Author:     Borislav Petkov <bp@suse.de>
+AuthorDate: Sun, 11 Aug 2019 17:40:36 +0200
 Committer:  Thomas Gleixner <tglx@linutronix.de>
-CommitDate: Mon, 12 Aug 2019 20:13:56 +0200
+CommitDate: Mon, 12 Aug 2019 20:35:04 +0200
 
-x86/boot: Use common BUILD_BUG_ON
+x86/apic/32: Fix yet another implicit fallthrough warning
 
-Defining BUILD_BUG_ON causes redefinition warnings when adding includes of
-include/linux/build_bug.h in files unrelated to x86/boot.  For example,
-adding an include of build_bug.h to include/linux/bits.h shows the
-following warnings:
+Fix
 
-  CC      arch/x86/boot/cpucheck.o
-  In file included from ./include/linux/bits.h:22,
-                   from ./arch/x86/include/asm/msr-index.h:5,
-                   from arch/x86/boot/cpucheck.c:28:
-  ./include/linux/build_bug.h:49: warning: "BUILD_BUG_ON" redefined
-     49 | #define BUILD_BUG_ON(condition) \
-        |
-  In file included from arch/x86/boot/cpucheck.c:22:
-  arch/x86/boot/boot.h:31: note: this is the location of the previous definition
-     31 | #define BUILD_BUG_ON(condition) ((void)sizeof(char[1 - 2*!!(condition)]))
-        |
+  arch/x86/kernel/apic/probe_32.c: In function ‘default_setup_apic_routing’:
+  arch/x86/kernel/apic/probe_32.c:146:7: warning: this statement may fall through [-Wimplicit-fallthrough=]
+      if (!APIC_XAPIC(version)) {
+         ^
+  arch/x86/kernel/apic/probe_32.c:151:3: note: here
+   case X86_VENDOR_HYGON:
+   ^~~~
 
-The macro was added to boot.h in commit 62bd0337d0c4 ("Top header file for
-new x86 setup code"). At that time, BUILD_BUG_ON was defined in
-kernel.h. Presumably BUILD_BUG_ON was redefined to avoid pulling in
-kernel.h. Since then, BUILD_BUG_ON and similar macros have been split to a
-separate header file.
+for 32-bit builds.
 
-Signed-off-by: Rikard Falkeborn <rikard.falkeborn@gmail.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Link: https://lkml.kernel.org/r/20190811184938.1796-2-rikard.falkeborn@gmail.com
+Link: https://lkml.kernel.org/r/20190811154036.29805-1-bp@alien8.de
 
 ---
- arch/x86/boot/boot.h | 2 --
- arch/x86/boot/main.c | 1 +
- 2 files changed, 1 insertion(+), 2 deletions(-)
+ arch/x86/kernel/apic/probe_32.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/boot/boot.h b/arch/x86/boot/boot.h
-index 19eca14b49a0..ca866f1cca2e 100644
---- a/arch/x86/boot/boot.h
-+++ b/arch/x86/boot/boot.h
-@@ -28,8 +28,6 @@
- #include "cpuflags.h"
- 
- /* Useful macros */
--#define BUILD_BUG_ON(condition) ((void)sizeof(char[1 - 2*!!(condition)]))
--
- #define ARRAY_SIZE(x) (sizeof(x) / sizeof(*(x)))
- 
- extern struct setup_header hdr;
-diff --git a/arch/x86/boot/main.c b/arch/x86/boot/main.c
-index 996df3d586f0..e3add857c2c9 100644
---- a/arch/x86/boot/main.c
-+++ b/arch/x86/boot/main.c
-@@ -10,6 +10,7 @@
- /*
-  * Main module for the real-mode kernel code
-  */
-+#include <linux/build_bug.h>
- 
- #include "boot.h"
- #include "string.h"
+diff --git a/arch/x86/kernel/apic/probe_32.c b/arch/x86/kernel/apic/probe_32.c
+index 1492799b8f43..ee2d91e382f1 100644
+--- a/arch/x86/kernel/apic/probe_32.c
++++ b/arch/x86/kernel/apic/probe_32.c
+@@ -184,7 +184,8 @@ void __init default_setup_apic_routing(void)
+ 				def_to_bigsmp = 0;
+ 				break;
+ 			}
+-			/* If P4 and above fall through */
++			/* P4 and above */
++			/* fall through */
+ 		case X86_VENDOR_HYGON:
+ 		case X86_VENDOR_AMD:
+ 			def_to_bigsmp = 1;
