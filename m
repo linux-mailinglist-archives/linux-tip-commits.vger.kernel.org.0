@@ -2,46 +2,48 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BAAB08A402
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 12 Aug 2019 19:07:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3548F8A581
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 12 Aug 2019 20:19:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726506AbfHLRHe (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 12 Aug 2019 13:07:34 -0400
-Received: from terminus.zytor.com ([198.137.202.136]:50197 "EHLO
+        id S1726236AbfHLSTQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 12 Aug 2019 14:19:16 -0400
+Received: from terminus.zytor.com ([198.137.202.136]:42959 "EHLO
         terminus.zytor.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726463AbfHLRHd (ORCPT
+        with ESMTP id S1726185AbfHLSTQ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 12 Aug 2019 13:07:33 -0400
+        Mon, 12 Aug 2019 14:19:16 -0400
 Received: from terminus.zytor.com (localhost [127.0.0.1])
-        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x7CH7E4G994216
+        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x7CIJ44S1015897
         (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-        Mon, 12 Aug 2019 10:07:14 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x7CH7E4G994216
+        Mon, 12 Aug 2019 11:19:04 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x7CIJ44S1015897
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-        s=2019071901; t=1565629635;
-        bh=I890kUx1pDO0HdPKM65T9tG+ZWIkp3p7pWJoeNUpqTM=;
-        h=Date:From:Cc:Reply-To:To:Subject:From;
-        b=5FmKoNkEgvPG01wXLpHusOZYtltVTuIyUfSrmBiAyNJHS7uLhBt7K4b4NOd8cPJr9
-         o0wg/TWqAYmqyJnlKjqi0LxMTOrk+8am9R0zLeidYRC0yqfqd1+wbNFAvSt2EGMXN1
-         73eRszWiZcwe9clgO5PzgUobZh4X4XVJXDbun551nV0nJGtpHYlKblcqbV3DQDkBGz
-         Rfvdw3rw/mUbicexOmGNLEm0VKlnuhwbvNHDoGeXY6t3xSNKfNniHxP2RahfnQSF/v
-         OWYQEMxgXcCJhJo+YMZpJKx1t0CC7Lp/aHCGVnyE6h90HJYO6VyGhc0761ZuF0V5Gf
-         NUvdIVStaOMDg==
+        s=2019071901; t=1565633945;
+        bh=efP7XqhGzykMkOAX6h2fCl47Xp9KPIgLDTW9CGFRZYc=;
+        h=Date:From:Cc:Reply-To:In-Reply-To:References:To:Subject:From;
+        b=mfq2CS4ZoONKBOZA1/s+mb4POda0y/f5aeh4LcndUVzwTkXfb+JnKdNM9A1qeOUeh
+         yJ837ckqZs6VH+zo17DXA2TUNgIBpsY7CV4RTPjbgSmyQ3rLynTnvP/oW8mESMqAbO
+         2RZN3dBr+H2noepQ15gxJlaK/n8hDbSgKBbrMtshjPDw7itueNmXwvWpYq8UiJ8lOI
+         N5poWFPpz51zQxhm5IYdJcOfNElrsaYGMkYkEmHA4Tak5B2eSB/uAMq2D+N5whU60i
+         OWGZkDQMqESEDmvCl7SA08E+s2yPxqJclPo8a2Pf3st9STIaOuN4XO9nI1j/aB1liy
+         Ej5s1fg0Oj+Ow==
 Received: (from tipbot@localhost)
-        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x7CH7DBG994213;
-        Mon, 12 Aug 2019 10:07:13 -0700
-Date:   Mon, 12 Aug 2019 10:07:13 -0700
+        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x7CIJ4m61015894;
+        Mon, 12 Aug 2019 11:19:04 -0700
+Date:   Mon, 12 Aug 2019 11:19:04 -0700
 X-Authentication-Warning: terminus.zytor.com: tipbot set sender to tipbot@zytor.com using -f
-From:   tip-bot for Xiaofei Tan <tipbot@zytor.com>
-Message-ID: <tip-b194a77fcc4001dc40aecdd15d249648e8a436d1@git.kernel.org>
-Cc:     james.morse@arm.com, mingo@kernel.org, ard.biesheuvel@linaro.org,
-        tglx@linutronix.de, hpa@zytor.com, tanxiaofei@huawei.com
-Reply-To: james.morse@arm.com, tanxiaofei@huawei.com, mingo@kernel.org,
-          ard.biesheuvel@linaro.org, tglx@linutronix.de, hpa@zytor.com,
-          linux-kernel@vger.kernel.org
+From:   tip-bot for Rikard Falkeborn <tipbot@zytor.com>
+Message-ID: <tip-f6fabe25f01cb09db51644780193f5ea6c44e04e@git.kernel.org>
+Cc:     mingo@kernel.org, rikard.falkeborn@gmail.com, tglx@linutronix.de,
+        linux-kernel@vger.kernel.org, keescook@chromium.org, hpa@zytor.com
+Reply-To: rikard.falkeborn@gmail.com, hpa@zytor.com,
+          linux-kernel@vger.kernel.org, tglx@linutronix.de,
+          keescook@chromium.org, mingo@kernel.org
+In-Reply-To: <20190811184938.1796-2-rikard.falkeborn@gmail.com>
+References: <20190811184938.1796-2-rikard.falkeborn@gmail.com>
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip:efi/core] efi: cper: print AER info of PCIe fatal error
-Git-Commit-ID: b194a77fcc4001dc40aecdd15d249648e8a436d1
+Subject: [tip:x86/boot] x86/boot: Use common BUILD_BUG_ON
+Git-Commit-ID: f6fabe25f01cb09db51644780193f5ea6c44e04e
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot.git.kernel.org>
 Robot-Unsubscribe: Contact <mailto:hpa@kernel.org> to get blacklisted from
@@ -50,97 +52,80 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset=UTF-8
 Content-Disposition: inline
-X-Spam-Status: No, score=-0.2 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        DATE_IN_FUTURE_96_Q,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF
-        autolearn=no autolearn_force=no version=3.4.2
+X-Spam-Status: No, score=1.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        DATE_IN_FUTURE_96_Q,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        FREEMAIL_FORGED_REPLYTO autolearn=no autolearn_force=no version=3.4.2
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on terminus.zytor.com
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-Commit-ID:  b194a77fcc4001dc40aecdd15d249648e8a436d1
-Gitweb:     https://git.kernel.org/tip/b194a77fcc4001dc40aecdd15d249648e8a436d1
-Author:     Xiaofei Tan <tanxiaofei@huawei.com>
-AuthorDate: Fri, 26 Jul 2019 09:43:37 +0800
-Committer:  Ard Biesheuvel <ard.biesheuvel@linaro.org>
-CommitDate: Mon, 12 Aug 2019 12:06:23 +0300
+Commit-ID:  f6fabe25f01cb09db51644780193f5ea6c44e04e
+Gitweb:     https://git.kernel.org/tip/f6fabe25f01cb09db51644780193f5ea6c44e04e
+Author:     Rikard Falkeborn <rikard.falkeborn@gmail.com>
+AuthorDate: Sun, 11 Aug 2019 20:49:36 +0200
+Committer:  Thomas Gleixner <tglx@linutronix.de>
+CommitDate: Mon, 12 Aug 2019 20:13:56 +0200
 
-efi: cper: print AER info of PCIe fatal error
+x86/boot: Use common BUILD_BUG_ON
 
-AER info of PCIe fatal error is not printed in the current driver.
-Because APEI driver will panic directly for fatal error, and can't
-run to the place of printing AER info.
+Defining BUILD_BUG_ON causes redefinition warnings when adding includes of
+include/linux/build_bug.h in files unrelated to x86/boot.  For example,
+adding an include of build_bug.h to include/linux/bits.h shows the
+following warnings:
 
-An example log is as following:
-{763}[Hardware Error]: Hardware error from APEI Generic Hardware Error Source: 11
-{763}[Hardware Error]: event severity: fatal
-{763}[Hardware Error]:  Error 0, type: fatal
-{763}[Hardware Error]:   section_type: PCIe error
-{763}[Hardware Error]:   port_type: 0, PCIe end point
-{763}[Hardware Error]:   version: 4.0
-{763}[Hardware Error]:   command: 0x0000, status: 0x0010
-{763}[Hardware Error]:   device_id: 0000:82:00.0
-{763}[Hardware Error]:   slot: 0
-{763}[Hardware Error]:   secondary_bus: 0x00
-{763}[Hardware Error]:   vendor_id: 0x8086, device_id: 0x10fb
-{763}[Hardware Error]:   class_code: 000002
-Kernel panic - not syncing: Fatal hardware error!
+  CC      arch/x86/boot/cpucheck.o
+  In file included from ./include/linux/bits.h:22,
+                   from ./arch/x86/include/asm/msr-index.h:5,
+                   from arch/x86/boot/cpucheck.c:28:
+  ./include/linux/build_bug.h:49: warning: "BUILD_BUG_ON" redefined
+     49 | #define BUILD_BUG_ON(condition) \
+        |
+  In file included from arch/x86/boot/cpucheck.c:22:
+  arch/x86/boot/boot.h:31: note: this is the location of the previous definition
+     31 | #define BUILD_BUG_ON(condition) ((void)sizeof(char[1 - 2*!!(condition)]))
+        |
 
-This issue was imported by the patch, '37448adfc7ce ("aerdrv: Move
-cper_print_aer() call out of interrupt context")'. To fix this issue,
-this patch adds print of AER info in cper_print_pcie() for fatal error.
+The macro was added to boot.h in commit 62bd0337d0c4 ("Top header file for
+new x86 setup code"). At that time, BUILD_BUG_ON was defined in
+kernel.h. Presumably BUILD_BUG_ON was redefined to avoid pulling in
+kernel.h. Since then, BUILD_BUG_ON and similar macros have been split to a
+separate header file.
 
-Here is the example log after this patch applied:
-{24}[Hardware Error]: Hardware error from APEI Generic Hardware Error Source: 10
-{24}[Hardware Error]: event severity: fatal
-{24}[Hardware Error]:  Error 0, type: fatal
-{24}[Hardware Error]:   section_type: PCIe error
-{24}[Hardware Error]:   port_type: 0, PCIe end point
-{24}[Hardware Error]:   version: 4.0
-{24}[Hardware Error]:   command: 0x0546, status: 0x4010
-{24}[Hardware Error]:   device_id: 0000:01:00.0
-{24}[Hardware Error]:   slot: 0
-{24}[Hardware Error]:   secondary_bus: 0x00
-{24}[Hardware Error]:   vendor_id: 0x15b3, device_id: 0x1019
-{24}[Hardware Error]:   class_code: 000002
-{24}[Hardware Error]:   aer_uncor_status: 0x00040000, aer_uncor_mask: 0x00000000
-{24}[Hardware Error]:   aer_uncor_severity: 0x00062010
-{24}[Hardware Error]:   TLP Header: 000000c0 01010000 00000001 00000000
-Kernel panic - not syncing: Fatal hardware error!
+Signed-off-by: Rikard Falkeborn <rikard.falkeborn@gmail.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Link: https://lkml.kernel.org/r/20190811184938.1796-2-rikard.falkeborn@gmail.com
 
-Fixes: 37448adfc7ce ("aerdrv: Move cper_print_aer() call out of interrupt context")
-Signed-off-by: Xiaofei Tan <tanxiaofei@huawei.com>
-Reviewed-by: James Morse <james.morse@arm.com>
-[ardb: put parens around terms of && operator]
-Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
 ---
- drivers/firmware/efi/cper.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ arch/x86/boot/boot.h | 2 --
+ arch/x86/boot/main.c | 1 +
+ 2 files changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/firmware/efi/cper.c b/drivers/firmware/efi/cper.c
-index 8fa977c7861f..addf0749dd8b 100644
---- a/drivers/firmware/efi/cper.c
-+++ b/drivers/firmware/efi/cper.c
-@@ -390,6 +390,21 @@ static void cper_print_pcie(const char *pfx, const struct cper_sec_pcie *pcie,
- 		printk(
- 	"%s""bridge: secondary_status: 0x%04x, control: 0x%04x\n",
- 	pfx, pcie->bridge.secondary_status, pcie->bridge.control);
-+
-+	/* Fatal errors call __ghes_panic() before AER handler prints this */
-+	if ((pcie->validation_bits & CPER_PCIE_VALID_AER_INFO) &&
-+	    (gdata->error_severity & CPER_SEV_FATAL)) {
-+		struct aer_capability_regs *aer;
-+
-+		aer = (struct aer_capability_regs *)pcie->aer_info;
-+		printk("%saer_uncor_status: 0x%08x, aer_uncor_mask: 0x%08x\n",
-+		       pfx, aer->uncor_status, aer->uncor_mask);
-+		printk("%saer_uncor_severity: 0x%08x\n",
-+		       pfx, aer->uncor_severity);
-+		printk("%sTLP Header: %08x %08x %08x %08x\n", pfx,
-+		       aer->header_log.dw0, aer->header_log.dw1,
-+		       aer->header_log.dw2, aer->header_log.dw3);
-+	}
- }
+diff --git a/arch/x86/boot/boot.h b/arch/x86/boot/boot.h
+index 19eca14b49a0..ca866f1cca2e 100644
+--- a/arch/x86/boot/boot.h
++++ b/arch/x86/boot/boot.h
+@@ -28,8 +28,6 @@
+ #include "cpuflags.h"
  
- static void cper_print_tstamp(const char *pfx,
+ /* Useful macros */
+-#define BUILD_BUG_ON(condition) ((void)sizeof(char[1 - 2*!!(condition)]))
+-
+ #define ARRAY_SIZE(x) (sizeof(x) / sizeof(*(x)))
+ 
+ extern struct setup_header hdr;
+diff --git a/arch/x86/boot/main.c b/arch/x86/boot/main.c
+index 996df3d586f0..e3add857c2c9 100644
+--- a/arch/x86/boot/main.c
++++ b/arch/x86/boot/main.c
+@@ -10,6 +10,7 @@
+ /*
+  * Main module for the real-mode kernel code
+  */
++#include <linux/build_bug.h>
+ 
+ #include "boot.h"
+ #include "string.h"
