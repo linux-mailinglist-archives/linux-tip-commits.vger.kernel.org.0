@@ -2,50 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E8ED8E5E2
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 15 Aug 2019 10:01:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D5DA8E7EB
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 15 Aug 2019 11:16:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730456AbfHOIBj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 15 Aug 2019 04:01:39 -0400
-Received: from terminus.zytor.com ([198.137.202.136]:43945 "EHLO
+        id S1730609AbfHOJQw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 15 Aug 2019 05:16:52 -0400
+Received: from terminus.zytor.com ([198.137.202.136]:36681 "EHLO
         terminus.zytor.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725961AbfHOIBi (ORCPT
+        with ESMTP id S1730389AbfHOJQw (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 15 Aug 2019 04:01:38 -0400
+        Thu, 15 Aug 2019 05:16:52 -0400
 Received: from terminus.zytor.com (localhost [127.0.0.1])
-        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x7F81Is92231846
+        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x7F9GMYr2270342
         (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-        Thu, 15 Aug 2019 01:01:19 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x7F81Is92231846
+        Thu, 15 Aug 2019 02:16:22 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x7F9GMYr2270342
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-        s=2019071901; t=1565856079;
-        bh=Qo5hIdjqn2mP1l8MTFhwo6997MzZjr+UXx68NuqDI3I=;
+        s=2019071901; t=1565860583;
+        bh=qgQwcS9vqN6A1JMDyfTrlZSBFQeKPquDL/x8bhkf67s=;
         h=Date:From:Cc:Reply-To:In-Reply-To:References:To:Subject:From;
-        b=Uq3nJ8rDBT5fF3t1qxO+P2qzU4QVVrly0+KP5AvfPTqOpZpU+YtCjWCTVz09uZLwO
-         Qov2HRgFqZaQ9r7eMPa6ZXOeoWEzJzRAtY/47mA8ynfuupG06JJ40qrVuH90Sodh2x
-         cXmS2akvLjPdB7Y2SxXG8N9E/J3UosIJuz/h2jpxrxyk1w05AMGtO/FNNy1x6p+eJk
-         B/+s4EJlU0UMc/2M1HsMgw0B2tak6FxVjgDqQAe1vncL/ApetVUXseKN3DkVKVObqY
-         BgbAo60zdaT2Ne64r2maQZonnToCIn9qGL44vpK1btWKUySq9yBDnu5RA7ksIfMCvg
-         O5FZV7FOWBbpQ==
+        b=DAp0EWbGpB/Koi3PHlsDFJRtbPI22EluaRHClvqENR93qzBBldXchQi1tZWgtVvWT
+         RmPSQTHju5eJ37s4FG5QGCDHUnOkkajq6miB9hnBxr7MWhTzWfVlN86WNZB8ZtNO5K
+         JdOnmoORxGT7IoHVtJxpYQWv4oWVxHpTdakJ67xssoIQGTNFapbS/tRwPrNb6BEqkc
+         hxo4vWG5z8Lc+US7m3X8hF/2MjhvSZjsKxG6gKWRQOfngVR7pWRUONPdPOipEk55HM
+         yb7WlsiaERb5FagGvpCDJkiK9wakrZpTCeMTI7LSvNA9BOzzU/M78nwdGMeob+eniH
+         Nqgzj5SojhROw==
 Received: (from tipbot@localhost)
-        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x7F81IMd2231843;
-        Thu, 15 Aug 2019 01:01:18 -0700
-Date:   Thu, 15 Aug 2019 01:01:18 -0700
+        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x7F9GLYb2270335;
+        Thu, 15 Aug 2019 02:16:21 -0700
+Date:   Thu, 15 Aug 2019 02:16:21 -0700
 X-Authentication-Warning: terminus.zytor.com: tipbot set sender to tipbot@zytor.com using -f
-From:   tip-bot for Tony Luck <tipbot@zytor.com>
-Message-ID: <tip-5ed1c835ed8b522ce25071cc2d56a9a09bd5b59e@git.kernel.org>
-Cc:     dave.hansen@intel.com, mingo@kernel.org, tglx@linutronix.de,
-        tony.luck@intel.com, hpa@zytor.com, linux-kernel@vger.kernel.org,
-        x86@kernel.org, bp@suse.de
-Reply-To: linux-kernel@vger.kernel.org, bp@suse.de, x86@kernel.org,
-          mingo@kernel.org, tglx@linutronix.de, tony.luck@intel.com,
-          dave.hansen@intel.com, hpa@zytor.com
-In-Reply-To: <20190814234030.30817-1-tony.luck@intel.com>
-References: <20190814234030.30817-1-tony.luck@intel.com>
+From:   tip-bot for Arnaldo Carvalho de Melo <tipbot@zytor.com>
+Message-ID: <tip-57fc032ad643ffd018d66bd4c1bd3a91de4841e8@git.kernel.org>
+Cc:     linux-kernel@vger.kernel.org, acme@redhat.com, hpa@zytor.com,
+        namhyung@kernel.org, mingo@kernel.org, jolsa@kernel.org,
+        vincent.weaver@maine.edu, tglx@linutronix.de, peterz@infradead.org,
+        alexander.shishkin@linux.intel.com
+Reply-To: namhyung@kernel.org, hpa@zytor.com, mingo@kernel.org,
+          tglx@linutronix.de, jolsa@kernel.org, vincent.weaver@maine.edu,
+          peterz@infradead.org, alexander.shishkin@linux.intel.com,
+          linux-kernel@vger.kernel.org, acme@redhat.com
+In-Reply-To: <20190726211415.GE24867@kernel.org>
+References: <20190726211415.GE24867@kernel.org>
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip:x86/urgent] MAINTAINERS, x86/CPU: Tony Luck will maintain
- asm/intel-family.h
-Git-Commit-ID: 5ed1c835ed8b522ce25071cc2d56a9a09bd5b59e
+Subject: [tip:perf/core] perf session: Avoid infinite loop when seeing
+ invalid header.size
+Git-Commit-ID: 57fc032ad643ffd018d66bd4c1bd3a91de4841e8
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot.git.kernel.org>
 Robot-Unsubscribe: Contact <mailto:hpa@kernel.org> to get blacklisted from
@@ -63,48 +65,73 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-Commit-ID:  5ed1c835ed8b522ce25071cc2d56a9a09bd5b59e
-Gitweb:     https://git.kernel.org/tip/5ed1c835ed8b522ce25071cc2d56a9a09bd5b59e
-Author:     Tony Luck <tony.luck@intel.com>
-AuthorDate: Wed, 14 Aug 2019 16:40:30 -0700
-Committer:  Borislav Petkov <bp@suse.de>
-CommitDate: Thu, 15 Aug 2019 09:54:05 +0200
+Commit-ID:  57fc032ad643ffd018d66bd4c1bd3a91de4841e8
+Gitweb:     https://git.kernel.org/tip/57fc032ad643ffd018d66bd4c1bd3a91de4841e8
+Author:     Arnaldo Carvalho de Melo <acme@redhat.com>
+AuthorDate: Tue, 30 Jul 2019 10:58:41 -0300
+Committer:  Arnaldo Carvalho de Melo <acme@redhat.com>
+CommitDate: Mon, 12 Aug 2019 16:26:02 -0300
 
-MAINTAINERS, x86/CPU: Tony Luck will maintain asm/intel-family.h
+perf session: Avoid infinite loop when seeing invalid header.size
 
-There are a few different subsystems in the kernel that depend on model
-specific behaviour (perf, EDAC, power, ...). Easier for just one person
-to have the task to get new model numbers included instead of having
-these groups trip over each other to do it.
+Vince reported that when fuzzing the userland perf tool with a bogus
+perf.data file he got into a infinite loop in 'perf report'.
 
- [ bp: s/Cpu/CPU/ and add x86@kernel.org so that it gets CCed too as
-   FYI. ]
+Changing the return of fetch_mmaped_event() to ERR_PTR(-EINVAL) for that
+case gets us out of that infinite loop.
 
-Signed-off-by: Tony Luck <tony.luck@intel.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Acked-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: Dave Hansen <dave.hansen@intel.com>
-Cc: x86-ml <x86@kernel.org>
-Link: https://lkml.kernel.org/r/20190814234030.30817-1-tony.luck@intel.com
+Reported-by: Vince Weaver <vincent.weaver@maine.edu>
+Tested-by: Vince Weaver <vincent.weaver@maine.edu>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20190726211415.GE24867@kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- MAINTAINERS | 7 +++++++
- 1 file changed, 7 insertions(+)
+ tools/perf/util/session.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index e81e60bd7c26..f3a78403b47f 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -8064,6 +8064,13 @@ T:	git git://git.code.sf.net/p/intel-sas/isci
- S:	Supported
- F:	drivers/scsi/isci/
+diff --git a/tools/perf/util/session.c b/tools/perf/util/session.c
+index 11e6093c941b..b9fe71d11bf6 100644
+--- a/tools/perf/util/session.c
++++ b/tools/perf/util/session.c
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0
+ #include <errno.h>
+ #include <inttypes.h>
++#include <linux/err.h>
+ #include <linux/kernel.h>
+ #include <linux/zalloc.h>
+ #include <traceevent/event-parse.h>
+@@ -1955,7 +1956,9 @@ fetch_mmaped_event(struct perf_session *session,
+ 		/* We're not fetching the event so swap back again */
+ 		if (session->header.needs_swap)
+ 			perf_event_header__bswap(&event->header);
+-		return NULL;
++		pr_debug("%s: head=%#" PRIx64 " event->header_size=%#x, mmap_size=%#zx: fuzzed perf.data?\n",
++			 __func__, head, event->header.size, mmap_size);
++		return ERR_PTR(-EINVAL);
+ 	}
  
-+INTEL CPU family model numbers
-+M:	Tony Luck <tony.luck@intel.com>
-+M:	x86@kernel.org
-+L:	linux-kernel@vger.kernel.org
-+S:	Supported
-+F:	arch/x86/include/asm/intel-family.h
+ 	return event;
+@@ -1973,6 +1976,9 @@ static int __perf_session__process_decomp_events(struct perf_session *session)
+ 	while (decomp->head < decomp->size && !session_done()) {
+ 		union perf_event *event = fetch_mmaped_event(session, decomp->head, decomp->size, decomp->data);
+ 
++		if (IS_ERR(event))
++			return PTR_ERR(event);
 +
- INTEL DRM DRIVERS (excluding Poulsbo, Moorestown and derivative chipsets)
- M:	Jani Nikula <jani.nikula@linux.intel.com>
- M:	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+ 		if (!event)
+ 			break;
+ 
+@@ -2072,6 +2078,9 @@ remap:
+ 
+ more:
+ 	event = fetch_mmaped_event(session, head, mmap_size, buf);
++	if (IS_ERR(event))
++		return PTR_ERR(event);
++
+ 	if (!event) {
+ 		if (mmaps[map_idx]) {
+ 			munmap(mmaps[map_idx], mmap_size);
