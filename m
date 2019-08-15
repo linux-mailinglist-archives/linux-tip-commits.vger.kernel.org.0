@@ -2,47 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 25E688E81B
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 15 Aug 2019 11:24:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FA3B8E821
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 15 Aug 2019 11:25:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731298AbfHOJYD (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 15 Aug 2019 05:24:03 -0400
-Received: from terminus.zytor.com ([198.137.202.136]:43967 "EHLO
+        id S1731333AbfHOJZN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 15 Aug 2019 05:25:13 -0400
+Received: from terminus.zytor.com ([198.137.202.136]:34801 "EHLO
         terminus.zytor.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730204AbfHOJYD (ORCPT
+        with ESMTP id S1731007AbfHOJZN (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 15 Aug 2019 05:24:03 -0400
+        Thu, 15 Aug 2019 05:25:13 -0400
 Received: from terminus.zytor.com (localhost [127.0.0.1])
-        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x7F9NsGB2271489
+        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x7F9OgrZ2273378
         (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-        Thu, 15 Aug 2019 02:23:54 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x7F9NsGB2271489
+        Thu, 15 Aug 2019 02:24:42 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x7F9OgrZ2273378
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-        s=2019071901; t=1565861035;
-        bh=BynCa3z1+v/j//96nM7bV8u8d5IsTxtgLkQ+UAbH9Hw=;
-        h=Date:From:Cc:Reply-To:To:Subject:From;
-        b=dACcdR7oKiMW0i9oUn33yGzbokttS7g/ysoaYv6L9GtGq623ImKS6twNX35R2HBF4
-         QEDm3rPghGIqC5t5/VibGNNLTtKlllo4uTftOV4r9N/x8kIrDQUwTBw8qvXD7RvDVr
-         Zw8PJLN7II1ubdqZzsbkzU3/gB7C+LgdFZB1aJh30Nnt1kgYghjjPzWmIzxrX2EhAM
-         cXfdbujbv19OG9PK8ETIJk+W9eo8u3ZWJR8Inb5o5PpI6MbUDpM5Ajovow/EbpLoiP
-         D/Pf1pBDvP7hsZgdSD7HimSnLgatEl8sPw8s1rzO4GCGZmsV1KcatxqvI0FAo/mnZP
-         KS4X3eUAhJjkw==
+        s=2019071901; t=1565861083;
+        bh=O3R7u84xVzFZVaiTftKDe3Pi7Etc7l4VbOZN8IAgmHI=;
+        h=Date:From:Cc:Reply-To:In-Reply-To:References:To:Subject:From;
+        b=IlzVwDhYF/etgBd78ObNWS3eGeChnwEKIgcU8reZRlWQGgLyinCuIlhMsvB0dwv2p
+         QJ7yEJNDyATXcF7St/kf9Xb2ynQ+1u4iLuiRA9eYaeJK+ssSsBzzQJVrwDlLiiwd2/
+         u1dP28HPCw8CDVQjUP1ItK7tRTjTyrntmUkzZQlDCXbzfkej3/EdYJdZKIgToN3FJQ
+         7wuUW8IwOSSHEXHv1239eEjr6mX/KybFIfWhHUHoshAdbXS99GPnQikwxVyKGRQjhm
+         FtFQ4tgvCf9OY7tLh4/wqiWI0zNIDBgU9vn9Pic7SFLvI/8tcRBnsHSq20FJ/Wwubl
+         f532i1rmihW2A==
 Received: (from tipbot@localhost)
-        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x7F9NrOs2271486;
-        Thu, 15 Aug 2019 02:23:53 -0700
-Date:   Thu, 15 Aug 2019 02:23:53 -0700
+        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x7F9Oe472273368;
+        Thu, 15 Aug 2019 02:24:40 -0700
+Date:   Thu, 15 Aug 2019 02:24:40 -0700
 X-Authentication-Warning: terminus.zytor.com: tipbot set sender to tipbot@zytor.com using -f
-From:   tip-bot for Arnaldo Carvalho de Melo <tipbot@zytor.com>
-Message-ID: <tip-uw8cjeifxvjpkjp6x2iil0ar@git.kernel.org>
-Cc:     namhyung@kernel.org, jolsa@kernel.org,
-        linux-kernel@vger.kernel.org, mingo@kernel.org, hpa@zytor.com,
-        tglx@linutronix.de, adrian.hunter@intel.com, acme@redhat.com
-Reply-To: acme@redhat.com, adrian.hunter@intel.com, mingo@kernel.org,
-          linux-kernel@vger.kernel.org, jolsa@kernel.org, hpa@zytor.com,
-          tglx@linutronix.de, namhyung@kernel.org
+From:   tip-bot for Igor Lubashev <tipbot@zytor.com>
+Message-ID: <tip-74d5f3d06f707eb5f7e1908ad88954bde02000ce@git.kernel.org>
+Cc:     ilubashe@akamai.com, mathieu.poirier@linaro.org,
+        tglx@linutronix.de, suzuki.poulose@arm.com, peterz@infradead.org,
+        mingo@kernel.org, alexey.budankov@linux.intel.com,
+        alexander.shishkin@linux.intel.com, linux-kernel@vger.kernel.org,
+        hpa@zytor.com, jolsa@kernel.org, namhyung@kernel.org,
+        jmorris@namei.org, acme@redhat.com
+Reply-To: alexey.budankov@linux.intel.com,
+          alexander.shishkin@linux.intel.com, mingo@kernel.org,
+          acme@redhat.com, linux-kernel@vger.kernel.org, jolsa@kernel.org,
+          hpa@zytor.com, namhyung@kernel.org, jmorris@namei.org,
+          tglx@linutronix.de, ilubashe@akamai.com,
+          mathieu.poirier@linaro.org, suzuki.poulose@arm.com,
+          peterz@infradead.org
+In-Reply-To: <8a1e76cf5c7c9796d0d4d240fbaa85305298aafa.1565188228.git.ilubashe@akamai.com>
+References: <8a1e76cf5c7c9796d0d4d240fbaa85305298aafa.1565188228.git.ilubashe@akamai.com>
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip:perf/core] perf top: Collapse and resort all evsels in a group
-Git-Commit-ID: 40d81772dac45643cecc7add0e95356072265754
+Subject: [tip:perf/core] tools build: Add capability-related feature
+ detection
+Git-Commit-ID: 74d5f3d06f707eb5f7e1908ad88954bde02000ce
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot.git.kernel.org>
 Robot-Unsubscribe: Contact <mailto:hpa@kernel.org> to get blacklisted from
@@ -60,128 +70,193 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-Commit-ID:  40d81772dac45643cecc7add0e95356072265754
-Gitweb:     https://git.kernel.org/tip/40d81772dac45643cecc7add0e95356072265754
-Author:     Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate: Fri, 9 Aug 2019 16:44:34 -0300
+Commit-ID:  74d5f3d06f707eb5f7e1908ad88954bde02000ce
+Gitweb:     https://git.kernel.org/tip/74d5f3d06f707eb5f7e1908ad88954bde02000ce
+Author:     Igor Lubashev <ilubashe@akamai.com>
+AuthorDate: Wed, 7 Aug 2019 10:44:14 -0400
 Committer:  Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitDate: Mon, 12 Aug 2019 16:26:02 -0300
+CommitDate: Mon, 12 Aug 2019 17:14:14 -0300
 
-perf top: Collapse and resort all evsels in a group
+tools build: Add capability-related feature detection
 
-And link them, i.e. find the hist entries in the non-leader events and
-link them to the ones in the leader.
+Add utilities to help checking capabilities of the running procss.  Make
+perf link with libcap, if it is available. If no libcap-dev[el], assume
+no capabilities.
 
-This should be the same thing already done for the 'perf report' case,
-but now we do it periodically.
+Committer testing:
 
-With this in place we get percentages in from the second overhead column
-on, not just on the first (the leader).
+  $ make O=/tmp/build/perf -C tools/perf install-bin
+  make: Entering directory '/home/acme/git/perf/tools/perf'
+    BUILD:   Doing 'make -j8' parallel build
 
-Try it using:
+  Auto-detecting system features:
+  <SNIP>
+  ...                        libbfd: [ on  ]
+  ...                        libcap: [ OFF ]
+  ...                        libelf: [ on  ]
+  <SNIP>
+  Makefile.config:833: No libcap found, disables capability support, please install libcap-devel/libcap-dev
+  <SNIP>
+  $ grep libcap /tmp/build/perf/FEATURE-DUMP
+  feature-libcap=0
+  $ cat /tmp/build/perf/feature/test-libcap.make.output
+  test-libcap.c:2:10: fatal error: sys/capability.h: No such file or directory
+      2 | #include <sys/capability.h>
+        |          ^~~~~~~~~~~~~~~~~~
+  compilation terminated.
+  $
 
-  perf top --stdio -e '{cycles,instructions}'
+Now install libcap-devel and try again:
 
-You should see something like:
+  $ make O=/tmp/build/perf -C tools/perf install-bin
+  make: Entering directory '/home/acme/git/perf/tools/perf'
+    BUILD:   Doing 'make -j8' parallel build
+  Warning: Kernel ABI header at 'tools/include/linux/bits.h' differs from latest version at 'include/linux/bits.h'
+  diff -u tools/include/linux/bits.h include/linux/bits.h
+  Warning: Kernel ABI header at 'tools/arch/x86/include/asm/cpufeatures.h' differs from latest version at 'arch/x86/include/asm/cpufeatures.h'
+  diff -u tools/arch/x86/include/asm/cpufeatures.h arch/x86/include/asm/cpufeatures.h
 
-   PerfTop:   20776 irqs/sec  kernel:68.7%  exact:  0.0% lost: 0/0 drop: 0/0 [cycles],  (all, 8 CPUs)
-  ---------------------------------------------------------------------------------------------------
+  Auto-detecting system features:
+  <SNIP>
+  ...                        libbfd: [ on  ]
+  ...                        libcap: [ on  ]
+  ...                        libelf: [ on  ]
+  <SNIP>>
+    CC       /tmp/build/perf/jvmti/libjvmti.o
+  <SNIP>>
+  $ grep libcap /tmp/build/perf/FEATURE-DUMP
+  feature-libcap=1
+  $ cat /tmp/build/perf/feature/test-libcap.make.output
+  $ ldd /tmp/build/perf/feature/test-libcap.make.bin
+  ldd: /tmp/build/perf/feature/test-libcap.make.bin: No such file or directory
+  $ ldd /tmp/build/perf/feature/test-libcap.bin
+  	linux-vdso.so.1 (0x00007ffc35bfe000)
+  	libcap.so.2 => /lib64/libcap.so.2 (0x00007ff9c62ff000)
+  	libc.so.6 => /lib64/libc.so.6 (0x00007ff9c6139000)
+  	/lib64/ld-linux-x86-64.so.2 (0x00007ff9c6326000)
+  $
 
-     4.44%   0.44%  [kernel]                 [k] do_syscall_64
-     2.27%   0.17%  [kernel]                 [k] entry_SYSCALL_64
-     1.73%   0.27%  [kernel]                 [k] syscall_return_via_sysret
-     1.60%   0.91%  [kernel]                 [k] _raw_spin_lock_irqsave
-     1.45%   3.53%  libglib-2.0.so.0.6000.4  [.] g_string_insert_unichar
-     1.39%   0.21%  [kernel]                 [k] copy_user_enhanced_fast_string
-     1.26%   1.15%  [kernel]                 [k] psi_task_change
-     1.16%   0.14%  libpixman-1.so.0.38.0    [.] 0x000000000006f403
-     1.00%   0.32%  [kernel]                 [k] __sched_text_start
-     0.97%   2.11%  [kernel]                 [k] n_tty_write
-     0.96%   0.04%  [kernel]                 [k] queued_spin_lock_slowpath
-     0.93%   0.88%  [kernel]                 [k] menu_select
-     0.87%   0.14%  [kernel]                 [k] try_to_wake_up
-     0.77%   0.10%  libpixman-1.so.0.38.0    [.] 0x000000000006f40b
-     0.73%   0.09%  libpixman-1.so.0.38.0    [.] 0x000000000006f413
-     0.69%   0.48%  libc-2.29.so             [.] __memmove_avx_unaligned_erms
-     0.68%   0.29%  [kernel]                 [k] _raw_spin_lock_irq
-     0.61%   0.04%  libpixman-1.so.0.38.0    [.] 0x000000000006f423
-     0.60%   0.37%  [kernel]                 [k] native_sched_clock
-     0.57%   0.23%  [kernel]                 [k] do_idle
-     0.57%   0.23%  [kernel]                 [k] __fget
-     0.56%   0.30%  [kernel]                 [k] __switch_to_asm
-     0.56%   0.00%  libc-2.29.so             [.] __memset_avx2_erms
-     0.52%   0.32%  [kernel]                 [k] _raw_spin_lock
-     0.49%   0.24%  [kernel]                 [k] n_tty_poll
-     0.49%   0.54%  libglib-2.0.so.0.6000.4  [.] g_mutex_lock
-     0.48%   0.62%  [kernel]                 [k] _raw_spin_unlock_irqrestore
-     0.47%   0.27%  [kernel]                 [k] __switch_to
-     0.47%   0.25%  [kernel]                 [k] pick_next_task_fair
-     0.45%   0.17%  [kernel]                 [k] filldir64
-     0.40%   0.16%  [kernel]                 [k] update_rq_clock
-     0.39%   0.19%  [kernel]                 [k] enqueue_task_fair
-  #
-
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
+Signed-off-by: Igor Lubashev <ilubashe@akamai.com>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Alexey Budankov <alexey.budankov@linux.intel.com>
+Cc: James Morris <jmorris@namei.org>
+Cc: Mathieu Poirier <mathieu.poirier@linaro.org>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lkml.kernel.org/n/tip-uw8cjeifxvjpkjp6x2iil0ar@git.kernel.org
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Suzuki Poulouse <suzuki.poulose@arm.com>
+[ split from a larger patch ]
+Link: http://lkml.kernel.org/r/8a1e76cf5c7c9796d0d4d240fbaa85305298aafa.1565188228.git.ilubashe@akamai.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/builtin-top.c | 30 ++++++++++++++++++++++++++----
- 1 file changed, 26 insertions(+), 4 deletions(-)
+ tools/build/Makefile.feature      |  2 ++
+ tools/build/feature/Makefile      |  4 ++++
+ tools/build/feature/test-libcap.c | 20 ++++++++++++++++++++
+ tools/perf/Makefile.config        | 11 +++++++++++
+ tools/perf/Makefile.perf          |  2 ++
+ 5 files changed, 39 insertions(+)
 
-diff --git a/tools/perf/builtin-top.c b/tools/perf/builtin-top.c
-index 94e34853a238..78e7efc597a6 100644
---- a/tools/perf/builtin-top.c
-+++ b/tools/perf/builtin-top.c
-@@ -264,6 +264,30 @@ out_unlock:
- 	pthread_mutex_unlock(&notes->lock);
- }
+diff --git a/tools/build/Makefile.feature b/tools/build/Makefile.feature
+index 86b793dffbc4..8a19753cc26a 100644
+--- a/tools/build/Makefile.feature
++++ b/tools/build/Makefile.feature
+@@ -42,6 +42,7 @@ FEATURE_TESTS_BASIC :=                  \
+         gtk2-infobar                    \
+         libaudit                        \
+         libbfd                          \
++        libcap                          \
+         libelf                          \
+         libelf-getphdrnum               \
+         libelf-gelf_getnote             \
+@@ -110,6 +111,7 @@ FEATURE_DISPLAY ?=              \
+          gtk2                   \
+          libaudit               \
+          libbfd                 \
++         libcap                 \
+          libelf                 \
+          libnuma                \
+          numa_num_possible_cpus \
+diff --git a/tools/build/feature/Makefile b/tools/build/feature/Makefile
+index 0658b8cd0e53..8499385365c0 100644
+--- a/tools/build/feature/Makefile
++++ b/tools/build/feature/Makefile
+@@ -20,6 +20,7 @@ FILES=                                          \
+          test-libbfd-liberty.bin                \
+          test-libbfd-liberty-z.bin              \
+          test-cplus-demangle.bin                \
++         test-libcap.bin			\
+          test-libelf.bin                        \
+          test-libelf-getphdrnum.bin             \
+          test-libelf-gelf_getnote.bin           \
+@@ -105,6 +106,9 @@ $(OUTPUT)test-fortify-source.bin:
+ $(OUTPUT)test-bionic.bin:
+ 	$(BUILD)
  
-+static void evlist__resort_hists(struct evlist *evlist)
++$(OUTPUT)test-libcap.bin:
++	$(BUILD) -lcap
++
+ $(OUTPUT)test-libelf.bin:
+ 	$(BUILD) -lelf
+ 
+diff --git a/tools/build/feature/test-libcap.c b/tools/build/feature/test-libcap.c
+new file mode 100644
+index 000000000000..d2a2e152195f
+--- /dev/null
++++ b/tools/build/feature/test-libcap.c
+@@ -0,0 +1,20 @@
++// SPDX-License-Identifier: GPL-2.0
++#include <sys/capability.h>
++#include <linux/capability.h>
++
++int main(void)
 +{
-+	struct evsel *pos;
++	cap_flag_value_t val;
++	cap_t caps = cap_get_proc();
 +
-+	evlist__for_each_entry(evlist, pos) {
-+		struct hists *hists = evsel__hists(pos);
++	if (!caps)
++		return 1;
 +
-+		hists__collapse_resort(hists, NULL);
++	if (cap_get_flag(caps, CAP_SYS_ADMIN, CAP_EFFECTIVE, &val) != 0)
++		return 1;
 +
-+		/* Non-group events are considered as leader */
-+		if (symbol_conf.event_group &&
-+		    !perf_evsel__is_group_leader(pos)) {
-+			struct hists *leader_hists = evsel__hists(pos->leader);
++	if (cap_free(caps) != 0)
++		return 1;
 +
-+			hists__match(leader_hists, hists);
-+			hists__link(leader_hists, hists);
-+		}
-+	}
-+
-+	evlist__for_each_entry(evlist, pos) {
-+		perf_evsel__output_resort(pos, NULL);
-+	}
++	return 0;
 +}
+diff --git a/tools/perf/Makefile.config b/tools/perf/Makefile.config
+index e4988f49ea79..9a06787fedc6 100644
+--- a/tools/perf/Makefile.config
++++ b/tools/perf/Makefile.config
+@@ -824,6 +824,17 @@ ifndef NO_LIBZSTD
+   endif
+ endif
+ 
++ifndef NO_LIBCAP
++  ifeq ($(feature-libcap), 1)
++    CFLAGS += -DHAVE_LIBCAP_SUPPORT
++    EXTLIBS += -lcap
++    $(call detected,CONFIG_LIBCAP)
++  else
++    msg := $(warning No libcap found, disables capability support, please install libcap-devel/libcap-dev);
++    NO_LIBCAP := 1
++  endif
++endif
 +
- static void perf_top__print_sym_table(struct perf_top *top)
- {
- 	char bf[160];
-@@ -304,8 +328,7 @@ static void perf_top__print_sym_table(struct perf_top *top)
- 		}
- 	}
- 
--	hists__collapse_resort(hists, NULL);
--	perf_evsel__output_resort(evsel, NULL);
-+	evlist__resort_hists(top->evlist);
- 
- 	hists__output_recalc_col_len(hists, top->print_entries - printed);
- 	putchar('\n');
-@@ -570,8 +593,7 @@ static void perf_top__sort_new_samples(void *arg)
- 		}
- 	}
- 
--	hists__collapse_resort(hists, NULL);
--	perf_evsel__output_resort(evsel, NULL);
-+	evlist__resort_hists(t->evlist);
- 
- 	if (t->lost || t->drop)
- 		pr_warning("Too slow to read ring buffer (change period (-c/-F) or limit CPUs (-C)\n");
+ ifndef NO_BACKTRACE
+   ifeq ($(feature-backtrace), 1)
+     CFLAGS += -DHAVE_BACKTRACE_SUPPORT
+diff --git a/tools/perf/Makefile.perf b/tools/perf/Makefile.perf
+index 67512a12276b..f9807d8c005b 100644
+--- a/tools/perf/Makefile.perf
++++ b/tools/perf/Makefile.perf
+@@ -88,6 +88,8 @@ include ../scripts/utilities.mak
+ #
+ # Define NO_LIBBPF if you do not want BPF support
+ #
++# Define NO_LIBCAP if you do not want process capabilities considered by perf
++#
+ # Define NO_SDT if you do not want to define SDT event in perf tools,
+ # note that it doesn't disable SDT scanning support.
+ #
