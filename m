@@ -2,52 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E90EC8E84B
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 15 Aug 2019 11:31:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 83E968E851
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 15 Aug 2019 11:32:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730378AbfHOJbp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 15 Aug 2019 05:31:45 -0400
-Received: from terminus.zytor.com ([198.137.202.136]:38427 "EHLO
+        id S1730854AbfHOJcb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 15 Aug 2019 05:32:31 -0400
+Received: from terminus.zytor.com ([198.137.202.136]:59089 "EHLO
         terminus.zytor.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726008AbfHOJbp (ORCPT
+        with ESMTP id S1726008AbfHOJcb (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 15 Aug 2019 05:31:45 -0400
+        Thu, 15 Aug 2019 05:32:31 -0400
 Received: from terminus.zytor.com (localhost [127.0.0.1])
-        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x7F9VWwc2274393
+        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x7F9WI4r2274467
         (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-        Thu, 15 Aug 2019 02:31:33 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x7F9VWwc2274393
+        Thu, 15 Aug 2019 02:32:18 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x7F9WI4r2274467
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-        s=2019071901; t=1565861493;
-        bh=nlS6jRcmhYdusrdJEPi5/I1pR9Nj7ux3gwKkdKr9NnI=;
+        s=2019071901; t=1565861539;
+        bh=0ui+/GgtvsaoRaDR6J8z8f8Sp+PWSa3GGOrhA2FO2SE=;
         h=Date:From:Cc:Reply-To:In-Reply-To:References:To:Subject:From;
-        b=1Yd5y0Xf9KBXHsljILvjUUb73o6LqmTMJzh5YIgWYtHCAICRfei/GLGMpgBEQQ9LP
-         zKwJ9WlBuBZG8b5LamsfpWVZ8vU6HDaVxMraFlJSxLwp6qIbGKQK/Jcfb/68Sg9Ibp
-         eUWt/mQUp90m26kdauAL6oLBOiYUlGJlmzWuLnYjPsHiB9Jy7g2gnBuc5rDihj3fVV
-         MQJv41ILypMN8+ED4kYzvuG3I3OGtpy9QjL9wlG/tybuDGw0Y5ITAH8GDpOT+w3FBo
-         siRBgVoOH3V9I9ua2ald05MrGgTOrU2LnVue4knhP1Bc5WH1UGipUgsRadJNFBECNT
-         KKIhfJOKloZcg==
+        b=2FG8hUe8rgjYkpEdSo6WHuu2rwtkMxLuCNTfSZrg+KsSY1UN9Ze56cmi449rsVieY
+         EhrzIqbNKRT9NIqLUxt7EqZQbC2/f32nTlvYPBq6Gt96+D3cxMTngJPRG5hdBJ/e7U
+         z8jMPfoudRscrUJS+IO6zVRzCeNLETm4Ishac7AycUBjksrjT6x5ZFz4sOTaqvIX3q
+         kbHxFXKmpEqubN2SpLUO4sJNhrX6VM2o5tnA21rCYCYWczK9MGQtwZUKkFTwdTYr4C
+         p9lE4A08bRib0ysFlJhMfUlEZeBHWefhCyF19kzVXn5pb5wEBDd2h1hewivGlFw5eh
+         iF3FT9BJ7Ttxw==
 Received: (from tipbot@localhost)
-        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x7F9VWF22274389;
-        Thu, 15 Aug 2019 02:31:32 -0700
-Date:   Thu, 15 Aug 2019 02:31:32 -0700
+        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x7F9WIrY2274464;
+        Thu, 15 Aug 2019 02:32:18 -0700
+Date:   Thu, 15 Aug 2019 02:32:18 -0700
 X-Authentication-Warning: terminus.zytor.com: tipbot set sender to tipbot@zytor.com using -f
 From:   tip-bot for Adrian Hunter <tipbot@zytor.com>
-Message-ID: <tip-9e64cefe4335b0f2799956d3f3cca8bb652d950f@git.kernel.org>
-Cc:     acme@redhat.com, jolsa@kernel.org, kan.liang@linux.intel.com,
-        tglx@linutronix.de, mingo@kernel.org, linux-kernel@vger.kernel.org,
-        alexander.shishkin@linux.intel.com, adrian.hunter@intel.com,
-        peterz@infradead.org, namhyung@kernel.org, hpa@zytor.com
-Reply-To: namhyung@kernel.org, kan.liang@linux.intel.com, jolsa@kernel.org,
-          tglx@linutronix.de, mingo@kernel.org, hpa@zytor.com,
-          linux-kernel@vger.kernel.org, alexander.shishkin@linux.intel.com,
-          acme@redhat.com, peterz@infradead.org, adrian.hunter@intel.com
-In-Reply-To: <20190806084606.4021-6-alexander.shishkin@linux.intel.com>
-References: <20190806084606.4021-6-alexander.shishkin@linux.intel.com>
+Message-ID: <tip-1b9921546a9641aefc4a52c1c635b96b67142993@git.kernel.org>
+Cc:     namhyung@kernel.org, jolsa@kernel.org, mingo@kernel.org,
+        hpa@zytor.com, kan.liang@linux.intel.com, peterz@infradead.org,
+        adrian.hunter@intel.com, tglx@linutronix.de,
+        linux-kernel@vger.kernel.org, alexander.shishkin@linux.intel.com,
+        acme@redhat.com
+Reply-To: alexander.shishkin@linux.intel.com, acme@redhat.com,
+          tglx@linutronix.de, linux-kernel@vger.kernel.org,
+          mingo@kernel.org, kan.liang@linux.intel.com, hpa@zytor.com,
+          adrian.hunter@intel.com, peterz@infradead.org,
+          namhyung@kernel.org, jolsa@kernel.org
+In-Reply-To: <20190806084606.4021-7-alexander.shishkin@linux.intel.com>
+References: <20190806084606.4021-7-alexander.shishkin@linux.intel.com>
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip:perf/core] perf intel-pt: Process options for PEBS event
- synthesis
-Git-Commit-ID: 9e64cefe4335b0f2799956d3f3cca8bb652d950f
+Subject: [tip:perf/core] perf tools: Add aux-output config term
+Git-Commit-ID: 1b9921546a9641aefc4a52c1c635b96b67142993
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot.git.kernel.org>
 Robot-Unsubscribe: Contact <mailto:hpa@kernel.org> to get blacklisted from
@@ -65,107 +66,145 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-Commit-ID:  9e64cefe4335b0f2799956d3f3cca8bb652d950f
-Gitweb:     https://git.kernel.org/tip/9e64cefe4335b0f2799956d3f3cca8bb652d950f
+Commit-ID:  1b9921546a9641aefc4a52c1c635b96b67142993
+Gitweb:     https://git.kernel.org/tip/1b9921546a9641aefc4a52c1c635b96b67142993
 Author:     Adrian Hunter <adrian.hunter@intel.com>
-AuthorDate: Tue, 6 Aug 2019 11:46:04 +0300
+AuthorDate: Tue, 6 Aug 2019 11:46:05 +0300
 Committer:  Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitDate: Wed, 14 Aug 2019 10:59:59 -0300
 
-perf intel-pt: Process options for PEBS event synthesis
+perf tools: Add aux-output config term
 
-Process synth_opts.other_events and attr.aux_output to set up for
-synthesizing PEBs via Intel PT events.
+Expose the aux_output attribute flag to the user to configure, by adding a
+config term 'aux-output'. For events that support it, selection of
+'aux-output' causes the generation of AUX records instead of event records.
+This requires that an AUX area event is also provided.
 
 Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
 Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Kan Liang <kan.liang@linux.intel.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Link: http://lkml.kernel.org/r/20190806084606.4021-6-alexander.shishkin@linux.intel.com
+Link: http://lkml.kernel.org/r/20190806084606.4021-7-alexander.shishkin@linux.intel.com
 Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-[ Fixed up libbperf clashes, i.e. some places using perf_evsel (now in libperf)
-  need to use instead 'evsel' (a tools/perf only abstraction) ]
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/arch/x86/util/intel-pt.c | 23 +++++++++++++++++++++++
- tools/perf/util/intel-pt.c          | 18 ++++++++++++++++++
- 2 files changed, 41 insertions(+)
+ tools/perf/Documentation/perf-record.txt | 2 ++
+ tools/perf/util/evsel.c                  | 3 +++
+ tools/perf/util/evsel.h                  | 2 ++
+ tools/perf/util/parse-events.c           | 8 ++++++++
+ tools/perf/util/parse-events.h           | 1 +
+ tools/perf/util/parse-events.l           | 1 +
+ 6 files changed, 17 insertions(+)
 
-diff --git a/tools/perf/arch/x86/util/intel-pt.c b/tools/perf/arch/x86/util/intel-pt.c
-index 218a4e694618..a8e633aa278a 100644
---- a/tools/perf/arch/x86/util/intel-pt.c
-+++ b/tools/perf/arch/x86/util/intel-pt.c
-@@ -548,6 +548,26 @@ static int intel_pt_validate_config(struct perf_pmu *intel_pt_pmu,
- 					evsel->core.attr.config);
- }
+diff --git a/tools/perf/Documentation/perf-record.txt b/tools/perf/Documentation/perf-record.txt
+index d5e58e0a2bca..c6f9f31b6039 100644
+--- a/tools/perf/Documentation/perf-record.txt
++++ b/tools/perf/Documentation/perf-record.txt
+@@ -60,6 +60,8 @@ OPTIONS
+ 	  - 'name' : User defined event name. Single quotes (') may be used to
+ 		    escape symbols in the name from parsing by shell and tool
+ 		    like this: name=\'CPU_CLK_UNHALTED.THREAD:cmask=0x1\'.
++	  - 'aux-output': Generate AUX records instead of events. This requires
++			  that an AUX area event is also provided.
  
-+/*
-+ * Currently, there is not enough information to disambiguate different PEBS
-+ * events, so only allow one.
-+ */
-+static bool intel_pt_too_many_aux_output(struct evlist *evlist)
-+{
-+	struct evsel *evsel;
-+	int aux_output_cnt = 0;
-+
-+	evlist__for_each_entry(evlist, evsel)
-+		aux_output_cnt += !!evsel->core.attr.aux_output;
-+
-+	if (aux_output_cnt > 1) {
-+		pr_err(INTEL_PT_PMU_NAME " supports at most one event with aux-output\n");
-+		return true;
-+	}
-+
-+	return false;
-+}
-+
- static int intel_pt_recording_options(struct auxtrace_record *itr,
- 				      struct evlist *evlist,
- 				      struct record_opts *opts)
-@@ -588,6 +608,9 @@ static int intel_pt_recording_options(struct auxtrace_record *itr,
- 		return -EINVAL;
- 	}
+           See the linkperf:perf-list[1] man page for more parameters.
  
-+	if (intel_pt_too_many_aux_output(evlist))
-+		return -EINVAL;
-+
- 	if (!opts->full_auxtrace)
- 		return 0;
+diff --git a/tools/perf/util/evsel.c b/tools/perf/util/evsel.c
+index 897a97af2d81..5da40511546b 100644
+--- a/tools/perf/util/evsel.c
++++ b/tools/perf/util/evsel.c
+@@ -833,6 +833,9 @@ static void apply_config_terms(struct evsel *evsel,
+ 			break;
+ 		case PERF_EVSEL__CONFIG_TERM_PERCORE:
+ 			break;
++		case PERF_EVSEL__CONFIG_TERM_AUX_OUTPUT:
++			attr->aux_output = term->val.aux_output ? 1 : 0;
++			break;
+ 		default:
+ 			break;
+ 		}
+diff --git a/tools/perf/util/evsel.h b/tools/perf/util/evsel.h
+index 3cf35aa782b9..8a316dd54cd0 100644
+--- a/tools/perf/util/evsel.h
++++ b/tools/perf/util/evsel.h
+@@ -52,6 +52,7 @@ enum term_type {
+ 	PERF_EVSEL__CONFIG_TERM_DRV_CFG,
+ 	PERF_EVSEL__CONFIG_TERM_BRANCH,
+ 	PERF_EVSEL__CONFIG_TERM_PERCORE,
++	PERF_EVSEL__CONFIG_TERM_AUX_OUTPUT,
+ };
  
-diff --git a/tools/perf/util/intel-pt.c b/tools/perf/util/intel-pt.c
-index 4c52204868d8..ea504fa9b623 100644
---- a/tools/perf/util/intel-pt.c
-+++ b/tools/perf/util/intel-pt.c
-@@ -2894,6 +2894,22 @@ static int intel_pt_synth_events(struct intel_pt *pt,
- 	return 0;
- }
+ struct perf_evsel_config_term {
+@@ -70,6 +71,7 @@ struct perf_evsel_config_term {
+ 		char	*branch;
+ 		unsigned long max_events;
+ 		bool	percore;
++		bool	aux_output;
+ 	} val;
+ 	bool weak;
+ };
+diff --git a/tools/perf/util/parse-events.c b/tools/perf/util/parse-events.c
+index 2cfec3b7a982..9101568946d2 100644
+--- a/tools/perf/util/parse-events.c
++++ b/tools/perf/util/parse-events.c
+@@ -963,6 +963,7 @@ static const char *config_term_names[__PARSE_EVENTS__TERM_TYPE_NR] = {
+ 	[PARSE_EVENTS__TERM_TYPE_NOOVERWRITE]		= "no-overwrite",
+ 	[PARSE_EVENTS__TERM_TYPE_DRV_CFG]		= "driver-config",
+ 	[PARSE_EVENTS__TERM_TYPE_PERCORE]		= "percore",
++	[PARSE_EVENTS__TERM_TYPE_AUX_OUTPUT]		= "aux-output",
+ };
  
-+static void intel_pt_setup_pebs_events(struct intel_pt *pt)
-+{
-+	struct evsel *evsel;
-+
-+	if (!pt->synth_opts.other_events)
-+		return;
-+
-+	evlist__for_each_entry(pt->session->evlist, evsel) {
-+		if (evsel->core.attr.aux_output && evsel->id) {
-+			pt->sample_pebs = true;
-+			pt->pebs_evsel = evsel;
-+			return;
-+		}
-+	}
-+}
-+
- static struct evsel *intel_pt_find_sched_switch(struct evlist *evlist)
- {
- 	struct evsel *evsel;
-@@ -3263,6 +3279,8 @@ int intel_pt_process_auxtrace_info(union perf_event *event,
- 	if (err)
- 		goto err_delete_thread;
+ static bool config_term_shrinked;
+@@ -1083,6 +1084,9 @@ do {									   \
+ 			return -EINVAL;
+ 		}
+ 		break;
++	case PARSE_EVENTS__TERM_TYPE_AUX_OUTPUT:
++		CHECK_TYPE_VAL(NUM);
++		break;
+ 	default:
+ 		err->str = strdup("unknown term");
+ 		err->idx = term->err_term;
+@@ -1133,6 +1137,7 @@ static int config_term_tracepoint(struct perf_event_attr *attr,
+ 	case PARSE_EVENTS__TERM_TYPE_MAX_EVENTS:
+ 	case PARSE_EVENTS__TERM_TYPE_OVERWRITE:
+ 	case PARSE_EVENTS__TERM_TYPE_NOOVERWRITE:
++	case PARSE_EVENTS__TERM_TYPE_AUX_OUTPUT:
+ 		return config_term_common(attr, term, err);
+ 	default:
+ 		if (err) {
+@@ -1225,6 +1230,9 @@ do {								\
+ 			ADD_CONFIG_TERM(PERCORE, percore,
+ 					term->val.num ? true : false);
+ 			break;
++		case PARSE_EVENTS__TERM_TYPE_AUX_OUTPUT:
++			ADD_CONFIG_TERM(AUX_OUTPUT, aux_output, term->val.num ? 1 : 0);
++			break;
+ 		default:
+ 			break;
+ 		}
+diff --git a/tools/perf/util/parse-events.h b/tools/perf/util/parse-events.h
+index 48111b8fc232..616ca1eda0eb 100644
+--- a/tools/perf/util/parse-events.h
++++ b/tools/perf/util/parse-events.h
+@@ -76,6 +76,7 @@ enum {
+ 	PARSE_EVENTS__TERM_TYPE_OVERWRITE,
+ 	PARSE_EVENTS__TERM_TYPE_DRV_CFG,
+ 	PARSE_EVENTS__TERM_TYPE_PERCORE,
++	PARSE_EVENTS__TERM_TYPE_AUX_OUTPUT,
+ 	__PARSE_EVENTS__TERM_TYPE_NR,
+ };
  
-+	intel_pt_setup_pebs_events(pt);
-+
- 	err = auxtrace_queues__process_index(&pt->queues, session);
- 	if (err)
- 		goto err_delete_thread;
+diff --git a/tools/perf/util/parse-events.l b/tools/perf/util/parse-events.l
+index ca6098874fe2..7469497cd28e 100644
+--- a/tools/perf/util/parse-events.l
++++ b/tools/perf/util/parse-events.l
+@@ -284,6 +284,7 @@ no-inherit		{ return term(yyscanner, PARSE_EVENTS__TERM_TYPE_NOINHERIT); }
+ overwrite		{ return term(yyscanner, PARSE_EVENTS__TERM_TYPE_OVERWRITE); }
+ no-overwrite		{ return term(yyscanner, PARSE_EVENTS__TERM_TYPE_NOOVERWRITE); }
+ percore			{ return term(yyscanner, PARSE_EVENTS__TERM_TYPE_PERCORE); }
++aux-output		{ return term(yyscanner, PARSE_EVENTS__TERM_TYPE_AUX_OUTPUT); }
+ ,			{ return ','; }
+ "/"			{ BEGIN(INITIAL); return '/'; }
+ {name_minus}		{ return str(yyscanner, PE_NAME); }
