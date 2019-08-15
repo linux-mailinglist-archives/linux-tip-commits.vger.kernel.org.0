@@ -2,41 +2,109 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C418A8DEF2
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 14 Aug 2019 22:36:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E8ED8E5E2
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 15 Aug 2019 10:01:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728656AbfHNUgG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 14 Aug 2019 16:36:06 -0400
-Received: from mta6.epbfi.com ([74.205.143.41]:40731 "EHLO mta6.epbfi.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725895AbfHNUgF (ORCPT
+        id S1730456AbfHOIBj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 15 Aug 2019 04:01:39 -0400
+Received: from terminus.zytor.com ([198.137.202.136]:43945 "EHLO
+        terminus.zytor.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725961AbfHOIBi (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 14 Aug 2019 16:36:05 -0400
-X-Greylist: delayed 488 seconds by postgrey-1.27 at vger.kernel.org; Wed, 14 Aug 2019 16:36:04 EDT
-Received: from mail1.epbfi.com ([74.205.143.164])
-        by cmsmtp with SMTP
-        id xzsBhGsnJYCqLxzsBhvV4L; Wed, 14 Aug 2019 16:27:55 -0400
-X-Authority-Analysis: v=2.1 cv=TLq4MARa c=1 sm=1 tr=0
- a=5ScIZQf/Q5/3FLbwc1EtpQ==:117 a=L9H7d07YOLsA:10 a=9cW_t1CCXrUA:10
- a=s5jvgZ67dGcA:10 a=FKkrIqjQGGEA:10 a=grFN1ervr_QA:10 a=UG-uvQm33TwA:10
- a=IkcTkHD0fZMA:10 a=x7bEGLp0ZPQA:10 a=DFN9YHfRJOsA:10
- a=wXAVZr1hBdtwWWVGSaMA:9 a=QEXdDO2ut3YA:10 a=9ZFY-tFxM8eGAlHkra-o:22
-Date:   Wed, 14 Aug 2019 16:27:55 -0400 (EDT)
-From:   "I.D" <incordesign@epbfi.com>
-Reply-To: mattadams.cclc@gmail.com
-Message-ID: <1012346246.30499326.1565814475610.JavaMail.zimbra@epbfi.com>
-Subject: 3% L OANS.
+        Thu, 15 Aug 2019 04:01:38 -0400
+Received: from terminus.zytor.com (localhost [127.0.0.1])
+        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x7F81Is92231846
+        (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
+        Thu, 15 Aug 2019 01:01:19 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x7F81Is92231846
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+        s=2019071901; t=1565856079;
+        bh=Qo5hIdjqn2mP1l8MTFhwo6997MzZjr+UXx68NuqDI3I=;
+        h=Date:From:Cc:Reply-To:In-Reply-To:References:To:Subject:From;
+        b=Uq3nJ8rDBT5fF3t1qxO+P2qzU4QVVrly0+KP5AvfPTqOpZpU+YtCjWCTVz09uZLwO
+         Qov2HRgFqZaQ9r7eMPa6ZXOeoWEzJzRAtY/47mA8ynfuupG06JJ40qrVuH90Sodh2x
+         cXmS2akvLjPdB7Y2SxXG8N9E/J3UosIJuz/h2jpxrxyk1w05AMGtO/FNNy1x6p+eJk
+         B/+s4EJlU0UMc/2M1HsMgw0B2tak6FxVjgDqQAe1vncL/ApetVUXseKN3DkVKVObqY
+         BgbAo60zdaT2Ne64r2maQZonnToCIn9qGL44vpK1btWKUySq9yBDnu5RA7ksIfMCvg
+         O5FZV7FOWBbpQ==
+Received: (from tipbot@localhost)
+        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x7F81IMd2231843;
+        Thu, 15 Aug 2019 01:01:18 -0700
+Date:   Thu, 15 Aug 2019 01:01:18 -0700
+X-Authentication-Warning: terminus.zytor.com: tipbot set sender to tipbot@zytor.com using -f
+From:   tip-bot for Tony Luck <tipbot@zytor.com>
+Message-ID: <tip-5ed1c835ed8b522ce25071cc2d56a9a09bd5b59e@git.kernel.org>
+Cc:     dave.hansen@intel.com, mingo@kernel.org, tglx@linutronix.de,
+        tony.luck@intel.com, hpa@zytor.com, linux-kernel@vger.kernel.org,
+        x86@kernel.org, bp@suse.de
+Reply-To: linux-kernel@vger.kernel.org, bp@suse.de, x86@kernel.org,
+          mingo@kernel.org, tglx@linutronix.de, tony.luck@intel.com,
+          dave.hansen@intel.com, hpa@zytor.com
+In-Reply-To: <20190814234030.30817-1-tony.luck@intel.com>
+References: <20190814234030.30817-1-tony.luck@intel.com>
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip:x86/urgent] MAINTAINERS, x86/CPU: Tony Luck will maintain
+ asm/intel-family.h
+Git-Commit-ID: 5ed1c835ed8b522ce25071cc2d56a9a09bd5b59e
+X-Mailer: tip-git-log-daemon
+Robot-ID: <tip-bot.git.kernel.org>
+Robot-Unsubscribe: Contact <mailto:hpa@kernel.org> to get blacklisted from
+ these emails
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [185.242.6.5]
-X-Mailer: Zimbra 8.6.0_GA_1242 (zclient/8.6.0_GA_1242)
-Thread-Topic: 3% L OANS.
-Thread-Index: WFJVs1zIIRsiGV1zsMUTB0cTYIUd0w==
-To:     unlisted-recipients:; (no To-header on input)
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Disposition: inline
+X-Spam-Status: No, score=-0.2 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        DATE_IN_FUTURE_96_Q,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF
+        autolearn=no autolearn_force=no version=3.4.2
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on terminus.zytor.com
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-Hi, Contact us for a 3% L oan today. Let me know how much you need and duration to pay back for more details. Thanks.
+Commit-ID:  5ed1c835ed8b522ce25071cc2d56a9a09bd5b59e
+Gitweb:     https://git.kernel.org/tip/5ed1c835ed8b522ce25071cc2d56a9a09bd5b59e
+Author:     Tony Luck <tony.luck@intel.com>
+AuthorDate: Wed, 14 Aug 2019 16:40:30 -0700
+Committer:  Borislav Petkov <bp@suse.de>
+CommitDate: Thu, 15 Aug 2019 09:54:05 +0200
+
+MAINTAINERS, x86/CPU: Tony Luck will maintain asm/intel-family.h
+
+There are a few different subsystems in the kernel that depend on model
+specific behaviour (perf, EDAC, power, ...). Easier for just one person
+to have the task to get new model numbers included instead of having
+these groups trip over each other to do it.
+
+ [ bp: s/Cpu/CPU/ and add x86@kernel.org so that it gets CCed too as
+   FYI. ]
+
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Acked-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: Dave Hansen <dave.hansen@intel.com>
+Cc: x86-ml <x86@kernel.org>
+Link: https://lkml.kernel.org/r/20190814234030.30817-1-tony.luck@intel.com
+---
+ MAINTAINERS | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index e81e60bd7c26..f3a78403b47f 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -8064,6 +8064,13 @@ T:	git git://git.code.sf.net/p/intel-sas/isci
+ S:	Supported
+ F:	drivers/scsi/isci/
+ 
++INTEL CPU family model numbers
++M:	Tony Luck <tony.luck@intel.com>
++M:	x86@kernel.org
++L:	linux-kernel@vger.kernel.org
++S:	Supported
++F:	arch/x86/include/asm/intel-family.h
++
+ INTEL DRM DRIVERS (excluding Poulsbo, Moorestown and derivative chipsets)
+ M:	Jani Nikula <jani.nikula@linux.intel.com>
+ M:	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
