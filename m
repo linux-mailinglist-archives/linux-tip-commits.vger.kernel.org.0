@@ -2,56 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 20FB88E824
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 15 Aug 2019 11:25:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 339858E831
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 15 Aug 2019 11:26:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731007AbfHOJZz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 15 Aug 2019 05:25:55 -0400
-Received: from terminus.zytor.com ([198.137.202.136]:49361 "EHLO
+        id S1729909AbfHOJ0m (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 15 Aug 2019 05:26:42 -0400
+Received: from terminus.zytor.com ([198.137.202.136]:33329 "EHLO
         terminus.zytor.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730939AbfHOJZz (ORCPT
+        with ESMTP id S1727814AbfHOJ0m (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 15 Aug 2019 05:25:55 -0400
+        Thu, 15 Aug 2019 05:26:42 -0400
 Received: from terminus.zytor.com (localhost [127.0.0.1])
-        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x7F9PSpn2273469
+        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x7F9QFO32273546
         (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-        Thu, 15 Aug 2019 02:25:28 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x7F9PSpn2273469
+        Thu, 15 Aug 2019 02:26:15 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x7F9QFO32273546
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-        s=2019071901; t=1565861129;
-        bh=LDl1z16vncmPXWZDTxe3P8S/Jo8I8UhNKIyAe3oBczQ=;
-        h=Date:From:Cc:Reply-To:In-Reply-To:References:To:Subject:From;
-        b=bFdj3xvtZgeXKBX0u6vcmGvXTsxhQsI5wTN7nw8ppUTxIF1D4MyIku8ABds5Gifjt
-         +kYo6whtLsi4/7A3BZ07sKTd2sZ0RIUnuAjJKJczURxPPBRnJw9/oNp9RpYovd9Z+I
-         sCPeYWxmkJ87s2+/I4ZOjLfXVmpUtc3YX1y6XosaKNbK1IUMqFyxTBmpbrrzVGnThn
-         uFGinTgaYH37M2yp6uBOoyGOlSxBXg4BY3kXKO4hys5G9fr7hYqwOOuY4ymBjX5g5S
-         gCziUz11z7gBEJngxgKycPukiJKr7kHei8a1KPVhVVUU5zeNEWR2vsRWAWbGiA1Dx5
-         OvJvNRr7/mivg==
+        s=2019071901; t=1565861176;
+        bh=CEdv23Vqx5irCbXcpPnAkTHtVCRcdd6g1utuqbVtqO8=;
+        h=Date:From:Cc:Reply-To:To:Subject:From;
+        b=iCkxwcggo/XYQFuKTJYmTrFaf9m2TmidLdWvD6MK3ExWHVrxib+OXfhCoe/KPw3ES
+         h7LnAZ56x2YTOJ44j/8Cfmk7661fwXolFY2K4JWercQXrWMMdTQ9+YzGa55QGV6oc0
+         O/KIJf+tz1fconAd52ZKY9xFdZdHP5JlPRZ+CLVqYhwg+t/w2AoL75RIRyCUL8Carm
+         +0oQ2Yr1Nxj4cCK6LKIFxB+uBg93kEkK3ZXYlaN8jtvWppRIAu6Q1p546zjUdp1kHu
+         d0QJYq5V82lWYnu/xips2+JB+VAgs7E+Q/3ciswfGaPKMkOKqb9Rq/8D4uaYBEbvGc
+         gqVlM8Fdew71A==
 Received: (from tipbot@localhost)
-        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x7F9PRbR2273466;
-        Thu, 15 Aug 2019 02:25:27 -0700
-Date:   Thu, 15 Aug 2019 02:25:27 -0700
+        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x7F9QEo62273543;
+        Thu, 15 Aug 2019 02:26:14 -0700
+Date:   Thu, 15 Aug 2019 02:26:14 -0700
 X-Authentication-Warning: terminus.zytor.com: tipbot set sender to tipbot@zytor.com using -f
-From:   tip-bot for Igor Lubashev <tipbot@zytor.com>
-Message-ID: <tip-c22e150e3afa6f8db2300bd510e4ac26bbee1bf3@git.kernel.org>
-Cc:     alexander.shishkin@linux.intel.com, tglx@linutronix.de,
-        hpa@zytor.com, jolsa@kernel.org, mathieu.poirier@linaro.org,
-        linux-kernel@vger.kernel.org, peterz@infradead.org,
-        alexey.budankov@linux.intel.com, jmorris@namei.org,
-        mingo@kernel.org, namhyung@kernel.org, ilubashe@akamai.com,
-        suzuki.poulose@arm.com, acme@redhat.com
-Reply-To: mingo@kernel.org, namhyung@kernel.org, jmorris@namei.org,
-          acme@redhat.com, ilubashe@akamai.com, suzuki.poulose@arm.com,
-          alexander.shishkin@linux.intel.com, tglx@linutronix.de,
-          alexey.budankov@linux.intel.com, jolsa@kernel.org,
-          mathieu.poirier@linaro.org, hpa@zytor.com, peterz@infradead.org,
-          linux-kernel@vger.kernel.org
-In-Reply-To: <8a1e76cf5c7c9796d0d4d240fbaa85305298aafa.1565188228.git.ilubashe@akamai.com>
-References: <8a1e76cf5c7c9796d0d4d240fbaa85305298aafa.1565188228.git.ilubashe@akamai.com>
+From:   tip-bot for Arnaldo Carvalho de Melo <tipbot@zytor.com>
+Message-ID: <tip-eknnvp22elznj0cl5a39hc4v@git.kernel.org>
+Cc:     mathieu.poirier@linaro.org, alexander.shishkin@linux.intel.com,
+        suzuki.poulose@arm.com, peterz@infradead.org, namhyung@kernel.org,
+        mingo@kernel.org, tglx@linutronix.de, acme@redhat.com,
+        jolsa@kernel.org, hpa@zytor.com, ilubashe@akamai.com,
+        linux-kernel@vger.kernel.org, alexey.budankov@linux.intel.com,
+        jmorris@namei.org
+Reply-To: namhyung@kernel.org, peterz@infradead.org,
+          suzuki.poulose@arm.com, tglx@linutronix.de, mingo@kernel.org,
+          mathieu.poirier@linaro.org, alexander.shishkin@linux.intel.com,
+          alexey.budankov@linux.intel.com, jmorris@namei.org,
+          linux-kernel@vger.kernel.org, jolsa@kernel.org, acme@redhat.com,
+          ilubashe@akamai.com, hpa@zytor.com
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip:perf/core] perf tools: Add helpers to use capabilities if
- present
-Git-Commit-ID: c22e150e3afa6f8db2300bd510e4ac26bbee1bf3
+Subject: [tip:perf/core] perf tools: Add NO_LIBCAP=1 to the minimal build
+ test
+Git-Commit-ID: 97993bd6eb89bf08649c01d4d57453feca4314f8
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot.git.kernel.org>
 Robot-Unsubscribe: Contact <mailto:hpa@kernel.org> to get blacklisted from
@@ -69,233 +67,42 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-Commit-ID:  c22e150e3afa6f8db2300bd510e4ac26bbee1bf3
-Gitweb:     https://git.kernel.org/tip/c22e150e3afa6f8db2300bd510e4ac26bbee1bf3
-Author:     Igor Lubashev <ilubashe@akamai.com>
-AuthorDate: Wed, 7 Aug 2019 10:44:14 -0400
+Commit-ID:  97993bd6eb89bf08649c01d4d57453feca4314f8
+Gitweb:     https://git.kernel.org/tip/97993bd6eb89bf08649c01d4d57453feca4314f8
+Author:     Arnaldo Carvalho de Melo <acme@redhat.com>
+AuthorDate: Mon, 12 Aug 2019 16:43:08 -0300
 Committer:  Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitDate: Wed, 14 Aug 2019 10:48:39 -0300
+CommitDate: Wed, 14 Aug 2019 10:59:59 -0300
 
-perf tools: Add helpers to use capabilities if present
+perf tools: Add NO_LIBCAP=1 to the minimal build test
 
-Add utilities to help checking capabilities of the running procss.  Make
-perf link with libcap, if it is available. If no libcap-dev[el],
-fallback to the geteuid() == 0 test used before.
+We need to add these so that we test building without all selectable
+features.
 
-Committer notes:
-
-  $ perf test python
-  18: 'import perf' in python                               : FAILED!
-  $ perf test -v python
-  Couldn't bump rlimit(MEMLOCK), failures may take place when creating BPF maps, etc
-  18: 'import perf' in python                               :
-  --- start ---
-  test child forked, pid 23288
-  Traceback (most recent call last):
-    File "<stdin>", line 1, in <module>
-  ImportError: /tmp/build/perf/python/perf.so: undefined symbol: cap_get_flag
-  test child finished with -1
-  ---- end ----
-  'import perf' in python: FAILED!
-  $
-
-This happens because differently from the perf binary generated with
-this patch applied:
-
-  $ ldd /tmp/build/perf/perf | grep libcap
-  	libcap.so.2 => /lib64/libcap.so.2 (0x00007f724a4ef000)
-  $
-
-The python binding isn't linking with libcap:
-
-  $ ldd /tmp/build/perf/python/perf.so | grep libcap
-  $
-
-So add 'cap' to the 'extra_libraries' variable in
-tools/perf/util/setup.py, and rebuild:
-
-  $ perf test python
-  18: 'import perf' in python                               : Ok
-  $
-
-If we explicitely disable libcap it also continues to work:
-
-  $ make NO_LIBCAP=1 -C tools/perf O=/tmp/build/perf install-bin
-    $ ldd /tmp/build/perf/perf | grep libcap
-  $ ldd /tmp/build/perf/python/perf.so | grep libcap
-  $ perf test python
-  18: 'import perf' in python                               : Ok
-  $
-
-Signed-off-by: Igor Lubashev <ilubashe@akamai.com>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
+Acked-by: Igor Lubashev <ilubashe@akamai.com>
 Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 Cc: Alexey Budankov <alexey.budankov@linux.intel.com>
 Cc: James Morris <jmorris@namei.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Mathieu Poirier <mathieu.poirier@linaro.org>
 Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Suzuki Poulouse <suzuki.poulose@arm.com>
-Cc: linux-arm-kernel@lists.infradead.org
-[ split from a larger patch ]
-Link: http://lkml.kernel.org/r/8a1e76cf5c7c9796d0d4d240fbaa85305298aafa.1565188228.git.ilubashe@akamai.com
+Link: https://lkml.kernel.org/n/tip-eknnvp22elznj0cl5a39hc4v@git.kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/Build              |  2 ++
- tools/perf/util/cap.c              | 29 +++++++++++++++++++++++++++++
- tools/perf/util/cap.h              | 27 +++++++++++++++++++++++++++
- tools/perf/util/event.h            |  1 +
- tools/perf/util/python-ext-sources |  1 +
- tools/perf/util/setup.py           |  2 ++
- tools/perf/util/util.c             |  9 +++++++++
- 7 files changed, 71 insertions(+)
+ tools/perf/tests/make | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/perf/util/Build b/tools/perf/util/Build
-index 7abf05131889..7cda749059a9 100644
---- a/tools/perf/util/Build
-+++ b/tools/perf/util/Build
-@@ -148,6 +148,8 @@ perf-$(CONFIG_ZLIB) += zlib.o
- perf-$(CONFIG_LZMA) += lzma.o
- perf-$(CONFIG_ZSTD) += zstd.o
+diff --git a/tools/perf/tests/make b/tools/perf/tests/make
+index 5363a12a8b9b..70c48475896d 100644
+--- a/tools/perf/tests/make
++++ b/tools/perf/tests/make
+@@ -108,6 +108,7 @@ make_minimal        += NO_DEMANGLE=1 NO_LIBELF=1 NO_LIBUNWIND=1 NO_BACKTRACE=1
+ make_minimal        += NO_LIBNUMA=1 NO_LIBAUDIT=1 NO_LIBBIONIC=1
+ make_minimal        += NO_LIBDW_DWARF_UNWIND=1 NO_AUXTRACE=1 NO_LIBBPF=1
+ make_minimal        += NO_LIBCRYPTO=1 NO_SDT=1 NO_JVMTI=1 NO_LIBZSTD=1
++make_minimal        += NO_LIBCAP=1
  
-+perf-$(CONFIG_LIBCAP) += cap.o
-+
- perf-y += demangle-java.o
- perf-y += demangle-rust.o
- 
-diff --git a/tools/perf/util/cap.c b/tools/perf/util/cap.c
-new file mode 100644
-index 000000000000..c3ba841bbf37
---- /dev/null
-+++ b/tools/perf/util/cap.c
-@@ -0,0 +1,29 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Capability utilities
-+ */
-+
-+#ifdef HAVE_LIBCAP_SUPPORT
-+
-+#include "cap.h"
-+#include <stdbool.h>
-+#include <sys/capability.h>
-+
-+bool perf_cap__capable(cap_value_t cap)
-+{
-+	cap_flag_value_t val;
-+	cap_t caps = cap_get_proc();
-+
-+	if (!caps)
-+		return false;
-+
-+	if (cap_get_flag(caps, cap, CAP_EFFECTIVE, &val) != 0)
-+		val = CAP_CLEAR;
-+
-+	if (cap_free(caps) != 0)
-+		return false;
-+
-+	return val == CAP_SET;
-+}
-+
-+#endif  /* HAVE_LIBCAP_SUPPORT */
-diff --git a/tools/perf/util/cap.h b/tools/perf/util/cap.h
-new file mode 100644
-index 000000000000..10af94e473da
---- /dev/null
-+++ b/tools/perf/util/cap.h
-@@ -0,0 +1,27 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef __PERF_CAP_H
-+#define __PERF_CAP_H
-+
-+#include <stdbool.h>
-+#include <linux/capability.h>
-+#include <linux/compiler.h>
-+
-+#ifdef HAVE_LIBCAP_SUPPORT
-+
-+#include <sys/capability.h>
-+
-+bool perf_cap__capable(cap_value_t cap);
-+
-+#else
-+
-+#include <unistd.h>
-+#include <sys/types.h>
-+
-+static inline bool perf_cap__capable(int cap __maybe_unused)
-+{
-+	return geteuid() == 0;
-+}
-+
-+#endif /* HAVE_LIBCAP_SUPPORT */
-+
-+#endif /* __PERF_CAP_H */
-diff --git a/tools/perf/util/event.h b/tools/perf/util/event.h
-index 70841d115349..0e164e8ae28d 100644
---- a/tools/perf/util/event.h
-+++ b/tools/perf/util/event.h
-@@ -851,6 +851,7 @@ void  cpu_map_data__synthesize(struct cpu_map_data *data, struct perf_cpu_map *m
- void event_attr_init(struct perf_event_attr *attr);
- 
- int perf_event_paranoid(void);
-+bool perf_event_paranoid_check(int max_level);
- 
- extern int sysctl_perf_event_max_stack;
- extern int sysctl_perf_event_max_contexts_per_stack;
-diff --git a/tools/perf/util/python-ext-sources b/tools/perf/util/python-ext-sources
-index 235bd9803390..c6dd478956f1 100644
---- a/tools/perf/util/python-ext-sources
-+++ b/tools/perf/util/python-ext-sources
-@@ -7,6 +7,7 @@
- 
- util/python.c
- ../lib/ctype.c
-+util/cap.c
- util/evlist.c
- util/evsel.c
- util/cpumap.c
-diff --git a/tools/perf/util/setup.py b/tools/perf/util/setup.py
-index d48f9cd58964..aa344a163eaf 100644
---- a/tools/perf/util/setup.py
-+++ b/tools/perf/util/setup.py
-@@ -59,6 +59,8 @@ ext_sources = list(map(lambda x: '%s/%s' % (src_perf, x) , ext_sources))
- extra_libraries = []
- if '-DHAVE_LIBNUMA_SUPPORT' in cflags:
-     extra_libraries = [ 'numa' ]
-+if '-DHAVE_LIBCAP_SUPPORT' in cflags:
-+    extra_libraries += [ 'cap' ]
- 
- perf = Extension('perf',
- 		  sources = ext_sources,
-diff --git a/tools/perf/util/util.c b/tools/perf/util/util.c
-index 9c3c97697387..6fd130a5d8f2 100644
---- a/tools/perf/util/util.c
-+++ b/tools/perf/util/util.c
-@@ -16,10 +16,12 @@
- #include <string.h>
- #include <errno.h>
- #include <limits.h>
-+#include <linux/capability.h>
- #include <linux/kernel.h>
- #include <linux/log2.h>
- #include <linux/time64.h>
- #include <unistd.h>
-+#include "cap.h"
- #include "strlist.h"
- #include "string2.h"
- 
-@@ -403,6 +405,13 @@ int perf_event_paranoid(void)
- 
- 	return value;
- }
-+
-+bool perf_event_paranoid_check(int max_level)
-+{
-+	return perf_cap__capable(CAP_SYS_ADMIN) ||
-+			perf_event_paranoid() <= max_level;
-+}
-+
- static int
- fetch_ubuntu_kernel_version(unsigned int *puint)
- {
+ # $(run) contains all available tests
+ run := make_pure
