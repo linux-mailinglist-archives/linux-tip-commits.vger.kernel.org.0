@@ -2,55 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C002B8E85E
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 15 Aug 2019 11:35:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B86858E869
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 15 Aug 2019 11:37:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730815AbfHOJfb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 15 Aug 2019 05:35:31 -0400
-Received: from terminus.zytor.com ([198.137.202.136]:60813 "EHLO
+        id S1731243AbfHOJh4 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 15 Aug 2019 05:37:56 -0400
+Received: from terminus.zytor.com ([198.137.202.136]:60329 "EHLO
         terminus.zytor.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730213AbfHOJfb (ORCPT
+        with ESMTP id S1730464AbfHOJhz (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 15 Aug 2019 05:35:31 -0400
+        Thu, 15 Aug 2019 05:37:55 -0400
 Received: from terminus.zytor.com (localhost [127.0.0.1])
-        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x7F9ZF2O2275041
+        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x7F9Zx182275131
         (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-        Thu, 15 Aug 2019 02:35:16 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x7F9ZF2O2275041
+        Thu, 15 Aug 2019 02:35:59 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x7F9Zx182275131
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-        s=2019071901; t=1565861716;
-        bh=dm16HIFA/tXkgLfMM0ox8GYhHgm8U+WBAdBwW0jWldM=;
+        s=2019071901; t=1565861760;
+        bh=0yPQC3co021hKgcA2DD+PLYhcMZQw49ORGdECLLy2fw=;
         h=Date:From:Cc:Reply-To:In-Reply-To:References:To:Subject:From;
-        b=uRvTfM3CiuSckvF5rP+ZwyiI0iT0YtszK1q8XlSORTkROf+6pulYhXMxBF1GjOIN+
-         6DKJ/sRtndOOq/GBfK9uBqSG6gUXeHM7c4Ily14Z6jWlzSl+pquISmsQhmv2VpNSpA
-         qSAxze+FOfqZyEHJbGs7Q2SldKFaMpCwrNDoevwb27mVys38kbjDadxr/Wuw6+xMv7
-         pkHc8F+93a2UOJOdIuSlOzl1JIgYcbQ622eVqV24XboXOav6vyE0r2HB+3O8TkQq0t
-         MF49709HdCEHniHEuFnUwjplx4aEZ0wKp2el+WA4Lvge/9+5kAemZvYuhH78HFEqYb
-         k4BImthz66IPw==
+        b=Ju5undD56dOGsIXNNF5/34biLIQXFdzFK72e6vS6s5vbcDpxTr90fLsngPQTckMyN
+         00ZtujXA6cLlxnZbxu8cewf1JPo7NovXF7XhiFSU3eK7u+HsQZSriofn0kUhTr1zK/
+         tqLp7bb2gea/5HtpFJOA3tiPwCL9cDhWT1uWV/gDC35/z0qmjHLjMv2ns3ezoa22Gg
+         JpCx2P1LReKkNrWkaixFUhzKqdwjeZoe2mC90gPEPPVwyAFIzoLr1WQPU4yOv4GbQP
+         QXBT4aYKLY0ybHqXbqnVHeXv3HOteipxqki0tYiWn7oiC/PmbxYtM591RNLM0+wXK8
+         HFfGh2Zi/vorw==
 Received: (from tipbot@localhost)
-        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x7F9ZFBv2275035;
-        Thu, 15 Aug 2019 02:35:15 -0700
-Date:   Thu, 15 Aug 2019 02:35:15 -0700
+        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x7F9ZxBQ2275127;
+        Thu, 15 Aug 2019 02:35:59 -0700
+Date:   Thu, 15 Aug 2019 02:35:59 -0700
 X-Authentication-Warning: terminus.zytor.com: tipbot set sender to tipbot@zytor.com using -f
-From:   tip-bot for Vince Weaver <tipbot@zytor.com>
-Message-ID: <tip-3143906c2770778d89b730e0342b745d1b4a8303@git.kernel.org>
-Cc:     ak@linux.intel.com, chongjiang@chromium.org,
-        linux-kernel@vger.kernel.org, jolsa@kernel.org, sque@chromium.org,
-        hpa@zytor.com, vincent.weaver@maine.edu, adrian.hunter@intel.com,
-        namhyung@kernel.org, acme@redhat.com, mingo@kernel.org,
-        peterz@infradead.org, tglx@linutronix.de,
-        alexander.shishkin@linux.intel.com
-Reply-To: vincent.weaver@maine.edu, adrian.hunter@intel.com, hpa@zytor.com,
-          peterz@infradead.org, alexander.shishkin@linux.intel.com,
-          tglx@linutronix.de, namhyung@kernel.org, mingo@kernel.org,
-          acme@redhat.com, chongjiang@chromium.org, ak@linux.intel.com,
-          sque@chromium.org, jolsa@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <alpine.DEB.2.21.1908011425240.14303@macbook-air>
-References: <alpine.DEB.2.21.1908011425240.14303@macbook-air>
+From:   tip-bot for Tan Xiaojun <tipbot@zytor.com>
+Message-ID: <tip-0a4d8fb229dd78f9e0752817339e19e903b37a60@git.kernel.org>
+Cc:     peterz@infradead.org, alexander.shishkin@linux.intel.com,
+        alexey.budankov@linux.intel.com, rostedt@goodmis.org,
+        tglx@linutronix.de, tanxiaojun@huawei.com, mingo@kernel.org,
+        namhyung@kernel.org, jolsa@kernel.org, acme@redhat.com,
+        linux-kernel@vger.kernel.org, tz.stoyanov@gmail.com,
+        kan.liang@linux.intel.com, songliubraving@fb.com, hpa@zytor.com
+Reply-To: kan.liang@linux.intel.com, tz.stoyanov@gmail.com,
+          acme@redhat.com, linux-kernel@vger.kernel.org, jolsa@kernel.org,
+          namhyung@kernel.org, tanxiaojun@huawei.com, mingo@kernel.org,
+          rostedt@goodmis.org, tglx@linutronix.de,
+          alexey.budankov@linux.intel.com, peterz@infradead.org,
+          alexander.shishkin@linux.intel.com, hpa@zytor.com,
+          songliubraving@fb.com
+In-Reply-To: <1564717737-21602-1-git-send-email-tanxiaojun@huawei.com>
+References: <1564717737-21602-1-git-send-email-tanxiaojun@huawei.com>
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip:perf/core] perf.data documentation: Clarify
- HEADER_SAMPLE_TOPOLOGY format
-Git-Commit-ID: 3143906c2770778d89b730e0342b745d1b4a8303
+Subject: [tip:perf/core] perf record: Support aarch64 random socket_id
+ assignment
+Git-Commit-ID: 0a4d8fb229dd78f9e0752817339e19e903b37a60
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot.git.kernel.org>
 Robot-Unsubscribe: Contact <mailto:hpa@kernel.org> to get blacklisted from
@@ -59,77 +61,89 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset=UTF-8
 Content-Disposition: inline
-X-Spam-Status: No, score=-0.2 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        DATE_IN_FUTURE_96_Q,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF
-        autolearn=no autolearn_force=no version=3.4.2
+X-Spam-Status: No, score=1.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        DATE_IN_FUTURE_96_Q,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        FREEMAIL_FORGED_REPLYTO autolearn=no autolearn_force=no version=3.4.2
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on terminus.zytor.com
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-Commit-ID:  3143906c2770778d89b730e0342b745d1b4a8303
-Gitweb:     https://git.kernel.org/tip/3143906c2770778d89b730e0342b745d1b4a8303
-Author:     Vince Weaver <vincent.weaver@maine.edu>
-AuthorDate: Thu, 1 Aug 2019 14:30:43 -0400
+Commit-ID:  0a4d8fb229dd78f9e0752817339e19e903b37a60
+Gitweb:     https://git.kernel.org/tip/0a4d8fb229dd78f9e0752817339e19e903b37a60
+Author:     Tan Xiaojun <tanxiaojun@huawei.com>
+AuthorDate: Fri, 2 Aug 2019 11:48:57 +0800
 Committer:  Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitDate: Wed, 14 Aug 2019 10:59:59 -0300
+CommitDate: Wed, 14 Aug 2019 11:00:00 -0300
 
-perf.data documentation: Clarify HEADER_SAMPLE_TOPOLOGY format
+perf record: Support aarch64 random socket_id assignment
 
-The perf.data file format documentation for HEADER_SAMPLE_TOPOLOGY
-specifies the layout in a confusing manner that doesn't match the rest
-of the document.  This patch attempts to describe things consistent with
-the rest of the file.
+Same as in the commit 01766229533f ("perf record: Support s390 random
+socket_id assignment"), aarch64 also have this problem.
 
-Signed-off-by: Vince Weaver <vincent.weaver@maine.edu>
+Without this fix:
+
+  [root@localhost perf]# ./perf report --header -I -v
+  ...
+  socket_id number is too big.You may need to upgrade the perf tool.
+
+  # ========
+  # captured on    : Thu Aug  1 22:58:38 2019
+  # header version : 1
+  ...
+  # Core ID and Socket ID information is not available
+  ...
+
+With this fix:
+  [root@localhost perf]# ./perf report --header -I -v
+  ...
+  cpumask list: 0-31
+  cpumask list: 32-63
+  cpumask list: 64-95
+  cpumask list: 96-127
+
+  # ========
+  # captured on    : Thu Aug  1 22:58:38 2019
+  # header version : 1
+  ...
+  # CPU 0: Core ID 0, Socket ID 36
+  # CPU 1: Core ID 1, Socket ID 36
+  ...
+  # CPU 126: Core ID 126, Socket ID 8442
+  # CPU 127: Core ID 127, Socket ID 8442
+  ...
+
+Signed-off-by: Tan Xiaojun <tanxiaojun@huawei.com>
 Acked-by: Jiri Olsa <jolsa@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
 Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Chong Jiang <chongjiang@chromium.org>
+Cc: Alexey Budankov <alexey.budankov@linux.intel.com>
+Cc: Kan Liang <kan.liang@linux.intel.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Simon Que <sque@chromium.org>
-Link: http://lkml.kernel.org/r/alpine.DEB.2.21.1908011425240.14303@macbook-air
+Cc: Song Liu <songliubraving@fb.com>
+Cc: Steven Rostedt (VMware) <rostedt@goodmis.org>
+Cc: Tzvetomir Stoyanov (VMware) <tz.stoyanov@gmail.com>
+Link: http://lkml.kernel.org/r/1564717737-21602-1-git-send-email-tanxiaojun@huawei.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/Documentation/perf.data-file-format.txt | 25 +++++++++++++---------
- 1 file changed, 15 insertions(+), 10 deletions(-)
+ tools/perf/util/header.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/Documentation/perf.data-file-format.txt b/tools/perf/Documentation/perf.data-file-format.txt
-index d030c87ed9f5..b0152e1095c5 100644
---- a/tools/perf/Documentation/perf.data-file-format.txt
-+++ b/tools/perf/Documentation/perf.data-file-format.txt
-@@ -298,16 +298,21 @@ Physical memory map and its node assignments.
+diff --git a/tools/perf/util/header.c b/tools/perf/util/header.c
+index b04c2b6b28b3..1f2965a07bef 100644
+--- a/tools/perf/util/header.c
++++ b/tools/perf/util/header.c
+@@ -2252,8 +2252,10 @@ static int process_cpu_topology(struct feat_fd *ff, void *data __maybe_unused)
+ 	/* On s390 the socket_id number is not related to the numbers of cpus.
+ 	 * The socket_id number might be higher than the numbers of cpus.
+ 	 * This depends on the configuration.
++	 * AArch64 is the same.
+ 	 */
+-	if (ph->env.arch && !strncmp(ph->env.arch, "s390", 4))
++	if (ph->env.arch && (!strncmp(ph->env.arch, "s390", 4)
++			  || !strncmp(ph->env.arch, "aarch64", 7)))
+ 		do_core_id_test = false;
  
- The format of data in MEM_TOPOLOGY is as follows:
- 
--   0 - version          | for future changes
--   8 - block_size_bytes | /sys/devices/system/memory/block_size_bytes
--  16 - count            | number of nodes
--
--For each node we store map of physical indexes:
--
--  32 - node id          | node index
--  40 - size             | size of bitmap
--  48 - bitmap           | bitmap of memory indexes that belongs to node
--                        | /sys/devices/system/node/node<NODE>/memory<INDEX>
-+	u64 version;            // Currently 1
-+	u64 block_size_bytes;   // /sys/devices/system/memory/block_size_bytes
-+	u64 count;              // number of nodes
-+
-+struct memory_node {
-+        u64 node_id;            // node index
-+        u64 size;               // size of bitmap
-+        struct bitmap {
-+		/* size of bitmap again */
-+                u64 bitmapsize;
-+		/* bitmap of memory indexes that belongs to node     */
-+		/* /sys/devices/system/node/node<NODE>/memory<INDEX> */
-+                u64 entries[(bitmapsize/64)+1];
-+        }
-+}[count];
- 
- The MEM_TOPOLOGY can be displayed with following command:
- 
+ 	for (i = 0; i < (u32)cpu_nr; i++) {
