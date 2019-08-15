@@ -2,55 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F4CD8E838
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 15 Aug 2019 11:29:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46E318E848
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 15 Aug 2019 11:31:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726443AbfHOJ3N (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 15 Aug 2019 05:29:13 -0400
-Received: from terminus.zytor.com ([198.137.202.136]:38151 "EHLO
+        id S1730801AbfHOJbC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 15 Aug 2019 05:31:02 -0400
+Received: from terminus.zytor.com ([198.137.202.136]:47611 "EHLO
         terminus.zytor.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726366AbfHOJ3N (ORCPT
+        with ESMTP id S1726008AbfHOJbC (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 15 Aug 2019 05:29:13 -0400
+        Thu, 15 Aug 2019 05:31:02 -0400
 Received: from terminus.zytor.com (localhost [127.0.0.1])
-        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x7F9Rm4P2273930
+        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x7F9SWQ62273959
         (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-        Thu, 15 Aug 2019 02:27:48 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x7F9Rm4P2273930
+        Thu, 15 Aug 2019 02:28:33 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x7F9SWQ62273959
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-        s=2019071901; t=1565861269;
-        bh=jlsBxp77Asfo/zJcUww11QSpMvlzdBF4vVG+TL/UKpk=;
-        h=Date:From:Cc:Reply-To:In-Reply-To:References:To:Subject:From;
-        b=LX0xnt5n9ymQMDCywqxfSLRJmHjnSn24HemXd0pIB3AkXKFGbW6Um3+esO5ZhXB0z
-         Bvl3DYJdKy1Jwp6/27XIQwu3CZjQNmtp9nu+nSqqmN1cBQBRNq2HLzspFkK031Yln7
-         jRs758vTr5AUUrP0oQLBGxXF2kbq9JhydXZ9TDAmrrzGZ5hl7M1Iig0qea4i4giEPi
-         PH8PJ0f3ayuUlpUMQdUK3rb8npMvFicL6tfUo/1iWLEuDzEp1PGH1m0HUIvz7YhV7n
-         kbyhJpCQZACC1MLD+uS5AqLbMoF0ItNG/or3uX0AYS79XtucAPro9wTd9MGQuztdat
-         XH3bZ7PpnzTHg==
+        s=2019071901; t=1565861314;
+        bh=ryZsENnTKlkD3MhgZfN5F/AhUx06fgs5gjf28SuFcho=;
+        h=Date:From:Cc:Reply-To:To:Subject:From;
+        b=xlIim6ph/XraYsvm/QQ9iMwJ8uyrMTONm41dNZr/BqgdZXgR2q8P3hzMdG8a982Jn
+         b7cYYVr9jdEV8NvESxqDthIuBBJvnKSnc4eQTyCyKupKvlOjnyzSvDidlCRxn8uIn4
+         RVvcn7f85jiXemVHfWFJkQO+R7dxFBBcW9rPZwkwrwqzmsZQo4MI9NYQfYriCO2M4q
+         4bOEb7Dqu42csk4CBymF8tMy5P+4M32gnub/AOvoCbeywE13OQXE1MLMeqko2Bps6k
+         FAL3UXxp+H1BCcwQoDdbkTFSzGb/cuWcEsf4M0Lyr3XcIv50ds5QGKE5lesvLAeatC
+         M/yqgvIcPL5mg==
 Received: (from tipbot@localhost)
-        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x7F9Rlvb2273927;
-        Thu, 15 Aug 2019 02:27:47 -0700
-Date:   Thu, 15 Aug 2019 02:27:47 -0700
+        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x7F9SWx22273956;
+        Thu, 15 Aug 2019 02:28:32 -0700
+Date:   Thu, 15 Aug 2019 02:28:32 -0700
 X-Authentication-Warning: terminus.zytor.com: tipbot set sender to tipbot@zytor.com using -f
-From:   tip-bot for Igor Lubashev <tipbot@zytor.com>
-Message-ID: <tip-c766f3df635de14295e410c6dd5410bc416c24a0@git.kernel.org>
-Cc:     mingo@kernel.org, jmorris@namei.org, namhyung@kernel.org,
-        alexander.shishkin@linux.intel.com, mathieu.poirier@linaro.org,
-        acme@redhat.com, hpa@zytor.com, alexey.budankov@linux.intel.com,
-        linux-kernel@vger.kernel.org, peterz@infradead.org,
-        jolsa@kernel.org, ilubashe@akamai.com, suzuki.poulose@arm.com,
-        tglx@linutronix.de
-Reply-To: suzuki.poulose@arm.com, tglx@linutronix.de, ilubashe@akamai.com,
-          jolsa@kernel.org, peterz@infradead.org,
-          linux-kernel@vger.kernel.org, alexey.budankov@linux.intel.com,
-          alexander.shishkin@linux.intel.com, mathieu.poirier@linaro.org,
-          acme@redhat.com, hpa@zytor.com, namhyung@kernel.org,
-          mingo@kernel.org, jmorris@namei.org
-In-Reply-To: <bd8763b72ed4d58d0b42d44fbc7eb474d32e53a3.1565188228.git.ilubashe@akamai.com>
-References: <bd8763b72ed4d58d0b42d44fbc7eb474d32e53a3.1565188228.git.ilubashe@akamai.com>
+From:   tip-bot for Arnaldo Carvalho de Melo <tipbot@zytor.com>
+Message-ID: <tip-hhnbjdo8r67054of9zm2kxtl@git.kernel.org>
+Cc:     alexey.budankov@linux.intel.com, jmorris@namei.org, hpa@zytor.com,
+        namhyung@kernel.org, suzuki.poulose@arm.com, mingo@kernel.org,
+        ilubashe@akamai.com, tglx@linutronix.de, acme@redhat.com,
+        mathieu.poirier@linaro.org, jolsa@kernel.org,
+        adrian.hunter@intel.com, peterz@infradead.org,
+        alexander.shishkin@linux.intel.com, linux-kernel@vger.kernel.org
+Reply-To: namhyung@kernel.org, mingo@kernel.org, suzuki.poulose@arm.com,
+          ilubashe@akamai.com, tglx@linutronix.de, jmorris@namei.org,
+          alexey.budankov@linux.intel.com, hpa@zytor.com,
+          adrian.hunter@intel.com, alexander.shishkin@linux.intel.com,
+          peterz@infradead.org, linux-kernel@vger.kernel.org,
+          acme@redhat.com, jolsa@kernel.org, mathieu.poirier@linaro.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip:perf/core] perf ftrace: Use CAP_SYS_ADMIN instead of euid==0
-Git-Commit-ID: c766f3df635de14295e410c6dd5410bc416c24a0
+Subject: [tip:perf/core] perf ftrace: Improve error message about capability
+ to use ftrace
+Git-Commit-ID: 73e5de70dca00344cb48e018131a4cadec0fabf0
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot.git.kernel.org>
 Robot-Unsubscribe: Contact <mailto:hpa@kernel.org> to get blacklisted from
@@ -68,60 +67,51 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-Commit-ID:  c766f3df635de14295e410c6dd5410bc416c24a0
-Gitweb:     https://git.kernel.org/tip/c766f3df635de14295e410c6dd5410bc416c24a0
-Author:     Igor Lubashev <ilubashe@akamai.com>
-AuthorDate: Wed, 7 Aug 2019 10:44:17 -0400
+Commit-ID:  73e5de70dca00344cb48e018131a4cadec0fabf0
+Gitweb:     https://git.kernel.org/tip/73e5de70dca00344cb48e018131a4cadec0fabf0
+Author:     Arnaldo Carvalho de Melo <acme@redhat.com>
+AuthorDate: Mon, 12 Aug 2019 17:27:11 -0300
 Committer:  Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitDate: Wed, 14 Aug 2019 10:59:59 -0300
 
-perf ftrace: Use CAP_SYS_ADMIN instead of euid==0
+perf ftrace: Improve error message about capability to use ftrace
 
-The kernel requires CAP_SYS_ADMIN instead of euid==0 to mount debugfs
-for ftrace.  Make perf do the same.
+If we link against libcap, then we can state that CAP_SYS_ADMIN is
+needed, if not, fallback to telling the user it needs to be root, as was
+before linking against libcap.
 
-Signed-off-by: Igor Lubashev <ilubashe@akamai.com>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
 Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 Cc: Alexey Budankov <alexey.budankov@linux.intel.com>
+Cc: Igor Lubashev <ilubashe@akamai.com>
 Cc: James Morris <jmorris@namei.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Mathieu Poirier <mathieu.poirier@linaro.org>
 Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Suzuki Poulouse <suzuki.poulose@arm.com>
-Cc: linux-arm-kernel@lists.infradead.org
-Link: http://lkml.kernel.org/r/bd8763b72ed4d58d0b42d44fbc7eb474d32e53a3.1565188228.git.ilubashe@akamai.com
+Link: https://lkml.kernel.org/n/tip-hhnbjdo8r67054of9zm2kxtl@git.kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/builtin-ftrace.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tools/perf/builtin-ftrace.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
 diff --git a/tools/perf/builtin-ftrace.c b/tools/perf/builtin-ftrace.c
-index 20d4c0ce8b53..01a5bb58eb04 100644
+index 01a5bb58eb04..1367bb5046a7 100644
 --- a/tools/perf/builtin-ftrace.c
 +++ b/tools/perf/builtin-ftrace.c
-@@ -13,6 +13,7 @@
- #include <signal.h>
- #include <fcntl.h>
- #include <poll.h>
-+#include <linux/capability.h>
- 
- #include "debug.h"
- #include <subcmd/parse-options.h>
-@@ -21,6 +22,7 @@
- #include "target.h"
- #include "cpumap.h"
- #include "thread_map.h"
-+#include "util/cap.h"
- #include "util/config.h"
- 
- 
-@@ -281,7 +283,7 @@ static int __cmd_ftrace(struct perf_ftrace *ftrace, int argc, const char **argv)
- 		.events = POLLIN,
+@@ -284,7 +284,13 @@ static int __cmd_ftrace(struct perf_ftrace *ftrace, int argc, const char **argv)
  	};
  
--	if (geteuid() != 0) {
-+	if (!perf_cap__capable(CAP_SYS_ADMIN)) {
- 		pr_err("ftrace only works for root!\n");
+ 	if (!perf_cap__capable(CAP_SYS_ADMIN)) {
+-		pr_err("ftrace only works for root!\n");
++		pr_err("ftrace only works for %s!\n",
++#ifdef HAVE_LIBCAP_SUPPORT
++		"users with the SYS_ADMIN capability"
++#else
++		"root"
++#endif
++		);
  		return -1;
  	}
+ 
