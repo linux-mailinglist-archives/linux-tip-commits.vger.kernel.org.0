@@ -2,48 +2,47 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F0A908E807
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 15 Aug 2019 11:21:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1070D8E80E
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 15 Aug 2019 11:21:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731210AbfHOJVD (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 15 Aug 2019 05:21:03 -0400
-Received: from terminus.zytor.com ([198.137.202.136]:44801 "EHLO
+        id S1731239AbfHOJVr (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 15 Aug 2019 05:21:47 -0400
+Received: from terminus.zytor.com ([198.137.202.136]:34261 "EHLO
         terminus.zytor.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730212AbfHOJVD (ORCPT
+        with ESMTP id S1730212AbfHOJVr (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 15 Aug 2019 05:21:03 -0400
+        Thu, 15 Aug 2019 05:21:47 -0400
 Received: from terminus.zytor.com (localhost [127.0.0.1])
-        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x7F9KtTN2270943
+        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x7F9LeqY2271251
         (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-        Thu, 15 Aug 2019 02:20:55 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x7F9KtTN2270943
+        Thu, 15 Aug 2019 02:21:40 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x7F9LeqY2271251
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-        s=2019071901; t=1565860856;
-        bh=i6A/28iwIBUJHa3y2ozSH6Drz8wmQPMXfjLx+p5iyHI=;
+        s=2019071901; t=1565860901;
+        bh=2YSlfP1BdVO4encMNyt2IbdcLRq5KmMZEDyQZRuI8xM=;
         h=Date:From:Cc:Reply-To:To:Subject:From;
-        b=1kdlT60Q7l+3zAqw+30XfZm7G0+fj0kWDSlvatD8NWnGjDzjdvO2WIF7CrJk+TMH7
-         1JZKSFN2hL6EUaMZV/0RLx45ny4+JUEtiaLp5oAq+GEQ0YOUUItd+TklYJ9xevSuHd
-         WyQgpqKgbZ5QCUg0Gn71RWAA1cViijzuVqnhBu4/5QEkILxVoGMZGEnDAcQzBm0GM/
-         0JEU2l9C3d2+DLexeYV0HQMaNqn0O2g4ANiUQy9HM9z+hQIWBXhWihXNEPVlLOHGCy
-         E0lLwD7cbp7p59daXyCgm7PlPtdpCaLpJRbOwgndoqkfW3O/H5bBU9jrODmj0+wAfx
-         ++oe7AwdPfgAQ==
+        b=13jR2mQZxO+6KvHdSwNyL9tROhXKnwbxs0FrmV+iFgsAGrWBO8lZjCLXa2t1qPN6k
+         1gW9vrZZkgs4fmChyt+6TDsuQWm0kDYi70HMQd24YUbWRS5a7VICudyTl/iEvwp+1m
+         zFaBWZN5woZON3c7vKDqBp1w9/l9C4QPMkNBpwXH2qNzceHiuEIdyPjXniMx3yqJsj
+         +dSU8w2J25L8Oi4siYnbURvNTHcJ7b9YbEI6lv5V0aLV+Ye9K8YxPcp50kVunPYuVE
+         5wUSqVRyuT3ypyAXgnPrxms6IBTn/00k+kiqsw7Ts5fdF2gREInTdrib8O9cjX34aK
+         kO9JVg4D42gMA==
 Received: (from tipbot@localhost)
-        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x7F9KsYo2270940;
-        Thu, 15 Aug 2019 02:20:54 -0700
-Date:   Thu, 15 Aug 2019 02:20:54 -0700
+        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x7F9LeI12271248;
+        Thu, 15 Aug 2019 02:21:40 -0700
+Date:   Thu, 15 Aug 2019 02:21:40 -0700
 X-Authentication-Warning: terminus.zytor.com: tipbot set sender to tipbot@zytor.com using -f
 From:   tip-bot for Arnaldo Carvalho de Melo <tipbot@zytor.com>
-Message-ID: <tip-5w0hmlk3zfvysxvpsh763k9w@git.kernel.org>
-Cc:     linux-kernel@vger.kernel.org, namhyung@kernel.org,
-        adrian.hunter@intel.com, hpa@zytor.com, jolsa@kernel.org,
-        acme@redhat.com, tglx@linutronix.de, mingo@kernel.org
-Reply-To: linux-kernel@vger.kernel.org, hpa@zytor.com,
-          adrian.hunter@intel.com, namhyung@kernel.org, acme@redhat.com,
-          jolsa@kernel.org, mingo@kernel.org, tglx@linutronix.de
+Message-ID: <tip-iwvb37rgb7upswhruwpcdnhw@git.kernel.org>
+Cc:     mingo@kernel.org, jolsa@kernel.org, acme@redhat.com,
+        namhyung@kernel.org, linux-kernel@vger.kernel.org, hpa@zytor.com,
+        tglx@linutronix.de, adrian.hunter@intel.com
+Reply-To: mingo@kernel.org, jolsa@kernel.org, acme@redhat.com,
+          namhyung@kernel.org, hpa@zytor.com, linux-kernel@vger.kernel.org,
+          adrian.hunter@intel.com, tglx@linutronix.de
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip:perf/core] perf top: Set display thread COMM to help with
- debugging
-Git-Commit-ID: 1205a2719e52b6b52e0f9c0011554419da0377a0
+Subject: [tip:perf/core] perf hists: Do not link a pair if already linked
+Git-Commit-ID: 7d1a5efa20dbfea97cb93b99c67ce5cd5c4a4dbc
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot.git.kernel.org>
 Robot-Unsubscribe: Contact <mailto:hpa@kernel.org> to get blacklisted from
@@ -61,47 +60,45 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-Commit-ID:  1205a2719e52b6b52e0f9c0011554419da0377a0
-Gitweb:     https://git.kernel.org/tip/1205a2719e52b6b52e0f9c0011554419da0377a0
+Commit-ID:  7d1a5efa20dbfea97cb93b99c67ce5cd5c4a4dbc
+Gitweb:     https://git.kernel.org/tip/7d1a5efa20dbfea97cb93b99c67ce5cd5c4a4dbc
 Author:     Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate: Tue, 6 Aug 2019 11:20:42 -0300
+AuthorDate: Wed, 7 Aug 2019 10:45:30 -0300
 Committer:  Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitDate: Mon, 12 Aug 2019 16:26:02 -0300
 
-perf top: Set display thread COMM to help with debugging
+perf hists: Do not link a pair if already linked
 
-When we want to attach just to the thread that updates the display it
-helps having its COMM stand out, so change it from the default "perf" to
-"perf-top-UI".
+When we have multiple events in a group we link hist_entries in the
+non-leader evsel hists to the one in the leader that points to the same
+sorting criteria, in hists__match().
+
+For 'perf report' we do this just once and then print the results, but
+for 'perf top' we need to look if this was already done in the previous
+refresh of the screen, so check for that and don't try to link again.
+
+This is part of having 'perf top' using the hists browser for showing
+multiple events in multiple columns.
 
 Cc: Adrian Hunter <adrian.hunter@intel.com>
 Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lkml.kernel.org/n/tip-5w0hmlk3zfvysxvpsh763k9w@git.kernel.org
+Link: https://lkml.kernel.org/n/tip-iwvb37rgb7upswhruwpcdnhw@git.kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/builtin-top.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ tools/perf/util/hist.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/builtin-top.c b/tools/perf/builtin-top.c
-index 1a4615a5f6c9..94e34853a238 100644
---- a/tools/perf/builtin-top.c
-+++ b/tools/perf/builtin-top.c
-@@ -601,6 +601,8 @@ static void *display_thread_tui(void *arg)
- 	 */
- 	unshare(CLONE_FS);
+diff --git a/tools/perf/util/hist.c b/tools/perf/util/hist.c
+index 4297f56b1e05..d923a5bb7b48 100644
+--- a/tools/perf/util/hist.c
++++ b/tools/perf/util/hist.c
+@@ -2453,7 +2453,7 @@ void hists__match(struct hists *leader, struct hists *other)
+ 		pos  = rb_entry(nd, struct hist_entry, rb_node_in);
+ 		pair = hists__find_entry(other, pos);
  
-+	prctl(PR_SET_NAME, "perf-top-UI", 0, 0, 0);
-+
- 	perf_top__sort_new_samples(top);
- 
- 	/*
-@@ -651,6 +653,8 @@ static void *display_thread(void *arg)
- 	 */
- 	unshare(CLONE_FS);
- 
-+	prctl(PR_SET_NAME, "perf-top-UI", 0, 0, 0);
-+
- 	display_setup_sig();
- 	pthread__unblock_sigwinch();
- repeat:
+-		if (pair)
++		if (pair && list_empty(&pair->pairs.node))
+ 			hist_entry__add_pair(pair, pos);
+ 	}
+ }
