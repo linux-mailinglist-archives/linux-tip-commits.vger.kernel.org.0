@@ -2,50 +2,50 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 26F608E7F2
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 15 Aug 2019 11:18:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D17A8E7F6
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 15 Aug 2019 11:18:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731118AbfHOJSE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 15 Aug 2019 05:18:04 -0400
-Received: from terminus.zytor.com ([198.137.202.136]:54911 "EHLO
+        id S1730379AbfHOJSu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 15 Aug 2019 05:18:50 -0400
+Received: from terminus.zytor.com ([198.137.202.136]:33777 "EHLO
         terminus.zytor.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729668AbfHOJSE (ORCPT
+        with ESMTP id S1730029AbfHOJSu (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 15 Aug 2019 05:18:04 -0400
+        Thu, 15 Aug 2019 05:18:50 -0400
 Received: from terminus.zytor.com (localhost [127.0.0.1])
-        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x7F9HtsB2270463
+        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x7F9Ig4f2270753
         (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-        Thu, 15 Aug 2019 02:17:55 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x7F9HtsB2270463
+        Thu, 15 Aug 2019 02:18:43 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x7F9Ig4f2270753
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-        s=2019071901; t=1565860676;
-        bh=ukVRDUqoQeOP27TAvHo39H8XO24WHNna2kFHIo4hcWY=;
+        s=2019071901; t=1565860723;
+        bh=Ti+A5DmLubGWvxE+G1z/lwt3lnWYsZKvzG65MGPjIwY=;
         h=Date:From:Cc:Reply-To:To:Subject:From;
-        b=yBpEP1c4NkKM93jIvSKT6ejof15ogmgV/PLR3PGbbsV2ncaqZvucIt2LW2c8ue4O1
-         G136tL72xb3j5aVKWP6pAjrxgyldZs9wSkgpNzIed47UX6JcfRinASEiwTiv3KSBDc
-         H8ZkE/PtXz2ojDoEcXLQkRXm+CfzB7Ww243kP0b7HAnTalncVmm0khR56VHatyJ9Lu
-         ZE/rLwvr0r0sPHz/4xhYasQIjWwzca/Ee53KbUb+iTaf+5XSH1vBecxiB40YuU13zS
-         e/+gR3+1MQKtIlAYGd7JAv7YcCIwVvqIUSxwvHhuZqMbL5cdlc8aWyf93NBpPWmY2a
-         pC6mkwlgbziIQ==
+        b=393BsZMwOOSwkU8wqdQqHWE6lrKyzIbz/p97776ZEiPInl5vznjy+5ovqiNS4qTJX
+         lWZ8uxbznzgMScfz5cJrc3H/t0B9hzsEUlvKFng7TMQdnhmz78G9s9Pg138aADq8rC
+         k2bCi4OIG2m1xNRYTX12jjBX16IEnT8z0xxSBBTnwKPw76Ssh2+Ud7LWttETcCl+5V
+         Gi1k83l4REyAoeowXpYmpBNlL7Q+6D458QXlwtI7yaqPuKM97BdFu33DgZ2eykuaXY
+         VKM2EF7PFZmZbAiYj34a7+VYvQKyyNYCSZxz4ZxZZ4glDmGJLLSoqXv6pY/TKA1S1F
+         9sZ9brXQXCX9w==
 Received: (from tipbot@localhost)
-        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x7F9HsEs2270457;
-        Thu, 15 Aug 2019 02:17:54 -0700
-Date:   Thu, 15 Aug 2019 02:17:54 -0700
+        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x7F9IgLR2270750;
+        Thu, 15 Aug 2019 02:18:42 -0700
+Date:   Thu, 15 Aug 2019 02:18:42 -0700
 X-Authentication-Warning: terminus.zytor.com: tipbot set sender to tipbot@zytor.com using -f
 From:   tip-bot for Arnaldo Carvalho de Melo <tipbot@zytor.com>
-Message-ID: <tip-0u4o967hsk7j0o50zp9ctn89@git.kernel.org>
-Cc:     lclaudio@redhat.com, linux-kernel@vger.kernel.org,
-        adrian.hunter@intel.com, mingo@kernel.org, hpa@zytor.com,
-        treeze.taeung@gmail.com, namhyung@kernel.org, acme@redhat.com,
-        jolsa@kernel.org, tglx@linutronix.de
-Reply-To: lclaudio@redhat.com, linux-kernel@vger.kernel.org,
-          mingo@kernel.org, adrian.hunter@intel.com, acme@redhat.com,
-          jolsa@kernel.org, tglx@linutronix.de, hpa@zytor.com,
-          namhyung@kernel.org, treeze.taeung@gmail.com
+Message-ID: <tip-3up27pexg5i3exuzqrvt4m8u@git.kernel.org>
+Cc:     namhyung@kernel.org, linux-kernel@vger.kernel.org,
+        mingo@kernel.org, tglx@linutronix.de, lclaudio@redhat.com,
+        hpa@zytor.com, adrian.hunter@intel.com, treeze.taeung@gmail.com,
+        acme@redhat.com, jolsa@kernel.org
+Reply-To: adrian.hunter@intel.com, hpa@zytor.com, namhyung@kernel.org,
+          linux-kernel@vger.kernel.org, tglx@linutronix.de,
+          lclaudio@redhat.com, mingo@kernel.org, treeze.taeung@gmail.com,
+          jolsa@kernel.org, acme@redhat.com
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip:perf/core] perf config: Document the PERF_CONFIG environment
- variable
-Git-Commit-ID: 5de9e5fda05b580c036e1fec6e2d8bf78eb2ac9d
+Subject: [tip:perf/core] perf test vfs_getname: Disable ~/.perfconfig to get
+ default output
+Git-Commit-ID: 4fe94ce1c6ba678b5f12b94bb9996eea4fc99e85
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot.git.kernel.org>
 Robot-Unsubscribe: Contact <mailto:hpa@kernel.org> to get blacklisted from
@@ -64,46 +64,75 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-Commit-ID:  5de9e5fda05b580c036e1fec6e2d8bf78eb2ac9d
-Gitweb:     https://git.kernel.org/tip/5de9e5fda05b580c036e1fec6e2d8bf78eb2ac9d
+Commit-ID:  4fe94ce1c6ba678b5f12b94bb9996eea4fc99e85
+Gitweb:     https://git.kernel.org/tip/4fe94ce1c6ba678b5f12b94bb9996eea4fc99e85
 Author:     Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate: Tue, 30 Jul 2019 11:30:37 -0300
+AuthorDate: Tue, 30 Jul 2019 11:37:44 -0300
 Committer:  Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitDate: Mon, 12 Aug 2019 16:26:02 -0300
 
-perf config: Document the PERF_CONFIG environment variable
+perf test vfs_getname: Disable ~/.perfconfig to get default output
 
-There was a provision for setting this variable, but not the
-getenv("PERF_CONFIG") call to set it, as this was fixed in the previous
-cset, document that it can be used to ask for using an alternative
-.perfconfig file or to disable reading whatever file exists in the
-system or home directory, i.e. using:
+To get the expected output we have to ignore whatever changes the user
+has in its ~/.perfconfig file, so set PERF_CONFIG to /dev/null to
+achieve that.
 
-  export PERF_CONFIG=/dev/null
+Before:
+
+  # egrep 'trace|show_' ~/.perfconfig
+  [trace]
+  	show_zeros = yes
+  	show_duration = no
+  	show_timestamp = no
+  	show_arg_names = no
+  	show_prefix = yes
+  # echo $PERF_CONFIG
+
+  # perf test "trace + vfs_getname"
+  70: Check open filename arg using perf trace + vfs_getname: FAILED!
+  # export PERF_CONFIG=/dev/null
+  # perf test "trace + vfs_getname"
+  70: Check open filename arg using perf trace + vfs_getname: Ok
+  #
+
+After:
+
+  # egrep 'trace|show_' ~/.perfconfig
+  [trace]
+  	show_zeros = yes
+  	show_duration = no
+  	show_timestamp = no
+  	show_arg_names = no
+  	show_prefix = yes
+  # echo $PERF_CONFIG
+
+  # perf test "trace + vfs_getname"
+  70: Check open filename arg using perf trace + vfs_getname: Ok
+  #
 
 Cc: Adrian Hunter <adrian.hunter@intel.com>
 Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Luis Cláudio Gonçalves <lclaudio@redhat.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Taeung Song <treeze.taeung@gmail.com>
-Link: https://lkml.kernel.org/n/tip-0u4o967hsk7j0o50zp9ctn89@git.kernel.org
+Link: https://lkml.kernel.org/n/tip-3up27pexg5i3exuzqrvt4m8u@git.kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/Documentation/perf-config.txt | 4 ++++
+ tools/perf/tests/shell/trace+probe_vfs_getname.sh | 4 ++++
  1 file changed, 4 insertions(+)
 
-diff --git a/tools/perf/Documentation/perf-config.txt b/tools/perf/Documentation/perf-config.txt
-index e4aa268d2e38..c599623a1f3d 100644
---- a/tools/perf/Documentation/perf-config.txt
-+++ b/tools/perf/Documentation/perf-config.txt
-@@ -40,6 +40,10 @@ The '$HOME/.perfconfig' file is used to store a per-user configuration.
- The file '$(sysconfdir)/perfconfig' can be used to
- store a system-wide default configuration.
+diff --git a/tools/perf/tests/shell/trace+probe_vfs_getname.sh b/tools/perf/tests/shell/trace+probe_vfs_getname.sh
+index 45d269b0157e..11cc2af13f2b 100755
+--- a/tools/perf/tests/shell/trace+probe_vfs_getname.sh
++++ b/tools/perf/tests/shell/trace+probe_vfs_getname.sh
+@@ -32,6 +32,10 @@ if [ $err -ne 0 ] ; then
+ 	exit $err
+ fi
  
-+One an disable reading config files by setting the PERF_CONFIG environment
-+variable to /dev/null, or provide an alternate config file by setting that
-+variable.
++# Do not use whatever ~/.perfconfig file, it may change the output
++# via trace.{show_timestamp,show_prefix,etc}
++export PERF_CONFIG=/dev/null
 +
- When reading or writing, the values are read from the system and user
- configuration files by default, and options '--system' and '--user'
- can be used to tell the command to read from or write to only that location.
+ trace_open_vfs_getname
+ err=$?
+ rm -f ${file}
