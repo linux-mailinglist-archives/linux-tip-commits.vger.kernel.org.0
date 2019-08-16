@@ -2,47 +2,49 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E6B598E867
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 15 Aug 2019 11:36:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 915AD9013D
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 Aug 2019 14:19:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731256AbfHOJgv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 15 Aug 2019 05:36:51 -0400
-Received: from terminus.zytor.com ([198.137.202.136]:35613 "EHLO
+        id S1727210AbfHPMT0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 16 Aug 2019 08:19:26 -0400
+Received: from terminus.zytor.com ([198.137.202.136]:47035 "EHLO
         terminus.zytor.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731228AbfHOJgv (ORCPT
+        with ESMTP id S1727178AbfHPMT0 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 15 Aug 2019 05:36:51 -0400
+        Fri, 16 Aug 2019 08:19:26 -0400
 Received: from terminus.zytor.com (localhost [127.0.0.1])
-        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x7F9aiar2275415
+        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x7GCJAuQ2797771
         (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-        Thu, 15 Aug 2019 02:36:44 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x7F9aiar2275415
+        Fri, 16 Aug 2019 05:19:10 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x7GCJAuQ2797771
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-        s=2019071901; t=1565861805;
-        bh=3HKRKHGqClWBjEMXGAW44Wa6JdPTStv+aPbdtbpPGbg=;
-        h=Date:From:Cc:Reply-To:To:Subject:From;
-        b=N0iuR5o0qX6P0zMsgY6s1Dqedn/AoIGlo6+c02Rbb6Xqj7dAz7xog/YuJQC9+XtaE
-         Qpuh8N8dUDHQ5h5rqHooN0OaHMJSFjZWBr4uLGMwtQHxMVu2JVEgWnNNtUIR3OAv+C
-         LsKVJzqnkkQunueFYE4ancerLbhdVsoIs4LehRl+6kZonGueyvbCtP9mmD+Eg7A53v
-         JydYtt3srv9M1/ZL0p3AzsM4c5ou/K7aqiWbspYhztC+ml40qePbIW1mCydrQvNTP3
-         Z963IcKUJsROSlWeGYF6RVIJOic+dLLlZch7aDv5jnoFisXKKhKA2hq2oPLuFrg9Oe
-         jZpD8eoj0+EzA==
+        s=2019071901; t=1565957951;
+        bh=BrfH1XhTznc2zALCwGSlvffGTIizJp5vG62LuP0mI1c=;
+        h=Date:From:Cc:Reply-To:In-Reply-To:References:To:Subject:From;
+        b=v/QFyJXak1RXek35qwjE5NnR+A+eUTKgoLHGovieUjkLWlFqZJo1AcwRv2dPUl2tc
+         Tj8DAqdPymLwdP/RrNGXQu6b7S8euzo++MUZl1BEQK12QdQuWCjaoVZI454uGCiVQw
+         iEP2rk+g9ev/xKeo368kAYOf5GwOqcwaPyaEoLoSZBDC3rDk/wSPJgjGVRC65qboEc
+         gv97PKGs5Y3BrFh7h+6vbQ1hyHTi/JTgMC4ZS4qPqEiOt2t3wv2Klm0VekofWykyf3
+         L5nJK7eBzOIz5Q+jF3Ule5nP1Xngi/sRjt5e0LCwveKrINpS3qwcTOApdfJzkgwWnM
+         HkBYK4mMH0kvQ==
 Received: (from tipbot@localhost)
-        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x7F9aiMn2275411;
-        Thu, 15 Aug 2019 02:36:44 -0700
-Date:   Thu, 15 Aug 2019 02:36:44 -0700
+        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x7GCJANk2797765;
+        Fri, 16 Aug 2019 05:19:10 -0700
+Date:   Fri, 16 Aug 2019 05:19:10 -0700
 X-Authentication-Warning: terminus.zytor.com: tipbot set sender to tipbot@zytor.com using -f
-From:   tip-bot for Arnaldo Carvalho de Melo <tipbot@zytor.com>
-Message-ID: <tip-dda0acxqef1k72n9z4myjbjt@git.kernel.org>
-Cc:     tglx@linutronix.de, mingo@kernel.org, hpa@zytor.com,
-        adrian.hunter@intel.com, namhyung@kernel.org,
-        linux-kernel@vger.kernel.org, jolsa@kernel.org, acme@redhat.com
-Reply-To: acme@redhat.com, jolsa@kernel.org, namhyung@kernel.org,
-          linux-kernel@vger.kernel.org, hpa@zytor.com,
-          adrian.hunter@intel.com, mingo@kernel.org, tglx@linutronix.de
+From:   tip-bot for Rikard Falkeborn <tipbot@zytor.com>
+Message-ID: <tip-d5a1baddf1585885868cbab55989401fb97118c6@git.kernel.org>
+Cc:     linux-kernel@vger.kernel.org, hpa@zytor.com, mingo@kernel.org,
+        tglx@linutronix.de, keescook@chromium.org,
+        rikard.falkeborn@gmail.com
+Reply-To: linux-kernel@vger.kernel.org, hpa@zytor.com, tglx@linutronix.de,
+          mingo@kernel.org, keescook@chromium.org,
+          rikard.falkeborn@gmail.com
+In-Reply-To: <20190811184938.1796-2-rikard.falkeborn@gmail.com>
+References: <20190811184938.1796-2-rikard.falkeborn@gmail.com>
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip:perf/core] perf ui: No need to set ui_browser to 1 twice
-Git-Commit-ID: 1cd8fa288eb83c1fe0dfa492b09d228a8d802fbf
+Subject: [tip:x86/boot] x86/boot: Use common BUILD_BUG_ON
+Git-Commit-ID: d5a1baddf1585885868cbab55989401fb97118c6
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot.git.kernel.org>
 Robot-Unsubscribe: Contact <mailto:hpa@kernel.org> to get blacklisted from
@@ -51,47 +53,81 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset=UTF-8
 Content-Disposition: inline
-X-Spam-Status: No, score=-0.2 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        DATE_IN_FUTURE_96_Q,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF
-        autolearn=no autolearn_force=no version=3.4.2
+X-Spam-Status: No, score=1.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        DATE_IN_FUTURE_96_Q,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        FREEMAIL_FORGED_REPLYTO autolearn=no autolearn_force=no version=3.4.2
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on terminus.zytor.com
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-Commit-ID:  1cd8fa288eb83c1fe0dfa492b09d228a8d802fbf
-Gitweb:     https://git.kernel.org/tip/1cd8fa288eb83c1fe0dfa492b09d228a8d802fbf
-Author:     Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate: Tue, 13 Aug 2019 12:07:14 -0300
-Committer:  Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitDate: Wed, 14 Aug 2019 11:00:00 -0300
+Commit-ID:  d5a1baddf1585885868cbab55989401fb97118c6
+Gitweb:     https://git.kernel.org/tip/d5a1baddf1585885868cbab55989401fb97118c6
+Author:     Rikard Falkeborn <rikard.falkeborn@gmail.com>
+AuthorDate: Sun, 11 Aug 2019 20:49:36 +0200
+Committer:  Thomas Gleixner <tglx@linutronix.de>
+CommitDate: Fri, 16 Aug 2019 14:15:50 +0200
 
-perf ui: No need to set ui_browser to 1 twice
+x86/boot: Use common BUILD_BUG_ON
 
-We need to do it only when fallbacking from GTK to the TUI.
+Defining BUILD_BUG_ON causes redefinition warnings when adding includes of
+include/linux/build_bug.h in files unrelated to x86/boot.  For example,
+adding an include of build_bug.h to include/linux/bits.h shows the
+following warnings:
 
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lkml.kernel.org/n/tip-dda0acxqef1k72n9z4myjbjt@git.kernel.org
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+  CC      arch/x86/boot/cpucheck.o
+  In file included from ./include/linux/bits.h:22,
+                   from ./arch/x86/include/asm/msr-index.h:5,
+                   from arch/x86/boot/cpucheck.c:28:
+  ./include/linux/build_bug.h:49: warning: "BUILD_BUG_ON" redefined
+     49 | #define BUILD_BUG_ON(condition) \
+        |
+  In file included from arch/x86/boot/cpucheck.c:22:
+  arch/x86/boot/boot.h:31: note: this is the location of the previous definition
+     31 | #define BUILD_BUG_ON(condition) ((void)sizeof(char[1 - 2*!!(condition)]))
+        |
+
+The macro was added to boot.h in commit 62bd0337d0c4 ("Top header file for
+new x86 setup code"). At that time, BUILD_BUG_ON was defined in
+kernel.h. Presumably BUILD_BUG_ON was redefined to avoid pulling in
+kernel.h. Since then, BUILD_BUG_ON and similar macros have been split to a
+separate header file.
+
+Signed-off-by: Rikard Falkeborn <rikard.falkeborn@gmail.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Link: https://lkml.kernel.org/r/20190811184938.1796-2-rikard.falkeborn@gmail.com
+
+
 ---
- tools/perf/ui/setup.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/boot/boot.h | 2 --
+ arch/x86/boot/main.c | 1 +
+ 2 files changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/tools/perf/ui/setup.c b/tools/perf/ui/setup.c
-index 44fe824e96cd..3bc7c9a6fae9 100644
---- a/tools/perf/ui/setup.c
-+++ b/tools/perf/ui/setup.c
-@@ -89,9 +89,9 @@ void setup_browser(bool fallback_to_pager)
- 		printf("GTK browser requested but could not find %s\n",
- 		       PERF_GTK_DSO);
- 		sleep(1);
-+		use_browser = 1;
- 		/* fall through */
- 	case 1:
--		use_browser = 1;
- 		if (ui__init() == 0)
- 			break;
- 		/* fall through */
+diff --git a/arch/x86/boot/boot.h b/arch/x86/boot/boot.h
+index 19eca14b49a0..ca866f1cca2e 100644
+--- a/arch/x86/boot/boot.h
++++ b/arch/x86/boot/boot.h
+@@ -28,8 +28,6 @@
+ #include "cpuflags.h"
+ 
+ /* Useful macros */
+-#define BUILD_BUG_ON(condition) ((void)sizeof(char[1 - 2*!!(condition)]))
+-
+ #define ARRAY_SIZE(x) (sizeof(x) / sizeof(*(x)))
+ 
+ extern struct setup_header hdr;
+diff --git a/arch/x86/boot/main.c b/arch/x86/boot/main.c
+index 996df3d586f0..e3add857c2c9 100644
+--- a/arch/x86/boot/main.c
++++ b/arch/x86/boot/main.c
+@@ -10,6 +10,7 @@
+ /*
+  * Main module for the real-mode kernel code
+  */
++#include <linux/build_bug.h>
+ 
+ #include "boot.h"
+ #include "string.h"
