@@ -2,53 +2,50 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 80ABE909E4
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 Aug 2019 23:01:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C815C90F63
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 17 Aug 2019 10:19:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727723AbfHPVBW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 16 Aug 2019 17:01:22 -0400
-Received: from terminus.zytor.com ([198.137.202.136]:49923 "EHLO
+        id S1725965AbfHQITi (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 17 Aug 2019 04:19:38 -0400
+Received: from terminus.zytor.com ([198.137.202.136]:42111 "EHLO
         terminus.zytor.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727548AbfHPVBW (ORCPT
+        with ESMTP id S1725267AbfHQITh (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 16 Aug 2019 17:01:22 -0400
+        Sat, 17 Aug 2019 04:19:37 -0400
 Received: from terminus.zytor.com (localhost [127.0.0.1])
-        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x7GL18l32960880
+        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x7H8JEG03177926
         (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-        Fri, 16 Aug 2019 14:01:08 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x7GL18l32960880
+        Sat, 17 Aug 2019 01:19:14 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x7H8JEG03177926
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-        s=2019071901; t=1565989268;
-        bh=Q+6F7TluFBK2tIaqc8cWv7BEw07K7Xt56N49104j54g=;
+        s=2019071901; t=1566029954;
+        bh=07UNe5hT8xvaHkrT7ytvXu3ykvn8iCr4NvX3BxqJG5Q=;
         h=Date:From:Cc:Reply-To:In-Reply-To:References:To:Subject:From;
-        b=YLVVtCJJaJ5gE4M9bzqt3ZqihCzfCspCuZ8sOzKTQnqFoU9uNmEr8WdCE4Hf9C9Q5
-         u9etIQSiM+cGZk3DyTsttJJLpIM4YnCJbnj81GBCAQh1flH0KigiwjdyRkYcWncDXH
-         F7yeBIH+fgXIKh4O+i/ZF8fu4h/k3G5gjfLydpEeZwaGmjQiqyfRsRbJNk8SBuOb43
-         vWqBRGQHavj1Axwl8izXc79UBexOcMN2FsgJ0fEtD3sCx0652ZFZ4+GZev0Z9ME0h5
-         diCWCpJgFCyjdovuS9P9miE0wYqF4SRDRukTVIwo3WYIoRolRFBl7Z6u3QLtrPSCen
-         c6GporIXSOQvQ==
+        b=5E54YlwXx4Di1qfVUjjSPIwQr8zKj+rovaiJsO/vPrMggNrvfO+gKddxbMVjqgGyZ
+         qWH4AtuuAY0UTYUPv3egtW3yBWi8msHzmoEMb8JTESh35JlJY2ErWF8+SAXs73GyyB
+         TKJViLWS9qJq1Z4B4MsyrTvx3Mjb17HNZtYCWhba8jFzwNdXJSzUrb+pMzFirO+HO5
+         o6Bd5P6EVQPBpLKf0YWwRPhVdd4R+/mvPOnzihEV8nhDL0ZhY2juJFvaUFBDlSNaUu
+         +ltRVLF7FNC78CtZbkZPGXNdEftP4ysUt7m88EwWJL0yfwi/q6Suqeiz4+oOOToQEe
+         EhBRayUtMcUmw==
 Received: (from tipbot@localhost)
-        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x7GL176p2960864;
-        Fri, 16 Aug 2019 14:01:07 -0700
-Date:   Fri, 16 Aug 2019 14:01:07 -0700
+        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x7H8JDYL3177923;
+        Sat, 17 Aug 2019 01:19:13 -0700
+Date:   Sat, 17 Aug 2019 01:19:13 -0700
 X-Authentication-Warning: terminus.zytor.com: tipbot set sender to tipbot@zytor.com using -f
-From:   tip-bot for John Keeping <tipbot@zytor.com>
-Message-ID: <tip-e2736219e6ca3117e10651e215b96d66775220da@git.kernel.org>
-Cc:     namhyung@kernel.org, linux-kernel@vger.kernel.org,
-        mingo@kernel.org, alexander.shishkin@linux.intel.com,
-        khlebnikov@yandex-team.ru, peterz@infradead.org, acme@redhat.com,
-        jolsa@kernel.org, john@metanate.com, hpa@zytor.com,
-        tglx@linutronix.de
-Reply-To: namhyung@kernel.org, khlebnikov@yandex-team.ru,
-          peterz@infradead.org, acme@redhat.com, jolsa@kernel.org,
-          john@metanate.com, hpa@zytor.com, tglx@linutronix.de,
-          mingo@kernel.org, linux-kernel@vger.kernel.org,
-          alexander.shishkin@linux.intel.com
-In-Reply-To: <20190815100146.28842-3-john@metanate.com>
-References: <20190815100146.28842-3-john@metanate.com>
+From:   tip-bot for Tony Luck <tipbot@zytor.com>
+Message-ID: <tip-12ece2d53d3e8f827e972caf497c165f7729c717@git.kernel.org>
+Cc:     x86@kernel.org, tony.luck@intel.com, mingo@redhat.com,
+        tglx@linutronix.de, hpa@zytor.com, mingo@kernel.org, bp@suse.de,
+        dave.hansen@intel.com, linux-kernel@vger.kernel.org, bp@alien8.de
+Reply-To: bp@alien8.de, linux-kernel@vger.kernel.org, bp@suse.de,
+          dave.hansen@intel.com, hpa@zytor.com, mingo@kernel.org,
+          tglx@linutronix.de, x86@kernel.org, mingo@redhat.com,
+          tony.luck@intel.com
+In-Reply-To: <20190815224704.GA10025@agluck-desk2.amr.corp.intel.com>
+References: <20190815224704.GA10025@agluck-desk2.amr.corp.intel.com>
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip:perf/core] perf unwind: Remove unnecessary test
-Git-Commit-ID: e2736219e6ca3117e10651e215b96d66775220da
+Subject: [tip:x86/urgent] x86/cpu: Explain Intel model naming convention
+Git-Commit-ID: 12ece2d53d3e8f827e972caf497c165f7729c717
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot.git.kernel.org>
 Robot-Unsubscribe: Contact <mailto:hpa@kernel.org> to get blacklisted from
@@ -66,51 +63,58 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-Commit-ID:  e2736219e6ca3117e10651e215b96d66775220da
-Gitweb:     https://git.kernel.org/tip/e2736219e6ca3117e10651e215b96d66775220da
-Author:     John Keeping <john@metanate.com>
-AuthorDate: Thu, 15 Aug 2019 11:01:46 +0100
-Committer:  Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitDate: Fri, 16 Aug 2019 12:30:14 -0300
+Commit-ID:  12ece2d53d3e8f827e972caf497c165f7729c717
+Gitweb:     https://git.kernel.org/tip/12ece2d53d3e8f827e972caf497c165f7729c717
+Author:     Tony Luck <tony.luck@intel.com>
+AuthorDate: Thu, 15 Aug 2019 11:16:24 -0700
+Committer:  Borislav Petkov <bp@suse.de>
+CommitDate: Sat, 17 Aug 2019 10:06:32 +0200
 
-perf unwind: Remove unnecessary test
+x86/cpu: Explain Intel model naming convention
 
-If dwarf_callchain_users is false, then unwind__prepare_access() will
-not set unwind_libunwind_ops so the remaining test here is sufficient.
+Dave Hansen spelled out the rules in an e-mail:
 
-Signed-off-by: John Keeping <john@metanate.com>
-Reviewed-by: Jiri Olsa <jolsa@kernel.org>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Konstantin Khlebnikov <khlebnikov@yandex-team.ru>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: john keeping <john@metanate.com>
-Link: http://lkml.kernel.org/r/20190815100146.28842-3-john@metanate.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+ https://lkml.kernel.org/r/91eefbe4-e32b-d762-be4d-672ff915db47@intel.com
+
+Copy those right into the <asm/intel-family.h> file to make it easy for
+people to find them.
+
+Suggested-by: Borislav Petkov <bp@alien8.de>
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Acked-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Dave Hansen <dave.hansen@intel.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: x86-ml <x86@kernel.org>
+Link: https://lkml.kernel.org/r/20190815224704.GA10025@agluck-desk2.amr.corp.intel.com
 ---
- tools/perf/util/unwind-libunwind.c | 6 ------
- 1 file changed, 6 deletions(-)
+ arch/x86/include/asm/intel-family.h | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/tools/perf/util/unwind-libunwind.c b/tools/perf/util/unwind-libunwind.c
-index b843f9d0a9ea..6499b22b158b 100644
---- a/tools/perf/util/unwind-libunwind.c
-+++ b/tools/perf/util/unwind-libunwind.c
-@@ -69,18 +69,12 @@ out_register:
+diff --git a/arch/x86/include/asm/intel-family.h b/arch/x86/include/asm/intel-family.h
+index 0278aa66ef62..fe7c205233f1 100644
+--- a/arch/x86/include/asm/intel-family.h
++++ b/arch/x86/include/asm/intel-family.h
+@@ -11,6 +11,21 @@
+  * While adding a new CPUID for a new microarchitecture, add a new
+  * group to keep logically sorted out in chronological order. Within
+  * that group keep the CPUID for the variants sorted by model number.
++ *
++ * The defined symbol names have the following form:
++ *	INTEL_FAM6{OPTFAMILY}_{MICROARCH}{OPTDIFF}
++ * where:
++ * OPTFAMILY	Describes the family of CPUs that this belongs to. Default
++ *		is assumed to be "_CORE" (and should be omitted). Other values
++ *		currently in use are _ATOM and _XEON_PHI
++ * MICROARCH	Is the code name for the micro-architecture for this core.
++ *		N.B. Not the platform name.
++ * OPTDIFF	If needed, a short string to differentiate by market segment.
++ *		Exact strings here will vary over time. _DESKTOP, _MOBILE, and
++ *		_X (short for Xeon server) should be used when they are
++ *		appropriate.
++ *
++ * The #define line may optionally include a comment including platform names.
+  */
  
- void unwind__flush_access(struct map_groups *mg)
- {
--	if (!dwarf_callchain_users)
--		return;
--
- 	if (mg->unwind_libunwind_ops)
- 		mg->unwind_libunwind_ops->flush_access(mg);
- }
- 
- void unwind__finish_access(struct map_groups *mg)
- {
--	if (!dwarf_callchain_users)
--		return;
--
- 	if (mg->unwind_libunwind_ops)
- 		mg->unwind_libunwind_ops->finish_access(mg);
- }
+ #define INTEL_FAM6_CORE_YONAH		0x0E
