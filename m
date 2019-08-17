@@ -2,50 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C815C90F63
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 17 Aug 2019 10:19:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A408E90F85
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 17 Aug 2019 10:40:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725965AbfHQITi (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 17 Aug 2019 04:19:38 -0400
-Received: from terminus.zytor.com ([198.137.202.136]:42111 "EHLO
+        id S1725945AbfHQIkX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 17 Aug 2019 04:40:23 -0400
+Received: from terminus.zytor.com ([198.137.202.136]:44479 "EHLO
         terminus.zytor.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725267AbfHQITh (ORCPT
+        with ESMTP id S1725925AbfHQIkX (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 17 Aug 2019 04:19:37 -0400
+        Sat, 17 Aug 2019 04:40:23 -0400
 Received: from terminus.zytor.com (localhost [127.0.0.1])
-        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x7H8JEG03177926
+        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x7H8eAKh3184729
         (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-        Sat, 17 Aug 2019 01:19:14 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x7H8JEG03177926
+        Sat, 17 Aug 2019 01:40:10 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x7H8eAKh3184729
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-        s=2019071901; t=1566029954;
-        bh=07UNe5hT8xvaHkrT7ytvXu3ykvn8iCr4NvX3BxqJG5Q=;
+        s=2019071901; t=1566031211;
+        bh=L+ePIe7v6+koOGHVExA53FMzqQm7TQc96yfOl1tYPi0=;
         h=Date:From:Cc:Reply-To:In-Reply-To:References:To:Subject:From;
-        b=5E54YlwXx4Di1qfVUjjSPIwQr8zKj+rovaiJsO/vPrMggNrvfO+gKddxbMVjqgGyZ
-         qWH4AtuuAY0UTYUPv3egtW3yBWi8msHzmoEMb8JTESh35JlJY2ErWF8+SAXs73GyyB
-         TKJViLWS9qJq1Z4B4MsyrTvx3Mjb17HNZtYCWhba8jFzwNdXJSzUrb+pMzFirO+HO5
-         o6Bd5P6EVQPBpLKf0YWwRPhVdd4R+/mvPOnzihEV8nhDL0ZhY2juJFvaUFBDlSNaUu
-         +ltRVLF7FNC78CtZbkZPGXNdEftP4ysUt7m88EwWJL0yfwi/q6Suqeiz4+oOOToQEe
-         EhBRayUtMcUmw==
+        b=eimec7yupCa67r9VO30kecBKdQ+K4K/h3IWMPy0CAbtD4LRSBi1Ams0GFItXwcxAa
+         fdqRbEUeszwpQRu5GHsWKn0wnxr38OayfNq+XcNXr0zT+JoMtXWW5NsEyqEg2QV3cB
+         xdn4tVPdUM3ckrXkvWEmi+dH+WMfYSoUT7wC0je3IYtzBZPfyt9OIllcXO1t5eYJ5Q
+         BXMahoaOPEy/qBsL/re0KLlcscB4lST+/mQZYBvqDGoPdViEaoWBBK9mO3SUjsXV6j
+         yirnmXVNGmrweerHbZy3Bt3f7Vgd/ECk47/+R1A09DZttYM0YCGIhY15365k4Y6y7f
+         X5q80KtzbGwZg==
 Received: (from tipbot@localhost)
-        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x7H8JDYL3177923;
-        Sat, 17 Aug 2019 01:19:13 -0700
-Date:   Sat, 17 Aug 2019 01:19:13 -0700
+        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x7H8e9YV3184726;
+        Sat, 17 Aug 2019 01:40:09 -0700
+Date:   Sat, 17 Aug 2019 01:40:09 -0700
 X-Authentication-Warning: terminus.zytor.com: tipbot set sender to tipbot@zytor.com using -f
-From:   tip-bot for Tony Luck <tipbot@zytor.com>
-Message-ID: <tip-12ece2d53d3e8f827e972caf497c165f7729c717@git.kernel.org>
-Cc:     x86@kernel.org, tony.luck@intel.com, mingo@redhat.com,
-        tglx@linutronix.de, hpa@zytor.com, mingo@kernel.org, bp@suse.de,
-        dave.hansen@intel.com, linux-kernel@vger.kernel.org, bp@alien8.de
-Reply-To: bp@alien8.de, linux-kernel@vger.kernel.org, bp@suse.de,
-          dave.hansen@intel.com, hpa@zytor.com, mingo@kernel.org,
-          tglx@linutronix.de, x86@kernel.org, mingo@redhat.com,
-          tony.luck@intel.com
-In-Reply-To: <20190815224704.GA10025@agluck-desk2.amr.corp.intel.com>
-References: <20190815224704.GA10025@agluck-desk2.amr.corp.intel.com>
+From:   tip-bot for Rahul Tanwar <tipbot@zytor.com>
+Message-ID: <tip-bba10c5cab4ddd8725a7998e064fc72c9770c667@git.kernel.org>
+Cc:     mingo@redhat.com, bp@suse.de, andriy.shevchenko@intel.com,
+        ricardo.neri-calderon@linux.intel.com, tony.luck@intel.com,
+        rafael.j.wysocki@intel.com, tglx@linutronix.de,
+        linux-kernel@vger.kernel.org, hdegoede@redhat.com,
+        mingo@kernel.org, hpa@zytor.com, x86@kernel.org,
+        rahul.tanwar@linux.intel.com
+Reply-To: andriy.shevchenko@intel.com, mingo@redhat.com, bp@suse.de,
+          tony.luck@intel.com, ricardo.neri-calderon@linux.intel.com,
+          tglx@linutronix.de, linux-kernel@vger.kernel.org,
+          rafael.j.wysocki@intel.com, mingo@kernel.org, x86@kernel.org,
+          hpa@zytor.com, rahul.tanwar@linux.intel.com, hdegoede@redhat.com
+In-Reply-To: <f7a0e142faa953a53d5f81f78055e1b3c793b134.1565940653.git.rahul.tanwar@linux.intel.com>
+References: <f7a0e142faa953a53d5f81f78055e1b3c793b134.1565940653.git.rahul.tanwar@linux.intel.com>
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip:x86/urgent] x86/cpu: Explain Intel model naming convention
-Git-Commit-ID: 12ece2d53d3e8f827e972caf497c165f7729c717
+Subject: [tip:x86/cleanups] x86/cpu: Use constant definitions for CPU models
+Git-Commit-ID: bba10c5cab4ddd8725a7998e064fc72c9770c667
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot.git.kernel.org>
 Robot-Unsubscribe: Contact <mailto:hpa@kernel.org> to get blacklisted from
@@ -63,58 +67,51 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-Commit-ID:  12ece2d53d3e8f827e972caf497c165f7729c717
-Gitweb:     https://git.kernel.org/tip/12ece2d53d3e8f827e972caf497c165f7729c717
-Author:     Tony Luck <tony.luck@intel.com>
-AuthorDate: Thu, 15 Aug 2019 11:16:24 -0700
+Commit-ID:  bba10c5cab4ddd8725a7998e064fc72c9770c667
+Gitweb:     https://git.kernel.org/tip/bba10c5cab4ddd8725a7998e064fc72c9770c667
+Author:     Rahul Tanwar <rahul.tanwar@linux.intel.com>
+AuthorDate: Fri, 16 Aug 2019 16:18:57 +0800
 Committer:  Borislav Petkov <bp@suse.de>
-CommitDate: Sat, 17 Aug 2019 10:06:32 +0200
+CommitDate: Sat, 17 Aug 2019 10:34:09 +0200
 
-x86/cpu: Explain Intel model naming convention
+x86/cpu: Use constant definitions for CPU models
 
-Dave Hansen spelled out the rules in an e-mail:
+Replace model numbers with their respective macro definitions when
+comparing CPU models.
 
- https://lkml.kernel.org/r/91eefbe4-e32b-d762-be4d-672ff915db47@intel.com
-
-Copy those right into the <asm/intel-family.h> file to make it easy for
-people to find them.
-
-Suggested-by: Borislav Petkov <bp@alien8.de>
-Signed-off-by: Tony Luck <tony.luck@intel.com>
+Suggested-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Signed-off-by: Rahul Tanwar <rahul.tanwar@linux.intel.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Acked-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: alan@linux.intel.com
+Cc: cheol.yong.kim@intel.com
+Cc: Hans de Goede <hdegoede@redhat.com>
 Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Dave Hansen <dave.hansen@intel.com>
 Cc: Ingo Molnar <mingo@redhat.com>
+Cc: qi-ming.wu@intel.com
+Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Cc: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Tony Luck <tony.luck@intel.com>
 Cc: x86-ml <x86@kernel.org>
-Link: https://lkml.kernel.org/r/20190815224704.GA10025@agluck-desk2.amr.corp.intel.com
+Link: https://lkml.kernel.org/r/f7a0e142faa953a53d5f81f78055e1b3c793b134.1565940653.git.rahul.tanwar@linux.intel.com
 ---
- arch/x86/include/asm/intel-family.h | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ arch/x86/kernel/cpu/intel.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/include/asm/intel-family.h b/arch/x86/include/asm/intel-family.h
-index 0278aa66ef62..fe7c205233f1 100644
---- a/arch/x86/include/asm/intel-family.h
-+++ b/arch/x86/include/asm/intel-family.h
-@@ -11,6 +11,21 @@
-  * While adding a new CPUID for a new microarchitecture, add a new
-  * group to keep logically sorted out in chronological order. Within
-  * that group keep the CPUID for the variants sorted by model number.
-+ *
-+ * The defined symbol names have the following form:
-+ *	INTEL_FAM6{OPTFAMILY}_{MICROARCH}{OPTDIFF}
-+ * where:
-+ * OPTFAMILY	Describes the family of CPUs that this belongs to. Default
-+ *		is assumed to be "_CORE" (and should be omitted). Other values
-+ *		currently in use are _ATOM and _XEON_PHI
-+ * MICROARCH	Is the code name for the micro-architecture for this core.
-+ *		N.B. Not the platform name.
-+ * OPTDIFF	If needed, a short string to differentiate by market segment.
-+ *		Exact strings here will vary over time. _DESKTOP, _MOBILE, and
-+ *		_X (short for Xeon server) should be used when they are
-+ *		appropriate.
-+ *
-+ * The #define line may optionally include a comment including platform names.
-  */
- 
- #define INTEL_FAM6_CORE_YONAH		0x0E
+diff --git a/arch/x86/kernel/cpu/intel.c b/arch/x86/kernel/cpu/intel.c
+index 8d6d92ebeb54..66de4b84c369 100644
+--- a/arch/x86/kernel/cpu/intel.c
++++ b/arch/x86/kernel/cpu/intel.c
+@@ -265,9 +265,9 @@ static void early_init_intel(struct cpuinfo_x86 *c)
+ 	/* Penwell and Cloverview have the TSC which doesn't sleep on S3 */
+ 	if (c->x86 == 6) {
+ 		switch (c->x86_model) {
+-		case 0x27:	/* Penwell */
+-		case 0x35:	/* Cloverview */
+-		case 0x4a:	/* Merrifield */
++		case INTEL_FAM6_ATOM_SALTWELL_MID:
++		case INTEL_FAM6_ATOM_SALTWELL_TABLET:
++		case INTEL_FAM6_ATOM_SILVERMONT_MID:
+ 			set_cpu_cap(c, X86_FEATURE_NONSTOP_TSC_S3);
+ 			break;
+ 		default:
