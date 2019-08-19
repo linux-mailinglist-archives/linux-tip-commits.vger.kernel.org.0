@@ -2,50 +2,51 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DE3D925AF
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Aug 2019 16:01:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF45E9264F
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Aug 2019 16:16:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727614AbfHSOBX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 19 Aug 2019 10:01:23 -0400
-Received: from terminus.zytor.com ([198.137.202.136]:59029 "EHLO
+        id S1726242AbfHSOQW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 19 Aug 2019 10:16:22 -0400
+Received: from terminus.zytor.com ([198.137.202.136]:34841 "EHLO
         terminus.zytor.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727537AbfHSOBX (ORCPT
+        with ESMTP id S1726028AbfHSOQV (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 19 Aug 2019 10:01:23 -0400
+        Mon, 19 Aug 2019 10:16:21 -0400
 Received: from terminus.zytor.com (localhost [127.0.0.1])
-        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x7JE16CS4169973
+        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x7JEG4Us4176149
         (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-        Mon, 19 Aug 2019 07:01:06 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x7JE16CS4169973
+        Mon, 19 Aug 2019 07:16:05 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x7JEG4Us4176149
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-        s=2019071901; t=1566223267;
-        bh=VEXomE9QNd6gB1XcE7lQbh06Yd7VvKl7S0Flkxa4Nm8=;
+        s=2019071901; t=1566224165;
+        bh=kNu8MarXlKNs9EGB0IGZiHuSCFeD5t2WIZgZBqyJbi4=;
         h=Date:From:Cc:Reply-To:In-Reply-To:References:To:Subject:From;
-        b=HHgnOrh6j1yB4WnDdp/NOVjoGirR7EBnsb7QB9APps0fNOX3rxZN5GQfT/DLWpp2U
-         n6zFjMkc5o5kyohktb76B376ssn1IZJ9/Oyd29DqqaXhwQ1MYNp/o+YZf9GtrDdDEU
-         JcUEqYgeR2ATdnXFudDXQpNqNsBTtOw4Ny6CJ+8Gb6IElj15oE5Qt6uOVtj4SlEdhT
-         PBo1jnxJbW9yxC7CkFliO/QGcqtqutU0Ij5B8hu2iu9pwC/lGpFDajhFLWtCajz8Dv
-         0g7ILGzDrMxU13CfFlNjiZH71pGWMMkcDep33Jys7P/mBbUNPXZHtb4Vc8F5g3l6Lc
-         AERWV9RlqCTNQ==
+        b=pl/foEheLJp/qeBf9rhfqjYPYcUZWjvcNPlPAoPA1676cu/UcGbBGBtl4cRsWalDa
+         BaJd46PuzDeT4r4f0y+dn2nZABqmo8EJAeBFTjJCSboOJqRlBnUp/j5PFnOraAX999
+         y+7Fs/SyEUDyMg8FxjeU223fEwUpDiAxTzKKVIL/QymFOCDqZsqE/VK5Ec5JNHogst
+         roX8LpnpWpoBB6kZwUnJT/h/u5dmCLw4Kf3MFQdwbVEp2P2YfOcifwj16PLHYmIUmE
+         zlHI7y7d3h/liekDC6m7I7609mqfqQHnqwX6TV26DtEovH2/dS2fDwzlweeW/P1PtW
+         rkDabdiWkyfOw==
 Received: (from tipbot@localhost)
-        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x7JE16MP4169970;
-        Mon, 19 Aug 2019 07:01:06 -0700
-Date:   Mon, 19 Aug 2019 07:01:06 -0700
+        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x7JEG43k4176146;
+        Mon, 19 Aug 2019 07:16:04 -0700
+Date:   Mon, 19 Aug 2019 07:16:04 -0700
 X-Authentication-Warning: terminus.zytor.com: tipbot set sender to tipbot@zytor.com using -f
-From:   tip-bot for Michael Kelley <tipbot@zytor.com>
-Message-ID: <tip-e1ee29624746fbf667f80e8ae3815a76e4d1bd5b@git.kernel.org>
-Cc:     linux-kernel@vger.kernel.org, mikelley@microsoft.com,
-        gregkh@linuxfoundation.org, hpa@zytor.com, mingo@kernel.org,
-        tglx@linutronix.de
-Reply-To: mingo@kernel.org, tglx@linutronix.de, hpa@zytor.com,
-          gregkh@linuxfoundation.org, mikelley@microsoft.com,
-          linux-kernel@vger.kernel.org
-In-Reply-To: <1564703564-4116-1-git-send-email-mikelley@microsoft.com>
-References: <1564703564-4116-1-git-send-email-mikelley@microsoft.com>
+From:   "tip-bot for Kirill A. Shutemov" <tipbot@zytor.com>
+Message-ID: <tip-0a46fff2f9108c2c44218380a43a736cf4612541@git.kernel.org>
+Cc:     mingo@kernel.org, kirill.shutemov@linux.intel.com, x86@kernel.org,
+        mingo@redhat.com, linux-kernel@vger.kernel.org, bp@suse.de,
+        hpa@zytor.com, tglx@linutronix.de, kirill@shutemov.name
+Reply-To: tglx@linutronix.de, bp@suse.de, hpa@zytor.com,
+          linux-kernel@vger.kernel.org, mingo@redhat.com, x86@kernel.org,
+          mingo@kernel.org, kirill.shutemov@linux.intel.com,
+          kirill@shutemov.name
+In-Reply-To: <20190813131654.24378-1-kirill.shutemov@linux.intel.com>
+References: <20190813131654.24378-1-kirill.shutemov@linux.intel.com>
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip:irq/urgent] genirq: Properly pair kobject_del() with
- kobject_add()
-Git-Commit-ID: e1ee29624746fbf667f80e8ae3815a76e4d1bd5b
+Subject: [tip:x86/urgent] x86/boot/compressed/64: Fix boot on machines with
+ broken E820 table
+Git-Commit-ID: 0a46fff2f9108c2c44218380a43a736cf4612541
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot.git.kernel.org>
 Robot-Unsubscribe: Contact <mailto:hpa@kernel.org> to get blacklisted from
@@ -63,57 +64,75 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-Commit-ID:  e1ee29624746fbf667f80e8ae3815a76e4d1bd5b
-Gitweb:     https://git.kernel.org/tip/e1ee29624746fbf667f80e8ae3815a76e4d1bd5b
-Author:     Michael Kelley <mikelley@microsoft.com>
-AuthorDate: Thu, 1 Aug 2019 23:53:53 +0000
-Committer:  Thomas Gleixner <tglx@linutronix.de>
-CommitDate: Mon, 19 Aug 2019 15:56:28 +0200
+Commit-ID:  0a46fff2f9108c2c44218380a43a736cf4612541
+Gitweb:     https://git.kernel.org/tip/0a46fff2f9108c2c44218380a43a736cf4612541
+Author:     Kirill A. Shutemov <kirill@shutemov.name>
+AuthorDate: Tue, 13 Aug 2019 16:16:54 +0300
+Committer:  Borislav Petkov <bp@suse.de>
+CommitDate: Mon, 19 Aug 2019 15:59:13 +0200
 
-genirq: Properly pair kobject_del() with kobject_add()
+x86/boot/compressed/64: Fix boot on machines with broken E820 table
 
-If alloc_descs() fails before irq_sysfs_init() has run, free_desc() in the
-cleanup path will call kobject_del() even though the kobject has not been
-added with kobject_add().
+BIOS on Samsung 500C Chromebook reports very rudimentary E820 table that
+consists of 2 entries:
 
-Fix this by making the call to kobject_del() conditional on whether
-irq_sysfs_init() has run.
+  BIOS-e820: [mem 0x0000000000000000-0x0000000000000fff] usable
+  BIOS-e820: [mem 0x00000000fffff000-0x00000000ffffffff] reserved
 
-This problem surfaced because commit aa30f47cf666 ("kobject: Add support
-for default attribute groups to kobj_type") makes kobject_del() stricter
-about pairing with kobject_add(). If the pairing is incorrrect, a WARNING
-and backtrace occur in sysfs_remove_group() because there is no parent.
+It breaks logic in find_trampoline_placement(): bios_start lands on the
+end of the first 4k page and trampoline start gets placed below 0.
 
-[ tglx: Add a comment to the code ]
+Detect underflow and don't touch bios_start for such cases. It makes
+kernel ignore E820 table on machines that doesn't have two usable pages
+below BIOS_START_MAX.
 
-Fixes: ecb3f394c5db ("genirq: Expose interrupt information through sysfs")
-Signed-off-by: Michael Kelley <mikelley@microsoft.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/1564703564-4116-1-git-send-email-mikelley@microsoft.com
-
+Fixes: 1b3a62643660 ("x86/boot/compressed/64: Validate trampoline placement against E820")
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: x86-ml <x86@kernel.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=203463
+Link: https://lkml.kernel.org/r/20190813131654.24378-1-kirill.shutemov@linux.intel.com
 ---
- kernel/irq/irqdesc.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ arch/x86/boot/compressed/pgtable_64.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/irq/irqdesc.c b/kernel/irq/irqdesc.c
-index 9484e88dabc2..51f42f3caf09 100644
---- a/kernel/irq/irqdesc.c
-+++ b/kernel/irq/irqdesc.c
-@@ -437,8 +437,14 @@ static void free_desc(unsigned int irq)
- 	 *
- 	 * The sysfs entry must be serialized against a concurrent
- 	 * irq_sysfs_init() as well.
-+	 *
-+	 * If irq_sysfs_init() has not yet been invoked (early boot), then
-+	 * irq_kobj_base is NULL and the descriptor was never added.
-+	 * kobject_del() complains about a object with no parent, so make
-+	 * it conditional.
- 	 */
--	kobject_del(&desc->kobj);
-+	if (irq_kobj_base)
-+		kobject_del(&desc->kobj);
- 	delete_irq_desc(irq);
+diff --git a/arch/x86/boot/compressed/pgtable_64.c b/arch/x86/boot/compressed/pgtable_64.c
+index 5f2d03067ae5..2faddeb0398a 100644
+--- a/arch/x86/boot/compressed/pgtable_64.c
++++ b/arch/x86/boot/compressed/pgtable_64.c
+@@ -72,6 +72,8 @@ static unsigned long find_trampoline_placement(void)
  
- 	/*
+ 	/* Find the first usable memory region under bios_start. */
+ 	for (i = boot_params->e820_entries - 1; i >= 0; i--) {
++		unsigned long new;
++
+ 		entry = &boot_params->e820_table[i];
+ 
+ 		/* Skip all entries above bios_start. */
+@@ -84,15 +86,20 @@ static unsigned long find_trampoline_placement(void)
+ 
+ 		/* Adjust bios_start to the end of the entry if needed. */
+ 		if (bios_start > entry->addr + entry->size)
+-			bios_start = entry->addr + entry->size;
++			new = entry->addr + entry->size;
+ 
+ 		/* Keep bios_start page-aligned. */
+-		bios_start = round_down(bios_start, PAGE_SIZE);
++		new = round_down(new, PAGE_SIZE);
+ 
+ 		/* Skip the entry if it's too small. */
+-		if (bios_start - TRAMPOLINE_32BIT_SIZE < entry->addr)
++		if (new - TRAMPOLINE_32BIT_SIZE < entry->addr)
+ 			continue;
+ 
++		/* Protect against underflow. */
++		if (new - TRAMPOLINE_32BIT_SIZE > bios_start)
++			break;
++
++		bios_start = new;
+ 		break;
+ 	}
+ 
