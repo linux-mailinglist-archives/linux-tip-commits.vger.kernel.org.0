@@ -2,47 +2,50 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CC959257E
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Aug 2019 15:49:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DE3D925AF
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Aug 2019 16:01:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727424AbfHSNtQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 19 Aug 2019 09:49:16 -0400
-Received: from terminus.zytor.com ([198.137.202.136]:37439 "EHLO
+        id S1727614AbfHSOBX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 19 Aug 2019 10:01:23 -0400
+Received: from terminus.zytor.com ([198.137.202.136]:59029 "EHLO
         terminus.zytor.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726987AbfHSNtQ (ORCPT
+        with ESMTP id S1727537AbfHSOBX (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 19 Aug 2019 09:49:16 -0400
+        Mon, 19 Aug 2019 10:01:23 -0400
 Received: from terminus.zytor.com (localhost [127.0.0.1])
-        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x7JDn8V94166449
+        by terminus.zytor.com (8.15.2/8.15.2) with ESMTPS id x7JE16CS4169973
         (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-        Mon, 19 Aug 2019 06:49:08 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x7JDn8V94166449
+        Mon, 19 Aug 2019 07:01:06 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 terminus.zytor.com x7JE16CS4169973
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-        s=2019071901; t=1566222549;
-        bh=bt9qBxsW1yj/rc8BAQPZI2Fpcuazh9VG5NsUKCp6KPU=;
+        s=2019071901; t=1566223267;
+        bh=VEXomE9QNd6gB1XcE7lQbh06Yd7VvKl7S0Flkxa4Nm8=;
         h=Date:From:Cc:Reply-To:In-Reply-To:References:To:Subject:From;
-        b=46cDyLahblbPlji6Y727Sf3dn5OGX6uzqSuocI56qhYdw0U+ugG1Q0U3raILDihcf
-         gXv+Th5FSod5HhZD2a6Vd3lgPWoWYxn6aEN7nKi6IwOlzJQ6lTg9IvsDlkJX0q2TDR
-         szexbLQhwbotXYRhDPITx+SXR8JN6ciqtG+aBIOIiOFwXr9JN46vQiHMb3TvwMRgZY
-         J+T5xNsPdLza10Xm8NmL/KGZI9IuKiHiBIYJzQh7cUEbN95JesWFdpy/K69ZRbRTPj
-         7ie5gXlcj4GzoloY1RUpLlZkNahIjhZV5fCaESbDlwJAReomjBe42glGEtNHXQm5yg
-         Vm5uW/xZCyktw==
+        b=HHgnOrh6j1yB4WnDdp/NOVjoGirR7EBnsb7QB9APps0fNOX3rxZN5GQfT/DLWpp2U
+         n6zFjMkc5o5kyohktb76B376ssn1IZJ9/Oyd29DqqaXhwQ1MYNp/o+YZf9GtrDdDEU
+         JcUEqYgeR2ATdnXFudDXQpNqNsBTtOw4Ny6CJ+8Gb6IElj15oE5Qt6uOVtj4SlEdhT
+         PBo1jnxJbW9yxC7CkFliO/QGcqtqutU0Ij5B8hu2iu9pwC/lGpFDajhFLWtCajz8Dv
+         0g7ILGzDrMxU13CfFlNjiZH71pGWMMkcDep33Jys7P/mBbUNPXZHtb4Vc8F5g3l6Lc
+         AERWV9RlqCTNQ==
 Received: (from tipbot@localhost)
-        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x7JDn8So4166445;
-        Mon, 19 Aug 2019 06:49:08 -0700
-Date:   Mon, 19 Aug 2019 06:49:08 -0700
+        by terminus.zytor.com (8.15.2/8.15.2/Submit) id x7JE16MP4169970;
+        Mon, 19 Aug 2019 07:01:06 -0700
+Date:   Mon, 19 Aug 2019 07:01:06 -0700
 X-Authentication-Warning: terminus.zytor.com: tipbot set sender to tipbot@zytor.com using -f
-From:   tip-bot for Thomas Gleixner <tipbot@zytor.com>
-Message-ID: <tip-b6a32bbd8735def2d0d696ba59205d1874b7800f@git.kernel.org>
-Cc:     mingo@kernel.org, bigeasy@linutronix.de, hpa@zytor.com,
-        linux-kernel@vger.kernel.org, tglx@linutronix.de
-Reply-To: mingo@kernel.org, hpa@zytor.com, bigeasy@linutronix.de,
-          tglx@linutronix.de, linux-kernel@vger.kernel.org
-In-Reply-To: <20190816160923.12855-1-bigeasy@linutronix.de>
-References: <20190816160923.12855-1-bigeasy@linutronix.de>
+From:   tip-bot for Michael Kelley <tipbot@zytor.com>
+Message-ID: <tip-e1ee29624746fbf667f80e8ae3815a76e4d1bd5b@git.kernel.org>
+Cc:     linux-kernel@vger.kernel.org, mikelley@microsoft.com,
+        gregkh@linuxfoundation.org, hpa@zytor.com, mingo@kernel.org,
+        tglx@linutronix.de
+Reply-To: mingo@kernel.org, tglx@linutronix.de, hpa@zytor.com,
+          gregkh@linuxfoundation.org, mikelley@microsoft.com,
+          linux-kernel@vger.kernel.org
+In-Reply-To: <1564703564-4116-1-git-send-email-mikelley@microsoft.com>
+References: <1564703564-4116-1-git-send-email-mikelley@microsoft.com>
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip:irq/core] genirq: Force interrupt threading on RT
-Git-Commit-ID: b6a32bbd8735def2d0d696ba59205d1874b7800f
+Subject: [tip:irq/urgent] genirq: Properly pair kobject_del() with
+ kobject_add()
+Git-Commit-ID: e1ee29624746fbf667f80e8ae3815a76e4d1bd5b
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot.git.kernel.org>
 Robot-Unsubscribe: Contact <mailto:hpa@kernel.org> to get blacklisted from
@@ -60,54 +63,57 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-Commit-ID:  b6a32bbd8735def2d0d696ba59205d1874b7800f
-Gitweb:     https://git.kernel.org/tip/b6a32bbd8735def2d0d696ba59205d1874b7800f
-Author:     Thomas Gleixner <tglx@linutronix.de>
-AuthorDate: Fri, 16 Aug 2019 18:09:23 +0200
+Commit-ID:  e1ee29624746fbf667f80e8ae3815a76e4d1bd5b
+Gitweb:     https://git.kernel.org/tip/e1ee29624746fbf667f80e8ae3815a76e4d1bd5b
+Author:     Michael Kelley <mikelley@microsoft.com>
+AuthorDate: Thu, 1 Aug 2019 23:53:53 +0000
 Committer:  Thomas Gleixner <tglx@linutronix.de>
-CommitDate: Mon, 19 Aug 2019 15:45:48 +0200
+CommitDate: Mon, 19 Aug 2019 15:56:28 +0200
 
-genirq: Force interrupt threading on RT
+genirq: Properly pair kobject_del() with kobject_add()
 
-Switch force_irqthreads from a boot time modifiable variable to a compile
-time constant when CONFIG_PREEMPT_RT is enabled.
+If alloc_descs() fails before irq_sysfs_init() has run, free_desc() in the
+cleanup path will call kobject_del() even though the kobject has not been
+added with kobject_add().
 
+Fix this by making the call to kobject_del() conditional on whether
+irq_sysfs_init() has run.
+
+This problem surfaced because commit aa30f47cf666 ("kobject: Add support
+for default attribute groups to kobj_type") makes kobject_del() stricter
+about pairing with kobject_add(). If the pairing is incorrrect, a WARNING
+and backtrace occur in sysfs_remove_group() because there is no parent.
+
+[ tglx: Add a comment to the code ]
+
+Fixes: ecb3f394c5db ("genirq: Expose interrupt information through sysfs")
+Signed-off-by: Michael Kelley <mikelley@microsoft.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20190816160923.12855-1-bigeasy@linutronix.de
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/1564703564-4116-1-git-send-email-mikelley@microsoft.com
 
 ---
- include/linux/interrupt.h | 4 ++++
- kernel/irq/manage.c       | 2 +-
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ kernel/irq/irqdesc.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/interrupt.h b/include/linux/interrupt.h
-index 5b8328a99b2a..07b527dca996 100644
---- a/include/linux/interrupt.h
-+++ b/include/linux/interrupt.h
-@@ -472,7 +472,11 @@ extern int irq_set_irqchip_state(unsigned int irq, enum irqchip_irq_state which,
- 				 bool state);
+diff --git a/kernel/irq/irqdesc.c b/kernel/irq/irqdesc.c
+index 9484e88dabc2..51f42f3caf09 100644
+--- a/kernel/irq/irqdesc.c
++++ b/kernel/irq/irqdesc.c
+@@ -437,8 +437,14 @@ static void free_desc(unsigned int irq)
+ 	 *
+ 	 * The sysfs entry must be serialized against a concurrent
+ 	 * irq_sysfs_init() as well.
++	 *
++	 * If irq_sysfs_init() has not yet been invoked (early boot), then
++	 * irq_kobj_base is NULL and the descriptor was never added.
++	 * kobject_del() complains about a object with no parent, so make
++	 * it conditional.
+ 	 */
+-	kobject_del(&desc->kobj);
++	if (irq_kobj_base)
++		kobject_del(&desc->kobj);
+ 	delete_irq_desc(irq);
  
- #ifdef CONFIG_IRQ_FORCED_THREADING
-+# ifdef CONFIG_PREEMPT_RT
-+#  define force_irqthreads	(true)
-+# else
- extern bool force_irqthreads;
-+# endif
- #else
- #define force_irqthreads	(0)
- #endif
-diff --git a/kernel/irq/manage.c b/kernel/irq/manage.c
-index e8f7f179bf77..97de1b7d43af 100644
---- a/kernel/irq/manage.c
-+++ b/kernel/irq/manage.c
-@@ -23,7 +23,7 @@
- 
- #include "internals.h"
- 
--#ifdef CONFIG_IRQ_FORCED_THREADING
-+#if defined(CONFIG_IRQ_FORCED_THREADING) && !defined(CONFIG_PREEMPT_RT)
- __read_mostly bool force_irqthreads;
- EXPORT_SYMBOL_GPL(force_irqthreads);
- 
+ 	/*
