@@ -2,126 +2,175 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F122995054
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Aug 2019 23:58:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B4E395FFD
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 20 Aug 2019 15:27:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728358AbfHSV6k (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 19 Aug 2019 17:58:40 -0400
-Received: from mail-eopbgr720131.outbound.protection.outlook.com ([40.107.72.131]:18592
-        "EHLO NAM05-CO1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728305AbfHSV6j (ORCPT
+        id S1729995AbfHTN1B (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 20 Aug 2019 09:27:01 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59958 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728248AbfHTN1B (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 19 Aug 2019 17:58:39 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=bGu7SdMCcxUkmlDolZooE5MHM3eeEbpgAKO7eZ3HPSWlRZlCOZfqynucJbJW89N2O1XkWa6KfnVELR2QIllbjTKU8lRX7TXCO4qWS1MwiiTMXGikVMxlb+pJj+KkPy8thC5rKMnYy/htUBphppnxzWNlZVr7yUF4ugi+lrSNqdCf37c4NkAKcPrCC5Bw+/i8HwBdxmXiURVF0cOZIXEsfbxiGR+g4lu7RXfIJsxCcHpasyF1JAIGSOugUwgJtnfPyEot6EPZO6s5ztSUXNp23iC6xlAKQNqUEJ1NzmodyOOh/RyYsw1kqxQ/fthSvGc7jeomhqrCOMDHcMA+mhoh1w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=oFjP54vZWuSvei+Siz7dvFxIgo4b7q5FUgI8Mim7NjI=;
- b=DZJlVyuwramzTNdMfMtthN31QTZA+fMWek8S2pWd7w98RxMFYc2BB5P6dueJK4Obton70jPIJkHi90AS3UQdc1ITsDBctFw+02yQsBGyd+ZfWiQK0pMlEGVL/aHdapjCeDngtVLBldL27JIDPDrYDSNMl0EgzNlLmsP8FGgIpVuENnpqvxC0vJ8wxnTfuMlVnos+Mwk2U99VOBAH3bBvsD5aKsVNl6tiRvp6luuJsarHF3ZXDQ0ACgznHq7Rwq1UUDAR6SB3c/FfOw9kDzyFg8FplZnGdLioBHYn4tBu2S+JmZjUz4d6V94AeideUXJg+JNuY03co429ddgcZTyE3A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microsoft.com; dmarc=pass action=none
- header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=oFjP54vZWuSvei+Siz7dvFxIgo4b7q5FUgI8Mim7NjI=;
- b=XlqNKtjy5P8yrhFqp1rU7Gbdftf1S3ZFoXhvkL8a5a+Oi3O0JMcD5WhlVXiLq18tS+GuaxdTSunGbzTNLTEdaRpjiMYS8UnfuXG1MckqifEYOSK41Xg1s+oNRmyG6zsm2O3ogZkB7XgquSTkJX8laVAwb0jhUqvoCFGW6xho+SU=
-Received: from DM5PR21MB0137.namprd21.prod.outlook.com (10.173.173.12) by
- DM5PR21MB0796.namprd21.prod.outlook.com (10.175.112.16) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2220.1; Mon, 19 Aug 2019 21:58:35 +0000
-Received: from DM5PR21MB0137.namprd21.prod.outlook.com
- ([fe80::8985:a319:f21:530e]) by DM5PR21MB0137.namprd21.prod.outlook.com
- ([fe80::c437:6219:efcc:fb8a%8]) with mapi id 15.20.2220.000; Mon, 19 Aug 2019
- 21:58:35 +0000
-From:   Michael Kelley <mikelley@microsoft.com>
-To:     Sasha Levin <sashal@kernel.org>,
-        tip-bot for Michael Kelley <tipbot@zytor.com>,
-        "linux-tip-commits@vger.kernel.org" 
-        <linux-tip-commits@vger.kernel.org>
-CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: RE: [tip:irq/urgent] genirq: Properly pair kobject_del() with
- kobject_add()
-Thread-Topic: [tip:irq/urgent] genirq: Properly pair kobject_del() with
- kobject_add()
-Thread-Index: AQHVVpaWAFz9unahCkyCihJdmLkBdacC/MKAgAAHgUA=
-Date:   Mon, 19 Aug 2019 21:58:34 +0000
-Message-ID: <DM5PR21MB013781495B041A4FA6C8DCEAD7A80@DM5PR21MB0137.namprd21.prod.outlook.com>
-References: <tip-e1ee29624746fbf667f80e8ae3815a76e4d1bd5b@git.kernel.org>
- <20190819212758.6D03D22CEC@mail.kernel.org>
-In-Reply-To: <20190819212758.6D03D22CEC@mail.kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=True;
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Owner=mikelley@ntdev.microsoft.com;
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2019-08-19T21:58:32.8572884Z;
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=General;
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Application=Microsoft Azure
- Information Protection;
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=8a4d0f22-e011-4226-9d10-0c0346f8ba2f;
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Extended_MSFT_Method=Automatic
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=mikelley@microsoft.com; 
-x-originating-ip: [2001:4898:80e8:1:edc7:4690:8678:e56f]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 2c836a8a-3965-484c-23a5-08d724f061f3
-x-ms-office365-filtering-ht: Tenant
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(5600158)(711020)(4605104)(1401327)(4618075)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(2017052603328)(7193020);SRVR:DM5PR21MB0796;
-x-ms-traffictypediagnostic: DM5PR21MB0796:
-x-microsoft-antispam-prvs: <DM5PR21MB0796FC8BE938BE63DDD75949D7A80@DM5PR21MB0796.namprd21.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:2150;
-x-forefront-prvs: 0134AD334F
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(4636009)(346002)(366004)(136003)(396003)(376002)(39860400002)(199004)(189003)(8936002)(2501003)(7736002)(8676002)(305945005)(81166006)(102836004)(81156014)(186003)(6506007)(74316002)(46003)(22452003)(316002)(64756008)(66556008)(10290500003)(486006)(446003)(11346002)(476003)(71190400001)(71200400001)(6246003)(25786009)(4326008)(53936002)(478600001)(6436002)(76176011)(229853002)(86362001)(7696005)(5660300002)(8990500004)(52536014)(14454004)(55016002)(66476007)(66446008)(76116006)(9686003)(256004)(54906003)(110136005)(6116002)(2906002)(33656002)(66946007)(99286004)(10090500001);DIR:OUT;SFP:1102;SCL:1;SRVR:DM5PR21MB0796;H:DM5PR21MB0137.namprd21.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: microsoft.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: Vc/y588XxxXkw4RB3qDpHKYxI2Lno/EsXK3U4tY7EAzRKl4D+o0uahANp2N2lorzFN9kl0yiiKr6EEbQCxt2YhEbLPb+P0FVc2o9rWdSE9nccYlroRTLOYNh7cwmj/AKhOE6fRARkCc0XQUY7i2C6TS9I/A/DYmhi858qavkH7XEZyn6dmh/r6rKZk+EGKpnugibzT7c63ShSmVUP2rQcsB7v23fO1cCe1s381JYNVS7X8zNHfnR8ENT+mbvuqK/XPyk0/iuE0DHZuJoQvdBq3Re5VVyFHO8uIcnKHkSc85H+uOaq9larUGpiszOHyi09uFuBnC/Lm+5cRQ8CafbmopeyX4YpK6W1TAEpGAZvNj99AJe07zg4dx55BKmYRwU2H/r+BOApQX/Ew5Q+BkQhYCRL+PSStoqtQxZic6DhZo=
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        Tue, 20 Aug 2019 09:27:01 -0400
+Received: from localhost (lfbn-ncy-1-174-150.w83-194.abo.wanadoo.fr [83.194.254.150])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 288EA22CF7;
+        Tue, 20 Aug 2019 13:26:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1566307619;
+        bh=1hPEl4SSmvnbgbuDJZCUpRpxFHYm3yfVh4Ax14pHbdE=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=CzLou++RPTmg8Flwf+H4cChKWdWqcZJRRrM8hWhQfdWaqDui13XXhkIAKqC7Joy3Q
+         b4jwONxz/qBlE8R75HdqEYaGO2PipYoomdWLVGqJoonKR3y5QFOozzAYRVTTG1BDbD
+         W10CPMkeWpl42y2j9nwzRD8VX3dGkX5jCprdUDG0=
+Date:   Tue, 20 Aug 2019 15:26:57 +0200
+From:   Frederic Weisbecker <frederic@kernel.org>
+To:     bigeasy@linutronix.de, peterz@infradead.org, mingo@kernel.org,
+        linux-kernel@vger.kernel.org, anna-maria@linutronix.de,
+        tglx@linutronix.de, hpa@zytor.com
+Cc:     linux-tip-commits@vger.kernel.org
+Subject: Re: [tip:timers/core] hrtimer: Prepare support for PREEMPT_RT
+Message-ID: <20190820132656.GC2093@lenoir>
+References: <20190726185753.737767218@linutronix.de>
+ <tip-f61eff83cec9cfab31fd30a2ca8856be379cdcd5@git.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: microsoft.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2c836a8a-3965-484c-23a5-08d724f061f3
-X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Aug 2019 21:58:34.8890
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 27rnR9zGKVGIGMDTGZ8IyIirqaRKFhsNuzOpiQDQhaUil0PDpmWCSj2T6bZ9mTsKjnMLfNH+PMtBDYleLbdOVl5p7QoEk9bFdJkvwfxKFfo=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR21MB0796
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <tip-f61eff83cec9cfab31fd30a2ca8856be379cdcd5@git.kernel.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-RnJvbTogU2FzaGEgTGV2aW4gPHNhc2hhbEBrZXJuZWwub3JnPiAgU2VudDogTW9uZGF5LCBBdWd1
-c3QgMTksIDIwMTkgMjoyOCBQTQ0KPiANCj4gVGhpcyBjb21taXQgaGFzIGJlZW4gcHJvY2Vzc2Vk
-IGJlY2F1c2UgaXQgY29udGFpbnMgYSAiRml4ZXM6IiB0YWcsDQo+IGZpeGluZyBjb21taXQ6IGVj
-YjNmMzk0YzVkYiBnZW5pcnE6IEV4cG9zZSBpbnRlcnJ1cHQgaW5mb3JtYXRpb24gdGhyb3VnaCBz
-eXNmcy4NCj4gDQo+IFRoZSBib3QgaGFzIHRlc3RlZCB0aGUgZm9sbG93aW5nIHRyZWVzOiB2NS4y
-LjksIHY0LjE5LjY3LCB2NC4xNC4xMzksIHY0LjkuMTg5Lg0KPiANCj4gdjUuMi45OiBCdWlsZCBm
-YWlsZWQhIEVycm9yczoNCj4gICAgIGtlcm5lbC9pcnEvaXJxZGVzYy5jOjQ0Njo2OiBlcnJvcjog
-4oCYaXJxX2tvYmpfYmFzZeKAmSB1bmRlY2xhcmVkIChmaXJzdCB1c2UgaW4gdGhpcyBmdW5jdGlv
-bik7DQo+IGRpZCB5b3UgbWVhbiDigJhpcnFfa29ial90eXBl4oCZPw0KPiANCj4gdjQuMTkuNjc6
-IEJ1aWxkIGZhaWxlZCEgRXJyb3JzOg0KPiAgICAga2VybmVsL2lycS9pcnFkZXNjLmM6NDQ1OjY6
-IGVycm9yOiDigJhpcnFfa29ial9iYXNl4oCZIHVuZGVjbGFyZWQgKGZpcnN0IHVzZSBpbiB0aGlz
-IGZ1bmN0aW9uKTsNCj4gZGlkIHlvdSBtZWFuIOKAmGlycV9rb2JqX3R5cGXigJk/DQo+IA0KPiB2
-NC4xNC4xMzk6IEJ1aWxkIGZhaWxlZCEgRXJyb3JzOg0KPiAgICAga2VybmVsL2lycS9pcnFkZXNj
-LmM6NDI4OjY6IGVycm9yOiDigJhpcnFfa29ial9iYXNl4oCZIHVuZGVjbGFyZWQgKGZpcnN0IHVz
-ZSBpbiB0aGlzIGZ1bmN0aW9uKTsNCj4gZGlkIHlvdSBtZWFuIOKAmGlycV9rb2JqX3R5cGXigJk/
-DQo+IA0KPiB2NC45LjE4OTogQnVpbGQgZmFpbGVkISBFcnJvcnM6DQo+ICAgICBrZXJuZWwvaXJx
-L2lycWRlc2MuYzo0MTQ6NjogZXJyb3I6IOKAmGlycV9rb2JqX2Jhc2XigJkgdW5kZWNsYXJlZCAo
-Zmlyc3QgdXNlIGluIHRoaXMgZnVuY3Rpb24pOw0KPiBkaWQgeW91IG1lYW4g4oCYaXJxX2tvYmpf
-dHlwZeKAmT8NCj4gDQo+IA0KPiBOT1RFOiBUaGUgcGF0Y2ggd2lsbCBub3QgYmUgcXVldWVkIHRv
-IHN0YWJsZSB0cmVlcyB1bnRpbCBpdCBpcyB1cHN0cmVhbS4NCj4gDQo+IEhvdyBzaG91bGQgd2Ug
-cHJvY2VlZCB3aXRoIHRoaXMgcGF0Y2g/DQoNCkNvbXBpbGUgZXJyb3Igb2NjdXJzIHdoZW4gQ09O
-RklHX1NZU0ZTIGlzIG5vdCBzZWxlY3RlZC4gIEl0J3MgcHJvYmFibHkgY2xlYW5lc3QgdG8NCnJl
-dmVydCB0aGUgY3VycmVudCBwYXRjaC4gICBJJ2xsIHNlbmQgb3V0IGEgbmV3IHZlcnNpb24gdGhh
-dCBmaXhlcyB0aGUgcHJvYmxlbS4NCg0KTWljaGFlbA0K
+On Thu, Aug 01, 2019 at 12:04:03PM -0700, tip-bot for Anna-Maria Gleixner wrote:
+> Commit-ID:  f61eff83cec9cfab31fd30a2ca8856be379cdcd5
+> Gitweb:     https://git.kernel.org/tip/f61eff83cec9cfab31fd30a2ca8856be379cdcd5
+> Author:     Anna-Maria Gleixner <anna-maria@linutronix.de>
+> AuthorDate: Fri, 26 Jul 2019 20:30:59 +0200
+> Committer:  Thomas Gleixner <tglx@linutronix.de>
+> CommitDate: Thu, 1 Aug 2019 20:51:22 +0200
+> 
+> hrtimer: Prepare support for PREEMPT_RT
+> 
+> When PREEMPT_RT is enabled, the soft interrupt thread can be preempted.  If
+> the soft interrupt thread is preempted in the middle of a timer callback,
+> then calling hrtimer_cancel() can lead to two issues:
+> 
+>   - If the caller is on a remote CPU then it has to spin wait for the timer
+>     handler to complete. This can result in unbound priority inversion.
+> 
+>   - If the caller originates from the task which preempted the timer
+>     handler on the same CPU, then spin waiting for the timer handler to
+>     complete is never going to end.
+
+[...]
+> +/*
+> + * This function is called on PREEMPT_RT kernels when the fast path
+> + * deletion of a timer failed because the timer callback function was
+> + * running.
+> + *
+> + * This prevents priority inversion, if the softirq thread on a remote CPU
+> + * got preempted, and it prevents a life lock when the task which tries to
+> + * delete a timer preempted the softirq thread running the timer callback
+> + * function.
+> + */
+> +void hrtimer_cancel_wait_running(const struct hrtimer *timer)
+> +{
+> +	struct hrtimer_clock_base *base = timer->base;
+> +
+> +	if (!timer->is_soft || !base || !base->cpu_base) {
+> +		cpu_relax();
+> +		return;
+> +	}
+> +
+> +	/*
+> +	 * Mark the base as contended and grab the expiry lock, which is
+> +	 * held by the softirq across the timer callback. Drop the lock
+> +	 * immediately so the softirq can expire the next timer. In theory
+> +	 * the timer could already be running again, but that's more than
+> +	 * unlikely and just causes another wait loop.
+> +	 */
+> +	atomic_inc(&base->cpu_base->timer_waiters);
+> +	spin_lock_bh(&base->cpu_base->softirq_expiry_lock);
+> +	atomic_dec(&base->cpu_base->timer_waiters);
+> +	spin_unlock_bh(&base->cpu_base->softirq_expiry_lock);
+> +}
+
+So, while reviewing the posix timers series, I stumbled upon timer_wait_running() which
+lacked any explanation, which led me to hrtimer_cancel_wait_running() that was
+a bit more helpful but still had blurry explanation.
+
+In the end I found the approrpiate infomation in this commit changelog.
+It might be helpful for future reviewers to apply this:
+
+---
+From ef9a4d87b6e7c43899248c376c5959f4e0bcd309 Mon Sep 17 00:00:00 2001
+From: Frederic Weisbecker <frederic@kernel.org>
+Date: Tue, 20 Aug 2019 15:12:23 +0200
+Subject: [PATCH] hrtimer: Improve comments on handling priority inversion
+ against softirq kthread
+
+The handling of a priority inversion between timer cancelling and a
+a not well defined possible preemption of softirq kthread is not very
+clear. Especially in the posix timers side where we don't even know why
+there is a specific RT wait callback.
+
+All the nice explanations can be found in the initial changelog of
+f61eff83cec9cfab31fd30a2ca8856be379cdcd5
+(hrtimer: Prepare support for PREEMPT_RT"). So lets extract the detailed
+informations from there.
+
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+---
+ kernel/time/hrtimer.c      | 14 ++++++++++----
+ kernel/time/posix-timers.c |  5 +++++
+ 2 files changed, 15 insertions(+), 4 deletions(-)
+
+diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
+index 499122752649..833353732554 100644
+--- a/kernel/time/hrtimer.c
++++ b/kernel/time/hrtimer.c
+@@ -1201,10 +1201,16 @@ static void hrtimer_sync_wait_running(struct hrtimer_cpu_base *cpu_base,
+  * deletion of a timer failed because the timer callback function was
+  * running.
+  *
+- * This prevents priority inversion, if the softirq thread on a remote CPU
+- * got preempted, and it prevents a life lock when the task which tries to
+- * delete a timer preempted the softirq thread running the timer callback
+- * function.
++ * This prevents priority inversion: if the soft irq thread is preempted
++ * in the middle of a timer callback, then calling del_timer_sync() can
++ * lead to two issues:
++ *
++ *  - If the caller is on a remote CPU then it has to spin wait for the timer
++ *    handler to complete. This can result in unbound priority inversion.
++ *
++ *  - If the caller originates from the task which preempted the timer
++ *    handler on the same CPU, then spin waiting for the timer handler to
++ *    complete is never going to end.
+  */
+ void hrtimer_cancel_wait_running(const struct hrtimer *timer)
+ {
+diff --git a/kernel/time/posix-timers.c b/kernel/time/posix-timers.c
+index a71c1aab071c..f6713a41e4e0 100644
+--- a/kernel/time/posix-timers.c
++++ b/kernel/time/posix-timers.c
+@@ -806,6 +806,11 @@ static int common_hrtimer_try_to_cancel(struct k_itimer *timr)
+ }
+ 
+ #ifdef CONFIG_PREEMPT_RT
++/*
++ * Prevent from priority inversion against softirq kthread in case
++ * it gets preempted while executing an htimer callback. See
++ * comments in hrtimer_cancel_wait_running.
++ */
+ static struct k_itimer *timer_wait_running(struct k_itimer *timer,
+ 					   unsigned long *flags)
+ {
+-- 
+2.21.0
+
+
+
