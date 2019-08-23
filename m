@@ -2,49 +2,43 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C69869AF83
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 23 Aug 2019 14:30:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E7A209B2ED
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 23 Aug 2019 17:04:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392796AbfHWM3d (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 23 Aug 2019 08:29:33 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:35355 "EHLO
+        id S2394260AbfHWPEI (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 23 Aug 2019 11:04:08 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:35896 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730804AbfHWM3d (ORCPT
+        with ESMTP id S1732542AbfHWPEI (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 23 Aug 2019 08:29:33 -0400
+        Fri, 23 Aug 2019 11:04:08 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i18h2-00024i-Uk; Fri, 23 Aug 2019 14:29:25 +0200
+        id 1i1B6h-0004l7-6M; Fri, 23 Aug 2019 17:04:03 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 838901C04F3;
-        Fri, 23 Aug 2019 14:29:24 +0200 (CEST)
-Date:   Fri, 23 Aug 2019 12:29:24 -0000
-From:   tip-bot2 for Gerald BAEZA <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id CC0E51C089A;
+        Fri, 23 Aug 2019 17:04:02 +0200 (CEST)
+Date:   Fri, 23 Aug 2019 15:04:02 -0000
+From:   tip-bot2 for Tianyu Lan <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] libperf: Fix alignment trap with xyarray contents in 'perf
- stat'
-Cc:     Gerald Baeza <gerald.baeza@st.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Andi Kleen <ak@linux.intel.com>, Jiri Olsa <jolsa@redhat.com>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
+Subject: [tip: timers/core] clocksource/drivers/hyperv: Add Hyper-V specific
+ sched clock function
+Cc:     Tianyu Lan <Tianyu.Lan@microsoft.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Michael Kelley <mikelley@microsoft.com>,
         Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org
-In-Reply-To: <1566464769-16374-1-git-send-email-gerald.baeza@st.com>
-References: <1566464769-16374-1-git-send-email-gerald.baeza@st.com>
+In-Reply-To: <20190814123216.32245-3-Tianyu.Lan@microsoft.com>
+References: <20190814123216.32245-3-Tianyu.Lan@microsoft.com>
 MIME-Version: 1.0
-Message-ID: <156656336440.32674.1760481697733567809.tip-bot2@tip-bot2>
+Message-ID: <156657264274.8404.12703131421619631346.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from
- these emails
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Content-Disposition: inline
 X-Linutronix-Spam-Score: -1.0
 X-Linutronix-Spam-Level: -
@@ -54,59 +48,169 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/core branch of tip:
+The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     d9c5c083416500e95da098c01be092b937def7fa
-Gitweb:        https://git.kernel.org/tip/d9c5c083416500e95da098c01be092b937def7fa
-Author:        Gerald BAEZA <gerald.baeza@st.com>
-AuthorDate:    Thu, 22 Aug 2019 09:07:01 
-Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Thu, 22 Aug 2019 17:16:57 -03:00
+Commit-ID:     bd00cd52d5be655a2f217e2ed74b91a71cb2b14f
+Gitweb:        https://git.kernel.org/tip/bd00cd52d5be655a2f217e2ed74b91a71cb2b14f
+Author:        Tianyu Lan <Tianyu.Lan@microsoft.com>
+AuthorDate:    Wed, 14 Aug 2019 20:32:16 +08:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Fri, 23 Aug 2019 16:59:54 +02:00
 
-libperf: Fix alignment trap with xyarray contents in 'perf stat'
+clocksource/drivers/hyperv: Add Hyper-V specific sched clock function
 
-Following the patch 'perf stat: Fix --no-scale', an alignment trap
-happens in process_counter_values() on ARMv7 platforms due to the
-attempt to copy non 64 bits aligned double words (pointed by 'count')
-via a NEON vectored instruction ('vld1' with 64 bits alignment
-constraint).
+Hyper-V guests use the default native_sched_clock() in
+pv_ops.time.sched_clock on x86. But native_sched_clock() directly uses the
+raw TSC value, which can be discontinuous in a Hyper-V VM.
+    
+Add the generic hv_setup_sched_clock() to set the sched clock function
+appropriately. On x86, this sets pv_ops.time.sched_clock to read the
+Hyper-V reference TSC value that is scaled and adjusted to be continuous.
+    
+Also move the Hyper-V reference TSC initialization much earlier in the boot
+process so no discontinuity is observed when pv_ops.time.sched_clock
+calculates its offset.
 
-This patch sets a 64 bits alignment constraint on 'contents[]' field in
-'struct xyarray' since the 'count' pointer used above points to such a
-structure.
+[ tglx: Folded build fix ]
 
-Signed-off-by: Gerald Baeza <gerald.baeza@st.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Alexandre Torgue <alexandre.torgue@st.com>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Jiri Olsa <jolsa@redhat.com>
-Cc: Mathieu Poirier <mathieu.poirier@linaro.org>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: http://lkml.kernel.org/r/1566464769-16374-1-git-send-email-gerald.baeza@st.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Tianyu Lan <Tianyu.Lan@microsoft.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Michael Kelley <mikelley@microsoft.com>
+Link: https://lkml.kernel.org/r/20190814123216.32245-3-Tianyu.Lan@microsoft.com
 ---
- tools/perf/lib/include/internal/xyarray.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/x86/hyperv/hv_init.c          |  2 --
+ arch/x86/kernel/cpu/mshyperv.c     |  8 ++++++++
+ drivers/clocksource/hyperv_timer.c | 22 ++++++++++++----------
+ include/asm-generic/mshyperv.h     |  1 +
+ 4 files changed, 21 insertions(+), 12 deletions(-)
 
-diff --git a/tools/perf/lib/include/internal/xyarray.h b/tools/perf/lib/include/internal/xyarray.h
-index 3bf70e4..51e35d6 100644
---- a/tools/perf/lib/include/internal/xyarray.h
-+++ b/tools/perf/lib/include/internal/xyarray.h
-@@ -2,6 +2,7 @@
- #ifndef __LIBPERF_INTERNAL_XYARRAY_H
- #define __LIBPERF_INTERNAL_XYARRAY_H
+diff --git a/arch/x86/hyperv/hv_init.c b/arch/x86/hyperv/hv_init.c
+index 0d25868..866dfb3 100644
+--- a/arch/x86/hyperv/hv_init.c
++++ b/arch/x86/hyperv/hv_init.c
+@@ -301,8 +301,6 @@ void __init hyperv_init(void)
  
-+#include <linux/compiler.h>
- #include <sys/types.h>
+ 	x86_init.pci.arch_init = hv_pci_init;
  
- struct xyarray {
-@@ -10,7 +11,7 @@ struct xyarray {
- 	size_t entries;
- 	size_t max_x;
- 	size_t max_y;
--	char contents[];
-+	char contents[] __aligned(8);
+-	/* Register Hyper-V specific clocksource */
+-	hv_init_clocksource();
+ 	return;
+ 
+ remove_cpuhp_state:
+diff --git a/arch/x86/kernel/cpu/mshyperv.c b/arch/x86/kernel/cpu/mshyperv.c
+index 062f772..53afd33 100644
+--- a/arch/x86/kernel/cpu/mshyperv.c
++++ b/arch/x86/kernel/cpu/mshyperv.c
+@@ -29,6 +29,7 @@
+ #include <asm/timer.h>
+ #include <asm/reboot.h>
+ #include <asm/nmi.h>
++#include <clocksource/hyperv_timer.h>
+ 
+ struct ms_hyperv_info ms_hyperv;
+ EXPORT_SYMBOL_GPL(ms_hyperv);
+@@ -338,9 +339,16 @@ static void __init ms_hyperv_init_platform(void)
+ 		x2apic_phys = 1;
+ # endif
+ 
++	/* Register Hyper-V specific clocksource */
++	hv_init_clocksource();
+ #endif
+ }
+ 
++void hv_setup_sched_clock(void *sched_clock)
++{
++	pv_ops.time.sched_clock = sched_clock;
++}
++
+ const __initconst struct hypervisor_x86 x86_hyper_ms_hyperv = {
+ 	.name			= "Microsoft Hyper-V",
+ 	.detect			= ms_hyperv_platform,
+diff --git a/drivers/clocksource/hyperv_timer.c b/drivers/clocksource/hyperv_timer.c
+index 432aa33..c322ab4 100644
+--- a/drivers/clocksource/hyperv_timer.c
++++ b/drivers/clocksource/hyperv_timer.c
+@@ -22,6 +22,7 @@
+ #include <asm/mshyperv.h>
+ 
+ static struct clock_event_device __percpu *hv_clock_event;
++static u64 hv_sched_clock_offset __ro_after_init;
+ 
+ /*
+  * If false, we're using the old mechanism for stimer0 interrupts
+@@ -222,7 +223,7 @@ struct ms_hyperv_tsc_page *hv_get_tsc_page(void)
+ }
+ EXPORT_SYMBOL_GPL(hv_get_tsc_page);
+ 
+-static u64 notrace read_hv_sched_clock_tsc(void)
++static u64 notrace read_hv_clock_tsc(struct clocksource *arg)
+ {
+ 	u64 current_tick = hv_read_tsc_page(&tsc_pg);
+ 
+@@ -232,9 +233,9 @@ static u64 notrace read_hv_sched_clock_tsc(void)
+ 	return current_tick;
+ }
+ 
+-static u64 read_hv_clock_tsc(struct clocksource *arg)
++static u64 read_hv_sched_clock_tsc(void)
+ {
+-	return read_hv_sched_clock_tsc();
++	return read_hv_clock_tsc(NULL) - hv_sched_clock_offset;
+ }
+ 
+ static struct clocksource hyperv_cs_tsc = {
+@@ -246,7 +247,7 @@ static struct clocksource hyperv_cs_tsc = {
  };
+ #endif
  
- struct xyarray *xyarray__new(int xlen, int ylen, size_t entry_size);
+-static u64 notrace read_hv_sched_clock_msr(void)
++static u64 notrace read_hv_clock_msr(struct clocksource *arg)
+ {
+ 	u64 current_tick;
+ 	/*
+@@ -258,9 +259,9 @@ static u64 notrace read_hv_sched_clock_msr(void)
+ 	return current_tick;
+ }
+ 
+-static u64 read_hv_clock_msr(struct clocksource *arg)
++static u64 read_hv_sched_clock_msr(void)
+ {
+-	return read_hv_sched_clock_msr();
++	return read_hv_clock_msr(NULL) - hv_sched_clock_offset;
+ }
+ 
+ static struct clocksource hyperv_cs_msr = {
+@@ -298,8 +299,9 @@ static bool __init hv_init_tsc_clocksource(void)
+ 	hv_set_clocksource_vdso(hyperv_cs_tsc);
+ 	clocksource_register_hz(&hyperv_cs_tsc, NSEC_PER_SEC/100);
+ 
+-	/* sched_clock_register is needed on ARM64 but is a no-op on x86 */
+-	sched_clock_register(read_hv_sched_clock_tsc, 64, HV_CLOCK_HZ);
++	hv_sched_clock_offset = hyperv_cs->read(hyperv_cs);
++	hv_setup_sched_clock(read_hv_sched_clock_tsc);
++
+ 	return true;
+ }
+ #else
+@@ -329,7 +331,7 @@ void __init hv_init_clocksource(void)
+ 	hyperv_cs = &hyperv_cs_msr;
+ 	clocksource_register_hz(&hyperv_cs_msr, NSEC_PER_SEC/100);
+ 
+-	/* sched_clock_register is needed on ARM64 but is a no-op on x86 */
+-	sched_clock_register(read_hv_sched_clock_msr, 64, HV_CLOCK_HZ);
++	hv_sched_clock_offset = hyperv_cs->read(hyperv_cs);
++	hv_setup_sched_clock(read_hv_sched_clock_msr);
+ }
+ EXPORT_SYMBOL_GPL(hv_init_clocksource);
+diff --git a/include/asm-generic/mshyperv.h b/include/asm-generic/mshyperv.h
+index 0becb7d..18d8e2d 100644
+--- a/include/asm-generic/mshyperv.h
++++ b/include/asm-generic/mshyperv.h
+@@ -167,6 +167,7 @@ void hyperv_report_panic(struct pt_regs *regs, long err);
+ void hyperv_report_panic_msg(phys_addr_t pa, size_t size);
+ bool hv_is_hyperv_initialized(void);
+ void hyperv_cleanup(void);
++void hv_setup_sched_clock(void *sched_clock);
+ #else /* CONFIG_HYPERV */
+ static inline bool hv_is_hyperv_initialized(void) { return false; }
+ static inline void hyperv_cleanup(void) {}
