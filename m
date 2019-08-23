@@ -2,38 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E5D69AF45
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 23 Aug 2019 14:25:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B6B0D9AF3C
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 23 Aug 2019 14:24:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2394575AbfHWMYP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S2394579AbfHWMYP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Fri, 23 Aug 2019 08:24:15 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:35254 "EHLO
+Received: from Galois.linutronix.de ([193.142.43.55]:35267 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387492AbfHWMYN (ORCPT
+        with ESMTP id S1731856AbfHWMYP (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 23 Aug 2019 08:24:13 -0400
+        Fri, 23 Aug 2019 08:24:15 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i18bx-0001q1-0P; Fri, 23 Aug 2019 14:24:09 +0200
+        id 1i18by-0001r6-Cx; Fri, 23 Aug 2019 14:24:10 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id AB6EF1C04F3;
-        Fri, 23 Aug 2019 14:24:08 +0200 (CEST)
-Date:   Fri, 23 Aug 2019 12:24:08 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 089A01C089A;
+        Fri, 23 Aug 2019 14:24:10 +0200 (CEST)
+Date:   Fri, 23 Aug 2019 12:24:09 -0000
 From:   tip-bot2 for Arnaldo Carvalho de Melo <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf tests: Add missing counts.h
+Subject: [tip: perf/core] perf evsel: Add missing perf/evsel.h header in util/evsel.h
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         Jiri Olsa <jolsa@kernel.org>,
         Namhyung Kim <namhyung@kernel.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org
-In-Reply-To: <tip-phldqlfxxu563txja7evd4zt@git.kernel.org>
-References: <tip-phldqlfxxu563txja7evd4zt@git.kernel.org>
+In-Reply-To: <tip-nfb9e0t4jm9zhvr0q86hc29d@git.kernel.org>
+References: <tip-nfb9e0t4jm9zhvr0q86hc29d@git.kernel.org>
 MIME-Version: 1.0
-Message-ID: <156656304858.32111.3122202198057924685.tip-bot2@tip-bot2>
+Message-ID: <156656304997.32120.3841712694711958136.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from
@@ -51,50 +51,40 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     e4aec1b1bdad744f3afc3ebf2b337ac1bcfa9be0
-Gitweb:        https://git.kernel.org/tip/e4aec1b1bdad744f3afc3ebf2b337ac1bcfa9be0
+Commit-ID:     69714a4e3959eb051e685c6dce06c6d5a8f27c3c
+Gitweb:        https://git.kernel.org/tip/69714a4e3959eb051e685c6dce06c6d5a8f27c3c
 Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Wed, 21 Aug 2019 14:01:24 -03:00
+AuthorDate:    Wed, 21 Aug 2019 14:09:54 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Thu, 22 Aug 2019 17:16:57 -03:00
 
-perf tests: Add missing counts.h
+perf evsel: Add missing perf/evsel.h header in util/evsel.h
 
-Those are getting counts.h via evsel.h, that don't strictly need
-counts.h, just forward declarations for some structs, so add it here
-before we remove it from there.
+Since util/evsel.h uses perf_evsel__cpus() that has its prototype in
+libperf's perf/evsel.h file, we need it explicitely included.
+
+This was working by luck as util/evsel.h includes counts.h, but that is
+not necessary, just some forward declarations, so, before we remove
+counts.h from util/evsel.h, add what is realli needed.
 
 Cc: Adrian Hunter <adrian.hunter@intel.com>
 Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lkml.kernel.org/n/tip-phldqlfxxu563txja7evd4zt@git.kernel.org
+Link: https://lkml.kernel.org/n/tip-nfb9e0t4jm9zhvr0q86hc29d@git.kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/tests/openat-syscall-all-cpus.c | 1 +
- tools/perf/tests/openat-syscall.c          | 1 +
- 2 files changed, 2 insertions(+)
+ tools/perf/util/evsel.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/perf/tests/openat-syscall-all-cpus.c b/tools/perf/tests/openat-syscall-all-cpus.c
-index 8322b6a..4ae4dea 100644
---- a/tools/perf/tests/openat-syscall-all-cpus.c
-+++ b/tools/perf/tests/openat-syscall-all-cpus.c
-@@ -16,6 +16,7 @@
+diff --git a/tools/perf/util/evsel.h b/tools/perf/util/evsel.h
+index 2928eee..da91d6f 100644
+--- a/tools/perf/util/evsel.h
++++ b/tools/perf/util/evsel.h
+@@ -8,6 +8,7 @@
+ #include <linux/perf_event.h>
+ #include <linux/types.h>
+ #include <internal/evsel.h>
++#include <perf/evsel.h>
+ #include "symbol_conf.h"
  #include "cpumap.h"
- #include "debug.h"
- #include "stat.h"
-+#include "util/counts.h"
- 
- int test__openat_syscall_event_on_all_cpus(struct test *test __maybe_unused, int subtest __maybe_unused)
- {
-diff --git a/tools/perf/tests/openat-syscall.c b/tools/perf/tests/openat-syscall.c
-index f217972..58df4bd 100644
---- a/tools/perf/tests/openat-syscall.c
-+++ b/tools/perf/tests/openat-syscall.c
-@@ -10,6 +10,7 @@
- #include "evsel.h"
- #include "debug.h"
- #include "tests.h"
-+#include "util/counts.h"
- 
- int test__openat_syscall_event(struct test *test __maybe_unused, int subtest __maybe_unused)
- {
+ #include "counts.h"
