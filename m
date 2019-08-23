@@ -2,38 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 82CA99A57A
+	by mail.lfdr.de (Postfix) with ESMTP id EB5689A57B
 	for <lists+linux-tip-commits@lfdr.de>; Fri, 23 Aug 2019 04:31:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390339AbfHWC2Q (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 22 Aug 2019 22:28:16 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:33788 "EHLO
+        id S2390410AbfHWC2R (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 22 Aug 2019 22:28:17 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:33787 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390210AbfHWC2N (ORCPT
+        with ESMTP id S2389429AbfHWC2M (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 22 Aug 2019 22:28:13 -0400
+        Thu, 22 Aug 2019 22:28:12 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i0zJ8-00018J-AD; Fri, 23 Aug 2019 04:28:06 +0200
+        id 1i0zJ9-00018e-BF; Fri, 23 Aug 2019 04:28:07 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C572D1C07E4;
-        Fri, 23 Aug 2019 04:28:05 +0200 (CEST)
-Date:   Fri, 23 Aug 2019 02:28:05 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D22811C07E4;
+        Fri, 23 Aug 2019 04:28:06 +0200 (CEST)
+Date:   Fri, 23 Aug 2019 02:28:06 -0000
 From:   tip-bot2 for Arnaldo Carvalho de Melo <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] tools headers: Fixup bitsperlong per arch includes
+Subject: [tip: perf/core] perf ui browser: Allow specifying message to show
+ when no samples are
+ available to display
 Cc:     linux-kernel@vger.kernel.org,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Namhyung Kim <namhyung@kernel.org>,
         Jiri Olsa <jolsa@kernel.org>,
         Adrian Hunter <adrian.hunter@intel.com>
-In-Reply-To: <tip-8f8cfqywmf6jk8a3ucr0ixhu@git.kernel.org>
-References: <tip-8f8cfqywmf6jk8a3ucr0ixhu@git.kernel.org>
+In-Reply-To: <tip-89ciceg8cy4442he3t0jzo3f@git.kernel.org>
+References: <tip-89ciceg8cy4442he3t0jzo3f@git.kernel.org>
 MIME-Version: 1.0
-Message-ID: <156652728564.12678.6447900186465158550.tip-bot2@tip-bot2>
+Message-ID: <156652728679.12691.16260831939328577053.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from
@@ -50,111 +52,50 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     42fc2e9ef9603a7948aaa4ffd8dfb94b30294ad8
-Gitweb:        https://git.kernel.org/tip/42fc2e9ef9603a7948aaa4ffd8dfb94b30294ad8
+Commit-ID:     2284cf8074ff12b6304665618f81ced3aa0b41de
+Gitweb:        https://git.kernel.org/tip/2284cf8074ff12b6304665618f81ced3aa0b41de
 Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Tue, 20 Aug 2019 11:45:17 -03:00
+AuthorDate:    Mon, 19 Aug 2019 16:43:58 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Tue, 20 Aug 2019 12:23:00 -03:00
+CommitterDate: Tue, 20 Aug 2019 12:22:18 -03:00
 
-tools headers: Fixup bitsperlong per arch includes
+perf ui browser: Allow specifying message to show when no samples are available to display
 
-We were getting the file by luck, from one of the paths in -I, fix it to
-get it from the proper place:
-
-  $ cd tools/include/uapi/asm/
-  [acme@quaco asm]$ grep include bitsperlong.h
-  #include "../../arch/x86/include/uapi/asm/bitsperlong.h"
-  #include "../../arch/arm64/include/uapi/asm/bitsperlong.h"
-  #include "../../arch/powerpc/include/uapi/asm/bitsperlong.h"
-  #include "../../arch/s390/include/uapi/asm/bitsperlong.h"
-  #include "../../arch/sparc/include/uapi/asm/bitsperlong.h"
-  #include "../../arch/mips/include/uapi/asm/bitsperlong.h"
-  #include "../../arch/ia64/include/uapi/asm/bitsperlong.h"
-  #include "../../arch/riscv/include/uapi/asm/bitsperlong.h"
-  #include "../../arch/alpha/include/uapi/asm/bitsperlong.h"
-  #include <asm-generic/bitsperlong.h>
-  $ ls -la ../../arch/x86/include/uapi/asm/bitsperlong.h
-  ls: cannot access '../../arch/x86/include/uapi/asm/bitsperlong.h': No such file or directory
-  $ ls -la ../../../arch/*/include/uapi/asm/bitsperlong.h
-  -rw-rw-r--. 1 237 ../../../arch/alpha/include/uapi/asm/bitsperlong.h
-  -rw-rw-r--. 1 841 ../../../arch/arm64/include/uapi/asm/bitsperlong.h
-  -rw-rw-r--. 1 966 ../../../arch/hexagon/include/uapi/asm/bitsperlong.h
-  -rw-rw-r--. 1 234 ../../../arch/ia64/include/uapi/asm/bitsperlong.h
-  -rw-rw-r--. 1 100 ../../../arch/microblaze/include/uapi/asm/bitsperlong.h
-  -rw-rw-r--. 1 244 ../../../arch/mips/include/uapi/asm/bitsperlong.h
-  -rw-rw-r--. 1 352 ../../../arch/parisc/include/uapi/asm/bitsperlong.h
-  -rw-rw-r--. 1 312 ../../../arch/powerpc/include/uapi/asm/bitsperlong.h
-  -rw-rw-r--. 1 353 ../../../arch/riscv/include/uapi/asm/bitsperlong.h
-  -rw-rw-r--. 1 292 ../../../arch/s390/include/uapi/asm/bitsperlong.h
-  -rw-rw-r--. 1 323 ../../../arch/sparc/include/uapi/asm/bitsperlong.h
-  -rw-rw-r--. 1 320 ../../../arch/x86/include/uapi/asm/bitsperlong.h
-  $
-
-Found while fixing some other problem, before it was escaping the
-tools/ chroot and using stuff in the kernel sources:
-
-    CC       /tmp/build/perf/util/find_bit.o
-In file included from /git/linux/tools/include/../../arch/x86/include/uapi/asm/bitsperlong.h:11,
-                 from /git/linux/tools/include/uapi/asm/bitsperlong.h:3,
-                 from /git/linux/tools/include/linux/bits.h:6,
-                 from /git/linux/tools/include/linux/bitops.h:13,
-                 from ../lib/find_bit.c:17:
-
-  # cd /git/linux/tools/include/../../arch/x86/include/uapi/asm/
-  # pwd
-  /git/linux/arch/x86/include/uapi/asm
-  #
-
-Now it is getting the one we want it to, i.e. the one inside tools/:
-
-    CC       /tmp/build/perf/util/find_bit.o
-  In file included from /git/linux/tools/arch/x86/include/uapi/asm/bitsperlong.h:11,
-                   from /git/linux/tools/include/linux/bits.h:6,
-                   from /git/linux/tools/include/linux/bitops.h:13,
+The 'perf top' tool will use that to avoid having a initial blank screen
+while collecting the minimum number of samples to sort and display.
 
 Cc: Adrian Hunter <adrian.hunter@intel.com>
 Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lkml.kernel.org/n/tip-8f8cfqywmf6jk8a3ucr0ixhu@git.kernel.org
+Link: https://lkml.kernel.org/n/tip-89ciceg8cy4442he3t0jzo3f@git.kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/include/uapi/asm/bitsperlong.h | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ tools/perf/ui/browser.c | 2 ++
+ tools/perf/ui/browser.h | 1 +
+ 2 files changed, 3 insertions(+)
 
-diff --git a/tools/include/uapi/asm/bitsperlong.h b/tools/include/uapi/asm/bitsperlong.h
-index 57aaeaf..edba4d9 100644
---- a/tools/include/uapi/asm/bitsperlong.h
-+++ b/tools/include/uapi/asm/bitsperlong.h
-@@ -1,22 +1,22 @@
- /* SPDX-License-Identifier: GPL-2.0 */
- #if defined(__i386__) || defined(__x86_64__)
--#include "../../arch/x86/include/uapi/asm/bitsperlong.h"
-+#include "../../../arch/x86/include/uapi/asm/bitsperlong.h"
- #elif defined(__aarch64__)
--#include "../../arch/arm64/include/uapi/asm/bitsperlong.h"
-+#include "../../../arch/arm64/include/uapi/asm/bitsperlong.h"
- #elif defined(__powerpc__)
--#include "../../arch/powerpc/include/uapi/asm/bitsperlong.h"
-+#include "../../../arch/powerpc/include/uapi/asm/bitsperlong.h"
- #elif defined(__s390__)
--#include "../../arch/s390/include/uapi/asm/bitsperlong.h"
-+#include "../../../arch/s390/include/uapi/asm/bitsperlong.h"
- #elif defined(__sparc__)
--#include "../../arch/sparc/include/uapi/asm/bitsperlong.h"
-+#include "../../../arch/sparc/include/uapi/asm/bitsperlong.h"
- #elif defined(__mips__)
--#include "../../arch/mips/include/uapi/asm/bitsperlong.h"
-+#include "../../../arch/mips/include/uapi/asm/bitsperlong.h"
- #elif defined(__ia64__)
--#include "../../arch/ia64/include/uapi/asm/bitsperlong.h"
-+#include "../../../arch/ia64/include/uapi/asm/bitsperlong.h"
- #elif defined(__riscv)
--#include "../../arch/riscv/include/uapi/asm/bitsperlong.h"
-+#include "../../../arch/riscv/include/uapi/asm/bitsperlong.h"
- #elif defined(__alpha__)
--#include "../../arch/alpha/include/uapi/asm/bitsperlong.h"
-+#include "../../../arch/alpha/include/uapi/asm/bitsperlong.h"
- #else
- #include <asm-generic/bitsperlong.h>
- #endif
+diff --git a/tools/perf/ui/browser.c b/tools/perf/ui/browser.c
+index d227d74..c797a85 100644
+--- a/tools/perf/ui/browser.c
++++ b/tools/perf/ui/browser.c
+@@ -347,6 +347,8 @@ static int __ui_browser__refresh(struct ui_browser *browser)
+ 	SLsmg_fill_region(browser->y + row + browser->extra_title_lines, browser->x,
+ 			  browser->rows - row, width, ' ');
+ 
++	if (browser->nr_entries == 0 && browser->no_samples_msg)
++		__ui__info_window(NULL, browser->no_samples_msg, NULL);
+ 	return 0;
+ }
+ 
+diff --git a/tools/perf/ui/browser.h b/tools/perf/ui/browser.h
+index dc14441..3678eb8 100644
+--- a/tools/perf/ui/browser.h
++++ b/tools/perf/ui/browser.h
+@@ -23,6 +23,7 @@ struct ui_browser {
+ 	void	      *priv;
+ 	const char    *title;
+ 	char	      *helpline;
++	const char    *no_samples_msg;
+ 	void 	      (*refresh_dimensions)(struct ui_browser *browser);
+ 	unsigned int  (*refresh)(struct ui_browser *browser);
+ 	void	      (*write)(struct ui_browser *browser, void *entry, int row);
