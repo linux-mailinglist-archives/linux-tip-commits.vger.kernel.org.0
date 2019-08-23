@@ -2,38 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A1959AF46
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 23 Aug 2019 14:25:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 345069AF43
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 23 Aug 2019 14:25:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2394581AbfHWMYQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 23 Aug 2019 08:24:16 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:35265 "EHLO
+        id S2394568AbfHWMYO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 23 Aug 2019 08:24:14 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:35259 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2391888AbfHWMYO (ORCPT
+        with ESMTP id S2387912AbfHWMYO (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Fri, 23 Aug 2019 08:24:14 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i18bx-0001qm-TU; Fri, 23 Aug 2019 14:24:10 +0200
+        id 1i18bx-0001qS-Hm; Fri, 23 Aug 2019 14:24:09 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 90A1A1C04F3;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 241CB1C089A;
         Fri, 23 Aug 2019 14:24:09 +0200 (CEST)
 Date:   Fri, 23 Aug 2019 12:24:09 -0000
 From:   tip-bot2 for Arnaldo Carvalho de Melo <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf scripting python: Add missing counts.h header
+Subject: [tip: perf/core] perf stat: Add missing counts.h
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         Jiri Olsa <jolsa@kernel.org>,
         Namhyung Kim <namhyung@kernel.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org
-In-Reply-To: <tip-6bxk3ltwkw91qcld2ot86bgg@git.kernel.org>
-References: <tip-6bxk3ltwkw91qcld2ot86bgg@git.kernel.org>
+In-Reply-To: <tip-jwcbm9gv9llloe3he5qkdefs@git.kernel.org>
+References: <tip-jwcbm9gv9llloe3he5qkdefs@git.kernel.org>
 MIME-Version: 1.0
-Message-ID: <156656304951.32117.11655967798767148792.tip-bot2@tip-bot2>
+Message-ID: <156656304907.32114.12611741392633447359.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from
@@ -51,14 +51,14 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     430482c2e34ea8c164240ce295b5f57f16ab5621
-Gitweb:        https://git.kernel.org/tip/430482c2e34ea8c164240ce295b5f57f16ab5621
+Commit-ID:     bfc49182c64e9dbdea494a577894194701b61e72
+Gitweb:        https://git.kernel.org/tip/bfc49182c64e9dbdea494a577894194701b61e72
 Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Wed, 21 Aug 2019 14:02:35 -03:00
+AuthorDate:    Wed, 21 Aug 2019 14:02:05 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Thu, 22 Aug 2019 17:16:57 -03:00
 
-perf scripting python: Add missing counts.h header
+perf stat: Add missing counts.h
 
 It is getting this via evsel.h, that don't strictly need counts.h, just
 forward declarations for some structs, so add it here before we remove
@@ -67,21 +67,34 @@ it from there.
 Cc: Adrian Hunter <adrian.hunter@intel.com>
 Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lkml.kernel.org/n/tip-6bxk3ltwkw91qcld2ot86bgg@git.kernel.org
+Link: https://lkml.kernel.org/n/tip-jwcbm9gv9llloe3he5qkdefs@git.kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/scripting-engines/trace-event-python.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/perf/util/stat-display.c | 1 +
+ tools/perf/util/stat.c         | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/tools/perf/util/scripting-engines/trace-event-python.c b/tools/perf/util/scripting-engines/trace-event-python.c
-index 32c17a7..51771fc 100644
---- a/tools/perf/util/scripting-engines/trace-event-python.c
-+++ b/tools/perf/util/scripting-engines/trace-event-python.c
-@@ -32,6 +32,7 @@
+diff --git a/tools/perf/util/stat-display.c b/tools/perf/util/stat-display.c
+index 3df0e39..605a1fd 100644
+--- a/tools/perf/util/stat-display.c
++++ b/tools/perf/util/stat-display.c
+@@ -4,6 +4,7 @@
  #include <linux/time64.h>
- 
- #include "../../perf.h"
-+#include "../counts.h"
- #include "../debug.h"
- #include "../callchain.h"
- #include "../evsel.h"
+ #include <math.h>
+ #include "color.h"
++#include "counts.h"
+ #include "evlist.h"
+ #include "evsel.h"
+ #include "stat.h"
+diff --git a/tools/perf/util/stat.c b/tools/perf/util/stat.c
+index 2715112..1e6a25a 100644
+--- a/tools/perf/util/stat.c
++++ b/tools/perf/util/stat.c
+@@ -2,6 +2,7 @@
+ #include <errno.h>
+ #include <inttypes.h>
+ #include <math.h>
++#include "counts.h"
+ #include "stat.h"
+ #include "evlist.h"
+ #include "evsel.h"
