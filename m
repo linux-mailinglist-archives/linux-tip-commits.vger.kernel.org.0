@@ -2,36 +2,35 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 57C379A546
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 23 Aug 2019 04:12:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 86A169A55E
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 23 Aug 2019 04:14:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389364AbfHWCMS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 22 Aug 2019 22:12:18 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:33711 "EHLO
+        id S2389880AbfHWCMv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 22 Aug 2019 22:12:51 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:33717 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389300AbfHWCMS (ORCPT
+        with ESMTP id S2389311AbfHWCMS (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Thu, 22 Aug 2019 22:12:18 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i0z3n-0000wA-45; Fri, 23 Aug 2019 04:12:15 +0200
+        id 1i0z3o-0000wk-3P; Fri, 23 Aug 2019 04:12:16 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C578E1C0883;
-        Fri, 23 Aug 2019 04:12:14 +0200 (CEST)
-Date:   Fri, 23 Aug 2019 02:12:14 -0000
-From:   tip-bot2 for Thomas Gleixner <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id BF6CF1C0883;
+        Fri, 23 Aug 2019 04:12:15 +0200 (CEST)
+Date:   Fri, 23 Aug 2019 02:12:15 -0000
+From:   tip-bot2 for Julien Grall <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] posix-cpu-timers: Sanitize bogus WARNONS
-Cc:     linux-kernel@vger.kernel.org,
-        Frederic Weisbecker <frederic@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>
-In-Reply-To: <20190819143801.846497772@linutronix.de>
-References: <20190819143801.846497772@linutronix.de>
+Subject: [tip: timers/core] hrtimer: Protect lockless access to timer->base
+Cc:     linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+        Julien Grall <julien.grall@arm.com>
+In-Reply-To: <20190821092409.13225-2-julien.grall@arm.com>
+References: <20190821092409.13225-2-julien.grall@arm.com>
 MIME-Version: 1.0
-Message-ID: <156652633476.11645.833680996843703655.tip-bot2@tip-bot2>
+Message-ID: <156652633563.11652.10492988947576826957.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from
@@ -48,97 +47,42 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     692117c1f7a6770ed41dd8f277cd9fed1dfb16f1
-Gitweb:        https://git.kernel.org/tip/692117c1f7a6770ed41dd8f277cd9fed1dfb16f1
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Mon, 19 Aug 2019 16:31:46 +02:00
+Commit-ID:     dd2261ed45aaeddeb77768f291d604179bcab096
+Gitweb:        https://git.kernel.org/tip/dd2261ed45aaeddeb77768f291d604179bcab096
+Author:        Julien Grall <julien.grall@arm.com>
+AuthorDate:    Wed, 21 Aug 2019 10:24:07 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 21 Aug 2019 20:27:15 +02:00
+CommitterDate: Wed, 21 Aug 2019 16:10:01 +02:00
 
-posix-cpu-timers: Sanitize bogus WARNONS
+hrtimer: Protect lockless access to timer->base
 
-Warning when p == NULL and then proceeding and dereferencing p does not
-make any sense as the kernel will crash with a NULL pointer dereference
-right away.
+The update to timer->base is protected by the base->cpu_base->lock().
+However, hrtimer_cancel_wait_running() does access it lockless.  So the
+compiler is allowed to refetch timer->base which can cause havoc when the
+timer base is changed concurrently.
 
-Bailing out when p == NULL and returning an error code does not cure the
-underlying problem which caused p to be NULL. Though it might allow to
-do proper debugging.
+Use READ_ONCE() to prevent this.
 
-Same applies to the clock id check in set_process_cpu_timer().
+[ tglx: Adapted from a RT patch ]
 
-Clean them up and make them return without trying to do further damage.
-
+Signed-off-by: Julien Grall <julien.grall@arm.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Link: https://lkml.kernel.org/r/20190819143801.846497772@linutronix.de
-
+Link: https://lkml.kernel.org/r/20190821092409.13225-2-julien.grall@arm.com
 ---
- kernel/time/posix-cpu-timers.c | 20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
+ kernel/time/hrtimer.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/time/posix-cpu-timers.c b/kernel/time/posix-cpu-timers.c
-index 742d4a4..98223d2 100644
---- a/kernel/time/posix-cpu-timers.c
-+++ b/kernel/time/posix-cpu-timers.c
-@@ -375,7 +375,8 @@ static int posix_cpu_timer_del(struct k_itimer *timer)
- 	struct sighand_struct *sighand;
- 	struct task_struct *p = timer->it.cpu.task;
- 
--	WARN_ON_ONCE(p == NULL);
-+	if (WARN_ON_ONCE(!p))
-+		return -EINVAL;
- 
- 	/*
- 	 * Protect against sighand release/switch in exit/exec and process/
-@@ -581,7 +582,8 @@ static int posix_cpu_timer_set(struct k_itimer *timer, int timer_flags,
- 	u64 old_expires, new_expires, old_incr, val;
- 	int ret;
- 
--	WARN_ON_ONCE(p == NULL);
-+	if (WARN_ON_ONCE(!p))
-+		return -EINVAL;
- 
- 	/*
- 	 * Use the to_ktime conversion because that clamps the maximum
-@@ -716,10 +718,11 @@ static int posix_cpu_timer_set(struct k_itimer *timer, int timer_flags,
- 
- static void posix_cpu_timer_get(struct k_itimer *timer, struct itimerspec64 *itp)
- {
--	u64 now;
- 	struct task_struct *p = timer->it.cpu.task;
-+	u64 now;
- 
--	WARN_ON_ONCE(p == NULL);
-+	if (WARN_ON_ONCE(!p))
-+		return;
- 
- 	/*
- 	 * Easy part: convert the reload time.
-@@ -1001,12 +1004,13 @@ static void check_process_timers(struct task_struct *tsk,
+diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
+index 8333537..f48864e 100644
+--- a/kernel/time/hrtimer.c
++++ b/kernel/time/hrtimer.c
+@@ -1214,7 +1214,8 @@ static void hrtimer_sync_wait_running(struct hrtimer_cpu_base *cpu_base,
   */
- static void posix_cpu_timer_rearm(struct k_itimer *timer)
+ void hrtimer_cancel_wait_running(const struct hrtimer *timer)
  {
-+	struct task_struct *p = timer->it.cpu.task;
- 	struct sighand_struct *sighand;
- 	unsigned long flags;
--	struct task_struct *p = timer->it.cpu.task;
- 	u64 now;
+-	struct hrtimer_clock_base *base = timer->base;
++	/* Lockless read. Prevent the compiler from reloading it below */
++	struct hrtimer_clock_base *base = READ_ONCE(timer->base);
  
--	WARN_ON_ONCE(p == NULL);
-+	if (WARN_ON_ONCE(!p))
-+		return;
- 
- 	/*
- 	 * Fetch the current sample and update the timer's expiry time.
-@@ -1203,7 +1207,9 @@ void set_process_cpu_timer(struct task_struct *tsk, unsigned int clock_idx,
- 	u64 now;
- 	int ret;
- 
--	WARN_ON_ONCE(clock_idx == CPUCLOCK_SCHED);
-+	if (WARN_ON_ONCE(clock_idx >= CPUCLOCK_SCHED))
-+		return;
-+
- 	ret = cpu_timer_sample_group(clock_idx, tsk, &now);
- 
- 	if (oldval && ret != -EINVAL) {
+ 	if (!timer->is_soft || !base || !base->cpu_base) {
+ 		cpu_relax();
