@@ -2,39 +2,45 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C83699A57D
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 23 Aug 2019 04:31:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4DBC9A586
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 23 Aug 2019 04:31:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390363AbfHWC2R (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 22 Aug 2019 22:28:17 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:33796 "EHLO
+        id S2390878AbfHWC23 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 22 Aug 2019 22:28:29 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:33821 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390216AbfHWC2M (ORCPT
+        with ESMTP id S2390502AbfHWC23 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 22 Aug 2019 22:28:12 -0400
+        Thu, 22 Aug 2019 22:28:29 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i0zJA-00019E-OT; Fri, 23 Aug 2019 04:28:08 +0200
+        id 1i0zJA-00019X-TL; Fri, 23 Aug 2019 04:28:09 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C4DA61C07E4;
-        Fri, 23 Aug 2019 04:28:07 +0200 (CEST)
-Date:   Fri, 23 Aug 2019 02:28:07 -0000
-From:   tip-bot2 for Arnaldo Carvalho de Melo <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 6DC2A1C0883;
+        Fri, 23 Aug 2019 04:28:08 +0200 (CEST)
+Date:   Fri, 23 Aug 2019 02:28:08 -0000
+From:   tip-bot2 for Leo Yan <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf ui: Make 'exit_msg' optional in
- ui__question_window()
+Subject: [tip: perf/core] perf cs-etm: Support sample flags 'insn' and
+ 'insnlen'
 Cc:     linux-kernel@vger.kernel.org,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
+        linux-arm-kernel@lists.infradead.org, coresight@lists.linaro.org,
+        Suzuki Poulouse <suzuki.poulose@arm.com>,
+        Robert Walker <robert.walker@arm.com>,
         Namhyung Kim <namhyung@kernel.org>,
-        Jiri Olsa <jolsa@kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>
-In-Reply-To: <tip-pnx1dn17bsz7lqt9ty95nnjx@git.kernel.org>
-References: <tip-pnx1dn17bsz7lqt9ty95nnjx@git.kernel.org>
+        Mike Leach <mike.leach@linaro.org>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Leo Yan <leo.yan@linaro.org>
+In-Reply-To: <20190815082854.18191-1-leo.yan@linaro.org>
+References: <20190815082854.18191-1-leo.yan@linaro.org>
 MIME-Version: 1.0
-Message-ID: <156652728773.12698.1207944733354060591.tip-bot2@tip-bot2>
+Message-ID: <156652728831.12701.17501120781804999488.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from
@@ -51,62 +57,135 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     9e79ff77e4195e40e7a47a2001132db66e25d541
-Gitweb:        https://git.kernel.org/tip/9e79ff77e4195e40e7a47a2001132db66e25d541
-Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Mon, 19 Aug 2019 16:09:50 -03:00
+Commit-ID:     a4973d8f7bea98a0795ba853e7bd2cef11363824
+Gitweb:        https://git.kernel.org/tip/a4973d8f7bea98a0795ba853e7bd2cef11363824
+Author:        Leo Yan <leo.yan@linaro.org>
+AuthorDate:    Thu, 15 Aug 2019 16:28:54 +08:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Tue, 20 Aug 2019 12:21:27 -03:00
+CommitterDate: Tue, 20 Aug 2019 12:20:52 -03:00
 
-perf ui: Make 'exit_msg' optional in ui__question_window()
+perf cs-etm: Support sample flags 'insn' and 'insnlen'
 
-We will not need it when refactoring this function to be
-non-interactive, so make it optional.
+The synthetic branch and instruction samples are missed to set
+instruction related info, thus the perf tool fails to display samples
+with flags '-F,+insn,+insnlen'.
 
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
+The CoreSight trace decoder provides sufficient information to decide
+the instruction size based on the ISA type: A64/A32 instructions are
+32-bit size, but one exception is the T32 instruction size, which might
+be 32-bit or 16-bit.
+
+This patch handles these cases and it reads the instruction values from
+DSO file; thus can support the flags '-F,+insn,+insnlen'.
+
+Before:
+
+  # perf script -F,insn,insnlen,ip,sym
+                0 [unknown] ilen: 0
+     ffff97174044 _start ilen: 0
+     ffff97174938 _dl_start ilen: 0
+     ffff97174938 _dl_start ilen: 0
+     ffff97174938 _dl_start ilen: 0
+     ffff97174938 _dl_start ilen: 0
+     ffff97174938 _dl_start ilen: 0
+     ffff97174938 _dl_start ilen: 0
+     ffff97174938 _dl_start ilen: 0
+     ffff97174938 _dl_start ilen: 0
+
+  [...]
+
+After:
+
+  # perf script -F,insn,insnlen,ip,sym
+                0 [unknown] ilen: 0
+     ffff97174044 _start ilen: 4 insn: 2f 02 00 94
+     ffff97174938 _dl_start ilen: 4 insn: c1 ff ff 54
+     ffff97174938 _dl_start ilen: 4 insn: c1 ff ff 54
+     ffff97174938 _dl_start ilen: 4 insn: c1 ff ff 54
+     ffff97174938 _dl_start ilen: 4 insn: c1 ff ff 54
+     ffff97174938 _dl_start ilen: 4 insn: c1 ff ff 54
+     ffff97174938 _dl_start ilen: 4 insn: c1 ff ff 54
+     ffff97174938 _dl_start ilen: 4 insn: c1 ff ff 54
+     ffff97174938 _dl_start ilen: 4 insn: c1 ff ff 54
+
+  [...]
+
+Signed-off-by: Leo Yan <leo.yan@linaro.org>
+Reviewed-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Tested-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Jiri Olsa <jolsa@redhat.com>
+Cc: Mike Leach <mike.leach@linaro.org>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lkml.kernel.org/n/tip-pnx1dn17bsz7lqt9ty95nnjx@git.kernel.org
+Cc: Robert Walker <robert.walker@arm.com>
+Cc: Suzuki Poulouse <suzuki.poulose@arm.com>
+Cc: coresight@lists.linaro.org
+Cc: linux-arm-kernel@lists.infradead.org
+Link: http://lkml.kernel.org/r/20190815082854.18191-1-leo.yan@linaro.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/ui/tui/util.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ tools/perf/util/cs-etm.c | 35 ++++++++++++++++++++++++++++++++++-
+ 1 file changed, 34 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/ui/tui/util.c b/tools/perf/ui/tui/util.c
-index fe5e571..5d65ea8 100644
---- a/tools/perf/ui/tui/util.c
-+++ b/tools/perf/ui/tui/util.c
-@@ -188,7 +188,9 @@ int ui__question_window(const char *title, const char *text,
- 	pthread_mutex_lock(&ui__lock);
+diff --git a/tools/perf/util/cs-etm.c b/tools/perf/util/cs-etm.c
+index ed6f7fd..b3a5daa 100644
+--- a/tools/perf/util/cs-etm.c
++++ b/tools/perf/util/cs-etm.c
+@@ -1076,6 +1076,35 @@ bool cs_etm__etmq_is_timeless(struct cs_etm_queue *etmq)
+ 	return !!etmq->etm->timeless_decoding;
+ }
  
- 	max_len += 2;
--	nr_lines += 4;
-+	nr_lines += 2;
-+	if (exit_msg)
-+		nr_lines += 2;
- 	y = SLtt_Screen_Rows / 2 - nr_lines / 2,
- 	x = SLtt_Screen_Cols / 2 - max_len / 2;
- 
-@@ -199,14 +201,20 @@ int ui__question_window(const char *title, const char *text,
- 		SLsmg_write_string((char *)title);
- 	}
- 	SLsmg_gotorc(++y, x);
--	nr_lines -= 2;
-+	if (exit_msg)
-+		nr_lines -= 2;
- 	max_len -= 2;
- 	SLsmg_write_wrapped_string((unsigned char *)text, y, x,
- 				   nr_lines, max_len, 1);
- 	SLsmg_gotorc(y + nr_lines - 2, x);
- 	SLsmg_write_nstring((char *)" ", max_len);
- 	SLsmg_gotorc(y + nr_lines - 1, x);
--	SLsmg_write_nstring((char *)exit_msg, max_len);
-+	if (exit_msg) {
-+		SLsmg_gotorc(y + nr_lines - 2, x);
-+		SLsmg_write_nstring((char *)" ", max_len);
-+		SLsmg_gotorc(y + nr_lines - 1, x);
-+		SLsmg_write_nstring((char *)exit_msg, max_len);
++static void cs_etm__copy_insn(struct cs_etm_queue *etmq,
++			      u64 trace_chan_id,
++			      const struct cs_etm_packet *packet,
++			      struct perf_sample *sample)
++{
++	/*
++	 * It's pointless to read instructions for the CS_ETM_DISCONTINUITY
++	 * packet, so directly bail out with 'insn_len' = 0.
++	 */
++	if (packet->sample_type == CS_ETM_DISCONTINUITY) {
++		sample->insn_len = 0;
++		return;
 +	}
- 	SLsmg_refresh();
++
++	/*
++	 * T32 instruction size might be 32-bit or 16-bit, decide by calling
++	 * cs_etm__t32_instr_size().
++	 */
++	if (packet->isa == CS_ETM_ISA_T32)
++		sample->insn_len = cs_etm__t32_instr_size(etmq, trace_chan_id,
++							  sample->ip);
++	/* Otherwise, A64 and A32 instruction size are always 32-bit. */
++	else
++		sample->insn_len = 4;
++
++	cs_etm__mem_access(etmq, trace_chan_id, sample->ip,
++			   sample->insn_len, (void *)sample->insn);
++}
++
+ static int cs_etm__synth_instruction_sample(struct cs_etm_queue *etmq,
+ 					    struct cs_etm_traceid_queue *tidq,
+ 					    u64 addr, u64 period)
+@@ -1097,9 +1126,10 @@ static int cs_etm__synth_instruction_sample(struct cs_etm_queue *etmq,
+ 	sample.period = period;
+ 	sample.cpu = tidq->packet->cpu;
+ 	sample.flags = tidq->prev_packet->flags;
+-	sample.insn_len = 1;
+ 	sample.cpumode = event->sample.header.misc;
  
- 	pthread_mutex_unlock(&ui__lock);
++	cs_etm__copy_insn(etmq, tidq->trace_chan_id, tidq->packet, &sample);
++
+ 	if (etm->synth_opts.last_branch) {
+ 		cs_etm__copy_last_branch_rb(etmq, tidq);
+ 		sample.branch_stack = tidq->last_branch;
+@@ -1159,6 +1189,9 @@ static int cs_etm__synth_branch_sample(struct cs_etm_queue *etmq,
+ 	sample.flags = tidq->prev_packet->flags;
+ 	sample.cpumode = event->sample.header.misc;
+ 
++	cs_etm__copy_insn(etmq, tidq->trace_chan_id, tidq->prev_packet,
++			  &sample);
++
+ 	/*
+ 	 * perf report cannot handle events without a branch stack
+ 	 */
