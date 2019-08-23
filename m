@@ -2,29 +2,29 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EB0249A582
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 23 Aug 2019 04:31:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 81DD99A588
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 23 Aug 2019 04:31:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389429AbfHWC2W (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 22 Aug 2019 22:28:22 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:33815 "EHLO
+        id S2390940AbfHWC2j (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 22 Aug 2019 22:28:39 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:33812 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390502AbfHWC2W (ORCPT
+        with ESMTP id S2390337AbfHWC2S (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 22 Aug 2019 22:28:22 -0400
+        Thu, 22 Aug 2019 22:28:18 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i0zJC-0001AR-FS; Fri, 23 Aug 2019 04:28:10 +0200
+        id 1i0zJC-00019x-1G; Fri, 23 Aug 2019 04:28:10 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 1349E1C0883;
-        Fri, 23 Aug 2019 04:28:10 +0200 (CEST)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 83D9C1C07E4;
+        Fri, 23 Aug 2019 04:28:09 +0200 (CEST)
 Date:   Fri, 23 Aug 2019 02:28:09 -0000
 From:   tip-bot2 for Alexey Budankov <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf record: Enable LBR callstack capture jointly
+Subject: [tip: perf/core] perf report: Dump LBR callstack data by -D jointly
  with thread stack
 Cc:     linux-kernel@vger.kernel.org,
         Peter Zijlstra <peterz@infradead.org>,
@@ -36,10 +36,10 @@ Cc:     linux-kernel@vger.kernel.org,
         Alexander Shishkin <alexander.shishkin@linux.intel.com>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Alexey Budankov <alexey.budankov@linux.intel.com>
-In-Reply-To: <e9e00090-66fb-d2a4-c90f-1d12344f7788@linux.intel.com>
-References: <e9e00090-66fb-d2a4-c90f-1d12344f7788@linux.intel.com>
+In-Reply-To: <aa82e5dd-def2-0ca8-a064-db9e2e8ad076@linux.intel.com>
+References: <aa82e5dd-def2-0ca8-a064-db9e2e8ad076@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <156652728996.12710.3122701757092644139.tip-bot2@tip-bot2>
+Message-ID: <156652728940.12707.17186855532932836374.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from
@@ -56,182 +56,126 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     2566349648b40aa3f5edf6af8f7f893ccd6e4eae
-Gitweb:        https://git.kernel.org/tip/2566349648b40aa3f5edf6af8f7f893ccd6e4eae
+Commit-ID:     d2720c3dad58def723f9617f7cf2a48c752ef50a
+Gitweb:        https://git.kernel.org/tip/d2720c3dad58def723f9617f7cf2a48c752ef50a
 Author:        Alexey Budankov <alexey.budankov@linux.intel.com>
-AuthorDate:    Fri, 09 Aug 2019 18:23:58 +03:00
+AuthorDate:    Fri, 09 Aug 2019 18:26:30 +03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Tue, 20 Aug 2019 12:18:58 -03:00
+CommitterDate: Tue, 20 Aug 2019 12:19:44 -03:00
 
-perf record: Enable LBR callstack capture jointly with thread stack
+perf report: Dump LBR callstack data by -D jointly with thread stack
 
-Enable '-j stack' applicability together with '--call-graph dwarf'
-option so thread stack data and LBR call stack could be captured
-jointly:
+Make perf report -D command print captured LBR callstack chain when it is
+collected together with raw thread stack data:
 
-  $ perf record -g --call-graph dwarf,1024 -j stack,u -- stack_test
-
-Collected LBR call stack can be used to augment DWARF call stack
-calculated from the raw thread stack data and to provide more
-comprehensive call stack information for cases when collected SIZE is
-not enough to cover complete thread stack.
-
-Such cases are typical for workloads that allocate large arrays of data
-on its threads stacks or the possible SIZE to collect can't be large
-enough due to workload nature or system configuration and this is where
-hardware captured LBR call stacks can provide missing stack frames.
-Possible DWARF plus LBR call stacks consolidation algorithm description
-follows.
-
-With this patch set perf report command UI currently ignores collected
-LBR call stack data and still provides DWARF based call stacks
-information.
-
-  ===========================================================================
-
-  Overview:
-
-   Legend:
-
-   THS - thread stack
-   CTX - thread register context
-   SWS - software stack
-   SSF - skipped stack frames
-   PSS - Perf sample stack
-
-   ip,sp,bp - HW registers values
-   d        - allocated stack regions
-   kip      - ip address in the kernel space
-   K        - captured thread stack size
-
-        THS
-
-       -----
-       |   |<-stack bottom
-        ...
-       |---|
-       |ip4|
-       |---|         PSS = SWS(THS(K))
-       |   |
-   --> |   |
-   |   |d3 |                  user/
-   |   |---|         user PSS kernel PSS
-   |   |ip3|         ------   ------
-   |   |---|         |SSF |   |SSF |
-   |   |   |          ....     ....
-   |   |   |         ------   ------
-   |   |d2 |         | -1 |   | -1 |
-       |---|   user  ------   ------
-   K   |ip2|   CTX   |ip3 |   |ip3 |
-       |---|         |----|   |----|
-   |   |d1 |   ...   |ip2 | , |ip2 |
-   |   |---|  |---|  |----|   |----|
-   |   |ip1|  |bp0|  |ip1 |   |ip1 |
-   |   |---|  |---|  |----|   |----|
-   |   |   |  |ip0|->|ip0 |   |ip0 |<-user stack top
-   |   |   |  |---|  ------   ------
-   |   |   |<-|sp0|<-stack    |kip0|<-kernel stack bottom
-   --> -----  -----   top     |----|
-                              |kip1|
-                              |----|
-		              |kip2|
-		              |----|
-                               ....
-			      |    |<-kernel stack top
-                              ------
-
-  Algorithm details:
-
-   Legend:
-
-   HWS - hardware stack
-   K-SWS - kernel software stack
-
-			 BRANCH
-			 TABLE
-
-		 HWS      ip   ip
-			  from to
-		 ------  -----------
-		 |ip7`|  |ip7`|    |
-		 |----|  |----|----|
-		 |ip6`|  |ip6`|    |
-	user PSS |----|  |----|----|
-		 |ip5`|  |ip5`|    |
-	------   |----|  |----|----|
-	| -1 |   |ip4`|  |ip4`|    |
-	------   |----|  |----|----|
-	|ip3 |~~~|ip3`|  |ip3`|    |
-	|----|   |----|  |----|----|
-	|ip2 |~~~|ip2`|  |ip2`|    |
-	|----| 	 |----|  |----|----|
-	|ip1 |~~~|ip1`|  |ip1`|ip0`|
-	|----| 	 |----|  -----------
-	|ip0 |~~~|ip0`|<---------'
-	------   ------
-
-	1. if (sym(ipj) == sym(ipj`)), j=0-3 ===> user PSS
-	2. ipj`                      , j=4-7 ===> user PSS
-
-  Augmented PSS = A_SWS(SWS(THS(K)), HWS):
-
-	         user/
-       user PSS  kernel PSS
-
-	------   ------
-	|ip7`|   |ip7`|<-user PSS bottom
-	|----|   |----|
-	|ip6`|   |ip6`|
-	|----|   |----|
-    HWS	|ip5`|   |ip5`|
-	|----|   |----|
-	|ip4`|   |ip4`|
-	------   ------
-	|ip3 |   |ip3 |
-	|----|   |----|
-    SWS |ip2 |   |ip2 |
-	|----|   |----|
-	|ip1 |   |ip1 |
-	|----|   |----|
-	|ip0 |   |ip0 |<-user PSS top
-	------   ------
-		 |kip0|<-kernel PSS bottom
-		 |----|
-		 |kip1|
-	   K-SWS |----|
-		 |kip2|
-		 |----|
-		 |kip3|<-kernel PSS top
-		 ------
-
-                  APSS
+  2752673087247083 0x5d10 [0x548]: PERF_RECORD_SAMPLE(IP, 0x4002): 5841/5841: 0x40121f period: 1543862 addr: 0
+  ... FP chain: nr:0
+  ... branch callstack: nr:3
+  .....  0: 00000000004011d0
+  .....  1: 00007f393c388411
+  .....  2: 0000000000401098
+  ... user regs: mask 0xff0fff ABI 64-bit
+  .... AX    0x34e7
+  .... BX    0x7fff5f6dd3c0
+  .... CX    0xffffffff
+  .... DX    0x34e6
+  .... SI    0x7f393c5268d0
+  .... DI    0x0
+  .... BP    0x401260
+  .... SP    0x7fff5f6dd3c0
+  .... IP    0x40121f
+  .... FLAGS 0x29f
+  .... CS    0x33
+  .... SS    0x2b
+  .... R8    0x7f393c526800
+  .... R9    0x7f393c525da0
+  .... R10   0xfffffffffffff70a
+  .... R11   0x246
+  .... R12   0x401070
+  .... R13   0x7fff5f6ddcb0
+  .... R14   0x0
+  .... R15   0x0
+  ... ustack: size 1024, offset 0x130
+   . data_src: 0x5080021
+   ... thread: stack_test:5841
+   ...... dso: /root/abudanko/stacks/stack_test
 
 Committer testing:
 
+  # perf record -g --call-graph dwarf,1024 -j stack,u ls > /dev/null
+  [ perf record: Woken up 1 times to write data ]
+  [ perf record: Captured and wrote 0.042 MB perf.data (10 samples) ]
+  #
+
 Before:
 
-  # perf record -g --call-graph dwarf,1024 -j stack,u ls > /dev/null
-  unknown branch filter stack, check man page
+  # perf report -D |& grep PERF_RECORD_SAMPLE -A28 | tail -29
+  67538909824483 0xa7a0 [0x560]: PERF_RECORD_SAMPLE(IP, 0x4002): 9721/9721: 0x7f441b2b1e20 period: 1376095 addr: 0
+  ... FP chain: nr:0
+  ... user regs: mask 0xff0fff ABI 64-bit
+  .... AX    0x7f441b2b1000
+  .... BX    0x7f441b55b970
+  .... CX    0x7fff6e2db218
+  .... DX    0x7fff6e2db218
+  .... SI    0x7fff6e2db208
+  .... DI    0x1
+  .... BP    0x1
+  .... SP    0x7fff6e2db178
+  .... IP    0x7f441b2b1e20
+  .... FLAGS 0x20a
+  .... CS    0x33
+  .... SS    0x2b
+  .... R8    0x1
+  .... R9    0x7f441b371c18
+  .... R10   0x7f441b5a5f10
+  .... R11   0x202
+  .... R12   0x7fff6e2db208
+  .... R13   0x7fff6e2db218
+  .... R14   0x7f441b5a7150
+  .... R15   0x0
+  ... ustack: size 1024, offset 0x148
+   . data_src: 0x5080021
+   ... thread: ls:9721
+   ...... dso: /usr/lib64/libpthread-2.29.so
 
-   Usage: perf record [<options>] [<command>]
-      or: perf record [<options>] -- <command> [<options>]
-
-      -j, --branch-filter <branch filter mask>
-                            branch stack filter modes
-  # perf record -g --call-graph dwarf,1024 -j u ls > /dev/null
-  [ perf record: Woken up 1 times to write data ]
-  [ perf record: Captured and wrote 0.054 MB perf.data (12 samples) ]
-  # perf evlist -v
-  cycles: size: 112, { sample_period, sample_freq }: 4000, sample_type: IP|TID|TIME|ADDR|CALLCHAIN|PERIOD|BRANCH_STACK|REGS_USER|STACK_USER|DATA_SRC, read_format: ID, disabled: 1, inherit: 1, mmap: 1, comm: 1, freq: 1, enable_on_exec: 1, task: 1, precise_ip: 3, mmap_data: 1, sample_id_all: 1, exclude_guest: 1, exclude_callchain_user: 1, mmap2: 1, comm_exec: 1, ksymbol: 1, bpf_event: 1, branch_sample_type: ANY, sample_regs_user: 0xff0fff, sample_stack_user: 1024
-   #
+  0xad00 [0x60]: event: 10
+  #
 
 After:
 
-  # perf record -g --call-graph dwarf,1024 -j stack,u ls > /dev/null
-  [ perf record: Woken up 1 times to write data ]
-  [ perf record: Captured and wrote 0.044 MB perf.data (11 samples) ]
-  [root@quaco ~]# perf evlist -v
-  cycles: size: 112, { sample_period, sample_freq }: 4000, sample_type: IP|TID|TIME|ADDR|CALLCHAIN|PERIOD|BRANCH_STACK|REGS_USER|STACK_USER|DATA_SRC, read_format: ID, disabled: 1, inherit: 1, mmap: 1, comm: 1, freq: 1, enable_on_exec: 1, task: 1, precise_ip: 3, mmap_data: 1, sample_id_all: 1, exclude_guest: 1, exclude_callchain_user: 1, mmap2: 1, comm_exec: 1, ksymbol: 1, bpf_event: 1, branch_sample_type: USER|CALL_STACK, sample_regs_user: 0xff0fff, sample_stack_user: 1024
+  # perf report -D |& grep PERF_RECORD_SAMPLE -A31 | tail -32
+  67538909824483 0xa7a0 [0x560]: PERF_RECORD_SAMPLE(IP, 0x4002): 9721/9721: 0x7f441b2b1e20 period: 1376095 addr: 0
+  ... FP chain: nr:0
+  ... branch callstack: nr:4
+  .....  0: 00007f441b2b1e20
+  .....  1: 00007f441b58af1a
+  .....  2: 00007f441b58b0e1
+  .....  3: 00007f441b57c145
+  ... user regs: mask 0xff0fff ABI 64-bit
+  .... AX    0x7f441b2b1000
+  .... BX    0x7f441b55b970
+  .... CX    0x7fff6e2db218
+  .... DX    0x7fff6e2db218
+  .... SI    0x7fff6e2db208
+  .... DI    0x1
+  .... BP    0x1
+  .... SP    0x7fff6e2db178
+  .... IP    0x7f441b2b1e20
+  .... FLAGS 0x20a
+  .... CS    0x33
+  .... SS    0x2b
+  .... R8    0x1
+  .... R9    0x7f441b371c18
+  .... R10   0x7f441b5a5f10
+  .... R11   0x202
+  .... R12   0x7fff6e2db208
+  .... R13   0x7fff6e2db218
+  .... R14   0x7f441b5a7150
+  .... R15   0x0
+  ... ustack: size 1024, offset 0x148
+   . data_src: 0x5080021
+   ... thread: ls:9721
+   ...... dso: /usr/lib64/libpthread-2.29.so
   #
 
 Signed-off-by: Alexey Budankov <alexey.budankov@linux.intel.com>
@@ -243,21 +187,65 @@ Cc: Jiri Olsa <jolsa@redhat.com>
 Cc: Kan Liang <kan.liang@linux.intel.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Link: http://lkml.kernel.org/r/e9e00090-66fb-d2a4-c90f-1d12344f7788@linux.intel.com
+Link: http://lkml.kernel.org/r/aa82e5dd-def2-0ca8-a064-db9e2e8ad076@linux.intel.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/parse-branch-options.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/perf/util/session.c | 31 +++++++++++++++++++------------
+ 1 file changed, 19 insertions(+), 12 deletions(-)
 
-diff --git a/tools/perf/util/parse-branch-options.c b/tools/perf/util/parse-branch-options.c
-index 726e8d9..4ed20c8 100644
---- a/tools/perf/util/parse-branch-options.c
-+++ b/tools/perf/util/parse-branch-options.c
-@@ -30,6 +30,7 @@ static const struct branch_mode branch_modes[] = {
- 	BRANCH_OPT("ind_jmp", PERF_SAMPLE_BRANCH_IND_JUMP),
- 	BRANCH_OPT("call", PERF_SAMPLE_BRANCH_CALL),
- 	BRANCH_OPT("save_type", PERF_SAMPLE_BRANCH_TYPE_SAVE),
-+	BRANCH_OPT("stack", PERF_SAMPLE_BRANCH_CALL_STACK),
- 	BRANCH_END
- };
+diff --git a/tools/perf/util/session.c b/tools/perf/util/session.c
+index b9fe71d..82e0438 100644
+--- a/tools/perf/util/session.c
++++ b/tools/perf/util/session.c
+@@ -1051,23 +1051,30 @@ static void callchain__printf(struct evsel *evsel,
+ 		       i, callchain->ips[i]);
+ }
  
+-static void branch_stack__printf(struct perf_sample *sample)
++static void branch_stack__printf(struct perf_sample *sample, bool callstack)
+ {
+ 	uint64_t i;
+ 
+-	printf("... branch stack: nr:%" PRIu64 "\n", sample->branch_stack->nr);
++	printf("%s: nr:%" PRIu64 "\n",
++		!callstack ? "... branch stack" : "... branch callstack",
++		sample->branch_stack->nr);
+ 
+ 	for (i = 0; i < sample->branch_stack->nr; i++) {
+ 		struct branch_entry *e = &sample->branch_stack->entries[i];
+ 
+-		printf("..... %2"PRIu64": %016" PRIx64 " -> %016" PRIx64 " %hu cycles %s%s%s%s %x\n",
+-			i, e->from, e->to,
+-			(unsigned short)e->flags.cycles,
+-			e->flags.mispred ? "M" : " ",
+-			e->flags.predicted ? "P" : " ",
+-			e->flags.abort ? "A" : " ",
+-			e->flags.in_tx ? "T" : " ",
+-			(unsigned)e->flags.reserved);
++		if (!callstack) {
++			printf("..... %2"PRIu64": %016" PRIx64 " -> %016" PRIx64 " %hu cycles %s%s%s%s %x\n",
++				i, e->from, e->to,
++				(unsigned short)e->flags.cycles,
++				e->flags.mispred ? "M" : " ",
++				e->flags.predicted ? "P" : " ",
++				e->flags.abort ? "A" : " ",
++				e->flags.in_tx ? "T" : " ",
++				(unsigned)e->flags.reserved);
++		} else {
++			printf("..... %2"PRIu64": %016" PRIx64 "\n",
++				i, i > 0 ? e->from : e->to);
++		}
+ 	}
+ }
+ 
+@@ -1217,8 +1224,8 @@ static void dump_sample(struct evsel *evsel, union perf_event *event,
+ 	if (evsel__has_callchain(evsel))
+ 		callchain__printf(evsel, sample);
+ 
+-	if ((sample_type & PERF_SAMPLE_BRANCH_STACK) && !perf_evsel__has_branch_callstack(evsel))
+-		branch_stack__printf(sample);
++	if (sample_type & PERF_SAMPLE_BRANCH_STACK)
++		branch_stack__printf(sample, perf_evsel__has_branch_callstack(evsel));
+ 
+ 	if (sample_type & PERF_SAMPLE_REGS_USER)
+ 		regs_user__printf(sample);
