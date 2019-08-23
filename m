@@ -2,37 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E23ED9A545
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 23 Aug 2019 04:12:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 57C379A546
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 23 Aug 2019 04:12:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389334AbfHWCMS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S2389364AbfHWCMS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Thu, 22 Aug 2019 22:12:18 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:33708 "EHLO
+Received: from Galois.linutronix.de ([193.142.43.55]:33711 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730401AbfHWCMR (ORCPT
+        with ESMTP id S2389300AbfHWCMS (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 22 Aug 2019 22:12:17 -0400
+        Thu, 22 Aug 2019 22:12:18 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i0z3m-0000w9-QA; Fri, 23 Aug 2019 04:12:14 +0200
+        id 1i0z3n-0000wA-45; Fri, 23 Aug 2019 04:12:15 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 648201C07E4;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C578E1C0883;
         Fri, 23 Aug 2019 04:12:14 +0200 (CEST)
 Date:   Fri, 23 Aug 2019 02:12:14 -0000
 From:   tip-bot2 for Thomas Gleixner <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] posix-cpu-timers: Remove tsk argument from
- run_posix_cpu_timers()
+Subject: [tip: timers/core] posix-cpu-timers: Sanitize bogus WARNONS
 Cc:     linux-kernel@vger.kernel.org,
         Frederic Weisbecker <frederic@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>
-In-Reply-To: <20190819143801.945469967@linutronix.de>
-References: <20190819143801.945469967@linutronix.de>
+In-Reply-To: <20190819143801.846497772@linutronix.de>
+References: <20190819143801.846497772@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <156652633417.11637.2192098489035972415.tip-bot2@tip-bot2>
+Message-ID: <156652633476.11645.833680996843703655.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from
@@ -49,69 +48,97 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     dce3e8fd039cc1b62760b3ad6822cf04c262cd0e
-Gitweb:        https://git.kernel.org/tip/dce3e8fd039cc1b62760b3ad6822cf04c262cd0e
+Commit-ID:     692117c1f7a6770ed41dd8f277cd9fed1dfb16f1
+Gitweb:        https://git.kernel.org/tip/692117c1f7a6770ed41dd8f277cd9fed1dfb16f1
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Mon, 19 Aug 2019 16:31:47 +02:00
+AuthorDate:    Mon, 19 Aug 2019 16:31:46 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 21 Aug 2019 20:27:16 +02:00
+CommitterDate: Wed, 21 Aug 2019 20:27:15 +02:00
 
-posix-cpu-timers: Remove tsk argument from run_posix_cpu_timers()
+posix-cpu-timers: Sanitize bogus WARNONS
 
-It's always current. Don't give people wrong ideas.
+Warning when p == NULL and then proceeding and dereferencing p does not
+make any sense as the kernel will crash with a NULL pointer dereference
+right away.
+
+Bailing out when p == NULL and returning an error code does not cure the
+underlying problem which caused p to be NULL. Though it might allow to
+do proper debugging.
+
+Same applies to the clock id check in set_process_cpu_timer().
+
+Clean them up and make them return without trying to do further damage.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Link: https://lkml.kernel.org/r/20190819143801.945469967@linutronix.de
+Link: https://lkml.kernel.org/r/20190819143801.846497772@linutronix.de
 
 ---
- include/linux/posix-timers.h   | 2 +-
- kernel/time/posix-cpu-timers.c | 5 +++--
- kernel/time/timer.c            | 2 +-
- 3 files changed, 5 insertions(+), 4 deletions(-)
+ kernel/time/posix-cpu-timers.c | 20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
-diff --git a/include/linux/posix-timers.h b/include/linux/posix-timers.h
-index 26c636d..033374b 100644
---- a/include/linux/posix-timers.h
-+++ b/include/linux/posix-timers.h
-@@ -118,7 +118,7 @@ struct k_itimer {
- 	struct rcu_head		rcu;
- };
- 
--void run_posix_cpu_timers(struct task_struct *task);
-+void run_posix_cpu_timers(void);
- void posix_cpu_timers_exit(struct task_struct *task);
- void posix_cpu_timers_exit_group(struct task_struct *task);
- void set_process_cpu_timer(struct task_struct *task, unsigned int clock_idx,
 diff --git a/kernel/time/posix-cpu-timers.c b/kernel/time/posix-cpu-timers.c
-index 98223d2..387e0e8 100644
+index 742d4a4..98223d2 100644
 --- a/kernel/time/posix-cpu-timers.c
 +++ b/kernel/time/posix-cpu-timers.c
-@@ -1137,11 +1137,12 @@ static inline int fastpath_timer_check(struct task_struct *tsk)
-  * already updated our counts.  We need to check if any timers fire now.
-  * Interrupts are disabled.
-  */
--void run_posix_cpu_timers(struct task_struct *tsk)
-+void run_posix_cpu_timers(void)
+@@ -375,7 +375,8 @@ static int posix_cpu_timer_del(struct k_itimer *timer)
+ 	struct sighand_struct *sighand;
+ 	struct task_struct *p = timer->it.cpu.task;
+ 
+-	WARN_ON_ONCE(p == NULL);
++	if (WARN_ON_ONCE(!p))
++		return -EINVAL;
+ 
+ 	/*
+ 	 * Protect against sighand release/switch in exit/exec and process/
+@@ -581,7 +582,8 @@ static int posix_cpu_timer_set(struct k_itimer *timer, int timer_flags,
+ 	u64 old_expires, new_expires, old_incr, val;
+ 	int ret;
+ 
+-	WARN_ON_ONCE(p == NULL);
++	if (WARN_ON_ONCE(!p))
++		return -EINVAL;
+ 
+ 	/*
+ 	 * Use the to_ktime conversion because that clamps the maximum
+@@ -716,10 +718,11 @@ static int posix_cpu_timer_set(struct k_itimer *timer, int timer_flags,
+ 
+ static void posix_cpu_timer_get(struct k_itimer *timer, struct itimerspec64 *itp)
  {
--	LIST_HEAD(firing);
-+	struct task_struct *tsk = current;
- 	struct k_itimer *timer, *next;
+-	u64 now;
+ 	struct task_struct *p = timer->it.cpu.task;
++	u64 now;
+ 
+-	WARN_ON_ONCE(p == NULL);
++	if (WARN_ON_ONCE(!p))
++		return;
+ 
+ 	/*
+ 	 * Easy part: convert the reload time.
+@@ -1001,12 +1004,13 @@ static void check_process_timers(struct task_struct *tsk,
+  */
+ static void posix_cpu_timer_rearm(struct k_itimer *timer)
+ {
++	struct task_struct *p = timer->it.cpu.task;
+ 	struct sighand_struct *sighand;
  	unsigned long flags;
-+	LIST_HEAD(firing);
+-	struct task_struct *p = timer->it.cpu.task;
+ 	u64 now;
  
- 	lockdep_assert_irqs_disabled();
+-	WARN_ON_ONCE(p == NULL);
++	if (WARN_ON_ONCE(!p))
++		return;
  
-diff --git a/kernel/time/timer.c b/kernel/time/timer.c
-index 673c6a0..0e315a2 100644
---- a/kernel/time/timer.c
-+++ b/kernel/time/timer.c
-@@ -1728,7 +1728,7 @@ void update_process_times(int user_tick)
- #endif
- 	scheduler_tick();
- 	if (IS_ENABLED(CONFIG_POSIX_TIMERS))
--		run_posix_cpu_timers(p);
-+		run_posix_cpu_timers();
- }
+ 	/*
+ 	 * Fetch the current sample and update the timer's expiry time.
+@@ -1203,7 +1207,9 @@ void set_process_cpu_timer(struct task_struct *tsk, unsigned int clock_idx,
+ 	u64 now;
+ 	int ret;
  
- /**
+-	WARN_ON_ONCE(clock_idx == CPUCLOCK_SCHED);
++	if (WARN_ON_ONCE(clock_idx >= CPUCLOCK_SCHED))
++		return;
++
+ 	ret = cpu_timer_sample_group(clock_idx, tsk, &now);
+ 
+ 	if (oldval && ret != -EINVAL) {
