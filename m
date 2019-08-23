@@ -2,40 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E3BA9AF2B
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 23 Aug 2019 14:22:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 619529AF22
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 23 Aug 2019 14:22:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2394491AbfHWMVy (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 23 Aug 2019 08:21:54 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:35199 "EHLO
+        id S2394486AbfHWMVx (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 23 Aug 2019 08:21:53 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:35197 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2394466AbfHWMVt (ORCPT
+        with ESMTP id S2394460AbfHWMVu (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 23 Aug 2019 08:21:49 -0400
+        Fri, 23 Aug 2019 08:21:50 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i18ZX-0001gZ-LG; Fri, 23 Aug 2019 14:21:39 +0200
+        id 1i18Za-0001i1-2q; Fri, 23 Aug 2019 14:21:42 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4AA671C08B0;
-        Fri, 23 Aug 2019 14:21:39 +0200 (CEST)
-Date:   Fri, 23 Aug 2019 12:21:39 -0000
-From:   tip-bot2 for Jiri Olsa <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 0B5551C089A;
+        Fri, 23 Aug 2019 14:21:41 +0200 (CEST)
+Date:   Fri, 23 Aug 2019 12:21:40 -0000
+From:   tip-bot2 for Arnaldo Carvalho de Melo <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] libperf: Move perf's cpu_map__idx() to perf_cpu_map__idx()
-Cc:     Jiri Olsa <jolsa@kernel.org>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Michael Petlan <mpetlan@redhat.com>,
+Subject: [tip: perf/core] perf kvm s390: Add missing string.h header
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        Jiri Olsa <jolsa@kernel.org>,
         Namhyung Kim <namhyung@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org
-In-Reply-To: <20190822111141.25823-5-jolsa@kernel.org>
-References: <20190822111141.25823-5-jolsa@kernel.org>
+In-Reply-To: <tip-72y0i0uiaqght5b83e3ae7p4@git.kernel.org>
+References: <tip-72y0i0uiaqght5b83e3ae7p4@git.kernel.org>
 MIME-Version: 1.0
-Message-ID: <156656289921.31546.5483240567773794836.tip-bot2@tip-bot2>
+Message-ID: <156656290012.31554.17628410475770095788.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from
@@ -53,109 +51,37 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     b4df75de3b3930703415aa053a269ae07c78d9b2
-Gitweb:        https://git.kernel.org/tip/b4df75de3b3930703415aa053a269ae07c78d9b2
-Author:        Jiri Olsa <jolsa@kernel.org>
-AuthorDate:    Thu, 22 Aug 2019 13:11:40 +02:00
+Commit-ID:     e740ca86f354038f55978c8ac7bec69b57f0c8e0
+Gitweb:        https://git.kernel.org/tip/e740ca86f354038f55978c8ac7bec69b57f0c8e0
+Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
+AuthorDate:    Thu, 22 Aug 2019 17:15:42 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Thu, 22 Aug 2019 11:18:45 -03:00
+CommitterDate: Thu, 22 Aug 2019 17:16:56 -03:00
 
-libperf: Move perf's cpu_map__idx() to perf_cpu_map__idx()
+perf kvm s390: Add missing string.h header
 
-As an internal function that will be used by both perf and libperf, but
-is not exported at this point.
+It uses strstr(), needs to include string.h or its not going to build
+when we remove string.h from the place it is getting from indirectly, by
+luck.
 
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Michael Petlan <mpetlan@redhat.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: http://lkml.kernel.org/r/20190822111141.25823-5-jolsa@kernel.org
+Link: https://lkml.kernel.org/n/tip-72y0i0uiaqght5b83e3ae7p4@git.kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/lib/cpumap.c                  | 12 ++++++++++++
- tools/perf/lib/include/internal/cpumap.h |  2 ++
- tools/perf/util/cpumap.c                 | 14 +-------------
- tools/perf/util/cpumap.h                 |  1 -
- tools/perf/util/evlist.c                 |  2 +-
- 5 files changed, 16 insertions(+), 15 deletions(-)
+ tools/perf/arch/s390/util/kvm-stat.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/perf/lib/cpumap.c b/tools/perf/lib/cpumap.c
-index 63f7df7..2834753 100644
---- a/tools/perf/lib/cpumap.c
-+++ b/tools/perf/lib/cpumap.c
-@@ -242,3 +242,15 @@ bool perf_cpu_map__empty(const struct perf_cpu_map *map)
- {
- 	return map ? map->map[0] == -1 : true;
- }
-+
-+int perf_cpu_map__idx(struct perf_cpu_map *cpus, int cpu)
-+{
-+	int i;
-+
-+	for (i = 0; i < cpus->nr; ++i) {
-+		if (cpus->map[i] == cpu)
-+			return i;
-+	}
-+
-+	return -1;
-+}
-diff --git a/tools/perf/lib/include/internal/cpumap.h b/tools/perf/lib/include/internal/cpumap.h
-index 3306319..840d403 100644
---- a/tools/perf/lib/include/internal/cpumap.h
-+++ b/tools/perf/lib/include/internal/cpumap.h
-@@ -14,4 +14,6 @@ struct perf_cpu_map {
- #define MAX_NR_CPUS	2048
- #endif
+diff --git a/tools/perf/arch/s390/util/kvm-stat.c b/tools/perf/arch/s390/util/kvm-stat.c
+index dac7844..0fd4e9f 100644
+--- a/tools/perf/arch/s390/util/kvm-stat.c
++++ b/tools/perf/arch/s390/util/kvm-stat.c
+@@ -7,6 +7,7 @@
+  */
  
-+int perf_cpu_map__idx(struct perf_cpu_map *cpus, int cpu);
-+
- #endif /* __LIBPERF_INTERNAL_CPUMAP_H */
-diff --git a/tools/perf/util/cpumap.c b/tools/perf/util/cpumap.c
-index 4402e67..8e6c2cb 100644
---- a/tools/perf/util/cpumap.c
-+++ b/tools/perf/util/cpumap.c
-@@ -458,19 +458,7 @@ int cpu__setup_cpunode_map(void)
- 
- bool cpu_map__has(struct perf_cpu_map *cpus, int cpu)
- {
--	return cpu_map__idx(cpus, cpu) != -1;
--}
--
--int cpu_map__idx(struct perf_cpu_map *cpus, int cpu)
--{
--	int i;
--
--	for (i = 0; i < cpus->nr; ++i) {
--		if (cpus->map[i] == cpu)
--			return i;
--	}
--
--	return -1;
-+	return perf_cpu_map__idx(cpus, cpu) != -1;
- }
- 
- int cpu_map__cpu(struct perf_cpu_map *cpus, int idx)
-diff --git a/tools/perf/util/cpumap.h b/tools/perf/util/cpumap.h
-index 3e06809..8dbedda 100644
---- a/tools/perf/util/cpumap.h
-+++ b/tools/perf/util/cpumap.h
-@@ -62,5 +62,4 @@ int cpu_map__build_map(struct perf_cpu_map *cpus, struct perf_cpu_map **res,
- 
- int cpu_map__cpu(struct perf_cpu_map *cpus, int idx);
- bool cpu_map__has(struct perf_cpu_map *cpus, int cpu);
--int cpu_map__idx(struct perf_cpu_map *cpus, int cpu);
- #endif /* __PERF_CPUMAP_H */
-diff --git a/tools/perf/util/evlist.c b/tools/perf/util/evlist.c
-index ba49b5e..8582560 100644
---- a/tools/perf/util/evlist.c
-+++ b/tools/perf/util/evlist.c
-@@ -758,7 +758,7 @@ static int perf_evlist__mmap_per_evsel(struct evlist *evlist, int idx,
- 		if (evsel->system_wide && thread)
- 			continue;
- 
--		cpu = cpu_map__idx(evsel->core.cpus, evlist_cpu);
-+		cpu = perf_cpu_map__idx(evsel->core.cpus, evlist_cpu);
- 		if (cpu == -1)
- 			continue;
- 
+ #include <errno.h>
++#include <string.h>
+ #include "../../util/kvm-stat.h"
+ #include "../../util/evsel.h"
+ #include <asm/sie.h>
