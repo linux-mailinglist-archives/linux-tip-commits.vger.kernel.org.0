@@ -2,45 +2,44 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A4DBC9A586
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 23 Aug 2019 04:31:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EAE2C9A589
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 23 Aug 2019 04:31:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390878AbfHWC23 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 22 Aug 2019 22:28:29 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:33821 "EHLO
+        id S2389976AbfHWC2j (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 22 Aug 2019 22:28:39 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:33810 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390502AbfHWC23 (ORCPT
+        with ESMTP id S2389611AbfHWC2S (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 22 Aug 2019 22:28:29 -0400
+        Thu, 22 Aug 2019 22:28:18 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i0zJA-00019X-TL; Fri, 23 Aug 2019 04:28:09 +0200
+        id 1i0zJB-00019p-Fu; Fri, 23 Aug 2019 04:28:09 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 6DC2A1C0883;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id F2C461C0890;
         Fri, 23 Aug 2019 04:28:08 +0200 (CEST)
 Date:   Fri, 23 Aug 2019 02:28:08 -0000
-From:   tip-bot2 for Leo Yan <tip-bot2@linutronix.de>
+From:   tip-bot2 for Alexey Budankov <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf cs-etm: Support sample flags 'insn' and
- 'insnlen'
+Subject: [tip: perf/core] perf report: Prefer DWARF callstacks to LBR ones
+ when captured both
 Cc:     linux-kernel@vger.kernel.org,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        linux-arm-kernel@lists.infradead.org, coresight@lists.linaro.org,
-        Suzuki Poulouse <suzuki.poulose@arm.com>,
-        Robert Walker <robert.walker@arm.com>,
+        Peter Zijlstra <peterz@infradead.org>,
         Namhyung Kim <namhyung@kernel.org>,
-        Mike Leach <mike.leach@linaro.org>,
+        Kan Liang <kan.liang@linux.intel.com>,
         Jiri Olsa <jolsa@redhat.com>,
+        Jin Yao <yao.jin@linux.intel.com>,
+        Andi Kleen <ak@linux.intel.com>,
         Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Leo Yan <leo.yan@linaro.org>
-In-Reply-To: <20190815082854.18191-1-leo.yan@linaro.org>
-References: <20190815082854.18191-1-leo.yan@linaro.org>
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Alexey Budankov <alexey.budankov@linux.intel.com>
+In-Reply-To: <ccbd9583-82f4-dec5-7e84-64bf56e351fb@linux.intel.com>
+References: <ccbd9583-82f4-dec5-7e84-64bf56e351fb@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <156652728831.12701.17501120781804999488.tip-bot2@tip-bot2>
+Message-ID: <156652728884.12704.14948438831949421867.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from
@@ -57,135 +56,196 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     a4973d8f7bea98a0795ba853e7bd2cef11363824
-Gitweb:        https://git.kernel.org/tip/a4973d8f7bea98a0795ba853e7bd2cef11363824
-Author:        Leo Yan <leo.yan@linaro.org>
-AuthorDate:    Thu, 15 Aug 2019 16:28:54 +08:00
+Commit-ID:     10ccbc1cc0b8a05a5c8491630d36d1e2672036c1
+Gitweb:        https://git.kernel.org/tip/10ccbc1cc0b8a05a5c8491630d36d1e2672036c1
+Author:        Alexey Budankov <alexey.budankov@linux.intel.com>
+AuthorDate:    Fri, 09 Aug 2019 18:31:28 +03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Tue, 20 Aug 2019 12:20:52 -03:00
+CommitterDate: Tue, 20 Aug 2019 12:20:16 -03:00
 
-perf cs-etm: Support sample flags 'insn' and 'insnlen'
+perf report: Prefer DWARF callstacks to LBR ones when captured both
 
-The synthetic branch and instruction samples are missed to set
-instruction related info, thus the perf tool fails to display samples
-with flags '-F,+insn,+insnlen'.
+Display DWARF based callchains when the perf.data file contains raw thread
+stack data as LBR callstack data.
 
-The CoreSight trace decoder provides sufficient information to decide
-the instruction size based on the ISA type: A64/A32 instructions are
-32-bit size, but one exception is the T32 instruction size, which might
-be 32-bit or 16-bit.
+Commiter testing:
 
-This patch handles these cases and it reads the instruction values from
-DSO file; thus can support the flags '-F,+insn,+insnlen'.
+This changes the output from the branch stack based one, i.e. without
+this patch, for the same file as in the previous csets:
 
-Before:
+  # perf report --stdio
+  # To display the perf.data header info, please use --header/--header-only options.
+  #
+  # Total Lost Samples: 0
+  #
+  # Samples: 13  of event 'cycles'
+  # Event count (approx.): 13
+  #
+  # Overhead  Command  Source Shared Object  Source Symbol                Target Symbol                              Basic Block Cycles
+  # ........  .......  ....................  ...........................  .........................................  ..................
+  #
+       7.69%  ls       libpthread-2.29.so    [.] _init                    [.] __pthread_initialize_minimal_internal  6827
+       7.69%  ls       ld-2.29.so            [k] _start                   [k] _dl_start                              -
+       7.69%  ls       ld-2.29.so            [.] _dl_start_user           [.] _dl_init                               -24790
+       7.69%  ls       ld-2.29.so            [k] _dl_start                [k] _dl_sysdep_start                       278
+       7.69%  ls       ld-2.29.so            [k] dl_main                  [k] _dl_map_object_deps                    15581
+       7.69%  ls       ld-2.29.so            [k] open_verify.constprop.0  [k] lseek64                                4228
+       7.69%  ls       ld-2.29.so            [k] _dl_map_object           [k] open_verify.constprop.0                55
+       7.69%  ls       ld-2.29.so            [k] openaux                  [k] _dl_map_object                         67
+       7.69%  ls       ld-2.29.so            [k] _dl_map_object_deps      [k] 0x00007f441b57c090                     112
+       7.69%  ls       ld-2.29.so            [.] call_init.part.0         [.] _init                                  334
+       7.69%  ls       ld-2.29.so            [.] _dl_init                 [.] call_init.part.0                       383
+       7.69%  ls       ld-2.29.so            [k] _dl_sysdep_start         [k] dl_main                                45
+       7.69%  ls       ld-2.29.so            [k] _dl_catch_exception      [k] openaux                                116
 
-  # perf script -F,insn,insnlen,ip,sym
-                0 [unknown] ilen: 0
-     ffff97174044 _start ilen: 0
-     ffff97174938 _dl_start ilen: 0
-     ffff97174938 _dl_start ilen: 0
-     ffff97174938 _dl_start ilen: 0
-     ffff97174938 _dl_start ilen: 0
-     ffff97174938 _dl_start ilen: 0
-     ffff97174938 _dl_start ilen: 0
-     ffff97174938 _dl_start ilen: 0
-     ffff97174938 _dl_start ilen: 0
+  #
+  # (Tip: For memory address profiling, try: perf mem record / perf mem report)
+  #
 
-  [...]
+To the one that shows call chains:
 
-After:
+  # perf report --stdio
+  # To display the perf.data header info, please use --header/--header-only options.
+  #
+  #
+  # Total Lost Samples: 0
+  #
+  # Samples: 10  of event 'cycles'
+  # Event count (approx.): 3204047
+  #
+  # Children      Self  Command  Shared Object       Symbol
+  # ........  ........  .......  ..................  .........................................
+  #
+      55.01%     0.00%  ls       [kernel.vmlinux]    [k] entry_SYSCALL_64_after_hwframe
+              |
+              ---entry_SYSCALL_64_after_hwframe
+                 do_syscall_64
+                 |
+                  --16.01%--__x64_sys_execve
+                            __do_execve_file.isra.0
+                            search_binary_handler
+                            load_elf_binary
+                            elf_map
+                            vm_mmap_pgoff
+                            do_mmap
+                            mmap_region
+                            perf_event_mmap
+                            perf_iterate_sb
+                            perf_iterate_ctx
+                            perf_event_mmap_output
+                            perf_output_copy
+                            memcpy_erms
 
-  # perf script -F,insn,insnlen,ip,sym
-                0 [unknown] ilen: 0
-     ffff97174044 _start ilen: 4 insn: 2f 02 00 94
-     ffff97174938 _dl_start ilen: 4 insn: c1 ff ff 54
-     ffff97174938 _dl_start ilen: 4 insn: c1 ff ff 54
-     ffff97174938 _dl_start ilen: 4 insn: c1 ff ff 54
-     ffff97174938 _dl_start ilen: 4 insn: c1 ff ff 54
-     ffff97174938 _dl_start ilen: 4 insn: c1 ff ff 54
-     ffff97174938 _dl_start ilen: 4 insn: c1 ff ff 54
-     ffff97174938 _dl_start ilen: 4 insn: c1 ff ff 54
-     ffff97174938 _dl_start ilen: 4 insn: c1 ff ff 54
+      55.01%    39.00%  ls       [kernel.vmlinux]    [k] do_syscall_64
+              |
+              |--39.00%--0xffffffffffffffff
+              |          _dl_map_object
+              |          open_verify.constprop.0
+              |          __lseek64 (inlined)
+              |          entry_SYSCALL_64_after_hwframe
+              |          do_syscall_64
+              |
+               --16.01%--do_syscall_64
+                         __x64_sys_execve
+                         __do_execve_file.isra.0
+                         search_binary_handler
+                         load_elf_binary
+                         elf_map
+                         vm_mmap_pgoff
+                         do_mmap
+                         mmap_region
+                         perf_event_mmap
+                         perf_iterate_sb
+                         perf_iterate_ctx
+                         perf_event_mmap_output
+                         perf_output_copy
+                         memcpy_erms
 
-  [...]
+      42.95%    42.95%  ls       libpthread-2.29.so  [.] __pthread_initialize_minimal_internal
+              |
+              ---_init
+                 __pthread_initialize_minimal_internal
 
-Signed-off-by: Leo Yan <leo.yan@linaro.org>
-Reviewed-by: Mathieu Poirier <mathieu.poirier@linaro.org>
-Tested-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+      42.95%     0.00%  ls       libpthread-2.29.so  [.] _init
+              |
+              ---_init
+                 __pthread_initialize_minimal_internal
+
+  <SNIP>
+
+  #
+  # (Tip: Profiling branch (mis)predictions with: perf record -b / perf report)
+  #
+  #
+
+The branch stack view be explicitely selected using:
+
+  # perf report -h branch-stack
+
+   Usage: perf report [<options>]
+
+      -b, --branch-stack    use branch records for per branch histogram filling
+
+  #
+
+I.e. after this patch:
+
+  # perf report -b --stdio
+  # To display the perf.data header info, please use --header/--header-only options.
+  #
+  #
+  # Total Lost Samples: 0
+  #
+  # Samples: 13  of event 'cycles'
+  # Event count (approx.): 13
+  #
+  # Overhead  Command  Source Shared Object  Source Symbol                Target Symbol                              Basic Block Cycles
+  # ........  .......  ....................  ...........................  .........................................  ..................
+  #
+       7.69%  ls       libpthread-2.29.so    [.] _init                    [.] __pthread_initialize_minimal_internal  6827
+       7.69%  ls       ld-2.29.so            [k] _start                   [k] _dl_start                              -
+       7.69%  ls       ld-2.29.so            [.] _dl_start_user           [.] _dl_init                               -24790
+       7.69%  ls       ld-2.29.so            [k] _dl_start                [k] _dl_sysdep_start                       278
+       7.69%  ls       ld-2.29.so            [k] dl_main                  [k] _dl_map_object_deps                    15581
+       7.69%  ls       ld-2.29.so            [k] open_verify.constprop.0  [k] lseek64                                4228
+       7.69%  ls       ld-2.29.so            [k] _dl_map_object           [k] open_verify.constprop.0                55
+       7.69%  ls       ld-2.29.so            [k] openaux                  [k] _dl_map_object                         67
+       7.69%  ls       ld-2.29.so            [k] _dl_map_object_deps      [k] 0x00007f441b57c090                     112
+       7.69%  ls       ld-2.29.so            [.] call_init.part.0         [.] _init                                  334
+       7.69%  ls       ld-2.29.so            [.] _dl_init                 [.] call_init.part.0                       383
+       7.69%  ls       ld-2.29.so            [k] _dl_sysdep_start         [k] dl_main                                45
+       7.69%  ls       ld-2.29.so            [k] _dl_catch_exception      [k] openaux                                116
+
+  #
+  # (Tip: Show current config key-value pairs: perf config --list)
+  #
+  #
+
+Signed-off-by: Alexey Budankov <alexey.budankov@linux.intel.com>
+Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Andi Kleen <ak@linux.intel.com>
+Cc: Jin Yao <yao.jin@linux.intel.com>
 Cc: Jiri Olsa <jolsa@redhat.com>
-Cc: Mike Leach <mike.leach@linaro.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Robert Walker <robert.walker@arm.com>
-Cc: Suzuki Poulouse <suzuki.poulose@arm.com>
-Cc: coresight@lists.linaro.org
-Cc: linux-arm-kernel@lists.infradead.org
-Link: http://lkml.kernel.org/r/20190815082854.18191-1-leo.yan@linaro.org
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: http://lkml.kernel.org/r/ccbd9583-82f4-dec5-7e84-64bf56e351fb@linux.intel.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/cs-etm.c | 35 ++++++++++++++++++++++++++++++++++-
- 1 file changed, 34 insertions(+), 1 deletion(-)
+ tools/perf/builtin-report.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tools/perf/util/cs-etm.c b/tools/perf/util/cs-etm.c
-index ed6f7fd..b3a5daa 100644
---- a/tools/perf/util/cs-etm.c
-+++ b/tools/perf/util/cs-etm.c
-@@ -1076,6 +1076,35 @@ bool cs_etm__etmq_is_timeless(struct cs_etm_queue *etmq)
- 	return !!etmq->etm->timeless_decoding;
- }
+diff --git a/tools/perf/builtin-report.c b/tools/perf/builtin-report.c
+index 5e003d0..79dfb11 100644
+--- a/tools/perf/builtin-report.c
++++ b/tools/perf/builtin-report.c
+@@ -1281,6 +1281,8 @@ int cmd_report(int argc, const char **argv)
  
-+static void cs_etm__copy_insn(struct cs_etm_queue *etmq,
-+			      u64 trace_chan_id,
-+			      const struct cs_etm_packet *packet,
-+			      struct perf_sample *sample)
-+{
-+	/*
-+	 * It's pointless to read instructions for the CS_ETM_DISCONTINUITY
-+	 * packet, so directly bail out with 'insn_len' = 0.
-+	 */
-+	if (packet->sample_type == CS_ETM_DISCONTINUITY) {
-+		sample->insn_len = 0;
-+		return;
-+	}
-+
-+	/*
-+	 * T32 instruction size might be 32-bit or 16-bit, decide by calling
-+	 * cs_etm__t32_instr_size().
-+	 */
-+	if (packet->isa == CS_ETM_ISA_T32)
-+		sample->insn_len = cs_etm__t32_instr_size(etmq, trace_chan_id,
-+							  sample->ip);
-+	/* Otherwise, A64 and A32 instruction size are always 32-bit. */
-+	else
-+		sample->insn_len = 4;
-+
-+	cs_etm__mem_access(etmq, trace_chan_id, sample->ip,
-+			   sample->insn_len, (void *)sample->insn);
-+}
-+
- static int cs_etm__synth_instruction_sample(struct cs_etm_queue *etmq,
- 					    struct cs_etm_traceid_queue *tidq,
- 					    u64 addr, u64 period)
-@@ -1097,9 +1126,10 @@ static int cs_etm__synth_instruction_sample(struct cs_etm_queue *etmq,
- 	sample.period = period;
- 	sample.cpu = tidq->packet->cpu;
- 	sample.flags = tidq->prev_packet->flags;
--	sample.insn_len = 1;
- 	sample.cpumode = event->sample.header.misc;
+ 	has_br_stack = perf_header__has_feat(&session->header,
+ 					     HEADER_BRANCH_STACK);
++	if (perf_evlist__combined_sample_type(session->evlist) & PERF_SAMPLE_STACK_USER)
++		has_br_stack = false;
  
-+	cs_etm__copy_insn(etmq, tidq->trace_chan_id, tidq->packet, &sample);
-+
- 	if (etm->synth_opts.last_branch) {
- 		cs_etm__copy_last_branch_rb(etmq, tidq);
- 		sample.branch_stack = tidq->last_branch;
-@@ -1159,6 +1189,9 @@ static int cs_etm__synth_branch_sample(struct cs_etm_queue *etmq,
- 	sample.flags = tidq->prev_packet->flags;
- 	sample.cpumode = event->sample.header.misc;
+ 	setup_forced_leader(&report, session->evlist);
  
-+	cs_etm__copy_insn(etmq, tidq->trace_chan_id, tidq->prev_packet,
-+			  &sample);
-+
- 	/*
- 	 * perf report cannot handle events without a branch stack
- 	 */
