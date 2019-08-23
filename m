@@ -2,38 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CF8809A471
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 23 Aug 2019 02:55:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 966299A4C9
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 23 Aug 2019 03:10:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732482AbfHWAzs (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 22 Aug 2019 20:55:48 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:33482 "EHLO
+        id S2387760AbfHWBKx (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 22 Aug 2019 21:10:53 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:33530 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732470AbfHWAzs (ORCPT
+        with ESMTP id S2387656AbfHWBKw (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 22 Aug 2019 20:55:48 -0400
+        Thu, 22 Aug 2019 21:10:52 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i0xrj-0000Ak-S7; Fri, 23 Aug 2019 02:55:44 +0200
+        id 1i0y6L-0000Me-CI; Fri, 23 Aug 2019 03:10:49 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 35F8E1C07E4;
-        Fri, 23 Aug 2019 02:55:43 +0200 (CEST)
-Date:   Fri, 23 Aug 2019 00:55:39 -0000
-From:   tip-bot2 for Thomas Gleixner <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 046261C07E4;
+        Fri, 23 Aug 2019 03:10:49 +0200 (CEST)
+Date:   Fri, 23 Aug 2019 01:10:47 -0000
+From:   tip-bot2 for John Hubbard <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/urgent] timekeeping/vsyscall: Prevent math overflow in
- BOOTTIME update
-Cc:     linux-kernel@vger.kernel.org,
-        Vincenzo Frascino <vincenzo.frascino@arm.com>,
+Subject: [tip: x86/urgent] x86/boot: Fix boot regression caused by bootparam
+ sanitizing
+Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        John Hubbard <jhubbard@nvidia.com>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Chris Clayton <chris2553@googlemail.com>
-In-Reply-To: <alpine.DEB.2.21.1908221257580.1983@nanos.tec.linutronix.de>
-References: <alpine.DEB.2.21.1908221257580.1983@nanos.tec.linutronix.de>
+        Neil MacLeod <neil@nmacleod.com>
+In-Reply-To: <20190821192513.20126-1-jhubbard@nvidia.com>
+References: <20190821192513.20126-1-jhubbard@nvidia.com>
 MIME-Version: 1.0
-Message-ID: <156652173939.9311.7491866845285987289.tip-bot2@tip-bot2>
+Message-ID: <156652264750.9533.3737031935739279123.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from
@@ -48,133 +48,54 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/urgent branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     b99328a60a482108f5195b4d611f90992ca016ba
-Gitweb:        https://git.kernel.org/tip/b99328a60a482108f5195b4d611f90992ca016ba
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Thu, 22 Aug 2019 13:00:15 +02:00
+Commit-ID:     7846f58fba964af7cb8cf77d4d13c33254725211
+Gitweb:        https://git.kernel.org/tip/7846f58fba964af7cb8cf77d4d13c33254725211
+Author:        John Hubbard <jhubbard@nvidia.com>
+AuthorDate:    Wed, 21 Aug 2019 12:25:13 -07:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 23 Aug 2019 02:12:11 +02:00
+CommitterDate: Wed, 21 Aug 2019 22:37:09 +02:00
 
-timekeeping/vsyscall: Prevent math overflow in BOOTTIME update
+x86/boot: Fix boot regression caused by bootparam sanitizing
 
-The VDSO update for CLOCK_BOOTTIME has a overflow issue as it shifts the
-nanoseconds based boot time offset left by the clocksource shift. That
-overflows once the boot time offset becomes large enough. As a consequence
-CLOCK_BOOTTIME in the VDSO becomes a random number causing applications to
-misbehave.
+commit a90118c445cc ("x86/boot: Save fields explicitly, zero out everything
+else") had two errors:
 
-Fix it by storing a timespec64 representation of the offset when boot time
-is adjusted and add that to the MONOTONIC base time value in the vdso data
-page. Using the timespec64 representation avoids a 64bit division in the
-update code.
+    * It preserved boot_params.acpi_rsdp_addr, and
+    * It failed to preserve boot_params.hdr
 
-Fixes: 44f57d788e7d ("timekeeping: Provide a generic update_vsyscall() implementation")
-Reported-by: Chris Clayton <chris2553@googlemail.com>
+Therefore, zero out acpi_rsdp_addr, and preserve hdr.
+
+Fixes: a90118c445cc ("x86/boot: Save fields explicitly, zero out everything else")
+Reported-by: Neil MacLeod <neil@nmacleod.com>
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: John Hubbard <jhubbard@nvidia.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Chris Clayton <chris2553@googlemail.com>
-Tested-by: Vincenzo Frascino <vincenzo.frascino@arm.com>
-Link: https://lkml.kernel.org/r/alpine.DEB.2.21.1908221257580.1983@nanos.tec.linutronix.de
-
+Tested-by: Neil MacLeod <neil@nmacleod.com>
+Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/20190821192513.20126-1-jhubbard@nvidia.com
 ---
- include/linux/timekeeper_internal.h |  5 -----
- kernel/time/timekeeping.c           |  5 -----
- kernel/time/vsyscall.c              | 22 +++++++++-------------
- 3 files changed, 9 insertions(+), 23 deletions(-)
+ arch/x86/include/asm/bootparam_utils.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/timekeeper_internal.h b/include/linux/timekeeper_internal.h
-index 84ff284..7acb953 100644
---- a/include/linux/timekeeper_internal.h
-+++ b/include/linux/timekeeper_internal.h
-@@ -57,7 +57,6 @@ struct tk_read_base {
-  * @cs_was_changed_seq:	The sequence number of clocksource change events
-  * @next_leap_ktime:	CLOCK_MONOTONIC time value of a pending leap-second
-  * @raw_sec:		CLOCK_MONOTONIC_RAW  time in seconds
-- * @monotonic_to_boot:	CLOCK_MONOTONIC to CLOCK_BOOTTIME offset
-  * @cycle_interval:	Number of clock cycles in one NTP interval
-  * @xtime_interval:	Number of clock shifted nano seconds in one NTP
-  *			interval.
-@@ -85,9 +84,6 @@ struct tk_read_base {
-  *
-  * wall_to_monotonic is no longer the boot time, getboottime must be
-  * used instead.
-- *
-- * @monotonic_to_boottime is a timespec64 representation of @offs_boot to
-- * accelerate the VDSO update for CLOCK_BOOTTIME.
-  */
- struct timekeeper {
- 	struct tk_read_base	tkr_mono;
-@@ -103,7 +99,6 @@ struct timekeeper {
- 	u8			cs_was_changed_seq;
- 	ktime_t			next_leap_ktime;
- 	u64			raw_sec;
--	struct timespec64	monotonic_to_boot;
- 
- 	/* The following members are for timekeeping internal use */
- 	u64			cycle_interval;
-diff --git a/kernel/time/timekeeping.c b/kernel/time/timekeeping.c
-index ca69290..d911c84 100644
---- a/kernel/time/timekeeping.c
-+++ b/kernel/time/timekeeping.c
-@@ -146,11 +146,6 @@ static void tk_set_wall_to_mono(struct timekeeper *tk, struct timespec64 wtm)
- static inline void tk_update_sleep_time(struct timekeeper *tk, ktime_t delta)
- {
- 	tk->offs_boot = ktime_add(tk->offs_boot, delta);
--	/*
--	 * Timespec representation for VDSO update to avoid 64bit division
--	 * on every update.
--	 */
--	tk->monotonic_to_boot = ktime_to_timespec64(tk->offs_boot);
- }
- 
- /*
-diff --git a/kernel/time/vsyscall.c b/kernel/time/vsyscall.c
-index 4bc37ac..8cf3596 100644
---- a/kernel/time/vsyscall.c
-+++ b/kernel/time/vsyscall.c
-@@ -17,7 +17,7 @@ static inline void update_vdso_data(struct vdso_data *vdata,
- 				    struct timekeeper *tk)
- {
- 	struct vdso_timestamp *vdso_ts;
--	u64 nsec, sec;
-+	u64 nsec;
- 
- 	vdata[CS_HRES_COARSE].cycle_last	= tk->tkr_mono.cycle_last;
- 	vdata[CS_HRES_COARSE].mask		= tk->tkr_mono.mask;
-@@ -45,27 +45,23 @@ static inline void update_vdso_data(struct vdso_data *vdata,
- 	}
- 	vdso_ts->nsec	= nsec;
- 
--	/* Copy MONOTONIC time for BOOTTIME */
--	sec	= vdso_ts->sec;
--	/* Add the boot offset */
--	sec	+= tk->monotonic_to_boot.tv_sec;
--	nsec	+= (u64)tk->monotonic_to_boot.tv_nsec << tk->tkr_mono.shift;
-+	/* CLOCK_MONOTONIC_RAW */
-+	vdso_ts		= &vdata[CS_RAW].basetime[CLOCK_MONOTONIC_RAW];
-+	vdso_ts->sec	= tk->raw_sec;
-+	vdso_ts->nsec	= tk->tkr_raw.xtime_nsec;
- 
- 	/* CLOCK_BOOTTIME */
- 	vdso_ts		= &vdata[CS_HRES_COARSE].basetime[CLOCK_BOOTTIME];
--	vdso_ts->sec	= sec;
--
-+	vdso_ts->sec	= tk->xtime_sec + tk->wall_to_monotonic.tv_sec;
-+	nsec = tk->tkr_mono.xtime_nsec;
-+	nsec += ((u64)(tk->wall_to_monotonic.tv_nsec +
-+		       ktime_to_ns(tk->offs_boot)) << tk->tkr_mono.shift);
- 	while (nsec >= (((u64)NSEC_PER_SEC) << tk->tkr_mono.shift)) {
- 		nsec -= (((u64)NSEC_PER_SEC) << tk->tkr_mono.shift);
- 		vdso_ts->sec++;
- 	}
- 	vdso_ts->nsec	= nsec;
- 
--	/* CLOCK_MONOTONIC_RAW */
--	vdso_ts		= &vdata[CS_RAW].basetime[CLOCK_MONOTONIC_RAW];
--	vdso_ts->sec	= tk->raw_sec;
--	vdso_ts->nsec	= tk->tkr_raw.xtime_nsec;
--
- 	/* CLOCK_TAI */
- 	vdso_ts		= &vdata[CS_HRES_COARSE].basetime[CLOCK_TAI];
- 	vdso_ts->sec	= tk->xtime_sec + (s64)tk->tai_offset;
+diff --git a/arch/x86/include/asm/bootparam_utils.h b/arch/x86/include/asm/bootparam_utils.h
+index 9e5f3c7..f5e90a8 100644
+--- a/arch/x86/include/asm/bootparam_utils.h
++++ b/arch/x86/include/asm/bootparam_utils.h
+@@ -59,6 +59,7 @@ static void sanitize_boot_params(struct boot_params *boot_params)
+ 			BOOT_PARAM_PRESERVE(apm_bios_info),
+ 			BOOT_PARAM_PRESERVE(tboot_addr),
+ 			BOOT_PARAM_PRESERVE(ist_info),
++			BOOT_PARAM_PRESERVE(acpi_rsdp_addr),
+ 			BOOT_PARAM_PRESERVE(hd0_info),
+ 			BOOT_PARAM_PRESERVE(hd1_info),
+ 			BOOT_PARAM_PRESERVE(sys_desc_table),
+@@ -70,7 +71,6 @@ static void sanitize_boot_params(struct boot_params *boot_params)
+ 			BOOT_PARAM_PRESERVE(eddbuf_entries),
+ 			BOOT_PARAM_PRESERVE(edd_mbr_sig_buf_entries),
+ 			BOOT_PARAM_PRESERVE(edd_mbr_sig_buffer),
+-			BOOT_PARAM_PRESERVE(hdr),
+ 			BOOT_PARAM_PRESERVE(e820_table),
+ 			BOOT_PARAM_PRESERVE(eddbuf),
+ 		};
