@@ -2,30 +2,30 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EAE2C9A589
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 23 Aug 2019 04:31:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB0249A582
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 23 Aug 2019 04:31:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389976AbfHWC2j (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 22 Aug 2019 22:28:39 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:33810 "EHLO
+        id S2389429AbfHWC2W (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 22 Aug 2019 22:28:22 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:33815 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389611AbfHWC2S (ORCPT
+        with ESMTP id S2390502AbfHWC2W (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 22 Aug 2019 22:28:18 -0400
+        Thu, 22 Aug 2019 22:28:22 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i0zJB-00019p-Fu; Fri, 23 Aug 2019 04:28:09 +0200
+        id 1i0zJC-0001AR-FS; Fri, 23 Aug 2019 04:28:10 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id F2C461C0890;
-        Fri, 23 Aug 2019 04:28:08 +0200 (CEST)
-Date:   Fri, 23 Aug 2019 02:28:08 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 1349E1C0883;
+        Fri, 23 Aug 2019 04:28:10 +0200 (CEST)
+Date:   Fri, 23 Aug 2019 02:28:09 -0000
 From:   tip-bot2 for Alexey Budankov <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf report: Prefer DWARF callstacks to LBR ones
- when captured both
+Subject: [tip: perf/core] perf record: Enable LBR callstack capture jointly
+ with thread stack
 Cc:     linux-kernel@vger.kernel.org,
         Peter Zijlstra <peterz@infradead.org>,
         Namhyung Kim <namhyung@kernel.org>,
@@ -36,10 +36,10 @@ Cc:     linux-kernel@vger.kernel.org,
         Alexander Shishkin <alexander.shishkin@linux.intel.com>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Alexey Budankov <alexey.budankov@linux.intel.com>
-In-Reply-To: <ccbd9583-82f4-dec5-7e84-64bf56e351fb@linux.intel.com>
-References: <ccbd9583-82f4-dec5-7e84-64bf56e351fb@linux.intel.com>
+In-Reply-To: <e9e00090-66fb-d2a4-c90f-1d12344f7788@linux.intel.com>
+References: <e9e00090-66fb-d2a4-c90f-1d12344f7788@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <156652728884.12704.14948438831949421867.tip-bot2@tip-bot2>
+Message-ID: <156652728996.12710.3122701757092644139.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from
@@ -56,169 +56,182 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     10ccbc1cc0b8a05a5c8491630d36d1e2672036c1
-Gitweb:        https://git.kernel.org/tip/10ccbc1cc0b8a05a5c8491630d36d1e2672036c1
+Commit-ID:     2566349648b40aa3f5edf6af8f7f893ccd6e4eae
+Gitweb:        https://git.kernel.org/tip/2566349648b40aa3f5edf6af8f7f893ccd6e4eae
 Author:        Alexey Budankov <alexey.budankov@linux.intel.com>
-AuthorDate:    Fri, 09 Aug 2019 18:31:28 +03:00
+AuthorDate:    Fri, 09 Aug 2019 18:23:58 +03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Tue, 20 Aug 2019 12:20:16 -03:00
+CommitterDate: Tue, 20 Aug 2019 12:18:58 -03:00
 
-perf report: Prefer DWARF callstacks to LBR ones when captured both
+perf record: Enable LBR callstack capture jointly with thread stack
 
-Display DWARF based callchains when the perf.data file contains raw thread
-stack data as LBR callstack data.
+Enable '-j stack' applicability together with '--call-graph dwarf'
+option so thread stack data and LBR call stack could be captured
+jointly:
 
-Commiter testing:
+  $ perf record -g --call-graph dwarf,1024 -j stack,u -- stack_test
 
-This changes the output from the branch stack based one, i.e. without
-this patch, for the same file as in the previous csets:
+Collected LBR call stack can be used to augment DWARF call stack
+calculated from the raw thread stack data and to provide more
+comprehensive call stack information for cases when collected SIZE is
+not enough to cover complete thread stack.
 
-  # perf report --stdio
-  # To display the perf.data header info, please use --header/--header-only options.
-  #
-  # Total Lost Samples: 0
-  #
-  # Samples: 13  of event 'cycles'
-  # Event count (approx.): 13
-  #
-  # Overhead  Command  Source Shared Object  Source Symbol                Target Symbol                              Basic Block Cycles
-  # ........  .......  ....................  ...........................  .........................................  ..................
-  #
-       7.69%  ls       libpthread-2.29.so    [.] _init                    [.] __pthread_initialize_minimal_internal  6827
-       7.69%  ls       ld-2.29.so            [k] _start                   [k] _dl_start                              -
-       7.69%  ls       ld-2.29.so            [.] _dl_start_user           [.] _dl_init                               -24790
-       7.69%  ls       ld-2.29.so            [k] _dl_start                [k] _dl_sysdep_start                       278
-       7.69%  ls       ld-2.29.so            [k] dl_main                  [k] _dl_map_object_deps                    15581
-       7.69%  ls       ld-2.29.so            [k] open_verify.constprop.0  [k] lseek64                                4228
-       7.69%  ls       ld-2.29.so            [k] _dl_map_object           [k] open_verify.constprop.0                55
-       7.69%  ls       ld-2.29.so            [k] openaux                  [k] _dl_map_object                         67
-       7.69%  ls       ld-2.29.so            [k] _dl_map_object_deps      [k] 0x00007f441b57c090                     112
-       7.69%  ls       ld-2.29.so            [.] call_init.part.0         [.] _init                                  334
-       7.69%  ls       ld-2.29.so            [.] _dl_init                 [.] call_init.part.0                       383
-       7.69%  ls       ld-2.29.so            [k] _dl_sysdep_start         [k] dl_main                                45
-       7.69%  ls       ld-2.29.so            [k] _dl_catch_exception      [k] openaux                                116
+Such cases are typical for workloads that allocate large arrays of data
+on its threads stacks or the possible SIZE to collect can't be large
+enough due to workload nature or system configuration and this is where
+hardware captured LBR call stacks can provide missing stack frames.
+Possible DWARF plus LBR call stacks consolidation algorithm description
+follows.
 
-  #
-  # (Tip: For memory address profiling, try: perf mem record / perf mem report)
-  #
+With this patch set perf report command UI currently ignores collected
+LBR call stack data and still provides DWARF based call stacks
+information.
 
-To the one that shows call chains:
+  ===========================================================================
 
-  # perf report --stdio
-  # To display the perf.data header info, please use --header/--header-only options.
-  #
-  #
-  # Total Lost Samples: 0
-  #
-  # Samples: 10  of event 'cycles'
-  # Event count (approx.): 3204047
-  #
-  # Children      Self  Command  Shared Object       Symbol
-  # ........  ........  .......  ..................  .........................................
-  #
-      55.01%     0.00%  ls       [kernel.vmlinux]    [k] entry_SYSCALL_64_after_hwframe
-              |
-              ---entry_SYSCALL_64_after_hwframe
-                 do_syscall_64
-                 |
-                  --16.01%--__x64_sys_execve
-                            __do_execve_file.isra.0
-                            search_binary_handler
-                            load_elf_binary
-                            elf_map
-                            vm_mmap_pgoff
-                            do_mmap
-                            mmap_region
-                            perf_event_mmap
-                            perf_iterate_sb
-                            perf_iterate_ctx
-                            perf_event_mmap_output
-                            perf_output_copy
-                            memcpy_erms
+  Overview:
 
-      55.01%    39.00%  ls       [kernel.vmlinux]    [k] do_syscall_64
-              |
-              |--39.00%--0xffffffffffffffff
-              |          _dl_map_object
-              |          open_verify.constprop.0
-              |          __lseek64 (inlined)
-              |          entry_SYSCALL_64_after_hwframe
-              |          do_syscall_64
-              |
-               --16.01%--do_syscall_64
-                         __x64_sys_execve
-                         __do_execve_file.isra.0
-                         search_binary_handler
-                         load_elf_binary
-                         elf_map
-                         vm_mmap_pgoff
-                         do_mmap
-                         mmap_region
-                         perf_event_mmap
-                         perf_iterate_sb
-                         perf_iterate_ctx
-                         perf_event_mmap_output
-                         perf_output_copy
-                         memcpy_erms
+   Legend:
 
-      42.95%    42.95%  ls       libpthread-2.29.so  [.] __pthread_initialize_minimal_internal
-              |
-              ---_init
-                 __pthread_initialize_minimal_internal
+   THS - thread stack
+   CTX - thread register context
+   SWS - software stack
+   SSF - skipped stack frames
+   PSS - Perf sample stack
 
-      42.95%     0.00%  ls       libpthread-2.29.so  [.] _init
-              |
-              ---_init
-                 __pthread_initialize_minimal_internal
+   ip,sp,bp - HW registers values
+   d        - allocated stack regions
+   kip      - ip address in the kernel space
+   K        - captured thread stack size
 
-  <SNIP>
+        THS
 
-  #
-  # (Tip: Profiling branch (mis)predictions with: perf record -b / perf report)
-  #
-  #
+       -----
+       |   |<-stack bottom
+        ...
+       |---|
+       |ip4|
+       |---|         PSS = SWS(THS(K))
+       |   |
+   --> |   |
+   |   |d3 |                  user/
+   |   |---|         user PSS kernel PSS
+   |   |ip3|         ------   ------
+   |   |---|         |SSF |   |SSF |
+   |   |   |          ....     ....
+   |   |   |         ------   ------
+   |   |d2 |         | -1 |   | -1 |
+       |---|   user  ------   ------
+   K   |ip2|   CTX   |ip3 |   |ip3 |
+       |---|         |----|   |----|
+   |   |d1 |   ...   |ip2 | , |ip2 |
+   |   |---|  |---|  |----|   |----|
+   |   |ip1|  |bp0|  |ip1 |   |ip1 |
+   |   |---|  |---|  |----|   |----|
+   |   |   |  |ip0|->|ip0 |   |ip0 |<-user stack top
+   |   |   |  |---|  ------   ------
+   |   |   |<-|sp0|<-stack    |kip0|<-kernel stack bottom
+   --> -----  -----   top     |----|
+                              |kip1|
+                              |----|
+		              |kip2|
+		              |----|
+                               ....
+			      |    |<-kernel stack top
+                              ------
 
-The branch stack view be explicitely selected using:
+  Algorithm details:
 
-  # perf report -h branch-stack
+   Legend:
 
-   Usage: perf report [<options>]
+   HWS - hardware stack
+   K-SWS - kernel software stack
 
-      -b, --branch-stack    use branch records for per branch histogram filling
+			 BRANCH
+			 TABLE
 
-  #
+		 HWS      ip   ip
+			  from to
+		 ------  -----------
+		 |ip7`|  |ip7`|    |
+		 |----|  |----|----|
+		 |ip6`|  |ip6`|    |
+	user PSS |----|  |----|----|
+		 |ip5`|  |ip5`|    |
+	------   |----|  |----|----|
+	| -1 |   |ip4`|  |ip4`|    |
+	------   |----|  |----|----|
+	|ip3 |~~~|ip3`|  |ip3`|    |
+	|----|   |----|  |----|----|
+	|ip2 |~~~|ip2`|  |ip2`|    |
+	|----| 	 |----|  |----|----|
+	|ip1 |~~~|ip1`|  |ip1`|ip0`|
+	|----| 	 |----|  -----------
+	|ip0 |~~~|ip0`|<---------'
+	------   ------
 
-I.e. after this patch:
+	1. if (sym(ipj) == sym(ipj`)), j=0-3 ===> user PSS
+	2. ipj`                      , j=4-7 ===> user PSS
 
-  # perf report -b --stdio
-  # To display the perf.data header info, please use --header/--header-only options.
-  #
-  #
-  # Total Lost Samples: 0
-  #
-  # Samples: 13  of event 'cycles'
-  # Event count (approx.): 13
-  #
-  # Overhead  Command  Source Shared Object  Source Symbol                Target Symbol                              Basic Block Cycles
-  # ........  .......  ....................  ...........................  .........................................  ..................
-  #
-       7.69%  ls       libpthread-2.29.so    [.] _init                    [.] __pthread_initialize_minimal_internal  6827
-       7.69%  ls       ld-2.29.so            [k] _start                   [k] _dl_start                              -
-       7.69%  ls       ld-2.29.so            [.] _dl_start_user           [.] _dl_init                               -24790
-       7.69%  ls       ld-2.29.so            [k] _dl_start                [k] _dl_sysdep_start                       278
-       7.69%  ls       ld-2.29.so            [k] dl_main                  [k] _dl_map_object_deps                    15581
-       7.69%  ls       ld-2.29.so            [k] open_verify.constprop.0  [k] lseek64                                4228
-       7.69%  ls       ld-2.29.so            [k] _dl_map_object           [k] open_verify.constprop.0                55
-       7.69%  ls       ld-2.29.so            [k] openaux                  [k] _dl_map_object                         67
-       7.69%  ls       ld-2.29.so            [k] _dl_map_object_deps      [k] 0x00007f441b57c090                     112
-       7.69%  ls       ld-2.29.so            [.] call_init.part.0         [.] _init                                  334
-       7.69%  ls       ld-2.29.so            [.] _dl_init                 [.] call_init.part.0                       383
-       7.69%  ls       ld-2.29.so            [k] _dl_sysdep_start         [k] dl_main                                45
-       7.69%  ls       ld-2.29.so            [k] _dl_catch_exception      [k] openaux                                116
+  Augmented PSS = A_SWS(SWS(THS(K)), HWS):
 
-  #
-  # (Tip: Show current config key-value pairs: perf config --list)
-  #
+	         user/
+       user PSS  kernel PSS
+
+	------   ------
+	|ip7`|   |ip7`|<-user PSS bottom
+	|----|   |----|
+	|ip6`|   |ip6`|
+	|----|   |----|
+    HWS	|ip5`|   |ip5`|
+	|----|   |----|
+	|ip4`|   |ip4`|
+	------   ------
+	|ip3 |   |ip3 |
+	|----|   |----|
+    SWS |ip2 |   |ip2 |
+	|----|   |----|
+	|ip1 |   |ip1 |
+	|----|   |----|
+	|ip0 |   |ip0 |<-user PSS top
+	------   ------
+		 |kip0|<-kernel PSS bottom
+		 |----|
+		 |kip1|
+	   K-SWS |----|
+		 |kip2|
+		 |----|
+		 |kip3|<-kernel PSS top
+		 ------
+
+                  APSS
+
+Committer testing:
+
+Before:
+
+  # perf record -g --call-graph dwarf,1024 -j stack,u ls > /dev/null
+  unknown branch filter stack, check man page
+
+   Usage: perf record [<options>] [<command>]
+      or: perf record [<options>] -- <command> [<options>]
+
+      -j, --branch-filter <branch filter mask>
+                            branch stack filter modes
+  # perf record -g --call-graph dwarf,1024 -j u ls > /dev/null
+  [ perf record: Woken up 1 times to write data ]
+  [ perf record: Captured and wrote 0.054 MB perf.data (12 samples) ]
+  # perf evlist -v
+  cycles: size: 112, { sample_period, sample_freq }: 4000, sample_type: IP|TID|TIME|ADDR|CALLCHAIN|PERIOD|BRANCH_STACK|REGS_USER|STACK_USER|DATA_SRC, read_format: ID, disabled: 1, inherit: 1, mmap: 1, comm: 1, freq: 1, enable_on_exec: 1, task: 1, precise_ip: 3, mmap_data: 1, sample_id_all: 1, exclude_guest: 1, exclude_callchain_user: 1, mmap2: 1, comm_exec: 1, ksymbol: 1, bpf_event: 1, branch_sample_type: ANY, sample_regs_user: 0xff0fff, sample_stack_user: 1024
+   #
+
+After:
+
+  # perf record -g --call-graph dwarf,1024 -j stack,u ls > /dev/null
+  [ perf record: Woken up 1 times to write data ]
+  [ perf record: Captured and wrote 0.044 MB perf.data (11 samples) ]
+  [root@quaco ~]# perf evlist -v
+  cycles: size: 112, { sample_period, sample_freq }: 4000, sample_type: IP|TID|TIME|ADDR|CALLCHAIN|PERIOD|BRANCH_STACK|REGS_USER|STACK_USER|DATA_SRC, read_format: ID, disabled: 1, inherit: 1, mmap: 1, comm: 1, freq: 1, enable_on_exec: 1, task: 1, precise_ip: 3, mmap_data: 1, sample_id_all: 1, exclude_guest: 1, exclude_callchain_user: 1, mmap2: 1, comm_exec: 1, ksymbol: 1, bpf_event: 1, branch_sample_type: USER|CALL_STACK, sample_regs_user: 0xff0fff, sample_stack_user: 1024
   #
 
 Signed-off-by: Alexey Budankov <alexey.budankov@linux.intel.com>
@@ -230,22 +243,21 @@ Cc: Jiri Olsa <jolsa@redhat.com>
 Cc: Kan Liang <kan.liang@linux.intel.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Link: http://lkml.kernel.org/r/ccbd9583-82f4-dec5-7e84-64bf56e351fb@linux.intel.com
+Link: http://lkml.kernel.org/r/e9e00090-66fb-d2a4-c90f-1d12344f7788@linux.intel.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/builtin-report.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/perf/util/parse-branch-options.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/perf/builtin-report.c b/tools/perf/builtin-report.c
-index 5e003d0..79dfb11 100644
---- a/tools/perf/builtin-report.c
-+++ b/tools/perf/builtin-report.c
-@@ -1281,6 +1281,8 @@ int cmd_report(int argc, const char **argv)
- 
- 	has_br_stack = perf_header__has_feat(&session->header,
- 					     HEADER_BRANCH_STACK);
-+	if (perf_evlist__combined_sample_type(session->evlist) & PERF_SAMPLE_STACK_USER)
-+		has_br_stack = false;
- 
- 	setup_forced_leader(&report, session->evlist);
+diff --git a/tools/perf/util/parse-branch-options.c b/tools/perf/util/parse-branch-options.c
+index 726e8d9..4ed20c8 100644
+--- a/tools/perf/util/parse-branch-options.c
++++ b/tools/perf/util/parse-branch-options.c
+@@ -30,6 +30,7 @@ static const struct branch_mode branch_modes[] = {
+ 	BRANCH_OPT("ind_jmp", PERF_SAMPLE_BRANCH_IND_JUMP),
+ 	BRANCH_OPT("call", PERF_SAMPLE_BRANCH_CALL),
+ 	BRANCH_OPT("save_type", PERF_SAMPLE_BRANCH_TYPE_SAVE),
++	BRANCH_OPT("stack", PERF_SAMPLE_BRANCH_CALL_STACK),
+ 	BRANCH_END
+ };
  
