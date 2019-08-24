@@ -2,132 +2,147 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A7759B3B7
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 23 Aug 2019 17:46:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 59E8C9BECF
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 24 Aug 2019 18:30:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733254AbfHWPoe (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 23 Aug 2019 11:44:34 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:36025 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2405914AbfHWPod (ORCPT
+        id S1727728AbfHXQap (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 24 Aug 2019 12:30:45 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51202 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726628AbfHXQap (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 23 Aug 2019 11:44:33 -0400
-Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tip-bot2@linutronix.de>)
-        id 1i1Bjn-0005MO-Bu; Fri, 23 Aug 2019 17:44:27 +0200
-Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E85AF1C04F3;
-        Fri, 23 Aug 2019 17:44:26 +0200 (CEST)
-Date:   Fri, 23 Aug 2019 15:44:26 -0000
-From:   tip-bot2 for Sean Christopherson <tip-bot2@linutronix.de>
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/retpoline: Don't clobber RFLAGS during
- CALL_NOSPEC on i386
-Cc:     Sean Christopherson <sean.j.christopherson@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Peter Zijlstra (Intel) <peterz@infradead.org>,
-        stable@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20190822211122.27579-1-sean.j.christopherson@intel.com>
-References: <20190822211122.27579-1-sean.j.christopherson@intel.com>
+        Sat, 24 Aug 2019 12:30:45 -0400
+Received: from localhost (unknown [8.46.76.71])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id E87272133F;
+        Sat, 24 Aug 2019 16:30:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1566664243;
+        bh=+JuKxCOgJyBntCQvY6U3JY+tJ2pkpRKpi7Kas9YX6aQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=2JCsvY6KrYzxYIpv+m8WMh+iSkH0tmAKK2RhzWqbs9T4ahODOuEjgejLGapr5RUd9
+         tffZ1z1dcUGfhiBbn+/plVU7AmJxYa08G3zby2VydzN3K4cMa8xutpmhkbQBEWLw7d
+         dmhrbql6MJj0ka0EGuC9P5zWcopoMB8TBOVm/uo0=
+Date:   Sat, 24 Aug 2019 09:50:28 -0400
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-tip-commits@vger.kernel.org,
+        "x86@kernel.org" <x86@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Pavel Machek <pavel@ucw.cz>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Juergen Gross <jgross@suse.com>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Ingo Molnar <mingo@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Chen Yu <yu.c.chen@intel.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Andrew Cooper <andrew.cooper3@citrix.com>,
+        Borislav Petkov <bp@suse.de>,
+        Tom Lendacky <thomas.lendacky@amd.com>
+Subject: Re: [tip: x86/urgent] x86/CPU/AMD: Clear RDRAND CPUID bit on AMD
+ family 15h/16h
+Message-ID: <20190824135028.GJ1581@sasha-vm>
+References: <7543af91666f491547bd86cebb1e17c66824ab9f.1566229943.git.thomas.lendacky@amd.com>
+ <156652264945.9541.4969272027980914591.tip-bot2@tip-bot2>
 MIME-Version: 1.0
-Message-ID: <156657506681.13327.12784359764644509478.tip-bot2@tip-bot2>
-X-Mailer: tip-git-log-daemon
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+In-Reply-To: <156652264945.9541.4969272027980914591.tip-bot2@tip-bot2>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+On Fri, Aug 23, 2019 at 01:10:49AM -0000, tip-bot2 for Tom Lendacky wrote:
+>The following commit has been merged into the x86/urgent branch of tip:
+>
+>Commit-ID:     c49a0a80137c7ca7d6ced4c812c9e07a949f6f24
+>Gitweb:        https://git.kernel.org/tip/c49a0a80137c7ca7d6ced4c812c9e07a949f6f24
+>Author:        Tom Lendacky <thomas.lendacky@amd.com>
+>AuthorDate:    Mon, 19 Aug 2019 15:52:35
+>Committer:     Borislav Petkov <bp@suse.de>
+>CommitterDate: Mon, 19 Aug 2019 19:42:52 +02:00
+>
+>x86/CPU/AMD: Clear RDRAND CPUID bit on AMD family 15h/16h
+>
+>There have been reports of RDRAND issues after resuming from suspend on
+>some AMD family 15h and family 16h systems. This issue stems from a BIOS
+>not performing the proper steps during resume to ensure RDRAND continues
+>to function properly.
+>
+>RDRAND support is indicated by CPUID Fn00000001_ECX[30]. This bit can be
+>reset by clearing MSR C001_1004[62]. Any software that checks for RDRAND
+>support using CPUID, including the kernel, will believe that RDRAND is
+>not supported.
+>
+>Update the CPU initialization to clear the RDRAND CPUID bit for any family
+>15h and 16h processor that supports RDRAND. If it is known that the family
+>15h or family 16h system does not have an RDRAND resume issue or that the
+>system will not be placed in suspend, the "rdrand=force" kernel parameter
+>can be used to stop the clearing of the RDRAND CPUID bit.
+>
+>Additionally, update the suspend and resume path to save and restore the
+>MSR C001_1004 value to ensure that the RDRAND CPUID setting remains in
+>place after resuming from suspend.
+>
+>Note, that clearing the RDRAND CPUID bit does not prevent a processor
+>that normally supports the RDRAND instruction from executing it. So any
+>code that determined the support based on family and model won't #UD.
+>
+>Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
+>Signed-off-by: Borislav Petkov <bp@suse.de>
+>Cc: Andrew Cooper <andrew.cooper3@citrix.com>
+>Cc: Andrew Morton <akpm@linux-foundation.org>
+>Cc: Chen Yu <yu.c.chen@intel.com>
+>Cc: "H. Peter Anvin" <hpa@zytor.com>
+>Cc: Ingo Molnar <mingo@redhat.com>
+>Cc: Jonathan Corbet <corbet@lwn.net>
+>Cc: Josh Poimboeuf <jpoimboe@redhat.com>
+>Cc: Juergen Gross <jgross@suse.com>
+>Cc: Kees Cook <keescook@chromium.org>
+>Cc: "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>
+>Cc: "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>
+>Cc: Nathan Chancellor <natechancellor@gmail.com>
+>Cc: Paolo Bonzini <pbonzini@redhat.com>
+>Cc: Pavel Machek <pavel@ucw.cz>
+>Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+>Cc: <stable@vger.kernel.org>
+>Cc: Thomas Gleixner <tglx@linutronix.de>
+>Cc: "x86@kernel.org" <x86@kernel.org>
+>Link: https://lkml.kernel.org/r/7543af91666f491547bd86cebb1e17c66824ab9f.1566229943.git.thomas.lendacky@amd.com
+>---
+> Documentation/admin-guide/kernel-parameters.txt |  7 +-
+> arch/x86/include/asm/msr-index.h                |  1 +-
+> arch/x86/kernel/cpu/amd.c                       | 66 +------------
+> arch/x86/power/cpu.c                            | 86 ++--------------
+> 4 files changed, 13 insertions(+), 147 deletions(-)
+>
+>diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+>index 4c19719..47d981a 100644
+>--- a/Documentation/admin-guide/kernel-parameters.txt
+>+++ b/Documentation/admin-guide/kernel-parameters.txt
+>@@ -4090,13 +4090,6 @@
+> 			Run specified binary instead of /init from the ramdisk,
+> 			used for early userspace startup. See initrd.
+>
+>-	rdrand=		[X86]
+>-			force - Override the decision by the kernel to hide the
+>-				advertisement of RDRAND support (this affects
+>-				certain AMD processors because of buggy BIOS
+>-				support, specifically around the suspend/resume
+>-				path).
+>-
 
-Commit-ID:     b63f20a778c88b6a04458ed6ffc69da953d3a109
-Gitweb:        https://git.kernel.org/tip/b63f20a778c88b6a04458ed6ffc69da953d3a109
-Author:        Sean Christopherson <sean.j.christopherson@intel.com>
-AuthorDate:    Thu, 22 Aug 2019 14:11:22 -07:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 23 Aug 2019 17:38:13 +02:00
+Why is this being removed (along with supporting code)?
 
-x86/retpoline: Don't clobber RFLAGS during CALL_NOSPEC on i386
-
-Use 'lea' instead of 'add' when adjusting %rsp in CALL_NOSPEC so as to
-avoid clobbering flags.
-
-KVM's emulator makes indirect calls into a jump table of sorts, where
-the destination of the CALL_NOSPEC is a small blob of code that performs
-fast emulation by executing the target instruction with fixed operands.
-
-  adcb_al_dl:
-     0x000339f8 <+0>:   adc    %dl,%al
-     0x000339fa <+2>:   ret
-
-A major motiviation for doing fast emulation is to leverage the CPU to
-handle consumption and manipulation of arithmetic flags, i.e. RFLAGS is
-both an input and output to the target of CALL_NOSPEC.  Clobbering flags
-results in all sorts of incorrect emulation, e.g. Jcc instructions often
-take the wrong path.  Sans the nops...
-
-  asm("push %[flags]; popf; " CALL_NOSPEC " ; pushf; pop %[flags]\n"
-     0x0003595a <+58>:  mov    0xc0(%ebx),%eax
-     0x00035960 <+64>:  mov    0x60(%ebx),%edx
-     0x00035963 <+67>:  mov    0x90(%ebx),%ecx
-     0x00035969 <+73>:  push   %edi
-     0x0003596a <+74>:  popf
-     0x0003596b <+75>:  call   *%esi
-     0x000359a0 <+128>: pushf
-     0x000359a1 <+129>: pop    %edi
-     0x000359a2 <+130>: mov    %eax,0xc0(%ebx)
-     0x000359b1 <+145>: mov    %edx,0x60(%ebx)
-
-  ctxt->eflags = (ctxt->eflags & ~EFLAGS_MASK) | (flags & EFLAGS_MASK);
-     0x000359a8 <+136>: mov    -0x10(%ebp),%eax
-     0x000359ab <+139>: and    $0x8d5,%edi
-     0x000359b4 <+148>: and    $0xfffff72a,%eax
-     0x000359b9 <+153>: or     %eax,%edi
-     0x000359bd <+157>: mov    %edi,0x4(%ebx)
-
-For the most part this has gone unnoticed as emulation of guest code
-that can trigger fast emulation is effectively limited to MMIO when
-running on modern hardware, and MMIO is rarely, if ever, accessed by
-instructions that affect or consume flags.
-
-Breakage is almost instantaneous when running with unrestricted guest
-disabled, in which case KVM must emulate all instructions when the guest
-has invalid state, e.g. when the guest is in Big Real Mode during early
-BIOS.
-
-Fixes: 776b043848fd2 ("x86/retpoline: Add initial retpoline support")
-Fixes: 1a29b5b7f347a ("KVM: x86: Make indirect calls in emulator speculation safe")
-Signed-off-by: Sean Christopherson <sean.j.christopherson@intel.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20190822211122.27579-1-sean.j.christopherson@intel.com
-
----
- arch/x86/include/asm/nospec-branch.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
-index 109f974..80bc209 100644
---- a/arch/x86/include/asm/nospec-branch.h
-+++ b/arch/x86/include/asm/nospec-branch.h
-@@ -192,7 +192,7 @@
- 	"    	lfence;\n"					\
- 	"       jmp    902b;\n"					\
- 	"       .align 16\n"					\
--	"903:	addl   $4, %%esp;\n"				\
-+	"903:	lea    4(%%esp), %%esp;\n"			\
- 	"       pushl  %[thunk_target];\n"			\
- 	"       ret;\n"						\
- 	"       .align 16\n"					\
+--
+Thanks,
+Sasha
