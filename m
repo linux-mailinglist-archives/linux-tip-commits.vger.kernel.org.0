@@ -2,95 +2,169 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8DBF29C9F9
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 26 Aug 2019 09:15:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 748269CE75
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 26 Aug 2019 13:47:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729828AbfHZHPp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 26 Aug 2019 03:15:45 -0400
-Received: from mail.skyhub.de ([5.9.137.197]:60230 "EHLO mail.skyhub.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727933AbfHZHPp (ORCPT
+        id S1730093AbfHZLqx (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 26 Aug 2019 07:46:53 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:39574 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727182AbfHZLqD (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 26 Aug 2019 03:15:45 -0400
-Received: from zn.tnic (p200300EC2F065700C590DC7B9886C27F.dip0.t-ipconnect.de [IPv6:2003:ec:2f06:5700:c590:dc7b:9886:c27f])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 426691EC058B;
-        Mon, 26 Aug 2019 09:15:44 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1566803744;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=nkHKAm1vG91TpwR2bDOsp87e2mUi6js2MU6LPCkxmLE=;
-        b=jIzMPWZxihiD3BLqrMZz1hXq6CiTahUEYCk0n125DtF5zEYbqEabFLaLwskqP/xAOJsTgd
-        aBFYFIwJgrQlyV/HTTqAdm+wL2CKNkMu4G9lqP2tLsGru3YYT/oVteP5MIfb1k0rrztVro
-        mU7wrhYsrfdxKsoM75Ox7ZkS1a+cfYo=
-Date:   Mon, 26 Aug 2019 09:15:39 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Cc:     tglx@linutronix.de, hpa@zytor.com, linux-kernel@vger.kernel.org,
-        mingo@redhat.com, x86@kernel.org, mingo@kernel.org,
-        kirill.shutemov@linux.intel.com, kirill@shutemov.name,
-        linux-tip-commits@vger.kernel.org
-Subject: Re: [tip:x86/urgent] x86/boot/compressed/64: Fix boot on machines
- with broken E820 table
-Message-ID: <20190826071539.GB27636@zn.tnic>
-References: <20190813131654.24378-1-kirill.shutemov@linux.intel.com>
- <tip-0a46fff2f9108c2c44218380a43a736cf4612541@git.kernel.org>
- <caa30daa-9ed5-e293-f6cd-ff261c995e1e@embeddedor.com>
+        Mon, 26 Aug 2019 07:46:03 -0400
+Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tip-bot2@linutronix.de>)
+        id 1i2DRQ-0000vQ-A8; Mon, 26 Aug 2019 13:45:44 +0200
+Received: from [127.0.1.1] (localhost [IPv6:::1])
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E866A1C0DAE;
+        Mon, 26 Aug 2019 13:45:43 +0200 (CEST)
+Date:   Mon, 26 Aug 2019 11:45:42 -0000
+From:   tip-bot2 for Alexander Shishkin <tip-bot2@linutronix.de>
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: perf/core] perf/x86/intel/pt: Clean up ToPA allocation path
+Cc:     Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Peter Zijlstra <a.p.zijlstra@chello.nl>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Stephane Eranian <eranian@google.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Vince Weaver <vincent.weaver@maine.edu>,
+        Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org
+In-Reply-To: <20190821124727.73310-2-alexander.shishkin@linux.intel.com>
+References: <20190821124727.73310-2-alexander.shishkin@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Message-ID: <156681994258.3120.6665983400581475472.tip-bot2@tip-bot2>
+X-Mailer: tip-git-log-daemon
+Robot-ID: <tip-bot2.linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Content-Disposition: inline
-In-Reply-To: <caa30daa-9ed5-e293-f6cd-ff261c995e1e@embeddedor.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Sun, Aug 25, 2019 at 10:33:15PM -0500, Gustavo A. R. Silva wrote:
-> Hi all,
-> 
-> On 8/19/19 9:16 AM, tip-bot for Kirill A. Shutemov wrote:
-> [..]
-> > 
-> > diff --git a/arch/x86/boot/compressed/pgtable_64.c b/arch/x86/boot/compressed/pgtable_64.c
-> > index 5f2d03067ae5..2faddeb0398a 100644
-> > --- a/arch/x86/boot/compressed/pgtable_64.c
-> > +++ b/arch/x86/boot/compressed/pgtable_64.c
-> > @@ -72,6 +72,8 @@ static unsigned long find_trampoline_placement(void)
-> >  
-> >  	/* Find the first usable memory region under bios_start. */
-> >  	for (i = boot_params->e820_entries - 1; i >= 0; i--) {
-> > +		unsigned long new;
-> > +
-> >  		entry = &boot_params->e820_table[i];
-> >  
-> >  		/* Skip all entries above bios_start. */
-> > @@ -84,15 +86,20 @@ static unsigned long find_trampoline_placement(void)
-> >  
-> >  		/* Adjust bios_start to the end of the entry if needed. */
-> >  		if (bios_start > entry->addr + entry->size)
-> 
-> Notice that if this condition happens to be false, we end up with an
-> uninitialized variable *new*.
+The following commit has been merged into the perf/core branch of tip:
 
-Yap, good catch.
+Commit-ID:     90583af61d0c0d2826f42a297a03645b35c49085
+Gitweb:        https://git.kernel.org/tip/90583af61d0c0d2826f42a297a03645b35c49085
+Author:        Alexander Shishkin <alexander.shishkin@linux.intel.com>
+AuthorDate:    Wed, 21 Aug 2019 15:47:22 +03:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Mon, 26 Aug 2019 12:00:12 +02:00
 
-> What would be the right value to assign to *new* at declaration under
-> this condition?
+perf/x86/intel/pt: Clean up ToPA allocation path
 
-Looking at the changed flow of the loop, how we use new instead of
-bios_start and how we assign new back to bios_start, I think we should
-do:
+Some of the allocation parameters are passed as function arguments,
+while the CPU number for per-cpu allocation is passed via the buffer
+object. There's no reason for this.
 
-		unsigned long new = bios_start;
+Pass the CPU as a function argument instead.
 
-at the beginning...
+Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Jiri Olsa <jolsa@redhat.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Peter Zijlstra <a.p.zijlstra@chello.nl>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Stephane Eranian <eranian@google.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Vince Weaver <vincent.weaver@maine.edu>
+Link: http://lkml.kernel.org/r/20190821124727.73310-2-alexander.shishkin@linux.intel.com
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+---
+ arch/x86/events/intel/pt.c | 15 +++++++--------
+ arch/x86/events/intel/pt.h |  2 --
+ 2 files changed, 7 insertions(+), 10 deletions(-)
 
--- 
-Regards/Gruss,
-    Boris.
-
-Good mailing practices for 400: avoid top-posting and trim the reply.
+diff --git a/arch/x86/events/intel/pt.c b/arch/x86/events/intel/pt.c
+index d3dc227..9d9258f 100644
+--- a/arch/x86/events/intel/pt.c
++++ b/arch/x86/events/intel/pt.c
+@@ -670,7 +670,7 @@ static bool topa_table_full(struct topa *topa)
+  *
+  * Return:	0 on success or error code.
+  */
+-static int topa_insert_pages(struct pt_buffer *buf, gfp_t gfp)
++static int topa_insert_pages(struct pt_buffer *buf, int cpu, gfp_t gfp)
+ {
+ 	struct topa *topa = buf->last;
+ 	int order = 0;
+@@ -681,7 +681,7 @@ static int topa_insert_pages(struct pt_buffer *buf, gfp_t gfp)
+ 		order = page_private(p);
+ 
+ 	if (topa_table_full(topa)) {
+-		topa = topa_alloc(buf->cpu, gfp);
++		topa = topa_alloc(cpu, gfp);
+ 		if (!topa)
+ 			return -ENOMEM;
+ 
+@@ -1061,20 +1061,20 @@ static void pt_buffer_fini_topa(struct pt_buffer *buf)
+  * @size:	Total size of all regions within this ToPA.
+  * @gfp:	Allocation flags.
+  */
+-static int pt_buffer_init_topa(struct pt_buffer *buf, unsigned long nr_pages,
+-			       gfp_t gfp)
++static int pt_buffer_init_topa(struct pt_buffer *buf, int cpu,
++			       unsigned long nr_pages, gfp_t gfp)
+ {
+ 	struct topa *topa;
+ 	int err;
+ 
+-	topa = topa_alloc(buf->cpu, gfp);
++	topa = topa_alloc(cpu, gfp);
+ 	if (!topa)
+ 		return -ENOMEM;
+ 
+ 	topa_insert_table(buf, topa);
+ 
+ 	while (buf->nr_pages < nr_pages) {
+-		err = topa_insert_pages(buf, gfp);
++		err = topa_insert_pages(buf, cpu, gfp);
+ 		if (err) {
+ 			pt_buffer_fini_topa(buf);
+ 			return -ENOMEM;
+@@ -1124,13 +1124,12 @@ pt_buffer_setup_aux(struct perf_event *event, void **pages,
+ 	if (!buf)
+ 		return NULL;
+ 
+-	buf->cpu = cpu;
+ 	buf->snapshot = snapshot;
+ 	buf->data_pages = pages;
+ 
+ 	INIT_LIST_HEAD(&buf->tables);
+ 
+-	ret = pt_buffer_init_topa(buf, nr_pages, GFP_KERNEL);
++	ret = pt_buffer_init_topa(buf, cpu, nr_pages, GFP_KERNEL);
+ 	if (ret) {
+ 		kfree(buf);
+ 		return NULL;
+diff --git a/arch/x86/events/intel/pt.h b/arch/x86/events/intel/pt.h
+index 63fe406..8de8ed0 100644
+--- a/arch/x86/events/intel/pt.h
++++ b/arch/x86/events/intel/pt.h
+@@ -53,7 +53,6 @@ struct pt_pmu {
+ /**
+  * struct pt_buffer - buffer configuration; one buffer per task_struct or
+  *		cpu, depending on perf event configuration
+- * @cpu:	cpu for per-cpu allocation
+  * @tables:	list of ToPA tables in this buffer
+  * @first:	shorthand for first topa table
+  * @last:	shorthand for last topa table
+@@ -71,7 +70,6 @@ struct pt_pmu {
+  * @topa_index:	table of topa entries indexed by page offset
+  */
+ struct pt_buffer {
+-	int			cpu;
+ 	struct list_head	tables;
+ 	struct topa		*first, *last, *cur;
+ 	unsigned int		cur_idx;
