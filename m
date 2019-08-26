@@ -2,35 +2,34 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 416ED9D992
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 27 Aug 2019 00:53:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1699F9D9A0
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 27 Aug 2019 00:53:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728197AbfHZWws (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 26 Aug 2019 18:52:48 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:41532 "EHLO
+        id S1728527AbfHZWxR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 26 Aug 2019 18:53:17 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:41466 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727680AbfHZWwb (ORCPT
+        with ESMTP id S1727182AbfHZWwY (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 26 Aug 2019 18:52:31 -0400
+        Mon, 26 Aug 2019 18:52:24 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i2NqN-0006lo-MF; Tue, 27 Aug 2019 00:52:11 +0200
+        id 1i2NqQ-0006mg-54; Tue, 27 Aug 2019 00:52:14 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 3EE8A1C0DD9;
-        Tue, 27 Aug 2019 00:52:11 +0200 (CEST)
-Date:   Mon, 26 Aug 2019 22:52:11 -0000
-From:   tip-bot2 for Maxime Ripard <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A609F1C0DDF;
+        Tue, 27 Aug 2019 00:52:12 +0200 (CEST)
+Date:   Mon, 26 Aug 2019 22:52:12 -0000
+From:   tip-bot2 for Alexandre Belloni <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] dt-bindings: timer: Add missing compatibles
-Cc:     Maxime Ripard <maxime.ripard@bootlin.com>,
-        Rob Herring <robh@kernel.org>,
+Subject: [tip: timers/core] clocksource/drivers/tcb_clksrc: Register delay timer
+Cc:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
         Daniel Lezcano <daniel.lezcano@linaro.org>,
         Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <156685993119.1286.17565392305975726898.tip-bot2@tip-bot2>
+Message-ID: <156685993261.1297.1431848765931294560.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,66 +46,91 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     7fccfcd678e80cc8cf131922296eccf72e19a69c
-Gitweb:        https://git.kernel.org/tip/7fccfcd678e80cc8cf131922296eccf72e19a69c
-Author:        Maxime Ripard <maxime.ripard@bootlin.com>
-AuthorDate:    Mon, 22 Jul 2019 10:12:20 +02:00
+Commit-ID:     1ce861cec03c79a68bae81a7e039edae46b2c493
+Gitweb:        https://git.kernel.org/tip/1ce861cec03c79a68bae81a7e039edae46b2c493
+Author:        Alexandre Belloni <alexandre.belloni@bootlin.com>
+AuthorDate:    Tue, 13 Aug 2019 15:30:50 +02:00
 Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
 CommitterDate: Tue, 27 Aug 2019 00:31:39 +02:00
 
-dt-bindings: timer: Add missing compatibles
+clocksource/drivers/tcb_clksrc: Register delay timer
 
-Newer Allwinner SoCs have different number of interrupts, let's add
-different compatibles for all of them to deal with this properly.
+Implement and register delay timer to allow get_cycles() to work properly.
 
-Signed-off-by: Maxime Ripard <maxime.ripard@bootlin.com>
-Reviewed-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 ---
- Documentation/devicetree/bindings/timer/allwinner,sun4i-a10-timer.yaml | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+ drivers/clocksource/Kconfig           |  2 +-
+ drivers/clocksource/timer-atmel-tcb.c | 18 ++++++++++++++++++
+ 2 files changed, 19 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/timer/allwinner,sun4i-a10-timer.yaml b/Documentation/devicetree/bindings/timer/allwinner,sun4i-a10-timer.yaml
-index 7292a42..20adc1c 100644
---- a/Documentation/devicetree/bindings/timer/allwinner,sun4i-a10-timer.yaml
-+++ b/Documentation/devicetree/bindings/timer/allwinner,sun4i-a10-timer.yaml
-@@ -14,6 +14,8 @@ properties:
-   compatible:
-     enum:
-       - allwinner,sun4i-a10-timer
-+      - allwinner,sun8i-a23-timer
-+      - allwinner,sun8i-v3s-timer
-       - allwinner,suniv-f1c100s-timer
+diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
+index 5e9317d..a642c23 100644
+--- a/drivers/clocksource/Kconfig
++++ b/drivers/clocksource/Kconfig
+@@ -429,7 +429,7 @@ config ATMEL_ST
  
-   reg:
-@@ -43,6 +45,30 @@ allOf:
-       properties:
-         compatible:
-           items:
-+            const: allwinner,sun8i-a23-timer
-+
-+    then:
-+      properties:
-+        interrupts:
-+          minItems: 2
-+          maxItems: 2
-+
-+  - if:
-+      properties:
-+        compatible:
-+          items:
-+            const: allwinner,sun8i-v3s-timer
-+
-+    then:
-+      properties:
-+        interrupts:
-+          minItems: 3
-+          maxItems: 3
-+
-+  - if:
-+      properties:
-+        compatible:
-+          items:
-             const: allwinner,suniv-f1c100s-timer
+ config ATMEL_TCB_CLKSRC
+ 	bool "Atmel TC Block timer driver" if COMPILE_TEST
+-	depends on HAS_IOMEM
++	depends on ARM && HAS_IOMEM
+ 	select TIMER_OF if OF
+ 	help
+ 	  Support for Timer Counter Blocks on Atmel SoCs.
+diff --git a/drivers/clocksource/timer-atmel-tcb.c b/drivers/clocksource/timer-atmel-tcb.c
+index 6ed31f9..7427b07 100644
+--- a/drivers/clocksource/timer-atmel-tcb.c
++++ b/drivers/clocksource/timer-atmel-tcb.c
+@@ -6,6 +6,7 @@
+ #include <linux/irq.h>
  
-     then:
+ #include <linux/clk.h>
++#include <linux/delay.h>
+ #include <linux/err.h>
+ #include <linux/ioport.h>
+ #include <linux/io.h>
+@@ -125,6 +126,18 @@ static u64 notrace tc_sched_clock_read32(void)
+ 	return tc_get_cycles32(&clksrc);
+ }
+ 
++static struct delay_timer tc_delay_timer;
++
++static unsigned long tc_delay_timer_read(void)
++{
++	return tc_get_cycles(&clksrc);
++}
++
++static unsigned long notrace tc_delay_timer_read32(void)
++{
++	return tc_get_cycles32(&clksrc);
++}
++
+ #ifdef CONFIG_GENERIC_CLOCKEVENTS
+ 
+ struct tc_clkevt_device {
+@@ -432,6 +445,7 @@ static int __init tcb_clksrc_init(struct device_node *node)
+ 		/* setup ony channel 0 */
+ 		tcb_setup_single_chan(&tc, best_divisor_idx);
+ 		tc_sched_clock = tc_sched_clock_read32;
++		tc_delay_timer.read_current_timer = tc_delay_timer_read32;
+ 	} else {
+ 		/* we have three clocks no matter what the
+ 		 * underlying platform supports.
+@@ -444,6 +458,7 @@ static int __init tcb_clksrc_init(struct device_node *node)
+ 		/* setup both channel 0 & 1 */
+ 		tcb_setup_dual_chan(&tc, best_divisor_idx);
+ 		tc_sched_clock = tc_sched_clock_read;
++		tc_delay_timer.read_current_timer = tc_delay_timer_read;
+ 	}
+ 
+ 	/* and away we go! */
+@@ -458,6 +473,9 @@ static int __init tcb_clksrc_init(struct device_node *node)
+ 
+ 	sched_clock_register(tc_sched_clock, 32, divided_rate);
+ 
++	tc_delay_timer.freq = divided_rate;
++	register_current_timer_delay(&tc_delay_timer);
++
+ 	return 0;
+ 
+ err_unregister_clksrc:
