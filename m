@@ -2,153 +2,181 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EB4F9D0AB
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 26 Aug 2019 15:33:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A284D9D141
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 26 Aug 2019 16:02:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730611AbfHZNd1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 26 Aug 2019 09:33:27 -0400
-Received: from mail-ed1-f68.google.com ([209.85.208.68]:42124 "EHLO
-        mail-ed1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730524AbfHZNd1 (ORCPT
+        id S1730461AbfHZOC5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 26 Aug 2019 10:02:57 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:40242 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727091AbfHZOC4 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 26 Aug 2019 09:33:27 -0400
-Received: by mail-ed1-f68.google.com with SMTP id m44so26495056edd.9
-        for <linux-tip-commits@vger.kernel.org>; Mon, 26 Aug 2019 06:33:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=shutemov-name.20150623.gappssmtp.com; s=20150623;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=bcUfL34FoYp4/VabITIx6X/hBshWWuaQCv3+2NB9Wuo=;
-        b=uNdf7j98900+3G56FRLP6n5FYs7OQNYJAikxCojCx9KA+DxauVKt+ZYG9nGdLUDcIg
-         3jJHThfnxMGoOflE9QMP7dvLmOurLC/5iEe8aY39OkqbfblIkF8lCaoiah7lSbjDwI37
-         wNWjcVKwPD9yhjQcHd1oGOyeg7idIF9SeNUBIMPM8Tl96hGaODG4jYNCo6jkfvvWuYoU
-         A4jJHSzeU3o+Nmf9c/fi9uSBOKt5n85GzBhlLtig+WxWfNHa6shtmOrGAElgs924psRC
-         7xi0dWry0ZRHo/BmCfyC5VS2kR7vwoUpp9XfZUEWHzxm1rFyMyuFp6NxKA5rdmJFgGCQ
-         oo9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=bcUfL34FoYp4/VabITIx6X/hBshWWuaQCv3+2NB9Wuo=;
-        b=UPj56BFfBTILGXfcK1HaFjvRYk5JA2QdimJvC1d6aGJfxpmyO5b98K/XJBhI+BXi+J
-         gTRB+8hXh0/o85KvHMbri94C2TicltnrURrxRuRS/DN1ONs8JYgJEF+HDPXqgYwGGBx4
-         P2r9sJyibwmuWVnVzMpw59uGVom4Z4yJKrqk4+OinIeDAF6whL0M7mZzD9mSpBPciPvz
-         9MdBp0g/fAGAEXCmDnsDG9Z6xVsa7WHlz+6O9BvgE/nVtZUfzUbxgiW0C/4XcEJhZvTc
-         WGAkFWBbtLsdnYd+eBOGwsmowz4wFJxnois29EMcf4MNwpjVTLEH0Ajus4JGu/iJTpkD
-         lh2g==
-X-Gm-Message-State: APjAAAWFE6HQY8hiHHCWBkRCyIT2yWXiqRuEWtLUw4nKjCN4oUgr8wFI
-        WOVvxtLyGJhVe2DikXcSEWyUcg==
-X-Google-Smtp-Source: APXvYqwEyTAOm70GPqxQ0JdvxB8u4mVlVB3HNyBKxvtxr+6ex91ykH53z1B8TzSHnaxfQXPoFelQbA==
-X-Received: by 2002:a17:906:34c2:: with SMTP id h2mr16368397ejb.227.1566826405105;
-        Mon, 26 Aug 2019 06:33:25 -0700 (PDT)
-Received: from box.localdomain ([86.57.175.117])
-        by smtp.gmail.com with ESMTPSA id i1sm1294470edi.13.2019.08.26.06.33.24
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 26 Aug 2019 06:33:24 -0700 (PDT)
-Received: by box.localdomain (Postfix, from userid 1000)
-        id 1101D10050C; Mon, 26 Aug 2019 16:33:26 +0300 (+03)
-Date:   Mon, 26 Aug 2019 16:33:26 +0300
-From:   "Kirill A. Shutemov" <kirill@shutemov.name>
-To:     Borislav Petkov <bp@alien8.de>
-Cc:     "Gustavo A. R. Silva" <gustavo@embeddedor.com>, tglx@linutronix.de,
-        hpa@zytor.com, linux-kernel@vger.kernel.org, mingo@redhat.com,
-        x86@kernel.org, mingo@kernel.org, kirill.shutemov@linux.intel.com,
-        linux-tip-commits@vger.kernel.org
-Subject: Re: [tip:x86/urgent] x86/boot/compressed/64: Fix boot on machines
- with broken E820 table
-Message-ID: <20190826133326.7cxb4vbmiawffv2r@box>
-References: <20190813131654.24378-1-kirill.shutemov@linux.intel.com>
- <tip-0a46fff2f9108c2c44218380a43a736cf4612541@git.kernel.org>
- <caa30daa-9ed5-e293-f6cd-ff261c995e1e@embeddedor.com>
- <20190826071539.GB27636@zn.tnic>
+        Mon, 26 Aug 2019 10:02:56 -0400
+Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tip-bot2@linutronix.de>)
+        id 1i2Fa4-0005AA-H1; Mon, 26 Aug 2019 16:02:48 +0200
+Received: from [127.0.1.1] (localhost [IPv6:::1])
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id F104F1C0DAE;
+        Mon, 26 Aug 2019 16:02:47 +0200 (CEST)
+Date:   Mon, 26 Aug 2019 14:02:47 -0000
+From:   tip-bot2 for Sebastian Mayr <tip-bot2@linutronix.de>
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/urgent] uprobes/x86: Fix detection of 32-bit user mode
+Cc:     Sebastian Mayr <me@sam.st>, Thomas Gleixner <tglx@linutronix.de>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Dmitry Safonov <dsafonov@virtuozzo.com>,
+        Oleg Nesterov <oleg@redhat.com>,
+        Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
+        stable@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20190728152617.7308-1-me@sam.st>
+References: <20190728152617.7308-1-me@sam.st>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Message-ID: <156682816785.22183.13288779592609885843.tip-bot2@tip-bot2>
+X-Mailer: tip-git-log-daemon
+Robot-ID: <tip-bot2.linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Content-Disposition: inline
-In-Reply-To: <20190826071539.GB27636@zn.tnic>
-User-Agent: NeoMutt/20180716
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Mon, Aug 26, 2019 at 09:15:39AM +0200, Borislav Petkov wrote:
-> On Sun, Aug 25, 2019 at 10:33:15PM -0500, Gustavo A. R. Silva wrote:
-> > Hi all,
-> > 
-> > On 8/19/19 9:16 AM, tip-bot for Kirill A. Shutemov wrote:
-> > [..]
-> > > 
-> > > diff --git a/arch/x86/boot/compressed/pgtable_64.c b/arch/x86/boot/compressed/pgtable_64.c
-> > > index 5f2d03067ae5..2faddeb0398a 100644
-> > > --- a/arch/x86/boot/compressed/pgtable_64.c
-> > > +++ b/arch/x86/boot/compressed/pgtable_64.c
-> > > @@ -72,6 +72,8 @@ static unsigned long find_trampoline_placement(void)
-> > >  
-> > >  	/* Find the first usable memory region under bios_start. */
-> > >  	for (i = boot_params->e820_entries - 1; i >= 0; i--) {
-> > > +		unsigned long new;
-> > > +
-> > >  		entry = &boot_params->e820_table[i];
-> > >  
-> > >  		/* Skip all entries above bios_start. */
-> > > @@ -84,15 +86,20 @@ static unsigned long find_trampoline_placement(void)
-> > >  
-> > >  		/* Adjust bios_start to the end of the entry if needed. */
-> > >  		if (bios_start > entry->addr + entry->size)
-> > 
-> > Notice that if this condition happens to be false, we end up with an
-> > uninitialized variable *new*.
-> 
-> Yap, good catch.
+The following commit has been merged into the x86/urgent branch of tip:
 
-:facepalm:
+Commit-ID:     9212ec7d8357ea630031e89d0d399c761421c83b
+Gitweb:        https://git.kernel.org/tip/9212ec7d8357ea630031e89d0d399c761421c83b
+Author:        Sebastian Mayr <me@sam.st>
+AuthorDate:    Sun, 28 Jul 2019 17:26:17 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Mon, 26 Aug 2019 15:55:09 +02:00
 
-> > What would be the right value to assign to *new* at declaration under
-> > this condition?
-> 
-> Looking at the changed flow of the loop, how we use new instead of
-> bios_start and how we assign new back to bios_start, I think we should
-> do:
-> 
-> 		unsigned long new = bios_start;
-> 
-> at the beginning...
+uprobes/x86: Fix detection of 32-bit user mode
 
-Right.
+32-bit processes running on a 64-bit kernel are not always detected
+correctly, causing the process to crash when uretprobes are installed.
 
-What about this:
+The reason for the crash is that in_ia32_syscall() is used to determine the
+process's mode, which only works correctly when called from a syscall.
 
-From b613c675e6690ef5608a5abf71d90e15ced31b2b Mon Sep 17 00:00:00 2001
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Date: Mon, 26 Aug 2019 16:26:01 +0300
-Subject: [PATCH] x86/boot/compressed/64: Fix missining initialization in
- find_trampoline_placement()
+In the case of uretprobes, however, the function is called from a exception
+and always returns 'false' on a 64-bit kernel. In consequence this leads to
+corruption of the process's return address.
 
-Gustavo noticed that 'new' can be left uninitialized if 'bios_start'
-happens to be less or equal to 'entry->addr + entry->size'.
+Fix this by using user_64bit_mode() instead of in_ia32_syscall(), which
+is correct in any situation.
 
-Initialize the variable at the start of the iteration to current value
-of 'bios_start'.
+[ tglx: Add a comment and the following historical info ]
 
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Reported-by: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Fixes: 0a46fff2f910 ("x86/boot/compressed/64: Fix boot on machines with broken E820 table")
+This should have been detected by the rename which happened in commit
+
+  abfb9498ee13 ("x86/entry: Rename is_{ia32,x32}_task() to in_{ia32,x32}_syscall()")
+
+which states in the changelog:
+
+    The is_ia32_task()/is_x32_task() function names are a big misnomer: they
+    suggests that the compat-ness of a system call is a task property, which
+    is not true, the compatness of a system call purely depends on how it
+    was invoked through the system call layer.
+    .....
+
+and then it went and blindly renamed every call site.
+
+Sadly enough this was already mentioned here:
+
+   8faaed1b9f50 ("uprobes/x86: Introduce sizeof_long(), cleanup adjust_ret_addr() and
+arch_uretprobe_hijack_return_addr()")
+
+where the changelog says:
+
+    TODO: is_ia32_task() is not what we actually want, TS_COMPAT does
+    not necessarily mean 32bit. Fortunately syscall-like insns can't be
+    probed so it actually works, but it would be better to rename and
+    use is_ia32_frame().
+
+and goes all the way back to:
+
+    0326f5a94dde ("uprobes/core: Handle breakpoint and singlestep exceptions")
+
+Oh well. 7+ years until someone actually tried a uretprobe on a 32bit
+process on a 64bit kernel....
+
+Fixes: 0326f5a94dde ("uprobes/core: Handle breakpoint and singlestep exceptions")
+Signed-off-by: Sebastian Mayr <me@sam.st>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Dmitry Safonov <dsafonov@virtuozzo.com>
+Cc: Oleg Nesterov <oleg@redhat.com>
+Cc: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/20190728152617.7308-1-me@sam.st
 ---
- arch/x86/boot/compressed/pgtable_64.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/uprobes.c | 17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
 
-diff --git a/arch/x86/boot/compressed/pgtable_64.c b/arch/x86/boot/compressed/pgtable_64.c
-index 2faddeb0398a..c8862696a47b 100644
---- a/arch/x86/boot/compressed/pgtable_64.c
-+++ b/arch/x86/boot/compressed/pgtable_64.c
-@@ -72,7 +72,7 @@ static unsigned long find_trampoline_placement(void)
+diff --git a/arch/x86/kernel/uprobes.c b/arch/x86/kernel/uprobes.c
+index d8359eb..8cd745e 100644
+--- a/arch/x86/kernel/uprobes.c
++++ b/arch/x86/kernel/uprobes.c
+@@ -508,9 +508,12 @@ struct uprobe_xol_ops {
+ 	void	(*abort)(struct arch_uprobe *, struct pt_regs *);
+ };
  
- 	/* Find the first usable memory region under bios_start. */
- 	for (i = boot_params->e820_entries - 1; i >= 0; i--) {
--		unsigned long new;
-+		unsigned long new = bios_start;
+-static inline int sizeof_long(void)
++static inline int sizeof_long(struct pt_regs *regs)
+ {
+-	return in_ia32_syscall() ? 4 : 8;
++	/*
++	 * Check registers for mode as in_xxx_syscall() does not apply here.
++	 */
++	return user_64bit_mode(regs) ? 8 : 4;
+ }
  
- 		entry = &boot_params->e820_table[i];
+ static int default_pre_xol_op(struct arch_uprobe *auprobe, struct pt_regs *regs)
+@@ -521,9 +524,9 @@ static int default_pre_xol_op(struct arch_uprobe *auprobe, struct pt_regs *regs)
  
--- 
- Kirill A. Shutemov
+ static int emulate_push_stack(struct pt_regs *regs, unsigned long val)
+ {
+-	unsigned long new_sp = regs->sp - sizeof_long();
++	unsigned long new_sp = regs->sp - sizeof_long(regs);
+ 
+-	if (copy_to_user((void __user *)new_sp, &val, sizeof_long()))
++	if (copy_to_user((void __user *)new_sp, &val, sizeof_long(regs)))
+ 		return -EFAULT;
+ 
+ 	regs->sp = new_sp;
+@@ -556,7 +559,7 @@ static int default_post_xol_op(struct arch_uprobe *auprobe, struct pt_regs *regs
+ 		long correction = utask->vaddr - utask->xol_vaddr;
+ 		regs->ip += correction;
+ 	} else if (auprobe->defparam.fixups & UPROBE_FIX_CALL) {
+-		regs->sp += sizeof_long(); /* Pop incorrect return address */
++		regs->sp += sizeof_long(regs); /* Pop incorrect return address */
+ 		if (emulate_push_stack(regs, utask->vaddr + auprobe->defparam.ilen))
+ 			return -ERESTART;
+ 	}
+@@ -675,7 +678,7 @@ static int branch_post_xol_op(struct arch_uprobe *auprobe, struct pt_regs *regs)
+ 	 * "call" insn was executed out-of-line. Just restore ->sp and restart.
+ 	 * We could also restore ->ip and try to call branch_emulate_op() again.
+ 	 */
+-	regs->sp += sizeof_long();
++	regs->sp += sizeof_long(regs);
+ 	return -ERESTART;
+ }
+ 
+@@ -1056,7 +1059,7 @@ bool arch_uprobe_skip_sstep(struct arch_uprobe *auprobe, struct pt_regs *regs)
+ unsigned long
+ arch_uretprobe_hijack_return_addr(unsigned long trampoline_vaddr, struct pt_regs *regs)
+ {
+-	int rasize = sizeof_long(), nleft;
++	int rasize = sizeof_long(regs), nleft;
+ 	unsigned long orig_ret_vaddr = 0; /* clear high bits for 32-bit apps */
+ 
+ 	if (copy_from_user(&orig_ret_vaddr, (void __user *)regs->sp, rasize))
