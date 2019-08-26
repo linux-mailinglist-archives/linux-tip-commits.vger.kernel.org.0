@@ -2,34 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1699F9D9A0
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 27 Aug 2019 00:53:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E939D9D9A8
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 27 Aug 2019 00:53:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728527AbfHZWxR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 26 Aug 2019 18:53:17 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:41466 "EHLO
+        id S1727115AbfHZWwV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 26 Aug 2019 18:52:21 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:41446 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727182AbfHZWwY (ORCPT
+        with ESMTP id S1726867AbfHZWwV (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 26 Aug 2019 18:52:24 -0400
+        Mon, 26 Aug 2019 18:52:21 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i2NqQ-0006mg-54; Tue, 27 Aug 2019 00:52:14 +0200
+        id 1i2NqP-0006ls-MG; Tue, 27 Aug 2019 00:52:14 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A609F1C0DDF;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 219EB1C0DDE;
         Tue, 27 Aug 2019 00:52:12 +0200 (CEST)
 Date:   Mon, 26 Aug 2019 22:52:12 -0000
-From:   tip-bot2 for Alexandre Belloni <tip-bot2@linutronix.de>
+From:   tip-bot2 for Maxime Ripard <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] clocksource/drivers/tcb_clksrc: Register delay timer
-Cc:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
+Subject: [tip: timers/core] dt-bindings: timer: Convert Allwinner A13 HSTimer
+ to a schema
+Cc:     Maxime Ripard <maxime.ripard@bootlin.com>,
+        Rob Herring <robh@kernel.org>,
         Daniel Lezcano <daniel.lezcano@linaro.org>,
         Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <156685993261.1297.1431848765931294560.tip-bot2@tip-bot2>
+Message-ID: <156685993207.1294.8284624629488299394.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -46,91 +48,145 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     1ce861cec03c79a68bae81a7e039edae46b2c493
-Gitweb:        https://git.kernel.org/tip/1ce861cec03c79a68bae81a7e039edae46b2c493
-Author:        Alexandre Belloni <alexandre.belloni@bootlin.com>
-AuthorDate:    Tue, 13 Aug 2019 15:30:50 +02:00
+Commit-ID:     d9b51093cca430f75a054d78eb35a6e13c1540cb
+Gitweb:        https://git.kernel.org/tip/d9b51093cca430f75a054d78eb35a6e13c1540cb
+Author:        Maxime Ripard <maxime.ripard@bootlin.com>
+AuthorDate:    Mon, 22 Jul 2019 10:12:22 +02:00
 Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
 CommitterDate: Tue, 27 Aug 2019 00:31:39 +02:00
 
-clocksource/drivers/tcb_clksrc: Register delay timer
+dt-bindings: timer: Convert Allwinner A13 HSTimer to a schema
 
-Implement and register delay timer to allow get_cycles() to work properly.
+The newer Allwinner SoCs have a High Speed Timer supported in Linux, with a
+matching Device Tree binding.
 
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Now that we have the DT validation in place, let's convert the device tree
+bindings for that controller over to a YAML schemas.
+
+Signed-off-by: Maxime Ripard <maxime.ripard@bootlin.com>
+Reviewed-by: Rob Herring <robh@kernel.org>
 Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 ---
- drivers/clocksource/Kconfig           |  2 +-
- drivers/clocksource/timer-atmel-tcb.c | 18 ++++++++++++++++++
- 2 files changed, 19 insertions(+), 1 deletion(-)
+ Documentation/devicetree/bindings/timer/allwinner,sun5i-a13-hstimer.txt  | 26 +-----------------------
+ Documentation/devicetree/bindings/timer/allwinner,sun5i-a13-hstimer.yaml | 79 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 79 insertions(+), 26 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/timer/allwinner,sun5i-a13-hstimer.txt
+ create mode 100644 Documentation/devicetree/bindings/timer/allwinner,sun5i-a13-hstimer.yaml
 
-diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
-index 5e9317d..a642c23 100644
---- a/drivers/clocksource/Kconfig
-+++ b/drivers/clocksource/Kconfig
-@@ -429,7 +429,7 @@ config ATMEL_ST
- 
- config ATMEL_TCB_CLKSRC
- 	bool "Atmel TC Block timer driver" if COMPILE_TEST
--	depends on HAS_IOMEM
-+	depends on ARM && HAS_IOMEM
- 	select TIMER_OF if OF
- 	help
- 	  Support for Timer Counter Blocks on Atmel SoCs.
-diff --git a/drivers/clocksource/timer-atmel-tcb.c b/drivers/clocksource/timer-atmel-tcb.c
-index 6ed31f9..7427b07 100644
---- a/drivers/clocksource/timer-atmel-tcb.c
-+++ b/drivers/clocksource/timer-atmel-tcb.c
-@@ -6,6 +6,7 @@
- #include <linux/irq.h>
- 
- #include <linux/clk.h>
-+#include <linux/delay.h>
- #include <linux/err.h>
- #include <linux/ioport.h>
- #include <linux/io.h>
-@@ -125,6 +126,18 @@ static u64 notrace tc_sched_clock_read32(void)
- 	return tc_get_cycles32(&clksrc);
- }
- 
-+static struct delay_timer tc_delay_timer;
+diff --git a/Documentation/devicetree/bindings/timer/allwinner,sun5i-a13-hstimer.txt b/Documentation/devicetree/bindings/timer/allwinner,sun5i-a13-hstimer.txt
+deleted file mode 100644
+index 2c5c1be..0000000
+--- a/Documentation/devicetree/bindings/timer/allwinner,sun5i-a13-hstimer.txt
++++ /dev/null
+@@ -1,26 +0,0 @@
+-Allwinner SoCs High Speed Timer Controller
+-
+-Required properties:
+-
+-- compatible :	should be "allwinner,sun5i-a13-hstimer" or
+-		"allwinner,sun7i-a20-hstimer"
+-- reg : Specifies base physical address and size of the registers.
+-- interrupts :	The interrupts of these timers (2 for the sun5i IP, 4 for the sun7i
+-		one)
+-- clocks: phandle to the source clock (usually the AHB clock)
+-
+-Optional properties:
+-- resets: phandle to a reset controller asserting the timer
+-
+-Example:
+-
+-timer@1c60000 {
+-	compatible = "allwinner,sun7i-a20-hstimer";
+-	reg = <0x01c60000 0x1000>;
+-	interrupts = <0 51 1>,
+-		     <0 52 1>,
+-		     <0 53 1>,
+-		     <0 54 1>;
+-	clocks = <&ahb1_gates 19>;
+-	resets = <&ahb1rst 19>;
+-};
+diff --git a/Documentation/devicetree/bindings/timer/allwinner,sun5i-a13-hstimer.yaml b/Documentation/devicetree/bindings/timer/allwinner,sun5i-a13-hstimer.yaml
+new file mode 100644
+index 0000000..dfa0c41
+--- /dev/null
++++ b/Documentation/devicetree/bindings/timer/allwinner,sun5i-a13-hstimer.yaml
+@@ -0,0 +1,79 @@
++# SPDX-License-Identifier: GPL-2.0
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/timer/allwinner,sun5i-a13-hstimer.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+static unsigned long tc_delay_timer_read(void)
-+{
-+	return tc_get_cycles(&clksrc);
-+}
++title: Allwinner A13 High-Speed Timer Device Tree Bindings
 +
-+static unsigned long notrace tc_delay_timer_read32(void)
-+{
-+	return tc_get_cycles32(&clksrc);
-+}
++maintainers:
++  - Chen-Yu Tsai <wens@csie.org>
++  - Maxime Ripard <maxime.ripard@bootlin.com>
 +
- #ifdef CONFIG_GENERIC_CLOCKEVENTS
- 
- struct tc_clkevt_device {
-@@ -432,6 +445,7 @@ static int __init tcb_clksrc_init(struct device_node *node)
- 		/* setup ony channel 0 */
- 		tcb_setup_single_chan(&tc, best_divisor_idx);
- 		tc_sched_clock = tc_sched_clock_read32;
-+		tc_delay_timer.read_current_timer = tc_delay_timer_read32;
- 	} else {
- 		/* we have three clocks no matter what the
- 		 * underlying platform supports.
-@@ -444,6 +458,7 @@ static int __init tcb_clksrc_init(struct device_node *node)
- 		/* setup both channel 0 & 1 */
- 		tcb_setup_dual_chan(&tc, best_divisor_idx);
- 		tc_sched_clock = tc_sched_clock_read;
-+		tc_delay_timer.read_current_timer = tc_delay_timer_read;
- 	}
- 
- 	/* and away we go! */
-@@ -458,6 +473,9 @@ static int __init tcb_clksrc_init(struct device_node *node)
- 
- 	sched_clock_register(tc_sched_clock, 32, divided_rate);
- 
-+	tc_delay_timer.freq = divided_rate;
-+	register_current_timer_delay(&tc_delay_timer);
++properties:
++  compatible:
++    oneOf:
++      - const: allwinner,sun5i-a13-hstimer
++      - const: allwinner,sun7i-a20-hstimer
++      - items:
++          - const: allwinner,sun6i-a31-hstimer
++          - const: allwinner,sun7i-a20-hstimer
 +
- 	return 0;
- 
- err_unregister_clksrc:
++  reg:
++    maxItems: 1
++
++  interrupts:
++    minItems: 2
++    maxItems: 4
++    items:
++      - description: Timer 0 Interrupt
++      - description: Timer 1 Interrupt
++      - description: Timer 2 Interrupt
++      - description: Timer 3 Interrupt
++
++  clocks:
++    maxItems: 1
++
++  resets:
++    maxItems: 1
++
++required:
++  - compatible
++  - reg
++  - interrupts
++  - clocks
++
++if:
++  properties:
++    compatible:
++      items:
++        const: allwinner,sun5i-a13-hstimer
++
++then:
++  properties:
++    interrupts:
++      minItems: 2
++      maxItems: 2
++
++else:
++  properties:
++    interrupts:
++      minItems: 4
++      maxItems: 4
++
++additionalProperties: false
++
++examples:
++  - |
++    timer@1c60000 {
++        compatible = "allwinner,sun7i-a20-hstimer";
++        reg = <0x01c60000 0x1000>;
++        interrupts = <0 51 1>,
++                     <0 52 1>,
++                     <0 53 1>,
++                     <0 54 1>;
++        clocks = <&ahb1_gates 19>;
++        resets = <&ahb1rst 19>;
++    };
++
++...
