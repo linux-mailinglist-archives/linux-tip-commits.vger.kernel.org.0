@@ -2,226 +2,153 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 207919CE72
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 26 Aug 2019 13:47:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EB4F9D0AB
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 26 Aug 2019 15:33:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731601AbfHZLqj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 26 Aug 2019 07:46:39 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:39629 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727487AbfHZLqY (ORCPT
+        id S1730611AbfHZNd1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 26 Aug 2019 09:33:27 -0400
+Received: from mail-ed1-f68.google.com ([209.85.208.68]:42124 "EHLO
+        mail-ed1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730524AbfHZNd1 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 26 Aug 2019 07:46:24 -0400
-Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tip-bot2@linutronix.de>)
-        id 1i2DRv-00013W-DW; Mon, 26 Aug 2019 13:46:15 +0200
-Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 14C5B1C0DDA;
-        Mon, 26 Aug 2019 13:46:15 +0200 (CEST)
-Date:   Mon, 26 Aug 2019 11:46:14 -0000
-From:   tip-bot2 for Ingo Molnar <tip-bot2@linutronix.de>
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cpu] x86/cpu/intel: Fix rename fallout
-Cc:     Ingo Molnar <mingo@kernel.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tony Luck <tony.luck@intel.com>, linux-kernel@vger.kernel.org
+        Mon, 26 Aug 2019 09:33:27 -0400
+Received: by mail-ed1-f68.google.com with SMTP id m44so26495056edd.9
+        for <linux-tip-commits@vger.kernel.org>; Mon, 26 Aug 2019 06:33:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=shutemov-name.20150623.gappssmtp.com; s=20150623;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=bcUfL34FoYp4/VabITIx6X/hBshWWuaQCv3+2NB9Wuo=;
+        b=uNdf7j98900+3G56FRLP6n5FYs7OQNYJAikxCojCx9KA+DxauVKt+ZYG9nGdLUDcIg
+         3jJHThfnxMGoOflE9QMP7dvLmOurLC/5iEe8aY39OkqbfblIkF8lCaoiah7lSbjDwI37
+         wNWjcVKwPD9yhjQcHd1oGOyeg7idIF9SeNUBIMPM8Tl96hGaODG4jYNCo6jkfvvWuYoU
+         A4jJHSzeU3o+Nmf9c/fi9uSBOKt5n85GzBhlLtig+WxWfNHa6shtmOrGAElgs924psRC
+         7xi0dWry0ZRHo/BmCfyC5VS2kR7vwoUpp9XfZUEWHzxm1rFyMyuFp6NxKA5rdmJFgGCQ
+         oo9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=bcUfL34FoYp4/VabITIx6X/hBshWWuaQCv3+2NB9Wuo=;
+        b=UPj56BFfBTILGXfcK1HaFjvRYk5JA2QdimJvC1d6aGJfxpmyO5b98K/XJBhI+BXi+J
+         gTRB+8hXh0/o85KvHMbri94C2TicltnrURrxRuRS/DN1ONs8JYgJEF+HDPXqgYwGGBx4
+         P2r9sJyibwmuWVnVzMpw59uGVom4Z4yJKrqk4+OinIeDAF6whL0M7mZzD9mSpBPciPvz
+         9MdBp0g/fAGAEXCmDnsDG9Z6xVsa7WHlz+6O9BvgE/nVtZUfzUbxgiW0C/4XcEJhZvTc
+         WGAkFWBbtLsdnYd+eBOGwsmowz4wFJxnois29EMcf4MNwpjVTLEH0Ajus4JGu/iJTpkD
+         lh2g==
+X-Gm-Message-State: APjAAAWFE6HQY8hiHHCWBkRCyIT2yWXiqRuEWtLUw4nKjCN4oUgr8wFI
+        WOVvxtLyGJhVe2DikXcSEWyUcg==
+X-Google-Smtp-Source: APXvYqwEyTAOm70GPqxQ0JdvxB8u4mVlVB3HNyBKxvtxr+6ex91ykH53z1B8TzSHnaxfQXPoFelQbA==
+X-Received: by 2002:a17:906:34c2:: with SMTP id h2mr16368397ejb.227.1566826405105;
+        Mon, 26 Aug 2019 06:33:25 -0700 (PDT)
+Received: from box.localdomain ([86.57.175.117])
+        by smtp.gmail.com with ESMTPSA id i1sm1294470edi.13.2019.08.26.06.33.24
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 26 Aug 2019 06:33:24 -0700 (PDT)
+Received: by box.localdomain (Postfix, from userid 1000)
+        id 1101D10050C; Mon, 26 Aug 2019 16:33:26 +0300 (+03)
+Date:   Mon, 26 Aug 2019 16:33:26 +0300
+From:   "Kirill A. Shutemov" <kirill@shutemov.name>
+To:     Borislav Petkov <bp@alien8.de>
+Cc:     "Gustavo A. R. Silva" <gustavo@embeddedor.com>, tglx@linutronix.de,
+        hpa@zytor.com, linux-kernel@vger.kernel.org, mingo@redhat.com,
+        x86@kernel.org, mingo@kernel.org, kirill.shutemov@linux.intel.com,
+        linux-tip-commits@vger.kernel.org
+Subject: Re: [tip:x86/urgent] x86/boot/compressed/64: Fix boot on machines
+ with broken E820 table
+Message-ID: <20190826133326.7cxb4vbmiawffv2r@box>
+References: <20190813131654.24378-1-kirill.shutemov@linux.intel.com>
+ <tip-0a46fff2f9108c2c44218380a43a736cf4612541@git.kernel.org>
+ <caa30daa-9ed5-e293-f6cd-ff261c995e1e@embeddedor.com>
+ <20190826071539.GB27636@zn.tnic>
 MIME-Version: 1.0
-Message-ID: <156681997497.3432.15184152614666653291.tip-bot2@tip-bot2>
-X-Mailer: tip-git-log-daemon
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+In-Reply-To: <20190826071539.GB27636@zn.tnic>
+User-Agent: NeoMutt/20180716
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cpu branch of tip:
+On Mon, Aug 26, 2019 at 09:15:39AM +0200, Borislav Petkov wrote:
+> On Sun, Aug 25, 2019 at 10:33:15PM -0500, Gustavo A. R. Silva wrote:
+> > Hi all,
+> > 
+> > On 8/19/19 9:16 AM, tip-bot for Kirill A. Shutemov wrote:
+> > [..]
+> > > 
+> > > diff --git a/arch/x86/boot/compressed/pgtable_64.c b/arch/x86/boot/compressed/pgtable_64.c
+> > > index 5f2d03067ae5..2faddeb0398a 100644
+> > > --- a/arch/x86/boot/compressed/pgtable_64.c
+> > > +++ b/arch/x86/boot/compressed/pgtable_64.c
+> > > @@ -72,6 +72,8 @@ static unsigned long find_trampoline_placement(void)
+> > >  
+> > >  	/* Find the first usable memory region under bios_start. */
+> > >  	for (i = boot_params->e820_entries - 1; i >= 0; i--) {
+> > > +		unsigned long new;
+> > > +
+> > >  		entry = &boot_params->e820_table[i];
+> > >  
+> > >  		/* Skip all entries above bios_start. */
+> > > @@ -84,15 +86,20 @@ static unsigned long find_trampoline_placement(void)
+> > >  
+> > >  		/* Adjust bios_start to the end of the entry if needed. */
+> > >  		if (bios_start > entry->addr + entry->size)
+> > 
+> > Notice that if this condition happens to be false, we end up with an
+> > uninitialized variable *new*.
+> 
+> Yap, good catch.
 
-Commit-ID:     26ee9ccc117b9c4179f0a1c65c67f71a0a5a0afe
-Gitweb:        https://git.kernel.org/tip/26ee9ccc117b9c4179f0a1c65c67f71a0a5a0afe
-Author:        Ingo Molnar <mingo@kernel.org>
-AuthorDate:    Mon, 26 Aug 2019 12:19:06 +02:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Mon, 26 Aug 2019 13:06:29 +02:00
+:facepalm:
 
-x86/cpu/intel: Fix rename fallout
+> > What would be the right value to assign to *new* at declaration under
+> > this condition?
+> 
+> Looking at the changed flow of the loop, how we use new instead of
+> bios_start and how we assign new back to bios_start, I think we should
+> do:
+> 
+> 		unsigned long new = bios_start;
+> 
+> at the beginning...
 
-The scripts missed a macro construct of intel_idle.c and other files.
+Right.
 
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Dave Hansen <dave.hansen@intel.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Tony Luck <tony.luck@intel.com>
-Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
+What about this:
+
+From b613c675e6690ef5608a5abf71d90e15ced31b2b Mon Sep 17 00:00:00 2001
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Date: Mon, 26 Aug 2019 16:26:01 +0300
+Subject: [PATCH] x86/boot/compressed/64: Fix missining initialization in
+ find_trampoline_placement()
+
+Gustavo noticed that 'new' can be left uninitialized if 'bios_start'
+happens to be less or equal to 'entry->addr + entry->size'.
+
+Initialize the variable at the start of the iteration to current value
+of 'bios_start'.
+
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Reported-by: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+Fixes: 0a46fff2f910 ("x86/boot/compressed/64: Fix boot on machines with broken E820 table")
 ---
- drivers/idle/intel_idle.c                    | 26 +++++++--------
- drivers/platform/x86/intel_pmc_core.c        | 12 +++----
- drivers/platform/x86/intel_pmc_core_pltdrv.c | 12 +++----
- drivers/powercap/intel_rapl_common.c         | 32 +++++++++----------
- 4 files changed, 41 insertions(+), 41 deletions(-)
+ arch/x86/boot/compressed/pgtable_64.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/idle/intel_idle.c b/drivers/idle/intel_idle.c
-index ac58487..347b08b 100644
---- a/drivers/idle/intel_idle.c
-+++ b/drivers/idle/intel_idle.c
-@@ -1072,26 +1072,26 @@ static const struct x86_cpu_id intel_idle_ids[] __initconst = {
- 	INTEL_CPU_FAM6(ATOM_AIRMONT,		idle_cpu_cht),
- 	INTEL_CPU_FAM6(IVYBRIDGE,		idle_cpu_ivb),
- 	INTEL_CPU_FAM6(IVYBRIDGE_X,		idle_cpu_ivt),
--	INTEL_CPU_FAM6(HASWELL_CORE,		idle_cpu_hsw),
-+	INTEL_CPU_FAM6(HASWELL,			idle_cpu_hsw),
- 	INTEL_CPU_FAM6(HASWELL_X,		idle_cpu_hsw),
--	INTEL_CPU_FAM6(HASWELL_ULT,		idle_cpu_hsw),
--	INTEL_CPU_FAM6(HASWELL_GT3E,		idle_cpu_hsw),
--	INTEL_CPU_FAM6(ATOM_SILVERMONT_X,	idle_cpu_avn),
--	INTEL_CPU_FAM6(BROADWELL_CORE,		idle_cpu_bdw),
--	INTEL_CPU_FAM6(BROADWELL_GT3E,		idle_cpu_bdw),
-+	INTEL_CPU_FAM6(HASWELL_L,		idle_cpu_hsw),
-+	INTEL_CPU_FAM6(HASWELL_G,		idle_cpu_hsw),
-+	INTEL_CPU_FAM6(ATOM_SILVERMONT_D,	idle_cpu_avn),
-+	INTEL_CPU_FAM6(BROADWELL,		idle_cpu_bdw),
-+	INTEL_CPU_FAM6(BROADWELL_G,		idle_cpu_bdw),
- 	INTEL_CPU_FAM6(BROADWELL_X,		idle_cpu_bdw),
--	INTEL_CPU_FAM6(BROADWELL_XEON_D,	idle_cpu_bdw),
--	INTEL_CPU_FAM6(SKYLAKE_MOBILE,		idle_cpu_skl),
--	INTEL_CPU_FAM6(SKYLAKE_DESKTOP,		idle_cpu_skl),
--	INTEL_CPU_FAM6(KABYLAKE_MOBILE,		idle_cpu_skl),
--	INTEL_CPU_FAM6(KABYLAKE_DESKTOP,	idle_cpu_skl),
-+	INTEL_CPU_FAM6(BROADWELL_D,		idle_cpu_bdw),
-+	INTEL_CPU_FAM6(SKYLAKE_L,		idle_cpu_skl),
-+	INTEL_CPU_FAM6(SKYLAKE,			idle_cpu_skl),
-+	INTEL_CPU_FAM6(KABYLAKE_L,		idle_cpu_skl),
-+	INTEL_CPU_FAM6(KABYLAKE,		idle_cpu_skl),
- 	INTEL_CPU_FAM6(SKYLAKE_X,		idle_cpu_skx),
- 	INTEL_CPU_FAM6(XEON_PHI_KNL,		idle_cpu_knl),
- 	INTEL_CPU_FAM6(XEON_PHI_KNM,		idle_cpu_knl),
- 	INTEL_CPU_FAM6(ATOM_GOLDMONT,		idle_cpu_bxt),
- 	INTEL_CPU_FAM6(ATOM_GOLDMONT_PLUS,	idle_cpu_bxt),
--	INTEL_CPU_FAM6(ATOM_GOLDMONT_X,		idle_cpu_dnv),
--	INTEL_CPU_FAM6(ATOM_TREMONT_X,		idle_cpu_dnv),
-+	INTEL_CPU_FAM6(ATOM_GOLDMONT_D,		idle_cpu_dnv),
-+	INTEL_CPU_FAM6(ATOM_TREMONT_D,		idle_cpu_dnv),
- 	{}
- };
+diff --git a/arch/x86/boot/compressed/pgtable_64.c b/arch/x86/boot/compressed/pgtable_64.c
+index 2faddeb0398a..c8862696a47b 100644
+--- a/arch/x86/boot/compressed/pgtable_64.c
++++ b/arch/x86/boot/compressed/pgtable_64.c
+@@ -72,7 +72,7 @@ static unsigned long find_trampoline_placement(void)
  
-diff --git a/drivers/platform/x86/intel_pmc_core.c b/drivers/platform/x86/intel_pmc_core.c
-index c510d0d..fd1bfd5 100644
---- a/drivers/platform/x86/intel_pmc_core.c
-+++ b/drivers/platform/x86/intel_pmc_core.c
-@@ -806,12 +806,12 @@ static inline void pmc_core_dbgfs_unregister(struct pmc_dev *pmcdev)
- #endif /* CONFIG_DEBUG_FS */
+ 	/* Find the first usable memory region under bios_start. */
+ 	for (i = boot_params->e820_entries - 1; i >= 0; i--) {
+-		unsigned long new;
++		unsigned long new = bios_start;
  
- static const struct x86_cpu_id intel_pmc_core_ids[] = {
--	INTEL_CPU_FAM6(SKYLAKE_MOBILE, spt_reg_map),
--	INTEL_CPU_FAM6(SKYLAKE_DESKTOP, spt_reg_map),
--	INTEL_CPU_FAM6(KABYLAKE_MOBILE, spt_reg_map),
--	INTEL_CPU_FAM6(KABYLAKE_DESKTOP, spt_reg_map),
--	INTEL_CPU_FAM6(CANNONLAKE_MOBILE, cnp_reg_map),
--	INTEL_CPU_FAM6(ICELAKE_MOBILE, icl_reg_map),
-+	INTEL_CPU_FAM6(SKYLAKE_L, spt_reg_map),
-+	INTEL_CPU_FAM6(SKYLAKE, spt_reg_map),
-+	INTEL_CPU_FAM6(KABYLAKE_L, spt_reg_map),
-+	INTEL_CPU_FAM6(KABYLAKE, spt_reg_map),
-+	INTEL_CPU_FAM6(CANNONLAKE_L, cnp_reg_map),
-+	INTEL_CPU_FAM6(ICELAKE_L, icl_reg_map),
- 	INTEL_CPU_FAM6(ICELAKE_NNPI, icl_reg_map),
- 	{}
- };
-diff --git a/drivers/platform/x86/intel_pmc_core_pltdrv.c b/drivers/platform/x86/intel_pmc_core_pltdrv.c
-index a8754a6..5977e0d 100644
---- a/drivers/platform/x86/intel_pmc_core_pltdrv.c
-+++ b/drivers/platform/x86/intel_pmc_core_pltdrv.c
-@@ -30,12 +30,12 @@ static struct platform_device pmc_core_device = {
-  * other list may grow, but this list should not.
-  */
- static const struct x86_cpu_id intel_pmc_core_platform_ids[] = {
--	INTEL_CPU_FAM6(SKYLAKE_MOBILE, pmc_core_device),
--	INTEL_CPU_FAM6(SKYLAKE_DESKTOP, pmc_core_device),
--	INTEL_CPU_FAM6(KABYLAKE_MOBILE, pmc_core_device),
--	INTEL_CPU_FAM6(KABYLAKE_DESKTOP, pmc_core_device),
--	INTEL_CPU_FAM6(CANNONLAKE_MOBILE, pmc_core_device),
--	INTEL_CPU_FAM6(ICELAKE_MOBILE, pmc_core_device),
-+	INTEL_CPU_FAM6(SKYLAKE_L, pmc_core_device),
-+	INTEL_CPU_FAM6(SKYLAKE, pmc_core_device),
-+	INTEL_CPU_FAM6(KABYLAKE_L, pmc_core_device),
-+	INTEL_CPU_FAM6(KABYLAKE, pmc_core_device),
-+	INTEL_CPU_FAM6(CANNONLAKE_L, pmc_core_device),
-+	INTEL_CPU_FAM6(ICELAKE_L, pmc_core_device),
- 	{}
- };
- MODULE_DEVICE_TABLE(x86cpu, intel_pmc_core_platform_ids);
-diff --git a/drivers/powercap/intel_rapl_common.c b/drivers/powercap/intel_rapl_common.c
-index 6df4818..94ddd7d 100644
---- a/drivers/powercap/intel_rapl_common.c
-+++ b/drivers/powercap/intel_rapl_common.c
-@@ -957,27 +957,27 @@ static const struct x86_cpu_id rapl_ids[] __initconst = {
- 	INTEL_CPU_FAM6(IVYBRIDGE, rapl_defaults_core),
- 	INTEL_CPU_FAM6(IVYBRIDGE_X, rapl_defaults_core),
+ 		entry = &boot_params->e820_table[i];
  
--	INTEL_CPU_FAM6(HASWELL_CORE, rapl_defaults_core),
--	INTEL_CPU_FAM6(HASWELL_ULT, rapl_defaults_core),
--	INTEL_CPU_FAM6(HASWELL_GT3E, rapl_defaults_core),
-+	INTEL_CPU_FAM6(HASWELL, rapl_defaults_core),
-+	INTEL_CPU_FAM6(HASWELL_L, rapl_defaults_core),
-+	INTEL_CPU_FAM6(HASWELL_G, rapl_defaults_core),
- 	INTEL_CPU_FAM6(HASWELL_X, rapl_defaults_hsw_server),
- 
--	INTEL_CPU_FAM6(BROADWELL_CORE, rapl_defaults_core),
--	INTEL_CPU_FAM6(BROADWELL_GT3E, rapl_defaults_core),
--	INTEL_CPU_FAM6(BROADWELL_XEON_D, rapl_defaults_core),
-+	INTEL_CPU_FAM6(BROADWELL, rapl_defaults_core),
-+	INTEL_CPU_FAM6(BROADWELL_G, rapl_defaults_core),
-+	INTEL_CPU_FAM6(BROADWELL_D, rapl_defaults_core),
- 	INTEL_CPU_FAM6(BROADWELL_X, rapl_defaults_hsw_server),
- 
--	INTEL_CPU_FAM6(SKYLAKE_DESKTOP, rapl_defaults_core),
--	INTEL_CPU_FAM6(SKYLAKE_MOBILE, rapl_defaults_core),
-+	INTEL_CPU_FAM6(SKYLAKE, rapl_defaults_core),
-+	INTEL_CPU_FAM6(SKYLAKE_L, rapl_defaults_core),
- 	INTEL_CPU_FAM6(SKYLAKE_X, rapl_defaults_hsw_server),
--	INTEL_CPU_FAM6(KABYLAKE_MOBILE, rapl_defaults_core),
--	INTEL_CPU_FAM6(KABYLAKE_DESKTOP, rapl_defaults_core),
--	INTEL_CPU_FAM6(CANNONLAKE_MOBILE, rapl_defaults_core),
--	INTEL_CPU_FAM6(ICELAKE_MOBILE, rapl_defaults_core),
--	INTEL_CPU_FAM6(ICELAKE_DESKTOP, rapl_defaults_core),
-+	INTEL_CPU_FAM6(KABYLAKE_L, rapl_defaults_core),
-+	INTEL_CPU_FAM6(KABYLAKE, rapl_defaults_core),
-+	INTEL_CPU_FAM6(CANNONLAKE_L, rapl_defaults_core),
-+	INTEL_CPU_FAM6(ICELAKE_L, rapl_defaults_core),
-+	INTEL_CPU_FAM6(ICELAKE, rapl_defaults_core),
- 	INTEL_CPU_FAM6(ICELAKE_NNPI, rapl_defaults_core),
- 	INTEL_CPU_FAM6(ICELAKE_X, rapl_defaults_hsw_server),
--	INTEL_CPU_FAM6(ICELAKE_XEON_D, rapl_defaults_hsw_server),
-+	INTEL_CPU_FAM6(ICELAKE_D, rapl_defaults_hsw_server),
- 
- 	INTEL_CPU_FAM6(ATOM_SILVERMONT, rapl_defaults_byt),
- 	INTEL_CPU_FAM6(ATOM_AIRMONT, rapl_defaults_cht),
-@@ -985,8 +985,8 @@ static const struct x86_cpu_id rapl_ids[] __initconst = {
- 	INTEL_CPU_FAM6(ATOM_AIRMONT_MID, rapl_defaults_ann),
- 	INTEL_CPU_FAM6(ATOM_GOLDMONT, rapl_defaults_core),
- 	INTEL_CPU_FAM6(ATOM_GOLDMONT_PLUS, rapl_defaults_core),
--	INTEL_CPU_FAM6(ATOM_GOLDMONT_X, rapl_defaults_core),
--	INTEL_CPU_FAM6(ATOM_TREMONT_X, rapl_defaults_core),
-+	INTEL_CPU_FAM6(ATOM_GOLDMONT_D, rapl_defaults_core),
-+	INTEL_CPU_FAM6(ATOM_TREMONT_D, rapl_defaults_core),
- 
- 	INTEL_CPU_FAM6(XEON_PHI_KNL, rapl_defaults_hsw_server),
- 	INTEL_CPU_FAM6(XEON_PHI_KNM, rapl_defaults_hsw_server),
+-- 
+ Kirill A. Shutemov
