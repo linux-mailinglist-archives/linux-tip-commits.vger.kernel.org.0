@@ -2,42 +2,35 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 103979E28F
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 27 Aug 2019 10:28:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1103B9E27B
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 27 Aug 2019 10:28:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729783AbfH0I1y (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 27 Aug 2019 04:27:54 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:42791 "EHLO
+        id S1729553AbfH0I0W (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 27 Aug 2019 04:26:22 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:42724 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729619AbfH0I02 (ORCPT
+        with ESMTP id S1729370AbfH0I0W (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 27 Aug 2019 04:26:28 -0400
+        Tue, 27 Aug 2019 04:26:22 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i2Wnu-0007nz-RA; Tue, 27 Aug 2019 10:26:14 +0200
+        id 1i2Wnw-0007oZ-3A; Tue, 27 Aug 2019 10:26:16 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 755031C07DC;
-        Tue, 27 Aug 2019 10:26:14 +0200 (CEST)
-Date:   Tue, 27 Aug 2019 08:26:14 -0000
-From:   tip-bot2 for Benjamin Peterson <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B98C91C0DDE;
+        Tue, 27 Aug 2019 10:26:15 +0200 (CEST)
+Date:   Tue, 27 Aug 2019 08:26:15 -0000
+From:   tip-bot2 for Arnaldo Carvalho de Melo <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf trace beauty ioctl: Fix off-by-one error in
- cmd->string table
-Cc:     Benjamin Peterson <benjamin@python.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Jiri Olsa <jolsa@redhat.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
+Subject: [tip: perf/core] perf augmented_raw_syscalls: Introduce helper to get
+ the scratch space
+Cc:     Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20190823033625.18814-1-benjamin@python.org>
-References: <20190823033625.18814-1-benjamin@python.org>
 MIME-Version: 1.0
-Message-ID: <156689437437.24493.16968096306780867374.tip-bot2@tip-bot2>
+Message-ID: <156689437565.24502.15798435536563381582.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -54,83 +47,119 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     b92675f4a9c02dd78052645597dac9e270679ddf
-Gitweb:        https://git.kernel.org/tip/b92675f4a9c02dd78052645597dac9e270679ddf
-Author:        Benjamin Peterson <benjamin@python.org>
-AuthorDate:    Thu, 22 Aug 2019 20:36:25 -07:00
+Commit-ID:     c265784de7adff9e07934b712204556fb0b3ba43
+Gitweb:        https://git.kernel.org/tip/c265784de7adff9e07934b712204556fb0b3ba43
+Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
+AuthorDate:    Fri, 23 Aug 2019 15:45:54 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Mon, 26 Aug 2019 11:58:29 -03:00
 
-perf trace beauty ioctl: Fix off-by-one error in cmd->string table
+perf augmented_raw_syscalls: Introduce helper to get the scratch space
 
-While tracing a program that calls isatty(3), I noticed that strace
-reported TCGETS for the request argument of the underlying ioctl(2)
-syscall while perf trace reported TCSETS. strace is corrrect. The bug in
-perf was due to the tty ioctl beauty table starting at 0x5400 rather
-than 0x5401.
+We need more than the BPF stack can give us to format the
+raw_syscalls:sys_enter augmented tracepoint, so we use a PERCPU_ARRAY
+map for that, use a helper to shorten the sequence to access that area.
 
-Committer testing:
-
-  Using augmented_raw_syscalls.o and settings to make 'perf trace'
-  use strace formatting, i.e. with this in ~/.perfconfig
-
-  # cat ~/.perfconfig
-  [trace]
-	add_events = /home/acme/git/linux/tools/perf/examples/bpf/augmented_raw_syscalls.c
-	show_zeros = yes
-	show_duration = no
-	no_inherit = yes
-	show_timestamp = no
-	show_arg_names = no
-	args_alignment = 40
-	show_prefix = yes
-
-  # strace -e ioctl stty > /dev/null
-  ioctl(0, TCGETS, {B38400 opost isig icanon echo ...}) = 0
-  ioctl(1, TIOCGWINSZ, 0x7fff8a9b0860)    = -1 ENOTTY (Inappropriate ioctl for device)
-  ioctl(1, TCGETS, 0x7fff8a9b0540)        = -1 ENOTTY (Inappropriate ioctl for device)
-  +++ exited with 0 +++
-  #
-
-Before:
-
-  # perf trace -e ioctl stty > /dev/null
-  ioctl(0, TCSETS, 0x7fff2cf79f20)        = 0
-  ioctl(1, TIOCSWINSZ, 0x7fff2cf79f40)    = -1 ENOTTY (Inappropriate ioctl for device)
-  ioctl(1, TCSETS, 0x7fff2cf79c20)        = -1 ENOTTY (Inappropriate ioctl for device)
-  #
-
-After:
-
-  # perf trace -e ioctl stty > /dev/null
-  ioctl(0, TCGETS, 0x7ffed0763920)        = 0
-  ioctl(1, TIOCGWINSZ, 0x7ffed0763940)    = -1 ENOTTY (Inappropriate ioctl for device)
-  ioctl(1, TCGETS, 0x7ffed0763620)        = -1 ENOTTY (Inappropriate ioctl for device)
-  #
-
-Signed-off-by: Benjamin Peterson <benjamin@python.org>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Jiri Olsa <jolsa@redhat.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Fixes: 1cc47f2d46206d67285aea0ca7e8450af571da13 ("perf trace beauty ioctl: Improve 'cmd' beautifier")
-Link: http://lkml.kernel.org/r/20190823033625.18814-1-benjamin@python.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/trace/beauty/ioctl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/perf/examples/bpf/augmented_raw_syscalls.c | 32 +++++++--------
+ 1 file changed, 16 insertions(+), 16 deletions(-)
 
-diff --git a/tools/perf/trace/beauty/ioctl.c b/tools/perf/trace/beauty/ioctl.c
-index 52242fa..e19eb6e 100644
---- a/tools/perf/trace/beauty/ioctl.c
-+++ b/tools/perf/trace/beauty/ioctl.c
-@@ -21,7 +21,7 @@
- static size_t ioctl__scnprintf_tty_cmd(int nr, int dir, char *bf, size_t size)
+diff --git a/tools/perf/examples/bpf/augmented_raw_syscalls.c b/tools/perf/examples/bpf/augmented_raw_syscalls.c
+index 0a8d217..8fd5ea0 100644
+--- a/tools/perf/examples/bpf/augmented_raw_syscalls.c
++++ b/tools/perf/examples/bpf/augmented_raw_syscalls.c
+@@ -78,8 +78,15 @@ struct augmented_args_payload {
+ 	};
+ };
+ 
++// We need more tmp space than the BPF stack can give us
+ bpf_map(augmented_args_tmp, PERCPU_ARRAY, int, struct augmented_args_payload, 1);
+ 
++static inline struct augmented_args_payload *augmented_args_payload(void)
++{
++	int key = 0;
++	return bpf_map_lookup_elem(&augmented_args_tmp, &key);
++}
++
+ static inline
+ unsigned int augmented_arg__read_str(struct augmented_arg *augmented_arg, const void *arg, unsigned int arg_len)
  {
- 	static const char *ioctl_tty_cmd[] = {
--	"TCGETS", "TCSETS", "TCSETSW", "TCSETSF", "TCGETA", "TCSETA", "TCSETAW",
-+	[_IOC_NR(TCGETS)] = "TCGETS", "TCSETS", "TCSETSW", "TCSETSF", "TCGETA", "TCSETA", "TCSETAW",
- 	"TCSETAF", "TCSBRK", "TCXONC", "TCFLSH", "TIOCEXCL", "TIOCNXCL", "TIOCSCTTY",
- 	"TIOCGPGRP", "TIOCSPGRP", "TIOCOUTQ", "TIOCSTI", "TIOCGWINSZ", "TIOCSWINSZ",
- 	"TIOCMGET", "TIOCMBIS", "TIOCMBIC", "TIOCMSET", "TIOCGSOFTCAR", "TIOCSSOFTCAR",
+@@ -122,8 +129,7 @@ int syscall_unaugmented(struct syscall_enter_args *args)
+ SEC("!syscalls:sys_enter_connect")
+ int sys_enter_connect(struct syscall_enter_args *args)
+ {
+-	int key = 0;
+-	struct augmented_args_payload *augmented_args = bpf_map_lookup_elem(&augmented_args_tmp, &key);
++	struct augmented_args_payload *augmented_args = augmented_args_payload();
+ 	const void *sockaddr_arg = (const void *)args->args[1];
+ 	unsigned int socklen = args->args[2];
+ 	unsigned int len = sizeof(augmented_args->args);
+@@ -143,8 +149,7 @@ int sys_enter_connect(struct syscall_enter_args *args)
+ SEC("!syscalls:sys_enter_sendto")
+ int sys_enter_sendto(struct syscall_enter_args *args)
+ {
+-	int key = 0;
+-	struct augmented_args_payload *augmented_args = bpf_map_lookup_elem(&augmented_args_tmp, &key);
++	struct augmented_args_payload *augmented_args = augmented_args_payload();
+ 	const void *sockaddr_arg = (const void *)args->args[4];
+ 	unsigned int socklen = args->args[5];
+ 	unsigned int len = sizeof(augmented_args->args);
+@@ -164,8 +169,7 @@ int sys_enter_sendto(struct syscall_enter_args *args)
+ SEC("!syscalls:sys_enter_open")
+ int sys_enter_open(struct syscall_enter_args *args)
+ {
+-	int key = 0;
+-	struct augmented_args_payload *augmented_args = bpf_map_lookup_elem(&augmented_args_tmp, &key);
++	struct augmented_args_payload *augmented_args = augmented_args_payload();
+ 	const void *filename_arg = (const void *)args->args[0];
+ 	unsigned int len = sizeof(augmented_args->args);
+ 
+@@ -181,8 +185,7 @@ int sys_enter_open(struct syscall_enter_args *args)
+ SEC("!syscalls:sys_enter_openat")
+ int sys_enter_openat(struct syscall_enter_args *args)
+ {
+-	int key = 0;
+-	struct augmented_args_payload *augmented_args = bpf_map_lookup_elem(&augmented_args_tmp, &key);
++	struct augmented_args_payload *augmented_args = augmented_args_payload();
+ 	const void *filename_arg = (const void *)args->args[1];
+ 	unsigned int len = sizeof(augmented_args->args);
+ 
+@@ -198,8 +201,7 @@ int sys_enter_openat(struct syscall_enter_args *args)
+ SEC("!syscalls:sys_enter_rename")
+ int sys_enter_rename(struct syscall_enter_args *args)
+ {
+-	int key = 0;
+-	struct augmented_args_payload *augmented_args = bpf_map_lookup_elem(&augmented_args_tmp, &key);
++	struct augmented_args_payload *augmented_args = augmented_args_payload();
+ 	const void *oldpath_arg = (const void *)args->args[0],
+ 		   *newpath_arg = (const void *)args->args[1];
+ 	unsigned int len = sizeof(augmented_args->args), oldpath_len;
+@@ -217,8 +219,7 @@ int sys_enter_rename(struct syscall_enter_args *args)
+ SEC("!syscalls:sys_enter_renameat")
+ int sys_enter_renameat(struct syscall_enter_args *args)
+ {
+-	int key = 0;
+-	struct augmented_args_payload *augmented_args = bpf_map_lookup_elem(&augmented_args_tmp, &key);
++	struct augmented_args_payload *augmented_args = augmented_args_payload();
+ 	const void *oldpath_arg = (const void *)args->args[1],
+ 		   *newpath_arg = (const void *)args->args[3];
+ 	unsigned int len = sizeof(augmented_args->args), oldpath_len;
+@@ -248,14 +249,13 @@ int sys_enter(struct syscall_enter_args *args)
+ 	 */
+ 	unsigned int len = sizeof(augmented_args->args);
+ 	struct syscall *syscall;
+-	int key = 0;
+ 
+ 	if (pid_filter__has(&pids_filtered, getpid()))
+ 		return 0;
+ 
+-        augmented_args = bpf_map_lookup_elem(&augmented_args_tmp, &key);
+-        if (augmented_args == NULL)
+-                return 1;
++	augmented_args = augmented_args_payload();
++	if (augmented_args == NULL)
++		return 1;
+ 
+ 	probe_read(&augmented_args->args, sizeof(augmented_args->args), args);
+ 
