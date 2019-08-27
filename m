@@ -2,35 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1103B9E27B
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 27 Aug 2019 10:28:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ACCDD9E29E
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 27 Aug 2019 10:28:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729553AbfH0I0W (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 27 Aug 2019 04:26:22 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:42724 "EHLO
+        id S1730082AbfH0I2Y (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 27 Aug 2019 04:28:24 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:42720 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729370AbfH0I0W (ORCPT
+        with ESMTP id S1729326AbfH0I0V (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 27 Aug 2019 04:26:22 -0400
+        Tue, 27 Aug 2019 04:26:21 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i2Wnw-0007oZ-3A; Tue, 27 Aug 2019 10:26:16 +0200
+        id 1i2Wnv-0007o7-M4; Tue, 27 Aug 2019 10:26:15 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B98C91C0DDE;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4D7B01C07DC;
         Tue, 27 Aug 2019 10:26:15 +0200 (CEST)
 Date:   Tue, 27 Aug 2019 08:26:15 -0000
 From:   tip-bot2 for Arnaldo Carvalho de Melo <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf augmented_raw_syscalls: Introduce helper to get
- the scratch space
-Cc:     Arnaldo Carvalho de Melo <acme@redhat.com>,
+Subject: [tip: perf/core] perf augmented_raw_syscalls: Postpone tmp map lookup
+ to after pid_filter
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        Jiri Olsa <jolsa@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
+In-Reply-To: <tip-o74yggieorucfg4j74tb6rta@git.kernel.org>
+References: <tip-o74yggieorucfg4j74tb6rta@git.kernel.org>
 MIME-Version: 1.0
-Message-ID: <156689437565.24502.15798435536563381582.tip-bot2@tip-bot2>
+Message-ID: <156689437523.24499.74947707469683711.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,119 +52,45 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     c265784de7adff9e07934b712204556fb0b3ba43
-Gitweb:        https://git.kernel.org/tip/c265784de7adff9e07934b712204556fb0b3ba43
+Commit-ID:     01128065ca5112123e6992dc0522484349c6ced7
+Gitweb:        https://git.kernel.org/tip/01128065ca5112123e6992dc0522484349c6ced7
 Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Fri, 23 Aug 2019 15:45:54 -03:00
+AuthorDate:    Fri, 23 Aug 2019 15:38:08 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Mon, 26 Aug 2019 11:58:29 -03:00
 
-perf augmented_raw_syscalls: Introduce helper to get the scratch space
+perf augmented_raw_syscalls: Postpone tmp map lookup to after pid_filter
 
-We need more than the BPF stack can give us to format the
-raw_syscalls:sys_enter augmented tracepoint, so we use a PERCPU_ARRAY
-map for that, use a helper to shorten the sequence to access that area.
+No sense in doing that lookup before figuring out if it will be used,
+i.e. if the pid is being filtered that tmp space lookup will be useless.
 
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Link: https://lkml.kernel.org/n/tip-o74yggieorucfg4j74tb6rta@git.kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/examples/bpf/augmented_raw_syscalls.c | 32 +++++++--------
- 1 file changed, 16 insertions(+), 16 deletions(-)
+ tools/perf/examples/bpf/augmented_raw_syscalls.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/tools/perf/examples/bpf/augmented_raw_syscalls.c b/tools/perf/examples/bpf/augmented_raw_syscalls.c
-index 0a8d217..8fd5ea0 100644
+index b85b177..0a8d217 100644
 --- a/tools/perf/examples/bpf/augmented_raw_syscalls.c
 +++ b/tools/perf/examples/bpf/augmented_raw_syscalls.c
-@@ -78,8 +78,15 @@ struct augmented_args_payload {
- 	};
- };
- 
-+// We need more tmp space than the BPF stack can give us
- bpf_map(augmented_args_tmp, PERCPU_ARRAY, int, struct augmented_args_payload, 1);
- 
-+static inline struct augmented_args_payload *augmented_args_payload(void)
-+{
-+	int key = 0;
-+	return bpf_map_lookup_elem(&augmented_args_tmp, &key);
-+}
-+
- static inline
- unsigned int augmented_arg__read_str(struct augmented_arg *augmented_arg, const void *arg, unsigned int arg_len)
- {
-@@ -122,8 +129,7 @@ int syscall_unaugmented(struct syscall_enter_args *args)
- SEC("!syscalls:sys_enter_connect")
- int sys_enter_connect(struct syscall_enter_args *args)
- {
--	int key = 0;
--	struct augmented_args_payload *augmented_args = bpf_map_lookup_elem(&augmented_args_tmp, &key);
-+	struct augmented_args_payload *augmented_args = augmented_args_payload();
- 	const void *sockaddr_arg = (const void *)args->args[1];
- 	unsigned int socklen = args->args[2];
- 	unsigned int len = sizeof(augmented_args->args);
-@@ -143,8 +149,7 @@ int sys_enter_connect(struct syscall_enter_args *args)
- SEC("!syscalls:sys_enter_sendto")
- int sys_enter_sendto(struct syscall_enter_args *args)
- {
--	int key = 0;
--	struct augmented_args_payload *augmented_args = bpf_map_lookup_elem(&augmented_args_tmp, &key);
-+	struct augmented_args_payload *augmented_args = augmented_args_payload();
- 	const void *sockaddr_arg = (const void *)args->args[4];
- 	unsigned int socklen = args->args[5];
- 	unsigned int len = sizeof(augmented_args->args);
-@@ -164,8 +169,7 @@ int sys_enter_sendto(struct syscall_enter_args *args)
- SEC("!syscalls:sys_enter_open")
- int sys_enter_open(struct syscall_enter_args *args)
- {
--	int key = 0;
--	struct augmented_args_payload *augmented_args = bpf_map_lookup_elem(&augmented_args_tmp, &key);
-+	struct augmented_args_payload *augmented_args = augmented_args_payload();
- 	const void *filename_arg = (const void *)args->args[0];
- 	unsigned int len = sizeof(augmented_args->args);
- 
-@@ -181,8 +185,7 @@ int sys_enter_open(struct syscall_enter_args *args)
- SEC("!syscalls:sys_enter_openat")
- int sys_enter_openat(struct syscall_enter_args *args)
- {
--	int key = 0;
--	struct augmented_args_payload *augmented_args = bpf_map_lookup_elem(&augmented_args_tmp, &key);
-+	struct augmented_args_payload *augmented_args = augmented_args_payload();
- 	const void *filename_arg = (const void *)args->args[1];
- 	unsigned int len = sizeof(augmented_args->args);
- 
-@@ -198,8 +201,7 @@ int sys_enter_openat(struct syscall_enter_args *args)
- SEC("!syscalls:sys_enter_rename")
- int sys_enter_rename(struct syscall_enter_args *args)
- {
--	int key = 0;
--	struct augmented_args_payload *augmented_args = bpf_map_lookup_elem(&augmented_args_tmp, &key);
-+	struct augmented_args_payload *augmented_args = augmented_args_payload();
- 	const void *oldpath_arg = (const void *)args->args[0],
- 		   *newpath_arg = (const void *)args->args[1];
- 	unsigned int len = sizeof(augmented_args->args), oldpath_len;
-@@ -217,8 +219,7 @@ int sys_enter_rename(struct syscall_enter_args *args)
- SEC("!syscalls:sys_enter_renameat")
- int sys_enter_renameat(struct syscall_enter_args *args)
- {
--	int key = 0;
--	struct augmented_args_payload *augmented_args = bpf_map_lookup_elem(&augmented_args_tmp, &key);
-+	struct augmented_args_payload *augmented_args = augmented_args_payload();
- 	const void *oldpath_arg = (const void *)args->args[1],
- 		   *newpath_arg = (const void *)args->args[3];
- 	unsigned int len = sizeof(augmented_args->args), oldpath_len;
-@@ -248,14 +249,13 @@ int sys_enter(struct syscall_enter_args *args)
- 	 */
- 	unsigned int len = sizeof(augmented_args->args);
+@@ -250,13 +250,13 @@ int sys_enter(struct syscall_enter_args *args)
  	struct syscall *syscall;
--	int key = 0;
+ 	int key = 0;
  
- 	if (pid_filter__has(&pids_filtered, getpid()))
- 		return 0;
++	if (pid_filter__has(&pids_filtered, getpid()))
++		return 0;
++
+         augmented_args = bpf_map_lookup_elem(&augmented_args_tmp, &key);
+         if (augmented_args == NULL)
+                 return 1;
  
--        augmented_args = bpf_map_lookup_elem(&augmented_args_tmp, &key);
--        if (augmented_args == NULL)
--                return 1;
-+	augmented_args = augmented_args_payload();
-+	if (augmented_args == NULL)
-+		return 1;
- 
+-	if (pid_filter__has(&pids_filtered, getpid()))
+-		return 0;
+-
  	probe_read(&augmented_args->args, sizeof(augmented_args->args), args);
  
+ 	/*
