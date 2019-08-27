@@ -2,40 +2,42 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ACCDD9E29E
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 27 Aug 2019 10:28:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1CFB59E27D
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 27 Aug 2019 10:28:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730082AbfH0I2Y (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 27 Aug 2019 04:28:24 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:42720 "EHLO
+        id S1729844AbfH0I02 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 27 Aug 2019 04:26:28 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:42769 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729326AbfH0I0V (ORCPT
+        with ESMTP id S1729747AbfH0I00 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 27 Aug 2019 04:26:21 -0400
+        Tue, 27 Aug 2019 04:26:26 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i2Wnv-0007o7-M4; Tue, 27 Aug 2019 10:26:15 +0200
+        id 1i2Wnx-0007q0-8F; Tue, 27 Aug 2019 10:26:17 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4D7B01C07DC;
-        Tue, 27 Aug 2019 10:26:15 +0200 (CEST)
-Date:   Tue, 27 Aug 2019 08:26:15 -0000
-From:   tip-bot2 for Arnaldo Carvalho de Melo <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A370B1C0DDE;
+        Tue, 27 Aug 2019 10:26:16 +0200 (CEST)
+Date:   Tue, 27 Aug 2019 08:26:16 -0000
+From:   tip-bot2 for Souptick Joarder <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf augmented_raw_syscalls: Postpone tmp map lookup
- to after pid_filter
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Jiri Olsa <jolsa@kernel.org>,
+Subject: [tip: perf/core] perf tools: Remove duplicate headers
+Cc:     Souptick Joarder <jrdr.linux@gmail.com>,
+        Mukesh Ojha <mojha@codeaurora.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Jiri Olsa <jolsa@redhat.com>,
         Namhyung Kim <namhyung@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <tip-o74yggieorucfg4j74tb6rta@git.kernel.org>
-References: <tip-o74yggieorucfg4j74tb6rta@git.kernel.org>
+In-Reply-To: <1566663319-4283-1-git-send-email-jrdr.linux@gmail.com>
+References: <1566663319-4283-1-git-send-email-jrdr.linux@gmail.com>
 MIME-Version: 1.0
-Message-ID: <156689437523.24499.74947707469683711.tip-bot2@tip-bot2>
+Message-ID: <156689437654.24508.3120746550321091583.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -52,45 +54,64 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     01128065ca5112123e6992dc0522484349c6ced7
-Gitweb:        https://git.kernel.org/tip/01128065ca5112123e6992dc0522484349c6ced7
-Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Fri, 23 Aug 2019 15:38:08 -03:00
+Commit-ID:     b4de344b25b9fbd4db7b84da43808a6b7daac887
+Gitweb:        https://git.kernel.org/tip/b4de344b25b9fbd4db7b84da43808a6b7daac887
+Author:        Souptick Joarder <jrdr.linux@gmail.com>
+AuthorDate:    Sat, 24 Aug 2019 21:45:19 +05:30
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Mon, 26 Aug 2019 11:58:29 -03:00
 
-perf augmented_raw_syscalls: Postpone tmp map lookup to after pid_filter
+perf tools: Remove duplicate headers
 
-No sense in doing that lookup before figuring out if it will be used,
-i.e. if the pid is being filtered that tmp space lookup will be useless.
+Removed headers which are included twice.
 
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
+Signed-off-by: Souptick Joarder <jrdr.linux@gmail.com>
+Reviewed-by: Mukesh Ojha <mojha@codeaurora.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Jiri Olsa <jolsa@redhat.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lkml.kernel.org/n/tip-o74yggieorucfg4j74tb6rta@git.kernel.org
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: http://lkml.kernel.org/r/1566663319-4283-1-git-send-email-jrdr.linux@gmail.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/examples/bpf/augmented_raw_syscalls.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ tools/perf/util/data.c                 | 1 -
+ tools/perf/util/get_current_dir_name.c | 1 -
+ tools/perf/util/stat-display.c         | 1 -
+ 3 files changed, 3 deletions(-)
 
-diff --git a/tools/perf/examples/bpf/augmented_raw_syscalls.c b/tools/perf/examples/bpf/augmented_raw_syscalls.c
-index b85b177..0a8d217 100644
---- a/tools/perf/examples/bpf/augmented_raw_syscalls.c
-+++ b/tools/perf/examples/bpf/augmented_raw_syscalls.c
-@@ -250,13 +250,13 @@ int sys_enter(struct syscall_enter_args *args)
- 	struct syscall *syscall;
- 	int key = 0;
+diff --git a/tools/perf/util/data.c b/tools/perf/util/data.c
+index 1d1b97a..74aafe0 100644
+--- a/tools/perf/util/data.c
++++ b/tools/perf/util/data.c
+@@ -9,7 +9,6 @@
+ #include <unistd.h>
+ #include <string.h>
+ #include <asm/bug.h>
+-#include <sys/types.h>
+ #include <dirent.h>
  
-+	if (pid_filter__has(&pids_filtered, getpid()))
-+		return 0;
-+
-         augmented_args = bpf_map_lookup_elem(&augmented_args_tmp, &key);
-         if (augmented_args == NULL)
-                 return 1;
+ #include "data.h"
+diff --git a/tools/perf/util/get_current_dir_name.c b/tools/perf/util/get_current_dir_name.c
+index 01f32f2..b205d92 100644
+--- a/tools/perf/util/get_current_dir_name.c
++++ b/tools/perf/util/get_current_dir_name.c
+@@ -5,7 +5,6 @@
+ #include "get_current_dir_name.h"
+ #include <unistd.h>
+ #include <stdlib.h>
+-#include <stdlib.h>
  
--	if (pid_filter__has(&pids_filtered, getpid()))
--		return 0;
--
- 	probe_read(&augmented_args->args, sizeof(augmented_args->args), args);
+ /* Android's 'bionic' library, for one, doesn't have this */
  
- 	/*
+diff --git a/tools/perf/util/stat-display.c b/tools/perf/util/stat-display.c
+index 51d6781..1461dac 100644
+--- a/tools/perf/util/stat-display.c
++++ b/tools/perf/util/stat-display.c
+@@ -14,7 +14,6 @@
+ #include "string2.h"
+ #include <linux/ctype.h>
+ #include "cgroup.h"
+-#include <math.h>
+ #include <api/fs/fs.h>
+ 
+ #define CNTR_NOT_SUPPORTED	"<not supported>"
