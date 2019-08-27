@@ -2,40 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E362C9E291
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 27 Aug 2019 10:28:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 63AF59E29B
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 27 Aug 2019 10:28:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729619AbfH0I17 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 27 Aug 2019 04:27:59 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:42741 "EHLO
+        id S1729391AbfH0I2Q (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 27 Aug 2019 04:28:16 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:42732 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729578AbfH0I0Z (ORCPT
+        with ESMTP id S1729461AbfH0I0W (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 27 Aug 2019 04:26:25 -0400
+        Tue, 27 Aug 2019 04:26:22 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i2Wnx-0007ov-4W; Tue, 27 Aug 2019 10:26:17 +0200
+        id 1i2Wnx-0007q2-Fe; Tue, 27 Aug 2019 10:26:17 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 2E1761C07DC;
-        Tue, 27 Aug 2019 10:26:16 +0200 (CEST)
-Date:   Tue, 27 Aug 2019 08:26:16 -0000
-From:   tip-bot2 for Arnaldo Carvalho de Melo <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 15B3C1C0DDF;
+        Tue, 27 Aug 2019 10:26:17 +0200 (CEST)
+Date:   Tue, 27 Aug 2019 08:26:17 -0000
+From:   tip-bot2 for Andi Kleen <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf augmented_raw_syscalls: Reduce
- perf_event_output() boilerplate
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Jiri Olsa <jolsa@kernel.org>,
-        Namhyung Kim <namhyung@kernel.org>,
+Subject: [tip: perf/core] perf report: Use timestamp__scnprintf_nsec() for
+ time sort key
+Cc:     Andi Kleen <ak@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <tip-ln99gt0j4fv0kw0778h6vphm@git.kernel.org>
-References: <tip-ln99gt0j4fv0kw0778h6vphm@git.kernel.org>
+In-Reply-To: <20190823210338.12360-1-andi@firstfloor.org>
+References: <20190823210338.12360-1-andi@firstfloor.org>
 MIME-Version: 1.0
-Message-ID: <156689437609.24505.834539880681540435.tip-bot2@tip-bot2>
+Message-ID: <156689437701.24511.15888574333072459132.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -52,103 +50,47 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     e051c2f69850e571cb408b555aaffb00c07dbb05
-Gitweb:        https://git.kernel.org/tip/e051c2f69850e571cb408b555aaffb00c07dbb05
-Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Fri, 23 Aug 2019 15:54:02 -03:00
+Commit-ID:     092804ae092fc6097348f5c09b62cde040717aa1
+Gitweb:        https://git.kernel.org/tip/092804ae092fc6097348f5c09b62cde040717aa1
+Author:        Andi Kleen <ak@linux.intel.com>
+AuthorDate:    Fri, 23 Aug 2019 14:03:37 -07:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Mon, 26 Aug 2019 11:58:29 -03:00
 
-perf augmented_raw_syscalls: Reduce perf_event_output() boilerplate
+perf report: Use timestamp__scnprintf_nsec() for time sort key
 
-Add a augmented__output() helper to reduce the boilerplate of sending
-the augmented tracepoint to the PERF_EVENT_ARRAY BPF map associated with
-the bpf-output event used to communicate with the userspace perf trace
-tool.
+Use timestamp__scnprintf_nsec() to print nanoseconds for the time sort
+key, instead of open coding.
 
-Cc: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Andi Kleen <ak@linux.intel.com>
 Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lkml.kernel.org/n/tip-ln99gt0j4fv0kw0778h6vphm@git.kernel.org
+Link: http://lkml.kernel.org/r/20190823210338.12360-1-andi@firstfloor.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/examples/bpf/augmented_raw_syscalls.c | 24 +++++++--------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ tools/perf/util/sort.c | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
-diff --git a/tools/perf/examples/bpf/augmented_raw_syscalls.c b/tools/perf/examples/bpf/augmented_raw_syscalls.c
-index 8fd5ea0..b804379 100644
---- a/tools/perf/examples/bpf/augmented_raw_syscalls.c
-+++ b/tools/perf/examples/bpf/augmented_raw_syscalls.c
-@@ -87,6 +87,12 @@ static inline struct augmented_args_payload *augmented_args_payload(void)
- 	return bpf_map_lookup_elem(&augmented_args_tmp, &key);
- }
- 
-+static inline int augmented__output(void *ctx, struct augmented_args_payload *args, int len)
-+{
-+	/* If perf_event_output fails, return non-zero so that it gets recorded unaugmented */
-+	return perf_event_output(ctx, &__augmented_syscalls__, BPF_F_CURRENT_CPU, args, len);
-+}
-+
- static inline
- unsigned int augmented_arg__read_str(struct augmented_arg *augmented_arg, const void *arg, unsigned int arg_len)
+diff --git a/tools/perf/util/sort.c b/tools/perf/util/sort.c
+index c522bdd..83eb3fa 100644
+--- a/tools/perf/util/sort.c
++++ b/tools/perf/util/sort.c
+@@ -670,17 +670,11 @@ sort__time_cmp(struct hist_entry *left, struct hist_entry *right)
+ static int hist_entry__time_snprintf(struct hist_entry *he, char *bf,
+ 				    size_t size, unsigned int width)
  {
-@@ -142,8 +148,7 @@ int sys_enter_connect(struct syscall_enter_args *args)
+-	unsigned long secs;
+-	unsigned long long nsecs;
+ 	char he_time[32];
  
- 	probe_read(&augmented_args->saddr, socklen, sockaddr_arg);
- 
--	/* If perf_event_output fails, return non-zero so that it gets recorded unaugmented */
--	return perf_event_output(args, &__augmented_syscalls__, BPF_F_CURRENT_CPU, augmented_args, len + socklen);
-+	return augmented__output(args, augmented_args, len + socklen);
- }
- 
- SEC("!syscalls:sys_enter_sendto")
-@@ -162,8 +167,7 @@ int sys_enter_sendto(struct syscall_enter_args *args)
- 
- 	probe_read(&augmented_args->saddr, socklen, sockaddr_arg);
- 
--	/* If perf_event_output fails, return non-zero so that it gets recorded unaugmented */
--	return perf_event_output(args, &__augmented_syscalls__, BPF_F_CURRENT_CPU, augmented_args, len + socklen);
-+	return augmented__output(args, augmented_args, len + socklen);
- }
- 
- SEC("!syscalls:sys_enter_open")
-@@ -178,8 +182,7 @@ int sys_enter_open(struct syscall_enter_args *args)
- 
- 	len += augmented_arg__read_str(&augmented_args->arg, filename_arg, sizeof(augmented_args->arg.value));
- 
--	/* If perf_event_output fails, return non-zero so that it gets recorded unaugmented */
--	return perf_event_output(args, &__augmented_syscalls__, BPF_F_CURRENT_CPU, augmented_args, len);
-+	return augmented__output(args, augmented_args, len);
- }
- 
- SEC("!syscalls:sys_enter_openat")
-@@ -194,8 +197,7 @@ int sys_enter_openat(struct syscall_enter_args *args)
- 
- 	len += augmented_arg__read_str(&augmented_args->arg, filename_arg, sizeof(augmented_args->arg.value));
- 
--	/* If perf_event_output fails, return non-zero so that it gets recorded unaugmented */
--	return perf_event_output(args, &__augmented_syscalls__, BPF_F_CURRENT_CPU, augmented_args, len);
-+	return augmented__output(args, augmented_args, len);
- }
- 
- SEC("!syscalls:sys_enter_rename")
-@@ -212,8 +214,7 @@ int sys_enter_rename(struct syscall_enter_args *args)
- 	oldpath_len = augmented_arg__read_str(&augmented_args->arg, oldpath_arg, sizeof(augmented_args->arg.value));
- 	len += oldpath_len + augmented_arg__read_str((void *)(&augmented_args->arg) + oldpath_len, newpath_arg, sizeof(augmented_args->arg.value));
- 
--	/* If perf_event_output fails, return non-zero so that it gets recorded unaugmented */
--	return perf_event_output(args, &__augmented_syscalls__, BPF_F_CURRENT_CPU, augmented_args, len);
-+	return augmented__output(args, augmented_args, len);
- }
- 
- SEC("!syscalls:sys_enter_renameat")
-@@ -230,8 +231,7 @@ int sys_enter_renameat(struct syscall_enter_args *args)
- 	oldpath_len = augmented_arg__read_str(&augmented_args->arg, oldpath_arg, sizeof(augmented_args->arg.value));
- 	len += oldpath_len + augmented_arg__read_str((void *)(&augmented_args->arg) + oldpath_len, newpath_arg, sizeof(augmented_args->arg.value));
- 
--	/* If perf_event_output fails, return non-zero so that it gets recorded unaugmented */
--	return perf_event_output(args, &__augmented_syscalls__, BPF_F_CURRENT_CPU, augmented_args, len);
-+	return augmented__output(args, augmented_args, len);
- }
- 
- SEC("raw_syscalls:sys_enter")
+-	nsecs = he->time;
+-	secs = nsecs / NSEC_PER_SEC;
+-	nsecs -= secs * NSEC_PER_SEC;
+-
+ 	if (symbol_conf.nanosecs)
+-		snprintf(he_time, sizeof he_time, "%5lu.%09llu: ",
+-			 secs, nsecs);
++		timestamp__scnprintf_nsec(he->time, he_time,
++					  sizeof(he_time));
+ 	else
+ 		timestamp__scnprintf_usec(he->time, he_time,
+ 					  sizeof(he_time));
