@@ -2,42 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CFB59E27D
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 27 Aug 2019 10:28:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E362C9E291
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 27 Aug 2019 10:28:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729844AbfH0I02 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 27 Aug 2019 04:26:28 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:42769 "EHLO
+        id S1729619AbfH0I17 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 27 Aug 2019 04:27:59 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:42741 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729747AbfH0I00 (ORCPT
+        with ESMTP id S1729578AbfH0I0Z (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 27 Aug 2019 04:26:26 -0400
+        Tue, 27 Aug 2019 04:26:25 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i2Wnx-0007q0-8F; Tue, 27 Aug 2019 10:26:17 +0200
+        id 1i2Wnx-0007ov-4W; Tue, 27 Aug 2019 10:26:17 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A370B1C0DDE;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 2E1761C07DC;
         Tue, 27 Aug 2019 10:26:16 +0200 (CEST)
 Date:   Tue, 27 Aug 2019 08:26:16 -0000
-From:   tip-bot2 for Souptick Joarder <tip-bot2@linutronix.de>
+From:   tip-bot2 for Arnaldo Carvalho de Melo <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf tools: Remove duplicate headers
-Cc:     Souptick Joarder <jrdr.linux@gmail.com>,
-        Mukesh Ojha <mojha@codeaurora.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Jiri Olsa <jolsa@redhat.com>,
+Subject: [tip: perf/core] perf augmented_raw_syscalls: Reduce
+ perf_event_output() boilerplate
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        Jiri Olsa <jolsa@kernel.org>,
         Namhyung Kim <namhyung@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <1566663319-4283-1-git-send-email-jrdr.linux@gmail.com>
-References: <1566663319-4283-1-git-send-email-jrdr.linux@gmail.com>
+In-Reply-To: <tip-ln99gt0j4fv0kw0778h6vphm@git.kernel.org>
+References: <tip-ln99gt0j4fv0kw0778h6vphm@git.kernel.org>
 MIME-Version: 1.0
-Message-ID: <156689437654.24508.3120746550321091583.tip-bot2@tip-bot2>
+Message-ID: <156689437609.24505.834539880681540435.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -54,64 +52,103 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     b4de344b25b9fbd4db7b84da43808a6b7daac887
-Gitweb:        https://git.kernel.org/tip/b4de344b25b9fbd4db7b84da43808a6b7daac887
-Author:        Souptick Joarder <jrdr.linux@gmail.com>
-AuthorDate:    Sat, 24 Aug 2019 21:45:19 +05:30
+Commit-ID:     e051c2f69850e571cb408b555aaffb00c07dbb05
+Gitweb:        https://git.kernel.org/tip/e051c2f69850e571cb408b555aaffb00c07dbb05
+Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
+AuthorDate:    Fri, 23 Aug 2019 15:54:02 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Mon, 26 Aug 2019 11:58:29 -03:00
 
-perf tools: Remove duplicate headers
+perf augmented_raw_syscalls: Reduce perf_event_output() boilerplate
 
-Removed headers which are included twice.
+Add a augmented__output() helper to reduce the boilerplate of sending
+the augmented tracepoint to the PERF_EVENT_ARRAY BPF map associated with
+the bpf-output event used to communicate with the userspace perf trace
+tool.
 
-Signed-off-by: Souptick Joarder <jrdr.linux@gmail.com>
-Reviewed-by: Mukesh Ojha <mojha@codeaurora.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Jiri Olsa <jolsa@redhat.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: http://lkml.kernel.org/r/1566663319-4283-1-git-send-email-jrdr.linux@gmail.com
+Link: https://lkml.kernel.org/n/tip-ln99gt0j4fv0kw0778h6vphm@git.kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/data.c                 | 1 -
- tools/perf/util/get_current_dir_name.c | 1 -
- tools/perf/util/stat-display.c         | 1 -
- 3 files changed, 3 deletions(-)
+ tools/perf/examples/bpf/augmented_raw_syscalls.c | 24 +++++++--------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/tools/perf/util/data.c b/tools/perf/util/data.c
-index 1d1b97a..74aafe0 100644
---- a/tools/perf/util/data.c
-+++ b/tools/perf/util/data.c
-@@ -9,7 +9,6 @@
- #include <unistd.h>
- #include <string.h>
- #include <asm/bug.h>
--#include <sys/types.h>
- #include <dirent.h>
+diff --git a/tools/perf/examples/bpf/augmented_raw_syscalls.c b/tools/perf/examples/bpf/augmented_raw_syscalls.c
+index 8fd5ea0..b804379 100644
+--- a/tools/perf/examples/bpf/augmented_raw_syscalls.c
++++ b/tools/perf/examples/bpf/augmented_raw_syscalls.c
+@@ -87,6 +87,12 @@ static inline struct augmented_args_payload *augmented_args_payload(void)
+ 	return bpf_map_lookup_elem(&augmented_args_tmp, &key);
+ }
  
- #include "data.h"
-diff --git a/tools/perf/util/get_current_dir_name.c b/tools/perf/util/get_current_dir_name.c
-index 01f32f2..b205d92 100644
---- a/tools/perf/util/get_current_dir_name.c
-+++ b/tools/perf/util/get_current_dir_name.c
-@@ -5,7 +5,6 @@
- #include "get_current_dir_name.h"
- #include <unistd.h>
- #include <stdlib.h>
--#include <stdlib.h>
++static inline int augmented__output(void *ctx, struct augmented_args_payload *args, int len)
++{
++	/* If perf_event_output fails, return non-zero so that it gets recorded unaugmented */
++	return perf_event_output(ctx, &__augmented_syscalls__, BPF_F_CURRENT_CPU, args, len);
++}
++
+ static inline
+ unsigned int augmented_arg__read_str(struct augmented_arg *augmented_arg, const void *arg, unsigned int arg_len)
+ {
+@@ -142,8 +148,7 @@ int sys_enter_connect(struct syscall_enter_args *args)
  
- /* Android's 'bionic' library, for one, doesn't have this */
+ 	probe_read(&augmented_args->saddr, socklen, sockaddr_arg);
  
-diff --git a/tools/perf/util/stat-display.c b/tools/perf/util/stat-display.c
-index 51d6781..1461dac 100644
---- a/tools/perf/util/stat-display.c
-+++ b/tools/perf/util/stat-display.c
-@@ -14,7 +14,6 @@
- #include "string2.h"
- #include <linux/ctype.h>
- #include "cgroup.h"
--#include <math.h>
- #include <api/fs/fs.h>
+-	/* If perf_event_output fails, return non-zero so that it gets recorded unaugmented */
+-	return perf_event_output(args, &__augmented_syscalls__, BPF_F_CURRENT_CPU, augmented_args, len + socklen);
++	return augmented__output(args, augmented_args, len + socklen);
+ }
  
- #define CNTR_NOT_SUPPORTED	"<not supported>"
+ SEC("!syscalls:sys_enter_sendto")
+@@ -162,8 +167,7 @@ int sys_enter_sendto(struct syscall_enter_args *args)
+ 
+ 	probe_read(&augmented_args->saddr, socklen, sockaddr_arg);
+ 
+-	/* If perf_event_output fails, return non-zero so that it gets recorded unaugmented */
+-	return perf_event_output(args, &__augmented_syscalls__, BPF_F_CURRENT_CPU, augmented_args, len + socklen);
++	return augmented__output(args, augmented_args, len + socklen);
+ }
+ 
+ SEC("!syscalls:sys_enter_open")
+@@ -178,8 +182,7 @@ int sys_enter_open(struct syscall_enter_args *args)
+ 
+ 	len += augmented_arg__read_str(&augmented_args->arg, filename_arg, sizeof(augmented_args->arg.value));
+ 
+-	/* If perf_event_output fails, return non-zero so that it gets recorded unaugmented */
+-	return perf_event_output(args, &__augmented_syscalls__, BPF_F_CURRENT_CPU, augmented_args, len);
++	return augmented__output(args, augmented_args, len);
+ }
+ 
+ SEC("!syscalls:sys_enter_openat")
+@@ -194,8 +197,7 @@ int sys_enter_openat(struct syscall_enter_args *args)
+ 
+ 	len += augmented_arg__read_str(&augmented_args->arg, filename_arg, sizeof(augmented_args->arg.value));
+ 
+-	/* If perf_event_output fails, return non-zero so that it gets recorded unaugmented */
+-	return perf_event_output(args, &__augmented_syscalls__, BPF_F_CURRENT_CPU, augmented_args, len);
++	return augmented__output(args, augmented_args, len);
+ }
+ 
+ SEC("!syscalls:sys_enter_rename")
+@@ -212,8 +214,7 @@ int sys_enter_rename(struct syscall_enter_args *args)
+ 	oldpath_len = augmented_arg__read_str(&augmented_args->arg, oldpath_arg, sizeof(augmented_args->arg.value));
+ 	len += oldpath_len + augmented_arg__read_str((void *)(&augmented_args->arg) + oldpath_len, newpath_arg, sizeof(augmented_args->arg.value));
+ 
+-	/* If perf_event_output fails, return non-zero so that it gets recorded unaugmented */
+-	return perf_event_output(args, &__augmented_syscalls__, BPF_F_CURRENT_CPU, augmented_args, len);
++	return augmented__output(args, augmented_args, len);
+ }
+ 
+ SEC("!syscalls:sys_enter_renameat")
+@@ -230,8 +231,7 @@ int sys_enter_renameat(struct syscall_enter_args *args)
+ 	oldpath_len = augmented_arg__read_str(&augmented_args->arg, oldpath_arg, sizeof(augmented_args->arg.value));
+ 	len += oldpath_len + augmented_arg__read_str((void *)(&augmented_args->arg) + oldpath_len, newpath_arg, sizeof(augmented_args->arg.value));
+ 
+-	/* If perf_event_output fails, return non-zero so that it gets recorded unaugmented */
+-	return perf_event_output(args, &__augmented_syscalls__, BPF_F_CURRENT_CPU, augmented_args, len);
++	return augmented__output(args, augmented_args, len);
+ }
+ 
+ SEC("raw_syscalls:sys_enter")
