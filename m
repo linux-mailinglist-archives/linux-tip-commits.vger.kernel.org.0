@@ -2,42 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EE9099E26B
+	by mail.lfdr.de (Postfix) with ESMTP id 84DD79E26A
 	for <lists+linux-tip-commits@lfdr.de>; Tue, 27 Aug 2019 10:27:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730335AbfH0I04 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 27 Aug 2019 04:26:56 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:42869 "EHLO
+        id S1730103AbfH0I0z (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 27 Aug 2019 04:26:55 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:42868 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730117AbfH0I0j (ORCPT
+        with ESMTP id S1730116AbfH0I0k (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 27 Aug 2019 04:26:39 -0400
+        Tue, 27 Aug 2019 04:26:40 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i2WoB-0007wt-6Z; Tue, 27 Aug 2019 10:26:31 +0200
+        id 1i2Wo8-0007yQ-Kl; Tue, 27 Aug 2019 10:26:28 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 8EB251C07DC;
-        Tue, 27 Aug 2019 10:26:23 +0200 (CEST)
-Date:   Tue, 27 Aug 2019 08:26:23 -0000
-From:   tip-bot2 for Jiri Olsa <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id DD9191C0DDE;
+        Tue, 27 Aug 2019 10:26:24 +0200 (CEST)
+Date:   Tue, 27 Aug 2019 08:26:24 -0000
+From:   tip-bot2 for Arnaldo Carvalho de Melo <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] libperf: Add PERF_RECORD_SAMPLE 'struct
- sample_event' to perf/event.h
-Cc:     Jiri Olsa <jolsa@kernel.org>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Michael Petlan <mpetlan@redhat.com>,
+Subject: [tip: perf/core] perf tools: Rename perf_event::bpf_event to perf_event::bpf
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        Jiri Olsa <jolsa@kernel.org>,
         Namhyung Kim <namhyung@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
+        Song Liu <songliubraving@fb.com>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20190825181752.722-13-jolsa@kernel.org>
-References: <20190825181752.722-13-jolsa@kernel.org>
+In-Reply-To: <tip-505qwpaizq1k0t6pk13v1ibd@git.kernel.org>
+References: <tip-505qwpaizq1k0t6pk13v1ibd@git.kernel.org>
 MIME-Version: 1.0
-Message-ID: <156689438344.24556.1687215100185726976.tip-bot2@tip-bot2>
+Message-ID: <156689438482.24565.8439004528106816385.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -54,115 +52,126 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     b1fcd190bb3fc1234dca60390d171a4cc75b21b2
-Gitweb:        https://git.kernel.org/tip/b1fcd190bb3fc1234dca60390d171a4cc75b21b2
-Author:        Jiri Olsa <jolsa@kernel.org>
-AuthorDate:    Sun, 25 Aug 2019 20:17:52 +02:00
+Commit-ID:     6a1b359821eb8d929c4dd9f53178da84888d79ec
+Gitweb:        https://git.kernel.org/tip/6a1b359821eb8d929c4dd9f53178da84888d79ec
+Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
+AuthorDate:    Mon, 26 Aug 2019 19:20:35 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Mon, 26 Aug 2019 19:39:10 -03:00
+CommitterDate: Mon, 26 Aug 2019 19:39:11 -03:00
 
-libperf: Add PERF_RECORD_SAMPLE 'struct sample_event' to perf/event.h
+perf tools: Rename perf_event::bpf_event to perf_event::bpf
 
-Move the PERF_RECORD_SAMPLE event definition to libperf's event.h header
-include.
+Just like all the other meta events, that extra _event suffix is just
+redundant, ditch it.
 
-In order to keep libperf simple, we switch 'u64/u32/u16/u8' types used
-events to their generic '__u*' versions.
-
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Michael Petlan <mpetlan@redhat.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: http://lkml.kernel.org/r/20190825181752.722-13-jolsa@kernel.org
+Cc: Song Liu <songliubraving@fb.com>
+Link: https://lkml.kernel.org/n/tip-505qwpaizq1k0t6pk13v1ibd@git.kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/lib/include/perf/event.h | 5 +++++
- tools/perf/util/event.h             | 5 -----
- tools/perf/util/evlist.c            | 2 +-
- tools/perf/util/evsel.c             | 8 ++++----
- 4 files changed, 10 insertions(+), 10 deletions(-)
+ tools/perf/util/bpf-event.c | 18 ++++++++----------
+ tools/perf/util/event.c     |  3 +--
+ tools/perf/util/event.h     |  2 +-
+ 3 files changed, 10 insertions(+), 13 deletions(-)
 
-diff --git a/tools/perf/lib/include/perf/event.h b/tools/perf/lib/include/perf/event.h
-index 585c9d8..e768a2d 100644
---- a/tools/perf/lib/include/perf/event.h
-+++ b/tools/perf/lib/include/perf/event.h
-@@ -104,4 +104,9 @@ struct bpf_event {
- 	__u8			 tag[BPF_TAG_SIZE];  // prog tag
- };
+diff --git a/tools/perf/util/bpf-event.c b/tools/perf/util/bpf-event.c
+index 69795c3..28fa2b1 100644
+--- a/tools/perf/util/bpf-event.c
++++ b/tools/perf/util/bpf-event.c
+@@ -35,7 +35,7 @@ static int machine__process_bpf_event_load(struct machine *machine,
+ 	struct bpf_prog_info_linear *info_linear;
+ 	struct bpf_prog_info_node *info_node;
+ 	struct perf_env *env = machine->env;
+-	int id = event->bpf_event.id;
++	int id = event->bpf.id;
+ 	unsigned int i;
  
-+struct sample_event {
-+	struct perf_event_header header;
-+	__u64			 array[];
-+};
-+
- #endif /* __LIBPERF_EVENT_H */
+ 	/* perf-record, no need to handle bpf-event */
+@@ -71,7 +71,7 @@ int machine__process_bpf_event(struct machine *machine __maybe_unused,
+ 	if (dump_trace)
+ 		perf_event__fprintf_bpf_event(event, stdout);
+ 
+-	switch (event->bpf_event.type) {
++	switch (event->bpf.type) {
+ 	case PERF_BPF_EVENT_PROG_LOAD:
+ 		return machine__process_bpf_event_load(machine, event, sample);
+ 
+@@ -83,8 +83,7 @@ int machine__process_bpf_event(struct machine *machine __maybe_unused,
+ 		 */
+ 		break;
+ 	default:
+-		pr_debug("unexpected bpf_event type of %d\n",
+-			 event->bpf_event.type);
++		pr_debug("unexpected bpf_event type of %d\n", event->bpf.type);
+ 		break;
+ 	}
+ 	return 0;
+@@ -162,7 +161,7 @@ static int perf_event__synthesize_one_bpf_prog(struct perf_session *session,
+ 					       struct record_opts *opts)
+ {
+ 	struct perf_record_ksymbol *ksymbol_event = &event->ksymbol;
+-	struct perf_record_bpf_event *bpf_event = &event->bpf_event;
++	struct perf_record_bpf_event *bpf_event = &event->bpf;
+ 	struct bpf_prog_info_linear *info_linear;
+ 	struct perf_tool *tool = session->tool;
+ 	struct bpf_prog_info_node *info_node;
+@@ -302,7 +301,7 @@ int perf_event__synthesize_bpf_events(struct perf_session *session,
+ 	int err;
+ 	int fd;
+ 
+-	event = malloc(sizeof(event->bpf_event) + KSYM_NAME_LEN + machine->id_hdr_size);
++	event = malloc(sizeof(event->bpf) + KSYM_NAME_LEN + machine->id_hdr_size);
+ 	if (!event)
+ 		return -1;
+ 	while (true) {
+@@ -399,9 +398,9 @@ static int bpf_event__sb_cb(union perf_event *event, void *data)
+ 	if (event->header.type != PERF_RECORD_BPF_EVENT)
+ 		return -1;
+ 
+-	switch (event->bpf_event.type) {
++	switch (event->bpf.type) {
+ 	case PERF_BPF_EVENT_PROG_LOAD:
+-		perf_env__add_bpf_info(env, event->bpf_event.id);
++		perf_env__add_bpf_info(env, event->bpf.id);
+ 
+ 	case PERF_BPF_EVENT_PROG_UNLOAD:
+ 		/*
+@@ -411,8 +410,7 @@ static int bpf_event__sb_cb(union perf_event *event, void *data)
+ 		 */
+ 		break;
+ 	default:
+-		pr_debug("unexpected bpf_event type of %d\n",
+-			 event->bpf_event.type);
++		pr_debug("unexpected bpf_event type of %d\n", event->bpf.type);
+ 		break;
+ 	}
+ 
+diff --git a/tools/perf/util/event.c b/tools/perf/util/event.c
+index bdeaad4..17304df 100644
+--- a/tools/perf/util/event.c
++++ b/tools/perf/util/event.c
+@@ -1494,8 +1494,7 @@ size_t perf_event__fprintf_ksymbol(union perf_event *event, FILE *fp)
+ size_t perf_event__fprintf_bpf_event(union perf_event *event, FILE *fp)
+ {
+ 	return fprintf(fp, " type %u, flags %u, id %u\n",
+-		       event->bpf_event.type, event->bpf_event.flags,
+-		       event->bpf_event.id);
++		       event->bpf.type, event->bpf.flags, event->bpf.id);
+ }
+ 
+ size_t perf_event__fprintf(union perf_event *event, FILE *fp)
 diff --git a/tools/perf/util/event.h b/tools/perf/util/event.h
-index 091a069..dee0ee5 100644
+index 34190e0..7251e2e 100644
 --- a/tools/perf/util/event.h
 +++ b/tools/perf/util/event.h
-@@ -37,11 +37,6 @@
- /* perf sample has 16 bits size limit */
- #define PERF_SAMPLE_MAX_SIZE (1 << 16)
- 
--struct sample_event {
--	struct perf_event_header        header;
--	u64 array[];
--};
--
- struct regs_dump {
- 	u64 abi;
- 	u64 mask;
-diff --git a/tools/perf/util/evlist.c b/tools/perf/util/evlist.c
-index ff41568..47bc541 100644
---- a/tools/perf/util/evlist.c
-+++ b/tools/perf/util/evlist.c
-@@ -587,7 +587,7 @@ struct evsel *perf_evlist__id2evsel_strict(struct evlist *evlist,
- static int perf_evlist__event2id(struct evlist *evlist,
- 				 union perf_event *event, u64 *id)
- {
--	const u64 *array = event->sample.array;
-+	const __u64 *array = event->sample.array;
- 	ssize_t n;
- 
- 	n = (event->header.size - sizeof(event->header)) >> 3;
-diff --git a/tools/perf/util/evsel.c b/tools/perf/util/evsel.c
-index 9fadd58..778262f 100644
---- a/tools/perf/util/evsel.c
-+++ b/tools/perf/util/evsel.c
-@@ -2009,7 +2009,7 @@ static int perf_evsel__parse_id_sample(const struct evsel *evsel,
- 				       struct perf_sample *sample)
- {
- 	u64 type = evsel->core.attr.sample_type;
--	const u64 *array = event->sample.array;
-+	const __u64 *array = event->sample.array;
- 	bool swapped = evsel->needs_swap;
- 	union u64_swap u;
- 
-@@ -2099,7 +2099,7 @@ int perf_evsel__parse_sample(struct evsel *evsel, union perf_event *event,
- {
- 	u64 type = evsel->core.attr.sample_type;
- 	bool swapped = evsel->needs_swap;
--	const u64 *array;
-+	const __u64 *array;
- 	u16 max_size = event->header.size;
- 	const void *endp = (void *)event + max_size;
- 	u64 sz;
-@@ -2378,7 +2378,7 @@ int perf_evsel__parse_sample_timestamp(struct evsel *evsel,
- 				       u64 *timestamp)
- {
- 	u64 type = evsel->core.attr.sample_type;
--	const u64 *array;
-+	const __u64 *array;
- 
- 	if (!(type & PERF_SAMPLE_TIME))
- 		return -1;
-@@ -2529,7 +2529,7 @@ int perf_event__synthesize_sample(union perf_event *event, u64 type,
- 				  u64 read_format,
- 				  const struct perf_sample *sample)
- {
--	u64 *array;
-+	__u64 *array;
- 	size_t sz;
- 	/*
- 	 * used for cross-endian analysis. See git commit 65014ab3
+@@ -560,7 +560,7 @@ union perf_event {
+ 	struct perf_record_read		read;
+ 	struct perf_record_throttle	throttle;
+ 	struct perf_record_sample	sample;
+-	struct perf_record_bpf_event	bpf_event;
++	struct perf_record_bpf_event	bpf;
+ 	struct perf_record_ksymbol	ksymbol;
+ 	struct attr_event		attr;
+ 	struct event_update_event	event_update;
