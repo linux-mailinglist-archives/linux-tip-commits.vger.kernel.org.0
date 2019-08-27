@@ -2,443 +2,182 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 361B49EB25
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 27 Aug 2019 16:36:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D5CC09F031
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 27 Aug 2019 18:32:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729951AbfH0Ogq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 27 Aug 2019 10:36:46 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:43963 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729636AbfH0Ogp (ORCPT
+        id S1726678AbfH0Qc0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 27 Aug 2019 12:32:26 -0400
+Received: from gateway32.websitewelcome.com ([192.185.145.178]:39670 "EHLO
+        gateway32.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727138AbfH0Qc0 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 27 Aug 2019 10:36:45 -0400
-Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tip-bot2@linutronix.de>)
-        id 1i2caJ-0008Qx-Fn; Tue, 27 Aug 2019 16:36:35 +0200
-Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 172831C0DDE;
-        Tue, 27 Aug 2019 16:36:35 +0200 (CEST)
-Date:   Tue, 27 Aug 2019 14:36:35 -0000
-From:   "tip-bot2 for Ming Lei" <tip-bot2@linutronix.de>
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] genirq/affinity: Spread vectors on node according to
- nr_cpu ratio
-Cc:     Jon Derrick <jonathan.derrick@intel.com>,
-        Ming Lei <ming.lei@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Keith Busch <kbusch@kernel.org>,
-        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20190816022849.14075-3-ming.lei@redhat.com>
-References: <20190816022849.14075-3-ming.lei@redhat.com>
+        Tue, 27 Aug 2019 12:32:26 -0400
+X-Greylist: delayed 1210 seconds by postgrey-1.27 at vger.kernel.org; Tue, 27 Aug 2019 12:32:25 EDT
+Received: from cm12.websitewelcome.com (cm12.websitewelcome.com [100.42.49.8])
+        by gateway32.websitewelcome.com (Postfix) with ESMTP id 117096DBC
+        for <linux-tip-commits@vger.kernel.org>; Tue, 27 Aug 2019 11:12:15 -0500 (CDT)
+Received: from gator4166.hostgator.com ([108.167.133.22])
+        by cmsmtp with SMTP
+        id 2e4tiHafriQer2e4tibJ7s; Tue, 27 Aug 2019 11:12:15 -0500
+X-Authority-Reason: nr=8
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=WSBQeqkJ5CcbrCqPCgB7MdbtX/7sMQTBGQ+deQxu2II=; b=zGaai2G3SXYyy529zJcXeOarTM
+        IIzW1IpqTl5kIQPPdyKEiGGR2W+dvXsE181psQQBLDn2GhARatHo86O1saJ5hFks0KGkBP2EsC/kt
+        9OPSSa5IVKrWnWzNNMr0yV25cqN4ZiBYUjrxhgztU9yrWjuDp9Ene7jaZYMB/DsePKsOmGb0zIvyc
+        eGGZQG4GwYStLdgjHiuVp1WGR40Fk2FPK0RkBoYWJIch7CzH2Pm/8cSnUAc8kHsrZkUbKHNQyi0dt
+        5Emj7K7etkdiRqGKMCJ9+1TDNROhXOutkQHdN7LJ/mfyoGNk4TZTEXUqCx504Pnp+QLL+Y1Pz3xBC
+        GW/5xXZg==;
+Received: from [189.152.216.116] (port=53388 helo=[192.168.43.131])
+        by gator4166.hostgator.com with esmtpsa (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128)
+        (Exim 4.92)
+        (envelope-from <gustavo@embeddedor.com>)
+        id 1i2e4s-001fut-HC; Tue, 27 Aug 2019 11:12:14 -0500
+Subject: Re: [tip: perf/core] perf script: Fix memory leaks in list_scripts()
+To:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org
+Cc:     Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Andi Kleen <ak@linux.intel.com>, Jiri Olsa <jolsa@redhat.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>
+References: <20190408162748.GA21008@embeddedor>
+ <156689437793.24518.1210962260082729908.tip-bot2@tip-bot2>
+From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+Openpgp: preference=signencrypt
+Autocrypt: addr=gustavo@embeddedor.com; keydata=
+ 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
+ VtSixD1uOgytAP7RWS474w==
+Message-ID: <b660a320-6b32-cc24-d829-1527dfc16e5d@embeddedor.com>
+Date:   Tue, 27 Aug 2019 11:12:04 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Message-ID: <156691659501.23593.1867538449039948777.tip-bot2@tip-bot2>
-X-Mailer: tip-git-log-daemon
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Content-Disposition: inline
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+In-Reply-To: <156689437793.24518.1210962260082729908.tip-bot2@tip-bot2>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 189.152.216.116
+X-Source-L: No
+X-Exim-ID: 1i2e4s-001fut-HC
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: ([192.168.43.131]) [189.152.216.116]:53388
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 2
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the irq/core branch of tip:
+Hi,
 
-Commit-ID:     b1a5a73e64e99faa5f4deef2ae96d7371a0fb5d0
-Gitweb:        https://git.kernel.org/tip/b1a5a73e64e99faa5f4deef2ae96d7371a0fb5d0
-Author:        Ming Lei <ming.lei@redhat.com>
-AuthorDate:    Fri, 16 Aug 2019 10:28:49 +08:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 27 Aug 2019 16:31:17 +02:00
+On 8/27/19 3:26 AM, tip-bot2 for Gustavo A. R. Silva wrote:
+> The following commit has been merged into the perf/core branch of tip:
+> 
+> Commit-ID:     3b4acbb92dbda4829e021e5c6d5410658849fa1c
+> Gitweb:        https://git.kernel.org/tip/3b4acbb92dbda4829e021e5c6d5410658849fa1c
+> Author:        Gustavo A. R. Silva <gustavo@embeddedor.com>
+> AuthorDate:    Mon, 08 Apr 2019 11:27:48 -05:00
+> Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
+> CommitterDate: Mon, 26 Aug 2019 11:58:30 -03:00
+> 
+> perf script: Fix memory leaks in list_scripts()
+> 
+> In case memory resources for *buf* and *paths* were allocated, jump to
+> *out* and release them before return.
+> 
+> Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
 
-genirq/affinity: Spread vectors on node according to nr_cpu ratio
+This should be tagged for stable:
 
-Now __irq_build_affinity_masks() spreads vectors evenly per node, but there
-is a case that not all vectors have been spread when each numa node has a
-different number of CPUs which triggers the warning in the spreading code.
+Cc: stable@vger.kernel.org
 
-Improve the spreading algorithm by
+> Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+> Cc: Andi Kleen <ak@linux.intel.com>
+> Cc: Gustavo A. R. Silva <gustavo@embeddedor.com>
+> Cc: Jiri Olsa <jolsa@redhat.com>
+> Cc: Namhyung Kim <namhyung@kernel.org>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Addresses-Coverity-ID: 1444328 ("Resource leak")
+> Fixes: 6f3da20e151f ("perf report: Support builtin perf script in scripts menu")
+> Link: http://lkml.kernel.org/r/20190408162748.GA21008@embeddedor
+> Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+> ---
+>  tools/perf/ui/browsers/scripts.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+> 
+> diff --git a/tools/perf/ui/browsers/scripts.c b/tools/perf/ui/browsers/scripts.c
+> index f2fd9f0..50e0c03 100644
+> --- a/tools/perf/ui/browsers/scripts.c
+> +++ b/tools/perf/ui/browsers/scripts.c
+> @@ -133,8 +133,10 @@ static int list_scripts(char *script_name, bool *custom,
+>  		int key = ui_browser__input_window("perf script command",
+>  				"Enter perf script command line (without perf script prefix)",
+>  				script_args, "", 0);
+> -		if (key != K_ENTER)
+> -			return -1;
+> +		if (key != K_ENTER) {
+> +			ret = -1;
+> +			goto out;
+> +		}
+>  		sprintf(script_name, "%s script %s", perf, script_args);
+>  	} else if (choice < num + max_std) {
+>  		strcpy(script_name, paths[choice]);
+> 
 
- - assigning vectors according to the ratio of the number of CPUs on a node
-   to the number of remaining CPUs.
-
- - running the assignment from smaller nodes to bigger nodes to guarantee
-   that every active node gets allocated at least one vector.
-
-This ensures that all vectors are spread out. Asided of that the spread
-becomes more fair if the nodes have different number of CPUs.
-
-For example, on the following machine:
-	CPU(s):              16
-	On-line CPU(s) list: 0-15
-	Thread(s) per core:  1
-	Core(s) per socket:  8
-	Socket(s):           2
-	NUMA node(s):        2
-	...
-	NUMA node0 CPU(s):   0,1,3,5-9,11,13-15
-	NUMA node1 CPU(s):   2,4,10,12
-
-When a driver requests to allocate 8 vectors, the following spread results:
-
-	irq 31, cpu list 2,4
-	irq 32, cpu list 10,12
-	irq 33, cpu list 0-1
-	irq 34, cpu list 3,5
-	irq 35, cpu list 6-7
-	irq 36, cpu list 8-9
-	irq 37, cpu list 11,13
-	irq 38, cpu list 14-15
-
-So Node 0 has now 6 and Node 1 has 2 vectors assigned. The original
-algorithm assigned 4 vectors on each node which was unfair versus Node 0.
-
-[ tglx: Massaged changelog ]
-
-Reported-by: Jon Derrick <jonathan.derrick@intel.com>
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Keith Busch <kbusch@kernel.org>
-Reviewed-by: Jon Derrick <jonathan.derrick@intel.com>
-Link: https://lkml.kernel.org/r/20190816022849.14075-3-ming.lei@redhat.com
-
----
- kernel/irq/affinity.c | 239 ++++++++++++++++++++++++++++++++++-------
- 1 file changed, 200 insertions(+), 39 deletions(-)
-
-diff --git a/kernel/irq/affinity.c b/kernel/irq/affinity.c
-index c7cca94..d905e84 100644
---- a/kernel/irq/affinity.c
-+++ b/kernel/irq/affinity.c
-@@ -7,6 +7,7 @@
- #include <linux/kernel.h>
- #include <linux/slab.h>
- #include <linux/cpu.h>
-+#include <linux/sort.h>
- 
- static void irq_spread_init_one(struct cpumask *irqmsk, struct cpumask *nmsk,
- 				unsigned int cpus_per_vec)
-@@ -94,6 +95,155 @@ static int get_nodes_in_cpumask(cpumask_var_t *node_to_cpumask,
- 	return nodes;
- }
- 
-+struct node_vectors {
-+	unsigned id;
-+
-+	union {
-+		unsigned nvectors;
-+		unsigned ncpus;
-+	};
-+};
-+
-+static int ncpus_cmp_func(const void *l, const void *r)
-+{
-+	const struct node_vectors *ln = l;
-+	const struct node_vectors *rn = r;
-+
-+	return ln->ncpus - rn->ncpus;
-+}
-+
-+/*
-+ * Allocate vector number for each node, so that for each node:
-+ *
-+ * 1) the allocated number is >= 1
-+ *
-+ * 2) the allocated numbver is <= active CPU number of this node
-+ *
-+ * The actual allocated total vectors may be less than @numvecs when
-+ * active total CPU number is less than @numvecs.
-+ *
-+ * Active CPUs means the CPUs in '@cpu_mask AND @node_to_cpumask[]'
-+ * for each node.
-+ */
-+static void alloc_nodes_vectors(unsigned int numvecs,
-+				const cpumask_var_t *node_to_cpumask,
-+				const struct cpumask *cpu_mask,
-+				const nodemask_t nodemsk,
-+				struct cpumask *nmsk,
-+				struct node_vectors *node_vectors)
-+{
-+	unsigned n, remaining_ncpus = 0;
-+
-+	for (n = 0; n < nr_node_ids; n++) {
-+		node_vectors[n].id = n;
-+		node_vectors[n].ncpus = UINT_MAX;
-+	}
-+
-+	for_each_node_mask(n, nodemsk) {
-+		unsigned ncpus;
-+
-+		cpumask_and(nmsk, cpu_mask, node_to_cpumask[n]);
-+		ncpus = cpumask_weight(nmsk);
-+
-+		if (!ncpus)
-+			continue;
-+		remaining_ncpus += ncpus;
-+		node_vectors[n].ncpus = ncpus;
-+	}
-+
-+	numvecs = min_t(unsigned, remaining_ncpus, numvecs);
-+
-+	sort(node_vectors, nr_node_ids, sizeof(node_vectors[0]),
-+	     ncpus_cmp_func, NULL);
-+
-+	/*
-+	 * Allocate vectors for each node according to the ratio of this
-+	 * node's nr_cpus to remaining un-assigned ncpus. 'numvecs' is
-+	 * bigger than number of active numa nodes. Always start the
-+	 * allocation from the node with minimized nr_cpus.
-+	 *
-+	 * This way guarantees that each active node gets allocated at
-+	 * least one vector, and the theory is simple: over-allocation
-+	 * is only done when this node is assigned by one vector, so
-+	 * other nodes will be allocated >= 1 vector, since 'numvecs' is
-+	 * bigger than number of numa nodes.
-+	 *
-+	 * One perfect invariant is that number of allocated vectors for
-+	 * each node is <= CPU count of this node:
-+	 *
-+	 * 1) suppose there are two nodes: A and B
-+	 * 	ncpu(X) is CPU count of node X
-+	 * 	vecs(X) is the vector count allocated to node X via this
-+	 * 	algorithm
-+	 *
-+	 * 	ncpu(A) <= ncpu(B)
-+	 * 	ncpu(A) + ncpu(B) = N
-+	 * 	vecs(A) + vecs(B) = V
-+	 *
-+	 * 	vecs(A) = max(1, round_down(V * ncpu(A) / N))
-+	 * 	vecs(B) = V - vecs(A)
-+	 *
-+	 * 	both N and V are integer, and 2 <= V <= N, suppose
-+	 * 	V = N - delta, and 0 <= delta <= N - 2
-+	 *
-+	 * 2) obviously vecs(A) <= ncpu(A) because:
-+	 *
-+	 * 	if vecs(A) is 1, then vecs(A) <= ncpu(A) given
-+	 * 	ncpu(A) >= 1
-+	 *
-+	 * 	otherwise,
-+	 * 		vecs(A) <= V * ncpu(A) / N <= ncpu(A), given V <= N
-+	 *
-+	 * 3) prove how vecs(B) <= ncpu(B):
-+	 *
-+	 * 	if round_down(V * ncpu(A) / N) == 0, vecs(B) won't be
-+	 * 	over-allocated, so vecs(B) <= ncpu(B),
-+	 *
-+	 * 	otherwise:
-+	 *
-+	 * 	vecs(A) =
-+	 * 		round_down(V * ncpu(A) / N) =
-+	 * 		round_down((N - delta) * ncpu(A) / N) =
-+	 * 		round_down((N * ncpu(A) - delta * ncpu(A)) / N)	 >=
-+	 * 		round_down((N * ncpu(A) - delta * N) / N)	 =
-+	 * 		cpu(A) - delta
-+	 *
-+	 * 	then:
-+	 *
-+	 * 	vecs(A) - V >= ncpu(A) - delta - V
-+	 * 	=>
-+	 * 	V - vecs(A) <= V + delta - ncpu(A)
-+	 * 	=>
-+	 * 	vecs(B) <= N - ncpu(A)
-+	 * 	=>
-+	 * 	vecs(B) <= cpu(B)
-+	 *
-+	 * For nodes >= 3, it can be thought as one node and another big
-+	 * node given that is exactly what this algorithm is implemented,
-+	 * and we always re-calculate 'remaining_ncpus' & 'numvecs', and
-+	 * finally for each node X: vecs(X) <= ncpu(X).
-+	 *
-+	 */
-+	for (n = 0; n < nr_node_ids; n++) {
-+		unsigned nvectors, ncpus;
-+
-+		if (node_vectors[n].ncpus == UINT_MAX)
-+			continue;
-+
-+		WARN_ON_ONCE(numvecs == 0);
-+
-+		ncpus = node_vectors[n].ncpus;
-+		nvectors = max_t(unsigned, 1,
-+				 numvecs * ncpus / remaining_ncpus);
-+		WARN_ON_ONCE(nvectors > ncpus);
-+
-+		node_vectors[n].nvectors = nvectors;
-+
-+		remaining_ncpus -= ncpus;
-+		numvecs -= nvectors;
-+	}
-+}
-+
- static int __irq_build_affinity_masks(unsigned int startvec,
- 				      unsigned int numvecs,
- 				      unsigned int firstvec,
-@@ -102,10 +252,11 @@ static int __irq_build_affinity_masks(unsigned int startvec,
- 				      struct cpumask *nmsk,
- 				      struct irq_affinity_desc *masks)
- {
--	unsigned int n, nodes, cpus_per_vec, extra_vecs, done = 0;
-+	unsigned int i, n, nodes, cpus_per_vec, extra_vecs, done = 0;
- 	unsigned int last_affv = firstvec + numvecs;
- 	unsigned int curvec = startvec;
- 	nodemask_t nodemsk = NODE_MASK_NONE;
-+	struct node_vectors *node_vectors;
- 
- 	if (!cpumask_weight(cpu_mask))
- 		return 0;
-@@ -126,53 +277,57 @@ static int __irq_build_affinity_masks(unsigned int startvec,
- 		return numvecs;
- 	}
- 
--	for_each_node_mask(n, nodemsk) {
--		unsigned int ncpus, v, vecs_to_assign, vecs_per_node;
-+	node_vectors = kcalloc(nr_node_ids,
-+			       sizeof(struct node_vectors),
-+			       GFP_KERNEL);
-+	if (!node_vectors)
-+		return -ENOMEM;
-+
-+	/* allocate vector number for each node */
-+	alloc_nodes_vectors(numvecs, node_to_cpumask, cpu_mask,
-+			    nodemsk, nmsk, node_vectors);
-+
-+	for (i = 0; i < nr_node_ids; i++) {
-+		unsigned int ncpus, v;
-+		struct node_vectors *nv = &node_vectors[i];
-+
-+		if (nv->nvectors == UINT_MAX)
-+			continue;
- 
- 		/* Get the cpus on this node which are in the mask */
--		cpumask_and(nmsk, cpu_mask, node_to_cpumask[n]);
-+		cpumask_and(nmsk, cpu_mask, node_to_cpumask[nv->id]);
- 		ncpus = cpumask_weight(nmsk);
- 		if (!ncpus)
- 			continue;
- 
--		/*
--		 * Calculate the number of cpus per vector
--		 *
--		 * Spread the vectors evenly per node. If the requested
--		 * vector number has been reached, simply allocate one
--		 * vector for each remaining node so that all nodes can
--		 * be covered
--		 */
--		if (numvecs > done)
--			vecs_per_node = max_t(unsigned,
--					(numvecs - done) / nodes, 1);
--		else
--			vecs_per_node = 1;
--
--		vecs_to_assign = min(vecs_per_node, ncpus);
-+		WARN_ON_ONCE(nv->nvectors > ncpus);
- 
- 		/* Account for rounding errors */
--		extra_vecs = ncpus - vecs_to_assign * (ncpus / vecs_to_assign);
-+		extra_vecs = ncpus - nv->nvectors * (ncpus / nv->nvectors);
- 
--		for (v = 0; curvec < last_affv && v < vecs_to_assign;
--		     curvec++, v++) {
--			cpus_per_vec = ncpus / vecs_to_assign;
-+		/* Spread allocated vectors on CPUs of the current node */
-+		for (v = 0; v < nv->nvectors; v++, curvec++) {
-+			cpus_per_vec = ncpus / nv->nvectors;
- 
- 			/* Account for extra vectors to compensate rounding errors */
- 			if (extra_vecs) {
- 				cpus_per_vec++;
- 				--extra_vecs;
- 			}
-+
-+			/*
-+			 * wrapping has to be considered given 'startvec'
-+			 * may start anywhere
-+			 */
-+			if (curvec >= last_affv)
-+				curvec = firstvec;
- 			irq_spread_init_one(&masks[curvec].mask, nmsk,
- 						cpus_per_vec);
- 		}
--
--		done += v;
--		if (curvec >= last_affv)
--			curvec = firstvec;
--		--nodes;
-+		done += nv->nvectors;
- 	}
--	return done < numvecs ? done : numvecs;
-+	kfree(node_vectors);
-+	return done;
- }
- 
- /*
-@@ -184,7 +339,7 @@ static int irq_build_affinity_masks(unsigned int startvec, unsigned int numvecs,
- 				    unsigned int firstvec,
- 				    struct irq_affinity_desc *masks)
- {
--	unsigned int curvec = startvec, nr_present, nr_others;
-+	unsigned int curvec = startvec, nr_present = 0, nr_others = 0;
- 	cpumask_var_t *node_to_cpumask;
- 	cpumask_var_t nmsk, npresmsk;
- 	int ret = -ENOMEM;
-@@ -199,15 +354,17 @@ static int irq_build_affinity_masks(unsigned int startvec, unsigned int numvecs,
- 	if (!node_to_cpumask)
- 		goto fail_npresmsk;
- 
--	ret = 0;
- 	/* Stabilize the cpumasks */
- 	get_online_cpus();
- 	build_node_to_cpumask(node_to_cpumask);
- 
- 	/* Spread on present CPUs starting from affd->pre_vectors */
--	nr_present = __irq_build_affinity_masks(curvec, numvecs,
--						firstvec, node_to_cpumask,
--						cpu_present_mask, nmsk, masks);
-+	ret = __irq_build_affinity_masks(curvec, numvecs, firstvec,
-+					 node_to_cpumask, cpu_present_mask,
-+					 nmsk, masks);
-+	if (ret < 0)
-+		goto fail_build_affinity;
-+	nr_present = ret;
- 
- 	/*
- 	 * Spread on non present CPUs starting from the next vector to be
-@@ -220,12 +377,16 @@ static int irq_build_affinity_masks(unsigned int startvec, unsigned int numvecs,
- 	else
- 		curvec = firstvec + nr_present;
- 	cpumask_andnot(npresmsk, cpu_possible_mask, cpu_present_mask);
--	nr_others = __irq_build_affinity_masks(curvec, numvecs,
--					       firstvec, node_to_cpumask,
--					       npresmsk, nmsk, masks);
-+	ret = __irq_build_affinity_masks(curvec, numvecs, firstvec,
-+					 node_to_cpumask, npresmsk, nmsk,
-+					 masks);
-+	if (ret >= 0)
-+		nr_others = ret;
-+
-+ fail_build_affinity:
- 	put_online_cpus();
- 
--	if (nr_present < numvecs)
-+	if (ret >= 0)
- 		WARN_ON(nr_present + nr_others < numvecs);
- 
- 	free_node_to_cpumask(node_to_cpumask);
-@@ -235,7 +396,7 @@ static int irq_build_affinity_masks(unsigned int startvec, unsigned int numvecs,
- 
-  fail_nmsk:
- 	free_cpumask_var(nmsk);
--	return ret;
-+	return ret < 0 ? ret : 0;
- }
- 
- static void default_calc_sets(struct irq_affinity *affd, unsigned int affvecs)
+--
+Gustavo
