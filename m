@@ -2,29 +2,29 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2819A9E277
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 27 Aug 2019 10:27:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 402E79E285
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 27 Aug 2019 10:28:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730058AbfH0I0f (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 27 Aug 2019 04:26:35 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:42852 "EHLO
+        id S1729047AbfH0I1c (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 27 Aug 2019 04:27:32 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:42831 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729989AbfH0I0f (ORCPT
+        with ESMTP id S1729935AbfH0I0c (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 27 Aug 2019 04:26:35 -0400
+        Tue, 27 Aug 2019 04:26:32 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i2Wo5-0007sm-Rh; Tue, 27 Aug 2019 10:26:25 +0200
+        id 1i2Wo3-0007u0-EC; Tue, 27 Aug 2019 10:26:23 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 2F4F31C0DE0;
-        Tue, 27 Aug 2019 10:26:20 +0200 (CEST)
-Date:   Tue, 27 Aug 2019 08:26:20 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B30D81C0DE3;
+        Tue, 27 Aug 2019 10:26:21 +0200 (CEST)
+Date:   Tue, 27 Aug 2019 08:26:21 -0000
 From:   tip-bot2 for Jiri Olsa <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] libperf: Add PERF_RECORD_FORK 'struct fork_event' to
+Subject: [tip: perf/core] libperf: Add PERF_RECORD_READ 'struct read_event' to
  perf/event.h
 Cc:     Jiri Olsa <jolsa@kernel.org>,
         Alexander Shishkin <alexander.shishkin@linux.intel.com>,
@@ -34,10 +34,10 @@ Cc:     Jiri Olsa <jolsa@kernel.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20190825181752.722-6-jolsa@kernel.org>
-References: <20190825181752.722-6-jolsa@kernel.org>
+In-Reply-To: <20190825181752.722-9-jolsa@kernel.org>
+References: <20190825181752.722-9-jolsa@kernel.org>
 MIME-Version: 1.0
-Message-ID: <156689438007.24534.12659074587476165506.tip-bot2@tip-bot2>
+Message-ID: <156689438154.24544.8209665051621814081.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -54,16 +54,16 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     bceb59b1f28d1ca812d816fd8f33c72b1a8378fb
-Gitweb:        https://git.kernel.org/tip/bceb59b1f28d1ca812d816fd8f33c72b1a8378fb
+Commit-ID:     213a6c1d20687d44acaa1cb4f77ce5bae4f1dd8f
+Gitweb:        https://git.kernel.org/tip/213a6c1d20687d44acaa1cb4f77ce5bae4f1dd8f
 Author:        Jiri Olsa <jolsa@kernel.org>
-AuthorDate:    Sun, 25 Aug 2019 20:17:45 +02:00
+AuthorDate:    Sun, 25 Aug 2019 20:17:48 +02:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Mon, 26 Aug 2019 19:39:09 -03:00
+CommitterDate: Mon, 26 Aug 2019 19:39:10 -03:00
 
-libperf: Add PERF_RECORD_FORK 'struct fork_event' to perf/event.h
+libperf: Add PERF_RECORD_READ 'struct read_event' to perf/event.h
 
-Move the fork_event event definition into libperf's event.h header
+Move the PERF_RECORD_READ event definition to libperf's event.h header
 include.
 
 In order to keep libperf simple, we switch 'u64/u32/u16/u8' types used
@@ -80,67 +80,93 @@ as stated in the linux/types.h comment:
    * typedef __s64 s64;
    */
 
-Add and use new PRI_lu64 and PRI_lx64 macros for that.  Using extra '_'
-to ease up the reading and differentiate them from standard PRI*64
-macros.
+Add and use new PRI_lu64 and PRI_lx64 macros for that.  Use extra '_' to
+ease up the reading and differentiate them from standard PRI*64 macros.
 
 Signed-off-by: Jiri Olsa <jolsa@kernel.org>
 Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 Cc: Michael Petlan <mpetlan@redhat.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Link: http://lkml.kernel.org/r/20190825181752.722-6-jolsa@kernel.org
+Link: http://lkml.kernel.org/r/20190825181752.722-9-jolsa@kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/lib/include/perf/event.h | 7 +++++++
- tools/perf/util/event.h             | 7 -------
- tools/perf/util/python.c            | 2 +-
- 3 files changed, 8 insertions(+), 8 deletions(-)
+ tools/perf/lib/include/perf/event.h | 12 ++++++++++++
+ tools/perf/util/event.h             | 12 ------------
+ tools/perf/util/session.c           |  8 ++++----
+ 3 files changed, 16 insertions(+), 16 deletions(-)
 
 diff --git a/tools/perf/lib/include/perf/event.h b/tools/perf/lib/include/perf/event.h
-index b90a8a2..c7cae58 100644
+index 86a7795..f183070 100644
 --- a/tools/perf/lib/include/perf/event.h
 +++ b/tools/perf/lib/include/perf/event.h
-@@ -43,4 +43,11 @@ struct namespaces_event {
- 	struct perf_ns_link_info link_info[];
+@@ -61,4 +61,16 @@ struct lost_samples_event {
+ 	__u64			 lost;
  };
  
-+struct fork_event {
++/*
++ * PERF_FORMAT_ENABLED | PERF_FORMAT_RUNNING | PERF_FORMAT_ID
++ */
++struct read_event {
 +	struct perf_event_header header;
-+	__u32			 pid, ppid;
-+	__u32			 tid, ptid;
-+	__u64			 time;
++	__u32			 pid, tid;
++	__u64			 value;
++	__u64			 time_enabled;
++	__u64			 time_running;
++	__u64			 id;
 +};
 +
  #endif /* __LIBPERF_EVENT_H */
 diff --git a/tools/perf/util/event.h b/tools/perf/util/event.h
-index 0d3ac4f..38b258c 100644
+index 976a8f0..008a283 100644
 --- a/tools/perf/util/event.h
 +++ b/tools/perf/util/event.h
-@@ -27,13 +27,6 @@
+@@ -27,18 +27,6 @@
  #define PRI_lx64 PRIx64
  #endif
  
--struct fork_event {
+-/*
+- * PERF_FORMAT_ENABLED | PERF_FORMAT_RUNNING | PERF_FORMAT_ID
+- */
+-struct read_event {
 -	struct perf_event_header header;
--	u32 pid, ppid;
--	u32 tid, ptid;
--	u64 time;
+-	u32 pid, tid;
+-	u64 value;
+-	u64 time_enabled;
+-	u64 time_running;
+-	u64 id;
 -};
 -
- struct lost_event {
+ struct throttle_event {
  	struct perf_event_header header;
- 	u64 id;
-diff --git a/tools/perf/util/python.c b/tools/perf/util/python.c
-index 55ff0c3..8bdadb2 100644
---- a/tools/perf/util/python.c
-+++ b/tools/perf/util/python.c
-@@ -170,7 +170,7 @@ static PyMemberDef pyrf_task_event__members[] = {
- static PyObject *pyrf_task_event__repr(struct pyrf_event *pevent)
- {
- 	return _PyUnicode_FromFormat("{ type: %s, pid: %u, ppid: %u, tid: %u, "
--				   "ptid: %u, time: %" PRIu64 "}",
-+				   "ptid: %u, time: %" PRI_lu64 "}",
- 				   pevent->event.header.type == PERF_RECORD_FORK ? "fork" : "exit",
- 				   pevent->event.fork.pid,
- 				   pevent->event.fork.ppid,
+ 	u64 time;
+diff --git a/tools/perf/util/session.c b/tools/perf/util/session.c
+index 82e0438..cb1d8dc 100644
+--- a/tools/perf/util/session.c
++++ b/tools/perf/util/session.c
+@@ -1260,7 +1260,7 @@ static void dump_read(struct evsel *evsel, union perf_event *event)
+ 	if (!dump_trace)
+ 		return;
+ 
+-	printf(": %d %d %s %" PRIu64 "\n", event->read.pid, event->read.tid,
++	printf(": %d %d %s %" PRI_lu64 "\n", event->read.pid, event->read.tid,
+ 	       perf_evsel__name(evsel),
+ 	       event->read.value);
+ 
+@@ -1270,13 +1270,13 @@ static void dump_read(struct evsel *evsel, union perf_event *event)
+ 	read_format = evsel->core.attr.read_format;
+ 
+ 	if (read_format & PERF_FORMAT_TOTAL_TIME_ENABLED)
+-		printf("... time enabled : %" PRIu64 "\n", read_event->time_enabled);
++		printf("... time enabled : %" PRI_lu64 "\n", read_event->time_enabled);
+ 
+ 	if (read_format & PERF_FORMAT_TOTAL_TIME_RUNNING)
+-		printf("... time running : %" PRIu64 "\n", read_event->time_running);
++		printf("... time running : %" PRI_lu64 "\n", read_event->time_running);
+ 
+ 	if (read_format & PERF_FORMAT_ID)
+-		printf("... id           : %" PRIu64 "\n", read_event->id);
++		printf("... id           : %" PRI_lu64 "\n", read_event->id);
+ }
+ 
+ static struct machine *machines__find_for_cpumode(struct machines *machines,
