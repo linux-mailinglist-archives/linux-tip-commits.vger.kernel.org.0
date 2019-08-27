@@ -2,40 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0140F9E2A1
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 27 Aug 2019 10:28:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BEF09E2A0
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 27 Aug 2019 10:28:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729194AbfH0I0U (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 27 Aug 2019 04:26:20 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:42690 "EHLO
+        id S1729396AbfH0I0V (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 27 Aug 2019 04:26:21 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:42706 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728222AbfH0I0T (ORCPT
+        with ESMTP id S1727306AbfH0I0U (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 27 Aug 2019 04:26:19 -0400
+        Tue, 27 Aug 2019 04:26:20 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i2Wnq-0007lo-Op; Tue, 27 Aug 2019 10:26:10 +0200
+        id 1i2Wnt-0007nU-Su; Tue, 27 Aug 2019 10:26:14 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 6BD2D1C0DDE;
-        Tue, 27 Aug 2019 10:26:10 +0200 (CEST)
-Date:   Tue, 27 Aug 2019 08:26:10 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 86C021C07DC;
+        Tue, 27 Aug 2019 10:26:13 +0200 (CEST)
+Date:   Tue, 27 Aug 2019 08:26:13 -0000
 From:   tip-bot2 for Arnaldo Carvalho de Melo <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf cacheline: Move cacheline related routines to
- separate files
+Subject: [tip: perf/core] perf sort: Remove needless headers from sort.h,
+ provide fwd struct decls
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         Jiri Olsa <jolsa@kernel.org>,
         Namhyung Kim <namhyung@kernel.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <tip-6kbf2cauas06rbqp15pyter5@git.kernel.org>
-References: <tip-6kbf2cauas06rbqp15pyter5@git.kernel.org>
+In-Reply-To: <tip-u63el2vqsovsmnhebx1rcixo@git.kernel.org>
+References: <tip-u63el2vqsovsmnhebx1rcixo@git.kernel.org>
 MIME-Version: 1.0
-Message-ID: <156689437029.24479.16720726998675578375.tip-bot2@tip-bot2>
+Message-ID: <156689437339.24487.57241566156068084.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -52,193 +52,113 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     125009026bfc9ec929975d35344bf69d2c636e95
-Gitweb:        https://git.kernel.org/tip/125009026bfc9ec929975d35344bf69d2c636e95
+Commit-ID:     185bcb92c80eae2d85ec834ea76a144fd163e2af
+Gitweb:        https://git.kernel.org/tip/185bcb92c80eae2d85ec834ea76a144fd163e2af
 Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Thu, 22 Aug 2019 16:58:29 -03:00
+AuthorDate:    Thu, 22 Aug 2019 17:11:39 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Mon, 26 Aug 2019 11:58:29 -03:00
 
-perf cacheline: Move cacheline related routines to separate files
+perf sort: Remove needless headers from sort.h, provide fwd struct decls
 
-To disentangle util/sort.h a bit more.
+Reducing the includes hell a bit more, speeding up the build and
+avoiding needless rebuilds when just one of those files gets updated.
 
 Cc: Adrian Hunter <adrian.hunter@intel.com>
 Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lkml.kernel.org/n/tip-6kbf2cauas06rbqp15pyter5@git.kernel.org
+Link: https://lkml.kernel.org/n/tip-u63el2vqsovsmnhebx1rcixo@git.kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/builtin-c2c.c    |  1 +
- tools/perf/util/Build       |  1 +
- tools/perf/util/cacheline.c | 26 ++++++++++++++++++++++++++
- tools/perf/util/cacheline.h | 21 +++++++++++++++++++++
- tools/perf/util/sort.c      |  1 +
- tools/perf/util/sort.h      | 12 ------------
- tools/perf/util/util.c      | 20 --------------------
- tools/perf/util/util.h      |  1 -
- 8 files changed, 50 insertions(+), 33 deletions(-)
- create mode 100644 tools/perf/util/cacheline.c
- create mode 100644 tools/perf/util/cacheline.h
+ tools/perf/ui/browsers/res_sample.c |  2 ++
+ tools/perf/ui/browsers/scripts.c    |  2 ++
+ tools/perf/ui/stdio/hist.c          |  1 +
+ tools/perf/util/callchain.c         |  1 +
+ tools/perf/util/sort.h              | 15 ++-------------
+ 5 files changed, 8 insertions(+), 13 deletions(-)
 
-diff --git a/tools/perf/builtin-c2c.c b/tools/perf/builtin-c2c.c
-index 2111437..73782d9 100644
---- a/tools/perf/builtin-c2c.c
-+++ b/tools/perf/builtin-c2c.c
-@@ -26,6 +26,7 @@
- #include "hist.h"
+diff --git a/tools/perf/ui/browsers/res_sample.c b/tools/perf/ui/browsers/res_sample.c
+index 08897bd..41a9d89 100644
+--- a/tools/perf/ui/browsers/res_sample.c
++++ b/tools/perf/ui/browsers/res_sample.c
+@@ -6,6 +6,8 @@
  #include "sort.h"
- #include "tool.h"
-+#include "cacheline.h"
- #include "data.h"
- #include "event.h"
- #include "evlist.h"
-diff --git a/tools/perf/util/Build b/tools/perf/util/Build
-index b922c8c..2e38564 100644
---- a/tools/perf/util/Build
-+++ b/tools/perf/util/Build
-@@ -1,6 +1,7 @@
- perf-y += annotate.o
- perf-y += block-range.o
- perf-y += build-id.o
-+perf-y += cacheline.o
- perf-y += config.o
- perf-y += ctype.o
- perf-y += db-export.o
-diff --git a/tools/perf/util/cacheline.c b/tools/perf/util/cacheline.c
-new file mode 100644
-index 0000000..9361d3f
---- /dev/null
-+++ b/tools/perf/util/cacheline.c
-@@ -0,0 +1,26 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#include "cacheline.h"
-+#include "../perf.h"
-+#include <unistd.h>
-+
-+#ifdef _SC_LEVEL1_DCACHE_LINESIZE
-+#define cache_line_size(cacheline_sizep) *cacheline_sizep = sysconf(_SC_LEVEL1_DCACHE_LINESIZE)
-+#else
-+#include <api/fs/fs.h>
-+#include "debug.h"
-+static void cache_line_size(int *cacheline_sizep)
-+{
-+	if (sysfs__read_int("devices/system/cpu/cpu0/cache/index0/coherency_line_size", cacheline_sizep))
-+		pr_debug("cannot determine cache line size");
-+}
-+#endif
-+
-+int cacheline_size(void)
-+{
-+	static int size;
-+
-+	if (!size)
-+		cache_line_size(&size);
-+
-+	return size;
-+}
-diff --git a/tools/perf/util/cacheline.h b/tools/perf/util/cacheline.h
-new file mode 100644
-index 0000000..dec8c0f
---- /dev/null
-+++ b/tools/perf/util/cacheline.h
-@@ -0,0 +1,21 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef PERF_CACHELINE_H
-+#define PERF_CACHELINE_H
-+
-+#include <linux/compiler.h>
-+
-+int __pure cacheline_size(void);
-+
-+static inline u64 cl_address(u64 address)
-+{
-+	/* return the cacheline of the address */
-+	return (address & ~(cacheline_size() - 1));
-+}
-+
-+static inline u64 cl_offset(u64 address)
-+{
-+	/* return the cacheline of the address */
-+	return (address & (cacheline_size() - 1));
-+}
-+
-+#endif // PERF_CACHELINE_H
-diff --git a/tools/perf/util/sort.c b/tools/perf/util/sort.c
-index f9a38a1..904ff4b 100644
---- a/tools/perf/util/sort.c
-+++ b/tools/perf/util/sort.c
-@@ -6,6 +6,7 @@
+ #include "config.h"
+ #include "time-utils.h"
++#include "../util.h"
++#include "../../util/util.h"
  #include <linux/time64.h>
- #include "sort.h"
+ #include <linux/zalloc.h>
+ 
+diff --git a/tools/perf/ui/browsers/scripts.c b/tools/perf/ui/browsers/scripts.c
+index 04f9aff..f2fd9f0 100644
+--- a/tools/perf/ui/browsers/scripts.c
++++ b/tools/perf/ui/browsers/scripts.c
+@@ -1,5 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0
++#include "../../builtin.h"
+ #include "../../util/sort.h"
++#include "../../util/util.h"
+ #include "../../util/hist.h"
+ #include "../../util/debug.h"
+ #include "../../util/symbol.h"
+diff --git a/tools/perf/ui/stdio/hist.c b/tools/perf/ui/stdio/hist.c
+index ee7ea6d..51ed675 100644
+--- a/tools/perf/ui/stdio/hist.c
++++ b/tools/perf/ui/stdio/hist.c
+@@ -3,6 +3,7 @@
+ #include <linux/string.h>
+ 
+ #include "../../util/callchain.h"
++#include "../../util/debug.h"
+ #include "../../util/hist.h"
+ #include "../../util/map.h"
+ #include "../../util/map_groups.h"
+diff --git a/tools/perf/util/callchain.c b/tools/perf/util/callchain.c
+index d077704..dd6e010 100644
+--- a/tools/perf/util/callchain.c
++++ b/tools/perf/util/callchain.c
+@@ -20,6 +20,7 @@
+ 
+ #include "asm/bug.h"
+ 
++#include "debug.h"
  #include "hist.h"
-+#include "cacheline.h"
- #include "comm.h"
- #include "map.h"
- #include "symbol.h"
+ #include "sort.h"
+ #include "machine.h"
 diff --git a/tools/perf/util/sort.h b/tools/perf/util/sort.h
-index 5e34676..4ae155c 100644
+index 4ae155c..3d7cef7 100644
 --- a/tools/perf/util/sort.h
 +++ b/tools/perf/util/sort.h
-@@ -204,18 +204,6 @@ static inline float hist_entry__get_percent_limit(struct hist_entry *he)
- 	return period * 100.0 / total_period;
- }
- 
--static inline u64 cl_address(u64 address)
--{
--	/* return the cacheline of the address */
--	return (address & ~(cacheline_size() - 1));
--}
+@@ -1,29 +1,18 @@
+ /* SPDX-License-Identifier: GPL-2.0 */
+ #ifndef __PERF_SORT_H
+ #define __PERF_SORT_H
+-#include "../builtin.h"
 -
--static inline u64 cl_offset(u64 address)
--{
--	/* return the cacheline of the address */
--	return (address & (cacheline_size() - 1));
--}
+ #include <regex.h>
 -
- enum sort_mode {
- 	SORT_MODE__NORMAL,
- 	SORT_MODE__BRANCH,
-diff --git a/tools/perf/util/util.c b/tools/perf/util/util.c
-index 6fd130a..44211e4 100644
---- a/tools/perf/util/util.c
-+++ b/tools/perf/util/util.c
-@@ -43,26 +43,6 @@ void perf_set_multithreaded(void)
+-#include "color.h"
++#include <stdbool.h>
+ #include <linux/list.h>
+-#include "cache.h"
+ #include <linux/rbtree.h>
+ #include "map_symbol.h"
+ #include "symbol_conf.h"
+-#include "string.h"
+ #include "callchain.h"
+ #include "values.h"
  
- unsigned int page_size;
- 
--#ifdef _SC_LEVEL1_DCACHE_LINESIZE
--#define cache_line_size(cacheline_sizep) *cacheline_sizep = sysconf(_SC_LEVEL1_DCACHE_LINESIZE)
--#else
--static void cache_line_size(int *cacheline_sizep)
--{
--	if (sysfs__read_int("devices/system/cpu/cpu0/cache/index0/coherency_line_size", cacheline_sizep))
--		pr_debug("cannot determine cache line size");
--}
--#endif
+-#include "../perf.h"
+-#include "debug.h"
+-#include "header.h"
 -
--int cacheline_size(void)
--{
--	static int size;
--
--	if (!size)
--		cache_line_size(&size);
--
--	return size;
--}
--
- int sysctl_perf_event_max_stack = PERF_MAX_STACK_DEPTH;
- int sysctl_perf_event_max_contexts_per_stack = PERF_MAX_CONTEXTS_PER_STACK;
+-#include <subcmd/parse-options.h>
+-#include "parse-events.h"
+ #include "hist.h"
+-#include "srcline.h"
  
-diff --git a/tools/perf/util/util.h b/tools/perf/util/util.h
-index 0dab140..45a5c6f 100644
---- a/tools/perf/util/util.h
-+++ b/tools/perf/util/util.h
-@@ -34,7 +34,6 @@ int copyfile_offset(int ifd, loff_t off_in, int ofd, loff_t off_out, u64 size);
- size_t hex_width(u64 v);
++struct option;
+ struct thread;
  
- extern unsigned int page_size;
--int __pure cacheline_size(void);
- 
- int sysctl__max_stack(void);
- 
+ extern regex_t parent_regex;
