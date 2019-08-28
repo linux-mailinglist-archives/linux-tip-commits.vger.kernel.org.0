@@ -2,38 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E79A19FF7E
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 28 Aug 2019 12:19:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 61C9E9FF7F
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 28 Aug 2019 12:19:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726457AbfH1KQZ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S1726447AbfH1KQZ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Wed, 28 Aug 2019 06:16:25 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:46358 "EHLO
+Received: from Galois.linutronix.de ([193.142.43.55]:46353 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726300AbfH1KQY (ORCPT
+        with ESMTP id S1726292AbfH1KQY (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Wed, 28 Aug 2019 06:16:24 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i2v00-0000Al-B8; Wed, 28 Aug 2019 12:16:20 +0200
+        id 1i2uzz-0000AQ-T3; Wed, 28 Aug 2019 12:16:20 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id F1EF81C07D2;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 830F01C0DE2;
         Wed, 28 Aug 2019 12:16:19 +0200 (CEST)
 Date:   Wed, 28 Aug 2019 10:16:19 -0000
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
 Subject: [tip: timers/core] posix-cpu-timers: Use common permission check in
- posix_cpu_timer_create()
+ posix_cpu_clock_get()
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Frederic Weisbecker <frederic@kernel.org>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20190821192919.505833418@linutronix.de>
-References: <20190821192919.505833418@linutronix.de>
+In-Reply-To: <20190821192919.414813172@linutronix.de>
+References: <20190821192919.414813172@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <156698737988.5692.15003724980491955957.tip-bot2@tip-bot2>
+Message-ID: <156698737946.5688.8980349129135194974.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,73 +49,95 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     e5a8b65b4cb2fe024b83bdec0424269949cc0a27
-Gitweb:        https://git.kernel.org/tip/e5a8b65b4cb2fe024b83bdec0424269949cc0a27
+Commit-ID:     bfcf3e92c6c07cd1084624bad5622f3dad96328c
+Gitweb:        https://git.kernel.org/tip/bfcf3e92c6c07cd1084624bad5622f3dad96328c
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Wed, 21 Aug 2019 21:08:50 +02:00
+AuthorDate:    Wed, 21 Aug 2019 21:08:49 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Wed, 28 Aug 2019 11:50:25 +02:00
 
-posix-cpu-timers: Use common permission check in posix_cpu_timer_create()
+posix-cpu-timers: Use common permission check in posix_cpu_clock_get()
 
-Yet another copy of the same thing gone...
+Replace the next slightly different copy of permission checks. That also
+removes the necessarity to check the return value of the sample functions
+because the clock id is already validated.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Link: https://lkml.kernel.org/r/20190821192919.505833418@linutronix.de
+Link: https://lkml.kernel.org/r/20190821192919.414813172@linutronix.de
 
 ---
- kernel/time/posix-cpu-timers.c | 35 ++-------------------------------
- 1 file changed, 3 insertions(+), 32 deletions(-)
+ kernel/time/posix-cpu-timers.c | 57 ++++++++-------------------------
+ 1 file changed, 14 insertions(+), 43 deletions(-)
 
 diff --git a/kernel/time/posix-cpu-timers.c b/kernel/time/posix-cpu-timers.c
-index eb11117..4426a0f 100644
+index b06ed8b..eb11117 100644
 --- a/kernel/time/posix-cpu-timers.c
 +++ b/kernel/time/posix-cpu-timers.c
-@@ -316,44 +316,15 @@ static int posix_cpu_clock_get(const clockid_t clock, struct timespec64 *tp)
-  */
- static int posix_cpu_timer_create(struct k_itimer *new_timer)
+@@ -289,53 +289,24 @@ static int cpu_clock_sample_group(const clockid_t which_clock,
+ 	return 0;
+ }
+ 
+-static int posix_cpu_clock_get_task(struct task_struct *tsk,
+-				    const clockid_t which_clock,
+-				    struct timespec64 *tp)
++static int posix_cpu_clock_get(const clockid_t clock, struct timespec64 *tp)
  {
--	int ret = 0;
--	const pid_t pid = CPUCLOCK_PID(new_timer->it_clock);
--	struct task_struct *p;
-+	struct task_struct *p = get_task_for_clock(new_timer->it_clock);
- 
--	if (CPUCLOCK_WHICH(new_timer->it_clock) >= CPUCLOCK_MAX)
-+	if (!p)
- 		return -EINVAL;
- 
- 	new_timer->kclock = &clock_posix_cpu;
+-	int err = -EINVAL;
+-	u64 rtn;
 -
- 	INIT_LIST_HEAD(&new_timer->it.cpu.entry);
--
--	rcu_read_lock();
--	if (CPUCLOCK_PERTHREAD(new_timer->it_clock)) {
--		if (pid == 0) {
--			p = current;
--		} else {
--			p = find_task_by_vpid(pid);
--			if (p && !same_thread_group(p, current))
--				p = NULL;
--		}
+-	if (CPUCLOCK_PERTHREAD(which_clock)) {
+-		if (same_thread_group(tsk, current))
+-			err = cpu_clock_sample(which_clock, tsk, &rtn);
 -	} else {
--		if (pid == 0) {
--			p = current->group_leader;
--		} else {
--			p = find_task_by_vpid(pid);
--			if (p && !has_group_leader_pid(p))
--				p = NULL;
--		}
+-		if (tsk == current || thread_group_leader(tsk))
+-			err = cpu_clock_sample_group(which_clock, tsk, &rtn);
 -	}
- 	new_timer->it.cpu.task = p;
--	if (p) {
--		get_task_struct(p);
--	} else {
--		ret = -EINVAL;
--	}
--	rcu_read_unlock();
 -
--	return ret;
+-	if (!err)
+-		*tp = ns_to_timespec64(rtn);
++	const clockid_t clkid = CPUCLOCK_WHICH(clock);
++	struct task_struct *tsk;
++	u64 t;
+ 
+-	return err;
+-}
+-
+-
+-static int posix_cpu_clock_get(const clockid_t which_clock, struct timespec64 *tp)
+-{
+-	const pid_t pid = CPUCLOCK_PID(which_clock);
+-	int err = -EINVAL;
++	tsk = get_task_for_clock(clock);
++	if (!tsk)
++		return -EINVAL;
+ 
+-	if (pid == 0) {
+-		/*
+-		 * Special case constant value for our own clocks.
+-		 * We don't have to do any lookup to find ourselves.
+-		 */
+-		err = posix_cpu_clock_get_task(current, which_clock, tp);
+-	} else {
+-		/*
+-		 * Find the given PID, and validate that the caller
+-		 * should be able to see it.
+-		 */
+-		struct task_struct *p;
+-		rcu_read_lock();
+-		p = find_task_by_vpid(pid);
+-		if (p)
+-			err = posix_cpu_clock_get_task(p, which_clock, tp);
+-		rcu_read_unlock();
+-	}
++	if (CPUCLOCK_PERTHREAD(clock))
++		cpu_clock_sample(clkid, tsk, &t);
++	else
++		cpu_clock_sample_group(clkid, tsk, &t);
++	put_task_struct(tsk);
+ 
+-	return err;
++	*tp = ns_to_timespec64(t);
 +	return 0;
  }
  
