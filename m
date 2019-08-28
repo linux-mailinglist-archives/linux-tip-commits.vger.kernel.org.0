@@ -2,38 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3920B9FFA5
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 28 Aug 2019 12:22:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B77649FFE0
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 28 Aug 2019 12:30:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726292AbfH1KWt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 28 Aug 2019 06:22:49 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:46526 "EHLO
+        id S1726259AbfH1KaM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 28 Aug 2019 06:30:12 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:46547 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726253AbfH1KWt (ORCPT
+        with ESMTP id S1726315AbfH1KaL (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 28 Aug 2019 06:22:49 -0400
+        Wed, 28 Aug 2019 06:30:11 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i2v68-0000p7-54; Wed, 28 Aug 2019 12:22:40 +0200
+        id 1i2vDL-0000vr-EB; Wed, 28 Aug 2019 12:30:07 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id BDCCA1C07D2;
-        Wed, 28 Aug 2019 12:22:39 +0200 (CEST)
-Date:   Wed, 28 Aug 2019 10:22:39 -0000
-From:   "tip-bot2 for Ming Lei" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id EF47B1C07D2;
+        Wed, 28 Aug 2019 12:30:06 +0200 (CEST)
+Date:   Wed, 28 Aug 2019 10:30:06 -0000
+From:   "tip-bot2 for Tianyu Lan" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] genirq/affinity: Remove const qualifier from
- node_to_cpumask argument
-Cc:     kbuild test robot <lkp@intel.com>, Ming Lei <ming.lei@redhat.com>,
+Subject: [tip: timers/core] x86/hyperv: Hide pv_ops access for CONFIG_PARAVIRT=n
+Cc:     Tianyu Lan <Tianyu.Lan@microsoft.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20190828085815.19931-1-ming.lei@redhat.com>
-References: <20190828085815.19931-1-ming.lei@redhat.com>
+In-Reply-To: <20190828080747.204419-1-Tianyu.Lan@microsoft.com>
+References: <20190828080747.204419-1-Tianyu.Lan@microsoft.com>
 MIME-Version: 1.0
-Message-ID: <156698775955.6413.14282501548633391814.tip-bot2@tip-bot2>
+Message-ID: <156698820683.8007.9582744413346389871.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,52 +46,41 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the irq/core branch of tip:
+The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     101f85b56d03b36418bbf867f67d81710839b0ec
-Gitweb:        https://git.kernel.org/tip/101f85b56d03b36418bbf867f67d81710839b0ec
-Author:        Ming Lei <ming.lei@redhat.com>
-AuthorDate:    Wed, 28 Aug 2019 16:58:15 +08:00
+Commit-ID:     41cfe2a2a7f4fad5647031ad3a1da166452b5437
+Gitweb:        https://git.kernel.org/tip/41cfe2a2a7f4fad5647031ad3a1da166452b5437
+Author:        Tianyu Lan <Tianyu.Lan@microsoft.com>
+AuthorDate:    Wed, 28 Aug 2019 16:07:47 +08:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 28 Aug 2019 12:20:43 +02:00
+CommitterDate: Wed, 28 Aug 2019 12:25:06 +02:00
 
-genirq/affinity: Remove const qualifier from node_to_cpumask argument
+x86/hyperv: Hide pv_ops access for CONFIG_PARAVIRT=n
 
-When CONFIG_CPUMASK_OFFSTACK isn't enabled, 'cpumask_var_t' is as
+hv_setup_sched_clock() references pv_ops which is only available when
+CONFIG_PARAVIRT=Y.
 
-'typedef struct cpumask cpumask_var_t[1]',
+Wrap it into a #ifdef
 
-so the argument 'node_to_cpumask' alloc_nodes_vectors() can't be declared
-as 'const cpumask_var_t *'
-
-Fixes the following warning:
-
-   kernel/irq/affinity.c: In function '__irq_build_affinity_masks':
-     alloc_nodes_vectors(numvecs, node_to_cpumask, cpu_mask,
-                                  ^
-   kernel/irq/affinity.c:128:13: note: expected 'const struct cpumask (*)[1]' but argument is of type 'struct cpumask (*)[1]'
-    static void alloc_nodes_vectors(unsigned int numvecs,
-                ^
-Fixes: b1a5a73e64e9 ("genirq/affinity: Spread vectors on node according to nr_cpu ratio")
-Reported-by: kbuild test robot <lkp@intel.com>
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Signed-off-by: Tianyu Lan <Tianyu.Lan@microsoft.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20190828085815.19931-1-ming.lei@redhat.com
+Link: https://lkml.kernel.org/r/20190828080747.204419-1-Tianyu.Lan@microsoft.com
 
 ---
- kernel/irq/affinity.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/cpu/mshyperv.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/kernel/irq/affinity.c b/kernel/irq/affinity.c
-index d905e84..4d89ad4 100644
---- a/kernel/irq/affinity.c
-+++ b/kernel/irq/affinity.c
-@@ -126,7 +126,7 @@ static int ncpus_cmp_func(const void *l, const void *r)
-  * for each node.
-  */
- static void alloc_nodes_vectors(unsigned int numvecs,
--				const cpumask_var_t *node_to_cpumask,
-+				cpumask_var_t *node_to_cpumask,
- 				const struct cpumask *cpu_mask,
- 				const nodemask_t nodemsk,
- 				struct cpumask *nmsk,
+diff --git a/arch/x86/kernel/cpu/mshyperv.c b/arch/x86/kernel/cpu/mshyperv.c
+index 53afd33..267daad 100644
+--- a/arch/x86/kernel/cpu/mshyperv.c
++++ b/arch/x86/kernel/cpu/mshyperv.c
+@@ -346,7 +346,9 @@ static void __init ms_hyperv_init_platform(void)
+ 
+ void hv_setup_sched_clock(void *sched_clock)
+ {
++#ifdef CONFIG_PARAVIRT
+ 	pv_ops.time.sched_clock = sched_clock;
++#endif
+ }
+ 
+ const __initconst struct hypervisor_x86 x86_hyper_ms_hyperv = {
