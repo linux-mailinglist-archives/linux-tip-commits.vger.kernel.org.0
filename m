@@ -2,43 +2,41 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B61B09FF25
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 28 Aug 2019 12:09:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 662589FF38
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 28 Aug 2019 12:16:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726273AbfH1KJv convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 28 Aug 2019 06:09:51 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:46332 "EHLO
+        id S1726328AbfH1KQX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 28 Aug 2019 06:16:23 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:46343 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726259AbfH1KJu (ORCPT
+        with ESMTP id S1726246AbfH1KQX (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 28 Aug 2019 06:09:50 -0400
+        Wed, 28 Aug 2019 06:16:23 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i2utZ-0008Pp-FU; Wed, 28 Aug 2019 12:09:41 +0200
+        id 1i2uzz-0000AP-EV; Wed, 28 Aug 2019 12:16:19 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id DFB631C07D2;
-        Wed, 28 Aug 2019 12:09:40 +0200 (CEST)
-Date:   Wed, 28 Aug 2019 10:09:40 -0000
-From:   "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 173901C07D2;
+        Wed, 28 Aug 2019 12:16:19 +0200 (CEST)
+Date:   Wed, 28 Aug 2019 10:16:18 -0000
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/build: Add -Wnoaddress-of-packed-member to
- REALMODE_CFLAGS, to silence GCC9 build warning
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Borislav Petkov <bp@alien8.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org
+Subject: [tip: timers/core] posix-cpu-timers: Provide task validation functions
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20190821192919.326097175@linutronix.de>
+References: <20190821192919.326097175@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <156698698079.4621.3455385800348514459.tip-bot2@tip-bot2>
+Message-ID: <156698737894.5680.10697132030534215507.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: 7bit
 X-Linutronix-Spam-Score: -1.0
 X-Linutronix-Spam-Level: -
 X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
@@ -47,54 +45,133 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     183e6429186150690cee034eb85745cf2b15ccb4
-Gitweb:        https://git.kernel.org/tip/183e6429186150690cee034eb85745cf2b15ccb4
-Author:        Ingo Molnar <mingo@kernel.org>
-AuthorDate:    Wed, 28 Aug 2019 10:56:48 +02:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 28 Aug 2019 10:58:41 +02:00
+Commit-ID:     6ae40e3fdcd33a6ff3c490b9302d6a1861093f65
+Gitweb:        https://git.kernel.org/tip/6ae40e3fdcd33a6ff3c490b9302d6a1861093f65
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Wed, 21 Aug 2019 21:08:48 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Wed, 28 Aug 2019 11:50:24 +02:00
 
-x86/build: Add -Wnoaddress-of-packed-member to REALMODE_CFLAGS, to silence GCC9 build warning
+posix-cpu-timers: Provide task validation functions
 
-One of the very few warnings I have in the current build comes from
-arch/x86/boot/edd.c, where I get the following with a gcc9 build:
+The code contains three slightly different copies of validating whether a
+given clock resolves to a valid task and whether the current caller has
+permissions to access it.
 
-   arch/x86/boot/edd.c: In function ‘query_edd’:
-   arch/x86/boot/edd.c:148:11: warning: taking address of packed member of ‘struct boot_params’ may result in an unaligned pointer value [-Waddress-of-packed-member]
-     148 |  mbrptr = boot_params.edd_mbr_sig_buffer;
-         |           ^~~~~~~~~~~
+Create central functions. Replace check_clock() as a first step and rename
+it to something sensible.
 
-This warning triggers because we throw away all the CFLAGS and then make
-a new set for REALMODE_CFLAGS, so the -Wno-address-of-packed-member we
-added in the following commit is not present:
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lkml.kernel.org/r/20190821192919.326097175@linutronix.de
 
-  6f303d60534c ("gcc-9: silence 'address-of-packed-member' warning")
-
-The simplest solution for now is to adjust the warning for this version
-of CFLAGS as well, but it would definitely make sense to examine whether
-REALMODE_CFLAGS could be derived from CFLAGS, so that it picks up changes
-in the compiler flags environment automatically.
-
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Acked-by: Borislav Petkov <bp@alien8.de>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- arch/x86/Makefile | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/time/posix-cpu-timers.c | 65 ++++++++++++++++++++++-----------
+ 1 file changed, 44 insertions(+), 21 deletions(-)
 
-diff --git a/arch/x86/Makefile b/arch/x86/Makefile
-index 56e748a..94df086 100644
---- a/arch/x86/Makefile
-+++ b/arch/x86/Makefile
-@@ -38,6 +38,7 @@ REALMODE_CFLAGS	:= $(M16_CFLAGS) -g -Os -DDISABLE_BRANCH_PROFILING \
+diff --git a/kernel/time/posix-cpu-timers.c b/kernel/time/posix-cpu-timers.c
+index 387e0e8..b06ed8b 100644
+--- a/kernel/time/posix-cpu-timers.c
++++ b/kernel/time/posix-cpu-timers.c
+@@ -35,27 +35,52 @@ void update_rlimit_cpu(struct task_struct *task, unsigned long rlim_new)
+ 	spin_unlock_irq(&task->sighand->siglock);
+ }
  
- REALMODE_CFLAGS += $(call __cc-option, $(CC), $(REALMODE_CFLAGS), -ffreestanding)
- REALMODE_CFLAGS += $(call __cc-option, $(CC), $(REALMODE_CFLAGS), -fno-stack-protector)
-+REALMODE_CFLAGS += $(call __cc-option, $(CC), $(REALMODE_CFLAGS), -Wno-address-of-packed-member)
- REALMODE_CFLAGS += $(call __cc-option, $(CC), $(REALMODE_CFLAGS), $(cc_stack_align4))
- export REALMODE_CFLAGS
+-static int check_clock(const clockid_t which_clock)
++/*
++ * Functions for validating access to tasks.
++ */
++static struct task_struct *lookup_task(const pid_t pid, bool thread)
+ {
+-	int error = 0;
+ 	struct task_struct *p;
+-	const pid_t pid = CPUCLOCK_PID(which_clock);
  
+-	if (CPUCLOCK_WHICH(which_clock) >= CPUCLOCK_MAX)
+-		return -EINVAL;
++	if (!pid)
++		return thread ? current : current->group_leader;
++
++	p = find_task_by_vpid(pid);
++	if (!p || p == current)
++		return p;
++	if (thread)
++		return same_thread_group(p, current) ? p : NULL;
++	if (p == current)
++		return p;
++	return has_group_leader_pid(p) ? p : NULL;
++}
++
++static struct task_struct *__get_task_for_clock(const clockid_t clock,
++						bool getref)
++{
++	const bool thread = !!CPUCLOCK_PERTHREAD(clock);
++	const pid_t pid = CPUCLOCK_PID(clock);
++	struct task_struct *p;
+ 
+-	if (pid == 0)
+-		return 0;
++	if (CPUCLOCK_WHICH(clock) >= CPUCLOCK_MAX)
++		return NULL;
+ 
+ 	rcu_read_lock();
+-	p = find_task_by_vpid(pid);
+-	if (!p || !(CPUCLOCK_PERTHREAD(which_clock) ?
+-		   same_thread_group(p, current) : has_group_leader_pid(p))) {
+-		error = -EINVAL;
+-	}
++	p = lookup_task(pid, thread);
++	if (p && getref)
++		get_task_struct(p);
+ 	rcu_read_unlock();
++	return p;
++}
+ 
+-	return error;
++static inline struct task_struct *get_task_for_clock(const clockid_t clock)
++{
++	return __get_task_for_clock(clock, true);
++}
++
++static inline int validate_clock_permissions(const clockid_t clock)
++{
++	return __get_task_for_clock(clock, false) ? 0 : -EINVAL;
+ }
+ 
+ /*
+@@ -125,7 +150,8 @@ static inline u64 virt_ticks(struct task_struct *p)
+ static int
+ posix_cpu_clock_getres(const clockid_t which_clock, struct timespec64 *tp)
+ {
+-	int error = check_clock(which_clock);
++	int error = validate_clock_permissions(which_clock);
++
+ 	if (!error) {
+ 		tp->tv_sec = 0;
+ 		tp->tv_nsec = ((NSEC_PER_SEC + HZ - 1) / HZ);
+@@ -142,20 +168,17 @@ posix_cpu_clock_getres(const clockid_t which_clock, struct timespec64 *tp)
+ }
+ 
+ static int
+-posix_cpu_clock_set(const clockid_t which_clock, const struct timespec64 *tp)
++posix_cpu_clock_set(const clockid_t clock, const struct timespec64 *tp)
+ {
++	int error = validate_clock_permissions(clock);
++
+ 	/*
+ 	 * You can never reset a CPU clock, but we check for other errors
+ 	 * in the call before failing with EPERM.
+ 	 */
+-	int error = check_clock(which_clock);
+-	if (error == 0) {
+-		error = -EPERM;
+-	}
+-	return error;
++	return error ? : -EPERM;
+ }
+ 
+-
+ /*
+  * Sample a per-thread clock for the given task.
+  */
