@@ -2,64 +2,112 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 859CF9F576
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 27 Aug 2019 23:46:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A74ED9FAC8
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 28 Aug 2019 08:49:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725976AbfH0Vpq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 27 Aug 2019 17:45:46 -0400
-Received: from mga17.intel.com ([192.55.52.151]:33535 "EHLO mga17.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725804AbfH0Vpq (ORCPT
+        id S1726271AbfH1Gtk (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 28 Aug 2019 02:49:40 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:45740 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726169AbfH1Gtj (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 27 Aug 2019 17:45:46 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 27 Aug 2019 14:45:46 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,438,1559545200"; 
-   d="scan'208";a="209903706"
-Received: from tassilo.jf.intel.com (HELO tassilo.localdomain) ([10.7.201.137])
-  by fmsmga002.fm.intel.com with ESMTP; 27 Aug 2019 14:45:45 -0700
-Received: by tassilo.localdomain (Postfix, from userid 1000)
-        id C2D09301872; Tue, 27 Aug 2019 14:45:45 -0700 (PDT)
-Date:   Tue, 27 Aug 2019 14:45:45 -0700
-From:   Andi Kleen <ak@linux.intel.com>
-To:     "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Cc:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Jiri Olsa <jolsa@redhat.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>
-Subject: Re: [tip: perf/core] perf script: Fix memory leaks in list_scripts()
-Message-ID: <20190827214545.GM5447@tassilo.jf.intel.com>
-References: <20190408162748.GA21008@embeddedor>
- <156689437793.24518.1210962260082729908.tip-bot2@tip-bot2>
- <b660a320-6b32-cc24-d829-1527dfc16e5d@embeddedor.com>
+        Wed, 28 Aug 2019 02:49:39 -0400
+Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tip-bot2@linutronix.de>)
+        id 1i2rlY-0000qF-8A; Wed, 28 Aug 2019 08:49:12 +0200
+Received: from [127.0.1.1] (localhost [IPv6:::1])
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A04AB1C07D2;
+        Wed, 28 Aug 2019 08:49:11 +0200 (CEST)
+Date:   Wed, 28 Aug 2019 06:49:11 -0000
+From:   "tip-bot2 for Cao Jin" <tip-bot2@linutronix.de>
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/cleanups] x86/cpufeature: Explain the macro duplication
+Cc:     Borislav Petkov <bp@alien8.de>, Cao Jin <caoj.fnst@cn.fujitsu.com>,
+        Borislav Petkov <bp@suse.de>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        Jann Horn <jannh@google.com>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nadav Amit <namit@vmware.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "x86-ml" <x86@kernel.org>, Ingo Molnar <mingo@kernel.org>,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20190828061100.27032-1-caoj.fnst@cn.fujitsu.com>
+References: <20190828061100.27032-1-caoj.fnst@cn.fujitsu.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Message-ID: <156697495154.15133.9156303181767258276.tip-bot2@tip-bot2>
+X-Mailer: tip-git-log-daemon
+Robot-ID: <tip-bot2.linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Content-Disposition: inline
-In-Reply-To: <b660a320-6b32-cc24-d829-1527dfc16e5d@embeddedor.com>
-User-Agent: Mutt/1.12.0 (2019-05-25)
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-> > Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
-> 
-> This should be tagged for stable:
-> 
-> Cc: stable@vger.kernel.org
+The following commit has been merged into the x86/cleanups branch of tip:
 
-It's a theoretical problem (which are explicitely ruled out by stable rules)
-because if you ever see user space malloc() returning NULL the system is likely
-already randomly killing your processes in OOM, including eventually perf.
+Commit-ID:     cbb1133b563a63901cf778220eb17e3ff1425aed
+Gitweb:        https://git.kernel.org/tip/cbb1133b563a63901cf778220eb17e3ff1425aed
+Author:        Cao Jin <caoj.fnst@cn.fujitsu.com>
+AuthorDate:    Wed, 28 Aug 2019 14:11:00 +08:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Wed, 28 Aug 2019 08:38:39 +02:00
 
-I can see the value of shutting up coverity though, but that's not something
-that needs to be in stable.
+x86/cpufeature: Explain the macro duplication
 
--Andi
+Explain the intent behind the duplication of the
+
+  BUILD_BUG_ON_ZERO(NCAPINTS != n)
+
+check in *_MASK_CHECK and its immediate use in the *MASK_BIT_SET macros
+too.
+
+ [ bp: Massage. ]
+
+Suggested-by: Borislav Petkov <bp@alien8.de>
+Signed-off-by: Cao Jin <caoj.fnst@cn.fujitsu.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Cc: Dave Hansen <dave.hansen@intel.com>
+Cc: Fenghua Yu <fenghua.yu@intel.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jann Horn <jannh@google.com>
+Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nadav Amit <namit@vmware.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: x86-ml <x86@kernel.org>
+Link: https://lkml.kernel.org/r/20190828061100.27032-1-caoj.fnst@cn.fujitsu.com
+---
+ arch/x86/include/asm/cpufeature.h | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/arch/x86/include/asm/cpufeature.h b/arch/x86/include/asm/cpufeature.h
+index 58acda5..59bf91c 100644
+--- a/arch/x86/include/asm/cpufeature.h
++++ b/arch/x86/include/asm/cpufeature.h
+@@ -61,6 +61,13 @@ extern const char * const x86_bug_flags[NBUGINTS*32];
+ #define CHECK_BIT_IN_MASK_WORD(maskname, word, bit)	\
+ 	(((bit)>>5)==(word) && (1UL<<((bit)&31) & maskname##word ))
+ 
++/*
++ * {REQUIRED,DISABLED}_MASK_CHECK below may seem duplicated with the
++ * following BUILD_BUG_ON_ZERO() check but when NCAPINTS gets changed, all
++ * header macros which use NCAPINTS need to be changed. The duplicated macro
++ * use causes the compiler to issue errors for all headers so that all usage
++ * sites can be corrected.
++ */
+ #define REQUIRED_MASK_BIT_SET(feature_bit)		\
+ 	 ( CHECK_BIT_IN_MASK_WORD(REQUIRED_MASK,  0, feature_bit) ||	\
+ 	   CHECK_BIT_IN_MASK_WORD(REQUIRED_MASK,  1, feature_bit) ||	\
