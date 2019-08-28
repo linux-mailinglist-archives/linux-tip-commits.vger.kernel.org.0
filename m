@@ -2,39 +2,43 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BE277A0334
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 28 Aug 2019 15:30:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B2D0FA033D
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 28 Aug 2019 15:31:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726440AbfH1Na2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 28 Aug 2019 09:30:28 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:47238 "EHLO
+        id S1726743AbfH1NbG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 28 Aug 2019 09:31:06 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:47264 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726394AbfH1Na2 (ORCPT
+        with ESMTP id S1726439AbfH1NbE (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 28 Aug 2019 09:30:28 -0400
+        Wed, 28 Aug 2019 09:31:04 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i2y1h-0004Jp-Nm; Wed, 28 Aug 2019 15:30:17 +0200
+        id 1i2y2J-0004MS-5C; Wed, 28 Aug 2019 15:30:55 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 53D921C07D2;
-        Wed, 28 Aug 2019 15:30:17 +0200 (CEST)
-Date:   Wed, 28 Aug 2019 13:30:17 -0000
-From:   "tip-bot2 for Alexander Shishkin" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C55241C07D2;
+        Wed, 28 Aug 2019 15:30:54 +0200 (CEST)
+Date:   Wed, 28 Aug 2019 13:30:54 -0000
+From:   "tip-bot2 for Thomas Hellstrom" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf: Allow normal events to output AUX data
-Cc:     Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+Subject: [tip: x86/vmware] x86/vmware: Update platform detection code for
+ VMCALL/VMMCALL hypercalls
+Cc:     Doug Covelli <dcovelli@vmware.com>,
+        Thomas Hellstrom <thellstrom@vmware.com>,
+        Borislav Petkov <bp@suse.de>, "H. Peter Anvin" <hpa@zytor.com>,
         Ingo Molnar <mingo@redhat.com>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        kan.liang@linux.intel.com, Ingo Molnar <mingo@kernel.org>,
+        linux-graphics-maintainer@vmware.com,
+        Thomas Gleixner <tglx@linutronix.de>,
+        virtualization@lists.linux-foundation.org, <pv-drivers@vmware.com>,
+        "x86-ml" <x86@kernel.org>, Ingo Molnar <mingo@kernel.org>,
         Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
-In-Reply-To: <20190806084606.4021-2-alexander.shishkin@linux.intel.com>
-References: <20190806084606.4021-2-alexander.shishkin@linux.intel.com>
+In-Reply-To: <20190828080353.12658-2-thomas_os@shipmail.org>
+References: <20190828080353.12658-2-thomas_os@shipmail.org>
 MIME-Version: 1.0
-Message-ID: <156699901719.4858.12786762701473177634.tip-bot2@tip-bot2>
+Message-ID: <156699905467.5310.17325936546223421628.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,215 +52,183 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/core branch of tip:
+The following commit has been merged into the x86/vmware branch of tip:
 
-Commit-ID:     ab43762ef010967e4ccd53627f70a2eecbeafefb
-Gitweb:        https://git.kernel.org/tip/ab43762ef010967e4ccd53627f70a2eecbeafefb
-Author:        Alexander Shishkin <alexander.shishkin@linux.intel.com>
-AuthorDate:    Tue, 06 Aug 2019 11:46:00 +03:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 28 Aug 2019 11:29:38 +02:00
+Commit-ID:     bac7b4e843232a3a49a042410cf743341eb0887e
+Gitweb:        https://git.kernel.org/tip/bac7b4e843232a3a49a042410cf743341eb0887e
+Author:        Thomas Hellstrom <thellstrom@vmware.com>
+AuthorDate:    Wed, 28 Aug 2019 10:03:50 +02:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Wed, 28 Aug 2019 10:48:30 +02:00
 
-perf: Allow normal events to output AUX data
+x86/vmware: Update platform detection code for VMCALL/VMMCALL hypercalls
 
-In some cases, ordinary (non-AUX) events can generate data for AUX events.
-For example, PEBS events can come out as records in the Intel PT stream
-instead of their usual DS records, if configured to do so.
+Vmware has historically used an INL instruction for this, but recent
+hardware versions support using VMCALL/VMMCALL instead, so use this
+method if supported at platform detection time. Explicitly code separate
+macro versions since the alternatives self-patching has not been
+performed at platform detection time.
 
-One requirement for such events is to consistently schedule together, to
-ensure that the data from the "AUX output" events isn't lost while their
-corresponding AUX event is not scheduled. We use grouping to provide this
-guarantee: an "AUX output" event can be added to a group where an AUX event
-is a group leader, and provided that the former supports writing to the
-latter.
+Also put tighter constraints on the assembly input parameters.
 
-Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Co-developed-by: Doug Covelli <dcovelli@vmware.com>
+Signed-off-by: Doug Covelli <dcovelli@vmware.com>
+Signed-off-by: Thomas Hellstrom <thellstrom@vmware.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Reviewed-by: Doug Covelli <dcovelli@vmware.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
 Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: kan.liang@linux.intel.com
-Link: https://lkml.kernel.org/r/20190806084606.4021-2-alexander.shishkin@linux.intel.com
+Cc: linux-graphics-maintainer@vmware.com
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: virtualization@lists.linux-foundation.org
+Cc: <pv-drivers@vmware.com>
+Cc: x86-ml <x86@kernel.org>
+Link: https://lkml.kernel.org/r/20190828080353.12658-2-thomas_os@shipmail.org
 ---
- include/linux/perf_event.h      | 14 +++++-
- include/uapi/linux/perf_event.h |  3 +-
- kernel/events/core.c            | 93 ++++++++++++++++++++++++++++++++-
- 3 files changed, 109 insertions(+), 1 deletion(-)
+ arch/x86/kernel/cpu/vmware.c | 88 ++++++++++++++++++++++++++++-------
+ 1 file changed, 71 insertions(+), 17 deletions(-)
 
-diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
-index e8ad3c5..61448c1 100644
---- a/include/linux/perf_event.h
-+++ b/include/linux/perf_event.h
-@@ -246,6 +246,7 @@ struct perf_event;
- #define PERF_PMU_CAP_ITRACE			0x20
- #define PERF_PMU_CAP_HETEROGENEOUS_CPUS		0x40
- #define PERF_PMU_CAP_NO_EXCLUDE			0x80
-+#define PERF_PMU_CAP_AUX_OUTPUT			0x100
+diff --git a/arch/x86/kernel/cpu/vmware.c b/arch/x86/kernel/cpu/vmware.c
+index 3c64847..757dded 100644
+--- a/arch/x86/kernel/cpu/vmware.c
++++ b/arch/x86/kernel/cpu/vmware.c
+@@ -34,30 +34,65 @@
+ #undef pr_fmt
+ #define pr_fmt(fmt)	"vmware: " fmt
  
- /**
-  * struct pmu - generic performance monitoring unit
-@@ -447,6 +448,16 @@ struct pmu {
- 					/* optional */
- 
- 	/*
-+	 * Check if event can be used for aux_output purposes for
-+	 * events of this PMU.
-+	 *
-+	 * Runs from perf_event_open(). Should return 0 for "no match"
-+	 * or non-zero for "match".
-+	 */
-+	int (*aux_output_match)		(struct perf_event *event);
-+					/* optional */
+-#define CPUID_VMWARE_INFO_LEAF	0x40000000
++#define CPUID_VMWARE_INFO_LEAF               0x40000000
++#define CPUID_VMWARE_FEATURES_LEAF           0x40000010
++#define CPUID_VMWARE_FEATURES_ECX_VMMCALL    BIT(0)
++#define CPUID_VMWARE_FEATURES_ECX_VMCALL     BIT(1)
 +
-+	/*
- 	 * Filter events for PMU-specific reasons.
- 	 */
- 	int (*filter_match)		(struct perf_event *event); /* optional */
-@@ -681,6 +692,9 @@ struct perf_event {
- 	struct perf_addr_filter_range	*addr_filter_ranges;
- 	unsigned long			addr_filters_gen;
+ #define VMWARE_HYPERVISOR_MAGIC	0x564D5868
+ #define VMWARE_HYPERVISOR_PORT	0x5658
  
-+	/* for aux_output events */
-+	struct perf_event		*aux_event;
+-#define VMWARE_PORT_CMD_GETVERSION	10
+-#define VMWARE_PORT_CMD_GETHZ		45
+-#define VMWARE_PORT_CMD_GETVCPU_INFO	68
+-#define VMWARE_PORT_CMD_LEGACY_X2APIC	3
+-#define VMWARE_PORT_CMD_VCPU_RESERVED	31
++#define VMWARE_CMD_GETVERSION    10
++#define VMWARE_CMD_GETHZ         45
++#define VMWARE_CMD_GETVCPU_INFO  68
++#define VMWARE_CMD_LEGACY_X2APIC  3
++#define VMWARE_CMD_VCPU_RESERVED 31
+ 
+ #define VMWARE_PORT(cmd, eax, ebx, ecx, edx)				\
+ 	__asm__("inl (%%dx)" :						\
+-			"=a"(eax), "=c"(ecx), "=d"(edx), "=b"(ebx) :	\
+-			"0"(VMWARE_HYPERVISOR_MAGIC),			\
+-			"1"(VMWARE_PORT_CMD_##cmd),			\
+-			"2"(VMWARE_HYPERVISOR_PORT), "3"(UINT_MAX) :	\
+-			"memory");
++		"=a"(eax), "=c"(ecx), "=d"(edx), "=b"(ebx) :		\
++		"a"(VMWARE_HYPERVISOR_MAGIC),				\
++		"c"(VMWARE_CMD_##cmd),					\
++		"d"(VMWARE_HYPERVISOR_PORT), "b"(UINT_MAX) :		\
++		"memory")
 +
- 	void (*destroy)(struct perf_event *);
- 	struct rcu_head			rcu_head;
++#define VMWARE_VMCALL(cmd, eax, ebx, ecx, edx)				\
++	__asm__("vmcall" :						\
++		"=a"(eax), "=c"(ecx), "=d"(edx), "=b"(ebx) :		\
++		"a"(VMWARE_HYPERVISOR_MAGIC),				\
++		"c"(VMWARE_CMD_##cmd),					\
++		"d"(0), "b"(UINT_MAX) :					\
++		"memory")
++
++#define VMWARE_VMMCALL(cmd, eax, ebx, ecx, edx)                         \
++	__asm__("vmmcall" :						\
++		"=a"(eax), "=c"(ecx), "=d"(edx), "=b"(ebx) :		\
++		"a"(VMWARE_HYPERVISOR_MAGIC),				\
++		"c"(VMWARE_CMD_##cmd),					\
++		"d"(0), "b"(UINT_MAX) :					\
++		"memory")
++
++#define VMWARE_CMD(cmd, eax, ebx, ecx, edx) do {		\
++	switch (vmware_hypercall_mode) {			\
++	case CPUID_VMWARE_FEATURES_ECX_VMCALL:			\
++		VMWARE_VMCALL(cmd, eax, ebx, ecx, edx);		\
++		break;						\
++	case CPUID_VMWARE_FEATURES_ECX_VMMCALL:			\
++		VMWARE_VMMCALL(cmd, eax, ebx, ecx, edx);	\
++		break;						\
++	default:						\
++		VMWARE_PORT(cmd, eax, ebx, ecx, edx);		\
++		break;						\
++	}							\
++	} while (0)
  
-diff --git a/include/uapi/linux/perf_event.h b/include/uapi/linux/perf_event.h
-index 7198ddd..bb7b271 100644
---- a/include/uapi/linux/perf_event.h
-+++ b/include/uapi/linux/perf_event.h
-@@ -374,7 +374,8 @@ struct perf_event_attr {
- 				namespaces     :  1, /* include namespaces data */
- 				ksymbol        :  1, /* include ksymbol events */
- 				bpf_event      :  1, /* include bpf events */
--				__reserved_1   : 33;
-+				aux_output     :  1, /* generate AUX records instead of events */
-+				__reserved_1   : 32;
+ static unsigned long vmware_tsc_khz __ro_after_init;
++static u8 vmware_hypercall_mode     __ro_after_init;
  
- 	union {
- 		__u32		wakeup_events;	  /* wakeup every n events */
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 0463c11..2aad959 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -1887,6 +1887,89 @@ list_del_event(struct perf_event *event, struct perf_event_context *ctx)
- 	ctx->generation++;
+ static inline int __vmware_platform(void)
+ {
+ 	uint32_t eax, ebx, ecx, edx;
+-	VMWARE_PORT(GETVERSION, eax, ebx, ecx, edx);
++	VMWARE_CMD(GETVERSION, eax, ebx, ecx, edx);
+ 	return eax != (uint32_t)-1 && ebx == VMWARE_HYPERVISOR_MAGIC;
  }
  
-+static int
-+perf_aux_output_match(struct perf_event *event, struct perf_event *aux_event)
+@@ -136,7 +171,7 @@ static void __init vmware_platform_setup(void)
+ 	uint32_t eax, ebx, ecx, edx;
+ 	uint64_t lpj, tsc_khz;
+ 
+-	VMWARE_PORT(GETHZ, eax, ebx, ecx, edx);
++	VMWARE_CMD(GETHZ, eax, ebx, ecx, edx);
+ 
+ 	if (ebx != UINT_MAX) {
+ 		lpj = tsc_khz = eax | (((uint64_t)ebx) << 32);
+@@ -174,10 +209,21 @@ static void __init vmware_platform_setup(void)
+ 	vmware_set_capabilities();
+ }
+ 
++static u8 vmware_select_hypercall(void)
 +{
-+	if (!has_aux(aux_event))
-+		return 0;
++	int eax, ebx, ecx, edx;
 +
-+	if (!event->pmu->aux_output_match)
-+		return 0;
-+
-+	return event->pmu->aux_output_match(aux_event);
++	cpuid(CPUID_VMWARE_FEATURES_LEAF, &eax, &ebx, &ecx, &edx);
++	return (ecx & (CPUID_VMWARE_FEATURES_ECX_VMMCALL |
++		       CPUID_VMWARE_FEATURES_ECX_VMCALL));
 +}
 +
-+static void put_event(struct perf_event *event);
-+static void event_sched_out(struct perf_event *event,
-+			    struct perf_cpu_context *cpuctx,
-+			    struct perf_event_context *ctx);
-+
-+static void perf_put_aux_event(struct perf_event *event)
-+{
-+	struct perf_event_context *ctx = event->ctx;
-+	struct perf_cpu_context *cpuctx = __get_cpu_context(ctx);
-+	struct perf_event *iter;
-+
-+	/*
-+	 * If event uses aux_event tear down the link
-+	 */
-+	if (event->aux_event) {
-+		iter = event->aux_event;
-+		event->aux_event = NULL;
-+		put_event(iter);
-+		return;
-+	}
-+
-+	/*
-+	 * If the event is an aux_event, tear down all links to
-+	 * it from other events.
-+	 */
-+	for_each_sibling_event(iter, event->group_leader) {
-+		if (iter->aux_event != event)
-+			continue;
-+
-+		iter->aux_event = NULL;
-+		put_event(event);
-+
-+		/*
-+		 * If it's ACTIVE, schedule it out and put it into ERROR
-+		 * state so that we don't try to schedule it again. Note
-+		 * that perf_event_enable() will clear the ERROR status.
-+		 */
-+		event_sched_out(iter, cpuctx, ctx);
-+		perf_event_set_state(event, PERF_EVENT_STATE_ERROR);
-+	}
-+}
-+
-+static int perf_get_aux_event(struct perf_event *event,
-+			      struct perf_event *group_leader)
-+{
-+	/*
-+	 * Our group leader must be an aux event if we want to be
-+	 * an aux_output. This way, the aux event will precede its
-+	 * aux_output events in the group, and therefore will always
-+	 * schedule first.
-+	 */
-+	if (!group_leader)
-+		return 0;
-+
-+	if (!perf_aux_output_match(event, group_leader))
-+		return 0;
-+
-+	if (!atomic_long_inc_not_zero(&group_leader->refcount))
-+		return 0;
-+
-+	/*
-+	 * Link aux_outputs to their aux event; this is undone in
-+	 * perf_group_detach() by perf_put_aux_event(). When the
-+	 * group in torn down, the aux_output events loose their
-+	 * link to the aux_event and can't schedule any more.
-+	 */
-+	event->aux_event = group_leader;
-+
-+	return 1;
-+}
-+
- static void perf_group_detach(struct perf_event *event)
+ /*
+  * While checking the dmi string information, just checking the product
+  * serial key should be enough, as this will always have a VMware
+  * specific string when running under VMware hypervisor.
++ * If !boot_cpu_has(X86_FEATURE_HYPERVISOR), vmware_hypercall_mode
++ * intentionally defaults to 0.
+  */
+ static uint32_t __init vmware_platform(void)
  {
- 	struct perf_event *sibling, *tmp;
-@@ -1902,6 +1985,8 @@ static void perf_group_detach(struct perf_event *event)
+@@ -187,8 +233,16 @@ static uint32_t __init vmware_platform(void)
  
- 	event->attach_state &= ~PERF_ATTACH_GROUP;
- 
-+	perf_put_aux_event(event);
+ 		cpuid(CPUID_VMWARE_INFO_LEAF, &eax, &hyper_vendor_id[0],
+ 		      &hyper_vendor_id[1], &hyper_vendor_id[2]);
+-		if (!memcmp(hyper_vendor_id, "VMwareVMware", 12))
++		if (!memcmp(hyper_vendor_id, "VMwareVMware", 12)) {
++			if (eax >= CPUID_VMWARE_FEATURES_LEAF)
++				vmware_hypercall_mode =
++					vmware_select_hypercall();
 +
- 	/*
- 	 * If this is a sibling, remove it from its group.
- 	 */
-@@ -10426,6 +10511,12 @@ perf_event_alloc(struct perf_event_attr *attr, int cpu,
- 		goto err_ns;
- 	}
- 
-+	if (event->attr.aux_output &&
-+	    !(pmu->capabilities & PERF_PMU_CAP_AUX_OUTPUT)) {
-+		err = -EOPNOTSUPP;
-+		goto err_pmu;
-+	}
++			pr_info("hypercall mode: 0x%02x\n",
++				(unsigned int) vmware_hypercall_mode);
 +
- 	err = exclusive_event_init(event);
- 	if (err)
- 		goto err_pmu;
-@@ -11082,6 +11173,8 @@ SYSCALL_DEFINE5(perf_event_open,
- 		}
- 	}
+ 			return CPUID_VMWARE_INFO_LEAF;
++		}
+ 	} else if (dmi_available && dmi_name_in_serial("VMware") &&
+ 		   __vmware_platform())
+ 		return 1;
+@@ -200,9 +254,9 @@ static uint32_t __init vmware_platform(void)
+ static bool __init vmware_legacy_x2apic_available(void)
+ {
+ 	uint32_t eax, ebx, ecx, edx;
+-	VMWARE_PORT(GETVCPU_INFO, eax, ebx, ecx, edx);
+-	return (eax & (1 << VMWARE_PORT_CMD_VCPU_RESERVED)) == 0 &&
+-	       (eax & (1 << VMWARE_PORT_CMD_LEGACY_X2APIC)) != 0;
++	VMWARE_CMD(GETVCPU_INFO, eax, ebx, ecx, edx);
++	return (eax & (1 << VMWARE_CMD_VCPU_RESERVED)) == 0 &&
++	       (eax & (1 << VMWARE_CMD_LEGACY_X2APIC)) != 0;
+ }
  
-+	if (event->attr.aux_output && !perf_get_aux_event(event, group_leader))
-+		goto err_locked;
- 
- 	/*
- 	 * Must be under the same ctx::mutex as perf_install_in_context(),
+ const __initconst struct hypervisor_x86 x86_hyper_vmware = {
