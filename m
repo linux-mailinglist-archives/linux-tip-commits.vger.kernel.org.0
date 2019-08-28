@@ -2,37 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A7419FF81
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 28 Aug 2019 12:19:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 19D659FF8A
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 28 Aug 2019 12:19:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726462AbfH1KQ0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 28 Aug 2019 06:16:26 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:46362 "EHLO
+        id S1726901AbfH1KSt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 28 Aug 2019 06:18:49 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:46371 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726259AbfH1KQY (ORCPT
+        with ESMTP id S1726441AbfH1KQZ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 28 Aug 2019 06:16:24 -0400
+        Wed, 28 Aug 2019 06:16:25 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i2v01-0000Bw-MN; Wed, 28 Aug 2019 12:16:21 +0200
+        id 1i2v03-0000D9-1X; Wed, 28 Aug 2019 12:16:23 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 42DB91C0DE2;
-        Wed, 28 Aug 2019 12:16:21 +0200 (CEST)
-Date:   Wed, 28 Aug 2019 10:16:21 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B3EEF1C07D2;
+        Wed, 28 Aug 2019 12:16:22 +0200 (CEST)
+Date:   Wed, 28 Aug 2019 10:16:22 -0000
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] posix-cpu-timers: Sample directly in timer check
+Subject: [tip: timers/core] posix-cpu-timers: Use clock ID in posix_cpu_timer_set()
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Frederic Weisbecker <frederic@kernel.org>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20190821192919.780348088@linutronix.de>
-References: <20190821192919.780348088@linutronix.de>
+In-Reply-To: <20190821192920.050770464@linutronix.de>
+References: <20190821192920.050770464@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <156698738119.5702.7658261420606067283.tip-bot2@tip-bot2>
+Message-ID: <156698738265.5711.7294224034567747192.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,48 +48,55 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     a324956fae05d863386c682830e917f6685f1d4f
-Gitweb:        https://git.kernel.org/tip/a324956fae05d863386c682830e917f6685f1d4f
+Commit-ID:     c7a37c6f4c651a531101c5721814333bae2804ec
+Gitweb:        https://git.kernel.org/tip/c7a37c6f4c651a531101c5721814333bae2804ec
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Wed, 21 Aug 2019 21:08:53 +02:00
+AuthorDate:    Wed, 21 Aug 2019 21:08:56 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 28 Aug 2019 11:50:27 +02:00
+CommitterDate: Wed, 28 Aug 2019 11:50:28 +02:00
 
-posix-cpu-timers: Sample directly in timer check
+posix-cpu-timers: Use clock ID in posix_cpu_timer_set()
 
-The thread group accounting is active, otherwise the expiry function would
-not be running. Sample the thread group time directly.
+Extract the clock ID (PROF/VIRT/SCHED) from the clock selector and use it
+as argument to the sample functions. That allows to simplify them once all
+callers are fixed.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Link: https://lkml.kernel.org/r/20190821192919.780348088@linutronix.de
+Link: https://lkml.kernel.org/r/20190821192920.050770464@linutronix.de
 
 ---
- kernel/time/posix-cpu-timers.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ kernel/time/posix-cpu-timers.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
 diff --git a/kernel/time/posix-cpu-timers.c b/kernel/time/posix-cpu-timers.c
-index c22b6b6..cb73678 100644
+index a9003b2..12561f8 100644
 --- a/kernel/time/posix-cpu-timers.c
 +++ b/kernel/time/posix-cpu-timers.c
-@@ -914,16 +914,17 @@ static void check_process_timers(struct task_struct *tsk,
- 	if (!READ_ONCE(tsk->signal->cputimer.running))
- 		return;
+@@ -556,10 +556,11 @@ static void cpu_timer_fire(struct k_itimer *timer)
+ static int posix_cpu_timer_set(struct k_itimer *timer, int timer_flags,
+ 			       struct itimerspec64 *new, struct itimerspec64 *old)
+ {
+-	unsigned long flags;
+-	struct sighand_struct *sighand;
+-	struct task_struct *p = timer->it.cpu.task;
++	clockid_t clkid = CPUCLOCK_WHICH(timer->it_clock);
+ 	u64 old_expires, new_expires, old_incr, val;
++	struct task_struct *p = timer->it.cpu.task;
++	struct sighand_struct *sighand;
++	unsigned long flags;
+ 	int ret;
  
--        /*
-+       /*
- 	 * Signify that a thread is checking for process timers.
- 	 * Write access to this field is protected by the sighand lock.
+ 	if (WARN_ON_ONCE(!p))
+@@ -606,9 +607,9 @@ static int posix_cpu_timer_set(struct k_itimer *timer, int timer_flags,
+ 	 * check if it's already passed.  In short, we need a sample.
  	 */
- 	sig->cputimer.checking_timer = true;
+ 	if (CPUCLOCK_PERTHREAD(timer->it_clock)) {
+-		cpu_clock_sample(timer->it_clock, p, &val);
++		cpu_clock_sample(clkid, p, &val);
+ 	} else {
+-		cpu_clock_sample_group(timer->it_clock, p, &val, true);
++		cpu_clock_sample_group(clkid, p, &val, true);
+ 	}
  
- 	/*
--	 * Collect the current process totals.
-+	 * Collect the current process totals. Group accounting is active
-+	 * so the sample can be taken directly.
- 	 */
--	thread_group_cputimer(tsk, &cputime);
-+	sample_cputime_atomic(&cputime, &sig->cputimer.cputime_atomic);
- 	utime = cputime.utime;
- 	ptime = utime + cputime.stime;
- 	sum_sched_runtime = cputime.sum_exec_runtime;
+ 	if (old) {
