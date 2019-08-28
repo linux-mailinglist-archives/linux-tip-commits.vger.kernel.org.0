@@ -2,45 +2,50 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D265A033F
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 28 Aug 2019 15:31:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B48FA0344
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 28 Aug 2019 15:32:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726777AbfH1NbH (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 28 Aug 2019 09:31:07 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:47267 "EHLO
+        id S1726397AbfH1Nbf (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 28 Aug 2019 09:31:35 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:47288 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726706AbfH1NbG (ORCPT
+        with ESMTP id S1726382AbfH1Nbe (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 28 Aug 2019 09:31:06 -0400
+        Wed, 28 Aug 2019 09:31:34 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i2y2K-0004Ma-2r; Wed, 28 Aug 2019 15:30:56 +0200
+        id 1i2y2J-0004MZ-M7; Wed, 28 Aug 2019 15:30:55 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B9DB81C07D2;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4ACB51C0DE2;
         Wed, 28 Aug 2019 15:30:55 +0200 (CEST)
 Date:   Wed, 28 Aug 2019 13:30:55 -0000
 From:   "tip-bot2 for Thomas Hellstrom" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/vmware] drm/vmwgfx: Update the backdoor call with support
- for new instructions
+Subject: [tip: x86/vmware] x86/vmware: Add a header file for hypercall definitions
 Cc:     Thomas Hellstrom <thellstrom@vmware.com>,
         Borislav Petkov <bp@suse.de>,
         Doug Covelli <dcovelli@vmware.com>,
-        Dave Airlie <airlied@redhat.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        dri-devel@lists.freedesktop.org, "H. Peter Anvin" <hpa@zytor.com>,
-        Ingo Molnar <mingo@redhat.com>, pv-drivers@vmware.com,
+        Aaron Lewis <aaronlewis@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        linux-graphics-maintainer@vmware.com,
+        Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Robert Hoo <robert.hu@linux.intel.com>,
         Thomas Gleixner <tglx@linutronix.de>,
-        VMware Graphics <linux-graphics-maintainer@vmware.com>,
+        virtualization@lists.linux-foundation.org, <pv-drivers@vmware.com>,
         "x86-ml" <x86@kernel.org>, Ingo Molnar <mingo@kernel.org>,
         Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
-In-Reply-To: <20190828080353.12658-4-thomas_os@shipmail.org>
-References: <20190828080353.12658-4-thomas_os@shipmail.org>
+In-Reply-To: <20190828080353.12658-3-thomas_os@shipmail.org>
+References: <20190828080353.12658-3-thomas_os@shipmail.org>
 MIME-Version: 1.0
-Message-ID: <156699905566.5317.3681114864747196316.tip-bot2@tip-bot2>
+Message-ID: <156699905522.5313.7855443081930586035.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -56,277 +61,167 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/vmware branch of tip:
 
-Commit-ID:     6abe3778cf5abd59b23b9037796f3eab8b7f1d98
-Gitweb:        https://git.kernel.org/tip/6abe3778cf5abd59b23b9037796f3eab8b7f1d98
+Commit-ID:     b4dd4f6e3648dfd66576515f2222d885a9a765c0
+Gitweb:        https://git.kernel.org/tip/b4dd4f6e3648dfd66576515f2222d885a9a765c0
 Author:        Thomas Hellstrom <thellstrom@vmware.com>
-AuthorDate:    Wed, 28 Aug 2019 10:03:52 +02:00
+AuthorDate:    Wed, 28 Aug 2019 10:03:51 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 28 Aug 2019 13:36:46 +02:00
+CommitterDate: Wed, 28 Aug 2019 13:32:06 +02:00
 
-drm/vmwgfx: Update the backdoor call with support for new instructions
+x86/vmware: Add a header file for hypercall definitions
 
-Use the definition provided by include/asm/vmware.h
+The new header is intended to be used by drivers using the backdoor.
+Follow the KVM example using alternatives self-patching to choose
+between vmcall, vmmcall and io instructions.
+
+Also define two new CPU feature flags to indicate hypervisor support
+for vmcall- and vmmcall instructions. The new XF86_FEATURE_VMW_VMMCALL
+flag is needed because using XF86_FEATURE_VMMCALL might break QEMU/KVM
+setups using the vmmouse driver. They rely on XF86_FEATURE_VMMCALL
+on AMD to get the kvm_hypercall() right. But they do not yet implement
+vmmcall for the VMware hypercall used by the vmmouse driver.
+
+ [ bp: reflow hypercall %edx usage explanation comment. ]
 
 Signed-off-by: Thomas Hellstrom <thellstrom@vmware.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
 Reviewed-by: Doug Covelli <dcovelli@vmware.com>
-Acked-by: Dave Airlie <airlied@redhat.com>
-Cc: Daniel Vetter <daniel@ffwll.ch>
-Cc: dri-devel@lists.freedesktop.org
+Cc: Aaron Lewis <aaronlewis@google.com>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Fenghua Yu <fenghua.yu@intel.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: "H. Peter Anvin" <hpa@zytor.com>
 Cc: Ingo Molnar <mingo@redhat.com>
-Cc: pv-drivers@vmware.com
+Cc: Josh Poimboeuf <jpoimboe@redhat.com>
+Cc: linux-graphics-maintainer@vmware.com
+Cc: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+Cc: Nicolas Ferre <nicolas.ferre@microchip.com>
+Cc: Robert Hoo <robert.hu@linux.intel.com>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: VMware Graphics <linux-graphics-maintainer@vmware.com>
+Cc: virtualization@lists.linux-foundation.org
+Cc: <pv-drivers@vmware.com>
 Cc: x86-ml <x86@kernel.org>
-Link: https://lkml.kernel.org/r/20190828080353.12658-4-thomas_os@shipmail.org
+Link: https://lkml.kernel.org/r/20190828080353.12658-3-thomas_os@shipmail.org
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_msg.c | 21 ++++++++---------
- drivers/gpu/drm/vmwgfx/vmwgfx_msg.h | 35 ++++++++++++++--------------
- 2 files changed, 28 insertions(+), 28 deletions(-)
+ MAINTAINERS                        |  1 +-
+ arch/x86/include/asm/cpufeatures.h |  2 +-
+ arch/x86/include/asm/vmware.h      | 53 +++++++++++++++++++++++++++++-
+ arch/x86/kernel/cpu/vmware.c       |  6 ++-
+ 4 files changed, 61 insertions(+), 1 deletion(-)
+ create mode 100644 arch/x86/include/asm/vmware.h
 
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_msg.c b/drivers/gpu/drm/vmwgfx/vmwgfx_msg.c
-index 59e9d05..b1df3e3 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_msg.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_msg.c
-@@ -46,8 +46,6 @@
- #define RETRIES                 3
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 9cbcf16..47efc1b 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -17206,6 +17206,7 @@ M:	"VMware, Inc." <pv-drivers@vmware.com>
+ L:	virtualization@lists.linux-foundation.org
+ S:	Supported
+ F:	arch/x86/kernel/cpu/vmware.c
++F:	arch/x86/include/asm/vmware.h
  
- #define VMW_HYPERVISOR_MAGIC    0x564D5868
--#define VMW_HYPERVISOR_PORT     0x5658
--#define VMW_HYPERVISOR_HB_PORT  0x5659
+ VMWARE PVRDMA DRIVER
+ M:	Adit Ranadive <aditr@vmware.com>
+diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
+index e880f24..aaeae2f 100644
+--- a/arch/x86/include/asm/cpufeatures.h
++++ b/arch/x86/include/asm/cpufeatures.h
+@@ -232,6 +232,8 @@
+ #define X86_FEATURE_VMMCALL		( 8*32+15) /* Prefer VMMCALL to VMCALL */
+ #define X86_FEATURE_XENPV		( 8*32+16) /* "" Xen paravirtual guest */
+ #define X86_FEATURE_EPT_AD		( 8*32+17) /* Intel Extended Page Table access-dirty bit */
++#define X86_FEATURE_VMCALL		( 8*32+18) /* "" Hypervisor supports the VMCALL instruction */
++#define X86_FEATURE_VMW_VMMCALL		( 8*32+19) /* "" VMware prefers VMMCALL hypercall instruction */
  
- #define VMW_PORT_CMD_MSG        30
- #define VMW_PORT_CMD_HB_MSG     0
-@@ -93,7 +91,7 @@ static int vmw_open_channel(struct rpc_channel *channel, unsigned int protocol)
- 
- 	VMW_PORT(VMW_PORT_CMD_OPEN_CHANNEL,
- 		(protocol | GUESTMSG_FLAG_COOKIE), si, di,
--		VMW_HYPERVISOR_PORT,
-+		0,
- 		VMW_HYPERVISOR_MAGIC,
- 		eax, ebx, ecx, edx, si, di);
- 
-@@ -126,7 +124,7 @@ static int vmw_close_channel(struct rpc_channel *channel)
- 
- 	VMW_PORT(VMW_PORT_CMD_CLOSE_CHANNEL,
- 		0, si, di,
--		(VMW_HYPERVISOR_PORT | (channel->channel_id << 16)),
-+		channel->channel_id << 16,
- 		VMW_HYPERVISOR_MAGIC,
- 		eax, ebx, ecx, edx, si, di);
- 
-@@ -160,7 +158,8 @@ static unsigned long vmw_port_hb_out(struct rpc_channel *channel,
- 		VMW_PORT_HB_OUT(
- 			(MESSAGE_STATUS_SUCCESS << 16) | VMW_PORT_CMD_HB_MSG,
- 			msg_len, si, di,
--			VMW_HYPERVISOR_HB_PORT | (channel->channel_id << 16),
-+			VMWARE_HYPERVISOR_HB | (channel->channel_id << 16) |
-+			VMWARE_HYPERVISOR_OUT,
- 			VMW_HYPERVISOR_MAGIC, bp,
- 			eax, ebx, ecx, edx, si, di);
- 
-@@ -181,7 +180,7 @@ static unsigned long vmw_port_hb_out(struct rpc_channel *channel,
- 
- 		VMW_PORT(VMW_PORT_CMD_MSG | (MSG_TYPE_SENDPAYLOAD << 16),
- 			 word, si, di,
--			 VMW_HYPERVISOR_PORT | (channel->channel_id << 16),
-+			 channel->channel_id << 16,
- 			 VMW_HYPERVISOR_MAGIC,
- 			 eax, ebx, ecx, edx, si, di);
- 	}
-@@ -213,7 +212,7 @@ static unsigned long vmw_port_hb_in(struct rpc_channel *channel, char *reply,
- 		VMW_PORT_HB_IN(
- 			(MESSAGE_STATUS_SUCCESS << 16) | VMW_PORT_CMD_HB_MSG,
- 			reply_len, si, di,
--			VMW_HYPERVISOR_HB_PORT | (channel->channel_id << 16),
-+			VMWARE_HYPERVISOR_HB | (channel->channel_id << 16),
- 			VMW_HYPERVISOR_MAGIC, bp,
- 			eax, ebx, ecx, edx, si, di);
- 
-@@ -230,7 +229,7 @@ static unsigned long vmw_port_hb_in(struct rpc_channel *channel, char *reply,
- 
- 		VMW_PORT(VMW_PORT_CMD_MSG | (MSG_TYPE_RECVPAYLOAD << 16),
- 			 MESSAGE_STATUS_SUCCESS, si, di,
--			 VMW_HYPERVISOR_PORT | (channel->channel_id << 16),
-+			 channel->channel_id << 16,
- 			 VMW_HYPERVISOR_MAGIC,
- 			 eax, ebx, ecx, edx, si, di);
- 
-@@ -269,7 +268,7 @@ static int vmw_send_msg(struct rpc_channel *channel, const char *msg)
- 
- 		VMW_PORT(VMW_PORT_CMD_SENDSIZE,
- 			msg_len, si, di,
--			VMW_HYPERVISOR_PORT | (channel->channel_id << 16),
-+			channel->channel_id << 16,
- 			VMW_HYPERVISOR_MAGIC,
- 			eax, ebx, ecx, edx, si, di);
- 
-@@ -327,7 +326,7 @@ static int vmw_recv_msg(struct rpc_channel *channel, void **msg,
- 
- 		VMW_PORT(VMW_PORT_CMD_RECVSIZE,
- 			0, si, di,
--			(VMW_HYPERVISOR_PORT | (channel->channel_id << 16)),
-+			channel->channel_id << 16,
- 			VMW_HYPERVISOR_MAGIC,
- 			eax, ebx, ecx, edx, si, di);
- 
-@@ -371,7 +370,7 @@ static int vmw_recv_msg(struct rpc_channel *channel, void **msg,
- 
- 		VMW_PORT(VMW_PORT_CMD_RECVSTATUS,
- 			MESSAGE_STATUS_SUCCESS, si, di,
--			(VMW_HYPERVISOR_PORT | (channel->channel_id << 16)),
-+			channel->channel_id << 16,
- 			VMW_HYPERVISOR_MAGIC,
- 			eax, ebx, ecx, edx, si, di);
- 
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_msg.h b/drivers/gpu/drm/vmwgfx/vmwgfx_msg.h
-index 4907e50..f685c70 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_msg.h
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_msg.h
-@@ -32,6 +32,7 @@
- #ifndef _VMWGFX_MSG_H
- #define _VMWGFX_MSG_H
- 
+ /* Intel-defined CPU features, CPUID level 0x00000007:0 (EBX), word 9 */
+ #define X86_FEATURE_FSGSBASE		( 9*32+ 0) /* RDFSBASE, WRFSBASE, RDGSBASE, WRGSBASE instructions*/
+diff --git a/arch/x86/include/asm/vmware.h b/arch/x86/include/asm/vmware.h
+new file mode 100644
+index 0000000..e00c9e8
+--- /dev/null
++++ b/arch/x86/include/asm/vmware.h
+@@ -0,0 +1,53 @@
++/* SPDX-License-Identifier: GPL-2.0 or MIT */
++#ifndef _ASM_X86_VMWARE_H
++#define _ASM_X86_VMWARE_H
++
++#include <asm/cpufeatures.h>
++#include <asm/alternative.h>
++
++/*
++ * The hypercall definitions differ in the low word of the %edx argument
++ * in the following way: the old port base interface uses the port
++ * number to distinguish between high- and low bandwidth versions.
++ *
++ * The new vmcall interface instead uses a set of flags to select
++ * bandwidth mode and transfer direction. The flags should be loaded
++ * into %dx by any user and are automatically replaced by the port
++ * number if the VMWARE_HYPERVISOR_PORT method is used.
++ *
++ * In short, new driver code should strictly use the new definition of
++ * %dx content.
++ */
++
++/* Old port-based version */
++#define VMWARE_HYPERVISOR_PORT    "0x5658"
++#define VMWARE_HYPERVISOR_PORT_HB "0x5659"
++
++/* Current vmcall / vmmcall version */
++#define VMWARE_HYPERVISOR_HB   BIT(0)
++#define VMWARE_HYPERVISOR_OUT  BIT(1)
++
++/* The low bandwidth call. The low word of edx is presumed clear. */
++#define VMWARE_HYPERCALL						\
++	ALTERNATIVE_2("movw $" VMWARE_HYPERVISOR_PORT ", %%dx; inl (%%dx)", \
++		      "vmcall", X86_FEATURE_VMCALL,			\
++		      "vmmcall", X86_FEATURE_VMW_VMMCALL)
++
++/*
++ * The high bandwidth out call. The low word of edx is presumed to have the
++ * HB and OUT bits set.
++ */
++#define VMWARE_HYPERCALL_HB_OUT						\
++	ALTERNATIVE_2("movw $" VMWARE_HYPERVISOR_PORT_HB ", %%dx; rep outsb", \
++		      "vmcall", X86_FEATURE_VMCALL,			\
++		      "vmmcall", X86_FEATURE_VMW_VMMCALL)
++
++/*
++ * The high bandwidth in call. The low word of edx is presumed to have the
++ * HB bit set.
++ */
++#define VMWARE_HYPERCALL_HB_IN						\
++	ALTERNATIVE_2("movw $" VMWARE_HYPERVISOR_PORT_HB ", %%dx; rep insb", \
++		      "vmcall", X86_FEATURE_VMCALL,			\
++		      "vmmcall", X86_FEATURE_VMW_VMMCALL)
++#endif
+diff --git a/arch/x86/kernel/cpu/vmware.c b/arch/x86/kernel/cpu/vmware.c
+index 757dded..9735139 100644
+--- a/arch/x86/kernel/cpu/vmware.c
++++ b/arch/x86/kernel/cpu/vmware.c
+@@ -30,6 +30,7 @@
+ #include <asm/hypervisor.h>
+ #include <asm/timer.h>
+ #include <asm/apic.h>
 +#include <asm/vmware.h>
  
- /**
-  * Hypervisor-specific bi-directional communication channel.  Should never
-@@ -44,7 +45,7 @@
-  * @in_ebx: [IN] Message Len, through EBX
-  * @in_si: [IN] Input argument through SI, set to 0 if not used
-  * @in_di: [IN] Input argument through DI, set ot 0 if not used
-- * @port_num: [IN] port number + [channel id]
-+ * @flags: [IN] hypercall flags + [channel id]
-  * @magic: [IN] hypervisor magic value
-  * @eax: [OUT] value of EAX register
-  * @ebx: [OUT] e.g. status from an HB message status command
-@@ -54,10 +55,10 @@
-  * @di:  [OUT]
-  */
- #define VMW_PORT(cmd, in_ebx, in_si, in_di,	\
--		 port_num, magic,		\
-+		 flags, magic,		\
- 		 eax, ebx, ecx, edx, si, di)	\
- ({						\
--	asm volatile ("inl %%dx, %%eax;" :	\
-+	asm volatile (VMWARE_HYPERCALL :	\
- 		"=a"(eax),			\
- 		"=b"(ebx),			\
- 		"=c"(ecx),			\
-@@ -67,7 +68,7 @@
- 		"a"(magic),			\
- 		"b"(in_ebx),			\
- 		"c"(cmd),			\
--		"d"(port_num),			\
-+		"d"(flags),			\
- 		"S"(in_si),			\
- 		"D"(in_di) :			\
- 		"memory");			\
-@@ -85,7 +86,7 @@
-  * @in_ecx: [IN] Message Len, through ECX
-  * @in_si: [IN] Input argument through SI, set to 0 if not used
-  * @in_di: [IN] Input argument through DI, set to 0 if not used
-- * @port_num: [IN] port number + [channel id]
-+ * @flags: [IN] hypercall flags + [channel id]
-  * @magic: [IN] hypervisor magic value
-  * @bp:  [IN]
-  * @eax: [OUT] value of EAX register
-@@ -98,12 +99,12 @@
- #ifdef __x86_64__
+ #undef pr_fmt
+ #define pr_fmt(fmt)	"vmware: " fmt
+@@ -40,7 +41,6 @@
+ #define CPUID_VMWARE_FEATURES_ECX_VMCALL     BIT(1)
  
- #define VMW_PORT_HB_OUT(cmd, in_ecx, in_si, in_di,	\
--			port_num, magic, bp,		\
-+			flags, magic, bp,		\
- 			eax, ebx, ecx, edx, si, di)	\
- ({							\
- 	asm volatile ("push %%rbp;"			\
- 		"mov %12, %%rbp;"			\
--		"rep outsb;"				\
-+		VMWARE_HYPERCALL_HB_OUT			\
- 		"pop %%rbp;" :				\
- 		"=a"(eax),				\
- 		"=b"(ebx),				\
-@@ -114,7 +115,7 @@
- 		"a"(magic),				\
- 		"b"(cmd),				\
- 		"c"(in_ecx),				\
--		"d"(port_num),				\
-+		"d"(flags),				\
- 		"S"(in_si),				\
- 		"D"(in_di),				\
- 		"r"(bp) :				\
-@@ -123,12 +124,12 @@
+ #define VMWARE_HYPERVISOR_MAGIC	0x564D5868
+-#define VMWARE_HYPERVISOR_PORT	0x5658
  
+ #define VMWARE_CMD_GETVERSION    10
+ #define VMWARE_CMD_GETHZ         45
+@@ -164,6 +164,10 @@ static void __init vmware_set_capabilities(void)
+ {
+ 	setup_force_cpu_cap(X86_FEATURE_CONSTANT_TSC);
+ 	setup_force_cpu_cap(X86_FEATURE_TSC_RELIABLE);
++	if (vmware_hypercall_mode == CPUID_VMWARE_FEATURES_ECX_VMCALL)
++		setup_force_cpu_cap(X86_FEATURE_VMCALL);
++	else if (vmware_hypercall_mode == CPUID_VMWARE_FEATURES_ECX_VMMCALL)
++		setup_force_cpu_cap(X86_FEATURE_VMW_VMMCALL);
+ }
  
- #define VMW_PORT_HB_IN(cmd, in_ecx, in_si, in_di,	\
--		       port_num, magic, bp,		\
-+		       flags, magic, bp,		\
- 		       eax, ebx, ecx, edx, si, di)	\
- ({							\
- 	asm volatile ("push %%rbp;"			\
- 		"mov %12, %%rbp;"			\
--		"rep insb;"				\
-+		VMWARE_HYPERCALL_HB_IN			\
- 		"pop %%rbp" :				\
- 		"=a"(eax),				\
- 		"=b"(ebx),				\
-@@ -139,7 +140,7 @@
- 		"a"(magic),				\
- 		"b"(cmd),				\
- 		"c"(in_ecx),				\
--		"d"(port_num),				\
-+		"d"(flags),				\
- 		"S"(in_si),				\
- 		"D"(in_di),				\
- 		"r"(bp) :				\
-@@ -157,13 +158,13 @@
-  * just pushed it.
-  */
- #define VMW_PORT_HB_OUT(cmd, in_ecx, in_si, in_di,	\
--			port_num, magic, bp,		\
-+			flags, magic, bp,		\
- 			eax, ebx, ecx, edx, si, di)	\
- ({							\
- 	asm volatile ("push %12;"			\
- 		"push %%ebp;"				\
- 		"mov 0x04(%%esp), %%ebp;"		\
--		"rep outsb;"				\
-+		VMWARE_HYPERCALL_HB_OUT			\
- 		"pop %%ebp;"				\
- 		"add $0x04, %%esp;" :			\
- 		"=a"(eax),				\
-@@ -175,7 +176,7 @@
- 		"a"(magic),				\
- 		"b"(cmd),				\
- 		"c"(in_ecx),				\
--		"d"(port_num),				\
-+		"d"(flags),				\
- 		"S"(in_si),				\
- 		"D"(in_di),				\
- 		"m"(bp) :				\
-@@ -184,13 +185,13 @@
- 
- 
- #define VMW_PORT_HB_IN(cmd, in_ecx, in_si, in_di,	\
--		       port_num, magic, bp,		\
-+		       flags, magic, bp,		\
- 		       eax, ebx, ecx, edx, si, di)	\
- ({							\
- 	asm volatile ("push %12;"			\
- 		"push %%ebp;"				\
- 		"mov 0x04(%%esp), %%ebp;"		\
--		"rep insb;"				\
-+		VMWARE_HYPERCALL_HB_IN			\
- 		"pop %%ebp;"				\
- 		"add $0x04, %%esp;" :			\
- 		"=a"(eax),				\
-@@ -202,7 +203,7 @@
- 		"a"(magic),				\
- 		"b"(cmd),				\
- 		"c"(in_ecx),				\
--		"d"(port_num),				\
-+		"d"(flags),				\
- 		"S"(in_si),				\
- 		"D"(in_di),				\
- 		"m"(bp) :				\
+ static void __init vmware_platform_setup(void)
