@@ -2,37 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 65EF19FF65
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 28 Aug 2019 12:17:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79D149FF54
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 28 Aug 2019 12:17:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727064AbfH1KRp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 28 Aug 2019 06:17:45 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:46446 "EHLO
+        id S1726394AbfH1KRP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 28 Aug 2019 06:17:15 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:46483 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726866AbfH1KQj (ORCPT
+        with ESMTP id S1726964AbfH1KQo (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 28 Aug 2019 06:16:39 -0400
+        Wed, 28 Aug 2019 06:16:44 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i2v0G-0000LP-IJ; Wed, 28 Aug 2019 12:16:36 +0200
+        id 1i2v0K-0000La-SF; Wed, 28 Aug 2019 12:16:41 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 99A2A1C0DE3;
-        Wed, 28 Aug 2019 12:16:32 +0200 (CEST)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 1719A1C0DE5;
+        Wed, 28 Aug 2019 12:16:33 +0200 (CEST)
 Date:   Wed, 28 Aug 2019 10:16:32 -0000
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] posix-cpu-timers: Respect INFINITY for hard RTTIME limit
+Subject: [tip: timers/core] rlimit: Rewrite non-sensical RLIMIT_CPU comment
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Frederic Weisbecker <frederic@kernel.org>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20190821192922.078293002@linutronix.de>
-References: <20190821192922.078293002@linutronix.de>
+In-Reply-To: <20190821192922.185511287@linutronix.de>
+References: <20190821192922.185511287@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <156698739240.5777.15500414280182979993.tip-bot2@tip-bot2>
+Message-ID: <156698739298.5780.9875919416300087726.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,45 +48,51 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     fe0517f893d36636de20d0a809fc0c788ca0cade
-Gitweb:        https://git.kernel.org/tip/fe0517f893d36636de20d0a809fc0c788ca0cade
+Commit-ID:     24db4dd90dd53ad6e3331b6f01cb985e466cface
+Gitweb:        https://git.kernel.org/tip/24db4dd90dd53ad6e3331b6f01cb985e466cface
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Wed, 21 Aug 2019 21:09:17 +02:00
+AuthorDate:    Wed, 21 Aug 2019 21:09:18 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 28 Aug 2019 11:50:39 +02:00
+CommitterDate: Wed, 28 Aug 2019 11:50:40 +02:00
 
-posix-cpu-timers: Respect INFINITY for hard RTTIME limit
+rlimit: Rewrite non-sensical RLIMIT_CPU comment
 
-The RTIME limit expiry code does not check the hard RTTIME limit for
-INFINITY, i.e. being disabled.  Add it.
+The comment above the function which arms RLIMIT_CPU in the posix CPU timer
+code makes no sense at all. It claims that the kernel does not return an
+error code when it rejected the attempt to set RLIMIT_CPU. That's clearly
+bogus as the code does an error check and the rlimit is only set and
+activated when the permission checks are ok. In case of a rejection an
+appropriate error code is returned.
 
-While this could be considered an ABI breakage if something would depend on
-this behaviour. Though it's highly unlikely to have an effect because
-RLIM_INFINITY is at minimum INT_MAX and the RTTIME limit is in seconds, so
-the timer would fire after ~68 years.
+This is a historical and outdated comment which got dragged along even when
+the rlimit handling code was rewritten.
 
-Adding this obvious correct limit check also allows further consolidation
-of that code and is a prerequisite for cleaning up the 0 based checks and
-the rlimit setter code.
+Replace it with an explanation why the setup function is not called when
+the rlimit value is RLIM_INFINITY and how the 'disarming' is handled.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Link: https://lkml.kernel.org/r/20190821192922.078293002@linutronix.de
+Link: https://lkml.kernel.org/r/20190821192922.185511287@linutronix.de
 
 ---
- kernel/time/posix-cpu-timers.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/sys.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/time/posix-cpu-timers.c b/kernel/time/posix-cpu-timers.c
-index e62139a..a738d76 100644
---- a/kernel/time/posix-cpu-timers.c
-+++ b/kernel/time/posix-cpu-timers.c
-@@ -921,7 +921,7 @@ static void check_process_timers(struct task_struct *tsk,
- 		unsigned long hard = task_rlimit_max(tsk, RLIMIT_CPU);
- 		unsigned long psecs = div_u64(ptime, NSEC_PER_SEC);
+diff --git a/kernel/sys.c b/kernel/sys.c
+index 2969304..c578b75 100644
+--- a/kernel/sys.c
++++ b/kernel/sys.c
+@@ -1576,10 +1576,9 @@ int do_prlimit(struct task_struct *tsk, unsigned int resource,
+ 	task_unlock(tsk->group_leader);
  
--		if (psecs >= hard) {
-+		if (hard != RLIM_INFINITY && psecs >= hard) {
- 			/*
- 			 * At the hard limit, we just die.
- 			 * No need to calculate anything else now.
+ 	/*
+-	 * RLIMIT_CPU handling.   Note that the kernel fails to return an error
+-	 * code if it rejected the user's attempt to set RLIMIT_CPU.  This is a
+-	 * very long-standing error, and fixing it now risks breakage of
+-	 * applications, so we live with it
++	 * RLIMIT_CPU handling. Arm the posix CPU timer if the limit is not
++	 * infite. In case of RLIM_INFINITY the posix CPU timer code
++	 * ignores the rlimit.
+ 	 */
+ 	 if (!retval && new_rlim && resource == RLIMIT_CPU &&
+ 	     new_rlim->rlim_cur != RLIM_INFINITY &&
