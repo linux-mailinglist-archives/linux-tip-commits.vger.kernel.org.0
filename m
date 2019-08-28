@@ -2,37 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 68962A006B
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 28 Aug 2019 13:03:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7AA09A0231
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 28 Aug 2019 14:50:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726253AbfH1LDh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 28 Aug 2019 07:03:37 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:46717 "EHLO
+        id S1726270AbfH1Muq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 28 Aug 2019 08:50:46 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:47039 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725991AbfH1LDh (ORCPT
+        with ESMTP id S1726253AbfH1Muq (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 28 Aug 2019 07:03:37 -0400
+        Wed, 28 Aug 2019 08:50:46 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i2vjh-0001SL-Ql; Wed, 28 Aug 2019 13:03:34 +0200
+        id 1i2xPE-0003LC-8j; Wed, 28 Aug 2019 14:50:32 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 64E2A1C07D2;
-        Wed, 28 Aug 2019 13:03:33 +0200 (CEST)
-Date:   Wed, 28 Aug 2019 11:03:33 -0000
-From:   "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D6F2C1C07D2;
+        Wed, 28 Aug 2019 14:50:31 +0200 (CEST)
+Date:   Wed, 28 Aug 2019 12:50:31 -0000
+From:   "tip-bot2 for Neil Horman" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] hrtimer: Add kernel doc annotation for HRTIMER_MODE_HARD
-Cc:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+Subject: [tip: x86/apic] x86/apic/vector: Warn when vector space exhaustion
+ breaks affinity
+Cc:     djuran@redhat.com, Neil Horman <nhorman@tuxdriver.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20190823113845.12125-2-bigeasy@linutronix.de>
-References: <20190823113845.12125-2-bigeasy@linutronix.de>
+In-Reply-To: <20190822143421.9535-1-nhorman@tuxdriver.com>
+References: <20190822143421.9535-1-nhorman@tuxdriver.com>
 MIME-Version: 1.0
-Message-ID: <156699021323.13471.2791153356668392865.tip-bot2@tip-bot2>
+Message-ID: <156699663175.31014.3746755502169958579.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -46,38 +47,65 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/core branch of tip:
+The following commit has been merged into the x86/apic branch of tip:
 
-Commit-ID:     a67e408241783575716fcf3f79d0878f6cef0273
-Gitweb:        https://git.kernel.org/tip/a67e408241783575716fcf3f79d0878f6cef0273
-Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-AuthorDate:    Fri, 23 Aug 2019 13:38:44 +02:00
+Commit-ID:     743dac494d61d991967ebcfab92e4f80dc7583b3
+Gitweb:        https://git.kernel.org/tip/743dac494d61d991967ebcfab92e4f80dc7583b3
+Author:        Neil Horman <nhorman@tuxdriver.com>
+AuthorDate:    Thu, 22 Aug 2019 10:34:21 -04:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 28 Aug 2019 13:01:25 +02:00
+CommitterDate: Wed, 28 Aug 2019 14:44:08 +02:00
 
-hrtimer: Add kernel doc annotation for HRTIMER_MODE_HARD
+x86/apic/vector: Warn when vector space exhaustion breaks affinity
 
-Add kernel doc annotation for HRTIMER_MODE_HARD.
+On x86, CPUs are limited in the number of interrupts they can have affined
+to them as they only support 256 interrupt vectors per CPU. 32 vectors are
+reserved for the CPU and the kernel reserves another 22 for internal
+purposes. That leaves 202 vectors for assignement to devices.
 
-Fixes: ae6683d815895 ("hrtimer: Introduce HARD expiry mode")
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+When an interrupt is set up or the affinity is changed by the kernel or the
+administrator, the vector assignment code attempts to honor the requested
+affinity mask. If the vector space on the CPUs in that affinity mask is
+exhausted the code falls back to a wider set of CPUs and assigns a vector
+on a CPU outside of the requested affinity mask silently.
+
+While the effective affinity is reflected in the corresponding
+/proc/irq/$N/effective_affinity* files the silent breakage of the requested
+affinity can lead to unexpected behaviour for administrators.
+
+Add a pr_warn() when this happens so that adminstrators get at least
+informed about it in the syslog.
+
+[ tglx: Massaged changelog and made the pr_warn() more informative ]
+
+Reported-by: djuran@redhat.com
+Signed-off-by: Neil Horman <nhorman@tuxdriver.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20190823113845.12125-2-bigeasy@linutronix.de
-
+Tested-by: djuran@redhat.com
+Link: https://lkml.kernel.org/r/20190822143421.9535-1-nhorman@tuxdriver.com
 ---
- include/linux/hrtimer.h | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/kernel/apic/vector.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/include/linux/hrtimer.h b/include/linux/hrtimer.h
-index 5df4bcf..1b9a51a 100644
---- a/include/linux/hrtimer.h
-+++ b/include/linux/hrtimer.h
-@@ -32,6 +32,8 @@ struct hrtimer_cpu_base;
-  *				  when starting the timer)
-  * HRTIMER_MODE_SOFT		- Timer callback function will be executed in
-  *				  soft irq context
-+ * HRTIMER_MODE_HARD		- Timer callback function will be executed in
-+ *				  hard irq context even on PREEMPT_RT.
-  */
- enum hrtimer_mode {
- 	HRTIMER_MODE_ABS	= 0x00,
+diff --git a/arch/x86/kernel/apic/vector.c b/arch/x86/kernel/apic/vector.c
+index fdacb86..2c5676b 100644
+--- a/arch/x86/kernel/apic/vector.c
++++ b/arch/x86/kernel/apic/vector.c
+@@ -398,6 +398,17 @@ static int activate_reserved(struct irq_data *irqd)
+ 		if (!irqd_can_reserve(irqd))
+ 			apicd->can_reserve = false;
+ 	}
++
++	/*
++	 * Check to ensure that the effective affinity mask is a subset
++	 * the user supplied affinity mask, and warn the user if it is not
++	 */
++	if (!cpumask_subset(irq_data_get_effective_affinity_mask(irqd),
++			    irq_data_get_affinity_mask(irqd))) {
++		pr_warn("irq %u: Affinity broken due to vector space exhaustion.\n",
++			irqd->irq);
++	}
++
+ 	return ret;
+ }
+ 
