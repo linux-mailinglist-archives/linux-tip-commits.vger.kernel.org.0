@@ -2,37 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D4A799FF66
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 28 Aug 2019 12:17:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1CB899FF76
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 28 Aug 2019 12:18:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726292AbfH1KRt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 28 Aug 2019 06:17:49 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:46440 "EHLO
+        id S1726975AbfH1KSV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 28 Aug 2019 06:18:21 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:46413 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726839AbfH1KQi (ORCPT
+        with ESMTP id S1726709AbfH1KQd (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 28 Aug 2019 06:16:38 -0400
+        Wed, 28 Aug 2019 06:16:33 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i2v0F-0000HM-0D; Wed, 28 Aug 2019 12:16:35 +0200
+        id 1i2v0A-0000Hl-L9; Wed, 28 Aug 2019 12:16:30 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id BCEA31C0DE2;
-        Wed, 28 Aug 2019 12:16:28 +0200 (CEST)
-Date:   Wed, 28 Aug 2019 10:16:28 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 34BCD1C0DE7;
+        Wed, 28 Aug 2019 12:16:29 +0200 (CEST)
+Date:   Wed, 28 Aug 2019 10:16:29 -0000
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] posix-cpu-timers: Simplify set_process_cpu_timer()
+Subject: [tip: timers/core] posix-cpu-timers: Switch check_*_timers() to array cache
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Frederic Weisbecker <frederic@kernel.org>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20190821192921.303316423@linutronix.de>
-References: <20190821192921.303316423@linutronix.de>
+In-Reply-To: <20190821192921.408222378@linutronix.de>
+References: <20190821192921.408222378@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <156698738863.5753.1896232532462251513.tip-bot2@tip-bot2>
+Message-ID: <156698738911.5756.9860023779470771200.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,71 +48,85 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     1b0dd96d0f07c482bf1d04987cc1b35e376a7518
-Gitweb:        https://git.kernel.org/tip/1b0dd96d0f07c482bf1d04987cc1b35e376a7518
+Commit-ID:     c02b078e63a6f42029cb655d0aa3c991271637ac
+Gitweb:        https://git.kernel.org/tip/c02b078e63a6f42029cb655d0aa3c991271637ac
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Wed, 21 Aug 2019 21:09:09 +02:00
+AuthorDate:    Wed, 21 Aug 2019 21:09:10 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Wed, 28 Aug 2019 11:50:36 +02:00
 
-posix-cpu-timers: Simplify set_process_cpu_timer()
+posix-cpu-timers: Switch check_*_timers() to array cache
 
-The expiry cache can now be accessed as an array. Replace the per clock
-checks with a simple comparison of the clock indexed array member.
+Use the array based expiry cache in check_thread_timers() and convert the
+store in check_process_timers() for consistency.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Link: https://lkml.kernel.org/r/20190821192921.303316423@linutronix.de
+Link: https://lkml.kernel.org/r/20190821192921.408222378@linutronix.de
 
 ---
- kernel/time/posix-cpu-timers.c | 24 ++++++++----------------
- 1 file changed, 8 insertions(+), 16 deletions(-)
+ kernel/time/posix-cpu-timers.c | 26 +++++++++++---------------
+ 1 file changed, 11 insertions(+), 15 deletions(-)
 
 diff --git a/kernel/time/posix-cpu-timers.c b/kernel/time/posix-cpu-timers.c
-index b132417..2c47ce6 100644
+index 2c47ce6..220e3c7 100644
 --- a/kernel/time/posix-cpu-timers.c
 +++ b/kernel/time/posix-cpu-timers.c
-@@ -1174,15 +1174,15 @@ void run_posix_cpu_timers(void)
-  * Set one of the process-wide special case CPU timers or RLIMIT_CPU.
-  * The tsk->sighand->siglock must be held by the caller.
-  */
--void set_process_cpu_timer(struct task_struct *tsk, unsigned int clock_idx,
-+void set_process_cpu_timer(struct task_struct *tsk, unsigned int clkid,
- 			   u64 *newval, u64 *oldval)
+@@ -778,8 +778,7 @@ static void check_thread_timers(struct task_struct *tsk,
+ 				struct list_head *firing)
  {
--	u64 now;
-+	u64 now, *expiry = tsk->signal->posix_cputimers.expiries + clkid;
+ 	struct list_head *timers = tsk->posix_cputimers.cpu_timers;
+-	struct task_cputime *tsk_expires = &tsk->posix_cputimers.cputime_expires;
+-	u64 expires, stime, utime;
++	u64 stime, utime, *expires = tsk->posix_cputimers.expiries;
+ 	unsigned long soft;
  
--	if (WARN_ON_ONCE(clock_idx >= CPUCLOCK_SCHED))
-+	if (WARN_ON_ONCE(clkid >= CPUCLOCK_SCHED))
+ 	if (dl_task(tsk))
+@@ -789,19 +788,14 @@ static void check_thread_timers(struct task_struct *tsk,
+ 	 * If cputime_expires is zero, then there are no active
+ 	 * per thread CPU timers.
+ 	 */
+-	if (task_cputime_zero(tsk_expires))
++	if (task_cputime_zero(&tsk->posix_cputimers.cputime_expires))
  		return;
  
--	now = cpu_clock_sample_group(clock_idx, tsk, true);
-+	now = cpu_clock_sample_group(clkid, tsk, true);
+ 	task_cputime(tsk, &utime, &stime);
  
- 	if (oldval) {
- 		/*
-@@ -1205,19 +1205,11 @@ void set_process_cpu_timer(struct task_struct *tsk, unsigned int clock_idx,
- 	}
+-	expires = check_timers_list(timers, firing, utime + stime);
+-	tsk_expires->prof_exp = expires;
+-
+-	expires = check_timers_list(++timers, firing, utime);
+-	tsk_expires->virt_exp = expires;
+-
+-	tsk_expires->sched_exp = check_timers_list(++timers, firing,
+-						   tsk->se.sum_exec_runtime);
++	*expires++ = check_timers_list(timers, firing, utime + stime);
++	*expires++ = check_timers_list(++timers, firing, utime);
++	*expires = check_timers_list(++timers, firing, tsk->se.sum_exec_runtime);
  
  	/*
--	 * Update expiration cache if we are the earliest timer, or eventually
--	 * RLIMIT_CPU limit is earlier than prof_exp cpu timer expire.
-+	 * Update expiration cache if this is the earliest timer. CPUCLOCK_PROF
-+	 * expiry cache is also used by RLIMIT_CPU!.
- 	 */
--	switch (clock_idx) {
--	case CPUCLOCK_PROF:
--		if (expires_gt(tsk->signal->posix_cputimers.cputime_expires.prof_exp, *newval))
--			tsk->signal->posix_cputimers.cputime_expires.prof_exp = *newval;
--		break;
--	case CPUCLOCK_VIRT:
--		if (expires_gt(tsk->signal->posix_cputimers.cputime_expires.virt_exp, *newval))
--			tsk->signal->posix_cputimers.cputime_expires.virt_exp = *newval;
--		break;
--	}
-+	if (expires_gt(*expiry, *newval))
-+		*expiry = *newval;
- 
- 	tick_dep_set_signal(tsk->signal, TICK_DEP_BIT_POSIX_TIMER);
+ 	 * Check for the special case thread timers.
+@@ -839,7 +833,8 @@ static void check_thread_timers(struct task_struct *tsk,
+ 			__group_send_sig_info(SIGXCPU, SEND_SIG_PRIV, tsk);
+ 		}
+ 	}
+-	if (task_cputime_zero(tsk_expires))
++
++	if (task_cputime_zero(&tsk->posix_cputimers.cputime_expires))
+ 		tick_dep_clear_task(tsk, TICK_DEP_BIT_POSIX_TIMER);
  }
+ 
+@@ -958,9 +953,10 @@ static void check_process_timers(struct task_struct *tsk,
+ 			prof_expires = x;
+ 	}
+ 
+-	sig->posix_cputimers.cputime_expires.prof_exp = prof_expires;
+-	sig->posix_cputimers.cputime_expires.virt_exp = virt_expires;
+-	sig->posix_cputimers.cputime_expires.sched_exp = sched_expires;
++	sig->posix_cputimers.expiries[CPUCLOCK_PROF] = prof_expires;
++	sig->posix_cputimers.expiries[CPUCLOCK_VIRT] = virt_expires;
++	sig->posix_cputimers.expiries[CPUCLOCK_SCHED] = sched_expires;
++
+ 	if (task_cputime_zero(&sig->posix_cputimers.cputime_expires))
+ 		stop_process_timers(sig);
+ 
