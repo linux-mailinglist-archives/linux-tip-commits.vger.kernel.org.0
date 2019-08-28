@@ -2,50 +2,44 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B48FA0344
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 28 Aug 2019 15:32:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F31F6A033A
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 28 Aug 2019 15:31:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726397AbfH1Nbf (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 28 Aug 2019 09:31:35 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:47288 "EHLO
+        id S1726545AbfH1NbD (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 28 Aug 2019 09:31:03 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:47258 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726382AbfH1Nbe (ORCPT
+        with ESMTP id S1726368AbfH1NbC (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 28 Aug 2019 09:31:34 -0400
+        Wed, 28 Aug 2019 09:31:02 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i2y2J-0004MZ-M7; Wed, 28 Aug 2019 15:30:55 +0200
+        id 1i2y2K-0004Mf-Ip; Wed, 28 Aug 2019 15:30:56 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4ACB51C0DE2;
-        Wed, 28 Aug 2019 15:30:55 +0200 (CEST)
-Date:   Wed, 28 Aug 2019 13:30:55 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 3114E1C0DE2;
+        Wed, 28 Aug 2019 15:30:56 +0200 (CEST)
+Date:   Wed, 28 Aug 2019 13:30:56 -0000
 From:   "tip-bot2 for Thomas Hellstrom" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/vmware] x86/vmware: Add a header file for hypercall definitions
+Subject: [tip: x86/vmware] input/vmmouse: Update the backdoor call with
+ support for new instructions
 Cc:     Thomas Hellstrom <thellstrom@vmware.com>,
         Borislav Petkov <bp@suse.de>,
         Doug Covelli <dcovelli@vmware.com>,
-        Aaron Lewis <aaronlewis@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
         "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        linux-graphics-maintainer@vmware.com,
-        Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Robert Hoo <robert.hu@linux.intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        virtualization@lists.linux-foundation.org, <pv-drivers@vmware.com>,
-        "x86-ml" <x86@kernel.org>, Ingo Molnar <mingo@kernel.org>,
-        Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
-In-Reply-To: <20190828080353.12658-3-thomas_os@shipmail.org>
-References: <20190828080353.12658-3-thomas_os@shipmail.org>
+        linux-input@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+        VMware Graphics <linux-graphics-maintainer@vmware.com>,
+        <pv-drivers@vmware.com>, "x86-ml" <x86@kernel.org>,
+        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20190828080353.12658-5-thomas_os@shipmail.org>
+References: <20190828080353.12658-5-thomas_os@shipmail.org>
 MIME-Version: 1.0
-Message-ID: <156699905522.5313.7855443081930586035.tip-bot2@tip-bot2>
+Message-ID: <156699905611.5321.15444519862547054670.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -61,167 +55,66 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/vmware branch of tip:
 
-Commit-ID:     b4dd4f6e3648dfd66576515f2222d885a9a765c0
-Gitweb:        https://git.kernel.org/tip/b4dd4f6e3648dfd66576515f2222d885a9a765c0
+Commit-ID:     f7b15c74cffd760ec9959078982d8268a38456c4
+Gitweb:        https://git.kernel.org/tip/f7b15c74cffd760ec9959078982d8268a38456c4
 Author:        Thomas Hellstrom <thellstrom@vmware.com>
-AuthorDate:    Wed, 28 Aug 2019 10:03:51 +02:00
+AuthorDate:    Wed, 28 Aug 2019 10:03:53 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 28 Aug 2019 13:32:06 +02:00
+CommitterDate: Wed, 28 Aug 2019 13:43:01 +02:00
 
-x86/vmware: Add a header file for hypercall definitions
+input/vmmouse: Update the backdoor call with support for new instructions
 
-The new header is intended to be used by drivers using the backdoor.
-Follow the KVM example using alternatives self-patching to choose
-between vmcall, vmmcall and io instructions.
-
-Also define two new CPU feature flags to indicate hypervisor support
-for vmcall- and vmmcall instructions. The new XF86_FEATURE_VMW_VMMCALL
-flag is needed because using XF86_FEATURE_VMMCALL might break QEMU/KVM
-setups using the vmmouse driver. They rely on XF86_FEATURE_VMMCALL
-on AMD to get the kvm_hypercall() right. But they do not yet implement
-vmmcall for the VMware hypercall used by the vmmouse driver.
-
- [ bp: reflow hypercall %edx usage explanation comment. ]
+Use the definition provided by include/asm/vmware.h.
 
 Signed-off-by: Thomas Hellstrom <thellstrom@vmware.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
 Reviewed-by: Doug Covelli <dcovelli@vmware.com>
-Cc: Aaron Lewis <aaronlewis@google.com>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Fenghua Yu <fenghua.yu@intel.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Cc: "H. Peter Anvin" <hpa@zytor.com>
 Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Cc: linux-graphics-maintainer@vmware.com
-Cc: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
-Cc: Nicolas Ferre <nicolas.ferre@microchip.com>
-Cc: Robert Hoo <robert.hu@linux.intel.com>
+Cc: linux-input@vger.kernel.org
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: virtualization@lists.linux-foundation.org
+Cc: VMware Graphics <linux-graphics-maintainer@vmware.com>
 Cc: <pv-drivers@vmware.com>
 Cc: x86-ml <x86@kernel.org>
-Link: https://lkml.kernel.org/r/20190828080353.12658-3-thomas_os@shipmail.org
+Link: https://lkml.kernel.org/r/20190828080353.12658-5-thomas_os@shipmail.org
 ---
- MAINTAINERS                        |  1 +-
- arch/x86/include/asm/cpufeatures.h |  2 +-
- arch/x86/include/asm/vmware.h      | 53 +++++++++++++++++++++++++++++-
- arch/x86/kernel/cpu/vmware.c       |  6 ++-
- 4 files changed, 61 insertions(+), 1 deletion(-)
- create mode 100644 arch/x86/include/asm/vmware.h
+ drivers/input/mouse/vmmouse.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 9cbcf16..47efc1b 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -17206,6 +17206,7 @@ M:	"VMware, Inc." <pv-drivers@vmware.com>
- L:	virtualization@lists.linux-foundation.org
- S:	Supported
- F:	arch/x86/kernel/cpu/vmware.c
-+F:	arch/x86/include/asm/vmware.h
- 
- VMWARE PVRDMA DRIVER
- M:	Adit Ranadive <aditr@vmware.com>
-diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
-index e880f24..aaeae2f 100644
---- a/arch/x86/include/asm/cpufeatures.h
-+++ b/arch/x86/include/asm/cpufeatures.h
-@@ -232,6 +232,8 @@
- #define X86_FEATURE_VMMCALL		( 8*32+15) /* Prefer VMMCALL to VMCALL */
- #define X86_FEATURE_XENPV		( 8*32+16) /* "" Xen paravirtual guest */
- #define X86_FEATURE_EPT_AD		( 8*32+17) /* Intel Extended Page Table access-dirty bit */
-+#define X86_FEATURE_VMCALL		( 8*32+18) /* "" Hypervisor supports the VMCALL instruction */
-+#define X86_FEATURE_VMW_VMMCALL		( 8*32+19) /* "" VMware prefers VMMCALL hypercall instruction */
- 
- /* Intel-defined CPU features, CPUID level 0x00000007:0 (EBX), word 9 */
- #define X86_FEATURE_FSGSBASE		( 9*32+ 0) /* RDFSBASE, WRFSBASE, RDGSBASE, WRGSBASE instructions*/
-diff --git a/arch/x86/include/asm/vmware.h b/arch/x86/include/asm/vmware.h
-new file mode 100644
-index 0000000..e00c9e8
---- /dev/null
-+++ b/arch/x86/include/asm/vmware.h
-@@ -0,0 +1,53 @@
-+/* SPDX-License-Identifier: GPL-2.0 or MIT */
-+#ifndef _ASM_X86_VMWARE_H
-+#define _ASM_X86_VMWARE_H
-+
-+#include <asm/cpufeatures.h>
-+#include <asm/alternative.h>
-+
-+/*
-+ * The hypercall definitions differ in the low word of the %edx argument
-+ * in the following way: the old port base interface uses the port
-+ * number to distinguish between high- and low bandwidth versions.
-+ *
-+ * The new vmcall interface instead uses a set of flags to select
-+ * bandwidth mode and transfer direction. The flags should be loaded
-+ * into %dx by any user and are automatically replaced by the port
-+ * number if the VMWARE_HYPERVISOR_PORT method is used.
-+ *
-+ * In short, new driver code should strictly use the new definition of
-+ * %dx content.
-+ */
-+
-+/* Old port-based version */
-+#define VMWARE_HYPERVISOR_PORT    "0x5658"
-+#define VMWARE_HYPERVISOR_PORT_HB "0x5659"
-+
-+/* Current vmcall / vmmcall version */
-+#define VMWARE_HYPERVISOR_HB   BIT(0)
-+#define VMWARE_HYPERVISOR_OUT  BIT(1)
-+
-+/* The low bandwidth call. The low word of edx is presumed clear. */
-+#define VMWARE_HYPERCALL						\
-+	ALTERNATIVE_2("movw $" VMWARE_HYPERVISOR_PORT ", %%dx; inl (%%dx)", \
-+		      "vmcall", X86_FEATURE_VMCALL,			\
-+		      "vmmcall", X86_FEATURE_VMW_VMMCALL)
-+
-+/*
-+ * The high bandwidth out call. The low word of edx is presumed to have the
-+ * HB and OUT bits set.
-+ */
-+#define VMWARE_HYPERCALL_HB_OUT						\
-+	ALTERNATIVE_2("movw $" VMWARE_HYPERVISOR_PORT_HB ", %%dx; rep outsb", \
-+		      "vmcall", X86_FEATURE_VMCALL,			\
-+		      "vmmcall", X86_FEATURE_VMW_VMMCALL)
-+
-+/*
-+ * The high bandwidth in call. The low word of edx is presumed to have the
-+ * HB bit set.
-+ */
-+#define VMWARE_HYPERCALL_HB_IN						\
-+	ALTERNATIVE_2("movw $" VMWARE_HYPERVISOR_PORT_HB ", %%dx; rep insb", \
-+		      "vmcall", X86_FEATURE_VMCALL,			\
-+		      "vmmcall", X86_FEATURE_VMW_VMMCALL)
-+#endif
-diff --git a/arch/x86/kernel/cpu/vmware.c b/arch/x86/kernel/cpu/vmware.c
-index 757dded..9735139 100644
---- a/arch/x86/kernel/cpu/vmware.c
-+++ b/arch/x86/kernel/cpu/vmware.c
-@@ -30,6 +30,7 @@
+diff --git a/drivers/input/mouse/vmmouse.c b/drivers/input/mouse/vmmouse.c
+index 871e5b5..148245c 100644
+--- a/drivers/input/mouse/vmmouse.c
++++ b/drivers/input/mouse/vmmouse.c
+@@ -16,12 +16,12 @@
+ #include <linux/slab.h>
+ #include <linux/module.h>
  #include <asm/hypervisor.h>
- #include <asm/timer.h>
- #include <asm/apic.h>
 +#include <asm/vmware.h>
  
- #undef pr_fmt
- #define pr_fmt(fmt)	"vmware: " fmt
-@@ -40,7 +41,6 @@
- #define CPUID_VMWARE_FEATURES_ECX_VMCALL     BIT(1)
+ #include "psmouse.h"
+ #include "vmmouse.h"
  
- #define VMWARE_HYPERVISOR_MAGIC	0x564D5868
--#define VMWARE_HYPERVISOR_PORT	0x5658
+ #define VMMOUSE_PROTO_MAGIC			0x564D5868U
+-#define VMMOUSE_PROTO_PORT			0x5658
  
- #define VMWARE_CMD_GETVERSION    10
- #define VMWARE_CMD_GETHZ         45
-@@ -164,6 +164,10 @@ static void __init vmware_set_capabilities(void)
- {
- 	setup_force_cpu_cap(X86_FEATURE_CONSTANT_TSC);
- 	setup_force_cpu_cap(X86_FEATURE_TSC_RELIABLE);
-+	if (vmware_hypercall_mode == CPUID_VMWARE_FEATURES_ECX_VMCALL)
-+		setup_force_cpu_cap(X86_FEATURE_VMCALL);
-+	else if (vmware_hypercall_mode == CPUID_VMWARE_FEATURES_ECX_VMMCALL)
-+		setup_force_cpu_cap(X86_FEATURE_VMW_VMMCALL);
- }
+ /*
+  * Main commands supported by the vmmouse hypervisor port.
+@@ -84,7 +84,7 @@ struct vmmouse_data {
+ #define VMMOUSE_CMD(cmd, in1, out1, out2, out3, out4)	\
+ ({							\
+ 	unsigned long __dummy1, __dummy2;		\
+-	__asm__ __volatile__ ("inl %%dx" :		\
++	__asm__ __volatile__ (VMWARE_HYPERCALL :	\
+ 		"=a"(out1),				\
+ 		"=b"(out2),				\
+ 		"=c"(out3),				\
+@@ -94,7 +94,7 @@ struct vmmouse_data {
+ 		"a"(VMMOUSE_PROTO_MAGIC),		\
+ 		"b"(in1),				\
+ 		"c"(VMMOUSE_PROTO_CMD_##cmd),		\
+-		"d"(VMMOUSE_PROTO_PORT) :		\
++		"d"(0) :			        \
+ 		"memory");		                \
+ })
  
- static void __init vmware_platform_setup(void)
