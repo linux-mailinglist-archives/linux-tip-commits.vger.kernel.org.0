@@ -2,30 +2,30 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D45C2A26D8
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 29 Aug 2019 21:04:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 48F4FA26D3
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 29 Aug 2019 21:03:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729393AbfH2TDa (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 29 Aug 2019 15:03:30 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:51465 "EHLO
+        id S1728162AbfH2TDZ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 29 Aug 2019 15:03:25 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:51464 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728640AbfH2TCG (ORCPT
+        with ESMTP id S1728735AbfH2TCH (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 29 Aug 2019 15:02:06 -0400
+        Thu, 29 Aug 2019 15:02:07 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i3PgF-00058D-V4; Thu, 29 Aug 2019 21:02:00 +0200
+        id 1i3PgD-00059p-Cy; Thu, 29 Aug 2019 21:01:57 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5C5F91C0DE9;
-        Thu, 29 Aug 2019 21:01:54 +0200 (CEST)
-Date:   Thu, 29 Aug 2019 19:01:54 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5B24A1C0DEA;
+        Thu, 29 Aug 2019 21:01:55 +0200 (CEST)
+Date:   Thu, 29 Aug 2019 19:01:55 -0000
 From:   "tip-bot2 for Jiri Olsa" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] libperf: Add PERF_RECORD_ID_INDEX 'struct
- id_index_event' to perf/event.h
+Subject: [tip: perf/core] libperf: Add PERF_RECORD_AUXTRACE 'struct
+ auxtrace_event' to perf/event.h
 Cc:     Jiri Olsa <jolsa@kernel.org>,
         Alexander Shishkin <alexander.shishkin@linux.intel.com>,
         Michael Petlan <mpetlan@redhat.com>,
@@ -34,10 +34,10 @@ Cc:     Jiri Olsa <jolsa@kernel.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20190828135717.7245-8-jolsa@kernel.org>
-References: <20190828135717.7245-8-jolsa@kernel.org>
+In-Reply-To: <20190828135717.7245-10-jolsa@kernel.org>
+References: <20190828135717.7245-10-jolsa@kernel.org>
 MIME-Version: 1.0
-Message-ID: <156710531425.10561.3393738240075496572.tip-bot2@tip-bot2>
+Message-ID: <156710531528.10568.3815035679236242059.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -53,109 +53,85 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     fecb410030628d70401e06a98a585d735f61d7e2
-Gitweb:        https://git.kernel.org/tip/fecb410030628d70401e06a98a585d735f61d7e2
+Commit-ID:     306c9d24c09d84d80ae54b36f7f907c8b8fa537a
+Gitweb:        https://git.kernel.org/tip/306c9d24c09d84d80ae54b36f7f907c8b8fa537a
 Author:        Jiri Olsa <jolsa@kernel.org>
-AuthorDate:    Wed, 28 Aug 2019 15:57:01 +02:00
+AuthorDate:    Wed, 28 Aug 2019 15:57:03 +02:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Wed, 28 Aug 2019 18:15:05 -03:00
+CommitterDate: Thu, 29 Aug 2019 08:36:11 -03:00
 
-libperf: Add PERF_RECORD_ID_INDEX 'struct id_index_event' to perf/event.h
+libperf: Add PERF_RECORD_AUXTRACE 'struct auxtrace_event' to perf/event.h
 
-Move the PERF_RECORD_ID_INDEX event definition to libperf's event.h.
+Move the PERF_RECORD_AUXTRACE event definition to libperf's event.h.
 
-In order to keep libperf simple, we switch 'u64/u32/u16/u8' types used
-events to their generic '__u*' versions.
-
-Add the PRI_ld64 define, so we can use it in printf output.
+Ipn order to keep libperf simple, we switch 'u64/u32/u16/u8'
+types used events to their generic '__u*' versions.
 
 Signed-off-by: Jiri Olsa <jolsa@kernel.org>
 Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 Cc: Michael Petlan <mpetlan@redhat.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Link: http://lkml.kernel.org/r/20190828135717.7245-8-jolsa@kernel.org
+Link: http://lkml.kernel.org/r/20190828135717.7245-10-jolsa@kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/lib/include/perf/event.h | 13 +++++++++++++
- tools/perf/util/event.h             | 15 ++-------------
- tools/perf/util/session.c           |  8 ++++----
- 3 files changed, 19 insertions(+), 17 deletions(-)
+ tools/perf/lib/include/perf/event.h | 11 +++++++++++
+ tools/perf/util/auxtrace.c          |  2 +-
+ tools/perf/util/event.h             | 11 -----------
+ 3 files changed, 12 insertions(+), 12 deletions(-)
 
 diff --git a/tools/perf/lib/include/perf/event.h b/tools/perf/lib/include/perf/event.h
-index 5e6b6d1..c68523c 100644
+index 02da734..78001c2 100644
 --- a/tools/perf/lib/include/perf/event.h
 +++ b/tools/perf/lib/include/perf/event.h
-@@ -188,4 +188,17 @@ struct build_id_event {
- 	char			 filename[];
+@@ -208,4 +208,15 @@ struct auxtrace_info_event {
+ 	__u64			 priv[];
  };
  
-+struct id_index_entry {
-+	__u64			 id;
-+	__u64			 idx;
-+	__u64			 cpu;
-+	__u64			 tid;
-+};
-+
-+struct id_index_event {
++struct auxtrace_event {
 +	struct perf_event_header header;
-+	__u64			 nr;
-+	struct id_index_entry	 entries[0];
++	__u64			 size;
++	__u64			 offset;
++	__u64			 reference;
++	__u32			 idx;
++	__u32			 tid;
++	__u32			 cpu;
++	__u32			 reserved__; /* For alignment */
 +};
 +
  #endif /* __LIBPERF_EVENT_H */
+diff --git a/tools/perf/util/auxtrace.c b/tools/perf/util/auxtrace.c
+index 112c24a..5edec71 100644
+--- a/tools/perf/util/auxtrace.c
++++ b/tools/perf/util/auxtrace.c
+@@ -943,7 +943,7 @@ s64 perf_event__process_auxtrace(struct perf_session *session,
+ 	s64 err;
+ 
+ 	if (dump_trace)
+-		fprintf(stdout, " size: %#"PRIx64"  offset: %#"PRIx64"  ref: %#"PRIx64"  idx: %u  tid: %d  cpu: %d\n",
++		fprintf(stdout, " size: %#"PRI_lx64"  offset: %#"PRI_lx64"  ref: %#"PRI_lx64"  idx: %u  tid: %d  cpu: %d\n",
+ 			event->auxtrace.size, event->auxtrace.offset,
+ 			event->auxtrace.reference, event->auxtrace.idx,
+ 			event->auxtrace.tid, event->auxtrace.cpu);
 diff --git a/tools/perf/util/event.h b/tools/perf/util/event.h
-index 4b6cf89..82315d2 100644
+index ca2cae3..60895a3 100644
 --- a/tools/perf/util/event.h
 +++ b/tools/perf/util/event.h
-@@ -22,9 +22,11 @@
-  */
- #define PRI_lu64 "l" PRIu64
- #define PRI_lx64 "l" PRIx64
-+#define PRI_ld64 "l" PRId64
- #else
- #define PRI_lu64 PRIu64
- #define PRI_lx64 PRIx64
-+#define PRI_ld64 PRId64
- #endif
- 
- #define PERF_SAMPLE_MASK				\
-@@ -330,19 +332,6 @@ struct events_stats {
+@@ -332,17 +332,6 @@ struct events_stats {
  	u32 nr_proc_map_timeout;
  };
  
--struct id_index_entry {
--	u64 id;
--	u64 idx;
--	u64 cpu;
--	u64 tid;
--};
--
--struct id_index_event {
+-struct auxtrace_event {
 -	struct perf_event_header header;
--	u64 nr;
--	struct id_index_entry entries[0];
+-	u64 size;
+-	u64 offset;
+-	u64 reference;
+-	u32 idx;
+-	u32 tid;
+-	u32 cpu;
+-	u32 reserved__; /* For alignment */
 -};
 -
- struct auxtrace_info_event {
- 	struct perf_event_header header;
- 	u32 type;
-diff --git a/tools/perf/util/session.c b/tools/perf/util/session.c
-index a275f2e..aa96674 100644
---- a/tools/perf/util/session.c
-+++ b/tools/perf/util/session.c
-@@ -2393,10 +2393,10 @@ int perf_event__process_id_index(struct perf_session *session,
- 		struct perf_sample_id *sid;
+ #define MAX_AUXTRACE_ERROR_MSG 64
  
- 		if (dump_trace) {
--			fprintf(stdout,	" ... id: %"PRIu64, e->id);
--			fprintf(stdout,	"  idx: %"PRIu64, e->idx);
--			fprintf(stdout,	"  cpu: %"PRId64, e->cpu);
--			fprintf(stdout,	"  tid: %"PRId64"\n", e->tid);
-+			fprintf(stdout,	" ... id: %"PRI_lu64, e->id);
-+			fprintf(stdout,	"  idx: %"PRI_lu64, e->idx);
-+			fprintf(stdout,	"  cpu: %"PRI_ld64, e->cpu);
-+			fprintf(stdout,	"  tid: %"PRI_ld64"\n", e->tid);
- 		}
- 
- 		sid = perf_evlist__id2sid(evlist, e->id);
+ struct auxtrace_error_event {
