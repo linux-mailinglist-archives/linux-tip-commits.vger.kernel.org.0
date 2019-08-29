@@ -2,40 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AF47DA26E3
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 29 Aug 2019 21:04:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02DE1A26EC
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 29 Aug 2019 21:04:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729494AbfH2TD6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 29 Aug 2019 15:03:58 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:51388 "EHLO
+        id S1728303AbfH2TB7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 29 Aug 2019 15:01:59 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:51358 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728654AbfH2TCC (ORCPT
+        with ESMTP id S1727437AbfH2TB6 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 29 Aug 2019 15:02:02 -0400
+        Thu, 29 Aug 2019 15:01:58 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i3Pg6-00054p-78; Thu, 29 Aug 2019 21:01:50 +0200
+        id 1i3Pg7-00055c-Bk; Thu, 29 Aug 2019 21:01:51 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C0B561C07C3;
-        Thu, 29 Aug 2019 21:01:49 +0200 (CEST)
-Date:   Thu, 29 Aug 2019 19:01:49 -0000
-From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id CDD7C1C07C3;
+        Thu, 29 Aug 2019 21:01:50 +0200 (CEST)
+Date:   Thu, 29 Aug 2019 19:01:50 -0000
+From:   "tip-bot2 for Namhyung Kim" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf clang: Delete needless util-cxx.h header
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        He Kuang <hekuang@huawei.com>, Jiri Olsa <jolsa@kernel.org>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Wang Nan <wangnan0@huawei.com>,
+Subject: [tip: perf/core] perf top: Fix event group with more than two events
+Cc:     Namhyung Kim <namhyung@kernel.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <tip-1r5tvfnwiydjxhukgqs6bi11@git.kernel.org>
-References: <tip-1r5tvfnwiydjxhukgqs6bi11@git.kernel.org>
+        Jiri Olsa <jolsa@redhat.com>, Ingo Molnar <mingo@kernel.org>,
+        Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
+In-Reply-To: <20190827231555.121411-2-namhyung@kernel.org>
+References: <20190827231555.121411-2-namhyung@kernel.org>
 MIME-Version: 1.0
-Message-ID: <156710530970.10532.5221592756860725372.tip-bot2@tip-bot2>
+Message-ID: <156710531069.10538.8108779182336952593.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,116 +48,135 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     630aec1a7fd60ac355d5f2d67b5454912c5971a6
-Gitweb:        https://git.kernel.org/tip/630aec1a7fd60ac355d5f2d67b5454912c5971a6
-Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Wed, 28 Aug 2019 09:59:10 -03:00
+Commit-ID:     be5863b7d9281bbb932542d16b7d758357fde267
+Gitweb:        https://git.kernel.org/tip/be5863b7d9281bbb932542d16b7d758357fde267
+Author:        Namhyung Kim <namhyung@kernel.org>
+AuthorDate:    Wed, 28 Aug 2019 08:15:55 +09:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Wed, 28 Aug 2019 18:14:57 -03:00
+CommitterDate: Wed, 28 Aug 2019 18:15:03 -03:00
 
-perf clang: Delete needless util-cxx.h header
+perf top: Fix event group with more than two events
 
-It was put in place just to make sure the 'new' C++ operator wouldn't
-clash with some argument name in util.h, but there is not anymore any
-such argument and also the reason stated for util.h to be included there
-was to get the __maybe_unused definition, that is in linux/compiler.h,
-so use that instead and nuke util-cxx.h.
+The event group feature links relevant hist entries among events so that
+they can be displayed together.  During the link process, each hist
+entry in non-leader events is connected to a hist entry in the leader
+event.  This is done in order of events specified in the command line so
+it assumes that events are linked in the order.
 
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: He Kuang <hekuang@huawei.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Wang Nan <wangnan0@huawei.com>
-Link: https://lkml.kernel.org/n/tip-1r5tvfnwiydjxhukgqs6bi11@git.kernel.org
+But 'perf top' can break the assumption since it does the link process
+multiple times.  For example, a hist entry can be in the third event
+only at first so it's linked after the leader.  Some time later, second
+event has a hist entry for it and it'll be linked after the entry of the
+third event.
+
+This makes the code compilicated to deal with such unordered entries.
+This patch simply unlink all the entries after it's printed so that they
+can assume the correct order after the repeated link process.  Also it'd
+be easy to deal with decaying old entries IMHO.
+
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Reported-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Jiri Olsa <jolsa@redhat.com>
+Link: http://lkml.kernel.org/r/20190827231555.121411-2-namhyung@kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/bpf-loader.c       |  1 +
- tools/perf/util/c++/clang-c.h      |  2 +-
- tools/perf/util/c++/clang-test.cpp |  4 +++-
- tools/perf/util/util-cxx.h         | 27 ---------------------------
- 4 files changed, 5 insertions(+), 29 deletions(-)
- delete mode 100644 tools/perf/util/util-cxx.h
+ tools/perf/builtin-top.c |  6 ++++++-
+ tools/perf/util/hist.c   | 39 +++++++++++++++++++++------------------
+ tools/perf/util/hist.h   |  1 +-
+ 3 files changed, 28 insertions(+), 18 deletions(-)
 
-diff --git a/tools/perf/util/bpf-loader.c b/tools/perf/util/bpf-loader.c
-index e20d7c5..80a828e 100644
---- a/tools/perf/util/bpf-loader.c
-+++ b/tools/perf/util/bpf-loader.c
-@@ -23,6 +23,7 @@
- #include "probe-finder.h" // for MAX_PROBES
- #include "parse-events.h"
- #include "strfilter.h"
-+#include "util.h"
- #include "llvm-utils.h"
- #include "c++/clang-c.h"
+diff --git a/tools/perf/builtin-top.c b/tools/perf/builtin-top.c
+index 104dbb1..c3f9544 100644
+--- a/tools/perf/builtin-top.c
++++ b/tools/perf/builtin-top.c
+@@ -273,6 +273,12 @@ static void perf_top__resort_hists(struct perf_top *t)
+ 	evlist__for_each_entry(evlist, pos) {
+ 		struct hists *hists = evsel__hists(pos);
  
-diff --git a/tools/perf/util/c++/clang-c.h b/tools/perf/util/c++/clang-c.h
-index e513366..2df8a45 100644
---- a/tools/perf/util/c++/clang-c.h
-+++ b/tools/perf/util/c++/clang-c.h
-@@ -3,7 +3,6 @@
- #define PERF_UTIL_CLANG_C_H
++		/*
++		 * unlink existing entries so that they can be linked
++		 * in a correct order in hists__match() below.
++		 */
++		hists__unlink(hists);
++
+ 		if (evlist->enabled) {
+ 			if (t->zero) {
+ 				hists__delete_entries(hists);
+diff --git a/tools/perf/util/hist.c b/tools/perf/util/hist.c
+index 3370267..e0b1496 100644
+--- a/tools/perf/util/hist.c
++++ b/tools/perf/util/hist.c
+@@ -2439,7 +2439,7 @@ void hists__match(struct hists *leader, struct hists *other)
+ {
+ 	struct rb_root_cached *root;
+ 	struct rb_node *nd;
+-	struct hist_entry *pos, *pair, *pos_pair, *tmp_pair;
++	struct hist_entry *pos, *pair;
  
- #include <stddef.h>	/* for size_t */
--#include <util-cxx.h>	/* for __maybe_unused */
+ 	if (symbol_conf.report_hierarchy) {
+ 		/* hierarchy report always collapses entries */
+@@ -2456,24 +2456,8 @@ void hists__match(struct hists *leader, struct hists *other)
+ 		pos  = rb_entry(nd, struct hist_entry, rb_node_in);
+ 		pair = hists__find_entry(other, pos);
  
- #ifdef __cplusplus
- extern "C" {
-@@ -22,6 +21,7 @@ extern int perf_clang__compile_bpf(const char *filename,
- #else
+-		if (pair && list_empty(&pair->pairs.node)) {
+-			list_for_each_entry_safe(pos_pair, tmp_pair, &pos->pairs.head, pairs.node) {
+-				if (pos_pair->hists == other) {
+-					/*
+-					 * XXX maybe decayed entries can appear
+-					 * here?  but then we would have use
+-					 * after free, as decayed entries are
+-					 * freed see hists__delete_entry
+-					 */
+-					BUG_ON(!pos_pair->dummy);
+-					list_del_init(&pos_pair->pairs.node);
+-					hist_entry__delete(pos_pair);
+-					break;
+-				}
+-			}
+-
++		if (pair)
+ 			hist_entry__add_pair(pair, pos);
+-		}
+ 	}
+ }
  
- #include <errno.h>
-+#include <linux/compiler.h>	/* for __maybe_unused */
+@@ -2558,6 +2542,25 @@ int hists__link(struct hists *leader, struct hists *other)
+ 	return 0;
+ }
  
- static inline void perf_clang__init(void) { }
- static inline void perf_clang__cleanup(void) { }
-diff --git a/tools/perf/util/c++/clang-test.cpp b/tools/perf/util/c++/clang-test.cpp
-index 7b042a5..21b2360 100644
---- a/tools/perf/util/c++/clang-test.cpp
-+++ b/tools/perf/util/c++/clang-test.cpp
-@@ -1,10 +1,12 @@
- // SPDX-License-Identifier: GPL-2.0
- #include "clang.h"
- #include "clang-c.h"
-+extern "C" {
-+#include "../util.h"
++int hists__unlink(struct hists *hists)
++{
++	struct rb_root_cached *root;
++	struct rb_node *nd;
++	struct hist_entry *pos;
++
++	if (hists__has(hists, need_collapse))
++		root = &hists->entries_collapsed;
++	else
++		root = hists->entries_in;
++
++	for (nd = rb_first_cached(root); nd; nd = rb_next(nd)) {
++		pos = rb_entry(nd, struct hist_entry, rb_node_in);
++		list_del_init(&pos->pairs.node);
++	}
++
++	return 0;
 +}
- #include "llvm/IR/Function.h"
- #include "llvm/IR/LLVMContext.h"
++
+ void hist__account_cycles(struct branch_stack *bs, struct addr_location *al,
+ 			  struct perf_sample *sample, bool nonany_branch_mode)
+ {
+diff --git a/tools/perf/util/hist.h b/tools/perf/util/hist.h
+index 83d5fc1..7b9267e 100644
+--- a/tools/perf/util/hist.h
++++ b/tools/perf/util/hist.h
+@@ -217,6 +217,7 @@ void hists__calc_col_len(struct hists *hists, struct hist_entry *he);
  
--#include <util-cxx.h>
- #include <tests/llvm.h>
- #include <string>
+ void hists__match(struct hists *leader, struct hists *other);
+ int hists__link(struct hists *leader, struct hists *other);
++int hists__unlink(struct hists *hists);
  
-diff --git a/tools/perf/util/util-cxx.h b/tools/perf/util/util-cxx.h
-deleted file mode 100644
-index 80a99e4..0000000
---- a/tools/perf/util/util-cxx.h
-+++ /dev/null
-@@ -1,27 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0 */
--/*
-- * Support C++ source use utilities defined in util.h
-- */
--
--#ifndef PERF_UTIL_UTIL_CXX_H
--#define PERF_UTIL_UTIL_CXX_H
--
--#ifdef __cplusplus
--extern "C" {
--#endif
--
--/*
-- * Now 'new' is the only C++ keyword found in util.h:
-- * in tools/include/linux/rbtree.h
-- *
-- * Other keywords, like class and delete, should be
-- * redefined if necessary.
-- */
--#define new _new
--#include "util.h"
--#undef new
--
--#ifdef __cplusplus
--}
--#endif
--#endif
+ struct hists_evsel {
+ 	struct evsel evsel;
