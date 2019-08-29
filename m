@@ -2,32 +2,30 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 81F2FA26BF
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 29 Aug 2019 21:03:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EFE3A26C3
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 29 Aug 2019 21:03:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728799AbfH2TCI (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 29 Aug 2019 15:02:08 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:51476 "EHLO
+        id S1728849AbfH2TCL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 29 Aug 2019 15:02:11 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:51511 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728753AbfH2TCH (ORCPT
+        with ESMTP id S1728178AbfH2TCL (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 29 Aug 2019 15:02:07 -0400
+        Thu, 29 Aug 2019 15:02:11 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i3Pg3-00051f-S7; Thu, 29 Aug 2019 21:01:48 +0200
+        id 1i3Pg4-00051j-H2; Thu, 29 Aug 2019 21:01:48 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5DB431C0DE6;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E90F61C07C3;
         Thu, 29 Aug 2019 21:01:47 +0200 (CEST)
 Date:   Thu, 29 Aug 2019 19:01:47 -0000
 From:   "tip-bot2 for Igor Lubashev" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf evsel: Kernel profiling is disallowed only when
- perf_event_paranoid > 1
-Cc:     Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Igor Lubashev <ilubashe@akamai.com>,
+Subject: [tip: perf/core] perf symbols: Use CAP_SYSLOG with kptr_restrict checks
+Cc:     Igor Lubashev <ilubashe@akamai.com>,
         Mathieu Poirier <mathieu.poirier@linaro.org>,
         Alexander Shishkin <alexander.shishkin@linux.intel.com>,
         Alexey Budankov <alexey.budankov@linux.intel.com>,
@@ -36,12 +34,13 @@ Cc:     Arnaldo Carvalho de Melo <acme@redhat.com>,
         Peter Zijlstra <peterz@infradead.org>,
         Suzuki Poulouse <suzuki.poulose@arm.com>,
         linux-arm-kernel@lists.infradead.org,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <1566869956-7154-4-git-send-email-ilubashe@akamai.com>
-References: <1566869956-7154-4-git-send-email-ilubashe@akamai.com>
+In-Reply-To: <1566869956-7154-5-git-send-email-ilubashe@akamai.com>
+References: <1566869956-7154-5-git-send-email-ilubashe@akamai.com>
 MIME-Version: 1.0
-Message-ID: <156710530726.10517.14742815139500868393.tip-bot2@tip-bot2>
+Message-ID: <156710530783.10520.13944020347498949771.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -57,98 +56,22 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     aa97293ff129f504e7c8589e56007ecfe3e3e835
-Gitweb:        https://git.kernel.org/tip/aa97293ff129f504e7c8589e56007ecfe3e3e835
+Commit-ID:     8859aedefefe7eeea5e67968b7fe39c828d589a0
+Gitweb:        https://git.kernel.org/tip/8859aedefefe7eeea5e67968b7fe39c828d589a0
 Author:        Igor Lubashev <ilubashe@akamai.com>
-AuthorDate:    Mon, 26 Aug 2019 21:39:14 -04:00
+AuthorDate:    Mon, 26 Aug 2019 21:39:15 -04:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Wed, 28 Aug 2019 17:19:05 -03:00
+CommitterDate: Wed, 28 Aug 2019 17:19:19 -03:00
 
-perf evsel: Kernel profiling is disallowed only when perf_event_paranoid > 1
+perf symbols: Use CAP_SYSLOG with kptr_restrict checks
 
-Perf was too restrictive about sysctl kernel.perf_event_paranoid. The
-kernel only disallows profiling when perf_event_paranoid > 1. Make perf
-do the same.
+The kernel is using CAP_SYSLOG capability instead of uid==0 and euid==0
+when checking kptr_restrict. Make perf do the same.
 
-Committer testing:
+Also, the kernel is a more restrictive than "no restrictions" in case of
+kptr_restrict==0, so add the same logic to perf.
 
-For a non-root user:
-
-  $ id
-  uid=1000(acme) gid=1000(acme) groups=1000(acme),10(wheel) context=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023
-  $
-
-Before:
-
-We were restricting it to just userspace (:u suffix) even for a
-workload started by the user:
-
-  $ perf record sleep 1
-  [ perf record: Woken up 1 times to write data ]
-  [ perf record: Captured and wrote 0.001 MB perf.data (8 samples) ]
-  $ perf evlist
-  cycles:u
-  $ perf evlist -v
-  cycles:u: size: 112, { sample_period, sample_freq }: 4000, sample_type: IP|TID|TIME|PERIOD, read_format: ID, disabled: 1, inherit: 1, exclude_kernel: 1, mmap: 1, comm: 1, freq: 1, enable_on_exec: 1, task: 1, precise_ip: 3, sample_id_all: 1, exclude_guest: 1, mmap2: 1, comm_exec: 1, ksymbol: 1, bpf_event: 1
-  $ perf report --stdio
-  # To display the perf.data header info, please use --header/--header-only options.
-  #
-  # Total Lost Samples: 0
-  #
-  # Samples: 8  of event 'cycles:u'
-  # Event count (approx.): 1040396
-  #
-  # Overhead  Command  Shared Object     Symbol
-  # ........  .......  ................  ......................
-  #
-      68.36%  sleep    libc-2.29.so      [.] _dl_addr
-      27.33%  sleep    ld-2.29.so        [.] dl_main
-       3.80%  sleep    ld-2.29.so        [.] _dl_setup_hash
-  #
-  # (Tip: Order by the overhead of source file name and line number: perf report -s srcline)
-  #
-  $
-  $
-
-After:
-
-When the kernel allows profiling the kernel in that scenario:
-
-  $ perf record sleep 1
-  [ perf record: Woken up 1 times to write data ]
-  [ perf record: Captured and wrote 0.023 MB perf.data (11 samples) ]
-  $ perf evlist
-  cycles
-  $ perf evlist -v
-  cycles: size: 112, { sample_period, sample_freq }: 4000, sample_type: IP|TID|TIME|PERIOD, read_format: ID, disabled: 1, inherit: 1, mmap: 1, comm: 1, freq: 1, enable_on_exec: 1, task: 1, precise_ip: 3, sample_id_all: 1, exclude_guest: 1, mmap2: 1, comm_exec: 1, ksymbol: 1, bpf_event: 1
-  $
-  $ perf report --stdio
-  # To display the perf.data header info, please use --header/--header-only options.
-  #
-  # Total Lost Samples: 0
-  #
-  # Samples: 11  of event 'cycles'
-  # Event count (approx.): 1601964
-  #
-  # Overhead  Command  Shared Object     Symbol
-  # ........  .......  ................  ..........................
-  #
-      28.14%  sleep    [kernel.vmlinux]  [k] __rb_erase_color
-      27.21%  sleep    [kernel.vmlinux]  [k] unmap_page_range
-      27.20%  sleep    ld-2.29.so        [.] __tunable_get_val
-      15.24%  sleep    [kernel.vmlinux]  [k] thp_get_unmapped_area
-       1.96%  perf     [kernel.vmlinux]  [k] perf_event_exec
-       0.22%  perf     [kernel.vmlinux]  [k] native_sched_clock
-       0.02%  perf     [kernel.vmlinux]  [k] intel_bts_enable_local
-       0.00%  perf     [kernel.vmlinux]  [k] native_write_msr
-  #
-  # (Tip: Boolean options have negative forms, e.g.: perf report --no-children)
-  #
-  $
-
-Reported-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Igor Lubashev <ilubashe@akamai.com>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Tested-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 Cc: Alexey Budankov <alexey.budankov@linux.intel.com>
@@ -158,22 +81,55 @@ Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Suzuki Poulouse <suzuki.poulose@arm.com>
 Cc: linux-arm-kernel@lists.infradead.org
-Link: http://lkml.kernel.org/r/1566869956-7154-4-git-send-email-ilubashe@akamai.com
+Link: http://lkml.kernel.org/r/1566869956-7154-5-git-send-email-ilubashe@akamai.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/evsel.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/perf/util/symbol.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/tools/perf/util/evsel.c b/tools/perf/util/evsel.c
-index 7c704b8..d4540bf 100644
---- a/tools/perf/util/evsel.c
-+++ b/tools/perf/util/evsel.c
-@@ -282,7 +282,7 @@ struct evsel *perf_evsel__new_idx(struct perf_event_attr *attr, int idx)
+diff --git a/tools/perf/util/symbol.c b/tools/perf/util/symbol.c
+index 4efde78..035f2e7 100644
+--- a/tools/perf/util/symbol.c
++++ b/tools/perf/util/symbol.c
+@@ -4,6 +4,7 @@
+ #include <stdlib.h>
+ #include <stdio.h>
+ #include <string.h>
++#include <linux/capability.h>
+ #include <linux/kernel.h>
+ #include <linux/mman.h>
+ #include <linux/time64.h>
+@@ -15,8 +16,10 @@
+ #include <inttypes.h>
+ #include "annotate.h"
+ #include "build-id.h"
++#include "cap.h"
+ #include "util.h"
+ #include "debug.h"
++#include "event.h"
+ #include "machine.h"
+ #include "map.h"
+ #include "symbol.h"
+@@ -2195,13 +2198,19 @@ static bool symbol__read_kptr_restrict(void)
+ 		char line[8];
  
- static bool perf_event_can_profile_kernel(void)
- {
--	return perf_event_paranoid_check(-1);
-+	return perf_event_paranoid_check(1);
+ 		if (fgets(line, sizeof(line), fp) != NULL)
+-			value = ((geteuid() != 0) || (getuid() != 0)) ?
+-					(atoi(line) != 0) :
+-					(atoi(line) == 2);
++			value = perf_cap__capable(CAP_SYSLOG) ?
++					(atoi(line) >= 2) :
++					(atoi(line) != 0);
+ 
+ 		fclose(fp);
+ 	}
+ 
++	/* Per kernel/kallsyms.c:
++	 * we also restrict when perf_event_paranoid > 1 w/o CAP_SYSLOG
++	 */
++	if (perf_event_paranoid() > 1 && !perf_cap__capable(CAP_SYSLOG))
++		value = true;
++
+ 	return value;
  }
  
- struct evsel *perf_evsel__new_cycles(bool precise)
