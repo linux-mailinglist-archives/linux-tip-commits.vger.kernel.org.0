@@ -2,39 +2,46 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F346A26ED
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 29 Aug 2019 21:04:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77B03A26A4
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 29 Aug 2019 21:02:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728695AbfH2TCC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 29 Aug 2019 15:02:02 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:51375 "EHLO
+        id S1728719AbfH2TCE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 29 Aug 2019 15:02:04 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:51422 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728640AbfH2TCB (ORCPT
+        with ESMTP id S1727437AbfH2TCD (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 29 Aug 2019 15:02:01 -0400
+        Thu, 29 Aug 2019 15:02:03 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i3Pg5-00051p-BB; Thu, 29 Aug 2019 21:01:49 +0200
+        id 1i3Pg4-00051m-RY; Thu, 29 Aug 2019 21:01:49 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D70DE1C07C3;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 64A3F1C0DE6;
         Thu, 29 Aug 2019 21:01:48 +0200 (CEST)
 Date:   Thu, 29 Aug 2019 19:01:48 -0000
-From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Igor Lubashev" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf tools: Remove needless util.h include from builtin.h
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Jiri Olsa <jolsa@kernel.org>,
+Subject: [tip: perf/core] perf tools: Warn that perf_event_paranoid can
+ restrict kernel symbols
+Cc:     Igor Lubashev <ilubashe@akamai.com>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Alexey Budankov <alexey.budankov@linux.intel.com>,
+        James Morris <jmorris@namei.org>, Jiri Olsa <jolsa@kernel.org>,
         Namhyung Kim <namhyung@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Suzuki Poulouse <suzuki.poulose@arm.com>,
+        linux-arm-kernel@lists.infradead.org,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <tip-a01ig3c4t76ye5wkqmtgk9qn@git.kernel.org>
-References: <tip-a01ig3c4t76ye5wkqmtgk9qn@git.kernel.org>
+In-Reply-To: <1566869956-7154-6-git-send-email-ilubashe@akamai.com>
+References: <1566869956-7154-6-git-send-email-ilubashe@akamai.com>
 MIME-Version: 1.0
-Message-ID: <156710530875.10526.15982096409974008602.tip-bot2@tip-bot2>
+Message-ID: <156710530833.10523.4547415862334821213.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,63 +57,72 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     efa73d37c11af5082a5605665186c368f1196381
-Gitweb:        https://git.kernel.org/tip/efa73d37c11af5082a5605665186c368f1196381
-Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Tue, 27 Aug 2019 11:32:09 -03:00
+Commit-ID:     d06e5fad8c4692c6e5f1bd626056f23716bfe4a6
+Gitweb:        https://git.kernel.org/tip/d06e5fad8c4692c6e5f1bd626056f23716bfe4a6
+Author:        Igor Lubashev <ilubashe@akamai.com>
+AuthorDate:    Mon, 26 Aug 2019 21:39:16 -04:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Wed, 28 Aug 2019 17:19:34 -03:00
+CommitterDate: Wed, 28 Aug 2019 17:19:28 -03:00
 
-perf tools: Remove needless util.h include from builtin.h
+perf tools: Warn that perf_event_paranoid can restrict kernel symbols
 
-And fix up places where util.h is needed but was obtained indirectly via
-builtin.h.
+Warn that /proc/sys/kernel/perf_event_paranoid can also restrict kernel
+symbols.
 
-Cc: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Igor Lubashev <ilubashe@akamai.com>
+Tested-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Alexey Budankov <alexey.budankov@linux.intel.com>
+Cc: James Morris <jmorris@namei.org>
 Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lkml.kernel.org/n/tip-a01ig3c4t76ye5wkqmtgk9qn@git.kernel.org
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Suzuki Poulouse <suzuki.poulose@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org
+Link: http://lkml.kernel.org/r/1566869956-7154-6-git-send-email-ilubashe@akamai.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/builtin-buildid-cache.c | 1 +
- tools/perf/builtin.h               | 2 --
- tools/perf/perf.c                  | 1 +
- 3 files changed, 2 insertions(+), 2 deletions(-)
+ tools/perf/builtin-record.c | 2 +-
+ tools/perf/builtin-top.c    | 2 +-
+ tools/perf/builtin-trace.c  | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tools/perf/builtin-buildid-cache.c b/tools/perf/builtin-buildid-cache.c
-index 10457b1..7dde3ef 100644
---- a/tools/perf/builtin-buildid-cache.c
-+++ b/tools/perf/builtin-buildid-cache.c
-@@ -25,6 +25,7 @@
- #include "util/session.h"
- #include "util/symbol.h"
- #include "util/time-utils.h"
-+#include "util/util.h"
- #include "util/probe-file.h"
+diff --git a/tools/perf/builtin-record.c b/tools/perf/builtin-record.c
+index 359bb8f..afe5584 100644
+--- a/tools/perf/builtin-record.c
++++ b/tools/perf/builtin-record.c
+@@ -2372,7 +2372,7 @@ int cmd_record(int argc, const char **argv)
+ 	if (symbol_conf.kptr_restrict && !perf_evlist__exclude_kernel(rec->evlist))
+ 		pr_warning(
+ "WARNING: Kernel address maps (/proc/{kallsyms,modules}) are restricted,\n"
+-"check /proc/sys/kernel/kptr_restrict.\n\n"
++"check /proc/sys/kernel/kptr_restrict and /proc/sys/kernel/perf_event_paranoid.\n\n"
+ "Samples in kernel functions may not be resolved if a suitable vmlinux\n"
+ "file is not found in the buildid cache or in the vmlinux path.\n\n"
+ "Samples in kernel modules won't be resolved at all.\n\n"
+diff --git a/tools/perf/builtin-top.c b/tools/perf/builtin-top.c
+index 5970723..29e910f 100644
+--- a/tools/perf/builtin-top.c
++++ b/tools/perf/builtin-top.c
+@@ -770,7 +770,7 @@ static void perf_event__process_sample(struct perf_tool *tool,
+ 		if (!perf_evlist__exclude_kernel(top->session->evlist)) {
+ 			ui__warning(
+ "Kernel address maps (/proc/{kallsyms,modules}) are restricted.\n\n"
+-"Check /proc/sys/kernel/kptr_restrict.\n\n"
++"Check /proc/sys/kernel/kptr_restrict and /proc/sys/kernel/perf_event_paranoid.\n\n"
+ "Kernel%s samples will not be resolved.\n",
+ 			  al.map && map__has_symbols(al.map) ?
+ 			  " modules" : "");
+diff --git a/tools/perf/builtin-trace.c b/tools/perf/builtin-trace.c
+index 8ea62fd..58a75dd 100644
+--- a/tools/perf/builtin-trace.c
++++ b/tools/perf/builtin-trace.c
+@@ -1382,7 +1382,7 @@ static char *trace__machine__resolve_kernel_addr(void *vmachine, unsigned long l
  
- static int build_id_cache__kcore_buildid(const char *proc_dir, char *sbuildid)
-diff --git a/tools/perf/builtin.h b/tools/perf/builtin.h
-index 999fe91..14a2db6 100644
---- a/tools/perf/builtin.h
-+++ b/tools/perf/builtin.h
-@@ -2,8 +2,6 @@
- #ifndef BUILTIN_H
- #define BUILTIN_H
- 
--#include "util/util.h"
--
- extern const char perf_usage_string[];
- extern const char perf_more_info_string[];
- 
-diff --git a/tools/perf/perf.c b/tools/perf/perf.c
-index d4e4d53..34763a9 100644
---- a/tools/perf/perf.c
-+++ b/tools/perf/perf.c
-@@ -18,6 +18,7 @@
- #include "util/bpf-loader.h"
- #include "util/debug.h"
- #include "util/event.h"
-+#include "util/util.h"
- #include <api/fs/fs.h>
- #include <api/fs/tracing_path.h>
- #include <errno.h>
+ 	if (symbol_conf.kptr_restrict) {
+ 		pr_warning("Kernel address maps (/proc/{kallsyms,modules}) are restricted.\n\n"
+-			   "Check /proc/sys/kernel/kptr_restrict.\n\n"
++			   "Check /proc/sys/kernel/kptr_restrict and /proc/sys/kernel/perf_event_paranoid.\n\n"
+ 			   "Kernel samples will not be resolved.\n");
+ 		machine->kptr_restrict_warned = true;
+ 		return NULL;
