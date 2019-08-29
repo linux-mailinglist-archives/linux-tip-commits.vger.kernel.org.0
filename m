@@ -2,30 +2,30 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 60D91A26CA
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 29 Aug 2019 21:03:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 006B0A26D0
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 29 Aug 2019 21:03:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727885AbfH2TDF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 29 Aug 2019 15:03:05 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:51545 "EHLO
+        id S1728818AbfH2TDR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 29 Aug 2019 15:03:17 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:51515 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728896AbfH2TCO (ORCPT
+        with ESMTP id S1728811AbfH2TCL (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 29 Aug 2019 15:02:14 -0400
+        Thu, 29 Aug 2019 15:02:11 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i3PgL-0005CM-3Y; Thu, 29 Aug 2019 21:02:05 +0200
+        id 1i3PgJ-0005Cr-PB; Thu, 29 Aug 2019 21:02:04 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B5A0D1C0DE6;
-        Thu, 29 Aug 2019 21:01:57 +0200 (CEST)
-Date:   Thu, 29 Aug 2019 19:01:57 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4877F1C0DEA;
+        Thu, 29 Aug 2019 21:01:58 +0200 (CEST)
+Date:   Thu, 29 Aug 2019 19:01:58 -0000
 From:   "tip-bot2 for Jiri Olsa" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] libperf: Add PERF_RECORD_THREAD_MAP 'struct
- thread_map_event' to perf/event.h
+Subject: [tip: perf/core] libperf: Add PERF_RECORD_STAT_CONFIG 'struct
+ stat_config_event' to perf/event.h
 Cc:     Jiri Olsa <jolsa@kernel.org>,
         Alexander Shishkin <alexander.shishkin@linux.intel.com>,
         Michael Petlan <mpetlan@redhat.com>,
@@ -34,10 +34,10 @@ Cc:     Jiri Olsa <jolsa@kernel.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20190828135717.7245-15-jolsa@kernel.org>
-References: <20190828135717.7245-15-jolsa@kernel.org>
+In-Reply-To: <20190828135717.7245-16-jolsa@kernel.org>
+References: <20190828135717.7245-16-jolsa@kernel.org>
 MIME-Version: 1.0
-Message-ID: <156710531757.10583.11542635532912483757.tip-bot2@tip-bot2>
+Message-ID: <156710531809.10586.8461661547952223478.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -53,16 +53,16 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     3e4c453f5cbac75afec37eedd0ffcd8dac82e23e
-Gitweb:        https://git.kernel.org/tip/3e4c453f5cbac75afec37eedd0ffcd8dac82e23e
+Commit-ID:     c5f416e6c69e333207666a1ddab0b41c6f12e588
+Gitweb:        https://git.kernel.org/tip/c5f416e6c69e333207666a1ddab0b41c6f12e588
 Author:        Jiri Olsa <jolsa@kernel.org>
-AuthorDate:    Wed, 28 Aug 2019 15:57:08 +02:00
+AuthorDate:    Wed, 28 Aug 2019 15:57:09 +02:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Thu, 29 Aug 2019 08:36:11 -03:00
 
-libperf: Add PERF_RECORD_THREAD_MAP 'struct thread_map_event' to perf/event.h
+libperf: Add PERF_RECORD_STAT_CONFIG 'struct stat_config_event' to perf/event.h
 
-Move the PERF_RECORD_THREAD_MAP event definition to libperf's event.h.
+Move the PERF_RECORD_STAT_CONFIG event definition to libperf's event.h.
 
 In order to keep libperf simple, we switch 'u64/u32/u16/u8' types used
 events to their generic '__u*' versions.
@@ -72,52 +72,80 @@ Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 Cc: Michael Petlan <mpetlan@redhat.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Link: http://lkml.kernel.org/r/20190828135717.7245-15-jolsa@kernel.org
+Link: http://lkml.kernel.org/r/20190828135717.7245-16-jolsa@kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/lib/include/perf/event.h | 11 +++++++++++
- tools/perf/util/event.h             | 11 -----------
- 2 files changed, 11 insertions(+), 11 deletions(-)
+ tools/perf/lib/include/perf/event.h | 18 ++++++++++++++++++
+ tools/perf/util/event.c             |  2 +-
+ tools/perf/util/event.h             | 18 ------------------
+ 3 files changed, 19 insertions(+), 19 deletions(-)
 
 diff --git a/tools/perf/lib/include/perf/event.h b/tools/perf/lib/include/perf/event.h
-index a7b0344..fe0ce65 100644
+index fe0ce65..ba6ed24 100644
 --- a/tools/perf/lib/include/perf/event.h
 +++ b/tools/perf/lib/include/perf/event.h
-@@ -253,4 +253,15 @@ struct itrace_start_event {
- 	__u32			 tid;
+@@ -264,4 +264,22 @@ struct thread_map_event {
+ 	struct thread_map_event_entry	 entries[];
  };
  
-+struct thread_map_event_entry {
-+	__u64			 pid;
-+	char			 comm[16];
++enum {
++	PERF_STAT_CONFIG_TERM__AGGR_MODE	= 0,
++	PERF_STAT_CONFIG_TERM__INTERVAL		= 1,
++	PERF_STAT_CONFIG_TERM__SCALE		= 2,
++	PERF_STAT_CONFIG_TERM__MAX		= 3,
 +};
 +
-+struct thread_map_event {
++struct stat_config_event_entry {
++	__u64			 tag;
++	__u64			 val;
++};
++
++struct stat_config_event {
 +	struct perf_event_header	 header;
 +	__u64				 nr;
-+	struct thread_map_event_entry	 entries[];
++	struct stat_config_event_entry	 data[];
 +};
 +
  #endif /* __LIBPERF_EVENT_H */
+diff --git a/tools/perf/util/event.c b/tools/perf/util/event.c
+index b048e60..b711019 100644
+--- a/tools/perf/util/event.c
++++ b/tools/perf/util/event.c
+@@ -1235,7 +1235,7 @@ void perf_event__read_stat_config(struct perf_stat_config *config,
+ 		CASE(INTERVAL,  interval)
+ #undef CASE
+ 		default:
+-			pr_warning("unknown stat config term %" PRIu64 "\n",
++			pr_warning("unknown stat config term %" PRI_lu64 "\n",
+ 				   event->data[i].tag);
+ 		}
+ 	}
 diff --git a/tools/perf/util/event.h b/tools/perf/util/event.h
-index 012b2ba..3a85669 100644
+index 3a85669..68531d0 100644
 --- a/tools/perf/util/event.h
 +++ b/tools/perf/util/event.h
-@@ -332,17 +332,6 @@ struct events_stats {
+@@ -332,24 +332,6 @@ struct events_stats {
  	u32 nr_proc_map_timeout;
  };
  
--struct thread_map_event_entry {
--	u64	pid;
--	char	comm[16];
+-enum {
+-	PERF_STAT_CONFIG_TERM__AGGR_MODE	= 0,
+-	PERF_STAT_CONFIG_TERM__INTERVAL		= 1,
+-	PERF_STAT_CONFIG_TERM__SCALE		= 2,
+-	PERF_STAT_CONFIG_TERM__MAX		= 3,
 -};
 -
--struct thread_map_event {
+-struct stat_config_event_entry {
+-	u64	tag;
+-	u64	val;
+-};
+-
+-struct stat_config_event {
 -	struct perf_event_header	header;
 -	u64				nr;
--	struct thread_map_event_entry	entries[];
+-	struct stat_config_event_entry	data[];
 -};
 -
- enum {
- 	PERF_STAT_CONFIG_TERM__AGGR_MODE	= 0,
- 	PERF_STAT_CONFIG_TERM__INTERVAL		= 1,
+ struct stat_event {
+ 	struct perf_event_header	header;
+ 
