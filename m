@@ -2,42 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 97C47A26B1
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 29 Aug 2019 21:02:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 80DECA26C8
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 29 Aug 2019 21:03:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728651AbfH2TCY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 29 Aug 2019 15:02:24 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:51565 "EHLO
+        id S1727992AbfH2TCx (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 29 Aug 2019 15:02:53 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:51582 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728968AbfH2TCU (ORCPT
+        with ESMTP id S1729201AbfH2TCv (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 29 Aug 2019 15:02:20 -0400
+        Thu, 29 Aug 2019 15:02:51 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i3PgQ-0005IK-2G; Thu, 29 Aug 2019 21:02:10 +0200
+        id 1i3Pgz-0005PB-Ks; Thu, 29 Aug 2019 21:02:45 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D02FF1C0DE7;
-        Thu, 29 Aug 2019 21:02:03 +0200 (CEST)
-Date:   Thu, 29 Aug 2019 19:02:03 -0000
-From:   "tip-bot2 for Steven Rostedt (VMware)" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4EE851C07C3;
+        Thu, 29 Aug 2019 21:02:45 +0200 (CEST)
+Date:   Thu, 29 Aug 2019 19:02:45 -0000
+From:   "tip-bot2 for Song Liu" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] tools lib traceevent: Remove unneeded qsort and uses
- memmove instead
-Cc:     "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Jiri Olsa <jolsa@redhat.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        linux-trace-devel@vger.kernel.org,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20190828191820.127233764@goodmis.org>
-References: <20190828191820.127233764@goodmis.org>
+Subject: [tip: x86/pti] x86/mm/pti: Handle unaligned address gracefully in
+ pti_clone_pagetable()
+Cc:     Song Liu <songliubraving@fb.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@kernel.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
+In-Reply-To: <alpine.DEB.2.21.1908282352470.1938@nanos.tec.linutronix.de>
+References: <alpine.DEB.2.21.1908282352470.1938@nanos.tec.linutronix.de>
 MIME-Version: 1.0
-Message-ID: <156710532375.10619.16987688702890392152.tip-bot2@tip-bot2>
+Message-ID: <156710536517.11132.5891479982921579440.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,123 +48,61 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/core branch of tip:
+The following commit has been merged into the x86/pti branch of tip:
 
-Commit-ID:     301011ba622513cb41ced59973972204e0da2f71
-Gitweb:        https://git.kernel.org/tip/301011ba622513cb41ced59973972204e0da2f71
-Author:        Steven Rostedt (VMware) <rostedt@goodmis.org>
-AuthorDate:    Wed, 28 Aug 2019 15:05:29 -04:00
-Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Thu, 29 Aug 2019 08:36:12 -03:00
+Commit-ID:     825d0b73cd7526b0bb186798583fae810091cbac
+Gitweb:        https://git.kernel.org/tip/825d0b73cd7526b0bb186798583fae810091cbac
+Author:        Song Liu <songliubraving@fb.com>
+AuthorDate:    Wed, 28 Aug 2019 23:54:55 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Thu, 29 Aug 2019 20:52:52 +02:00
 
-tools lib traceevent: Remove unneeded qsort and uses memmove instead
+x86/mm/pti: Handle unaligned address gracefully in pti_clone_pagetable()
 
-While reading a trace data file that had 100,000s of tasks, the process
-took an extremely long time. I profiled it down to add_new_comm(), which
-was doing a qsort() call on an array that was pretty much already sorted
-(all but the last element. qsort() isn't very efficient when dealing
-with mostly sorted arrays, and this definitely showed its issues.
+pti_clone_pmds() assumes that the supplied address is either:
 
-When adding a new task to the task list, instead of using qsort(), do
-another bsearch() with a function that will find the element before
-where the new task will be inserted in. Then simply shift the rest of
-the array, and insert the task where it belongs.
+ - properly PUD/PMD aligned
+or
+ - the address is actually mapped which means that independently
+   of the mapping level (PUD/PMD/PTE) the next higher mapping
+   exists.
 
-Fixes: f7d82350e597d ("tools/events: Add files to create libtraceevent.a")
-Signed-off-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Jiri Olsa <jolsa@redhat.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: linux-trace-devel@vger.kernel.org
-Link: http://lkml.kernel.org/r/20190828191820.127233764@goodmis.org
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+If that's not the case the unaligned address can be incremented by PUD or
+PMD size incorrectly. All callers supply mapped and/or aligned addresses,
+but for the sake of robustness it's better to handle that case properly and
+to emit a warning.
+
+[ tglx: Rewrote changelog and added WARN_ON_ONCE() ]
+
+Signed-off-by: Song Liu <songliubraving@fb.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/alpine.DEB.2.21.1908282352470.1938@nanos.tec.linutronix.de
+
 ---
- tools/lib/traceevent/event-parse.c | 55 +++++++++++++++++++++++++----
- 1 file changed, 49 insertions(+), 6 deletions(-)
+ arch/x86/mm/pti.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/tools/lib/traceevent/event-parse.c b/tools/lib/traceevent/event-parse.c
-index 13fd9fd..3e83636 100644
---- a/tools/lib/traceevent/event-parse.c
-+++ b/tools/lib/traceevent/event-parse.c
-@@ -142,6 +142,25 @@ static int cmdline_cmp(const void *a, const void *b)
- 	return 0;
- }
+diff --git a/arch/x86/mm/pti.c b/arch/x86/mm/pti.c
+index b196524..a24487b 100644
+--- a/arch/x86/mm/pti.c
++++ b/arch/x86/mm/pti.c
+@@ -330,13 +330,15 @@ pti_clone_pgtable(unsigned long start, unsigned long end,
  
-+/* Looking for where to place the key */
-+static int cmdline_slot_cmp(const void *a, const void *b)
-+{
-+	const struct tep_cmdline *ca = a;
-+	const struct tep_cmdline *cb = b;
-+	const struct tep_cmdline *cb1 = cb + 1;
-+
-+	if (ca->pid < cb->pid)
-+		return -1;
-+
-+	if (ca->pid > cb->pid) {
-+		if (ca->pid <= cb1->pid)
-+			return 0;
-+		return 1;
-+	}
-+
-+	return 0;
-+}
-+
- struct cmdline_list {
- 	struct cmdline_list	*next;
- 	char			*comm;
-@@ -239,6 +258,7 @@ static int add_new_comm(struct tep_handle *tep,
- 	struct tep_cmdline *cmdline;
- 	struct tep_cmdline key;
- 	char *new_comm;
-+	int cnt;
+ 		pud = pud_offset(p4d, addr);
+ 		if (pud_none(*pud)) {
+-			addr += PUD_SIZE;
++			WARN_ON_ONCE(addr & ~PUD_MASK);
++			addr = round_up(addr + 1, PUD_SIZE);
+ 			continue;
+ 		}
  
- 	if (!pid)
- 		return 0;
-@@ -271,18 +291,41 @@ static int add_new_comm(struct tep_handle *tep,
- 	}
- 	tep->cmdlines = cmdlines;
+ 		pmd = pmd_offset(pud, addr);
+ 		if (pmd_none(*pmd)) {
+-			addr += PMD_SIZE;
++			WARN_ON_ONCE(addr & ~PMD_MASK);
++			addr = round_up(addr + 1, PMD_SIZE);
+ 			continue;
+ 		}
  
--	cmdlines[tep->cmdline_count].comm = strdup(comm);
--	if (!cmdlines[tep->cmdline_count].comm) {
-+	key.comm = strdup(comm);
-+	if (!key.comm) {
- 		errno = ENOMEM;
- 		return -1;
- 	}
- 
--	cmdlines[tep->cmdline_count].pid = pid;
--		
--	if (cmdlines[tep->cmdline_count].comm)
-+	if (!tep->cmdline_count) {
-+		/* no entries yet */
-+		tep->cmdlines[0] = key;
- 		tep->cmdline_count++;
-+		return 0;
-+	}
- 
--	qsort(cmdlines, tep->cmdline_count, sizeof(*cmdlines), cmdline_cmp);
-+	/* Now find where we want to store the new cmdline */
-+	cmdline = bsearch(&key, tep->cmdlines, tep->cmdline_count - 1,
-+			  sizeof(*tep->cmdlines), cmdline_slot_cmp);
-+
-+	cnt = tep->cmdline_count;
-+	if (cmdline) {
-+		/* cmdline points to the one before the spot we want */
-+		cmdline++;
-+		cnt -= cmdline - tep->cmdlines;
-+
-+	} else {
-+		/* The new entry is either before or after the list */
-+		if (key.pid > tep->cmdlines[tep->cmdline_count - 1].pid) {
-+			tep->cmdlines[tep->cmdline_count++] = key;
-+			return 0;
-+		}
-+		cmdline = &tep->cmdlines[0];
-+	}
-+	memmove(cmdline + 1, cmdline, (cnt * sizeof(*cmdline)));
-+	*cmdline = key;
-+
-+	tep->cmdline_count++;
- 
- 	return 0;
- }
