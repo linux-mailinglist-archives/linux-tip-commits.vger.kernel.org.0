@@ -2,33 +2,28 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 236D3A31CF
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 30 Aug 2019 10:07:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E4DEA3948
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 30 Aug 2019 16:32:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728288AbfH3IG6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 30 Aug 2019 04:06:58 -0400
-Received: from mail.skyhub.de ([5.9.137.197]:42988 "EHLO mail.skyhub.de"
+        id S1727809AbfH3Oc0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 30 Aug 2019 10:32:26 -0400
+Received: from mga07.intel.com ([134.134.136.100]:61224 "EHLO mga07.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727850AbfH3IG6 (ORCPT
+        id S1727170AbfH3Oc0 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 30 Aug 2019 04:06:58 -0400
-Received: from zn.tnic (p200300EC2F0AAA00D143FB30E0E334BB.dip0.t-ipconnect.de [IPv6:2003:ec:2f0a:aa00:d143:fb30:e0e3:34bb])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 1730D1EC08E5;
-        Fri, 30 Aug 2019 10:06:56 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1567152416;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=qXLbeGuCB4Q7DKwqF4nt9wPYEUvkZL9LoEnennVSvS4=;
-        b=qlDbJykMOgPx7lXzq2UWDmuqF6MhWEeP6Y3t3rFOnYgASqSDdn7vxp14p41LwcuuqtGJ1X
-        5MXAOx1jhcSa4KSRabjnGQeMaiSyM0rqrSdcE8Bez/AUd0s5OvOmshnOQhkNvfd272S5ch
-        zLj35RlTRCchYcsteoG7QV4qj1qNb80=
-Date:   Fri, 30 Aug 2019 10:06:50 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     Philip Li <philip.li@intel.com>
+        Fri, 30 Aug 2019 10:32:26 -0400
+X-Amp-Result: UNSCANNABLE
+X-Amp-File-Uploaded: False
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 30 Aug 2019 07:32:24 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,447,1559545200"; 
+   d="scan'208";a="175625020"
+Received: from pl-dbox.sh.intel.com (HELO intel.com) ([10.239.13.128])
+  by orsmga008.jf.intel.com with ESMTP; 30 Aug 2019 07:32:20 -0700
+Date:   Fri, 30 Aug 2019 22:36:45 +0800
+From:   Philip Li <philip.li@intel.com>
+To:     Borislav Petkov <bp@alien8.de>
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         kbuild test robot <lkp@intel.com>,
         linux-input@vger.kernel.org,
@@ -44,38 +39,44 @@ Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@kernel.org>
 Subject: Re: [kbuild-all] [tip: x86/vmware] input/vmmouse: Update the
  backdoor call with support for new instructions
-Message-ID: <20190830080650.GA30413@zn.tnic>
+Message-ID: <20190830143645.GA4784@intel.com>
 References: <156699905611.5321.15444519862547054670.tip-bot2@tip-bot2>
  <201908292325.aLXyyzEx%lkp@intel.com>
  <20190829163353.GC2132@zn.tnic>
  <20190830010349.GD857@intel.com>
  <alpine.DEB.2.21.1908300802390.1938@nanos.tec.linutronix.de>
  <20190830062053.GA2598@intel.com>
+ <20190830080650.GA30413@zn.tnic>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190830062053.GA2598@intel.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20190830080650.GA30413@zn.tnic>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Fri, Aug 30, 2019 at 02:20:53PM +0800, Philip Li wrote:
-> thanks for your patience. I just realize we actually block tip-bot, but
-> not tip-bot2. I will update the logic to avoid this issue, and we will
-> keep monitor for a while to fix new issue if any.
+On Fri, Aug 30, 2019 at 10:06:50AM +0200, Borislav Petkov wrote:
+> On Fri, Aug 30, 2019 at 02:20:53PM +0800, Philip Li wrote:
+> > thanks for your patience. I just realize we actually block tip-bot, but
+> > not tip-bot2. I will update the logic to avoid this issue, and we will
+> > keep monitor for a while to fix new issue if any.
+> 
+> ... and just to reiterate: it would be a *lot-lot* more useful if you
+> guys tested the single tip branches or the combined tip/master on a
+> daily basis as that is the x86 queue that goes to Linus eventually. That
+yes, we monitor the repo pub/scm/linux/kernel/git/tip/tip.git, and will
+send build status of head (like BUILD SUCCESS or REGRESSION), also provide
+bisect report of unique error for first bad commit.
 
-... and just to reiterate: it would be a *lot-lot* more useful if you
-guys tested the single tip branches or the combined tip/master on a
-daily basis as that is the x86 queue that goes to Linus eventually. That
-is, if you do not test it already. But we don't get any "we tested this
-branch" email so I'm thinking you don't...
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-Good mailing practices for 400: avoid top-posting and trim the reply.
+> is, if you do not test it already. But we don't get any "we tested this
+> branch" email so I'm thinking you don't...
+> 
+> Thx.
+> 
+> -- 
+> Regards/Gruss,
+>     Boris.
+> 
+> Good mailing practices for 400: avoid top-posting and trim the reply.
