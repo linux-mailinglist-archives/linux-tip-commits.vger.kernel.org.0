@@ -2,25 +2,35 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B6B0A31B3
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 30 Aug 2019 09:58:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 236D3A31CF
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 30 Aug 2019 10:07:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727887AbfH3H6r (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 30 Aug 2019 03:58:47 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:52404 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726943AbfH3H6r (ORCPT
+        id S1728288AbfH3IG6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 30 Aug 2019 04:06:58 -0400
+Received: from mail.skyhub.de ([5.9.137.197]:42988 "EHLO mail.skyhub.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727850AbfH3IG6 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 30 Aug 2019 03:58:47 -0400
-Received: from [5.158.153.55] (helo=nanos)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tglx@linutronix.de>)
-        id 1i3bnr-0007Ec-6z; Fri, 30 Aug 2019 09:58:39 +0200
-Date:   Fri, 30 Aug 2019 09:58:26 +0200 (CEST)
-From:   Thomas Gleixner <tglx@linutronix.de>
+        Fri, 30 Aug 2019 04:06:58 -0400
+Received: from zn.tnic (p200300EC2F0AAA00D143FB30E0E334BB.dip0.t-ipconnect.de [IPv6:2003:ec:2f0a:aa00:d143:fb30:e0e3:34bb])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 1730D1EC08E5;
+        Fri, 30 Aug 2019 10:06:56 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1567152416;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=qXLbeGuCB4Q7DKwqF4nt9wPYEUvkZL9LoEnennVSvS4=;
+        b=qlDbJykMOgPx7lXzq2UWDmuqF6MhWEeP6Y3t3rFOnYgASqSDdn7vxp14p41LwcuuqtGJ1X
+        5MXAOx1jhcSa4KSRabjnGQeMaiSyM0rqrSdcE8Bez/AUd0s5OvOmshnOQhkNvfd272S5ch
+        zLj35RlTRCchYcsteoG7QV4qj1qNb80=
+Date:   Fri, 30 Aug 2019 10:06:50 +0200
+From:   Borislav Petkov <bp@alien8.de>
 To:     Philip Li <philip.li@intel.com>
-cc:     Borislav Petkov <bp@suse.de>, kbuild test robot <lkp@intel.com>,
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        kbuild test robot <lkp@intel.com>,
         linux-input@vger.kernel.org,
         Thomas Hellstrom <thellstrom@vmware.com>,
         x86-ml <x86@kernel.org>, linux-tip-commits@vger.kernel.org,
@@ -32,35 +42,40 @@ cc:     Borislav Petkov <bp@suse.de>, kbuild test robot <lkp@intel.com>,
         VMware Graphics <linux-graphics-maintainer@vmware.com>,
         kbuild-all@01.org, "H. Peter Anvin" <hpa@zytor.com>,
         Ingo Molnar <mingo@kernel.org>
-Subject: Re: [kbuild-all] [tip: x86/vmware] input/vmmouse: Update the backdoor
- call with support for new instructions
-In-Reply-To: <20190830063326.GB2598@intel.com>
-Message-ID: <alpine.DEB.2.21.1908300957450.1933@nanos.tec.linutronix.de>
-References: <156699905611.5321.15444519862547054670.tip-bot2@tip-bot2> <201908292325.aLXyyzEx%lkp@intel.com> <20190829163353.GC2132@zn.tnic> <20190830010349.GD857@intel.com> <alpine.DEB.2.21.1908300802390.1938@nanos.tec.linutronix.de> <20190830062053.GA2598@intel.com>
- <20190830063326.GB2598@intel.com>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+Subject: Re: [kbuild-all] [tip: x86/vmware] input/vmmouse: Update the
+ backdoor call with support for new instructions
+Message-ID: <20190830080650.GA30413@zn.tnic>
+References: <156699905611.5321.15444519862547054670.tip-bot2@tip-bot2>
+ <201908292325.aLXyyzEx%lkp@intel.com>
+ <20190829163353.GC2132@zn.tnic>
+ <20190830010349.GD857@intel.com>
+ <alpine.DEB.2.21.1908300802390.1938@nanos.tec.linutronix.de>
+ <20190830062053.GA2598@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20190830062053.GA2598@intel.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Fri, 30 Aug 2019, Philip Li wrote:
-> On Fri, Aug 30, 2019 at 02:20:53PM +0800, Philip Li wrote:
-> > thanks for your patience. I just realize we actually block tip-bot, but
-> > not tip-bot2. I will update the logic to avoid this issue, and we will
-> > keep monitor for a while to fix new issue if any.
->
-> BTW: the related service need some time to be upgraded after code change,
-> some already fetched patches will continue sending out noisy mails until
-> they are consumed. Sorry about this.
+On Fri, Aug 30, 2019 at 02:20:53PM +0800, Philip Li wrote:
+> thanks for your patience. I just realize we actually block tip-bot, but
+> not tip-bot2. I will update the logic to avoid this issue, and we will
+> keep monitor for a while to fix new issue if any.
 
-All good. I'll just redirect them to /dev/null.
+... and just to reiterate: it would be a *lot-lot* more useful if you
+guys tested the single tip branches or the combined tip/master on a
+daily basis as that is the x86 queue that goes to Linus eventually. That
+is, if you do not test it already. But we don't get any "we tested this
+branch" email so I'm thinking you don't...
 
-Thanks,
+Thx.
 
-	tglx
+-- 
+Regards/Gruss,
+    Boris.
+
+Good mailing practices for 400: avoid top-posting and trim the reply.
