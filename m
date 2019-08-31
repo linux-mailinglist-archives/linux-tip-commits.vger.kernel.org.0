@@ -2,118 +2,141 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2875BA3E77
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 30 Aug 2019 21:36:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 07569A438C
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 31 Aug 2019 11:06:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728053AbfH3TgF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 30 Aug 2019 15:36:05 -0400
-Received: from mail.skyhub.de ([5.9.137.197]:60330 "EHLO mail.skyhub.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727888AbfH3TgF (ORCPT
+        id S1726602AbfHaJGV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 31 Aug 2019 05:06:21 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:54403 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726062AbfHaJGU (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 30 Aug 2019 15:36:05 -0400
-Received: from zn.tnic (p200300EC2F0AAA0065BEA12EFE5D4E65.dip0.t-ipconnect.de [IPv6:2003:ec:2f0a:aa00:65be:a12e:fe5d:4e65])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 55C261EC0819;
-        Fri, 30 Aug 2019 21:36:03 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1567193763;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=FTGKhVuj3U6v9FsAz7Xts6Aci6B1WqfD2IhDMm4Gyy4=;
-        b=ggwKB1p6KENXFxHZSrgTtJiNNhKCXZMkBEY4L1zRwZ22OYNJJwG+V5PBzwgtRUr3rZ/Ln5
-        KFoDXfx3ZYSpj6CbIJeCFDRz0DEvYtpqQdz90bgHQ2q9VNy5vNB/hnLSB7tQxgKSR/5oS2
-        isbzRBLmzDN+PqDVpx+4VFmBBF6fn+8=
-Date:   Fri, 30 Aug 2019 21:35:57 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     Philip Li <philip.li@intel.com>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        kbuild test robot <lkp@intel.com>,
-        linux-input@vger.kernel.org,
-        Thomas Hellstrom <thellstrom@vmware.com>,
-        x86-ml <x86@kernel.org>, linux-tip-commits@vger.kernel.org,
-        pv-drivers@vmware.com, Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        linux-kernel@vger.kernel.org,
-        tip-bot2 for Thomas Hellstrom <tip-bot2@linutronix.de>,
-        Doug Covelli <dcovelli@vmware.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        VMware Graphics <linux-graphics-maintainer@vmware.com>,
-        kbuild-all@01.org, "H. Peter Anvin" <hpa@zytor.com>,
-        Ingo Molnar <mingo@kernel.org>
-Subject: Re: [kbuild-all] [tip: x86/vmware] input/vmmouse: Update the
- backdoor call with support for new instructions
-Message-ID: <20190830193557.GF30413@zn.tnic>
-References: <201908292325.aLXyyzEx%lkp@intel.com>
- <20190829163353.GC2132@zn.tnic>
- <20190830010349.GD857@intel.com>
- <alpine.DEB.2.21.1908300802390.1938@nanos.tec.linutronix.de>
- <20190830062053.GA2598@intel.com>
- <20190830080650.GA30413@zn.tnic>
- <20190830143645.GA4784@intel.com>
- <20190830144628.GC30413@zn.tnic>
- <20190830150002.GA6931@intel.com>
- <20190830150856.GB6931@intel.com>
+        Sat, 31 Aug 2019 05:06:20 -0400
+Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tip-bot2@linutronix.de>)
+        id 1i3zKf-0006D1-R7; Sat, 31 Aug 2019 11:06:06 +0200
+Received: from [127.0.1.1] (localhost [IPv6:::1])
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D01681C07A5;
+        Sat, 31 Aug 2019 11:06:04 +0200 (CEST)
+Date:   Sat, 31 Aug 2019 09:06:04 -0000
+From:   "tip-bot2 for Josh Hunt" <tip-bot2@linutronix.de>
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: perf/urgent] perf/x86/intel: Restrict period on Nehalem
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>, acme@kernel.org,
+        Josh Hunt <johunt@akamai.com>, bpuranda@akamai.com,
+        mingo@redhat.com, jolsa@redhat.com, tglx@linutronix.de,
+        namhyung@kernel.org, alexander.shishkin@linux.intel.com,
+        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <1566256411-18820-1-git-send-email-johunt@akamai.com>
+References: <1566256411-18820-1-git-send-email-johunt@akamai.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20190830150856.GB6931@intel.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Message-ID: <156724236470.10774.16768356657393096116.tip-bot2@tip-bot2>
+X-Mailer: tip-git-log-daemon
+Robot-ID: <tip-bot2.linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Fri, Aug 30, 2019 at 11:08:56PM +0800, Philip Li wrote:
-> hi Boris, for the build status notification, we currently send to below
-> address, is it still valid? If not, can you suggest one for us?
+The following commit has been merged into the perf/urgent branch of tip:
 
-Sure, here's an update patch ontop of your master branch:
+Commit-ID:     44d3bbb6f5e501b873218142fe08cdf62a4ac1f3
+Gitweb:        https://git.kernel.org/tip/44d3bbb6f5e501b873218142fe08cdf62a4ac1f3
+Author:        Josh Hunt <johunt@akamai.com>
+AuthorDate:    Mon, 19 Aug 2019 19:13:31 -04:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Fri, 30 Aug 2019 14:27:47 +02:00
 
+perf/x86/intel: Restrict period on Nehalem
+
+We see our Nehalem machines reporting 'perfevents: irq loop stuck!' in
+some cases when using perf:
+
+perfevents: irq loop stuck!
+WARNING: CPU: 0 PID: 3485 at arch/x86/events/intel/core.c:2282 intel_pmu_handle_irq+0x37b/0x530
+...
+RIP: 0010:intel_pmu_handle_irq+0x37b/0x530
+...
+Call Trace:
+<NMI>
+? perf_event_nmi_handler+0x2e/0x50
+? intel_pmu_save_and_restart+0x50/0x50
+perf_event_nmi_handler+0x2e/0x50
+nmi_handle+0x6e/0x120
+default_do_nmi+0x3e/0x100
+do_nmi+0x102/0x160
+end_repeat_nmi+0x16/0x50
+...
+? native_write_msr+0x6/0x20
+? native_write_msr+0x6/0x20
+</NMI>
+intel_pmu_enable_event+0x1ce/0x1f0
+x86_pmu_start+0x78/0xa0
+x86_pmu_enable+0x252/0x310
+__perf_event_task_sched_in+0x181/0x190
+? __switch_to_asm+0x41/0x70
+? __switch_to_asm+0x35/0x70
+? __switch_to_asm+0x41/0x70
+? __switch_to_asm+0x35/0x70
+finish_task_switch+0x158/0x260
+__schedule+0x2f6/0x840
+? hrtimer_start_range_ns+0x153/0x210
+schedule+0x32/0x80
+schedule_hrtimeout_range_clock+0x8a/0x100
+? hrtimer_init+0x120/0x120
+ep_poll+0x2f7/0x3a0
+? wake_up_q+0x60/0x60
+do_epoll_wait+0xa9/0xc0
+__x64_sys_epoll_wait+0x1a/0x20
+do_syscall_64+0x4e/0x110
+entry_SYSCALL_64_after_hwframe+0x44/0xa9
+RIP: 0033:0x7fdeb1e96c03
+...
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: acme@kernel.org
+Cc: Josh Hunt <johunt@akamai.com>
+Cc: bpuranda@akamai.com
+Cc: mingo@redhat.com
+Cc: jolsa@redhat.com
+Cc: tglx@linutronix.de
+Cc: namhyung@kernel.org
+Cc: alexander.shishkin@linux.intel.com
+Link: https://lkml.kernel.org/r/1566256411-18820-1-git-send-email-johunt@akamai.com
 ---
-From: Borislav Petkov <bp@suse.de>
-Date: Fri, 30 Aug 2019 21:33:29 +0200
-Subject: [PATCH] repo/linux/tip: Update tip tree contact information
+ arch/x86/events/intel/core.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-Replace hpa with Borislav and change contact mail address.
-
-Signed-off-by: Borislav Petkov <bp@suse.de>
----
- repo/linux/tip | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/repo/linux/tip b/repo/linux/tip
-index 4fc5d88176fd..96a7dec66f97 100644
---- a/repo/linux/tip
-+++ b/repo/linux/tip
-@@ -2,11 +2,11 @@ url: https://kernel.googlesource.com/pub/scm/linux/kernel/git/tip/tip.git
- integration_testing_branches: auto-latest
- mail_cc:
- - linux-kernel@vger.kernel.org
--- tipbuild@zytor.com
-+- x86@kernel.org
- owner:
- - Ingo Molnar <mingo@kernel.org>
--- H. Peter Anvin <hpa@zytor.com>
- - Thomas Gleixner <tglx@linutronix.de>
-+- Borislav Petkov <bp@suse.de>
- subsystems:
- - x86
- - fpu
-@@ -16,4 +16,4 @@ subsystems:
- - locking
- blacklist_branch: auto-.*|tmp-.*|base-.*|test.*|.*-for-linus
- notify_build_success_branch: .*
--build_success_mail_to: tip build status <tipbuild@zytor.com>
-+build_success_mail_to: x86-ml <x86@kernel.org>
--- 
-2.21.0
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-Good mailing practices for 400: avoid top-posting and trim the reply.
+diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+index 648260b..e4c2cb6 100644
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -3572,6 +3572,11 @@ static u64 bdw_limit_period(struct perf_event *event, u64 left)
+ 	return left;
+ }
+ 
++static u64 nhm_limit_period(struct perf_event *event, u64 left)
++{
++	return max(left, 32ULL);
++}
++
+ PMU_FORMAT_ATTR(event,	"config:0-7"	);
+ PMU_FORMAT_ATTR(umask,	"config:8-15"	);
+ PMU_FORMAT_ATTR(edge,	"config:18"	);
+@@ -4606,6 +4611,7 @@ __init int intel_pmu_init(void)
+ 		x86_pmu.pebs_constraints = intel_nehalem_pebs_event_constraints;
+ 		x86_pmu.enable_all = intel_pmu_nhm_enable_all;
+ 		x86_pmu.extra_regs = intel_nehalem_extra_regs;
++		x86_pmu.limit_period = nhm_limit_period;
+ 
+ 		mem_attr = nhm_mem_events_attrs;
+ 
