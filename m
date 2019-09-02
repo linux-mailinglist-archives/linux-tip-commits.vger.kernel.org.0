@@ -2,41 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 964BEA5111
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  2 Sep 2019 10:16:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 31A8BA5172
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  2 Sep 2019 10:19:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730190AbfIBIQm (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 2 Sep 2019 04:16:42 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:56220 "EHLO
+        id S1730042AbfIBIQe (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 2 Sep 2019 04:16:34 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:56137 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730186AbfIBIQl (ORCPT
+        with ESMTP id S1729950AbfIBIQe (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 2 Sep 2019 04:16:41 -0400
+        Mon, 2 Sep 2019 04:16:34 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i4hVn-0007za-OR; Mon, 02 Sep 2019 10:16:31 +0200
+        id 1i4hVj-00080R-Bk; Mon, 02 Sep 2019 10:16:27 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 687B11C0793;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E7EF61C0DE7;
         Mon,  2 Sep 2019 10:16:26 +0200 (CEST)
 Date:   Mon, 02 Sep 2019 08:16:26 -0000
 From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf tools: Remove needless libtraceevent include directives
+Subject: [tip: perf/core] perf header: Move CPUINFO_PROC to the only file
+ where it is used
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         Jiri Olsa <jolsa@kernel.org>,
         Namhyung Kim <namhyung@kernel.org>,
-        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
-        Tzvetomir Stoyanov <tstoyanov@vmware.com>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <tip-26hn75jn9rdealn4uqtzend6@git.kernel.org>
-References: <tip-26hn75jn9rdealn4uqtzend6@git.kernel.org>
+In-Reply-To: <tip-ars2j5m3if3gypsvkbbijucq@git.kernel.org>
+References: <tip-ars2j5m3if3gypsvkbbijucq@git.kernel.org>
 MIME-Version: 1.0
-Message-ID: <156741218634.17290.2486045734312080490.tip-bot2@tip-bot2>
+Message-ID: <156741218675.17293.4112902995246071094.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -52,67 +51,109 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     108a1bb9d1d88bff47d5eccd2cf18dc09a04fb9f
-Gitweb:        https://git.kernel.org/tip/108a1bb9d1d88bff47d5eccd2cf18dc09a04fb9f
+Commit-ID:     a77494026309711a5f1e4b078e353cd46c2dad9f
+Gitweb:        https://git.kernel.org/tip/a77494026309711a5f1e4b078e353cd46c2dad9f
 Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Thu, 29 Aug 2019 13:00:28 -03:00
+AuthorDate:    Thu, 29 Aug 2019 14:40:28 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Thu, 29 Aug 2019 17:38:32 -03:00
 
-perf tools: Remove needless libtraceevent include directives
+perf header: Move CPUINFO_PROC to the only file where it is used
 
-Remove traceevent/event-parse.h and traceevent/trace-seq.h from places
-where it is not needed.
-
-Should avoid rebuilding those files when these traceevent headers get
-changed.
+To reduce perf-sys.h and eventually nuke it.
 
 Cc: Adrian Hunter <adrian.hunter@intel.com>
 Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Steven Rostedt (VMware) <rostedt@goodmis.org>
-Cc: Tzvetomir Stoyanov <tstoyanov@vmware.com>
-Link: https://lkml.kernel.org/n/tip-26hn75jn9rdealn4uqtzend6@git.kernel.org
+Link: https://lkml.kernel.org/n/tip-ars2j5m3if3gypsvkbbijucq@git.kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/builtin-timechart.c | 1 -
- tools/perf/util/session.c      | 1 -
- tools/perf/util/trace-event.h  | 1 -
- 3 files changed, 3 deletions(-)
+ tools/perf/perf-sys.h    | 44 +---------------------------------------
+ tools/perf/util/header.c | 18 ++++++++++++++++-
+ 2 files changed, 18 insertions(+), 44 deletions(-)
 
-diff --git a/tools/perf/builtin-timechart.c b/tools/perf/builtin-timechart.c
-index 1ff81a7..1a74499 100644
---- a/tools/perf/builtin-timechart.c
-+++ b/tools/perf/builtin-timechart.c
-@@ -10,7 +10,6 @@
+diff --git a/tools/perf/perf-sys.h b/tools/perf/perf-sys.h
+index 3eb7a39..6ffb0fb 100644
+--- a/tools/perf/perf-sys.h
++++ b/tools/perf/perf-sys.h
+@@ -10,50 +10,6 @@
+ #include <linux/perf_event.h>
+ #include <asm/barrier.h>
  
- #include <errno.h>
- #include <inttypes.h>
--#include <traceevent/event-parse.h>
+-#ifdef __powerpc__
+-#define CPUINFO_PROC	{"cpu"}
+-#endif
+-
+-#ifdef __s390__
+-#define CPUINFO_PROC	{"vendor_id"}
+-#endif
+-
+-#ifdef __sh__
+-#define CPUINFO_PROC	{"cpu type"}
+-#endif
+-
+-#ifdef __hppa__
+-#define CPUINFO_PROC	{"cpu"}
+-#endif
+-
+-#ifdef __sparc__
+-#define CPUINFO_PROC	{"cpu"}
+-#endif
+-
+-#ifdef __alpha__
+-#define CPUINFO_PROC	{"cpu model"}
+-#endif
+-
+-#ifdef __arm__
+-#define CPUINFO_PROC	{"model name", "Processor"}
+-#endif
+-
+-#ifdef __mips__
+-#define CPUINFO_PROC	{"cpu model"}
+-#endif
+-
+-#ifdef __arc__
+-#define CPUINFO_PROC	{"Processor"}
+-#endif
+-
+-#ifdef __xtensa__
+-#define CPUINFO_PROC	{"core ID"}
+-#endif
+-
+-#ifndef CPUINFO_PROC
+-#define CPUINFO_PROC	{ "model name", }
+-#endif
+-
+ static inline int
+ sys_perf_event_open(struct perf_event_attr *attr,
+ 		      pid_t pid, int cpu, int group_fd,
+diff --git a/tools/perf/util/header.c b/tools/perf/util/header.c
+index dd2bb08..d252124 100644
+--- a/tools/perf/util/header.c
++++ b/tools/perf/util/header.c
+@@ -436,7 +436,25 @@ static int __write_cpudesc(struct feat_fd *ff, const char *cpuinfo_proc)
+ static int write_cpudesc(struct feat_fd *ff,
+ 		       struct evlist *evlist __maybe_unused)
+ {
++#if defined(__powerpc__) || defined(__hppa__) || defined(__sparc__)
++#define CPUINFO_PROC	{ "cpu", }
++#elif defined(__s390__)
++#define CPUINFO_PROC	{ "vendor_id", }
++#elif defined(__sh__)
++#define CPUINFO_PROC	{ "cpu type", }
++#elif defined(__alpha__) || defined(__mips__)
++#define CPUINFO_PROC	{ "cpu model", }
++#elif defined(__arm__)
++#define CPUINFO_PROC	{ "model name", "Processor", }
++#elif defined(__arc__)
++#define CPUINFO_PROC	{ "Processor", }
++#elif defined(__xtensa__)
++#define CPUINFO_PROC	{ "core ID", }
++#else
++#define CPUINFO_PROC	{ "model name", }
++#endif
+ 	const char *cpuinfo_procs[] = CPUINFO_PROC;
++#undef CPUINFO_PROC
+ 	unsigned int i;
  
- #include "builtin.h"
- #include "util/color.h"
-diff --git a/tools/perf/util/session.c b/tools/perf/util/session.c
-index 13486bc..9eb843e 100644
---- a/tools/perf/util/session.c
-+++ b/tools/perf/util/session.c
-@@ -4,7 +4,6 @@
- #include <linux/err.h>
- #include <linux/kernel.h>
- #include <linux/zalloc.h>
--#include <traceevent/event-parse.h>
- #include <api/fs/fs.h>
- 
- #include <byteswap.h>
-diff --git a/tools/perf/util/trace-event.h b/tools/perf/util/trace-event.h
-index 258d790..2e15838 100644
---- a/tools/perf/util/trace-event.h
-+++ b/tools/perf/util/trace-event.h
-@@ -3,7 +3,6 @@
- #define _PERF_UTIL_TRACE_EVENT_H
- 
- #include <traceevent/event-parse.h>
--#include <traceevent/trace-seq.h>
- #include "parse-events.h"
- 
- struct machine;
+ 	for (i = 0; i < ARRAY_SIZE(cpuinfo_procs); i++) {
