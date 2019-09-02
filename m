@@ -2,29 +2,29 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 49111A516D
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  2 Sep 2019 10:19:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EDF29A515F
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  2 Sep 2019 10:19:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730584AbfIBITX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 2 Sep 2019 04:19:23 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:56167 "EHLO
+        id S1730223AbfIBIS6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 2 Sep 2019 04:18:58 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:56238 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730075AbfIBIQg (ORCPT
+        with ESMTP id S1730189AbfIBIQn (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 2 Sep 2019 04:16:36 -0400
+        Mon, 2 Sep 2019 04:16:43 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i4hVg-0007xG-JT; Mon, 02 Sep 2019 10:16:24 +0200
+        id 1i4hVh-0007ya-UR; Mon, 02 Sep 2019 10:16:26 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 35EED1C0DEC;
-        Mon,  2 Sep 2019 10:16:24 +0200 (CEST)
-Date:   Mon, 02 Sep 2019 08:16:24 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 8D30E1C0793;
+        Mon,  2 Sep 2019 10:16:25 +0200 (CEST)
+Date:   Mon, 02 Sep 2019 08:16:25 -0000
 From:   "tip-bot2 for Kyle Meyer" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf stat: Replace MAX_NR_CPUS with cpu__max_cpu()
+Subject: [tip: perf/core] perf header: Replace MAX_NR_CPUS with cpu__max_cpu()
 Cc:     Kyle Meyer <kyle.meyer@hpe.com>, Jiri Olsa <jolsa@redhat.com>,
         Alexander Shishkin <alexander.shishkin@linux.intel.com>,
         Namhyung Kim <namhyung@kernel.org>,
@@ -33,10 +33,10 @@ Cc:     Kyle Meyer <kyle.meyer@hpe.com>, Jiri Olsa <jolsa@redhat.com>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20190827214352.94272-4-meyerk@stormcage.eag.rdlabs.hpecorp.net>
-References: <20190827214352.94272-4-meyerk@stormcage.eag.rdlabs.hpecorp.net>
+In-Reply-To: <20190827214352.94272-7-meyerk@stormcage.eag.rdlabs.hpecorp.net>
+References: <20190827214352.94272-7-meyerk@stormcage.eag.rdlabs.hpecorp.net>
 MIME-Version: 1.0
-Message-ID: <156741218411.17273.11828039652851567525.tip-bot2@tip-bot2>
+Message-ID: <156741218548.17283.4925605246141492237.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -52,18 +52,20 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     92b5a1545ad51e8225e691e9a29ba33cc9fe37bc
-Gitweb:        https://git.kernel.org/tip/92b5a1545ad51e8225e691e9a29ba33cc9fe37bc
+Commit-ID:     dc84187f32a3e8eb86bd97f3b10494e1f1fe5e7f
+Gitweb:        https://git.kernel.org/tip/dc84187f32a3e8eb86bd97f3b10494e1f1fe5e7f
 Author:        Kyle Meyer <meyerk@hpe.com>
-AuthorDate:    Tue, 27 Aug 2019 16:43:48 -05:00
+AuthorDate:    Tue, 27 Aug 2019 16:43:51 -05:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Thu, 29 Aug 2019 17:38:32 -03:00
 
-perf stat: Replace MAX_NR_CPUS with cpu__max_cpu()
+perf header: Replace MAX_NR_CPUS with cpu__max_cpu()
 
 The function cpu__max_cpu() returns the possible number of CPUs as
 defined in the sysfs and can be used as an alternative for MAX_NR_CPUS
-in zero_per_pkg() and check_per_pkg().
+in write_cache.
+
+MAX_CACHES is replaced by cpu__max_cpu() * MAX_CACHE_LVL.
 
 Signed-off-by: Kyle Meyer <kyle.meyer@hpe.com>
 Reviewed-by: Jiri Olsa <jolsa@redhat.com>
@@ -71,31 +73,34 @@ Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Russ Anderson <russ.anderson@hpe.com>
-Link: http://lore.kernel.org/lkml/20190827214352.94272-4-meyerk@stormcage.eag.rdlabs.hpecorp.net
+Link: http://lore.kernel.org/lkml/20190827214352.94272-7-meyerk@stormcage.eag.rdlabs.hpecorp.net
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/stat.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/perf/util/header.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/tools/perf/util/stat.c b/tools/perf/util/stat.c
-index 66f8808..f6eb6af 100644
---- a/tools/perf/util/stat.c
-+++ b/tools/perf/util/stat.c
-@@ -210,7 +210,7 @@ void perf_evlist__reset_stats(struct evlist *evlist)
- static void zero_per_pkg(struct evsel *counter)
- {
- 	if (counter->per_pkg_mask)
--		memset(counter->per_pkg_mask, 0, MAX_NR_CPUS);
-+		memset(counter->per_pkg_mask, 0, cpu__max_cpu());
+diff --git a/tools/perf/util/header.c b/tools/perf/util/header.c
+index 0a842d9..dd2bb08 100644
+--- a/tools/perf/util/header.c
++++ b/tools/perf/util/header.c
+@@ -1122,16 +1122,17 @@ static int build_caches(struct cpu_cache_level caches[], u32 size, u32 *cntp)
+ 	return 0;
  }
  
- static int check_per_pkg(struct evsel *counter,
-@@ -229,7 +229,7 @@ static int check_per_pkg(struct evsel *counter,
- 		return 0;
+-#define MAX_CACHES (MAX_NR_CPUS * 4)
++#define MAX_CACHE_LVL 4
  
- 	if (!mask) {
--		mask = zalloc(MAX_NR_CPUS);
-+		mask = zalloc(cpu__max_cpu());
- 		if (!mask)
- 			return -ENOMEM;
+ static int write_cache(struct feat_fd *ff,
+ 		       struct evlist *evlist __maybe_unused)
+ {
+-	struct cpu_cache_level caches[MAX_CACHES];
++	u32 max_caches = cpu__max_cpu() * MAX_CACHE_LVL;
++	struct cpu_cache_level caches[max_caches];
+ 	u32 cnt = 0, i, version = 1;
+ 	int ret;
+ 
+-	ret = build_caches(caches, MAX_CACHES, &cnt);
++	ret = build_caches(caches, max_caches, &cnt);
+ 	if (ret)
+ 		goto out;
  
