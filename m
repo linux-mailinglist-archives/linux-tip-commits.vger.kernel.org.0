@@ -2,30 +2,30 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 02D71A5129
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  2 Sep 2019 10:18:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F5EFA511F
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  2 Sep 2019 10:17:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730371AbfIBIRA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 2 Sep 2019 04:17:00 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:56372 "EHLO
+        id S1730396AbfIBIRE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 2 Sep 2019 04:17:04 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:56385 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730352AbfIBIRA (ORCPT
+        with ESMTP id S1730386AbfIBIRE (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 2 Sep 2019 04:17:00 -0400
+        Mon, 2 Sep 2019 04:17:04 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i4hW9-0008GX-0A; Mon, 02 Sep 2019 10:16:53 +0200
+        id 1i4hW9-0008HO-GZ; Mon, 02 Sep 2019 10:16:53 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 598171C0DFB;
-        Mon,  2 Sep 2019 10:16:44 +0200 (CEST)
-Date:   Mon, 02 Sep 2019 08:16:44 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 564131C0DFE;
+        Mon,  2 Sep 2019 10:16:45 +0200 (CEST)
+Date:   Mon, 02 Sep 2019 08:16:45 -0000
 From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf build: Ignore intentional differences for the
- x86 insn decoder
+Subject: [tip: perf/core] objtool: Ignore intentional differences for the x86
+ insn decoder
 Cc:     Josh Poimboeuf <jpoimboe@redhat.com>,
         Masami Hiramatsu <mhiramat@kernel.org>,
         Adrian Hunter <adrian.hunter@intel.com>,
@@ -35,10 +35,10 @@ Cc:     Josh Poimboeuf <jpoimboe@redhat.com>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <tip-9qziqjjt120mmz6kyepka9p7@git.kernel.org>
-References: <tip-9qziqjjt120mmz6kyepka9p7@git.kernel.org>
+In-Reply-To: <20190830193109.p7jagidsrahoa4pn@treble>
+References: <20190830193109.p7jagidsrahoa4pn@treble>
 MIME-Version: 1.0
-Message-ID: <156741220425.17401.15997171596211954925.tip-bot2@tip-bot2>
+Message-ID: <156741220521.17407.3732502437425777535.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -54,14 +54,14 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     87a682a7c4e719d238d1839098375470b55e2097
-Gitweb:        https://git.kernel.org/tip/87a682a7c4e719d238d1839098375470b55e2097
+Commit-ID:     ae31a514a134d9e4ca1d7b0f0a19b5934747d79f
+Gitweb:        https://git.kernel.org/tip/ae31a514a134d9e4ca1d7b0f0a19b5934747d79f
 Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Sat, 31 Aug 2019 17:14:19 -03:00
+AuthorDate:    Sat, 31 Aug 2019 17:35:53 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Sat, 31 Aug 2019 22:27:52 -03:00
 
-perf build: Ignore intentional differences for the x86 insn decoder
+objtool: Ignore intentional differences for the x86 insn decoder
 
 Since we need to build this in !x86, we need to explicitely use the x86
 files, not things like asm/insn.h, so we intentionally differ from the
@@ -69,42 +69,42 @@ master copy in the kernel sources, add -I diff directives to ignore just
 these differences when checking for drift.
 
 Acked-by: Josh Poimboeuf <jpoimboe@redhat.com>
+Link: http://lore.kernel.org/lkml/20190830193109.p7jagidsrahoa4pn@treble
 Acked-by: Masami Hiramatsu <mhiramat@kernel.org>
 Cc: Adrian Hunter <adrian.hunter@intel.com>
 Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/n/tip-9qziqjjt120mmz6kyepka9p7@git.kernel.org
+Link: https://lkml.kernel.org/n/tip-j965m9b7xtdc83em3twfkh9o@git.kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/check-headers.sh | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ tools/objtool/sync-check.sh |  9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/tools/perf/check-headers.sh b/tools/perf/check-headers.sh
-index cbcc359..e2e0f06 100755
---- a/tools/perf/check-headers.sh
-+++ b/tools/perf/check-headers.sh
-@@ -26,12 +26,8 @@ include/uapi/linux/hw_breakpoint.h
- arch/x86/include/asm/disabled-features.h
- arch/x86/include/asm/required-features.h
- arch/x86/include/asm/cpufeatures.h
+diff --git a/tools/objtool/sync-check.sh b/tools/objtool/sync-check.sh
+index 6fa87de..0a832e2 100755
+--- a/tools/objtool/sync-check.sh
++++ b/tools/objtool/sync-check.sh
+@@ -2,12 +2,8 @@
+ # SPDX-License-Identifier: GPL-2.0
+ 
+ FILES='
 -arch/x86/include/asm/inat.h
  arch/x86/include/asm/inat_types.h
 -arch/x86/include/asm/insn.h
- arch/x86/include/uapi/asm/prctl.h
+ arch/x86/include/asm/orc_types.h
 -arch/x86/lib/inat.c
 -arch/x86/lib/insn.c
  arch/x86/lib/x86-opcode-map.txt
  arch/x86/tools/gen-insn-attr-x86.awk
- arch/arm/include/uapi/asm/perf_regs.h
-@@ -116,6 +112,10 @@ check include/uapi/asm-generic/mman.h '-I "^#include <\(uapi/\)*asm-generic/mman
- check include/uapi/linux/mman.h       '-I "^#include <\(uapi/\)*asm/mman.h>"'
- check include/linux/ctype.h	      '-I "isdigit("'
- check lib/ctype.c		      '-I "^EXPORT_SYMBOL" -I "^#include <linux/export.h>" -B'
+ '
+@@ -47,4 +43,9 @@ for i in $FILES; do
+   check $i
+ done
+ 
 +check arch/x86/include/asm/inat.h     '-I "^#include [\"<]\(asm/\)*inat_types.h[\">]"'
 +check arch/x86/include/asm/insn.h     '-I "^#include [\"<]\(asm/\)*inat.h[\">]"'
-+check arch/x86/lib/inat.c	      '-I "^#include [\"<]\(../include/\)*asm/insn.h[\">]"'
-+check arch/x86/lib/insn.c	      '-I "^#include [\"<]\(../include/\)*asm/in\(at\|sn\).h[\">]"'
- 
- # diff non-symmetric files
- check_2 tools/perf/arch/x86/entry/syscalls/syscall_64.tbl arch/x86/entry/syscalls/syscall_64.tbl
++check arch/x86/lib/inat.c             '-I "^#include [\"<]\(../include/\)*asm/insn.h[\">]"'
++check arch/x86/lib/insn.c             '-I "^#include [\"<]\(../include/\)*asm/in\(at\|sn\).h[\">]"'
++
+ cd -
