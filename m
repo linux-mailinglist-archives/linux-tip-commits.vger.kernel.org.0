@@ -2,39 +2,43 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 50BECA5162
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  2 Sep 2019 10:19:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 007A9A5154
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  2 Sep 2019 10:19:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730568AbfIBITG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 2 Sep 2019 04:19:06 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:56236 "EHLO
+        id S1730256AbfIBIQq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 2 Sep 2019 04:16:46 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:56256 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730001AbfIBIQn (ORCPT
+        with ESMTP id S1730234AbfIBIQp (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 2 Sep 2019 04:16:43 -0400
+        Mon, 2 Sep 2019 04:16:45 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i4hVu-00084j-Sh; Mon, 02 Sep 2019 10:16:39 +0200
+        id 1i4hVs-00084P-MX; Mon, 02 Sep 2019 10:16:36 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B0B941C0DF6;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 3CD351C0793;
         Mon,  2 Sep 2019 10:16:32 +0200 (CEST)
 Date:   Mon, 02 Sep 2019 08:16:32 -0000
-From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Tzvetomir Stoyanov" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf dso: Adopt DSO related macros from symbol.h
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Jiri Olsa <jolsa@kernel.org>,
+Subject: [tip: perf/core] libtraceevent: Change users plugin directory
+Cc:     Patrick McLean <chutzpah@gentoo.org>,
+        Tzvetomir Stoyanov <tstoyanov@vmware.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Jiri Olsa <jolsa@redhat.com>,
         Namhyung Kim <namhyung@kernel.org>,
+        linux-trace-devel@vger.kernel.org,
+        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <tip-edenkmjt1oe5fks2s6umd30b@git.kernel.org>
-References: <tip-edenkmjt1oe5fks2s6umd30b@git.kernel.org>
+In-Reply-To: <20190801074959.22023-4-tz.stoyanov@gmail.com>
+References: <20190801074959.22023-4-tz.stoyanov@gmail.com>
 MIME-Version: 1.0
-Message-ID: <156741219258.17330.10301827707018214523.tip-bot2@tip-bot2>
+Message-ID: <156741219210.17327.15327991314741454472.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,105 +54,69 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     fac583fdb6741bf4850928b2a5bb8b0118b5879c
-Gitweb:        https://git.kernel.org/tip/fac583fdb6741bf4850928b2a5bb8b0118b5879c
-Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Fri, 30 Aug 2019 09:43:25 -03:00
+Commit-ID:     e97fd1383cd77c467d2aed7fa4e596789df83977
+Gitweb:        https://git.kernel.org/tip/e97fd1383cd77c467d2aed7fa4e596789df83977
+Author:        Tzvetomir Stoyanov <tstoyanov@vmware.com>
+AuthorDate:    Mon, 05 Aug 2019 16:43:15 -04:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Sat, 31 Aug 2019 22:19:28 -03:00
 
-perf dso: Adopt DSO related macros from symbol.h
+libtraceevent: Change users plugin directory
 
-Reducing the size of symbol.h by removing things that are better placed
-somewhere else.
+To be compliant with XDG user directory layout, the user's plugin
+directory is changed from ~/.traceevent/plugins to
+~/.local/lib/traceevent/plugins/
 
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
+Suggested-by: Patrick McLean <chutzpah@gentoo.org>
+Signed-off-by: Tzvetomir Stoyanov <tstoyanov@vmware.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Jiri Olsa <jolsa@redhat.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lkml.kernel.org/n/tip-edenkmjt1oe5fks2s6umd30b@git.kernel.org
+Cc: Patrick McLean <chutzpah@gentoo.org>
+Cc: linux-trace-devel@vger.kernel.org
+Link: https://lore.kernel.org/linux-trace-devel/20190313144206.41e75cf8@patrickm/
+Link: http://lore.kernel.org/linux-trace-devel/20190801074959.22023-4-tz.stoyanov@gmail.com
+Link: http://lore.kernel.org/lkml/20190805204355.344622683@goodmis.org
+Signed-off-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/annotate.c   | 1 +
- tools/perf/util/build-id.c   | 1 +
- tools/perf/util/dso.h        | 3 +++
- tools/perf/util/probe-file.c | 1 +
- tools/perf/util/symbol.c     | 1 +
- tools/perf/util/symbol.h     | 3 ---
- 6 files changed, 7 insertions(+), 3 deletions(-)
+ tools/lib/traceevent/Makefile       | 6 +++---
+ tools/lib/traceevent/event-plugin.c | 2 +-
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/tools/perf/util/annotate.c b/tools/perf/util/annotate.c
-index 3bd1691..67a7513 100644
---- a/tools/perf/util/annotate.c
-+++ b/tools/perf/util/annotate.c
-@@ -20,6 +20,7 @@
- #include "color.h"
- #include "config.h"
- #include "cache.h"
-+#include "dso.h"
- #include "map.h"
- #include "symbol.h"
- #include "srcline.h"
-diff --git a/tools/perf/util/build-id.c b/tools/perf/util/build-id.c
-index 4c96a33..e5fb777 100644
---- a/tools/perf/util/build-id.c
-+++ b/tools/perf/util/build-id.c
-@@ -13,6 +13,7 @@
- #include <stdio.h>
- #include <sys/stat.h>
- #include <sys/types.h>
-+#include "dso.h"
- #include "build-id.h"
- #include "event.h"
- #include "namespaces.h"
-diff --git a/tools/perf/util/dso.h b/tools/perf/util/dso.h
-index 6e3f637..ff0b818 100644
---- a/tools/perf/util/dso.h
-+++ b/tools/perf/util/dso.h
-@@ -16,6 +16,9 @@ struct machine;
- struct map;
- struct perf_env;
+diff --git a/tools/lib/traceevent/Makefile b/tools/lib/traceevent/Makefile
+index 8352d53..a39cdd0 100644
+--- a/tools/lib/traceevent/Makefile
++++ b/tools/lib/traceevent/Makefile
+@@ -62,15 +62,15 @@ set_plugin_dir := 1
  
-+#define DSO__NAME_KALLSYMS	"[kernel.kallsyms]"
-+#define DSO__NAME_KCORE		"[kernel.kcore]"
-+
- enum dso_binary_type {
- 	DSO_BINARY_TYPE__KALLSYMS = 0,
- 	DSO_BINARY_TYPE__GUEST_KALLSYMS,
-diff --git a/tools/perf/util/probe-file.c b/tools/perf/util/probe-file.c
-index 5b4d493..10d2ab1 100644
---- a/tools/perf/util/probe-file.c
-+++ b/tools/perf/util/probe-file.c
-@@ -16,6 +16,7 @@
- #include "strlist.h"
- #include "strfilter.h"
- #include "debug.h"
-+#include "dso.h"
- #include "cache.h"
- #include "color.h"
- #include "symbol.h"
-diff --git a/tools/perf/util/symbol.c b/tools/perf/util/symbol.c
-index c37cca6..b11a696 100644
---- a/tools/perf/util/symbol.c
-+++ b/tools/perf/util/symbol.c
-@@ -18,6 +18,7 @@
- #include "annotate.h"
- #include "build-id.h"
- #include "cap.h"
-+#include "dso.h"
- #include "util.h"
- #include "debug.h"
- #include "event.h"
-diff --git a/tools/perf/util/symbol.h b/tools/perf/util/symbol.h
-index 183f630..159c596 100644
---- a/tools/perf/util/symbol.h
-+++ b/tools/perf/util/symbol.h
-@@ -46,9 +46,6 @@ Elf_Scn *elf_section_by_name(Elf *elf, GElf_Ehdr *ep,
- #define DMGL_ANSI        (1 << 1)       /* Include const, volatile, etc */
- #endif
+ # Set plugin_dir to preffered global plugin location
+ # If we install under $HOME directory we go under
+-# $(HOME)/.traceevent/plugins
++# $(HOME)/.local/lib/traceevent/plugins
+ #
+ # We dont set PLUGIN_DIR in case we install under $HOME
+ # directory, because by default the code looks under:
+-# $(HOME)/.traceevent/plugins by default.
++# $(HOME)/.local/lib/traceevent/plugins by default.
+ #
+ ifeq ($(plugin_dir),)
+ ifeq ($(prefix),$(HOME))
+-override plugin_dir = $(HOME)/.traceevent/plugins
++override plugin_dir = $(HOME)/.local/lib/traceevent/plugins
+ set_plugin_dir := 0
+ else
+ override plugin_dir = $(libdir)/traceevent/plugins
+diff --git a/tools/lib/traceevent/event-plugin.c b/tools/lib/traceevent/event-plugin.c
+index 8ca28de..e1f7ddd 100644
+--- a/tools/lib/traceevent/event-plugin.c
++++ b/tools/lib/traceevent/event-plugin.c
+@@ -18,7 +18,7 @@
+ #include "event-utils.h"
+ #include "trace-seq.h"
  
--#define DSO__NAME_KALLSYMS	"[kernel.kallsyms]"
--#define DSO__NAME_KCORE		"[kernel.kcore]"
--
- /** struct symbol - symtab entry
-  *
-  * @ignore - resolvable but tools ignore it (e.g. idle routines)
+-#define LOCAL_PLUGIN_DIR ".traceevent/plugins"
++#define LOCAL_PLUGIN_DIR ".local/lib/traceevent/plugins/"
+ 
+ static struct registered_plugin_options {
+ 	struct registered_plugin_options	*next;
