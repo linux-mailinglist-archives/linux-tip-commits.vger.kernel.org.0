@@ -2,117 +2,94 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A3513A4D07
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  2 Sep 2019 03:09:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C8D1EA510F
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  2 Sep 2019 10:16:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729223AbfIBBJR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 1 Sep 2019 21:09:17 -0400
-Received: from mga05.intel.com ([192.55.52.43]:10038 "EHLO mga05.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729169AbfIBBJQ (ORCPT
+        id S1730127AbfIBIQg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 2 Sep 2019 04:16:36 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:56153 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730001AbfIBIQf (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 1 Sep 2019 21:09:16 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 01 Sep 2019 18:09:16 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,457,1559545200"; 
-   d="scan'208";a="183190007"
-Received: from pl-dbox.sh.intel.com (HELO intel.com) ([10.239.13.128])
-  by fmsmga007.fm.intel.com with ESMTP; 01 Sep 2019 18:09:13 -0700
-Date:   Mon, 2 Sep 2019 09:13:42 +0800
-From:   Philip Li <philip.li@intel.com>
-To:     Borislav Petkov <bp@alien8.de>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        kbuild test robot <lkp@intel.com>,
-        linux-input@vger.kernel.org,
-        Thomas Hellstrom <thellstrom@vmware.com>,
-        x86-ml <x86@kernel.org>, linux-tip-commits@vger.kernel.org,
-        pv-drivers@vmware.com, Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        linux-kernel@vger.kernel.org,
-        tip-bot2 for Thomas Hellstrom <tip-bot2@linutronix.de>,
-        Doug Covelli <dcovelli@vmware.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        VMware Graphics <linux-graphics-maintainer@vmware.com>,
-        kbuild-all@01.org, "H. Peter Anvin" <hpa@zytor.com>,
-        Ingo Molnar <mingo@kernel.org>
-Subject: Re: [kbuild-all] [tip: x86/vmware] input/vmmouse: Update the
- backdoor call with support for new instructions
-Message-ID: <20190902011342.GA14687@intel.com>
-References: <20190829163353.GC2132@zn.tnic>
- <20190830010349.GD857@intel.com>
- <alpine.DEB.2.21.1908300802390.1938@nanos.tec.linutronix.de>
- <20190830062053.GA2598@intel.com>
- <20190830080650.GA30413@zn.tnic>
- <20190830143645.GA4784@intel.com>
- <20190830144628.GC30413@zn.tnic>
- <20190830150002.GA6931@intel.com>
- <20190830150856.GB6931@intel.com>
- <20190830193557.GF30413@zn.tnic>
+        Mon, 2 Sep 2019 04:16:35 -0400
+Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tip-bot2@linutronix.de>)
+        id 1i4hVf-0007wk-9l; Mon, 02 Sep 2019 10:16:23 +0200
+Received: from [127.0.1.1] (localhost [IPv6:::1])
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D10221C0793;
+        Mon,  2 Sep 2019 10:16:22 +0200 (CEST)
+Date:   Mon, 02 Sep 2019 08:16:22 -0000
+From:   "tip-bot2 for Jiri Olsa" <tip-bot2@linutronix.de>
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: perf/core] perf c2c: Display proper cpu count in nodes column
+Cc:     Joe Mario <jmario@redhat.com>, Jiri Olsa <jolsa@kernel.org>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Michael Petlan <mpetlan@redhat.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20190820140219.28338-1-jolsa@kernel.org>
+References: <20190820140219.28338-1-jolsa@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190830193557.GF30413@zn.tnic>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Message-ID: <156741218263.17256.8006689739075209942.tip-bot2@tip-bot2>
+X-Mailer: tip-git-log-daemon
+Robot-ID: <tip-bot2.linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Fri, Aug 30, 2019 at 09:35:57PM +0200, Borislav Petkov wrote:
-> On Fri, Aug 30, 2019 at 11:08:56PM +0800, Philip Li wrote:
-> > hi Boris, for the build status notification, we currently send to below
-> > address, is it still valid? If not, can you suggest one for us?
-> 
-> Sure, here's an update patch ontop of your master branch:
-Thanks Boris, it is applied, and will take effect soon.
+The following commit has been merged into the perf/core branch of tip:
 
-> 
-> ---
-> From: Borislav Petkov <bp@suse.de>
-> Date: Fri, 30 Aug 2019 21:33:29 +0200
-> Subject: [PATCH] repo/linux/tip: Update tip tree contact information
-> 
-> Replace hpa with Borislav and change contact mail address.
-> 
-> Signed-off-by: Borislav Petkov <bp@suse.de>
-> ---
->  repo/linux/tip | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/repo/linux/tip b/repo/linux/tip
-> index 4fc5d88176fd..96a7dec66f97 100644
-> --- a/repo/linux/tip
-> +++ b/repo/linux/tip
-> @@ -2,11 +2,11 @@ url: https://kernel.googlesource.com/pub/scm/linux/kernel/git/tip/tip.git
->  integration_testing_branches: auto-latest
->  mail_cc:
->  - linux-kernel@vger.kernel.org
-> -- tipbuild@zytor.com
-> +- x86@kernel.org
->  owner:
->  - Ingo Molnar <mingo@kernel.org>
-> -- H. Peter Anvin <hpa@zytor.com>
->  - Thomas Gleixner <tglx@linutronix.de>
-> +- Borislav Petkov <bp@suse.de>
->  subsystems:
->  - x86
->  - fpu
-> @@ -16,4 +16,4 @@ subsystems:
->  - locking
->  blacklist_branch: auto-.*|tmp-.*|base-.*|test.*|.*-for-linus
->  notify_build_success_branch: .*
-> -build_success_mail_to: tip build status <tipbuild@zytor.com>
-> +build_success_mail_to: x86-ml <x86@kernel.org>
-> -- 
-> 2.21.0
-> 
-> Thx.
-> 
-> -- 
-> Regards/Gruss,
->     Boris.
-> 
-> Good mailing practices for 400: avoid top-posting and trim the reply.
+Commit-ID:     67260e8c0e681a9bb9ed861514b4c80c2d0eb2e5
+Gitweb:        https://git.kernel.org/tip/67260e8c0e681a9bb9ed861514b4c80c2d0eb2e5
+Author:        Jiri Olsa <jolsa@kernel.org>
+AuthorDate:    Tue, 20 Aug 2019 16:02:19 +02:00
+Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
+CommitterDate: Thu, 29 Aug 2019 17:38:31 -03:00
+
+perf c2c: Display proper cpu count in nodes column
+
+There's wrong bitmap considered when checking for cpu count of specific
+node.
+
+We do the needed computation for 'set' variable, but at the end we use
+the 'c2c_he->cpuset' weight, which shows misleading numbers.
+
+Fixes: 1e181b92a2da ("perf c2c report: Add 'node' sort key")
+Reported-by: Joe Mario <jmario@redhat.com>
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Michael Petlan <mpetlan@redhat.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: http://lore.kernel.org/lkml/20190820140219.28338-1-jolsa@kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+---
+ tools/perf/builtin-c2c.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tools/perf/builtin-c2c.c b/tools/perf/builtin-c2c.c
+index 73782d9..8335a40 100644
+--- a/tools/perf/builtin-c2c.c
++++ b/tools/perf/builtin-c2c.c
+@@ -1107,7 +1107,7 @@ node_entry(struct perf_hpp_fmt *fmt __maybe_unused, struct perf_hpp *hpp,
+ 			break;
+ 		case 1:
+ 		{
+-			int num = bitmap_weight(c2c_he->cpuset, c2c.cpus_cnt);
++			int num = bitmap_weight(set, c2c.cpus_cnt);
+ 			struct c2c_stats *stats = &c2c_he->node_stats[node];
+ 
+ 			ret = scnprintf(hpp->buf, hpp->size, "%2d{%2d ", node, num);
