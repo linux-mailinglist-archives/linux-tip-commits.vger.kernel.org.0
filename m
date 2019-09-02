@@ -2,39 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 40427A5159
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  2 Sep 2019 10:19:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 88D99A513E
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  2 Sep 2019 10:18:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730085AbfIBISm (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 2 Sep 2019 04:18:42 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:56273 "EHLO
+        id S1729801AbfIBISJ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 2 Sep 2019 04:18:09 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:56316 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730245AbfIBIQr (ORCPT
+        with ESMTP id S1730295AbfIBIQw (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 2 Sep 2019 04:16:47 -0400
+        Mon, 2 Sep 2019 04:16:52 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i4hVy-00089O-N4; Mon, 02 Sep 2019 10:16:42 +0200
+        id 1i4hW3-00089w-9T; Mon, 02 Sep 2019 10:16:47 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 260F21C0793;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 9648F1C0DF5;
         Mon,  2 Sep 2019 10:16:37 +0200 (CEST)
 Date:   Mon, 02 Sep 2019 08:16:37 -0000
 From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf tools: Remove needless map.h include directives
+Subject: [tip: perf/core] perf tools: Remove needless thread.h include directives
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         Jiri Olsa <jolsa@kernel.org>,
         Namhyung Kim <namhyung@kernel.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <tip-iu8ylqky7g1i9i54v3y7qovw@git.kernel.org>
-References: <tip-iu8ylqky7g1i9i54v3y7qovw@git.kernel.org>
+In-Reply-To: <tip-kh333ivjbw05wsggckpziu86@git.kernel.org>
+References: <tip-kh333ivjbw05wsggckpziu86@git.kernel.org>
 MIME-Version: 1.0
-Message-ID: <156741219704.17357.3613300071249261568.tip-bot2@tip-bot2>
+Message-ID: <156741219749.17360.14527466607072463669.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,70 +50,141 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     df1a0a110c2c0138665f6d8ec96812ea14c2d818
-Gitweb:        https://git.kernel.org/tip/df1a0a110c2c0138665f6d8ec96812ea14c2d818
+Commit-ID:     4becb2395f9166b11d68817ed4af8fc06b840908
+Gitweb:        https://git.kernel.org/tip/4becb2395f9166b11d68817ed4af8fc06b840908
 Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Fri, 30 Aug 2019 12:07:23 -03:00
+AuthorDate:    Fri, 30 Aug 2019 12:13:45 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Sat, 31 Aug 2019 22:24:10 -03:00
 
-perf tools: Remove needless map.h include directives
+perf tools: Remove needless thread.h include directives
 
-Now that map.h isn't included by any other header, we can check where
+Now that thread.h isn't included by any other header, we can check where
 it is really needed, i.e. we can remove it and be sure that it isn't
 being obtained indirectly.
 
 Cc: Adrian Hunter <adrian.hunter@intel.com>
 Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lkml.kernel.org/n/tip-iu8ylqky7g1i9i54v3y7qovw@git.kernel.org
+Link: https://lkml.kernel.org/n/tip-kh333ivjbw05wsggckpziu86@git.kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/arch/arm64/util/sym-handling.c | 8 +++-----
- tools/perf/tests/thread-mg-share.c        | 1 -
- tools/perf/util/intel-bts.c               | 1 -
- 3 files changed, 3 insertions(+), 7 deletions(-)
+ tools/perf/builtin-annotate.c   | 1 -
+ tools/perf/builtin-stat.c       | 1 -
+ tools/perf/builtin-top.c        | 1 -
+ tools/perf/tests/hists_filter.c | 1 -
+ tools/perf/tests/hists_link.c   | 1 -
+ tools/perf/util/arm-spe.c       | 1 -
+ tools/perf/util/probe-event.c   | 1 -
+ tools/perf/util/probe-file.c    | 1 -
+ tools/perf/util/s390-cpumsf.c   | 1 -
+ 9 files changed, 9 deletions(-)
 
-diff --git a/tools/perf/arch/arm64/util/sym-handling.c b/tools/perf/arch/arm64/util/sym-handling.c
-index 27fcf24..5df7889 100644
---- a/tools/perf/arch/arm64/util/sym-handling.c
-+++ b/tools/perf/arch/arm64/util/sym-handling.c
-@@ -4,11 +4,9 @@
-  * Copyright (C) 2015 Naveen N. Rao, IBM Corporation
-  */
- 
--#include "debug.h"
--#include "symbol.h"
--#include "map.h"
--#include "probe-event.h"
--#include "probe-file.h"
-+#include "symbol.h" // for the elf__needs_adjust_symbols() prototype
-+#include <stdbool.h>
-+#include <gelf.h>
- 
- #ifdef HAVE_LIBELF_SUPPORT
- bool elf__needs_adjust_symbols(GElf_Ehdr ehdr)
-diff --git a/tools/perf/tests/thread-mg-share.c b/tools/perf/tests/thread-mg-share.c
-index b1d1bba..cbac717 100644
---- a/tools/perf/tests/thread-mg-share.c
-+++ b/tools/perf/tests/thread-mg-share.c
-@@ -2,7 +2,6 @@
- #include "tests.h"
- #include "machine.h"
- #include "thread.h"
--#include "map.h"
- #include "debug.h"
- 
- int test__thread_mg_share(struct test *test __maybe_unused, int subtest __maybe_unused)
-diff --git a/tools/perf/util/intel-bts.c b/tools/perf/util/intel-bts.c
-index a30427a..aacffa2 100644
---- a/tools/perf/util/intel-bts.c
-+++ b/tools/perf/util/intel-bts.c
-@@ -19,7 +19,6 @@
+diff --git a/tools/perf/builtin-annotate.c b/tools/perf/builtin-annotate.c
+index 738471a..7135b77 100644
+--- a/tools/perf/builtin-annotate.c
++++ b/tools/perf/builtin-annotate.c
+@@ -24,7 +24,6 @@
+ #include "util/event.h"
+ #include <subcmd/parse-options.h>
+ #include "util/parse-events.h"
+-#include "util/thread.h"
+ #include "util/sort.h"
+ #include "util/hist.h"
+ #include "util/dso.h"
+diff --git a/tools/perf/builtin-stat.c b/tools/perf/builtin-stat.c
+index fa4212d..7e17bf9 100644
+--- a/tools/perf/builtin-stat.c
++++ b/tools/perf/builtin-stat.c
+@@ -54,7 +54,6 @@
+ #include "util/stat.h"
+ #include "util/header.h"
+ #include "util/cpumap.h"
+-#include "util/thread.h"
+ #include "util/thread_map.h"
+ #include "util/counts.h"
+ #include "util/group.h"
+diff --git a/tools/perf/builtin-top.c b/tools/perf/builtin-top.c
+index 0f0d962..eb94121 100644
+--- a/tools/perf/builtin-top.c
++++ b/tools/perf/builtin-top.c
+@@ -32,7 +32,6 @@
+ #include "util/map.h"
+ #include "util/session.h"
+ #include "util/symbol.h"
+-#include "util/thread.h"
+ #include "util/thread_map.h"
+ #include "util/top.h"
+ #include "util/util.h"
+diff --git a/tools/perf/tests/hists_filter.c b/tools/perf/tests/hists_filter.c
+index 41dede2..618b51f 100644
+--- a/tools/perf/tests/hists_filter.c
++++ b/tools/perf/tests/hists_filter.c
+@@ -7,7 +7,6 @@
+ #include "util/event.h"
+ #include "util/evlist.h"
+ #include "util/machine.h"
+-#include "util/thread.h"
+ #include "util/parse-events.h"
+ #include "tests/tests.h"
+ #include "tests/hists_common.h"
+diff --git a/tools/perf/tests/hists_link.c b/tools/perf/tests/hists_link.c
+index 012fe8a..8be4d0b 100644
+--- a/tools/perf/tests/hists_link.c
++++ b/tools/perf/tests/hists_link.c
+@@ -6,7 +6,6 @@
  #include "evsel.h"
  #include "evlist.h"
  #include "machine.h"
--#include "map.h"
+-#include "thread.h"
+ #include "parse-events.h"
+ #include "hists_common.h"
+ #include <errno.h>
+diff --git a/tools/perf/util/arm-spe.c b/tools/perf/util/arm-spe.c
+index d7c3fbb..6bee599 100644
+--- a/tools/perf/util/arm-spe.c
++++ b/tools/perf/util/arm-spe.c
+@@ -20,7 +20,6 @@
+ #include "evlist.h"
+ #include "machine.h"
+ #include "session.h"
+-#include "thread.h"
+ #include "debug.h"
+ #include "auxtrace.h"
+ #include "arm-spe.h"
+diff --git a/tools/perf/util/probe-event.c b/tools/perf/util/probe-event.c
+index 5d12a78..e90faa6 100644
+--- a/tools/perf/util/probe-event.c
++++ b/tools/perf/util/probe-event.c
+@@ -31,7 +31,6 @@
+ #include "map.h"
+ #include "map_groups.h"
  #include "symbol.h"
+-#include "thread.h"
+ #include <api/fs/fs.h>
+ #include "trace-event.h"	/* For __maybe_unused */
+ #include "probe-event.h"
+diff --git a/tools/perf/util/probe-file.c b/tools/perf/util/probe-file.c
+index 10d2ab1..adc949e 100644
+--- a/tools/perf/util/probe-file.c
++++ b/tools/perf/util/probe-file.c
+@@ -20,7 +20,6 @@
+ #include "cache.h"
+ #include "color.h"
+ #include "symbol.h"
+-#include "thread.h"
+ #include <api/fs/tracing_path.h>
+ #include "probe-event.h"
+ #include "probe-file.h"
+diff --git a/tools/perf/util/s390-cpumsf.c b/tools/perf/util/s390-cpumsf.c
+index 2ba4baa..24a9990 100644
+--- a/tools/perf/util/s390-cpumsf.c
++++ b/tools/perf/util/s390-cpumsf.c
+@@ -158,7 +158,6 @@
+ #include "machine.h"
  #include "session.h"
  #include "tool.h"
+-#include "thread.h"
+ #include "debug.h"
+ #include "auxtrace.h"
+ #include "s390-cpumsf.h"
