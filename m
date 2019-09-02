@@ -2,111 +2,78 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F344CA5132
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  2 Sep 2019 10:18:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BAC4A52F2
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  2 Sep 2019 11:36:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729600AbfIBIRY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 2 Sep 2019 04:17:24 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:56402 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729462AbfIBIRY (ORCPT
+        id S1731187AbfIBJgy (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 2 Sep 2019 05:36:54 -0400
+Received: from mail.skyhub.de ([5.9.137.197]:34398 "EHLO mail.skyhub.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1731184AbfIBJgy (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 2 Sep 2019 04:17:24 -0400
-Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tip-bot2@linutronix.de>)
-        id 1i4hWQ-0008Mf-J3; Mon, 02 Sep 2019 10:17:10 +0200
-Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 327551C0793;
-        Mon,  2 Sep 2019 10:17:10 +0200 (CEST)
-Date:   Mon, 02 Sep 2019 08:17:10 -0000
-From:   "tip-bot2 for John S. Gruber" <tip-bot2@linutronix.de>
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/boot: Preserve boot_params.secure_boot from sanitizing
-Cc:     "John S. Gruber" <JohnSGruber@gmail.com>,
-        Borislav Petkov <bp@suse.de>,
-        John Hubbard <jhubbard@nvidia.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        Juergen Gross <jgross@suse.com>,
-        Mark Brown <broonie@kernel.org>,
-        stable <stable@vger.kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "x86-ml" <x86@kernel.org>, Ingo Molnar <mingo@kernel.org>,
-        Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
-In-Reply-To: <CAPotdmSPExAuQcy9iAHqX3js_fc4mMLQOTr5RBGvizyCOPcTQQ@mail.gmail.com>
-References: <CAPotdmSPExAuQcy9iAHqX3js_fc4mMLQOTr5RBGvizyCOPcTQQ@mail.gmail.com>
+        Mon, 2 Sep 2019 05:36:54 -0400
+Received: from zn.tnic (p200300EC2F064300457D028AAFF6D0C1.dip0.t-ipconnect.de [IPv6:2003:ec:2f06:4300:457d:28a:aff6:d0c1])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id A77E21EC06F3;
+        Mon,  2 Sep 2019 11:36:52 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1567417012;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=uMMyoFANBQiUKkXtM+OKELpLztUx2WSmL1GhIv0sKAU=;
+        b=PxjOk9O0dXU9E7bIKDD2ZEc8hbly/jAUZbTtsoHimpotQwXLizCKcd6cVmjf06OhCOxE77
+        djGhJr720LyUela8JuoFpGaw56lj7C29LUqDO/k0KMvE3l0E0g7L4/G4jfMR4YnY16lqTo
+        2aeSwLB8dHhL7pqEyOi9p+YwStKBi7I=
+Date:   Mon, 2 Sep 2019 11:36:51 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     Philip Li <philip.li@intel.com>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        kbuild test robot <lkp@intel.com>,
+        linux-input@vger.kernel.org,
+        Thomas Hellstrom <thellstrom@vmware.com>,
+        x86-ml <x86@kernel.org>, linux-tip-commits@vger.kernel.org,
+        pv-drivers@vmware.com, Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        linux-kernel@vger.kernel.org,
+        tip-bot2 for Thomas Hellstrom <tip-bot2@linutronix.de>,
+        Doug Covelli <dcovelli@vmware.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        VMware Graphics <linux-graphics-maintainer@vmware.com>,
+        kbuild-all@01.org, "H. Peter Anvin" <hpa@zytor.com>,
+        Ingo Molnar <mingo@kernel.org>
+Subject: Re: [kbuild-all] [tip: x86/vmware] input/vmmouse: Update the
+ backdoor call with support for new instructions
+Message-ID: <20190902093651.GC9605@zn.tnic>
+References: <20190830010349.GD857@intel.com>
+ <alpine.DEB.2.21.1908300802390.1938@nanos.tec.linutronix.de>
+ <20190830062053.GA2598@intel.com>
+ <20190830080650.GA30413@zn.tnic>
+ <20190830143645.GA4784@intel.com>
+ <20190830144628.GC30413@zn.tnic>
+ <20190830150002.GA6931@intel.com>
+ <20190830150856.GB6931@intel.com>
+ <20190830193557.GF30413@zn.tnic>
+ <20190902011342.GA14687@intel.com>
 MIME-Version: 1.0
-Message-ID: <156741223005.17687.14072415887043895040.tip-bot2@tip-bot2>
-X-Mailer: tip-git-log-daemon
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20190902011342.GA14687@intel.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+On Mon, Sep 02, 2019 at 09:13:42AM +0800, Philip Li wrote:
+> Thanks Boris, it is applied, and will take effect soon.
 
-Commit-ID:     29d9a0b50736768f042752070e5cdf4e4d4c00df
-Gitweb:        https://git.kernel.org/tip/29d9a0b50736768f042752070e5cdf4e4d4c00df
-Author:        John S. Gruber <JohnSGruber@gmail.com>
-AuthorDate:    Mon, 02 Sep 2019 00:00:54 +02:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 02 Sep 2019 09:17:45 +02:00
+Seems to has taken effect. I got the first build report.
 
-x86/boot: Preserve boot_params.secure_boot from sanitizing
+Thx!
 
-Commit
+-- 
+Regards/Gruss,
+    Boris.
 
-  a90118c445cc ("x86/boot: Save fields explicitly, zero out everything else")
-
-now zeroes the secure boot setting information (enabled/disabled/...)
-passed by the boot loader or by the kernel's EFI handover mechanism.
-
-The problem manifests itself with signed kernels using the EFI handoff
-protocol with grub and the kernel loses the information whether secure
-boot is enabled in the firmware, i.e., the log message "Secure boot
-enabled" becomes "Secure boot could not be determined".
-
-efi_main() arch/x86/boot/compressed/eboot.c sets this field early but it
-is subsequently zeroed by the above referenced commit.
-
-Include boot_params.secure_boot in the preserve field list.
-
- [ bp: restructure commit message and massage. ]
-
-Fixes: a90118c445cc ("x86/boot: Save fields explicitly, zero out everything else")
-Signed-off-by: John S. Gruber <JohnSGruber@gmail.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: John Hubbard <jhubbard@nvidia.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Juergen Gross <jgross@suse.com>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: stable <stable@vger.kernel.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: x86-ml <x86@kernel.org>
-Link: https://lkml.kernel.org/r/CAPotdmSPExAuQcy9iAHqX3js_fc4mMLQOTr5RBGvizyCOPcTQQ@mail.gmail.com
----
- arch/x86/include/asm/bootparam_utils.h | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/arch/x86/include/asm/bootparam_utils.h b/arch/x86/include/asm/bootparam_utils.h
-index 9e5f3c7..981fe92 100644
---- a/arch/x86/include/asm/bootparam_utils.h
-+++ b/arch/x86/include/asm/bootparam_utils.h
-@@ -70,6 +70,7 @@ static void sanitize_boot_params(struct boot_params *boot_params)
- 			BOOT_PARAM_PRESERVE(eddbuf_entries),
- 			BOOT_PARAM_PRESERVE(edd_mbr_sig_buf_entries),
- 			BOOT_PARAM_PRESERVE(edd_mbr_sig_buffer),
-+			BOOT_PARAM_PRESERVE(secure_boot),
- 			BOOT_PARAM_PRESERVE(hdr),
- 			BOOT_PARAM_PRESERVE(e820_table),
- 			BOOT_PARAM_PRESERVE(eddbuf),
+Good mailing practices for 400: avoid top-posting and trim the reply.
