@@ -2,41 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2653AA563C
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  2 Sep 2019 14:36:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 69844A5C15
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  2 Sep 2019 20:08:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731782AbfIBMfD (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 2 Sep 2019 08:35:03 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:57614 "EHLO
+        id S1726882AbfIBSHt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 2 Sep 2019 14:07:49 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:58151 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731777AbfIBMfC (ORCPT
+        with ESMTP id S1726448AbfIBSHs (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 2 Sep 2019 08:35:02 -0400
+        Mon, 2 Sep 2019 14:07:48 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i4lXi-0004Tx-GT; Mon, 02 Sep 2019 14:34:46 +0200
+        id 1i4qjq-0000he-P8; Mon, 02 Sep 2019 20:07:38 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id DC3561C0793;
-        Mon,  2 Sep 2019 14:34:45 +0200 (CEST)
-Date:   Mon, 02 Sep 2019 12:34:45 -0000
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 004851C0C76;
+        Mon,  2 Sep 2019 20:07:37 +0200 (CEST)
+Date:   Mon, 02 Sep 2019 18:07:37 -0000
+From:   "tip-bot2 for Tianyu Lan" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/uaccess: Don't leak the AC flags into
- __get_user() argument evaluation
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>, broonie@kernel.org,
-        sfr@canb.auug.org.au, akpm@linux-foundation.org, mhocko@suse.cz,
-        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20190829082445.GM2369@hirez.programming.kicks-ass.net>
-References: <20190829082445.GM2369@hirez.programming.kicks-ass.net>
+Subject: [tip: x86/urgent] x86/hyper-v: Fix overflow bug in fill_gva_list()
+Cc:     Jong Hyun Park <park.jonghyun@yonsei.ac.kr>,
+        Tianyu Lan <Tianyu.Lan@microsoft.com>,
+        Michael Kelley <mikelley@microsoft.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <156742768563.30370.14506895450404848829.tip-bot2@tip-bot2>
+Message-ID: <156744765778.23765.3492272300473328838.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -52,56 +50,57 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     9b8bd476e78e89c9ea26c3b435ad0201c3d7dbf5
-Gitweb:        https://git.kernel.org/tip/9b8bd476e78e89c9ea26c3b435ad0201c3d7dbf5
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Thu, 29 Aug 2019 10:24:45 +02:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Mon, 02 Sep 2019 14:22:38 +02:00
+Commit-ID:     4030b4c585c41eeefec7bd20ce3d0e100a0f2e4d
+Gitweb:        https://git.kernel.org/tip/4030b4c585c41eeefec7bd20ce3d0e100a0f2e4d
+Author:        Tianyu Lan <Tianyu.Lan@microsoft.com>
+AuthorDate:    Mon, 02 Sep 2019 20:41:43 +08:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Mon, 02 Sep 2019 19:57:19 +02:00
 
-x86/uaccess: Don't leak the AC flags into __get_user() argument evaluation
+x86/hyper-v: Fix overflow bug in fill_gva_list()
 
-Identical to __put_user(); the __get_user() argument evalution will too
-leak UBSAN crud into the __uaccess_begin() / __uaccess_end() region.
-While uncommon this was observed to happen for:
+When the 'start' parameter is >=  0xFF000000 on 32-bit
+systems, or >= 0xFFFFFFFF'FF000000 on 64-bit systems,
+fill_gva_list() gets into an infinite loop.
 
-  drivers/xen/gntdev.c: if (__get_user(old_status, batch->status[i]))
+With such inputs, 'cur' overflows after adding HV_TLB_FLUSH_UNIT
+and always compares as less than end.  Memory is filled with
+guest virtual addresses until the system crashes.
 
-where UBSAN added array bound checking.
+Fix this by never incrementing 'cur' to be larger than 'end'.
 
-This complements commit:
-
-  6ae865615fc4 ("x86/uaccess: Dont leak the AC flag into __put_user() argument evaluation")
-
-Tested-by Sedat Dilek <sedat.dilek@gmail.com>
-Reported-by: Randy Dunlap <rdunlap@infradead.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: broonie@kernel.org
-Cc: sfr@canb.auug.org.au
-Cc: akpm@linux-foundation.org
-Cc: Randy Dunlap <rdunlap@infradead.org>
-Cc: mhocko@suse.cz
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Link: https://lkml.kernel.org/r/20190829082445.GM2369@hirez.programming.kicks-ass.net
+Reported-by: Jong Hyun Park <park.jonghyun@yonsei.ac.kr>
+Signed-off-by: Tianyu Lan <Tianyu.Lan@microsoft.com>
+Reviewed-by: Michael Kelley <mikelley@microsoft.com>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Fixes: 2ffd9e33ce4a ("x86/hyper-v: Use hypercall for remote TLB flush")
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- arch/x86/include/asm/uaccess.h | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/x86/hyperv/mmu.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uaccess.h
-index 9c44353..35c225e 100644
---- a/arch/x86/include/asm/uaccess.h
-+++ b/arch/x86/include/asm/uaccess.h
-@@ -444,8 +444,10 @@ __pu_label:							\
- ({									\
- 	int __gu_err;							\
- 	__inttype(*(ptr)) __gu_val;					\
-+	__typeof__(ptr) __gu_ptr = (ptr);				\
-+	__typeof__(size) __gu_size = (size);				\
- 	__uaccess_begin_nospec();					\
--	__get_user_size(__gu_val, (ptr), (size), __gu_err, -EFAULT);	\
-+	__get_user_size(__gu_val, __gu_ptr, __gu_size, __gu_err, -EFAULT);	\
- 	__uaccess_end();						\
- 	(x) = (__force __typeof__(*(ptr)))__gu_val;			\
- 	__builtin_expect(__gu_err, 0);					\
+diff --git a/arch/x86/hyperv/mmu.c b/arch/x86/hyperv/mmu.c
+index e65d7fe..5208ba4 100644
+--- a/arch/x86/hyperv/mmu.c
++++ b/arch/x86/hyperv/mmu.c
+@@ -37,12 +37,14 @@ static inline int fill_gva_list(u64 gva_list[], int offset,
+ 		 * Lower 12 bits encode the number of additional
+ 		 * pages to flush (in addition to the 'cur' page).
+ 		 */
+-		if (diff >= HV_TLB_FLUSH_UNIT)
++		if (diff >= HV_TLB_FLUSH_UNIT) {
+ 			gva_list[gva_n] |= ~PAGE_MASK;
+-		else if (diff)
++			cur += HV_TLB_FLUSH_UNIT;
++		}  else if (diff) {
+ 			gva_list[gva_n] |= (diff - 1) >> PAGE_SHIFT;
++			cur = end;
++		}
+ 
+-		cur += HV_TLB_FLUSH_UNIT;
+ 		gva_n++;
+ 
+ 	} while (cur < end);
