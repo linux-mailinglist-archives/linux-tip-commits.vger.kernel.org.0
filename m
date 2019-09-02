@@ -2,43 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 007A9A5154
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  2 Sep 2019 10:19:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D60FDA5161
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  2 Sep 2019 10:19:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730256AbfIBIQq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 2 Sep 2019 04:16:46 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:56256 "EHLO
+        id S1730565AbfIBITF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 2 Sep 2019 04:19:05 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:56215 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730234AbfIBIQp (ORCPT
+        with ESMTP id S1730178AbfIBIQn (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 2 Sep 2019 04:16:45 -0400
+        Mon, 2 Sep 2019 04:16:43 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i4hVs-00084P-MX; Mon, 02 Sep 2019 10:16:36 +0200
+        id 1i4hVt-00086M-CS; Mon, 02 Sep 2019 10:16:37 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 3CD351C0793;
-        Mon,  2 Sep 2019 10:16:32 +0200 (CEST)
-Date:   Mon, 02 Sep 2019 08:16:32 -0000
-From:   "tip-bot2 for Tzvetomir Stoyanov" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 151B01C0DF9;
+        Mon,  2 Sep 2019 10:16:34 +0200 (CEST)
+Date:   Mon, 02 Sep 2019 08:16:33 -0000
+From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] libtraceevent: Change users plugin directory
-Cc:     Patrick McLean <chutzpah@gentoo.org>,
-        Tzvetomir Stoyanov <tstoyanov@vmware.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Jiri Olsa <jolsa@redhat.com>,
+Subject: [tip: perf/core] perf symbols: Move symsrc prototypes to a separate header
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        Jiri Olsa <jolsa@kernel.org>,
         Namhyung Kim <namhyung@kernel.org>,
-        linux-trace-devel@vger.kernel.org,
-        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20190801074959.22023-4-tz.stoyanov@gmail.com>
-References: <20190801074959.22023-4-tz.stoyanov@gmail.com>
+In-Reply-To: <tip-ip683cegt306ncu3gsz7ii21@git.kernel.org>
+References: <tip-ip683cegt306ncu3gsz7ii21@git.kernel.org>
 MIME-Version: 1.0
-Message-ID: <156741219210.17327.15327991314741454472.tip-bot2@tip-bot2>
+Message-ID: <156741219400.17339.1610175190643025403.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -54,69 +50,246 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     e97fd1383cd77c467d2aed7fa4e596789df83977
-Gitweb:        https://git.kernel.org/tip/e97fd1383cd77c467d2aed7fa4e596789df83977
-Author:        Tzvetomir Stoyanov <tstoyanov@vmware.com>
-AuthorDate:    Mon, 05 Aug 2019 16:43:15 -04:00
+Commit-ID:     b1d1b094f7570a13dd7c9b995209baacc8aa6273
+Gitweb:        https://git.kernel.org/tip/b1d1b094f7570a13dd7c9b995209baacc8aa6273
+Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
+AuthorDate:    Fri, 30 Aug 2019 10:26:37 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Sat, 31 Aug 2019 22:19:28 -03:00
+CommitterDate: Sat, 31 Aug 2019 22:24:05 -03:00
 
-libtraceevent: Change users plugin directory
+perf symbols: Move symsrc prototypes to a separate header
 
-To be compliant with XDG user directory layout, the user's plugin
-directory is changed from ~/.traceevent/plugins to
-~/.local/lib/traceevent/plugins/
+So that we can remove dso.h from symbol.h and reduce the header
+dependency tree.
 
-Suggested-by: Patrick McLean <chutzpah@gentoo.org>
-Signed-off-by: Tzvetomir Stoyanov <tstoyanov@vmware.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Jiri Olsa <jolsa@redhat.com>
+Fixup cases where struct dso guts are needed but were obtained via
+symbol.h, indirectly.
+
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Patrick McLean <chutzpah@gentoo.org>
-Cc: linux-trace-devel@vger.kernel.org
-Link: https://lore.kernel.org/linux-trace-devel/20190313144206.41e75cf8@patrickm/
-Link: http://lore.kernel.org/linux-trace-devel/20190801074959.22023-4-tz.stoyanov@gmail.com
-Link: http://lore.kernel.org/lkml/20190805204355.344622683@goodmis.org
-Signed-off-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
+Link: https://lkml.kernel.org/n/tip-ip683cegt306ncu3gsz7ii21@git.kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/lib/traceevent/Makefile       | 6 +++---
- tools/lib/traceevent/event-plugin.c | 2 +-
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ tools/perf/arch/powerpc/util/sym-handling.c |  1 +-
+ tools/perf/builtin-probe.c                  |  1 +-
+ tools/perf/ui/browsers/map.c                |  1 +-
+ tools/perf/ui/gtk/annotate.c                |  1 +-
+ tools/perf/util/symbol-elf.c                |  1 +-
+ tools/perf/util/symbol-minimal.c            |  2 +-
+ tools/perf/util/symbol.c                    |  1 +-
+ tools/perf/util/symbol.h                    | 36 +---------------
+ tools/perf/util/symbol_fprintf.c            |  1 +-
+ tools/perf/util/symsrc.h                    | 46 ++++++++++++++++++++-
+ 10 files changed, 58 insertions(+), 33 deletions(-)
+ create mode 100644 tools/perf/util/symsrc.h
 
-diff --git a/tools/lib/traceevent/Makefile b/tools/lib/traceevent/Makefile
-index 8352d53..a39cdd0 100644
---- a/tools/lib/traceevent/Makefile
-+++ b/tools/lib/traceevent/Makefile
-@@ -62,15 +62,15 @@ set_plugin_dir := 1
+diff --git a/tools/perf/arch/powerpc/util/sym-handling.c b/tools/perf/arch/powerpc/util/sym-handling.c
+index b0a67ea..8a4b717 100644
+--- a/tools/perf/arch/powerpc/util/sym-handling.c
++++ b/tools/perf/arch/powerpc/util/sym-handling.c
+@@ -5,6 +5,7 @@
+  */
  
- # Set plugin_dir to preffered global plugin location
- # If we install under $HOME directory we go under
--# $(HOME)/.traceevent/plugins
-+# $(HOME)/.local/lib/traceevent/plugins
- #
- # We dont set PLUGIN_DIR in case we install under $HOME
- # directory, because by default the code looks under:
--# $(HOME)/.traceevent/plugins by default.
-+# $(HOME)/.local/lib/traceevent/plugins by default.
- #
- ifeq ($(plugin_dir),)
- ifeq ($(prefix),$(HOME))
--override plugin_dir = $(HOME)/.traceevent/plugins
-+override plugin_dir = $(HOME)/.local/lib/traceevent/plugins
- set_plugin_dir := 0
- else
- override plugin_dir = $(libdir)/traceevent/plugins
-diff --git a/tools/lib/traceevent/event-plugin.c b/tools/lib/traceevent/event-plugin.c
-index 8ca28de..e1f7ddd 100644
---- a/tools/lib/traceevent/event-plugin.c
-+++ b/tools/lib/traceevent/event-plugin.c
-@@ -18,7 +18,7 @@
- #include "event-utils.h"
- #include "trace-seq.h"
+ #include "debug.h"
++#include "dso.h"
+ #include "symbol.h"
+ #include "map.h"
+ #include "probe-event.h"
+diff --git a/tools/perf/builtin-probe.c b/tools/perf/builtin-probe.c
+index 8950c05..6dce172 100644
+--- a/tools/perf/builtin-probe.c
++++ b/tools/perf/builtin-probe.c
+@@ -18,6 +18,7 @@
  
--#define LOCAL_PLUGIN_DIR ".traceevent/plugins"
-+#define LOCAL_PLUGIN_DIR ".local/lib/traceevent/plugins/"
+ #include "builtin.h"
+ #include "namespaces.h"
++#include "util/build-id.h"
+ #include "util/strlist.h"
+ #include "util/strfilter.h"
+ #include "util/symbol.h"
+diff --git a/tools/perf/ui/browsers/map.c b/tools/perf/ui/browsers/map.c
+index 4c545b9..893b065 100644
+--- a/tools/perf/ui/browsers/map.c
++++ b/tools/perf/ui/browsers/map.c
+@@ -8,6 +8,7 @@
+ #include "../../util/util.h"
+ #include "../../util/debug.h"
+ #include "../../util/map.h"
++#include "../../util/dso.h"
+ #include "../../util/symbol.h"
+ #include "../browser.h"
+ #include "../helpline.h"
+diff --git a/tools/perf/ui/gtk/annotate.c b/tools/perf/ui/gtk/annotate.c
+index d7f9844..8e744af 100644
+--- a/tools/perf/ui/gtk/annotate.c
++++ b/tools/perf/ui/gtk/annotate.c
+@@ -5,6 +5,7 @@
+ #include "util/annotate.h"
+ #include "util/evsel.h"
+ #include "util/map.h"
++#include "util/dso.h"
+ #include "util/symbol.h"
+ #include "ui/helpline.h"
+ #include <inttypes.h>
+diff --git a/tools/perf/util/symbol-elf.c b/tools/perf/util/symbol-elf.c
+index 6d22437..9428639 100644
+--- a/tools/perf/util/symbol-elf.c
++++ b/tools/perf/util/symbol-elf.c
+@@ -10,6 +10,7 @@
+ #include "map.h"
+ #include "map_groups.h"
+ #include "symbol.h"
++#include "symsrc.h"
+ #include "demangle-java.h"
+ #include "demangle-rust.h"
+ #include "machine.h"
+diff --git a/tools/perf/util/symbol-minimal.c b/tools/perf/util/symbol-minimal.c
+index 3bc8b7e..7e2813e 100644
+--- a/tools/perf/util/symbol-minimal.c
++++ b/tools/perf/util/symbol-minimal.c
+@@ -1,5 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0
++#include "dso.h"
+ #include "symbol.h"
++#include "symsrc.h"
+ #include "util.h"
  
- static struct registered_plugin_options {
- 	struct registered_plugin_options	*next;
+ #include <errno.h>
+diff --git a/tools/perf/util/symbol.c b/tools/perf/util/symbol.c
+index b11a696..e5ffe61 100644
+--- a/tools/perf/util/symbol.c
++++ b/tools/perf/util/symbol.c
+@@ -25,6 +25,7 @@
+ #include "machine.h"
+ #include "map.h"
+ #include "symbol.h"
++#include "symsrc.h"
+ #include "strlist.h"
+ #include "intlist.h"
+ #include "namespaces.h"
+diff --git a/tools/perf/util/symbol.h b/tools/perf/util/symbol.h
+index 22660c7..5a58407 100644
+--- a/tools/perf/util/symbol.h
++++ b/tools/perf/util/symbol.h
+@@ -20,8 +20,7 @@
+ #endif
+ #include <elf.h>
+ 
+-#include "dso.h"
+-
++struct dso;
+ struct map;
+ struct map_groups;
+ struct option;
+@@ -148,37 +147,6 @@ struct addr_location {
+ 	s32	      socket;
+ };
+ 
+-struct symsrc {
+-	char *name;
+-	int fd;
+-	enum dso_binary_type type;
+-
+-#ifdef HAVE_LIBELF_SUPPORT
+-	Elf *elf;
+-	GElf_Ehdr ehdr;
+-
+-	Elf_Scn *opdsec;
+-	size_t opdidx;
+-	GElf_Shdr opdshdr;
+-
+-	Elf_Scn *symtab;
+-	GElf_Shdr symshdr;
+-
+-	Elf_Scn *dynsym;
+-	size_t dynsym_idx;
+-	GElf_Shdr dynshdr;
+-
+-	bool adjust_symbols;
+-	bool is_64_bit;
+-#endif
+-};
+-
+-void symsrc__destroy(struct symsrc *ss);
+-int symsrc__init(struct symsrc *ss, struct dso *dso, const char *name,
+-		 enum dso_binary_type type);
+-bool symsrc__has_symtab(struct symsrc *ss);
+-bool symsrc__possibly_runtime(struct symsrc *ss);
+-
+ int dso__load(struct dso *dso, struct map *map);
+ int dso__load_vmlinux(struct dso *dso, struct map *map,
+ 		      const char *vmlinux, bool vmlinux_allocated);
+@@ -232,6 +200,8 @@ bool symbol__restricted_filename(const char *filename,
+ int symbol__config_symfs(const struct option *opt __maybe_unused,
+ 			 const char *dir, int unset __maybe_unused);
+ 
++struct symsrc;
++
+ int dso__load_sym(struct dso *dso, struct map *map, struct symsrc *syms_ss,
+ 		  struct symsrc *runtime_ss, int kmodule);
+ int dso__synthesize_plt_symbols(struct dso *dso, struct symsrc *ss);
+diff --git a/tools/perf/util/symbol_fprintf.c b/tools/perf/util/symbol_fprintf.c
+index 02e89b0..35c936c 100644
+--- a/tools/perf/util/symbol_fprintf.c
++++ b/tools/perf/util/symbol_fprintf.c
+@@ -3,6 +3,7 @@
+ #include <inttypes.h>
+ #include <stdio.h>
+ 
++#include "dso.h"
+ #include "map.h"
+ #include "symbol.h"
+ 
+diff --git a/tools/perf/util/symsrc.h b/tools/perf/util/symsrc.h
+new file mode 100644
+index 0000000..2665b4b
+--- /dev/null
++++ b/tools/perf/util/symsrc.h
+@@ -0,0 +1,46 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef __PERF_SYMSRC_
++#define __PERF_SYMSRC_ 1
++
++#include <stdbool.h>
++#include <stddef.h>
++#include "dso.h"
++
++#ifdef HAVE_LIBELF_SUPPORT
++#include <libelf.h>
++#include <gelf.h>
++#endif
++#include <elf.h>
++
++struct symsrc {
++	char		     *name;
++	int		     fd;
++	enum dso_binary_type type;
++
++#ifdef HAVE_LIBELF_SUPPORT
++	Elf		     *elf;
++	GElf_Ehdr	     ehdr;
++
++	Elf_Scn		     *opdsec;
++	size_t		     opdidx;
++	GElf_Shdr	     opdshdr;
++
++	Elf_Scn		     *symtab;
++	GElf_Shdr	     symshdr;
++
++	Elf_Scn		     *dynsym;
++	size_t		     dynsym_idx;
++	GElf_Shdr	     dynshdr;
++
++	bool		     adjust_symbols;
++	bool		     is_64_bit;
++#endif
++};
++
++int symsrc__init(struct symsrc *ss, struct dso *dso, const char *name, enum dso_binary_type type);
++void symsrc__destroy(struct symsrc *ss);
++
++bool symsrc__has_symtab(struct symsrc *ss);
++bool symsrc__possibly_runtime(struct symsrc *ss);
++
++#endif /* __PERF_SYMSRC_ */
