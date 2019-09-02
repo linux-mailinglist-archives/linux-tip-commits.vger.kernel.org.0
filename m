@@ -2,29 +2,29 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EFD3DA5138
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  2 Sep 2019 10:18:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0972BA5120
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  2 Sep 2019 10:17:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729378AbfIBIRu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 2 Sep 2019 04:17:50 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:56366 "EHLO
+        id S1730399AbfIBIRF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 2 Sep 2019 04:17:05 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:56386 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730345AbfIBIQ6 (ORCPT
+        with ESMTP id S1730389AbfIBIRE (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 2 Sep 2019 04:16:58 -0400
+        Mon, 2 Sep 2019 04:17:04 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i4hW7-0008D4-NF; Mon, 02 Sep 2019 10:16:51 +0200
+        id 1i4hW8-0008DU-Nv; Mon, 02 Sep 2019 10:16:52 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id EE4AC1C0DE7;
-        Mon,  2 Sep 2019 10:16:40 +0200 (CEST)
-Date:   Mon, 02 Sep 2019 08:16:40 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 6ABD21C0DF7;
+        Mon,  2 Sep 2019 10:16:41 +0200 (CEST)
+Date:   Mon, 02 Sep 2019 08:16:41 -0000
 From:   "tip-bot2 for Jin Yao" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf pmu: Change convert_scale from static to global
+Subject: [tip: perf/core] perf metricgroup: Scale the metric result
 Cc:     Jin Yao <yao.jin@linux.intel.com>,
         Alexander Shishkin <alexander.shishkin@linux.intel.com>,
         Andi Kleen <ak@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>,
@@ -33,10 +33,10 @@ Cc:     Jin Yao <yao.jin@linux.intel.com>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20190828055932.8269-2-yao.jin@linux.intel.com>
-References: <20190828055932.8269-2-yao.jin@linux.intel.com>
+In-Reply-To: <20190828055932.8269-4-yao.jin@linux.intel.com>
+References: <20190828055932.8269-4-yao.jin@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <156741220086.17378.14383384648862196300.tip-bot2@tip-bot2>
+Message-ID: <156741220133.17381.1725783860233117581.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -52,26 +52,40 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     a55ab7c4ca6986a542d313b02043a39ebf712a39
-Gitweb:        https://git.kernel.org/tip/a55ab7c4ca6986a542d313b02043a39ebf712a39
+Commit-ID:     287f2649f791819dd2d8f32f0213c8c521d6dfa0
+Gitweb:        https://git.kernel.org/tip/287f2649f791819dd2d8f32f0213c8c521d6dfa0
 Author:        Jin Yao <yao.jin@linux.intel.com>
-AuthorDate:    Wed, 28 Aug 2019 13:59:29 +08:00
+AuthorDate:    Wed, 28 Aug 2019 13:59:31 +08:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Sat, 31 Aug 2019 22:27:51 -03:00
+CommitterDate: Sat, 31 Aug 2019 22:27:52 -03:00
 
-perf pmu: Change convert_scale from static to global
+perf metricgroup: Scale the metric result
 
-The function convert_scale() can be used to convert string to unit and
-scale. For example,
+Some metrics define the scale unit, such as
 
-  s = "6000000000ns";
-  convert_scale(s, &unit, &scale);
+    {
+        "BriefDescription": "Intel Optane DC persistent memory read latency (ns). Derived from unc_m_pmm_rpq_occupancy.all",
+        "Counter": "0,1,2,3",
+        "EventCode": "0xE0",
+        "EventName": "UNC_M_PMM_READ_LATENCY",
+        "MetricExpr": "UNC_M_PMM_RPQ_OCCUPANCY.ALL / UNC_M_PMM_RPQ_INSERTS / UNC_M_CLOCKTICKS",
+        "MetricName": "UNC_M_PMM_READ_LATENCY",
+        "PerPkg": "1",
+        "ScaleUnit": "6000000000ns",
+        "UMask": "0x1",
+        "Unit": "iMC"
+    },
 
-unit = "ns", scale = 6000000000.
+For above example, the ratio should be,
 
-Currently this function is static. This patch renames the function to
-perf_pmu__convert_scale and changes the function to global.  No
-functional change.
+ratio = (UNC_M_PMM_RPQ_OCCUPANCY.ALL / UNC_M_PMM_RPQ_INSERTS / UNC_M_CLOCKTICKS) * 6000000000
+
+But in current code, the ratio is not scaled ( * 6000000000)
+
+With this patch, the ratio is scaled and the unit (ns) is printed.
+
+For example,
+  #    219.4 ns  UNC_M_PMM_READ_LATENCY
 
 Signed-off-by: Jin Yao <yao.jin@linux.intel.com>
 Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
@@ -79,52 +93,138 @@ Cc: Andi Kleen <ak@linux.intel.com>
 Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Kan Liang <kan.liang@linux.intel.com>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Link: http://lore.kernel.org/lkml/20190828055932.8269-2-yao.jin@linux.intel.com
+Link: http://lore.kernel.org/lkml/20190828055932.8269-4-yao.jin@linux.intel.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/pmu.c | 6 +++---
- tools/perf/util/pmu.h | 2 ++
- 2 files changed, 5 insertions(+), 3 deletions(-)
+ tools/perf/util/metricgroup.c |  3 +++-
+ tools/perf/util/metricgroup.h |  1 +-
+ tools/perf/util/stat-shadow.c | 38 ++++++++++++++++++++++++----------
+ 3 files changed, 31 insertions(+), 11 deletions(-)
 
-diff --git a/tools/perf/util/pmu.c b/tools/perf/util/pmu.c
-index 6b3448f..fb597fa 100644
---- a/tools/perf/util/pmu.c
-+++ b/tools/perf/util/pmu.c
-@@ -102,7 +102,7 @@ static int pmu_format(const char *name, struct list_head *format)
- 	return 0;
- }
+diff --git a/tools/perf/util/metricgroup.c b/tools/perf/util/metricgroup.c
+index 33f5e21..f474a29 100644
+--- a/tools/perf/util/metricgroup.c
++++ b/tools/perf/util/metricgroup.c
+@@ -87,6 +87,7 @@ struct egroup {
+ 	const char **ids;
+ 	const char *metric_name;
+ 	const char *metric_expr;
++	const char *metric_unit;
+ };
  
--static int convert_scale(const char *scale, char **end, double *sval)
-+int perf_pmu__convert_scale(const char *scale, char **end, double *sval)
- {
- 	char *lc;
- 	int ret = 0;
-@@ -165,7 +165,7 @@ static int perf_pmu__parse_scale(struct perf_pmu_alias *alias, char *dir, char *
- 	else
- 		scale[sret] = '\0';
- 
--	ret = convert_scale(scale, NULL, &alias->scale);
-+	ret = perf_pmu__convert_scale(scale, NULL, &alias->scale);
- error:
- 	close(fd);
- 	return ret;
-@@ -373,7 +373,7 @@ static int __perf_pmu__new_alias(struct list_head *list, char *dir, char *name,
- 				desc ? strdup(desc) : NULL;
- 	alias->topic = topic ? strdup(topic) : NULL;
- 	if (unit) {
--		if (convert_scale(unit, &unit, &alias->scale) < 0)
-+		if (perf_pmu__convert_scale(unit, &unit, &alias->scale) < 0)
- 			return -1;
- 		snprintf(alias->unit, sizeof(alias->unit), "%s", unit);
+ static bool record_evsel(int *ind, struct evsel **start,
+@@ -182,6 +183,7 @@ static int metricgroup__setup_events(struct list_head *groups,
+ 		}
+ 		expr->metric_expr = eg->metric_expr;
+ 		expr->metric_name = eg->metric_name;
++		expr->metric_unit = eg->metric_unit;
+ 		expr->metric_events = metric_events;
+ 		list_add(&expr->nd, &me->head);
  	}
-diff --git a/tools/perf/util/pmu.h b/tools/perf/util/pmu.h
-index 3f8b79b..f36ade6 100644
---- a/tools/perf/util/pmu.h
-+++ b/tools/perf/util/pmu.h
-@@ -96,4 +96,6 @@ struct perf_event_attr *perf_pmu__get_default_config(struct perf_pmu *pmu);
+@@ -453,6 +455,7 @@ static int metricgroup__add_metric(const char *metric, struct strbuf *events,
+ 			eg->idnum = idnum;
+ 			eg->metric_name = pe->metric_name;
+ 			eg->metric_expr = pe->metric_expr;
++			eg->metric_unit = pe->unit;
+ 			list_add_tail(&eg->nd, group_list);
+ 			ret = 0;
+ 		}
+diff --git a/tools/perf/util/metricgroup.h b/tools/perf/util/metricgroup.h
+index e5092f6..475c7f9 100644
+--- a/tools/perf/util/metricgroup.h
++++ b/tools/perf/util/metricgroup.h
+@@ -20,6 +20,7 @@ struct metric_expr {
+ 	struct list_head nd;
+ 	const char *metric_expr;
+ 	const char *metric_name;
++	const char *metric_unit;
+ 	struct evsel **metric_events;
+ };
  
- struct pmu_events_map *perf_pmu__find_map(struct perf_pmu *pmu);
+diff --git a/tools/perf/util/stat-shadow.c b/tools/perf/util/stat-shadow.c
+index 2ed5e00..696d263 100644
+--- a/tools/perf/util/stat-shadow.c
++++ b/tools/perf/util/stat-shadow.c
+@@ -715,6 +715,7 @@ static void generic_metric(struct perf_stat_config *config,
+ 			   struct evsel **metric_events,
+ 			   char *name,
+ 			   const char *metric_name,
++			   const char *metric_unit,
+ 			   double avg,
+ 			   int cpu,
+ 			   struct perf_stat_output_ctx *out,
+@@ -722,7 +723,7 @@ static void generic_metric(struct perf_stat_config *config,
+ {
+ 	print_metric_t print_metric = out->print_metric;
+ 	struct parse_ctx pctx;
+-	double ratio;
++	double ratio, scale;
+ 	int i;
+ 	void *ctxp = out->ctx;
+ 	char *n, *pn;
+@@ -732,7 +733,6 @@ static void generic_metric(struct perf_stat_config *config,
+ 	for (i = 0; metric_events[i]; i++) {
+ 		struct saved_value *v;
+ 		struct stats *stats;
+-		double scale;
  
-+int perf_pmu__convert_scale(const char *scale, char **end, double *sval);
+ 		if (!strcmp(metric_events[i]->name, "duration_time")) {
+ 			stats = &walltime_nsecs_stats;
+@@ -762,16 +762,32 @@ static void generic_metric(struct perf_stat_config *config,
+ 	if (!metric_events[i]) {
+ 		const char *p = metric_expr;
+ 
+-		if (expr__parse(&ratio, &pctx, &p) == 0)
+-			print_metric(config, ctxp, NULL, "%8.1f",
+-				metric_name ?
+-				metric_name :
+-				out->force_header ?  name : "",
+-				ratio);
+-		else
++		if (expr__parse(&ratio, &pctx, &p) == 0) {
++			char *unit;
++			char metric_bf[64];
 +
- #endif /* __PMU_H */
++			if (metric_unit && metric_name) {
++				if (perf_pmu__convert_scale(metric_unit,
++					&unit, &scale) >= 0) {
++					ratio *= scale;
++				}
++
++				scnprintf(metric_bf, sizeof(metric_bf),
++					  "%s  %s", unit, metric_name);
++				print_metric(config, ctxp, NULL, "%8.1f",
++					     metric_bf, ratio);
++			} else {
++				print_metric(config, ctxp, NULL, "%8.1f",
++					metric_name ?
++					metric_name :
++					out->force_header ?  name : "",
++					ratio);
++			}
++		} else {
+ 			print_metric(config, ctxp, NULL, NULL,
+ 				     out->force_header ?
+ 				     (metric_name ? metric_name : name) : "", 0);
++		}
+ 	} else
+ 		print_metric(config, ctxp, NULL, NULL, "", 0);
+ 
+@@ -992,7 +1008,7 @@ void perf_stat__print_shadow_stats(struct perf_stat_config *config,
+ 			print_metric(config, ctxp, NULL, NULL, name, 0);
+ 	} else if (evsel->metric_expr) {
+ 		generic_metric(config, evsel->metric_expr, evsel->metric_events, evsel->name,
+-				evsel->metric_name, avg, cpu, out, st);
++				evsel->metric_name, NULL, avg, cpu, out, st);
+ 	} else if (runtime_stat_n(st, STAT_NSECS, 0, cpu) != 0) {
+ 		char unit = 'M';
+ 		char unit_buf[10];
+@@ -1021,7 +1037,7 @@ void perf_stat__print_shadow_stats(struct perf_stat_config *config,
+ 				out->new_line(config, ctxp);
+ 			generic_metric(config, mexp->metric_expr, mexp->metric_events,
+ 					evsel->name, mexp->metric_name,
+-					avg, cpu, out, st);
++					mexp->metric_unit, avg, cpu, out, st);
+ 		}
+ 	}
+ 	if (num == 0)
