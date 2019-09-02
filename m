@@ -2,29 +2,29 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EDF29A515F
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  2 Sep 2019 10:19:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FEDBA510D
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  2 Sep 2019 10:16:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730223AbfIBIS6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 2 Sep 2019 04:18:58 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:56238 "EHLO
+        id S1729950AbfIBIQg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 2 Sep 2019 04:16:36 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:56165 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730189AbfIBIQn (ORCPT
+        with ESMTP id S1730055AbfIBIQg (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 2 Sep 2019 04:16:43 -0400
+        Mon, 2 Sep 2019 04:16:36 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i4hVh-0007ya-UR; Mon, 02 Sep 2019 10:16:26 +0200
+        id 1i4hVi-0007yd-Cs; Mon, 02 Sep 2019 10:16:26 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 8D30E1C0793;
-        Mon,  2 Sep 2019 10:16:25 +0200 (CEST)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 032061C0DF3;
+        Mon,  2 Sep 2019 10:16:26 +0200 (CEST)
 Date:   Mon, 02 Sep 2019 08:16:25 -0000
 From:   "tip-bot2 for Kyle Meyer" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf header: Replace MAX_NR_CPUS with cpu__max_cpu()
+Subject: [tip: perf/core] libperf: Warn when exceeding MAX_NR_CPUS in cpumap
 Cc:     Kyle Meyer <kyle.meyer@hpe.com>, Jiri Olsa <jolsa@redhat.com>,
         Alexander Shishkin <alexander.shishkin@linux.intel.com>,
         Namhyung Kim <namhyung@kernel.org>,
@@ -33,10 +33,10 @@ Cc:     Kyle Meyer <kyle.meyer@hpe.com>, Jiri Olsa <jolsa@redhat.com>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20190827214352.94272-7-meyerk@stormcage.eag.rdlabs.hpecorp.net>
-References: <20190827214352.94272-7-meyerk@stormcage.eag.rdlabs.hpecorp.net>
+In-Reply-To: <20190827214352.94272-8-meyerk@stormcage.eag.rdlabs.hpecorp.net>
+References: <20190827214352.94272-8-meyerk@stormcage.eag.rdlabs.hpecorp.net>
 MIME-Version: 1.0
-Message-ID: <156741218548.17283.4925605246141492237.tip-bot2@tip-bot2>
+Message-ID: <156741218591.17286.11105173064357616868.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -52,20 +52,17 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     dc84187f32a3e8eb86bd97f3b10494e1f1fe5e7f
-Gitweb:        https://git.kernel.org/tip/dc84187f32a3e8eb86bd97f3b10494e1f1fe5e7f
+Commit-ID:     df552793493ff83b2b7289389d29d417b3ef6d6d
+Gitweb:        https://git.kernel.org/tip/df552793493ff83b2b7289389d29d417b3ef6d6d
 Author:        Kyle Meyer <meyerk@hpe.com>
-AuthorDate:    Tue, 27 Aug 2019 16:43:51 -05:00
+AuthorDate:    Tue, 27 Aug 2019 16:43:52 -05:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Thu, 29 Aug 2019 17:38:32 -03:00
 
-perf header: Replace MAX_NR_CPUS with cpu__max_cpu()
+libperf: Warn when exceeding MAX_NR_CPUS in cpumap
 
-The function cpu__max_cpu() returns the possible number of CPUs as
-defined in the sysfs and can be used as an alternative for MAX_NR_CPUS
-in write_cache.
-
-MAX_CACHES is replaced by cpu__max_cpu() * MAX_CACHE_LVL.
+Display a warning when attempting to profile more than MAX_NR_CPU CPUs.
+This patch should not change any behavior.
 
 Signed-off-by: Kyle Meyer <kyle.meyer@hpe.com>
 Reviewed-by: Jiri Olsa <jolsa@redhat.com>
@@ -73,34 +70,33 @@ Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Russ Anderson <russ.anderson@hpe.com>
-Link: http://lore.kernel.org/lkml/20190827214352.94272-7-meyerk@stormcage.eag.rdlabs.hpecorp.net
+Link: http://lore.kernel.org/lkml/20190827214352.94272-8-meyerk@stormcage.eag.rdlabs.hpecorp.net
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/header.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ tools/perf/lib/cpumap.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/tools/perf/util/header.c b/tools/perf/util/header.c
-index 0a842d9..dd2bb08 100644
---- a/tools/perf/util/header.c
-+++ b/tools/perf/util/header.c
-@@ -1122,16 +1122,17 @@ static int build_caches(struct cpu_cache_level caches[], u32 size, u32 *cntp)
- 	return 0;
- }
+diff --git a/tools/perf/lib/cpumap.c b/tools/perf/lib/cpumap.c
+index 2834753..1f0e6f3 100644
+--- a/tools/perf/lib/cpumap.c
++++ b/tools/perf/lib/cpumap.c
+@@ -100,6 +100,9 @@ struct perf_cpu_map *perf_cpu_map__read(FILE *file)
+ 		if (prev >= 0) {
+ 			int new_max = nr_cpus + cpu - prev - 1;
  
--#define MAX_CACHES (MAX_NR_CPUS * 4)
-+#define MAX_CACHE_LVL 4
++			WARN_ONCE(new_max >= MAX_NR_CPUS, "Perf can support %d CPUs. "
++							  "Consider raising MAX_NR_CPUS\n", MAX_NR_CPUS);
++
+ 			if (new_max >= max_entries) {
+ 				max_entries = new_max + MAX_NR_CPUS / 2;
+ 				tmp = realloc(tmp_cpus, max_entries * sizeof(int));
+@@ -192,6 +195,9 @@ struct perf_cpu_map *perf_cpu_map__new(const char *cpu_list)
+ 			end_cpu = start_cpu;
+ 		}
  
- static int write_cache(struct feat_fd *ff,
- 		       struct evlist *evlist __maybe_unused)
- {
--	struct cpu_cache_level caches[MAX_CACHES];
-+	u32 max_caches = cpu__max_cpu() * MAX_CACHE_LVL;
-+	struct cpu_cache_level caches[max_caches];
- 	u32 cnt = 0, i, version = 1;
- 	int ret;
- 
--	ret = build_caches(caches, MAX_CACHES, &cnt);
-+	ret = build_caches(caches, max_caches, &cnt);
- 	if (ret)
- 		goto out;
- 
++		WARN_ONCE(end_cpu >= MAX_NR_CPUS, "Perf can support %d CPUs. "
++						  "Consider raising MAX_NR_CPUS\n", MAX_NR_CPUS);
++
+ 		for (; start_cpu <= end_cpu; start_cpu++) {
+ 			/* check for duplicates */
+ 			for (i = 0; i < nr_cpus; i++)
