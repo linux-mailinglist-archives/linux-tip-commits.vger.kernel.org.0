@@ -2,29 +2,30 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FEDBA510D
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  2 Sep 2019 10:16:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CEE33A516C
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  2 Sep 2019 10:19:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729950AbfIBIQg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 2 Sep 2019 04:16:36 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:56165 "EHLO
+        id S1730588AbfIBITX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 2 Sep 2019 04:19:23 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:56157 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730055AbfIBIQg (ORCPT
+        with ESMTP id S1730021AbfIBIQf (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 2 Sep 2019 04:16:36 -0400
+        Mon, 2 Sep 2019 04:16:35 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i4hVi-0007yd-Cs; Mon, 02 Sep 2019 10:16:26 +0200
+        id 1i4hVi-0007xM-6l; Mon, 02 Sep 2019 10:16:26 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 032061C0DF3;
-        Mon,  2 Sep 2019 10:16:26 +0200 (CEST)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 21C921C0DEC;
+        Mon,  2 Sep 2019 10:16:25 +0200 (CEST)
 Date:   Mon, 02 Sep 2019 08:16:25 -0000
 From:   "tip-bot2 for Kyle Meyer" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] libperf: Warn when exceeding MAX_NR_CPUS in cpumap
+Subject: [tip: perf/core] perf machine: Replace MAX_NR_CPUS with
+ perf_env::nr_cpus_online
 Cc:     Kyle Meyer <kyle.meyer@hpe.com>, Jiri Olsa <jolsa@redhat.com>,
         Alexander Shishkin <alexander.shishkin@linux.intel.com>,
         Namhyung Kim <namhyung@kernel.org>,
@@ -33,10 +34,10 @@ Cc:     Kyle Meyer <kyle.meyer@hpe.com>, Jiri Olsa <jolsa@redhat.com>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20190827214352.94272-8-meyerk@stormcage.eag.rdlabs.hpecorp.net>
-References: <20190827214352.94272-8-meyerk@stormcage.eag.rdlabs.hpecorp.net>
+In-Reply-To: <20190827214352.94272-6-meyerk@stormcage.eag.rdlabs.hpecorp.net>
+References: <20190827214352.94272-6-meyerk@stormcage.eag.rdlabs.hpecorp.net>
 MIME-Version: 1.0
-Message-ID: <156741218591.17286.11105173064357616868.tip-bot2@tip-bot2>
+Message-ID: <156741218504.17280.8058375020426111095.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -52,17 +53,18 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     df552793493ff83b2b7289389d29d417b3ef6d6d
-Gitweb:        https://git.kernel.org/tip/df552793493ff83b2b7289389d29d417b3ef6d6d
+Commit-ID:     8c7274691f0de5fb56f3b9fe9208ce7e515a2d2c
+Gitweb:        https://git.kernel.org/tip/8c7274691f0de5fb56f3b9fe9208ce7e515a2d2c
 Author:        Kyle Meyer <meyerk@hpe.com>
-AuthorDate:    Tue, 27 Aug 2019 16:43:52 -05:00
+AuthorDate:    Tue, 27 Aug 2019 16:43:50 -05:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Thu, 29 Aug 2019 17:38:32 -03:00
 
-libperf: Warn when exceeding MAX_NR_CPUS in cpumap
+perf machine: Replace MAX_NR_CPUS with perf_env::nr_cpus_online
 
-Display a warning when attempting to profile more than MAX_NR_CPU CPUs.
-This patch should not change any behavior.
+nr_cpus, the number of CPUs online during a record session bound by
+MAX_NR_CPUS, can be used as a dynamic alternative for MAX_NR_CPUS in
+__machine__synthesize_threads and machine__set_current_tid.
 
 Signed-off-by: Kyle Meyer <kyle.meyer@hpe.com>
 Reviewed-by: Jiri Olsa <jolsa@redhat.com>
@@ -70,33 +72,50 @@ Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Russ Anderson <russ.anderson@hpe.com>
-Link: http://lore.kernel.org/lkml/20190827214352.94272-8-meyerk@stormcage.eag.rdlabs.hpecorp.net
+Link: http://lore.kernel.org/lkml/20190827214352.94272-6-meyerk@stormcage.eag.rdlabs.hpecorp.net
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/lib/cpumap.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ tools/perf/util/machine.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/tools/perf/lib/cpumap.c b/tools/perf/lib/cpumap.c
-index 2834753..1f0e6f3 100644
---- a/tools/perf/lib/cpumap.c
-+++ b/tools/perf/lib/cpumap.c
-@@ -100,6 +100,9 @@ struct perf_cpu_map *perf_cpu_map__read(FILE *file)
- 		if (prev >= 0) {
- 			int new_max = nr_cpus + cpu - prev - 1;
+diff --git a/tools/perf/util/machine.c b/tools/perf/util/machine.c
+index 93483f1..a1542b4 100644
+--- a/tools/perf/util/machine.c
++++ b/tools/perf/util/machine.c
+@@ -2619,7 +2619,9 @@ int __machine__synthesize_threads(struct machine *machine, struct perf_tool *too
  
-+			WARN_ONCE(new_max >= MAX_NR_CPUS, "Perf can support %d CPUs. "
-+							  "Consider raising MAX_NR_CPUS\n", MAX_NR_CPUS);
+ pid_t machine__get_current_tid(struct machine *machine, int cpu)
+ {
+-	if (cpu < 0 || cpu >= MAX_NR_CPUS || !machine->current_tid)
++	int nr_cpus = min(machine->env->nr_cpus_online, MAX_NR_CPUS);
 +
- 			if (new_max >= max_entries) {
- 				max_entries = new_max + MAX_NR_CPUS / 2;
- 				tmp = realloc(tmp_cpus, max_entries * sizeof(int));
-@@ -192,6 +195,9 @@ struct perf_cpu_map *perf_cpu_map__new(const char *cpu_list)
- 			end_cpu = start_cpu;
- 		}
++	if (cpu < 0 || cpu >= nr_cpus || !machine->current_tid)
+ 		return -1;
  
-+		WARN_ONCE(end_cpu >= MAX_NR_CPUS, "Perf can support %d CPUs. "
-+						  "Consider raising MAX_NR_CPUS\n", MAX_NR_CPUS);
-+
- 		for (; start_cpu <= end_cpu; start_cpu++) {
- 			/* check for duplicates */
- 			for (i = 0; i < nr_cpus; i++)
+ 	return machine->current_tid[cpu];
+@@ -2629,6 +2631,7 @@ int machine__set_current_tid(struct machine *machine, int cpu, pid_t pid,
+ 			     pid_t tid)
+ {
+ 	struct thread *thread;
++	int nr_cpus = min(machine->env->nr_cpus_online, MAX_NR_CPUS);
+ 
+ 	if (cpu < 0)
+ 		return -EINVAL;
+@@ -2636,14 +2639,14 @@ int machine__set_current_tid(struct machine *machine, int cpu, pid_t pid,
+ 	if (!machine->current_tid) {
+ 		int i;
+ 
+-		machine->current_tid = calloc(MAX_NR_CPUS, sizeof(pid_t));
++		machine->current_tid = calloc(nr_cpus, sizeof(pid_t));
+ 		if (!machine->current_tid)
+ 			return -ENOMEM;
+-		for (i = 0; i < MAX_NR_CPUS; i++)
++		for (i = 0; i < nr_cpus; i++)
+ 			machine->current_tid[i] = -1;
+ 	}
+ 
+-	if (cpu >= MAX_NR_CPUS) {
++	if (cpu >= nr_cpus) {
+ 		pr_err("Requested CPU %d too large. ", cpu);
+ 		pr_err("Consider raising MAX_NR_CPUS\n");
+ 		return -EINVAL;
