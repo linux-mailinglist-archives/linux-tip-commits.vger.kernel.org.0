@@ -2,42 +2,41 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CEE33A516C
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  2 Sep 2019 10:19:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 964BEA5111
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  2 Sep 2019 10:16:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730588AbfIBITX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 2 Sep 2019 04:19:23 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:56157 "EHLO
+        id S1730190AbfIBIQm (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 2 Sep 2019 04:16:42 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:56220 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730021AbfIBIQf (ORCPT
+        with ESMTP id S1730186AbfIBIQl (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 2 Sep 2019 04:16:35 -0400
+        Mon, 2 Sep 2019 04:16:41 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i4hVi-0007xM-6l; Mon, 02 Sep 2019 10:16:26 +0200
+        id 1i4hVn-0007za-OR; Mon, 02 Sep 2019 10:16:31 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 21C921C0DEC;
-        Mon,  2 Sep 2019 10:16:25 +0200 (CEST)
-Date:   Mon, 02 Sep 2019 08:16:25 -0000
-From:   "tip-bot2 for Kyle Meyer" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 687B11C0793;
+        Mon,  2 Sep 2019 10:16:26 +0200 (CEST)
+Date:   Mon, 02 Sep 2019 08:16:26 -0000
+From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf machine: Replace MAX_NR_CPUS with
- perf_env::nr_cpus_online
-Cc:     Kyle Meyer <kyle.meyer@hpe.com>, Jiri Olsa <jolsa@redhat.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+Subject: [tip: perf/core] perf tools: Remove needless libtraceevent include directives
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        Jiri Olsa <jolsa@kernel.org>,
         Namhyung Kim <namhyung@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Russ Anderson <russ.anderson@hpe.com>,
+        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
+        Tzvetomir Stoyanov <tstoyanov@vmware.com>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20190827214352.94272-6-meyerk@stormcage.eag.rdlabs.hpecorp.net>
-References: <20190827214352.94272-6-meyerk@stormcage.eag.rdlabs.hpecorp.net>
+In-Reply-To: <tip-26hn75jn9rdealn4uqtzend6@git.kernel.org>
+References: <tip-26hn75jn9rdealn4uqtzend6@git.kernel.org>
 MIME-Version: 1.0
-Message-ID: <156741218504.17280.8058375020426111095.tip-bot2@tip-bot2>
+Message-ID: <156741218634.17290.2486045734312080490.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -53,69 +52,67 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     8c7274691f0de5fb56f3b9fe9208ce7e515a2d2c
-Gitweb:        https://git.kernel.org/tip/8c7274691f0de5fb56f3b9fe9208ce7e515a2d2c
-Author:        Kyle Meyer <meyerk@hpe.com>
-AuthorDate:    Tue, 27 Aug 2019 16:43:50 -05:00
+Commit-ID:     108a1bb9d1d88bff47d5eccd2cf18dc09a04fb9f
+Gitweb:        https://git.kernel.org/tip/108a1bb9d1d88bff47d5eccd2cf18dc09a04fb9f
+Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
+AuthorDate:    Thu, 29 Aug 2019 13:00:28 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Thu, 29 Aug 2019 17:38:32 -03:00
 
-perf machine: Replace MAX_NR_CPUS with perf_env::nr_cpus_online
+perf tools: Remove needless libtraceevent include directives
 
-nr_cpus, the number of CPUs online during a record session bound by
-MAX_NR_CPUS, can be used as a dynamic alternative for MAX_NR_CPUS in
-__machine__synthesize_threads and machine__set_current_tid.
+Remove traceevent/event-parse.h and traceevent/trace-seq.h from places
+where it is not needed.
 
-Signed-off-by: Kyle Meyer <kyle.meyer@hpe.com>
-Reviewed-by: Jiri Olsa <jolsa@redhat.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Should avoid rebuilding those files when these traceevent headers get
+changed.
+
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Russ Anderson <russ.anderson@hpe.com>
-Link: http://lore.kernel.org/lkml/20190827214352.94272-6-meyerk@stormcage.eag.rdlabs.hpecorp.net
+Cc: Steven Rostedt (VMware) <rostedt@goodmis.org>
+Cc: Tzvetomir Stoyanov <tstoyanov@vmware.com>
+Link: https://lkml.kernel.org/n/tip-26hn75jn9rdealn4uqtzend6@git.kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/machine.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ tools/perf/builtin-timechart.c | 1 -
+ tools/perf/util/session.c      | 1 -
+ tools/perf/util/trace-event.h  | 1 -
+ 3 files changed, 3 deletions(-)
 
-diff --git a/tools/perf/util/machine.c b/tools/perf/util/machine.c
-index 93483f1..a1542b4 100644
---- a/tools/perf/util/machine.c
-+++ b/tools/perf/util/machine.c
-@@ -2619,7 +2619,9 @@ int __machine__synthesize_threads(struct machine *machine, struct perf_tool *too
+diff --git a/tools/perf/builtin-timechart.c b/tools/perf/builtin-timechart.c
+index 1ff81a7..1a74499 100644
+--- a/tools/perf/builtin-timechart.c
++++ b/tools/perf/builtin-timechart.c
+@@ -10,7 +10,6 @@
  
- pid_t machine__get_current_tid(struct machine *machine, int cpu)
- {
--	if (cpu < 0 || cpu >= MAX_NR_CPUS || !machine->current_tid)
-+	int nr_cpus = min(machine->env->nr_cpus_online, MAX_NR_CPUS);
-+
-+	if (cpu < 0 || cpu >= nr_cpus || !machine->current_tid)
- 		return -1;
+ #include <errno.h>
+ #include <inttypes.h>
+-#include <traceevent/event-parse.h>
  
- 	return machine->current_tid[cpu];
-@@ -2629,6 +2631,7 @@ int machine__set_current_tid(struct machine *machine, int cpu, pid_t pid,
- 			     pid_t tid)
- {
- 	struct thread *thread;
-+	int nr_cpus = min(machine->env->nr_cpus_online, MAX_NR_CPUS);
+ #include "builtin.h"
+ #include "util/color.h"
+diff --git a/tools/perf/util/session.c b/tools/perf/util/session.c
+index 13486bc..9eb843e 100644
+--- a/tools/perf/util/session.c
++++ b/tools/perf/util/session.c
+@@ -4,7 +4,6 @@
+ #include <linux/err.h>
+ #include <linux/kernel.h>
+ #include <linux/zalloc.h>
+-#include <traceevent/event-parse.h>
+ #include <api/fs/fs.h>
  
- 	if (cpu < 0)
- 		return -EINVAL;
-@@ -2636,14 +2639,14 @@ int machine__set_current_tid(struct machine *machine, int cpu, pid_t pid,
- 	if (!machine->current_tid) {
- 		int i;
+ #include <byteswap.h>
+diff --git a/tools/perf/util/trace-event.h b/tools/perf/util/trace-event.h
+index 258d790..2e15838 100644
+--- a/tools/perf/util/trace-event.h
++++ b/tools/perf/util/trace-event.h
+@@ -3,7 +3,6 @@
+ #define _PERF_UTIL_TRACE_EVENT_H
  
--		machine->current_tid = calloc(MAX_NR_CPUS, sizeof(pid_t));
-+		machine->current_tid = calloc(nr_cpus, sizeof(pid_t));
- 		if (!machine->current_tid)
- 			return -ENOMEM;
--		for (i = 0; i < MAX_NR_CPUS; i++)
-+		for (i = 0; i < nr_cpus; i++)
- 			machine->current_tid[i] = -1;
- 	}
+ #include <traceevent/event-parse.h>
+-#include <traceevent/trace-seq.h>
+ #include "parse-events.h"
  
--	if (cpu >= MAX_NR_CPUS) {
-+	if (cpu >= nr_cpus) {
- 		pr_err("Requested CPU %d too large. ", cpu);
- 		pr_err("Consider raising MAX_NR_CPUS\n");
- 		return -EINVAL;
+ struct machine;
