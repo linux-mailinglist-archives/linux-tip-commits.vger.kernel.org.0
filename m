@@ -2,41 +2,42 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 63CD4A5139
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  2 Sep 2019 10:18:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 39625A511D
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  2 Sep 2019 10:17:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729691AbfIBIRv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 2 Sep 2019 04:17:51 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:56361 "EHLO
+        id S1730379AbfIBIRB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 2 Sep 2019 04:17:01 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:56378 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730344AbfIBIQ5 (ORCPT
+        with ESMTP id S1730369AbfIBIRB (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 2 Sep 2019 04:16:57 -0400
+        Mon, 2 Sep 2019 04:17:01 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i4hW7-0008FJ-7u; Mon, 02 Sep 2019 10:16:51 +0200
+        id 1i4hWA-0008HP-G5; Mon, 02 Sep 2019 10:16:54 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 664861C0793;
-        Mon,  2 Sep 2019 10:16:43 +0200 (CEST)
-Date:   Mon, 02 Sep 2019 08:16:43 -0000
-From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D68D61C0DF6;
+        Mon,  2 Sep 2019 10:16:44 +0200 (CEST)
+Date:   Mon, 02 Sep 2019 08:16:44 -0000
+From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf intel-pt: Remove inat.c from build dependency list
+Subject: [tip: perf/core] objtool: Update sync-check.sh from perf's check-headers.sh
 Cc:     Josh Poimboeuf <jpoimboe@redhat.com>,
         Masami Hiramatsu <mhiramat@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
         Adrian Hunter <adrian.hunter@intel.com>,
-        Jiri Olsa <jolsa@redhat.com>, x86@kernel.org,
+        Jiri Olsa <jolsa@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <53776d6d29bc9eceb571d52df8fa32250c58a0f3.1567118001.git.jpoimboe@redhat.com>
-References: <53776d6d29bc9eceb571d52df8fa32250c58a0f3.1567118001.git.jpoimboe@redhat.com>
+In-Reply-To: <20190830193109.p7jagidsrahoa4pn@treble>
+References: <20190830193109.p7jagidsrahoa4pn@treble>
 MIME-Version: 1.0
-Message-ID: <156741220324.17395.10042321867096660211.tip-bot2@tip-bot2>
+Message-ID: <156741220469.17404.17592526465433413478.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -52,40 +53,102 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     f1da0a6c136542b9571b30af27bc1e84254f7a47
-Gitweb:        https://git.kernel.org/tip/f1da0a6c136542b9571b30af27bc1e84254f7a47
-Author:        Josh Poimboeuf <jpoimboe@redhat.com>
-AuthorDate:    Thu, 29 Aug 2019 17:41:20 -05:00
+Commit-ID:     2ffd84ae973b5ad16be96840574bb1142fda268a
+Gitweb:        https://git.kernel.org/tip/2ffd84ae973b5ad16be96840574bb1142fda268a
+Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
+AuthorDate:    Sat, 31 Aug 2019 17:29:47 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Sat, 31 Aug 2019 22:27:52 -03:00
 
-perf intel-pt: Remove inat.c from build dependency list
+objtool: Update sync-check.sh from perf's check-headers.sh
 
-intel-pt-insn-decoder.c includes inat.c directly, so it already has an
-implicit dependency on inat.c.  The Build file dependency is redundant.
+To allow using the -I trick that will be needed for checking the x86
+insn decoder files.
 
-Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Reviewed-by: Masami Hiramatsu <mhiramat@kernel.org>
-Acked-by: Peter Zijlstra <peterz@infradead.org>
+Without the specific -I lines we still get the same warnings as before:
+
+  $ make -C tools/objtool/ clean ; make -C tools/objtool/
+  make: Entering directory '/home/acme/git/perf/tools/objtool'
+    CLEAN    objtool
+  find  -name '*.o' -delete -o -name '\.*.cmd' -delete -o -name '\.*.d' -delete
+  rm -f arch/x86/inat-tables.c fixdep
+  <SNIP>
+    LD       objtool-in.o
+  make[1]: Leaving directory '/home/acme/git/perf/tools/objtool'
+  Warning: Kernel ABI header at 'tools/arch/x86/include/asm/inat.h' differs from latest version at 'arch/x86/include/asm/inat.h'
+  diff -u tools/arch/x86/include/asm/inat.h arch/x86/include/asm/inat.h
+  Warning: Kernel ABI header at 'tools/arch/x86/include/asm/insn.h' differs from latest version at 'arch/x86/include/asm/insn.h'
+  diff -u tools/arch/x86/include/asm/insn.h arch/x86/include/asm/insn.h
+  Warning: Kernel ABI header at 'tools/arch/x86/lib/inat.c' differs from latest version at 'arch/x86/lib/inat.c'
+  diff -u tools/arch/x86/lib/inat.c arch/x86/lib/inat.c
+  Warning: Kernel ABI header at 'tools/arch/x86/lib/insn.c' differs from latest version at 'arch/x86/lib/insn.c'
+  diff -u tools/arch/x86/lib/insn.c arch/x86/lib/insn.c
+  /home/acme/git/perf/tools/objtool
+    LINK     objtool
+  make: Leaving directory '/home/acme/git/perf/tools/objtool'
+  $
+
+The next patch will add the -I lines for those files.
+
+Acked-by: Josh Poimboeuf <jpoimboe@redhat.com>
+Link: http://lore.kernel.org/lkml/20190830193109.p7jagidsrahoa4pn@treble
+Acked-by: Masami Hiramatsu <mhiramat@kernel.org>
 Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Jiri Olsa <jolsa@redhat.com>
-Cc: x86@kernel.org
-Link: http://lore.kernel.org/lkml/53776d6d29bc9eceb571d52df8fa32250c58a0f3.1567118001.git.jpoimboe@redhat.com
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/n/tip-vu3p38mnxlwd80rlsnjkqcf2@git.kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/intel-pt-decoder/Build | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/objtool/sync-check.sh | 31 ++++++++++++++++++++++++++-----
+ 1 file changed, 26 insertions(+), 5 deletions(-)
 
-diff --git a/tools/perf/util/intel-pt-decoder/Build b/tools/perf/util/intel-pt-decoder/Build
-index 23bf788..acb18a3 100644
---- a/tools/perf/util/intel-pt-decoder/Build
-+++ b/tools/perf/util/intel-pt-decoder/Build
-@@ -9,7 +9,7 @@ $(OUTPUT)util/intel-pt-decoder/inat-tables.c: $(inat_tables_script) $(inat_table
+diff --git a/tools/objtool/sync-check.sh b/tools/objtool/sync-check.sh
+index 66f1575..6fa87de 100755
+--- a/tools/objtool/sync-check.sh
++++ b/tools/objtool/sync-check.sh
+@@ -12,18 +12,39 @@ arch/x86/lib/x86-opcode-map.txt
+ arch/x86/tools/gen-insn-attr-x86.awk
+ '
  
- # Busybox's diff doesn't have -I, avoid warning in the case
+-check()
+-{
+-	local file=$1
++check_2 () {
++  file1=$1
++  file2=$2
  
--$(OUTPUT)util/intel-pt-decoder/intel-pt-insn-decoder.o: util/intel-pt-decoder/intel-pt-insn-decoder.c util/intel-pt-decoder/inat.c $(OUTPUT)util/intel-pt-decoder/inat-tables.c
-+$(OUTPUT)util/intel-pt-decoder/intel-pt-insn-decoder.o: util/intel-pt-decoder/intel-pt-insn-decoder.c $(OUTPUT)util/intel-pt-decoder/inat-tables.c
- 	@(diff -I 2>&1 | grep -q 'option requires an argument' && \
- 	test -d ../../kernel -a -d ../../tools -a -d ../perf && ( \
- 	((diff -B -I'^#include' util/intel-pt-decoder/insn.c ../../arch/x86/lib/insn.c >/dev/null) || \
+-	diff ../$file ../../$file > /dev/null ||
+-		echo "Warning: synced file at 'tools/objtool/$file' differs from latest kernel version at '$file'"
++  shift
++  shift
++
++  cmd="diff $* $file1 $file2 > /dev/null"
++
++  test -f $file2 && {
++    eval $cmd || {
++      echo "Warning: Kernel ABI header at '$file1' differs from latest version at '$file2'" >&2
++      echo diff -u $file1 $file2
++    }
++  }
++}
++
++check () {
++  file=$1
++
++  shift
++
++  check_2 tools/$file $file $*
+ }
+ 
+ if [ ! -d ../../kernel ] || [ ! -d ../../tools ] || [ ! -d ../objtool ]; then
+ 	exit 0
+ fi
+ 
++cd ../..
++
+ for i in $FILES; do
+   check $i
+ done
++
++cd -
