@@ -2,43 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D760CA63FA
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  3 Sep 2019 10:32:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EEDD7A63F8
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  3 Sep 2019 10:32:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728504AbfICIcK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 3 Sep 2019 04:32:10 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:59252 "EHLO
+        id S1728486AbfICIcG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 3 Sep 2019 04:32:06 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:59244 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728493AbfICIcJ (ORCPT
+        with ESMTP id S1728373AbfICIcG (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 3 Sep 2019 04:32:09 -0400
+        Tue, 3 Sep 2019 04:32:06 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i54EL-0002qj-3f; Tue, 03 Sep 2019 10:32:01 +0200
+        id 1i54EL-0002rK-JB; Tue, 03 Sep 2019 10:32:01 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 9499E1C0DDE;
-        Tue,  3 Sep 2019 10:32:00 +0200 (CEST)
-Date:   Tue, 03 Sep 2019 08:32:00 -0000
-From:   "tip-bot2 for Christoph Hellwig" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 2CF521C0772;
+        Tue,  3 Sep 2019 10:32:01 +0200 (CEST)
+Date:   Tue, 03 Sep 2019 08:32:01 -0000
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/mm] x86/mm: Remove the unused set_memory_wt() function
-Cc:     Christoph Hellwig <hch@lst.de>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Andy Lutomirski <luto@kernel.org>,
+Subject: [tip: x86/asm] x86/math64: Provide a sane mul_u64_u32_div()
+ implementation for x86_64
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
         Linus Torvalds <torvalds@linux-foundation.org>,
-        Rik van Riel <riel@surriel.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org
-In-Reply-To: <20190826075558.8125-5-hch@lst.de>
-References: <20190826075558.8125-5-hch@lst.de>
 MIME-Version: 1.0
-Message-ID: <156749952049.13288.14725971164548000063.tip-bot2@tip-bot2>
+Message-ID: <156749952104.13294.1046109089775898437.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -52,71 +46,52 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/mm branch of tip:
+The following commit has been merged into the x86/asm branch of tip:
 
-Commit-ID:     aeb415fbe9f62e6db0fabd2023d39728ccc705fd
-Gitweb:        https://git.kernel.org/tip/aeb415fbe9f62e6db0fabd2023d39728ccc705fd
-Author:        Christoph Hellwig <hch@lst.de>
-AuthorDate:    Mon, 26 Aug 2019 09:55:57 +02:00
+Commit-ID:     db4e919d9a119b7c54eb5e5ac9bee5d3eb4cb859
+Gitweb:        https://git.kernel.org/tip/db4e919d9a119b7c54eb5e5ac9bee5d3eb4cb859
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Wed, 28 Aug 2019 17:39:46 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 03 Sep 2019 09:26:37 +02:00
+CommitterDate: Tue, 03 Sep 2019 08:56:14 +02:00
 
-x86/mm: Remove the unused set_memory_wt() function
+x86/math64: Provide a sane mul_u64_u32_div() implementation for x86_64
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+On x86_64 we can do a u64 * u64 -> u128 widening multiply followed by
+a u128 / u64 -> u64 division to implement a sane version of
+mul_u64_u32_div().
+
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: Andy Lutomirski <luto@kernel.org>
 Cc: Borislav Petkov <bp@alien8.de>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: H. Peter Anvin <hpa@zytor.com>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Rik van Riel <riel@surriel.com>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20190826075558.8125-5-hch@lst.de
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- arch/x86/include/asm/set_memory.h |  1 -
- arch/x86/mm/pageattr.c            | 17 -----------------
- 2 files changed, 18 deletions(-)
+ arch/x86/include/asm/div64.h | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/arch/x86/include/asm/set_memory.h b/arch/x86/include/asm/set_memory.h
-index fd549c3..2ee8e46 100644
---- a/arch/x86/include/asm/set_memory.h
-+++ b/arch/x86/include/asm/set_memory.h
-@@ -40,7 +40,6 @@ int _set_memory_wt(unsigned long addr, int numpages);
- int _set_memory_wb(unsigned long addr, int numpages);
- int set_memory_uc(unsigned long addr, int numpages);
- int set_memory_wc(unsigned long addr, int numpages);
--int set_memory_wt(unsigned long addr, int numpages);
- int set_memory_wb(unsigned long addr, int numpages);
- int set_memory_np(unsigned long addr, int numpages);
- int set_memory_4k(unsigned long addr, int numpages);
-diff --git a/arch/x86/mm/pageattr.c b/arch/x86/mm/pageattr.c
-index d5586a0..0d09cc5 100644
---- a/arch/x86/mm/pageattr.c
-+++ b/arch/x86/mm/pageattr.c
-@@ -1858,23 +1858,6 @@ int _set_memory_wt(unsigned long addr, int numpages)
- 				    cachemode2pgprot(_PAGE_CACHE_MODE_WT), 0);
- }
+diff --git a/arch/x86/include/asm/div64.h b/arch/x86/include/asm/div64.h
+index 20a4615..9b8cb50 100644
+--- a/arch/x86/include/asm/div64.h
++++ b/arch/x86/include/asm/div64.h
+@@ -73,6 +73,19 @@ static inline u64 mul_u32_u32(u32 a, u32 b)
  
--int set_memory_wt(unsigned long addr, int numpages)
--{
--	int ret;
--
--	ret = reserve_memtype(__pa(addr), __pa(addr) + numpages * PAGE_SIZE,
--			      _PAGE_CACHE_MODE_WT, NULL);
--	if (ret)
--		return ret;
--
--	ret = _set_memory_wt(addr, numpages);
--	if (ret)
--		free_memtype(__pa(addr), __pa(addr) + numpages * PAGE_SIZE);
--
--	return ret;
--}
--EXPORT_SYMBOL_GPL(set_memory_wt);
--
- int _set_memory_wb(unsigned long addr, int numpages)
- {
- 	/* WB cache mode is hard wired to all cache attribute bits being 0 */
+ #else
+ # include <asm-generic/div64.h>
++
++static inline u64 mul_u64_u32_div(u64 a, u32 mul, u32 div)
++{
++	u64 q;
++
++	asm ("mulq %2; divq %3" : "=a" (q)
++				: "a" (a), "rm" ((u64)mul), "rm" ((u64)div)
++				: "rdx");
++
++	return q;
++}
++#define mul_u64_u32_div	mul_u64_u32_div
++
+ #endif /* CONFIG_X86_32 */
+ 
+ #endif /* _ASM_X86_DIV64_H */
