@@ -2,42 +2,45 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BFA12A63E6
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  3 Sep 2019 10:31:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 593E1A63F0
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  3 Sep 2019 10:32:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726452AbfICIbb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 3 Sep 2019 04:31:31 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:59106 "EHLO
+        id S1728388AbfICIb7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 3 Sep 2019 04:31:59 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:59214 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725888AbfICIbb (ORCPT
+        with ESMTP id S1728366AbfICIb6 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 3 Sep 2019 04:31:31 -0400
+        Tue, 3 Sep 2019 04:31:58 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i54Dh-0002d6-3X; Tue, 03 Sep 2019 10:31:21 +0200
+        id 1i54Dk-0002eI-By; Tue, 03 Sep 2019 10:31:24 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A08EB1C0DDE;
-        Tue,  3 Sep 2019 10:31:20 +0200 (CEST)
-Date:   Tue, 03 Sep 2019 08:31:20 -0000
-From:   "tip-bot2 for Liangyan" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id CD0971C0772;
+        Tue,  3 Sep 2019 10:31:23 +0200 (CEST)
+Date:   Tue, 03 Sep 2019 08:31:23 -0000
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] sched/fair: Don't assign runtime for throttled cfs_rq
-Cc:     Liangyan <liangyan.peng@linux.alibaba.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Valentin Schneider <valentin.schneider@arm.com>,
+Subject: [tip: sched/core] sched, perf: MAINTAINERS update, add submaintainers
+ and reviewers
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Juri Lelli <juri.lelli@redhat.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
         Ben Segall <bsegall@google.com>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
         Linus Torvalds <torvalds@linux-foundation.org>,
+        Mel Gorman <mgorman@suse.de>,
         Thomas Gleixner <tglx@linutronix.de>,
-        shanpeic@linux.alibaba.com, stable@vger.kernel.org,
-        xlpang@linux.alibaba.com, Ingo Molnar <mingo@kernel.org>,
-        Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
-In-Reply-To: <20190826121633.6538-1-liangyan.peng@linux.alibaba.com>
-References: <20190826121633.6538-1-liangyan.peng@linux.alibaba.com>
+        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
+        linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <156749948052.12827.9239935639656619220.tip-bot2@tip-bot2>
+Message-ID: <156749948366.12868.10186842854628988431.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,78 +54,61 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/urgent branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     5e2d2cc2588bd3307ce3937acbc2ed03c830a861
-Gitweb:        https://git.kernel.org/tip/5e2d2cc2588bd3307ce3937acbc2ed03c830a861
-Author:        Liangyan <liangyan.peng@linux.alibaba.com>
-AuthorDate:    Mon, 26 Aug 2019 20:16:33 +08:00
+Commit-ID:     bb87481612c4a87d0d9ce8bcb3b9e8ce0ff89a71
+Gitweb:        https://git.kernel.org/tip/bb87481612c4a87d0d9ce8bcb3b9e8ce0ff89a71
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Fri, 30 Aug 2019 14:02:46 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 03 Sep 2019 08:55:07 +02:00
+CommitterDate: Tue, 03 Sep 2019 09:12:51 +02:00
 
-sched/fair: Don't assign runtime for throttled cfs_rq
+sched, perf: MAINTAINERS update, add submaintainers and reviewers
 
-do_sched_cfs_period_timer() will refill cfs_b runtime and call
-distribute_cfs_runtime to unthrottle cfs_rq, sometimes cfs_b->runtime
-will allocate all quota to one cfs_rq incorrectly, then other cfs_rqs
-attached to this cfs_b can't get runtime and will be throttled.
+The below entries are a little unorthodox; I've not found other entries in
+MAINTAINER that subdivide responsibilities like this, and certainly the lovely
+get_maintainers.pl script will not get it, but I'm thinking to a human it
+should be plenty clear and we're all very good at ignoring email anyway.
 
-We find that one throttled cfs_rq has non-negative
-cfs_rq->runtime_remaining and cause an unexpetced cast from s64 to u64
-in snippet:
-
-  distribute_cfs_runtime() {
-    runtime = -cfs_rq->runtime_remaining + 1;
-  }
-
-The runtime here will change to a large number and consume all
-cfs_b->runtime in this cfs_b period.
-
-According to Ben Segall, the throttled cfs_rq can have
-account_cfs_rq_runtime called on it because it is throttled before
-idle_balance, and the idle_balance calls update_rq_clock to add time
-that is accounted to the task.
-
-This commit prevents cfs_rq to be assgined new runtime if it has been
-throttled until that distribute_cfs_runtime is called.
-
-Signed-off-by: Liangyan <liangyan.peng@linux.alibaba.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Valentin Schneider <valentin.schneider@arm.com>
-Reviewed-by: Ben Segall <bsegall@google.com>
+Acked-by: Juri Lelli <juri.lelli@redhat.com>
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Acked-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
+Acked-by: Vincent Guittot <vincent.guittot@linaro.org>
+Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
+Cc: Ben Segall <bsegall@google.com>
+Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Mel Gorman <mgorman@suse.de>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: shanpeic@linux.alibaba.com
-Cc: stable@vger.kernel.org
-Cc: xlpang@linux.alibaba.com
-Fixes: d3d9dc330236 ("sched: Throttle entities exceeding their allowed bandwidth")
-Link: https://lkml.kernel.org/r/20190826121633.6538-1-liangyan.peng@linux.alibaba.com
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- kernel/sched/fair.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ MAINTAINERS | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index bc9cfea..500f5db 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -4470,6 +4470,8 @@ static void __account_cfs_rq_runtime(struct cfs_rq *cfs_rq, u64 delta_exec)
- 	if (likely(cfs_rq->runtime_remaining > 0))
- 		return;
- 
-+	if (cfs_rq->throttled)
-+		return;
- 	/*
- 	 * if we're unable to extend our runtime we resched so that the active
- 	 * hierarchy can be throttled
-@@ -4673,6 +4675,9 @@ static u64 distribute_cfs_runtime(struct cfs_bandwidth *cfs_b,
- 		if (!cfs_rq_throttled(cfs_rq))
- 			goto next;
- 
-+		/* By the above check, this should never be true */
-+		SCHED_WARN_ON(cfs_rq->runtime_remaining > 0);
-+
- 		runtime = -cfs_rq->runtime_remaining + 1;
- 		if (runtime > remaining)
- 			runtime = remaining;
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 783569e..bab0ca4 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -12590,6 +12590,7 @@ PERFORMANCE EVENTS SUBSYSTEM
+ M:	Peter Zijlstra <peterz@infradead.org>
+ M:	Ingo Molnar <mingo@redhat.com>
+ M:	Arnaldo Carvalho de Melo <acme@kernel.org>
++R:	Mark Rutland <mark.rutland@arm.com>
+ R:	Alexander Shishkin <alexander.shishkin@linux.intel.com>
+ R:	Jiri Olsa <jolsa@redhat.com>
+ R:	Namhyung Kim <namhyung@kernel.org>
+@@ -14176,6 +14177,12 @@ F:	drivers/watchdog/sc1200wdt.c
+ SCHEDULER
+ M:	Ingo Molnar <mingo@redhat.com>
+ M:	Peter Zijlstra <peterz@infradead.org>
++M:	Juri Lelli <juri.lelli@redhat.com> (SCHED_DEADLINE)
++M:	Vincent Guittot <vincent.guittot@linaro.org> (SCHED_NORMAL)
++R:	Dietmar Eggemann <dietmar.eggemann@arm.com> (SCHED_NORMAL)
++R:	Steven Rostedt <rostedt@goodmis.org> (SCHED_FIFO/SCHED_RR)
++R:	Ben Segall <bsegall@google.com> (CONFIG_CFS_BANDWIDTH)
++R:	Mel Gorman <mgorman@suse.de> (CONFIG_NUMA_BALANCING)
+ L:	linux-kernel@vger.kernel.org
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git sched/core
+ S:	Maintained
