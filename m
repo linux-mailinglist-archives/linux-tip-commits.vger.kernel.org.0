@@ -2,43 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1DFC8A63E2
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  3 Sep 2019 10:31:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C543BA63E9
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  3 Sep 2019 10:31:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728169AbfICIbh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 3 Sep 2019 04:31:37 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:59155 "EHLO
+        id S1728306AbfICIbu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 3 Sep 2019 04:31:50 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:59206 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728163AbfICIbh (ORCPT
+        with ESMTP id S1728263AbfICIbu (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 3 Sep 2019 04:31:37 -0400
+        Tue, 3 Sep 2019 04:31:50 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i54Dk-0002eL-W9; Tue, 03 Sep 2019 10:31:25 +0200
+        id 1i54Dm-0002fV-KI; Tue, 03 Sep 2019 10:31:26 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 723F21C0DDE;
-        Tue,  3 Sep 2019 10:31:24 +0200 (CEST)
-Date:   Tue, 03 Sep 2019 08:31:24 -0000
-From:   "tip-bot2 for Matt Fleming" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 196221C0772;
+        Tue,  3 Sep 2019 10:31:26 +0200 (CEST)
+Date:   Tue, 03 Sep 2019 08:31:25 -0000
+From:   "tip-bot2 for Patrick Bellasi" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] arch, ia64: Make NUMA select SMP
-Cc:     Matt Fleming <matt@codeblueprint.co.uk>,
+Subject: [tip: sched/core] sched/uclamp: Propagate parent clamps
+Cc:     Patrick Bellasi <patrick.bellasi@arm.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Borislav Petkov <bp@alien8.de>,
+        Michal Koutny <mkoutny@suse.com>, Tejun Heo <tj@kernel.org>,
+        Alessio Balsini <balsini@android.com>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Joel Fernandes <joelaf@google.com>,
+        Juri Lelli <juri.lelli@redhat.com>,
         Linus Torvalds <torvalds@linux-foundation.org>,
-        Mel Gorman <mgorman@techsingularity.net>,
-        Rik van Riel <riel@surriel.com>,
-        Suravee.Suthikulpanit@amd.com,
-        Thomas Gleixner <tglx@linutronix.de>, Thomas.Lendacky@amd.com,
-        Tony Luck <tony.luck@intel.com>,
-        Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org
-In-Reply-To: <20190808195301.13222-2-matt@codeblueprint.co.uk>
-References: <20190808195301.13222-2-matt@codeblueprint.co.uk>
+        Morten Rasmussen <morten.rasmussen@arm.com>,
+        Paul Turner <pjt@google.com>,
+        Quentin Perret <quentin.perret@arm.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Steve Muckle <smuckle@google.com>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Todd Kjos <tkjos@google.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20190822132811.31294-3-patrick.bellasi@arm.com>
+References: <20190822132811.31294-3-patrick.bellasi@arm.com>
 MIME-Version: 1.0
-Message-ID: <156749948430.12871.13896634861148973044.tip-bot2@tip-bot2>
+Message-ID: <156749948592.12881.9832071454008370865.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -54,49 +64,147 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     a2cbfd46559e809c8165773b7fe8afa058b35414
-Gitweb:        https://git.kernel.org/tip/a2cbfd46559e809c8165773b7fe8afa058b35414
-Author:        Matt Fleming <matt@codeblueprint.co.uk>
-AuthorDate:    Thu, 08 Aug 2019 20:53:00 +01:00
+Commit-ID:     0b60ba2dd342016e4e717dbaa4ca9af3a43f4434
+Gitweb:        https://git.kernel.org/tip/0b60ba2dd342016e4e717dbaa4ca9af3a43f4434
+Author:        Patrick Bellasi <patrick.bellasi@arm.com>
+AuthorDate:    Thu, 22 Aug 2019 14:28:07 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 03 Sep 2019 09:17:36 +02:00
+CommitterDate: Tue, 03 Sep 2019 09:17:38 +02:00
 
-arch, ia64: Make NUMA select SMP
+sched/uclamp: Propagate parent clamps
 
-While it does make sense to allow CONFIG_NUMA and !CONFIG_SMP in
-theory, it doesn't make much sense in practice.
+In order to properly support hierarchical resources control, the cgroup
+delegation model requires that attribute writes from a child group never
+fail but still are locally consistent and constrained based on parent's
+assigned resources. This requires to properly propagate and aggregate
+parent attributes down to its descendants.
 
-Follow other architectures and make CONFIG_NUMA select CONFIG_SMP.
+Implement this mechanism by adding a new "effective" clamp value for each
+task group. The effective clamp value is defined as the smaller value
+between the clamp value of a group and the effective clamp value of its
+parent. This is the actual clamp value enforced on tasks in a task group.
 
-The motivation for this patch is to allow a new NUMA variable to be
-initialised in kernel/sched/topology.c.
+Since it's possible for a cpu.uclamp.min value to be bigger than the
+cpu.uclamp.max value, ensure local consistency by restricting each
+"protection" (i.e. min utilization) with the corresponding "limit"
+(i.e. max utilization).
 
-Signed-off-by: Matt Fleming <matt@codeblueprint.co.uk>
+Do that at effective clamps propagation to ensure all user-space write
+never fails while still always tracking the most restrictive values.
+
+Signed-off-by: Patrick Bellasi <patrick.bellasi@arm.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: Borislav Petkov <bp@alien8.de>
+Reviewed-by: Michal Koutny <mkoutny@suse.com>
+Acked-by: Tejun Heo <tj@kernel.org>
+Cc: Alessio Balsini <balsini@android.com>
+Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Cc: Joel Fernandes <joelaf@google.com>
+Cc: Juri Lelli <juri.lelli@redhat.com>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Mel Gorman <mgorman@techsingularity.net>
+Cc: Morten Rasmussen <morten.rasmussen@arm.com>
+Cc: Paul Turner <pjt@google.com>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Suravee.Suthikulpanit@amd.com
+Cc: Quentin Perret <quentin.perret@arm.com>
+Cc: Rafael J . Wysocki <rafael.j.wysocki@intel.com>
+Cc: Steve Muckle <smuckle@google.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Thomas.Lendacky@amd.com
-Cc: Tony Luck <tony.luck@intel.com>
-Link: https://lkml.kernel.org/r/20190808195301.13222-2-matt@codeblueprint.co.uk
+Cc: Todd Kjos <tkjos@google.com>
+Cc: Vincent Guittot <vincent.guittot@linaro.org>
+Cc: Viresh Kumar <viresh.kumar@linaro.org>
+Link: https://lkml.kernel.org/r/20190822132811.31294-3-patrick.bellasi@arm.com
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- arch/ia64/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/sched/core.c  | 44 +++++++++++++++++++++++++++++++++++++++++++-
+ kernel/sched/sched.h |  2 ++-
+ 2 files changed, 46 insertions(+)
 
-diff --git a/arch/ia64/Kconfig b/arch/ia64/Kconfig
-index 7468d8e..997baba 100644
---- a/arch/ia64/Kconfig
-+++ b/arch/ia64/Kconfig
-@@ -389,6 +389,7 @@ config NUMA
- 	depends on !IA64_HP_SIM && !FLATMEM
- 	default y if IA64_SGI_SN2
- 	select ACPI_NUMA if ACPI
-+	select SMP
- 	help
- 	  Say Y to compile the kernel to support NUMA (Non-Uniform Memory
- 	  Access).  This option is for configuring high-end multiprocessor
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index c186abe..8855481 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -1166,6 +1166,7 @@ static void __init init_uclamp(void)
+ 		uclamp_default[clamp_id] = uc_max;
+ #ifdef CONFIG_UCLAMP_TASK_GROUP
+ 		root_task_group.uclamp_req[clamp_id] = uc_max;
++		root_task_group.uclamp[clamp_id] = uc_max;
+ #endif
+ 	}
+ }
+@@ -6824,6 +6825,7 @@ static inline void alloc_uclamp_sched_group(struct task_group *tg,
+ 	for_each_clamp_id(clamp_id) {
+ 		uclamp_se_set(&tg->uclamp_req[clamp_id],
+ 			      uclamp_none(clamp_id), false);
++		tg->uclamp[clamp_id] = parent->uclamp[clamp_id];
+ 	}
+ #endif
+ }
+@@ -7070,6 +7072,45 @@ static void cpu_cgroup_attach(struct cgroup_taskset *tset)
+ }
+ 
+ #ifdef CONFIG_UCLAMP_TASK_GROUP
++static void cpu_util_update_eff(struct cgroup_subsys_state *css)
++{
++	struct cgroup_subsys_state *top_css = css;
++	struct uclamp_se *uc_parent = NULL;
++	struct uclamp_se *uc_se = NULL;
++	unsigned int eff[UCLAMP_CNT];
++	unsigned int clamp_id;
++	unsigned int clamps;
++
++	css_for_each_descendant_pre(css, top_css) {
++		uc_parent = css_tg(css)->parent
++			? css_tg(css)->parent->uclamp : NULL;
++
++		for_each_clamp_id(clamp_id) {
++			/* Assume effective clamps matches requested clamps */
++			eff[clamp_id] = css_tg(css)->uclamp_req[clamp_id].value;
++			/* Cap effective clamps with parent's effective clamps */
++			if (uc_parent &&
++			    eff[clamp_id] > uc_parent[clamp_id].value) {
++				eff[clamp_id] = uc_parent[clamp_id].value;
++			}
++		}
++		/* Ensure protection is always capped by limit */
++		eff[UCLAMP_MIN] = min(eff[UCLAMP_MIN], eff[UCLAMP_MAX]);
++
++		/* Propagate most restrictive effective clamps */
++		clamps = 0x0;
++		uc_se = css_tg(css)->uclamp;
++		for_each_clamp_id(clamp_id) {
++			if (eff[clamp_id] == uc_se[clamp_id].value)
++				continue;
++			uc_se[clamp_id].value = eff[clamp_id];
++			uc_se[clamp_id].bucket_id = uclamp_bucket_id(eff[clamp_id]);
++			clamps |= (0x1 << clamp_id);
++		}
++		if (!clamps)
++			css = css_rightmost_descendant(css);
++	}
++}
+ 
+ /*
+  * Integer 10^N with a given N exponent by casting to integer the literal "1eN"
+@@ -7138,6 +7179,9 @@ static ssize_t cpu_uclamp_write(struct kernfs_open_file *of, char *buf,
+ 	 */
+ 	tg->uclamp_pct[clamp_id] = req.percent;
+ 
++	/* Update effective clamps to track the most restrictive value */
++	cpu_util_update_eff(of_css(of));
++
+ 	rcu_read_unlock();
+ 	mutex_unlock(&uclamp_mutex);
+ 
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index ae1be61..5b34311 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -397,6 +397,8 @@ struct task_group {
+ 	unsigned int		uclamp_pct[UCLAMP_CNT];
+ 	/* Clamp values requested for a task group */
+ 	struct uclamp_se	uclamp_req[UCLAMP_CNT];
++	/* Effective clamp values used for a task group */
++	struct uclamp_se	uclamp[UCLAMP_CNT];
+ #endif
+ 
+ };
