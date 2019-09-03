@@ -2,45 +2,43 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 593E1A63F0
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  3 Sep 2019 10:32:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F12DEA63E4
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  3 Sep 2019 10:31:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728388AbfICIb7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 3 Sep 2019 04:31:59 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:59214 "EHLO
+        id S1728163AbfICIbl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 3 Sep 2019 04:31:41 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:59175 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728366AbfICIb6 (ORCPT
+        with ESMTP id S1728209AbfICIbl (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 3 Sep 2019 04:31:58 -0400
+        Tue, 3 Sep 2019 04:31:41 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i54Dk-0002eI-By; Tue, 03 Sep 2019 10:31:24 +0200
+        id 1i54Dl-0002eS-Eb; Tue, 03 Sep 2019 10:31:25 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id CD0971C0772;
-        Tue,  3 Sep 2019 10:31:23 +0200 (CEST)
-Date:   Tue, 03 Sep 2019 08:31:23 -0000
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E64841C0772;
+        Tue,  3 Sep 2019 10:31:24 +0200 (CEST)
+Date:   Tue, 03 Sep 2019 08:31:24 -0000
+From:   "tip-bot2 for Matt Fleming" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched, perf: MAINTAINERS update, add submaintainers
- and reviewers
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Ben Segall <bsegall@google.com>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+Subject: [tip: sched/core] sched/topology: Improve load balancing on AMD EPYC systems
+Cc:     Matt Fleming <matt@codeblueprint.co.uk>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Mel Gorman <mgorman@techsingularity.net>,
+        Borislav Petkov <bp@alien8.de>,
         Linus Torvalds <torvalds@linux-foundation.org>,
-        Mel Gorman <mgorman@suse.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
-        linux-kernel@vger.kernel.org
+        Rik van Riel <riel@surriel.com>,
+        Suravee.Suthikulpanit@amd.com,
+        Thomas Gleixner <tglx@linutronix.de>, Thomas.Lendacky@amd.com,
+        Tony Luck <tony.luck@intel.com>,
+        Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org
+In-Reply-To: <20190808195301.13222-3-matt@codeblueprint.co.uk>
+References: <20190808195301.13222-3-matt@codeblueprint.co.uk>
 MIME-Version: 1.0
-Message-ID: <156749948366.12868.10186842854628988431.tip-bot2@tip-bot2>
+Message-ID: <156749948482.12874.10100038281387418384.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -56,59 +54,169 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     bb87481612c4a87d0d9ce8bcb3b9e8ce0ff89a71
-Gitweb:        https://git.kernel.org/tip/bb87481612c4a87d0d9ce8bcb3b9e8ce0ff89a71
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Fri, 30 Aug 2019 14:02:46 +02:00
+Commit-ID:     a55c7454a8c887b226a01d7eed088ccb5374d81e
+Gitweb:        https://git.kernel.org/tip/a55c7454a8c887b226a01d7eed088ccb5374d81e
+Author:        Matt Fleming <matt@codeblueprint.co.uk>
+AuthorDate:    Thu, 08 Aug 2019 20:53:01 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 03 Sep 2019 09:12:51 +02:00
+CommitterDate: Tue, 03 Sep 2019 09:17:37 +02:00
 
-sched, perf: MAINTAINERS update, add submaintainers and reviewers
+sched/topology: Improve load balancing on AMD EPYC systems
 
-The below entries are a little unorthodox; I've not found other entries in
-MAINTAINER that subdivide responsibilities like this, and certainly the lovely
-get_maintainers.pl script will not get it, but I'm thinking to a human it
-should be plenty clear and we're all very good at ignoring email anyway.
+SD_BALANCE_{FORK,EXEC} and SD_WAKE_AFFINE are stripped in sd_init()
+for any sched domains with a NUMA distance greater than 2 hops
+(RECLAIM_DISTANCE). The idea being that it's expensive to balance
+across domains that far apart.
 
+However, as is rather unfortunately explained in:
+
+  commit 32e45ff43eaf ("mm: increase RECLAIM_DISTANCE to 30")
+
+the value for RECLAIM_DISTANCE is based on node distance tables from
+2011-era hardware.
+
+Current AMD EPYC machines have the following NUMA node distances:
+
+ node distances:
+ node   0   1   2   3   4   5   6   7
+   0:  10  16  16  16  32  32  32  32
+   1:  16  10  16  16  32  32  32  32
+   2:  16  16  10  16  32  32  32  32
+   3:  16  16  16  10  32  32  32  32
+   4:  32  32  32  32  10  16  16  16
+   5:  32  32  32  32  16  10  16  16
+   6:  32  32  32  32  16  16  10  16
+   7:  32  32  32  32  16  16  16  10
+
+where 2 hops is 32.
+
+The result is that the scheduler fails to load balance properly across
+NUMA nodes on different sockets -- 2 hops apart.
+
+For example, pinning 16 busy threads to NUMA nodes 0 (CPUs 0-7) and 4
+(CPUs 32-39) like so,
+
+  $ numactl -C 0-7,32-39 ./spinner 16
+
+causes all threads to fork and remain on node 0 until the active
+balancer kicks in after a few seconds and forcibly moves some threads
+to node 4.
+
+Override node_reclaim_distance for AMD Zen.
+
+Signed-off-by: Matt Fleming <matt@codeblueprint.co.uk>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Juri Lelli <juri.lelli@redhat.com>
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Acked-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
-Acked-by: Vincent Guittot <vincent.guittot@linaro.org>
-Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
-Cc: Ben Segall <bsegall@google.com>
-Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Acked-by: Mel Gorman <mgorman@techsingularity.net>
+Cc: Borislav Petkov <bp@alien8.de>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Mel Gorman <mgorman@suse.de>
 Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: Suravee.Suthikulpanit@amd.com
 Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Thomas.Lendacky@amd.com
+Cc: Tony Luck <tony.luck@intel.com>
+Link: https://lkml.kernel.org/r/20190808195301.13222-3-matt@codeblueprint.co.uk
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- MAINTAINERS | 7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/x86/kernel/cpu/amd.c |  5 +++++
+ include/linux/topology.h  | 14 ++++++++++++++
+ kernel/sched/topology.c   |  3 ++-
+ mm/khugepaged.c           |  2 +-
+ mm/page_alloc.c           |  2 +-
+ 5 files changed, 23 insertions(+), 3 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 783569e..bab0ca4 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -12590,6 +12590,7 @@ PERFORMANCE EVENTS SUBSYSTEM
- M:	Peter Zijlstra <peterz@infradead.org>
- M:	Ingo Molnar <mingo@redhat.com>
- M:	Arnaldo Carvalho de Melo <acme@kernel.org>
-+R:	Mark Rutland <mark.rutland@arm.com>
- R:	Alexander Shishkin <alexander.shishkin@linux.intel.com>
- R:	Jiri Olsa <jolsa@redhat.com>
- R:	Namhyung Kim <namhyung@kernel.org>
-@@ -14176,6 +14177,12 @@ F:	drivers/watchdog/sc1200wdt.c
- SCHEDULER
- M:	Ingo Molnar <mingo@redhat.com>
- M:	Peter Zijlstra <peterz@infradead.org>
-+M:	Juri Lelli <juri.lelli@redhat.com> (SCHED_DEADLINE)
-+M:	Vincent Guittot <vincent.guittot@linaro.org> (SCHED_NORMAL)
-+R:	Dietmar Eggemann <dietmar.eggemann@arm.com> (SCHED_NORMAL)
-+R:	Steven Rostedt <rostedt@goodmis.org> (SCHED_FIFO/SCHED_RR)
-+R:	Ben Segall <bsegall@google.com> (CONFIG_CFS_BANDWIDTH)
-+R:	Mel Gorman <mgorman@suse.de> (CONFIG_NUMA_BALANCING)
- L:	linux-kernel@vger.kernel.org
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git sched/core
- S:	Maintained
+diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
+index 8d4e504..ceeb8af 100644
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -8,6 +8,7 @@
+ #include <linux/sched.h>
+ #include <linux/sched/clock.h>
+ #include <linux/random.h>
++#include <linux/topology.h>
+ #include <asm/processor.h>
+ #include <asm/apic.h>
+ #include <asm/cacheinfo.h>
+@@ -824,6 +825,10 @@ static void init_amd_zn(struct cpuinfo_x86 *c)
+ {
+ 	set_cpu_cap(c, X86_FEATURE_ZEN);
+ 
++#ifdef CONFIG_NUMA
++	node_reclaim_distance = 32;
++#endif
++
+ 	/*
+ 	 * Fix erratum 1076: CPB feature bit not being set in CPUID.
+ 	 * Always set it, except when running under a hypervisor.
+diff --git a/include/linux/topology.h b/include/linux/topology.h
+index 47a3e3c..579522e 100644
+--- a/include/linux/topology.h
++++ b/include/linux/topology.h
+@@ -59,6 +59,20 @@ int arch_update_cpu_topology(void);
+  */
+ #define RECLAIM_DISTANCE 30
+ #endif
++
++/*
++ * The following tunable allows platforms to override the default node
++ * reclaim distance (RECLAIM_DISTANCE) if remote memory accesses are
++ * sufficiently fast that the default value actually hurts
++ * performance.
++ *
++ * AMD EPYC machines use this because even though the 2-hop distance
++ * is 32 (3.2x slower than a local memory access) performance actually
++ * *improves* if allowed to reclaim memory and load balance tasks
++ * between NUMA nodes 2-hops apart.
++ */
++extern int __read_mostly node_reclaim_distance;
++
+ #ifndef PENALTY_FOR_NODE_WITH_CPUS
+ #define PENALTY_FOR_NODE_WITH_CPUS	(1)
+ #endif
+diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
+index 8f83e8e..b5667a2 100644
+--- a/kernel/sched/topology.c
++++ b/kernel/sched/topology.c
+@@ -1284,6 +1284,7 @@ static int			sched_domains_curr_level;
+ int				sched_max_numa_distance;
+ static int			*sched_domains_numa_distance;
+ static struct cpumask		***sched_domains_numa_masks;
++int __read_mostly		node_reclaim_distance = RECLAIM_DISTANCE;
+ #endif
+ 
+ /*
+@@ -1402,7 +1403,7 @@ sd_init(struct sched_domain_topology_level *tl,
+ 
+ 		sd->flags &= ~SD_PREFER_SIBLING;
+ 		sd->flags |= SD_SERIALIZE;
+-		if (sched_domains_numa_distance[tl->numa_level] > RECLAIM_DISTANCE) {
++		if (sched_domains_numa_distance[tl->numa_level] > node_reclaim_distance) {
+ 			sd->flags &= ~(SD_BALANCE_EXEC |
+ 				       SD_BALANCE_FORK |
+ 				       SD_WAKE_AFFINE);
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index eaaa21b..ccede24 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -710,7 +710,7 @@ static bool khugepaged_scan_abort(int nid)
+ 	for (i = 0; i < MAX_NUMNODES; i++) {
+ 		if (!khugepaged_node_load[i])
+ 			continue;
+-		if (node_distance(nid, i) > RECLAIM_DISTANCE)
++		if (node_distance(nid, i) > node_reclaim_distance)
+ 			return true;
+ 	}
+ 	return false;
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 272c6de..0d54cd2 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -3522,7 +3522,7 @@ bool zone_watermark_ok_safe(struct zone *z, unsigned int order,
+ static bool zone_allows_reclaim(struct zone *local_zone, struct zone *zone)
+ {
+ 	return node_distance(zone_to_nid(local_zone), zone_to_nid(zone)) <=
+-				RECLAIM_DISTANCE;
++				node_reclaim_distance;
+ }
+ #else	/* CONFIG_NUMA */
+ static bool zone_allows_reclaim(struct zone *local_zone, struct zone *zone)
