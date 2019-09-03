@@ -2,29 +2,29 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 44CE9A63EA
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  3 Sep 2019 10:31:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE9DCA6402
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  3 Sep 2019 10:32:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728309AbfICIbv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 3 Sep 2019 04:31:51 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:59207 "EHLO
+        id S1728550AbfICIcY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 3 Sep 2019 04:32:24 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:59211 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728285AbfICIbt (ORCPT
+        with ESMTP id S1728320AbfICIbx (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 3 Sep 2019 04:31:49 -0400
+        Tue, 3 Sep 2019 04:31:53 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i54Do-0002iq-At; Tue, 03 Sep 2019 10:31:28 +0200
+        id 1i54Dn-0002gL-Kl; Tue, 03 Sep 2019 10:31:27 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D04A91C0DDE;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 370651C0772;
         Tue,  3 Sep 2019 10:31:27 +0200 (CEST)
 Date:   Tue, 03 Sep 2019 08:31:27 -0000
 From:   "tip-bot2 for Patrick Bellasi" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/uclamp: Update CPU's refcount on TG's clamp changes
+Subject: [tip: sched/core] sched/uclamp: Use TG's clamps to restrict TASK's clamps
 Cc:     Patrick Bellasi <patrick.bellasi@arm.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Michal Koutny <mkoutny@suse.com>, Tejun Heo <tj@kernel.org>,
@@ -45,10 +45,10 @@ Cc:     Patrick Bellasi <patrick.bellasi@arm.com>,
         Viresh Kumar <viresh.kumar@linaro.org>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20190822132811.31294-6-patrick.bellasi@arm.com>
-References: <20190822132811.31294-6-patrick.bellasi@arm.com>
+In-Reply-To: <20190822132811.31294-5-patrick.bellasi@arm.com>
+References: <20190822132811.31294-5-patrick.bellasi@arm.com>
 MIME-Version: 1.0
-Message-ID: <156749948767.12894.5150732137197774157.tip-bot2@tip-bot2>
+Message-ID: <156749948707.12887.5752456843363605543.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -64,24 +64,38 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     babbe170e053c6ec2343751749995b7b9fd5fd2c
-Gitweb:        https://git.kernel.org/tip/babbe170e053c6ec2343751749995b7b9fd5fd2c
+Commit-ID:     3eac870a324728e5d17118888840dad70bcd37f3
+Gitweb:        https://git.kernel.org/tip/3eac870a324728e5d17118888840dad70bcd37f3
 Author:        Patrick Bellasi <patrick.bellasi@arm.com>
-AuthorDate:    Thu, 22 Aug 2019 14:28:10 +01:00
+AuthorDate:    Thu, 22 Aug 2019 14:28:09 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 03 Sep 2019 09:17:40 +02:00
+CommitterDate: Tue, 03 Sep 2019 09:17:39 +02:00
 
-sched/uclamp: Update CPU's refcount on TG's clamp changes
+sched/uclamp: Use TG's clamps to restrict TASK's clamps
 
-On updates of task group (TG) clamp values, ensure that these new values
-are enforced on all RUNNABLE tasks of the task group, i.e. all RUNNABLE
-tasks are immediately boosted and/or capped as requested.
+When a task specific clamp value is configured via sched_setattr(2), this
+value is accounted in the corresponding clamp bucket every time the task is
+{en,de}qeued. However, when cgroups are also in use, the task specific
+clamp values could be restricted by the task_group (TG) clamp values.
 
-Do that each time we update effective clamps from cpu_util_update_eff().
-Use the *cgroup_subsys_state (css) to walk the list of tasks in each
-affected TG and update their RUNNABLE tasks.
-Update each task by using the same mechanism used for cpu affinity masks
-updates, i.e. by taking the rq lock.
+Update uclamp_cpu_inc() to aggregate task and TG clamp values. Every time a
+task is enqueued, it's accounted in the clamp bucket tracking the smaller
+clamp between the task specific value and its TG effective value. This
+allows to:
+
+1. ensure cgroup clamps are always used to restrict task specific requests,
+   i.e. boosted not more than its TG effective protection and capped at
+   least as its TG effective limit.
+
+2. implement a "nice-like" policy, where tasks are still allowed to request
+   less than what enforced by their TG effective limits and protections
+
+Do this by exploiting the concept of "effective" clamp, which is already
+used by a TG to track parent enforced restrictions.
+
+Apply task group clamp restrictions only to tasks belonging to a child
+group. While, for tasks in the root group or in an autogroup, system
+defaults are still enforced.
 
 Signed-off-by: Patrick Bellasi <patrick.bellasi@arm.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
@@ -103,83 +117,57 @@ Cc: Thomas Gleixner <tglx@linutronix.de>
 Cc: Todd Kjos <tkjos@google.com>
 Cc: Vincent Guittot <vincent.guittot@linaro.org>
 Cc: Viresh Kumar <viresh.kumar@linaro.org>
-Link: https://lkml.kernel.org/r/20190822132811.31294-6-patrick.bellasi@arm.com
+Link: https://lkml.kernel.org/r/20190822132811.31294-5-patrick.bellasi@arm.com
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- kernel/sched/core.c | 55 +++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 54 insertions(+), 1 deletion(-)
+ kernel/sched/core.c | 28 +++++++++++++++++++++++++++-
+ 1 file changed, 27 insertions(+), 1 deletion(-)
 
 diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index c32ac07..55a1c07 100644
+index e6800fe..c32ac07 100644
 --- a/kernel/sched/core.c
 +++ b/kernel/sched/core.c
-@@ -1043,6 +1043,54 @@ static inline void uclamp_rq_dec(struct rq *rq, struct task_struct *p)
- 		uclamp_rq_dec_id(rq, p, clamp_id);
+@@ -873,16 +873,42 @@ unsigned int uclamp_rq_max_value(struct rq *rq, unsigned int clamp_id,
+ 	return uclamp_idle_value(rq, clamp_id, clamp_value);
  }
  
-+static inline void
-+uclamp_update_active(struct task_struct *p, unsigned int clamp_id)
++static inline struct uclamp_se
++uclamp_tg_restrict(struct task_struct *p, unsigned int clamp_id)
 +{
-+	struct rq_flags rf;
-+	struct rq *rq;
++	struct uclamp_se uc_req = p->uclamp_req[clamp_id];
++#ifdef CONFIG_UCLAMP_TASK_GROUP
++	struct uclamp_se uc_max;
 +
 +	/*
-+	 * Lock the task and the rq where the task is (or was) queued.
-+	 *
-+	 * We might lock the (previous) rq of a !RUNNABLE task, but that's the
-+	 * price to pay to safely serialize util_{min,max} updates with
-+	 * enqueues, dequeues and migration operations.
-+	 * This is the same locking schema used by __set_cpus_allowed_ptr().
++	 * Tasks in autogroups or root task group will be
++	 * restricted by system defaults.
 +	 */
-+	rq = task_rq_lock(p, &rf);
++	if (task_group_is_autogroup(task_group(p)))
++		return uc_req;
++	if (task_group(p) == &root_task_group)
++		return uc_req;
 +
-+	/*
-+	 * Setting the clamp bucket is serialized by task_rq_lock().
-+	 * If the task is not yet RUNNABLE and its task_struct is not
-+	 * affecting a valid clamp bucket, the next time it's enqueued,
-+	 * it will already see the updated clamp bucket value.
-+	 */
-+	if (!p->uclamp[clamp_id].active) {
-+		uclamp_rq_dec_id(rq, p, clamp_id);
-+		uclamp_rq_inc_id(rq, p, clamp_id);
-+	}
++	uc_max = task_group(p)->uclamp[clamp_id];
++	if (uc_req.value > uc_max.value || !uc_req.user_defined)
++		return uc_max;
++#endif
 +
-+	task_rq_unlock(rq, p, &rf);
++	return uc_req;
 +}
 +
-+static inline void
-+uclamp_update_active_tasks(struct cgroup_subsys_state *css,
-+			   unsigned int clamps)
-+{
-+	struct css_task_iter it;
-+	struct task_struct *p;
-+	unsigned int clamp_id;
-+
-+	css_task_iter_start(css, 0, &it);
-+	while ((p = css_task_iter_next(&it))) {
-+		for_each_clamp_id(clamp_id) {
-+			if ((0x1 << clamp_id) & clamps)
-+				uclamp_update_active(p, clamp_id);
-+		}
-+	}
-+	css_task_iter_end(&it);
-+}
-+
- #ifdef CONFIG_UCLAMP_TASK_GROUP
- static void cpu_util_update_eff(struct cgroup_subsys_state *css);
- static void uclamp_update_root_tg(void)
-@@ -7160,8 +7208,13 @@ static void cpu_util_update_eff(struct cgroup_subsys_state *css)
- 			uc_se[clamp_id].bucket_id = uclamp_bucket_id(eff[clamp_id]);
- 			clamps |= (0x1 << clamp_id);
- 		}
--		if (!clamps)
-+		if (!clamps) {
- 			css = css_rightmost_descendant(css);
-+			continue;
-+		}
-+
-+		/* Immediately update descendants RUNNABLE tasks */
-+		uclamp_update_active_tasks(css, clamps);
- 	}
- }
+ /*
+  * The effective clamp bucket index of a task depends on, by increasing
+  * priority:
+  * - the task specific clamp value, when explicitly requested from userspace
++ * - the task group effective clamp value, for tasks not either in the root
++ *   group or in an autogroup
+  * - the system default clamp value, defined by the sysadmin
+  */
+ static inline struct uclamp_se
+ uclamp_eff_get(struct task_struct *p, unsigned int clamp_id)
+ {
+-	struct uclamp_se uc_req = p->uclamp_req[clamp_id];
++	struct uclamp_se uc_req = uclamp_tg_restrict(p, clamp_id);
+ 	struct uclamp_se uc_max = uclamp_default[clamp_id];
  
+ 	/* System default restrictions always apply */
