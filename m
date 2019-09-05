@@ -2,34 +2,33 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 90B42AAD62
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  5 Sep 2019 22:50:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA2B7AAD59
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  5 Sep 2019 22:50:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404089AbfIEUuQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 5 Sep 2019 16:50:16 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:44592 "EHLO
+        id S2404072AbfIEUuK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 5 Sep 2019 16:50:10 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:44596 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404044AbfIEUuC (ORCPT
+        with ESMTP id S2404065AbfIEUuJ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 5 Sep 2019 16:50:02 -0400
+        Thu, 5 Sep 2019 16:50:09 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i5yha-0001kd-KB; Thu, 05 Sep 2019 22:49:58 +0200
+        id 1i5yhg-0001lw-R4; Thu, 05 Sep 2019 22:50:04 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 2F3321C0DFA;
-        Thu,  5 Sep 2019 22:49:58 +0200 (CEST)
-Date:   Thu, 05 Sep 2019 20:49:58 -0000
-From:   "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5DF261C0895;
+        Thu,  5 Sep 2019 22:50:04 +0200 (CEST)
+Date:   Thu, 05 Sep 2019 20:50:04 -0000
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: refs/heads/timers/core] hrtimer: Add a missing bracket and hide
- `migration_base' on !SMP
+Subject: [tip: refs/heads/x86/mm] x86/mm: Fix cpumask_of_node() error condition
 Cc:     Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <156771659817.12994.13601627409989265457.tip-bot2@tip-bot2>
+Message-ID: <156771660431.12994.3113518520786620054.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -43,73 +42,51 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the refs/heads/timers/core branch of tip:
+The following commit has been merged into the refs/heads/x86/mm branch of tip:
 
-Commit-ID:     5d2295f3a93b04986d069ebeaf5b07725f9096c1
-Gitweb:        https://git.kernel.org/tip/5d2295f3a93b04986d069ebeaf5b07725f9096c1
-Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-AuthorDate:    Wed, 04 Sep 2019 16:55:27 +02:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 05 Sep 2019 10:39:06 +02:00
+Commit-ID:     bc04a049f058a472695aa22905d57e2b1f4c77d9
+Gitweb:        https://git.kernel.org/tip/bc04a049f058a472695aa22905d57e2b1f4c77d9
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Tue, 03 Sep 2019 09:53:52 +02:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Thu, 05 Sep 2019 13:03:04 +02:00
 
-hrtimer: Add a missing bracket and hide `migration_base' on !SMP
+x86/mm: Fix cpumask_of_node() error condition
 
-The recent change to avoid taking the expiry lock when a timer is currently
-migrated missed to add a bracket at the end of the if statement leading to
-compile errors.  Since that commit the variable `migration_base' is always
-used but it is only available on SMP configuration thus leading to another
-compile error.  The changelog says "The timer base and base->cpu_base
-cannot be NULL in the code path", so it is safe to limit this check to SMP
-configurations only.
+When CONFIG_DEBUG_PER_CPU_MAPS=y we validate that the @node argument of
+cpumask_of_node() is a valid node_id. It however forgets to check for
+negative numbers. Fix this by explicitly casting to unsigned int.
 
-Add the missing bracket to the if statement and hide `migration_base'
-behind CONFIG_SMP bars.
+  (unsigned)node >= nr_node_ids
 
-[ tglx: Mark the functions inline ... ]
+verifies: 0 <= node < nr_node_ids
 
-Fixes: 68b2c8c1e4210 ("hrtimer: Don't take expiry_lock when timer is currently migrated")
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20190904145527.eah7z56ntwobqm6j@linutronix.de
+Also ammend the error message to match the condition.
 
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Yunsheng Lin <linyunsheng@huawei.com>
+Link: https://lkml.kernel.org/r/20190903075352.GY2369@hirez.programming.kicks-ass.net
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- kernel/time/hrtimer.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ arch/x86/mm/numa.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
-index ebbd0fb..0d4dc24 100644
---- a/kernel/time/hrtimer.c
-+++ b/kernel/time/hrtimer.c
-@@ -140,6 +140,11 @@ static struct hrtimer_cpu_base migration_cpu_base = {
- 
- #define migration_base	migration_cpu_base.clock_base[0]
- 
-+static inline bool is_migration_base(struct hrtimer_clock_base *base)
-+{
-+	return base == &migration_base;
-+}
-+
- /*
-  * We are using hashed locking: holding per_cpu(hrtimer_bases)[n].lock
-  * means that all timers which are tied to this base via timer->base are
-@@ -264,6 +269,11 @@ again:
- 
- #else /* CONFIG_SMP */
- 
-+static inline bool is_migration_base(struct hrtimer_clock_base *base)
-+{
-+	return false;
-+}
-+
- static inline struct hrtimer_clock_base *
- lock_hrtimer_base(const struct hrtimer *timer, unsigned long *flags)
+diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
+index e6dad60..4123100 100644
+--- a/arch/x86/mm/numa.c
++++ b/arch/x86/mm/numa.c
+@@ -861,9 +861,9 @@ void numa_remove_cpu(int cpu)
+  */
+ const struct cpumask *cpumask_of_node(int node)
  {
-@@ -1221,7 +1231,7 @@ void hrtimer_cancel_wait_running(const struct hrtimer *timer)
- 	 * Just relax if the timer expires in hard interrupt context or if
- 	 * it is currently on the migration base.
- 	 */
--	if (!timer->is_soft || base == &migration_base)
-+	if (!timer->is_soft || is_migration_base(base)) {
- 		cpu_relax();
- 		return;
- 	}
+-	if (node >= nr_node_ids) {
++	if ((unsigned)node >= nr_node_ids) {
+ 		printk(KERN_WARNING
+-			"cpumask_of_node(%d): node > nr_node_ids(%u)\n",
++			"cpumask_of_node(%d): (unsigned)node >= nr_node_ids(%u)\n",
+ 			node, nr_node_ids);
+ 		dump_stack();
+ 		return cpu_none_mask;
