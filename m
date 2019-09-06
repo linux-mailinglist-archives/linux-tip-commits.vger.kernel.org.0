@@ -2,34 +2,35 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 23AFCAB6C2
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Sep 2019 13:09:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FA4DAB6B8
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Sep 2019 13:09:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729209AbfIFLJ1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 6 Sep 2019 07:09:27 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:47070 "EHLO
+        id S2393209AbfIFLJD (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 6 Sep 2019 07:09:03 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:47115 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2392367AbfIFLIc (ORCPT
+        with ESMTP id S1727604AbfIFLIl (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 6 Sep 2019 07:08:32 -0400
+        Fri, 6 Sep 2019 07:08:41 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i6C6O-0007AI-4x; Fri, 06 Sep 2019 13:08:28 +0200
+        id 1i6C6O-0007Aq-Ok; Fri, 06 Sep 2019 13:08:28 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 662131C0E2B;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B98601C0E2E;
         Fri,  6 Sep 2019 13:08:17 +0200 (CEST)
 Date:   Fri, 06 Sep 2019 11:08:17 -0000
 From:   "tip-bot2 for Marc Zyngier" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] irqchip/gic: Rework gic_configure_irq to take the
- full ICFGR base
-Cc:     Marc Zyngier <maz@kernel.org>, Ingo Molnar <mingo@kernel.org>,
+Subject: [tip: irq/core] gpio/ixp4xx: Register the base PA instead of its VA in fwnode
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Marc Zyngier <maz@kernel.org>, Ingo Molnar <mingo@kernel.org>,
         Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <156776809737.24167.16109669324170708245.tip-bot2@tip-bot2>
+Message-ID: <156776809772.24167.8650737097914479700.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -45,137 +46,36 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     13d22e2e1f35f2d3cc7ddc002c23e733c2782dd4
-Gitweb:        https://git.kernel.org/tip/13d22e2e1f35f2d3cc7ddc002c23e733c2782dd4
+Commit-ID:     daa19fe5b082779962988a5ba9e38509004db3de
+Gitweb:        https://git.kernel.org/tip/daa19fe5b082779962988a5ba9e38509004db3de
 Author:        Marc Zyngier <maz@kernel.org>
-AuthorDate:    Tue, 16 Jul 2019 14:35:17 +01:00
+AuthorDate:    Wed, 31 Jul 2019 16:13:42 +01:00
 Committer:     Marc Zyngier <maz@kernel.org>
-CommitterDate: Tue, 20 Aug 2019 10:04:09 +01:00
+CommitterDate: Wed, 07 Aug 2019 14:24:45 +01:00
 
-irqchip/gic: Rework gic_configure_irq to take the full ICFGR base
+gpio/ixp4xx: Register the base PA instead of its VA in fwnode
 
-gic_configure_irq is currently passed the (re)distributor address,
-to which it applies an a fixed offset to get to the configuration
-registers. This offset is constant across all GICs, or rather it was
-until to v3.1...
+Do not expose the base VA (it appears in debugfs). Instead,
+record the PA, which at least can be used to precisely identify
+the associated irqchip and domain.
 
-An easy way out is for the individual drivers to pass the base
-address of the configuration register for the considered interrupt.
-At the same time, move part of the error handling back to the
-individual drivers, as things are about to change on that front.
-
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Acked-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 ---
- drivers/irqchip/irq-gic-common.c | 14 +++++---------
- drivers/irqchip/irq-gic-v3.c     | 11 ++++++++++-
- drivers/irqchip/irq-gic.c        | 10 +++++++++-
- drivers/irqchip/irq-hip04.c      |  7 ++++++-
- 4 files changed, 30 insertions(+), 12 deletions(-)
+ drivers/gpio/gpio-ixp4xx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/irqchip/irq-gic-common.c b/drivers/irqchip/irq-gic-common.c
-index b0a8215..6900b6f 100644
---- a/drivers/irqchip/irq-gic-common.c
-+++ b/drivers/irqchip/irq-gic-common.c
-@@ -63,7 +63,7 @@ int gic_configure_irq(unsigned int irq, unsigned int type,
- 	 * for "irq", depending on "type".
- 	 */
- 	raw_spin_lock_irqsave(&irq_controller_lock, flags);
--	val = oldval = readl_relaxed(base + GIC_DIST_CONFIG + confoff);
-+	val = oldval = readl_relaxed(base + confoff);
- 	if (type & IRQ_TYPE_LEVEL_MASK)
- 		val &= ~confmask;
- 	else if (type & IRQ_TYPE_EDGE_BOTH)
-@@ -83,14 +83,10 @@ int gic_configure_irq(unsigned int irq, unsigned int type,
- 	 * does not allow us to set the configuration or we are in a
- 	 * non-secure mode, and hence it may not be catastrophic.
- 	 */
--	writel_relaxed(val, base + GIC_DIST_CONFIG + confoff);
--	if (readl_relaxed(base + GIC_DIST_CONFIG + confoff) != val) {
--		if (WARN_ON(irq >= 32))
--			ret = -EINVAL;
--		else
--			pr_warn("GIC: PPI%d is secure or misconfigured\n",
--				irq - 16);
--	}
-+	writel_relaxed(val, base + confoff);
-+	if (readl_relaxed(base + confoff) != val)
-+		ret = -EINVAL;
-+
- 	raw_spin_unlock_irqrestore(&irq_controller_lock, flags);
- 
- 	if (sync_access)
-diff --git a/drivers/irqchip/irq-gic-v3.c b/drivers/irqchip/irq-gic-v3.c
-index be961c2..efc5319 100644
---- a/drivers/irqchip/irq-gic-v3.c
-+++ b/drivers/irqchip/irq-gic-v3.c
-@@ -407,6 +407,7 @@ static int gic_set_type(struct irq_data *d, unsigned int type)
- 	unsigned int irq = gic_irq(d);
- 	void (*rwp_wait)(void);
- 	void __iomem *base;
-+	int ret;
- 
- 	/* Interrupt configuration for SGIs can't be changed */
- 	if (irq < 16)
-@@ -425,7 +426,15 @@ static int gic_set_type(struct irq_data *d, unsigned int type)
- 		rwp_wait = gic_dist_wait_for_rwp;
- 	}
- 
--	return gic_configure_irq(irq, type, base, rwp_wait);
-+
-+	ret = gic_configure_irq(irq, type, base + GICD_ICFGR, rwp_wait);
-+	if (ret && irq < 32) {
-+		/* Misconfigured PPIs are usually not fatal */
-+		pr_warn("GIC: PPI%d is secure or misconfigured\n", irq - 16);
-+		ret = 0;
-+	}
-+
-+	return ret;
- }
- 
- static int gic_irq_set_vcpu_affinity(struct irq_data *d, void *vcpu)
-diff --git a/drivers/irqchip/irq-gic.c b/drivers/irqchip/irq-gic.c
-index b6b8573..5ca7d55 100644
---- a/drivers/irqchip/irq-gic.c
-+++ b/drivers/irqchip/irq-gic.c
-@@ -291,6 +291,7 @@ static int gic_set_type(struct irq_data *d, unsigned int type)
- {
- 	void __iomem *base = gic_dist_base(d);
- 	unsigned int gicirq = gic_irq(d);
-+	int ret;
- 
- 	/* Interrupt configuration for SGIs can't be changed */
- 	if (gicirq < 16)
-@@ -301,7 +302,14 @@ static int gic_set_type(struct irq_data *d, unsigned int type)
- 			    type != IRQ_TYPE_EDGE_RISING)
- 		return -EINVAL;
- 
--	return gic_configure_irq(gicirq, type, base, NULL);
-+	ret = gic_configure_irq(gicirq, type, base + GIC_DIST_CONFIG, NULL);
-+	if (ret && gicirq < 32) {
-+		/* Misconfigured PPIs are usually not fatal */
-+		pr_warn("GIC: PPI%d is secure or misconfigured\n", gicirq - 16);
-+		ret = 0;
-+	}
-+
-+	return ret;
- }
- 
- static int gic_irq_set_vcpu_affinity(struct irq_data *d, void *vcpu)
-diff --git a/drivers/irqchip/irq-hip04.c b/drivers/irqchip/irq-hip04.c
-index cf70582..1626131 100644
---- a/drivers/irqchip/irq-hip04.c
-+++ b/drivers/irqchip/irq-hip04.c
-@@ -130,7 +130,12 @@ static int hip04_irq_set_type(struct irq_data *d, unsigned int type)
- 
- 	raw_spin_lock(&irq_controller_lock);
- 
--	ret = gic_configure_irq(irq, type, base, NULL);
-+	ret = gic_configure_irq(irq, type, base + GIC_DIST_CONFIG, NULL);
-+	if (ret && irq < 32) {
-+		/* Misconfigured PPIs are usually not fatal */
-+		pr_warn("GIC: PPI%d is secure or misconfigured\n", irq - 16);
-+		ret = 0;
-+	}
- 
- 	raw_spin_unlock(&irq_controller_lock);
- 
+diff --git a/drivers/gpio/gpio-ixp4xx.c b/drivers/gpio/gpio-ixp4xx.c
+index 670c2a8..cc72c9a 100644
+--- a/drivers/gpio/gpio-ixp4xx.c
++++ b/drivers/gpio/gpio-ixp4xx.c
+@@ -400,7 +400,7 @@ static int ixp4xx_gpio_probe(struct platform_device *pdev)
+ 		g->fwnode = of_node_to_fwnode(np);
+ 	} else {
+ 		parent = ixp4xx_get_irq_domain();
+-		g->fwnode = irq_domain_alloc_fwnode(g->base);
++		g->fwnode = irq_domain_alloc_fwnode(&res->start);
+ 		if (!g->fwnode) {
+ 			dev_err(dev, "no domain base\n");
+ 			return -ENODEV;
