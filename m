@@ -2,39 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A1937AB6E0
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Sep 2019 13:11:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89AA9AB6E2
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Sep 2019 13:11:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731375AbfIFLKI (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 6 Sep 2019 07:10:08 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:47013 "EHLO
+        id S1731972AbfIFLKO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 6 Sep 2019 07:10:14 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:47012 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2392237AbfIFLIX (ORCPT
+        with ESMTP id S2392228AbfIFLIX (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Fri, 6 Sep 2019 07:08:23 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i6C6A-00072D-Qk; Fri, 06 Sep 2019 13:08:14 +0200
+        id 1i6C6A-00072C-Qa; Fri, 06 Sep 2019 13:08:14 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4A2AE1C0E04;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 299391C0DE8;
         Fri,  6 Sep 2019 13:08:14 +0200 (CEST)
 Date:   Fri, 06 Sep 2019 11:08:14 -0000
-From:   "tip-bot2 for Dexuan Cui" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Masahiro Yamada" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] irqdomain: Add the missing assignment of
- domain->fwnode for named fwnode
-Cc:     Lili Deng <v-lide@microsoft.com>, Dexuan Cui <decui@microsoft.com>,
+Subject: [tip: irq/core] irqchip/uniphier-aidet: Use devm_platform_ioremap_resource()
+Cc:     Masahiro Yamada <yamada.masahiro@socionext.com>,
         Marc Zyngier <maz@kernel.org>, Ingo Molnar <mingo@kernel.org>,
         Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
-In-Reply-To: =?utf-8?q?=3CPU1P153MB01694D9AF625AC335C600C5FBFBE0=40PU1P153MB?=
- =?utf-8?q?0169=2EAPCP153=2EPROD=2EOUTLOOK=2ECOM=3E?=
-References: =?utf-8?q?=3CPU1P153MB01694D9AF625AC335C600C5FBFBE0=40PU1P153M?=
- =?utf-8?q?B0169=2EAPCP153=2EPROD=2EOUTLOOK=2ECOM=3E?=
+In-Reply-To: <20190905034932.12587-1-yamada.masahiro@socionext.com>
+References: <20190905034932.12587-1-yamada.masahiro@socionext.com>
 MIME-Version: 1.0
-Message-ID: <156776809424.24167.4172013274250164395.tip-bot2@tip-bot2>
+Message-ID: <156776809407.24167.7594401755357124629.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,59 +47,47 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     711419e504ebd68c8f03656616829c8ad7829389
-Gitweb:        https://git.kernel.org/tip/711419e504ebd68c8f03656616829c8ad7829389
-Author:        Dexuan Cui <decui@microsoft.com>
-AuthorDate:    Mon, 02 Sep 2019 23:14:56 
+Commit-ID:     e89327f659dd517f30b6232b1fabd6f6c6777c3e
+Gitweb:        https://git.kernel.org/tip/e89327f659dd517f30b6232b1fabd6f6c6777c3e
+Author:        Masahiro Yamada <yamada.masahiro@socionext.com>
+AuthorDate:    Thu, 05 Sep 2019 12:49:32 +09:00
 Committer:     Marc Zyngier <maz@kernel.org>
-CommitterDate: Tue, 03 Sep 2019 09:16:50 +01:00
+CommitterDate: Thu, 05 Sep 2019 09:28:13 +01:00
 
-irqdomain: Add the missing assignment of domain->fwnode for named fwnode
+irqchip/uniphier-aidet: Use devm_platform_ioremap_resource()
 
-Recently device pass-through stops working for Linux VM running on Hyper-V.
+Replace the chain of platform_get_resource() and devm_ioremap_resource()
+with devm_platform_ioremap_resource().
 
-git-bisect shows the regression is caused by the recent commit
-467a3bb97432 ("PCI: hv: Allocate a named fwnode ..."), but the root cause
-is that the commit d59f6617eef0 forgets to set the domain->fwnode for
-IRQCHIP_FWNODE_NAMED*, and as a result:
+This allows to remove the local variable for (struct resource *), and
+have one function call less.
 
-1. The domain->fwnode remains to be NULL.
-
-2. irq_find_matching_fwspec() returns NULL since "h->fwnode == fwnode" is
-false, and pci_set_bus_msi_domain() sets the Hyper-V PCI root bus's
-msi_domain to NULL.
-
-3. When the device is added onto the root bus, the device's dev->msi_domain
-is set to NULL in pci_set_msi_domain().
-
-4. When a device driver tries to enable MSI-X, pci_msi_setup_msi_irqs()
-calls arch_setup_msi_irqs(), which uses the native MSI chip (i.e.
-arch/x86/kernel/apic/msi.c: pci_msi_controller) to set up the irqs, but
-actually pci_msi_setup_msi_irqs() is supposed to call
-msi_domain_alloc_irqs() with the hbus->irq_domain, which is created in
-hv_pcie_init_irq_domain() and is associated with the Hyper-V chip
-hv_msi_irq_chip. Consequently, the irq line is not properly set up, and
-the device driver can not receive any interrupt.
-
-Fixes: d59f6617eef0 ("genirq: Allow fwnode to carry name information only")
-Fixes: 467a3bb97432 ("PCI: hv: Allocate a named fwnode instead of an address-based one")
-Reported-by: Lili Deng <v-lide@microsoft.com>
-Signed-off-by: Dexuan Cui <decui@microsoft.com>
+Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
 Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/PU1P153MB01694D9AF625AC335C600C5FBFBE0@PU1P153MB0169.APCP153.PROD.OUTLOOK.COM
+Link: https://lore.kernel.org/r/20190905034932.12587-1-yamada.masahiro@socionext.com
 ---
- kernel/irq/irqdomain.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/irqchip/irq-uniphier-aidet.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/kernel/irq/irqdomain.c b/kernel/irq/irqdomain.c
-index e7bbab1..132672b 100644
---- a/kernel/irq/irqdomain.c
-+++ b/kernel/irq/irqdomain.c
-@@ -149,6 +149,7 @@ struct irq_domain *__irq_domain_add(struct fwnode_handle *fwnode, int size,
- 		switch (fwid->type) {
- 		case IRQCHIP_FWNODE_NAMED:
- 		case IRQCHIP_FWNODE_NAMED_ID:
-+			domain->fwnode = fwnode;
- 			domain->name = kstrdup(fwid->name, GFP_KERNEL);
- 			if (!domain->name) {
- 				kfree(domain);
+diff --git a/drivers/irqchip/irq-uniphier-aidet.c b/drivers/irqchip/irq-uniphier-aidet.c
+index ed7b4f4..89121b3 100644
+--- a/drivers/irqchip/irq-uniphier-aidet.c
++++ b/drivers/irqchip/irq-uniphier-aidet.c
+@@ -166,7 +166,6 @@ static int uniphier_aidet_probe(struct platform_device *pdev)
+ 	struct device_node *parent_np;
+ 	struct irq_domain *parent_domain;
+ 	struct uniphier_aidet_priv *priv;
+-	struct resource *res;
+ 
+ 	parent_np = of_irq_find_parent(dev->of_node);
+ 	if (!parent_np)
+@@ -181,8 +180,7 @@ static int uniphier_aidet_probe(struct platform_device *pdev)
+ 	if (!priv)
+ 		return -ENOMEM;
+ 
+-	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	priv->reg_base = devm_ioremap_resource(dev, res);
++	priv->reg_base = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(priv->reg_base))
+ 		return PTR_ERR(priv->reg_base);
+ 
