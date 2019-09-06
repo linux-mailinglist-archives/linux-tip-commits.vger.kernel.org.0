@@ -2,33 +2,34 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5EB17AB21D
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Sep 2019 07:42:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B371EAB264
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Sep 2019 08:25:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389173AbfIFFmQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 6 Sep 2019 01:42:16 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:45582 "EHLO
+        id S2391698AbfIFGZr (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 6 Sep 2019 02:25:47 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:45698 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404005AbfIFFmP (ORCPT
+        with ESMTP id S1727970AbfIFGZq (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 6 Sep 2019 01:42:15 -0400
+        Fri, 6 Sep 2019 02:25:46 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i670d-0008E0-Rr; Fri, 06 Sep 2019 07:42:11 +0200
+        id 1i67gk-0000Uv-OY; Fri, 06 Sep 2019 08:25:42 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4CC101C0744;
-        Fri,  6 Sep 2019 07:42:11 +0200 (CEST)
-Date:   Fri, 06 Sep 2019 05:42:11 -0000
-From:   "tip-bot2 for Austin Kim" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 565151C0744;
+        Fri,  6 Sep 2019 08:25:42 +0200 (CEST)
+Date:   Fri, 06 Sep 2019 06:25:42 -0000
+From:   "tip-bot2 for Mark-PK Tsai" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/platform] x86/platform/uv: Fix kmalloc() NULL check routine
+Subject: [tip: perf/urgent] perf/hw_breakpoint: Fix arch_hw_breakpoint
+ use-before-initialization
 Cc:     Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <156774853124.13152.5026817368988742001.tip-bot2@tip-bot2>
+Message-ID: <156775114220.13152.7362529034900093824.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -42,60 +43,64 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/platform branch of tip:
+The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     864b23f0169d5bff677e8443a7a90dfd6b090afc
-Gitweb:        https://git.kernel.org/tip/864b23f0169d5bff677e8443a7a90dfd6b090afc
-Author:        Austin Kim <austindh.kim@gmail.com>
-AuthorDate:    Fri, 06 Sep 2019 08:29:51 +09:00
+Commit-ID:     310aa0a25b338b3100c94880c9a69bec8ce8c3ae
+Gitweb:        https://git.kernel.org/tip/310aa0a25b338b3100c94880c9a69bec8ce8c3ae
+Author:        Mark-PK Tsai <mark-pk.tsai@mediatek.com>
+AuthorDate:    Fri, 06 Sep 2019 14:01:16 +08:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 06 Sep 2019 07:36:16 +02:00
+CommitterDate: Fri, 06 Sep 2019 08:24:01 +02:00
 
-x86/platform/uv: Fix kmalloc() NULL check routine
+perf/hw_breakpoint: Fix arch_hw_breakpoint use-before-initialization
 
-The result of kmalloc() should have been checked ahead of below statement:
+If we disable the compiler's auto-initialization feature, if
+-fplugin-arg-structleak_plugin-byref or -ftrivial-auto-var-init=pattern
+are disabled, arch_hw_breakpoint may be used before initialization after:
 
-	pqp = (struct bau_pq_entry *)vp;
+  9a4903dde2c86 ("perf/hw_breakpoint: Split attribute parse and commit")
 
-Move BUG_ON(!vp) before above statement.
+On our ARM platform, the struct step_ctrl in arch_hw_breakpoint, which
+used to be zero-initialized by kzalloc(), may be used in
+arch_install_hw_breakpoint() without initialization.
 
-Signed-off-by: Austin Kim <austindh.kim@gmail.com>
-Cc: Dimitri Sivanich <dimitri.sivanich@hpe.com>
-Cc: Hedi Berriche <hedi.berriche@hpe.com>
+Signed-off-by: Mark-PK Tsai <mark-pk.tsai@mediatek.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Alix Wu <alix.wu@mediatek.com>
+Cc: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Jiri Olsa <jolsa@redhat.com>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Mike Travis <mike.travis@hpe.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Russ Anderson <russ.anderson@hpe.com>
-Cc: Steve Wahl <steve.wahl@hpe.com>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: allison@lohutok.net
-Cc: andy@infradead.org
-Cc: armijn@tjaldur.nl
-Cc: bp@alien8.de
-Cc: dvhart@infradead.org
-Cc: gregkh@linuxfoundation.org
-Cc: hpa@zytor.com
-Cc: kjlu@umn.edu
-Cc: platform-driver-x86@vger.kernel.org
-Link: https://lkml.kernel.org/r/20190905232951.GA28779@LGEARND20B15
+Cc: YJ Chiang <yj.chiang@mediatek.com>
+Link: https://lkml.kernel.org/r/20190906060115.9460-1-mark-pk.tsai@mediatek.com
+[ Minor edits. ]
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- arch/x86/platform/uv/tlb_uv.c | 4 ++--
+ kernel/events/hw_breakpoint.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/platform/uv/tlb_uv.c b/arch/x86/platform/uv/tlb_uv.c
-index 20c389a..5f0a96b 100644
---- a/arch/x86/platform/uv/tlb_uv.c
-+++ b/arch/x86/platform/uv/tlb_uv.c
-@@ -1804,9 +1804,9 @@ static void pq_init(int node, int pnode)
+diff --git a/kernel/events/hw_breakpoint.c b/kernel/events/hw_breakpoint.c
+index c5cd852..3cc8416 100644
+--- a/kernel/events/hw_breakpoint.c
++++ b/kernel/events/hw_breakpoint.c
+@@ -413,7 +413,7 @@ static int hw_breakpoint_parse(struct perf_event *bp,
  
- 	plsize = (DEST_Q_SIZE + 1) * sizeof(struct bau_pq_entry);
- 	vp = kmalloc_node(plsize, GFP_KERNEL, node);
--	pqp = (struct bau_pq_entry *)vp;
--	BUG_ON(!pqp);
-+	BUG_ON(!vp);
+ int register_perf_hw_breakpoint(struct perf_event *bp)
+ {
+-	struct arch_hw_breakpoint hw;
++	struct arch_hw_breakpoint hw = { };
+ 	int err;
  
-+	pqp = (struct bau_pq_entry *)vp;
- 	cp = (char *)pqp + 31;
- 	pqp = (struct bau_pq_entry *)(((unsigned long)cp >> 5) << 5);
+ 	err = reserve_bp_slot(bp);
+@@ -461,7 +461,7 @@ int
+ modify_user_hw_breakpoint_check(struct perf_event *bp, struct perf_event_attr *attr,
+ 			        bool check)
+ {
+-	struct arch_hw_breakpoint hw;
++	struct arch_hw_breakpoint hw = { };
+ 	int err;
  
+ 	err = hw_breakpoint_parse(bp, attr, &hw);
