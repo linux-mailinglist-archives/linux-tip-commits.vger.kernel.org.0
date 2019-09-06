@@ -2,33 +2,33 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AA2B7AAD59
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  5 Sep 2019 22:50:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98335AB21A
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Sep 2019 07:42:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404072AbfIEUuK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 5 Sep 2019 16:50:10 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:44596 "EHLO
+        id S2404487AbfIFFmM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 6 Sep 2019 01:42:12 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:45576 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404065AbfIEUuJ (ORCPT
+        with ESMTP id S2403984AbfIFFmM (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 5 Sep 2019 16:50:09 -0400
+        Fri, 6 Sep 2019 01:42:12 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i5yhg-0001lw-R4; Thu, 05 Sep 2019 22:50:04 +0200
+        id 1i670a-0008Cu-8u; Fri, 06 Sep 2019 07:42:08 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5DF261C0895;
-        Thu,  5 Sep 2019 22:50:04 +0200 (CEST)
-Date:   Thu, 05 Sep 2019 20:50:04 -0000
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id CE6A31C0E04;
+        Fri,  6 Sep 2019 07:42:07 +0200 (CEST)
+Date:   Fri, 06 Sep 2019 05:42:07 -0000
+From:   "tip-bot2 for Gayatri Kammela" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: refs/heads/x86/mm] x86/mm: Fix cpumask_of_node() error condition
+Subject: [tip: x86/cpu] x86/cpu: Add Elkhart Lake to Intel family
 Cc:     Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <156771660431.12994.3113518520786620054.tip-bot2@tip-bot2>
+Message-ID: <156774852780.13152.4128689725657250369.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -42,51 +42,41 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the refs/heads/x86/mm branch of tip:
+The following commit has been merged into the x86/cpu branch of tip:
 
-Commit-ID:     bc04a049f058a472695aa22905d57e2b1f4c77d9
-Gitweb:        https://git.kernel.org/tip/bc04a049f058a472695aa22905d57e2b1f4c77d9
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Tue, 03 Sep 2019 09:53:52 +02:00
+Commit-ID:     0f65605a8d744b3a205d0a2cd8f20707e31fc023
+Gitweb:        https://git.kernel.org/tip/0f65605a8d744b3a205d0a2cd8f20707e31fc023
+Author:        Gayatri Kammela <gayatri.kammela@intel.com>
+AuthorDate:    Thu, 05 Sep 2019 12:30:18 -07:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 05 Sep 2019 13:03:04 +02:00
+CommitterDate: Fri, 06 Sep 2019 07:30:39 +02:00
 
-x86/mm: Fix cpumask_of_node() error condition
+x86/cpu: Add Elkhart Lake to Intel family
 
-When CONFIG_DEBUG_PER_CPU_MAPS=y we validate that the @node argument of
-cpumask_of_node() is a valid node_id. It however forgets to check for
-negative numbers. Fix this by explicitly casting to unsigned int.
+Add the model number/CPUID of atom based Elkhart Lake to the Intel
+family.
 
-  (unsigned)node >= nr_node_ids
-
-verifies: 0 <= node < nr_node_ids
-
-Also ammend the error message to match the condition.
-
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Gayatri Kammela <gayatri.kammela@intel.com>
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Rahul Tanwar <rahul.tanwar@linux.intel.com>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Yunsheng Lin <linyunsheng@huawei.com>
-Link: https://lkml.kernel.org/r/20190903075352.GY2369@hirez.programming.kicks-ass.net
+Link: https://lkml.kernel.org/r/20190905193020.14707-3-tony.luck@intel.com
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- arch/x86/mm/numa.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/include/asm/intel-family.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
-index e6dad60..4123100 100644
---- a/arch/x86/mm/numa.c
-+++ b/arch/x86/mm/numa.c
-@@ -861,9 +861,9 @@ void numa_remove_cpu(int cpu)
-  */
- const struct cpumask *cpumask_of_node(int node)
- {
--	if (node >= nr_node_ids) {
-+	if ((unsigned)node >= nr_node_ids) {
- 		printk(KERN_WARNING
--			"cpumask_of_node(%d): node > nr_node_ids(%u)\n",
-+			"cpumask_of_node(%d): (unsigned)node >= nr_node_ids(%u)\n",
- 			node, nr_node_ids);
- 		dump_stack();
- 		return cpu_none_mask;
+diff --git a/arch/x86/include/asm/intel-family.h b/arch/x86/include/asm/intel-family.h
+index 7c2ef2e..55568af 100644
+--- a/arch/x86/include/asm/intel-family.h
++++ b/arch/x86/include/asm/intel-family.h
+@@ -106,6 +106,7 @@
+ #define INTEL_FAM6_ATOM_GOLDMONT_PLUS	0x7A /* Gemini Lake */
+ 
+ #define INTEL_FAM6_ATOM_TREMONT_D	0x86 /* Jacobsville */
++#define INTEL_FAM6_ATOM_TREMONT		0x96 /* Elkhart Lake */
+ 
+ /* Xeon Phi */
+ 
