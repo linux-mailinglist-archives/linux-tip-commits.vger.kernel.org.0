@@ -2,34 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FB65AB6D9
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Sep 2019 13:11:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B953FAB6DE
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Sep 2019 13:11:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728742AbfIFLJs (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 6 Sep 2019 07:09:48 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:47035 "EHLO
+        id S2393235AbfIFLKE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 6 Sep 2019 07:10:04 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:47029 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2392277AbfIFLIZ (ORCPT
+        with ESMTP id S2392255AbfIFLIY (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 6 Sep 2019 07:08:25 -0400
+        Fri, 6 Sep 2019 07:08:24 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i6C6H-00073S-CR; Fri, 06 Sep 2019 13:08:21 +0200
+        id 1i6C6H-00073O-8q; Fri, 06 Sep 2019 13:08:21 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 9385A1C0E04;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 3FAE81C0744;
         Fri,  6 Sep 2019 13:08:15 +0200 (CEST)
 Date:   Fri, 06 Sep 2019 11:08:15 -0000
-From:   "tip-bot2 for Masahiro Yamada" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Jerome Brunet" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] irqchip: Add include guard to irq-partition-percpu.h
-Cc:     Masahiro Yamada <yamada.masahiro@socionext.com>,
+Subject: [tip: irq/core] dt-bindings: interrupt-controller: New binding for
+ the meson sm1 SoCs
+Cc:     Jerome Brunet <jbrunet@baylibre.com>,
         Marc Zyngier <maz@kernel.org>, Ingo Molnar <mingo@kernel.org>,
         Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
+In-Reply-To: <20190829161635.25067-2-jbrunet@baylibre.com>
+References: <20190829161635.25067-2-jbrunet@baylibre.com>
 MIME-Version: 1.0
-Message-ID: <156776809546.24167.16607497136307365643.tip-bot2@tip-bot2>
+Message-ID: <156776809521.24167.11608140259251300270.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -45,40 +48,34 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     a512584abd7ab860560ac21e6daac1aaebc1c14f
-Gitweb:        https://git.kernel.org/tip/a512584abd7ab860560ac21e6daac1aaebc1c14f
-Author:        Masahiro Yamada <yamada.masahiro@socionext.com>
-AuthorDate:    Mon, 19 Aug 2019 16:45:34 +09:00
+Commit-ID:     abc08aac82af0c71e30b446575f5810c9cc11640
+Gitweb:        https://git.kernel.org/tip/abc08aac82af0c71e30b446575f5810c9cc11640
+Author:        Jerome Brunet <jbrunet@baylibre.com>
+AuthorDate:    Thu, 29 Aug 2019 18:16:34 +02:00
 Committer:     Marc Zyngier <maz@kernel.org>
-CommitterDate: Tue, 20 Aug 2019 10:35:46 +01:00
+CommitterDate: Fri, 30 Aug 2019 15:01:06 +01:00
 
-irqchip: Add include guard to irq-partition-percpu.h
+dt-bindings: interrupt-controller: New binding for the meson sm1 SoCs
 
-Add a header include guard just in case.
+Update the dt-binding to add support for the sm1 SoC family in the
+amlogic GPIO interrupt controller driver.
 
-Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
 Signed-off-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20190829161635.25067-2-jbrunet@baylibre.com
 ---
- include/linux/irqchip/irq-partition-percpu.h | 5 +++++
- 1 file changed, 5 insertions(+)
+ Documentation/devicetree/bindings/interrupt-controller/amlogic,meson-gpio-intc.txt | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/linux/irqchip/irq-partition-percpu.h b/include/linux/irqchip/irq-partition-percpu.h
-index a783ddb..2f6ae75 100644
---- a/include/linux/irqchip/irq-partition-percpu.h
-+++ b/include/linux/irqchip/irq-partition-percpu.h
-@@ -4,6 +4,9 @@
-  * Author: Marc Zyngier <marc.zyngier@arm.com>
-  */
- 
-+#ifndef __LINUX_IRQCHIP_IRQ_PARTITION_PERCPU_H
-+#define __LINUX_IRQCHIP_IRQ_PARTITION_PERCPU_H
-+
- #include <linux/fwnode.h>
- #include <linux/cpumask.h>
- #include <linux/irqdomain.h>
-@@ -46,3 +49,5 @@ struct irq_domain *partition_get_domain(struct partition_desc *dsc)
- 	return NULL;
- }
- #endif
-+
-+#endif /* __LINUX_IRQCHIP_IRQ_PARTITION_PERCPU_H */
+diff --git a/Documentation/devicetree/bindings/interrupt-controller/amlogic,meson-gpio-intc.txt b/Documentation/devicetree/bindings/interrupt-controller/amlogic,meson-gpio-intc.txt
+index 7d531d5..684bb1c 100644
+--- a/Documentation/devicetree/bindings/interrupt-controller/amlogic,meson-gpio-intc.txt
++++ b/Documentation/devicetree/bindings/interrupt-controller/amlogic,meson-gpio-intc.txt
+@@ -16,6 +16,7 @@ Required properties:
+     "amlogic,meson-gxl-gpio-intc" for GXL SoCs (S905X, S912)
+     "amlogic,meson-axg-gpio-intc" for AXG SoCs (A113D, A113X)
+     "amlogic,meson-g12a-gpio-intc" for G12A SoCs (S905D2, S905X2, S905Y2)
++    "amlogic,meson-sm1-gpio-intc" for SM1 SoCs (S905D3, S905X3, S905Y3)
+ - reg : Specifies base physical address and size of the registers.
+ - interrupt-controller : Identifies the node as an interrupt controller.
+ - #interrupt-cells : Specifies the number of cells needed to encode an
