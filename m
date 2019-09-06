@@ -2,25 +2,25 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 69761ABFF0
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Sep 2019 20:56:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 47690ABFED
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Sep 2019 20:55:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389339AbfIFSz5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S2387967AbfIFSz5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Fri, 6 Sep 2019 14:55:57 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:48246 "EHLO
+Received: from Galois.linutronix.de ([193.142.43.55]:48245 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387606AbfIFSz5 (ORCPT
+        with ESMTP id S1733057AbfIFSz5 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Fri, 6 Sep 2019 14:55:57 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i6JOW-0000DR-6e; Fri, 06 Sep 2019 20:55:40 +0200
+        id 1i6JOb-0000EG-0g; Fri, 06 Sep 2019 20:55:45 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 70BF61C0744;
-        Fri,  6 Sep 2019 20:55:39 +0200 (CEST)
-Date:   Fri, 06 Sep 2019 18:55:39 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 7BAC91C0744;
+        Fri,  6 Sep 2019 20:55:44 +0200 (CEST)
+Date:   Fri, 06 Sep 2019 18:55:44 -0000
 From:   "tip-bot2 for Steve Wahl" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
@@ -41,7 +41,7 @@ Cc:     Vaibhav Rustagi <vaibhavrustagi@google.com>,
 In-Reply-To: <20190905202346.GA26595@swahl-linux>
 References: <20190905202346.GA26595@swahl-linux>
 MIME-Version: 1.0
-Message-ID: <156779613930.24167.1219380492780490078.tip-bot2@tip-bot2>
+Message-ID: <156779614439.24167.3539003390891394057.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
