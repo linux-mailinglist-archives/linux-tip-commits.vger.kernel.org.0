@@ -2,34 +2,34 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A5DD1AB6CC
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Sep 2019 13:09:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0D39AB6A5
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Sep 2019 13:08:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392303AbfIFLI0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 6 Sep 2019 07:08:26 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:47036 "EHLO
+        id S2392374AbfIFLIb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 6 Sep 2019 07:08:31 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:47068 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2392278AbfIFLIZ (ORCPT
+        with ESMTP id S2392362AbfIFLIb (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 6 Sep 2019 07:08:25 -0400
+        Fri, 6 Sep 2019 07:08:31 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i6C6H-00076h-JZ; Fri, 06 Sep 2019 13:08:21 +0200
+        id 1i6C6N-00077J-8o; Fri, 06 Sep 2019 13:08:27 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5FA611C0E23;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B372C1C0E26;
         Fri,  6 Sep 2019 13:08:16 +0200 (CEST)
 Date:   Fri, 06 Sep 2019 11:08:16 -0000
 From:   "tip-bot2 for Marc Zyngier" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] irqchip/gic-v3: Warn about inconsistent
- implementations of extended ranges
+Subject: [tip: irq/core] irqchip/gic-v3: Dynamically allocate PPI partition
+ descriptors
 Cc:     Marc Zyngier <maz@kernel.org>, Ingo Molnar <mingo@kernel.org>,
         Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <156776809635.24167.7858449540084580045.tip-bot2@tip-bot2>
+Message-ID: <156776809671.24167.4067545080989857248.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -45,52 +45,73 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     ad5a78d3da81836c88d1f2d53310484462660997
-Gitweb:        https://git.kernel.org/tip/ad5a78d3da81836c88d1f2d53310484462660997
+Commit-ID:     52085d3f2028d853f8d6ce7ead2f8a504f6077fa
+Gitweb:        https://git.kernel.org/tip/52085d3f2028d853f8d6ce7ead2f8a504f6077fa
 Author:        Marc Zyngier <maz@kernel.org>
-AuthorDate:    Thu, 25 Jul 2019 15:30:51 +01:00
+AuthorDate:    Thu, 18 Jul 2019 13:05:17 +01:00
 Committer:     Marc Zyngier <maz@kernel.org>
-CommitterDate: Tue, 20 Aug 2019 10:23:35 +01:00
+CommitterDate: Tue, 20 Aug 2019 10:23:34 +01:00
 
-irqchip/gic-v3: Warn about inconsistent implementations of extended ranges
+irqchip/gic-v3: Dynamically allocate PPI partition descriptors
 
-As is it usual for the GIC, it isn't disallowed to put together a system
-that is majorly inconsistent, with a distributor supporting the
-extended ranges while some of the CPUs don't.
-
-Kindly tell the user that things are sailing isn't going to be smooth.
+Again, PPIs are becoming a variable set. Let's hack the PPI partition
+code to make the top-level array dynamically allocated.
 
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 ---
- drivers/irqchip/irq-gic-v3.c       | 5 +++++
- include/linux/irqchip/arm-gic-v3.h | 1 +
- 2 files changed, 6 insertions(+)
+ drivers/irqchip/irq-gic-v3.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/irqchip/irq-gic-v3.c b/drivers/irqchip/irq-gic-v3.c
-index d3727e8..8af08dd 100644
+index 869a805..f5dbdbf 100644
 --- a/drivers/irqchip/irq-gic-v3.c
 +++ b/drivers/irqchip/irq-gic-v3.c
-@@ -1014,6 +1014,11 @@ static void gic_cpu_init(void)
+@@ -52,7 +52,7 @@ struct gic_chip_data {
+ 	u64			flags;
+ 	bool			has_rss;
+ 	unsigned int		ppi_nr;
+-	struct partition_desc	*ppi_descs[16];
++	struct partition_desc	**ppi_descs;
+ };
  
- 	gic_enable_redist(true);
+ static struct gic_chip_data gic_data __read_mostly;
+@@ -1354,7 +1354,8 @@ static int gic_irq_domain_select(struct irq_domain *d,
+ 	 * then we need to match the partition domain.
+ 	 */
+ 	if (fwspec->param_count >= 4 &&
+-	    fwspec->param[0] == 1 && fwspec->param[3] != 0)
++	    fwspec->param[0] == 1 && fwspec->param[3] != 0 &&
++	    gic_data.ppi_descs)
+ 		return d == partition_get_domain(gic_data.ppi_descs[fwspec->param[1]]);
  
-+	WARN((gic_data.ppi_nr > 16 || GIC_ESPI_NR != 0) &&
-+	     !(gic_read_ctlr() & ICC_CTLR_EL1_ExtRange),
-+	     "Distributor has extended ranges, but CPU%d doesn't\n",
-+	     smp_processor_id());
+ 	return d == gic_data.domain;
+@@ -1375,6 +1376,9 @@ static int partition_domain_translate(struct irq_domain *d,
+ 	struct device_node *np;
+ 	int ret;
+ 
++	if (!gic_data.ppi_descs)
++		return -ENOMEM;
 +
- 	rbase = gic_data_rdist_sgi_base();
+ 	np = of_find_node_by_phandle(fwspec->param[3]);
+ 	if (WARN_ON(!np))
+ 		return -EINVAL;
+@@ -1531,6 +1535,10 @@ static void __init gic_populate_ppi_partitions(struct device_node *gic_node)
+ 	if (!parts_node)
+ 		return;
  
- 	/* Configure SGIs/PPIs as non-secure Group-1 */
-diff --git a/include/linux/irqchip/arm-gic-v3.h b/include/linux/irqchip/arm-gic-v3.h
-index 9ec3349..5cc10cf 100644
---- a/include/linux/irqchip/arm-gic-v3.h
-+++ b/include/linux/irqchip/arm-gic-v3.h
-@@ -496,6 +496,7 @@
- #define ICC_CTLR_EL1_A3V_SHIFT		15
- #define ICC_CTLR_EL1_A3V_MASK		(0x1 << ICC_CTLR_EL1_A3V_SHIFT)
- #define ICC_CTLR_EL1_RSS		(0x1 << 18)
-+#define ICC_CTLR_EL1_ExtRange		(0x1 << 19)
- #define ICC_PMR_EL1_SHIFT		0
- #define ICC_PMR_EL1_MASK		(0xff << ICC_PMR_EL1_SHIFT)
- #define ICC_BPR0_EL1_SHIFT		0
++	gic_data.ppi_descs = kcalloc(gic_data.ppi_nr, sizeof(*gic_data.ppi_descs), GFP_KERNEL);
++	if (!gic_data.ppi_descs)
++		return;
++
+ 	nr_parts = of_get_child_count(parts_node);
+ 
+ 	if (!nr_parts)
+@@ -1582,7 +1590,7 @@ static void __init gic_populate_ppi_partitions(struct device_node *gic_node)
+ 		part_idx++;
+ 	}
+ 
+-	for (i = 0; i < 16; i++) {
++	for (i = 0; i < gic_data.ppi_nr; i++) {
+ 		unsigned int irq;
+ 		struct partition_desc *desc;
+ 		struct irq_fwspec ppi_fwspec = {
