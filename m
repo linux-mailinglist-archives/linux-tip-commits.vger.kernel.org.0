@@ -2,41 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DE8FCAB520
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Sep 2019 11:52:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 67E8DAB69E
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Sep 2019 13:08:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392977AbfIFJwL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 6 Sep 2019 05:52:11 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:46795 "EHLO
+        id S2392179AbfIFLIU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 6 Sep 2019 07:08:20 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:46992 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2392975AbfIFJwK (ORCPT
+        with ESMTP id S1727053AbfIFLIT (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 6 Sep 2019 05:52:10 -0400
+        Fri, 6 Sep 2019 07:08:19 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i6AuS-000557-PG; Fri, 06 Sep 2019 11:52:04 +0200
+        id 1i6C6B-00072h-LB; Fri, 06 Sep 2019 13:08:15 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4B09D1C0DE8;
-        Fri,  6 Sep 2019 11:52:04 +0200 (CEST)
-Date:   Fri, 06 Sep 2019 09:52:04 -0000
-From:   "tip-bot2 for Jiri Slaby" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C9A7C1C0E20;
+        Fri,  6 Sep 2019 13:08:14 +0200 (CEST)
+Date:   Fri, 06 Sep 2019 11:08:14 -0000
+From:   "tip-bot2 for Lubomir Rintel" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/asm] x86/asm/suspend: Get rid of bogus_64_magic
-Cc:     Jiri Slaby <jslaby@suse.cz>, Borislav Petkov <bp@suse.de>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        Len Brown <lenb@kernel.org>, linux-pm@vger.kernel.org,
-        Pavel Machek <pavel@ucw.cz>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "x86-ml" <x86@kernel.org>, Ingo Molnar <mingo@kernel.org>,
-        Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
-In-Reply-To: <20190906075550.23435-1-jslaby@suse.cz>
-References: <20190906075550.23435-1-jslaby@suse.cz>
+Subject: [tip: irq/core] irqchip/mmp: Add missing chained_irq_{enter,exit}()
+Cc:     Lubomir Rintel <lkundrak@v3.sk>, Marc Zyngier <maz@kernel.org>,
+        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20190822092643.593488-8-lkundrak@v3.sk>
+References: <20190822092643.593488-8-lkundrak@v3.sk>
 MIME-Version: 1.0
-Message-ID: <156776352423.24167.12782521075233555186.tip-bot2@tip-bot2>
+Message-ID: <156776809474.24167.8447201645063845818.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,76 +45,70 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/asm branch of tip:
+The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     559ceeed62a5121783a8955c63aeb18aaa0ef224
-Gitweb:        https://git.kernel.org/tip/559ceeed62a5121783a8955c63aeb18aaa0ef224
-Author:        Jiri Slaby <jslaby@suse.cz>
-AuthorDate:    Fri, 06 Sep 2019 09:55:49 +02:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Fri, 06 Sep 2019 10:34:15 +02:00
+Commit-ID:     a46bc5fd8b205050ebbdccc6d5ca4124edb8dc6c
+Gitweb:        https://git.kernel.org/tip/a46bc5fd8b205050ebbdccc6d5ca4124edb8dc6c
+Author:        Lubomir Rintel <lkundrak@v3.sk>
+AuthorDate:    Thu, 22 Aug 2019 11:26:30 +02:00
+Committer:     Marc Zyngier <maz@kernel.org>
+CommitterDate: Fri, 30 Aug 2019 15:23:30 +01:00
 
-x86/asm/suspend: Get rid of bogus_64_magic
+irqchip/mmp: Add missing chained_irq_{enter,exit}()
 
-bogus_64_magic is only a dead-end loop. There is no need for an
-out-of-order function (and unannotated local label), so just handle it
-in-place and also store 0xbad-m-a-g-i-c to %rcx beforehand, in case
-someone is inspecting registers.
+The lack of chained_irq_exit() leaves the muxed interrupt masked on MMP3.
+For reasons unknown this is not a problem on MMP2.
 
-Here a qemu+gdb example:
-
-  Remote debugging using localhost:1235
-  wakeup_long64 () at arch/x86/kernel/acpi/wakeup_64.S:26
-  26              jmp 1b
-  (gdb) info registers
-  rax            0x123456789abcdef0       1311768467463790320
-  rbx            0x0      0
-  rcx            0xbad6d61676963  3286910041024867
-  		 ^^^^^^^^^^^^^^^
-
- [ bp: Add the gdb example. ]
-
-Signed-off-by: Jiri Slaby <jslaby@suse.cz>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Len Brown <lenb@kernel.org>
-Cc: linux-pm@vger.kernel.org
-Cc: Pavel Machek <pavel@ucw.cz>
-Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: x86-ml <x86@kernel.org>
-Link: https://lkml.kernel.org/r/20190906075550.23435-1-jslaby@suse.cz
+Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20190822092643.593488-8-lkundrak@v3.sk
 ---
- arch/x86/kernel/acpi/wakeup_64.S | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/irqchip/irq-mmp.c |  9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/acpi/wakeup_64.S b/arch/x86/kernel/acpi/wakeup_64.S
-index b0715c3..7f9ade1 100644
---- a/arch/x86/kernel/acpi/wakeup_64.S
-+++ b/arch/x86/kernel/acpi/wakeup_64.S
-@@ -18,8 +18,13 @@ ENTRY(wakeup_long64)
- 	movq	saved_magic, %rax
- 	movq	$0x123456789abcdef0, %rdx
- 	cmpq	%rdx, %rax
--	jne	bogus_64_magic
-+	je	2f
+diff --git a/drivers/irqchip/irq-mmp.c b/drivers/irqchip/irq-mmp.c
+index f60e52b..fa23947 100644
+--- a/drivers/irqchip/irq-mmp.c
++++ b/drivers/irqchip/irq-mmp.c
+@@ -13,6 +13,7 @@
+ #include <linux/init.h>
+ #include <linux/irq.h>
+ #include <linux/irqchip.h>
++#include <linux/irqchip/chained_irq.h>
+ #include <linux/irqdomain.h>
+ #include <linux/io.h>
+ #include <linux/ioport.h>
+@@ -132,11 +133,14 @@ struct irq_chip icu_irq_chip = {
+ static void icu_mux_irq_demux(struct irq_desc *desc)
+ {
+ 	unsigned int irq = irq_desc_get_irq(desc);
++	struct irq_chip *chip = irq_desc_get_chip(desc);
+ 	struct irq_domain *domain;
+ 	struct icu_chip_data *data;
+ 	int i;
+ 	unsigned long mask, status, n;
  
-+	/* stop here on a saved_magic mismatch */
-+	movq $0xbad6d61676963, %rcx
-+1:
-+	jmp 1b
-+2:
- 	movw	$__KERNEL_DS, %ax
- 	movw	%ax, %ss	
- 	movw	%ax, %ds
-@@ -37,9 +42,6 @@ ENTRY(wakeup_long64)
- 	jmp	*%rax
- ENDPROC(wakeup_long64)
++	chained_irq_enter(chip, desc);
++
+ 	for (i = 1; i < max_icu_nr; i++) {
+ 		if (irq == icu_data[i].cascade_irq) {
+ 			domain = icu_data[i].domain;
+@@ -146,7 +150,7 @@ static void icu_mux_irq_demux(struct irq_desc *desc)
+ 	}
+ 	if (i >= max_icu_nr) {
+ 		pr_err("Spurious irq %d in MMP INTC\n", irq);
+-		return;
++		goto out;
+ 	}
  
--bogus_64_magic:
--	jmp	bogus_64_magic
--
- ENTRY(do_suspend_lowlevel)
- 	FRAME_BEGIN
- 	subq	$8, %rsp
+ 	mask = readl_relaxed(data->reg_mask);
+@@ -158,6 +162,9 @@ static void icu_mux_irq_demux(struct irq_desc *desc)
+ 			generic_handle_irq(icu_data[i].virq_base + n);
+ 		}
+ 	}
++
++out:
++	chained_irq_exit(chip, desc);
+ }
+ 
+ static int mmp_irq_domain_map(struct irq_domain *d, unsigned int irq,
