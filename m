@@ -2,46 +2,35 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 47690ABFED
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Sep 2019 20:55:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 684E8ACB44
+	for <lists+linux-tip-commits@lfdr.de>; Sun,  8 Sep 2019 09:07:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387967AbfIFSz5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 6 Sep 2019 14:55:57 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:48245 "EHLO
+        id S1726990AbfIHHHT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 8 Sep 2019 03:07:19 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:50007 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1733057AbfIFSz5 (ORCPT
+        with ESMTP id S1726643AbfIHHHT (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 6 Sep 2019 14:55:57 -0400
+        Sun, 8 Sep 2019 03:07:19 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i6JOb-0000EG-0g; Fri, 06 Sep 2019 20:55:45 +0200
+        id 1i6rHy-0006Ud-M0; Sun, 08 Sep 2019 09:07:10 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 7BAC91C0744;
-        Fri,  6 Sep 2019 20:55:44 +0200 (CEST)
-Date:   Fri, 06 Sep 2019 18:55:44 -0000
-From:   "tip-bot2 for Steve Wahl" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B71BD1C072D;
+        Sun,  8 Sep 2019 09:07:09 +0200 (CEST)
+Date:   Sun, 08 Sep 2019 07:07:09 -0000
+From:   "tip-bot2 for Jan Stancek" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/purgatory: Change compiler flags from
- -mcmodel=kernel to -mcmodel=large to fix kexec relocation errors
-Cc:     Vaibhav Rustagi <vaibhavrustagi@google.com>,
-        Andreas Smas <andreas@lonelycoder.com>,
-        Steve Wahl <steve.wahl@hpe.com>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Borislav Petkov <bp@alien8.de>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Peter Zijlstra <peterz@infradead.org>,
+Subject: [tip: x86/urgent] x86/timer: Force PIT initialization when !X86_FEATURE_ARAT
+Cc:     Jan Stancek <jstancek@redhat.com>,
         Thomas Gleixner <tglx@linutronix.de>,
-        clang-built-linux@googlegroups.com, dimitri.sivanich@hpe.com,
-        mike.travis@hpe.com, russ.anderson@hpe.com,
-        Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org
-In-Reply-To: <20190905202346.GA26595@swahl-linux>
-References: <20190905202346.GA26595@swahl-linux>
+        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
+        linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <156779614439.24167.3539003390891394057.tip-bot2@tip-bot2>
+Message-ID: <156792642964.24167.6604165442907782350.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -57,135 +46,47 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     e16c2983fba0fa6763e43ad10916be35e3d8dc05
-Gitweb:        https://git.kernel.org/tip/e16c2983fba0fa6763e43ad10916be35e3d8dc05
-Author:        Steve Wahl <steve.wahl@hpe.com>
-AuthorDate:    Thu, 05 Sep 2019 15:23:46 -05:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 06 Sep 2019 09:50:56 +02:00
+Commit-ID:     afa8b475c1aec185a8e106c48b3832e0b88bc2de
+Gitweb:        https://git.kernel.org/tip/afa8b475c1aec185a8e106c48b3832e0b88bc2de
+Author:        Jan Stancek <jstancek@redhat.com>
+AuthorDate:    Sun, 08 Sep 2019 00:50:40 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Sun, 08 Sep 2019 09:01:15 +02:00
 
-x86/purgatory: Change compiler flags from -mcmodel=kernel to -mcmodel=large to fix kexec relocation errors
+x86/timer: Force PIT initialization when !X86_FEATURE_ARAT
 
-The last change to this Makefile caused relocation errors when loading
-a kdump kernel.  Restore -mcmodel=large (not -mcmodel=kernel),
--ffreestanding, and -fno-zero-initialized-bsss, without reverting to
-the former practice of resetting KBUILD_CFLAGS.
+KVM guests with commit c8c4076723da ("x86/timer: Skip PIT initialization on
+modern chipsets") applied to guest kernel have been observed to have
+unusually higher CPU usage with symptoms of increase in vm exits for HLT
+and MSW_WRITE (MSR_IA32_TSCDEADLINE).
 
-Purgatory.ro is a standalone binary that is not linked against the
-rest of the kernel.  Its image is copied into an array that is linked
-to the kernel, and from there kexec relocates it wherever it desires.
+This is caused by older QEMUs lacking support for X86_FEATURE_ARAT.  lapic
+clock retains CLOCK_EVT_FEAT_C3STOP and nohz stays inactive.  There's no
+usable broadcast device either.
 
-With the previous change to compiler flags, the error "kexec: Overflow
-in relocation type 11 value 0x11fffd000" was encountered when trying
-to load the crash kernel.  This is from kexec code trying to relocate
-the purgatory.ro object.
+Do the PIT initialization if guest CPU lacks X86_FEATURE_ARAT.  On real
+hardware it shouldn't matter as ARAT and DEADLINE come together.
 
->From the error message, relocation type 11 is R_X86_64_32S.  The
-x86_64 ABI says:
+Fixes: c8c4076723da ("x86/timer: Skip PIT initialization on modern chipsets")
+Signed-off-by: Jan Stancek <jstancek@redhat.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 
-  "The R_X86_64_32 and R_X86_64_32S relocations truncate the
-   computed value to 32-bits.  The linker must verify that the
-   generated value for the R_X86_64_32 (R_X86_64_32S) relocation
-   zero-extends (sign-extends) to the original 64-bit value."
-
-This type of relocation doesn't work when kexec chooses to place the
-purgatory binary in memory that is not reachable with 32 bit
-addresses.
-
-The compiler flag -mcmodel=kernel allows those type of relocations to
-be emitted, so revert to using -mcmodel=large as was done before.
-
-Also restore the -ffreestanding and -fno-zero-initialized-bss flags
-because they are appropriate for a stand alone piece of object code
-which doesn't explicitly zero the bss, and one other report has said
-undefined symbols are encountered without -ffreestanding.
-
-These identical compiler flag changes need to happen for every object
-that becomes part of the purgatory.ro object, so gather them together
-first into PURGATORY_CFLAGS_REMOVE and PURGATORY_CFLAGS, and then
-apply them to each of the objects that have C source.  Do not apply
-any of these flags to kexec-purgatory.o, which is not part of the
-standalone object but part of the kernel proper.
-
-Tested-by: Vaibhav Rustagi <vaibhavrustagi@google.com>
-Tested-by: Andreas Smas <andreas@lonelycoder.com>
-Signed-off-by: Steve Wahl <steve.wahl@hpe.com>
-Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: None
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: clang-built-linux@googlegroups.com
-Cc: dimitri.sivanich@hpe.com
-Cc: mike.travis@hpe.com
-Cc: russ.anderson@hpe.com
-Fixes: b059f801a937 ("x86/purgatory: Use CFLAGS_REMOVE rather than reset KBUILD_CFLAGS")
-Link: https://lkml.kernel.org/r/20190905202346.GA26595@swahl-linux
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- arch/x86/purgatory/Makefile | 35 +++++++++++++++++++----------------
- 1 file changed, 19 insertions(+), 16 deletions(-)
+ arch/x86/kernel/apic/apic.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/x86/purgatory/Makefile b/arch/x86/purgatory/Makefile
-index 8901a1f..10fb42d 100644
---- a/arch/x86/purgatory/Makefile
-+++ b/arch/x86/purgatory/Makefile
-@@ -18,37 +18,40 @@ targets += purgatory.ro
- KASAN_SANITIZE	:= n
- KCOV_INSTRUMENT := n
+diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
+index dba2828..f91b3ff 100644
+--- a/arch/x86/kernel/apic/apic.c
++++ b/arch/x86/kernel/apic/apic.c
+@@ -834,6 +834,10 @@ bool __init apic_needs_pit(void)
+ 	if (!boot_cpu_has(X86_FEATURE_APIC))
+ 		return true;
  
-+# These are adjustments to the compiler flags used for objects that
-+# make up the standalone purgatory.ro
++	/* Virt guests may lack ARAT, but still have DEADLINE */
++	if (!boot_cpu_has(X86_FEATURE_ARAT))
++		return true;
 +
-+PURGATORY_CFLAGS_REMOVE := -mcmodel=kernel
-+PURGATORY_CFLAGS := -mcmodel=large -ffreestanding -fno-zero-initialized-in-bss
-+
- # Default KBUILD_CFLAGS can have -pg option set when FTRACE is enabled. That
- # in turn leaves some undefined symbols like __fentry__ in purgatory and not
- # sure how to relocate those.
- ifdef CONFIG_FUNCTION_TRACER
--CFLAGS_REMOVE_sha256.o		+= $(CC_FLAGS_FTRACE)
--CFLAGS_REMOVE_purgatory.o	+= $(CC_FLAGS_FTRACE)
--CFLAGS_REMOVE_string.o		+= $(CC_FLAGS_FTRACE)
--CFLAGS_REMOVE_kexec-purgatory.o	+= $(CC_FLAGS_FTRACE)
-+PURGATORY_CFLAGS_REMOVE		+= $(CC_FLAGS_FTRACE)
- endif
- 
- ifdef CONFIG_STACKPROTECTOR
--CFLAGS_REMOVE_sha256.o		+= -fstack-protector
--CFLAGS_REMOVE_purgatory.o	+= -fstack-protector
--CFLAGS_REMOVE_string.o		+= -fstack-protector
--CFLAGS_REMOVE_kexec-purgatory.o	+= -fstack-protector
-+PURGATORY_CFLAGS_REMOVE		+= -fstack-protector
- endif
- 
- ifdef CONFIG_STACKPROTECTOR_STRONG
--CFLAGS_REMOVE_sha256.o		+= -fstack-protector-strong
--CFLAGS_REMOVE_purgatory.o	+= -fstack-protector-strong
--CFLAGS_REMOVE_string.o		+= -fstack-protector-strong
--CFLAGS_REMOVE_kexec-purgatory.o	+= -fstack-protector-strong
-+PURGATORY_CFLAGS_REMOVE		+= -fstack-protector-strong
- endif
- 
- ifdef CONFIG_RETPOLINE
--CFLAGS_REMOVE_sha256.o		+= $(RETPOLINE_CFLAGS)
--CFLAGS_REMOVE_purgatory.o	+= $(RETPOLINE_CFLAGS)
--CFLAGS_REMOVE_string.o		+= $(RETPOLINE_CFLAGS)
--CFLAGS_REMOVE_kexec-purgatory.o	+= $(RETPOLINE_CFLAGS)
-+PURGATORY_CFLAGS_REMOVE		+= $(RETPOLINE_CFLAGS)
- endif
- 
-+CFLAGS_REMOVE_purgatory.o	+= $(PURGATORY_CFLAGS_REMOVE)
-+CFLAGS_purgatory.o		+= $(PURGATORY_CFLAGS)
-+
-+CFLAGS_REMOVE_sha256.o		+= $(PURGATORY_CFLAGS_REMOVE)
-+CFLAGS_sha256.o			+= $(PURGATORY_CFLAGS)
-+
-+CFLAGS_REMOVE_string.o		+= $(PURGATORY_CFLAGS_REMOVE)
-+CFLAGS_string.o			+= $(PURGATORY_CFLAGS)
-+
- $(obj)/purgatory.ro: $(PURGATORY_OBJS) FORCE
- 		$(call if_changed,ld)
- 
+ 	/* Deadline timer is based on TSC so no further PIT action required */
+ 	if (boot_cpu_has(X86_FEATURE_TSC_DEADLINE_TIMER))
+ 		return false;
