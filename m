@@ -2,40 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E79EAE415
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 10 Sep 2019 08:57:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B9BFAE8F7
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 10 Sep 2019 13:18:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731204AbfIJG5f (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 10 Sep 2019 02:57:35 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:53037 "EHLO
+        id S2403846AbfIJLSL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 10 Sep 2019 07:18:11 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:54089 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729634AbfIJG5e (ORCPT
+        with ESMTP id S2392848AbfIJLSL (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 10 Sep 2019 02:57:34 -0400
+        Tue, 10 Sep 2019 07:18:11 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i7a5h-0007Cf-NK; Tue, 10 Sep 2019 08:57:29 +0200
+        id 1i7e9v-0004IW-Dt; Tue, 10 Sep 2019 13:18:07 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 138A21C0714;
-        Tue, 10 Sep 2019 08:57:29 +0200 (CEST)
-Date:   Tue, 10 Sep 2019 06:57:28 -0000
-From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 7A6F41C0714;
+        Tue, 10 Sep 2019 13:18:06 +0200 (CEST)
+Date:   Tue, 10 Sep 2019 11:18:06 -0000
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/objtool] objtool: Clobber user CFLAGS variable
-Cc:     Valdis Kletnieks <valdis.kletnieks@vt.edu>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
+Subject: [tip: timers/core] posix-cpu-timers: Fix permission check regression
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Frederic Weisbecker <frederic@kernel.org>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <83a276df209962e6058fcb6c615eef9d401c21bc.1567121311.git.jpoimboe@redhat.com>
-References: <83a276df209962e6058fcb6c615eef9d401c21bc.1567121311.git.jpoimboe@redhat.com>
+In-Reply-To: <alpine.DEB.2.21.1909052314110.1902@nanos.tec.linutronix.de>
+References: <alpine.DEB.2.21.1909052314110.1902@nanos.tec.linutronix.de>
 MIME-Version: 1.0
-Message-ID: <156809864897.24167.16002808408492392040.tip-bot2@tip-bot2>
+Message-ID: <156811428632.24167.388244767927708510.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,44 +46,139 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the core/objtool branch of tip:
+The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     f73b3cc39c84220e6dccd463b5c8279b03514646
-Gitweb:        https://git.kernel.org/tip/f73b3cc39c84220e6dccd463b5c8279b03514646
-Author:        Josh Poimboeuf <jpoimboe@redhat.com>
-AuthorDate:    Thu, 29 Aug 2019 18:28:49 -05:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 10 Sep 2019 08:49:52 +02:00
+Commit-ID:     77b4b5420422fc037d00b8f3f0e89b2262e4ae29
+Gitweb:        https://git.kernel.org/tip/77b4b5420422fc037d00b8f3f0e89b2262e4ae29
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Thu, 05 Sep 2019 23:15:08 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Tue, 10 Sep 2019 12:13:07 +01:00
 
-objtool: Clobber user CFLAGS variable
+posix-cpu-timers: Fix permission check regression
 
-If the build user has the CFLAGS variable set in their environment,
-objtool blindly appends to it, which can cause unexpected behavior.
+The recent consolidation of the three permission checks introduced a subtle
+regression. For timer_create() with a process wide timer it returns the
+current task if the lookup through the PID which is encoded into the
+clockid results in returning current.
 
-Clobber CFLAGS to ensure consistent objtool compilation behavior.
+That's broken because it does not validate whether the current task is the
+group leader.
 
-Reported-by: Valdis Kletnieks <valdis.kletnieks@vt.edu>
-Tested-by: Valdis Kletnieks <valdis.kletnieks@vt.edu>
-Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/83a276df209962e6058fcb6c615eef9d401c21bc.1567121311.git.jpoimboe@redhat.com
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
+That was caused by the two different variants of permission checks:
+
+  - posix_cpu_timer_get() allowed access to the process wide clock when the
+    looked up task is current. That's not an issue because the process wide
+    clock is in the shared sighand.
+
+  - posix_cpu_timer_create() made sure that the looked up task is the group
+    leader.
+
+Restore the previous state.
+
+Note, that these permission checks are more than questionable, but that's
+subject to follow up changes.
+
+Fixes: 6ae40e3fdcd3 ("posix-cpu-timers: Provide task validation functions")
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+Link: https://lkml.kernel.org/r/alpine.DEB.2.21.1909052314110.1902@nanos.tec.linutronix.de
+
 ---
- tools/objtool/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/time/posix-cpu-timers.c | 44 ++++++++++++++++++++++++++-------
+ 1 file changed, 35 insertions(+), 9 deletions(-)
 
-diff --git a/tools/objtool/Makefile b/tools/objtool/Makefile
-index 8815823..20f67fc 100644
---- a/tools/objtool/Makefile
-+++ b/tools/objtool/Makefile
-@@ -35,7 +35,7 @@ INCLUDES := -I$(srctree)/tools/include \
- 	    -I$(srctree)/tools/arch/$(HOSTARCH)/include/uapi \
- 	    -I$(srctree)/tools/objtool/arch/$(ARCH)/include
- WARNINGS := $(EXTRA_WARNINGS) -Wno-switch-default -Wno-switch-enum -Wno-packed
--CFLAGS   += -Werror $(WARNINGS) $(KBUILD_HOSTCFLAGS) -g $(INCLUDES) $(LIBELF_FLAGS)
-+CFLAGS   := -Werror $(WARNINGS) $(KBUILD_HOSTCFLAGS) -g $(INCLUDES) $(LIBELF_FLAGS)
- LDFLAGS  += $(LIBELF_LIBS) $(LIBSUBCMD) $(KBUILD_HOSTLDFLAGS)
+diff --git a/kernel/time/posix-cpu-timers.c b/kernel/time/posix-cpu-timers.c
+index c3a95b1..92a4319 100644
+--- a/kernel/time/posix-cpu-timers.c
++++ b/kernel/time/posix-cpu-timers.c
+@@ -47,25 +47,46 @@ void update_rlimit_cpu(struct task_struct *task, unsigned long rlim_new)
+ /*
+  * Functions for validating access to tasks.
+  */
+-static struct task_struct *lookup_task(const pid_t pid, bool thread)
++static struct task_struct *lookup_task(const pid_t pid, bool thread,
++				       bool gettime)
+ {
+ 	struct task_struct *p;
  
- # Allow old libelf to be used:
++	/*
++	 * If the encoded PID is 0, then the timer is targeted at current
++	 * or the process to which current belongs.
++	 */
+ 	if (!pid)
+ 		return thread ? current : current->group_leader;
+ 
+ 	p = find_task_by_vpid(pid);
+-	if (!p || p == current)
++	if (!p)
+ 		return p;
++
+ 	if (thread)
+ 		return same_thread_group(p, current) ? p : NULL;
+-	if (p == current)
+-		return p;
++
++	if (gettime) {
++		/*
++		 * For clock_gettime(PROCESS) the task does not need to be
++		 * the actual group leader. tsk->sighand gives
++		 * access to the group's clock.
++		 *
++		 * Timers need the group leader because they take a
++		 * reference on it and store the task pointer until the
++		 * timer is destroyed.
++		 */
++		return (p == current || thread_group_leader(p)) ? p : NULL;
++	}
++
++	/*
++	 * For processes require that p is group leader.
++	 */
+ 	return has_group_leader_pid(p) ? p : NULL;
+ }
+ 
+ static struct task_struct *__get_task_for_clock(const clockid_t clock,
+-						bool getref)
++						bool getref, bool gettime)
+ {
+ 	const bool thread = !!CPUCLOCK_PERTHREAD(clock);
+ 	const pid_t pid = CPUCLOCK_PID(clock);
+@@ -75,7 +96,7 @@ static struct task_struct *__get_task_for_clock(const clockid_t clock,
+ 		return NULL;
+ 
+ 	rcu_read_lock();
+-	p = lookup_task(pid, thread);
++	p = lookup_task(pid, thread, gettime);
+ 	if (p && getref)
+ 		get_task_struct(p);
+ 	rcu_read_unlock();
+@@ -84,12 +105,17 @@ static struct task_struct *__get_task_for_clock(const clockid_t clock,
+ 
+ static inline struct task_struct *get_task_for_clock(const clockid_t clock)
+ {
+-	return __get_task_for_clock(clock, true);
++	return __get_task_for_clock(clock, true, false);
++}
++
++static inline struct task_struct *get_task_for_clock_get(const clockid_t clock)
++{
++	return __get_task_for_clock(clock, true, true);
+ }
+ 
+ static inline int validate_clock_permissions(const clockid_t clock)
+ {
+-	return __get_task_for_clock(clock, false) ? 0 : -EINVAL;
++	return __get_task_for_clock(clock, false, false) ? 0 : -EINVAL;
+ }
+ 
+ /*
+@@ -339,7 +365,7 @@ static int posix_cpu_clock_get(const clockid_t clock, struct timespec64 *tp)
+ 	struct task_struct *tsk;
+ 	u64 t;
+ 
+-	tsk = get_task_for_clock(clock);
++	tsk = get_task_for_clock_get(clock);
+ 	if (!tsk)
+ 		return -EINVAL;
+ 
