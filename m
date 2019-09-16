@@ -2,43 +2,47 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 70549B3CF4
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 16 Sep 2019 16:55:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EBC92B3DA2
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 16 Sep 2019 17:28:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731112AbfIPOzG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 16 Sep 2019 10:55:06 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:39494 "EHLO
+        id S1728810AbfIPP2H (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 16 Sep 2019 11:28:07 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:39580 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730902AbfIPOzG (ORCPT
+        with ESMTP id S1727374AbfIPP2H (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 16 Sep 2019 10:55:06 -0400
+        Mon, 16 Sep 2019 11:28:07 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1i9sP0-0001d7-M3; Mon, 16 Sep 2019 16:54:54 +0200
+        id 1i9sum-0003A6-HS; Mon, 16 Sep 2019 17:27:44 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 2CE4F1C06CD;
-        Mon, 16 Sep 2019 16:54:54 +0200 (CEST)
-Date:   Mon, 16 Sep 2019 14:54:54 -0000
-From:   "tip-bot2 for Kirill A. Shutemov" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D7A481C06CD;
+        Mon, 16 Sep 2019 17:27:43 +0200 (CEST)
+Date:   Mon, 16 Sep 2019 15:27:43 -0000
+From:   "tip-bot2 for Sylvain 'ythier' Hitier" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/mm] x86/mm: Enable 5-level paging support by default
-Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
+Subject: [tip: x86/mm] x86/cpu: Clean up intel_tlb_table[]
+Cc:     "Sylvain 'ythier' Hitier" <sylvain.hitier@gmail.com>,
+        Alex Shi <alex.shi@intel.com>,
         Andy Lutomirski <luto@kernel.org>,
         Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
         "H. Peter Anvin" <hpa@zytor.com>,
+        Hans de Goede <hdegoede@redhat.com>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Peter Zijlstra <peterz@infradead.org>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Ricardo Neri <ricardo.neri-calderon@linux.intel.com>,
         Rik van Riel <riel@surriel.com>,
-        Thomas Gleixner <tglx@linutronix.de>, linux-mm@kvack.org,
+        Thomas Gleixner <tglx@linutronix.de>, trivial@kernel.org,
         Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org
-In-Reply-To: <20190913095452.40592-1-kirill.shutemov@linux.intel.com>
-References: <20190913095452.40592-1-kirill.shutemov@linux.intel.com>
+In-Reply-To: <20190915090917.GA5086@lilas>
+References: <20190915090917.GA5086@lilas>
 MIME-Version: 1.0
-Message-ID: <156864569401.24167.16824438993576938124.tip-bot2@tip-bot2>
+Message-ID: <156864766375.24167.2061010311416733334.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -54,55 +58,75 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/mm branch of tip:
 
-Commit-ID:     18ec1eaf58fbf2d9009a752a102a3d8e0d905a0f
-Gitweb:        https://git.kernel.org/tip/18ec1eaf58fbf2d9009a752a102a3d8e0d905a0f
-Author:        Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-AuthorDate:    Fri, 13 Sep 2019 12:54:52 +03:00
+Commit-ID:     77df779de742d6616d4ddd177cba152a75259104
+Gitweb:        https://git.kernel.org/tip/77df779de742d6616d4ddd177cba152a75259104
+Author:        Sylvain 'ythier' Hitier <sylvain.hitier@gmail.com>
+AuthorDate:    Sun, 15 Sep 2019 11:09:25 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Mon, 16 Sep 2019 16:51:20 +02:00
+CommitterDate: Mon, 16 Sep 2019 17:23:46 +02:00
 
-x86/mm: Enable 5-level paging support by default
+x86/cpu: Clean up intel_tlb_table[]
 
-Support of boot-time switching between 4- and 5-level paging mode is
-upstream since 4.17.
+- Remove the unneeded backslash at EOL: that's not a macro.
+  And let's please checkpatch by aligning to open parenthesis.
 
-We run internal testing with 5-level paging support enabled for a while
-and it doesn't not cause any functional or performance regression on
-4-level paging hardware.
+- For 0x4f descriptor, remove " */" from the info field.
 
-The only 5-level paging related regressions I saw were in early boot
-code that runs independently from CONFIG_X86_5LEVEL.
+- For 0xc2 descriptor, sync the beginning of info to match the tlb_type.
 
-The next major release of distributions expected to have
-CONFIG_X86_5LEVEL=y.
+(The value of info fields could be made more regular, but it's unused by
+ the code and will be read only by developers, so don't bother.)
 
-Enable the option by default. It may help to catch obscure bugs early.
-
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+Signed-off-by: Sylvain 'ythier' Hitier <sylvain.hitier@gmail.com>
+Cc: Alex Shi <alex.shi@intel.com>
 Cc: Andy Lutomirski <luto@kernel.org>
 Cc: Borislav Petkov <bp@alien8.de>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
 Cc: H. Peter Anvin <hpa@zytor.com>
+Cc: Hans de Goede <hdegoede@redhat.com>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Cc: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
 Cc: Rik van Riel <riel@surriel.com>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: linux-mm@kvack.org
-Link: https://lkml.kernel.org/r/20190913095452.40592-1-kirill.shutemov@linux.intel.com
+Cc: trivial@kernel.org
+Link: https://lkml.kernel.org/r/20190915090917.GA5086@lilas
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- arch/x86/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/kernel/cpu/intel.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 58eae28..d4bbebe 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -1483,6 +1483,7 @@ config X86_PAE
+diff --git a/arch/x86/kernel/cpu/intel.c b/arch/x86/kernel/cpu/intel.c
+index 8d6d92e..24e619d 100644
+--- a/arch/x86/kernel/cpu/intel.c
++++ b/arch/x86/kernel/cpu/intel.c
+@@ -813,7 +813,7 @@ static const struct _tlb_table intel_tlb_table[] = {
+ 	{ 0x04, TLB_DATA_4M,		8,	" TLB_DATA 4 MByte pages, 4-way set associative" },
+ 	{ 0x05, TLB_DATA_4M,		32,	" TLB_DATA 4 MByte pages, 4-way set associative" },
+ 	{ 0x0b, TLB_INST_4M,		4,	" TLB_INST 4 MByte pages, 4-way set associative" },
+-	{ 0x4f, TLB_INST_4K,		32,	" TLB_INST 4 KByte pages */" },
++	{ 0x4f, TLB_INST_4K,		32,	" TLB_INST 4 KByte pages" },
+ 	{ 0x50, TLB_INST_ALL,		64,	" TLB_INST 4 KByte and 2-MByte or 4-MByte pages" },
+ 	{ 0x51, TLB_INST_ALL,		128,	" TLB_INST 4 KByte and 2-MByte or 4-MByte pages" },
+ 	{ 0x52, TLB_INST_ALL,		256,	" TLB_INST 4 KByte and 2-MByte or 4-MByte pages" },
+@@ -841,7 +841,7 @@ static const struct _tlb_table intel_tlb_table[] = {
+ 	{ 0xba, TLB_DATA_4K,		64,	" TLB_DATA 4 KByte pages, 4-way associative" },
+ 	{ 0xc0, TLB_DATA_4K_4M,		8,	" TLB_DATA 4 KByte and 4 MByte pages, 4-way associative" },
+ 	{ 0xc1, STLB_4K_2M,		1024,	" STLB 4 KByte and 2 MByte pages, 8-way associative" },
+-	{ 0xc2, TLB_DATA_2M_4M,		16,	" DTLB 2 MByte/4MByte pages, 4-way associative" },
++	{ 0xc2, TLB_DATA_2M_4M,		16,	" TLB_DATA 2 MByte/4MByte pages, 4-way associative" },
+ 	{ 0xca, STLB_4K,		512,	" STLB 4 KByte pages, 4-way associative" },
+ 	{ 0x00, 0, 0 }
+ };
+@@ -853,8 +853,8 @@ static void intel_tlb_lookup(const unsigned char desc)
+ 		return;
  
- config X86_5LEVEL
- 	bool "Enable 5-level page tables support"
-+	default y
- 	select DYNAMIC_MEMORY_LAYOUT
- 	select SPARSEMEM_VMEMMAP
- 	depends on X86_64
+ 	/* look up this descriptor in the table */
+-	for (k = 0; intel_tlb_table[k].descriptor != desc && \
+-			intel_tlb_table[k].descriptor != 0; k++)
++	for (k = 0; intel_tlb_table[k].descriptor != desc &&
++	     intel_tlb_table[k].descriptor != 0; k++)
+ 		;
+ 
+ 	if (intel_tlb_table[k].tlb_type == 0)
