@@ -2,134 +2,89 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 59064B2891
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 14 Sep 2019 00:43:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 38FAEB39B5
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 16 Sep 2019 13:49:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404083AbfIMWnq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 13 Sep 2019 18:43:46 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:35704 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404009AbfIMWnq (ORCPT
+        id S1730232AbfIPLt1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 16 Sep 2019 07:49:27 -0400
+Received: from eu-smtp-delivery-151.mimecast.com ([207.82.80.151]:57640 "EHLO
+        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1730124AbfIPLt1 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 13 Sep 2019 18:43:46 -0400
-Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tip-bot2@linutronix.de>)
-        id 1i8uHm-0005iJ-Hf; Sat, 14 Sep 2019 00:43:27 +0200
-Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A23011C04F3;
-        Sat, 14 Sep 2019 00:43:25 +0200 (CEST)
-Date:   Fri, 13 Sep 2019 22:43:25 -0000
-From:   "tip-bot2 for Miles Chen" <tip-bot2@linutronix.de>
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/psi: Correct overly pessimistic size calculation
-Cc:     Miles Chen <miles.chen@mediatek.com>,
-        <linux-mediatek@lists.infradead.org>, <wsd_upstream@mediatek.com>,
+        Mon, 16 Sep 2019 07:49:27 -0400
+Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ uk-mta-166-eM_ZKBYxM-CKIRdpMPgtuQ-1; Mon, 16 Sep 2019 12:49:23 +0100
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
+ Server (TLS) id 15.0.1347.2; Mon, 16 Sep 2019 12:49:22 +0100
+Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
+ AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000;
+ Mon, 16 Sep 2019 12:49:22 +0100
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-tip-commits@vger.kernel.org" 
+        <linux-tip-commits@vger.kernel.org>
+CC:     Miles Chen <miles.chen@mediatek.com>,
+        "linux-mediatek@lists.infradead.org" 
+        <linux-mediatek@lists.infradead.org>,
+        "wsd_upstream@mediatek.com" <wsd_upstream@mediatek.com>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Peter Zijlstra <peterz@infradead.org>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20190912103452.13281-1-miles.chen@mediatek.com>
+        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>
+Subject: RE: [tip: sched/core] sched/psi: Correct overly pessimistic size
+ calculation
+Thread-Topic: [tip: sched/core] sched/psi: Correct overly pessimistic size
+ calculation
+Thread-Index: AQHVaoS2xzP/Zpoyw0CDGPLgyB3STacuM1dg
+Date:   Mon, 16 Sep 2019 11:49:22 +0000
+Message-ID: <ead094dabae64e6c978e94b617c8d08c@AcuMS.aculab.com>
 References: <20190912103452.13281-1-miles.chen@mediatek.com>
+ <156841460535.24167.6273030361884540421.tip-bot2@tip-bot2>
+In-Reply-To: <156841460535.24167.6273030361884540421.tip-bot2@tip-bot2>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-Message-ID: <156841460535.24167.6273030361884540421.tip-bot2@tip-bot2>
-X-Mailer: tip-git-log-daemon
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+X-MC-Unique: eM_ZKBYxM-CKIRdpMPgtuQ-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+RnJvbTogTWlsZXMgQ2hlbg0KPiBTZW50OiAxMyBTZXB0ZW1iZXIgMjAxOSAyMzo0Mw0KPiBUaGUg
+Zm9sbG93aW5nIGNvbW1pdCBoYXMgYmVlbiBtZXJnZWQgaW50byB0aGUgc2NoZWQvY29yZSBicmFu
+Y2ggb2YgdGlwOg0KPiANCj4gQ29tbWl0LUlEOiAgICAgNGFkY2RjZWE3MTdjYjJkODQzNmJlZjAw
+ZGQ2ODlhYTViYzc2ZjExYg0KPiBHaXR3ZWI6ICAgICAgICBodHRwczovL2dpdC5rZXJuZWwub3Jn
+L3RpcC80YWRjZGNlYTcxN2NiMmQ4NDM2YmVmMDBkZDY4OWFhNWJjNzZmMTFiDQo+IEF1dGhvcjog
+ICAgICAgIE1pbGVzIENoZW4gPG1pbGVzLmNoZW5AbWVkaWF0ZWsuY29tPg0KPiBBdXRob3JEYXRl
+OiAgICBUaHUsIDEyIFNlcCAyMDE5IDE4OjM0OjUyICswODowMA0KPiBDb21taXR0ZXI6ICAgICBJ
+bmdvIE1vbG5hciA8bWluZ29Aa2VybmVsLm9yZz4NCj4gQ29tbWl0dGVyRGF0ZTogRnJpLCAxMyBT
+ZXAgMjAxOSAwNzo0OToyOCArMDI6MDANCj4gDQo+IHNjaGVkL3BzaTogQ29ycmVjdCBvdmVybHkg
+cGVzc2ltaXN0aWMgc2l6ZSBjYWxjdWxhdGlvbg0KPiANCj4gV2hlbiBwYXNzaW5nIGEgZXF1YWwg
+b3IgbW9yZSB0aGVuIDMyIGJ5dGVzIGxvbmcgc3RyaW5nIHRvIHBzaV93cml0ZSgpLA0KPiBwc2lf
+d3JpdGUoKSBjb3BpZXMgMzEgYnl0ZXMgdG8gaXRzIGJ1ZiBhbmQgb3ZlcndyaXRlcyBidWZbMzBd
+DQo+IHdpdGggJ1wwJy4gV2hpY2ggbWFrZXMgdGhlIGlucHV0IHN0cmluZyAxIGJ5dGUgc2hvcnRl
+ciB0aGFuDQo+IGl0IHNob3VsZCBiZS4NCj4gDQo+IEZpeCBpdCBieSBjb3B5aW5nIHNpemVvZihi
+dWYpIGJ5dGVzIHdoZW4gbmJ5dGVzID49IHNpemVvZihidWYpLg0KPiANCj4gVGhpcyBkb2VzIG5v
+dCBjYXVzZSBwcm9ibGVtcyBpbiBub3JtYWwgdXNlIGNhc2UgbGlrZToNCj4gInNvbWUgNTAwMDAw
+IDEwMDAwMDAwIiBvciAiZnVsbCA1MDAwMDAgMTAwMDAwMDAiIGJlY2F1c2UgdGhleQ0KPiBhcmUg
+bGVzcyB0aGFuIDMyIGJ5dGVzIGluIGxlbmd0aC4NCj4gDQo+IAkvKiBhc3N1bWluZyBuYnl0ZXMg
+PT0gMzUgKi8NCj4gCWNoYXIgYnVmWzMyXTsNCj4gDQo+IAlidWZfc2l6ZSA9IG1pbihuYnl0ZXMs
+IChzaXplb2YoYnVmKSAtIDEpKTsgLyogYnVmX3NpemUgPSAzMSAqLw0KPiAJaWYgKGNvcHlfZnJv
+bV91c2VyKGJ1ZiwgdXNlcl9idWYsIGJ1Zl9zaXplKSkNCj4gCQlyZXR1cm4gLUVGQVVMVDsNCj4g
+DQo+IAlidWZbYnVmX3NpemUgLSAxXSA9ICdcMCc7IC8qIGJ1ZlszMF0gPSAnXDAnICovDQoNCldv
+dWxkbid0IGl0IGJlIGJldHRlciB0byBhbHNvIGFsbG93IHRoZSB1c2VyIHRvIHBhc3MNCmFuIHVu
+dGVybWluYXRlZCBzdHJpbmc/DQpTbyBsZWF2ZSB0aGUgJy0xJyBvbiB0aGUgYXNzaWdubWVudCB0
+byBidWZfc2l6ZSwgYnV0IHJlbW92ZQ0KaXQgZnJvbSB0aGUgbGFzdCBsaW5lLg0KDQoJRGF2aWQN
+Cg0KLQ0KUmVnaXN0ZXJlZCBBZGRyZXNzIExha2VzaWRlLCBCcmFtbGV5IFJvYWQsIE1vdW50IEZh
+cm0sIE1pbHRvbiBLZXluZXMsIE1LMSAxUFQsIFVLDQpSZWdpc3RyYXRpb24gTm86IDEzOTczODYg
+KFdhbGVzKQ0K
 
-Commit-ID:     4adcdcea717cb2d8436bef00dd689aa5bc76f11b
-Gitweb:        https://git.kernel.org/tip/4adcdcea717cb2d8436bef00dd689aa5bc76f11b
-Author:        Miles Chen <miles.chen@mediatek.com>
-AuthorDate:    Thu, 12 Sep 2019 18:34:52 +08:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 13 Sep 2019 07:49:28 +02:00
-
-sched/psi: Correct overly pessimistic size calculation
-
-When passing a equal or more then 32 bytes long string to psi_write(),
-psi_write() copies 31 bytes to its buf and overwrites buf[30]
-with '\0'. Which makes the input string 1 byte shorter than
-it should be.
-
-Fix it by copying sizeof(buf) bytes when nbytes >= sizeof(buf).
-
-This does not cause problems in normal use case like:
-"some 500000 10000000" or "full 500000 10000000" because they
-are less than 32 bytes in length.
-
-	/* assuming nbytes == 35 */
-	char buf[32];
-
-	buf_size = min(nbytes, (sizeof(buf) - 1)); /* buf_size = 31 */
-	if (copy_from_user(buf, user_buf, buf_size))
-		return -EFAULT;
-
-	buf[buf_size - 1] = '\0'; /* buf[30] = '\0' */
-
-Before:
-
- %cd /proc/pressure/
- %echo "123456789|123456789|123456789|1234" > memory
- [   22.473497] nbytes=35,buf_size=31
- [   22.473775] 123456789|123456789|123456789| (print 30 chars)
- %sh: write error: Invalid argument
-
- %echo "123456789|123456789|123456789|1" > memory
- [   64.916162] nbytes=32,buf_size=31
- [   64.916331] 123456789|123456789|123456789| (print 30 chars)
- %sh: write error: Invalid argument
-
-After:
-
- %cd /proc/pressure/
- %echo "123456789|123456789|123456789|1234" > memory
- [  254.837863] nbytes=35,buf_size=32
- [  254.838541] 123456789|123456789|123456789|1 (print 31 chars)
- %sh: write error: Invalid argument
-
- %echo "123456789|123456789|123456789|1" > memory
- [ 9965.714935] nbytes=32,buf_size=32
- [ 9965.715096] 123456789|123456789|123456789|1 (print 31 chars)
- %sh: write error: Invalid argument
-
-Also remove the superfluous parentheses.
-
-Signed-off-by: Miles Chen <miles.chen@mediatek.com>
-Cc: <linux-mediatek@lists.infradead.org>
-Cc: <wsd_upstream@mediatek.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20190912103452.13281-1-miles.chen@mediatek.com
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
----
- kernel/sched/psi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/kernel/sched/psi.c b/kernel/sched/psi.c
-index 7acc632..4b14a32 100644
---- a/kernel/sched/psi.c
-+++ b/kernel/sched/psi.c
-@@ -1190,7 +1190,7 @@ static ssize_t psi_write(struct file *file, const char __user *user_buf,
- 	if (static_branch_likely(&psi_disabled))
- 		return -EOPNOTSUPP;
- 
--	buf_size = min(nbytes, (sizeof(buf) - 1));
-+	buf_size = min(nbytes, sizeof(buf));
- 	if (copy_from_user(buf, user_buf, buf_size))
- 		return -EFAULT;
- 
