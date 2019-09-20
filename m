@@ -2,39 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 70E48B9568
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 20 Sep 2019 18:23:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 60A48B955D
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 20 Sep 2019 18:22:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2393610AbfITQW6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 20 Sep 2019 12:22:58 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:52796 "EHLO
+        id S2390533AbfITQWj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 20 Sep 2019 12:22:39 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:52868 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404848AbfITQVN (ORCPT
+        with ESMTP id S2404971AbfITQVT (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 20 Sep 2019 12:21:13 -0400
+        Fri, 20 Sep 2019 12:21:19 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iBLeb-00047D-Kz; Fri, 20 Sep 2019 18:21:05 +0200
+        id 1iBLek-00049b-36; Fri, 20 Sep 2019 18:21:14 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 2555C1C0E2C;
-        Fri, 20 Sep 2019 18:21:00 +0200 (CEST)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 1AAA61C0E34;
+        Fri, 20 Sep 2019 18:21:01 +0200 (CEST)
 Date:   Fri, 20 Sep 2019 16:21:00 -0000
 From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf event: Move perf_event__synthesize* to event.h
+Subject: [tip: perf/urgent] perf tools: Remove debug.h from places where it is
+ not needed
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         Jiri Olsa <jolsa@kernel.org>,
         Namhyung Kim <namhyung@kernel.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <tip-outjyzh1o29ndcv9lsqyzt87@git.kernel.org>
-References: <tip-outjyzh1o29ndcv9lsqyzt87@git.kernel.org>
+In-Reply-To: <tip-r889ur2cxe16m91m2a4pl15p@git.kernel.org>
+References: <tip-r889ur2cxe16m91m2a4pl15p@git.kernel.org>
 MIME-Version: 1.0
-Message-ID: <156899646007.24167.12247910897602587358.tip-bot2@tip-bot2>
+Message-ID: <156899646098.24167.15439088929691950490.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,159 +51,234 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     278306163882a3557fb2c69fd2cc632a2f9ef601
-Gitweb:        https://git.kernel.org/tip/278306163882a3557fb2c69fd2cc632a2f9ef601
+Commit-ID:     4a903c2e151423be9af19c7eb35d4667be21c4c1
+Gitweb:        https://git.kernel.org/tip/4a903c2e151423be9af19c7eb35d4667be21c4c1
 Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Tue, 10 Sep 2019 16:42:52 +01:00
+AuthorDate:    Tue, 03 Sep 2019 10:11:53 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Fri, 20 Sep 2019 09:19:21 -03:00
+CommitterDate: Fri, 20 Sep 2019 09:19:20 -03:00
 
-perf event: Move perf_event__synthesize* to event.h
+perf tools: Remove debug.h from places where it is not needed
 
-Where is the perf_event__handler_t typedef they need, which was the only
-reason for header.h to be including event.h, untangle that.
+Pruning a bit more the includes dependency tree. Building this thing on
+lots of containers takes time, we better reduce the time per build, each
+container is doing 6 builds when clang and clang-devel are available,
+and the plan is to do a 'make -C tools/perf build-test' that have many
+more.
+
+Also helps when doing normal development, as touching some random file
+will have a much reduced chance of triggering lots of rebuilds.
 
 Cc: Adrian Hunter <adrian.hunter@intel.com>
 Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lkml.kernel.org/n/tip-outjyzh1o29ndcv9lsqyzt87@git.kernel.org
+Link: https://lkml.kernel.org/n/tip-r889ur2cxe16m91m2a4pl15p@git.kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/event.h  | 36 +++++++++++++++++++++++++++++++++-
- tools/perf/util/header.h | 42 ++-------------------------------------
- 2 files changed, 39 insertions(+), 39 deletions(-)
+ tools/perf/arch/arm64/util/unwind-libunwind.c | 2 +-
+ tools/perf/arch/powerpc/util/sym-handling.c   | 1 -
+ tools/perf/tests/clang.c                      | 1 -
+ tools/perf/ui/browsers/header.c               | 1 -
+ tools/perf/ui/gtk/helpline.c                  | 1 -
+ tools/perf/ui/gtk/util.c                      | 1 -
+ tools/perf/ui/helpline.c                      | 1 -
+ tools/perf/ui/tui/helpline.c                  | 1 -
+ tools/perf/ui/tui/util.c                      | 1 -
+ tools/perf/util/branch.c                      | 1 -
+ tools/perf/util/demangle-java.c               | 1 -
+ tools/perf/util/libunwind/arm64.c             | 1 -
+ tools/perf/util/libunwind/x86_32.c            | 1 -
+ tools/perf/util/target.c                      | 1 -
+ tools/perf/util/usage.c                       | 1 -
+ tools/perf/util/zlib.c                        | 2 --
+ 16 files changed, 1 insertion(+), 17 deletions(-)
 
-diff --git a/tools/perf/util/event.h b/tools/perf/util/event.h
-index 47ad81d..4e6d33c 100644
---- a/tools/perf/util/event.h
-+++ b/tools/perf/util/event.h
-@@ -279,6 +279,9 @@ enum {
+diff --git a/tools/perf/arch/arm64/util/unwind-libunwind.c b/tools/perf/arch/arm64/util/unwind-libunwind.c
+index 002520d..1495a95 100644
+--- a/tools/perf/arch/arm64/util/unwind-libunwind.c
++++ b/tools/perf/arch/arm64/util/unwind-libunwind.c
+@@ -5,8 +5,8 @@
+ #include <libunwind.h>
+ #include "perf_regs.h"
+ #include "../../util/unwind.h"
+-#include "../../util/debug.h"
+ #endif
++#include "../../util/debug.h"
  
- void perf_event__print_totals(void);
+ int LIBUNWIND__ARCH_REG_ID(int regnum)
+ {
+diff --git a/tools/perf/arch/powerpc/util/sym-handling.c b/tools/perf/arch/powerpc/util/sym-handling.c
+index 8a4b717..abb7a12 100644
+--- a/tools/perf/arch/powerpc/util/sym-handling.c
++++ b/tools/perf/arch/powerpc/util/sym-handling.c
+@@ -4,7 +4,6 @@
+  * Copyright (C) 2015 Naveen N. Rao, IBM Corporation
+  */
  
-+struct evlist;
-+struct evsel;
-+struct perf_session;
- struct perf_tool;
- struct perf_thread_map;
- struct perf_cpu_map;
-@@ -290,6 +293,39 @@ typedef int (*perf_event__handler_t)(struct perf_tool *tool,
- 				     struct perf_sample *sample,
- 				     struct machine *machine);
+-#include "debug.h"
+ #include "dso.h"
+ #include "symbol.h"
+ #include "map.h"
+diff --git a/tools/perf/tests/clang.c b/tools/perf/tests/clang.c
+index f45fe11..ff2711a 100644
+--- a/tools/perf/tests/clang.c
++++ b/tools/perf/tests/clang.c
+@@ -1,6 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0
+ #include "tests.h"
+-#include "debug.h"
+ #include "util.h"
+ #include "c++/clang-c.h"
+ #include <linux/kernel.h>
+diff --git a/tools/perf/ui/browsers/header.c b/tools/perf/ui/browsers/header.c
+index 0f59a70..57e6e43 100644
+--- a/tools/perf/ui/browsers/header.c
++++ b/tools/perf/ui/browsers/header.c
+@@ -1,5 +1,4 @@
+ // SPDX-License-Identifier: GPL-2.0
+-#include "util/debug.h"
+ #include "ui/browser.h"
+ #include "ui/keysyms.h"
+ #include "ui/ui.h"
+diff --git a/tools/perf/ui/gtk/helpline.c b/tools/perf/ui/gtk/helpline.c
+index e166da9..e40a006 100644
+--- a/tools/perf/ui/gtk/helpline.c
++++ b/tools/perf/ui/gtk/helpline.c
+@@ -6,7 +6,6 @@
+ #include "gtk.h"
+ #include "../ui.h"
+ #include "../helpline.h"
+-#include "../../util/debug.h"
  
-+int perf_event__synthesize_attr(struct perf_tool *tool,
-+				struct perf_event_attr *attr, u32 ids, u64 *id,
-+				perf_event__handler_t process);
-+int perf_event__synthesize_attrs(struct perf_tool *tool,
-+				 struct evlist *evlist,
-+				 perf_event__handler_t process);
-+int perf_event__synthesize_build_id(struct perf_tool *tool,
-+				    struct dso *pos, u16 misc,
-+				    perf_event__handler_t process,
-+				    struct machine *machine);
-+int perf_event__synthesize_extra_attr(struct perf_tool *tool,
-+				      struct evlist *evsel_list,
-+				      perf_event__handler_t process,
-+				      bool is_pipe);
-+int perf_event__synthesize_event_update_cpus(struct perf_tool *tool,
-+					     struct evsel *evsel,
-+					     perf_event__handler_t process);
-+int perf_event__synthesize_event_update_name(struct perf_tool *tool,
-+					     struct evsel *evsel,
-+					     perf_event__handler_t process);
-+int perf_event__synthesize_event_update_scale(struct perf_tool *tool,
-+					      struct evsel *evsel,
-+					      perf_event__handler_t process);
-+int perf_event__synthesize_event_update_unit(struct perf_tool *tool,
-+					     struct evsel *evsel,
-+					     perf_event__handler_t process);
-+int perf_event__synthesize_features(struct perf_tool *tool,
-+				    struct perf_session *session,
-+				    struct evlist *evlist,
-+				    perf_event__handler_t process);
-+int perf_event__synthesize_tracing_data(struct perf_tool *tool,
-+					int fd, struct evlist *evlist,
-+					perf_event__handler_t process);
- int perf_event__synthesize_thread_map(struct perf_tool *tool,
- 				      struct perf_thread_map *threads,
- 				      perf_event__handler_t process,
-diff --git a/tools/perf/util/header.h b/tools/perf/util/header.h
-index 3e48ae3..999dac4 100644
---- a/tools/perf/util/header.h
-+++ b/tools/perf/util/header.h
-@@ -5,10 +5,10 @@
- #include <linux/stddef.h>
- #include <linux/perf_event.h>
- #include <sys/types.h>
-+#include <stdio.h> // FILE
- #include <stdbool.h>
- #include <linux/bitmap.h>
- #include <linux/types.h>
--#include "event.h"
- #include "env.h"
- #include "pmu.h"
+ static void gtk_helpline_pop(void)
+ {
+diff --git a/tools/perf/ui/gtk/util.c b/tools/perf/ui/gtk/util.c
+index c2c5589..c47f5c3 100644
+--- a/tools/perf/ui/gtk/util.c
++++ b/tools/perf/ui/gtk/util.c
+@@ -1,6 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0
+ #include "../util.h"
+-#include "../../util/debug.h"
+ #include "gtk.h"
  
-@@ -94,6 +94,8 @@ struct perf_header {
+ #include <stdlib.h>
+diff --git a/tools/perf/ui/helpline.c b/tools/perf/ui/helpline.c
+index 54bcd08..e009014 100644
+--- a/tools/perf/ui/helpline.c
++++ b/tools/perf/ui/helpline.c
+@@ -3,7 +3,6 @@
+ #include <stdlib.h>
+ #include <string.h>
  
- struct evlist;
- struct perf_session;
-+struct perf_tool;
-+union perf_event;
+-#include "../util/debug.h"
+ #include "helpline.h"
+ #include "ui.h"
+ #include "../util/util.h"
+diff --git a/tools/perf/ui/tui/helpline.c b/tools/perf/ui/tui/helpline.c
+index 5f188f6..298d6af 100644
+--- a/tools/perf/ui/tui/helpline.c
++++ b/tools/perf/ui/tui/helpline.c
+@@ -6,7 +6,6 @@
+ #include <linux/kernel.h>
+ #include <linux/string.h>
  
- int perf_session__read_header(struct perf_session *session);
- int perf_session__write_header(struct perf_session *session,
-@@ -115,54 +117,16 @@ int perf_header__process_sections(struct perf_header *header, int fd,
+-#include "../../util/debug.h"
+ #include "../helpline.h"
+ #include "../ui.h"
+ #include "../libslang.h"
+diff --git a/tools/perf/ui/tui/util.c b/tools/perf/ui/tui/util.c
+index 087d9ab..b98dd0e 100644
+--- a/tools/perf/ui/tui/util.c
++++ b/tools/perf/ui/tui/util.c
+@@ -5,7 +5,6 @@
+ #include <stdlib.h>
+ #include <sys/ttydefaults.h>
  
- int perf_header__fprintf_info(struct perf_session *s, FILE *fp, bool full);
+-#include "../../util/debug.h"
+ #include "../browser.h"
+ #include "../keysyms.h"
+ #include "../helpline.h"
+diff --git a/tools/perf/util/branch.c b/tools/perf/util/branch.c
+index 9d1e090..52261e5 100644
+--- a/tools/perf/util/branch.c
++++ b/tools/perf/util/branch.c
+@@ -1,5 +1,4 @@
+ #include "util/util.h"
+-#include "util/debug.h"
+ #include "util/map_symbol.h"
+ #include "util/branch.h"
+ #include <linux/kernel.h>
+diff --git a/tools/perf/util/demangle-java.c b/tools/perf/util/demangle-java.c
+index 763328c..6fb7f34 100644
+--- a/tools/perf/util/demangle-java.c
++++ b/tools/perf/util/demangle-java.c
+@@ -3,7 +3,6 @@
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
+-#include "debug.h"
+ #include "symbol.h"
  
--int perf_event__synthesize_features(struct perf_tool *tool,
--				    struct perf_session *session,
--				    struct evlist *evlist,
--				    perf_event__handler_t process);
+ #include "demangle-java.h"
+diff --git a/tools/perf/util/libunwind/arm64.c b/tools/perf/util/libunwind/arm64.c
+index 66756e6..6b4e5a0 100644
+--- a/tools/perf/util/libunwind/arm64.c
++++ b/tools/perf/util/libunwind/arm64.c
+@@ -22,7 +22,6 @@
+ #define LIBUNWIND__ARCH_REG_SP PERF_REG_ARM64_SP
+ 
+ #include "unwind.h"
+-#include "debug.h"
+ #include "libunwind-aarch64.h"
+ #include <../../../../arch/arm64/include/uapi/asm/perf_regs.h>
+ #include "../../arch/arm64/util/unwind-libunwind.c"
+diff --git a/tools/perf/util/libunwind/x86_32.c b/tools/perf/util/libunwind/x86_32.c
+index c5e5681..21c216c 100644
+--- a/tools/perf/util/libunwind/x86_32.c
++++ b/tools/perf/util/libunwind/x86_32.c
+@@ -22,7 +22,6 @@
+ #define LIBUNWIND__ARCH_REG_SP PERF_REG_X86_SP
+ 
+ #include "unwind.h"
+-#include "debug.h"
+ #include "libunwind-x86.h"
+ #include <../../../../arch/x86/include/uapi/asm/perf_regs.h>
+ 
+diff --git a/tools/perf/util/target.c b/tools/perf/util/target.c
+index 565f7ae..e152d2b 100644
+--- a/tools/perf/util/target.c
++++ b/tools/perf/util/target.c
+@@ -7,7 +7,6 @@
+ 
+ #include "target.h"
+ #include "util.h"
+-#include "debug.h"
+ 
+ #include <pwd.h>
+ #include <stdio.h>
+diff --git a/tools/perf/util/usage.c b/tools/perf/util/usage.c
+index 3949a60..196438e 100644
+--- a/tools/perf/util/usage.c
++++ b/tools/perf/util/usage.c
+@@ -8,7 +8,6 @@
+  * Copyright (C) Linus Torvalds, 2005
+  */
+ #include "util.h"
+-#include "debug.h"
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <linux/compiler.h>
+diff --git a/tools/perf/util/zlib.c b/tools/perf/util/zlib.c
+index 59d456f..deb6e69 100644
+--- a/tools/perf/util/zlib.c
++++ b/tools/perf/util/zlib.c
+@@ -10,8 +10,6 @@
+ 
+ #include "util/compress.h"
+ #include "util/util.h"
+-#include "util/debug.h"
 -
--int perf_event__synthesize_extra_attr(struct perf_tool *tool,
--				      struct evlist *evsel_list,
--				      perf_event__handler_t process,
--				      bool is_pipe);
--
- int perf_event__process_feature(struct perf_session *session,
- 				union perf_event *event);
--
--int perf_event__synthesize_attr(struct perf_tool *tool,
--				struct perf_event_attr *attr, u32 ids, u64 *id,
--				perf_event__handler_t process);
--int perf_event__synthesize_attrs(struct perf_tool *tool,
--				 struct evlist *evlist,
--				 perf_event__handler_t process);
--int perf_event__synthesize_event_update_unit(struct perf_tool *tool,
--					     struct evsel *evsel,
--					     perf_event__handler_t process);
--int perf_event__synthesize_event_update_scale(struct perf_tool *tool,
--					      struct evsel *evsel,
--					      perf_event__handler_t process);
--int perf_event__synthesize_event_update_name(struct perf_tool *tool,
--					     struct evsel *evsel,
--					     perf_event__handler_t process);
--int perf_event__synthesize_event_update_cpus(struct perf_tool *tool,
--					     struct evsel *evsel,
--					     perf_event__handler_t process);
- int perf_event__process_attr(struct perf_tool *tool, union perf_event *event,
- 			     struct evlist **pevlist);
- int perf_event__process_event_update(struct perf_tool *tool,
- 				     union perf_event *event,
- 				     struct evlist **pevlist);
- size_t perf_event__fprintf_event_update(union perf_event *event, FILE *fp);
--
--int perf_event__synthesize_tracing_data(struct perf_tool *tool,
--					int fd, struct evlist *evlist,
--					perf_event__handler_t process);
- int perf_event__process_tracing_data(struct perf_session *session,
- 				     union perf_event *event);
--
--int perf_event__synthesize_build_id(struct perf_tool *tool,
--				    struct dso *pos, u16 misc,
--				    perf_event__handler_t process,
--				    struct machine *machine);
- int perf_event__process_build_id(struct perf_session *session,
- 				 union perf_event *event);
- bool is_perf_magic(u64 magic);
+ 
+ #define CHUNK_SIZE  16384
+ 
