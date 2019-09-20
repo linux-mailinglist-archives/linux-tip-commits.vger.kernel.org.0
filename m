@@ -2,33 +2,51 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2117CB8E82
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 20 Sep 2019 12:32:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 06DDEB9552
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 20 Sep 2019 18:22:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2393528AbfITKcg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 20 Sep 2019 06:32:36 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:51982 "EHLO
+        id S2405025AbfITQVV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 20 Sep 2019 12:21:21 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:52878 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390710AbfITKcg (ORCPT
+        with ESMTP id S2404984AbfITQVU (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 20 Sep 2019 06:32:36 -0400
-Received: from [5.158.153.55] (helo=nanos)
+        Fri, 20 Sep 2019 12:21:20 -0400
+Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
-        (envelope-from <tglx@linutronix.de>)
-        id 1iBGDK-0006zP-7Q; Fri, 20 Sep 2019 12:32:34 +0200
-Date:   Fri, 20 Sep 2019 12:32:28 +0200 (CEST)
-From:   Thomas Gleixner <tglx@linutronix.de>
-To:     Sasha Levin <sashal@kernel.org>
-cc:     linux-tip-commits@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [tip: timers/urgent] timer: Read jiffies once when forwarding
- base clk
-In-Reply-To: <20190919182903.87E0A20882@mail.kernel.org>
-Message-ID: <alpine.DEB.2.21.1909201228020.1858@nanos.tec.linutronix.de>
-References: <156890832199.24167.16270557930790056516.tip-bot2@tip-bot2> <20190919182903.87E0A20882@mail.kernel.org>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+        (envelope-from <tip-bot2@linutronix.de>)
+        id 1iBLeT-00040d-PU; Fri, 20 Sep 2019 18:20:57 +0200
+Received: from [127.0.1.1] (localhost [IPv6:::1])
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id BFAD71C0DAE;
+        Fri, 20 Sep 2019 18:20:56 +0200 (CEST)
+Date:   Fri, 20 Sep 2019 16:20:56 -0000
+From:   "tip-bot2 for Anju T Sudhakar" <tip-bot2@linutronix.de>
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: perf/urgent] perf kvm stat: Set 'trace_cycles' as default event
+ for 'perf kvm record' in powerpc
+Cc:     Anju T Sudhakar <anju@linux.vnet.ibm.com>,
+        Ravi Bangoria <ravi.bangoria@linux.ibm.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        linuxppc-dev@lists.ozlabs.org,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20190718181749.30612-3-anju@linux.vnet.ibm.com>
+References: <20190718181749.30612-3-anju@linux.vnet.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Message-ID: <156899645662.24167.1538786694550700474.tip-bot2@tip-bot2>
+X-Mailer: tip-git-log-daemon
+Robot-ID: <tip-bot2.linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Linutronix-Spam-Score: -1.0
 X-Linutronix-Spam-Level: -
 X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
@@ -37,29 +55,74 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Thu, 19 Sep 2019, Sasha Levin wrote:
-> [This is an automated email]
-> 
-> This commit has been processed because it contains a "Fixes:" tag,
-> fixing commit: 236968383cf5 timers: Optimize collect_expired_timers() for NOHZ.
-> 
-> The bot has tested the following trees: v5.2.15, v4.19.73, v4.14.144, v4.9.193.
-> 
-> v5.2.15: Build OK!
-> v4.19.73: Build OK!
-> v4.14.144: Failed to apply! Possible dependencies:
->     c310ce4dcb9d ("timers: Avoid an unnecessary iteration in __run_timers()")
-> 
-> v4.9.193: Failed to apply! Possible dependencies:
->     c310ce4dcb9d ("timers: Avoid an unnecessary iteration in __run_timers()")
-> 
-> 
-> NOTE: The patch will not be queued to stable trees until it is upstream.
-> 
-> How should we proceed with this patch?
+The following commit has been merged into the perf/urgent branch of tip:
 
-The backport should be trivial. If you need help, please let me know.
+Commit-ID:     2bff2b828502b5e5d5ea5a52643d3542053df03f
+Gitweb:        https://git.kernel.org/tip/2bff2b828502b5e5d5ea5a52643d3542053df03f
+Author:        Anju T Sudhakar <anju@linux.vnet.ibm.com>
+AuthorDate:    Thu, 18 Jul 2019 23:47:49 +05:30
+Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
+CommitterDate: Fri, 20 Sep 2019 10:28:26 -03:00
 
-Thanks,
+perf kvm stat: Set 'trace_cycles' as default event for 'perf kvm record' in powerpc
 
-	tglx
+Use 'trace_imc/trace_cycles' as the default event for 'perf kvm record'
+in powerpc.
+
+Signed-off-by: Anju T Sudhakar <anju@linux.vnet.ibm.com>
+Reviewed-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Jiri Olsa <jolsa@redhat.com>
+Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: linuxppc-dev@lists.ozlabs.org
+Link: http://lore.kernel.org/lkml/20190718181749.30612-3-anju@linux.vnet.ibm.com
+[ Add missing pmu.h header, needed because this patch uses pmu_have_event() ]
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+---
+ tools/perf/arch/powerpc/util/kvm-stat.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
+
+diff --git a/tools/perf/arch/powerpc/util/kvm-stat.c b/tools/perf/arch/powerpc/util/kvm-stat.c
+index ec5b771..9cc1c4a 100644
+--- a/tools/perf/arch/powerpc/util/kvm-stat.c
++++ b/tools/perf/arch/powerpc/util/kvm-stat.c
+@@ -5,6 +5,7 @@
+ #include "util/debug.h"
+ #include "util/evsel.h"
+ #include "util/evlist.h"
++#include "util/pmu.h"
+ 
+ #include "book3s_hv_exits.h"
+ #include "book3s_hcalls.h"
+@@ -177,8 +178,9 @@ int cpu_isa_init(struct perf_kvm_stat *kvm, const char *cpuid __maybe_unused)
+ /*
+  * Incase of powerpc architecture, pmu registers are programmable
+  * by guest kernel. So monitoring guest via host may not provide
+- * valid samples. It is better to fail the "perf kvm record"
+- * with default "cycles" event to monitor guest in powerpc.
++ * valid samples with default 'cycles' event. It is better to use
++ * 'trace_imc/trace_cycles' event for guest profiling, since it
++ * can track the guest instruction pointer in the trace-record.
+  *
+  * Function to parse the arguments and return appropriate values.
+  */
+@@ -202,8 +204,14 @@ int kvm_add_default_arch_event(int *argc, const char **argv)
+ 
+ 	parse_options(j, tmp, event_options, NULL, PARSE_OPT_KEEP_UNKNOWN);
+ 	if (!event) {
+-		free(tmp);
+-		return -EINVAL;
++		if (pmu_have_event("trace_imc", "trace_cycles")) {
++			argv[j++] = strdup("-e");
++			argv[j++] = strdup("trace_imc/trace_cycles/");
++			*argc += 2;
++		} else {
++			free(tmp);
++			return -EINVAL;
++		}
+ 	}
+ 
+ 	free(tmp);
