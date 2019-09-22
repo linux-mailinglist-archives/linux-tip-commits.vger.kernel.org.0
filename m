@@ -2,42 +2,42 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E0C0B9558
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 20 Sep 2019 18:22:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 41003BA1E3
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 22 Sep 2019 12:52:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405592AbfITQWb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 20 Sep 2019 12:22:31 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:52881 "EHLO
+        id S1728386AbfIVKwi (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 22 Sep 2019 06:52:38 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:55563 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404997AbfITQVU (ORCPT
+        with ESMTP id S1728361AbfIVKwi (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 20 Sep 2019 12:21:20 -0400
+        Sun, 22 Sep 2019 06:52:38 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iBLej-0004DK-In; Fri, 20 Sep 2019 18:21:13 +0200
+        id 1iBzTc-0000uz-Ou; Sun, 22 Sep 2019 12:52:24 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 8798A1C0E3B;
-        Fri, 20 Sep 2019 18:21:02 +0200 (CEST)
-Date:   Fri, 20 Sep 2019 16:21:02 -0000
-From:   "tip-bot2 for Jiri Olsa" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 057E21C07C3;
+        Sun, 22 Sep 2019 12:52:24 +0200 (CEST)
+Date:   Sun, 22 Sep 2019 10:52:23 -0000
+From:   "tip-bot2 for Roy Ben Shlomo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf tests: Add libperf automated test for 'make
- -C tools/perf build-test'
-Cc:     Jiri Olsa <jolsa@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
+Subject: [tip: perf/urgent] perf/core: Fix several typos in comments
+Cc:     Roy Ben Shlomo <royb@sentinelone.com>,
         Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Michael Petlan <mpetlan@redhat.com>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Mark Rutland <mark.rutland@arm.com>,
         Namhyung Kim <namhyung@kernel.org>,
         Peter Zijlstra <peterz@infradead.org>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20190901124822.10132-4-jolsa@kernel.org>
-References: <20190901124822.10132-4-jolsa@kernel.org>
+In-Reply-To: <20190920171254.31373-1-royb@sentinelone.com>
+References: <20190920171254.31373-1-royb@sentinelone.com>
 MIME-Version: 1.0
-Message-ID: <156899646246.24167.1384772520301168306.tip-bot2@tip-bot2>
+Message-ID: <156914954391.24167.12320372146686080125.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -53,50 +53,58 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     9eab951f34dbd092ab520bda167f288899858306
-Gitweb:        https://git.kernel.org/tip/9eab951f34dbd092ab520bda167f288899858306
-Author:        Jiri Olsa <jolsa@kernel.org>
-AuthorDate:    Sun, 01 Sep 2019 14:48:21 +02:00
+Commit-ID:     9f014e3a66bc936412b6614304a4e6c70c70230e
+Gitweb:        https://git.kernel.org/tip/9f014e3a66bc936412b6614304a4e6c70c70230e
+Author:        Roy Ben Shlomo <roy.benshlomo@gmail.com>
+AuthorDate:    Fri, 20 Sep 2019 20:12:53 +03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Tue, 10 Sep 2019 14:33:32 +01:00
+CommitterDate: Fri, 20 Sep 2019 16:05:20 -03:00
 
-perf tests: Add libperf automated test for 'make -C tools/perf build-test'
+perf/core: Fix several typos in comments
 
-Add a libperf build test, that is triggered when one does:
+Fix typos in a few functions' documentation comments.
 
-  $ make -C tools/perf build-test
-
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Roy Ben Shlomo <royb@sentinelone.com>
 Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Michael Petlan <mpetlan@redhat.com>
+Cc: Jiri Olsa <jolsa@redhat.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Link: http://lore.kernel.org/lkml/20190901124822.10132-4-jolsa@kernel.org
+Cc: royb@sentinelone.com
+Link: http://lore.kernel.org/lkml/20190920171254.31373-1-royb@sentinelone.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/tests/make | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ kernel/events/core.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tools/perf/tests/make b/tools/perf/tests/make
-index 70c4847..6b3afed 100644
---- a/tools/perf/tests/make
-+++ b/tools/perf/tests/make
-@@ -327,6 +327,10 @@ make_kernelsrc_tools:
- 	(make -C ../../tools $(PARALLEL_OPT) $(K_O_OPT) perf) > $@ 2>&1 && \
- 	test -x $(KERNEL_O)/tools/perf/perf && rm -f $@ || (cat $@ ; false)
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 4f08b17..275eae0 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -2239,7 +2239,7 @@ static void __perf_event_disable(struct perf_event *event,
+  *
+  * If event->ctx is a cloned context, callers must make sure that
+  * every task struct that event->ctx->task could possibly point to
+- * remains valid.  This condition is satisifed when called through
++ * remains valid.  This condition is satisfied when called through
+  * perf_event_for_each_child or perf_event_for_each because they
+  * hold the top-level event's child_mutex, so any descendant that
+  * goes to exit will block in perf_event_exit_event().
+@@ -6054,7 +6054,7 @@ static void perf_sample_regs_intr(struct perf_regs *regs_intr,
+  * Get remaining task size from user stack pointer.
+  *
+  * It'd be better to take stack vma map and limit this more
+- * precisly, but there's no way to get it safely under interrupt,
++ * precisely, but there's no way to get it safely under interrupt,
+  * so using TASK_SIZE as limit.
+  */
+ static u64 perf_ustack_task_size(struct pt_regs *regs)
+@@ -6616,7 +6616,7 @@ void perf_prepare_sample(struct perf_event_header *header,
  
-+make_libperf:
-+	@echo "- make -C lib";
-+	make -C lib clean >$@ 2>&1; make -C lib >>$@ 2>&1 && rm $@
-+
- FEATURES_DUMP_FILE := $(FULL_O)/BUILD_TEST_FEATURE_DUMP
- FEATURES_DUMP_FILE_STATIC := $(FULL_O)/BUILD_TEST_FEATURE_DUMP_STATIC
- 
-@@ -365,5 +369,5 @@ $(foreach t,$(run),$(if $(findstring make_static,$(t)),\
- 			$(eval $(t) := $($(t)) FEATURES_DUMP=$(FEATURES_DUMP_FILE))))
- endif
- 
--.PHONY: all $(run) $(run_O) tarpkg clean make_kernelsrc make_kernelsrc_tools
-+.PHONY: all $(run) $(run_O) tarpkg clean make_kernelsrc make_kernelsrc_tools make_libperf
- endif # ifndef MK
+ 	if (sample_type & PERF_SAMPLE_STACK_USER) {
+ 		/*
+-		 * Either we need PERF_SAMPLE_STACK_USER bit to be allways
++		 * Either we need PERF_SAMPLE_STACK_USER bit to be always
+ 		 * processed as the last one or have additional check added
+ 		 * in case new sample type is added, because we could eat
+ 		 * up the rest of the sample size.
