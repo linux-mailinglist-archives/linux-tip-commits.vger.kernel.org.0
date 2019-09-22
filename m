@@ -2,40 +2,41 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A3E6DBA1E0
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 22 Sep 2019 12:52:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 16DCEBA2D5
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 22 Sep 2019 16:05:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728426AbfIVKwk (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 22 Sep 2019 06:52:40 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:55568 "EHLO
+        id S1728898AbfIVOFi (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 22 Sep 2019 10:05:38 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:55887 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728361AbfIVKwk (ORCPT
+        with ESMTP id S1728488AbfIVOFi (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 22 Sep 2019 06:52:40 -0400
+        Sun, 22 Sep 2019 10:05:38 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iBzTe-0000vE-T0; Sun, 22 Sep 2019 12:52:27 +0200
+        id 1iC2UR-0002wi-EL; Sun, 22 Sep 2019 16:05:27 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 52F3C1C0DEE;
-        Sun, 22 Sep 2019 12:52:25 +0200 (CEST)
-Date:   Sun, 22 Sep 2019 10:52:25 -0000
-From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B60021C0131;
+        Sun, 22 Sep 2019 16:05:26 +0200 (CEST)
+Date:   Sun, 22 Sep 2019 14:05:26 -0000
+From:   "tip-bot2 for Jiri Olsa" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] tools uapi asm-generic: Sync unistd.h with the
- kernel sources
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Arnd Bergmann <arnd@arndb.de>, Jiri Olsa <jolsa@kernel.org>,
+Subject: [tip: perf/urgent] perf tests: Fix static build test
+Cc:     Jiri Olsa <jolsa@kernel.org>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Michael Petlan <mpetlan@redhat.com>,
         Namhyung Kim <namhyung@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <tip-hpnjuyjzoudltqe7dvbokqdt@git.kernel.org>
-References: <tip-hpnjuyjzoudltqe7dvbokqdt@git.kernel.org>
+In-Reply-To: <20190905090924.GA1949@krava>
+References: <20190905090924.GA1949@krava>
 MIME-Version: 1.0
-Message-ID: <156914954529.24167.15440163405295467233.tip-bot2@tip-bot2>
+Message-ID: <156916112669.4511.15106187732638392365.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,45 +52,40 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     9846f1366489e1a30d871a5c3198b14394365be7
-Gitweb:        https://git.kernel.org/tip/9846f1366489e1a30d871a5c3198b14394365be7
-Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Fri, 20 Sep 2019 14:52:24 -03:00
+Commit-ID:     b117b9b48b24cbb090dd3844b563b464d60a6278
+Gitweb:        https://git.kernel.org/tip/b117b9b48b24cbb090dd3844b563b464d60a6278
+Author:        Jiri Olsa <jolsa@redhat.com>
+AuthorDate:    Thu, 05 Sep 2019 11:09:24 +02:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Fri, 20 Sep 2019 14:59:28 -03:00
+CommitterDate: Fri, 20 Sep 2019 14:37:28 -03:00
 
-tools uapi asm-generic: Sync unistd.h with the kernel sources
+perf tests: Fix static build test
 
-To pick the change from:
+Disable the potentional shared library features, which breaks static
+build if they are enabled and detected: jvmti and vdso libraries.
 
-  78e05972c5e6 ("ipc: fix semtimedop for generic 32-bit architectures")
-
-Which doesn't trigger any change in tooling and silences this perf build
-warning:
-
-  Warning: Kernel ABI header at 'tools/include/uapi/asm-generic/unistd.h' differs from latest version at 'include/uapi/asm-generic/unistd.h'
-  diff -u tools/include/uapi/asm-generic/unistd.h include/uapi/asm-generic/unistd.h
-
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Michael Petlan <mpetlan@redhat.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lkml.kernel.org/n/tip-hpnjuyjzoudltqe7dvbokqdt@git.kernel.org
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: http://lore.kernel.org/lkml/20190905090924.GA1949@krava
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/include/uapi/asm-generic/unistd.h | 2 +-
+ tools/perf/tests/make | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/include/uapi/asm-generic/unistd.h b/tools/include/uapi/asm-generic/unistd.h
-index 1be0e79..1fc8faa 100644
---- a/tools/include/uapi/asm-generic/unistd.h
-+++ b/tools/include/uapi/asm-generic/unistd.h
-@@ -569,7 +569,7 @@ __SYSCALL(__NR_semget, sys_semget)
- __SC_COMP(__NR_semctl, sys_semctl, compat_sys_semctl)
- #if defined(__ARCH_WANT_TIME32_SYSCALLS) || __BITS_PER_LONG != 32
- #define __NR_semtimedop 192
--__SC_COMP(__NR_semtimedop, sys_semtimedop, sys_semtimedop_time32)
-+__SC_3264(__NR_semtimedop, sys_semtimedop_time32, sys_semtimedop)
- #endif
- #define __NR_semop 193
- __SYSCALL(__NR_semop, sys_semop)
+diff --git a/tools/perf/tests/make b/tools/perf/tests/make
+index 6b3afed..c850d16 100644
+--- a/tools/perf/tests/make
++++ b/tools/perf/tests/make
+@@ -100,7 +100,7 @@ make_install_info   := install-info
+ make_install_pdf    := install-pdf
+ make_install_prefix       := install prefix=/tmp/krava
+ make_install_prefix_slash := install prefix=/tmp/krava/
+-make_static         := LDFLAGS=-static
++make_static         := LDFLAGS=-static NO_PERF_READ_VDSO32=1 NO_PERF_READ_VDSOX32=1 NO_JVMTI=1
+ 
+ # all the NO_* variable combined
+ make_minimal        := NO_LIBPERL=1 NO_LIBPYTHON=1 NO_NEWT=1 NO_GTK2=1
