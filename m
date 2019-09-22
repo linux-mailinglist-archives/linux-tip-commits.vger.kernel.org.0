@@ -2,39 +2,45 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 24544BA1E5
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 22 Sep 2019 12:53:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DF42BA1E2
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 22 Sep 2019 12:52:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728336AbfIVKwf (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 22 Sep 2019 06:52:35 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:55548 "EHLO
+        id S1728407AbfIVKwj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 22 Sep 2019 06:52:39 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:55565 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725887AbfIVKwf (ORCPT
+        with ESMTP id S1728370AbfIVKwi (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 22 Sep 2019 06:52:35 -0400
+        Sun, 22 Sep 2019 06:52:38 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iBzTd-0000v2-0z; Sun, 22 Sep 2019 12:52:25 +0200
+        id 1iBzTd-0000v8-Bv; Sun, 22 Sep 2019 12:52:25 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 8A46D1C0DF1;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E63311C0E22;
         Sun, 22 Sep 2019 12:52:24 +0200 (CEST)
 Date:   Sun, 22 Sep 2019 10:52:24 -0000
-From:   "tip-bot2 for Masami Hiramatsu" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf probe: Skip same probe address for a given line
-Cc:     Masami Hiramatsu <mhiramat@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Jiri Olsa <jolsa@redhat.com>,
+Subject: [tip: perf/urgent] tools arch x86: Sync asm/cpufeatures.h with the
+ kernel sources
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        Borislav Petkov <bp@suse.de>,
+        Gayatri Kammela <gayatri.kammela@intel.com>,
+        Jiri Olsa <jolsa@kernel.org>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
         Namhyung Kim <namhyung@kernel.org>,
-        Wang Nan <wangnan0@huawei.com>, Ingo Molnar <mingo@kernel.org>,
-        Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
-In-Reply-To: <156886447061.10772.4261569305869149178.stgit@devnote2>
-References: <156886447061.10772.4261569305869149178.stgit@devnote2>
+        Thomas Gleixner <tglx@linutronix.de>,
+        Thomas Hellstrom <thellstrom@vmware.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <tip-pq63abgknsaeov23p80d8gjv@git.kernel.org>
+References: <tip-pq63abgknsaeov23p80d8gjv@git.kernel.org>
 MIME-Version: 1.0
-Message-ID: <156914954448.24167.7115189929260088693.tip-bot2@tip-bot2>
+Message-ID: <156914954486.24167.16035963049459550059.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,92 +56,78 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     1a375ae7659ab740d4c885ea98c1659b8a6e2071
-Gitweb:        https://git.kernel.org/tip/1a375ae7659ab740d4c885ea98c1659b8a6e2071
-Author:        Masami Hiramatsu <mhiramat@kernel.org>
-AuthorDate:    Thu, 19 Sep 2019 12:41:10 +09:00
+Commit-ID:     40f1c039c7c6de913ee04eac585102e2fce7f6f7
+Gitweb:        https://git.kernel.org/tip/40f1c039c7c6de913ee04eac585102e2fce7f6f7
+Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
+AuthorDate:    Fri, 20 Sep 2019 15:00:49 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Fri, 20 Sep 2019 15:22:00 -03:00
+CommitterDate: Fri, 20 Sep 2019 15:00:49 -03:00
 
-perf probe: Skip same probe address for a given line
+tools arch x86: Sync asm/cpufeatures.h with the kernel sources
 
-Fix to skip making a same probe address on given line.
+To pick up the changes from:
 
-Since a DWARF line info contains several entries for one line with
-different column, perf probe will make a different probe on same address
-if user specifies a probe point by "function:line" or "file:line".
+  b4dd4f6e3648 ("x86/vmware: Add a header file for hypercall definitions")
+  f36cf386e3fe ("x86/speculation/swapgs: Exclude ATOMs from speculation through SWAPGS")
+  be261ffce6f1 ("x86: Remove X86_FEATURE_MFENCE_RDTSC")
+  018ebca8bd70 ("x86/cpufeatures: Enable a new AVX512 CPU feature")
 
-e.g.
- $ perf probe -D kernel_read:8
- p:probe/kernel_read_L8 kernel_read+39
- p:probe/kernel_read_L8_1 kernel_read+39
+These don't cause any changes in tooling, just silences this perf build
+warning:
 
-This skips such duplicated probe addresses.
+  Warning: Kernel ABI header at 'tools/arch/x86/include/asm/cpufeatures.h' differs from latest version at 'arch/x86/include/asm/cpufeatures.h'
+  diff -u tools/arch/x86/include/asm/cpufeatures.h arch/x86/include/asm/cpufeatures.h
 
-Committer testing:
+To clarify, updating those files cause these bits of tools/perf to rebuild:
 
-  # uname -a
-  Linux quaco 5.3.0+ #2 SMP Thu Sep 19 16:13:22 -03 2019 x86_64 x86_64 x86_64 GNU/Linux
-  #
+  CC       /tmp/build/perf/bench/mem-memcpy-x86-64-asm.o
+  CC       /tmp/build/perf/bench/mem-memset-x86-64-asm.o
+  INSTALL  GTK UI
+  LD       /tmp/build/perf/bench/perf-in.o
 
-Before:
+Those use just:
 
-  # perf probe -D kernel_read:8
-  p:probe/kernel_read _text+3115191
-  p:probe/kernel_read_1 _text+3115191
-  #
+  $ grep FEATURE tools/arch/x86/lib/mem*.S
+  tools/arch/x86/lib/memcpy_64.S:	ALTERNATIVE_2 "jmp memcpy_orig", "", X86_FEATURE_REP_GOOD, \
+  tools/arch/x86/lib/memcpy_64.S:		      "jmp memcpy_erms", X86_FEATURE_ERMS
+  tools/arch/x86/lib/memset_64.S:	ALTERNATIVE_2 "jmp memset_orig", "", X86_FEATURE_REP_GOOD, \
+  tools/arch/x86/lib/memset_64.S:		      "jmp memset_erms", X86_FEATURE_ERMS
+  $
 
-After:
+I.e. none of the feature defines added/removed by the patches above.
 
-  # perf probe -D kernel_read:8
-  p:probe/kernel_read _text+3115191
-  #
-
-Signed-off-by: Masami Hiramatsu <mhiramat@kernel.org>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Jiri Olsa <jolsa@redhat.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Borislav Petkov <bp@suse.de>
+Cc: Gayatri Kammela <gayatri.kammela@intel.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Josh Poimboeuf <jpoimboe@redhat.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Wang Nan <wangnan0@huawei.com>
-Link: http://lore.kernel.org/lkml/156886447061.10772.4261569305869149178.stgit@devnote2
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Thomas Hellstrom <thellstrom@vmware.com>
+Link: https://lkml.kernel.org/n/tip-pq63abgknsaeov23p80d8gjv@git.kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/probe-finder.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ tools/arch/x86/include/asm/cpufeatures.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tools/perf/util/probe-finder.c b/tools/perf/util/probe-finder.c
-index 505905f..cd9f95e 100644
---- a/tools/perf/util/probe-finder.c
-+++ b/tools/perf/util/probe-finder.c
-@@ -1245,6 +1245,17 @@ static int expand_probe_args(Dwarf_Die *sc_die, struct probe_finder *pf,
- 	return n;
- }
+diff --git a/tools/arch/x86/include/asm/cpufeatures.h b/tools/arch/x86/include/asm/cpufeatures.h
+index 5171b9c..0652d3e 100644
+--- a/tools/arch/x86/include/asm/cpufeatures.h
++++ b/tools/arch/x86/include/asm/cpufeatures.h
+@@ -231,6 +231,8 @@
+ #define X86_FEATURE_VMMCALL		( 8*32+15) /* Prefer VMMCALL to VMCALL */
+ #define X86_FEATURE_XENPV		( 8*32+16) /* "" Xen paravirtual guest */
+ #define X86_FEATURE_EPT_AD		( 8*32+17) /* Intel Extended Page Table access-dirty bit */
++#define X86_FEATURE_VMCALL		( 8*32+18) /* "" Hypervisor supports the VMCALL instruction */
++#define X86_FEATURE_VMW_VMMCALL		( 8*32+19) /* "" VMware prefers VMMCALL hypercall instruction */
  
-+static bool trace_event_finder_overlap(struct trace_event_finder *tf)
-+{
-+	int i;
-+
-+	for (i = 0; i < tf->ntevs; i++) {
-+		if (tf->pf.addr == tf->tevs[i].point.address)
-+			return true;
-+	}
-+	return false;
-+}
-+
- /* Add a found probe point into trace event list */
- static int add_probe_trace_event(Dwarf_Die *sc_die, struct probe_finder *pf)
- {
-@@ -1255,6 +1266,14 @@ static int add_probe_trace_event(Dwarf_Die *sc_die, struct probe_finder *pf)
- 	struct perf_probe_arg *args = NULL;
- 	int ret, i;
- 
-+	/*
-+	 * For some reason (e.g. different column assigned to same address)
-+	 * This callback can be called with the address which already passed.
-+	 * Ignore it first.
-+	 */
-+	if (trace_event_finder_overlap(tf))
-+		return 0;
-+
- 	/* Check number of tevs */
- 	if (tf->ntevs == tf->max_tevs) {
- 		pr_warning("Too many( > %d) probe point found.\n",
+ /* Intel-defined CPU features, CPUID level 0x00000007:0 (EBX), word 9 */
+ #define X86_FEATURE_FSGSBASE		( 9*32+ 0) /* RDFSBASE, WRFSBASE, RDGSBASE, WRGSBASE instructions*/
+@@ -354,6 +356,7 @@
+ /* Intel-defined CPU features, CPUID level 0x00000007:0 (EDX), word 18 */
+ #define X86_FEATURE_AVX512_4VNNIW	(18*32+ 2) /* AVX-512 Neural Network Instructions */
+ #define X86_FEATURE_AVX512_4FMAPS	(18*32+ 3) /* AVX-512 Multiply Accumulation Single precision */
++#define X86_FEATURE_AVX512_VP2INTERSECT (18*32+ 8) /* AVX-512 Intersect for D/Q */
+ #define X86_FEATURE_MD_CLEAR		(18*32+10) /* VERW clears CPU buffers */
+ #define X86_FEATURE_TSX_FORCE_ABORT	(18*32+13) /* "" TSX_FORCE_ABORT */
+ #define X86_FEATURE_PCONFIG		(18*32+18) /* Intel PCONFIG */
