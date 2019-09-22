@@ -2,40 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F3E78BA1DB
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 22 Sep 2019 12:52:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 24544BA1E5
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 22 Sep 2019 12:53:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728307AbfIVKwf (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S1728336AbfIVKwf (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Sun, 22 Sep 2019 06:52:35 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:55549 "EHLO
+Received: from Galois.linutronix.de ([193.142.43.55]:55548 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728292AbfIVKwf (ORCPT
+        with ESMTP id S1725887AbfIVKwf (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Sun, 22 Sep 2019 06:52:35 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iBzTc-0000v1-Sy; Sun, 22 Sep 2019 12:52:24 +0200
+        id 1iBzTd-0000v2-0z; Sun, 22 Sep 2019 12:52:25 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5922C1C0DF0;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 8A46D1C0DF1;
         Sun, 22 Sep 2019 12:52:24 +0200 (CEST)
 Date:   Sun, 22 Sep 2019 10:52:24 -0000
 From:   "tip-bot2 for Masami Hiramatsu" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf probe: Fix to clear tev->nargs in
- clear_probe_trace_event()
+Subject: [tip: perf/urgent] perf probe: Skip same probe address for a given line
 Cc:     Masami Hiramatsu <mhiramat@kernel.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Jiri Olsa <jolsa@redhat.com>,
         Namhyung Kim <namhyung@kernel.org>,
         Wang Nan <wangnan0@huawei.com>, Ingo Molnar <mingo@kernel.org>,
         Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
-In-Reply-To: <156856587999.25775.5145779959474477595.stgit@devnote2>
-References: <156856587999.25775.5145779959474477595.stgit@devnote2>
+In-Reply-To: <156886447061.10772.4261569305869149178.stgit@devnote2>
+References: <156886447061.10772.4261569305869149178.stgit@devnote2>
 MIME-Version: 1.0
-Message-ID: <156914954430.24167.14701079319060500126.tip-bot2@tip-bot2>
+Message-ID: <156914954448.24167.7115189929260088693.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,65 +50,92 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     9e6124d9d635957b56717f85219a88701617253f
-Gitweb:        https://git.kernel.org/tip/9e6124d9d635957b56717f85219a88701617253f
+Commit-ID:     1a375ae7659ab740d4c885ea98c1659b8a6e2071
+Gitweb:        https://git.kernel.org/tip/1a375ae7659ab740d4c885ea98c1659b8a6e2071
 Author:        Masami Hiramatsu <mhiramat@kernel.org>
-AuthorDate:    Mon, 16 Sep 2019 01:44:40 +09:00
+AuthorDate:    Thu, 19 Sep 2019 12:41:10 +09:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Fri, 20 Sep 2019 15:30:09 -03:00
+CommitterDate: Fri, 20 Sep 2019 15:22:00 -03:00
 
-perf probe: Fix to clear tev->nargs in clear_probe_trace_event()
+perf probe: Skip same probe address for a given line
 
-Since add_probe_trace_event() can reuse tf->tevs[i] after calling
-clear_probe_trace_event(), this can make perf-probe crash if the 1st
-attempt of probe event finding fails to find an event argument, and the
-2nd attempt fails to find probe point.
+Fix to skip making a same probe address on given line.
 
-E.g.
-  $ perf probe -D "task_pid_nr tsk"
-  Failed to find 'tsk' in this function.
-  Failed to get entry address of warn_bad_vsyscall
-  Segmentation fault (core dumped)
+Since a DWARF line info contains several entries for one line with
+different column, perf probe will make a different probe on same address
+if user specifies a probe point by "function:line" or "file:line".
+
+e.g.
+ $ perf probe -D kernel_read:8
+ p:probe/kernel_read_L8 kernel_read+39
+ p:probe/kernel_read_L8_1 kernel_read+39
+
+This skips such duplicated probe addresses.
 
 Committer testing:
 
-After the patch:
+  # uname -a
+  Linux quaco 5.3.0+ #2 SMP Thu Sep 19 16:13:22 -03 2019 x86_64 x86_64 x86_64 GNU/Linux
+  #
 
-  $ perf probe -D "task_pid_nr tsk"
-  Failed to find 'tsk' in this function.
-  Failed to get entry address of warn_bad_vsyscall
-  Failed to get entry address of signal_fault
-  Failed to get entry address of show_signal
-  Failed to get entry address of umip_printk
-  Failed to get entry address of __bad_area_nosemaphore
-  <SNIP>
-  Failed to get entry address of sock_set_timeout
-  Failed to get entry address of tcp_recvmsg
-  Probe point 'task_pid_nr' not found.
-    Error: Failed to add events.
-  $
+Before:
 
-Fixes: 092b1f0b5f9f ("perf probe: Clear probe_trace_event when add_probe_trace_event() fails")
+  # perf probe -D kernel_read:8
+  p:probe/kernel_read _text+3115191
+  p:probe/kernel_read_1 _text+3115191
+  #
+
+After:
+
+  # perf probe -D kernel_read:8
+  p:probe/kernel_read _text+3115191
+  #
+
 Signed-off-by: Masami Hiramatsu <mhiramat@kernel.org>
 Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Cc: Jiri Olsa <jolsa@redhat.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Wang Nan <wangnan0@huawei.com>
-Link: http://lore.kernel.org/lkml/156856587999.25775.5145779959474477595.stgit@devnote2
+Link: http://lore.kernel.org/lkml/156886447061.10772.4261569305869149178.stgit@devnote2
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/probe-event.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/perf/util/probe-finder.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/tools/perf/util/probe-event.c b/tools/perf/util/probe-event.c
-index b8e0967..91cab5f 100644
---- a/tools/perf/util/probe-event.c
-+++ b/tools/perf/util/probe-event.c
-@@ -2331,6 +2331,7 @@ void clear_probe_trace_event(struct probe_trace_event *tev)
- 		}
- 	}
- 	zfree(&tev->args);
-+	tev->nargs = 0;
+diff --git a/tools/perf/util/probe-finder.c b/tools/perf/util/probe-finder.c
+index 505905f..cd9f95e 100644
+--- a/tools/perf/util/probe-finder.c
++++ b/tools/perf/util/probe-finder.c
+@@ -1245,6 +1245,17 @@ static int expand_probe_args(Dwarf_Die *sc_die, struct probe_finder *pf,
+ 	return n;
  }
  
- struct kprobe_blacklist_node {
++static bool trace_event_finder_overlap(struct trace_event_finder *tf)
++{
++	int i;
++
++	for (i = 0; i < tf->ntevs; i++) {
++		if (tf->pf.addr == tf->tevs[i].point.address)
++			return true;
++	}
++	return false;
++}
++
+ /* Add a found probe point into trace event list */
+ static int add_probe_trace_event(Dwarf_Die *sc_die, struct probe_finder *pf)
+ {
+@@ -1255,6 +1266,14 @@ static int add_probe_trace_event(Dwarf_Die *sc_die, struct probe_finder *pf)
+ 	struct perf_probe_arg *args = NULL;
+ 	int ret, i;
+ 
++	/*
++	 * For some reason (e.g. different column assigned to same address)
++	 * This callback can be called with the address which already passed.
++	 * Ignore it first.
++	 */
++	if (trace_event_finder_overlap(tf))
++		return 0;
++
+ 	/* Check number of tevs */
+ 	if (tf->ntevs == tf->max_tevs) {
+ 		pr_warning("Too many( > %d) probe point found.\n",
