@@ -2,40 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E0E7BA1E6
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 22 Sep 2019 12:53:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A3E6DBA1E0
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 22 Sep 2019 12:52:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728365AbfIVKwh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 22 Sep 2019 06:52:37 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:55557 "EHLO
+        id S1728426AbfIVKwk (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 22 Sep 2019 06:52:40 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:55568 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728306AbfIVKwg (ORCPT
+        with ESMTP id S1728361AbfIVKwk (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 22 Sep 2019 06:52:36 -0400
+        Sun, 22 Sep 2019 06:52:40 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iBzTd-0000vD-Je; Sun, 22 Sep 2019 12:52:25 +0200
+        id 1iBzTe-0000vE-T0; Sun, 22 Sep 2019 12:52:27 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 236161C07C3;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 52F3C1C0DEE;
         Sun, 22 Sep 2019 12:52:25 +0200 (CEST)
 Date:   Sun, 22 Sep 2019 10:52:25 -0000
 From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] tools arch x86 uapi: Synch asm/unistd.h with the
+Subject: [tip: perf/urgent] tools uapi asm-generic: Sync unistd.h with the
  kernel sources
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Jiri Olsa <jolsa@kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>, Jiri Olsa <jolsa@kernel.org>,
         Namhyung Kim <namhyung@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
+In-Reply-To: <tip-hpnjuyjzoudltqe7dvbokqdt@git.kernel.org>
+References: <tip-hpnjuyjzoudltqe7dvbokqdt@git.kernel.org>
 MIME-Version: 1.0
-Message-ID: <156914954504.24167.15576551007465139001.tip-bot2@tip-bot2>
+Message-ID: <156914954529.24167.15440163405295467233.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,45 +51,45 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     761830a03c5c99fc0a7142e16cf0811cb68bd7af
-Gitweb:        https://git.kernel.org/tip/761830a03c5c99fc0a7142e16cf0811cb68bd7af
+Commit-ID:     9846f1366489e1a30d871a5c3198b14394365be7
+Gitweb:        https://git.kernel.org/tip/9846f1366489e1a30d871a5c3198b14394365be7
 Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Fri, 20 Sep 2019 14:56:47 -03:00
+AuthorDate:    Fri, 20 Sep 2019 14:52:24 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Fri, 20 Sep 2019 14:59:28 -03:00
 
-tools arch x86 uapi: Synch asm/unistd.h with the kernel sources
+tools uapi asm-generic: Sync unistd.h with the kernel sources
 
-To pick up the change in:
+To pick the change from:
 
-  45e29d119e99 ("x86/syscalls: Make __X32_SYSCALL_BIT be unsigned long")
+  78e05972c5e6 ("ipc: fix semtimedop for generic 32-bit architectures")
 
-That doesn't trigger any changes in tooling and silences this perf build
+Which doesn't trigger any change in tooling and silences this perf build
 warning:
 
-  Warning: Kernel ABI header at 'tools/arch/x86/include/uapi/asm/unistd.h' differs from latest version at 'arch/x86/include/uapi/asm/unistd.h'
-  diff -u tools/arch/x86/include/uapi/asm/unistd.h arch/x86/include/uapi/asm/unistd.h
+  Warning: Kernel ABI header at 'tools/include/uapi/asm-generic/unistd.h' differs from latest version at 'include/uapi/asm-generic/unistd.h'
+  diff -u tools/include/uapi/asm-generic/unistd.h include/uapi/asm-generic/unistd.h
 
 Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>
 Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lkml.kernel.org/n/tip-hpnjuyjzoudltqe7dvbokqdt@git.kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/arch/x86/include/uapi/asm/unistd.h | 2 +-
+ tools/include/uapi/asm-generic/unistd.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/arch/x86/include/uapi/asm/unistd.h b/tools/arch/x86/include/uapi/asm/unistd.h
-index 30d7d04..196fdd0 100644
---- a/tools/arch/x86/include/uapi/asm/unistd.h
-+++ b/tools/arch/x86/include/uapi/asm/unistd.h
-@@ -3,7 +3,7 @@
- #define _UAPI_ASM_X86_UNISTD_H
- 
- /* x32 syscall flag bit */
--#define __X32_SYSCALL_BIT	0x40000000
-+#define __X32_SYSCALL_BIT	0x40000000UL
- 
- #ifndef __KERNEL__
- # ifdef __i386__
+diff --git a/tools/include/uapi/asm-generic/unistd.h b/tools/include/uapi/asm-generic/unistd.h
+index 1be0e79..1fc8faa 100644
+--- a/tools/include/uapi/asm-generic/unistd.h
++++ b/tools/include/uapi/asm-generic/unistd.h
+@@ -569,7 +569,7 @@ __SYSCALL(__NR_semget, sys_semget)
+ __SC_COMP(__NR_semctl, sys_semctl, compat_sys_semctl)
+ #if defined(__ARCH_WANT_TIME32_SYSCALLS) || __BITS_PER_LONG != 32
+ #define __NR_semtimedop 192
+-__SC_COMP(__NR_semtimedop, sys_semtimedop, sys_semtimedop_time32)
++__SC_3264(__NR_semtimedop, sys_semtimedop_time32, sys_semtimedop)
+ #endif
+ #define __NR_semop 193
+ __SYSCALL(__NR_semop, sys_semop)
