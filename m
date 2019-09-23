@@ -2,49 +2,47 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FD79BA2D8
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 22 Sep 2019 16:05:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A883BBACA
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 23 Sep 2019 19:53:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728488AbfIVOFj convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 22 Sep 2019 10:05:39 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:55888 "EHLO
+        id S2502167AbfIWRwy (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 23 Sep 2019 13:52:54 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:59284 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728679AbfIVOFi (ORCPT
+        with ESMTP id S2502187AbfIWRwy (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 22 Sep 2019 10:05:38 -0400
+        Mon, 23 Sep 2019 13:52:54 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iC2UR-0002wh-EZ; Sun, 22 Sep 2019 16:05:27 +0200
+        id 1iCSVq-0002Jt-DJ; Mon, 23 Sep 2019 19:52:38 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 8D3441C0084;
-        Sun, 22 Sep 2019 16:05:26 +0200 (CEST)
-Date:   Sun, 22 Sep 2019 14:05:26 -0000
-From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 8CD5A1C04A9;
+        Mon, 23 Sep 2019 19:52:37 +0200 (CEST)
+Date:   Mon, 23 Sep 2019 17:52:37 -0000
+From:   "tip-bot2 for Arvind Sankar" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] tools headers uapi: Sync prctl.h with the kernel sources
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Brendan Gregg <brendan.d.gregg@gmail.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Jiri Olsa <jolsa@kernel.org>,
-        Luis =?utf-8?q?Cl=C3=A1udio_Gon=C3=A7alves?= 
-        <lclaudio@redhat.com>, Namhyung Kim <namhyung@kernel.org>,
-        Will Deacon <will@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <tip-y8u8kvflooyo9x0if1g3jska@git.kernel.org>
-References: <tip-y8u8kvflooyo9x0if1g3jska@git.kernel.org>
+Subject: [tip: x86/urgent] x86/purgatory: Disable the stackleak GCC plugin for
+ the purgatory
+Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org
+In-Reply-To: <20190923171753.GA2252517@rani.riverdale.lan>
+References: <20190923171753.GA2252517@rani.riverdale.lan>
 MIME-Version: 1.0
-Message-ID: <156916112642.4511.15623631686793353349.tip-bot2@tip-bot2>
+Message-ID: <156926115738.4511.12812558157721670150.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: 7bit
 X-Linutronix-Spam-Score: -1.0
 X-Linutronix-Spam-Level: -
 X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
@@ -53,107 +51,54 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/urgent branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     7b678ccdf5f608c408e1368e525ed191ca456bcf
-Gitweb:        https://git.kernel.org/tip/7b678ccdf5f608c408e1368e525ed191ca456bcf
-Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Fri, 20 Sep 2019 14:40:30 -03:00
-Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Fri, 20 Sep 2019 14:59:05 -03:00
+Commit-ID:     ca14c996afe7228ff9b480cf225211cc17212688
+Gitweb:        https://git.kernel.org/tip/ca14c996afe7228ff9b480cf225211cc17212688
+Author:        Arvind Sankar <nivedita@alum.mit.edu>
+AuthorDate:    Mon, 23 Sep 2019 13:17:54 -04:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Mon, 23 Sep 2019 19:48:02 +02:00
 
-tools headers uapi: Sync prctl.h with the kernel sources
+x86/purgatory: Disable the stackleak GCC plugin for the purgatory
 
-To get the changes in:
+Since commit:
 
-  63f0c6037965 ("arm64: Introduce prctl() options to control the tagged user addresses ABI")
+  b059f801a937 ("x86/purgatory: Use CFLAGS_REMOVE rather than reset KBUILD_CFLAGS")
 
-that introduces prctl options that then automagically gets catched by
-the prctl cmd table generator, and thus supported in the 'perf trace'
-prctl beautifier for the 'option' argument:
+kexec breaks if GCC_PLUGIN_STACKLEAK=y is enabled, as the purgatory
+contains undefined references to stackleak_track_stack.
 
-  $ tools/perf/trace/beauty/prctl_option.sh  > after
-  $ diff -u before after
-  --- before	2019-09-20 14:38:41.386720870 -0300
-  +++ after	2019-09-20 14:40:02.583990802 -0300
-  @@ -49,6 +49,8 @@
-   	[52] = "GET_SPECULATION_CTRL",
-   	[53] = "SET_SPECULATION_CTRL",
-   	[54] = "PAC_RESET_KEYS",
-  +	[55] = "SET_TAGGED_ADDR_CTRL",
-  +	[56] = "GET_TAGGED_ADDR_CTRL",
-   };
-   static const char *prctl_set_mm_options[] = {
-   	[1] = "START_CODE",
-  $
+Attempting to load a kexec kernel results in this failure:
 
-For now just the translation of 55 and 56 to the respecting strings are
-done, more work needed to allow for filters to be used using strings.
+  kexec: Undefined symbol: stackleak_track_stack
+  kexec-bzImage64: Loading purgatory failed
 
-This, for instance, already works:
+Fix this by disabling the stackleak plugin for the purgatory.
 
-  # perf record -e syscalls:sys_enter_close --filter="fd==4"
-  # perf script | head -5
-               gpm  1018 [006] 21327.171436: syscalls:sys_enter_close: fd: 0x00000004
-               gpm  1018 [006] 21329.171583: syscalls:sys_enter_close: fd: 0x00000004
-              bash  4882 [002] 21330.785496: syscalls:sys_enter_close: fd: 0x00000004
-              bash 20672 [001] 21330.785719: syscalls:sys_enter_close: fd: 0x00000004
-              find 20672 [001] 21330.789082: syscalls:sys_enter_close: fd: 0x00000004
-  # perf record -e syscalls:sys_enter_close --filter="fd>=4"
-  ^C[ perf record: Woken up 1 times to write data ]
-  # perf script | head -5
-               gpm  1018 [005] 21401.178501: syscalls:sys_enter_close: fd: 0x00000004
-   gsd-housekeepin  2287 [006] 21402.225365: syscalls:sys_enter_close: fd: 0x0000000b
-   gsd-housekeepin  2287 [006] 21402.226234: syscalls:sys_enter_close: fd: 0x0000000b
-   gsd-housekeepin  2287 [006] 21402.227255: syscalls:sys_enter_close: fd: 0x0000000b
-   gsd-housekeepin  2287 [006] 21402.228088: syscalls:sys_enter_close: fd: 0x0000000b
-  #
-
-Being able to pass something like:
-
-  # perf record -e syscalls:sys_enter_prctl --filter="option=*TAGGED_ADDR*"
-
-Should be easy enough, first using tracepoint filters, then via the
-augmented_raw_syscalls.c BPF method.
-
-This addresses this perf build warning:
-
-  Warning: Kernel ABI header at 'tools/include/uapi/linux/prctl.h' differs from latest version at 'include/uapi/linux/prctl.h'
-  diff -u tools/include/uapi/linux/prctl.h include/uapi/linux/prctl.h
-
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Brendan Gregg <brendan.d.gregg@gmail.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Luis Cláudio Gonçalves <lclaudio@redhat.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Will Deacon <will@kernel.org>
-Link: https://lkml.kernel.org/n/tip-y8u8kvflooyo9x0if1g3jska@git.kernel.org
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
+Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: H. Peter Anvin <hpa@zytor.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Fixes: b059f801a937 ("x86/purgatory: Use CFLAGS_REMOVE rather than reset KBUILD_CFLAGS")
+Link: https://lkml.kernel.org/r/20190923171753.GA2252517@rani.riverdale.lan
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- tools/include/uapi/linux/prctl.h | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/x86/purgatory/Makefile | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/include/uapi/linux/prctl.h b/tools/include/uapi/linux/prctl.h
-index 094bb03..7da1b37 100644
---- a/tools/include/uapi/linux/prctl.h
-+++ b/tools/include/uapi/linux/prctl.h
-@@ -181,7 +181,7 @@ struct prctl_mm_map {
- #define PR_GET_THP_DISABLE	42
+diff --git a/arch/x86/purgatory/Makefile b/arch/x86/purgatory/Makefile
+index 10fb42d..b81b517 100644
+--- a/arch/x86/purgatory/Makefile
++++ b/arch/x86/purgatory/Makefile
+@@ -23,6 +23,7 @@ KCOV_INSTRUMENT := n
  
- /*
-- * Tell the kernel to start/stop helping userspace manage bounds tables.
-+ * No longer implemented, but left here to ensure the numbers stay reserved:
-  */
- #define PR_MPX_ENABLE_MANAGEMENT  43
- #define PR_MPX_DISABLE_MANAGEMENT 44
-@@ -229,4 +229,9 @@ struct prctl_mm_map {
- # define PR_PAC_APDBKEY			(1UL << 3)
- # define PR_PAC_APGAKEY			(1UL << 4)
+ PURGATORY_CFLAGS_REMOVE := -mcmodel=kernel
+ PURGATORY_CFLAGS := -mcmodel=large -ffreestanding -fno-zero-initialized-in-bss
++PURGATORY_CFLAGS += $(DISABLE_STACKLEAK_PLUGIN)
  
-+/* Tagged user address controls for arm64 */
-+#define PR_SET_TAGGED_ADDR_CTRL		55
-+#define PR_GET_TAGGED_ADDR_CTRL		56
-+# define PR_TAGGED_ADDR_ENABLE		(1UL << 0)
-+
- #endif /* _LINUX_PRCTL_H */
+ # Default KBUILD_CFLAGS can have -pg option set when FTRACE is enabled. That
+ # in turn leaves some undefined symbols like __fentry__ in purgatory and not
