@@ -2,25 +2,25 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A883BBACA
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 23 Sep 2019 19:53:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10B2BBBAC7
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 23 Sep 2019 19:52:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2502167AbfIWRwy (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 23 Sep 2019 13:52:54 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:59284 "EHLO
+        id S2502189AbfIWRwx (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 23 Sep 2019 13:52:53 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:59281 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2502187AbfIWRwy (ORCPT
+        with ESMTP id S2502167AbfIWRww (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 23 Sep 2019 13:52:54 -0400
+        Mon, 23 Sep 2019 13:52:52 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iCSVq-0002Jt-DJ; Mon, 23 Sep 2019 19:52:38 +0200
+        id 1iCSVw-0002Ku-Mm; Mon, 23 Sep 2019 19:52:44 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 8CD5A1C04A9;
-        Mon, 23 Sep 2019 19:52:37 +0200 (CEST)
-Date:   Mon, 23 Sep 2019 17:52:37 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 45A451C04A9;
+        Mon, 23 Sep 2019 19:52:44 +0200 (CEST)
+Date:   Mon, 23 Sep 2019 17:52:44 -0000
 From:   "tip-bot2 for Arvind Sankar" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
@@ -37,7 +37,7 @@ Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
 In-Reply-To: <20190923171753.GA2252517@rani.riverdale.lan>
 References: <20190923171753.GA2252517@rani.riverdale.lan>
 MIME-Version: 1.0
-Message-ID: <156926115738.4511.12812558157721670150.tip-bot2@tip-bot2>
+Message-ID: <156926116417.4511.12565628052114033194.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
