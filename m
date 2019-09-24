@@ -2,103 +2,59 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 10B2BBBAC7
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 23 Sep 2019 19:52:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25C48BC4D5
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Sep 2019 11:29:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2502189AbfIWRwx (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 23 Sep 2019 13:52:53 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:59281 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2502167AbfIWRww (ORCPT
+        id S2504218AbfIXJ3I (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 24 Sep 2019 05:29:08 -0400
+Received: from mail-io1-f68.google.com ([209.85.166.68]:35789 "EHLO
+        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2504217AbfIXJ3I (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 23 Sep 2019 13:52:52 -0400
-Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tip-bot2@linutronix.de>)
-        id 1iCSVw-0002Ku-Mm; Mon, 23 Sep 2019 19:52:44 +0200
-Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 45A451C04A9;
-        Mon, 23 Sep 2019 19:52:44 +0200 (CEST)
-Date:   Mon, 23 Sep 2019 17:52:44 -0000
-From:   "tip-bot2 for Arvind Sankar" <tip-bot2@linutronix.de>
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/purgatory: Disable the stackleak GCC plugin for
- the purgatory
-Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Borislav Petkov <bp@alien8.de>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org
-In-Reply-To: <20190923171753.GA2252517@rani.riverdale.lan>
-References: <20190923171753.GA2252517@rani.riverdale.lan>
+        Tue, 24 Sep 2019 05:29:08 -0400
+Received: by mail-io1-f68.google.com with SMTP id q10so2787520iop.2
+        for <linux-tip-commits@vger.kernel.org>; Tue, 24 Sep 2019 02:29:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=PsBefuE69ICySw1INeoKPBOa4EoEyDywr9K0yzzfv30=;
+        b=Dfz5XQGn/HBRizOYWeJZxt/bUYytqTS08XZ6SyR7XKJrdtGIb9cnZF3Y1eHedXwcWS
+         1y3CJ9g9iy0SydoAFWPrMTYJg60h9nWzfmbyoUqNxM9B0kQ3pJUofpDrhgS6gmLNJsgQ
+         bO7yXhI7Ub7jQ03NIjqELJ2ee9BCJbUIB7Bs4fV9TadwpMswmnGSTua9dCTmc36eVO1z
+         4FclNa/niadC8Hwi+A9ogIu8sBrBI6B6cXwQI4fvV8zownNbkmx6ERLgdr7fmbynkxIB
+         451RNsYeuqXMf0ehCuUSV0z+fSh/BrT9puRMZ+v86t93VjczvJwSvKnuUSNitxxi+X/M
+         tPzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=PsBefuE69ICySw1INeoKPBOa4EoEyDywr9K0yzzfv30=;
+        b=WZOl9vK/kVT5NcRiQ5iPjoz2DiGWu+p4Lns3wOovpufHkTtwe/LCemv7T8ig0Nb/hv
+         0Z85xrYjBEHsTM7tcXdqFI52eN/AjScKKNugRr5RcKQ2b0EOYEMAy2EBgXeeWWPxw9n3
+         /Ke7ZbC6oIi/DI2lbPxjI3d2RVw+V8KqXyyj80cmoyEr04CILBXXvwfwWB6I/baDROSZ
+         HiyruX33GWRWMW1nswHDhvoc1jBjBU4+c1hvcu1tzXOBmfGGzzS1cPEZr4ATqliapj7I
+         bKd/0jzGQq679vP81iszT/cDP/KGiKlf9b7t9uNVTrHUC0ui8kNZ1GfS7U1f8yBI/0kT
+         ANeg==
+X-Gm-Message-State: APjAAAVZkMHS9qv0jB+1DFOccX9O80GP0KCaz0wFG9BQEO+/NFPi2NZ0
+        pn4plaNeRdgcpqTPSfzVrvsxujbi1RoyYAAN+jY=
+X-Google-Smtp-Source: APXvYqyBgJQLEkKo1DIegbJlBiLV/CjK2S0O3LK42dTJmSOL/OdYoJGydyqtsCDJKv8S090Q6JB9lwiacM5Xj6wtLkU=
+X-Received: by 2002:a02:cc83:: with SMTP id s3mr2540654jap.93.1569317346505;
+ Tue, 24 Sep 2019 02:29:06 -0700 (PDT)
 MIME-Version: 1.0
-Message-ID: <156926116417.4511.12565628052114033194.tip-bot2@tip-bot2>
-X-Mailer: tip-git-log-daemon
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+Received: by 2002:a05:6638:284:0:0:0:0 with HTTP; Tue, 24 Sep 2019 02:29:06
+ -0700 (PDT)
+Reply-To: jessicajohnsongirl997@gmail.com
+From:   "jessicajohnsongirl997@gmail.com" <julietbikomagu123@gmail.com>
+Date:   Tue, 24 Sep 2019 10:29:06 +0100
+Message-ID: <CACQ_gq6B21pfoxNe4ZqYvPow+WFaPHOkkYbCKUwOi+aNy-tn-w@mail.gmail.com>
+Subject: Hello
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
-
-Commit-ID:     ca14c996afe7228ff9b480cf225211cc17212688
-Gitweb:        https://git.kernel.org/tip/ca14c996afe7228ff9b480cf225211cc17212688
-Author:        Arvind Sankar <nivedita@alum.mit.edu>
-AuthorDate:    Mon, 23 Sep 2019 13:17:54 -04:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Mon, 23 Sep 2019 19:48:02 +02:00
-
-x86/purgatory: Disable the stackleak GCC plugin for the purgatory
-
-Since commit:
-
-  b059f801a937 ("x86/purgatory: Use CFLAGS_REMOVE rather than reset KBUILD_CFLAGS")
-
-kexec breaks if GCC_PLUGIN_STACKLEAK=y is enabled, as the purgatory
-contains undefined references to stackleak_track_stack.
-
-Attempting to load a kexec kernel results in this failure:
-
-  kexec: Undefined symbol: stackleak_track_stack
-  kexec-bzImage64: Loading purgatory failed
-
-Fix this by disabling the stackleak plugin for the purgatory.
-
-Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
-Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Fixes: b059f801a937 ("x86/purgatory: Use CFLAGS_REMOVE rather than reset KBUILD_CFLAGS")
-Link: https://lkml.kernel.org/r/20190923171753.GA2252517@rani.riverdale.lan
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
----
- arch/x86/purgatory/Makefile | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/arch/x86/purgatory/Makefile b/arch/x86/purgatory/Makefile
-index 10fb42d..b81b517 100644
---- a/arch/x86/purgatory/Makefile
-+++ b/arch/x86/purgatory/Makefile
-@@ -23,6 +23,7 @@ KCOV_INSTRUMENT := n
- 
- PURGATORY_CFLAGS_REMOVE := -mcmodel=kernel
- PURGATORY_CFLAGS := -mcmodel=large -ffreestanding -fno-zero-initialized-in-bss
-+PURGATORY_CFLAGS += $(DISABLE_STACKLEAK_PLUGIN)
- 
- # Default KBUILD_CFLAGS can have -pg option set when FTRACE is enabled. That
- # in turn leaves some undefined symbols like __fentry__ in purgatory and not
+-- 
+Hello dear, Friend My spirit ask me to contact you my name is Jessica
+Johnson from USA okay
