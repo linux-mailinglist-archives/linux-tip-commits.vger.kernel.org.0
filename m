@@ -2,29 +2,29 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EE93C00C7
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 27 Sep 2019 10:12:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C0080C00C5
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 27 Sep 2019 10:12:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726984AbfI0ILQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 27 Sep 2019 04:11:16 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:45313 "EHLO
+        id S1727047AbfI0ILM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 27 Sep 2019 04:11:12 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:45296 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727061AbfI0ILP (ORCPT
+        with ESMTP id S1726984AbfI0ILI (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 27 Sep 2019 04:11:15 -0400
+        Fri, 27 Sep 2019 04:11:08 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iDlL8-0005mg-AD; Fri, 27 Sep 2019 10:10:58 +0200
+        id 1iDlL8-0005me-3P; Fri, 27 Sep 2019 10:10:58 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id EE9E01C073C;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id BE81C1C0440;
         Fri, 27 Sep 2019 10:10:57 +0200 (CEST)
 Date:   Fri, 27 Sep 2019 08:10:57 -0000
-From:   "tip-bot2 for Wei Yang" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/mm] x86/mm: Fix function name typo in pmd_read_atomic() comment
+Subject: [tip: x86/mm] x86/mm: Clean up the pmd_read_atomic() comments
 Cc:     Wei Yang <richardw.yang@linux.intel.com>,
         Andy Lutomirski <luto@kernel.org>,
         Borislav Petkov <bp@alien8.de>,
@@ -35,10 +35,8 @@ Cc:     Wei Yang <richardw.yang@linux.intel.com>,
         Rik van Riel <riel@surriel.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org
-In-Reply-To: <20190925014453.20236-1-richardw.yang@linux.intel.com>
-References: <20190925014453.20236-1-richardw.yang@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <156957185789.9866.15298763161487547551.tip-bot2@tip-bot2>
+Message-ID: <156957185765.9866.13900435982443947626.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -54,19 +52,19 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/mm branch of tip:
 
-Commit-ID:     a2f7a0bfcaaa3928e4876d15edd4dfdc09e139b6
-Gitweb:        https://git.kernel.org/tip/a2f7a0bfcaaa3928e4876d15edd4dfdc09e139b6
-Author:        Wei Yang <richardw.yang@linux.intel.com>
-AuthorDate:    Wed, 25 Sep 2019 09:44:53 +08:00
+Commit-ID:     44e09568cf2d874cb2a8e2ac35acf71a9ae3402b
+Gitweb:        https://git.kernel.org/tip/44e09568cf2d874cb2a8e2ac35acf71a9ae3402b
+Author:        Ingo Molnar <mingo@kernel.org>
+AuthorDate:    Wed, 25 Sep 2019 08:38:57 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 25 Sep 2019 08:40:19 +02:00
+CommitterDate: Wed, 25 Sep 2019 10:13:27 +02:00
 
-x86/mm: Fix function name typo in pmd_read_atomic() comment
+x86/mm: Clean up the pmd_read_atomic() comments
 
-The function involved should be pte_offset_map_lock() and we never have
-function pmd_offset_map_lock defined.
+Fix spelling, consistent parenthesis and grammar - and also clarify
+the language where needed.
 
-Signed-off-by: Wei Yang <richardw.yang@linux.intel.com>
+Reviewed-by: Wei Yang <richardw.yang@linux.intel.com>
 Cc: Andy Lutomirski <luto@kernel.org>
 Cc: Borislav Petkov <bp@alien8.de>
 Cc: Dave Hansen <dave.hansen@linux.intel.com>
@@ -75,27 +73,75 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Rik van Riel <riel@surriel.com>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20190925014453.20236-1-richardw.yang@linux.intel.com
-[ Minor edits. ]
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- arch/x86/include/asm/pgtable-3level.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/include/asm/pgtable-3level.h | 44 +++++++++++++-------------
+ 1 file changed, 23 insertions(+), 21 deletions(-)
 
 diff --git a/arch/x86/include/asm/pgtable-3level.h b/arch/x86/include/asm/pgtable-3level.h
-index e363379..1796462 100644
+index 1796462..5afb5e0 100644
 --- a/arch/x86/include/asm/pgtable-3level.h
 +++ b/arch/x86/include/asm/pgtable-3level.h
-@@ -44,10 +44,10 @@ static inline void native_set_pte(pte_t *ptep, pte_t pte)
-  * pmd_populate rightfully does a set_64bit, but if we're reading the
+@@ -36,39 +36,41 @@ static inline void native_set_pte(pte_t *ptep, pte_t pte)
+ 
+ #define pmd_read_atomic pmd_read_atomic
+ /*
+- * pte_offset_map_lock on 32bit PAE kernels was reading the pmd_t with
+- * a "*pmdp" dereference done by gcc. Problem is, in certain places
+- * where pte_offset_map_lock is called, concurrent page faults are
++ * pte_offset_map_lock() on 32-bit PAE kernels was reading the pmd_t with
++ * a "*pmdp" dereference done by GCC. Problem is, in certain places
++ * where pte_offset_map_lock() is called, concurrent page faults are
+  * allowed, if the mmap_sem is hold for reading. An example is mincore
+  * vs page faults vs MADV_DONTNEED. On the page fault side
+- * pmd_populate rightfully does a set_64bit, but if we're reading the
++ * pmd_populate() rightfully does a set_64bit(), but if we're reading the
   * pmd_t with a "*pmdp" on the mincore side, a SMP race can happen
-  * because gcc will not read the 64bit of the pmd atomically. To fix
-- * this all places running pmd_offset_map_lock() while holding the
-+ * this all places running pte_offset_map_lock() while holding the
+- * because gcc will not read the 64bit of the pmd atomically. To fix
+- * this all places running pte_offset_map_lock() while holding the
++ * because GCC will not read the 64-bit value of the pmd atomically.
++ *
++ * To fix this all places running pte_offset_map_lock() while holding the
   * mmap_sem in read mode, shall read the pmdp pointer using this
-  * function to know if the pmd is null nor not, and in turn to know if
-- * they can run pmd_offset_map_lock or pmd_trans_huge or other pmd
-+ * they can run pte_offset_map_lock() or pmd_trans_huge() or other pmd
+- * function to know if the pmd is null nor not, and in turn to know if
++ * function to know if the pmd is null or not, and in turn to know if
+  * they can run pte_offset_map_lock() or pmd_trans_huge() or other pmd
   * operations.
   *
-  * Without THP if the mmap_sem is hold for reading, the pmd can only
+- * Without THP if the mmap_sem is hold for reading, the pmd can only
+- * transition from null to not null while pmd_read_atomic runs. So
++ * Without THP if the mmap_sem is held for reading, the pmd can only
++ * transition from null to not null while pmd_read_atomic() runs. So
+  * we can always return atomic pmd values with this function.
+  *
+- * With THP if the mmap_sem is hold for reading, the pmd can become
++ * With THP if the mmap_sem is held for reading, the pmd can become
+  * trans_huge or none or point to a pte (and in turn become "stable")
+- * at any time under pmd_read_atomic. We could read it really
+- * atomically here with a atomic64_read for the THP enabled case (and
++ * at any time under pmd_read_atomic(). We could read it truly
++ * atomically here with an atomic64_read() for the THP enabled case (and
+  * it would be a whole lot simpler), but to avoid using cmpxchg8b we
+  * only return an atomic pmdval if the low part of the pmdval is later
+- * found stable (i.e. pointing to a pte). And we're returning a none
+- * pmdval if the low part of the pmd is none. In some cases the high
+- * and low part of the pmdval returned may not be consistent if THP is
+- * enabled (the low part may point to previously mapped hugepage,
+- * while the high part may point to a more recently mapped hugepage),
+- * but pmd_none_or_trans_huge_or_clear_bad() only needs the low part
+- * of the pmd to be read atomically to decide if the pmd is unstable
+- * or not, with the only exception of when the low part of the pmd is
+- * zero in which case we return a none pmd.
++ * found to be stable (i.e. pointing to a pte). We are also returning a
++ * 'none' (zero) pmdval if the low part of the pmd is zero.
++ *
++ * In some cases the high and low part of the pmdval returned may not be
++ * consistent if THP is enabled (the low part may point to previously
++ * mapped hugepage, while the high part may point to a more recently
++ * mapped hugepage), but pmd_none_or_trans_huge_or_clear_bad() only
++ * needs the low part of the pmd to be read atomically to decide if the
++ * pmd is unstable or not, with the only exception when the low part
++ * of the pmd is zero, in which case we return a 'none' pmd.
+  */
+ static inline pmd_t pmd_read_atomic(pmd_t *pmdp)
+ {
