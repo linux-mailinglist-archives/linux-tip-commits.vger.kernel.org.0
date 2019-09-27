@@ -2,41 +2,48 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DDFAC00BF
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 27 Sep 2019 10:12:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D897C00C9
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 27 Sep 2019 10:12:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726785AbfI0IK5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 27 Sep 2019 04:10:57 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:45187 "EHLO
+        id S1727084AbfI0ILT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 27 Sep 2019 04:11:19 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:45317 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726769AbfI0IKz (ORCPT
+        with ESMTP id S1727079AbfI0ILT (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 27 Sep 2019 04:10:55 -0400
+        Fri, 27 Sep 2019 04:11:19 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iDlKs-0005ad-Lr; Fri, 27 Sep 2019 10:10:42 +0200
+        id 1iDlKs-0005ae-VE; Fri, 27 Sep 2019 10:10:43 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 27BCB1C073C;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 798FD1C0740;
         Fri, 27 Sep 2019 10:10:42 +0200 (CEST)
 Date:   Fri, 27 Sep 2019 08:10:42 -0000
-From:   "tip-bot2 for KeMeng Shi" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Mathieu Desnoyers" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] sched/core: Fix migration to invalid CPU in
- __set_cpus_allowed_ptr()
-Cc:     KeMeng Shi <shikemeng@huawei.com>,
+Subject: [tip: sched/urgent] sched/membarrier: Return -ENOMEM to userspace on
+ memory allocation failure
+Cc:     Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Valentin Schneider <valentin.schneider@arm.com>,
+        Chris Metcalf <cmetcalf@ezchip.com>,
+        Christoph Lameter <cl@linux.com>,
+        "Eric W. Biederman" <ebiederm@xmission.com>,
+        Kirill Tkhai <tkhai@yandex.ru>,
         Linus Torvalds <torvalds@linux-foundation.org>,
+        Mike Galbraith <efault@gmx.de>,
+        Oleg Nesterov <oleg@redhat.com>,
+        "Paul E. McKenney" <paulmck@linux.ibm.com>,
+        "Russell King - ARM Linux admin" <linux@armlinux.org.uk>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <1568616808-16808-1-git-send-email-shikemeng@huawei.com>
-References: <1568616808-16808-1-git-send-email-shikemeng@huawei.com>
+In-Reply-To: <20190919173705.2181-8-mathieu.desnoyers@efficios.com>
+References: <20190919173705.2181-8-mathieu.desnoyers@efficios.com>
 MIME-Version: 1.0
-Message-ID: <156957184212.9866.17332309018333415855.tip-bot2@tip-bot2>
+Message-ID: <156957184244.9866.6327974056677601202.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -52,84 +59,160 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     714e501e16cd473538b609b3e351b2cc9f7f09ed
-Gitweb:        https://git.kernel.org/tip/714e501e16cd473538b609b3e351b2cc9f7f09ed
-Author:        KeMeng Shi <shikemeng@huawei.com>
-AuthorDate:    Mon, 16 Sep 2019 06:53:28 
+Commit-ID:     c172e0a3e8e65a4c6fffec5bc4d6de08d6f894f7
+Gitweb:        https://git.kernel.org/tip/c172e0a3e8e65a4c6fffec5bc4d6de08d6f894f7
+Author:        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+AuthorDate:    Thu, 19 Sep 2019 13:37:05 -04:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Wed, 25 Sep 2019 17:42:31 +02:00
 
-sched/core: Fix migration to invalid CPU in __set_cpus_allowed_ptr()
+sched/membarrier: Return -ENOMEM to userspace on memory allocation failure
 
-An oops can be triggered in the scheduler when running qemu on arm64:
+Remove the IPI fallback code from membarrier to deal with very
+infrequent cpumask memory allocation failure. Use GFP_KERNEL rather
+than GFP_NOWAIT, and relax the blocking guarantees for the expedited
+membarrier system call commands, allowing it to block if waiting for
+memory to be made available.
 
- Unable to handle kernel paging request at virtual address ffff000008effe40
- Internal error: Oops: 96000007 [#1] SMP
- Process migration/0 (pid: 12, stack limit = 0x00000000084e3736)
- pstate: 20000085 (nzCv daIf -PAN -UAO)
- pc : __ll_sc___cmpxchg_case_acq_4+0x4/0x20
- lr : move_queued_task.isra.21+0x124/0x298
- ...
- Call trace:
-  __ll_sc___cmpxchg_case_acq_4+0x4/0x20
-  __migrate_task+0xc8/0xe0
-  migration_cpu_stop+0x170/0x180
-  cpu_stopper_thread+0xec/0x178
-  smpboot_thread_fn+0x1ac/0x1e8
-  kthread+0x134/0x138
-  ret_from_fork+0x10/0x18
+In addition, now -ENOMEM can be returned to user-space if the cpumask
+memory allocation fails.
 
-__set_cpus_allowed_ptr() will choose an active dest_cpu in affinity mask to
-migrage the process if process is not currently running on any one of the
-CPUs specified in affinity mask. __set_cpus_allowed_ptr() will choose an
-invalid dest_cpu (dest_cpu >= nr_cpu_ids, 1024 in my virtual machine) if
-CPUS in an affinity mask are deactived by cpu_down after cpumask_intersects
-check. cpumask_test_cpu() of dest_cpu afterwards is overflown and may pass if
-corresponding bit is coincidentally set. As a consequence, kernel will
-access an invalid rq address associate with the invalid CPU in
-migration_cpu_stop->__migrate_task->move_queued_task and the Oops occurs.
-
-The reproduce the crash:
-
-  1) A process repeatedly binds itself to cpu0 and cpu1 in turn by calling
-  sched_setaffinity.
-
-  2) A shell script repeatedly does "echo 0 > /sys/devices/system/cpu/cpu1/online"
-  and "echo 1 > /sys/devices/system/cpu/cpu1/online" in turn.
-
-  3) Oops appears if the invalid CPU is set in memory after tested cpumask.
-
-Signed-off-by: KeMeng Shi <shikemeng@huawei.com>
+Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Valentin Schneider <valentin.schneider@arm.com>
+Cc: Chris Metcalf <cmetcalf@ezchip.com>
+Cc: Christoph Lameter <cl@linux.com>
+Cc: Eric W. Biederman <ebiederm@xmission.com>
+Cc: Kirill Tkhai <tkhai@yandex.ru>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Mike Galbraith <efault@gmx.de>
+Cc: Oleg Nesterov <oleg@redhat.com>
+Cc: Paul E. McKenney <paulmck@linux.ibm.com>
 Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Russell King - ARM Linux admin <linux@armlinux.org.uk>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/1568616808-16808-1-git-send-email-shikemeng@huawei.com
+Link: https://lkml.kernel.org/r/20190919173705.2181-8-mathieu.desnoyers@efficios.com
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- kernel/sched/core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/sched/membarrier.c | 63 ++++++++++++--------------------------
+ 1 file changed, 20 insertions(+), 43 deletions(-)
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 2d9a394..83ea23e 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -1656,7 +1656,8 @@ static int __set_cpus_allowed_ptr(struct task_struct *p,
- 	if (cpumask_equal(p->cpus_ptr, new_mask))
- 		goto out;
+diff --git a/kernel/sched/membarrier.c b/kernel/sched/membarrier.c
+index fced54a..a39bed2 100644
+--- a/kernel/sched/membarrier.c
++++ b/kernel/sched/membarrier.c
+@@ -66,7 +66,6 @@ void membarrier_exec_mmap(struct mm_struct *mm)
+ static int membarrier_global_expedited(void)
+ {
+ 	int cpu;
+-	bool fallback = false;
+ 	cpumask_var_t tmpmask;
  
--	if (!cpumask_intersects(new_mask, cpu_valid_mask)) {
-+	dest_cpu = cpumask_any_and(cpu_valid_mask, new_mask);
-+	if (dest_cpu >= nr_cpu_ids) {
- 		ret = -EINVAL;
- 		goto out;
+ 	if (num_online_cpus() == 1)
+@@ -78,15 +77,8 @@ static int membarrier_global_expedited(void)
+ 	 */
+ 	smp_mb();	/* system call entry is not a mb. */
+ 
+-	/*
+-	 * Expedited membarrier commands guarantee that they won't
+-	 * block, hence the GFP_NOWAIT allocation flag and fallback
+-	 * implementation.
+-	 */
+-	if (!zalloc_cpumask_var(&tmpmask, GFP_NOWAIT)) {
+-		/* Fallback for OOM. */
+-		fallback = true;
+-	}
++	if (!zalloc_cpumask_var(&tmpmask, GFP_KERNEL))
++		return -ENOMEM;
+ 
+ 	cpus_read_lock();
+ 	rcu_read_lock();
+@@ -117,18 +109,15 @@ static int membarrier_global_expedited(void)
+ 		if (p->flags & PF_KTHREAD)
+ 			continue;
+ 
+-		if (!fallback)
+-			__cpumask_set_cpu(cpu, tmpmask);
+-		else
+-			smp_call_function_single(cpu, ipi_mb, NULL, 1);
++		__cpumask_set_cpu(cpu, tmpmask);
  	}
-@@ -1677,7 +1678,6 @@ static int __set_cpus_allowed_ptr(struct task_struct *p,
- 	if (cpumask_test_cpu(task_cpu(p), new_mask))
- 		goto out;
+ 	rcu_read_unlock();
+-	if (!fallback) {
+-		preempt_disable();
+-		smp_call_function_many(tmpmask, ipi_mb, NULL, 1);
+-		preempt_enable();
+-		free_cpumask_var(tmpmask);
+-	}
++
++	preempt_disable();
++	smp_call_function_many(tmpmask, ipi_mb, NULL, 1);
++	preempt_enable();
++
++	free_cpumask_var(tmpmask);
+ 	cpus_read_unlock();
  
--	dest_cpu = cpumask_any_and(cpu_valid_mask, new_mask);
- 	if (task_running(rq, p) || p->state == TASK_WAKING) {
- 		struct migration_arg arg = { p, dest_cpu };
- 		/* Need help from migration thread: drop lock and wait. */
+ 	/*
+@@ -143,7 +132,6 @@ static int membarrier_global_expedited(void)
+ static int membarrier_private_expedited(int flags)
+ {
+ 	int cpu;
+-	bool fallback = false;
+ 	cpumask_var_t tmpmask;
+ 	struct mm_struct *mm = current->mm;
+ 
+@@ -168,15 +156,8 @@ static int membarrier_private_expedited(int flags)
+ 	 */
+ 	smp_mb();	/* system call entry is not a mb. */
+ 
+-	/*
+-	 * Expedited membarrier commands guarantee that they won't
+-	 * block, hence the GFP_NOWAIT allocation flag and fallback
+-	 * implementation.
+-	 */
+-	if (!zalloc_cpumask_var(&tmpmask, GFP_NOWAIT)) {
+-		/* Fallback for OOM. */
+-		fallback = true;
+-	}
++	if (!zalloc_cpumask_var(&tmpmask, GFP_KERNEL))
++		return -ENOMEM;
+ 
+ 	cpus_read_lock();
+ 	rcu_read_lock();
+@@ -195,20 +176,16 @@ static int membarrier_private_expedited(int flags)
+ 			continue;
+ 		rcu_read_lock();
+ 		p = rcu_dereference(cpu_rq(cpu)->curr);
+-		if (p && p->mm == mm) {
+-			if (!fallback)
+-				__cpumask_set_cpu(cpu, tmpmask);
+-			else
+-				smp_call_function_single(cpu, ipi_mb, NULL, 1);
+-		}
++		if (p && p->mm == mm)
++			__cpumask_set_cpu(cpu, tmpmask);
+ 	}
+ 	rcu_read_unlock();
+-	if (!fallback) {
+-		preempt_disable();
+-		smp_call_function_many(tmpmask, ipi_mb, NULL, 1);
+-		preempt_enable();
+-		free_cpumask_var(tmpmask);
+-	}
++
++	preempt_disable();
++	smp_call_function_many(tmpmask, ipi_mb, NULL, 1);
++	preempt_enable();
++
++	free_cpumask_var(tmpmask);
+ 	cpus_read_unlock();
+ 
+ 	/*
+@@ -264,7 +241,7 @@ static int sync_runqueues_membarrier_state(struct mm_struct *mm)
+ 		struct rq *rq = cpu_rq(cpu);
+ 		struct task_struct *p;
+ 
+-		p = rcu_dereference(&rq->curr);
++		p = rcu_dereference(rq->curr);
+ 		if (p && p->mm == mm)
+ 			__cpumask_set_cpu(cpu, tmpmask);
+ 	}
