@@ -2,30 +2,30 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8289FC00D1
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 27 Sep 2019 10:12:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9759BC00C0
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 27 Sep 2019 10:12:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726316AbfI0ILc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 27 Sep 2019 04:11:32 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:45297 "EHLO
+        id S1726958AbfI0ILE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 27 Sep 2019 04:11:04 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:45265 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726988AbfI0ILI (ORCPT
+        with ESMTP id S1726769AbfI0ILE (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 27 Sep 2019 04:11:08 -0400
+        Fri, 27 Sep 2019 04:11:04 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iDlKx-0005hG-N0; Fri, 27 Sep 2019 10:10:47 +0200
+        id 1iDlKz-0005fj-4y; Fri, 27 Sep 2019 10:10:49 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 874A51C07A5;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5F7B01C079B;
         Fri, 27 Sep 2019 10:10:44 +0200 (CEST)
 Date:   Fri, 27 Sep 2019 08:10:44 -0000
 From:   "tip-bot2 for Eric W. Biederman" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] tasks, sched/core: Ensure tasks are available for
- a grace period after leaving the runqueue
+Subject: [tip: sched/urgent] tasks, sched/core: With a grace period after
+ finish_task_switch(), remove unnecessary code
 Cc:     "Eric W. Biederman" <ebiederm@xmission.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Chris Metcalf <cmetcalf@ezchip.com>,
@@ -34,15 +34,16 @@ Cc:     "Eric W. Biederman" <ebiederm@xmission.com>,
         Kirill Tkhai <tkhai@yandex.ru>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Mike Galbraith <efault@gmx.de>,
+        Oleg Nesterov <oleg@redhat.com>,
         "Paul E. McKenney" <paulmck@kernel.org>,
         "Russell King - ARM Linux admin" <linux@armlinux.org.uk>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <87r24jdpl5.fsf_-_@x220.int.ebiederm.org>
-References: <87r24jdpl5.fsf_-_@x220.int.ebiederm.org>
+In-Reply-To: <87lfurdpk9.fsf_-_@x220.int.ebiederm.org>
+References: <87lfurdpk9.fsf_-_@x220.int.ebiederm.org>
 MIME-Version: 1.0
-Message-ID: <156957184451.9866.478882199102320208.tip-bot2@tip-bot2>
+Message-ID: <156957184434.9866.8980212388435648779.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -58,52 +59,32 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     0ff7b2cfbae36ebcd216c6a5ad7f8534eebeaee2
-Gitweb:        https://git.kernel.org/tip/0ff7b2cfbae36ebcd216c6a5ad7f8534eebeaee2
+Commit-ID:     154abafc68bfb7c2ef2ad5308a3b2de8968c3f61
+Gitweb:        https://git.kernel.org/tip/154abafc68bfb7c2ef2ad5308a3b2de8968c3f61
 Author:        Eric W. Biederman <ebiederm@xmission.com>
-AuthorDate:    Sat, 14 Sep 2019 07:33:58 -05:00
+AuthorDate:    Sat, 14 Sep 2019 07:34:30 -05:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Wed, 25 Sep 2019 17:42:29 +02:00
 
-tasks, sched/core: Ensure tasks are available for a grace period after leaving the runqueue
+tasks, sched/core: With a grace period after finish_task_switch(), remove unnecessary code
 
-In the ordinary case today the RCU grace period for a task_struct is
-triggered when another process wait's for it's zombine and causes the
-kernel to call release_task().  As the waiting task has to receive a
-signal and then act upon it before this happens, typically this will
-occur after the original task as been removed from the runqueue.
+Remove work arounds that were written before there was a grace period
+after tasks left the runqueue in finish_task_switch().
 
-Unfortunaty in some cases such as self reaping tasks it can be shown
-that release_task() will be called starting the grace period for
-task_struct long before the task leaves the runqueue.
+In particular now that there tasks exiting the runqueue exprience
+a RCU grace period none of the work performed by task_rcu_dereference()
+excpet the rcu_dereference() is necessary so replace task_rcu_dereference()
+with rcu_dereference().
 
-Therefore use put_task_struct_rcu_user() in finish_task_switch() to
-guarantee that the there is a RCU lifetime after the task
-leaves the runqueue.
+Remove the code in rcuwait_wait_event() that checks to ensure the current
+task has not exited.  It is no longer necessary as it is guaranteed
+that any running task will experience a RCU grace period after it
+leaves the run queueue.
 
-Besides the change in the start of the RCU grace period for the
-task_struct this change may cause perf_event_delayed_put and
-trace_sched_process_free.  The function perf_event_delayed_put boils
-down to just a WARN_ON for cases that I assume never show happen.  So
-I don't see any problem with delaying it.
+Remove the comment in rcuwait_wake_up() as it is no longer relevant.
 
-The function trace_sched_process_free is a trace point and thus
-visible to user space.  Occassionally userspace has the strangest
-dependencies so this has a miniscule chance of causing a regression.
-This change only changes the timing of when the tracepoint is called.
-The change in timing arguably gives userspace a more accurate picture
-of what is going on.  So I don't expect there to be a regression.
-
-In the case where a task self reaps we are pretty much guaranteed that
-the RCU grace period is delayed.  So we should get quite a bit of
-coverage in of this worst case for the change in a normal threaded
-workload.  So I expect any issues to turn up quickly or not at all.
-
-I have lightly tested this change and everything appears to work
-fine.
-
-Inspired-by: Linus Torvalds <torvalds@linux-foundation.org>
-Inspired-by: Oleg Nesterov <oleg@redhat.com>
+Ref: 8f95c90ceb54 ("sched/wait, RCU: Introduce rcuwait machinery")
+Ref: 150593bf8693 ("sched/api: Introduce task_rcu_dereference() and try_get_task_struct()")
 Signed-off-by: Eric W. Biederman <ebiederm@xmission.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Cc: Chris Metcalf <cmetcalf@ezchip.com>
@@ -112,49 +93,189 @@ Cc: Davidlohr Bueso <dave@stgolabs.net>
 Cc: Kirill Tkhai <tkhai@yandex.ru>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: Mike Galbraith <efault@gmx.de>
+Cc: Oleg Nesterov <oleg@redhat.com>
 Cc: Paul E. McKenney <paulmck@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Russell King - ARM Linux admin <linux@armlinux.org.uk>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/87r24jdpl5.fsf_-_@x220.int.ebiederm.org
+Link: https://lkml.kernel.org/r/87lfurdpk9.fsf_-_@x220.int.ebiederm.org
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- kernel/fork.c       | 11 +++++++----
- kernel/sched/core.c |  2 +-
- 2 files changed, 8 insertions(+), 5 deletions(-)
+ include/linux/rcuwait.h    | 20 ++---------
+ include/linux/sched/task.h |  1 +-
+ kernel/exit.c              | 67 +-------------------------------------
+ kernel/sched/fair.c        |  2 +-
+ kernel/sched/membarrier.c  |  4 +-
+ 5 files changed, 7 insertions(+), 87 deletions(-)
 
-diff --git a/kernel/fork.c b/kernel/fork.c
-index 7eefe33..d6e5525 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -902,10 +902,13 @@ static struct task_struct *dup_task_struct(struct task_struct *orig, int node)
- 	if (orig->cpus_ptr == &orig->cpus_mask)
- 		tsk->cpus_ptr = &tsk->cpus_mask;
+diff --git a/include/linux/rcuwait.h b/include/linux/rcuwait.h
+index 563290f..75c97e4 100644
+--- a/include/linux/rcuwait.h
++++ b/include/linux/rcuwait.h
+@@ -6,16 +6,11 @@
  
--	/* One for the user space visible state that goes away when reaped. */
--	refcount_set(&tsk->rcu_users, 1);
--	/* One for the rcu users, and one for the scheduler */
--	refcount_set(&tsk->usage, 2);
-+	/*
-+	 * One for the user space visible state that goes away when reaped.
-+	 * One for the scheduler.
-+	 */
-+	refcount_set(&tsk->rcu_users, 2);
-+	/* One for the rcu users */
-+	refcount_set(&tsk->usage, 1);
- #ifdef CONFIG_BLK_DEV_IO_TRACE
- 	tsk->btrace_seq = 0;
- #endif
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 06961b9..5e5fefb 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -3254,7 +3254,7 @@ static struct rq *finish_task_switch(struct task_struct *prev)
- 		/* Task is done with its stack. */
- 		put_task_stack(prev);
+ /*
+  * rcuwait provides a way of blocking and waking up a single
+- * task in an rcu-safe manner; where it is forbidden to use
+- * after exit_notify(). task_struct is not properly rcu protected,
+- * unless dealing with rcu-aware lists, ie: find_task_by_*().
++ * task in an rcu-safe manner.
+  *
+- * Alternatively we have task_rcu_dereference(), but the return
+- * semantics have different implications which would break the
+- * wakeup side. The only time @task is non-nil is when a user is
+- * blocked (or checking if it needs to) on a condition, and reset
+- * as soon as we know that the condition has succeeded and are
+- * awoken.
++ * The only time @task is non-nil is when a user is blocked (or
++ * checking if it needs to) on a condition, and reset as soon as we
++ * know that the condition has succeeded and are awoken.
+  */
+ struct rcuwait {
+ 	struct task_struct __rcu *task;
+@@ -37,13 +32,6 @@ extern void rcuwait_wake_up(struct rcuwait *w);
+  */
+ #define rcuwait_wait_event(w, condition)				\
+ ({									\
+-	/*								\
+-	 * Complain if we are called after do_exit()/exit_notify(),     \
+-	 * as we cannot rely on the rcu critical region for the		\
+-	 * wakeup side.							\
+-	 */                                                             \
+-	WARN_ON(current->exit_state);                                   \
+-									\
+ 	rcu_assign_pointer((w)->task, current);				\
+ 	for (;;) {							\
+ 		/*							\
+diff --git a/include/linux/sched/task.h b/include/linux/sched/task.h
+index 153a683..4b1c3b6 100644
+--- a/include/linux/sched/task.h
++++ b/include/linux/sched/task.h
+@@ -119,7 +119,6 @@ static inline void put_task_struct(struct task_struct *t)
+ 		__put_task_struct(t);
+ }
  
--		put_task_struct(prev);
-+		put_task_struct_rcu_user(prev);
- 	}
+-struct task_struct *task_rcu_dereference(struct task_struct **ptask);
+ void put_task_struct_rcu_user(struct task_struct *task);
  
- 	tick_nohz_task_switch();
+ #ifdef CONFIG_ARCH_WANTS_DYNAMIC_TASK_STRUCT
+diff --git a/kernel/exit.c b/kernel/exit.c
+index 3bcaec2..a46a50d 100644
+--- a/kernel/exit.c
++++ b/kernel/exit.c
+@@ -234,69 +234,6 @@ repeat:
+ 		goto repeat;
+ }
+ 
+-/*
+- * Note that if this function returns a valid task_struct pointer (!NULL)
+- * task->usage must remain >0 for the duration of the RCU critical section.
+- */
+-struct task_struct *task_rcu_dereference(struct task_struct **ptask)
+-{
+-	struct sighand_struct *sighand;
+-	struct task_struct *task;
+-
+-	/*
+-	 * We need to verify that release_task() was not called and thus
+-	 * delayed_put_task_struct() can't run and drop the last reference
+-	 * before rcu_read_unlock(). We check task->sighand != NULL,
+-	 * but we can read the already freed and reused memory.
+-	 */
+-retry:
+-	task = rcu_dereference(*ptask);
+-	if (!task)
+-		return NULL;
+-
+-	probe_kernel_address(&task->sighand, sighand);
+-
+-	/*
+-	 * Pairs with atomic_dec_and_test() in put_task_struct(). If this task
+-	 * was already freed we can not miss the preceding update of this
+-	 * pointer.
+-	 */
+-	smp_rmb();
+-	if (unlikely(task != READ_ONCE(*ptask)))
+-		goto retry;
+-
+-	/*
+-	 * We've re-checked that "task == *ptask", now we have two different
+-	 * cases:
+-	 *
+-	 * 1. This is actually the same task/task_struct. In this case
+-	 *    sighand != NULL tells us it is still alive.
+-	 *
+-	 * 2. This is another task which got the same memory for task_struct.
+-	 *    We can't know this of course, and we can not trust
+-	 *    sighand != NULL.
+-	 *
+-	 *    In this case we actually return a random value, but this is
+-	 *    correct.
+-	 *
+-	 *    If we return NULL - we can pretend that we actually noticed that
+-	 *    *ptask was updated when the previous task has exited. Or pretend
+-	 *    that probe_slab_address(&sighand) reads NULL.
+-	 *
+-	 *    If we return the new task (because sighand is not NULL for any
+-	 *    reason) - this is fine too. This (new) task can't go away before
+-	 *    another gp pass.
+-	 *
+-	 *    And note: We could even eliminate the false positive if re-read
+-	 *    task->sighand once again to avoid the falsely NULL. But this case
+-	 *    is very unlikely so we don't care.
+-	 */
+-	if (!sighand)
+-		return NULL;
+-
+-	return task;
+-}
+-
+ void rcuwait_wake_up(struct rcuwait *w)
+ {
+ 	struct task_struct *task;
+@@ -316,10 +253,6 @@ void rcuwait_wake_up(struct rcuwait *w)
+ 	 */
+ 	smp_mb(); /* (B) */
+ 
+-	/*
+-	 * Avoid using task_rcu_dereference() magic as long as we are careful,
+-	 * see comment in rcuwait_wait_event() regarding ->exit_state.
+-	 */
+ 	task = rcu_dereference(w->task);
+ 	if (task)
+ 		wake_up_process(task);
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 3101c66..5bc2399 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -1602,7 +1602,7 @@ static void task_numa_compare(struct task_numa_env *env,
+ 		return;
+ 
+ 	rcu_read_lock();
+-	cur = task_rcu_dereference(&dst_rq->curr);
++	cur = rcu_dereference(dst_rq->curr);
+ 	if (cur && ((cur->flags & PF_EXITING) || is_idle_task(cur)))
+ 		cur = NULL;
+ 
+diff --git a/kernel/sched/membarrier.c b/kernel/sched/membarrier.c
+index aa8d758..b14250a 100644
+--- a/kernel/sched/membarrier.c
++++ b/kernel/sched/membarrier.c
+@@ -71,7 +71,7 @@ static int membarrier_global_expedited(void)
+ 			continue;
+ 
+ 		rcu_read_lock();
+-		p = task_rcu_dereference(&cpu_rq(cpu)->curr);
++		p = rcu_dereference(cpu_rq(cpu)->curr);
+ 		if (p && p->mm && (atomic_read(&p->mm->membarrier_state) &
+ 				   MEMBARRIER_STATE_GLOBAL_EXPEDITED)) {
+ 			if (!fallback)
+@@ -150,7 +150,7 @@ static int membarrier_private_expedited(int flags)
+ 		if (cpu == raw_smp_processor_id())
+ 			continue;
+ 		rcu_read_lock();
+-		p = task_rcu_dereference(&cpu_rq(cpu)->curr);
++		p = rcu_dereference(cpu_rq(cpu)->curr);
+ 		if (p && p->mm == current->mm) {
+ 			if (!fallback)
+ 				__cpumask_set_cpu(cpu, tmpmask);
