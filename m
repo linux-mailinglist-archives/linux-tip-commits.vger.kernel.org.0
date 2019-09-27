@@ -2,48 +2,46 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 89797C00DA
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 27 Sep 2019 10:13:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC14BC00D2
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 27 Sep 2019 10:12:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726178AbfI0IMK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 27 Sep 2019 04:12:10 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:45337 "EHLO
+        id S1727178AbfI0ILg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 27 Sep 2019 04:11:36 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:45280 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726404AbfI0IMK (ORCPT
+        with ESMTP id S1726915AbfI0ILG (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 27 Sep 2019 04:12:10 -0400
+        Fri, 27 Sep 2019 04:11:06 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iDlKt-0005bB-Jf; Fri, 27 Sep 2019 10:10:43 +0200
+        id 1iDlKu-0005cK-TF; Fri, 27 Sep 2019 10:10:45 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 29BF91C073C;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 6FF071C0740;
         Fri, 27 Sep 2019 10:10:43 +0200 (CEST)
 Date:   Fri, 27 Sep 2019 08:10:43 -0000
 From:   "tip-bot2 for Mathieu Desnoyers" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] selftests, sched/membarrier: Add multi-threaded test
-Cc:     Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+Subject: [tip: sched/urgent] sched/membarrier: Fix p->mm->membarrier_state racy load
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Chris Metcalf <cmetcalf@ezchip.com>,
         Christoph Lameter <cl@linux.com>,
         "Eric W. Biederman" <ebiederm@xmission.com>,
-        Kirill Tkhai <tkhai@yandex.ru>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Mike Galbraith <efault@gmx.de>,
+        Kirill Tkhai <tkhai@yandex.ru>, Mike Galbraith <efault@gmx.de>,
         Oleg Nesterov <oleg@redhat.com>,
         "Paul E. McKenney" <paulmck@linux.ibm.com>,
         "Russell King - ARM Linux admin" <linux@armlinux.org.uk>,
-        Shuah Khan <shuahkh@osg.samsung.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20190919173705.2181-6-mathieu.desnoyers@efficios.com>
-References: <20190919173705.2181-6-mathieu.desnoyers@efficios.com>
+In-Reply-To: <20190919173705.2181-5-mathieu.desnoyers@efficios.com>
+References: <20190919173705.2181-5-mathieu.desnoyers@efficios.com>
 MIME-Version: 1.0
-Message-ID: <156957184306.9866.10459210030485538128.tip-bot2@tip-bot2>
+Message-ID: <156957184332.9866.1795367595934026999.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -59,819 +57,475 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     19a4ff534bb09686f53800564cb977bad2177c00
-Gitweb:        https://git.kernel.org/tip/19a4ff534bb09686f53800564cb977bad2177c00
+Commit-ID:     227a4aadc75ba22fcb6c4e1c078817b8cbaae4ce
+Gitweb:        https://git.kernel.org/tip/227a4aadc75ba22fcb6c4e1c078817b8cbaae4ce
 Author:        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-AuthorDate:    Thu, 19 Sep 2019 13:37:03 -04:00
+AuthorDate:    Thu, 19 Sep 2019 13:37:02 -04:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 25 Sep 2019 17:42:31 +02:00
+CommitterDate: Wed, 25 Sep 2019 17:42:30 +02:00
 
-selftests, sched/membarrier: Add multi-threaded test
+sched/membarrier: Fix p->mm->membarrier_state racy load
 
-membarrier commands cover very different code paths if they are in
-a single-threaded vs multi-threaded process. Therefore, exercise both
-scenarios in the kernel selftests to increase coverage of this selftest.
+The membarrier_state field is located within the mm_struct, which
+is not guaranteed to exist when used from runqueue-lock-free iteration
+on runqueues by the membarrier system call.
 
+Copy the membarrier_state from the mm_struct into the scheduler runqueue
+when the scheduler switches between mm.
+
+When registering membarrier for mm, after setting the registration bit
+in the mm membarrier state, issue a synchronize_rcu() to ensure the
+scheduler observes the change. In order to take care of the case
+where a runqueue keeps executing the target mm without swapping to
+other mm, iterate over each runqueue and issue an IPI to copy the
+membarrier_state from the mm_struct into each runqueue which have the
+same mm which state has just been modified.
+
+Move the mm membarrier_state field closer to pgd in mm_struct to use
+a cache line already touched by the scheduler switch_mm.
+
+The membarrier_execve() (now membarrier_exec_mmap) hook now needs to
+clear the runqueue's membarrier state in addition to clear the mm
+membarrier state, so move its implementation into the scheduler
+membarrier code so it can access the runqueue structure.
+
+Add memory barrier in membarrier_exec_mmap() prior to clearing
+the membarrier state, ensuring memory accesses executed prior to exec
+are not reordered with the stores clearing the membarrier state.
+
+As suggested by Linus, move all membarrier.c RCU read-side locks outside
+of the for each cpu loops.
+
+Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Cc: Chris Metcalf <cmetcalf@ezchip.com>
 Cc: Christoph Lameter <cl@linux.com>
 Cc: Eric W. Biederman <ebiederm@xmission.com>
 Cc: Kirill Tkhai <tkhai@yandex.ru>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: Mike Galbraith <efault@gmx.de>
 Cc: Oleg Nesterov <oleg@redhat.com>
 Cc: Paul E. McKenney <paulmck@linux.ibm.com>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Russell King - ARM Linux admin <linux@armlinux.org.uk>
-Cc: Shuah Khan <shuahkh@osg.samsung.com>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20190919173705.2181-6-mathieu.desnoyers@efficios.com
+Link: https://lkml.kernel.org/r/20190919173705.2181-5-mathieu.desnoyers@efficios.com
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- tools/testing/selftests/membarrier/.gitignore                      |   3 +-
- tools/testing/selftests/membarrier/Makefile                        |   5 +-
- tools/testing/selftests/membarrier/membarrier_test.c               | 313 +---------------------------------------------------------------------
- tools/testing/selftests/membarrier/membarrier_test_impl.h          | 317 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-
- tools/testing/selftests/membarrier/membarrier_test_multi_thread.c  |  73 ++++++++++++++++-
- tools/testing/selftests/membarrier/membarrier_test_single_thread.c |  24 +++++-
- 6 files changed, 419 insertions(+), 316 deletions(-)
- delete mode 100644 tools/testing/selftests/membarrier/membarrier_test.c
- create mode 100644 tools/testing/selftests/membarrier/membarrier_test_impl.h
- create mode 100644 tools/testing/selftests/membarrier/membarrier_test_multi_thread.c
- create mode 100644 tools/testing/selftests/membarrier/membarrier_test_single_thread.c
+ fs/exec.c                 |   2 +-
+ include/linux/mm_types.h  |  14 ++-
+ include/linux/sched/mm.h  |   8 +--
+ kernel/sched/core.c       |   4 +-
+ kernel/sched/membarrier.c | 175 +++++++++++++++++++++++++++----------
+ kernel/sched/sched.h      |  34 +++++++-
+ 6 files changed, 183 insertions(+), 54 deletions(-)
 
-diff --git a/tools/testing/selftests/membarrier/.gitignore b/tools/testing/selftests/membarrier/.gitignore
-index 020c44f..f2f7ec0 100644
---- a/tools/testing/selftests/membarrier/.gitignore
-+++ b/tools/testing/selftests/membarrier/.gitignore
-@@ -1 +1,2 @@
--membarrier_test
-+membarrier_test_multi_thread
-+membarrier_test_single_thread
-diff --git a/tools/testing/selftests/membarrier/Makefile b/tools/testing/selftests/membarrier/Makefile
-index 97e3bdf..34d1c81 100644
---- a/tools/testing/selftests/membarrier/Makefile
-+++ b/tools/testing/selftests/membarrier/Makefile
-@@ -1,7 +1,8 @@
- # SPDX-License-Identifier: GPL-2.0-only
- CFLAGS += -g -I../../../../usr/include/
-+LDLIBS += -lpthread
+diff --git a/fs/exec.c b/fs/exec.c
+index f7f6a14..555e93c 100644
+--- a/fs/exec.c
++++ b/fs/exec.c
+@@ -1033,6 +1033,7 @@ static int exec_mmap(struct mm_struct *mm)
+ 	}
+ 	task_lock(tsk);
+ 	active_mm = tsk->active_mm;
++	membarrier_exec_mmap(mm);
+ 	tsk->mm = mm;
+ 	tsk->active_mm = mm;
+ 	activate_mm(active_mm, mm);
+@@ -1825,7 +1826,6 @@ static int __do_execve_file(int fd, struct filename *filename,
+ 	/* execve succeeded */
+ 	current->fs->in_exec = 0;
+ 	current->in_execve = 0;
+-	membarrier_execve(current);
+ 	rseq_execve(current);
+ 	acct_update_integrals(current);
+ 	task_numa_free(current, false);
+diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+index 6a7a108..ec9bd3a 100644
+--- a/include/linux/mm_types.h
++++ b/include/linux/mm_types.h
+@@ -383,6 +383,16 @@ struct mm_struct {
+ 		unsigned long highest_vm_end;	/* highest vma end address */
+ 		pgd_t * pgd;
  
--TEST_GEN_PROGS := membarrier_test
-+TEST_GEN_PROGS := membarrier_test_single_thread \
-+		membarrier_test_multi_thread
++#ifdef CONFIG_MEMBARRIER
++		/**
++		 * @membarrier_state: Flags controlling membarrier behavior.
++		 *
++		 * This field is close to @pgd to hopefully fit in the same
++		 * cache-line, which needs to be touched by switch_mm().
++		 */
++		atomic_t membarrier_state;
++#endif
++
+ 		/**
+ 		 * @mm_users: The number of users including userspace.
+ 		 *
+@@ -452,9 +462,7 @@ struct mm_struct {
+ 		unsigned long flags; /* Must use atomic bitops to access */
  
- include ../lib.mk
--
-diff --git a/tools/testing/selftests/membarrier/membarrier_test.c b/tools/testing/selftests/membarrier/membarrier_test.c
-deleted file mode 100644
-index 70b4ddb..0000000
---- a/tools/testing/selftests/membarrier/membarrier_test.c
-+++ /dev/null
-@@ -1,313 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0
--#define _GNU_SOURCE
--#include <linux/membarrier.h>
--#include <syscall.h>
--#include <stdio.h>
--#include <errno.h>
--#include <string.h>
--
--#include "../kselftest.h"
--
--static int sys_membarrier(int cmd, int flags)
--{
--	return syscall(__NR_membarrier, cmd, flags);
--}
--
--static int test_membarrier_cmd_fail(void)
--{
--	int cmd = -1, flags = 0;
--	const char *test_name = "sys membarrier invalid command";
--
--	if (sys_membarrier(cmd, flags) != -1) {
--		ksft_exit_fail_msg(
--			"%s test: command = %d, flags = %d. Should fail, but passed\n",
--			test_name, cmd, flags);
--	}
--	if (errno != EINVAL) {
--		ksft_exit_fail_msg(
--			"%s test: flags = %d. Should return (%d: \"%s\"), but returned (%d: \"%s\").\n",
--			test_name, flags, EINVAL, strerror(EINVAL),
--			errno, strerror(errno));
--	}
--
--	ksft_test_result_pass(
--		"%s test: command = %d, flags = %d, errno = %d. Failed as expected\n",
--		test_name, cmd, flags, errno);
--	return 0;
--}
--
--static int test_membarrier_flags_fail(void)
--{
--	int cmd = MEMBARRIER_CMD_QUERY, flags = 1;
--	const char *test_name = "sys membarrier MEMBARRIER_CMD_QUERY invalid flags";
--
--	if (sys_membarrier(cmd, flags) != -1) {
--		ksft_exit_fail_msg(
--			"%s test: flags = %d. Should fail, but passed\n",
--			test_name, flags);
--	}
--	if (errno != EINVAL) {
--		ksft_exit_fail_msg(
--			"%s test: flags = %d. Should return (%d: \"%s\"), but returned (%d: \"%s\").\n",
--			test_name, flags, EINVAL, strerror(EINVAL),
--			errno, strerror(errno));
--	}
--
--	ksft_test_result_pass(
--		"%s test: flags = %d, errno = %d. Failed as expected\n",
--		test_name, flags, errno);
--	return 0;
--}
--
--static int test_membarrier_global_success(void)
--{
--	int cmd = MEMBARRIER_CMD_GLOBAL, flags = 0;
--	const char *test_name = "sys membarrier MEMBARRIER_CMD_GLOBAL";
--
--	if (sys_membarrier(cmd, flags) != 0) {
--		ksft_exit_fail_msg(
--			"%s test: flags = %d, errno = %d\n",
--			test_name, flags, errno);
--	}
--
--	ksft_test_result_pass(
--		"%s test: flags = %d\n", test_name, flags);
--	return 0;
--}
--
--static int test_membarrier_private_expedited_fail(void)
--{
--	int cmd = MEMBARRIER_CMD_PRIVATE_EXPEDITED, flags = 0;
--	const char *test_name = "sys membarrier MEMBARRIER_CMD_PRIVATE_EXPEDITED not registered failure";
--
--	if (sys_membarrier(cmd, flags) != -1) {
--		ksft_exit_fail_msg(
--			"%s test: flags = %d. Should fail, but passed\n",
--			test_name, flags);
--	}
--	if (errno != EPERM) {
--		ksft_exit_fail_msg(
--			"%s test: flags = %d. Should return (%d: \"%s\"), but returned (%d: \"%s\").\n",
--			test_name, flags, EPERM, strerror(EPERM),
--			errno, strerror(errno));
--	}
--
--	ksft_test_result_pass(
--		"%s test: flags = %d, errno = %d\n",
--		test_name, flags, errno);
--	return 0;
--}
--
--static int test_membarrier_register_private_expedited_success(void)
--{
--	int cmd = MEMBARRIER_CMD_REGISTER_PRIVATE_EXPEDITED, flags = 0;
--	const char *test_name = "sys membarrier MEMBARRIER_CMD_REGISTER_PRIVATE_EXPEDITED";
--
--	if (sys_membarrier(cmd, flags) != 0) {
--		ksft_exit_fail_msg(
--			"%s test: flags = %d, errno = %d\n",
--			test_name, flags, errno);
--	}
--
--	ksft_test_result_pass(
--		"%s test: flags = %d\n",
--		test_name, flags);
--	return 0;
--}
--
--static int test_membarrier_private_expedited_success(void)
--{
--	int cmd = MEMBARRIER_CMD_PRIVATE_EXPEDITED, flags = 0;
--	const char *test_name = "sys membarrier MEMBARRIER_CMD_PRIVATE_EXPEDITED";
--
--	if (sys_membarrier(cmd, flags) != 0) {
--		ksft_exit_fail_msg(
--			"%s test: flags = %d, errno = %d\n",
--			test_name, flags, errno);
--	}
--
--	ksft_test_result_pass(
--		"%s test: flags = %d\n",
--		test_name, flags);
--	return 0;
--}
--
--static int test_membarrier_private_expedited_sync_core_fail(void)
--{
--	int cmd = MEMBARRIER_CMD_PRIVATE_EXPEDITED_SYNC_CORE, flags = 0;
--	const char *test_name = "sys membarrier MEMBARRIER_CMD_PRIVATE_EXPEDITED_SYNC_CORE not registered failure";
--
--	if (sys_membarrier(cmd, flags) != -1) {
--		ksft_exit_fail_msg(
--			"%s test: flags = %d. Should fail, but passed\n",
--			test_name, flags);
--	}
--	if (errno != EPERM) {
--		ksft_exit_fail_msg(
--			"%s test: flags = %d. Should return (%d: \"%s\"), but returned (%d: \"%s\").\n",
--			test_name, flags, EPERM, strerror(EPERM),
--			errno, strerror(errno));
--	}
--
--	ksft_test_result_pass(
--		"%s test: flags = %d, errno = %d\n",
--		test_name, flags, errno);
--	return 0;
--}
--
--static int test_membarrier_register_private_expedited_sync_core_success(void)
--{
--	int cmd = MEMBARRIER_CMD_REGISTER_PRIVATE_EXPEDITED_SYNC_CORE, flags = 0;
--	const char *test_name = "sys membarrier MEMBARRIER_CMD_REGISTER_PRIVATE_EXPEDITED_SYNC_CORE";
--
--	if (sys_membarrier(cmd, flags) != 0) {
--		ksft_exit_fail_msg(
--			"%s test: flags = %d, errno = %d\n",
--			test_name, flags, errno);
--	}
--
--	ksft_test_result_pass(
--		"%s test: flags = %d\n",
--		test_name, flags);
--	return 0;
--}
--
--static int test_membarrier_private_expedited_sync_core_success(void)
--{
--	int cmd = MEMBARRIER_CMD_PRIVATE_EXPEDITED, flags = 0;
--	const char *test_name = "sys membarrier MEMBARRIER_CMD_PRIVATE_EXPEDITED_SYNC_CORE";
--
--	if (sys_membarrier(cmd, flags) != 0) {
--		ksft_exit_fail_msg(
--			"%s test: flags = %d, errno = %d\n",
--			test_name, flags, errno);
--	}
--
--	ksft_test_result_pass(
--		"%s test: flags = %d\n",
--		test_name, flags);
--	return 0;
--}
--
--static int test_membarrier_register_global_expedited_success(void)
--{
--	int cmd = MEMBARRIER_CMD_REGISTER_GLOBAL_EXPEDITED, flags = 0;
--	const char *test_name = "sys membarrier MEMBARRIER_CMD_REGISTER_GLOBAL_EXPEDITED";
--
--	if (sys_membarrier(cmd, flags) != 0) {
--		ksft_exit_fail_msg(
--			"%s test: flags = %d, errno = %d\n",
--			test_name, flags, errno);
--	}
--
--	ksft_test_result_pass(
--		"%s test: flags = %d\n",
--		test_name, flags);
--	return 0;
--}
--
--static int test_membarrier_global_expedited_success(void)
--{
--	int cmd = MEMBARRIER_CMD_GLOBAL_EXPEDITED, flags = 0;
--	const char *test_name = "sys membarrier MEMBARRIER_CMD_GLOBAL_EXPEDITED";
--
--	if (sys_membarrier(cmd, flags) != 0) {
--		ksft_exit_fail_msg(
--			"%s test: flags = %d, errno = %d\n",
--			test_name, flags, errno);
--	}
--
--	ksft_test_result_pass(
--		"%s test: flags = %d\n",
--		test_name, flags);
--	return 0;
--}
--
--static int test_membarrier(void)
--{
--	int status;
--
--	status = test_membarrier_cmd_fail();
--	if (status)
--		return status;
--	status = test_membarrier_flags_fail();
--	if (status)
--		return status;
--	status = test_membarrier_global_success();
--	if (status)
--		return status;
--	status = test_membarrier_private_expedited_fail();
--	if (status)
--		return status;
--	status = test_membarrier_register_private_expedited_success();
--	if (status)
--		return status;
--	status = test_membarrier_private_expedited_success();
--	if (status)
--		return status;
--	status = sys_membarrier(MEMBARRIER_CMD_QUERY, 0);
--	if (status < 0) {
--		ksft_test_result_fail("sys_membarrier() failed\n");
--		return status;
--	}
--	if (status & MEMBARRIER_CMD_PRIVATE_EXPEDITED_SYNC_CORE) {
--		status = test_membarrier_private_expedited_sync_core_fail();
--		if (status)
--			return status;
--		status = test_membarrier_register_private_expedited_sync_core_success();
--		if (status)
--			return status;
--		status = test_membarrier_private_expedited_sync_core_success();
--		if (status)
--			return status;
--	}
--	/*
--	 * It is valid to send a global membarrier from a non-registered
--	 * process.
--	 */
--	status = test_membarrier_global_expedited_success();
--	if (status)
--		return status;
--	status = test_membarrier_register_global_expedited_success();
--	if (status)
--		return status;
--	status = test_membarrier_global_expedited_success();
--	if (status)
--		return status;
--	return 0;
--}
--
--static int test_membarrier_query(void)
--{
--	int flags = 0, ret;
--
--	ret = sys_membarrier(MEMBARRIER_CMD_QUERY, flags);
--	if (ret < 0) {
--		if (errno == ENOSYS) {
--			/*
--			 * It is valid to build a kernel with
--			 * CONFIG_MEMBARRIER=n. However, this skips the tests.
--			 */
--			ksft_exit_skip(
--				"sys membarrier (CONFIG_MEMBARRIER) is disabled.\n");
--		}
--		ksft_exit_fail_msg("sys_membarrier() failed\n");
--	}
--	if (!(ret & MEMBARRIER_CMD_GLOBAL))
--		ksft_exit_skip(
--			"sys_membarrier unsupported: CMD_GLOBAL not found.\n");
--
--	ksft_test_result_pass("sys_membarrier available\n");
--	return 0;
--}
--
--int main(int argc, char **argv)
--{
--	ksft_print_header();
--	ksft_set_plan(13);
--
--	test_membarrier_query();
--	test_membarrier();
--
--	return ksft_exit_pass();
--}
-diff --git a/tools/testing/selftests/membarrier/membarrier_test_impl.h b/tools/testing/selftests/membarrier/membarrier_test_impl.h
-new file mode 100644
-index 0000000..186be69
---- /dev/null
-+++ b/tools/testing/selftests/membarrier/membarrier_test_impl.h
-@@ -0,0 +1,317 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#define _GNU_SOURCE
-+#include <linux/membarrier.h>
-+#include <syscall.h>
-+#include <stdio.h>
-+#include <errno.h>
-+#include <string.h>
-+#include <pthread.h>
+ 		struct core_state *core_state; /* coredumping support */
+-#ifdef CONFIG_MEMBARRIER
+-		atomic_t membarrier_state;
+-#endif
 +
-+#include "../kselftest.h"
+ #ifdef CONFIG_AIO
+ 		spinlock_t			ioctx_lock;
+ 		struct kioctx_table __rcu	*ioctx_table;
+diff --git a/include/linux/sched/mm.h b/include/linux/sched/mm.h
+index 8557ec6..e677001 100644
+--- a/include/linux/sched/mm.h
++++ b/include/linux/sched/mm.h
+@@ -370,10 +370,8 @@ static inline void membarrier_mm_sync_core_before_usermode(struct mm_struct *mm)
+ 	sync_core_before_usermode();
+ }
+ 
+-static inline void membarrier_execve(struct task_struct *t)
+-{
+-	atomic_set(&t->mm->membarrier_state, 0);
+-}
++extern void membarrier_exec_mmap(struct mm_struct *mm);
 +
-+static int sys_membarrier(int cmd, int flags)
+ #else
+ #ifdef CONFIG_ARCH_HAS_MEMBARRIER_CALLBACKS
+ static inline void membarrier_arch_switch_mm(struct mm_struct *prev,
+@@ -382,7 +380,7 @@ static inline void membarrier_arch_switch_mm(struct mm_struct *prev,
+ {
+ }
+ #endif
+-static inline void membarrier_execve(struct task_struct *t)
++static inline void membarrier_exec_mmap(struct mm_struct *mm)
+ {
+ }
+ static inline void membarrier_mm_sync_core_before_usermode(struct mm_struct *mm)
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 84c7116..2d9a394 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -3358,15 +3358,15 @@ context_switch(struct rq *rq, struct task_struct *prev,
+ 		else
+ 			prev->active_mm = NULL;
+ 	} else {                                        // to user
++		membarrier_switch_mm(rq, prev->active_mm, next->mm);
+ 		/*
+ 		 * sys_membarrier() requires an smp_mb() between setting
+-		 * rq->curr and returning to userspace.
++		 * rq->curr / membarrier_switch_mm() and returning to userspace.
+ 		 *
+ 		 * The below provides this either through switch_mm(), or in
+ 		 * case 'prev->active_mm == next->mm' through
+ 		 * finish_task_switch()'s mmdrop().
+ 		 */
+-
+ 		switch_mm_irqs_off(prev->active_mm, next->mm, next);
+ 
+ 		if (!prev->mm) {                        // from kernel
+diff --git a/kernel/sched/membarrier.c b/kernel/sched/membarrier.c
+index 7ccbd0e..070cf43 100644
+--- a/kernel/sched/membarrier.c
++++ b/kernel/sched/membarrier.c
+@@ -30,6 +30,39 @@ static void ipi_mb(void *info)
+ 	smp_mb();	/* IPIs should be serializing but paranoid. */
+ }
+ 
++static void ipi_sync_rq_state(void *info)
 +{
-+	return syscall(__NR_membarrier, cmd, flags);
-+}
++	struct mm_struct *mm = (struct mm_struct *) info;
 +
-+static int test_membarrier_cmd_fail(void)
-+{
-+	int cmd = -1, flags = 0;
-+	const char *test_name = "sys membarrier invalid command";
-+
-+	if (sys_membarrier(cmd, flags) != -1) {
-+		ksft_exit_fail_msg(
-+			"%s test: command = %d, flags = %d. Should fail, but passed\n",
-+			test_name, cmd, flags);
-+	}
-+	if (errno != EINVAL) {
-+		ksft_exit_fail_msg(
-+			"%s test: flags = %d. Should return (%d: \"%s\"), but returned (%d: \"%s\").\n",
-+			test_name, flags, EINVAL, strerror(EINVAL),
-+			errno, strerror(errno));
-+	}
-+
-+	ksft_test_result_pass(
-+		"%s test: command = %d, flags = %d, errno = %d. Failed as expected\n",
-+		test_name, cmd, flags, errno);
-+	return 0;
-+}
-+
-+static int test_membarrier_flags_fail(void)
-+{
-+	int cmd = MEMBARRIER_CMD_QUERY, flags = 1;
-+	const char *test_name = "sys membarrier MEMBARRIER_CMD_QUERY invalid flags";
-+
-+	if (sys_membarrier(cmd, flags) != -1) {
-+		ksft_exit_fail_msg(
-+			"%s test: flags = %d. Should fail, but passed\n",
-+			test_name, flags);
-+	}
-+	if (errno != EINVAL) {
-+		ksft_exit_fail_msg(
-+			"%s test: flags = %d. Should return (%d: \"%s\"), but returned (%d: \"%s\").\n",
-+			test_name, flags, EINVAL, strerror(EINVAL),
-+			errno, strerror(errno));
-+	}
-+
-+	ksft_test_result_pass(
-+		"%s test: flags = %d, errno = %d. Failed as expected\n",
-+		test_name, flags, errno);
-+	return 0;
-+}
-+
-+static int test_membarrier_global_success(void)
-+{
-+	int cmd = MEMBARRIER_CMD_GLOBAL, flags = 0;
-+	const char *test_name = "sys membarrier MEMBARRIER_CMD_GLOBAL";
-+
-+	if (sys_membarrier(cmd, flags) != 0) {
-+		ksft_exit_fail_msg(
-+			"%s test: flags = %d, errno = %d\n",
-+			test_name, flags, errno);
-+	}
-+
-+	ksft_test_result_pass(
-+		"%s test: flags = %d\n", test_name, flags);
-+	return 0;
-+}
-+
-+static int test_membarrier_private_expedited_fail(void)
-+{
-+	int cmd = MEMBARRIER_CMD_PRIVATE_EXPEDITED, flags = 0;
-+	const char *test_name = "sys membarrier MEMBARRIER_CMD_PRIVATE_EXPEDITED not registered failure";
-+
-+	if (sys_membarrier(cmd, flags) != -1) {
-+		ksft_exit_fail_msg(
-+			"%s test: flags = %d. Should fail, but passed\n",
-+			test_name, flags);
-+	}
-+	if (errno != EPERM) {
-+		ksft_exit_fail_msg(
-+			"%s test: flags = %d. Should return (%d: \"%s\"), but returned (%d: \"%s\").\n",
-+			test_name, flags, EPERM, strerror(EPERM),
-+			errno, strerror(errno));
-+	}
-+
-+	ksft_test_result_pass(
-+		"%s test: flags = %d, errno = %d\n",
-+		test_name, flags, errno);
-+	return 0;
-+}
-+
-+static int test_membarrier_register_private_expedited_success(void)
-+{
-+	int cmd = MEMBARRIER_CMD_REGISTER_PRIVATE_EXPEDITED, flags = 0;
-+	const char *test_name = "sys membarrier MEMBARRIER_CMD_REGISTER_PRIVATE_EXPEDITED";
-+
-+	if (sys_membarrier(cmd, flags) != 0) {
-+		ksft_exit_fail_msg(
-+			"%s test: flags = %d, errno = %d\n",
-+			test_name, flags, errno);
-+	}
-+
-+	ksft_test_result_pass(
-+		"%s test: flags = %d\n",
-+		test_name, flags);
-+	return 0;
-+}
-+
-+static int test_membarrier_private_expedited_success(void)
-+{
-+	int cmd = MEMBARRIER_CMD_PRIVATE_EXPEDITED, flags = 0;
-+	const char *test_name = "sys membarrier MEMBARRIER_CMD_PRIVATE_EXPEDITED";
-+
-+	if (sys_membarrier(cmd, flags) != 0) {
-+		ksft_exit_fail_msg(
-+			"%s test: flags = %d, errno = %d\n",
-+			test_name, flags, errno);
-+	}
-+
-+	ksft_test_result_pass(
-+		"%s test: flags = %d\n",
-+		test_name, flags);
-+	return 0;
-+}
-+
-+static int test_membarrier_private_expedited_sync_core_fail(void)
-+{
-+	int cmd = MEMBARRIER_CMD_PRIVATE_EXPEDITED_SYNC_CORE, flags = 0;
-+	const char *test_name = "sys membarrier MEMBARRIER_CMD_PRIVATE_EXPEDITED_SYNC_CORE not registered failure";
-+
-+	if (sys_membarrier(cmd, flags) != -1) {
-+		ksft_exit_fail_msg(
-+			"%s test: flags = %d. Should fail, but passed\n",
-+			test_name, flags);
-+	}
-+	if (errno != EPERM) {
-+		ksft_exit_fail_msg(
-+			"%s test: flags = %d. Should return (%d: \"%s\"), but returned (%d: \"%s\").\n",
-+			test_name, flags, EPERM, strerror(EPERM),
-+			errno, strerror(errno));
-+	}
-+
-+	ksft_test_result_pass(
-+		"%s test: flags = %d, errno = %d\n",
-+		test_name, flags, errno);
-+	return 0;
-+}
-+
-+static int test_membarrier_register_private_expedited_sync_core_success(void)
-+{
-+	int cmd = MEMBARRIER_CMD_REGISTER_PRIVATE_EXPEDITED_SYNC_CORE, flags = 0;
-+	const char *test_name = "sys membarrier MEMBARRIER_CMD_REGISTER_PRIVATE_EXPEDITED_SYNC_CORE";
-+
-+	if (sys_membarrier(cmd, flags) != 0) {
-+		ksft_exit_fail_msg(
-+			"%s test: flags = %d, errno = %d\n",
-+			test_name, flags, errno);
-+	}
-+
-+	ksft_test_result_pass(
-+		"%s test: flags = %d\n",
-+		test_name, flags);
-+	return 0;
-+}
-+
-+static int test_membarrier_private_expedited_sync_core_success(void)
-+{
-+	int cmd = MEMBARRIER_CMD_PRIVATE_EXPEDITED, flags = 0;
-+	const char *test_name = "sys membarrier MEMBARRIER_CMD_PRIVATE_EXPEDITED_SYNC_CORE";
-+
-+	if (sys_membarrier(cmd, flags) != 0) {
-+		ksft_exit_fail_msg(
-+			"%s test: flags = %d, errno = %d\n",
-+			test_name, flags, errno);
-+	}
-+
-+	ksft_test_result_pass(
-+		"%s test: flags = %d\n",
-+		test_name, flags);
-+	return 0;
-+}
-+
-+static int test_membarrier_register_global_expedited_success(void)
-+{
-+	int cmd = MEMBARRIER_CMD_REGISTER_GLOBAL_EXPEDITED, flags = 0;
-+	const char *test_name = "sys membarrier MEMBARRIER_CMD_REGISTER_GLOBAL_EXPEDITED";
-+
-+	if (sys_membarrier(cmd, flags) != 0) {
-+		ksft_exit_fail_msg(
-+			"%s test: flags = %d, errno = %d\n",
-+			test_name, flags, errno);
-+	}
-+
-+	ksft_test_result_pass(
-+		"%s test: flags = %d\n",
-+		test_name, flags);
-+	return 0;
-+}
-+
-+static int test_membarrier_global_expedited_success(void)
-+{
-+	int cmd = MEMBARRIER_CMD_GLOBAL_EXPEDITED, flags = 0;
-+	const char *test_name = "sys membarrier MEMBARRIER_CMD_GLOBAL_EXPEDITED";
-+
-+	if (sys_membarrier(cmd, flags) != 0) {
-+		ksft_exit_fail_msg(
-+			"%s test: flags = %d, errno = %d\n",
-+			test_name, flags, errno);
-+	}
-+
-+	ksft_test_result_pass(
-+		"%s test: flags = %d\n",
-+		test_name, flags);
-+	return 0;
-+}
-+
-+static int test_membarrier_fail(void)
-+{
-+	int status;
-+
-+	status = test_membarrier_cmd_fail();
-+	if (status)
-+		return status;
-+	status = test_membarrier_flags_fail();
-+	if (status)
-+		return status;
-+	status = test_membarrier_private_expedited_fail();
-+	if (status)
-+		return status;
-+	status = sys_membarrier(MEMBARRIER_CMD_QUERY, 0);
-+	if (status < 0) {
-+		ksft_test_result_fail("sys_membarrier() failed\n");
-+		return status;
-+	}
-+	if (status & MEMBARRIER_CMD_PRIVATE_EXPEDITED_SYNC_CORE) {
-+		status = test_membarrier_private_expedited_sync_core_fail();
-+		if (status)
-+			return status;
-+	}
-+	return 0;
-+}
-+
-+static int test_membarrier_success(void)
-+{
-+	int status;
-+
-+	status = test_membarrier_global_success();
-+	if (status)
-+		return status;
-+	status = test_membarrier_register_private_expedited_success();
-+	if (status)
-+		return status;
-+	status = test_membarrier_private_expedited_success();
-+	if (status)
-+		return status;
-+	status = sys_membarrier(MEMBARRIER_CMD_QUERY, 0);
-+	if (status < 0) {
-+		ksft_test_result_fail("sys_membarrier() failed\n");
-+		return status;
-+	}
-+	if (status & MEMBARRIER_CMD_PRIVATE_EXPEDITED_SYNC_CORE) {
-+		status = test_membarrier_register_private_expedited_sync_core_success();
-+		if (status)
-+			return status;
-+		status = test_membarrier_private_expedited_sync_core_success();
-+		if (status)
-+			return status;
-+	}
++	if (current->mm != mm)
++		return;
++	this_cpu_write(runqueues.membarrier_state,
++		       atomic_read(&mm->membarrier_state));
 +	/*
-+	 * It is valid to send a global membarrier from a non-registered
-+	 * process.
++	 * Issue a memory barrier after setting
++	 * MEMBARRIER_STATE_GLOBAL_EXPEDITED in the current runqueue to
++	 * guarantee that no memory access following registration is reordered
++	 * before registration.
 +	 */
-+	status = test_membarrier_global_expedited_success();
-+	if (status)
-+		return status;
-+	status = test_membarrier_register_global_expedited_success();
-+	if (status)
-+		return status;
-+	status = test_membarrier_global_expedited_success();
-+	if (status)
-+		return status;
-+	return 0;
++	smp_mb();
 +}
 +
-+static int test_membarrier_query(void)
++void membarrier_exec_mmap(struct mm_struct *mm)
 +{
-+	int flags = 0, ret;
++	/*
++	 * Issue a memory barrier before clearing membarrier_state to
++	 * guarantee that no memory access prior to exec is reordered after
++	 * clearing this state.
++	 */
++	smp_mb();
++	atomic_set(&mm->membarrier_state, 0);
++	/*
++	 * Keep the runqueue membarrier_state in sync with this mm
++	 * membarrier_state.
++	 */
++	this_cpu_write(runqueues.membarrier_state, 0);
++}
 +
-+	ret = sys_membarrier(MEMBARRIER_CMD_QUERY, flags);
-+	if (ret < 0) {
-+		if (errno == ENOSYS) {
-+			/*
-+			 * It is valid to build a kernel with
-+			 * CONFIG_MEMBARRIER=n. However, this skips the tests.
-+			 */
-+			ksft_exit_skip(
-+				"sys membarrier (CONFIG_MEMBARRIER) is disabled.\n");
-+		}
-+		ksft_exit_fail_msg("sys_membarrier() failed\n");
+ static int membarrier_global_expedited(void)
+ {
+ 	int cpu;
+@@ -56,6 +89,7 @@ static int membarrier_global_expedited(void)
+ 	}
+ 
+ 	cpus_read_lock();
++	rcu_read_lock();
+ 	for_each_online_cpu(cpu) {
+ 		struct task_struct *p;
+ 
+@@ -70,17 +104,25 @@ static int membarrier_global_expedited(void)
+ 		if (cpu == raw_smp_processor_id())
+ 			continue;
+ 
+-		rcu_read_lock();
++		if (!(READ_ONCE(cpu_rq(cpu)->membarrier_state) &
++		    MEMBARRIER_STATE_GLOBAL_EXPEDITED))
++			continue;
++
++		/*
++		 * Skip the CPU if it runs a kernel thread. The scheduler
++		 * leaves the prior task mm in place as an optimization when
++		 * scheduling a kthread.
++		 */
+ 		p = rcu_dereference(cpu_rq(cpu)->curr);
+-		if (p && p->mm && (atomic_read(&p->mm->membarrier_state) &
+-				   MEMBARRIER_STATE_GLOBAL_EXPEDITED)) {
+-			if (!fallback)
+-				__cpumask_set_cpu(cpu, tmpmask);
+-			else
+-				smp_call_function_single(cpu, ipi_mb, NULL, 1);
+-		}
+-		rcu_read_unlock();
++		if (p->flags & PF_KTHREAD)
++			continue;
++
++		if (!fallback)
++			__cpumask_set_cpu(cpu, tmpmask);
++		else
++			smp_call_function_single(cpu, ipi_mb, NULL, 1);
+ 	}
++	rcu_read_unlock();
+ 	if (!fallback) {
+ 		preempt_disable();
+ 		smp_call_function_many(tmpmask, ipi_mb, NULL, 1);
+@@ -136,6 +178,7 @@ static int membarrier_private_expedited(int flags)
+ 	}
+ 
+ 	cpus_read_lock();
++	rcu_read_lock();
+ 	for_each_online_cpu(cpu) {
+ 		struct task_struct *p;
+ 
+@@ -157,8 +200,8 @@ static int membarrier_private_expedited(int flags)
+ 			else
+ 				smp_call_function_single(cpu, ipi_mb, NULL, 1);
+ 		}
+-		rcu_read_unlock();
+ 	}
++	rcu_read_unlock();
+ 	if (!fallback) {
+ 		preempt_disable();
+ 		smp_call_function_many(tmpmask, ipi_mb, NULL, 1);
+@@ -177,32 +220,78 @@ static int membarrier_private_expedited(int flags)
+ 	return 0;
+ }
+ 
++static int sync_runqueues_membarrier_state(struct mm_struct *mm)
++{
++	int membarrier_state = atomic_read(&mm->membarrier_state);
++	cpumask_var_t tmpmask;
++	int cpu;
++
++	if (atomic_read(&mm->mm_users) == 1 || num_online_cpus() == 1) {
++		this_cpu_write(runqueues.membarrier_state, membarrier_state);
++
++		/*
++		 * For single mm user, we can simply issue a memory barrier
++		 * after setting MEMBARRIER_STATE_GLOBAL_EXPEDITED in the
++		 * mm and in the current runqueue to guarantee that no memory
++		 * access following registration is reordered before
++		 * registration.
++		 */
++		smp_mb();
++		return 0;
 +	}
-+	if (!(ret & MEMBARRIER_CMD_GLOBAL))
-+		ksft_exit_skip(
-+			"sys_membarrier unsupported: CMD_GLOBAL not found.\n");
 +
-+	ksft_test_result_pass("sys_membarrier available\n");
-+	return 0;
-+}
-diff --git a/tools/testing/selftests/membarrier/membarrier_test_multi_thread.c b/tools/testing/selftests/membarrier/membarrier_test_multi_thread.c
-new file mode 100644
-index 0000000..ac5613e
---- /dev/null
-+++ b/tools/testing/selftests/membarrier/membarrier_test_multi_thread.c
-@@ -0,0 +1,73 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#define _GNU_SOURCE
-+#include <linux/membarrier.h>
-+#include <syscall.h>
-+#include <stdio.h>
-+#include <errno.h>
-+#include <string.h>
-+#include <pthread.h>
++	if (!zalloc_cpumask_var(&tmpmask, GFP_KERNEL))
++		return -ENOMEM;
 +
-+#include "membarrier_test_impl.h"
++	/*
++	 * For mm with multiple users, we need to ensure all future
++	 * scheduler executions will observe @mm's new membarrier
++	 * state.
++	 */
++	synchronize_rcu();
 +
-+static int thread_ready, thread_quit;
-+static pthread_mutex_t test_membarrier_thread_mutex =
-+	PTHREAD_MUTEX_INITIALIZER;
-+static pthread_cond_t test_membarrier_thread_cond =
-+	PTHREAD_COND_INITIALIZER;
++	/*
++	 * For each cpu runqueue, if the task's mm match @mm, ensure that all
++	 * @mm's membarrier state set bits are also set in in the runqueue's
++	 * membarrier state. This ensures that a runqueue scheduling
++	 * between threads which are users of @mm has its membarrier state
++	 * updated.
++	 */
++	cpus_read_lock();
++	rcu_read_lock();
++	for_each_online_cpu(cpu) {
++		struct rq *rq = cpu_rq(cpu);
++		struct task_struct *p;
 +
-+void *test_membarrier_thread(void *arg)
-+{
-+	pthread_mutex_lock(&test_membarrier_thread_mutex);
-+	thread_ready = 1;
-+	pthread_cond_broadcast(&test_membarrier_thread_cond);
-+	pthread_mutex_unlock(&test_membarrier_thread_mutex);
++		p = rcu_dereference(&rq->curr);
++		if (p && p->mm == mm)
++			__cpumask_set_cpu(cpu, tmpmask);
++	}
++	rcu_read_unlock();
 +
-+	pthread_mutex_lock(&test_membarrier_thread_mutex);
-+	while (!thread_quit)
-+		pthread_cond_wait(&test_membarrier_thread_cond,
-+				  &test_membarrier_thread_mutex);
-+	pthread_mutex_unlock(&test_membarrier_thread_mutex);
++	preempt_disable();
++	smp_call_function_many(tmpmask, ipi_sync_rq_state, mm, 1);
++	preempt_enable();
 +
-+	return NULL;
-+}
-+
-+static int test_mt_membarrier(void)
-+{
-+	int i;
-+	pthread_t test_thread;
-+
-+	pthread_create(&test_thread, NULL,
-+		       test_membarrier_thread, NULL);
-+
-+	pthread_mutex_lock(&test_membarrier_thread_mutex);
-+	while (!thread_ready)
-+		pthread_cond_wait(&test_membarrier_thread_cond,
-+				  &test_membarrier_thread_mutex);
-+	pthread_mutex_unlock(&test_membarrier_thread_mutex);
-+
-+	test_membarrier_fail();
-+
-+	test_membarrier_success();
-+
-+	pthread_mutex_lock(&test_membarrier_thread_mutex);
-+	thread_quit = 1;
-+	pthread_cond_broadcast(&test_membarrier_thread_cond);
-+	pthread_mutex_unlock(&test_membarrier_thread_mutex);
-+
-+	pthread_join(test_thread, NULL);
++	free_cpumask_var(tmpmask);
++	cpus_read_unlock();
 +
 +	return 0;
 +}
 +
-+int main(int argc, char **argv)
+ static int membarrier_register_global_expedited(void)
+ {
+ 	struct task_struct *p = current;
+ 	struct mm_struct *mm = p->mm;
++	int ret;
+ 
+ 	if (atomic_read(&mm->membarrier_state) &
+ 	    MEMBARRIER_STATE_GLOBAL_EXPEDITED_READY)
+ 		return 0;
+ 	atomic_or(MEMBARRIER_STATE_GLOBAL_EXPEDITED, &mm->membarrier_state);
+-	if (atomic_read(&mm->mm_users) == 1) {
+-		/*
+-		 * For single mm user, single threaded process, we can
+-		 * simply issue a memory barrier after setting
+-		 * MEMBARRIER_STATE_GLOBAL_EXPEDITED to guarantee that
+-		 * no memory access following registration is reordered
+-		 * before registration.
+-		 */
+-		smp_mb();
+-	} else {
+-		/*
+-		 * For multi-mm user threads, we need to ensure all
+-		 * future scheduler executions will observe the new
+-		 * thread flag state for this mm.
+-		 */
+-		synchronize_rcu();
+-	}
++	ret = sync_runqueues_membarrier_state(mm);
++	if (ret)
++		return ret;
+ 	atomic_or(MEMBARRIER_STATE_GLOBAL_EXPEDITED_READY,
+ 		  &mm->membarrier_state);
+ 
+@@ -213,12 +302,15 @@ static int membarrier_register_private_expedited(int flags)
+ {
+ 	struct task_struct *p = current;
+ 	struct mm_struct *mm = p->mm;
+-	int state = MEMBARRIER_STATE_PRIVATE_EXPEDITED_READY;
++	int ready_state = MEMBARRIER_STATE_PRIVATE_EXPEDITED_READY,
++	    set_state = MEMBARRIER_STATE_PRIVATE_EXPEDITED,
++	    ret;
+ 
+ 	if (flags & MEMBARRIER_FLAG_SYNC_CORE) {
+ 		if (!IS_ENABLED(CONFIG_ARCH_HAS_MEMBARRIER_SYNC_CORE))
+ 			return -EINVAL;
+-		state = MEMBARRIER_STATE_PRIVATE_EXPEDITED_SYNC_CORE_READY;
++		ready_state =
++			MEMBARRIER_STATE_PRIVATE_EXPEDITED_SYNC_CORE_READY;
+ 	}
+ 
+ 	/*
+@@ -226,20 +318,15 @@ static int membarrier_register_private_expedited(int flags)
+ 	 * groups, which use the same mm. (CLONE_VM but not
+ 	 * CLONE_THREAD).
+ 	 */
+-	if ((atomic_read(&mm->membarrier_state) & state) == state)
++	if ((atomic_read(&mm->membarrier_state) & ready_state) == ready_state)
+ 		return 0;
+-	atomic_or(MEMBARRIER_STATE_PRIVATE_EXPEDITED, &mm->membarrier_state);
+ 	if (flags & MEMBARRIER_FLAG_SYNC_CORE)
+-		atomic_or(MEMBARRIER_STATE_PRIVATE_EXPEDITED_SYNC_CORE,
+-			  &mm->membarrier_state);
+-	if (atomic_read(&mm->mm_users) != 1) {
+-		/*
+-		 * Ensure all future scheduler executions will observe the
+-		 * new thread flag state for this process.
+-		 */
+-		synchronize_rcu();
+-	}
+-	atomic_or(state, &mm->membarrier_state);
++		set_state |= MEMBARRIER_STATE_PRIVATE_EXPEDITED_SYNC_CORE;
++	atomic_or(set_state, &mm->membarrier_state);
++	ret = sync_runqueues_membarrier_state(mm);
++	if (ret)
++		return ret;
++	atomic_or(ready_state, &mm->membarrier_state);
+ 
+ 	return 0;
+ }
+@@ -253,8 +340,10 @@ static int membarrier_register_private_expedited(int flags)
+  * command specified does not exist, not available on the running
+  * kernel, or if the command argument is invalid, this system call
+  * returns -EINVAL. For a given command, with flags argument set to 0,
+- * this system call is guaranteed to always return the same value until
+- * reboot.
++ * if this system call returns -ENOSYS or -EINVAL, it is guaranteed to
++ * always return the same value until reboot. In addition, it can return
++ * -ENOMEM if there is not enough memory available to perform the system
++ * call.
+  *
+  * All memory accesses performed in program order from each targeted thread
+  * is guaranteed to be ordered with respect to sys_membarrier(). If we use
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index b3cb895..0db2c1b 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -911,6 +911,10 @@ struct rq {
+ 
+ 	atomic_t		nr_iowait;
+ 
++#ifdef CONFIG_MEMBARRIER
++	int membarrier_state;
++#endif
++
+ #ifdef CONFIG_SMP
+ 	struct root_domain		*rd;
+ 	struct sched_domain __rcu	*sd;
+@@ -2438,3 +2442,33 @@ static inline bool sched_energy_enabled(void)
+ static inline bool sched_energy_enabled(void) { return false; }
+ 
+ #endif /* CONFIG_ENERGY_MODEL && CONFIG_CPU_FREQ_GOV_SCHEDUTIL */
++
++#ifdef CONFIG_MEMBARRIER
++/*
++ * The scheduler provides memory barriers required by membarrier between:
++ * - prior user-space memory accesses and store to rq->membarrier_state,
++ * - store to rq->membarrier_state and following user-space memory accesses.
++ * In the same way it provides those guarantees around store to rq->curr.
++ */
++static inline void membarrier_switch_mm(struct rq *rq,
++					struct mm_struct *prev_mm,
++					struct mm_struct *next_mm)
 +{
-+	ksft_print_header();
-+	ksft_set_plan(13);
++	int membarrier_state;
 +
-+	test_membarrier_query();
++	if (prev_mm == next_mm)
++		return;
 +
-+	/* Multi-threaded */
-+	test_mt_membarrier();
++	membarrier_state = atomic_read(&next_mm->membarrier_state);
++	if (READ_ONCE(rq->membarrier_state) == membarrier_state)
++		return;
 +
-+	return ksft_exit_pass();
++	WRITE_ONCE(rq->membarrier_state, membarrier_state);
 +}
-diff --git a/tools/testing/selftests/membarrier/membarrier_test_single_thread.c b/tools/testing/selftests/membarrier/membarrier_test_single_thread.c
-new file mode 100644
-index 0000000..c1c9639
---- /dev/null
-+++ b/tools/testing/selftests/membarrier/membarrier_test_single_thread.c
-@@ -0,0 +1,24 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#define _GNU_SOURCE
-+#include <linux/membarrier.h>
-+#include <syscall.h>
-+#include <stdio.h>
-+#include <errno.h>
-+#include <string.h>
-+#include <pthread.h>
-+
-+#include "membarrier_test_impl.h"
-+
-+int main(int argc, char **argv)
++#else
++static inline void membarrier_switch_mm(struct rq *rq,
++					struct mm_struct *prev_mm,
++					struct mm_struct *next_mm)
 +{
-+	ksft_print_header();
-+	ksft_set_plan(13);
-+
-+	test_membarrier_query();
-+
-+	test_membarrier_fail();
-+
-+	test_membarrier_success();
-+
-+	return ksft_exit_pass();
 +}
++#endif
