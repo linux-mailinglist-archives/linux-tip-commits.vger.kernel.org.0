@@ -2,42 +2,41 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 592E5C00B3
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 27 Sep 2019 10:11:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B779C00B1
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 27 Sep 2019 10:10:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726694AbfI0IKv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 27 Sep 2019 04:10:51 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:45160 "EHLO
+        id S1726359AbfI0IKu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 27 Sep 2019 04:10:50 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:45156 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726178AbfI0IKv (ORCPT
+        with ESMTP id S1725842AbfI0IKu (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 27 Sep 2019 04:10:51 -0400
+        Fri, 27 Sep 2019 04:10:50 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iDlKs-0005aX-2A; Fri, 27 Sep 2019 10:10:42 +0200
+        id 1iDlKr-0005aT-Oi; Fri, 27 Sep 2019 10:10:41 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 863DE1C0740;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 3C0C91C073C;
         Fri, 27 Sep 2019 10:10:41 +0200 (CEST)
 Date:   Fri, 27 Sep 2019 08:10:41 -0000
 From:   "tip-bot2 for Valentin Schneider" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] sched/core: Fix preempt_schedule() interrupt
- return comment
+Subject: [tip: sched/urgent] sched/core: Remove double update_max_interval()
+ call on CPU startup
 Cc:     Valentin Schneider <valentin.schneider@arm.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
         Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-m68k@lists.linux-m68k.org, linux-riscv@lists.infradead.org,
-        uclinux-h8-devel@lists.sourceforge.jp,
+        Thomas Gleixner <tglx@linutronix.de>, dietmar.eggemann@arm.com,
+        juri.lelli@redhat.com, vincent.guittot@linaro.org,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20190923143620.29334-2-valentin.schneider@arm.com>
-References: <20190923143620.29334-2-valentin.schneider@arm.com>
+In-Reply-To: <20190923093017.11755-1-valentin.schneider@arm.com>
+References: <20190923093017.11755-1-valentin.schneider@arm.com>
 MIME-Version: 1.0
-Message-ID: <156957184150.9866.17072165851925129764.tip-bot2@tip-bot2>
+Message-ID: <156957184120.9866.12838336712837668803.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -53,54 +52,49 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     a49b4f4012ef233143c5f7ce44f97851e54d5ef9
-Gitweb:        https://git.kernel.org/tip/a49b4f4012ef233143c5f7ce44f97851e54d5ef9
+Commit-ID:     9fc41acc89e58262c917b4be89ef00a87485804f
+Gitweb:        https://git.kernel.org/tip/9fc41acc89e58262c917b4be89ef00a87485804f
 Author:        Valentin Schneider <valentin.schneider@arm.com>
-AuthorDate:    Mon, 23 Sep 2019 15:36:12 +01:00
+AuthorDate:    Mon, 23 Sep 2019 10:30:17 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Wed, 25 Sep 2019 17:42:32 +02:00
 
-sched/core: Fix preempt_schedule() interrupt return comment
+sched/core: Remove double update_max_interval() call on CPU startup
 
-preempt_schedule_irq() is the one that should be called on return from
-interrupt, clean up the comment to avoid any ambiguity.
+update_max_interval() is called in both CPUHP_AP_SCHED_STARTING's startup
+and teardown callbacks, but it turns out it's also called at the end of
+the startup callback of CPUHP_AP_ACTIVE (which is further down the
+startup sequence).
+
+There's no point in repeating this interval update in the startup sequence
+since the CPU will remain online until it goes down the teardown path.
+
+Remove the redundant call in sched_cpu_activate() (CPUHP_AP_ACTIVE).
 
 Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Thomas Gleixner <tglx@linutronix.de>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: linux-m68k@lists.linux-m68k.org
-Cc: linux-riscv@lists.infradead.org
-Cc: uclinux-h8-devel@lists.sourceforge.jp
-Link: https://lkml.kernel.org/r/20190923143620.29334-2-valentin.schneider@arm.com
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: dietmar.eggemann@arm.com
+Cc: juri.lelli@redhat.com
+Cc: vincent.guittot@linaro.org
+Link: https://lkml.kernel.org/r/20190923093017.11755-1-valentin.schneider@arm.com
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- kernel/sched/core.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ kernel/sched/core.c | 2 --
+ 1 file changed, 2 deletions(-)
 
 diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 83ea23e..00ef44c 100644
+index 00ef44c..1b61cf4 100644
 --- a/kernel/sched/core.c
 +++ b/kernel/sched/core.c
-@@ -4218,9 +4218,8 @@ static void __sched notrace preempt_schedule_common(void)
+@@ -6425,8 +6425,6 @@ int sched_cpu_activate(unsigned int cpu)
+ 	}
+ 	rq_unlock_irqrestore(rq, &rf);
  
- #ifdef CONFIG_PREEMPTION
- /*
-- * this is the entry point to schedule() from in-kernel preemption
-- * off of preempt_enable. Kernel preemptions off return from interrupt
-- * occur there and call schedule directly.
-+ * This is the entry point to schedule() from in-kernel preemption
-+ * off of preempt_enable.
-  */
- asmlinkage __visible void __sched notrace preempt_schedule(void)
- {
-@@ -4291,7 +4290,7 @@ EXPORT_SYMBOL_GPL(preempt_schedule_notrace);
- #endif /* CONFIG_PREEMPTION */
+-	update_max_interval();
+-
+ 	return 0;
+ }
  
- /*
-- * this is the entry point to schedule() from kernel preemption
-+ * This is the entry point to schedule() from kernel preemption
-  * off of irq context.
-  * Note, that this is called and return with irqs disabled. This will
-  * protect us against recursive calling from irq.
