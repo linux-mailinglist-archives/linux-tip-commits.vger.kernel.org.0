@@ -2,29 +2,29 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DAE0C00B9
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 27 Sep 2019 10:11:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 017E7C00BB
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 27 Sep 2019 10:11:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726902AbfI0ILC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 27 Sep 2019 04:11:02 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:45251 "EHLO
+        id S1726962AbfI0ILF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 27 Sep 2019 04:11:05 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:45275 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726877AbfI0ILB (ORCPT
+        with ESMTP id S1726906AbfI0ILF (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 27 Sep 2019 04:11:01 -0400
+        Fri, 27 Sep 2019 04:11:05 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iDlL1-0005iS-8I; Fri, 27 Sep 2019 10:10:51 +0200
+        id 1iDlKv-0005ef-H6; Fri, 27 Sep 2019 10:10:45 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id BAD951C07BA;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 348561C0744;
         Fri, 27 Sep 2019 10:10:44 +0200 (CEST)
 Date:   Fri, 27 Sep 2019 08:10:44 -0000
 From:   "tip-bot2 for Eric W. Biederman" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] tasks: Add a count of task RCU users
+Subject: [tip: sched/urgent] tasks, sched/core: RCUify the assignment of rq->curr
 Cc:     "Eric W. Biederman" <ebiederm@xmission.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Chris Metcalf <cmetcalf@ezchip.com>,
@@ -33,15 +33,16 @@ Cc:     "Eric W. Biederman" <ebiederm@xmission.com>,
         Kirill Tkhai <tkhai@yandex.ru>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Mike Galbraith <efault@gmx.de>,
+        Oleg Nesterov <oleg@redhat.com>,
         "Paul E. McKenney" <paulmck@kernel.org>,
         "Russell King - ARM Linux admin" <linux@armlinux.org.uk>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <87woebdplt.fsf_-_@x220.int.ebiederm.org>
-References: <87woebdplt.fsf_-_@x220.int.ebiederm.org>
+In-Reply-To: <20190903200603.GW2349@hirez.programming.kicks-ass.net>
+References: <20190903200603.GW2349@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-Message-ID: <156957184468.9866.15729112622047548545.tip-bot2@tip-bot2>
+Message-ID: <156957184417.9866.5061690782234958008.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -57,24 +58,80 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     3fbd7ee285b2bbc6eebd15a3c8786d9776a402a8
-Gitweb:        https://git.kernel.org/tip/3fbd7ee285b2bbc6eebd15a3c8786d9776a402a8
+Commit-ID:     5311a98fef7d0dc2e8040ae0e18f5568d6d1dd5a
+Gitweb:        https://git.kernel.org/tip/5311a98fef7d0dc2e8040ae0e18f5568d6d1dd5a
 Author:        Eric W. Biederman <ebiederm@xmission.com>
-AuthorDate:    Sat, 14 Sep 2019 07:33:34 -05:00
+AuthorDate:    Sat, 14 Sep 2019 07:35:02 -05:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Wed, 25 Sep 2019 17:42:29 +02:00
 
-tasks: Add a count of task RCU users
+tasks, sched/core: RCUify the assignment of rq->curr
 
-Add a count of the number of RCU users (currently 1) of the task
-struct so that we can later add the scheduler case and get rid of the
-very subtle task_rcu_dereference(), and just use rcu_dereference().
+The current task on the runqueue is currently read with rcu_dereference().
 
-As suggested by Oleg have the count overlap rcu_head so that no
-additional space in task_struct is required.
+To obtain ordinary RCU semantics for an rcu_dereference() of rq->curr it needs
+to be paired with rcu_assign_pointer() of rq->curr.  Which provides the
+memory barrier necessary to order assignments to the task_struct
+and the assignment to rq->curr.
 
-Inspired-by: Linus Torvalds <torvalds@linux-foundation.org>
-Inspired-by: Oleg Nesterov <oleg@redhat.com>
+Unfortunately the assignment of rq->curr in __schedule is a hot path,
+and it has already been show that additional barriers in that code
+will reduce the performance of the scheduler.  So I will attempt to
+describe below why you can effectively have ordinary RCU semantics
+without any additional barriers.
+
+The assignment of rq->curr in init_idle is a slow path called once
+per cpu and that can use rcu_assign_pointer() without any concerns.
+
+As I write this there are effectively two users of rcu_dereference() on
+rq->curr.  There is the membarrier code in kernel/sched/membarrier.c
+that only looks at "->mm" after the rcu_dereference().  Then there is
+task_numa_compare() in kernel/sched/fair.c.  My best reading of the
+code shows that task_numa_compare only access: "->flags",
+"->cpus_ptr", "->numa_group", "->numa_faults[]",
+"->total_numa_faults", and "->se.cfs_rq".
+
+The code in __schedule() essentially does:
+	rq_lock(...);
+	smp_mb__after_spinlock();
+
+	next = pick_next_task(...);
+	rq->curr = next;
+
+	context_switch(prev, next);
+
+At the start of the function the rq_lock/smp_mb__after_spinlock
+pair provides a full memory barrier.  Further there is a full memory barrier
+in context_switch().
+
+This means that any task that has already run and modified itself (the
+common case) has already seen two memory barriers before __schedule()
+runs and begins executing.  A task that modifies itself then sees a
+third full memory barrier pair with the rq_lock();
+
+For a brand new task that is enqueued with wake_up_new_task() there
+are the memory barriers present from the taking and release the
+pi_lock and the rq_lock as the processes is enqueued as well as the
+full memory barrier at the start of __schedule() assuming __schedule()
+happens on the same cpu.
+
+This means that by the time we reach the assignment of rq->curr
+except for values on the task struct modified in pick_next_task
+the code has the same guarantees as if it used rcu_assign_pointer().
+
+Reading through all of the implementations of pick_next_task it
+appears pick_next_task is limited to modifying the task_struct fields
+"->se", "->rt", "->dl".  These fields are the sched_entity structures
+of the varies schedulers.
+
+Further "->se.cfs_rq" is only changed in cgroup attach/move operations
+initialized by userspace.
+
+Unless I have missed something this means that in practice that the
+users of "rcu_dereference(rq->curr)" get normal RCU semantics of
+rcu_dereference() for the fields the care about, despite the
+assignment of rq->curr in __schedule() ot using rcu_assign_pointer.
+
 Signed-off-by: Eric W. Biederman <ebiederm@xmission.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Cc: Chris Metcalf <cmetcalf@ezchip.com>
@@ -83,87 +140,41 @@ Cc: Davidlohr Bueso <dave@stgolabs.net>
 Cc: Kirill Tkhai <tkhai@yandex.ru>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: Mike Galbraith <efault@gmx.de>
+Cc: Oleg Nesterov <oleg@redhat.com>
 Cc: Paul E. McKenney <paulmck@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Russell King - ARM Linux admin <linux@armlinux.org.uk>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/87woebdplt.fsf_-_@x220.int.ebiederm.org
+Link: https://lore.kernel.org/r/20190903200603.GW2349@hirez.programming.kicks-ass.net
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- include/linux/sched.h      | 5 ++++-
- include/linux/sched/task.h | 1 +
- kernel/exit.c              | 7 ++++++-
- kernel/fork.c              | 7 +++----
- 4 files changed, 14 insertions(+), 6 deletions(-)
+ kernel/sched/core.c |  9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index e2e9196..8e43e54 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -1147,7 +1147,10 @@ struct task_struct {
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 5e5fefb..84c7116 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -4033,7 +4033,11 @@ static void __sched notrace __schedule(bool preempt)
  
- 	struct tlbflush_unmap_batch	tlb_ubc;
+ 	if (likely(prev != next)) {
+ 		rq->nr_switches++;
+-		rq->curr = next;
++		/*
++		 * RCU users of rcu_dereference(rq->curr) may not see
++		 * changes to task_struct made by pick_next_task().
++		 */
++		RCU_INIT_POINTER(rq->curr, next);
+ 		/*
+ 		 * The membarrier system call requires each architecture
+ 		 * to have a full memory barrier after updating
+@@ -6060,7 +6064,8 @@ void init_idle(struct task_struct *idle, int cpu)
+ 	__set_task_cpu(idle, cpu);
+ 	rcu_read_unlock();
  
--	struct rcu_head			rcu;
-+	union {
-+		refcount_t		rcu_users;
-+		struct rcu_head		rcu;
-+	};
- 
- 	/* Cache last used pipe for splice(): */
- 	struct pipe_inode_info		*splice_pipe;
-diff --git a/include/linux/sched/task.h b/include/linux/sched/task.h
-index 3d90ed8..153a683 100644
---- a/include/linux/sched/task.h
-+++ b/include/linux/sched/task.h
-@@ -120,6 +120,7 @@ static inline void put_task_struct(struct task_struct *t)
- }
- 
- struct task_struct *task_rcu_dereference(struct task_struct **ptask);
-+void put_task_struct_rcu_user(struct task_struct *task);
- 
- #ifdef CONFIG_ARCH_WANTS_DYNAMIC_TASK_STRUCT
- extern int arch_task_struct_size __read_mostly;
-diff --git a/kernel/exit.c b/kernel/exit.c
-index 22ab6a4..3bcaec2 100644
---- a/kernel/exit.c
-+++ b/kernel/exit.c
-@@ -182,6 +182,11 @@ static void delayed_put_task_struct(struct rcu_head *rhp)
- 	put_task_struct(tsk);
- }
- 
-+void put_task_struct_rcu_user(struct task_struct *task)
-+{
-+	if (refcount_dec_and_test(&task->rcu_users))
-+		call_rcu(&task->rcu, delayed_put_task_struct);
-+}
- 
- void release_task(struct task_struct *p)
- {
-@@ -222,7 +227,7 @@ repeat:
- 
- 	write_unlock_irq(&tasklist_lock);
- 	release_thread(p);
--	call_rcu(&p->rcu, delayed_put_task_struct);
-+	put_task_struct_rcu_user(p);
- 
- 	p = leader;
- 	if (unlikely(zap_leader))
-diff --git a/kernel/fork.c b/kernel/fork.c
-index 1d1cd06..7eefe33 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -902,10 +902,9 @@ static struct task_struct *dup_task_struct(struct task_struct *orig, int node)
- 	if (orig->cpus_ptr == &orig->cpus_mask)
- 		tsk->cpus_ptr = &tsk->cpus_mask;
- 
--	/*
--	 * One for us, one for whoever does the "release_task()" (usually
--	 * parent)
--	 */
-+	/* One for the user space visible state that goes away when reaped. */
-+	refcount_set(&tsk->rcu_users, 1);
-+	/* One for the rcu users, and one for the scheduler */
- 	refcount_set(&tsk->usage, 2);
- #ifdef CONFIG_BLK_DEV_IO_TRACE
- 	tsk->btrace_seq = 0;
+-	rq->curr = rq->idle = idle;
++	rq->idle = idle;
++	rcu_assign_pointer(rq->curr, idle);
+ 	idle->on_rq = TASK_ON_RQ_QUEUED;
+ #ifdef CONFIG_SMP
+ 	idle->on_cpu = 1;
