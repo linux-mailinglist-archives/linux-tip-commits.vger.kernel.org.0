@@ -2,49 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8AEC0C3EDB
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  1 Oct 2019 19:43:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F2D66C4000
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  1 Oct 2019 20:38:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727562AbfJARnk (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 1 Oct 2019 13:43:40 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:56058 "EHLO
+        id S1725794AbfJASiq convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 1 Oct 2019 14:38:46 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:56346 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726096AbfJARnk (ORCPT
+        with ESMTP id S1725919AbfJASiq (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 1 Oct 2019 13:43:40 -0400
+        Tue, 1 Oct 2019 14:38:46 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iFMBF-0000rE-0M; Tue, 01 Oct 2019 19:43:21 +0200
+        id 1iFN2i-0002L4-Ec; Tue, 01 Oct 2019 20:38:36 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A9BCD1C070D;
-        Tue,  1 Oct 2019 19:43:20 +0200 (CEST)
-Date:   Tue, 01 Oct 2019 17:43:20 -0000
-From:   "tip-bot2 for Ashok Raj" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 0E0ED1C03AB;
+        Tue,  1 Oct 2019 20:38:36 +0200 (CEST)
+Date:   Tue, 01 Oct 2019 18:38:35 -0000
+From:   "tip-bot2 for Nishad Kamdar" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/microcode] x86/microcode: Update late microcode in parallel
-Cc:     Ashok Raj <ashok.raj@intel.com>,
-        Mihai Carabas <mihai.carabas@oracle.com>,
+Subject: [tip: core/urgent] x86: Use the correct SPDX License Identifier in headers
+Cc:     Joe Perches <joe@perches.com>,
+        Nishad Kamdar <nishadkamdar@gmail.com>,
         Borislav Petkov <bp@suse.de>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
         "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        Jon Grimm <Jon.Grimm@amd.com>, kanth.ghatraju@oracle.com,
-        konrad.wilk@oracle.com, patrick.colp@oracle.com,
+        Sean Christopherson <sean.j.christopherson@intel.com>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
+        Uwe =?utf-8?q?Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>, Waiman Long <longman@redhat.com>,
         "x86-ml" <x86@kernel.org>, Ingo Molnar <mingo@kernel.org>,
         Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
-In-Reply-To: <1566506627-16536-2-git-send-email-mihai.carabas@oracle.com>
-References: <1566506627-16536-2-git-send-email-mihai.carabas@oracle.com>
+In-Reply-To: =?utf-8?q?=3C697848ff866ade29e78e872525d7a3067642fd37=2E15554?=
+ =?utf-8?q?27420=2Egit=2Enishadkamdar=40gmail=2Ecom=3E?=
+References: =?utf-8?q?=3C697848ff866ade29e78e872525d7a3067642fd37=2E155542?=
+ =?utf-8?q?7420=2Egit=2Enishadkamdar=40gmail=2Ecom=3E?=
 MIME-Version: 1.0
-Message-ID: <156995180065.9978.1515455093579209484.tip-bot2@tip-bot2>
+Message-ID: <156995511592.9978.4673936343643990987.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8BIT
 X-Linutronix-Spam-Score: -1.0
 X-Linutronix-Spam-Level: -
 X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
@@ -53,110 +56,64 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/microcode branch of tip:
+The following commit has been merged into the core/urgent branch of tip:
 
-Commit-ID:     93946a33b5693a6bbcf917a170198ff4afaa7a31
-Gitweb:        https://git.kernel.org/tip/93946a33b5693a6bbcf917a170198ff4afaa7a31
-Author:        Ashok Raj <ashok.raj@intel.com>
-AuthorDate:    Thu, 22 Aug 2019 23:43:47 +03:00
+Commit-ID:     6184488a19be96d89cb6c36fb4bc277198309484
+Gitweb:        https://git.kernel.org/tip/6184488a19be96d89cb6c36fb4bc277198309484
+Author:        Nishad Kamdar <nishadkamdar@gmail.com>
+AuthorDate:    Tue, 16 Apr 2019 21:16:14 +05:30
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 01 Oct 2019 15:58:54 +02:00
+CommitterDate: Tue, 01 Oct 2019 20:31:35 +02:00
 
-x86/microcode: Update late microcode in parallel
+x86: Use the correct SPDX License Identifier in headers
 
-Microcode update was changed to be serialized due to restrictions after
-Spectre days. Updating serially on a large multi-socket system can be
-painful since it is being done on one CPU at a time.
+Correct the SPDX License Identifier format in a couple of headers.
 
-Cloud customers have expressed discontent as services disappear for
-a prolonged time. The restriction is that only one core (or only one
-thread of a core in the case of an SMT system) goes through the update
-while other cores (or respectively, SMT threads) are quiesced.
-
-Do the microcode update only on the first thread of each core while
-other siblings simply wait for this to complete.
-
- [ bp: Simplify, massage, cleanup comments. ]
-
-Signed-off-by: Ashok Raj <ashok.raj@intel.com>
-Signed-off-by: Mihai Carabas <mihai.carabas@oracle.com>
+Suggested-by: Joe Perches <joe@perches.com>
+Signed-off-by: Nishad Kamdar <nishadkamdar@gmail.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Cc: Boris Ostrovsky <boris.ostrovsky@oracle.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: "H. Peter Anvin" <hpa@zytor.com>
 Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jon Grimm <Jon.Grimm@amd.com>
-Cc: kanth.ghatraju@oracle.com
-Cc: konrad.wilk@oracle.com
-Cc: patrick.colp@oracle.com
+Cc: Sean Christopherson <sean.j.christopherson@intel.com>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Cc: Waiman Long <longman@redhat.com>
 Cc: x86-ml <x86@kernel.org>
-Link: https://lkml.kernel.org/r/1566506627-16536-2-git-send-email-mihai.carabas@oracle.com
+Link: https://lkml.kernel.org/r/697848ff866ade29e78e872525d7a3067642fd37.1555427420.git.nishadkamdar@gmail.com
 ---
- arch/x86/kernel/cpu/microcode/core.c | 36 +++++++++++++++------------
- 1 file changed, 21 insertions(+), 15 deletions(-)
+ arch/x86/include/asm/cpu_entry_area.h | 2 +-
+ arch/x86/include/asm/pti.h            | 2 +-
+ arch/x86/kernel/process.h             | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/microcode/core.c b/arch/x86/kernel/cpu/microcode/core.c
-index cb0fdca..7019d4b 100644
---- a/arch/x86/kernel/cpu/microcode/core.c
-+++ b/arch/x86/kernel/cpu/microcode/core.c
-@@ -63,11 +63,6 @@ LIST_HEAD(microcode_cache);
-  */
- static DEFINE_MUTEX(microcode_mutex);
+diff --git a/arch/x86/include/asm/cpu_entry_area.h b/arch/x86/include/asm/cpu_entry_area.h
+index cff3f3f..8348f7d 100644
+--- a/arch/x86/include/asm/cpu_entry_area.h
++++ b/arch/x86/include/asm/cpu_entry_area.h
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: GPL-2.0
++/* SPDX-License-Identifier: GPL-2.0 */
  
--/*
-- * Serialize late loading so that CPUs get updated one-by-one.
-- */
--static DEFINE_RAW_SPINLOCK(update_lock);
--
- struct ucode_cpu_info		ucode_cpu_info[NR_CPUS];
+ #ifndef _ASM_X86_CPU_ENTRY_AREA_H
+ #define _ASM_X86_CPU_ENTRY_AREA_H
+diff --git a/arch/x86/include/asm/pti.h b/arch/x86/include/asm/pti.h
+index 5df09a0..07375b4 100644
+--- a/arch/x86/include/asm/pti.h
++++ b/arch/x86/include/asm/pti.h
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: GPL-2.0
++/* SPDX-License-Identifier: GPL-2.0 */
+ #ifndef _ASM_X86_PTI_H
+ #define _ASM_X86_PTI_H
+ #ifndef __ASSEMBLY__
+diff --git a/arch/x86/kernel/process.h b/arch/x86/kernel/process.h
+index 320ab97..1d0797b 100644
+--- a/arch/x86/kernel/process.h
++++ b/arch/x86/kernel/process.h
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: GPL-2.0
++/* SPDX-License-Identifier: GPL-2.0 */
+ //
+ // Code shared between 32 and 64 bit
  
- struct cpu_info_ctx {
-@@ -566,11 +561,18 @@ static int __reload_late(void *info)
- 	if (__wait_for_cpus(&late_cpus_in, NSEC_PER_SEC))
- 		return -1;
- 
--	raw_spin_lock(&update_lock);
--	apply_microcode_local(&err);
--	raw_spin_unlock(&update_lock);
-+	/*
-+	 * On an SMT system, it suffices to load the microcode on one sibling of
-+	 * the core because the microcode engine is shared between the threads.
-+	 * Synchronization still needs to take place so that no concurrent
-+	 * loading attempts happen on multiple threads of an SMT core. See
-+	 * below.
-+	 */
-+	if (cpumask_first(topology_sibling_cpumask(cpu)) == cpu)
-+		apply_microcode_local(&err);
-+	else
-+		goto wait_for_siblings;
- 
--	/* siblings return UCODE_OK because their engine got updated already */
- 	if (err > UCODE_NFOUND) {
- 		pr_warn("Error reloading microcode on CPU %d\n", cpu);
- 		ret = -1;
-@@ -578,14 +580,18 @@ static int __reload_late(void *info)
- 		ret = 1;
- 	}
- 
-+wait_for_siblings:
-+	if (__wait_for_cpus(&late_cpus_out, NSEC_PER_SEC))
-+		panic("Timeout during microcode update!\n");
-+
- 	/*
--	 * Increase the wait timeout to a safe value here since we're
--	 * serializing the microcode update and that could take a while on a
--	 * large number of CPUs. And that is fine as the *actual* timeout will
--	 * be determined by the last CPU finished updating and thus cut short.
-+	 * At least one thread has completed update on each core.
-+	 * For others, simply call the update to make sure the
-+	 * per-cpu cpuinfo can be updated with right microcode
-+	 * revision.
- 	 */
--	if (__wait_for_cpus(&late_cpus_out, NSEC_PER_SEC * num_online_cpus()))
--		panic("Timeout during microcode update!\n");
-+	if (cpumask_first(topology_sibling_cpumask(cpu)) != cpu)
-+		apply_microcode_local(&err);
- 
- 	return ret;
- }
