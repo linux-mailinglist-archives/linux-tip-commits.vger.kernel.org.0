@@ -2,48 +2,44 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 44F2FC4121
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  1 Oct 2019 21:35:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1717C41AE
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  1 Oct 2019 22:18:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726240AbfJATey (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 1 Oct 2019 15:34:54 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:56743 "EHLO
+        id S1726068AbfJAUS7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 1 Oct 2019 16:18:59 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:56880 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726043AbfJATey (ORCPT
+        with ESMTP id S1725851AbfJAUS7 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 1 Oct 2019 15:34:54 -0400
+        Tue, 1 Oct 2019 16:18:59 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iFNuW-0003ZJ-L1; Tue, 01 Oct 2019 21:34:12 +0200
+        id 1iFObe-0004Og-KL; Tue, 01 Oct 2019 22:18:46 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id F09D91C03AB;
-        Tue,  1 Oct 2019 21:34:11 +0200 (CEST)
-Date:   Tue, 01 Oct 2019 19:34:11 -0000
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 328C41C03AB;
+        Tue,  1 Oct 2019 22:18:46 +0200 (CEST)
+Date:   Tue, 01 Oct 2019 20:18:45 -0000
+From:   "tip-bot2 for Nick Desaulniers" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] membarrier: Fix RCU locking bug caused by faulty merge
-Cc:     Ingo Molnar <mingo@kernel.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+Subject: [tip: x86/boot] x86/realmode: Explicitly set entry point via ENTRY in
+ linker script
+Cc:     Sedat Dilek <sedat.dilek@gmail.com>,
         Borislav Petkov <bp@alien8.de>,
-        Chris Metcalf <cmetcalf@ezchip.com>,
-        Christoph Lameter <cl@linux.com>,
-        "Eric W. Biederman" <ebiederm@xmission.com>,
-        Kirill Tkhai <tkhai@yandex.ru>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        Mike Galbraith <efault@gmx.de>,
-        Oleg Nesterov <oleg@redhat.com>,
-        "Paul E. McKenney" <paulmck@linux.ibm.com>,
-        "Russell King - ARM Linux admin" <linux@armlinux.org.uk>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-tip-commits@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20191001085033.GP4519@hirez.programming.kicks-ass.net>
-References: <20191001085033.GP4519@hirez.programming.kicks-ass.net>
+        Peter Smith <Peter.Smith@arm.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Borislav Petkov <bp@suse.de>, "H. Peter Anvin" <hpa@zytor.com>,
+        clang-built-linux@googlegroups.com, grimar@accesssoftek.com,
+        Ingo Molnar <mingo@redhat.com>, maskray@google.com,
+        ruiu@google.com, Thomas Gleixner <tglx@linutronix.de>,
+        "x86-ml" <x86@kernel.org>, Ingo Molnar <mingo@kernel.org>,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20190925180908.54260-1-ndesaulniers@google.com>
+References: <20190925180908.54260-1-ndesaulniers@google.com>
 MIME-Version: 1.0
-Message-ID: <156995845178.9978.16309965770056877944.tip-bot2@tip-bot2>
+Message-ID: <156996112595.9978.10016104223665574360.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -57,57 +53,64 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/urgent branch of tip:
+The following commit has been merged into the x86/boot branch of tip:
 
-Commit-ID:     73956fc07dd7b25d4a33ab3fdd6247c60d0b237c
-Gitweb:        https://git.kernel.org/tip/73956fc07dd7b25d4a33ab3fdd6247c60d0b237c
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Tue, 01 Oct 2019 10:50:33 +02:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 01 Oct 2019 21:27:50 +02:00
+Commit-ID:     6a181e333954a26f46596b36f82abd14743570fd
+Gitweb:        https://git.kernel.org/tip/6a181e333954a26f46596b36f82abd14743570fd
+Author:        Nick Desaulniers <ndesaulniers@google.com>
+AuthorDate:    Wed, 25 Sep 2019 11:09:06 -07:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Tue, 01 Oct 2019 22:13:17 +02:00
 
-membarrier: Fix RCU locking bug caused by faulty merge
+x86/realmode: Explicitly set entry point via ENTRY in linker script
 
-The following commit:
+Linking with ld.lld via
 
-  227a4aadc75b ("sched/membarrier: Fix p->mm->membarrier_state racy load")
+$ make LD=ld.lld
 
-got fat fingered by me when merging it with other patches. It meant to move
-the RCU section out of the for loop but ended up doing it partially, leaving
-a superfluous rcu_read_lock() inside, causing havok.
+produces the warning:
 
-Reported-by: Ingo Molnar <mingo@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Chris Metcalf <cmetcalf@ezchip.com>
-Cc: Christoph Lameter <cl@linux.com>
-Cc: Eric W. Biederman <ebiederm@xmission.com>
-Cc: Kirill Tkhai <tkhai@yandex.ru>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Mike Galbraith <efault@gmx.de>
-Cc: Oleg Nesterov <oleg@redhat.com>
-Cc: Paul E. McKenney <paulmck@linux.ibm.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Russell King - ARM Linux admin <linux@armlinux.org.uk>
+  ld.lld: warning: cannot find entry symbol _start; defaulting to 0x1000
+
+Linking with ld.bfd shows the default entry is 0x1000:
+
+$ readelf -h arch/x86/realmode/rm/realmode.elf | grep Entry
+  Entry point address:               0x1000
+
+While ld.lld is being pedantic, just set the entry point explicitly,
+instead of depending on the implicit default. The symbol pa_text_start
+refers to the start of the .text section, which may not be at 0x1000 if
+the preceding sections listed in arch/x86/realmode/rm/realmode.lds.S
+were large enough. This matches behavior in arch/x86/boot/setup.ld.
+
+Reported-by: Sedat Dilek <sedat.dilek@gmail.com>
+Suggested-by: Borislav Petkov <bp@alien8.de>
+Suggested-by: Peter Smith <Peter.Smith@arm.com>
+Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: clang-built-linux@googlegroups.com
+Cc: grimar@accesssoftek.com
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: maskray@google.com
+Cc: ruiu@google.com
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: linux-tip-commits@vger.kernel.org
-Fixes: 227a4aadc75b ("sched/membarrier: Fix p->mm->membarrier_state racy load")
-Link: https://lkml.kernel.org/r/20191001085033.GP4519@hirez.programming.kicks-ass.net
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: x86-ml <x86@kernel.org>
+Link: https://lkml.kernel.org/r/20190925180908.54260-1-ndesaulniers@google.com
+Link: https://github.com/ClangBuiltLinux/linux/issues/216
 ---
- kernel/sched/membarrier.c | 1 -
- 1 file changed, 1 deletion(-)
+ arch/x86/realmode/rm/realmode.lds.S | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/sched/membarrier.c b/kernel/sched/membarrier.c
-index a39bed2..168479a 100644
---- a/kernel/sched/membarrier.c
-+++ b/kernel/sched/membarrier.c
-@@ -174,7 +174,6 @@ static int membarrier_private_expedited(int flags)
- 		 */
- 		if (cpu == raw_smp_processor_id())
- 			continue;
--		rcu_read_lock();
- 		p = rcu_dereference(cpu_rq(cpu)->curr);
- 		if (p && p->mm == mm)
- 			__cpumask_set_cpu(cpu, tmpmask);
+diff --git a/arch/x86/realmode/rm/realmode.lds.S b/arch/x86/realmode/rm/realmode.lds.S
+index 3bb9808..64d135d 100644
+--- a/arch/x86/realmode/rm/realmode.lds.S
++++ b/arch/x86/realmode/rm/realmode.lds.S
+@@ -11,6 +11,7 @@
+ 
+ OUTPUT_FORMAT("elf32-i386")
+ OUTPUT_ARCH(i386)
++ENTRY(pa_text_start)
+ 
+ SECTIONS
+ {
