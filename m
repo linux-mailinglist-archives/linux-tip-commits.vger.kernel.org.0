@@ -2,42 +2,43 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 76BDBC3250
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  1 Oct 2019 13:22:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3211DC3ED8
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  1 Oct 2019 19:43:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731591AbfJALVu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 1 Oct 2019 07:21:50 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:54938 "EHLO
+        id S1726184AbfJARni (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 1 Oct 2019 13:43:38 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:56054 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725839AbfJALVt (ORCPT
+        with ESMTP id S1726034AbfJARni (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 1 Oct 2019 07:21:49 -0400
+        Tue, 1 Oct 2019 13:43:38 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iFGDr-0000H4-Rg; Tue, 01 Oct 2019 13:21:39 +0200
+        id 1iFMBE-0000rD-WA; Tue, 01 Oct 2019 19:43:21 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 7184C1C03AB;
-        Tue,  1 Oct 2019 13:21:39 +0200 (CEST)
-Date:   Tue, 01 Oct 2019 11:21:39 -0000
-From:   "tip-bot2 for Tony W Wang-oc" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 820C91C03AB;
+        Tue,  1 Oct 2019 19:43:20 +0200 (CEST)
+Date:   Tue, 01 Oct 2019 17:43:20 -0000
+From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: ras/core] x86/mce: Add Zhaoxin LMCE support
-Cc:     "Tony W Wang-oc" <TonyWWang-oc@zhaoxin.com>,
-        Borislav Petkov <bp@suse.de>, CooperYan@zhaoxin.com,
-        DavidWang@zhaoxin.com, HerryYang@zhaoxin.com,
+Subject: [tip: x86/microcode] x86/microcode/intel: Issue the revision updated
+ message only on the BSP
+Cc:     Borislav Petkov <bp@suse.de>, Ashok Raj <ashok.raj@intel.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
         "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        "linux-edac" <linux-edac@vger.kernel.org>, QiyuanWang@zhaoxin.com,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tony Luck <tony.luck@intel.com>, "x86-ml" <x86@kernel.org>,
-        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <1568787573-1297-5-git-send-email-TonyWWang-oc@zhaoxin.com>
-References: <1568787573-1297-5-git-send-email-TonyWWang-oc@zhaoxin.com>
+        Jon Grimm <Jon.Grimm@amd.com>, kanth.ghatraju@oracle.com,
+        konrad.wilk@oracle.com, Mihai Carabas <mihai.carabas@oracle.com>,
+        patrick.colp@oracle.com, Thomas Gleixner <tglx@linutronix.de>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "x86-ml" <x86@kernel.org>, Ingo Molnar <mingo@kernel.org>,
+        Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
+In-Reply-To: <20190824085341.GC16813@zn.tnic>
+References: <20190824085341.GC16813@zn.tnic>
 MIME-Version: 1.0
-Message-ID: <156992889928.9978.12753504403920052831.tip-bot2@tip-bot2>
+Message-ID: <156995180039.9978.4399431172812014164.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,139 +52,65 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the ras/core branch of tip:
+The following commit has been merged into the x86/microcode branch of tip:
 
-Commit-ID:     70f0c230031dfef3c9b3e37b2a8c18d3f7186fb2
-Gitweb:        https://git.kernel.org/tip/70f0c230031dfef3c9b3e37b2a8c18d3f7186fb2
-Author:        Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>
-AuthorDate:    Wed, 18 Sep 2019 14:19:33 +08:00
+Commit-ID:     811ae8ba6dca6b91a3ceccf9d40b98818cc4f400
+Gitweb:        https://git.kernel.org/tip/811ae8ba6dca6b91a3ceccf9d40b98818cc4f400
+Author:        Borislav Petkov <bp@suse.de>
+AuthorDate:    Sat, 24 Aug 2019 10:01:53 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 01 Oct 2019 12:33:33 +02:00
+CommitterDate: Tue, 01 Oct 2019 16:06:35 +02:00
 
-x86/mce: Add Zhaoxin LMCE support
+x86/microcode/intel: Issue the revision updated message only on the BSP
 
-Newer Zhaoxin CPUs support LMCE compatible with Intel. Add support for
-that.
+... in order to not pollute dmesg with a line for each updated microcode
+engine.
 
- [ bp: Export functions and massage. ]
-
-Signed-off-by: Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Cc: CooperYan@zhaoxin.com
-Cc: DavidWang@zhaoxin.com
-Cc: HerryYang@zhaoxin.com
+Cc: Ashok Raj <ashok.raj@intel.com>
+Cc: Boris Ostrovsky <boris.ostrovsky@oracle.com>
 Cc: "H. Peter Anvin" <hpa@zytor.com>
 Cc: Ingo Molnar <mingo@redhat.com>
-Cc: linux-edac <linux-edac@vger.kernel.org>
-Cc: QiyuanWang@zhaoxin.com
+Cc: Jon Grimm <Jon.Grimm@amd.com>
+Cc: kanth.ghatraju@oracle.com
+Cc: konrad.wilk@oracle.com
+Cc: Mihai Carabas <mihai.carabas@oracle.com>
+Cc: patrick.colp@oracle.com
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Tony Luck <tony.luck@intel.com>
+Cc: Tom Lendacky <thomas.lendacky@amd.com>
 Cc: x86-ml <x86@kernel.org>
-Link: https://lkml.kernel.org/r/1568787573-1297-5-git-send-email-TonyWWang-oc@zhaoxin.com
+Link: https://lkml.kernel.org/r/20190824085341.GC16813@zn.tnic
 ---
- arch/x86/kernel/cpu/mce/core.c     | 22 ++++++++++++++++++++--
- arch/x86/kernel/cpu/mce/intel.c    |  4 ++--
- arch/x86/kernel/cpu/mce/internal.h |  4 ++++
- 3 files changed, 26 insertions(+), 4 deletions(-)
+ arch/x86/kernel/cpu/microcode/intel.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
-index 1e6b8a4..5f42f25 100644
---- a/arch/x86/kernel/cpu/mce/core.c
-+++ b/arch/x86/kernel/cpu/mce/core.c
-@@ -1132,6 +1132,12 @@ static bool __mc_check_crashing_cpu(int cpu)
- 		u64 mcgstatus;
- 
- 		mcgstatus = mce_rdmsrl(MSR_IA32_MCG_STATUS);
-+
-+		if (boot_cpu_data.x86_vendor == X86_VENDOR_ZHAOXIN) {
-+			if (mcgstatus & MCG_STATUS_LMCES)
-+				return false;
-+		}
-+
- 		if (mcgstatus & MCG_STATUS_RIPV) {
- 			mce_wrmsrl(MSR_IA32_MCG_STATUS, 0);
- 			return true;
-@@ -1282,9 +1288,10 @@ void do_machine_check(struct pt_regs *regs, long error_code)
- 
- 	/*
- 	 * Check if this MCE is signaled to only this logical processor,
--	 * on Intel only.
-+	 * on Intel, Zhaoxin only.
- 	 */
--	if (m.cpuvendor == X86_VENDOR_INTEL)
-+	if (m.cpuvendor == X86_VENDOR_INTEL ||
-+	    m.cpuvendor == X86_VENDOR_ZHAOXIN)
- 		lmce = m.mcgstatus & MCG_STATUS_LMCES;
- 
- 	/*
-@@ -1797,9 +1804,15 @@ static void mce_zhaoxin_feature_init(struct cpuinfo_x86 *c)
+diff --git a/arch/x86/kernel/cpu/microcode/intel.c b/arch/x86/kernel/cpu/microcode/intel.c
+index ce799cf..6a99535 100644
+--- a/arch/x86/kernel/cpu/microcode/intel.c
++++ b/arch/x86/kernel/cpu/microcode/intel.c
+@@ -791,6 +791,7 @@ static enum ucode_state apply_microcode_intel(int cpu)
+ {
+ 	struct ucode_cpu_info *uci = ucode_cpu_info + cpu;
+ 	struct cpuinfo_x86 *c = &cpu_data(cpu);
++	bool bsp = c->cpu_index == boot_cpu_data.cpu_index;
+ 	struct microcode_intel *mc;
+ 	enum ucode_state ret;
+ 	static int prev_rev;
+@@ -836,7 +837,7 @@ static enum ucode_state apply_microcode_intel(int cpu)
+ 		return UCODE_ERROR;
  	}
  
- 	intel_init_cmci();
-+	intel_init_lmce();
- 	mce_adjust_timer = cmci_intel_adjust_timer;
- }
+-	if (rev != prev_rev) {
++	if (bsp && rev != prev_rev) {
+ 		pr_info("updated to revision 0x%x, date = %04x-%02x-%02x\n",
+ 			rev,
+ 			mc->hdr.date & 0xffff,
+@@ -852,7 +853,7 @@ out:
+ 	c->microcode	 = rev;
  
-+static void mce_zhaoxin_feature_clear(struct cpuinfo_x86 *c)
-+{
-+	intel_clear_lmce();
-+}
-+
- static void __mcheck_cpu_init_vendor(struct cpuinfo_x86 *c)
- {
- 	switch (c->x86_vendor) {
-@@ -1836,6 +1849,11 @@ static void __mcheck_cpu_clear_vendor(struct cpuinfo_x86 *c)
- 	case X86_VENDOR_INTEL:
- 		mce_intel_feature_clear(c);
- 		break;
-+
-+	case X86_VENDOR_ZHAOXIN:
-+		mce_zhaoxin_feature_clear(c);
-+		break;
-+
- 	default:
- 		break;
- 	}
-diff --git a/arch/x86/kernel/cpu/mce/intel.c b/arch/x86/kernel/cpu/mce/intel.c
-index fb6e990..68a1d25 100644
---- a/arch/x86/kernel/cpu/mce/intel.c
-+++ b/arch/x86/kernel/cpu/mce/intel.c
-@@ -444,7 +444,7 @@ void intel_init_cmci(void)
- 	cmci_recheck();
- }
+ 	/* Update boot_cpu_data's revision too, if we're on the BSP: */
+-	if (c->cpu_index == boot_cpu_data.cpu_index)
++	if (bsp)
+ 		boot_cpu_data.microcode = rev;
  
--static void intel_init_lmce(void)
-+void intel_init_lmce(void)
- {
- 	u64 val;
- 
-@@ -457,7 +457,7 @@ static void intel_init_lmce(void)
- 		wrmsrl(MSR_IA32_MCG_EXT_CTL, val | MCG_EXT_CTL_LMCE_EN);
- }
- 
--static void intel_clear_lmce(void)
-+void intel_clear_lmce(void)
- {
- 	u64 val;
- 
-diff --git a/arch/x86/kernel/cpu/mce/internal.h b/arch/x86/kernel/cpu/mce/internal.h
-index a7ee230..842b273 100644
---- a/arch/x86/kernel/cpu/mce/internal.h
-+++ b/arch/x86/kernel/cpu/mce/internal.h
-@@ -46,12 +46,16 @@ bool mce_intel_cmci_poll(void);
- void mce_intel_hcpu_update(unsigned long cpu);
- void cmci_disable_bank(int bank);
- void intel_init_cmci(void);
-+void intel_init_lmce(void);
-+void intel_clear_lmce(void);
- #else
- # define cmci_intel_adjust_timer mce_adjust_timer_default
- static inline bool mce_intel_cmci_poll(void) { return false; }
- static inline void mce_intel_hcpu_update(unsigned long cpu) { }
- static inline void cmci_disable_bank(int bank) { }
- static inline void intel_init_cmci(void) { }
-+static inline void intel_init_lmce(void) { }
-+static inline void intel_clear_lmce(void) { }
- #endif
- 
- void mce_timer_kick(unsigned long interval);
+ 	return ret;
