@@ -2,37 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E2DFCC3086
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  1 Oct 2019 11:46:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DA5FC30A5
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  1 Oct 2019 11:52:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726461AbfJAJqf (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 1 Oct 2019 05:46:35 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:54690 "EHLO
+        id S1726800AbfJAJw3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 1 Oct 2019 05:52:29 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:54712 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725765AbfJAJqf (ORCPT
+        with ESMTP id S1725765AbfJAJw3 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 1 Oct 2019 05:46:35 -0400
+        Tue, 1 Oct 2019 05:52:29 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iFEjm-00071I-Mt; Tue, 01 Oct 2019 11:46:30 +0200
+        id 1iFEpV-0007B9-NL; Tue, 01 Oct 2019 11:52:25 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4D8671C03AB;
-        Tue,  1 Oct 2019 11:46:30 +0200 (CEST)
-Date:   Tue, 01 Oct 2019 09:46:30 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4B6D81C03AB;
+        Tue,  1 Oct 2019 11:52:25 +0200 (CEST)
+Date:   Tue, 01 Oct 2019 09:52:25 -0000
 From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/microcode] x86/microcode/amd: Fix two
- -Wunused-but-set-variable warnings
+Subject: [tip: ras/core] x86/mce/amd: Make disable_err_thresholding() static
 Cc:     Borislav Petkov <bp@suse.de>, x86@kernel.org,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20190928162559.26294-1-bp@alien8.de>
-References: <20190928162559.26294-1-bp@alien8.de>
+In-Reply-To: <20190928170539.2729-1-bp@alien8.de>
+References: <20190928170539.2729-1-bp@alien8.de>
 MIME-Version: 1.0
-Message-ID: <156992319017.9978.9822954444615674815.tip-bot2@tip-bot2>
+Message-ID: <156992354518.9978.16819187666387348387.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -46,49 +45,36 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/microcode branch of tip:
+The following commit has been merged into the ras/core branch of tip:
 
-Commit-ID:     2b730952066cd022d1f46e801f06ca6ca9878823
-Gitweb:        https://git.kernel.org/tip/2b730952066cd022d1f46e801f06ca6ca9878823
+Commit-ID:     47cd84e98f512eac5aad988f08baff432aea35ba
+Gitweb:        https://git.kernel.org/tip/47cd84e98f512eac5aad988f08baff432aea35ba
 Author:        Borislav Petkov <bp@suse.de>
-AuthorDate:    Sat, 28 Sep 2019 16:53:56 +02:00
+AuthorDate:    Sat, 28 Sep 2019 19:02:29 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 01 Oct 2019 11:36:09 +02:00
+CommitterDate: Tue, 01 Oct 2019 11:42:59 +02:00
 
-x86/microcode/amd: Fix two -Wunused-but-set-variable warnings
-
-The dummy variable is the high part of the microcode revision MSR which
-is defined as reserved. Mark it unused so that W=1 builds don't trigger
-the above warning.
+x86/mce/amd: Make disable_err_thresholding() static
 
 No functional changes.
 
 Signed-off-by: Borislav Petkov <bp@suse.de>
 Cc: x86@kernel.org
-Link: https://lkml.kernel.org/r/20190928162559.26294-1-bp@alien8.de
+Link: https://lkml.kernel.org/r/20190928170539.2729-1-bp@alien8.de
 ---
- arch/x86/kernel/cpu/microcode/amd.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/kernel/cpu/mce/amd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/cpu/microcode/amd.c b/arch/x86/kernel/cpu/microcode/amd.c
-index a0e52bd..3f6b137 100644
---- a/arch/x86/kernel/cpu/microcode/amd.c
-+++ b/arch/x86/kernel/cpu/microcode/amd.c
-@@ -567,7 +567,7 @@ int __init save_microcode_in_initrd_amd(unsigned int cpuid_1_eax)
- void reload_ucode_amd(void)
+diff --git a/arch/x86/kernel/cpu/mce/amd.c b/arch/x86/kernel/cpu/mce/amd.c
+index 6ea7fdc..5167bd2 100644
+--- a/arch/x86/kernel/cpu/mce/amd.c
++++ b/arch/x86/kernel/cpu/mce/amd.c
+@@ -583,7 +583,7 @@ bool amd_filter_mce(struct mce *m)
+  * - Prevent possible spurious interrupts from the IF bank on Family 0x17
+  *   Models 0x10-0x2F due to Erratum #1114.
+  */
+-void disable_err_thresholding(struct cpuinfo_x86 *c, unsigned int bank)
++static void disable_err_thresholding(struct cpuinfo_x86 *c, unsigned int bank)
  {
- 	struct microcode_amd *mc;
--	u32 rev, dummy;
-+	u32 rev, dummy __always_unused;
- 
- 	mc = (struct microcode_amd *)amd_ucode_patch;
- 
-@@ -673,7 +673,7 @@ static enum ucode_state apply_microcode_amd(int cpu)
- 	struct ucode_cpu_info *uci;
- 	struct ucode_patch *p;
- 	enum ucode_state ret;
--	u32 rev, dummy;
-+	u32 rev, dummy __always_unused;
- 
- 	BUG_ON(raw_smp_processor_id() != cpu);
- 
+ 	int i, num_msrs;
+ 	u64 hwcr;
