@@ -2,52 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F2D66C4000
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  1 Oct 2019 20:38:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44F2FC4121
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  1 Oct 2019 21:35:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725794AbfJASiq convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 1 Oct 2019 14:38:46 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:56346 "EHLO
+        id S1726240AbfJATey (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 1 Oct 2019 15:34:54 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:56743 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725919AbfJASiq (ORCPT
+        with ESMTP id S1726043AbfJATey (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 1 Oct 2019 14:38:46 -0400
+        Tue, 1 Oct 2019 15:34:54 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iFN2i-0002L4-Ec; Tue, 01 Oct 2019 20:38:36 +0200
+        id 1iFNuW-0003ZJ-L1; Tue, 01 Oct 2019 21:34:12 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 0E0ED1C03AB;
-        Tue,  1 Oct 2019 20:38:36 +0200 (CEST)
-Date:   Tue, 01 Oct 2019 18:38:35 -0000
-From:   "tip-bot2 for Nishad Kamdar" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id F09D91C03AB;
+        Tue,  1 Oct 2019 21:34:11 +0200 (CEST)
+Date:   Tue, 01 Oct 2019 19:34:11 -0000
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/urgent] x86: Use the correct SPDX License Identifier in headers
-Cc:     Joe Perches <joe@perches.com>,
-        Nishad Kamdar <nishadkamdar@gmail.com>,
-        Borislav Petkov <bp@suse.de>,
-        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        Sean Christopherson <sean.j.christopherson@intel.com>,
+Subject: [tip: sched/urgent] membarrier: Fix RCU locking bug caused by faulty merge
+Cc:     Ingo Molnar <mingo@kernel.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Borislav Petkov <bp@alien8.de>,
+        Chris Metcalf <cmetcalf@ezchip.com>,
+        Christoph Lameter <cl@linux.com>,
+        "Eric W. Biederman" <ebiederm@xmission.com>,
+        Kirill Tkhai <tkhai@yandex.ru>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Mike Galbraith <efault@gmx.de>,
+        Oleg Nesterov <oleg@redhat.com>,
+        "Paul E. McKenney" <paulmck@linux.ibm.com>,
+        "Russell King - ARM Linux admin" <linux@armlinux.org.uk>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Uwe =?utf-8?q?Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>, Waiman Long <longman@redhat.com>,
-        "x86-ml" <x86@kernel.org>, Ingo Molnar <mingo@kernel.org>,
-        Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
-In-Reply-To: =?utf-8?q?=3C697848ff866ade29e78e872525d7a3067642fd37=2E15554?=
- =?utf-8?q?27420=2Egit=2Enishadkamdar=40gmail=2Ecom=3E?=
-References: =?utf-8?q?=3C697848ff866ade29e78e872525d7a3067642fd37=2E155542?=
- =?utf-8?q?7420=2Egit=2Enishadkamdar=40gmail=2Ecom=3E?=
+        linux-tip-commits@vger.kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20191001085033.GP4519@hirez.programming.kicks-ass.net>
+References: <20191001085033.GP4519@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-Message-ID: <156995511592.9978.4673936343643990987.tip-bot2@tip-bot2>
+Message-ID: <156995845178.9978.16309965770056877944.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: 7bit
 X-Linutronix-Spam-Score: -1.0
 X-Linutronix-Spam-Level: -
 X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
@@ -56,64 +57,57 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the core/urgent branch of tip:
+The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     6184488a19be96d89cb6c36fb4bc277198309484
-Gitweb:        https://git.kernel.org/tip/6184488a19be96d89cb6c36fb4bc277198309484
-Author:        Nishad Kamdar <nishadkamdar@gmail.com>
-AuthorDate:    Tue, 16 Apr 2019 21:16:14 +05:30
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 01 Oct 2019 20:31:35 +02:00
+Commit-ID:     73956fc07dd7b25d4a33ab3fdd6247c60d0b237c
+Gitweb:        https://git.kernel.org/tip/73956fc07dd7b25d4a33ab3fdd6247c60d0b237c
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Tue, 01 Oct 2019 10:50:33 +02:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Tue, 01 Oct 2019 21:27:50 +02:00
 
-x86: Use the correct SPDX License Identifier in headers
+membarrier: Fix RCU locking bug caused by faulty merge
 
-Correct the SPDX License Identifier format in a couple of headers.
+The following commit:
 
-Suggested-by: Joe Perches <joe@perches.com>
-Signed-off-by: Nishad Kamdar <nishadkamdar@gmail.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Sean Christopherson <sean.j.christopherson@intel.com>
+  227a4aadc75b ("sched/membarrier: Fix p->mm->membarrier_state racy load")
+
+got fat fingered by me when merging it with other patches. It meant to move
+the RCU section out of the for loop but ended up doing it partially, leaving
+a superfluous rcu_read_lock() inside, causing havok.
+
+Reported-by: Ingo Molnar <mingo@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Chris Metcalf <cmetcalf@ezchip.com>
+Cc: Christoph Lameter <cl@linux.com>
+Cc: Eric W. Biederman <ebiederm@xmission.com>
+Cc: Kirill Tkhai <tkhai@yandex.ru>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Mike Galbraith <efault@gmx.de>
+Cc: Oleg Nesterov <oleg@redhat.com>
+Cc: Paul E. McKenney <paulmck@linux.ibm.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Russell King - ARM Linux admin <linux@armlinux.org.uk>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Cc: Waiman Long <longman@redhat.com>
-Cc: x86-ml <x86@kernel.org>
-Link: https://lkml.kernel.org/r/697848ff866ade29e78e872525d7a3067642fd37.1555427420.git.nishadkamdar@gmail.com
+Cc: linux-tip-commits@vger.kernel.org
+Fixes: 227a4aadc75b ("sched/membarrier: Fix p->mm->membarrier_state racy load")
+Link: https://lkml.kernel.org/r/20191001085033.GP4519@hirez.programming.kicks-ass.net
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- arch/x86/include/asm/cpu_entry_area.h | 2 +-
- arch/x86/include/asm/pti.h            | 2 +-
- arch/x86/kernel/process.h             | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ kernel/sched/membarrier.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/cpu_entry_area.h b/arch/x86/include/asm/cpu_entry_area.h
-index cff3f3f..8348f7d 100644
---- a/arch/x86/include/asm/cpu_entry_area.h
-+++ b/arch/x86/include/asm/cpu_entry_area.h
-@@ -1,4 +1,4 @@
--// SPDX-License-Identifier: GPL-2.0
-+/* SPDX-License-Identifier: GPL-2.0 */
- 
- #ifndef _ASM_X86_CPU_ENTRY_AREA_H
- #define _ASM_X86_CPU_ENTRY_AREA_H
-diff --git a/arch/x86/include/asm/pti.h b/arch/x86/include/asm/pti.h
-index 5df09a0..07375b4 100644
---- a/arch/x86/include/asm/pti.h
-+++ b/arch/x86/include/asm/pti.h
-@@ -1,4 +1,4 @@
--// SPDX-License-Identifier: GPL-2.0
-+/* SPDX-License-Identifier: GPL-2.0 */
- #ifndef _ASM_X86_PTI_H
- #define _ASM_X86_PTI_H
- #ifndef __ASSEMBLY__
-diff --git a/arch/x86/kernel/process.h b/arch/x86/kernel/process.h
-index 320ab97..1d0797b 100644
---- a/arch/x86/kernel/process.h
-+++ b/arch/x86/kernel/process.h
-@@ -1,4 +1,4 @@
--// SPDX-License-Identifier: GPL-2.0
-+/* SPDX-License-Identifier: GPL-2.0 */
- //
- // Code shared between 32 and 64 bit
- 
+diff --git a/kernel/sched/membarrier.c b/kernel/sched/membarrier.c
+index a39bed2..168479a 100644
+--- a/kernel/sched/membarrier.c
++++ b/kernel/sched/membarrier.c
+@@ -174,7 +174,6 @@ static int membarrier_private_expedited(int flags)
+ 		 */
+ 		if (cpu == raw_smp_processor_id())
+ 			continue;
+-		rcu_read_lock();
+ 		p = rcu_dereference(cpu_rq(cpu)->curr);
+ 		if (p && p->mm == mm)
+ 			__cpumask_set_cpu(cpu, tmpmask);
