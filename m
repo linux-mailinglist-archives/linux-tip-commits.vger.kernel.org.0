@@ -2,36 +2,45 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DA5FC30A5
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  1 Oct 2019 11:52:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 66639C3120
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  1 Oct 2019 12:20:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726800AbfJAJw3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 1 Oct 2019 05:52:29 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:54712 "EHLO
+        id S1726375AbfJAKUN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 1 Oct 2019 06:20:13 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:54797 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725765AbfJAJw3 (ORCPT
+        with ESMTP id S1726190AbfJAKUN (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 1 Oct 2019 05:52:29 -0400
+        Tue, 1 Oct 2019 06:20:13 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iFEpV-0007B9-NL; Tue, 01 Oct 2019 11:52:25 +0200
+        id 1iFFG9-0007pI-Fs; Tue, 01 Oct 2019 12:19:57 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4B6D81C03AB;
-        Tue,  1 Oct 2019 11:52:25 +0200 (CEST)
-Date:   Tue, 01 Oct 2019 09:52:25 -0000
-From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 159241C03AB;
+        Tue,  1 Oct 2019 12:19:57 +0200 (CEST)
+Date:   Tue, 01 Oct 2019 10:19:56 -0000
+From:   "tip-bot2 for Alexander Kapshuk" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: ras/core] x86/mce/amd: Make disable_err_thresholding() static
-Cc:     Borislav Petkov <bp@suse.de>, x86@kernel.org,
-        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20190928170539.2729-1-bp@alien8.de>
-References: <20190928170539.2729-1-bp@alien8.de>
+Subject: [tip: core/objtool] x86/insn: Fix awk regexp warnings
+Cc:     kbuild test robot <lkp@intel.com>,
+        Alexander Kapshuk <alexander.kapshuk@gmail.com>,
+        Borislav Petkov <bp@suse.de>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "x86-ml" <x86@kernel.org>, Ingo Molnar <mingo@kernel.org>,
+        Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
+In-Reply-To: <20190924044659.3785-1-alexander.kapshuk@gmail.com>
+References: <20190924044659.3785-1-alexander.kapshuk@gmail.com>
 MIME-Version: 1.0
-Message-ID: <156992354518.9978.16819187666387348387.tip-bot2@tip-bot2>
+Message-ID: <156992519684.9978.637485393388419464.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -45,36 +54,95 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the ras/core branch of tip:
+The following commit has been merged into the core/objtool branch of tip:
 
-Commit-ID:     47cd84e98f512eac5aad988f08baff432aea35ba
-Gitweb:        https://git.kernel.org/tip/47cd84e98f512eac5aad988f08baff432aea35ba
-Author:        Borislav Petkov <bp@suse.de>
-AuthorDate:    Sat, 28 Sep 2019 19:02:29 +02:00
+Commit-ID:     700c1018b86d0d4b3f1f2d459708c0cdf42b521d
+Gitweb:        https://git.kernel.org/tip/700c1018b86d0d4b3f1f2d459708c0cdf42b521d
+Author:        Alexander Kapshuk <alexander.kapshuk@gmail.com>
+AuthorDate:    Tue, 24 Sep 2019 07:46:59 +03:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 01 Oct 2019 11:42:59 +02:00
+CommitterDate: Tue, 01 Oct 2019 12:13:16 +02:00
 
-x86/mce/amd: Make disable_err_thresholding() static
+x86/insn: Fix awk regexp warnings
 
-No functional changes.
+gawk 5.0.1 generates the following regexp warnings:
 
+  GEN      /home/sasha/torvalds/tools/objtool/arch/x86/lib/inat-tables.c
+  awk: ../arch/x86/tools/gen-insn-attr-x86.awk:260: warning: regexp escape sequence `\:' is not a known regexp operator
+  awk: ../arch/x86/tools/gen-insn-attr-x86.awk:350: (FILENAME=../arch/x86/lib/x86-opcode-map.txt FNR=41) warning: regexp escape sequence `\&' is  not a known regexp operator
+
+Ealier versions of gawk are not known to generate these warnings. The
+gawk manual referenced below does not list characters ':' and '&' as
+needing escaping, so 'unescape' them. See
+
+  https://www.gnu.org/software/gawk/manual/html_node/Escape-Sequences.html
+
+for more info.
+
+Running diff on the output generated by the script before and after
+applying the patch reported no differences.
+
+ [ bp: Massage commit message. ]
+
+[ Caught the respective tools header discrepancy. ]
+Reported-by: kbuild test robot <lkp@intel.com>
+Signed-off-by: Alexander Kapshuk <alexander.kapshuk@gmail.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Cc: x86@kernel.org
-Link: https://lkml.kernel.org/r/20190928170539.2729-1-bp@alien8.de
+Acked-by: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: "Peter Zijlstra (Intel)" <peterz@infradead.org>
+Cc: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Josh Poimboeuf <jpoimboe@redhat.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: x86-ml <x86@kernel.org>
+Link: https://lkml.kernel.org/r/20190924044659.3785-1-alexander.kapshuk@gmail.com
 ---
- arch/x86/kernel/cpu/mce/amd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/tools/gen-insn-attr-x86.awk       | 4 ++--
+ tools/arch/x86/tools/gen-insn-attr-x86.awk | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/mce/amd.c b/arch/x86/kernel/cpu/mce/amd.c
-index 6ea7fdc..5167bd2 100644
---- a/arch/x86/kernel/cpu/mce/amd.c
-+++ b/arch/x86/kernel/cpu/mce/amd.c
-@@ -583,7 +583,7 @@ bool amd_filter_mce(struct mce *m)
-  * - Prevent possible spurious interrupts from the IF bank on Family 0x17
-  *   Models 0x10-0x2F due to Erratum #1114.
-  */
--void disable_err_thresholding(struct cpuinfo_x86 *c, unsigned int bank)
-+static void disable_err_thresholding(struct cpuinfo_x86 *c, unsigned int bank)
- {
- 	int i, num_msrs;
- 	u64 hwcr;
+diff --git a/arch/x86/tools/gen-insn-attr-x86.awk b/arch/x86/tools/gen-insn-attr-x86.awk
+index b02a36b..a42015b 100644
+--- a/arch/x86/tools/gen-insn-attr-x86.awk
++++ b/arch/x86/tools/gen-insn-attr-x86.awk
+@@ -69,7 +69,7 @@ BEGIN {
+ 
+ 	lprefix1_expr = "\\((66|!F3)\\)"
+ 	lprefix2_expr = "\\(F3\\)"
+-	lprefix3_expr = "\\((F2|!F3|66\\&F2)\\)"
++	lprefix3_expr = "\\((F2|!F3|66&F2)\\)"
+ 	lprefix_expr = "\\((66|F2|F3)\\)"
+ 	max_lprefix = 4
+ 
+@@ -257,7 +257,7 @@ function convert_operands(count,opnd,       i,j,imm,mod)
+ 	return add_flags(imm, mod)
+ }
+ 
+-/^[0-9a-f]+\:/ {
++/^[0-9a-f]+:/ {
+ 	if (NR == 1)
+ 		next
+ 	# get index
+diff --git a/tools/arch/x86/tools/gen-insn-attr-x86.awk b/tools/arch/x86/tools/gen-insn-attr-x86.awk
+index b02a36b..a42015b 100644
+--- a/tools/arch/x86/tools/gen-insn-attr-x86.awk
++++ b/tools/arch/x86/tools/gen-insn-attr-x86.awk
+@@ -69,7 +69,7 @@ BEGIN {
+ 
+ 	lprefix1_expr = "\\((66|!F3)\\)"
+ 	lprefix2_expr = "\\(F3\\)"
+-	lprefix3_expr = "\\((F2|!F3|66\\&F2)\\)"
++	lprefix3_expr = "\\((F2|!F3|66&F2)\\)"
+ 	lprefix_expr = "\\((66|F2|F3)\\)"
+ 	max_lprefix = 4
+ 
+@@ -257,7 +257,7 @@ function convert_operands(count,opnd,       i,j,imm,mod)
+ 	return add_flags(imm, mod)
+ }
+ 
+-/^[0-9a-f]+\:/ {
++/^[0-9a-f]+:/ {
+ 	if (NR == 1)
+ 		next
+ 	# get index
