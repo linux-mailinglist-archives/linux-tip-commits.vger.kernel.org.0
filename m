@@ -2,225 +2,142 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 097FFC0593
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 27 Sep 2019 14:48:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E2B4AC2F14
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  1 Oct 2019 10:44:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727344AbfI0Ms1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 27 Sep 2019 08:48:27 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:45923 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727607AbfI0Ms1 (ORCPT
+        id S1727615AbfJAIoL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 1 Oct 2019 04:44:11 -0400
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:46229 "EHLO
+        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1733089AbfJAIoK (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 27 Sep 2019 08:48:27 -0400
-Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tip-bot2@linutronix.de>)
-        id 1iDpfY-0001Jg-RJ; Fri, 27 Sep 2019 14:48:20 +0200
-Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 6DC151C0440;
-        Fri, 27 Sep 2019 14:48:20 +0200 (CEST)
-Date:   Fri, 27 Sep 2019 12:48:20 -0000
-From:   "tip-bot2 for Balasubramani Vivekanandan" <tip-bot2@linutronix.de>
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] tick: broadcast-hrtimer: Fix a race in bc_set_next
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Balasubramani Vivekanandan 
-        <balasubramani_vivekanandan@mentor.com>, stable@vger.kernel.org,
-        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20190926135101.12102-2-balasubramani_vivekanandan@mentor.com>
-References: <20190926135101.12102-2-balasubramani_vivekanandan@mentor.com>
+        Tue, 1 Oct 2019 04:44:10 -0400
+Received: by mail-wr1-f67.google.com with SMTP id o18so14351660wrv.13;
+        Tue, 01 Oct 2019 01:44:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=SdwQsb3+JNLacsbpDuz5D32yWpg1tCJ/fPIbG+myM0k=;
+        b=HdLePNBPoqDcKEnbiodeM2y0/VHWwbTm0K4gcAPzQG5RyacfWV8WdQ7aANdu6YFRld
+         4gvhFaEjdKU/VKuqkXc8uDdEDLc718tTTK4psrEo7DArxtyyC7EmhUGc12rCtxIu76U+
+         F+h6qIAos0aLbpED271AqnIXBF2AzkfGl90a/0noS3z3/3BZmuHmGcfFEXoHeV3CINSS
+         M4iq2zgCvOisAC4VLxU2FtoTyvVTIMJcrwGbbERl4h+5A1XWMD9liYf6GxbcH24Em7pg
+         qlKC4xx1ylqwLmTdHmJeCP/Ys8XMdMh1id+lz9nz0OGRcJoGSbtgMFQH+DUURXYTVto8
+         6E3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=SdwQsb3+JNLacsbpDuz5D32yWpg1tCJ/fPIbG+myM0k=;
+        b=KhLOFEuBFULxBIBzIfn7eHXwW5ocF9xC/IhjoAoR3jvEVY+vIqM4vyqW/CcKBgEcPZ
+         a74OWYuGavUyaL2tl3rs2HmYXPN/DndzeUl2wXX0JibYoyAf6D8qTEGeWVU3aGjJpMbV
+         LkPLLvKLbo7IRcBN15DUoGyEIlLCob3fS5/8lkPcLE1exii8CRR4z396C9jt1UHEMtkO
+         JEGY2qgorluX+Wg4srBu6l/ECGD3NrZ0xU4NwCNnFgKG3QxhK+1DcPKLMYQYWy0LAiZr
+         cOu09JChvAV+oaCj6XP7jhES4n12o4E8NS8vBnL0N8JGAgzcRpTvP57WOr85Su7ayTjv
+         DQdQ==
+X-Gm-Message-State: APjAAAUz8j4gK5iBfHIeqRy2gfTvawTWplEAMsvIs8wF5jt++L7FwooA
+        eKbpZGGCy0uKa+NHnJePypRNvOYE
+X-Google-Smtp-Source: APXvYqxEOTjQwvwYhtdzjfmAg55crVPh5QvTjltvq9e7dUT8IARmTGB+GkEbovvl0gxcy+nDXVx6Zg==
+X-Received: by 2002:adf:f341:: with SMTP id e1mr16367215wrp.1.1569919448565;
+        Tue, 01 Oct 2019 01:44:08 -0700 (PDT)
+Received: from gmail.com (2E8B0CD5.catv.pool.telekom.hu. [46.139.12.213])
+        by smtp.gmail.com with ESMTPSA id d10sm2307155wma.42.2019.10.01.01.44.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Oct 2019 01:44:07 -0700 (PDT)
+Date:   Tue, 1 Oct 2019 10:44:05 +0200
+From:   Ingo Molnar <mingo@kernel.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-tip-commits@vger.kernel.org,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Chris Metcalf <cmetcalf@ezchip.com>,
+        Christoph Lameter <cl@linux.com>,
+        "Eric W. Biederman" <ebiederm@xmission.com>,
+        Kirill Tkhai <tkhai@yandex.ru>, Mike Galbraith <efault@gmx.de>,
+        Oleg Nesterov <oleg@redhat.com>,
+        "Paul E. McKenney" <paulmck@linux.ibm.com>,
+        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Borislav Petkov <bp@alien8.de>
+Subject: Re: [tip: sched/urgent] sched/membarrier: Fix
+ p->mm->membarrier_state racy load
+Message-ID: <20191001084405.GA115089@gmail.com>
+References: <20190919173705.2181-5-mathieu.desnoyers@efficios.com>
+ <156957184332.9866.1795367595934026999.tip-bot2@tip-bot2>
 MIME-Version: 1.0
-Message-ID: <156958850029.9978.16189420676178262920.tip-bot2@tip-bot2>
-X-Mailer: tip-git-log-daemon
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <156957184332.9866.1795367595934026999.tip-bot2@tip-bot2>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     b9023b91dd020ad7e093baa5122b6968c48cc9e0
-Gitweb:        https://git.kernel.org/tip/b9023b91dd020ad7e093baa5122b6968c48cc9e0
-Author:        Balasubramani Vivekanandan <balasubramani_vivekanandan@mentor.com>
-AuthorDate:    Thu, 26 Sep 2019 15:51:01 +02:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 27 Sep 2019 14:45:55 +02:00
+* tip-bot2 for Mathieu Desnoyers <tip-bot2@linutronix.de> wrote:
 
-tick: broadcast-hrtimer: Fix a race in bc_set_next
+> The following commit has been merged into the sched/urgent branch of tip:
+> 
+> Commit-ID:     227a4aadc75ba22fcb6c4e1c078817b8cbaae4ce
+> Gitweb:        https://git.kernel.org/tip/227a4aadc75ba22fcb6c4e1c078817b8cbaae4ce
+> Author:        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+> AuthorDate:    Thu, 19 Sep 2019 13:37:02 -04:00
+> Committer:     Ingo Molnar <mingo@kernel.org>
+> CommitterDate: Wed, 25 Sep 2019 17:42:30 +02:00
+> 
+> sched/membarrier: Fix p->mm->membarrier_state racy load
 
-When a cpu requests broadcasting, before starting the tick broadcast
-hrtimer, bc_set_next() checks if the timer callback (bc_handler) is active
-using hrtimer_try_to_cancel(). But hrtimer_try_to_cancel() does not provide
-the required synchronization when the callback is active on other core.
+> +	rcu_read_unlock();
+>  	if (!fallback) {
+>  		preempt_disable();
+>  		smp_call_function_many(tmpmask, ipi_mb, NULL, 1);
+> @@ -136,6 +178,7 @@ static int membarrier_private_expedited(int flags)
+>  	}
+>  
+>  	cpus_read_lock();
+> +	rcu_read_lock();
+>  	for_each_online_cpu(cpu) {
+>  		struct task_struct *p;
+>  
+> @@ -157,8 +200,8 @@ static int membarrier_private_expedited(int flags)
+>  			else
+>  				smp_call_function_single(cpu, ipi_mb, NULL, 1);
+>  		}
+> -		rcu_read_unlock();
+>  	}
+> +	rcu_read_unlock();
 
-The callback could have already executed tick_handle_oneshot_broadcast()
-and could have also returned. But still there is a small time window where
-the hrtimer_try_to_cancel() returns -1. In that case bc_set_next() returns
-without doing anything, but the next_event of the tick broadcast clock
-device is already set to a timeout value.
+I noticed this too late, but the locking in this part is now bogus:
 
-In the race condition diagram below, CPU #1 is running the timer callback
-and CPU #2 is entering idle state and so calls bc_set_next().
+	rcu_read_lock();
+	for_each_online_cpu(cpu) {
+		struct task_struct *p;
 
-In the worst case, the next_event will contain an expiry time, but the
-hrtimer will not be started which happens when the racing callback returns
-HRTIMER_NORESTART. The hrtimer might never recover if all further requests
-from the CPUs to subscribe to tick broadcast have timeout greater than the
-next_event of tick broadcast clock device. This leads to cascading of
-failures and finally noticed as rcu stall warnings
+		/*
+		 * Skipping the current CPU is OK even through we can be
+		 * migrated at any point. The current CPU, at the point
+		 * where we read raw_smp_processor_id(), is ensured to
+		 * be in program order with respect to the caller
+		 * thread. Therefore, we can skip this CPU from the
+		 * iteration.
+		 */
+		if (cpu == raw_smp_processor_id())
+			continue;
+		rcu_read_lock();
+		p = rcu_dereference(cpu_rq(cpu)->curr);
+		if (p && p->mm == mm)
+			__cpumask_set_cpu(cpu, tmpmask);
+	}
+	rcu_read_unlock();
 
-Here is a depiction of the race condition
+Note the double rcu_read_lock() ....
 
-CPU #1 (Running timer callback)                   CPU #2 (Enter idle
-                                                  and subscribe to
-                                                  tick broadcast)
----------------------                             ---------------------
+This bug is now upstream, so requires an urgent fix, as it should be 
+trivial to trigger with pretty much any membarrier user.
 
-__run_hrtimer()                                   tick_broadcast_enter()
+Thanks,
 
-  bc_handler()                                      __tick_broadcast_oneshot_control()
-
-    tick_handle_oneshot_broadcast()
-
-      raw_spin_lock(&tick_broadcast_lock);
-
-      dev->next_event = KTIME_MAX;                  //wait for tick_broadcast_lock
-      //next_event for tick broadcast clock
-      set to KTIME_MAX since no other cores
-      subscribed to tick broadcasting
-
-      raw_spin_unlock(&tick_broadcast_lock);
-
-    if (dev->next_event == KTIME_MAX)
-      return HRTIMER_NORESTART
-    // callback function exits without
-       restarting the hrtimer                      //tick_broadcast_lock acquired
-                                                   raw_spin_lock(&tick_broadcast_lock);
-
-                                                   tick_broadcast_set_event()
-
-                                                     clockevents_program_event()
-
-                                                       dev->next_event = expires;
-
-                                                       bc_set_next()
-
-                                                         hrtimer_try_to_cancel()
-                                                         //returns -1 since the timer
-                                                         callback is active. Exits without
-                                                         restarting the timer
-  cpu_base->running = NULL;
-
-The comment that hrtimer cannot be armed from within the callback is
-wrong. It is fine to start the hrtimer from within the callback. Also it is
-safe to start the hrtimer from the enter/exit idle code while the broadcast
-handler is active. The enter/exit idle code and the broadcast handler are
-synchronized using tick_broadcast_lock. So there is no need for the
-existing try to cancel logic. All this can be removed which will eliminate
-the race condition as well.
-
-Fixes: 5d1638acb9f6 ("tick: Introduce hrtimer based broadcast")
-Originally-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Balasubramani Vivekanandan <balasubramani_vivekanandan@mentor.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20190926135101.12102-2-balasubramani_vivekanandan@mentor.com
-
----
- kernel/time/tick-broadcast-hrtimer.c | 62 ++++++++++++---------------
- 1 file changed, 29 insertions(+), 33 deletions(-)
-
-diff --git a/kernel/time/tick-broadcast-hrtimer.c b/kernel/time/tick-broadcast-hrtimer.c
-index c1f5bb5..b5a65e2 100644
---- a/kernel/time/tick-broadcast-hrtimer.c
-+++ b/kernel/time/tick-broadcast-hrtimer.c
-@@ -42,39 +42,39 @@ static int bc_shutdown(struct clock_event_device *evt)
-  */
- static int bc_set_next(ktime_t expires, struct clock_event_device *bc)
- {
--	int bc_moved;
- 	/*
--	 * We try to cancel the timer first. If the callback is on
--	 * flight on some other cpu then we let it handle it. If we
--	 * were able to cancel the timer nothing can rearm it as we
--	 * own broadcast_lock.
-+	 * This is called either from enter/exit idle code or from the
-+	 * broadcast handler. In all cases tick_broadcast_lock is held.
- 	 *
--	 * However we can also be called from the event handler of
--	 * ce_broadcast_hrtimer itself when it expires. We cannot
--	 * restart the timer because we are in the callback, but we
--	 * can set the expiry time and let the callback return
--	 * HRTIMER_RESTART.
-+	 * hrtimer_cancel() cannot be called here neither from the
-+	 * broadcast handler nor from the enter/exit idle code. The idle
-+	 * code can run into the problem described in bc_shutdown() and the
-+	 * broadcast handler cannot wait for itself to complete for obvious
-+	 * reasons.
- 	 *
--	 * Since we are in the idle loop at this point and because
--	 * hrtimer_{start/cancel} functions call into tracing,
--	 * calls to these functions must be bound within RCU_NONIDLE.
-+	 * Each caller tries to arm the hrtimer on its own CPU, but if the
-+	 * hrtimer callbback function is currently running, then
-+	 * hrtimer_start() cannot move it and the timer stays on the CPU on
-+	 * which it is assigned at the moment.
-+	 *
-+	 * As this can be called from idle code, the hrtimer_start()
-+	 * invocation has to be wrapped with RCU_NONIDLE() as
-+	 * hrtimer_start() can call into tracing.
- 	 */
--	RCU_NONIDLE(
--		{
--			bc_moved = hrtimer_try_to_cancel(&bctimer) >= 0;
--			if (bc_moved) {
--				hrtimer_start(&bctimer, expires,
--					      HRTIMER_MODE_ABS_PINNED_HARD);
--			}
--		}
--	);
--
--	if (bc_moved) {
--		/* Bind the "device" to the cpu */
--		bc->bound_on = smp_processor_id();
--	} else if (bc->bound_on == smp_processor_id()) {
--		hrtimer_set_expires(&bctimer, expires);
--	}
-+	RCU_NONIDLE( {
-+		hrtimer_start(&bctimer, expires, HRTIMER_MODE_ABS_PINNED_HARD);
-+		/*
-+		 * The core tick broadcast mode expects bc->bound_on to be set
-+		 * correctly to prevent a CPU which has the broadcast hrtimer
-+		 * armed from going deep idle.
-+		 *
-+		 * As tick_broadcast_lock is held, nothing can change the cpu
-+		 * base which was just established in hrtimer_start() above. So
-+		 * the below access is safe even without holding the hrtimer
-+		 * base lock.
-+		 */
-+		bc->bound_on = bctimer.base->cpu_base->cpu;
-+	} );
- 	return 0;
- }
- 
-@@ -100,10 +100,6 @@ static enum hrtimer_restart bc_handler(struct hrtimer *t)
- {
- 	ce_broadcast_hrtimer.event_handler(&ce_broadcast_hrtimer);
- 
--	if (clockevent_state_oneshot(&ce_broadcast_hrtimer))
--		if (ce_broadcast_hrtimer.next_event != KTIME_MAX)
--			return HRTIMER_RESTART;
--
- 	return HRTIMER_NORESTART;
- }
- 
+	Ingo
