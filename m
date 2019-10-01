@@ -2,45 +2,42 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 66639C3120
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  1 Oct 2019 12:20:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EDB36C3199
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  1 Oct 2019 12:38:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726375AbfJAKUN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 1 Oct 2019 06:20:13 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:54797 "EHLO
+        id S1730006AbfJAKhR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 1 Oct 2019 06:37:17 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:54837 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726190AbfJAKUN (ORCPT
+        with ESMTP id S1729317AbfJAKhR (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 1 Oct 2019 06:20:13 -0400
+        Tue, 1 Oct 2019 06:37:17 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iFFG9-0007pI-Fs; Tue, 01 Oct 2019 12:19:57 +0200
+        id 1iFFWe-00088X-QK; Tue, 01 Oct 2019 12:37:00 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 159241C03AB;
-        Tue,  1 Oct 2019 12:19:57 +0200 (CEST)
-Date:   Tue, 01 Oct 2019 10:19:56 -0000
-From:   "tip-bot2 for Alexander Kapshuk" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4AAE01C03AB;
+        Tue,  1 Oct 2019 12:37:00 +0200 (CEST)
+Date:   Tue, 01 Oct 2019 10:37:00 -0000
+From:   "tip-bot2 for Nick Desaulniers" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/objtool] x86/insn: Fix awk regexp warnings
-Cc:     kbuild test robot <lkp@intel.com>,
-        Alexander Kapshuk <alexander.kapshuk@gmail.com>,
-        Borislav Petkov <bp@suse.de>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
+Subject: [tip: x86/boot] x86/realmode: Explicitly set entry point via ENTRY in
+ linker script
+Cc:     Borislav Petkov <bp@alien8.de>, Peter Smith <Peter.Smith@arm.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Borislav Petkov <bp@suse.de>, "H. Peter Anvin" <hpa@zytor.com>,
+        clang-built-linux@googlegroups.com, grimar@accesssoftek.com,
+        Ingo Molnar <mingo@redhat.com>, maskray@google.com,
+        ruiu@google.com, Thomas Gleixner <tglx@linutronix.de>,
         "x86-ml" <x86@kernel.org>, Ingo Molnar <mingo@kernel.org>,
-        Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
-In-Reply-To: <20190924044659.3785-1-alexander.kapshuk@gmail.com>
-References: <20190924044659.3785-1-alexander.kapshuk@gmail.com>
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20190925180908.54260-1-ndesaulniers@google.com>
+References: <20190925180908.54260-1-ndesaulniers@google.com>
 MIME-Version: 1.0
-Message-ID: <156992519684.9978.637485393388419464.tip-bot2@tip-bot2>
+Message-ID: <156992622015.9978.3158653614859964805.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -54,95 +51,63 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the core/objtool branch of tip:
+The following commit has been merged into the x86/boot branch of tip:
 
-Commit-ID:     700c1018b86d0d4b3f1f2d459708c0cdf42b521d
-Gitweb:        https://git.kernel.org/tip/700c1018b86d0d4b3f1f2d459708c0cdf42b521d
-Author:        Alexander Kapshuk <alexander.kapshuk@gmail.com>
-AuthorDate:    Tue, 24 Sep 2019 07:46:59 +03:00
+Commit-ID:     3f5f909bc331a7ff9120b11c8e0e320d60b01c89
+Gitweb:        https://git.kernel.org/tip/3f5f909bc331a7ff9120b11c8e0e320d60b01c89
+Author:        Nick Desaulniers <ndesaulniers@google.com>
+AuthorDate:    Wed, 25 Sep 2019 11:09:06 -07:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 01 Oct 2019 12:13:16 +02:00
+CommitterDate: Tue, 01 Oct 2019 12:17:58 +02:00
 
-x86/insn: Fix awk regexp warnings
+x86/realmode: Explicitly set entry point via ENTRY in linker script
 
-gawk 5.0.1 generates the following regexp warnings:
+Linking with ld.lld via
 
-  GEN      /home/sasha/torvalds/tools/objtool/arch/x86/lib/inat-tables.c
-  awk: ../arch/x86/tools/gen-insn-attr-x86.awk:260: warning: regexp escape sequence `\:' is not a known regexp operator
-  awk: ../arch/x86/tools/gen-insn-attr-x86.awk:350: (FILENAME=../arch/x86/lib/x86-opcode-map.txt FNR=41) warning: regexp escape sequence `\&' is  not a known regexp operator
+$ make LD=ld.lld
 
-Ealier versions of gawk are not known to generate these warnings. The
-gawk manual referenced below does not list characters ':' and '&' as
-needing escaping, so 'unescape' them. See
+produces the warning:
 
-  https://www.gnu.org/software/gawk/manual/html_node/Escape-Sequences.html
+  ld.lld: warning: cannot find entry symbol _start; defaulting to 0x1000
 
-for more info.
+Linking with ld.bfd shows the default entry is 0x1000:
 
-Running diff on the output generated by the script before and after
-applying the patch reported no differences.
+$ readelf -h arch/x86/realmode/rm/realmode.elf | grep Entry
+  Entry point address:               0x1000
 
- [ bp: Massage commit message. ]
+While ld.lld is being pedantic, just set the entry point explicitly,
+instead of depending on the implicit default. The symbol pa_text_start
+refers to the start of the .text section, which may not be at 0x1000 if
+the preceding sections listed in arch/x86/realmode/rm/realmode.lds.S
+were large enough. This matches behavior in arch/x86/boot/setup.ld.
 
-[ Caught the respective tools header discrepancy. ]
-Reported-by: kbuild test robot <lkp@intel.com>
-Signed-off-by: Alexander Kapshuk <alexander.kapshuk@gmail.com>
+Suggested-by: Borislav Petkov <bp@alien8.de>
+Suggested-by: Peter Smith <Peter.Smith@arm.com>
+Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Acked-by: Masami Hiramatsu <mhiramat@kernel.org>
 Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: "Peter Zijlstra (Intel)" <peterz@infradead.org>
-Cc: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: clang-built-linux@googlegroups.com
+Cc: grimar@accesssoftek.com
 Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
+Cc: maskray@google.com
+Cc: ruiu@google.com
 Cc: Thomas Gleixner <tglx@linutronix.de>
 Cc: x86-ml <x86@kernel.org>
-Link: https://lkml.kernel.org/r/20190924044659.3785-1-alexander.kapshuk@gmail.com
+Link: https://lkml.kernel.org/r/20190925180908.54260-1-ndesaulniers@google.com
+Link: https://github.com/ClangBuiltLinux/linux/issues/216
 ---
- arch/x86/tools/gen-insn-attr-x86.awk       | 4 ++--
- tools/arch/x86/tools/gen-insn-attr-x86.awk | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ arch/x86/realmode/rm/realmode.lds.S | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/tools/gen-insn-attr-x86.awk b/arch/x86/tools/gen-insn-attr-x86.awk
-index b02a36b..a42015b 100644
---- a/arch/x86/tools/gen-insn-attr-x86.awk
-+++ b/arch/x86/tools/gen-insn-attr-x86.awk
-@@ -69,7 +69,7 @@ BEGIN {
+diff --git a/arch/x86/realmode/rm/realmode.lds.S b/arch/x86/realmode/rm/realmode.lds.S
+index 3bb9808..64d135d 100644
+--- a/arch/x86/realmode/rm/realmode.lds.S
++++ b/arch/x86/realmode/rm/realmode.lds.S
+@@ -11,6 +11,7 @@
  
- 	lprefix1_expr = "\\((66|!F3)\\)"
- 	lprefix2_expr = "\\(F3\\)"
--	lprefix3_expr = "\\((F2|!F3|66\\&F2)\\)"
-+	lprefix3_expr = "\\((F2|!F3|66&F2)\\)"
- 	lprefix_expr = "\\((66|F2|F3)\\)"
- 	max_lprefix = 4
+ OUTPUT_FORMAT("elf32-i386")
+ OUTPUT_ARCH(i386)
++ENTRY(pa_text_start)
  
-@@ -257,7 +257,7 @@ function convert_operands(count,opnd,       i,j,imm,mod)
- 	return add_flags(imm, mod)
- }
- 
--/^[0-9a-f]+\:/ {
-+/^[0-9a-f]+:/ {
- 	if (NR == 1)
- 		next
- 	# get index
-diff --git a/tools/arch/x86/tools/gen-insn-attr-x86.awk b/tools/arch/x86/tools/gen-insn-attr-x86.awk
-index b02a36b..a42015b 100644
---- a/tools/arch/x86/tools/gen-insn-attr-x86.awk
-+++ b/tools/arch/x86/tools/gen-insn-attr-x86.awk
-@@ -69,7 +69,7 @@ BEGIN {
- 
- 	lprefix1_expr = "\\((66|!F3)\\)"
- 	lprefix2_expr = "\\(F3\\)"
--	lprefix3_expr = "\\((F2|!F3|66\\&F2)\\)"
-+	lprefix3_expr = "\\((F2|!F3|66&F2)\\)"
- 	lprefix_expr = "\\((66|F2|F3)\\)"
- 	max_lprefix = 4
- 
-@@ -257,7 +257,7 @@ function convert_operands(count,opnd,       i,j,imm,mod)
- 	return add_flags(imm, mod)
- }
- 
--/^[0-9a-f]+\:/ {
-+/^[0-9a-f]+:/ {
- 	if (NR == 1)
- 		next
- 	# get index
+ SECTIONS
+ {
