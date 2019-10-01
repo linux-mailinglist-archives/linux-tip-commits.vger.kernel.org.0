@@ -2,43 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 36263C304D
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  1 Oct 2019 11:35:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E2DFCC3086
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  1 Oct 2019 11:46:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726303AbfJAJf2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 1 Oct 2019 05:35:28 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:54658 "EHLO
+        id S1726461AbfJAJqf (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 1 Oct 2019 05:46:35 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:54690 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727957AbfJAJf2 (ORCPT
+        with ESMTP id S1725765AbfJAJqf (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 1 Oct 2019 05:35:28 -0400
+        Tue, 1 Oct 2019 05:46:35 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iFEYl-0006ps-V0; Tue, 01 Oct 2019 11:35:08 +0200
+        id 1iFEjm-00071I-Mt; Tue, 01 Oct 2019 11:46:30 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4930A1C03AB;
-        Tue,  1 Oct 2019 11:35:07 +0200 (CEST)
-Date:   Tue, 01 Oct 2019 09:35:07 -0000
-From:   "tip-bot2 for Bruce Ashfield" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4D8671C03AB;
+        Tue,  1 Oct 2019 11:46:30 +0200 (CEST)
+Date:   Tue, 01 Oct 2019 09:46:30 -0000
+From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/build] arch/x86/boot: Use prefix map to avoid embedded paths
-Cc:     Bruce Ashfield <bruce.ashfield@gmail.com>,
-        Ross Burton <ross.burton@intel.com>,
-        Borislav Petkov <bp@suse.de>, "H. Peter Anvin" <hpa@zytor.com>,
-        George Rimar <grimar@accesssoftek.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "x86-ml" <x86@kernel.org>, Ingo Molnar <mingo@kernel.org>,
-        Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
-In-Reply-To: <20190926093226.8568-1-ross.burton@intel.com>
-References: <20190926093226.8568-1-ross.burton@intel.com>
+Subject: [tip: x86/microcode] x86/microcode/amd: Fix two
+ -Wunused-but-set-variable warnings
+Cc:     Borislav Petkov <bp@suse.de>, x86@kernel.org,
+        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20190928162559.26294-1-bp@alien8.de>
+References: <20190928162559.26294-1-bp@alien8.de>
 MIME-Version: 1.0
-Message-ID: <156992250722.9978.12089821293615435249.tip-bot2@tip-bot2>
+Message-ID: <156992319017.9978.9822954444615674815.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -52,86 +46,49 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/build branch of tip:
+The following commit has been merged into the x86/microcode branch of tip:
 
-Commit-ID:     9e2276fa6eb39817dcc4cda415f0199fb7016b37
-Gitweb:        https://git.kernel.org/tip/9e2276fa6eb39817dcc4cda415f0199fb7016b37
-Author:        Bruce Ashfield <bruce.ashfield@gmail.com>
-AuthorDate:    Thu, 26 Sep 2019 10:32:26 +01:00
+Commit-ID:     2b730952066cd022d1f46e801f06ca6ca9878823
+Gitweb:        https://git.kernel.org/tip/2b730952066cd022d1f46e801f06ca6ca9878823
+Author:        Borislav Petkov <bp@suse.de>
+AuthorDate:    Sat, 28 Sep 2019 16:53:56 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 01 Oct 2019 11:19:40 +02:00
+CommitterDate: Tue, 01 Oct 2019 11:36:09 +02:00
 
-arch/x86/boot: Use prefix map to avoid embedded paths
+x86/microcode/amd: Fix two -Wunused-but-set-variable warnings
 
-It was observed that the kernel embeds the absolute build path in the
-x86 boot image when the __FILE__ macro is expanded.
+The dummy variable is the high part of the microcode revision MSR which
+is defined as reserved. Mark it unused so that W=1 builds don't trigger
+the above warning.
 
-> From https://bugzilla.yoctoproject.org/show_bug.cgi?id=13458:
+No functional changes.
 
-  If you turn on the buildpaths QA test, or try a reproducible build, you
-  discover that the kernel image contains build paths.
-
-  $ strings bzImage-5.0.19-yocto-standard |grep tmp/
-  out of pgt_buf in
-  /data/poky-tmp/reproducible/tmp/work-shared/qemux86-64/kernel-source/arch/x86/boot/compressed/kaslr_64.c!?
-
-  But what's this in the top-level Makefile:
-
-  $ git grep prefix-map
-  Makefile:KBUILD_CFLAGS  += $(call
-  cc-option,-fmacro-prefix-map=$(srctree)/=)
-
-  So the __FILE__ shouldn't be using the full path.  However
-  arch/x86/boot/compressed/Makefile has this:
-
-  KBUILD_CFLAGS := -m$(BITS) -O2
-
-  So that clears KBUILD_FLAGS, removing the -fmacro-prefix-map option.
-
-Use -fmacro-prefix-map to have relative paths in the boot image too.
-
- [ bp: Massage commit message and put the KBUILD_CFLAGS addition in
-   ..boot/Makefile after the KBUILD_AFLAGS assignment because gas
-   doesn't support -fmacro-prefix-map. ]
-
-Signed-off-by: Bruce Ashfield <bruce.ashfield@gmail.com>
-Signed-off-by: Ross Burton <ross.burton@intel.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: George Rimar <grimar@accesssoftek.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
-Cc: Nathan Chancellor <natechancellor@gmail.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: x86-ml <x86@kernel.org>
-Link: https://lkml.kernel.org/r/20190926093226.8568-1-ross.burton@intel.com
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=204333
+Cc: x86@kernel.org
+Link: https://lkml.kernel.org/r/20190928162559.26294-1-bp@alien8.de
 ---
- arch/x86/boot/Makefile            | 1 +
- arch/x86/boot/compressed/Makefile | 1 +
- 2 files changed, 2 insertions(+)
+ arch/x86/kernel/cpu/microcode/amd.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/boot/Makefile b/arch/x86/boot/Makefile
-index e2839b5..3e9f554 100644
---- a/arch/x86/boot/Makefile
-+++ b/arch/x86/boot/Makefile
-@@ -67,6 +67,7 @@ clean-files += cpustr.h
+diff --git a/arch/x86/kernel/cpu/microcode/amd.c b/arch/x86/kernel/cpu/microcode/amd.c
+index a0e52bd..3f6b137 100644
+--- a/arch/x86/kernel/cpu/microcode/amd.c
++++ b/arch/x86/kernel/cpu/microcode/amd.c
+@@ -567,7 +567,7 @@ int __init save_microcode_in_initrd_amd(unsigned int cpuid_1_eax)
+ void reload_ucode_amd(void)
+ {
+ 	struct microcode_amd *mc;
+-	u32 rev, dummy;
++	u32 rev, dummy __always_unused;
  
- KBUILD_CFLAGS	:= $(REALMODE_CFLAGS) -D_SETUP
- KBUILD_AFLAGS	:= $(KBUILD_CFLAGS) -D__ASSEMBLY__
-+KBUILD_CFLAGS	+= $(call cc-option,-fmacro-prefix-map=$(srctree)/=)
- GCOV_PROFILE := n
- UBSAN_SANITIZE := n
+ 	mc = (struct microcode_amd *)amd_ucode_patch;
  
-diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
-index 6b84afd..b246f18 100644
---- a/arch/x86/boot/compressed/Makefile
-+++ b/arch/x86/boot/compressed/Makefile
-@@ -38,6 +38,7 @@ KBUILD_CFLAGS += $(call cc-option,-fno-stack-protector)
- KBUILD_CFLAGS += $(call cc-disable-warning, address-of-packed-member)
- KBUILD_CFLAGS += $(call cc-disable-warning, gnu)
- KBUILD_CFLAGS += -Wno-pointer-sign
-+KBUILD_CFLAGS += $(call cc-option,-fmacro-prefix-map=$(srctree)/=)
+@@ -673,7 +673,7 @@ static enum ucode_state apply_microcode_amd(int cpu)
+ 	struct ucode_cpu_info *uci;
+ 	struct ucode_patch *p;
+ 	enum ucode_state ret;
+-	u32 rev, dummy;
++	u32 rev, dummy __always_unused;
  
- KBUILD_AFLAGS  := $(KBUILD_CFLAGS) -D__ASSEMBLY__
- GCOV_PROFILE := n
+ 	BUG_ON(raw_smp_processor_id() != cpu);
+ 
