@@ -2,44 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F1717C41AE
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  1 Oct 2019 22:18:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 64D01C9191
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  2 Oct 2019 21:11:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726068AbfJAUS7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 1 Oct 2019 16:18:59 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:56880 "EHLO
+        id S1729725AbfJBTJ4 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 2 Oct 2019 15:09:56 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:60726 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725851AbfJAUS7 (ORCPT
+        with ESMTP id S1729704AbfJBTJz (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 1 Oct 2019 16:18:59 -0400
+        Wed, 2 Oct 2019 15:09:55 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iFObe-0004Og-KL; Tue, 01 Oct 2019 22:18:46 +0200
+        id 1iFk0L-0000qJ-HV; Wed, 02 Oct 2019 21:09:41 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 328C41C03AB;
-        Tue,  1 Oct 2019 22:18:46 +0200 (CEST)
-Date:   Tue, 01 Oct 2019 20:18:45 -0000
-From:   "tip-bot2 for Nick Desaulniers" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E26151C03A9;
+        Wed,  2 Oct 2019 21:09:40 +0200 (CEST)
+Date:   Wed, 02 Oct 2019 19:09:40 -0000
+From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/boot] x86/realmode: Explicitly set entry point via ENTRY in
- linker script
-Cc:     Sedat Dilek <sedat.dilek@gmail.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Peter Smith <Peter.Smith@arm.com>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Borislav Petkov <bp@suse.de>, "H. Peter Anvin" <hpa@zytor.com>,
-        clang-built-linux@googlegroups.com, grimar@accesssoftek.com,
-        Ingo Molnar <mingo@redhat.com>, maskray@google.com,
-        ruiu@google.com, Thomas Gleixner <tglx@linutronix.de>,
+Subject: [tip: x86/cpu] x86/rdrand: Sanity-check RDRAND output
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Borislav Petkov <bp@suse.de>, Pu Wen <puwen@hygon.cn>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
         "x86-ml" <x86@kernel.org>, Ingo Molnar <mingo@kernel.org>,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20190925180908.54260-1-ndesaulniers@google.com>
-References: <20190925180908.54260-1-ndesaulniers@google.com>
+        Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
+In-Reply-To: <CAHk-=wjWPDauemCmLTKbdMYFB0UveMszZpcrwoUkJRRWKrqaTw@mail.gmail.com>
+References: <CAHk-=wjWPDauemCmLTKbdMYFB0UveMszZpcrwoUkJRRWKrqaTw@mail.gmail.com>
 MIME-Version: 1.0
-Message-ID: <156996112595.9978.10016104223665574360.tip-bot2@tip-bot2>
+Message-ID: <157004338078.9978.6255400681793760670.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -53,64 +48,74 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/boot branch of tip:
+The following commit has been merged into the x86/cpu branch of tip:
 
-Commit-ID:     6a181e333954a26f46596b36f82abd14743570fd
-Gitweb:        https://git.kernel.org/tip/6a181e333954a26f46596b36f82abd14743570fd
-Author:        Nick Desaulniers <ndesaulniers@google.com>
-AuthorDate:    Wed, 25 Sep 2019 11:09:06 -07:00
+Commit-ID:     7879fc4bdc7506d37bd67b6fc29442c53c06dfda
+Gitweb:        https://git.kernel.org/tip/7879fc4bdc7506d37bd67b6fc29442c53c06dfda
+Author:        Borislav Petkov <bp@suse.de>
+AuthorDate:    Sun, 25 Aug 2019 22:50:18 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 01 Oct 2019 22:13:17 +02:00
+CommitterDate: Tue, 01 Oct 2019 19:55:32 +02:00
 
-x86/realmode: Explicitly set entry point via ENTRY in linker script
+x86/rdrand: Sanity-check RDRAND output
 
-Linking with ld.lld via
+It turned out recently that on certain AMD F15h and F16h machines, due
+to the BIOS dropping the ball after resume, yet again, RDRAND would not
+function anymore:
 
-$ make LD=ld.lld
+  c49a0a80137c ("x86/CPU/AMD: Clear RDRAND CPUID bit on AMD family 15h/16h")
 
-produces the warning:
+Add a silly test to the CPU bringup path, to sanity-check the random
+data RDRAND returns and scream as loudly as possible if that returned
+random data doesn't change.
 
-  ld.lld: warning: cannot find entry symbol _start; defaulting to 0x1000
-
-Linking with ld.bfd shows the default entry is 0x1000:
-
-$ readelf -h arch/x86/realmode/rm/realmode.elf | grep Entry
-  Entry point address:               0x1000
-
-While ld.lld is being pedantic, just set the entry point explicitly,
-instead of depending on the implicit default. The symbol pa_text_start
-refers to the start of the .text section, which may not be at 0x1000 if
-the preceding sections listed in arch/x86/realmode/rm/realmode.lds.S
-were large enough. This matches behavior in arch/x86/boot/setup.ld.
-
-Reported-by: Sedat Dilek <sedat.dilek@gmail.com>
-Suggested-by: Borislav Petkov <bp@alien8.de>
-Suggested-by: Peter Smith <Peter.Smith@arm.com>
-Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
+Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: clang-built-linux@googlegroups.com
-Cc: grimar@accesssoftek.com
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: maskray@google.com
-Cc: ruiu@google.com
+Cc: Pu Wen <puwen@hygon.cn>
 Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Tom Lendacky <thomas.lendacky@amd.com>
 Cc: x86-ml <x86@kernel.org>
-Link: https://lkml.kernel.org/r/20190925180908.54260-1-ndesaulniers@google.com
-Link: https://github.com/ClangBuiltLinux/linux/issues/216
+Link: https://lkml.kernel.org/r/CAHk-=wjWPDauemCmLTKbdMYFB0UveMszZpcrwoUkJRRWKrqaTw@mail.gmail.com
 ---
- arch/x86/realmode/rm/realmode.lds.S | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/kernel/cpu/rdrand.c | 22 +++++++++++++++++++++-
+ 1 file changed, 21 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/realmode/rm/realmode.lds.S b/arch/x86/realmode/rm/realmode.lds.S
-index 3bb9808..64d135d 100644
---- a/arch/x86/realmode/rm/realmode.lds.S
-+++ b/arch/x86/realmode/rm/realmode.lds.S
-@@ -11,6 +11,7 @@
- 
- OUTPUT_FORMAT("elf32-i386")
- OUTPUT_ARCH(i386)
-+ENTRY(pa_text_start)
- 
- SECTIONS
+diff --git a/arch/x86/kernel/cpu/rdrand.c b/arch/x86/kernel/cpu/rdrand.c
+index 5c900f9..c4be620 100644
+--- a/arch/x86/kernel/cpu/rdrand.c
++++ b/arch/x86/kernel/cpu/rdrand.c
+@@ -29,7 +29,8 @@ __setup("nordrand", x86_rdrand_setup);
+ #ifdef CONFIG_ARCH_RANDOM
+ void x86_init_rdrand(struct cpuinfo_x86 *c)
  {
+-	unsigned long tmp;
++	unsigned int changed = 0;
++	unsigned long tmp, prev;
+ 	int i;
+ 
+ 	if (!cpu_has(c, X86_FEATURE_RDRAND))
+@@ -42,5 +43,24 @@ void x86_init_rdrand(struct cpuinfo_x86 *c)
+ 			return;
+ 		}
+ 	}
++
++	/*
++	 * Stupid sanity-check whether RDRAND does *actually* generate
++	 * some at least random-looking data.
++	 */
++	prev = tmp;
++	for (i = 0; i < SANITY_CHECK_LOOPS; i++) {
++		if (rdrand_long(&tmp)) {
++			if (prev != tmp)
++				changed++;
++
++			prev = tmp;
++		}
++	}
++
++	if (WARN_ON_ONCE(!changed))
++		pr_emerg(
++"RDRAND gives funky smelling output, might consider not using it by booting with \"nordrand\"");
++
+ }
+ #endif
