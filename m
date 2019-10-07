@@ -2,42 +2,43 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 44124CE5CC
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  7 Oct 2019 16:51:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F5F4CE5CF
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  7 Oct 2019 16:51:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728564AbfJGOti (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 7 Oct 2019 10:49:38 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:44447 "EHLO
+        id S1728633AbfJGOtl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 7 Oct 2019 10:49:41 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:44472 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728528AbfJGOth (ORCPT
+        with ESMTP id S1728588AbfJGOtk (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 7 Oct 2019 10:49:37 -0400
+        Mon, 7 Oct 2019 10:49:40 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iHUKH-00064n-GX; Mon, 07 Oct 2019 16:49:29 +0200
+        id 1iHUKF-00065n-5e; Mon, 07 Oct 2019 16:49:27 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B41821C0DD7;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E70521C08B0;
         Mon,  7 Oct 2019 16:49:17 +0200 (CEST)
 Date:   Mon, 07 Oct 2019 14:49:17 -0000
 From:   "tip-bot2 for Ian Rogers" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf docs: Allow man page date to be specified
+Subject: [tip: perf/urgent] perf tests: Avoid raising SEGV using an obvious
+ NULL dereference
 Cc:     Ian Rogers <irogers@google.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
         Alexander Shishkin <alexander.shishkin@linux.intel.com>,
         Andi Kleen <ak@linux.intel.com>, Jiri Olsa <jolsa@redhat.com>,
         Namhyung Kim <namhyung@kernel.org>,
         Peter Zijlstra <peterz@infradead.org>,
         Stephane Eranian <eranian@google.com>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20190921041327.155054-1-irogers@google.com>
-References: <20190921041327.155054-1-irogers@google.com>
+        Wang Nan <wangnan0@huawei.com>, Ingo Molnar <mingo@kernel.org>,
+        Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
+In-Reply-To: <20190925195924.152834-2-irogers@google.com>
+References: <20190925195924.152834-2-irogers@google.com>
 MIME-Version: 1.0
-Message-ID: <157045975768.9978.17723597574080494209.tip-bot2@tip-bot2>
+Message-ID: <157045975781.9978.17507056715784418883.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -53,51 +54,89 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     d586ac10ce56b2381b8e1d8ed74660c1b2b8ab0d
-Gitweb:        https://git.kernel.org/tip/d586ac10ce56b2381b8e1d8ed74660c1b2b8ab0d
+Commit-ID:     e3e2cf3d5b1fe800b032e14c0fdcd9a6fb20cf3b
+Gitweb:        https://git.kernel.org/tip/e3e2cf3d5b1fe800b032e14c0fdcd9a6fb20cf3b
 Author:        Ian Rogers <irogers@google.com>
-AuthorDate:    Fri, 20 Sep 2019 21:13:27 -07:00
+AuthorDate:    Wed, 25 Sep 2019 12:59:24 -07:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Fri, 27 Sep 2019 09:26:14 -03:00
 
-perf docs: Allow man page date to be specified
+perf tests: Avoid raising SEGV using an obvious NULL dereference
 
-With this change if a perf_date parameter is provided to asciidoc then
-it will override the default date written to the man page metadata.
+An optimized build such as:
 
-Without this change, or if the perf_date isn't specified, then the
-current date is written to the metadata.
+  make -C tools/perf CLANG=1 CC=clang EXTRA_CFLAGS="-O3
 
-Having this parameter allows the metadata to be constant if builds
-happen on different dates.
+will turn the dereference operation into a ud2 instruction, raising a
+SIGILL rather than a SIGSEGV. Use raise(..) for correctness and clarity.
 
-The name of the parameter is intended to be consistent with the existing
-perf_version parameter.
+Similar issues were addressed in Numfor Mbiziwo-Tiapo's patch:
 
+  https://lkml.org/lkml/2019/7/8/1234
+
+Committer testing:
+
+Before:
+
+  [root@quaco ~]# perf test hooks
+  55: perf hooks                                            : Ok
+  [root@quaco ~]# perf test -v hooks
+  55: perf hooks                                            :
+  --- start ---
+  test child forked, pid 17092
+  SIGSEGV is observed as expected, try to recover.
+  Fatal error (SEGFAULT) in perf hook 'test'
+  test child finished with 0
+  ---- end ----
+  perf hooks: Ok
+  [root@quaco ~]#
+
+After:
+
+  [root@quaco ~]# perf test hooks
+  55: perf hooks                                            : Ok
+  [root@quaco ~]# perf test -v hooks
+  55: perf hooks                                            :
+  --- start ---
+  test child forked, pid 17909
+  SIGSEGV is observed as expected, try to recover.
+  Fatal error (SEGFAULT) in perf hook 'test'
+  test child finished with 0
+  ---- end ----
+  perf hooks: Ok
+  [root@quaco ~]#
+
+Fixes: a074865e60ed ("perf tools: Introduce perf hooks")
 Signed-off-by: Ian Rogers <irogers@google.com>
+Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 Cc: Andi Kleen <ak@linux.intel.com>
 Cc: Jiri Olsa <jolsa@redhat.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Stephane Eranian <eranian@google.com>
-Link: http://lore.kernel.org/lkml/20190921041327.155054-1-irogers@google.com
+Cc: Wang Nan <wangnan0@huawei.com>
+Link: http://lore.kernel.org/lkml/20190925195924.152834-2-irogers@google.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/Documentation/asciidoc.conf | 3 +++
- 1 file changed, 3 insertions(+)
+ tools/perf/tests/perf-hooks.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/tools/perf/Documentation/asciidoc.conf b/tools/perf/Documentation/asciidoc.conf
-index 356b23a..2b62ba1 100644
---- a/tools/perf/Documentation/asciidoc.conf
-+++ b/tools/perf/Documentation/asciidoc.conf
-@@ -71,6 +71,9 @@ ifdef::backend-docbook[]
- [header]
- template::[header-declarations]
- <refentry>
-+ifdef::perf_date[]
-+<refentryinfo><date>{perf_date}</date></refentryinfo>
-+endif::perf_date[]
- <refmeta>
- <refentrytitle>{mantitle}</refentrytitle>
- <manvolnum>{manvolnum}</manvolnum>
+diff --git a/tools/perf/tests/perf-hooks.c b/tools/perf/tests/perf-hooks.c
+index dbc2719..dd865e0 100644
+--- a/tools/perf/tests/perf-hooks.c
++++ b/tools/perf/tests/perf-hooks.c
+@@ -19,12 +19,11 @@ static void sigsegv_handler(int sig __maybe_unused)
+ static void the_hook(void *_hook_flags)
+ {
+ 	int *hook_flags = _hook_flags;
+-	int *p = NULL;
+ 
+ 	*hook_flags = 1234;
+ 
+ 	/* Generate a segfault, test perf_hooks__recover */
+-	*p = 0;
++	raise(SIGSEGV);
+ }
+ 
+ int test__perf_hooks(struct test *test __maybe_unused, int subtest __maybe_unused)
