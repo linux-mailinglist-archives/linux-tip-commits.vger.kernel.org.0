@@ -2,44 +2,41 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BB2F4CE5B5
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  7 Oct 2019 16:50:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3AA39CE627
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  7 Oct 2019 16:55:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728772AbfJGOtt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 7 Oct 2019 10:49:49 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:44534 "EHLO
+        id S1727490AbfJGOzW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 7 Oct 2019 10:55:22 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:44571 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728718AbfJGOts (ORCPT
+        with ESMTP id S1728130AbfJGOzW (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 7 Oct 2019 10:49:48 -0400
+        Mon, 7 Oct 2019 10:55:22 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iHUKQ-0006Ep-Qt; Mon, 07 Oct 2019 16:49:38 +0200
+        id 1iHUPk-0006c5-Ky; Mon, 07 Oct 2019 16:55:08 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 8B87E1C0895;
-        Mon,  7 Oct 2019 16:49:34 +0200 (CEST)
-Date:   Mon, 07 Oct 2019 14:49:34 -0000
-From:   "tip-bot2 for Hans de Goede" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 380391C032F;
+        Mon,  7 Oct 2019 16:55:08 +0200 (CEST)
+Date:   Mon, 07 Oct 2019 14:55:08 -0000
+From:   "tip-bot2 for Alexander Shishkin" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/boot: Provide memzero_explicit()
-Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Borislav Petkov <bp@alien8.de>,
-        "H . Peter Anvin" <hpa@zytor.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
+Subject: [tip: perf/urgent] perf/core: Fix inheritance of aux_output groups
+Cc:     Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
         Linus Torvalds <torvalds@linux-foundation.org>,
+        Peter Zijlstra <a.p.zijlstra@chello.nl>,
         Peter Zijlstra <peterz@infradead.org>,
         Thomas Gleixner <tglx@linutronix.de>,
-        linux-crypto@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
+        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20191007134724.4019-1-hdegoede@redhat.com>
-References: <20191007134724.4019-1-hdegoede@redhat.com>
+In-Reply-To: <20191004125729.32397-1-alexander.shishkin@linux.intel.com>
+References: <20191004125729.32397-1-alexander.shishkin@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <157045977450.9978.18318761982949903126.tip-bot2@tip-bot2>
+Message-ID: <157046010808.9978.1455574004813453973.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -53,60 +50,50 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     ee008a19f1c72c37ffa54326a592035dddb66fd6
-Gitweb:        https://git.kernel.org/tip/ee008a19f1c72c37ffa54326a592035dddb66fd6
-Author:        Hans de Goede <hdegoede@redhat.com>
-AuthorDate:    Mon, 07 Oct 2019 15:47:24 +02:00
+Commit-ID:     f733c6b508bcaa3441ba1eacf16efb9abd47489f
+Gitweb:        https://git.kernel.org/tip/f733c6b508bcaa3441ba1eacf16efb9abd47489f
+Author:        Alexander Shishkin <alexander.shishkin@linux.intel.com>
+AuthorDate:    Fri, 04 Oct 2019 15:57:29 +03:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Mon, 07 Oct 2019 16:47:35 +02:00
+CommitterDate: Mon, 07 Oct 2019 16:50:42 +02:00
 
-x86/boot: Provide memzero_explicit()
+perf/core: Fix inheritance of aux_output groups
 
-The purgatory code now uses the shared lib/crypto/sha256.c sha256
-implementation. This needs memzero_explicit(), implement this.
+Commit:
 
-We also have barrier_data() call after the memset, making sure
-neither the compiler nor the linker optimizes out this seemingly
-unused function.
+  ab43762ef010 ("perf: Allow normal events to output AUX data")
 
-Reported-by: Arvind Sankar <nivedita@alum.mit.edu>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: H . Peter Anvin <hpa@zytor.com>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>
+forgets to configure aux_output relation in the inherited groups, which
+results in child PEBS events forever failing to schedule.
+
+Fix this by setting up the AUX output link in the inheritance path.
+
+Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Arnaldo Carvalho de Melo <acme@redhat.com>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Peter Zijlstra <a.p.zijlstra@chello.nl>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: linux-crypto@vger.kernel.org
-Fixes: 906a4bb97f5d ("crypto: sha256 - Use get/put_unaligned_be32 to get input, memzero_explicit")
-Link: https://lkml.kernel.org/r/20191007134724.4019-1-hdegoede@redhat.com
-[ Added comment. ]
+Link: https://lkml.kernel.org/r/20191004125729.32397-1-alexander.shishkin@linux.intel.com
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- arch/x86/boot/compressed/string.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ kernel/events/core.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/x86/boot/compressed/string.c b/arch/x86/boot/compressed/string.c
-index 81fc1ea..dd30e63 100644
---- a/arch/x86/boot/compressed/string.c
-+++ b/arch/x86/boot/compressed/string.c
-@@ -50,6 +50,16 @@ void *memset(void *s, int c, size_t n)
- 	return s;
- }
- 
-+void memzero_explicit(void *s, size_t count)
-+{
-+	memset(s, 0, count);
-+	/*
-+	 * Make sure this function never gets inlined and
-+	 * the memset() never gets optimized away:
-+	 */
-+	barrier_data(s);
-+}
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 3f0cb82..f953dd1 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -11862,6 +11862,10 @@ static int inherit_group(struct perf_event *parent_event,
+ 					    child, leader, child_ctx);
+ 		if (IS_ERR(child_ctr))
+ 			return PTR_ERR(child_ctr);
 +
- void *memmove(void *dest, const void *src, size_t n)
- {
- 	unsigned char *d = dest;
++		if (sub->aux_event == parent_event &&
++		    !perf_get_aux_event(child_ctr, leader))
++			return -EINVAL;
+ 	}
+ 	return 0;
+ }
