@@ -2,44 +2,44 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B23BACE5CD
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  7 Oct 2019 16:51:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 39E48CE5C3
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  7 Oct 2019 16:50:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728599AbfJGOtj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 7 Oct 2019 10:49:39 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:44462 "EHLO
+        id S1728931AbfJGOuZ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 7 Oct 2019 10:50:25 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:44529 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728553AbfJGOtj (ORCPT
+        with ESMTP id S1728708AbfJGOtr (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 7 Oct 2019 10:49:39 -0400
+        Mon, 7 Oct 2019 10:49:47 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iHUKG-00066K-C2; Mon, 07 Oct 2019 16:49:28 +0200
+        id 1iHUKI-00066Y-PO; Mon, 07 Oct 2019 16:49:30 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 285041C0DD8;
-        Mon,  7 Oct 2019 16:49:18 +0200 (CEST)
-Date:   Mon, 07 Oct 2019 14:49:18 -0000
-From:   "tip-bot2 for Ian Rogers" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 0FE711C032F;
+        Mon,  7 Oct 2019 16:49:26 +0200 (CEST)
+Date:   Mon, 07 Oct 2019 14:49:25 -0000
+From:   "tip-bot2 for Hans de Goede" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] libsubcmd: Make _FORTIFY_SOURCE defines dependent
- on the feature
-Cc:     Ian Rogers <irogers@google.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Andi Kleen <ak@linux.intel.com>, Jiri Olsa <jolsa@redhat.com>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Namhyung Kim <namhyung@kernel.org>,
+Subject: [tip: x86/urgent] x86/boot: Provide memzero_explicit()
+Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Borislav Petkov <bp@alien8.de>,
+        "H . Peter Anvin" <hpa@zytor.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
         Peter Zijlstra <peterz@infradead.org>,
-        Stephane Eranian <eranian@google.com>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-crypto@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20190925195924.152834-1-irogers@google.com>
-References: <20190925195924.152834-1-irogers@google.com>
+In-Reply-To: <20191007134724.4019-1-hdegoede@redhat.com>
+References: <20191007134724.4019-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-Message-ID: <157045975810.9978.12496841458958178913.tip-bot2@tip-bot2>
+Message-ID: <157045976599.9978.16157507866106024022.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -53,53 +53,60 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/urgent branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     4b0b2b096da9d296e0e5668cdfba8613bd6f5bc8
-Gitweb:        https://git.kernel.org/tip/4b0b2b096da9d296e0e5668cdfba8613bd6f5bc8
-Author:        Ian Rogers <irogers@google.com>
-AuthorDate:    Wed, 25 Sep 2019 12:59:23 -07:00
-Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Fri, 27 Sep 2019 09:26:14 -03:00
+Commit-ID:     ee008a19f1c72c37ffa54326a592035dddb66fd6
+Gitweb:        https://git.kernel.org/tip/ee008a19f1c72c37ffa54326a592035dddb66fd6
+Author:        Hans de Goede <hdegoede@redhat.com>
+AuthorDate:    Mon, 07 Oct 2019 15:47:24 +02:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Mon, 07 Oct 2019 16:47:35 +02:00
 
-libsubcmd: Make _FORTIFY_SOURCE defines dependent on the feature
+x86/boot: Provide memzero_explicit()
 
-Unconditionally defining _FORTIFY_SOURCE can break tools that don't work
-with it, such as memory sanitizers:
+The purgatory code now uses the shared lib/crypto/sha256.c sha256
+implementation. This needs memzero_explicit(), implement this.
 
-  https://github.com/google/sanitizers/wiki/AddressSanitizer#faq
+We also have barrier_data() call after the memset, making sure
+neither the compiler nor the linker optimizes out this seemingly
+unused function.
 
-Fixes: 4b6ab94eabe4 ("perf subcmd: Create subcmd library")
-Signed-off-by: Ian Rogers <irogers@google.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Jiri Olsa <jolsa@redhat.com>
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
+Reported-by: Arvind Sankar <nivedita@alum.mit.edu>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: H . Peter Anvin <hpa@zytor.com>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Stephane Eranian <eranian@google.com>
-Link: http://lore.kernel.org/lkml/20190925195924.152834-1-irogers@google.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: linux-crypto@vger.kernel.org
+Fixes: 906a4bb97f5d ("crypto: sha256 - Use get/put_unaligned_be32 to get input, memzero_explicit")
+Link: https://lkml.kernel.org/r/20191007134724.4019-1-hdegoede@redhat.com
+[ Added comment. ]
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- tools/lib/subcmd/Makefile | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ arch/x86/boot/compressed/string.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/tools/lib/subcmd/Makefile b/tools/lib/subcmd/Makefile
-index ed61fb3..5b2cd5e 100644
---- a/tools/lib/subcmd/Makefile
-+++ b/tools/lib/subcmd/Makefile
-@@ -20,7 +20,13 @@ MAKEFLAGS += --no-print-directory
- LIBFILE = $(OUTPUT)libsubcmd.a
+diff --git a/arch/x86/boot/compressed/string.c b/arch/x86/boot/compressed/string.c
+index 81fc1ea..dd30e63 100644
+--- a/arch/x86/boot/compressed/string.c
++++ b/arch/x86/boot/compressed/string.c
+@@ -50,6 +50,16 @@ void *memset(void *s, int c, size_t n)
+ 	return s;
+ }
  
- CFLAGS := $(EXTRA_WARNINGS) $(EXTRA_CFLAGS)
--CFLAGS += -ggdb3 -Wall -Wextra -std=gnu99 -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2 -fPIC
-+CFLAGS += -ggdb3 -Wall -Wextra -std=gnu99 -fPIC
++void memzero_explicit(void *s, size_t count)
++{
++	memset(s, 0, count);
++	/*
++	 * Make sure this function never gets inlined and
++	 * the memset() never gets optimized away:
++	 */
++	barrier_data(s);
++}
 +
-+ifeq ($(DEBUG),0)
-+  ifeq ($(feature-fortify-source), 1)
-+    CFLAGS += -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2
-+  endif
-+endif
- 
- ifeq ($(CC_NO_CLANG), 0)
-   CFLAGS += -O3
+ void *memmove(void *dest, const void *src, size_t n)
+ {
+ 	unsigned char *d = dest;
