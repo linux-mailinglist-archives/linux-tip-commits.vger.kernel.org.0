@@ -2,41 +2,42 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E12FACE5EA
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  7 Oct 2019 16:51:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44124CE5CC
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  7 Oct 2019 16:51:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729060AbfJGOvO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 7 Oct 2019 10:51:14 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:44400 "EHLO
+        id S1728564AbfJGOti (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 7 Oct 2019 10:49:38 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:44447 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728477AbfJGOtf (ORCPT
+        with ESMTP id S1728528AbfJGOth (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 7 Oct 2019 10:49:35 -0400
+        Mon, 7 Oct 2019 10:49:37 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iHUKD-00064h-Vv; Mon, 07 Oct 2019 16:49:26 +0200
+        id 1iHUKH-00064n-GX; Mon, 07 Oct 2019 16:49:29 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 954061C0DD6;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B41821C0DD7;
         Mon,  7 Oct 2019 16:49:17 +0200 (CEST)
 Date:   Mon, 07 Oct 2019 14:49:17 -0000
-From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Ian Rogers" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] tools headers uapi: Sync drm/i915_drm.h with the
- kernel sources
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Chris Wilson <chris@chris-wilson.co.uk>,
-        Jiri Olsa <jolsa@kernel.org>,
+Subject: [tip: perf/urgent] perf docs: Allow man page date to be specified
+Cc:     Ian Rogers <irogers@google.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Andi Kleen <ak@linux.intel.com>, Jiri Olsa <jolsa@redhat.com>,
         Namhyung Kim <namhyung@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Stephane Eranian <eranian@google.com>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <tip-o651nt7vpz93tu3nmx4f3xql@git.kernel.org>
-References: <tip-o651nt7vpz93tu3nmx4f3xql@git.kernel.org>
+In-Reply-To: <20190921041327.155054-1-irogers@google.com>
+References: <20190921041327.155054-1-irogers@google.com>
 MIME-Version: 1.0
-Message-ID: <157045975755.9978.18064898645088207289.tip-bot2@tip-bot2>
+Message-ID: <157045975768.9978.17723597574080494209.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -52,44 +53,51 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     08a96a31474a732fd654575ced843b94bc3212e1
-Gitweb:        https://git.kernel.org/tip/08a96a31474a732fd654575ced843b94bc3212e1
-Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Fri, 27 Sep 2019 09:28:11 -03:00
+Commit-ID:     d586ac10ce56b2381b8e1d8ed74660c1b2b8ab0d
+Gitweb:        https://git.kernel.org/tip/d586ac10ce56b2381b8e1d8ed74660c1b2b8ab0d
+Author:        Ian Rogers <irogers@google.com>
+AuthorDate:    Fri, 20 Sep 2019 21:13:27 -07:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Fri, 27 Sep 2019 09:28:11 -03:00
+CommitterDate: Fri, 27 Sep 2019 09:26:14 -03:00
 
-tools headers uapi: Sync drm/i915_drm.h with the kernel sources
+perf docs: Allow man page date to be specified
 
-To pick the change in:
+With this change if a perf_date parameter is provided to asciidoc then
+it will override the default date written to the man page metadata.
 
-  bf73fc0fa9cf ("drm/i915: Show support for accurate sw PMU busyness tracking")
+Without this change, or if the perf_date isn't specified, then the
+current date is written to the metadata.
 
-That don't result in any changes in tooling, just silences this perf
-build warning:
+Having this parameter allows the metadata to be constant if builds
+happen on different dates.
 
-  Warning: Kernel ABI header at 'tools/include/uapi/drm/i915_drm.h' differs from latest version at 'include/uapi/drm/i915_drm.h'
-  diff -u tools/include/uapi/drm/i915_drm.h include/uapi/drm/i915_drm.h
+The name of the parameter is intended to be consistent with the existing
+perf_version parameter.
 
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: Jiri Olsa <jolsa@kernel.org>
+Signed-off-by: Ian Rogers <irogers@google.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Andi Kleen <ak@linux.intel.com>
+Cc: Jiri Olsa <jolsa@redhat.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lkml.kernel.org/n/tip-o651nt7vpz93tu3nmx4f3xql@git.kernel.org
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Stephane Eranian <eranian@google.com>
+Link: http://lore.kernel.org/lkml/20190921041327.155054-1-irogers@google.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/include/uapi/drm/i915_drm.h | 1 +
- 1 file changed, 1 insertion(+)
+ tools/perf/Documentation/asciidoc.conf | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tools/include/uapi/drm/i915_drm.h b/tools/include/uapi/drm/i915_drm.h
-index 328d05e..469dc51 100644
---- a/tools/include/uapi/drm/i915_drm.h
-+++ b/tools/include/uapi/drm/i915_drm.h
-@@ -521,6 +521,7 @@ typedef struct drm_i915_irq_wait {
- #define   I915_SCHEDULER_CAP_PRIORITY	(1ul << 1)
- #define   I915_SCHEDULER_CAP_PREEMPTION	(1ul << 2)
- #define   I915_SCHEDULER_CAP_SEMAPHORES	(1ul << 3)
-+#define   I915_SCHEDULER_CAP_ENGINE_BUSY_STATS	(1ul << 4)
- 
- #define I915_PARAM_HUC_STATUS		 42
- 
+diff --git a/tools/perf/Documentation/asciidoc.conf b/tools/perf/Documentation/asciidoc.conf
+index 356b23a..2b62ba1 100644
+--- a/tools/perf/Documentation/asciidoc.conf
++++ b/tools/perf/Documentation/asciidoc.conf
+@@ -71,6 +71,9 @@ ifdef::backend-docbook[]
+ [header]
+ template::[header-declarations]
+ <refentry>
++ifdef::perf_date[]
++<refentryinfo><date>{perf_date}</date></refentryinfo>
++endif::perf_date[]
+ <refmeta>
+ <refentrytitle>{mantitle}</refentrytitle>
+ <manvolnum>{manvolnum}</manvolnum>
