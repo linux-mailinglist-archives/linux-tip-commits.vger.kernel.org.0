@@ -2,46 +2,49 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 67223CE5AD
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  7 Oct 2019 16:49:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93E65CE5E7
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  7 Oct 2019 16:51:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728660AbfJGOtm (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 7 Oct 2019 10:49:42 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:44487 "EHLO
+        id S1729043AbfJGOvJ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 7 Oct 2019 10:51:09 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:44442 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728603AbfJGOtm (ORCPT
+        with ESMTP id S1728516AbfJGOth (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 7 Oct 2019 10:49:42 -0400
+        Mon, 7 Oct 2019 10:49:37 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iHUKN-0006AS-5S; Mon, 07 Oct 2019 16:49:35 +0200
+        id 1iHUJy-0005pZ-KG; Mon, 07 Oct 2019 16:49:10 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C6FD91C08B0;
-        Mon,  7 Oct 2019 16:49:31 +0200 (CEST)
-Date:   Mon, 07 Oct 2019 14:49:31 -0000
-From:   "tip-bot2 for Mike Travis" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id F07241C08B3;
+        Mon,  7 Oct 2019 16:49:09 +0200 (CEST)
+Date:   Mon, 07 Oct 2019 14:49:09 -0000
+From:   "tip-bot2 for Peter Jones" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/platform] x86/platform/uv: Add UV Hubbed/Hubless Proc FS Files
-Cc:     Mike Travis <mike.travis@hpe.com>, Steve Wahl <steve.wahl@hpe.com>,
-        Dimitri Sivanich <dimitri.sivanich@hpe.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Borislav Petkov <bp@alien8.de>,
-        Christoph Hellwig <hch@infradead.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Hedi Berriche <hedi.berriche@hpe.com>,
-        Justin Ernst <justin.ernst@hpe.com>,
+Subject: [tip: efi/urgent] efi/tpm: Don't access event->count when it isn't mapped
+Cc:     Lyude Paul <lyude@redhat.com>, Peter Jones <pjones@redhat.com>,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Matthew Garrett <mjg59@google.com>,
+        Ben Dooks <ben.dooks@codethink.co.uk>,
+        Dave Young <dyoung@redhat.com>,
+        Jerry Snitselaar <jsnitsel@redhat.com>,
         Linus Torvalds <torvalds@linux-foundation.org>,
+        Lukas Wunner <lukas@wunner.de>,
+        Octavian Purdila <octavian.purdila@intel.com>,
         Peter Zijlstra <peterz@infradead.org>,
-        Russ Anderson <russ.anderson@hpe.com>,
+        Scott Talbert <swt@techie.net>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org
-In-Reply-To: <20190910145840.055590900@stormcage.eag.rdlabs.hpecorp.net>
-References: <20190910145840.055590900@stormcage.eag.rdlabs.hpecorp.net>
+        linux-efi@vger.kernel.org, linux-integrity@vger.kernel.org,
+        stable@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
+        Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
+In-Reply-To: <20191002165904.8819-4-ard.biesheuvel@linaro.org>
+References: <20191002165904.8819-4-ard.biesheuvel@linaro.org>
 MIME-Version: 1.0
-Message-ID: <157045977175.9978.7357984896554313600.tip-bot2@tip-bot2>
+Message-ID: <157045974993.9978.18070605431254154051.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -55,207 +58,97 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/platform branch of tip:
+The following commit has been merged into the efi/urgent branch of tip:
 
-Commit-ID:     8785968bce1cc7368ea95c3e1e5b9210f56f6667
-Gitweb:        https://git.kernel.org/tip/8785968bce1cc7368ea95c3e1e5b9210f56f6667
-Author:        Mike Travis <mike.travis@hpe.com>
-AuthorDate:    Tue, 10 Sep 2019 09:58:44 -05:00
+Commit-ID:     047d50aee341d940350897c85799e56ae57c3849
+Gitweb:        https://git.kernel.org/tip/047d50aee341d940350897c85799e56ae57c3849
+Author:        Peter Jones <pjones@redhat.com>
+AuthorDate:    Wed, 02 Oct 2019 18:59:00 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Mon, 07 Oct 2019 13:42:10 +02:00
+CommitterDate: Mon, 07 Oct 2019 15:24:35 +02:00
 
-x86/platform/uv: Add UV Hubbed/Hubless Proc FS Files
+efi/tpm: Don't access event->count when it isn't mapped
 
-Indicate to UV user utilities that UV hubless support is available on
-this system via the existing /proc infterface.  The current interface is
-maintained with the addition of new /proc leaves ("hubbed", "hubless",
-and "oemid") that contain the specific type of UV arch this one is.
+Some machines generate a lot of event log entries.  When we're
+iterating over them, the code removes the old mapping and adds a
+new one, so once we cross the page boundary we're unmapping the page
+with the count on it.  Hilarity ensues.
 
-Signed-off-by: Mike Travis <mike.travis@hpe.com>
-Reviewed-by: Steve Wahl <steve.wahl@hpe.com>
-Reviewed-by: Dimitri Sivanich <dimitri.sivanich@hpe.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Christoph Hellwig <hch@infradead.org>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Hedi Berriche <hedi.berriche@hpe.com>
-Cc: Justin Ernst <justin.ernst@hpe.com>
+This patch keeps the info from the header in local variables so we don't
+need to access that page again or keep track of if it's mapped.
+
+Tested-by: Lyude Paul <lyude@redhat.com>
+Signed-off-by: Peter Jones <pjones@redhat.com>
+Signed-off-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Reviewed-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+Acked-by: Matthew Garrett <mjg59@google.com>
+Acked-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Cc: Ben Dooks <ben.dooks@codethink.co.uk>
+Cc: Dave Young <dyoung@redhat.com>
+Cc: Jerry Snitselaar <jsnitsel@redhat.com>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Lukas Wunner <lukas@wunner.de>
+Cc: Octavian Purdila <octavian.purdila@intel.com>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Russ Anderson <russ.anderson@hpe.com>
+Cc: Scott Talbert <swt@techie.net>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20190910145840.055590900@stormcage.eag.rdlabs.hpecorp.net
+Cc: linux-efi@vger.kernel.org
+Cc: linux-integrity@vger.kernel.org
+Cc: stable@vger.kernel.org
+Fixes: 44038bc514a2 ("tpm: Abstract crypto agile event size calculations")
+Link: https://lkml.kernel.org/r/20191002165904.8819-4-ard.biesheuvel@linaro.org
+[ Minor edits. ]
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- arch/x86/include/asm/uv/uv.h       |  4 +-
- arch/x86/kernel/apic/x2apic_uv_x.c | 93 ++++++++++++++++++++++++++++-
- 2 files changed, 96 insertions(+), 1 deletion(-)
+ include/linux/tpm_eventlog.h | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/include/asm/uv/uv.h b/arch/x86/include/asm/uv/uv.h
-index 792faab..45ea95c 100644
---- a/arch/x86/include/asm/uv/uv.h
-+++ b/arch/x86/include/asm/uv/uv.h
-@@ -12,6 +12,8 @@ struct mm_struct;
- #ifdef CONFIG_X86_UV
- #include <linux/efi.h>
+diff --git a/include/linux/tpm_eventlog.h b/include/linux/tpm_eventlog.h
+index 63238c8..b50cc3a 100644
+--- a/include/linux/tpm_eventlog.h
++++ b/include/linux/tpm_eventlog.h
+@@ -170,6 +170,7 @@ static inline int __calc_tpm2_event_size(struct tcg_pcr_event2_head *event,
+ 	u16 halg;
+ 	int i;
+ 	int j;
++	u32 count, event_type;
  
-+#define	UV_PROC_NODE	"sgi_uv"
-+
- static inline int uv(int uvtype)
- {
- 	/* uv(0) is "any" */
-@@ -28,6 +30,7 @@ static inline bool is_early_uv_system(void)
- 	return uv_systab_phys && uv_systab_phys != EFI_INVALID_TABLE_ADDR;
- }
- extern int is_uv_system(void);
-+extern int is_uv_hubbed(int uvtype);
- extern int is_uv_hubless(int uvtype);
- extern void uv_cpu_init(void);
- extern void uv_nmi_init(void);
-@@ -40,6 +43,7 @@ extern const struct cpumask *uv_flush_tlb_others(const struct cpumask *cpumask,
- static inline enum uv_system_type get_uv_system_type(void) { return UV_NONE; }
- static inline bool is_early_uv_system(void)	{ return 0; }
- static inline int is_uv_system(void)	{ return 0; }
-+static inline int is_uv_hubbed(int uv)	{ return 0; }
- static inline int is_uv_hubless(int uv) { return 0; }
- static inline void uv_cpu_init(void)	{ }
- static inline void uv_system_init(void)	{ }
-diff --git a/arch/x86/kernel/apic/x2apic_uv_x.c b/arch/x86/kernel/apic/x2apic_uv_x.c
-index 14554a3..b505905 100644
---- a/arch/x86/kernel/apic/x2apic_uv_x.c
-+++ b/arch/x86/kernel/apic/x2apic_uv_x.c
-@@ -26,6 +26,7 @@
- static DEFINE_PER_CPU(int, x2apic_extra_bits);
- 
- static enum uv_system_type	uv_system_type;
-+static int			uv_hubbed_system;
- static int			uv_hubless_system;
- static u64			gru_start_paddr, gru_end_paddr;
- static u64			gru_dist_base, gru_first_node_paddr = -1LL, gru_last_node_paddr;
-@@ -309,6 +310,24 @@ static int __init uv_acpi_madt_oem_check(char *_oem_id, char *_oem_table_id)
- 	if (uv_hub_info->hub_revision == 0)
- 		goto badbios;
- 
-+	switch (uv_hub_info->hub_revision) {
-+	case UV4_HUB_REVISION_BASE:
-+		uv_hubbed_system = 0x11;
-+		break;
-+
-+	case UV3_HUB_REVISION_BASE:
-+		uv_hubbed_system = 0x9;
-+		break;
-+
-+	case UV2_HUB_REVISION_BASE:
-+		uv_hubbed_system = 0x5;
-+		break;
-+
-+	case UV1_HUB_REVISION_BASE:
-+		uv_hubbed_system = 0x3;
-+		break;
-+	}
-+
- 	pnodeid = early_get_pnodeid();
- 	early_get_apic_socketid_shift();
- 
-@@ -359,6 +378,12 @@ int is_uv_system(void)
- }
- EXPORT_SYMBOL_GPL(is_uv_system);
- 
-+int is_uv_hubbed(int uvtype)
-+{
-+	return (uv_hubbed_system & uvtype);
-+}
-+EXPORT_SYMBOL_GPL(is_uv_hubbed);
-+
- int is_uv_hubless(int uvtype)
- {
- 	return (uv_hubless_system & uvtype);
-@@ -1457,6 +1482,68 @@ static void __init build_socket_tables(void)
+ 	marker = event;
+ 	marker_start = marker;
+@@ -190,16 +191,22 @@ static inline int __calc_tpm2_event_size(struct tcg_pcr_event2_head *event,
  	}
- }
  
-+/* Setup user proc fs files */
-+static int proc_hubbed_show(struct seq_file *file, void *data)
-+{
-+	seq_printf(file, "0x%x\n", uv_hubbed_system);
-+	return 0;
-+}
-+
-+static int proc_hubless_show(struct seq_file *file, void *data)
-+{
-+	seq_printf(file, "0x%x\n", uv_hubless_system);
-+	return 0;
-+}
-+
-+static int proc_oemid_show(struct seq_file *file, void *data)
-+{
-+	seq_printf(file, "%s/%s\n", oem_id, oem_table_id);
-+	return 0;
-+}
-+
-+static int proc_hubbed_open(struct inode *inode, struct file *file)
-+{
-+	return single_open(file, proc_hubbed_show, (void *)NULL);
-+}
-+
-+static int proc_hubless_open(struct inode *inode, struct file *file)
-+{
-+	return single_open(file, proc_hubless_show, (void *)NULL);
-+}
-+
-+static int proc_oemid_open(struct inode *inode, struct file *file)
-+{
-+	return single_open(file, proc_oemid_show, (void *)NULL);
-+}
-+
-+/* (struct is "non-const" as open function is set at runtime) */
-+static struct file_operations proc_version_fops = {
-+	.read		= seq_read,
-+	.llseek		= seq_lseek,
-+	.release	= single_release,
-+};
-+
-+static const struct file_operations proc_oemid_fops = {
-+	.open		= proc_oemid_open,
-+	.read		= seq_read,
-+	.llseek		= seq_lseek,
-+	.release	= single_release,
-+};
-+
-+static __init void uv_setup_proc_files(int hubless)
-+{
-+	struct proc_dir_entry *pde;
-+	char *name = hubless ? "hubless" : "hubbed";
-+
-+	pde = proc_mkdir(UV_PROC_NODE, NULL);
-+	proc_create("oemid", 0, pde, &proc_oemid_fops);
-+	proc_create(name, 0, pde, &proc_version_fops);
-+	if (hubless)
-+		proc_version_fops.open = proc_hubless_open;
-+	else
-+		proc_version_fops.open = proc_hubbed_open;
-+}
-+
- /* Initialize UV hubless systems */
- static __init int uv_system_init_hubless(void)
- {
-@@ -1468,6 +1555,10 @@ static __init int uv_system_init_hubless(void)
- 	/* Init kernel/BIOS interface */
- 	rc = uv_bios_init();
+ 	event = (struct tcg_pcr_event2_head *)mapping;
++	/*
++	 * The loop below will unmap these fields if the log is larger than
++	 * one page, so save them here for reference:
++	 */
++	count = READ_ONCE(event->count);
++	event_type = READ_ONCE(event->event_type);
  
-+	/* Create user access node if UVsystab available */
-+	if (rc >= 0)
-+		uv_setup_proc_files(1);
+ 	efispecid = (struct tcg_efi_specid_event_head *)event_header->event;
+ 
+ 	/* Check if event is malformed. */
+-	if (event->count > efispecid->num_algs) {
++	if (count > efispecid->num_algs) {
+ 		size = 0;
+ 		goto out;
+ 	}
+ 
+-	for (i = 0; i < event->count; i++) {
++	for (i = 0; i < count; i++) {
+ 		halg_size = sizeof(event->digests[i].alg_id);
+ 
+ 		/* Map the digest's algorithm identifier */
+@@ -256,8 +263,9 @@ static inline int __calc_tpm2_event_size(struct tcg_pcr_event2_head *event,
+ 		+ event_field->event_size;
+ 	size = marker - marker_start;
+ 
+-	if ((event->event_type == 0) && (event_field->event_size == 0))
++	if (event_type == 0 && event_field->event_size == 0)
+ 		size = 0;
 +
- 	return rc;
- }
- 
-@@ -1596,7 +1687,7 @@ static void __init uv_system_init_hub(void)
- 	uv_nmi_setup();
- 	uv_cpu_init();
- 	uv_scir_register_cpu_notifier();
--	proc_mkdir("sgi_uv", NULL);
-+	uv_setup_proc_files(0);
- 
- 	/* Register Legacy VGA I/O redirection handler: */
- 	pci_register_set_vga_state(uv_set_vga_state);
+ out:
+ 	if (do_mapping)
+ 		TPM_MEMUNMAP(mapping, mapping_size);
