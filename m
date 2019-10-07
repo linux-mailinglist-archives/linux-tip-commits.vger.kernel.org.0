@@ -2,48 +2,50 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F5F4CE5CF
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  7 Oct 2019 16:51:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C088CE5FF
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  7 Oct 2019 16:52:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728633AbfJGOtl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 7 Oct 2019 10:49:41 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:44472 "EHLO
+        id S1728081AbfJGOvg convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 7 Oct 2019 10:51:36 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:44383 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728588AbfJGOtk (ORCPT
+        with ESMTP id S1728212AbfJGOtd (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 7 Oct 2019 10:49:40 -0400
+        Mon, 7 Oct 2019 10:49:33 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iHUKF-00065n-5e; Mon, 07 Oct 2019 16:49:27 +0200
+        id 1iHUKD-00063y-Bx; Mon, 07 Oct 2019 16:49:25 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E70521C08B0;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4A24A1C0DD2;
         Mon,  7 Oct 2019 16:49:17 +0200 (CEST)
 Date:   Mon, 07 Oct 2019 14:49:17 -0000
-From:   "tip-bot2 for Ian Rogers" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf tests: Avoid raising SEGV using an obvious
- NULL dereference
-Cc:     Ian Rogers <irogers@google.com>,
+Subject: [tip: perf/urgent] tools headers uapi: Sync linux/usbdevice_fs.h with
+ the kernel sources
+Cc:     Alan Stern <stern@rowland.harvard.edu>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Brendan Gregg <brendan.d.gregg@gmail.com>,
+        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+        Jiri Olsa <jolsa@kernel.org>,
+        Luis =?utf-8?q?Cl=C3=A1udio_Gon=C3=A7alves?= 
+        <lclaudio@redhat.com>, Namhyung Kim <namhyung@kernel.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Andi Kleen <ak@linux.intel.com>, Jiri Olsa <jolsa@redhat.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Stephane Eranian <eranian@google.com>,
-        Wang Nan <wangnan0@huawei.com>, Ingo Molnar <mingo@kernel.org>,
-        Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
-In-Reply-To: <20190925195924.152834-2-irogers@google.com>
-References: <20190925195924.152834-2-irogers@google.com>
+        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <tip-x1rb109b9nfi7pukota82xhj@git.kernel.org>
+References: <tip-x1rb109b9nfi7pukota82xhj@git.kernel.org>
 MIME-Version: 1.0
-Message-ID: <157045975781.9978.17507056715784418883.tip-bot2@tip-bot2>
+Message-ID: <157045975718.9978.14795938261468093833.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8BIT
 X-Linutronix-Spam-Score: -1.0
 X-Linutronix-Spam-Level: -
 X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
@@ -54,89 +56,105 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     e3e2cf3d5b1fe800b032e14c0fdcd9a6fb20cf3b
-Gitweb:        https://git.kernel.org/tip/e3e2cf3d5b1fe800b032e14c0fdcd9a6fb20cf3b
-Author:        Ian Rogers <irogers@google.com>
-AuthorDate:    Wed, 25 Sep 2019 12:59:24 -07:00
+Commit-ID:     05f371f8c55d69e4c04db4473085303291e4e734
+Gitweb:        https://git.kernel.org/tip/05f371f8c55d69e4c04db4473085303291e4e734
+Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
+AuthorDate:    Fri, 27 Sep 2019 11:42:26 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Fri, 27 Sep 2019 09:26:14 -03:00
+CommitterDate: Mon, 30 Sep 2019 17:29:02 -03:00
 
-perf tests: Avoid raising SEGV using an obvious NULL dereference
+tools headers uapi: Sync linux/usbdevice_fs.h with the kernel sources
 
-An optimized build such as:
+To pick up the changes from:
 
-  make -C tools/perf CLANG=1 CC=clang EXTRA_CFLAGS="-O3
+  4ed3350539aa ("USB: usbfs: Add a capability flag for runtime suspend")
+  7794f486ed0b ("usbfs: Add ioctls for runtime power management")
 
-will turn the dereference operation into a ud2 instruction, raising a
-SIGILL rather than a SIGSEGV. Use raise(..) for correctness and clarity.
+This triggers these changes in the kernel sources, automagically
+supporting these new ioctls in the 'perf trace' beautifiers.
 
-Similar issues were addressed in Numfor Mbiziwo-Tiapo's patch:
+Soon this will be used in things like filter expressions for tracepoints
+in 'perf record', 'perf trace', 'perf top', i.e. filter expressions will
+do a lookup to turn things like USBDEVFS_WAIT_FOR_RESUME into _IO('U',
+35) before associating the tracepoint expression to tracepoint perf
+event.
 
-  https://lkml.org/lkml/2019/7/8/1234
+  $ tools/perf/trace/beauty/usbdevfs_ioctl.sh  > before
+  $ cp include/uapi/linux/usbdevice_fs.h tools/include/uapi/linux/usbdevice_fs.h
+  $ git diff
+  diff --git a/tools/include/uapi/linux/usbdevice_fs.h b/tools/include/uapi/linux/usbdevice_fs.h
+  index 78efe870c2b7..cf525cddeb94 100644
+  --- a/tools/include/uapi/linux/usbdevice_fs.h
+  +++ b/tools/include/uapi/linux/usbdevice_fs.h
+  @@ -158,6 +158,7 @@ struct usbdevfs_hub_portinfo {
+   #define USBDEVFS_CAP_MMAP                      0x20
+   #define USBDEVFS_CAP_DROP_PRIVILEGES           0x40
+   #define USBDEVFS_CAP_CONNINFO_EX               0x80
+  +#define USBDEVFS_CAP_SUSPEND                   0x100
 
-Committer testing:
+   /* USBDEVFS_DISCONNECT_CLAIM flags & struct */
 
-Before:
+  @@ -223,5 +224,8 @@ struct usbdevfs_streams {
+    * extending size of the data returned.
+    */
+   #define USBDEVFS_CONNINFO_EX(len)  _IOC(_IOC_READ, 'U', 32, len)
+  +#define USBDEVFS_FORBID_SUSPEND    _IO('U', 33)
+  +#define USBDEVFS_ALLOW_SUSPEND     _IO('U', 34)
+  +#define USBDEVFS_WAIT_FOR_RESUME   _IO('U', 35)
 
-  [root@quaco ~]# perf test hooks
-  55: perf hooks                                            : Ok
-  [root@quaco ~]# perf test -v hooks
-  55: perf hooks                                            :
-  --- start ---
-  test child forked, pid 17092
-  SIGSEGV is observed as expected, try to recover.
-  Fatal error (SEGFAULT) in perf hook 'test'
-  test child finished with 0
-  ---- end ----
-  perf hooks: Ok
-  [root@quaco ~]#
+   #endif /* _UAPI_LINUX_USBDEVICE_FS_H */
+  $ tools/perf/trace/beauty/usbdevfs_ioctl.sh  > after
+  $ diff -u before after
+  --- before	2019-09-27 11:41:50.634867620 -0300
+  +++ after	2019-09-27 11:42:07.453102978 -0300
+  @@ -24,6 +24,9 @@
+   	[30] = "DROP_PRIVILEGES",
+   	[31] = "GET_SPEED",
+   	[32] = "CONNINFO_EX",
+  +	[33] = "FORBID_SUSPEND",
+  +	[34] = "ALLOW_SUSPEND",
+  +	[35] = "WAIT_FOR_RESUME",
+   	[3] = "RESETEP",
+   	[4] = "SETINTERFACE",
+   	[5] = "SETCONFIGURATION",
+  $
 
-After:
+This addresses the following perf build warning:
 
-  [root@quaco ~]# perf test hooks
-  55: perf hooks                                            : Ok
-  [root@quaco ~]# perf test -v hooks
-  55: perf hooks                                            :
-  --- start ---
-  test child forked, pid 17909
-  SIGSEGV is observed as expected, try to recover.
-  Fatal error (SEGFAULT) in perf hook 'test'
-  test child finished with 0
-  ---- end ----
-  perf hooks: Ok
-  [root@quaco ~]#
+  Warning: Kernel ABI header at 'tools/include/uapi/linux/usbdevice_fs.h' differs from latest version at 'include/uapi/linux/usbdevice_fs.h'
+  diff -u tools/include/uapi/linux/usbdevice_fs.h include/uapi/linux/usbdevice_fs.h
 
-Fixes: a074865e60ed ("perf tools: Introduce perf hooks")
-Signed-off-by: Ian Rogers <irogers@google.com>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Jiri Olsa <jolsa@redhat.com>
+Cc: Alan Stern <stern@rowland.harvard.edu>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Brendan Gregg <brendan.d.gregg@gmail.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Luis Cláudio Gonçalves <lclaudio@redhat.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Stephane Eranian <eranian@google.com>
-Cc: Wang Nan <wangnan0@huawei.com>
-Link: http://lore.kernel.org/lkml/20190925195924.152834-2-irogers@google.com
+Link: https://lkml.kernel.org/n/tip-x1rb109b9nfi7pukota82xhj@git.kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/tests/perf-hooks.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ tools/include/uapi/linux/usbdevice_fs.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/tools/perf/tests/perf-hooks.c b/tools/perf/tests/perf-hooks.c
-index dbc2719..dd865e0 100644
---- a/tools/perf/tests/perf-hooks.c
-+++ b/tools/perf/tests/perf-hooks.c
-@@ -19,12 +19,11 @@ static void sigsegv_handler(int sig __maybe_unused)
- static void the_hook(void *_hook_flags)
- {
- 	int *hook_flags = _hook_flags;
--	int *p = NULL;
+diff --git a/tools/include/uapi/linux/usbdevice_fs.h b/tools/include/uapi/linux/usbdevice_fs.h
+index 78efe87..cf525cd 100644
+--- a/tools/include/uapi/linux/usbdevice_fs.h
++++ b/tools/include/uapi/linux/usbdevice_fs.h
+@@ -158,6 +158,7 @@ struct usbdevfs_hub_portinfo {
+ #define USBDEVFS_CAP_MMAP			0x20
+ #define USBDEVFS_CAP_DROP_PRIVILEGES		0x40
+ #define USBDEVFS_CAP_CONNINFO_EX		0x80
++#define USBDEVFS_CAP_SUSPEND			0x100
  
- 	*hook_flags = 1234;
+ /* USBDEVFS_DISCONNECT_CLAIM flags & struct */
  
- 	/* Generate a segfault, test perf_hooks__recover */
--	*p = 0;
-+	raise(SIGSEGV);
- }
+@@ -223,5 +224,8 @@ struct usbdevfs_streams {
+  * extending size of the data returned.
+  */
+ #define USBDEVFS_CONNINFO_EX(len)  _IOC(_IOC_READ, 'U', 32, len)
++#define USBDEVFS_FORBID_SUSPEND    _IO('U', 33)
++#define USBDEVFS_ALLOW_SUSPEND     _IO('U', 34)
++#define USBDEVFS_WAIT_FOR_RESUME   _IO('U', 35)
  
- int test__perf_hooks(struct test *test __maybe_unused, int subtest __maybe_unused)
+ #endif /* _UAPI_LINUX_USBDEVICE_FS_H */
