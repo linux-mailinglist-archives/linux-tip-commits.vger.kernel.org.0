@@ -2,29 +2,29 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D2AACE5DF
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  7 Oct 2019 16:51:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 35668CE5B6
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  7 Oct 2019 16:50:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728594AbfJGOu7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 7 Oct 2019 10:50:59 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:44477 "EHLO
+        id S1728791AbfJGOtu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 7 Oct 2019 10:49:50 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:44539 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728066AbfJGOtl (ORCPT
+        with ESMTP id S1728764AbfJGOtu (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 7 Oct 2019 10:49:41 -0400
+        Mon, 7 Oct 2019 10:49:50 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iHUKM-0006Cc-ON; Mon, 07 Oct 2019 16:49:34 +0200
+        id 1iHUKO-0006E3-DR; Mon, 07 Oct 2019 16:49:36 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 3A25E1C032F;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 55D351C079B;
         Mon,  7 Oct 2019 16:49:32 +0200 (CEST)
 Date:   Mon, 07 Oct 2019 14:49:32 -0000
 From:   "tip-bot2 for Mike Travis" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/platform] x86/platform/uv: Return UV Hubless System Type
+Subject: [tip: x86/platform] x86/platform/uv: Save OEM_ID from ACPI MADT probe
 Cc:     Mike Travis <mike.travis@hpe.com>, Steve Wahl <steve.wahl@hpe.com>,
         Dimitri Sivanich <dimitri.sivanich@hpe.com>,
         Andrew Morton <akpm@linux-foundation.org>,
@@ -38,10 +38,10 @@ Cc:     Mike Travis <mike.travis@hpe.com>, Steve Wahl <steve.wahl@hpe.com>,
         Russ Anderson <russ.anderson@hpe.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org
-In-Reply-To: <20190910145839.814880843@stormcage.eag.rdlabs.hpecorp.net>
-References: <20190910145839.814880843@stormcage.eag.rdlabs.hpecorp.net>
+In-Reply-To: <20190910145839.732237241@stormcage.eag.rdlabs.hpecorp.net>
+References: <20190910145839.732237241@stormcage.eag.rdlabs.hpecorp.net>
 MIME-Version: 1.0
-Message-ID: <157045977216.9978.15019848455992775260.tip-bot2@tip-bot2>
+Message-ID: <157045977229.9978.6327888558896438069.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -57,18 +57,18 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/platform branch of tip:
 
-Commit-ID:     0959f8256ada0431c1470d89e5a2811ff2305c88
-Gitweb:        https://git.kernel.org/tip/0959f8256ada0431c1470d89e5a2811ff2305c88
+Commit-ID:     61e5ddca9c2a312f933bf5b12bc08484189fefe6
+Gitweb:        https://git.kernel.org/tip/61e5ddca9c2a312f933bf5b12bc08484189fefe6
 Author:        Mike Travis <mike.travis@hpe.com>
-AuthorDate:    Tue, 10 Sep 2019 09:58:41 -05:00
+AuthorDate:    Tue, 10 Sep 2019 09:58:40 -05:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Mon, 07 Oct 2019 13:42:10 +02:00
+CommitterDate: Mon, 07 Oct 2019 13:42:09 +02:00
 
-x86/platform/uv: Return UV Hubless System Type
+x86/platform/uv: Save OEM_ID from ACPI MADT probe
 
-Return the type of UV hubless system for UV specific code that depends
-on that.  Add a function to convert UV system type to bit pattern needed
-for is_uv_hubless().
+Save the OEM_ID and OEM_TABLE_ID passed to the apic driver probe function
+for later use.  Also, convert the char list arg passed from the kernel
+to a true null-terminated string.
 
 Signed-off-by: Mike Travis <mike.travis@hpe.com>
 Reviewed-by: Steve Wahl <steve.wahl@hpe.com>
@@ -83,107 +83,54 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Russ Anderson <russ.anderson@hpe.com>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20190910145839.814880843@stormcage.eag.rdlabs.hpecorp.net
+Link: https://lkml.kernel.org/r/20190910145839.732237241@stormcage.eag.rdlabs.hpecorp.net
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- arch/x86/include/asm/uv/uv.h       | 12 ++++++++++--
- arch/x86/kernel/apic/x2apic_uv_x.c | 27 ++++++++++++++++++---------
- 2 files changed, 28 insertions(+), 11 deletions(-)
+ arch/x86/kernel/apic/x2apic_uv_x.c | 16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/uv/uv.h b/arch/x86/include/asm/uv/uv.h
-index 6bc6d89..792faab 100644
---- a/arch/x86/include/asm/uv/uv.h
-+++ b/arch/x86/include/asm/uv/uv.h
-@@ -12,6 +12,14 @@ struct mm_struct;
- #ifdef CONFIG_X86_UV
- #include <linux/efi.h>
- 
-+static inline int uv(int uvtype)
-+{
-+	/* uv(0) is "any" */
-+	if (uvtype >= 0 && uvtype <= 30)
-+		return 1 << uvtype;
-+	return 1;
-+}
-+
- extern unsigned long uv_systab_phys;
- 
- extern enum uv_system_type get_uv_system_type(void);
-@@ -20,7 +28,7 @@ static inline bool is_early_uv_system(void)
- 	return uv_systab_phys && uv_systab_phys != EFI_INVALID_TABLE_ADDR;
- }
- extern int is_uv_system(void);
--extern int is_uv_hubless(void);
-+extern int is_uv_hubless(int uvtype);
- extern void uv_cpu_init(void);
- extern void uv_nmi_init(void);
- extern void uv_system_init(void);
-@@ -32,7 +40,7 @@ extern const struct cpumask *uv_flush_tlb_others(const struct cpumask *cpumask,
- static inline enum uv_system_type get_uv_system_type(void) { return UV_NONE; }
- static inline bool is_early_uv_system(void)	{ return 0; }
- static inline int is_uv_system(void)	{ return 0; }
--static inline int is_uv_hubless(void)	{ return 0; }
-+static inline int is_uv_hubless(int uv) { return 0; }
- static inline void uv_cpu_init(void)	{ }
- static inline void uv_system_init(void)	{ }
- static inline const struct cpumask *
 diff --git a/arch/x86/kernel/apic/x2apic_uv_x.c b/arch/x86/kernel/apic/x2apic_uv_x.c
-index 66b38a6..43fad61 100644
+index e6230af..66b38a6 100644
 --- a/arch/x86/kernel/apic/x2apic_uv_x.c
 +++ b/arch/x86/kernel/apic/x2apic_uv_x.c
-@@ -26,7 +26,7 @@
- static DEFINE_PER_CPU(int, x2apic_extra_bits);
+@@ -14,6 +14,7 @@
+ #include <linux/memory.h>
+ #include <linux/export.h>
+ #include <linux/pci.h>
++#include <linux/acpi.h>
  
- static enum uv_system_type	uv_system_type;
--static bool			uv_hubless_system;
-+static int			uv_hubless_system;
- static u64			gru_start_paddr, gru_end_paddr;
- static u64			gru_dist_base, gru_first_node_paddr = -1LL, gru_last_node_paddr;
+ #include <asm/e820/api.h>
+ #include <asm/uv/uv_mmrs.h>
+@@ -31,6 +32,10 @@ static u64			gru_dist_base, gru_first_node_paddr = -1LL, gru_last_node_paddr;
  static u64			gru_dist_lmask, gru_dist_umask;
-@@ -268,11 +268,20 @@ static int __init uv_acpi_madt_oem_check(char *_oem_id, char *_oem_table_id)
- 	uv_stringify(sizeof(oem_table_id), oem_table_id, _oem_table_id);
+ static union uvh_apicid		uvh_apicid;
  
- 	if (strncmp(oem_id, "SGI", 3) != 0) {
--		if (strncmp(oem_id, "NSGI", 4) == 0) {
--			uv_hubless_system = true;
--			pr_info("UV: OEM IDs %s/%s, HUBLESS\n",
--				oem_id, oem_table_id);
--		}
-+		if (strncmp(oem_id, "NSGI", 4) != 0)
-+			return 0;
++/* Unpack OEM/TABLE ID's to be NULL terminated strings */
++static u8 oem_id[ACPI_OEM_ID_SIZE + 1];
++static u8 oem_table_id[ACPI_OEM_TABLE_ID_SIZE + 1];
 +
-+		/* UV4 Hubless, CH, (0x11:UV4+Any) */
-+		if (strncmp(oem_id, "NSGI4", 5) == 0)
-+			uv_hubless_system = 0x11;
-+
-+		/* UV3 Hubless, UV300/MC990X w/o hub (0x9:UV3+Any) */
-+		else
-+			uv_hubless_system = 0x9;
-+
-+		pr_info("UV: OEM IDs %s/%s, HUBLESS(0x%x)\n",
-+			oem_id, oem_table_id, uv_hubless_system);
-+
- 		return 0;
+ /* Information derived from CPUID: */
+ static struct {
+ 	unsigned int apicid_shift;
+@@ -248,11 +253,20 @@ static void __init uv_set_apicid_hibit(void)
  	}
- 
-@@ -350,9 +359,9 @@ int is_uv_system(void)
  }
- EXPORT_SYMBOL_GPL(is_uv_system);
  
--int is_uv_hubless(void)
-+int is_uv_hubless(int uvtype)
+-static int __init uv_acpi_madt_oem_check(char *oem_id, char *oem_table_id)
++static void __init uv_stringify(int len, char *to, char *from)
++{
++	/* Relies on 'to' being NULL chars so result will be NULL terminated */
++	strncpy(to, from, len-1);
++}
++
++static int __init uv_acpi_madt_oem_check(char *_oem_id, char *_oem_table_id)
  {
--	return uv_hubless_system;
-+	return (uv_hubless_system & uvtype);
- }
- EXPORT_SYMBOL_GPL(is_uv_hubless);
+ 	int pnodeid;
+ 	int uv_apic;
  
-@@ -1592,7 +1601,7 @@ static void __init uv_system_init_hub(void)
-  */
- void __init uv_system_init(void)
- {
--	if (likely(!is_uv_system() && !is_uv_hubless()))
-+	if (likely(!is_uv_system() && !is_uv_hubless(1)))
- 		return;
- 
- 	if (is_uv_system())
++	uv_stringify(sizeof(oem_id), oem_id, _oem_id);
++	uv_stringify(sizeof(oem_table_id), oem_table_id, _oem_table_id);
++
+ 	if (strncmp(oem_id, "SGI", 3) != 0) {
+ 		if (strncmp(oem_id, "NSGI", 4) == 0) {
+ 			uv_hubless_system = true;
