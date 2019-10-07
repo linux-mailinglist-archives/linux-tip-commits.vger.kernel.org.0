@@ -2,30 +2,29 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 73B9ACE5C8
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  7 Oct 2019 16:50:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EA0CCE5D8
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  7 Oct 2019 16:51:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728588AbfJGOue (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 7 Oct 2019 10:50:34 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:44515 "EHLO
+        id S1728175AbfJGOun (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 7 Oct 2019 10:50:43 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:44496 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728680AbfJGOtp (ORCPT
+        with ESMTP id S1728619AbfJGOtn (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 7 Oct 2019 10:49:45 -0400
+        Mon, 7 Oct 2019 10:49:43 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iHUKP-0006Aa-KH; Mon, 07 Oct 2019 16:49:37 +0200
+        id 1iHUKJ-0006AI-PV; Mon, 07 Oct 2019 16:49:31 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E67071C08B3;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 70AA21C032F;
         Mon,  7 Oct 2019 16:49:31 +0200 (CEST)
 Date:   Mon, 07 Oct 2019 14:49:31 -0000
 From:   "tip-bot2 for Mike Travis" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/platform] x86/platform/uv: Setup UV functions for Hubless
- UV Systems
+Subject: [tip: x86/platform] x86/platform/uv: Account for UV Hubless in is_uvX_hub Ops
 Cc:     Mike Travis <mike.travis@hpe.com>, Steve Wahl <steve.wahl@hpe.com>,
         Dimitri Sivanich <dimitri.sivanich@hpe.com>,
         Andrew Morton <akpm@linux-foundation.org>,
@@ -39,10 +38,10 @@ Cc:     Mike Travis <mike.travis@hpe.com>, Steve Wahl <steve.wahl@hpe.com>,
         Russ Anderson <russ.anderson@hpe.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org
-In-Reply-To: <20190910145839.975787119@stormcage.eag.rdlabs.hpecorp.net>
-References: <20190910145839.975787119@stormcage.eag.rdlabs.hpecorp.net>
+In-Reply-To: <20190910145840.294981941@stormcage.eag.rdlabs.hpecorp.net>
+References: <20190910145840.294981941@stormcage.eag.rdlabs.hpecorp.net>
 MIME-Version: 1.0
-Message-ID: <157045977188.9978.2863356948920530670.tip-bot2@tip-bot2>
+Message-ID: <157045977140.9978.3708665984961827038.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -58,22 +57,18 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/platform branch of tip:
 
-Commit-ID:     2bcf26528787d92333ed0dfd6abc9835b8e97eab
-Gitweb:        https://git.kernel.org/tip/2bcf26528787d92333ed0dfd6abc9835b8e97eab
+Commit-ID:     4fb7d08707565d27ec84a364d011043ade8c38b4
+Gitweb:        https://git.kernel.org/tip/4fb7d08707565d27ec84a364d011043ade8c38b4
 Author:        Mike Travis <mike.travis@hpe.com>
-AuthorDate:    Tue, 10 Sep 2019 09:58:43 -05:00
+AuthorDate:    Tue, 10 Sep 2019 09:58:47 -05:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Mon, 07 Oct 2019 13:42:10 +02:00
+CommitterDate: Mon, 07 Oct 2019 13:42:11 +02:00
 
-x86/platform/uv: Setup UV functions for Hubless UV Systems
+x86/platform/uv: Account for UV Hubless in is_uvX_hub Ops
 
-Add more support for UV systems that do not contain a UV Hub (AKA
-"hubless").  This update adds support for additional functions required:
-
-    Use PCH NMI handler instead of a UV Hub NMI handler.
-
-    Initialize the UV BIOS callback interface used to support specific
-    UV functions.
+The references in the is_uvX_hub() function uses the hub_info pointer
+which will be NULL when the system is hubless.  This change avoids
+that NULL dereference.  It is also an optimization in performance.
 
 Signed-off-by: Mike Travis <mike.travis@hpe.com>
 Reviewed-by: Steve Wahl <steve.wahl@hpe.com>
@@ -88,54 +83,124 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Russ Anderson <russ.anderson@hpe.com>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20190910145839.975787119@stormcage.eag.rdlabs.hpecorp.net
+Link: https://lkml.kernel.org/r/20190910145840.294981941@stormcage.eag.rdlabs.hpecorp.net
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- arch/x86/kernel/apic/x2apic_uv_x.c | 20 +++++++++++++++++---
- 1 file changed, 17 insertions(+), 3 deletions(-)
+ arch/x86/include/asm/uv/uv_hub.h | 61 ++++++++++---------------------
+ 1 file changed, 20 insertions(+), 41 deletions(-)
 
-diff --git a/arch/x86/kernel/apic/x2apic_uv_x.c b/arch/x86/kernel/apic/x2apic_uv_x.c
-index 43fad61..14554a3 100644
---- a/arch/x86/kernel/apic/x2apic_uv_x.c
-+++ b/arch/x86/kernel/apic/x2apic_uv_x.c
-@@ -1457,6 +1457,20 @@ static void __init build_socket_tables(void)
- 	}
- }
+diff --git a/arch/x86/include/asm/uv/uv_hub.h b/arch/x86/include/asm/uv/uv_hub.h
+index 44cf6d6..950cd13 100644
+--- a/arch/x86/include/asm/uv/uv_hub.h
++++ b/arch/x86/include/asm/uv/uv_hub.h
+@@ -19,6 +19,7 @@
+ #include <linux/topology.h>
+ #include <asm/types.h>
+ #include <asm/percpu.h>
++#include <asm/uv/uv.h>
+ #include <asm/uv/uv_mmrs.h>
+ #include <asm/uv/bios.h>
+ #include <asm/irq_vectors.h>
+@@ -243,83 +244,61 @@ static inline int uv_hub_info_check(int version)
+ #define UV4_HUB_REVISION_BASE		7
+ #define UV4A_HUB_REVISION_BASE		8	/* UV4 (fixed) rev 2 */
  
-+/* Initialize UV hubless systems */
-+static __init int uv_system_init_hubless(void)
-+{
-+	int rc;
-+
-+	/* Setup PCH NMI handler */
-+	uv_nmi_setup_hubless();
-+
-+	/* Init kernel/BIOS interface */
-+	rc = uv_bios_init();
-+
-+	return rc;
+-#ifdef	UV1_HUB_IS_SUPPORTED
++/* WARNING: UVx_HUB_IS_SUPPORTED defines are deprecated and will be removed */
+ static inline int is_uv1_hub(void)
+ {
+-	return uv_hub_info->hub_revision < UV2_HUB_REVISION_BASE;
+-}
++#ifdef	UV1_HUB_IS_SUPPORTED
++	return is_uv_hubbed(uv(1));
+ #else
+-static inline int is_uv1_hub(void)
+-{
+ 	return 0;
+-}
+ #endif
 +}
-+
- static void __init uv_system_init_hub(void)
+ 
+-#ifdef	UV2_HUB_IS_SUPPORTED
+ static inline int is_uv2_hub(void)
  {
- 	struct uv_hub_info_s hub_info = {0};
-@@ -1596,8 +1610,8 @@ static void __init uv_system_init_hub(void)
+-	return ((uv_hub_info->hub_revision >= UV2_HUB_REVISION_BASE) &&
+-		(uv_hub_info->hub_revision < UV3_HUB_REVISION_BASE));
+-}
++#ifdef	UV2_HUB_IS_SUPPORTED
++	return is_uv_hubbed(uv(2));
+ #else
+-static inline int is_uv2_hub(void)
+-{
+ 	return 0;
+-}
+ #endif
++}
+ 
+-#ifdef	UV3_HUB_IS_SUPPORTED
+ static inline int is_uv3_hub(void)
+ {
+-	return ((uv_hub_info->hub_revision >= UV3_HUB_REVISION_BASE) &&
+-		(uv_hub_info->hub_revision < UV4_HUB_REVISION_BASE));
+-}
++#ifdef	UV3_HUB_IS_SUPPORTED
++	return is_uv_hubbed(uv(3));
+ #else
+-static inline int is_uv3_hub(void)
+-{
+ 	return 0;
+-}
+ #endif
++}
+ 
+ /* First test "is UV4A", then "is UV4" */
+-#ifdef	UV4A_HUB_IS_SUPPORTED
+-static inline int is_uv4a_hub(void)
+-{
+-	return (uv_hub_info->hub_revision >= UV4A_HUB_REVISION_BASE);
+-}
+-#else
+ static inline int is_uv4a_hub(void)
+ {
++#ifdef	UV4A_HUB_IS_SUPPORTED
++	if (is_uv_hubbed(uv(4)))
++		return (uv_hub_info->hub_revision == UV4A_HUB_REVISION_BASE);
++#endif
+ 	return 0;
+ }
+-#endif
+ 
+-#ifdef	UV4_HUB_IS_SUPPORTED
+ static inline int is_uv4_hub(void)
+ {
+-	return uv_hub_info->hub_revision >= UV4_HUB_REVISION_BASE;
+-}
++#ifdef	UV4_HUB_IS_SUPPORTED
++	return is_uv_hubbed(uv(4));
+ #else
+-static inline int is_uv4_hub(void)
+-{
+ 	return 0;
+-}
+ #endif
++}
+ 
+ static inline int is_uvx_hub(void)
+ {
+-	if (uv_hub_info->hub_revision >= UV2_HUB_REVISION_BASE)
+-		return uv_hub_info->hub_revision;
+-
+-	return 0;
++	return (is_uv_hubbed(-2) >= uv(2));
  }
  
- /*
-- * There is a small amount of UV specific code needed to initialize a
-- * UV system that does not have a "UV HUB" (referred to as "hubless").
-+ * There is a different code path needed to initialize a UV system that does
-+ * not have a "UV HUB" (referred to as "hubless").
-  */
- void __init uv_system_init(void)
+ static inline int is_uv_hub(void)
  {
-@@ -1607,7 +1621,7 @@ void __init uv_system_init(void)
- 	if (is_uv_system())
- 		uv_system_init_hub();
- 	else
--		uv_nmi_setup_hubless();
-+		uv_system_init_hubless();
+-#ifdef	UV1_HUB_IS_SUPPORTED
+-	return uv_hub_info->hub_revision;
+-#endif
+-	return is_uvx_hub();
++	return is_uv1_hub() || is_uvx_hub();
  }
  
- apic_driver(apic_x2apic_uv_x);
+ union uvh_apicid {
