@@ -2,251 +2,93 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D498CEBBD
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  7 Oct 2019 20:25:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7064CCEBC3
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  7 Oct 2019 20:27:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728364AbfJGSZU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 7 Oct 2019 14:25:20 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:45446 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728031AbfJGSZT (ORCPT
+        id S1728250AbfJGS12 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 7 Oct 2019 14:27:28 -0400
+Received: from mail-wm1-f67.google.com ([209.85.128.67]:34515 "EHLO
+        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728081AbfJGS12 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 7 Oct 2019 14:25:19 -0400
-Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tip-bot2@linutronix.de>)
-        id 1iHXgu-0002LS-UO; Mon, 07 Oct 2019 20:25:05 +0200
-Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 7FF491C032F;
-        Mon,  7 Oct 2019 20:25:04 +0200 (CEST)
-Date:   Mon, 07 Oct 2019 18:25:04 -0000
-From:   "tip-bot2 for Ralf Ramsauer" <tip-bot2@linutronix.de>
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/platform] x86/jailhouse: Enable platform UARTs only if available
-Cc:     Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
+        Mon, 7 Oct 2019 14:27:28 -0400
+Received: by mail-wm1-f67.google.com with SMTP id y135so635324wmc.1;
+        Mon, 07 Oct 2019 11:27:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=suz6k0HPLihLeFdDPNbxBchocJGneApTO5mqjNjL2R4=;
+        b=LuS2AmkinUUjO5mhUkNRYmLH2YnfROHoYRESsXkFY9kK1pFfutlWOBlOIwl/YuWQ0Z
+         0rVIHfaYGfhd2eFC84wE4XyF5dTvIvMdOptF4VVd+DJVEbrTZaBwedxsZWjTl9DKze81
+         KMv/vQ04FeMc4zz03tLmN82tu8PVR8AlOa/cuzXIpbOlNU7q57lTPZJpCaTUooW6ketp
+         oau4/nV3UUSBc2CyDfnJRUKWY7lcwlToez93xXNx6wMvbEaGLivks0SOOGhZ4EHnby00
+         yxwSg/ezSxQGqU6sAGQ5nVocPp1TUYnd5rnOl3IH1+7+FSO7yBU7WKC/QbaRAq5NISRI
+         GbpQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=suz6k0HPLihLeFdDPNbxBchocJGneApTO5mqjNjL2R4=;
+        b=pdE6nZ6qBPY6y+czxRiAWJqOgl/Q4W73uX106CPB6vPwEuYBkJJyIWACx734IIK9ec
+         JI2pT1tba6Bz3KvYON9fb42g0MTCE4UedEGrdIEqR4EwEvLgztU9EwvXF6RUwWyBjA3Q
+         ub0Ii8EnPALOEHk3w3WshoR3trnF4/hy/24iqmo5jc+75JV6orLJ79E6bjjGJMnJnvul
+         H+d8PN5g4yCHA2V2c0mLmtpCKRZIpx8v+iAPfzCd1M4AIZfUTzkwZ73+M6gauRSb2SAN
+         Tbi1mC+T/34puYHcS2G9WobHiU+ksXU/hqtomEr5L/Q3pSUrSCBtWjlMibk0Zi31sjgw
+         Nr8g==
+X-Gm-Message-State: APjAAAWLQ9DxApe8M++AB4oPslRx2fSbSCwyJYz33RmOSrtJYLZbOaNN
+        j8sjrajtWFYWl9I1PZGjr4H99wBp
+X-Google-Smtp-Source: APXvYqwbM/g8QlwLv9TiPwD+XX1XXfkrQjAfz4sDBARTvrZYtTGBRsDQKTcB+W+P7Kv2jvVHdVAeRQ==
+X-Received: by 2002:a7b:c8d9:: with SMTP id f25mr405652wml.173.1570472846221;
+        Mon, 07 Oct 2019 11:27:26 -0700 (PDT)
+Received: from gmail.com (2E8B0CD5.catv.pool.telekom.hu. [46.139.12.213])
+        by smtp.gmail.com with ESMTPSA id g17sm7927581wrq.58.2019.10.07.11.27.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 07 Oct 2019 11:27:25 -0700 (PDT)
+Date:   Mon, 7 Oct 2019 20:27:23 +0200
+From:   Ingo Molnar <mingo@kernel.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-tip-commits@vger.kernel.org,
+        Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
         Jan Kiszka <jan.kiszka@siemens.com>,
         Borislav Petkov <bp@alien8.de>,
         "H . Peter Anvin" <hpa@zytor.com>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Peter Zijlstra <peterz@infradead.org>,
         Thomas Gleixner <tglx@linutronix.de>,
-        jailhouse-dev@googlegroups.com, Ingo Molnar <mingo@kernel.org>,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20191007123819.161432-3-ralf.ramsauer@oth-regensburg.de>
+        jailhouse-dev@googlegroups.com
+Subject: Re: [tip: x86/platform] x86/jailhouse: Enable platform UARTs only if
+ available
+Message-ID: <20191007182723.GB97660@gmail.com>
 References: <20191007123819.161432-3-ralf.ramsauer@oth-regensburg.de>
+ <157047270440.9978.1646295335019419258.tip-bot2@tip-bot2>
 MIME-Version: 1.0
-Message-ID: <157047270440.9978.1646295335019419258.tip-bot2@tip-bot2>
-X-Mailer: tip-git-log-daemon
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <157047270440.9978.1646295335019419258.tip-bot2@tip-bot2>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/platform branch of tip:
 
-Commit-ID:     dac59f1eb78123c3f0e497eb9870ac550c59debb
-Gitweb:        https://git.kernel.org/tip/dac59f1eb78123c3f0e497eb9870ac550c59debb
-Author:        Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>
-AuthorDate:    Mon, 07 Oct 2019 14:38:19 +02:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Mon, 07 Oct 2019 17:35:56 +02:00
+* tip-bot2 for Ralf Ramsauer <tip-bot2@linutronix.de> wrote:
 
-x86/jailhouse: Enable platform UARTs only if available
+> The following commit has been merged into the x86/platform branch of tip:
+> 
+> Commit-ID:     dac59f1eb78123c3f0e497eb9870ac550c59debb
+> Gitweb:        https://git.kernel.org/tip/dac59f1eb78123c3f0e497eb9870ac550c59debb
+> Author:        Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>
+> AuthorDate:    Mon, 07 Oct 2019 14:38:19 +02:00
+> Committer:     Ingo Molnar <mingo@kernel.org>
+> CommitterDate: Mon, 07 Oct 2019 17:35:56 +02:00
+> 
+> x86/jailhouse: Enable platform UARTs only if available
 
-ACPI tables aren't available if Linux runs as guest of the hypervisor
-Jailhouse. This makes the 8250 driver probe for all platform UARTs as
-it assumes that all platform are present in case of !ACPI. Jailhouse
-will stop execution of Linux guest due to port access violation.
+Never mind this commit notification - I pulled the two commits for the 
+time being, until Boris's feedback is addressed.
 
-So far, these access violations could be solved by tuning the
-8250.nr_uarts parameter but it has limitations: We can, e.g., only map
-consecutive platform UARTs to Linux, and only in the sequence 0x3f8,
-0x2f8, 0x3e8, 0x2e8.
+Thanks,
 
-Beginning from setup_data version 2, Jailhouse will place information of
-available platform UARTs in setup_data. This allows for selective
-activation of platform UARTs.
-
-This patch queries the setup_data version and activates only available
-UARTS. It comes with backward compatibility, and will still support
-older setup_data versions. In this case, Linux falls back to the old
-behaviour.
-
-Signed-off-by: Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>
-Reviewed-by: Jan Kiszka <jan.kiszka@siemens.com>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: H . Peter Anvin <hpa@zytor.com>
-Cc: Jan Kiszka <jan.kiszka@siemens.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: jailhouse-dev@googlegroups.com
-Link: https://lkml.kernel.org/r/20191007123819.161432-3-ralf.ramsauer@oth-regensburg.de
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
----
- arch/x86/include/uapi/asm/bootparam.h |  3 +-
- arch/x86/kernel/jailhouse.c           | 83 ++++++++++++++++++++++----
- 2 files changed, 74 insertions(+), 12 deletions(-)
-
-diff --git a/arch/x86/include/uapi/asm/bootparam.h b/arch/x86/include/uapi/asm/bootparam.h
-index 43be437..db1e24e 100644
---- a/arch/x86/include/uapi/asm/bootparam.h
-+++ b/arch/x86/include/uapi/asm/bootparam.h
-@@ -152,6 +152,9 @@ struct jailhouse_setup_data {
- 		__u8	standard_ioapic;
- 		__u8	cpu_ids[255];
- 	} __attribute__((packed)) v1;
-+	struct {
-+		__u32	flags;
-+	} __attribute__((packed)) v2;
- } __attribute__((packed));
- 
- /* The so-called "zeropage" */
-diff --git a/arch/x86/kernel/jailhouse.c b/arch/x86/kernel/jailhouse.c
-index b9647ad..95550c0 100644
---- a/arch/x86/kernel/jailhouse.c
-+++ b/arch/x86/kernel/jailhouse.c
-@@ -11,6 +11,7 @@
- #include <linux/acpi_pmtmr.h>
- #include <linux/kernel.h>
- #include <linux/reboot.h>
-+#include <linux/serial_8250.h>
- #include <asm/apic.h>
- #include <asm/cpu.h>
- #include <asm/hypervisor.h>
-@@ -23,9 +24,22 @@
- 
- static __initdata struct jailhouse_setup_data setup_data;
- #define SETUP_DATA_V1_LEN	(sizeof(setup_data.hdr) + sizeof(setup_data.v1))
-+#define SETUP_DATA_V2_LEN	(SETUP_DATA_V1_LEN + sizeof(setup_data.v2))
- 
- static unsigned int precalibrated_tsc_khz;
- 
-+static void jailhouse_setup_irq(unsigned int irq)
-+{
-+	struct mpc_intsrc mp_irq = {
-+		.type		= MP_INTSRC,
-+		.irqtype	= mp_INT,
-+		.irqflag	= MP_IRQPOL_ACTIVE_HIGH | MP_IRQTRIG_EDGE,
-+		.srcbusirq	= irq,
-+		.dstirq		= irq,
-+	};
-+	mp_save_irq(&mp_irq);
-+}
-+
- static uint32_t jailhouse_cpuid_base(void)
- {
- 	if (boot_cpu_data.cpuid_level < 0 ||
-@@ -79,11 +93,6 @@ static void __init jailhouse_get_smp_config(unsigned int early)
- 		.type = IOAPIC_DOMAIN_STRICT,
- 		.ops = &mp_ioapic_irqdomain_ops,
- 	};
--	struct mpc_intsrc mp_irq = {
--		.type = MP_INTSRC,
--		.irqtype = mp_INT,
--		.irqflag = MP_IRQPOL_ACTIVE_HIGH | MP_IRQTRIG_EDGE,
--	};
- 	unsigned int cpu;
- 
- 	jailhouse_x2apic_init();
-@@ -100,12 +109,12 @@ static void __init jailhouse_get_smp_config(unsigned int early)
- 	if (setup_data.v1.standard_ioapic) {
- 		mp_register_ioapic(0, 0xfec00000, gsi_top, &ioapic_cfg);
- 
--		/* Register 1:1 mapping for legacy UART IRQs 3 and 4 */
--		mp_irq.srcbusirq = mp_irq.dstirq = 3;
--		mp_save_irq(&mp_irq);
--
--		mp_irq.srcbusirq = mp_irq.dstirq = 4;
--		mp_save_irq(&mp_irq);
-+		if (IS_ENABLED(CONFIG_SERIAL_8250) &&
-+		    setup_data.hdr.version < 2) {
-+			/* Register 1:1 mapping for legacy UART IRQs 3 and 4 */
-+			jailhouse_setup_irq(3);
-+			jailhouse_setup_irq(4);
-+		}
- 	}
- }
- 
-@@ -138,6 +147,53 @@ static int __init jailhouse_pci_arch_init(void)
- 	return 0;
- }
- 
-+#ifdef CONFIG_SERIAL_8250
-+static bool jailhouse_uart_enabled(unsigned int uart_nr)
-+{
-+	return setup_data.v2.flags & BIT(uart_nr);
-+}
-+
-+static void jailhouse_serial_fixup(int port, struct uart_port *up,
-+				   u32 *capabilities)
-+{
-+	static const u16 pcuart_base[] = {0x3f8, 0x2f8, 0x3e8, 0x2e8};
-+	unsigned int n;
-+
-+	for (n = 0; n < ARRAY_SIZE(pcuart_base); n++) {
-+		if (pcuart_base[n] != up->iobase)
-+			continue;
-+
-+		if (jailhouse_uart_enabled(n)) {
-+			pr_info("Enabling UART%u (port 0x%lx)\n", n,
-+				up->iobase);
-+			jailhouse_setup_irq(up->irq);
-+		} else {
-+			/* Deactivate UART if access isn't allowed */
-+			up->iobase = 0;
-+		}
-+		break;
-+	}
-+}
-+
-+static void jailhouse_serial_workaround(void)
-+{
-+	/*
-+	 * There are flags inside setup_data that indicate availability of
-+	 * platform UARTs since setup data version 2.
-+	 *
-+	 * In case of version 1, we don't know which UARTs belong Linux. In
-+	 * this case, unconditionally register 1:1 mapping for legacy UART IRQs
-+	 * 3 and 4.
-+	 */
-+	if (setup_data.hdr.version > 1)
-+		serial8250_set_isa_configurator(jailhouse_serial_fixup);
-+}
-+#else /* !CONFIG_SERIAL_8250 */
-+static inline void jailhouse_serial_workaround(void)
-+{
-+}
-+#endif /* CONFIG_SERIAL_8250 */
-+
- static void __init jailhouse_init_platform(void)
- {
- 	u64 pa_data = boot_params.hdr.setup_data;
-@@ -188,7 +244,8 @@ static void __init jailhouse_init_platform(void)
- 	if (setup_data.hdr.version == 0 ||
- 	    setup_data.hdr.compatible_version !=
- 		JAILHOUSE_SETUP_REQUIRED_VERSION ||
--	    (setup_data.hdr.version >= 1 && header.len < SETUP_DATA_V1_LEN))
-+	    (setup_data.hdr.version == 1 && header.len < SETUP_DATA_V1_LEN) ||
-+	    (setup_data.hdr.version >= 2 && header.len < SETUP_DATA_V2_LEN))
- 		goto unsupported;
- 
- 	pmtmr_ioport = setup_data.v1.pm_timer_address;
-@@ -204,6 +261,8 @@ static void __init jailhouse_init_platform(void)
- 	 * are none in a non-root cell.
- 	 */
- 	disable_acpi();
-+
-+	jailhouse_serial_workaround();
- 	return;
- 
- unsupported:
+	Ingo
