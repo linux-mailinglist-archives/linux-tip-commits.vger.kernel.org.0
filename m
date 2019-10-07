@@ -2,47 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D1E81CE5AE
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  7 Oct 2019 16:49:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 04C33CE5A5
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  7 Oct 2019 16:49:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728588AbfJGOtq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 7 Oct 2019 10:49:46 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:44518 "EHLO
+        id S1728066AbfJGOtY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 7 Oct 2019 10:49:24 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:44225 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728688AbfJGOtq (ORCPT
+        with ESMTP id S1727589AbfJGOtY (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 7 Oct 2019 10:49:46 -0400
+        Mon, 7 Oct 2019 10:49:24 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iHUK2-0005v1-Kp; Mon, 07 Oct 2019 16:49:14 +0200
+        id 1iHUK5-0005wT-M0; Mon, 07 Oct 2019 16:49:17 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4CDA71C032F;
-        Mon,  7 Oct 2019 16:49:14 +0200 (CEST)
-Date:   Mon, 07 Oct 2019 14:49:14 -0000
-From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 594431C08B0;
+        Mon,  7 Oct 2019 16:49:15 +0200 (CEST)
+Date:   Mon, 07 Oct 2019 14:49:15 -0000
+From:   "tip-bot2 for Andi Kleen" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf annotate: Don't return -1 for error when
- doing BPF disassembly
-Cc:     "Russell King - ARM Linux admin" <linux@armlinux.org.uk>,
-        Song Liu <songliubraving@fb.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Jiri Olsa <jolsa@kernel.org>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Will Deacon <will@kernel.org>,
+Subject: [tip: perf/urgent] perf jevents: Fix period for Intel fixed counters
+Cc:     Andi Kleen <ak@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <tip-usevw9r2gcipfcrbpaueurw0@git.kernel.org>
-References: <tip-usevw9r2gcipfcrbpaueurw0@git.kernel.org>
+In-Reply-To: <20190927233546.11533-2-andi@firstfloor.org>
+References: <20190927233546.11533-2-andi@firstfloor.org>
 MIME-Version: 1.0
-Message-ID: <157045975426.9978.12248126879315343549.tip-bot2@tip-bot2>
+Message-ID: <157045975531.9978.3214758589104443413.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -58,106 +48,52 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     11aad897f6d1a28eae3b7e5b293647c522d65819
-Gitweb:        https://git.kernel.org/tip/11aad897f6d1a28eae3b7e5b293647c522d65819
-Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Mon, 30 Sep 2019 16:04:21 -03:00
+Commit-ID:     6bdfd9f118bd59cf0f85d3bf4b72b586adea17c1
+Gitweb:        https://git.kernel.org/tip/6bdfd9f118bd59cf0f85d3bf4b72b586adea17c1
+Author:        Andi Kleen <ak@linux.intel.com>
+AuthorDate:    Fri, 27 Sep 2019 16:35:45 -07:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Mon, 30 Sep 2019 17:30:06 -03:00
+CommitterDate: Mon, 30 Sep 2019 17:29:53 -03:00
 
-perf annotate: Don't return -1 for error when doing BPF disassembly
+perf jevents: Fix period for Intel fixed counters
 
-Return errno when open_memstream() fails and add two new speciall error
-codes for when an invalid, non BPF file or one without BTF is passed to
-symbol__disassemble_bpf(), so that its callers can rely on
-symbol__strerror_disassemble() to convert that to a human readable error
-message that can help figure out what is wrong, with hints even.
+The Intel fixed counters use a special table to override the JSON
+information.
 
-Cc: Russell King - ARM Linux admin <linux@armlinux.org.uk>
-Cc: Song Liu <songliubraving@fb.com>
-Cc: Alexei Starovoitov <ast@kernel.org>
-Cc: Daniel Borkmann <daniel@iogearbox.net>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+During this override the period information from the JSON file got
+dropped, which results in inst_retired.any and similar running with
+frequency mode instead of a period.
+
+Just specify the expected period in the table.
+
+Signed-off-by: Andi Kleen <ak@linux.intel.com>
 Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>,
-Cc: Will Deacon <will@kernel.org>
-Link: https://lkml.kernel.org/n/tip-usevw9r2gcipfcrbpaueurw0@git.kernel.org
+Link: http://lore.kernel.org/lkml/20190927233546.11533-2-andi@firstfloor.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/annotate.c | 19 +++++++++++++++----
- tools/perf/util/annotate.h |  2 ++
- 2 files changed, 17 insertions(+), 4 deletions(-)
+ tools/perf/pmu-events/jevents.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/tools/perf/util/annotate.c b/tools/perf/util/annotate.c
-index b49ecdd..4036c7f 100644
---- a/tools/perf/util/annotate.c
-+++ b/tools/perf/util/annotate.c
-@@ -1637,6 +1637,13 @@ int symbol__strerror_disassemble(struct symbol *sym __maybe_unused, struct map *
- 	case SYMBOL_ANNOTATE_ERRNO__ARCH_INIT_CPUID_PARSING:
- 		scnprintf(buf, buflen, "Problems while parsing the CPUID in the arch specific initialization.");
- 		break;
-+	case SYMBOL_ANNOTATE_ERRNO__BPF_INVALID_FILE:
-+		scnprintf(buf, buflen, "Invalid BPF file: %s.", dso->long_name);
-+		break;
-+	case SYMBOL_ANNOTATE_ERRNO__BPF_MISSING_BTF:
-+		scnprintf(buf, buflen, "The %s BPF file has no BTF section, compile with -g or use pahole -J.",
-+			  dso->long_name);
-+		break;
- 	default:
- 		scnprintf(buf, buflen, "Internal error: Invalid %d error code\n", errnum);
- 		break;
-@@ -1719,13 +1726,13 @@ static int symbol__disassemble_bpf(struct symbol *sym,
- 	char tpath[PATH_MAX];
- 	size_t buf_size;
- 	int nr_skip = 0;
--	int ret = -1;
- 	char *buf;
- 	bfd *bfdf;
-+	int ret;
- 	FILE *s;
- 
- 	if (dso->binary_type != DSO_BINARY_TYPE__BPF_PROG_INFO)
--		return -1;
-+		return SYMBOL_ANNOTATE_ERRNO__BPF_INVALID_FILE;
- 
- 	pr_debug("%s: handling sym %s addr %" PRIx64 " len %" PRIx64 "\n", __func__,
- 		  sym->name, sym->start, sym->end - sym->start);
-@@ -1738,8 +1745,10 @@ static int symbol__disassemble_bpf(struct symbol *sym,
- 	assert(bfd_check_format(bfdf, bfd_object));
- 
- 	s = open_memstream(&buf, &buf_size);
--	if (!s)
-+	if (!s) {
-+		ret = errno;
- 		goto out;
-+	}
- 	init_disassemble_info(&info, s,
- 			      (fprintf_ftype) fprintf);
- 
-@@ -1748,8 +1757,10 @@ static int symbol__disassemble_bpf(struct symbol *sym,
- 
- 	info_node = perf_env__find_bpf_prog_info(dso->bpf_prog.env,
- 						 dso->bpf_prog.id);
--	if (!info_node)
-+	if (!info_node) {
-+		return SYMBOL_ANNOTATE_ERRNO__BPF_MISSING_BTF;
- 		goto out;
-+	}
- 	info_linear = info_node->info_linear;
- 	sub_id = dso->bpf_prog.sub_id;
- 
-diff --git a/tools/perf/util/annotate.h b/tools/perf/util/annotate.h
-index 116e21f..d76fd0e 100644
---- a/tools/perf/util/annotate.h
-+++ b/tools/perf/util/annotate.h
-@@ -372,6 +372,8 @@ enum symbol_disassemble_errno {
- 	SYMBOL_ANNOTATE_ERRNO__NO_LIBOPCODES_FOR_BPF,
- 	SYMBOL_ANNOTATE_ERRNO__ARCH_INIT_CPUID_PARSING,
- 	SYMBOL_ANNOTATE_ERRNO__ARCH_INIT_REGEXP,
-+	SYMBOL_ANNOTATE_ERRNO__BPF_INVALID_FILE,
-+	SYMBOL_ANNOTATE_ERRNO__BPF_MISSING_BTF,
- 
- 	__SYMBOL_ANNOTATE_ERRNO__END,
+diff --git a/tools/perf/pmu-events/jevents.c b/tools/perf/pmu-events/jevents.c
+index 9e37287..e283726 100644
+--- a/tools/perf/pmu-events/jevents.c
++++ b/tools/perf/pmu-events/jevents.c
+@@ -450,12 +450,12 @@ static struct fixed {
+ 	const char *name;
+ 	const char *event;
+ } fixed[] = {
+-	{ "inst_retired.any", "event=0xc0" },
+-	{ "inst_retired.any_p", "event=0xc0" },
+-	{ "cpu_clk_unhalted.ref", "event=0x0,umask=0x03" },
+-	{ "cpu_clk_unhalted.thread", "event=0x3c" },
+-	{ "cpu_clk_unhalted.core", "event=0x3c" },
+-	{ "cpu_clk_unhalted.thread_any", "event=0x3c,any=1" },
++	{ "inst_retired.any", "event=0xc0,period=2000003" },
++	{ "inst_retired.any_p", "event=0xc0,period=2000003" },
++	{ "cpu_clk_unhalted.ref", "event=0x0,umask=0x03,period=2000003" },
++	{ "cpu_clk_unhalted.thread", "event=0x3c,period=2000003" },
++	{ "cpu_clk_unhalted.core", "event=0x3c,period=2000003" },
++	{ "cpu_clk_unhalted.thread_any", "event=0x3c,any=1,period=2000003" },
+ 	{ NULL, NULL},
  };
+ 
