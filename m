@@ -2,56 +2,45 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9389BCE5B9
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  7 Oct 2019 16:50:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 41118CE5CA
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  7 Oct 2019 16:51:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728828AbfJGOtz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 7 Oct 2019 10:49:55 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:44543 "EHLO
+        id S1728538AbfJGOth (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 7 Oct 2019 10:49:37 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:44430 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728804AbfJGOty (ORCPT
+        with ESMTP id S1728066AbfJGOtg (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 7 Oct 2019 10:49:54 -0400
+        Mon, 7 Oct 2019 10:49:36 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iHUK8-0005yu-As; Mon, 07 Oct 2019 16:49:20 +0200
+        id 1iHUKE-00060S-I4; Mon, 07 Oct 2019 16:49:26 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 9AC7F1C0DCB;
-        Mon,  7 Oct 2019 16:49:15 +0200 (CEST)
-Date:   Mon, 07 Oct 2019 14:49:15 -0000
-From:   "tip-bot2 for Steve MacLean" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E96301C0DD0;
+        Mon,  7 Oct 2019 16:49:16 +0200 (CEST)
+Date:   Mon, 07 Oct 2019 14:49:16 -0000
+From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf inject jit: Fix JIT_CODE_MOVE filename
-Cc:     stable@vger.kernel.org, #@tip-bot2.tec.linutronix.de,
-        v4.6+@tip-bot2.tec.linutronix.de,
-        Steve MacLean <Steve.MacLean@Microsoft.com>,
+Subject: [tip: perf/urgent] tools headers kvm: Sync kvm headers with the
+ kernel sources
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        Janosch Frank <frankja@linux.ibm.com>,
         Jiri Olsa <jolsa@kernel.org>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Andi Kleen <ak@linux.intel.com>,
-        Brian Robbins <brianrob@microsoft.com>,
-        Davidlohr Bueso <dave@stgolabs.net>,
-        "Eric Saint-Etienne" <eric.saint.etienne@oracle.com>,
-        John Keeping <john@metanate.com>,
-        John Salem <josalem@microsoft.com>,
-        Leo Yan <leo.yan@linaro.org>,
-        Mark Rutland <mark.rutland@arm.com>,
+        Liran Alon <liran.alon@oracle.com>,
+        Marc Zyngier <maz@kernel.org>,
         Namhyung Kim <namhyung@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Song Liu <songliubraving@fb.com>,
-        Stephane Eranian <eranian@google.com>,
-        Tom McDonald <thomas.mcdonald@microsoft.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Thomas Huth <thuth@redhat.com>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: =?utf-8?q?=3CBN8PR21MB1362FF8F127B31DBF4121528F7800=40BN8PR21MB?=
- =?utf-8?q?1362=2Enamprd21=2Eprod=2Eoutlook=2Ecom=3E?=
-References: =?utf-8?q?=3CBN8PR21MB1362FF8F127B31DBF4121528F7800=40BN8PR21M?=
- =?utf-8?q?B1362=2Enamprd21=2Eprod=2Eoutlook=2Ecom=3E?=
+In-Reply-To: <tip-akuugvvjxte26kzv23zp5d2z@git.kernel.org>
+References: <tip-akuugvvjxte26kzv23zp5d2z@git.kernel.org>
 MIME-Version: 1.0
-Message-ID: <157045975560.9978.11908955377927615460.tip-bot2@tip-bot2>
+Message-ID: <157045975688.9978.4446047649090510891.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -67,76 +56,141 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     b59711e9b0d22fd47abfa00602fd8c365cdd3ab7
-Gitweb:        https://git.kernel.org/tip/b59711e9b0d22fd47abfa00602fd8c365cdd3ab7
-Author:        Steve MacLean <Steve.MacLean@microsoft.com>
-AuthorDate:    Sat, 28 Sep 2019 01:41:18 
+Commit-ID:     b7ad6108484221f431372b94763b74e550d16c93
+Gitweb:        https://git.kernel.org/tip/b7ad6108484221f431372b94763b74e550d16c93
+Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
+AuthorDate:    Fri, 27 Sep 2019 12:18:21 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Mon, 30 Sep 2019 17:29:49 -03:00
+CommitterDate: Mon, 30 Sep 2019 17:29:30 -03:00
 
-perf inject jit: Fix JIT_CODE_MOVE filename
+tools headers kvm: Sync kvm headers with the kernel sources
 
-During perf inject --jit, JIT_CODE_MOVE records were injecting MMAP records
-with an incorrect filename. Specifically it was missing the ".so" suffix.
+To pick the changes in:
 
-Further the JIT_CODE_LOAD record were silently truncating the
-jr->load.code_index field to 32 bits before generating the filename.
+  200824f55eef ("KVM: s390: Disallow invalid bits in kvm_valid_regs and kvm_dirty_regs")
+  4a53d99dd0c2 ("KVM: VMX: Introduce exit reason for receiving INIT signal on guest-mode")
+  7396d337cfad ("KVM: x86: Return to userspace with internal error on unexpected exit reason")
+  92f35b751c71 ("KVM: arm/arm64: vgic: Allow more than 256 vcpus for KVM_IRQ_LINE")
 
-Make both records emit the same filename based on the full 64 bit
-code_index field.
+None of them trigger any changes in tooling, this time this is just to silence
+these perf build warnings:
 
-Fixes: 9b07e27f88b9 ("perf inject: Add jitdump mmap injection support")
-Cc: stable@vger.kernel.org # v4.6+
-Signed-off-by: Steve MacLean <Steve.MacLean@Microsoft.com>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Brian Robbins <brianrob@microsoft.com>
-Cc: Davidlohr Bueso <dave@stgolabs.net>
-Cc: Eric Saint-Etienne <eric.saint.etienne@oracle.com>
-Cc: John Keeping <john@metanate.com>
-Cc: John Salem <josalem@microsoft.com>
-Cc: Leo Yan <leo.yan@linaro.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
+  Warning: Kernel ABI header at 'tools/include/uapi/linux/kvm.h' differs from latest version at 'include/uapi/linux/kvm.h'
+  diff -u tools/include/uapi/linux/kvm.h include/uapi/linux/kvm.h
+  Warning: Kernel ABI header at 'tools/arch/x86/include/uapi/asm/vmx.h' differs from latest version at 'arch/x86/include/uapi/asm/vmx.h'
+  diff -u tools/arch/x86/include/uapi/asm/vmx.h arch/x86/include/uapi/asm/vmx.h
+  Warning: Kernel ABI header at 'tools/arch/s390/include/uapi/asm/kvm.h' differs from latest version at 'arch/s390/include/uapi/asm/kvm.h'
+  diff -u tools/arch/s390/include/uapi/asm/kvm.h arch/s390/include/uapi/asm/kvm.h
+  Warning: Kernel ABI header at 'tools/arch/arm/include/uapi/asm/kvm.h' differs from latest version at 'arch/arm/include/uapi/asm/kvm.h'
+  diff -u tools/arch/arm/include/uapi/asm/kvm.h arch/arm/include/uapi/asm/kvm.h
+  Warning: Kernel ABI header at 'tools/arch/arm64/include/uapi/asm/kvm.h' differs from latest version at 'arch/arm64/include/uapi/asm/kvm.h'
+  diff -u tools/arch/arm64/include/uapi/asm/kvm.h arch/arm64/include/uapi/asm/kvm.h
+
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Janosch Frank <frankja@linux.ibm.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Liran Alon <liran.alon@oracle.com>
+Cc: Marc Zyngier <maz@kernel.org>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Song Liu <songliubraving@fb.com>
-Cc: Stephane Eranian <eranian@google.com>
-Cc: Tom McDonald <thomas.mcdonald@microsoft.com>
-Link: http://lore.kernel.org/lkml/BN8PR21MB1362FF8F127B31DBF4121528F7800@BN8PR21MB1362.namprd21.prod.outlook.com
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Thomas Huth <thuth@redhat.com>
+Link: https://lkml.kernel.org/n/tip-akuugvvjxte26kzv23zp5d2z@git.kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/jitdump.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ tools/arch/arm/include/uapi/asm/kvm.h   | 4 +++-
+ tools/arch/arm64/include/uapi/asm/kvm.h | 4 +++-
+ tools/arch/s390/include/uapi/asm/kvm.h  | 6 ++++++
+ tools/arch/x86/include/uapi/asm/vmx.h   | 2 ++
+ tools/include/uapi/linux/kvm.h          | 3 +++
+ 5 files changed, 17 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/util/jitdump.c b/tools/perf/util/jitdump.c
-index 1bdf4c6..e3ccb0c 100644
---- a/tools/perf/util/jitdump.c
-+++ b/tools/perf/util/jitdump.c
-@@ -395,7 +395,7 @@ static int jit_repipe_code_load(struct jit_buf_desc *jd, union jr_entry *jr)
- 	size_t size;
- 	u16 idr_size;
- 	const char *sym;
--	uint32_t count;
-+	uint64_t count;
- 	int ret, csize, usize;
- 	pid_t pid, tid;
- 	struct {
-@@ -418,7 +418,7 @@ static int jit_repipe_code_load(struct jit_buf_desc *jd, union jr_entry *jr)
- 		return -1;
+diff --git a/tools/arch/arm/include/uapi/asm/kvm.h b/tools/arch/arm/include/uapi/asm/kvm.h
+index a4217c1..2769360 100644
+--- a/tools/arch/arm/include/uapi/asm/kvm.h
++++ b/tools/arch/arm/include/uapi/asm/kvm.h
+@@ -266,8 +266,10 @@ struct kvm_vcpu_events {
+ #define   KVM_DEV_ARM_ITS_CTRL_RESET		4
  
- 	filename = event->mmap2.filename;
--	size = snprintf(filename, PATH_MAX, "%s/jitted-%d-%u.so",
-+	size = snprintf(filename, PATH_MAX, "%s/jitted-%d-%" PRIu64 ".so",
- 			jd->dir,
- 			pid,
- 			count);
-@@ -529,7 +529,7 @@ static int jit_repipe_code_move(struct jit_buf_desc *jd, union jr_entry *jr)
- 		return -1;
+ /* KVM_IRQ_LINE irq field index values */
++#define KVM_ARM_IRQ_VCPU2_SHIFT		28
++#define KVM_ARM_IRQ_VCPU2_MASK		0xf
+ #define KVM_ARM_IRQ_TYPE_SHIFT		24
+-#define KVM_ARM_IRQ_TYPE_MASK		0xff
++#define KVM_ARM_IRQ_TYPE_MASK		0xf
+ #define KVM_ARM_IRQ_VCPU_SHIFT		16
+ #define KVM_ARM_IRQ_VCPU_MASK		0xff
+ #define KVM_ARM_IRQ_NUM_SHIFT		0
+diff --git a/tools/arch/arm64/include/uapi/asm/kvm.h b/tools/arch/arm64/include/uapi/asm/kvm.h
+index 9a50771..67c21f9 100644
+--- a/tools/arch/arm64/include/uapi/asm/kvm.h
++++ b/tools/arch/arm64/include/uapi/asm/kvm.h
+@@ -325,8 +325,10 @@ struct kvm_vcpu_events {
+ #define   KVM_ARM_VCPU_TIMER_IRQ_PTIMER		1
  
- 	filename = event->mmap2.filename;
--	size = snprintf(filename, PATH_MAX, "%s/jitted-%d-%"PRIu64,
-+	size = snprintf(filename, PATH_MAX, "%s/jitted-%d-%" PRIu64 ".so",
- 	         jd->dir,
- 	         pid,
- 		 jr->move.code_index);
+ /* KVM_IRQ_LINE irq field index values */
++#define KVM_ARM_IRQ_VCPU2_SHIFT		28
++#define KVM_ARM_IRQ_VCPU2_MASK		0xf
+ #define KVM_ARM_IRQ_TYPE_SHIFT		24
+-#define KVM_ARM_IRQ_TYPE_MASK		0xff
++#define KVM_ARM_IRQ_TYPE_MASK		0xf
+ #define KVM_ARM_IRQ_VCPU_SHIFT		16
+ #define KVM_ARM_IRQ_VCPU_MASK		0xff
+ #define KVM_ARM_IRQ_NUM_SHIFT		0
+diff --git a/tools/arch/s390/include/uapi/asm/kvm.h b/tools/arch/s390/include/uapi/asm/kvm.h
+index 47104e5..436ec76 100644
+--- a/tools/arch/s390/include/uapi/asm/kvm.h
++++ b/tools/arch/s390/include/uapi/asm/kvm.h
+@@ -231,6 +231,12 @@ struct kvm_guest_debug_arch {
+ #define KVM_SYNC_GSCB   (1UL << 9)
+ #define KVM_SYNC_BPBC   (1UL << 10)
+ #define KVM_SYNC_ETOKEN (1UL << 11)
++
++#define KVM_SYNC_S390_VALID_FIELDS \
++	(KVM_SYNC_PREFIX | KVM_SYNC_GPRS | KVM_SYNC_ACRS | KVM_SYNC_CRS | \
++	 KVM_SYNC_ARCH0 | KVM_SYNC_PFAULT | KVM_SYNC_VRS | KVM_SYNC_RICCB | \
++	 KVM_SYNC_FPRS | KVM_SYNC_GSCB | KVM_SYNC_BPBC | KVM_SYNC_ETOKEN)
++
+ /* length and alignment of the sdnx as a power of two */
+ #define SDNXC 8
+ #define SDNXL (1UL << SDNXC)
+diff --git a/tools/arch/x86/include/uapi/asm/vmx.h b/tools/arch/x86/include/uapi/asm/vmx.h
+index f0b0c90..f01950a 100644
+--- a/tools/arch/x86/include/uapi/asm/vmx.h
++++ b/tools/arch/x86/include/uapi/asm/vmx.h
+@@ -31,6 +31,7 @@
+ #define EXIT_REASON_EXCEPTION_NMI       0
+ #define EXIT_REASON_EXTERNAL_INTERRUPT  1
+ #define EXIT_REASON_TRIPLE_FAULT        2
++#define EXIT_REASON_INIT_SIGNAL			3
+ 
+ #define EXIT_REASON_PENDING_INTERRUPT   7
+ #define EXIT_REASON_NMI_WINDOW          8
+@@ -90,6 +91,7 @@
+ 	{ EXIT_REASON_EXCEPTION_NMI,         "EXCEPTION_NMI" }, \
+ 	{ EXIT_REASON_EXTERNAL_INTERRUPT,    "EXTERNAL_INTERRUPT" }, \
+ 	{ EXIT_REASON_TRIPLE_FAULT,          "TRIPLE_FAULT" }, \
++	{ EXIT_REASON_INIT_SIGNAL,           "INIT_SIGNAL" }, \
+ 	{ EXIT_REASON_PENDING_INTERRUPT,     "PENDING_INTERRUPT" }, \
+ 	{ EXIT_REASON_NMI_WINDOW,            "NMI_WINDOW" }, \
+ 	{ EXIT_REASON_TASK_SWITCH,           "TASK_SWITCH" }, \
+diff --git a/tools/include/uapi/linux/kvm.h b/tools/include/uapi/linux/kvm.h
+index 5e3f12d..233efbb 100644
+--- a/tools/include/uapi/linux/kvm.h
++++ b/tools/include/uapi/linux/kvm.h
+@@ -243,6 +243,8 @@ struct kvm_hyperv_exit {
+ #define KVM_INTERNAL_ERROR_SIMUL_EX	2
+ /* Encounter unexpected vm-exit due to delivery event. */
+ #define KVM_INTERNAL_ERROR_DELIVERY_EV	3
++/* Encounter unexpected vm-exit reason */
++#define KVM_INTERNAL_ERROR_UNEXPECTED_EXIT_REASON	4
+ 
+ /* for KVM_RUN, returned by mmap(vcpu_fd, offset=0) */
+ struct kvm_run {
+@@ -996,6 +998,7 @@ struct kvm_ppc_resize_hpt {
+ #define KVM_CAP_ARM_PTRAUTH_ADDRESS 171
+ #define KVM_CAP_ARM_PTRAUTH_GENERIC 172
+ #define KVM_CAP_PMU_EVENT_FILTER 173
++#define KVM_CAP_ARM_IRQ_LINE_LAYOUT_2 174
+ 
+ #ifdef KVM_CAP_IRQ_ROUTING
+ 
