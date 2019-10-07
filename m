@@ -2,38 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 25863CE5F2
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  7 Oct 2019 16:52:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E0DDCE612
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  7 Oct 2019 16:52:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727589AbfJGOt0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 7 Oct 2019 10:49:26 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:44232 "EHLO
+        id S1728632AbfJGOwJ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 7 Oct 2019 10:52:09 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:44250 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727970AbfJGOtZ (ORCPT
+        with ESMTP id S1728048AbfJGOtZ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Mon, 7 Oct 2019 10:49:25 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iHUK6-0005yC-6B; Mon, 07 Oct 2019 16:49:18 +0200
+        id 1iHUK8-0005vM-Dv; Mon, 07 Oct 2019 16:49:20 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 719281C0DC9;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 1F61C1C079B;
         Mon,  7 Oct 2019 16:49:15 +0200 (CEST)
 Date:   Mon, 07 Oct 2019 14:49:15 -0000
-From:   "tip-bot2 for Andi Kleen" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf script brstackinsn: Fix recovery from
- LBR/binary mismatch
-Cc:     Andi Kleen <ak@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>,
+Subject: [tip: perf/urgent] perf evsel: Fall back to global 'perf_env' in
+ perf_evsel__env()
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        Jiri Olsa <jolsa@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20190927233546.11533-1-andi@firstfloor.org>
-References: <20190927233546.11533-1-andi@firstfloor.org>
+In-Reply-To: <tip-uqq4grmhbi12rwb0lfpo6lfu@git.kernel.org>
+References: <tip-uqq4grmhbi12rwb0lfpo6lfu@git.kernel.org>
 MIME-Version: 1.0
-Message-ID: <157045975542.9978.14015561869362479880.tip-bot2@tip-bot2>
+Message-ID: <157045975509.9978.15970537878008487052.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,76 +51,71 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     e98df280bc2a499fd41d7f9e2d6733884de69902
-Gitweb:        https://git.kernel.org/tip/e98df280bc2a499fd41d7f9e2d6733884de69902
-Author:        Andi Kleen <ak@linux.intel.com>
-AuthorDate:    Fri, 27 Sep 2019 16:35:44 -07:00
+Commit-ID:     9db0e3635fb35b6695275774ab909c51221b66ad
+Gitweb:        https://git.kernel.org/tip/9db0e3635fb35b6695275774ab909c51221b66ad
+Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
+AuthorDate:    Mon, 30 Sep 2019 11:48:32 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Mon, 30 Sep 2019 17:29:52 -03:00
+CommitterDate: Mon, 30 Sep 2019 17:29:57 -03:00
 
-perf script brstackinsn: Fix recovery from LBR/binary mismatch
+perf evsel: Fall back to global 'perf_env' in perf_evsel__env()
 
-When the LBR data and the instructions in a binary do not match the loop
-printing instructions could get confused and print a long stream of
-bogus <bad> instructions.
+I.e. if evsel->evlist or evsel->evlist->env isn't set, return the
+environment for the running machine, as that would be set if reading
+from a perf.data file.
 
-The problem was that if the instruction decoder cannot decode an
-instruction it ilen wasn't initialized, so the loop going through the
-basic block would continue with the previous value.
-
-Harden the code to avoid such problems:
-
-- Make sure ilen is always freshly initialized and is 0 for bad
-  instructions.
-
-- Do not overrun the code buffer while printing instructions
-
-- Print a warning message if the final jump is not on an instruction
-  boundary.
-
-Signed-off-by: Andi Kleen <ak@linux.intel.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
 Cc: Jiri Olsa <jolsa@kernel.org>
-Link: http://lore.kernel.org/lkml/20190927233546.11533-1-andi@firstfloor.org
+Cc: Namhyung Kim <namhyung@kernel.org>
+Link: https://lkml.kernel.org/n/tip-uqq4grmhbi12rwb0lfpo6lfu@git.kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/builtin-script.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ tools/perf/util/evsel.c  | 3 ++-
+ tools/perf/util/python.c | 6 ++++++
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/builtin-script.c b/tools/perf/builtin-script.c
-index 286fc70..67be8d3 100644
---- a/tools/perf/builtin-script.c
-+++ b/tools/perf/builtin-script.c
-@@ -1063,7 +1063,7 @@ static int perf_sample__fprintf_brstackinsn(struct perf_sample *sample,
- 			continue;
+diff --git a/tools/perf/util/evsel.c b/tools/perf/util/evsel.c
+index 5591af8..abc7fda 100644
+--- a/tools/perf/util/evsel.c
++++ b/tools/perf/util/evsel.c
+@@ -30,6 +30,7 @@
+ #include "counts.h"
+ #include "event.h"
+ #include "evsel.h"
++#include "util/env.h"
+ #include "util/evsel_config.h"
+ #include "util/evsel_fprintf.h"
+ #include "evlist.h"
+@@ -2512,7 +2513,7 @@ struct perf_env *perf_evsel__env(struct evsel *evsel)
+ {
+ 	if (evsel && evsel->evlist)
+ 		return evsel->evlist->env;
+-	return NULL;
++	return &perf_env;
+ }
  
- 		insn = 0;
--		for (off = 0;; off += ilen) {
-+		for (off = 0; off < (unsigned)len; off += ilen) {
- 			uint64_t ip = start + off;
+ static int store_evsel_ids(struct evsel *evsel, struct evlist *evlist)
+diff --git a/tools/perf/util/python.c b/tools/perf/util/python.c
+index 53f3105..0246036 100644
+--- a/tools/perf/util/python.c
++++ b/tools/perf/util/python.c
+@@ -14,6 +14,7 @@
+ #include "thread_map.h"
+ #include "trace-event.h"
+ #include "mmap.h"
++#include "util/env.h"
+ #include <internal/lib.h>
+ #include "../perf-sys.h"
  
- 			printed += ip__fprintf_sym(ip, thread, x.cpumode, x.cpu, &lastsym, attr, fp);
-@@ -1074,6 +1074,7 @@ static int perf_sample__fprintf_brstackinsn(struct perf_sample *sample,
- 					printed += print_srccode(thread, x.cpumode, ip);
- 				break;
- 			} else {
-+				ilen = 0;
- 				printed += fprintf(fp, "\t%016" PRIx64 "\t%s\n", ip,
- 						   dump_insn(&x, ip, buffer + off, len - off, &ilen));
- 				if (ilen == 0)
-@@ -1083,6 +1084,8 @@ static int perf_sample__fprintf_brstackinsn(struct perf_sample *sample,
- 				insn++;
- 			}
- 		}
-+		if (off != (unsigned)len)
-+			printed += fprintf(fp, "\tmismatch of LBR data and executable\n");
- 	}
+@@ -54,6 +55,11 @@ int parse_callchain_record(const char *arg __maybe_unused,
+ }
  
- 	/*
-@@ -1123,6 +1126,7 @@ static int perf_sample__fprintf_brstackinsn(struct perf_sample *sample,
- 		goto out;
- 	}
- 	for (off = 0; off <= end - start; off += ilen) {
-+		ilen = 0;
- 		printed += fprintf(fp, "\t%016" PRIx64 "\t%s\n", start + off,
- 				   dump_insn(&x, start + off, buffer + off, len - off, &ilen));
- 		if (ilen == 0)
+ /*
++ * Add this one here not to drag util/env.c
++ */
++struct perf_env perf_env;
++
++/*
+  * Support debug printing even though util/debug.c is not linked.  That means
+  * implementing 'verbose' and 'eprintf'.
+  */
