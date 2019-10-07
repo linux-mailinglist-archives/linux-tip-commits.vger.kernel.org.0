@@ -2,29 +2,30 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 96D92CE5D9
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  7 Oct 2019 16:51:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 73B9ACE5C8
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  7 Oct 2019 16:50:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728977AbfJGOuo (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 7 Oct 2019 10:50:44 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:44498 "EHLO
+        id S1728588AbfJGOue (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 7 Oct 2019 10:50:34 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:44515 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728620AbfJGOtm (ORCPT
+        with ESMTP id S1728680AbfJGOtp (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 7 Oct 2019 10:49:42 -0400
+        Mon, 7 Oct 2019 10:49:45 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iHUKL-0006AQ-1P; Mon, 07 Oct 2019 16:49:33 +0200
+        id 1iHUKP-0006Aa-KH; Mon, 07 Oct 2019 16:49:37 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id AB2251C0895;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E67071C08B3;
         Mon,  7 Oct 2019 16:49:31 +0200 (CEST)
 Date:   Mon, 07 Oct 2019 14:49:31 -0000
 From:   "tip-bot2 for Mike Travis" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/platform] x86/platform/uv: Decode UVsystab Info
+Subject: [tip: x86/platform] x86/platform/uv: Setup UV functions for Hubless
+ UV Systems
 Cc:     Mike Travis <mike.travis@hpe.com>, Steve Wahl <steve.wahl@hpe.com>,
         Dimitri Sivanich <dimitri.sivanich@hpe.com>,
         Andrew Morton <akpm@linux-foundation.org>,
@@ -38,10 +39,10 @@ Cc:     Mike Travis <mike.travis@hpe.com>, Steve Wahl <steve.wahl@hpe.com>,
         Russ Anderson <russ.anderson@hpe.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org
-In-Reply-To: <20190910145840.135325066@stormcage.eag.rdlabs.hpecorp.net>
-References: <20190910145840.135325066@stormcage.eag.rdlabs.hpecorp.net>
+In-Reply-To: <20190910145839.975787119@stormcage.eag.rdlabs.hpecorp.net>
+References: <20190910145839.975787119@stormcage.eag.rdlabs.hpecorp.net>
 MIME-Version: 1.0
-Message-ID: <157045977163.9978.17546530141291039371.tip-bot2@tip-bot2>
+Message-ID: <157045977188.9978.2863356948920530670.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -57,17 +58,22 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/platform branch of tip:
 
-Commit-ID:     f5a8f0ecb436a15f50215f27ab70a2e8626a6135
-Gitweb:        https://git.kernel.org/tip/f5a8f0ecb436a15f50215f27ab70a2e8626a6135
+Commit-ID:     2bcf26528787d92333ed0dfd6abc9835b8e97eab
+Gitweb:        https://git.kernel.org/tip/2bcf26528787d92333ed0dfd6abc9835b8e97eab
 Author:        Mike Travis <mike.travis@hpe.com>
-AuthorDate:    Tue, 10 Sep 2019 09:58:45 -05:00
+AuthorDate:    Tue, 10 Sep 2019 09:58:43 -05:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Mon, 07 Oct 2019 13:42:11 +02:00
+CommitterDate: Mon, 07 Oct 2019 13:42:10 +02:00
 
-x86/platform/uv: Decode UVsystab Info
+x86/platform/uv: Setup UV functions for Hubless UV Systems
 
-Decode the hubless UVsystab passed from BIOS to the kernel saving
-pertinent info in a similar manner that hubbed UVsystabs are decoded.
+Add more support for UV systems that do not contain a UV Hub (AKA
+"hubless").  This update adds support for additional functions required:
+
+    Use PCH NMI handler instead of a UV Hub NMI handler.
+
+    Initialize the UV BIOS callback interface used to support specific
+    UV functions.
 
 Signed-off-by: Mike Travis <mike.travis@hpe.com>
 Reviewed-by: Steve Wahl <steve.wahl@hpe.com>
@@ -82,40 +88,54 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Russ Anderson <russ.anderson@hpe.com>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20190910145840.135325066@stormcage.eag.rdlabs.hpecorp.net
+Link: https://lkml.kernel.org/r/20190910145839.975787119@stormcage.eag.rdlabs.hpecorp.net
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- arch/x86/kernel/apic/x2apic_uv_x.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ arch/x86/kernel/apic/x2apic_uv_x.c | 20 +++++++++++++++++---
+ 1 file changed, 17 insertions(+), 3 deletions(-)
 
 diff --git a/arch/x86/kernel/apic/x2apic_uv_x.c b/arch/x86/kernel/apic/x2apic_uv_x.c
-index b505905..ec940ad 100644
+index 43fad61..14554a3 100644
 --- a/arch/x86/kernel/apic/x2apic_uv_x.c
 +++ b/arch/x86/kernel/apic/x2apic_uv_x.c
-@@ -1303,7 +1303,8 @@ static int __init decode_uv_systab(void)
- 	struct uv_systab *st;
- 	int i;
+@@ -1457,6 +1457,20 @@ static void __init build_socket_tables(void)
+ 	}
+ }
  
--	if (uv_hub_info->hub_revision < UV4_HUB_REVISION_BASE)
-+	/* If system is uv3 or lower, there is no extended UVsystab */
-+	if (is_uv_hubbed(0xfffffe) < uv(4) && is_uv_hubless(0xfffffe) < uv(4))
- 		return 0;	/* No extended UVsystab required */
- 
- 	st = uv_systab;
-@@ -1554,8 +1555,15 @@ static __init int uv_system_init_hubless(void)
- 
- 	/* Init kernel/BIOS interface */
- 	rc = uv_bios_init();
-+	if (rc < 0)
-+		return rc;
- 
--	/* Create user access node if UVsystab available */
-+	/* Process UVsystab */
-+	rc = decode_uv_systab();
-+	if (rc < 0)
-+		return rc;
++/* Initialize UV hubless systems */
++static __init int uv_system_init_hubless(void)
++{
++	int rc;
 +
-+	/* Create user access node */
- 	if (rc >= 0)
- 		uv_setup_proc_files(1);
++	/* Setup PCH NMI handler */
++	uv_nmi_setup_hubless();
++
++	/* Init kernel/BIOS interface */
++	rc = uv_bios_init();
++
++	return rc;
++}
++
+ static void __init uv_system_init_hub(void)
+ {
+ 	struct uv_hub_info_s hub_info = {0};
+@@ -1596,8 +1610,8 @@ static void __init uv_system_init_hub(void)
+ }
  
+ /*
+- * There is a small amount of UV specific code needed to initialize a
+- * UV system that does not have a "UV HUB" (referred to as "hubless").
++ * There is a different code path needed to initialize a UV system that does
++ * not have a "UV HUB" (referred to as "hubless").
+  */
+ void __init uv_system_init(void)
+ {
+@@ -1607,7 +1621,7 @@ void __init uv_system_init(void)
+ 	if (is_uv_system())
+ 		uv_system_init_hub();
+ 	else
+-		uv_nmi_setup_hubless();
++		uv_system_init_hubless();
+ }
+ 
+ apic_driver(apic_x2apic_uv_x);
