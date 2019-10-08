@@ -2,25 +2,25 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CDD4ACF4DB
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  8 Oct 2019 10:19:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F4ADCF4DE
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  8 Oct 2019 10:19:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730457AbfJHITh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 8 Oct 2019 04:19:37 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:47241 "EHLO
+        id S1730549AbfJHITo (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 8 Oct 2019 04:19:44 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:47249 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730453AbfJHITh (ORCPT
+        with ESMTP id S1730453AbfJHITo (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 8 Oct 2019 04:19:37 -0400
+        Tue, 8 Oct 2019 04:19:44 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iHkiM-00052D-RY; Tue, 08 Oct 2019 10:19:27 +0200
+        id 1iHkiT-000531-Bu; Tue, 08 Oct 2019 10:19:33 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 52EF41C0325;
-        Tue,  8 Oct 2019 10:19:26 +0200 (CEST)
-Date:   Tue, 08 Oct 2019 08:19:26 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 05D281C0325;
+        Tue,  8 Oct 2019 10:19:33 +0200 (CEST)
+Date:   Tue, 08 Oct 2019 08:19:32 -0000
 From:   "tip-bot2 for Janakarajan Natarajan" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
@@ -38,7 +38,7 @@ Cc:     Janakarajan Natarajan <Janakarajan.Natarajan@amd.com>,
 In-Reply-To: <20191007190011.4859-1-Janakarajan.Natarajan@amd.com>
 References: <20191007190011.4859-1-Janakarajan.Natarajan@amd.com>
 MIME-Version: 1.0
-Message-ID: <157052276620.9978.10430246117846382274.tip-bot2@tip-bot2>
+Message-ID: <157052277295.9978.2993482656720588753.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
