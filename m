@@ -2,93 +2,110 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7064CCEBC3
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  7 Oct 2019 20:27:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B0F6CF3FE
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  8 Oct 2019 09:35:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728250AbfJGS12 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 7 Oct 2019 14:27:28 -0400
-Received: from mail-wm1-f67.google.com ([209.85.128.67]:34515 "EHLO
-        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728081AbfJGS12 (ORCPT
+        id S1730335AbfJHHfU convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 8 Oct 2019 03:35:20 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:47100 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730171AbfJHHfU (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 7 Oct 2019 14:27:28 -0400
-Received: by mail-wm1-f67.google.com with SMTP id y135so635324wmc.1;
-        Mon, 07 Oct 2019 11:27:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=suz6k0HPLihLeFdDPNbxBchocJGneApTO5mqjNjL2R4=;
-        b=LuS2AmkinUUjO5mhUkNRYmLH2YnfROHoYRESsXkFY9kK1pFfutlWOBlOIwl/YuWQ0Z
-         0rVIHfaYGfhd2eFC84wE4XyF5dTvIvMdOptF4VVd+DJVEbrTZaBwedxsZWjTl9DKze81
-         KMv/vQ04FeMc4zz03tLmN82tu8PVR8AlOa/cuzXIpbOlNU7q57lTPZJpCaTUooW6ketp
-         oau4/nV3UUSBc2CyDfnJRUKWY7lcwlToez93xXNx6wMvbEaGLivks0SOOGhZ4EHnby00
-         yxwSg/ezSxQGqU6sAGQ5nVocPp1TUYnd5rnOl3IH1+7+FSO7yBU7WKC/QbaRAq5NISRI
-         GbpQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=suz6k0HPLihLeFdDPNbxBchocJGneApTO5mqjNjL2R4=;
-        b=pdE6nZ6qBPY6y+czxRiAWJqOgl/Q4W73uX106CPB6vPwEuYBkJJyIWACx734IIK9ec
-         JI2pT1tba6Bz3KvYON9fb42g0MTCE4UedEGrdIEqR4EwEvLgztU9EwvXF6RUwWyBjA3Q
-         ub0Ii8EnPALOEHk3w3WshoR3trnF4/hy/24iqmo5jc+75JV6orLJ79E6bjjGJMnJnvul
-         H+d8PN5g4yCHA2V2c0mLmtpCKRZIpx8v+iAPfzCd1M4AIZfUTzkwZ73+M6gauRSb2SAN
-         Tbi1mC+T/34puYHcS2G9WobHiU+ksXU/hqtomEr5L/Q3pSUrSCBtWjlMibk0Zi31sjgw
-         Nr8g==
-X-Gm-Message-State: APjAAAWLQ9DxApe8M++AB4oPslRx2fSbSCwyJYz33RmOSrtJYLZbOaNN
-        j8sjrajtWFYWl9I1PZGjr4H99wBp
-X-Google-Smtp-Source: APXvYqwbM/g8QlwLv9TiPwD+XX1XXfkrQjAfz4sDBARTvrZYtTGBRsDQKTcB+W+P7Kv2jvVHdVAeRQ==
-X-Received: by 2002:a7b:c8d9:: with SMTP id f25mr405652wml.173.1570472846221;
-        Mon, 07 Oct 2019 11:27:26 -0700 (PDT)
-Received: from gmail.com (2E8B0CD5.catv.pool.telekom.hu. [46.139.12.213])
-        by smtp.gmail.com with ESMTPSA id g17sm7927581wrq.58.2019.10.07.11.27.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Oct 2019 11:27:25 -0700 (PDT)
-Date:   Mon, 7 Oct 2019 20:27:23 +0200
-From:   Ingo Molnar <mingo@kernel.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     linux-tip-commits@vger.kernel.org,
-        Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
-        Jan Kiszka <jan.kiszka@siemens.com>,
-        Borislav Petkov <bp@alien8.de>,
-        "H . Peter Anvin" <hpa@zytor.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        jailhouse-dev@googlegroups.com
-Subject: Re: [tip: x86/platform] x86/jailhouse: Enable platform UARTs only if
- available
-Message-ID: <20191007182723.GB97660@gmail.com>
-References: <20191007123819.161432-3-ralf.ramsauer@oth-regensburg.de>
- <157047270440.9978.1646295335019419258.tip-bot2@tip-bot2>
+        Tue, 8 Oct 2019 03:35:20 -0400
+Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tip-bot2@linutronix.de>)
+        id 1iHk1N-00040x-05; Tue, 08 Oct 2019 09:35:01 +0200
+Received: from [127.0.1.1] (localhost [IPv6:::1])
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 6ED381C0325;
+        Tue,  8 Oct 2019 09:35:00 +0200 (CEST)
+Date:   Tue, 08 Oct 2019 07:35:00 -0000
+From:   "tip-bot2 for Babu Moger" <tip-bot2@linutronix.de>
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/cpu] x86/cpufeatures: Add feature bit RDPRU on AMD
+Cc:     Babu Moger <babu.moger@amd.com>, Borislav Petkov <bp@suse.de>,
+        Aaron Lewis <aaronlewis@google.com>, ak@linux.intel.com,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        robert.hu@linux.intel.com, Thomas Gleixner <tglx@linutronix.de>,
+        Thomas Hellstrom <thellstrom@vmware.com>,
+        "x86-ml" <x86@kernel.org>, Ingo Molnar <mingo@kernel.org>,
+        Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
+In-Reply-To: <20191007204839.5727.10803.stgit@localhost.localdomain>
+References: <20191007204839.5727.10803.stgit@localhost.localdomain>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <157047270440.9978.1646295335019419258.tip-bot2@tip-bot2>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Message-ID: <157052010022.9978.18216780749038351513.tip-bot2@tip-bot2>
+X-Mailer: tip-git-log-daemon
+Robot-ID: <tip-bot2.linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8BIT
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
+The following commit has been merged into the x86/cpu branch of tip:
 
-* tip-bot2 for Ralf Ramsauer <tip-bot2@linutronix.de> wrote:
+Commit-ID:     9d40b85bb46a99bc95dad3a07787da93b0a018e9
+Gitweb:        https://git.kernel.org/tip/9d40b85bb46a99bc95dad3a07787da93b0a018e9
+Author:        Babu Moger <babu.moger@amd.com>
+AuthorDate:    Mon, 07 Oct 2019 15:48:39 -05:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Tue, 08 Oct 2019 09:28:37 +02:00
 
-> The following commit has been merged into the x86/platform branch of tip:
-> 
-> Commit-ID:     dac59f1eb78123c3f0e497eb9870ac550c59debb
-> Gitweb:        https://git.kernel.org/tip/dac59f1eb78123c3f0e497eb9870ac550c59debb
-> Author:        Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>
-> AuthorDate:    Mon, 07 Oct 2019 14:38:19 +02:00
-> Committer:     Ingo Molnar <mingo@kernel.org>
-> CommitterDate: Mon, 07 Oct 2019 17:35:56 +02:00
-> 
-> x86/jailhouse: Enable platform UARTs only if available
+x86/cpufeatures: Add feature bit RDPRU on AMD
 
-Never mind this commit notification - I pulled the two commits for the 
-time being, until Boris's feedback is addressed.
+AMD Zen 2 introduces a new RDPRU instruction which is used to give
+access to some processor registers that are typically only accessible
+when the privilege level is zero.
 
-Thanks,
+ECX is used as the implicit register to specify which register to read.
+RDPRU places the specified register’s value into EDX:EAX.
 
-	Ingo
+For example, the RDPRU instruction can be used to read MPERF and APERF
+at CPL > 0.
+
+Add the feature bit so it is visible in /proc/cpuinfo.
+
+Details are available in the AMD64 Architecture Programmer’s Manual:
+https://www.amd.com/system/files/TechDocs/24594.pdf
+
+Signed-off-by: Babu Moger <babu.moger@amd.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Cc: Aaron Lewis <aaronlewis@google.com>
+Cc: ak@linux.intel.com
+Cc: Fenghua Yu <fenghua.yu@intel.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Josh Poimboeuf <jpoimboe@redhat.com>
+Cc: "Peter Zijlstra (Intel)" <peterz@infradead.org>
+Cc: robert.hu@linux.intel.com
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Thomas Hellstrom <thellstrom@vmware.com>
+Cc: x86-ml <x86@kernel.org>
+Link: https://lkml.kernel.org/r/20191007204839.5727.10803.stgit@localhost.localdomain
+---
+ arch/x86/include/asm/cpufeatures.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
+index 0652d3e..1db10a1 100644
+--- a/arch/x86/include/asm/cpufeatures.h
++++ b/arch/x86/include/asm/cpufeatures.h
+@@ -292,6 +292,7 @@
+ #define X86_FEATURE_CLZERO		(13*32+ 0) /* CLZERO instruction */
+ #define X86_FEATURE_IRPERF		(13*32+ 1) /* Instructions Retired Count */
+ #define X86_FEATURE_XSAVEERPTR		(13*32+ 2) /* Always save/restore FP error pointers */
++#define X86_FEATURE_RDPRU		(13*32+ 4) /* Read processor register at user level */
+ #define X86_FEATURE_WBNOINVD		(13*32+ 9) /* WBNOINVD instruction */
+ #define X86_FEATURE_AMD_IBPB		(13*32+12) /* "" Indirect Branch Prediction Barrier */
+ #define X86_FEATURE_AMD_IBRS		(13*32+14) /* "" Indirect Branch Restricted Speculation */
