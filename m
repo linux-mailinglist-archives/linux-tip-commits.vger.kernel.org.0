@@ -2,25 +2,25 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D00DCFF81
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  8 Oct 2019 19:05:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D9B1CFF84
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  8 Oct 2019 19:06:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725966AbfJHRF6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S1726353AbfJHRF6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Tue, 8 Oct 2019 13:05:58 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:48719 "EHLO
+Received: from Galois.linutronix.de ([193.142.43.55]:48721 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725900AbfJHRF6 (ORCPT
+        with ESMTP id S1725917AbfJHRF6 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Tue, 8 Oct 2019 13:05:58 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iHsvd-0005uI-WA; Tue, 08 Oct 2019 19:05:42 +0200
+        id 1iHsvk-0005uy-Dv; Tue, 08 Oct 2019 19:05:48 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 610E01C0325;
-        Tue,  8 Oct 2019 19:05:41 +0200 (CEST)
-Date:   Tue, 08 Oct 2019 17:05:41 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 0EAA91C0325;
+        Tue,  8 Oct 2019 19:05:48 +0200 (CEST)
+Date:   Tue, 08 Oct 2019 17:05:47 -0000
 From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
@@ -36,7 +36,7 @@ Cc:     Kan Liang <kan.liang@linux.intel.com>,
 In-Reply-To: <1570549810-25049-2-git-send-email-kan.liang@linux.intel.com>
 References: <1570549810-25049-2-git-send-email-kan.liang@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <157055434130.9978.17481146228630673128.tip-bot2@tip-bot2>
+Message-ID: <157055434795.9978.2925265055909387833.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
