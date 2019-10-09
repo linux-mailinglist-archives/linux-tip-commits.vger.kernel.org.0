@@ -2,41 +2,43 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4725CD0F57
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Oct 2019 14:59:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B7AED0F5B
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Oct 2019 14:59:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731270AbfJIM7d (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 9 Oct 2019 08:59:33 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:50915 "EHLO
+        id S1731370AbfJIM7g (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 9 Oct 2019 08:59:36 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:50923 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731237AbfJIM7c (ORCPT
+        with ESMTP id S1731329AbfJIM7g (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 9 Oct 2019 08:59:32 -0400
+        Wed, 9 Oct 2019 08:59:36 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iIBYr-0002pS-6h; Wed, 09 Oct 2019 14:59:25 +0200
+        id 1iIBYr-0002r1-5p; Wed, 09 Oct 2019 14:59:25 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 886A01C0270;
-        Wed,  9 Oct 2019 14:59:19 +0200 (CEST)
-Date:   Wed, 09 Oct 2019 12:59:19 -0000
-From:   "tip-bot2 for Song Liu" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 838C01C031F;
+        Wed,  9 Oct 2019 14:59:20 +0200 (CEST)
+Date:   Wed, 09 Oct 2019 12:59:20 -0000
+From:   "tip-bot2 for Frederic Weisbecker" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf/core: Fix corner case in perf_rotate_context()
-Cc:     Song Liu <songliubraving@fb.com>,
+Subject: [tip: sched/core] sched/cputime: Rename vtime_account_system() to
+ vtime_account_kernel()
+Cc:     Frederic Weisbecker <frederic@kernel.org>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        <kernel-team@fb.com>, Arnaldo Carvalho de Melo <acme@kernel.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
-        Sasha Levin <sashal@kernel.org>,
+        Rik van Riel <riel@redhat.com>,
         Thomas Gleixner <tglx@linutronix.de>,
+        Wanpeng Li <wanpengli@tencent.com>,
+        Yauheni Kaliuta <yauheni.kaliuta@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20191008165949.920548-1-songliubraving@fb.com>
-References: <20191008165949.920548-1-songliubraving@fb.com>
+In-Reply-To: <20191003161745.28464-2-frederic@kernel.org>
+References: <20191003161745.28464-2-frederic@kernel.org>
 MIME-Version: 1.0
-Message-ID: <157062595948.9978.4521559810702776433.tip-bot2@tip-bot2>
+Message-ID: <157062596047.9978.13993465481296426700.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,104 +52,242 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/urgent branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     7fa343b7fdc4f351de4e3f28d5c285937dd1f42f
-Gitweb:        https://git.kernel.org/tip/7fa343b7fdc4f351de4e3f28d5c285937dd1f42f
-Author:        Song Liu <songliubraving@fb.com>
-AuthorDate:    Tue, 08 Oct 2019 09:59:49 -07:00
+Commit-ID:     f83eeb1a01689b2691f6f56629ac9f66de8d41c2
+Gitweb:        https://git.kernel.org/tip/f83eeb1a01689b2691f6f56629ac9f66de8d41c2
+Author:        Frederic Weisbecker <frederic@kernel.org>
+AuthorDate:    Thu, 03 Oct 2019 18:17:44 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 09 Oct 2019 12:44:13 +02:00
+CommitterDate: Wed, 09 Oct 2019 12:39:25 +02:00
 
-perf/core: Fix corner case in perf_rotate_context()
+sched/cputime: Rename vtime_account_system() to vtime_account_kernel()
 
-In perf_rotate_context(), when the first cpu flexible event fail to
-schedule, cpu_rotate is 1, while cpu_event is NULL. Since cpu_event is
-NULL, perf_rotate_context will _NOT_ call cpu_ctx_sched_out(), thus
-cpuctx->ctx.is_active will have EVENT_FLEXIBLE set. Then, the next
-perf_event_sched_in() will skip all cpu flexible events because of the
-EVENT_FLEXIBLE bit.
+vtime_account_system() decides if we need to account the time to the
+system (__vtime_account_system()) or to the guest (vtime_account_guest()).
 
-In the next call of perf_rotate_context(), cpu_rotate stays 1, and
-cpu_event stays NULL, so this process repeats. The end result is, flexible
-events on this cpu will not be scheduled (until another event being added
-to the cpuctx).
+So this function is a misnomer as we are on a higher level than
+"system". All we know when we call that function is that we are
+accounting kernel cputime. Whether it belongs to guest or system time
+is a lower level detail.
 
-Here is an easy repro of this issue. On Intel CPUs, where ref-cycles
-could only use one counter, run one pinned event for ref-cycles, one
-flexible event for ref-cycles, and one flexible event for cycles. The
-flexible ref-cycles is never scheduled, which is expected. However,
-because of this issue, the cycles event is never scheduled either.
+Rename this function to vtime_account_kernel(). This will clarify things
+and avoid too many underscored vtime_account_system() versions.
 
- $ perf stat -e ref-cycles:D,ref-cycles,cycles -C 5 -I 1000
-
-           time             counts unit events
-    1.000152973         15,412,480      ref-cycles:D
-    1.000152973      <not counted>      ref-cycles     (0.00%)
-    1.000152973      <not counted>      cycles         (0.00%)
-    2.000486957         18,263,120      ref-cycles:D
-    2.000486957      <not counted>      ref-cycles     (0.00%)
-    2.000486957      <not counted>      cycles         (0.00%)
-
-To fix this, when the flexible_active list is empty, try rotate the
-first event in the flexible_groups. Also, rename ctx_first_active() to
-ctx_event_to_rotate(), which is more accurate.
-
-Signed-off-by: Song Liu <songliubraving@fb.com>
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: <kernel-team@fb.com>
-Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Sasha Levin <sashal@kernel.org>
+Cc: Rik van Riel <riel@redhat.com>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Fixes: 8d5bce0c37fa ("perf/core: Optimize perf_rotate_context() event scheduling")
-Link: https://lkml.kernel.org/r/20191008165949.920548-1-songliubraving@fb.com
+Cc: Wanpeng Li <wanpengli@tencent.com>
+Cc: Yauheni Kaliuta <yauheni.kaliuta@redhat.com>
+Link: https://lkml.kernel.org/r/20191003161745.28464-2-frederic@kernel.org
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- kernel/events/core.c | 22 +++++++++++++++++-----
- 1 file changed, 17 insertions(+), 5 deletions(-)
+ arch/ia64/kernel/time.c          |  4 ++--
+ arch/powerpc/kernel/time.c       |  6 +++---
+ arch/s390/kernel/vtime.c         |  4 ++--
+ include/linux/context_tracking.h |  4 ++--
+ include/linux/vtime.h            |  6 +++---
+ kernel/sched/cputime.c           | 18 +++++++++---------
+ 6 files changed, 21 insertions(+), 21 deletions(-)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 2b8265a..9ec0b0b 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -3779,11 +3779,23 @@ static void rotate_ctx(struct perf_event_context *ctx, struct perf_event *event)
- 	perf_event_groups_insert(&ctx->flexible_groups, event);
+diff --git a/arch/ia64/kernel/time.c b/arch/ia64/kernel/time.c
+index 1e95d32..91b4024 100644
+--- a/arch/ia64/kernel/time.c
++++ b/arch/ia64/kernel/time.c
+@@ -132,7 +132,7 @@ static __u64 vtime_delta(struct task_struct *tsk)
+ 	return delta_stime;
  }
  
-+/* pick an event from the flexible_groups to rotate */
- static inline struct perf_event *
--ctx_first_active(struct perf_event_context *ctx)
-+ctx_event_to_rotate(struct perf_event_context *ctx)
+-void vtime_account_system(struct task_struct *tsk)
++void vtime_account_kernel(struct task_struct *tsk)
  {
--	return list_first_entry_or_null(&ctx->flexible_active,
--					struct perf_event, active_list);
-+	struct perf_event *event;
-+
-+	/* pick the first active flexible event */
-+	event = list_first_entry_or_null(&ctx->flexible_active,
-+					 struct perf_event, active_list);
-+
-+	/* if no active flexible event, pick the first event */
-+	if (!event) {
-+		event = rb_entry_safe(rb_first(&ctx->flexible_groups.tree),
-+				      typeof(*event), group_node);
-+	}
-+
-+	return event;
+ 	struct thread_info *ti = task_thread_info(tsk);
+ 	__u64 stime = vtime_delta(tsk);
+@@ -146,7 +146,7 @@ void vtime_account_system(struct task_struct *tsk)
+ 	else
+ 		ti->stime += stime;
+ }
+-EXPORT_SYMBOL_GPL(vtime_account_system);
++EXPORT_SYMBOL_GPL(vtime_account_kernel);
+ 
+ void vtime_account_idle(struct task_struct *tsk)
+ {
+diff --git a/arch/powerpc/kernel/time.c b/arch/powerpc/kernel/time.c
+index 6945223..84827da 100644
+--- a/arch/powerpc/kernel/time.c
++++ b/arch/powerpc/kernel/time.c
+@@ -338,7 +338,7 @@ static unsigned long vtime_delta(struct task_struct *tsk,
+ 	return stime;
  }
  
- static bool perf_rotate_context(struct perf_cpu_context *cpuctx)
-@@ -3808,9 +3820,9 @@ static bool perf_rotate_context(struct perf_cpu_context *cpuctx)
- 	perf_pmu_disable(cpuctx->ctx.pmu);
+-void vtime_account_system(struct task_struct *tsk)
++void vtime_account_kernel(struct task_struct *tsk)
+ {
+ 	unsigned long stime, stime_scaled, steal_time;
+ 	struct cpu_accounting_data *acct = get_accounting(tsk);
+@@ -366,7 +366,7 @@ void vtime_account_system(struct task_struct *tsk)
+ #endif
+ 	}
+ }
+-EXPORT_SYMBOL_GPL(vtime_account_system);
++EXPORT_SYMBOL_GPL(vtime_account_kernel);
  
- 	if (task_rotate)
--		task_event = ctx_first_active(task_ctx);
-+		task_event = ctx_event_to_rotate(task_ctx);
- 	if (cpu_rotate)
--		cpu_event = ctx_first_active(&cpuctx->ctx);
-+		cpu_event = ctx_event_to_rotate(&cpuctx->ctx);
+ void vtime_account_idle(struct task_struct *tsk)
+ {
+@@ -395,7 +395,7 @@ static void vtime_flush_scaled(struct task_struct *tsk,
+ /*
+  * Account the whole cputime accumulated in the paca
+  * Must be called with interrupts disabled.
+- * Assumes that vtime_account_system/idle() has been called
++ * Assumes that vtime_account_kernel/idle() has been called
+  * recently (i.e. since the last entry from usermode) so that
+  * get_paca()->user_time_scaled is up to date.
+  */
+diff --git a/arch/s390/kernel/vtime.c b/arch/s390/kernel/vtime.c
+index c475ca4..8df10d3 100644
+--- a/arch/s390/kernel/vtime.c
++++ b/arch/s390/kernel/vtime.c
+@@ -247,9 +247,9 @@ void vtime_account_irq_enter(struct task_struct *tsk)
+ }
+ EXPORT_SYMBOL_GPL(vtime_account_irq_enter);
  
- 	/*
- 	 * As per the order given at ctx_resched() first 'pop' task flexible
+-void vtime_account_system(struct task_struct *tsk)
++void vtime_account_kernel(struct task_struct *tsk)
+ __attribute__((alias("vtime_account_irq_enter")));
+-EXPORT_SYMBOL_GPL(vtime_account_system);
++EXPORT_SYMBOL_GPL(vtime_account_kernel);
+ 
+ /*
+  * Sorted add to a list. List is linear searched until first bigger
+diff --git a/include/linux/context_tracking.h b/include/linux/context_tracking.h
+index d05609a..558a209 100644
+--- a/include/linux/context_tracking.h
++++ b/include/linux/context_tracking.h
+@@ -141,7 +141,7 @@ static inline void guest_enter_irqoff(void)
+ 	 * to assume that it's the stime pending cputime
+ 	 * to flush.
+ 	 */
+-	vtime_account_system(current);
++	vtime_account_kernel(current);
+ 	current->flags |= PF_VCPU;
+ 	rcu_virt_note_context_switch(smp_processor_id());
+ }
+@@ -149,7 +149,7 @@ static inline void guest_enter_irqoff(void)
+ static inline void guest_exit_irqoff(void)
+ {
+ 	/* Flush the guest cputime we spent on the guest */
+-	vtime_account_system(current);
++	vtime_account_kernel(current);
+ 	current->flags &= ~PF_VCPU;
+ }
+ #endif /* CONFIG_VIRT_CPU_ACCOUNTING_GEN */
+diff --git a/include/linux/vtime.h b/include/linux/vtime.h
+index a26ed10..2fd247f 100644
+--- a/include/linux/vtime.h
++++ b/include/linux/vtime.h
+@@ -57,13 +57,13 @@ static inline void vtime_task_switch(struct task_struct *prev)
+ }
+ #endif /* __ARCH_HAS_VTIME_TASK_SWITCH */
+ 
+-extern void vtime_account_system(struct task_struct *tsk);
++extern void vtime_account_kernel(struct task_struct *tsk);
+ extern void vtime_account_idle(struct task_struct *tsk);
+ 
+ #else /* !CONFIG_VIRT_CPU_ACCOUNTING */
+ 
+ static inline void vtime_task_switch(struct task_struct *prev) { }
+-static inline void vtime_account_system(struct task_struct *tsk) { }
++static inline void vtime_account_kernel(struct task_struct *tsk) { }
+ #endif /* !CONFIG_VIRT_CPU_ACCOUNTING */
+ 
+ #ifdef CONFIG_VIRT_CPU_ACCOUNTING_GEN
+@@ -86,7 +86,7 @@ extern void vtime_account_irq_enter(struct task_struct *tsk);
+ static inline void vtime_account_irq_exit(struct task_struct *tsk)
+ {
+ 	/* On hard|softirq exit we always account to hard|softirq cputime */
+-	vtime_account_system(tsk);
++	vtime_account_kernel(tsk);
+ }
+ extern void vtime_flush(struct task_struct *tsk);
+ #else /* !CONFIG_VIRT_CPU_ACCOUNTING_NATIVE */
+diff --git a/kernel/sched/cputime.c b/kernel/sched/cputime.c
+index 46ed4e1..b45932e 100644
+--- a/kernel/sched/cputime.c
++++ b/kernel/sched/cputime.c
+@@ -412,7 +412,7 @@ void vtime_common_task_switch(struct task_struct *prev)
+ 	if (is_idle_task(prev))
+ 		vtime_account_idle(prev);
+ 	else
+-		vtime_account_system(prev);
++		vtime_account_kernel(prev);
+ 
+ 	vtime_flush(prev);
+ 	arch_vtime_task_switch(prev);
+@@ -425,7 +425,7 @@ void vtime_common_task_switch(struct task_struct *prev)
+ /*
+  * Archs that account the whole time spent in the idle task
+  * (outside irq) as idle time can rely on this and just implement
+- * vtime_account_system() and vtime_account_idle(). Archs that
++ * vtime_account_kernel() and vtime_account_idle(). Archs that
+  * have other meaning of the idle time (s390 only includes the
+  * time spent by the CPU when it's in low power mode) must override
+  * vtime_account().
+@@ -436,7 +436,7 @@ void vtime_account_irq_enter(struct task_struct *tsk)
+ 	if (!in_interrupt() && is_idle_task(tsk))
+ 		vtime_account_idle(tsk);
+ 	else
+-		vtime_account_system(tsk);
++		vtime_account_kernel(tsk);
+ }
+ EXPORT_SYMBOL_GPL(vtime_account_irq_enter);
+ #endif /* __ARCH_HAS_VTIME_ACCOUNT */
+@@ -711,8 +711,8 @@ static u64 get_vtime_delta(struct vtime *vtime)
+ 	return delta - other;
+ }
+ 
+-static void __vtime_account_system(struct task_struct *tsk,
+-				   struct vtime *vtime)
++static void vtime_account_system(struct task_struct *tsk,
++				 struct vtime *vtime)
+ {
+ 	vtime->stime += get_vtime_delta(vtime);
+ 	if (vtime->stime >= TICK_NSEC) {
+@@ -731,7 +731,7 @@ static void vtime_account_guest(struct task_struct *tsk,
+ 	}
+ }
+ 
+-void vtime_account_system(struct task_struct *tsk)
++void vtime_account_kernel(struct task_struct *tsk)
+ {
+ 	struct vtime *vtime = &tsk->vtime;
+ 
+@@ -743,7 +743,7 @@ void vtime_account_system(struct task_struct *tsk)
+ 	if (tsk->flags & PF_VCPU)
+ 		vtime_account_guest(tsk, vtime);
+ 	else
+-		__vtime_account_system(tsk, vtime);
++		vtime_account_system(tsk, vtime);
+ 	write_seqcount_end(&vtime->seqcount);
+ }
+ 
+@@ -752,7 +752,7 @@ void vtime_user_enter(struct task_struct *tsk)
+ 	struct vtime *vtime = &tsk->vtime;
+ 
+ 	write_seqcount_begin(&vtime->seqcount);
+-	__vtime_account_system(tsk, vtime);
++	vtime_account_system(tsk, vtime);
+ 	vtime->state = VTIME_USER;
+ 	write_seqcount_end(&vtime->seqcount);
+ }
+@@ -782,7 +782,7 @@ void vtime_guest_enter(struct task_struct *tsk)
+ 	 * that can thus safely catch up with a tickless delta.
+ 	 */
+ 	write_seqcount_begin(&vtime->seqcount);
+-	__vtime_account_system(tsk, vtime);
++	vtime_account_system(tsk, vtime);
+ 	tsk->flags |= PF_VCPU;
+ 	write_seqcount_end(&vtime->seqcount);
+ }
