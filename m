@@ -2,40 +2,43 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DC09D0F63
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Oct 2019 15:00:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B6AA1D0F68
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Oct 2019 15:00:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731375AbfJIM7h (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 9 Oct 2019 08:59:37 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:50940 "EHLO
+        id S1731267AbfJINAB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 9 Oct 2019 09:00:01 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:50929 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731356AbfJIM7h (ORCPT
+        with ESMTP id S1731335AbfJIM7f (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 9 Oct 2019 08:59:37 -0400
+        Wed, 9 Oct 2019 08:59:35 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iIBYr-0002pT-4v; Wed, 09 Oct 2019 14:59:25 +0200
+        id 1iIBYo-0002oe-PV; Wed, 09 Oct 2019 14:59:22 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id AFAD01C028F;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5DEB81C026C;
         Wed,  9 Oct 2019 14:59:19 +0200 (CEST)
 Date:   Wed, 09 Oct 2019 12:59:19 -0000
-From:   "tip-bot2 for Song Liu" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Tom Lendacky" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf/core: Rework memory accounting in perf_mmap()
-Cc:     Hechao Li <hechaol@fb.com>, Song Liu <songliubraving@fb.com>,
+Subject: [tip: perf/urgent] perf/x86/amd: Change/fix NMI latency mitigation to
+ use a timestamp
+Cc:     Tom Lendacky <thomas.lendacky@amd.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        <kernel-team@fb.com>, Jie Meng <jmeng@fb.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Borislav Petkov <bp@alien8.de>,
+        Jerry Hoemann <jerry.hoemann@hpe.com>,
+        Jiri Olsa <jolsa@redhat.com>,
         Linus Torvalds <torvalds@linux-foundation.org>,
+        Namhyung Kim <namhyung@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20190904214618.3795672-1-songliubraving@fb.com>
-References: <20190904214618.3795672-1-songliubraving@fb.com>
+        Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <157062595964.9978.13325399994782902718.tip-bot2@tip-bot2>
+Message-ID: <157062595932.9978.12198303438251229144.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,78 +54,130 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     d44248a41337731a111374822d7d4451b64e73e4
-Gitweb:        https://git.kernel.org/tip/d44248a41337731a111374822d7d4451b64e73e4
-Author:        Song Liu <songliubraving@fb.com>
-AuthorDate:    Wed, 04 Sep 2019 14:46:18 -07:00
+Commit-ID:     df4d29732fdad43a51284f826bec3e6ded177540
+Gitweb:        https://git.kernel.org/tip/df4d29732fdad43a51284f826bec3e6ded177540
+Author:        Tom Lendacky <thomas.lendacky@amd.com>
+AuthorDate:    Thu, 01 Aug 2019 18:57:41 
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 09 Oct 2019 12:44:12 +02:00
+CommitterDate: Wed, 09 Oct 2019 12:44:14 +02:00
 
-perf/core: Rework memory accounting in perf_mmap()
+perf/x86/amd: Change/fix NMI latency mitigation to use a timestamp
 
-perf_mmap() always increases user->locked_vm. As a result, "extra" could
-grow bigger than "user_extra", which doesn't make sense. Here is an
-example case:
+It turns out that the NMI latency workaround from commit:
 
-(Note: Assume "user_lock_limit" is very small.)
+  6d3edaae16c6 ("x86/perf/amd: Resolve NMI latency issues for active PMCs")
 
-  | # of perf_mmap calls |vma->vm_mm->pinned_vm|user->locked_vm|
-  | 0                    | 0                   | 0             |
-  | 1                    | user_extra          | user_extra    |
-  | 2                    | 3 * user_extra      | 2 * user_extra|
-  | 3                    | 6 * user_extra      | 3 * user_extra|
-  | 4                    | 10 * user_extra     | 4 * user_extra|
+ends up being too conservative and results in the perf NMI handler claiming
+NMIs too easily on AMD hardware when the NMI watchdog is active.
 
-Fix this by maintaining proper user_extra and extra.
+This has an impact, for example, on the hpwdt (HPE watchdog timer) module.
+This module can produce an NMI that is used to reset the system. It
+registers an NMI handler for the NMI_UNKNOWN type and relies on the fact
+that nothing has claimed an NMI so that its handler will be invoked when
+the watchdog device produces an NMI. After the referenced commit, the
+hpwdt module is unable to process its generated NMI if the NMI watchdog is
+active, because the current NMI latency mitigation results in the NMI
+being claimed by the perf NMI handler.
 
-Reviewed-By: Hechao Li <hechaol@fb.com>
-Reported-by: Hechao Li <hechaol@fb.com>
-Signed-off-by: Song Liu <songliubraving@fb.com>
+Update the AMD perf NMI latency mitigation workaround to, instead, use a
+window of time. Whenever a PMC is handled in the perf NMI handler, set a
+timestamp which will act as a perf NMI window. Any NMIs arriving within
+that window will be claimed by perf. Anything outside that window will
+not be claimed by perf. The value for the NMI window is set to 100 msecs.
+This is a conservative value that easily covers any NMI latency in the
+hardware. While this still results in a window in which the hpwdt module
+will not receive its NMI, the window is now much, much smaller.
+
+Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: <kernel-team@fb.com>
-Cc: Jie Meng <jmeng@fb.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Jerry Hoemann <jerry.hoemann@hpe.com>
+Cc: Jiri Olsa <jolsa@redhat.com>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20190904214618.3795672-1-songliubraving@fb.com
+Fixes: 6d3edaae16c6 ("x86/perf/amd: Resolve NMI latency issues for active PMCs")
+Link: https://lkml.kernel.org/r/Message-ID:
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- kernel/events/core.c | 17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
+ arch/x86/events/amd/core.c | 30 +++++++++++++++++-------------
+ 1 file changed, 17 insertions(+), 13 deletions(-)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index f953dd1..2b8265a 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -5668,7 +5668,8 @@ again:
- 	 * undo the VM accounting.
+diff --git a/arch/x86/events/amd/core.c b/arch/x86/events/amd/core.c
+index e7d35f6..64c3e70 100644
+--- a/arch/x86/events/amd/core.c
++++ b/arch/x86/events/amd/core.c
+@@ -5,12 +5,14 @@
+ #include <linux/init.h>
+ #include <linux/slab.h>
+ #include <linux/delay.h>
++#include <linux/jiffies.h>
+ #include <asm/apicdef.h>
+ #include <asm/nmi.h>
+ 
+ #include "../perf_event.h"
+ 
+-static DEFINE_PER_CPU(unsigned int, perf_nmi_counter);
++static DEFINE_PER_CPU(unsigned long, perf_nmi_tstamp);
++static unsigned long perf_nmi_window;
+ 
+ static __initconst const u64 amd_hw_cache_event_ids
+ 				[PERF_COUNT_HW_CACHE_MAX]
+@@ -641,11 +643,12 @@ static void amd_pmu_disable_event(struct perf_event *event)
+  * handler when multiple PMCs are active or PMC overflow while handling some
+  * other source of an NMI.
+  *
+- * Attempt to mitigate this by using the number of active PMCs to determine
+- * whether to return NMI_HANDLED if the perf NMI handler did not handle/reset
+- * any PMCs. The per-CPU perf_nmi_counter variable is set to a minimum of the
+- * number of active PMCs or 2. The value of 2 is used in case an NMI does not
+- * arrive at the LAPIC in time to be collapsed into an already pending NMI.
++ * Attempt to mitigate this by creating an NMI window in which un-handled NMIs
++ * received during this window will be claimed. This prevents extending the
++ * window past when it is possible that latent NMIs should be received. The
++ * per-CPU perf_nmi_tstamp will be set to the window end time whenever perf has
++ * handled a counter. When an un-handled NMI is received, it will be claimed
++ * only if arriving within that window.
+  */
+ static int amd_pmu_handle_irq(struct pt_regs *regs)
+ {
+@@ -663,21 +666,19 @@ static int amd_pmu_handle_irq(struct pt_regs *regs)
+ 	handled = x86_pmu_handle_irq(regs);
+ 
+ 	/*
+-	 * If a counter was handled, record the number of possible remaining
+-	 * NMIs that can occur.
++	 * If a counter was handled, record a timestamp such that un-handled
++	 * NMIs will be claimed if arriving within that window.
  	 */
+ 	if (handled) {
+-		this_cpu_write(perf_nmi_counter,
+-			       min_t(unsigned int, 2, active));
++		this_cpu_write(perf_nmi_tstamp,
++			       jiffies + perf_nmi_window);
  
--	atomic_long_sub((size >> PAGE_SHIFT) + 1, &mmap_user->locked_vm);
-+	atomic_long_sub((size >> PAGE_SHIFT) + 1 - mmap_locked,
-+			&mmap_user->locked_vm);
- 	atomic64_sub(mmap_locked, &vma->vm_mm->pinned_vm);
- 	free_uid(mmap_user);
+ 		return handled;
+ 	}
  
-@@ -5812,8 +5813,20 @@ accounting:
+-	if (!this_cpu_read(perf_nmi_counter))
++	if (time_after(jiffies, this_cpu_read(perf_nmi_tstamp)))
+ 		return NMI_DONE;
  
- 	user_locked = atomic_long_read(&user->locked_vm) + user_extra;
+-	this_cpu_dec(perf_nmi_counter);
+-
+ 	return NMI_HANDLED;
+ }
  
--	if (user_locked > user_lock_limit)
-+	if (user_locked <= user_lock_limit) {
-+		/* charge all to locked_vm */
-+	} else if (atomic_long_read(&user->locked_vm) >= user_lock_limit) {
-+		/* charge all to pinned_vm */
-+		extra = user_extra;
-+		user_extra = 0;
-+	} else {
-+		/*
-+		 * charge locked_vm until it hits user_lock_limit;
-+		 * charge the rest from pinned_vm
-+		 */
- 		extra = user_locked - user_lock_limit;
-+		user_extra -= extra;
-+	}
+@@ -909,6 +910,9 @@ static int __init amd_core_pmu_init(void)
+ 	if (!boot_cpu_has(X86_FEATURE_PERFCTR_CORE))
+ 		return 0;
  
- 	lock_limit = rlimit(RLIMIT_MEMLOCK);
- 	lock_limit >>= PAGE_SHIFT;
++	/* Avoid calulating the value each time in the NMI handler */
++	perf_nmi_window = msecs_to_jiffies(100);
++
+ 	switch (boot_cpu_data.x86) {
+ 	case 0x15:
+ 		pr_cont("Fam15h ");
