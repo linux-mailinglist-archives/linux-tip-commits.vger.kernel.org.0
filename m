@@ -2,39 +2,41 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B57A2D0F58
+	by mail.lfdr.de (Postfix) with ESMTP id 4725CD0F57
 	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Oct 2019 14:59:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731338AbfJIM7d (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S1731270AbfJIM7d (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Wed, 9 Oct 2019 08:59:33 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:50884 "EHLO
+Received: from Galois.linutronix.de ([193.142.43.55]:50915 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731240AbfJIM72 (ORCPT
+        with ESMTP id S1731237AbfJIM7c (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 9 Oct 2019 08:59:28 -0400
+        Wed, 9 Oct 2019 08:59:32 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iIBYm-0002oB-No; Wed, 09 Oct 2019 14:59:20 +0200
+        id 1iIBYr-0002pS-6h; Wed, 09 Oct 2019 14:59:25 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 2B9741C0196;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 886A01C0270;
         Wed,  9 Oct 2019 14:59:19 +0200 (CEST)
 Date:   Wed, 09 Oct 2019 12:59:19 -0000
-From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Song Liu" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf/x86/intel: Add Comet Lake CPU support
-Cc:     Kan Liang <kan.liang@linux.intel.com>,
+Subject: [tip: perf/urgent] perf/core: Fix corner case in perf_rotate_context()
+Cc:     Song Liu <songliubraving@fb.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        <kernel-team@fb.com>, Arnaldo Carvalho de Melo <acme@kernel.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
+        Sasha Levin <sashal@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <1570549810-25049-3-git-send-email-kan.liang@linux.intel.com>
-References: <1570549810-25049-3-git-send-email-kan.liang@linux.intel.com>
+In-Reply-To: <20191008165949.920548-1-songliubraving@fb.com>
+References: <20191008165949.920548-1-songliubraving@fb.com>
 MIME-Version: 1.0
-Message-ID: <157062595909.9978.574392608807261438.tip-bot2@tip-bot2>
+Message-ID: <157062595948.9978.4521559810702776433.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,42 +52,102 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     a53ad0305c1f25edf63db8ae2a9a0289af8d73d4
-Gitweb:        https://git.kernel.org/tip/a53ad0305c1f25edf63db8ae2a9a0289af8d73d4
-Author:        Kan Liang <kan.liang@linux.intel.com>
-AuthorDate:    Tue, 08 Oct 2019 08:50:03 -07:00
+Commit-ID:     7fa343b7fdc4f351de4e3f28d5c285937dd1f42f
+Gitweb:        https://git.kernel.org/tip/7fa343b7fdc4f351de4e3f28d5c285937dd1f42f
+Author:        Song Liu <songliubraving@fb.com>
+AuthorDate:    Tue, 08 Oct 2019 09:59:49 -07:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 09 Oct 2019 12:44:14 +02:00
+CommitterDate: Wed, 09 Oct 2019 12:44:13 +02:00
 
-perf/x86/intel: Add Comet Lake CPU support
+perf/core: Fix corner case in perf_rotate_context()
 
-Comet Lake is the new 10th Gen Intel processor. From the perspective
-of Intel PMU, there is nothing changed compared with Sky Lake.
-Share the perf code with Sky Lake.
+In perf_rotate_context(), when the first cpu flexible event fail to
+schedule, cpu_rotate is 1, while cpu_event is NULL. Since cpu_event is
+NULL, perf_rotate_context will _NOT_ call cpu_ctx_sched_out(), thus
+cpuctx->ctx.is_active will have EVENT_FLEXIBLE set. Then, the next
+perf_event_sched_in() will skip all cpu flexible events because of the
+EVENT_FLEXIBLE bit.
 
-The patch has been tested on real hardware.
+In the next call of perf_rotate_context(), cpu_rotate stays 1, and
+cpu_event stays NULL, so this process repeats. The end result is, flexible
+events on this cpu will not be scheduled (until another event being added
+to the cpuctx).
 
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Here is an easy repro of this issue. On Intel CPUs, where ref-cycles
+could only use one counter, run one pinned event for ref-cycles, one
+flexible event for ref-cycles, and one flexible event for cycles. The
+flexible ref-cycles is never scheduled, which is expected. However,
+because of this issue, the cycles event is never scheduled either.
+
+ $ perf stat -e ref-cycles:D,ref-cycles,cycles -C 5 -I 1000
+
+           time             counts unit events
+    1.000152973         15,412,480      ref-cycles:D
+    1.000152973      <not counted>      ref-cycles     (0.00%)
+    1.000152973      <not counted>      cycles         (0.00%)
+    2.000486957         18,263,120      ref-cycles:D
+    2.000486957      <not counted>      ref-cycles     (0.00%)
+    2.000486957      <not counted>      cycles         (0.00%)
+
+To fix this, when the flexible_active list is empty, try rotate the
+first event in the flexible_groups. Also, rename ctx_first_active() to
+ctx_event_to_rotate(), which is more accurate.
+
+Signed-off-by: Song Liu <songliubraving@fb.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: <kernel-team@fb.com>
+Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Sasha Levin <sashal@kernel.org>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/1570549810-25049-3-git-send-email-kan.liang@linux.intel.com
+Fixes: 8d5bce0c37fa ("perf/core: Optimize perf_rotate_context() event scheduling")
+Link: https://lkml.kernel.org/r/20191008165949.920548-1-songliubraving@fb.com
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- arch/x86/events/intel/core.c | 2 ++
- 1 file changed, 2 insertions(+)
+ kernel/events/core.c | 22 +++++++++++++++++-----
+ 1 file changed, 17 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-index 27ee47a..9d91a47 100644
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -4983,6 +4983,8 @@ __init int intel_pmu_init(void)
- 	case INTEL_FAM6_SKYLAKE:
- 	case INTEL_FAM6_KABYLAKE_L:
- 	case INTEL_FAM6_KABYLAKE:
-+	case INTEL_FAM6_COMETLAKE_L:
-+	case INTEL_FAM6_COMETLAKE:
- 		x86_add_quirk(intel_pebs_isolation_quirk);
- 		x86_pmu.late_ack = true;
- 		memcpy(hw_cache_event_ids, skl_hw_cache_event_ids, sizeof(hw_cache_event_ids));
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 2b8265a..9ec0b0b 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -3779,11 +3779,23 @@ static void rotate_ctx(struct perf_event_context *ctx, struct perf_event *event)
+ 	perf_event_groups_insert(&ctx->flexible_groups, event);
+ }
+ 
++/* pick an event from the flexible_groups to rotate */
+ static inline struct perf_event *
+-ctx_first_active(struct perf_event_context *ctx)
++ctx_event_to_rotate(struct perf_event_context *ctx)
+ {
+-	return list_first_entry_or_null(&ctx->flexible_active,
+-					struct perf_event, active_list);
++	struct perf_event *event;
++
++	/* pick the first active flexible event */
++	event = list_first_entry_or_null(&ctx->flexible_active,
++					 struct perf_event, active_list);
++
++	/* if no active flexible event, pick the first event */
++	if (!event) {
++		event = rb_entry_safe(rb_first(&ctx->flexible_groups.tree),
++				      typeof(*event), group_node);
++	}
++
++	return event;
+ }
+ 
+ static bool perf_rotate_context(struct perf_cpu_context *cpuctx)
+@@ -3808,9 +3820,9 @@ static bool perf_rotate_context(struct perf_cpu_context *cpuctx)
+ 	perf_pmu_disable(cpuctx->ctx.pmu);
+ 
+ 	if (task_rotate)
+-		task_event = ctx_first_active(task_ctx);
++		task_event = ctx_event_to_rotate(task_ctx);
+ 	if (cpu_rotate)
+-		cpu_event = ctx_first_active(&cpuctx->ctx);
++		cpu_event = ctx_event_to_rotate(&cpuctx->ctx);
+ 
+ 	/*
+ 	 * As per the order given at ctx_resched() first 'pop' task flexible
