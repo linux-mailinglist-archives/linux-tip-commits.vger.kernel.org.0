@@ -2,113 +2,157 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D4F24D02BF
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  8 Oct 2019 23:20:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E1BC2D0F52
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Oct 2019 14:59:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731081AbfJHVUq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 8 Oct 2019 17:20:46 -0400
-Received: from atrey.karlin.mff.cuni.cz ([195.113.26.193]:55910 "EHLO
-        atrey.karlin.mff.cuni.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730720AbfJHVUp (ORCPT
+        id S1731241AbfJIM71 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 9 Oct 2019 08:59:27 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:50858 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730490AbfJIM71 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 8 Oct 2019 17:20:45 -0400
-Received: by atrey.karlin.mff.cuni.cz (Postfix, from userid 512)
-        id 31D218030B; Tue,  8 Oct 2019 23:20:28 +0200 (CEST)
-Date:   Tue, 8 Oct 2019 23:20:41 +0200
-From:   Pavel Machek <pavel@ucw.cz>
-To:     "H. Peter Anvin" <hpa@zytor.com>
-Cc:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-        "x86@kernel.org" <x86@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
-        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Juergen Gross <jgross@suse.com>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Ingo Molnar <mingo@redhat.com>, Chen Yu <yu.c.chen@intel.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Andrew Cooper <andrew.cooper3@citrix.com>,
-        Borislav Petkov <bp@suse.de>,
-        Tom Lendacky <thomas.lendacky@amd.com>
-Subject: Re: [tip: x86/urgent] x86/CPU/AMD: Clear RDRAND CPUID bit on AMD
- family 15h/16h
-Message-ID: <20191008212041.GA7222@amd>
-References: <7543af91666f491547bd86cebb1e17c66824ab9f.1566229943.git.thomas.lendacky@amd.com>
- <156652264945.9541.4969272027980914591.tip-bot2@tip-bot2>
- <20190824181929.GA18551@amd>
- <409703ae-6d70-3f6a-d6fc-b7dada3c2797@zytor.com>
+        Wed, 9 Oct 2019 08:59:27 -0400
+Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tip-bot2@linutronix.de>)
+        id 1iIBYl-0002nB-DJ; Wed, 09 Oct 2019 14:59:19 +0200
+Received: from [127.0.1.1] (localhost [IPv6:::1])
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id CA0081C01BD;
+        Wed,  9 Oct 2019 14:59:18 +0200 (CEST)
+Date:   Wed, 09 Oct 2019 12:59:18 -0000
+From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: perf/urgent] perf/x86/cstate: Add Comet Lake CPU support
+Cc:     Kan Liang <kan.liang@linux.intel.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <1570549810-25049-5-git-send-email-kan.liang@linux.intel.com>
+References: <1570549810-25049-5-git-send-email-kan.liang@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="Nq2Wo0NMKNjxTN9z"
-Content-Disposition: inline
-In-Reply-To: <409703ae-6d70-3f6a-d6fc-b7dada3c2797@zytor.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+Message-ID: <157062595875.9978.11184059757208184047.tip-bot2@tip-bot2>
+X-Mailer: tip-git-log-daemon
+Robot-ID: <tip-bot2.linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
+The following commit has been merged into the perf/urgent branch of tip:
 
---Nq2Wo0NMKNjxTN9z
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Commit-ID:     1d4d9a6e37ebe8e4ffc3abfcdd24988e7f89df4a
+Gitweb:        https://git.kernel.org/tip/1d4d9a6e37ebe8e4ffc3abfcdd24988e7f89df4a
+Author:        Kan Liang <kan.liang@linux.intel.com>
+AuthorDate:    Tue, 08 Oct 2019 08:50:05 -07:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Wed, 09 Oct 2019 12:44:15 +02:00
 
-Hi!
+perf/x86/cstate: Add Comet Lake CPU support
 
-> >> x86/CPU/AMD: Clear RDRAND CPUID bit on AMD family 15h/16h
-> >>
-> >> There have been reports of RDRAND issues after resuming from suspend on
-> >> some AMD family 15h and family 16h systems. This issue stems from a BI=
-OS
-> >> not performing the proper steps during resume to ensure RDRAND continu=
-es
-> >> to function properly.
-> >=20
-> > There are quite a few unanswered questions here.
-> >=20
-> > a) Is there/should there be CVE for this?
-> >=20
-> > b) Can we perform proper steps in kernel, thus making RDRAND usable
-> > even when BIOS is buggy?
-> >=20
->=20
-> The kernel should at least be able to set its internal "CPUID" bit, visib=
-le
-> through /proc/cpuinfo.
+Comet Lake is the new 10th Gen Intel processor. From the perspective of
+Intel cstate residency counters, there is nothing changed compared with
+Kaby Lake.
 
-Actually, with hindsight I see two possible improvements here:
+Share hswult_cstates with Kaby Lake.
+Update the comments for Comet Lake.
+Kaby Lake is missed in the comments for some Residency Counters. Update
+the comments for Kaby Lake as well.
 
-1) Not having enabled s2ram in config does not mean machine was not
-suspended/resumed, then new kernel executed via kexec.
+The External Design Specification (EDS) is not published yet. It comes
+from an authoritative internal source.
 
-2) We really can continue using the RDRAND: we know how it fails
-(constant pattern) so we can check for the failure in kernel, and can
-continue to use it... It will certainly work until first suspend, and
-there's good chance it will work after that, too. (We still need to
-prevent userspace from using it).
+The patch has been tested on real hardware.
 
-Best regards,
-									Pavel
---=20
-(english) http://www.livejournal.com/~pavelmachek
-(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blo=
-g.html
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lkml.kernel.org/r/1570549810-25049-5-git-send-email-kan.liang@linux.intel.com
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+---
+ arch/x86/events/intel/cstate.c | 24 ++++++++++++++----------
+ 1 file changed, 14 insertions(+), 10 deletions(-)
 
---Nq2Wo0NMKNjxTN9z
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iEYEARECAAYFAl2c/akACgkQMOfwapXb+vIAIgCfTtdPEk+einOr1l0u8g3JJUIR
-Hw8An3EIBITYsbuZfkKzqYAG/mjHPUe/
-=XIae
------END PGP SIGNATURE-----
-
---Nq2Wo0NMKNjxTN9z--
+diff --git a/arch/x86/events/intel/cstate.c b/arch/x86/events/intel/cstate.c
+index 9f2f390..21c65e1 100644
+--- a/arch/x86/events/intel/cstate.c
++++ b/arch/x86/events/intel/cstate.c
+@@ -45,46 +45,48 @@
+  *	MSR_CORE_C3_RESIDENCY: CORE C3 Residency Counter
+  *			       perf code: 0x01
+  *			       Available model: NHM,WSM,SNB,IVB,HSW,BDW,SKL,GLM,
+-						CNL
++ *						CNL,KBL,CML
+  *			       Scope: Core
+  *	MSR_CORE_C6_RESIDENCY: CORE C6 Residency Counter
+  *			       perf code: 0x02
+  *			       Available model: SLM,AMT,NHM,WSM,SNB,IVB,HSW,BDW,
+- *						SKL,KNL,GLM,CNL
++ *						SKL,KNL,GLM,CNL,KBL,CML
+  *			       Scope: Core
+  *	MSR_CORE_C7_RESIDENCY: CORE C7 Residency Counter
+  *			       perf code: 0x03
+- *			       Available model: SNB,IVB,HSW,BDW,SKL,CNL
++ *			       Available model: SNB,IVB,HSW,BDW,SKL,CNL,KBL,CML
+  *			       Scope: Core
+  *	MSR_PKG_C2_RESIDENCY:  Package C2 Residency Counter.
+  *			       perf code: 0x00
+- *			       Available model: SNB,IVB,HSW,BDW,SKL,KNL,GLM,CNL
++ *			       Available model: SNB,IVB,HSW,BDW,SKL,KNL,GLM,CNL,
++ *						KBL,CML
+  *			       Scope: Package (physical package)
+  *	MSR_PKG_C3_RESIDENCY:  Package C3 Residency Counter.
+  *			       perf code: 0x01
+  *			       Available model: NHM,WSM,SNB,IVB,HSW,BDW,SKL,KNL,
+- *						GLM,CNL
++ *						GLM,CNL,KBL,CML
+  *			       Scope: Package (physical package)
+  *	MSR_PKG_C6_RESIDENCY:  Package C6 Residency Counter.
+  *			       perf code: 0x02
+  *			       Available model: SLM,AMT,NHM,WSM,SNB,IVB,HSW,BDW
+- *						SKL,KNL,GLM,CNL
++ *						SKL,KNL,GLM,CNL,KBL,CML
+  *			       Scope: Package (physical package)
+  *	MSR_PKG_C7_RESIDENCY:  Package C7 Residency Counter.
+  *			       perf code: 0x03
+- *			       Available model: NHM,WSM,SNB,IVB,HSW,BDW,SKL,CNL
++ *			       Available model: NHM,WSM,SNB,IVB,HSW,BDW,SKL,CNL,
++ *						KBL,CML
+  *			       Scope: Package (physical package)
+  *	MSR_PKG_C8_RESIDENCY:  Package C8 Residency Counter.
+  *			       perf code: 0x04
+- *			       Available model: HSW ULT,KBL,CNL
++ *			       Available model: HSW ULT,KBL,CNL,CML
+  *			       Scope: Package (physical package)
+  *	MSR_PKG_C9_RESIDENCY:  Package C9 Residency Counter.
+  *			       perf code: 0x05
+- *			       Available model: HSW ULT,KBL,CNL
++ *			       Available model: HSW ULT,KBL,CNL,CML
+  *			       Scope: Package (physical package)
+  *	MSR_PKG_C10_RESIDENCY: Package C10 Residency Counter.
+  *			       perf code: 0x06
+- *			       Available model: HSW ULT,KBL,GLM,CNL
++ *			       Available model: HSW ULT,KBL,GLM,CNL,CML
+  *			       Scope: Package (physical package)
+  *
+  */
+@@ -614,6 +616,8 @@ static const struct x86_cpu_id intel_cstates_match[] __initconst = {
+ 
+ 	X86_CSTATES_MODEL(INTEL_FAM6_KABYLAKE_L, hswult_cstates),
+ 	X86_CSTATES_MODEL(INTEL_FAM6_KABYLAKE,   hswult_cstates),
++	X86_CSTATES_MODEL(INTEL_FAM6_COMETLAKE_L, hswult_cstates),
++	X86_CSTATES_MODEL(INTEL_FAM6_COMETLAKE, hswult_cstates),
+ 
+ 	X86_CSTATES_MODEL(INTEL_FAM6_CANNONLAKE_L, cnl_cstates),
+ 
