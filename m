@@ -2,42 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 51451D0F72
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Oct 2019 15:00:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DC09D0F63
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Oct 2019 15:00:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731263AbfJINAT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 9 Oct 2019 09:00:19 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:50920 "EHLO
+        id S1731375AbfJIM7h (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 9 Oct 2019 08:59:37 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:50940 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731328AbfJIM7d (ORCPT
+        with ESMTP id S1731356AbfJIM7h (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 9 Oct 2019 08:59:33 -0400
+        Wed, 9 Oct 2019 08:59:37 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iIBYo-0002pz-8t; Wed, 09 Oct 2019 14:59:22 +0200
+        id 1iIBYr-0002pT-4v; Wed, 09 Oct 2019 14:59:25 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id F00851C01BD;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id AFAD01C028F;
         Wed,  9 Oct 2019 14:59:19 +0200 (CEST)
 Date:   Wed, 09 Oct 2019 12:59:19 -0000
-From:   "tip-bot2 for Frederic Weisbecker" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Song Liu" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] sched/vtime: Fix guest/system mis-accounting on
- task switch
-Cc:     Frederic Weisbecker <frederic@kernel.org>,
+Subject: [tip: perf/urgent] perf/core: Rework memory accounting in perf_mmap()
+Cc:     Hechao Li <hechaol@fb.com>, Song Liu <songliubraving@fb.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        <kernel-team@fb.com>, Jie Meng <jmeng@fb.com>,
         Linus Torvalds <torvalds@linux-foundation.org>,
-        Rik van Riel <riel@redhat.com>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Wanpeng Li <wanpengli@tencent.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20190925214242.21873-1-frederic@kernel.org>
-References: <20190925214242.21873-1-frederic@kernel.org>
+In-Reply-To: <20190904214618.3795672-1-songliubraving@fb.com>
+References: <20190904214618.3795672-1-songliubraving@fb.com>
 MIME-Version: 1.0
-Message-ID: <157062595991.9978.4513600041871696751.tip-bot2@tip-bot2>
+Message-ID: <157062595964.9978.13325399994782902718.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,80 +49,80 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/urgent branch of tip:
+The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     68e7a4d66b0ce04bf18ff2ffded5596ab3618585
-Gitweb:        https://git.kernel.org/tip/68e7a4d66b0ce04bf18ff2ffded5596ab3618585
-Author:        Frederic Weisbecker <frederic@kernel.org>
-AuthorDate:    Wed, 25 Sep 2019 23:42:42 +02:00
+Commit-ID:     d44248a41337731a111374822d7d4451b64e73e4
+Gitweb:        https://git.kernel.org/tip/d44248a41337731a111374822d7d4451b64e73e4
+Author:        Song Liu <songliubraving@fb.com>
+AuthorDate:    Wed, 04 Sep 2019 14:46:18 -07:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 09 Oct 2019 12:38:03 +02:00
+CommitterDate: Wed, 09 Oct 2019 12:44:12 +02:00
 
-sched/vtime: Fix guest/system mis-accounting on task switch
+perf/core: Rework memory accounting in perf_mmap()
 
-vtime_account_system() assumes that the target task to account cputime
-to is always the current task. This is most often true indeed except on
-task switch where we call:
+perf_mmap() always increases user->locked_vm. As a result, "extra" could
+grow bigger than "user_extra", which doesn't make sense. Here is an
+example case:
 
-	vtime_common_task_switch(prev)
-		vtime_account_system(prev)
+(Note: Assume "user_lock_limit" is very small.)
 
-Here prev is the scheduling-out task where we account the cputime to. It
-doesn't match current that is already the scheduling-in task at this
-stage of the context switch.
+  | # of perf_mmap calls |vma->vm_mm->pinned_vm|user->locked_vm|
+  | 0                    | 0                   | 0             |
+  | 1                    | user_extra          | user_extra    |
+  | 2                    | 3 * user_extra      | 2 * user_extra|
+  | 3                    | 6 * user_extra      | 3 * user_extra|
+  | 4                    | 10 * user_extra     | 4 * user_extra|
 
-So we end up checking the wrong task flags to determine if we are
-accounting guest or system time to the previous task.
+Fix this by maintaining proper user_extra and extra.
 
-As a result the wrong task is used to check if the target is running in
-guest mode. We may then spuriously account or leak either system or
-guest time on task switch.
-
-Fix this assumption and also turn vtime_guest_enter/exit() to use the
-task passed in parameter as well to avoid future similar issues.
-
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Reviewed-By: Hechao Li <hechaol@fb.com>
+Reported-by: Hechao Li <hechaol@fb.com>
+Signed-off-by: Song Liu <songliubraving@fb.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: <kernel-team@fb.com>
+Cc: Jie Meng <jmeng@fb.com>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Rik van Riel <riel@redhat.com>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Wanpeng Li <wanpengli@tencent.com>
-Fixes: 2a42eb9594a1 ("sched/cputime: Accumulate vtime on top of nsec clocksource")
-Link: https://lkml.kernel.org/r/20190925214242.21873-1-frederic@kernel.org
+Link: https://lkml.kernel.org/r/20190904214618.3795672-1-songliubraving@fb.com
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- kernel/sched/cputime.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ kernel/events/core.c | 17 +++++++++++++++--
+ 1 file changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/sched/cputime.c b/kernel/sched/cputime.c
-index 2305ce8..46ed4e1 100644
---- a/kernel/sched/cputime.c
-+++ b/kernel/sched/cputime.c
-@@ -740,7 +740,7 @@ void vtime_account_system(struct task_struct *tsk)
- 
- 	write_seqcount_begin(&vtime->seqcount);
- 	/* We might have scheduled out from guest path */
--	if (current->flags & PF_VCPU)
-+	if (tsk->flags & PF_VCPU)
- 		vtime_account_guest(tsk, vtime);
- 	else
- 		__vtime_account_system(tsk, vtime);
-@@ -783,7 +783,7 @@ void vtime_guest_enter(struct task_struct *tsk)
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index f953dd1..2b8265a 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -5668,7 +5668,8 @@ again:
+ 	 * undo the VM accounting.
  	 */
- 	write_seqcount_begin(&vtime->seqcount);
- 	__vtime_account_system(tsk, vtime);
--	current->flags |= PF_VCPU;
-+	tsk->flags |= PF_VCPU;
- 	write_seqcount_end(&vtime->seqcount);
- }
- EXPORT_SYMBOL_GPL(vtime_guest_enter);
-@@ -794,7 +794,7 @@ void vtime_guest_exit(struct task_struct *tsk)
  
- 	write_seqcount_begin(&vtime->seqcount);
- 	vtime_account_guest(tsk, vtime);
--	current->flags &= ~PF_VCPU;
-+	tsk->flags &= ~PF_VCPU;
- 	write_seqcount_end(&vtime->seqcount);
- }
- EXPORT_SYMBOL_GPL(vtime_guest_exit);
+-	atomic_long_sub((size >> PAGE_SHIFT) + 1, &mmap_user->locked_vm);
++	atomic_long_sub((size >> PAGE_SHIFT) + 1 - mmap_locked,
++			&mmap_user->locked_vm);
+ 	atomic64_sub(mmap_locked, &vma->vm_mm->pinned_vm);
+ 	free_uid(mmap_user);
+ 
+@@ -5812,8 +5813,20 @@ accounting:
+ 
+ 	user_locked = atomic_long_read(&user->locked_vm) + user_extra;
+ 
+-	if (user_locked > user_lock_limit)
++	if (user_locked <= user_lock_limit) {
++		/* charge all to locked_vm */
++	} else if (atomic_long_read(&user->locked_vm) >= user_lock_limit) {
++		/* charge all to pinned_vm */
++		extra = user_extra;
++		user_extra = 0;
++	} else {
++		/*
++		 * charge locked_vm until it hits user_lock_limit;
++		 * charge the rest from pinned_vm
++		 */
+ 		extra = user_locked - user_lock_limit;
++		user_extra -= extra;
++	}
+ 
+ 	lock_limit = rlimit(RLIMIT_MEMLOCK);
+ 	lock_limit >>= PAGE_SHIFT;
