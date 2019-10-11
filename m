@@ -2,45 +2,42 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 860D4D3E4F
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 11 Oct 2019 13:22:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9367ED3E4D
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 11 Oct 2019 13:22:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728126AbfJKLWP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 11 Oct 2019 07:22:15 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:60379 "EHLO
+        id S1728102AbfJKLWM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 11 Oct 2019 07:22:12 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:60370 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728105AbfJKLWP (ORCPT
+        with ESMTP id S1728087AbfJKLWM (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 11 Oct 2019 07:22:15 -0400
+        Fri, 11 Oct 2019 07:22:12 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iIszi-0007Cl-3P; Fri, 11 Oct 2019 13:22:02 +0200
+        id 1iIszi-0007D1-Pg; Fri, 11 Oct 2019 13:22:02 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id AA6771C0178;
-        Fri, 11 Oct 2019 13:22:01 +0200 (CEST)
-Date:   Fri, 11 Oct 2019 11:22:01 -0000
-From:   "tip-bot2 for Sami Tolvanen" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 657391C0178;
+        Fri, 11 Oct 2019 13:22:02 +0200 (CEST)
+Date:   Fri, 11 Oct 2019 11:22:02 -0000
+From:   "tip-bot2 for Andy Lutomirski" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/entry] x86/mm: Use the correct function type for
- native_set_fixmap()
-Cc:     Sami Tolvanen <samitolvanen@google.com>,
-        Kees Cook <keescook@chromium.org>,
-        Andy Lutomirski <luto@kernel.org>,
+Subject: [tip: x86/entry] syscalls/x86: Wire up COMPAT_SYSCALL_DEFINE0
+Cc:     Andy Lutomirski <luto@kernel.org>,
+        Sami Tolvanen <samitolvanen@google.com>,
         Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
         "H . Peter Anvin" <hpa@zytor.com>,
+        Kees Cook <keescook@chromium.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Peter Zijlstra <peterz@infradead.org>,
-        Rik van Riel <riel@surriel.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org
-In-Reply-To: <20190913211402.193018-1-samitolvanen@google.com>
-References: <20190913211402.193018-1-samitolvanen@google.com>
+In-Reply-To: <20191008224049.115427-3-samitolvanen@google.com>
+References: <20191008224049.115427-3-samitolvanen@google.com>
 MIME-Version: 1.0
-Message-ID: <157079292154.9978.79280283255049041.tip-bot2@tip-bot2>
+Message-ID: <157079292227.9978.612006427333892080.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -56,64 +53,101 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/entry branch of tip:
 
-Commit-ID:     f53e2cd0b8ab7d9e390414470bdbd830f660133f
-Gitweb:        https://git.kernel.org/tip/f53e2cd0b8ab7d9e390414470bdbd830f660133f
-Author:        Sami Tolvanen <samitolvanen@google.com>
-AuthorDate:    Fri, 13 Sep 2019 14:14:02 -07:00
+Commit-ID:     cf3b83e19d7c928e05a5d193c375463182c6029a
+Gitweb:        https://git.kernel.org/tip/cf3b83e19d7c928e05a5d193c375463182c6029a
+Author:        Andy Lutomirski <luto@kernel.org>
+AuthorDate:    Tue, 08 Oct 2019 15:40:46 -07:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 11 Oct 2019 12:52:32 +02:00
+CommitterDate: Fri, 11 Oct 2019 12:49:18 +02:00
 
-x86/mm: Use the correct function type for native_set_fixmap()
+syscalls/x86: Wire up COMPAT_SYSCALL_DEFINE0
 
-We call native_set_fixmap indirectly through the function pointer
-struct pv_mmu_ops::set_fixmap, which expects the first parameter to be
-'unsigned' instead of 'enum fixed_addresses'. This patch changes the
-function type for native_set_fixmap to match the pointer, which fixes
-indirect call mismatches with Control-Flow Integrity (CFI) checking.
+x86 has special handling for COMPAT_SYSCALL_DEFINEx, but there was
+no override for COMPAT_SYSCALL_DEFINE0.  Wire it up so that we can
+use it for rt_sigreturn.
 
+Signed-off-by: Andy Lutomirski <luto@kernel.org>
 Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Cc: Andy Lutomirski <luto@kernel.org>
 Cc: Borislav Petkov <bp@alien8.de>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
 Cc: H . Peter Anvin <hpa@zytor.com>
-Cc: H. Peter Anvin <hpa@zytor.com>
+Cc: Kees Cook <keescook@chromium.org>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Rik van Riel <riel@surriel.com>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20190913211402.193018-1-samitolvanen@google.com
+Link: https://lkml.kernel.org/r/20191008224049.115427-3-samitolvanen@google.com
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- arch/x86/include/asm/fixmap.h | 2 +-
- arch/x86/mm/pgtable.c         | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ arch/x86/include/asm/syscall_wrapper.h | 32 +++++++++++++++++++++++--
+ 1 file changed, 30 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/include/asm/fixmap.h b/arch/x86/include/asm/fixmap.h
-index 0c47aa8..28183ee 100644
---- a/arch/x86/include/asm/fixmap.h
-+++ b/arch/x86/include/asm/fixmap.h
-@@ -156,7 +156,7 @@ extern pte_t *kmap_pte;
- extern pte_t *pkmap_page_table;
+diff --git a/arch/x86/include/asm/syscall_wrapper.h b/arch/x86/include/asm/syscall_wrapper.h
+index 90eb70d..3dab048 100644
+--- a/arch/x86/include/asm/syscall_wrapper.h
++++ b/arch/x86/include/asm/syscall_wrapper.h
+@@ -28,13 +28,21 @@
+  * kernel/sys_ni.c and SYS_NI in kernel/time/posix-stubs.c to cover this
+  * case as well.
+  */
++#define __IA32_COMPAT_SYS_STUB0(x, name)				\
++	asmlinkage long __ia32_compat_sys_##name(const struct pt_regs *regs);\
++	ALLOW_ERROR_INJECTION(__ia32_compat_sys_##name, ERRNO);		\
++	asmlinkage long __ia32_compat_sys_##name(const struct pt_regs *regs)\
++	{								\
++		return __se_compat_sys_##name();			\
++	}
++
+ #define __IA32_COMPAT_SYS_STUBx(x, name, ...)				\
+ 	asmlinkage long __ia32_compat_sys##name(const struct pt_regs *regs);\
+ 	ALLOW_ERROR_INJECTION(__ia32_compat_sys##name, ERRNO);		\
+ 	asmlinkage long __ia32_compat_sys##name(const struct pt_regs *regs)\
+ 	{								\
+ 		return __se_compat_sys##name(SC_IA32_REGS_TO_ARGS(x,__VA_ARGS__));\
+-	}								\
++	}
  
- void __native_set_fixmap(enum fixed_addresses idx, pte_t pte);
--void native_set_fixmap(enum fixed_addresses idx,
-+void native_set_fixmap(unsigned /* enum fixed_addresses */ idx,
- 		       phys_addr_t phys, pgprot_t flags);
+ #define __IA32_SYS_STUBx(x, name, ...)					\
+ 	asmlinkage long __ia32_sys##name(const struct pt_regs *regs);	\
+@@ -76,15 +84,24 @@
+  * of the x86-64-style parameter ordering of x32 syscalls. The syscalls common
+  * with x86_64 obviously do not need such care.
+  */
++#define __X32_COMPAT_SYS_STUB0(x, name, ...)				\
++	asmlinkage long __x32_compat_sys_##name(const struct pt_regs *regs);\
++	ALLOW_ERROR_INJECTION(__x32_compat_sys_##name, ERRNO);		\
++	asmlinkage long __x32_compat_sys_##name(const struct pt_regs *regs)\
++	{								\
++		return __se_compat_sys_##name();\
++	}
++
+ #define __X32_COMPAT_SYS_STUBx(x, name, ...)				\
+ 	asmlinkage long __x32_compat_sys##name(const struct pt_regs *regs);\
+ 	ALLOW_ERROR_INJECTION(__x32_compat_sys##name, ERRNO);		\
+ 	asmlinkage long __x32_compat_sys##name(const struct pt_regs *regs)\
+ 	{								\
+ 		return __se_compat_sys##name(SC_X86_64_REGS_TO_ARGS(x,__VA_ARGS__));\
+-	}								\
++	}
  
- #ifndef CONFIG_PARAVIRT_XXL
-diff --git a/arch/x86/mm/pgtable.c b/arch/x86/mm/pgtable.c
-index 3e4b903..7bd2c3a 100644
---- a/arch/x86/mm/pgtable.c
-+++ b/arch/x86/mm/pgtable.c
-@@ -643,8 +643,8 @@ void __native_set_fixmap(enum fixed_addresses idx, pte_t pte)
- 	fixmaps_set++;
- }
+ #else /* CONFIG_X86_X32 */
++#define __X32_COMPAT_SYS_STUB0(x, name)
+ #define __X32_COMPAT_SYS_STUBx(x, name, ...)
+ #endif /* CONFIG_X86_X32 */
  
--void native_set_fixmap(enum fixed_addresses idx, phys_addr_t phys,
--		       pgprot_t flags)
-+void native_set_fixmap(unsigned /* enum fixed_addresses */ idx,
-+		       phys_addr_t phys, pgprot_t flags)
- {
- 	/* Sanitize 'prot' against any unsupported bits: */
- 	pgprot_val(flags) &= __default_kernel_pte_mask;
+@@ -95,6 +112,17 @@
+  * mapping of registers to parameters, we need to generate stubs for each
+  * of them.
+  */
++#define COMPAT_SYSCALL_DEFINE0(name)					\
++	static long __se_compat_sys_##name(void);			\
++	static inline long __do_compat_sys_##name(void);		\
++	__IA32_COMPAT_SYS_STUB0(x, name)				\
++	__X32_COMPAT_SYS_STUB0(x, name)					\
++	static long __se_compat_sys_##name(void)			\
++	{								\
++		return __do_compat_sys_##name();			\
++	}								\
++	static inline long __do_compat_sys_##name(void)
++
+ #define COMPAT_SYSCALL_DEFINEx(x, name, ...)					\
+ 	static long __se_compat_sys##name(__MAP(x,__SC_LONG,__VA_ARGS__));	\
+ 	static inline long __do_compat_sys##name(__MAP(x,__SC_DECL,__VA_ARGS__));\
