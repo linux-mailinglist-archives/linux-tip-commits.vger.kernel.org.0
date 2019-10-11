@@ -2,43 +2,43 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C688BD2BC7
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Oct 2019 15:52:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E45BD3E53
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 11 Oct 2019 13:22:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726157AbfJJNwM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 10 Oct 2019 09:52:12 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:56855 "EHLO
+        id S1728105AbfJKLWV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 11 Oct 2019 07:22:21 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:60383 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726045AbfJJNwM (ORCPT
+        with ESMTP id S1728107AbfJKLWP (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 10 Oct 2019 09:52:12 -0400
+        Fri, 11 Oct 2019 07:22:15 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iIYpN-0001jy-6F; Thu, 10 Oct 2019 15:50:01 +0200
+        id 1iIszi-0007Cp-FJ; Fri, 11 Oct 2019 13:22:02 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id BA5351C02FC;
-        Thu, 10 Oct 2019 15:50:00 +0200 (CEST)
-Date:   Thu, 10 Oct 2019 13:50:00 -0000
-From:   "tip-bot2 for Ralf Ramsauer" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 0ECBF1C0325;
+        Fri, 11 Oct 2019 13:22:02 +0200 (CEST)
+Date:   Fri, 11 Oct 2019 11:22:01 -0000
+From:   "tip-bot2 for Sami Tolvanen" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/platform] x86/jailhouse: Improve setup data version comparison
-Cc:     Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
-        Borislav Petkov <bp@suse.de>,
-        Jan Kiszka <jan.kiszka@siemens.com>,
-        Baoquan He <bhe@redhat.com>, "H. Peter Anvin" <hpa@zytor.com>,
-        Ingo Molnar <mingo@redhat.com>, jailhouse-dev@googlegroups.com,
-        Juergen Gross <jgross@suse.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+Subject: [tip: x86/entry] syscalls/x86: Use the correct function type for
+ sys_ni_syscall
+Cc:     Sami Tolvanen <samitolvanen@google.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Borislav Petkov <bp@alien8.de>,
+        "H . Peter Anvin" <hpa@zytor.com>,
+        Kees Cook <keescook@chromium.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Peter Zijlstra <peterz@infradead.org>,
         Thomas Gleixner <tglx@linutronix.de>,
-        "x86-ml" <x86@kernel.org>, Ingo Molnar <mingo@kernel.org>,
-        Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
-In-Reply-To: <20191010102102.421035-2-ralf.ramsauer@oth-regensburg.de>
-References: <20191010102102.421035-2-ralf.ramsauer@oth-regensburg.de>
+        Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org
+In-Reply-To: <20191008224049.115427-5-samitolvanen@google.com>
+References: <20191008224049.115427-5-samitolvanen@google.com>
 MIME-Version: 1.0
-Message-ID: <157071540068.9978.14509461318456247452.tip-bot2@tip-bot2>
+Message-ID: <157079292192.9978.16707723873924335711.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -52,204 +52,126 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/platform branch of tip:
+The following commit has been merged into the x86/entry branch of tip:
 
-Commit-ID:     0935e5f7527ccd46163b42e1540409c98e29fe17
-Gitweb:        https://git.kernel.org/tip/0935e5f7527ccd46163b42e1540409c98e29fe17
-Author:        Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>
-AuthorDate:    Thu, 10 Oct 2019 12:21:01 +02:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Thu, 10 Oct 2019 15:38:30 +02:00
+Commit-ID:     f48f01a92cca09e86d46c91d8edf9d5a71c61727
+Gitweb:        https://git.kernel.org/tip/f48f01a92cca09e86d46c91d8edf9d5a71c61727
+Author:        Sami Tolvanen <samitolvanen@google.com>
+AuthorDate:    Tue, 08 Oct 2019 15:40:48 -07:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Fri, 11 Oct 2019 12:49:18 +02:00
 
-x86/jailhouse: Improve setup data version comparison
+syscalls/x86: Use the correct function type for sys_ni_syscall
 
-Soon, setup_data will contain information on passed-through platform
-UARTs. This requires some preparational work for the sanity check of the
-header and the check of the version.
+Use the correct function type for sys_ni_syscall() in system
+call tables to fix indirect call mismatches with Control-Flow
+Integrity (CFI) checking.
 
-Use the following strategy:
-
-  1. Ensure that the header declares at least enough space for the
-     version and the compatible_version as it must hold that fields for
-     any version. The location and semantics of header+version fields
-     will never change.
-
-  2. Copy over data -- as much as as possible. The length is either
-     limited by the header length or the length of setup_data.
-
-  3. Things are now in place -- sanity check if the header length
-     complies the actual version.
-
-For future versions of the setup_data, only step 3 requires alignment.
-
-Signed-off-by: Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Jan Kiszka <jan.kiszka@siemens.com>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: jailhouse-dev@googlegroups.com
-Cc: Juergen Gross <jgross@suse.com>
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
+Acked-by: Andy Lutomirski <luto@kernel.org>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: H . Peter Anvin <hpa@zytor.com>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: x86-ml <x86@kernel.org>
-Link: https://lkml.kernel.org/r/20191010102102.421035-2-ralf.ramsauer@oth-regensburg.de
+Link: https://lkml.kernel.org/r/20191008224049.115427-5-samitolvanen@google.com
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- arch/x86/include/uapi/asm/bootparam.h | 22 ++++++-----
- arch/x86/kernel/jailhouse.c           | 51 ++++++++++++++++----------
- 2 files changed, 45 insertions(+), 28 deletions(-)
+ arch/x86/entry/syscall_32.c            |  8 +++-----
+ arch/x86/entry/syscall_64.c            | 14 ++++++++++----
+ arch/x86/entry/syscalls/syscall_32.tbl |  4 ++--
+ 3 files changed, 15 insertions(+), 11 deletions(-)
 
-diff --git a/arch/x86/include/uapi/asm/bootparam.h b/arch/x86/include/uapi/asm/bootparam.h
-index c895df5..43be437 100644
---- a/arch/x86/include/uapi/asm/bootparam.h
-+++ b/arch/x86/include/uapi/asm/bootparam.h
-@@ -139,15 +139,19 @@ struct boot_e820_entry {
-  * setup data structure.
-  */
- struct jailhouse_setup_data {
--	__u16	version;
--	__u16	compatible_version;
--	__u16	pm_timer_address;
--	__u16	num_cpus;
--	__u64	pci_mmconfig_base;
--	__u32	tsc_khz;
--	__u32	apic_khz;
--	__u8	standard_ioapic;
--	__u8	cpu_ids[255];
-+	struct {
-+		__u16	version;
-+		__u16	compatible_version;
-+	} __attribute__((packed)) hdr;
-+	struct {
-+		__u16	pm_timer_address;
-+		__u16	num_cpus;
-+		__u64	pci_mmconfig_base;
-+		__u32	tsc_khz;
-+		__u32	apic_khz;
-+		__u8	standard_ioapic;
-+		__u8	cpu_ids[255];
-+	} __attribute__((packed)) v1;
- } __attribute__((packed));
- 
- /* The so-called "zeropage" */
-diff --git a/arch/x86/kernel/jailhouse.c b/arch/x86/kernel/jailhouse.c
-index 3ad34f0..cf4eb37 100644
---- a/arch/x86/kernel/jailhouse.c
-+++ b/arch/x86/kernel/jailhouse.c
-@@ -22,6 +22,8 @@
- #include <asm/jailhouse_para.h>
- 
- static __initdata struct jailhouse_setup_data setup_data;
-+#define SETUP_DATA_V1_LEN	(sizeof(setup_data.hdr) + sizeof(setup_data.v1))
-+
- static unsigned int precalibrated_tsc_khz;
- 
- static uint32_t jailhouse_cpuid_base(void)
-@@ -45,7 +47,7 @@ static void jailhouse_get_wallclock(struct timespec64 *now)
- 
- static void __init jailhouse_timer_init(void)
- {
--	lapic_timer_period = setup_data.apic_khz * (1000 / HZ);
-+	lapic_timer_period = setup_data.v1.apic_khz * (1000 / HZ);
- }
- 
- static unsigned long jailhouse_get_tsc(void)
-@@ -88,14 +90,14 @@ static void __init jailhouse_get_smp_config(unsigned int early)
- 
- 	register_lapic_address(0xfee00000);
- 
--	for (cpu = 0; cpu < setup_data.num_cpus; cpu++) {
--		generic_processor_info(setup_data.cpu_ids[cpu],
-+	for (cpu = 0; cpu < setup_data.v1.num_cpus; cpu++) {
-+		generic_processor_info(setup_data.v1.cpu_ids[cpu],
- 				       boot_cpu_apic_version);
- 	}
- 
- 	smp_found_config = 1;
- 
--	if (setup_data.standard_ioapic) {
-+	if (setup_data.v1.standard_ioapic) {
- 		mp_register_ioapic(0, 0xfec00000, gsi_top, &ioapic_cfg);
- 
- 		/* Register 1:1 mapping for legacy UART IRQs 3 and 4 */
-@@ -126,9 +128,9 @@ static int __init jailhouse_pci_arch_init(void)
- 		pcibios_last_bus = 0xff;
- 
- #ifdef CONFIG_PCI_MMCONFIG
--	if (setup_data.pci_mmconfig_base) {
-+	if (setup_data.v1.pci_mmconfig_base) {
- 		pci_mmconfig_add(0, 0, pcibios_last_bus,
--				 setup_data.pci_mmconfig_base);
-+				 setup_data.v1.pci_mmconfig_base);
- 		pci_mmcfg_arch_init();
- 	}
- #endif
-@@ -139,6 +141,7 @@ static int __init jailhouse_pci_arch_init(void)
- static void __init jailhouse_init_platform(void)
- {
- 	u64 pa_data = boot_params.hdr.setup_data;
-+	unsigned long setup_data_len;
- 	struct setup_data header;
- 	void *mapping;
- 
-@@ -163,16 +166,8 @@ static void __init jailhouse_init_platform(void)
- 		memcpy(&header, mapping, sizeof(header));
- 		early_memunmap(mapping, sizeof(header));
- 
--		if (header.type == SETUP_JAILHOUSE &&
--		    header.len >= sizeof(setup_data)) {
--			pa_data += offsetof(struct setup_data, data);
+diff --git a/arch/x86/entry/syscall_32.c b/arch/x86/entry/syscall_32.c
+index aa3336a..7d17b3a 100644
+--- a/arch/x86/entry/syscall_32.c
++++ b/arch/x86/entry/syscall_32.c
+@@ -10,13 +10,11 @@
+ #ifdef CONFIG_IA32_EMULATION
+ /* On X86_64, we use struct pt_regs * to pass parameters to syscalls */
+ #define __SYSCALL_I386(nr, sym, qual) extern asmlinkage long sym(const struct pt_regs *);
 -
--			mapping = early_memremap(pa_data, sizeof(setup_data));
--			memcpy(&setup_data, mapping, sizeof(setup_data));
--			early_memunmap(mapping, sizeof(setup_data));
+-/* this is a lie, but it does not hurt as sys_ni_syscall just returns -EINVAL */
+-extern asmlinkage long sys_ni_syscall(const struct pt_regs *);
 -
-+		if (header.type == SETUP_JAILHOUSE)
- 			break;
--		}
++#define __sys_ni_syscall __ia32_sys_ni_syscall
+ #else /* CONFIG_IA32_EMULATION */
+ #define __SYSCALL_I386(nr, sym, qual) extern asmlinkage long sym(unsigned long, unsigned long, unsigned long, unsigned long, unsigned long, unsigned long);
+ extern asmlinkage long sys_ni_syscall(unsigned long, unsigned long, unsigned long, unsigned long, unsigned long, unsigned long);
++#define __sys_ni_syscall sys_ni_syscall
+ #endif /* CONFIG_IA32_EMULATION */
  
- 		pa_data = header.next;
- 	}
-@@ -180,13 +175,27 @@ static void __init jailhouse_init_platform(void)
- 	if (!pa_data)
- 		panic("Jailhouse: No valid setup data found");
- 
--	if (setup_data.compatible_version > JAILHOUSE_SETUP_REQUIRED_VERSION)
--		panic("Jailhouse: Unsupported setup data structure");
-+	/* setup data must at least contain the header */
-+	if (header.len < sizeof(setup_data.hdr))
-+		goto unsupported;
- 
--	pmtmr_ioport = setup_data.pm_timer_address;
-+	pa_data += offsetof(struct setup_data, data);
-+	setup_data_len = min_t(unsigned long, sizeof(setup_data),
-+			       (unsigned long)header.len);
-+	mapping = early_memremap(pa_data, setup_data_len);
-+	memcpy(&setup_data, mapping, setup_data_len);
-+	early_memunmap(mapping, setup_data_len);
-+
-+	if (setup_data.hdr.version == 0 ||
-+	    setup_data.hdr.compatible_version !=
-+		JAILHOUSE_SETUP_REQUIRED_VERSION ||
-+	    (setup_data.hdr.version >= 1 && header.len < SETUP_DATA_V1_LEN))
-+		goto unsupported;
-+
-+	pmtmr_ioport = setup_data.v1.pm_timer_address;
- 	pr_debug("Jailhouse: PM-Timer IO Port: %#x\n", pmtmr_ioport);
- 
--	precalibrated_tsc_khz = setup_data.tsc_khz;
-+	precalibrated_tsc_khz = setup_data.v1.tsc_khz;
- 	setup_force_cpu_cap(X86_FEATURE_TSC_KNOWN_FREQ);
- 
- 	pci_probe = 0;
-@@ -196,6 +205,10 @@ static void __init jailhouse_init_platform(void)
- 	 * are none in a non-root cell.
+ #include <asm/syscalls_32.h>
+@@ -29,6 +27,6 @@ __visible const sys_call_ptr_t ia32_sys_call_table[__NR_syscall_compat_max+1] = 
+ 	 * Smells like a compiler bug -- it doesn't work
+ 	 * when the & below is removed.
  	 */
- 	disable_acpi();
-+	return;
-+
-+unsupported:
-+	panic("Jailhouse: Unsupported setup data structure");
- }
+-	[0 ... __NR_syscall_compat_max] = &sys_ni_syscall,
++	[0 ... __NR_syscall_compat_max] = &__sys_ni_syscall,
+ #include <asm/syscalls_32.h>
+ };
+diff --git a/arch/x86/entry/syscall_64.c b/arch/x86/entry/syscall_64.c
+index b1bf317..adf619a 100644
+--- a/arch/x86/entry/syscall_64.c
++++ b/arch/x86/entry/syscall_64.c
+@@ -4,11 +4,17 @@
+ #include <linux/linkage.h>
+ #include <linux/sys.h>
+ #include <linux/cache.h>
++#include <linux/syscalls.h>
+ #include <asm/asm-offsets.h>
+ #include <asm/syscall.h>
  
- bool jailhouse_paravirt(void)
+-/* this is a lie, but it does not hurt as sys_ni_syscall just returns -EINVAL */
+-extern asmlinkage long sys_ni_syscall(const struct pt_regs *);
++extern asmlinkage long sys_ni_syscall(void);
++
++SYSCALL_DEFINE0(ni_syscall)
++{
++	return sys_ni_syscall();
++}
++
+ #define __SYSCALL_64(nr, sym, qual) extern asmlinkage long sym(const struct pt_regs *);
+ #define __SYSCALL_X32(nr, sym, qual) __SYSCALL_64(nr, sym, qual)
+ #include <asm/syscalls_64.h>
+@@ -23,7 +29,7 @@ asmlinkage const sys_call_ptr_t sys_call_table[__NR_syscall_max+1] = {
+ 	 * Smells like a compiler bug -- it doesn't work
+ 	 * when the & below is removed.
+ 	 */
+-	[0 ... __NR_syscall_max] = &sys_ni_syscall,
++	[0 ... __NR_syscall_max] = &__x64_sys_ni_syscall,
+ #include <asm/syscalls_64.h>
+ };
+ 
+@@ -40,7 +46,7 @@ asmlinkage const sys_call_ptr_t x32_sys_call_table[__NR_syscall_x32_max+1] = {
+ 	 * Smells like a compiler bug -- it doesn't work
+ 	 * when the & below is removed.
+ 	 */
+-	[0 ... __NR_syscall_x32_max] = &sys_ni_syscall,
++	[0 ... __NR_syscall_x32_max] = &__x64_sys_ni_syscall,
+ #include <asm/syscalls_64.h>
+ };
+ 
+diff --git a/arch/x86/entry/syscalls/syscall_32.tbl b/arch/x86/entry/syscalls/syscall_32.tbl
+index 2de75fd..15908eb 100644
+--- a/arch/x86/entry/syscalls/syscall_32.tbl
++++ b/arch/x86/entry/syscalls/syscall_32.tbl
+@@ -124,7 +124,7 @@
+ 110	i386	iopl			sys_iopl			__ia32_sys_iopl
+ 111	i386	vhangup			sys_vhangup			__ia32_sys_vhangup
+ 112	i386	idle
+-113	i386	vm86old			sys_vm86old			sys_ni_syscall
++113	i386	vm86old			sys_vm86old			__ia32_sys_ni_syscall
+ 114	i386	wait4			sys_wait4			__ia32_compat_sys_wait4
+ 115	i386	swapoff			sys_swapoff			__ia32_sys_swapoff
+ 116	i386	sysinfo			sys_sysinfo			__ia32_compat_sys_sysinfo
+@@ -177,7 +177,7 @@
+ 163	i386	mremap			sys_mremap			__ia32_sys_mremap
+ 164	i386	setresuid		sys_setresuid16			__ia32_sys_setresuid16
+ 165	i386	getresuid		sys_getresuid16			__ia32_sys_getresuid16
+-166	i386	vm86			sys_vm86			sys_ni_syscall
++166	i386	vm86			sys_vm86			__ia32_sys_ni_syscall
+ 167	i386	query_module
+ 168	i386	poll			sys_poll			__ia32_sys_poll
+ 169	i386	nfsservctl
