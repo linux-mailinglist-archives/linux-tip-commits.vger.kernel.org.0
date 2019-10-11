@@ -2,30 +2,30 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B4B72D3E4B
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 11 Oct 2019 13:22:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 97006D3E56
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 11 Oct 2019 13:22:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728088AbfJKLWK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 11 Oct 2019 07:22:10 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:60361 "EHLO
+        id S1727930AbfJKLW1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 11 Oct 2019 07:22:27 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:60360 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727538AbfJKLWK (ORCPT
+        with ESMTP id S1728086AbfJKLWK (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Fri, 11 Oct 2019 07:22:10 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iIszi-0007Cq-Ky; Fri, 11 Oct 2019 13:22:02 +0200
+        id 1iIszi-0007D2-Uk; Fri, 11 Oct 2019 13:22:03 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 301561C0357;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 947A51C0324;
         Fri, 11 Oct 2019 13:22:02 +0200 (CEST)
 Date:   Fri, 11 Oct 2019 11:22:02 -0000
 From:   "tip-bot2 for Sami Tolvanen" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/entry] syscalls/x86: Use COMPAT_SYSCALL_DEFINE0 for IA32
- (rt_)sigreturn
+Subject: [tip: x86/entry] syscalls/x86: Use the correct function type in
+ SYSCALL_DEFINE0
 Cc:     Sami Tolvanen <samitolvanen@google.com>,
         Andy Lutomirski <luto@kernel.org>,
         Borislav Petkov <bp@alien8.de>,
@@ -35,10 +35,10 @@ Cc:     Sami Tolvanen <samitolvanen@google.com>,
         Peter Zijlstra <peterz@infradead.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org
-In-Reply-To: <20191008224049.115427-4-samitolvanen@google.com>
-References: <20191008224049.115427-4-samitolvanen@google.com>
+In-Reply-To: <20191008224049.115427-2-samitolvanen@google.com>
+References: <20191008224049.115427-2-samitolvanen@google.com>
 MIME-Version: 1.0
-Message-ID: <157079292213.9978.9031904284272103742.tip-bot2@tip-bot2>
+Message-ID: <157079292253.9978.17704020212301082450.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -54,18 +54,18 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/entry branch of tip:
 
-Commit-ID:     00198a6eaf66609de5e4de9163bb42c7ca9dd7b7
-Gitweb:        https://git.kernel.org/tip/00198a6eaf66609de5e4de9163bb42c7ca9dd7b7
+Commit-ID:     8661d769ab77c675b5eb6c3351a372b9fbc1bf40
+Gitweb:        https://git.kernel.org/tip/8661d769ab77c675b5eb6c3351a372b9fbc1bf40
 Author:        Sami Tolvanen <samitolvanen@google.com>
-AuthorDate:    Tue, 08 Oct 2019 15:40:47 -07:00
+AuthorDate:    Tue, 08 Oct 2019 15:40:45 -07:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Fri, 11 Oct 2019 12:49:18 +02:00
 
-syscalls/x86: Use COMPAT_SYSCALL_DEFINE0 for IA32 (rt_)sigreturn
+syscalls/x86: Use the correct function type in SYSCALL_DEFINE0
 
-Use COMPAT_SYSCALL_DEFINE0 to define (rt_)sigreturn() syscalls to
-replace sys32_sigreturn() and sys32_rt_sigreturn(). This fixes indirect
-call mismatches with Control-Flow Integrity (CFI) checking.
+Although a syscall defined using SYSCALL_DEFINE0 doesn't accept
+parameters, use the correct function type to avoid type mismatches
+with Control-Flow Integrity (CFI) checking.
 
 Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
 Acked-by: Andy Lutomirski <luto@kernel.org>
@@ -75,62 +75,50 @@ Cc: Kees Cook <keescook@chromium.org>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20191008224049.115427-4-samitolvanen@google.com
+Link: https://lkml.kernel.org/r/20191008224049.115427-2-samitolvanen@google.com
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- arch/x86/entry/syscalls/syscall_32.tbl | 4 ++--
- arch/x86/ia32/ia32_signal.c            | 5 +++--
- 2 files changed, 5 insertions(+), 4 deletions(-)
+ arch/x86/include/asm/syscall_wrapper.h | 23 ++++++++++++-----------
+ 1 file changed, 12 insertions(+), 11 deletions(-)
 
-diff --git a/arch/x86/entry/syscalls/syscall_32.tbl b/arch/x86/entry/syscalls/syscall_32.tbl
-index 3fe0254..2de75fd 100644
---- a/arch/x86/entry/syscalls/syscall_32.tbl
-+++ b/arch/x86/entry/syscalls/syscall_32.tbl
-@@ -130,7 +130,7 @@
- 116	i386	sysinfo			sys_sysinfo			__ia32_compat_sys_sysinfo
- 117	i386	ipc			sys_ipc				__ia32_compat_sys_ipc
- 118	i386	fsync			sys_fsync			__ia32_sys_fsync
--119	i386	sigreturn		sys_sigreturn			sys32_sigreturn
-+119	i386	sigreturn		sys_sigreturn			__ia32_compat_sys_sigreturn
- 120	i386	clone			sys_clone			__ia32_compat_sys_x86_clone
- 121	i386	setdomainname		sys_setdomainname		__ia32_sys_setdomainname
- 122	i386	uname			sys_newuname			__ia32_sys_newuname
-@@ -184,7 +184,7 @@
- 170	i386	setresgid		sys_setresgid16			__ia32_sys_setresgid16
- 171	i386	getresgid		sys_getresgid16			__ia32_sys_getresgid16
- 172	i386	prctl			sys_prctl			__ia32_sys_prctl
--173	i386	rt_sigreturn		sys_rt_sigreturn		sys32_rt_sigreturn
-+173	i386	rt_sigreturn		sys_rt_sigreturn		__ia32_compat_sys_rt_sigreturn
- 174	i386	rt_sigaction		sys_rt_sigaction		__ia32_compat_sys_rt_sigaction
- 175	i386	rt_sigprocmask		sys_rt_sigprocmask		__ia32_compat_sys_rt_sigprocmask
- 176	i386	rt_sigpending		sys_rt_sigpending		__ia32_compat_sys_rt_sigpending
-diff --git a/arch/x86/ia32/ia32_signal.c b/arch/x86/ia32/ia32_signal.c
-index 1cee100..30416d7 100644
---- a/arch/x86/ia32/ia32_signal.c
-+++ b/arch/x86/ia32/ia32_signal.c
-@@ -21,6 +21,7 @@
- #include <linux/personality.h>
- #include <linux/compat.h>
- #include <linux/binfmts.h>
-+#include <linux/syscalls.h>
- #include <asm/ucontext.h>
- #include <linux/uaccess.h>
- #include <asm/fpu/internal.h>
-@@ -118,7 +119,7 @@ static int ia32_restore_sigcontext(struct pt_regs *regs,
- 	return err;
- }
+diff --git a/arch/x86/include/asm/syscall_wrapper.h b/arch/x86/include/asm/syscall_wrapper.h
+index e046a40..90eb70d 100644
+--- a/arch/x86/include/asm/syscall_wrapper.h
++++ b/arch/x86/include/asm/syscall_wrapper.h
+@@ -48,12 +48,13 @@
+  * To keep the naming coherent, re-define SYSCALL_DEFINE0 to create an alias
+  * named __ia32_sys_*()
+  */
+-#define SYSCALL_DEFINE0(sname)					\
+-	SYSCALL_METADATA(_##sname, 0);				\
+-	asmlinkage long __x64_sys_##sname(void);		\
+-	ALLOW_ERROR_INJECTION(__x64_sys_##sname, ERRNO);	\
+-	SYSCALL_ALIAS(__ia32_sys_##sname, __x64_sys_##sname);	\
+-	asmlinkage long __x64_sys_##sname(void)
++
++#define SYSCALL_DEFINE0(sname)						\
++	SYSCALL_METADATA(_##sname, 0);					\
++	asmlinkage long __x64_sys_##sname(const struct pt_regs *__unused);\
++	ALLOW_ERROR_INJECTION(__x64_sys_##sname, ERRNO);		\
++	SYSCALL_ALIAS(__ia32_sys_##sname, __x64_sys_##sname);		\
++	asmlinkage long __x64_sys_##sname(const struct pt_regs *__unused)
  
--asmlinkage long sys32_sigreturn(void)
-+COMPAT_SYSCALL_DEFINE0(sigreturn)
- {
- 	struct pt_regs *regs = current_pt_regs();
- 	struct sigframe_ia32 __user *frame = (struct sigframe_ia32 __user *)(regs->sp-8);
-@@ -144,7 +145,7 @@ badframe:
- 	return 0;
- }
+ #define COND_SYSCALL(name)						\
+ 	cond_syscall(__x64_sys_##name);					\
+@@ -181,11 +182,11 @@
+  * macros to work correctly.
+  */
+ #ifndef SYSCALL_DEFINE0
+-#define SYSCALL_DEFINE0(sname)					\
+-	SYSCALL_METADATA(_##sname, 0);				\
+-	asmlinkage long __x64_sys_##sname(void);		\
+-	ALLOW_ERROR_INJECTION(__x64_sys_##sname, ERRNO);	\
+-	asmlinkage long __x64_sys_##sname(void)
++#define SYSCALL_DEFINE0(sname)						\
++	SYSCALL_METADATA(_##sname, 0);					\
++	asmlinkage long __x64_sys_##sname(const struct pt_regs *__unused);\
++	ALLOW_ERROR_INJECTION(__x64_sys_##sname, ERRNO);		\
++	asmlinkage long __x64_sys_##sname(const struct pt_regs *__unused)
+ #endif
  
--asmlinkage long sys32_rt_sigreturn(void)
-+COMPAT_SYSCALL_DEFINE0(rt_sigreturn)
- {
- 	struct pt_regs *regs = current_pt_regs();
- 	struct rt_sigframe_ia32 __user *frame;
+ #ifndef COND_SYSCALL
