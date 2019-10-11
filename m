@@ -2,39 +2,49 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8AB49D4204
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 11 Oct 2019 16:02:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 33C63D4793
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 11 Oct 2019 20:28:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728033AbfJKOCV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 11 Oct 2019 10:02:21 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:32857 "EHLO
+        id S1728501AbfJKS2S (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 11 Oct 2019 14:28:18 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:33599 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727950AbfJKOCV (ORCPT
+        with ESMTP id S1728735AbfJKS2S (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 11 Oct 2019 10:02:21 -0400
+        Fri, 11 Oct 2019 14:28:18 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iIvUi-0001Yy-2e; Fri, 11 Oct 2019 16:02:12 +0200
+        id 1iIzdj-0008R6-29; Fri, 11 Oct 2019 20:27:47 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 81A081C0178;
-        Fri, 11 Oct 2019 16:02:11 +0200 (CEST)
-Date:   Fri, 11 Oct 2019 14:02:11 -0000
-From:   "tip-bot2 for Jiri Slaby" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 953461C0324;
+        Fri, 11 Oct 2019 20:27:46 +0200 (CEST)
+Date:   Fri, 11 Oct 2019 18:27:46 -0000
+From:   "tip-bot2 for Steve Wahl" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/asm] x86/asm: Make more symbols local
-Cc:     Jiri Slaby <jslaby@suse.cz>, Borislav Petkov <bp@suse.de>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>, bp@alien8.de,
-        hpa@zytor.com, Ingo Molnar <mingo@kernel.org>,
+Subject: [tip: x86/urgent] x86/boot/64: Make level2_kernel_pgt pages invalid
+ outside kernel area
+Cc:     Steve Wahl <steve.wahl@hpe.com>, Borislav Petkov <bp@suse.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Baoquan He <bhe@redhat.com>,
+        Brijesh Singh <brijesh.singh@amd.com>,
+        dimitri.sivanich@hpe.com, Feng Tang <feng.tang@intel.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        Jordan Borgner <mail@jordan-borgner.de>,
+        Juergen Gross <jgross@suse.com>, mike.travis@hpe.com,
+        russ.anderson@hpe.com, stable@vger.kernel.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "x86-ml" <x86@kernel.org>,
+        Zhenzhong Duan <zhenzhong.duan@oracle.com>,
+        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20191011092213.31470-1-jslaby@suse.cz>
-References: <20191011092213.31470-1-jslaby@suse.cz>
+In-Reply-To: <9c011ee51b081534a7a15065b1681d200298b530.1569358539.git.steve.wahl@hpe.com>
+References: <9c011ee51b081534a7a15065b1681d200298b530.1569358539.git.steve.wahl@hpe.com>
 MIME-Version: 1.0
-Message-ID: <157080253134.9978.12838764433984468954.tip-bot2@tip-bot2>
+Message-ID: <157081846655.9978.8543242326238590954.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,114 +58,112 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/asm branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     30a2441cae7b149ff484a697bf9eb8de53240a4f
-Gitweb:        https://git.kernel.org/tip/30a2441cae7b149ff484a697bf9eb8de53240a4f
-Author:        Jiri Slaby <jslaby@suse.cz>
-AuthorDate:    Fri, 11 Oct 2019 11:22:13 +02:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 11 Oct 2019 15:56:30 +02:00
+Commit-ID:     2aa85f246c181b1fa89f27e8e20c5636426be624
+Gitweb:        https://git.kernel.org/tip/2aa85f246c181b1fa89f27e8e20c5636426be624
+Author:        Steve Wahl <steve.wahl@hpe.com>
+AuthorDate:    Tue, 24 Sep 2019 16:03:55 -05:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Fri, 11 Oct 2019 18:38:15 +02:00
 
-x86/asm: Make more symbols local
+x86/boot/64: Make level2_kernel_pgt pages invalid outside kernel area
 
-During the assembly cleanup patchset review, I found more symbols which
-are used only locally. So make them really local by prepending ".L" to
-them. Namely:
+Our hardware (UV aka Superdome Flex) has address ranges marked
+reserved by the BIOS. Access to these ranges is caught as an error,
+causing the BIOS to halt the system.
 
- - wakeup_idt is used only in realmode/rm/wakeup_asm.S.
- - in_pm32 is used only in boot/pmjump.S.
- - retint_user is used only in entry/entry_64.S, perhaps since commit
-   2ec67971facc ("x86/entry/64/compat: Remove most of the fast system
-   call machinery"), where entry_64_compat's caller was removed.
+Initial page tables mapped a large range of physical addresses that
+were not checked against the list of BIOS reserved addresses, and
+sometimes included reserved addresses in part of the mapped range.
+Including the reserved range in the map allowed processor speculative
+accesses to the reserved range, triggering a BIOS halt.
 
-Drop GLOBAL from all of them too. I do not see more candidates in the
-series.
+Used early in booting, the page table level2_kernel_pgt addresses 1
+GiB divided into 2 MiB pages, and it was set up to linearly map a full
+ 1 GiB of physical addresses that included the physical address range
+of the kernel image, as chosen by KASLR.  But this also included a
+large range of unused addresses on either side of the kernel image.
+And unlike the kernel image's physical address range, this extra
+mapped space was not checked against the BIOS tables of usable RAM
+addresses.  So there were times when the addresses chosen by KASLR
+would result in processor accessible mappings of BIOS reserved
+physical addresses.
 
-Signed-off-by: Jiri Slaby <jslaby@suse.cz>
-Acked-by: Borislav Petkov <bp@suse.de>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
+The kernel code did not directly access any of this extra mapped
+space, but having it mapped allowed the processor to issue speculative
+accesses into reserved memory, causing system halts.
+
+This was encountered somewhat rarely on a normal system boot, and much
+more often when starting the crash kernel if "crashkernel=512M,high"
+was specified on the command line (this heavily restricts the physical
+address of the crash kernel, in our case usually within 1 GiB of
+reserved space).
+
+The solution is to invalidate the pages of this table outside the kernel
+image's space before the page table is activated. It fixes this problem
+on our hardware.
+
+ [ bp: Touchups. ]
+
+Signed-off-by: Steve Wahl <steve.wahl@hpe.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Brijesh Singh <brijesh.singh@amd.com>
+Cc: dimitri.sivanich@hpe.com
+Cc: Feng Tang <feng.tang@intel.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jordan Borgner <mail@jordan-borgner.de>
+Cc: Juergen Gross <jgross@suse.com>
+Cc: mike.travis@hpe.com
+Cc: russ.anderson@hpe.com
+Cc: stable@vger.kernel.org
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: bp@alien8.de
-Cc: hpa@zytor.com
-Link: https://lkml.kernel.org/r/20191011092213.31470-1-jslaby@suse.cz
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: x86-ml <x86@kernel.org>
+Cc: Zhenzhong Duan <zhenzhong.duan@oracle.com>
+Link: https://lkml.kernel.org/r/9c011ee51b081534a7a15065b1681d200298b530.1569358539.git.steve.wahl@hpe.com
 ---
- arch/x86/boot/pmjump.S            | 6 +++---
- arch/x86/entry/entry_64.S         | 4 ++--
- arch/x86/realmode/rm/wakeup_asm.S | 6 +++---
- 3 files changed, 8 insertions(+), 8 deletions(-)
+ arch/x86/kernel/head64.c | 22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/boot/pmjump.S b/arch/x86/boot/pmjump.S
-index c22f9a7..ea88d52 100644
---- a/arch/x86/boot/pmjump.S
-+++ b/arch/x86/boot/pmjump.S
-@@ -40,13 +40,13 @@ GLOBAL(protected_mode_jump)
+diff --git a/arch/x86/kernel/head64.c b/arch/x86/kernel/head64.c
+index 29ffa49..206a4b6 100644
+--- a/arch/x86/kernel/head64.c
++++ b/arch/x86/kernel/head64.c
+@@ -222,13 +222,31 @@ unsigned long __head __startup_64(unsigned long physaddr,
+ 	 * we might write invalid pmds, when the kernel is relocated
+ 	 * cleanup_highmap() fixes this up along with the mappings
+ 	 * beyond _end.
++	 *
++	 * Only the region occupied by the kernel image has so far
++	 * been checked against the table of usable memory regions
++	 * provided by the firmware, so invalidate pages outside that
++	 * region. A page table entry that maps to a reserved area of
++	 * memory would allow processor speculation into that area,
++	 * and on some hardware (particularly the UV platform) even
++	 * speculative access to some reserved areas is caught as an
++	 * error, causing the BIOS to halt the system.
+ 	 */
  
- 	# Transition to 32-bit mode
- 	.byte	0x66, 0xea		# ljmpl opcode
--2:	.long	in_pm32			# offset
-+2:	.long	.Lin_pm32		# offset
- 	.word	__BOOT_CS		# segment
- ENDPROC(protected_mode_jump)
+ 	pmd = fixup_pointer(level2_kernel_pgt, physaddr);
+-	for (i = 0; i < PTRS_PER_PMD; i++) {
++
++	/* invalidate pages before the kernel image */
++	for (i = 0; i < pmd_index((unsigned long)_text); i++)
++		pmd[i] &= ~_PAGE_PRESENT;
++
++	/* fixup pages that are part of the kernel image */
++	for (; i <= pmd_index((unsigned long)_end); i++)
+ 		if (pmd[i] & _PAGE_PRESENT)
+ 			pmd[i] += load_delta;
+-	}
++
++	/* invalidate pages after the kernel image */
++	for (; i < PTRS_PER_PMD; i++)
++		pmd[i] &= ~_PAGE_PRESENT;
  
- 	.code32
- 	.section ".text32","ax"
--GLOBAL(in_pm32)
-+.Lin_pm32:
- 	# Set up data segments for flat 32-bit mode
- 	movl	%ecx, %ds
- 	movl	%ecx, %es
-@@ -72,4 +72,4 @@ GLOBAL(in_pm32)
- 	lldt	%cx
- 
- 	jmpl	*%eax			# Jump to the 32-bit entrypoint
--ENDPROC(in_pm32)
-+ENDPROC(.Lin_pm32)
-diff --git a/arch/x86/entry/entry_64.S b/arch/x86/entry/entry_64.S
-index b7c3ea4..86cbb22 100644
---- a/arch/x86/entry/entry_64.S
-+++ b/arch/x86/entry/entry_64.S
-@@ -616,7 +616,7 @@ ret_from_intr:
- 	jz	retint_kernel
- 
- 	/* Interrupt came from user space */
--GLOBAL(retint_user)
-+.Lretint_user:
- 	mov	%rsp,%rdi
- 	call	prepare_exit_to_usermode
- 	TRACE_IRQS_IRETQ
-@@ -1372,7 +1372,7 @@ ENTRY(error_exit)
- 	TRACE_IRQS_OFF
- 	testb	$3, CS(%rsp)
- 	jz	retint_kernel
--	jmp	retint_user
-+	jmp	.Lretint_user
- END(error_exit)
- 
- /*
-diff --git a/arch/x86/realmode/rm/wakeup_asm.S b/arch/x86/realmode/rm/wakeup_asm.S
-index 05ac9c1..dad6198 100644
---- a/arch/x86/realmode/rm/wakeup_asm.S
-+++ b/arch/x86/realmode/rm/wakeup_asm.S
-@@ -73,7 +73,7 @@ ENTRY(wakeup_start)
- 	movw	%ax, %fs
- 	movw	%ax, %gs
- 
--	lidtl	wakeup_idt
-+	lidtl	.Lwakeup_idt
- 
- 	/* Clear the EFLAGS */
- 	pushl $0
-@@ -171,8 +171,8 @@ END(wakeup_gdt)
- 
- 	/* This is the standard real-mode IDT */
- 	.balign	16
--GLOBAL(wakeup_idt)
-+.Lwakeup_idt:
- 	.word	0xffff		/* limit */
- 	.long	0		/* address */
- 	.word	0
--END(wakeup_idt)
-+END(.Lwakeup_idt)
+ 	/*
+ 	 * Fixup phys_base - remove the memory encryption mask to obtain
