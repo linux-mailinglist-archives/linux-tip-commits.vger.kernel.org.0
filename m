@@ -2,25 +2,25 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 668F1D479E
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 11 Oct 2019 20:30:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C4EEFD478C
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 11 Oct 2019 20:28:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728603AbfJKSaM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 11 Oct 2019 14:30:12 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:33610 "EHLO
+        id S1728514AbfJKS2K (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 11 Oct 2019 14:28:10 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:33590 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728470AbfJKSaM (ORCPT
+        with ESMTP id S1728501AbfJKS2K (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 11 Oct 2019 14:30:12 -0400
+        Fri, 11 Oct 2019 14:28:10 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iIzdj-0008R5-1u; Fri, 11 Oct 2019 20:27:47 +0200
+        id 1iIzdp-0008Sl-Rk; Fri, 11 Oct 2019 20:27:53 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 682E31C0178;
-        Fri, 11 Oct 2019 20:27:46 +0200 (CEST)
-Date:   Fri, 11 Oct 2019 18:27:46 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 7B1DD1C0178;
+        Fri, 11 Oct 2019 20:27:53 +0200 (CEST)
+Date:   Fri, 11 Oct 2019 18:27:53 -0000
 From:   "tip-bot2 for Steve Wahl" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
@@ -42,7 +42,7 @@ Cc:     Steve Wahl <steve.wahl@hpe.com>, Borislav Petkov <bp@suse.de>,
 In-Reply-To: <df4f49f05c0c27f108234eb93db5c613d09ea62e.1569358539.git.steve.wahl@hpe.com>
 References: <df4f49f05c0c27f108234eb93db5c613d09ea62e.1569358539.git.steve.wahl@hpe.com>
 MIME-Version: 1.0
-Message-ID: <157081846631.9978.9049202899557176748.tip-bot2@tip-bot2>
+Message-ID: <157081847335.9978.12589261969290312814.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
