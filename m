@@ -2,36 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 21BC1D6997
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 14 Oct 2019 20:39:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 42ADAD6995
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 14 Oct 2019 20:39:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731548AbfJNSi6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 14 Oct 2019 14:38:58 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:40321 "EHLO
+        id S1731381AbfJNSi5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 14 Oct 2019 14:38:57 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:40317 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731326AbfJNSi6 (ORCPT
+        with ESMTP id S1731224AbfJNSi5 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 14 Oct 2019 14:38:58 -0400
+        Mon, 14 Oct 2019 14:38:57 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iK5F5-0005ah-9b; Mon, 14 Oct 2019 20:38:51 +0200
+        id 1iK5F5-0005ag-Cj; Mon, 14 Oct 2019 20:38:51 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D9E1F1C0482;
-        Mon, 14 Oct 2019 20:38:47 +0200 (CEST)
-Date:   Mon, 14 Oct 2019 18:38:47 -0000
-From:   "tip-bot2 for Zenghui Yu" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 1C7831C0483;
+        Mon, 14 Oct 2019 20:38:48 +0200 (CEST)
+Date:   Mon, 14 Oct 2019 18:38:48 -0000
+From:   "tip-bot2 for Sandeep Sheriker Mallikarjun" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/urgent] irqchip/gic-v3: Fix GIC_LINE_NR accessor
-Cc:     Zenghui Yu <yuzenghui@huawei.com>, Marc Zyngier <maz@kernel.org>,
-        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <1568789850-14080-1-git-send-email-yuzenghui@huawei.com>
-References: <1568789850-14080-1-git-send-email-yuzenghui@huawei.com>
+Subject: [tip: irq/urgent] irqchip/atmel-aic5: Add support for sam9x60 irqchip
+Cc:     Sandeep Sheriker Mallikarjun 
+        <sandeepsheriker.mallikarjun@microchip.com>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Marc Zyngier <maz@kernel.org>, Ingo Molnar <mingo@kernel.org>,
+        Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
+In-Reply-To: <1568026835-6646-1-git-send-email-claudiu.beznea@microchip.com>
+References: <1568026835-6646-1-git-send-email-claudiu.beznea@microchip.com>
 MIME-Version: 1.0
-Message-ID: <157107832781.12254.2548879177162595204.tip-bot2@tip-bot2>
+Message-ID: <157107832805.12254.7183157920442567022.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,39 +49,69 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/urgent branch of tip:
 
-Commit-ID:     c107d613f9204ff9c7624c229938153d7492c56e
-Gitweb:        https://git.kernel.org/tip/c107d613f9204ff9c7624c229938153d7492c56e
-Author:        Zenghui Yu <yuzenghui@huawei.com>
-AuthorDate:    Wed, 18 Sep 2019 06:57:30 
+Commit-ID:     212fbf2c9e84ceb267cadd8342156b69b54b8135
+Gitweb:        https://git.kernel.org/tip/212fbf2c9e84ceb267cadd8342156b69b54b8135
+Author:        Sandeep Sheriker Mallikarjun <sandeepsheriker.mallikarjun@microchip.com>
+AuthorDate:    Mon, 09 Sep 2019 14:00:35 +03:00
 Committer:     Marc Zyngier <maz@kernel.org>
-CommitterDate: Wed, 18 Sep 2019 11:42:23 +01:00
+CommitterDate: Mon, 09 Sep 2019 18:11:51 +01:00
 
-irqchip/gic-v3: Fix GIC_LINE_NR accessor
+irqchip/atmel-aic5: Add support for sam9x60 irqchip
 
-As per GIC spec, ITLinesNumber indicates the maximum SPI INTID that
-the GIC implementation supports. And the maximum SPI INTID an
-implementation might support is 1019 (field value 11111).
+Add support for SAM9X60 irqchip.
 
-max(GICD_TYPER_SPIS(...), 1020) is not what we actually want for
-GIC_LINE_NR. Fix it to min(GICD_TYPER_SPIS(...), 1020).
-
-Signed-off-by: Zenghui Yu <yuzenghui@huawei.com>
+Signed-off-by: Sandeep Sheriker Mallikarjun <sandeepsheriker.mallikarjun@microchip.com>
+Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
 Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/1568789850-14080-1-git-send-email-yuzenghui@huawei.com
----
- drivers/irqchip/irq-gic-v3.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Link: https://lore.kernel.org/r/1568026835-6646-1-git-send-email-claudiu.beznea@microchip.com
 
-diff --git a/drivers/irqchip/irq-gic-v3.c b/drivers/irqchip/irq-gic-v3.c
-index 422664a..1edc993 100644
---- a/drivers/irqchip/irq-gic-v3.c
-+++ b/drivers/irqchip/irq-gic-v3.c
-@@ -59,7 +59,7 @@ static struct gic_chip_data gic_data __read_mostly;
- static DEFINE_STATIC_KEY_TRUE(supports_deactivate_key);
+[claudiu.beznea@microchip.com: update aic5_irq_fixups[], update
+ documentation]
+---
+ Documentation/devicetree/bindings/interrupt-controller/atmel,aic.txt |  7 +++++--
+ drivers/irqchip/irq-atmel-aic5.c                                     | 10 ++++++++++
+ 2 files changed, 15 insertions(+), 2 deletions(-)
+
+diff --git a/Documentation/devicetree/bindings/interrupt-controller/atmel,aic.txt b/Documentation/devicetree/bindings/interrupt-controller/atmel,aic.txt
+index f4c5d34..7079d44 100644
+--- a/Documentation/devicetree/bindings/interrupt-controller/atmel,aic.txt
++++ b/Documentation/devicetree/bindings/interrupt-controller/atmel,aic.txt
+@@ -1,8 +1,11 @@
+ * Advanced Interrupt Controller (AIC)
  
- #define GIC_ID_NR	(1U << GICD_TYPER_ID_BITS(gic_data.rdists.gicd_typer))
--#define GIC_LINE_NR	max(GICD_TYPER_SPIS(gic_data.rdists.gicd_typer), 1020U)
-+#define GIC_LINE_NR	min(GICD_TYPER_SPIS(gic_data.rdists.gicd_typer), 1020U)
- #define GIC_ESPI_NR	GICD_TYPER_ESPIS(gic_data.rdists.gicd_typer)
+ Required properties:
+-- compatible: Should be "atmel,<chip>-aic"
+-  <chip> can be "at91rm9200", "sama5d2", "sama5d3" or "sama5d4"
++- compatible: Should be:
++    - "atmel,<chip>-aic" where  <chip> can be "at91rm9200", "sama5d2",
++      "sama5d3" or "sama5d4"
++    - "microchip,<chip>-aic" where <chip> can be "sam9x60"
++
+ - interrupt-controller: Identifies the node as an interrupt controller.
+ - #interrupt-cells: The number of cells to define the interrupts. It should be 3.
+   The first cell is the IRQ number (aka "Peripheral IDentifier" on datasheet).
+diff --git a/drivers/irqchip/irq-atmel-aic5.c b/drivers/irqchip/irq-atmel-aic5.c
+index 6acad2e..2933349 100644
+--- a/drivers/irqchip/irq-atmel-aic5.c
++++ b/drivers/irqchip/irq-atmel-aic5.c
+@@ -313,6 +313,7 @@ static void __init sama5d3_aic_irq_fixup(void)
+ static const struct of_device_id aic5_irq_fixups[] __initconst = {
+ 	{ .compatible = "atmel,sama5d3", .data = sama5d3_aic_irq_fixup },
+ 	{ .compatible = "atmel,sama5d4", .data = sama5d3_aic_irq_fixup },
++	{ .compatible = "microchip,sam9x60", .data = sama5d3_aic_irq_fixup },
+ 	{ /* sentinel */ },
+ };
  
- /*
+@@ -390,3 +391,12 @@ static int __init sama5d4_aic5_of_init(struct device_node *node,
+ 	return aic5_of_init(node, parent, NR_SAMA5D4_IRQS);
+ }
+ IRQCHIP_DECLARE(sama5d4_aic5, "atmel,sama5d4-aic", sama5d4_aic5_of_init);
++
++#define NR_SAM9X60_IRQS		50
++
++static int __init sam9x60_aic5_of_init(struct device_node *node,
++				       struct device_node *parent)
++{
++	return aic5_of_init(node, parent, NR_SAM9X60_IRQS);
++}
++IRQCHIP_DECLARE(sam9x60_aic5, "microchip,sam9x60-aic", sam9x60_aic5_of_init);
