@@ -2,39 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D757CD4FFD
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 12 Oct 2019 15:20:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D06DD6486
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 14 Oct 2019 15:59:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729340AbfJLNTc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 12 Oct 2019 09:19:32 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:34806 "EHLO
+        id S1732379AbfJNN64 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 14 Oct 2019 09:58:56 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:38750 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729250AbfJLNTc (ORCPT
+        with ESMTP id S1730477AbfJNN64 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 12 Oct 2019 09:19:32 -0400
+        Mon, 14 Oct 2019 09:58:56 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iJHIl-0000aK-4e; Sat, 12 Oct 2019 15:19:19 +0200
+        id 1iK0s7-0000rw-9o; Mon, 14 Oct 2019 15:58:51 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 8F5FF1C0426;
-        Sat, 12 Oct 2019 15:19:18 +0200 (CEST)
-Date:   Sat, 12 Oct 2019 13:19:18 -0000
-From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E10C21C010B;
+        Mon, 14 Oct 2019 15:58:50 +0200 (CEST)
+Date:   Mon, 14 Oct 2019 13:58:50 -0000
+From:   "tip-bot2 for Eric Dumazet" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf/x86/msr: Add new CPU model numbers for Ice Lake
-Cc:     Kan Liang <kan.liang@linux.intel.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
+Subject: [tip: timers/urgent] hrtimer: Annotate lockless access to timer->base
+Cc:     Eric Dumazet <edumazet@google.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <1570549810-25049-6-git-send-email-kan.liang@linux.intel.com>
-References: <1570549810-25049-6-git-send-email-kan.liang@linux.intel.com>
+In-Reply-To: <20191008173204.180879-1-edumazet@google.com>
+References: <20191008173204.180879-1-edumazet@google.com>
 MIME-Version: 1.0
-Message-ID: <157088635853.9978.567895938553199892.tip-bot2@tip-bot2>
+Message-ID: <157106153080.9978.2971873792879229342.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,42 +46,77 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/urgent branch of tip:
+The following commit has been merged into the timers/urgent branch of tip:
 
-Commit-ID:     1a5da78d00ce0152994946debd1417513dc35eb3
-Gitweb:        https://git.kernel.org/tip/1a5da78d00ce0152994946debd1417513dc35eb3
-Author:        Kan Liang <kan.liang@linux.intel.com>
-AuthorDate:    Tue, 08 Oct 2019 08:50:06 -07:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sat, 12 Oct 2019 15:13:09 +02:00
+Commit-ID:     ff229eee3d897f52bd001c841f2d3cce8853ecdc
+Gitweb:        https://git.kernel.org/tip/ff229eee3d897f52bd001c841f2d3cce8853ecdc
+Author:        Eric Dumazet <edumazet@google.com>
+AuthorDate:    Tue, 08 Oct 2019 10:32:04 -07:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Mon, 14 Oct 2019 15:51:49 +02:00
 
-perf/x86/msr: Add new CPU model numbers for Ice Lake
+hrtimer: Annotate lockless access to timer->base
 
-PPERF and SMI_COUNT MSRs are also supported by Ice Lake desktop and
-server.
+Followup to commit dd2261ed45aa ("hrtimer: Protect lockless access
+to timer->base")
 
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/1570549810-25049-6-git-send-email-kan.liang@linux.intel.com
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
+lock_hrtimer_base() fetches timer->base without lock exclusion.
+
+Compiler is allowed to read timer->base twice (even if considered dumb)
+which could end up trying to lock migration_base and return
+&migration_base.
+
+  base = timer->base;
+  if (likely(base != &migration_base)) {
+
+       /* compiler reads timer->base again, and now (base == &migration_base)
+
+       raw_spin_lock_irqsave(&base->cpu_base->lock, *flags);
+       if (likely(base == timer->base))
+            return base; /* == &migration_base ! */
+
+Similarly the write sides must use WRITE_ONCE() to avoid store tearing.
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lkml.kernel.org/r/20191008173204.180879-1-edumazet@google.com
+
 ---
- arch/x86/events/msr.c | 3 +++
- 1 file changed, 3 insertions(+)
+ kernel/time/hrtimer.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/events/msr.c b/arch/x86/events/msr.c
-index c177bbe..8515512 100644
---- a/arch/x86/events/msr.c
-+++ b/arch/x86/events/msr.c
-@@ -92,6 +92,9 @@ static bool test_intel(int idx, void *data)
- 	case INTEL_FAM6_COMETLAKE_L:
- 	case INTEL_FAM6_COMETLAKE:
- 	case INTEL_FAM6_ICELAKE_L:
-+	case INTEL_FAM6_ICELAKE:
-+	case INTEL_FAM6_ICELAKE_X:
-+	case INTEL_FAM6_ICELAKE_D:
- 		if (idx == PERF_MSR_SMI || idx == PERF_MSR_PPERF)
- 			return true;
- 		break;
+diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
+index 0d4dc24..6560553 100644
+--- a/kernel/time/hrtimer.c
++++ b/kernel/time/hrtimer.c
+@@ -164,7 +164,7 @@ struct hrtimer_clock_base *lock_hrtimer_base(const struct hrtimer *timer,
+ 	struct hrtimer_clock_base *base;
+ 
+ 	for (;;) {
+-		base = timer->base;
++		base = READ_ONCE(timer->base);
+ 		if (likely(base != &migration_base)) {
+ 			raw_spin_lock_irqsave(&base->cpu_base->lock, *flags);
+ 			if (likely(base == timer->base))
+@@ -244,7 +244,7 @@ again:
+ 			return base;
+ 
+ 		/* See the comment in lock_hrtimer_base() */
+-		timer->base = &migration_base;
++		WRITE_ONCE(timer->base, &migration_base);
+ 		raw_spin_unlock(&base->cpu_base->lock);
+ 		raw_spin_lock(&new_base->cpu_base->lock);
+ 
+@@ -253,10 +253,10 @@ again:
+ 			raw_spin_unlock(&new_base->cpu_base->lock);
+ 			raw_spin_lock(&base->cpu_base->lock);
+ 			new_cpu_base = this_cpu_base;
+-			timer->base = base;
++			WRITE_ONCE(timer->base, base);
+ 			goto again;
+ 		}
+-		timer->base = new_base;
++		WRITE_ONCE(timer->base, new_base);
+ 	} else {
+ 		if (new_cpu_base != this_cpu_base &&
+ 		    hrtimer_check_target(timer, new_base)) {
