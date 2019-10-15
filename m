@@ -2,41 +2,46 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F4017D6EF7
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 15 Oct 2019 07:34:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CE44D6ED8
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 15 Oct 2019 07:33:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726382AbfJOFeX convert rfc822-to-8bit (ORCPT
+        id S1728962AbfJOFdY convert rfc822-to-8bit (ORCPT
         <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 15 Oct 2019 01:34:23 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:42128 "EHLO
+        Tue, 15 Oct 2019 01:33:24 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:42255 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728547AbfJOFcK (ORCPT
+        with ESMTP id S1728672AbfJOFcV (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 15 Oct 2019 01:32:10 -0400
+        Tue, 15 Oct 2019 01:32:21 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iKFRD-0000N1-1O; Tue, 15 Oct 2019 07:32:03 +0200
+        id 1iKFRH-0000QF-N9; Tue, 15 Oct 2019 07:32:07 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5A4A01C04D1;
-        Tue, 15 Oct 2019 07:31:47 +0200 (CEST)
-Date:   Tue, 15 Oct 2019 05:31:47 -0000
-From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 0F7361C04D4;
+        Tue, 15 Oct 2019 07:31:49 +0200 (CEST)
+Date:   Tue, 15 Oct 2019 05:31:48 -0000
+From:   tip-bot2 for =?utf-8?q?Bj=C3=B6rn_T=C3=B6pel?= 
+        <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf trace: Add array of chars scnprintf beautifier
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+Subject: [tip: perf/core] samples/bpf: fix build by setting HAVE_ATTR_TEST to zero
+Cc:     =?utf-8?q?Bj=C3=B6rn_T=C3=B6pel?= <bjorn.topel@intel.com>,
+        KP Singh <kpsingh@google.com>,
+        Song Liu <songliubraving@fb.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
         Jiri Olsa <jolsa@kernel.org>,
-        Luis =?utf-8?q?Cl=C3=A1udio_Gon=C3=A7alves?= 
-        <lclaudio@redhat.com>, Namhyung Kim <namhyung@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Namhyung Kim <namhyung@kernel.org>, bpf@vger.kernel.org,
+        netdev@vger.kernel.org, Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <tip-rlll7tmcqe1g4odtaifil5re@git.kernel.org>
-References: <tip-rlll7tmcqe1g4odtaifil5re@git.kernel.org>
+In-Reply-To: <20191001113307.27796-3-bjorn.topel@gmail.com>
+References: <20191001113307.27796-3-bjorn.topel@gmail.com>
 MIME-Version: 1.0
-Message-ID: <157111750724.12254.17152871616001206067.tip-bot2@tip-bot2>
+Message-ID: <157111750893.12254.16541060201823244763.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -52,67 +57,43 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     9597945d7fb42460e9f2559d1273302ebde85bbf
-Gitweb:        https://git.kernel.org/tip/9597945d7fb42460e9f2559d1273302ebde85bbf
-Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Fri, 04 Oct 2019 14:56:40 -03:00
+Commit-ID:     fce9501aec6bdda45ef3a5e365a5e0de7de7fe2d
+Gitweb:        https://git.kernel.org/tip/fce9501aec6bdda45ef3a5e365a5e0de7de7fe2d
+Author:        Björn Töpel <bjorn.topel@intel.com>
+AuthorDate:    Tue, 01 Oct 2019 13:33:07 +02:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Mon, 07 Oct 2019 12:22:18 -03:00
 
-perf trace: Add array of chars scnprintf beautifier
+samples/bpf: fix build by setting HAVE_ATTR_TEST to zero
 
-Needed for sched's traceoints prev/next comm, where, unlike with
-syscalls, we are not dealing with an integer or pointer, but an array
-straight out from the ring buffer.
+To remove that test_attr__{enabled/open} are used by perf-sys.h, we
+set HAVE_ATTR_TEST to zero.
 
+Signed-off-by: Björn Töpel <bjorn.topel@intel.com>
+Tested-by: KP Singh <kpsingh@google.com>
+Acked-by: Song Liu <songliubraving@fb.com>
 Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexei Starovoitov <ast@kernel.org>
+Cc: Daniel Borkmann <daniel@iogearbox.net>
 Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Luis Cláudio Gonçalves <lclaudio@redhat.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lkml.kernel.org/n/tip-rlll7tmcqe1g4odtaifil5re@git.kernel.org
+Cc: bpf@vger.kernel.org
+Cc: netdev@vger.kernel.org
+Link: http://lore.kernel.org/lkml/20191001113307.27796-3-bjorn.topel@gmail.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/builtin-trace.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ samples/bpf/Makefile | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/perf/builtin-trace.c b/tools/perf/builtin-trace.c
-index f30296c..b3fb208 100644
---- a/tools/perf/builtin-trace.c
-+++ b/tools/perf/builtin-trace.c
-@@ -91,6 +91,7 @@ struct syscall_arg_fmt {
- 	unsigned long (*mask_val)(struct syscall_arg *arg, unsigned long val);
- 	void	   *parm;
- 	const char *name;
-+	u16	   nr_entries; // for arrays
- 	bool	   show_zero;
- };
+diff --git a/samples/bpf/Makefile b/samples/bpf/Makefile
+index 1d9be26..42b571c 100644
+--- a/samples/bpf/Makefile
++++ b/samples/bpf/Makefile
+@@ -176,6 +176,7 @@ KBUILD_HOSTCFLAGS += -I$(srctree)/tools/lib/bpf/
+ KBUILD_HOSTCFLAGS += -I$(srctree)/tools/testing/selftests/bpf/
+ KBUILD_HOSTCFLAGS += -I$(srctree)/tools/lib/ -I$(srctree)/tools/include
+ KBUILD_HOSTCFLAGS += -I$(srctree)/tools/perf
++KBUILD_HOSTCFLAGS += -DHAVE_ATTR_TEST=0
  
-@@ -522,6 +523,16 @@ size_t syscall_arg__scnprintf_long(char *bf, size_t size, struct syscall_arg *ar
- 	return scnprintf(bf, size, "%ld", arg->val);
- }
+ HOSTCFLAGS_bpf_load.o += -I$(objtree)/usr/include -Wno-unused-variable
  
-+static size_t syscall_arg__scnprintf_char_array(char *bf, size_t size, struct syscall_arg *arg)
-+{
-+	// XXX Hey, maybe for sched:sched_switch prev/next comm fields we can
-+	//     fill missing comms using thread__set_comm()...
-+	//     here or in a special syscall_arg__scnprintf_pid_sched_tp...
-+	return scnprintf(bf, size, "\"%-.*s\"", arg->fmt->nr_entries, arg->val);
-+}
-+
-+#define SCA_CHAR_ARRAY syscall_arg__scnprintf_char_array
-+
- static const char *bpf_cmd[] = {
- 	"MAP_CREATE", "MAP_LOOKUP_ELEM", "MAP_UPDATE_ELEM", "MAP_DELETE_ELEM",
- 	"MAP_GET_NEXT_KEY", "PROG_LOAD",
-@@ -1491,7 +1502,10 @@ syscall_arg_fmt__init_array(struct syscall_arg_fmt *arg, struct tep_format_field
- 			arg->scnprintf = SCA_PID;
- 		else if (strcmp(field->type, "umode_t") == 0)
- 			arg->scnprintf = SCA_MODE_T;
--		else if ((strcmp(field->type, "int") == 0 ||
-+		else if ((field->flags & TEP_FIELD_IS_ARRAY) && strstarts(field->type, "char")) {
-+			arg->scnprintf = SCA_CHAR_ARRAY;
-+			arg->nr_entries = field->arraylen;
-+		} else if ((strcmp(field->type, "int") == 0 ||
- 			  strcmp(field->type, "unsigned int") == 0 ||
- 			  strcmp(field->type, "long") == 0) &&
- 			 len >= 2 && strcmp(field->name + len - 2, "fd") == 0) {
