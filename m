@@ -2,30 +2,29 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B63CD6EEA
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 15 Oct 2019 07:34:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 15B61D6F30
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 15 Oct 2019 07:36:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728646AbfJOFd6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 15 Oct 2019 01:33:58 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:42206 "EHLO
+        id S1727435AbfJOFgU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 15 Oct 2019 01:36:20 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:41923 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728627AbfJOFcQ (ORCPT
+        with ESMTP id S1728383AbfJOFbx (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 15 Oct 2019 01:32:16 -0400
+        Tue, 15 Oct 2019 01:31:53 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iKFQm-0008SC-HL; Tue, 15 Oct 2019 07:31:36 +0200
+        id 1iKFQs-0008ST-ML; Tue, 15 Oct 2019 07:31:42 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 3B9D51C03AB;
-        Tue, 15 Oct 2019 07:31:36 +0200 (CEST)
-Date:   Tue, 15 Oct 2019 05:31:36 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5CEFC1C0482;
+        Tue, 15 Oct 2019 07:31:37 +0200 (CEST)
+Date:   Tue, 15 Oct 2019 05:31:37 -0000
 From:   "tip-bot2 for Jiri Olsa" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] libperf: Move the pollfd allocation from tools/perf
- to libperf
+Subject: [tip: perf/core] perf evlist: Introduce perf_evlist__mmap_cb_get()
 Cc:     Jiri Olsa <jolsa@kernel.org>,
         Alexander Shishkin <alexander.shishkin@linux.intel.com>,
         Michael Petlan <mpetlan@redhat.com>,
@@ -34,10 +33,10 @@ Cc:     Jiri Olsa <jolsa@kernel.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20191007125344.14268-24-jolsa@kernel.org>
-References: <20191007125344.14268-24-jolsa@kernel.org>
+In-Reply-To: <20191007125344.14268-20-jolsa@kernel.org>
+References: <20191007125344.14268-20-jolsa@kernel.org>
 MIME-Version: 1.0
-Message-ID: <157111749616.12254.13205504186119776560.tip-bot2@tip-bot2>
+Message-ID: <157111749722.12254.2532014264638298584.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -53,79 +52,71 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     230662e15ed6cc63ecf72ed1bffa3cadef486850
-Gitweb:        https://git.kernel.org/tip/230662e15ed6cc63ecf72ed1bffa3cadef486850
+Commit-ID:     bb1b1885e2f22afb8bc7981cd865fe4b0e3d975b
+Gitweb:        https://git.kernel.org/tip/bb1b1885e2f22afb8bc7981cd865fe4b0e3d975b
 Author:        Jiri Olsa <jolsa@kernel.org>
-AuthorDate:    Mon, 07 Oct 2019 14:53:31 +02:00
+AuthorDate:    Mon, 07 Oct 2019 14:53:27 +02:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Thu, 10 Oct 2019 12:54:35 -03:00
+CommitterDate: Thu, 10 Oct 2019 12:30:21 -03:00
 
-libperf: Move the pollfd allocation from tools/perf to libperf
+perf evlist: Introduce perf_evlist__mmap_cb_get()
 
-It's needed in libperf only, so move it to the perf_evlist__mmap_ops()
-function.
+Add the perf_evlist__mmap_cb_get() function to return 'struct perf_mmap'
+object during perf_evlist__mmap_ops() call.
+
+The array of 'struct mmap' is allocated via evlist__alloc_mmap(), in
+this callback we simply returns pointer to the base object.
 
 Signed-off-by: Jiri Olsa <jolsa@kernel.org>
 Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 Cc: Michael Petlan <mpetlan@redhat.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Link: http://lore.kernel.org/lkml/20191007125344.14268-24-jolsa@kernel.org
+Link: http://lore.kernel.org/lkml/20191007125344.14268-20-jolsa@kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/lib/evlist.c  | 5 +++++
- tools/perf/util/evlist.c | 4 ----
- 2 files changed, 5 insertions(+), 4 deletions(-)
+ tools/perf/util/evlist.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-diff --git a/tools/perf/lib/evlist.c b/tools/perf/lib/evlist.c
-index f9a802d..5ae1da9 100644
---- a/tools/perf/lib/evlist.c
-+++ b/tools/perf/lib/evlist.c
-@@ -34,6 +34,7 @@ void perf_evlist__init(struct perf_evlist *evlist)
- 		INIT_HLIST_HEAD(&evlist->heads[i]);
- 	INIT_LIST_HEAD(&evlist->entries);
- 	evlist->nr_entries = 0;
-+	fdarray__init(&evlist->pollfd, 64);
- }
- 
- static void __perf_evlist__propagate_maps(struct perf_evlist *evlist,
-@@ -114,6 +115,7 @@ void perf_evlist__delete(struct perf_evlist *evlist)
- 		return;
- 
- 	perf_evlist__munmap(evlist);
-+	fdarray__exit(&evlist->pollfd);
- 	free(evlist);
- }
- 
-@@ -525,6 +527,9 @@ int perf_evlist__mmap_ops(struct perf_evlist *evlist,
- 			return -ENOMEM;
- 	}
- 
-+	if (evlist->pollfd.entries == NULL && perf_evlist__alloc_pollfd(evlist) < 0)
-+		return -ENOMEM;
-+
- 	if (perf_cpu_map__empty(cpus))
- 		return mmap_per_thread(evlist, ops, mp);
- 
 diff --git a/tools/perf/util/evlist.c b/tools/perf/util/evlist.c
-index 3f4f11f..5192c65 100644
+index 11716f2..f50ee5c 100644
 --- a/tools/perf/util/evlist.c
 +++ b/tools/perf/util/evlist.c
-@@ -58,7 +58,6 @@ void evlist__init(struct evlist *evlist, struct perf_cpu_map *cpus,
- {
- 	perf_evlist__init(&evlist->core);
- 	perf_evlist__set_maps(&evlist->core, cpus, threads);
--	fdarray__init(&evlist->core.pollfd, 64);
- 	evlist->workload.pid = -1;
- 	evlist->bkw_mmap_state = BKW_MMAP_NOTREADY;
+@@ -750,6 +750,29 @@ perf_evlist__mmap_cb_idx(struct perf_evlist *_evlist,
+ 	auxtrace_mmap_params__set_idx(&mp->auxtrace_mp, evlist, idx, per_cpu);
  }
-@@ -829,9 +828,6 @@ int evlist__mmap_ex(struct evlist *evlist, unsigned int pages,
- 	if (!evlist->mmap)
- 		return -ENOMEM;
  
--	if (evlist->core.pollfd.entries == NULL && perf_evlist__alloc_pollfd(&evlist->core) < 0)
--		return -ENOMEM;
--
- 	evlist->core.mmap_len = evlist__mmap_size(pages);
- 	pr_debug("mmap size %zuB\n", evlist->core.mmap_len);
- 	mp.core.mask = evlist->core.mmap_len - page_size - 1;
++static struct perf_mmap*
++perf_evlist__mmap_cb_get(struct perf_evlist *_evlist, bool overwrite, int idx)
++{
++	struct evlist *evlist = container_of(_evlist, struct evlist, core);
++	struct mmap *maps = evlist->mmap;
++
++	if (overwrite) {
++		maps = evlist->overwrite_mmap;
++
++		if (!maps) {
++			maps = evlist__alloc_mmap(evlist, true);
++			if (!maps)
++				return NULL;
++
++			evlist->overwrite_mmap = maps;
++			if (evlist->bkw_mmap_state == BKW_MMAP_NOTREADY)
++				perf_evlist__toggle_bkw_mmap(evlist, BKW_MMAP_RUNNING);
++		}
++	}
++
++	return &maps[idx].core;
++}
++
+ static int evlist__mmap_per_cpu(struct evlist *evlist,
+ 				     struct mmap_params *mp)
+ {
+@@ -948,6 +971,7 @@ int evlist__mmap_ex(struct evlist *evlist, unsigned int pages,
+ 	};
+ 	struct perf_evlist_mmap_ops ops __maybe_unused = {
+ 		.idx = perf_evlist__mmap_cb_idx,
++		.get = perf_evlist__mmap_cb_get,
+ 	};
+ 
+ 	if (!evlist->mmap)
