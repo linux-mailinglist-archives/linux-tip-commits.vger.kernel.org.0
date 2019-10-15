@@ -2,47 +2,45 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EC3A5D6EF0
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 15 Oct 2019 07:34:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8ED8D6EFD
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 15 Oct 2019 07:35:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726217AbfJOFeM convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 15 Oct 2019 01:34:12 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:42154 "EHLO
+        id S1728533AbfJOFcG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 15 Oct 2019 01:32:06 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:42083 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728570AbfJOFcM (ORCPT
+        with ESMTP id S1728507AbfJOFcF (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 15 Oct 2019 01:32:12 -0400
+        Tue, 15 Oct 2019 01:32:05 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iKFRF-0000Kl-52; Tue, 15 Oct 2019 07:32:05 +0200
+        id 1iKFR9-0000I7-2d; Tue, 15 Oct 2019 07:31:59 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E22421C04F3;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5F7E11C04E8;
         Tue, 15 Oct 2019 07:31:45 +0200 (CEST)
 Date:   Tue, 15 Oct 2019 05:31:45 -0000
 From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf trace beauty: Add a x86 MSR cmd id->str table generator
+Subject: [tip: perf/core] perf trace: Allow associating scnprintf routines
+ with well known arg names
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Brendan Gregg <brendan.d.gregg@gmail.com>,
         Jiri Olsa <jolsa@kernel.org>,
-        Luis =?utf-8?q?Cl=C3=A1udio_Gon=C3=A7alves?= 
-        <lclaudio@redhat.com>, Namhyung Kim <namhyung@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <tip-ja080xawx08kedez855usnon@git.kernel.org>
-References: <tip-ja080xawx08kedez855usnon@git.kernel.org>
+In-Reply-To: <tip-89ptht6s5fez82lykuwq1eyb@git.kernel.org>
+References: <tip-89ptht6s5fez82lykuwq1eyb@git.kernel.org>
 MIME-Version: 1.0
-Message-ID: <157111750578.12254.13845674153073672746.tip-bot2@tip-bot2>
+Message-ID: <157111750531.12254.10430004196569872399.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: 7bit
 X-Linutronix-Spam-Score: -1.0
 X-Linutronix-Spam-Level: -
 X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
@@ -53,123 +51,71 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     693d345818e106318710ac150ae252b73765d0fa
-Gitweb:        https://git.kernel.org/tip/693d345818e106318710ac150ae252b73765d0fa
+Commit-ID:     5d88099bc00dccddf5da18e25e1223f01644f7a2
+Gitweb:        https://git.kernel.org/tip/5d88099bc00dccddf5da18e25e1223f01644f7a2
 Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Thu, 26 Sep 2019 15:28:02 -03:00
+AuthorDate:    Mon, 07 Oct 2019 15:50:15 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Wed, 09 Oct 2019 11:23:52 -03:00
 
-perf trace beauty: Add a x86 MSR cmd id->str table generator
+perf trace: Allow associating scnprintf routines with well known arg names
 
-Without parameters it'll parse tools/arch/x86/include/asm/msr-index.h
-and output a table usable by tools, that will be wired up later to a
-libtraceevent plugin registered from perf's glue code:
+For instance 'msr' appears in several tracepoints, so we can associate
+it with a single scnprintf() routine auto-generated from kernel headers,
+as will be done in followup patches.
 
-  $ tools/perf/trace/beauty/tracepoints/x86_msr.sh
-  static const char *x86_MSRs[] = {
- <SNIP>
-  	[0x00000034] = "SMI_COUNT",
-  	[0x0000003a] = "IA32_FEATURE_CONTROL",
-  	[0x0000003b] = "IA32_TSC_ADJUST",
-  	[0x00000040] = "LBR_CORE_FROM",
-  	[0x00000048] = "IA32_SPEC_CTRL",
-  	[0x00000049] = "IA32_PRED_CMD",
- <SNIP>
-  	[0x0000010b] = "IA32_FLUSH_CMD",
-  	[0x0000010F] = "TSX_FORCE_ABORT",
- <SNIP>
-  	[0x00000198] = "IA32_PERF_STATUS",
-  	[0x00000199] = "IA32_PERF_CTL",
-  <SNIP>
-  	[0x00000da0] = "IA32_XSS",
-  	[0x00000dc0] = "LBR_INFO_0",
-  	[0x00000ffc] = "IA32_BNDCFGS_RSVD",
-  };
-
-  #define x86_64_specific_MSRs_offset 0xc0000080
-  static const char *x86_64_specific_MSRs[] = {
-  	[0xc0000080 - x86_64_specific_MSRs_offset] = "EFER",
-  	[0xc0000081 - x86_64_specific_MSRs_offset] = "STAR",
-  	[0xc0000082 - x86_64_specific_MSRs_offset] = "LSTAR",
-  	[0xc0000083 - x86_64_specific_MSRs_offset] = "CSTAR",
-  	[0xc0000084 - x86_64_specific_MSRs_offset] = "SYSCALL_MASK",
-  <SNIP>
-  	[0xc0000103 - x86_64_specific_MSRs_offset] = "TSC_AUX",
-  	[0xc0000104 - x86_64_specific_MSRs_offset] = "AMD64_TSC_RATIO",
-  };
-
-  #define x86_AMD_V_KVM_MSRs_offset 0xc0010000
-  static const char *x86_AMD_V_KVM_MSRs[] = {
-  	[0xc0010000 - x86_AMD_V_KVM_MSRs_offset] = "K7_EVNTSEL0",
-  <SNIP>
-  	[0xc0010114 - x86_AMD_V_KVM_MSRs_offset] = "VM_CR",
-  	[0xc0010115 - x86_AMD_V_KVM_MSRs_offset] = "VM_IGNNE",
-  	[0xc0010117 - x86_AMD_V_KVM_MSRs_offset] = "VM_HSAVE_PA",
-  <SNIP>
-  	[0xc0010240 - x86_AMD_V_KVM_MSRs_offset] = "F15H_NB_PERF_CTL",
-  	[0xc0010241 - x86_AMD_V_KVM_MSRs_offset] = "F15H_NB_PERF_CTR",
-  	[0xc0010280 - x86_AMD_V_KVM_MSRs_offset] = "F15H_PTSC",
-  };
-
-Then these will in turn be hooked up in a follow up patch to be used by
-strarrays__scnprintf().
+Start with an empty array of associations.
 
 Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Brendan Gregg <brendan.d.gregg@gmail.com>
 Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Luis Cláudio Gonçalves <lclaudio@redhat.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lkml.kernel.org/n/tip-ja080xawx08kedez855usnon@git.kernel.org
+Link: https://lkml.kernel.org/n/tip-89ptht6s5fez82lykuwq1eyb@git.kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/trace/beauty/tracepoints/x86_msr.sh | 40 +++++++++++++++++-
- 1 file changed, 40 insertions(+)
- create mode 100755 tools/perf/trace/beauty/tracepoints/x86_msr.sh
+ tools/perf/builtin-trace.c | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
-diff --git a/tools/perf/trace/beauty/tracepoints/x86_msr.sh b/tools/perf/trace/beauty/tracepoints/x86_msr.sh
-new file mode 100755
-index 0000000..831c02c
---- /dev/null
-+++ b/tools/perf/trace/beauty/tracepoints/x86_msr.sh
-@@ -0,0 +1,40 @@
-+#!/bin/sh
-+# SPDX-License-Identifier: LGPL-2.1
+diff --git a/tools/perf/builtin-trace.c b/tools/perf/builtin-trace.c
+index 8303d83..d52972c 100644
+--- a/tools/perf/builtin-trace.c
++++ b/tools/perf/builtin-trace.c
+@@ -1479,6 +1479,27 @@ static int syscall__alloc_arg_fmts(struct syscall *sc, int nr_args)
+ 	return 0;
+ }
+ 
++static struct syscall_arg_fmt syscall_arg_fmts__by_name[] = {
++};
 +
-+if [ $# -ne 1 ] ; then
-+	arch_x86_header_dir=tools/arch/x86/include/asm/
-+else
-+	arch_x86_header_dir=$1
-+fi
++static int syscall_arg_fmt__cmp(const void *name, const void *fmtp)
++{
++       const struct syscall_arg_fmt *fmt = fmtp;
++       return strcmp(name, fmt->name);
++}
 +
-+x86_msr_index=${arch_x86_header_dir}/msr-index.h
++static struct syscall_arg_fmt *
++__syscall_arg_fmt__find_by_name(struct syscall_arg_fmt *fmts, const int nmemb, const char *name)
++{
++       return bsearch(name, fmts, nmemb, sizeof(struct syscall_arg_fmt), syscall_arg_fmt__cmp);
++}
 +
-+# Support all later, with some hash table, for now chop off
-+# Just the ones starting with 0x00000 so as to have a simple
-+# array.
++static struct syscall_arg_fmt *syscall_arg_fmt__find_by_name(const char *name)
++{
++       const int nmemb = ARRAY_SIZE(syscall_arg_fmts__by_name);
++       return __syscall_arg_fmt__find_by_name(syscall_arg_fmts__by_name, nmemb, name);
++}
 +
-+printf "static const char *x86_MSRs[] = {\n"
-+regex='^[[:space:]]*#[[:space:]]*define[[:space:]]+MSR_([[:alnum:]][[:alnum:]_]+)[[:space:]]+(0x00000[[:xdigit:]]+)[[:space:]]*.*'
-+egrep $regex ${x86_msr_index} | egrep -v 'MSR_(ATOM|P[46]|AMD64|IA32_TSCDEADLINE|IDT_FCR4)' | \
-+	sed -r "s/$regex/\2 \1/g" | sort -n | \
-+	xargs printf "\t[%s] = \"%s\",\n"
-+printf "};\n\n"
+ static struct tep_format_field *
+ syscall_arg_fmt__init_array(struct syscall_arg_fmt *arg, struct tep_format_field *field)
+ {
+@@ -1518,6 +1539,11 @@ syscall_arg_fmt__init_array(struct syscall_arg_fmt *arg, struct tep_format_field
+ 			 * 7 unsigned long
+ 			 */
+ 			arg->scnprintf = SCA_FD;
++               } else {
++			struct syscall_arg_fmt *fmt = syscall_arg_fmt__find_by_name(field->name);
 +
-+# Remove MSR_K6_WHCR, clashes with MSR_LSTAR
-+regex='^[[:space:]]*#[[:space:]]*define[[:space:]]+MSR_([[:alnum:]][[:alnum:]_]+)[[:space:]]+(0xc0000[[:xdigit:]]+)[[:space:]]*.*'
-+printf "#define x86_64_specific_MSRs_offset "
-+egrep $regex ${x86_msr_index} | sed -r "s/$regex/\2/g" | sort -n | head -1
-+printf "static const char *x86_64_specific_MSRs[] = {\n"
-+egrep $regex ${x86_msr_index} | \
-+	sed -r "s/$regex/\2 \1/g" | egrep -vw 'K6_WHCR' | sort -n | \
-+	xargs printf "\t[%s - x86_64_specific_MSRs_offset] = \"%s\",\n"
-+printf "};\n\n"
-+
-+regex='^[[:space:]]*#[[:space:]]*define[[:space:]]+MSR_([[:alnum:]][[:alnum:]_]+)[[:space:]]+(0xc0010[[:xdigit:]]+)[[:space:]]*.*'
-+printf "#define x86_AMD_V_KVM_MSRs_offset "
-+egrep $regex ${x86_msr_index} | sed -r "s/$regex/\2/g" | sort -n | head -1
-+printf "static const char *x86_AMD_V_KVM_MSRs[] = {\n"
-+egrep $regex ${x86_msr_index} | \
-+	sed -r "s/$regex/\2 \1/g" | sort -n | \
-+	xargs printf "\t[%s - x86_AMD_V_KVM_MSRs_offset] = \"%s\",\n"
-+printf "};\n"
++			if (fmt)
++				arg->scnprintf = fmt->scnprintf;
+ 		}
+ 	}
+ 
