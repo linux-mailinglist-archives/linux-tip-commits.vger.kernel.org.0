@@ -2,39 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EE271D6EB7
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 15 Oct 2019 07:32:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 96F86D6EB9
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 15 Oct 2019 07:32:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728642AbfJOFcR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 15 Oct 2019 01:32:17 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:42198 "EHLO
+        id S1728693AbfJOFcV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 15 Oct 2019 01:32:21 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:42257 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728615AbfJOFcQ (ORCPT
+        with ESMTP id S1728676AbfJOFcV (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 15 Oct 2019 01:32:16 -0400
+        Tue, 15 Oct 2019 01:32:21 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iKFRJ-0000Sk-J6; Tue, 15 Oct 2019 07:32:09 +0200
+        id 1iKFRR-0000UF-07; Tue, 15 Oct 2019 07:32:17 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 22CFE1C06D6;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E07181C06D9;
         Tue, 15 Oct 2019 07:31:50 +0200 (CEST)
 Date:   Tue, 15 Oct 2019 05:31:50 -0000
 From:   "tip-bot2 for Adrian Hunter" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf scripts python: exported-sql-viewer.py: Tidy up
- Call tree call_time
+Subject: [tip: perf/core] perf scripts python: exported-sql-viewer.py: Add
+ LookupModel()
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         Jiri Olsa <jolsa@redhat.com>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20190821083216.1340-5-adrian.hunter@intel.com>
-References: <20190821083216.1340-5-adrian.hunter@intel.com>
+In-Reply-To: <20190821083216.1340-2-adrian.hunter@intel.com>
+References: <20190821083216.1340-2-adrian.hunter@intel.com>
 MIME-Version: 1.0
-Message-ID: <157111751002.12254.2811140358205091894.tip-bot2@tip-bot2>
+Message-ID: <157111751078.12254.15231324042009196459.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,76 +50,42 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     da4264f5cf8a6b798bf5494e08a5dae85a61c4c3
-Gitweb:        https://git.kernel.org/tip/da4264f5cf8a6b798bf5494e08a5dae85a61c4c3
+Commit-ID:     181ea40a24af9a60c2ee75d4f271980f6453f585
+Gitweb:        https://git.kernel.org/tip/181ea40a24af9a60c2ee75d4f271980f6453f585
 Author:        Adrian Hunter <adrian.hunter@intel.com>
-AuthorDate:    Wed, 21 Aug 2019 11:32:14 +03:00
+AuthorDate:    Wed, 21 Aug 2019 11:32:11 +03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Mon, 07 Oct 2019 12:22:17 -03:00
 
-perf scripts python: exported-sql-viewer.py: Tidy up Call tree call_time
+perf scripts python: exported-sql-viewer.py: Add LookupModel()
 
-Record call_time on tree nodes and re-name the misnamed "count" parameter.
+Add LookupModel() to find a model in the model cache without creating it.
 
 Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
 Cc: Jiri Olsa <jolsa@redhat.com>
-Link: http://lore.kernel.org/lkml/20190821083216.1340-5-adrian.hunter@intel.com
+Link: http://lore.kernel.org/lkml/20190821083216.1340-2-adrian.hunter@intel.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/scripts/python/exported-sql-viewer.py | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ tools/perf/scripts/python/exported-sql-viewer.py |  9 +++++++++
+ 1 file changed, 9 insertions(+)
 
 diff --git a/tools/perf/scripts/python/exported-sql-viewer.py b/tools/perf/scripts/python/exported-sql-viewer.py
-index 0dcc9a0..06b8d55 100755
+index 61b3911..18ad046 100755
 --- a/tools/perf/scripts/python/exported-sql-viewer.py
 +++ b/tools/perf/scripts/python/exported-sql-viewer.py
-@@ -794,15 +794,16 @@ class CallGraphModel(CallGraphModelBase):
+@@ -341,6 +341,15 @@ def LookupCreateModel(model_name, create_fn):
+ 	model_cache_lock.release()
+ 	return model
  
- class CallTreeLevelTwoPlusItemBase(CallGraphLevelItemBase):
++def LookupModel(model_name):
++	model_cache_lock.acquire()
++	try:
++		model = model_cache[model_name]
++	except:
++		model = None
++	model_cache_lock.release()
++	return model
++
+ # Find bar
  
--	def __init__(self, glb, params, row, comm_id, thread_id, calls_id, time, insn_cnt, cyc_cnt, branch_count, parent_item):
-+	def __init__(self, glb, params, row, comm_id, thread_id, calls_id, call_time, time, insn_cnt, cyc_cnt, branch_count, parent_item):
- 		super(CallTreeLevelTwoPlusItemBase, self).__init__(glb, params, row, parent_item)
- 		self.comm_id = comm_id
- 		self.thread_id = thread_id
- 		self.calls_id = calls_id
-+		self.call_time = call_time
-+		self.time = time
- 		self.insn_cnt = insn_cnt
- 		self.cyc_cnt = cyc_cnt
- 		self.branch_count = branch_count
--		self.time = time
- 
- 	def Select(self):
- 		self.query_done = True
-@@ -839,17 +840,17 @@ class CallTreeLevelTwoPlusItemBase(CallGraphLevelItemBase):
- 
- class CallTreeLevelThreeItem(CallTreeLevelTwoPlusItemBase):
- 
--	def __init__(self, glb, params, row, comm_id, thread_id, calls_id, name, dso, count, time, insn_cnt, cyc_cnt, branch_count, parent_item):
--		super(CallTreeLevelThreeItem, self).__init__(glb, params, row, comm_id, thread_id, calls_id, time, insn_cnt, cyc_cnt, branch_count, parent_item)
-+	def __init__(self, glb, params, row, comm_id, thread_id, calls_id, name, dso, call_time, time, insn_cnt, cyc_cnt, branch_count, parent_item):
-+		super(CallTreeLevelThreeItem, self).__init__(glb, params, row, comm_id, thread_id, calls_id, call_time, time, insn_cnt, cyc_cnt, branch_count, parent_item)
- 		dso = dsoname(dso)
- 		if self.params.have_ipc:
- 			insn_pcnt = PercentToOneDP(insn_cnt, parent_item.insn_cnt)
- 			cyc_pcnt = PercentToOneDP(cyc_cnt, parent_item.cyc_cnt)
- 			br_pcnt = PercentToOneDP(branch_count, parent_item.branch_count)
- 			ipc = CalcIPC(cyc_cnt, insn_cnt)
--			self.data = [ name, dso, str(count), str(time), PercentToOneDP(time, parent_item.time), str(insn_cnt), insn_pcnt, str(cyc_cnt), cyc_pcnt, ipc, str(branch_count), br_pcnt ]
-+			self.data = [ name, dso, str(call_time), str(time), PercentToOneDP(time, parent_item.time), str(insn_cnt), insn_pcnt, str(cyc_cnt), cyc_pcnt, ipc, str(branch_count), br_pcnt ]
- 		else:
--			self.data = [ name, dso, str(count), str(time), PercentToOneDP(time, parent_item.time), str(branch_count), PercentToOneDP(branch_count, parent_item.branch_count) ]
-+			self.data = [ name, dso, str(call_time), str(time), PercentToOneDP(time, parent_item.time), str(branch_count), PercentToOneDP(branch_count, parent_item.branch_count) ]
- 		self.dbid = calls_id
- 
- # Call tree data model level two item
-@@ -857,7 +858,7 @@ class CallTreeLevelThreeItem(CallTreeLevelTwoPlusItemBase):
- class CallTreeLevelTwoItem(CallTreeLevelTwoPlusItemBase):
- 
- 	def __init__(self, glb, params, row, comm_id, thread_id, pid, tid, parent_item):
--		super(CallTreeLevelTwoItem, self).__init__(glb, params, row, comm_id, thread_id, 0, 0, 0, 0, 0, parent_item)
-+		super(CallTreeLevelTwoItem, self).__init__(glb, params, row, comm_id, thread_id, 0, 0, 0, 0, 0, 0, parent_item)
- 		if self.params.have_ipc:
- 			self.data = [str(pid) + ":" + str(tid), "", "", "", "", "", "", "", "", "", "", ""]
- 		else:
+ class FindBar():
