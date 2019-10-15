@@ -2,51 +2,44 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 436C6D6ECA
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 15 Oct 2019 07:33:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7BA9CD6EE8
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 15 Oct 2019 07:34:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728704AbfJOFcW convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 15 Oct 2019 01:32:22 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:42254 "EHLO
+        id S1726898AbfJOFdx (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 15 Oct 2019 01:33:53 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:42226 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728651AbfJOFcW (ORCPT
+        with ESMTP id S1728646AbfJOFcS (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 15 Oct 2019 01:32:22 -0400
+        Tue, 15 Oct 2019 01:32:18 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iKFRL-0000Qr-OZ; Tue, 15 Oct 2019 07:32:11 +0200
+        id 1iKFRN-0000Re-7h; Tue, 15 Oct 2019 07:32:13 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 53CD81C06CD;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D98FB1C04D5;
         Tue, 15 Oct 2019 07:31:49 +0200 (CEST)
 Date:   Tue, 15 Oct 2019 05:31:49 -0000
-From:   tip-bot2 for =?utf-8?q?Bj=C3=B6rn_T=C3=B6pel?= 
-        <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Adrian Hunter" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf tools: Make usage of test_attr__* optional for
- perf-sys.h
-Cc:     =?utf-8?q?Bj=C3=B6rn_T=C3=B6pel?= <bjorn.topel@intel.com>,
-        Song Liu <songliubraving@fb.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Jiri Olsa <jolsa@kernel.org>,
-        Namhyung Kim <namhyung@kernel.org>, bpf@vger.kernel.org,
-        netdev@vger.kernel.org, Arnaldo Carvalho de Melo <acme@redhat.com>,
+Subject: [tip: perf/core] perf scripts python: exported-sql-viewer.py: Add
+ ability for Call tree to open at a specified task and time
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20191001113307.27796-2-bjorn.topel@gmail.com>
-References: <20191001113307.27796-2-bjorn.topel@gmail.com>
+In-Reply-To: <20190821083216.1340-6-adrian.hunter@intel.com>
+References: <20190821083216.1340-6-adrian.hunter@intel.com>
 MIME-Version: 1.0
-Message-ID: <157111750919.12254.12122425573168365300.tip-bot2@tip-bot2>
+Message-ID: <157111750975.12254.3870071299889679053.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: 7bit
 X-Linutronix-Spam-Score: -1.0
 X-Linutronix-Spam-Level: -
 X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
@@ -57,62 +50,84 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     06f84d1989b7e58d56fa2e448664585749d41221
-Gitweb:        https://git.kernel.org/tip/06f84d1989b7e58d56fa2e448664585749d41221
-Author:        Björn Töpel <bjorn.topel@intel.com>
-AuthorDate:    Tue, 01 Oct 2019 13:33:06 +02:00
+Commit-ID:     e69d5df75d74da14cbc8c96bbc1d9e86cc91ad0b
+Gitweb:        https://git.kernel.org/tip/e69d5df75d74da14cbc8c96bbc1d9e86cc91ad0b
+Author:        Adrian Hunter <adrian.hunter@intel.com>
+AuthorDate:    Wed, 21 Aug 2019 11:32:15 +03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Mon, 07 Oct 2019 12:22:17 -03:00
 
-perf tools: Make usage of test_attr__* optional for perf-sys.h
+perf scripts python: exported-sql-viewer.py: Add ability for Call tree to open at a specified task and time
 
-For users of perf-sys.h outside perf, e.g. samples/bpf/bpf_load.c, it's
-convenient not to depend on test_attr__*.
+Add ability for Call tree to open at a specified task and time.
 
-After commit 91854f9a077e ("perf tools: Move everything related to
-sys_perf_event_open() to perf-sys.h"), all users of perf-sys.h will
-depend on test_attr__enabled and test_attr__open.
-
-This commit enables a user to define HAVE_ATTR_TEST to zero in order
-to omit the test dependency.
-
-Fixes: 91854f9a077e ("perf tools: Move everything related to sys_perf_event_open() to perf-sys.h")
-Signed-off-by: Björn Töpel <bjorn.topel@intel.com>
-Acked-by: Song Liu <songliubraving@fb.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexei Starovoitov <ast@kernel.org>
-Cc: Daniel Borkmann <daniel@iogearbox.net>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: bpf@vger.kernel.org
-Cc: netdev@vger.kernel.org
-Link: http://lore.kernel.org/lkml/20191001113307.27796-2-bjorn.topel@gmail.com
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Jiri Olsa <jolsa@redhat.com>
+Link: http://lore.kernel.org/lkml/20190821083216.1340-6-adrian.hunter@intel.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/perf-sys.h | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ tools/perf/scripts/python/exported-sql-viewer.py | 44 ++++++++++++++-
+ 1 file changed, 43 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/perf-sys.h b/tools/perf/perf-sys.h
-index 63e4349..15e458e 100644
---- a/tools/perf/perf-sys.h
-+++ b/tools/perf/perf-sys.h
-@@ -15,7 +15,9 @@ void test_attr__init(void);
- void test_attr__open(struct perf_event_attr *attr, pid_t pid, int cpu,
- 		     int fd, int group_fd, unsigned long flags);
+diff --git a/tools/perf/scripts/python/exported-sql-viewer.py b/tools/perf/scripts/python/exported-sql-viewer.py
+index 06b8d55..a5af52f 100755
+--- a/tools/perf/scripts/python/exported-sql-viewer.py
++++ b/tools/perf/scripts/python/exported-sql-viewer.py
+@@ -1094,7 +1094,7 @@ class CallGraphWindow(TreeWindowBase):
  
--#define HAVE_ATTR_TEST
-+#ifndef HAVE_ATTR_TEST
-+#define HAVE_ATTR_TEST 1
-+#endif
+ class CallTreeWindow(TreeWindowBase):
  
- static inline int
- sys_perf_event_open(struct perf_event_attr *attr,
-@@ -27,7 +29,7 @@ sys_perf_event_open(struct perf_event_attr *attr,
- 	fd = syscall(__NR_perf_event_open, attr, pid, cpu,
- 		     group_fd, flags);
+-	def __init__(self, glb, parent=None):
++	def __init__(self, glb, parent=None, thread_at_time=None):
+ 		super(CallTreeWindow, self).__init__(parent)
  
--#ifdef HAVE_ATTR_TEST
-+#if HAVE_ATTR_TEST
- 	if (unlikely(test_attr__enabled))
- 		test_attr__open(attr, pid, cpu, fd, group_fd, flags);
- #endif
+ 		self.model = LookupCreateModel("Call Tree", lambda x=glb: CallTreeModel(x))
+@@ -1112,6 +1112,48 @@ class CallTreeWindow(TreeWindowBase):
+ 
+ 		AddSubWindow(glb.mainwindow.mdi_area, self, "Call Tree")
+ 
++		if thread_at_time:
++			self.DisplayThreadAtTime(*thread_at_time)
++
++	def DisplayThreadAtTime(self, comm_id, thread_id, time):
++		parent = QModelIndex()
++		for dbid in (comm_id, thread_id):
++			found = False
++			n = self.model.rowCount(parent)
++			for row in xrange(n):
++				child = self.model.index(row, 0, parent)
++				if child.internalPointer().dbid == dbid:
++					found = True
++					self.view.setCurrentIndex(child)
++					parent = child
++					break
++			if not found:
++				return
++		found = False
++		while True:
++			n = self.model.rowCount(parent)
++			if not n:
++				return
++			last_child = None
++			for row in xrange(n):
++				child = self.model.index(row, 0, parent)
++				child_call_time = child.internalPointer().call_time
++				if child_call_time < time:
++					last_child = child
++				elif child_call_time == time:
++					self.view.setCurrentIndex(child)
++					return
++				elif child_call_time > time:
++					break
++			if not last_child:
++				if not found:
++					child = self.model.index(0, 0, parent)
++					self.view.setCurrentIndex(child)
++				return
++			found = True
++			self.view.setCurrentIndex(last_child)
++			parent = last_child
++
+ # Child data item  finder
+ 
+ class ChildDataItemFinder():
