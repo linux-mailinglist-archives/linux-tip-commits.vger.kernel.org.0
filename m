@@ -2,45 +2,47 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D8ED8D6EFD
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 15 Oct 2019 07:35:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C315ED6EFF
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 15 Oct 2019 07:35:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728533AbfJOFcG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 15 Oct 2019 01:32:06 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:42083 "EHLO
+        id S1728539AbfJOFcH convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 15 Oct 2019 01:32:07 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:42095 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728507AbfJOFcF (ORCPT
+        with ESMTP id S1728517AbfJOFcG (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 15 Oct 2019 01:32:05 -0400
+        Tue, 15 Oct 2019 01:32:06 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iKFR9-0000I7-2d; Tue, 15 Oct 2019 07:31:59 +0200
+        id 1iKFR9-0000K3-Go; Tue, 15 Oct 2019 07:31:59 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5F7E11C04E8;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A18951C04D0;
         Tue, 15 Oct 2019 07:31:45 +0200 (CEST)
 Date:   Tue, 15 Oct 2019 05:31:45 -0000
 From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf trace: Allow associating scnprintf routines
- with well known arg names
+Subject: [tip: perf/core] perf beauty: Hook up the x86 MSR table generator
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        Brendan Gregg <brendan.d.gregg@gmail.com>,
         Jiri Olsa <jolsa@kernel.org>,
-        Namhyung Kim <namhyung@kernel.org>,
+        Luis =?utf-8?q?Cl=C3=A1udio_Gon=C3=A7alves?= 
+        <lclaudio@redhat.com>, Namhyung Kim <namhyung@kernel.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <tip-89ptht6s5fez82lykuwq1eyb@git.kernel.org>
-References: <tip-89ptht6s5fez82lykuwq1eyb@git.kernel.org>
+In-Reply-To: <tip-b3rmutg4igcohx6kpo67qh4j@git.kernel.org>
+References: <tip-b3rmutg4igcohx6kpo67qh4j@git.kernel.org>
 MIME-Version: 1.0
-Message-ID: <157111750531.12254.10430004196569872399.tip-bot2@tip-bot2>
+Message-ID: <157111750551.12254.1187486778237278829.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8BIT
 X-Linutronix-Spam-Score: -1.0
 X-Linutronix-Spam-Level: -
 X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
@@ -51,71 +53,92 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     5d88099bc00dccddf5da18e25e1223f01644f7a2
-Gitweb:        https://git.kernel.org/tip/5d88099bc00dccddf5da18e25e1223f01644f7a2
+Commit-ID:     fd21834704a678a583cf294aea47c7ed3fd9d8d2
+Gitweb:        https://git.kernel.org/tip/fd21834704a678a583cf294aea47c7ed3fd9d8d2
 Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Mon, 07 Oct 2019 15:50:15 -03:00
+AuthorDate:    Thu, 26 Sep 2019 15:47:16 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Wed, 09 Oct 2019 11:23:52 -03:00
 
-perf trace: Allow associating scnprintf routines with well known arg names
+perf beauty: Hook up the x86 MSR table generator
 
-For instance 'msr' appears in several tracepoints, so we can associate
-it with a single scnprintf() routine auto-generated from kernel headers,
-as will be done in followup patches.
+This way we generate the source with the table for later use by plugins,
+etc.
 
-Start with an empty array of associations.
+I.e. after running:
+
+  $ make -C tools/perf O=/tmp/build/perf
+
+We end up with:
+
+  $ head /tmp/build/perf/trace/beauty/generated/x86_arch_MSRs_array.c
+  static const char *x86_MSRs[] = {
+  	[0x00000000] = "IA32_P5_MC_ADDR",
+  	[0x00000001] = "IA32_P5_MC_TYPE",
+  	[0x00000010] = "IA32_TSC",
+  	[0x00000017] = "IA32_PLATFORM_ID",
+  	[0x0000001b] = "IA32_APICBASE",
+  	[0x00000020] = "KNC_PERFCTR0",
+  	[0x00000021] = "KNC_PERFCTR1",
+  	[0x00000028] = "KNC_EVNTSEL0",
+  	[0x00000029] = "KNC_EVNTSEL1",
+  $
+
+Now its just a matter of using it, first in a libtracevent plugin.
+
+At some point we should move tools/perf/trace/beauty to tools/beauty/,
+so that it can be used more generally and even made available externally
+like libbpf, libperf, libtraevent, etc.
 
 Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Brendan Gregg <brendan.d.gregg@gmail.com>
 Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Luis Cláudio Gonçalves <lclaudio@redhat.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lkml.kernel.org/n/tip-89ptht6s5fez82lykuwq1eyb@git.kernel.org
+Link: https://lkml.kernel.org/n/tip-b3rmutg4igcohx6kpo67qh4j@git.kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/builtin-trace.c | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+ tools/perf/Makefile.perf |  9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/tools/perf/builtin-trace.c b/tools/perf/builtin-trace.c
-index 8303d83..d52972c 100644
---- a/tools/perf/builtin-trace.c
-+++ b/tools/perf/builtin-trace.c
-@@ -1479,6 +1479,27 @@ static int syscall__alloc_arg_fmts(struct syscall *sc, int nr_args)
- 	return 0;
- }
+diff --git a/tools/perf/Makefile.perf b/tools/perf/Makefile.perf
+index 902c792..45c14dc 100644
+--- a/tools/perf/Makefile.perf
++++ b/tools/perf/Makefile.perf
+@@ -407,6 +407,7 @@ linux_uapi_dir := $(srctree)/tools/include/uapi/linux
+ asm_generic_uapi_dir := $(srctree)/tools/include/uapi/asm-generic
+ arch_asm_uapi_dir := $(srctree)/tools/arch/$(SRCARCH)/include/uapi/asm/
+ x86_arch_asm_uapi_dir := $(srctree)/tools/arch/x86/include/uapi/asm/
++x86_arch_asm_dir := $(srctree)/tools/arch/x86/include/asm/
  
-+static struct syscall_arg_fmt syscall_arg_fmts__by_name[] = {
-+};
-+
-+static int syscall_arg_fmt__cmp(const void *name, const void *fmtp)
-+{
-+       const struct syscall_arg_fmt *fmt = fmtp;
-+       return strcmp(name, fmt->name);
-+}
-+
-+static struct syscall_arg_fmt *
-+__syscall_arg_fmt__find_by_name(struct syscall_arg_fmt *fmts, const int nmemb, const char *name)
-+{
-+       return bsearch(name, fmts, nmemb, sizeof(struct syscall_arg_fmt), syscall_arg_fmt__cmp);
-+}
-+
-+static struct syscall_arg_fmt *syscall_arg_fmt__find_by_name(const char *name)
-+{
-+       const int nmemb = ARRAY_SIZE(syscall_arg_fmts__by_name);
-+       return __syscall_arg_fmt__find_by_name(syscall_arg_fmts__by_name, nmemb, name);
-+}
-+
- static struct tep_format_field *
- syscall_arg_fmt__init_array(struct syscall_arg_fmt *arg, struct tep_format_field *field)
- {
-@@ -1518,6 +1539,11 @@ syscall_arg_fmt__init_array(struct syscall_arg_fmt *arg, struct tep_format_field
- 			 * 7 unsigned long
- 			 */
- 			arg->scnprintf = SCA_FD;
-+               } else {
-+			struct syscall_arg_fmt *fmt = syscall_arg_fmt__find_by_name(field->name);
-+
-+			if (fmt)
-+				arg->scnprintf = fmt->scnprintf;
- 		}
- 	}
+ beauty_outdir := $(OUTPUT)trace/beauty/generated
+ beauty_ioctl_outdir := $(beauty_outdir)/ioctl
+@@ -543,6 +544,12 @@ x86_arch_prctl_code_tbl := $(srctree)/tools/perf/trace/beauty/x86_arch_prctl.sh
+ $(x86_arch_prctl_code_array): $(x86_arch_asm_uapi_dir)/prctl.h $(x86_arch_prctl_code_tbl)
+ 	$(Q)$(SHELL) '$(x86_arch_prctl_code_tbl)' $(x86_arch_asm_uapi_dir) > $@
  
++x86_arch_MSRs_array := $(beauty_outdir)/x86_arch_MSRs_array.c
++x86_arch_MSRs_tbl := $(srctree)/tools/perf/trace/beauty/tracepoints/x86_msr.sh
++
++$(x86_arch_MSRs_array): $(x86_arch_asm_dir)/msr-index.h $(x86_arch_MSRs_tbl)
++	$(Q)$(SHELL) '$(x86_arch_MSRs_tbl)' $(x86_arch_asm_dir) > $@
++
+ rename_flags_array := $(beauty_outdir)/rename_flags_array.c
+ rename_flags_tbl := $(srctree)/tools/perf/trace/beauty/rename_flags.sh
+ 
+@@ -677,6 +684,7 @@ prepare: $(OUTPUT)PERF-VERSION-FILE $(OUTPUT)common-cmds.h archheaders $(drm_ioc
+ 	$(perf_ioctl_array) \
+ 	$(prctl_option_array) \
+ 	$(usbdevfs_ioctl_array) \
++	$(x86_arch_MSRs_array) \
+ 	$(x86_arch_prctl_code_array) \
+ 	$(rename_flags_array) \
+ 	$(arch_errno_name_array) \
+@@ -981,6 +989,7 @@ clean:: $(LIBTRACEEVENT)-clean $(LIBAPI)-clean $(LIBBPF)-clean $(LIBSUBCMD)-clea
+ 		$(OUTPUT)$(perf_ioctl_array) \
+ 		$(OUTPUT)$(prctl_option_array) \
+ 		$(OUTPUT)$(usbdevfs_ioctl_array) \
++		$(OUTPUT)$(x86_arch_MSRs_array) \
+ 		$(OUTPUT)$(x86_arch_prctl_code_array) \
+ 		$(OUTPUT)$(rename_flags_array) \
+ 		$(OUTPUT)$(arch_errno_name_array) \
