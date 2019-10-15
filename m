@@ -2,43 +2,43 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AB7BAD6EF4
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 15 Oct 2019 07:34:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 52751D6F1C
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 15 Oct 2019 07:35:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727206AbfJOFeX convert rfc822-to-8bit (ORCPT
+        id S1728464AbfJOFfo convert rfc822-to-8bit (ORCPT
         <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 15 Oct 2019 01:34:23 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:42114 "EHLO
+        Tue, 15 Oct 2019 01:35:44 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:42024 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728537AbfJOFcK (ORCPT
+        with ESMTP id S1728457AbfJOFcB (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 15 Oct 2019 01:32:10 -0400
+        Tue, 15 Oct 2019 01:32:01 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iKFR9-0000FZ-RI; Tue, 15 Oct 2019 07:32:00 +0200
+        id 1iKFR4-0000EV-Cb; Tue, 15 Oct 2019 07:31:54 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 9D0FE1C04DD;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 24B8A1C0482;
         Tue, 15 Oct 2019 07:31:43 +0200 (CEST)
 Date:   Tue, 15 Oct 2019 05:31:43 -0000
 From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf trace: Introduce --filter for tracepoint events
+Subject: [tip: perf/core] perf trace: Introduce a strtoul() method for 'struct
+ strarrays'
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         Brendan Gregg <brendan.d.gregg@gmail.com>,
         Jiri Olsa <jolsa@kernel.org>,
         Luis =?utf-8?q?Cl=C3=A1udio_Gon=C3=A7alves?= 
-        <lclaudio@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>,
-        Namhyung Kim <namhyung@kernel.org>,
+        <lclaudio@redhat.com>, Namhyung Kim <namhyung@kernel.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <tip-95bfe5d4tzy5f66bx49d05rj@git.kernel.org>
-References: <tip-95bfe5d4tzy5f66bx49d05rj@git.kernel.org>
+In-Reply-To: <tip-r2hpaahf8lishyb1owko9vs1@git.kernel.org>
+References: <tip-r2hpaahf8lishyb1owko9vs1@git.kernel.org>
 MIME-Version: 1.0
-Message-ID: <157111750352.12254.17113253973879925388.tip-bot2@tip-bot2>
+Message-ID: <157111750300.12254.14854506277817723991.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -54,212 +54,112 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     d4097f1937f2242d0aa0a7c654d2159a6895e5c8
-Gitweb:        https://git.kernel.org/tip/d4097f1937f2242d0aa0a7c654d2159a6895e5c8
+Commit-ID:     d0a3a1041005d9273d18669819e2a6dfed922a4d
+Gitweb:        https://git.kernel.org/tip/d0a3a1041005d9273d18669819e2a6dfed922a4d
 Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Tue, 08 Oct 2019 07:33:08 -03:00
+AuthorDate:    Wed, 09 Oct 2019 16:11:36 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Wed, 09 Oct 2019 11:23:52 -03:00
+CommitterDate: Wed, 09 Oct 2019 16:11:36 -03:00
 
-perf trace: Introduce --filter for tracepoint events
+perf trace: Introduce a strtoul() method for 'struct strarrays'
 
-Similar to what is in 'perf record', works just like there:
+And also for 'struct strarray', since its needed to implement
+strarrays__strtoul(). This just traverses the entries and when finding a
+match, returns (offset + index), i.e. the value associated with the
+searched string.
 
-  # perf trace -e msr:*
-   328.297 :0/0 msr:write_msr(msr: FS_BASE, val: 140240388381888)
-   328.302 :0/0 msr:write_msr(msr: FS_BASE, val: 140240388381888)
-   328.306 :0/0 msr:write_msr(msr: FS_BASE, val: 140240388381888)
-   328.317 :0/0 msr:write_msr(msr: FS_BASE, val: 140240388381888)
-   328.322 :0/0 msr:write_msr(msr: FS_BASE, val: 140240388381888)
-   328.327 :0/0 msr:write_msr(msr: FS_BASE, val: 140240388381888)
-   328.331 :0/0 msr:write_msr(msr: FS_BASE, val: 140240388381888)
-   328.336 :0/0 msr:write_msr(msr: FS_BASE, val: 140240388381888)
-   328.340 :0/0 ^Cmsr:write_msr(msr: FS_BASE, val: 140240388381888)
+E.g. "EFER" (MSR_EFER) returns:
+
+  # grep -w EFER -B2 /tmp/build/perf/trace/beauty/generated/x86_arch_MSRs_array.c
+  #define x86_64_specific_MSRs_offset 0xc0000080
+  static const char *x86_64_specific_MSRs[] = {
+	[0xc0000080 - x86_64_specific_MSRs_offset] = "EFER",
   #
 
-So, for a system wide trace session looking at the write_msr tracepoint
-we see a flood of MSR_FS_BASE, we need to get the number for that:
+  0xc0000080
 
-  # grep FS_BASE /tmp/build/perf/trace/beauty/generated/x86_arch_MSRs_array.c
-	[0xc0000100 - x86_64_specific_MSRs_offset] = "FS_BASE",
-  #
-
-And then use it in a filter:
-
-  # perf trace -e msr:* --filter="msr!=0xc0000100"
-  <SNIP>
-   942.177 :0/0 msr:write_msr(msr: IA32_TSC_DEADLINE, val: 3056931068232)
-   942.199 :0/0 msr:write_msr(msr: IA32_TSC_DEADLINE, val: 3057135655252)
-   942.203 :0/0 msr:write_msr(msr: IA32_TSC_DEADLINE, val: 3056931068222)
-   942.231 :0/0 msr:write_msr(msr: IA32_TSC_DEADLINE, val: 3056998373022)
-   942.241 :0/0 msr:write_msr(msr: IA32_TSC_DEADLINE, val: 3056931068236)
-  <SNIP>
-  #
-
-Ok, lets filter that too, too noisy:
-
-  # grep TSC_DEADLINE /tmp/build/perf/trace/beauty/generated/x86_arch_MSRs_array.c
-	[0x000006E0] = "IA32_TSC_DEADLINE",
-  #
-
-  # perf trace -e msr:* --filter="msr!=0xc0000100 && msr!=0x6e0" -a sleep 0.1
-     0.000 :0/0 msr:read_msr(msr: IA32_TSC_ADJUST)
-     0.066 CPU 0/KVM/4895 msr:write_msr(msr: IA32_SPEC_CTRL, val: 6)
-     0.070 CPU 0/KVM/4895 msr:write_msr(msr: 0x830, val: 34359740667)
-     0.099 CPU 0/KVM/4895 msr:read_msr(msr: IA32_SYSENTER_ESP, val: -2199021993472)
-     0.100 CPU 0/KVM/4895 msr:read_msr(msr: IA32_APICBASE, val: 4276096000)
-     0.101 CPU 0/KVM/4895 msr:read_msr(msr: IA32_DEBUGCTLMSR)
-     0.109 :0/0 msr:write_msr(msr: IA32_SPEC_CTRL)
-     1.000 :0/0 msr:write_msr(msr: 0x830, val: 17179871485)
-    18.893 :0/0 msr:write_msr(msr: 0x83f, val: 246)
-    28.810 :0/0 msr:write_msr(msr: 0x830, val: 68719479037)
-    40.117 CPU 0/KVM/4895 msr:write_msr(msr: IA32_SPEC_CTRL, val: 6)
-    40.127 CPU 0/KVM/4895 msr:read_msr(msr: IA32_DEBUGCTLMSR)
-    40.139 CPU 0/KVM/4895 msr:write_msr(msr: LSTAR, val: -2130661312)
-    40.141 CPU 0/KVM/4895 msr:write_msr(msr: SYSCALL_MASK, val: 14080)
-    40.142 CPU 0/KVM/4895 msr:write_msr(msr: TSC_AUX)
-    40.144 CPU 0/KVM/4895 msr:write_msr(msr: KERNEL_GS_BASE)
-    40.147 CPU 0/KVM/4895 msr:write_msr(msr: IA32_SPEC_CTRL)
-    40.148 CPU 0/KVM/4895 msr:write_msr(msr: IA32_FLUSH_CMD, val: 1)
-    40.151 CPU 0/KVM/4895 msr:write_msr(msr: IA32_SPEC_CTRL, val: 6)
-  ^C
-  #
-
-One can combine that with filtering pids as well:
-
-  # perf trace -e msr:* --filter="msr!=0xc0000100 && msr!=0x6e0" --filter-pids 4895 -a sleep 0.09
-     0.000 :0/0 msr:write_msr(msr: 0x830, val: 4294969597)
-     0.291 gnome-terminal/2790 msr:write_msr(msr: SYSCALL_MASK, val: 292608)
-     0.294 gnome-terminal/2790 msr:write_msr(msr: LSTAR, val: -1935671280)
-     0.295 gnome-terminal/2790 msr:write_msr(msr: TSC_AUX, val: 6)
-    10.940 gnome-terminal/2790 msr:write_msr(msr: 0x830, val: 4294969597)
-    15.943 gnome-shell/2096 msr:write_msr(msr: 0x830, val: 4294969597)
-    16.975 :0/0 msr:write_msr(msr: 0x830, val: 4294969597)
-    19.560 :0/0 msr:write_msr(msr: 0x83f, val: 246)
-    25.162 :0/0 msr:read_msr(msr: IA32_TSC_ADJUST)
-    25.807 JS Watchdog/3635 msr:write_msr(msr: IA32_SPEC_CTRL, val: 6)
-    25.820 :0/0 msr:write_msr(msr: IA32_SPEC_CTRL)
-    25.941 gnome-terminal/2790 msr:write_msr(msr: 0x830, val: 4294969597)
-    26.941 gnome-terminal/2790 msr:write_msr(msr: 0x830, val: 4294969597)
-    29.942 gnome-terminal/2790 msr:write_msr(msr: 0x830, val: 4294969597)
-    45.313 :0/0 msr:write_msr(msr: 0x83f, val: 246)
-    56.945 gnome-terminal/2790 msr:write_msr(msr: 0x830, val: 4294969597)
-    60.946 gnome-terminal/2790 msr:write_msr(msr: 0x830, val: 4294969597)
-    74.096 JS Watchdog/8971 msr:write_msr(msr: IA32_SPEC_CTRL, val: 6)
-    74.130 :0/0 msr:write_msr(msr: IA32_SPEC_CTRL)
-    79.673 :0/0 msr:write_msr(msr: 0x83f, val: 246)
-    79.947 gnome-terminal/2790 msr:write_msr(msr: 0x830, val: 17179871485)
-  #
-
-Or for just a pid, with callchains:
-
-  # grep SYSCALL_MAS /tmp/build/perf/trace/beauty/generated/x86_arch_MSRs_array.c
-	[0xc0000084 - x86_64_specific_MSRs_offset] = "SYSCALL_MASK",
-  # perf trace -e msr:* --filter="msr==0xc0000084" --pid 2790 --call-graph=dwarf
-
-     0.000 gnome-terminal/2790 msr:write_msr(msr: SYSCALL_MASK, val: 292608)
-                                       do_trace_write_msr ([kernel.kallsyms])
-                                       do_trace_write_msr ([kernel.kallsyms])
-                                       kvm_on_user_return ([kvm])
-                                       fire_user_return_notifiers ([kernel.kallsyms])
-                                       exit_to_usermode_loop ([kernel.kallsyms])
-                                       do_syscall_64 ([kernel.kallsyms])
-                                       entry_SYSCALL_64 ([kernel.kallsyms])
-                                       __GI___poll (inlined)
-  9299.073 gnome-terminal/2790 msr:write_msr(msr: SYSCALL_MASK, val: 292608)
-                                       do_trace_write_msr ([kernel.kallsyms])
-                                       do_trace_write_msr ([kernel.kallsyms])
-                                       kvm_on_user_return ([kvm])
-                                       fire_user_return_notifiers ([kernel.kallsyms])
-                                       exit_to_usermode_loop ([kernel.kallsyms])
-                                       do_syscall_64 ([kernel.kallsyms])
-                                       entry_SYSCALL_64 ([kernel.kallsyms])
-                                       __GI___poll (inlined)
-  9348.374 gnome-terminal/2790 msr:write_msr(msr: SYSCALL_MASK, val: 292608)
-                                       do_trace_write_msr ([kernel.kallsyms])
-                                       do_trace_write_msr ([kernel.kallsyms])
-                                       kvm_on_user_return ([kvm])
-                                       fire_user_return_notifiers ([kernel.kallsyms])
-                                       exit_to_usermode_loop ([kernel.kallsyms])
-                                       do_syscall_64 ([kernel.kallsyms])
-                                       entry_SYSCALL_64 ([kernel.kallsyms])
-                                       __GI___poll (inlined)
-  <SNIP>
-  #
-
-Ok, just another form of KVM to emit MSRs :-)
-
-Next step: elliminate those greps by getting the filter expression,
-looking for arg names, then for the arrays associated with it to do a
-reverse lookup.
-
-Also allow those filters to be associated with strace-like syscall
-names.
-
-After that: augment the 'val' arg for 'msr:write_msr' based on the first
-arg, 'msr'.
-
-Then, do that with eBPF too, not just with tracepoint filters.
+This will be auto-attached to 'struct syscall_arg_fmt' entries
+associated with strarrays as soon as we add a ->strarray and ->strarrays
+to 'struct syscall_arg_fmt'.
 
 Cc: Adrian Hunter <adrian.hunter@intel.com>
 Cc: Brendan Gregg <brendan.d.gregg@gmail.com>
 Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Luis Cláudio Gonçalves <lclaudio@redhat.com>
-Cc: Marcelo Tosatti <mtosatti@redhat.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lkml.kernel.org/n/tip-95bfe5d4tzy5f66bx49d05rj@git.kernel.org
+Link: https://lkml.kernel.org/n/tip-r2hpaahf8lishyb1owko9vs1@git.kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/Documentation/perf-trace.txt | 5 +++++
- tools/perf/builtin-trace.c              | 8 +++++---
- 2 files changed, 10 insertions(+), 3 deletions(-)
+ tools/perf/builtin-trace.c       | 28 ++++++++++++++++++++++++++++
+ tools/perf/trace/beauty/beauty.h |  5 +++++
+ 2 files changed, 33 insertions(+)
 
-diff --git a/tools/perf/Documentation/perf-trace.txt b/tools/perf/Documentation/perf-trace.txt
-index ba16cd5..3bb89c2 100644
---- a/tools/perf/Documentation/perf-trace.txt
-+++ b/tools/perf/Documentation/perf-trace.txt
-@@ -42,6 +42,11 @@ OPTIONS
- 	Prefixing with ! shows all syscalls but the ones specified.  You may
- 	need to escape it.
- 
-+--filter=<filter>::
-+        Event filter. This option should follow an event selector (-e) which
-+	selects tracepoint event(s).
-+
-+
- -D msecs::
- --delay msecs::
- After starting the program, wait msecs before measuring. This is useful to
 diff --git a/tools/perf/builtin-trace.c b/tools/perf/builtin-trace.c
-index e9f132a..2c19680 100644
+index faa5bf4..50a1aeb 100644
 --- a/tools/perf/builtin-trace.c
 +++ b/tools/perf/builtin-trace.c
-@@ -3362,7 +3362,7 @@ static int trace__set_filter_loop_pids(struct trace *trace)
- 		thread = parent;
- 	}
+@@ -477,6 +477,34 @@ size_t strarrays__scnprintf(struct strarrays *sas, char *bf, size_t size, const 
+ 	return printed;
+ }
  
--	err = perf_evlist__set_tp_filter_pids(trace->evlist, nr, pids);
-+	err = perf_evlist__append_tp_filter_pids(trace->evlist, nr, pids);
- 	if (!err && trace->filter_pids.map)
- 		err = bpf_map__set_filter_pids(trace->filter_pids.map, nr, pids);
++bool strarray__strtoul(struct strarray *sa, char *bf, size_t size, u64 *ret)
++{
++	int i;
++
++	for (i = 0; i < sa->nr_entries; ++i) {
++		if (sa->entries[i] && strncmp(sa->entries[i], bf, size) == 0 && sa->entries[i][size] == '\0') {
++			*ret = sa->offset + i;
++			return true;
++		}
++	}
++
++	return false;
++}
++
++bool strarrays__strtoul(struct strarrays *sas, char *bf, size_t size, u64 *ret)
++{
++	int i;
++
++	for (i = 0; i < sas->nr_entries; ++i) {
++		struct strarray *sa = sas->entries[i];
++
++		if (strarray__strtoul(sa, bf, size, ret))
++			return true;
++	}
++
++	return false;
++}
++
+ size_t syscall_arg__scnprintf_strarrays(char *bf, size_t size,
+ 					struct syscall_arg *arg)
+ {
+diff --git a/tools/perf/trace/beauty/beauty.h b/tools/perf/trace/beauty/beauty.h
+index aa3fac8..919ac45 100644
+--- a/tools/perf/trace/beauty/beauty.h
++++ b/tools/perf/trace/beauty/beauty.h
+@@ -5,6 +5,7 @@
+ #include <linux/kernel.h>
+ #include <linux/types.h>
+ #include <sys/types.h>
++#include <stdbool.h>
  
-@@ -3379,8 +3379,8 @@ static int trace__set_filter_pids(struct trace *trace)
- 	 * we fork the workload in perf_evlist__prepare_workload.
- 	 */
- 	if (trace->filter_pids.nr > 0) {
--		err = perf_evlist__set_tp_filter_pids(trace->evlist, trace->filter_pids.nr,
--						      trace->filter_pids.entries);
-+		err = perf_evlist__append_tp_filter_pids(trace->evlist, trace->filter_pids.nr,
-+							 trace->filter_pids.entries);
- 		if (!err && trace->filter_pids.map) {
- 			err = bpf_map__set_filter_pids(trace->filter_pids.map, trace->filter_pids.nr,
- 						       trace->filter_pids.entries);
-@@ -4294,6 +4294,8 @@ int cmd_trace(int argc, const char **argv)
- 	OPT_CALLBACK('e', "event", &trace, "event",
- 		     "event/syscall selector. use 'perf list' to list available events",
- 		     trace__parse_events_option),
-+	OPT_CALLBACK(0, "filter", &trace.evlist, "filter",
-+		     "event filter", parse_filter),
- 	OPT_BOOLEAN(0, "comm", &trace.show_comm,
- 		    "show the thread COMM next to its id"),
- 	OPT_BOOLEAN(0, "tool_stats", &trace.show_tool_stats, "show tool stats"),
+ struct strarray {
+ 	u64	    offset;
+@@ -29,6 +30,8 @@ struct strarray {
+ size_t strarray__scnprintf(struct strarray *sa, char *bf, size_t size, const char *intfmt, bool show_prefix, int val);
+ size_t strarray__scnprintf_flags(struct strarray *sa, char *bf, size_t size, bool show_prefix, unsigned long flags);
+ 
++bool strarray__strtoul(struct strarray *sa, char *bf, size_t size, u64 *ret);
++
+ struct trace;
+ struct thread;
+ 
+@@ -51,6 +54,8 @@ struct strarrays {
+ 
+ size_t strarrays__scnprintf(struct strarrays *sas, char *bf, size_t size, const char *intfmt, bool show_prefix, int val);
+ 
++bool strarrays__strtoul(struct strarrays *sas, char *bf, size_t size, u64 *ret);
++
+ size_t pid__scnprintf_fd(struct trace *trace, pid_t pid, int fd, char *bf, size_t size);
+ 
+ extern struct strarray strarray__socket_families;
