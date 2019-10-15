@@ -2,46 +2,42 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CE44D6ED8
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 15 Oct 2019 07:33:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 75B06D6EB6
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 15 Oct 2019 07:32:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728962AbfJOFdY convert rfc822-to-8bit (ORCPT
+        id S1728624AbfJOFcP convert rfc822-to-8bit (ORCPT
         <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 15 Oct 2019 01:33:24 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:42255 "EHLO
+        Tue, 15 Oct 2019 01:32:15 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:42192 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728672AbfJOFcV (ORCPT
+        with ESMTP id S1728609AbfJOFcP (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 15 Oct 2019 01:32:21 -0400
+        Tue, 15 Oct 2019 01:32:15 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iKFRH-0000QF-N9; Tue, 15 Oct 2019 07:32:07 +0200
+        id 1iKFRJ-0000PP-3E; Tue, 15 Oct 2019 07:32:09 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 0F7361C04D4;
-        Tue, 15 Oct 2019 07:31:49 +0200 (CEST)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 890BB1C04CB;
+        Tue, 15 Oct 2019 07:31:48 +0200 (CEST)
 Date:   Tue, 15 Oct 2019 05:31:48 -0000
-From:   tip-bot2 for =?utf-8?q?Bj=C3=B6rn_T=C3=B6pel?= 
-        <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] samples/bpf: fix build by setting HAVE_ATTR_TEST to zero
-Cc:     =?utf-8?q?Bj=C3=B6rn_T=C3=B6pel?= <bjorn.topel@intel.com>,
-        KP Singh <kpsingh@google.com>,
-        Song Liu <songliubraving@fb.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
+Subject: [tip: perf/core] perf trace: Factor out the initialization of
+ syscal_arg_fmt->scnprintf
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         Jiri Olsa <jolsa@kernel.org>,
-        Namhyung Kim <namhyung@kernel.org>, bpf@vger.kernel.org,
-        netdev@vger.kernel.org, Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Luis =?utf-8?q?Cl=C3=A1udio_Gon=C3=A7alves?= 
+        <lclaudio@redhat.com>, Namhyung Kim <namhyung@kernel.org>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20191001113307.27796-3-bjorn.topel@gmail.com>
-References: <20191001113307.27796-3-bjorn.topel@gmail.com>
+In-Reply-To: <tip-xs3x0zzyes06c7scdsjn01ty@git.kernel.org>
+References: <tip-xs3x0zzyes06c7scdsjn01ty@git.kernel.org>
 MIME-Version: 1.0
-Message-ID: <157111750893.12254.16541060201823244763.tip-bot2@tip-bot2>
+Message-ID: <157111750842.12254.9042699783487450531.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -57,43 +53,91 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     fce9501aec6bdda45ef3a5e365a5e0de7de7fe2d
-Gitweb:        https://git.kernel.org/tip/fce9501aec6bdda45ef3a5e365a5e0de7de7fe2d
-Author:        Björn Töpel <bjorn.topel@intel.com>
-AuthorDate:    Tue, 01 Oct 2019 13:33:07 +02:00
+Commit-ID:     8d1d4ff5e239d9ef385444bc0d855127d7b32754
+Gitweb:        https://git.kernel.org/tip/8d1d4ff5e239d9ef385444bc0d855127d7b32754
+Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
+AuthorDate:    Thu, 03 Oct 2019 15:57:42 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Mon, 07 Oct 2019 12:22:18 -03:00
 
-samples/bpf: fix build by setting HAVE_ATTR_TEST to zero
+perf trace: Factor out the initialization of syscal_arg_fmt->scnprintf
 
-To remove that test_attr__{enabled/open} are used by perf-sys.h, we
-set HAVE_ATTR_TEST to zero.
+We set the default scnprint routines for the syscall args based on its
+type or on heuristics based on its names, now we'll use this for
+tracepoints as well, so move it out of syscall__set_arg_fmts() and into
+a routine that receive just an array of syscall_arg_fmt entries + the
+tracepoint format fields list.
 
-Signed-off-by: Björn Töpel <bjorn.topel@intel.com>
-Tested-by: KP Singh <kpsingh@google.com>
-Acked-by: Song Liu <songliubraving@fb.com>
 Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexei Starovoitov <ast@kernel.org>
-Cc: Daniel Borkmann <daniel@iogearbox.net>
 Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Luis Cláudio Gonçalves <lclaudio@redhat.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: bpf@vger.kernel.org
-Cc: netdev@vger.kernel.org
-Link: http://lore.kernel.org/lkml/20191001113307.27796-3-bjorn.topel@gmail.com
+Link: https://lkml.kernel.org/n/tip-xs3x0zzyes06c7scdsjn01ty@git.kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- samples/bpf/Makefile | 1 +
- 1 file changed, 1 insertion(+)
+ tools/perf/builtin-trace.c | 28 ++++++++++++++++++----------
+ 1 file changed, 18 insertions(+), 10 deletions(-)
 
-diff --git a/samples/bpf/Makefile b/samples/bpf/Makefile
-index 1d9be26..42b571c 100644
---- a/samples/bpf/Makefile
-+++ b/samples/bpf/Makefile
-@@ -176,6 +176,7 @@ KBUILD_HOSTCFLAGS += -I$(srctree)/tools/lib/bpf/
- KBUILD_HOSTCFLAGS += -I$(srctree)/tools/testing/selftests/bpf/
- KBUILD_HOSTCFLAGS += -I$(srctree)/tools/lib/ -I$(srctree)/tools/include
- KBUILD_HOSTCFLAGS += -I$(srctree)/tools/perf
-+KBUILD_HOSTCFLAGS += -DHAVE_ATTR_TEST=0
+diff --git a/tools/perf/builtin-trace.c b/tools/perf/builtin-trace.c
+index 6c70253..d52dd2b 100644
+--- a/tools/perf/builtin-trace.c
++++ b/tools/perf/builtin-trace.c
+@@ -1467,15 +1467,16 @@ static int syscall__alloc_arg_fmts(struct syscall *sc, int nr_args)
+ 	return 0;
+ }
  
- HOSTCFLAGS_bpf_load.o += -I$(objtree)/usr/include -Wno-unused-variable
+-static int syscall__set_arg_fmts(struct syscall *sc)
++static struct tep_format_field *
++syscall_arg_fmt__init_array(struct syscall_arg_fmt *arg, struct tep_format_field *field)
+ {
+-	struct tep_format_field *field, *last_field = NULL;
+-	int idx = 0, len;
++	struct tep_format_field *last_field = NULL;
++	int len;
+ 
+-	for (field = sc->args; field; field = field->next, ++idx) {
++	for (; field; field = field->next, ++arg) {
+ 		last_field = field;
+ 
+-		if (sc->fmt && sc->fmt->arg[idx].scnprintf)
++		if (arg->scnprintf)
+ 			continue;
+ 
+ 		len = strlen(field->name);
+@@ -1483,13 +1484,13 @@ static int syscall__set_arg_fmts(struct syscall *sc)
+ 		if (strcmp(field->type, "const char *") == 0 &&
+ 		    ((len >= 4 && strcmp(field->name + len - 4, "name") == 0) ||
+ 		     strstr(field->name, "path") != NULL))
+-			sc->arg_fmt[idx].scnprintf = SCA_FILENAME;
++			arg->scnprintf = SCA_FILENAME;
+ 		else if ((field->flags & TEP_FIELD_IS_POINTER) || strstr(field->name, "addr"))
+-			sc->arg_fmt[idx].scnprintf = SCA_PTR;
++			arg->scnprintf = SCA_PTR;
+ 		else if (strcmp(field->type, "pid_t") == 0)
+-			sc->arg_fmt[idx].scnprintf = SCA_PID;
++			arg->scnprintf = SCA_PID;
+ 		else if (strcmp(field->type, "umode_t") == 0)
+-			sc->arg_fmt[idx].scnprintf = SCA_MODE_T;
++			arg->scnprintf = SCA_MODE_T;
+ 		else if ((strcmp(field->type, "int") == 0 ||
+ 			  strcmp(field->type, "unsigned int") == 0 ||
+ 			  strcmp(field->type, "long") == 0) &&
+@@ -1501,10 +1502,17 @@ static int syscall__set_arg_fmts(struct syscall *sc)
+ 			 * 23 unsigned int
+ 			 * 7 unsigned long
+ 			 */
+-			sc->arg_fmt[idx].scnprintf = SCA_FD;
++			arg->scnprintf = SCA_FD;
+ 		}
+ 	}
+ 
++	return last_field;
++}
++
++static int syscall__set_arg_fmts(struct syscall *sc)
++{
++	struct tep_format_field *last_field = syscall_arg_fmt__init_array(sc->arg_fmt, sc->args);
++
+ 	if (last_field)
+ 		sc->args_size = last_field->offset + last_field->size;
  
