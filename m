@@ -2,40 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 11D7DD6EDC
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 15 Oct 2019 07:33:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D946D71B9
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 15 Oct 2019 11:02:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728658AbfJOFde (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 15 Oct 2019 01:33:34 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:42249 "EHLO
+        id S1729502AbfJOJCT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 15 Oct 2019 05:02:19 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:43044 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728668AbfJOFcV (ORCPT
+        with ESMTP id S1728896AbfJOJCN (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 15 Oct 2019 01:32:21 -0400
+        Tue, 15 Oct 2019 05:02:13 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iKFRQ-0000X2-8K; Tue, 15 Oct 2019 07:32:16 +0200
+        id 1iKIiU-0004Sd-G1; Tue, 15 Oct 2019 11:02:06 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 8C9051C070D;
-        Tue, 15 Oct 2019 07:31:52 +0200 (CEST)
-Date:   Tue, 15 Oct 2019 05:31:52 -0000
-From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 1F3961C0105;
+        Tue, 15 Oct 2019 11:02:06 +0200 (CEST)
+Date:   Tue, 15 Oct 2019 09:02:05 -0000
+From:   "tip-bot2 for Sean Christopherson" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf evlist: Adopt __set_tracepoint_handlers method
- from perf_session
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Jiri Olsa <jolsa@kernel.org>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
+Subject: [tip: x86/urgent] x86/apic/x2apic: Fix a NULL pointer deref when
+ handling a dying cpu
+Cc:     Sean Christopherson <sean.j.christopherson@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <tip-9oc53gnfi53vg82fvolkm85g@git.kernel.org>
-References: <tip-9oc53gnfi53vg82fvolkm85g@git.kernel.org>
+In-Reply-To: <20191001205019.5789-1-sean.j.christopherson@intel.com>
+References: <20191001205019.5789-1-sean.j.christopherson@intel.com>
 MIME-Version: 1.0
-Message-ID: <157111751245.12254.8726429854829041178.tip-bot2@tip-bot2>
+Message-ID: <157113012595.12254.4819420610843563041.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,141 +47,59 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/core branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     c0e53476ab5087353547cbcd37f001d98941326c
-Gitweb:        https://git.kernel.org/tip/c0e53476ab5087353547cbcd37f001d98941326c
-Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Tue, 01 Oct 2019 11:14:26 -03:00
-Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Mon, 07 Oct 2019 12:22:17 -03:00
+Commit-ID:     7a22e03b0c02988e91003c505b34d752a51de344
+Gitweb:        https://git.kernel.org/tip/7a22e03b0c02988e91003c505b34d752a51de344
+Author:        Sean Christopherson <sean.j.christopherson@intel.com>
+AuthorDate:    Tue, 01 Oct 2019 13:50:19 -07:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Tue, 15 Oct 2019 10:57:09 +02:00
 
-perf evlist: Adopt __set_tracepoint_handlers method from perf_session
+x86/apic/x2apic: Fix a NULL pointer deref when handling a dying cpu
 
-It all operates on the evsels in the session's evlist, so move it to the
-evlist layer to make it useful to tools not using perf_session, just
-evlists, like 'perf trace' in live mode.
+Check that the per-cpu cluster mask pointer has been set prior to
+clearing a dying cpu's bit.  The per-cpu pointer is not set until the
+target cpu reaches smp_callin() during CPUHP_BRINGUP_CPU, whereas the
+teardown function, x2apic_dead_cpu(), is associated with the earlier
+CPUHP_X2APIC_PREPARE.  If an error occurs before the cpu is awakened,
+e.g. if do_boot_cpu() itself fails, x2apic_dead_cpu() will dereference
+the NULL pointer and cause a panic.
 
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lkml.kernel.org/n/tip-9oc53gnfi53vg82fvolkm85g@git.kernel.org
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+  smpboot: do_boot_cpu failed(-22) to wakeup CPU#1
+  BUG: kernel NULL pointer dereference, address: 0000000000000008
+  RIP: 0010:x2apic_dead_cpu+0x1a/0x30
+  Call Trace:
+   cpuhp_invoke_callback+0x9a/0x580
+   _cpu_up+0x10d/0x140
+   do_cpu_up+0x69/0xb0
+   smp_init+0x63/0xa9
+   kernel_init_freeable+0xd7/0x229
+   ? rest_init+0xa0/0xa0
+   kernel_init+0xa/0x100
+   ret_from_fork+0x35/0x40
+
+Fixes: 023a611748fd5 ("x86/apic/x2apic: Simplify cluster management")
+Signed-off-by: Sean Christopherson <sean.j.christopherson@intel.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/20191001205019.5789-1-sean.j.christopherson@intel.com
+
 ---
- tools/perf/util/evlist.c  | 24 ++++++++++++++++++++++++
- tools/perf/util/evlist.h  |  7 +++++++
- tools/perf/util/session.c | 29 -----------------------------
- tools/perf/util/session.h |  6 +-----
- 4 files changed, 32 insertions(+), 34 deletions(-)
+ arch/x86/kernel/apic/x2apic_cluster.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/util/evlist.c b/tools/perf/util/evlist.c
-index d277a98..b4c43ac 100644
---- a/tools/perf/util/evlist.c
-+++ b/tools/perf/util/evlist.c
-@@ -186,6 +186,30 @@ void perf_evlist__splice_list_tail(struct evlist *evlist,
- 	}
- }
- 
-+int __evlist__set_tracepoints_handlers(struct evlist *evlist,
-+				       const struct evsel_str_handler *assocs, size_t nr_assocs)
-+{
-+	struct evsel *evsel;
-+	size_t i;
-+	int err;
-+
-+	for (i = 0; i < nr_assocs; i++) {
-+		// Adding a handler for an event not in this evlist, just ignore it.
-+		evsel = perf_evlist__find_tracepoint_by_name(evlist, assocs[i].name);
-+		if (evsel == NULL)
-+			continue;
-+
-+		err = -EEXIST;
-+		if (evsel->handler != NULL)
-+			goto out;
-+		evsel->handler = assocs[i].handler;
-+	}
-+
-+	err = 0;
-+out:
-+	return err;
-+}
-+
- void __perf_evlist__set_leader(struct list_head *list)
+diff --git a/arch/x86/kernel/apic/x2apic_cluster.c b/arch/x86/kernel/apic/x2apic_cluster.c
+index 45e92cb..b0889c4 100644
+--- a/arch/x86/kernel/apic/x2apic_cluster.c
++++ b/arch/x86/kernel/apic/x2apic_cluster.c
+@@ -156,7 +156,8 @@ static int x2apic_dead_cpu(unsigned int dead_cpu)
  {
- 	struct evsel *evsel, *leader;
-diff --git a/tools/perf/util/evlist.h b/tools/perf/util/evlist.h
-index 7cfe755..00eab94 100644
---- a/tools/perf/util/evlist.h
-+++ b/tools/perf/util/evlist.h
-@@ -118,6 +118,13 @@ void perf_evlist__stop_sb_thread(struct evlist *evlist);
- int perf_evlist__add_newtp(struct evlist *evlist,
- 			   const char *sys, const char *name, void *handler);
+ 	struct cluster_mask *cmsk = per_cpu(cluster_masks, dead_cpu);
  
-+int __evlist__set_tracepoints_handlers(struct evlist *evlist,
-+				       const struct evsel_str_handler *assocs,
-+				       size_t nr_assocs);
-+
-+#define evlist__set_tracepoints_handlers(evlist, array) \
-+	__evlist__set_tracepoints_handlers(evlist, array, ARRAY_SIZE(array))
-+
- void __perf_evlist__set_sample_bit(struct evlist *evlist,
- 				   enum perf_event_sample_format bit);
- void __perf_evlist__reset_sample_bit(struct evlist *evlist,
-diff --git a/tools/perf/util/session.c b/tools/perf/util/session.c
-index 061bb4d..6cc32f5 100644
---- a/tools/perf/util/session.c
-+++ b/tools/perf/util/session.c
-@@ -2355,35 +2355,6 @@ void perf_session__fprintf_info(struct perf_session *session, FILE *fp,
- 	fprintf(fp, "# ========\n#\n");
+-	cpumask_clear_cpu(dead_cpu, &cmsk->mask);
++	if (cmsk)
++		cpumask_clear_cpu(dead_cpu, &cmsk->mask);
+ 	free_cpumask_var(per_cpu(ipi_mask, dead_cpu));
+ 	return 0;
  }
- 
--
--int __perf_session__set_tracepoints_handlers(struct perf_session *session,
--					     const struct evsel_str_handler *assocs,
--					     size_t nr_assocs)
--{
--	struct evsel *evsel;
--	size_t i;
--	int err;
--
--	for (i = 0; i < nr_assocs; i++) {
--		/*
--		 * Adding a handler for an event not in the session,
--		 * just ignore it.
--		 */
--		evsel = perf_evlist__find_tracepoint_by_name(session->evlist, assocs[i].name);
--		if (evsel == NULL)
--			continue;
--
--		err = -EEXIST;
--		if (evsel->handler != NULL)
--			goto out;
--		evsel->handler = assocs[i].handler;
--	}
--
--	err = 0;
--out:
--	return err;
--}
--
- int perf_event__process_id_index(struct perf_session *session,
- 				 union perf_event *event)
- {
-diff --git a/tools/perf/util/session.h b/tools/perf/util/session.h
-index b4c9428..8456e1d 100644
---- a/tools/perf/util/session.h
-+++ b/tools/perf/util/session.h
-@@ -120,12 +120,8 @@ void perf_session__fprintf_info(struct perf_session *s, FILE *fp, bool full);
- 
- struct evsel_str_handler;
- 
--int __perf_session__set_tracepoints_handlers(struct perf_session *session,
--					     const struct evsel_str_handler *assocs,
--					     size_t nr_assocs);
--
- #define perf_session__set_tracepoints_handlers(session, array) \
--	__perf_session__set_tracepoints_handlers(session, array, ARRAY_SIZE(array))
-+	__evlist__set_tracepoints_handlers(session->evlist, array, ARRAY_SIZE(array))
- 
- extern volatile int session_done;
- 
