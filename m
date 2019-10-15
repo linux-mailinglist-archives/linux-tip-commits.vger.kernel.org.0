@@ -2,40 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AD988D6ED9
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 15 Oct 2019 07:33:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E06CCD6ED2
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 15 Oct 2019 07:33:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728952AbfJOFdX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 15 Oct 2019 01:33:23 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:42262 "EHLO
+        id S1726505AbfJOFdO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 15 Oct 2019 01:33:14 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:42266 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728680AbfJOFcW (ORCPT
+        with ESMTP id S1728695AbfJOFcX (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 15 Oct 2019 01:32:22 -0400
+        Tue, 15 Oct 2019 01:32:23 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iKFRR-0000Y7-Fk; Tue, 15 Oct 2019 07:32:17 +0200
+        id 1iKFRS-0000WS-Vu; Tue, 15 Oct 2019 07:32:19 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 1B77F1C04A9;
-        Tue, 15 Oct 2019 07:31:53 +0200 (CEST)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5109B1C04D6;
+        Tue, 15 Oct 2019 07:31:52 +0200 (CEST)
 Date:   Tue, 15 Oct 2019 05:31:52 -0000
 From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf env: Add routine to read the env->cpuid from
- the running machine
+Subject: [tip: perf/core] perf trace: Make evlist__set_evsel_handler() affect
+ just entries without a handler
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         Jiri Olsa <jolsa@kernel.org>,
         Namhyung Kim <namhyung@kernel.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <tip-h2wb3sx7u7znx6lqfezrh7ca@git.kernel.org>
-References: <tip-h2wb3sx7u7znx6lqfezrh7ca@git.kernel.org>
+In-Reply-To: <tip-e1bit7upnpmtsayh8039kfuw@git.kernel.org>
+References: <tip-e1bit7upnpmtsayh8039kfuw@git.kernel.org>
 MIME-Version: 1.0
-Message-ID: <157111751299.12254.13329361993141140643.tip-bot2@tip-bot2>
+Message-ID: <157111751221.12254.12826613305063607363.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,76 +51,57 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     f1cedfb82858c8a7ec21e45d0ce7b6e2ce9edea0
-Gitweb:        https://git.kernel.org/tip/f1cedfb82858c8a7ec21e45d0ce7b6e2ce9edea0
+Commit-ID:     206d635aa594a5246cd181b3be39d1e3b2126f68
+Gitweb:        https://git.kernel.org/tip/206d635aa594a5246cd181b3be39d1e3b2126f68
 Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Mon, 30 Sep 2019 11:50:15 -03:00
+AuthorDate:    Tue, 01 Oct 2019 11:31:59 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Mon, 07 Oct 2019 12:22:17 -03:00
 
-perf env: Add routine to read the env->cpuid from the running machine
+perf trace: Make evlist__set_evsel_handler() affect just entries without a handler
 
-In 'perf top' we use that cpuid when initializing the per arch
-annotation init routines (e.g. x86__annotate_init()) and in that case
-(live mode, 'perf top') we need to obtain it from the running machine,
-not from a perf.data file header.
-
-Provide a means to do that. Will be used by 'perf top' in a followup
-patch.
+Renaming it to evlist__set_default_evsel_handler(), to better reflect
+what we want to do, which is to set a default handler for events we
+still haven't set a custom handler, like the ones for "msr:write_msr",
+etc that are coming soon.
 
 Cc: Adrian Hunter <adrian.hunter@intel.com>
 Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lkml.kernel.org/n/tip-h2wb3sx7u7znx6lqfezrh7ca@git.kernel.org
+Link: https://lkml.kernel.org/n/tip-e1bit7upnpmtsayh8039kfuw@git.kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/env.c | 16 ++++++++++++++++
- tools/perf/util/env.h |  1 +
- 2 files changed, 17 insertions(+)
+ tools/perf/builtin-trace.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/tools/perf/util/env.c b/tools/perf/util/env.c
-index 3baca06..2a91a10 100644
---- a/tools/perf/util/env.c
-+++ b/tools/perf/util/env.c
-@@ -2,6 +2,7 @@
- #include "cpumap.h"
- #include "debug.h"
- #include "env.h"
-+#include "util/header.h"
- #include <linux/ctype.h>
- #include <linux/zalloc.h>
- #include "bpf-event.h"
-@@ -256,6 +257,21 @@ int perf_env__read_cpu_topology_map(struct perf_env *env)
+diff --git a/tools/perf/builtin-trace.c b/tools/perf/builtin-trace.c
+index bb5130d..ee330f5 100644
+--- a/tools/perf/builtin-trace.c
++++ b/tools/perf/builtin-trace.c
+@@ -3858,12 +3858,14 @@ static int parse_pagefaults(const struct option *opt, const char *str,
  	return 0;
  }
  
-+int perf_env__read_cpuid(struct perf_env *env)
-+{
-+	char cpuid[128];
-+	int err = get_cpuid(cpuid, sizeof(cpuid));
-+
-+	if (err)
-+		return err;
-+
-+	free(env->cpuid);
-+	env->cpuid = strdup(cpuid);
-+	if (env->cpuid == NULL)
-+		return ENOMEM;
-+	return 0;
-+}
-+
- static int perf_env__read_arch(struct perf_env *env)
+-static void evlist__set_evsel_handler(struct evlist *evlist, void *handler)
++static void evlist__set_default_evsel_handler(struct evlist *evlist, void *handler)
  {
- 	struct utsname uts;
-diff --git a/tools/perf/util/env.h b/tools/perf/util/env.h
-index db40906..a3059dc 100644
---- a/tools/perf/util/env.h
-+++ b/tools/perf/util/env.h
-@@ -104,6 +104,7 @@ void perf_env__exit(struct perf_env *env);
+ 	struct evsel *evsel;
  
- int perf_env__set_cmdline(struct perf_env *env, int argc, const char *argv[]);
+-	evlist__for_each_entry(evlist, evsel)
+-		evsel->handler = handler;
++	evlist__for_each_entry(evlist, evsel) {
++		if (evsel->handler == NULL)
++			evsel->handler = handler;
++	}
+ }
  
-+int perf_env__read_cpuid(struct perf_env *env);
- int perf_env__read_cpu_topology_map(struct perf_env *env);
+ static int evlist__set_syscall_tp_fields(struct evlist *evlist)
+@@ -4287,7 +4289,7 @@ int cmd_trace(int argc, const char **argv)
+ 	}
  
- void cpu_cache_level__free(struct cpu_cache_level *cache);
+ 	if (trace.evlist->core.nr_entries > 0) {
+-		evlist__set_evsel_handler(trace.evlist, trace__event_handler);
++		evlist__set_default_evsel_handler(trace.evlist, trace__event_handler);
+ 		if (evlist__set_syscall_tp_fields(trace.evlist)) {
+ 			perror("failed to set syscalls:* tracepoint fields");
+ 			goto out;
