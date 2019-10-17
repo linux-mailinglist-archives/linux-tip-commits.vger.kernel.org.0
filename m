@@ -2,44 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2512BDA64A
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 17 Oct 2019 09:20:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CF79DAA5C
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 17 Oct 2019 12:50:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2408110AbfJQHUW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 17 Oct 2019 03:20:22 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:52178 "EHLO
+        id S2409044AbfJQKuD (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 17 Oct 2019 06:50:03 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:52640 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2408101AbfJQHUV (ORCPT
+        with ESMTP id S2409023AbfJQKuB (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 17 Oct 2019 03:20:21 -0400
+        Thu, 17 Oct 2019 06:50:01 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iL04n-0002eF-3c; Thu, 17 Oct 2019 09:20:01 +0200
+        id 1iL3Ls-0006Qf-0U; Thu, 17 Oct 2019 12:49:52 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B529B1C009F;
-        Thu, 17 Oct 2019 09:20:00 +0200 (CEST)
-Date:   Thu, 17 Oct 2019 07:20:00 -0000
-From:   "tip-bot2 for Benjamin Berg" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 855321C009F;
+        Thu, 17 Oct 2019 12:49:51 +0200 (CEST)
+Date:   Thu, 17 Oct 2019 10:49:51 -0000
+From:   "tip-bot2 for Mark Rutland" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: ras/core] x86/mce: Lower throttling MCE messages' priority to warning
-Cc:     Benjamin Berg <bberg@redhat.com>, Borislav Petkov <bp@suse.de>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Christian Kellner <ckellner@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        "linux-edac" <linux-edac@vger.kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+Subject: [tip: core/urgent] stop_machine: Avoid potential race behaviour
+Cc:     Mark Rutland <mark.rutland@arm.com>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Tony Luck <tony.luck@intel.com>, "x86-ml" <x86@kernel.org>,
-        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20191009155424.249277-1-bberg@redhat.com>
-References: <20191009155424.249277-1-bberg@redhat.com>
+        Marco Elver <elver@google.com>, Ingo Molnar <mingo@kernel.org>,
+        Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
+In-Reply-To: <20191007104536.27276-1-mark.rutland@arm.com>
+References: <20191007104536.27276-1-mark.rutland@arm.com>
 MIME-Version: 1.0
-Message-ID: <157129680050.29376.455617240270032569.tip-bot2@tip-bot2>
+Message-ID: <157130939131.29376.13614810360711743863.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -53,68 +46,127 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the ras/core branch of tip:
+The following commit has been merged into the core/urgent branch of tip:
 
-Commit-ID:     9c3bafaa1fd88e4dd2dba3735a1f1abb0f2c7bb7
-Gitweb:        https://git.kernel.org/tip/9c3bafaa1fd88e4dd2dba3735a1f1abb0f2c7bb7
-Author:        Benjamin Berg <bberg@redhat.com>
-AuthorDate:    Wed, 09 Oct 2019 17:54:24 +02:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Thu, 17 Oct 2019 09:07:09 +02:00
+Commit-ID:     b1fc5833357524d5d342737913dbe32ff3557bc5
+Gitweb:        https://git.kernel.org/tip/b1fc5833357524d5d342737913dbe32ff3557bc5
+Author:        Mark Rutland <mark.rutland@arm.com>
+AuthorDate:    Mon, 07 Oct 2019 11:45:36 +01:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Thu, 17 Oct 2019 12:47:12 +02:00
 
-x86/mce: Lower throttling MCE messages' priority to warning
+stop_machine: Avoid potential race behaviour
 
-On modern CPUs it is quite normal that the temperature limits are
-reached and the CPU is throttled. In fact, often the thermal design is
-not sufficient to cool the CPU at full load and limits can quickly be
-reached when a burst in load happens. This will even happen with
-technologies like RAPL limitting the long term power consumption of
-the package.
+Both multi_cpu_stop() and set_state() access multi_stop_data::state
+racily using plain accesses. These are subject to compiler
+transformations which could break the intended behaviour of the code,
+and this situation is detected by KCSAN on both arm64 and x86 (splats
+below).
 
-Also, these limits are "softer", as Srinivas explains:
+Improve matters by using READ_ONCE() and WRITE_ONCE() to ensure that the
+compiler cannot elide, replay, or tear loads and stores.
 
-"CPU temperature doesn't have to hit max(TjMax) to get these warnings.
-OEMs ha[ve] an ability to program a threshold where a thermal interrupt
-can be generated. In some systems the offset is 20C+ (Read only value).
+In multi_cpu_stop() the two loads of multi_stop_data::state are expected to
+be a consistent value, so snapshot the value into a temporary variable to
+ensure this.
 
-In recent systems, there is another offset on top of it which can be
-programmed by OS, once some agent can adjust power limits dynamically.
-By default this is set to low by the firmware, which I guess the
-prime motivation of Benjamin to submit the patch."
+The state transitions are serialized by atomic manipulation of
+multi_stop_data::num_threads, and other fields in multi_stop_data are not
+modified while subject to concurrent reads.
 
-So these messages do not usually indicate a hardware issue (e.g.
-insufficient cooling). Log them as warnings to avoid confusion about
-their severity.
+KCSAN splat on arm64:
 
- [ bp: Massage commit mesage. ]
+| BUG: KCSAN: data-race in multi_cpu_stop+0xa8/0x198 and set_state+0x80/0xb0
+|
+| write to 0xffff00001003bd00 of 4 bytes by task 24 on cpu 3:
+|  set_state+0x80/0xb0
+|  multi_cpu_stop+0x16c/0x198
+|  cpu_stopper_thread+0x170/0x298
+|  smpboot_thread_fn+0x40c/0x560
+|  kthread+0x1a8/0x1b0
+|  ret_from_fork+0x10/0x18
+|
+| read to 0xffff00001003bd00 of 4 bytes by task 14 on cpu 1:
+|  multi_cpu_stop+0xa8/0x198
+|  cpu_stopper_thread+0x170/0x298
+|  smpboot_thread_fn+0x40c/0x560
+|  kthread+0x1a8/0x1b0
+|  ret_from_fork+0x10/0x18
+|
+| Reported by Kernel Concurrency Sanitizer on:
+| CPU: 1 PID: 14 Comm: migration/1 Not tainted 5.3.0-00007-g67ab35a199f4-dirty #3
+| Hardware name: linux,dummy-virt (DT)
 
-Signed-off-by: Benjamin Berg <bberg@redhat.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Tested-by: Christian Kellner <ckellner@redhat.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: linux-edac <linux-edac@vger.kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Tony Luck <tony.luck@intel.com>
-Cc: x86-ml <x86@kernel.org>
-Link: https://lkml.kernel.org/r/20191009155424.249277-1-bberg@redhat.com
+KCSAN splat on x86:
+
+| write to 0xffffb0bac0013e18 of 4 bytes by task 19 on cpu 2:
+|  set_state kernel/stop_machine.c:170 [inline]
+|  ack_state kernel/stop_machine.c:177 [inline]
+|  multi_cpu_stop+0x1a4/0x220 kernel/stop_machine.c:227
+|  cpu_stopper_thread+0x19e/0x280 kernel/stop_machine.c:516
+|  smpboot_thread_fn+0x1a8/0x300 kernel/smpboot.c:165
+|  kthread+0x1b5/0x200 kernel/kthread.c:255
+|  ret_from_fork+0x35/0x40 arch/x86/entry/entry_64.S:352
+|
+| read to 0xffffb0bac0013e18 of 4 bytes by task 44 on cpu 7:
+|  multi_cpu_stop+0xb4/0x220 kernel/stop_machine.c:213
+|  cpu_stopper_thread+0x19e/0x280 kernel/stop_machine.c:516
+|  smpboot_thread_fn+0x1a8/0x300 kernel/smpboot.c:165
+|  kthread+0x1b5/0x200 kernel/kthread.c:255
+|  ret_from_fork+0x35/0x40 arch/x86/entry/entry_64.S:352
+|
+| Reported by Kernel Concurrency Sanitizer on:
+| CPU: 7 PID: 44 Comm: migration/7 Not tainted 5.3.0+ #1
+| Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
+
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Acked-by: Marco Elver <elver@google.com>
+Link: https://lkml.kernel.org/r/20191007104536.27276-1-mark.rutland@arm.com
+
 ---
- arch/x86/kernel/cpu/mce/therm_throt.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/stop_machine.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/mce/therm_throt.c b/arch/x86/kernel/cpu/mce/therm_throt.c
-index 6e2becf..bc441d6 100644
---- a/arch/x86/kernel/cpu/mce/therm_throt.c
-+++ b/arch/x86/kernel/cpu/mce/therm_throt.c
-@@ -188,7 +188,7 @@ static void therm_throt_process(bool new_event, int event, int level)
- 	/* if we just entered the thermal event */
- 	if (new_event) {
- 		if (event == THERMAL_THROTTLING_EVENT)
--			pr_crit("CPU%d: %s temperature above threshold, cpu clock throttled (total events = %lu)\n",
-+			pr_warn("CPU%d: %s temperature above threshold, cpu clock throttled (total events = %lu)\n",
- 				this_cpu,
- 				level == CORE_LEVEL ? "Core" : "Package",
- 				state->count);
+diff --git a/kernel/stop_machine.c b/kernel/stop_machine.c
+index c7031a2..998d50e 100644
+--- a/kernel/stop_machine.c
++++ b/kernel/stop_machine.c
+@@ -7,6 +7,7 @@
+  * Copyright (C) 2010		SUSE Linux Products GmbH
+  * Copyright (C) 2010		Tejun Heo <tj@kernel.org>
+  */
++#include <linux/compiler.h>
+ #include <linux/completion.h>
+ #include <linux/cpu.h>
+ #include <linux/init.h>
+@@ -167,7 +168,7 @@ static void set_state(struct multi_stop_data *msdata,
+ 	/* Reset ack counter. */
+ 	atomic_set(&msdata->thread_ack, msdata->num_threads);
+ 	smp_wmb();
+-	msdata->state = newstate;
++	WRITE_ONCE(msdata->state, newstate);
+ }
+ 
+ /* Last one to ack a state moves to the next state. */
+@@ -186,7 +187,7 @@ void __weak stop_machine_yield(const struct cpumask *cpumask)
+ static int multi_cpu_stop(void *data)
+ {
+ 	struct multi_stop_data *msdata = data;
+-	enum multi_stop_state curstate = MULTI_STOP_NONE;
++	enum multi_stop_state newstate, curstate = MULTI_STOP_NONE;
+ 	int cpu = smp_processor_id(), err = 0;
+ 	const struct cpumask *cpumask;
+ 	unsigned long flags;
+@@ -210,8 +211,9 @@ static int multi_cpu_stop(void *data)
+ 	do {
+ 		/* Chill out and ensure we re-read multi_stop_state. */
+ 		stop_machine_yield(cpumask);
+-		if (msdata->state != curstate) {
+-			curstate = msdata->state;
++		newstate = READ_ONCE(msdata->state);
++		if (newstate != curstate) {
++			curstate = newstate;
+ 			switch (curstate) {
+ 			case MULTI_STOP_DISABLE_IRQ:
+ 				local_irq_disable();
