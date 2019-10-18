@@ -2,40 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D13EDDC419
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 18 Oct 2019 13:41:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D4A6DC554
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 18 Oct 2019 14:49:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2409705AbfJRLlh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 18 Oct 2019 07:41:37 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:56572 "EHLO
+        id S2633974AbfJRMsc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 18 Oct 2019 08:48:32 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:56788 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729803AbfJRLlg (ORCPT
+        with ESMTP id S2633960AbfJRMsc (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 18 Oct 2019 07:41:36 -0400
+        Fri, 18 Oct 2019 08:48:32 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iLQdL-000647-6G; Fri, 18 Oct 2019 13:41:27 +0200
+        id 1iLRfu-00075p-B8; Fri, 18 Oct 2019 14:48:10 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id BC8291C03AB;
-        Fri, 18 Oct 2019 13:41:26 +0200 (CEST)
-Date:   Fri, 18 Oct 2019 11:41:26 -0000
-From:   "tip-bot2 for Andrea Parri" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E224A1C03AB;
+        Fri, 18 Oct 2019 14:48:09 +0200 (CEST)
+Date:   Fri, 18 Oct 2019 12:48:09 -0000
+From:   "tip-bot2 for Yunfeng Ye" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/hyperv: Set pv_info.name to "Hyper-V"
-Cc:     Michael Kelley <mikelley@microsoft.com>,
-        Andrea Parri <parri.andrea@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Wei Liu <wei.liu@kernel.org>,
-        YueHaibing <yuehaibing@huawei.com>,
+Subject: [tip: perf/core] perf/ring_buffer: Modify the parameter type of
+ perf_mmap_free_page()
+Cc:     Yunfeng Ye <yeyunfeng@huawei.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, <jolsa@redhat.co>,
+        <acme@kernel.org>, <mingo@redhat.com>, <mark.rutland@arm.com>,
+        <namhyung@kernel.org>, <alexander.shishkin@linux.intel.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20191015103502.13156-1-parri.andrea@gmail.com>
-References: <20191015103502.13156-1-parri.andrea@gmail.com>
+In-Reply-To: <e6ae3f0c-d04c-50f9-544a-aee3b30330cd@huawei.com>
+References: <e6ae3f0c-d04c-50f9-544a-aee3b30330cd@huawei.com>
 MIME-Version: 1.0
-Message-ID: <157139888658.29376.12730864004180074032.tip-bot2@tip-bot2>
+Message-ID: <157140288978.29376.16956109153818084888.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,54 +49,61 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     f7c0f50f1857c1cf013466fcea4dc98d116bf456
-Gitweb:        https://git.kernel.org/tip/f7c0f50f1857c1cf013466fcea4dc98d116bf456
-Author:        Andrea Parri <parri.andrea@gmail.com>
-AuthorDate:    Tue, 15 Oct 2019 12:35:02 +02:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 18 Oct 2019 13:33:38 +02:00
+Commit-ID:     8a9f91c51ea72b126864e0db616b1bac12261200
+Gitweb:        https://git.kernel.org/tip/8a9f91c51ea72b126864e0db616b1bac12261200
+Author:        Yunfeng Ye <yeyunfeng@huawei.com>
+AuthorDate:    Mon, 14 Oct 2019 16:14:59 +08:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Thu, 17 Oct 2019 21:31:55 +02:00
 
-x86/hyperv: Set pv_info.name to "Hyper-V"
+perf/ring_buffer: Modify the parameter type of perf_mmap_free_page()
 
-Michael reported that the x86/hyperv initialization code prints the
-following dmesg when running in a VM on Hyper-V:
+In perf_mmap_free_page(), the unsigned long type is converted to the
+pointer type, but where the call is made, the pointer type is converted
+to the unsigned long type. There is no need to do these operations.
 
-  [    0.000738] Booting paravirtualized kernel on bare hardware
+Modify the parameter type of perf_mmap_free_page() to pointer type.
 
-Let the x86/hyperv initialization code set pv_info.name to "Hyper-V" so
-dmesg reports correctly:
-
-  [    0.000172] Booting paravirtualized kernel on Hyper-V
-
-[ tglx: Folded build fix provided by Yue ]
-
-Reported-by: Michael Kelley <mikelley@microsoft.com>
-Signed-off-by: Andrea Parri <parri.andrea@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Wei Liu <wei.liu@kernel.org>
-Reviewed-by: Michael Kelley <mikelley@microsoft.com>
-Cc: YueHaibing <yuehaibing@huawei.com>
-Link: https://lkml.kernel.org/r/20191015103502.13156-1-parri.andrea@gmail.com
-
-
+Signed-off-by: Yunfeng Ye <yeyunfeng@huawei.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: <jolsa@redhat.co>
+Cc: <acme@kernel.org>
+Cc: <mingo@redhat.com>
+Cc: <mark.rutland@arm.com>
+Cc: <namhyung@kernel.org>
+Cc: <alexander.shishkin@linux.intel.com>
+Link: https://lkml.kernel.org/r/e6ae3f0c-d04c-50f9-544a-aee3b30330cd@huawei.com
 ---
- arch/x86/kernel/cpu/mshyperv.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ kernel/events/ring_buffer.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/mshyperv.c b/arch/x86/kernel/cpu/mshyperv.c
-index 267daad..c656d92 100644
---- a/arch/x86/kernel/cpu/mshyperv.c
-+++ b/arch/x86/kernel/cpu/mshyperv.c
-@@ -216,6 +216,10 @@ static void __init ms_hyperv_init_platform(void)
- 	int hv_host_info_ecx;
- 	int hv_host_info_edx;
+diff --git a/kernel/events/ring_buffer.c b/kernel/events/ring_buffer.c
+index ffb59a4..abc145c 100644
+--- a/kernel/events/ring_buffer.c
++++ b/kernel/events/ring_buffer.c
+@@ -799,9 +799,9 @@ fail:
+ 	return NULL;
+ }
  
-+#ifdef CONFIG_PARAVIRT
-+	pv_info.name = "Hyper-V";
-+#endif
-+
- 	/*
- 	 * Extract the features and hints
- 	 */
+-static void perf_mmap_free_page(unsigned long addr)
++static void perf_mmap_free_page(void *addr)
+ {
+-	struct page *page = virt_to_page((void *)addr);
++	struct page *page = virt_to_page(addr);
+ 
+ 	page->mapping = NULL;
+ 	__free_page(page);
+@@ -811,9 +811,9 @@ void rb_free(struct ring_buffer *rb)
+ {
+ 	int i;
+ 
+-	perf_mmap_free_page((unsigned long)rb->user_page);
++	perf_mmap_free_page(rb->user_page);
+ 	for (i = 0; i < rb->nr_pages; i++)
+-		perf_mmap_free_page((unsigned long)rb->data_pages[i]);
++		perf_mmap_free_page(rb->data_pages[i]);
+ 	kfree(rb);
+ }
+ 
