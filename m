@@ -2,40 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D12CDB21D
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 17 Oct 2019 18:17:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C8C5DC417
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 18 Oct 2019 13:41:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392768AbfJQQRG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 17 Oct 2019 12:17:06 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:53733 "EHLO
+        id S2407818AbfJRLlc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 18 Oct 2019 07:41:32 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:56569 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730526AbfJQQRG (ORCPT
+        with ESMTP id S1729803AbfJRLlc (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 17 Oct 2019 12:17:06 -0400
+        Fri, 18 Oct 2019 07:41:32 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iL8SN-0002xh-RE; Thu, 17 Oct 2019 18:16:55 +0200
+        id 1iLQdL-000645-65; Fri, 18 Oct 2019 13:41:27 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5EB891C009F;
-        Thu, 17 Oct 2019 18:16:55 +0200 (CEST)
-Date:   Thu, 17 Oct 2019 16:16:55 -0000
-From:   "tip-bot2 for Scott Wood" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 7BB491C009C;
+        Fri, 18 Oct 2019 13:41:26 +0200 (CEST)
+Date:   Fri, 18 Oct 2019 11:41:26 -0000
+From:   "tip-bot2 for Zhenzhong Duan" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cpu] x86/Kconfig: Enforce limit of 512 CPUs with MAXSMP and
- no CPUMASK_OFFSTACK
-Cc:     Scott Wood <swood@redhat.com>, Borislav Petkov <bp@suse.de>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        Mike Travis <mike.travis@hpe.com>,
+Subject: [tip: x86/urgent] x86/boot/acpi: Move get_cmdline_acpi_rsdp() under
+ #ifdef guard
+Cc:     Zhenzhong Duan <zhenzhong.duan@oracle.com>,
         Thomas Gleixner <tglx@linutronix.de>,
-        "x86-ml" <x86@kernel.org>, Ingo Molnar <mingo@kernel.org>,
-        Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
-In-Reply-To: <20191012070054.28657-1-swood@redhat.com>
-References: <20191012070054.28657-1-swood@redhat.com>
+        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <1569719633-32164-1-git-send-email-zhenzhong.duan@oracle.com>
+References: <1569719633-32164-1-git-send-email-zhenzhong.duan@oracle.com>
 MIME-Version: 1.0
-Message-ID: <157132901520.29376.161729676075623652.tip-bot2@tip-bot2>
+Message-ID: <157139888626.29376.8907978839274879255.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,50 +47,102 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cpu branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     1edae1ae62589f28d00da186465a003e2a7f9c6c
-Gitweb:        https://git.kernel.org/tip/1edae1ae62589f28d00da186465a003e2a7f9c6c
-Author:        Scott Wood <swood@redhat.com>
-AuthorDate:    Sat, 12 Oct 2019 02:00:54 -05:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Thu, 17 Oct 2019 18:04:51 +02:00
+Commit-ID:     228d120051a2234356690924c1f42e07e54e1eaf
+Gitweb:        https://git.kernel.org/tip/228d120051a2234356690924c1f42e07e54e1eaf
+Author:        Zhenzhong Duan <zhenzhong.duan@oracle.com>
+AuthorDate:    Sun, 29 Sep 2019 09:13:52 +08:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Fri, 18 Oct 2019 13:33:38 +02:00
 
-x86/Kconfig: Enforce limit of 512 CPUs with MAXSMP and no CPUMASK_OFFSTACK
+x86/boot/acpi: Move get_cmdline_acpi_rsdp() under #ifdef guard
 
-The help text of NR_CPUS says that the maximum number of CPUs supported
-without CPUMASK_OFFSTACK is 512. However, NR_CPUS_RANGE_END allows this
-limit to be bypassed by MAXSMP even if CPUMASK_OFFSTACK is not set.
+When building with "EXTRA_CFLAGS=-Wall" gcc warns:
 
-This scenario can currently only happen in the RT tree, since it has
-"select CPUMASK_OFFSTACK if !PREEMPT_RT_FULL" in MAXSMP. However,
-even if we ignore the RT tree, checking for MAXSMP in addition to
-CPUMASK_OFFSTACK is redundant.
+arch/x86/boot/compressed/acpi.c:29:30: warning: get_cmdline_acpi_rsdp defined but not used [-Wunused-function]
 
-Signed-off-by: Scott Wood <swood@redhat.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Mike Travis <mike.travis@hpe.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: x86-ml <x86@kernel.org>
-Link: https://lkml.kernel.org/r/20191012070054.28657-1-swood@redhat.com
+get_cmdline_acpi_rsdp() is only used when CONFIG_RANDOMIZE_BASE and
+CONFIG_MEMORY_HOTREMOVE are both enabled, so any build where one of these
+config options is disabled has this issue.
+
+Move the function under the same ifdef guard as the call site.
+
+[ tglx: Add context to the changelog so it becomes useful ]
+
+Fixes: 41fa1ee9c6d6 ("acpi: Ignore acpi_rsdp kernel param when the kernel has been locked down")
+Signed-off-by: Zhenzhong Duan <zhenzhong.duan@oracle.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lkml.kernel.org/r/1569719633-32164-1-git-send-email-zhenzhong.duan@oracle.com
+
+
 ---
- arch/x86/Kconfig | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/boot/compressed/acpi.c | 48 ++++++++++++++++----------------
+ 1 file changed, 24 insertions(+), 24 deletions(-)
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 91c22ee..896f840 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -1000,8 +1000,8 @@ config NR_CPUS_RANGE_END
- config NR_CPUS_RANGE_END
- 	int
- 	depends on X86_64
--	default 8192 if  SMP && ( MAXSMP ||  CPUMASK_OFFSTACK)
--	default  512 if  SMP && (!MAXSMP && !CPUMASK_OFFSTACK)
-+	default 8192 if  SMP && CPUMASK_OFFSTACK
-+	default  512 if  SMP && !CPUMASK_OFFSTACK
- 	default    1 if !SMP
+diff --git a/arch/x86/boot/compressed/acpi.c b/arch/x86/boot/compressed/acpi.c
+index 149795c..25019d4 100644
+--- a/arch/x86/boot/compressed/acpi.c
++++ b/arch/x86/boot/compressed/acpi.c
+@@ -21,30 +21,6 @@
+ struct mem_vector immovable_mem[MAX_NUMNODES*2];
  
- config NR_CPUS_DEFAULT
+ /*
+- * Max length of 64-bit hex address string is 19, prefix "0x" + 16 hex
+- * digits, and '\0' for termination.
+- */
+-#define MAX_ADDR_LEN 19
+-
+-static acpi_physical_address get_cmdline_acpi_rsdp(void)
+-{
+-	acpi_physical_address addr = 0;
+-
+-#ifdef CONFIG_KEXEC
+-	char val[MAX_ADDR_LEN] = { };
+-	int ret;
+-
+-	ret = cmdline_find_option("acpi_rsdp", val, MAX_ADDR_LEN);
+-	if (ret < 0)
+-		return 0;
+-
+-	if (kstrtoull(val, 16, &addr))
+-		return 0;
+-#endif
+-	return addr;
+-}
+-
+-/*
+  * Search EFI system tables for RSDP.  If both ACPI_20_TABLE_GUID and
+  * ACPI_TABLE_GUID are found, take the former, which has more features.
+  */
+@@ -298,6 +274,30 @@ acpi_physical_address get_rsdp_addr(void)
+ }
+ 
+ #if defined(CONFIG_RANDOMIZE_BASE) && defined(CONFIG_MEMORY_HOTREMOVE)
++/*
++ * Max length of 64-bit hex address string is 19, prefix "0x" + 16 hex
++ * digits, and '\0' for termination.
++ */
++#define MAX_ADDR_LEN 19
++
++static acpi_physical_address get_cmdline_acpi_rsdp(void)
++{
++	acpi_physical_address addr = 0;
++
++#ifdef CONFIG_KEXEC
++	char val[MAX_ADDR_LEN] = { };
++	int ret;
++
++	ret = cmdline_find_option("acpi_rsdp", val, MAX_ADDR_LEN);
++	if (ret < 0)
++		return 0;
++
++	if (kstrtoull(val, 16, &addr))
++		return 0;
++#endif
++	return addr;
++}
++
+ /* Compute SRAT address from RSDP. */
+ static unsigned long get_acpi_srat_table(void)
+ {
