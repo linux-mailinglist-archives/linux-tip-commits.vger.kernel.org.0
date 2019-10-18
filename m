@@ -2,44 +2,46 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DB667DC555
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 18 Oct 2019 14:49:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8487EDCB50
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 18 Oct 2019 18:33:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2633979AbfJRMsd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 18 Oct 2019 08:48:33 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:56792 "EHLO
+        id S2408770AbfJRQcV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 18 Oct 2019 12:32:21 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:57828 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2633907AbfJRMsd (ORCPT
+        with ESMTP id S2442973AbfJRQbJ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 18 Oct 2019 08:48:33 -0400
+        Fri, 18 Oct 2019 12:31:09 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iLRg3-00078X-N5; Fri, 18 Oct 2019 14:48:19 +0200
+        id 1iLV90-0002j2-6Z; Fri, 18 Oct 2019 18:30:26 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 477681C009C;
-        Fri, 18 Oct 2019 14:48:19 +0200 (CEST)
-Date:   Fri, 18 Oct 2019 12:48:19 -0000
-From:   "tip-bot2 for Masami Hiramatsu" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 7BCB51C009C;
+        Fri, 18 Oct 2019 18:30:25 +0200 (CEST)
+Date:   Fri, 18 Oct 2019 16:30:25 -0000
+From:   "tip-bot2 for Jiri Slaby" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/core] x86/asm: Allow to pass macros to __ASM_FORM()
-Cc:     Masami Hiramatsu <mhiramat@kernel.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Juergen Gross <jgross@suse.com>, x86@kernel.org,
+Subject: [tip: x86/asm] x86/asm: Replace WEAK uses by SYM_INNER_LABEL_ALIGN
+Cc:     Jiri Slaby <jslaby@suse.cz>, Borislav Petkov <bp@suse.de>,
+        Andrey Ryabinin <aryabinin@virtuozzo.com>,
         Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Andrew Cooper <andrew.cooper3@citrix.com>,
-        Borislav Petkov <bp@alien8.de>, xen-devel@lists.xenproject.org,
-        Randy Dunlap <rdunlap@infradead.org>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
         Josh Poimboeuf <jpoimboe@redhat.com>,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <156777562873.25081.2288083344657460959.stgit@devnote2>
-References: <156777562873.25081.2288083344657460959.stgit@devnote2>
+        linux-arch@vger.kernel.org, Mark Rutland <mark.rutland@arm.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "x86-ml" <x86@kernel.org>, Ingo Molnar <mingo@kernel.org>,
+        Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
+In-Reply-To: <20191011115108.12392-29-jslaby@suse.cz>
+References: <20191011115108.12392-29-jslaby@suse.cz>
 MIME-Version: 1.0
-Message-ID: <157140289913.29376.11199090886356756663.tip-bot2@tip-bot2>
+Message-ID: <157141622513.29376.15999556589986391789.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -53,53 +55,101 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/core branch of tip:
+The following commit has been merged into the x86/asm branch of tip:
 
-Commit-ID:     f7919fd943abf0c77aed4441ea9897a323d132f5
-Gitweb:        https://git.kernel.org/tip/f7919fd943abf0c77aed4441ea9897a323d132f5
-Author:        Masami Hiramatsu <mhiramat@kernel.org>
-AuthorDate:    Fri, 06 Sep 2019 22:13:48 +09:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Thu, 17 Oct 2019 21:31:57 +02:00
+Commit-ID:     13fbe784ef6e58d0267a6e183f90ce7826d7d885
+Gitweb:        https://git.kernel.org/tip/13fbe784ef6e58d0267a6e183f90ce7826d7d885
+Author:        Jiri Slaby <jslaby@suse.cz>
+AuthorDate:    Fri, 11 Oct 2019 13:51:08 +02:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Fri, 18 Oct 2019 12:13:35 +02:00
 
-x86/asm: Allow to pass macros to __ASM_FORM()
+x86/asm: Replace WEAK uses by SYM_INNER_LABEL_ALIGN
 
-Use __stringify() at __ASM_FORM() so that user can pass
-code including macros to __ASM_FORM().
+Use the new SYM_INNER_LABEL_ALIGN for WEAK entries in the middle of x86
+assembly functions.
 
-Signed-off-by: Masami Hiramatsu <mhiramat@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: Juergen Gross <jgross@suse.com>
-Cc: x86@kernel.org
+And make sure WEAK is not defined for x86 anymore as these were the last
+users.
+
+Signed-off-by: Jiri Slaby <jslaby@suse.cz>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Cc: Andrey Ryabinin <aryabinin@virtuozzo.com>
 Cc: Boris Ostrovsky <boris.ostrovsky@oracle.com>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Stefano Stabellini <sstabellini@kernel.org>
-Cc: Andrew Cooper <andrew.cooper3@citrix.com>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: xen-devel@lists.xenproject.org
-Cc: Randy Dunlap <rdunlap@infradead.org>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Ingo Molnar <mingo@redhat.com>
 Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Link: https://lkml.kernel.org/r/156777562873.25081.2288083344657460959.stgit@devnote2
+Cc: linux-arch@vger.kernel.org
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Cc: "Steven Rostedt (VMware)" <rostedt@goodmis.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: x86-ml <x86@kernel.org>
+Link: https://lkml.kernel.org/r/20191011115108.12392-29-jslaby@suse.cz
 ---
- arch/x86/include/asm/asm.h | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ arch/x86/kernel/ftrace_32.S | 2 +-
+ arch/x86/kernel/ftrace_64.S | 2 +-
+ arch/x86/kernel/head_32.S   | 2 +-
+ include/linux/linkage.h     | 2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/include/asm/asm.h b/arch/x86/include/asm/asm.h
-index 3ff577c..1b563f9 100644
---- a/arch/x86/include/asm/asm.h
-+++ b/arch/x86/include/asm/asm.h
-@@ -7,9 +7,11 @@
- # define __ASM_FORM_RAW(x)     x
- # define __ASM_FORM_COMMA(x) x,
- #else
--# define __ASM_FORM(x)	" " #x " "
--# define __ASM_FORM_RAW(x)     #x
--# define __ASM_FORM_COMMA(x) " " #x ","
-+#include <linux/stringify.h>
-+
-+# define __ASM_FORM(x)	" " __stringify(x) " "
-+# define __ASM_FORM_RAW(x)     __stringify(x)
-+# define __ASM_FORM_COMMA(x) " " __stringify(x) ","
+diff --git a/arch/x86/kernel/ftrace_32.S b/arch/x86/kernel/ftrace_32.S
+index b4f495b..8ed1f5d 100644
+--- a/arch/x86/kernel/ftrace_32.S
++++ b/arch/x86/kernel/ftrace_32.S
+@@ -85,7 +85,7 @@ ftrace_graph_call:
  #endif
  
- #ifndef __x86_64__
+ /* This is weak to keep gas from relaxing the jumps */
+-WEAK(ftrace_stub)
++SYM_INNER_LABEL_ALIGN(ftrace_stub, SYM_L_WEAK)
+ 	ret
+ SYM_CODE_END(ftrace_caller)
+ 
+diff --git a/arch/x86/kernel/ftrace_64.S b/arch/x86/kernel/ftrace_64.S
+index 16deae7..69c8d1b 100644
+--- a/arch/x86/kernel/ftrace_64.S
++++ b/arch/x86/kernel/ftrace_64.S
+@@ -168,7 +168,7 @@ SYM_INNER_LABEL(ftrace_graph_call, SYM_L_GLOBAL)
+  * This is weak to keep gas from relaxing the jumps.
+  * It is also used to copy the retq for trampolines.
+  */
+-WEAK(ftrace_stub)
++SYM_INNER_LABEL_ALIGN(ftrace_stub, SYM_L_WEAK)
+ 	retq
+ SYM_FUNC_END(ftrace_caller)
+ 
+diff --git a/arch/x86/kernel/head_32.S b/arch/x86/kernel/head_32.S
+index ea24aa5..3fe7d20 100644
+--- a/arch/x86/kernel/head_32.S
++++ b/arch/x86/kernel/head_32.S
+@@ -156,7 +156,7 @@ SYM_CODE_START(startup_32)
+ 	jmp *%eax
+ 
+ .Lbad_subarch:
+-WEAK(xen_entry)
++SYM_INNER_LABEL_ALIGN(xen_entry, SYM_L_WEAK)
+ 	/* Unknown implementation; there's really
+ 	   nothing we can do at this point. */
+ 	ud2a
+diff --git a/include/linux/linkage.h b/include/linux/linkage.h
+index 331a230..9280209 100644
+--- a/include/linux/linkage.h
++++ b/include/linux/linkage.h
+@@ -121,13 +121,13 @@
+ #endif /* CONFIG_X86 */
+ #endif /* LINKER_SCRIPT */
+ 
++#ifndef CONFIG_X86
+ #ifndef WEAK
+ /* deprecated, use SYM_FUNC_START_WEAK* */
+ #define WEAK(name)	   \
+ 	SYM_FUNC_START_WEAK(name)
+ #endif
+ 
+-#ifndef CONFIG_X86
+ #ifndef END
+ /* deprecated, use SYM_FUNC_END, SYM_DATA_END, or SYM_END */
+ #define END(name) \
