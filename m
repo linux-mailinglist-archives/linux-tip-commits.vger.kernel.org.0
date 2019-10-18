@@ -2,40 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D4A6DC554
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 18 Oct 2019 14:49:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91551DC550
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 18 Oct 2019 14:49:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2633974AbfJRMsc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 18 Oct 2019 08:48:32 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:56788 "EHLO
+        id S2633949AbfJRMsZ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 18 Oct 2019 08:48:25 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:56769 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2633960AbfJRMsc (ORCPT
+        with ESMTP id S2633907AbfJRMsY (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 18 Oct 2019 08:48:32 -0400
+        Fri, 18 Oct 2019 08:48:24 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iLRfu-00075p-B8; Fri, 18 Oct 2019 14:48:10 +0200
+        id 1iLRfu-00075o-4O; Fri, 18 Oct 2019 14:48:10 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E224A1C03AB;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A5A981C009C;
         Fri, 18 Oct 2019 14:48:09 +0200 (CEST)
 Date:   Fri, 18 Oct 2019 12:48:09 -0000
 From:   "tip-bot2 for Yunfeng Ye" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/ring_buffer: Modify the parameter type of
- perf_mmap_free_page()
+Subject: [tip: perf/core] perf/ring_buffer: Matching the memory allocate and
+ free, in rb_alloc()
 Cc:     Yunfeng Ye <yeyunfeng@huawei.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>, <jolsa@redhat.co>,
         <acme@kernel.org>, <mingo@redhat.com>, <mark.rutland@arm.com>,
         <namhyung@kernel.org>, <alexander.shishkin@linux.intel.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <e6ae3f0c-d04c-50f9-544a-aee3b30330cd@huawei.com>
-References: <e6ae3f0c-d04c-50f9-544a-aee3b30330cd@huawei.com>
+In-Reply-To: <575c7e8c-90c7-4e3a-b41d-f894d8cdbd7f@huawei.com>
+References: <575c7e8c-90c7-4e3a-b41d-f894d8cdbd7f@huawei.com>
 MIME-Version: 1.0
-Message-ID: <157140288978.29376.16956109153818084888.tip-bot2@tip-bot2>
+Message-ID: <157140288949.29376.10061367480857136332.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,20 +51,19 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     8a9f91c51ea72b126864e0db616b1bac12261200
-Gitweb:        https://git.kernel.org/tip/8a9f91c51ea72b126864e0db616b1bac12261200
+Commit-ID:     d7e78706e43107fa269fe34b1a69e653f5ec9f2c
+Gitweb:        https://git.kernel.org/tip/d7e78706e43107fa269fe34b1a69e653f5ec9f2c
 Author:        Yunfeng Ye <yeyunfeng@huawei.com>
-AuthorDate:    Mon, 14 Oct 2019 16:14:59 +08:00
+AuthorDate:    Mon, 14 Oct 2019 16:15:57 +08:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Thu, 17 Oct 2019 21:31:55 +02:00
 
-perf/ring_buffer: Modify the parameter type of perf_mmap_free_page()
+perf/ring_buffer: Matching the memory allocate and free, in rb_alloc()
 
-In perf_mmap_free_page(), the unsigned long type is converted to the
-pointer type, but where the call is made, the pointer type is converted
-to the unsigned long type. There is no need to do these operations.
+Currently perf_mmap_alloc_page() is used to allocate memory in
+rb_alloc(), but using free_page() to free memory in the failure path.
 
-Modify the parameter type of perf_mmap_free_page() to pointer type.
+It's better to use perf_mmap_free_page() instead.
 
 Signed-off-by: Yunfeng Ye <yeyunfeng@huawei.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
@@ -74,36 +73,54 @@ Cc: <mingo@redhat.com>
 Cc: <mark.rutland@arm.com>
 Cc: <namhyung@kernel.org>
 Cc: <alexander.shishkin@linux.intel.com>
-Link: https://lkml.kernel.org/r/e6ae3f0c-d04c-50f9-544a-aee3b30330cd@huawei.com
+Link: https://lkml.kernel.org/r/575c7e8c-90c7-4e3a-b41d-f894d8cdbd7f@huawei.com
 ---
- kernel/events/ring_buffer.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ kernel/events/ring_buffer.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
 diff --git a/kernel/events/ring_buffer.c b/kernel/events/ring_buffer.c
-index ffb59a4..abc145c 100644
+index abc145c..246c83a 100644
 --- a/kernel/events/ring_buffer.c
 +++ b/kernel/events/ring_buffer.c
-@@ -799,9 +799,9 @@ fail:
+@@ -754,6 +754,14 @@ static void *perf_mmap_alloc_page(int cpu)
+ 	return page_address(page);
+ }
+ 
++static void perf_mmap_free_page(void *addr)
++{
++	struct page *page = virt_to_page(addr);
++
++	page->mapping = NULL;
++	__free_page(page);
++}
++
+ struct ring_buffer *rb_alloc(int nr_pages, long watermark, int cpu, int flags)
+ {
+ 	struct ring_buffer *rb;
+@@ -788,9 +796,9 @@ struct ring_buffer *rb_alloc(int nr_pages, long watermark, int cpu, int flags)
+ 
+ fail_data_pages:
+ 	for (i--; i >= 0; i--)
+-		free_page((unsigned long)rb->data_pages[i]);
++		perf_mmap_free_page(rb->data_pages[i]);
+ 
+-	free_page((unsigned long)rb->user_page);
++	perf_mmap_free_page(rb->user_page);
+ 
+ fail_user_page:
+ 	kfree(rb);
+@@ -799,14 +807,6 @@ fail:
  	return NULL;
  }
  
--static void perf_mmap_free_page(unsigned long addr)
-+static void perf_mmap_free_page(void *addr)
- {
--	struct page *page = virt_to_page((void *)addr);
-+	struct page *page = virt_to_page(addr);
- 
- 	page->mapping = NULL;
- 	__free_page(page);
-@@ -811,9 +811,9 @@ void rb_free(struct ring_buffer *rb)
+-static void perf_mmap_free_page(void *addr)
+-{
+-	struct page *page = virt_to_page(addr);
+-
+-	page->mapping = NULL;
+-	__free_page(page);
+-}
+-
+ void rb_free(struct ring_buffer *rb)
  {
  	int i;
- 
--	perf_mmap_free_page((unsigned long)rb->user_page);
-+	perf_mmap_free_page(rb->user_page);
- 	for (i = 0; i < rb->nr_pages; i++)
--		perf_mmap_free_page((unsigned long)rb->data_pages[i]);
-+		perf_mmap_free_page(rb->data_pages[i]);
- 	kfree(rb);
- }
- 
