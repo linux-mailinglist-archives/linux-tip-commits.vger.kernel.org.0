@@ -2,115 +2,106 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 22BFBDCB1C
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 18 Oct 2019 18:33:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4EA8DCBD3
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 18 Oct 2019 18:48:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2439886AbfJRQat (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 18 Oct 2019 12:30:49 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:57691 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2439817AbfJRQas (ORCPT
+        id S2502101AbfJRQsE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 18 Oct 2019 12:48:04 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46084 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728368AbfJRQsE (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 18 Oct 2019 12:30:48 -0400
-Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tip-bot2@linutronix.de>)
-        id 1iLV9F-00033f-4e; Fri, 18 Oct 2019 18:30:41 +0200
-Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 6C5091C04D6;
-        Fri, 18 Oct 2019 18:30:34 +0200 (CEST)
-Date:   Fri, 18 Oct 2019 16:30:34 -0000
-From:   "tip-bot2 for Jiri Slaby" <tip-bot2@linutronix.de>
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/asm] x86/asm/suspend: Use SYM_DATA for data
-Cc:     Jiri Slaby <jslaby@suse.cz>, Borislav Petkov <bp@suse.de>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Pavel Machek <pavel@ucw.cz>, "H. Peter Anvin" <hpa@zytor.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Len Brown <len.brown@intel.com>, linux-arch@vger.kernel.org,
-        linux-pm@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+        Fri, 18 Oct 2019 12:48:04 -0400
+Received: from gandalf.local.home (cpe-66-24-58-225.stny.res.rr.com [66.24.58.225])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 07E4B20854;
+        Fri, 18 Oct 2019 16:48:01 +0000 (UTC)
+Date:   Fri, 18 Oct 2019 12:48:00 -0400
+From:   Steven Rostedt <rostedt@goodmis.org>
+To:     "tip-bot2 for Jiri Slaby" <tip-bot2@linutronix.de>
+Cc:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
+        Jiri Slaby <jslaby@suse.cz>, Borislav Petkov <bp@suse.de>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        linux-arch@vger.kernel.org, Masami Hiramatsu <mhiramat@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
         "x86-ml" <x86@kernel.org>, Ingo Molnar <mingo@kernel.org>,
-        Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
-In-Reply-To: <20191011115108.12392-3-jslaby@suse.cz>
-References: <20191011115108.12392-3-jslaby@suse.cz>
+        Borislav Petkov <bp@alien8.de>
+Subject: Re: [tip: x86/asm] x86/asm/ftrace: Mark function_hook as function
+Message-ID: <20191018124800.0a7006bb@gandalf.local.home>
+In-Reply-To: <157141622788.29376.4016565749507481510.tip-bot2@tip-bot2>
+References: <20191011115108.12392-22-jslaby@suse.cz>
+        <157141622788.29376.4016565749507481510.tip-bot2@tip-bot2>
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Message-ID: <157141623420.29376.9224656338909570146.tip-bot2@tip-bot2>
-X-Mailer: tip-git-log-daemon
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/asm branch of tip:
+On Fri, 18 Oct 2019 16:30:27 -0000
+"tip-bot2 for Jiri Slaby" <tip-bot2@linutronix.de> wrote:
 
-Commit-ID:     37503f734e9de314c4e9a1eba33e9e7d8ec80839
-Gitweb:        https://git.kernel.org/tip/37503f734e9de314c4e9a1eba33e9e7d8ec80839
-Author:        Jiri Slaby <jslaby@suse.cz>
-AuthorDate:    Fri, 11 Oct 2019 13:50:42 +02:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Fri, 18 Oct 2019 09:50:25 +02:00
+> The following commit has been merged into the x86/asm branch of tip:
+> 
+> Commit-ID:     f13ad88a984e8090226a8f62d75e87b770eefdf4
+> Gitweb:        https://git.kernel.org/tip/f13ad88a984e8090226a8f62d75e87b770eefdf4
+> Author:        Jiri Slaby <jslaby@suse.cz>
+> AuthorDate:    Fri, 11 Oct 2019 13:51:01 +02:00
+> Committer:     Borislav Petkov <bp@suse.de>
+> CommitterDate: Fri, 18 Oct 2019 11:35:41 +02:00
 
-x86/asm/suspend: Use SYM_DATA for data
+I just noticed this (sorry missed the original patch).
 
-Some global data in the suspend code were marked as `ENTRY'. ENTRY was
-intended for functions and shall be paired with ENDPROC. ENTRY also
-aligns symbols to 16 bytes which creates unnecessary holes.
+> 
+> x86/asm/ftrace: Mark function_hook as function
+> 
+> Relabel function_hook to be marked really as a function. It is called
+> from C and has the same expectations towards the stack etc.
 
-Note that:
+This is wrong, function_hook is never called from C. It's called via
+fentry (use to be mcount), and does not have the same semantics as a C
+function. In fact, that's why it exists in assembly. Because it has to
+save and restore registers to make it possible to call a C function!
 
-* saved_magic (long) in wakeup_32 is still prepended by section's ALIGN
-* saved_magic (quad) in wakeup_64 follows a bunch of quads which are
-  aligned (but need not be aligned to 16)
+-- Steve
 
-Since historical markings are being dropped, make proper use of newly
-added SYM_DATA in this code.
 
-Signed-off-by: Jiri Slaby <jslaby@suse.cz>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Acked-by: Pavel Machek <pavel@ucw.cz>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Len Brown <len.brown@intel.com>
-Cc: linux-arch@vger.kernel.org
-Cc: linux-pm@vger.kernel.org
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: x86-ml <x86@kernel.org>
-Link: https://lkml.kernel.org/r/20191011115108.12392-3-jslaby@suse.cz
----
- arch/x86/kernel/acpi/wakeup_32.S | 2 +-
- arch/x86/kernel/acpi/wakeup_64.S | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+> 
+> Signed-off-by: Jiri Slaby <jslaby@suse.cz>
+> Signed-off-by: Borislav Petkov <bp@suse.de>
+> Cc: "H. Peter Anvin" <hpa@zytor.com>
+> Cc: Ingo Molnar <mingo@redhat.com>
+> Cc: Josh Poimboeuf <jpoimboe@redhat.com>
+> Cc: linux-arch@vger.kernel.org
+> Cc: Masami Hiramatsu <mhiramat@kernel.org>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Cc: "Steven Rostedt (VMware)" <rostedt@goodmis.org>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: x86-ml <x86@kernel.org>
+> Link: https://lkml.kernel.org/r/20191011115108.12392-22-jslaby@suse.cz
+> ---
+>  arch/x86/kernel/ftrace_32.S | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/x86/kernel/ftrace_32.S b/arch/x86/kernel/ftrace_32.S
+> index e0061dc..219be13 100644
+> --- a/arch/x86/kernel/ftrace_32.S
+> +++ b/arch/x86/kernel/ftrace_32.S
+> @@ -21,9 +21,9 @@ EXPORT_SYMBOL(__fentry__)
+>  # define MCOUNT_FRAME			0	/* using frame = false */
+>  #endif
+>  
+> -ENTRY(function_hook)
+> +SYM_FUNC_START(function_hook)
+>  	ret
+> -END(function_hook)
+> +SYM_FUNC_END(function_hook)
+>  
+>  ENTRY(ftrace_caller)
+>  
 
-diff --git a/arch/x86/kernel/acpi/wakeup_32.S b/arch/x86/kernel/acpi/wakeup_32.S
-index e95e959..4272492 100644
---- a/arch/x86/kernel/acpi/wakeup_32.S
-+++ b/arch/x86/kernel/acpi/wakeup_32.S
-@@ -90,7 +90,7 @@ ret_point:
- 
- .data
- ALIGN
--ENTRY(saved_magic)	.long	0
-+SYM_DATA(saved_magic,	.long 0)
- saved_eip:		.long 0
- 
- # saved registers
-diff --git a/arch/x86/kernel/acpi/wakeup_64.S b/arch/x86/kernel/acpi/wakeup_64.S
-index 7f9ade1..462a20f 100644
---- a/arch/x86/kernel/acpi/wakeup_64.S
-+++ b/arch/x86/kernel/acpi/wakeup_64.S
-@@ -136,4 +136,4 @@ saved_rbx:		.quad	0
- saved_rip:		.quad	0
- saved_rsp:		.quad	0
- 
--ENTRY(saved_magic)	.quad	0
-+SYM_DATA(saved_magic,	.quad	0)
