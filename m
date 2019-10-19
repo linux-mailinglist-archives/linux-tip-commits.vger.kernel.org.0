@@ -2,75 +2,97 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7701BDD04B
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 18 Oct 2019 22:31:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9ADF4DD717
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 19 Oct 2019 09:21:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405935AbfJRUb2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 18 Oct 2019 16:31:28 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45410 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2404605AbfJRUb2 (ORCPT
+        id S1726689AbfJSHV2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 19 Oct 2019 03:21:28 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:58959 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726252AbfJSHV2 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 18 Oct 2019 16:31:28 -0400
-Received: from gandalf.local.home (cpe-66-24-58-225.stny.res.rr.com [66.24.58.225])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CE71A2054F;
-        Fri, 18 Oct 2019 20:31:26 +0000 (UTC)
-Date:   Fri, 18 Oct 2019 16:31:25 -0400
-From:   Steven Rostedt <rostedt@goodmis.org>
-To:     Borislav Petkov <bp@suse.de>
-Cc:     tip-bot2 for Jiri Slaby <tip-bot2@linutronix.de>,
-        linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-        Jiri Slaby <jslaby@suse.cz>, "H. Peter Anvin" <hpa@zytor.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        linux-arch@vger.kernel.org, Masami Hiramatsu <mhiramat@kernel.org>,
+        Sat, 19 Oct 2019 03:21:28 -0400
+Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tip-bot2@linutronix.de>)
+        id 1iLj34-0003FE-Ar; Sat, 19 Oct 2019 09:21:14 +0200
+Received: from [127.0.1.1] (localhost [IPv6:::1])
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id AB35E1C0095;
+        Sat, 19 Oct 2019 09:21:13 +0200 (CEST)
+Date:   Sat, 19 Oct 2019 07:21:13 -0000
+From:   "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: perf/core] perf/core: Fix !CONFIG_PERF_EVENTS build warnings
+ and failures
+Cc:     "Joel Fernandes (Google)" <joel@joelfernandes.org>,
+        linux-kernel@vger.kernel.org,
         Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>, x86-ml <x86@kernel.org>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Namhyung Kim <namhyung@kernel.org>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>
-Subject: Re: [tip: x86/asm] x86/asm/ftrace: Mark function_hook as function
-Message-ID: <20191018163125.346e078d@gandalf.local.home>
-In-Reply-To: <20191018194856.GC20368@zn.tnic>
-References: <20191011115108.12392-22-jslaby@suse.cz>
-        <157141622788.29376.4016565749507481510.tip-bot2@tip-bot2>
-        <20191018124800.0a7006bb@gandalf.local.home>
-        <20191018124956.764ac42e@gandalf.local.home>
-        <20191018171354.GB20368@zn.tnic>
-        <20191018133735.77e90e36@gandalf.local.home>
-        <20191018194856.GC20368@zn.tnic>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Message-ID: <157146967348.29376.10523588734238269050.tip-bot2@tip-bot2>
+X-Mailer: tip-git-log-daemon
+Robot-ID: <tip-bot2.linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Fri, 18 Oct 2019 21:48:56 +0200
-Borislav Petkov <bp@suse.de> wrote:
+The following commit has been merged into the perf/core branch of tip:
 
-> > The #define was because we use to support mcount or __fentry__, now we
-> > just support __fentry__, and function_hook describes it better ;-)  
-> 
-> Well sorry but gcc documentation talks about __fentry__. I'd keep the
-> same name to avoid confusion and explain above it what it is. Much
-> better.
+Commit-ID:     ae79d5588a04aec9dc4b0c6df700d131447306e0
+Gitweb:        https://git.kernel.org/tip/ae79d5588a04aec9dc4b0c6df700d131447306e0
+Author:        Ingo Molnar <mingo@kernel.org>
+AuthorDate:    Sat, 19 Oct 2019 09:15:27 +02:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Sat, 19 Oct 2019 09:15:27 +02:00
 
-Still looks ugly ;-)
+perf/core: Fix !CONFIG_PERF_EVENTS build warnings and failures
 
-> 
-> > Heh, I guess we could, which would probably be quite a long comment as
-> > it's the key behind ftrace itself.  
-> 
-> Well, you can explain with a couple of sentences what it is and
-> then point at the bigger document explaining ftrace. Provided, Mr.
-> Rostedt, you'll stop doing talks and finally sit down and write that
-> documentation!
+sparc64 runs into this warning:
 
-I do the talks hoping someone else will finally sit down and write the
-documentation!
+  include/linux/security.h:1913:52: warning: 'struct perf_event' declared inside parameter list will not be visible outside of this definition or declaration
 
--- Steve
+which is escalated to a build error in some of the .c files due to -Werror.
 
+Fix it via a forward declaration, like we do for perf_event_attr, the stub inlines
+don't actually need to know the structure of this struct.
+
+Fixes: da97e18458fb: ("perf_event: Add support for LSM and SELinux checks")
+Cc: "Joel Fernandes (Google)" <joel@joelfernandes.org>
+Cc: linux-kernel@vger.kernel.org
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Jiri Olsa <jolsa@redhat.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+---
+ include/linux/security.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/include/linux/security.h b/include/linux/security.h
+index 4df79ff..0a86bfe 100644
+--- a/include/linux/security.h
++++ b/include/linux/security.h
+@@ -1896,6 +1896,7 @@ static inline void security_bpf_prog_free(struct bpf_prog_aux *aux)
+ 
+ #ifdef CONFIG_PERF_EVENTS
+ struct perf_event_attr;
++struct perf_event;
+ 
+ #ifdef CONFIG_SECURITY
+ extern int security_perf_event_open(struct perf_event_attr *attr, int type);
