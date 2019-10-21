@@ -2,185 +2,189 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A832DE82C
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 21 Oct 2019 11:35:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D56BADEEF0
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 21 Oct 2019 16:11:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727328AbfJUJfa (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 21 Oct 2019 05:35:30 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:34092 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726847AbfJUJf3 (ORCPT
+        id S1728812AbfJUOLT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 21 Oct 2019 10:11:19 -0400
+Received: from mail.skyhub.de ([5.9.137.197]:34312 "EHLO mail.skyhub.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728096AbfJUOLT (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 21 Oct 2019 05:35:29 -0400
-Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tip-bot2@linutronix.de>)
-        id 1iMU5h-0005uz-5H; Mon, 21 Oct 2019 11:35:05 +0200
-Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 7C7EF1C0092;
-        Mon, 21 Oct 2019 11:35:04 +0200 (CEST)
-Date:   Mon, 21 Oct 2019 09:35:04 -0000
-From:   "tip-bot2 for Thomas Richter" <tip-bot2@linutronix.de>
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf/aux: Fix tracking of auxiliary trace buffer
- allocation
-Cc:     Thomas Richter <tmricht@linux.ibm.com>,
-        Peter Zijlstra <a.p.zijlstra@chello.nl>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Jiri Olsa <jolsa@redhat.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Namhyung Kim <namhyung@kernel.org>,
+        Mon, 21 Oct 2019 10:11:19 -0400
+Received: from zn.tnic (p2E584653.dip0.t-ipconnect.de [46.88.70.83])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 9A2AB1EC0A91;
+        Mon, 21 Oct 2019 16:11:17 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1571667077;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=a2bggndZ0RE+j7gX/jhzN6ElN77ti8vwT0063HW7Cyo=;
+        b=g7ops0Z6z1w7Phc9JJ3NVpOwk9Uvgu3Pm7GrxPnWuWJ3FxbQWbYyeM++C56B/iKJV9K3Lx
+        q67f+DlUrzhZJ+Nzv1xFZ9nXG6IX6C2hxH/Ht0kR/ZdV1pZOf4Ct4vCgay62ZExc6UCTT8
+        rhVC8JZMAVoMMujOVTwNfGOA3fdw/hs=
+Date:   Mon, 21 Oct 2019 16:10:38 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     Steven Rostedt <rostedt@goodmis.org>
+Cc:     tip-bot2 for Jiri Slaby <tip-bot2@linutronix.de>,
+        linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
+        Jiri Slaby <jslaby@suse.cz>, "H. Peter Anvin" <hpa@zytor.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        linux-arch@vger.kernel.org, Masami Hiramatsu <mhiramat@kernel.org>,
         Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>, acme@kernel.org,
-        gor@linux.ibm.com, hechaol@fb.com, heiko.carstens@de.ibm.com,
-        linux-perf-users@vger.kernel.org, songliubraving@fb.com,
-        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20191021083354.67868-1-tmricht@linux.ibm.com>
-References: <20191021083354.67868-1-tmricht@linux.ibm.com>
+        Thomas Gleixner <tglx@linutronix.de>, x86-ml <x86@kernel.org>,
+        Ingo Molnar <mingo@kernel.org>
+Subject: [PATCH] x86/ftrace: Get rid of function_hook
+Message-ID: <20191021141038.GC7014@zn.tnic>
+References: <20191011115108.12392-22-jslaby@suse.cz>
+ <157141622788.29376.4016565749507481510.tip-bot2@tip-bot2>
+ <20191018124800.0a7006bb@gandalf.local.home>
+ <20191018124956.764ac42e@gandalf.local.home>
+ <20191018171354.GB20368@zn.tnic>
+ <20191018133735.77e90e36@gandalf.local.home>
+ <20191018194856.GC20368@zn.tnic>
+ <20191018163125.346e078d@gandalf.local.home>
+ <20191019073424.GA27353@zn.tnic>
 MIME-Version: 1.0
-Message-ID: <157165050422.29376.10692255781840811810.tip-bot2@tip-bot2>
-X-Mailer: tip-git-log-daemon
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20191019073424.GA27353@zn.tnic>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/urgent branch of tip:
+From: Borislav Petkov <bp@suse.de>
 
-Commit-ID:     5e6c3c7b1ec217c1c4c95d9148182302b9969b97
-Gitweb:        https://git.kernel.org/tip/5e6c3c7b1ec217c1c4c95d9148182302b9969b97
-Author:        Thomas Richter <tmricht@linux.ibm.com>
-AuthorDate:    Mon, 21 Oct 2019 10:33:54 +02:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Mon, 21 Oct 2019 11:31:24 +02:00
+function_hook is used as a better name than the default __fentry__
+which is the profiling counter which gcc adds before every function's
+prologue. Thus, it is not called from C and cannot have the same
+semantics as a pure C function - it saves/restores regs so that a C
+function can be called.
 
-perf/aux: Fix tracking of auxiliary trace buffer allocation
+Drop the function_hook symbol and use __fentry__ directly for better
+alignment with gcc's documentation.
 
-The following commit from the v5.4 merge window:
+Switch the marking to SYM_CODE_START/_END which is reserved for
+non-standard, special functions.
 
-  d44248a41337 ("perf/core: Rework memory accounting in perf_mmap()")
-
-... breaks auxiliary trace buffer tracking.
-
-If I run command 'perf record -e rbd000' to record samples and saving
-them in the **auxiliary** trace buffer then the value of 'locked_vm' becomes
-negative after all trace buffers have been allocated and released:
-
-During allocation the values increase:
-
-  [52.250027] perf_mmap user->locked_vm:0x87 pinned_vm:0x0 ret:0
-  [52.250115] perf_mmap user->locked_vm:0x107 pinned_vm:0x0 ret:0
-  [52.250251] perf_mmap user->locked_vm:0x188 pinned_vm:0x0 ret:0
-  [52.250326] perf_mmap user->locked_vm:0x208 pinned_vm:0x0 ret:0
-  [52.250441] perf_mmap user->locked_vm:0x289 pinned_vm:0x0 ret:0
-  [52.250498] perf_mmap user->locked_vm:0x309 pinned_vm:0x0 ret:0
-  [52.250613] perf_mmap user->locked_vm:0x38a pinned_vm:0x0 ret:0
-  [52.250715] perf_mmap user->locked_vm:0x408 pinned_vm:0x2 ret:0
-  [52.250834] perf_mmap user->locked_vm:0x408 pinned_vm:0x83 ret:0
-  [52.250915] perf_mmap user->locked_vm:0x408 pinned_vm:0x103 ret:0
-  [52.251061] perf_mmap user->locked_vm:0x408 pinned_vm:0x184 ret:0
-  [52.251146] perf_mmap user->locked_vm:0x408 pinned_vm:0x204 ret:0
-  [52.251299] perf_mmap user->locked_vm:0x408 pinned_vm:0x285 ret:0
-  [52.251383] perf_mmap user->locked_vm:0x408 pinned_vm:0x305 ret:0
-  [52.251544] perf_mmap user->locked_vm:0x408 pinned_vm:0x386 ret:0
-  [52.251634] perf_mmap user->locked_vm:0x408 pinned_vm:0x406 ret:0
-  [52.253018] perf_mmap user->locked_vm:0x408 pinned_vm:0x487 ret:0
-  [52.253197] perf_mmap user->locked_vm:0x408 pinned_vm:0x508 ret:0
-  [52.253374] perf_mmap user->locked_vm:0x408 pinned_vm:0x589 ret:0
-  [52.253550] perf_mmap user->locked_vm:0x408 pinned_vm:0x60a ret:0
-  [52.253726] perf_mmap user->locked_vm:0x408 pinned_vm:0x68b ret:0
-  [52.253903] perf_mmap user->locked_vm:0x408 pinned_vm:0x70c ret:0
-  [52.254084] perf_mmap user->locked_vm:0x408 pinned_vm:0x78d ret:0
-  [52.254263] perf_mmap user->locked_vm:0x408 pinned_vm:0x80e ret:0
-
-The value of user->locked_vm increases to a limit then the memory
-is tracked by pinned_vm.
-
-During deallocation the size is subtracted from pinned_vm until
-it hits a limit. Then a larger value is subtracted from locked_vm
-leading to a large number (because of type unsigned):
-
-  [64.267797] perf_mmap_close mmap_user->locked_vm:0x408 pinned_vm:0x78d
-  [64.267826] perf_mmap_close mmap_user->locked_vm:0x408 pinned_vm:0x70c
-  [64.267848] perf_mmap_close mmap_user->locked_vm:0x408 pinned_vm:0x68b
-  [64.267869] perf_mmap_close mmap_user->locked_vm:0x408 pinned_vm:0x60a
-  [64.267891] perf_mmap_close mmap_user->locked_vm:0x408 pinned_vm:0x589
-  [64.267911] perf_mmap_close mmap_user->locked_vm:0x408 pinned_vm:0x508
-  [64.267933] perf_mmap_close mmap_user->locked_vm:0x408 pinned_vm:0x487
-  [64.267952] perf_mmap_close mmap_user->locked_vm:0x408 pinned_vm:0x406
-  [64.268883] perf_mmap_close mmap_user->locked_vm:0x307 pinned_vm:0x406
-  [64.269117] perf_mmap_close mmap_user->locked_vm:0x206 pinned_vm:0x406
-  [64.269433] perf_mmap_close mmap_user->locked_vm:0x105 pinned_vm:0x406
-  [64.269536] perf_mmap_close mmap_user->locked_vm:0x4 pinned_vm:0x404
-  [64.269797] perf_mmap_close mmap_user->locked_vm:0xffffffffffffff84 pinned_vm:0x303
-  [64.270105] perf_mmap_close mmap_user->locked_vm:0xffffffffffffff04 pinned_vm:0x202
-  [64.270374] perf_mmap_close mmap_user->locked_vm:0xfffffffffffffe84 pinned_vm:0x101
-  [64.270628] perf_mmap_close mmap_user->locked_vm:0xfffffffffffffe04 pinned_vm:0x0
-
-This value sticks for the user until system is rebooted, causing
-follow-on system calls using locked_vm resource limit to fail.
-
-Note: There is no issue using the normal trace buffer.
-
-In fact the issue is in perf_mmap_close(). During allocation auxiliary
-trace buffer memory is either traced as 'extra' and added to 'pinned_vm'
-or trace as 'user_extra' and added to 'locked_vm'. This applies for
-normal trace buffers and auxiliary trace buffer.
-
-However in function perf_mmap_close() all auxiliary trace buffer is
-subtraced from 'locked_vm' and never from 'pinned_vm'. This breaks the
-ballance.
-
-Signed-off-by: Thomas Richter <tmricht@linux.ibm.com>
-Acked-by: Peter Zijlstra <a.p.zijlstra@chello.nl>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Jiri Olsa <jolsa@redhat.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Slaby <jslaby@suse.cz>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Josh Poimboeuf <jpoimboe@redhat.com>
+Cc: linux-doc@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
 Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: "Steven Rostedt (VMware)" <rostedt@goodmis.org>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: acme@kernel.org
-Cc: gor@linux.ibm.com
-Cc: hechaol@fb.com
-Cc: heiko.carstens@de.ibm.com
-Cc: linux-perf-users@vger.kernel.org
-Cc: songliubraving@fb.com
-Fixes: d44248a41337 ("perf/core: Rework memory accounting in perf_mmap()")
-Link: https://lkml.kernel.org/r/20191021083354.67868-1-tmricht@linux.ibm.com
-[ Minor readability edits. ]
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: x86@kernel.org
 ---
- kernel/events/core.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ Documentation/asm-annotations.rst |  4 ++--
+ arch/x86/kernel/ftrace_32.S       |  8 +++-----
+ arch/x86/kernel/ftrace_64.S       | 13 ++++++-------
+ 3 files changed, 11 insertions(+), 14 deletions(-)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 9ec0b0b..f5d7950 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -5607,8 +5607,10 @@ static void perf_mmap_close(struct vm_area_struct *vma)
- 		perf_pmu_output_stop(event);
+diff --git a/Documentation/asm-annotations.rst b/Documentation/asm-annotations.rst
+index 29ccd6e61fe5..f55c2bb74d00 100644
+--- a/Documentation/asm-annotations.rst
++++ b/Documentation/asm-annotations.rst
+@@ -117,9 +117,9 @@ This section covers ``SYM_FUNC_*`` and ``SYM_CODE_*`` enumerated above.
+   So in most cases, developers should write something like in the following
+   example, having some asm instructions in between the macros, of course::
  
- 		/* now it's safe to free the pages */
--		atomic_long_sub(rb->aux_nr_pages, &mmap_user->locked_vm);
--		atomic64_sub(rb->aux_mmap_locked, &vma->vm_mm->pinned_vm);
-+		if (!rb->aux_mmap_locked)
-+			atomic_long_sub(rb->aux_nr_pages, &mmap_user->locked_vm);
-+		else
-+			atomic64_sub(rb->aux_mmap_locked, &vma->vm_mm->pinned_vm);
+-    SYM_FUNC_START(function_hook)
++    SYM_FUNC_START(memset)
+         ... asm insns ...
+-    SYM_FUNC_END(function_hook)
++    SYM_FUNC_END(memset)
  
- 		/* this has to be the last one */
- 		rb_free_aux(rb);
+   In fact, this kind of annotation corresponds to the now deprecated ``ENTRY``
+   and ``ENDPROC`` macros.
+diff --git a/arch/x86/kernel/ftrace_32.S b/arch/x86/kernel/ftrace_32.S
+index 8ed1f5d371f0..77be7e7e5e59 100644
+--- a/arch/x86/kernel/ftrace_32.S
++++ b/arch/x86/kernel/ftrace_32.S
+@@ -12,18 +12,16 @@
+ #include <asm/frame.h>
+ #include <asm/asm-offsets.h>
+ 
+-# define function_hook	__fentry__
+-EXPORT_SYMBOL(__fentry__)
+-
+ #ifdef CONFIG_FRAME_POINTER
+ # define MCOUNT_FRAME			1	/* using frame = true  */
+ #else
+ # define MCOUNT_FRAME			0	/* using frame = false */
+ #endif
+ 
+-SYM_FUNC_START(function_hook)
++SYM_CODE_START(__fentry__)
+ 	ret
+-SYM_FUNC_END(function_hook)
++SYM_CODE_END(__fentry__)
++EXPORT_SYMBOL(__fentry__)
+ 
+ SYM_CODE_START(ftrace_caller)
+ 
+diff --git a/arch/x86/kernel/ftrace_64.S b/arch/x86/kernel/ftrace_64.S
+index 69c8d1b9119e..3029fe4f8547 100644
+--- a/arch/x86/kernel/ftrace_64.S
++++ b/arch/x86/kernel/ftrace_64.S
+@@ -14,9 +14,6 @@
+ 	.code64
+ 	.section .entry.text, "ax"
+ 
+-# define function_hook	__fentry__
+-EXPORT_SYMBOL(__fentry__)
+-
+ #ifdef CONFIG_FRAME_POINTER
+ /* Save parent and function stack frames (rip and rbp) */
+ #  define MCOUNT_FRAME_SIZE	(8+16*2)
+@@ -132,9 +129,10 @@ EXPORT_SYMBOL(__fentry__)
+ 
+ #ifdef CONFIG_DYNAMIC_FTRACE
+ 
+-SYM_FUNC_START(function_hook)
++SYM_CODE_START(__fentry__)
+ 	retq
+-SYM_FUNC_END(function_hook)
++SYM_CODE_END(__fentry__)
++EXPORT_SYMBOL(__fentry__)
+ 
+ SYM_FUNC_START(ftrace_caller)
+ 	/* save_mcount_regs fills in first two parameters */
+@@ -248,7 +246,7 @@ SYM_FUNC_END(ftrace_regs_caller)
+ 
+ #else /* ! CONFIG_DYNAMIC_FTRACE */
+ 
+-SYM_FUNC_START(function_hook)
++SYM_CODE_START(__fentry__)
+ 	cmpq $ftrace_stub, ftrace_trace_function
+ 	jnz trace
+ 
+@@ -279,7 +277,8 @@ trace:
+ 	restore_mcount_regs
+ 
+ 	jmp fgraph_trace
+-SYM_FUNC_END(function_hook)
++SYM_CODE_END(__fentry__)
++EXPORT_SYMBOL(__fentry__)
+ #endif /* CONFIG_DYNAMIC_FTRACE */
+ 
+ #ifdef CONFIG_FUNCTION_GRAPH_TRACER
+-- 
+2.21.0
+
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
