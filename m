@@ -2,41 +2,45 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3964EDF93C
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Oct 2019 02:06:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB9CEDF942
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Oct 2019 02:06:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730665AbfJVAD4 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 21 Oct 2019 20:03:56 -0400
+        id S2387396AbfJVAG2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 21 Oct 2019 20:06:28 -0400
 Received: from Galois.linutronix.de ([193.142.43.55]:38895 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730646AbfJVADz (ORCPT
+        with ESMTP id S1728375AbfJVADs (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 21 Oct 2019 20:03:55 -0400
+        Mon, 21 Oct 2019 20:03:48 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iMgxR-0004FY-93; Tue, 22 Oct 2019 01:19:25 +0200
+        id 1iMgxQ-0004F5-4S; Tue, 22 Oct 2019 01:19:24 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 0FD921C04DF;
-        Tue, 22 Oct 2019 01:19:18 +0200 (CEST)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5340A1C04DD;
+        Tue, 22 Oct 2019 01:19:17 +0200 (CEST)
 Date:   Mon, 21 Oct 2019 23:19:17 -0000
-From:   "tip-bot2 for Jin Yao" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Ian Rogers" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf report: Add warning when libunwind not compiled in
-Cc:     Jin Yao <yao.jin@linux.intel.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Andi Kleen <ak@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>,
-        Kan Liang <kan.liang@linux.intel.com>,
-        Peter Zijlstra <peterz@infradead.org>,
+Subject: [tip: perf/core] perf annotate: Avoid reallocation in objdump parsing
+Cc:     Ian Rogers <irogers@google.com>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20191011022122.26369-1-yao.jin@linux.intel.com>
-References: <20191011022122.26369-1-yao.jin@linux.intel.com>
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Jin Yao <yao.jin@linux.intel.com>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Song Liu <songliubraving@fb.com>,
+        Stephane Eranian <eranian@google.com>,
+        clang-built-linux@googlegroups.com, Ingo Molnar <mingo@kernel.org>,
+        Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
+In-Reply-To: <20191010183649.23768-2-irogers@google.com>
+References: <20191010183649.23768-2-irogers@google.com>
 MIME-Version: 1.0
-Message-ID: <157169995752.29376.8635056089307609328.tip-bot2@tip-bot2>
+Message-ID: <157169995703.29376.923567640046514942.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -52,57 +56,112 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     800d3f561659b5436f8c57e7c26dd1f6928b5615
-Gitweb:        https://git.kernel.org/tip/800d3f561659b5436f8c57e7c26dd1f6928b5615
-Author:        Jin Yao <yao.jin@linux.intel.com>
-AuthorDate:    Fri, 11 Oct 2019 10:21:22 +08:00
+Commit-ID:     353dcaa2f979a04f9397306ae3165ccf9fc731df
+Gitweb:        https://git.kernel.org/tip/353dcaa2f979a04f9397306ae3165ccf9fc731df
+Author:        Ian Rogers <irogers@google.com>
+AuthorDate:    Thu, 10 Oct 2019 11:36:45 -07:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Tue, 15 Oct 2019 08:36:22 -03:00
 
-perf report: Add warning when libunwind not compiled in
+perf annotate: Avoid reallocation in objdump parsing
 
-We received a user report that call-graph DWARF mode was enabled in
-'perf record' but 'perf report' didn't unwind the callstack correctly.
-The reason was, libunwind was not compiled in.
+Objdump output is parsed using getline which allocates memory for the
+read. Getline will realloc if the memory is too small, but currently the
+line is always freed after the call.
 
-We can use 'perf -vv' to check the compiled libraries but it would be
-valuable to report a warning to user directly (especially valuable for
-a perf newbie).
+Simplify parse_objdump_line by performing the reading in symbol__disassemble.
 
-The warning is:
-
-Warning:
-Please install libunwind development packages during the perf build.
-
-Both TUI and stdio are supported.
-
-Signed-off-by: Jin Yao <yao.jin@linux.intel.com>
+Signed-off-by: Ian Rogers <irogers@google.com>
+Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Jin Yao <yao.jin@linux.intel.com>
+Cc: Jiri Olsa <jolsa@redhat.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Link: http://lore.kernel.org/lkml/20191011022122.26369-1-yao.jin@linux.intel.com
+Cc: Song Liu <songliubraving@fb.com>
+Cc: Stephane Eranian <eranian@google.com>
+Cc: clang-built-linux@googlegroups.com
+Link: http://lore.kernel.org/lkml/20191010183649.23768-2-irogers@google.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/builtin-report.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ tools/perf/util/annotate.c | 26 ++++++++++++++------------
+ 1 file changed, 14 insertions(+), 12 deletions(-)
 
-diff --git a/tools/perf/builtin-report.c b/tools/perf/builtin-report.c
-index aae0e57..7accaf8 100644
---- a/tools/perf/builtin-report.c
-+++ b/tools/perf/builtin-report.c
-@@ -399,6 +399,13 @@ static int report__setup_sample_type(struct report *rep)
- 				PERF_SAMPLE_BRANCH_ANY))
- 		rep->nonany_branch_mode = true;
+diff --git a/tools/perf/util/annotate.c b/tools/perf/util/annotate.c
+index 2b856b6..f9c39a7 100644
+--- a/tools/perf/util/annotate.c
++++ b/tools/perf/util/annotate.c
+@@ -1489,24 +1489,17 @@ annotation_line__print(struct annotation_line *al, struct symbol *sym, u64 start
+  * means that it's not a disassembly line so should be treated differently.
+  * The ops.raw part will be parsed further according to type of the instruction.
+  */
+-static int symbol__parse_objdump_line(struct symbol *sym, FILE *file,
++static int symbol__parse_objdump_line(struct symbol *sym,
+ 				      struct annotate_args *args,
+-				      int *line_nr)
++				      char *line, int *line_nr)
+ {
+ 	struct map *map = args->ms.map;
+ 	struct annotation *notes = symbol__annotation(sym);
+ 	struct disasm_line *dl;
+-	char *line = NULL, *parsed_line, *tmp, *tmp2;
+-	size_t line_len;
++	char *parsed_line, *tmp, *tmp2;
+ 	s64 line_ip, offset = -1;
+ 	regmatch_t match[2];
  
-+#ifndef HAVE_LIBUNWIND_SUPPORT
-+	if (dwarf_callchain_users) {
-+		ui__warning("Please install libunwind development packages "
-+			    "during the perf build.\n");
-+	}
-+#endif
+-	if (getline(&line, &line_len, file) < 0)
+-		return -1;
+-
+-	if (!line)
+-		return -1;
+-
+ 	line_ip = -1;
+ 	parsed_line = strim(line);
+ 
+@@ -1543,7 +1536,6 @@ static int symbol__parse_objdump_line(struct symbol *sym, FILE *file,
+ 	args->ms.sym  = sym;
+ 
+ 	dl = disasm_line__new(args);
+-	free(line);
+ 	(*line_nr)++;
+ 
+ 	if (dl == NULL)
+@@ -1876,6 +1868,8 @@ static int symbol__disassemble(struct symbol *sym, struct annotate_args *args)
+ 	int lineno = 0;
+ 	int nline;
+ 	pid_t pid;
++	char *line;
++	size_t line_len;
+ 	int err = dso__disassemble_filename(dso, symfs_filename, sizeof(symfs_filename));
+ 
+ 	if (err)
+@@ -1964,18 +1958,26 @@ static int symbol__disassemble(struct symbol *sym, struct annotate_args *args)
+ 		goto out_free_command;
+ 	}
+ 
++	/* Storage for getline. */
++	line = NULL;
++	line_len = 0;
 +
- 	return 0;
- }
+ 	nline = 0;
+ 	while (!feof(file)) {
++		if (getline(&line, &line_len, file) < 0 || !line)
++			break;
++
+ 		/*
+ 		 * The source code line number (lineno) needs to be kept in
+ 		 * across calls to symbol__parse_objdump_line(), so that it
+ 		 * can associate it with the instructions till the next one.
+ 		 * See disasm_line__new() and struct disasm_line::line_nr.
+ 		 */
+-		if (symbol__parse_objdump_line(sym, file, args, &lineno) < 0)
++		if (symbol__parse_objdump_line(sym, args, line, &lineno) < 0)
+ 			break;
+ 		nline++;
+ 	}
++	free(line);
  
+ 	if (nline == 0)
+ 		pr_err("No output from %s\n", command);
