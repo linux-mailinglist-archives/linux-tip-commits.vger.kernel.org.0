@@ -2,30 +2,30 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0831EDF8DF
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Oct 2019 02:03:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B7E3BDF934
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Oct 2019 02:06:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730065AbfJVADe convert rfc822-to-8bit (ORCPT
+        id S1730220AbfJVAGC convert rfc822-to-8bit (ORCPT
         <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 21 Oct 2019 20:03:34 -0400
+        Mon, 21 Oct 2019 20:06:02 -0400
 Received: from Galois.linutronix.de ([193.142.43.55]:38895 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728375AbfJVADe (ORCPT
+        with ESMTP id S1730749AbfJVAEl (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 21 Oct 2019 20:03:34 -0400
+        Mon, 21 Oct 2019 20:04:41 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iMgxA-00044K-Eo; Tue, 22 Oct 2019 01:19:08 +0200
+        id 1iMgxB-00045I-3I; Tue, 22 Oct 2019 01:19:09 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id F2CC41C0086;
-        Tue, 22 Oct 2019 01:19:05 +0200 (CEST)
-Date:   Mon, 21 Oct 2019 23:19:05 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id CC0111C047B;
+        Tue, 22 Oct 2019 01:19:06 +0200 (CEST)
+Date:   Mon, 21 Oct 2019 23:19:06 -0000
 From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] libbeauty: Hook up the x86 irq_vectors table generator
+Subject: [tip: perf/core] libbeauty: Add a generator for x86's IRQ vectors -> strings
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         Andi Kleen <ak@linux.intel.com>,
         David Ahern <dsahern@gmail.com>, Jiri Olsa <jolsa@kernel.org>,
@@ -34,10 +34,10 @@ Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <tip-0p2df4kq1afrxbck4e4ct34r@git.kernel.org>
-References: <tip-0p2df4kq1afrxbck4e4ct34r@git.kernel.org>
+In-Reply-To: <tip-cpl1pa7kkwn0llufi5qw4li8@git.kernel.org>
+References: <tip-cpl1pa7kkwn0llufi5qw4li8@git.kernel.org>
 MIME-Version: 1.0
-Message-ID: <157169994553.29376.6754649503560413293.tip-bot2@tip-bot2>
+Message-ID: <157169994629.29376.6467117925431245922.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -53,22 +53,20 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     f19a85c68cb4d5bb90c587d9390e1ce2716d6160
-Gitweb:        https://git.kernel.org/tip/f19a85c68cb4d5bb90c587d9390e1ce2716d6160
+Commit-ID:     5fa022aeba8420d4803e6198642d0a0cbbac99f3
+Gitweb:        https://git.kernel.org/tip/5fa022aeba8420d4803e6198642d0a0cbbac99f3
 Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Tue, 15 Oct 2019 15:48:50 -03:00
+AuthorDate:    Tue, 15 Oct 2019 15:33:24 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Tue, 15 Oct 2019 15:48:50 -03:00
+CommitterDate: Tue, 15 Oct 2019 15:42:44 -03:00
 
-libbeauty: Hook up the x86 irq_vectors table generator
+libbeauty: Add a generator for x86's IRQ vectors -> strings
 
-I.e. after running:
+We'll wire this up with the 'vector' arg in irq_vectors:*, etc:
 
-  $ make -C tools/perf O=/tmp/build/perf
+Just run it straight away and check what it produces:
 
-We end up with:
-
-  $ cat /tmp/build/perf/trace/beauty/generated/x86_arch_irq_vectors_array.c
+  $ tools/perf/trace/beauty/tracepoints/x86_irq_vectors.sh
   static const char *x86_irq_vectors[] = {
   	[0x02] = "NMI",
   	[0x12] = "MCE",
@@ -96,55 +94,49 @@ We end up with:
   };
   $
 
-Now its just a matter of using it, associating it to tracepoint arguments named
-'vector', all of which can be correctly used with this table, for int args.
-
-At some point we should move tools/perf/trace/beauty to tools/beauty/,
-so that it can be used more generally and even made available externally
-like libbpf, libperf, libtraceevent, etc.
-
 Cc: Adrian Hunter <adrian.hunter@intel.com>
 Cc: Andi Kleen <ak@linux.intel.com>
 Cc: David Ahern <dsahern@gmail.com>
 Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Luis Cláudio Gonçalves <lclaudio@redhat.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lkml.kernel.org/n/tip-0p2df4kq1afrxbck4e4ct34r@git.kernel.org
+Link: https://lkml.kernel.org/n/tip-cpl1pa7kkwn0llufi5qw4li8@git.kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/Makefile.perf | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ tools/perf/trace/beauty/tracepoints/x86_irq_vectors.sh | 27 +++++++++-
+ 1 file changed, 27 insertions(+)
+ create mode 100755 tools/perf/trace/beauty/tracepoints/x86_irq_vectors.sh
 
-diff --git a/tools/perf/Makefile.perf b/tools/perf/Makefile.perf
-index 8f1ba98..1cd2944 100644
---- a/tools/perf/Makefile.perf
-+++ b/tools/perf/Makefile.perf
-@@ -546,6 +546,12 @@ x86_arch_prctl_code_tbl := $(srctree)/tools/perf/trace/beauty/x86_arch_prctl.sh
- $(x86_arch_prctl_code_array): $(x86_arch_asm_uapi_dir)/prctl.h $(x86_arch_prctl_code_tbl)
- 	$(Q)$(SHELL) '$(x86_arch_prctl_code_tbl)' $(x86_arch_asm_uapi_dir) > $@
- 
-+x86_arch_irq_vectors_array := $(beauty_outdir)/x86_arch_irq_vectors_array.c
-+x86_arch_irq_vectors_tbl := $(srctree)/tools/perf/trace/beauty/tracepoints/x86_irq_vectors.sh
+diff --git a/tools/perf/trace/beauty/tracepoints/x86_irq_vectors.sh b/tools/perf/trace/beauty/tracepoints/x86_irq_vectors.sh
+new file mode 100755
+index 0000000..f920003
+--- /dev/null
++++ b/tools/perf/trace/beauty/tracepoints/x86_irq_vectors.sh
+@@ -0,0 +1,27 @@
++#!/bin/sh
++# SPDX-License-Identifier: LGPL-2.1
++# (C) 2019, Arnaldo Carvalho de Melo <acme@redhat.com>
 +
-+$(x86_arch_irq_vectors_array): $(x86_arch_asm_dir)/irq_vectors.h $(x86_arch_irq_vectors_tbl)
-+	$(Q)$(SHELL) '$(x86_arch_irq_vectors_tbl)' $(x86_arch_asm_dir) > $@
++if [ $# -ne 1 ] ; then
++	arch_x86_header_dir=tools/arch/x86/include/asm/
++else
++	arch_x86_header_dir=$1
++fi
 +
- x86_arch_MSRs_array := $(beauty_outdir)/x86_arch_MSRs_array.c
- x86_arch_MSRs_tbl := $(srctree)/tools/perf/trace/beauty/tracepoints/x86_msr.sh
- 
-@@ -686,6 +692,7 @@ prepare: $(OUTPUT)PERF-VERSION-FILE $(OUTPUT)common-cmds.h archheaders $(drm_ioc
- 	$(perf_ioctl_array) \
- 	$(prctl_option_array) \
- 	$(usbdevfs_ioctl_array) \
-+	$(x86_arch_irq_vectors_array) \
- 	$(x86_arch_MSRs_array) \
- 	$(x86_arch_prctl_code_array) \
- 	$(rename_flags_array) \
-@@ -991,6 +998,7 @@ clean:: $(LIBTRACEEVENT)-clean $(LIBAPI)-clean $(LIBBPF)-clean $(LIBSUBCMD)-clea
- 		$(OUTPUT)$(perf_ioctl_array) \
- 		$(OUTPUT)$(prctl_option_array) \
- 		$(OUTPUT)$(usbdevfs_ioctl_array) \
-+		$(OUTPUT)$(x86_arch_irq_vectors_array) \
- 		$(OUTPUT)$(x86_arch_MSRs_array) \
- 		$(OUTPUT)$(x86_arch_prctl_code_array) \
- 		$(OUTPUT)$(rename_flags_array) \
++x86_irq_vectors=${arch_x86_header_dir}/irq_vectors.h
++
++# FIRST_EXTERNAL_VECTOR is not that useful, find what is its number
++# and then replace whatever is using it and that is useful, which at
++# the time of writing of this script was: IRQ_MOVE_CLEANUP_VECTOR.
++
++first_external_regex='^#define[[:space:]]+FIRST_EXTERNAL_VECTOR[[:space:]]+(0x[[:xdigit:]]+)$'
++first_external_vector=$(egrep ${first_external_regex} ${x86_irq_vectors} | sed -r "s/${first_external_regex}/\1/g")
++
++printf "static const char *x86_irq_vectors[] = {\n"
++regex='^#define[[:space:]]+([[:alnum:]_]+)_VECTOR[[:space:]]+(0x[[:xdigit:]]+)$'
++sed -r "s/FIRST_EXTERNAL_VECTOR/${first_external_vector}/g" ${x86_irq_vectors} | \
++egrep ${regex} | \
++	sed -r "s/${regex}/\2 \1/g" | sort -n | \
++	xargs printf "\t[%s] = \"%s\",\n"
++printf "};\n\n"
++
