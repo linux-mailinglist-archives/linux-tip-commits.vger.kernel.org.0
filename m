@@ -2,31 +2,31 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 970F0DF913
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Oct 2019 02:05:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 197B0DF904
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Oct 2019 02:05:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387579AbfJVAFK convert rfc822-to-8bit (ORCPT
+        id S1730761AbfJVAEo convert rfc822-to-8bit (ORCPT
         <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 21 Oct 2019 20:05:10 -0400
+        Mon, 21 Oct 2019 20:04:44 -0400
 Received: from Galois.linutronix.de ([193.142.43.55]:38895 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387566AbfJVAFK (ORCPT
+        with ESMTP id S1730466AbfJVAEn (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 21 Oct 2019 20:05:10 -0400
+        Mon, 21 Oct 2019 20:04:43 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iMgx3-00040Y-V8; Tue, 22 Oct 2019 01:19:02 +0200
+        id 1iMgx4-00040e-EA; Tue, 22 Oct 2019 01:19:02 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 49DC91C04D3;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id CA3041C03AB;
         Tue, 22 Oct 2019 01:19:01 +0200 (CEST)
-Date:   Mon, 21 Oct 2019 23:19:00 -0000
+Date:   Mon, 21 Oct 2019 23:19:01 -0000
 From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf trace: Initialize evsel_trace->fmt for
- syscalls:sys_enter_* tracepoints
+Subject: [tip: perf/core] perf trace: Introduce 'struct evsel__trace' for
+ evsel->priv needs
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         David Ahern <dsahern@gmail.com>, Jiri Olsa <jolsa@kernel.org>,
         Luis =?utf-8?q?Cl=C3=A1udio_Gon=C3=A7alves?= 
@@ -34,10 +34,10 @@ Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <tip-lc8h9jgvbnboe0g7ic8tra1y@git.kernel.org>
-References: <tip-lc8h9jgvbnboe0g7ic8tra1y@git.kernel.org>
+In-Reply-To: <tip-hx8ukasuws5sz6rsar73cocv@git.kernel.org>
+References: <tip-hx8ukasuws5sz6rsar73cocv@git.kernel.org>
 MIME-Version: 1.0
-Message-ID: <157169994085.29376.2672649081556176042.tip-bot2@tip-bot2>
+Message-ID: <157169994141.29376.161893503478087645.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -53,129 +53,120 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     362222f877f1369c0a8017c58b075abf30b16ab7
-Gitweb:        https://git.kernel.org/tip/362222f877f1369c0a8017c58b075abf30b16ab7
+Commit-ID:     2b00bb627f62ed1c6180f49f7883789bc5e1b33f
+Gitweb:        https://git.kernel.org/tip/2b00bb627f62ed1c6180f49f7883789bc5e1b33f
 Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Thu, 17 Oct 2019 17:33:08 -03:00
+AuthorDate:    Thu, 17 Oct 2019 16:37:18 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Fri, 18 Oct 2019 12:07:42 -03:00
+CommitterDate: Thu, 17 Oct 2019 17:27:43 -03:00
 
-perf trace: Initialize evsel_trace->fmt for syscalls:sys_enter_* tracepoints
+perf trace: Introduce 'struct evsel__trace' for evsel->priv needs
 
->From the syscall_fmts->arg entries for formatting strace-like syscalls.
-
-This is when resolving the string "whence" on a filter expression for
-the syscalls:sys_enter_lseek:
-
-  Breakpoint 3, perf_evsel__syscall_arg_fmt (evsel=0xc91ed0, arg=0x7fffffff7cd0 "whence") at builtin-trace.c:3626
-  3626	{
-  (gdb) n
-  3628		struct syscall_arg_fmt *fmt = __evsel__syscall_arg_fmt(evsel);
-  (gdb) n
-  3630		if (evsel->tp_format == NULL || fmt == NULL)
-  (gdb) n
-  3633		for (field = evsel->tp_format->format.fields; field; field = field->next, ++fmt)
-  (gdb) n
-  3634			if (strcmp(field->name, arg) == 0)
-  (gdb) p field->name
-  $3 = 0xc945e0 "__syscall_nr"
-  (gdb) n
-  3633		for (field = evsel->tp_format->format.fields; field; field = field->next, ++fmt)
-  (gdb) p *fmt
-  $4 = {scnprintf = 0x0, strtoul = 0x0, mask_val = 0x0, parm = 0x0, name = 0x0, nr_entries = 0, show_zero = false}
-  (gdb) n
-  3634			if (strcmp(field->name, arg) == 0)
-  (gdb) p field->name
-  $5 = 0xc94690 "fd"
-  (gdb) n
-  3633		for (field = evsel->tp_format->format.fields; field; field = field->next, ++fmt)
-  (gdb) n
-  3634			if (strcmp(field->name, arg) == 0)
-  (gdb) n
-  3633		for (field = evsel->tp_format->format.fields; field; field = field->next, ++fmt)
-  (gdb) n
-  3634			if (strcmp(field->name, arg) == 0)
-  (gdb) p *fmt
-  $9 = {scnprintf = 0x489be2 <syscall_arg__scnprintf_strarray>, strtoul = 0x0, mask_val = 0x0, parm = 0xa2da80 <strarray.whences>, name = 0x0,
-    nr_entries = 0, show_zero = false}
-  (gdb) p field->name
-  $10 = 0xc947b0 "whence"
-  (gdb) p fmt->parm
-  $11 = (void *) 0xa2da80 <strarray.whences>
-  (gdb) p *(struct strarray *)fmt->parm
-  $12 = {offset = 0, nr_entries = 5, prefix = 0x724d37 "SEEK_", entries = 0xa2da40 <whences>}
-  (gdb) p (struct strarray *)fmt->parm)->entries
-  Junk after end of expression.
-  (gdb) p ((struct strarray *)fmt->parm)->entries
-  $13 = (const char **) 0xa2da40 <whences>
-  (gdb) p ((struct strarray *)fmt->parm)->entries[0]
-  $14 = 0x724d21 "SET"
-  (gdb) p ((struct strarray *)fmt->parm)->entries[1]
-  $15 = 0x724d25 "CUR"
-  (gdb) p ((struct strarray *)fmt->parm)->entries[2]
-  $16 = 0x724d29 "END"
-  (gdb) p ((struct strarray *)fmt->parm)->entries[2]
-  $17 = 0x724d29 "END"
-  (gdb) p ((struct strarray *)fmt->parm)->entries[3]
-  $18 = 0x724d2d "DATA"
-  (gdb) p ((struct strarray *)fmt->parm)->entries[4]
-  $19 = 0x724d32 "HOLE"
-  (gdb)
+For syscalls we need to cache the 'syscall_id' and 'ret' field offsets
+but as well have a pointer to the syscall_fmt_arg array for the fields,
+so that we can expand strings in filter expressions, so introduce
+a 'struct evsel_trace' to have in evsel->priv that allows for that.
 
 Cc: Adrian Hunter <adrian.hunter@intel.com>
 Cc: David Ahern <dsahern@gmail.com>
 Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Luis Cláudio Gonçalves <lclaudio@redhat.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lkml.kernel.org/n/tip-lc8h9jgvbnboe0g7ic8tra1y@git.kernel.org
+Link: https://lkml.kernel.org/n/tip-hx8ukasuws5sz6rsar73cocv@git.kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/builtin-trace.c | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ tools/perf/builtin-trace.c | 54 ++++++++++++++++++++++++++++++++-----
+ 1 file changed, 48 insertions(+), 6 deletions(-)
 
 diff --git a/tools/perf/builtin-trace.c b/tools/perf/builtin-trace.c
-index 5792278..3502417 100644
+index 1d2ed28..5792278 100644
 --- a/tools/perf/builtin-trace.c
 +++ b/tools/perf/builtin-trace.c
-@@ -4366,6 +4366,25 @@ static void evlist__set_default_evsel_handler(struct evlist *evlist, void *handl
- 	}
- }
+@@ -286,20 +286,46 @@ struct syscall_tp {
+ };
  
-+static void evsel__set_syscall_arg_fmt(struct evsel *evsel, const char *name)
+ /*
++ * The evsel->priv as used by 'perf trace'
++ * sc:	for raw_syscalls:sys_{enter,exit} and syscalls:sys_{enter,exit}_SYSCALLNAME
++ * fmt: for all the other tracepoints
++ */
++struct evsel_trace {
++	struct syscall_tp	sc;
++	struct syscall_arg_fmt  *fmt;
++};
++
++static struct evsel_trace *evsel_trace__new(void)
 +{
-+	struct syscall_arg_fmt *fmt = evsel__syscall_arg_fmt(evsel);
-+
-+	if (fmt) {
-+		struct syscall_fmt *scfmt = syscall_fmt__find(name);
-+
-+		if (scfmt) {
-+			int skip = 0;
-+
-+			if (strcmp(evsel->tp_format->format.fields->name, "__syscall_nr") == 0 ||
-+			    strcmp(evsel->tp_format->format.fields->name, "nr") == 0)
-+				++skip;
-+
-+			memcpy(fmt + skip, scfmt->arg, (evsel->tp_format->format.nr_fields - skip) * sizeof(*fmt));
-+		}
-+	}
++	return zalloc(sizeof(struct evsel_trace));
 +}
 +
- static int evlist__set_syscall_tp_fields(struct evlist *evlist)
++static void evsel_trace__delete(struct evsel_trace *et)
++{
++	if (et == NULL)
++		return;
++
++	zfree(&et->fmt);
++	free(et);
++}
++
++/*
+  * Used with raw_syscalls:sys_{enter,exit} and with the
+  * syscalls:sys_{enter,exit}_SYSCALL tracepoints
+  */
+ static inline struct syscall_tp *__evsel__syscall_tp(struct evsel *evsel)
  {
- 	struct evsel *evsel;
-@@ -4387,11 +4406,15 @@ static int evlist__set_syscall_tp_fields(struct evlist *evlist)
+-	struct syscall_tp *sc = evsel->priv;
++	struct evsel_trace *et = evsel->priv;
  
- 			if (__tp_field__init_ptr(&sc->args, sc->id.offset + sizeof(u64)))
- 				return -1;
-+
-+			evsel__set_syscall_arg_fmt(evsel, evsel->tp_format->name + sizeof("sys_enter_") - 1);
- 		} else if (!strncmp(evsel->tp_format->name, "sys_exit_", 9)) {
- 			struct syscall_tp *sc = __evsel__syscall_tp(evsel);
+-	return sc;
++	return &et->sc;
+ }
  
- 			if (__tp_field__init_uint(&sc->ret, sizeof(u64), sc->id.offset + sizeof(u64), evsel->needs_swap))
- 				return -1;
-+
-+			evsel__set_syscall_arg_fmt(evsel, evsel->tp_format->name + sizeof("sys_exit_") - 1);
- 		}
+ static struct syscall_tp *evsel__syscall_tp(struct evsel *evsel)
+ {
+ 	if (evsel->priv == NULL) {
+-		evsel->priv = zalloc(sizeof(struct syscall_tp));
++		evsel->priv = evsel_trace__new();
++		if (evsel->priv == NULL)
++			return NULL;
  	}
  
+ 	return __evsel__syscall_tp(evsel);
+@@ -310,18 +336,34 @@ static struct syscall_tp *evsel__syscall_tp(struct evsel *evsel)
+  */
+ static inline struct syscall_arg_fmt *__evsel__syscall_arg_fmt(struct evsel *evsel)
+ {
+-	struct syscall_arg_fmt *fmt = evsel->priv;
++	struct evsel_trace *et = evsel->priv;
+ 
+-	return fmt;
++	return et->fmt;
+ }
+ 
+ static struct syscall_arg_fmt *evsel__syscall_arg_fmt(struct evsel *evsel)
+ {
++	struct evsel_trace *et = evsel->priv;
++
+ 	if (evsel->priv == NULL) {
+-		evsel->priv = calloc(evsel->tp_format->format.nr_fields, sizeof(struct syscall_arg_fmt));
++		et = evsel->priv = evsel_trace__new();
++
++		if (et == NULL)
++			return NULL;
++	}
++
++	if (et->fmt == NULL) {
++		et->fmt = calloc(evsel->tp_format->format.nr_fields, sizeof(struct syscall_arg_fmt));
++		if (et->fmt == NULL)
++			goto out_delete;
+ 	}
+ 
+ 	return __evsel__syscall_arg_fmt(evsel);
++
++out_delete:
++	evsel_trace__delete(evsel->priv);
++	evsel->priv = NULL;
++	return NULL;
+ }
+ 
+ static int perf_evsel__init_tp_uint_field(struct evsel *evsel,
