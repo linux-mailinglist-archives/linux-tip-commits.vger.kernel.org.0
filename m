@@ -2,29 +2,29 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DF3EDDF920
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Oct 2019 02:05:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC291DF940
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Oct 2019 02:06:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387666AbfJVAFZ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 21 Oct 2019 20:05:25 -0400
+        id S1730370AbfJVADg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 21 Oct 2019 20:03:36 -0400
 Received: from Galois.linutronix.de ([193.142.43.55]:38895 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387566AbfJVAFZ (ORCPT
+        with ESMTP id S1730220AbfJVADg (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 21 Oct 2019 20:05:25 -0400
+        Mon, 21 Oct 2019 20:03:36 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iMgwu-0003sg-Cc; Tue, 22 Oct 2019 01:18:52 +0200
+        id 1iMgwv-0003tF-4y; Tue, 22 Oct 2019 01:18:53 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D95351C03AB;
-        Tue, 22 Oct 2019 01:18:51 +0200 (CEST)
-Date:   Mon, 21 Oct 2019 23:18:51 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 7DCDE1C047B;
+        Tue, 22 Oct 2019 01:18:52 +0200 (CEST)
+Date:   Mon, 21 Oct 2019 23:18:52 -0000
 From:   "tip-bot2 for Jiri Olsa" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] libperf: Link static tests with libapi.a
+Subject: [tip: perf/core] libperf: Move mask setup to perf_evlist__mmap_ops()
 Cc:     Jiri Olsa <jolsa@kernel.org>,
         Alexander Shishkin <alexander.shishkin@linux.intel.com>,
         Alexey Budankov <alexey.budankov@linux.intel.com>,
@@ -37,10 +37,10 @@ Cc:     Jiri Olsa <jolsa@kernel.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20191017105918.20873-5-jolsa@kernel.org>
-References: <20191017105918.20873-5-jolsa@kernel.org>
+In-Reply-To: <20191017105918.20873-4-jolsa@kernel.org>
+References: <20191017105918.20873-4-jolsa@kernel.org>
 MIME-Version: 1.0
-Message-ID: <157169993154.29376.8877690079613356165.tip-bot2@tip-bot2>
+Message-ID: <157169993210.29376.12340799034453879917.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -56,17 +56,17 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     395e62cde10df64122d708c68baee64b1d1622fc
-Gitweb:        https://git.kernel.org/tip/395e62cde10df64122d708c68baee64b1d1622fc
+Commit-ID:     b6cd35e4e09c12f9478ed98cb015d4352fa98056
+Gitweb:        https://git.kernel.org/tip/b6cd35e4e09c12f9478ed98cb015d4352fa98056
 Author:        Jiri Olsa <jolsa@kernel.org>
-AuthorDate:    Thu, 17 Oct 2019 12:59:12 +02:00
+AuthorDate:    Thu, 17 Oct 2019 12:59:11 +02:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Sat, 19 Oct 2019 15:35:01 -03:00
 
-libperf: Link static tests with libapi.a
+libperf: Move mask setup to perf_evlist__mmap_ops()
 
-Both static and dynamic tests needs to link with libapi.a, because it's
-using its functions. Also include path for libapi includes.
+Move the mask setup to perf_evlist__mmap_ops(), because it's the same on
+both perf and libperf path.
 
 Signed-off-by: Jiri Olsa <jolsa@kernel.org>
 Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
@@ -77,43 +77,43 @@ Cc: Michael Petlan <mpetlan@redhat.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Stephane Eranian <eranian@google.com>
-Link: http://lore.kernel.org/lkml/20191017105918.20873-5-jolsa@kernel.org
+Link: http://lore.kernel.org/lkml/20191017105918.20873-4-jolsa@kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/lib/Makefile       | 1 +
- tools/perf/lib/tests/Makefile | 6 +++---
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ tools/perf/lib/evlist.c  | 3 ++-
+ tools/perf/util/evlist.c | 1 -
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/lib/Makefile b/tools/perf/lib/Makefile
-index 0889c9c..0f23363 100644
---- a/tools/perf/lib/Makefile
-+++ b/tools/perf/lib/Makefile
-@@ -107,6 +107,7 @@ else
- endif
+diff --git a/tools/perf/lib/evlist.c b/tools/perf/lib/evlist.c
+index 73aac6b..205ddbb 100644
+--- a/tools/perf/lib/evlist.c
++++ b/tools/perf/lib/evlist.c
+@@ -578,6 +578,8 @@ int perf_evlist__mmap_ops(struct perf_evlist *evlist,
+ 	if (!ops || !ops->get || !ops->mmap)
+ 		return -EINVAL;
  
- LIBAPI = $(API_PATH)libapi.a
-+export LIBAPI
++	mp->mask = evlist->mmap_len - page_size - 1;
++
+ 	evlist->nr_mmaps = perf_evlist__nr_mmaps(evlist);
  
- $(LIBAPI): FORCE
- 	$(Q)$(MAKE) -C $(LIB_DIR) O=$(OUTPUT) $(OUTPUT)libapi.a
-diff --git a/tools/perf/lib/tests/Makefile b/tools/perf/lib/tests/Makefile
-index 1ee4e9b..a43cd08 100644
---- a/tools/perf/lib/tests/Makefile
-+++ b/tools/perf/lib/tests/Makefile
-@@ -16,13 +16,13 @@ all:
+ 	perf_evlist__for_each_entry(evlist, evsel) {
+@@ -605,7 +607,6 @@ int perf_evlist__mmap(struct perf_evlist *evlist, int pages)
+ 	};
  
- include $(srctree)/tools/scripts/Makefile.include
+ 	evlist->mmap_len = (pages + 1) * page_size;
+-	mp.mask = evlist->mmap_len - page_size - 1;
  
--INCLUDE = -I$(srctree)/tools/perf/lib/include -I$(srctree)/tools/include
-+INCLUDE = -I$(srctree)/tools/perf/lib/include -I$(srctree)/tools/include -I$(srctree)/tools/lib
+ 	return perf_evlist__mmap_ops(evlist, &ops, &mp);
+ }
+diff --git a/tools/perf/util/evlist.c b/tools/perf/util/evlist.c
+index 5cded4e..fdce590 100644
+--- a/tools/perf/util/evlist.c
++++ b/tools/perf/util/evlist.c
+@@ -813,7 +813,6 @@ int evlist__mmap_ex(struct evlist *evlist, unsigned int pages,
  
- $(TESTS_A): FORCE
--	$(QUIET_LINK)$(CC) $(INCLUDE) $(CFLAGS) -o $@ $(subst -a,.c,$@) ../libperf.a
-+	$(QUIET_LINK)$(CC) $(INCLUDE) $(CFLAGS) -o $@ $(subst -a,.c,$@) ../libperf.a $(LIBAPI)
+ 	evlist->core.mmap_len = evlist__mmap_size(pages);
+ 	pr_debug("mmap size %zuB\n", evlist->core.mmap_len);
+-	mp.core.mask = evlist->core.mmap_len - page_size - 1;
  
- $(TESTS_SO): FORCE
--	$(QUIET_LINK)$(CC) $(INCLUDE) $(CFLAGS) -L.. -o $@ $(subst -so,.c,$@) -lperf
-+	$(QUIET_LINK)$(CC) $(INCLUDE) $(CFLAGS) -L.. -o $@ $(subst -so,.c,$@) $(LIBAPI) -lperf
- 
- all: $(TESTS_A) $(TESTS_SO)
- 
+ 	auxtrace_mmap_params__init(&mp.auxtrace_mp, evlist->core.mmap_len,
+ 				   auxtrace_pages, auxtrace_overwrite);
