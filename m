@@ -2,30 +2,29 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 53701DF921
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Oct 2019 02:05:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD585DF90F
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Oct 2019 02:05:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387657AbfJVAFX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 21 Oct 2019 20:05:23 -0400
+        id S2387554AbfJVAFG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 21 Oct 2019 20:05:06 -0400
 Received: from Galois.linutronix.de ([193.142.43.55]:38895 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387615AbfJVAFX (ORCPT
+        with ESMTP id S2387548AbfJVAFG (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 21 Oct 2019 20:05:23 -0400
+        Mon, 21 Oct 2019 20:05:06 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iMgwr-0003qU-NK; Tue, 22 Oct 2019 01:18:50 +0200
+        id 1iMgws-0003qu-CE; Tue, 22 Oct 2019 01:18:50 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 332791C03AB;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id AD15D1C047B;
         Tue, 22 Oct 2019 01:18:49 +0200 (CEST)
-Date:   Mon, 21 Oct 2019 23:18:48 -0000
+Date:   Mon, 21 Oct 2019 23:18:49 -0000
 From:   "tip-bot2 for Jiri Olsa" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] libperf: Do not export
- perf_evsel__init()/perf_evlist__init()
+Subject: [tip: perf/core] libperf: Keep count of failed tests
 Cc:     Jiri Olsa <jolsa@kernel.org>,
         Alexander Shishkin <alexander.shishkin@linux.intel.com>,
         Alexey Budankov <alexey.budankov@linux.intel.com>,
@@ -38,10 +37,10 @@ Cc:     Jiri Olsa <jolsa@kernel.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20191017105918.20873-10-jolsa@kernel.org>
-References: <20191017105918.20873-10-jolsa@kernel.org>
+In-Reply-To: <20191017105918.20873-9-jolsa@kernel.org>
+References: <20191017105918.20873-9-jolsa@kernel.org>
 MIME-Version: 1.0
-Message-ID: <157169992878.29376.3893401323194986329.tip-bot2@tip-bot2>
+Message-ID: <157169992933.29376.15176117865199883044.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -57,20 +56,37 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     c27feefea10aed40e82cd5c6b06a154e141dc038
-Gitweb:        https://git.kernel.org/tip/c27feefea10aed40e82cd5c6b06a154e141dc038
+Commit-ID:     301a89f8cf628316eea6c768787a836b63a83439
+Gitweb:        https://git.kernel.org/tip/301a89f8cf628316eea6c768787a836b63a83439
 Author:        Jiri Olsa <jolsa@kernel.org>
-AuthorDate:    Thu, 17 Oct 2019 12:59:17 +02:00
+AuthorDate:    Thu, 17 Oct 2019 12:59:16 +02:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Sat, 19 Oct 2019 15:35:01 -03:00
 
-libperf: Do not export perf_evsel__init()/perf_evlist__init()
+libperf: Keep count of failed tests
 
-There's no point in exporting perf_evsel__init()/perf_evlist__init(),
-it's called from perf_evsel__new()/perf_evlist__new() respectively.
+Keep the count of failed tests, so we get better output with failures,
+like:
 
-It's used only from perf where perf_evsel()/perf_evlist() is embedded
-perf's evsel/evlist.
+  # make tests
+  ...
+  running static:
+  - running test-cpumap.c...OK
+  - running test-threadmap.c...OK
+  - running test-evlist.c...FAILED test-evlist.c:53 failed to create evsel2
+  FAILED test-evlist.c:163 failed to create evsel2
+  FAILED test-evlist.c:287 failed count
+    FAILED (3)
+  - running test-evsel.c...OK
+  running dynamic:
+  - running test-cpumap.c...OK
+  - running test-threadmap.c...OK
+  - running test-evlist.c...FAILED test-evlist.c:53 failed to create evsel2
+  FAILED test-evlist.c:163 failed to create evsel2
+  FAILED test-evlist.c:287 failed count
+    FAILED (3)
+  - running test-evsel.c...OK
+ ...
 
 Signed-off-by: Jiri Olsa <jolsa@kernel.org>
 Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
@@ -81,82 +97,97 @@ Cc: Michael Petlan <mpetlan@redhat.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Stephane Eranian <eranian@google.com>
-Link: http://lore.kernel.org/lkml/20191017105918.20873-10-jolsa@kernel.org
+Link: http://lore.kernel.org/lkml/20191017105918.20873-9-jolsa@kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/lib/include/internal/evlist.h | 1 +
- tools/perf/lib/include/internal/evsel.h  | 1 +
- tools/perf/lib/include/perf/evlist.h     | 1 -
- tools/perf/lib/include/perf/evsel.h      | 2 --
- tools/perf/lib/libperf.map               | 2 --
- 5 files changed, 2 insertions(+), 5 deletions(-)
+ tools/perf/lib/include/internal/tests.h | 20 +++++++++++++++++---
+ tools/perf/lib/tests/test-cpumap.c      |  2 +-
+ tools/perf/lib/tests/test-evlist.c      |  2 +-
+ tools/perf/lib/tests/test-evsel.c       |  2 +-
+ tools/perf/lib/tests/test-threadmap.c   |  2 +-
+ 5 files changed, 21 insertions(+), 7 deletions(-)
 
-diff --git a/tools/perf/lib/include/internal/evlist.h b/tools/perf/lib/include/internal/evlist.h
-index 20d90e2..a2fbccf 100644
---- a/tools/perf/lib/include/internal/evlist.h
-+++ b/tools/perf/lib/include/internal/evlist.h
-@@ -50,6 +50,7 @@ int perf_evlist__mmap_ops(struct perf_evlist *evlist,
- 			  struct perf_evlist_mmap_ops *ops,
- 			  struct perf_mmap_param *mp);
+diff --git a/tools/perf/lib/include/internal/tests.h b/tools/perf/lib/include/internal/tests.h
+index b7a20cd..2093e88 100644
+--- a/tools/perf/lib/include/internal/tests.h
++++ b/tools/perf/lib/include/internal/tests.h
+@@ -4,14 +4,28 @@
  
-+void perf_evlist__init(struct perf_evlist *evlist);
- void perf_evlist__exit(struct perf_evlist *evlist);
+ #include <stdio.h>
  
- /**
-diff --git a/tools/perf/lib/include/internal/evsel.h b/tools/perf/lib/include/internal/evsel.h
-index a69b829..1ffd083 100644
---- a/tools/perf/lib/include/internal/evsel.h
-+++ b/tools/perf/lib/include/internal/evsel.h
-@@ -50,6 +50,7 @@ struct perf_evsel {
- 	bool			 system_wide;
- };
+-#define __T_START fprintf(stdout, "- running %s...", __FILE__)
+-#define __T_OK    fprintf(stdout, "OK\n")
+-#define __T_FAIL  fprintf(stdout, "FAIL\n")
++int tests_failed;
++
++#define __T_START					\
++do {							\
++	fprintf(stdout, "- running %s...", __FILE__);	\
++	fflush(NULL);					\
++	tests_failed = 0;				\
++} while (0)
++
++#define __T_END								\
++do {									\
++	if (tests_failed)						\
++		fprintf(stdout, "  FAILED (%d)\n", tests_failed);	\
++	else								\
++		fprintf(stdout, "OK\n");				\
++} while (0)
  
-+void perf_evsel__init(struct perf_evsel *evsel, struct perf_event_attr *attr);
- int perf_evsel__alloc_fd(struct perf_evsel *evsel, int ncpus, int nthreads);
- void perf_evsel__close_fd(struct perf_evsel *evsel);
- void perf_evsel__free_fd(struct perf_evsel *evsel);
-diff --git a/tools/perf/lib/include/perf/evlist.h b/tools/perf/lib/include/perf/evlist.h
-index 8c4b3c2..0a7479d 100644
---- a/tools/perf/lib/include/perf/evlist.h
-+++ b/tools/perf/lib/include/perf/evlist.h
-@@ -10,7 +10,6 @@ struct perf_evsel;
- struct perf_cpu_map;
- struct perf_thread_map;
+ #define __T(text, cond)                                                          \
+ do {                                                                             \
+ 	if (!(cond)) {                                                           \
+ 		fprintf(stderr, "FAILED %s:%d %s\n", __FILE__, __LINE__, text);  \
++		tests_failed++;                                                  \
+ 		return -1;                                                       \
+ 	}                                                                        \
+ } while (0)
+diff --git a/tools/perf/lib/tests/test-cpumap.c b/tools/perf/lib/tests/test-cpumap.c
+index aa34c20..c8d4509 100644
+--- a/tools/perf/lib/tests/test-cpumap.c
++++ b/tools/perf/lib/tests/test-cpumap.c
+@@ -26,6 +26,6 @@ int main(int argc, char **argv)
+ 	perf_cpu_map__put(cpus);
+ 	perf_cpu_map__put(cpus);
  
--LIBPERF_API void perf_evlist__init(struct perf_evlist *evlist);
- LIBPERF_API void perf_evlist__add(struct perf_evlist *evlist,
- 				  struct perf_evsel *evsel);
- LIBPERF_API void perf_evlist__remove(struct perf_evlist *evlist,
-diff --git a/tools/perf/lib/include/perf/evsel.h b/tools/perf/lib/include/perf/evsel.h
-index 4388667..557f581 100644
---- a/tools/perf/lib/include/perf/evsel.h
-+++ b/tools/perf/lib/include/perf/evsel.h
-@@ -21,8 +21,6 @@ struct perf_counts_values {
- 	};
- };
+-	__T_OK;
++	__T_END;
+ 	return 0;
+ }
+diff --git a/tools/perf/lib/tests/test-evlist.c b/tools/perf/lib/tests/test-evlist.c
+index 741bc1b..6d8ebe0 100644
+--- a/tools/perf/lib/tests/test-evlist.c
++++ b/tools/perf/lib/tests/test-evlist.c
+@@ -408,6 +408,6 @@ int main(int argc, char **argv)
+ 	test_mmap_thread();
+ 	test_mmap_cpus();
  
--LIBPERF_API void perf_evsel__init(struct perf_evsel *evsel,
--				  struct perf_event_attr *attr);
- LIBPERF_API struct perf_evsel *perf_evsel__new(struct perf_event_attr *attr);
- LIBPERF_API void perf_evsel__delete(struct perf_evsel *evsel);
- LIBPERF_API int perf_evsel__open(struct perf_evsel *evsel, struct perf_cpu_map *cpus,
-diff --git a/tools/perf/lib/libperf.map b/tools/perf/lib/libperf.map
-index 8be02af..7be1af8 100644
---- a/tools/perf/lib/libperf.map
-+++ b/tools/perf/lib/libperf.map
-@@ -21,7 +21,6 @@ LIBPERF_0.0.1 {
- 		perf_evsel__delete;
- 		perf_evsel__enable;
- 		perf_evsel__disable;
--		perf_evsel__init;
- 		perf_evsel__open;
- 		perf_evsel__close;
- 		perf_evsel__read;
-@@ -34,7 +33,6 @@ LIBPERF_0.0.1 {
- 		perf_evlist__close;
- 		perf_evlist__enable;
- 		perf_evlist__disable;
--		perf_evlist__init;
- 		perf_evlist__add;
- 		perf_evlist__remove;
- 		perf_evlist__next;
+-	__T_OK;
++	__T_END;
+ 	return 0;
+ }
+diff --git a/tools/perf/lib/tests/test-evsel.c b/tools/perf/lib/tests/test-evsel.c
+index 1b6c428..135722a 100644
+--- a/tools/perf/lib/tests/test-evsel.c
++++ b/tools/perf/lib/tests/test-evsel.c
+@@ -130,6 +130,6 @@ int main(int argc, char **argv)
+ 	test_stat_thread();
+ 	test_stat_thread_enable();
+ 
+-	__T_OK;
++	__T_END;
+ 	return 0;
+ }
+diff --git a/tools/perf/lib/tests/test-threadmap.c b/tools/perf/lib/tests/test-threadmap.c
+index 8c5f472..7dc4d6f 100644
+--- a/tools/perf/lib/tests/test-threadmap.c
++++ b/tools/perf/lib/tests/test-threadmap.c
+@@ -26,6 +26,6 @@ int main(int argc, char **argv)
+ 	perf_thread_map__put(threads);
+ 	perf_thread_map__put(threads);
+ 
+-	__T_OK;
++	__T_END;
+ 	return 0;
+ }
