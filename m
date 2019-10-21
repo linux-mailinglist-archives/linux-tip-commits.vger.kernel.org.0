@@ -2,29 +2,29 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 30D6EDF923
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Oct 2019 02:05:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC8C8DF922
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Oct 2019 02:05:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387614AbfJVAFQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 21 Oct 2019 20:05:16 -0400
+        id S2387643AbfJVAFW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 21 Oct 2019 20:05:22 -0400
 Received: from Galois.linutronix.de ([193.142.43.55]:38895 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387566AbfJVAFQ (ORCPT
+        with ESMTP id S2387566AbfJVAFV (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 21 Oct 2019 20:05:16 -0400
+        Mon, 21 Oct 2019 20:05:21 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iMgwv-0003tO-Nk; Tue, 22 Oct 2019 01:18:54 +0200
+        id 1iMgww-0003uR-Bb; Tue, 22 Oct 2019 01:18:54 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 2D3381C0489;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id CA34A1C0086;
         Tue, 22 Oct 2019 01:18:53 +0200 (CEST)
-Date:   Mon, 21 Oct 2019 23:18:52 -0000
+Date:   Mon, 21 Oct 2019 23:18:53 -0000
 From:   "tip-bot2 for Jiri Olsa" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] libperf: Move mmap allocation to perf_evlist__mmap_ops::get
+Subject: [tip: perf/core] libperf: Introduce perf_evlist__for_each_mmap()
 Cc:     Jiri Olsa <jolsa@kernel.org>,
         Alexander Shishkin <alexander.shishkin@linux.intel.com>,
         Alexey Budankov <alexey.budankov@linux.intel.com>,
@@ -37,10 +37,10 @@ Cc:     Jiri Olsa <jolsa@kernel.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20191017105918.20873-3-jolsa@kernel.org>
-References: <20191017105918.20873-3-jolsa@kernel.org>
+In-Reply-To: <20191017105918.20873-2-jolsa@kernel.org>
+References: <20191017105918.20873-2-jolsa@kernel.org>
 MIME-Version: 1.0
-Message-ID: <157169993270.29376.15194593020616946024.tip-bot2@tip-bot2>
+Message-ID: <157169993330.29376.269615045829409052.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -56,20 +56,20 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     3805e4f303314c2b53fb217dd8549a5b9eb06b11
-Gitweb:        https://git.kernel.org/tip/3805e4f303314c2b53fb217dd8549a5b9eb06b11
+Commit-ID:     6eb65f7a5cc553f5dffb5cea3a874f1087524d99
+Gitweb:        https://git.kernel.org/tip/6eb65f7a5cc553f5dffb5cea3a874f1087524d99
 Author:        Jiri Olsa <jolsa@kernel.org>
-AuthorDate:    Thu, 17 Oct 2019 12:59:10 +02:00
+AuthorDate:    Thu, 17 Oct 2019 12:59:09 +02:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Sat, 19 Oct 2019 15:35:01 -03:00
 
-libperf: Move mmap allocation to perf_evlist__mmap_ops::get
+libperf: Introduce perf_evlist__for_each_mmap()
 
-Move allocation of the mmap array into perf_evlist__mmap_ops::get, to
-centralize the mmap allocation.
+Add the perf_evlist__for_each_mmap() function and export it in the
+perf/evlist.h header, so that the user can iterate through 'struct
+perf_mmap' objects.
 
-Also move nr_mmap setup to perf_evlist__mmap_ops so it's centralized and
-shared by both perf and libperf mmap code.
+Add a internal perf_mmap__link() function to do the actual linking.
 
 Signed-off-by: Jiri Olsa <jolsa@kernel.org>
 Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
@@ -80,142 +80,194 @@ Cc: Michael Petlan <mpetlan@redhat.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Stephane Eranian <eranian@google.com>
-Link: http://lore.kernel.org/lkml/20191017105918.20873-3-jolsa@kernel.org
+Link: http://lore.kernel.org/lkml/20191017105918.20873-2-jolsa@kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/lib/evlist.c  | 42 +++++++++++++++++++++++----------------
- tools/perf/util/evlist.c | 24 ++++++++--------------
- 2 files changed, 34 insertions(+), 32 deletions(-)
+ tools/perf/lib/evlist.c                  | 26 ++++++++++++++++++++++-
+ tools/perf/lib/include/internal/evlist.h |  2 ++-
+ tools/perf/lib/include/internal/mmap.h   |  5 ++--
+ tools/perf/lib/include/perf/evlist.h     |  9 ++++++++-
+ tools/perf/lib/libperf.map               |  1 +-
+ tools/perf/lib/mmap.c                    |  6 +++--
+ tools/perf/util/evlist.c                 |  4 +++-
+ 7 files changed, 47 insertions(+), 6 deletions(-)
 
 diff --git a/tools/perf/lib/evlist.c b/tools/perf/lib/evlist.c
-index 854efff..73aac6b 100644
+index 6504561..854efff 100644
 --- a/tools/perf/lib/evlist.c
 +++ b/tools/perf/lib/evlist.c
-@@ -338,10 +338,6 @@ static struct perf_mmap* perf_evlist__alloc_mmap(struct perf_evlist *evlist, boo
- 	int i;
- 	struct perf_mmap *map;
- 
--	evlist->nr_mmaps = perf_cpu_map__nr(evlist->cpus);
--	if (perf_cpu_map__empty(evlist->cpus))
--		evlist->nr_mmaps = perf_thread_map__nr(evlist->threads);
--
- 	map = zalloc(evlist->nr_mmaps * sizeof(struct perf_mmap));
- 	if (!map)
+@@ -347,6 +347,8 @@ static struct perf_mmap* perf_evlist__alloc_mmap(struct perf_evlist *evlist, boo
  		return NULL;
-@@ -384,18 +380,22 @@ static void perf_evlist__set_sid_idx(struct perf_evlist *evlist,
- static struct perf_mmap*
- perf_evlist__mmap_cb_get(struct perf_evlist *evlist, bool overwrite, int idx)
- {
--	struct perf_mmap *map = &evlist->mmap[idx];
-+	struct perf_mmap *maps;
  
--	if (overwrite) {
--		if (!evlist->mmap_ovw) {
--			evlist->mmap_ovw = perf_evlist__alloc_mmap(evlist, true);
--			if (!evlist->mmap_ovw)
--				return NULL;
--		}
--		map = &evlist->mmap_ovw[idx];
-+	maps = overwrite ? evlist->mmap_ovw : evlist->mmap;
+ 	for (i = 0; i < evlist->nr_mmaps; i++) {
++		struct perf_mmap *prev = i ? &map[i - 1] : NULL;
 +
-+	if (!maps) {
-+		maps = perf_evlist__alloc_mmap(evlist, overwrite);
-+		if (!maps)
-+			return NULL;
-+
-+		if (overwrite)
-+			evlist->mmap_ovw = maps;
-+		else
-+			evlist->mmap = maps;
+ 		/*
+ 		 * When the perf_mmap() call is made we grab one refcount, plus
+ 		 * one extra to let perf_mmap__consume() get the last
+@@ -356,7 +358,7 @@ static struct perf_mmap* perf_evlist__alloc_mmap(struct perf_evlist *evlist, boo
+ 		 * Each PERF_EVENT_IOC_SET_OUTPUT points to this mmap and
+ 		 * thus does perf_mmap__get() on it.
+ 		 */
+-		perf_mmap__init(&map[i], overwrite, NULL);
++		perf_mmap__init(&map[i], prev, overwrite, NULL);
  	}
  
--	return map;
-+	return &maps[idx];
+ 	return map;
+@@ -405,6 +407,15 @@ perf_evlist__mmap_cb_mmap(struct perf_mmap *map, struct perf_mmap_param *mp,
+ 	return perf_mmap__mmap(map, mp, output, cpu);
  }
  
- #define FD(e, x, y) (*(int *) xyarray__entry(e->fd, x, y))
-@@ -556,6 +556,17 @@ out_unmap:
- 	return -1;
- }
- 
-+static int perf_evlist__nr_mmaps(struct perf_evlist *evlist)
++static void perf_evlist__set_mmap_first(struct perf_evlist *evlist, struct perf_mmap *map,
++					bool overwrite)
 +{
-+	int nr_mmaps;
-+
-+	nr_mmaps = perf_cpu_map__nr(evlist->cpus);
-+	if (perf_cpu_map__empty(evlist->cpus))
-+		nr_mmaps = perf_thread_map__nr(evlist->threads);
-+
-+	return nr_mmaps;
++	if (overwrite)
++		evlist->mmap_ovw_first = map;
++	else
++		evlist->mmap_first = map;
 +}
 +
- int perf_evlist__mmap_ops(struct perf_evlist *evlist,
- 			  struct perf_evlist_mmap_ops *ops,
- 			  struct perf_mmap_param *mp)
-@@ -567,10 +578,7 @@ int perf_evlist__mmap_ops(struct perf_evlist *evlist,
- 	if (!ops || !ops->get || !ops->mmap)
- 		return -EINVAL;
+ static int
+ mmap_per_evsel(struct perf_evlist *evlist, struct perf_evlist_mmap_ops *ops,
+ 	       int idx, struct perf_mmap_param *mp, int cpu_idx,
+@@ -460,6 +471,9 @@ mmap_per_evsel(struct perf_evlist *evlist, struct perf_evlist_mmap_ops *ops,
  
--	if (!evlist->mmap)
--		evlist->mmap = perf_evlist__alloc_mmap(evlist, false);
--	if (!evlist->mmap)
--		return -ENOMEM;
-+	evlist->nr_mmaps = perf_evlist__nr_mmaps(evlist);
+ 			if (ops->mmap(map, mp, *output, evlist_cpu) < 0)
+ 				return -1;
++
++			if (!idx)
++				perf_evlist__set_mmap_first(evlist, map, overwrite);
+ 		} else {
+ 			if (ioctl(fd, PERF_EVENT_IOC_SET_OUTPUT, *output) != 0)
+ 				return -1;
+@@ -605,3 +619,13 @@ void perf_evlist__munmap(struct perf_evlist *evlist)
+ 	zfree(&evlist->mmap);
+ 	zfree(&evlist->mmap_ovw);
+ }
++
++struct perf_mmap*
++perf_evlist__next_mmap(struct perf_evlist *evlist, struct perf_mmap *map,
++		       bool overwrite)
++{
++	if (map)
++		return map->next;
++
++	return overwrite ? evlist->mmap_ovw_first : evlist->mmap_first;
++}
+diff --git a/tools/perf/lib/include/internal/evlist.h b/tools/perf/lib/include/internal/evlist.h
+index be0b25a..20d90e2 100644
+--- a/tools/perf/lib/include/internal/evlist.h
++++ b/tools/perf/lib/include/internal/evlist.h
+@@ -25,6 +25,8 @@ struct perf_evlist {
+ 	struct hlist_head	 heads[PERF_EVLIST__HLIST_SIZE];
+ 	struct perf_mmap	*mmap;
+ 	struct perf_mmap	*mmap_ovw;
++	struct perf_mmap	*mmap_first;
++	struct perf_mmap	*mmap_ovw_first;
+ };
  
- 	perf_evlist__for_each_entry(evlist, evsel) {
- 		if ((evsel->attr.read_format & PERF_FORMAT_ID) &&
+ typedef void
+diff --git a/tools/perf/lib/include/internal/mmap.h b/tools/perf/lib/include/internal/mmap.h
+index ee536c4..be7556e 100644
+--- a/tools/perf/lib/include/internal/mmap.h
++++ b/tools/perf/lib/include/internal/mmap.h
+@@ -32,6 +32,7 @@ struct perf_mmap {
+ 	u64			 flush;
+ 	libperf_unmap_cb_t	 unmap_cb;
+ 	char			 event_copy[PERF_SAMPLE_MAX_SIZE] __aligned(8);
++	struct perf_mmap	*next;
+ };
+ 
+ struct perf_mmap_param {
+@@ -41,8 +42,8 @@ struct perf_mmap_param {
+ 
+ size_t perf_mmap__mmap_len(struct perf_mmap *map);
+ 
+-void perf_mmap__init(struct perf_mmap *map, bool overwrite,
+-		     libperf_unmap_cb_t unmap_cb);
++void perf_mmap__init(struct perf_mmap *map, struct perf_mmap *prev,
++		     bool overwrite, libperf_unmap_cb_t unmap_cb);
+ int perf_mmap__mmap(struct perf_mmap *map, struct perf_mmap_param *mp,
+ 		    int fd, int cpu);
+ void perf_mmap__munmap(struct perf_mmap *map);
+diff --git a/tools/perf/lib/include/perf/evlist.h b/tools/perf/lib/include/perf/evlist.h
+index 16f526e..8c4b3c2 100644
+--- a/tools/perf/lib/include/perf/evlist.h
++++ b/tools/perf/lib/include/perf/evlist.h
+@@ -3,6 +3,7 @@
+ #define __LIBPERF_EVLIST_H
+ 
+ #include <perf/core.h>
++#include <stdbool.h>
+ 
+ struct perf_evlist;
+ struct perf_evsel;
+@@ -38,4 +39,12 @@ LIBPERF_API int perf_evlist__filter_pollfd(struct perf_evlist *evlist,
+ LIBPERF_API int perf_evlist__mmap(struct perf_evlist *evlist, int pages);
+ LIBPERF_API void perf_evlist__munmap(struct perf_evlist *evlist);
+ 
++LIBPERF_API struct perf_mmap *perf_evlist__next_mmap(struct perf_evlist *evlist,
++						     struct perf_mmap *map,
++						     bool overwrite);
++#define perf_evlist__for_each_mmap(evlist, pos, overwrite)		\
++	for ((pos) = perf_evlist__next_mmap((evlist), NULL, overwrite);	\
++	     (pos) != NULL;						\
++	     (pos) = perf_evlist__next_mmap((evlist), (pos), overwrite))
++
+ #endif /* __LIBPERF_EVLIST_H */
+diff --git a/tools/perf/lib/libperf.map b/tools/perf/lib/libperf.map
+index 2184aba..8be02af 100644
+--- a/tools/perf/lib/libperf.map
++++ b/tools/perf/lib/libperf.map
+@@ -43,6 +43,7 @@ LIBPERF_0.0.1 {
+ 		perf_evlist__mmap;
+ 		perf_evlist__munmap;
+ 		perf_evlist__filter_pollfd;
++		perf_evlist__next_mmap;
+ 		perf_mmap__consume;
+ 		perf_mmap__read_init;
+ 		perf_mmap__read_done;
+diff --git a/tools/perf/lib/mmap.c b/tools/perf/lib/mmap.c
+index 0752c19..79d5ed6 100644
+--- a/tools/perf/lib/mmap.c
++++ b/tools/perf/lib/mmap.c
+@@ -13,13 +13,15 @@
+ #include <linux/kernel.h>
+ #include "internal.h"
+ 
+-void perf_mmap__init(struct perf_mmap *map, bool overwrite,
+-		     libperf_unmap_cb_t unmap_cb)
++void perf_mmap__init(struct perf_mmap *map, struct perf_mmap *prev,
++		     bool overwrite, libperf_unmap_cb_t unmap_cb)
+ {
+ 	map->fd = -1;
+ 	map->overwrite = overwrite;
+ 	map->unmap_cb  = unmap_cb;
+ 	refcount_set(&map->refcnt, 0);
++	if (prev)
++		prev->next = map;
+ }
+ 
+ size_t perf_mmap__mmap_len(struct perf_mmap *map)
 diff --git a/tools/perf/util/evlist.c b/tools/perf/util/evlist.c
-index 6cda5a3..5cded4e 100644
+index 0f9cd70..6cda5a3 100644
 --- a/tools/perf/util/evlist.c
 +++ b/tools/perf/util/evlist.c
-@@ -599,9 +599,6 @@ static struct mmap *evlist__alloc_mmap(struct evlist *evlist,
- 	int i;
- 	struct mmap *map;
- 
--	evlist->core.nr_mmaps = perf_cpu_map__nr(evlist->core.cpus);
--	if (perf_cpu_map__empty(evlist->core.cpus))
--		evlist->core.nr_mmaps = perf_thread_map__nr(evlist->core.threads);
- 	map = zalloc(evlist->core.nr_mmaps * sizeof(struct mmap));
- 	if (!map)
+@@ -607,6 +607,8 @@ static struct mmap *evlist__alloc_mmap(struct evlist *evlist,
  		return NULL;
-@@ -639,19 +636,21 @@ static struct perf_mmap*
- perf_evlist__mmap_cb_get(struct perf_evlist *_evlist, bool overwrite, int idx)
- {
- 	struct evlist *evlist = container_of(_evlist, struct evlist, core);
--	struct mmap *maps = evlist->mmap;
-+	struct mmap *maps;
  
--	if (overwrite) {
--		maps = evlist->overwrite_mmap;
-+	maps = overwrite ? evlist->overwrite_mmap : evlist->mmap;
- 
--		if (!maps) {
--			maps = evlist__alloc_mmap(evlist, true);
--			if (!maps)
--				return NULL;
-+	if (!maps) {
-+		maps = evlist__alloc_mmap(evlist, overwrite);
-+		if (!maps)
-+			return NULL;
- 
-+		if (overwrite) {
- 			evlist->overwrite_mmap = maps;
- 			if (evlist->bkw_mmap_state == BKW_MMAP_NOTREADY)
- 				perf_evlist__toggle_bkw_mmap(evlist, BKW_MMAP_RUNNING);
-+		} else {
-+			evlist->mmap = maps;
- 		}
+ 	for (i = 0; i < evlist->core.nr_mmaps; i++) {
++		struct perf_mmap *prev = i ? &map[i - 1].core : NULL;
++
+ 		/*
+ 		 * When the perf_mmap() call is made we grab one refcount, plus
+ 		 * one extra to let perf_mmap__consume() get the last
+@@ -616,7 +618,7 @@ static struct mmap *evlist__alloc_mmap(struct evlist *evlist,
+ 		 * Each PERF_EVENT_IOC_SET_OUTPUT points to this mmap and
+ 		 * thus does perf_mmap__get() on it.
+ 		 */
+-		perf_mmap__init(&map[i].core, overwrite, perf_mmap__unmap_cb);
++		perf_mmap__init(&map[i].core, prev, overwrite, perf_mmap__unmap_cb);
  	}
  
-@@ -812,11 +811,6 @@ int evlist__mmap_ex(struct evlist *evlist, unsigned int pages,
- 		.mmap = perf_evlist__mmap_cb_mmap,
- 	};
- 
--	if (!evlist->mmap)
--		evlist->mmap = evlist__alloc_mmap(evlist, false);
--	if (!evlist->mmap)
--		return -ENOMEM;
--
- 	evlist->core.mmap_len = evlist__mmap_size(pages);
- 	pr_debug("mmap size %zuB\n", evlist->core.mmap_len);
- 	mp.core.mask = evlist->core.mmap_len - page_size - 1;
+ 	return map;
