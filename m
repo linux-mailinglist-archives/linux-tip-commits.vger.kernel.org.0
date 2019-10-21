@@ -2,31 +2,30 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E00F3DE79C
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 21 Oct 2019 11:14:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A71D5DE784
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 21 Oct 2019 11:13:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727850AbfJUJN6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 21 Oct 2019 05:13:58 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:33964 "EHLO
+        id S1727674AbfJUJNa (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 21 Oct 2019 05:13:30 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:33978 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727328AbfJUJNW (ORCPT
+        with ESMTP id S1727111AbfJUJNa (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 21 Oct 2019 05:13:22 -0400
+        Mon, 21 Oct 2019 05:13:30 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iMTk2-0005JN-Nj; Mon, 21 Oct 2019 11:12:42 +0200
+        id 1iMTk2-0005JS-VI; Mon, 21 Oct 2019 11:12:43 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 538951C0092;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 9B7721C047B;
         Mon, 21 Oct 2019 11:12:42 +0200 (CEST)
 Date:   Mon, 21 Oct 2019 09:12:42 -0000
 From:   "tip-bot2 for Vincent Guittot" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/fair: Use utilization to select misfit task
+Subject: [tip: sched/core] sched/fair: Spread out tasks evenly when not overloaded
 Cc:     Vincent Guittot <vincent.guittot@linaro.org>,
-        Valentin Schneider <valentin.schneider@arm.com>,
         Ben Segall <bsegall@google.com>,
         Dietmar Eggemann <dietmar.eggemann@arm.com>,
         Juri Lelli <juri.lelli@redhat.com>,
@@ -37,12 +36,12 @@ Cc:     Vincent Guittot <vincent.guittot@linaro.org>,
         Thomas Gleixner <tglx@linutronix.de>, hdanton@sina.com,
         parth@linux.ibm.com, pauld@redhat.com, quentin.perret@arm.com,
         riel@surriel.com, srikar@linux.vnet.ibm.com,
-        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <1571405198-27570-9-git-send-email-vincent.guittot@linaro.org>
-References: <1571405198-27570-9-git-send-email-vincent.guittot@linaro.org>
+        valentin.schneider@arm.com, Ingo Molnar <mingo@kernel.org>,
+        Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
+In-Reply-To: <1571405198-27570-8-git-send-email-vincent.guittot@linaro.org>
+References: <1571405198-27570-8-git-send-email-vincent.guittot@linaro.org>
 MIME-Version: 1.0
-Message-ID: <157164916215.29376.14056001196691062623.tip-bot2@tip-bot2>
+Message-ID: <157164916243.29376.10093977370174875453.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -58,24 +57,19 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     c63be7be59de65d12ff7b4329acea99cf734d6de
-Gitweb:        https://git.kernel.org/tip/c63be7be59de65d12ff7b4329acea99cf734d6de
+Commit-ID:     2ab4092fc82d6001fdd9d51dbba27d04dec967e0
+Gitweb:        https://git.kernel.org/tip/2ab4092fc82d6001fdd9d51dbba27d04dec967e0
 Author:        Vincent Guittot <vincent.guittot@linaro.org>
-AuthorDate:    Fri, 18 Oct 2019 15:26:35 +02:00
+AuthorDate:    Fri, 18 Oct 2019 15:26:34 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Mon, 21 Oct 2019 09:40:54 +02:00
 
-sched/fair: Use utilization to select misfit task
+sched/fair: Spread out tasks evenly when not overloaded
 
-Utilization is used to detect a misfit task but the load is then used to
-select the task on the CPU which can lead to select a small task with
-high weight instead of the task that triggered the misfit migration.
-
-Check that task can't fit the CPU's capacity when selecting the misfit
-task instead of using the load.
+When there is only one CPU per group, using the idle CPUs to evenly spread
+tasks doesn't make sense and nr_running is a better metrics.
 
 Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
-Acked-by: Valentin Schneider <valentin.schneider@arm.com>
 Cc: Ben Segall <bsegall@google.com>
 Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
 Cc: Juri Lelli <juri.lelli@redhat.com>
@@ -92,38 +86,61 @@ Cc: pauld@redhat.com
 Cc: quentin.perret@arm.com
 Cc: riel@surriel.com
 Cc: srikar@linux.vnet.ibm.com
-Link: https://lkml.kernel.org/r/1571405198-27570-9-git-send-email-vincent.guittot@linaro.org
+Cc: valentin.schneider@arm.com
+Link: https://lkml.kernel.org/r/1571405198-27570-8-git-send-email-vincent.guittot@linaro.org
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- kernel/sched/fair.c | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ kernel/sched/fair.c | 40 ++++++++++++++++++++++++++++------------
+ 1 file changed, 28 insertions(+), 12 deletions(-)
 
 diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index f489f60..1fd6f39 100644
+index e6a3db0..f489f60 100644
 --- a/kernel/sched/fair.c
 +++ b/kernel/sched/fair.c
-@@ -7408,13 +7408,8 @@ static int detach_tasks(struct lb_env *env)
- 			break;
+@@ -8591,18 +8591,34 @@ static struct sched_group *find_busiest_group(struct lb_env *env)
+ 	    busiest->sum_nr_running > local->sum_nr_running + 1)
+ 		goto force_balance;
  
- 		case migrate_misfit:
--			load = task_h_load(p);
--
--			/*
--			 * Load of misfit task might decrease a bit since it has
--			 * been recorded. Be conservative in the condition.
--			 */
--			if (load/2 < env->imbalance)
-+			/* This is not a misfit task */
-+			if (task_fits_capacity(p, capacity_of(env->src_cpu)))
- 				goto next;
+-	if (busiest->group_type != group_overloaded &&
+-	     (env->idle == CPU_NOT_IDLE ||
+-	      local->idle_cpus <= (busiest->idle_cpus + 1)))
+-		/*
+-		 * If the busiest group is not overloaded
+-		 * and there is no imbalance between this and busiest group
+-		 * wrt. idle CPUs, it is balanced. The imbalance
+-		 * becomes significant if the diff is greater than 1 otherwise
+-		 * we might end up just moving the imbalance to another
+-		 * group.
+-		 */
+-		goto out_balanced;
++	if (busiest->group_type != group_overloaded) {
++		if (env->idle == CPU_NOT_IDLE)
++			/*
++			 * If the busiest group is not overloaded (and as a
++			 * result the local one too) but this CPU is already
++			 * busy, let another idle CPU try to pull task.
++			 */
++			goto out_balanced;
++
++		if (busiest->group_weight > 1 &&
++		    local->idle_cpus <= (busiest->idle_cpus + 1))
++			/*
++			 * If the busiest group is not overloaded
++			 * and there is no imbalance between this and busiest
++			 * group wrt idle CPUs, it is balanced. The imbalance
++			 * becomes significant if the diff is greater than 1
++			 * otherwise we might end up to just move the imbalance
++			 * on another group. Of course this applies only if
++			 * there is more than 1 CPU per group.
++			 */
++			goto out_balanced;
++
++		if (busiest->sum_h_nr_running == 1)
++			/*
++			 * busiest doesn't have any tasks waiting to run
++			 */
++			goto out_balanced;
++	}
  
- 			env->imbalance = 0;
-@@ -8358,7 +8353,7 @@ static inline void calculate_imbalance(struct lb_env *env, struct sd_lb_stats *s
- 	if (busiest->group_type == group_misfit_task) {
- 		/* Set imbalance to allow misfit tasks to be balanced. */
- 		env->migration_type = migrate_misfit;
--		env->imbalance = busiest->group_misfit_task_load;
-+		env->imbalance = 1;
- 		return;
- 	}
- 
+ force_balance:
+ 	/* Looks like there is an imbalance. Compute it */
