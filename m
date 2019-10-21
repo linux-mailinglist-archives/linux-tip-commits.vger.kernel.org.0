@@ -2,44 +2,41 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E4BD7DE48D
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 21 Oct 2019 08:27:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 35140DE492
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 21 Oct 2019 08:27:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727239AbfJUG1B (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 21 Oct 2019 02:27:01 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:33241 "EHLO
+        id S1727299AbfJUG1O (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 21 Oct 2019 02:27:14 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:33233 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727221AbfJUG1B (ORCPT
+        with ESMTP id S1727166AbfJUG05 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 21 Oct 2019 02:27:01 -0400
+        Mon, 21 Oct 2019 02:26:57 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iMR9N-00025h-Dq; Mon, 21 Oct 2019 08:26:41 +0200
+        id 1iMR9N-00025i-GO; Mon, 21 Oct 2019 08:26:41 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B4E4A1C0092;
-        Mon, 21 Oct 2019 08:26:40 +0200 (CEST)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 201CC1C047B;
+        Mon, 21 Oct 2019 08:26:41 +0200 (CEST)
 Date:   Mon, 21 Oct 2019 06:26:40 -0000
-From:   "tip-bot2 for Yunfeng Ye" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf kmem: Fix memory leak in compact_gfp_flags()
-Cc:     Yunfeng Ye <yeyunfeng@huawei.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Feilong Lin <linfeilong@huawei.com>,
-        Hu Shiyuan <hushiyuan@huawei.com>,
-        Jiri Olsa <jolsa@redhat.com>,
-        Mark Rutland <mark.rutland@arm.com>,
+Subject: [tip: perf/urgent] tools headers UAPI: Sync sched.h with the kernel
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        Aleksa Sarai <cyphar@cyphar.com>,
+        Christian Brauner <christian.brauner@ubuntu.com>,
+        Jiri Olsa <jolsa@kernel.org>,
         Namhyung Kim <namhyung@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <f9e9f458-96f3-4a97-a1d5-9feec2420e07@huawei.com>
-References: <f9e9f458-96f3-4a97-a1d5-9feec2420e07@huawei.com>
+In-Reply-To: <tip-xqruu8wohwlbc57udg1g0xzx@git.kernel.org>
+References: <tip-xqruu8wohwlbc57udg1g0xzx@git.kernel.org>
 MIME-Version: 1.0
-Message-ID: <157163920042.29376.8707217157617619218.tip-bot2@tip-bot2>
+Message-ID: <157163920086.29376.11201291375139295425.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -55,44 +52,85 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     1abecfcaa7bba21c9985e0136fa49836164dd8fd
-Gitweb:        https://git.kernel.org/tip/1abecfcaa7bba21c9985e0136fa49836164dd8fd
-Author:        Yunfeng Ye <yeyunfeng@huawei.com>
-AuthorDate:    Wed, 16 Oct 2019 16:38:45 +08:00
+Commit-ID:     5eca1379c0eb06e3908179665230a86d19bd2df7
+Gitweb:        https://git.kernel.org/tip/5eca1379c0eb06e3908179665230a86d19bd2df7
+Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
+AuthorDate:    Tue, 15 Oct 2019 12:44:00 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Wed, 16 Oct 2019 10:08:32 -03:00
+CommitterDate: Tue, 15 Oct 2019 12:44:00 -03:00
 
-perf kmem: Fix memory leak in compact_gfp_flags()
+tools headers UAPI: Sync sched.h with the kernel
 
-The memory @orig_flags is allocated by strdup(), it is freed on the
-normal path, but leak to free on the error path.
+To get the changes in:
 
-Fix this by adding free(orig_flags) on the error path.
+  78f6face5af3 ("sched: add kernel-doc for struct clone_args")
+  f14c234b4bc5 ("clone3: switch to copy_struct_from_user()")
 
-Fixes: 0e11115644b3 ("perf kmem: Print gfp flags in human readable string")
-Signed-off-by: Yunfeng Ye <yeyunfeng@huawei.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Feilong Lin <linfeilong@huawei.com>
-Cc: Hu Shiyuan <hushiyuan@huawei.com>
-Cc: Jiri Olsa <jolsa@redhat.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
+This file gets rebuilt, but no changes ensues:
+
+   CC       /tmp/build/perf/trace/beauty/clone.o
+
+This addresses this perf build warning:
+
+  Warning: Kernel ABI header at 'tools/include/uapi/linux/sched.h' differs from latest version at 'include/uapi/linux/sched.h'
+  diff -u tools/include/uapi/linux/sched.h include/uapi/linux/sched.h
+
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Aleksa Sarai <cyphar@cyphar.com>
+Cc: Christian Brauner <christian.brauner@ubuntu.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: http://lore.kernel.org/lkml/f9e9f458-96f3-4a97-a1d5-9feec2420e07@huawei.com
+Link: https://lkml.kernel.org/n/tip-xqruu8wohwlbc57udg1g0xzx@git.kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/builtin-kmem.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/include/uapi/linux/sched.h | 30 ++++++++++++++++++++++++++++--
+ 1 file changed, 28 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/builtin-kmem.c b/tools/perf/builtin-kmem.c
-index 1e61e35..9661671 100644
---- a/tools/perf/builtin-kmem.c
-+++ b/tools/perf/builtin-kmem.c
-@@ -691,6 +691,7 @@ static char *compact_gfp_flags(char *gfp_flags)
- 			new = realloc(new_flags, len + strlen(cpt) + 2);
- 			if (new == NULL) {
- 				free(new_flags);
-+				free(orig_flags);
- 				return NULL;
- 			}
+diff --git a/tools/include/uapi/linux/sched.h b/tools/include/uapi/linux/sched.h
+index b3105ac..99335e1 100644
+--- a/tools/include/uapi/linux/sched.h
++++ b/tools/include/uapi/linux/sched.h
+@@ -33,8 +33,31 @@
+ #define CLONE_NEWNET		0x40000000	/* New network namespace */
+ #define CLONE_IO		0x80000000	/* Clone io context */
  
+-/*
+- * Arguments for the clone3 syscall
++#ifndef __ASSEMBLY__
++/**
++ * struct clone_args - arguments for the clone3 syscall
++ * @flags:       Flags for the new process as listed above.
++ *               All flags are valid except for CSIGNAL and
++ *               CLONE_DETACHED.
++ * @pidfd:       If CLONE_PIDFD is set, a pidfd will be
++ *               returned in this argument.
++ * @child_tid:   If CLONE_CHILD_SETTID is set, the TID of the
++ *               child process will be returned in the child's
++ *               memory.
++ * @parent_tid:  If CLONE_PARENT_SETTID is set, the TID of
++ *               the child process will be returned in the
++ *               parent's memory.
++ * @exit_signal: The exit_signal the parent process will be
++ *               sent when the child exits.
++ * @stack:       Specify the location of the stack for the
++ *               child process.
++ * @stack_size:  The size of the stack for the child process.
++ * @tls:         If CLONE_SETTLS is set, the tls descriptor
++ *               is set to tls.
++ *
++ * The structure is versioned by size and thus extensible.
++ * New struct members must go at the end of the struct and
++ * must be properly 64bit aligned.
+  */
+ struct clone_args {
+ 	__aligned_u64 flags;
+@@ -46,6 +69,9 @@ struct clone_args {
+ 	__aligned_u64 stack_size;
+ 	__aligned_u64 tls;
+ };
++#endif
++
++#define CLONE_ARGS_SIZE_VER0 64 /* sizeof first published struct */
+ 
+ /*
+  * Scheduling policies
