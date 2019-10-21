@@ -2,42 +2,43 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8167FDE48A
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 21 Oct 2019 08:27:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B88B1DE484
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 21 Oct 2019 08:27:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727186AbfJUG05 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 21 Oct 2019 02:26:57 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:33232 "EHLO
+        id S1726039AbfJUG0w (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 21 Oct 2019 02:26:52 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:33202 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727164AbfJUG04 (ORCPT
+        with ESMTP id S1726149AbfJUG0w (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 21 Oct 2019 02:26:56 -0400
+        Mon, 21 Oct 2019 02:26:52 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iMR9O-00025r-PV; Mon, 21 Oct 2019 08:26:42 +0200
+        id 1iMR9N-00025j-PY; Mon, 21 Oct 2019 08:26:41 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 3591F1C047B;
-        Mon, 21 Oct 2019 08:26:42 +0200 (CEST)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 64F561C0494;
+        Mon, 21 Oct 2019 08:26:41 +0200 (CEST)
 Date:   Mon, 21 Oct 2019 06:26:41 -0000
 From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] tools headers kvm: Sync kvm headers with the
+Subject: [tip: perf/urgent] tools headers kvm: Sync kvm.h headers with the
  kernel sources
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        David Ahern <dsahern@gmail.com>, Jiri Olsa <jolsa@kernel.org>,
+        Anup Patel <Anup.Patel@wdc.com>, Jiri Olsa <jolsa@kernel.org>,
         Namhyung Kim <namhyung@kernel.org>,
         Paolo Bonzini <pbonzini@redhat.com>,
-        Tao Xu <tao3.xu@intel.com>, Wang Nan <wangnan0@huawei.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Tianyu Lan <Tianyu.Lan@microsoft.com>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <tip-gr1eel0hckmi5l3p2ewdpfxh@git.kernel.org>
-References: <tip-gr1eel0hckmi5l3p2ewdpfxh@git.kernel.org>
+In-Reply-To: <tip-d1v48a0qfoe98u5v9tn3mu5u@git.kernel.org>
+References: <tip-d1v48a0qfoe98u5v9tn3mu5u@git.kernel.org>
 MIME-Version: 1.0
-Message-ID: <157163920185.29376.1994845103011056417.tip-bot2@tip-bot2>
+Message-ID: <157163920121.29376.13129751515781398069.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -53,74 +54,62 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     7a12f514c408cc499e61211f234858d3d4b7f4ea
-Gitweb:        https://git.kernel.org/tip/7a12f514c408cc499e61211f234858d3d4b7f4ea
+Commit-ID:     8daf1fb73295b43fb2f624f709449b484532ba64
+Gitweb:        https://git.kernel.org/tip/8daf1fb73295b43fb2f624f709449b484532ba64
 Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Tue, 15 Oct 2019 12:22:37 -03:00
+AuthorDate:    Tue, 15 Oct 2019 12:35:02 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Tue, 15 Oct 2019 12:28:18 -03:00
+CommitterDate: Tue, 15 Oct 2019 12:35:02 -03:00
 
-tools headers kvm: Sync kvm headers with the kernel sources
+tools headers kvm: Sync kvm.h headers with the kernel sources
 
 To pick the changes in:
 
-  bf653b78f960 ("KVM: vmx: Introduce handle_unexpected_vmexit and handle WAITPKG vmexit")
+  344c6c804703 ("KVM/Hyper-V: Add new KVM capability KVM_CAP_HYPERV_DIRECT_TLBFLUSH")
+  dee04eee9182 ("KVM: RISC-V: Add KVM_REG_RISCV for ONE_REG interface")
 
-That trigger these changes in tooling:
+These trigger the rebuild of this object:
 
-    CC       /tmp/build/perf/arch/x86/util/kvm-stat.o
-    INSTALL  GTK UI
-    DESCEND  plugins
-  make[3]: Nothing to be done for '/tmp/build/perf/plugins/libtraceevent-dynamic-list'.
-    INSTALL  trace_plugins
-    LD       /tmp/build/perf/arch/x86/util/perf-in.o
-    LD       /tmp/build/perf/arch/x86/perf-in.o
-    LD       /tmp/build/perf/arch/perf-in.o
-    LD       /tmp/build/perf/perf-in.o
-    LINK     /tmp/build/perf/perf
+  CC       /tmp/build/perf/trace/beauty/ioctl.o
 
-And this is not just because that header is included, kvm-stat.c
-uses the VMX_EXIT_REASONS define and it got changed by the above cset.
+But do not result in any change in tooling, as the additions are not
+being used in any table generatator.
 
-And addresses this perf build warnings:
+This silences this perf build warning:
 
-  Warning: Kernel ABI header at 'tools/arch/x86/include/uapi/asm/vmx.h' differs from latest version at 'arch/x86/include/uapi/asm/vmx.h'
-  diff -u tools/arch/x86/include/uapi/asm/vmx.h arch/x86/include/uapi/asm/vmx.h
+  Warning: Kernel ABI header at 'tools/include/uapi/linux/kvm.h' differs from latest version at 'include/uapi/linux/kvm.h'
+  diff -u tools/include/uapi/linux/kvm.h include/uapi/linux/kvm.h
 
 Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: David Ahern <dsahern@gmail.com>
+Cc: Anup Patel <Anup.Patel@wdc.com>
 Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Tao Xu <tao3.xu@intel.com>
-Cc: Wang Nan <wangnan0@huawei.com>
-Link: https://lkml.kernel.org/n/tip-gr1eel0hckmi5l3p2ewdpfxh@git.kernel.org
+Cc: Paul Walmsley <paul.walmsley@sifive.com>
+Cc: Tianyu Lan <Tianyu.Lan@microsoft.com>
+Link: https://lkml.kernel.org/n/tip-d1v48a0qfoe98u5v9tn3mu5u@git.kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/arch/x86/include/uapi/asm/vmx.h | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ tools/include/uapi/linux/kvm.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tools/arch/x86/include/uapi/asm/vmx.h b/tools/arch/x86/include/uapi/asm/vmx.h
-index f01950a..3eb8411 100644
---- a/tools/arch/x86/include/uapi/asm/vmx.h
-+++ b/tools/arch/x86/include/uapi/asm/vmx.h
-@@ -86,6 +86,8 @@
- #define EXIT_REASON_PML_FULL            62
- #define EXIT_REASON_XSAVES              63
- #define EXIT_REASON_XRSTORS             64
-+#define EXIT_REASON_UMWAIT              67
-+#define EXIT_REASON_TPAUSE              68
+diff --git a/tools/include/uapi/linux/kvm.h b/tools/include/uapi/linux/kvm.h
+index 233efbb..52641d8 100644
+--- a/tools/include/uapi/linux/kvm.h
++++ b/tools/include/uapi/linux/kvm.h
+@@ -999,6 +999,7 @@ struct kvm_ppc_resize_hpt {
+ #define KVM_CAP_ARM_PTRAUTH_GENERIC 172
+ #define KVM_CAP_PMU_EVENT_FILTER 173
+ #define KVM_CAP_ARM_IRQ_LINE_LAYOUT_2 174
++#define KVM_CAP_HYPERV_DIRECT_TLBFLUSH 175
  
- #define VMX_EXIT_REASONS \
- 	{ EXIT_REASON_EXCEPTION_NMI,         "EXCEPTION_NMI" }, \
-@@ -144,7 +146,9 @@
- 	{ EXIT_REASON_RDSEED,                "RDSEED" }, \
- 	{ EXIT_REASON_PML_FULL,              "PML_FULL" }, \
- 	{ EXIT_REASON_XSAVES,                "XSAVES" }, \
--	{ EXIT_REASON_XRSTORS,               "XRSTORS" }
-+	{ EXIT_REASON_XRSTORS,               "XRSTORS" }, \
-+	{ EXIT_REASON_UMWAIT,                "UMWAIT" }, \
-+	{ EXIT_REASON_TPAUSE,                "TPAUSE" }
+ #ifdef KVM_CAP_IRQ_ROUTING
  
- #define VMX_ABORT_SAVE_GUEST_MSR_FAIL        1
- #define VMX_ABORT_LOAD_HOST_PDPTE_FAIL       2
+@@ -1145,6 +1146,7 @@ struct kvm_dirty_tlb {
+ #define KVM_REG_S390		0x5000000000000000ULL
+ #define KVM_REG_ARM64		0x6000000000000000ULL
+ #define KVM_REG_MIPS		0x7000000000000000ULL
++#define KVM_REG_RISCV		0x8000000000000000ULL
+ 
+ #define KVM_REG_SIZE_SHIFT	52
+ #define KVM_REG_SIZE_MASK	0x00f0000000000000ULL
