@@ -2,49 +2,48 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 74686DF84C
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Oct 2019 00:56:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A101FDF889
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Oct 2019 01:20:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730396AbfJUW4t (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 21 Oct 2019 18:56:49 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:37967 "EHLO
+        id S1729606AbfJUXSy convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 21 Oct 2019 19:18:54 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:38239 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730276AbfJUW4t (ORCPT
+        with ESMTP id S1730420AbfJUXSx (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 21 Oct 2019 18:56:49 -0400
+        Mon, 21 Oct 2019 19:18:53 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iMgbE-0003So-06; Tue, 22 Oct 2019 00:56:29 +0200
+        id 1iMgwm-0003o3-BM; Tue, 22 Oct 2019 01:18:44 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 721F61C03AB;
-        Tue, 22 Oct 2019 00:56:27 +0200 (CEST)
-Date:   Mon, 21 Oct 2019 22:56:27 -0000
-From:   "tip-bot2 for Thomas Hellstrom" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id CA8A11C0086;
+        Tue, 22 Oct 2019 01:18:43 +0200 (CEST)
+Date:   Mon, 21 Oct 2019 23:18:43 -0000
+From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/cpu/vmware: Use the full form of INL in
- VMWARE_HYPERCALL, for clang/llvm
-Cc:     Sami Tolvanen <samitolvanen@google.com>,
-        Thomas Hellstrom <thellstrom@vmware.com>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Borislav Petkov <bp@suse.de>, "H. Peter Anvin" <hpa@zytor.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Sean Christopherson <sean.j.christopherson@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        clang-built-linux@googlegroups.com, Ingo Molnar <mingo@kernel.org>,
-        Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
-In-Reply-To: <20191021172403.3085-2-thomas_os@shipmail.org>
-References: <20191021172403.3085-2-thomas_os@shipmail.org>
+Subject: [tip: perf/core] perf trace: Use STUL_STRARRAY_FLAGS with mmap
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        Andi Kleen <ak@linux.intel.com>,
+        Brendan Gregg <brendan.d.gregg@gmail.com>,
+        David Ahern <dsahern@gmail.com>, Jiri Olsa <jolsa@kernel.org>,
+        Luis =?utf-8?q?Cl=C3=A1udio_Gon=C3=A7alves?= 
+        <lclaudio@redhat.com>, Namhyung Kim <namhyung@kernel.org>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <tip-czw754b7m9rp9ibq2f6be2o1@git.kernel.org>
+References: <tip-czw754b7m9rp9ibq2f6be2o1@git.kernel.org>
 MIME-Version: 1.0
-Message-ID: <157169858708.29376.13468044937611817754.tip-bot2@tip-bot2>
+Message-ID: <157169992330.29376.3168694023613817354.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8BIT
 X-Linutronix-Spam-Score: -1.0
 X-Linutronix-Spam-Level: -
 X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
@@ -53,54 +52,72 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     db633a4e0e6eda69b6065e3e106f9ea13a0676c3
-Gitweb:        https://git.kernel.org/tip/db633a4e0e6eda69b6065e3e106f9ea13a0676c3
-Author:        Thomas Hellstrom <thellstrom@vmware.com>
-AuthorDate:    Mon, 21 Oct 2019 19:24:02 +02:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 22 Oct 2019 00:51:44 +02:00
+Commit-ID:     27198a893ba074407e7a87e346252b3e6fab454f
+Gitweb:        https://git.kernel.org/tip/27198a893ba074407e7a87e346252b3e6fab454f
+Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
+AuthorDate:    Sat, 19 Oct 2019 15:30:15 -03:00
+Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
+CommitterDate: Sat, 19 Oct 2019 15:35:02 -03:00
 
-x86/cpu/vmware: Use the full form of INL in VMWARE_HYPERCALL, for clang/llvm
+perf trace: Use STUL_STRARRAY_FLAGS with mmap
 
-LLVM's assembler doesn't accept the short form INL instruction:
+The 'mmap' syscall has special needs so it doesn't use
+SCA_STRARRAY_FLAGS, see its implementation in
+syscall_arg__scnprintf_mmap_flags(), related to special handling of
+MAP_ANONYMOUS, so set ->parm to the strarray__mmap_flags and hook up
+with strarray__strtoul_flags manually, now we can filter by those or-ed
+string expressions:
 
-  inl (%%dx)
+  # perf trace -e syscalls:sys_enter_mmap sleep 1
+     0.000 syscalls:sys_enter_mmap(addr: NULL, len: 134346, prot: READ, flags: PRIVATE, fd: 3, off: 0)
+     0.026 syscalls:sys_enter_mmap(addr: NULL, len: 8192, prot: READ|WRITE, flags: PRIVATE|ANONYMOUS)
+     0.036 syscalls:sys_enter_mmap(addr: NULL, len: 1857472, prot: READ, flags: PRIVATE|DENYWRITE, fd: 3, off: 0)
+     0.046 syscalls:sys_enter_mmap(addr: 0x7fae003d9000, len: 1363968, prot: READ|EXEC, flags: PRIVATE|FIXED|DENYWRITE, fd: 3, off: 0x22000)
+     0.052 syscalls:sys_enter_mmap(addr: 0x7fae00526000, len: 311296, prot: READ, flags: PRIVATE|FIXED|DENYWRITE, fd: 3, off: 0x16f000)
+     0.055 syscalls:sys_enter_mmap(addr: 0x7fae00573000, len: 24576, prot: READ|WRITE, flags: PRIVATE|FIXED|DENYWRITE, fd: 3, off: 0x1bb000)
+     0.062 syscalls:sys_enter_mmap(addr: 0x7fae00579000, len: 14272, prot: READ|WRITE, flags: PRIVATE|FIXED|ANONYMOUS)
+     0.253 syscalls:sys_enter_mmap(addr: NULL, len: 217750512, prot: READ, flags: PRIVATE, fd: 3, off: 0)
+  #
 
-but instead insists on the output register to be explicitly specified.
+  # perf trace -e syscalls:sys_enter_mmap --filter="flags==PRIVATE|FIXED|DENYWRITE" sleep 1
+     0.000 syscalls:sys_enter_mmap(addr: 0x7f6ab3dcb000, len: 1363968, prot: READ|EXEC, flags: PRIVATE|FIXED|DENYWRITE, fd: 3, off: 0x22000)
+     0.010 syscalls:sys_enter_mmap(addr: 0x7f6ab3f18000, len: 311296, prot: READ, flags: PRIVATE|FIXED|DENYWRITE, fd: 3, off: 0x16f000)
+     0.014 syscalls:sys_enter_mmap(addr: 0x7f6ab3f65000, len: 24576, prot: READ|WRITE, flags: PRIVATE|FIXED|DENYWRITE, fd: 3, off: 0x1bb000)
+  # perf trace -e syscalls:sys_enter_mmap --filter="flags==PRIVATE|ANONYMOUS" sleep 1
+     0.000 syscalls:sys_enter_mmap(addr: NULL, len: 8192, prot: READ|WRITE, flags: PRIVATE|ANONYMOUS)
+  #
 
-This was previously fixed for the VMWARE_PORT macro. Fix it also for
-the VMWARE_HYPERCALL macro.
+  # perf trace -v -e syscalls:sys_enter_mmap --filter="flags==PRIVATE|ANONYMOUS" sleep 1 |& grep "New filter"
+  New filter for syscalls:sys_enter_mmap: flags==0x22
+  #
 
-Suggested-by: Sami Tolvanen <samitolvanen@google.com>
-Signed-off-by: Thomas Hellstrom <thellstrom@vmware.com>
-Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
-Cc: Borislav Petkov <bp@suse.de>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Sean Christopherson <sean.j.christopherson@intel.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: clang-built-linux@googlegroups.com
-Fixes: b4dd4f6e3648 ("Add a header file for hypercall definitions")
-Link: https://lkml.kernel.org/r/20191021172403.3085-2-thomas_os@shipmail.org
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Andi Kleen <ak@linux.intel.com>
+Cc: Brendan Gregg <brendan.d.gregg@gmail.com>
+Cc: David Ahern <dsahern@gmail.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Luis Cláudio Gonçalves <lclaudio@redhat.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Link: https://lkml.kernel.org/n/tip-czw754b7m9rp9ibq2f6be2o1@git.kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- arch/x86/include/asm/vmware.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tools/perf/builtin-trace.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/vmware.h b/arch/x86/include/asm/vmware.h
-index e00c9e8..3caac90 100644
---- a/arch/x86/include/asm/vmware.h
-+++ b/arch/x86/include/asm/vmware.h
-@@ -29,7 +29,8 @@
- 
- /* The low bandwidth call. The low word of edx is presumed clear. */
- #define VMWARE_HYPERCALL						\
--	ALTERNATIVE_2("movw $" VMWARE_HYPERVISOR_PORT ", %%dx; inl (%%dx)", \
-+	ALTERNATIVE_2("movw $" VMWARE_HYPERVISOR_PORT ", %%dx; "	\
-+		      "inl (%%dx), %%eax",				\
- 		      "vmcall", X86_FEATURE_VMCALL,			\
- 		      "vmmcall", X86_FEATURE_VMW_VMMCALL)
- 
+diff --git a/tools/perf/builtin-trace.c b/tools/perf/builtin-trace.c
+index 7bb84c4..43c05ea 100644
+--- a/tools/perf/builtin-trace.c
++++ b/tools/perf/builtin-trace.c
+@@ -1015,7 +1015,9 @@ static struct syscall_fmt syscall_fmts[] = {
+ 	.alias = "old_mmap",
+ #endif
+ 	  .arg = { [2] = { .scnprintf = SCA_MMAP_PROT,	/* prot */ },
+-		   [3] = { .scnprintf = SCA_MMAP_FLAGS,	/* flags */ },
++		   [3] = { .scnprintf = SCA_MMAP_FLAGS,	/* flags */
++			   .strtoul   = STUL_STRARRAY_FLAGS,
++			   .parm      = &strarray__mmap_flags, },
+ 		   [5] = { .scnprintf = SCA_HEX,	/* offset */ }, }, },
+ 	{ .name	    = "mount",
+ 	  .arg = { [0] = { .scnprintf = SCA_FILENAME, /* dev_name */ },
