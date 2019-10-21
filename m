@@ -2,30 +2,31 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3016FDF90B
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Oct 2019 02:05:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 51B25DF910
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Oct 2019 02:05:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730837AbfJVAE5 convert rfc822-to-8bit (ORCPT
+        id S2387557AbfJVAFH convert rfc822-to-8bit (ORCPT
         <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 21 Oct 2019 20:04:57 -0400
+        Mon, 21 Oct 2019 20:05:07 -0400
 Received: from Galois.linutronix.de ([193.142.43.55]:38895 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730823AbfJVAE4 (ORCPT
+        with ESMTP id S2387534AbfJVAFE (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 21 Oct 2019 20:04:56 -0400
+        Mon, 21 Oct 2019 20:05:04 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iMgx2-0003zM-58; Tue, 22 Oct 2019 01:19:00 +0200
+        id 1iMgx6-0003yk-AN; Tue, 22 Oct 2019 01:19:04 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 6E4DA1C03AB;
-        Tue, 22 Oct 2019 01:18:59 +0200 (CEST)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id CE7061C0086;
+        Tue, 22 Oct 2019 01:18:58 +0200 (CEST)
 Date:   Mon, 21 Oct 2019 23:18:58 -0000
 From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] libbeauty: Introduce syscall_arg__strtoul_strarray()
+Subject: [tip: perf/core] perf trace: Honour --max-events in processing
+ syscalls:sys_enter_*
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         David Ahern <dsahern@gmail.com>, Jiri Olsa <jolsa@kernel.org>,
         Luis =?utf-8?q?Cl=C3=A1udio_Gon=C3=A7alves?= 
@@ -33,10 +34,10 @@ Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <tip-wta0qvo207z27huib2c4ijxq@git.kernel.org>
-References: <tip-wta0qvo207z27huib2c4ijxq@git.kernel.org>
+In-Reply-To: <tip-0ob1dky1a9ijlfrfhxyl40wr@git.kernel.org>
+References: <tip-0ob1dky1a9ijlfrfhxyl40wr@git.kernel.org>
 MIME-Version: 1.0
-Message-ID: <157169993900.29376.5463460192237318860.tip-bot2@tip-bot2>
+Message-ID: <157169993806.29376.8362318761084030080.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -52,64 +53,70 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     d066da978f89ef035c823367a97650f0c4cfa464
-Gitweb:        https://git.kernel.org/tip/d066da978f89ef035c823367a97650f0c4cfa464
+Commit-ID:     db25bf98a3861225bc0b2138cf665097141c72ee
+Gitweb:        https://git.kernel.org/tip/db25bf98a3861225bc0b2138cf665097141c72ee
 Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Thu, 17 Oct 2019 18:33:00 -03:00
+AuthorDate:    Fri, 18 Oct 2019 11:48:57 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Fri, 18 Oct 2019 12:07:46 -03:00
+CommitterDate: Fri, 18 Oct 2019 12:19:02 -03:00
 
-libbeauty: Introduce syscall_arg__strtoul_strarray()
+perf trace: Honour --max-events in processing syscalls:sys_enter_*
 
-To go from strarrays strings to its indexes.
+We were doing this only at the sys_exit syscall tracepoint, as for
+strace-like we count the pair of sys_enter and sys_exit as one event,
+but when asking specifically for a the syscalls:sys_enter_NAME
+tracepoint we need to count each of those as an event.
+
+I.e. things like:
+
+  # perf trace --max-events=4 -e syscalls:sys_enter_lseek
+     0.000 pool/2242 syscalls:sys_enter_lseek(fd: 14<anon_inode:[timerfd]>, offset: 0, whence: CUR)
+     0.034 pool/2242 syscalls:sys_enter_lseek(fd: 15<anon_inode:[timerfd]>, offset: 0, whence: CUR)
+     0.051 pool/2242 syscalls:sys_enter_lseek(fd: 16<anon_inode:[timerfd]>, offset: 0, whence: CUR)
+  2307.900 sshd/30800 syscalls:sys_enter_lseek(fd: 3</usr/lib64/libsystemd.so.0.25.0>, offset: 9032, whence: SET)
+  #
+
+Were going on forever, since we only had sys_enter events.
 
 Cc: Adrian Hunter <adrian.hunter@intel.com>
 Cc: David Ahern <dsahern@gmail.com>
 Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Luis Cláudio Gonçalves <lclaudio@redhat.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lkml.kernel.org/n/tip-wta0qvo207z27huib2c4ijxq@git.kernel.org
+Link: https://lkml.kernel.org/n/tip-0ob1dky1a9ijlfrfhxyl40wr@git.kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/builtin-trace.c       | 6 ++++++
- tools/perf/trace/beauty/beauty.h | 3 +++
- 2 files changed, 9 insertions(+)
+ tools/perf/builtin-trace.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
 diff --git a/tools/perf/builtin-trace.c b/tools/perf/builtin-trace.c
-index 3502417..0294b17 100644
+index 0294b17..1aaf7b2 100644
 --- a/tools/perf/builtin-trace.c
 +++ b/tools/perf/builtin-trace.c
-@@ -535,6 +535,11 @@ static size_t syscall_arg__scnprintf_strarray(char *bf, size_t size,
+@@ -2727,12 +2727,6 @@ static int trace__event_handler(struct trace *trace, struct evsel *evsel,
+ 			} else {
+ 				trace__fprintf_tp_fields(trace, evsel, sample, thread, NULL, 0);
+ 			}
+-			++trace->nr_events_printed;
+-
+-			if (evsel->max_events != ULONG_MAX && ++evsel->nr_events_printed == evsel->max_events) {
+-				evsel__disable(evsel);
+-				evsel__close(evsel);
+-			}
+ 		}
+ 	}
  
- #define SCA_STRARRAY syscall_arg__scnprintf_strarray
- 
-+bool syscall_arg__strtoul_strarray(char *bf, size_t size, struct syscall_arg *arg, u64 *ret)
-+{
-+	return strarray__strtoul(arg->parm, bf, size, ret);
-+}
+@@ -2743,6 +2737,13 @@ newline:
+ 		trace__fprintf_callchain(trace, sample);
+ 	else if (callchain_ret < 0)
+ 		pr_err("Problem processing %s callchain, skipping...\n", perf_evsel__name(evsel));
 +
- size_t syscall_arg__scnprintf_strarray_flags(char *bf, size_t size, struct syscall_arg *arg)
- {
- 	return strarray__scnprintf_flags(arg->parm, bf, size, arg->show_string_prefix, arg->val);
-@@ -824,6 +829,7 @@ static size_t syscall_arg__scnprintf_getrandom_flags(char *bf, size_t size,
- 
- #define STRARRAY(name, array) \
- 	  { .scnprintf	= SCA_STRARRAY, \
-+	    .strtoul	= STUL_STRARRAY, \
- 	    .parm	= &strarray__##array, }
- 
- #define STRARRAY_FLAGS(name, array) \
-diff --git a/tools/perf/trace/beauty/beauty.h b/tools/perf/trace/beauty/beauty.h
-index 232b64d..1b8a30e 100644
---- a/tools/perf/trace/beauty/beauty.h
-+++ b/tools/perf/trace/beauty/beauty.h
-@@ -122,6 +122,9 @@ unsigned long syscall_arg__val(struct syscall_arg *arg, u8 idx);
- size_t syscall_arg__scnprintf_strarray_flags(char *bf, size_t size, struct syscall_arg *arg);
- #define SCA_STRARRAY_FLAGS syscall_arg__scnprintf_strarray_flags
- 
-+bool syscall_arg__strtoul_strarray(char *bf, size_t size, struct syscall_arg *arg, u64 *ret);
-+#define STUL_STRARRAY syscall_arg__strtoul_strarray
++	++trace->nr_events_printed;
 +
- size_t syscall_arg__scnprintf_x86_irq_vectors(char *bf, size_t size, struct syscall_arg *arg);
- #define SCA_X86_IRQ_VECTORS syscall_arg__scnprintf_x86_irq_vectors
- 
++	if (evsel->max_events != ULONG_MAX && ++evsel->nr_events_printed == evsel->max_events) {
++		evsel__disable(evsel);
++		evsel__close(evsel);
++	}
+ out:
+ 	thread__put(thread);
+ 	return 0;
