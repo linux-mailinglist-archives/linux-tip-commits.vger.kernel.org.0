@@ -2,38 +2,43 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F659DE494
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 21 Oct 2019 08:27:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CC55DE488
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 21 Oct 2019 08:27:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727307AbfJUG1P (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 21 Oct 2019 02:27:15 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:33218 "EHLO
+        id S1727194AbfJUG05 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 21 Oct 2019 02:26:57 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:33230 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727129AbfJUG0y (ORCPT
+        with ESMTP id S1727150AbfJUG0z (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 21 Oct 2019 02:26:54 -0400
+        Mon, 21 Oct 2019 02:26:55 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iMR9P-000274-M0; Mon, 21 Oct 2019 08:26:43 +0200
+        id 1iMR9Q-000277-2S; Mon, 21 Oct 2019 08:26:44 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 161F91C0494;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 91FA31C0092;
         Mon, 21 Oct 2019 08:26:43 +0200 (CEST)
-Date:   Mon, 21 Oct 2019 06:26:42 -0000
-From:   "tip-bot2 for Adrian Hunter" <tip-bot2@linutronix.de>
+Date:   Mon, 21 Oct 2019 06:26:43 -0000
+From:   "tip-bot2 for Gustavo A. R. Silva" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf tools: Fix mode setting in copyfile_mode_ns()
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+Subject: [tip: perf/urgent] perf annotate: Fix multiple memory and file
+ descriptor leaks
+Cc:     "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
         Jiri Olsa <jolsa@kernel.org>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20191007070221.11158-1-adrian.hunter@intel.com>
-References: <20191007070221.11158-1-adrian.hunter@intel.com>
+In-Reply-To: <20191014171047.GA30850@embeddedor>
+References: <20191014171047.GA30850@embeddedor>
 MIME-Version: 1.0
-Message-ID: <157163920270.29376.13870140679809212692.tip-bot2@tip-bot2>
+Message-ID: <157163920324.29376.662244450209670073.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,64 +54,43 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     5a0baf5123236362fda4e9772cc63b7faa16a0df
-Gitweb:        https://git.kernel.org/tip/5a0baf5123236362fda4e9772cc63b7faa16a0df
-Author:        Adrian Hunter <adrian.hunter@intel.com>
-AuthorDate:    Mon, 07 Oct 2019 10:02:21 +03:00
+Commit-ID:     f948eb45e3af9fb18a0487d0797a773897ef6929
+Gitweb:        https://git.kernel.org/tip/f948eb45e3af9fb18a0487d0797a773897ef6929
+Author:        Gustavo A. R. Silva <gustavo@embeddedor.com>
+AuthorDate:    Mon, 14 Oct 2019 12:10:47 -05:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Tue, 15 Oct 2019 12:05:18 -03:00
+CommitterDate: Tue, 15 Oct 2019 12:00:01 -03:00
 
-perf tools: Fix mode setting in copyfile_mode_ns()
+perf annotate: Fix multiple memory and file descriptor leaks
 
-slow_copyfile() opens the file by name, so "write" permissions must not
-be removed in copyfile_mode_ns() before calling slow_copyfile().
+Store SYMBOL_ANNOTATE_ERRNO__BPF_MISSING_BTF in variable *ret*, instead
+of returning in the middle of the function and leaking multiple
+resources: prog_linfo, btf, s and bfdf.
 
-Example:
-
- Before:
-
-  $ sudo chmod +r /proc/kcore
-  $ sudo setcap "cap_sys_admin,cap_sys_ptrace,cap_syslog,cap_sys_rawio=ep" tools/perf/perf
-  $ tools/perf/perf buildid-cache -k /proc/kcore
-  Couldn't add /proc/kcore
-
- After:
-
-  $ sudo chmod +r /proc/kcore
-  $ sudo setcap "cap_sys_admin,cap_sys_ptrace,cap_syslog,cap_sys_rawio=ep" tools/perf/perf
-  $ tools/perf/perf buildid-cache -v -k /proc/kcore
-  kcore added to build-id cache directory /home/ahunter/.debug/[kernel.kcore]/37e340b1b5a7cf4f57ba8de2bc777359588a957f/2019100709562289
-
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Addresses-Coverity-ID: 1454832 ("Structurally dead code")
+Fixes: 11aad897f6d1 ("perf annotate: Don't return -1 for error when doing BPF disassembly")
+Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
 Acked-by: Jiri Olsa <jolsa@kernel.org>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Link: http://lore.kernel.org/lkml/20191007070221.11158-1-adrian.hunter@intel.com
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: http://lore.kernel.org/lkml/20191014171047.GA30850@embeddedor
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/copyfile.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ tools/perf/util/annotate.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/util/copyfile.c b/tools/perf/util/copyfile.c
-index 3fa0db1..47e03de 100644
---- a/tools/perf/util/copyfile.c
-+++ b/tools/perf/util/copyfile.c
-@@ -101,14 +101,16 @@ static int copyfile_mode_ns(const char *from, const char *to, mode_t mode,
- 	if (tofd < 0)
+diff --git a/tools/perf/util/annotate.c b/tools/perf/util/annotate.c
+index 4036c7f..e42bf57 100644
+--- a/tools/perf/util/annotate.c
++++ b/tools/perf/util/annotate.c
+@@ -1758,7 +1758,7 @@ static int symbol__disassemble_bpf(struct symbol *sym,
+ 	info_node = perf_env__find_bpf_prog_info(dso->bpf_prog.env,
+ 						 dso->bpf_prog.id);
+ 	if (!info_node) {
+-		return SYMBOL_ANNOTATE_ERRNO__BPF_MISSING_BTF;
++		ret = SYMBOL_ANNOTATE_ERRNO__BPF_MISSING_BTF;
  		goto out;
- 
--	if (fchmod(tofd, mode))
--		goto out_close_to;
--
- 	if (st.st_size == 0) { /* /proc? do it slowly... */
- 		err = slow_copyfile(from, tmp, nsi);
-+		if (!err && fchmod(tofd, mode))
-+			err = -1;
- 		goto out_close_to;
  	}
- 
-+	if (fchmod(tofd, mode))
-+		goto out_close_to;
-+
- 	nsinfo__mountns_enter(nsi, &nsc);
- 	fromfd = open(from, O_RDONLY);
- 	nsinfo__mountns_exit(&nsc);
+ 	info_linear = info_node->info_linear;
