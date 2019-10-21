@@ -2,43 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CC55DE488
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 21 Oct 2019 08:27:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 098F6DE496
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 21 Oct 2019 08:27:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727194AbfJUG05 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 21 Oct 2019 02:26:57 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:33230 "EHLO
+        id S1727129AbfJUG1T (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 21 Oct 2019 02:27:19 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:33244 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727150AbfJUG0z (ORCPT
+        with ESMTP id S1727319AbfJUG1S (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 21 Oct 2019 02:26:55 -0400
+        Mon, 21 Oct 2019 02:27:18 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iMR9Q-000277-2S; Mon, 21 Oct 2019 08:26:44 +0200
+        id 1iMR9Q-00027S-Fz; Mon, 21 Oct 2019 08:26:44 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 91FA31C0092;
-        Mon, 21 Oct 2019 08:26:43 +0200 (CEST)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 07C821C047B;
+        Mon, 21 Oct 2019 08:26:44 +0200 (CEST)
 Date:   Mon, 21 Oct 2019 06:26:43 -0000
-From:   "tip-bot2 for Gustavo A. R. Silva" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Yunfeng Ye" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf annotate: Fix multiple memory and file
- descriptor leaks
-Cc:     "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
-        Jiri Olsa <jolsa@kernel.org>,
+Subject: [tip: perf/urgent] perf tools: Fix resource leak of closedir() on the
+ error paths
+Cc:     Yunfeng Ye <yeyunfeng@huawei.com>, Jiri Olsa <jolsa@kernel.org>,
         Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Alexey Budankov <alexey.budankov@linux.intel.com>,
+        Andi Kleen <ak@linux.intel.com>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Feilong Lin <linfeilong@huawei.com>,
+        Hu Shiyuan <hushiyuan@huawei.com>,
+        Igor Lubashev <ilubashe@akamai.com>,
+        Kan Liang <kan.liang@linux.intel.com>,
         Mark Rutland <mark.rutland@arm.com>,
+        Martin KaFai Lau <kafai@fb.com>,
         Namhyung Kim <namhyung@kernel.org>,
         Peter Zijlstra <peterz@infradead.org>,
+        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20191014171047.GA30850@embeddedor>
-References: <20191014171047.GA30850@embeddedor>
+In-Reply-To: <cd5f7cd2-b80d-6add-20a1-32f4f43e0744@huawei.com>
+References: <cd5f7cd2-b80d-6add-20a1-32f4f43e0744@huawei.com>
 MIME-Version: 1.0
-Message-ID: <157163920324.29376.662244450209670073.tip-bot2@tip-bot2>
+Message-ID: <157163920371.29376.16536037745766899826.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -54,43 +63,76 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     f948eb45e3af9fb18a0487d0797a773897ef6929
-Gitweb:        https://git.kernel.org/tip/f948eb45e3af9fb18a0487d0797a773897ef6929
-Author:        Gustavo A. R. Silva <gustavo@embeddedor.com>
-AuthorDate:    Mon, 14 Oct 2019 12:10:47 -05:00
+Commit-ID:     6080728ff8e9c9116e52e6f840152356ac2fea56
+Gitweb:        https://git.kernel.org/tip/6080728ff8e9c9116e52e6f840152356ac2fea56
+Author:        Yunfeng Ye <yeyunfeng@huawei.com>
+AuthorDate:    Tue, 15 Oct 2019 16:30:08 +08:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Tue, 15 Oct 2019 12:00:01 -03:00
+CommitterDate: Tue, 15 Oct 2019 11:54:11 -03:00
 
-perf annotate: Fix multiple memory and file descriptor leaks
+perf tools: Fix resource leak of closedir() on the error paths
 
-Store SYMBOL_ANNOTATE_ERRNO__BPF_MISSING_BTF in variable *ret*, instead
-of returning in the middle of the function and leaking multiple
-resources: prog_linfo, btf, s and bfdf.
+Both build_mem_topology() and rm_rf_depth_pat() have resource leaks of
+closedir() on the error paths.
 
-Addresses-Coverity-ID: 1454832 ("Structurally dead code")
-Fixes: 11aad897f6d1 ("perf annotate: Don't return -1 for error when doing BPF disassembly")
-Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
+Fix this by calling closedir() before function returns.
+
+Fixes: e2091cedd51b ("perf tools: Add MEM_TOPOLOGY feature to perf data file")
+Fixes: cdb6b0235f17 ("perf tools: Add pattern name checking to rm_rf")
+Signed-off-by: Yunfeng Ye <yeyunfeng@huawei.com>
 Acked-by: Jiri Olsa <jolsa@kernel.org>
 Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Alexei Starovoitov <ast@kernel.org>
+Cc: Alexey Budankov <alexey.budankov@linux.intel.com>
+Cc: Andi Kleen <ak@linux.intel.com>
+Cc: Daniel Borkmann <daniel@iogearbox.net>
+Cc: Feilong Lin <linfeilong@huawei.com>
+Cc: Hu Shiyuan <hushiyuan@huawei.com>
+Cc: Igor Lubashev <ilubashe@akamai.com>
+Cc: Kan Liang <kan.liang@linux.intel.com>
 Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Martin KaFai Lau <kafai@fb.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Link: http://lore.kernel.org/lkml/20191014171047.GA30850@embeddedor
+Cc: Song Liu <songliubraving@fb.com>
+Cc: Yonghong Song <yhs@fb.com>
+Link: http://lore.kernel.org/lkml/cd5f7cd2-b80d-6add-20a1-32f4f43e0744@huawei.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/annotate.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/perf/util/header.c | 4 +++-
+ tools/perf/util/util.c   | 6 ++++--
+ 2 files changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/tools/perf/util/annotate.c b/tools/perf/util/annotate.c
-index 4036c7f..e42bf57 100644
---- a/tools/perf/util/annotate.c
-+++ b/tools/perf/util/annotate.c
-@@ -1758,7 +1758,7 @@ static int symbol__disassemble_bpf(struct symbol *sym,
- 	info_node = perf_env__find_bpf_prog_info(dso->bpf_prog.env,
- 						 dso->bpf_prog.id);
- 	if (!info_node) {
--		return SYMBOL_ANNOTATE_ERRNO__BPF_MISSING_BTF;
-+		ret = SYMBOL_ANNOTATE_ERRNO__BPF_MISSING_BTF;
- 		goto out;
+diff --git a/tools/perf/util/header.c b/tools/perf/util/header.c
+index 86d9396..becc2d1 100644
+--- a/tools/perf/util/header.c
++++ b/tools/perf/util/header.c
+@@ -1296,8 +1296,10 @@ static int build_mem_topology(struct memory_node *nodes, u64 size, u64 *cntp)
+ 			continue;
+ 
+ 		if (WARN_ONCE(cnt >= size,
+-			      "failed to write MEM_TOPOLOGY, way too many nodes\n"))
++			"failed to write MEM_TOPOLOGY, way too many nodes\n")) {
++			closedir(dir);
+ 			return -1;
++		}
+ 
+ 		ret = memory_node__read(&nodes[cnt++], idx);
  	}
- 	info_linear = info_node->info_linear;
+diff --git a/tools/perf/util/util.c b/tools/perf/util/util.c
+index 5eda6e1..ae56c76 100644
+--- a/tools/perf/util/util.c
++++ b/tools/perf/util/util.c
+@@ -154,8 +154,10 @@ static int rm_rf_depth_pat(const char *path, int depth, const char **pat)
+ 		if (!strcmp(d->d_name, ".") || !strcmp(d->d_name, ".."))
+ 			continue;
+ 
+-		if (!match_pat(d->d_name, pat))
+-			return -2;
++		if (!match_pat(d->d_name, pat)) {
++			ret =  -2;
++			break;
++		}
+ 
+ 		scnprintf(namebuf, sizeof(namebuf), "%s/%s",
+ 			  path, d->d_name);
