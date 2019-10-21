@@ -2,30 +2,31 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B7E3BDF934
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Oct 2019 02:06:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CBC0DF902
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Oct 2019 02:05:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730220AbfJVAGC convert rfc822-to-8bit (ORCPT
+        id S1730750AbfJVAEj convert rfc822-to-8bit (ORCPT
         <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 21 Oct 2019 20:06:02 -0400
+        Mon, 21 Oct 2019 20:04:39 -0400
 Received: from Galois.linutronix.de ([193.142.43.55]:38895 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730749AbfJVAEl (ORCPT
+        with ESMTP id S1730730AbfJVAEi (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 21 Oct 2019 20:04:41 -0400
+        Mon, 21 Oct 2019 20:04:38 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iMgxB-00045I-3I; Tue, 22 Oct 2019 01:19:09 +0200
+        id 1iMgxC-00045w-FI; Tue, 22 Oct 2019 01:19:11 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id CC0111C047B;
-        Tue, 22 Oct 2019 01:19:06 +0200 (CEST)
-Date:   Mon, 21 Oct 2019 23:19:06 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 925891C04D3;
+        Tue, 22 Oct 2019 01:19:07 +0200 (CEST)
+Date:   Mon, 21 Oct 2019 23:19:07 -0000
 From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] libbeauty: Add a generator for x86's IRQ vectors -> strings
+Subject: [tip: perf/core] tools arch x86: Grab a copy of the file containing
+ the IRQ vector defines
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         Andi Kleen <ak@linux.intel.com>,
         David Ahern <dsahern@gmail.com>, Jiri Olsa <jolsa@kernel.org>,
@@ -34,10 +35,10 @@ Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <tip-cpl1pa7kkwn0llufi5qw4li8@git.kernel.org>
-References: <tip-cpl1pa7kkwn0llufi5qw4li8@git.kernel.org>
+In-Reply-To: <tip-z7gi058lzhnrm32slevg3xod@git.kernel.org>
+References: <tip-z7gi058lzhnrm32slevg3xod@git.kernel.org>
 MIME-Version: 1.0
-Message-ID: <157169994629.29376.6467117925431245922.tip-bot2@tip-bot2>
+Message-ID: <157169994705.29376.10717273950729910695.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -53,46 +54,17 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     5fa022aeba8420d4803e6198642d0a0cbbac99f3
-Gitweb:        https://git.kernel.org/tip/5fa022aeba8420d4803e6198642d0a0cbbac99f3
+Commit-ID:     d2b72b7280370aaddcbe93d00939bc7ec21dda48
+Gitweb:        https://git.kernel.org/tip/d2b72b7280370aaddcbe93d00939bc7ec21dda48
 Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Tue, 15 Oct 2019 15:33:24 -03:00
+AuthorDate:    Tue, 15 Oct 2019 15:40:23 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Tue, 15 Oct 2019 15:42:44 -03:00
+CommitterDate: Tue, 15 Oct 2019 15:42:01 -03:00
 
-libbeauty: Add a generator for x86's IRQ vectors -> strings
+tools arch x86: Grab a copy of the file containing the IRQ vector defines
 
-We'll wire this up with the 'vector' arg in irq_vectors:*, etc:
-
-Just run it straight away and check what it produces:
-
-  $ tools/perf/trace/beauty/tracepoints/x86_irq_vectors.sh
-  static const char *x86_irq_vectors[] = {
-  	[0x02] = "NMI",
-  	[0x12] = "MCE",
-  	[0x20] = "IRQ_MOVE_CLEANUP",
-  	[0x80] = "IA32_SYSCALL",
-  	[0xec] = "LOCAL_TIMER",
-  	[0xed] = "HYPERV_STIMER0",
-  	[0xee] = "HYPERV_REENLIGHTENMENT",
-  	[0xef] = "MANAGED_IRQ_SHUTDOWN",
-  	[0xf0] = "POSTED_INTR_NESTED",
-  	[0xf1] = "POSTED_INTR_WAKEUP",
-  	[0xf2] = "POSTED_INTR",
-  	[0xf3] = "HYPERVISOR_CALLBACK",
-  	[0xf4] = "DEFERRED_ERROR",
-  	[0xf6] = "IRQ_WORK",
-  	[0xf7] = "X86_PLATFORM_IPI",
-  	[0xf8] = "REBOOT",
-  	[0xf9] = "THRESHOLD_APIC",
-  	[0xfa] = "THERMAL_APIC",
-  	[0xfb] = "CALL_FUNCTION_SINGLE",
-  	[0xfc] = "CALL_FUNCTION",
-  	[0xfd] = "RESCHEDULE",
-  	[0xfe] = "ERROR_APIC",
-  	[0xff] = "SPURIOUS_APIC",
-  };
-  $
+We'll use it to generate a table and then convert the irq_vectors:*
+tracepoint 'vector' arg in things like perf trace, script, etc.
 
 Cc: Adrian Hunter <adrian.hunter@intel.com>
 Cc: Andi Kleen <ak@linux.intel.com>
@@ -100,43 +72,175 @@ Cc: David Ahern <dsahern@gmail.com>
 Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Luis Cláudio Gonçalves <lclaudio@redhat.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lkml.kernel.org/n/tip-cpl1pa7kkwn0llufi5qw4li8@git.kernel.org
+Link: https://lkml.kernel.org/n/tip-z7gi058lzhnrm32slevg3xod@git.kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/trace/beauty/tracepoints/x86_irq_vectors.sh | 27 +++++++++-
- 1 file changed, 27 insertions(+)
- create mode 100755 tools/perf/trace/beauty/tracepoints/x86_irq_vectors.sh
+ tools/arch/x86/include/asm/irq_vectors.h | 146 ++++++++++++++++++++++-
+ tools/perf/check-headers.sh              |   1 +-
+ 2 files changed, 147 insertions(+)
+ create mode 100644 tools/arch/x86/include/asm/irq_vectors.h
 
-diff --git a/tools/perf/trace/beauty/tracepoints/x86_irq_vectors.sh b/tools/perf/trace/beauty/tracepoints/x86_irq_vectors.sh
-new file mode 100755
-index 0000000..f920003
+diff --git a/tools/arch/x86/include/asm/irq_vectors.h b/tools/arch/x86/include/asm/irq_vectors.h
+new file mode 100644
+index 0000000..889f8b1
 --- /dev/null
-+++ b/tools/perf/trace/beauty/tracepoints/x86_irq_vectors.sh
-@@ -0,0 +1,27 @@
-+#!/bin/sh
-+# SPDX-License-Identifier: LGPL-2.1
-+# (C) 2019, Arnaldo Carvalho de Melo <acme@redhat.com>
++++ b/tools/arch/x86/include/asm/irq_vectors.h
+@@ -0,0 +1,146 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _ASM_X86_IRQ_VECTORS_H
++#define _ASM_X86_IRQ_VECTORS_H
 +
-+if [ $# -ne 1 ] ; then
-+	arch_x86_header_dir=tools/arch/x86/include/asm/
-+else
-+	arch_x86_header_dir=$1
-+fi
++#include <linux/threads.h>
++/*
++ * Linux IRQ vector layout.
++ *
++ * There are 256 IDT entries (per CPU - each entry is 8 bytes) which can
++ * be defined by Linux. They are used as a jump table by the CPU when a
++ * given vector is triggered - by a CPU-external, CPU-internal or
++ * software-triggered event.
++ *
++ * Linux sets the kernel code address each entry jumps to early during
++ * bootup, and never changes them. This is the general layout of the
++ * IDT entries:
++ *
++ *  Vectors   0 ...  31 : system traps and exceptions - hardcoded events
++ *  Vectors  32 ... 127 : device interrupts
++ *  Vector  128         : legacy int80 syscall interface
++ *  Vectors 129 ... LOCAL_TIMER_VECTOR-1
++ *  Vectors LOCAL_TIMER_VECTOR ... 255 : special interrupts
++ *
++ * 64-bit x86 has per CPU IDT tables, 32-bit has one shared IDT table.
++ *
++ * This file enumerates the exact layout of them:
++ */
 +
-+x86_irq_vectors=${arch_x86_header_dir}/irq_vectors.h
++#define NMI_VECTOR			0x02
++#define MCE_VECTOR			0x12
 +
-+# FIRST_EXTERNAL_VECTOR is not that useful, find what is its number
-+# and then replace whatever is using it and that is useful, which at
-+# the time of writing of this script was: IRQ_MOVE_CLEANUP_VECTOR.
++/*
++ * IDT vectors usable for external interrupt sources start at 0x20.
++ * (0x80 is the syscall vector, 0x30-0x3f are for ISA)
++ */
++#define FIRST_EXTERNAL_VECTOR		0x20
 +
-+first_external_regex='^#define[[:space:]]+FIRST_EXTERNAL_VECTOR[[:space:]]+(0x[[:xdigit:]]+)$'
-+first_external_vector=$(egrep ${first_external_regex} ${x86_irq_vectors} | sed -r "s/${first_external_regex}/\1/g")
++/*
++ * Reserve the lowest usable vector (and hence lowest priority)  0x20 for
++ * triggering cleanup after irq migration. 0x21-0x2f will still be used
++ * for device interrupts.
++ */
++#define IRQ_MOVE_CLEANUP_VECTOR		FIRST_EXTERNAL_VECTOR
 +
-+printf "static const char *x86_irq_vectors[] = {\n"
-+regex='^#define[[:space:]]+([[:alnum:]_]+)_VECTOR[[:space:]]+(0x[[:xdigit:]]+)$'
-+sed -r "s/FIRST_EXTERNAL_VECTOR/${first_external_vector}/g" ${x86_irq_vectors} | \
-+egrep ${regex} | \
-+	sed -r "s/${regex}/\2 \1/g" | sort -n | \
-+	xargs printf "\t[%s] = \"%s\",\n"
-+printf "};\n\n"
++#define IA32_SYSCALL_VECTOR		0x80
 +
++/*
++ * Vectors 0x30-0x3f are used for ISA interrupts.
++ *   round up to the next 16-vector boundary
++ */
++#define ISA_IRQ_VECTOR(irq)		(((FIRST_EXTERNAL_VECTOR + 16) & ~15) + irq)
++
++/*
++ * Special IRQ vectors used by the SMP architecture, 0xf0-0xff
++ *
++ *  some of the following vectors are 'rare', they are merged
++ *  into a single vector (CALL_FUNCTION_VECTOR) to save vector space.
++ *  TLB, reschedule and local APIC vectors are performance-critical.
++ */
++
++#define SPURIOUS_APIC_VECTOR		0xff
++/*
++ * Sanity check
++ */
++#if ((SPURIOUS_APIC_VECTOR & 0x0F) != 0x0F)
++# error SPURIOUS_APIC_VECTOR definition error
++#endif
++
++#define ERROR_APIC_VECTOR		0xfe
++#define RESCHEDULE_VECTOR		0xfd
++#define CALL_FUNCTION_VECTOR		0xfc
++#define CALL_FUNCTION_SINGLE_VECTOR	0xfb
++#define THERMAL_APIC_VECTOR		0xfa
++#define THRESHOLD_APIC_VECTOR		0xf9
++#define REBOOT_VECTOR			0xf8
++
++/*
++ * Generic system vector for platform specific use
++ */
++#define X86_PLATFORM_IPI_VECTOR		0xf7
++
++/*
++ * IRQ work vector:
++ */
++#define IRQ_WORK_VECTOR			0xf6
++
++#define UV_BAU_MESSAGE			0xf5
++#define DEFERRED_ERROR_VECTOR		0xf4
++
++/* Vector on which hypervisor callbacks will be delivered */
++#define HYPERVISOR_CALLBACK_VECTOR	0xf3
++
++/* Vector for KVM to deliver posted interrupt IPI */
++#ifdef CONFIG_HAVE_KVM
++#define POSTED_INTR_VECTOR		0xf2
++#define POSTED_INTR_WAKEUP_VECTOR	0xf1
++#define POSTED_INTR_NESTED_VECTOR	0xf0
++#endif
++
++#define MANAGED_IRQ_SHUTDOWN_VECTOR	0xef
++
++#if IS_ENABLED(CONFIG_HYPERV)
++#define HYPERV_REENLIGHTENMENT_VECTOR	0xee
++#define HYPERV_STIMER0_VECTOR		0xed
++#endif
++
++#define LOCAL_TIMER_VECTOR		0xec
++
++#define NR_VECTORS			 256
++
++#ifdef CONFIG_X86_LOCAL_APIC
++#define FIRST_SYSTEM_VECTOR		LOCAL_TIMER_VECTOR
++#else
++#define FIRST_SYSTEM_VECTOR		NR_VECTORS
++#endif
++
++/*
++ * Size the maximum number of interrupts.
++ *
++ * If the irq_desc[] array has a sparse layout, we can size things
++ * generously - it scales up linearly with the maximum number of CPUs,
++ * and the maximum number of IO-APICs, whichever is higher.
++ *
++ * In other cases we size more conservatively, to not create too large
++ * static arrays.
++ */
++
++#define NR_IRQS_LEGACY			16
++
++#define CPU_VECTOR_LIMIT		(64 * NR_CPUS)
++#define IO_APIC_VECTOR_LIMIT		(32 * MAX_IO_APICS)
++
++#if defined(CONFIG_X86_IO_APIC) && defined(CONFIG_PCI_MSI)
++#define NR_IRQS						\
++	(CPU_VECTOR_LIMIT > IO_APIC_VECTOR_LIMIT ?	\
++		(NR_VECTORS + CPU_VECTOR_LIMIT)  :	\
++		(NR_VECTORS + IO_APIC_VECTOR_LIMIT))
++#elif defined(CONFIG_X86_IO_APIC)
++#define	NR_IRQS				(NR_VECTORS + IO_APIC_VECTOR_LIMIT)
++#elif defined(CONFIG_PCI_MSI)
++#define NR_IRQS				(NR_VECTORS + CPU_VECTOR_LIMIT)
++#else
++#define NR_IRQS				NR_IRQS_LEGACY
++#endif
++
++#endif /* _ASM_X86_IRQ_VECTORS_H */
+diff --git a/tools/perf/check-headers.sh b/tools/perf/check-headers.sh
+index 93c46d3..48290a0 100755
+--- a/tools/perf/check-headers.sh
++++ b/tools/perf/check-headers.sh
+@@ -28,6 +28,7 @@ arch/x86/include/asm/disabled-features.h
+ arch/x86/include/asm/required-features.h
+ arch/x86/include/asm/cpufeatures.h
+ arch/x86/include/asm/inat_types.h
++arch/x86/include/asm/irq_vectors.h
+ arch/x86/include/asm/msr-index.h
+ arch/x86/include/uapi/asm/prctl.h
+ arch/x86/lib/x86-opcode-map.txt
