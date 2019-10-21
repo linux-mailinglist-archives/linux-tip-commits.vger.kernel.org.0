@@ -2,30 +2,30 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AC395DF8F1
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Oct 2019 02:04:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DA39DF937
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Oct 2019 02:06:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387474AbfJVAEK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 21 Oct 2019 20:04:10 -0400
+        id S2387736AbfJVAGN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 21 Oct 2019 20:06:13 -0400
 Received: from Galois.linutronix.de ([193.142.43.55]:38895 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387469AbfJVAEJ (ORCPT
+        with ESMTP id S2387456AbfJVAEI (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 21 Oct 2019 20:04:09 -0400
+        Mon, 21 Oct 2019 20:04:08 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iMgxE-000478-Rw; Tue, 22 Oct 2019 01:19:13 +0200
+        id 1iMgxF-00047E-Dt; Tue, 22 Oct 2019 01:19:13 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id EA22E1C04D4;
-        Tue, 22 Oct 2019 01:19:08 +0200 (CEST)
-Date:   Mon, 21 Oct 2019 23:19:08 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 87CBA1C04D5;
+        Tue, 22 Oct 2019 01:19:09 +0200 (CEST)
+Date:   Mon, 21 Oct 2019 23:19:09 -0000
 From:   "tip-bot2 for John Garry" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
 Subject: [tip: perf/core] perf vendor events arm64: Add some missing events
- for Hisi hip08 L3C PMU
+ for Hisi hip08 DDRC PMU
 Cc:     John Garry <john.garry@huawei.com>,
         Shaokun Zhang <zhangshaokun@hisilicon.com>,
         Alexander Shishkin <alexander.shishkin@linux.intel.com>,
@@ -37,10 +37,10 @@ Cc:     John Garry <john.garry@huawei.com>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <1567612484-195727-4-git-send-email-john.garry@huawei.com>
-References: <1567612484-195727-4-git-send-email-john.garry@huawei.com>
+In-Reply-To: <1567612484-195727-3-git-send-email-john.garry@huawei.com>
+References: <1567612484-195727-3-git-send-email-john.garry@huawei.com>
 MIME-Version: 1.0
-Message-ID: <157169994853.29376.14939514341259795265.tip-bot2@tip-bot2>
+Message-ID: <157169994925.29376.607343103322832232.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -56,14 +56,14 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     e3ae569541802a6c9e89ab1f0f3ff613a5a1237b
-Gitweb:        https://git.kernel.org/tip/e3ae569541802a6c9e89ab1f0f3ff613a5a1237b
+Commit-ID:     1410732a1b642ba82730a95bdf7f4dafbac1891a
+Gitweb:        https://git.kernel.org/tip/1410732a1b642ba82730a95bdf7f4dafbac1891a
 Author:        John Garry <john.garry@huawei.com>
-AuthorDate:    Wed, 04 Sep 2019 23:54:43 +08:00
+AuthorDate:    Wed, 04 Sep 2019 23:54:42 +08:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Tue, 15 Oct 2019 13:03:58 -03:00
 
-perf vendor events arm64: Add some missing events for Hisi hip08 L3C PMU
+perf vendor events arm64: Add some missing events for Hisi hip08 DDRC PMU
 
 Add some more missing events.
 
@@ -76,74 +76,33 @@ Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Will Deacon <will@kernel.org>
 Cc: linuxarm@huawei.com
-Link: http://lore.kernel.org/lkml/1567612484-195727-4-git-send-email-john.garry@huawei.com
+Link: http://lore.kernel.org/lkml/1567612484-195727-3-git-send-email-john.garry@huawei.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/pmu-events/arch/arm64/hisilicon/hip08/uncore-l3c.json | 56 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 56 insertions(+)
+ tools/perf/pmu-events/arch/arm64/hisilicon/hip08/uncore-ddrc.json | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/tools/perf/pmu-events/arch/arm64/hisilicon/hip08/uncore-l3c.json b/tools/perf/pmu-events/arch/arm64/hisilicon/hip08/uncore-l3c.json
-index ca48747..f463d0a 100644
---- a/tools/perf/pmu-events/arch/arm64/hisilicon/hip08/uncore-l3c.json
-+++ b/tools/perf/pmu-events/arch/arm64/hisilicon/hip08/uncore-l3c.json
-@@ -34,4 +34,60 @@
- 	    "PublicDescription": "l3c precharge commands",
- 	    "Unit": "hisi_sccl,l3c",
-    },
-+   {
-+	    "EventCode": "0x20",
-+	    "EventName": "uncore_hisi_l3c.rd_spipe",
-+	    "BriefDescription": "Count of the number of read lines that come from this cluster of CPU core in spipe",
-+	    "PublicDescription": "Count of the number of read lines that come from this cluster of CPU core in spipe",
-+	    "Unit": "hisi_sccl,l3c",
+diff --git a/tools/perf/pmu-events/arch/arm64/hisilicon/hip08/uncore-ddrc.json b/tools/perf/pmu-events/arch/arm64/hisilicon/hip08/uncore-ddrc.json
+index 99f4fc4..7da8694 100644
+--- a/tools/perf/pmu-events/arch/arm64/hisilicon/hip08/uncore-ddrc.json
++++ b/tools/perf/pmu-events/arch/arm64/hisilicon/hip08/uncore-ddrc.json
+@@ -1,5 +1,19 @@
+ [
+    {
++	    "EventCode": "0x00",
++	    "EventName": "uncore_hisi_ddrc.flux_wr",
++	    "BriefDescription": "DDRC total write operations",
++	    "PublicDescription": "DDRC total write operations",
++	    "Unit": "hisi_sccl,ddrc",
 +   },
 +   {
-+	    "EventCode": "0x21",
-+	    "EventName": "uncore_hisi_l3c.wr_spipe",
-+	    "BriefDescription": "Count of the number of write lines that come from this cluster of CPU core in spipe",
-+	    "PublicDescription": "Count of the number of write lines that come from this cluster of CPU core in spipe",
-+	    "Unit": "hisi_sccl,l3c",
++	    "EventCode": "0x01",
++	    "EventName": "uncore_hisi_ddrc.flux_rd",
++	    "BriefDescription": "DDRC total read operations",
++	    "PublicDescription": "DDRC total read operations",
++	    "Unit": "hisi_sccl,ddrc",
 +   },
 +   {
-+	    "EventCode": "0x22",
-+	    "EventName": "uncore_hisi_l3c.rd_hit_spipe",
-+	    "BriefDescription": "Count of the number of read lines that hits in spipe of this L3C",
-+	    "PublicDescription": "Count of the number of read lines that hits in spipe of this L3C",
-+	    "Unit": "hisi_sccl,l3c",
-+   },
-+   {
-+	    "EventCode": "0x23",
-+	    "EventName": "uncore_hisi_l3c.wr_hit_spipe",
-+	    "BriefDescription": "Count of the number of write lines that hits in spipe of this L3C",
-+	    "PublicDescription": "Count of the number of write lines that hits in spipe of this L3C",
-+	    "Unit": "hisi_sccl,l3c",
-+   },
-+   {
-+	    "EventCode": "0x29",
-+	    "EventName": "uncore_hisi_l3c.back_invalid",
-+	    "BriefDescription": "Count of the number of L3C back invalid operations",
-+	    "PublicDescription": "Count of the number of L3C back invalid operations",
-+	    "Unit": "hisi_sccl,l3c",
-+   },
-+   {
-+	    "EventCode": "0x40",
-+	    "EventName": "uncore_hisi_l3c.retry_cpu",
-+	    "BriefDescription": "Count of the number of retry that L3C suppresses the CPU operations",
-+	    "PublicDescription": "Count of the number of retry that L3C suppresses the CPU operations",
-+	    "Unit": "hisi_sccl,l3c",
-+   },
-+   {
-+	    "EventCode": "0x41",
-+	    "EventName": "uncore_hisi_l3c.retry_ring",
-+	    "BriefDescription": "Count of the number of retry that L3C suppresses the ring operations",
-+	    "PublicDescription": "Count of the number of retry that L3C suppresses the ring operations",
-+	    "Unit": "hisi_sccl,l3c",
-+   },
-+   {
-+	    "EventCode": "0x42",
-+	    "EventName": "uncore_hisi_l3c.prefetch_drop",
-+	    "BriefDescription": "Count of the number of prefetch drops from this L3C",
-+	    "PublicDescription": "Count of the number of prefetch drops from this L3C",
-+	    "Unit": "hisi_sccl,l3c",
-+   },
- ]
+ 	    "EventCode": "0x02",
+ 	    "EventName": "uncore_hisi_ddrc.flux_wcmd",
+ 	    "BriefDescription": "DDRC write commands",
