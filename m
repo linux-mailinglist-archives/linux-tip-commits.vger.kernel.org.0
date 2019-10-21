@@ -2,47 +2,47 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ECFE6DF927
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Oct 2019 02:06:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 970F0DF913
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Oct 2019 02:05:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730773AbfJVAEq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 21 Oct 2019 20:04:46 -0400
+        id S2387579AbfJVAFK convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 21 Oct 2019 20:05:10 -0400
 Received: from Galois.linutronix.de ([193.142.43.55]:38895 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730730AbfJVAEq (ORCPT
+        with ESMTP id S2387566AbfJVAFK (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 21 Oct 2019 20:04:46 -0400
+        Mon, 21 Oct 2019 20:05:10 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iMgx8-000403-9h; Tue, 22 Oct 2019 01:19:06 +0200
+        id 1iMgx3-00040Y-V8; Tue, 22 Oct 2019 01:19:02 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A59781C0489;
-        Tue, 22 Oct 2019 01:19:00 +0200 (CEST)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 49DC91C04D3;
+        Tue, 22 Oct 2019 01:19:01 +0200 (CEST)
 Date:   Mon, 21 Oct 2019 23:19:00 -0000
-From:   "tip-bot2 for Steven Rostedt (VMware)" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf scripting engines: Iterate on tep event arrays directly
-Cc:     Daniel Bristot de Oliveira <bristot@redhat.com>,
-        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
+Subject: [tip: perf/core] perf trace: Initialize evsel_trace->fmt for
+ syscalls:sys_enter_* tracepoints
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        David Ahern <dsahern@gmail.com>, Jiri Olsa <jolsa@kernel.org>,
+        Luis =?utf-8?q?Cl=C3=A1udio_Gon=C3=A7alves?= 
+        <lclaudio@redhat.com>, Namhyung Kim <namhyung@kernel.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Jiri Olsa <jolsa@redhat.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Tzvetomir Stoyanov <tstoyanov@vmware.com>,
-        linux-trace-devel@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
-        Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
-In-Reply-To: <20191017153733.630cd5eb@gandalf.local.home>
-References: <20191017153733.630cd5eb@gandalf.local.home>
+        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <tip-lc8h9jgvbnboe0g7ic8tra1y@git.kernel.org>
+References: <tip-lc8h9jgvbnboe0g7ic8tra1y@git.kernel.org>
 MIME-Version: 1.0
-Message-ID: <157169994036.29376.7991606132621346447.tip-bot2@tip-bot2>
+Message-ID: <157169994085.29376.2672649081556176042.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8BIT
 X-Linutronix-Spam-Score: -1.0
 X-Linutronix-Spam-Level: -
 X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
@@ -53,108 +53,129 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     a5e05abc6b8d81148b35cd8632a4a6252383d968
-Gitweb:        https://git.kernel.org/tip/a5e05abc6b8d81148b35cd8632a4a6252383d968
-Author:        Steven Rostedt (VMware) <rostedt@goodmis.org>
-AuthorDate:    Thu, 17 Oct 2019 17:05:22 -04:00
+Commit-ID:     362222f877f1369c0a8017c58b075abf30b16ab7
+Gitweb:        https://git.kernel.org/tip/362222f877f1369c0a8017c58b075abf30b16ab7
+Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
+AuthorDate:    Thu, 17 Oct 2019 17:33:08 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Fri, 18 Oct 2019 12:07:46 -03:00
+CommitterDate: Fri, 18 Oct 2019 12:07:42 -03:00
 
-perf scripting engines: Iterate on tep event arrays directly
+perf trace: Initialize evsel_trace->fmt for syscalls:sys_enter_* tracepoints
 
-Instead of calling a useless (and broken) helper function to get the
-next event of a tep event array, just get the array directly and iterate
-over it.
+>From the syscall_fmts->arg entries for formatting strace-like syscalls.
 
-Note, the broken part was from trace_find_next_event() which after this
-will no longer be used, and can be removed.
+This is when resolving the string "whence" on a filter expression for
+the syscalls:sys_enter_lseek:
 
-Committer notes:
+  Breakpoint 3, perf_evsel__syscall_arg_fmt (evsel=0xc91ed0, arg=0x7fffffff7cd0 "whence") at builtin-trace.c:3626
+  3626	{
+  (gdb) n
+  3628		struct syscall_arg_fmt *fmt = __evsel__syscall_arg_fmt(evsel);
+  (gdb) n
+  3630		if (evsel->tp_format == NULL || fmt == NULL)
+  (gdb) n
+  3633		for (field = evsel->tp_format->format.fields; field; field = field->next, ++fmt)
+  (gdb) n
+  3634			if (strcmp(field->name, arg) == 0)
+  (gdb) p field->name
+  $3 = 0xc945e0 "__syscall_nr"
+  (gdb) n
+  3633		for (field = evsel->tp_format->format.fields; field; field = field->next, ++fmt)
+  (gdb) p *fmt
+  $4 = {scnprintf = 0x0, strtoul = 0x0, mask_val = 0x0, parm = 0x0, name = 0x0, nr_entries = 0, show_zero = false}
+  (gdb) n
+  3634			if (strcmp(field->name, arg) == 0)
+  (gdb) p field->name
+  $5 = 0xc94690 "fd"
+  (gdb) n
+  3633		for (field = evsel->tp_format->format.fields; field; field = field->next, ++fmt)
+  (gdb) n
+  3634			if (strcmp(field->name, arg) == 0)
+  (gdb) n
+  3633		for (field = evsel->tp_format->format.fields; field; field = field->next, ++fmt)
+  (gdb) n
+  3634			if (strcmp(field->name, arg) == 0)
+  (gdb) p *fmt
+  $9 = {scnprintf = 0x489be2 <syscall_arg__scnprintf_strarray>, strtoul = 0x0, mask_val = 0x0, parm = 0xa2da80 <strarray.whences>, name = 0x0,
+    nr_entries = 0, show_zero = false}
+  (gdb) p field->name
+  $10 = 0xc947b0 "whence"
+  (gdb) p fmt->parm
+  $11 = (void *) 0xa2da80 <strarray.whences>
+  (gdb) p *(struct strarray *)fmt->parm
+  $12 = {offset = 0, nr_entries = 5, prefix = 0x724d37 "SEEK_", entries = 0xa2da40 <whences>}
+  (gdb) p (struct strarray *)fmt->parm)->entries
+  Junk after end of expression.
+  (gdb) p ((struct strarray *)fmt->parm)->entries
+  $13 = (const char **) 0xa2da40 <whences>
+  (gdb) p ((struct strarray *)fmt->parm)->entries[0]
+  $14 = 0x724d21 "SET"
+  (gdb) p ((struct strarray *)fmt->parm)->entries[1]
+  $15 = 0x724d25 "CUR"
+  (gdb) p ((struct strarray *)fmt->parm)->entries[2]
+  $16 = 0x724d29 "END"
+  (gdb) p ((struct strarray *)fmt->parm)->entries[2]
+  $17 = 0x724d29 "END"
+  (gdb) p ((struct strarray *)fmt->parm)->entries[3]
+  $18 = 0x724d2d "DATA"
+  (gdb) p ((struct strarray *)fmt->parm)->entries[4]
+  $19 = 0x724d32 "HOLE"
+  (gdb)
 
-This fixes a segfault when generating python scripts from perf.data
-files with multiple tracepoint events, i.e. the following use case is
-fixed by this patch:
-
-  # perf record -e sched:* sleep 1
-  [ perf record: Woken up 31 times to write data ]
-  [ perf record: Captured and wrote 0.031 MB perf.data (9 samples) ]
-  # perf script -g python
-  Segmentation fault (core dumped)
-  #
-
-Reported-by: Daniel Bristot de Oliveira <bristot@redhat.com>
-Signed-off-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Jiri Olsa <jolsa@redhat.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: David Ahern <dsahern@gmail.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Luis Cláudio Gonçalves <lclaudio@redhat.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Tzvetomir Stoyanov <tstoyanov@vmware.com>
-Cc: linux-trace-devel@vger.kernel.org
-Link: http://lkml.kernel.org/r/20191017153733.630cd5eb@gandalf.local.home
-Link: http://lore.kernel.org/lkml/20191017210636.061448713@goodmis.org
+Link: https://lkml.kernel.org/n/tip-lc8h9jgvbnboe0g7ic8tra1y@git.kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/scripting-engines/trace-event-perl.c   |  8 ++++++--
- tools/perf/util/scripting-engines/trace-event-python.c |  9 +++++++--
- 2 files changed, 13 insertions(+), 4 deletions(-)
+ tools/perf/builtin-trace.c | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/tools/perf/util/scripting-engines/trace-event-perl.c b/tools/perf/util/scripting-engines/trace-event-perl.c
-index 1596185..741f040 100644
---- a/tools/perf/util/scripting-engines/trace-event-perl.c
-+++ b/tools/perf/util/scripting-engines/trace-event-perl.c
-@@ -539,10 +539,11 @@ static int perl_stop_script(void)
+diff --git a/tools/perf/builtin-trace.c b/tools/perf/builtin-trace.c
+index 5792278..3502417 100644
+--- a/tools/perf/builtin-trace.c
++++ b/tools/perf/builtin-trace.c
+@@ -4366,6 +4366,25 @@ static void evlist__set_default_evsel_handler(struct evlist *evlist, void *handl
+ 	}
+ }
  
- static int perl_generate_script(struct tep_handle *pevent, const char *outfile)
- {
-+	int i, not_first, count, nr_events;
-+	struct tep_event **all_events;
- 	struct tep_event *event = NULL;
- 	struct tep_format_field *f;
- 	char fname[PATH_MAX];
--	int not_first, count;
- 	FILE *ofp;
- 
- 	sprintf(fname, "%s.pl", outfile);
-@@ -603,8 +604,11 @@ sub print_backtrace\n\
- }\n\n\
- ");
- 
-+	nr_events = tep_get_events_count(pevent);
-+	all_events = tep_list_events(pevent, TEP_EVENT_SORT_ID);
- 
--	while ((event = trace_find_next_event(pevent, event))) {
-+	for (i = 0; all_events && i < nr_events; i++) {
-+		event = all_events[i];
- 		fprintf(ofp, "sub %s::%s\n{\n", event->system, event->name);
- 		fprintf(ofp, "\tmy (");
- 
-diff --git a/tools/perf/util/scripting-engines/trace-event-python.c b/tools/perf/util/scripting-engines/trace-event-python.c
-index 5d341ef..93c03b3 100644
---- a/tools/perf/util/scripting-engines/trace-event-python.c
-+++ b/tools/perf/util/scripting-engines/trace-event-python.c
-@@ -1687,10 +1687,11 @@ static int python_stop_script(void)
- 
- static int python_generate_script(struct tep_handle *pevent, const char *outfile)
- {
-+	int i, not_first, count, nr_events;
-+	struct tep_event **all_events;
- 	struct tep_event *event = NULL;
- 	struct tep_format_field *f;
- 	char fname[PATH_MAX];
--	int not_first, count;
- 	FILE *ofp;
- 
- 	sprintf(fname, "%s.py", outfile);
-@@ -1735,7 +1736,11 @@ static int python_generate_script(struct tep_handle *pevent, const char *outfile
- 	fprintf(ofp, "def trace_end():\n");
- 	fprintf(ofp, "\tprint(\"in trace_end\")\n\n");
- 
--	while ((event = trace_find_next_event(pevent, event))) {
-+	nr_events = tep_get_events_count(pevent);
-+	all_events = tep_list_events(pevent, TEP_EVENT_SORT_ID);
++static void evsel__set_syscall_arg_fmt(struct evsel *evsel, const char *name)
++{
++	struct syscall_arg_fmt *fmt = evsel__syscall_arg_fmt(evsel);
 +
-+	for (i = 0; all_events && i < nr_events; i++) {
-+		event = all_events[i];
- 		fprintf(ofp, "def %s__%s(", event->system, event->name);
- 		fprintf(ofp, "event_name, ");
- 		fprintf(ofp, "context, ");
++	if (fmt) {
++		struct syscall_fmt *scfmt = syscall_fmt__find(name);
++
++		if (scfmt) {
++			int skip = 0;
++
++			if (strcmp(evsel->tp_format->format.fields->name, "__syscall_nr") == 0 ||
++			    strcmp(evsel->tp_format->format.fields->name, "nr") == 0)
++				++skip;
++
++			memcpy(fmt + skip, scfmt->arg, (evsel->tp_format->format.nr_fields - skip) * sizeof(*fmt));
++		}
++	}
++}
++
+ static int evlist__set_syscall_tp_fields(struct evlist *evlist)
+ {
+ 	struct evsel *evsel;
+@@ -4387,11 +4406,15 @@ static int evlist__set_syscall_tp_fields(struct evlist *evlist)
+ 
+ 			if (__tp_field__init_ptr(&sc->args, sc->id.offset + sizeof(u64)))
+ 				return -1;
++
++			evsel__set_syscall_arg_fmt(evsel, evsel->tp_format->name + sizeof("sys_enter_") - 1);
+ 		} else if (!strncmp(evsel->tp_format->name, "sys_exit_", 9)) {
+ 			struct syscall_tp *sc = __evsel__syscall_tp(evsel);
+ 
+ 			if (__tp_field__init_uint(&sc->ret, sizeof(u64), sc->id.offset + sizeof(u64), evsel->needs_swap))
+ 				return -1;
++
++			evsel__set_syscall_arg_fmt(evsel, evsel->tp_format->name + sizeof("sys_exit_") - 1);
+ 		}
+ 	}
+ 
