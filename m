@@ -2,48 +2,50 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CBC0DF902
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Oct 2019 02:05:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6983EDF8F5
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Oct 2019 02:04:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730750AbfJVAEj convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 21 Oct 2019 20:04:39 -0400
+        id S1730220AbfJVAER (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 21 Oct 2019 20:04:17 -0400
 Received: from Galois.linutronix.de ([193.142.43.55]:38895 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730730AbfJVAEi (ORCPT
+        with ESMTP id S2387481AbfJVAEN (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 21 Oct 2019 20:04:38 -0400
+        Mon, 21 Oct 2019 20:04:13 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iMgxC-00045w-FI; Tue, 22 Oct 2019 01:19:11 +0200
+        id 1iMgxC-00046Q-Pl; Tue, 22 Oct 2019 01:19:11 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 925891C04D3;
-        Tue, 22 Oct 2019 01:19:07 +0200 (CEST)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4892B1C0489;
+        Tue, 22 Oct 2019 01:19:08 +0200 (CEST)
 Date:   Mon, 21 Oct 2019 23:19:07 -0000
-From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for John Garry" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] tools arch x86: Grab a copy of the file containing
- the IRQ vector defines
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Andi Kleen <ak@linux.intel.com>,
-        David Ahern <dsahern@gmail.com>, Jiri Olsa <jolsa@kernel.org>,
-        Luis =?utf-8?q?Cl=C3=A1udio_Gon=C3=A7alves?= 
-        <lclaudio@redhat.com>, Namhyung Kim <namhyung@kernel.org>,
+Subject: [tip: perf/core] perf vendor events arm64: Add some missing events
+ for Hisi hip08 HHA PMU
+Cc:     John Garry <john.garry@huawei.com>,
+        Shaokun Zhang <zhangshaokun@hisilicon.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Will Deacon <will@kernel.org>, linuxarm@huawei.com,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <tip-z7gi058lzhnrm32slevg3xod@git.kernel.org>
-References: <tip-z7gi058lzhnrm32slevg3xod@git.kernel.org>
+In-Reply-To: <1567612484-195727-5-git-send-email-john.garry@huawei.com>
+References: <1567612484-195727-5-git-send-email-john.garry@huawei.com>
 MIME-Version: 1.0
-Message-ID: <157169994705.29376.10717273950729910695.tip-bot2@tip-bot2>
+Message-ID: <157169994783.29376.4450201190536915731.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: 7bit
 X-Linutronix-Spam-Score: -1.0
 X-Linutronix-Spam-Level: -
 X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
@@ -54,193 +56,77 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     d2b72b7280370aaddcbe93d00939bc7ec21dda48
-Gitweb:        https://git.kernel.org/tip/d2b72b7280370aaddcbe93d00939bc7ec21dda48
-Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Tue, 15 Oct 2019 15:40:23 -03:00
+Commit-ID:     2b7847158120136c4b23684c768a82d571ee59bf
+Gitweb:        https://git.kernel.org/tip/2b7847158120136c4b23684c768a82d571ee59bf
+Author:        John Garry <john.garry@huawei.com>
+AuthorDate:    Wed, 04 Sep 2019 23:54:44 +08:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Tue, 15 Oct 2019 15:42:01 -03:00
+CommitterDate: Tue, 15 Oct 2019 13:03:58 -03:00
 
-tools arch x86: Grab a copy of the file containing the IRQ vector defines
+perf vendor events arm64: Add some missing events for Hisi hip08 HHA PMU
 
-We'll use it to generate a table and then convert the irq_vectors:*
-tracepoint 'vector' arg in things like perf trace, script, etc.
+Add some more missing events.
 
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: David Ahern <dsahern@gmail.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Luis Cláudio Gonçalves <lclaudio@redhat.com>
+A trivial typo is also fixed.
+
+Signed-off-by: John Garry <john.garry@huawei.com>
+Reviewed-by: Shaokun Zhang <zhangshaokun@hisilicon.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Jiri Olsa <jolsa@redhat.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lkml.kernel.org/n/tip-z7gi058lzhnrm32slevg3xod@git.kernel.org
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Will Deacon <will@kernel.org>
+Cc: linuxarm@huawei.com
+Link: http://lore.kernel.org/lkml/1567612484-195727-5-git-send-email-john.garry@huawei.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/arch/x86/include/asm/irq_vectors.h | 146 ++++++++++++++++++++++-
- tools/perf/check-headers.sh              |   1 +-
- 2 files changed, 147 insertions(+)
- create mode 100644 tools/arch/x86/include/asm/irq_vectors.h
+ tools/perf/pmu-events/arch/arm64/hisilicon/hip08/uncore-hha.json | 23 ++++++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
 
-diff --git a/tools/arch/x86/include/asm/irq_vectors.h b/tools/arch/x86/include/asm/irq_vectors.h
-new file mode 100644
-index 0000000..889f8b1
---- /dev/null
-+++ b/tools/arch/x86/include/asm/irq_vectors.h
-@@ -0,0 +1,146 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _ASM_X86_IRQ_VECTORS_H
-+#define _ASM_X86_IRQ_VECTORS_H
-+
-+#include <linux/threads.h>
-+/*
-+ * Linux IRQ vector layout.
-+ *
-+ * There are 256 IDT entries (per CPU - each entry is 8 bytes) which can
-+ * be defined by Linux. They are used as a jump table by the CPU when a
-+ * given vector is triggered - by a CPU-external, CPU-internal or
-+ * software-triggered event.
-+ *
-+ * Linux sets the kernel code address each entry jumps to early during
-+ * bootup, and never changes them. This is the general layout of the
-+ * IDT entries:
-+ *
-+ *  Vectors   0 ...  31 : system traps and exceptions - hardcoded events
-+ *  Vectors  32 ... 127 : device interrupts
-+ *  Vector  128         : legacy int80 syscall interface
-+ *  Vectors 129 ... LOCAL_TIMER_VECTOR-1
-+ *  Vectors LOCAL_TIMER_VECTOR ... 255 : special interrupts
-+ *
-+ * 64-bit x86 has per CPU IDT tables, 32-bit has one shared IDT table.
-+ *
-+ * This file enumerates the exact layout of them:
-+ */
-+
-+#define NMI_VECTOR			0x02
-+#define MCE_VECTOR			0x12
-+
-+/*
-+ * IDT vectors usable for external interrupt sources start at 0x20.
-+ * (0x80 is the syscall vector, 0x30-0x3f are for ISA)
-+ */
-+#define FIRST_EXTERNAL_VECTOR		0x20
-+
-+/*
-+ * Reserve the lowest usable vector (and hence lowest priority)  0x20 for
-+ * triggering cleanup after irq migration. 0x21-0x2f will still be used
-+ * for device interrupts.
-+ */
-+#define IRQ_MOVE_CLEANUP_VECTOR		FIRST_EXTERNAL_VECTOR
-+
-+#define IA32_SYSCALL_VECTOR		0x80
-+
-+/*
-+ * Vectors 0x30-0x3f are used for ISA interrupts.
-+ *   round up to the next 16-vector boundary
-+ */
-+#define ISA_IRQ_VECTOR(irq)		(((FIRST_EXTERNAL_VECTOR + 16) & ~15) + irq)
-+
-+/*
-+ * Special IRQ vectors used by the SMP architecture, 0xf0-0xff
-+ *
-+ *  some of the following vectors are 'rare', they are merged
-+ *  into a single vector (CALL_FUNCTION_VECTOR) to save vector space.
-+ *  TLB, reschedule and local APIC vectors are performance-critical.
-+ */
-+
-+#define SPURIOUS_APIC_VECTOR		0xff
-+/*
-+ * Sanity check
-+ */
-+#if ((SPURIOUS_APIC_VECTOR & 0x0F) != 0x0F)
-+# error SPURIOUS_APIC_VECTOR definition error
-+#endif
-+
-+#define ERROR_APIC_VECTOR		0xfe
-+#define RESCHEDULE_VECTOR		0xfd
-+#define CALL_FUNCTION_VECTOR		0xfc
-+#define CALL_FUNCTION_SINGLE_VECTOR	0xfb
-+#define THERMAL_APIC_VECTOR		0xfa
-+#define THRESHOLD_APIC_VECTOR		0xf9
-+#define REBOOT_VECTOR			0xf8
-+
-+/*
-+ * Generic system vector for platform specific use
-+ */
-+#define X86_PLATFORM_IPI_VECTOR		0xf7
-+
-+/*
-+ * IRQ work vector:
-+ */
-+#define IRQ_WORK_VECTOR			0xf6
-+
-+#define UV_BAU_MESSAGE			0xf5
-+#define DEFERRED_ERROR_VECTOR		0xf4
-+
-+/* Vector on which hypervisor callbacks will be delivered */
-+#define HYPERVISOR_CALLBACK_VECTOR	0xf3
-+
-+/* Vector for KVM to deliver posted interrupt IPI */
-+#ifdef CONFIG_HAVE_KVM
-+#define POSTED_INTR_VECTOR		0xf2
-+#define POSTED_INTR_WAKEUP_VECTOR	0xf1
-+#define POSTED_INTR_NESTED_VECTOR	0xf0
-+#endif
-+
-+#define MANAGED_IRQ_SHUTDOWN_VECTOR	0xef
-+
-+#if IS_ENABLED(CONFIG_HYPERV)
-+#define HYPERV_REENLIGHTENMENT_VECTOR	0xee
-+#define HYPERV_STIMER0_VECTOR		0xed
-+#endif
-+
-+#define LOCAL_TIMER_VECTOR		0xec
-+
-+#define NR_VECTORS			 256
-+
-+#ifdef CONFIG_X86_LOCAL_APIC
-+#define FIRST_SYSTEM_VECTOR		LOCAL_TIMER_VECTOR
-+#else
-+#define FIRST_SYSTEM_VECTOR		NR_VECTORS
-+#endif
-+
-+/*
-+ * Size the maximum number of interrupts.
-+ *
-+ * If the irq_desc[] array has a sparse layout, we can size things
-+ * generously - it scales up linearly with the maximum number of CPUs,
-+ * and the maximum number of IO-APICs, whichever is higher.
-+ *
-+ * In other cases we size more conservatively, to not create too large
-+ * static arrays.
-+ */
-+
-+#define NR_IRQS_LEGACY			16
-+
-+#define CPU_VECTOR_LIMIT		(64 * NR_CPUS)
-+#define IO_APIC_VECTOR_LIMIT		(32 * MAX_IO_APICS)
-+
-+#if defined(CONFIG_X86_IO_APIC) && defined(CONFIG_PCI_MSI)
-+#define NR_IRQS						\
-+	(CPU_VECTOR_LIMIT > IO_APIC_VECTOR_LIMIT ?	\
-+		(NR_VECTORS + CPU_VECTOR_LIMIT)  :	\
-+		(NR_VECTORS + IO_APIC_VECTOR_LIMIT))
-+#elif defined(CONFIG_X86_IO_APIC)
-+#define	NR_IRQS				(NR_VECTORS + IO_APIC_VECTOR_LIMIT)
-+#elif defined(CONFIG_PCI_MSI)
-+#define NR_IRQS				(NR_VECTORS + CPU_VECTOR_LIMIT)
-+#else
-+#define NR_IRQS				NR_IRQS_LEGACY
-+#endif
-+
-+#endif /* _ASM_X86_IRQ_VECTORS_H */
-diff --git a/tools/perf/check-headers.sh b/tools/perf/check-headers.sh
-index 93c46d3..48290a0 100755
---- a/tools/perf/check-headers.sh
-+++ b/tools/perf/check-headers.sh
-@@ -28,6 +28,7 @@ arch/x86/include/asm/disabled-features.h
- arch/x86/include/asm/required-features.h
- arch/x86/include/asm/cpufeatures.h
- arch/x86/include/asm/inat_types.h
-+arch/x86/include/asm/irq_vectors.h
- arch/x86/include/asm/msr-index.h
- arch/x86/include/uapi/asm/prctl.h
- arch/x86/lib/x86-opcode-map.txt
+diff --git a/tools/perf/pmu-events/arch/arm64/hisilicon/hip08/uncore-hha.json b/tools/perf/pmu-events/arch/arm64/hisilicon/hip08/uncore-hha.json
+index 447d306..3be418a 100644
+--- a/tools/perf/pmu-events/arch/arm64/hisilicon/hip08/uncore-hha.json
++++ b/tools/perf/pmu-events/arch/arm64/hisilicon/hip08/uncore-hha.json
+@@ -21,6 +21,13 @@
+ 	    "Unit": "hisi_sccl,hha",
+    },
+    {
++	    "EventCode": "0x03",
++	    "EventName": "uncore_hisi_hha.rx_ccix",
++	    "BriefDescription": "Count of the number of operations that HHA has received from CCIX",
++	    "PublicDescription": "Count of the number of operations that HHA has received from CCIX",
++	    "Unit": "hisi_sccl,hha",
++   },
++   {
+ 	    "EventCode": "0x1c",
+ 	    "EventName": "uncore_hisi_hha.rd_ddr_64b",
+ 	    "BriefDescription": "The number of read operations sent by HHA to DDRC which size is 64 bytes",
+@@ -29,7 +36,7 @@
+    },
+    {
+ 	    "EventCode": "0x1d",
+-	    "EventName": "uncore_hisi_hha.wr_dr_64b",
++	    "EventName": "uncore_hisi_hha.wr_ddr_64b",
+ 	    "BriefDescription": "The number of write operations sent by HHA to DDRC which size is 64 bytes",
+ 	    "PublicDescription": "The number of write operations sent by HHA to DDRC which size is 64 bytes",
+ 	    "Unit": "hisi_sccl,hha",
+@@ -48,4 +55,18 @@
+ 	    "PublicDescription": "The number of write operations sent by HHA to DDRC which size is 128 bytes",
+ 	    "Unit": "hisi_sccl,hha",
+    },
++   {
++	    "EventCode": "0x20",
++	    "EventName": "uncore_hisi_hha.spill_num",
++	    "BriefDescription": "Count of the number of spill operations that the HHA has sent",
++	    "PublicDescription": "Count of the number of spill operations that the HHA has sent",
++	    "Unit": "hisi_sccl,hha",
++   },
++   {
++	    "EventCode": "0x21",
++	    "EventName": "uncore_hisi_hha.spill_success",
++	    "BriefDescription": "Count of the number of successful spill operations that the HHA has sent",
++	    "PublicDescription": "Count of the number of successful spill operations that the HHA has sent",
++	    "Unit": "hisi_sccl,hha",
++   },
+ ]
