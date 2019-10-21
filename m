@@ -2,43 +2,41 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2802CDF8F9
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Oct 2019 02:04:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 833FBDF926
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Oct 2019 02:06:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387520AbfJVAEX convert rfc822-to-8bit (ORCPT
+        id S1730731AbfJVAEf convert rfc822-to-8bit (ORCPT
         <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 21 Oct 2019 20:04:23 -0400
+        Mon, 21 Oct 2019 20:04:35 -0400
 Received: from Galois.linutronix.de ([193.142.43.55]:38895 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387508AbfJVAEX (ORCPT
+        with ESMTP id S1730718AbfJVAEe (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 21 Oct 2019 20:04:23 -0400
+        Mon, 21 Oct 2019 20:04:34 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iMgxK-00049G-ES; Tue, 22 Oct 2019 01:19:18 +0200
+        id 1iMgxH-00049U-II; Tue, 22 Oct 2019 01:19:15 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 894361C04D7;
-        Tue, 22 Oct 2019 01:19:11 +0200 (CEST)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 358851C04DD;
+        Tue, 22 Oct 2019 01:19:12 +0200 (CEST)
 Date:   Mon, 21 Oct 2019 23:19:11 -0000
 From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf trace: Filter own pid to avoid a feedback look
- in 'perf trace record -a'
-Cc:     Andi Kleen <ak@linux.intel.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
+Subject: [tip: perf/core] perf string: Export asprintf__tp_filter_pids()
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         David Ahern <dsahern@gmail.com>, Jiri Olsa <jolsa@kernel.org>,
         Luis =?utf-8?q?Cl=C3=A1udio_Gon=C3=A7alves?= 
         <lclaudio@redhat.com>, Namhyung Kim <namhyung@kernel.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <tip-uysx5w8f2y5ndoln5cq370tv@git.kernel.org>
-References: <tip-uysx5w8f2y5ndoln5cq370tv@git.kernel.org>
+In-Reply-To: <tip-w3cuwjs63lxf5zpryy3145uv@git.kernel.org>
+References: <tip-w3cuwjs63lxf5zpryy3145uv@git.kernel.org>
 MIME-Version: 1.0
-Message-ID: <157169995114.29376.6162722012242994606.tip-bot2@tip-bot2>
+Message-ID: <157169995179.29376.3543190043695058395.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -54,91 +52,71 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     7fbfe22cf4cfe01a88704dd76ca65d108039d297
-Gitweb:        https://git.kernel.org/tip/7fbfe22cf4cfe01a88704dd76ca65d108039d297
+Commit-ID:     da949f507a73df5b5ad5031cb23b82a4d81846eb
+Gitweb:        https://git.kernel.org/tip/da949f507a73df5b5ad5031cb23b82a4d81846eb
 Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Mon, 14 Oct 2019 20:13:51 -03:00
+AuthorDate:    Mon, 14 Oct 2019 20:10:50 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Tue, 15 Oct 2019 13:03:57 -03:00
 
-perf trace: Filter own pid to avoid a feedback look in 'perf trace record -a'
+perf string: Export asprintf__tp_filter_pids()
 
-When doing a system wide 'perf trace record' we need, just like in 'perf
-trace' live mode, to filter out perf trace's own pid, so set up a
-tracepoint filter for the raw_syscalls tracepoints right after adding
-them to the argv array that is set up to then call cmd_record().
+Will be used directly in 'perf trace' for setting up the command line
+argv array to pass to cmd_record, as this was how 'perf trace record'
+was implemented, following the model used in 'perf kvm record', 'perf
+sched record', etc.
 
-Reported-by: Andi Kleen <ak@linux.intel.com>
 Cc: Adrian Hunter <adrian.hunter@intel.com>
 Cc: David Ahern <dsahern@gmail.com>
 Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Luis Cláudio Gonçalves <lclaudio@redhat.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lkml.kernel.org/n/tip-uysx5w8f2y5ndoln5cq370tv@git.kernel.org
+Link: https://lkml.kernel.org/n/tip-w3cuwjs63lxf5zpryy3145uv@git.kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/builtin-trace.c | 24 ++++++++++++++++--------
- 1 file changed, 16 insertions(+), 8 deletions(-)
+ tools/perf/util/evlist.c  | 3 ++-
+ tools/perf/util/string2.h | 3 +++
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/builtin-trace.c b/tools/perf/builtin-trace.c
-index 467e18e..cdee22d 100644
---- a/tools/perf/builtin-trace.c
-+++ b/tools/perf/builtin-trace.c
-@@ -2796,21 +2796,23 @@ static int trace__record(struct trace *trace, int argc, const char **argv)
- 		"-m", "1024",
- 		"-c", "1",
- 	};
--
-+	pid_t pid = getpid();
-+	char *filter = asprintf__tp_filter_pids(1, &pid);
- 	const char * const sc_args[] = { "-e", };
- 	unsigned int sc_args_nr = ARRAY_SIZE(sc_args);
- 	const char * const majpf_args[] = { "-e", "major-faults" };
- 	unsigned int majpf_args_nr = ARRAY_SIZE(majpf_args);
- 	const char * const minpf_args[] = { "-e", "minor-faults" };
- 	unsigned int minpf_args_nr = ARRAY_SIZE(minpf_args);
-+	int err = -1;
- 
--	/* +1 is for the event string below */
--	rec_argc = ARRAY_SIZE(record_args) + sc_args_nr + 1 +
-+	/* +3 is for the event string below and the pid filter */
-+	rec_argc = ARRAY_SIZE(record_args) + sc_args_nr + 3 +
- 		majpf_args_nr + minpf_args_nr + argc;
- 	rec_argv = calloc(rec_argc + 1, sizeof(char *));
- 
--	if (rec_argv == NULL)
--		return -ENOMEM;
-+	if (rec_argv == NULL || filter == NULL)
-+		goto out_free;
- 
- 	j = 0;
- 	for (i = 0; i < ARRAY_SIZE(record_args); i++)
-@@ -2827,11 +2829,13 @@ static int trace__record(struct trace *trace, int argc, const char **argv)
- 			rec_argv[j++] = "syscalls:sys_enter,syscalls:sys_exit";
- 		else {
- 			pr_err("Neither raw_syscalls nor syscalls events exist.\n");
--			free(rec_argv);
--			return -1;
-+			goto out_free;
- 		}
- 	}
- 
-+	rec_argv[j++] = "--filter";
-+	rec_argv[j++] = filter;
-+
- 	if (trace->trace_pgfaults & TRACE_PFMAJ)
- 		for (i = 0; i < majpf_args_nr; i++)
- 			rec_argv[j++] = majpf_args[i];
-@@ -2843,7 +2847,11 @@ static int trace__record(struct trace *trace, int argc, const char **argv)
- 	for (i = 0; i < (unsigned int)argc; i++)
- 		rec_argv[j++] = argv[i];
- 
--	return cmd_record(j, rec_argv);
-+	err = cmd_record(j, rec_argv);
-+out_free:
-+	free(filter);
-+	free(rec_argv);
-+	return err;
+diff --git a/tools/perf/util/evlist.c b/tools/perf/util/evlist.c
+index 8793b4e..0f9cd70 100644
+--- a/tools/perf/util/evlist.c
++++ b/tools/perf/util/evlist.c
+@@ -21,6 +21,7 @@
+ #include "../perf.h"
+ #include "asm/bug.h"
+ #include "bpf-event.h"
++#include "util/string2.h"
+ #include <signal.h>
+ #include <unistd.h>
+ #include <sched.h>
+@@ -959,7 +960,7 @@ int perf_evlist__append_tp_filter(struct evlist *evlist, const char *filter)
+ 	return err;
  }
  
- static size_t trace__fprintf_thread_summary(struct trace *trace, FILE *fp);
+-static char *asprintf__tp_filter_pids(size_t npids, pid_t *pids)
++char *asprintf__tp_filter_pids(size_t npids, pid_t *pids)
+ {
+ 	char *filter;
+ 	size_t i;
+diff --git a/tools/perf/util/string2.h b/tools/perf/util/string2.h
+index 708805f..73df616 100644
+--- a/tools/perf/util/string2.h
++++ b/tools/perf/util/string2.h
+@@ -4,6 +4,7 @@
+ 
+ #include <linux/string.h>
+ #include <linux/types.h>
++#include <sys/types.h> // pid_t
+ #include <stddef.h>
+ #include <string.h>
+ 
+@@ -32,6 +33,8 @@ static inline char *asprintf_expr_not_in_ints(const char *var, size_t nints, int
+ 	return asprintf_expr_inout_ints(var, false, nints, ints);
+ }
+ 
++char *asprintf__tp_filter_pids(size_t npids, pid_t *pids);
++
+ char *strpbrk_esc(char *str, const char *stopset);
+ char *strdup_esc(const char *str);
+ 
