@@ -2,42 +2,43 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E466DE481
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 21 Oct 2019 08:26:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA0E5DE491
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 21 Oct 2019 08:27:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726289AbfJUG0v (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 21 Oct 2019 02:26:51 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:33199 "EHLO
+        id S1727221AbfJUG1L (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 21 Oct 2019 02:27:11 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:33236 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726039AbfJUG0v (ORCPT
+        with ESMTP id S1726199AbfJUG06 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 21 Oct 2019 02:26:51 -0400
+        Mon, 21 Oct 2019 02:26:58 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iMR9O-00025o-7H; Mon, 21 Oct 2019 08:26:42 +0200
+        id 1iMR9P-00025u-58; Mon, 21 Oct 2019 08:26:43 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B9F951C0092;
-        Mon, 21 Oct 2019 08:26:41 +0200 (CEST)
-Date:   Mon, 21 Oct 2019 06:26:41 -0000
-From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 84F971C0092;
+        Mon, 21 Oct 2019 08:26:42 +0200 (CEST)
+Date:   Mon, 21 Oct 2019 06:26:42 -0000
+From:   "tip-bot2 for Yunfeng Ye" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] tools headers kvm: Sync kvm headers with the
- kernel sources
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Jim Mattson <jmattson@google.com>,
-        Jiri Olsa <jolsa@kernel.org>,
+Subject: [tip: perf/urgent] perf c2c: Fix memory leak in build_cl_output()
+Cc:     Yunfeng Ye <yeyunfeng@huawei.com>, Jiri Olsa <jolsa@kernel.org>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Feilong Lin <linfeilong@huawei.com>,
+        Hu Shiyuan <hushiyuan@huawei.com>,
+        Mark Rutland <mark.rutland@arm.com>,
         Namhyung Kim <namhyung@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <tip-pqzkt1hmfpqph3ts8i6zzmim@git.kernel.org>
-References: <tip-pqzkt1hmfpqph3ts8i6zzmim@git.kernel.org>
+In-Reply-To: <4d3c0178-5482-c313-98e1-f82090d2d456@huawei.com>
+References: <4d3c0178-5482-c313-98e1-f82090d2d456@huawei.com>
 MIME-Version: 1.0
-Message-ID: <157163920149.29376.13457875113967123033.tip-bot2@tip-bot2>
+Message-ID: <157163920230.29376.8676818856135975024.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -53,51 +54,71 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     7cb3a2445705e45af9b58dd241d26598a35b1fdd
-Gitweb:        https://git.kernel.org/tip/7cb3a2445705e45af9b58dd241d26598a35b1fdd
-Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Tue, 15 Oct 2019 12:30:08 -03:00
+Commit-ID:     ae199c580da1754a2b051321eeb76d6dacd8707b
+Gitweb:        https://git.kernel.org/tip/ae199c580da1754a2b051321eeb76d6dacd8707b
+Author:        Yunfeng Ye <yeyunfeng@huawei.com>
+AuthorDate:    Tue, 15 Oct 2019 10:54:14 +08:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Tue, 15 Oct 2019 12:30:08 -03:00
+CommitterDate: Tue, 15 Oct 2019 12:08:13 -03:00
 
-tools headers kvm: Sync kvm headers with the kernel sources
+perf c2c: Fix memory leak in build_cl_output()
 
-To pick the changes in:
+There is a memory leak problem in the failure paths of
+build_cl_output(), so fix it.
 
-    0cb8410b90e7 ("kvm: svm: Intercept RDPRU")
-
-That trigger a rebuild in too in tooling:
-
-    CC       /tmp/build/perf/arch/x86/util/kvm-stat.o
-
-But this time around no changes in tooling results, as SVM_EXIT_RDPRU
-wasn't added to SVM_EXIT_REASONS, that is used in kvm-stat.c.
-
-And addresses this perf build warnings:
-
-  Warning: Kernel ABI header at 'tools/arch/x86/include/uapi/asm/svm.h' differs from latest version at 'arch/x86/include/uapi/asm/svm.h'
-  diff -u tools/arch/x86/include/uapi/asm/svm.h arch/x86/include/uapi/asm/svm.h
-
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Jim Mattson <jmattson@google.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
+Signed-off-by: Yunfeng Ye <yeyunfeng@huawei.com>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Feilong Lin <linfeilong@huawei.com>
+Cc: Hu Shiyuan <hushiyuan@huawei.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Link: https://lkml.kernel.org/n/tip-pqzkt1hmfpqph3ts8i6zzmim@git.kernel.org
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: http://lore.kernel.org/lkml/4d3c0178-5482-c313-98e1-f82090d2d456@huawei.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/arch/x86/include/uapi/asm/svm.h | 1 +
- 1 file changed, 1 insertion(+)
+ tools/perf/builtin-c2c.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/tools/arch/x86/include/uapi/asm/svm.h b/tools/arch/x86/include/uapi/asm/svm.h
-index a9731f8..2e8a30f 100644
---- a/tools/arch/x86/include/uapi/asm/svm.h
-+++ b/tools/arch/x86/include/uapi/asm/svm.h
-@@ -75,6 +75,7 @@
- #define SVM_EXIT_MWAIT         0x08b
- #define SVM_EXIT_MWAIT_COND    0x08c
- #define SVM_EXIT_XSETBV        0x08d
-+#define SVM_EXIT_RDPRU         0x08e
- #define SVM_EXIT_NPF           0x400
- #define SVM_EXIT_AVIC_INCOMPLETE_IPI		0x401
- #define SVM_EXIT_AVIC_UNACCELERATED_ACCESS	0x402
+diff --git a/tools/perf/builtin-c2c.c b/tools/perf/builtin-c2c.c
+index 3542b6a..e69f449 100644
+--- a/tools/perf/builtin-c2c.c
++++ b/tools/perf/builtin-c2c.c
+@@ -2635,6 +2635,7 @@ static int build_cl_output(char *cl_sort, bool no_source)
+ 	bool add_sym   = false;
+ 	bool add_dso   = false;
+ 	bool add_src   = false;
++	int ret = 0;
+ 
+ 	if (!buf)
+ 		return -ENOMEM;
+@@ -2653,7 +2654,8 @@ static int build_cl_output(char *cl_sort, bool no_source)
+ 			add_dso = true;
+ 		} else if (strcmp(tok, "offset")) {
+ 			pr_err("unrecognized sort token: %s\n", tok);
+-			return -EINVAL;
++			ret = -EINVAL;
++			goto err;
+ 		}
+ 	}
+ 
+@@ -2676,13 +2678,15 @@ static int build_cl_output(char *cl_sort, bool no_source)
+ 		add_sym ? "symbol," : "",
+ 		add_dso ? "dso," : "",
+ 		add_src ? "cl_srcline," : "",
+-		"node") < 0)
+-		return -ENOMEM;
++		"node") < 0) {
++		ret = -ENOMEM;
++		goto err;
++	}
+ 
+ 	c2c.show_src = add_src;
+-
++err:
+ 	free(buf);
+-	return 0;
++	return ret;
+ }
+ 
+ static int setup_coalesce(const char *coalesce, bool no_source)
