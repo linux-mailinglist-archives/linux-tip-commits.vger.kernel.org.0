@@ -2,52 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 098F6DE496
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 21 Oct 2019 08:27:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A2859DE486
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 21 Oct 2019 08:27:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727129AbfJUG1T (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 21 Oct 2019 02:27:19 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:33244 "EHLO
+        id S1726149AbfJUG0y (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 21 Oct 2019 02:26:54 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:33210 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727319AbfJUG1S (ORCPT
+        with ESMTP id S1726199AbfJUG0w (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 21 Oct 2019 02:27:18 -0400
+        Mon, 21 Oct 2019 02:26:52 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iMR9Q-00027S-Fz; Mon, 21 Oct 2019 08:26:44 +0200
+        id 1iMR9U-00029E-83; Mon, 21 Oct 2019 08:26:48 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 07C821C047B;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A621E1C0494;
         Mon, 21 Oct 2019 08:26:44 +0200 (CEST)
-Date:   Mon, 21 Oct 2019 06:26:43 -0000
-From:   "tip-bot2 for Yunfeng Ye" <tip-bot2@linutronix.de>
+Date:   Mon, 21 Oct 2019 06:26:44 -0000
+From:   "tip-bot2 for Thomas Richter" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf tools: Fix resource leak of closedir() on the
- error paths
-Cc:     Yunfeng Ye <yeyunfeng@huawei.com>, Jiri Olsa <jolsa@kernel.org>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Alexey Budankov <alexey.budankov@linux.intel.com>,
-        Andi Kleen <ak@linux.intel.com>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Feilong Lin <linfeilong@huawei.com>,
-        Hu Shiyuan <hushiyuan@huawei.com>,
-        Igor Lubashev <ilubashe@akamai.com>,
-        Kan Liang <kan.liang@linux.intel.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Martin KaFai Lau <kafai@fb.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
+Subject: [tip: perf/urgent] perf jvmti: Link against tools/lib/ctype.h to have
+ weak strlcpy()
+Cc:     Thomas Richter <tmricht@linux.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <cd5f7cd2-b80d-6add-20a1-32f4f43e0744@huawei.com>
-References: <cd5f7cd2-b80d-6add-20a1-32f4f43e0744@huawei.com>
+In-Reply-To: <20191008093841.59387-1-tmricht@linux.ibm.com>
+References: <20191008093841.59387-1-tmricht@linux.ibm.com>
 MIME-Version: 1.0
-Message-ID: <157163920371.29376.16536037745766899826.tip-bot2@tip-bot2>
+Message-ID: <157163920447.29376.9814329868243162602.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -63,76 +51,57 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     6080728ff8e9c9116e52e6f840152356ac2fea56
-Gitweb:        https://git.kernel.org/tip/6080728ff8e9c9116e52e6f840152356ac2fea56
-Author:        Yunfeng Ye <yeyunfeng@huawei.com>
-AuthorDate:    Tue, 15 Oct 2019 16:30:08 +08:00
+Commit-ID:     6a6fac11b11299aa5bd8532ea863fc2f652af2b6
+Gitweb:        https://git.kernel.org/tip/6a6fac11b11299aa5bd8532ea863fc2f652af2b6
+Author:        Thomas Richter <tmricht@linux.ibm.com>
+AuthorDate:    Tue, 08 Oct 2019 11:38:41 +02:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Tue, 15 Oct 2019 11:54:11 -03:00
+CommitterDate: Tue, 15 Oct 2019 11:47:38 -03:00
 
-perf tools: Fix resource leak of closedir() on the error paths
+perf jvmti: Link against tools/lib/ctype.h to have weak strlcpy()
 
-Both build_mem_topology() and rm_rf_depth_pat() have resource leaks of
-closedir() on the error paths.
+The build of file libperf-jvmti.so succeeds but the resulting
+object fails to load:
 
-Fix this by calling closedir() before function returns.
+ # ~/linux/tools/perf/perf record -k mono -- java  \
+      -XX:+PreserveFramePointer \
+      -agentpath:/root/linux/tools/perf/libperf-jvmti.so \
+       hog 100000 123450
+  Error occurred during initialization of VM
+  Could not find agent library /root/linux/tools/perf/libperf-jvmti.so
+      in absolute path, with error:
+      /root/linux/tools/perf/libperf-jvmti.so: undefined symbol: _ctype
 
-Fixes: e2091cedd51b ("perf tools: Add MEM_TOPOLOGY feature to perf data file")
-Fixes: cdb6b0235f17 ("perf tools: Add pattern name checking to rm_rf")
-Signed-off-by: Yunfeng Ye <yeyunfeng@huawei.com>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Alexei Starovoitov <ast@kernel.org>
-Cc: Alexey Budankov <alexey.budankov@linux.intel.com>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Daniel Borkmann <daniel@iogearbox.net>
-Cc: Feilong Lin <linfeilong@huawei.com>
-Cc: Hu Shiyuan <hushiyuan@huawei.com>
-Cc: Igor Lubashev <ilubashe@akamai.com>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Martin KaFai Lau <kafai@fb.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Song Liu <songliubraving@fb.com>
-Cc: Yonghong Song <yhs@fb.com>
-Link: http://lore.kernel.org/lkml/cd5f7cd2-b80d-6add-20a1-32f4f43e0744@huawei.com
+Add the missing _ctype symbol into the build script.
+
+Fixes: 79743bc927f6 ("perf jvmti: Link against tools/lib/string.o to have weak strlcpy()")
+Signed-off-by: Thomas Richter <tmricht@linux.ibm.com>
+Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Link: http://lore.kernel.org/lkml/20191008093841.59387-1-tmricht@linux.ibm.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/header.c | 4 +++-
- tools/perf/util/util.c   | 6 ++++--
- 2 files changed, 7 insertions(+), 3 deletions(-)
+ tools/perf/jvmti/Build | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/util/header.c b/tools/perf/util/header.c
-index 86d9396..becc2d1 100644
---- a/tools/perf/util/header.c
-+++ b/tools/perf/util/header.c
-@@ -1296,8 +1296,10 @@ static int build_mem_topology(struct memory_node *nodes, u64 size, u64 *cntp)
- 			continue;
+diff --git a/tools/perf/jvmti/Build b/tools/perf/jvmti/Build
+index 1e148bb..202cada 100644
+--- a/tools/perf/jvmti/Build
++++ b/tools/perf/jvmti/Build
+@@ -2,7 +2,7 @@ jvmti-y += libjvmti.o
+ jvmti-y += jvmti_agent.o
  
- 		if (WARN_ONCE(cnt >= size,
--			      "failed to write MEM_TOPOLOGY, way too many nodes\n"))
-+			"failed to write MEM_TOPOLOGY, way too many nodes\n")) {
-+			closedir(dir);
- 			return -1;
-+		}
+ # For strlcpy
+-jvmti-y += libstring.o
++jvmti-y += libstring.o libctype.o
  
- 		ret = memory_node__read(&nodes[cnt++], idx);
- 	}
-diff --git a/tools/perf/util/util.c b/tools/perf/util/util.c
-index 5eda6e1..ae56c76 100644
---- a/tools/perf/util/util.c
-+++ b/tools/perf/util/util.c
-@@ -154,8 +154,10 @@ static int rm_rf_depth_pat(const char *path, int depth, const char **pat)
- 		if (!strcmp(d->d_name, ".") || !strcmp(d->d_name, ".."))
- 			continue;
- 
--		if (!match_pat(d->d_name, pat))
--			return -2;
-+		if (!match_pat(d->d_name, pat)) {
-+			ret =  -2;
-+			break;
-+		}
- 
- 		scnprintf(namebuf, sizeof(namebuf), "%s/%s",
- 			  path, d->d_name);
+ CFLAGS_jvmti         = -fPIC -DPIC -I$(JDIR)/include -I$(JDIR)/include/linux
+ CFLAGS_REMOVE_jvmti  = -Wmissing-declarations
+@@ -15,3 +15,7 @@ CFLAGS_libstring.o += -Wno-unused-parameter -DETC_PERFCONFIG="BUILD_STR($(ETC_PE
+ $(OUTPUT)jvmti/libstring.o: ../lib/string.c FORCE
+ 	$(call rule_mkdir)
+ 	$(call if_changed_dep,cc_o_c)
++
++$(OUTPUT)jvmti/libctype.o: ../lib/ctype.c FORCE
++	$(call rule_mkdir)
++	$(call if_changed_dep,cc_o_c)
