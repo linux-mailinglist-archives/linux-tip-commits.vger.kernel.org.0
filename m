@@ -2,195 +2,162 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E4078E044E
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Oct 2019 14:57:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 23CC5E04A8
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Oct 2019 15:14:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731035AbfJVM5U (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 22 Oct 2019 08:57:20 -0400
-Received: from mail.skyhub.de ([5.9.137.197]:34540 "EHLO mail.skyhub.de"
+        id S1730878AbfJVNOc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 22 Oct 2019 09:14:32 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55466 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730684AbfJVM5U (ORCPT
+        id S1730290AbfJVNOc (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 22 Oct 2019 08:57:20 -0400
-Received: from zn.tnic (p200300EC2F0D770050FB97201665E20F.dip0.t-ipconnect.de [IPv6:2003:ec:2f0d:7700:50fb:9720:1665:e20f])
+        Tue, 22 Oct 2019 09:14:32 -0400
+Received: from willie-the-truck (236.31.169.217.in-addr.arpa [217.169.31.236])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id A12A91EC0C95;
-        Tue, 22 Oct 2019 14:57:18 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1571749038;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=GTANuafLbPF/Q3/eSyDWz71FojGcGsXaYU5OcWCfmvQ=;
-        b=M7EPGnSeThiY1V+rMPeYdSRV+BtTuVKjJwGa/L0z7r4bhN10WlNmULPVtPle3iBt3Q219d
-        4Ur4m2vqePxii7f50mMHERnn0wNHWKoVLzh7JBZMOgogl9/1M+8QEIugg2UfxH/v3e66Gq
-        vL52fJWczHPd5lhhPRebHCgM5Z86veg=
-Date:   Tue, 22 Oct 2019 14:57:16 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     Jiri Slaby <jslaby@suse.cz>
-Cc:     Steven Rostedt <rostedt@goodmis.org>,
-        tip-bot2 for Jiri Slaby <tip-bot2@linutronix.de>,
-        linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        linux-arch@vger.kernel.org, Masami Hiramatsu <mhiramat@kernel.org>,
+        by mail.kernel.org (Postfix) with ESMTPSA id 58CF72184C;
+        Tue, 22 Oct 2019 13:14:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1571750071;
+        bh=CL/xFvn31VTj0bWYIaumiEDX4FAE4FmWveGE7TbKL9g=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=RViUNS18ImkiWCTnB2mPBcKZ3iLu60VuBhL9A/Tf6vUWIydt3+8HSBWu/kw05m9sW
+         ASHvuTfm2rRRAOlD312WjI1lNk+IPQ+uh+UtsltUD09tRHoBFs7ABRlxwayL3BsHj7
+         F951rSf39+qtAHQa5xBadQSSoGGPPqz7oZLg1F7c=
+Date:   Tue, 22 Oct 2019 14:14:25 +0100
+From:   Will Deacon <will@kernel.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-tip-commits@vger.kernel.org, Leo Yan <leo.yan@linaro.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Brajeswar Ghosh <brajeswar.linux@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Michael Petlan <mpetlan@redhat.com>,
+        Namhyung Kim <namhyung@kernel.org>,
         Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>, x86-ml <x86@kernel.org>,
-        Ingo Molnar <mingo@kernel.org>
-Subject: [PATCH -v2] x86/ftrace: Get rid of function_hook
-Message-ID: <20191022125716.GF31700@zn.tnic>
-References: <20191018124800.0a7006bb@gandalf.local.home>
- <20191018124956.764ac42e@gandalf.local.home>
- <20191018171354.GB20368@zn.tnic>
- <20191018133735.77e90e36@gandalf.local.home>
- <20191018194856.GC20368@zn.tnic>
- <20191018163125.346e078d@gandalf.local.home>
- <20191019073424.GA27353@zn.tnic>
- <20191021141038.GC7014@zn.tnic>
- <f8dcb3dd-a8a6-5326-ea4a-bea2eb1c4651@suse.cz>
- <20191022125615.GE31700@zn.tnic>
+        Song Liu <songliubraving@fb.com>,
+        Souptick Joarder <jrdr.linux@gmail.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>
+Subject: Re: [tip: perf/core] perf tests: Disable bp_signal testing for arm64
+Message-ID: <20191022131423.GA17920@willie-the-truck>
+References: <20191018085531.6348-3-leo.yan@linaro.org>
+ <157169993406.29376.12473771029179755767.tip-bot2@tip-bot2>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20191022125615.GE31700@zn.tnic>
+In-Reply-To: <157169993406.29376.12473771029179755767.tip-bot2@tip-bot2>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-From: Borislav Petkov <bp@suse.de>
+On Mon, Oct 21, 2019 at 11:18:54PM -0000, tip-bot2 for Leo Yan wrote:
+> The following commit has been merged into the perf/core branch of tip:
+> 
+> Commit-ID:     6a5f3d94cb69a185b921cb92c39888dc31009acb
+> Gitweb:        https://git.kernel.org/tip/6a5f3d94cb69a185b921cb92c39888dc31009acb
+> Author:        Leo Yan <leo.yan@linaro.org>
+> AuthorDate:    Fri, 18 Oct 2019 16:55:31 +08:00
+> Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
+> CommitterDate: Sat, 19 Oct 2019 15:35:01 -03:00
+> 
+> perf tests: Disable bp_signal testing for arm64
+> 
+> As there are several discussions for enabling perf breakpoint signal
+> testing on arm64 platform: arm64 needs to rely on single-step to execute
+> the breakpointed instruction and then reinstall the breakpoint exception
+> handler.  But if we hook the breakpoint with a signal, the signal
+> handler will do the stepping rather than the breakpointed instruction,
+> this causes infinite loops as below:
+> 
+>          Kernel space              |            Userspace
+>   ---------------------------------|--------------------------------
+>                                    |  __test_function() -> hit
+> 				   |                       breakpoint
+>   breakpoint_handler()             |
+>     `-> user_enable_single_step()  |
+>   do_signal()                      |
+>                                    |  sig_handler() -> Step one
+> 				   |                instruction and
+> 				   |                trap to kernel
+>   single_step_handler()            |
+>     `-> reinstall_suspended_bps()  |
+>                                    |  __test_function() -> hit
+> 				   |     breakpoint again and
+> 				   |     repeat up flow infinitely
+> 
+> As Will Deacon mentioned [1]: "that we require the overflow handler to
+> do the stepping on arm/arm64, which is relied upon by GDB/ptrace. The
+> hw_breakpoint code is a complete disaster so my preference would be to
+> rip out the perf part and just implement something directly in ptrace,
+> but it's a pretty horrible job".  Though Will commented this on arm
+> architecture, but the comment also can apply on arm64 architecture.
+> 
+> For complete information, I searched online and found a few years back,
+> Wang Nan sent one patch 'arm64: Store breakpoint single step state into
+> pstate' [2]; the patch tried to resolve this issue by avoiding single
+> stepping in signal handler and defer to enable the signal stepping when
+> return to __test_function().  The fixing was not merged due to the
+> concern for missing to handle different usage cases.
+> 
+> Based on the info, the most feasible way is to skip Perf breakpoint
+> signal testing for arm64 and this could avoid the duplicate
+> investigation efforts when people see the failure.  This patch skips
+> this case on arm64 platform, which is same with arm architecture.
+> 
+> [1] https://lkml.org/lkml/2018/11/15/205
+> [2] https://lkml.org/lkml/2015/12/23/477
+> 
+> Signed-off-by: Leo Yan <leo.yan@linaro.org>
+> Cc: Adrian Hunter <adrian.hunter@intel.com>
+> Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+> Cc: Brajeswar Ghosh <brajeswar.linux@gmail.com>
+> Cc: Florian Fainelli <f.fainelli@gmail.com>
+> Cc: Jiri Olsa <jolsa@redhat.com>
+> Cc: Mark Rutland <mark.rutland@arm.com>
+> Cc: Michael Petlan <mpetlan@redhat.com>
+> Cc: Namhyung Kim <namhyung@kernel.org>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Cc: Song Liu <songliubraving@fb.com>
+> Cc: Souptick Joarder <jrdr.linux@gmail.com>
+> Cc: Will Deacon <will@kernel.org>
+> Link: http://lore.kernel.org/lkml/20191018085531.6348-3-leo.yan@linaro.org
+> Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+> ---
+>  tools/perf/tests/bp_signal.c | 15 ++++++---------
+>  1 file changed, 6 insertions(+), 9 deletions(-)
+> 
+> diff --git a/tools/perf/tests/bp_signal.c b/tools/perf/tests/bp_signal.c
+> index c1c2c13..166f411 100644
+> --- a/tools/perf/tests/bp_signal.c
+> +++ b/tools/perf/tests/bp_signal.c
+> @@ -49,14 +49,6 @@ asm (
+>  	"__test_function:\n"
+>  	"incq (%rdi)\n"
+>  	"ret\n");
+> -#elif defined (__aarch64__)
+> -extern void __test_function(volatile long *ptr);
+> -asm (
+> -	".globl __test_function\n"
+> -	"__test_function:\n"
+> -	"str x30, [x0]\n"
+> -	"ret\n");
+> -
+>  #else
+>  static void __test_function(volatile long *ptr)
+>  {
+> @@ -302,10 +294,15 @@ bool test__bp_signal_is_supported(void)
+>  	 * stepping into the SIGIO handler and getting stuck on the
+>  	 * breakpointed instruction.
+>  	 *
+> +	 * Since arm64 has the same issue with arm for the single-step
+> +	 * handling, this case also gets suck on the breakpointed
+> +	 * instruction.
 
-History lesson courtesy of Steve:
+Freudian slip?
 
-"When ftrace first was introduced to the kernel, it used gcc's
-mcount profiling mechanism. The mcount mechanism would add a call to
-"mcount" at the start of every function but after the stack frame was
-set up. Later, in gcc 4.6, gcc introduced -mfentry, that would create a
-call to "__fentry__" instead of "mcount", before the stack frame was
-set up. In order to handle both cases, ftrace defined a macro
-"function_hook" that would be either "mcount" or "__fentry__" depending
-on which one was being used.
-
-The Linux kernel no longer supports the "mcount" method, thus there's
-no reason to keep the "function_hook" define around. Simply use
-"__fentry__", as there is no ambiguity to the name anymore."
-
-Drop it everywhere.
-
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Acked-by: Jiri Slaby <jslaby@suse.cz>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Cc: linux-doc@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: "Steven Rostedt (VMware)" <rostedt@goodmis.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: x86@kernel.org
----
- Documentation/asm-annotations.rst |  4 ++--
- arch/x86/kernel/ftrace_32.S       |  8 +++-----
- arch/x86/kernel/ftrace_64.S       | 13 ++++++-------
- 3 files changed, 11 insertions(+), 14 deletions(-)
-
-diff --git a/Documentation/asm-annotations.rst b/Documentation/asm-annotations.rst
-index 29ccd6e61fe5..f55c2bb74d00 100644
---- a/Documentation/asm-annotations.rst
-+++ b/Documentation/asm-annotations.rst
-@@ -117,9 +117,9 @@ This section covers ``SYM_FUNC_*`` and ``SYM_CODE_*`` enumerated above.
-   So in most cases, developers should write something like in the following
-   example, having some asm instructions in between the macros, of course::
- 
--    SYM_FUNC_START(function_hook)
-+    SYM_FUNC_START(memset)
-         ... asm insns ...
--    SYM_FUNC_END(function_hook)
-+    SYM_FUNC_END(memset)
- 
-   In fact, this kind of annotation corresponds to the now deprecated ``ENTRY``
-   and ``ENDPROC`` macros.
-diff --git a/arch/x86/kernel/ftrace_32.S b/arch/x86/kernel/ftrace_32.S
-index 8ed1f5d371f0..e8a9f8370112 100644
---- a/arch/x86/kernel/ftrace_32.S
-+++ b/arch/x86/kernel/ftrace_32.S
-@@ -12,18 +12,16 @@
- #include <asm/frame.h>
- #include <asm/asm-offsets.h>
- 
--# define function_hook	__fentry__
--EXPORT_SYMBOL(__fentry__)
--
- #ifdef CONFIG_FRAME_POINTER
- # define MCOUNT_FRAME			1	/* using frame = true  */
- #else
- # define MCOUNT_FRAME			0	/* using frame = false */
- #endif
- 
--SYM_FUNC_START(function_hook)
-+SYM_FUNC_START(__fentry__)
- 	ret
--SYM_FUNC_END(function_hook)
-+SYM_FUNC_END(__fentry__)
-+EXPORT_SYMBOL(__fentry__)
- 
- SYM_CODE_START(ftrace_caller)
- 
-diff --git a/arch/x86/kernel/ftrace_64.S b/arch/x86/kernel/ftrace_64.S
-index 69c8d1b9119e..6e8961ca3605 100644
---- a/arch/x86/kernel/ftrace_64.S
-+++ b/arch/x86/kernel/ftrace_64.S
-@@ -14,9 +14,6 @@
- 	.code64
- 	.section .entry.text, "ax"
- 
--# define function_hook	__fentry__
--EXPORT_SYMBOL(__fentry__)
--
- #ifdef CONFIG_FRAME_POINTER
- /* Save parent and function stack frames (rip and rbp) */
- #  define MCOUNT_FRAME_SIZE	(8+16*2)
-@@ -132,9 +129,10 @@ EXPORT_SYMBOL(__fentry__)
- 
- #ifdef CONFIG_DYNAMIC_FTRACE
- 
--SYM_FUNC_START(function_hook)
-+SYM_FUNC_START(__fentry__)
- 	retq
--SYM_FUNC_END(function_hook)
-+SYM_FUNC_END(__fentry__)
-+EXPORT_SYMBOL(__fentry__)
- 
- SYM_FUNC_START(ftrace_caller)
- 	/* save_mcount_regs fills in first two parameters */
-@@ -248,7 +246,7 @@ SYM_FUNC_END(ftrace_regs_caller)
- 
- #else /* ! CONFIG_DYNAMIC_FTRACE */
- 
--SYM_FUNC_START(function_hook)
-+SYM_FUNC_START(__fentry__)
- 	cmpq $ftrace_stub, ftrace_trace_function
- 	jnz trace
- 
-@@ -279,7 +277,8 @@ trace:
- 	restore_mcount_regs
- 
- 	jmp fgraph_trace
--SYM_FUNC_END(function_hook)
-+SYM_FUNC_END(__fentry__)
-+EXPORT_SYMBOL(__fentry__)
- #endif /* CONFIG_DYNAMIC_FTRACE */
- 
- #ifdef CONFIG_FUNCTION_GRAPH_TRACER
--- 
-2.21.0
-
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Will
