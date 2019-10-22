@@ -2,111 +2,82 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AA85EE0408
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Oct 2019 14:41:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C5300E0449
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Oct 2019 14:56:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731626AbfJVMlU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 22 Oct 2019 08:41:20 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:40923 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731405AbfJVMlU (ORCPT
+        id S2388182AbfJVM4X (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 22 Oct 2019 08:56:23 -0400
+Received: from mail.skyhub.de ([5.9.137.197]:34370 "EHLO mail.skyhub.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2388090AbfJVM4X (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 22 Oct 2019 08:41:20 -0400
-Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tip-bot2@linutronix.de>)
-        id 1iMtTC-0006aF-Pt; Tue, 22 Oct 2019 14:41:02 +0200
-Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 53A7F1C0090;
-        Tue, 22 Oct 2019 14:41:02 +0200 (CEST)
-Date:   Tue, 22 Oct 2019 12:41:01 -0000
-From:   "tip-bot2 for Alexander Shishkin" <tip-bot2@linutronix.de>
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf/aux: Fix AUX output stopping
-Cc:     Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Jiri Olsa <jolsa@redhat.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Peter Zijlstra <a.p.zijlstra@chello.nl>,
+        Tue, 22 Oct 2019 08:56:23 -0400
+Received: from zn.tnic (p200300EC2F0D770050FB97201665E20F.dip0.t-ipconnect.de [IPv6:2003:ec:2f0d:7700:50fb:9720:1665:e20f])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id A65671EC0C93;
+        Tue, 22 Oct 2019 14:56:21 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1571748981;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=ks1D9cpBLbkfWTmP9/zselE/e5+jDjbNzQqZmgKx9es=;
+        b=jcguvE70r76Nwj7LatlqAWnUUBSXLYHwSALouOKz1MzbmbLTOMF7c7RYagsBjyHQAEbdyQ
+        6rTgqhezg/UzWC9hxm21LZBVleeTfGxkeWl7gekr+Nk2Kodh98Qx+SHQ6SfX/WcZU34jUH
+        AZ27Q5fIwPgzzKd/DJ5TMkz0mCfqA9s=
+Date:   Tue, 22 Oct 2019 14:56:15 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     Jiri Slaby <jslaby@suse.cz>
+Cc:     Steven Rostedt <rostedt@goodmis.org>,
+        tip-bot2 for Jiri Slaby <tip-bot2@linutronix.de>,
+        linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        linux-arch@vger.kernel.org, Masami Hiramatsu <mhiramat@kernel.org>,
         Peter Zijlstra <peterz@infradead.org>,
-        Stephane Eranian <eranian@google.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Vince Weaver <vincent.weaver@maine.edu>,
-        stable@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
-        Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
-In-Reply-To: <20191022073940.61814-1-alexander.shishkin@linux.intel.com>
-References: <20191022073940.61814-1-alexander.shishkin@linux.intel.com>
+        Thomas Gleixner <tglx@linutronix.de>, x86-ml <x86@kernel.org>,
+        Ingo Molnar <mingo@kernel.org>
+Subject: Re: [PATCH] x86/ftrace: Get rid of function_hook
+Message-ID: <20191022125615.GE31700@zn.tnic>
+References: <157141622788.29376.4016565749507481510.tip-bot2@tip-bot2>
+ <20191018124800.0a7006bb@gandalf.local.home>
+ <20191018124956.764ac42e@gandalf.local.home>
+ <20191018171354.GB20368@zn.tnic>
+ <20191018133735.77e90e36@gandalf.local.home>
+ <20191018194856.GC20368@zn.tnic>
+ <20191018163125.346e078d@gandalf.local.home>
+ <20191019073424.GA27353@zn.tnic>
+ <20191021141038.GC7014@zn.tnic>
+ <f8dcb3dd-a8a6-5326-ea4a-bea2eb1c4651@suse.cz>
 MIME-Version: 1.0
-Message-ID: <157174806200.29376.5249502095555132828.tip-bot2@tip-bot2>
-X-Mailer: tip-git-log-daemon
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <f8dcb3dd-a8a6-5326-ea4a-bea2eb1c4651@suse.cz>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/urgent branch of tip:
+On Tue, Oct 22, 2019 at 01:38:42PM +0200, Jiri Slaby wrote:
+> On the top of Steven's comment:
+> Acked-by: Jiri Slaby <jslaby@suse.cz>
+> 
+> Thanks for taking care of this while my tooth was causing me pain.
 
-Commit-ID:     f3a519e4add93b7b31a6616f0b09635ff2e6a159
-Gitweb:        https://git.kernel.org/tip/f3a519e4add93b7b31a6616f0b09635ff2e6a159
-Author:        Alexander Shishkin <alexander.shishkin@linux.intel.com>
-AuthorDate:    Tue, 22 Oct 2019 10:39:40 +03:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 22 Oct 2019 14:39:37 +02:00
+Sure, np. Toothache is yuck.
 
-perf/aux: Fix AUX output stopping
+Ok, so after some back'n'forth yesterday on IRC, I think we agree on
+only renaming function_hook but keeping its SYM_FUNC* annotation so
+that ORC can unwind into it because we're fancy and we do all kinds of
+unwinding from interrupts in ftrace handlers and all that other fun. So
+it needs to know that that thing is a function.
 
-Commit:
+So here it is as a proper patch as a reply to this message.
 
-  8a58ddae2379 ("perf/core: Fix exclusive events' grouping")
+-- 
+Regards/Gruss,
+    Boris.
 
-allows CAP_EXCLUSIVE events to be grouped with other events. Since all
-of those also happen to be AUX events (which is not the case the other
-way around, because arch/s390), this changes the rules for stopping the
-output: the AUX event may not be on its PMU's context any more, if it's
-grouped with a HW event, in which case it will be on that HW event's
-context instead. If that's the case, munmap() of the AUX buffer can't
-find and stop the AUX event, potentially leaving the last reference with
-the atomic context, which will then end up freeing the AUX buffer. This
-will then trip warnings:
-
-Fix this by using the context's PMU context when looking for events
-to stop, instead of the event's PMU context.
-
-Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Jiri Olsa <jolsa@redhat.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Peter Zijlstra <a.p.zijlstra@chello.nl>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Stephane Eranian <eranian@google.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Vince Weaver <vincent.weaver@maine.edu>
-Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20191022073940.61814-1-alexander.shishkin@linux.intel.com
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
----
- kernel/events/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index f5d7950..bb3748d 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -6949,7 +6949,7 @@ static void __perf_event_output_stop(struct perf_event *event, void *data)
- static int __perf_pmu_output_stop(void *info)
- {
- 	struct perf_event *event = info;
--	struct pmu *pmu = event->pmu;
-+	struct pmu *pmu = event->ctx->pmu;
- 	struct perf_cpu_context *cpuctx = this_cpu_ptr(pmu->pmu_cpu_context);
- 	struct remote_output ro = {
- 		.rb	= event->rb,
+https://people.kernel.org/tglx/notes-about-netiquette
