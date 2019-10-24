@@ -2,38 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8882CE1B49
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 23 Oct 2019 14:51:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C9F7BE2E75
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 24 Oct 2019 12:13:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391775AbfJWMvD (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 23 Oct 2019 08:51:03 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:49248 "EHLO
+        id S2404607AbfJXKNX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 24 Oct 2019 06:13:23 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:53290 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2391769AbfJWMvC (ORCPT
+        with ESMTP id S2391927AbfJXKNX (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 23 Oct 2019 08:51:02 -0400
+        Thu, 24 Oct 2019 06:13:23 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iNG6H-0001hc-O6; Wed, 23 Oct 2019 14:50:53 +0200
+        id 1iNa7E-0002oh-6Z; Thu, 24 Oct 2019 12:13:12 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5C7751C03AB;
-        Wed, 23 Oct 2019 14:50:53 +0200 (CEST)
-Date:   Wed, 23 Oct 2019 12:50:53 -0000
-From:   "tip-bot2 for Ben Dooks (Codethink)" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B9EF21C0087;
+        Thu, 24 Oct 2019 12:13:11 +0200 (CEST)
+Date:   Thu, 24 Oct 2019 10:13:11 -0000
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/urgent] timers/sched_clock: Include local timekeeping.h
- for missing declarations
-Cc:     "Ben Dooks (Codethink)" <ben.dooks@codethink.co.uk>,
-        Thomas Gleixner <tglx@linutronix.de>,
+Subject: [tip: x86/apic] x86/ioapic: Rename misnamed functions
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Sebastian Siewior <bigeasy@linutronix.de>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20191022131226.11465-1-ben.dooks@codethink.co.uk>
-References: <20191022131226.11465-1-ben.dooks@codethink.co.uk>
+In-Reply-To: <20191017101938.412489856@linutronix.de>
+References: <20191017101938.412489856@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <157183505310.29376.6098311175532476740.tip-bot2@tip-bot2>
+Message-ID: <157191199146.29376.13205140020620411699.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,42 +49,97 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/urgent branch of tip:
+The following commit has been merged into the x86/apic branch of tip:
 
-Commit-ID:     086ee46b08634a999bcd1707eabe3b0dc1806674
-Gitweb:        https://git.kernel.org/tip/086ee46b08634a999bcd1707eabe3b0dc1806674
-Author:        Ben Dooks (Codethink) <ben.dooks@codethink.co.uk>
-AuthorDate:    Tue, 22 Oct 2019 14:12:26 +01:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 23 Oct 2019 14:48:23 +02:00
+Commit-ID:     2579a4eefc04d1c23eef8f3f0db3309f955e5792
+Gitweb:        https://git.kernel.org/tip/2579a4eefc04d1c23eef8f3f0db3309f955e5792
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Thu, 17 Oct 2019 12:19:02 +02:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Thu, 24 Oct 2019 12:09:21 +02:00
 
-timers/sched_clock: Include local timekeeping.h for missing declarations
+x86/ioapic: Rename misnamed functions
 
-Include the timekeeping.h header to get the declaration of the
-sched_clock_{suspend,resume} functions. Fixes the following sparse
-warnings:
+ioapic_irqd_[un]mask() are misnomers as both functions do way more than
+masking and unmasking the interrupt line. Both deal with the moving the
+affinity of the interrupt within interrupt context. The mask/unmask is just
+a tiny part of the functionality.
 
-kernel/time/sched_clock.c:275:5: warning: symbol 'sched_clock_suspend' was not declared. Should it be static?
-kernel/time/sched_clock.c:286:6: warning: symbol 'sched_clock_resume' was not declared. Should it be static?
+Rename them to ioapic_prepare/finish_move(), fixup the call sites and
+rename the related variables in the code to reflect what this is about.
 
-Signed-off-by: Ben Dooks (Codethink) <ben.dooks@codethink.co.uk>
+No functional change.
+
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20191022131226.11465-1-ben.dooks@codethink.co.uk
-
+Cc: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Sebastian Siewior <bigeasy@linutronix.de>
+Link: https://lkml.kernel.org/r/20191017101938.412489856@linutronix.de
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- kernel/time/sched_clock.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/kernel/apic/io_apic.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/kernel/time/sched_clock.c b/kernel/time/sched_clock.c
-index 142b076..dbd6905 100644
---- a/kernel/time/sched_clock.c
-+++ b/kernel/time/sched_clock.c
-@@ -17,6 +17,8 @@
- #include <linux/seqlock.h>
- #include <linux/bitops.h>
+diff --git a/arch/x86/kernel/apic/io_apic.c b/arch/x86/kernel/apic/io_apic.c
+index f0262cb..913c886 100644
+--- a/arch/x86/kernel/apic/io_apic.c
++++ b/arch/x86/kernel/apic/io_apic.c
+@@ -1725,7 +1725,7 @@ static bool io_apic_level_ack_pending(struct mp_chip_data *data)
+ 	return false;
+ }
  
-+#include "timekeeping.h"
-+
- /**
-  * struct clock_read_data - data required to read from sched_clock()
-  *
+-static inline bool ioapic_irqd_mask(struct irq_data *data)
++static inline bool ioapic_prepare_move(struct irq_data *data)
+ {
+ 	/* If we are moving the IRQ we need to mask it */
+ 	if (unlikely(irqd_is_setaffinity_pending(data))) {
+@@ -1736,9 +1736,9 @@ static inline bool ioapic_irqd_mask(struct irq_data *data)
+ 	return false;
+ }
+ 
+-static inline void ioapic_irqd_unmask(struct irq_data *data, bool masked)
++static inline void ioapic_finish_move(struct irq_data *data, bool moveit)
+ {
+-	if (unlikely(masked)) {
++	if (unlikely(moveit)) {
+ 		/* Only migrate the irq if the ack has been received.
+ 		 *
+ 		 * On rare occasions the broadcast level triggered ack gets
+@@ -1773,11 +1773,11 @@ static inline void ioapic_irqd_unmask(struct irq_data *data, bool masked)
+ 	}
+ }
+ #else
+-static inline bool ioapic_irqd_mask(struct irq_data *data)
++static inline bool ioapic_prepare_move(struct irq_data *data)
+ {
+ 	return false;
+ }
+-static inline void ioapic_irqd_unmask(struct irq_data *data, bool masked)
++static inline void ioapic_finish_move(struct irq_data *data, bool moveit)
+ {
+ }
+ #endif
+@@ -1786,11 +1786,11 @@ static void ioapic_ack_level(struct irq_data *irq_data)
+ {
+ 	struct irq_cfg *cfg = irqd_cfg(irq_data);
+ 	unsigned long v;
+-	bool masked;
++	bool moveit;
+ 	int i;
+ 
+ 	irq_complete_move(cfg);
+-	masked = ioapic_irqd_mask(irq_data);
++	moveit = ioapic_prepare_move(irq_data);
+ 
+ 	/*
+ 	 * It appears there is an erratum which affects at least version 0x11
+@@ -1845,7 +1845,7 @@ static void ioapic_ack_level(struct irq_data *irq_data)
+ 		eoi_ioapic_pin(cfg->vector, irq_data->chip_data);
+ 	}
+ 
+-	ioapic_irqd_unmask(irq_data, masked);
++	ioapic_finish_move(irq_data, moveit);
+ }
+ 
+ static void ioapic_ir_ack_level(struct irq_data *irq_data)
