@@ -2,39 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DB44E4B09
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 25 Oct 2019 14:30:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 83251E4B0D
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 25 Oct 2019 14:30:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2440212AbfJYMaW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 25 Oct 2019 08:30:22 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:37675 "EHLO
+        id S2440224AbfJYMa2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 25 Oct 2019 08:30:28 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:37677 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2436494AbfJYMaV (ORCPT
+        with ESMTP id S2436494AbfJYMa2 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 25 Oct 2019 08:30:21 -0400
+        Fri, 25 Oct 2019 08:30:28 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iNyjP-00072V-0l; Fri, 25 Oct 2019 14:30:15 +0200
+        id 1iNyjP-00072X-DR; Fri, 25 Oct 2019 14:30:15 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 9A2081C0086;
-        Fri, 25 Oct 2019 14:30:14 +0200 (CEST)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 151DA1C03AB;
+        Fri, 25 Oct 2019 14:30:15 +0200 (CEST)
 Date:   Fri, 25 Oct 2019 12:30:14 -0000
-From:   "tip-bot2 for Alan Mikhak" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Zenghui Yu" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/urgent] irqchip/sifive-plic: Skip contexts except
- supervisor in plic_init()
-Cc:     Alan Mikhak <alan.mikhak@sifive.com>,
-        Marc Zyngier <maz@kernel.org>, Christoph Hellwig <hch@lst.de>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
+Subject: [tip: irq/urgent] irqchip/gic-v3-its: Use the exact ITSList for VMOVP
+Cc:     Zenghui Yu <yuzenghui@huawei.com>, Marc Zyngier <maz@kernel.org>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <1571933503-21504-1-git-send-email-alan.mikhak@sifive.com>
-References: <1571933503-21504-1-git-send-email-alan.mikhak@sifive.com>
+In-Reply-To: <1571802386-2680-1-git-send-email-yuzenghui@huawei.com>
+References: <1571802386-2680-1-git-send-email-yuzenghui@huawei.com>
 MIME-Version: 1.0
-Message-ID: <157200661432.29376.6464692458150883535.tip-bot2@tip-bot2>
+Message-ID: <157200661481.29376.15373625289556053248.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,52 +47,90 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/urgent branch of tip:
 
-Commit-ID:     41860cc447045c811ce6d5a92f93a065a691fe8e
-Gitweb:        https://git.kernel.org/tip/41860cc447045c811ce6d5a92f93a065a691fe8e
-Author:        Alan Mikhak <alan.mikhak@sifive.com>
-AuthorDate:    Thu, 24 Oct 2019 09:11:43 -07:00
+Commit-ID:     8424312516e5d9baeeb0a95d0e4523579b7aa395
+Gitweb:        https://git.kernel.org/tip/8424312516e5d9baeeb0a95d0e4523579b7aa395
+Author:        Zenghui Yu <yuzenghui@huawei.com>
+AuthorDate:    Wed, 23 Oct 2019 03:46:26 
 Committer:     Marc Zyngier <maz@kernel.org>
-CommitterDate: Fri, 25 Oct 2019 11:48:13 +01:00
+CommitterDate: Thu, 24 Oct 2019 18:02:53 +01:00
 
-irqchip/sifive-plic: Skip contexts except supervisor in plic_init()
+irqchip/gic-v3-its: Use the exact ITSList for VMOVP
 
-Modify plic_init() to skip .dts interrupt contexts other
-than supervisor external interrupt.
+On a system without Single VMOVP support (say GITS_TYPER.VMOVP == 0),
+we will map vPEs only on ITSs that will actually control interrupts
+for the given VM.  And when moving a vPE, the VMOVP command will be
+issued only for those ITSs.
 
-The .dts entry for plic may specify multiple interrupt contexts.
-For example, it may assign two entries IRQ_M_EXT and IRQ_S_EXT,
-in that order, to the same interrupt controller. This patch
-modifies plic_init() to skip the IRQ_M_EXT context since
-IRQ_S_EXT is currently the only supported context.
+But when issuing VMOVPs we seemed fail to present the exact ITSList
+to ITSs who are actually included in the synchronization operation.
+The its_list_map we're currently using includes all ITSs in the system,
+even though some of them don't have the corresponding vPE mapping at all.
 
-If IRQ_M_EXT is not skipped, plic_init() will report "handler
-already present for context" when it comes across the IRQ_S_EXT
-context in the next iteration of its loop.
+Introduce get_its_list() to get the per-VM its_list_map, to indicate
+which ITSs have vPE mappings for the given VM, and use this map as
+the expected ITSList when building VMOVP. This is hopefully a performance
+gain not to do some synchronization with those unsuspecting ITSs.
+And initialize the whole command descriptor to zero at beginning, since
+the seq_num and its_list should be RES0 when GITS_TYPER.VMOVP == 1.
 
-Without this patch, .dts would have to be edited to replace the
-value of IRQ_M_EXT with -1 for it to be skipped.
-
-Signed-off-by: Alan Mikhak <alan.mikhak@sifive.com>
+Signed-off-by: Zenghui Yu <yuzenghui@huawei.com>
 Signed-off-by: Marc Zyngier <maz@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Acked-by: Paul Walmsley <paul.walmsley@sifive.com> # arch/riscv
-Link: https://lkml.kernel.org/r/1571933503-21504-1-git-send-email-alan.mikhak@sifive.com
+Link: https://lore.kernel.org/r/1571802386-2680-1-git-send-email-yuzenghui@huawei.com
 ---
- drivers/irqchip/irq-sifive-plic.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/irqchip/irq-gic-v3-its.c | 21 ++++++++++++++++++---
+ 1 file changed, 18 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/irqchip/irq-sifive-plic.c b/drivers/irqchip/irq-sifive-plic.c
-index 3e51dee..b1a33f9 100644
---- a/drivers/irqchip/irq-sifive-plic.c
-+++ b/drivers/irqchip/irq-sifive-plic.c
-@@ -251,8 +251,8 @@ static int __init plic_init(struct device_node *node,
- 			continue;
- 		}
+diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
+index 62e54f1..787e8ee 100644
+--- a/drivers/irqchip/irq-gic-v3-its.c
++++ b/drivers/irqchip/irq-gic-v3-its.c
+@@ -175,6 +175,22 @@ static DEFINE_IDA(its_vpeid_ida);
+ #define gic_data_rdist_rd_base()	(gic_data_rdist()->rd_base)
+ #define gic_data_rdist_vlpi_base()	(gic_data_rdist_rd_base() + SZ_128K)
  
--		/* skip context holes */
--		if (parent.args[0] == -1)
-+		/* skip contexts other than supervisor external interrupt */
-+		if (parent.args[0] != IRQ_S_EXT)
- 			continue;
++static u16 get_its_list(struct its_vm *vm)
++{
++	struct its_node *its;
++	unsigned long its_list = 0;
++
++	list_for_each_entry(its, &its_nodes, entry) {
++		if (!its->is_v4)
++			continue;
++
++		if (vm->vlpi_count[its->list_nr])
++			__set_bit(its->list_nr, &its_list);
++	}
++
++	return (u16)its_list;
++}
++
+ static struct its_collection *dev_event_to_col(struct its_device *its_dev,
+ 					       u32 event)
+ {
+@@ -976,17 +992,15 @@ static void its_send_vmapp(struct its_node *its,
  
- 		hartid = plic_find_hart_id(parent.np);
+ static void its_send_vmovp(struct its_vpe *vpe)
+ {
+-	struct its_cmd_desc desc;
++	struct its_cmd_desc desc = {};
+ 	struct its_node *its;
+ 	unsigned long flags;
+ 	int col_id = vpe->col_idx;
+ 
+ 	desc.its_vmovp_cmd.vpe = vpe;
+-	desc.its_vmovp_cmd.its_list = (u16)its_list_map;
+ 
+ 	if (!its_list_map) {
+ 		its = list_first_entry(&its_nodes, struct its_node, entry);
+-		desc.its_vmovp_cmd.seq_num = 0;
+ 		desc.its_vmovp_cmd.col = &its->collections[col_id];
+ 		its_send_single_vcommand(its, its_build_vmovp_cmd, &desc);
+ 		return;
+@@ -1003,6 +1017,7 @@ static void its_send_vmovp(struct its_vpe *vpe)
+ 	raw_spin_lock_irqsave(&vmovp_lock, flags);
+ 
+ 	desc.its_vmovp_cmd.seq_num = vmovp_seq_num++;
++	desc.its_vmovp_cmd.its_list = get_its_list(vpe->its_vm);
+ 
+ 	/* Emit VMOVPs */
+ 	list_for_each_entry(its, &its_nodes, entry) {
