@@ -2,42 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8724BE467F
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 25 Oct 2019 11:00:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DB44E4B09
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 25 Oct 2019 14:30:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392237AbfJYJAX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 25 Oct 2019 05:00:23 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:36311 "EHLO
+        id S2440212AbfJYMaW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 25 Oct 2019 08:30:22 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:37675 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2392171AbfJYJAX (ORCPT
+        with ESMTP id S2436494AbfJYMaV (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 25 Oct 2019 05:00:23 -0400
+        Fri, 25 Oct 2019 08:30:21 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iNvRw-0003GO-UW; Fri, 25 Oct 2019 11:00:01 +0200
+        id 1iNyjP-00072V-0l; Fri, 25 Oct 2019 14:30:15 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 6E9AE1C0086;
-        Fri, 25 Oct 2019 11:00:00 +0200 (CEST)
-Date:   Fri, 25 Oct 2019 09:00:00 -0000
-From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 9A2081C0086;
+        Fri, 25 Oct 2019 14:30:14 +0200 (CEST)
+Date:   Fri, 25 Oct 2019 12:30:14 -0000
+From:   "tip-bot2 for Alan Mikhak" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/asm] x86/ftrace: Get rid of function_hook
-Cc:     Borislav Petkov <bp@suse.de>, Jiri Slaby <jslaby@suse.cz>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Peter Zijlstra <peterz@infradead.org>,
-        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
-        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
-        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>
-In-Reply-To: <20191018124800.0a7006bb@gandalf.local.home>
-References: <20191018124800.0a7006bb@gandalf.local.home>
+Subject: [tip: irq/urgent] irqchip/sifive-plic: Skip contexts except
+ supervisor in plic_init()
+Cc:     Alan Mikhak <alan.mikhak@sifive.com>,
+        Marc Zyngier <maz@kernel.org>, Christoph Hellwig <hch@lst.de>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <1571933503-21504-1-git-send-email-alan.mikhak@sifive.com>
+References: <1571933503-21504-1-git-send-email-alan.mikhak@sifive.com>
 MIME-Version: 1.0
-Message-ID: <157199400012.29376.15138755769283504073.tip-bot2@tip-bot2>
+Message-ID: <157200661432.29376.6464692458150883535.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,138 +48,54 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/asm branch of tip:
+The following commit has been merged into the irq/urgent branch of tip:
 
-Commit-ID:     0f42c1ad44d437f75b840b572376fd538fbb9643
-Gitweb:        https://git.kernel.org/tip/0f42c1ad44d437f75b840b572376fd538fbb9643
-Author:        Borislav Petkov <bp@suse.de>
-AuthorDate:    Mon, 21 Oct 2019 17:18:23 +02:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Fri, 25 Oct 2019 10:52:22 +02:00
+Commit-ID:     41860cc447045c811ce6d5a92f93a065a691fe8e
+Gitweb:        https://git.kernel.org/tip/41860cc447045c811ce6d5a92f93a065a691fe8e
+Author:        Alan Mikhak <alan.mikhak@sifive.com>
+AuthorDate:    Thu, 24 Oct 2019 09:11:43 -07:00
+Committer:     Marc Zyngier <maz@kernel.org>
+CommitterDate: Fri, 25 Oct 2019 11:48:13 +01:00
 
-x86/ftrace: Get rid of function_hook
+irqchip/sifive-plic: Skip contexts except supervisor in plic_init()
 
-History lesson courtesy of Steve:
+Modify plic_init() to skip .dts interrupt contexts other
+than supervisor external interrupt.
 
-"When ftrace first was introduced to the kernel, it used gcc's
-mcount profiling mechanism. The mcount mechanism would add a call to
-"mcount" at the start of every function but after the stack frame was
-set up. Later, in gcc 4.6, gcc introduced -mfentry, that would create a
-call to "__fentry__" instead of "mcount", before the stack frame was
-set up. In order to handle both cases, ftrace defined a macro
-"function_hook" that would be either "mcount" or "__fentry__" depending
-on which one was being used.
+The .dts entry for plic may specify multiple interrupt contexts.
+For example, it may assign two entries IRQ_M_EXT and IRQ_S_EXT,
+in that order, to the same interrupt controller. This patch
+modifies plic_init() to skip the IRQ_M_EXT context since
+IRQ_S_EXT is currently the only supported context.
 
-The Linux kernel no longer supports the "mcount" method, thus there's
-no reason to keep the "function_hook" define around. Simply use
-"__fentry__", as there is no ambiguity to the name anymore."
+If IRQ_M_EXT is not skipped, plic_init() will report "handler
+already present for context" when it comes across the IRQ_S_EXT
+context in the next iteration of its loop.
 
-Drop it everywhere.
+Without this patch, .dts would have to be edited to replace the
+value of IRQ_M_EXT with -1 for it to be skipped.
 
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Acked-by: Jiri Slaby <jslaby@suse.cz>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Cc: linux-doc@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: "Steven Rostedt (VMware)" <rostedt@goodmis.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: x86@kernel.org
-Link: http://lkml.kernel.org/r/20191018124800.0a7006bb@gandalf.local.home
+Signed-off-by: Alan Mikhak <alan.mikhak@sifive.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Acked-by: Paul Walmsley <paul.walmsley@sifive.com> # arch/riscv
+Link: https://lkml.kernel.org/r/1571933503-21504-1-git-send-email-alan.mikhak@sifive.com
 ---
- Documentation/asm-annotations.rst |  4 ++--
- arch/x86/kernel/ftrace_32.S       |  8 +++-----
- arch/x86/kernel/ftrace_64.S       | 13 ++++++-------
- 3 files changed, 11 insertions(+), 14 deletions(-)
+ drivers/irqchip/irq-sifive-plic.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/asm-annotations.rst b/Documentation/asm-annotations.rst
-index 29ccd6e..f55c2bb 100644
---- a/Documentation/asm-annotations.rst
-+++ b/Documentation/asm-annotations.rst
-@@ -117,9 +117,9 @@ This section covers ``SYM_FUNC_*`` and ``SYM_CODE_*`` enumerated above.
-   So in most cases, developers should write something like in the following
-   example, having some asm instructions in between the macros, of course::
+diff --git a/drivers/irqchip/irq-sifive-plic.c b/drivers/irqchip/irq-sifive-plic.c
+index 3e51dee..b1a33f9 100644
+--- a/drivers/irqchip/irq-sifive-plic.c
++++ b/drivers/irqchip/irq-sifive-plic.c
+@@ -251,8 +251,8 @@ static int __init plic_init(struct device_node *node,
+ 			continue;
+ 		}
  
--    SYM_FUNC_START(function_hook)
-+    SYM_FUNC_START(memset)
-         ... asm insns ...
--    SYM_FUNC_END(function_hook)
-+    SYM_FUNC_END(memset)
+-		/* skip context holes */
+-		if (parent.args[0] == -1)
++		/* skip contexts other than supervisor external interrupt */
++		if (parent.args[0] != IRQ_S_EXT)
+ 			continue;
  
-   In fact, this kind of annotation corresponds to the now deprecated ``ENTRY``
-   and ``ENDPROC`` macros.
-diff --git a/arch/x86/kernel/ftrace_32.S b/arch/x86/kernel/ftrace_32.S
-index 8ed1f5d..e8a9f83 100644
---- a/arch/x86/kernel/ftrace_32.S
-+++ b/arch/x86/kernel/ftrace_32.S
-@@ -12,18 +12,16 @@
- #include <asm/frame.h>
- #include <asm/asm-offsets.h>
- 
--# define function_hook	__fentry__
--EXPORT_SYMBOL(__fentry__)
--
- #ifdef CONFIG_FRAME_POINTER
- # define MCOUNT_FRAME			1	/* using frame = true  */
- #else
- # define MCOUNT_FRAME			0	/* using frame = false */
- #endif
- 
--SYM_FUNC_START(function_hook)
-+SYM_FUNC_START(__fentry__)
- 	ret
--SYM_FUNC_END(function_hook)
-+SYM_FUNC_END(__fentry__)
-+EXPORT_SYMBOL(__fentry__)
- 
- SYM_CODE_START(ftrace_caller)
- 
-diff --git a/arch/x86/kernel/ftrace_64.S b/arch/x86/kernel/ftrace_64.S
-index 69c8d1b..6e8961c 100644
---- a/arch/x86/kernel/ftrace_64.S
-+++ b/arch/x86/kernel/ftrace_64.S
-@@ -14,9 +14,6 @@
- 	.code64
- 	.section .entry.text, "ax"
- 
--# define function_hook	__fentry__
--EXPORT_SYMBOL(__fentry__)
--
- #ifdef CONFIG_FRAME_POINTER
- /* Save parent and function stack frames (rip and rbp) */
- #  define MCOUNT_FRAME_SIZE	(8+16*2)
-@@ -132,9 +129,10 @@ EXPORT_SYMBOL(__fentry__)
- 
- #ifdef CONFIG_DYNAMIC_FTRACE
- 
--SYM_FUNC_START(function_hook)
-+SYM_FUNC_START(__fentry__)
- 	retq
--SYM_FUNC_END(function_hook)
-+SYM_FUNC_END(__fentry__)
-+EXPORT_SYMBOL(__fentry__)
- 
- SYM_FUNC_START(ftrace_caller)
- 	/* save_mcount_regs fills in first two parameters */
-@@ -248,7 +246,7 @@ SYM_FUNC_END(ftrace_regs_caller)
- 
- #else /* ! CONFIG_DYNAMIC_FTRACE */
- 
--SYM_FUNC_START(function_hook)
-+SYM_FUNC_START(__fentry__)
- 	cmpq $ftrace_stub, ftrace_trace_function
- 	jnz trace
- 
-@@ -279,7 +277,8 @@ trace:
- 	restore_mcount_regs
- 
- 	jmp fgraph_trace
--SYM_FUNC_END(function_hook)
-+SYM_FUNC_END(__fentry__)
-+EXPORT_SYMBOL(__fentry__)
- #endif /* CONFIG_DYNAMIC_FTRACE */
- 
- #ifdef CONFIG_FUNCTION_GRAPH_TRACER
+ 		hartid = plic_find_hart_id(parent.np);
