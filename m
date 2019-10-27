@@ -2,36 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 83251E4B0D
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 25 Oct 2019 14:30:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2ABC4E618A
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 27 Oct 2019 09:05:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2440224AbfJYMa2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 25 Oct 2019 08:30:28 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:37677 "EHLO
+        id S1726002AbfJ0IFa (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 27 Oct 2019 04:05:30 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:41132 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2436494AbfJYMa2 (ORCPT
+        with ESMTP id S1725977AbfJ0IFa (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 25 Oct 2019 08:30:28 -0400
+        Sun, 27 Oct 2019 04:05:30 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iNyjP-00072X-DR; Fri, 25 Oct 2019 14:30:15 +0200
+        id 1iOdYA-0003g2-V6; Sun, 27 Oct 2019 09:05:23 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 151DA1C03AB;
-        Fri, 25 Oct 2019 14:30:15 +0200 (CEST)
-Date:   Fri, 25 Oct 2019 12:30:14 -0000
-From:   "tip-bot2 for Zenghui Yu" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 912301C0082;
+        Sun, 27 Oct 2019 09:05:22 +0100 (CET)
+Date:   Sun, 27 Oct 2019 08:05:22 -0000
+From:   "tip-bot2 for Yi Wang" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/urgent] irqchip/gic-v3-its: Use the exact ITSList for VMOVP
-Cc:     Zenghui Yu <yuzenghui@huawei.com>, Marc Zyngier <maz@kernel.org>,
-        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <1571802386-2680-1-git-send-email-yuzenghui@huawei.com>
-References: <1571802386-2680-1-git-send-email-yuzenghui@huawei.com>
+Subject: [tip: x86/cleanups] x86/apic, x86/uprobes: Correct parameter names in
+ kernel-doc comments
+Cc:     Yi Wang <wang.yi59@zte.com.cn>, Borislav Petkov <bp@suse.de>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "x86-ml" <x86@kernel.org>, Ingo Molnar <mingo@kernel.org>,
+        Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
+In-Reply-To: <1571816442-22494-1-git-send-email-wang.yi59@zte.com.cn>
+References: <1571816442-22494-1-git-send-email-wang.yi59@zte.com.cn>
 MIME-Version: 1.0
-Message-ID: <157200661481.29376.15373625289556053248.tip-bot2@tip-bot2>
+Message-ID: <157216352223.29376.4881710179306669523.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -45,92 +48,58 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the irq/urgent branch of tip:
+The following commit has been merged into the x86/cleanups branch of tip:
 
-Commit-ID:     8424312516e5d9baeeb0a95d0e4523579b7aa395
-Gitweb:        https://git.kernel.org/tip/8424312516e5d9baeeb0a95d0e4523579b7aa395
-Author:        Zenghui Yu <yuzenghui@huawei.com>
-AuthorDate:    Wed, 23 Oct 2019 03:46:26 
-Committer:     Marc Zyngier <maz@kernel.org>
-CommitterDate: Thu, 24 Oct 2019 18:02:53 +01:00
+Commit-ID:     44eb5a7e5dc6f23d04c05c15f91bc279e0dc700d
+Gitweb:        https://git.kernel.org/tip/44eb5a7e5dc6f23d04c05c15f91bc279e0dc700d
+Author:        Yi Wang <wang.yi59@zte.com.cn>
+AuthorDate:    Sun, 27 Oct 2019 08:55:39 +01:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Sun, 27 Oct 2019 09:00:28 +01:00
 
-irqchip/gic-v3-its: Use the exact ITSList for VMOVP
+x86/apic, x86/uprobes: Correct parameter names in kernel-doc comments
 
-On a system without Single VMOVP support (say GITS_TYPER.VMOVP == 0),
-we will map vPEs only on ITSs that will actually control interrupts
-for the given VM.  And when moving a vPE, the VMOVP command will be
-issued only for those ITSs.
+Rename parameter names to the correct ones used in the function. No
+functional changes.
 
-But when issuing VMOVPs we seemed fail to present the exact ITSList
-to ITSs who are actually included in the synchronization operation.
-The its_list_map we're currently using includes all ITSs in the system,
-even though some of them don't have the corresponding vPE mapping at all.
+ [ bp: Merge two patches into a single one. ]
 
-Introduce get_its_list() to get the per-VM its_list_map, to indicate
-which ITSs have vPE mappings for the given VM, and use this map as
-the expected ITSList when building VMOVP. This is hopefully a performance
-gain not to do some synchronization with those unsuspecting ITSs.
-And initialize the whole command descriptor to zero at beginning, since
-the seq_num and its_list should be RES0 when GITS_TYPER.VMOVP == 1.
-
-Signed-off-by: Zenghui Yu <yuzenghui@huawei.com>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/1571802386-2680-1-git-send-email-yuzenghui@huawei.com
+Signed-off-by: Yi Wang <wang.yi59@zte.com.cn>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: x86-ml <x86@kernel.org>
+Link: https://lkml.kernel.org/r/1571816442-22494-1-git-send-email-wang.yi59@zte.com.cn
 ---
- drivers/irqchip/irq-gic-v3-its.c | 21 ++++++++++++++++++---
- 1 file changed, 18 insertions(+), 3 deletions(-)
+ arch/x86/kernel/apic/apic.c | 2 +-
+ arch/x86/kernel/uprobes.c   | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
-index 62e54f1..787e8ee 100644
---- a/drivers/irqchip/irq-gic-v3-its.c
-+++ b/drivers/irqchip/irq-gic-v3-its.c
-@@ -175,6 +175,22 @@ static DEFINE_IDA(its_vpeid_ida);
- #define gic_data_rdist_rd_base()	(gic_data_rdist()->rd_base)
- #define gic_data_rdist_vlpi_base()	(gic_data_rdist_rd_base() + SZ_128K)
- 
-+static u16 get_its_list(struct its_vm *vm)
-+{
-+	struct its_node *its;
-+	unsigned long its_list = 0;
-+
-+	list_for_each_entry(its, &its_nodes, entry) {
-+		if (!its->is_v4)
-+			continue;
-+
-+		if (vm->vlpi_count[its->list_nr])
-+			__set_bit(its->list_nr, &its_list);
-+	}
-+
-+	return (u16)its_list;
-+}
-+
- static struct its_collection *dev_event_to_col(struct its_device *its_dev,
- 					       u32 event)
+diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
+index 9e2dd2b..8147106 100644
+--- a/arch/x86/kernel/apic/apic.c
++++ b/arch/x86/kernel/apic/apic.c
+@@ -2335,7 +2335,7 @@ static int cpuid_to_apicid[] = {
+ #ifdef CONFIG_SMP
+ /**
+  * apic_id_is_primary_thread - Check whether APIC ID belongs to a primary thread
+- * @id:	APIC ID to check
++ * @apicid: APIC ID to check
+  */
+ bool apic_id_is_primary_thread(unsigned int apicid)
  {
-@@ -976,17 +992,15 @@ static void its_send_vmapp(struct its_node *its,
+diff --git a/arch/x86/kernel/uprobes.c b/arch/x86/kernel/uprobes.c
+index 8cd745e..15e5aad 100644
+--- a/arch/x86/kernel/uprobes.c
++++ b/arch/x86/kernel/uprobes.c
+@@ -842,8 +842,8 @@ static int push_setup_xol_ops(struct arch_uprobe *auprobe, struct insn *insn)
  
- static void its_send_vmovp(struct its_vpe *vpe)
- {
--	struct its_cmd_desc desc;
-+	struct its_cmd_desc desc = {};
- 	struct its_node *its;
- 	unsigned long flags;
- 	int col_id = vpe->col_idx;
- 
- 	desc.its_vmovp_cmd.vpe = vpe;
--	desc.its_vmovp_cmd.its_list = (u16)its_list_map;
- 
- 	if (!its_list_map) {
- 		its = list_first_entry(&its_nodes, struct its_node, entry);
--		desc.its_vmovp_cmd.seq_num = 0;
- 		desc.its_vmovp_cmd.col = &its->collections[col_id];
- 		its_send_single_vcommand(its, its_build_vmovp_cmd, &desc);
- 		return;
-@@ -1003,6 +1017,7 @@ static void its_send_vmovp(struct its_vpe *vpe)
- 	raw_spin_lock_irqsave(&vmovp_lock, flags);
- 
- 	desc.its_vmovp_cmd.seq_num = vmovp_seq_num++;
-+	desc.its_vmovp_cmd.its_list = get_its_list(vpe->its_vm);
- 
- 	/* Emit VMOVPs */
- 	list_for_each_entry(its, &its_nodes, entry) {
+ /**
+  * arch_uprobe_analyze_insn - instruction analysis including validity and fixups.
++ * @auprobe: the probepoint information.
+  * @mm: the probed address space.
+- * @arch_uprobe: the probepoint information.
+  * @addr: virtual address at which to install the probepoint
+  * Return 0 on success or a -ve number on error.
+  */
