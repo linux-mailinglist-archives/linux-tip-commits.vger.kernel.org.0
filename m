@@ -2,30 +2,30 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 89001E71C8
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 28 Oct 2019 13:43:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D4680E71D1
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 28 Oct 2019 13:43:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389487AbfJ1Mnf (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 28 Oct 2019 08:43:35 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:44683 "EHLO
+        id S2389469AbfJ1Mnd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 28 Oct 2019 08:43:33 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:44678 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389472AbfJ1Mnf (ORCPT
+        with ESMTP id S2389453AbfJ1Mnd (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 28 Oct 2019 08:43:35 -0400
+        Mon, 28 Oct 2019 08:43:33 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iP4Mh-0002Lt-Vl; Mon, 28 Oct 2019 13:43:20 +0100
+        id 1iP4Mh-0002Lq-Lh; Mon, 28 Oct 2019 13:43:19 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 9F80E1C0081;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4D0131C047C;
         Mon, 28 Oct 2019 13:43:19 +0100 (CET)
 Date:   Mon, 28 Oct 2019 12:43:19 -0000
 From:   "tip-bot2 for Alexey Budankov" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/x86/intel: Implement LBR callstack context
- synchronization
+Subject: [tip: perf/core] perf/x86: Synchronize PMU task contexts on optimized
+ context switches
 Cc:     Alexey Budankov <alexey.budankov@linux.intel.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Alexander Shishkin <alexander.shishkin@linux.intel.com>,
@@ -42,10 +42,10 @@ Cc:     Alexey Budankov <alexey.budankov@linux.intel.com>,
         Vince Weaver <vincent.weaver@maine.edu>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <261ac742-9022-c3f4-5885-1eae7415b091@linux.intel.com>
-References: <261ac742-9022-c3f4-5885-1eae7415b091@linux.intel.com>
+In-Reply-To: <9c6445a9-bdba-ef03-3859-f1f91198f27a@linux.intel.com>
+References: <9c6445a9-bdba-ef03-3859-f1f91198f27a@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <157226659938.29376.5074252162703228441.tip-bot2@tip-bot2>
+Message-ID: <157226659905.29376.4151373731366750163.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -61,30 +61,18 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     421ca868ea3b7c1ca1a541ed6dff3c101a563b95
-Gitweb:        https://git.kernel.org/tip/421ca868ea3b7c1ca1a541ed6dff3c101a563b95
+Commit-ID:     c2b98a8661514f29a44ebd0925cf4b1503beb48c
+Gitweb:        https://git.kernel.org/tip/c2b98a8661514f29a44ebd0925cf4b1503beb48c
 Author:        Alexey Budankov <alexey.budankov@linux.intel.com>
-AuthorDate:    Wed, 23 Oct 2019 10:12:54 +03:00
+AuthorDate:    Wed, 23 Oct 2019 10:13:56 +03:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Mon, 28 Oct 2019 12:51:01 +01:00
 
-perf/x86/intel: Implement LBR callstack context synchronization
+perf/x86: Synchronize PMU task contexts on optimized context switches
 
-Implement intel_pmu_lbr_swap_task_ctx() method updating counters
-of the events that requested LBR callstack data on a sample.
-
-The counter can be zero for the case when task context belongs to
-a thread that has just come from a block on a futex and the context
-contains saved (lbr_stack_state == LBR_VALID) LBR register values.
-
-For the values to be restored at LBR registers on the next thread's
-switch-in event it swaps the counter value with the one that is
-expected to be non zero at the previous equivalent task perf event
-context.
-
-Swap operation type ensures the previous task perf event context
-stays consistent with the amount of events that requested LBR
-callstack data on a sample.
+Install Intel specific PMU task context synchronization adapter and
+extend optimized context switch path with PMU specific task context
+synchronization to fix LBR callstack virtualization on context switches.
 
 Signed-off-by: Alexey Budankov <alexey.budankov@linux.intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
@@ -102,58 +90,62 @@ Cc: Song Liu <songliubraving@fb.com>
 Cc: Stephane Eranian <eranian@google.com>
 Cc: Thomas Gleixner <tglx@linutronix.de>
 Cc: Vince Weaver <vincent.weaver@maine.edu>
-Link: https://lkml.kernel.org/r/261ac742-9022-c3f4-5885-1eae7415b091@linux.intel.com
+Link: https://lkml.kernel.org/r/9c6445a9-bdba-ef03-3859-f1f91198f27a@linux.intel.com
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- arch/x86/events/intel/lbr.c  | 23 +++++++++++++++++++++++
- arch/x86/events/perf_event.h |  3 +++
- 2 files changed, 26 insertions(+)
+ arch/x86/events/intel/core.c |  7 +++++++
+ kernel/events/core.c         | 13 ++++++++++++-
+ 2 files changed, 19 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/events/intel/lbr.c b/arch/x86/events/intel/lbr.c
-index ea54634..534c766 100644
---- a/arch/x86/events/intel/lbr.c
-+++ b/arch/x86/events/intel/lbr.c
-@@ -417,6 +417,29 @@ static void __intel_pmu_lbr_save(struct x86_perf_task_context *task_ctx)
- 	cpuc->last_log_id = ++task_ctx->log_id;
+diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+index bbf6588..dc64b16 100644
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -3820,6 +3820,12 @@ static void intel_pmu_sched_task(struct perf_event_context *ctx,
+ 	intel_pmu_lbr_sched_task(ctx, sched_in);
  }
  
-+void intel_pmu_lbr_swap_task_ctx(struct perf_event_context *prev,
-+				 struct perf_event_context *next)
++static void intel_pmu_swap_task_ctx(struct perf_event_context *prev,
++				    struct perf_event_context *next)
 +{
-+	struct x86_perf_task_context *prev_ctx_data, *next_ctx_data;
-+
-+	swap(prev->task_ctx_data, next->task_ctx_data);
-+
-+	/*
-+	 * Architecture specific synchronization makes sense in
-+	 * case both prev->task_ctx_data and next->task_ctx_data
-+	 * pointers are allocated.
-+	 */
-+
-+	prev_ctx_data = next->task_ctx_data;
-+	next_ctx_data = prev->task_ctx_data;
-+
-+	if (!prev_ctx_data || !next_ctx_data)
-+		return;
-+
-+	swap(prev_ctx_data->lbr_callstack_users,
-+	     next_ctx_data->lbr_callstack_users);
++	intel_pmu_lbr_swap_task_ctx(prev, next);
 +}
 +
- void intel_pmu_lbr_sched_task(struct perf_event_context *ctx, bool sched_in)
+ static int intel_pmu_check_period(struct perf_event *event, u64 value)
  {
- 	struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
-diff --git a/arch/x86/events/perf_event.h b/arch/x86/events/perf_event.h
-index 5384317..930611d 100644
---- a/arch/x86/events/perf_event.h
-+++ b/arch/x86/events/perf_event.h
-@@ -1024,6 +1024,9 @@ void intel_pmu_store_pebs_lbrs(struct pebs_lbr *lbr);
+ 	return intel_pmu_has_bts_period(event, value) ? -EINVAL : 0;
+@@ -3955,6 +3961,7 @@ static __initconst const struct x86_pmu intel_pmu = {
  
- void intel_ds_init(void);
+ 	.guest_get_msrs		= intel_guest_get_msrs,
+ 	.sched_task		= intel_pmu_sched_task,
++	.swap_task_ctx		= intel_pmu_swap_task_ctx,
  
-+void intel_pmu_lbr_swap_task_ctx(struct perf_event_context *prev,
-+				 struct perf_event_context *next);
+ 	.check_period		= intel_pmu_check_period,
+ 
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 0940c88..f48d38b 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -3204,10 +3204,21 @@ static void perf_event_context_sched_out(struct task_struct *task, int ctxn,
+ 		raw_spin_lock(&ctx->lock);
+ 		raw_spin_lock_nested(&next_ctx->lock, SINGLE_DEPTH_NESTING);
+ 		if (context_equiv(ctx, next_ctx)) {
++			struct pmu *pmu = ctx->pmu;
 +
- void intel_pmu_lbr_sched_task(struct perf_event_context *ctx, bool sched_in);
+ 			WRITE_ONCE(ctx->task, next);
+ 			WRITE_ONCE(next_ctx->task, task);
  
- u64 lbr_from_signext_quirk_wr(u64 val);
+-			swap(ctx->task_ctx_data, next_ctx->task_ctx_data);
++			/*
++			 * PMU specific parts of task perf context can require
++			 * additional synchronization. As an example of such
++			 * synchronization see implementation details of Intel
++			 * LBR call stack data profiling;
++			 */
++			if (pmu->swap_task_ctx)
++				pmu->swap_task_ctx(ctx, next_ctx);
++			else
++				swap(ctx->task_ctx_data, next_ctx->task_ctx_data);
+ 
+ 			/*
+ 			 * RCU_INIT_POINTER here is safe because we've not
