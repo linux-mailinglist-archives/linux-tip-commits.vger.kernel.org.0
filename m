@@ -2,44 +2,44 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D0EBE70A0
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 28 Oct 2019 12:42:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ED5D3E71DC
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 28 Oct 2019 13:44:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388604AbfJ1LmT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 28 Oct 2019 07:42:19 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:44359 "EHLO
+        id S2389443AbfJ1Mnb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 28 Oct 2019 08:43:31 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:44661 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388603AbfJ1LmT (ORCPT
+        with ESMTP id S2389433AbfJ1Mna (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 28 Oct 2019 07:42:19 -0400
+        Mon, 28 Oct 2019 08:43:30 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iP3PO-0001Kb-0E; Mon, 28 Oct 2019 12:42:02 +0100
+        id 1iP4Mg-0002Lj-KL; Mon, 28 Oct 2019 13:43:18 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 902341C0081;
-        Mon, 28 Oct 2019 12:42:01 +0100 (CET)
-Date:   Mon, 28 Oct 2019 11:42:01 -0000
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 16CCE1C0081;
+        Mon, 28 Oct 2019 13:43:18 +0100 (CET)
+Date:   Mon, 28 Oct 2019 12:43:17 -0000
+From:   "tip-bot2 for Liang, Kan" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/asm] ubsan, x86: Annotate and allow
- __ubsan_handle_shift_out_of_bounds() in uaccess regions
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
+Subject: [tip: perf/core] perf/core: Optimize perf_init_event() for TYPE_SOFTWARE
+Cc:     "Liang, Kan" <kan.liang@linux.intel.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Christian Brauner <christian.brauner@ubuntu.com>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Jiri Olsa <jolsa@redhat.com>,
         Linus Torvalds <torvalds@linux-foundation.org>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Thomas Gleixner <tglx@linutronix.de>, cyphar@cyphar.com,
-        keescook@chromium.org, linux@rasmusvillemoes.dk,
+        Mark Rutland <mark.rutland@arm.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Stephane Eranian <eranian@google.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Vince Weaver <vincent.weaver@maine.edu>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20191021131149.GA19358@hirez.programming.kicks-ass.net>
-References: <20191021131149.GA19358@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-Message-ID: <157226292126.29376.1602879935081875165.tip-bot2@tip-bot2>
+Message-ID: <157226659774.29376.11587351641119778344.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -53,82 +53,59 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/asm branch of tip:
+The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     9a50dcaf0416a43e1fe411dc61a99c8333c90119
-Gitweb:        https://git.kernel.org/tip/9a50dcaf0416a43e1fe411dc61a99c8333c90119
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Mon, 21 Oct 2019 15:11:49 +02:00
+Commit-ID:     d44f821b0e13275735e8f3fe4db8703b45f05d52
+Gitweb:        https://git.kernel.org/tip/d44f821b0e13275735e8f3fe4db8703b45f05d52
+Author:        Liang, Kan <kan.liang@linux.intel.com>
+AuthorDate:    Tue, 22 Oct 2019 11:13:09 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Mon, 28 Oct 2019 10:43:00 +01:00
+CommitterDate: Mon, 28 Oct 2019 12:53:28 +01:00
 
-ubsan, x86: Annotate and allow __ubsan_handle_shift_out_of_bounds() in uaccess regions
+perf/core: Optimize perf_init_event() for TYPE_SOFTWARE
 
-The new check_zeroed_user() function uses variable shifts inside of a
-user_access_begin()/user_access_end() section and that results in GCC
-emitting __ubsan_handle_shift_out_of_bounds() calls, even though
-through value range analysis it would be able to see that the UB in
-question is impossible.
+Andi reported that he was hitting the linear search in
+perf_init_event() a lot. Now that all !TYPE_SOFTWARE events should hit
+the IDR, make sure the TYPE_SOFTWARE events are at the head of the
+list such that we'll quickly find the right PMU (provided a valid
+event was given).
 
-Annotate and whitelist this UBSAN function; continued use of
-user_access_begin()/user_access_end() will undoubtedly result in
-further uses of function.
-
-Reported-by: Randy Dunlap <rdunlap@infradead.org>
-Tested-by: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Liang, Kan <kan.liang@linux.intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
-Acked-by: Christian Brauner <christian.brauner@ubuntu.com>
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Jiri Olsa <jolsa@redhat.com>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>
+Cc: Stephane Eranian <eranian@google.com>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: cyphar@cyphar.com
-Cc: keescook@chromium.org
-Cc: linux@rasmusvillemoes.dk
-Fixes: f5a1a536fa14 ("lib: introduce copy_struct_from_user() helper")
-Link: https://lkml.kernel.org/r/20191021131149.GA19358@hirez.programming.kicks-ass.net
+Cc: Vince Weaver <vincent.weaver@maine.edu>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- lib/ubsan.c           | 5 ++++-
- tools/objtool/check.c | 1 +
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ kernel/events/core.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/lib/ubsan.c b/lib/ubsan.c
-index e7d3173..0c46811 100644
---- a/lib/ubsan.c
-+++ b/lib/ubsan.c
-@@ -374,9 +374,10 @@ void __ubsan_handle_shift_out_of_bounds(struct shift_out_of_bounds_data *data,
- 	struct type_descriptor *lhs_type = data->lhs_type;
- 	char rhs_str[VALUE_LENGTH];
- 	char lhs_str[VALUE_LENGTH];
-+	unsigned long ua_flags = user_access_save();
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 4d67c5d..cfd89b4 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -10180,7 +10180,16 @@ got_cpu_context:
+ 	if (!pmu->event_idx)
+ 		pmu->event_idx = perf_event_idx_default;
  
- 	if (suppress_report(&data->location))
--		return;
-+		goto out;
- 
- 	ubsan_prologue(&data->location, &flags);
- 
-@@ -402,6 +403,8 @@ void __ubsan_handle_shift_out_of_bounds(struct shift_out_of_bounds_data *data,
- 			lhs_type->type_name);
- 
- 	ubsan_epilogue(&flags);
-+out:
-+	user_access_restore(ua_flags);
- }
- EXPORT_SYMBOL(__ubsan_handle_shift_out_of_bounds);
- 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 044c9a3..f53d3c5 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -481,6 +481,7 @@ static const char *uaccess_safe_builtin[] = {
- 	"ubsan_type_mismatch_common",
- 	"__ubsan_handle_type_mismatch",
- 	"__ubsan_handle_type_mismatch_v1",
-+	"__ubsan_handle_shift_out_of_bounds",
- 	/* misc */
- 	"csum_partial_copy_generic",
- 	"__memcpy_mcsafe",
+-	list_add_rcu(&pmu->entry, &pmus);
++	/*
++	 * Ensure the TYPE_SOFTWARE PMUs are at the head of the list,
++	 * since these cannot be in the IDR. This way the linear search
++	 * is fast, provided a valid software event is provided.
++	 */
++	if (type == PERF_TYPE_SOFTWARE || !name)
++		list_add_rcu(&pmu->entry, &pmus);
++	else
++		list_add_tail_rcu(&pmu->entry, &pmus);
++
+ 	atomic_set(&pmu->exclusive_cnt, 0);
+ 	ret = 0;
+ unlock:
