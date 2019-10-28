@@ -2,39 +2,48 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2ABC4E618A
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 27 Oct 2019 09:05:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E946BE709B
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 28 Oct 2019 12:42:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726002AbfJ0IFa (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 27 Oct 2019 04:05:30 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:41132 "EHLO
+        id S1729074AbfJ1LmH (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 28 Oct 2019 07:42:07 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:44350 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725977AbfJ0IFa (ORCPT
+        with ESMTP id S1730170AbfJ1LmH (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 27 Oct 2019 04:05:30 -0400
+        Mon, 28 Oct 2019 07:42:07 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iOdYA-0003g2-V6; Sun, 27 Oct 2019 09:05:23 +0100
+        id 1iP3PA-0001G3-6G; Mon, 28 Oct 2019 12:41:48 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 912301C0082;
-        Sun, 27 Oct 2019 09:05:22 +0100 (CET)
-Date:   Sun, 27 Oct 2019 08:05:22 -0000
-From:   "tip-bot2 for Yi Wang" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 645B11C0081;
+        Mon, 28 Oct 2019 12:41:47 +0100 (CET)
+Date:   Mon, 28 Oct 2019 11:41:47 -0000
+From:   "tip-bot2 for Geert Uytterhoeven" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] x86/apic, x86/uprobes: Correct parameter names in
- kernel-doc comments
-Cc:     Yi Wang <wang.yi59@zte.com.cn>, Borislav Petkov <bp@suse.de>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+Subject: [tip: perf/urgent] perf/headers: Fix spelling s/EACCESS/EACCES/,
+ s/privilidge/privilege/
+Cc:     Geert Uytterhoeven <geert+renesas@glider.be>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Jiri Kosina <trivial@kernel.org>, Jiri Olsa <jolsa@redhat.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Stephane Eranian <eranian@google.com>,
         Thomas Gleixner <tglx@linutronix.de>,
-        "x86-ml" <x86@kernel.org>, Ingo Molnar <mingo@kernel.org>,
-        Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
-In-Reply-To: <1571816442-22494-1-git-send-email-wang.yi59@zte.com.cn>
-References: <1571816442-22494-1-git-send-email-wang.yi59@zte.com.cn>
+        Vince Weaver <vincent.weaver@maine.edu>,
+        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20191024122904.12463-1-geert+renesas@glider.be>
+References: <20191024122904.12463-1-geert+renesas@glider.be>
 MIME-Version: 1.0
-Message-ID: <157216352223.29376.4881710179306669523.tip-bot2@tip-bot2>
+Message-ID: <157226290708.29376.6650080342188215853.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,58 +57,50 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cleanups branch of tip:
+The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     44eb5a7e5dc6f23d04c05c15f91bc279e0dc700d
-Gitweb:        https://git.kernel.org/tip/44eb5a7e5dc6f23d04c05c15f91bc279e0dc700d
-Author:        Yi Wang <wang.yi59@zte.com.cn>
-AuthorDate:    Sun, 27 Oct 2019 08:55:39 +01:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Sun, 27 Oct 2019 09:00:28 +01:00
+Commit-ID:     652521d460cbfa24ef27717b4b28acfac4281be6
+Gitweb:        https://git.kernel.org/tip/652521d460cbfa24ef27717b4b28acfac4281be6
+Author:        Geert Uytterhoeven <geert+renesas@glider.be>
+AuthorDate:    Thu, 24 Oct 2019 14:29:04 +02:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Mon, 28 Oct 2019 11:02:01 +01:00
 
-x86/apic, x86/uprobes: Correct parameter names in kernel-doc comments
+perf/headers: Fix spelling s/EACCESS/EACCES/, s/privilidge/privilege/
 
-Rename parameter names to the correct ones used in the function. No
-functional changes.
+As per POSIX, the correct spelling of the error code is EACCES:
 
- [ bp: Merge two patches into a single one. ]
+  include/uapi/asm-generic/errno-base.h:#define EACCES 13 /* Permission denied */
 
-Signed-off-by: Yi Wang <wang.yi59@zte.com.cn>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Ingo Molnar <mingo@redhat.com>
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
+Cc: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Jiri Kosina <trivial@kernel.org>
+Cc: Jiri Olsa <jolsa@redhat.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Stephane Eranian <eranian@google.com>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: x86-ml <x86@kernel.org>
-Link: https://lkml.kernel.org/r/1571816442-22494-1-git-send-email-wang.yi59@zte.com.cn
+Cc: Vince Weaver <vincent.weaver@maine.edu>
+Link: https://lkml.kernel.org/r/20191024122904.12463-1-geert+renesas@glider.be
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- arch/x86/kernel/apic/apic.c | 2 +-
- arch/x86/kernel/uprobes.c   | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ include/linux/perf_event.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
-index 9e2dd2b..8147106 100644
---- a/arch/x86/kernel/apic/apic.c
-+++ b/arch/x86/kernel/apic/apic.c
-@@ -2335,7 +2335,7 @@ static int cpuid_to_apicid[] = {
- #ifdef CONFIG_SMP
- /**
-  * apic_id_is_primary_thread - Check whether APIC ID belongs to a primary thread
-- * @id:	APIC ID to check
-+ * @apicid: APIC ID to check
-  */
- bool apic_id_is_primary_thread(unsigned int apicid)
- {
-diff --git a/arch/x86/kernel/uprobes.c b/arch/x86/kernel/uprobes.c
-index 8cd745e..15e5aad 100644
---- a/arch/x86/kernel/uprobes.c
-+++ b/arch/x86/kernel/uprobes.c
-@@ -842,8 +842,8 @@ static int push_setup_xol_ops(struct arch_uprobe *auprobe, struct insn *insn)
- 
- /**
-  * arch_uprobe_analyze_insn - instruction analysis including validity and fixups.
-+ * @auprobe: the probepoint information.
-  * @mm: the probed address space.
-- * @arch_uprobe: the probepoint information.
-  * @addr: virtual address at which to install the probepoint
-  * Return 0 on success or a -ve number on error.
-  */
+diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
+index 61448c1..68ccc5b 100644
+--- a/include/linux/perf_event.h
++++ b/include/linux/perf_event.h
+@@ -292,7 +292,7 @@ struct pmu {
+ 	 *  -EBUSY	-- @event is for this PMU but PMU temporarily unavailable
+ 	 *  -EINVAL	-- @event is for this PMU but @event is not valid
+ 	 *  -EOPNOTSUPP -- @event is for this PMU, @event is valid, but not supported
+-	 *  -EACCESS	-- @event is for this PMU, @event is valid, but no privilidges
++	 *  -EACCES	-- @event is for this PMU, @event is valid, but no privileges
+ 	 *
+ 	 *  0		-- @event is for this PMU and valid
+ 	 *
