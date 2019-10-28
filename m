@@ -2,30 +2,30 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ED5D3E71DC
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 28 Oct 2019 13:44:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A154E71D0
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 28 Oct 2019 13:43:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389443AbfJ1Mnb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 28 Oct 2019 08:43:31 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:44661 "EHLO
+        id S2389475AbfJ1Mne (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 28 Oct 2019 08:43:34 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:44679 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389433AbfJ1Mna (ORCPT
+        with ESMTP id S2389456AbfJ1Mne (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 28 Oct 2019 08:43:30 -0400
+        Mon, 28 Oct 2019 08:43:34 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iP4Mg-0002Lj-KL; Mon, 28 Oct 2019 13:43:18 +0100
+        id 1iP4Mh-0002Ln-Ag; Mon, 28 Oct 2019 13:43:19 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 16CCE1C0081;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id ED2D41C0081;
         Mon, 28 Oct 2019 13:43:18 +0100 (CET)
-Date:   Mon, 28 Oct 2019 12:43:17 -0000
-From:   "tip-bot2 for Liang, Kan" <tip-bot2@linutronix.de>
+Date:   Mon, 28 Oct 2019 12:43:18 -0000
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/core: Optimize perf_init_event() for TYPE_SOFTWARE
-Cc:     "Liang, Kan" <kan.liang@linux.intel.com>,
+Subject: [tip: perf/core] perf/core: Optimize perf_install_in_event()
+Cc:     Andi Kleen <andi@firstfloor.org>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Alexander Shishkin <alexander.shishkin@linux.intel.com>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
@@ -35,11 +35,11 @@ Cc:     "Liang, Kan" <kan.liang@linux.intel.com>,
         Namhyung Kim <namhyung@kernel.org>,
         Stephane Eranian <eranian@google.com>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Vince Weaver <vincent.weaver@maine.edu>,
-        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
-        linux-kernel@vger.kernel.org
+        Vince Weaver <vincent.weaver@maine.edu>, acme@kernel.org,
+        kan.liang@linux.intel.com, Ingo Molnar <mingo@kernel.org>,
+        Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <157226659774.29376.11587351641119778344.tip-bot2@tip-bot2>
+Message-ID: <157226659857.29376.5471855612098417861.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -55,22 +55,37 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     d44f821b0e13275735e8f3fe4db8703b45f05d52
-Gitweb:        https://git.kernel.org/tip/d44f821b0e13275735e8f3fe4db8703b45f05d52
-Author:        Liang, Kan <kan.liang@linux.intel.com>
-AuthorDate:    Tue, 22 Oct 2019 11:13:09 +02:00
+Commit-ID:     db0503e4f6751f2c719d002ba1becd1811633e6e
+Gitweb:        https://git.kernel.org/tip/db0503e4f6751f2c719d002ba1becd1811633e6e
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Mon, 21 Oct 2019 16:02:39 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Mon, 28 Oct 2019 12:53:28 +01:00
+CommitterDate: Mon, 28 Oct 2019 12:51:02 +01:00
 
-perf/core: Optimize perf_init_event() for TYPE_SOFTWARE
+perf/core: Optimize perf_install_in_event()
 
-Andi reported that he was hitting the linear search in
-perf_init_event() a lot. Now that all !TYPE_SOFTWARE events should hit
-the IDR, make sure the TYPE_SOFTWARE events are at the head of the
-list such that we'll quickly find the right PMU (provided a valid
-event was given).
+Andi reported that when creating a lot of events, a lot of time is
+spent in IPIs and asked if it would be possible to elide some of that.
 
-Signed-off-by: Liang, Kan <kan.liang@linux.intel.com>
+Now when, as for example the perf-tool always does, events are created
+disabled, then these events will not need to be scheduled when added
+to the context (they're still disable) and therefore the IPI is not
+required -- except for the very first event, that will need to set
+ctx->is_active.
+
+( It might be possible to set ctx->is_active remotely for cpu_ctx, but
+  we really need the IPI for task_ctx, so lets not make that
+  distinction. )
+
+Also use __perf_effective_state() since group events depend on the
+state of the leader, if the leader is OFF, the whole group is OFF.
+
+So when sibling events are created enabled (XXX check tool) then we
+only need a single IPI to create and enable the whole group (+ that
+initial IPI to initialize the context).
+
+Suggested-by: Andi Kleen <andi@firstfloor.org>
+Reported-by: Andi Kleen <andi@firstfloor.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 Cc: Arnaldo Carvalho de Melo <acme@redhat.com>
@@ -82,30 +97,40 @@ Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Stephane Eranian <eranian@google.com>
 Cc: Thomas Gleixner <tglx@linutronix.de>
 Cc: Vince Weaver <vincent.weaver@maine.edu>
+Cc: acme@kernel.org
+Cc: kan.liang@linux.intel.com
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- kernel/events/core.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ kernel/events/core.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
 diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 4d67c5d..cfd89b4 100644
+index f48d38b..ea70ca6 100644
 --- a/kernel/events/core.c
 +++ b/kernel/events/core.c
-@@ -10180,7 +10180,16 @@ got_cpu_context:
- 	if (!pmu->event_idx)
- 		pmu->event_idx = perf_event_idx_default;
+@@ -2666,6 +2666,25 @@ perf_install_in_context(struct perf_event_context *ctx,
+ 	 */
+ 	smp_store_release(&event->ctx, ctx);
  
--	list_add_rcu(&pmu->entry, &pmus);
 +	/*
-+	 * Ensure the TYPE_SOFTWARE PMUs are at the head of the list,
-+	 * since these cannot be in the IDR. This way the linear search
-+	 * is fast, provided a valid software event is provided.
++	 * perf_event_attr::disabled events will not run and can be initialized
++	 * without IPI. Except when this is the first event for the context, in
++	 * that case we need the magic of the IPI to set ctx->is_active.
++	 *
++	 * The IOC_ENABLE that is sure to follow the creation of a disabled
++	 * event will issue the IPI and reprogram the hardware.
 +	 */
-+	if (type == PERF_TYPE_SOFTWARE || !name)
-+		list_add_rcu(&pmu->entry, &pmus);
-+	else
-+		list_add_tail_rcu(&pmu->entry, &pmus);
++	if (__perf_effective_state(event) == PERF_EVENT_STATE_OFF && ctx->nr_events) {
++		raw_spin_lock_irq(&ctx->lock);
++		if (ctx->task == TASK_TOMBSTONE) {
++			raw_spin_unlock_irq(&ctx->lock);
++			return;
++		}
++		add_event_to_ctx(event, ctx);
++		raw_spin_unlock_irq(&ctx->lock);
++		return;
++	}
 +
- 	atomic_set(&pmu->exclusive_cnt, 0);
- 	ret = 0;
- unlock:
+ 	if (!task) {
+ 		cpu_function_call(cpu, __perf_install_in_context, event);
+ 		return;
