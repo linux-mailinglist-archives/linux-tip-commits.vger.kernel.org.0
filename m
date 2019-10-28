@@ -2,47 +2,48 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4ABE1E709E
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 28 Oct 2019 12:42:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7BF04E709A
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 28 Oct 2019 12:42:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388592AbfJ1LmP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 28 Oct 2019 07:42:15 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:44338 "EHLO
+        id S2388568AbfJ1LmG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 28 Oct 2019 07:42:06 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:44343 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388276AbfJ1LmE (ORCPT
+        with ESMTP id S1729074AbfJ1LmG (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 28 Oct 2019 07:42:04 -0400
+        Mon, 28 Oct 2019 07:42:06 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iP3PB-0001GH-9V; Mon, 28 Oct 2019 12:41:49 +0100
+        id 1iP3PA-0001G9-Ua; Mon, 28 Oct 2019 12:41:49 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E718C1C047C;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 917951C0081;
         Mon, 28 Oct 2019 12:41:48 +0100 (CET)
 Date:   Mon, 28 Oct 2019 11:41:48 -0000
-From:   "tip-bot2 for Alexander Shishkin" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Kim Phillips" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf/core: Start rejecting the syscall with
- attr.__reserved_2 set
-Cc:     Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+Subject: [tip: perf/urgent] perf/x86/amd/ibs: Fix reading of the IBS OpData
+ register and thus precise RIP validity
+Cc:     Kim Phillips <kim.phillips@amd.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Jiri Olsa <jolsa@redhat.com>,
+        Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>, Jiri Olsa <jolsa@redhat.com>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Mark Rutland <mark.rutland@arm.com>,
         Namhyung Kim <namhyung@kernel.org>,
         Stephane Eranian <eranian@google.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         Vince Weaver <vincent.weaver@maine.edu>,
-        adrian.hunter@intel.com, mathieu.poirier@linaro.org,
-        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20191025121636.75182-1-alexander.shishkin@linux.intel.com>
-References: <20191025121636.75182-1-alexander.shishkin@linux.intel.com>
+        Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org
+In-Reply-To: <20191023150955.30292-1-kim.phillips@amd.com>
+References: <20191023150955.30292-1-kim.phillips@amd.com>
 MIME-Version: 1.0
-Message-ID: <157226290868.29376.3945306919973708358.tip-bot2@tip-bot2>
+Message-ID: <157226290832.29376.10682843753427923945.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -58,25 +59,29 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     8c7e975667fbc3b7c816119dd56104739899f125
-Gitweb:        https://git.kernel.org/tip/8c7e975667fbc3b7c816119dd56104739899f125
-Author:        Alexander Shishkin <alexander.shishkin@linux.intel.com>
-AuthorDate:    Fri, 25 Oct 2019 15:16:36 +03:00
+Commit-ID:     317b96bb14303c7998dbcd5bc606bd8038fdd4b4
+Gitweb:        https://git.kernel.org/tip/317b96bb14303c7998dbcd5bc606bd8038fdd4b4
+Author:        Kim Phillips <kim.phillips@amd.com>
+AuthorDate:    Wed, 23 Oct 2019 10:09:54 -05:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Mon, 28 Oct 2019 11:01:59 +01:00
 
-perf/core: Start rejecting the syscall with attr.__reserved_2 set
+perf/x86/amd/ibs: Fix reading of the IBS OpData register and thus precise RIP validity
 
-Commit:
+The loop that reads all the IBS MSRs into *buf stopped one MSR short of
+reading the IbsOpData register, which contains the RipInvalid status bit.
 
-  1a5941312414c ("perf: Add wakeup watermark control to the AUX area")
+Fix the offset_max assignment so the MSR gets read, so the RIP invalid
+evaluation is based on what the IBS h/w output, instead of what was
+left in memory.
 
-added attr.__reserved_2 padding, but forgot to add an ABI check to reject
-attributes with this field set. Fix that.
-
-Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Signed-off-by: Kim Phillips <kim.phillips@amd.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
 Cc: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: H. Peter Anvin <hpa@zytor.com>
 Cc: Jiri Olsa <jolsa@redhat.com>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: Mark Rutland <mark.rutland@arm.com>
@@ -84,24 +89,23 @@ Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Stephane Eranian <eranian@google.com>
 Cc: Thomas Gleixner <tglx@linutronix.de>
 Cc: Vince Weaver <vincent.weaver@maine.edu>
-Cc: adrian.hunter@intel.com
-Cc: mathieu.poirier@linaro.org
-Link: https://lkml.kernel.org/r/20191025121636.75182-1-alexander.shishkin@linux.intel.com
+Fixes: d47e8238cd76 ("perf/x86-ibs: Take instruction pointer from ibs sample")
+Link: https://lkml.kernel.org/r/20191023150955.30292-1-kim.phillips@amd.com
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- kernel/events/core.c | 2 +-
+ arch/x86/events/amd/ibs.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index bb3748d..aec8dba 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -10635,7 +10635,7 @@ static int perf_copy_attr(struct perf_event_attr __user *uattr,
- 
- 	attr->size = size;
- 
--	if (attr->__reserved_1)
-+	if (attr->__reserved_1 || attr->__reserved_2)
- 		return -EINVAL;
- 
- 	if (attr->sample_type & ~(PERF_SAMPLE_MAX-1))
+diff --git a/arch/x86/events/amd/ibs.c b/arch/x86/events/amd/ibs.c
+index 5b35b7e..98ba21a 100644
+--- a/arch/x86/events/amd/ibs.c
++++ b/arch/x86/events/amd/ibs.c
+@@ -614,7 +614,7 @@ fail:
+ 	if (event->attr.sample_type & PERF_SAMPLE_RAW)
+ 		offset_max = perf_ibs->offset_max;
+ 	else if (check_rip)
+-		offset_max = 2;
++		offset_max = 3;
+ 	else
+ 		offset_max = 1;
+ 	do {
