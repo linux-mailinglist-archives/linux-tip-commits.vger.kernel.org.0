@@ -2,50 +2,42 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6726AE71DD
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 28 Oct 2019 13:44:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B3D88E84BA
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 29 Oct 2019 10:52:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389457AbfJ1Mnc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 28 Oct 2019 08:43:32 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:44674 "EHLO
+        id S1728343AbfJ2Jwa (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 29 Oct 2019 05:52:30 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:47697 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389395AbfJ1Mnc (ORCPT
+        with ESMTP id S1726912AbfJ2Jw3 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 28 Oct 2019 08:43:32 -0400
+        Tue, 29 Oct 2019 05:52:29 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iP4Mi-0002Nj-M4; Mon, 28 Oct 2019 13:43:20 +0100
+        id 1iPOAk-0004MA-Hl; Tue, 29 Oct 2019 10:52:18 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 593761C0482;
-        Mon, 28 Oct 2019 13:43:20 +0100 (CET)
-Date:   Mon, 28 Oct 2019 12:43:20 -0000
-From:   "tip-bot2 for Alexey Budankov" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 230E71C047B;
+        Tue, 29 Oct 2019 10:52:18 +0100 (CET)
+Date:   Tue, 29 Oct 2019 09:52:17 -0000
+From:   "tip-bot2 for Valentin Schneider" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/core, perf/x86: Introduce swap_task_ctx()
- method at 'struct pmu'
-Cc:     Alexey Budankov <alexey.budankov@linux.intel.com>,
+Subject: [tip: sched/urgent] sched/topology: Don't try to build empty sched domains
+Cc:     Valentin Schneider <valentin.schneider@arm.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Ian Rogers <irogers@google.com>, Jiri Olsa <jolsa@redhat.com>,
-        Kan Liang <kan.liang@linux.intel.com>,
+        Dietmar.Eggemann@arm.com,
         Linus Torvalds <torvalds@linux-foundation.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Song Liu <songliubraving@fb.com>,
-        Stephane Eranian <eranian@google.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Vince Weaver <vincent.weaver@maine.edu>,
+        Thomas Gleixner <tglx@linutronix.de>, hannes@cmpxchg.org,
+        lizefan@huawei.com, morten.rasmussen@arm.com, qperret@google.com,
+        tj@kernel.org, vincent.guittot@linaro.org,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <9a0aa84a-f062-9b64-3133-373658550c4b@linux.intel.com>
-References: <9a0aa84a-f062-9b64-3133-373658550c4b@linux.intel.com>
+In-Reply-To: <20191023153745.19515-2-valentin.schneider@arm.com>
+References: <20191023153745.19515-2-valentin.schneider@arm.com>
 MIME-Version: 1.0
-Message-ID: <157226660008.29376.17028800323168322771.tip-bot2@tip-bot2>
+Message-ID: <157234273774.29376.13053377889800055975.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -59,80 +51,124 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/core branch of tip:
+The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     fc1adfe306b71e094df636012f8c0fed971cad45
-Gitweb:        https://git.kernel.org/tip/fc1adfe306b71e094df636012f8c0fed971cad45
-Author:        Alexey Budankov <alexey.budankov@linux.intel.com>
-AuthorDate:    Wed, 23 Oct 2019 10:11:04 +03:00
+Commit-ID:     cd1cb3350561d2bf544ddfef76fbf0b1c9c7178f
+Gitweb:        https://git.kernel.org/tip/cd1cb3350561d2bf544ddfef76fbf0b1c9c7178f
+Author:        Valentin Schneider <valentin.schneider@arm.com>
+AuthorDate:    Wed, 23 Oct 2019 16:37:44 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Mon, 28 Oct 2019 12:50:59 +01:00
+CommitterDate: Tue, 29 Oct 2019 09:58:45 +01:00
 
-perf/core, perf/x86: Introduce swap_task_ctx() method at 'struct pmu'
+sched/topology: Don't try to build empty sched domains
 
-Declare swap_task_ctx() methods at the generic and x86 specific
-pmu types to bridge calls to platform specific PMU code on optimized
-context switch path between equivalent task perf event contexts.
+Turns out hotplugging CPUs that are in exclusive cpusets can lead to the
+cpuset code feeding empty cpumasks to the sched domain rebuild machinery.
 
-Signed-off-by: Alexey Budankov <alexey.budankov@linux.intel.com>
+This leads to the following splat:
+
+    Internal error: Oops: 96000004 [#1] PREEMPT SMP
+    Modules linked in:
+    CPU: 0 PID: 235 Comm: kworker/5:2 Not tainted 5.4.0-rc1-00005-g8d495477d62e #23
+    Hardware name: ARM Juno development board (r0) (DT)
+    Workqueue: events cpuset_hotplug_workfn
+    pstate: 60000005 (nZCv daif -PAN -UAO)
+    pc : build_sched_domains (./include/linux/arch_topology.h:23 kernel/sched/topology.c:1898 kernel/sched/topology.c:1969)
+    lr : build_sched_domains (kernel/sched/topology.c:1966)
+    Call trace:
+    build_sched_domains (./include/linux/arch_topology.h:23 kernel/sched/topology.c:1898 kernel/sched/topology.c:1969)
+    partition_sched_domains_locked (kernel/sched/topology.c:2250)
+    rebuild_sched_domains_locked (./include/linux/bitmap.h:370 ./include/linux/cpumask.h:538 kernel/cgroup/cpuset.c:955 kernel/cgroup/cpuset.c:978 kernel/cgroup/cpuset.c:1019)
+    rebuild_sched_domains (kernel/cgroup/cpuset.c:1032)
+    cpuset_hotplug_workfn (kernel/cgroup/cpuset.c:3205 (discriminator 2))
+    process_one_work (./arch/arm64/include/asm/jump_label.h:21 ./include/linux/jump_label.h:200 ./include/trace/events/workqueue.h:114 kernel/workqueue.c:2274)
+    worker_thread (./include/linux/compiler.h:199 ./include/linux/list.h:268 kernel/workqueue.c:2416)
+    kthread (kernel/kthread.c:255)
+    ret_from_fork (arch/arm64/kernel/entry.S:1167)
+    Code: f860dae2 912802d6 aa1603e1 12800000 (f8616853)
+
+The faulty line in question is:
+
+  cap = arch_scale_cpu_capacity(cpumask_first(cpu_map));
+
+and we're not checking the return value against nr_cpu_ids (we shouldn't
+have to!), which leads to the above.
+
+Prevent generate_sched_domains() from returning empty cpumasks, and add
+some assertion in build_sched_domains() to scream bloody murder if it
+happens again.
+
+The above splat was obtained on my Juno r0 with the following reproducer:
+
+  $ cgcreate -g cpuset:asym
+  $ cgset -r cpuset.cpus=0-3 asym
+  $ cgset -r cpuset.mems=0 asym
+  $ cgset -r cpuset.cpu_exclusive=1 asym
+
+  $ cgcreate -g cpuset:smp
+  $ cgset -r cpuset.cpus=4-5 smp
+  $ cgset -r cpuset.mems=0 smp
+  $ cgset -r cpuset.cpu_exclusive=1 smp
+
+  $ cgset -r cpuset.sched_load_balance=0 .
+
+  $ echo 0 > /sys/devices/system/cpu/cpu4/online
+  $ echo 0 > /sys/devices/system/cpu/cpu5/online
+
+Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
-Cc: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Jiri Olsa <jolsa@redhat.com>
-Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Dietmar.Eggemann@arm.com
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Song Liu <songliubraving@fb.com>
-Cc: Stephane Eranian <eranian@google.com>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Vince Weaver <vincent.weaver@maine.edu>
-Link: https://lkml.kernel.org/r/9a0aa84a-f062-9b64-3133-373658550c4b@linux.intel.com
+Cc: hannes@cmpxchg.org
+Cc: lizefan@huawei.com
+Cc: morten.rasmussen@arm.com
+Cc: qperret@google.com
+Cc: tj@kernel.org
+Cc: vincent.guittot@linaro.org
+Fixes: 05484e098448 ("sched/topology: Add SD_ASYM_CPUCAPACITY flag detection")
+Link: https://lkml.kernel.org/r/20191023153745.19515-2-valentin.schneider@arm.com
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- arch/x86/events/perf_event.h |  8 ++++++++
- include/linux/perf_event.h   |  9 +++++++++
- 2 files changed, 17 insertions(+)
+ kernel/cgroup/cpuset.c  | 3 ++-
+ kernel/sched/topology.c | 5 ++++-
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/events/perf_event.h b/arch/x86/events/perf_event.h
-index ecacfbf..5384317 100644
---- a/arch/x86/events/perf_event.h
-+++ b/arch/x86/events/perf_event.h
-@@ -683,6 +683,14 @@ struct x86_pmu {
- 	atomic_t	lbr_exclusive[x86_lbr_exclusive_max];
+diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+index c52bc91..c87ee64 100644
+--- a/kernel/cgroup/cpuset.c
++++ b/kernel/cgroup/cpuset.c
+@@ -798,7 +798,8 @@ static int generate_sched_domains(cpumask_var_t **domains,
+ 		    cpumask_subset(cp->cpus_allowed, top_cpuset.effective_cpus))
+ 			continue;
  
- 	/*
-+	 * perf task context (i.e. struct perf_event_context::task_ctx_data)
-+	 * switch helper to bridge calls from perf/core to perf/x86.
-+	 * See struct pmu::swap_task_ctx() usage for examples;
-+	 */
-+	void		(*swap_task_ctx)(struct perf_event_context *prev,
-+					 struct perf_event_context *next);
+-		if (is_sched_load_balance(cp))
++		if (is_sched_load_balance(cp) &&
++		    !cpumask_empty(cp->effective_cpus))
+ 			csa[csn++] = cp;
+ 
+ 		/* skip @cp's subtree if not a partition root */
+diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
+index b5667a2..9318acf 100644
+--- a/kernel/sched/topology.c
++++ b/kernel/sched/topology.c
+@@ -1948,7 +1948,7 @@ next_level:
+ static int
+ build_sched_domains(const struct cpumask *cpu_map, struct sched_domain_attr *attr)
+ {
+-	enum s_alloc alloc_state;
++	enum s_alloc alloc_state = sa_none;
+ 	struct sched_domain *sd;
+ 	struct s_data d;
+ 	struct rq *rq = NULL;
+@@ -1956,6 +1956,9 @@ build_sched_domains(const struct cpumask *cpu_map, struct sched_domain_attr *att
+ 	struct sched_domain_topology_level *tl_asym;
+ 	bool has_asym = false;
+ 
++	if (WARN_ON(cpumask_empty(cpu_map)))
++		goto error;
 +
-+	/*
- 	 * AMD bits
- 	 */
- 	unsigned int	amd_nb_constraints : 1;
-diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
-index 4f77b22..011dcbd 100644
---- a/include/linux/perf_event.h
-+++ b/include/linux/perf_event.h
-@@ -410,6 +410,15 @@ struct pmu {
- 	 */
- 	size_t				task_ctx_size;
- 
-+	/*
-+	 * PMU specific parts of task perf event context (i.e. ctx->task_ctx_data)
-+	 * can be synchronized using this function. See Intel LBR callstack support
-+	 * implementation and Perf core context switch handling callbacks for usage
-+	 * examples.
-+	 */
-+	void (*swap_task_ctx)		(struct perf_event_context *prev,
-+					 struct perf_event_context *next);
-+					/* optional */
- 
- 	/*
- 	 * Set up pmu-private data structures for an AUX area
+ 	alloc_state = __visit_domain_allocation_hell(&d, cpu_map);
+ 	if (alloc_state != sa_rootdomain)
+ 		goto error;
