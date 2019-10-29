@@ -2,29 +2,30 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 40622E84C9
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 29 Oct 2019 10:53:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D3256E84DF
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 29 Oct 2019 10:54:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732963AbfJ2Jwu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 29 Oct 2019 05:52:50 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:47815 "EHLO
+        id S1733100AbfJ2JxG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 29 Oct 2019 05:53:06 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:47812 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1733014AbfJ2Jwt (ORCPT
+        with ESMTP id S1733005AbfJ2Jwr (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 29 Oct 2019 05:52:49 -0400
+        Tue, 29 Oct 2019 05:52:47 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iPOAm-0004Nb-Lk; Tue, 29 Oct 2019 10:52:20 +0100
+        id 1iPOAs-0004O4-1P; Tue, 29 Oct 2019 10:52:26 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4D48D1C0073;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 9E31A1C047C;
         Tue, 29 Oct 2019 10:52:20 +0100 (CET)
 Date:   Tue, 29 Oct 2019 09:52:20 -0000
 From:   "tip-bot2 for Frederic Weisbecker" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/vtime: Introduce vtime_accounting_enabled_cpu()
+Subject: [tip: sched/core] sched/vtime: Rename vtime_accounting_cpu_enabled()
+ to vtime_accounting_enabled_this_cpu()
 Cc:     Frederic Weisbecker <frederic@kernel.org>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Jacek Anaszewski <jacek.anaszewski@gmail.com>,
@@ -38,10 +39,10 @@ Cc:     Frederic Weisbecker <frederic@kernel.org>,
         Yauheni Kaliuta <yauheni.kaliuta@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20191016025700.31277-10-frederic@kernel.org>
-References: <20191016025700.31277-10-frederic@kernel.org>
+In-Reply-To: <20191016025700.31277-9-frederic@kernel.org>
+References: <20191016025700.31277-9-frederic@kernel.org>
 MIME-Version: 1.0
-Message-ID: <157234274004.29376.3323221394697861825.tip-bot2@tip-bot2>
+Message-ID: <157234274038.29376.7255236944838511857.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -57,21 +58,19 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     9adbb9dd4c4eb45e1129fc73d8de69ca72350f81
-Gitweb:        https://git.kernel.org/tip/9adbb9dd4c4eb45e1129fc73d8de69ca72350f81
+Commit-ID:     e44fcb4b7a299602fb300b82a546c0b8a50d9d90
+Gitweb:        https://git.kernel.org/tip/e44fcb4b7a299602fb300b82a546c0b8a50d9d90
 Author:        Frederic Weisbecker <frederic@kernel.org>
-AuthorDate:    Wed, 16 Oct 2019 04:56:55 +02:00
+AuthorDate:    Wed, 16 Oct 2019 04:56:54 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 29 Oct 2019 10:01:15 +01:00
+CommitterDate: Tue, 29 Oct 2019 10:01:14 +01:00
 
-sched/vtime: Introduce vtime_accounting_enabled_cpu()
+sched/vtime: Rename vtime_accounting_cpu_enabled() to vtime_accounting_enabled_this_cpu()
 
-This allows us to check if a remote CPU runs vtime accounting
-(ie: is nohz_full). We'll need that to reliably support reading kcpustat
-on nohz_full CPUs.
-
-Also simplify a bit the condition in the local flavoured function while
-at it.
+Standardize the naming on top of the vtime_accounting_enabled_*() base.
+Also make it clear we are checking the vtime state of the
+*current* CPU with this function. We'll need to add an API to check that
+state on remote CPUs as well, so we must disambiguate the naming.
 
 Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
@@ -85,42 +84,103 @@ Cc: Thomas Gleixner <tglx@linutronix.de>
 Cc: Viresh Kumar <viresh.kumar@linaro.org>
 Cc: Wanpeng Li <wanpengli@tencent.com>
 Cc: Yauheni Kaliuta <yauheni.kaliuta@redhat.com>
-Link: https://lkml.kernel.org/r/20191016025700.31277-10-frederic@kernel.org
+Link: https://lkml.kernel.org/r/20191016025700.31277-9-frederic@kernel.org
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- include/linux/vtime.h | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ include/linux/context_tracking.h |  4 ++--
+ include/linux/vtime.h            | 10 +++++-----
+ kernel/sched/cputime.c           |  2 +-
+ kernel/time/tick-sched.c         |  2 +-
+ 4 files changed, 9 insertions(+), 9 deletions(-)
 
+diff --git a/include/linux/context_tracking.h b/include/linux/context_tracking.h
+index c9065ad..64ec828 100644
+--- a/include/linux/context_tracking.h
++++ b/include/linux/context_tracking.h
+@@ -103,7 +103,7 @@ static inline void context_tracking_init(void) { }
+ /* must be called with irqs disabled */
+ static inline void guest_enter_irqoff(void)
+ {
+-	if (vtime_accounting_cpu_enabled())
++	if (vtime_accounting_enabled_this_cpu())
+ 		vtime_guest_enter(current);
+ 	else
+ 		current->flags |= PF_VCPU;
+@@ -127,7 +127,7 @@ static inline void guest_exit_irqoff(void)
+ 	if (context_tracking_enabled())
+ 		__context_tracking_exit(CONTEXT_GUEST);
+ 
+-	if (vtime_accounting_cpu_enabled())
++	if (vtime_accounting_enabled_this_cpu())
+ 		vtime_guest_exit(current);
+ 	else
+ 		current->flags &= ~PF_VCPU;
 diff --git a/include/linux/vtime.h b/include/linux/vtime.h
-index eb2e7a1..e2733bf 100644
+index 54e9151..eb2e7a1 100644
 --- a/include/linux/vtime.h
 +++ b/include/linux/vtime.h
-@@ -31,14 +31,14 @@ static inline bool vtime_accounting_enabled(void)
+@@ -11,11 +11,11 @@
+ struct task_struct;
+ 
+ /*
+- * vtime_accounting_cpu_enabled() definitions/declarations
++ * vtime_accounting_enabled_this_cpu() definitions/declarations
+  */
+ #if defined(CONFIG_VIRT_CPU_ACCOUNTING_NATIVE)
+ 
+-static inline bool vtime_accounting_cpu_enabled(void) { return true; }
++static inline bool vtime_accounting_enabled_this_cpu(void) { return true; }
+ extern void vtime_task_switch(struct task_struct *prev);
+ 
+ #elif defined(CONFIG_VIRT_CPU_ACCOUNTING_GEN)
+@@ -31,7 +31,7 @@ static inline bool vtime_accounting_enabled(void)
  	return context_tracking_enabled();
  }
  
--static inline bool vtime_accounting_enabled_this_cpu(void)
-+static inline bool vtime_accounting_enabled_cpu(int cpu)
- {
--	if (vtime_accounting_enabled()) {
--		if (context_tracking_enabled_this_cpu())
--			return true;
--	}
-+	return (vtime_accounting_enabled() && context_tracking_enabled_cpu(cpu));
-+}
- 
--	return false;
+-static inline bool vtime_accounting_cpu_enabled(void)
 +static inline bool vtime_accounting_enabled_this_cpu(void)
-+{
-+	return (vtime_accounting_enabled() && context_tracking_enabled_this_cpu());
- }
+ {
+ 	if (vtime_accounting_enabled()) {
+ 		if (context_tracking_enabled_this_cpu())
+@@ -45,13 +45,13 @@ extern void vtime_task_switch_generic(struct task_struct *prev);
  
- extern void vtime_task_switch_generic(struct task_struct *prev);
-@@ -51,6 +51,7 @@ static inline void vtime_task_switch(struct task_struct *prev)
+ static inline void vtime_task_switch(struct task_struct *prev)
+ {
+-	if (vtime_accounting_cpu_enabled())
++	if (vtime_accounting_enabled_this_cpu())
+ 		vtime_task_switch_generic(prev);
+ }
  
  #else /* !CONFIG_VIRT_CPU_ACCOUNTING */
  
-+static inline bool vtime_accounting_enabled_cpu(int cpu) {return false; }
- static inline bool vtime_accounting_enabled_this_cpu(void) { return false; }
+-static inline bool vtime_accounting_cpu_enabled(void) { return false; }
++static inline bool vtime_accounting_enabled_this_cpu(void) { return false; }
  static inline void vtime_task_switch(struct task_struct *prev) { }
  
+ #endif
+diff --git a/kernel/sched/cputime.c b/kernel/sched/cputime.c
+index 34086af..b931a19 100644
+--- a/kernel/sched/cputime.c
++++ b/kernel/sched/cputime.c
+@@ -475,7 +475,7 @@ void account_process_tick(struct task_struct *p, int user_tick)
+ 	u64 cputime, steal;
+ 	struct rq *rq = this_rq();
+ 
+-	if (vtime_accounting_cpu_enabled())
++	if (vtime_accounting_enabled_this_cpu())
+ 		return;
+ 
+ 	if (sched_clock_irqtime) {
+diff --git a/kernel/time/tick-sched.c b/kernel/time/tick-sched.c
+index 9558517..c274823 100644
+--- a/kernel/time/tick-sched.c
++++ b/kernel/time/tick-sched.c
+@@ -1119,7 +1119,7 @@ static void tick_nohz_account_idle_ticks(struct tick_sched *ts)
+ #ifndef CONFIG_VIRT_CPU_ACCOUNTING_NATIVE
+ 	unsigned long ticks;
+ 
+-	if (vtime_accounting_cpu_enabled())
++	if (vtime_accounting_enabled_this_cpu())
+ 		return;
+ 	/*
+ 	 * We stopped the tick in idle. Update process times would miss the
