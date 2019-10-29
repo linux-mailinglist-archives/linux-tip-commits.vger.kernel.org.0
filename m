@@ -2,46 +2,46 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DDEBDE84C4
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 29 Oct 2019 10:52:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 640D7E84DE
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 29 Oct 2019 10:54:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729947AbfJ2Jwv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 29 Oct 2019 05:52:51 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:47820 "EHLO
+        id S1730437AbfJ2JxF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 29 Oct 2019 05:53:05 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:47821 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732948AbfJ2Jwu (ORCPT
+        with ESMTP id S1732951AbfJ2Jwu (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Tue, 29 Oct 2019 05:52:50 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iPOAt-0004SV-SQ; Tue, 29 Oct 2019 10:52:28 +0100
+        id 1iPOAs-0004Ue-9c; Tue, 29 Oct 2019 10:52:26 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 6062E1C047B;
-        Tue, 29 Oct 2019 10:52:22 +0100 (CET)
-Date:   Tue, 29 Oct 2019 09:52:22 -0000
-From:   "tip-bot2 for Frederic Weisbecker" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 785BC1C04DF;
+        Tue, 29 Oct 2019 10:52:23 +0100 (CET)
+Date:   Tue, 29 Oct 2019 09:52:23 -0000
+From:   "tip-bot2 for Patrick Bellasi" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/cputime: Add vtime guest task state
-Cc:     Frederic Weisbecker <frederic@kernel.org>,
+Subject: [tip: sched/core] sched/fair/util_est: Implement faster ramp-up EWMA
+ on utilization increases
+Cc:     Patrick Bellasi <patrick.bellasi@matbug.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Douglas Raillard <douglas.raillard@arm.com>,
+        Juri Lelli <juri.lelli@redhat.com>,
         Linus Torvalds <torvalds@linux-foundation.org>,
-        Pavel Machek <pavel@ucw.cz>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Rik van Riel <riel@surriel.com>,
+        Quentin Perret <qperret@google.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Wanpeng Li <wanpengli@tencent.com>,
-        Yauheni Kaliuta <yauheni.kaliuta@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20191016025700.31277-4-frederic@kernel.org>
-References: <20191016025700.31277-4-frederic@kernel.org>
+In-Reply-To: <20191023205630.14469-1-patrick.bellasi@matbug.net>
+References: <20191023205630.14469-1-patrick.bellasi@matbug.net>
 MIME-Version: 1.0
-Message-ID: <157234274212.29376.10288322559842657116.tip-bot2@tip-bot2>
+Message-ID: <157234274323.29376.7566420504850484825.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -57,115 +57,97 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     e6d5bf3e321ca664d12eb00ceb40bd58987ce8a1
-Gitweb:        https://git.kernel.org/tip/e6d5bf3e321ca664d12eb00ceb40bd58987ce8a1
-Author:        Frederic Weisbecker <frederic@kernel.org>
-AuthorDate:    Wed, 16 Oct 2019 04:56:49 +02:00
+Commit-ID:     b8c96361402aa3e74ad48ceef18aed99153d8da8
+Gitweb:        https://git.kernel.org/tip/b8c96361402aa3e74ad48ceef18aed99153d8da8
+Author:        Patrick Bellasi <patrick.bellasi@matbug.net>
+AuthorDate:    Wed, 23 Oct 2019 21:56:30 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 29 Oct 2019 10:01:11 +01:00
+CommitterDate: Tue, 29 Oct 2019 10:01:07 +01:00
 
-sched/cputime: Add vtime guest task state
+sched/fair/util_est: Implement faster ramp-up EWMA on utilization increases
 
-Record guest as a VTIME state instead of guessing it from VTIME_SYS and
-PF_VCPU. This is going to simplify the cputime read side especially as
-its state machine is going to further expand in order to fully support
-kcpustat on nohz_full.
+The estimated utilization for a task:
 
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+   util_est = max(util_avg, est.enqueue, est.ewma)
+
+is defined based on:
+
+ - util_avg: the PELT defined utilization
+ - est.enqueued: the util_avg at the end of the last activation
+ - est.ewma:     a exponential moving average on the est.enqueued samples
+
+According to this definition, when a task suddenly changes its bandwidth
+requirements from small to big, the EWMA will need to collect multiple
+samples before converging up to track the new big utilization.
+
+This slow convergence towards bigger utilization values is not
+aligned to the default scheduler behavior, which is to optimize for
+performance. Moreover, the est.ewma component fails to compensate for
+temporarely utilization drops which spans just few est.enqueued samples.
+
+To let util_est do a better job in the scenario depicted above, change
+its definition by making util_est directly follow upward motion and
+only decay the est.ewma on downward.
+
+Signed-off-by: Patrick Bellasi <patrick.bellasi@matbug.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: Jacek Anaszewski <jacek.anaszewski@gmail.com>
+Acked-by: Vincent Guittot <vincent.guittot@linaro.org>
+Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Cc: Douglas Raillard <douglas.raillard@arm.com>
+Cc: Juri Lelli <juri.lelli@redhat.com>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Pavel Machek <pavel@ucw.cz>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Rafael J . Wysocki <rjw@rjwysocki.net>
-Cc: Rik van Riel <riel@surriel.com>
+Cc: Quentin Perret <qperret@google.com>
+Cc: Rafael J . Wysocki <rafael.j.wysocki@intel.com>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Viresh Kumar <viresh.kumar@linaro.org>
-Cc: Wanpeng Li <wanpengli@tencent.com>
-Cc: Yauheni Kaliuta <yauheni.kaliuta@redhat.com>
-Link: https://lkml.kernel.org/r/20191016025700.31277-4-frederic@kernel.org
+Link: https://lkml.kernel.org/r/20191023205630.14469-1-patrick.bellasi@matbug.net
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- include/linux/sched.h  |  2 ++
- kernel/sched/cputime.c | 18 +++++++++++-------
- 2 files changed, 13 insertions(+), 7 deletions(-)
+ kernel/sched/fair.c     | 14 +++++++++++++-
+ kernel/sched/features.h |  1 +
+ 2 files changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index 4ae19be..988c4da 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -255,6 +255,8 @@ enum vtime_state {
- 	VTIME_SYS,
- 	/* Task runs in userspace in a CPU with VTIME active: */
- 	VTIME_USER,
-+	/* Task runs as guests in a CPU with VTIME active: */
-+	VTIME_GUEST,
- };
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index a81c364..a144874 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -3769,10 +3769,21 @@ util_est_dequeue(struct cfs_rq *cfs_rq, struct task_struct *p, bool task_sleep)
+ 		return;
  
- struct vtime {
-diff --git a/kernel/sched/cputime.c b/kernel/sched/cputime.c
-index 2e885e8..34086af 100644
---- a/kernel/sched/cputime.c
-+++ b/kernel/sched/cputime.c
-@@ -733,7 +733,7 @@ static void __vtime_account_kernel(struct task_struct *tsk,
- 				   struct vtime *vtime)
- {
- 	/* We might have scheduled out from guest path */
--	if (tsk->flags & PF_VCPU)
-+	if (vtime->state == VTIME_GUEST)
- 		vtime_account_guest(tsk, vtime);
- 	else
- 		vtime_account_system(tsk, vtime);
-@@ -788,6 +788,7 @@ void vtime_guest_enter(struct task_struct *tsk)
- 	write_seqcount_begin(&vtime->seqcount);
- 	vtime_account_system(tsk, vtime);
- 	tsk->flags |= PF_VCPU;
-+	vtime->state = VTIME_GUEST;
- 	write_seqcount_end(&vtime->seqcount);
+ 	/*
++	 * Reset EWMA on utilization increases, the moving average is used only
++	 * to smooth utilization decreases.
++	 */
++	ue.enqueued = (task_util(p) | UTIL_AVG_UNCHANGED);
++	if (sched_feat(UTIL_EST_FASTUP)) {
++		if (ue.ewma < ue.enqueued) {
++			ue.ewma = ue.enqueued;
++			goto done;
++		}
++	}
++
++	/*
+ 	 * Skip update of task's estimated utilization when its EWMA is
+ 	 * already ~1% close to its last activation value.
+ 	 */
+-	ue.enqueued = (task_util(p) | UTIL_AVG_UNCHANGED);
+ 	last_ewma_diff = ue.enqueued - ue.ewma;
+ 	if (within_margin(last_ewma_diff, (SCHED_CAPACITY_SCALE / 100)))
+ 		return;
+@@ -3805,6 +3816,7 @@ util_est_dequeue(struct cfs_rq *cfs_rq, struct task_struct *p, bool task_sleep)
+ 	ue.ewma <<= UTIL_EST_WEIGHT_SHIFT;
+ 	ue.ewma  += last_ewma_diff;
+ 	ue.ewma >>= UTIL_EST_WEIGHT_SHIFT;
++done:
+ 	WRITE_ONCE(p->se.avg.util_est, ue);
  }
- EXPORT_SYMBOL_GPL(vtime_guest_enter);
-@@ -799,6 +800,7 @@ void vtime_guest_exit(struct task_struct *tsk)
- 	write_seqcount_begin(&vtime->seqcount);
- 	vtime_account_guest(tsk, vtime);
- 	tsk->flags &= ~PF_VCPU;
-+	vtime->state = VTIME_SYS;
- 	write_seqcount_end(&vtime->seqcount);
- }
- EXPORT_SYMBOL_GPL(vtime_guest_exit);
-@@ -826,6 +828,8 @@ void vtime_task_switch_generic(struct task_struct *prev)
- 	write_seqcount_begin(&vtime->seqcount);
- 	if (is_idle_task(current))
- 		vtime->state = VTIME_IDLE;
-+	else if (current->flags & PF_VCPU)
-+		vtime->state = VTIME_GUEST;
- 	else
- 		vtime->state = VTIME_SYS;
- 	vtime->starttime = sched_clock();
-@@ -860,7 +864,7 @@ u64 task_gtime(struct task_struct *t)
- 		seq = read_seqcount_begin(&vtime->seqcount);
  
- 		gtime = t->gtime;
--		if (vtime->state == VTIME_SYS && t->flags & PF_VCPU)
-+		if (vtime->state == VTIME_GUEST)
- 			gtime += vtime->gtime + vtime_delta(vtime);
- 
- 	} while (read_seqcount_retry(&vtime->seqcount, seq));
-@@ -898,13 +902,13 @@ void task_cputime(struct task_struct *t, u64 *utime, u64 *stime)
- 		delta = vtime_delta(vtime);
- 
- 		/*
--		 * Task runs either in user or kernel space, add pending nohz time to
--		 * the right place.
-+		 * Task runs either in user (including guest) or kernel space,
-+		 * add pending nohz time to the right place.
- 		 */
--		if (vtime->state == VTIME_USER || t->flags & PF_VCPU)
--			*utime += vtime->utime + delta;
--		else if (vtime->state == VTIME_SYS)
-+		if (vtime->state == VTIME_SYS)
- 			*stime += vtime->stime + delta;
-+		else
-+			*utime += vtime->utime + delta;
- 	} while (read_seqcount_retry(&vtime->seqcount, seq));
- }
- #endif /* CONFIG_VIRT_CPU_ACCOUNTING_GEN */
+diff --git a/kernel/sched/features.h b/kernel/sched/features.h
+index 2410db5..7481cd9 100644
+--- a/kernel/sched/features.h
++++ b/kernel/sched/features.h
+@@ -89,3 +89,4 @@ SCHED_FEAT(WA_BIAS, true)
+  * UtilEstimation. Use estimated CPU utilization.
+  */
+ SCHED_FEAT(UTIL_EST, true)
++SCHED_FEAT(UTIL_EST_FASTUP, true)
