@@ -2,43 +2,47 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EF8B8E84D9
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 29 Oct 2019 10:54:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D6F1E84D5
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 29 Oct 2019 10:54:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732839AbfJ2Jwk (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 29 Oct 2019 05:52:40 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:47785 "EHLO
+        id S1730412AbfJ2Jwh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 29 Oct 2019 05:52:37 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:47753 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730883AbfJ2Jwj (ORCPT
+        with ESMTP id S1730110AbfJ2Jwf (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 29 Oct 2019 05:52:39 -0400
+        Tue, 29 Oct 2019 05:52:35 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iPOAl-0004NT-VX; Tue, 29 Oct 2019 10:52:20 +0100
+        id 1iPOAm-0004NY-IL; Tue, 29 Oct 2019 10:52:20 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 964421C0073;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id EFE6D1C047B;
         Tue, 29 Oct 2019 10:52:19 +0100 (CET)
 Date:   Tue, 29 Oct 2019 09:52:19 -0000
 From:   "tip-bot2 for Frederic Weisbecker" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/kcpustat: Introduce vtime-aware kcpustat
- accessor for CPUTIME_SYSTEM
-Cc:     Yauheni Kaliuta <yauheni.kaliuta@redhat.com>,
+Subject: [tip: sched/core] context_tracking: Check static key on
+ context_tracking_enabled_*cpu()
+Cc:     Peter Zijlstra <peterz@infradead.org>,
         Frederic Weisbecker <frederic@kernel.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
         Linus Torvalds <torvalds@linux-foundation.org>,
+        Pavel Machek <pavel@ucw.cz>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
         Rik van Riel <riel@surriel.com>,
         Thomas Gleixner <tglx@linutronix.de>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
         Wanpeng Li <wanpengli@tencent.com>,
+        Yauheni Kaliuta <yauheni.kaliuta@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20191025020303.19342-1-frederic@kernel.org>
-References: <20191025020303.19342-1-frederic@kernel.org>
+In-Reply-To: <20191016025700.31277-11-frederic@kernel.org>
+References: <20191016025700.31277-11-frederic@kernel.org>
 MIME-Version: 1.0
-Message-ID: <157234273931.29376.8892610322143430578.tip-bot2@tip-bot2>
+Message-ID: <157234273969.29376.9417573638381911938.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -54,156 +58,76 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     64eea63c19a2c386a96638f4e54a1355510709e3
-Gitweb:        https://git.kernel.org/tip/64eea63c19a2c386a96638f4e54a1355510709e3
+Commit-ID:     023e9deb51c9e1aafacbd421e55beadcb8e87f53
+Gitweb:        https://git.kernel.org/tip/023e9deb51c9e1aafacbd421e55beadcb8e87f53
 Author:        Frederic Weisbecker <frederic@kernel.org>
-AuthorDate:    Fri, 25 Oct 2019 04:03:03 +02:00
+AuthorDate:    Wed, 16 Oct 2019 04:56:56 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 29 Oct 2019 10:01:17 +01:00
+CommitterDate: Tue, 29 Oct 2019 10:01:16 +01:00
 
-sched/kcpustat: Introduce vtime-aware kcpustat accessor for CPUTIME_SYSTEM
+context_tracking: Check static key on context_tracking_enabled_*cpu()
 
-Kcpustat is not correctly supported on nohz_full CPUs. The tick doesn't
-fire and the cputime therefore doesn't move forward. The issue has shown
-up after the vanishing of the remaining 1Hz which has made the stall
-visible.
+guest_enter() doesn't call context_tracking_enabled() before calling
+context_tracking_enabled_this_cpu(). Therefore the guest code doesn't
+benefit from the static key on the fast path.
 
-We are solving that with checking the task running on a CPU through RCU
-and reading its vtime delta that we add to the raw kcpustat values.
+Just make sure that context_tracking_enabled_*cpu() functions check
+the static key by themselves to propagate the optimization.
 
-We make sure that we fetch a coherent raw-kcpustat/vtime-delta couple
-sequence while checking that the CPU referred by the target vtime is the
-correct one, under the locked vtime seqcount.
-
-Only CPUTIME_SYSTEM is handled here as a start because it's the trivial
-case. User and guest time will require more preparation work to
-correctly handle niceness.
-
-Reported-by: Yauheni Kaliuta <yauheni.kaliuta@redhat.com>
+Reported-by: Peter Zijlstra <peterz@infradead.org>
 Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: Jacek Anaszewski <jacek.anaszewski@gmail.com>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Pavel Machek <pavel@ucw.cz>
+Cc: Rafael J . Wysocki <rjw@rjwysocki.net>
 Cc: Rik van Riel <riel@surriel.com>
 Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Viresh Kumar <viresh.kumar@linaro.org>
 Cc: Wanpeng Li <wanpengli@tencent.com>
-Link: https://lkml.kernel.org/r/20191025020303.19342-1-frederic@kernel.org
+Cc: Yauheni Kaliuta <yauheni.kaliuta@redhat.com>
+Link: https://lkml.kernel.org/r/20191016025700.31277-11-frederic@kernel.org
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- include/linux/kernel_stat.h | 11 +++++-
- kernel/sched/cputime.c      | 82 ++++++++++++++++++++++++++++++++++++-
- 2 files changed, 93 insertions(+)
+ include/linux/context_tracking_state.h | 4 ++--
+ include/linux/vtime.h                  | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/kernel_stat.h b/include/linux/kernel_stat.h
-index 7ee2bb4..7978119 100644
---- a/include/linux/kernel_stat.h
-+++ b/include/linux/kernel_stat.h
-@@ -78,6 +78,17 @@ static inline unsigned int kstat_cpu_irqs_sum(unsigned int cpu)
- 	return kstat_cpu(cpu).irqs_sum;
+diff --git a/include/linux/context_tracking_state.h b/include/linux/context_tracking_state.h
+index 5877177..e7fe667 100644
+--- a/include/linux/context_tracking_state.h
++++ b/include/linux/context_tracking_state.h
+@@ -33,12 +33,12 @@ static inline bool context_tracking_enabled(void)
+ 
+ static inline bool context_tracking_enabled_cpu(int cpu)
+ {
+-	return per_cpu(context_tracking.active, cpu);
++	return context_tracking_enabled() && per_cpu(context_tracking.active, cpu);
  }
  
-+#ifdef CONFIG_VIRT_CPU_ACCOUNTING_GEN
-+extern u64 kcpustat_field(struct kernel_cpustat *kcpustat,
-+			  enum cpu_usage_stat usage, int cpu);
-+#else
-+static inline u64 kcpustat_field(struct kernel_cpustat *kcpustat,
-+				 enum cpu_usage_stat usage, int cpu)
-+{
-+	return kcpustat->cpustat[usage];
-+}
-+#endif
-+
- extern void account_user_time(struct task_struct *, u64);
- extern void account_guest_time(struct task_struct *, u64);
- extern void account_system_time(struct task_struct *, int, u64);
-diff --git a/kernel/sched/cputime.c b/kernel/sched/cputime.c
-index b931a19..e0cd206 100644
---- a/kernel/sched/cputime.c
-+++ b/kernel/sched/cputime.c
-@@ -911,4 +911,86 @@ void task_cputime(struct task_struct *t, u64 *utime, u64 *stime)
- 			*utime += vtime->utime + delta;
- 	} while (read_seqcount_retry(&vtime->seqcount, seq));
+ static inline bool context_tracking_enabled_this_cpu(void)
+ {
+-	return __this_cpu_read(context_tracking.active);
++	return context_tracking_enabled() && __this_cpu_read(context_tracking.active);
  }
-+
-+static int kcpustat_field_vtime(u64 *cpustat,
-+				struct vtime *vtime,
-+				enum cpu_usage_stat usage,
-+				int cpu, u64 *val)
-+{
-+	unsigned int seq;
-+	int err;
-+
-+	do {
-+		seq = read_seqcount_begin(&vtime->seqcount);
-+
-+		/*
-+		 * We raced against context switch, fetch the
-+		 * kcpustat task again.
-+		 */
-+		if (vtime->cpu != cpu && vtime->cpu != -1)
-+			return -EAGAIN;
-+
-+		/*
-+		 * Two possible things here:
-+		 * 1) We are seeing the scheduling out task (prev) or any past one.
-+		 * 2) We are seeing the scheduling in task (next) but it hasn't
-+		 *    passed though vtime_task_switch() yet so the pending
-+		 *    cputime of the prev task may not be flushed yet.
-+		 *
-+		 * Case 1) is ok but 2) is not. So wait for a safe VTIME state.
-+		 */
-+		if (vtime->state == VTIME_INACTIVE)
-+			return -EAGAIN;
-+
-+		err = 0;
-+
-+		*val = cpustat[usage];
-+
-+		if (vtime->state == VTIME_SYS)
-+			*val += vtime->stime + vtime_delta(vtime);
-+
-+	} while (read_seqcount_retry(&vtime->seqcount, seq));
-+
-+	return 0;
-+}
-+
-+u64 kcpustat_field(struct kernel_cpustat *kcpustat,
-+		   enum cpu_usage_stat usage, int cpu)
-+{
-+	u64 *cpustat = kcpustat->cpustat;
-+	struct rq *rq;
-+	u64 val;
-+	int err;
-+
-+	if (!vtime_accounting_enabled_cpu(cpu))
-+		return cpustat[usage];
-+
-+	/* Only support sys vtime for now */
-+	if (usage != CPUTIME_SYSTEM)
-+		return cpustat[usage];
-+
-+	rq = cpu_rq(cpu);
-+
-+	for (;;) {
-+		struct task_struct *curr;
-+		struct vtime *vtime;
-+
-+		rcu_read_lock();
-+		curr = rcu_dereference(rq->curr);
-+		if (WARN_ON_ONCE(!curr)) {
-+			rcu_read_unlock();
-+			return cpustat[usage];
-+		}
-+
-+		vtime = &curr->vtime;
-+		err = kcpustat_field_vtime(cpustat, vtime, usage, cpu, &val);
-+		rcu_read_unlock();
-+
-+		if (!err)
-+			return val;
-+
-+		cpu_relax();
-+	}
-+}
-+EXPORT_SYMBOL_GPL(kcpustat_field);
- #endif /* CONFIG_VIRT_CPU_ACCOUNTING_GEN */
+ 
+ static inline bool context_tracking_in_user(void)
+diff --git a/include/linux/vtime.h b/include/linux/vtime.h
+index e2733bf..2cdeca0 100644
+--- a/include/linux/vtime.h
++++ b/include/linux/vtime.h
+@@ -33,12 +33,12 @@ static inline bool vtime_accounting_enabled(void)
+ 
+ static inline bool vtime_accounting_enabled_cpu(int cpu)
+ {
+-	return (vtime_accounting_enabled() && context_tracking_enabled_cpu(cpu));
++	return context_tracking_enabled_cpu(cpu);
+ }
+ 
+ static inline bool vtime_accounting_enabled_this_cpu(void)
+ {
+-	return (vtime_accounting_enabled() && context_tracking_enabled_this_cpu());
++	return context_tracking_enabled_this_cpu();
+ }
+ 
+ extern void vtime_task_switch_generic(struct task_struct *prev);
