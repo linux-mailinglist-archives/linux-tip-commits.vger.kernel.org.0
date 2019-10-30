@@ -2,46 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 640D7E84DE
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 29 Oct 2019 10:54:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 688B9E99A2
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 30 Oct 2019 11:04:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730437AbfJ2JxF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 29 Oct 2019 05:53:05 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:47821 "EHLO
+        id S1726269AbfJ3KEM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 30 Oct 2019 06:04:12 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:51485 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732951AbfJ2Jwu (ORCPT
+        with ESMTP id S1726091AbfJ3KEM (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 29 Oct 2019 05:52:50 -0400
+        Wed, 30 Oct 2019 06:04:12 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iPOAs-0004Ue-9c; Tue, 29 Oct 2019 10:52:26 +0100
+        id 1iPkpb-0008At-VY; Wed, 30 Oct 2019 11:04:00 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 785BC1C04DF;
-        Tue, 29 Oct 2019 10:52:23 +0100 (CET)
-Date:   Tue, 29 Oct 2019 09:52:23 -0000
-From:   "tip-bot2 for Patrick Bellasi" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 7B2D41C0072;
+        Wed, 30 Oct 2019 11:03:59 +0100 (CET)
+Date:   Wed, 30 Oct 2019 10:03:59 -0000
+From:   "tip-bot2 for Davidlohr Bueso" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/fair/util_est: Implement faster ramp-up EWMA
- on utilization increases
-Cc:     Patrick Bellasi <patrick.bellasi@matbug.com>,
+Subject: [tip: locking/core] locking/mutex: Complain upon mutex API misuse in
+ IRQ contexts
+Cc:     Davidlohr Bueso <dbueso@suse.de>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Douglas Raillard <douglas.raillard@arm.com>,
-        Juri Lelli <juri.lelli@redhat.com>,
         Linus Torvalds <torvalds@linux-foundation.org>,
-        Quentin Perret <qperret@google.com>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
+        Thomas Gleixner <tglx@linutronix.de>, dave@stgolabs.net,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20191023205630.14469-1-patrick.bellasi@matbug.net>
-References: <20191023205630.14469-1-patrick.bellasi@matbug.net>
+In-Reply-To: <20191025033634.3330-1-dave@stgolabs.net>
+References: <20191025033634.3330-1-dave@stgolabs.net>
 MIME-Version: 1.0
-Message-ID: <157234274323.29376.7566420504850484825.tip-bot2@tip-bot2>
+Message-ID: <157242983900.29376.2332769194381838907.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -55,99 +49,57 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     b8c96361402aa3e74ad48ceef18aed99153d8da8
-Gitweb:        https://git.kernel.org/tip/b8c96361402aa3e74ad48ceef18aed99153d8da8
-Author:        Patrick Bellasi <patrick.bellasi@matbug.net>
-AuthorDate:    Wed, 23 Oct 2019 21:56:30 +01:00
+Commit-ID:     a0855d24fc22d49cdc25664fb224caee16998683
+Gitweb:        https://git.kernel.org/tip/a0855d24fc22d49cdc25664fb224caee16998683
+Author:        Davidlohr Bueso <dave@stgolabs.net>
+AuthorDate:    Thu, 24 Oct 2019 20:36:34 -07:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 29 Oct 2019 10:01:07 +01:00
+CommitterDate: Tue, 29 Oct 2019 12:22:52 +01:00
 
-sched/fair/util_est: Implement faster ramp-up EWMA on utilization increases
+locking/mutex: Complain upon mutex API misuse in IRQ contexts
 
-The estimated utilization for a task:
+Add warning checks if mutex_trylock() or mutex_unlock() are used in
+IRQ contexts, under CONFIG_DEBUG_MUTEXES=y.
 
-   util_est = max(util_avg, est.enqueue, est.ewma)
+While the mutex rules and semantics are explicitly documented, this allows
+to expose any abusers and robustifies the whole thing.
 
-is defined based on:
+While trylock and unlock are non-blocking, calling from IRQ context
+is still forbidden (lock must be within the same context as unlock).
 
- - util_avg: the PELT defined utilization
- - est.enqueued: the util_avg at the end of the last activation
- - est.ewma:     a exponential moving average on the est.enqueued samples
-
-According to this definition, when a task suddenly changes its bandwidth
-requirements from small to big, the EWMA will need to collect multiple
-samples before converging up to track the new big utilization.
-
-This slow convergence towards bigger utilization values is not
-aligned to the default scheduler behavior, which is to optimize for
-performance. Moreover, the est.ewma component fails to compensate for
-temporarely utilization drops which spans just few est.enqueued samples.
-
-To let util_est do a better job in the scenario depicted above, change
-its definition by making util_est directly follow upward motion and
-only decay the est.ewma on downward.
-
-Signed-off-by: Patrick Bellasi <patrick.bellasi@matbug.com>
+Signed-off-by: Davidlohr Bueso <dbueso@suse.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Vincent Guittot <vincent.guittot@linaro.org>
-Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Cc: Douglas Raillard <douglas.raillard@arm.com>
-Cc: Juri Lelli <juri.lelli@redhat.com>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Quentin Perret <qperret@google.com>
-Cc: Rafael J . Wysocki <rafael.j.wysocki@intel.com>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20191023205630.14469-1-patrick.bellasi@matbug.net
+Cc: dave@stgolabs.net
+Link: https://lkml.kernel.org/r/20191025033634.3330-1-dave@stgolabs.net
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- kernel/sched/fair.c     | 14 +++++++++++++-
- kernel/sched/features.h |  1 +
- 2 files changed, 14 insertions(+), 1 deletion(-)
+ kernel/locking/mutex.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index a81c364..a144874 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -3769,10 +3769,21 @@ util_est_dequeue(struct cfs_rq *cfs_rq, struct task_struct *p, bool task_sleep)
- 		return;
- 
- 	/*
-+	 * Reset EWMA on utilization increases, the moving average is used only
-+	 * to smooth utilization decreases.
-+	 */
-+	ue.enqueued = (task_util(p) | UTIL_AVG_UNCHANGED);
-+	if (sched_feat(UTIL_EST_FASTUP)) {
-+		if (ue.ewma < ue.enqueued) {
-+			ue.ewma = ue.enqueued;
-+			goto done;
-+		}
-+	}
-+
-+	/*
- 	 * Skip update of task's estimated utilization when its EWMA is
- 	 * already ~1% close to its last activation value.
- 	 */
--	ue.enqueued = (task_util(p) | UTIL_AVG_UNCHANGED);
- 	last_ewma_diff = ue.enqueued - ue.ewma;
- 	if (within_margin(last_ewma_diff, (SCHED_CAPACITY_SCALE / 100)))
- 		return;
-@@ -3805,6 +3816,7 @@ util_est_dequeue(struct cfs_rq *cfs_rq, struct task_struct *p, bool task_sleep)
- 	ue.ewma <<= UTIL_EST_WEIGHT_SHIFT;
- 	ue.ewma  += last_ewma_diff;
- 	ue.ewma >>= UTIL_EST_WEIGHT_SHIFT;
-+done:
- 	WRITE_ONCE(p->se.avg.util_est, ue);
- }
- 
-diff --git a/kernel/sched/features.h b/kernel/sched/features.h
-index 2410db5..7481cd9 100644
---- a/kernel/sched/features.h
-+++ b/kernel/sched/features.h
-@@ -89,3 +89,4 @@ SCHED_FEAT(WA_BIAS, true)
-  * UtilEstimation. Use estimated CPU utilization.
+diff --git a/kernel/locking/mutex.c b/kernel/locking/mutex.c
+index 5352ce5..54cc5f9 100644
+--- a/kernel/locking/mutex.c
++++ b/kernel/locking/mutex.c
+@@ -733,6 +733,9 @@ static noinline void __sched __mutex_unlock_slowpath(struct mutex *lock, unsigne
   */
- SCHED_FEAT(UTIL_EST, true)
-+SCHED_FEAT(UTIL_EST_FASTUP, true)
+ void __sched mutex_unlock(struct mutex *lock)
+ {
++#ifdef CONFIG_DEBUG_MUTEXES
++	WARN_ON(in_interrupt());
++#endif
+ #ifndef CONFIG_DEBUG_LOCK_ALLOC
+ 	if (__mutex_unlock_fast(lock))
+ 		return;
+@@ -1413,6 +1416,7 @@ int __sched mutex_trylock(struct mutex *lock)
+ 
+ #ifdef CONFIG_DEBUG_MUTEXES
+ 	DEBUG_LOCKS_WARN_ON(lock->magic != lock);
++	WARN_ON(in_interrupt());
+ #endif
+ 
+ 	locked = __mutex_trylock(lock);
