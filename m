@@ -2,35 +2,35 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 43A3DEAFAF
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 31 Oct 2019 12:58:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DEE32EAFAC
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 31 Oct 2019 12:58:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727419AbfJaL6L (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 31 Oct 2019 07:58:11 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:55291 "EHLO
+        id S1727418AbfJaL55 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 31 Oct 2019 07:57:57 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:55292 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726945AbfJaLzH (ORCPT
+        with ESMTP id S1726947AbfJaLzH (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Thu, 31 Oct 2019 07:55:07 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iQ92d-0002x9-Nu; Thu, 31 Oct 2019 12:55:03 +0100
+        id 1iQ92c-0002wq-MM; Thu, 31 Oct 2019 12:55:02 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D5DF91C0070;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 69BF41C04E3;
         Thu, 31 Oct 2019 12:54:59 +0100 (CET)
 Date:   Thu, 31 Oct 2019 11:54:59 -0000
-From:   "tip-bot2 for Ethan Hansen" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for kbuild test robot" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcu: Remove unused function hlist_bl_del_init_rcu()
-Cc:     Ethan Hansen <1ethanhansen@gmail.com>,
+Subject: [tip: core/rcu] rcu: Several rcu_segcblist functions can be static
+Cc:     kbuild test robot <lkp@intel.com>,
         "Paul E. McKenney" <paulmck@kernel.org>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <157252289950.29376.4828245605504588132.tip-bot2@tip-bot2>
+Message-ID: <157252289915.29376.99377795403979638.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -46,60 +46,55 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     8e6af017f4b1da9cdd2b55ce83853df8e167b4d3
-Gitweb:        https://git.kernel.org/tip/8e6af017f4b1da9cdd2b55ce83853df8e167b4d3
-Author:        Ethan Hansen <1ethanhansen@gmail.com>
-AuthorDate:    Fri, 02 Aug 2019 13:37:58 -07:00
+Commit-ID:     1d24dd4e01fb6b928cf679e3e415ddff7016fa96
+Gitweb:        https://git.kernel.org/tip/1d24dd4e01fb6b928cf679e3e415ddff7016fa96
+Author:        kbuild test robot <lkp@intel.com>
+AuthorDate:    Thu, 08 Aug 2019 10:32:58 +08:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Wed, 30 Oct 2019 08:32:07 -07:00
+CommitterDate: Wed, 30 Oct 2019 08:33:22 -07:00
 
-rcu: Remove unused function hlist_bl_del_init_rcu()
+rcu: Several rcu_segcblist functions can be static
 
-The function hlist_bl_del_init_rcu() is declared in rculist_bl.h,
-but never used.  This commit therefore removes it.
+None of rcu_segcblist_set_len(), rcu_segcblist_add_len(), or
+rcu_segcblist_xchg_len() are used outside of kernel/rcu/rcu_segcblist.c.
+This commit therefore makes them static.
 
-Signed-off-by: Ethan Hansen <1ethanhansen@gmail.com>
+Fixes: eda669a6a2c5 ("rcu/nocb: Atomic ->len field in rcu_segcblist structure")
+Signed-off-by: kbuild test robot <lkp@intel.com>
+[ paulmck: "Fixes:" updated per Stephen Rothwell feedback. ]
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- include/linux/rculist_bl.h | 28 ----------------------------
- 1 file changed, 28 deletions(-)
+ kernel/rcu/rcu_segcblist.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/rculist_bl.h b/include/linux/rculist_bl.h
-index 66e73ec..0b952d0 100644
---- a/include/linux/rculist_bl.h
-+++ b/include/linux/rculist_bl.h
-@@ -25,34 +25,6 @@ static inline struct hlist_bl_node *hlist_bl_first_rcu(struct hlist_bl_head *h)
+diff --git a/kernel/rcu/rcu_segcblist.c b/kernel/rcu/rcu_segcblist.c
+index 495c58c..cbc87b8 100644
+--- a/kernel/rcu/rcu_segcblist.c
++++ b/kernel/rcu/rcu_segcblist.c
+@@ -88,7 +88,7 @@ struct rcu_head *rcu_cblist_dequeue(struct rcu_cblist *rclp)
  }
  
- /**
-- * hlist_bl_del_init_rcu - deletes entry from hash list with re-initialization
-- * @n: the element to delete from the hash list.
-- *
-- * Note: hlist_bl_unhashed() on the node returns true after this. It is
-- * useful for RCU based read lockfree traversal if the writer side
-- * must know if the list entry is still hashed or already unhashed.
-- *
-- * In particular, it means that we can not poison the forward pointers
-- * that may still be used for walking the hash list and we can only
-- * zero the pprev pointer so list_unhashed() will return true after
-- * this.
-- *
-- * The caller must take whatever precautions are necessary (such as
-- * holding appropriate locks) to avoid racing with another
-- * list-mutation primitive, such as hlist_bl_add_head_rcu() or
-- * hlist_bl_del_rcu(), running on this same list.  However, it is
-- * perfectly legal to run concurrently with the _rcu list-traversal
-- * primitives, such as hlist_bl_for_each_entry_rcu().
-- */
--static inline void hlist_bl_del_init_rcu(struct hlist_bl_node *n)
--{
--	if (!hlist_bl_unhashed(n)) {
--		__hlist_bl_del(n);
--		n->pprev = NULL;
--	}
--}
--
--/**
-  * hlist_bl_del_rcu - deletes entry from hash list without re-initialization
-  * @n: the element to delete from the hash list.
-  *
+ /* Set the length of an rcu_segcblist structure. */
+-void rcu_segcblist_set_len(struct rcu_segcblist *rsclp, long v)
++static void rcu_segcblist_set_len(struct rcu_segcblist *rsclp, long v)
+ {
+ #ifdef CONFIG_RCU_NOCB_CPU
+ 	atomic_long_set(&rsclp->len, v);
+@@ -104,7 +104,7 @@ void rcu_segcblist_set_len(struct rcu_segcblist *rsclp, long v)
+  * This increase is fully ordered with respect to the callers accesses
+  * both before and after.
+  */
+-void rcu_segcblist_add_len(struct rcu_segcblist *rsclp, long v)
++static void rcu_segcblist_add_len(struct rcu_segcblist *rsclp, long v)
+ {
+ #ifdef CONFIG_RCU_NOCB_CPU
+ 	smp_mb__before_atomic(); /* Up to the caller! */
+@@ -134,7 +134,7 @@ void rcu_segcblist_inc_len(struct rcu_segcblist *rsclp)
+  * with the actual number of callbacks on the structure.  This exchange is
+  * fully ordered with respect to the callers accesses both before and after.
+  */
+-long rcu_segcblist_xchg_len(struct rcu_segcblist *rsclp, long v)
++static long rcu_segcblist_xchg_len(struct rcu_segcblist *rsclp, long v)
+ {
+ #ifdef CONFIG_RCU_NOCB_CPU
+ 	return atomic_long_xchg(&rsclp->len, v);
