@@ -2,34 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FF92EAFAB
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 31 Oct 2019 12:58:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 86A80EAFB4
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 31 Oct 2019 12:58:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727470AbfJaL56 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 31 Oct 2019 07:57:58 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:55293 "EHLO
+        id S1726959AbfJaLzG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 31 Oct 2019 07:55:06 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:55261 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726948AbfJaLzH (ORCPT
+        with ESMTP id S1726926AbfJaLzF (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 31 Oct 2019 07:55:07 -0400
+        Thu, 31 Oct 2019 07:55:05 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iQ92d-0002uN-Iz; Thu, 31 Oct 2019 12:55:03 +0100
+        id 1iQ92c-0002w7-98; Thu, 31 Oct 2019 12:55:02 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E62AD1C04D7;
-        Thu, 31 Oct 2019 12:54:57 +0100 (CET)
-Date:   Thu, 31 Oct 2019 11:54:57 -0000
-From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 16F671C04DF;
+        Thu, 31 Oct 2019 12:54:59 +0100 (CET)
+Date:   Thu, 31 Oct 2019 11:54:58 -0000
+From:   "tip-bot2 for Joel Fernandes (Google)" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcu: Update descriptions for rcu_nocb_wake tracepoint
-Cc:     "Paul E. McKenney" <paulmck@kernel.org>,
+Subject: [tip: core/rcu] workqueue: Convert for_each_wq to use built-in list check
+Cc:     Tejun Heo <tj@kernel.org>,
+        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <157252289767.29376.2910308882156136502.tip-bot2@tip-bot2>
+Message-ID: <157252289879.29376.6076686101367300616.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -45,63 +47,54 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     d01f86206864e429839f6a4aeb90064f0c043ed9
-Gitweb:        https://git.kernel.org/tip/d01f86206864e429839f6a4aeb90064f0c043ed9
-Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Wed, 21 Aug 2019 10:29:06 -07:00
+Commit-ID:     5a6446626d7e062b47a5cc1cf27d5060e60bb0d9
+Gitweb:        https://git.kernel.org/tip/5a6446626d7e062b47a5cc1cf27d5060e60bb0d9
+Author:        Joel Fernandes (Google) <joel@joelfernandes.org>
+AuthorDate:    Thu, 15 Aug 2019 10:18:42 -04:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Wed, 30 Oct 2019 08:34:52 -07:00
+CommitterDate: Wed, 30 Oct 2019 08:34:10 -07:00
 
-rcu: Update descriptions for rcu_nocb_wake tracepoint
+workqueue: Convert for_each_wq to use built-in list check
 
+Because list_for_each_entry_rcu() can now check for holding a
+lock as well as for being in an RCU read-side critical section,
+this commit replaces the workqueue_sysfs_unregister() function's
+use of assert_rcu_or_wq_mutex() and list_for_each_entry_rcu() with
+list_for_each_entry_rcu() augmented with a lockdep_is_held() optional
+argument.
+
+Acked-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- include/trace/events/rcu.h | 35 +++++++++++++++++++++--------------
- 1 file changed, 21 insertions(+), 14 deletions(-)
+ kernel/workqueue.c | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
-diff --git a/include/trace/events/rcu.h b/include/trace/events/rcu.h
-index afa8985..4609f2e 100644
---- a/include/trace/events/rcu.h
-+++ b/include/trace/events/rcu.h
-@@ -258,20 +258,27 @@ TRACE_EVENT_RCU(rcu_exp_funnel_lock,
-  * the number of the offloaded CPU are extracted.  The third and final
-  * argument is a string as follows:
-  *
-- *	"WakeEmpty": Wake rcuo kthread, first CB to empty list.
-- *	"WakeEmptyIsDeferred": Wake rcuo kthread later, first CB to empty list.
-- *	"WakeOvf": Wake rcuo kthread, CB list is huge.
-- *	"WakeOvfIsDeferred": Wake rcuo kthread later, CB list is huge.
-- *	"WakeNot": Don't wake rcuo kthread.
-- *	"WakeNotPoll": Don't wake rcuo kthread because it is polling.
-- *	"DeferredWake": Carried out the "IsDeferred" wakeup.
-- *	"Poll": Start of new polling cycle for rcu_nocb_poll.
-- *	"Sleep": Sleep waiting for GP for !rcu_nocb_poll.
-- *	"CBSleep": Sleep waiting for CBs for !rcu_nocb_poll.
-- *	"WokeEmpty": rcuo kthread woke to find empty list.
-- *	"WokeNonEmpty": rcuo kthread woke to find non-empty list.
-- *	"WaitQueue": Enqueue partially done, timed wait for it to complete.
-- *	"WokeQueue": Partial enqueue now complete.
-+ * "AlreadyAwake": The to-be-awakened rcuo kthread is already awake.
-+ * "Bypass": rcuo GP kthread sees non-empty ->nocb_bypass.
-+ * "CBSleep": rcuo CB kthread sleeping waiting for CBs.
-+ * "Check": rcuo GP kthread checking specified CPU for work.
-+ * "DeferredWake": Timer expired or polled check, time to wake.
-+ * "DoWake": The to-be-awakened rcuo kthread needs to be awakened.
-+ * "EndSleep": Done waiting for GP for !rcu_nocb_poll.
-+ * "FirstBQ": New CB to empty ->nocb_bypass (->cblist maybe non-empty).
-+ * "FirstBQnoWake": FirstBQ plus rcuo kthread need not be awakened.
-+ * "FirstBQwake": FirstBQ plus rcuo kthread must be awakened.
-+ * "FirstQ": New CB to empty ->cblist (->nocb_bypass maybe non-empty).
-+ * "NeedWaitGP": rcuo GP kthread must wait on a grace period.
-+ * "Poll": Start of new polling cycle for rcu_nocb_poll.
-+ * "Sleep": Sleep waiting for GP for !rcu_nocb_poll.
-+ * "Timer": Deferred-wake timer expired.
-+ * "WakeEmptyIsDeferred": Wake rcuo kthread later, first CB to empty list.
-+ * "WakeEmpty": Wake rcuo kthread, first CB to empty list.
-+ * "WakeNot": Don't wake rcuo kthread.
-+ * "WakeNotPoll": Don't wake rcuo kthread because it is polling.
-+ * "WakeOvfIsDeferred": Wake rcuo kthread later, CB list is huge.
-+ * "WokeEmpty": rcuo CB kthread woke to find empty list.
+diff --git a/kernel/workqueue.c b/kernel/workqueue.c
+index bc2e09a..e501c79 100644
+--- a/kernel/workqueue.c
++++ b/kernel/workqueue.c
+@@ -364,11 +364,6 @@ static void workqueue_sysfs_unregister(struct workqueue_struct *wq);
+ 			 !lockdep_is_held(&wq_pool_mutex),		\
+ 			 "RCU or wq_pool_mutex should be held")
+ 
+-#define assert_rcu_or_wq_mutex(wq)					\
+-	RCU_LOCKDEP_WARN(!rcu_read_lock_held() &&			\
+-			 !lockdep_is_held(&wq->mutex),			\
+-			 "RCU or wq->mutex should be held")
+-
+ #define assert_rcu_or_wq_mutex_or_pool_mutex(wq)			\
+ 	RCU_LOCKDEP_WARN(!rcu_read_lock_held() &&			\
+ 			 !lockdep_is_held(&wq->mutex) &&		\
+@@ -425,9 +420,8 @@ static void workqueue_sysfs_unregister(struct workqueue_struct *wq);
+  * ignored.
   */
- TRACE_EVENT_RCU(rcu_nocb_wake,
+ #define for_each_pwq(pwq, wq)						\
+-	list_for_each_entry_rcu((pwq), &(wq)->pwqs, pwqs_node)		\
+-		if (({ assert_rcu_or_wq_mutex(wq); false; })) { }	\
+-		else
++	list_for_each_entry_rcu((pwq), &(wq)->pwqs, pwqs_node,		\
++				 lockdep_is_held(&(wq->mutex)))
+ 
+ #ifdef CONFIG_DEBUG_OBJECTS_WORK
  
