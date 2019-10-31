@@ -2,36 +2,35 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A791EAF5C
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 31 Oct 2019 12:57:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AD293EAF9A
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 31 Oct 2019 12:58:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727201AbfJaLzO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 31 Oct 2019 07:55:14 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:55352 "EHLO
+        id S1726913AbfJaL50 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 31 Oct 2019 07:57:26 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:55351 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727150AbfJaLzO (ORCPT
+        with ESMTP id S1727151AbfJaLzO (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Thu, 31 Oct 2019 07:55:14 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iQ92i-00030z-Vk; Thu, 31 Oct 2019 12:55:09 +0100
+        id 1iQ92k-00031M-Ue; Thu, 31 Oct 2019 12:55:11 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 7E6591C04DF;
-        Thu, 31 Oct 2019 12:55:03 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 3EA0B1C0070;
+        Thu, 31 Oct 2019 12:55:04 +0100 (CET)
 Date:   Thu, 31 Oct 2019 11:55:03 -0000
-From:   "tip-bot2 for Joel Fernandes (Google)" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] Revert docs from "rcu: Restore barrier() to
- rcu_read_lock() and rcu_read_unlock()"
-Cc:     "Joel Fernandes (Google)" <joel@joelfernandes.org>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
+Subject: [tip: core/rcu] rcu: Confine ->core_needs_qs accesses to the
+ corresponding CPU
+Cc:     "Paul E. McKenney" <paulmck@kernel.org>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <157252290322.29376.3242675913911109273.tip-bot2@tip-bot2>
+Message-ID: <157252290397.29376.9034850067084045394.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,111 +46,77 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     97df75cde57f0a24075200e22d9e2cfb1f2e195b
-Gitweb:        https://git.kernel.org/tip/97df75cde57f0a24075200e22d9e2cfb1f2e195b
-Author:        Joel Fernandes (Google) <joel@joelfernandes.org>
-AuthorDate:    Thu, 01 Aug 2019 17:39:16 -04:00
+Commit-ID:     ed93dfc6bc0084485ccad1ff6bd2ea81ab2c03cd
+Gitweb:        https://git.kernel.org/tip/ed93dfc6bc0084485ccad1ff6bd2ea81ab2c03cd
+Author:        Paul E. McKenney <paulmck@kernel.org>
+AuthorDate:    Fri, 13 Sep 2019 14:09:56 -07:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Tue, 29 Oct 2019 02:43:50 -07:00
+CommitterDate: Mon, 28 Oct 2019 07:02:21 -07:00
 
-Revert docs from "rcu: Restore barrier() to rcu_read_lock() and rcu_read_unlock()"
+rcu: Confine ->core_needs_qs accesses to the corresponding CPU
 
-This reverts docs from commit d6b9cd7dc8e041ee83cb1362fce59a3cdb1f2709.
+Commit 671a63517cf9 ("rcu: Avoid unnecessary softirq when system
+is idle") fixed a bug that could result in an indefinite number of
+unnecessary invocations of the RCU_SOFTIRQ handler at the trailing edge
+of a scheduler-clock interrupt.  However, the fix introduced off-CPU
+stores to ->core_needs_qs.  These writes did not conflict with the
+on-CPU stores because the CPU's leaf rcu_node structure's ->lock was
+held across all such stores.  However, the loads from ->core_needs_qs
+were not promoted to READ_ONCE() and, worse yet, the code loading from
+->core_needs_qs was written assuming that it was only ever updated by
+the corresponding CPU.  So operation has been robust, but only by luck.
+This situation is therefore an accident waiting to happen.
 
-Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
-[ paulmck: Added Joel's SoB per Stephen Rothwell feedback. ]
-[ paulmck: Joel approved via private email. ]
+This commit therefore takes a different approach.  Instead of clearing
+->core_needs_qs from the grace-period kthread's force-quiescent-state
+processing, it modifies the rcu_pending() function to suppress the
+rcu_sched_clock_irq() function's call to invoke_rcu_core() if there is no
+grace period in progress.  This avoids the infinite needless RCU_SOFTIRQ
+handlers while still keeping all accesses to ->core_needs_qs local to
+the corresponding CPU.
+
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- Documentation/RCU/Design/Requirements/Requirements.html | 71 +--------
- 1 file changed, 71 deletions(-)
+ kernel/rcu/tree.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/Documentation/RCU/Design/Requirements/Requirements.html b/Documentation/RCU/Design/Requirements/Requirements.html
-index 467251f..bdbc84f 100644
---- a/Documentation/RCU/Design/Requirements/Requirements.html
-+++ b/Documentation/RCU/Design/Requirements/Requirements.html
-@@ -2129,8 +2129,6 @@ Some of the relevant points of interest are as follows:
- <li>	<a href="#Hotplug CPU">Hotplug CPU</a>.
- <li>	<a href="#Scheduler and RCU">Scheduler and RCU</a>.
- <li>	<a href="#Tracing and RCU">Tracing and RCU</a>.
--<li>	<a href="#Accesses to User Memory and RCU">
--Accesses to User Memory and RCU</a>.
- <li>	<a href="#Energy Efficiency">Energy Efficiency</a>.
- <li>	<a href="#Scheduling-Clock Interrupts and RCU">
- 	Scheduling-Clock Interrupts and RCU</a>.
-@@ -2523,75 +2521,6 @@ cannot be used.
- The tracing folks both located the requirement and provided the
- needed fix, so this surprise requirement was relatively painless.
+diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
+index 82caca3..0c8046b 100644
+--- a/kernel/rcu/tree.c
++++ b/kernel/rcu/tree.c
+@@ -1989,7 +1989,6 @@ rcu_report_qs_rdp(int cpu, struct rcu_data *rdp)
+ 		return;
+ 	}
+ 	mask = rdp->grpmask;
+-	rdp->core_needs_qs = false;
+ 	if ((rnp->qsmask & mask) == 0) {
+ 		raw_spin_unlock_irqrestore_rcu_node(rnp, flags);
+ 	} else {
+@@ -2819,6 +2818,7 @@ EXPORT_SYMBOL_GPL(cond_synchronize_rcu);
+  */
+ static int rcu_pending(void)
+ {
++	bool gp_in_progress;
+ 	struct rcu_data *rdp = this_cpu_ptr(&rcu_data);
+ 	struct rcu_node *rnp = rdp->mynode;
  
--<h3><a name="Accesses to User Memory and RCU">
--Accesses to User Memory and RCU</a></h3>
--
--<p>
--The kernel needs to access user-space memory, for example, to access
--data referenced by system-call parameters.
--The <tt>get_user()</tt> macro does this job.
--
--<p>
--However, user-space memory might well be paged out, which means
--that <tt>get_user()</tt> might well page-fault and thus block while
--waiting for the resulting I/O to complete.
--It would be a very bad thing for the compiler to reorder
--a <tt>get_user()</tt> invocation into an RCU read-side critical
--section.
--For example, suppose that the source code looked like this:
--
--<blockquote>
--<pre>
-- 1 rcu_read_lock();
-- 2 p = rcu_dereference(gp);
-- 3 v = p-&gt;value;
-- 4 rcu_read_unlock();
-- 5 get_user(user_v, user_p);
-- 6 do_something_with(v, user_v);
--</pre>
--</blockquote>
--
--<p>
--The compiler must not be permitted to transform this source code into
--the following:
--
--<blockquote>
--<pre>
-- 1 rcu_read_lock();
-- 2 p = rcu_dereference(gp);
-- 3 get_user(user_v, user_p); // BUG: POSSIBLE PAGE FAULT!!!
-- 4 v = p-&gt;value;
-- 5 rcu_read_unlock();
-- 6 do_something_with(v, user_v);
--</pre>
--</blockquote>
--
--<p>
--If the compiler did make this transformation in a
--<tt>CONFIG_PREEMPT=n</tt> kernel build, and if <tt>get_user()</tt> did
--page fault, the result would be a quiescent state in the middle
--of an RCU read-side critical section.
--This misplaced quiescent state could result in line&nbsp;4 being
--a use-after-free access, which could be bad for your kernel's
--actuarial statistics.
--Similar examples can be constructed with the call to <tt>get_user()</tt>
--preceding the <tt>rcu_read_lock()</tt>.
--
--<p>
--Unfortunately, <tt>get_user()</tt> doesn't have any particular
--ordering properties, and in some architectures the underlying <tt>asm</tt>
--isn't even marked <tt>volatile</tt>.
--And even if it was marked <tt>volatile</tt>, the above access to
--<tt>p-&gt;value</tt> is not volatile, so the compiler would not have any
--reason to keep those two accesses in order.
--
--<p>
--Therefore, the Linux-kernel definitions of <tt>rcu_read_lock()</tt>
--and <tt>rcu_read_unlock()</tt> must act as compiler barriers,
--at least for outermost instances of <tt>rcu_read_lock()</tt> and
--<tt>rcu_read_unlock()</tt> within a nested set of RCU read-side critical
--sections.
--
- <h3><a name="Energy Efficiency">Energy Efficiency</a></h3>
+@@ -2834,7 +2834,8 @@ static int rcu_pending(void)
+ 		return 0;
  
- <p>
+ 	/* Is the RCU core waiting for a quiescent state from this CPU? */
+-	if (rdp->core_needs_qs && !rdp->cpu_no_qs.b.norm)
++	gp_in_progress = rcu_gp_in_progress();
++	if (rdp->core_needs_qs && !rdp->cpu_no_qs.b.norm && gp_in_progress)
+ 		return 1;
+ 
+ 	/* Does this CPU have callbacks ready to invoke? */
+@@ -2842,8 +2843,7 @@ static int rcu_pending(void)
+ 		return 1;
+ 
+ 	/* Has RCU gone idle with this CPU needing another grace period? */
+-	if (!rcu_gp_in_progress() &&
+-	    rcu_segcblist_is_enabled(&rdp->cblist) &&
++	if (!gp_in_progress && rcu_segcblist_is_enabled(&rdp->cblist) &&
+ 	    (!IS_ENABLED(CONFIG_RCU_NOCB_CPU) ||
+ 	     !rcu_segcblist_is_offloaded(&rdp->cblist)) &&
+ 	    !rcu_segcblist_restempty(&rdp->cblist, RCU_NEXT_READY_TAIL))
