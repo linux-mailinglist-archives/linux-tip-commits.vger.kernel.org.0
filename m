@@ -2,35 +2,34 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 11053EAF64
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 31 Oct 2019 12:57:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AD872EAF44
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 31 Oct 2019 12:55:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727405AbfJaLzY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 31 Oct 2019 07:55:24 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:55422 "EHLO
+        id S1727068AbfJaLz2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 31 Oct 2019 07:55:28 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:55456 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727335AbfJaLzX (ORCPT
+        with ESMTP id S1727452AbfJaLz2 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 31 Oct 2019 07:55:23 -0400
+        Thu, 31 Oct 2019 07:55:28 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iQ92u-00037u-Ja; Thu, 31 Oct 2019 12:55:20 +0100
+        id 1iQ92v-00038t-BC; Thu, 31 Oct 2019 12:55:21 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 758151C04D7;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E6AB31C04E8;
         Thu, 31 Oct 2019 12:55:10 +0100 (CET)
 Date:   Thu, 31 Oct 2019 11:55:10 -0000
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcutorture: Emulate dyntick aspect of userspace
- nohz_full sojourn
+Subject: [tip: core/rcu] rcu: Make CPU-hotplug removal operations enable tick
 Cc:     "Paul E. McKenney" <paulmck@kernel.org>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <157252291017.29376.11893239366143477054.tip-bot2@tip-bot2>
+Message-ID: <157252291056.29376.4271367091061665605.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -46,84 +45,61 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     79ba7ff5a9925f5c170f51ed7a96d1475eb6c27f
-Gitweb:        https://git.kernel.org/tip/79ba7ff5a9925f5c170f51ed7a96d1475eb6c27f
+Commit-ID:     96926686deab853bcacf887501f4ed958e38666b
+Gitweb:        https://git.kernel.org/tip/96926686deab853bcacf887501f4ed958e38666b
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Sun, 04 Aug 2019 13:17:35 -07:00
+AuthorDate:    Fri, 02 Aug 2019 15:12:47 -07:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Sat, 05 Oct 2019 10:46:05 -07:00
 
-rcutorture: Emulate dyntick aspect of userspace nohz_full sojourn
+rcu: Make CPU-hotplug removal operations enable tick
 
-During an actual call_rcu() flood, there would be frequent trips to
-userspace (in-kernel call_rcu() floods must be otherwise housebroken).
-Userspace execution on nohz_full CPUs implies an RCU dyntick idle/not-idle
-transition pair, so this commit adds emulation of that pair.
+CPU-hotplug removal operations run the multi_cpu_stop() function, which
+relies on the scheduler to gain control from whatever is running on the
+various online CPUs, including any nohz_full CPUs running long loops in
+kernel-mode code.  Lack of the scheduler-clock interrupt on such CPUs
+can delay multi_cpu_stop() for several minutes and can also result in
+RCU CPU stall warnings.  This commit therefore causes CPU-hotplug removal
+operations to enable the scheduler-clock interrupt on all online CPUs.
 
+[ paulmck: Apply Joel Fernandes TICK_DEP_MASK_RCU->TICK_DEP_BIT_RCU fix. ]
+[ paulmck: Apply simplifications suggested by Frederic Weisbecker. ]
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- include/linux/rcutiny.h |  1 +
- kernel/rcu/rcutorture.c | 11 +++++++++++
- kernel/rcu/tree.c       |  1 +
- 3 files changed, 13 insertions(+)
+ kernel/rcu/tree.c |  9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/include/linux/rcutiny.h b/include/linux/rcutiny.h
-index 9bf1dfe..37b6f0c 100644
---- a/include/linux/rcutiny.h
-+++ b/include/linux/rcutiny.h
-@@ -84,6 +84,7 @@ static inline void rcu_scheduler_starting(void) { }
- #endif /* #else #ifndef CONFIG_SRCU */
- static inline void rcu_end_inkernel_boot(void) { }
- static inline bool rcu_is_watching(void) { return true; }
-+static inline void rcu_momentary_dyntick_idle(void) { }
- 
- /* Avoid RCU read-side critical sections leaking across. */
- static inline void rcu_all_qs(void) { barrier(); }
-diff --git a/kernel/rcu/rcutorture.c b/kernel/rcu/rcutorture.c
-index ab61f5c..49ad887 100644
---- a/kernel/rcu/rcutorture.c
-+++ b/kernel/rcu/rcutorture.c
-@@ -1761,6 +1761,11 @@ static unsigned long rcu_torture_fwd_prog_cbfree(void)
- 		kfree(rfcp);
- 		freed++;
- 		rcu_torture_fwd_prog_cond_resched(freed);
-+		if (tick_nohz_full_enabled()) {
-+			local_irq_save(flags);
-+			rcu_momentary_dyntick_idle();
-+			local_irq_restore(flags);
-+		}
- 	}
- 	return freed;
- }
-@@ -1835,6 +1840,7 @@ static void rcu_torture_fwd_prog_nr(int *tested, int *tested_tries)
- static void rcu_torture_fwd_prog_cr(void)
- {
- 	unsigned long cver;
-+	unsigned long flags;
- 	unsigned long gps;
- 	int i;
- 	long n_launders;
-@@ -1894,6 +1900,11 @@ static void rcu_torture_fwd_prog_cr(void)
- 		}
- 		cur_ops->call(&rfcp->rh, rcu_torture_fwd_cb_cr);
- 		rcu_torture_fwd_prog_cond_resched(n_launders + n_max_cbs);
-+		if (tick_nohz_full_enabled()) {
-+			local_irq_save(flags);
-+			rcu_momentary_dyntick_idle();
-+			local_irq_restore(flags);
-+		}
- 	}
- 	stoppedat = jiffies;
- 	n_launders_cb_snap = READ_ONCE(n_launders_cb);
 diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
-index 7c67ea5..66354ef 100644
+index a5c296d..7c67ea5 100644
 --- a/kernel/rcu/tree.c
 +++ b/kernel/rcu/tree.c
-@@ -375,6 +375,7 @@ void rcu_momentary_dyntick_idle(void)
- 	WARN_ON_ONCE(!(special & RCU_DYNTICK_CTRL_CTR));
- 	rcu_preempt_deferred_qs(current);
+@@ -2101,6 +2101,9 @@ int rcutree_dead_cpu(unsigned int cpu)
+ 	rcu_boost_kthread_setaffinity(rnp, -1);
+ 	/* Do any needed no-CB deferred wakeups from this CPU. */
+ 	do_nocb_deferred_wakeup(per_cpu_ptr(&rcu_data, cpu));
++
++	// Stop-machine done, so allow nohz_full to disable tick.
++	tick_dep_clear(TICK_DEP_BIT_RCU);
+ 	return 0;
  }
-+EXPORT_SYMBOL_GPL(rcu_momentary_dyntick_idle);
  
- /**
-  * rcu_is_cpu_rrupt_from_idle - see if interrupted from idle
+@@ -3085,6 +3088,9 @@ int rcutree_online_cpu(unsigned int cpu)
+ 		return 0; /* Too early in boot for scheduler work. */
+ 	sync_sched_exp_online_cleanup(cpu);
+ 	rcutree_affinity_setting(cpu, -1);
++
++	// Stop-machine done, so allow nohz_full to disable tick.
++	tick_dep_clear(TICK_DEP_BIT_RCU);
+ 	return 0;
+ }
+ 
+@@ -3105,6 +3111,9 @@ int rcutree_offline_cpu(unsigned int cpu)
+ 	raw_spin_unlock_irqrestore_rcu_node(rnp, flags);
+ 
+ 	rcutree_affinity_setting(cpu, cpu);
++
++	// nohz_full CPUs need the tick for stop-machine to work quickly
++	tick_dep_set(TICK_DEP_BIT_RCU);
+ 	return 0;
+ }
+ 
