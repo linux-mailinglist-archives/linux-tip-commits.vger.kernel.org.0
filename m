@@ -2,37 +2,42 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 971D3EAF35
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 31 Oct 2019 12:55:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DC5A7EAF59
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 31 Oct 2019 12:57:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726951AbfJaLzG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 31 Oct 2019 07:55:06 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:55278 "EHLO
+        id S1727141AbfJaLzM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 31 Oct 2019 07:55:12 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:55330 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726524AbfJaLzF (ORCPT
+        with ESMTP id S1727069AbfJaLzL (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 31 Oct 2019 07:55:05 -0400
+        Thu, 31 Oct 2019 07:55:11 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iQ92V-0002qZ-CA; Thu, 31 Oct 2019 12:54:55 +0100
+        id 1iQ92U-0002qR-OH; Thu, 31 Oct 2019 12:54:54 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 06C8A1C03AD;
-        Thu, 31 Oct 2019 12:54:55 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 60C691C0482;
+        Thu, 31 Oct 2019 12:54:54 +0100 (CET)
 Date:   Thu, 31 Oct 2019 11:54:54 -0000
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] fs/afs: Replace rcu_swap_protected() with
+Subject: [tip: core/rcu] net/core: Replace rcu_swap_protected() with
  rcu_replace_pointer()
 Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
         "Paul E. McKenney" <paulmck@kernel.org>,
-        David Howells <dhowells@redhat.com>,
-        <linux-afs@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>
+        "David S. Miller" <davem@davemloft.net>,
+        Jiri Pirko <jiri@mellanox.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Ido Schimmel <idosch@mellanox.com>,
+        Petr Machata <petrm@mellanox.com>,
+        Paolo Abeni <pabeni@redhat.com>, <netdev@vger.kernel.org>,
+        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
+        linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <157252289477.29376.15790301620769288456.tip-bot2@tip-bot2>
+Message-ID: <157252289414.29376.17980810515086127468.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,14 +53,14 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     62860da7082e4f2440c6bc96e4710d9c8bfb916b
-Gitweb:        https://git.kernel.org/tip/62860da7082e4f2440c6bc96e4710d9c8bfb916b
+Commit-ID:     e3f0d761fcaec5d445c9280d6e09087dc32828d2
+Gitweb:        https://git.kernel.org/tip/e3f0d761fcaec5d445c9280d6e09087dc32828d2
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Mon, 23 Sep 2019 15:28:28 -07:00
+AuthorDate:    Mon, 23 Sep 2019 15:42:28 -07:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Wed, 30 Oct 2019 08:44:27 -07:00
+CommitterDate: Wed, 30 Oct 2019 08:45:26 -07:00
 
-fs/afs: Replace rcu_swap_protected() with rcu_replace_pointer()
+net/core: Replace rcu_swap_protected() with rcu_replace_pointer()
 
 This commit replaces the use of rcu_swap_protected() with the more
 intuitively appealing rcu_replace_pointer() as a step towards removing
@@ -65,25 +70,45 @@ Link: https://lore.kernel.org/lkml/CAHk-=wiAsJLw1egFEE=Z7-GGtM6wcvtyytXZA1+BHqta
 Reported-by: Linus Torvalds <torvalds@linux-foundation.org>
 [ paulmck: From rcu_replace() to rcu_replace_pointer() per Ingo Molnar. ]
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Acked-by: David Howells <dhowells@redhat.com>
-Cc: <linux-afs@lists.infradead.org>
-Cc: <linux-kernel@vger.kernel.org>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Jiri Pirko <jiri@mellanox.com>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Ido Schimmel <idosch@mellanox.com>
+Cc: Petr Machata <petrm@mellanox.com>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: <netdev@vger.kernel.org>
 ---
- fs/afs/vl_list.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/core/dev.c            | 4 ++--
+ net/core/sock_reuseport.c | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/fs/afs/vl_list.c b/fs/afs/vl_list.c
-index 21eb0c0..8fea54e 100644
---- a/fs/afs/vl_list.c
-+++ b/fs/afs/vl_list.c
-@@ -279,8 +279,8 @@ struct afs_vlserver_list *afs_extract_vlserver_list(struct afs_cell *cell,
- 			struct afs_addr_list *old = addrs;
+diff --git a/net/core/dev.c b/net/core/dev.c
+index bf3ed41..c5d8882 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -1288,8 +1288,8 @@ int dev_set_alias(struct net_device *dev, const char *alias, size_t len)
+ 	}
  
- 			write_lock(&server->lock);
--			rcu_swap_protected(server->addresses, old,
--					   lockdep_is_held(&server->lock));
-+			old = rcu_replace_pointer(server->addresses, old,
-+						  lockdep_is_held(&server->lock));
- 			write_unlock(&server->lock);
- 			afs_put_addrlist(old);
- 		}
+ 	mutex_lock(&ifalias_mutex);
+-	rcu_swap_protected(dev->ifalias, new_alias,
+-			   mutex_is_locked(&ifalias_mutex));
++	new_alias = rcu_replace_pointer(dev->ifalias, new_alias,
++					mutex_is_locked(&ifalias_mutex));
+ 	mutex_unlock(&ifalias_mutex);
+ 
+ 	if (new_alias)
+diff --git a/net/core/sock_reuseport.c b/net/core/sock_reuseport.c
+index f3ceec9..f19f179 100644
+--- a/net/core/sock_reuseport.c
++++ b/net/core/sock_reuseport.c
+@@ -356,8 +356,8 @@ int reuseport_detach_prog(struct sock *sk)
+ 	spin_lock_bh(&reuseport_lock);
+ 	reuse = rcu_dereference_protected(sk->sk_reuseport_cb,
+ 					  lockdep_is_held(&reuseport_lock));
+-	rcu_swap_protected(reuse->prog, old_prog,
+-			   lockdep_is_held(&reuseport_lock));
++	old_prog = rcu_replace_pointer(reuse->prog, old_prog,
++				       lockdep_is_held(&reuseport_lock));
+ 	spin_unlock_bh(&reuseport_lock);
+ 
+ 	if (!old_prog)
