@@ -2,37 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 11B60EAF92
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 31 Oct 2019 12:58:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 544DDEAF97
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 31 Oct 2019 12:58:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727869AbfJaL5L (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 31 Oct 2019 07:57:11 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:55379 "EHLO
+        id S1727888AbfJaL5Q (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 31 Oct 2019 07:57:16 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:55364 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727233AbfJaLzS (ORCPT
+        with ESMTP id S1727206AbfJaLzR (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 31 Oct 2019 07:55:18 -0400
+        Thu, 31 Oct 2019 07:55:17 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iQ92n-00034V-TZ; Thu, 31 Oct 2019 12:55:14 +0100
+        id 1iQ92l-00033M-Mj; Thu, 31 Oct 2019 12:55:11 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4444D1C0673;
-        Thu, 31 Oct 2019 12:55:06 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 7CE9A1C0671;
+        Thu, 31 Oct 2019 12:55:05 +0100 (CET)
 Date:   Thu, 31 Oct 2019 11:55:05 -0000
-From:   "tip-bot2 for Alan Stern" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] tools/memory-model/Documentation: Put redefinition of
- rcu-fence into explanation.txt
-Cc:     Alan Stern <stern@rowland.harvard.edu>,
-        Andrea Parri <parri.andrea@gmail.com>,
+Subject: [tip: core/rcu] rcu: Force tick on for nohz_full CPUs not reaching
+ quiescent states
+Cc:     Joel Fernandes <joel@joelfernandes.org>,
         "Paul E. McKenney" <paulmck@kernel.org>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <157252290599.29376.15152132361280992721.tip-bot2@tip-bot2>
+Message-ID: <157252290512.29376.2397341748578098915.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,135 +47,163 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     ddc82999f02580f93f9be2b8fb3b10f6139fb281
-Gitweb:        https://git.kernel.org/tip/ddc82999f02580f93f9be2b8fb3b10f6139fb281
-Author:        Alan Stern <stern@rowland.harvard.edu>
-AuthorDate:    Tue, 01 Oct 2019 13:40:11 -04:00
+Commit-ID:     66e4c33b51bc515ca803c0948cf1525b53ffd631
+Gitweb:        https://git.kernel.org/tip/66e4c33b51bc515ca803c0948cf1525b53ffd631
+Author:        Paul E. McKenney <paulmck@kernel.org>
+AuthorDate:    Mon, 12 Aug 2019 16:14:00 -07:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Sat, 05 Oct 2019 11:59:23 -07:00
+CommitterDate: Mon, 28 Oct 2019 07:02:21 -07:00
 
-tools/memory-model/Documentation: Put redefinition of rcu-fence into explanation.txt
+rcu: Force tick on for nohz_full CPUs not reaching quiescent states
 
-This patch updates the Linux Kernel Memory Model's explanation.txt
-file to incorporate the introduction of the rcu-order relation and
-the redefinition of rcu-fence made by commit 15aa25cbf0cc
-("tools/memory-model: Change definition of rcu-fence").
+CPUs running for long time periods in the kernel in nohz_full mode
+might leave the scheduling-clock interrupt disabled for then full
+duration of their in-kernel execution.  This can (among other things)
+delay grace periods.  This commit therefore forces the tick back on
+for any nohz_full CPU that is failing to pass through a quiescent state
+upon return from interrupt, which the resched_cpu() will induce.
 
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Acked-by: Andrea Parri <parri.andrea@gmail.com>
+Reported-by: Joel Fernandes <joel@joelfernandes.org>
+[ paulmck: Clear ->rcu_forced_tick as reported by Joel Fernandes testing. ]
+[ paulmck: Apply Joel Fernandes TICK_DEP_MASK_RCU->TICK_DEP_BIT_RCU fix. ]
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- tools/memory-model/Documentation/explanation.txt | 53 ++++++++++-----
- 1 file changed, 36 insertions(+), 17 deletions(-)
+ kernel/rcu/tree.c | 38 +++++++++++++++++++++++++++++++-------
+ kernel/rcu/tree.h |  1 +
+ 2 files changed, 32 insertions(+), 7 deletions(-)
 
-diff --git a/tools/memory-model/Documentation/explanation.txt b/tools/memory-model/Documentation/explanation.txt
-index 1b52645..ecf6ccc 100644
---- a/tools/memory-model/Documentation/explanation.txt
-+++ b/tools/memory-model/Documentation/explanation.txt
-@@ -27,7 +27,7 @@ Explanation of the Linux-Kernel Memory Consistency Model
-   19. AND THEN THERE WAS ALPHA
-   20. THE HAPPENS-BEFORE RELATION: hb
-   21. THE PROPAGATES-BEFORE RELATION: pb
--  22. RCU RELATIONS: rcu-link, rcu-gp, rcu-rscsi, rcu-fence, and rb
-+  22. RCU RELATIONS: rcu-link, rcu-gp, rcu-rscsi, rcu-order, rcu-fence, and rb
-   23. LOCKING
-   24. ODDS AND ENDS
+diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
+index 66354ef..9fda338 100644
+--- a/kernel/rcu/tree.c
++++ b/kernel/rcu/tree.c
+@@ -651,6 +651,12 @@ static __always_inline void rcu_nmi_exit_common(bool irq)
+ 	 */
+ 	if (rdp->dynticks_nmi_nesting != 1) {
+ 		trace_rcu_dyntick(TPS("--="), rdp->dynticks_nmi_nesting, rdp->dynticks_nmi_nesting - 2, rdp->dynticks);
++		if (tick_nohz_full_cpu(rdp->cpu) &&
++		    rdp->dynticks_nmi_nesting == 2 &&
++		    rdp->rcu_urgent_qs && !rdp->rcu_forced_tick) {
++			rdp->rcu_forced_tick = true;
++			tick_dep_set_cpu(rdp->cpu, TICK_DEP_MASK_RCU);
++		}
+ 		WRITE_ONCE(rdp->dynticks_nmi_nesting, /* No store tearing. */
+ 			   rdp->dynticks_nmi_nesting - 2);
+ 		return;
+@@ -886,6 +892,18 @@ void rcu_irq_enter_irqson(void)
+ 	local_irq_restore(flags);
+ }
  
-@@ -1425,8 +1425,8 @@ they execute means that it cannot have cycles.  This requirement is
- the content of the LKMM's "propagation" axiom.
- 
- 
--RCU RELATIONS: rcu-link, rcu-gp, rcu-rscsi, rcu-fence, and rb
---------------------------------------------------------------
-+RCU RELATIONS: rcu-link, rcu-gp, rcu-rscsi, rcu-order, rcu-fence, and rb
-+------------------------------------------------------------------------
- 
- RCU (Read-Copy-Update) is a powerful synchronization mechanism.  It
- rests on two concepts: grace periods and read-side critical sections.
-@@ -1536,29 +1536,29 @@ Z's CPU before Z begins but doesn't propagate to some other CPU until
- after X ends.)  Similarly, X ->rcu-rscsi Y ->rcu-link Z says that X is
- the end of a critical section which starts before Z begins.
- 
--The LKMM goes on to define the rcu-fence relation as a sequence of
-+The LKMM goes on to define the rcu-order relation as a sequence of
- rcu-gp and rcu-rscsi links separated by rcu-link links, in which the
- number of rcu-gp links is >= the number of rcu-rscsi links.  For
- example:
- 
- 	X ->rcu-gp Y ->rcu-link Z ->rcu-rscsi T ->rcu-link U ->rcu-gp V
- 
--would imply that X ->rcu-fence V, because this sequence contains two
-+would imply that X ->rcu-order V, because this sequence contains two
- rcu-gp links and one rcu-rscsi link.  (It also implies that
--X ->rcu-fence T and Z ->rcu-fence V.)  On the other hand:
-+X ->rcu-order T and Z ->rcu-order V.)  On the other hand:
- 
- 	X ->rcu-rscsi Y ->rcu-link Z ->rcu-rscsi T ->rcu-link U ->rcu-gp V
- 
--does not imply X ->rcu-fence V, because the sequence contains only
-+does not imply X ->rcu-order V, because the sequence contains only
- one rcu-gp link but two rcu-rscsi links.
- 
--The rcu-fence relation is important because the Grace Period Guarantee
--means that rcu-fence acts kind of like a strong fence.  In particular,
--E ->rcu-fence F implies not only that E begins before F ends, but also
--that any write po-before E will propagate to every CPU before any
--instruction po-after F can execute.  (However, it does not imply that
--E must execute before F; in fact, each synchronize_rcu() fence event
--is linked to itself by rcu-fence as a degenerate case.)
-+The rcu-order relation is important because the Grace Period Guarantee
-+means that rcu-order links act kind of like strong fences.  In
-+particular, E ->rcu-order F implies not only that E begins before F
-+ends, but also that any write po-before E will propagate to every CPU
-+before any instruction po-after F can execute.  (However, it does not
-+imply that E must execute before F; in fact, each synchronize_rcu()
-+fence event is linked to itself by rcu-order as a degenerate case.)
- 
- To prove this in full generality requires some intellectual effort.
- We'll consider just a very simple case:
-@@ -1585,7 +1585,26 @@ G's CPU before G starts must propagate to every CPU before C starts.
- In particular, the write propagates to every CPU before F finishes
- executing and hence before any instruction po-after F can execute.
- This sort of reasoning can be extended to handle all the situations
--covered by rcu-fence.
-+covered by rcu-order.
++/*
++ * If the scheduler-clock interrupt was enabled on a nohz_full CPU
++ * in order to get to a quiescent state, disable it.
++ */
++void rcu_disable_tick_upon_qs(struct rcu_data *rdp)
++{
++	if (tick_nohz_full_cpu(rdp->cpu) && rdp->rcu_forced_tick) {
++		tick_dep_clear_cpu(rdp->cpu, TICK_DEP_BIT_RCU);
++		rdp->rcu_forced_tick = false;
++	}
++}
 +
-+The rcu-fence relation is a simple extension of rcu-order.  While
-+rcu-order only links certain fence events (calls to synchronize_rcu(),
-+rcu_read_lock(), or rcu_read_unlock()), rcu-fence links any events
-+that are separated by an rcu-order link.  This is analogous to the way
-+the strong-fence relation links events that are separated by an
-+smp_mb() fence event (as mentioned above, rcu-order links act kind of
-+like strong fences).  Written symbolically, X ->rcu-fence Y means
-+there are fence events E and F such that:
-+
-+	X ->po E ->rcu-order F ->po Y.
-+
-+From the discussion above, we see this implies not only that X
-+executes before Y, but also (if X is a store) that X propagates to
-+every CPU before Y executes.  Thus rcu-fence is sort of a
-+"super-strong" fence: Unlike the original strong fences (smp_mb() and
-+synchronize_rcu()), rcu-fence is able to link events on different
-+CPUs.  (Perhaps this fact should lead us to say that rcu-fence isn't
-+really a fence at all!)
+ /**
+  * rcu_is_watching - see if RCU thinks that the current CPU is not idle
+  *
+@@ -1980,6 +1998,7 @@ rcu_report_qs_rdp(int cpu, struct rcu_data *rdp)
+ 		if (!offloaded)
+ 			needwake = rcu_accelerate_cbs(rnp, rdp);
  
- Finally, the LKMM defines the RCU-before (rb) relation in terms of
- rcu-fence.  This is done in essentially the same way as the pb
-@@ -1596,7 +1615,7 @@ before F, just as E ->pb F does (and for much the same reasons).
- Putting this all together, the LKMM expresses the Grace Period
- Guarantee by requiring that the rb relation does not contain a cycle.
- Equivalently, this "rcu" axiom requires that there are no events E
--and F with E ->rcu-link F ->rcu-fence E.  Or to put it a third way,
-+and F with E ->rcu-link F ->rcu-order E.  Or to put it a third way,
- the axiom requires that there are no cycles consisting of rcu-gp and
- rcu-rscsi alternating with rcu-link, where the number of rcu-gp links
- is >= the number of rcu-rscsi links.
-@@ -1750,7 +1769,7 @@ addition to normal RCU.  The ideas involved are much the same as
- above, with new relations srcu-gp and srcu-rscsi added to represent
- SRCU grace periods and read-side critical sections.  There is a
- restriction on the srcu-gp and srcu-rscsi links that can appear in an
--rcu-fence sequence (the srcu-rscsi links must be paired with srcu-gp
-+rcu-order sequence (the srcu-rscsi links must be paired with srcu-gp
- links having the same SRCU domain with proper nesting); the details
- are relatively unimportant.
++		rcu_disable_tick_upon_qs(rdp);
+ 		rcu_report_qs_rnp(mask, rnp, rnp->gp_seq, flags);
+ 		/* ^^^ Released rnp->lock */
+ 		if (needwake)
+@@ -2265,6 +2284,7 @@ static void force_qs_rnp(int (*f)(struct rcu_data *rdp))
+ 	int cpu;
+ 	unsigned long flags;
+ 	unsigned long mask;
++	struct rcu_data *rdp;
+ 	struct rcu_node *rnp;
  
+ 	rcu_for_each_leaf_node(rnp) {
+@@ -2289,8 +2309,11 @@ static void force_qs_rnp(int (*f)(struct rcu_data *rdp))
+ 		for_each_leaf_node_possible_cpu(rnp, cpu) {
+ 			unsigned long bit = leaf_node_cpu_bit(rnp, cpu);
+ 			if ((rnp->qsmask & bit) != 0) {
+-				if (f(per_cpu_ptr(&rcu_data, cpu)))
++				rdp = per_cpu_ptr(&rcu_data, cpu);
++				if (f(rdp)) {
+ 					mask |= bit;
++					rcu_disable_tick_upon_qs(rdp);
++				}
+ 			}
+ 		}
+ 		if (mask != 0) {
+@@ -2318,7 +2341,7 @@ void rcu_force_quiescent_state(void)
+ 	rnp = __this_cpu_read(rcu_data.mynode);
+ 	for (; rnp != NULL; rnp = rnp->parent) {
+ 		ret = (READ_ONCE(rcu_state.gp_flags) & RCU_GP_FLAG_FQS) ||
+-		      !raw_spin_trylock(&rnp->fqslock);
++		       !raw_spin_trylock(&rnp->fqslock);
+ 		if (rnp_old != NULL)
+ 			raw_spin_unlock(&rnp_old->fqslock);
+ 		if (ret)
+@@ -2851,7 +2874,7 @@ static void rcu_barrier_callback(struct rcu_head *rhp)
+ {
+ 	if (atomic_dec_and_test(&rcu_state.barrier_cpu_count)) {
+ 		rcu_barrier_trace(TPS("LastCB"), -1,
+-				   rcu_state.barrier_sequence);
++				  rcu_state.barrier_sequence);
+ 		complete(&rcu_state.barrier_completion);
+ 	} else {
+ 		rcu_barrier_trace(TPS("CB"), -1, rcu_state.barrier_sequence);
+@@ -2875,7 +2898,7 @@ static void rcu_barrier_func(void *unused)
+ 	} else {
+ 		debug_rcu_head_unqueue(&rdp->barrier_head);
+ 		rcu_barrier_trace(TPS("IRQNQ"), -1,
+-				   rcu_state.barrier_sequence);
++				  rcu_state.barrier_sequence);
+ 	}
+ 	rcu_nocb_unlock(rdp);
+ }
+@@ -2902,7 +2925,7 @@ void rcu_barrier(void)
+ 	/* Did someone else do our work for us? */
+ 	if (rcu_seq_done(&rcu_state.barrier_sequence, s)) {
+ 		rcu_barrier_trace(TPS("EarlyExit"), -1,
+-				   rcu_state.barrier_sequence);
++				  rcu_state.barrier_sequence);
+ 		smp_mb(); /* caller's subsequent code after above check. */
+ 		mutex_unlock(&rcu_state.barrier_mutex);
+ 		return;
+@@ -2934,11 +2957,11 @@ void rcu_barrier(void)
+ 			continue;
+ 		if (rcu_segcblist_n_cbs(&rdp->cblist)) {
+ 			rcu_barrier_trace(TPS("OnlineQ"), cpu,
+-					   rcu_state.barrier_sequence);
++					  rcu_state.barrier_sequence);
+ 			smp_call_function_single(cpu, rcu_barrier_func, NULL, 1);
+ 		} else {
+ 			rcu_barrier_trace(TPS("OnlineNQ"), cpu,
+-					   rcu_state.barrier_sequence);
++					  rcu_state.barrier_sequence);
+ 		}
+ 	}
+ 	put_online_cpus();
+@@ -3160,6 +3183,7 @@ void rcu_cpu_starting(unsigned int cpu)
+ 	rdp->rcu_onl_gp_seq = READ_ONCE(rcu_state.gp_seq);
+ 	rdp->rcu_onl_gp_flags = READ_ONCE(rcu_state.gp_flags);
+ 	if (rnp->qsmask & mask) { /* RCU waiting on incoming CPU? */
++		rcu_disable_tick_upon_qs(rdp);
+ 		/* Report QS -after- changing ->qsmaskinitnext! */
+ 		rcu_report_qs_rnp(mask, rnp, rnp->gp_seq, flags);
+ 	} else {
+diff --git a/kernel/rcu/tree.h b/kernel/rcu/tree.h
+index c612f30..055c317 100644
+--- a/kernel/rcu/tree.h
++++ b/kernel/rcu/tree.h
+@@ -181,6 +181,7 @@ struct rcu_data {
+ 	atomic_t dynticks;		/* Even value for idle, else odd. */
+ 	bool rcu_need_heavy_qs;		/* GP old, so heavy quiescent state! */
+ 	bool rcu_urgent_qs;		/* GP old need light quiescent state. */
++	bool rcu_forced_tick;		/* Forced tick to provide QS. */
+ #ifdef CONFIG_RCU_FAST_NO_HZ
+ 	bool all_lazy;			/* All CPU's CBs lazy at idle start? */
+ 	unsigned long last_accelerate;	/* Last jiffy CBs were accelerated. */
