@@ -2,37 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 441EEEAF43
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 31 Oct 2019 12:55:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E0FCEAF8E
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 31 Oct 2019 12:58:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727461AbfJaLz1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 31 Oct 2019 07:55:27 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:55449 "EHLO
+        id S1726824AbfJaL5F (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 31 Oct 2019 07:57:05 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:55395 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727437AbfJaLz1 (ORCPT
+        with ESMTP id S1727263AbfJaLzT (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 31 Oct 2019 07:55:27 -0400
+        Thu, 31 Oct 2019 07:55:19 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iQ92t-000355-GZ; Thu, 31 Oct 2019 12:55:19 +0100
+        id 1iQ92p-00035m-Vi; Thu, 31 Oct 2019 12:55:16 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 1E9A81C06B2;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 880D51C04F4;
         Thu, 31 Oct 2019 12:55:07 +0100 (CET)
-Date:   Thu, 31 Oct 2019 11:55:06 -0000
-From:   "tip-bot2 for Alan Stern" <tip-bot2@linutronix.de>
+Date:   Thu, 31 Oct 2019 11:55:07 -0000
+From:   "tip-bot2 for Wolfgang M. Reimer" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] tools/memory-model: Fix data race detection for
- unordered store and load
-Cc:     Alan Stern <stern@rowland.harvard.edu>,
-        Andrea Parri <parri.andrea@gmail.com>,
+Subject: [tip: core/rcu] locking: locktorture: Do not include rwlock.h directly
+Cc:     "Wolfgang M. Reimer" <linuxball@gmail.com>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Davidlohr Bueso <dbueso@suse.de>,
         "Paul E. McKenney" <paulmck@kernel.org>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <157252290681.29376.3038680166687118243.tip-bot2@tip-bot2>
+Message-ID: <157252290720.29376.16264381220235980397.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,88 +48,39 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     daebf24a8e8c6064cba3a330db9fe9376a137d2c
-Gitweb:        https://git.kernel.org/tip/daebf24a8e8c6064cba3a330db9fe9376a137d2c
-Author:        Alan Stern <stern@rowland.harvard.edu>
-AuthorDate:    Fri, 06 Sep 2019 16:57:22 -04:00
+Commit-ID:     67d64918a163fd62cf3b668d69133b723c48ed96
+Gitweb:        https://git.kernel.org/tip/67d64918a163fd62cf3b668d69133b723c48ed96
+Author:        Wolfgang M. Reimer <linuxball@gmail.com>
+AuthorDate:    Mon, 16 Sep 2019 16:54:04 +02:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Sat, 05 Oct 2019 11:58:14 -07:00
+CommitterDate: Sat, 05 Oct 2019 11:50:24 -07:00
 
-tools/memory-model: Fix data race detection for unordered store and load
+locking: locktorture: Do not include rwlock.h directly
 
-Currently the Linux Kernel Memory Model gives an incorrect response
-for the following litmus test:
+Including rwlock.h directly will cause kernel builds to fail
+if CONFIG_PREEMPT_RT is defined. The correct header file
+(rwlock_rt.h OR rwlock.h) will be included by spinlock.h which
+is included by locktorture.c anyway.
 
-C plain-WWC
+Remove the include of linux/rwlock.h.
 
-{}
-
-P0(int *x)
-{
-	WRITE_ONCE(*x, 2);
-}
-
-P1(int *x, int *y)
-{
-	int r1;
-	int r2;
-	int r3;
-
-	r1 = READ_ONCE(*x);
-	if (r1 == 2) {
-		smp_rmb();
-		r2 = *x;
-	}
-	smp_rmb();
-	r3 = READ_ONCE(*x);
-	WRITE_ONCE(*y, r3 - 1);
-}
-
-P2(int *x, int *y)
-{
-	int r4;
-
-	r4 = READ_ONCE(*y);
-	if (r4 > 0)
-		WRITE_ONCE(*x, 1);
-}
-
-exists (x=2 /\ 1:r2=2 /\ 2:r4=1)
-
-The memory model says that the plain read of *x in P1 races with the
-WRITE_ONCE(*x) in P2.
-
-The problem is that we have a write W and a read R related by neither
-fre or rfe, but rather W ->coe W' ->rfe R, where W' is an intermediate
-write (the WRITE_ONCE() in P0).  In this situation there is no
-particular ordering between W and R, so either a wr-vis link from W to
-R or an rw-xbstar link from R to W would prove that the accesses
-aren't concurrent.
-
-But the LKMM only looks for a wr-vis link, which is equivalent to
-assuming that W must execute before R.  This is not necessarily true
-on non-multicopy-atomic systems, as the WWC pattern demonstrates.
-
-This patch changes the LKMM to accept either a wr-vis or a reverse
-rw-xbstar link as a proof of non-concurrency.
-
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Acked-by: Andrea Parri <parri.andrea@gmail.com>
+Signed-off-by: Wolfgang M. Reimer <linuxball@gmail.com>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Acked-by: Davidlohr Bueso <dbueso@suse.de>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- tools/memory-model/linux-kernel.cat | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/locking/locktorture.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/tools/memory-model/linux-kernel.cat b/tools/memory-model/linux-kernel.cat
-index ea2ff4b..2a9b4fe 100644
---- a/tools/memory-model/linux-kernel.cat
-+++ b/tools/memory-model/linux-kernel.cat
-@@ -197,7 +197,7 @@ empty (wr-incoh | rw-incoh | ww-incoh) as plain-coherence
- (* Actual races *)
- let ww-nonrace = ww-vis & ((Marked * W) | rw-xbstar) & ((W * Marked) | wr-vis)
- let ww-race = (pre-race & co) \ ww-nonrace
--let wr-race = (pre-race & (co? ; rf)) \ wr-vis
-+let wr-race = (pre-race & (co? ; rf)) \ wr-vis \ rw-xbstar^-1
- let rw-race = (pre-race & fr) \ rw-xbstar
- 
- flag ~empty (ww-race | wr-race | rw-race) as data-race
+diff --git a/kernel/locking/locktorture.c b/kernel/locking/locktorture.c
+index 8dd9002..99475a6 100644
+--- a/kernel/locking/locktorture.c
++++ b/kernel/locking/locktorture.c
+@@ -16,7 +16,6 @@
+ #include <linux/kthread.h>
+ #include <linux/sched/rt.h>
+ #include <linux/spinlock.h>
+-#include <linux/rwlock.h>
+ #include <linux/mutex.h>
+ #include <linux/rwsem.h>
+ #include <linux/smp.h>
