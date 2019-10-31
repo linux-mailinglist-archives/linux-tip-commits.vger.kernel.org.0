@@ -2,34 +2,34 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D649CEAF8B
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 31 Oct 2019 12:58:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CCCDEAF60
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 31 Oct 2019 12:57:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727828AbfJaL47 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 31 Oct 2019 07:56:59 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:55430 "EHLO
+        id S1727010AbfJaLzX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 31 Oct 2019 07:55:23 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:55409 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727354AbfJaLzY (ORCPT
+        with ESMTP id S1727310AbfJaLzX (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 31 Oct 2019 07:55:24 -0400
+        Thu, 31 Oct 2019 07:55:23 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iQ92v-000365-9W; Thu, 31 Oct 2019 12:55:21 +0100
+        id 1iQ92s-000373-96; Thu, 31 Oct 2019 12:55:18 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id EFD591C06CD;
-        Thu, 31 Oct 2019 12:55:07 +0100 (CET)
-Date:   Thu, 31 Oct 2019 11:55:07 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 2A00C1C06D2;
+        Thu, 31 Oct 2019 12:55:09 +0100 (CET)
+Date:   Thu, 31 Oct 2019 11:55:08 -0000
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcutorture: Make in-kernel-loop testing more brutal
+Subject: [tip: core/rcu] rcutorture: Remove CONFIG_HOTPLUG_CPU=n from scenarios
 Cc:     "Paul E. McKenney" <paulmck@kernel.org>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <157252290769.29376.3589481983002794153.tip-bot2@tip-bot2>
+Message-ID: <157252290888.29376.7569458712945584864.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -45,43 +45,141 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     fbbd5e358cecb5fa490550ace66463517a7577e8
-Gitweb:        https://git.kernel.org/tip/fbbd5e358cecb5fa490550ace66463517a7577e8
+Commit-ID:     9f8ba55d49cef46da63f7863ec544e2b2b7eda66
+Gitweb:        https://git.kernel.org/tip/9f8ba55d49cef46da63f7863ec544e2b2b7eda66
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Thu, 15 Aug 2019 11:43:53 -07:00
+AuthorDate:    Fri, 02 Aug 2019 20:18:25 -07:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Sat, 05 Oct 2019 11:50:18 -07:00
+CommitterDate: Sat, 05 Oct 2019 11:49:13 -07:00
 
-rcutorture: Make in-kernel-loop testing more brutal
+rcutorture: Remove CONFIG_HOTPLUG_CPU=n from scenarios
 
-The rcu_torture_fwd_prog_nr() tests the ability of RCU to tolerate
-in-kernel busy loops.  It invokes rcu_torture_fwd_prog_cond_resched()
-within its delay loop, which, in PREEMPT && NO_HZ_FULL kernels results
-in the occasional direct call to schedule().  Now, this direct call to
-schedule() is appropriate for call_rcu() flood testing, in which either
-the kernel should restrain itself or userspace transitions will supply
-the needed restraint.  But in pure in-kernel loops, the occasional
-cond_resched() should do the job.
-
-This commit therefore makes rcu_torture_fwd_prog_nr() use cond_resched()
-instead of rcu_torture_fwd_prog_cond_resched() in order to increase the
-brutality of this aspect of rcutorture testing.
+A number of mainstream CPU families are no longer capable of building
+kernels having CONFIG_SMP=y and CONFIG_HOTPLUG_CPU=n, so this commit
+removes this combination from the rcutorture scenarios having it.
+People wishing to try out this combination may still do so using the
+"--kconfig CONFIG_HOTPLUG_CPU=n CONFIG_SUSPEND=n CONFIG_HIBERNATION=n"
+argument to the tools/testing/selftests/rcutorture/bin/kvm.sh script
+that is used to run rcutorture.
 
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/rcu/rcutorture.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/rcutorture/configs/rcu/TASKS03      | 3 ---
+ tools/testing/selftests/rcutorture/configs/rcu/TREE02       | 3 ---
+ tools/testing/selftests/rcutorture/configs/rcu/TREE04       | 3 ---
+ tools/testing/selftests/rcutorture/configs/rcu/TREE06       | 3 ---
+ tools/testing/selftests/rcutorture/configs/rcu/TREE08       | 3 ---
+ tools/testing/selftests/rcutorture/configs/rcu/TREE09       | 3 ---
+ tools/testing/selftests/rcutorture/configs/rcu/TRIVIAL      | 3 ---
+ tools/testing/selftests/rcutorture/doc/TREE_RCU-kconfig.txt | 1 -
+ 8 files changed, 22 deletions(-)
 
-diff --git a/kernel/rcu/rcutorture.c b/kernel/rcu/rcutorture.c
-index 5ac4672..df1caa9 100644
---- a/kernel/rcu/rcutorture.c
-+++ b/kernel/rcu/rcutorture.c
-@@ -1806,7 +1806,7 @@ static void rcu_torture_fwd_prog_nr(int *tested, int *tested_tries)
- 		udelay(10);
- 		cur_ops->readunlock(idx);
- 		if (!fwd_progress_need_resched || need_resched())
--			rcu_torture_fwd_prog_cond_resched(1);
-+			cond_resched();
- 	}
- 	(*tested_tries)++;
- 	if (!time_before(jiffies, stopat) &&
+diff --git a/tools/testing/selftests/rcutorture/configs/rcu/TASKS03 b/tools/testing/selftests/rcutorture/configs/rcu/TASKS03
+index 28568b7..ea43990 100644
+--- a/tools/testing/selftests/rcutorture/configs/rcu/TASKS03
++++ b/tools/testing/selftests/rcutorture/configs/rcu/TASKS03
+@@ -1,8 +1,5 @@
+ CONFIG_SMP=y
+ CONFIG_NR_CPUS=2
+-CONFIG_HOTPLUG_CPU=n
+-CONFIG_SUSPEND=n
+-CONFIG_HIBERNATION=n
+ CONFIG_PREEMPT_NONE=n
+ CONFIG_PREEMPT_VOLUNTARY=n
+ CONFIG_PREEMPT=y
+diff --git a/tools/testing/selftests/rcutorture/configs/rcu/TREE02 b/tools/testing/selftests/rcutorture/configs/rcu/TREE02
+index 35e639e..65daee4 100644
+--- a/tools/testing/selftests/rcutorture/configs/rcu/TREE02
++++ b/tools/testing/selftests/rcutorture/configs/rcu/TREE02
+@@ -9,9 +9,6 @@ CONFIG_NO_HZ_IDLE=y
+ CONFIG_NO_HZ_FULL=n
+ CONFIG_RCU_FAST_NO_HZ=n
+ CONFIG_RCU_TRACE=n
+-CONFIG_HOTPLUG_CPU=n
+-CONFIG_SUSPEND=n
+-CONFIG_HIBERNATION=n
+ CONFIG_RCU_FANOUT=3
+ CONFIG_RCU_FANOUT_LEAF=3
+ CONFIG_RCU_NOCB_CPU=n
+diff --git a/tools/testing/selftests/rcutorture/configs/rcu/TREE04 b/tools/testing/selftests/rcutorture/configs/rcu/TREE04
+index 24c9f60..f6d6a40 100644
+--- a/tools/testing/selftests/rcutorture/configs/rcu/TREE04
++++ b/tools/testing/selftests/rcutorture/configs/rcu/TREE04
+@@ -9,9 +9,6 @@ CONFIG_NO_HZ_IDLE=n
+ CONFIG_NO_HZ_FULL=y
+ CONFIG_RCU_FAST_NO_HZ=y
+ CONFIG_RCU_TRACE=y
+-CONFIG_HOTPLUG_CPU=n
+-CONFIG_SUSPEND=n
+-CONFIG_HIBERNATION=n
+ CONFIG_RCU_FANOUT=4
+ CONFIG_RCU_FANOUT_LEAF=3
+ CONFIG_DEBUG_LOCK_ALLOC=n
+diff --git a/tools/testing/selftests/rcutorture/configs/rcu/TREE06 b/tools/testing/selftests/rcutorture/configs/rcu/TREE06
+index 05a4eec..bf4980d 100644
+--- a/tools/testing/selftests/rcutorture/configs/rcu/TREE06
++++ b/tools/testing/selftests/rcutorture/configs/rcu/TREE06
+@@ -9,9 +9,6 @@ CONFIG_NO_HZ_IDLE=y
+ CONFIG_NO_HZ_FULL=n
+ CONFIG_RCU_FAST_NO_HZ=n
+ CONFIG_RCU_TRACE=n
+-CONFIG_HOTPLUG_CPU=n
+-CONFIG_SUSPEND=n
+-CONFIG_HIBERNATION=n
+ CONFIG_RCU_FANOUT=6
+ CONFIG_RCU_FANOUT_LEAF=6
+ CONFIG_RCU_NOCB_CPU=n
+diff --git a/tools/testing/selftests/rcutorture/configs/rcu/TREE08 b/tools/testing/selftests/rcutorture/configs/rcu/TREE08
+index fb1c763..c810c52 100644
+--- a/tools/testing/selftests/rcutorture/configs/rcu/TREE08
++++ b/tools/testing/selftests/rcutorture/configs/rcu/TREE08
+@@ -9,9 +9,6 @@ CONFIG_NO_HZ_IDLE=y
+ CONFIG_NO_HZ_FULL=n
+ CONFIG_RCU_FAST_NO_HZ=n
+ CONFIG_RCU_TRACE=n
+-CONFIG_HOTPLUG_CPU=n
+-CONFIG_SUSPEND=n
+-CONFIG_HIBERNATION=n
+ CONFIG_RCU_FANOUT=3
+ CONFIG_RCU_FANOUT_LEAF=2
+ CONFIG_RCU_NOCB_CPU=y
+diff --git a/tools/testing/selftests/rcutorture/configs/rcu/TREE09 b/tools/testing/selftests/rcutorture/configs/rcu/TREE09
+index 6710e74..8523a75 100644
+--- a/tools/testing/selftests/rcutorture/configs/rcu/TREE09
++++ b/tools/testing/selftests/rcutorture/configs/rcu/TREE09
+@@ -8,9 +8,6 @@ CONFIG_HZ_PERIODIC=n
+ CONFIG_NO_HZ_IDLE=y
+ CONFIG_NO_HZ_FULL=n
+ CONFIG_RCU_TRACE=n
+-CONFIG_HOTPLUG_CPU=n
+-CONFIG_SUSPEND=n
+-CONFIG_HIBERNATION=n
+ CONFIG_RCU_NOCB_CPU=n
+ CONFIG_DEBUG_LOCK_ALLOC=n
+ CONFIG_RCU_BOOST=n
+diff --git a/tools/testing/selftests/rcutorture/configs/rcu/TRIVIAL b/tools/testing/selftests/rcutorture/configs/rcu/TRIVIAL
+index 4d8eb5b..5d546ef 100644
+--- a/tools/testing/selftests/rcutorture/configs/rcu/TRIVIAL
++++ b/tools/testing/selftests/rcutorture/configs/rcu/TRIVIAL
+@@ -6,9 +6,6 @@ CONFIG_PREEMPT=n
+ CONFIG_HZ_PERIODIC=n
+ CONFIG_NO_HZ_IDLE=y
+ CONFIG_NO_HZ_FULL=n
+-CONFIG_HOTPLUG_CPU=n
+-CONFIG_SUSPEND=n
+-CONFIG_HIBERNATION=n
+ CONFIG_DEBUG_LOCK_ALLOC=n
+ CONFIG_DEBUG_OBJECTS_RCU_HEAD=n
+ CONFIG_RCU_EXPERT=y
+diff --git a/tools/testing/selftests/rcutorture/doc/TREE_RCU-kconfig.txt b/tools/testing/selftests/rcutorture/doc/TREE_RCU-kconfig.txt
+index af6fca0..1b96d68 100644
+--- a/tools/testing/selftests/rcutorture/doc/TREE_RCU-kconfig.txt
++++ b/tools/testing/selftests/rcutorture/doc/TREE_RCU-kconfig.txt
+@@ -6,7 +6,6 @@ Kconfig Parameters:
+ 
+ CONFIG_DEBUG_LOCK_ALLOC -- Do three, covering CONFIG_PROVE_LOCKING & not.
+ CONFIG_DEBUG_OBJECTS_RCU_HEAD -- Do one.
+-CONFIG_HOTPLUG_CPU -- Do half.  (Every second.)
+ CONFIG_HZ_PERIODIC -- Do one.
+ CONFIG_NO_HZ_IDLE -- Do those not otherwise specified. (Groups of two.)
+ CONFIG_NO_HZ_FULL -- Do two, one with partial CPU enablement.
