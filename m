@@ -2,35 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DEE32EAFAC
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 31 Oct 2019 12:58:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CA87EAF58
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 31 Oct 2019 12:57:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727418AbfJaL55 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 31 Oct 2019 07:57:57 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:55292 "EHLO
+        id S1727149AbfJaLzM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 31 Oct 2019 07:55:12 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:55327 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726947AbfJaLzH (ORCPT
+        with ESMTP id S1727068AbfJaLzL (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 31 Oct 2019 07:55:07 -0400
+        Thu, 31 Oct 2019 07:55:11 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iQ92c-0002wq-MM; Thu, 31 Oct 2019 12:55:02 +0100
+        id 1iQ92i-0002xS-2F; Thu, 31 Oct 2019 12:55:08 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 69BF41C04E3;
-        Thu, 31 Oct 2019 12:54:59 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 593701C04E4;
+        Thu, 31 Oct 2019 12:55:00 +0100 (CET)
 Date:   Thu, 31 Oct 2019 11:54:59 -0000
-From:   "tip-bot2 for kbuild test robot" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcu: Several rcu_segcblist functions can be static
-Cc:     kbuild test robot <lkp@intel.com>,
+Subject: [tip: core/rcu] Documentation: Rename rcu_node_context_switch() to
+ rcu_note_context_switch()
+Cc:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
         "Paul E. McKenney" <paulmck@kernel.org>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <157252289915.29376.99377795403979638.tip-bot2@tip-bot2>
+Message-ID: <157252289998.29376.9578728814186666748.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -46,55 +47,63 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     1d24dd4e01fb6b928cf679e3e415ddff7016fa96
-Gitweb:        https://git.kernel.org/tip/1d24dd4e01fb6b928cf679e3e415ddff7016fa96
-Author:        kbuild test robot <lkp@intel.com>
-AuthorDate:    Thu, 08 Aug 2019 10:32:58 +08:00
+Commit-ID:     b1ec18eae0b63a19a05a846c084aa84cbd9c87c6
+Gitweb:        https://git.kernel.org/tip/b1ec18eae0b63a19a05a846c084aa84cbd9c87c6
+Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+AuthorDate:    Tue, 27 Aug 2019 09:00:44 -07:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Wed, 30 Oct 2019 08:33:22 -07:00
+CommitterDate: Tue, 29 Oct 2019 02:48:29 -07:00
 
-rcu: Several rcu_segcblist functions can be static
+Documentation: Rename rcu_node_context_switch() to rcu_note_context_switch()
 
-None of rcu_segcblist_set_len(), rcu_segcblist_add_len(), or
-rcu_segcblist_xchg_len() are used outside of kernel/rcu/rcu_segcblist.c.
-This commit therefore makes them static.
+While Paul was explaining some RCU magic I noticed a typo in
+rcu_note_context_switch().  As a result, this commit replaces
+rcu_node_context_switch() with rcu_note_context_switch().
 
-Fixes: eda669a6a2c5 ("rcu/nocb: Atomic ->len field in rcu_segcblist structure")
-Signed-off-by: kbuild test robot <lkp@intel.com>
-[ paulmck: "Fixes:" updated per Stephen Rothwell feedback. ]
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/rcu/rcu_segcblist.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ Documentation/RCU/Design/Memory-Ordering/Tree-RCU-Memory-Ordering.rst | 2 +-
+ Documentation/RCU/Design/Memory-Ordering/TreeRCU-gp.svg               | 2 +-
+ Documentation/RCU/Design/Memory-Ordering/TreeRCU-qs.svg               | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/rcu/rcu_segcblist.c b/kernel/rcu/rcu_segcblist.c
-index 495c58c..cbc87b8 100644
---- a/kernel/rcu/rcu_segcblist.c
-+++ b/kernel/rcu/rcu_segcblist.c
-@@ -88,7 +88,7 @@ struct rcu_head *rcu_cblist_dequeue(struct rcu_cblist *rclp)
- }
+diff --git a/Documentation/RCU/Design/Memory-Ordering/Tree-RCU-Memory-Ordering.rst b/Documentation/RCU/Design/Memory-Ordering/Tree-RCU-Memory-Ordering.rst
+index 248b122..1a8b129 100644
+--- a/Documentation/RCU/Design/Memory-Ordering/Tree-RCU-Memory-Ordering.rst
++++ b/Documentation/RCU/Design/Memory-Ordering/Tree-RCU-Memory-Ordering.rst
+@@ -423,7 +423,7 @@ wait on.
+ +-----------------------------------------------------------------------+
  
- /* Set the length of an rcu_segcblist structure. */
--void rcu_segcblist_set_len(struct rcu_segcblist *rsclp, long v)
-+static void rcu_segcblist_set_len(struct rcu_segcblist *rsclp, long v)
- {
- #ifdef CONFIG_RCU_NOCB_CPU
- 	atomic_long_set(&rsclp->len, v);
-@@ -104,7 +104,7 @@ void rcu_segcblist_set_len(struct rcu_segcblist *rsclp, long v)
-  * This increase is fully ordered with respect to the callers accesses
-  * both before and after.
-  */
--void rcu_segcblist_add_len(struct rcu_segcblist *rsclp, long v)
-+static void rcu_segcblist_add_len(struct rcu_segcblist *rsclp, long v)
- {
- #ifdef CONFIG_RCU_NOCB_CPU
- 	smp_mb__before_atomic(); /* Up to the caller! */
-@@ -134,7 +134,7 @@ void rcu_segcblist_inc_len(struct rcu_segcblist *rsclp)
-  * with the actual number of callbacks on the structure.  This exchange is
-  * fully ordered with respect to the callers accesses both before and after.
-  */
--long rcu_segcblist_xchg_len(struct rcu_segcblist *rsclp, long v)
-+static long rcu_segcblist_xchg_len(struct rcu_segcblist *rsclp, long v)
- {
- #ifdef CONFIG_RCU_NOCB_CPU
- 	return atomic_long_xchg(&rsclp->len, v);
+ If the CPU does a context switch, a quiescent state will be noted by
+-``rcu_node_context_switch()`` on the left. On the other hand, if the CPU
++``rcu_note_context_switch()`` on the left. On the other hand, if the CPU
+ takes a scheduler-clock interrupt while executing in usermode, a
+ quiescent state will be noted by ``rcu_sched_clock_irq()`` on the right.
+ Either way, the passage through a quiescent state will be noted in a
+diff --git a/Documentation/RCU/Design/Memory-Ordering/TreeRCU-gp.svg b/Documentation/RCU/Design/Memory-Ordering/TreeRCU-gp.svg
+index 2bcd742..069f6f8 100644
+--- a/Documentation/RCU/Design/Memory-Ordering/TreeRCU-gp.svg
++++ b/Documentation/RCU/Design/Memory-Ordering/TreeRCU-gp.svg
+@@ -3880,7 +3880,7 @@
+          font-style="normal"
+          y="-4418.6582"
+          x="3745.7725"
+-         xml:space="preserve">rcu_node_context_switch()</text>
++         xml:space="preserve">rcu_note_context_switch()</text>
+     </g>
+     <g
+        transform="translate(1881.1886,54048.57)"
+diff --git a/Documentation/RCU/Design/Memory-Ordering/TreeRCU-qs.svg b/Documentation/RCU/Design/Memory-Ordering/TreeRCU-qs.svg
+index 779c9ac..7d6c5f7 100644
+--- a/Documentation/RCU/Design/Memory-Ordering/TreeRCU-qs.svg
++++ b/Documentation/RCU/Design/Memory-Ordering/TreeRCU-qs.svg
+@@ -753,7 +753,7 @@
+          font-style="normal"
+          y="-4418.6582"
+          x="3745.7725"
+-         xml:space="preserve">rcu_node_context_switch()</text>
++         xml:space="preserve">rcu_note_context_switch()</text>
+     </g>
+     <g
+        transform="translate(3131.2648,-585.6713)"
