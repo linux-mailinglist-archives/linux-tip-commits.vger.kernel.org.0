@@ -2,34 +2,34 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BAB70EAF81
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 31 Oct 2019 12:58:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A3D9EAF67
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 31 Oct 2019 12:57:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727757AbfJaL4b (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 31 Oct 2019 07:56:31 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:55442 "EHLO
+        id S1727474AbfJaLz3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 31 Oct 2019 07:55:29 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:55461 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727410AbfJaLz0 (ORCPT
+        with ESMTP id S1727455AbfJaLz2 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 31 Oct 2019 07:55:26 -0400
+        Thu, 31 Oct 2019 07:55:28 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iQ92x-00039W-29; Thu, 31 Oct 2019 12:55:23 +0100
+        id 1iQ92z-00039a-5I; Thu, 31 Oct 2019 12:55:25 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B054A1C0070;
-        Thu, 31 Oct 2019 12:55:11 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 119101C0671;
+        Thu, 31 Oct 2019 12:55:12 +0100 (CET)
 Date:   Thu, 31 Oct 2019 11:55:11 -0000
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcutorture: Force on tick for readers and callback flooders
+Subject: [tip: core/rcu] rcu: Force on tick when invoking lots of callbacks
 Cc:     "Paul E. McKenney" <paulmck@kernel.org>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <157252291137.29376.6492575120270689137.tip-bot2@tip-bot2>
+Message-ID: <157252291178.29376.6993443685603243726.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -45,97 +45,50 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     d38e6dc6ed0dfef8d323354031a1ee1a7cfdedc1
-Gitweb:        https://git.kernel.org/tip/d38e6dc6ed0dfef8d323354031a1ee1a7cfdedc1
+Commit-ID:     6a949b7af82db7eb1e52caaed122eab1cf63acee
+Gitweb:        https://git.kernel.org/tip/6a949b7af82db7eb1e52caaed122eab1cf63acee
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Sun, 28 Jul 2019 12:00:48 -07:00
+AuthorDate:    Sun, 28 Jul 2019 11:50:56 -07:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Sat, 05 Oct 2019 10:46:04 -07:00
 
-rcutorture: Force on tick for readers and callback flooders
+rcu: Force on tick when invoking lots of callbacks
 
-Readers and callback flooders in the rcutorture stress-test suite run for
-extended time periods by design.  They do take pains to relinquish the
-CPU from time to time, but in some cases this relies on the scheduler
-being active, which in turn relies on the scheduler-clock interrupt
-firing from time to time.
+Callback invocation can run for a significant time period, and within
+CONFIG_NO_HZ_FULL=y kernels, this period will be devoid of scheduler-clock
+interrupts.  In-kernel execution without such interrupts can cause all
+manner of malfunction, with RCU CPU stall warnings being but one result.
 
-This commit therefore forces scheduling-clock interrupts within
-these loops.  While in the area, this commit also prevents
-rcu_torture_reader()'s occasional timed sleeps from delaying shutdown.
+This commit therefore forces scheduling-clock interrupts on whenever more
+than a few RCU callbacks are invoked.  Because offloaded callback invocation
+can be preempted, this forcing is withdrawn on each context switch.  This
+in turn requires that the loop invoking RCU callbacks reiterate the forcing
+periodically.
 
 [ paulmck: Apply Joel Fernandes TICK_DEP_MASK_RCU->TICK_DEP_BIT_RCU fix. ]
+[ paulmck: Remove NO_HZ_FULL check per Frederic Weisbecker feedback. ]
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/rcu/rcutorture.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ kernel/rcu/tree.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/kernel/rcu/rcutorture.c b/kernel/rcu/rcutorture.c
-index 3c9feca..ab61f5c 100644
---- a/kernel/rcu/rcutorture.c
-+++ b/kernel/rcu/rcutorture.c
-@@ -44,6 +44,7 @@
- #include <linux/sched/debug.h>
- #include <linux/sched/sysctl.h>
- #include <linux/oom.h>
-+#include <linux/tick.h>
+diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
+index 8110514..238f93b 100644
+--- a/kernel/rcu/tree.c
++++ b/kernel/rcu/tree.c
+@@ -2151,6 +2151,7 @@ static void rcu_do_batch(struct rcu_data *rdp)
+ 	rcu_nocb_unlock_irqrestore(rdp, flags);
  
- #include "rcu.h"
- 
-@@ -1363,15 +1364,15 @@ rcu_torture_reader(void *arg)
- 	set_user_nice(current, MAX_NICE);
- 	if (irqreader && cur_ops->irq_capable)
- 		timer_setup_on_stack(&t, rcu_torture_timer, 0);
--
+ 	/* Invoke callbacks. */
 +	tick_dep_set_task(current, TICK_DEP_BIT_RCU);
- 	do {
- 		if (irqreader && cur_ops->irq_capable) {
- 			if (!timer_pending(&t))
- 				mod_timer(&t, jiffies + 1);
- 		}
--		if (!rcu_torture_one_read(&rand))
-+		if (!rcu_torture_one_read(&rand) && !torture_must_stop())
- 			schedule_timeout_interruptible(HZ);
--		if (time_after(jiffies, lastsleep)) {
-+		if (time_after(jiffies, lastsleep) && !torture_must_stop()) {
- 			schedule_timeout_interruptible(1);
- 			lastsleep = jiffies + 10;
- 		}
-@@ -1383,6 +1384,7 @@ rcu_torture_reader(void *arg)
- 		del_timer_sync(&t);
- 		destroy_timer_on_stack(&t);
- 	}
+ 	rhp = rcu_cblist_dequeue(&rcl);
+ 	for (; rhp; rhp = rcu_cblist_dequeue(&rcl)) {
+ 		debug_rcu_head_unqueue(rhp);
+@@ -2217,6 +2218,7 @@ static void rcu_do_batch(struct rcu_data *rdp)
+ 	/* Re-invoke RCU core processing if there are callbacks remaining. */
+ 	if (!offloaded && rcu_segcblist_ready_cbs(&rdp->cblist))
+ 		invoke_rcu_core();
 +	tick_dep_clear_task(current, TICK_DEP_BIT_RCU);
- 	torture_kthread_stopping("rcu_torture_reader");
- 	return 0;
- }
-@@ -1729,10 +1731,10 @@ static void rcu_torture_fwd_prog_cond_resched(unsigned long iter)
- 		// Real call_rcu() floods hit userspace, so emulate that.
- 		if (need_resched() || (iter & 0xfff))
- 			schedule();
--	} else {
--		// No userspace emulation: CB invocation throttles call_rcu()
--		cond_resched();
-+		return;
- 	}
-+	// No userspace emulation: CB invocation throttles call_rcu()
-+	cond_resched();
  }
  
  /*
-@@ -1865,6 +1867,7 @@ static void rcu_torture_fwd_prog_cr(void)
- 	cver = READ_ONCE(rcu_torture_current_version);
- 	gps = cur_ops->get_gp_seq();
- 	rcu_launder_gp_seq_start = gps;
-+	tick_dep_set_task(current, TICK_DEP_BIT_RCU);
- 	while (time_before(jiffies, stopat) &&
- 	       !shutdown_time_arrived() &&
- 	       !READ_ONCE(rcu_fwd_emergency_stop) && !torture_must_stop()) {
-@@ -1911,6 +1914,7 @@ static void rcu_torture_fwd_prog_cr(void)
- 		rcu_torture_fwd_cb_hist();
- 	}
- 	schedule_timeout_uninterruptible(HZ); /* Let CBs drain. */
-+	tick_dep_clear_task(current, TICK_DEP_BIT_RCU);
- 	WRITE_ONCE(rcu_fwd_cb_nodelay, false);
- }
- 
