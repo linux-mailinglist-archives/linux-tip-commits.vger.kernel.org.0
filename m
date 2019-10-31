@@ -2,34 +2,35 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CCCDEAF60
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 31 Oct 2019 12:57:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 48B2EEAF5E
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 31 Oct 2019 12:57:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727010AbfJaLzX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 31 Oct 2019 07:55:23 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:55409 "EHLO
+        id S1726979AbfJaLzU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 31 Oct 2019 07:55:20 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:55396 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727310AbfJaLzX (ORCPT
+        with ESMTP id S1727269AbfJaLzT (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 31 Oct 2019 07:55:23 -0400
+        Thu, 31 Oct 2019 07:55:19 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iQ92s-000373-96; Thu, 31 Oct 2019 12:55:18 +0100
+        id 1iQ92q-00036q-MT; Thu, 31 Oct 2019 12:55:16 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 2A00C1C06D2;
-        Thu, 31 Oct 2019 12:55:09 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C67A31C04DD;
+        Thu, 31 Oct 2019 12:55:08 +0100 (CET)
 Date:   Thu, 31 Oct 2019 11:55:08 -0000
-From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Ethan Hansen" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcutorture: Remove CONFIG_HOTPLUG_CPU=n from scenarios
-Cc:     "Paul E. McKenney" <paulmck@kernel.org>,
+Subject: [tip: core/rcu] rcu: Remove unused variable rcu_perf_writer_state
+Cc:     Ethan Hansen <1ethanhansen@gmail.com>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <157252290888.29376.7569458712945584864.tip-bot2@tip-bot2>
+Message-ID: <157252290845.29376.5219527334083036042.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -45,141 +46,79 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     9f8ba55d49cef46da63f7863ec544e2b2b7eda66
-Gitweb:        https://git.kernel.org/tip/9f8ba55d49cef46da63f7863ec544e2b2b7eda66
-Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Fri, 02 Aug 2019 20:18:25 -07:00
+Commit-ID:     b3ffb206ddd7f07d83bafd10e1b403df57055af4
+Gitweb:        https://git.kernel.org/tip/b3ffb206ddd7f07d83bafd10e1b403df57055af4
+Author:        Ethan Hansen <1ethanhansen@gmail.com>
+AuthorDate:    Wed, 07 Aug 2019 17:27:32 -07:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Sat, 05 Oct 2019 11:49:13 -07:00
+CommitterDate: Sat, 05 Oct 2019 11:49:36 -07:00
 
-rcutorture: Remove CONFIG_HOTPLUG_CPU=n from scenarios
+rcu: Remove unused variable rcu_perf_writer_state
 
-A number of mainstream CPU families are no longer capable of building
-kernels having CONFIG_SMP=y and CONFIG_HOTPLUG_CPU=n, so this commit
-removes this combination from the rcutorture scenarios having it.
-People wishing to try out this combination may still do so using the
-"--kconfig CONFIG_HOTPLUG_CPU=n CONFIG_SUSPEND=n CONFIG_HIBERNATION=n"
-argument to the tools/testing/selftests/rcutorture/bin/kvm.sh script
-that is used to run rcutorture.
+The variable rcu_perf_writer_state is declared and initialized,
+but is never actually referenced. Remove it to clean code.
 
+Signed-off-by: Ethan Hansen <1ethanhansen@gmail.com>
+[ paulmck: Also removed unused macros assigned to that variable. ]
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- tools/testing/selftests/rcutorture/configs/rcu/TASKS03      | 3 ---
- tools/testing/selftests/rcutorture/configs/rcu/TREE02       | 3 ---
- tools/testing/selftests/rcutorture/configs/rcu/TREE04       | 3 ---
- tools/testing/selftests/rcutorture/configs/rcu/TREE06       | 3 ---
- tools/testing/selftests/rcutorture/configs/rcu/TREE08       | 3 ---
- tools/testing/selftests/rcutorture/configs/rcu/TREE09       | 3 ---
- tools/testing/selftests/rcutorture/configs/rcu/TRIVIAL      | 3 ---
- tools/testing/selftests/rcutorture/doc/TREE_RCU-kconfig.txt | 1 -
- 8 files changed, 22 deletions(-)
+ kernel/rcu/rcuperf.c | 16 ----------------
+ 1 file changed, 16 deletions(-)
 
-diff --git a/tools/testing/selftests/rcutorture/configs/rcu/TASKS03 b/tools/testing/selftests/rcutorture/configs/rcu/TASKS03
-index 28568b7..ea43990 100644
---- a/tools/testing/selftests/rcutorture/configs/rcu/TASKS03
-+++ b/tools/testing/selftests/rcutorture/configs/rcu/TASKS03
-@@ -1,8 +1,5 @@
- CONFIG_SMP=y
- CONFIG_NR_CPUS=2
--CONFIG_HOTPLUG_CPU=n
--CONFIG_SUSPEND=n
--CONFIG_HIBERNATION=n
- CONFIG_PREEMPT_NONE=n
- CONFIG_PREEMPT_VOLUNTARY=n
- CONFIG_PREEMPT=y
-diff --git a/tools/testing/selftests/rcutorture/configs/rcu/TREE02 b/tools/testing/selftests/rcutorture/configs/rcu/TREE02
-index 35e639e..65daee4 100644
---- a/tools/testing/selftests/rcutorture/configs/rcu/TREE02
-+++ b/tools/testing/selftests/rcutorture/configs/rcu/TREE02
-@@ -9,9 +9,6 @@ CONFIG_NO_HZ_IDLE=y
- CONFIG_NO_HZ_FULL=n
- CONFIG_RCU_FAST_NO_HZ=n
- CONFIG_RCU_TRACE=n
--CONFIG_HOTPLUG_CPU=n
--CONFIG_SUSPEND=n
--CONFIG_HIBERNATION=n
- CONFIG_RCU_FANOUT=3
- CONFIG_RCU_FANOUT_LEAF=3
- CONFIG_RCU_NOCB_CPU=n
-diff --git a/tools/testing/selftests/rcutorture/configs/rcu/TREE04 b/tools/testing/selftests/rcutorture/configs/rcu/TREE04
-index 24c9f60..f6d6a40 100644
---- a/tools/testing/selftests/rcutorture/configs/rcu/TREE04
-+++ b/tools/testing/selftests/rcutorture/configs/rcu/TREE04
-@@ -9,9 +9,6 @@ CONFIG_NO_HZ_IDLE=n
- CONFIG_NO_HZ_FULL=y
- CONFIG_RCU_FAST_NO_HZ=y
- CONFIG_RCU_TRACE=y
--CONFIG_HOTPLUG_CPU=n
--CONFIG_SUSPEND=n
--CONFIG_HIBERNATION=n
- CONFIG_RCU_FANOUT=4
- CONFIG_RCU_FANOUT_LEAF=3
- CONFIG_DEBUG_LOCK_ALLOC=n
-diff --git a/tools/testing/selftests/rcutorture/configs/rcu/TREE06 b/tools/testing/selftests/rcutorture/configs/rcu/TREE06
-index 05a4eec..bf4980d 100644
---- a/tools/testing/selftests/rcutorture/configs/rcu/TREE06
-+++ b/tools/testing/selftests/rcutorture/configs/rcu/TREE06
-@@ -9,9 +9,6 @@ CONFIG_NO_HZ_IDLE=y
- CONFIG_NO_HZ_FULL=n
- CONFIG_RCU_FAST_NO_HZ=n
- CONFIG_RCU_TRACE=n
--CONFIG_HOTPLUG_CPU=n
--CONFIG_SUSPEND=n
--CONFIG_HIBERNATION=n
- CONFIG_RCU_FANOUT=6
- CONFIG_RCU_FANOUT_LEAF=6
- CONFIG_RCU_NOCB_CPU=n
-diff --git a/tools/testing/selftests/rcutorture/configs/rcu/TREE08 b/tools/testing/selftests/rcutorture/configs/rcu/TREE08
-index fb1c763..c810c52 100644
---- a/tools/testing/selftests/rcutorture/configs/rcu/TREE08
-+++ b/tools/testing/selftests/rcutorture/configs/rcu/TREE08
-@@ -9,9 +9,6 @@ CONFIG_NO_HZ_IDLE=y
- CONFIG_NO_HZ_FULL=n
- CONFIG_RCU_FAST_NO_HZ=n
- CONFIG_RCU_TRACE=n
--CONFIG_HOTPLUG_CPU=n
--CONFIG_SUSPEND=n
--CONFIG_HIBERNATION=n
- CONFIG_RCU_FANOUT=3
- CONFIG_RCU_FANOUT_LEAF=2
- CONFIG_RCU_NOCB_CPU=y
-diff --git a/tools/testing/selftests/rcutorture/configs/rcu/TREE09 b/tools/testing/selftests/rcutorture/configs/rcu/TREE09
-index 6710e74..8523a75 100644
---- a/tools/testing/selftests/rcutorture/configs/rcu/TREE09
-+++ b/tools/testing/selftests/rcutorture/configs/rcu/TREE09
-@@ -8,9 +8,6 @@ CONFIG_HZ_PERIODIC=n
- CONFIG_NO_HZ_IDLE=y
- CONFIG_NO_HZ_FULL=n
- CONFIG_RCU_TRACE=n
--CONFIG_HOTPLUG_CPU=n
--CONFIG_SUSPEND=n
--CONFIG_HIBERNATION=n
- CONFIG_RCU_NOCB_CPU=n
- CONFIG_DEBUG_LOCK_ALLOC=n
- CONFIG_RCU_BOOST=n
-diff --git a/tools/testing/selftests/rcutorture/configs/rcu/TRIVIAL b/tools/testing/selftests/rcutorture/configs/rcu/TRIVIAL
-index 4d8eb5b..5d546ef 100644
---- a/tools/testing/selftests/rcutorture/configs/rcu/TRIVIAL
-+++ b/tools/testing/selftests/rcutorture/configs/rcu/TRIVIAL
-@@ -6,9 +6,6 @@ CONFIG_PREEMPT=n
- CONFIG_HZ_PERIODIC=n
- CONFIG_NO_HZ_IDLE=y
- CONFIG_NO_HZ_FULL=n
--CONFIG_HOTPLUG_CPU=n
--CONFIG_SUSPEND=n
--CONFIG_HIBERNATION=n
- CONFIG_DEBUG_LOCK_ALLOC=n
- CONFIG_DEBUG_OBJECTS_RCU_HEAD=n
- CONFIG_RCU_EXPERT=y
-diff --git a/tools/testing/selftests/rcutorture/doc/TREE_RCU-kconfig.txt b/tools/testing/selftests/rcutorture/doc/TREE_RCU-kconfig.txt
-index af6fca0..1b96d68 100644
---- a/tools/testing/selftests/rcutorture/doc/TREE_RCU-kconfig.txt
-+++ b/tools/testing/selftests/rcutorture/doc/TREE_RCU-kconfig.txt
-@@ -6,7 +6,6 @@ Kconfig Parameters:
+diff --git a/kernel/rcu/rcuperf.c b/kernel/rcu/rcuperf.c
+index 5a879d0..5f884d5 100644
+--- a/kernel/rcu/rcuperf.c
++++ b/kernel/rcu/rcuperf.c
+@@ -109,15 +109,6 @@ static unsigned long b_rcu_perf_writer_started;
+ static unsigned long b_rcu_perf_writer_finished;
+ static DEFINE_PER_CPU(atomic_t, n_async_inflight);
  
- CONFIG_DEBUG_LOCK_ALLOC -- Do three, covering CONFIG_PROVE_LOCKING & not.
- CONFIG_DEBUG_OBJECTS_RCU_HEAD -- Do one.
--CONFIG_HOTPLUG_CPU -- Do half.  (Every second.)
- CONFIG_HZ_PERIODIC -- Do one.
- CONFIG_NO_HZ_IDLE -- Do those not otherwise specified. (Groups of two.)
- CONFIG_NO_HZ_FULL -- Do two, one with partial CPU enablement.
+-static int rcu_perf_writer_state;
+-#define RTWS_INIT		0
+-#define RTWS_ASYNC		1
+-#define RTWS_BARRIER		2
+-#define RTWS_EXP_SYNC		3
+-#define RTWS_SYNC		4
+-#define RTWS_IDLE		5
+-#define RTWS_STOPPING		6
+-
+ #define MAX_MEAS 10000
+ #define MIN_MEAS 100
+ 
+@@ -404,25 +395,20 @@ retry:
+ 			if (!rhp)
+ 				rhp = kmalloc(sizeof(*rhp), GFP_KERNEL);
+ 			if (rhp && atomic_read(this_cpu_ptr(&n_async_inflight)) < gp_async_max) {
+-				rcu_perf_writer_state = RTWS_ASYNC;
+ 				atomic_inc(this_cpu_ptr(&n_async_inflight));
+ 				cur_ops->async(rhp, rcu_perf_async_cb);
+ 				rhp = NULL;
+ 			} else if (!kthread_should_stop()) {
+-				rcu_perf_writer_state = RTWS_BARRIER;
+ 				cur_ops->gp_barrier();
+ 				goto retry;
+ 			} else {
+ 				kfree(rhp); /* Because we are stopping. */
+ 			}
+ 		} else if (gp_exp) {
+-			rcu_perf_writer_state = RTWS_EXP_SYNC;
+ 			cur_ops->exp_sync();
+ 		} else {
+-			rcu_perf_writer_state = RTWS_SYNC;
+ 			cur_ops->sync();
+ 		}
+-		rcu_perf_writer_state = RTWS_IDLE;
+ 		t = ktime_get_mono_fast_ns();
+ 		*wdp = t - *wdp;
+ 		i_max = i;
+@@ -463,10 +449,8 @@ retry:
+ 		rcu_perf_wait_shutdown();
+ 	} while (!torture_must_stop());
+ 	if (gp_async) {
+-		rcu_perf_writer_state = RTWS_BARRIER;
+ 		cur_ops->gp_barrier();
+ 	}
+-	rcu_perf_writer_state = RTWS_STOPPING;
+ 	writer_n_durations[me] = i_max;
+ 	torture_kthread_stopping("rcu_perf_writer");
+ 	return 0;
