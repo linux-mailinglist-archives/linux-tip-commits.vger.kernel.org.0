@@ -2,39 +2,43 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 39A8EEC6E8
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  1 Nov 2019 17:37:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 33681ED3EF
+	for <lists+linux-tip-commits@lfdr.de>; Sun,  3 Nov 2019 18:12:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727873AbfKAQhr (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 1 Nov 2019 12:37:47 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:60104 "EHLO
+        id S1727682AbfKCRMp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 3 Nov 2019 12:12:45 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:35760 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727626AbfKAQhq (ORCPT
+        with ESMTP id S1727444AbfKCRMp (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 1 Nov 2019 12:37:46 -0400
+        Sun, 3 Nov 2019 12:12:45 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iQZve-0002yY-9u; Fri, 01 Nov 2019 17:37:38 +0100
+        id 1iRJQT-0003cs-DB; Sun, 03 Nov 2019 18:12:29 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id DC4B91C0315;
-        Fri,  1 Nov 2019 17:37:37 +0100 (CET)
-Date:   Fri, 01 Nov 2019 16:37:37 -0000
-From:   "tip-bot2 for Tony Luck" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id DF7451C0018;
+        Sun,  3 Nov 2019 18:12:28 +0100 (CET)
+Date:   Sun, 03 Nov 2019 17:12:28 -0000
+From:   "tip-bot2 for Xiaochen Shen" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: ras/core] x86/mce: Add Xeon Icelake to list of CPUs that support PPIN
-Cc:     Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@suse.de>,
+Subject: [tip: x86/urgent] x86/resctrl: Prevent NULL pointer dereference when
+ reading mondata
+Cc:     Xiaochen Shen <xiaochen.shen@intel.com>,
+        Borislav Petkov <bp@suse.de>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Tony Luck <tony.luck@intel.com>,
         "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        "linux-edac" <linux-edac@vger.kernel.org>,
+        pei.p.jia@intel.com, Reinette Chatre <reinette.chatre@intel.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         "x86-ml" <x86@kernel.org>, Ingo Molnar <mingo@kernel.org>,
         Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
-In-Reply-To: <20191028163719.19708-1-tony.luck@intel.com>
-References: <20191028163719.19708-1-tony.luck@intel.com>
+In-Reply-To: <1572326702-27577-1-git-send-email-xiaochen.shen@intel.com>
+References: <1572326702-27577-1-git-send-email-xiaochen.shen@intel.com>
 MIME-Version: 1.0
-Message-ID: <157262625753.29376.16645566147052348797.tip-bot2@tip-bot2>
+Message-ID: <157280114858.29376.4595330962343256563.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,40 +52,60 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the ras/core branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     dc6b025de95bcd22ff37c4fabb022ec8a027abf1
-Gitweb:        https://git.kernel.org/tip/dc6b025de95bcd22ff37c4fabb022ec8a027abf1
-Author:        Tony Luck <tony.luck@intel.com>
-AuthorDate:    Mon, 28 Oct 2019 09:37:19 -07:00
+Commit-ID:     26467b0f8407cbd628fa5b7bcfd156e772004155
+Gitweb:        https://git.kernel.org/tip/26467b0f8407cbd628fa5b7bcfd156e772004155
+Author:        Xiaochen Shen <xiaochen.shen@intel.com>
+AuthorDate:    Tue, 29 Oct 2019 13:25:02 +08:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Fri, 01 Nov 2019 17:29:36 +01:00
+CommitterDate: Sun, 03 Nov 2019 17:51:22 +01:00
 
-x86/mce: Add Xeon Icelake to list of CPUs that support PPIN
+x86/resctrl: Prevent NULL pointer dereference when reading mondata
 
-New CPU model, same MSRs to control and read the inventory number.
+When a mon group is being deleted, rdtgrp->flags is set to RDT_DELETED
+in rdtgroup_rmdir_mon() firstly. The structure of rdtgrp will be freed
+until rdtgrp->waitcount is dropped to 0 in rdtgroup_kn_unlock() later.
 
-Signed-off-by: Tony Luck <tony.luck@intel.com>
+During the window of deleting a mon group, if an application calls
+rdtgroup_mondata_show() to read mondata under this mon group,
+'rdtgrp' returned from rdtgroup_kn_lock_live() is a NULL pointer when
+rdtgrp->flags is RDT_DELETED. And then 'rdtgrp' is passed in this path:
+rdtgroup_mondata_show() --> mon_event_read() --> mon_event_count().
+Thus it results in NULL pointer dereference in mon_event_count().
+
+Check 'rdtgrp' in rdtgroup_mondata_show(), and return -ENOENT
+immediately when reading mondata during the window of deleting a mon
+group.
+
+Fixes: d89b7379015f ("x86/intel_rdt/cqm: Add mon_data")
+Signed-off-by: Xiaochen Shen <xiaochen.shen@intel.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
+Reviewed-by: Fenghua Yu <fenghua.yu@intel.com>
+Reviewed-by: Tony Luck <tony.luck@intel.com>
 Cc: "H. Peter Anvin" <hpa@zytor.com>
 Cc: Ingo Molnar <mingo@redhat.com>
-Cc: linux-edac <linux-edac@vger.kernel.org>
+Cc: pei.p.jia@intel.com
+Cc: Reinette Chatre <reinette.chatre@intel.com>
 Cc: Thomas Gleixner <tglx@linutronix.de>
 Cc: x86-ml <x86@kernel.org>
-Link: https://lkml.kernel.org/r/20191028163719.19708-1-tony.luck@intel.com
+Link: https://lkml.kernel.org/r/1572326702-27577-1-git-send-email-xiaochen.shen@intel.com
 ---
- arch/x86/kernel/cpu/mce/intel.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/kernel/cpu/resctrl/ctrlmondata.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/x86/kernel/cpu/mce/intel.c b/arch/x86/kernel/cpu/mce/intel.c
-index 68a1d25..e270d07 100644
---- a/arch/x86/kernel/cpu/mce/intel.c
-+++ b/arch/x86/kernel/cpu/mce/intel.c
-@@ -484,6 +484,7 @@ static void intel_ppin_init(struct cpuinfo_x86 *c)
- 	case INTEL_FAM6_BROADWELL_D:
- 	case INTEL_FAM6_BROADWELL_X:
- 	case INTEL_FAM6_SKYLAKE_X:
-+	case INTEL_FAM6_ICELAKE_X:
- 	case INTEL_FAM6_XEON_PHI_KNL:
- 	case INTEL_FAM6_XEON_PHI_KNM:
+diff --git a/arch/x86/kernel/cpu/resctrl/ctrlmondata.c b/arch/x86/kernel/cpu/resctrl/ctrlmondata.c
+index efbd54c..055c861 100644
+--- a/arch/x86/kernel/cpu/resctrl/ctrlmondata.c
++++ b/arch/x86/kernel/cpu/resctrl/ctrlmondata.c
+@@ -522,6 +522,10 @@ int rdtgroup_mondata_show(struct seq_file *m, void *arg)
+ 	int ret = 0;
  
+ 	rdtgrp = rdtgroup_kn_lock_live(of->kn);
++	if (!rdtgrp) {
++		ret = -ENOENT;
++		goto out;
++	}
+ 
+ 	md.priv = of->kn->priv;
+ 	resid = md.u.rid;
