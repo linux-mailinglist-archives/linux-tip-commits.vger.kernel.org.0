@@ -2,37 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B63F2EEACF
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  4 Nov 2019 22:14:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E48BEEAD3
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  4 Nov 2019 22:14:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728778AbfKDVOf (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 4 Nov 2019 16:14:35 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:38914 "EHLO
+        id S1728940AbfKDVOk (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 4 Nov 2019 16:14:40 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:38912 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728634AbfKDVOe (ORCPT
+        with ESMTP id S1728377AbfKDVOf (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 4 Nov 2019 16:14:34 -0500
+        Mon, 4 Nov 2019 16:14:35 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iRjgG-0005ZP-70; Mon, 04 Nov 2019 22:14:32 +0100
+        id 1iRjgF-0005ZM-Tw; Mon, 04 Nov 2019 22:14:32 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C76F11C0426;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 692A21C0017;
         Mon,  4 Nov 2019 22:14:31 +0100 (CET)
 Date:   Mon, 04 Nov 2019 21:14:31 -0000
 From:   "tip-bot2 for Cyrill Gorcunov" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/fpu] x86/fpu: Shrink space allocated for xstate_comp_offsets
+Subject: [tip: x86/fpu] x86/fpu: Use XFEATURE_FP/SSE enum values instead of
+ hardcoded numbers
 Cc:     Cyrill Gorcunov <gorcunov@gmail.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20191101124228.GF1615@uranus.lan>
-References: <20191101124228.GF1615@uranus.lan>
+In-Reply-To: <20191101130153.GG1615@uranus.lan>
+References: <20191101130153.GG1615@uranus.lan>
 MIME-Version: 1.0
-Message-ID: <157290207153.29376.7801513970239330301.tip-bot2@tip-bot2>
+Message-ID: <157290207104.29376.2447130677768331870.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,60 +49,60 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/fpu branch of tip:
 
-Commit-ID:     c08550510ca26bd57eabfe912281635e382193e5
-Gitweb:        https://git.kernel.org/tip/c08550510ca26bd57eabfe912281635e382193e5
+Commit-ID:     446e693ca30b7c7c2aaeaf09e90ec224c7538fec
+Gitweb:        https://git.kernel.org/tip/446e693ca30b7c7c2aaeaf09e90ec224c7538fec
 Author:        Cyrill Gorcunov <gorcunov@gmail.com>
-AuthorDate:    Fri, 01 Nov 2019 15:42:28 +03:00
+AuthorDate:    Fri, 01 Nov 2019 16:01:53 +03:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 04 Nov 2019 22:04:19 +01:00
+CommitterDate: Mon, 04 Nov 2019 22:10:07 +01:00
 
-x86/fpu: Shrink space allocated for xstate_comp_offsets
+x86/fpu: Use XFEATURE_FP/SSE enum values instead of hardcoded numbers
 
-commit 8ff925e10f2c ("x86/xsaves: Clean up code in xstate offsets
-computation in xsave area") introduced an allocation of 64 entries for
-xstate_comp_offsets while the code only handles up to XFEATURE_MAX entries.
+When setting up sizes and offsets for legacy header entries the code uses
+hardcoded 0/1 instead of the corresponding enum values XFEATURE_FP and
+XFEATURE_SSE.
 
-For this reason xstate_offsets and xstate_sizes are already defined with
-the explicit XFEATURE_MAX limit.
-
-Do the same for compressed format for consistency sake.
-
-As the changelog of that commit is not giving any information it's assumed
-that the main idea was to cover all possible bits in xfeatures_mask, but
-this doesn't explain why other variables such as the non-compacted offsets
-and sizes are explicitely limited to XFEATURE_MAX.
-
-For consistency it's better to use the XFEATURE_MAX limit everywhere and
-extend it on demand when new features get implemented at the hardware
-level and subsequently supported by the kernel.
+Replace the hardcoded numbers which enhances readability of the code and
+also makes this code the first user of those enum values..
 
 Signed-off-by: Cyrill Gorcunov <gorcunov@gmail.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20191101124228.GF1615@uranus.lan
-
+Link: https://lkml.kernel.org/r/20191101130153.GG1615@uranus.lan
 ---
- arch/x86/kernel/fpu/xstate.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/kernel/fpu/xstate.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
 diff --git a/arch/x86/kernel/fpu/xstate.c b/arch/x86/kernel/fpu/xstate.c
-index 18ffc6f..a8bd5c0 100644
+index a8bd5c0..319be93 100644
 --- a/arch/x86/kernel/fpu/xstate.c
 +++ b/arch/x86/kernel/fpu/xstate.c
-@@ -60,7 +60,7 @@ u64 xfeatures_mask __read_mostly;
+@@ -254,10 +254,13 @@ static void __init setup_xstate_features(void)
+ 	 * in the fixed offsets in the xsave area in either compacted form
+ 	 * or standard form.
+ 	 */
+-	xstate_offsets[0] = 0;
+-	xstate_sizes[0] = offsetof(struct fxregs_state, xmm_space);
+-	xstate_offsets[1] = xstate_sizes[0];
+-	xstate_sizes[1] = FIELD_SIZEOF(struct fxregs_state, xmm_space);
++	xstate_offsets[XFEATURE_FP]	= 0;
++	xstate_sizes[XFEATURE_FP]	= offsetof(struct fxregs_state,
++						   xmm_space);
++
++	xstate_offsets[XFEATURE_SSE]	= xstate_sizes[XFEATURE_FP];
++	xstate_sizes[XFEATURE_SSE]	= FIELD_SIZEOF(struct fxregs_state,
++						       xmm_space);
  
- static unsigned int xstate_offsets[XFEATURE_MAX] = { [ 0 ... XFEATURE_MAX - 1] = -1};
- static unsigned int xstate_sizes[XFEATURE_MAX]   = { [ 0 ... XFEATURE_MAX - 1] = -1};
--static unsigned int xstate_comp_offsets[sizeof(xfeatures_mask)*8];
-+static unsigned int xstate_comp_offsets[XFEATURE_MAX] = { [ 0 ... XFEATURE_MAX - 1] = -1};
+ 	for (i = FIRST_EXTENDED_XFEATURE; i < XFEATURE_MAX; i++) {
+ 		if (!xfeature_enabled(i))
+@@ -350,8 +353,9 @@ static void __init setup_xstate_comp(void)
+ 	 * in the fixed offsets in the xsave area in either compacted form
+ 	 * or standard form.
+ 	 */
+-	xstate_comp_offsets[0] = 0;
+-	xstate_comp_offsets[1] = offsetof(struct fxregs_state, xmm_space);
++	xstate_comp_offsets[XFEATURE_FP] = 0;
++	xstate_comp_offsets[XFEATURE_SSE] = offsetof(struct fxregs_state,
++						     xmm_space);
  
- /*
-  * The XSAVE area of kernel can be in standard or compacted format;
-@@ -342,7 +342,7 @@ static int xfeature_is_aligned(int xfeature_nr)
-  */
- static void __init setup_xstate_comp(void)
- {
--	unsigned int xstate_comp_sizes[sizeof(xfeatures_mask)*8];
-+	unsigned int xstate_comp_sizes[XFEATURE_MAX];
- 	int i;
- 
- 	/*
+ 	if (!boot_cpu_has(X86_FEATURE_XSAVES)) {
+ 		for (i = FIRST_EXTENDED_XFEATURE; i < XFEATURE_MAX; i++) {
