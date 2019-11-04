@@ -2,38 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CC2AEE68A
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  4 Nov 2019 18:48:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E650EE6B0
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  4 Nov 2019 18:54:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729326AbfKDRsb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 4 Nov 2019 12:48:31 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:37999 "EHLO
+        id S1729519AbfKDRy1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 4 Nov 2019 12:54:27 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:38036 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728012AbfKDRsa (ORCPT
+        with ESMTP id S1728766AbfKDRyV (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 4 Nov 2019 12:48:30 -0500
+        Mon, 4 Nov 2019 12:54:21 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iRgSm-0002TJ-D2; Mon, 04 Nov 2019 18:48:24 +0100
+        id 1iRgYQ-0002ZH-Ap; Mon, 04 Nov 2019 18:54:14 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B6CF71C0017;
-        Mon,  4 Nov 2019 18:48:23 +0100 (CET)
-Date:   Mon, 04 Nov 2019 17:48:23 -0000
-From:   "tip-bot2 for Geert Uytterhoeven" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E2BD51C0017;
+        Mon,  4 Nov 2019 18:54:13 +0100 (CET)
+Date:   Mon, 04 Nov 2019 17:54:13 -0000
+From:   "tip-bot2 for Chuhong Yuan" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/urgent] clocksource/drivers/sh_mtu2: Do not loop using
- platform_get_irq_by_name()
-Cc:     Geert Uytterhoeven <geert+renesas@glider.be>,
+Subject: [tip: timers/core] clocksource/drivers/asm9260: Add a check for of_clk_get
+Cc:     Chuhong Yuan <hslester96@gmail.com>,
         Daniel Lezcano <daniel.lezcano@linaro.org>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20191016143003.28561-1-geert+renesas@glider.be>
-References: <20191016143003.28561-1-geert+renesas@glider.be>
+In-Reply-To: <20191016124330.22211-1-hslester96@gmail.com>
+References: <20191016124330.22211-1-hslester96@gmail.com>
 MIME-Version: 1.0
-Message-ID: <157288970341.29376.4277271047838734036.tip-bot2@tip-bot2>
+Message-ID: <157289005359.29376.7826557448523708212.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,78 +46,39 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/urgent branch of tip:
+The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     7693de9f7aa4e2993fbd7094863304be6a4bbe16
-Gitweb:        https://git.kernel.org/tip/7693de9f7aa4e2993fbd7094863304be6a4bbe16
-Author:        Geert Uytterhoeven <geert+renesas@glider.be>
-AuthorDate:    Wed, 16 Oct 2019 16:30:03 +02:00
+Commit-ID:     6e001f6a4cc73cd06fc7b8c633bc4906c33dd8ad
+Gitweb:        https://git.kernel.org/tip/6e001f6a4cc73cd06fc7b8c633bc4906c33dd8ad
+Author:        Chuhong Yuan <hslester96@gmail.com>
+AuthorDate:    Wed, 16 Oct 2019 20:43:30 +08:00
 Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
-CommitterDate: Fri, 18 Oct 2019 07:55:16 +02:00
+CommitterDate: Mon, 04 Nov 2019 10:40:10 +01:00
 
-clocksource/drivers/sh_mtu2: Do not loop using platform_get_irq_by_name()
+clocksource/drivers/asm9260: Add a check for of_clk_get
 
-As platform_get_irq_by_name() now prints an error when the interrupt
-does not exist, looping over possibly non-existing interrupts causes the
-printing of scary messages like:
+asm9260_timer_init misses a check for of_clk_get.
+Add a check for it and print errors like other clocksource drivers.
 
-    sh_mtu2 fcff0000.timer: IRQ tgi1a not found
-    sh_mtu2 fcff0000.timer: IRQ tgi2a not found
-
-Fix this by using the platform_irq_count() helper, to avoid touching
-non-existent interrupts.  Limit the returned number of interrupts to the
-maximum number of channels currently supported by the driver in a
-future-proof way, i.e. using ARRAY_SIZE() instead of a hardcoded number.
-
-Fixes: 7723f4c5ecdb8d83 ("driver core: platform: Add an error message to platform_get_irq*()")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
 Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20191016143003.28561-1-geert+renesas@glider.be
+Link: https://lore.kernel.org/r/20191016124330.22211-1-hslester96@gmail.com
 ---
- drivers/clocksource/sh_mtu2.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ drivers/clocksource/asm9260_timer.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/clocksource/sh_mtu2.c b/drivers/clocksource/sh_mtu2.c
-index 354b27d..62812f8 100644
---- a/drivers/clocksource/sh_mtu2.c
-+++ b/drivers/clocksource/sh_mtu2.c
-@@ -328,12 +328,13 @@ static int sh_mtu2_register(struct sh_mtu2_channel *ch, const char *name)
- 	return 0;
- }
- 
-+static const unsigned int sh_mtu2_channel_offsets[] = {
-+	0x300, 0x380, 0x000,
-+};
-+
- static int sh_mtu2_setup_channel(struct sh_mtu2_channel *ch, unsigned int index,
- 				 struct sh_mtu2_device *mtu)
- {
--	static const unsigned int channel_offsets[] = {
--		0x300, 0x380, 0x000,
--	};
- 	char name[6];
- 	int irq;
- 	int ret;
-@@ -356,7 +357,7 @@ static int sh_mtu2_setup_channel(struct sh_mtu2_channel *ch, unsigned int index,
- 		return ret;
+diff --git a/drivers/clocksource/asm9260_timer.c b/drivers/clocksource/asm9260_timer.c
+index 9f09a59..5b39d37 100644
+--- a/drivers/clocksource/asm9260_timer.c
++++ b/drivers/clocksource/asm9260_timer.c
+@@ -194,6 +194,10 @@ static int __init asm9260_timer_init(struct device_node *np)
  	}
  
--	ch->base = mtu->mapbase + channel_offsets[index];
-+	ch->base = mtu->mapbase + sh_mtu2_channel_offsets[index];
- 	ch->index = index;
+ 	clk = of_clk_get(np, 0);
++	if (IS_ERR(clk)) {
++		pr_err("Failed to get clk!\n");
++		return PTR_ERR(clk);
++	}
  
- 	return sh_mtu2_register(ch, dev_name(&mtu->pdev->dev));
-@@ -408,7 +409,12 @@ static int sh_mtu2_setup(struct sh_mtu2_device *mtu,
- 	}
- 
- 	/* Allocate and setup the channels. */
--	mtu->num_channels = 3;
-+	ret = platform_irq_count(pdev);
-+	if (ret < 0)
-+		goto err_unmap;
-+
-+	mtu->num_channels = min_t(unsigned int, ret,
-+				  ARRAY_SIZE(sh_mtu2_channel_offsets));
- 
- 	mtu->channels = kcalloc(mtu->num_channels, sizeof(*mtu->channels),
- 				GFP_KERNEL);
+ 	ret = clk_prepare_enable(clk);
+ 	if (ret) {
