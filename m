@@ -2,39 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 36C80EE6A9
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  4 Nov 2019 18:54:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0184DEE6AC
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  4 Nov 2019 18:54:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728800AbfKDRyT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 4 Nov 2019 12:54:19 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:38025 "EHLO
+        id S1729466AbfKDRyU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 4 Nov 2019 12:54:20 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:38029 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728216AbfKDRyT (ORCPT
+        with ESMTP id S1728377AbfKDRyU (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 4 Nov 2019 12:54:19 -0500
+        Mon, 4 Nov 2019 12:54:20 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iRgYR-0002Zs-Hx; Mon, 04 Nov 2019 18:54:15 +0100
+        id 1iRgYQ-0002ZK-Lo; Mon, 04 Nov 2019 18:54:14 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 344561C0426;
-        Mon,  4 Nov 2019 18:54:15 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4AE6F1C0426;
+        Mon,  4 Nov 2019 18:54:14 +0100 (CET)
 Date:   Mon, 04 Nov 2019 17:54:14 -0000
 From:   "tip-bot2 for Geert Uytterhoeven" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] clocksource/drivers/timer-of: Use unique device
- name instead of timer
+Subject: [tip: timers/core] clocksource/drivers/renesas-ostm: Use unique
+ device name instead of ostm
 Cc:     Geert Uytterhoeven <geert+renesas@glider.be>,
-        Rob Herring <robh@kernel.org>,
         Daniel Lezcano <daniel.lezcano@linaro.org>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20191016144747.29538-3-geert+renesas@glider.be>
-References: <20191016144747.29538-3-geert+renesas@glider.be>
+In-Reply-To: <20191016144747.29538-5-geert+renesas@glider.be>
+References: <20191016144747.29538-5-geert+renesas@glider.be>
 MIME-Version: 1.0
-Message-ID: <157289005492.29376.132373533001357963.tip-bot2@tip-bot2>
+Message-ID: <157289005402.29376.6102945736763616341.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,46 +49,71 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     4411464d6f8b5e5759637235a6f2b2a85c2be0f1
-Gitweb:        https://git.kernel.org/tip/4411464d6f8b5e5759637235a6f2b2a85c2be0f1
+Commit-ID:     b35a5e5961f814799b75a97a16c9b51e0d477c06
+Gitweb:        https://git.kernel.org/tip/b35a5e5961f814799b75a97a16c9b51e0d477c06
 Author:        Geert Uytterhoeven <geert+renesas@glider.be>
-AuthorDate:    Wed, 16 Oct 2019 16:47:45 +02:00
+AuthorDate:    Wed, 16 Oct 2019 16:47:47 +02:00
 Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
 CommitterDate: Mon, 04 Nov 2019 10:38:46 +01:00
 
-clocksource/drivers/timer-of: Use unique device name instead of timer
+clocksource/drivers/renesas-ostm: Use unique device name instead of ostm
 
-If a hardware-specific driver does not provide a name, the timer-of core
-falls back to device_node.name.  Due to generic DT node naming policies,
-that name is almost always "timer", and thus doesn't identify the actual
-timer used.
+Currently all OSTM devices are called "ostm", also in kernel messages.
 
-Fix this by using device_node.full_name instead, which includes the unit
-addrees.
+As there can be multiple instances in an SoC, this can confuse the user.
+Hence construct a unique name from the DT node name, like is done for
+platform devices.
 
-Example impact on /proc/timer_list:
+On RSK+RZA1, the boot log changes like:
 
-    -Clock Event Device: timer
-    +Clock Event Device: timer@fcfec400
+    -clocksource: ostm: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 57352151442 ns
+    +clocksource: timer@fcfec000: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 57352151442 ns
+     sched_clock: 32 bits at 33MHz, resolution 30ns, wraps every 64440619504ns
+    -ostm: used for clocksource
+    -ostm: used for clock events
+    +/soc/timer@fcfec000: used for clocksource
+    +/soc/timer@fcfec400: used for clock events
+     ...
+    -clocksource: Switched to clocksource ostm
+    +clocksource: Switched to clocksource timer@fcfec000
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Rob Herring <robh@kernel.org>
 Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20191016144747.29538-3-geert+renesas@glider.be
+Link: https://lore.kernel.org/r/20191016144747.29538-5-geert+renesas@glider.be
 ---
- drivers/clocksource/timer-of.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clocksource/renesas-ostm.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/clocksource/timer-of.c b/drivers/clocksource/timer-of.c
-index 3843942..8c11bd7 100644
---- a/drivers/clocksource/timer-of.c
-+++ b/drivers/clocksource/timer-of.c
-@@ -190,7 +190,7 @@ int __init timer_of_init(struct device_node *np, struct timer_of *to)
+diff --git a/drivers/clocksource/renesas-ostm.c b/drivers/clocksource/renesas-ostm.c
+index 46012d9..3d06ba6 100644
+--- a/drivers/clocksource/renesas-ostm.c
++++ b/drivers/clocksource/renesas-ostm.c
+@@ -64,9 +64,9 @@ static int __init ostm_init_clksrc(struct timer_of *to)
+ 	writeb(CTL_FREERUN, timer_of_base(to) + OSTM_CTL);
+ 	writeb(TS, timer_of_base(to) + OSTM_TS);
+ 
+-	return clocksource_mmio_init(timer_of_base(to) + OSTM_CNT, "ostm",
+-				     timer_of_rate(to), 300, 32,
+-				     clocksource_mmio_readl_up);
++	return clocksource_mmio_init(timer_of_base(to) + OSTM_CNT,
++				     to->np->full_name, timer_of_rate(to), 300,
++				     32, clocksource_mmio_readl_up);
+ }
+ 
+ static u64 notrace ostm_read_sched_clock(void)
+@@ -190,13 +190,13 @@ static int __init ostm_init(struct device_node *np)
+ 			goto err_cleanup;
+ 
+ 		ostm_init_sched_clock(to);
+-		pr_info("ostm: used for clocksource\n");
++		pr_info("%pOF: used for clocksource\n", np);
+ 	} else {
+ 		ret = ostm_init_clkevt(to);
+ 		if (ret)
+ 			goto err_cleanup;
+ 
+-		pr_info("ostm: used for clock events\n");
++		pr_info("%pOF: used for clock events\n", np);
  	}
  
- 	if (!to->clkevt.name)
--		to->clkevt.name = np->name;
-+		to->clkevt.name = np->full_name;
- 
- 	to->np = np;
- 
+ 	return 0;
