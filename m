@@ -2,38 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 02A11EE6B2
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  4 Nov 2019 18:54:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 88C23EE967
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  4 Nov 2019 21:24:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729305AbfKDRyT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 4 Nov 2019 12:54:19 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:38028 "EHLO
+        id S1729074AbfKDUYL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 4 Nov 2019 15:24:11 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:38848 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728346AbfKDRyT (ORCPT
+        with ESMTP id S1728510AbfKDUYL (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 4 Nov 2019 12:54:19 -0500
+        Mon, 4 Nov 2019 15:24:11 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iRgYR-0002aA-Tt; Mon, 04 Nov 2019 18:54:15 +0100
+        id 1iRitR-0004xa-4U; Mon, 04 Nov 2019 21:24:05 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 974501C0017;
-        Mon,  4 Nov 2019 18:54:15 +0100 (CET)
-Date:   Mon, 04 Nov 2019 17:54:15 -0000
-From:   "tip-bot2 for Geert Uytterhoeven" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 791611C0017;
+        Mon,  4 Nov 2019 21:24:04 +0100 (CET)
+Date:   Mon, 04 Nov 2019 20:24:04 -0000
+From:   "tip-bot2 for Jiri Slaby" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] clocksource/drivers/timer-of: Convert last
- full_name to %pOF
-Cc:     Geert Uytterhoeven <geert+renesas@glider.be>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
+Subject: [tip: core/urgent] stacktrace: Don't skip first entry on noncurrent tasks
+Cc:     Jiri Slaby <jslaby@suse.cz>, Thomas Gleixner <tglx@linutronix.de>,
+        Michal Suchanek <msuchanek@suse.de>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20191016144747.29538-2-geert+renesas@glider.be>
-References: <20191016144747.29538-2-geert+renesas@glider.be>
+In-Reply-To: <20191030072545.19462-1-jslaby@suse.cz>
+References: <20191030072545.19462-1-jslaby@suse.cz>
 MIME-Version: 1.0
-Message-ID: <157289005530.29376.16415534797520052620.tip-bot2@tip-bot2>
+Message-ID: <157289904416.29376.6390821004707816453.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,41 +47,59 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/core branch of tip:
+The following commit has been merged into the core/urgent branch of tip:
 
-Commit-ID:     ccb80012481fd8d16c7557c00bb54c42103eef9d
-Gitweb:        https://git.kernel.org/tip/ccb80012481fd8d16c7557c00bb54c42103eef9d
-Author:        Geert Uytterhoeven <geert+renesas@glider.be>
-AuthorDate:    Wed, 16 Oct 2019 16:47:44 +02:00
-Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
-CommitterDate: Mon, 04 Nov 2019 10:38:46 +01:00
+Commit-ID:     b0c51f158455e31d5024100cf3580fcd88214b0e
+Gitweb:        https://git.kernel.org/tip/b0c51f158455e31d5024100cf3580fcd88214b0e
+Author:        Jiri Slaby <jslaby@suse.cz>
+AuthorDate:    Wed, 30 Oct 2019 08:25:45 +01:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Mon, 04 Nov 2019 21:19:25 +01:00
 
-clocksource/drivers/timer-of: Convert last full_name to %pOF
+stacktrace: Don't skip first entry on noncurrent tasks
 
-Commit 469869d18a886e04 ("clocksource: Convert to using %pOF instead of
-full_name") converted all but the one just added before by commit
-32f2fea6e77e64cd ("clocksource/drivers/timer-of: Handle
-of_irq_get_byname() result correctly").
+When doing cat /proc/<PID>/stack, the output is missing the first entry.
+When the current code walks the stack starting in stack_trace_save_tsk,
+it skips all scheduler functions (that's OK) plus one more function. But
+this one function should be skipped only for the 'current' task as it is
+stack_trace_save_tsk proper.
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20191016144747.29538-2-geert+renesas@glider.be
+The original code (before the common infrastructure) skipped one
+function only for the 'current' task -- see save_stack_trace_tsk before
+3599fe12a125. So do so also in the new infrastructure now.
+
+Fixes: 214d8ca6ee85 ("stacktrace: Provide common infrastructure")
+Signed-off-by: Jiri Slaby <jslaby@suse.cz>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Michal Suchanek <msuchanek@suse.de>
+Acked-by: Josh Poimboeuf <jpoimboe@redhat.com>
+Link: https://lkml.kernel.org/r/20191030072545.19462-1-jslaby@suse.cz
+
 ---
- drivers/clocksource/timer-of.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/stacktrace.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clocksource/timer-of.c b/drivers/clocksource/timer-of.c
-index d8c2bd4..3843942 100644
---- a/drivers/clocksource/timer-of.c
-+++ b/drivers/clocksource/timer-of.c
-@@ -55,8 +55,8 @@ static __init int timer_of_irq_init(struct device_node *np,
- 	if (of_irq->name) {
- 		of_irq->irq = ret = of_irq_get_byname(np, of_irq->name);
- 		if (ret < 0) {
--			pr_err("Failed to get interrupt %s for %s\n",
--			       of_irq->name, np->full_name);
-+			pr_err("Failed to get interrupt %s for %pOF\n",
-+			       of_irq->name, np);
- 			return ret;
- 		}
- 	} else	{
+diff --git a/kernel/stacktrace.c b/kernel/stacktrace.c
+index 6d1f68b..c9ea7eb 100644
+--- a/kernel/stacktrace.c
++++ b/kernel/stacktrace.c
+@@ -141,7 +141,8 @@ unsigned int stack_trace_save_tsk(struct task_struct *tsk, unsigned long *store,
+ 	struct stacktrace_cookie c = {
+ 		.store	= store,
+ 		.size	= size,
+-		.skip	= skipnr + 1,
++		/* skip this function if they are tracing us */
++		.skip	= skipnr + !!(current == tsk),
+ 	};
+ 
+ 	if (!try_get_task_stack(tsk))
+@@ -298,7 +299,8 @@ unsigned int stack_trace_save_tsk(struct task_struct *task,
+ 	struct stack_trace trace = {
+ 		.entries	= store,
+ 		.max_entries	= size,
+-		.skip		= skipnr + 1,
++		/* skip this function if they are tracing us */
++		.skip	= skipnr + !!(current == task),
+ 	};
+ 
+ 	save_stack_trace_tsk(task, &trace);
