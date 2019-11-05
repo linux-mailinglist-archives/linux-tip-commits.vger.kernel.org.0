@@ -2,39 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 923F2EF176
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  5 Nov 2019 00:56:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DB3D2EF1F5
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  5 Nov 2019 01:29:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729863AbfKDX4Y (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 4 Nov 2019 18:56:24 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:39263 "EHLO
+        id S1729636AbfKEA3w (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 4 Nov 2019 19:29:52 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:39505 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729862AbfKDX4X (ORCPT
+        with ESMTP id S1729137AbfKEA3w (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 4 Nov 2019 18:56:23 -0500
+        Mon, 4 Nov 2019 19:29:52 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iRmCk-0001NK-1x; Tue, 05 Nov 2019 00:56:14 +0100
+        id 1iRmjC-0001tZ-03; Tue, 05 Nov 2019 01:29:46 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A2A191C0105;
-        Tue,  5 Nov 2019 00:56:13 +0100 (CET)
-Date:   Mon, 04 Nov 2019 23:56:13 -0000
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 6B1D31C0105;
+        Tue,  5 Nov 2019 01:29:45 +0100 (CET)
+Date:   Tue, 05 Nov 2019 00:29:44 -0000
+From:   "tip-bot2 for Michael Zhivich" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/dumpstack/64: Don't evaluate exception stacks
- before setup
-Cc:     Cyrill Gorcunov <gorcunov@gmail.com>,
+Subject: [tip: x86/urgent] x86/tsc: Respect tsc command line paraemeter for
+ clocksource_tsc_early
+Cc:     Michael Zhivich <mzhivich@akamai.com>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Josh Poimboeuf <jpoimboe@redhat.com>, stable@vger.kernel.org,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <alpine.DEB.2.21.1910231950590.1852@nanos.tec.linutronix.de>
-References: <alpine.DEB.2.21.1910231950590.1852@nanos.tec.linutronix.de>
+In-Reply-To: <20191024175945.14338-1-mzhivich@akamai.com>
+References: <20191024175945.14338-1-mzhivich@akamai.com>
 MIME-Version: 1.0
-Message-ID: <157291177324.29376.14563915167890708264.tip-bot2@tip-bot2>
+Message-ID: <157291378499.29376.13943510117369625835.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,71 +49,67 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     e361362b08cab1098b64b0e5fd8c879f086b3f46
-Gitweb:        https://git.kernel.org/tip/e361362b08cab1098b64b0e5fd8c879f086b3f46
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Wed, 23 Oct 2019 20:05:49 +02:00
+Commit-ID:     63ec58b44fcc05efd1542045abd7faf056ac27d9
+Gitweb:        https://git.kernel.org/tip/63ec58b44fcc05efd1542045abd7faf056ac27d9
+Author:        Michael Zhivich <mzhivich@akamai.com>
+AuthorDate:    Thu, 24 Oct 2019 13:59:45 -04:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 05 Nov 2019 00:51:35 +01:00
+CommitterDate: Tue, 05 Nov 2019 01:24:56 +01:00
 
-x86/dumpstack/64: Don't evaluate exception stacks before setup
+x86/tsc: Respect tsc command line paraemeter for clocksource_tsc_early
 
-Cyrill reported the following crash:
+The introduction of clocksource_tsc_early broke the functionality of
+"tsc=reliable" and "tsc=nowatchdog" command line parameters, since
+clocksource_tsc_early is unconditionally registered with
+CLOCK_SOURCE_MUST_VERIFY and thus put on the watchdog list.
 
-  BUG: unable to handle page fault for address: 0000000000001ff0
-  #PF: supervisor read access in kernel mode
-  RIP: 0010:get_stack_info+0xb3/0x148
+This can cause the TSC to be declared unstable during boot:
 
-It turns out that if the stack tracer is invoked before the exception stack
-mappings are initialized in_exception_stack() can erroneously classify an
-invalid address as an address inside of an exception stack:
+  clocksource: timekeeping watchdog on CPU0: Marking clocksource
+               'tsc-early' as unstable because the skew is too large:
+  clocksource: 'refined-jiffies' wd_now: fffb7018 wd_last: fffb6e9d
+               mask: ffffffff
+  clocksource: 'tsc-early' cs_now: 68a6a7070f6a0 cs_last: 68a69ab6f74d6
+               mask: ffffffffffffffff
+  tsc: Marking TSC unstable due to clocksource watchdog
 
-    begin = this_cpu_read(cea_exception_stacks);  <- 0
-    end = begin + sizeof(exception stacks);
+The corresponding elapsed times are cs_nsec=1224152026 and wd_nsec=378942392, so
+the watchdog differs from TSC by 0.84 seconds.
 
-i.e. any address between 0 and end will be considered as exception stack
-address and the subsequent code will then try to derefence the resulting
-stack frame at a non mapped address.
+This happens when HPET is not available and jiffies are used as the TSC
+watchdog instead and the jiffies update is not happening due to lost timer
+interrupts in periodic mode, which can happen e.g. with expensive debug
+mechanisms enabled or under massive overload conditions in virtualized
+environments.
 
- end = begin + (unsigned long)ep->size;
-     ==> end = 0x2000
+Before the introduction of the early TSC clocksource the command line
+parameters "tsc=reliable" and "tsc=nowatchdog" could be used to work around
+this issue.
 
- regs = (struct pt_regs *)end - 1;
-     ==> regs = 0x2000 - sizeof(struct pt_regs *) = 0x1ff0
+Restore the behaviour by disabling the watchdog if requested on the kernel
+command line.
 
- info->next_sp   = (unsigned long *)regs->sp;
-     ==> Crashes due to accessing 0x1ff0
+[ tglx: Clarify changelog ]
 
-Prevent this by checking the validity of the cea_exception_stack base
-address and bailing out if it is zero.
-
-Fixes: afcd21dad88b ("x86/dumpstack/64: Use cpu_entry_area instead of orig_ist")
-Reported-by: Cyrill Gorcunov <gorcunov@gmail.com>
+Fixes: aa83c45762a24 ("x86/tsc: Introduce early tsc clocksource")
+Signed-off-by: Michael Zhivich <mzhivich@akamai.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Cyrill Gorcunov <gorcunov@gmail.com>
-Acked-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/alpine.DEB.2.21.1910231950590.1852@nanos.tec.linutronix.de
-
+Link: https://lkml.kernel.org/r/20191024175945.14338-1-mzhivich@akamai.com
 ---
- arch/x86/kernel/dumpstack_64.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/x86/kernel/tsc.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/x86/kernel/dumpstack_64.c b/arch/x86/kernel/dumpstack_64.c
-index 753b8cf..87b9789 100644
---- a/arch/x86/kernel/dumpstack_64.c
-+++ b/arch/x86/kernel/dumpstack_64.c
-@@ -94,6 +94,13 @@ static bool in_exception_stack(unsigned long *stack, struct stack_info *info)
- 	BUILD_BUG_ON(N_EXCEPTION_STACKS != 6);
+diff --git a/arch/x86/kernel/tsc.c b/arch/x86/kernel/tsc.c
+index c59454c..7e322e2 100644
+--- a/arch/x86/kernel/tsc.c
++++ b/arch/x86/kernel/tsc.c
+@@ -1505,6 +1505,9 @@ void __init tsc_init(void)
+ 		return;
+ 	}
  
- 	begin = (unsigned long)__this_cpu_read(cea_exception_stacks);
-+	/*
-+	 * Handle the case where stack trace is collected _before_
-+	 * cea_exception_stacks had been initialized.
-+	 */
-+	if (!begin)
-+		return false;
++	if (tsc_clocksource_reliable || no_tsc_watchdog)
++		clocksource_tsc_early.flags &= ~CLOCK_SOURCE_MUST_VERIFY;
 +
- 	end = begin + sizeof(struct cea_exception_stacks);
- 	/* Bail if @stack is outside the exception stack area. */
- 	if (stk < begin || stk >= end)
+ 	clocksource_register_khz(&clocksource_tsc_early, tsc_khz);
+ 	detect_art();
+ }
