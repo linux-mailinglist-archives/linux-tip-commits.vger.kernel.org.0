@@ -2,42 +2,43 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E3C3FF1D45
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  6 Nov 2019 19:15:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 619A2F1D4A
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  6 Nov 2019 19:15:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727286AbfKFSPD (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 6 Nov 2019 13:15:03 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:45013 "EHLO
+        id S1732474AbfKFSPN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 6 Nov 2019 13:15:13 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:45025 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726713AbfKFSPD (ORCPT
+        with ESMTP id S1727397AbfKFSPN (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 6 Nov 2019 13:15:03 -0500
+        Wed, 6 Nov 2019 13:15:13 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iSPp1-00015o-7Q; Wed, 06 Nov 2019 19:14:23 +0100
+        id 1iSPp0-00015q-LS; Wed, 06 Nov 2019 19:14:23 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 3ACD41C0131;
-        Wed,  6 Nov 2019 19:14:20 +0100 (CET)
-Date:   Wed, 06 Nov 2019 18:14:19 -0000
-From:   "tip-bot2 for Jiri Olsa" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 08D4C1C0334;
+        Wed,  6 Nov 2019 19:14:21 +0100 (CET)
+Date:   Wed, 06 Nov 2019 18:14:20 -0000
+From:   "tip-bot2 for Steven Rostedt (VMware)" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf tools: Fix time sorting
-Cc:     Jiri Olsa <jolsa@kernel.org>, Andi Kleen <ak@linux.intel.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Michael Petlan <mpetlan@redhat.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>, stable@vger.kernel.org,
-        #@tip-bot2.tec.linutronix.de, v3.16+@tip-bot2.tec.linutronix.de,
+Subject: [tip: perf/urgent] perf scripting engines: Iterate on tep event
+ arrays directly
+Cc:     Daniel Bristot de Oliveira <bristot@redhat.com>,
+        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20191104232711.16055-1-jolsa@kernel.org>
-References: <20191104232711.16055-1-jolsa@kernel.org>
+        Andrew Morton <akpm@linux-foundation.org>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Tzvetomir Stoyanov <tstoyanov@vmware.com>,
+        linux-trace-devel@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
+        Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
+In-Reply-To: <20191017153733.630cd5eb@gandalf.local.home>
+References: <20191017153733.630cd5eb@gandalf.local.home>
 MIME-Version: 1.0
-Message-ID: <157306405988.29376.15381480880213738913.tip-bot2@tip-bot2>
+Message-ID: <157306406073.29376.12006121934933488297.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -53,49 +54,108 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     722ddfde366fd46205456a9c5ff9b3359dc9a75e
-Gitweb:        https://git.kernel.org/tip/722ddfde366fd46205456a9c5ff9b3359dc9a75e
-Author:        Jiri Olsa <jolsa@kernel.org>
-AuthorDate:    Tue, 05 Nov 2019 00:27:11 +01:00
+Commit-ID:     443b0636ea7386d01dc460b4a4264e125f710b53
+Gitweb:        https://git.kernel.org/tip/443b0636ea7386d01dc460b4a4264e125f710b53
+Author:        Steven Rostedt (VMware) <rostedt@goodmis.org>
+AuthorDate:    Thu, 17 Oct 2019 17:05:22 -04:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Tue, 05 Nov 2019 08:49:14 -03:00
+CommitterDate: Tue, 05 Nov 2019 08:39:26 -03:00
 
-perf tools: Fix time sorting
+perf scripting engines: Iterate on tep event arrays directly
 
-The final sort might get confused when the comparison is done over
-bigger numbers than int like for -s time.
+Instead of calling a useless (and broken) helper function to get the
+next event of a tep event array, just get the array directly and iterate
+over it.
 
-Check the following report for longer workloads:
+Note, the broken part was from trace_find_next_event() which after this
+will no longer be used, and can be removed.
 
-  $ perf report -s time -F time,overhead --stdio
+Committer notes:
 
-Fix hist_entry__sort() to properly return int64_t and not possible cut
-int.
+This fixes a segfault when generating python scripts from perf.data
+files with multiple tracepoint events, i.e. the following use case is
+fixed by this patch:
 
-Fixes: 043ca389a318 ("perf tools: Use hpp formats to sort final output")
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-Reviewed-by: Andi Kleen <ak@linux.intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Michael Petlan <mpetlan@redhat.com>
+  # perf record -e sched:* sleep 1
+  [ perf record: Woken up 31 times to write data ]
+  [ perf record: Captured and wrote 0.031 MB perf.data (9 samples) ]
+  # perf script -g python
+  Segmentation fault (core dumped)
+  #
+
+Reported-by: Daniel Bristot de Oliveira <bristot@redhat.com>
+Signed-off-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
+Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Jiri Olsa <jolsa@redhat.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: stable@vger.kernel.org # v3.16+
-Link: http://lore.kernel.org/lkml/20191104232711.16055-1-jolsa@kernel.org
+Cc: Tzvetomir Stoyanov <tstoyanov@vmware.com>
+Cc: linux-trace-devel@vger.kernel.org
+Link: http://lkml.kernel.org/r/20191017153733.630cd5eb@gandalf.local.home
+Link: http://lore.kernel.org/lkml/20191017210636.061448713@goodmis.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/hist.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/perf/util/scripting-engines/trace-event-perl.c   |  8 ++++++--
+ tools/perf/util/scripting-engines/trace-event-python.c |  9 +++++++--
+ 2 files changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/tools/perf/util/hist.c b/tools/perf/util/hist.c
-index 679a1d7..7b6eaf5 100644
---- a/tools/perf/util/hist.c
-+++ b/tools/perf/util/hist.c
-@@ -1625,7 +1625,7 @@ int hists__collapse_resort(struct hists *hists, struct ui_progress *prog)
- 	return 0;
- }
+diff --git a/tools/perf/util/scripting-engines/trace-event-perl.c b/tools/perf/util/scripting-engines/trace-event-perl.c
+index 1596185..741f040 100644
+--- a/tools/perf/util/scripting-engines/trace-event-perl.c
++++ b/tools/perf/util/scripting-engines/trace-event-perl.c
+@@ -539,10 +539,11 @@ static int perl_stop_script(void)
  
--static int hist_entry__sort(struct hist_entry *a, struct hist_entry *b)
-+static int64_t hist_entry__sort(struct hist_entry *a, struct hist_entry *b)
+ static int perl_generate_script(struct tep_handle *pevent, const char *outfile)
  {
- 	struct hists *hists = a->hists;
- 	struct perf_hpp_fmt *fmt;
++	int i, not_first, count, nr_events;
++	struct tep_event **all_events;
+ 	struct tep_event *event = NULL;
+ 	struct tep_format_field *f;
+ 	char fname[PATH_MAX];
+-	int not_first, count;
+ 	FILE *ofp;
+ 
+ 	sprintf(fname, "%s.pl", outfile);
+@@ -603,8 +604,11 @@ sub print_backtrace\n\
+ }\n\n\
+ ");
+ 
++	nr_events = tep_get_events_count(pevent);
++	all_events = tep_list_events(pevent, TEP_EVENT_SORT_ID);
+ 
+-	while ((event = trace_find_next_event(pevent, event))) {
++	for (i = 0; all_events && i < nr_events; i++) {
++		event = all_events[i];
+ 		fprintf(ofp, "sub %s::%s\n{\n", event->system, event->name);
+ 		fprintf(ofp, "\tmy (");
+ 
+diff --git a/tools/perf/util/scripting-engines/trace-event-python.c b/tools/perf/util/scripting-engines/trace-event-python.c
+index 5d341ef..93c03b3 100644
+--- a/tools/perf/util/scripting-engines/trace-event-python.c
++++ b/tools/perf/util/scripting-engines/trace-event-python.c
+@@ -1687,10 +1687,11 @@ static int python_stop_script(void)
+ 
+ static int python_generate_script(struct tep_handle *pevent, const char *outfile)
+ {
++	int i, not_first, count, nr_events;
++	struct tep_event **all_events;
+ 	struct tep_event *event = NULL;
+ 	struct tep_format_field *f;
+ 	char fname[PATH_MAX];
+-	int not_first, count;
+ 	FILE *ofp;
+ 
+ 	sprintf(fname, "%s.py", outfile);
+@@ -1735,7 +1736,11 @@ static int python_generate_script(struct tep_handle *pevent, const char *outfile
+ 	fprintf(ofp, "def trace_end():\n");
+ 	fprintf(ofp, "\tprint(\"in trace_end\")\n\n");
+ 
+-	while ((event = trace_find_next_event(pevent, event))) {
++	nr_events = tep_get_events_count(pevent);
++	all_events = tep_list_events(pevent, TEP_EVENT_SORT_ID);
++
++	for (i = 0; all_events && i < nr_events; i++) {
++		event = all_events[i];
+ 		fprintf(ofp, "def %s__%s(", event->system, event->name);
+ 		fprintf(ofp, "event_name, ");
+ 		fprintf(ofp, "context, ");
