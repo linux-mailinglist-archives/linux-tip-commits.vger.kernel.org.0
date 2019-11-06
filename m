@@ -2,48 +2,42 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C6360EF95A
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  5 Nov 2019 10:31:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E3C3FF1D45
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  6 Nov 2019 19:15:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388648AbfKEJ3c (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 5 Nov 2019 04:29:32 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:40611 "EHLO
+        id S1727286AbfKFSPD (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 6 Nov 2019 13:15:03 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:45013 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730762AbfKEJ2G (ORCPT
+        with ESMTP id S1726713AbfKFSPD (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 5 Nov 2019 04:28:06 -0500
+        Wed, 6 Nov 2019 13:15:03 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iRv7o-0007hg-6T; Tue, 05 Nov 2019 10:27:44 +0100
+        id 1iSPp1-00015o-7Q; Wed, 06 Nov 2019 19:14:23 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5FE1C1C04D6;
-        Tue,  5 Nov 2019 10:27:36 +0100 (CET)
-Date:   Tue, 05 Nov 2019 09:27:36 -0000
-From:   "tip-bot2 for Kees Cook" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 3ACD41C0131;
+        Wed,  6 Nov 2019 19:14:20 +0100 (CET)
+Date:   Wed, 06 Nov 2019 18:14:19 -0000
+From:   "tip-bot2 for Jiri Olsa" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/build] powerpc: Remove PT_NOTE workaround
-Cc:     Kees Cook <keescook@chromium.org>, Borislav Petkov <bp@suse.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Andy Lutomirski <luto@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        linux-alpha@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
-        linux-ia64@vger.kernel.org, linux-s390@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, Michal Simek <monstr@monstr.eu>,
-        Rick Edgecombe <rick.p.edgecombe@intel.com>,
-        Segher Boessenkool <segher@kernel.crashing.org>,
-        Will Deacon <will@kernel.org>, x86@kernel.org,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
+Subject: [tip: perf/urgent] perf tools: Fix time sorting
+Cc:     Jiri Olsa <jolsa@kernel.org>, Andi Kleen <ak@linux.intel.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Michael Petlan <mpetlan@redhat.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>, stable@vger.kernel.org,
+        #@tip-bot2.tec.linutronix.de, v3.16+@tip-bot2.tec.linutronix.de,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20191029211351.13243-3-keescook@chromium.org>
-References: <20191029211351.13243-3-keescook@chromium.org>
+In-Reply-To: <20191104232711.16055-1-jolsa@kernel.org>
+References: <20191104232711.16055-1-jolsa@kernel.org>
 MIME-Version: 1.0
-Message-ID: <157294605610.29376.1760819077288569366.tip-bot2@tip-bot2>
+Message-ID: <157306405988.29376.15381480880213738913.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -57,84 +51,51 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/build branch of tip:
+The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     6fc4000656a10fb679ab6566dcd516ee672f1706
-Gitweb:        https://git.kernel.org/tip/6fc4000656a10fb679ab6566dcd516ee672f1706
-Author:        Kees Cook <keescook@chromium.org>
-AuthorDate:    Tue, 29 Oct 2019 14:13:24 -07:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 04 Nov 2019 15:33:39 +01:00
+Commit-ID:     722ddfde366fd46205456a9c5ff9b3359dc9a75e
+Gitweb:        https://git.kernel.org/tip/722ddfde366fd46205456a9c5ff9b3359dc9a75e
+Author:        Jiri Olsa <jolsa@kernel.org>
+AuthorDate:    Tue, 05 Nov 2019 00:27:11 +01:00
+Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
+CommitterDate: Tue, 05 Nov 2019 08:49:14 -03:00
 
-powerpc: Remove PT_NOTE workaround
+perf tools: Fix time sorting
 
-In preparation for moving NOTES into RO_DATA, remove the PT_NOTE
-workaround since the kernel requires at least gcc 4.6 now.
+The final sort might get confused when the comparison is done over
+bigger numbers than int like for -s time.
 
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Acked-by: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: linux-alpha@vger.kernel.org
-Cc: linux-arch@vger.kernel.org
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-c6x-dev@linux-c6x.org
-Cc: linux-ia64@vger.kernel.org
-Cc: linux-s390@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Michal Simek <monstr@monstr.eu>
-Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Cc: Segher Boessenkool <segher@kernel.crashing.org>
-Cc: Will Deacon <will@kernel.org>
-Cc: x86@kernel.org
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-Link: https://lkml.kernel.org/r/20191029211351.13243-3-keescook@chromium.org
+Check the following report for longer workloads:
+
+  $ perf report -s time -F time,overhead --stdio
+
+Fix hist_entry__sort() to properly return int64_t and not possible cut
+int.
+
+Fixes: 043ca389a318 ("perf tools: Use hpp formats to sort final output")
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+Reviewed-by: Andi Kleen <ak@linux.intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Michael Petlan <mpetlan@redhat.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: stable@vger.kernel.org # v3.16+
+Link: http://lore.kernel.org/lkml/20191104232711.16055-1-jolsa@kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- arch/powerpc/kernel/vmlinux.lds.S | 24 ++----------------------
- 1 file changed, 2 insertions(+), 22 deletions(-)
+ tools/perf/util/hist.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kernel/vmlinux.lds.S b/arch/powerpc/kernel/vmlinux.lds.S
-index 81e6726..a3c8492 100644
---- a/arch/powerpc/kernel/vmlinux.lds.S
-+++ b/arch/powerpc/kernel/vmlinux.lds.S
-@@ -20,20 +20,6 @@ ENTRY(_stext)
- PHDRS {
- 	kernel PT_LOAD FLAGS(7); /* RWX */
- 	note PT_NOTE FLAGS(0);
--	dummy PT_NOTE FLAGS(0);
--
--	/* binutils < 2.18 has a bug that makes it misbehave when taking an
--	   ELF file with all segments at load address 0 as input.  This
--	   happens when running "strip" on vmlinux, because of the AT() magic
--	   in this linker script.  People using GCC >= 4.2 won't run into
--	   this problem, because the "build-id" support will put some data
--	   into the "notes" segment (at a non-zero load address).
--
--	   To work around this, we force some data into both the "dummy"
--	   segment and the kernel segment, so the dummy segment will get a
--	   non-zero load address.  It's not enough to always create the
--	   "notes" segment, since if nothing gets assigned to it, its load
--	   address will be zero.  */
+diff --git a/tools/perf/util/hist.c b/tools/perf/util/hist.c
+index 679a1d7..7b6eaf5 100644
+--- a/tools/perf/util/hist.c
++++ b/tools/perf/util/hist.c
+@@ -1625,7 +1625,7 @@ int hists__collapse_resort(struct hists *hists, struct ui_progress *prog)
+ 	return 0;
  }
  
- #ifdef CONFIG_PPC64
-@@ -178,14 +164,8 @@ SECTIONS
- 	EXCEPTION_TABLE(0)
- 
- 	NOTES :kernel :note
--
--	/* The dummy segment contents for the bug workaround mentioned above
--	   near PHDRS.  */
--	.dummy : AT(ADDR(.dummy) - LOAD_OFFSET) {
--		LONG(0)
--		LONG(0)
--		LONG(0)
--	} :kernel :dummy
-+	/* Restore program header away from PT_NOTE. */
-+	.dummy : { *(.dummy) } :kernel
- 
- /*
-  * Init sections discarded at runtime
+-static int hist_entry__sort(struct hist_entry *a, struct hist_entry *b)
++static int64_t hist_entry__sort(struct hist_entry *a, struct hist_entry *b)
+ {
+ 	struct hists *hists = a->hists;
+ 	struct perf_hpp_fmt *fmt;
