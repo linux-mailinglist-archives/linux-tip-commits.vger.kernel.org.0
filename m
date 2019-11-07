@@ -2,87 +2,105 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 440FEF29CE
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  7 Nov 2019 09:53:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B2D3F2C0B
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  7 Nov 2019 11:21:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733257AbfKGIw7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 7 Nov 2019 03:52:59 -0500
-Received: from mail.kernel.org ([198.145.29.99]:50102 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1733238AbfKGIw7 (ORCPT
+        id S2387786AbfKGKVH (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 7 Nov 2019 05:21:07 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:47090 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387779AbfKGKVG (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 7 Nov 2019 03:52:59 -0500
-Received: from paulmck-ThinkPad-P72.home (unknown [109.144.217.237])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 223D62077C;
-        Thu,  7 Nov 2019 08:52:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1573116778;
-        bh=atNfkvWqHmIDqLBv86TZs4C30jzzuzCcG/ghR09esKA=;
-        h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-        b=N7p8iKhXD7qMUIc0Kc48NqghvP37TKKdvsyPGXuC9QLTBsdANK8T1abwIYv4GvbZf
-         HALn3YEjWZ/T4Syc1ONWryy8bSOJuL+pwfcY0EagM30R0/BsbnWeuKwSw/PyQ+sC3y
-         VG3pBmbXTWwWDLIabQjqa0loryPex93TBVkwUjTs=
-Received: by paulmck-ThinkPad-P72.home (Postfix, from userid 1000)
-        id 8E51035227FC; Thu,  7 Nov 2019 00:52:55 -0800 (PST)
-Date:   Thu, 7 Nov 2019 00:52:55 -0800
-From:   "Paul E. McKenney" <paulmck@kernel.org>
-To:     Eric Dumazet <edumazet@google.com>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        linux-tip-commits@vger.kernel.org,
-        syzbot <syzkaller@googlegroups.com>,
+        Thu, 7 Nov 2019 05:21:06 -0500
+Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tip-bot2@linutronix.de>)
+        id 1iSeuM-00034l-GI; Thu, 07 Nov 2019 11:20:54 +0100
+Received: from [127.0.1.1] (localhost [IPv6:::1])
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 466191C010B;
+        Thu,  7 Nov 2019 11:20:53 +0100 (CET)
+Date:   Thu, 07 Nov 2019 10:20:52 -0000
+From:   "tip-bot2 for Babu Moger" <tip-bot2@linutronix.de>
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/cpu] x86/umip: Make the comments vendor-agnostic
+Cc:     Babu Moger <babu.moger@amd.com>, Borislav Petkov <bp@suse.de>,
+        Andy Lutomirski <luto@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        Ricardo Neri <ricardo.neri-calderon@linux.intel.com>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>
-Subject: Re: [tip: timers/core] hrtimer: Annotate lockless access to
- timer->state
-Message-ID: <20191107085255.GK20975@paulmck-ThinkPad-P72>
-Reply-To: paulmck@kernel.org
-References: <20191106174804.74723-1-edumazet@google.com>
- <157307905904.29376.8711513726869840596.tip-bot2@tip-bot2>
- <CANn89iKXi3rWWruKoBwQ8rncwLvkbzjZJWuJL3K05fjAhcySwg@mail.gmail.com>
- <CANn89iL=xPxejRPC=wHY7q27fLOvFBK-7HtqU_HJo+go3S9UXA@mail.gmail.com>
+        "x86@kernel.org" <x86@kernel.org>, Ingo Molnar <mingo@kernel.org>,
+        Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
+In-Reply-To: <157298913784.17462.12654728938970637305.stgit@naples-babu.amd.com>
+References: <157298913784.17462.12654728938970637305.stgit@naples-babu.amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CANn89iL=xPxejRPC=wHY7q27fLOvFBK-7HtqU_HJo+go3S9UXA@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Message-ID: <157312205287.29376.490924999918229502.tip-bot2@tip-bot2>
+X-Mailer: tip-git-log-daemon
+Robot-ID: <tip-bot2.linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Wed, Nov 06, 2019 at 02:59:36PM -0800, Eric Dumazet wrote:
-> On Wed, Nov 6, 2019 at 2:53 PM Eric Dumazet <edumazet@google.com> wrote:
-> >
-> > On Wed, Nov 6, 2019 at 2:24 PM tip-bot2 for Eric Dumazet
-> > <tip-bot2@linutronix.de> wrote:
-> > >
-> > > The following commit has been merged into the timers/core branch of tip:
-> > >
-> > > Commit-ID:     56144737e67329c9aaed15f942d46a6302e2e3d8
-> > > Gitweb:        https://git.kernel.org/tip/56144737e67329c9aaed15f942d46a6302e2e3d8
-> > > Author:        Eric Dumazet <edumazet@google.com>
-> > > AuthorDate:    Wed, 06 Nov 2019 09:48:04 -08:00
-> > > Committer:     Thomas Gleixner <tglx@linutronix.de>
-> > > CommitterDate: Wed, 06 Nov 2019 23:18:31 +01:00
-> > >
-> > > hrtimer: Annotate lockless access to timer->state
-> > >
-> >
-> > I guess we also need to fix timer_pending(), since timer->entry.pprev
-> > could change while we read it.
-> 
-> It is interesting seeing hlist_add_head() has a WRITE_ONCE(h->first, n);,
-> but no WRITE_ONCE() for the pprev change.
-> 
-> The WRITE_ONCE() was added in commit 1c97be677f72b3c338312aecd36d8fff20322f32
-> ("list: Use WRITE_ONCE() when adding to lists and hlists")
+The following commit has been merged into the x86/cpu branch of tip:
 
-The theory is that while the ->next pointer is concurrently accessed by
-RCU readers, the ->pprev pointer is accessed only by updaters, who need
-to supply sufficient synchronization.
+Commit-ID:     9774a96f785bf0fa6d956ce33300463f1704dbeb
+Gitweb:        https://git.kernel.org/tip/9774a96f785bf0fa6d956ce33300463f1704dbeb
+Author:        Babu Moger <Babu.Moger@amd.com>
+AuthorDate:    Tue, 05 Nov 2019 21:25:40 
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Thu, 07 Nov 2019 11:16:44 +01:00
 
-But what is this theory missing in practice?
+x86/umip: Make the comments vendor-agnostic
 
-							Thanx, Paul
+AMD 2nd generation EPYC processors also support the UMIP feature. Make
+the comments vendor-agnostic.
+
+Signed-off-by: Babu Moger <babu.moger@amd.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: "x86@kernel.org" <x86@kernel.org>
+Link: https://lkml.kernel.org/r/157298913784.17462.12654728938970637305.stgit@naples-babu.amd.com
+---
+ arch/x86/kernel/umip.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/arch/x86/kernel/umip.c b/arch/x86/kernel/umip.c
+index 548fefe..8ccef6c 100644
+--- a/arch/x86/kernel/umip.c
++++ b/arch/x86/kernel/umip.c
+@@ -1,6 +1,6 @@
+ /*
+- * umip.c Emulation for instruction protected by the Intel User-Mode
+- * Instruction Prevention feature
++ * umip.c Emulation for instruction protected by the User-Mode Instruction
++ * Prevention feature
+  *
+  * Copyright (c) 2017, Intel Corporation.
+  * Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+@@ -18,10 +18,10 @@
+ 
+ /** DOC: Emulation for User-Mode Instruction Prevention (UMIP)
+  *
+- * The feature User-Mode Instruction Prevention present in recent Intel
+- * processor prevents a group of instructions (SGDT, SIDT, SLDT, SMSW and STR)
+- * from being executed with CPL > 0. Otherwise, a general protection fault is
+- * issued.
++ * User-Mode Instruction Prevention is a security feature present in recent
++ * x86 processors that, when enabled, prevents a group of instructions (SGDT,
++ * SIDT, SLDT, SMSW and STR) from being run in user mode by issuing a general
++ * protection fault if the instruction is executed with CPL > 0.
+  *
+  * Rather than relaying to the user space the general protection fault caused by
+  * the UMIP-protected instructions (in the form of a SIGSEGV signal), it can be
