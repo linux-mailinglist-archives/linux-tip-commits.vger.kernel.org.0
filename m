@@ -2,168 +2,177 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B778F2C0D
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  7 Nov 2019 11:21:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 316E8F33C1
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  7 Nov 2019 16:49:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733205AbfKGKVK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 7 Nov 2019 05:21:10 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:47094 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387779AbfKGKVJ (ORCPT
+        id S1727727AbfKGPtG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 7 Nov 2019 10:49:06 -0500
+Received: from mail-il1-f196.google.com ([209.85.166.196]:46952 "EHLO
+        mail-il1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726231AbfKGPtG (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 7 Nov 2019 05:21:09 -0500
-Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tip-bot2@linutronix.de>)
-        id 1iSeuM-00034m-GU; Thu, 07 Nov 2019 11:20:55 +0100
-Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id ADE681C03AB;
-        Thu,  7 Nov 2019 11:20:53 +0100 (CET)
-Date:   Thu, 07 Nov 2019 10:20:53 -0000
-From:   "tip-bot2 for Babu Moger" <tip-bot2@linutronix.de>
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cpu] x86/Kconfig: Rename UMIP config parameter
-Cc:     Babu Moger <babu.moger@amd.com>, Borislav Petkov <bp@suse.de>,
-        Andy Lutomirski <luto@kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        Ricardo Neri <ricardo.neri-calderon@linux.intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "x86@kernel.org" <x86@kernel.org>, Ingo Molnar <mingo@kernel.org>,
-        Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
-In-Reply-To: <157298912544.17462.2018334793891409521.stgit@naples-babu.amd.com>
-References: <157298912544.17462.2018334793891409521.stgit@naples-babu.amd.com>
+        Thu, 7 Nov 2019 10:49:06 -0500
+Received: by mail-il1-f196.google.com with SMTP id q1so1534457ile.13
+        for <linux-tip-commits@vger.kernel.org>; Thu, 07 Nov 2019 07:49:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=irMCwGA+SjUoAhw2kPyFwUWFY57JiJA9rRuNTgeQCh8=;
+        b=Yb3pn5DYtXWC8iLf4ShERfzttjHNlNhL0NjssWsWP6Rd+wR37V5Pn8+bFz76mGvKaB
+         QdErVtlytC2NUdQzhSR6XebSH+y3CRMrhcM10+1msuKW0f/seCZQEroBf/w9CM4NntiJ
+         pt6jgeZkBbQLbBctN73fHQrGLyT7T0lljR2uFzpIq7NRFURHZZ7CWpQP2V0n0XMGodQc
+         ibyB7NUNSoe8uFoYgCbw9sv+jn5ZSpCICaVFVSku0YuRiY9QPAoeOSgHjD0Vocllrvhy
+         USKnw16kpc7IuUO56IFQz1ETeCKW+TYOoxMEJMAKrr7QOP+FcjrxGzBLw/ueaXic4h9Y
+         3Beg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=irMCwGA+SjUoAhw2kPyFwUWFY57JiJA9rRuNTgeQCh8=;
+        b=iysbhaHDN6oJ1yt8LIRudAKD3h+HwwzpNnq198f6Vh9I74iBCEpLrZL5Q5htVa/Rk0
+         pzxYN0HDIuPsPkLvispEZNXH3JkRqchmtwfqVx7YyPeF/50/7RKk7WD+M9HlY8C9t/ia
+         V8vYfCfqKUG7bHXn3x5fhodRNyapKXLSbRNfdfvcAhFKFwMmBGlGMDwea7MH9x2vJkE+
+         MOckOsRGbO4q5+9DsqyOhrzSK950sRgpVwPXwGDnYQNStRcMJC5+zKIVvL8McGxNoLOV
+         XmbCSZwp/17wUsDElu9obY5l8nSU84vRofsNB0cOLRkonSj7vYfK3KHvDP5ESra3bV5M
+         iUqA==
+X-Gm-Message-State: APjAAAWdHaDTr8tb1LrnO2DoSJ5gM+xNINZsR33Qx6SjvD21mAy/ABFr
+        GC3jBtJPIbzB/0hv9k6zZd4CLfEtRdUxHOOsFVELPA==
+X-Google-Smtp-Source: APXvYqyta6RxawQ69LCG84WSBv/fO42eHcRNdKfOg8XJYa0M/nleY0bgPGxtlzJsf4qQw0nl6UDH4hMOxuaLiSurdkc=
+X-Received: by 2002:a92:7e0d:: with SMTP id z13mr5601143ilc.168.1573141742933;
+ Thu, 07 Nov 2019 07:49:02 -0800 (PST)
 MIME-Version: 1.0
-Message-ID: <157312205338.29376.6775745697687176487.tip-bot2@tip-bot2>
-X-Mailer: tip-git-log-daemon
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+References: <20191106174804.74723-1-edumazet@google.com> <157307905904.29376.8711513726869840596.tip-bot2@tip-bot2>
+ <CANn89iKXi3rWWruKoBwQ8rncwLvkbzjZJWuJL3K05fjAhcySwg@mail.gmail.com>
+ <CANn89iL=xPxejRPC=wHY7q27fLOvFBK-7HtqU_HJo+go3S9UXA@mail.gmail.com> <20191107085255.GK20975@paulmck-ThinkPad-P72>
+In-Reply-To: <20191107085255.GK20975@paulmck-ThinkPad-P72>
+From:   Eric Dumazet <edumazet@google.com>
+Date:   Thu, 7 Nov 2019 07:48:50 -0800
+Message-ID: <CANn89i+8Hq5j234zFRY05QxZU1n=Vr6S-kZCcvn3Z80xYaindg@mail.gmail.com>
+Subject: Re: [tip: timers/core] hrtimer: Annotate lockless access to timer->state
+To:     paulmck@kernel.org
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        linux-tip-commits@vger.kernel.org,
+        syzbot <syzkaller@googlegroups.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cpu branch of tip:
+On Thu, Nov 7, 2019 at 12:53 AM Paul E. McKenney <paulmck@kernel.org> wrote:
+>
+> On Wed, Nov 06, 2019 at 02:59:36PM -0800, Eric Dumazet wrote:
+> > On Wed, Nov 6, 2019 at 2:53 PM Eric Dumazet <edumazet@google.com> wrote:
+> > >
+> > > On Wed, Nov 6, 2019 at 2:24 PM tip-bot2 for Eric Dumazet
+> > > <tip-bot2@linutronix.de> wrote:
+> > > >
+> > > > The following commit has been merged into the timers/core branch of tip:
+> > > >
+> > > > Commit-ID:     56144737e67329c9aaed15f942d46a6302e2e3d8
+> > > > Gitweb:        https://git.kernel.org/tip/56144737e67329c9aaed15f942d46a6302e2e3d8
+> > > > Author:        Eric Dumazet <edumazet@google.com>
+> > > > AuthorDate:    Wed, 06 Nov 2019 09:48:04 -08:00
+> > > > Committer:     Thomas Gleixner <tglx@linutronix.de>
+> > > > CommitterDate: Wed, 06 Nov 2019 23:18:31 +01:00
+> > > >
+> > > > hrtimer: Annotate lockless access to timer->state
+> > > >
+> > >
+> > > I guess we also need to fix timer_pending(), since timer->entry.pprev
+> > > could change while we read it.
+> >
+> > It is interesting seeing hlist_add_head() has a WRITE_ONCE(h->first, n);,
+> > but no WRITE_ONCE() for the pprev change.
+> >
+> > The WRITE_ONCE() was added in commit 1c97be677f72b3c338312aecd36d8fff20322f32
+> > ("list: Use WRITE_ONCE() when adding to lists and hlists")
+>
+> The theory is that while the ->next pointer is concurrently accessed by
+> RCU readers, the ->pprev pointer is accessed only by updaters, who need
+> to supply sufficient synchronization.
+>
+> But what is this theory missing in practice?
 
-Commit-ID:     b971880fe79f4042aaaf426744a5b19521bf77b3
-Gitweb:        https://git.kernel.org/tip/b971880fe79f4042aaaf426744a5b19521bf77b3
-Author:        Babu Moger <Babu.Moger@amd.com>
-AuthorDate:    Tue, 05 Nov 2019 21:25:32 
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Thu, 07 Nov 2019 11:07:29 +01:00
+Here is some context : I am helping triaging about 400 KCSAN data-race
+splats in syzbot moderation queue.
 
-x86/Kconfig: Rename UMIP config parameter
+Take a look at the timer related one in [1]
 
-AMD 2nd generation EPYC processors support the UMIP (User-Mode
-Instruction Prevention) feature. So, rename X86_INTEL_UMIP to
-generic X86_UMIP and modify the text to cover both Intel and AMD.
+If we want to avoid potential load/store-tearing, minimall patch would be :
 
- [ bp: take of the disabled-features.h copy in tools/ too. ]
+diff --git a/include/linux/list.h b/include/linux/list.h
+index 85c92555e31f85f019354e54d6efb8e79c2aee17..9139803b851cc37bb759c8d7c12ee7e36c61f009
+100644
+--- a/include/linux/list.h
++++ b/include/linux/list.h
+@@ -761,7 +761,7 @@ static inline void __hlist_del(struct hlist_node *n)
 
-Signed-off-by: Babu Moger <babu.moger@amd.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: "x86@kernel.org" <x86@kernel.org>
-Link: https://lkml.kernel.org/r/157298912544.17462.2018334793891409521.stgit@naples-babu.amd.com
----
- arch/x86/Kconfig                               | 16 ++++++++--------
- arch/x86/include/asm/disabled-features.h       |  2 +-
- arch/x86/include/asm/umip.h                    |  4 ++--
- arch/x86/kernel/Makefile                       |  2 +-
- tools/arch/x86/include/asm/disabled-features.h |  2 +-
- 5 files changed, 13 insertions(+), 13 deletions(-)
+        WRITE_ONCE(*pprev, next);
+        if (next)
+-               next->pprev = pprev;
++               WRITE_ONCE(next->pprev, pprev);
+ }
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 896f840..434fae9 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -1880,16 +1880,16 @@ config X86_SMAP
- 
- 	  If unsure, say Y.
- 
--config X86_INTEL_UMIP
-+config X86_UMIP
- 	def_bool y
--	depends on CPU_SUP_INTEL
--	prompt "Intel User Mode Instruction Prevention" if EXPERT
-+	depends on CPU_SUP_INTEL || CPU_SUP_AMD
-+	prompt "User Mode Instruction Prevention" if EXPERT
- 	---help---
--	  The User Mode Instruction Prevention (UMIP) is a security
--	  feature in newer Intel processors. If enabled, a general
--	  protection fault is issued if the SGDT, SLDT, SIDT, SMSW
--	  or STR instructions are executed in user mode. These instructions
--	  unnecessarily expose information about the hardware state.
-+	  User Mode Instruction Prevention (UMIP) is a security feature in
-+	  some x86 processors. If enabled, a general protection fault is
-+	  issued if the SGDT, SLDT, SIDT, SMSW or STR instructions are
-+	  executed in user mode. These instructions unnecessarily expose
-+	  information about the hardware state.
- 
- 	  The vast majority of applications do not use these instructions.
- 	  For the very few that do, software emulation is provided in
-diff --git a/arch/x86/include/asm/disabled-features.h b/arch/x86/include/asm/disabled-features.h
-index a5ea841..8e1d0bb 100644
---- a/arch/x86/include/asm/disabled-features.h
-+++ b/arch/x86/include/asm/disabled-features.h
-@@ -22,7 +22,7 @@
- # define DISABLE_SMAP	(1<<(X86_FEATURE_SMAP & 31))
- #endif
- 
--#ifdef CONFIG_X86_INTEL_UMIP
-+#ifdef CONFIG_X86_UMIP
- # define DISABLE_UMIP	0
- #else
- # define DISABLE_UMIP	(1<<(X86_FEATURE_UMIP & 31))
-diff --git a/arch/x86/include/asm/umip.h b/arch/x86/include/asm/umip.h
-index db43f2a..aeed98c 100644
---- a/arch/x86/include/asm/umip.h
-+++ b/arch/x86/include/asm/umip.h
-@@ -4,9 +4,9 @@
- #include <linux/types.h>
- #include <asm/ptrace.h>
- 
--#ifdef CONFIG_X86_INTEL_UMIP
-+#ifdef CONFIG_X86_UMIP
- bool fixup_umip_exception(struct pt_regs *regs);
- #else
- static inline bool fixup_umip_exception(struct pt_regs *regs) { return false; }
--#endif  /* CONFIG_X86_INTEL_UMIP */
-+#endif  /* CONFIG_X86_UMIP */
- #endif  /* _ASM_X86_UMIP_H */
-diff --git a/arch/x86/kernel/Makefile b/arch/x86/kernel/Makefile
-index 3578ad2..52ce1e2 100644
---- a/arch/x86/kernel/Makefile
-+++ b/arch/x86/kernel/Makefile
-@@ -134,7 +134,7 @@ obj-$(CONFIG_EFI)			+= sysfb_efi.o
- obj-$(CONFIG_PERF_EVENTS)		+= perf_regs.o
- obj-$(CONFIG_TRACING)			+= tracepoint.o
- obj-$(CONFIG_SCHED_MC_PRIO)		+= itmt.o
--obj-$(CONFIG_X86_INTEL_UMIP)		+= umip.o
-+obj-$(CONFIG_X86_UMIP)			+= umip.o
- 
- obj-$(CONFIG_UNWINDER_ORC)		+= unwind_orc.o
- obj-$(CONFIG_UNWINDER_FRAME_POINTER)	+= unwind_frame.o
-diff --git a/tools/arch/x86/include/asm/disabled-features.h b/tools/arch/x86/include/asm/disabled-features.h
-index a5ea841..8e1d0bb 100644
---- a/tools/arch/x86/include/asm/disabled-features.h
-+++ b/tools/arch/x86/include/asm/disabled-features.h
-@@ -22,7 +22,7 @@
- # define DISABLE_SMAP	(1<<(X86_FEATURE_SMAP & 31))
- #endif
- 
--#ifdef CONFIG_X86_INTEL_UMIP
-+#ifdef CONFIG_X86_UMIP
- # define DISABLE_UMIP	0
- #else
- # define DISABLE_UMIP	(1<<(X86_FEATURE_UMIP & 31))
+ static inline void hlist_del(struct hlist_node *n)
+diff --git a/include/linux/timer.h b/include/linux/timer.h
+index 1e6650ed066d5d28251b0bd385fc37ef94c96532..c7c8dd89f2797389ca96473e60c7297fd38d8259
+100644
+--- a/include/linux/timer.h
++++ b/include/linux/timer.h
+@@ -164,7 +164,7 @@ static inline void destroy_timer_on_stack(struct
+timer_list *timer) { }
+  */
+ static inline int timer_pending(const struct timer_list * timer)
+ {
+-       return timer->entry.pprev != NULL;
++       return READ_ONCE(timer->entry.pprev) != NULL;
+ }
+
+ extern void add_timer_on(struct timer_list *timer, int cpu);
+
+
+But really many other WRITE_ONCE() would be needed in include/linux/list.h
+
+
+[1]
+
+BUG: KCSAN: data-race in del_timer / detach_if_pending
+
+write to 0xffff88808697d870 of 8 bytes by task 10 on cpu 0:
+ __hlist_del include/linux/list.h:764 [inline]
+ detach_timer kernel/time/timer.c:815 [inline]
+ detach_if_pending+0xcd/0x2d0 kernel/time/timer.c:832
+ try_to_del_timer_sync+0x60/0xb0 kernel/time/timer.c:1226
+ del_timer_sync+0x6b/0xa0 kernel/time/timer.c:1365
+ schedule_timeout+0x2d2/0x6e0 kernel/time/timer.c:1896
+ rcu_gp_fqs_loop+0x37c/0x580 kernel/rcu/tree.c:1639
+ rcu_gp_kthread+0x143/0x230 kernel/rcu/tree.c:1799
+ kthread+0x1d4/0x200 drivers/block/aoe/aoecmd.c:1253
+ ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:352
+
+read to 0xffff88808697d870 of 8 bytes by task 12060 on cpu 1:
+ del_timer+0x3b/0xb0 kernel/time/timer.c:1198
+ sk_stop_timer+0x25/0x60 net/core/sock.c:2845
+ inet_csk_clear_xmit_timers+0x69/0xa0 net/ipv4/inet_connection_sock.c:523
+ tcp_clear_xmit_timers include/net/tcp.h:606 [inline]
+ tcp_v4_destroy_sock+0xa3/0x3f0 net/ipv4/tcp_ipv4.c:2096
+ inet_csk_destroy_sock+0xf4/0x250 net/ipv4/inet_connection_sock.c:836
+ tcp_close+0x6f3/0x970 net/ipv4/tcp.c:2497
+ inet_release+0x86/0x100 net/ipv4/af_inet.c:427
+ __sock_release+0x85/0x160 net/socket.c:590
+ sock_close+0x24/0x30 net/socket.c:1268
+ __fput+0x1e1/0x520 fs/file_table.c:280
+ ____fput+0x1f/0x30 fs/file_table.c:313
+ task_work_run+0xf6/0x130 kernel/task_work.c:113
+ tracehook_notify_resume include/linux/tracehook.h:188 [inline]
+ exit_to_usermode_loop+0x2b4/0x2c0 arch/x86/entry/common.c:163
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 1 PID: 12060 Comm: syz-executor.5 Not tainted 5.4.0-rc3+ #0
+Hardware name: Google Google Compute Engine/Google Compute Engine,
+BIOS Google 01/01/2011
+==================================================================
