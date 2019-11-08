@@ -2,42 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1924BF5839
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 Nov 2019 21:42:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FDE3F5844
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 Nov 2019 21:42:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728142AbfKHUHN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 8 Nov 2019 15:07:13 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:52534 "EHLO
+        id S1727233AbfKHUMx (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 8 Nov 2019 15:12:53 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:52549 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729075AbfKHUHN (ORCPT
+        with ESMTP id S1726843AbfKHUMw (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 8 Nov 2019 15:07:13 -0500
+        Fri, 8 Nov 2019 15:12:52 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iTAX5-0002Bl-8G; Fri, 08 Nov 2019 21:06:59 +0100
+        id 1iTAcj-0002Fz-1P; Fri, 08 Nov 2019 21:12:49 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B13771C0105;
-        Fri,  8 Nov 2019 21:06:58 +0100 (CET)
-Date:   Fri, 08 Nov 2019 20:06:58 -0000
-From:   "tip-bot2 for Zhang Xiaoxu" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A0F331C0105;
+        Fri,  8 Nov 2019 21:12:48 +0100 (CET)
+Date:   Fri, 08 Nov 2019 20:12:48 -0000
+From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/mtrr] x86/mtrr: Restrict MTRR ranges dumping and ioctl()
-Cc:     Zhang Xiaoxu <zhangxiaoxu5@huawei.com>,
-        Borislav Petkov <bp@suse.de>, "H. Peter Anvin" <hpa@zytor.com>,
-        Colin Ian King <colin.king@canonical.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Kees Cook <keescook@chromium.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tyler Hicks <tyhicks@canonical.com>, "x86-ml" <x86@kernel.org>,
-        zhangxiaoxu@huawei.com, Ingo Molnar <mingo@kernel.org>,
-        Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
-In-Reply-To: <20191105071714.27376-1-zhangxiaoxu5@huawei.com>
-References: <20191105071714.27376-1-zhangxiaoxu5@huawei.com>
+Subject: [tip: x86/mtrr] x86/mtrr: Get rid of mtrr_seq_show() forward declaration
+Cc:     Borislav Petkov <bp@suse.de>, x86@kernel.org,
+        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20191108200815.24589-1-bp@alien8.de>
+References: <20191108200815.24589-1-bp@alien8.de>
 MIME-Version: 1.0
-Message-ID: <157324361834.29376.5328593346754751963.tip-bot2@tip-bot2>
+Message-ID: <157324396829.29376.10225460729022651496.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -53,157 +47,83 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/mtrr branch of tip:
 
-Commit-ID:     d5a8b06841082ead88493eb918dd646a12c19d8e
-Gitweb:        https://git.kernel.org/tip/d5a8b06841082ead88493eb918dd646a12c19d8e
-Author:        Zhang Xiaoxu <zhangxiaoxu5@huawei.com>
-AuthorDate:    Tue, 05 Nov 2019 15:17:14 +08:00
+Commit-ID:     bb2385bc38ffcea8afd0968e1895424e512c176c
+Gitweb:        https://git.kernel.org/tip/bb2385bc38ffcea8afd0968e1895424e512c176c
+Author:        Borislav Petkov <bp@suse.de>
+AuthorDate:    Fri, 08 Nov 2019 21:05:45 +01:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Fri, 08 Nov 2019 20:59:40 +01:00
+CommitterDate: Fri, 08 Nov 2019 21:10:02 +01:00
 
-x86/mtrr: Restrict MTRR ranges dumping and ioctl()
+x86/mtrr: Get rid of mtrr_seq_show() forward declaration
 
-/proc/mtrr dumps the physical memory ranges of the variable range MTRRs
-along with their respective sizes and caching attributes. Since that
-file is world-readable, it presents a small information leak about the
-physical address ranges of a system which should be blocked.
+... by moving the function up in the file.
 
-Make that file root-only.
+No functional changes.
 
-Make the ioctl root-only as well because the $NAME read ioctl also
-allows access. Replace the checks in the write ioctls with a single one
-on entry.
-
- [ bp: rewrite commit message. ]
-
-Signed-off-by: Zhang Xiaoxu <zhangxiaoxu5@huawei.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Colin Ian King <colin.king@canonical.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Tyler Hicks <tyhicks@canonical.com>
-Cc: x86-ml <x86@kernel.org>
-Cc: zhangxiaoxu@huawei.com
-Link: https://lkml.kernel.org/r/20191105071714.27376-1-zhangxiaoxu5@huawei.com
+Cc: x86@kernel.org
+Link: https://lkml.kernel.org/r/20191108200815.24589-1-bp@alien8.de
 ---
- arch/x86/kernel/cpu/mtrr/if.c | 32 ++++++++++++++------------------
- 1 file changed, 14 insertions(+), 18 deletions(-)
+ arch/x86/kernel/cpu/mtrr/if.c | 42 ++++++++++++++++------------------
+ 1 file changed, 20 insertions(+), 22 deletions(-)
 
 diff --git a/arch/x86/kernel/cpu/mtrr/if.c b/arch/x86/kernel/cpu/mtrr/if.c
-index 4d36dcc..8e0cee8 100644
+index 8e0cee8..79f0d2d 100644
 --- a/arch/x86/kernel/cpu/mtrr/if.c
 +++ b/arch/x86/kernel/cpu/mtrr/if.c
-@@ -84,6 +84,15 @@ mtrr_file_del(unsigned long base, unsigned long size,
- 	return reg;
+@@ -369,28 +369,6 @@ static int mtrr_close(struct inode *ino, struct file *file)
+ 	return single_release(ino, file);
  }
  
-+static ssize_t
-+mtrr_read(struct file *file, char __user *buf, size_t size, loff_t *ppos)
-+{
-+	if (!capable(CAP_SYS_ADMIN))
-+		return -EPERM;
-+
-+	return seq_read(file, buf, size, ppos);
-+}
-+
- /*
-  * seq_file can seek but we ignore it.
-  *
-@@ -165,6 +174,9 @@ mtrr_ioctl(struct file *file, unsigned int cmd, unsigned long __arg)
- 	struct mtrr_gentry gentry;
- 	void __user *arg = (void __user *) __arg;
- 
-+	if (!capable(CAP_SYS_ADMIN))
-+		return -EPERM;
-+
- 	memset(&gentry, 0, sizeof(gentry));
- 
- 	switch (cmd) {
-@@ -226,8 +238,6 @@ mtrr_ioctl(struct file *file, unsigned int cmd, unsigned long __arg)
- #ifdef CONFIG_COMPAT
- 	case MTRRIOC32_ADD_ENTRY:
- #endif
--		if (!capable(CAP_SYS_ADMIN))
--			return -EPERM;
- 		err =
- 		    mtrr_file_add(sentry.base, sentry.size, sentry.type, true,
- 				  file, 0);
-@@ -236,24 +246,18 @@ mtrr_ioctl(struct file *file, unsigned int cmd, unsigned long __arg)
- #ifdef CONFIG_COMPAT
- 	case MTRRIOC32_SET_ENTRY:
- #endif
--		if (!capable(CAP_SYS_ADMIN))
--			return -EPERM;
- 		err = mtrr_add(sentry.base, sentry.size, sentry.type, false);
- 		break;
- 	case MTRRIOC_DEL_ENTRY:
- #ifdef CONFIG_COMPAT
- 	case MTRRIOC32_DEL_ENTRY:
- #endif
--		if (!capable(CAP_SYS_ADMIN))
--			return -EPERM;
- 		err = mtrr_file_del(sentry.base, sentry.size, file, 0);
- 		break;
- 	case MTRRIOC_KILL_ENTRY:
- #ifdef CONFIG_COMPAT
- 	case MTRRIOC32_KILL_ENTRY:
- #endif
--		if (!capable(CAP_SYS_ADMIN))
--			return -EPERM;
- 		err = mtrr_del(-1, sentry.base, sentry.size);
- 		break;
- 	case MTRRIOC_GET_ENTRY:
-@@ -279,8 +283,6 @@ mtrr_ioctl(struct file *file, unsigned int cmd, unsigned long __arg)
- #ifdef CONFIG_COMPAT
- 	case MTRRIOC32_ADD_PAGE_ENTRY:
- #endif
--		if (!capable(CAP_SYS_ADMIN))
--			return -EPERM;
- 		err =
- 		    mtrr_file_add(sentry.base, sentry.size, sentry.type, true,
- 				  file, 1);
-@@ -289,8 +291,6 @@ mtrr_ioctl(struct file *file, unsigned int cmd, unsigned long __arg)
- #ifdef CONFIG_COMPAT
- 	case MTRRIOC32_SET_PAGE_ENTRY:
- #endif
--		if (!capable(CAP_SYS_ADMIN))
--			return -EPERM;
- 		err =
- 		    mtrr_add_page(sentry.base, sentry.size, sentry.type, false);
- 		break;
-@@ -298,16 +298,12 @@ mtrr_ioctl(struct file *file, unsigned int cmd, unsigned long __arg)
- #ifdef CONFIG_COMPAT
- 	case MTRRIOC32_DEL_PAGE_ENTRY:
- #endif
--		if (!capable(CAP_SYS_ADMIN))
--			return -EPERM;
- 		err = mtrr_file_del(sentry.base, sentry.size, file, 1);
- 		break;
- 	case MTRRIOC_KILL_PAGE_ENTRY:
- #ifdef CONFIG_COMPAT
- 	case MTRRIOC32_KILL_PAGE_ENTRY:
- #endif
--		if (!capable(CAP_SYS_ADMIN))
--			return -EPERM;
- 		err = mtrr_del_page(-1, sentry.base, sentry.size);
- 		break;
- 	case MTRRIOC_GET_PAGE_ENTRY:
-@@ -387,7 +383,7 @@ static int mtrr_open(struct inode *inode, struct file *file)
- static const struct file_operations mtrr_fops = {
- 	.owner			= THIS_MODULE,
- 	.open			= mtrr_open,
--	.read			= seq_read,
-+	.read			= mtrr_read,
- 	.llseek			= seq_lseek,
- 	.write			= mtrr_write,
- 	.unlocked_ioctl		= mtrr_ioctl,
-@@ -436,7 +432,7 @@ static int __init mtrr_if_init(void)
- 	    (!cpu_has(c, X86_FEATURE_CENTAUR_MCR)))
- 		return -ENODEV;
- 
--	proc_create("mtrr", S_IWUSR | S_IRUGO, NULL, &mtrr_fops);
-+	proc_create("mtrr", 0600, NULL, &mtrr_fops);
+-static int mtrr_seq_show(struct seq_file *seq, void *offset);
+-
+-static int mtrr_open(struct inode *inode, struct file *file)
+-{
+-	if (!mtrr_if)
+-		return -EIO;
+-	if (!mtrr_if->get)
+-		return -ENXIO;
+-	return single_open(file, mtrr_seq_show, NULL);
+-}
+-
+-static const struct file_operations mtrr_fops = {
+-	.owner			= THIS_MODULE,
+-	.open			= mtrr_open,
+-	.read			= mtrr_read,
+-	.llseek			= seq_lseek,
+-	.write			= mtrr_write,
+-	.unlocked_ioctl		= mtrr_ioctl,
+-	.compat_ioctl		= mtrr_ioctl,
+-	.release		= mtrr_close,
+-};
+-
+ static int mtrr_seq_show(struct seq_file *seq, void *offset)
+ {
+ 	char factor;
+@@ -422,6 +400,26 @@ static int mtrr_seq_show(struct seq_file *seq, void *offset)
  	return 0;
  }
- arch_initcall(mtrr_if_init);
+ 
++static int mtrr_open(struct inode *inode, struct file *file)
++{
++	if (!mtrr_if)
++		return -EIO;
++	if (!mtrr_if->get)
++		return -ENXIO;
++	return single_open(file, mtrr_seq_show, NULL);
++}
++
++static const struct file_operations mtrr_fops = {
++	.owner			= THIS_MODULE,
++	.open			= mtrr_open,
++	.read			= mtrr_read,
++	.llseek			= seq_lseek,
++	.write			= mtrr_write,
++	.unlocked_ioctl		= mtrr_ioctl,
++	.compat_ioctl		= mtrr_ioctl,
++	.release		= mtrr_close,
++};
++
+ static int __init mtrr_if_init(void)
+ {
+ 	struct cpuinfo_x86 *c = &boot_cpu_data;
