@@ -2,124 +2,208 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CFC8F356A
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  7 Nov 2019 18:07:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1924BF5839
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 Nov 2019 21:42:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729711AbfKGRHm (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 7 Nov 2019 12:07:42 -0500
-Received: from mail.kernel.org ([198.145.29.99]:56832 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726231AbfKGRHm (ORCPT
+        id S1728142AbfKHUHN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 8 Nov 2019 15:07:13 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:52534 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729075AbfKHUHN (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 7 Nov 2019 12:07:42 -0500
-Received: from paulmck-ThinkPad-P72.home (unknown [109.144.209.93])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9AB93206BA;
-        Thu,  7 Nov 2019 17:07:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1573146461;
-        bh=fPQk1CB2fD+joQiucvbdrbH/MOkp35H8ljloJnhHVes=;
-        h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-        b=FULeloc2Cw14BMI0w6LnhBrCrhL9bUi4jg/5JduqcxU4Ybfb829eYbVWNWZF4gheK
-         tDIboebsOwypoS5vF4/mx2IY93cqYQEIFnewH7V4EQyDY5/XgXLycehA4w0EAzQA5j
-         ZK841bxgxlWiZqX0XKC7AuXoB+tVohNI61d9Kd+s=
-Received: by paulmck-ThinkPad-P72.home (Postfix, from userid 1000)
-        id A09D13522919; Thu,  7 Nov 2019 09:07:38 -0800 (PST)
-Date:   Thu, 7 Nov 2019 09:07:38 -0800
-From:   "Paul E. McKenney" <paulmck@kernel.org>
-To:     Eric Dumazet <edumazet@google.com>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        linux-tip-commits@vger.kernel.org,
-        syzbot <syzkaller@googlegroups.com>,
+        Fri, 8 Nov 2019 15:07:13 -0500
+Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tip-bot2@linutronix.de>)
+        id 1iTAX5-0002Bl-8G; Fri, 08 Nov 2019 21:06:59 +0100
+Received: from [127.0.1.1] (localhost [IPv6:::1])
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B13771C0105;
+        Fri,  8 Nov 2019 21:06:58 +0100 (CET)
+Date:   Fri, 08 Nov 2019 20:06:58 -0000
+From:   "tip-bot2 for Zhang Xiaoxu" <tip-bot2@linutronix.de>
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/mtrr] x86/mtrr: Restrict MTRR ranges dumping and ioctl()
+Cc:     Zhang Xiaoxu <zhangxiaoxu5@huawei.com>,
+        Borislav Petkov <bp@suse.de>, "H. Peter Anvin" <hpa@zytor.com>,
+        Colin Ian King <colin.king@canonical.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Kees Cook <keescook@chromium.org>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>
-Subject: Re: [tip: timers/core] hrtimer: Annotate lockless access to
- timer->state
-Message-ID: <20191107170738.GT20975@paulmck-ThinkPad-P72>
-Reply-To: paulmck@kernel.org
-References: <157307905904.29376.8711513726869840596.tip-bot2@tip-bot2>
- <CANn89iKXi3rWWruKoBwQ8rncwLvkbzjZJWuJL3K05fjAhcySwg@mail.gmail.com>
- <CANn89iL=xPxejRPC=wHY7q27fLOvFBK-7HtqU_HJo+go3S9UXA@mail.gmail.com>
- <20191107085255.GK20975@paulmck-ThinkPad-P72>
- <CANn89i+8Hq5j234zFRY05QxZU1n=Vr6S-kZCcvn3Z80xYaindg@mail.gmail.com>
- <20191107161149.GQ20975@paulmck-ThinkPad-P72>
- <CANn89iLMD0=tiQ181qQ=qKo=Nom-XX4MqonZw6pKiYUzTDVjQg@mail.gmail.com>
- <CANn89iLqcqKLRgfn7TDnBr9ZatiJVyezXmmZaeN2f2BT=qFe7Q@mail.gmail.com>
- <20191107165428.GR20975@paulmck-ThinkPad-P72>
- <CANn89i+Cc1aOHVFnYvZ93EDee81RaGNrv47ZBVdQXmxMuuMmww@mail.gmail.com>
+        Tyler Hicks <tyhicks@canonical.com>, "x86-ml" <x86@kernel.org>,
+        zhangxiaoxu@huawei.com, Ingo Molnar <mingo@kernel.org>,
+        Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
+In-Reply-To: <20191105071714.27376-1-zhangxiaoxu5@huawei.com>
+References: <20191105071714.27376-1-zhangxiaoxu5@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CANn89i+Cc1aOHVFnYvZ93EDee81RaGNrv47ZBVdQXmxMuuMmww@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Message-ID: <157324361834.29376.5328593346754751963.tip-bot2@tip-bot2>
+X-Mailer: tip-git-log-daemon
+Robot-ID: <tip-bot2.linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Thu, Nov 07, 2019 at 08:59:49AM -0800, Eric Dumazet wrote:
-> On Thu, Nov 7, 2019 at 8:54 AM Paul E. McKenney <paulmck@kernel.org> wrote:
-> >
-> > On Thu, Nov 07, 2019 at 08:39:42AM -0800, Eric Dumazet wrote:
-> > > On Thu, Nov 7, 2019 at 8:35 AM Eric Dumazet <edumazet@google.com> wrote:
-> > > >
-> > > > On Thu, Nov 7, 2019 at 8:11 AM Paul E. McKenney <paulmck@kernel.org> wrote:
-> > > > >
-> > > > > OK, so this is due to timer_pending() lockless access to ->entry.pprev
-> > > > > to determine whether or not the timer is on the list.  New one on me!
-> > > > >
-> > > > > Given that use case, I don't have an objection to your patch to list.h.
-> > > > >
-> > > > > Except...
-> > > > >
-> > > > > Would it make sense to add a READ_ONCE() to hlist_unhashed()
-> > > > > and to then make timer_pending() invoke hlist_unhashed()?  That
-> > > > > would better confine the needed uses of READ_ONCE().
-> > > >
-> > > > Sounds good to me, I had the same idea but was too lazy to look at the
-> > > > history of timer_pending()
-> > > > to check if the pprev pointer check was really the same underlying idea.
-> > >
-> > > Note that forcing READ_ONCE() in hlist_unhashed() might force the compiler
-> > > to read the pprev pointer twice in some cases.
-> > >
-> > > This was one of the reason for me to add skb_queue_empty_lockless()
-> > > variant in include/linux/skbuff.h
-> >
-> > Ouch!
-> >
-> > > /**
-> > >  * skb_queue_empty_lockless - check if a queue is empty
-> > >  * @list: queue head
-> > >  *
-> > >  * Returns true if the queue is empty, false otherwise.
-> > >  * This variant can be used in lockless contexts.
-> > >  */
-> > > static inline bool skb_queue_empty_lockless(const struct sk_buff_head *list)
-> > > {
-> > > return READ_ONCE(list->next) == (const struct sk_buff *) list;
-> > > }
-> > >
-> > > So maybe add a hlist_unhashed_lockless() to clearly document why
-> > > callers are using the lockless variant ?
-> >
-> > That sounds like a reasonable approach to me.  There aren't all that
-> > many uses of hlist_unhashed(), so a name change should not be a problem.
-> 
-> Maybe I was not clear :  I did not rename skb_queue_empty()
-> I chose to add another helper.
-> 
-> Contexts that can safely use skb_queue_empty() still continue to use
-> it, since it might help
-> the compiler to generate better code.
-> 
-> So If I add hlist_unhashed_lockless(), I would only use it from
-> timer_pending() at first.
-> 
-> Then an audit of the code might reveal other potential users.
+The following commit has been merged into the x86/mtrr branch of tip:
 
-OK, yes, that approach does make more sense, and thank you for the
-clarification.
+Commit-ID:     d5a8b06841082ead88493eb918dd646a12c19d8e
+Gitweb:        https://git.kernel.org/tip/d5a8b06841082ead88493eb918dd646a12c19d8e
+Author:        Zhang Xiaoxu <zhangxiaoxu5@huawei.com>
+AuthorDate:    Tue, 05 Nov 2019 15:17:14 +08:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Fri, 08 Nov 2019 20:59:40 +01:00
 
-							Thanx, Paul
+x86/mtrr: Restrict MTRR ranges dumping and ioctl()
+
+/proc/mtrr dumps the physical memory ranges of the variable range MTRRs
+along with their respective sizes and caching attributes. Since that
+file is world-readable, it presents a small information leak about the
+physical address ranges of a system which should be blocked.
+
+Make that file root-only.
+
+Make the ioctl root-only as well because the $NAME read ioctl also
+allows access. Replace the checks in the write ioctls with a single one
+on entry.
+
+ [ bp: rewrite commit message. ]
+
+Signed-off-by: Zhang Xiaoxu <zhangxiaoxu5@huawei.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Colin Ian King <colin.king@canonical.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Tyler Hicks <tyhicks@canonical.com>
+Cc: x86-ml <x86@kernel.org>
+Cc: zhangxiaoxu@huawei.com
+Link: https://lkml.kernel.org/r/20191105071714.27376-1-zhangxiaoxu5@huawei.com
+---
+ arch/x86/kernel/cpu/mtrr/if.c | 32 ++++++++++++++------------------
+ 1 file changed, 14 insertions(+), 18 deletions(-)
+
+diff --git a/arch/x86/kernel/cpu/mtrr/if.c b/arch/x86/kernel/cpu/mtrr/if.c
+index 4d36dcc..8e0cee8 100644
+--- a/arch/x86/kernel/cpu/mtrr/if.c
++++ b/arch/x86/kernel/cpu/mtrr/if.c
+@@ -84,6 +84,15 @@ mtrr_file_del(unsigned long base, unsigned long size,
+ 	return reg;
+ }
+ 
++static ssize_t
++mtrr_read(struct file *file, char __user *buf, size_t size, loff_t *ppos)
++{
++	if (!capable(CAP_SYS_ADMIN))
++		return -EPERM;
++
++	return seq_read(file, buf, size, ppos);
++}
++
+ /*
+  * seq_file can seek but we ignore it.
+  *
+@@ -165,6 +174,9 @@ mtrr_ioctl(struct file *file, unsigned int cmd, unsigned long __arg)
+ 	struct mtrr_gentry gentry;
+ 	void __user *arg = (void __user *) __arg;
+ 
++	if (!capable(CAP_SYS_ADMIN))
++		return -EPERM;
++
+ 	memset(&gentry, 0, sizeof(gentry));
+ 
+ 	switch (cmd) {
+@@ -226,8 +238,6 @@ mtrr_ioctl(struct file *file, unsigned int cmd, unsigned long __arg)
+ #ifdef CONFIG_COMPAT
+ 	case MTRRIOC32_ADD_ENTRY:
+ #endif
+-		if (!capable(CAP_SYS_ADMIN))
+-			return -EPERM;
+ 		err =
+ 		    mtrr_file_add(sentry.base, sentry.size, sentry.type, true,
+ 				  file, 0);
+@@ -236,24 +246,18 @@ mtrr_ioctl(struct file *file, unsigned int cmd, unsigned long __arg)
+ #ifdef CONFIG_COMPAT
+ 	case MTRRIOC32_SET_ENTRY:
+ #endif
+-		if (!capable(CAP_SYS_ADMIN))
+-			return -EPERM;
+ 		err = mtrr_add(sentry.base, sentry.size, sentry.type, false);
+ 		break;
+ 	case MTRRIOC_DEL_ENTRY:
+ #ifdef CONFIG_COMPAT
+ 	case MTRRIOC32_DEL_ENTRY:
+ #endif
+-		if (!capable(CAP_SYS_ADMIN))
+-			return -EPERM;
+ 		err = mtrr_file_del(sentry.base, sentry.size, file, 0);
+ 		break;
+ 	case MTRRIOC_KILL_ENTRY:
+ #ifdef CONFIG_COMPAT
+ 	case MTRRIOC32_KILL_ENTRY:
+ #endif
+-		if (!capable(CAP_SYS_ADMIN))
+-			return -EPERM;
+ 		err = mtrr_del(-1, sentry.base, sentry.size);
+ 		break;
+ 	case MTRRIOC_GET_ENTRY:
+@@ -279,8 +283,6 @@ mtrr_ioctl(struct file *file, unsigned int cmd, unsigned long __arg)
+ #ifdef CONFIG_COMPAT
+ 	case MTRRIOC32_ADD_PAGE_ENTRY:
+ #endif
+-		if (!capable(CAP_SYS_ADMIN))
+-			return -EPERM;
+ 		err =
+ 		    mtrr_file_add(sentry.base, sentry.size, sentry.type, true,
+ 				  file, 1);
+@@ -289,8 +291,6 @@ mtrr_ioctl(struct file *file, unsigned int cmd, unsigned long __arg)
+ #ifdef CONFIG_COMPAT
+ 	case MTRRIOC32_SET_PAGE_ENTRY:
+ #endif
+-		if (!capable(CAP_SYS_ADMIN))
+-			return -EPERM;
+ 		err =
+ 		    mtrr_add_page(sentry.base, sentry.size, sentry.type, false);
+ 		break;
+@@ -298,16 +298,12 @@ mtrr_ioctl(struct file *file, unsigned int cmd, unsigned long __arg)
+ #ifdef CONFIG_COMPAT
+ 	case MTRRIOC32_DEL_PAGE_ENTRY:
+ #endif
+-		if (!capable(CAP_SYS_ADMIN))
+-			return -EPERM;
+ 		err = mtrr_file_del(sentry.base, sentry.size, file, 1);
+ 		break;
+ 	case MTRRIOC_KILL_PAGE_ENTRY:
+ #ifdef CONFIG_COMPAT
+ 	case MTRRIOC32_KILL_PAGE_ENTRY:
+ #endif
+-		if (!capable(CAP_SYS_ADMIN))
+-			return -EPERM;
+ 		err = mtrr_del_page(-1, sentry.base, sentry.size);
+ 		break;
+ 	case MTRRIOC_GET_PAGE_ENTRY:
+@@ -387,7 +383,7 @@ static int mtrr_open(struct inode *inode, struct file *file)
+ static const struct file_operations mtrr_fops = {
+ 	.owner			= THIS_MODULE,
+ 	.open			= mtrr_open,
+-	.read			= seq_read,
++	.read			= mtrr_read,
+ 	.llseek			= seq_lseek,
+ 	.write			= mtrr_write,
+ 	.unlocked_ioctl		= mtrr_ioctl,
+@@ -436,7 +432,7 @@ static int __init mtrr_if_init(void)
+ 	    (!cpu_has(c, X86_FEATURE_CENTAUR_MCR)))
+ 		return -ENODEV;
+ 
+-	proc_create("mtrr", S_IWUSR | S_IRUGO, NULL, &mtrr_fops);
++	proc_create("mtrr", 0600, NULL, &mtrr_fops);
+ 	return 0;
+ }
+ arch_initcall(mtrr_if_init);
