@@ -2,29 +2,29 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C2120F70DA
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 Nov 2019 10:33:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 31A5EF70E0
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 Nov 2019 10:33:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727053AbfKKJdG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S1726978AbfKKJdG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Mon, 11 Nov 2019 04:33:06 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:55838 "EHLO
+Received: from Galois.linutronix.de ([193.142.43.55]:55844 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726843AbfKKJdD (ORCPT
+        with ESMTP id S1727089AbfKKJdF (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 11 Nov 2019 04:33:03 -0500
+        Mon, 11 Nov 2019 04:33:05 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iU63n-00038m-9p; Mon, 11 Nov 2019 10:32:35 +0100
+        id 1iU63o-00039X-JJ; Mon, 11 Nov 2019 10:32:36 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E0F6D1C03AB;
-        Mon, 11 Nov 2019 10:32:34 +0100 (CET)
-Date:   Mon, 11 Nov 2019 09:32:34 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 282C21C0093;
+        Mon, 11 Nov 2019 10:32:36 +0100 (CET)
+Date:   Mon, 11 Nov 2019 09:32:35 -0000
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/fair: Use mul_u32_u32()
+Subject: [tip: sched/core] sched/core: Make pick_next_task_idle() more consistent
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Thomas Gleixner <tglx@linutronix.de>, bsegall@google.com,
@@ -34,10 +34,10 @@ Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         valentin.schneider@arm.com, vincent.guittot@linaro.org,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20191108131909.717931380@infradead.org>
-References: <20191108131909.717931380@infradead.org>
+In-Reply-To: <20191108131909.545730862@infradead.org>
+References: <20191108131909.545730862@infradead.org>
 MIME-Version: 1.0
-Message-ID: <157346475453.29376.12759548199068622692.tip-bot2@tip-bot2>
+Message-ID: <157346475585.29376.10209379419645304652.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -53,17 +53,19 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     2eeb01a28c9233333bf229a5b4b0559f4bd22b52
-Gitweb:        https://git.kernel.org/tip/2eeb01a28c9233333bf229a5b4b0559f4bd22b52
+Commit-ID:     f488e1057bb97b881ed317557dc5e62ff8747393
+Gitweb:        https://git.kernel.org/tip/f488e1057bb97b881ed317557dc5e62ff8747393
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Fri, 08 Nov 2019 14:15:59 +01:00
+AuthorDate:    Fri, 08 Nov 2019 14:15:56 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Mon, 11 Nov 2019 08:35:20 +01:00
+CommitterDate: Mon, 11 Nov 2019 08:35:19 +01:00
 
-sched/fair: Use mul_u32_u32()
+sched/core: Make pick_next_task_idle() more consistent
 
-While reading the code I encountered another site where we should be
-using mul_u32_u32() because GCC just won't take a hint.
+Only pick_next_task_fair() needs the @prev and @rf argument; these are
+required to implement the cpu-cgroup optimization. None of the other
+pick_next_task() methods need this. Make pick_next_task_idle() more
+consistent.
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
@@ -79,23 +81,41 @@ Cc: qperret@google.com
 Cc: rostedt@goodmis.org
 Cc: valentin.schneider@arm.com
 Cc: vincent.guittot@linaro.org
-Link: https://lkml.kernel.org/r/20191108131909.717931380@infradead.org
+Link: https://lkml.kernel.org/r/20191108131909.545730862@infradead.org
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- kernel/sched/fair.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ kernel/sched/core.c | 6 ++++--
+ kernel/sched/idle.c | 3 +--
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 1789193..ba97d1a 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -229,8 +229,7 @@ static u64 __calc_delta(u64 delta_exec, unsigned long weight, struct load_weight
- 		}
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 0f2eb36..59c4f29 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -3922,8 +3922,10 @@ pick_next_task(struct rq *rq, struct task_struct *prev, struct rq_flags *rf)
+ 			goto restart;
+ 
+ 		/* Assumes fair_sched_class->next == idle_sched_class */
+-		if (unlikely(!p))
+-			p = idle_sched_class.pick_next_task(rq, prev, rf);
++		if (unlikely(!p)) {
++			put_prev_task(rq, prev);
++			p = idle_sched_class.pick_next_task(rq, NULL, NULL);
++		}
+ 
+ 		return p;
  	}
+diff --git a/kernel/sched/idle.c b/kernel/sched/idle.c
+index f65ef1e..179d1d4 100644
+--- a/kernel/sched/idle.c
++++ b/kernel/sched/idle.c
+@@ -396,8 +396,7 @@ pick_next_task_idle(struct rq *rq, struct task_struct *prev, struct rq_flags *rf
+ {
+ 	struct task_struct *next = rq->idle;
  
--	/* hint to use a 32x32->64 mul */
--	fact = (u64)(u32)fact * lw->inv_weight;
-+	fact = mul_u32_u32(fact, lw->inv_weight);
+-	if (prev)
+-		put_prev_task(rq, prev);
++	WARN_ON_ONCE(prev || rf);
  
- 	while (fact >> 32) {
- 		fact >>= 1;
+ 	set_next_task_idle(rq, next);
+ 
