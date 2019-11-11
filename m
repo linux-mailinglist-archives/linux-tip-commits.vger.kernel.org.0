@@ -2,29 +2,29 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A30A8F70CD
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 Nov 2019 10:32:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D5DDF70D2
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 Nov 2019 10:32:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727148AbfKKJcn (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 11 Nov 2019 04:32:43 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:55754 "EHLO
+        id S1727093AbfKKJck (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 11 Nov 2019 04:32:40 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:55742 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726976AbfKKJcm (ORCPT
+        with ESMTP id S1726768AbfKKJck (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 11 Nov 2019 04:32:42 -0500
+        Mon, 11 Nov 2019 04:32:40 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iU63l-000379-BG; Mon, 11 Nov 2019 10:32:33 +0100
+        id 1iU63l-000378-4X; Mon, 11 Nov 2019 10:32:33 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id F0E1D1C03AB;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 9034E1C0093;
         Mon, 11 Nov 2019 10:32:32 +0100 (CET)
 Date:   Mon, 11 Nov 2019 09:32:32 -0000
 From:   "tip-bot2 for Frederic Weisbecker" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] irq_work: Fix irq_work_claim() memory ordering
+Subject: [tip: irq/core] irq_work: Slightly simplify IRQ_WORK_PENDING clearing
 Cc:     Frederic Weisbecker <frederic@kernel.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         "Paul E . McKenney" <paulmck@linux.vnet.ibm.com>,
@@ -32,10 +32,10 @@ Cc:     Frederic Weisbecker <frederic@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20191108160858.31665-3-frederic@kernel.org>
-References: <20191108160858.31665-3-frederic@kernel.org>
+In-Reply-To: <20191108160858.31665-4-frederic@kernel.org>
+References: <20191108160858.31665-4-frederic@kernel.org>
 MIME-Version: 1.0
-Message-ID: <157346475270.29376.12510079913530639928.tip-bot2@tip-bot2>
+Message-ID: <157346475217.29376.12478664809830197769.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,70 +51,66 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     25269871db1ad0cbbaafd5098cbdb40c8db4ccb9
-Gitweb:        https://git.kernel.org/tip/25269871db1ad0cbbaafd5098cbdb40c8db4ccb9
+Commit-ID:     feb4a51323babe13315c3b783ea7f1cf25368918
+Gitweb:        https://git.kernel.org/tip/feb4a51323babe13315c3b783ea7f1cf25368918
 Author:        Frederic Weisbecker <frederic@kernel.org>
-AuthorDate:    Fri, 08 Nov 2019 17:08:56 +01:00
+AuthorDate:    Fri, 08 Nov 2019 17:08:57 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Mon, 11 Nov 2019 09:03:31 +01:00
 
-irq_work: Fix irq_work_claim() memory ordering
+irq_work: Slightly simplify IRQ_WORK_PENDING clearing
 
-When irq_work_claim() finds IRQ_WORK_PENDING flag already set, we just
-return and don't raise a new IPI. We expect the destination to see
-and handle our latest updades thanks to the pairing atomic_xchg()
-in irq_work_run_list().
-
-But cmpxchg() doesn't guarantee a full memory barrier upon failure. So
-it's possible that the destination misses our latest updates.
-
-So use atomic_fetch_or() instead that is unconditionally fully ordered
-and also performs exactly what we want here and simplify the code.
+Instead of fetching the value of flags and perform an xchg() to clear
+a bit, just use atomic_fetch_andnot() that is more suitable to do that
+job in one operation while keeping the full ordering.
 
 Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: Paul E . McKenney <paulmck@linux.vnet.ibm.com>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20191108160858.31665-3-frederic@kernel.org
+Link: https://lkml.kernel.org/r/20191108160858.31665-4-frederic@kernel.org
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- kernel/irq_work.c | 22 +++++++---------------
- 1 file changed, 7 insertions(+), 15 deletions(-)
+ kernel/irq_work.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
 diff --git a/kernel/irq_work.c b/kernel/irq_work.c
-index df0dbf4..255454a 100644
+index 255454a..49c53f8 100644
 --- a/kernel/irq_work.c
 +++ b/kernel/irq_work.c
-@@ -29,24 +29,16 @@ static DEFINE_PER_CPU(struct llist_head, lazy_list);
-  */
- static bool irq_work_claim(struct irq_work *work)
- {
--	int flags, oflags, nflags;
-+	int oflags;
- 
-+	oflags = atomic_fetch_or(IRQ_WORK_CLAIMED, &work->flags);
+@@ -34,7 +34,7 @@ static bool irq_work_claim(struct irq_work *work)
+ 	oflags = atomic_fetch_or(IRQ_WORK_CLAIMED, &work->flags);
  	/*
--	 * Start with our best wish as a premise but only trust any
--	 * flag value after cmpxchg() result.
-+	 * If the work is already pending, no need to raise the IPI.
-+	 * The pairing atomic_xchg() in irq_work_run() makes sure
-+	 * everything we did before is visible.
+ 	 * If the work is already pending, no need to raise the IPI.
+-	 * The pairing atomic_xchg() in irq_work_run() makes sure
++	 * The pairing atomic_fetch_andnot() in irq_work_run() makes sure
+ 	 * everything we did before is visible.
  	 */
--	flags = atomic_read(&work->flags) & ~IRQ_WORK_PENDING;
--	for (;;) {
--		nflags = flags | IRQ_WORK_CLAIMED;
--		oflags = atomic_cmpxchg(&work->flags, flags, nflags);
--		if (oflags == flags)
--			break;
--		if (oflags & IRQ_WORK_PENDING)
--			return false;
--		flags = oflags;
--		cpu_relax();
--	}
--
-+	if (oflags & IRQ_WORK_PENDING)
-+		return false;
- 	return true;
- }
+ 	if (oflags & IRQ_WORK_PENDING)
+@@ -135,7 +135,6 @@ static void irq_work_run_list(struct llist_head *list)
+ {
+ 	struct irq_work *work, *tmp;
+ 	struct llist_node *llnode;
+-	int flags;
  
+ 	BUG_ON(!irqs_disabled());
+ 
+@@ -144,6 +143,7 @@ static void irq_work_run_list(struct llist_head *list)
+ 
+ 	llnode = llist_del_all(list);
+ 	llist_for_each_entry_safe(work, tmp, llnode, llnode) {
++		int flags;
+ 		/*
+ 		 * Clear the PENDING bit, after this point the @work
+ 		 * can be re-used.
+@@ -151,8 +151,7 @@ static void irq_work_run_list(struct llist_head *list)
+ 		 * to claim that work don't rely on us to handle their data
+ 		 * while we are in the middle of the func.
+ 		 */
+-		flags = atomic_read(&work->flags) & ~IRQ_WORK_PENDING;
+-		atomic_xchg(&work->flags, flags);
++		flags = atomic_fetch_andnot(IRQ_WORK_PENDING, &work->flags);
+ 
+ 		work->func(work);
+ 		/*
