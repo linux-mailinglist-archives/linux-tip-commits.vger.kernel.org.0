@@ -2,29 +2,29 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B6432F70DF
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 Nov 2019 10:33:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BEF10F70D6
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 Nov 2019 10:33:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727276AbfKKJdC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 11 Nov 2019 04:33:02 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:55822 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727089AbfKKJc6 (ORCPT
-        <rfc822;linux-tip-commits@vger.kernel.org>);
+        id S1727226AbfKKJc6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Mon, 11 Nov 2019 04:32:58 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:55814 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726843AbfKKJc5 (ORCPT
+        <rfc822;linux-tip-commits@vger.kernel.org>);
+        Mon, 11 Nov 2019 04:32:57 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iU63o-00039Q-5Y; Mon, 11 Nov 2019 10:32:36 +0100
+        id 1iU63n-00038t-OW; Mon, 11 Nov 2019 10:32:35 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id BCCD31C03AB;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5AAF31C0093;
         Mon, 11 Nov 2019 10:32:35 +0100 (CET)
 Date:   Mon, 11 Nov 2019 09:32:35 -0000
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/core: Optimize pick_next_task()
+Subject: [tip: sched/core] sched/core: Simplify sched_class::pick_next_task()
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Thomas Gleixner <tglx@linutronix.de>, bsegall@google.com,
@@ -34,10 +34,10 @@ Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         valentin.schneider@arm.com, vincent.guittot@linaro.org,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20191108131909.603037345@infradead.org>
-References: <20191108131909.603037345@infradead.org>
+In-Reply-To: <20191108131909.660595546@infradead.org>
+References: <20191108131909.660595546@infradead.org>
 MIME-Version: 1.0
-Message-ID: <157346475546.29376.4590888474085572805.tip-bot2@tip-bot2>
+Message-ID: <157346475502.29376.15329961374914157251.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -53,28 +53,17 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     5d7d605642b28a5911198a405a6072f091bfbee6
-Gitweb:        https://git.kernel.org/tip/5d7d605642b28a5911198a405a6072f091bfbee6
+Commit-ID:     98c2f700edb413e4baa4a0368c5861d96211a775
+Gitweb:        https://git.kernel.org/tip/98c2f700edb413e4baa4a0368c5861d96211a775
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Fri, 08 Nov 2019 14:15:57 +01:00
+AuthorDate:    Fri, 08 Nov 2019 14:15:58 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Mon, 11 Nov 2019 08:35:19 +01:00
+CommitterDate: Mon, 11 Nov 2019 08:35:20 +01:00
 
-sched/core: Optimize pick_next_task()
+sched/core: Simplify sched_class::pick_next_task()
 
-Ever since we moved the sched_class definitions into their own files,
-the constant expression {fair,idle}_sched_class.pick_next_task() is
-not in fact a compile time constant anymore and results in an indirect
-call (barring LTO).
-
-Fix that by exposing pick_next_task_{fair,idle}() directly, this gets
-rid of the indirect call (and RETPOLINE) on the fast path.
-
-Also remove the unlikely() from the idle case, it is in fact /the/ way
-we select idle -- and that is a very common thing to do.
-
-Performance for will-it-scale/sched_yield improves by 2% (as reported
-by 0-day).
+Now that the indirect class call never uses the last two arguments of
+pick_next_task(), remove them.
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
@@ -90,74 +79,183 @@ Cc: qperret@google.com
 Cc: rostedt@goodmis.org
 Cc: valentin.schneider@arm.com
 Cc: vincent.guittot@linaro.org
-Link: https://lkml.kernel.org/r/20191108131909.603037345@infradead.org
+Link: https://lkml.kernel.org/r/20191108131909.660595546@infradead.org
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- kernel/sched/core.c  | 6 +++---
- kernel/sched/fair.c  | 2 +-
- kernel/sched/idle.c  | 2 +-
- kernel/sched/sched.h | 3 +++
- 4 files changed, 8 insertions(+), 5 deletions(-)
+ kernel/sched/core.c      |  6 +++---
+ kernel/sched/deadline.c  |  5 +----
+ kernel/sched/fair.c      |  7 ++++++-
+ kernel/sched/idle.c      |  5 +----
+ kernel/sched/rt.c        |  5 +----
+ kernel/sched/sched.h     | 18 +++---------------
+ kernel/sched/stop_task.c |  5 +----
+ 7 files changed, 16 insertions(+), 35 deletions(-)
 
 diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 59c4f29..7cf6547 100644
+index 7cf6547..513a479 100644
 --- a/kernel/sched/core.c
 +++ b/kernel/sched/core.c
-@@ -3917,14 +3917,14 @@ pick_next_task(struct rq *rq, struct task_struct *prev, struct rq_flags *rf)
- 		    prev->sched_class == &fair_sched_class) &&
- 		   rq->nr_running == rq->cfs.h_nr_running)) {
- 
--		p = fair_sched_class.pick_next_task(rq, prev, rf);
-+		p = pick_next_task_fair(rq, prev, rf);
- 		if (unlikely(p == RETRY_TASK))
- 			goto restart;
- 
+@@ -3924,7 +3924,7 @@ pick_next_task(struct rq *rq, struct task_struct *prev, struct rq_flags *rf)
  		/* Assumes fair_sched_class->next == idle_sched_class */
--		if (unlikely(!p)) {
-+		if (!p) {
+ 		if (!p) {
  			put_prev_task(rq, prev);
--			p = idle_sched_class.pick_next_task(rq, NULL, NULL);
-+			p = pick_next_task_idle(rq, NULL, NULL);
+-			p = pick_next_task_idle(rq, NULL, NULL);
++			p = pick_next_task_idle(rq);
  		}
  
  		return p;
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index c48a695..da81451 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -6611,7 +6611,7 @@ preempt:
- 		set_last_buddy(se);
+@@ -3949,7 +3949,7 @@ restart:
+ 	put_prev_task(rq, prev);
+ 
+ 	for_each_class(class) {
+-		p = class->pick_next_task(rq, NULL, NULL);
++		p = class->pick_next_task(rq);
+ 		if (p)
+ 			return p;
+ 	}
+@@ -6210,7 +6210,7 @@ static struct task_struct *__pick_migrate_task(struct rq *rq)
+ 	struct task_struct *next;
+ 
+ 	for_each_class(class) {
+-		next = class->pick_next_task(rq, NULL, NULL);
++		next = class->pick_next_task(rq);
+ 		if (next) {
+ 			next->sched_class->put_prev_task(rq, next);
+ 			return next;
+diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
+index a8a0803..f7fbb44 100644
+--- a/kernel/sched/deadline.c
++++ b/kernel/sched/deadline.c
+@@ -1770,15 +1770,12 @@ static struct sched_dl_entity *pick_next_dl_entity(struct rq *rq,
+ 	return rb_entry(left, struct sched_dl_entity, rb_node);
  }
  
 -static struct task_struct *
-+struct task_struct *
- pick_next_task_fair(struct rq *rq, struct task_struct *prev, struct rq_flags *rf)
+-pick_next_task_dl(struct rq *rq, struct task_struct *prev, struct rq_flags *rf)
++static struct task_struct *pick_next_task_dl(struct rq *rq)
  {
- 	struct cfs_rq *cfs_rq = &rq->cfs;
+ 	struct sched_dl_entity *dl_se;
+ 	struct dl_rq *dl_rq = &rq->dl;
+ 	struct task_struct *p;
+ 
+-	WARN_ON_ONCE(prev || rf);
+-
+ 	if (!sched_dl_runnable(rq))
+ 		return NULL;
+ 
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index da81451..1789193 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -6755,6 +6755,11 @@ idle:
+ 	return NULL;
+ }
+ 
++static struct task_struct *__pick_next_task_fair(struct rq *rq)
++{
++	return pick_next_task_fair(rq, NULL, NULL);
++}
++
+ /*
+  * Account for a descheduled task:
+  */
+@@ -10622,7 +10627,7 @@ const struct sched_class fair_sched_class = {
+ 
+ 	.check_preempt_curr	= check_preempt_wakeup,
+ 
+-	.pick_next_task		= pick_next_task_fair,
++	.pick_next_task		= __pick_next_task_fair,
+ 	.put_prev_task		= put_prev_task_fair,
+ 	.set_next_task          = set_next_task_fair,
+ 
 diff --git a/kernel/sched/idle.c b/kernel/sched/idle.c
-index 179d1d4..0fdceac 100644
+index 0fdceac..f88b79e 100644
 --- a/kernel/sched/idle.c
 +++ b/kernel/sched/idle.c
-@@ -391,7 +391,7 @@ static void set_next_task_idle(struct rq *rq, struct task_struct *next)
+@@ -391,13 +391,10 @@ static void set_next_task_idle(struct rq *rq, struct task_struct *next)
  	schedstat_inc(rq->sched_goidle);
  }
  
--static struct task_struct *
-+struct task_struct *
- pick_next_task_idle(struct rq *rq, struct task_struct *prev, struct rq_flags *rf)
+-struct task_struct *
+-pick_next_task_idle(struct rq *rq, struct task_struct *prev, struct rq_flags *rf)
++struct task_struct *pick_next_task_idle(struct rq *rq)
  {
  	struct task_struct *next = rq->idle;
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index c8870c5..66172a3 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -1821,6 +1821,9 @@ static inline bool sched_fair_runnable(struct rq *rq)
- 	return rq->cfs.nr_running > 0;
+ 
+-	WARN_ON_ONCE(prev || rf);
+-
+ 	set_next_task_idle(rq, next);
+ 
+ 	return next;
+diff --git a/kernel/sched/rt.c b/kernel/sched/rt.c
+index 9b8adc0..38027c0 100644
+--- a/kernel/sched/rt.c
++++ b/kernel/sched/rt.c
+@@ -1564,13 +1564,10 @@ static struct task_struct *_pick_next_task_rt(struct rq *rq)
+ 	return rt_task_of(rt_se);
  }
  
-+extern struct task_struct *pick_next_task_fair(struct rq *rq, struct task_struct *prev, struct rq_flags *rf);
-+extern struct task_struct *pick_next_task_idle(struct rq *rq, struct task_struct *prev, struct rq_flags *rf);
+-static struct task_struct *
+-pick_next_task_rt(struct rq *rq, struct task_struct *prev, struct rq_flags *rf)
++static struct task_struct *pick_next_task_rt(struct rq *rq)
+ {
+ 	struct task_struct *p;
+ 
+-	WARN_ON_ONCE(prev || rf);
+-
+ 	if (!sched_rt_runnable(rq))
+ 		return NULL;
+ 
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index 66172a3..75d96cc 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -1713,20 +1713,8 @@ struct sched_class {
+ 
+ 	void (*check_preempt_curr)(struct rq *rq, struct task_struct *p, int flags);
+ 
+-	/*
+-	 * Both @prev and @rf are optional and may be NULL, in which case the
+-	 * caller must already have invoked put_prev_task(rq, prev, rf).
+-	 *
+-	 * Otherwise it is the responsibility of the pick_next_task() to call
+-	 * put_prev_task() on the @prev task or something equivalent, IFF it
+-	 * returns a next task.
+-	 *
+-	 * In that case (@rf != NULL) it may return RETRY_TASK when it finds a
+-	 * higher prio class has runnable tasks.
+-	 */
+-	struct task_struct * (*pick_next_task)(struct rq *rq,
+-					       struct task_struct *prev,
+-					       struct rq_flags *rf);
++	struct task_struct *(*pick_next_task)(struct rq *rq);
 +
+ 	void (*put_prev_task)(struct rq *rq, struct task_struct *p);
+ 	void (*set_next_task)(struct rq *rq, struct task_struct *p);
+ 
+@@ -1822,7 +1810,7 @@ static inline bool sched_fair_runnable(struct rq *rq)
+ }
+ 
+ extern struct task_struct *pick_next_task_fair(struct rq *rq, struct task_struct *prev, struct rq_flags *rf);
+-extern struct task_struct *pick_next_task_idle(struct rq *rq, struct task_struct *prev, struct rq_flags *rf);
++extern struct task_struct *pick_next_task_idle(struct rq *rq);
+ 
  #ifdef CONFIG_SMP
  
- extern void update_group_capacity(struct sched_domain *sd, int cpu);
+diff --git a/kernel/sched/stop_task.c b/kernel/sched/stop_task.c
+index c064073..0aefdfb 100644
+--- a/kernel/sched/stop_task.c
++++ b/kernel/sched/stop_task.c
+@@ -34,11 +34,8 @@ static void set_next_task_stop(struct rq *rq, struct task_struct *stop)
+ 	stop->se.exec_start = rq_clock_task(rq);
+ }
+ 
+-static struct task_struct *
+-pick_next_task_stop(struct rq *rq, struct task_struct *prev, struct rq_flags *rf)
++static struct task_struct *pick_next_task_stop(struct rq *rq)
+ {
+-	WARN_ON_ONCE(prev || rf);
+-
+ 	if (!sched_stop_runnable(rq))
+ 		return NULL;
+ 
