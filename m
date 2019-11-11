@@ -2,42 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0808BF70D3
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 Nov 2019 10:32:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B8863F719A
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 Nov 2019 11:11:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726912AbfKKJc4 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 11 Nov 2019 04:32:56 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:55815 "EHLO
+        id S1727068AbfKKKLu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 11 Nov 2019 05:11:50 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:56043 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726845AbfKKJc4 (ORCPT
+        with ESMTP id S1726768AbfKKKLt (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 11 Nov 2019 04:32:56 -0500
+        Mon, 11 Nov 2019 05:11:49 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iU63q-00039c-2k; Mon, 11 Nov 2019 10:32:38 +0100
+        id 1iU6fc-00046R-6A; Mon, 11 Nov 2019 11:11:40 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 843B01C03AB;
-        Mon, 11 Nov 2019 10:32:36 +0100 (CET)
-Date:   Mon, 11 Nov 2019 09:32:36 -0000
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A7E4D1C0093;
+        Mon, 11 Nov 2019 11:11:39 +0100 (CET)
+Date:   Mon, 11 Nov 2019 10:11:39 -0000
+From:   "tip-bot2 for Jiri Slaby" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/fair: Better document newidle_balance()
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+Subject: [tip: core/stacktrace] stacktrace: Get rid of unneeded '!!' pattern
+Cc:     Joe Perches <joe@perches.com>, Jiri Slaby <jslaby@suse.cz>,
         Linus Torvalds <torvalds@linux-foundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>, bsegall@google.com,
-        dietmar.eggemann@arm.com, juri.lelli@redhat.com,
-        ktkhai@virtuozzo.com, mgorman@suse.de, qais.yousef@arm.com,
-        qperret@google.com, rostedt@goodmis.org,
-        valentin.schneider@arm.com, vincent.guittot@linaro.org,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20191108131909.488364308@infradead.org>
-References: <20191108131909.488364308@infradead.org>
+In-Reply-To: <20191111092647.27419-1-jslaby@suse.cz>
+References: <20191111092647.27419-1-jslaby@suse.cz>
 MIME-Version: 1.0
-Message-ID: <157346475624.29376.10025173920245642380.tip-bot2@tip-bot2>
+Message-ID: <157346709937.29376.10784180052617315961.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,55 +48,59 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the core/stacktrace branch of tip:
 
-Commit-ID:     7277a34c6be0b2972bdd1fea88c7cef409bed5b4
-Gitweb:        https://git.kernel.org/tip/7277a34c6be0b2972bdd1fea88c7cef409bed5b4
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Fri, 08 Nov 2019 14:15:55 +01:00
+Commit-ID:     4b48512c2e9c63b62d7da23563cdb224b4d61d72
+Gitweb:        https://git.kernel.org/tip/4b48512c2e9c63b62d7da23563cdb224b4d61d72
+Author:        Jiri Slaby <jslaby@suse.cz>
+AuthorDate:    Mon, 11 Nov 2019 10:26:47 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Mon, 11 Nov 2019 08:35:18 +01:00
+CommitterDate: Mon, 11 Nov 2019 10:30:59 +01:00
 
-sched/fair: Better document newidle_balance()
+stacktrace: Get rid of unneeded '!!' pattern
 
-Whilst chasing the pick_next_task() race, there was some confusion
-about the newidle_balance() return values. Document them.
+My commit b0c51f158455 ("stacktrace: Don't skip first entry on
+noncurrent tasks") adds one or zero to skipnr by "!!(current == tsk)".
 
-[ mingo: Minor edits. ]
+But the C99 standard says:
 
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+  The == (equal to) and != (not equal to) operators are
+  ...
+  Each of the operators yields 1 if the specified relation is true and 0
+  if it is false.
+
+So there is no need to prepend the above expression by "!!" -- remove it.
+
+Reported-by: Joe Perches <joe@perches.com>
+Signed-off-by: Jiri Slaby <jslaby@suse.cz>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: bsegall@google.com
-Cc: dietmar.eggemann@arm.com
-Cc: juri.lelli@redhat.com
-Cc: ktkhai@virtuozzo.com
-Cc: mgorman@suse.de
-Cc: qais.yousef@arm.com
-Cc: qperret@google.com
-Cc: rostedt@goodmis.org
-Cc: valentin.schneider@arm.com
-Cc: vincent.guittot@linaro.org
-Link: https://lkml.kernel.org/r/20191108131909.488364308@infradead.org
+Link: https://lkml.kernel.org/r/20191111092647.27419-1-jslaby@suse.cz
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- kernel/sched/fair.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ kernel/stacktrace.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 6e622f4..c48a695 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -9941,6 +9941,11 @@ static inline void nohz_newidle_balance(struct rq *this_rq) { }
- /*
-  * idle_balance is called by schedule() if this_cpu is about to become
-  * idle. Attempts to pull tasks from other CPUs.
-+ *
-+ * Returns:
-+ *   < 0 - we released the lock and there are !fair tasks present
-+ *     0 - failed, no new tasks
-+ *   > 0 - success, new (fair) tasks present
-  */
- int newidle_balance(struct rq *this_rq, struct rq_flags *rf)
- {
+diff --git a/kernel/stacktrace.c b/kernel/stacktrace.c
+index c9ea7eb..2af66e4 100644
+--- a/kernel/stacktrace.c
++++ b/kernel/stacktrace.c
+@@ -142,7 +142,7 @@ unsigned int stack_trace_save_tsk(struct task_struct *tsk, unsigned long *store,
+ 		.store	= store,
+ 		.size	= size,
+ 		/* skip this function if they are tracing us */
+-		.skip	= skipnr + !!(current == tsk),
++		.skip	= skipnr + (current == tsk),
+ 	};
+ 
+ 	if (!try_get_task_stack(tsk))
+@@ -300,7 +300,7 @@ unsigned int stack_trace_save_tsk(struct task_struct *task,
+ 		.entries	= store,
+ 		.max_entries	= size,
+ 		/* skip this function if they are tracing us */
+-		.skip	= skipnr + !!(current == task),
++		.skip	= skipnr + (current == task),
+ 	};
+ 
+ 	save_stack_trace_tsk(task, &trace);
