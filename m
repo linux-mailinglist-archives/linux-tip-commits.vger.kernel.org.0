@@ -2,41 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E0733F6EDF
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 Nov 2019 08:02:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A30A8F70CD
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 Nov 2019 10:32:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726853AbfKKHCy (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 11 Nov 2019 02:02:54 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:55462 "EHLO
+        id S1727148AbfKKJcn (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 11 Nov 2019 04:32:43 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:55754 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726791AbfKKHCy (ORCPT
+        with ESMTP id S1726976AbfKKJcm (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 11 Nov 2019 02:02:54 -0500
+        Mon, 11 Nov 2019 04:32:42 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iU3ic-000144-Bv; Mon, 11 Nov 2019 08:02:34 +0100
+        id 1iU63l-000379-BG; Mon, 11 Nov 2019 10:32:33 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5F6F81C0093;
-        Mon, 11 Nov 2019 08:02:33 +0100 (CET)
-Date:   Mon, 11 Nov 2019 07:02:32 -0000
-From:   "tip-bot2 for Zheng Yongjun" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id F0E1D1C03AB;
+        Mon, 11 Nov 2019 10:32:32 +0100 (CET)
+Date:   Mon, 11 Nov 2019 09:32:32 -0000
+From:   "tip-bot2 for Frederic Weisbecker" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/x86/amd: Remove set but not used variable 'active'
-Cc:     Hulk Robot <hulkci@huawei.com>,
-        Zheng Yongjun <zhengyongjun3@huawei.com>, <acme@kernel.org>,
-        <alexander.shishkin@linux.intel.com>, <mark.rutland@arm.com>,
-        <peterz@infradead.org>,
+Subject: [tip: irq/core] irq_work: Fix irq_work_claim() memory ordering
+Cc:     Frederic Weisbecker <frederic@kernel.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
+        "Paul E . McKenney" <paulmck@linux.vnet.ibm.com>,
+        Peter Zijlstra <peterz@infradead.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20191110094453.113001-1-zhengyongjun3@huawei.com>
-References: <20191110094453.113001-1-zhengyongjun3@huawei.com>
+In-Reply-To: <20191108160858.31665-3-frederic@kernel.org>
+References: <20191108160858.31665-3-frederic@kernel.org>
 MIME-Version: 1.0
-Message-ID: <157345575289.29376.9588442641574553152.tip-bot2@tip-bot2>
+Message-ID: <157346475270.29376.12510079913530639928.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,62 +49,72 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/core branch of tip:
+The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     010fe58de2d5ebb86903f74db4402c474434e08c
-Gitweb:        https://git.kernel.org/tip/010fe58de2d5ebb86903f74db4402c474434e08c
-Author:        Zheng Yongjun <zhengyongjun3@huawei.com>
-AuthorDate:    Sun, 10 Nov 2019 17:44:53 +08:00
+Commit-ID:     25269871db1ad0cbbaafd5098cbdb40c8db4ccb9
+Gitweb:        https://git.kernel.org/tip/25269871db1ad0cbbaafd5098cbdb40c8db4ccb9
+Author:        Frederic Weisbecker <frederic@kernel.org>
+AuthorDate:    Fri, 08 Nov 2019 17:08:56 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Mon, 11 Nov 2019 08:01:16 +01:00
+CommitterDate: Mon, 11 Nov 2019 09:03:31 +01:00
 
-perf/x86/amd: Remove set but not used variable 'active'
+irq_work: Fix irq_work_claim() memory ordering
 
-'-Wunused-but-set-variable' triggers this warning:
+When irq_work_claim() finds IRQ_WORK_PENDING flag already set, we just
+return and don't raise a new IPI. We expect the destination to see
+and handle our latest updades thanks to the pairing atomic_xchg()
+in irq_work_run_list().
 
-  arch/x86/events/amd/core.c: In function amd_pmu_handle_irq:
-  arch/x86/events/amd/core.c:656:6: warning: variable active set but not used [-Wunused-but-set-variable]
+But cmpxchg() doesn't guarantee a full memory barrier upon failure. So
+it's possible that the destination misses our latest updates.
 
-GCC is right, 'active' is not used anymore.
+So use atomic_fetch_or() instead that is unconditionally fully ordered
+and also performs exactly what we want here and simplify the code.
 
-This variable was introduced earlier this year and then removed in:
-
-  df4d29732fdad perf/x86/amd: Change/fix NMI latency mitigation to use a timestamp
-
-[ mingo: Improved the changelog. ]
-
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Zheng Yongjun <zhengyongjun3@huawei.com>
-Cc: <acme@kernel.org>
-Cc: <alexander.shishkin@linux.intel.com>
-Cc: <mark.rutland@arm.com>
-Cc: <peterz@infradead.org>
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Paul E . McKenney <paulmck@linux.vnet.ibm.com>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20191110094453.113001-1-zhengyongjun3@huawei.com
+Link: https://lkml.kernel.org/r/20191108160858.31665-3-frederic@kernel.org
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- arch/x86/events/amd/core.c |  9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+ kernel/irq_work.c | 22 +++++++---------------
+ 1 file changed, 7 insertions(+), 15 deletions(-)
 
-diff --git a/arch/x86/events/amd/core.c b/arch/x86/events/amd/core.c
-index 64c3e70..1ff652a 100644
---- a/arch/x86/events/amd/core.c
-+++ b/arch/x86/events/amd/core.c
-@@ -653,14 +653,7 @@ static void amd_pmu_disable_event(struct perf_event *event)
- static int amd_pmu_handle_irq(struct pt_regs *regs)
+diff --git a/kernel/irq_work.c b/kernel/irq_work.c
+index df0dbf4..255454a 100644
+--- a/kernel/irq_work.c
++++ b/kernel/irq_work.c
+@@ -29,24 +29,16 @@ static DEFINE_PER_CPU(struct llist_head, lazy_list);
+  */
+ static bool irq_work_claim(struct irq_work *work)
  {
- 	struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
--	int active, handled;
--
--	/*
--	 * Obtain the active count before calling x86_pmu_handle_irq() since
--	 * it is possible that x86_pmu_handle_irq() may make a counter
--	 * inactive (through x86_pmu_stop).
--	 */
--	active = __bitmap_weight(cpuc->active_mask, X86_PMC_IDX_MAX);
-+	int handled;
+-	int flags, oflags, nflags;
++	int oflags;
  
- 	/* Process any counter overflows */
- 	handled = x86_pmu_handle_irq(regs);
++	oflags = atomic_fetch_or(IRQ_WORK_CLAIMED, &work->flags);
+ 	/*
+-	 * Start with our best wish as a premise but only trust any
+-	 * flag value after cmpxchg() result.
++	 * If the work is already pending, no need to raise the IPI.
++	 * The pairing atomic_xchg() in irq_work_run() makes sure
++	 * everything we did before is visible.
+ 	 */
+-	flags = atomic_read(&work->flags) & ~IRQ_WORK_PENDING;
+-	for (;;) {
+-		nflags = flags | IRQ_WORK_CLAIMED;
+-		oflags = atomic_cmpxchg(&work->flags, flags, nflags);
+-		if (oflags == flags)
+-			break;
+-		if (oflags & IRQ_WORK_PENDING)
+-			return false;
+-		flags = oflags;
+-		cpu_relax();
+-	}
+-
++	if (oflags & IRQ_WORK_PENDING)
++		return false;
+ 	return true;
+ }
+ 
