@@ -2,41 +2,42 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7439BF70CF
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 Nov 2019 10:32:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5BD9EF70D7
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 Nov 2019 10:33:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727176AbfKKJcr (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 11 Nov 2019 04:32:47 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:55769 "EHLO
+        id S1727265AbfKKJdC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 11 Nov 2019 04:33:02 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:55834 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726976AbfKKJcr (ORCPT
+        with ESMTP id S1727262AbfKKJdB (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 11 Nov 2019 04:32:47 -0500
+        Mon, 11 Nov 2019 04:33:01 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iU63m-00037x-7n; Mon, 11 Nov 2019 10:32:34 +0100
+        id 1iU63m-00038T-RS; Mon, 11 Nov 2019 10:32:35 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id DB3A51C03AB;
-        Mon, 11 Nov 2019 10:32:33 +0100 (CET)
-Date:   Mon, 11 Nov 2019 09:32:33 -0000
-From:   "tip-bot2 for Zheng Yongjun" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 6B4DA1C0093;
+        Mon, 11 Nov 2019 10:32:34 +0100 (CET)
+Date:   Mon, 11 Nov 2019 09:32:34 -0000
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/x86/amd: Remove set but not used variable 'active'
-Cc:     Hulk Robot <hulkci@huawei.com>,
-        Zheng Yongjun <zhengyongjun3@huawei.com>, <acme@kernel.org>,
-        <alexander.shishkin@linux.intel.com>, <mark.rutland@arm.com>,
-        <peterz@infradead.org>,
+Subject: [tip: sched/core] sched/core: Further clarify sched_class::set_next_task()
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
+        Thomas Gleixner <tglx@linutronix.de>, bsegall@google.com,
+        dietmar.eggemann@arm.com, juri.lelli@redhat.com,
+        ktkhai@virtuozzo.com, mgorman@suse.de, qais.yousef@arm.com,
+        qperret@google.com, rostedt@goodmis.org,
+        valentin.schneider@arm.com, vincent.guittot@linaro.org,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20191110094453.113001-1-zhengyongjun3@huawei.com>
-References: <20191110094453.113001-1-zhengyongjun3@huawei.com>
+In-Reply-To: <20191108131909.775434698@infradead.org>
+References: <20191108131909.775434698@infradead.org>
 MIME-Version: 1.0
-Message-ID: <157346475356.29376.17366628370555604591.tip-bot2@tip-bot2>
+Message-ID: <157346475407.29376.10359988629214177511.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,73 +51,185 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/core branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     8f05c1ff8bfb8cbae0898e5dc6791927d1e5c503
-Gitweb:        https://git.kernel.org/tip/8f05c1ff8bfb8cbae0898e5dc6791927d1e5c503
-Author:        Zheng Yongjun <zhengyongjun3@huawei.com>
-AuthorDate:    Sun, 10 Nov 2019 17:44:53 +08:00
+Commit-ID:     a0e813f26ebcb25c0b5e504498fbd796cca1a4ba
+Gitweb:        https://git.kernel.org/tip/a0e813f26ebcb25c0b5e504498fbd796cca1a4ba
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Fri, 08 Nov 2019 14:16:00 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Mon, 11 Nov 2019 08:31:55 +01:00
+CommitterDate: Mon, 11 Nov 2019 08:35:21 +01:00
 
-perf/x86/amd: Remove set but not used variable 'active'
+sched/core: Further clarify sched_class::set_next_task()
 
-'-Wunused-but-set-variable' triggers this warning:
+It turns out there really is something special to the first
+set_next_task() invocation. In specific the 'change' pattern really
+should not cause balance callbacks.
 
-  arch/x86/events/amd/core.c: In function amd_pmu_handle_irq:
-  arch/x86/events/amd/core.c:656:6: warning: variable active set but not used [-Wunused-but-set-variable]
-
-GCC is right, 'active' is not used anymore.
-
-This variable was introduced earlier this year and then removed in:
-
-  df4d29732fdad perf/x86/amd: Change/fix NMI latency mitigation to use a timestamp
-
-[ mingo: Improved the changelog, fixed build warning caused by this fix, improved surrounding code. ]
-
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Zheng Yongjun <zhengyongjun3@huawei.com>
-Cc: <acme@kernel.org>
-Cc: <alexander.shishkin@linux.intel.com>
-Cc: <mark.rutland@arm.com>
-Cc: <peterz@infradead.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20191110094453.113001-1-zhengyongjun3@huawei.com
+Cc: bsegall@google.com
+Cc: dietmar.eggemann@arm.com
+Cc: juri.lelli@redhat.com
+Cc: ktkhai@virtuozzo.com
+Cc: mgorman@suse.de
+Cc: qais.yousef@arm.com
+Cc: qperret@google.com
+Cc: rostedt@goodmis.org
+Cc: valentin.schneider@arm.com
+Cc: vincent.guittot@linaro.org
+Fixes: f95d4eaee6d0 ("sched/{rt,deadline}: Fix set_next_task vs pick_next_task")
+Link: https://lkml.kernel.org/r/20191108131909.775434698@infradead.org
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- arch/x86/events/amd/core.c | 13 ++-----------
- 1 file changed, 2 insertions(+), 11 deletions(-)
+ kernel/sched/deadline.c  | 7 +++++--
+ kernel/sched/fair.c      | 2 +-
+ kernel/sched/idle.c      | 4 ++--
+ kernel/sched/rt.c        | 7 +++++--
+ kernel/sched/sched.h     | 4 ++--
+ kernel/sched/stop_task.c | 4 ++--
+ 6 files changed, 17 insertions(+), 11 deletions(-)
 
-diff --git a/arch/x86/events/amd/core.c b/arch/x86/events/amd/core.c
-index 64c3e70..a7752cd 100644
---- a/arch/x86/events/amd/core.c
-+++ b/arch/x86/events/amd/core.c
-@@ -652,15 +652,7 @@ static void amd_pmu_disable_event(struct perf_event *event)
-  */
- static int amd_pmu_handle_irq(struct pt_regs *regs)
+diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
+index f7fbb44..43323f8 100644
+--- a/kernel/sched/deadline.c
++++ b/kernel/sched/deadline.c
+@@ -1743,13 +1743,16 @@ static void start_hrtick_dl(struct rq *rq, struct task_struct *p)
+ }
+ #endif
+ 
+-static void set_next_task_dl(struct rq *rq, struct task_struct *p)
++static void set_next_task_dl(struct rq *rq, struct task_struct *p, bool first)
  {
--	struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
--	int active, handled;
--
--	/*
--	 * Obtain the active count before calling x86_pmu_handle_irq() since
--	 * it is possible that x86_pmu_handle_irq() may make a counter
--	 * inactive (through x86_pmu_stop).
--	 */
--	active = __bitmap_weight(cpuc->active_mask, X86_PMC_IDX_MAX);
-+	int handled;
+ 	p->se.exec_start = rq_clock_task(rq);
  
- 	/* Process any counter overflows */
- 	handled = x86_pmu_handle_irq(regs);
-@@ -670,8 +662,7 @@ static int amd_pmu_handle_irq(struct pt_regs *regs)
- 	 * NMIs will be claimed if arriving within that window.
- 	 */
- 	if (handled) {
--		this_cpu_write(perf_nmi_tstamp,
--			       jiffies + perf_nmi_window);
-+		this_cpu_write(perf_nmi_tstamp, jiffies + perf_nmi_window);
+ 	/* You can't push away the running task */
+ 	dequeue_pushable_dl_task(rq, p);
  
- 		return handled;
- 	}
++	if (!first)
++		return;
++
+ 	if (hrtick_enabled(rq))
+ 		start_hrtick_dl(rq, p);
+ 
+@@ -1782,7 +1785,7 @@ static struct task_struct *pick_next_task_dl(struct rq *rq)
+ 	dl_se = pick_next_dl_entity(rq, dl_rq);
+ 	BUG_ON(!dl_se);
+ 	p = dl_task_of(dl_se);
+-	set_next_task_dl(rq, p);
++	set_next_task_dl(rq, p, true);
+ 	return p;
+ }
+ 
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index ba97d1a..81eba55 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -10344,7 +10344,7 @@ static void switched_to_fair(struct rq *rq, struct task_struct *p)
+  * This routine is mostly called to set cfs_rq->curr field when a task
+  * migrates between groups/classes.
+  */
+-static void set_next_task_fair(struct rq *rq, struct task_struct *p)
++static void set_next_task_fair(struct rq *rq, struct task_struct *p, bool first)
+ {
+ 	struct sched_entity *se = &p->se;
+ 
+diff --git a/kernel/sched/idle.c b/kernel/sched/idle.c
+index f88b79e..428cd05 100644
+--- a/kernel/sched/idle.c
++++ b/kernel/sched/idle.c
+@@ -385,7 +385,7 @@ static void put_prev_task_idle(struct rq *rq, struct task_struct *prev)
+ {
+ }
+ 
+-static void set_next_task_idle(struct rq *rq, struct task_struct *next)
++static void set_next_task_idle(struct rq *rq, struct task_struct *next, bool first)
+ {
+ 	update_idle_core(rq);
+ 	schedstat_inc(rq->sched_goidle);
+@@ -395,7 +395,7 @@ struct task_struct *pick_next_task_idle(struct rq *rq)
+ {
+ 	struct task_struct *next = rq->idle;
+ 
+-	set_next_task_idle(rq, next);
++	set_next_task_idle(rq, next, true);
+ 
+ 	return next;
+ }
+diff --git a/kernel/sched/rt.c b/kernel/sched/rt.c
+index 38027c0..e591d40 100644
+--- a/kernel/sched/rt.c
++++ b/kernel/sched/rt.c
+@@ -1515,13 +1515,16 @@ static void check_preempt_curr_rt(struct rq *rq, struct task_struct *p, int flag
+ #endif
+ }
+ 
+-static inline void set_next_task_rt(struct rq *rq, struct task_struct *p)
++static inline void set_next_task_rt(struct rq *rq, struct task_struct *p, bool first)
+ {
+ 	p->se.exec_start = rq_clock_task(rq);
+ 
+ 	/* The running task is never eligible for pushing */
+ 	dequeue_pushable_task(rq, p);
+ 
++	if (!first)
++		return;
++
+ 	/*
+ 	 * If prev task was rt, put_prev_task() has already updated the
+ 	 * utilization. We only care of the case where we start to schedule a
+@@ -1572,7 +1575,7 @@ static struct task_struct *pick_next_task_rt(struct rq *rq)
+ 		return NULL;
+ 
+ 	p = _pick_next_task_rt(rq);
+-	set_next_task_rt(rq, p);
++	set_next_task_rt(rq, p, true);
+ 	return p;
+ }
+ 
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index 75d96cc..05c2827 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -1716,7 +1716,7 @@ struct sched_class {
+ 	struct task_struct *(*pick_next_task)(struct rq *rq);
+ 
+ 	void (*put_prev_task)(struct rq *rq, struct task_struct *p);
+-	void (*set_next_task)(struct rq *rq, struct task_struct *p);
++	void (*set_next_task)(struct rq *rq, struct task_struct *p, bool first);
+ 
+ #ifdef CONFIG_SMP
+ 	int (*balance)(struct rq *rq, struct task_struct *prev, struct rq_flags *rf);
+@@ -1768,7 +1768,7 @@ static inline void put_prev_task(struct rq *rq, struct task_struct *prev)
+ static inline void set_next_task(struct rq *rq, struct task_struct *next)
+ {
+ 	WARN_ON_ONCE(rq->curr != next);
+-	next->sched_class->set_next_task(rq, next);
++	next->sched_class->set_next_task(rq, next, false);
+ }
+ 
+ #ifdef CONFIG_SMP
+diff --git a/kernel/sched/stop_task.c b/kernel/sched/stop_task.c
+index 0aefdfb..4c9e997 100644
+--- a/kernel/sched/stop_task.c
++++ b/kernel/sched/stop_task.c
+@@ -29,7 +29,7 @@ check_preempt_curr_stop(struct rq *rq, struct task_struct *p, int flags)
+ 	/* we're never preempted */
+ }
+ 
+-static void set_next_task_stop(struct rq *rq, struct task_struct *stop)
++static void set_next_task_stop(struct rq *rq, struct task_struct *stop, bool first)
+ {
+ 	stop->se.exec_start = rq_clock_task(rq);
+ }
+@@ -39,7 +39,7 @@ static struct task_struct *pick_next_task_stop(struct rq *rq)
+ 	if (!sched_stop_runnable(rq))
+ 		return NULL;
+ 
+-	set_next_task_stop(rq, rq->stop);
++	set_next_task_stop(rq, rq->stop, true);
+ 	return rq->stop;
+ }
+ 
