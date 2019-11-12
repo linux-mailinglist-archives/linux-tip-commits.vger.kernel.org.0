@@ -2,42 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 93360F8E57
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Nov 2019 12:21:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C416EF8E80
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Nov 2019 12:23:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727612AbfKLLVX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 12 Nov 2019 06:21:23 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:33695 "EHLO
+        id S1727133AbfKLLSD (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 12 Nov 2019 06:18:03 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:33457 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725865AbfKLLSQ (ORCPT
+        with ESMTP id S1727122AbfKLLSC (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 12 Nov 2019 06:18:16 -0500
+        Tue, 12 Nov 2019 06:18:02 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iUUBL-0000Hl-UP; Tue, 12 Nov 2019 12:18:00 +0100
+        id 1iUUBI-0000IF-Vu; Tue, 12 Nov 2019 12:17:57 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 8BF281C047B;
-        Tue, 12 Nov 2019 12:17:54 +0100 (CET)
-Date:   Tue, 12 Nov 2019 11:17:54 -0000
-From:   "tip-bot2 for Masami Hiramatsu" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 7059E1C0483;
+        Tue, 12 Nov 2019 12:17:55 +0100 (CET)
+Date:   Tue, 12 Nov 2019 11:17:55 -0000
+From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf probe: Return a better scope DIE if there is no
- best scope
-Cc:     Masami Hiramatsu <mhiramat@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
+Subject: [tip: perf/core] perf machine: Add kernel_dso() method
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        Jiri Olsa <jolsa@kernel.org>,
         Namhyung Kim <namhyung@kernel.org>,
-        Ravi Bangoria <ravi.bangoria@linux.ibm.com>,
-        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
-        Tom Zanussi <tom.zanussi@linux.intel.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <157291300887.19771.14936015360963292236.stgit@devnote2>
-References: <157291300887.19771.14936015360963292236.stgit@devnote2>
+In-Reply-To: <tip-9s1bgoxxhlnu037e1nqx0tw3@git.kernel.org>
+References: <tip-9s1bgoxxhlnu037e1nqx0tw3@git.kernel.org>
 MIME-Version: 1.0
-Message-ID: <157355747423.29376.8608445663818956550.tip-bot2@tip-bot2>
+Message-ID: <157355747511.29376.6682944329164352135.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -53,83 +50,58 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     c701636aeec4c173208697d68da6e4271125564b
-Gitweb:        https://git.kernel.org/tip/c701636aeec4c173208697d68da6e4271125564b
-Author:        Masami Hiramatsu <mhiramat@kernel.org>
-AuthorDate:    Tue, 05 Nov 2019 09:16:49 +09:00
+Commit-ID:     93730f85eb37d9cf592c18dad7e488abed09b461
+Gitweb:        https://git.kernel.org/tip/93730f85eb37d9cf592c18dad7e488abed09b461
+Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
+AuthorDate:    Thu, 31 Oct 2019 15:22:24 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Thu, 07 Nov 2019 08:30:18 -03:00
 
-perf probe: Return a better scope DIE if there is no best scope
+perf machine: Add kernel_dso() method
 
-Make find_best_scope() returns innermost DIE at given address if there
-is no best matched scope DIE. Since Gcc sometimes generates intuitively
-strange line info which is out of inlined function address range, we
-need this fixup.
+To reduce boilerplate in some places.
 
-Without this, sometimes perf probe failed to probe on a line inside an
-inlined function:
-
-  # perf probe -D ksys_open:3
-  Failed to find scope of probe point.
-    Error: Failed to add events.
-
-With this fix, 'perf probe' can probe it:
-
-  # perf probe -D ksys_open:3
-  p:probe/ksys_open _text+25707308
-  p:probe/ksys_open_1 _text+25710596
-  p:probe/ksys_open_2 _text+25711114
-  p:probe/ksys_open_3 _text+25711343
-  p:probe/ksys_open_4 _text+25714058
-  p:probe/ksys_open_5 _text+2819653
-  p:probe/ksys_open_6 _text+2819701
-
-Signed-off-by: Masami Hiramatsu <mhiramat@kernel.org>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Cc: Steven Rostedt (VMware) <rostedt@goodmis.org>
-Cc: Tom Zanussi <tom.zanussi@linux.intel.com>
-Link: http://lore.kernel.org/lkml/157291300887.19771.14936015360963292236.stgit@devnote2
+Link: https://lkml.kernel.org/n/tip-9s1bgoxxhlnu037e1nqx0tw3@git.kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/probe-finder.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ tools/perf/util/machine.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/tools/perf/util/probe-finder.c b/tools/perf/util/probe-finder.c
-index 88e17a4..582f8c3 100644
---- a/tools/perf/util/probe-finder.c
-+++ b/tools/perf/util/probe-finder.c
-@@ -744,6 +744,16 @@ static int find_best_scope_cb(Dwarf_Die *fn_die, void *data)
- 	return 0;
- }
+diff --git a/tools/perf/util/machine.c b/tools/perf/util/machine.c
+index 24d9e28..e768ef2 100644
+--- a/tools/perf/util/machine.c
++++ b/tools/perf/util/machine.c
+@@ -42,6 +42,11 @@
  
-+/* Return innermost DIE */
-+static int find_inner_scope_cb(Dwarf_Die *fn_die, void *data)
+ static void __machine__remove_thread(struct machine *machine, struct thread *th, bool lock);
+ 
++static struct dso *machine__kernel_dso(struct machine *machine)
 +{
-+	struct find_scope_param *fsp = data;
-+
-+	memcpy(fsp->die_mem, fn_die, sizeof(Dwarf_Die));
-+	fsp->found = true;
-+	return 1;
++	return machine->vmlinux_map->dso;
 +}
 +
- /* Find an appropriate scope fits to given conditions */
- static Dwarf_Die *find_best_scope(struct probe_finder *pf, Dwarf_Die *die_mem)
+ static void dsos__init(struct dsos *dsos)
  {
-@@ -755,8 +765,13 @@ static Dwarf_Die *find_best_scope(struct probe_finder *pf, Dwarf_Die *die_mem)
- 		.die_mem = die_mem,
- 		.found = false,
- 	};
-+	int ret;
+ 	INIT_LIST_HEAD(&dsos->head);
+@@ -861,7 +866,7 @@ size_t machine__fprintf_vmlinux_path(struct machine *machine, FILE *fp)
+ {
+ 	int i;
+ 	size_t printed = 0;
+-	struct dso *kdso = machine__kernel_map(machine)->dso;
++	struct dso *kdso = machine__kernel_dso(machine);
  
--	cu_walk_functions_at(&pf->cu_die, pf->addr, find_best_scope_cb, &fsp);
-+	ret = cu_walk_functions_at(&pf->cu_die, pf->addr, find_best_scope_cb,
-+				   &fsp);
-+	if (!ret && !fsp.found)
-+		cu_walk_functions_at(&pf->cu_die, pf->addr,
-+				     find_inner_scope_cb, &fsp);
- 
- 	return fsp.found ? die_mem : NULL;
- }
+ 	if (kdso->has_build_id) {
+ 		char filename[PATH_MAX];
+@@ -1543,8 +1548,7 @@ static bool perf_event__is_extra_kernel_mmap(struct machine *machine,
+ static int machine__process_extra_kernel_map(struct machine *machine,
+ 					     union perf_event *event)
+ {
+-	struct map *kernel_map = machine__kernel_map(machine);
+-	struct dso *kernel = kernel_map ? kernel_map->dso : NULL;
++	struct dso *kernel = machine__kernel_dso(machine);
+ 	struct extra_kernel_map xm = {
+ 		.start = event->mmap.start,
+ 		.end   = event->mmap.start + event->mmap.len,
