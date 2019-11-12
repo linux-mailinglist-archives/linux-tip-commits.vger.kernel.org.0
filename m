@@ -2,37 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4EEFCF8CCB
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Nov 2019 11:27:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 43840F8CC7
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Nov 2019 11:27:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727128AbfKLK1P (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 12 Nov 2019 05:27:15 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:33201 "EHLO
+        id S1726924AbfKLK1K (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 12 Nov 2019 05:27:10 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:33196 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726212AbfKLK1O (ORCPT
+        with ESMTP id S1726497AbfKLK1K (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 12 Nov 2019 05:27:14 -0500
+        Tue, 12 Nov 2019 05:27:10 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iUTO4-0007n4-Gd; Tue, 12 Nov 2019 11:27:04 +0100
+        id 1iUTO4-0007n6-UD; Tue, 12 Nov 2019 11:27:05 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 28E811C0084;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 942A71C0357;
         Tue, 12 Nov 2019 11:27:04 +0100 (CET)
-Date:   Tue, 12 Nov 2019 10:27:03 -0000
-From:   "tip-bot2 for Xinwei Kong" <tip-bot2@linutronix.de>
+Date:   Tue, 12 Nov 2019 10:27:04 -0000
+From:   "tip-bot2 for Dominik Brodowski" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: efi/core] efi: libstub/tpm: enable tpm eventlog function for
- ARM platforms
-Cc:     Zou Cao <zoucao@linux.alibaba.com>,
-        Xinwei Kong <kong.kongxinwei@hisilicon.com>,
+Subject: [tip: efi/core] x86: efi/random: Invoke EFI_RNG_PROTOCOL to seed the
+ UEFI RNG table
+Cc:     Dominik Brodowski <linux@dominikbrodowski.net>,
         Ard Biesheuvel <ardb@kernel.org>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <157355442380.29376.1364588538431617460.tip-bot2@tip-bot2>
+Message-ID: <157355442425.29376.14080787563048463732.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,36 +47,92 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the efi/core branch of tip:
 
-Commit-ID:     d99c1ba6a73b9e93e2884b7893fe19e3c082ba03
-Gitweb:        https://git.kernel.org/tip/d99c1ba6a73b9e93e2884b7893fe19e3c082ba03
-Author:        Xinwei Kong <kong.kongxinwei@hisilicon.com>
-AuthorDate:    Thu, 07 Nov 2019 16:24:21 +08:00
+Commit-ID:     0d95981438c3bdb53cc99b0fb656d24d7a80e1f3
+Gitweb:        https://git.kernel.org/tip/0d95981438c3bdb53cc99b0fb656d24d7a80e1f3
+Author:        Dominik Brodowski <linux@dominikbrodowski.net>
+AuthorDate:    Wed, 06 Nov 2019 08:06:13 +01:00
 Committer:     Ard Biesheuvel <ardb@kernel.org>
 CommitterDate: Thu, 07 Nov 2019 10:18:45 +01:00
 
-efi: libstub/tpm: enable tpm eventlog function for ARM platforms
+x86: efi/random: Invoke EFI_RNG_PROTOCOL to seed the UEFI RNG table
 
-Wire up the existing code for ARM that loads the TPM event log into
-OS accessible buffers while running the EFI stub so that the kernel
-proper can access it at runtime.
+Invoke the EFI_RNG_PROTOCOL protocol in the context of the x86 EFI stub,
+same as is done on arm/arm64 since commit 568bc4e87033 ("efi/arm*/libstub:
+Invoke EFI_RNG_PROTOCOL to seed the UEFI RNG table"). Within the stub,
+a Linux-specific RNG seed UEFI config table will be seeded. The EFI routines
+in the core kernel will pick that up later, yet still early during boot,
+to seed the kernel entropy pool. If CONFIG_RANDOM_TRUST_BOOTLOADER, entropy
+is credited for this seed.
 
-Tested-by: Zou Cao <zoucao@linux.alibaba.com>
-Signed-off-by: Xinwei Kong <kong.kongxinwei@hisilicon.com>
+Signed-off-by: Dominik Brodowski <linux@dominikbrodowski.net>
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- drivers/firmware/efi/libstub/arm-stub.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/boot/compressed/eboot.c       | 3 +++
+ drivers/firmware/efi/libstub/Makefile  | 5 +++--
+ drivers/firmware/efi/libstub/efistub.h | 2 --
+ include/linux/efi.h                    | 2 ++
+ 4 files changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/firmware/efi/libstub/arm-stub.c b/drivers/firmware/efi/libstub/arm-stub.c
-index c382a48..817237c 100644
---- a/drivers/firmware/efi/libstub/arm-stub.c
-+++ b/drivers/firmware/efi/libstub/arm-stub.c
-@@ -189,6 +189,8 @@ unsigned long efi_entry(void *handle, efi_system_table_t *sys_table,
- 		goto fail_free_cmdline;
- 	}
+diff --git a/arch/x86/boot/compressed/eboot.c b/arch/x86/boot/compressed/eboot.c
+index 82bc60c..68945c5 100644
+--- a/arch/x86/boot/compressed/eboot.c
++++ b/arch/x86/boot/compressed/eboot.c
+@@ -782,6 +782,9 @@ efi_main(struct efi_config *c, struct boot_params *boot_params)
  
-+	efi_retrieve_tpm2_eventlog(sys_table);
-+
  	/* Ask the firmware to clear memory on unclean shutdown */
  	efi_enable_reset_attack_mitigation(sys_table);
++
++	efi_random_get_seed(sys_table);
++
+ 	efi_retrieve_tpm2_eventlog(sys_table);
  
+ 	setup_graphics(boot_params);
+diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
+index ee0661d..c35f893 100644
+--- a/drivers/firmware/efi/libstub/Makefile
++++ b/drivers/firmware/efi/libstub/Makefile
+@@ -38,7 +38,8 @@ OBJECT_FILES_NON_STANDARD	:= y
+ # Prevents link failures: __sanitizer_cov_trace_pc() is not linked in.
+ KCOV_INSTRUMENT			:= n
+ 
+-lib-y				:= efi-stub-helper.o gop.o secureboot.o tpm.o
++lib-y				:= efi-stub-helper.o gop.o secureboot.o tpm.o \
++				   random.o
+ 
+ # include the stub's generic dependencies from lib/ when building for ARM/arm64
+ arm-deps-y := fdt_rw.c fdt_ro.c fdt_wip.c fdt.c fdt_empty_tree.c fdt_sw.c
+@@ -47,7 +48,7 @@ arm-deps-$(CONFIG_ARM64) += sort.c
+ $(obj)/lib-%.o: $(srctree)/lib/%.c FORCE
+ 	$(call if_changed_rule,cc_o_c)
+ 
+-lib-$(CONFIG_EFI_ARMSTUB)	+= arm-stub.o fdt.o string.o random.o \
++lib-$(CONFIG_EFI_ARMSTUB)	+= arm-stub.o fdt.o string.o \
+ 				   $(patsubst %.c,lib-%.o,$(arm-deps-y))
+ 
+ lib-$(CONFIG_ARM)		+= arm32-stub.o
+diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
+index 7f1556f..05739ae 100644
+--- a/drivers/firmware/efi/libstub/efistub.h
++++ b/drivers/firmware/efi/libstub/efistub.h
+@@ -63,8 +63,6 @@ efi_status_t efi_random_alloc(efi_system_table_t *sys_table_arg,
+ 
+ efi_status_t check_platform_features(efi_system_table_t *sys_table_arg);
+ 
+-efi_status_t efi_random_get_seed(efi_system_table_t *sys_table_arg);
+-
+ void *get_efi_config_table(efi_system_table_t *sys_table, efi_guid_t guid);
+ 
+ /* Helper macros for the usual case of using simple C variables: */
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index d87acf6..028efa7 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -1645,6 +1645,8 @@ static inline void
+ efi_enable_reset_attack_mitigation(efi_system_table_t *sys_table_arg) { }
+ #endif
+ 
++efi_status_t efi_random_get_seed(efi_system_table_t *sys_table_arg);
++
+ void efi_retrieve_tpm2_eventlog(efi_system_table_t *sys_table);
+ 
+ /*
