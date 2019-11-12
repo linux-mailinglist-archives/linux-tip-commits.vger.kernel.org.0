@@ -2,40 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E590F8E51
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Nov 2019 12:21:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9781FF8E44
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Nov 2019 12:21:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727032AbfKLLVP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 12 Nov 2019 06:21:15 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:33740 "EHLO
+        id S1727442AbfKLLSU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 12 Nov 2019 06:18:20 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:33791 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727290AbfKLLSS (ORCPT
+        with ESMTP id S1727417AbfKLLSU (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 12 Nov 2019 06:18:18 -0500
+        Tue, 12 Nov 2019 06:18:20 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iUUBU-0000VP-A1; Tue, 12 Nov 2019 12:18:08 +0100
+        id 1iUUBZ-0000Wg-Rh; Tue, 12 Nov 2019 12:18:14 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id ABB3D1C04C9;
-        Tue, 12 Nov 2019 12:18:04 +0100 (CET)
-Date:   Tue, 12 Nov 2019 11:18:04 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id EAAB81C0084;
+        Tue, 12 Nov 2019 12:18:05 +0100 (CET)
+Date:   Tue, 12 Nov 2019 11:18:05 -0000
 From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf map_groups: Introduce for_each_entry() and
- for_each_entry_safe() iterators
+Subject: [tip: perf/core] perf map: Allow map__next() to receive a NULL arg
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         Andi Kleen <ak@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>,
         Namhyung Kim <namhyung@kernel.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <tip-gc3go6fmdn30twusg91t2q56@git.kernel.org>
-References: <tip-gc3go6fmdn30twusg91t2q56@git.kernel.org>
+In-Reply-To: <tip-pbde2ucn49khnrebclys9pny@git.kernel.org>
+References: <tip-pbde2ucn49khnrebclys9pny@git.kernel.org>
 MIME-Version: 1.0
-Message-ID: <157355748426.29376.10807971722624153496.tip-bot2@tip-bot2>
+Message-ID: <157355748556.29376.11680687534918838530.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,171 +50,50 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     50481461cfe937289724643691a752fa15a600c9
-Gitweb:        https://git.kernel.org/tip/50481461cfe937289724643691a752fa15a600c9
+Commit-ID:     20419d3a5bc0a278ed7e2ee54943674004411933
+Gitweb:        https://git.kernel.org/tip/20419d3a5bc0a278ed7e2ee54943674004411933
 Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Mon, 28 Oct 2019 11:55:28 -03:00
+AuthorDate:    Mon, 28 Oct 2019 11:50:12 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Wed, 06 Nov 2019 15:49:39 -03:00
+CommitterDate: Wed, 06 Nov 2019 15:43:06 -03:00
 
-perf map_groups: Introduce for_each_entry() and for_each_entry_safe() iterators
+perf map: Allow map__next() to receive a NULL arg
 
-To reduce boilerplate, providing a more compact form to iterate over the
-maps in a map_group.
+Just like free(), return NULL in that case, will simplify the
+for_each_entry_safe() iterators.
 
 Cc: Adrian Hunter <adrian.hunter@intel.com>
 Cc: Andi Kleen <ak@linux.intel.com>
 Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lkml.kernel.org/n/tip-gc3go6fmdn30twusg91t2q56@git.kernel.org
+Link: https://lkml.kernel.org/n/tip-pbde2ucn49khnrebclys9pny@git.kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/tests/map_groups.c |  9 ++++-----
- tools/perf/util/map_groups.h  |  9 ++++-----
- tools/perf/util/symbol.c      | 24 ++++--------------------
- tools/perf/util/vdso.c        |  4 ++--
- 4 files changed, 14 insertions(+), 32 deletions(-)
+ tools/perf/util/map.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/tests/map_groups.c b/tools/perf/tests/map_groups.c
-index 594fdac..b52adad 100644
---- a/tools/perf/tests/map_groups.c
-+++ b/tools/perf/tests/map_groups.c
-@@ -18,17 +18,16 @@ static int check_maps(struct map_def *merged, unsigned int size, struct map_grou
- 	struct map *map;
- 	unsigned int i = 0;
+diff --git a/tools/perf/util/map.c b/tools/perf/util/map.c
+index c9ba495..86d8d18 100644
+--- a/tools/perf/util/map.c
++++ b/tools/perf/util/map.c
+@@ -1007,7 +1007,7 @@ struct map *maps__first(struct maps *maps)
+ 	return NULL;
+ }
  
--	map = map_groups__first(mg);
--	while (map) {
-+	map_groups__for_each_entry(mg, map) {
-+		if (i > 0)
-+			TEST_ASSERT_VAL("less maps expected", (map && i < size) || (!map && i == size));
+-struct map *map__next(struct map *map)
++static struct map *__map__next(struct map *map)
+ {
+ 	struct rb_node *next = rb_next(&map->rb_node);
+ 
+@@ -1016,6 +1016,11 @@ struct map *map__next(struct map *map)
+ 	return NULL;
+ }
+ 
++struct map *map__next(struct map *map)
++{
++	return map ? __map__next(map) : NULL;
++}
 +
- 		TEST_ASSERT_VAL("wrong map start",  map->start == merged[i].start);
- 		TEST_ASSERT_VAL("wrong map end",    map->end == merged[i].end);
- 		TEST_ASSERT_VAL("wrong map name",  !strcmp(map->dso->name, merged[i].name));
- 		TEST_ASSERT_VAL("wrong map refcnt", refcount_read(&map->refcnt) == 2);
- 
- 		i++;
--		map = map_groups__next(map);
--
--		TEST_ASSERT_VAL("less maps expected", (map && i < size) || (!map && i == size));
- 	}
- 
- 	return TEST_OK;
-diff --git a/tools/perf/util/map_groups.h b/tools/perf/util/map_groups.h
-index ce3ade3..bfbdbf5 100644
---- a/tools/perf/util/map_groups.h
-+++ b/tools/perf/util/map_groups.h
-@@ -89,12 +89,11 @@ static inline struct map *map_groups__find(struct map_groups *mg, u64 addr)
- 	return maps__find(&mg->maps, addr);
- }
- 
--struct map *map_groups__first(struct map_groups *mg);
-+#define map_groups__for_each_entry(mg, map) \
-+	for (map = maps__first(&mg->maps); map; map = map__next(map))
- 
--static inline struct map *map_groups__next(struct map *map)
--{
--	return map__next(map);
--}
-+#define map_groups__for_each_entry_safe(mg, map, next) \
-+	for (map = maps__first(&mg->maps), next = map__next(map); map; map = next, next = map__next(map))
- 
- struct symbol *map_groups__find_symbol(struct map_groups *mg, u64 addr, struct map **mapp);
- struct symbol *map_groups__find_symbol_by_name(struct map_groups *mg, const char *name, struct map **mapp);
-diff --git a/tools/perf/util/symbol.c b/tools/perf/util/symbol.c
-index 042140f..a4bd61c 100644
---- a/tools/perf/util/symbol.c
-+++ b/tools/perf/util/symbol.c
-@@ -1049,11 +1049,6 @@ out_delete_from:
- 	return ret;
- }
- 
--struct map *map_groups__first(struct map_groups *mg)
--{
--	return maps__first(&mg->maps);
--}
--
- static int do_validate_kcore_modules(const char *filename,
- 				  struct map_groups *kmaps)
+ struct kmap *__map__kmap(struct map *map)
  {
-@@ -1065,13 +1060,10 @@ static int do_validate_kcore_modules(const char *filename,
- 	if (err)
- 		return err;
- 
--	old_map = map_groups__first(kmaps);
--	while (old_map) {
--		struct map *next = map_groups__next(old_map);
-+	map_groups__for_each_entry(kmaps, old_map) {
- 		struct module_info *mi;
- 
- 		if (!__map__is_kmodule(old_map)) {
--			old_map = next;
- 			continue;
- 		}
- 
-@@ -1081,8 +1073,6 @@ static int do_validate_kcore_modules(const char *filename,
- 			err = -EINVAL;
- 			goto out;
- 		}
--
--		old_map = next;
- 	}
- out:
- 	delete_modules(&modules);
-@@ -1185,9 +1175,7 @@ int map_groups__merge_in(struct map_groups *kmaps, struct map *new_map)
- 	struct map *old_map;
- 	LIST_HEAD(merged);
- 
--	for (old_map = map_groups__first(kmaps); old_map;
--	     old_map = map_groups__next(old_map)) {
--
-+	map_groups__for_each_entry(kmaps, old_map) {
- 		/* no overload with this one */
- 		if (new_map->end < old_map->start ||
- 		    new_map->start >= old_map->end)
-@@ -1260,7 +1248,7 @@ static int dso__load_kcore(struct dso *dso, struct map *map,
- {
- 	struct map_groups *kmaps = map__kmaps(map);
- 	struct kcore_mapfn_data md;
--	struct map *old_map, *new_map, *replacement_map = NULL;
-+	struct map *old_map, *new_map, *replacement_map = NULL, *next;
- 	struct machine *machine;
- 	bool is_64_bit;
- 	int err, fd;
-@@ -1307,10 +1295,7 @@ static int dso__load_kcore(struct dso *dso, struct map *map,
- 	}
- 
- 	/* Remove old maps */
--	old_map = map_groups__first(kmaps);
--	while (old_map) {
--		struct map *next = map_groups__next(old_map);
--
-+	map_groups__for_each_entry_safe(kmaps, old_map, next) {
- 		/*
- 		 * We need to preserve eBPF maps even if they are
- 		 * covered by kcore, because we need to access
-@@ -1318,7 +1303,6 @@ static int dso__load_kcore(struct dso *dso, struct map *map,
- 		 */
- 		if (old_map != map && !__map__is_bpf_prog(old_map))
- 			map_groups__remove(kmaps, old_map);
--		old_map = next;
- 	}
- 	machine->trampolines_mapped = false;
- 
-diff --git a/tools/perf/util/vdso.c b/tools/perf/util/vdso.c
-index ba4b439..6e00793 100644
---- a/tools/perf/util/vdso.c
-+++ b/tools/perf/util/vdso.c
-@@ -142,9 +142,9 @@ static enum dso_type machine__thread_dso_type(struct machine *machine,
- 					      struct thread *thread)
- {
- 	enum dso_type dso_type = DSO__TYPE_UNKNOWN;
--	struct map *map = map_groups__first(thread->mg);
-+	struct map *map;
- 
--	for (; map ; map = map_groups__next(map)) {
-+	map_groups__for_each_entry(thread->mg, map) {
- 		struct dso *dso = map->dso;
- 		if (!dso || dso->long_name[0] != '/')
- 			continue;
+ 	if (!map->dso || !map->dso->kernel)
