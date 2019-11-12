@@ -2,45 +2,49 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A3D9F8E7C
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Nov 2019 12:23:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BBE8F8DE3
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Nov 2019 12:18:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725881AbfKLLR7 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 12 Nov 2019 06:17:59 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:33395 "EHLO
+        id S1727142AbfKLLSJ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 12 Nov 2019 06:18:09 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:33549 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726718AbfKLLR6 (ORCPT
+        with ESMTP id S1727201AbfKLLSG (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 12 Nov 2019 06:17:58 -0500
+        Tue, 12 Nov 2019 06:18:06 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iUUBG-0000HH-FI; Tue, 12 Nov 2019 12:17:54 +0100
+        id 1iUUBH-0000I8-DF; Tue, 12 Nov 2019 12:17:55 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 27FC11C0084;
-        Tue, 12 Nov 2019 12:17:54 +0100 (CET)
-Date:   Tue, 12 Nov 2019 11:17:53 -0000
-From:   "tip-bot2 for Masami Hiramatsu" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 087851C0084;
+        Tue, 12 Nov 2019 12:17:55 +0100 (CET)
+Date:   Tue, 12 Nov 2019 11:17:54 -0000
+From:   "tip-bot2 for Ian Rogers" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf probe: Skip end-of-sequence and non statement lines
-Cc:     Masami Hiramatsu <mhiramat@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Jiri Olsa <jolsa@redhat.com>,
+Subject: [tip: perf/core] perf annotate: Fix heap overflow
+Cc:     Ian Rogers <irogers@google.com>, Jiri Olsa <jolsa@kernel.org>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Jin Yao <yao.jin@linux.intel.com>,
+        Mark Rutland <mark.rutland@arm.com>,
         Namhyung Kim <namhyung@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Song Liu <songliubraving@fb.com>,
+        Stephane Eranian <eranian@google.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <157241936090.32002.12156347518596111660.stgit@devnote2>
-References: <157241936090.32002.12156347518596111660.stgit@devnote2>
+In-Reply-To: <20191026035644.217548-1-irogers@google.com>
+References: <20191026035644.217548-1-irogers@google.com>
 MIME-Version: 1.0
-Message-ID: <157355747383.29376.10426327530011036953.tip-bot2@tip-bot2>
+Message-ID: <157355747465.29376.10616272191107642409.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: 7bit
 X-Linutronix-Spam-Score: -1.0
 X-Linutronix-Spam-Level: -
 X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
@@ -51,141 +55,43 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     f4d99bdfd124823a81878b44b5e8750b97f73902
-Gitweb:        https://git.kernel.org/tip/f4d99bdfd124823a81878b44b5e8750b97f73902
-Author:        Masami Hiramatsu <mhiramat@kernel.org>
-AuthorDate:    Wed, 30 Oct 2019 16:09:21 +09:00
+Commit-ID:     5c65b1c0842f9daddc6aec4bdb4b5d898006be19
+Gitweb:        https://git.kernel.org/tip/5c65b1c0842f9daddc6aec4bdb4b5d898006be19
+Author:        Ian Rogers <irogers@google.com>
+AuthorDate:    Fri, 25 Oct 2019 20:56:44 -07:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Thu, 07 Nov 2019 08:30:18 -03:00
 
-perf probe: Skip end-of-sequence and non statement lines
+perf annotate: Fix heap overflow
 
-Skip end-of-sequence and non-statement lines while walking through lines
-list.
+Fix expand_tabs that copies the source lines '\0' and then appends
+another '\0' at a potentially out of bounds address.
 
-The "end-of-sequence" line information means:
-
- "the current address is that of the first byte after the
-  end of a sequence of target machine instructions."
- (DWARF version 4 spec 6.2.2)
-
-This actually means out of scope and we can not probe on it.
-
-On the other hand, the statement lines (is_stmt) means:
-
- "the current instruction is a recommended breakpoint location.
-  A recommended breakpoint location is intended to “represent”
-  a line, a statement and/or a semantically distinct subpart
-  of a statement."
-
- (DWARF version 4 spec 6.2.2)
-
-So, non-statement line info also should be skipped.
-
-These can reduce unneeded probe points and also avoid an error.
-
-E.g. without this patch:
-
-  # perf probe -a "clear_tasks_mm_cpumask:1"
-  Added new events:
-    probe:clear_tasks_mm_cpumask (on clear_tasks_mm_cpumask:1)
-    probe:clear_tasks_mm_cpumask_1 (on clear_tasks_mm_cpumask:1)
-    probe:clear_tasks_mm_cpumask_2 (on clear_tasks_mm_cpumask:1)
-    probe:clear_tasks_mm_cpumask_3 (on clear_tasks_mm_cpumask:1)
-    probe:clear_tasks_mm_cpumask_4 (on clear_tasks_mm_cpumask:1)
-
-  You can now use it in all perf tools, such as:
-
-  	perf record -e probe:clear_tasks_mm_cpumask_4 -aR sleep 1
-
-  #
-
-This puts 5 probes on one line, but acutally it's not inlined function.
-This is because there are many non statement instructions at the
-function prologue.
-
-With this patch:
-
-  # perf probe -a "clear_tasks_mm_cpumask:1"
-  Added new event:
-    probe:clear_tasks_mm_cpumask (on clear_tasks_mm_cpumask:1)
-
-  You can now use it in all perf tools, such as:
-
-  	perf record -e probe:clear_tasks_mm_cpumask -aR sleep 1
-
-  #
-
-Now perf-probe skips unneeded addresses.
-
-Committer testing:
-
-Slightly different results, but similar:
-
-Before:
-
-  # uname -a
-  Linux quaco 5.3.8-200.fc30.x86_64 #1 SMP Tue Oct 29 14:46:22 UTC 2019 x86_64 x86_64 x86_64 GNU/Linux
-  #
-  # perf probe -a "clear_tasks_mm_cpumask:1"
-  Added new events:
-    probe:clear_tasks_mm_cpumask (on clear_tasks_mm_cpumask:1)
-    probe:clear_tasks_mm_cpumask_1 (on clear_tasks_mm_cpumask:1)
-    probe:clear_tasks_mm_cpumask_2 (on clear_tasks_mm_cpumask:1)
-
-  You can now use it in all perf tools, such as:
-
-  	perf record -e probe:clear_tasks_mm_cpumask_2 -aR sleep 1
-
-  #
-
-After:
-
-  # perf probe -a "clear_tasks_mm_cpumask:1"
-  Added new event:
-    probe:clear_tasks_mm_cpumask (on clear_tasks_mm_cpumask:1)
-
-  You can now use it in all perf tools, such as:
-
-  	perf record -e probe:clear_tasks_mm_cpumask -aR sleep 1
-
-  # perf probe -l
-    probe:clear_tasks_mm_cpumask (on clear_tasks_mm_cpumask@kernel/cpu.c)
-  #
-
-Fixes: 4cc9cec636e7 ("perf probe: Introduce lines walker interface")
-Signed-off-by: Masami Hiramatsu <mhiramat@kernel.org>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Jiri Olsa <jolsa@redhat.com>
+Signed-off-by: Ian Rogers <irogers@google.com>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Jin Yao <yao.jin@linux.intel.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Link: http://lore.kernel.org/lkml/157241936090.32002.12156347518596111660.stgit@devnote2
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Song Liu <songliubraving@fb.com>
+Cc: Stephane Eranian <eranian@google.com>
+Link: http://lore.kernel.org/lkml/20191026035644.217548-1-irogers@google.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/dwarf-aux.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ tools/perf/util/annotate.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/util/dwarf-aux.c b/tools/perf/util/dwarf-aux.c
-index ac82fd9..f31001d 100644
---- a/tools/perf/util/dwarf-aux.c
-+++ b/tools/perf/util/dwarf-aux.c
-@@ -782,6 +782,7 @@ int die_walk_lines(Dwarf_Die *rt_die, line_walk_callback_t callback, void *data)
- 	int decl = 0, inl;
- 	Dwarf_Die die_mem, *cu_die;
- 	size_t nlines, i;
-+	bool flag;
+diff --git a/tools/perf/util/annotate.c b/tools/perf/util/annotate.c
+index ef1866a..bee0fee 100644
+--- a/tools/perf/util/annotate.c
++++ b/tools/perf/util/annotate.c
+@@ -1892,7 +1892,7 @@ static char *expand_tabs(char *line, char **storage, size_t *storage_len)
+ 	}
  
- 	/* Get the CU die */
- 	if (dwarf_tag(rt_die) != DW_TAG_compile_unit) {
-@@ -812,6 +813,12 @@ int die_walk_lines(Dwarf_Die *rt_die, line_walk_callback_t callback, void *data)
- 				  "Possible error in debuginfo.\n");
- 			continue;
- 		}
-+		/* Skip end-of-sequence */
-+		if (dwarf_lineendsequence(line, &flag) != 0 || flag)
-+			continue;
-+		/* Skip Non statement line-info */
-+		if (dwarf_linebeginstatement(line, &flag) != 0 || !flag)
-+			continue;
- 		/* Filter lines based on address */
- 		if (rt_die != cu_die) {
- 			/*
+ 	/* Expand the last region. */
+-	len = line_len + 1 - src;
++	len = line_len - src;
+ 	memcpy(&new_line[dst], &line[src], len);
+ 	dst += len;
+ 	new_line[dst] = '\0';
