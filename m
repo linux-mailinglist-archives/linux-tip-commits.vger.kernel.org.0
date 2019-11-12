@@ -2,41 +2,43 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F43EF8E81
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Nov 2019 12:23:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 23D96F8E75
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Nov 2019 12:22:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727140AbfKLLSF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 12 Nov 2019 06:18:05 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:33496 "EHLO
+        id S1727044AbfKLLWN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 12 Nov 2019 06:22:13 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:33516 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727142AbfKLLSF (ORCPT
+        with ESMTP id S1727166AbfKLLSF (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Tue, 12 Nov 2019 06:18:05 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iUUBD-0000Ct-0N; Tue, 12 Nov 2019 12:17:51 +0100
+        id 1iUUBE-0000GB-MY; Tue, 12 Nov 2019 12:17:52 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 972C01C0084;
-        Tue, 12 Nov 2019 12:17:50 +0100 (CET)
-Date:   Tue, 12 Nov 2019 11:17:50 -0000
-From:   "tip-bot2 for Jin Yao" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 538F91C0084;
+        Tue, 12 Nov 2019 12:17:52 +0100 (CET)
+Date:   Tue, 12 Nov 2019 11:17:51 -0000
+From:   "tip-bot2 for Jiwei Sun" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf hist: Count the total cycles of all samples
-Cc:     Jin Yao <yao.jin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Andi Kleen <ak@linux.intel.com>, Jin Yao <yao.jin@intel.com>,
-        Kan Liang <kan.liang@linux.intel.com>,
-        Peter Zijlstra <peterz@infradead.org>,
+Subject: [tip: perf/core] perf record: Add support for limit perf output file size
+Cc:     Jiwei Sun <jiwei.sun@windriver.com>, Jiri Olsa <jolsa@kernel.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Michael Petlan <mpetlan@redhat.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Richard Danter <richard.danter@windriver.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20191107074719.26139-4-yao.jin@linux.intel.com>
-References: <20191107074719.26139-4-yao.jin@linux.intel.com>
+In-Reply-To: <20191022080901.3841-1-jiwei.sun@windriver.com>
+References: <20191022080901.3841-1-jiwei.sun@windriver.com>
 MIME-Version: 1.0
-Message-ID: <157355747026.29376.2534753507000044849.tip-bot2@tip-bot2>
+Message-ID: <157355747195.29376.11637889672517733386.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -52,131 +54,177 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     7841f40aed933dd3838f8d9f2dfcf286c352b7ee
-Gitweb:        https://git.kernel.org/tip/7841f40aed933dd3838f8d9f2dfcf286c352b7ee
-Author:        Jin Yao <yao.jin@linux.intel.com>
-AuthorDate:    Thu, 07 Nov 2019 15:47:15 +08:00
+Commit-ID:     6d57581659f7229903d141455c7308e309056e89
+Gitweb:        https://git.kernel.org/tip/6d57581659f7229903d141455c7308e309056e89
+Author:        Jiwei Sun <jiwei.sun@windriver.com>
+AuthorDate:    Tue, 22 Oct 2019 16:09:01 +08:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Thu, 07 Nov 2019 09:14:15 -03:00
+CommitterDate: Thu, 07 Nov 2019 08:30:19 -03:00
 
-perf hist: Count the total cycles of all samples
+perf record: Add support for limit perf output file size
 
-We can get the per sample cycles by hist__account_cycles(). It's also
-useful to know the total cycles of all samples in order to get the
-cycles coverage for a single program block in further. For example:
+The patch adds a new option to limit the output file size, then based on
+it, we can create a wrapper of the perf command that uses the option to
+avoid exhausting the disk space by the unconscious user.
 
-  coverage = per block sampled cycles / total sampled cycles
+In order to make the perf.data parsable, we just limit the sample data
+size, since the perf.data consists of many headers and sample data and
+other data, the actual size of the recorded file will bigger than the
+setting value.
 
-This patch creates a new argument 'total_cycles' in hist__account_cycles(),
-which will be added with the cycles of each sample.
+Testing it:
 
-Signed-off-by: Jin Yao <yao.jin@linux.intel.com>
-Reviewed-by: Jiri Olsa <jolsa@kernel.org>
+  # ./perf record -a -g --max-size=10M
+  Couldn't synthesize bpf events.
+  [ perf record: perf size limit reached (10249 KB), stopping session ]
+  [ perf record: Woken up 32 times to write data ]
+  [ perf record: Captured and wrote 10.133 MB perf.data (71964 samples) ]
+
+  # ls -lh perf.data
+  -rw------- 1 root root 11M Oct 22 14:32 perf.data
+
+  # ./perf record -a -g --max-size=10K
+  [ perf record: perf size limit reached (10 KB), stopping session ]
+  Couldn't synthesize bpf events.
+  [ perf record: Woken up 0 times to write data ]
+  [ perf record: Captured and wrote 1.546 MB perf.data (69 samples) ]
+
+  # ls -l perf.data
+  -rw------- 1 root root 1626952 Oct 22 14:36 perf.data
+
+Committer notes:
+
+Fixed the build in multiple distros by using PRIu64 to print u64 struct
+members, fixing this:
+
+  builtin-record.c: In function 'record__write':
+  builtin-record.c:150:5: error: format '%lu' expects argument of type 'long unsigned int', but argument 3 has type 'u64' [-Werror=format=]
+       rec->bytes_written >> 10);
+       ^
+    CC       /tmp/build/pe
+
+Signed-off-by: Jiwei Sun <jiwei.sun@windriver.com>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
 Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Jin Yao <yao.jin@intel.com>
-Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Michael Petlan <mpetlan@redhat.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Link: http://lore.kernel.org/lkml/20191107074719.26139-4-yao.jin@linux.intel.com
+Cc: Richard Danter <richard.danter@windriver.com>
+Link: http://lore.kernel.org/lkml/20191022080901.3841-1-jiwei.sun@windriver.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/builtin-annotate.c | 2 +-
- tools/perf/builtin-diff.c     | 3 ++-
- tools/perf/builtin-report.c   | 2 +-
- tools/perf/builtin-top.c      | 3 ++-
- tools/perf/util/hist.c        | 6 +++++-
- tools/perf/util/hist.h        | 3 ++-
- 6 files changed, 13 insertions(+), 6 deletions(-)
+ tools/perf/Documentation/perf-record.txt |  4 ++-
+ tools/perf/builtin-record.c              | 46 ++++++++++++++++++++++-
+ 2 files changed, 49 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/builtin-annotate.c b/tools/perf/builtin-annotate.c
-index 8db8fc9..6ab0cc4 100644
---- a/tools/perf/builtin-annotate.c
-+++ b/tools/perf/builtin-annotate.c
-@@ -201,7 +201,7 @@ static int process_branch_callback(struct evsel *evsel,
- 	if (a.map != NULL)
- 		a.map->dso->hit = 1;
+diff --git a/tools/perf/Documentation/perf-record.txt b/tools/perf/Documentation/perf-record.txt
+index 8a45061..ebcba1f 100644
+--- a/tools/perf/Documentation/perf-record.txt
++++ b/tools/perf/Documentation/perf-record.txt
+@@ -574,6 +574,10 @@ Implies --tail-synthesize.
+ --kcore::
+ Make a copy of /proc/kcore and place it into a directory with the perf data file.
  
--	hist__account_cycles(sample->branch_stack, al, sample, false);
-+	hist__account_cycles(sample->branch_stack, al, sample, false, NULL);
++--max-size=<size>::
++Limit the sample data max size, <size> is expected to be a number with
++appended unit character - B/K/M/G
++
+ SEE ALSO
+ --------
+ linkperf:perf-stat[1], linkperf:perf-list[1]
+diff --git a/tools/perf/builtin-record.c b/tools/perf/builtin-record.c
+index f6664bb..b95c000 100644
+--- a/tools/perf/builtin-record.c
++++ b/tools/perf/builtin-record.c
+@@ -94,8 +94,11 @@ struct record {
+ 	struct switch_output	switch_output;
+ 	unsigned long long	samples;
+ 	cpu_set_t		affinity_mask;
++	unsigned long		output_max_size;	/* = 0: unlimited */
+ };
  
- 	ret = hist_entry_iter__add(&iter, &a, PERF_MAX_STACK_DEPTH, ann);
- 	return ret;
-diff --git a/tools/perf/builtin-diff.c b/tools/perf/builtin-diff.c
-index 6728568..376dbf1 100644
---- a/tools/perf/builtin-diff.c
-+++ b/tools/perf/builtin-diff.c
-@@ -426,7 +426,8 @@ static int diff__process_sample_event(struct perf_tool *tool,
- 			goto out_put;
- 		}
++static volatile int done;
++
+ static volatile int auxtrace_record__snapshot_started;
+ static DEFINE_TRIGGER(auxtrace_snapshot_trigger);
+ static DEFINE_TRIGGER(switch_output_trigger);
+@@ -123,6 +126,12 @@ static bool switch_output_time(struct record *rec)
+ 	       trigger_is_ready(&switch_output_trigger);
+ }
  
--		hist__account_cycles(sample->branch_stack, &al, sample, false);
-+		hist__account_cycles(sample->branch_stack, &al, sample, false,
-+				     NULL);
- 	}
++static bool record__output_max_size_exceeded(struct record *rec)
++{
++	return rec->output_max_size &&
++	       (rec->bytes_written >= rec->output_max_size);
++}
++
+ static int record__write(struct record *rec, struct mmap *map __maybe_unused,
+ 			 void *bf, size_t size)
+ {
+@@ -135,6 +144,13 @@ static int record__write(struct record *rec, struct mmap *map __maybe_unused,
  
- 	/*
-diff --git a/tools/perf/builtin-report.c b/tools/perf/builtin-report.c
-index 3bbad03..bc15b9d 100644
---- a/tools/perf/builtin-report.c
-+++ b/tools/perf/builtin-report.c
-@@ -292,7 +292,7 @@ static int process_sample_event(struct perf_tool *tool,
+ 	rec->bytes_written += size;
  
- 	if (ui__has_annotation() || rep->symbol_ipc) {
- 		hist__account_cycles(sample->branch_stack, &al, sample,
--				     rep->nonany_branch_mode);
-+				     rep->nonany_branch_mode, NULL);
- 	}
++	if (record__output_max_size_exceeded(rec) && !done) {
++		fprintf(stderr, "[ perf record: perf size limit reached (%" PRIu64 " KB),"
++				" stopping session ]\n",
++				rec->bytes_written >> 10);
++		done = 1;
++	}
++
+ 	if (switch_output_size(rec))
+ 		trigger_hit(&switch_output_trigger);
  
- 	ret = hist_entry_iter__add(&iter, &al, rep->max_stack, rep);
-diff --git a/tools/perf/builtin-top.c b/tools/perf/builtin-top.c
-index d96f24c..14c52e4 100644
---- a/tools/perf/builtin-top.c
-+++ b/tools/perf/builtin-top.c
-@@ -725,7 +725,8 @@ static int hist_iter__top_callback(struct hist_entry_iter *iter,
- 		perf_top__record_precise_ip(top, he, iter->sample, evsel, al->addr);
+@@ -499,7 +515,6 @@ static int record__pushfn(struct mmap *map, void *to, void *bf, size_t size)
+ 	return record__write(rec, map, bf, size);
+ }
  
- 	hist__account_cycles(iter->sample->branch_stack, al, iter->sample,
--		     !(top->record_opts.branch_stack & PERF_SAMPLE_BRANCH_ANY));
-+		     !(top->record_opts.branch_stack & PERF_SAMPLE_BRANCH_ANY),
-+		     NULL);
+-static volatile int done;
+ static volatile int signr = -1;
+ static volatile int child_finished;
+ 
+@@ -1984,6 +1999,33 @@ static int record__parse_affinity(const struct option *opt, const char *str, int
  	return 0;
  }
  
-diff --git a/tools/perf/util/hist.c b/tools/perf/util/hist.c
-index a7fa061..0e27d68 100644
---- a/tools/perf/util/hist.c
-+++ b/tools/perf/util/hist.c
-@@ -2572,7 +2572,8 @@ int hists__unlink(struct hists *hists)
- }
- 
- void hist__account_cycles(struct branch_stack *bs, struct addr_location *al,
--			  struct perf_sample *sample, bool nonany_branch_mode)
-+			  struct perf_sample *sample, bool nonany_branch_mode,
-+			  u64 *total_cycles)
- {
- 	struct branch_info *bi;
- 
-@@ -2599,6 +2600,9 @@ void hist__account_cycles(struct branch_stack *bs, struct addr_location *al,
- 					nonany_branch_mode ? NULL : prev,
- 					bi[i].flags.cycles);
- 				prev = &bi[i].to;
++static int parse_output_max_size(const struct option *opt,
++				 const char *str, int unset)
++{
++	unsigned long *s = (unsigned long *)opt->value;
++	static struct parse_tag tags_size[] = {
++		{ .tag  = 'B', .mult = 1       },
++		{ .tag  = 'K', .mult = 1 << 10 },
++		{ .tag  = 'M', .mult = 1 << 20 },
++		{ .tag  = 'G', .mult = 1 << 30 },
++		{ .tag  = 0 },
++	};
++	unsigned long val;
 +
-+				if (total_cycles)
-+					*total_cycles += bi[i].flags.cycles;
- 			}
- 			free(bi);
- 		}
-diff --git a/tools/perf/util/hist.h b/tools/perf/util/hist.h
-index 6a186b6..4d87c7b 100644
---- a/tools/perf/util/hist.h
-+++ b/tools/perf/util/hist.h
-@@ -527,7 +527,8 @@ unsigned int hists__sort_list_width(struct hists *hists);
- unsigned int hists__overhead_width(struct hists *hists);
++	if (unset) {
++		*s = 0;
++		return 0;
++	}
++
++	val = parse_tag_value(str, tags_size);
++	if (val != (unsigned long) -1) {
++		*s = val;
++		return 0;
++	}
++
++	return -1;
++}
++
+ static int record__parse_mmap_pages(const struct option *opt,
+ 				    const char *str,
+ 				    int unset __maybe_unused)
+@@ -2311,6 +2353,8 @@ static struct option __record_options[] = {
+ 			    "n", "Compressed records using specified level (default: 1 - fastest compression, 22 - greatest compression)",
+ 			    record__parse_comp_level),
+ #endif
++	OPT_CALLBACK(0, "max-size", &record.output_max_size,
++		     "size", "Limit the maximum size of the output file", parse_output_max_size),
+ 	OPT_END()
+ };
  
- void hist__account_cycles(struct branch_stack *bs, struct addr_location *al,
--			  struct perf_sample *sample, bool nonany_branch_mode);
-+			  struct perf_sample *sample, bool nonany_branch_mode,
-+			  u64 *total_cycles);
- 
- struct option;
- int parse_filter_percentage(const struct option *opt, const char *arg, int unset);
