@@ -2,37 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EE7B2F8CEB
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Nov 2019 11:38:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 563D4F8D3D
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Nov 2019 11:50:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725865AbfKLKid (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 12 Nov 2019 05:38:33 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:33229 "EHLO
+        id S1725899AbfKLKuJ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 12 Nov 2019 05:50:09 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:33276 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725944AbfKLKid (ORCPT
+        with ESMTP id S1725919AbfKLKuJ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 12 Nov 2019 05:38:33 -0500
+        Tue, 12 Nov 2019 05:50:09 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iUTZ5-0007x6-Vm; Tue, 12 Nov 2019 11:38:28 +0100
+        id 1iUTkJ-0008AZ-Hy; Tue, 12 Nov 2019 11:50:03 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 9395C1C0084;
-        Tue, 12 Nov 2019 11:38:27 +0100 (CET)
-Date:   Tue, 12 Nov 2019 10:38:27 -0000
-From:   "tip-bot2 for Srivatsa S. Bhat (VMware)" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 1BC081C0357;
+        Tue, 12 Nov 2019 11:50:03 +0100 (CET)
+Date:   Tue, 12 Nov 2019 10:50:02 -0000
+From:   "tip-bot2 for Vitaly Kuznetsov" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/rt] sched/Kconfig: Fix spelling mistake in user-visible help text
-Cc:     "Srivatsa S. Bhat (VMware)" <srivatsa@csail.mit.edu>,
+Subject: [tip: x86/hyperv] x86/hyperv: Micro-optimize send_ipi_one()
+Cc:     Vitaly Kuznetsov <vkuznets@redhat.com>,
         Thomas Gleixner <tglx@linutronix.de>,
+        Michael Kelley <mikelley@microsoft.com>,
+        Roman Kagan <rkagan@virtuozzo.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <157204450499.10518.4542293884417101528.stgit@srivatsa-ubuntu>
-References: <157204450499.10518.4542293884417101528.stgit@srivatsa-ubuntu>
+In-Reply-To: <20191027151938.7296-1-vkuznets@redhat.com>
+References: <20191027151938.7296-1-vkuznets@redhat.com>
 MIME-Version: 1.0
-Message-ID: <157355510713.29376.14082067648105582008.tip-bot2@tip-bot2>
+Message-ID: <157355580264.29376.16644467726067576044.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -46,37 +48,90 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/rt branch of tip:
+The following commit has been merged into the x86/hyperv branch of tip:
 
-Commit-ID:     d61ca3c25e0330c44d9a18b2a767197f10c0cd16
-Gitweb:        https://git.kernel.org/tip/d61ca3c25e0330c44d9a18b2a767197f10c0cd16
-Author:        Srivatsa S. Bhat (VMware) <srivatsa@csail.mit.edu>
-AuthorDate:    Fri, 25 Oct 2019 16:02:07 -07:00
+Commit-ID:     b264f57fde0c686c5c1dfdd0c21992c49196bb87
+Gitweb:        https://git.kernel.org/tip/b264f57fde0c686c5c1dfdd0c21992c49196bb87
+Author:        Vitaly Kuznetsov <vkuznets@redhat.com>
+AuthorDate:    Sun, 27 Oct 2019 16:19:38 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 12 Nov 2019 11:35:32 +01:00
+CommitterDate: Tue, 12 Nov 2019 11:44:20 +01:00
 
-sched/Kconfig: Fix spelling mistake in user-visible help text
+x86/hyperv: Micro-optimize send_ipi_one()
 
-Fix a spelling mistake in the help text for PREEMPT_RT.
+When sending an IPI to a single CPU there is no need to deal with cpumasks.
 
-Signed-off-by: Srivatsa S. Bhat (VMware) <srivatsa@csail.mit.edu>
+With 2 CPU guest on WS2019 a minor (like 3%, 8043 -> 7761 CPU cycles)
+improvement with smp_call_function_single() loop benchmark can be seeb. The
+optimization, however, is tiny and straitforward. Also, send_ipi_one() is
+important for PV spinlock kick.
+
+Switching to the regular APIC IPI send for CPU > 64 case does not make
+sense as it is twice as expesive (12650 CPU cycles for __send_ipi_mask_ex()
+call, 26000 for orig_apic.send_IPI(cpu, vector)).
+
+Signed-off-by: Vitaly Kuznetsov <vkuznets@redhat.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/157204450499.10518.4542293884417101528.stgit@srivatsa-ubuntu
+Reviewed-by: Michael Kelley <mikelley@microsoft.com>
+Reviewed-by: Roman Kagan <rkagan@virtuozzo.com>
+Link: https://lkml.kernel.org/r/20191027151938.7296-1-vkuznets@redhat.com
 
 ---
- kernel/Kconfig.preempt | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/hyperv/hv_apic.c           | 16 +++++++++++++---
+ arch/x86/include/asm/trace/hyperv.h | 15 +++++++++++++++
+ 2 files changed, 28 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/Kconfig.preempt b/kernel/Kconfig.preempt
-index deff972..bf82259 100644
---- a/kernel/Kconfig.preempt
-+++ b/kernel/Kconfig.preempt
-@@ -65,7 +65,7 @@ config PREEMPT_RT
- 	  preemptible priority-inheritance aware variants, enforcing
- 	  interrupt threading and introducing mechanisms to break up long
- 	  non-preemptible sections. This makes the kernel, except for very
--	  low level and critical code pathes (entry code, scheduler, low
-+	  low level and critical code paths (entry code, scheduler, low
- 	  level interrupt handling) fully preemptible and brings most
- 	  execution contexts under scheduler control.
+diff --git a/arch/x86/hyperv/hv_apic.c b/arch/x86/hyperv/hv_apic.c
+index 5c056b8..86c8674 100644
+--- a/arch/x86/hyperv/hv_apic.c
++++ b/arch/x86/hyperv/hv_apic.c
+@@ -194,10 +194,20 @@ do_ex_hypercall:
  
+ static bool __send_ipi_one(int cpu, int vector)
+ {
+-	struct cpumask mask = CPU_MASK_NONE;
++	int vp = hv_cpu_number_to_vp_number(cpu);
+ 
+-	cpumask_set_cpu(cpu, &mask);
+-	return __send_ipi_mask(&mask, vector);
++	trace_hyperv_send_ipi_one(cpu, vector);
++
++	if (!hv_hypercall_pg || (vp == VP_INVAL))
++		return false;
++
++	if ((vector < HV_IPI_LOW_VECTOR) || (vector > HV_IPI_HIGH_VECTOR))
++		return false;
++
++	if (vp >= 64)
++		return __send_ipi_mask_ex(cpumask_of(cpu), vector);
++
++	return !hv_do_fast_hypercall16(HVCALL_SEND_IPI, vector, BIT_ULL(vp));
+ }
+ 
+ static void hv_send_ipi(int cpu, int vector)
+diff --git a/arch/x86/include/asm/trace/hyperv.h b/arch/x86/include/asm/trace/hyperv.h
+index ace464f..4d705cb 100644
+--- a/arch/x86/include/asm/trace/hyperv.h
++++ b/arch/x86/include/asm/trace/hyperv.h
+@@ -71,6 +71,21 @@ TRACE_EVENT(hyperv_send_ipi_mask,
+ 		      __entry->ncpus, __entry->vector)
+ 	);
+ 
++TRACE_EVENT(hyperv_send_ipi_one,
++	    TP_PROTO(int cpu,
++		     int vector),
++	    TP_ARGS(cpu, vector),
++	    TP_STRUCT__entry(
++		    __field(int, cpu)
++		    __field(int, vector)
++		    ),
++	    TP_fast_assign(__entry->cpu = cpu;
++			   __entry->vector = vector;
++		    ),
++	    TP_printk("cpu %d vector %x",
++		      __entry->cpu, __entry->vector)
++	);
++
+ #endif /* CONFIG_HYPERV */
+ 
+ #undef TRACE_INCLUDE_PATH
