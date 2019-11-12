@@ -2,38 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C403F8E6F
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Nov 2019 12:22:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DD52BF8E2B
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Nov 2019 12:20:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727646AbfKLLWH (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 12 Nov 2019 06:22:07 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:33561 "EHLO
+        id S1727626AbfKLLTc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 12 Nov 2019 06:19:32 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:33987 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727224AbfKLLSH (ORCPT
+        with ESMTP id S1727540AbfKLLSb (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 12 Nov 2019 06:18:07 -0500
+        Tue, 12 Nov 2019 06:18:31 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iUUBO-0000Mq-89; Tue, 12 Nov 2019 12:18:02 +0100
+        id 1iUUBM-0000Mc-JH; Tue, 12 Nov 2019 12:18:00 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 146A21C04C9;
-        Tue, 12 Nov 2019 12:17:59 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 986EC1C0357;
+        Tue, 12 Nov 2019 12:17:58 +0100 (CET)
 Date:   Tue, 12 Nov 2019 11:17:58 -0000
-From:   "tip-bot2 for Adrian Hunter" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Ian Rogers" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf inject: Make --strip keep evsels
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Jiri Olsa <jolsa@kernel.org>,
+Subject: [tip: perf/core] perf parse: Add parse events handle error
+Cc:     Ian Rogers <irogers@google.com>, Jiri Olsa <jolsa@kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Andi Kleen <ak@linux.intel.com>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Jin Yao <yao.jin@linux.intel.com>,
+        John Garry <john.garry@huawei.com>,
+        Kan Liang <kan.liang@linux.intel.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Martin KaFai Lau <kafai@fb.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Song Liu <songliubraving@fb.com>,
+        Stephane Eranian <eranian@google.com>,
+        Yonghong Song <yhs@fb.com>, bpf@vger.kernel.org,
+        clang-built-linux@googlegroups.com, netdev@vger.kernel.org,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20191105100057.21465-1-adrian.hunter@intel.com>
-References: <20191105100057.21465-1-adrian.hunter@intel.com>
+In-Reply-To: <20191030223448.12930-2-irogers@google.com>
+References: <20191030223448.12930-2-irogers@google.com>
 MIME-Version: 1.0
-Message-ID: <157355747868.29376.8267731943513542020.tip-bot2@tip-bot2>
+Message-ID: <157355747823.29376.1827924793040708314.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,95 +64,300 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     ef5502a1d9bd042dcf457378a6ac96701e498b1b
-Gitweb:        https://git.kernel.org/tip/ef5502a1d9bd042dcf457378a6ac96701e498b1b
-Author:        Adrian Hunter <adrian.hunter@intel.com>
-AuthorDate:    Tue, 05 Nov 2019 12:00:57 +02:00
+Commit-ID:     448d732cefb3b4017f687f18c300e48354ddc240
+Gitweb:        https://git.kernel.org/tip/448d732cefb3b4017f687f18c300e48354ddc240
+Author:        Ian Rogers <irogers@google.com>
+AuthorDate:    Wed, 30 Oct 2019 15:34:39 -07:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Wed, 06 Nov 2019 15:49:40 -03:00
 
-perf inject: Make --strip keep evsels
+perf parse: Add parse events handle error
 
-create_gcov (refer to the autofdo example in tools/perf/Documentation/intel-pt.txt)
-now needs the evsels to read the perf.data file. So don't strip them.
+Parse event error handling may overwrite one error string with another
+creating memory leaks. Introduce a helper routine that warns about
+multiple error messages as well as avoiding the memory leak.
 
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+A reproduction of this problem can be seen with:
+
+  perf stat -e c/c/
+
+After this change this produces:
+WARNING: multiple event parsing errors
+event syntax error: 'c/c/'
+                       \___ unknown term
+
+valid terms: event,filter_rem,filter_opc0,edge,filter_isoc,filter_tid,filter_loc,filter_nc,inv,umask,filter_opc1,tid_en,thresh,filter_all_op,filter_not_nm,filter_state,filter_nm,config,config1,config2,name,period,percore
+Run 'perf list' for a list of valid events
+
+ Usage: perf stat [<options>] [<command>]
+
+    -e, --event <event>   event selector. use 'perf list' to list available events
+
+Signed-off-by: Ian Rogers <irogers@google.com>
 Acked-by: Jiri Olsa <jolsa@kernel.org>
-Link: http://lore.kernel.org/lkml/20191105100057.21465-1-adrian.hunter@intel.com
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Alexei Starovoitov <ast@kernel.org>
+Cc: Andi Kleen <ak@linux.intel.com>
+Cc: Daniel Borkmann <daniel@iogearbox.net>
+Cc: Jin Yao <yao.jin@linux.intel.com>
+Cc: John Garry <john.garry@huawei.com>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Martin KaFai Lau <kafai@fb.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Song Liu <songliubraving@fb.com>
+Cc: Stephane Eranian <eranian@google.com>
+Cc: Yonghong Song <yhs@fb.com>
+Cc: bpf@vger.kernel.org
+Cc: clang-built-linux@googlegroups.com
+Cc: netdev@vger.kernel.org
+Link: http://lore.kernel.org/lkml/20191030223448.12930-2-irogers@google.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/builtin-inject.c | 54 +------------------------------------
- 1 file changed, 54 deletions(-)
+ tools/perf/util/parse-events.c | 82 ++++++++++++++++++++-------------
+ tools/perf/util/parse-events.h |  2 +-
+ tools/perf/util/pmu.c          | 30 +++++++-----
+ 3 files changed, 71 insertions(+), 43 deletions(-)
 
-diff --git a/tools/perf/builtin-inject.c b/tools/perf/builtin-inject.c
-index 372ecb3..1e5d283 100644
---- a/tools/perf/builtin-inject.c
-+++ b/tools/perf/builtin-inject.c
-@@ -578,58 +578,6 @@ static void strip_init(struct perf_inject *inject)
- 		evsel->handler = drop_sample;
+diff --git a/tools/perf/util/parse-events.c b/tools/perf/util/parse-events.c
+index d36b812..03e54a2 100644
+--- a/tools/perf/util/parse-events.c
++++ b/tools/perf/util/parse-events.c
+@@ -182,6 +182,20 @@ static int tp_event_has_id(const char *dir_path, struct dirent *evt_dir)
+ 
+ #define MAX_EVENT_LENGTH 512
+ 
++void parse_events__handle_error(struct parse_events_error *err, int idx,
++				char *str, char *help)
++{
++	if (WARN(!str, "WARNING: failed to provide error string\n")) {
++		free(help);
++		return;
++	}
++	WARN_ONCE(err->str, "WARNING: multiple event parsing errors\n");
++	err->idx = idx;
++	free(err->str);
++	err->str = str;
++	free(err->help);
++	err->help = help;
++}
+ 
+ struct tracepoint_path *tracepoint_id_to_path(u64 config)
+ {
+@@ -932,11 +946,11 @@ static int check_type_val(struct parse_events_term *term,
+ 		return 0;
+ 
+ 	if (err) {
+-		err->idx = term->err_val;
+-		if (type == PARSE_EVENTS__TERM_TYPE_NUM)
+-			err->str = strdup("expected numeric value");
+-		else
+-			err->str = strdup("expected string value");
++		parse_events__handle_error(err, term->err_val,
++					type == PARSE_EVENTS__TERM_TYPE_NUM
++					? strdup("expected numeric value")
++					: strdup("expected string value"),
++					NULL);
+ 	}
+ 	return -EINVAL;
+ }
+@@ -972,8 +986,11 @@ static bool config_term_shrinked;
+ static bool
+ config_term_avail(int term_type, struct parse_events_error *err)
+ {
++	char *err_str;
++
+ 	if (term_type < 0 || term_type >= __PARSE_EVENTS__TERM_TYPE_NR) {
+-		err->str = strdup("Invalid term_type");
++		parse_events__handle_error(err, -1,
++					strdup("Invalid term_type"), NULL);
+ 		return false;
+ 	}
+ 	if (!config_term_shrinked)
+@@ -992,9 +1009,9 @@ config_term_avail(int term_type, struct parse_events_error *err)
+ 			return false;
+ 
+ 		/* term_type is validated so indexing is safe */
+-		if (asprintf(&err->str, "'%s' is not usable in 'perf stat'",
+-			     config_term_names[term_type]) < 0)
+-			err->str = NULL;
++		if (asprintf(&err_str, "'%s' is not usable in 'perf stat'",
++				config_term_names[term_type]) >= 0)
++			parse_events__handle_error(err, -1, err_str, NULL);
+ 		return false;
+ 	}
+ }
+@@ -1036,17 +1053,20 @@ do {									   \
+ 	case PARSE_EVENTS__TERM_TYPE_BRANCH_SAMPLE_TYPE:
+ 		CHECK_TYPE_VAL(STR);
+ 		if (strcmp(term->val.str, "no") &&
+-		    parse_branch_str(term->val.str, &attr->branch_sample_type)) {
+-			err->str = strdup("invalid branch sample type");
+-			err->idx = term->err_val;
++		    parse_branch_str(term->val.str,
++				    &attr->branch_sample_type)) {
++			parse_events__handle_error(err, term->err_val,
++					strdup("invalid branch sample type"),
++					NULL);
+ 			return -EINVAL;
+ 		}
+ 		break;
+ 	case PARSE_EVENTS__TERM_TYPE_TIME:
+ 		CHECK_TYPE_VAL(NUM);
+ 		if (term->val.num > 1) {
+-			err->str = strdup("expected 0 or 1");
+-			err->idx = term->err_val;
++			parse_events__handle_error(err, term->err_val,
++						strdup("expected 0 or 1"),
++						NULL);
+ 			return -EINVAL;
+ 		}
+ 		break;
+@@ -1080,8 +1100,9 @@ do {									   \
+ 	case PARSE_EVENTS__TERM_TYPE_PERCORE:
+ 		CHECK_TYPE_VAL(NUM);
+ 		if ((unsigned int)term->val.num > 1) {
+-			err->str = strdup("expected 0 or 1");
+-			err->idx = term->err_val;
++			parse_events__handle_error(err, term->err_val,
++						strdup("expected 0 or 1"),
++						NULL);
+ 			return -EINVAL;
+ 		}
+ 		break;
+@@ -1089,9 +1110,9 @@ do {									   \
+ 		CHECK_TYPE_VAL(NUM);
+ 		break;
+ 	default:
+-		err->str = strdup("unknown term");
+-		err->idx = term->err_term;
+-		err->help = parse_events_formats_error_string(NULL);
++		parse_events__handle_error(err, term->err_term,
++				strdup("unknown term"),
++				parse_events_formats_error_string(NULL));
+ 		return -EINVAL;
+ 	}
+ 
+@@ -1142,9 +1163,9 @@ static int config_term_tracepoint(struct perf_event_attr *attr,
+ 		return config_term_common(attr, term, err);
+ 	default:
+ 		if (err) {
+-			err->idx = term->err_term;
+-			err->str = strdup("unknown term");
+-			err->help = strdup("valid terms: call-graph,stack-size\n");
++			parse_events__handle_error(err, term->err_term,
++				strdup("unknown term"),
++				strdup("valid terms: call-graph,stack-size\n"));
+ 		}
+ 		return -EINVAL;
+ 	}
+@@ -1323,10 +1344,12 @@ int parse_events_add_pmu(struct parse_events_state *parse_state,
+ 
+ 	pmu = perf_pmu__find(name);
+ 	if (!pmu) {
+-		if (asprintf(&err->str,
++		char *err_str;
++
++		if (asprintf(&err_str,
+ 				"Cannot find PMU `%s'. Missing kernel support?",
+-				name) < 0)
+-			err->str = NULL;
++				name) >= 0)
++			parse_events__handle_error(err, -1, err_str, NULL);
+ 		return -EINVAL;
+ 	}
+ 
+@@ -2802,13 +2825,10 @@ void parse_events__clear_array(struct parse_events_array *a)
+ void parse_events_evlist_error(struct parse_events_state *parse_state,
+ 			       int idx, const char *str)
+ {
+-	struct parse_events_error *err = parse_state->error;
+-
+-	if (!err)
++	if (!parse_state->error)
+ 		return;
+-	err->idx = idx;
+-	err->str = strdup(str);
+-	WARN_ONCE(!err->str, "WARNING: failed to allocate error string");
++
++	parse_events__handle_error(parse_state->error, idx, strdup(str), NULL);
  }
  
--static bool has_tracking(struct evsel *evsel)
--{
--	return evsel->core.attr.mmap || evsel->core.attr.mmap2 || evsel->core.attr.comm ||
--	       evsel->core.attr.task;
--}
--
--#define COMPAT_MASK (PERF_SAMPLE_ID | PERF_SAMPLE_TID | PERF_SAMPLE_TIME | \
--		     PERF_SAMPLE_ID | PERF_SAMPLE_CPU | PERF_SAMPLE_IDENTIFIER)
--
--/*
-- * In order that the perf.data file is parsable, tracking events like MMAP need
-- * their selected event to exist, except if there is only 1 selected event left
-- * and it has a compatible sample type.
-- */
--static bool ok_to_remove(struct evlist *evlist,
--			 struct evsel *evsel_to_remove)
--{
--	struct evsel *evsel;
--	int cnt = 0;
--	bool ok = false;
--
--	if (!has_tracking(evsel_to_remove))
--		return true;
--
--	evlist__for_each_entry(evlist, evsel) {
--		if (evsel->handler != drop_sample) {
--			cnt += 1;
--			if ((evsel->core.attr.sample_type & COMPAT_MASK) ==
--			    (evsel_to_remove->core.attr.sample_type & COMPAT_MASK))
--				ok = true;
--		}
--	}
--
--	return ok && cnt == 1;
--}
--
--static void strip_fini(struct perf_inject *inject)
--{
--	struct evlist *evlist = inject->session->evlist;
--	struct evsel *evsel, *tmp;
--
--	/* Remove non-synthesized evsels if possible */
--	evlist__for_each_entry_safe(evlist, tmp, evsel) {
--		if (evsel->handler == drop_sample &&
--		    ok_to_remove(evlist, evsel)) {
--			pr_debug("Deleting %s\n", perf_evsel__name(evsel));
--			evlist__remove(evlist, evsel);
--			evsel__delete(evsel);
--		}
--	}
--}
--
- static int __cmd_inject(struct perf_inject *inject)
- {
- 	int ret = -EINVAL;
-@@ -729,8 +677,6 @@ static int __cmd_inject(struct perf_inject *inject)
- 				evlist__remove(session->evlist, evsel);
- 				evsel__delete(evsel);
- 			}
--			if (inject->strip)
--				strip_fini(inject);
+ static void config_terms_list(char *buf, size_t buf_sz)
+diff --git a/tools/perf/util/parse-events.h b/tools/perf/util/parse-events.h
+index 769e07c..34f58d2 100644
+--- a/tools/perf/util/parse-events.h
++++ b/tools/perf/util/parse-events.h
+@@ -124,6 +124,8 @@ struct parse_events_state {
+ 	struct list_head	  *terms;
+ };
+ 
++void parse_events__handle_error(struct parse_events_error *err, int idx,
++				char *str, char *help);
+ void parse_events__shrink_config_terms(void);
+ int parse_events__is_hardcoded_term(struct parse_events_term *term);
+ int parse_events_term__num(struct parse_events_term **term,
+diff --git a/tools/perf/util/pmu.c b/tools/perf/util/pmu.c
+index adbe97e..f9f427d 100644
+--- a/tools/perf/util/pmu.c
++++ b/tools/perf/util/pmu.c
+@@ -1050,9 +1050,9 @@ static int pmu_config_term(struct list_head *formats,
+ 		if (err) {
+ 			char *pmu_term = pmu_formats_string(formats);
+ 
+-			err->idx  = term->err_term;
+-			err->str  = strdup("unknown term");
+-			err->help = parse_events_formats_error_string(pmu_term);
++			parse_events__handle_error(err, term->err_term,
++				strdup("unknown term"),
++				parse_events_formats_error_string(pmu_term));
+ 			free(pmu_term);
  		}
- 		session->header.data_offset = output_data_offset;
- 		session->header.data_size = inject->bytes_written;
+ 		return -EINVAL;
+@@ -1080,8 +1080,9 @@ static int pmu_config_term(struct list_head *formats,
+ 		if (term->no_value &&
+ 		    bitmap_weight(format->bits, PERF_PMU_FORMAT_BITS) > 1) {
+ 			if (err) {
+-				err->idx = term->err_val;
+-				err->str = strdup("no value assigned for term");
++				parse_events__handle_error(err, term->err_val,
++					   strdup("no value assigned for term"),
++					   NULL);
+ 			}
+ 			return -EINVAL;
+ 		}
+@@ -1094,8 +1095,9 @@ static int pmu_config_term(struct list_head *formats,
+ 						term->config, term->val.str);
+ 			}
+ 			if (err) {
+-				err->idx = term->err_val;
+-				err->str = strdup("expected numeric value");
++				parse_events__handle_error(err, term->err_val,
++					strdup("expected numeric value"),
++					NULL);
+ 			}
+ 			return -EINVAL;
+ 		}
+@@ -1108,11 +1110,15 @@ static int pmu_config_term(struct list_head *formats,
+ 	max_val = pmu_format_max_value(format->bits);
+ 	if (val > max_val) {
+ 		if (err) {
+-			err->idx = term->err_val;
+-			if (asprintf(&err->str,
+-				     "value too big for format, maximum is %llu",
+-				     (unsigned long long)max_val) < 0)
+-				err->str = strdup("value too big for format");
++			char *err_str;
++
++			parse_events__handle_error(err, term->err_val,
++				asprintf(&err_str,
++				    "value too big for format, maximum is %llu",
++				    (unsigned long long)max_val) < 0
++				    ? strdup("value too big for format")
++				    : err_str,
++				    NULL);
+ 			return -EINVAL;
+ 		}
+ 		/*
