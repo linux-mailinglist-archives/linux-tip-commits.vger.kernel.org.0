@@ -2,43 +2,41 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 23D96F8E75
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Nov 2019 12:22:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C1B38F8E6B
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Nov 2019 12:22:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727044AbfKLLWN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 12 Nov 2019 06:22:13 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:33516 "EHLO
+        id S1727298AbfKLLSJ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 12 Nov 2019 06:18:09 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:33586 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727166AbfKLLSF (ORCPT
+        with ESMTP id S1727241AbfKLLSI (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 12 Nov 2019 06:18:05 -0500
+        Tue, 12 Nov 2019 06:18:08 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iUUBE-0000GB-MY; Tue, 12 Nov 2019 12:17:52 +0100
+        id 1iUUBD-0000F5-OF; Tue, 12 Nov 2019 12:17:51 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 538F91C0084;
-        Tue, 12 Nov 2019 12:17:52 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 6B7541C0084;
+        Tue, 12 Nov 2019 12:17:51 +0100 (CET)
 Date:   Tue, 12 Nov 2019 11:17:51 -0000
-From:   "tip-bot2 for Jiwei Sun" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Jin Yao" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf record: Add support for limit perf output file size
-Cc:     Jiwei Sun <jiwei.sun@windriver.com>, Jiri Olsa <jolsa@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
+Subject: [tip: perf/core] perf diff: Don't use hack to skip column length calculation
+Cc:     Jin Yao <yao.jin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>,
         Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Michael Petlan <mpetlan@redhat.com>,
-        Namhyung Kim <namhyung@kernel.org>,
+        Andi Kleen <ak@linux.intel.com>, Jin Yao <yao.jin@intel.com>,
+        Kan Liang <kan.liang@linux.intel.com>,
         Peter Zijlstra <peterz@infradead.org>,
-        Richard Danter <richard.danter@windriver.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20191022080901.3841-1-jiwei.sun@windriver.com>
-References: <20191022080901.3841-1-jiwei.sun@windriver.com>
+In-Reply-To: <20191107074719.26139-2-yao.jin@linux.intel.com>
+References: <20191107074719.26139-2-yao.jin@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <157355747195.29376.11637889672517733386.tip-bot2@tip-bot2>
+Message-ID: <157355747111.29376.17426346123468487029.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -54,177 +52,75 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     6d57581659f7229903d141455c7308e309056e89
-Gitweb:        https://git.kernel.org/tip/6d57581659f7229903d141455c7308e309056e89
-Author:        Jiwei Sun <jiwei.sun@windriver.com>
-AuthorDate:    Tue, 22 Oct 2019 16:09:01 +08:00
+Commit-ID:     0bdf181fe0e5b6f6d5764ff482d7ae4707f8986b
+Gitweb:        https://git.kernel.org/tip/0bdf181fe0e5b6f6d5764ff482d7ae4707f8986b
+Author:        Jin Yao <yao.jin@linux.intel.com>
+AuthorDate:    Thu, 07 Nov 2019 15:47:13 +08:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Thu, 07 Nov 2019 08:30:19 -03:00
+CommitterDate: Thu, 07 Nov 2019 09:08:03 -03:00
 
-perf record: Add support for limit perf output file size
+perf diff: Don't use hack to skip column length calculation
 
-The patch adds a new option to limit the output file size, then based on
-it, we can create a wrapper of the perf command that uses the option to
-avoid exhausting the disk space by the unconscious user.
+Previously we use a nasty hack to skip the hists__calc_col_len for block
+since this function is not very suitable for block column length
+calculation.
 
-In order to make the perf.data parsable, we just limit the sample data
-size, since the perf.data consists of many headers and sample data and
-other data, the actual size of the recorded file will bigger than the
-setting value.
+This patch removes the hack code and add a check at the entry of
+hists__calc_col_len to skip for block case.
 
-Testing it:
-
-  # ./perf record -a -g --max-size=10M
-  Couldn't synthesize bpf events.
-  [ perf record: perf size limit reached (10249 KB), stopping session ]
-  [ perf record: Woken up 32 times to write data ]
-  [ perf record: Captured and wrote 10.133 MB perf.data (71964 samples) ]
-
-  # ls -lh perf.data
-  -rw------- 1 root root 11M Oct 22 14:32 perf.data
-
-  # ./perf record -a -g --max-size=10K
-  [ perf record: perf size limit reached (10 KB), stopping session ]
-  Couldn't synthesize bpf events.
-  [ perf record: Woken up 0 times to write data ]
-  [ perf record: Captured and wrote 1.546 MB perf.data (69 samples) ]
-
-  # ls -l perf.data
-  -rw------- 1 root root 1626952 Oct 22 14:36 perf.data
-
-Committer notes:
-
-Fixed the build in multiple distros by using PRIu64 to print u64 struct
-members, fixing this:
-
-  builtin-record.c: In function 'record__write':
-  builtin-record.c:150:5: error: format '%lu' expects argument of type 'long unsigned int', but argument 3 has type 'u64' [-Werror=format=]
-       rec->bytes_written >> 10);
-       ^
-    CC       /tmp/build/pe
-
-Signed-off-by: Jiwei Sun <jiwei.sun@windriver.com>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Jin Yao <yao.jin@linux.intel.com>
+Reviewed-by: Jiri Olsa <jolsa@kernel.org>
 Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Michael Petlan <mpetlan@redhat.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Andi Kleen <ak@linux.intel.com>
+Cc: Jin Yao <yao.jin@intel.com>
+Cc: Kan Liang <kan.liang@linux.intel.com>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Richard Danter <richard.danter@windriver.com>
-Link: http://lore.kernel.org/lkml/20191022080901.3841-1-jiwei.sun@windriver.com
+Link: http://lore.kernel.org/lkml/20191107074719.26139-2-yao.jin@linux.intel.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/Documentation/perf-record.txt |  4 ++-
- tools/perf/builtin-record.c              | 46 ++++++++++++++++++++++-
- 2 files changed, 49 insertions(+), 1 deletion(-)
+ tools/perf/builtin-diff.c | 11 ++---------
+ tools/perf/util/hist.c    |  2 ++
+ 2 files changed, 4 insertions(+), 9 deletions(-)
 
-diff --git a/tools/perf/Documentation/perf-record.txt b/tools/perf/Documentation/perf-record.txt
-index 8a45061..ebcba1f 100644
---- a/tools/perf/Documentation/perf-record.txt
-+++ b/tools/perf/Documentation/perf-record.txt
-@@ -574,6 +574,10 @@ Implies --tail-synthesize.
- --kcore::
- Make a copy of /proc/kcore and place it into a directory with the perf data file.
- 
-+--max-size=<size>::
-+Limit the sample data max size, <size> is expected to be a number with
-+appended unit character - B/K/M/G
-+
- SEE ALSO
- --------
- linkperf:perf-stat[1], linkperf:perf-list[1]
-diff --git a/tools/perf/builtin-record.c b/tools/perf/builtin-record.c
-index f6664bb..b95c000 100644
---- a/tools/perf/builtin-record.c
-+++ b/tools/perf/builtin-record.c
-@@ -94,8 +94,11 @@ struct record {
- 	struct switch_output	switch_output;
- 	unsigned long long	samples;
- 	cpu_set_t		affinity_mask;
-+	unsigned long		output_max_size;	/* = 0: unlimited */
- };
- 
-+static volatile int done;
-+
- static volatile int auxtrace_record__snapshot_started;
- static DEFINE_TRIGGER(auxtrace_snapshot_trigger);
- static DEFINE_TRIGGER(switch_output_trigger);
-@@ -123,6 +126,12 @@ static bool switch_output_time(struct record *rec)
- 	       trigger_is_ready(&switch_output_trigger);
+diff --git a/tools/perf/builtin-diff.c b/tools/perf/builtin-diff.c
+index 5281629..faf99a8 100644
+--- a/tools/perf/builtin-diff.c
++++ b/tools/perf/builtin-diff.c
+@@ -765,13 +765,6 @@ static void block_hists_match(struct hists *hists_base,
+ 	}
  }
  
-+static bool record__output_max_size_exceeded(struct record *rec)
-+{
-+	return rec->output_max_size &&
-+	       (rec->bytes_written >= rec->output_max_size);
-+}
-+
- static int record__write(struct record *rec, struct mmap *map __maybe_unused,
- 			 void *bf, size_t size)
+-static int filter_cb(struct hist_entry *he, void *arg __maybe_unused)
+-{
+-	/* Skip the calculation of column length in output_resort */
+-	he->filtered = true;
+-	return 0;
+-}
+-
+ static void hists__precompute(struct hists *hists)
  {
-@@ -135,6 +144,13 @@ static int record__write(struct record *rec, struct mmap *map __maybe_unused,
+ 	struct rb_root_cached *root;
+@@ -820,8 +813,8 @@ static void hists__precompute(struct hists *hists)
+ 				if (bh->valid && pair_bh->valid) {
+ 					block_hists_match(&bh->block_hists,
+ 							  &pair_bh->block_hists);
+-					hists__output_resort_cb(&pair_bh->block_hists,
+-								NULL, filter_cb);
++					hists__output_resort(&pair_bh->block_hists,
++							     NULL);
+ 				}
+ 				break;
+ 			default:
+diff --git a/tools/perf/util/hist.c b/tools/perf/util/hist.c
+index 679a1d7..daa6eef 100644
+--- a/tools/perf/util/hist.c
++++ b/tools/perf/util/hist.c
+@@ -80,6 +80,8 @@ void hists__calc_col_len(struct hists *hists, struct hist_entry *h)
+ 	int symlen;
+ 	u16 len;
  
- 	rec->bytes_written += size;
- 
-+	if (record__output_max_size_exceeded(rec) && !done) {
-+		fprintf(stderr, "[ perf record: perf size limit reached (%" PRIu64 " KB),"
-+				" stopping session ]\n",
-+				rec->bytes_written >> 10);
-+		done = 1;
-+	}
-+
- 	if (switch_output_size(rec))
- 		trigger_hit(&switch_output_trigger);
- 
-@@ -499,7 +515,6 @@ static int record__pushfn(struct mmap *map, void *to, void *bf, size_t size)
- 	return record__write(rec, map, bf, size);
- }
- 
--static volatile int done;
- static volatile int signr = -1;
- static volatile int child_finished;
- 
-@@ -1984,6 +1999,33 @@ static int record__parse_affinity(const struct option *opt, const char *str, int
- 	return 0;
- }
- 
-+static int parse_output_max_size(const struct option *opt,
-+				 const char *str, int unset)
-+{
-+	unsigned long *s = (unsigned long *)opt->value;
-+	static struct parse_tag tags_size[] = {
-+		{ .tag  = 'B', .mult = 1       },
-+		{ .tag  = 'K', .mult = 1 << 10 },
-+		{ .tag  = 'M', .mult = 1 << 20 },
-+		{ .tag  = 'G', .mult = 1 << 30 },
-+		{ .tag  = 0 },
-+	};
-+	unsigned long val;
-+
-+	if (unset) {
-+		*s = 0;
-+		return 0;
-+	}
-+
-+	val = parse_tag_value(str, tags_size);
-+	if (val != (unsigned long) -1) {
-+		*s = val;
-+		return 0;
-+	}
-+
-+	return -1;
-+}
-+
- static int record__parse_mmap_pages(const struct option *opt,
- 				    const char *str,
- 				    int unset __maybe_unused)
-@@ -2311,6 +2353,8 @@ static struct option __record_options[] = {
- 			    "n", "Compressed records using specified level (default: 1 - fastest compression, 22 - greatest compression)",
- 			    record__parse_comp_level),
- #endif
-+	OPT_CALLBACK(0, "max-size", &record.output_max_size,
-+		     "size", "Limit the maximum size of the output file", parse_output_max_size),
- 	OPT_END()
- };
- 
++	if (h->block_info)
++		return;
+ 	/*
+ 	 * +4 accounts for '[x] ' priv level info
+ 	 * +2 accounts for 0x prefix on raw addresses
