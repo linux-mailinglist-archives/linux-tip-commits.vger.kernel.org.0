@@ -2,39 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 14E8FF8E50
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Nov 2019 12:21:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D509F8E23
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Nov 2019 12:20:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727418AbfKLLST (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 12 Nov 2019 06:18:19 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:33741 "EHLO
+        id S1727535AbfKLLS3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 12 Nov 2019 06:18:29 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:33863 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727401AbfKLLSS (ORCPT
+        with ESMTP id S1727506AbfKLLS2 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 12 Nov 2019 06:18:18 -0500
+        Tue, 12 Nov 2019 06:18:28 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iUUBa-0000bP-AJ; Tue, 12 Nov 2019 12:18:14 +0100
+        id 1iUUBf-0000cM-Ux; Tue, 12 Nov 2019 12:18:20 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E86521C0357;
-        Tue, 12 Nov 2019 12:18:09 +0100 (CET)
-Date:   Tue, 12 Nov 2019 11:18:09 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E8C3D1C04F3;
+        Tue, 12 Nov 2019 12:18:10 +0100 (CET)
+Date:   Tue, 12 Nov 2019 11:18:10 -0000
 From:   "tip-bot2 for Masami Hiramatsu" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf probe: Fix to list probe event with correct line number
-Cc:     Masami Hiramatsu <mhiramat@kernel.org>,
+Subject: [tip: perf/core] perf probe: Fix to probe a function which has no entry pc
+Cc:     Arnaldo Carvalho de Melo <acme@kernel.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
         Jiri Olsa <jolsa@redhat.com>,
         Namhyung Kim <namhyung@kernel.org>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <157199321227.8075.14655572419136993015.stgit@devnote2>
-References: <157199321227.8075.14655572419136993015.stgit@devnote2>
+In-Reply-To: <157199319438.8075.4695576954550638618.stgit@devnote2>
+References: <157199319438.8075.4695576954550638618.stgit@devnote2>
 MIME-Version: 1.0
-Message-ID: <157355748948.29376.12970359374833546705.tip-bot2@tip-bot2>
+Message-ID: <157355749051.29376.230277997554016412.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,77 +51,95 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     3895534dd78f0fd4d3f9e05ee52b9cdd444a743e
-Gitweb:        https://git.kernel.org/tip/3895534dd78f0fd4d3f9e05ee52b9cdd444a743e
+Commit-ID:     5d16dbcc311d91267ddb45c6da4f187be320ecee
+Gitweb:        https://git.kernel.org/tip/5d16dbcc311d91267ddb45c6da4f187be320ecee
 Author:        Masami Hiramatsu <mhiramat@kernel.org>
-AuthorDate:    Fri, 25 Oct 2019 17:46:52 +09:00
+AuthorDate:    Fri, 25 Oct 2019 17:46:34 +09:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Wed, 06 Nov 2019 15:43:06 -03:00
 
-perf probe: Fix to list probe event with correct line number
+perf probe: Fix to probe a function which has no entry pc
 
-Since debuginfo__find_probe_point() uses dwarf_entrypc() for finding the
-entry address of the function on which a probe is, it will fail when the
-function DIE has only ranges attribute.
+Fix 'perf probe' to probe a function which has no entry pc or low pc but
+only has ranges attribute.
 
-To fix this issue, use die_entrypc() instead of dwarf_entrypc().
+probe_point_search_cb() uses dwarf_entrypc() to get the probe address,
+but that doesn't work for the function DIE which has only ranges
+attribute. Use die_entrypc() instead.
 
-Without this fix, perf probe -l shows incorrect offset:
+Without this fix:
 
-  # perf probe -l
-    probe:clear_tasks_mm_cpumask (on clear_tasks_mm_cpumask+18446744071579263632@work/linux/linux/kernel/cpu.c)
-    probe:clear_tasks_mm_cpumask_1 (on clear_tasks_mm_cpumask+18446744071579263752@work/linux/linux/kernel/cpu.c)
+  # perf probe -k ../build-x86_64/vmlinux -D clear_tasks_mm_cpumask:0
+  Probe point 'clear_tasks_mm_cpumask' not found.
+    Error: Failed to add events.
 
 With this:
 
-  # perf probe -l
-    probe:clear_tasks_mm_cpumask (on clear_tasks_mm_cpumask@work/linux/linux/kernel/cpu.c)
-    probe:clear_tasks_mm_cpumask_1 (on clear_tasks_mm_cpumask:21@work/linux/linux/kernel/cpu.c)
+  # perf probe -k ../build-x86_64/vmlinux -D clear_tasks_mm_cpumask:0
+  p:probe/clear_tasks_mm_cpumask clear_tasks_mm_cpumask+0
 
 Committer testing:
 
 Before:
 
-  [root@quaco ~]# perf probe -l
-    probe:clear_tasks_mm_cpumask (on clear_tasks_mm_cpumask+18446744071579765152@kernel/cpu.c)
+  [root@quaco ~]# perf probe clear_tasks_mm_cpumask:0
+  Probe point 'clear_tasks_mm_cpumask' not found.
+    Error: Failed to add events.
   [root@quaco ~]#
 
 After:
 
-  [root@quaco ~]# perf probe -l
-    probe:clear_tasks_mm_cpumask (on clear_tasks_mm_cpumask@kernel/cpu.c)
+  [root@quaco ~]# perf probe clear_tasks_mm_cpumask:0
+  Added new event:
+    probe:clear_tasks_mm_cpumask (on clear_tasks_mm_cpumask)
+
+  You can now use it in all perf tools, such as:
+
+  	perf record -e probe:clear_tasks_mm_cpumask -aR sleep 1
+
   [root@quaco ~]#
 
-Fixes: 1d46ea2a6a40 ("perf probe: Fix listing incorrect line number with inline function")
-Signed-off-by: Masami Hiramatsu <mhiramat@kernel.org>
+Using it with 'perf trace':
+
+  [root@quaco ~]# perf trace -e probe:clear_tasks_mm_cpumask
+
+Doesn't seem to be used in x86_64:
+
+  $ find . -name "*.c" | xargs grep clear_tasks_mm_cpumask
+  ./kernel/cpu.c: * clear_tasks_mm_cpumask - Safely clear tasks' mm_cpumask for a CPU
+  ./kernel/cpu.c:void clear_tasks_mm_cpumask(int cpu)
+  ./arch/xtensa/kernel/smp.c:	clear_tasks_mm_cpumask(cpu);
+  ./arch/csky/kernel/smp.c:	clear_tasks_mm_cpumask(cpu);
+  ./arch/sh/kernel/smp.c:	clear_tasks_mm_cpumask(cpu);
+  ./arch/arm/kernel/smp.c:	clear_tasks_mm_cpumask(cpu);
+  ./arch/powerpc/mm/nohash/mmu_context.c:	clear_tasks_mm_cpumask(cpu);
+  $ find . -name "*.h" | xargs grep clear_tasks_mm_cpumask
+  ./include/linux/cpu.h:void clear_tasks_mm_cpumask(int cpu);
+  $ find . -name "*.S" | xargs grep clear_tasks_mm_cpumask
+  $
+
+Fixes: e1ecbbc3fa83 ("perf probe: Fix to handle optimized not-inlined functions")
+Reported-by: Arnaldo Carvalho de Melo <acme@kernel.org>
 Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Masami Hiramatsu <mhiramat@kernel.org>
 Cc: Jiri Olsa <jolsa@redhat.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Link: http://lore.kernel.org/lkml/157199321227.8075.14655572419136993015.stgit@devnote2
+Link: http://lore.kernel.org/lkml/157199319438.8075.4695576954550638618.stgit@devnote2
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/probe-finder.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/perf/util/probe-finder.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/tools/perf/util/probe-finder.c b/tools/perf/util/probe-finder.c
-index 2fa932b..88e17a4 100644
+index 2b6513e..71633f5 100644
 --- a/tools/perf/util/probe-finder.c
 +++ b/tools/perf/util/probe-finder.c
-@@ -1566,7 +1566,7 @@ int debuginfo__find_probe_point(struct debuginfo *dbg, unsigned long addr,
- 		/* Get function entry information */
- 		func = basefunc = dwarf_diename(&spdie);
- 		if (!func ||
--		    dwarf_entrypc(&spdie, &baseaddr) != 0 ||
-+		    die_entrypc(&spdie, &baseaddr) != 0 ||
- 		    dwarf_decl_line(&spdie, &baseline) != 0) {
- 			lineno = 0;
- 			goto post;
-@@ -1583,7 +1583,7 @@ int debuginfo__find_probe_point(struct debuginfo *dbg, unsigned long addr,
- 		while (die_find_top_inlinefunc(&spdie, (Dwarf_Addr)addr,
- 						&indie)) {
- 			/* There is an inline function */
--			if (dwarf_entrypc(&indie, &_addr) == 0 &&
-+			if (die_entrypc(&indie, &_addr) == 0 &&
- 			    _addr == addr) {
- 				/*
- 				 * addr is at an inline function entry.
+@@ -982,7 +982,7 @@ static int probe_point_search_cb(Dwarf_Die *sp_die, void *data)
+ 		param->retval = find_probe_point_by_line(pf);
+ 	} else if (die_is_func_instance(sp_die)) {
+ 		/* Instances always have the entry address */
+-		dwarf_entrypc(sp_die, &pf->addr);
++		die_entrypc(sp_die, &pf->addr);
+ 		/* But in some case the entry address is 0 */
+ 		if (pf->addr == 0) {
+ 			pr_debug("%s has no entry PC. Skipped\n",
