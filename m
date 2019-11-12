@@ -2,29 +2,29 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CC4EF8E3B
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Nov 2019 12:20:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 11EACF8E45
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Nov 2019 12:21:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727054AbfKLLUY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 12 Nov 2019 06:20:24 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:33902 "EHLO
+        id S1727237AbfKLLUo (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 12 Nov 2019 06:20:44 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:33799 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727485AbfKLLS0 (ORCPT
+        with ESMTP id S1727428AbfKLLSV (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 12 Nov 2019 06:18:26 -0500
+        Tue, 12 Nov 2019 06:18:21 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iUUBd-0000YZ-4S; Tue, 12 Nov 2019 12:18:17 +0100
+        id 1iUUBX-0000YG-HP; Tue, 12 Nov 2019 12:18:11 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 2ED841C03AB;
-        Tue, 12 Nov 2019 12:18:08 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 7CB1C1C0483;
+        Tue, 12 Nov 2019 12:18:07 +0100 (CET)
 Date:   Tue, 12 Nov 2019 11:18:07 -0000
 From:   "tip-bot2 for Adrian Hunter" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf auxtrace: Add auxtrace_cache__remove()
+Subject: [tip: perf/core] perf dso: Refactor dso_cache__read()
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         Alexander Shishkin <alexander.shishkin@linux.intel.com>,
         Borislav Petkov <bp@alien8.de>,
@@ -35,10 +35,10 @@ Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         Peter Zijlstra <peterz@infradead.org>, x86@kernel.org,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org
-In-Reply-To: <20191025130000.13032-6-adrian.hunter@intel.com>
-References: <20191025130000.13032-6-adrian.hunter@intel.com>
+In-Reply-To: <20191025130000.13032-3-adrian.hunter@intel.com>
+References: <20191025130000.13032-3-adrian.hunter@intel.com>
 MIME-Version: 1.0
-Message-ID: <157355748769.29376.9336907434787303711.tip-bot2@tip-bot2>
+Message-ID: <157355748703.29376.7349254792650617038.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -54,19 +54,18 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     fd62c1097a0700484fc2cbc9a182f341f30890cd
-Gitweb:        https://git.kernel.org/tip/fd62c1097a0700484fc2cbc9a182f341f30890cd
+Commit-ID:     366df72657e0cd6bd072b56a48e63b8d89718f70
+Gitweb:        https://git.kernel.org/tip/366df72657e0cd6bd072b56a48e63b8d89718f70
 Author:        Adrian Hunter <adrian.hunter@intel.com>
-AuthorDate:    Fri, 25 Oct 2019 15:59:59 +03:00
+AuthorDate:    Fri, 25 Oct 2019 15:59:56 +03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Wed, 06 Nov 2019 15:43:06 -03:00
 
-perf auxtrace: Add auxtrace_cache__remove()
+perf dso: Refactor dso_cache__read()
 
-Add auxtrace_cache__remove(). Intel PT uses an auxtrace_cache to store
-the results of code-walking, so that the same block of instructions does
-not have to be decoded repeatedly. However, when there are text poke
-events, the associated cache entries need to be removed.
+Refactor dso_cache__read() to separate populating the cache from copying
+data from it.  This is preparation for adding a cache "write" that will
+update the data in the cache.
 
 Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
 Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
@@ -78,61 +77,113 @@ Cc: Mark Rutland <mark.rutland@arm.com>
 Cc: Mathieu Poirier <mathieu.poirier@linaro.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: x86@kernel.org
-Link: http://lore.kernel.org/lkml/20191025130000.13032-6-adrian.hunter@intel.com
+Link: http://lore.kernel.org/lkml/20191025130000.13032-3-adrian.hunter@intel.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/auxtrace.c | 28 ++++++++++++++++++++++++++++
- tools/perf/util/auxtrace.h |  1 +
- 2 files changed, 29 insertions(+)
+ tools/perf/util/dso.c | 64 ++++++++++++++++++++++++------------------
+ 1 file changed, 37 insertions(+), 27 deletions(-)
 
-diff --git a/tools/perf/util/auxtrace.c b/tools/perf/util/auxtrace.c
-index 8470dfe..c555c3c 100644
---- a/tools/perf/util/auxtrace.c
-+++ b/tools/perf/util/auxtrace.c
-@@ -1457,6 +1457,34 @@ int auxtrace_cache__add(struct auxtrace_cache *c, u32 key,
- 	return 0;
+diff --git a/tools/perf/util/dso.c b/tools/perf/util/dso.c
+index e11ddf8..460330d 100644
+--- a/tools/perf/util/dso.c
++++ b/tools/perf/util/dso.c
+@@ -768,7 +768,7 @@ dso_cache__free(struct dso *dso)
+ 	pthread_mutex_unlock(&dso->lock);
  }
  
-+static struct auxtrace_cache_entry *auxtrace_cache__rm(struct auxtrace_cache *c,
-+						       u32 key)
-+{
-+	struct auxtrace_cache_entry *entry;
-+	struct hlist_head *hlist;
-+	struct hlist_node *n;
-+
-+	if (!c)
-+		return NULL;
-+
-+	hlist = &c->hashtable[hash_32(key, c->bits)];
-+	hlist_for_each_entry_safe(entry, n, hlist, hash) {
-+		if (entry->key == key) {
-+			hlist_del(&entry->hash);
-+			return entry;
-+		}
-+	}
-+
-+	return NULL;
-+}
-+
-+void auxtrace_cache__remove(struct auxtrace_cache *c, u32 key)
-+{
-+	struct auxtrace_cache_entry *entry = auxtrace_cache__rm(c, key);
-+
-+	auxtrace_cache__free_entry(c, entry);
-+}
-+
- void *auxtrace_cache__lookup(struct auxtrace_cache *c, u32 key)
+-static struct dso_cache *dso_cache__find(struct dso *dso, u64 offset)
++static struct dso_cache *__dso_cache__find(struct dso *dso, u64 offset)
  {
- 	struct auxtrace_cache_entry *entry;
-diff --git a/tools/perf/util/auxtrace.h b/tools/perf/util/auxtrace.h
-index f201f36..3f4aa54 100644
---- a/tools/perf/util/auxtrace.h
-+++ b/tools/perf/util/auxtrace.h
-@@ -489,6 +489,7 @@ void *auxtrace_cache__alloc_entry(struct auxtrace_cache *c);
- void auxtrace_cache__free_entry(struct auxtrace_cache *c, void *entry);
- int auxtrace_cache__add(struct auxtrace_cache *c, u32 key,
- 			struct auxtrace_cache_entry *entry);
-+void auxtrace_cache__remove(struct auxtrace_cache *c, u32 key);
- void *auxtrace_cache__lookup(struct auxtrace_cache *c, u32 key);
+ 	const struct rb_root *root = &dso->data.cache;
+ 	struct rb_node * const *p = &root->rb_node;
+@@ -863,54 +863,64 @@ out:
+ 	return ret;
+ }
  
- struct auxtrace_record *auxtrace_record__init(struct evlist *evlist,
+-static ssize_t
+-dso_cache__read(struct dso *dso, struct machine *machine,
+-		u64 offset, u8 *data, ssize_t size)
++static struct dso_cache *dso_cache__populate(struct dso *dso,
++					     struct machine *machine,
++					     u64 offset, ssize_t *ret)
+ {
+ 	u64 cache_offset = offset & DSO__DATA_CACHE_MASK;
+ 	struct dso_cache *cache;
+ 	struct dso_cache *old;
+-	ssize_t ret;
+ 
+ 	cache = zalloc(sizeof(*cache) + DSO__DATA_CACHE_SIZE);
+-	if (!cache)
+-		return -ENOMEM;
++	if (!cache) {
++		*ret = -ENOMEM;
++		return NULL;
++	}
+ 
+ 	if (dso->binary_type == DSO_BINARY_TYPE__BPF_PROG_INFO)
+-		ret = bpf_read(dso, cache_offset, cache->data);
++		*ret = bpf_read(dso, cache_offset, cache->data);
+ 	else
+-		ret = file_read(dso, machine, cache_offset, cache->data);
++		*ret = file_read(dso, machine, cache_offset, cache->data);
+ 
+-	if (ret > 0) {
+-		cache->offset = cache_offset;
+-		cache->size   = ret;
++	if (*ret <= 0) {
++		free(cache);
++		return NULL;
++	}
+ 
+-		old = dso_cache__insert(dso, cache);
+-		if (old) {
+-			/* we lose the race */
+-			free(cache);
+-			cache = old;
+-		}
++	cache->offset = cache_offset;
++	cache->size   = *ret;
+ 
+-		ret = dso_cache__memcpy(cache, offset, data, size);
++	old = dso_cache__insert(dso, cache);
++	if (old) {
++		/* we lose the race */
++		free(cache);
++		cache = old;
+ 	}
+ 
+-	if (ret <= 0)
+-		free(cache);
++	return cache;
++}
+ 
+-	return ret;
++static struct dso_cache *dso_cache__find(struct dso *dso,
++					 struct machine *machine,
++					 u64 offset,
++					 ssize_t *ret)
++{
++	struct dso_cache *cache = __dso_cache__find(dso, offset);
++
++	return cache ? cache : dso_cache__populate(dso, machine, offset, ret);
+ }
+ 
+ static ssize_t dso_cache_read(struct dso *dso, struct machine *machine,
+ 			      u64 offset, u8 *data, ssize_t size)
+ {
+ 	struct dso_cache *cache;
++	ssize_t ret = 0;
+ 
+-	cache = dso_cache__find(dso, offset);
+-	if (cache)
+-		return dso_cache__memcpy(cache, offset, data, size);
+-	else
+-		return dso_cache__read(dso, machine, offset, data, size);
++	cache = dso_cache__find(dso, machine, offset, &ret);
++	if (!cache)
++		return ret;
++
++	return dso_cache__memcpy(cache, offset, data, size);
+ }
+ 
+ /*
