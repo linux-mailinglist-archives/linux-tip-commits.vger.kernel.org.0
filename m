@@ -2,40 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AEE3F8BA5
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Nov 2019 10:25:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EEFCF8CCB
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Nov 2019 11:27:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725853AbfKLJZg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 12 Nov 2019 04:25:36 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:32931 "EHLO
+        id S1727128AbfKLK1P (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 12 Nov 2019 05:27:15 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:33201 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725944AbfKLJZg (ORCPT
+        with ESMTP id S1726212AbfKLK1O (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 12 Nov 2019 04:25:36 -0500
+        Tue, 12 Nov 2019 05:27:14 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iUSQQ-0006xt-PU; Tue, 12 Nov 2019 10:25:26 +0100
+        id 1iUTO4-0007n4-Gd; Tue, 12 Nov 2019 11:27:04 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5ADC41C0084;
-        Tue, 12 Nov 2019 10:25:26 +0100 (CET)
-Date:   Tue, 12 Nov 2019 09:25:26 -0000
-From:   "tip-bot2 for Kees Cook" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 28E811C0084;
+        Tue, 12 Nov 2019 11:27:04 +0100 (CET)
+Date:   Tue, 12 Nov 2019 10:27:03 -0000
+From:   "tip-bot2 for Xinwei Kong" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/build] m68k: Convert missed RODATA to RO_DATA
-Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        Kees Cook <keescook@chromium.org>,
-        Borislav Petkov <bp@suse.de>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        linux-m68k@lists.linux-m68k.org, Sam Creasey <sammy@sammy.net>,
+Subject: [tip: efi/core] efi: libstub/tpm: enable tpm eventlog function for
+ ARM platforms
+Cc:     Zou Cao <zoucao@linux.alibaba.com>,
+        Xinwei Kong <kong.kongxinwei@hisilicon.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <201911110920.5840E9AF1@keescook>
-References: <201911110920.5840E9AF1@keescook>
 MIME-Version: 1.0
-Message-ID: <157355072603.29376.646015580479750741.tip-bot2@tip-bot2>
+Message-ID: <157355442380.29376.1364588538431617460.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,58 +46,38 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/build branch of tip:
+The following commit has been merged into the efi/core branch of tip:
 
-Commit-ID:     de7156689d69e9861d9ddc54a9dea623c25020c5
-Gitweb:        https://git.kernel.org/tip/de7156689d69e9861d9ddc54a9dea623c25020c5
-Author:        Kees Cook <keescook@chromium.org>
-AuthorDate:    Mon, 11 Nov 2019 09:22:00 -08:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 12 Nov 2019 09:56:51 +01:00
+Commit-ID:     d99c1ba6a73b9e93e2884b7893fe19e3c082ba03
+Gitweb:        https://git.kernel.org/tip/d99c1ba6a73b9e93e2884b7893fe19e3c082ba03
+Author:        Xinwei Kong <kong.kongxinwei@hisilicon.com>
+AuthorDate:    Thu, 07 Nov 2019 16:24:21 +08:00
+Committer:     Ard Biesheuvel <ardb@kernel.org>
+CommitterDate: Thu, 07 Nov 2019 10:18:45 +01:00
 
-m68k: Convert missed RODATA to RO_DATA
+efi: libstub/tpm: enable tpm eventlog function for ARM platforms
 
-I missed two instances of the old RODATA macro (seems I was searching
-for vmlinux.lds* not vmlinux*lds*). Fix both instances and double-check
-the entire tree for other "RODATA" instances in linker scripts.
+Wire up the existing code for ARM that loads the TPM event log into
+OS accessible buffers while running the EFI stub so that the kernel
+proper can access it at runtime.
 
-Fixes: c82318254d15 ("vmlinux.lds.h: Replace RODATA with RO_DATA")
-Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
-Cc: linux-m68k@lists.linux-m68k.org
-Cc: Sam Creasey <sammy@sammy.net>
-Link: https://lkml.kernel.org/r/201911110920.5840E9AF1@keescook
+Tested-by: Zou Cao <zoucao@linux.alibaba.com>
+Signed-off-by: Xinwei Kong <kong.kongxinwei@hisilicon.com>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/m68k/kernel/vmlinux-std.lds  | 2 +-
- arch/m68k/kernel/vmlinux-sun3.lds | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/firmware/efi/libstub/arm-stub.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/m68k/kernel/vmlinux-std.lds b/arch/m68k/kernel/vmlinux-std.lds
-index 6e7eb49..4d33da4 100644
---- a/arch/m68k/kernel/vmlinux-std.lds
-+++ b/arch/m68k/kernel/vmlinux-std.lds
-@@ -31,7 +31,7 @@ SECTIONS
+diff --git a/drivers/firmware/efi/libstub/arm-stub.c b/drivers/firmware/efi/libstub/arm-stub.c
+index c382a48..817237c 100644
+--- a/drivers/firmware/efi/libstub/arm-stub.c
++++ b/drivers/firmware/efi/libstub/arm-stub.c
+@@ -189,6 +189,8 @@ unsigned long efi_entry(void *handle, efi_system_table_t *sys_table,
+ 		goto fail_free_cmdline;
+ 	}
  
-   _sdata = .;			/* Start of data section */
- 
--  RODATA
-+  RO_DATA(4096)
- 
-   RW_DATA(16, PAGE_SIZE, THREAD_SIZE)
- 
-diff --git a/arch/m68k/kernel/vmlinux-sun3.lds b/arch/m68k/kernel/vmlinux-sun3.lds
-index 1a0ad6b..87d9f4d 100644
---- a/arch/m68k/kernel/vmlinux-sun3.lds
-+++ b/arch/m68k/kernel/vmlinux-sun3.lds
-@@ -24,7 +24,7 @@ SECTIONS
- 	*(.fixup)
- 	*(.gnu.warning)
- 	} :text = 0x4e75
--	RODATA
-+	RO_DATA(4096)
- 
-   _etext = .;			/* End of text section */
++	efi_retrieve_tpm2_eventlog(sys_table);
++
+ 	/* Ask the firmware to clear memory on unclean shutdown */
+ 	efi_enable_reset_attack_mitigation(sys_table);
  
