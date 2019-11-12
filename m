@@ -2,39 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 702FCF8E48
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Nov 2019 12:21:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1CB28F8E3F
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Nov 2019 12:20:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727481AbfKLLUu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 12 Nov 2019 06:20:50 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:33804 "EHLO
+        id S1727121AbfKLLUg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 12 Nov 2019 06:20:36 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:33832 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727431AbfKLLSV (ORCPT
+        with ESMTP id S1727453AbfKLLSX (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 12 Nov 2019 06:18:21 -0500
+        Tue, 12 Nov 2019 06:18:23 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iUUBd-0000e5-AT; Tue, 12 Nov 2019 12:18:17 +0100
+        id 1iUUBe-0000es-Lb; Tue, 12 Nov 2019 12:18:18 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 6EC1E1C04A9;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E5C741C04F4;
         Tue, 12 Nov 2019 12:18:12 +0100 (CET)
 Date:   Tue, 12 Nov 2019 11:18:12 -0000
 From:   "tip-bot2 for Masami Hiramatsu" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf probe: Fix to show function entry line as probe-able
+Subject: [tip: perf/core] perf probe: Walk function lines in lexical blocks
 Cc:     Masami Hiramatsu <mhiramat@kernel.org>,
         Jiri Olsa <jolsa@redhat.com>,
         Namhyung Kim <namhyung@kernel.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <157190837419.1859.4619125803596816752.stgit@devnote2>
-References: <157190837419.1859.4619125803596816752.stgit@devnote2>
+In-Reply-To: <157190836514.1859.15996864849678136353.stgit@devnote2>
+References: <157190836514.1859.15996864849678136353.stgit@devnote2>
 MIME-Version: 1.0
-Message-ID: <157355749205.29376.7472271446729295271.tip-bot2@tip-bot2>
+Message-ID: <157355749256.29376.12558706636462185654.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,89 +50,75 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     91e2f539eeda26ab00bd03fae8dc434c128c85ed
-Gitweb:        https://git.kernel.org/tip/91e2f539eeda26ab00bd03fae8dc434c128c85ed
+Commit-ID:     acb6a7047ac2146b723fef69ee1ab6b7143546bf
+Gitweb:        https://git.kernel.org/tip/acb6a7047ac2146b723fef69ee1ab6b7143546bf
 Author:        Masami Hiramatsu <mhiramat@kernel.org>
-AuthorDate:    Thu, 24 Oct 2019 18:12:54 +09:00
+AuthorDate:    Thu, 24 Oct 2019 18:12:45 +09:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Wed, 06 Nov 2019 15:43:06 -03:00
 
-perf probe: Fix to show function entry line as probe-able
+perf probe: Walk function lines in lexical blocks
 
-Fix die_walk_lines() to list the function entry line correctly.  Since
-the dwarf_entrypc() does not return the entry pc if the DIE has only
-range attribute, __die_walk_funclines() fails to list the declaration
-line (entry line) in that case.
+Since some inlined functions are in lexical blocks of given function, we
+have to recursively walk through the DIE tree.  Without this fix,
+perf-probe -L can miss the inlined functions which is in a lexical block
+(like if (..) { func() } case.)
 
-To solve this issue, this introduces die_entrypc() which correctly
-returns the entry PC (the first address range) even if the DIE has only
-range attribute. With this fix die_walk_lines() shows the function entry
-line is able to probe correctly.
+However, even though, to walk the lines in a given function, we don't
+need to follow the children DIE of inlined functions because those do
+not have any lines in the specified function.
 
-Fixes: 4cc9cec636e7 ("perf probe: Introduce lines walker interface")
+We need to walk though whole trees only if we walk all lines in a given
+file, because an inlined function can include another inlined function
+in the same file.
+
+Fixes: b0e9cb2802d4 ("perf probe: Fix to search nested inlined functions in CU")
 Signed-off-by: Masami Hiramatsu <mhiramat@kernel.org>
 Cc: Jiri Olsa <jolsa@redhat.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Link: http://lore.kernel.org/lkml/157190837419.1859.4619125803596816752.stgit@devnote2
+Link: http://lore.kernel.org/lkml/157190836514.1859.15996864849678136353.stgit@devnote2
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/dwarf-aux.c | 24 +++++++++++++++++++++++-
- tools/perf/util/dwarf-aux.h |  3 +++
- 2 files changed, 26 insertions(+), 1 deletion(-)
+ tools/perf/util/dwarf-aux.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
 diff --git a/tools/perf/util/dwarf-aux.c b/tools/perf/util/dwarf-aux.c
-index 929b7c0..063f71d 100644
+index 2ec24c3..929b7c0 100644
 --- a/tools/perf/util/dwarf-aux.c
 +++ b/tools/perf/util/dwarf-aux.c
-@@ -308,6 +308,28 @@ bool die_is_func_def(Dwarf_Die *dw_die)
- }
+@@ -678,10 +678,9 @@ static int __die_walk_funclines_cb(Dwarf_Die *in_die, void *data)
+ 			if (lw->retval != 0)
+ 				return DIE_FIND_CB_END;
+ 		}
++		if (!lw->recursive)
++			return DIE_FIND_CB_SIBLING;
+ 	}
+-	if (!lw->recursive)
+-		/* Don't need to search recursively */
+-		return DIE_FIND_CB_SIBLING;
  
- /**
-+ * die_entrypc - Returns entry PC (the lowest address) of a DIE
-+ * @dw_die: a DIE
-+ * @addr: where to store entry PC
-+ *
-+ * Since dwarf_entrypc() does not return entry PC if the DIE has only address
-+ * range, we have to use this to retrieve the lowest address from the address
-+ * range attribute.
-+ */
-+int die_entrypc(Dwarf_Die *dw_die, Dwarf_Addr *addr)
-+{
-+	Dwarf_Addr base, end;
-+
-+	if (!addr)
-+		return -EINVAL;
-+
-+	if (dwarf_entrypc(dw_die, addr) == 0)
-+		return 0;
-+
-+	return dwarf_ranges(dw_die, 0, &base, addr, &end) < 0 ? -ENOENT : 0;
-+}
-+
-+/**
-  * die_is_func_instance - Ensure that this DIE is an instance of a subprogram
-  * @dw_die: a DIE
-  *
-@@ -713,7 +735,7 @@ static int __die_walk_funclines(Dwarf_Die *sp_die, bool recursive,
- 	/* Handle function declaration line */
- 	fname = dwarf_decl_file(sp_die);
- 	if (fname && dwarf_decl_line(sp_die, &lineno) == 0 &&
--	    dwarf_entrypc(sp_die, &addr) == 0) {
-+	    die_entrypc(sp_die, &addr) == 0) {
- 		lw.retval = callback(fname, lineno, addr, data);
- 		if (lw.retval != 0)
- 			goto done;
-diff --git a/tools/perf/util/dwarf-aux.h b/tools/perf/util/dwarf-aux.h
-index f204e58..506006e 100644
---- a/tools/perf/util/dwarf-aux.h
-+++ b/tools/perf/util/dwarf-aux.h
-@@ -29,6 +29,9 @@ int cu_walk_functions_at(Dwarf_Die *cu_die, Dwarf_Addr addr,
- /* Get DW_AT_linkage_name (should be NULL for C binary) */
- const char *die_get_linkage_name(Dwarf_Die *dw_die);
+ 	if (addr) {
+ 		fname = dwarf_decl_file(in_die);
+@@ -728,6 +727,10 @@ static int __die_walk_culines_cb(Dwarf_Die *sp_die, void *data)
+ {
+ 	struct __line_walk_param *lw = data;
  
-+/* Get the lowest PC in DIE (including range list) */
-+int die_entrypc(Dwarf_Die *dw_die, Dwarf_Addr *addr);
-+
- /* Ensure that this DIE is a subprogram and definition (not declaration) */
- bool die_is_func_def(Dwarf_Die *dw_die);
- 
++	/*
++	 * Since inlined function can include another inlined function in
++	 * the same file, we need to walk in it recursively.
++	 */
+ 	lw->retval = __die_walk_funclines(sp_die, true, lw->callback, lw->data);
+ 	if (lw->retval != 0)
+ 		return DWARF_CB_ABORT;
+@@ -817,8 +820,9 @@ int die_walk_lines(Dwarf_Die *rt_die, line_walk_callback_t callback, void *data)
+ 	 */
+ 	if (rt_die != cu_die)
+ 		/*
+-		 * Don't need walk functions recursively, because nested
+-		 * inlined functions don't have lines of the specified DIE.
++		 * Don't need walk inlined functions recursively, because
++		 * inner inlined functions don't have the lines of the
++		 * specified function.
+ 		 */
+ 		ret = __die_walk_funclines(rt_die, false, callback, data);
+ 	else {
