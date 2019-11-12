@@ -2,53 +2,41 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 17F1EF8E08
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Nov 2019 12:19:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 30413F8DFD
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Nov 2019 12:19:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727719AbfKLLTF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 12 Nov 2019 06:19:05 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:34111 "EHLO
+        id S1727616AbfKLLSj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 12 Nov 2019 06:18:39 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:34088 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727563AbfKLLTE (ORCPT
+        with ESMTP id S1727392AbfKLLSi (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 12 Nov 2019 06:19:04 -0500
+        Tue, 12 Nov 2019 06:18:38 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iUUBl-0000go-RY; Tue, 12 Nov 2019 12:18:26 +0100
+        id 1iUUBi-0000jR-Ge; Tue, 12 Nov 2019 12:18:22 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id F08A11C0357;
-        Tue, 12 Nov 2019 12:18:14 +0100 (CET)
-Date:   Tue, 12 Nov 2019 11:18:14 -0000
-From:   "tip-bot2 for Ian Rogers" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 46FD71C04CB;
+        Tue, 12 Nov 2019 12:18:16 +0100 (CET)
+Date:   Tue, 12 Nov 2019 11:18:15 -0000
+From:   "tip-bot2 for Andi Kleen" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf tools: Avoid a malloc() for array events
-Cc:     Ian Rogers <irogers@google.com>, Jiri Olsa <jolsa@kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Andi Kleen <ak@linux.intel.com>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Jin Yao <yao.jin@linux.intel.com>,
-        John Garry <john.garry@huawei.com>,
+Subject: [tip: perf/core] perf evsel: Always preserve errno while cleaning up
+ perf_event_open failures
+Cc:     Andi Kleen <ak@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>,
         Kan Liang <kan.liang@linux.intel.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Martin KaFai Lau <kafai@fb.com>,
-        Namhyung Kim <namhyung@kernel.org>,
         Peter Zijlstra <peterz@infradead.org>,
-        Song Liu <songliubraving@fb.com>,
         Stephane Eranian <eranian@google.com>,
-        Yonghong Song <yhs@fb.com>, bpf@vger.kernel.org,
-        clang-built-linux@googlegroups.com, netdev@vger.kernel.org,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20191023005337.196160-6-irogers@google.com>
-References: <20191023005337.196160-6-irogers@google.com>
+In-Reply-To: <20191020175202.32456-2-andi@firstfloor.org>
+References: <20191020175202.32456-2-andi@firstfloor.org>
 MIME-Version: 1.0
-Message-ID: <157355749440.29376.10975700265435116588.tip-bot2@tip-bot2>
+Message-ID: <157355749593.29376.11413893527155626939.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -64,63 +52,68 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     826100a7ce9a659b42140710ebe789d710799048
-Gitweb:        https://git.kernel.org/tip/826100a7ce9a659b42140710ebe789d710799048
-Author:        Ian Rogers <irogers@google.com>
-AuthorDate:    Tue, 22 Oct 2019 17:53:33 -07:00
+Commit-ID:     796c01a4bfb4b35ec6d1bd1cd5d520515d078b51
+Gitweb:        https://git.kernel.org/tip/796c01a4bfb4b35ec6d1bd1cd5d520515d078b51
+Author:        Andi Kleen <ak@linux.intel.com>
+AuthorDate:    Sun, 20 Oct 2019 10:51:54 -07:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Wed, 06 Nov 2019 15:43:05 -03:00
 
-perf tools: Avoid a malloc() for array events
+perf evsel: Always preserve errno while cleaning up perf_event_open failures
 
-Use realloc() rather than malloc()+memcpy() to possibly avoid a memory
-allocation when appending array elements.
+In some cases when perf_event_open fails, it may do some closes to clean
+up. In special cases these closes can fail too, which overwrites the
+errno of the perf_event_open, which is then incorrectly reported.
 
-Signed-off-by: Ian Rogers <irogers@google.com>
+Save/restore errno around closes.
+
+Signed-off-by: Andi Kleen <ak@linux.intel.com>
 Acked-by: Jiri Olsa <jolsa@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Alexei Starovoitov <ast@kernel.org>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Daniel Borkmann <daniel@iogearbox.net>
-Cc: Jin Yao <yao.jin@linux.intel.com>
-Cc: John Garry <john.garry@huawei.com>
 Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Martin KaFai Lau <kafai@fb.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Song Liu <songliubraving@fb.com>
 Cc: Stephane Eranian <eranian@google.com>
-Cc: Yonghong Song <yhs@fb.com>
-Cc: bpf@vger.kernel.org
-Cc: clang-built-linux@googlegroups.com
-Cc: netdev@vger.kernel.org
-Link: http://lore.kernel.org/lkml/20191023005337.196160-6-irogers@google.com
+Link: http://lore.kernel.org/lkml/20191020175202.32456-2-andi@firstfloor.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/parse-events.y | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ tools/perf/util/evsel.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/util/parse-events.y b/tools/perf/util/parse-events.y
-index 5863acb..ffa1a1b 100644
---- a/tools/perf/util/parse-events.y
-+++ b/tools/perf/util/parse-events.y
-@@ -689,14 +689,12 @@ array_terms ',' array_term
- 	struct parse_events_array new_array;
+diff --git a/tools/perf/util/evsel.c b/tools/perf/util/evsel.c
+index abc7fda..d831038 100644
+--- a/tools/perf/util/evsel.c
++++ b/tools/perf/util/evsel.c
+@@ -1574,7 +1574,7 @@ int evsel__open(struct evsel *evsel, struct perf_cpu_map *cpus,
+ {
+ 	int cpu, thread, nthreads;
+ 	unsigned long flags = PERF_FLAG_FD_CLOEXEC;
+-	int pid = -1, err;
++	int pid = -1, err, old_errno;
+ 	enum { NO_CHANGE, SET_TO_MAX, INCREASED_MAX } set_rlimit = NO_CHANGE;
  
- 	new_array.nr_ranges = $1.nr_ranges + $3.nr_ranges;
--	new_array.ranges = malloc(sizeof(new_array.ranges[0]) *
--				  new_array.nr_ranges);
-+	new_array.ranges = realloc($1.ranges,
-+				sizeof(new_array.ranges[0]) *
-+				new_array.nr_ranges);
- 	ABORT_ON(!new_array.ranges);
--	memcpy(&new_array.ranges[0], $1.ranges,
--	       $1.nr_ranges * sizeof(new_array.ranges[0]));
- 	memcpy(&new_array.ranges[$1.nr_ranges], $3.ranges,
- 	       $3.nr_ranges * sizeof(new_array.ranges[0]));
--	free($1.ranges);
- 	free($3.ranges);
- 	$$ = new_array;
+ 	if ((perf_missing_features.write_backward && evsel->core.attr.write_backward) ||
+@@ -1727,8 +1727,8 @@ try_fallback:
+ 	 */
+ 	if (err == -EMFILE && set_rlimit < INCREASED_MAX) {
+ 		struct rlimit l;
+-		int old_errno = errno;
+ 
++		old_errno = errno;
+ 		if (getrlimit(RLIMIT_NOFILE, &l) == 0) {
+ 			if (set_rlimit == NO_CHANGE)
+ 				l.rlim_cur = l.rlim_max;
+@@ -1812,6 +1812,7 @@ out_close:
+ 	if (err)
+ 		threads->err_thread = thread;
+ 
++	old_errno = errno;
+ 	do {
+ 		while (--thread >= 0) {
+ 			close(FD(evsel, cpu, thread));
+@@ -1819,6 +1820,7 @@ out_close:
+ 		}
+ 		thread = nthreads;
+ 	} while (--cpu >= 0);
++	errno = old_errno;
+ 	return err;
  }
+ 
