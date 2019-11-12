@@ -2,41 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7EC07F9300
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Nov 2019 15:49:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D3DD8F937A
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Nov 2019 16:00:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726718AbfKLOtf (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 12 Nov 2019 09:49:35 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:34589 "EHLO
+        id S1727016AbfKLPAs (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 12 Nov 2019 10:00:48 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:34644 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725997AbfKLOte (ORCPT
+        with ESMTP id S1726953AbfKLPAs (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 12 Nov 2019 09:49:34 -0500
+        Tue, 12 Nov 2019 10:00:48 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iUXTs-0004jL-Vg; Tue, 12 Nov 2019 15:49:21 +0100
+        id 1iUXes-00057x-Vi; Tue, 12 Nov 2019 16:00:43 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 54BB21C0084;
-        Tue, 12 Nov 2019 15:49:20 +0100 (CET)
-Date:   Tue, 12 Nov 2019 14:49:19 -0000
-From:   "tip-bot2 for Rahul Tanwar" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 9E0FF1C0084;
+        Tue, 12 Nov 2019 16:00:42 +0100 (CET)
+Date:   Tue, 12 Nov 2019 15:00:42 -0000
+From:   "tip-bot2 for Kai-Heng Feng" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/boot] x86/init: Allow DT configured systems to disable RTC
- at boot time
-Cc:     Andy Shevchenko <andriy.shevchenko@intel.com>,
-        Rahul Tanwar <rahul.tanwar@linux.intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
+Subject: [tip: x86/urgent] x86/quirks: Disable HPET on Intel Coffe Lake platforms
+Cc:     Feng Tang <feng.tang@intel.com>,
+        "Kai-Heng Feng" <kai.heng.feng@canonical.com>,
+        Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: =?utf-8?q?=3Cb84d9152ce0c1c09896ff4987e691a0715cb02df=2E15706?=
- =?utf-8?q?93058=2Egit=2Erahul=2Etanwar=40linux=2Eintel=2Ecom=3E?=
-References: =?utf-8?q?=3Cb84d9152ce0c1c09896ff4987e691a0715cb02df=2E157069?=
- =?utf-8?q?3058=2Egit=2Erahul=2Etanwar=40linux=2Eintel=2Ecom=3E?=
+In-Reply-To: <20191016103816.30650-1-kai.heng.feng@canonical.com>
+References: <20191016103816.30650-1-kai.heng.feng@canonical.com>
 MIME-Version: 1.0
-Message-ID: <157357015991.29376.16358106600464439915.tip-bot2@tip-bot2>
+Message-ID: <157357084220.29376.9594483484255734151.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,76 +47,49 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/boot branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     c311ed6183f4fd137bb8451ef77f4011c225ddaf
-Gitweb:        https://git.kernel.org/tip/c311ed6183f4fd137bb8451ef77f4011c225ddaf
-Author:        Rahul Tanwar <rahul.tanwar@linux.intel.com>
-AuthorDate:    Thu, 10 Oct 2019 17:28:56 +08:00
+Commit-ID:     fc5db58539b49351e76f19817ed1102bf7c712d0
+Gitweb:        https://git.kernel.org/tip/fc5db58539b49351e76f19817ed1102bf7c712d0
+Author:        Kai-Heng Feng <kai.heng.feng@canonical.com>
+AuthorDate:    Wed, 16 Oct 2019 18:38:16 +08:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 12 Nov 2019 15:46:53 +01:00
+CommitterDate: Tue, 12 Nov 2019 15:55:20 +01:00
 
-x86/init: Allow DT configured systems to disable RTC at boot time
+x86/quirks: Disable HPET on Intel Coffe Lake platforms
 
-Systems which do not support RTC run into boot problems as the kernel
-assumes the availability of the RTC by default.
+Some Coffee Lake platforms have a skewed HPET timer once the SoCs entered
+PC10, which in consequence marks TSC as unstable because HPET is used as
+watchdog clocksource for TSC.
 
-On device tree configured systems the availability of the RTC can be
-detected by querying the corresponding device tree node.
+Harry Pan tried to work around it in the clocksource watchdog code [1]
+thereby creating a circular dependency between HPET and TSC. This also
+ignores the fact, that HPET is not only unsuitable as watchdog clocksource
+on these systems, it becomes unusable in general.
 
-Implement a wallclock init function to query the device tree and disable
-RTC if the RTC is marked as not available in the corresponding node.
+Disable HPET on affected platforms.
 
-[ tglx: Rewrote changelog and comments. Added proper __init(const)
-  	annotations. ]
-
-Suggested-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Signed-off-by: Rahul Tanwar <rahul.tanwar@linux.intel.com>
+Suggested-by: Feng Tang <feng.tang@intel.com>
+Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/b84d9152ce0c1c09896ff4987e691a0715cb02df.1570693058.git.rahul.tanwar@linux.intel.com
+Cc: stable@vger.kernel.org
+Bugzilla: https://bugzilla.kernel.org/show_bug.cgi?id=203183
+Link: https://lore.kernel.org/lkml/20190516090651.1396-1-harry.pan@intel.com/ [1]
+Link: https://lkml.kernel.org/r/20191016103816.30650-1-kai.heng.feng@canonical.com
 ---
- arch/x86/kernel/x86_init.c | 24 +++++++++++++++++++++++-
- 1 file changed, 23 insertions(+), 1 deletion(-)
+ arch/x86/kernel/early-quirks.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/x86/kernel/x86_init.c b/arch/x86/kernel/x86_init.c
-index 18a799c..ce89430 100644
---- a/arch/x86/kernel/x86_init.c
-+++ b/arch/x86/kernel/x86_init.c
-@@ -31,6 +31,28 @@ static int __init iommu_init_noop(void) { return 0; }
- static void iommu_shutdown_noop(void) { }
- bool __init bool_x86_init_noop(void) { return false; }
- void x86_op_int_noop(int cpu) { }
-+static __init int set_rtc_noop(const struct timespec64 *now) { return -EINVAL; }
-+static __init void get_rtc_noop(struct timespec64 *now) { }
-+
-+static __initconst const struct of_device_id of_cmos_match[] = {
-+	{ .compatible = "motorola,mc146818" },
-+	{}
-+};
-+
-+/*
-+ * Allow devicetree configured systems to disable the RTC by setting the
-+ * corresponding DT node's status property to disabled. Code is optimized
-+ * out for CONFIG_OF=n builds.
-+ */
-+static __init void x86_wallclock_init(void)
-+{
-+	struct device_node *node = of_find_matching_node(NULL, of_cmos_match);
-+
-+	if (node && !of_device_is_available(node)) {
-+		x86_platform.get_wallclock = get_rtc_noop;
-+		x86_platform.set_wallclock = set_rtc_noop;
-+	}
-+}
- 
- /*
-  * The platform setup functions are preset with the default functions
-@@ -73,7 +95,7 @@ struct x86_init_ops x86_init __initdata = {
- 	.timers = {
- 		.setup_percpu_clockev	= setup_boot_APIC_clock,
- 		.timer_init		= hpet_time_init,
--		.wallclock_init		= x86_init_noop,
-+		.wallclock_init		= x86_wallclock_init,
- 	},
- 
- 	.iommu = {
+diff --git a/arch/x86/kernel/early-quirks.c b/arch/x86/kernel/early-quirks.c
+index 6f6b1d0..4cba91e 100644
+--- a/arch/x86/kernel/early-quirks.c
++++ b/arch/x86/kernel/early-quirks.c
+@@ -710,6 +710,8 @@ static struct chipset early_qrk[] __initdata = {
+ 	 */
+ 	{ PCI_VENDOR_ID_INTEL, 0x0f00,
+ 		PCI_CLASS_BRIDGE_HOST, PCI_ANY_ID, 0, force_disable_hpet},
++	{ PCI_VENDOR_ID_INTEL, 0x3ec4,
++		PCI_CLASS_BRIDGE_HOST, PCI_ANY_ID, 0, force_disable_hpet},
+ 	{ PCI_VENDOR_ID_BROADCOM, 0x4331,
+ 	  PCI_CLASS_NETWORK_OTHER, PCI_ANY_ID, 0, apple_airport_reset},
+ 	{}
