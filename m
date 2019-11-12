@@ -2,39 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B8863F719A
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 Nov 2019 11:11:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AD6ABF8977
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Nov 2019 08:17:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727068AbfKKKLu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 11 Nov 2019 05:11:50 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:56043 "EHLO
+        id S1726008AbfKLHRB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 12 Nov 2019 02:17:01 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:60924 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726768AbfKKKLt (ORCPT
+        with ESMTP id S1725283AbfKLHRA (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 11 Nov 2019 05:11:49 -0500
+        Tue, 12 Nov 2019 02:17:00 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iU6fc-00046R-6A; Mon, 11 Nov 2019 11:11:40 +0100
+        id 1iUQQ3-0005Vk-HK; Tue, 12 Nov 2019 08:16:55 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A7E4D1C0093;
-        Mon, 11 Nov 2019 11:11:39 +0100 (CET)
-Date:   Mon, 11 Nov 2019 10:11:39 -0000
-From:   "tip-bot2 for Jiri Slaby" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id AEB471C0084;
+        Tue, 12 Nov 2019 08:16:54 +0100 (CET)
+Date:   Tue, 12 Nov 2019 07:16:54 -0000
+From:   "tip-bot2 for Arnd Bergmann" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/stacktrace] stacktrace: Get rid of unneeded '!!' pattern
-Cc:     Joe Perches <joe@perches.com>, Jiri Slaby <jslaby@suse.cz>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
+Subject: [tip: timers/urgent] ntp/y2038: Remove incorrect time_t truncation
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20191111092647.27419-1-jslaby@suse.cz>
-References: <20191111092647.27419-1-jslaby@suse.cz>
+In-Reply-To: <20191108203435.112759-2-arnd@arndb.de>
+References: <20191108203435.112759-2-arnd@arndb.de>
 MIME-Version: 1.0
-Message-ID: <157346709937.29376.10784180052617315961.tip-bot2@tip-bot2>
+Message-ID: <157354301429.29376.9889491292971482073.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,59 +46,43 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the core/stacktrace branch of tip:
+The following commit has been merged into the timers/urgent branch of tip:
 
-Commit-ID:     4b48512c2e9c63b62d7da23563cdb224b4d61d72
-Gitweb:        https://git.kernel.org/tip/4b48512c2e9c63b62d7da23563cdb224b4d61d72
-Author:        Jiri Slaby <jslaby@suse.cz>
-AuthorDate:    Mon, 11 Nov 2019 10:26:47 +01:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Mon, 11 Nov 2019 10:30:59 +01:00
+Commit-ID:     2f5841349df281ecf8f81cc82d869b8476f0db0b
+Gitweb:        https://git.kernel.org/tip/2f5841349df281ecf8f81cc82d869b8476f0db0b
+Author:        Arnd Bergmann <arnd@arndb.de>
+AuthorDate:    Fri, 08 Nov 2019 21:34:24 +01:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Tue, 12 Nov 2019 08:13:44 +01:00
 
-stacktrace: Get rid of unneeded '!!' pattern
+ntp/y2038: Remove incorrect time_t truncation
 
-My commit b0c51f158455 ("stacktrace: Don't skip first entry on
-noncurrent tasks") adds one or zero to skipnr by "!!(current == tsk)".
+A cast to 'time_t' was accidentally left in place during the
+conversion of __do_adjtimex() to 64-bit timestamps, so the
+resulting value is incorrectly truncated.
 
-But the C99 standard says:
+Remove the cast so the 64-bit time gets propagated correctly.
 
-  The == (equal to) and != (not equal to) operators are
-  ...
-  Each of the operators yields 1 if the specified relation is true and 0
-  if it is false.
+Fixes: ead25417f82e ("timex: use __kernel_timex internally")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/20191108203435.112759-2-arnd@arndb.de
 
-So there is no need to prepend the above expression by "!!" -- remove it.
-
-Reported-by: Joe Perches <joe@perches.com>
-Signed-off-by: Jiri Slaby <jslaby@suse.cz>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20191111092647.27419-1-jslaby@suse.cz
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- kernel/stacktrace.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/time/ntp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/stacktrace.c b/kernel/stacktrace.c
-index c9ea7eb..2af66e4 100644
---- a/kernel/stacktrace.c
-+++ b/kernel/stacktrace.c
-@@ -142,7 +142,7 @@ unsigned int stack_trace_save_tsk(struct task_struct *tsk, unsigned long *store,
- 		.store	= store,
- 		.size	= size,
- 		/* skip this function if they are tracing us */
--		.skip	= skipnr + !!(current == tsk),
-+		.skip	= skipnr + (current == tsk),
- 	};
+diff --git a/kernel/time/ntp.c b/kernel/time/ntp.c
+index 65eb796..069ca78 100644
+--- a/kernel/time/ntp.c
++++ b/kernel/time/ntp.c
+@@ -771,7 +771,7 @@ int __do_adjtimex(struct __kernel_timex *txc, const struct timespec64 *ts,
+ 	/* fill PPS status fields */
+ 	pps_fill_timex(txc);
  
- 	if (!try_get_task_stack(tsk))
-@@ -300,7 +300,7 @@ unsigned int stack_trace_save_tsk(struct task_struct *task,
- 		.entries	= store,
- 		.max_entries	= size,
- 		/* skip this function if they are tracing us */
--		.skip	= skipnr + !!(current == task),
-+		.skip	= skipnr + (current == task),
- 	};
- 
- 	save_stack_trace_tsk(task, &trace);
+-	txc->time.tv_sec = (time_t)ts->tv_sec;
++	txc->time.tv_sec = ts->tv_sec;
+ 	txc->time.tv_usec = ts->tv_nsec;
+ 	if (!(time_status & STA_NANO))
+ 		txc->time.tv_usec = ts->tv_nsec / NSEC_PER_USEC;
