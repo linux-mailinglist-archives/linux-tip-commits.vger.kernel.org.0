@@ -2,39 +2,43 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 968EAF8E55
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Nov 2019 12:21:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CC4EF8E3B
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Nov 2019 12:20:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727519AbfKLLVW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 12 Nov 2019 06:21:22 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:33731 "EHLO
+        id S1727054AbfKLLUY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 12 Nov 2019 06:20:24 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:33902 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727399AbfKLLSR (ORCPT
+        with ESMTP id S1727485AbfKLLS0 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 12 Nov 2019 06:18:17 -0500
+        Tue, 12 Nov 2019 06:18:26 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iUUBX-0000XM-0F; Tue, 12 Nov 2019 12:18:11 +0100
+        id 1iUUBd-0000YZ-4S; Tue, 12 Nov 2019 12:18:17 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 6EA2A1C04E8;
-        Tue, 12 Nov 2019 12:18:06 +0100 (CET)
-Date:   Tue, 12 Nov 2019 11:18:06 -0000
-From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 2ED841C03AB;
+        Tue, 12 Nov 2019 12:18:08 +0100 (CET)
+Date:   Tue, 12 Nov 2019 11:18:07 -0000
+From:   "tip-bot2 for Adrian Hunter" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf map: Check if the map still has some refcounts on exit
+Subject: [tip: perf/core] perf auxtrace: Add auxtrace_cache__remove()
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Andi Kleen <ak@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>,
-        Namhyung Kim <namhyung@kernel.org>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>, Jiri Olsa <jolsa@redhat.com>,
+        Leo Yan <leo.yan@linaro.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Peter Zijlstra <peterz@infradead.org>, x86@kernel.org,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <tip-hany65tbeavsax7n3xvwl9pc@git.kernel.org>
-References: <tip-hany65tbeavsax7n3xvwl9pc@git.kernel.org>
+        Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org
+In-Reply-To: <20191025130000.13032-6-adrian.hunter@intel.com>
+References: <20191025130000.13032-6-adrian.hunter@intel.com>
 MIME-Version: 1.0
-Message-ID: <157355748604.29376.4716695740555468697.tip-bot2@tip-bot2>
+Message-ID: <157355748769.29376.9336907434787303711.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,39 +54,85 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     ee2555b612869a763563c5389ad789a52db0afd1
-Gitweb:        https://git.kernel.org/tip/ee2555b612869a763563c5389ad789a52db0afd1
-Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Fri, 25 Oct 2019 15:14:50 -03:00
+Commit-ID:     fd62c1097a0700484fc2cbc9a182f341f30890cd
+Gitweb:        https://git.kernel.org/tip/fd62c1097a0700484fc2cbc9a182f341f30890cd
+Author:        Adrian Hunter <adrian.hunter@intel.com>
+AuthorDate:    Fri, 25 Oct 2019 15:59:59 +03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Wed, 06 Nov 2019 15:43:06 -03:00
 
-perf map: Check if the map still has some refcounts on exit
+perf auxtrace: Add auxtrace_cache__remove()
 
-We were checking just if it was still on some rb tree, but that is not
-the only way that this map can still have references, map->refcnt is
-there exactly for this, use it.
+Add auxtrace_cache__remove(). Intel PT uses an auxtrace_cache to store
+the results of code-walking, so that the same block of instructions does
+not have to be decoded repeatedly. However, when there are text poke
+events, the associated cache entries need to be removed.
 
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lkml.kernel.org/n/tip-hany65tbeavsax7n3xvwl9pc@git.kernel.org
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: H. Peter Anvin <hpa@zytor.com>
+Cc: Jiri Olsa <jolsa@redhat.com>
+Cc: Leo Yan <leo.yan@linaro.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Poirier <mathieu.poirier@linaro.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: x86@kernel.org
+Link: http://lore.kernel.org/lkml/20191025130000.13032-6-adrian.hunter@intel.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/map.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/perf/util/auxtrace.c | 28 ++++++++++++++++++++++++++++
+ tools/perf/util/auxtrace.h |  1 +
+ 2 files changed, 29 insertions(+)
 
-diff --git a/tools/perf/util/map.c b/tools/perf/util/map.c
-index eec9b28..c9ba495 100644
---- a/tools/perf/util/map.c
-+++ b/tools/perf/util/map.c
-@@ -288,7 +288,7 @@ bool map__has_symbols(const struct map *map)
- 
- static void map__exit(struct map *map)
- {
--	BUG_ON(!RB_EMPTY_NODE(&map->rb_node));
-+	BUG_ON(refcount_read(&map->refcnt) != 0);
- 	dso__zput(map->dso);
+diff --git a/tools/perf/util/auxtrace.c b/tools/perf/util/auxtrace.c
+index 8470dfe..c555c3c 100644
+--- a/tools/perf/util/auxtrace.c
++++ b/tools/perf/util/auxtrace.c
+@@ -1457,6 +1457,34 @@ int auxtrace_cache__add(struct auxtrace_cache *c, u32 key,
+ 	return 0;
  }
  
++static struct auxtrace_cache_entry *auxtrace_cache__rm(struct auxtrace_cache *c,
++						       u32 key)
++{
++	struct auxtrace_cache_entry *entry;
++	struct hlist_head *hlist;
++	struct hlist_node *n;
++
++	if (!c)
++		return NULL;
++
++	hlist = &c->hashtable[hash_32(key, c->bits)];
++	hlist_for_each_entry_safe(entry, n, hlist, hash) {
++		if (entry->key == key) {
++			hlist_del(&entry->hash);
++			return entry;
++		}
++	}
++
++	return NULL;
++}
++
++void auxtrace_cache__remove(struct auxtrace_cache *c, u32 key)
++{
++	struct auxtrace_cache_entry *entry = auxtrace_cache__rm(c, key);
++
++	auxtrace_cache__free_entry(c, entry);
++}
++
+ void *auxtrace_cache__lookup(struct auxtrace_cache *c, u32 key)
+ {
+ 	struct auxtrace_cache_entry *entry;
+diff --git a/tools/perf/util/auxtrace.h b/tools/perf/util/auxtrace.h
+index f201f36..3f4aa54 100644
+--- a/tools/perf/util/auxtrace.h
++++ b/tools/perf/util/auxtrace.h
+@@ -489,6 +489,7 @@ void *auxtrace_cache__alloc_entry(struct auxtrace_cache *c);
+ void auxtrace_cache__free_entry(struct auxtrace_cache *c, void *entry);
+ int auxtrace_cache__add(struct auxtrace_cache *c, u32 key,
+ 			struct auxtrace_cache_entry *entry);
++void auxtrace_cache__remove(struct auxtrace_cache *c, u32 key);
+ void *auxtrace_cache__lookup(struct auxtrace_cache *c, u32 key);
+ 
+ struct auxtrace_record *auxtrace_record__init(struct evlist *evlist,
