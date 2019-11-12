@@ -2,40 +2,50 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CE93FF8E4B
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Nov 2019 12:21:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C982DF8DF6
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Nov 2019 12:18:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727848AbfKLLVA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 12 Nov 2019 06:21:00 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:33792 "EHLO
+        id S1727672AbfKLLSp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 12 Nov 2019 06:18:45 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:34097 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727419AbfKLLSU (ORCPT
+        with ESMTP id S1727598AbfKLLSo (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 12 Nov 2019 06:18:20 -0500
+        Tue, 12 Nov 2019 06:18:44 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iUUBc-0000cz-SK; Tue, 12 Nov 2019 12:18:16 +0100
+        id 1iUUBh-0000dl-7Z; Tue, 12 Nov 2019 12:18:21 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 670FF1C04E8;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id EE47D1C0483;
         Tue, 12 Nov 2019 12:18:11 +0100 (CET)
 Date:   Tue, 12 Nov 2019 11:18:11 -0000
-From:   "tip-bot2 for Masami Hiramatsu" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Yunfeng Ye" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf probe: Fix wrong address verification
-Cc:     Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
+Subject: [tip: perf/core] perf jevents: Fix resource leak in process_mapfile()
+ and main()
+Cc:     Yunfeng Ye <yeyunfeng@huawei.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Andi Kleen <ak@linux.intel.com>,
+        Feilong Lin <linfeilong@huawei.com>,
+        Hu Shiyuan <hushiyuan@huawei.com>,
         Jiri Olsa <jolsa@redhat.com>,
+        John Garry <john.garry@huawei.com>,
+        Kan Liang <kan.liang@linux.intel.com>,
+        Luke Mujica <lukemujica@google.com>,
+        Mark Rutland <mark.rutland@arm.com>,
         Namhyung Kim <namhyung@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Zenghui Yu <yuzenghui@huawei.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <157199318513.8075.10463906803299647907.stgit@devnote2>
-References: <157199318513.8075.10463906803299647907.stgit@devnote2>
+In-Reply-To: <d7907042-ec9c-2bef-25b4-810e14602f89@huawei.com>
+References: <d7907042-ec9c-2bef-25b4-810e14602f89@huawei.com>
 MIME-Version: 1.0
-Message-ID: <157355749105.29376.15812882742854411341.tip-bot2@tip-bot2>
+Message-ID: <157355749152.29376.17973960512966372268.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,129 +61,106 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     07d369857808b7e8e471bbbbb0074a6718f89b31
-Gitweb:        https://git.kernel.org/tip/07d369857808b7e8e471bbbbb0074a6718f89b31
-Author:        Masami Hiramatsu <mhiramat@kernel.org>
-AuthorDate:    Fri, 25 Oct 2019 17:46:25 +09:00
+Commit-ID:     1785fbb73896dbd9d27a406f0d73047df42db710
+Gitweb:        https://git.kernel.org/tip/1785fbb73896dbd9d27a406f0d73047df42db710
+Author:        Yunfeng Ye <yeyunfeng@huawei.com>
+AuthorDate:    Wed, 16 Oct 2019 21:50:17 +08:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Wed, 06 Nov 2019 15:43:06 -03:00
 
-perf probe: Fix wrong address verification
+perf jevents: Fix resource leak in process_mapfile() and main()
 
-Since there are some DIE which has only ranges instead of the
-combination of entrypc/highpc, address verification must use
-dwarf_haspc() instead of dwarf_entrypc/dwarf_highpc.
+There are memory leaks and file descriptor resource leaks in
+process_mapfile() and main().
 
-Also, the ranges only DIE will have a partial code in different section
-(e.g. unlikely code will be in text.unlikely as "FUNC.cold" symbol). In
-that case, we can not use dwarf_entrypc() or die_entrypc(), because the
-offset from original DIE can be a minus value.
+Fix this by adding free(), fclose() and free_arch_std_events() on the
+error paths.
 
-Instead, this simply gets the symbol and offset from symtab.
-
-Without this patch;
-
-  # perf probe -D clear_tasks_mm_cpumask:1
-  Failed to get entry address of clear_tasks_mm_cpumask
-    Error: Failed to add events.
-
-And with this patch:
-
-  # perf probe -D clear_tasks_mm_cpumask:1
-  p:probe/clear_tasks_mm_cpumask clear_tasks_mm_cpumask+0
-  p:probe/clear_tasks_mm_cpumask_1 clear_tasks_mm_cpumask+5
-  p:probe/clear_tasks_mm_cpumask_2 clear_tasks_mm_cpumask+8
-  p:probe/clear_tasks_mm_cpumask_3 clear_tasks_mm_cpumask+16
-  p:probe/clear_tasks_mm_cpumask_4 clear_tasks_mm_cpumask+82
-
-Committer testing:
-
-I managed to reproduce the above:
-
-  [root@quaco ~]# perf probe -D clear_tasks_mm_cpumask:1
-  p:probe/clear_tasks_mm_cpumask _text+919968
-  p:probe/clear_tasks_mm_cpumask_1 _text+919973
-  p:probe/clear_tasks_mm_cpumask_2 _text+919976
-  [root@quaco ~]#
-
-But then when trying to actually put the probe in place, it fails if I
-use :0 as the offset:
-
-  [root@quaco ~]# perf probe -L clear_tasks_mm_cpumask | head -5
-  <clear_tasks_mm_cpumask@/usr/src/debug/kernel-5.2.fc30/linux-5.2.18-200.fc30.x86_64/kernel/cpu.c:0>
-        0  void clear_tasks_mm_cpumask(int cpu)
-        1  {
-        2  	struct task_struct *p;
-
-  [root@quaco ~]# perf probe clear_tasks_mm_cpumask:0
-  Probe point 'clear_tasks_mm_cpumask' not found.
-    Error: Failed to add events.
-  [root@quaco
-
-The next patch is needed to fix this case.
-
-Fixes: 576b523721b7 ("perf probe: Fix probing symbols with optimization suffix")
-Reported-by: Arnaldo Carvalho de Melo <acme@kernel.org>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Masami Hiramatsu <mhiramat@kernel.org>
+Fixes: 80eeb67fe577 ("perf jevents: Program to convert JSON file")
+Fixes: 3f056b66647b ("perf jevents: Make build fail on JSON parse error")
+Fixes: e9d32c1bf0cd ("perf vendor events: Add support for arch standard events")
+Signed-off-by: Yunfeng Ye <yeyunfeng@huawei.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Andi Kleen <ak@linux.intel.com>
+Cc: Feilong Lin <linfeilong@huawei.com>
+Cc: Hu Shiyuan <hushiyuan@huawei.com>
 Cc: Jiri Olsa <jolsa@redhat.com>
+Cc: John Garry <john.garry@huawei.com>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Luke Mujica <lukemujica@google.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Link: http://lore.kernel.org/lkml/157199318513.8075.10463906803299647907.stgit@devnote2
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Zenghui Yu <yuzenghui@huawei.com>
+Link: http://lore.kernel.org/lkml/d7907042-ec9c-2bef-25b4-810e14602f89@huawei.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/probe-finder.c | 32 ++++++++++----------------------
- 1 file changed, 10 insertions(+), 22 deletions(-)
+ tools/perf/pmu-events/jevents.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/util/probe-finder.c b/tools/perf/util/probe-finder.c
-index cd9f95e..2b6513e 100644
---- a/tools/perf/util/probe-finder.c
-+++ b/tools/perf/util/probe-finder.c
-@@ -604,38 +604,26 @@ static int convert_to_trace_point(Dwarf_Die *sp_die, Dwfl_Module *mod,
- 				  const char *function,
- 				  struct probe_trace_point *tp)
- {
--	Dwarf_Addr eaddr, highaddr;
-+	Dwarf_Addr eaddr;
- 	GElf_Sym sym;
- 	const char *symbol;
+diff --git a/tools/perf/pmu-events/jevents.c b/tools/perf/pmu-events/jevents.c
+index 7d69727..079c77b 100644
+--- a/tools/perf/pmu-events/jevents.c
++++ b/tools/perf/pmu-events/jevents.c
+@@ -772,6 +772,7 @@ static int process_mapfile(FILE *outfp, char *fpath)
+ 	char *line, *p;
+ 	int line_num;
+ 	char *tblname;
++	int ret = 0;
  
- 	/* Verify the address is correct */
--	if (dwarf_entrypc(sp_die, &eaddr) != 0) {
--		pr_warning("Failed to get entry address of %s\n",
--			   dwarf_diename(sp_die));
--		return -ENOENT;
--	}
--	if (dwarf_highpc(sp_die, &highaddr) != 0) {
--		pr_warning("Failed to get end address of %s\n",
--			   dwarf_diename(sp_die));
--		return -ENOENT;
--	}
--	if (paddr > highaddr) {
--		pr_warning("Offset specified is greater than size of %s\n",
-+	if (!dwarf_haspc(sp_die, paddr)) {
-+		pr_warning("Specified offset is out of %s\n",
- 			   dwarf_diename(sp_die));
- 		return -EINVAL;
+ 	pr_info("%s: Processing mapfile %s\n", prog, fpath);
+ 
+@@ -783,6 +784,7 @@ static int process_mapfile(FILE *outfp, char *fpath)
+ 	if (!mapfp) {
+ 		pr_info("%s: Error %s opening %s\n", prog, strerror(errno),
+ 				fpath);
++		free(line);
+ 		return -1;
  	}
  
--	symbol = dwarf_diename(sp_die);
-+	/* Try to get actual symbol name from symtab */
-+	symbol = dwfl_module_addrsym(mod, paddr, &sym, NULL);
- 	if (!symbol) {
--		/* Try to get the symbol name from symtab */
--		symbol = dwfl_module_addrsym(mod, paddr, &sym, NULL);
--		if (!symbol) {
--			pr_warning("Failed to find symbol at 0x%lx\n",
--				   (unsigned long)paddr);
--			return -ENOENT;
--		}
--		eaddr = sym.st_value;
-+		pr_warning("Failed to find symbol at 0x%lx\n",
-+			   (unsigned long)paddr);
-+		return -ENOENT;
+@@ -809,7 +811,8 @@ static int process_mapfile(FILE *outfp, char *fpath)
+ 			/* TODO Deal with lines longer than 16K */
+ 			pr_info("%s: Mapfile %s: line %d too long, aborting\n",
+ 					prog, fpath, line_num);
+-			return -1;
++			ret = -1;
++			goto out;
+ 		}
+ 		line[strlen(line)-1] = '\0';
+ 
+@@ -839,7 +842,9 @@ static int process_mapfile(FILE *outfp, char *fpath)
+ 
+ out:
+ 	print_mapping_table_suffix(outfp);
+-	return 0;
++	fclose(mapfp);
++	free(line);
++	return ret;
+ }
+ 
+ /*
+@@ -1136,6 +1141,7 @@ int main(int argc, char *argv[])
+ 		goto empty_map;
+ 	} else if (rc < 0) {
+ 		/* Make build fail */
++		fclose(eventsfp);
+ 		free_arch_std_events();
+ 		return 1;
+ 	} else if (rc) {
+@@ -1148,6 +1154,7 @@ int main(int argc, char *argv[])
+ 		goto empty_map;
+ 	} else if (rc < 0) {
+ 		/* Make build fail */
++		fclose(eventsfp);
+ 		free_arch_std_events();
+ 		return 1;
+ 	} else if (rc) {
+@@ -1165,6 +1172,8 @@ int main(int argc, char *argv[])
+ 	if (process_mapfile(eventsfp, mapfile)) {
+ 		pr_info("%s: Error processing mapfile %s\n", prog, mapfile);
+ 		/* Make build fail */
++		fclose(eventsfp);
++		free_arch_std_events();
+ 		return 1;
  	}
-+	eaddr = sym.st_value;
-+
- 	tp->offset = (unsigned long)(paddr - eaddr);
- 	tp->address = (unsigned long)paddr;
- 	tp->symbol = strdup(symbol);
+ 
