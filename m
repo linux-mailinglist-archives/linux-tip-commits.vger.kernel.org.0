@@ -2,53 +2,42 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 84E91F8E1A
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Nov 2019 12:19:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A96DDF8E5F
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Nov 2019 12:21:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727656AbfKLLTc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 12 Nov 2019 06:19:32 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:33999 "EHLO
+        id S1727220AbfKLLVn (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 12 Nov 2019 06:21:43 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:33672 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727547AbfKLLSb (ORCPT
+        with ESMTP id S1727264AbfKLLSO (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 12 Nov 2019 06:18:31 -0500
+        Tue, 12 Nov 2019 06:18:14 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iUUBS-0000Se-Pd; Tue, 12 Nov 2019 12:18:07 +0100
+        id 1iUUBT-0000V8-ML; Tue, 12 Nov 2019 12:18:07 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 1A63A1C0483;
-        Tue, 12 Nov 2019 12:18:03 +0100 (CET)
-Date:   Tue, 12 Nov 2019 11:18:02 -0000
-From:   "tip-bot2 for Ian Rogers" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 2AB691C047B;
+        Tue, 12 Nov 2019 12:18:04 +0100 (CET)
+Date:   Tue, 12 Nov 2019 11:18:03 -0000
+From:   "tip-bot2 for James Clark" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf tools: Splice events onto evlist even on error
-Cc:     Ian Rogers <irogers@google.com>, Jiri Olsa <jolsa@kernel.org>,
+Subject: [tip: perf/core] libsubcmd: Move EXTRA_FLAGS to the end to allow
+ overriding existing flags
+Cc:     James Clark <james.clark@arm.com>,
         Adrian Hunter <adrian.hunter@intel.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Andi Kleen <ak@linux.intel.com>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Jin Yao <yao.jin@linux.intel.com>,
-        John Garry <john.garry@huawei.com>,
-        Kan Liang <kan.liang@linux.intel.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Martin KaFai Lau <kafai@fb.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Song Liu <songliubraving@fb.com>,
-        Stephane Eranian <eranian@google.com>,
-        Yonghong Song <yhs@fb.com>, bpf@vger.kernel.org,
-        clang-built-linux@googlegroups.com, netdev@vger.kernel.org,
+        Ian Rogers <irogers@google.com>, Jiri Olsa <jolsa@kernel.org>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Namhyung Kim <namhyung@kernel.org>, nd <nd@arm.com>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20191025180827.191916-5-irogers@google.com>
-References: <20191025180827.191916-5-irogers@google.com>
+In-Reply-To: <20191028113340.4282-1-james.clark@arm.com>
+References: <20191028113340.4282-1-james.clark@arm.com>
 MIME-Version: 1.0
-Message-ID: <157355748269.29376.11251581788671798282.tip-bot2@tip-bot2>
+Message-ID: <157355748376.29376.14204856327895210952.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -64,75 +53,53 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     8e8714c3d157568b7a769917a5e05573bbaf5af0
-Gitweb:        https://git.kernel.org/tip/8e8714c3d157568b7a769917a5e05573bbaf5af0
-Author:        Ian Rogers <irogers@google.com>
-AuthorDate:    Fri, 25 Oct 2019 11:08:22 -07:00
+Commit-ID:     d894967fcaa469cb4c43544855f6fcc18045d526
+Gitweb:        https://git.kernel.org/tip/d894967fcaa469cb4c43544855f6fcc18045d526
+Author:        James Clark <James.Clark@arm.com>
+AuthorDate:    Mon, 28 Oct 2019 11:34:01 
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Wed, 06 Nov 2019 15:49:39 -03:00
 
-perf tools: Splice events onto evlist even on error
+libsubcmd: Move EXTRA_FLAGS to the end to allow overriding existing flags
 
-If event parsing fails the event list is leaked, instead splice the list
-onto the out result and let the caller cleanup.
+Move EXTRA_WARNINGS and EXTRA_FLAGS to the end of the compilation line,
+otherwise they cannot be used to override the default values.
 
-An example input for parse_events found by libFuzzer that reproduces
-this memory leak is 'm{'.
-
-Signed-off-by: Ian Rogers <irogers@google.com>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
+Signed-off-by: James Clark <james.clark@arm.com>
 Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Alexei Starovoitov <ast@kernel.org>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Daniel Borkmann <daniel@iogearbox.net>
-Cc: Jin Yao <yao.jin@linux.intel.com>
-Cc: John Garry <john.garry@huawei.com>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Martin KaFai Lau <kafai@fb.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: James Clark <james.clark@arm.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Josh Poimboeuf <jpoimboe@redhat.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Song Liu <songliubraving@fb.com>
-Cc: Stephane Eranian <eranian@google.com>
-Cc: Yonghong Song <yhs@fb.com>
-Cc: bpf@vger.kernel.org
-Cc: clang-built-linux@googlegroups.com
-Cc: netdev@vger.kernel.org
-Link: http://lore.kernel.org/lkml/20191025180827.191916-5-irogers@google.com
+Cc: nd <nd@arm.com>
+Link: http://lore.kernel.org/lkml/20191028113340.4282-1-james.clark@arm.com
+[ split from a larger patch ]
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/parse-events.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ tools/lib/subcmd/Makefile | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/util/parse-events.c b/tools/perf/util/parse-events.c
-index db882f6..d36b812 100644
---- a/tools/perf/util/parse-events.c
-+++ b/tools/perf/util/parse-events.c
-@@ -1927,15 +1927,20 @@ int parse_events(struct evlist *evlist, const char *str,
+diff --git a/tools/lib/subcmd/Makefile b/tools/lib/subcmd/Makefile
+index 5b2cd5e..352c606 100644
+--- a/tools/lib/subcmd/Makefile
++++ b/tools/lib/subcmd/Makefile
+@@ -19,8 +19,7 @@ MAKEFLAGS += --no-print-directory
  
- 	ret = parse_events__scanner(str, &parse_state, PE_START_EVENTS);
- 	perf_pmu__parse_cleanup();
-+
-+	if (!ret && list_empty(&parse_state.list)) {
-+		WARN_ONCE(true, "WARNING: event parser found nothing\n");
-+		return -1;
-+	}
-+
-+	/*
-+	 * Add list to the evlist even with errors to allow callers to clean up.
-+	 */
-+	perf_evlist__splice_list_tail(evlist, &parse_state.list);
-+
- 	if (!ret) {
- 		struct evsel *last;
+ LIBFILE = $(OUTPUT)libsubcmd.a
  
--		if (list_empty(&parse_state.list)) {
--			WARN_ONCE(true, "WARNING: event parser found nothing\n");
--			return -1;
--		}
--
--		perf_evlist__splice_list_tail(evlist, &parse_state.list);
- 		evlist->nr_groups += parse_state.nr_groups;
- 		last = evlist__last(evlist);
- 		last->cmdline_group_boundary = true;
+-CFLAGS := $(EXTRA_WARNINGS) $(EXTRA_CFLAGS)
+-CFLAGS += -ggdb3 -Wall -Wextra -std=gnu99 -fPIC
++CFLAGS := -ggdb3 -Wall -Wextra -std=gnu99 -fPIC
+ 
+ ifeq ($(DEBUG),0)
+   ifeq ($(feature-fortify-source), 1)
+@@ -43,6 +42,8 @@ CFLAGS += -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -D_GNU_SOURCE
+ 
+ CFLAGS += -I$(srctree)/tools/include/
+ 
++CFLAGS += $(EXTRA_WARNINGS) $(EXTRA_CFLAGS)
++
+ SUBCMD_IN := $(OUTPUT)libsubcmd-in.o
+ 
+ all:
