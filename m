@@ -2,38 +2,41 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3ACD3F8E06
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Nov 2019 12:19:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7EC07F9300
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Nov 2019 15:49:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727603AbfKLLTB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 12 Nov 2019 06:19:01 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:34035 "EHLO
+        id S1726718AbfKLOtf (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 12 Nov 2019 09:49:35 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:34589 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727563AbfKLLSe (ORCPT
+        with ESMTP id S1725997AbfKLOte (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 12 Nov 2019 06:18:34 -0500
+        Tue, 12 Nov 2019 09:49:34 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iUUBp-0000nk-Q0; Tue, 12 Nov 2019 12:18:29 +0100
+        id 1iUXTs-0004jL-Vg; Tue, 12 Nov 2019 15:49:21 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C87B81C06B2;
-        Tue, 12 Nov 2019 12:18:19 +0100 (CET)
-Date:   Tue, 12 Nov 2019 11:18:19 -0000
-From:   "tip-bot2 for Adrian Hunter" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 54BB21C0084;
+        Tue, 12 Nov 2019 15:49:20 +0100 (CET)
+Date:   Tue, 12 Nov 2019 14:49:19 -0000
+From:   "tip-bot2 for Rahul Tanwar" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf data: Move perf_dir_version into data.h
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Jiri Olsa <jolsa@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
+Subject: [tip: x86/boot] x86/init: Allow DT configured systems to disable RTC
+ at boot time
+Cc:     Andy Shevchenko <andriy.shevchenko@intel.com>,
+        Rahul Tanwar <rahul.tanwar@linux.intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20191004083121.12182-3-adrian.hunter@intel.com>
-References: <20191004083121.12182-3-adrian.hunter@intel.com>
+In-Reply-To: =?utf-8?q?=3Cb84d9152ce0c1c09896ff4987e691a0715cb02df=2E15706?=
+ =?utf-8?q?93058=2Egit=2Erahul=2Etanwar=40linux=2Eintel=2Ecom=3E?=
+References: =?utf-8?q?=3Cb84d9152ce0c1c09896ff4987e691a0715cb02df=2E157069?=
+ =?utf-8?q?3058=2Egit=2Erahul=2Etanwar=40linux=2Eintel=2Ecom=3E?=
 MIME-Version: 1.0
-Message-ID: <157355749933.29376.13816147104213658780.tip-bot2@tip-bot2>
+Message-ID: <157357015991.29376.16358106600464439915.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,57 +50,76 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/core branch of tip:
+The following commit has been merged into the x86/boot branch of tip:
 
-Commit-ID:     3dedec4f5ccc8048b9a2cfe89838c3b3275b6b2b
-Gitweb:        https://git.kernel.org/tip/3dedec4f5ccc8048b9a2cfe89838c3b3275b6b2b
-Author:        Adrian Hunter <adrian.hunter@intel.com>
-AuthorDate:    Fri, 04 Oct 2019 11:31:18 +03:00
-Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Wed, 06 Nov 2019 15:43:05 -03:00
+Commit-ID:     c311ed6183f4fd137bb8451ef77f4011c225ddaf
+Gitweb:        https://git.kernel.org/tip/c311ed6183f4fd137bb8451ef77f4011c225ddaf
+Author:        Rahul Tanwar <rahul.tanwar@linux.intel.com>
+AuthorDate:    Thu, 10 Oct 2019 17:28:56 +08:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Tue, 12 Nov 2019 15:46:53 +01:00
 
-perf data: Move perf_dir_version into data.h
+x86/init: Allow DT configured systems to disable RTC at boot time
 
-perf_dir_version belongs to struct perf_data which is declared in data.h.
-To allow its use in inline perf_data functions, move perf_dir_version to
-data.h
+Systems which do not support RTC run into boot problems as the kernel
+assumes the availability of the RTC by default.
 
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Reviewed-by: Jiri Olsa <jolsa@kernel.org>
-Link: http://lore.kernel.org/lkml/20191004083121.12182-3-adrian.hunter@intel.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+On device tree configured systems the availability of the RTC can be
+detected by querying the corresponding device tree node.
+
+Implement a wallclock init function to query the device tree and disable
+RTC if the RTC is marked as not available in the corresponding node.
+
+[ tglx: Rewrote changelog and comments. Added proper __init(const)
+  	annotations. ]
+
+Suggested-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Signed-off-by: Rahul Tanwar <rahul.tanwar@linux.intel.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lkml.kernel.org/r/b84d9152ce0c1c09896ff4987e691a0715cb02df.1570693058.git.rahul.tanwar@linux.intel.com
 ---
- tools/perf/util/data.h   | 4 ++++
- tools/perf/util/header.h | 4 ----
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ arch/x86/kernel/x86_init.c | 24 +++++++++++++++++++++++-
+ 1 file changed, 23 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/util/data.h b/tools/perf/util/data.h
-index 259868a..218fe9a 100644
---- a/tools/perf/util/data.h
-+++ b/tools/perf/util/data.h
-@@ -9,6 +9,10 @@ enum perf_data_mode {
- 	PERF_DATA_MODE_READ,
- };
- 
-+enum perf_dir_version {
-+	PERF_DIR_VERSION	= 1,
+diff --git a/arch/x86/kernel/x86_init.c b/arch/x86/kernel/x86_init.c
+index 18a799c..ce89430 100644
+--- a/arch/x86/kernel/x86_init.c
++++ b/arch/x86/kernel/x86_init.c
+@@ -31,6 +31,28 @@ static int __init iommu_init_noop(void) { return 0; }
+ static void iommu_shutdown_noop(void) { }
+ bool __init bool_x86_init_noop(void) { return false; }
+ void x86_op_int_noop(int cpu) { }
++static __init int set_rtc_noop(const struct timespec64 *now) { return -EINVAL; }
++static __init void get_rtc_noop(struct timespec64 *now) { }
++
++static __initconst const struct of_device_id of_cmos_match[] = {
++	{ .compatible = "motorola,mc146818" },
++	{}
 +};
 +
- struct perf_data_file {
- 	char		*path;
- 	int		 fd;
-diff --git a/tools/perf/util/header.h b/tools/perf/util/header.h
-index ca53a92..840f95c 100644
---- a/tools/perf/util/header.h
-+++ b/tools/perf/util/header.h
-@@ -52,10 +52,6 @@ enum perf_header_version {
- 	PERF_HEADER_VERSION_2,
- };
++/*
++ * Allow devicetree configured systems to disable the RTC by setting the
++ * corresponding DT node's status property to disabled. Code is optimized
++ * out for CONFIG_OF=n builds.
++ */
++static __init void x86_wallclock_init(void)
++{
++	struct device_node *node = of_find_matching_node(NULL, of_cmos_match);
++
++	if (node && !of_device_is_available(node)) {
++		x86_platform.get_wallclock = get_rtc_noop;
++		x86_platform.set_wallclock = set_rtc_noop;
++	}
++}
  
--enum perf_dir_version {
--	PERF_DIR_VERSION	= 1,
--};
--
- struct perf_file_section {
- 	u64 offset;
- 	u64 size;
+ /*
+  * The platform setup functions are preset with the default functions
+@@ -73,7 +95,7 @@ struct x86_init_ops x86_init __initdata = {
+ 	.timers = {
+ 		.setup_percpu_clockev	= setup_boot_APIC_clock,
+ 		.timer_init		= hpet_time_init,
+-		.wallclock_init		= x86_init_noop,
++		.wallclock_init		= x86_wallclock_init,
+ 	},
+ 
+ 	.iommu = {
