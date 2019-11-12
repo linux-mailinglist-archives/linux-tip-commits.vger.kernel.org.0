@@ -2,44 +2,42 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BBE8F8DE3
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Nov 2019 12:18:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 93360F8E57
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Nov 2019 12:21:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727142AbfKLLSJ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 12 Nov 2019 06:18:09 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:33549 "EHLO
+        id S1727612AbfKLLVX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 12 Nov 2019 06:21:23 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:33695 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727201AbfKLLSG (ORCPT
+        with ESMTP id S1725865AbfKLLSQ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 12 Nov 2019 06:18:06 -0500
+        Tue, 12 Nov 2019 06:18:16 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iUUBH-0000I8-DF; Tue, 12 Nov 2019 12:17:55 +0100
+        id 1iUUBL-0000Hl-UP; Tue, 12 Nov 2019 12:18:00 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 087851C0084;
-        Tue, 12 Nov 2019 12:17:55 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 8BF281C047B;
+        Tue, 12 Nov 2019 12:17:54 +0100 (CET)
 Date:   Tue, 12 Nov 2019 11:17:54 -0000
-From:   "tip-bot2 for Ian Rogers" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Masami Hiramatsu" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf annotate: Fix heap overflow
-Cc:     Ian Rogers <irogers@google.com>, Jiri Olsa <jolsa@kernel.org>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Jin Yao <yao.jin@linux.intel.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Song Liu <songliubraving@fb.com>,
-        Stephane Eranian <eranian@google.com>,
+Subject: [tip: perf/core] perf probe: Return a better scope DIE if there is no
+ best scope
+Cc:     Masami Hiramatsu <mhiramat@kernel.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Ravi Bangoria <ravi.bangoria@linux.ibm.com>,
+        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
+        Tom Zanussi <tom.zanussi@linux.intel.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20191026035644.217548-1-irogers@google.com>
-References: <20191026035644.217548-1-irogers@google.com>
+In-Reply-To: <157291300887.19771.14936015360963292236.stgit@devnote2>
+References: <157291300887.19771.14936015360963292236.stgit@devnote2>
 MIME-Version: 1.0
-Message-ID: <157355747465.29376.10616272191107642409.tip-bot2@tip-bot2>
+Message-ID: <157355747423.29376.8608445663818956550.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -55,43 +53,83 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     5c65b1c0842f9daddc6aec4bdb4b5d898006be19
-Gitweb:        https://git.kernel.org/tip/5c65b1c0842f9daddc6aec4bdb4b5d898006be19
-Author:        Ian Rogers <irogers@google.com>
-AuthorDate:    Fri, 25 Oct 2019 20:56:44 -07:00
+Commit-ID:     c701636aeec4c173208697d68da6e4271125564b
+Gitweb:        https://git.kernel.org/tip/c701636aeec4c173208697d68da6e4271125564b
+Author:        Masami Hiramatsu <mhiramat@kernel.org>
+AuthorDate:    Tue, 05 Nov 2019 09:16:49 +09:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Thu, 07 Nov 2019 08:30:18 -03:00
 
-perf annotate: Fix heap overflow
+perf probe: Return a better scope DIE if there is no best scope
 
-Fix expand_tabs that copies the source lines '\0' and then appends
-another '\0' at a potentially out of bounds address.
+Make find_best_scope() returns innermost DIE at given address if there
+is no best matched scope DIE. Since Gcc sometimes generates intuitively
+strange line info which is out of inlined function address range, we
+need this fixup.
 
-Signed-off-by: Ian Rogers <irogers@google.com>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Jin Yao <yao.jin@linux.intel.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
+Without this, sometimes perf probe failed to probe on a line inside an
+inlined function:
+
+  # perf probe -D ksys_open:3
+  Failed to find scope of probe point.
+    Error: Failed to add events.
+
+With this fix, 'perf probe' can probe it:
+
+  # perf probe -D ksys_open:3
+  p:probe/ksys_open _text+25707308
+  p:probe/ksys_open_1 _text+25710596
+  p:probe/ksys_open_2 _text+25711114
+  p:probe/ksys_open_3 _text+25711343
+  p:probe/ksys_open_4 _text+25714058
+  p:probe/ksys_open_5 _text+2819653
+  p:probe/ksys_open_6 _text+2819701
+
+Signed-off-by: Masami Hiramatsu <mhiramat@kernel.org>
+Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Song Liu <songliubraving@fb.com>
-Cc: Stephane Eranian <eranian@google.com>
-Link: http://lore.kernel.org/lkml/20191026035644.217548-1-irogers@google.com
+Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+Cc: Steven Rostedt (VMware) <rostedt@goodmis.org>
+Cc: Tom Zanussi <tom.zanussi@linux.intel.com>
+Link: http://lore.kernel.org/lkml/157291300887.19771.14936015360963292236.stgit@devnote2
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/annotate.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/perf/util/probe-finder.c | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/util/annotate.c b/tools/perf/util/annotate.c
-index ef1866a..bee0fee 100644
---- a/tools/perf/util/annotate.c
-+++ b/tools/perf/util/annotate.c
-@@ -1892,7 +1892,7 @@ static char *expand_tabs(char *line, char **storage, size_t *storage_len)
- 	}
+diff --git a/tools/perf/util/probe-finder.c b/tools/perf/util/probe-finder.c
+index 88e17a4..582f8c3 100644
+--- a/tools/perf/util/probe-finder.c
++++ b/tools/perf/util/probe-finder.c
+@@ -744,6 +744,16 @@ static int find_best_scope_cb(Dwarf_Die *fn_die, void *data)
+ 	return 0;
+ }
  
- 	/* Expand the last region. */
--	len = line_len + 1 - src;
-+	len = line_len - src;
- 	memcpy(&new_line[dst], &line[src], len);
- 	dst += len;
- 	new_line[dst] = '\0';
++/* Return innermost DIE */
++static int find_inner_scope_cb(Dwarf_Die *fn_die, void *data)
++{
++	struct find_scope_param *fsp = data;
++
++	memcpy(fsp->die_mem, fn_die, sizeof(Dwarf_Die));
++	fsp->found = true;
++	return 1;
++}
++
+ /* Find an appropriate scope fits to given conditions */
+ static Dwarf_Die *find_best_scope(struct probe_finder *pf, Dwarf_Die *die_mem)
+ {
+@@ -755,8 +765,13 @@ static Dwarf_Die *find_best_scope(struct probe_finder *pf, Dwarf_Die *die_mem)
+ 		.die_mem = die_mem,
+ 		.found = false,
+ 	};
++	int ret;
+ 
+-	cu_walk_functions_at(&pf->cu_die, pf->addr, find_best_scope_cb, &fsp);
++	ret = cu_walk_functions_at(&pf->cu_die, pf->addr, find_best_scope_cb,
++				   &fsp);
++	if (!ret && !fsp.found)
++		cu_walk_functions_at(&pf->cu_die, pf->addr,
++				     find_inner_scope_cb, &fsp);
+ 
+ 	return fsp.found ? die_mem : NULL;
+ }
