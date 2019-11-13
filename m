@@ -2,36 +2,42 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 95520FAF15
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 13 Nov 2019 11:56:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 70FC8FAF26
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 13 Nov 2019 11:57:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727452AbfKMK46 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 13 Nov 2019 05:56:58 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:37341 "EHLO
+        id S1727827AbfKMK5W (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 13 Nov 2019 05:57:22 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:37385 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726165AbfKMK45 (ORCPT
+        with ESMTP id S1727211AbfKMK5V (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 13 Nov 2019 05:56:57 -0500
+        Wed, 13 Nov 2019 05:57:21 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iUqKR-0002Aw-W3; Wed, 13 Nov 2019 11:56:52 +0100
+        id 1iUqKj-0002Cv-Uv; Wed, 13 Nov 2019 11:57:10 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id AF9421C0092;
-        Wed, 13 Nov 2019 11:56:51 +0100 (CET)
-Date:   Wed, 13 Nov 2019 10:56:51 -0000
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 787741C0092;
+        Wed, 13 Nov 2019 11:57:09 +0100 (CET)
+Date:   Wed, 13 Nov 2019 10:57:09 -0000
+From:   "tip-bot2 for Dan Carpenter" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] time: Rename tsk->real_start_time to ->start_boottime
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+Subject: [tip: locking/core] locking/lockdep: Update the comment for __lock_release()
+Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>,
-        linux-kernel@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
-        Borislav Petkov <bp@alien8.de>
+        Will Deacon <will.deacon@arm.com>,
+        Will Deacon <will@kernel.org>, Ingo Molnar <mingo@kernel.org>,
+        Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
+In-Reply-To: <20191104091252.GA31509@mwanda>
+References: <20191104091252.GA31509@mwanda>
 MIME-Version: 1.0
-Message-ID: <157364261123.29376.12299028093344341153.tip-bot2@tip-bot2>
+Message-ID: <157364262907.29376.12744254342786187711.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -45,82 +51,53 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/core branch of tip:
+The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     cf25e24db61cc9df42c47485a2ec2bff4e9a3692
-Gitweb:        https://git.kernel.org/tip/cf25e24db61cc9df42c47485a2ec2bff4e9a3692
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Thu, 07 Nov 2019 11:07:58 +01:00
+Commit-ID:     c759bc47db0fb8c02ecf2b2acc4b7fc6e4099039
+Gitweb:        https://git.kernel.org/tip/c759bc47db0fb8c02ecf2b2acc4b7fc6e4099039
+Author:        Dan Carpenter <dan.carpenter@oracle.com>
+AuthorDate:    Mon, 04 Nov 2019 12:12:52 +03:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 13 Nov 2019 11:09:49 +01:00
+CommitterDate: Wed, 13 Nov 2019 11:07:48 +01:00
 
-time: Rename tsk->real_start_time to ->start_boottime
+locking/lockdep: Update the comment for __lock_release()
 
-Since it stores CLOCK_BOOTTIME, not, as the name suggests,
-CLOCK_REALTIME, let's rename ->real_start_time to ->start_bootime.
+This changes "to the list" to "from the list" and also deletes the
+obsolete comment about the "@nested" argument.
 
+The "nested" argument was removed in this commit, earlier this year:
+
+  5facae4f3549 ("locking/lockdep: Remove unused @nested argument from lock_release()").
+
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Paul E. McKenney <paulmck@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: linux-kernel@vger.kernel.org
+Cc: Will Deacon <will.deacon@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Link: https://lkml.kernel.org/r/20191104091252.GA31509@mwanda
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- fs/exec.c             | 2 +-
- fs/proc/array.c       | 2 +-
- include/linux/sched.h | 2 +-
- kernel/fork.c         | 2 +-
- 4 files changed, 4 insertions(+), 4 deletions(-)
+ kernel/locking/lockdep.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/fs/exec.c b/fs/exec.c
-index 555e93c..f4d0f3a 100644
---- a/fs/exec.c
-+++ b/fs/exec.c
-@@ -1132,7 +1132,7 @@ static int de_thread(struct task_struct *tsk)
- 		 * also take its birthdate (always earlier than our own).
- 		 */
- 		tsk->start_time = leader->start_time;
--		tsk->real_start_time = leader->real_start_time;
-+		tsk->start_boottime = leader->start_boottime;
+diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
+index 8123518..32282e7 100644
+--- a/kernel/locking/lockdep.c
++++ b/kernel/locking/lockdep.c
+@@ -4208,11 +4208,9 @@ static int __lock_downgrade(struct lockdep_map *lock, unsigned long ip)
+ }
  
- 		BUG_ON(!same_thread_group(leader, tsk));
- 		BUG_ON(has_group_leader_pid(tsk));
-diff --git a/fs/proc/array.c b/fs/proc/array.c
-index 46dcb6f..5efaf37 100644
---- a/fs/proc/array.c
-+++ b/fs/proc/array.c
-@@ -533,7 +533,7 @@ static int do_task_stat(struct seq_file *m, struct pid_namespace *ns,
- 	nice = task_nice(task);
- 
- 	/* convert nsec -> ticks */
--	start_time = nsec_to_clock_t(task->real_start_time);
-+	start_time = nsec_to_clock_t(task->start_boottime);
- 
- 	seq_put_decimal_ull(m, "", pid_nr_ns(pid, ns));
- 	seq_puts(m, " (");
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index 67a1d86..2541289 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -857,7 +857,7 @@ struct task_struct {
- 	u64				start_time;
- 
- 	/* Boot based time in nsecs: */
--	u64				real_start_time;
-+	u64				start_boottime;
- 
- 	/* MM fault and swap info: this can arguably be seen as either mm-specific or thread-specific: */
- 	unsigned long			min_flt;
-diff --git a/kernel/fork.c b/kernel/fork.c
-index bcdf531..1392ee8 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -2130,7 +2130,7 @@ static __latent_entropy struct task_struct *copy_process(
- 	 */
- 
- 	p->start_time = ktime_get_ns();
--	p->real_start_time = ktime_get_boottime_ns();
-+	p->start_boottime = ktime_get_boottime_ns();
- 
- 	/*
- 	 * Make it visible to the rest of the system, but dont wake it up yet.
+ /*
+- * Remove the lock to the list of currently held locks - this gets
++ * Remove the lock from the list of currently held locks - this gets
+  * called on mutex_unlock()/spin_unlock*() (or on a failed
+  * mutex_lock_interruptible()).
+- *
+- * @nested is an hysterical artifact, needs a tree wide cleanup.
+  */
+ static int
+ __lock_release(struct lockdep_map *lock, unsigned long ip)
