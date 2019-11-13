@@ -2,46 +2,46 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9258CFAF24
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 13 Nov 2019 11:57:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 49A92FAF19
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 13 Nov 2019 11:57:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727720AbfKMK5S (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 13 Nov 2019 05:57:18 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:37371 "EHLO
+        id S1727734AbfKMK5C (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 13 Nov 2019 05:57:02 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:37366 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727211AbfKMK5D (ORCPT
+        with ESMTP id S1726165AbfKMK5A (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 13 Nov 2019 05:57:03 -0500
+        Wed, 13 Nov 2019 05:57:00 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iUqKK-00026O-Mc; Wed, 13 Nov 2019 11:56:44 +0100
+        id 1iUqKL-00026S-IZ; Wed, 13 Nov 2019 11:56:45 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 434D81C0092;
-        Wed, 13 Nov 2019 11:56:44 +0100 (CET)
-Date:   Wed, 13 Nov 2019 10:56:43 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 31EC51C0092;
+        Wed, 13 Nov 2019 11:56:45 +0100 (CET)
+Date:   Wed, 13 Nov 2019 10:56:44 -0000
 From:   "tip-bot2 for Alexander Shishkin" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/x86/intel/pt: Prevent redundant WRMSRs
+Subject: [tip: perf/core] perf/x86/intel/pt: Add sampling support
 Cc:     Alexander Shishkin <alexander.shishkin@linux.intel.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
-        David Ahern <dsahern@gmail.com>, Jiri Olsa <jolsa@kernel.org>,
-        Jiri Olsa <jolsa@redhat.com>,
+        David Ahern <dsahern@gmail.com>, Jiri Olsa <jolsa@redhat.com>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Mark Rutland <mark.rutland@arm.com>,
         Namhyung Kim <namhyung@kernel.org>,
         Stephane Eranian <eranian@google.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         Vince Weaver <vincent.weaver@maine.edu>,
+        adrian.hunter@intel.com, mathieu.poirier@linaro.org,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20191105082701.78442-3-alexander.shishkin@linux.intel.com>
-References: <20191105082701.78442-3-alexander.shishkin@linux.intel.com>
+In-Reply-To: <20191025140835.53665-4-alexander.shishkin@linux.intel.com>
+References: <20191025140835.53665-4-alexander.shishkin@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <157364260386.29376.10869455028795555021.tip-bot2@tip-bot2>
+Message-ID: <157364260484.29376.825811827291053349.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -57,27 +57,24 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     295c52ee1485e4dee660fc1a0e6ceed6c803c9d3
-Gitweb:        https://git.kernel.org/tip/295c52ee1485e4dee660fc1a0e6ceed6c803c9d3
+Commit-ID:     25e8920b301c133aeaa9f57d81295bf4ac78e17b
+Gitweb:        https://git.kernel.org/tip/25e8920b301c133aeaa9f57d81295bf4ac78e17b
 Author:        Alexander Shishkin <alexander.shishkin@linux.intel.com>
-AuthorDate:    Tue, 05 Nov 2019 10:27:01 +02:00
+AuthorDate:    Fri, 25 Oct 2019 17:08:35 +03:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 13 Nov 2019 11:06:18 +01:00
+CommitterDate: Wed, 13 Nov 2019 11:06:16 +01:00
 
-perf/x86/intel/pt: Prevent redundant WRMSRs
+perf/x86/intel/pt: Add sampling support
 
-With recent optimizations to AUX and PT buffer management code (high order
-AUX allocations, opportunistic Single Range Output), it is far more likely
-now that the output MSRs won't need reprogramming on every sched-in.
-
-To avoid needless WRMSRs of those registers, cache their values and only
-write them when needed.
+Add AUX sampling support to the PT PMU: implement an NMI-safe callback
+that takes a snapshot of the buffer without touching the event states.
+This is done for PT events that don't use PMIs, that is, snapshot mode
+(RO mapping of the AUX area).
 
 Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Cc: Arnaldo Carvalho de Melo <acme@redhat.com>
 Cc: David Ahern <dsahern@gmail.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Jiri Olsa <jolsa@redhat.com>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: Mark Rutland <mark.rutland@arm.com>
@@ -85,99 +82,90 @@ Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Stephane Eranian <eranian@google.com>
 Cc: Thomas Gleixner <tglx@linutronix.de>
 Cc: Vince Weaver <vincent.weaver@maine.edu>
-Link: https://lkml.kernel.org/r/20191105082701.78442-3-alexander.shishkin@linux.intel.com
+Cc: adrian.hunter@intel.com
+Cc: mathieu.poirier@linaro.org
+Link: https://lkml.kernel.org/r/20191025140835.53665-4-alexander.shishkin@linux.intel.com
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- arch/x86/events/intel/pt.c | 25 ++++++++++++++++---------
- arch/x86/events/intel/pt.h | 10 +++++++---
- 2 files changed, 23 insertions(+), 12 deletions(-)
+ arch/x86/events/intel/pt.c | 54 +++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 54 insertions(+)
 
 diff --git a/arch/x86/events/intel/pt.c b/arch/x86/events/intel/pt.c
-index c87d163..1db7a51 100644
+index 170f3b4..2f20d5a 100644
 --- a/arch/x86/events/intel/pt.c
 +++ b/arch/x86/events/intel/pt.c
-@@ -606,6 +606,7 @@ static inline phys_addr_t topa_pfn(struct topa *topa)
+@@ -1208,6 +1208,13 @@ pt_buffer_setup_aux(struct perf_event *event, void **pages,
+ 	if (!nr_pages)
+ 		return NULL;
  
- static void pt_config_buffer(struct pt_buffer *buf)
- {
-+	struct pt *pt = this_cpu_ptr(&pt_ctx);
- 	u64 reg, mask;
- 	void *base;
- 
-@@ -617,11 +618,17 @@ static void pt_config_buffer(struct pt_buffer *buf)
- 		mask = (u64)buf->cur_idx;
++	/*
++	 * Only support AUX sampling in snapshot mode, where we don't
++	 * generate NMIs.
++	 */
++	if (event->attr.aux_sample_size && !snapshot)
++		return NULL;
++
+ 	if (cpu == -1)
+ 		cpu = raw_smp_processor_id();
+ 	node = cpu_to_node(cpu);
+@@ -1506,6 +1513,52 @@ static void pt_event_stop(struct perf_event *event, int mode)
  	}
- 
--	wrmsrl(MSR_IA32_RTIT_OUTPUT_BASE, virt_to_phys(base));
-+	reg = virt_to_phys(base);
-+	if (pt->output_base != reg) {
-+		pt->output_base = reg;
-+		wrmsrl(MSR_IA32_RTIT_OUTPUT_BASE, reg);
-+	}
- 
- 	reg = 0x7f | (mask << 7) | ((u64)buf->output_off << 32);
--
--	wrmsrl(MSR_IA32_RTIT_OUTPUT_MASK, reg);
-+	if (pt->output_mask != reg) {
-+		pt->output_mask = reg;
-+		wrmsrl(MSR_IA32_RTIT_OUTPUT_MASK, reg);
-+	}
  }
  
- /**
-@@ -930,21 +937,21 @@ static void pt_handle_status(struct pt *pt)
-  */
- static void pt_read_offset(struct pt_buffer *buf)
- {
--	u64 offset, base;
++static long pt_event_snapshot_aux(struct perf_event *event,
++				  struct perf_output_handle *handle,
++				  unsigned long size)
++{
 +	struct pt *pt = this_cpu_ptr(&pt_ctx);
- 	struct topa_page *tp;
- 
- 	if (!buf->single) {
--		rdmsrl(MSR_IA32_RTIT_OUTPUT_BASE, base);
--		tp = phys_to_virt(base);
-+		rdmsrl(MSR_IA32_RTIT_OUTPUT_BASE, pt->output_base);
-+		tp = phys_to_virt(pt->output_base);
- 		buf->cur = &tp->topa;
- 	}
- 
--	rdmsrl(MSR_IA32_RTIT_OUTPUT_MASK, offset);
-+	rdmsrl(MSR_IA32_RTIT_OUTPUT_MASK, pt->output_mask);
- 	/* offset within current output region */
--	buf->output_off = offset >> 32;
-+	buf->output_off = pt->output_mask >> 32;
- 	/* index of current output region within this table */
- 	if (!buf->single)
--		buf->cur_idx = (offset & 0xffffff80) >> 7;
-+		buf->cur_idx = (pt->output_mask & 0xffffff80) >> 7;
- }
- 
- static struct topa_entry *
-diff --git a/arch/x86/events/intel/pt.h b/arch/x86/events/intel/pt.h
-index 3f78182..96906a6 100644
---- a/arch/x86/events/intel/pt.h
-+++ b/arch/x86/events/intel/pt.h
-@@ -113,16 +113,20 @@ struct pt_filters {
- 
- /**
-  * struct pt - per-cpu pt context
-- * @handle:	perf output handle
-+ * @handle:		perf output handle
-  * @filters:		last configured filters
-- * @handle_nmi:	do handle PT PMI on this cpu, there's an active event
-- * @vmx_on:	1 if VMX is ON on this cpu
-+ * @handle_nmi:		do handle PT PMI on this cpu, there's an active event
-+ * @vmx_on:		1 if VMX is ON on this cpu
-+ * @output_base:	cached RTIT_OUTPUT_BASE MSR value
-+ * @output_mask:	cached RTIT_OUTPUT_MASK MSR value
-  */
- struct pt {
- 	struct perf_output_handle handle;
- 	struct pt_filters	filters;
- 	int			handle_nmi;
- 	int			vmx_on;
-+	u64			output_base;
-+	u64			output_mask;
- };
- 
- #endif /* __INTEL_PT_H__ */
++	struct pt_buffer *buf = perf_get_aux(&pt->handle);
++	unsigned long from = 0, to;
++	long ret;
++
++	if (WARN_ON_ONCE(!buf))
++		return 0;
++
++	/*
++	 * Sampling is only allowed on snapshot events;
++	 * see pt_buffer_setup_aux().
++	 */
++	if (WARN_ON_ONCE(!buf->snapshot))
++		return 0;
++
++	/*
++	 * Here, handle_nmi tells us if the tracing is on
++	 */
++	if (READ_ONCE(pt->handle_nmi))
++		pt_config_stop(event);
++
++	pt_read_offset(buf);
++	pt_update_head(pt);
++
++	to = local_read(&buf->data_size);
++	if (to < size)
++		from = buf->nr_pages << PAGE_SHIFT;
++	from += to - size;
++
++	ret = perf_output_copy_aux(&pt->handle, handle, from, to);
++
++	/*
++	 * If the tracing was on when we turned up, restart it.
++	 * Compiler barrier not needed as we couldn't have been
++	 * preempted by anything that touches pt->handle_nmi.
++	 */
++	if (pt->handle_nmi)
++		pt_config_start(event);
++
++	return ret;
++}
++
+ static void pt_event_del(struct perf_event *event, int mode)
+ {
+ 	pt_event_stop(event, PERF_EF_UPDATE);
+@@ -1625,6 +1678,7 @@ static __init int pt_init(void)
+ 	pt_pmu.pmu.del			 = pt_event_del;
+ 	pt_pmu.pmu.start		 = pt_event_start;
+ 	pt_pmu.pmu.stop			 = pt_event_stop;
++	pt_pmu.pmu.snapshot_aux		 = pt_event_snapshot_aux;
+ 	pt_pmu.pmu.read			 = pt_event_read;
+ 	pt_pmu.pmu.setup_aux		 = pt_buffer_setup_aux;
+ 	pt_pmu.pmu.free_aux		 = pt_buffer_free_aux;
