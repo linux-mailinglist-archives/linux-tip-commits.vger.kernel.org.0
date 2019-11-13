@@ -2,31 +2,32 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 34DCAFAF20
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 13 Nov 2019 11:57:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F9D1FAF28
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 13 Nov 2019 11:57:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727452AbfKMK5H (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 13 Nov 2019 05:57:07 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:37377 "EHLO
+        id S1727703AbfKMK47 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 13 Nov 2019 05:56:59 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:37355 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727763AbfKMK5G (ORCPT
+        with ESMTP id S1727211AbfKMK46 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 13 Nov 2019 05:57:06 -0500
+        Wed, 13 Nov 2019 05:56:58 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iUqKM-00026V-0j; Wed, 13 Nov 2019 11:56:46 +0100
+        id 1iUqKM-00026c-VW; Wed, 13 Nov 2019 11:56:47 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A6DC81C0357;
-        Wed, 13 Nov 2019 11:56:45 +0100 (CET)
-Date:   Wed, 13 Nov 2019 10:56:45 -0000
-From:   "tip-bot2 for Alexander Shishkin" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 9ABAE1C0357;
+        Wed, 13 Nov 2019 11:56:46 +0100 (CET)
+Date:   Wed, 13 Nov 2019 10:56:46 -0000
+From:   "tip-bot2 for Qian Cai" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/x86/intel/pt: Factor out pt_config_start()
-Cc:     Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+Subject: [tip: perf/core] perf/core: Fix unlock balance in perf_init_event()
+Cc:     Qian Cai <cai@lca.pw>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         David Ahern <dsahern@gmail.com>, Jiri Olsa <jolsa@redhat.com>,
         Linus Torvalds <torvalds@linux-foundation.org>,
@@ -35,13 +36,12 @@ Cc:     Alexander Shishkin <alexander.shishkin@linux.intel.com>,
         Stephane Eranian <eranian@google.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         Vince Weaver <vincent.weaver@maine.edu>,
-        adrian.hunter@intel.com, mathieu.poirier@linaro.org,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20191025140835.53665-3-alexander.shishkin@linux.intel.com>
-References: <20191025140835.53665-3-alexander.shishkin@linux.intel.com>
+In-Reply-To: <20191106052935.8352-1-cai@lca.pw>
+References: <20191106052935.8352-1-cai@lca.pw>
 MIME-Version: 1.0
-Message-ID: <157364260527.29376.8773221510325735408.tip-bot2@tip-bot2>
+Message-ID: <157364260624.29376.13060187465049038563.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -57,26 +57,25 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     8e105a1fc2a02d78698834974083c980d2e5b513
-Gitweb:        https://git.kernel.org/tip/8e105a1fc2a02d78698834974083c980d2e5b513
-Author:        Alexander Shishkin <alexander.shishkin@linux.intel.com>
-AuthorDate:    Fri, 25 Oct 2019 17:08:34 +03:00
+Commit-ID:     deb0c3c29d552ab81ecd5481bb83bf2f4e41927d
+Gitweb:        https://git.kernel.org/tip/deb0c3c29d552ab81ecd5481bb83bf2f4e41927d
+Author:        Qian Cai <cai@lca.pw>
+AuthorDate:    Wed, 06 Nov 2019 00:29:35 -05:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 13 Nov 2019 11:06:15 +01:00
+CommitterDate: Wed, 13 Nov 2019 11:06:13 +01:00
 
-perf/x86/intel/pt: Factor out pt_config_start()
+perf/core: Fix unlock balance in perf_init_event()
 
-PT trace is now enabled at the bottom of the event configuration
-function that takes care of all configuration bits related to a given
-event, including the address filter update. This is only needed where
-the event configuration changes, that is, in ->add()/->start().
+Commit:
 
-In the interrupt path we can use a lighter version that keeps the
-configuration intact, since it hasn't changed, and only flips the
-enable bit.
+  66d258c5b048 ("perf/core: Optimize perf_init_event()")
 
-Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+introduced an unlock imbalance in perf_init_event() where it calls
+"goto again" and then only repeat rcu_read_unlock().
+
+Signed-off-by: Qian Cai <cai@lca.pw>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 Cc: Arnaldo Carvalho de Melo <acme@redhat.com>
 Cc: David Ahern <dsahern@gmail.com>
 Cc: Jiri Olsa <jolsa@redhat.com>
@@ -86,65 +85,30 @@ Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Stephane Eranian <eranian@google.com>
 Cc: Thomas Gleixner <tglx@linutronix.de>
 Cc: Vince Weaver <vincent.weaver@maine.edu>
-Cc: adrian.hunter@intel.com
-Cc: mathieu.poirier@linaro.org
-Link: https://lkml.kernel.org/r/20191025140835.53665-3-alexander.shishkin@linux.intel.com
+Fixes: 66d258c5b048 ("perf/core: Optimize perf_init_event()")
+Link: https://lkml.kernel.org/r/20191106052935.8352-1-cai@lca.pw
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- arch/x86/events/intel/pt.c | 22 ++++++++++++++++------
- 1 file changed, 16 insertions(+), 6 deletions(-)
+ kernel/events/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/events/intel/pt.c b/arch/x86/events/intel/pt.c
-index 05e43d0..170f3b4 100644
---- a/arch/x86/events/intel/pt.c
-+++ b/arch/x86/events/intel/pt.c
-@@ -397,6 +397,20 @@ static bool pt_event_valid(struct perf_event *event)
-  * These all are cpu affine and operate on a local PT
-  */
- 
-+static void pt_config_start(struct perf_event *event)
-+{
-+	struct pt *pt = this_cpu_ptr(&pt_ctx);
-+	u64 ctl = event->hw.config;
-+
-+	ctl |= RTIT_CTL_TRACEEN;
-+	if (READ_ONCE(pt->vmx_on))
-+		perf_aux_output_flag(&pt->handle, PERF_AUX_FLAG_PARTIAL);
-+	else
-+		wrmsrl(MSR_IA32_RTIT_CTL, ctl);
-+
-+	WRITE_ONCE(event->hw.config, ctl);
-+}
-+
- /* Address ranges and their corresponding msr configuration registers */
- static const struct pt_address_range {
- 	unsigned long	msr_a;
-@@ -468,7 +482,6 @@ static u64 pt_config_filters(struct perf_event *event)
- 
- static void pt_config(struct perf_event *event)
- {
--	struct pt *pt = this_cpu_ptr(&pt_ctx);
- 	u64 reg;
- 
- 	/* First round: clear STATUS, in particular the PSB byte counter. */
-@@ -501,10 +514,7 @@ static void pt_config(struct perf_event *event)
- 	reg |= (event->attr.config & PT_CONFIG_MASK);
- 
- 	event->hw.config = reg;
--	if (READ_ONCE(pt->vmx_on))
--		perf_aux_output_flag(&pt->handle, PERF_AUX_FLAG_PARTIAL);
--	else
--		wrmsrl(MSR_IA32_RTIT_CTL, reg);
-+	pt_config_start(event);
- }
- 
- static void pt_config_stop(struct perf_event *event)
-@@ -1381,7 +1391,7 @@ void intel_pt_interrupt(void)
- 
- 		pt_config_buffer(topa_to_page(buf->cur)->table, buf->cur_idx,
- 				 buf->output_off);
--		pt_config(event);
-+		pt_config_start(event);
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 6cb6d68..8d65e03 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -10307,7 +10307,6 @@ static struct pmu *perf_init_event(struct perf_event *event)
+ 			goto unlock;
  	}
- }
  
+-	rcu_read_lock();
+ 	/*
+ 	 * PERF_TYPE_HARDWARE and PERF_TYPE_HW_CACHE
+ 	 * are often aliases for PERF_TYPE_RAW.
+@@ -10317,6 +10316,7 @@ static struct pmu *perf_init_event(struct perf_event *event)
+ 		type = PERF_TYPE_RAW;
+ 
+ again:
++	rcu_read_lock();
+ 	pmu = idr_find(&pmu_idr, type);
+ 	rcu_read_unlock();
+ 	if (pmu) {
