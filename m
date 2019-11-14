@@ -2,41 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D2A29FAFFA
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 13 Nov 2019 12:47:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 21BC3FCBDD
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 14 Nov 2019 18:30:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727942AbfKMLrS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 13 Nov 2019 06:47:18 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:37477 "EHLO
+        id S1726444AbfKNRaE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 14 Nov 2019 12:30:04 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:41209 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726949AbfKMLrS (ORCPT
+        with ESMTP id S1726443AbfKNRaE (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 13 Nov 2019 06:47:18 -0500
+        Thu, 14 Nov 2019 12:30:04 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iUr75-0003gc-Ge; Wed, 13 Nov 2019 12:47:07 +0100
+        id 1iVIwQ-0007W6-LM; Thu, 14 Nov 2019 18:29:58 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id F2D731C0092;
-        Wed, 13 Nov 2019 12:47:06 +0100 (CET)
-Date:   Wed, 13 Nov 2019 11:47:06 -0000
-From:   "tip-bot2 for Xiaochen Shen" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 2F08D1C0090;
+        Thu, 14 Nov 2019 18:29:58 +0100 (CET)
+Date:   Thu, 14 Nov 2019 17:29:57 -0000
+From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/resctrl: Fix potential lockdep warning
-Cc:     Xiaochen Shen <xiaochen.shen@intel.com>,
-        Borislav Petkov <bp@suse.de>, Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Reinette Chatre <reinette.chatre@intel.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        pei.p.jia@intel.com, Thomas Gleixner <tglx@linutronix.de>,
-        "x86-ml" <x86@kernel.org>, Ingo Molnar <mingo@kernel.org>,
-        Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
-In-Reply-To: <1573079796-11713-1-git-send-email-xiaochen.shen@intel.com>
-References: <1573079796-11713-1-git-send-email-xiaochen.shen@intel.com>
+Subject: [tip: x86/kdump] x86/crash: Align function arguments on opening braces
+Cc:     Borislav Petkov <bp@suse.de>, x86@kernel.org,
+        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20191114172200.19563-1-bp@alien8.de>
+References: <20191114172200.19563-1-bp@alien8.de>
 MIME-Version: 1.0
-Message-ID: <157364562654.29376.17634958855166579949.tip-bot2@tip-bot2>
+Message-ID: <157375259774.29376.17108399184829392884.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,72 +45,123 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the x86/kdump branch of tip:
 
-Commit-ID:     c8eafe1495303bfd0eedaa8156b1ee9082ee9642
-Gitweb:        https://git.kernel.org/tip/c8eafe1495303bfd0eedaa8156b1ee9082ee9642
-Author:        Xiaochen Shen <xiaochen.shen@intel.com>
-AuthorDate:    Thu, 07 Nov 2019 06:36:36 +08:00
+Commit-ID:     9eff303725da6530b615e9258f696149baa51df6
+Gitweb:        https://git.kernel.org/tip/9eff303725da6530b615e9258f696149baa51df6
+Author:        Borislav Petkov <bp@suse.de>
+AuthorDate:    Thu, 14 Nov 2019 16:11:50 +01:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 13 Nov 2019 12:34:44 +01:00
+CommitterDate: Thu, 14 Nov 2019 18:24:55 +01:00
 
-x86/resctrl: Fix potential lockdep warning
+x86/crash: Align function arguments on opening braces
 
-rdtgroup_cpus_write() and mkdir_rdt_prepare() call
-rdtgroup_kn_lock_live() -> kernfs_to_rdtgroup() to get 'rdtgrp', and
-then call the rdt_last_cmd_{clear,puts,...}() functions which will check
-if rdtgroup_mutex is held/requires its caller to hold rdtgroup_mutex.
+... or let function calls stick out and thus remain on a single line,
+even if the 80 cols rule is violated by a couple of chars, for better
+readability.
 
-But if 'rdtgrp' returned from kernfs_to_rdtgroup() is NULL,
-rdtgroup_mutex is not held and calling rdt_last_cmd_{clear,puts,...}()
-will result in a self-incurred, potential lockdep warning.
+No functional changes.
 
-Remove the rdt_last_cmd_{clear,puts,...}() calls in these two paths.
-Just returning error should be sufficient to report to the user that the
-entry doesn't exist any more.
-
- [ bp: Massage. ]
-
-Fixes: 94457b36e8a5 ("x86/intel_rdt: Add diagnostics when writing the cpus file")
-Fixes: cfd0f34e4cd5 ("x86/intel_rdt: Add diagnostics when making directories")
-Signed-off-by: Xiaochen Shen <xiaochen.shen@intel.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Tony Luck <tony.luck@intel.com>
-Reviewed-by: Fenghua Yu <fenghua.yu@intel.com>
-Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: pei.p.jia@intel.com
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: x86-ml <x86@kernel.org>
-Link: https://lkml.kernel.org/r/1573079796-11713-1-git-send-email-xiaochen.shen@intel.com
+Cc: x86@kernel.org
+Link: https://lkml.kernel.org/r/20191114172200.19563-1-bp@alien8.de
 ---
- arch/x86/kernel/cpu/resctrl/rdtgroup.c | 4 ----
- 1 file changed, 4 deletions(-)
+ arch/x86/kernel/crash.c | 28 +++++++++++-----------------
+ 1 file changed, 11 insertions(+), 17 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/resctrl/rdtgroup.c b/arch/x86/kernel/cpu/resctrl/rdtgroup.c
-index a46dee8..2e3b06d 100644
---- a/arch/x86/kernel/cpu/resctrl/rdtgroup.c
-+++ b/arch/x86/kernel/cpu/resctrl/rdtgroup.c
-@@ -461,10 +461,8 @@ static ssize_t rdtgroup_cpus_write(struct kernfs_open_file *of,
+diff --git a/arch/x86/kernel/crash.c b/arch/x86/kernel/crash.c
+index a16ec92..00fc55a 100644
+--- a/arch/x86/kernel/crash.c
++++ b/arch/x86/kernel/crash.c
+@@ -202,8 +202,7 @@ static struct crash_mem *fill_up_crash_elf_data(void)
+ 	unsigned int nr_ranges = 0;
+ 	struct crash_mem *cmem;
+ 
+-	walk_system_ram_res(0, -1, &nr_ranges,
+-				get_nr_ram_ranges_callback);
++	walk_system_ram_res(0, -1, &nr_ranges, get_nr_ram_ranges_callback);
+ 	if (!nr_ranges)
+ 		return NULL;
+ 
+@@ -240,10 +239,9 @@ static int elf_header_exclude_ranges(struct crash_mem *cmem)
+ 	if (ret)
+ 		return ret;
+ 
+-	if (crashk_low_res.end) {
++	if (crashk_low_res.end)
+ 		ret = crash_exclude_mem_range(cmem, crashk_low_res.start,
+-							crashk_low_res.end);
+-	}
++					      crashk_low_res.end);
+ 
+ 	return ret;
+ }
+@@ -270,8 +268,7 @@ static int prepare_elf_headers(struct kimage *image, void **addr,
+ 	if (!cmem)
+ 		return -ENOMEM;
+ 
+-	ret = walk_system_ram_res(0, -1, cmem,
+-				prepare_elf64_ram_headers_callback);
++	ret = walk_system_ram_res(0, -1, cmem, prepare_elf64_ram_headers_callback);
+ 	if (ret)
+ 		goto out;
+ 
+@@ -281,8 +278,7 @@ static int prepare_elf_headers(struct kimage *image, void **addr,
+ 		goto out;
+ 
+ 	/* By default prepare 64bit headers */
+-	ret =  crash_prepare_elf64_headers(cmem,
+-				IS_ENABLED(CONFIG_X86_64), addr, sz);
++	ret =  crash_prepare_elf64_headers(cmem, IS_ENABLED(CONFIG_X86_64), addr, sz);
+ 
+ out:
+ 	vfree(cmem);
+@@ -297,8 +293,7 @@ static int add_e820_entry(struct boot_params *params, struct e820_entry *entry)
+ 	if (nr_e820_entries >= E820_MAX_ENTRIES_ZEROPAGE)
+ 		return 1;
+ 
+-	memcpy(&params->e820_table[nr_e820_entries], entry,
+-			sizeof(struct e820_entry));
++	memcpy(&params->e820_table[nr_e820_entries], entry, sizeof(struct e820_entry));
+ 	params->e820_entries++;
+ 	return 0;
+ }
+@@ -353,24 +348,24 @@ int crash_setup_memmap_entries(struct kimage *image, struct boot_params *params)
+ 	cmd.type = E820_TYPE_RAM;
+ 	flags = IORESOURCE_SYSTEM_RAM | IORESOURCE_BUSY;
+ 	walk_iomem_res_desc(IORES_DESC_NONE, flags, 0, (1<<20)-1, &cmd,
+-			memmap_entry_callback);
++			    memmap_entry_callback);
+ 
+ 	/* Add ACPI tables */
+ 	cmd.type = E820_TYPE_ACPI;
+ 	flags = IORESOURCE_MEM | IORESOURCE_BUSY;
+ 	walk_iomem_res_desc(IORES_DESC_ACPI_TABLES, flags, 0, -1, &cmd,
+-		       memmap_entry_callback);
++			    memmap_entry_callback);
+ 
+ 	/* Add ACPI Non-volatile Storage */
+ 	cmd.type = E820_TYPE_NVS;
+ 	walk_iomem_res_desc(IORES_DESC_ACPI_NV_STORAGE, flags, 0, -1, &cmd,
+-			memmap_entry_callback);
++			    memmap_entry_callback);
+ 
+ 	/* Add e820 reserved ranges */
+ 	cmd.type = E820_TYPE_RESERVED;
+ 	flags = IORESOURCE_MEM;
+ 	walk_iomem_res_desc(IORES_DESC_RESERVED, flags, 0, -1, &cmd,
+-			   memmap_entry_callback);
++			    memmap_entry_callback);
+ 
+ 	/* Add crashk_low_res region */
+ 	if (crashk_low_res.end) {
+@@ -381,8 +376,7 @@ int crash_setup_memmap_entries(struct kimage *image, struct boot_params *params)
  	}
  
- 	rdtgrp = rdtgroup_kn_lock_live(of->kn);
--	rdt_last_cmd_clear();
- 	if (!rdtgrp) {
- 		ret = -ENOENT;
--		rdt_last_cmd_puts("Directory was removed\n");
- 		goto unlock;
- 	}
- 
-@@ -2648,10 +2646,8 @@ static int mkdir_rdt_prepare(struct kernfs_node *parent_kn,
- 	int ret;
- 
- 	prdtgrp = rdtgroup_kn_lock_live(prgrp_kn);
--	rdt_last_cmd_clear();
- 	if (!prdtgrp) {
- 		ret = -ENODEV;
--		rdt_last_cmd_puts("Directory was removed\n");
- 		goto out_unlock;
- 	}
+ 	/* Exclude some ranges from crashk_res and add rest to memmap */
+-	ret = memmap_exclude_ranges(image, cmem, crashk_res.start,
+-						crashk_res.end);
++	ret = memmap_exclude_ranges(image, cmem, crashk_res.start, crashk_res.end);
+ 	if (ret)
+ 		goto out;
  
