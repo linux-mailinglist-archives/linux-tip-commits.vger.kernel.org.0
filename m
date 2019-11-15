@@ -2,37 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CF317FE6F0
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Nov 2019 22:13:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B16C5FE703
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Nov 2019 22:13:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726865AbfKOVNF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 15 Nov 2019 16:13:05 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:44641 "EHLO
+        id S1726996AbfKOVNj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 15 Nov 2019 16:13:39 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:44608 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727143AbfKOVMo (ORCPT
+        with ESMTP id S1726809AbfKOVMi (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 15 Nov 2019 16:12:44 -0500
+        Fri, 15 Nov 2019 16:12:38 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iVitT-0007RX-KY; Fri, 15 Nov 2019 22:12:39 +0100
+        id 1iVitN-0007Qq-SH; Fri, 15 Nov 2019 22:12:34 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 3DC2E1C18CE;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 2528B1C18D3;
         Fri, 15 Nov 2019 22:12:30 +0100 (CET)
 Date:   Fri, 15 Nov 2019 21:12:30 -0000
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/iopl] x86/ioperm: Simplify first ioperm() invocation logic
+Subject: [tip: x86/iopl] x86/ioperm: Avoid bitmap allocation if no permissions are set
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20191113210104.295618595@linutronix.de>
-References: <20191113210104.295618595@linutronix.de>
+In-Reply-To: <20191113210104.404509322@linutronix.de>
+References: <20191113210104.404509322@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <157385235022.12247.13427059796080402232.tip-bot2@tip-bot2>
+Message-ID: <157385235012.12247.1247139198046995586.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,130 +48,38 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/iopl branch of tip:
 
-Commit-ID:     3817927e6f5686a5c7571ae33f7b1a8483821c5b
-Gitweb:        https://git.kernel.org/tip/3817927e6f5686a5c7571ae33f7b1a8483821c5b
+Commit-ID:     5487da6bf0775d996352442b89a8defbd671b4ae
+Gitweb:        https://git.kernel.org/tip/5487da6bf0775d996352442b89a8defbd671b4ae
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Wed, 13 Nov 2019 21:42:46 +01:00
+AuthorDate:    Wed, 13 Nov 2019 21:42:47 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 14 Nov 2019 20:15:01 +01:00
+CommitterDate: Thu, 14 Nov 2019 20:15:02 +01:00
 
-x86/ioperm: Simplify first ioperm() invocation logic
+x86/ioperm: Avoid bitmap allocation if no permissions are set
 
-On the first allocation of a task the I/O bitmap needs to be
-allocated. After the allocation it is installed as an empty bitmap and
-immediately afterwards updated.
-
-Avoid that and just do the initial updates (store bitmap pointer, set TIF
-flag and make TSS limit valid) in the update path unconditionally. If the
-bitmap was already active this is redundant but harmless.
-
-Preparatory change for later optimizations in the context switch code.
+If ioperm() is invoked the first time and the @turn_on argument is 0, then
+there is no point to allocate a bitmap just to clear permissions which are
+not set.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20191113210104.295618595@linutronix.de
+Link: https://lkml.kernel.org/r/20191113210104.404509322@linutronix.de
 
 ---
- arch/x86/kernel/ioport.c | 55 ++++++++++++++++++---------------------
- 1 file changed, 26 insertions(+), 29 deletions(-)
+ arch/x86/kernel/ioport.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/arch/x86/kernel/ioport.c b/arch/x86/kernel/ioport.c
-index 76fc2ef..ca6aa1e 100644
+index ca6aa1e..80fa36b 100644
 --- a/arch/x86/kernel/ioport.c
 +++ b/arch/x86/kernel/ioport.c
-@@ -18,9 +18,10 @@
-  */
- long ksys_ioperm(unsigned long from, unsigned long num, int turn_on)
- {
-+	unsigned int i, max_long, bytes, bytes_updated;
- 	struct thread_struct *t = &current->thread;
- 	struct tss_struct *tss;
--	unsigned int i, max_long, bytes, bytes_updated;
-+	unsigned long *bitmap;
- 
- 	if ((from + num <= from) || (from + num > IO_BITMAP_BITS))
- 		return -EINVAL;
-@@ -33,59 +34,55 @@ long ksys_ioperm(unsigned long from, unsigned long num, int turn_on)
- 	 * IO bitmap up. ioperm() is much less timing critical than clone(),
- 	 * this is why we delay this operation until now:
+@@ -36,6 +36,9 @@ long ksys_ioperm(unsigned long from, unsigned long num, int turn_on)
  	 */
--	if (!t->io_bitmap_ptr) {
--		unsigned long *bitmap = kmalloc(IO_BITMAP_BYTES, GFP_KERNEL);
--
-+	bitmap = t->io_bitmap_ptr;
-+	if (!bitmap) {
-+		bitmap = kmalloc(IO_BITMAP_BYTES, GFP_KERNEL);
+ 	bitmap = t->io_bitmap_ptr;
+ 	if (!bitmap) {
++		/* No point to allocate a bitmap just to clear permissions */
++		if (!turn_on)
++			return 0;
+ 		bitmap = kmalloc(IO_BITMAP_BYTES, GFP_KERNEL);
  		if (!bitmap)
  			return -ENOMEM;
- 
- 		memset(bitmap, 0xff, IO_BITMAP_BYTES);
--		t->io_bitmap_ptr = bitmap;
--		set_thread_flag(TIF_IO_BITMAP);
--
--		/*
--		 * Now that we have an IO bitmap, we need our TSS limit to be
--		 * correct.  It's fine if we are preempted after doing this:
--		 * with TIF_IO_BITMAP set, context switches will keep our TSS
--		 * limit correct.
--		 */
--		preempt_disable();
--		refresh_tss_limit();
--		preempt_enable();
- 	}
- 
- 	/*
--	 * do it in the per-thread copy and in the TSS ...
--	 *
--	 * Disable preemption via get_cpu() - we must not switch away
--	 * because the ->io_bitmap_max value must match the bitmap
--	 * contents:
-+	 * Update the bitmap and the TSS copy with preemption disabled to
-+	 * prevent a race against context switch.
- 	 */
--	tss = &per_cpu(cpu_tss_rw, get_cpu());
--
-+	preempt_disable();
- 	if (turn_on)
--		bitmap_clear(t->io_bitmap_ptr, from, num);
-+		bitmap_clear(bitmap, from, num);
- 	else
--		bitmap_set(t->io_bitmap_ptr, from, num);
-+		bitmap_set(bitmap, from, num);
- 
- 	/*
- 	 * Search for a (possibly new) maximum. This is simple and stupid,
- 	 * to keep it obviously correct:
- 	 */
- 	max_long = 0;
--	for (i = 0; i < IO_BITMAP_LONGS; i++)
--		if (t->io_bitmap_ptr[i] != ~0UL)
-+	for (i = 0; i < IO_BITMAP_LONGS; i++) {
-+		if (bitmap[i] != ~0UL)
- 			max_long = i;
-+	}
- 
- 	bytes = (max_long + 1) * sizeof(unsigned long);
- 	bytes_updated = max(bytes, t->io_bitmap_max);
- 
-+	/* Update the thread data */
- 	t->io_bitmap_max = bytes;
-+	/*
-+	 * Store the bitmap pointer (might be the same if the task already
-+	 * head one). Set the TIF flag, just in case this is the first
-+	 * invocation.
-+	 */
-+	t->io_bitmap_ptr = bitmap;
-+	set_thread_flag(TIF_IO_BITMAP);
- 
--	/* Update the TSS: */
-+	/* Update the TSS */
-+	tss = this_cpu_ptr(&cpu_tss_rw);
- 	memcpy(tss->io_bitmap, t->io_bitmap_ptr, bytes_updated);
-+	/* Make sure the TSS limit covers the I/O bitmap. */
-+	refresh_tss_limit();
- 
--	put_cpu();
-+	preempt_enable();
- 
- 	return 0;
- }
