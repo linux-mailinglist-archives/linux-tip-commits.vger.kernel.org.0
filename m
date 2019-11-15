@@ -2,37 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7AA8EFE4D3
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Nov 2019 19:20:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B69FBFE592
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Nov 2019 20:26:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726961AbfKOST0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 15 Nov 2019 13:19:26 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:44317 "EHLO
+        id S1726466AbfKOT0b (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 15 Nov 2019 14:26:31 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:44429 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727004AbfKOST0 (ORCPT
+        with ESMTP id S1726365AbfKOT0a (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 15 Nov 2019 13:19:26 -0500
+        Fri, 15 Nov 2019 14:26:30 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iVgBl-0005Ar-T4; Fri, 15 Nov 2019 19:19:22 +0100
+        id 1iVhEa-0005vE-AJ; Fri, 15 Nov 2019 20:26:20 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 56CE11C18CE;
-        Fri, 15 Nov 2019 19:19:20 +0100 (CET)
-Date:   Fri, 15 Nov 2019 18:19:20 -0000
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D59811C18CD;
+        Fri, 15 Nov 2019 20:26:19 +0100 (CET)
+Date:   Fri, 15 Nov 2019 19:26:19 -0000
+From:   "tip-bot2 for Fenghua Yu" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] futex: Split futex_mm_release() for exit/exec
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@kernel.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+Subject: [tip: x86/cpu] x86/cpu: Align cpu_caps_cleared and cpu_caps_set to
+ unsigned long
+Cc:     Fenghua Yu <fenghua.yu@intel.com>, Tony Luck <tony.luck@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Borislav Petkov <bp@suse.de>, Ingo Molnar <mingo@kernel.org>,
         Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
-In-Reply-To: <20191106224556.332094221@linutronix.de>
-References: <20191106224556.332094221@linutronix.de>
+In-Reply-To: <20190916223958.27048-2-tony.luck@intel.com>
+References: <20190916223958.27048-2-tony.luck@intel.com>
 MIME-Version: 1.0
-Message-ID: <157384196032.12247.696012120427937697.tip-bot2@tip-bot2>
+Message-ID: <157384597983.12247.8995835529288193538.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -46,107 +47,59 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/core branch of tip:
+The following commit has been merged into the x86/cpu branch of tip:
 
-Commit-ID:     7d8882f1d07db08f25a8e35843a63a9caef36f20
-Gitweb:        https://git.kernel.org/tip/7d8882f1d07db08f25a8e35843a63a9caef36f20
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Wed, 06 Nov 2019 22:55:39 +01:00
+Commit-ID:     f6a892ddd53e555362dbf64d31b47fde0f550ec4
+Gitweb:        https://git.kernel.org/tip/f6a892ddd53e555362dbf64d31b47fde0f550ec4
+Author:        Fenghua Yu <fenghua.yu@intel.com>
+AuthorDate:    Mon, 16 Sep 2019 15:39:56 -07:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 15 Nov 2019 19:10:51 +01:00
+CommitterDate: Fri, 15 Nov 2019 20:20:32 +01:00
 
-futex: Split futex_mm_release() for exit/exec
+x86/cpu: Align cpu_caps_cleared and cpu_caps_set to unsigned long
 
-To allow separate handling of the futex exit state in the futex exit code
-for exit and exec, split futex_mm_release() into two functions and invoke
-them from the corresponding exit/exec_mm_release() callsites.
+cpu_caps_cleared[] and cpu_caps_set[] are arrays of type u32 and therefore
+naturally aligned to 4 bytes, which is also unsigned long aligned on
+32-bit, but not on 64-bit.
 
-Preparatory only, no functional change.
+The array pointer is handed into atomic bit operations. If the access not
+aligned to unsigned long then the atomic bit operations can end up crossing
+a cache line boundary, which causes the CPU to do a full bus lock as it
+can't lock both cache lines at once. The bus lock operation is heavy weight
+and can cause severe performance degradation.
 
+The upcoming #AC split lock detection mechanism will issue warnings for
+this kind of access.
+
+Force the alignment of these arrays to unsigned long. This avoids the
+massive code changes which would be required when converting the array data
+type to unsigned long.
+
+[ tglx: Rewrote changelog ]
+
+Signed-off-by: Fenghua Yu <fenghua.yu@intel.com>
+Signed-off-by: Tony Luck <tony.luck@intel.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20191106224556.332094221@linutronix.de
+Reviewed-by: Borislav Petkov <bp@suse.de>
+Link: https://lkml.kernel.org/r/20190916223958.27048-2-tony.luck@intel.com
 
 ---
- include/linux/futex.h | 6 ++++--
- kernel/fork.c         | 5 ++---
- kernel/futex.c        | 7 ++++++-
- 3 files changed, 12 insertions(+), 6 deletions(-)
+ arch/x86/kernel/cpu/common.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/futex.h b/include/linux/futex.h
-index 5a74bda..9762951 100644
---- a/include/linux/futex.h
-+++ b/include/linux/futex.h
-@@ -91,14 +91,16 @@ static inline void futex_exit_done(struct task_struct *tsk)
- 	tsk->futex_state = FUTEX_STATE_DEAD;
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index 9ae7d1b..1e9430b 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -565,8 +565,9 @@ static const char *table_lookup_model(struct cpuinfo_x86 *c)
+ 	return NULL;		/* Not found */
  }
  
--void futex_mm_release(struct task_struct *tsk);
-+void futex_exit_release(struct task_struct *tsk);
-+void futex_exec_release(struct task_struct *tsk);
+-__u32 cpu_caps_cleared[NCAPINTS + NBUGINTS];
+-__u32 cpu_caps_set[NCAPINTS + NBUGINTS];
++/* Aligned to unsigned long to avoid split lock in atomic bitmap ops */
++__u32 cpu_caps_cleared[NCAPINTS + NBUGINTS] __aligned(sizeof(unsigned long));
++__u32 cpu_caps_set[NCAPINTS + NBUGINTS] __aligned(sizeof(unsigned long));
  
- long do_futex(u32 __user *uaddr, int op, u32 val, ktime_t *timeout,
- 	      u32 __user *uaddr2, u32 val2, u32 val3);
- #else
- static inline void futex_init_task(struct task_struct *tsk) { }
--static inline void futex_mm_release(struct task_struct *tsk) { }
- static inline void futex_exit_done(struct task_struct *tsk) { }
-+static inline void futex_exit_release(struct task_struct *tsk) { }
-+static inline void futex_exec_release(struct task_struct *tsk) { }
- static inline long do_futex(u32 __user *uaddr, int op, u32 val,
- 			    ktime_t *timeout, u32 __user *uaddr2,
- 			    u32 val2, u32 val3)
-diff --git a/kernel/fork.c b/kernel/fork.c
-index 096f9d8..f1eb4d1 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -1285,9 +1285,6 @@ static int wait_for_vfork_done(struct task_struct *child,
-  */
- static void mm_release(struct task_struct *tsk, struct mm_struct *mm)
- {
--	/* Get rid of any futexes when releasing the mm */
--	futex_mm_release(tsk);
--
- 	uprobe_free_utask(tsk);
- 
- 	/* Get rid of any cached register state */
-@@ -1322,11 +1319,13 @@ static void mm_release(struct task_struct *tsk, struct mm_struct *mm)
- 
- void exit_mm_release(struct task_struct *tsk, struct mm_struct *mm)
- {
-+	futex_exit_release(tsk);
- 	mm_release(tsk, mm);
- }
- 
- void exec_mm_release(struct task_struct *tsk, struct mm_struct *mm)
- {
-+	futex_exec_release(tsk);
- 	mm_release(tsk, mm);
- }
- 
-diff --git a/kernel/futex.c b/kernel/futex.c
-index 41c7527..909e4d3 100644
---- a/kernel/futex.c
-+++ b/kernel/futex.c
-@@ -3661,7 +3661,7 @@ static void exit_robust_list(struct task_struct *curr)
- 	}
- }
- 
--void futex_mm_release(struct task_struct *tsk)
-+void futex_exec_release(struct task_struct *tsk)
- {
- 	if (unlikely(tsk->robust_list)) {
- 		exit_robust_list(tsk);
-@@ -3679,6 +3679,11 @@ void futex_mm_release(struct task_struct *tsk)
- 		exit_pi_state_list(tsk);
- }
- 
-+void futex_exit_release(struct task_struct *tsk)
-+{
-+	futex_exec_release(tsk);
-+}
-+
- long do_futex(u32 __user *uaddr, int op, u32 val, ktime_t *timeout,
- 		u32 __user *uaddr2, u32 val2, u32 val3)
+ void load_percpu_segment(int cpu)
  {
