@@ -2,99 +2,70 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 83BB6FDCB1
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Nov 2019 12:51:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A028FE242
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Nov 2019 17:07:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727529AbfKOLvo (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 15 Nov 2019 06:51:44 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:43211 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727521AbfKOLvo (ORCPT
+        id S1727461AbfKOQHF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 15 Nov 2019 11:07:05 -0500
+Received: from mga09.intel.com ([134.134.136.24]:10613 "EHLO mga09.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727423AbfKOQHF (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 15 Nov 2019 06:51:44 -0500
-Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tip-bot2@linutronix.de>)
-        id 1iVa8U-0006c7-Lz; Fri, 15 Nov 2019 12:51:34 +0100
-Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5250F1C08AC;
-        Fri, 15 Nov 2019 12:51:34 +0100 (CET)
-Date:   Fri, 15 Nov 2019 11:51:33 -0000
-From:   "tip-bot2 for Masahiro Yamada" <tip-bot2@linutronix.de>
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/build] x86/build/vdso: Remove meaningless CFLAGS_REMOVE_*.o
-Cc:     Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Borislav Petkov <bp@suse.de>,
-        Andy Lutomirski <luto@kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "x86-ml" <x86@kernel.org>, Borislav Petkov <bp@alien8.de>,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20191114154922.30365-1-yamada.masahiro@socionext.com>
-References: <20191114154922.30365-1-yamada.masahiro@socionext.com>
+        Fri, 15 Nov 2019 11:07:05 -0500
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 15 Nov 2019 08:07:04 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.68,308,1569308400"; 
+   d="scan'208";a="214800600"
+Received: from um.fi.intel.com (HELO um) ([10.237.72.57])
+  by fmsmga001.fm.intel.com with ESMTP; 15 Nov 2019 08:06:59 -0800
+From:   Alexander Shishkin <alexander.shishkin@linux.intel.com>
+To:     tip-bot2 for Thomas Richter <tip-bot2@linutronix.de>,
+        linux-tip-commits@vger.kernel.org
+Cc:     Thomas Richter <tmricht@linux.ibm.com>,
+        Peter Zijlstra <a.p.zijlstra@chello.nl>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>, acme@kernel.org,
+        gor@linux.ibm.com, hechaol@fb.com, heiko.carstens@de.ibm.com,
+        linux-perf-users@vger.kernel.org, songliubraving@fb.com,
+        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
+        linux-kernel@vger.kernel.org, alexander.shishkin@linux.intel.com
+Subject: Re: [tip: perf/urgent] perf/aux: Fix tracking of auxiliary trace buffer allocation
+In-Reply-To: <157165050422.29376.10692255781840811810.tip-bot2@tip-bot2>
+References: <20191021083354.67868-1-tmricht@linux.ibm.com> <157165050422.29376.10692255781840811810.tip-bot2@tip-bot2>
+Date:   Fri, 15 Nov 2019 18:06:59 +0200
+Message-ID: <87bltddsyk.fsf@ashishki-desk.ger.corp.intel.com>
 MIME-Version: 1.0
-Message-ID: <157381869387.29467.2747574809933300571.tip-bot2@tip-bot2>
-X-Mailer: tip-git-log-daemon
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+Content-Type: text/plain
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/build branch of tip:
+"tip-bot2 for Thomas Richter" <tip-bot2@linutronix.de> writes:
 
-Commit-ID:     66584ea6b70a6cbae661292702e56a07580dbbd4
-Gitweb:        https://git.kernel.org/tip/66584ea6b70a6cbae661292702e56a07580dbbd4
-Author:        Masahiro Yamada <yamada.masahiro@socionext.com>
-AuthorDate:    Fri, 15 Nov 2019 00:49:22 +09:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Fri, 15 Nov 2019 12:07:32 +01:00
+>  		/* now it's safe to free the pages */
+> -		atomic_long_sub(rb->aux_nr_pages, &mmap_user->locked_vm);
+> -		atomic64_sub(rb->aux_mmap_locked, &vma->vm_mm->pinned_vm);
+> +		if (!rb->aux_mmap_locked)
+> +			atomic_long_sub(rb->aux_nr_pages, &mmap_user->locked_vm);
+> +		else
+> +			atomic64_sub(rb->aux_mmap_locked, &vma->vm_mm->pinned_vm);
 
-x86/build/vdso: Remove meaningless CFLAGS_REMOVE_*.o
+This only works correctly when rb->aux_mmap_locked is either equal to
+rb->aux_nr_pages or zero. Otherwise, it leaks
 
-CFLAGS_REMOVE_*.o syntax is used to drop particular flags when
-building objects from C files. It has no effect for assembly files.
+  rb->aux_nr_pages - rb->aux_mmap_locked
 
-vdso-note.o is compiled from the assembly file, vdso-note.S, hence
-CFLAGS_REMOVE_vdso-note.o is meaningless.
+in the locked_vm permanently.
 
-Neither vvar.c nor vvar.S is found in the vdso directory. Since there
-is no source file to create vvar.o, CFLAGS_REMOVE_vvar.o is also
-meaningless.
-
-Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: x86-ml <x86@kernel.org>
-Link: https://lkml.kernel.org/r/20191114154922.30365-1-yamada.masahiro@socionext.com
----
- arch/x86/entry/vdso/Makefile | 2 --
- 1 file changed, 2 deletions(-)
-
-diff --git a/arch/x86/entry/vdso/Makefile b/arch/x86/entry/vdso/Makefile
-index 0f21541..2b75e80 100644
---- a/arch/x86/entry/vdso/Makefile
-+++ b/arch/x86/entry/vdso/Makefile
-@@ -87,11 +87,9 @@ $(vobjs): KBUILD_CFLAGS := $(filter-out $(GCC_PLUGINS_CFLAGS) $(RETPOLINE_CFLAGS
- #
- # vDSO code runs in userspace and -pg doesn't help with profiling anyway.
- #
--CFLAGS_REMOVE_vdso-note.o = -pg
- CFLAGS_REMOVE_vclock_gettime.o = -pg
- CFLAGS_REMOVE_vdso32/vclock_gettime.o = -pg
- CFLAGS_REMOVE_vgetcpu.o = -pg
--CFLAGS_REMOVE_vvar.o = -pg
- 
- #
- # X32 processes use x32 vDSO to access 64bit kernel data.
+Regards,
+--
+Alex
