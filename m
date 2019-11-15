@@ -2,36 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 21BC3FCBDD
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 14 Nov 2019 18:30:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B2AC0FD6EE
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Nov 2019 08:29:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726444AbfKNRaE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 14 Nov 2019 12:30:04 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:41209 "EHLO
+        id S1726598AbfKOH3K (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 15 Nov 2019 02:29:10 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:42506 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726443AbfKNRaE (ORCPT
+        with ESMTP id S1726182AbfKOH3K (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 14 Nov 2019 12:30:04 -0500
+        Fri, 15 Nov 2019 02:29:10 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iVIwQ-0007W6-LM; Thu, 14 Nov 2019 18:29:58 +0100
+        id 1iVW2L-0002Kw-8i; Fri, 15 Nov 2019 08:28:57 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 2F08D1C0090;
-        Thu, 14 Nov 2019 18:29:58 +0100 (CET)
-Date:   Thu, 14 Nov 2019 17:29:57 -0000
-From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 81CFC1C08AC;
+        Fri, 15 Nov 2019 08:28:56 +0100 (CET)
+Date:   Fri, 15 Nov 2019 07:28:55 -0000
+From:   "tip-bot2 for Cao jin" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/kdump] x86/crash: Align function arguments on opening braces
-Cc:     Borislav Petkov <bp@suse.de>, x86@kernel.org,
-        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20191114172200.19563-1-bp@alien8.de>
-References: <20191114172200.19563-1-bp@alien8.de>
+Subject: [tip: x86/cleanups] x86/numa: Fix typo
+Cc:     Cao jin <caoj.fnst@cn.fujitsu.com>, <bp@alien8.de>,
+        <dave.hansen@linux.intel.com>, <hpa@zytor.com>, <luto@kernel.org>,
+        <peterz@infradead.org>, <tglx@linutronix.de>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org
+In-Reply-To: <20191115050828.2138-1-ruansy.fnst@cn.fujitsu.com>
+References: <20191115050828.2138-1-ruansy.fnst@cn.fujitsu.com>
 MIME-Version: 1.0
-Message-ID: <157375259774.29376.17108399184829392884.tip-bot2@tip-bot2>
+Message-ID: <157380293598.29467.2287139923549118344.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -45,123 +47,45 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/kdump branch of tip:
+The following commit has been merged into the x86/cleanups branch of tip:
 
-Commit-ID:     9eff303725da6530b615e9258f696149baa51df6
-Gitweb:        https://git.kernel.org/tip/9eff303725da6530b615e9258f696149baa51df6
-Author:        Borislav Petkov <bp@suse.de>
-AuthorDate:    Thu, 14 Nov 2019 16:11:50 +01:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Thu, 14 Nov 2019 18:24:55 +01:00
+Commit-ID:     bff3dc88003badacb7ed685e301ab38dbdc36a8b
+Gitweb:        https://git.kernel.org/tip/bff3dc88003badacb7ed685e301ab38dbdc36a8b
+Author:        Cao jin <caoj.fnst@cn.fujitsu.com>
+AuthorDate:    Fri, 15 Nov 2019 13:08:28 +08:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Fri, 15 Nov 2019 08:26:07 +01:00
 
-x86/crash: Align function arguments on opening braces
+x86/numa: Fix typo
 
-... or let function calls stick out and thus remain on a single line,
-even if the 80 cols rule is violated by a couple of chars, for better
-readability.
+encomapssing -> encompassing.
 
-No functional changes.
-
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Cc: x86@kernel.org
-Link: https://lkml.kernel.org/r/20191114172200.19563-1-bp@alien8.de
+Signed-off-by: Cao jin <caoj.fnst@cn.fujitsu.com>
+Cc: <bp@alien8.de>
+Cc: <dave.hansen@linux.intel.com>
+Cc: <hpa@zytor.com>
+Cc: <luto@kernel.org>
+Cc: <peterz@infradead.org>
+Cc: <tglx@linutronix.de>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lkml.kernel.org/r/20191115050828.2138-1-ruansy.fnst@cn.fujitsu.com
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- arch/x86/kernel/crash.c | 28 +++++++++++-----------------
- 1 file changed, 11 insertions(+), 17 deletions(-)
+ arch/x86/mm/numa.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/crash.c b/arch/x86/kernel/crash.c
-index a16ec92..00fc55a 100644
---- a/arch/x86/kernel/crash.c
-+++ b/arch/x86/kernel/crash.c
-@@ -202,8 +202,7 @@ static struct crash_mem *fill_up_crash_elf_data(void)
- 	unsigned int nr_ranges = 0;
- 	struct crash_mem *cmem;
- 
--	walk_system_ram_res(0, -1, &nr_ranges,
--				get_nr_ram_ranges_callback);
-+	walk_system_ram_res(0, -1, &nr_ranges, get_nr_ram_ranges_callback);
- 	if (!nr_ranges)
- 		return NULL;
- 
-@@ -240,10 +239,9 @@ static int elf_header_exclude_ranges(struct crash_mem *cmem)
- 	if (ret)
- 		return ret;
- 
--	if (crashk_low_res.end) {
-+	if (crashk_low_res.end)
- 		ret = crash_exclude_mem_range(cmem, crashk_low_res.start,
--							crashk_low_res.end);
--	}
-+					      crashk_low_res.end);
- 
- 	return ret;
- }
-@@ -270,8 +268,7 @@ static int prepare_elf_headers(struct kimage *image, void **addr,
- 	if (!cmem)
- 		return -ENOMEM;
- 
--	ret = walk_system_ram_res(0, -1, cmem,
--				prepare_elf64_ram_headers_callback);
-+	ret = walk_system_ram_res(0, -1, cmem, prepare_elf64_ram_headers_callback);
- 	if (ret)
- 		goto out;
- 
-@@ -281,8 +278,7 @@ static int prepare_elf_headers(struct kimage *image, void **addr,
- 		goto out;
- 
- 	/* By default prepare 64bit headers */
--	ret =  crash_prepare_elf64_headers(cmem,
--				IS_ENABLED(CONFIG_X86_64), addr, sz);
-+	ret =  crash_prepare_elf64_headers(cmem, IS_ENABLED(CONFIG_X86_64), addr, sz);
- 
- out:
- 	vfree(cmem);
-@@ -297,8 +293,7 @@ static int add_e820_entry(struct boot_params *params, struct e820_entry *entry)
- 	if (nr_e820_entries >= E820_MAX_ENTRIES_ZEROPAGE)
- 		return 1;
- 
--	memcpy(&params->e820_table[nr_e820_entries], entry,
--			sizeof(struct e820_entry));
-+	memcpy(&params->e820_table[nr_e820_entries], entry, sizeof(struct e820_entry));
- 	params->e820_entries++;
- 	return 0;
- }
-@@ -353,24 +348,24 @@ int crash_setup_memmap_entries(struct kimage *image, struct boot_params *params)
- 	cmd.type = E820_TYPE_RAM;
- 	flags = IORESOURCE_SYSTEM_RAM | IORESOURCE_BUSY;
- 	walk_iomem_res_desc(IORES_DESC_NONE, flags, 0, (1<<20)-1, &cmd,
--			memmap_entry_callback);
-+			    memmap_entry_callback);
- 
- 	/* Add ACPI tables */
- 	cmd.type = E820_TYPE_ACPI;
- 	flags = IORESOURCE_MEM | IORESOURCE_BUSY;
- 	walk_iomem_res_desc(IORES_DESC_ACPI_TABLES, flags, 0, -1, &cmd,
--		       memmap_entry_callback);
-+			    memmap_entry_callback);
- 
- 	/* Add ACPI Non-volatile Storage */
- 	cmd.type = E820_TYPE_NVS;
- 	walk_iomem_res_desc(IORES_DESC_ACPI_NV_STORAGE, flags, 0, -1, &cmd,
--			memmap_entry_callback);
-+			    memmap_entry_callback);
- 
- 	/* Add e820 reserved ranges */
- 	cmd.type = E820_TYPE_RESERVED;
- 	flags = IORESOURCE_MEM;
- 	walk_iomem_res_desc(IORES_DESC_RESERVED, flags, 0, -1, &cmd,
--			   memmap_entry_callback);
-+			    memmap_entry_callback);
- 
- 	/* Add crashk_low_res region */
- 	if (crashk_low_res.end) {
-@@ -381,8 +376,7 @@ int crash_setup_memmap_entries(struct kimage *image, struct boot_params *params)
- 	}
- 
- 	/* Exclude some ranges from crashk_res and add rest to memmap */
--	ret = memmap_exclude_ranges(image, cmem, crashk_res.start,
--						crashk_res.end);
-+	ret = memmap_exclude_ranges(image, cmem, crashk_res.start, crashk_res.end);
- 	if (ret)
- 		goto out;
- 
+diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
+index 4123100..99f7a68 100644
+--- a/arch/x86/mm/numa.c
++++ b/arch/x86/mm/numa.c
+@@ -699,7 +699,7 @@ static int __init dummy_numa_init(void)
+  * x86_numa_init - Initialize NUMA
+  *
+  * Try each configured NUMA initialization method until one succeeds.  The
+- * last fallback is dummy single node config encomapssing whole memory and
++ * last fallback is dummy single node config encompassing whole memory and
+  * never fails.
+  */
+ void __init x86_numa_init(void)
