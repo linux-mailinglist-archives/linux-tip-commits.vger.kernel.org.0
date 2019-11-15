@@ -2,114 +2,58 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3455BFE4AA
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Nov 2019 19:13:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B1FE5FE4B9
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Nov 2019 19:15:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726996AbfKOSNY convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 15 Nov 2019 13:13:24 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:44270 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726075AbfKOSNY (ORCPT
+        id S1726550AbfKOSPk (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 15 Nov 2019 13:15:40 -0500
+Received: from foss.arm.com ([217.140.110.172]:34854 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726075AbfKOSPj (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 15 Nov 2019 13:13:24 -0500
-Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tip-bot2@linutronix.de>)
-        id 1iVg5i-00051Y-UY; Fri, 15 Nov 2019 19:13:07 +0100
-Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 6C7BE1C08AC;
-        Fri, 15 Nov 2019 19:13:06 +0100 (CET)
-Date:   Fri, 15 Nov 2019 18:13:06 -0000
-From:   "tip-bot2 for Valentin Schneider" <tip-bot2@linutronix.de>
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] sched/topology, cpuset: Account for housekeeping
- CPUs to avoid empty cpumasks
-Cc:     mkoutny@suse.com, Valentin Schneider <valentin.schneider@arm.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Fri, 15 Nov 2019 13:15:39 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4426C30E;
+        Fri, 15 Nov 2019 10:15:39 -0800 (PST)
+Received: from [10.0.2.15] (unknown [172.31.20.19])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F38723F534;
+        Fri, 15 Nov 2019 10:15:36 -0800 (PST)
+Subject: Re: [tip: sched/urgent] sched/topology, cpuset: Account for
+ housekeeping CPUs to avoid empty cpumasks
+To:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org
+Cc:     mkoutny@suse.com, "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Dietmar.Eggemann@arm.com,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Thomas Gleixner <tglx@linutronix.de>, hannes@cmpxchg.org,
         lizefan@huawei.com, morten.rasmussen@arm.com, qperret@google.com,
         tj@kernel.org, vincent.guittot@linaro.org,
-        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20191104003906.31476-1-valentin.schneider@arm.com>
+        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>
 References: <20191104003906.31476-1-valentin.schneider@arm.com>
+ <157384158622.12247.6135151696743651397.tip-bot2@tip-bot2>
+From:   Valentin Schneider <valentin.schneider@arm.com>
+Message-ID: <26624707-3913-5225-a7f9-f3cf9597d6f2@arm.com>
+Date:   Fri, 15 Nov 2019 18:15:35 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Message-ID: <157384158622.12247.6135151696743651397.tip-bot2@tip-bot2>
-X-Mailer: tip-git-log-daemon
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8BIT
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+In-Reply-To: <157384158622.12247.6135151696743651397.tip-bot2@tip-bot2>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/urgent branch of tip:
+On 15/11/2019 18:13, tip-bot2 for Valentin Schneider wrote:
+> The following commit has been merged into the sched/urgent branch of tip:
+> 
+> Commit-ID:     48a723d23b0d957e5b5861b974864e53c6841de8
+> Gitweb:        https://git.kernel.org/tip/48a723d23b0d957e5b5861b974864e53c6841de8
+> Author:        Valentin Schneider <valentin.schneider@arm.com>
+> AuthorDate:    Mon, 04 Nov 2019 00:39:06 
+> Committer:     Ingo Molnar <mingo@kernel.org>
+> CommitterDate: Fri, 15 Nov 2019 11:02:20 +01:00
 
-Commit-ID:     48a723d23b0d957e5b5861b974864e53c6841de8
-Gitweb:        https://git.kernel.org/tip/48a723d23b0d957e5b5861b974864e53c6841de8
-Author:        Valentin Schneider <valentin.schneider@arm.com>
-AuthorDate:    Mon, 04 Nov 2019 00:39:06 
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 15 Nov 2019 11:02:20 +01:00
-
-sched/topology, cpuset: Account for housekeeping CPUs to avoid empty cpumasks
-
-Michal noted that a cpuset's effective_cpus can be a non-empy mask, but
-because of the masking done with housekeeping_cpumask(HK_FLAG_DOMAIN)
-further down the line, we can still end up with an empty cpumask being
-passed down to partition_sched_domains_locked().
-
-Do the proper thing and don't just check the mask is non-empty - check
-that its intersection with housekeeping_cpumask(HK_FLAG_DOMAIN) is
-non-empty.
-
-Reported-by: Michal Koutný <mkoutny@suse.com>
-Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: Dietmar.Eggemann@arm.com
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: hannes@cmpxchg.org
-Cc: lizefan@huawei.com
-Cc: morten.rasmussen@arm.com
-Cc: qperret@google.com
-Cc: tj@kernel.org
-Cc: vincent.guittot@linaro.org
-Fixes: cd1cb3350561 ("sched/topology: Don't try to build empty sched domains")
-Link: https://lkml.kernel.org/r/20191104003906.31476-1-valentin.schneider@arm.com
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
----
- kernel/cgroup/cpuset.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
-
-diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
-index c87ee64..e4c1078 100644
---- a/kernel/cgroup/cpuset.c
-+++ b/kernel/cgroup/cpuset.c
-@@ -798,8 +798,14 @@ static int generate_sched_domains(cpumask_var_t **domains,
- 		    cpumask_subset(cp->cpus_allowed, top_cpuset.effective_cpus))
- 			continue;
- 
-+		/*
-+		 * Skip cpusets that would lead to an empty sched domain.
-+		 * That could be because effective_cpus is empty, or because
-+		 * it's only spanning CPUs outside the housekeeping mask.
-+		 */
- 		if (is_sched_load_balance(cp) &&
--		    !cpumask_empty(cp->effective_cpus))
-+		    cpumask_intersects(cp->effective_cpus,
-+				       housekeeping_cpumask(HK_FLAG_DOMAIN)))
- 			csa[csn++] = cp;
- 
- 		/* skip @cp's subtree if not a partition root */
+Michal just noted this might actually *not* be required. I'm setting up some
+tests on qemu right now to convince myself.
