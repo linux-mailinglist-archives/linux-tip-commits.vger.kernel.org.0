@@ -2,37 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BE1DFD99D
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Nov 2019 10:44:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A696DFD994
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Nov 2019 10:44:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727573AbfKOJoJ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 15 Nov 2019 04:44:09 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:42937 "EHLO
+        id S1727556AbfKOJoA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 15 Nov 2019 04:44:00 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:42936 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727323AbfKOJnZ (ORCPT
+        with ESMTP id S1727316AbfKOJn0 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 15 Nov 2019 04:43:25 -0500
+        Fri, 15 Nov 2019 04:43:26 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iVY8Q-0004T4-IY; Fri, 15 Nov 2019 10:43:22 +0100
+        id 1iVY8Q-0004Sz-1V; Fri, 15 Nov 2019 10:43:22 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 3AE751C18B4;
-        Fri, 15 Nov 2019 10:43:22 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B66821C08AC;
+        Fri, 15 Nov 2019 10:43:21 +0100 (CET)
 Date:   Fri, 15 Nov 2019 09:43:21 -0000
 From:   "tip-bot2 for Christoph Hellwig" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] x86/pci: Remove pci_64.h
+Subject: [tip: x86/cleanups] x86/pci: Remove #ifdef __KERNEL__ guard from <asm/pci.h>
 Cc:     Christoph Hellwig <hch@lst.de>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20191113071836.21041-3-hch@lst.de>
-References: <20191113071836.21041-3-hch@lst.de>
+In-Reply-To: <20191113071836.21041-4-hch@lst.de>
+References: <20191113071836.21041-4-hch@lst.de>
 MIME-Version: 1.0
-Message-ID: <157381100181.29467.6264266348455981055.tip-bot2@tip-bot2>
+Message-ID: <157381100119.29467.13434467993345423920.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,60 +48,42 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/cleanups branch of tip:
 
-Commit-ID:     948fdcf94289b15f86ce8206abd92a3f7d12360a
-Gitweb:        https://git.kernel.org/tip/948fdcf94289b15f86ce8206abd92a3f7d12360a
+Commit-ID:     b52b0c4fc977901c243756e191f3fc686725b7d9
+Gitweb:        https://git.kernel.org/tip/b52b0c4fc977901c243756e191f3fc686725b7d9
 Author:        Christoph Hellwig <hch@lst.de>
-AuthorDate:    Wed, 13 Nov 2019 08:18:35 +01:00
+AuthorDate:    Wed, 13 Nov 2019 08:18:36 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 15 Nov 2019 10:36:59 +01:00
+CommitterDate: Fri, 15 Nov 2019 10:37:14 +01:00
 
-x86/pci: Remove pci_64.h
+x86/pci: Remove #ifdef __KERNEL__ guard from <asm/pci.h>
 
-This file only contains external declarations for two non-existing
-function pointers.
+pci.h is not a UAPI header, so the __KERNEL__ ifdef is rather pointless.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20191113071836.21041-3-hch@lst.de
-
+Link: https://lkml.kernel.org/r/20191113071836.21041-4-hch@lst.de
 ---
- arch/x86/include/asm/pci.h    |  4 ----
- arch/x86/include/asm/pci_64.h | 14 --------------
- 2 files changed, 18 deletions(-)
- delete mode 100644 arch/x86/include/asm/pci_64.h
+ arch/x86/include/asm/pci.h | 3 ---
+ 1 file changed, 3 deletions(-)
 
 diff --git a/arch/x86/include/asm/pci.h b/arch/x86/include/asm/pci.h
-index e662f98..d9e28aa 100644
+index d9e28aa..90d0731 100644
 --- a/arch/x86/include/asm/pci.h
 +++ b/arch/x86/include/asm/pci.h
-@@ -120,10 +120,6 @@ void native_restore_msi_irqs(struct pci_dev *dev);
- #endif
- #endif  /* __KERNEL__ */
+@@ -12,8 +12,6 @@
+ #include <asm/pat.h>
+ #include <asm/x86_init.h>
  
--#ifdef CONFIG_X86_64
--#include <asm/pci_64.h>
--#endif
--
- /* generic pci stuff */
- #include <asm-generic/pci.h>
- 
-diff --git a/arch/x86/include/asm/pci_64.h b/arch/x86/include/asm/pci_64.h
-deleted file mode 100644
-index 4e1aef5..0000000
---- a/arch/x86/include/asm/pci_64.h
-+++ /dev/null
-@@ -1,14 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0 */
--#ifndef _ASM_X86_PCI_64_H
--#define _ASM_X86_PCI_64_H
--
 -#ifdef __KERNEL__
 -
--extern int (*pci_config_read)(int seg, int bus, int dev, int fn,
--			      int reg, int len, u32 *value);
--extern int (*pci_config_write)(int seg, int bus, int dev, int fn,
--			       int reg, int len, u32 value);
--
--#endif /* __KERNEL__ */
--
--#endif /* _ASM_X86_PCI_64_H */
+ struct pci_sysdata {
+ 	int		domain;		/* PCI domain */
+ 	int		node;		/* NUMA node */
+@@ -118,7 +116,6 @@ void native_restore_msi_irqs(struct pci_dev *dev);
+ #define native_setup_msi_irqs		NULL
+ #define native_teardown_msi_irq		NULL
+ #endif
+-#endif  /* __KERNEL__ */
+ 
+ /* generic pci stuff */
+ #include <asm-generic/pci.h>
