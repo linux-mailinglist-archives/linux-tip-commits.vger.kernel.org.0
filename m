@@ -2,38 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 29034FE706
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Nov 2019 22:13:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 67115FE6FE
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Nov 2019 22:13:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726992AbfKOVMi (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 15 Nov 2019 16:12:38 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:44591 "EHLO
+        id S1726750AbfKOVMj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 15 Nov 2019 16:12:39 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:44611 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726750AbfKOVMh (ORCPT
+        with ESMTP id S1726890AbfKOVMj (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 15 Nov 2019 16:12:37 -0500
+        Fri, 15 Nov 2019 16:12:39 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iVitJ-0007N1-03; Fri, 15 Nov 2019 22:12:29 +0100
+        id 1iVitN-0007Ou-8w; Fri, 15 Nov 2019 22:12:33 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 9CC0B1C18CD;
-        Fri, 15 Nov 2019 22:12:28 +0100 (CET)
-Date:   Fri, 15 Nov 2019 21:12:28 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id AEEAD1C18CF;
+        Fri, 15 Nov 2019 22:12:29 +0100 (CET)
+Date:   Fri, 15 Nov 2019 21:12:29 -0000
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/iopl] x86/ioperm: Extend IOPL config to control ioperm() as well
-Cc:     Andy Lutomirski <luto@kernel.org>,
+Subject: [tip: x86/iopl] x86/ioperm: Add bitmap sequence number
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20191113210105.557339819@linutronix.de>
-References: <20191113210105.557339819@linutronix.de>
+In-Reply-To: <20191113210104.790774205@linutronix.de>
+References: <20191113210104.790774205@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <157385234859.12247.7075966754785602380.tip-bot2@tip-bot2>
+Message-ID: <157385234967.12247.10518024307495865043.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,239 +49,158 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/iopl branch of tip:
 
-Commit-ID:     845fa6a960f45e07ab22b660bee7f7644dd29610
-Gitweb:        https://git.kernel.org/tip/845fa6a960f45e07ab22b660bee7f7644dd29610
+Commit-ID:     209c34d3c2de01a5dfe428b8b79fdb913dd76334
+Gitweb:        https://git.kernel.org/tip/209c34d3c2de01a5dfe428b8b79fdb913dd76334
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Wed, 13 Nov 2019 21:42:59 +01:00
+AuthorDate:    Wed, 13 Nov 2019 21:42:51 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 14 Nov 2019 20:15:08 +01:00
+CommitterDate: Thu, 14 Nov 2019 20:15:04 +01:00
 
-x86/ioperm: Extend IOPL config to control ioperm() as well
+x86/ioperm: Add bitmap sequence number
 
-If iopl() is disabled, then providing ioperm() does not make much sense.
+Add a globally unique sequence number which is incremented when ioperm() is
+changing the I/O bitmap of a task. Store the new sequence number in the
+io_bitmap structure and compare it with the sequence number of the I/O
+bitmap which was last loaded on a CPU. Only update the bitmap if the
+sequence is different.
 
-Rename the config option and disable/enable both syscalls with it. Guard
-the code with #ifdefs where appropriate.
+That should further reduce the overhead of I/O bitmap scheduling when there
+are only a few I/O bitmap users on the system.
 
-Suggested-by: Andy Lutomirski <luto@kernel.org>
+The 64bit sequence counter is sufficient. A wraparound of the sequence
+counter assuming an ioperm() call every nanosecond would require about 584
+years of uptime.
+
+Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20191113210105.557339819@linutronix.de
+Link: https://lkml.kernel.org/r/20191113210104.790774205@linutronix.de
+
 
 ---
- arch/x86/Kconfig                   |  7 +++++--
- arch/x86/include/asm/io_bitmap.h   |  6 ++++++
- arch/x86/include/asm/processor.h   |  9 ++++++++-
- arch/x86/include/asm/thread_info.h |  7 ++++++-
- arch/x86/kernel/cpu/common.c       | 26 +++++++++++++++++---------
- arch/x86/kernel/ioport.c           | 26 +++++++++++++++++++-------
- arch/x86/kernel/process.c          |  4 ++++
- 7 files changed, 65 insertions(+), 20 deletions(-)
+ arch/x86/include/asm/io_bitmap.h |  1 +-
+ arch/x86/include/asm/processor.h |  3 ++-
+ arch/x86/kernel/cpu/common.c     |  1 +-
+ arch/x86/kernel/ioport.c         |  5 ++++-
+ arch/x86/kernel/process.c        | 38 ++++++++++++++++++++++---------
+ 5 files changed, 38 insertions(+), 10 deletions(-)
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 1f926e3..b162ce1 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -1254,10 +1254,13 @@ config X86_VSYSCALL_EMULATION
- 	 Disabling this option saves about 7K of kernel size and
- 	 possibly 4K of additional runtime pagetable memory.
- 
--config X86_IOPL_EMULATION
--	bool "IOPL Emulation"
-+config X86_IOPL_IOPERM
-+	bool "IOPERM and IOPL Emulation"
- 	default y
- 	---help---
-+	  This enables the ioperm() and iopl() syscalls which are necessary
-+	  for legacy applications.
-+
- 	  Legacy IOPL support is an overbroad mechanism which allows user
- 	  space aside of accessing all 65536 I/O ports also to disable
- 	  interrupts. To gain this access the caller needs CAP_SYS_RAWIO
 diff --git a/arch/x86/include/asm/io_bitmap.h b/arch/x86/include/asm/io_bitmap.h
-index b664baa..02c6ef8 100644
+index 1a12b9f..d63bd5a 100644
 --- a/arch/x86/include/asm/io_bitmap.h
 +++ b/arch/x86/include/asm/io_bitmap.h
-@@ -15,9 +15,15 @@ struct io_bitmap {
+@@ -5,6 +5,7 @@
+ #include <asm/processor.h>
  
- struct task_struct;
- 
-+#ifdef CONFIG_X86_IOPL_IOPERM
- void io_bitmap_share(struct task_struct *tsk);
- void io_bitmap_exit(void);
- 
- void tss_update_io_bitmap(void);
-+#else
-+static inline void io_bitmap_share(struct task_struct *tsk) { }
-+static inline void io_bitmap_exit(void) { }
-+static inline void tss_update_io_bitmap(void) { }
-+#endif
- 
- #endif
+ struct io_bitmap {
++	u64		sequence;
+ 	/* The maximum number of bytes to copy so all zero bits are covered */
+ 	unsigned int	max;
+ 	unsigned long	bitmap[IO_BITMAP_LONGS];
 diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
-index 1387d31..45f416a 100644
+index c949e0e..40bb0f7 100644
 --- a/arch/x86/include/asm/processor.h
 +++ b/arch/x86/include/asm/processor.h
-@@ -340,13 +340,18 @@ struct x86_hw_tss {
- 	(offsetof(struct tss_struct, io_bitmap.mapall) -	\
- 	 offsetof(struct tss_struct, x86_tss))
- 
-+#ifdef CONFIG_X86_IOPL_IOPERM
- /*
-  * sizeof(unsigned long) coming from an extra "long" at the end of the
-  * iobitmap. The limit is inclusive, i.e. the last valid byte.
+@@ -361,6 +361,9 @@ struct entry_stack_page {
+  * All IO bitmap related data stored in the TSS:
   */
--#define __KERNEL_TSS_LIMIT	\
-+# define __KERNEL_TSS_LIMIT	\
- 	(IO_BITMAP_OFFSET_VALID_ALL + IO_BITMAP_BYTES + \
- 	 sizeof(unsigned long) - 1)
-+#else
-+# define __KERNEL_TSS_LIMIT	\
-+	(offsetof(struct tss_struct, x86_tss) + sizeof(struct x86_hw_tss) - 1)
-+#endif
- 
- /* Base offset outside of TSS_LIMIT so unpriviledged IO causes #GP */
- #define IO_BITMAP_OFFSET_INVALID	(__KERNEL_TSS_LIMIT + 1)
-@@ -398,7 +403,9 @@ struct tss_struct {
- 	 */
- 	struct x86_hw_tss	x86_tss;
- 
-+#ifdef CONFIG_X86_IOPL_IOPERM
- 	struct x86_io_bitmap	io_bitmap;
-+#endif
- } __aligned(PAGE_SIZE);
- 
- DECLARE_PER_CPU_PAGE_ALIGNED(struct tss_struct, cpu_tss_rw);
-diff --git a/arch/x86/include/asm/thread_info.h b/arch/x86/include/asm/thread_info.h
-index 0accf44..d779366 100644
---- a/arch/x86/include/asm/thread_info.h
-+++ b/arch/x86/include/asm/thread_info.h
-@@ -156,8 +156,13 @@ struct thread_info {
- # define _TIF_WORK_CTXSW	(_TIF_WORK_CTXSW_BASE)
- #endif
- 
--#define _TIF_WORK_CTXSW_PREV	(_TIF_WORK_CTXSW| _TIF_USER_RETURN_NOTIFY | \
-+#ifdef CONFIG_X86_IOPL_IOPERM
-+# define _TIF_WORK_CTXSW_PREV	(_TIF_WORK_CTXSW| _TIF_USER_RETURN_NOTIFY | \
- 				 _TIF_IO_BITMAP)
-+#else
-+# define _TIF_WORK_CTXSW_PREV	(_TIF_WORK_CTXSW| _TIF_USER_RETURN_NOTIFY)
-+#endif
+ struct x86_io_bitmap {
++	/* The sequence number of the last active bitmap. */
++	u64			prev_sequence;
 +
- #define _TIF_WORK_CTXSW_NEXT	(_TIF_WORK_CTXSW)
- 
- #define STACK_WARN		(THREAD_SIZE/8)
+ 	/*
+ 	 * Store the dirty size of the last io bitmap offender. The next
+ 	 * one will have to do the cleanup as the switch out to a non io
 diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index 7bf402b..6f6ca6b 100644
+index 3aee167..79dd544 100644
 --- a/arch/x86/kernel/cpu/common.c
 +++ b/arch/x86/kernel/cpu/common.c
-@@ -1804,6 +1804,22 @@ static inline void gdt_setup_doublefault_tss(int cpu)
- }
- #endif /* !CONFIG_X86_64 */
- 
-+static inline void tss_setup_io_bitmap(struct tss_struct *tss)
-+{
-+	tss->x86_tss.io_bitmap_base = IO_BITMAP_OFFSET_INVALID;
-+
-+#ifdef CONFIG_X86_IOPL_IOPERM
-+	tss->io_bitmap.prev_max = 0;
-+	tss->io_bitmap.prev_sequence = 0;
-+	memset(tss->io_bitmap.bitmap, 0xff, sizeof(tss->io_bitmap.bitmap));
-+	/*
-+	 * Invalidate the extra array entry past the end of the all
-+	 * permission bitmap as required by the hardware.
-+	 */
-+	tss->io_bitmap.mapall[IO_BITMAP_LONGS] = ~0UL;
-+#endif
-+}
-+
- /*
-  * cpu_init() initializes state that is per-CPU. Some data is already
-  * initialized (naturally) in the bootstrap process, such as the GDT
-@@ -1860,15 +1876,7 @@ void cpu_init(void)
- 
- 	/* Initialize the TSS. */
+@@ -1862,6 +1862,7 @@ void cpu_init(void)
  	tss_setup_ist(tss);
--	tss->x86_tss.io_bitmap_base = IO_BITMAP_OFFSET_INVALID;
--	tss->io_bitmap.prev_max = 0;
--	tss->io_bitmap.prev_sequence = 0;
--	memset(tss->io_bitmap.bitmap, 0xff, sizeof(tss->io_bitmap.bitmap));
--	/*
--	 * Invalidate the extra array entry past the end of the all
--	 * permission bitmap as required by the hardware.
--	 */
--	tss->io_bitmap.mapall[IO_BITMAP_LONGS] = ~0UL;
-+	tss_setup_io_bitmap(tss);
+ 	tss->x86_tss.io_bitmap_base = IO_BITMAP_OFFSET_INVALID;
+ 	tss->io_bitmap.prev_max = 0;
++	tss->io_bitmap.prev_sequence = 0;
+ 	memset(tss->io_bitmap.bitmap, 0xff, sizeof(tss->io_bitmap.bitmap));
  	set_tss_desc(cpu, &get_cpu_entry_area(cpu)->tss.x86_tss);
  
- 	load_TR_desc();
 diff --git a/arch/x86/kernel/ioport.c b/arch/x86/kernel/ioport.c
-index d5dcde9..8abeee0 100644
+index 05f77f3..7c1ab5c 100644
 --- a/arch/x86/kernel/ioport.c
 +++ b/arch/x86/kernel/ioport.c
 @@ -14,6 +14,8 @@
  #include <asm/io_bitmap.h>
  #include <asm/desc.h>
  
-+#ifdef CONFIG_X86_IOPL_IOPERM
++static atomic64_t io_bitmap_sequence;
 +
- static atomic64_t io_bitmap_sequence;
+ /*
+  * this changes the io permissions bitmap in the current task.
+  */
+@@ -72,6 +74,9 @@ long ksys_ioperm(unsigned long from, unsigned long num, int turn_on)
  
- void io_bitmap_share(struct task_struct *tsk)
-@@ -172,13 +174,6 @@ SYSCALL_DEFINE1(iopl, unsigned int, level)
- 	struct thread_struct *t = &current->thread;
- 	unsigned int old;
- 
--	/*
--	 * Careful: the IOPL bits in regs->flags are undefined under Xen PV
--	 * and changing them has no effect.
--	 */
--	if (IS_ENABLED(CONFIG_X86_IOPL_NONE))
--		return -ENOSYS;
--
- 	if (level > 3)
- 		return -EINVAL;
- 
-@@ -200,3 +195,20 @@ SYSCALL_DEFINE1(iopl, unsigned int, level)
- 
- 	return 0;
- }
+ 	/* Update the thread data */
+ 	iobm->max = bytes;
++	/* Update the sequence number to force an update in switch_to() */
++	iobm->sequence = atomic64_add_return(1, &io_bitmap_sequence);
 +
-+#else /* CONFIG_X86_IOPL_IOPERM */
-+
-+long ksys_ioperm(unsigned long from, unsigned long num, int turn_on)
-+{
-+	return -ENOSYS;
-+}
-+SYSCALL_DEFINE3(ioperm, unsigned long, from, unsigned long, num, int, turn_on)
-+{
-+	return -ENOSYS;
-+}
-+
-+SYSCALL_DEFINE1(iopl, unsigned int, level)
-+{
-+	return -ENOSYS;
-+}
-+#endif
+ 	/*
+ 	 * Store the bitmap pointer (might be the same if the task already
+ 	 * head one). Set the TIF flag, just in case this is the first
 diff --git a/arch/x86/kernel/process.c b/arch/x86/kernel/process.c
-index 8ba2707..77a7d8f 100644
+index 39c495d..eec7987 100644
 --- a/arch/x86/kernel/process.c
 +++ b/arch/x86/kernel/process.c
-@@ -316,6 +316,7 @@ void arch_setup_new_exec(void)
+@@ -354,6 +354,28 @@ void arch_setup_new_exec(void)
  	}
  }
  
-+#ifdef CONFIG_X86_IOPL_IOPERM
- static inline void tss_invalidate_io_bitmap(struct tss_struct *tss)
++static void switch_to_update_io_bitmap(struct tss_struct *tss,
++				       struct io_bitmap *iobm)
++{
++	/*
++	 * Copy at least the byte range of the incoming tasks bitmap which
++	 * covers the permitted I/O ports.
++	 *
++	 * If the previous task which used an I/O bitmap had more bits
++	 * permitted, then the copy needs to cover those as well so they
++	 * get turned off.
++	 */
++	memcpy(tss->io_bitmap.bitmap, iobm->bitmap,
++	       max(tss->io_bitmap.prev_max, iobm->max));
++
++	/*
++	 * Store the new max and the sequence number of this bitmap
++	 * and a pointer to the bitmap itself.
++	 */
++	tss->io_bitmap.prev_max = iobm->max;
++	tss->io_bitmap.prev_sequence = iobm->sequence;
++}
++
+ static inline void switch_to_bitmap(struct thread_struct *next,
+ 				    unsigned long tifp, unsigned long tifn)
  {
- 	/*
-@@ -403,6 +404,9 @@ void tss_update_io_bitmap(void)
- 		tss_invalidate_io_bitmap(tss);
- 	}
- }
-+#else /* CONFIG_X86_IOPL_IOPERM */
-+static inline void switch_to_bitmap(unsigned long tifp) { }
-+#endif
+@@ -363,18 +385,14 @@ static inline void switch_to_bitmap(struct thread_struct *next,
+ 		struct io_bitmap *iobm = next->io_bitmap;
  
- #ifdef CONFIG_SMP
+ 		/*
+-		 * Copy at least the size of the incoming tasks bitmap
+-		 * which covers the last permitted I/O port.
+-		 *
+-		 * If the previous task which used an io bitmap had more
+-		 * bits permitted, then the copy needs to cover those as
+-		 * well so they get turned off.
++		 * Only copy bitmap data when the sequence number
++		 * differs. The update time is accounted to the incoming
++		 * task.
+ 		 */
+-		memcpy(tss->io_bitmap.bitmap, next->io_bitmap->bitmap,
+-		       max(tss->io_bitmap.prev_max, next->io_bitmap->max));
++		if (tss->io_bitmap.prev_sequence != iobm->sequence)
++			switch_to_update_io_bitmap(tss, iobm);
  
+-		/* Store the new max and set io_bitmap_base valid */
+-		tss->io_bitmap.prev_max = next->io_bitmap->max;
++		/* Enable the bitmap */
+ 		tss->x86_tss.io_bitmap_base = IO_BITMAP_OFFSET_VALID;
+ 
+ 		/*
