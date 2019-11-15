@@ -2,39 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 916E2FD718
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Nov 2019 08:40:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 788ECFD727
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Nov 2019 08:41:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727295AbfKOHk2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 15 Nov 2019 02:40:28 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:42620 "EHLO
+        id S1727461AbfKOHlK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 15 Nov 2019 02:41:10 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:42588 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727192AbfKOHk1 (ORCPT
+        with ESMTP id S1726182AbfKOHkX (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 15 Nov 2019 02:40:27 -0500
+        Fri, 15 Nov 2019 02:40:23 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iVWDG-0002Vb-3F; Fri, 15 Nov 2019 08:40:14 +0100
+        id 1iVWDG-0002Ve-Hp; Fri, 15 Nov 2019 08:40:14 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id AFF551C18CD;
-        Fri, 15 Nov 2019 08:40:13 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 30C881C08AC;
+        Fri, 15 Nov 2019 08:40:14 +0100 (CET)
 Date:   Fri, 15 Nov 2019 07:40:13 -0000
 From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf map: Remove ->groups from 'struct map'
+Subject: [tip: perf/core] perf map: Combine maps__fixup_overlappings with its only use
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         Andi Kleen <ak@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>,
         Namhyung Kim <namhyung@kernel.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <tip-ymlv3nzpofv2fugnjnizkrwy@git.kernel.org>
-References: <tip-ymlv3nzpofv2fugnjnizkrwy@git.kernel.org>
+In-Reply-To: <tip-e50eqtqw3za24vmbjnqmmcs6@git.kernel.org>
+References: <tip-e50eqtqw3za24vmbjnqmmcs6@git.kernel.org>
 MIME-Version: 1.0
-Message-ID: <157380361326.29467.15056834595261302192.tip-bot2@tip-bot2>
+Message-ID: <157380361380.29467.9955626577114050046.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,91 +50,72 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     7b018e298752b9bcaf34eba8e1d3c08e3207dfd8
-Gitweb:        https://git.kernel.org/tip/7b018e298752b9bcaf34eba8e1d3c08e3207dfd8
+Commit-ID:     3f662fc08dddebd7bab654eada1f3e7568959eef
+Gitweb:        https://git.kernel.org/tip/3f662fc08dddebd7bab654eada1f3e7568959eef
 Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Mon, 04 Nov 2019 16:55:53 -03:00
+AuthorDate:    Fri, 01 Nov 2019 17:53:02 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Tue, 12 Nov 2019 08:20:53 -03:00
 
-perf map: Remove ->groups from 'struct map'
+perf map: Combine maps__fixup_overlappings with its only use
 
-With this 'struct map' uses a bit over 3 cachelines:
-
-  $ pahole -C map ~/bin/perf
-  <SNIP>
-  	/* --- cacheline 2 boundary (128 bytes) --- */
-  	u64                        (*unmap_ip)(struct map *, u64); /*   128     8 */
-  	struct dso *               dso;                            /*   136     8 */
-  	refcount_t                 refcnt;                         /*   144     4 */
-
-  	/* size: 152, cachelines: 3, members: 18 */
-  	/* sum members: 145, holes: 1, sum holes: 3 */
-  	/* padding: 4 */
-  	/* forced alignments: 2 */
-  	/* last cacheline: 24 bytes */
-  } __attribute__((__aligned__(8)));
-  $
-
-We probably can move map->map/unmap_ip() moved to 'struct map_groups',
-that will shave more 16 bytes, getting this almost to two cachelines.
+In the process we can kill some of the struct map->groups usage, trying
+to get rid of this per-full struct map fields getting in the way of
+sharing a map across father/parent processes.
 
 Cc: Adrian Hunter <adrian.hunter@intel.com>
 Cc: Andi Kleen <ak@linux.intel.com>
 Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lkml.kernel.org/n/tip-ymlv3nzpofv2fugnjnizkrwy@git.kernel.org
+Link: https://lkml.kernel.org/n/tip-e50eqtqw3za24vmbjnqmmcs6@git.kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/map.c | 4 ----
- tools/perf/util/map.h | 1 -
- 2 files changed, 5 deletions(-)
+ tools/perf/util/map.c | 13 ++++---------
+ 1 file changed, 4 insertions(+), 9 deletions(-)
 
 diff --git a/tools/perf/util/map.c b/tools/perf/util/map.c
-index 27d8508..3598468 100644
+index 6c59f55..27d8508 100644
 --- a/tools/perf/util/map.c
 +++ b/tools/perf/util/map.c
-@@ -140,7 +140,6 @@ void map__init(struct map *map, u64 start, u64 end, u64 pgoff, struct dso *dso)
- 	map->map_ip   = map__map_ip;
- 	map->unmap_ip = map__unmap_ip;
- 	RB_CLEAR_NODE(&map->rb_node);
--	map->groups   = NULL;
- 	map->erange_warned = false;
- 	refcount_set(&map->refcnt, 1);
+@@ -752,8 +752,9 @@ static void __map_groups__insert(struct map_groups *mg, struct map *map)
+ 	map->groups = mg;
  }
-@@ -388,7 +387,6 @@ struct map *map__clone(struct map *from)
- 		refcount_set(&map->refcnt, 1);
- 		RB_CLEAR_NODE(&map->rb_node);
- 		dso__get(map->dso);
--		map->groups = NULL;
- 	}
  
- 	return map;
-@@ -582,7 +580,6 @@ void map_groups__init(struct map_groups *mg, struct machine *machine)
- void map_groups__insert(struct map_groups *mg, struct map *map)
+-static int maps__fixup_overlappings(struct maps *maps, struct map *map, FILE *fp)
++int map_groups__fixup_overlappings(struct map_groups *mg, struct map *map, FILE *fp)
  {
- 	maps__insert(&mg->maps, map);
--	map->groups = mg;
++	struct maps *maps = &mg->maps;
+ 	struct rb_root *root;
+ 	struct rb_node *next, *first;
+ 	int err = 0;
+@@ -818,7 +819,7 @@ static int maps__fixup_overlappings(struct maps *maps, struct map *map, FILE *fp
+ 			}
+ 
+ 			before->end = map->start;
+-			__map_groups__insert(pos->groups, before);
++			__map_groups__insert(mg, before);
+ 			if (verbose >= 2 && !use_browser)
+ 				map__fprintf(before, fp);
+ 			map__put(before);
+@@ -835,7 +836,7 @@ static int maps__fixup_overlappings(struct maps *maps, struct map *map, FILE *fp
+ 			after->start = map->end;
+ 			after->pgoff += map->end - pos->start;
+ 			assert(pos->map_ip(pos, map->end) == after->map_ip(after, map->end));
+-			__map_groups__insert(pos->groups, after);
++			__map_groups__insert(mg, after);
+ 			if (verbose >= 2 && !use_browser)
+ 				map__fprintf(after, fp);
+ 			map__put(after);
+@@ -853,12 +854,6 @@ out:
+ 	return err;
  }
  
- static void __maps__purge(struct maps *maps)
-@@ -749,7 +746,6 @@ static void __map_groups__insert(struct map_groups *mg, struct map *map)
- {
- 	__maps__insert(&mg->maps, map);
- 	__maps__insert_name(&mg->maps, map);
--	map->groups = mg;
- }
- 
- int map_groups__fixup_overlappings(struct map_groups *mg, struct map *map, FILE *fp)
-diff --git a/tools/perf/util/map.h b/tools/perf/util/map.h
-index c361419..365deb6 100644
---- a/tools/perf/util/map.h
-+++ b/tools/perf/util/map.h
-@@ -42,7 +42,6 @@ struct map {
- 	u64			(*unmap_ip)(struct map *, u64);
- 
- 	struct dso		*dso;
--	struct map_groups	*groups;
- 	refcount_t		refcnt;
- };
- 
+-int map_groups__fixup_overlappings(struct map_groups *mg, struct map *map,
+-				   FILE *fp)
+-{
+-	return maps__fixup_overlappings(&mg->maps, map, fp);
+-}
+-
+ /*
+  * XXX This should not really _copy_ te maps, but refcount them.
+  */
