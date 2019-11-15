@@ -2,39 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 788ECFD727
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Nov 2019 08:41:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D275FD719
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Nov 2019 08:41:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727461AbfKOHlK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 15 Nov 2019 02:41:10 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:42588 "EHLO
+        id S1727208AbfKOHk0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 15 Nov 2019 02:40:26 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:42607 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726182AbfKOHkX (ORCPT
+        with ESMTP id S1727048AbfKOHkZ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 15 Nov 2019 02:40:23 -0500
+        Fri, 15 Nov 2019 02:40:25 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iVWDG-0002Ve-Hp; Fri, 15 Nov 2019 08:40:14 +0100
+        id 1iVWDH-0002WV-Fc; Fri, 15 Nov 2019 08:40:15 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 30C881C08AC;
-        Fri, 15 Nov 2019 08:40:14 +0100 (CET)
-Date:   Fri, 15 Nov 2019 07:40:13 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 1DDFF1C08AC;
+        Fri, 15 Nov 2019 08:40:15 +0100 (CET)
+Date:   Fri, 15 Nov 2019 07:40:14 -0000
 From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf map: Combine maps__fixup_overlappings with its only use
+Subject: [tip: perf/core] perf tools: Add a 'struct map_groups' pointer to
+ 'struct map_symbol'
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         Andi Kleen <ak@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>,
         Namhyung Kim <namhyung@kernel.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <tip-e50eqtqw3za24vmbjnqmmcs6@git.kernel.org>
-References: <tip-e50eqtqw3za24vmbjnqmmcs6@git.kernel.org>
+In-Reply-To: <tip-fzwfcnddenz1o7uj1fzw3g46@git.kernel.org>
+References: <tip-fzwfcnddenz1o7uj1fzw3g46@git.kernel.org>
 MIME-Version: 1.0
-Message-ID: <157380361380.29467.9955626577114050046.tip-bot2@tip-bot2>
+Message-ID: <157380361474.29467.1693226405134802627.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,72 +51,147 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     3f662fc08dddebd7bab654eada1f3e7568959eef
-Gitweb:        https://git.kernel.org/tip/3f662fc08dddebd7bab654eada1f3e7568959eef
+Commit-ID:     08f6680e627edf913c6d6adb9bb9ecc9d57a408d
+Gitweb:        https://git.kernel.org/tip/08f6680e627edf913c6d6adb9bb9ecc9d57a408d
 Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Fri, 01 Nov 2019 17:53:02 -03:00
+AuthorDate:    Mon, 04 Nov 2019 16:02:35 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Tue, 12 Nov 2019 08:20:53 -03:00
 
-perf map: Combine maps__fixup_overlappings with its only use
+perf tools: Add a 'struct map_groups' pointer to 'struct map_symbol'
 
-In the process we can kill some of the struct map->groups usage, trying
-to get rid of this per-full struct map fields getting in the way of
-sharing a map across father/parent processes.
+And fill it whenever we setup a a 'struct map_symbol', now we need to
+use it, next cset.
 
 Cc: Adrian Hunter <adrian.hunter@intel.com>
 Cc: Andi Kleen <ak@linux.intel.com>
 Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lkml.kernel.org/n/tip-e50eqtqw3za24vmbjnqmmcs6@git.kernel.org
+Link: https://lkml.kernel.org/n/tip-fzwfcnddenz1o7uj1fzw3g46@git.kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/map.c | 13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
+ tools/perf/util/callchain.c              | 1 +
+ tools/perf/util/hist.c                   | 4 ++++
+ tools/perf/util/machine.c                | 3 +++
+ tools/perf/util/map_symbol.h             | 2 ++
+ tools/perf/util/unwind-libdw.c           | 1 +
+ tools/perf/util/unwind-libunwind-local.c | 1 +
+ 6 files changed, 12 insertions(+)
 
-diff --git a/tools/perf/util/map.c b/tools/perf/util/map.c
-index 6c59f55..27d8508 100644
---- a/tools/perf/util/map.c
-+++ b/tools/perf/util/map.c
-@@ -752,8 +752,9 @@ static void __map_groups__insert(struct map_groups *mg, struct map *map)
- 	map->groups = mg;
- }
- 
--static int maps__fixup_overlappings(struct maps *maps, struct map *map, FILE *fp)
-+int map_groups__fixup_overlappings(struct map_groups *mg, struct map *map, FILE *fp)
+diff --git a/tools/perf/util/callchain.c b/tools/perf/util/callchain.c
+index 8f89c5a..5cefce3 100644
+--- a/tools/perf/util/callchain.c
++++ b/tools/perf/util/callchain.c
+@@ -1106,6 +1106,7 @@ int hist_entry__append_callchain(struct hist_entry *he, struct perf_sample *samp
+ int fill_callchain_info(struct addr_location *al, struct callchain_cursor_node *node,
+ 			bool hide_unresolved)
  {
-+	struct maps *maps = &mg->maps;
- 	struct rb_root *root;
- 	struct rb_node *next, *first;
- 	int err = 0;
-@@ -818,7 +819,7 @@ static int maps__fixup_overlappings(struct maps *maps, struct map *map, FILE *fp
- 			}
++	al->mg	= node->ms.mg;
+ 	al->map = node->ms.map;
+ 	al->sym = node->ms.sym;
+ 	al->srcline = node->srcline;
+diff --git a/tools/perf/util/hist.c b/tools/perf/util/hist.c
+index dec9961..0a8d72a 100644
+--- a/tools/perf/util/hist.c
++++ b/tools/perf/util/hist.c
+@@ -692,6 +692,7 @@ __hists__add_entry(struct hists *hists,
+ 			.ino = ns ? ns->link_info[CGROUP_NS_INDEX].ino : 0,
+ 		},
+ 		.ms = {
++			.mg	= al->mg,
+ 			.map	= al->map,
+ 			.sym	= al->sym,
+ 		},
+@@ -759,6 +760,7 @@ struct hist_entry *hists__add_entry_block(struct hists *hists,
+ 		.block_info = block_info,
+ 		.hists = hists,
+ 		.ms = {
++			.mg  = al->mg,
+ 			.map = al->map,
+ 			.sym = al->sym,
+ 		},
+@@ -893,6 +895,7 @@ iter_next_branch_entry(struct hist_entry_iter *iter, struct addr_location *al)
+ 	if (iter->curr >= iter->total)
+ 		return 0;
  
- 			before->end = map->start;
--			__map_groups__insert(pos->groups, before);
-+			__map_groups__insert(mg, before);
- 			if (verbose >= 2 && !use_browser)
- 				map__fprintf(before, fp);
- 			map__put(before);
-@@ -835,7 +836,7 @@ static int maps__fixup_overlappings(struct maps *maps, struct map *map, FILE *fp
- 			after->start = map->end;
- 			after->pgoff += map->end - pos->start;
- 			assert(pos->map_ip(pos, map->end) == after->map_ip(after, map->end));
--			__map_groups__insert(pos->groups, after);
-+			__map_groups__insert(mg, after);
- 			if (verbose >= 2 && !use_browser)
- 				map__fprintf(after, fp);
- 			map__put(after);
-@@ -853,12 +854,6 @@ out:
- 	return err;
- }
++	al->mg  = bi[i].to.ms.mg;
+ 	al->map = bi[i].to.ms.map;
+ 	al->sym = bi[i].to.ms.sym;
+ 	al->addr = bi[i].to.addr;
+@@ -1069,6 +1072,7 @@ iter_add_next_cumulative_entry(struct hist_entry_iter *iter,
+ 		.comm = thread__comm(al->thread),
+ 		.ip = al->addr,
+ 		.ms = {
++			.mg  = al->mg,
+ 			.map = al->map,
+ 			.sym = al->sym,
+ 		},
+diff --git a/tools/perf/util/machine.c b/tools/perf/util/machine.c
+index 614094d..6a0f5c2 100644
+--- a/tools/perf/util/machine.c
++++ b/tools/perf/util/machine.c
+@@ -1968,6 +1968,7 @@ static void ip__resolve_ams(struct thread *thread,
  
--int map_groups__fixup_overlappings(struct map_groups *mg, struct map *map,
--				   FILE *fp)
--{
--	return maps__fixup_overlappings(&mg->maps, map, fp);
--}
--
- /*
-  * XXX This should not really _copy_ te maps, but refcount them.
-  */
+ 	ams->addr = ip;
+ 	ams->al_addr = al.addr;
++	ams->ms.mg  = al.mg;
+ 	ams->ms.sym = al.sym;
+ 	ams->ms.map = al.map;
+ 	ams->phys_addr = 0;
+@@ -1985,6 +1986,7 @@ static void ip__resolve_data(struct thread *thread,
+ 
+ 	ams->addr = addr;
+ 	ams->al_addr = al.addr;
++	ams->ms.mg  = al.mg;
+ 	ams->ms.sym = al.sym;
+ 	ams->ms.map = al.map;
+ 	ams->phys_addr = phys_addr;
+@@ -2101,6 +2103,7 @@ static int add_callchain_ip(struct thread *thread,
+ 		iter_cycles = iter->cycles;
+ 	}
+ 
++	ms.mg  = al.mg;
+ 	ms.map = al.map;
+ 	ms.sym = al.sym;
+ 	srcline = callchain_srcline(&ms, al.addr);
+diff --git a/tools/perf/util/map_symbol.h b/tools/perf/util/map_symbol.h
+index f71cbe1..2964d97 100644
+--- a/tools/perf/util/map_symbol.h
++++ b/tools/perf/util/map_symbol.h
+@@ -4,10 +4,12 @@
+ 
+ #include <linux/types.h>
+ 
++struct map_groups;
+ struct map;
+ struct symbol;
+ 
+ struct map_symbol {
++	struct map_groups *mg;
+ 	struct map    *map;
+ 	struct symbol *sym;
+ };
+diff --git a/tools/perf/util/unwind-libdw.c b/tools/perf/util/unwind-libdw.c
+index 73c00d7..d2a8df0 100644
+--- a/tools/perf/util/unwind-libdw.c
++++ b/tools/perf/util/unwind-libdw.c
+@@ -81,6 +81,7 @@ static int entry(u64 ip, struct unwind_info *ui)
+ 		return -1;
+ 
+ 	e->ip	  = ip;
++	e->ms.mg  = al.mg;
+ 	e->ms.map = al.map;
+ 	e->ms.sym = al.sym;
+ 
+diff --git a/tools/perf/util/unwind-libunwind-local.c b/tools/perf/util/unwind-libunwind-local.c
+index 6e3873d..6d53347 100644
+--- a/tools/perf/util/unwind-libunwind-local.c
++++ b/tools/perf/util/unwind-libunwind-local.c
+@@ -578,6 +578,7 @@ static int entry(u64 ip, struct thread *thread,
+ 	e.ms.sym = thread__find_symbol(thread, PERF_RECORD_MISC_USER, ip, &al);
+ 	e.ip     = ip;
+ 	e.ms.map = al.map;
++	e.ms.mg  = al.mg;
+ 
+ 	pr_debug("unwind: %s:ip = 0x%" PRIx64 " (0x%" PRIx64 ")\n",
+ 		 al.sym ? al.sym->name : "''",
