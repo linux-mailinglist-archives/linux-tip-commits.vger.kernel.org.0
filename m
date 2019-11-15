@@ -2,110 +2,97 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 12B47FD9FE
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Nov 2019 10:54:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 85248FDAD7
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Nov 2019 11:11:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727585AbfKOJyr (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 15 Nov 2019 04:54:47 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:42982 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727590AbfKOJyq (ORCPT
+        id S1726930AbfKOKL3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 15 Nov 2019 05:11:29 -0500
+Received: from mail.cn.fujitsu.com ([183.91.158.132]:54953 "EHLO
+        heian.cn.fujitsu.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1725829AbfKOKL3 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 15 Nov 2019 04:54:46 -0500
-Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tip-bot2@linutronix.de>)
-        id 1iVYJM-0004n4-0a; Fri, 15 Nov 2019 10:54:40 +0100
-Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id AB2131C08AC;
-        Fri, 15 Nov 2019 10:54:39 +0100 (CET)
-Date:   Fri, 15 Nov 2019 09:54:39 -0000
-From:   "tip-bot2 for Frederic Weisbecker" <tip-bot2@linutronix.de>
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] irq_work: Fix IRQ_WORK_BUSY bit clearing
-Cc:     kernel test robot <rong.a.chen@intel.com>,
-        Leonard Crestez <leonard.crestez@nxp.com>,
-        Frederic Weisbecker <frederic@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20191113171201.14032-1-frederic@kernel.org>
-References: <20191113171201.14032-1-frederic@kernel.org>
+        Fri, 15 Nov 2019 05:11:29 -0500
+X-IronPort-AV: E=Sophos;i="5.68,307,1569254400"; 
+   d="scan'208";a="78510747"
+Received: from unknown (HELO cn.fujitsu.com) ([10.167.33.5])
+  by heian.cn.fujitsu.com with ESMTP; 15 Nov 2019 18:11:27 +0800
+Received: from G08CNEXCHPEKD01.g08.fujitsu.local (unknown [10.167.33.80])
+        by cn.fujitsu.com (Postfix) with ESMTP id 018AE4CE1BE4;
+        Fri, 15 Nov 2019 18:03:16 +0800 (CST)
+Received: from [10.167.226.60] (10.167.226.60) by
+ G08CNEXCHPEKD01.g08.fujitsu.local (10.167.33.89) with Microsoft SMTP Server
+ (TLS) id 14.3.439.0; Fri, 15 Nov 2019 18:11:36 +0800
+Subject: Re: [tip: x86/cleanups] x86/numa: Fix typo
+To:     Borislav Petkov <bp@alien8.de>
+CC:     Ingo Molnar <mingo@kernel.org>,
+        <linux-tip-commits@vger.kernel.org>, <dave.hansen@linux.intel.com>,
+        <hpa@zytor.com>, <luto@kernel.org>, <peterz@infradead.org>,
+        <tglx@linutronix.de>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Shiyang Ruan <ruansy.fnst@cn.fujitsu.com>
+References: <20191115050828.2138-1-ruansy.fnst@cn.fujitsu.com>
+ <157380293598.29467.2287139923549118344.tip-bot2@tip-bot2>
+ <20191115082604.GA18929@zn.tnic>
+ <73ffdd4c-d74d-e3c0-7cd5-f97e7061caeb@cn.fujitsu.com>
+ <20191115084509.GC18929@zn.tnic>
+ <550ce44a-2b61-42ea-46c1-22a6a4976e5f@cn.fujitsu.com>
+ <20191115093236.GG18929@zn.tnic>
+From:   Cao jin <caoj.fnst@cn.fujitsu.com>
+Message-ID: <c328744b-2870-b5bd-0b1a-a092a6aaf8ed@cn.fujitsu.com>
+Date:   Fri, 15 Nov 2019 18:12:28 +0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Message-ID: <157381167919.29467.977752896796863165.tip-bot2@tip-bot2>
-X-Mailer: tip-git-log-daemon
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+In-Reply-To: <20191115093236.GG18929@zn.tnic>
 Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+X-Originating-IP: [10.167.226.60]
+X-yoursite-MailScanner-ID: 018AE4CE1BE4.A20EA
+X-yoursite-MailScanner: Found to be clean
+X-yoursite-MailScanner-From: caoj.fnst@cn.fujitsu.com
+X-Spam-Status: No
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the irq/core branch of tip:
+On 11/15/19 5:32 PM, Borislav Petkov wrote:
+> On Fri, Nov 15, 2019 at 05:08:26PM +0800, Cao jin wrote:
+>> Net::SMTP=GLOB(0x557db0534920)<<< 220 G08CNEXCHPEKD01.g08.fujitsu.local
+>> Microsoft ESMTP MAIL Service ready at Fri, 15 Nov 2019 16:49:11 +0800
+> 
+> If that's exchange, it has been known to mangle patches and it is
+> generally unsuitable for upstream work. Talk to your manager about using
+> a linux solution for sending patches.
 
-Commit-ID:     e9838bd51169af87ae248336d4c3fc59184a0e46
-Gitweb:        https://git.kernel.org/tip/e9838bd51169af87ae248336d4c3fc59184a0e46
-Author:        Frederic Weisbecker <frederic@kernel.org>
-AuthorDate:    Wed, 13 Nov 2019 18:12:01 +01:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 15 Nov 2019 10:48:37 +01:00
+Out of my manger's boundary;)
 
-irq_work: Fix IRQ_WORK_BUSY bit clearing
+> 
+>> Net::SMTP=GLOB(0x557db0534920)<<< 220 2.0.0 SMTP server ready
+>> STARTTLS failed! hostname verification failed at
+> ^^^^^^^^^^^^^^^^^^
+> 
+> It complains about your hostname.
 
-While attempting to clear the busy bit at the end of a work execution,
-atomic_cmpxchg() expects the value of the flags with the pending bit
-cleared as the old value. However by mistake the value of the flags is
-passed without clearing the pending bit first.
+Did a little bit investigation, I don't think it is really related with
+my hostname. So I might want to wait the mail server is upgraded and see.
 
-As a result, clearing the busy bit fails and irq_work_sync() may stall:
+> 
+>> Got it, thanks. I thought SOB is more of the responsibility of the patch
+>> content.
+> 
+> I will point you to a nice reading, once more:
+> 
+> https://www.kernel.org/doc/html/latest/process/submitting-patches.html#sign-your-work-the-developer-s-certificate-of-origin
+> 
+> Make sure you look at it each time you're not sure about the SOB chain.
+> 
 
- watchdog: BUG: soft lockup - CPU#0 stuck for 22s! [blktrace:4948]
- CPU: 0 PID: 4948 Comm: blktrace Not tainted 5.4.0-rc7-00003-gfeb4a51323bab #1
- RIP: 0010:irq_work_sync+0x4/0x10
- Call Trace:
-  relay_close_buf+0x19/0x50
-  relay_close+0x64/0x100
-  blk_trace_free+0x1f/0x50
-  __blk_trace_remove+0x1e/0x30
-  blk_trace_ioctl+0x11b/0x140
-  blkdev_ioctl+0x6c1/0xa40
-  block_ioctl+0x39/0x40
-  do_vfs_ioctl+0xa5/0x700
-  ksys_ioctl+0x70/0x80
-  __x64_sys_ioctl+0x16/0x20
-  do_syscall_64+0x5b/0x1d0
-  entry_SYSCALL_64_after_hwframe+0x44/0xa9
+Thanks very much, already found it.
 
-So clear the appropriate bit before passing the old flags to cmpxchg().
+-- 
+Sincerely,
+Cao jin
 
-Fixes: feb4a51323ba ("irq_work: Slightly simplify IRQ_WORK_PENDING clearing")
-Reported-by: kernel test robot <rong.a.chen@intel.com>
-Reported-by: Leonard Crestez <leonard.crestez@nxp.com>
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Leonard Crestez <leonard.crestez@nxp.com>
-Link: https://lkml.kernel.org/r/20191113171201.14032-1-frederic@kernel.org
 
----
- kernel/irq_work.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/kernel/irq_work.c b/kernel/irq_work.c
-index 49c53f8..828cc30 100644
---- a/kernel/irq_work.c
-+++ b/kernel/irq_work.c
-@@ -158,6 +158,7 @@ static void irq_work_run_list(struct llist_head *list)
- 		 * Clear the BUSY bit and return to the free state if
- 		 * no-one else claimed it meanwhile.
- 		 */
-+		flags &= ~IRQ_WORK_PENDING;
- 		(void)atomic_cmpxchg(&work->flags, flags, flags & ~IRQ_WORK_BUSY);
- 	}
- }
