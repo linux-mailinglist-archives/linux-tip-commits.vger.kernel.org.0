@@ -2,42 +2,47 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B7316FE4A8
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Nov 2019 19:13:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AF67CFE4AC
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Nov 2019 19:13:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726962AbfKOSNQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 15 Nov 2019 13:13:16 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:44258 "EHLO
+        id S1727041AbfKOSNZ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 15 Nov 2019 13:13:25 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:44272 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726075AbfKOSNQ (ORCPT
+        with ESMTP id S1726995AbfKOSNZ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 15 Nov 2019 13:13:16 -0500
+        Fri, 15 Nov 2019 13:13:25 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iVg5i-00051Z-Vj; Fri, 15 Nov 2019 19:13:07 +0100
+        id 1iVg5j-00051n-7O; Fri, 15 Nov 2019 19:13:07 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 9D3661C18CD;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id CC5531C18CE;
         Fri, 15 Nov 2019 19:13:06 +0100 (CET)
 Date:   Fri, 15 Nov 2019 18:13:06 -0000
-From:   "tip-bot2 for Valentin Schneider" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Qais Yousef" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] sched/uclamp: Fix overzealous type replacement
-Cc:     Valentin Schneider <valentin.schneider@arm.com>,
+Subject: [tip: sched/urgent] sched/uclamp: Fix incorrect condition
+Cc:     Suren Baghdasaryan <surenb@google.com>,
+        Qais Yousef <qais.yousef@arm.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Qais Yousef <qais.yousef@arm.com>, Dietmar.Eggemann@arm.com,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Ben Segall <bsegall@google.com>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Juri Lelli <juri.lelli@redhat.com>,
         Linus Torvalds <torvalds@linux-foundation.org>,
+        Mel Gorman <mgorman@suse.de>,
+        Patrick Bellasi <patrick.bellasi@matbug.net>,
+        Steven Rostedt <rostedt@goodmis.org>,
         Thomas Gleixner <tglx@linutronix.de>,
-        patrick.bellasi@matbug.net, qperret@google.com, surenb@google.com,
-        tj@kernel.org, vincent.guittot@linaro.org,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20191113165334.14291-1-valentin.schneider@arm.com>
-References: <20191113165334.14291-1-valentin.schneider@arm.com>
+In-Reply-To: <20191114211052.15116-1-qais.yousef@arm.com>
+References: <20191114211052.15116-1-qais.yousef@arm.com>
 MIME-Version: 1.0
-Message-ID: <157384158660.12247.7949310118741537963.tip-bot2@tip-bot2>
+Message-ID: <157384158679.12247.12347903056419517407.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -53,82 +58,51 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     16d6bbe7982e99f7f326ec6f088c0aaf85efa69d
-Gitweb:        https://git.kernel.org/tip/16d6bbe7982e99f7f326ec6f088c0aaf85efa69d
-Author:        Valentin Schneider <valentin.schneider@arm.com>
-AuthorDate:    Wed, 13 Nov 2019 16:53:34 
+Commit-ID:     6e1ff0773f49c7d38e8b4a9df598def6afb9f415
+Gitweb:        https://git.kernel.org/tip/6e1ff0773f49c7d38e8b4a9df598def6afb9f415
+Author:        Qais Yousef <qais.yousef@arm.com>
+AuthorDate:    Thu, 14 Nov 2019 21:10:52 
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 15 Nov 2019 11:02:19 +01:00
+CommitterDate: Fri, 15 Nov 2019 11:02:18 +01:00
 
-sched/uclamp: Fix overzealous type replacement
+sched/uclamp: Fix incorrect condition
 
-Some uclamp helpers had their return type changed from 'unsigned int' to
-'enum uclamp_id' by commit:
+uclamp_update_active() should perform the update when
+p->uclamp[clamp_id].active is true. But when the logic was inverted in
+[1], the if condition wasn't inverted correctly too.
 
-  0413d7f33e60 ("sched/uclamp: Always use 'enum uclamp_id' for clamp_id values")
+[1] https://lore.kernel.org/lkml/20190902073836.GO2369@hirez.programming.kicks-ass.net/
 
-but it happens that some *actually* do return an unsigned int value. Those
-are the helpers that return a utilization value: uclamp_rq_max_value() and
-uclamp_eff_value(). Fix those up.
-
-Note that this doesn't lead to any obj diff using a relatively recent
-aarch64 compiler (8.3-2019.03). The current code of e.g. uclamp_eff_value()
-already figures out that the return value is 11 bits (bits_per(1024)) and
-doesn't seem to do anything funny. I'm still marking this as fixing the
-above commit to be on the safe side.
-
-Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
+Reported-by: Suren Baghdasaryan <surenb@google.com>
+Signed-off-by: Qais Yousef <qais.yousef@arm.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Qais Yousef <qais.yousef@arm.com>
-Cc: Dietmar.Eggemann@arm.com
+Acked-by: Vincent Guittot <vincent.guittot@linaro.org>
+Cc: Ben Segall <bsegall@google.com>
+Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Cc: Juri Lelli <juri.lelli@redhat.com>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Mel Gorman <mgorman@suse.de>
+Cc: Patrick Bellasi <patrick.bellasi@matbug.net>
 Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: patrick.bellasi@matbug.net
-Cc: qperret@google.com
-Cc: surenb@google.com
-Cc: tj@kernel.org
-Cc: vincent.guittot@linaro.org
-Fixes: 0413d7f33e60 ("sched/uclamp: Always use 'enum uclamp_id' for clamp_id values")
-Link: https://lkml.kernel.org/r/20191113165334.14291-1-valentin.schneider@arm.com
+Fixes: babbe170e053 ("sched/uclamp: Update CPU's refcount on TG's clamp changes")
+Link: https://lkml.kernel.org/r/20191114211052.15116-1-qais.yousef@arm.com
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- kernel/sched/core.c  | 4 ++--
- kernel/sched/sched.h | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ kernel/sched/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 44123b4..a4f76d3 100644
+index 33cd250..44123b4 100644
 --- a/kernel/sched/core.c
 +++ b/kernel/sched/core.c
-@@ -853,7 +853,7 @@ static inline void uclamp_idle_reset(struct rq *rq, enum uclamp_id clamp_id,
- }
- 
- static inline
--enum uclamp_id uclamp_rq_max_value(struct rq *rq, enum uclamp_id clamp_id,
-+unsigned int uclamp_rq_max_value(struct rq *rq, enum uclamp_id clamp_id,
- 				   unsigned int clamp_value)
- {
- 	struct uclamp_bucket *bucket = rq->uclamp[clamp_id].bucket;
-@@ -918,7 +918,7 @@ uclamp_eff_get(struct task_struct *p, enum uclamp_id clamp_id)
- 	return uc_req;
- }
- 
--enum uclamp_id uclamp_eff_value(struct task_struct *p, enum uclamp_id clamp_id)
-+unsigned int uclamp_eff_value(struct task_struct *p, enum uclamp_id clamp_id)
- {
- 	struct uclamp_se uc_eff;
- 
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index c8870c5..49ed949 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -2309,7 +2309,7 @@ static inline void cpufreq_update_util(struct rq *rq, unsigned int flags) {}
- #endif /* CONFIG_CPU_FREQ */
- 
- #ifdef CONFIG_UCLAMP_TASK
--enum uclamp_id uclamp_eff_value(struct task_struct *p, enum uclamp_id clamp_id);
-+unsigned int uclamp_eff_value(struct task_struct *p, enum uclamp_id clamp_id);
- 
- static __always_inline
- unsigned int uclamp_util_with(struct rq *rq, unsigned int util,
+@@ -1065,7 +1065,7 @@ uclamp_update_active(struct task_struct *p, enum uclamp_id clamp_id)
+ 	 * affecting a valid clamp bucket, the next time it's enqueued,
+ 	 * it will already see the updated clamp bucket value.
+ 	 */
+-	if (!p->uclamp[clamp_id].active) {
++	if (p->uclamp[clamp_id].active) {
+ 		uclamp_rq_dec_id(rq, p, clamp_id);
+ 		uclamp_rq_inc_id(rq, p, clamp_id);
+ 	}
