@@ -2,96 +2,99 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CFEAFFDC5F
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Nov 2019 12:38:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 83BB6FDCB1
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Nov 2019 12:51:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727337AbfKOLiq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 15 Nov 2019 06:38:46 -0500
-Received: from mail.skyhub.de ([5.9.137.197]:55190 "EHLO mail.skyhub.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727314AbfKOLiq (ORCPT
+        id S1727529AbfKOLvo (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 15 Nov 2019 06:51:44 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:43211 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727521AbfKOLvo (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 15 Nov 2019 06:38:46 -0500
-Received: from zn.tnic (p200300EC2F0CC3006D2B69FDD4279DE4.dip0.t-ipconnect.de [IPv6:2003:ec:2f0c:c300:6d2b:69fd:d427:9de4])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 41F051EC0C35;
-        Fri, 15 Nov 2019 12:38:45 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1573817925;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=hNpVvEqjvAKsdPU3KwSZaAcIcAO6LqsMpBVZ7EdMwcY=;
-        b=q3TPWAhOKrk/rfG8sPJA+qE9TT4pRQFi40EVUDnETOdGW9LDMs/Rew+UBxWkUan+lIJaqv
-        cjpxt4vKik7TU9T+YmBN+QtxOud34bFdrKXNAR4nAwQ5WrFT6EtM8p9FyXw4WLOnElmuER
-        heeLMVPABo92I19eglF8Lenq8nOSsaM=
-Date:   Fri, 15 Nov 2019 12:38:38 +0100
-From:   Borislav Petkov <bp@alien8.de>
-To:     Cao jin <caoj.fnst@cn.fujitsu.com>
-Cc:     Ingo Molnar <mingo@kernel.org>, linux-tip-commits@vger.kernel.org,
-        dave.hansen@linux.intel.com, hpa@zytor.com, luto@kernel.org,
-        peterz@infradead.org, tglx@linutronix.de,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Shiyang Ruan <ruansy.fnst@cn.fujitsu.com>
-Subject: Re: [tip: x86/cleanups] x86/numa: Fix typo
-Message-ID: <20191115113838.GK18929@zn.tnic>
-References: <20191115050828.2138-1-ruansy.fnst@cn.fujitsu.com>
- <157380293598.29467.2287139923549118344.tip-bot2@tip-bot2>
- <20191115082604.GA18929@zn.tnic>
- <20191115094009.GA25874@gmail.com>
- <9c43f148-479a-0aca-1577-30f686dcc90e@cn.fujitsu.com>
- <20191115104113.GJ18929@zn.tnic>
- <756e5529-5550-f4d3-ba8b-8d247a479f31@cn.fujitsu.com>
+        Fri, 15 Nov 2019 06:51:44 -0500
+Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tip-bot2@linutronix.de>)
+        id 1iVa8U-0006c7-Lz; Fri, 15 Nov 2019 12:51:34 +0100
+Received: from [127.0.1.1] (localhost [IPv6:::1])
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5250F1C08AC;
+        Fri, 15 Nov 2019 12:51:34 +0100 (CET)
+Date:   Fri, 15 Nov 2019 11:51:33 -0000
+From:   "tip-bot2 for Masahiro Yamada" <tip-bot2@linutronix.de>
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/build] x86/build/vdso: Remove meaningless CFLAGS_REMOVE_*.o
+Cc:     Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Borislav Petkov <bp@suse.de>,
+        Andy Lutomirski <luto@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "x86-ml" <x86@kernel.org>, Borislav Petkov <bp@alien8.de>,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20191114154922.30365-1-yamada.masahiro@socionext.com>
+References: <20191114154922.30365-1-yamada.masahiro@socionext.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <756e5529-5550-f4d3-ba8b-8d247a479f31@cn.fujitsu.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Message-ID: <157381869387.29467.2747574809933300571.tip-bot2@tip-bot2>
+X-Mailer: tip-git-log-daemon
+Robot-ID: <tip-bot2.linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Fri, Nov 15, 2019 at 07:13:59PM +0800, Cao jin wrote:
-> I still need my colleague to send the patches for me for the time being,
-> since the patches are removed now, so I am actually asking: does these 2
-> patches need to be resent with my SOB & my college's SOB, or maintainer
-> can do that for us?
-> 
-> Not aware where I am wrong.
+The following commit has been merged into the x86/build branch of tip:
 
-Ok, lemme try again:
+Commit-ID:     66584ea6b70a6cbae661292702e56a07580dbbd4
+Gitweb:        https://git.kernel.org/tip/66584ea6b70a6cbae661292702e56a07580dbbd4
+Author:        Masahiro Yamada <yamada.masahiro@socionext.com>
+AuthorDate:    Fri, 15 Nov 2019 00:49:22 +09:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Fri, 15 Nov 2019 12:07:32 +01:00
 
-If you send someone else's patch, you need to denote that the patch
-has been handled by you too. The reason this is done is so that it is
-crystal clear how a patch has found its way upstream: from the author,
-through the sender, then through the upstream maintainer and ending up
-in the upstream kernel.
+x86/build/vdso: Remove meaningless CFLAGS_REMOVE_*.o
 
-IOW, the SOB chain needs to *show* that:
+CFLAGS_REMOVE_*.o syntax is used to drop particular flags when
+building objects from C files. It has no effect for assembly files.
 
-Signed-off-by: Patch Author
-Signed-off-by: Patch Sender
-Signed-off-by: Subsystem maintainer
+vdso-note.o is compiled from the assembly file, vdso-note.S, hence
+CFLAGS_REMOVE_vdso-note.o is meaningless.
 
-You can find a gazillion examples for this in git history, some of them,
-unfortunately incorrect. Hopefully a small number.
+Neither vvar.c nor vvar.S is found in the vdso directory. Since there
+is no source file to create vvar.o, CFLAGS_REMOVE_vvar.o is also
+meaningless.
 
-And to answer your question: yes, the SOB needs to come from your
-colleague and upstream maintainers cannot do that for you. The SOB is
-his to give and cannot simply be slapped by maintainers at will because
-it entails the Certificate of Origin. That's also in the link I pointed
-you to earlier.
+Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: x86-ml <x86@kernel.org>
+Link: https://lkml.kernel.org/r/20191114154922.30365-1-yamada.masahiro@socionext.com
+---
+ arch/x86/entry/vdso/Makefile | 2 --
+ 1 file changed, 2 deletions(-)
 
-All clear? Or need more clarification?
-
-If so, don't hesitate to ask.
-
-HTH.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+diff --git a/arch/x86/entry/vdso/Makefile b/arch/x86/entry/vdso/Makefile
+index 0f21541..2b75e80 100644
+--- a/arch/x86/entry/vdso/Makefile
++++ b/arch/x86/entry/vdso/Makefile
+@@ -87,11 +87,9 @@ $(vobjs): KBUILD_CFLAGS := $(filter-out $(GCC_PLUGINS_CFLAGS) $(RETPOLINE_CFLAGS
+ #
+ # vDSO code runs in userspace and -pg doesn't help with profiling anyway.
+ #
+-CFLAGS_REMOVE_vdso-note.o = -pg
+ CFLAGS_REMOVE_vclock_gettime.o = -pg
+ CFLAGS_REMOVE_vdso32/vclock_gettime.o = -pg
+ CFLAGS_REMOVE_vgetcpu.o = -pg
+-CFLAGS_REMOVE_vvar.o = -pg
+ 
+ #
+ # X32 processes use x32 vDSO to access 64bit kernel data.
