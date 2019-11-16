@@ -2,52 +2,49 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C0BDDFF58A
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 16 Nov 2019 21:46:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BC1E2FF59E
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 16 Nov 2019 21:53:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727473AbfKPUq0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 16 Nov 2019 15:46:26 -0500
-Received: from mail.skyhub.de ([5.9.137.197]:34982 "EHLO mail.skyhub.de"
+        id S1727529AbfKPUxQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 16 Nov 2019 15:53:16 -0500
+Received: from mail.skyhub.de ([5.9.137.197]:35894 "EHLO mail.skyhub.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727386AbfKPUqZ (ORCPT
+        id S1727542AbfKPUxQ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 16 Nov 2019 15:46:25 -0500
+        Sat, 16 Nov 2019 15:53:16 -0500
 Received: from zn.tnic (p200300EC2F1E6900AD2B5933B9172911.dip0.t-ipconnect.de [IPv6:2003:ec:2f1e:6900:ad2b:5933:b917:2911])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id EFE681EC0C6F;
-        Sat, 16 Nov 2019 21:46:18 +0100 (CET)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id B15571EC0C5C;
+        Sat, 16 Nov 2019 21:53:10 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1573937179;
+        t=1573937591;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=6eWWyZrkfX2nqsbYDusjRI7MqvV5X93BKnryhKyL74c=;
-        b=Y9c0sOhRQtcqk3kLUbCvYH9eWf8Xr734wta5G8HqBQpMwzQH6Znv3YTMd8xPtszBS+6xQG
-        vemHjmuB5toGqJIdjivfUYl83EfIJt3ksUhaqNYT0+tRsVKF1dcSWfsgU9xmMAYz0cARva
-        DOi7lQfu0U26xWwDdw3Sw4gXDQX1j+g=
-Date:   Sat, 16 Nov 2019 21:46:07 +0100
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=Jjv2/kgnl4fY+TnK0hW9w5siPvhf88FrQ+qMscFdqcs=;
+        b=NUdOX1/+XwidaF+4EH06OwVEGUkxUpksMu2Lq8mbIWb07W7eFaUQ+hmuF1OMscqr3R3jbu
+        Cfi6EfKcCP76M20WtD1pboNTNOf1UFVin9C6ikzyqb8x4YqVvXWlqFMKyiif59D3Tmnsft
+        HZIKLoy07bbQAh/f4E89C2EZa8/ANdY=
+Date:   Sat, 16 Nov 2019 21:53:10 +0100
 From:   Borislav Petkov <bp@alien8.de>
-To:     Peter Zijlstra <peterz@infradead.org>
+To:     Thomas Gleixner <tglx@linutronix.de>
 Cc:     linux-tip-commits@vger.kernel.org,
-        Alexei Starovoitov <ast@kernel.org>,
-        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Andy Lutomirski <luto@kernel.org>,
-        Daniel Bristot de Oliveira <bristot@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org
-Subject: Re: [tip: core/kprobes] x86/ftrace: Use text_poke()
-Message-ID: <20191116204607.GC23231@zn.tnic>
-References: <20191111132457.761255803@infradead.org>
- <157381099055.29467.10982011694493970062.tip-bot2@tip-bot2>
+        Ingo Molnar <mingo@kernel.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        linux-kernel@vger.kernel.org
+Subject: Re: [tip: locking/core] futex: Move futex exit handling into futex
+ code
+Message-ID: <20191116205310.GD23231@zn.tnic>
+References: <20191106224556.049705556@linutronix.de>
+ <157384196076.12247.13739719830538551459.tip-bot2@tip-bot2>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="4Ckj6UjgE2iN1+kY"
+Content-Type: multipart/mixed; boundary="NDin8bjvE/0mNLFQ"
 Content-Disposition: inline
-In-Reply-To: <157381099055.29467.10982011694493970062.tip-bot2@tip-bot2>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <157384196076.12247.13739719830538551459.tip-bot2@tip-bot2>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
@@ -55,80 +52,121 @@ List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 
---4Ckj6UjgE2iN1+kY
+--NDin8bjvE/0mNLFQ
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-On Fri, Nov 15, 2019 at 09:43:10AM -0000, tip-bot2 for Peter Zijlstra wrote:
-> The following commit has been merged into the core/kprobes branch of tip:
+On Fri, Nov 15, 2019 at 06:19:20PM -0000, tip-bot2 for Thomas Gleixner wrote:
+> The following commit has been merged into the locking/core branch of tip:
 > 
-> Commit-ID:     9706f7c3531fee00505ebd03bf3aa0af76510877
-> Gitweb:        https://git.kernel.org/tip/9706f7c3531fee00505ebd03bf3aa0af76510877
-> Author:        Peter Zijlstra <peterz@infradead.org>
-> AuthorDate:    Mon, 26 Aug 2019 14:48:23 +02:00
-> Committer:     Ingo Molnar <mingo@kernel.org>
-> CommitterDate: Fri, 15 Nov 2019 09:07:42 +01:00
+> Commit-ID:     01e06025a2f81d7b797916a1b34731c6de0cf2e3
+> Gitweb:        https://git.kernel.org/tip/01e06025a2f81d7b797916a1b34731c6de0cf2e3
+> Author:        Thomas Gleixner <tglx@linutronix.de>
+> AuthorDate:    Wed, 06 Nov 2019 22:55:36 +01:00
+> Committer:     Thomas Gleixner <tglx@linutronix.de>
+> CommitterDate: Fri, 15 Nov 2019 19:10:49 +01:00
 > 
-> x86/ftrace: Use text_poke()
+> futex: Move futex exit handling into futex code
 > 
-> Move ftrace over to using the generic x86 text_poke functions; this
-> avoids having a second/different copy of that code around.
+> The futex exit handling is #ifdeffed into mm_release() which is not pretty
+> to begin with. But upcoming changes to address futex exit races need to add
+> more functionality to this exit code.
 > 
-> This also avoids ftrace violating the (new) W^X rule and avoids
-> fragmenting the kernel text page-tables, due to no longer having to
-> toggle them RW.
+> Split it out into a function, move it into futex code and make the various
+> futex exit functions static.
 > 
-> Tested-by: Alexei Starovoitov <ast@kernel.org>
-> Tested-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
-> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> Reviewed-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
-> Acked-by: Alexei Starovoitov <ast@kernel.org>
-> Cc: Andy Lutomirski <luto@kernel.org>
-> Cc: Borislav Petkov <bp@alien8.de>
-> Cc: Daniel Bristot de Oliveira <bristot@redhat.com>
-> Cc: H. Peter Anvin <hpa@zytor.com>
-> Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-> Cc: Linus Torvalds <torvalds@linux-foundation.org>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Link: https://lkml.kernel.org/r/20191111132457.761255803@infradead.org
-> Signed-off-by: Ingo Molnar <mingo@kernel.org>
+> Preparatory only and no functional change.
+> 
+> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+> Reviewed-by: Ingo Molnar <mingo@kernel.org>
+> Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> Link: https://lkml.kernel.org/r/20191106224556.049705556@linutronix.de
+> 
 > ---
->  arch/x86/include/asm/ftrace.h |   2 +-
->  arch/x86/kernel/alternative.c |  18 +-
->  arch/x86/kernel/ftrace.c      | 663 +++++----------------------------
->  arch/x86/kernel/traps.c       |   9 +-
->  4 files changed, 134 insertions(+), 558 deletions(-)
-
-...
-
-> +static int
-> +ftrace_modify_code_direct(unsigned long ip, const char *old_code,
-> +			  const char *new_code)
-> +{
-> +	int ret = ftrace_verify_code(ip, old_code);
-> +	if (ret)
-> +		return ret;
+>  include/linux/compat.h |  2 --
+>  include/linux/futex.h  | 27 ++++++++++++++-------------
+>  kernel/fork.c          | 25 +++----------------------
+>  kernel/futex.c         | 33 +++++++++++++++++++++++++++++----
+>  4 files changed, 46 insertions(+), 41 deletions(-)
+> 
+> diff --git a/include/linux/compat.h b/include/linux/compat.h
+> index 16dafd9..c4c389c 100644
+> --- a/include/linux/compat.h
+> +++ b/include/linux/compat.h
+> @@ -410,8 +410,6 @@ struct compat_kexec_segment;
+>  struct compat_mq_attr;
+>  struct compat_msgbuf;
 >  
-> +	/* replace the text with the new text */
-> +	if (ftrace_poke_late)
-> +		text_poke_queue((void *)ip, new_code, MCOUNT_INSN_SIZE, NULL);
-> +	else
-> +		text_poke_early((void *)ip, new_code, MCOUNT_INSN_SIZE);
+> -extern void compat_exit_robust_list(struct task_struct *curr);
+> -
+>  #define BITS_PER_COMPAT_LONG    (8*sizeof(compat_long_t))
+>  
+>  #define BITS_TO_COMPAT_LONGS(bits) DIV_ROUND_UP(bits, BITS_PER_COMPAT_LONG)
+> diff --git a/include/linux/futex.h b/include/linux/futex.h
+> index ccaef00..2ffbb9c 100644
+> --- a/include/linux/futex.h
+> +++ b/include/linux/futex.h
+> @@ -48,15 +48,24 @@ union futex_key {
+>  #define FUTEX_KEY_INIT (union futex_key) { .both = { .ptr = NULL } }
+>  
+>  #ifdef CONFIG_FUTEX
+> -extern void exit_robust_list(struct task_struct *curr);
+>  
+> -long do_futex(u32 __user *uaddr, int op, u32 val, ktime_t *timeout,
+> -	      u32 __user *uaddr2, u32 val2, u32 val3);
+> -#else
+> -static inline void exit_robust_list(struct task_struct *curr)
+> +static inline void futex_init_task(struct task_struct *tsk)
+>  {
+> +	tsk->robust_list = NULL;
+> +#ifdef CONFIG_COMPAT
+> +	tsk->compat_robust_list = NULL;
+> +#endif
+> +	INIT_LIST_HEAD(&tsk->pi_state_list);
+> +	tsk->pi_state_cache = NULL;
+>  }
 
-Btw:
+I don't see why it would happen besides maybe moving stuff around in the
+headers would upset the include hell but I'm triggering this with the
+attached randconfig:
 
-WARNING: vmlinux.o(.text+0x8c0b1): Section mismatch in reference from the function ftrace_modify_code_direct() to the function .init.text:text_poke_early()
-The function ftrace_modify_code_direct() references
-the function __init text_poke_early().
-This is often because ftrace_modify_code_direct lacks a __init 
-annotation or the annotation of text_poke_early is wrong.
+---
+In file included from <command-line>:
+./include/linux/futex.h: In function ‘futex_init_task’:
+./include/linux/futex.h:59:5: error: dereferencing pointer to incomplete type ‘struct task_struct’
+  tsk->robust_list = NULL;
+     ^~
+./include/linux/futex.h:66:2: error: implicit declaration of function ‘mutex_init’; did you mean ‘tsc_init’? [-Werror=implicit-function-declaration]
+  mutex_init(&tsk->futex_exit_mutex);
+  ^~~~~~~~~~
+  tsc_init
+cc1: some warnings being treated as errors
+make[1]: *** [scripts/Makefile.build:293: include/linux/futex.h.s] Error 1
+make[1]: *** Waiting for unfinished jobs....
+make: *** [Makefile:1652: include] Error 2
+make: *** Waiting for unfinished jobs....
 
-FATAL: modpost: Section mismatches detected.
-Set CONFIG_SECTION_MISMATCH_WARN_ONLY=y to allow them.
-make[1]: *** [scripts/Makefile.modpost:66: __modpost] Error 1
-make: *** [Makefile:1077: vmlinux] Error 2
+---
 
-random .config attached.
+This seems to fix it:
+
+---
+diff --git a/include/linux/futex.h b/include/linux/futex.h
+index 214284cc984e..025b44b6bdcf 100644
+--- a/include/linux/futex.h
++++ b/include/linux/futex.h
+@@ -3,6 +3,7 @@
+ #define _LINUX_FUTEX_H
+ 
+ #include <linux/ktime.h>
++#include <linux/sched.h>
+ #include <uapi/linux/futex.h>
+ 
+ struct inode;
+---
+
+HTH.
 
 -- 
 Regards/Gruss,
@@ -136,7 +174,7 @@ Regards/Gruss,
 
 https://people.kernel.org/tglx/notes-about-netiquette
 
---4Ckj6UjgE2iN1+kY
+--NDin8bjvE/0mNLFQ
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: attachment; filename=".config"
 
@@ -6797,4 +6835,4 @@ CONFIG_UNWINDER_ORC=y
 
 CONFIG_WARN_MISSING_DOCUMENTS=y
 
---4Ckj6UjgE2iN1+kY--
+--NDin8bjvE/0mNLFQ--
