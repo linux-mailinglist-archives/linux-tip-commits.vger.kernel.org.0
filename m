@@ -2,36 +2,34 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E5CEFEC02
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 16 Nov 2019 12:52:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B4020FEC13
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 16 Nov 2019 12:52:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727496AbfKPLvb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 16 Nov 2019 06:51:31 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:45259 "EHLO
+        id S1727533AbfKPLwM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 16 Nov 2019 06:52:12 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:45271 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727590AbfKPLva (ORCPT
+        with ESMTP id S1727610AbfKPLvc (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 16 Nov 2019 06:51:30 -0500
+        Sat, 16 Nov 2019 06:51:32 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iVwbq-00026J-NF; Sat, 16 Nov 2019 12:51:22 +0100
+        id 1iVwbw-00027z-Ny; Sat, 16 Nov 2019 12:51:28 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5A2A71C1903;
-        Sat, 16 Nov 2019 12:51:22 +0100 (CET)
-Date:   Sat, 16 Nov 2019 11:51:22 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 273D31C1903;
+        Sat, 16 Nov 2019 12:51:23 +0100 (CET)
+Date:   Sat, 16 Nov 2019 11:51:23 -0000
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/iopl] x86/iopl: Remove legacy IOPL option
+Subject: [tip: x86/iopl] x86/ioperm: Move TSS bitmap update to exit to user work
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Juergen Gross <jgross@suse.com>,
-        Andy Lutomirski <luto@kernel.org>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <157390508233.12247.17517625256928564637.tip-bot2@tip-bot2>
+Message-ID: <157390508312.12247.1522344048131777494.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,330 +45,255 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/iopl branch of tip:
 
-Commit-ID:     a24ca9976843156eabbc5f2d798954b5674d1b61
-Gitweb:        https://git.kernel.org/tip/a24ca9976843156eabbc5f2d798954b5674d1b61
+Commit-ID:     22fe5b0439dd53643fd6f4c582c46c6dba0fde53
+Gitweb:        https://git.kernel.org/tip/22fe5b0439dd53643fd6f4c582c46c6dba0fde53
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Mon, 11 Nov 2019 23:03:29 +01:00
+AuthorDate:    Mon, 11 Nov 2019 23:03:23 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sat, 16 Nov 2019 11:24:05 +01:00
+CommitterDate: Sat, 16 Nov 2019 11:24:03 +01:00
 
-x86/iopl: Remove legacy IOPL option
+x86/ioperm: Move TSS bitmap update to exit to user work
 
-The IOPL emulation via the I/O bitmap is sufficient. Remove the legacy
-cruft dealing with the (e)flags based IOPL mechanism.
+There is no point to update the TSS bitmap for tasks which use I/O bitmaps
+on every context switch. It's enough to update it right before exiting to
+user space.
+
+That reduces the context switch bitmap handling to invalidating the io
+bitmap base offset in the TSS when the outgoing task has TIF_IO_BITMAP
+set. The invaldiation is done on purpose when a task with an IO bitmap
+switches out to prevent any possible leakage of an activated IO bitmap.
+
+It also removes the requirement to update the tasks bitmap atomically in
+ioperm().
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Juergen Gross <jgross@suse.com> (Paravirt and Xen parts)
-Acked-by: Andy Lutomirski <luto@kernel.org>
 
 ---
- arch/x86/Kconfig                      | 23 +------------
- arch/x86/include/asm/paravirt.h       |  4 +--
- arch/x86/include/asm/paravirt_types.h |  2 +-
- arch/x86/include/asm/processor.h      | 26 +-------------
- arch/x86/include/asm/xen/hypervisor.h |  2 +-
- arch/x86/kernel/ioport.c              | 47 ++++++--------------------
- arch/x86/kernel/paravirt.c            |  2 +-
- arch/x86/kernel/process_32.c          |  9 +-----
- arch/x86/kernel/process_64.c          | 11 +------
- arch/x86/xen/enlighten_pv.c           | 10 +------
- 10 files changed, 17 insertions(+), 119 deletions(-)
+ arch/x86/entry/common.c            |  4 ++-
+ arch/x86/include/asm/io_bitmap.h   |  2 +-
+ arch/x86/include/asm/thread_info.h |  9 ++--
+ arch/x86/kernel/ioport.c           | 25 +-----------
+ arch/x86/kernel/process.c          | 59 +++++++++++++++++++----------
+ 5 files changed, 54 insertions(+), 45 deletions(-)
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 2aad1cd..1f926e3 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -1254,12 +1254,9 @@ config X86_VSYSCALL_EMULATION
- 	 Disabling this option saves about 7K of kernel size and
- 	 possibly 4K of additional runtime pagetable memory.
+diff --git a/arch/x86/entry/common.c b/arch/x86/entry/common.c
+index 3f8e226..9747876 100644
+--- a/arch/x86/entry/common.c
++++ b/arch/x86/entry/common.c
+@@ -33,6 +33,7 @@
+ #include <asm/cpufeature.h>
+ #include <asm/fpu/api.h>
+ #include <asm/nospec-branch.h>
++#include <asm/io_bitmap.h>
  
--choice
--	prompt "IOPL"
--	default X86_IOPL_EMULATION
--
- config X86_IOPL_EMULATION
- 	bool "IOPL Emulation"
-+	default y
- 	---help---
- 	  Legacy IOPL support is an overbroad mechanism which allows user
- 	  space aside of accessing all 65536 I/O ports also to disable
-@@ -1269,22 +1266,8 @@ config X86_IOPL_EMULATION
+ #define CREATE_TRACE_POINTS
+ #include <trace/events/syscalls.h>
+@@ -196,6 +197,9 @@ __visible inline void prepare_exit_to_usermode(struct pt_regs *regs)
+ 	/* Reload ti->flags; we may have rescheduled above. */
+ 	cached_flags = READ_ONCE(ti->flags);
  
- 	  The emulation restricts the functionality of the syscall to
- 	  only allowing the full range I/O port access, but prevents the
--	  ability to disable interrupts from user space.
--
--config X86_IOPL_LEGACY
--	bool "IOPL Legacy"
--	---help---
--	Allow the full IOPL permissions, i.e. user space access to all
--	65536 I/O ports and also the ability to disable interrupts, which
--	is overbroad and can result in system lockups.
--
--config X86_IOPL_NONE
--	bool "IOPL None"
--	---help---
--	Disable the IOPL permission syscall. That's the safest option as
--	no sane application should depend on this functionality.
--
--endchoice
-+	  ability to disable interrupts from user space which would be
-+	  granted if the hardware IOPL mechanism would be used.
++	if (unlikely(cached_flags & _TIF_IO_BITMAP))
++		tss_update_io_bitmap();
++
+ 	fpregs_assert_state_consistent();
+ 	if (unlikely(cached_flags & _TIF_NEED_FPU_LOAD))
+ 		switch_fpu_return();
+diff --git a/arch/x86/include/asm/io_bitmap.h b/arch/x86/include/asm/io_bitmap.h
+index d63bd5a..6d82a37 100644
+--- a/arch/x86/include/asm/io_bitmap.h
++++ b/arch/x86/include/asm/io_bitmap.h
+@@ -11,4 +11,6 @@ struct io_bitmap {
+ 	unsigned long	bitmap[IO_BITMAP_LONGS];
+ };
  
- config TOSHIBA
- 	tristate "Toshiba Laptop support"
-diff --git a/arch/x86/include/asm/paravirt.h b/arch/x86/include/asm/paravirt.h
-index 69089d4..86e7317 100644
---- a/arch/x86/include/asm/paravirt.h
-+++ b/arch/x86/include/asm/paravirt.h
-@@ -294,10 +294,6 @@ static inline void write_idt_entry(gate_desc *dt, int entry, const gate_desc *g)
- {
- 	PVOP_VCALL3(cpu.write_idt_entry, dt, entry, g);
- }
--static inline void set_iopl_mask(unsigned mask)
--{
--	PVOP_VCALL1(cpu.set_iopl_mask, mask);
--}
- 
- static inline void paravirt_activate_mm(struct mm_struct *prev,
- 					struct mm_struct *next)
-diff --git a/arch/x86/include/asm/paravirt_types.h b/arch/x86/include/asm/paravirt_types.h
-index 70b654f..8481296 100644
---- a/arch/x86/include/asm/paravirt_types.h
-+++ b/arch/x86/include/asm/paravirt_types.h
-@@ -140,8 +140,6 @@ struct pv_cpu_ops {
- 
- 	void (*load_sp0)(unsigned long sp0);
- 
--	void (*set_iopl_mask)(unsigned mask);
--
- 	void (*wbinvd)(void);
- 
- 	/* cpuid emulation, mostly so that caps bits can be disabled */
-diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
-index b0e02aa..1387d31 100644
---- a/arch/x86/include/asm/processor.h
-+++ b/arch/x86/include/asm/processor.h
-@@ -516,10 +516,10 @@ struct thread_struct {
- 	struct io_bitmap	*io_bitmap;
- 
- 	/*
--	 * IOPL. Priviledge level dependent I/O permission which includes
--	 * user space CLI/STI when granted.
-+	 * IOPL. Priviledge level dependent I/O permission which is
-+	 * emulated via the I/O bitmap to prevent user space from disabling
-+	 * interrupts.
- 	 */
--	unsigned long		iopl;
- 	unsigned long		iopl_emul;
- 
- 	mm_segment_t		addr_limit;
-@@ -552,25 +552,6 @@ static inline void arch_thread_struct_whitelist(unsigned long *offset,
-  */
- #define TS_COMPAT		0x0002	/* 32bit syscall active (64BIT)*/
- 
--/*
-- * Set IOPL bits in EFLAGS from given mask
-- */
--static inline void native_set_iopl_mask(unsigned mask)
--{
--#ifdef CONFIG_X86_32
--	unsigned int reg;
--
--	asm volatile ("pushfl;"
--		      "popl %0;"
--		      "andl %1, %0;"
--		      "orl %2, %0;"
--		      "pushl %0;"
--		      "popfl"
--		      : "=&r" (reg)
--		      : "i" (~X86_EFLAGS_IOPL), "r" (mask));
--#endif
--}
--
- static inline void
- native_load_sp0(unsigned long sp0)
- {
-@@ -610,7 +591,6 @@ static inline void load_sp0(unsigned long sp0)
- 	native_load_sp0(sp0);
- }
- 
--#define set_iopl_mask native_set_iopl_mask
- #endif /* CONFIG_PARAVIRT_XXL */
- 
- /* Free all resources held by a thread. */
-diff --git a/arch/x86/include/asm/xen/hypervisor.h b/arch/x86/include/asm/xen/hypervisor.h
-index 42e1245..ff4b52e 100644
---- a/arch/x86/include/asm/xen/hypervisor.h
-+++ b/arch/x86/include/asm/xen/hypervisor.h
-@@ -62,6 +62,4 @@ void xen_arch_register_cpu(int num);
- void xen_arch_unregister_cpu(int num);
++void tss_update_io_bitmap(void);
++
  #endif
+diff --git a/arch/x86/include/asm/thread_info.h b/arch/x86/include/asm/thread_info.h
+index f945353..0accf44 100644
+--- a/arch/x86/include/asm/thread_info.h
++++ b/arch/x86/include/asm/thread_info.h
+@@ -143,8 +143,8 @@ struct thread_info {
+ 	 _TIF_NOHZ)
  
--extern void xen_set_iopl_mask(unsigned mask);
--
- #endif /* _ASM_X86_XEN_HYPERVISOR_H */
-diff --git a/arch/x86/kernel/ioport.c b/arch/x86/kernel/ioport.c
-index 9ed9458..d5dcde9 100644
---- a/arch/x86/kernel/ioport.c
-+++ b/arch/x86/kernel/ioport.c
-@@ -153,28 +153,23 @@ SYSCALL_DEFINE3(ioperm, unsigned long, from, unsigned long, num, int, turn_on)
+ /* flags to check in __switch_to() */
+-#define _TIF_WORK_CTXSW_BASE						\
+-	(_TIF_IO_BITMAP|_TIF_NOCPUID|_TIF_NOTSC|_TIF_BLOCKSTEP|		\
++#define _TIF_WORK_CTXSW_BASE					\
++	(_TIF_NOCPUID | _TIF_NOTSC | _TIF_BLOCKSTEP |		\
+ 	 _TIF_SSBD | _TIF_SPEC_FORCE_UPDATE)
  
  /*
-  * The sys_iopl functionality depends on the level argument, which if
-- * granted for the task is used by the CPU to check I/O instruction and
-- * CLI/STI against the current priviledge level (CPL). If CPL is less than
-- * or equal the tasks IOPL level the instructions take effect. If not a #GP
-- * is raised. The default IOPL is 0, i.e. no permissions.
-+ * granted for the task is used to enable access to all 65536 I/O ports.
-  *
-- * Setting IOPL to level 0-2 is disabling the userspace access. Only level
-- * 3 enables it. If set it allows the user space thread:
-+ * This does not use the IOPL mechanism provided by the CPU as that would
-+ * also allow the user space task to use the CLI/STI instructions.
-  *
-- * - Unrestricted access to all 65535 I/O ports
-- * - The usage of CLI/STI instructions
-+ * Disabling interrupts in a user space task is dangerous as it might lock
-+ * up the machine and the semantics vs. syscalls and exceptions is
-+ * undefined.
-  *
-- * The advantage over ioperm is that the context switch does not require to
-- * update the I/O bitmap which is especially true when a large number of
-- * ports is accessed. But the allowance of CLI/STI in userspace is
-- * considered a major problem.
-+ * Setting IOPL to level 0-2 is disabling I/O permissions. Level 3
-+ * 3 enables them.
-  *
-  * IOPL is strictly per thread and inherited on fork.
+@@ -156,8 +156,9 @@ struct thread_info {
+ # define _TIF_WORK_CTXSW	(_TIF_WORK_CTXSW_BASE)
+ #endif
+ 
+-#define _TIF_WORK_CTXSW_PREV (_TIF_WORK_CTXSW|_TIF_USER_RETURN_NOTIFY)
+-#define _TIF_WORK_CTXSW_NEXT (_TIF_WORK_CTXSW)
++#define _TIF_WORK_CTXSW_PREV	(_TIF_WORK_CTXSW| _TIF_USER_RETURN_NOTIFY | \
++				 _TIF_IO_BITMAP)
++#define _TIF_WORK_CTXSW_NEXT	(_TIF_WORK_CTXSW)
+ 
+ #define STACK_WARN		(THREAD_SIZE/8)
+ 
+diff --git a/arch/x86/kernel/ioport.c b/arch/x86/kernel/ioport.c
+index 7c1ab5c..198bead 100644
+--- a/arch/x86/kernel/ioport.c
++++ b/arch/x86/kernel/ioport.c
+@@ -21,9 +21,8 @@ static atomic64_t io_bitmap_sequence;
   */
- SYSCALL_DEFINE1(iopl, unsigned int, level)
+ long ksys_ioperm(unsigned long from, unsigned long num, int turn_on)
  {
+-	unsigned int i, max_long, bytes, bytes_updated;
  	struct thread_struct *t = &current->thread;
--	struct pt_regs *regs = current_pt_regs();
- 	unsigned int old;
+-	struct tss_struct *tss;
++	unsigned int i, max_long;
+ 	struct io_bitmap *iobm;
  
- 	/*
-@@ -187,10 +182,7 @@ SYSCALL_DEFINE1(iopl, unsigned int, level)
- 	if (level > 3)
- 		return -EINVAL;
- 
--	if (IS_ENABLED(CONFIG_X86_IOPL_EMULATION))
--		old = t->iopl_emul;
--	else
--		old = t->iopl >> X86_EFLAGS_IOPL_BIT;
-+	old = t->iopl_emul;
- 
- 	/* No point in going further if nothing changes */
- 	if (level == old)
-@@ -203,25 +195,8 @@ SYSCALL_DEFINE1(iopl, unsigned int, level)
- 			return -EPERM;
+ 	if ((from + num <= from) || (from + num > IO_BITMAP_BITS))
+@@ -50,10 +49,9 @@ long ksys_ioperm(unsigned long from, unsigned long num, int turn_on)
  	}
  
--	if (IS_ENABLED(CONFIG_X86_IOPL_EMULATION)) {
--		t->iopl_emul = level;
--		task_update_io_bitmap();
--	} else {
--		/*
--		 * Change the flags value on the return stack, which has
--		 * been set up on system-call entry. See also the fork and
--		 * signal handling code how this is handled.
--		 */
--		regs->flags = (regs->flags & ~X86_EFLAGS_IOPL) |
--			(level << X86_EFLAGS_IOPL_BIT);
--		/* Store the new level in the thread struct */
--		t->iopl = level << X86_EFLAGS_IOPL_BIT;
--		/*
--		 * X86_32 switches immediately and XEN handles it via
--		 * emulation.
--		 */
--		set_iopl_mask(t->iopl);
--	}
-+	t->iopl_emul = level;
-+	task_update_io_bitmap();
+ 	/*
+-	 * Update the bitmap and the TSS copy with preemption disabled to
+-	 * prevent a race against context switch.
++	 * Update the tasks bitmap. The update of the TSS bitmap happens on
++	 * exit to user mode. So this needs no protection.
+ 	 */
+-	preempt_disable();
+ 	if (turn_on)
+ 		bitmap_clear(iobm->bitmap, from, num);
+ 	else
+@@ -69,11 +67,8 @@ long ksys_ioperm(unsigned long from, unsigned long num, int turn_on)
+ 			max_long = i;
+ 	}
  
+-	bytes = (max_long + 1) * sizeof(unsigned long);
+-	bytes_updated = max(bytes, t->io_bitmap->max);
++	iobm->max = (max_long + 1) * sizeof(unsigned long);
+ 
+-	/* Update the thread data */
+-	iobm->max = bytes;
+ 	/* Update the sequence number to force an update in switch_to() */
+ 	iobm->sequence = atomic64_add_return(1, &io_bitmap_sequence);
+ 
+@@ -85,18 +80,6 @@ long ksys_ioperm(unsigned long from, unsigned long num, int turn_on)
+ 	t->io_bitmap = iobm;
+ 	set_thread_flag(TIF_IO_BITMAP);
+ 
+-	/* Update the TSS */
+-	tss = this_cpu_ptr(&cpu_tss_rw);
+-	memcpy(tss->io_bitmap.bitmap, iobm->bitmap, bytes_updated);
+-	/* Store the new end of the zero bits */
+-	tss->io_bitmap.prev_max = bytes;
+-	/* Make the bitmap base in the TSS valid */
+-	tss->x86_tss.io_bitmap_base = IO_BITMAP_OFFSET_VALID;
+-	/* Make sure the TSS limit covers the I/O bitmap. */
+-	refresh_tss_limit();
+-
+-	preempt_enable();
+-
  	return 0;
  }
-diff --git a/arch/x86/kernel/paravirt.c b/arch/x86/kernel/paravirt.c
-index 59d3d27..789f5e4 100644
---- a/arch/x86/kernel/paravirt.c
-+++ b/arch/x86/kernel/paravirt.c
-@@ -341,8 +341,6 @@ struct paravirt_patch_template pv_ops = {
- 	.cpu.iret		= native_iret,
- 	.cpu.swapgs		= native_swapgs,
  
--	.cpu.set_iopl_mask	= native_set_iopl_mask,
--
- 	.cpu.start_context_switch	= paravirt_nop,
- 	.cpu.end_context_switch		= paravirt_nop,
- 
-diff --git a/arch/x86/kernel/process_32.c b/arch/x86/kernel/process_32.c
-index 6c7d905..323499f 100644
---- a/arch/x86/kernel/process_32.c
-+++ b/arch/x86/kernel/process_32.c
-@@ -187,15 +187,6 @@ __switch_to(struct task_struct *prev_p, struct task_struct *next_p)
- 	 */
- 	load_TLS(next, cpu);
- 
--	/*
--	 * Restore IOPL if needed.  In normal use, the flags restore
--	 * in the switch assembly will handle this.  But if the kernel
--	 * is running virtualized at a non-zero CPL, the popf will
--	 * not restore flags, so it must be done in a separate step.
--	 */
--	if (get_kernel_rpl() && unlikely(prev->iopl != next->iopl))
--		set_iopl_mask(next->iopl);
--
- 	switch_to_extra(prev_p, next_p);
- 
- 	/*
-diff --git a/arch/x86/kernel/process_64.c b/arch/x86/kernel/process_64.c
-index e93a1b8..506d668 100644
---- a/arch/x86/kernel/process_64.c
-+++ b/arch/x86/kernel/process_64.c
-@@ -497,17 +497,6 @@ __switch_to(struct task_struct *prev_p, struct task_struct *next_p)
- 
- 	switch_to_extra(prev_p, next_p);
- 
--#ifdef CONFIG_XEN_PV
--	/*
--	 * On Xen PV, IOPL bits in pt_regs->flags have no effect, and
--	 * current_pt_regs()->flags may not match the current task's
--	 * intended IOPL.  We need to switch it manually.
--	 */
--	if (unlikely(static_cpu_has(X86_FEATURE_XENPV) &&
--		     prev->iopl != next->iopl))
--		xen_set_iopl_mask(next->iopl);
--#endif
--
- 	if (static_cpu_has_bug(X86_BUG_SYSRET_SS_ATTRS)) {
- 		/*
- 		 * AMD CPUs have a misfeature: SYSRET sets the SS selector but
-diff --git a/arch/x86/xen/enlighten_pv.c b/arch/x86/xen/enlighten_pv.c
-index 5bfea37..ae4a41c 100644
---- a/arch/x86/xen/enlighten_pv.c
-+++ b/arch/x86/xen/enlighten_pv.c
-@@ -837,15 +837,6 @@ static void xen_load_sp0(unsigned long sp0)
- 	this_cpu_write(cpu_tss_rw.x86_tss.sp0, sp0);
+diff --git a/arch/x86/kernel/process.c b/arch/x86/kernel/process.c
+index 7c49be9..108af91 100644
+--- a/arch/x86/kernel/process.c
++++ b/arch/x86/kernel/process.c
+@@ -360,8 +360,34 @@ void arch_setup_new_exec(void)
+ 	}
  }
  
--void xen_set_iopl_mask(unsigned mask)
--{
--	struct physdev_set_iopl set_iopl;
--
--	/* Force the change at ring 0. */
--	set_iopl.iopl = (mask == 0) ? 1 : (mask >> 12) & 3;
--	HYPERVISOR_physdev_op(PHYSDEVOP_set_iopl, &set_iopl);
--}
--
- static void xen_io_delay(void)
+-static void switch_to_update_io_bitmap(struct tss_struct *tss,
+-				       struct io_bitmap *iobm)
++static inline void tss_invalidate_io_bitmap(struct tss_struct *tss)
++{
++	/*
++	 * Invalidate the I/O bitmap by moving io_bitmap_base outside the
++	 * TSS limit so any subsequent I/O access from user space will
++	 * trigger a #GP.
++	 *
++	 * This is correct even when VMEXIT rewrites the TSS limit
++	 * to 0x67 as the only requirement is that the base points
++	 * outside the limit.
++	 */
++	tss->x86_tss.io_bitmap_base = IO_BITMAP_OFFSET_INVALID;
++}
++
++static inline void switch_to_bitmap(unsigned long tifp)
++{
++	/*
++	 * Invalidate I/O bitmap if the previous task used it. This prevents
++	 * any possible leakage of an active I/O bitmap.
++	 *
++	 * If the next task has an I/O bitmap it will handle it on exit to
++	 * user mode.
++	 */
++	if (tifp & _TIF_IO_BITMAP)
++		tss_invalidate_io_bitmap(this_cpu_ptr(&cpu_tss_rw));
++}
++
++static void tss_copy_io_bitmap(struct tss_struct *tss, struct io_bitmap *iobm)
  {
+ 	/*
+ 	 * Copy at least the byte range of the incoming tasks bitmap which
+@@ -382,13 +408,15 @@ static void switch_to_update_io_bitmap(struct tss_struct *tss,
+ 	tss->io_bitmap.prev_sequence = iobm->sequence;
  }
-@@ -1055,7 +1046,6 @@ static const struct pv_cpu_ops xen_cpu_ops __initconst = {
- 	.write_idt_entry = xen_write_idt_entry,
- 	.load_sp0 = xen_load_sp0,
  
--	.set_iopl_mask = xen_set_iopl_mask,
- 	.io_delay = xen_io_delay,
+-static inline void switch_to_bitmap(struct thread_struct *next,
+-				    unsigned long tifp, unsigned long tifn)
++/**
++ * tss_update_io_bitmap - Update I/O bitmap before exiting to usermode
++ */
++void tss_update_io_bitmap(void)
+ {
+ 	struct tss_struct *tss = this_cpu_ptr(&cpu_tss_rw);
  
- 	/* Xen takes care of %gs when switching to usermode for us */
+-	if (tifn & _TIF_IO_BITMAP) {
+-		struct io_bitmap *iobm = next->io_bitmap;
++	if (test_thread_flag(TIF_IO_BITMAP)) {
++		struct io_bitmap *iobm = current->thread.io_bitmap;
+ 
+ 		/*
+ 		 * Only copy bitmap data when the sequence number
+@@ -396,7 +424,7 @@ static inline void switch_to_bitmap(struct thread_struct *next,
+ 		 * task.
+ 		 */
+ 		if (tss->io_bitmap.prev_sequence != iobm->sequence)
+-			switch_to_update_io_bitmap(tss, iobm);
++			tss_copy_io_bitmap(tss, iobm);
+ 
+ 		/* Enable the bitmap */
+ 		tss->x86_tss.io_bitmap_base = IO_BITMAP_OFFSET_VALID;
+@@ -409,18 +437,8 @@ static inline void switch_to_bitmap(struct thread_struct *next,
+ 		 * limit.
+ 		 */
+ 		refresh_tss_limit();
+-	} else if (tifp & _TIF_IO_BITMAP) {
+-		/*
+-		 * Do not touch the bitmap. Let the next bitmap using task
+-		 * deal with the mess. Just make the io_bitmap_base invalid
+-		 * by moving it outside the TSS limit so any subsequent I/O
+-		 * access from user space will trigger a #GP.
+-		 *
+-		 * This is correct even when VMEXIT rewrites the TSS limit
+-		 * to 0x67 as the only requirement is that the base points
+-		 * outside the limit.
+-		 */
+-		tss->x86_tss.io_bitmap_base = IO_BITMAP_OFFSET_INVALID;
++	} else {
++		tss_invalidate_io_bitmap(tss);
+ 	}
+ }
+ 
+@@ -634,7 +652,8 @@ void __switch_to_xtra(struct task_struct *prev_p, struct task_struct *next_p)
+ 
+ 	tifn = READ_ONCE(task_thread_info(next_p)->flags);
+ 	tifp = READ_ONCE(task_thread_info(prev_p)->flags);
+-	switch_to_bitmap(next, tifp, tifn);
++
++	switch_to_bitmap(tifp);
+ 
+ 	propagate_user_return_notify(prev_p, next_p);
+ 
