@@ -2,142 +2,108 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BD016FF8AF
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 17 Nov 2019 10:50:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F2D6EFFCCE
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 18 Nov 2019 02:22:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725974AbfKQJuR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 17 Nov 2019 04:50:17 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:46257 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725953AbfKQJuR (ORCPT
+        id S1726435AbfKRBW7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 17 Nov 2019 20:22:59 -0500
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:34977 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726425AbfKRBW7 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 17 Nov 2019 04:50:17 -0500
-Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tip-bot2@linutronix.de>)
-        id 1iWHBy-0007RY-3X; Sun, 17 Nov 2019 10:50:02 +0100
-Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 50ECF1C0085;
-        Sun, 17 Nov 2019 10:50:01 +0100 (CET)
-Date:   Sun, 17 Nov 2019 09:50:01 -0000
-From:   "tip-bot2 for Valentin Schneider" <tip-bot2@linutronix.de>
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/uclamp: Fix overzealous type replacement
-Cc:     Valentin Schneider <valentin.schneider@arm.com>,
-        Qais Yousef <qais.yousef@arm.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Dietmar.Eggemann@arm.com,
-        Linus Torvalds <torvalds@linux-foundation.org>,
+        Sun, 17 Nov 2019 20:22:59 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1574040177;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=NuKKozoX2IaGiwfBygC66aUq6NMWEqsDHdKXFpwLIXU=;
+        b=RvWNCzx3JTqwH0aW9c1xKKATQR0AISaGvzLcofhx3P4Bb6yeEwx9i3r+ifuh/D6tzsVDkW
+        FoTsfweJtAycxVVw0i47ovXcO9SdHrMLwelhod7uR/18Dc4rBGYPeYLcIAcgrhX8qpmE8a
+        jQfu9Bb+icRBleydAQilJNQOi50ze2A=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-347-B32kBpQdNrKDSGFJPojxsQ-1; Sun, 17 Nov 2019 20:22:54 -0500
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 01969801FCF;
+        Mon, 18 Nov 2019 01:22:52 +0000 (UTC)
+Received: from llong.remote.csb (ovpn-120-229.rdu2.redhat.com [10.10.120.229])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id E421A614F2;
+        Mon, 18 Nov 2019 01:22:49 +0000 (UTC)
+Subject: Re: [tip: x86/pti] x86/speculation: Fix redundant MDS mitigation
+ message
+To:     Borislav Petkov <bp@alien8.de>
+Cc:     linux-tip-commits@vger.kernel.org,
+        Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+        Borislav Petkov <bp@suse.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Mark Gross <mgross@linux.intel.com>,
         Peter Zijlstra <peterz@infradead.org>,
         Thomas Gleixner <tglx@linutronix.de>,
-        patrick.bellasi@matbug.net, qperret@google.com, surenb@google.com,
-        tj@kernel.org, Ingo Molnar <mingo@kernel.org>,
-        Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
-In-Reply-To: <20191115103908.27610-1-valentin.schneider@arm.com>
-References: <20191115103908.27610-1-valentin.schneider@arm.com>
+        Tim Chen <tim.c.chen@linux.intel.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Tyler Hicks <tyhicks@canonical.com>, x86-ml <x86@kernel.org>,
+        Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org
+References: <20191115161445.30809-3-longman@redhat.com>
+ <157390711921.12247.3084878540998345444.tip-bot2@tip-bot2>
+ <20191116142411.GA23231@zn.tnic>
+From:   Waiman Long <longman@redhat.com>
+Organization: Red Hat
+Message-ID: <da0e6414-6992-b275-6a16-9b3c76cfd979@redhat.com>
+Date:   Sun, 17 Nov 2019 20:22:49 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-Message-ID: <157398420124.12247.5677680230156384788.tip-bot2@tip-bot2>
-X-Mailer: tip-git-log-daemon
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+In-Reply-To: <20191116142411.GA23231@zn.tnic>
+Content-Language: en-US
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+X-MC-Unique: B32kBpQdNrKDSGFJPojxsQ-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+On 11/16/19 9:24 AM, Borislav Petkov wrote:
+> On Sat, Nov 16, 2019 at 12:25:19PM -0000, tip-bot2 for Waiman Long wrote:
+>> +static void __init mds_print_mitigation(void)
+>> +{
+>>  =09pr_info("%s\n", mds_strings[mds_mitigation]);
+>>  }
+> Almost. This causes
+>
+> MDS: Vulnerable
+>
+> to be printed on an in-order 32-bit Atom here, which is wrong. I've
+> fixed it up to:
+>
+> ---
+> diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
+> index cb2fbd93ef4d..8bf64899f56a 100644
+> --- a/arch/x86/kernel/cpu/bugs.c
+> +++ b/arch/x86/kernel/cpu/bugs.c
+> @@ -256,6 +256,9 @@ static void __init mds_select_mitigation(void)
+> =20
+>  static void __init mds_print_mitigation(void)
+>  {
+> +=09if (!boot_cpu_has_bug(X86_BUG_MDS) || cpu_mitigations_off())
+> +=09=09return;
+> +
+>  =09pr_info("%s\n", mds_strings[mds_mitigation]);
+>  }
+> =20
+>
+You are right. I missed that.
 
-Commit-ID:     7763baace1b738d65efa46d68326c9406311c6bf
-Gitweb:        https://git.kernel.org/tip/7763baace1b738d65efa46d68326c9406311c6bf
-Author:        Valentin Schneider <valentin.schneider@arm.com>
-AuthorDate:    Fri, 15 Nov 2019 10:39:08 
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sun, 17 Nov 2019 10:46:05 +01:00
+Thanks for fixing it.
 
-sched/uclamp: Fix overzealous type replacement
+Cheers,
+Longman
 
-Some uclamp helpers had their return type changed from 'unsigned int' to
-'enum uclamp_id' by commit
-
-  0413d7f33e60 ("sched/uclamp: Always use 'enum uclamp_id' for clamp_id values")
-
-but it happens that some do return a value in the [0, SCHED_CAPACITY_SCALE]
-range, which should really be unsigned int. The affected helpers are
-uclamp_none(), uclamp_rq_max_value() and uclamp_eff_value(). Fix those up.
-
-Note that this doesn't lead to any obj diff using a relatively recent
-aarch64 compiler (8.3-2019.03). The current code of e.g. uclamp_eff_value()
-properly returns an 11 bit value (bits_per(1024)) and doesn't seem to do
-anything funny. I'm still marking this as fixing the above commit to be on
-the safe side.
-
-Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
-Reviewed-by: Qais Yousef <qais.yousef@arm.com>
-Acked-by: Vincent Guittot <vincent.guittot@linaro.org>
-Cc: Dietmar.Eggemann@arm.com
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: patrick.bellasi@matbug.net
-Cc: qperret@google.com
-Cc: surenb@google.com
-Cc: tj@kernel.org
-Fixes: 0413d7f33e60 ("sched/uclamp: Always use 'enum uclamp_id' for clamp_id values")
-Link: https://lkml.kernel.org/r/20191115103908.27610-1-valentin.schneider@arm.com
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
----
- kernel/sched/core.c  | 6 +++---
- kernel/sched/sched.h | 2 +-
- 2 files changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 513a479..3ceff1c 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -810,7 +810,7 @@ static inline unsigned int uclamp_bucket_base_value(unsigned int clamp_value)
- 	return UCLAMP_BUCKET_DELTA * uclamp_bucket_id(clamp_value);
- }
- 
--static inline enum uclamp_id uclamp_none(enum uclamp_id clamp_id)
-+static inline unsigned int uclamp_none(enum uclamp_id clamp_id)
- {
- 	if (clamp_id == UCLAMP_MIN)
- 		return 0;
-@@ -853,7 +853,7 @@ static inline void uclamp_idle_reset(struct rq *rq, enum uclamp_id clamp_id,
- }
- 
- static inline
--enum uclamp_id uclamp_rq_max_value(struct rq *rq, enum uclamp_id clamp_id,
-+unsigned int uclamp_rq_max_value(struct rq *rq, enum uclamp_id clamp_id,
- 				   unsigned int clamp_value)
- {
- 	struct uclamp_bucket *bucket = rq->uclamp[clamp_id].bucket;
-@@ -918,7 +918,7 @@ uclamp_eff_get(struct task_struct *p, enum uclamp_id clamp_id)
- 	return uc_req;
- }
- 
--enum uclamp_id uclamp_eff_value(struct task_struct *p, enum uclamp_id clamp_id)
-+unsigned int uclamp_eff_value(struct task_struct *p, enum uclamp_id clamp_id)
- {
- 	struct uclamp_se uc_eff;
- 
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index 05c2827..280a3c7 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -2300,7 +2300,7 @@ static inline void cpufreq_update_util(struct rq *rq, unsigned int flags) {}
- #endif /* CONFIG_CPU_FREQ */
- 
- #ifdef CONFIG_UCLAMP_TASK
--enum uclamp_id uclamp_eff_value(struct task_struct *p, enum uclamp_id clamp_id);
-+unsigned int uclamp_eff_value(struct task_struct *p, enum uclamp_id clamp_id);
- 
- static __always_inline
- unsigned int uclamp_util_with(struct rq *rq, unsigned int util,
