@@ -2,119 +2,102 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 496FE100A51
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 18 Nov 2019 18:35:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C1918100A99
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 18 Nov 2019 18:42:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726336AbfKRRfQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 18 Nov 2019 12:35:16 -0500
-Received: from mail.skyhub.de ([5.9.137.197]:59194 "EHLO mail.skyhub.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726322AbfKRRfQ (ORCPT
+        id S1726600AbfKRRml (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 18 Nov 2019 12:42:41 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:50521 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726322AbfKRRml (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 18 Nov 2019 12:35:16 -0500
-Received: from zn.tnic (p200300EC2F27B5003D22FC05E431AFF8.dip0.t-ipconnect.de [IPv6:2003:ec:2f27:b500:3d22:fc05:e431:aff8])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 46CAF1EC072D;
-        Mon, 18 Nov 2019 18:35:11 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1574098511;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=ndkDKtfR+XvFiIIHQaaiR63mI1Ov3k+RZNEVbDcRAoA=;
-        b=kfwiml/3cso9RddEMd/IeRS8ROF89RgW4TqWMEUjdx6ulAZVkpQGmrFl4pw23Bwr1TaCmb
-        RUuzX5HAo8sm+UKhmzA/gA1/ta9v+vSqCTbo/Ikdtk2fGtEbUQJeI9phyPcjeevQ1seI0K
-        OjWE1CDmhGwJDT8dPM1KHuFd0utIQ5Y=
-Date:   Mon, 18 Nov 2019 18:35:10 +0100
-From:   Borislav Petkov <bp@alien8.de>
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     linux-tip-commits@vger.kernel.org,
-        Alexei Starovoitov <ast@kernel.org>,
-        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
-        Andy Lutomirski <luto@kernel.org>,
-        Daniel Bristot de Oliveira <bristot@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org
-Subject: [PATCH] x86/ftrace: Mark ftrace_modify_code_direct() __ref
-Message-ID: <20191118173510.GK6363@zn.tnic>
-References: <20191111132457.761255803@infradead.org>
- <157381099055.29467.10982011694493970062.tip-bot2@tip-bot2>
- <20191116204607.GC23231@zn.tnic>
+        Mon, 18 Nov 2019 12:42:41 -0500
+Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tip-bot2@linutronix.de>)
+        id 1iWl2q-00012T-Cb; Mon, 18 Nov 2019 18:42:36 +0100
+Received: from [127.0.1.1] (localhost [IPv6:::1])
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 909F41C19B8;
+        Mon, 18 Nov 2019 18:42:35 +0100 (CET)
+Date:   Mon, 18 Nov 2019 17:42:35 -0000
+From:   "tip-bot2 for Joel Fernandes (Google)" <tip-bot2@linutronix.de>
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: core/urgent] workqueue: Convert for_each_wq to use built-in list check
+Cc:     Tejun Heo <tj@kernel.org>,
+        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
+        linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20191116204607.GC23231@zn.tnic>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Message-ID: <157409895539.12247.11066584934267317219.tip-bot2@tip-bot2>
+X-Mailer: tip-git-log-daemon
+Robot-ID: <tip-bot2.linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Sat, Nov 16, 2019 at 09:46:07PM +0100, Borislav Petkov wrote:
-> WARNING: vmlinux.o(.text+0x8c0b1): Section mismatch in reference from the function ftrace_modify_code_direct() to the function .init.text:text_poke_early()
-> The function ftrace_modify_code_direct() references
-> the function __init text_poke_early().
-> This is often because ftrace_modify_code_direct lacks a __init 
-> annotation or the annotation of text_poke_early is wrong.
-> 
-> FATAL: modpost: Section mismatches detected.
-> Set CONFIG_SECTION_MISMATCH_WARN_ONLY=y to allow them.
-> make[1]: *** [scripts/Makefile.modpost:66: __modpost] Error 1
-> make: *** [Makefile:1077: vmlinux] Error 2
+The following commit has been merged into the core/urgent branch of tip:
 
-Here's a fix suggested by Peter:
+Commit-ID:     ac91dcca87e4300ea30e9514c31064d32469dd6d
+Gitweb:        https://git.kernel.org/tip/ac91dcca87e4300ea30e9514c31064d32469dd6d
+Author:        Joel Fernandes (Google) <joel@joelfernandes.org>
+AuthorDate:    Thu, 15 Aug 2019 10:18:42 -04:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Mon, 18 Nov 2019 16:20:00 +01:00
 
+workqueue: Convert for_each_wq to use built-in list check
+
+Because list_for_each_entry_rcu() can now check for holding a
+lock as well as for being in an RCU read-side critical section,
+this commit replaces the workqueue_sysfs_unregister() function's
+use of assert_rcu_or_wq_mutex() and list_for_each_entry_rcu() with
+list_for_each_entry_rcu() augmented with a lockdep_is_held() optional
+argument.
+
+[ Cherry-picked from: 5a6446626d7e: ("workqueue: Convert for_each_wq to use built-in list check") ]
+
+Acked-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
-From: Borislav Petkov <bp@suse.de>
-Subject: [PATCH] x86/ftrace: Mark ftrace_modify_code_direct() __ref
+ kernel/workqueue.c | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
-... because it calls the .init.text function text_poke_early(). That is
-ok because it does call that function early, during boot.
-
-Fixes: 9706f7c3531f ("x86/ftrace: Use text_poke()")
-Suggested-by: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Cc: Alexei Starovoitov <ast@kernel.org>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Daniel Bristot de Oliveira <bristot@redhat.com>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Steven Rostedt (VMware) <rostedt@goodmis.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20191116204607.GC23231@zn.tnic
----
- arch/x86/kernel/ftrace.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
-
-diff --git a/arch/x86/kernel/ftrace.c b/arch/x86/kernel/ftrace.c
-index 2a179fb35cd1..108ee96f8b66 100644
---- a/arch/x86/kernel/ftrace.c
-+++ b/arch/x86/kernel/ftrace.c
-@@ -99,7 +99,12 @@ static int ftrace_verify_code(unsigned long ip, const char *old_code)
- 	return 0;
- }
+diff --git a/kernel/workqueue.c b/kernel/workqueue.c
+index bc2e09a..e501c79 100644
+--- a/kernel/workqueue.c
++++ b/kernel/workqueue.c
+@@ -364,11 +364,6 @@ static void workqueue_sysfs_unregister(struct workqueue_struct *wq);
+ 			 !lockdep_is_held(&wq_pool_mutex),		\
+ 			 "RCU or wq_pool_mutex should be held")
  
--static int
-+/*
-+ * Marked __ref because it calls text_poke_early() which is .init.text. That is
-+ * ok because that call will happen early, during boot, when .init sections are
-+ * still present.
-+ */
-+static int __ref
- ftrace_modify_code_direct(unsigned long ip, const char *old_code,
- 			  const char *new_code)
- {
--- 
-2.21.0
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+-#define assert_rcu_or_wq_mutex(wq)					\
+-	RCU_LOCKDEP_WARN(!rcu_read_lock_held() &&			\
+-			 !lockdep_is_held(&wq->mutex),			\
+-			 "RCU or wq->mutex should be held")
+-
+ #define assert_rcu_or_wq_mutex_or_pool_mutex(wq)			\
+ 	RCU_LOCKDEP_WARN(!rcu_read_lock_held() &&			\
+ 			 !lockdep_is_held(&wq->mutex) &&		\
+@@ -425,9 +420,8 @@ static void workqueue_sysfs_unregister(struct workqueue_struct *wq);
+  * ignored.
+  */
+ #define for_each_pwq(pwq, wq)						\
+-	list_for_each_entry_rcu((pwq), &(wq)->pwqs, pwqs_node)		\
+-		if (({ assert_rcu_or_wq_mutex(wq); false; })) { }	\
+-		else
++	list_for_each_entry_rcu((pwq), &(wq)->pwqs, pwqs_node,		\
++				 lockdep_is_held(&(wq->mutex)))
+ 
+ #ifdef CONFIG_DEBUG_OBJECTS_WORK
+ 
