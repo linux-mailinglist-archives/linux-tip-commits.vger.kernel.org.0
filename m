@@ -2,45 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 684E21029EA
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 Nov 2019 17:57:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 20215102A1B
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 Nov 2019 17:58:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727805AbfKSQ47 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 19 Nov 2019 11:56:59 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:52755 "EHLO
+        id S1728459AbfKSQ6Q (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 19 Nov 2019 11:58:16 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:52925 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728601AbfKSQ47 (ORCPT
+        with ESMTP id S1728725AbfKSQ5R (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 19 Nov 2019 11:56:59 -0500
+        Tue, 19 Nov 2019 11:57:17 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iX6o3-0007JW-Eq; Tue, 19 Nov 2019 17:56:47 +0100
+        id 1iX6o9-0007Jh-5M; Tue, 19 Nov 2019 17:56:53 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 1E1CB1C19CA;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C6F121C19CA;
         Tue, 19 Nov 2019 17:56:47 +0100 (CET)
 Date:   Tue, 19 Nov 2019 16:56:47 -0000
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Ian Rogers" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/kprobes] arm/ftrace: Use __patch_text()
-Cc:     Will Deacon <will@kernel.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Andy Lutomirski <luto@kernel.org>,
-        Borislav Petkov <bp@alien8.de>,
-        Brian Gerst <brgerst@gmail.com>,
-        Denys Vlasenko <dvlasenk@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
+Subject: [tip: perf/core] perf parse: Report initial event parsing error
+Cc:     Ian Rogers <irogers@google.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Allison Randal <allison@lohutok.net>,
+        Andi Kleen <ak@linux.intel.com>,
+        Anju T Sudhakar <anju@linux.vnet.ibm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        Jin Yao <yao.jin@linux.intel.com>,
+        Jiri Olsa <jolsa@redhat.com>,
         Mark Rutland <mark.rutland@arm.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ravi Bangoria <ravi.bangoria@linux.ibm.com>,
+        Stephane Eranian <eranian@google.com>,
         Thomas Gleixner <tglx@linutronix.de>,
-        ard.biesheuvel@linaro.org, james.morse@arm.com, rabin@rab.in,
-        Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org
-In-Reply-To: <20191113092636.GG4131@hirez.programming.kicks-ass.net>
-References: <20191113092636.GG4131@hirez.programming.kicks-ass.net>
+        Thomas Richter <tmricht@linux.ibm.com>,
+        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20191116074652.9960-1-irogers@google.com>
+References: <20191116074652.9960-1-irogers@google.com>
 MIME-Version: 1.0
-Message-ID: <157418260705.12247.5966626318280850141.tip-bot2@tip-bot2>
+Message-ID: <157418260775.12247.1920842780601664691.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -54,103 +62,323 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the core/kprobes branch of tip:
+The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     42e51f187f869bf18199837acf2a412d6ca7f33f
-Gitweb:        https://git.kernel.org/tip/42e51f187f869bf18199837acf2a412d6ca7f33f
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Tue, 15 Oct 2019 21:07:35 +02:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 19 Nov 2019 13:13:06 +01:00
+Commit-ID:     a910e4666d61712840c78de33cc7f89de8affa78
+Gitweb:        https://git.kernel.org/tip/a910e4666d61712840c78de33cc7f89de8affa78
+Author:        Ian Rogers <irogers@google.com>
+AuthorDate:    Fri, 15 Nov 2019 23:46:52 -08:00
+Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
+CommitterDate: Mon, 18 Nov 2019 19:14:29 -03:00
 
-arm/ftrace: Use __patch_text()
+perf parse: Report initial event parsing error
 
-Instead of flipping text protection, use the patch_text infrastructure
-that uses a fixmap alias where required.
+Record the first event parsing error and report. Implementing feedback
+from Jiri Olsa:
 
-This removes the last user of set_all_modules_text_*().
+  https://lkml.org/lkml/2019/10/28/680
 
-Tested-by: Will Deacon <will@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Brian Gerst <brgerst@gmail.com>
-Cc: Denys Vlasenko <dvlasenk@redhat.com>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
+An example error is:
+
+  $ tools/perf/perf stat -e c/c/
+  WARNING: multiple event parsing errors
+  event syntax error: 'c/c/'
+                         \___ unknown term
+
+  valid terms: event,filter_rem,filter_opc0,edge,filter_isoc,filter_tid,filter_loc,filter_nc,inv,umask,filter_opc1,tid_en,thresh,filter_all_op,filter_not_nm,filter_state,filter_nm,config,config1,config2,name,period,percore
+
+Initial error:
+
+  event syntax error: 'c/c/'
+                      \___ Cannot find PMU `c'. Missing kernel support?
+  Run 'perf list' for a list of valid events
+
+   Usage: perf stat [<options>] [<command>]
+
+      -e, --event <event>   event selector. use 'perf list' to list available events
+
+Signed-off-by: Ian Rogers <irogers@google.com>
+Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Allison Randal <allison@lohutok.net>
+Cc: Andi Kleen <ak@linux.intel.com>
+Cc: Anju T Sudhakar <anju@linux.vnet.ibm.com>
+Cc: Christian Borntraeger <borntraeger@de.ibm.com>
+Cc: Davidlohr Bueso <dave@stgolabs.net>
+Cc: Jin Yao <yao.jin@linux.intel.com>
+Cc: Jiri Olsa <jolsa@redhat.com>
 Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+Cc: Stephane Eranian <eranian@google.com>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: ard.biesheuvel@linaro.org
-Cc: james.morse@arm.com
-Cc: rabin@rab.in
-Link: https://lkml.kernel.org/r/20191113092636.GG4131@hirez.programming.kicks-ass.net
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Thomas Richter <tmricht@linux.ibm.com>
+Link: http://lore.kernel.org/lkml/20191116074652.9960-1-irogers@google.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- arch/arm/kernel/Makefile |  4 ++--
- arch/arm/kernel/ftrace.c | 10 ++--------
- 2 files changed, 4 insertions(+), 10 deletions(-)
+ tools/perf/arch/powerpc/util/kvm-stat.c |  4 +-
+ tools/perf/builtin-stat.c               |  2 +-
+ tools/perf/builtin-trace.c              | 16 +++--
+ tools/perf/tests/parse-events.c         |  3 +-
+ tools/perf/util/metricgroup.c           |  2 +-
+ tools/perf/util/parse-events.c          | 78 +++++++++++++++++-------
+ tools/perf/util/parse-events.h          |  4 +-
+ 7 files changed, 80 insertions(+), 29 deletions(-)
 
-diff --git a/arch/arm/kernel/Makefile b/arch/arm/kernel/Makefile
-index 8cad594..a885172 100644
---- a/arch/arm/kernel/Makefile
-+++ b/arch/arm/kernel/Makefile
-@@ -49,8 +49,8 @@ obj-$(CONFIG_HAVE_ARM_SCU)	+= smp_scu.o
- obj-$(CONFIG_HAVE_ARM_TWD)	+= smp_twd.o
- obj-$(CONFIG_ARM_ARCH_TIMER)	+= arch_timer.o
- obj-$(CONFIG_FUNCTION_TRACER)	+= entry-ftrace.o
--obj-$(CONFIG_DYNAMIC_FTRACE)	+= ftrace.o insn.o
--obj-$(CONFIG_FUNCTION_GRAPH_TRACER)	+= ftrace.o insn.o
-+obj-$(CONFIG_DYNAMIC_FTRACE)	+= ftrace.o insn.o patch.o
-+obj-$(CONFIG_FUNCTION_GRAPH_TRACER)	+= ftrace.o insn.o patch.o
- obj-$(CONFIG_JUMP_LABEL)	+= jump_label.o insn.o patch.o
- obj-$(CONFIG_KEXEC)		+= machine_kexec.o relocate_kernel.o
- # Main staffs in KPROBES are in arch/arm/probes/ .
-diff --git a/arch/arm/kernel/ftrace.c b/arch/arm/kernel/ftrace.c
-index bda949f..2a5ff69 100644
---- a/arch/arm/kernel/ftrace.c
-+++ b/arch/arm/kernel/ftrace.c
-@@ -22,6 +22,7 @@
- #include <asm/ftrace.h>
- #include <asm/insn.h>
- #include <asm/set_memory.h>
-+#include <asm/patch.h>
+diff --git a/tools/perf/arch/powerpc/util/kvm-stat.c b/tools/perf/arch/powerpc/util/kvm-stat.c
+index 9cc1c4a..1680726 100644
+--- a/tools/perf/arch/powerpc/util/kvm-stat.c
++++ b/tools/perf/arch/powerpc/util/kvm-stat.c
+@@ -113,10 +113,10 @@ static int is_tracepoint_available(const char *str, struct evlist *evlist)
+ 	struct parse_events_error err;
+ 	int ret;
  
- #ifdef CONFIG_THUMB2_KERNEL
- #define	NOP		0xf85deb04	/* pop.w {lr} */
-@@ -35,9 +36,7 @@ static int __ftrace_modify_code(void *data)
- {
- 	int *command = data;
- 
--	set_kernel_text_rw();
- 	ftrace_modify_all_code(*command);
--	set_kernel_text_ro();
- 
- 	return 0;
- }
-@@ -59,13 +58,11 @@ static unsigned long adjust_address(struct dyn_ftrace *rec, unsigned long addr)
- 
- int ftrace_arch_code_modify_prepare(void)
- {
--	set_all_modules_text_rw();
- 	return 0;
+-	err.str = NULL;
++	bzero(&err, sizeof(err));
+ 	ret = parse_events(evlist, str, &err);
+ 	if (err.str)
+-		pr_err("%s : %s\n", str, err.str);
++		parse_events_print_error(&err, "tracepoint");
+ 	return ret;
  }
  
- int ftrace_arch_code_modify_post_process(void)
+diff --git a/tools/perf/builtin-stat.c b/tools/perf/builtin-stat.c
+index 5964e80..0a15253 100644
+--- a/tools/perf/builtin-stat.c
++++ b/tools/perf/builtin-stat.c
+@@ -1307,6 +1307,7 @@ static int add_default_attributes(void)
+ 	if (stat_config.null_run)
+ 		return 0;
+ 
++	bzero(&errinfo, sizeof(errinfo));
+ 	if (transaction_run) {
+ 		/* Handle -T as -M transaction. Once platform specific metrics
+ 		 * support has been added to the json files, all archictures
+@@ -1364,6 +1365,7 @@ static int add_default_attributes(void)
+ 			return -1;
+ 		}
+ 		if (err) {
++			parse_events_print_error(&errinfo, smi_cost_attrs);
+ 			fprintf(stderr, "Cannot set up SMI cost events\n");
+ 			return -1;
+ 		}
+diff --git a/tools/perf/builtin-trace.c b/tools/perf/builtin-trace.c
+index 43c05ea..46a72ec 100644
+--- a/tools/perf/builtin-trace.c
++++ b/tools/perf/builtin-trace.c
+@@ -3016,11 +3016,18 @@ static bool evlist__add_vfs_getname(struct evlist *evlist)
  {
--	set_all_modules_text_ro();
- 	/* Make sure any TLB misses during machine stop are cleared. */
- 	flush_tlb_all();
- 	return 0;
-@@ -97,10 +94,7 @@ static int ftrace_modify_code(unsigned long pc, unsigned long old,
- 			return -EINVAL;
+ 	bool found = false;
+ 	struct evsel *evsel, *tmp;
+-	struct parse_events_error err = { .idx = 0, };
+-	int ret = parse_events(evlist, "probe:vfs_getname*", &err);
++	struct parse_events_error err;
++	int ret;
+ 
+-	if (ret)
++	bzero(&err, sizeof(err));
++	ret = parse_events(evlist, "probe:vfs_getname*", &err);
++	if (ret) {
++		free(err.str);
++		free(err.help);
++		free(err.first_str);
++		free(err.first_help);
+ 		return false;
++	}
+ 
+ 	evlist__for_each_entry_safe(evlist, evsel, tmp) {
+ 		if (!strstarts(perf_evsel__name(evsel), "probe:vfs_getname"))
+@@ -4832,8 +4839,9 @@ int cmd_trace(int argc, const char **argv)
+ 	 * wrong in more detail.
+ 	 */
+ 	if (trace.perfconfig_events != NULL) {
+-		struct parse_events_error parse_err = { .idx = 0, };
++		struct parse_events_error parse_err;
+ 
++		bzero(&parse_err, sizeof(parse_err));
+ 		err = parse_events(trace.evlist, trace.perfconfig_events, &parse_err);
+ 		if (err) {
+ 			parse_events_print_error(&parse_err, trace.perfconfig_events);
+diff --git a/tools/perf/tests/parse-events.c b/tools/perf/tests/parse-events.c
+index 25e0ed2..091c3ae 100644
+--- a/tools/perf/tests/parse-events.c
++++ b/tools/perf/tests/parse-events.c
+@@ -1768,10 +1768,11 @@ static struct terms_test test__terms[] = {
+ 
+ static int test_event(struct evlist_test *e)
+ {
+-	struct parse_events_error err = { .idx = 0, };
++	struct parse_events_error err;
+ 	struct evlist *evlist;
+ 	int ret;
+ 
++	bzero(&err, sizeof(err));
+ 	if (e->valid && !e->valid()) {
+ 		pr_debug("... SKIP");
+ 		return 0;
+diff --git a/tools/perf/util/metricgroup.c b/tools/perf/util/metricgroup.c
+index a7c0424..6a4d350 100644
+--- a/tools/perf/util/metricgroup.c
++++ b/tools/perf/util/metricgroup.c
+@@ -523,7 +523,7 @@ int metricgroup__parse_groups(const struct option *opt,
+ 	if (ret)
+ 		return ret;
+ 	pr_debug("adding %s\n", extra_events.buf);
+-	memset(&parse_error, 0, sizeof(struct parse_events_error));
++	bzero(&parse_error, sizeof(parse_error));
+ 	ret = parse_events(perf_evlist, extra_events.buf, &parse_error);
+ 	if (ret) {
+ 		parse_events_print_error(&parse_error, extra_events.buf);
+diff --git a/tools/perf/util/parse-events.c b/tools/perf/util/parse-events.c
+index 6d18ff9..6bae9d6 100644
+--- a/tools/perf/util/parse-events.c
++++ b/tools/perf/util/parse-events.c
+@@ -189,12 +189,29 @@ void parse_events__handle_error(struct parse_events_error *err, int idx,
+ 		free(help);
+ 		return;
+ 	}
+-	WARN_ONCE(err->str, "WARNING: multiple event parsing errors\n");
+-	err->idx = idx;
+-	free(err->str);
+-	err->str = str;
+-	free(err->help);
+-	err->help = help;
++	switch (err->num_errors) {
++	case 0:
++		err->idx = idx;
++		err->str = str;
++		err->help = help;
++		break;
++	case 1:
++		err->first_idx = err->idx;
++		err->idx = idx;
++		err->first_str = err->str;
++		err->str = str;
++		err->first_help = err->help;
++		err->help = help;
++		break;
++	default:
++		WARN_ONCE(1, "WARNING: multiple event parsing errors\n");
++		free(err->str);
++		err->str = str;
++		free(err->help);
++		err->help = help;
++		break;
++	}
++	err->num_errors++;
+ }
+ 
+ struct tracepoint_path *tracepoint_id_to_path(u64 config)
+@@ -1349,7 +1366,7 @@ int parse_events_add_pmu(struct parse_events_state *parse_state,
+ 		if (asprintf(&err_str,
+ 				"Cannot find PMU `%s'. Missing kernel support?",
+ 				name) >= 0)
+-			parse_events__handle_error(err, -1, err_str, NULL);
++			parse_events__handle_error(err, 0, err_str, NULL);
+ 		return -EINVAL;
  	}
  
--	if (probe_kernel_write((void *)pc, &new, MCOUNT_INSN_SIZE))
--		return -EPERM;
--
--	flush_icache_range(pc, pc + MCOUNT_INSN_SIZE);
-+	__patch_text((void *)pc, new);
- 
- 	return 0;
+@@ -2007,15 +2024,14 @@ static int get_term_width(void)
+ 	return ws.ws_col > MAX_WIDTH ? MAX_WIDTH : ws.ws_col;
  }
+ 
+-void parse_events_print_error(struct parse_events_error *err,
+-			      const char *event)
++static void __parse_events_print_error(int err_idx, const char *err_str,
++				const char *err_help, const char *event)
+ {
+ 	const char *str = "invalid or unsupported event: ";
+ 	char _buf[MAX_WIDTH];
+ 	char *buf = (char *) event;
+ 	int idx = 0;
+-
+-	if (err->str) {
++	if (err_str) {
+ 		/* -2 for extra '' in the final fprintf */
+ 		int width       = get_term_width() - 2;
+ 		int len_event   = strlen(event);
+@@ -2038,8 +2054,8 @@ void parse_events_print_error(struct parse_events_error *err,
+ 		buf = _buf;
+ 
+ 		/* We're cutting from the beginning. */
+-		if (err->idx > max_err_idx)
+-			cut = err->idx - max_err_idx;
++		if (err_idx > max_err_idx)
++			cut = err_idx - max_err_idx;
+ 
+ 		strncpy(buf, event + cut, max_len);
+ 
+@@ -2052,16 +2068,33 @@ void parse_events_print_error(struct parse_events_error *err,
+ 			buf[max_len] = 0;
+ 		}
+ 
+-		idx = len_str + err->idx - cut;
++		idx = len_str + err_idx - cut;
+ 	}
+ 
+ 	fprintf(stderr, "%s'%s'\n", str, buf);
+ 	if (idx) {
+-		fprintf(stderr, "%*s\\___ %s\n", idx + 1, "", err->str);
+-		if (err->help)
+-			fprintf(stderr, "\n%s\n", err->help);
+-		zfree(&err->str);
+-		zfree(&err->help);
++		fprintf(stderr, "%*s\\___ %s\n", idx + 1, "", err_str);
++		if (err_help)
++			fprintf(stderr, "\n%s\n", err_help);
++	}
++}
++
++void parse_events_print_error(struct parse_events_error *err,
++			      const char *event)
++{
++	if (!err->num_errors)
++		return;
++
++	__parse_events_print_error(err->idx, err->str, err->help, event);
++	zfree(&err->str);
++	zfree(&err->help);
++
++	if (err->num_errors > 1) {
++		fputs("\nInitial error:\n", stderr);
++		__parse_events_print_error(err->first_idx, err->first_str,
++					err->first_help, event);
++		zfree(&err->first_str);
++		zfree(&err->first_help);
+ 	}
+ }
+ 
+@@ -2071,8 +2104,11 @@ int parse_events_option(const struct option *opt, const char *str,
+ 			int unset __maybe_unused)
+ {
+ 	struct evlist *evlist = *(struct evlist **)opt->value;
+-	struct parse_events_error err = { .idx = 0, };
+-	int ret = parse_events(evlist, str, &err);
++	struct parse_events_error err;
++	int ret;
++
++	bzero(&err, sizeof(err));
++	ret = parse_events(evlist, str, &err);
+ 
+ 	if (ret) {
+ 		parse_events_print_error(&err, str);
+diff --git a/tools/perf/util/parse-events.h b/tools/perf/util/parse-events.h
+index 5ee8ac9..ff367f2 100644
+--- a/tools/perf/util/parse-events.h
++++ b/tools/perf/util/parse-events.h
+@@ -110,9 +110,13 @@ struct parse_events_term {
+ };
+ 
+ struct parse_events_error {
++	int   num_errors;       /* number of errors encountered */
+ 	int   idx;	/* index in the parsed string */
+ 	char *str;      /* string to display at the index */
+ 	char *help;	/* optional help string */
++	int   first_idx;/* as above, but for the first encountered error */
++	char *first_str;
++	char *first_help;
+ };
+ 
+ struct parse_events_state {
