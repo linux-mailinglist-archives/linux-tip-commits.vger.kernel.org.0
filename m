@@ -2,75 +2,103 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CBED7100AE0
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 18 Nov 2019 18:52:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D8289102144
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 Nov 2019 10:55:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726686AbfKRRwu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 18 Nov 2019 12:52:50 -0500
-Received: from mail.kernel.org ([198.145.29.99]:41036 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726317AbfKRRwu (ORCPT
+        id S1727336AbfKSJze (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 19 Nov 2019 04:55:34 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:51775 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726170AbfKSJze (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 18 Nov 2019 12:52:50 -0500
-Received: from oasis.local.home (cpe-66-24-58-225.stny.res.rr.com [66.24.58.225])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 779222195D;
-        Mon, 18 Nov 2019 17:52:48 +0000 (UTC)
-Date:   Mon, 18 Nov 2019 12:52:46 -0500
-From:   Steven Rostedt <rostedt@goodmis.org>
-To:     Borislav Petkov <bp@alien8.de>
+        Tue, 19 Nov 2019 04:55:34 -0500
+Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tip-bot2@linutronix.de>)
+        id 1iX0E2-0001CQ-5s; Tue, 19 Nov 2019 10:55:10 +0100
+Received: from [127.0.1.1] (localhost [IPv6:::1])
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C928C1C1900;
+        Tue, 19 Nov 2019 10:55:09 +0100 (CET)
+Date:   Tue, 19 Nov 2019 09:55:09 -0000
+From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: core/kprobes] x86/ftrace: Mark ftrace_modify_code_direct() __ref
 Cc:     Peter Zijlstra <peterz@infradead.org>,
-        linux-tip-commits@vger.kernel.org,
+        Borislav Petkov <bp@suse.de>,
+        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
         Alexei Starovoitov <ast@kernel.org>,
         Andy Lutomirski <luto@kernel.org>,
         Daniel Bristot de Oliveira <bristot@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@kernel.org>,
         Josh Poimboeuf <jpoimboe@redhat.com>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] x86/ftrace: Mark ftrace_modify_code_direct() __ref
-Message-ID: <20191118125246.3eb768fa@oasis.local.home>
-In-Reply-To: <20191118173510.GK6363@zn.tnic>
-References: <20191111132457.761255803@infradead.org>
-        <157381099055.29467.10982011694493970062.tip-bot2@tip-bot2>
-        <20191116204607.GC23231@zn.tnic>
-        <20191118173510.GK6363@zn.tnic>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
+In-Reply-To: <20191116204607.GC23231@zn.tnic>
+References: <20191116204607.GC23231@zn.tnic>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Message-ID: <157415730969.12247.5820840912824556336.tip-bot2@tip-bot2>
+X-Mailer: tip-git-log-daemon
+Robot-ID: <tip-bot2.linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Mon, 18 Nov 2019 18:35:10 +0100
-Borislav Petkov <bp@alien8.de> wrote:
+The following commit has been merged into the core/kprobes branch of tip:
 
+Commit-ID:     994795481ddb8efbeda9e5924aca7d0c275efcd9
+Gitweb:        https://git.kernel.org/tip/994795481ddb8efbeda9e5924aca7d0c275efcd9
+Author:        Borislav Petkov <bp@suse.de>
+AuthorDate:    Mon, 18 Nov 2019 18:20:12 +01:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Tue, 19 Nov 2019 10:50:12 +01:00
 
-> diff --git a/arch/x86/kernel/ftrace.c b/arch/x86/kernel/ftrace.c
-> index 2a179fb35cd1..108ee96f8b66 100644
-> --- a/arch/x86/kernel/ftrace.c
-> +++ b/arch/x86/kernel/ftrace.c
-> @@ -99,7 +99,12 @@ static int ftrace_verify_code(unsigned long ip, const char *old_code)
->  	return 0;
->  }
->  
-> -static int
-> +/*
-> + * Marked __ref because it calls text_poke_early() which is .init.text. That is
-> + * ok because that call will happen early, during boot, when .init sections are
-> + * still present.
-> + */
-> +static int __ref
+x86/ftrace: Mark ftrace_modify_code_direct() __ref
 
+... because it calls the .init.text function text_poke_early(). That is
+ok because it does call that function early, during boot.
+
+Fixes: 9706f7c3531f ("x86/ftrace: Use text_poke()")
+Suggested-by: Peter Zijlstra <peterz@infradead.org>
+Signed-off-by: Borislav Petkov <bp@suse.de>
 Acked-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
+Cc: Alexei Starovoitov <ast@kernel.org>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Daniel Bristot de Oliveira <bristot@redhat.com>
+Cc: H. Peter Anvin <hpa@zytor.com>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Josh Poimboeuf <jpoimboe@redhat.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lkml.kernel.org/r/20191116204607.GC23231@zn.tnic
+---
+ arch/x86/kernel/ftrace.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
--- Steve
-
->  ftrace_modify_code_direct(unsigned long ip, const char *old_code,
->  			  const char *new_code)
->  {
-
+diff --git a/arch/x86/kernel/ftrace.c b/arch/x86/kernel/ftrace.c
+index 2a179fb..108ee96 100644
+--- a/arch/x86/kernel/ftrace.c
++++ b/arch/x86/kernel/ftrace.c
+@@ -99,7 +99,12 @@ static int ftrace_verify_code(unsigned long ip, const char *old_code)
+ 	return 0;
+ }
+ 
+-static int
++/*
++ * Marked __ref because it calls text_poke_early() which is .init.text. That is
++ * ok because that call will happen early, during boot, when .init sections are
++ * still present.
++ */
++static int __ref
+ ftrace_modify_code_direct(unsigned long ip, const char *old_code,
+ 			  const char *new_code)
+ {
