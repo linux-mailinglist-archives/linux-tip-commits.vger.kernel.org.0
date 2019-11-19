@@ -2,30 +2,29 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D39D4102A31
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 Nov 2019 17:59:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D09A102A01
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 Nov 2019 17:57:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728637AbfKSQ5J (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 19 Nov 2019 11:57:09 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:52880 "EHLO
+        id S1728516AbfKSQ5n (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 19 Nov 2019 11:57:43 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:52943 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728641AbfKSQ5J (ORCPT
+        with ESMTP id S1728786AbfKSQ50 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 19 Nov 2019 11:57:09 -0500
+        Tue, 19 Nov 2019 11:57:26 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iX6o7-0007Nk-5p; Tue, 19 Nov 2019 17:56:51 +0100
+        id 1iX6o4-0007Jo-KI; Tue, 19 Nov 2019 17:56:48 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 85F5B1C19CF;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 428481C19CC;
         Tue, 19 Nov 2019 17:56:48 +0100 (CET)
 Date:   Tue, 19 Nov 2019 16:56:48 -0000
 From:   "tip-bot2 for Masami Hiramatsu" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf probe: Do not show non representive lines by
- perf-probe -L
+Subject: [tip: perf/core] perf probe: Support multiprobe event
 Cc:     Masami Hiramatsu <mhiramat@kernel.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Namhyung Kim <namhyung@kernel.org>,
@@ -34,10 +33,10 @@ Cc:     Masami Hiramatsu <mhiramat@kernel.org>,
         Tom Zanussi <tom.zanussi@linux.intel.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <157406473064.24476.2913278267727587314.stgit@devnote2>
-References: <157406473064.24476.2913278267727587314.stgit@devnote2>
+In-Reply-To: <157406475010.24476.586290752591512351.stgit@devnote2>
+References: <157406475010.24476.586290752591512351.stgit@devnote2>
 MIME-Version: 1.0
-Message-ID: <157418260850.12247.4435566464230141839.tip-bot2@tip-bot2>
+Message-ID: <157418260823.12247.17338863416227915427.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -53,110 +52,141 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     499144c83d3b7e4f9e83916acfc97bbc3af891dc
-Gitweb:        https://git.kernel.org/tip/499144c83d3b7e4f9e83916acfc97bbc3af891dc
+Commit-ID:     72363540c009db5014252a1a15e149d30f88bcc3
+Gitweb:        https://git.kernel.org/tip/72363540c009db5014252a1a15e149d30f88bcc3
 Author:        Masami Hiramatsu <mhiramat@kernel.org>
-AuthorDate:    Mon, 18 Nov 2019 17:12:10 +09:00
+AuthorDate:    Mon, 18 Nov 2019 17:12:30 +09:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Mon, 18 Nov 2019 18:59:36 -03:00
+CommitterDate: Mon, 18 Nov 2019 19:03:38 -03:00
 
-perf probe: Do not show non representive lines by perf-probe -L
+perf probe: Support multiprobe event
 
-Since perf probe -L shows non representive lines, it can be mislead
-users where user can put probes.  This prevents to show such non
-representive lines so that user can understand which lines user can
-probe.
+Support multiprobe event if the event is based on function and lines and
+kernel supports it. In this case, perf probe creates the first probe
+with an event, and tries to append following probes on that event, since
+those probes must be on the same source code line.
 
-  # perf probe -L kernel_read
-  <kernel_read@/build/linux-pvZVvI/linux-5.0.0/fs/read_write.c:0>
-        0  ssize_t kernel_read(struct file *file, void *buf, size_t count, loff_t *pos)
-           {
-        2         mm_segment_t old_fs;
-                  ssize_t result;
+Before this patch;
 
-                  old_fs = get_fs();
-        6         set_fs(get_ds());
-                  /* The cast to a user pointer is valid due to the set_fs() */
-        8         result = vfs_read(file, (void __user *)buf, count, pos);
-        9         set_fs(old_fs);
-       10         return result;
-           }
-           EXPORT_SYMBOL(kernel_read);
+  # perf probe -a vfs_read:18
+  Added new events:
+    probe:vfs_read_L18   (on vfs_read:18)
+    probe:vfs_read_L18_1 (on vfs_read:18)
+
+  You can now use it in all perf tools, such as:
+
+  	perf record -e probe:vfs_read_L18_1 -aR sleep 1
+
+  #
+
+After this patch (on multiprobe supported kernel)
+  # perf probe -a vfs_read:18
+  Added new events:
+    probe:vfs_read_L18   (on vfs_read:18)
+    probe:vfs_read_L18   (on vfs_read:18)
+
+  You can now use it in all perf tools, such as:
+
+  	perf record -e probe:vfs_read_L18 -aR sleep 1
+
+  #
 
 Committer testing:
 
-Before:
+On a kernel that doesn't support multiprobe events, after this patch:
 
-  # perf probe -L kernel_read
-  <kernel_read@/usr/src/debug/kernel-5.3.fc30/linux-5.3.8-200.fc30.x86_64/fs/read_write.c:0>
-        0  ssize_t kernel_read(struct file *file, void *buf, size_t count, loff_t *pos)
-        1  {
-        2         mm_segment_t old_fs;
-        3         ssize_t result;
-
-        5         old_fs = get_fs();
-        6         set_fs(KERNEL_DS);
-                  /* The cast to a user pointer is valid due to the set_fs() */
-        8         result = vfs_read(file, (void __user *)buf, count, pos);
-        9         set_fs(old_fs);
-       10         return result;
-           }
-           EXPORT_SYMBOL(kernel_read);
+  # uname -a
+  Linux quaco 5.3.8-200.fc30.x86_64 #1 SMP Tue Oct 29 14:46:22 UTC 2019 x86_64 x86_64 x86_64 GNU/Linux
+  # grep append /sys/kernel/debug/tracing/README
+  	    be modified by appending '.descending' or '.ascending' to a
+  	    can be modified by appending any of the following modifiers
   #
+  # perf probe -a vfs_read:18
+  Added new events:
+    probe:vfs_read_L18   (on vfs_read:18)
+    probe:vfs_read_L18_1 (on vfs_read:18)
 
-See the 1, 3, 5 lines? They shouldn't be there, after this patch:
+  You can now use it in all perf tools, such as:
 
-  # perf probe -L kernel_read
-  <kernel_read@/usr/src/debug/kernel-5.3.fc30/linux-5.3.8-200.fc30.x86_64/fs/read_write.c:0>
-        0  ssize_t kernel_read(struct file *file, void *buf, size_t count, loff_t *pos)
-           {
-        2         mm_segment_t old_fs;
-                  ssize_t result;
+  	perf record -e probe:vfs_read_L18_1 -aR sleep 1
 
-                  old_fs = get_fs();
-        6         set_fs(KERNEL_DS);
-                  /* The cast to a user pointer is valid due to the set_fs() */
-        8         result = vfs_read(file, (void __user *)buf, count, pos);
-        9         set_fs(old_fs);
-       10         return result;
-           }
-           EXPORT_SYMBOL(kernel_read);
+  # perf probe -l
+    probe:vfs_read_L18   (on vfs_read:18@fs/read_write.c)
+    probe:vfs_read_L18_1 (on vfs_read:18@fs/read_write.c)
   #
 
 Signed-off-by: Masami Hiramatsu <mhiramat@kernel.org>
-Reported-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
 Cc: Steven Rostedt (VMware) <rostedt@goodmis.org>
 Cc: Tom Zanussi <tom.zanussi@linux.intel.com>
-Link: http://lore.kernel.org/lkml/157406473064.24476.2913278267727587314.stgit@devnote2
+Link: http://lore.kernel.org/lkml/157406475010.24476.586290752591512351.stgit@devnote2
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/probe-finder.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ tools/perf/util/probe-event.c |  9 +++++++--
+ tools/perf/util/probe-file.c  |  7 +++++++
+ tools/perf/util/probe-file.h  |  1 +
+ 3 files changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/util/probe-finder.c b/tools/perf/util/probe-finder.c
-index ef1b320..f12ad50 100644
---- a/tools/perf/util/probe-finder.c
-+++ b/tools/perf/util/probe-finder.c
-@@ -1734,12 +1734,19 @@ static int line_range_walk_cb(const char *fname, int lineno,
- 			      void *data)
+diff --git a/tools/perf/util/probe-event.c b/tools/perf/util/probe-event.c
+index 5c86d2c..8f963a1 100644
+--- a/tools/perf/util/probe-event.c
++++ b/tools/perf/util/probe-event.c
+@@ -2738,8 +2738,13 @@ static int probe_trace_event__set_name(struct probe_trace_event *tev,
+ 	if (tev->event == NULL || tev->group == NULL)
+ 		return -ENOMEM;
+ 
+-	/* Add added event name to namelist */
+-	strlist__add(namelist, event);
++	/*
++	 * Add new event name to namelist if multiprobe event is NOT
++	 * supported, since we have to use new event name for following
++	 * probes in that case.
++	 */
++	if (!multiprobe_event_is_supported())
++		strlist__add(namelist, event);
+ 	return 0;
+ }
+ 
+diff --git a/tools/perf/util/probe-file.c b/tools/perf/util/probe-file.c
+index b659466..a63f1a1 100644
+--- a/tools/perf/util/probe-file.c
++++ b/tools/perf/util/probe-file.c
+@@ -1007,6 +1007,7 @@ enum ftrace_readme {
+ 	FTRACE_README_KRETPROBE_OFFSET,
+ 	FTRACE_README_UPROBE_REF_CTR,
+ 	FTRACE_README_USER_ACCESS,
++	FTRACE_README_MULTIPROBE_EVENT,
+ 	FTRACE_README_END,
+ };
+ 
+@@ -1020,6 +1021,7 @@ static struct {
+ 	DEFINE_TYPE(FTRACE_README_KRETPROBE_OFFSET, "*place (kretprobe): *"),
+ 	DEFINE_TYPE(FTRACE_README_UPROBE_REF_CTR, "*ref_ctr_offset*"),
+ 	DEFINE_TYPE(FTRACE_README_USER_ACCESS, "*[u]<offset>*"),
++	DEFINE_TYPE(FTRACE_README_MULTIPROBE_EVENT, "*Create/append/*"),
+ };
+ 
+ static bool scan_ftrace_readme(enum ftrace_readme type)
+@@ -1085,3 +1087,8 @@ bool user_access_is_supported(void)
  {
- 	struct line_finder *lf = data;
-+	const char *__fname;
-+	int __lineno;
- 	int err;
- 
- 	if ((strtailcmp(fname, lf->fname) != 0) ||
- 	    (lf->lno_s > lineno || lf->lno_e < lineno))
- 		return 0;
- 
-+	/* Make sure this line can be reversable */
-+	if (cu_find_lineinfo(&lf->cu_die, addr, &__fname, &__lineno) > 0
-+	    && (lineno != __lineno || strcmp(fname, __fname)))
-+		return 0;
+ 	return scan_ftrace_readme(FTRACE_README_USER_ACCESS);
+ }
 +
- 	err = line_range_add_line(fname, lineno, lf->lr);
- 	if (err < 0 && err != -EEXIST)
- 		return err;
++bool multiprobe_event_is_supported(void)
++{
++	return scan_ftrace_readme(FTRACE_README_MULTIPROBE_EVENT);
++}
+diff --git a/tools/perf/util/probe-file.h b/tools/perf/util/probe-file.h
+index 986c1c9..850d1b5 100644
+--- a/tools/perf/util/probe-file.h
++++ b/tools/perf/util/probe-file.h
+@@ -71,6 +71,7 @@ bool probe_type_is_available(enum probe_type type);
+ bool kretprobe_offset_is_supported(void);
+ bool uprobe_ref_ctr_is_supported(void);
+ bool user_access_is_supported(void);
++bool multiprobe_event_is_supported(void);
+ #else	/* ! HAVE_LIBELF_SUPPORT */
+ static inline struct probe_cache *probe_cache__new(const char *tgt __maybe_unused, struct nsinfo *nsi __maybe_unused)
+ {
