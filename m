@@ -2,43 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AF79E102A25
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 Nov 2019 17:58:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DB832102A3F
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 Nov 2019 17:59:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728641AbfKSQ5L (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 19 Nov 2019 11:57:11 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:52890 "EHLO
+        id S1728654AbfKSQ7K (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 19 Nov 2019 11:59:10 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:52840 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728669AbfKSQ5L (ORCPT
+        with ESMTP id S1728638AbfKSQ5G (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 19 Nov 2019 11:57:11 -0500
+        Tue, 19 Nov 2019 11:57:06 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iX6oB-0007Q7-2U; Tue, 19 Nov 2019 17:56:55 +0100
+        id 1iX6oC-0007T4-J5; Tue, 19 Nov 2019 17:56:56 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 146811C19D3;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id BD3831C19D7;
         Tue, 19 Nov 2019 17:56:49 +0100 (CET)
 Date:   Tue, 19 Nov 2019 16:56:49 -0000
-From:   "tip-bot2 for Adrian Hunter" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] x86/insn: perf tools: Add some instructions to the
- new instructions test
+Subject: [tip: perf/core] perf map_groups: Auto sort maps by name, if needed
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Andi Kleen <ak@linux.intel.com>,
-        Borislav Petkov <bp@alien8.de>,
-        "H. Peter Anvin" <hpa@zytor.com>, Jiri Olsa <jolsa@redhat.com>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+        Andi Kleen <ak@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org
-In-Reply-To: <20191115135447.6519-2-adrian.hunter@intel.com>
-References: <20191115135447.6519-2-adrian.hunter@intel.com>
+        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <tip-c5lmbyr14x448rcfii7y6t3k@git.kernel.org>
+References: <tip-c5lmbyr14x448rcfii7y6t3k@git.kernel.org>
 MIME-Version: 1.0
-Message-ID: <157418260903.12247.7675264466307635685.tip-bot2@tip-bot2>
+Message-ID: <157418260971.12247.16181537627866809288.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -54,336 +50,326 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     1e5f015442e7b700941f8cd0274bb14962b3d78e
-Gitweb:        https://git.kernel.org/tip/1e5f015442e7b700941f8cd0274bb14962b3d78e
-Author:        Adrian Hunter <adrian.hunter@intel.com>
-AuthorDate:    Fri, 15 Nov 2019 15:54:46 +02:00
+Commit-ID:     a7c2b572e217418ad34441202ad3addd8f94d2ea
+Gitweb:        https://git.kernel.org/tip/a7c2b572e217418ad34441202ad3addd8f94d2ea
+Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
+AuthorDate:    Sun, 17 Nov 2019 11:38:13 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Mon, 18 Nov 2019 18:53:54 -03:00
+CommitterDate: Mon, 18 Nov 2019 13:01:58 -03:00
 
-x86/insn: perf tools: Add some instructions to the new instructions test
+perf map_groups: Auto sort maps by name, if needed
 
-Add to the "x86 instruction decoder - new instructions" test the following
-instructions:
-	cldemote
-	tpause
-	umonitor
-	umwait
-	movdiri
-	movdir64b
-	enqcmd
-	enqcmds
-	encls
-	enclu
-	enclv
-	pconfig
-	wbnoinvd
+There are still lots of lookups by name, even if just when loading
+vmlinux, till that code is studied to figure out if its possible to do
+away with those map lookup by names, provide a way to sort it using
+libc's qsort/bsearch.
 
-For information about the instructions, refer Intel SDM May 2019
-(325462-070US) and Intel Architecture Instruction Set Extensions
-May 2019 (319433-037).
+Doing it at the first lookup defers the sorting a bit, and as the code
+stands now, is never done for user maps, just for the kernel ones.
 
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Reviewed-by: Andi Kleen <ak@linux.intel.com>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Jiri Olsa <jolsa@redhat.com>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: x86@kernel.org
-Link: http://lore.kernel.org/lkml/20191115135447.6519-2-adrian.hunter@intel.com
+  # perf probe -l
+  # perf probe -x ~/bin/perf -L __map_groups__find_by_name
+  <__map_groups__find_by_name@/home/acme/git/perf/tools/perf/util/symbol.c:0>
+        0  static struct map *__map_groups__find_by_name(struct map_groups *mg, const char *name)
+        1  {
+                  struct map **mapp;
+
+        4         if (mg->maps_by_name == NULL &&
+        5             map__groups__sort_by_name_from_rbtree(mg))
+        6                 return NULL;
+
+        8         mapp = bsearch(name, mg->maps_by_name, mg->nr_maps, sizeof(*mapp), map__strcmp_name);
+        9         if (mapp)
+       10                 return *mapp;
+       11         return NULL;
+       12  }
+
+           struct map *map_groups__find_by_name(struct map_groups *mg, const char *name)
+           {
+
+  # perf probe -x ~/bin/perf 'found=__map_groups__find_by_name:10 name:string'
+  Added new event:
+    probe_perf:found     (on __map_groups__find_by_name:10 in /home/acme/bin/perf with name:string)
+
+  You can now use it in all perf tools, such as:
+
+  	perf record -e probe_perf:found -aR sleep 1
+
+  #
+  # perf probe -x ~/bin/perf -L map_groups__find_by_name
+  <map_groups__find_by_name@/home/acme/git/perf/tools/perf/util/symbol.c:0>
+        0  struct map *map_groups__find_by_name(struct map_groups *mg, const char *name)
+        1  {
+        2         struct maps *maps = &mg->maps;
+                  struct map *map;
+
+        5         down_read(&maps->lock);
+
+        7         if (mg->last_search_by_name && strcmp(mg->last_search_by_name->dso->short_name, name) == 0) {
+        8                 map = mg->last_search_by_name;
+        9                 goto out_unlock;
+                  }
+                  /*
+                   * If we have mg->maps_by_name, then the name isn't in the rbtree,
+                   * as mg->maps_by_name mirrors the rbtree when lookups by name are
+                   * made.
+                   */
+       16         map = __map_groups__find_by_name(mg, name);
+       17         if (map || mg->maps_by_name != NULL)
+       18                 goto out_unlock;
+
+                  /* Fallback to traversing the rbtree... */
+       21         maps__for_each_entry(maps, map)
+       22                 if (strcmp(map->dso->short_name, name) == 0) {
+       23                         mg->last_search_by_name = map;
+       24                         goto out_unlock;
+                          }
+
+       27         map = NULL;
+
+           out_unlock:
+       30         up_read(&maps->lock);
+       31         return map;
+       32  }
+
+           int dso__load_vmlinux(struct dso *dso, struct map *map,
+                                const char *vmlinux, bool vmlinux_allocated)
+
+  # perf probe -x ~/bin/perf 'fallback=map_groups__find_by_name:21 name:string'
+  Added new events:
+    probe_perf:fallback  (on map_groups__find_by_name:21 in /home/acme/bin/perf with name:string)
+    probe_perf:fallback_1 (on map_groups__find_by_name:21 in /home/acme/bin/perf with name:string)
+
+  You can now use it in all perf tools, such as:
+
+  	perf record -e probe_perf:fallback_1 -aR sleep 1
+
+  #
+  # perf probe -l
+    probe_perf:fallback  (on map_groups__find_by_name:21@util/symbol.c in /home/acme/bin/perf with name_string)
+    probe_perf:fallback_1 (on map_groups__find_by_name:21@util/symbol.c in /home/acme/bin/perf with name_string)
+    probe_perf:found     (on __map_groups__find_by_name:10@util/symbol.c in /home/acme/bin/perf with name_string)
+  #
+  # perf stat -e probe_perf:*
+
+Now run 'perf top' in another term and then, after a while, stop 'perf stat':
+
+Furthermore, if we ask for interval printing, we can see that that is done just
+at the start of the workload:
+
+  # perf stat -I1000 -e probe_perf:*
+  #           time             counts unit events
+       1.000319513                  0      probe_perf:found
+       1.000319513                  0      probe_perf:fallback_1
+       1.000319513                  0      probe_perf:fallback
+       2.001868092             23,251      probe_perf:found
+       2.001868092                  0      probe_perf:fallback_1
+       2.001868092                  0      probe_perf:fallback
+       3.002901597                  0      probe_perf:found
+       3.002901597                  0      probe_perf:fallback_1
+       3.002901597                  0      probe_perf:fallback
+       4.003358591                  0      probe_perf:found
+       4.003358591                  0      probe_perf:fallback_1
+       4.003358591                  0      probe_perf:fallback
+  ^C
+  #
+
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Andi Kleen <ak@linux.intel.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Link: https://lkml.kernel.org/n/tip-c5lmbyr14x448rcfii7y6t3k@git.kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/arch/x86/tests/insn-x86-dat-32.c  |  52 +++++++++-
- tools/perf/arch/x86/tests/insn-x86-dat-64.c  |  62 ++++++++++-
- tools/perf/arch/x86/tests/insn-x86-dat-src.c | 109 ++++++++++++++++++-
- 3 files changed, 223 insertions(+)
+ tools/perf/util/map.c        | 49 +++++++++++++++++++++++++++--
+ tools/perf/util/map_groups.h |  6 ++++-
+ tools/perf/util/symbol.c     | 59 +++++++++++++++++++++++++++++++++++-
+ 3 files changed, 111 insertions(+), 3 deletions(-)
 
-diff --git a/tools/perf/arch/x86/tests/insn-x86-dat-32.c b/tools/perf/arch/x86/tests/insn-x86-dat-32.c
-index fab3c6d..58f8f2a 100644
---- a/tools/perf/arch/x86/tests/insn-x86-dat-32.c
-+++ b/tools/perf/arch/x86/tests/insn-x86-dat-32.c
-@@ -1647,6 +1647,12 @@
- "0f ae 30             \txsaveopt (%eax)",},
- {{0x0f, 0xae, 0xf0, }, 3, 0, "", "",
- "0f ae f0             \tmfence ",},
-+{{0x0f, 0x1c, 0x00, }, 3, 0, "", "",
-+"0f 1c 00             \tcldemote (%eax)",},
-+{{0x0f, 0x1c, 0x05, 0x78, 0x56, 0x34, 0x12, }, 7, 0, "", "",
-+"0f 1c 05 78 56 34 12 \tcldemote 0x12345678",},
-+{{0x0f, 0x1c, 0x84, 0xc8, 0x78, 0x56, 0x34, 0x12, }, 8, 0, "", "",
-+"0f 1c 84 c8 78 56 34 12 \tcldemote 0x12345678(%eax,%ecx,8)",},
- {{0x0f, 0xc7, 0x20, }, 3, 0, "", "",
- "0f c7 20             \txsavec (%eax)",},
- {{0x0f, 0xc7, 0x25, 0x78, 0x56, 0x34, 0x12, }, 7, 0, "", "",
-@@ -1677,3 +1683,49 @@
- "f3 0f ae 25 78 56 34 12 \tptwritel 0x12345678",},
- {{0xf3, 0x0f, 0xae, 0xa4, 0xc8, 0x78, 0x56, 0x34, 0x12, }, 9, 0, "", "",
- "f3 0f ae a4 c8 78 56 34 12 \tptwritel 0x12345678(%eax,%ecx,8)",},
-+{{0x66, 0x0f, 0xae, 0xf3, }, 4, 0, "", "",
-+"66 0f ae f3          \ttpause %ebx",},
-+{{0x67, 0xf3, 0x0f, 0xae, 0xf0, }, 5, 0, "", "",
-+"67 f3 0f ae f0       \tumonitor %ax",},
-+{{0xf3, 0x0f, 0xae, 0xf0, }, 4, 0, "", "",
-+"f3 0f ae f0          \tumonitor %eax",},
-+{{0xf2, 0x0f, 0xae, 0xf0, }, 4, 0, "", "",
-+"f2 0f ae f0          \tumwait %eax",},
-+{{0x0f, 0x38, 0xf9, 0x03, }, 4, 0, "", "",
-+"0f 38 f9 03          \tmovdiri %eax,(%ebx)",},
-+{{0x0f, 0x38, 0xf9, 0x88, 0x78, 0x56, 0x34, 0x12, }, 8, 0, "", "",
-+"0f 38 f9 88 78 56 34 12 \tmovdiri %ecx,0x12345678(%eax)",},
-+{{0x66, 0x0f, 0x38, 0xf8, 0x18, }, 5, 0, "", "",
-+"66 0f 38 f8 18       \tmovdir64b (%eax),%ebx",},
-+{{0x66, 0x0f, 0x38, 0xf8, 0x88, 0x78, 0x56, 0x34, 0x12, }, 9, 0, "", "",
-+"66 0f 38 f8 88 78 56 34 12 \tmovdir64b 0x12345678(%eax),%ecx",},
-+{{0x67, 0x66, 0x0f, 0x38, 0xf8, 0x1c, }, 6, 0, "", "",
-+"67 66 0f 38 f8 1c    \tmovdir64b (%si),%bx",},
-+{{0x67, 0x66, 0x0f, 0x38, 0xf8, 0x8c, 0x34, 0x12, }, 8, 0, "", "",
-+"67 66 0f 38 f8 8c 34 12 \tmovdir64b 0x1234(%si),%cx",},
-+{{0xf2, 0x0f, 0x38, 0xf8, 0x18, }, 5, 0, "", "",
-+"f2 0f 38 f8 18       \tenqcmd (%eax),%ebx",},
-+{{0xf2, 0x0f, 0x38, 0xf8, 0x88, 0x78, 0x56, 0x34, 0x12, }, 9, 0, "", "",
-+"f2 0f 38 f8 88 78 56 34 12 \tenqcmd 0x12345678(%eax),%ecx",},
-+{{0x67, 0xf2, 0x0f, 0x38, 0xf8, 0x1c, }, 6, 0, "", "",
-+"67 f2 0f 38 f8 1c    \tenqcmd (%si),%bx",},
-+{{0x67, 0xf2, 0x0f, 0x38, 0xf8, 0x8c, 0x34, 0x12, }, 8, 0, "", "",
-+"67 f2 0f 38 f8 8c 34 12 \tenqcmd 0x1234(%si),%cx",},
-+{{0xf3, 0x0f, 0x38, 0xf8, 0x18, }, 5, 0, "", "",
-+"f3 0f 38 f8 18       \tenqcmds (%eax),%ebx",},
-+{{0xf3, 0x0f, 0x38, 0xf8, 0x88, 0x78, 0x56, 0x34, 0x12, }, 9, 0, "", "",
-+"f3 0f 38 f8 88 78 56 34 12 \tenqcmds 0x12345678(%eax),%ecx",},
-+{{0x67, 0xf3, 0x0f, 0x38, 0xf8, 0x1c, }, 6, 0, "", "",
-+"67 f3 0f 38 f8 1c    \tenqcmds (%si),%bx",},
-+{{0x67, 0xf3, 0x0f, 0x38, 0xf8, 0x8c, 0x34, 0x12, }, 8, 0, "", "",
-+"67 f3 0f 38 f8 8c 34 12 \tenqcmds 0x1234(%si),%cx",},
-+{{0x0f, 0x01, 0xcf, }, 3, 0, "", "",
-+"0f 01 cf             \tencls  ",},
-+{{0x0f, 0x01, 0xd7, }, 3, 0, "", "",
-+"0f 01 d7             \tenclu  ",},
-+{{0x0f, 0x01, 0xc0, }, 3, 0, "", "",
-+"0f 01 c0             \tenclv  ",},
-+{{0x0f, 0x01, 0xc5, }, 3, 0, "", "",
-+"0f 01 c5             \tpconfig ",},
-+{{0xf3, 0x0f, 0x09, }, 3, 0, "", "",
-+"f3 0f 09             \twbnoinvd ",},
-diff --git a/tools/perf/arch/x86/tests/insn-x86-dat-64.c b/tools/perf/arch/x86/tests/insn-x86-dat-64.c
-index c57f346..656f8ae 100644
---- a/tools/perf/arch/x86/tests/insn-x86-dat-64.c
-+++ b/tools/perf/arch/x86/tests/insn-x86-dat-64.c
-@@ -1667,6 +1667,16 @@
- "41 0f ae 30          \txsaveopt (%r8)",},
- {{0x0f, 0xae, 0xf0, }, 3, 0, "", "",
- "0f ae f0             \tmfence ",},
-+{{0x0f, 0x1c, 0x00, }, 3, 0, "", "",
-+"0f 1c 00             \tcldemote (%rax)",},
-+{{0x41, 0x0f, 0x1c, 0x00, }, 4, 0, "", "",
-+"41 0f 1c 00          \tcldemote (%r8)",},
-+{{0x0f, 0x1c, 0x04, 0x25, 0x78, 0x56, 0x34, 0x12, }, 8, 0, "", "",
-+"0f 1c 04 25 78 56 34 12 \tcldemote 0x12345678",},
-+{{0x0f, 0x1c, 0x84, 0xc8, 0x78, 0x56, 0x34, 0x12, }, 8, 0, "", "",
-+"0f 1c 84 c8 78 56 34 12 \tcldemote 0x12345678(%rax,%rcx,8)",},
-+{{0x41, 0x0f, 0x1c, 0x84, 0xc8, 0x78, 0x56, 0x34, 0x12, }, 9, 0, "", "",
-+"41 0f 1c 84 c8 78 56 34 12 \tcldemote 0x12345678(%r8,%rcx,8)",},
- {{0x0f, 0xc7, 0x20, }, 3, 0, "", "",
- "0f c7 20             \txsavec (%rax)",},
- {{0x41, 0x0f, 0xc7, 0x20, }, 4, 0, "", "",
-@@ -1727,3 +1737,55 @@
- "f3 48 0f ae a4 c8 78 56 34 12 \tptwriteq 0x12345678(%rax,%rcx,8)",},
- {{0xf3, 0x49, 0x0f, 0xae, 0xa4, 0xc8, 0x78, 0x56, 0x34, 0x12, }, 10, 0, "", "",
- "f3 49 0f ae a4 c8 78 56 34 12 \tptwriteq 0x12345678(%r8,%rcx,8)",},
-+{{0x66, 0x0f, 0xae, 0xf3, }, 4, 0, "", "",
-+"66 0f ae f3          \ttpause %ebx",},
-+{{0x66, 0x41, 0x0f, 0xae, 0xf0, }, 5, 0, "", "",
-+"66 41 0f ae f0       \ttpause %r8d",},
-+{{0x67, 0xf3, 0x0f, 0xae, 0xf0, }, 5, 0, "", "",
-+"67 f3 0f ae f0       \tumonitor %eax",},
-+{{0xf3, 0x0f, 0xae, 0xf0, }, 4, 0, "", "",
-+"f3 0f ae f0          \tumonitor %rax",},
-+{{0x67, 0xf3, 0x41, 0x0f, 0xae, 0xf0, }, 6, 0, "", "",
-+"67 f3 41 0f ae f0    \tumonitor %r8d",},
-+{{0xf2, 0x0f, 0xae, 0xf0, }, 4, 0, "", "",
-+"f2 0f ae f0          \tumwait %eax",},
-+{{0xf2, 0x41, 0x0f, 0xae, 0xf0, }, 5, 0, "", "",
-+"f2 41 0f ae f0       \tumwait %r8d",},
-+{{0x48, 0x0f, 0x38, 0xf9, 0x03, }, 5, 0, "", "",
-+"48 0f 38 f9 03       \tmovdiri %rax,(%rbx)",},
-+{{0x48, 0x0f, 0x38, 0xf9, 0x88, 0x78, 0x56, 0x34, 0x12, }, 9, 0, "", "",
-+"48 0f 38 f9 88 78 56 34 12 \tmovdiri %rcx,0x12345678(%rax)",},
-+{{0x66, 0x0f, 0x38, 0xf8, 0x18, }, 5, 0, "", "",
-+"66 0f 38 f8 18       \tmovdir64b (%rax),%rbx",},
-+{{0x66, 0x0f, 0x38, 0xf8, 0x88, 0x78, 0x56, 0x34, 0x12, }, 9, 0, "", "",
-+"66 0f 38 f8 88 78 56 34 12 \tmovdir64b 0x12345678(%rax),%rcx",},
-+{{0x67, 0x66, 0x0f, 0x38, 0xf8, 0x18, }, 6, 0, "", "",
-+"67 66 0f 38 f8 18    \tmovdir64b (%eax),%ebx",},
-+{{0x67, 0x66, 0x0f, 0x38, 0xf8, 0x88, 0x78, 0x56, 0x34, 0x12, }, 10, 0, "", "",
-+"67 66 0f 38 f8 88 78 56 34 12 \tmovdir64b 0x12345678(%eax),%ecx",},
-+{{0xf2, 0x0f, 0x38, 0xf8, 0x18, }, 5, 0, "", "",
-+"f2 0f 38 f8 18       \tenqcmd (%rax),%rbx",},
-+{{0xf2, 0x0f, 0x38, 0xf8, 0x88, 0x78, 0x56, 0x34, 0x12, }, 9, 0, "", "",
-+"f2 0f 38 f8 88 78 56 34 12 \tenqcmd 0x12345678(%rax),%rcx",},
-+{{0x67, 0xf2, 0x0f, 0x38, 0xf8, 0x18, }, 6, 0, "", "",
-+"67 f2 0f 38 f8 18    \tenqcmd (%eax),%ebx",},
-+{{0x67, 0xf2, 0x0f, 0x38, 0xf8, 0x88, 0x78, 0x56, 0x34, 0x12, }, 10, 0, "", "",
-+"67 f2 0f 38 f8 88 78 56 34 12 \tenqcmd 0x12345678(%eax),%ecx",},
-+{{0xf3, 0x0f, 0x38, 0xf8, 0x18, }, 5, 0, "", "",
-+"f3 0f 38 f8 18       \tenqcmds (%rax),%rbx",},
-+{{0xf3, 0x0f, 0x38, 0xf8, 0x88, 0x78, 0x56, 0x34, 0x12, }, 9, 0, "", "",
-+"f3 0f 38 f8 88 78 56 34 12 \tenqcmds 0x12345678(%rax),%rcx",},
-+{{0x67, 0xf3, 0x0f, 0x38, 0xf8, 0x18, }, 6, 0, "", "",
-+"67 f3 0f 38 f8 18    \tenqcmds (%eax),%ebx",},
-+{{0x67, 0xf3, 0x0f, 0x38, 0xf8, 0x88, 0x78, 0x56, 0x34, 0x12, }, 10, 0, "", "",
-+"67 f3 0f 38 f8 88 78 56 34 12 \tenqcmds 0x12345678(%eax),%ecx",},
-+{{0x0f, 0x01, 0xcf, }, 3, 0, "", "",
-+"0f 01 cf             \tencls  ",},
-+{{0x0f, 0x01, 0xd7, }, 3, 0, "", "",
-+"0f 01 d7             \tenclu  ",},
-+{{0x0f, 0x01, 0xc0, }, 3, 0, "", "",
-+"0f 01 c0             \tenclv  ",},
-+{{0x0f, 0x01, 0xc5, }, 3, 0, "", "",
-+"0f 01 c5             \tpconfig ",},
-+{{0xf3, 0x0f, 0x09, }, 3, 0, "", "",
-+"f3 0f 09             \twbnoinvd ",},
-diff --git a/tools/perf/arch/x86/tests/insn-x86-dat-src.c b/tools/perf/arch/x86/tests/insn-x86-dat-src.c
-index 891415b..dd85a3a 100644
---- a/tools/perf/arch/x86/tests/insn-x86-dat-src.c
-+++ b/tools/perf/arch/x86/tests/insn-x86-dat-src.c
-@@ -1320,6 +1320,14 @@ int main(void)
- 	asm volatile("xsaveopt (%r8)");
- 	asm volatile("mfence");
+diff --git a/tools/perf/util/map.c b/tools/perf/util/map.c
+index d0899df..67e0f81 100644
+--- a/tools/perf/util/map.c
++++ b/tools/perf/util/map.c
+@@ -573,20 +573,63 @@ void map_groups__init(struct map_groups *mg, struct machine *machine)
+ 	maps__init(&mg->maps);
+ 	mg->machine = machine;
+ 	mg->last_search_by_name = NULL;
++	mg->nr_maps = 0;
++	mg->maps_by_name = NULL;
+ 	refcount_set(&mg->refcnt, 1);
+ }
  
-+	/* cldemote m8 */
++static void __map_groups__free_maps_by_name(struct map_groups *mg)
++{
++	/*
++	 * Free everything to try to do it from the rbtree in the next search
++	 */
++	zfree(&mg->maps_by_name);
++	mg->nr_maps_allocated = 0;
++}
 +
-+	asm volatile("cldemote (%rax)");
-+	asm volatile("cldemote (%r8)");
-+	asm volatile("cldemote (0x12345678)");
-+	asm volatile("cldemote 0x12345678(%rax,%rcx,8)");
-+	asm volatile("cldemote 0x12345678(%r8,%rcx,8)");
+ void map_groups__insert(struct map_groups *mg, struct map *map)
+ {
+-	maps__insert(&mg->maps, map);
++	struct maps *maps = &mg->maps;
 +
- 	/* xsavec mem */
++	down_write(&maps->lock);
++	__maps__insert(maps, map);
++	++mg->nr_maps;
++
++	/*
++	 * If we already performed some search by name, then we need to add the just
++	 * inserted map and resort.
++	 */
++	if (mg->maps_by_name) {
++		if (mg->nr_maps > mg->nr_maps_allocated) {
++			int nr_allocate = mg->nr_maps * 2;
++			struct map **maps_by_name = realloc(mg->maps_by_name, nr_allocate * sizeof(map));
++
++			if (maps_by_name == NULL) {
++				__map_groups__free_maps_by_name(mg);
++				return;
++			}
++
++			mg->maps_by_name = maps_by_name;
++			mg->nr_maps_allocated = nr_allocate;
++		}
++		mg->maps_by_name[mg->nr_maps - 1] = map;
++		__map_groups__sort_by_name(mg);
++	}
++	up_write(&maps->lock);
+ }
  
- 	asm volatile("xsavec (%rax)");
-@@ -1364,6 +1372,48 @@ int main(void)
- 	asm volatile("ptwriteq 0x12345678(%rax,%rcx,8)");
- 	asm volatile("ptwriteq 0x12345678(%r8,%rcx,8)");
+ void map_groups__remove(struct map_groups *mg, struct map *map)
+ {
++	struct maps *maps = &mg->maps;
++	down_write(&maps->lock);
+ 	if (mg->last_search_by_name == map)
+ 		mg->last_search_by_name = NULL;
  
-+	/* tpause */
-+
-+	asm volatile("tpause %ebx");
-+	asm volatile("tpause %r8d");
-+
-+	/* umonitor */
-+
-+	asm volatile("umonitor %eax");
-+	asm volatile("umonitor %rax");
-+	asm volatile("umonitor %r8d");
-+
-+	/* umwait */
-+
-+	asm volatile("umwait %eax");
-+	asm volatile("umwait %r8d");
-+
-+	/* movdiri */
-+
-+	asm volatile("movdiri %rax,(%rbx)");
-+	asm volatile("movdiri %rcx,0x12345678(%rax)");
-+
-+	/* movdir64b */
-+
-+	asm volatile("movdir64b (%rax),%rbx");
-+	asm volatile("movdir64b 0x12345678(%rax),%rcx");
-+	asm volatile("movdir64b (%eax),%ebx");
-+	asm volatile("movdir64b 0x12345678(%eax),%ecx");
-+
-+	/* enqcmd */
-+
-+	asm volatile("enqcmd (%rax),%rbx");
-+	asm volatile("enqcmd 0x12345678(%rax),%rcx");
-+	asm volatile("enqcmd (%eax),%ebx");
-+	asm volatile("enqcmd 0x12345678(%eax),%ecx");
-+
-+	/* enqcmds */
-+
-+	asm volatile("enqcmds (%rax),%rbx");
-+	asm volatile("enqcmds 0x12345678(%rax),%rcx");
-+	asm volatile("enqcmds (%eax),%ebx");
-+	asm volatile("enqcmds 0x12345678(%eax),%ecx");
-+
- #else  /* #ifdef __x86_64__ */
+-	maps__remove(&mg->maps, map);
++	__maps__remove(maps, map);
++	--mg->nr_maps;
++	if (mg->maps_by_name)
++		__map_groups__free_maps_by_name(mg);
++	up_write(&maps->lock);
+ }
  
- 	/* bound r32, mem (same op code as EVEX prefix) */
-@@ -2656,6 +2706,12 @@ int main(void)
- 	asm volatile("xsaveopt (%eax)");
- 	asm volatile("mfence");
+ static void __maps__purge(struct maps *maps)
+@@ -904,7 +947,7 @@ void maps__insert(struct maps *maps, struct map *map)
+ 	up_write(&maps->lock);
+ }
  
-+	/* cldemote m8 */
-+
-+	asm volatile("cldemote (%eax)");
-+	asm volatile("cldemote (0x12345678)");
-+	asm volatile("cldemote 0x12345678(%eax,%ecx,8)");
-+
- 	/* xsavec mem */
+-static void __maps__remove(struct maps *maps, struct map *map)
++void __maps__remove(struct maps *maps, struct map *map)
+ {
+ 	rb_erase_init(&map->rb_node, &maps->entries);
+ 	map__put(map);
+diff --git a/tools/perf/util/map_groups.h b/tools/perf/util/map_groups.h
+index f2a3158..63ed211 100644
+--- a/tools/perf/util/map_groups.h
++++ b/tools/perf/util/map_groups.h
+@@ -21,6 +21,7 @@ struct maps {
  
- 	asm volatile("xsavec (%eax)");
-@@ -2684,8 +2740,61 @@ int main(void)
- 	asm volatile("ptwritel (0x12345678)");
- 	asm volatile("ptwritel 0x12345678(%eax,%ecx,8)");
+ void maps__insert(struct maps *maps, struct map *map);
+ void maps__remove(struct maps *maps, struct map *map);
++void __maps__remove(struct maps *maps, struct map *map);
+ struct map *maps__find(struct maps *maps, u64 addr);
+ struct map *maps__first(struct maps *maps);
+ struct map *map__next(struct map *map);
+@@ -37,7 +38,10 @@ struct map_groups {
+ 	struct maps	 maps;
+ 	struct machine	 *machine;
+ 	struct map	 *last_search_by_name;
++	struct map	 **maps_by_name;
+ 	refcount_t	 refcnt;
++	unsigned int	 nr_maps;
++	unsigned int	 nr_maps_allocated;
+ #ifdef HAVE_LIBUNWIND_SUPPORT
+ 	void				*addr_space;
+ 	struct unwind_libunwind_ops	*unwind_libunwind_ops;
+@@ -97,4 +101,6 @@ struct map *map_groups__find_by_name(struct map_groups *mg, const char *name);
  
-+	/* tpause */
-+
-+	asm volatile("tpause %ebx");
-+
-+	/* umonitor */
-+
-+	asm volatile("umonitor %ax");
-+	asm volatile("umonitor %eax");
-+
-+	/* umwait */
-+
-+	asm volatile("umwait %eax");
-+
-+	/* movdiri */
-+
-+	asm volatile("movdiri %eax,(%ebx)");
-+	asm volatile("movdiri %ecx,0x12345678(%eax)");
-+
-+	/* movdir64b */
-+
-+	asm volatile("movdir64b (%eax),%ebx");
-+	asm volatile("movdir64b 0x12345678(%eax),%ecx");
-+	asm volatile("movdir64b (%si),%bx");
-+	asm volatile("movdir64b 0x1234(%si),%cx");
-+
-+	/* enqcmd */
-+
-+	asm volatile("enqcmd (%eax),%ebx");
-+	asm volatile("enqcmd 0x12345678(%eax),%ecx");
-+	asm volatile("enqcmd (%si),%bx");
-+	asm volatile("enqcmd 0x1234(%si),%cx");
-+
-+	/* enqcmds */
-+
-+	asm volatile("enqcmds (%eax),%ebx");
-+	asm volatile("enqcmds 0x12345678(%eax),%ecx");
-+	asm volatile("enqcmds (%si),%bx");
-+	asm volatile("enqcmds 0x1234(%si),%cx");
-+
- #endif /* #ifndef __x86_64__ */
+ int map_groups__merge_in(struct map_groups *kmaps, struct map *new_map);
  
-+	/* SGX */
++void __map_groups__sort_by_name(struct map_groups *mg);
 +
-+	asm volatile("encls");
-+	asm volatile("enclu");
-+	asm volatile("enclv");
-+
-+	/* pconfig */
-+
-+	asm volatile("pconfig");
-+
-+	/* wbnoinvd */
-+
-+	asm volatile("wbnoinvd");
-+
- 	/* Following line is a marker for the awk script - do not change */
- 	asm volatile("rdtsc"); /* Stop here */
+ #endif // __PERF_MAP_GROUPS_H
+diff --git a/tools/perf/util/symbol.c b/tools/perf/util/symbol.c
+index b5ae82a..db9667a 100644
+--- a/tools/perf/util/symbol.c
++++ b/tools/perf/util/symbol.c
+@@ -1760,6 +1760,56 @@ out:
+ 	return ret;
+ }
  
++static int map__strcmp(const void *a, const void *b)
++{
++	const struct map *ma = *(const struct map **)a, *mb = *(const struct map **)b;
++	return strcmp(ma->dso->short_name, mb->dso->short_name);
++}
++
++static int map__strcmp_name(const void *name, const void *b)
++{
++	const struct map *map = *(const struct map **)b;
++	return strcmp(name, map->dso->short_name);
++}
++
++void __map_groups__sort_by_name(struct map_groups *mg)
++{
++	qsort(mg->maps_by_name, mg->nr_maps, sizeof(struct map *), map__strcmp);
++}
++
++static int map__groups__sort_by_name_from_rbtree(struct map_groups *mg)
++{
++	struct map *map;
++	struct map **maps_by_name = realloc(mg->maps_by_name, mg->nr_maps * sizeof(map));
++	int i = 0;
++
++	if (maps_by_name == NULL)
++		return -1;
++
++	mg->maps_by_name = maps_by_name;
++	mg->nr_maps_allocated = mg->nr_maps;
++
++	maps__for_each_entry(&mg->maps, map)
++		maps_by_name[i++] = map;
++
++	__map_groups__sort_by_name(mg);
++	return 0;
++}
++
++static struct map *__map_groups__find_by_name(struct map_groups *mg, const char *name)
++{
++	struct map **mapp;
++
++	if (mg->maps_by_name == NULL &&
++	    map__groups__sort_by_name_from_rbtree(mg))
++		return NULL;
++
++	mapp = bsearch(name, mg->maps_by_name, mg->nr_maps, sizeof(*mapp), map__strcmp_name);
++	if (mapp)
++		return *mapp;
++	return NULL;
++}
++
+ struct map *map_groups__find_by_name(struct map_groups *mg, const char *name)
+ {
+ 	struct maps *maps = &mg->maps;
+@@ -1771,7 +1821,16 @@ struct map *map_groups__find_by_name(struct map_groups *mg, const char *name)
+ 		map = mg->last_search_by_name;
+ 		goto out_unlock;
+ 	}
++	/*
++	 * If we have mg->maps_by_name, then the name isn't in the rbtree,
++	 * as mg->maps_by_name mirrors the rbtree when lookups by name are
++	 * made.
++	 */
++	map = __map_groups__find_by_name(mg, name);
++	if (map || mg->maps_by_name != NULL)
++		goto out_unlock;
+ 
++	/* Fallback to traversing the rbtree... */
+ 	maps__for_each_entry(maps, map)
+ 		if (strcmp(map->dso->short_name, name) == 0) {
+ 			mg->last_search_by_name = map;
