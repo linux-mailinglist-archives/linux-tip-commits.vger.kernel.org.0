@@ -2,40 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 72D2E102A3C
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 Nov 2019 17:59:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 15A23102A39
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 Nov 2019 17:59:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728984AbfKSQ66 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 19 Nov 2019 11:58:58 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:52871 "EHLO
+        id S1728650AbfKSQ5G (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 19 Nov 2019 11:57:06 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:52839 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728654AbfKSQ5I (ORCPT
+        with ESMTP id S1728637AbfKSQ5G (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 19 Nov 2019 11:57:08 -0500
+        Tue, 19 Nov 2019 11:57:06 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iX6oE-0007U6-5Z; Tue, 19 Nov 2019 17:56:58 +0100
+        id 1iX6oF-0007QG-A8; Tue, 19 Nov 2019 17:56:59 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E75AD1C19CE;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4E18E1C19CC;
         Tue, 19 Nov 2019 17:56:49 +0100 (CET)
 Date:   Tue, 19 Nov 2019 16:56:49 -0000
 From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf machine: No need to check if kernel module maps
- pre-exist
+Subject: [tip: perf/core] perf map: Use bitmap for booleans
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         Andi Kleen <ak@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>,
         Namhyung Kim <namhyung@kernel.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <tip-gnzjg2hhuz6jnrw91m35059y@git.kernel.org>
-References: <tip-gnzjg2hhuz6jnrw91m35059y@git.kernel.org>
+In-Reply-To: <tip-g5545pcq4ff0wr17tfb1piqt@git.kernel.org>
+References: <tip-g5545pcq4ff0wr17tfb1piqt@git.kernel.org>
 MIME-Version: 1.0
-Message-ID: <157418260988.12247.10814494424697377296.tip-bot2@tip-bot2>
+Message-ID: <157418260927.12247.7477192419256385944.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,105 +50,83 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     a94ab91a54c63b9101715b03171219279cc0ee26
-Gitweb:        https://git.kernel.org/tip/a94ab91a54c63b9101715b03171219279cc0ee26
+Commit-ID:     dbc984c961667b1ce48a0337b5bcd3b8c9cb2098
+Gitweb:        https://git.kernel.org/tip/dbc984c961667b1ce48a0337b5bcd3b8c9cb2098
 Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Thu, 14 Nov 2019 12:28:41 -03:00
+AuthorDate:    Mon, 18 Nov 2019 16:26:29 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Mon, 18 Nov 2019 13:01:50 -03:00
+CommitterDate: Mon, 18 Nov 2019 16:29:01 -03:00
 
-perf machine: No need to check if kernel module maps pre-exist
+perf map: Use bitmap for booleans
 
-We'only populating maps for kernel modules either from perf.data file
-PERF_RECORD_MMAP records or when parsing /proc/modules, so there is no
-need to first look if we already have those module maps in the list,
-that would mean the kernel has duplicate entries.
+The map->priv and map->erange_warned are seldom used, the first only in
+tests/vmlinux-kallsyms.c, the later only when hist_entry__inc_addr_samples()
+returns -ERANGE in 'perf top', which are really rare occasions, so make
+them a bool bitfield.
 
-So ditch one use of looking up maps by name.
+This will open up space for other members on the first cacheline.
+
+  $ pahole -C map ~/bin/perf
+  struct map {
+  	union {
+  		struct rb_node rb_node __attribute__((__aligned__(8))); /*     0    24 */
+  		struct list_head node;                   /*     0    16 */
+  	} __attribute__((__aligned__(8)));                                               /*     0    24 */
+  	u64                        start;                /*    24     8 */
+  	u64                        end;                  /*    32     8 */
+  	_Bool                      erange_warned:1;      /*    40: 0  1 */
+  	_Bool                      priv:1;               /*    40: 1  1 */
+
+  	/* XXX 6 bits hole, try to pack */
+  	/* XXX 3 bytes hole, try to pack */
+
+  	u32                        prot;                 /*    44     4 */
+  	u32                        flags;                /*    48     4 */
+
+  	/* XXX 4 bytes hole, try to pack */
+
+  	u64                        pgoff;                /*    56     8 */
+  	/* --- cacheline 1 boundary (64 bytes) --- */
+  	u64                        reloc;                /*    64     8 */
+  	u32                        maj;                  /*    72     4 */
+  	u32                        min;                  /*    76     4 */
+  	u64                        ino;                  /*    80     8 */
+  	u64                        ino_generation;       /*    88     8 */
+  	u64                        (*map_ip)(struct map *, u64); /*    96     8 */
+  	u64                        (*unmap_ip)(struct map *, u64); /*   104     8 */
+  	struct dso *               dso;                  /*   112     8 */
+  	refcount_t                 refcnt;               /*   120     4 */
+
+  	/* size: 128, cachelines: 2, members: 17 */
+  	/* sum members: 116, holes: 2, sum holes: 7 */
+  	/* sum bitfield members: 2 bits, bit holes: 1, sum bit holes: 6 bits */
+  	/* padding: 4 */
+  	/* forced alignments: 1 */
+  } __attribute__((__aligned__(8)));
+  $
 
 Cc: Adrian Hunter <adrian.hunter@intel.com>
 Cc: Andi Kleen <ak@linux.intel.com>
 Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lkml.kernel.org/n/tip-gnzjg2hhuz6jnrw91m35059y@git.kernel.org
+Link: https://lkml.kernel.org/n/tip-g5545pcq4ff0wr17tfb1piqt@git.kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/machine.c | 16 ++++++----------
- tools/perf/util/machine.h |  2 --
- tools/perf/util/symbol.c  |  2 +-
- 3 files changed, 7 insertions(+), 13 deletions(-)
+ tools/perf/util/map.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/util/machine.c b/tools/perf/util/machine.c
-index 6804c82..7d2e211 100644
---- a/tools/perf/util/machine.c
-+++ b/tools/perf/util/machine.c
-@@ -772,20 +772,16 @@ int machine__process_ksymbol(struct machine *machine __maybe_unused,
- 	return machine__process_ksymbol_register(machine, event, sample);
- }
- 
--struct map *machine__findnew_module_map(struct machine *machine, u64 start,
--					const char *filename)
-+static struct map *machine__addnew_module_map(struct machine *machine, u64 start,
-+					      const char *filename)
- {
- 	struct map *map = NULL;
--	struct dso *dso = NULL;
- 	struct kmod_path m;
-+	struct dso *dso;
- 
- 	if (kmod_path__parse_name(&m, filename))
- 		return NULL;
- 
--	map = map_groups__find_by_name(&machine->kmaps, m.name);
--	if (map)
--		goto out;
--
- 	dso = machine__findnew_module_dso(machine, &m, filename);
- 	if (dso == NULL)
- 		goto out;
-@@ -1384,7 +1380,7 @@ static int machine__create_module(void *arg, const char *name, u64 start,
- 	if (arch__fix_module_text_start(&start, &size, name) < 0)
- 		return -1;
- 
--	map = machine__findnew_module_map(machine, start, name);
-+	map = machine__addnew_module_map(machine, start, name);
- 	if (map == NULL)
- 		return -1;
- 	map->end = start + size;
-@@ -1559,8 +1555,8 @@ static int machine__process_kernel_mmap_event(struct machine *machine,
- 				strlen(machine->mmap_name) - 1) == 0;
- 	if (event->mmap.filename[0] == '/' ||
- 	    (!is_kernel_mmap && event->mmap.filename[0] == '[')) {
--		map = machine__findnew_module_map(machine, event->mmap.start,
--						  event->mmap.filename);
-+		map = machine__addnew_module_map(machine, event->mmap.start,
-+						 event->mmap.filename);
- 		if (map == NULL)
- 			goto out_problem;
- 
-diff --git a/tools/perf/util/machine.h b/tools/perf/util/machine.h
-index 18e13c0..1016978 100644
---- a/tools/perf/util/machine.h
-+++ b/tools/perf/util/machine.h
-@@ -221,8 +221,6 @@ struct symbol *machine__find_kernel_symbol_by_name(struct machine *machine,
- 	return map_groups__find_symbol_by_name(&machine->kmaps, name, mapp);
- }
- 
--struct map *machine__findnew_module_map(struct machine *machine, u64 start,
--					const char *filename);
- int arch__fix_module_text_start(u64 *start, u64 *size, const char *name);
- 
- int machine__load_kallsyms(struct machine *machine, const char *filename);
-diff --git a/tools/perf/util/symbol.c b/tools/perf/util/symbol.c
-index b146d87..b5ae82a 100644
---- a/tools/perf/util/symbol.c
-+++ b/tools/perf/util/symbol.c
-@@ -1530,7 +1530,7 @@ static bool dso__is_compatible_symtab_type(struct dso *dso, bool kmod,
- 	case DSO_BINARY_TYPE__SYSTEM_PATH_KMODULE_COMP:
- 		/*
- 		 * kernel modules know their symtab type - it's set when
--		 * creating a module dso in machine__findnew_module_map().
-+		 * creating a module dso in machine__addnew_module_map().
- 		 */
- 		return kmod && dso->symtab_type == type;
- 
+diff --git a/tools/perf/util/map.h b/tools/perf/util/map.h
+index a31e809..e2466aa 100644
+--- a/tools/perf/util/map.h
++++ b/tools/perf/util/map.h
+@@ -25,8 +25,8 @@ struct map {
+ 	};
+ 	u64			start;
+ 	u64			end;
+-	bool			erange_warned;
+-	u32			priv;
++	bool			erange_warned:1;
++	bool			priv:1;
+ 	u32			prot;
+ 	u32			flags;
+ 	u64			pgoff;
