@@ -2,42 +2,42 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 249B5102A2D
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 Nov 2019 17:58:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D39D4102A31
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 Nov 2019 17:59:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728680AbfKSQ5J (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S1728637AbfKSQ5J (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Tue, 19 Nov 2019 11:57:09 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:52874 "EHLO
+Received: from Galois.linutronix.de ([193.142.43.55]:52880 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728657AbfKSQ5J (ORCPT
+        with ESMTP id S1728641AbfKSQ5J (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Tue, 19 Nov 2019 11:57:09 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iX6o9-0007P8-Fj; Tue, 19 Nov 2019 17:56:53 +0100
+        id 1iX6o7-0007Nk-5p; Tue, 19 Nov 2019 17:56:51 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id CB1C51C19D1;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 85F5B1C19CF;
         Tue, 19 Nov 2019 17:56:48 +0100 (CET)
 Date:   Tue, 19 Nov 2019 16:56:48 -0000
 From:   "tip-bot2 for Masami Hiramatsu" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf probe: Show correct statement line number by
- perf probe -l
-Cc:     Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
+Subject: [tip: perf/core] perf probe: Do not show non representive lines by
+ perf-probe -L
+Cc:     Masami Hiramatsu <mhiramat@kernel.org>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
         Namhyung Kim <namhyung@kernel.org>,
         Ravi Bangoria <ravi.bangoria@linux.ibm.com>,
         "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
         Tom Zanussi <tom.zanussi@linux.intel.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <157406471067.24476.17463149618465494448.stgit@devnote2>
-References: <157406471067.24476.17463149618465494448.stgit@devnote2>
+In-Reply-To: <157406473064.24476.2913278267727587314.stgit@devnote2>
+References: <157406473064.24476.2913278267727587314.stgit@devnote2>
 MIME-Version: 1.0
-Message-ID: <157418260878.12247.9502844079335473718.tip-bot2@tip-bot2>
+Message-ID: <157418260850.12247.4435566464230141839.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -53,145 +53,110 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     57f95bf5f88295612871c36cb0de5069e50570f8
-Gitweb:        https://git.kernel.org/tip/57f95bf5f88295612871c36cb0de5069e50570f8
+Commit-ID:     499144c83d3b7e4f9e83916acfc97bbc3af891dc
+Gitweb:        https://git.kernel.org/tip/499144c83d3b7e4f9e83916acfc97bbc3af891dc
 Author:        Masami Hiramatsu <mhiramat@kernel.org>
-AuthorDate:    Mon, 18 Nov 2019 17:11:50 +09:00
+AuthorDate:    Mon, 18 Nov 2019 17:12:10 +09:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Mon, 18 Nov 2019 18:56:27 -03:00
+CommitterDate: Mon, 18 Nov 2019 18:59:36 -03:00
 
-perf probe: Show correct statement line number by perf probe -l
+perf probe: Do not show non representive lines by perf-probe -L
 
-The dwarf_getsrc_die() can return the line which is not a statement nor
-the least line number among the lines which shares same address.
+Since perf probe -L shows non representive lines, it can be mislead
+users where user can put probes.  This prevents to show such non
+representive lines so that user can understand which lines user can
+probe.
 
-This can lead perf probe --list shows incorrect line number for probed
-address.
+  # perf probe -L kernel_read
+  <kernel_read@/build/linux-pvZVvI/linux-5.0.0/fs/read_write.c:0>
+        0  ssize_t kernel_read(struct file *file, void *buf, size_t count, loff_t *pos)
+           {
+        2         mm_segment_t old_fs;
+                  ssize_t result;
 
-To fix this, this introduces cu_getsrc_die() which returns only a
-statement line and which is the least line number (we call it the
-representive line for an address), and use it in cu_find_lineinfo().
+                  old_fs = get_fs();
+        6         set_fs(get_ds());
+                  /* The cast to a user pointer is valid due to the set_fs() */
+        8         result = vfs_read(file, (void __user *)buf, count, pos);
+        9         set_fs(old_fs);
+       10         return result;
+           }
+           EXPORT_SYMBOL(kernel_read);
 
-Also, if the given address is the entry address of a real function,
-cu_find_lineinfo() returns the function declared line number instead of
-the start line number of the function body.
+Committer testing:
 
-For example, without this change perf probe -l shows incorrect line as
-below.
+Before:
 
-  # perf probe -a kernel_read:2
-  Added new event:
-    probe:kernel_read    (on kernel_read:2)
+  # perf probe -L kernel_read
+  <kernel_read@/usr/src/debug/kernel-5.3.fc30/linux-5.3.8-200.fc30.x86_64/fs/read_write.c:0>
+        0  ssize_t kernel_read(struct file *file, void *buf, size_t count, loff_t *pos)
+        1  {
+        2         mm_segment_t old_fs;
+        3         ssize_t result;
 
-  You can now use it in all perf tools, such as:
+        5         old_fs = get_fs();
+        6         set_fs(KERNEL_DS);
+                  /* The cast to a user pointer is valid due to the set_fs() */
+        8         result = vfs_read(file, (void __user *)buf, count, pos);
+        9         set_fs(old_fs);
+       10         return result;
+           }
+           EXPORT_SYMBOL(kernel_read);
+  #
 
-  	perf record -e probe:kernel_read -aR sleep 1
+See the 1, 3, 5 lines? They shouldn't be there, after this patch:
 
-  # perf probe -l
-    probe:kernel_read    (on kernel_read:1@linux-5.0.0/fs/read_write.c)
+  # perf probe -L kernel_read
+  <kernel_read@/usr/src/debug/kernel-5.3.fc30/linux-5.3.8-200.fc30.x86_64/fs/read_write.c:0>
+        0  ssize_t kernel_read(struct file *file, void *buf, size_t count, loff_t *pos)
+           {
+        2         mm_segment_t old_fs;
+                  ssize_t result;
 
-With this fix, it shows correct line number as below;
+                  old_fs = get_fs();
+        6         set_fs(KERNEL_DS);
+                  /* The cast to a user pointer is valid due to the set_fs() */
+        8         result = vfs_read(file, (void __user *)buf, count, pos);
+        9         set_fs(old_fs);
+       10         return result;
+           }
+           EXPORT_SYMBOL(kernel_read);
+  #
 
-  # perf probe -l
-    probe:kernel_read    (on kernel_read:2@linux-5.0.0/fs/read_write.c)
-
-Reported-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Masami Hiramatsu <mhiramat@kernel.org>
+Reported-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
 Cc: Steven Rostedt (VMware) <rostedt@goodmis.org>
 Cc: Tom Zanussi <tom.zanussi@linux.intel.com>
-Link: http://lore.kernel.org/lkml/157406471067.24476.17463149618465494448.stgit@devnote2
+Link: http://lore.kernel.org/lkml/157406473064.24476.2913278267727587314.stgit@devnote2
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/dwarf-aux.c | 62 +++++++++++++++++++++++++++++++++---
- 1 file changed, 58 insertions(+), 4 deletions(-)
+ tools/perf/util/probe-finder.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/tools/perf/util/dwarf-aux.c b/tools/perf/util/dwarf-aux.c
-index 5544bfb..aa89801 100644
---- a/tools/perf/util/dwarf-aux.c
-+++ b/tools/perf/util/dwarf-aux.c
-@@ -59,6 +59,51 @@ const char *cu_get_comp_dir(Dwarf_Die *cu_die)
- 	return dwarf_formstring(&attr);
- }
- 
-+/* Unlike dwarf_getsrc_die(), cu_getsrc_die() only returns statement line */
-+static Dwarf_Line *cu_getsrc_die(Dwarf_Die *cu_die, Dwarf_Addr addr)
-+{
-+	Dwarf_Addr laddr;
-+	Dwarf_Lines *lines;
-+	Dwarf_Line *line;
-+	size_t nlines, l, u, n;
-+	bool flag;
-+
-+	if (dwarf_getsrclines(cu_die, &lines, &nlines) != 0 ||
-+	    nlines == 0)
-+		return NULL;
-+
-+	/* Lines are sorted by address, use binary search */
-+	l = 0; u = nlines - 1;
-+	while (l < u) {
-+		n = u - (u - l) / 2;
-+		line = dwarf_onesrcline(lines, n);
-+		if (!line || dwarf_lineaddr(line, &laddr) != 0)
-+			return NULL;
-+		if (addr < laddr)
-+			u = n - 1;
-+		else
-+			l = n;
-+	}
-+	/* Going backward to find the lowest line */
-+	do {
-+		line = dwarf_onesrcline(lines, --l);
-+		if (!line || dwarf_lineaddr(line, &laddr) != 0)
-+			return NULL;
-+	} while (laddr == addr);
-+	l++;
-+	/* Going foward to find the statement line */
-+	do {
-+		line = dwarf_onesrcline(lines, l++);
-+		if (!line || dwarf_lineaddr(line, &laddr) != 0 ||
-+		    dwarf_linebeginstatement(line, &flag) != 0)
-+			return NULL;
-+		if (laddr > addr)
-+			return NULL;
-+	} while (!flag);
-+
-+	return line;
-+}
-+
- /**
-  * cu_find_lineinfo - Get a line number and file name for given address
-  * @cu_die: a CU DIE
-@@ -72,17 +117,26 @@ int cu_find_lineinfo(Dwarf_Die *cu_die, unsigned long addr,
- 		    const char **fname, int *lineno)
+diff --git a/tools/perf/util/probe-finder.c b/tools/perf/util/probe-finder.c
+index ef1b320..f12ad50 100644
+--- a/tools/perf/util/probe-finder.c
++++ b/tools/perf/util/probe-finder.c
+@@ -1734,12 +1734,19 @@ static int line_range_walk_cb(const char *fname, int lineno,
+ 			      void *data)
  {
- 	Dwarf_Line *line;
--	Dwarf_Addr laddr;
-+	Dwarf_Die die_mem;
-+	Dwarf_Addr faddr;
+ 	struct line_finder *lf = data;
++	const char *__fname;
++	int __lineno;
+ 	int err;
  
--	line = dwarf_getsrc_die(cu_die, (Dwarf_Addr)addr);
--	if (line && dwarf_lineaddr(line, &laddr) == 0 &&
--	    addr == (unsigned long)laddr && dwarf_lineno(line, lineno) == 0) {
-+	if (die_find_realfunc(cu_die, (Dwarf_Addr)addr, &die_mem)
-+	    && die_entrypc(&die_mem, &faddr) == 0 &&
-+	    faddr == addr) {
-+		*fname = dwarf_decl_file(&die_mem);
-+		dwarf_decl_line(&die_mem, lineno);
-+		goto out;
-+	}
+ 	if ((strtailcmp(fname, lf->fname) != 0) ||
+ 	    (lf->lno_s > lineno || lf->lno_e < lineno))
+ 		return 0;
+ 
++	/* Make sure this line can be reversable */
++	if (cu_find_lineinfo(&lf->cu_die, addr, &__fname, &__lineno) > 0
++	    && (lineno != __lineno || strcmp(fname, __fname)))
++		return 0;
 +
-+	line = cu_getsrc_die(cu_die, (Dwarf_Addr)addr);
-+	if (line && dwarf_lineno(line, lineno) == 0) {
- 		*fname = dwarf_linesrc(line, NULL, NULL);
- 		if (!*fname)
- 			/* line number is useless without filename */
- 			*lineno = 0;
- 	}
- 
-+out:
- 	return *lineno ?: -ENOENT;
- }
- 
+ 	err = line_range_add_line(fname, lineno, lf->lr);
+ 	if (err < 0 && err != -EEXIST)
+ 		return err;
