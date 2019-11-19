@@ -2,42 +2,44 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CDF5F1021C8
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 Nov 2019 11:12:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CA5D1029EE
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 Nov 2019 17:57:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726000AbfKSKM3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 19 Nov 2019 05:12:29 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:51839 "EHLO
+        id S1728699AbfKSQ5L (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 19 Nov 2019 11:57:11 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:52903 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725798AbfKSKM3 (ORCPT
+        with ESMTP id S1728676AbfKSQ5L (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 19 Nov 2019 05:12:29 -0500
+        Tue, 19 Nov 2019 11:57:11 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iX0UX-0001XN-Bb; Tue, 19 Nov 2019 11:12:13 +0100
+        id 1iX6o2-0007JA-QA; Tue, 19 Nov 2019 17:56:47 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E47B11C19C7;
-        Tue, 19 Nov 2019 11:12:12 +0100 (CET)
-Date:   Tue, 19 Nov 2019 10:12:12 -0000
-From:   "tip-bot2 for Jan Beulich" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 668341C19CB;
+        Tue, 19 Nov 2019 17:56:46 +0100 (CET)
+Date:   Tue, 19 Nov 2019 16:56:46 -0000
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/stackframe/32: Repair 32-bit Xen PV
-Cc:     Jan Beulich <jbeulich@suse.com>, <stable@vger.kernel.org>,
+Subject: [tip: core/kprobes] x86/kprobe: Add comments to arch_{,un}optimize_kprobes()
+Cc:     Alexei Starovoitov <ast@kernel.org>,
+        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Andy Lutomirski <luto@kernel.org>,
         Borislav Petkov <bp@alien8.de>,
         Brian Gerst <brgerst@gmail.com>,
         Denys Vlasenko <dvlasenk@redhat.com>,
         "H. Peter Anvin" <hpa@zytor.com>,
         Linus Torvalds <torvalds@linux-foundation.org>,
-        Peter Zijlstra <peterz@infradead.org>,
         Thomas Gleixner <tglx@linutronix.de>,
-        "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
         Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org
+In-Reply-To: <20191111132458.401696663@infradead.org>
+References: <20191111132458.401696663@infradead.org>
 MIME-Version: 1.0
-Message-ID: <157415833282.12247.2847277914358020515.tip-bot2@tip-bot2>
+Message-ID: <157418260634.12247.3206870563865681175.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,27 +53,25 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the core/kprobes branch of tip:
 
-Commit-ID:     189eb7f3d7ec70ceeaa195221ddfd95016e10ace
-Gitweb:        https://git.kernel.org/tip/189eb7f3d7ec70ceeaa195221ddfd95016e10ace
-Author:        Jan Beulich <jbeulich@suse.com>
-AuthorDate:    Mon, 18 Nov 2019 16:21:12 +01:00
+Commit-ID:     654920255149b034ad5a8aee6b02cfa16e65e9c0
+Gitweb:        https://git.kernel.org/tip/654920255149b034ad5a8aee6b02cfa16e65e9c0
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Mon, 11 Nov 2019 14:02:10 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 19 Nov 2019 09:01:59 +01:00
+CommitterDate: Tue, 19 Nov 2019 13:13:08 +01:00
 
-x86/stackframe/32: Repair 32-bit Xen PV
+x86/kprobe: Add comments to arch_{,un}optimize_kprobes()
 
-Once again RPL checks have been introduced which don't account for a
-32-bit kernel living in ring 1 when running in a PV Xen domain. The
-case in FIXUP_FRAME has been preventing boot. Adjust BUG_IF_WRONG_CR3
-as well to guard against future uses of the macro on a code path
-reachable when running in PV mode under Xen; I have to admit that I
-stopped at a certain point trying to figure out whether there are
-present ones.
+Add a few words describing how it is safe to overwrite the 4 bytes
+after a kprobe. In specific it is possible the JMP.d32 required for
+the optimized kprobe overwrites multiple instructions.
 
-Signed-off-by: Jan Beulich <jbeulich@suse.com>
-Cc: <stable@vger.kernel.org>
+Tested-by: Alexei Starovoitov <ast@kernel.org>
+Tested-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Alexei Starovoitov <ast@kernel.org>
 Cc: Andy Lutomirski <luto@kernel.org>
 Cc: Borislav Petkov <bp@alien8.de>
 Cc: Brian Gerst <brgerst@gmail.com>
@@ -80,56 +80,42 @@ Cc: H. Peter Anvin <hpa@zytor.com>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: xen-devel@lists.xenproject.org <xen-devel@lists.xenproject.org>
-Fixes: 3c88c692c287 ("x86/stackframe/32: Provide consistent pt_regs")
+Link: https://lkml.kernel.org/r/20191111132458.401696663@infradead.org
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- arch/x86/entry/entry_32.S      |  4 ++--
- arch/x86/include/asm/segment.h | 12 ++++++++++++
- 2 files changed, 14 insertions(+), 2 deletions(-)
+ arch/x86/kernel/kprobes/opt.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/entry/entry_32.S b/arch/x86/entry/entry_32.S
-index f83ca5a..3f847d8 100644
---- a/arch/x86/entry/entry_32.S
-+++ b/arch/x86/entry/entry_32.S
-@@ -172,7 +172,7 @@
- 	ALTERNATIVE "jmp .Lend_\@", "", X86_FEATURE_PTI
- 	.if \no_user_check == 0
- 	/* coming from usermode? */
--	testl	$SEGMENT_RPL_MASK, PT_CS(%esp)
-+	testl	$USER_SEGMENT_RPL_MASK, PT_CS(%esp)
- 	jz	.Lend_\@
- 	.endif
- 	/* On user-cr3? */
-@@ -217,7 +217,7 @@
- 	testl	$X86_EFLAGS_VM, 4*4(%esp)
- 	jnz	.Lfrom_usermode_no_fixup_\@
- #endif
--	testl	$SEGMENT_RPL_MASK, 3*4(%esp)
-+	testl	$USER_SEGMENT_RPL_MASK, 3*4(%esp)
- 	jnz	.Lfrom_usermode_no_fixup_\@
+diff --git a/arch/x86/kernel/kprobes/opt.c b/arch/x86/kernel/kprobes/opt.c
+index 26e0d6c..3f45b5c 100644
+--- a/arch/x86/kernel/kprobes/opt.c
++++ b/arch/x86/kernel/kprobes/opt.c
+@@ -414,8 +414,12 @@ err:
+ }
  
- 	orl	$CS_FROM_KERNEL, 3*4(%esp)
-diff --git a/arch/x86/include/asm/segment.h b/arch/x86/include/asm/segment.h
-index ac38929..6669164 100644
---- a/arch/x86/include/asm/segment.h
-+++ b/arch/x86/include/asm/segment.h
-@@ -31,6 +31,18 @@
-  */
- #define SEGMENT_RPL_MASK	0x3
- 
-+/*
-+ * When running on Xen PV, the actual privilege level of the kernel is 1,
-+ * not 0. Testing the Requested Privilege Level in a segment selector to
-+ * determine whether the context is user mode or kernel mode with
-+ * SEGMENT_RPL_MASK is wrong because the PV kernel's privilege level
-+ * matches the 0x3 mask.
+ /*
+- * Replace breakpoints (int3) with relative jumps.
++ * Replace breakpoints (INT3) with relative jumps (JMP.d32).
+  * Caller must call with locking kprobe_mutex and text_mutex.
 + *
-+ * Testing with USER_SEGMENT_RPL_MASK is valid for both native and Xen PV
-+ * kernels because privilege level 2 is never used.
-+ */
-+#define USER_SEGMENT_RPL_MASK	0x2
-+
- /* User mode is privilege level 3: */
- #define USER_RPL		0x3
++ * The caller will have installed a regular kprobe and after that issued
++ * syncrhonize_rcu_tasks(), this ensures that the instruction(s) that live in
++ * the 4 bytes after the INT3 are unused and can now be overwritten.
+  */
+ void arch_optimize_kprobes(struct list_head *oplist)
+ {
+@@ -441,7 +445,13 @@ void arch_optimize_kprobes(struct list_head *oplist)
+ 	}
+ }
  
+-/* Replace a relative jump with a breakpoint (int3).  */
++/*
++ * Replace a relative jump (JMP.d32) with a breakpoint (INT3).
++ *
++ * After that, we can restore the 4 bytes after the INT3 to undo what
++ * arch_optimize_kprobes() scribbled. This is safe since those bytes will be
++ * unused once the INT3 lands.
++ */
+ void arch_unoptimize_kprobe(struct optimized_kprobe *op)
+ {
+ 	arch_arm_kprobe(&op->kp);
