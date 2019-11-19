@@ -2,40 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F27AE102A1D
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 Nov 2019 17:58:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4707C102A2B
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 Nov 2019 17:58:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728913AbfKSQ6X (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 19 Nov 2019 11:58:23 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:52923 "EHLO
+        id S1728945AbfKSQ6q (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 19 Nov 2019 11:58:46 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:52882 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728718AbfKSQ5P (ORCPT
+        with ESMTP id S1728527AbfKSQ5K (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 19 Nov 2019 11:57:15 -0500
+        Tue, 19 Nov 2019 11:57:10 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iX6oL-0007WI-EU; Tue, 19 Nov 2019 17:57:05 +0100
+        id 1iX6oE-0007Uj-RQ; Tue, 19 Nov 2019 17:56:59 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D07F01C19DC;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 21D851C19D8;
         Tue, 19 Nov 2019 17:56:50 +0100 (CET)
 Date:   Tue, 19 Nov 2019 16:56:50 -0000
 From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf maps: Purge the entries from maps->names in
- __maps__purge()
+Subject: [tip: perf/core] perf record: No need to process the synthesized MMAP
+ events twice
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         Andi Kleen <ak@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>,
         Namhyung Kim <namhyung@kernel.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <tip-ps0nrio8pydyo23rr2s696ue@git.kernel.org>
-References: <tip-ps0nrio8pydyo23rr2s696ue@git.kernel.org>
+In-Reply-To: <tip-mofoxvcx2dryppcw3o689jdd@git.kernel.org>
+References: <tip-mofoxvcx2dryppcw3o689jdd@git.kernel.org>
 MIME-Version: 1.0
-Message-ID: <157418261074.12247.14398818002410876760.tip-bot2@tip-bot2>
+Message-ID: <157418261005.12247.14540142455238150040.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,107 +51,80 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     bcb8af5c46e452018de9b58db1fd0ffd94b5d96c
-Gitweb:        https://git.kernel.org/tip/bcb8af5c46e452018de9b58db1fd0ffd94b5d96c
+Commit-ID:     6e0a9b3dfaaf93476b34825e53c4ec065267081e
+Gitweb:        https://git.kernel.org/tip/6e0a9b3dfaaf93476b34825e53c4ec065267081e
 Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Wed, 13 Nov 2019 16:06:28 -03:00
+AuthorDate:    Thu, 14 Nov 2019 12:15:34 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Wed, 13 Nov 2019 16:06:28 -03:00
+CommitterDate: Mon, 18 Nov 2019 11:21:32 -03:00
 
-perf maps: Purge the entries from maps->names in __maps__purge()
+perf record: No need to process the synthesized MMAP events twice
 
-No need to iterate via the ->names rbtree, as all the entries there
-as in maps->entries as well, reuse __maps__purge() for that.
+At the end of a 'perf record' session, by default, we'll process all
+samples and populate the threads, maps, etc so as to find out which of
+the DSOs got samples, to reduce the size of the build-id table we'll
+add to the perf.data headers.
 
-Doing it this way we can kill maps__for_each_entry_by_name(),
-maps__for_each_entry_by_name_safe(), maps__{first,next}_by_name().
+But we don't need to process the PERF_RECORD_MMAP events synthesized
+for the kernel modules, as we have those already via
+perf_session__create_kernel_maps(), so add mmap/mmap2 handlers that
+first look at event->header.misc to see if the event is for a user map,
+bailing out if not.
 
 Cc: Adrian Hunter <adrian.hunter@intel.com>
 Cc: Andi Kleen <ak@linux.intel.com>
 Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lkml.kernel.org/n/tip-ps0nrio8pydyo23rr2s696ue@git.kernel.org
+Link: https://lkml.kernel.org/n/tip-mofoxvcx2dryppcw3o689jdd@git.kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/map.c        | 34 +---------------------------------
- tools/perf/util/map_groups.h |  8 --------
- 2 files changed, 1 insertion(+), 41 deletions(-)
+ tools/perf/builtin-record.c | 29 +++++++++++++++++++++++++++--
+ 1 file changed, 27 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/util/map.c b/tools/perf/util/map.c
-index 3598468..69b9e9b 100644
---- a/tools/perf/util/map.c
-+++ b/tools/perf/util/map.c
-@@ -589,15 +589,7 @@ static void __maps__purge(struct maps *maps)
- 	maps__for_each_entry_safe(maps, pos, next) {
- 		rb_erase_init(&pos->rb_node,  &maps->entries);
- 		map__put(pos);
--	}
--}
--
--static void __maps__purge_names(struct maps *maps)
--{
--	struct map *pos, *next;
--
--	maps__for_each_entry_by_name_safe(maps, pos, next) {
--		rb_erase_init(&pos->rb_node_name,  &maps->names);
-+		rb_erase_init(&pos->rb_node_name, &maps->names);
- 		map__put(pos);
- 	}
- }
-@@ -606,7 +598,6 @@ static void maps__exit(struct maps *maps)
- {
- 	down_write(&maps->lock);
- 	__maps__purge(maps);
--	__maps__purge_names(maps);
- 	up_write(&maps->lock);
- }
+diff --git a/tools/perf/builtin-record.c b/tools/perf/builtin-record.c
+index b95c000..7ab3110 100644
+--- a/tools/perf/builtin-record.c
++++ b/tools/perf/builtin-record.c
+@@ -2148,6 +2148,31 @@ static const char * const __record_usage[] = {
+ };
+ const char * const *record_usage = __record_usage;
  
-@@ -994,29 +985,6 @@ struct map *map__next(struct map *map)
- 	return map ? __map__next(map) : NULL;
- }
- 
--struct map *maps__first_by_name(struct maps *maps)
--{
--	struct rb_node *first = rb_first(&maps->names);
--
--	if (first)
--		return rb_entry(first, struct map, rb_node_name);
--	return NULL;
--}
--
--static struct map *__map__next_by_name(struct map *map)
--{
--	struct rb_node *next = rb_next(&map->rb_node_name);
--
--	if (next)
--		return rb_entry(next, struct map, rb_node_name);
--	return NULL;
--}
--
--struct map *map__next_by_name(struct map *map)
--{
--	return map ? __map__next_by_name(map) : NULL;
--}
--
- struct kmap *__map__kmap(struct map *map)
- {
- 	if (!map->dso || !map->dso->kernel)
-diff --git a/tools/perf/util/map_groups.h b/tools/perf/util/map_groups.h
-index 99cb810..3f36140 100644
---- a/tools/perf/util/map_groups.h
-+++ b/tools/perf/util/map_groups.h
-@@ -33,14 +33,6 @@ struct map *map__next(struct map *map);
- 	for (map = maps__first(maps), next = map__next(map); map; map = next, next = map__next(map))
- 
- struct symbol *maps__find_symbol_by_name(struct maps *maps, const char *name, struct map **mapp);
--struct map *maps__first_by_name(struct maps *maps);
--struct map *map__next_by_name(struct map *map);
--
--#define maps__for_each_entry_by_name(maps, map) \
--	for (map = maps__first_by_name(maps); map; map = map__next_by_name(map))
--
--#define maps__for_each_entry_by_name_safe(maps, map, next) \
--	for (map = maps__first_by_name(maps), next = map__next_by_name(map); map; map = next, next = map__next_by_name(map))
- 
- struct map_groups {
- 	struct maps	 maps;
++static int build_id__process_mmap(struct perf_tool *tool, union perf_event *event,
++				  struct perf_sample *sample, struct machine *machine)
++{
++	/*
++	 * We already have the kernel maps, put in place via perf_session__create_kernel_maps()
++	 * no need to add them twice.
++	 */
++	if (!(event->header.misc & PERF_RECORD_MISC_USER))
++		return 0;
++	return perf_event__process_mmap(tool, event, sample, machine);
++}
++
++static int build_id__process_mmap2(struct perf_tool *tool, union perf_event *event,
++				   struct perf_sample *sample, struct machine *machine)
++{
++	/*
++	 * We already have the kernel maps, put in place via perf_session__create_kernel_maps()
++	 * no need to add them twice.
++	 */
++	if (!(event->header.misc & PERF_RECORD_MISC_USER))
++		return 0;
++
++	return perf_event__process_mmap2(tool, event, sample, machine);
++}
++
+ /*
+  * XXX Ideally would be local to cmd_record() and passed to a record__new
+  * because we need to have access to it in record__exit, that is called
+@@ -2177,8 +2202,8 @@ static struct record record = {
+ 		.exit		= perf_event__process_exit,
+ 		.comm		= perf_event__process_comm,
+ 		.namespaces	= perf_event__process_namespaces,
+-		.mmap		= perf_event__process_mmap,
+-		.mmap2		= perf_event__process_mmap2,
++		.mmap		= build_id__process_mmap,
++		.mmap2		= build_id__process_mmap2,
+ 		.ordered_events	= true,
+ 	},
+ };
