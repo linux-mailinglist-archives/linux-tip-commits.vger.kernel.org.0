@@ -2,35 +2,33 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 24F66102A34
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 Nov 2019 17:59:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 33B8C1029F0
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 Nov 2019 17:57:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728981AbfKSQ66 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 19 Nov 2019 11:58:58 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:52875 "EHLO
+        id S1728709AbfKSQ5M (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 19 Nov 2019 11:57:12 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:52896 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728658AbfKSQ5I (ORCPT
+        with ESMTP id S1728672AbfKSQ5M (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 19 Nov 2019 11:57:08 -0500
+        Tue, 19 Nov 2019 11:57:12 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iX6o3-0007JZ-ME; Tue, 19 Nov 2019 17:56:47 +0100
+        id 1iX6o3-0007Jc-PD; Tue, 19 Nov 2019 17:56:47 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 49A921C19CB;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 6EE331C19CC;
         Tue, 19 Nov 2019 17:56:47 +0100 (CET)
 Date:   Tue, 19 Nov 2019 16:56:47 -0000
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/kprobes] x86/kprobes: Fix ordering while text-patching
+Subject: [tip: core/kprobes] x86/kprobes: Convert to text-patching.h
 Cc:     Alexei Starovoitov <ast@kernel.org>,
         "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
         Masami Hiramatsu <mhiramat@kernel.org>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
         Andy Lutomirski <luto@kernel.org>,
         Borislav Petkov <bp@alien8.de>,
         Brian Gerst <brgerst@gmail.com>,
@@ -39,10 +37,10 @@ Cc:     Alexei Starovoitov <ast@kernel.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org
-In-Reply-To: <20191111132458.162172862@infradead.org>
-References: <20191111132458.162172862@infradead.org>
+In-Reply-To: <20191111132458.103959370@infradead.org>
+References: <20191111132458.103959370@infradead.org>
 MIME-Version: 1.0
-Message-ID: <157418260724.12247.15762944350271345143.tip-bot2@tip-bot2>
+Message-ID: <157418260741.12247.11800905609390680398.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -58,67 +56,22 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/kprobes branch of tip:
 
-Commit-ID:     5b8ad1c9bc4466c3c16ffde3ba0edac523e34652
-Gitweb:        https://git.kernel.org/tip/5b8ad1c9bc4466c3c16ffde3ba0edac523e34652
+Commit-ID:     8986dec1a726cf565a226257a085abb781b22061
+Gitweb:        https://git.kernel.org/tip/8986dec1a726cf565a226257a085abb781b22061
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Wed, 09 Oct 2019 21:15:28 +02:00
+AuthorDate:    Wed, 09 Oct 2019 13:57:17 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Tue, 19 Nov 2019 13:13:05 +01:00
 
-x86/kprobes: Fix ordering while text-patching
+x86/kprobes: Convert to text-patching.h
 
-Kprobes does something like:
-
-register:
-	arch_arm_kprobe()
-	  text_poke(INT3)
-          /* guarantees nothing, INT3 will become visible at some point, maybe */
-
-        kprobe_optimizer()
-	  /* guarantees the bytes after INT3 are unused */
-	  synchronize_rcu_tasks();
-	  text_poke_bp(JMP32);
-	  /* implies IPI-sync, kprobe really is enabled */
-
-unregister:
-	__disarm_kprobe()
-	  unoptimize_kprobe()
-	    text_poke_bp(INT3 + tail);
-	    /* implies IPI-sync, so tail is guaranteed visible */
-          arch_disarm_kprobe()
-            text_poke(old);
-	    /* guarantees nothing, old will maybe become visible */
-
-	synchronize_rcu()
-
-        free-stuff
-
-Now the problem is that on register, the synchronize_rcu_tasks() does
-not imply sufficient to guarantee all CPUs have already observed INT3
-(although in practice this is exceedingly unlikely not to have
-happened) (similar to how MEMBARRIER_CMD_PRIVATE_EXPEDITED does not
-imply MEMBARRIER_CMD_PRIVATE_EXPEDITED_SYNC_CORE).
-
-Worse, even if it did, we'd have to do 2 synchronize calls to provide
-the guarantee we're looking for, the first to ensure INT3 is visible,
-the second to guarantee nobody is then still using the instruction
-bytes after INT3.
-
-Similar on unregister; the synchronize_rcu() between
-__unregister_kprobe_top() and __unregister_kprobe_bottom() does not
-guarantee all CPUs are free of the INT3 (and observe the old text).
-
-Therefore, sprinkle some IPI-sync love around. This guarantees that
-all CPUs agree on the text and RCU once again provides the required
-guaranteed.
+Convert kprobes to the new text-poke naming.
 
 Tested-by: Alexei Starovoitov <ast@kernel.org>
 Tested-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 Acked-by: Masami Hiramatsu <mhiramat@kernel.org>
 Acked-by: Alexei Starovoitov <ast@kernel.org>
-Acked-by: Paul E. McKenney <paulmck@kernel.org>
 Cc: Andy Lutomirski <luto@kernel.org>
 Cc: Borislav Petkov <bp@alien8.de>
 Cc: Brian Gerst <brgerst@gmail.com>
@@ -127,108 +80,307 @@ Cc: H. Peter Anvin <hpa@zytor.com>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20191111132458.162172862@infradead.org
+Link: https://lkml.kernel.org/r/20191111132458.103959370@infradead.org
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- arch/x86/include/asm/text-patching.h |  1 +
- arch/x86/kernel/alternative.c        | 11 ++++++++---
- arch/x86/kernel/kprobes/core.c       |  2 ++
- arch/x86/kernel/kprobes/opt.c        | 12 ++++--------
- 4 files changed, 15 insertions(+), 11 deletions(-)
+ arch/x86/include/asm/kprobes.h       | 14 +++------
+ arch/x86/include/asm/text-patching.h |  2 +-
+ arch/x86/kernel/kprobes/core.c       | 18 +++++------
+ arch/x86/kernel/kprobes/opt.c        | 44 ++++++++++++---------------
+ 4 files changed, 37 insertions(+), 41 deletions(-)
 
+diff --git a/arch/x86/include/asm/kprobes.h b/arch/x86/include/asm/kprobes.h
+index 5dc909d..95b1f05 100644
+--- a/arch/x86/include/asm/kprobes.h
++++ b/arch/x86/include/asm/kprobes.h
+@@ -11,12 +11,11 @@
+ 
+ #include <asm-generic/kprobes.h>
+ 
+-#define BREAKPOINT_INSTRUCTION	0xcc
+-
+ #ifdef CONFIG_KPROBES
+ #include <linux/types.h>
+ #include <linux/ptrace.h>
+ #include <linux/percpu.h>
++#include <asm/text-patching.h>
+ #include <asm/insn.h>
+ 
+ #define  __ARCH_WANT_KPROBES_INSN_SLOT
+@@ -25,10 +24,7 @@ struct pt_regs;
+ struct kprobe;
+ 
+ typedef u8 kprobe_opcode_t;
+-#define RELATIVEJUMP_OPCODE 0xe9
+-#define RELATIVEJUMP_SIZE 5
+-#define RELATIVECALL_OPCODE 0xe8
+-#define RELATIVE_ADDR_SIZE 4
++
+ #define MAX_STACK_SIZE 64
+ #define CUR_STACK_SIZE(ADDR) \
+ 	(current_top_of_stack() - (unsigned long)(ADDR))
+@@ -43,11 +39,11 @@ extern __visible kprobe_opcode_t optprobe_template_entry[];
+ extern __visible kprobe_opcode_t optprobe_template_val[];
+ extern __visible kprobe_opcode_t optprobe_template_call[];
+ extern __visible kprobe_opcode_t optprobe_template_end[];
+-#define MAX_OPTIMIZED_LENGTH (MAX_INSN_SIZE + RELATIVE_ADDR_SIZE)
++#define MAX_OPTIMIZED_LENGTH (MAX_INSN_SIZE + DISP32_SIZE)
+ #define MAX_OPTINSN_SIZE 				\
+ 	(((unsigned long)optprobe_template_end -	\
+ 	  (unsigned long)optprobe_template_entry) +	\
+-	 MAX_OPTIMIZED_LENGTH + RELATIVEJUMP_SIZE)
++	 MAX_OPTIMIZED_LENGTH + JMP32_INSN_SIZE)
+ 
+ extern const int kretprobe_blacklist_size;
+ 
+@@ -73,7 +69,7 @@ struct arch_specific_insn {
+ 
+ struct arch_optimized_insn {
+ 	/* copy of the original instructions */
+-	kprobe_opcode_t copied_insn[RELATIVE_ADDR_SIZE];
++	kprobe_opcode_t copied_insn[DISP32_SIZE];
+ 	/* detour code buffer */
+ 	kprobe_opcode_t *insn;
+ 	/* the size of instructions copied to detour code buffer */
 diff --git a/arch/x86/include/asm/text-patching.h b/arch/x86/include/asm/text-patching.h
-index 4c09f42..67315fa 100644
+index ad8f9f4..4c09f42 100644
 --- a/arch/x86/include/asm/text-patching.h
 +++ b/arch/x86/include/asm/text-patching.h
-@@ -42,6 +42,7 @@ extern void text_poke_early(void *addr, const void *opcode, size_t len);
-  * an inconsistent instruction while you patch.
-  */
- extern void *text_poke(void *addr, const void *opcode, size_t len);
-+extern void text_poke_sync(void);
- extern void *text_poke_kgdb(void *addr, const void *opcode, size_t len);
- extern int poke_int3_handler(struct pt_regs *regs);
- extern void text_poke_bp(void *addr, const void *opcode, size_t len, const void *emulate);
-diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
-index 526cc5f..6455902 100644
---- a/arch/x86/kernel/alternative.c
-+++ b/arch/x86/kernel/alternative.c
-@@ -936,6 +936,11 @@ static void do_sync_core(void *info)
- 	sync_core();
- }
+@@ -61,6 +61,8 @@ extern void text_poke_finish(void);
+ #define JMP8_INSN_SIZE		2
+ #define JMP8_INSN_OPCODE	0xEB
  
-+void text_poke_sync(void)
-+{
-+	on_each_cpu(do_sync_core, NULL, 1);
-+}
++#define DISP32_SIZE		4
 +
- struct text_poke_loc {
- 	s32 rel_addr; /* addr := _stext + rel_addr */
- 	s32 rel32;
-@@ -1085,7 +1090,7 @@ static void text_poke_bp_batch(struct text_poke_loc *tp, unsigned int nr_entries
- 	for (i = 0; i < nr_entries; i++)
- 		text_poke(text_poke_addr(&tp[i]), &int3, sizeof(int3));
- 
--	on_each_cpu(do_sync_core, NULL, 1);
-+	text_poke_sync();
- 
- 	/*
- 	 * Second step: update all but the first byte of the patched range.
-@@ -1107,7 +1112,7 @@ static void text_poke_bp_batch(struct text_poke_loc *tp, unsigned int nr_entries
- 		 * not necessary and we'd be safe even without it. But
- 		 * better safe than sorry (plus there's not only Intel).
- 		 */
--		on_each_cpu(do_sync_core, NULL, 1);
-+		text_poke_sync();
- 	}
- 
- 	/*
-@@ -1123,7 +1128,7 @@ static void text_poke_bp_batch(struct text_poke_loc *tp, unsigned int nr_entries
- 	}
- 
- 	if (do_sync)
--		on_each_cpu(do_sync_core, NULL, 1);
-+		text_poke_sync();
- 
- 	/*
- 	 * sync_core() implies an smp_mb() and orders this store against
+ static inline int text_opcode_size(u8 opcode)
+ {
+ 	int size = 0;
 diff --git a/arch/x86/kernel/kprobes/core.c b/arch/x86/kernel/kprobes/core.c
-index 4689f35..63e4ab1 100644
+index 43fc13c..4689f35 100644
 --- a/arch/x86/kernel/kprobes/core.c
 +++ b/arch/x86/kernel/kprobes/core.c
-@@ -498,11 +498,13 @@ int arch_prepare_kprobe(struct kprobe *p)
+@@ -119,14 +119,14 @@ __synthesize_relative_insn(void *dest, void *from, void *to, u8 op)
+ /* Insert a jump instruction at address 'from', which jumps to address 'to'.*/
+ void synthesize_reljump(void *dest, void *from, void *to)
+ {
+-	__synthesize_relative_insn(dest, from, to, RELATIVEJUMP_OPCODE);
++	__synthesize_relative_insn(dest, from, to, JMP32_INSN_OPCODE);
+ }
+ NOKPROBE_SYMBOL(synthesize_reljump);
+ 
+ /* Insert a call instruction at address 'from', which calls address 'to'.*/
+ void synthesize_relcall(void *dest, void *from, void *to)
+ {
+-	__synthesize_relative_insn(dest, from, to, RELATIVECALL_OPCODE);
++	__synthesize_relative_insn(dest, from, to, CALL_INSN_OPCODE);
+ }
+ NOKPROBE_SYMBOL(synthesize_relcall);
+ 
+@@ -301,7 +301,7 @@ static int can_probe(unsigned long paddr)
+ 		 * Another debugging subsystem might insert this breakpoint.
+ 		 * In that case, we can't recover it.
+ 		 */
+-		if (insn.opcode.bytes[0] == BREAKPOINT_INSTRUCTION)
++		if (insn.opcode.bytes[0] == INT3_INSN_OPCODE)
+ 			return 0;
+ 		addr += insn.length;
+ 	}
+@@ -352,7 +352,7 @@ int __copy_instruction(u8 *dest, u8 *src, u8 *real, struct insn *insn)
+ 	insn_get_length(insn);
+ 
+ 	/* Another subsystem puts a breakpoint, failed to recover */
+-	if (insn->opcode.bytes[0] == BREAKPOINT_INSTRUCTION)
++	if (insn->opcode.bytes[0] == INT3_INSN_OPCODE)
+ 		return 0;
+ 
+ 	/* We should not singlestep on the exception masking instructions */
+@@ -396,14 +396,14 @@ static int prepare_boost(kprobe_opcode_t *buf, struct kprobe *p,
+ 	int len = insn->length;
+ 
+ 	if (can_boost(insn, p->addr) &&
+-	    MAX_INSN_SIZE - len >= RELATIVEJUMP_SIZE) {
++	    MAX_INSN_SIZE - len >= JMP32_INSN_SIZE) {
+ 		/*
+ 		 * These instructions can be executed directly if it
+ 		 * jumps back to correct address.
+ 		 */
+ 		synthesize_reljump(buf + len, p->ainsn.insn + len,
+ 				   p->addr + insn->length);
+-		len += RELATIVEJUMP_SIZE;
++		len += JMP32_INSN_SIZE;
+ 		p->ainsn.boostable = true;
+ 	} else {
+ 		p->ainsn.boostable = false;
+@@ -497,7 +497,7 @@ int arch_prepare_kprobe(struct kprobe *p)
+ 
  void arch_arm_kprobe(struct kprobe *p)
  {
- 	text_poke(p->addr, ((unsigned char []){INT3_INSN_OPCODE}), 1);
-+	text_poke_sync();
+-	text_poke(p->addr, ((unsigned char []){BREAKPOINT_INSTRUCTION}), 1);
++	text_poke(p->addr, ((unsigned char []){INT3_INSN_OPCODE}), 1);
  }
  
  void arch_disarm_kprobe(struct kprobe *p)
- {
- 	text_poke(p->addr, &p->opcode, 1);
-+	text_poke_sync();
- }
- 
- void arch_remove_kprobe(struct kprobe *p)
+@@ -605,7 +605,7 @@ static void setup_singlestep(struct kprobe *p, struct pt_regs *regs,
+ 	regs->flags |= X86_EFLAGS_TF;
+ 	regs->flags &= ~X86_EFLAGS_IF;
+ 	/* single step inline if the instruction is an int3 */
+-	if (p->opcode == BREAKPOINT_INSTRUCTION)
++	if (p->opcode == INT3_INSN_OPCODE)
+ 		regs->ip = (unsigned long)p->addr;
+ 	else
+ 		regs->ip = (unsigned long)p->ainsn.insn;
+@@ -691,7 +691,7 @@ int kprobe_int3_handler(struct pt_regs *regs)
+ 				reset_current_kprobe();
+ 			return 1;
+ 		}
+-	} else if (*addr != BREAKPOINT_INSTRUCTION) {
++	} else if (*addr != INT3_INSN_OPCODE) {
+ 		/*
+ 		 * The breakpoint instruction was removed right
+ 		 * after we hit it.  Another cpu has removed
 diff --git a/arch/x86/kernel/kprobes/opt.c b/arch/x86/kernel/kprobes/opt.c
-index 0d9ea48..26e0d6c 100644
+index 9b01ee7..0d9ea48 100644
 --- a/arch/x86/kernel/kprobes/opt.c
 +++ b/arch/x86/kernel/kprobes/opt.c
-@@ -444,14 +444,10 @@ void arch_optimize_kprobes(struct list_head *oplist)
+@@ -38,7 +38,7 @@ unsigned long __recover_optprobed_insn(kprobe_opcode_t *buf, unsigned long addr)
+ 	long offs;
+ 	int i;
+ 
+-	for (i = 0; i < RELATIVEJUMP_SIZE; i++) {
++	for (i = 0; i < JMP32_INSN_SIZE; i++) {
+ 		kp = get_kprobe((void *)addr - i);
+ 		/* This function only handles jump-optimized kprobe */
+ 		if (kp && kprobe_optimized(kp)) {
+@@ -62,10 +62,10 @@ found:
+ 
+ 	if (addr == (unsigned long)kp->addr) {
+ 		buf[0] = kp->opcode;
+-		memcpy(buf + 1, op->optinsn.copied_insn, RELATIVE_ADDR_SIZE);
++		memcpy(buf + 1, op->optinsn.copied_insn, DISP32_SIZE);
+ 	} else {
+ 		offs = addr - (unsigned long)kp->addr - 1;
+-		memcpy(buf, op->optinsn.copied_insn + offs, RELATIVE_ADDR_SIZE - offs);
++		memcpy(buf, op->optinsn.copied_insn + offs, DISP32_SIZE - offs);
+ 	}
+ 
+ 	return (unsigned long)buf;
+@@ -141,8 +141,6 @@ STACK_FRAME_NON_STANDARD(optprobe_template_func);
+ #define TMPL_END_IDX \
+ 	((long)optprobe_template_end - (long)optprobe_template_entry)
+ 
+-#define INT3_SIZE sizeof(kprobe_opcode_t)
+-
+ /* Optimized kprobe call back function: called from optinsn */
+ static void
+ optimized_callback(struct optimized_kprobe *op, struct pt_regs *regs)
+@@ -162,7 +160,7 @@ optimized_callback(struct optimized_kprobe *op, struct pt_regs *regs)
+ 		regs->cs |= get_kernel_rpl();
+ 		regs->gs = 0;
+ #endif
+-		regs->ip = (unsigned long)op->kp.addr + INT3_SIZE;
++		regs->ip = (unsigned long)op->kp.addr + INT3_INSN_SIZE;
+ 		regs->orig_ax = ~0UL;
+ 
+ 		__this_cpu_write(current_kprobe, &op->kp);
+@@ -179,7 +177,7 @@ static int copy_optimized_instructions(u8 *dest, u8 *src, u8 *real)
+ 	struct insn insn;
+ 	int len = 0, ret;
+ 
+-	while (len < RELATIVEJUMP_SIZE) {
++	while (len < JMP32_INSN_SIZE) {
+ 		ret = __copy_instruction(dest + len, src + len, real + len, &insn);
+ 		if (!ret || !can_boost(&insn, src + len))
+ 			return -EINVAL;
+@@ -271,7 +269,7 @@ static int can_optimize(unsigned long paddr)
+ 		return 0;
+ 
+ 	/* Check there is enough space for a relative jump. */
+-	if (size - offset < RELATIVEJUMP_SIZE)
++	if (size - offset < JMP32_INSN_SIZE)
+ 		return 0;
+ 
+ 	/* Decode instructions */
+@@ -290,15 +288,15 @@ static int can_optimize(unsigned long paddr)
+ 		kernel_insn_init(&insn, (void *)recovered_insn, MAX_INSN_SIZE);
+ 		insn_get_length(&insn);
+ 		/* Another subsystem puts a breakpoint */
+-		if (insn.opcode.bytes[0] == BREAKPOINT_INSTRUCTION)
++		if (insn.opcode.bytes[0] == INT3_INSN_OPCODE)
+ 			return 0;
+ 		/* Recover address */
+ 		insn.kaddr = (void *)addr;
+ 		insn.next_byte = (void *)(addr + insn.length);
+ 		/* Check any instructions don't jump into target */
+ 		if (insn_is_indirect_jump(&insn) ||
+-		    insn_jump_into_range(&insn, paddr + INT3_SIZE,
+-					 RELATIVE_ADDR_SIZE))
++		    insn_jump_into_range(&insn, paddr + INT3_INSN_SIZE,
++					 DISP32_SIZE))
+ 			return 0;
+ 		addr += insn.length;
+ 	}
+@@ -374,7 +372,7 @@ int arch_prepare_optimized_kprobe(struct optimized_kprobe *op,
+ 	 * Verify if the address gap is in 2GB range, because this uses
+ 	 * a relative jump.
+ 	 */
+-	rel = (long)slot - (long)op->kp.addr + RELATIVEJUMP_SIZE;
++	rel = (long)slot - (long)op->kp.addr + JMP32_INSN_SIZE;
+ 	if (abs(rel) > 0x7fffffff) {
+ 		ret = -ERANGE;
+ 		goto err;
+@@ -401,7 +399,7 @@ int arch_prepare_optimized_kprobe(struct optimized_kprobe *op,
+ 	/* Set returning jmp instruction at the tail of out-of-line buffer */
+ 	synthesize_reljump(buf + len, slot + len,
+ 			   (u8 *)op->kp.addr + op->optinsn.size);
+-	len += RELATIVEJUMP_SIZE;
++	len += JMP32_INSN_SIZE;
+ 
+ 	/* We have to use text_poke() for instruction buffer because it is RO */
+ 	text_poke(slot, buf, len);
+@@ -422,22 +420,22 @@ err:
+ void arch_optimize_kprobes(struct list_head *oplist)
+ {
+ 	struct optimized_kprobe *op, *tmp;
+-	u8 insn_buff[RELATIVEJUMP_SIZE];
++	u8 insn_buff[JMP32_INSN_SIZE];
+ 
+ 	list_for_each_entry_safe(op, tmp, oplist, list) {
+ 		s32 rel = (s32)((long)op->optinsn.insn -
+-			((long)op->kp.addr + RELATIVEJUMP_SIZE));
++			((long)op->kp.addr + JMP32_INSN_SIZE));
+ 
+ 		WARN_ON(kprobe_disabled(&op->kp));
+ 
+ 		/* Backup instructions which will be replaced by jump address */
+-		memcpy(op->optinsn.copied_insn, op->kp.addr + INT3_SIZE,
+-		       RELATIVE_ADDR_SIZE);
++		memcpy(op->optinsn.copied_insn, op->kp.addr + INT3_INSN_SIZE,
++		       DISP32_SIZE);
+ 
+-		insn_buff[0] = RELATIVEJUMP_OPCODE;
++		insn_buff[0] = JMP32_INSN_OPCODE;
+ 		*(s32 *)(&insn_buff[1]) = rel;
+ 
+-		text_poke_bp(op->kp.addr, insn_buff, RELATIVEJUMP_SIZE, NULL);
++		text_poke_bp(op->kp.addr, insn_buff, JMP32_INSN_SIZE, NULL);
+ 
+ 		list_del_init(&op->list);
+ 	}
+@@ -446,13 +444,13 @@ void arch_optimize_kprobes(struct list_head *oplist)
  /* Replace a relative jump with a breakpoint (int3).  */
  void arch_unoptimize_kprobe(struct optimized_kprobe *op)
  {
--	u8 insn_buff[JMP32_INSN_SIZE];
--
--	/* Set int3 to first byte for kprobes */
--	insn_buff[0] = INT3_INSN_OPCODE;
--	memcpy(insn_buff + 1, op->optinsn.copied_insn, DISP32_SIZE);
--
--	text_poke_bp(op->kp.addr, insn_buff, JMP32_INSN_SIZE,
--		     text_gen_insn(JMP32_INSN_OPCODE, op->kp.addr, op->optinsn.insn));
-+	arch_arm_kprobe(&op->kp);
-+	text_poke(op->kp.addr + INT3_INSN_SIZE,
-+		  op->optinsn.copied_insn, DISP32_SIZE);
-+	text_poke_sync();
+-	u8 insn_buff[RELATIVEJUMP_SIZE];
++	u8 insn_buff[JMP32_INSN_SIZE];
+ 
+ 	/* Set int3 to first byte for kprobes */
+-	insn_buff[0] = BREAKPOINT_INSTRUCTION;
+-	memcpy(insn_buff + 1, op->optinsn.copied_insn, RELATIVE_ADDR_SIZE);
++	insn_buff[0] = INT3_INSN_OPCODE;
++	memcpy(insn_buff + 1, op->optinsn.copied_insn, DISP32_SIZE);
+ 
+-	text_poke_bp(op->kp.addr, insn_buff, RELATIVEJUMP_SIZE,
++	text_poke_bp(op->kp.addr, insn_buff, JMP32_INSN_SIZE,
+ 		     text_gen_insn(JMP32_INSN_OPCODE, op->kp.addr, op->optinsn.insn));
  }
  
- /*
