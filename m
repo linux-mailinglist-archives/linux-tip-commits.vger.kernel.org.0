@@ -2,40 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B044B102A2C
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 Nov 2019 17:58:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 244E7102A26
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 Nov 2019 17:58:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727560AbfKSQ6q (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 19 Nov 2019 11:58:46 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:52892 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728668AbfKSQ5K (ORCPT
-        <rfc822;linux-tip-commits@vger.kernel.org>);
+        id S1728692AbfKSQ5K (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Tue, 19 Nov 2019 11:57:10 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:52872 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728656AbfKSQ5J (ORCPT
+        <rfc822;linux-tip-commits@vger.kernel.org>);
+        Tue, 19 Nov 2019 11:57:09 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iX6oL-0007WJ-Ee; Tue, 19 Nov 2019 17:57:05 +0100
+        id 1iX6oH-0007W7-54; Tue, 19 Nov 2019 17:57:01 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 0D5171C19DD;
-        Tue, 19 Nov 2019 17:56:51 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 73A621C19DA;
+        Tue, 19 Nov 2019 17:56:50 +0100 (CET)
 Date:   Tue, 19 Nov 2019 16:56:50 -0000
-From:   "tip-bot2 for Adrian Hunter" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf scripts python: exported-sql-viewer.py: Fix use
- of TRUE with SQLite
+Subject: [tip: perf/core] perf map_groups: Add a front end cache for map
+ lookups by name
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Jiri Olsa <jolsa@redhat.com>, stable@vger.kernel.org,
-        #@tip-bot2.tec.linutronix.de, v5.3+@tip-bot2.tec.linutronix.de,
+        Andi Kleen <ak@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20191113120206.26957-1-adrian.hunter@intel.com>
-References: <20191113120206.26957-1-adrian.hunter@intel.com>
+In-Reply-To: <tip-tcz37g3nxv3tvxw3q90vga3p@git.kernel.org>
+References: <tip-tcz37g3nxv3tvxw3q90vga3p@git.kernel.org>
 MIME-Version: 1.0
-Message-ID: <157418261096.12247.2783714648514697196.tip-bot2@tip-bot2>
+Message-ID: <157418261040.12247.12941079165025669139.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,69 +51,164 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     af833988c088d3fed3e7188e7c3dd9ca17178dc3
-Gitweb:        https://git.kernel.org/tip/af833988c088d3fed3e7188e7c3dd9ca17178dc3
-Author:        Adrian Hunter <adrian.hunter@intel.com>
-AuthorDate:    Wed, 13 Nov 2019 14:02:06 +02:00
+Commit-ID:     1ae14516cba032a83b561144d3d48fd381584c0c
+Gitweb:        https://git.kernel.org/tip/1ae14516cba032a83b561144d3d48fd381584c0c
+Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
+AuthorDate:    Wed, 13 Nov 2019 16:33:33 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Wed, 13 Nov 2019 09:13:16 -03:00
+CommitterDate: Mon, 18 Nov 2019 11:21:32 -03:00
 
-perf scripts python: exported-sql-viewer.py: Fix use of TRUE with SQLite
+perf map_groups: Add a front end cache for map lookups by name
 
-Prior to version 3.23 SQLite does not support TRUE or FALSE, so always
-use 1 and 0 for SQLite.
+Lets see if it helps:
 
-Fixes: 26c11206f433 ("perf scripts python: exported-sql-viewer.py: Use new 'has_calls' column")
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Jiri Olsa <jolsa@redhat.com>
-Cc: stable@vger.kernel.org # v5.3+
-Link: http://lore.kernel.org/lkml/20191113120206.26957-1-adrian.hunter@intel.com
+First look at the probeable lines for the function that does lookups by
+name in a map_groups struct:
+
+  # perf probe -x ~/bin/perf -L map_groups__find_by_name
+  <map_groups__find_by_name@/home/acme/git/perf/tools/perf/util/symbol.c:0>
+        0  struct map *map_groups__find_by_name(struct map_groups *mg, const char *name)
+        1  {
+        2         struct maps *maps = &mg->maps;
+                  struct map *map;
+
+        5         down_read(&maps->lock);
+
+        7         if (mg->last_search_by_name && strcmp(mg->last_search_by_name->dso->short_name, name) == 0) {
+        8                 map = mg->last_search_by_name;
+        9                 goto out_unlock;
+                  }
+
+       12         maps__for_each_entry(maps, map)
+       13                 if (strcmp(map->dso->short_name, name) == 0) {
+       14                         mg->last_search_by_name = map;
+       15                         goto out_unlock;
+                          }
+
+       18         map = NULL;
+
+           out_unlock:
+       21         up_read(&maps->lock);
+       22         return map;
+       23  }
+
+           int dso__load_vmlinux(struct dso *dso, struct map *map,
+                                const char *vmlinux, bool vmlinux_allocated)
+
+  #
+
+Now add a probe to the place where we reuse the last search:
+
+  # perf probe -x ~/bin/perf map_groups__find_by_name:8
+  Added new event:
+    probe_perf:map_groups__find_by_name (on map_groups__find_by_name:8 in /home/acme/bin/perf)
+
+  You can now use it in all perf tools, such as:
+
+  	perf record -e probe_perf:map_groups__find_by_name -aR sleep 1
+
+  #
+
+Now lets do a system wide 'perf stat' counting those events:
+
+  # perf stat -e probe_perf:*
+
+Leave it running and lets do a 'perf top', then, after a while, stop the
+'perf stat':
+
+  # perf stat -e probe_perf:*
+  ^C
+   Performance counter stats for 'system wide':
+
+               3,603      probe_perf:map_groups__find_by_name
+
+        44.565253139 seconds time elapsed
+  #
+
+yeah, good to have.
+
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Andi Kleen <ak@linux.intel.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Link: https://lkml.kernel.org/n/tip-tcz37g3nxv3tvxw3q90vga3p@git.kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/scripts/python/exported-sql-viewer.py | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ tools/perf/util/map.c        |  9 +++++++++
+ tools/perf/util/map_groups.h |  6 ++----
+ tools/perf/util/symbol.c     |  9 ++++++++-
+ 3 files changed, 19 insertions(+), 5 deletions(-)
 
-diff --git a/tools/perf/scripts/python/exported-sql-viewer.py b/tools/perf/scripts/python/exported-sql-viewer.py
-index ebc6a2e..26d7be7 100755
---- a/tools/perf/scripts/python/exported-sql-viewer.py
-+++ b/tools/perf/scripts/python/exported-sql-viewer.py
-@@ -637,7 +637,7 @@ class CallGraphRootItem(CallGraphLevelItemBase):
- 		self.query_done = True
- 		if_has_calls = ""
- 		if IsSelectable(glb.db, "comms", columns = "has_calls"):
--			if_has_calls = " WHERE has_calls = TRUE"
-+			if_has_calls = " WHERE has_calls = " + glb.dbref.TRUE
- 		query = QSqlQuery(glb.db)
- 		QueryExec(query, "SELECT id, comm FROM comms" + if_has_calls)
- 		while query.next():
-@@ -918,7 +918,7 @@ class CallTreeRootItem(CallGraphLevelItemBase):
- 		self.query_done = True
- 		if_has_calls = ""
- 		if IsSelectable(glb.db, "comms", columns = "has_calls"):
--			if_has_calls = " WHERE has_calls = TRUE"
-+			if_has_calls = " WHERE has_calls = " + glb.dbref.TRUE
- 		query = QSqlQuery(glb.db)
- 		QueryExec(query, "SELECT id, comm FROM comms" + if_has_calls)
- 		while query.next():
-@@ -1290,7 +1290,7 @@ class SwitchGraphData(GraphData):
- 		QueryExec(query, "SELECT id, c_time"
- 					" FROM comms"
- 					" WHERE c_thread_id = " + str(thread_id) +
--					"   AND exec_flag = TRUE"
-+					"   AND exec_flag = " + self.collection.glb.dbref.TRUE +
- 					"   AND c_time >= " + str(start_time) +
- 					"   AND c_time <= " + str(end_time) +
- 					" ORDER BY c_time, id")
-@@ -5016,6 +5016,12 @@ class DBRef():
- 	def __init__(self, is_sqlite3, dbname):
- 		self.is_sqlite3 = is_sqlite3
- 		self.dbname = dbname
-+		self.TRUE = "TRUE"
-+		self.FALSE = "FALSE"
-+		# SQLite prior to version 3.23 does not support TRUE and FALSE
-+		if self.is_sqlite3:
-+			self.TRUE = "1"
-+			self.FALSE = "0"
+diff --git a/tools/perf/util/map.c b/tools/perf/util/map.c
+index 49e353e..d0899df 100644
+--- a/tools/perf/util/map.c
++++ b/tools/perf/util/map.c
+@@ -572,6 +572,7 @@ void map_groups__init(struct map_groups *mg, struct machine *machine)
+ {
+ 	maps__init(&mg->maps);
+ 	mg->machine = machine;
++	mg->last_search_by_name = NULL;
+ 	refcount_set(&mg->refcnt, 1);
+ }
  
- 	def Open(self, connection_name):
- 		dbname = self.dbname
+@@ -580,6 +581,14 @@ void map_groups__insert(struct map_groups *mg, struct map *map)
+ 	maps__insert(&mg->maps, map);
+ }
+ 
++void map_groups__remove(struct map_groups *mg, struct map *map)
++{
++	if (mg->last_search_by_name == map)
++		mg->last_search_by_name = NULL;
++
++	maps__remove(&mg->maps, map);
++}
++
+ static void __maps__purge(struct maps *maps)
+ {
+ 	struct map *pos, *next;
+diff --git a/tools/perf/util/map_groups.h b/tools/perf/util/map_groups.h
+index 26fc68b..f2a3158 100644
+--- a/tools/perf/util/map_groups.h
++++ b/tools/perf/util/map_groups.h
+@@ -36,6 +36,7 @@ struct symbol *maps__find_symbol_by_name(struct maps *maps, const char *name, st
+ struct map_groups {
+ 	struct maps	 maps;
+ 	struct machine	 *machine;
++	struct map	 *last_search_by_name;
+ 	refcount_t	 refcnt;
+ #ifdef HAVE_LIBUNWIND_SUPPORT
+ 	void				*addr_space;
+@@ -70,10 +71,7 @@ size_t map_groups__fprintf(struct map_groups *mg, FILE *fp);
+ 
+ void map_groups__insert(struct map_groups *mg, struct map *map);
+ 
+-static inline void map_groups__remove(struct map_groups *mg, struct map *map)
+-{
+-	maps__remove(&mg->maps, map);
+-}
++void map_groups__remove(struct map_groups *mg, struct map *map);
+ 
+ static inline struct map *map_groups__find(struct map_groups *mg, u64 addr)
+ {
+diff --git a/tools/perf/util/symbol.c b/tools/perf/util/symbol.c
+index 0fb9bd8..b146d87 100644
+--- a/tools/perf/util/symbol.c
++++ b/tools/perf/util/symbol.c
+@@ -1767,9 +1767,16 @@ struct map *map_groups__find_by_name(struct map_groups *mg, const char *name)
+ 
+ 	down_read(&maps->lock);
+ 
++	if (mg->last_search_by_name && strcmp(mg->last_search_by_name->dso->short_name, name) == 0) {
++		map = mg->last_search_by_name;
++		goto out_unlock;
++	}
++
+ 	maps__for_each_entry(maps, map)
+-		if (strcmp(map->dso->short_name, name) == 0)
++		if (strcmp(map->dso->short_name, name) == 0) {
++			mg->last_search_by_name = map;
+ 			goto out_unlock;
++		}
+ 
+ 	map = NULL;
+ 
