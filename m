@@ -2,38 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F153103B3E
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 20 Nov 2019 14:24:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FD43103B37
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 20 Nov 2019 14:23:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730145AbfKTNVI (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 20 Nov 2019 08:21:08 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:56658 "EHLO
+        id S1730169AbfKTNVK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 20 Nov 2019 08:21:10 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:56688 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727783AbfKTNVI (ORCPT
+        with ESMTP id S1730146AbfKTNVK (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 20 Nov 2019 08:21:08 -0500
+        Wed, 20 Nov 2019 08:21:10 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iXPup-00075u-GN; Wed, 20 Nov 2019 14:21:03 +0100
+        id 1iXPus-00077I-TO; Wed, 20 Nov 2019 14:21:07 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 2C7761C1A01;
-        Wed, 20 Nov 2019 14:21:02 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 03E361C1A0E;
+        Wed, 20 Nov 2019 14:21:03 +0100 (CET)
 Date:   Wed, 20 Nov 2019 13:21:02 -0000
-From:   "tip-bot2 for Zhou Yanjie" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Paul Cercueil" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] irqchip: Ingenic: Add process for more than one irq
- at the same time.
-Cc:     Zhou Yanjie <zhouyanjie@zoho.com>, Marc Zyngier <maz@kernel.org>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <1570015525-27018-6-git-send-email-zhouyanjie@zoho.com>
-References: <1570015525-27018-6-git-send-email-zhouyanjie@zoho.com>
+Subject: [tip: irq/core] irqchip: ingenic: Drop redundant irq_suspend /
+ irq_resume functions
+Cc:     Paul Cercueil <paul@crapouillou.net>,
+        Marc Zyngier <maz@kernel.org>, Ingo Molnar <mingo@kernel.org>,
+        Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
+In-Reply-To: <1570015525-27018-2-git-send-email-zhouyanjie@zoho.com>
+References: <1570015525-27018-2-git-send-email-zhouyanjie@zoho.com>
 MIME-Version: 1.0
-Message-ID: <157425606206.12247.3466209751027396364.tip-bot2@tip-bot2>
+Message-ID: <157425606292.12247.1623250092467011574.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,77 +48,93 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     b8b0145f7d0e24d98a58b7e54051dca0c1d77526
-Gitweb:        https://git.kernel.org/tip/b8b0145f7d0e24d98a58b7e54051dca0c1d77526
-Author:        Zhou Yanjie <zhouyanjie@zoho.com>
-AuthorDate:    Wed, 02 Oct 2019 19:25:25 +08:00
+Commit-ID:     20b44b4de61f2887694981e8cae74fe1bf58f950
+Gitweb:        https://git.kernel.org/tip/20b44b4de61f2887694981e8cae74fe1bf58f950
+Author:        Paul Cercueil <paul@crapouillou.net>
+AuthorDate:    Wed, 02 Oct 2019 19:25:21 +08:00
 Committer:     Marc Zyngier <maz@kernel.org>
-CommitterDate: Sun, 10 Nov 2019 18:55:31 
+CommitterDate: Sun, 10 Nov 2019 18:55:29 
 
-irqchip: Ingenic: Add process for more than one irq at the same time.
+irqchip: ingenic: Drop redundant irq_suspend / irq_resume functions
 
-Add process for the situation that more than one irq is coming to
-a single chip at the same time. The original code will only respond
-to the lowest setted bit in JZ_REG_INTC_PENDING, and then exit the
-interrupt dispatch function. After exiting the interrupt dispatch
-function, since the second interrupt has not yet responded, the
-interrupt dispatch function is again entered to process the second
-interrupt. This creates additional unnecessary overhead, and the
-more interrupts that occur at the same time, the more overhead is
-added. The improved method in this patch is to check whether there
-are still unresponsive interrupts after processing the lowest
-setted bit interrupt. If there are any, the processing will be
-processed according to the bit in JZ_REG_INTC_PENDING, and the
-interrupt dispatch function will be exited until all processing
-is completed.
+The same behaviour can be obtained by using the IRQCHIP_MASK_ON_SUSPEND
+flag on the IRQ chip.
 
-Signed-off-by: Zhou Yanjie <zhouyanjie@zoho.com>
+Signed-off-by: Paul Cercueil <paul@crapouillou.net>
 Signed-off-by: Marc Zyngier <maz@kernel.org>
-Reviewed-by: Paul Cercueil <paul@crapouillou.net>
-Link: https://lore.kernel.org/r/1570015525-27018-6-git-send-email-zhouyanjie@zoho.com
+Link: https://lore.kernel.org/r/1570015525-27018-2-git-send-email-zhouyanjie@zoho.com
 ---
- drivers/irqchip/irq-ingenic.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ drivers/irqchip/irq-ingenic.c   | 24 +-----------------------
+ include/linux/irqchip/ingenic.h | 14 --------------
+ 2 files changed, 1 insertion(+), 37 deletions(-)
+ delete mode 100644 include/linux/irqchip/ingenic.h
 
 diff --git a/drivers/irqchip/irq-ingenic.c b/drivers/irqchip/irq-ingenic.c
-index 06ab3ad..01d18b3 100644
+index f126255..06fa810 100644
 --- a/drivers/irqchip/irq-ingenic.c
 +++ b/drivers/irqchip/irq-ingenic.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0-or-later
- /*
-  *  Copyright (C) 2009-2010, Lars-Peter Clausen <lars@metafoo.de>
-- *  JZ4740 platform IRQ support
-+ *  Ingenic XBurst platform IRQ support
-  */
- 
- #include <linux/errno.h>
-@@ -37,18 +37,23 @@ static irqreturn_t intc_cascade(int irq, void *data)
- 	struct ingenic_intc_data *intc = irq_get_handler_data(irq);
- 	struct irq_domain *domain = intc->domain;
- 	struct irq_chip_generic *gc;
--	uint32_t irq_reg;
-+	uint32_t pending;
- 	unsigned i;
- 
- 	for (i = 0; i < intc->num_chips; i++) {
- 		gc = irq_get_domain_generic_chip(domain, i * 32);
- 
--		irq_reg = irq_reg_readl(gc, JZ_REG_INTC_PENDING);
--		if (!irq_reg)
-+		pending = irq_reg_readl(gc, JZ_REG_INTC_PENDING);
-+		if (!pending)
- 			continue;
- 
--		irq = irq_find_mapping(domain, __fls(irq_reg) + (i * 32));
--		generic_handle_irq(irq);
-+		while (pending) {
-+			int bit = __fls(pending);
-+
-+			irq = irq_find_mapping(domain, bit + (i * 32));
-+			generic_handle_irq(irq);
-+			pending &= ~BIT(bit);
-+		}
- 	}
- 
+@@ -10,7 +10,6 @@
+ #include <linux/interrupt.h>
+ #include <linux/ioport.h>
+ #include <linux/irqchip.h>
+-#include <linux/irqchip/ingenic.h>
+ #include <linux/of_address.h>
+ #include <linux/of_irq.h>
+ #include <linux/timex.h>
+@@ -50,26 +49,6 @@ static irqreturn_t intc_cascade(int irq, void *data)
  	return IRQ_HANDLED;
+ }
+ 
+-static void intc_irq_set_mask(struct irq_chip_generic *gc, uint32_t mask)
+-{
+-	struct irq_chip_regs *regs = &gc->chip_types->regs;
+-
+-	writel(mask, gc->reg_base + regs->enable);
+-	writel(~mask, gc->reg_base + regs->disable);
+-}
+-
+-void ingenic_intc_irq_suspend(struct irq_data *data)
+-{
+-	struct irq_chip_generic *gc = irq_data_get_irq_chip_data(data);
+-	intc_irq_set_mask(gc, gc->wake_active);
+-}
+-
+-void ingenic_intc_irq_resume(struct irq_data *data)
+-{
+-	struct irq_chip_generic *gc = irq_data_get_irq_chip_data(data);
+-	intc_irq_set_mask(gc, gc->mask_cache);
+-}
+-
+ static struct irqaction intc_cascade_action = {
+ 	.handler = intc_cascade,
+ 	.name = "SoC intc cascade interrupt",
+@@ -127,8 +106,7 @@ static int __init ingenic_intc_of_init(struct device_node *node,
+ 		ct->chip.irq_mask = irq_gc_mask_disable_reg;
+ 		ct->chip.irq_mask_ack = irq_gc_mask_disable_reg;
+ 		ct->chip.irq_set_wake = irq_gc_set_wake;
+-		ct->chip.irq_suspend = ingenic_intc_irq_suspend;
+-		ct->chip.irq_resume = ingenic_intc_irq_resume;
++		ct->chip.flags = IRQCHIP_MASK_ON_SUSPEND;
+ 
+ 		irq_setup_generic_chip(gc, IRQ_MSK(32), 0, 0,
+ 				       IRQ_NOPROBE | IRQ_LEVEL);
+diff --git a/include/linux/irqchip/ingenic.h b/include/linux/irqchip/ingenic.h
+deleted file mode 100644
+index 1465588..0000000
+--- a/include/linux/irqchip/ingenic.h
++++ /dev/null
+@@ -1,14 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0-or-later */
+-/*
+- *  Copyright (C) 2010, Lars-Peter Clausen <lars@metafoo.de>
+- */
+-
+-#ifndef __LINUX_IRQCHIP_INGENIC_H__
+-#define __LINUX_IRQCHIP_INGENIC_H__
+-
+-#include <linux/irq.h>
+-
+-extern void ingenic_intc_irq_suspend(struct irq_data *data);
+-extern void ingenic_intc_irq_resume(struct irq_data *data);
+-
+-#endif
