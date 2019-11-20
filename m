@@ -2,36 +2,41 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AFC87103B07
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 20 Nov 2019 14:22:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 22FD91046B5
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 20 Nov 2019 23:48:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730387AbfKTNVz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 20 Nov 2019 08:21:55 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:56837 "EHLO
+        id S1725842AbfKTWsx (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 20 Nov 2019 17:48:53 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:59095 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730216AbfKTNV3 (ORCPT
+        with ESMTP id S1725820AbfKTWsx (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 20 Nov 2019 08:21:29 -0500
+        Wed, 20 Nov 2019 17:48:53 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iXPv8-0007H3-Pr; Wed, 20 Nov 2019 14:21:22 +0100
+        id 1iXYmC-0000H4-Gu; Wed, 20 Nov 2019 23:48:44 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 1EDC61C1A23;
-        Wed, 20 Nov 2019 14:21:07 +0100 (CET)
-Date:   Wed, 20 Nov 2019 13:21:07 -0000
-From:   "tip-bot2 for Daode Huang" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id BEF351C1A27;
+        Wed, 20 Nov 2019 23:48:43 +0100 (CET)
+Date:   Wed, 20 Nov 2019 22:48:43 -0000
+From:   "tip-bot2 for Alexander Duyck" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] irqchip: Remove redundant semicolon after while
-Cc:     Daode Huang <huangdaode@hisilicon.com>,
-        Marc Zyngier <maz@kernel.org>, Ingo Molnar <mingo@kernel.org>,
-        Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
-In-Reply-To: <1571300729-38822-1-git-send-email-huangdaode@hisilicon.com>
-References: <1571300729-38822-1-git-send-email-huangdaode@hisilicon.com>
+Subject: [tip: x86/iopl] x86/ioperm: Fix use of deprecated config option
+Cc:     Alexander Duyck <alexander.h.duyck@linux.intel.com>,
+        Borislav Petkov <bp@suse.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        Rik van Riel <riel@surriel.com>, "x86-ml" <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20191120222426.3060.18462.stgit@localhost.localdomain>
+References: <20191120222426.3060.18462.stgit@localhost.localdomain>
 MIME-Version: 1.0
-Message-ID: <157425606706.12247.9462338694860117345.tip-bot2@tip-bot2>
+Message-ID: <157429012364.21853.105281990076926777.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -45,64 +50,78 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the irq/core branch of tip:
+The following commit has been merged into the x86/iopl branch of tip:
 
-Commit-ID:     2c542426128a4e3d247939f868d19279ad48cb1f
-Gitweb:        https://git.kernel.org/tip/2c542426128a4e3d247939f868d19279ad48cb1f
-Author:        Daode Huang <huangdaode@hisilicon.com>
-AuthorDate:    Thu, 17 Oct 2019 16:25:29 +08:00
-Committer:     Marc Zyngier <maz@kernel.org>
-CommitterDate: Sun, 10 Nov 2019 18:47:44 
+Commit-ID:     e3cb0c7102f04c83bf1a7cb1d052e92749310b46
+Gitweb:        https://git.kernel.org/tip/e3cb0c7102f04c83bf1a7cb1d052e92749310b46
+Author:        Alexander Duyck <alexander.h.duyck@linux.intel.com>
+AuthorDate:    Wed, 20 Nov 2019 14:25:53 -08:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Wed, 20 Nov 2019 23:40:05 +01:00
 
-irqchip: Remove redundant semicolon after while
+x86/ioperm: Fix use of deprecated config option
 
-check drivers/irqchip with "make coccicheck M=drivers/irqchip/",
-it will report unneeded semicolon like below, just remove them.
+The commit
 
-drivers/irqchip/irq-zevio.c:54:2-3: Unneeded semicolon
-drivers/irqchip/irq-gic-v3.c:177:2-3: Unneeded semicolon
-drivers/irqchip/irq-gic-v3.c:234:2-3: Unneeded semicolon
+  111e7b15cf10 ("x86/ioperm: Extend IOPL config to control ioperm() as well")
 
-Signed-off-by: Daode Huang <huangdaode@hisilicon.com>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/1571300729-38822-1-git-send-email-huangdaode@hisilicon.com
+replaced X86_IOPL_EMULATION with X86_IOPL_IOPERM. However it appears
+that there was at least one spot missed as tss_update_io_bitmap() still
+had a reference to it contained in the code.
+
+The result of this is that it exposed a NULL pointer dereference as seen
+below with a linux-next next-20191120 kernel:
+
+  BUG: kernel NULL pointer dereference, address: 0000000000000000
+  #PF: supervisor read access in kernel mode
+  #PF: error_code(0x0000) - not-present page
+  PGD 0 P4D 0
+  Oops: 0000 [#1] SMP PTI
+  CPU: 5 PID: 1542 Comm: ovs-vswitchd Tainted: G        W 5.4.0-rc8-next-20191120 #125
+  RIP: 0010:tss_update_io_bitmap+0x4e/0x180
+  Code: 10 31 c0 65 48 03 1d 69 54 5d 6d 65 48 8b 04 25 40 8c 01 00 48 8b 10 \
+	  f7 c2 00 00 40 00 0f 84 8c 00 00 00 4c 8b a0 c0 22 00 00 <49> 8b 04 \
+	  24 48 39 43 68 74 2e 8b 53 70 41 39 54 24 0c 48 8d 7b 78
+  RSP: 0018:ffffb8888a0ebf08 EFLAGS: 00010006
+  RAX: ffff8a429811a680 RBX: ffff8a4c3f946000 RCX: 0000000000000011
+  RDX: 0000000000400080 RSI: 0000000000400080 RDI: 0000000000000000
+  RBP: ffffb8888a0ebf30 R08: 00007ffffb5d7ce0 R09: 0000000000000000
+  R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
+  R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+  FS:  00007f68a9635c40(0000) GS:ffff8a4c3f940000(0000) knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: 0000000000000000 CR3: 000000103572a001 CR4: 00000000001606e0
+  Call Trace:
+   ? syscall_slow_exit_work+0x39/0xdb
+   do_syscall_64+0x1a5/0x200
+   entry_SYSCALL_64_after_hwframe+0x44/0xa9
+  RIP: 0033:0x7f68a7aff797
+
+Fixes: 111e7b15cf10 ("x86/ioperm: Extend IOPL config to control ioperm() as well")
+Signed-off-by: Alexander Duyck <alexander.h.duyck@linux.intel.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: x86-ml <x86@kernel.org>
+Link: https://lkml.kernel.org/r/20191120222426.3060.18462.stgit@localhost.localdomain
 ---
- drivers/irqchip/irq-gic-v3.c | 4 ++--
- drivers/irqchip/irq-zevio.c  | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ arch/x86/kernel/process.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/irqchip/irq-gic-v3.c b/drivers/irqchip/irq-gic-v3.c
-index 1edc993..9e35155 100644
---- a/drivers/irqchip/irq-gic-v3.c
-+++ b/drivers/irqchip/irq-gic-v3.c
-@@ -174,7 +174,7 @@ static void gic_do_wait_for_rwp(void __iomem *base)
- 		}
- 		cpu_relax();
- 		udelay(1);
--	};
-+	}
- }
+diff --git a/arch/x86/kernel/process.c b/arch/x86/kernel/process.c
+index 7964d7d..bd2a11c 100644
+--- a/arch/x86/kernel/process.c
++++ b/arch/x86/kernel/process.c
+@@ -382,8 +382,7 @@ void tss_update_io_bitmap(void)
+ 	if (test_thread_flag(TIF_IO_BITMAP)) {
+ 		struct thread_struct *t = &current->thread;
  
- /* Wait for completion of a distributor change */
-@@ -231,7 +231,7 @@ static void gic_enable_redist(bool enable)
- 			break;
- 		cpu_relax();
- 		udelay(1);
--	};
-+	}
- 	if (!count)
- 		pr_err_ratelimited("redistributor failed to %s...\n",
- 				   enable ? "wakeup" : "sleep");
-diff --git a/drivers/irqchip/irq-zevio.c b/drivers/irqchip/irq-zevio.c
-index 5a7efeb..84163f1 100644
---- a/drivers/irqchip/irq-zevio.c
-+++ b/drivers/irqchip/irq-zevio.c
-@@ -51,7 +51,7 @@ static void __exception_irq_entry zevio_handle_irq(struct pt_regs *regs)
- 	while (readl(zevio_irq_io + IO_STATUS)) {
- 		irqnr = readl(zevio_irq_io + IO_CURRENT);
- 		handle_domain_irq(zevio_irq_domain, irqnr, regs);
--	};
-+	}
- }
- 
- static void __init zevio_init_irq_base(void __iomem *base)
+-		if (IS_ENABLED(CONFIG_X86_IOPL_EMULATION) &&
+-		    t->iopl_emul == 3) {
++		if (IS_ENABLED(CONFIG_X86_IOPL_IOPERM) && t->iopl_emul == 3) {
+ 			*base = IO_BITMAP_OFFSET_VALID_ALL;
+ 		} else {
+ 			struct io_bitmap *iobm = t->io_bitmap;
