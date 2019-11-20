@@ -2,36 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 702FA103B30
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 20 Nov 2019 14:23:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 53934103B1F
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 20 Nov 2019 14:22:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728799AbfKTNXA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 20 Nov 2019 08:23:00 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:56723 "EHLO
+        id S1729163AbfKTNWf (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 20 Nov 2019 08:22:35 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:56776 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730190AbfKTNVN (ORCPT
+        with ESMTP id S1730231AbfKTNVV (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 20 Nov 2019 08:21:13 -0500
+        Wed, 20 Nov 2019 08:21:21 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iXPuv-00079M-OB; Wed, 20 Nov 2019 14:21:09 +0100
+        id 1iXPv3-0007Dr-FL; Wed, 20 Nov 2019 14:21:17 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 1C31F1C1A13;
-        Wed, 20 Nov 2019 14:21:04 +0100 (CET)
-Date:   Wed, 20 Nov 2019 13:21:04 -0000
-From:   "tip-bot2 for Marc Zyngier" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D22761C1A1C;
+        Wed, 20 Nov 2019 14:21:05 +0100 (CET)
+Date:   Wed, 20 Nov 2019 13:21:05 -0000
+From:   "tip-bot2 for Florian Fainelli" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] irqchip/gic-v3-its: Add its_vlpi_map helpers
-Cc:     Marc Zyngier <maz@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>,
-        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20191027144234.8395-8-maz@kernel.org>
-References: <20191027144234.8395-8-maz@kernel.org>
+Subject: [tip: irq/core] irqchip/irq-bcm7038-l1: Support brcm,int-fwd-mask
+Cc:     Florian Fainelli <f.fainelli@gmail.com>,
+        Marc Zyngier <maz@kernel.org>, Ingo Molnar <mingo@kernel.org>,
+        Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
+In-Reply-To: <20191024201415.23454-6-f.fainelli@gmail.com>
+References: <20191024201415.23454-6-f.fainelli@gmail.com>
 MIME-Version: 1.0
-Message-ID: <157425606405.12247.12927680220747155377.tip-bot2@tip-bot2>
+Message-ID: <157425606576.12247.4120040549066780732.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,136 +47,109 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     c1d4d5cd203cc8ec83d67d4e2af51f1a9f01ba34
-Gitweb:        https://git.kernel.org/tip/c1d4d5cd203cc8ec83d67d4e2af51f1a9f01ba34
-Author:        Marc Zyngier <maz@kernel.org>
-AuthorDate:    Fri, 08 Nov 2019 16:58:01 
+Commit-ID:     96de80c14bc6b43b797299270e31b8924f89fa52
+Gitweb:        https://git.kernel.org/tip/96de80c14bc6b43b797299270e31b8924f89fa52
+Author:        Florian Fainelli <f.fainelli@gmail.com>
+AuthorDate:    Thu, 24 Oct 2019 13:14:15 -07:00
 Committer:     Marc Zyngier <maz@kernel.org>
-CommitterDate: Sun, 10 Nov 2019 18:47:52 
+CommitterDate: Sun, 10 Nov 2019 18:47:48 
 
-irqchip/gic-v3-its: Add its_vlpi_map helpers
+irqchip/irq-bcm7038-l1: Support brcm,int-fwd-mask
 
-Obtaining the mapping information for a VLPI is something quite common,
-and the GICv4.1 code is going to make even more use of it. Expose it as
-a separate set of helpers.
+On some specific chips like 7211 we need to leave some interrupts
+untouched/forwarded to the VPU which is another agent in the system
+making use of that interrupt controller hardware (goes to both ARM GIC
+and VPU L1 interrupt controller). Make that possible by using the
+existing brcm,int-fwd-mask property and take necessary actions to avoid
+masking that interrupt as well as not allowing Linux to map them.
 
+Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
 Signed-off-by: Marc Zyngier <maz@kernel.org>
-Reviewed-by: Zenghui Yu <yuzenghui@huawei.com>
-Link: https://lore.kernel.org/r/20191027144234.8395-8-maz@kernel.org
-Link: https://lore.kernel.org/r/20191108165805.3071-8-maz@kernel.org
+Link: https://lore.kernel.org/r/20191024201415.23454-6-f.fainelli@gmail.com
 ---
- drivers/irqchip/irq-gic-v3-its.c | 47 +++++++++++++++++++++----------
- 1 file changed, 32 insertions(+), 15 deletions(-)
+ drivers/irqchip/irq-bcm7038-l1.c | 30 ++++++++++++++++++++++++++----
+ 1 file changed, 26 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
-index e8aeb07..e8d088c 100644
---- a/drivers/irqchip/irq-gic-v3-its.c
-+++ b/drivers/irqchip/irq-gic-v3-its.c
-@@ -207,6 +207,15 @@ static struct its_collection *dev_event_to_col(struct its_device *its_dev,
- 	return its->collections + its_dev->event_map.col_map[event];
- }
+diff --git a/drivers/irqchip/irq-bcm7038-l1.c b/drivers/irqchip/irq-bcm7038-l1.c
+index 45879e5..cbf01af 100644
+--- a/drivers/irqchip/irq-bcm7038-l1.c
++++ b/drivers/irqchip/irq-bcm7038-l1.c
+@@ -44,6 +44,7 @@ struct bcm7038_l1_chip {
+ 	struct list_head	list;
+ 	u32			wake_mask[MAX_WORDS];
+ #endif
++	u32			irq_fwd_mask[MAX_WORDS];
+ 	u8			affinity[MAX_WORDS * IRQS_PER_WORD];
+ };
  
-+static struct its_vlpi_map *dev_event_to_vlpi_map(struct its_device *its_dev,
-+					       u32 event)
-+{
-+	if (WARN_ON_ONCE(event >= its_dev->event_map.nr_lpis))
-+		return NULL;
+@@ -254,6 +255,7 @@ static int __init bcm7038_l1_init_one(struct device_node *dn,
+ 	resource_size_t sz;
+ 	struct bcm7038_l1_cpu *cpu;
+ 	unsigned int i, n_words, parent_irq;
++	int ret;
+ 
+ 	if (of_address_to_resource(dn, idx, &res))
+ 		return -EINVAL;
+@@ -267,6 +269,14 @@ static int __init bcm7038_l1_init_one(struct device_node *dn,
+ 	else if (intc->n_words != n_words)
+ 		return -EINVAL;
+ 
++	ret = of_property_read_u32_array(dn , "brcm,int-fwd-mask",
++					 intc->irq_fwd_mask, n_words);
++	if (ret != 0 && ret != -EINVAL) {
++		/* property exists but has the wrong number of words */
++		pr_err("invalid brcm,int-fwd-mask property\n");
++		return -EINVAL;
++	}
 +
-+	return &its_dev->event_map.vlpi_maps[event];
-+}
-+
- static struct its_collection *irq_to_col(struct irq_data *d)
- {
- 	struct its_device *its_dev = irq_data_get_irq_chip_data(d);
-@@ -971,7 +980,7 @@ static void its_send_invall(struct its_node *its, struct its_collection *col)
+ 	cpu = intc->cpus[idx] = kzalloc(sizeof(*cpu) + n_words * sizeof(u32),
+ 					GFP_KERNEL);
+ 	if (!cpu)
+@@ -277,8 +287,11 @@ static int __init bcm7038_l1_init_one(struct device_node *dn,
+ 		return -ENOMEM;
  
- static void its_send_vmapti(struct its_device *dev, u32 id)
- {
--	struct its_vlpi_map *map = &dev->event_map.vlpi_maps[id];
-+	struct its_vlpi_map *map = dev_event_to_vlpi_map(dev, id);
- 	struct its_cmd_desc desc;
- 
- 	desc.its_vmapti_cmd.vpe = map->vpe;
-@@ -985,7 +994,7 @@ static void its_send_vmapti(struct its_device *dev, u32 id)
- 
- static void its_send_vmovi(struct its_device *dev, u32 id)
- {
--	struct its_vlpi_map *map = &dev->event_map.vlpi_maps[id];
-+	struct its_vlpi_map *map = dev_event_to_vlpi_map(dev, id);
- 	struct its_cmd_desc desc;
- 
- 	desc.its_vmovi_cmd.vpe = map->vpe;
-@@ -1063,20 +1072,26 @@ static void its_send_vinvall(struct its_node *its, struct its_vpe *vpe)
- /*
-  * irqchip functions - assumes MSI, mostly.
-  */
-+static struct its_vlpi_map *get_vlpi_map(struct irq_data *d)
-+{
-+	struct its_device *its_dev = irq_data_get_irq_chip_data(d);
-+	u32 event = its_get_event_id(d);
-+
-+	if (!irqd_is_forwarded_to_vcpu(d))
-+		return NULL;
-+
-+	return dev_event_to_vlpi_map(its_dev, event);
-+}
- 
- static void lpi_write_config(struct irq_data *d, u8 clr, u8 set)
- {
-+	struct its_vlpi_map *map = get_vlpi_map(d);
- 	irq_hw_number_t hwirq;
- 	void *va;
- 	u8 *cfg;
- 
--	if (irqd_is_forwarded_to_vcpu(d)) {
--		struct its_device *its_dev = irq_data_get_irq_chip_data(d);
--		u32 event = its_get_event_id(d);
--		struct its_vlpi_map *map;
--
--		va = page_address(its_dev->event_map.vm->vprop_page);
--		map = &its_dev->event_map.vlpi_maps[event];
-+	if (map) {
-+		va = page_address(map->vm->vprop_page);
- 		hwirq = map->vintid;
- 
- 		/* Remember the updated property */
-@@ -1136,11 +1151,14 @@ static void its_vlpi_set_doorbell(struct irq_data *d, bool enable)
- {
- 	struct its_device *its_dev = irq_data_get_irq_chip_data(d);
- 	u32 event = its_get_event_id(d);
-+	struct its_vlpi_map *map;
- 
--	if (its_dev->event_map.vlpi_maps[event].db_enabled == enable)
-+	map = dev_event_to_vlpi_map(its_dev, event);
-+
-+	if (map->db_enabled == enable)
- 		return;
- 
--	its_dev->event_map.vlpi_maps[event].db_enabled = enable;
-+	map->db_enabled = enable;
- 
- 	/*
- 	 * More fun with the architecture:
-@@ -1369,19 +1387,18 @@ out:
- static int its_vlpi_get(struct irq_data *d, struct its_cmd_info *info)
- {
- 	struct its_device *its_dev = irq_data_get_irq_chip_data(d);
--	u32 event = its_get_event_id(d);
-+	struct its_vlpi_map *map = get_vlpi_map(d);
- 	int ret = 0;
- 
- 	mutex_lock(&its_dev->event_map.vlpi_lock);
- 
--	if (!its_dev->event_map.vm ||
--	    !its_dev->event_map.vlpi_maps[event].vm) {
-+	if (!its_dev->event_map.vm || !map->vm) {
- 		ret = -EINVAL;
- 		goto out;
+ 	for (i = 0; i < n_words; i++) {
+-		l1_writel(0xffffffff, cpu->map_base + reg_mask_set(intc, i));
+-		cpu->mask_cache[i] = 0xffffffff;
++		l1_writel(~intc->irq_fwd_mask[i],
++			  cpu->map_base + reg_mask_set(intc, i));
++		l1_writel(intc->irq_fwd_mask[i],
++			  cpu->map_base + reg_mask_clr(intc, i));
++		cpu->mask_cache[i] = ~intc->irq_fwd_mask[i];
  	}
  
- 	/* Copy our mapping information to the incoming request */
--	*info->map = its_dev->event_map.vlpi_maps[event];
-+	*info->map = *map;
+ 	parent_irq = irq_of_parse_and_map(dn, idx);
+@@ -311,15 +324,17 @@ static int bcm7038_l1_suspend(void)
+ {
+ 	struct bcm7038_l1_chip *intc;
+ 	int boot_cpu, word;
++	u32 val;
  
- out:
- 	mutex_unlock(&its_dev->event_map.vlpi_lock);
+ 	/* Wakeup interrupt should only come from the boot cpu */
+ 	boot_cpu = cpu_logical_map(0);
+ 
+ 	list_for_each_entry(intc, &bcm7038_l1_intcs_list, list) {
+ 		for (word = 0; word < intc->n_words; word++) {
+-			l1_writel(~intc->wake_mask[word],
++			val = intc->wake_mask[word] | intc->irq_fwd_mask[word];
++			l1_writel(~val,
+ 				intc->cpus[boot_cpu]->map_base + reg_mask_set(intc, word));
+-			l1_writel(intc->wake_mask[word],
++			l1_writel(val,
+ 				intc->cpus[boot_cpu]->map_base + reg_mask_clr(intc, word));
+ 		}
+ 	}
+@@ -383,6 +398,13 @@ static struct irq_chip bcm7038_l1_irq_chip = {
+ static int bcm7038_l1_map(struct irq_domain *d, unsigned int virq,
+ 			  irq_hw_number_t hw_irq)
+ {
++	struct bcm7038_l1_chip *intc = d->host_data;
++	u32 mask = BIT(hw_irq % IRQS_PER_WORD);
++	u32 word = hw_irq / IRQS_PER_WORD;
++
++	if (intc->irq_fwd_mask[word] & mask)
++		return -EPERM;
++
+ 	irq_set_chip_and_handler(virq, &bcm7038_l1_irq_chip, handle_level_irq);
+ 	irq_set_chip_data(virq, d->host_data);
+ 	irqd_set_single_target(irq_desc_get_irq_data(irq_to_desc(virq)));
