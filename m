@@ -2,36 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4427B103B04
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 20 Nov 2019 14:22:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 635D9103B10
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 20 Nov 2019 14:22:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728729AbfKTNVt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 20 Nov 2019 08:21:49 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:56841 "EHLO
+        id S1730304AbfKTNV2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 20 Nov 2019 08:21:28 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:56834 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730335AbfKTNVd (ORCPT
+        with ESMTP id S1730286AbfKTNV1 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 20 Nov 2019 08:21:33 -0500
+        Wed, 20 Nov 2019 08:21:27 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iXPvA-0007GJ-0D; Wed, 20 Nov 2019 14:21:24 +0100
+        id 1iXPvA-0007F9-Qt; Wed, 20 Nov 2019 14:21:24 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C199B1C1A21;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 803C71C1A1F;
         Wed, 20 Nov 2019 14:21:06 +0100 (CET)
 Date:   Wed, 20 Nov 2019 13:21:06 -0000
-From:   "tip-bot2 for Ben Dooks (Codethink)" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Florian Fainelli" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] irqchip/gic-v3: Fix __iomem warning
-Cc:     Ben Dooks <ben.dooks@codethink.co.uk>,
-        Marc Zyngier <maz@kernel.org>, Ingo Molnar <mingo@kernel.org>,
-        Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
-In-Reply-To: <20191017113341.13778-1-ben.dooks@codethink.co.uk>
-References: <20191017113341.13778-1-ben.dooks@codethink.co.uk>
+Subject: [tip: irq/core] dt-bindings: Document brcm, irq-can-wake for brcm,
+ bcm7038-l1-intc.txt
+Cc:     Florian Fainelli <f.fainelli@gmail.com>,
+        Marc Zyngier <maz@kernel.org>, Rob Herring <robh@kernel.org>,
+        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20191024201415.23454-3-f.fainelli@gmail.com>
+References: <20191024201415.23454-3-f.fainelli@gmail.com>
 MIME-Version: 1.0
-Message-ID: <157425606673.12247.2619370151942633774.tip-bot2@tip-bot2>
+Message-ID: <157425606646.12247.14831145441040729864.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,58 +49,40 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     f8af4519dfb6156045173f38cbd528c043fb25e2
-Gitweb:        https://git.kernel.org/tip/f8af4519dfb6156045173f38cbd528c043fb25e2
-Author:        Ben Dooks (Codethink) <ben.dooks@codethink.co.uk>
-AuthorDate:    Thu, 17 Oct 2019 12:33:41 +01:00
+Commit-ID:     b94f9008f2ad551f4d6a9537b10238847cb81e5d
+Gitweb:        https://git.kernel.org/tip/b94f9008f2ad551f4d6a9537b10238847cb81e5d
+Author:        Florian Fainelli <f.fainelli@gmail.com>
+AuthorDate:    Thu, 24 Oct 2019 13:14:12 -07:00
 Committer:     Marc Zyngier <maz@kernel.org>
-CommitterDate: Sun, 10 Nov 2019 18:47:45 
+CommitterDate: Sun, 10 Nov 2019 18:47:46 
 
-irqchip/gic-v3: Fix __iomem warning
+dt-bindings: Document brcm, irq-can-wake for brcm, bcm7038-l1-intc.txt
 
-The __iomem attribute should go before the * in the
-prototype. Move to silence the following sparse
-warnings:
+The BCM7038 L1 interrupt controller can be used as a wake-up interrupt
+controller on MIPS and ARM-based systems, document the brcm,irq-can-wake
+which has been "standardized" across Broadcom interrupt controllers.
 
-./arch/arm/include/asm/arch_gicv3.h:340:15: warning: incorrect type in argument 1 (different address spaces)
-./arch/arm/include/asm/arch_gicv3.h:340:15:    expected void const volatile [noderef] <asn:2> *addr
-./arch/arm/include/asm/arch_gicv3.h:340:15:    got void *
-./arch/arm/include/asm/arch_gicv3.h:343:17: warning: incorrect type in argument 2 (different address spaces)
-./arch/arm/include/asm/arch_gicv3.h:343:17:    expected void volatile [noderef] <asn:2> *addr
-./arch/arm/include/asm/arch_gicv3.h:343:17:    got void *
-./arch/arm/include/asm/arch_gicv3.h:350:37: warning: incorrect type in argument 2 (different address spaces)
-./arch/arm/include/asm/arch_gicv3.h:350:37:    expected void volatile [noderef] <asn:2> *addr
-./arch/arm/include/asm/arch_gicv3.h:350:37:    got void *[noderef] <asn:2> addr
-drivers/irqchip/irq-gic-v3-its.c:2832:46: warning: incorrect type in argument 2 (different address spaces)
-drivers/irqchip/irq-gic-v3-its.c:2832:46:    expected void *[noderef] <asn:2> addr
-drivers/irqchip/irq-gic-v3-its.c:2832:46:    got void [noderef] <asn:2> *
-./arch/arm/include/asm/arch_gicv3.h:340:15: warning: incorrect type in argument 1 (different address spaces)
-./arch/arm/include/asm/arch_gicv3.h:340:15:    expected void const volatile [noderef] <asn:2> *addr
-./arch/arm/include/asm/arch_gicv3.h:340:15:    got void *
-./arch/arm/include/asm/arch_gicv3.h:343:17: warning: incorrect type in argument 2 (different address spaces)
-./arch/arm/include/asm/arch_gicv3.h:343:17:    expected void volatile [noderef] <asn:2> *addr
-./arch/arm/include/asm/arch_gicv3.h:343:17:    got void *
-./arch/arm/include/asm/arch_gicv3.h:350:37: warning: incorrect type in argument 2 (different address spaces)
-./arch/arm/include/asm/arch_gicv3.h:350:37:    expected void volatile [noderef] <asn:2> *addr
-./arch/arm/include/asm/arch_gicv3.h:350:37:    got void *[noderef] <asn:2> addr
-
-Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
+Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
 Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20191017113341.13778-1-ben.dooks@codethink.co.uk
+Acked-by: Rob Herring <robh@kernel.org>
+Link: https://lore.kernel.org/r/20191024201415.23454-3-f.fainelli@gmail.com
 ---
- arch/arm/include/asm/arch_gicv3.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/devicetree/bindings/interrupt-controller/brcm,bcm7038-l1-intc.txt | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/arm/include/asm/arch_gicv3.h b/arch/arm/include/asm/arch_gicv3.h
-index 0555f14..fa50bb0 100644
---- a/arch/arm/include/asm/arch_gicv3.h
-+++ b/arch/arm/include/asm/arch_gicv3.h
-@@ -333,7 +333,7 @@ static inline u64 __gic_readq_nonatomic(const volatile void __iomem *addr)
-  * GITS_VPENDBASER - the Valid bit must be cleared before changing
-  * anything else.
-  */
--static inline void gits_write_vpendbaser(u64 val, void * __iomem addr)
-+static inline void gits_write_vpendbaser(u64 val, void __iomem *addr)
- {
- 	u32 tmp;
+diff --git a/Documentation/devicetree/bindings/interrupt-controller/brcm,bcm7038-l1-intc.txt b/Documentation/devicetree/bindings/interrupt-controller/brcm,bcm7038-l1-intc.txt
+index 2117d4a..4eb0432 100644
+--- a/Documentation/devicetree/bindings/interrupt-controller/brcm,bcm7038-l1-intc.txt
++++ b/Documentation/devicetree/bindings/interrupt-controller/brcm,bcm7038-l1-intc.txt
+@@ -31,6 +31,11 @@ Required properties:
+ - interrupts: specifies the interrupt line(s) in the interrupt-parent controller
+   node; valid values depend on the type of parent interrupt controller
  
++Optional properties:
++
++- brcm,irq-can-wake: If present, this means the L1 controller can be used as a
++  wakeup source for system suspend/resume.
++
+ If multiple reg ranges and interrupt-parent entries are present on an SMP
+ system, the driver will allow IRQ SMP affinity to be set up through the
+ /proc/irq/ interface.  In the simplest possible configuration, only one
