@@ -2,38 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A6DB9103B0A
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 20 Nov 2019 14:22:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CBF01103B20
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 20 Nov 2019 14:22:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730273AbfKTNVY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 20 Nov 2019 08:21:24 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:56810 "EHLO
+        id S1729196AbfKTNWj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 20 Nov 2019 08:22:39 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:56782 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730256AbfKTNVY (ORCPT
+        with ESMTP id S1730237AbfKTNVV (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 20 Nov 2019 08:21:24 -0500
+        Wed, 20 Nov 2019 08:21:21 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iXPv4-0007Be-Vg; Wed, 20 Nov 2019 14:21:19 +0100
+        id 1iXPv2-0007BZ-Jt; Wed, 20 Nov 2019 14:21:16 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4449A1C1A19;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 22AC71C1A0B;
         Wed, 20 Nov 2019 14:21:05 +0100 (CET)
 Date:   Wed, 20 Nov 2019 13:21:05 -0000
-From:   "tip-bot2 for Rajendra Nayak" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Marc Zyngier" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] dt-bindings: qcom,pdc: Add compatible for sc7180
-Cc:     Rajendra Nayak <rnayak@codeaurora.org>,
-        Marc Zyngier <maz@kernel.org>, Rob Herring <robh@kernel.org>,
-        Stephen Boyd <swboyd@chromium.org>,
+Subject: [tip: irq/core] irqchip/gic-v3-its: Free collection mapping on device
+ teardown
+Cc:     Marc Zyngier <maz@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20191108092824.9773-8-rnayak@codeaurora.org>
-References: <20191108092824.9773-8-rnayak@codeaurora.org>
+In-Reply-To: <20191108165805.3071-2-maz@kernel.org>
+References: <20191108165805.3071-2-maz@kernel.org>
 MIME-Version: 1.0
-Message-ID: <157425606522.12247.12968768078402599671.tip-bot2@tip-bot2>
+Message-ID: <157425606507.12247.10617023526080442996.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,37 +48,46 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     bf93b04cd85d74c34335e76882cf8bf206caab6e
-Gitweb:        https://git.kernel.org/tip/bf93b04cd85d74c34335e76882cf8bf206caab6e
-Author:        Rajendra Nayak <rnayak@codeaurora.org>
-AuthorDate:    Fri, 08 Nov 2019 14:58:18 +05:30
+Commit-ID:     898aa5ce6158c5ccfc256bfc17963bc81981eef8
+Gitweb:        https://git.kernel.org/tip/898aa5ce6158c5ccfc256bfc17963bc81981eef8
+Author:        Marc Zyngier <maz@kernel.org>
+AuthorDate:    Fri, 08 Nov 2019 16:57:55 
 Committer:     Marc Zyngier <maz@kernel.org>
 CommitterDate: Sun, 10 Nov 2019 18:47:50 
 
-dt-bindings: qcom,pdc: Add compatible for sc7180
+irqchip/gic-v3-its: Free collection mapping on device teardown
 
-Add the compatible string for sc7180 SoC from Qualcomm.
+We allocate the collection mapping on device creation, but somehow
+free it on the irqdomain free path, which is pretty inconsistent
+and has led to bugs in the past.
 
-Signed-off-by: Rajendra Nayak <rnayak@codeaurora.org>
+Move it to the point where we teardown the device, making the
+alloc/free symetric.
+
 Signed-off-by: Marc Zyngier <maz@kernel.org>
-Reviewed-by: Rob Herring <robh@kernel.org>
-Reviewed-by: Stephen Boyd <swboyd@chromium.org>
-Link: https://lore.kernel.org/r/20191108092824.9773-8-rnayak@codeaurora.org
+Reviewed-by: Zenghui Yu <yuzenghui@huawei.com>
+Link: https://lore.kernel.org/r/20191108165805.3071-2-maz@kernel.org
 ---
- Documentation/devicetree/bindings/interrupt-controller/qcom,pdc.txt | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/irqchip/irq-gic-v3-its.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/interrupt-controller/qcom,pdc.txt b/Documentation/devicetree/bindings/interrupt-controller/qcom,pdc.txt
-index 8e0797c..1df2939 100644
---- a/Documentation/devicetree/bindings/interrupt-controller/qcom,pdc.txt
-+++ b/Documentation/devicetree/bindings/interrupt-controller/qcom,pdc.txt
-@@ -17,7 +17,8 @@ Properties:
- - compatible:
- 	Usage: required
- 	Value type: <string>
--	Definition: Should contain "qcom,<soc>-pdc"
-+	Definition: Should contain "qcom,<soc>-pdc" and "qcom,pdc"
-+		    - "qcom,sc7180-pdc": For SC7180
- 		    - "qcom,sdm845-pdc": For SDM845
+diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
+index 021e0c7..d5d8f8f 100644
+--- a/drivers/irqchip/irq-gic-v3-its.c
++++ b/drivers/irqchip/irq-gic-v3-its.c
+@@ -2474,6 +2474,7 @@ static void its_free_device(struct its_device *its_dev)
+ 	raw_spin_lock_irqsave(&its_dev->its->lock, flags);
+ 	list_del(&its_dev->entry);
+ 	raw_spin_unlock_irqrestore(&its_dev->its->lock, flags);
++	kfree(its_dev->event_map.col_map);
+ 	kfree(its_dev->itt);
+ 	kfree(its_dev);
+ }
+@@ -2682,7 +2683,6 @@ static void its_irq_domain_free(struct irq_domain *domain, unsigned int virq,
+ 		its_lpi_free(its_dev->event_map.lpi_map,
+ 			     its_dev->event_map.lpi_base,
+ 			     its_dev->event_map.nr_lpis);
+-		kfree(its_dev->event_map.col_map);
  
- - reg:
+ 		/* Unmap device/itt */
+ 		its_send_mapd(its_dev, 0);
