@@ -2,37 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 81EE6103B1B
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 20 Nov 2019 14:22:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ED795103AF9
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 20 Nov 2019 14:21:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730186AbfKTNVV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 20 Nov 2019 08:21:21 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:56779 "EHLO
+        id S1730229AbfKTNVT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 20 Nov 2019 08:21:19 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:56755 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730236AbfKTNVU (ORCPT
+        with ESMTP id S1730214AbfKTNVS (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 20 Nov 2019 08:21:20 -0500
+        Wed, 20 Nov 2019 08:21:18 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iXPuu-00078h-FV; Wed, 20 Nov 2019 14:21:08 +0100
+        id 1iXPuy-00078F-Ke; Wed, 20 Nov 2019 14:21:12 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C54C11C1A01;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 6750F1C1A10;
         Wed, 20 Nov 2019 14:21:03 +0100 (CET)
 Date:   Wed, 20 Nov 2019 13:21:03 -0000
 From:   "tip-bot2 for Marc Zyngier" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] irqchip/gic-v3-its: Synchronise INT/CLEAR commands
- targetting a VLPI using VSYNC
-Cc:     Zenghui Yu <yuzenghui@huawei.com>, Marc Zyngier <maz@kernel.org>,
+Subject: [tip: irq/core] irqchip/gic-v3-its: Make vlpi_lock a spinlock
+Cc:     Heyi Guo <guoheyi@huawei.com>, Marc Zyngier <maz@kernel.org>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20191108165805.3071-10-maz@kernel.org>
-References: <20191108165805.3071-10-maz@kernel.org>
+In-Reply-To: <20191108165805.3071-12-maz@kernel.org>
+References: <20191108165805.3071-12-maz@kernel.org>
 MIME-Version: 1.0
-Message-ID: <157425606371.12247.8279559926497707725.tip-bot2@tip-bot2>
+Message-ID: <157425606332.12247.1289778849742974310.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,134 +47,107 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     ed0e4aa9cc74c08a429f4a389483c1076da2ca51
-Gitweb:        https://git.kernel.org/tip/ed0e4aa9cc74c08a429f4a389483c1076da2ca51
+Commit-ID:     11635fa26dc7a715f3fc1c351846859e90985ae1
+Gitweb:        https://git.kernel.org/tip/11635fa26dc7a715f3fc1c351846859e90985ae1
 Author:        Marc Zyngier <maz@kernel.org>
-AuthorDate:    Fri, 08 Nov 2019 16:58:03 
+AuthorDate:    Fri, 08 Nov 2019 16:58:05 
 Committer:     Marc Zyngier <maz@kernel.org>
-CommitterDate: Sun, 10 Nov 2019 18:47:53 
+CommitterDate: Sun, 10 Nov 2019 18:48:35 
 
-irqchip/gic-v3-its: Synchronise INT/CLEAR commands targetting a VLPI using VSYNC
+irqchip/gic-v3-its: Make vlpi_lock a spinlock
 
-We have so far always injected/cleared VLPIs using either
-INT+SYNC or CLEAR+SYNC sequences, but that's pretty wrong
-for two reasons:
+The VLPI map is currently a mutex, and that's a bad idea as
+this lock can be taken in non-preemptible contexts. Convert
+it to a raw spinlock, and turn the memory allocation of the
+VLPI map to be atomic.
 
-- SYNC only synchronises physical LPIs
-- The collection ID that for the associated LPI doesn't match
-  the redistributor the vPE is associated with
-
-Instead, send an {INT,CLEAR}+VSYNC for forwarded LPIs, ensuring
-that the ITS synchronises against the virtual pending table.
-
-Reported-by: Zenghui Yu <yuzenghui@huawei.com>
+Reported-by: Heyi Guo <guoheyi@huawei.com>
 Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20191108165805.3071-10-maz@kernel.org
+Link: https://lore.kernel.org/r/20191108165805.3071-12-maz@kernel.org
 ---
- drivers/irqchip/irq-gic-v3-its.c | 79 +++++++++++++++++++++++++++++--
- 1 file changed, 75 insertions(+), 4 deletions(-)
+ drivers/irqchip/irq-gic-v3-its.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
 diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
-index 6a18b01..61b8851 100644
+index 9c4f35e..e05673b 100644
 --- a/drivers/irqchip/irq-gic-v3-its.c
 +++ b/drivers/irqchip/irq-gic-v3-its.c
-@@ -721,6 +721,42 @@ static struct its_vpe *its_build_vinv_cmd(struct its_node *its,
- 	return valid_vpe(its, map->vpe);
- }
- 
-+static struct its_vpe *its_build_vint_cmd(struct its_node *its,
-+					  struct its_cmd_block *cmd,
-+					  struct its_cmd_desc *desc)
-+{
-+	struct its_vlpi_map *map;
-+
-+	map = dev_event_to_vlpi_map(desc->its_int_cmd.dev,
-+				    desc->its_int_cmd.event_id);
-+
-+	its_encode_cmd(cmd, GITS_CMD_INT);
-+	its_encode_devid(cmd, desc->its_int_cmd.dev->device_id);
-+	its_encode_event_id(cmd, desc->its_int_cmd.event_id);
-+
-+	its_fixup_cmd(cmd);
-+
-+	return valid_vpe(its, map->vpe);
-+}
-+
-+static struct its_vpe *its_build_vclear_cmd(struct its_node *its,
-+					    struct its_cmd_block *cmd,
-+					    struct its_cmd_desc *desc)
-+{
-+	struct its_vlpi_map *map;
-+
-+	map = dev_event_to_vlpi_map(desc->its_clear_cmd.dev,
-+				    desc->its_clear_cmd.event_id);
-+
-+	its_encode_cmd(cmd, GITS_CMD_CLEAR);
-+	its_encode_devid(cmd, desc->its_clear_cmd.dev->device_id);
-+	its_encode_event_id(cmd, desc->its_clear_cmd.event_id);
-+
-+	its_fixup_cmd(cmd);
-+
-+	return valid_vpe(its, map->vpe);
-+}
-+
- static u64 its_cmd_ptr_to_offset(struct its_node *its,
- 				 struct its_cmd_block *ptr)
- {
-@@ -1101,6 +1137,34 @@ static void its_send_vinv(struct its_device *dev, u32 event_id)
- 	its_send_single_vcommand(dev->its, its_build_vinv_cmd, &desc);
- }
- 
-+static void its_send_vint(struct its_device *dev, u32 event_id)
-+{
-+	struct its_cmd_desc desc;
-+
-+	/*
-+	 * There is no real VINT command. This is just a normal INT,
-+	 * with a VSYNC instead of a SYNC.
-+	 */
-+	desc.its_int_cmd.dev = dev;
-+	desc.its_int_cmd.event_id = event_id;
-+
-+	its_send_single_vcommand(dev->its, its_build_vint_cmd, &desc);
-+}
-+
-+static void its_send_vclear(struct its_device *dev, u32 event_id)
-+{
-+	struct its_cmd_desc desc;
-+
-+	/*
-+	 * There is no real VCLEAR command. This is just a normal CLEAR,
-+	 * with a VSYNC instead of a SYNC.
-+	 */
-+	desc.its_clear_cmd.dev = dev;
-+	desc.its_clear_cmd.event_id = event_id;
-+
-+	its_send_single_vcommand(dev->its, its_build_vclear_cmd, &desc);
-+}
-+
- /*
-  * irqchip functions - assumes MSI, mostly.
-  */
-@@ -1294,10 +1358,17 @@ static int its_irq_set_irqchip_state(struct irq_data *d,
- 	if (which != IRQCHIP_STATE_PENDING)
+@@ -132,7 +132,7 @@ struct event_lpi_map {
+ 	u16			*col_map;
+ 	irq_hw_number_t		lpi_base;
+ 	int			nr_lpis;
+-	struct mutex		vlpi_lock;
++	raw_spinlock_t		vlpi_lock;
+ 	struct its_vm		*vm;
+ 	struct its_vlpi_map	*vlpi_maps;
+ 	int			nr_vlpis;
+@@ -1436,13 +1436,13 @@ static int its_vlpi_map(struct irq_data *d, struct its_cmd_info *info)
+ 	if (!info->map)
  		return -EINVAL;
  
--	if (state)
--		its_send_int(its_dev, event);
--	else
--		its_send_clear(its_dev, event);
-+	if (irqd_is_forwarded_to_vcpu(d)) {
-+		if (state)
-+			its_send_vint(its_dev, event);
-+		else
-+			its_send_vclear(its_dev, event);
-+	} else {
-+		if (state)
-+			its_send_int(its_dev, event);
-+		else
-+			its_send_clear(its_dev, event);
-+	}
+-	mutex_lock(&its_dev->event_map.vlpi_lock);
++	raw_spin_lock(&its_dev->event_map.vlpi_lock);
  
- 	return 0;
+ 	if (!its_dev->event_map.vm) {
+ 		struct its_vlpi_map *maps;
+ 
+ 		maps = kcalloc(its_dev->event_map.nr_lpis, sizeof(*maps),
+-			       GFP_KERNEL);
++			       GFP_ATOMIC);
+ 		if (!maps) {
+ 			ret = -ENOMEM;
+ 			goto out;
+@@ -1485,7 +1485,7 @@ static int its_vlpi_map(struct irq_data *d, struct its_cmd_info *info)
+ 	}
+ 
+ out:
+-	mutex_unlock(&its_dev->event_map.vlpi_lock);
++	raw_spin_unlock(&its_dev->event_map.vlpi_lock);
+ 	return ret;
  }
+ 
+@@ -1495,7 +1495,7 @@ static int its_vlpi_get(struct irq_data *d, struct its_cmd_info *info)
+ 	struct its_vlpi_map *map;
+ 	int ret = 0;
+ 
+-	mutex_lock(&its_dev->event_map.vlpi_lock);
++	raw_spin_lock(&its_dev->event_map.vlpi_lock);
+ 
+ 	map = get_vlpi_map(d);
+ 
+@@ -1508,7 +1508,7 @@ static int its_vlpi_get(struct irq_data *d, struct its_cmd_info *info)
+ 	*info->map = *map;
+ 
+ out:
+-	mutex_unlock(&its_dev->event_map.vlpi_lock);
++	raw_spin_unlock(&its_dev->event_map.vlpi_lock);
+ 	return ret;
+ }
+ 
+@@ -1518,7 +1518,7 @@ static int its_vlpi_unmap(struct irq_data *d)
+ 	u32 event = its_get_event_id(d);
+ 	int ret = 0;
+ 
+-	mutex_lock(&its_dev->event_map.vlpi_lock);
++	raw_spin_lock(&its_dev->event_map.vlpi_lock);
+ 
+ 	if (!its_dev->event_map.vm || !irqd_is_forwarded_to_vcpu(d)) {
+ 		ret = -EINVAL;
+@@ -1548,7 +1548,7 @@ static int its_vlpi_unmap(struct irq_data *d)
+ 	}
+ 
+ out:
+-	mutex_unlock(&its_dev->event_map.vlpi_lock);
++	raw_spin_unlock(&its_dev->event_map.vlpi_lock);
+ 	return ret;
+ }
+ 
+@@ -2608,7 +2608,7 @@ static struct its_device *its_create_device(struct its_node *its, u32 dev_id,
+ 	dev->event_map.col_map = col_map;
+ 	dev->event_map.lpi_base = lpi_base;
+ 	dev->event_map.nr_lpis = nr_lpis;
+-	mutex_init(&dev->event_map.vlpi_lock);
++	raw_spin_lock_init(&dev->event_map.vlpi_lock);
+ 	dev->device_id = dev_id;
+ 	INIT_LIST_HEAD(&dev->entry);
+ 
