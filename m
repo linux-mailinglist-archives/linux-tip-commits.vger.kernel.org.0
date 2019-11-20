@@ -2,37 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BD2D2103B24
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 20 Nov 2019 14:22:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F4F2103B32
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 20 Nov 2019 14:23:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730232AbfKTNVT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 20 Nov 2019 08:21:19 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:56758 "EHLO
+        id S1729013AbfKTNXE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 20 Nov 2019 08:23:04 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:56714 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730216AbfKTNVS (ORCPT
+        with ESMTP id S1730146AbfKTNVM (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 20 Nov 2019 08:21:18 -0500
+        Wed, 20 Nov 2019 08:21:12 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iXPut-00075R-16; Wed, 20 Nov 2019 14:21:07 +0100
+        id 1iXPuq-000756-NS; Wed, 20 Nov 2019 14:21:04 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id ABECC1C1998;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 6F43F1C1A0B;
         Wed, 20 Nov 2019 14:21:01 +0100 (CET)
 Date:   Wed, 20 Nov 2019 13:21:01 -0000
-From:   "tip-bot2 for Lina Iyer" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Maulik Shah" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] irqdomain: Add bus token DOMAIN_BUS_WAKEUP
-Cc:     Stephen Boyd <swboyd@chromium.org>,
+Subject: [tip: irq/core] genirq: Introduce irq_chip_get/set_parent_state calls
+Cc:     Maulik Shah <mkshah@codeaurora.org>,
         Lina Iyer <ilina@codeaurora.org>,
-        Marc Zyngier <maz@kernel.org>, Ingo Molnar <mingo@kernel.org>,
-        Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
-In-Reply-To: <1573855915-9841-2-git-send-email-ilina@codeaurora.org>
-References: <1573855915-9841-2-git-send-email-ilina@codeaurora.org>
+        Marc Zyngier <maz@kernel.org>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <1573855915-9841-7-git-send-email-ilina@codeaurora.org>
+References: <1573855915-9841-7-git-send-email-ilina@codeaurora.org>
 MIME-Version: 1.0
-Message-ID: <157425606157.12247.11399374334124634860.tip-bot2@tip-bot2>
+Message-ID: <157425606136.12247.11166423156373394360.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,42 +50,108 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     d46bca2b5d06cbb5f3e66945080f275bcfab7181
-Gitweb:        https://git.kernel.org/tip/d46bca2b5d06cbb5f3e66945080f275bcfab7181
-Author:        Lina Iyer <ilina@codeaurora.org>
-AuthorDate:    Fri, 15 Nov 2019 15:11:44 -07:00
+Commit-ID:     4a169a95d885fe5c050bac1a21d43c86ba955bcf
+Gitweb:        https://git.kernel.org/tip/4a169a95d885fe5c050bac1a21d43c86ba955bcf
+Author:        Maulik Shah <mkshah@codeaurora.org>
+AuthorDate:    Fri, 15 Nov 2019 15:11:49 -07:00
 Committer:     Marc Zyngier <maz@kernel.org>
-CommitterDate: Sat, 16 Nov 2019 10:18:52 
+CommitterDate: Sat, 16 Nov 2019 10:20:02 
 
-irqdomain: Add bus token DOMAIN_BUS_WAKEUP
+genirq: Introduce irq_chip_get/set_parent_state calls
 
-A single controller can handle normal interrupts and wake-up interrupts
-independently, with a different numbering space. It is thus crucial to
-allow the driver for such a controller discriminate between the two.
+On certain QTI chipsets some GPIOs are direct-connect interrupts to the
+GIC to be used as regular interrupt lines. When the GPIOs are not used
+for interrupt generation the interrupt line is disabled. But disabling
+the interrupt at GIC does not prevent the interrupt to be reported as
+pending at GIC_ISPEND. Later, when drivers call enable_irq() on the
+interrupt, an unwanted interrupt occurs.
 
-A simple way to do so is to tag the wake-up irqdomain with a "bus token"
-that indicates the wake-up domain. This slightly abuses the notion of
-bus, but also radically simplifies the design of such a driver. Between
-two evils, we choose the least damaging.
+Introduce get and set methods for irqchip's parent to clear it's pending
+irq state. This then can be invoked by the GPIO interrupt controller on
+the parents in it hierarchy to clear the interrupt before enabling the
+interrupt.
 
-Suggested-by: Stephen Boyd <swboyd@chromium.org>
+Signed-off-by: Maulik Shah <mkshah@codeaurora.org>
 Signed-off-by: Lina Iyer <ilina@codeaurora.org>
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 Reviewed-by: Stephen Boyd <swboyd@chromium.org>
-Link: https://lore.kernel.org/r/1573855915-9841-2-git-send-email-ilina@codeaurora.org
----
- include/linux/irqdomain.h | 1 +
- 1 file changed, 1 insertion(+)
+Link: https://lore.kernel.org/r/1573855915-9841-7-git-send-email-ilina@codeaurora.org
 
-diff --git a/include/linux/irqdomain.h b/include/linux/irqdomain.h
-index 583e7ab..3c340db 100644
---- a/include/linux/irqdomain.h
-+++ b/include/linux/irqdomain.h
-@@ -83,6 +83,7 @@ enum irq_domain_bus_token {
- 	DOMAIN_BUS_IPI,
- 	DOMAIN_BUS_FSL_MC_MSI,
- 	DOMAIN_BUS_TI_SCI_INTA_MSI,
-+	DOMAIN_BUS_WAKEUP,
- };
+[updated commit text and minor code fixes]
+---
+ include/linux/irq.h |  6 ++++++-
+ kernel/irq/chip.c   | 44 ++++++++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 50 insertions(+)
+
+diff --git a/include/linux/irq.h b/include/linux/irq.h
+index fb301cf..7853eb9 100644
+--- a/include/linux/irq.h
++++ b/include/linux/irq.h
+@@ -610,6 +610,12 @@ extern int irq_chip_pm_put(struct irq_data *data);
+ #ifdef	CONFIG_IRQ_DOMAIN_HIERARCHY
+ extern void handle_fasteoi_ack_irq(struct irq_desc *desc);
+ extern void handle_fasteoi_mask_irq(struct irq_desc *desc);
++extern int irq_chip_set_parent_state(struct irq_data *data,
++				     enum irqchip_irq_state which,
++				     bool val);
++extern int irq_chip_get_parent_state(struct irq_data *data,
++				     enum irqchip_irq_state which,
++				     bool *state);
+ extern void irq_chip_enable_parent(struct irq_data *data);
+ extern void irq_chip_disable_parent(struct irq_data *data);
+ extern void irq_chip_ack_parent(struct irq_data *data);
+diff --git a/kernel/irq/chip.c b/kernel/irq/chip.c
+index b76703b..b3fa2d8 100644
+--- a/kernel/irq/chip.c
++++ b/kernel/irq/chip.c
+@@ -1298,6 +1298,50 @@ EXPORT_SYMBOL_GPL(handle_fasteoi_mask_irq);
+ #endif /* CONFIG_IRQ_FASTEOI_HIERARCHY_HANDLERS */
  
  /**
++ * irq_chip_set_parent_state - set the state of a parent interrupt.
++ *
++ * @data: Pointer to interrupt specific data
++ * @which: State to be restored (one of IRQCHIP_STATE_*)
++ * @val: Value corresponding to @which
++ *
++ * Conditional success, if the underlying irqchip does not implement it.
++ */
++int irq_chip_set_parent_state(struct irq_data *data,
++			      enum irqchip_irq_state which,
++			      bool val)
++{
++	data = data->parent_data;
++
++	if (!data || !data->chip->irq_set_irqchip_state)
++		return 0;
++
++	return data->chip->irq_set_irqchip_state(data, which, val);
++}
++EXPORT_SYMBOL_GPL(irq_chip_set_parent_state);
++
++/**
++ * irq_chip_get_parent_state - get the state of a parent interrupt.
++ *
++ * @data: Pointer to interrupt specific data
++ * @which: one of IRQCHIP_STATE_* the caller wants to know
++ * @state: a pointer to a boolean where the state is to be stored
++ *
++ * Conditional success, if the underlying irqchip does not implement it.
++ */
++int irq_chip_get_parent_state(struct irq_data *data,
++			      enum irqchip_irq_state which,
++			      bool *state)
++{
++	data = data->parent_data;
++
++	if (!data || !data->chip->irq_get_irqchip_state)
++		return 0;
++
++	return data->chip->irq_get_irqchip_state(data, which, state);
++}
++EXPORT_SYMBOL_GPL(irq_chip_get_parent_state);
++
++/**
+  * irq_chip_enable_parent - Enable the parent interrupt (defaults to unmask if
+  * NULL)
+  * @data:	Pointer to interrupt specific data
