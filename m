@@ -2,37 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A09E103B28
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 20 Nov 2019 14:22:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 702FA103B30
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 20 Nov 2019 14:23:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728742AbfKTNWv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 20 Nov 2019 08:22:51 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:56757 "EHLO
+        id S1728799AbfKTNXA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 20 Nov 2019 08:23:00 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:56723 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730215AbfKTNVS (ORCPT
+        with ESMTP id S1730190AbfKTNVN (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 20 Nov 2019 08:21:18 -0500
+        Wed, 20 Nov 2019 08:21:13 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iXPuz-0007Aq-An; Wed, 20 Nov 2019 14:21:13 +0100
+        id 1iXPuv-00079M-OB; Wed, 20 Nov 2019 14:21:09 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id CD5491C1A17;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 1C31F1C1A13;
         Wed, 20 Nov 2019 14:21:04 +0100 (CET)
 Date:   Wed, 20 Nov 2019 13:21:04 -0000
 From:   "tip-bot2 for Marc Zyngier" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] irqchip/gic-v3-its: Allow LPI invalidation via the
- DirectLPI interface
+Subject: [tip: irq/core] irqchip/gic-v3-its: Add its_vlpi_map helpers
 Cc:     Marc Zyngier <maz@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20191027144234.8395-4-maz@kernel.org>
-References: <20191027144234.8395-4-maz@kernel.org>
+In-Reply-To: <20191027144234.8395-8-maz@kernel.org>
+References: <20191027144234.8395-8-maz@kernel.org>
 MIME-Version: 1.0
-Message-ID: <157425606477.12247.1951688405515949505.tip-bot2@tip-bot2>
+Message-ID: <157425606405.12247.12927680220747155377.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,109 +47,136 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     425c09be0f091a3b5940261d9a5d8467d62987e7
-Gitweb:        https://git.kernel.org/tip/425c09be0f091a3b5940261d9a5d8467d62987e7
+Commit-ID:     c1d4d5cd203cc8ec83d67d4e2af51f1a9f01ba34
+Gitweb:        https://git.kernel.org/tip/c1d4d5cd203cc8ec83d67d4e2af51f1a9f01ba34
 Author:        Marc Zyngier <maz@kernel.org>
-AuthorDate:    Fri, 08 Nov 2019 16:57:57 
+AuthorDate:    Fri, 08 Nov 2019 16:58:01 
 Committer:     Marc Zyngier <maz@kernel.org>
-CommitterDate: Sun, 10 Nov 2019 18:47:51 
+CommitterDate: Sun, 10 Nov 2019 18:47:52 
 
-irqchip/gic-v3-its: Allow LPI invalidation via the DirectLPI interface
+irqchip/gic-v3-its: Add its_vlpi_map helpers
 
-We currently don't make much use of the DirectLPI feature, and it would
-be beneficial to do this more, if only because it becomes a mandatory
-feature for GICv4.1.
+Obtaining the mapping information for a VLPI is something quite common,
+and the GICv4.1 code is going to make even more use of it. Expose it as
+a separate set of helpers.
 
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 Reviewed-by: Zenghui Yu <yuzenghui@huawei.com>
-Link: https://lore.kernel.org/r/20191027144234.8395-4-maz@kernel.org
-Link: https://lore.kernel.org/r/20191108165805.3071-4-maz@kernel.org
+Link: https://lore.kernel.org/r/20191027144234.8395-8-maz@kernel.org
+Link: https://lore.kernel.org/r/20191108165805.3071-8-maz@kernel.org
 ---
- drivers/irqchip/irq-gic-v3-its.c | 40 ++++++++++++++++++++++++-------
- 1 file changed, 32 insertions(+), 8 deletions(-)
+ drivers/irqchip/irq-gic-v3-its.c | 47 +++++++++++++++++++++----------
+ 1 file changed, 32 insertions(+), 15 deletions(-)
 
 diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
-index 78d3e73..6065b09 100644
+index e8aeb07..e8d088c 100644
 --- a/drivers/irqchip/irq-gic-v3-its.c
 +++ b/drivers/irqchip/irq-gic-v3-its.c
-@@ -191,6 +191,12 @@ static u16 get_its_list(struct its_vm *vm)
- 	return (u16)its_list;
- }
- 
-+static inline u32 its_get_event_id(struct irq_data *d)
-+{
-+	struct its_device *its_dev = irq_data_get_irq_chip_data(d);
-+	return d->hwirq - its_dev->event_map.lpi_base;
-+}
-+
- static struct its_collection *dev_event_to_col(struct its_device *its_dev,
- 					       u32 event)
- {
-@@ -199,6 +205,13 @@ static struct its_collection *dev_event_to_col(struct its_device *its_dev,
+@@ -207,6 +207,15 @@ static struct its_collection *dev_event_to_col(struct its_device *its_dev,
  	return its->collections + its_dev->event_map.col_map[event];
  }
  
-+static struct its_collection *irq_to_col(struct irq_data *d)
++static struct its_vlpi_map *dev_event_to_vlpi_map(struct its_device *its_dev,
++					       u32 event)
 +{
-+	struct its_device *its_dev = irq_data_get_irq_chip_data(d);
++	if (WARN_ON_ONCE(event >= its_dev->event_map.nr_lpis))
++		return NULL;
 +
-+	return dev_event_to_col(its_dev, its_get_event_id(d));
++	return &its_dev->event_map.vlpi_maps[event];
 +}
 +
- static struct its_collection *valid_col(struct its_collection *col)
- {
- 	if (WARN_ON_ONCE(col->target_address & GENMASK_ULL(15, 0)))
-@@ -1049,12 +1062,6 @@ static void its_send_vinvall(struct its_node *its, struct its_vpe *vpe)
-  * irqchip functions - assumes MSI, mostly.
-  */
- 
--static inline u32 its_get_event_id(struct irq_data *d)
--{
--	struct its_device *its_dev = irq_data_get_irq_chip_data(d);
--	return d->hwirq - its_dev->event_map.lpi_base;
--}
--
- static void lpi_write_config(struct irq_data *d, u8 clr, u8 set)
- {
- 	irq_hw_number_t hwirq;
-@@ -1099,12 +1106,28 @@ static void wait_for_syncr(void __iomem *rdbase)
- 		cpu_relax();
- }
- 
-+static void direct_lpi_inv(struct irq_data *d)
-+{
-+	struct its_collection *col;
-+	void __iomem *rdbase;
-+
-+	/* Target the redistributor this LPI is currently routed to */
-+	col = irq_to_col(d);
-+	rdbase = per_cpu_ptr(gic_rdists->rdist, col->col_id)->rd_base;
-+	gic_write_lpir(d->hwirq, rdbase + GICR_INVLPIR);
-+
-+	wait_for_syncr(rdbase);
-+}
-+
- static void lpi_update_config(struct irq_data *d, u8 clr, u8 set)
+ static struct its_collection *irq_to_col(struct irq_data *d)
  {
  	struct its_device *its_dev = irq_data_get_irq_chip_data(d);
+@@ -971,7 +980,7 @@ static void its_send_invall(struct its_node *its, struct its_collection *col)
  
- 	lpi_write_config(d, clr, set);
--	its_send_inv(its_dev, its_get_event_id(d));
-+	if (gic_rdists->has_direct_lpi && !irqd_is_forwarded_to_vcpu(d))
-+		direct_lpi_inv(d);
-+	else
-+		its_send_inv(its_dev, its_get_event_id(d));
- }
+ static void its_send_vmapti(struct its_device *dev, u32 id)
+ {
+-	struct its_vlpi_map *map = &dev->event_map.vlpi_maps[id];
++	struct its_vlpi_map *map = dev_event_to_vlpi_map(dev, id);
+ 	struct its_cmd_desc desc;
  
- static void its_vlpi_set_doorbell(struct irq_data *d, bool enable)
-@@ -2935,8 +2958,9 @@ static void its_vpe_send_inv(struct irq_data *d)
- 	if (gic_rdists->has_direct_lpi) {
- 		void __iomem *rdbase;
+ 	desc.its_vmapti_cmd.vpe = map->vpe;
+@@ -985,7 +994,7 @@ static void its_send_vmapti(struct its_device *dev, u32 id)
  
-+		/* Target the redistributor this VPE is currently known on */
- 		rdbase = per_cpu_ptr(gic_rdists->rdist, vpe->col_idx)->rd_base;
--		gic_write_lpir(vpe->vpe_db_lpi, rdbase + GICR_INVLPIR);
-+		gic_write_lpir(d->parent_data->hwirq, rdbase + GICR_INVLPIR);
- 		wait_for_syncr(rdbase);
- 	} else {
- 		its_vpe_send_cmd(vpe, its_send_inv);
+ static void its_send_vmovi(struct its_device *dev, u32 id)
+ {
+-	struct its_vlpi_map *map = &dev->event_map.vlpi_maps[id];
++	struct its_vlpi_map *map = dev_event_to_vlpi_map(dev, id);
+ 	struct its_cmd_desc desc;
+ 
+ 	desc.its_vmovi_cmd.vpe = map->vpe;
+@@ -1063,20 +1072,26 @@ static void its_send_vinvall(struct its_node *its, struct its_vpe *vpe)
+ /*
+  * irqchip functions - assumes MSI, mostly.
+  */
++static struct its_vlpi_map *get_vlpi_map(struct irq_data *d)
++{
++	struct its_device *its_dev = irq_data_get_irq_chip_data(d);
++	u32 event = its_get_event_id(d);
++
++	if (!irqd_is_forwarded_to_vcpu(d))
++		return NULL;
++
++	return dev_event_to_vlpi_map(its_dev, event);
++}
+ 
+ static void lpi_write_config(struct irq_data *d, u8 clr, u8 set)
+ {
++	struct its_vlpi_map *map = get_vlpi_map(d);
+ 	irq_hw_number_t hwirq;
+ 	void *va;
+ 	u8 *cfg;
+ 
+-	if (irqd_is_forwarded_to_vcpu(d)) {
+-		struct its_device *its_dev = irq_data_get_irq_chip_data(d);
+-		u32 event = its_get_event_id(d);
+-		struct its_vlpi_map *map;
+-
+-		va = page_address(its_dev->event_map.vm->vprop_page);
+-		map = &its_dev->event_map.vlpi_maps[event];
++	if (map) {
++		va = page_address(map->vm->vprop_page);
+ 		hwirq = map->vintid;
+ 
+ 		/* Remember the updated property */
+@@ -1136,11 +1151,14 @@ static void its_vlpi_set_doorbell(struct irq_data *d, bool enable)
+ {
+ 	struct its_device *its_dev = irq_data_get_irq_chip_data(d);
+ 	u32 event = its_get_event_id(d);
++	struct its_vlpi_map *map;
+ 
+-	if (its_dev->event_map.vlpi_maps[event].db_enabled == enable)
++	map = dev_event_to_vlpi_map(its_dev, event);
++
++	if (map->db_enabled == enable)
+ 		return;
+ 
+-	its_dev->event_map.vlpi_maps[event].db_enabled = enable;
++	map->db_enabled = enable;
+ 
+ 	/*
+ 	 * More fun with the architecture:
+@@ -1369,19 +1387,18 @@ out:
+ static int its_vlpi_get(struct irq_data *d, struct its_cmd_info *info)
+ {
+ 	struct its_device *its_dev = irq_data_get_irq_chip_data(d);
+-	u32 event = its_get_event_id(d);
++	struct its_vlpi_map *map = get_vlpi_map(d);
+ 	int ret = 0;
+ 
+ 	mutex_lock(&its_dev->event_map.vlpi_lock);
+ 
+-	if (!its_dev->event_map.vm ||
+-	    !its_dev->event_map.vlpi_maps[event].vm) {
++	if (!its_dev->event_map.vm || !map->vm) {
+ 		ret = -EINVAL;
+ 		goto out;
+ 	}
+ 
+ 	/* Copy our mapping information to the incoming request */
+-	*info->map = its_dev->event_map.vlpi_maps[event];
++	*info->map = *map;
+ 
+ out:
+ 	mutex_unlock(&its_dev->event_map.vlpi_lock);
