@@ -2,36 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ED795103AF9
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 20 Nov 2019 14:21:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 48A9A103B19
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 20 Nov 2019 14:22:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730229AbfKTNVT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 20 Nov 2019 08:21:19 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:56755 "EHLO
+        id S1730424AbfKTNWV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 20 Nov 2019 08:22:21 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:56804 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730214AbfKTNVS (ORCPT
+        with ESMTP id S1729073AbfKTNVX (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 20 Nov 2019 08:21:18 -0500
+        Wed, 20 Nov 2019 08:21:23 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iXPuy-00078F-Ke; Wed, 20 Nov 2019 14:21:12 +0100
+        id 1iXPv0-0007BD-C9; Wed, 20 Nov 2019 14:21:14 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 6750F1C1A10;
-        Wed, 20 Nov 2019 14:21:03 +0100 (CET)
-Date:   Wed, 20 Nov 2019 13:21:03 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id F21441C1A18;
+        Wed, 20 Nov 2019 14:21:04 +0100 (CET)
+Date:   Wed, 20 Nov 2019 13:21:04 -0000
 From:   "tip-bot2 for Marc Zyngier" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] irqchip/gic-v3-its: Make vlpi_lock a spinlock
-Cc:     Heyi Guo <guoheyi@huawei.com>, Marc Zyngier <maz@kernel.org>,
+Subject: [tip: irq/core] irqchip/gic-v3-its: Factor out wait_for_syncr primitive
+Cc:     Marc Zyngier <maz@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20191108165805.3071-12-maz@kernel.org>
-References: <20191108165805.3071-12-maz@kernel.org>
+In-Reply-To: <20191027144234.8395-3-maz@kernel.org>
+References: <20191027144234.8395-3-maz@kernel.org>
 MIME-Version: 1.0
-Message-ID: <157425606332.12247.1289778849742974310.tip-bot2@tip-bot2>
+Message-ID: <157425606492.12247.5343904804762133353.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,107 +47,72 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     11635fa26dc7a715f3fc1c351846859e90985ae1
-Gitweb:        https://git.kernel.org/tip/11635fa26dc7a715f3fc1c351846859e90985ae1
+Commit-ID:     2f4f064b31315c7c8986522cf38ef6d11fb77986
+Gitweb:        https://git.kernel.org/tip/2f4f064b31315c7c8986522cf38ef6d11fb77986
 Author:        Marc Zyngier <maz@kernel.org>
-AuthorDate:    Fri, 08 Nov 2019 16:58:05 
+AuthorDate:    Fri, 08 Nov 2019 16:57:56 
 Committer:     Marc Zyngier <maz@kernel.org>
-CommitterDate: Sun, 10 Nov 2019 18:48:35 
+CommitterDate: Sun, 10 Nov 2019 18:47:50 
 
-irqchip/gic-v3-its: Make vlpi_lock a spinlock
+irqchip/gic-v3-its: Factor out wait_for_syncr primitive
 
-The VLPI map is currently a mutex, and that's a bad idea as
-this lock can be taken in non-preemptible contexts. Convert
-it to a raw spinlock, and turn the memory allocation of the
-VLPI map to be atomic.
+Waiting for a redistributor to have performed an operation is a
+common thing to do, and the idiom is already spread around.
+As we're going to make even more use of this, let's have a primitive
+that does just that.
 
-Reported-by: Heyi Guo <guoheyi@huawei.com>
 Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20191108165805.3071-12-maz@kernel.org
+Reviewed-by: Zenghui Yu <yuzenghui@huawei.com>
+Link: https://lore.kernel.org/r/20191027144234.8395-3-maz@kernel.org
+Link: https://lore.kernel.org/r/20191108165805.3071-3-maz@kernel.org
 ---
- drivers/irqchip/irq-gic-v3-its.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/irqchip/irq-gic-v3-its.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
-index 9c4f35e..e05673b 100644
+index d5d8f8f..78d3e73 100644
 --- a/drivers/irqchip/irq-gic-v3-its.c
 +++ b/drivers/irqchip/irq-gic-v3-its.c
-@@ -132,7 +132,7 @@ struct event_lpi_map {
- 	u16			*col_map;
- 	irq_hw_number_t		lpi_base;
- 	int			nr_lpis;
--	struct mutex		vlpi_lock;
-+	raw_spinlock_t		vlpi_lock;
- 	struct its_vm		*vm;
- 	struct its_vlpi_map	*vlpi_maps;
- 	int			nr_vlpis;
-@@ -1436,13 +1436,13 @@ static int its_vlpi_map(struct irq_data *d, struct its_cmd_info *info)
- 	if (!info->map)
- 		return -EINVAL;
+@@ -1093,6 +1093,12 @@ static void lpi_write_config(struct irq_data *d, u8 clr, u8 set)
+ 		dsb(ishst);
+ }
  
--	mutex_lock(&its_dev->event_map.vlpi_lock);
-+	raw_spin_lock(&its_dev->event_map.vlpi_lock);
++static void wait_for_syncr(void __iomem *rdbase)
++{
++	while (gic_read_lpir(rdbase + GICR_SYNCR) & 1)
++		cpu_relax();
++}
++
+ static void lpi_update_config(struct irq_data *d, u8 clr, u8 set)
+ {
+ 	struct its_device *its_dev = irq_data_get_irq_chip_data(d);
+@@ -2775,8 +2781,7 @@ static void its_vpe_db_proxy_move(struct its_vpe *vpe, int from, int to)
  
- 	if (!its_dev->event_map.vm) {
- 		struct its_vlpi_map *maps;
+ 		rdbase = per_cpu_ptr(gic_rdists->rdist, from)->rd_base;
+ 		gic_write_lpir(vpe->vpe_db_lpi, rdbase + GICR_CLRLPIR);
+-		while (gic_read_lpir(rdbase + GICR_SYNCR) & 1)
+-			cpu_relax();
++		wait_for_syncr(rdbase);
  
- 		maps = kcalloc(its_dev->event_map.nr_lpis, sizeof(*maps),
--			       GFP_KERNEL);
-+			       GFP_ATOMIC);
- 		if (!maps) {
- 			ret = -ENOMEM;
- 			goto out;
-@@ -1485,7 +1485,7 @@ static int its_vlpi_map(struct irq_data *d, struct its_cmd_info *info)
+ 		return;
  	}
+@@ -2932,8 +2937,7 @@ static void its_vpe_send_inv(struct irq_data *d)
  
- out:
--	mutex_unlock(&its_dev->event_map.vlpi_lock);
-+	raw_spin_unlock(&its_dev->event_map.vlpi_lock);
- 	return ret;
- }
- 
-@@ -1495,7 +1495,7 @@ static int its_vlpi_get(struct irq_data *d, struct its_cmd_info *info)
- 	struct its_vlpi_map *map;
- 	int ret = 0;
- 
--	mutex_lock(&its_dev->event_map.vlpi_lock);
-+	raw_spin_lock(&its_dev->event_map.vlpi_lock);
- 
- 	map = get_vlpi_map(d);
- 
-@@ -1508,7 +1508,7 @@ static int its_vlpi_get(struct irq_data *d, struct its_cmd_info *info)
- 	*info->map = *map;
- 
- out:
--	mutex_unlock(&its_dev->event_map.vlpi_lock);
-+	raw_spin_unlock(&its_dev->event_map.vlpi_lock);
- 	return ret;
- }
- 
-@@ -1518,7 +1518,7 @@ static int its_vlpi_unmap(struct irq_data *d)
- 	u32 event = its_get_event_id(d);
- 	int ret = 0;
- 
--	mutex_lock(&its_dev->event_map.vlpi_lock);
-+	raw_spin_lock(&its_dev->event_map.vlpi_lock);
- 
- 	if (!its_dev->event_map.vm || !irqd_is_forwarded_to_vcpu(d)) {
- 		ret = -EINVAL;
-@@ -1548,7 +1548,7 @@ static int its_vlpi_unmap(struct irq_data *d)
+ 		rdbase = per_cpu_ptr(gic_rdists->rdist, vpe->col_idx)->rd_base;
+ 		gic_write_lpir(vpe->vpe_db_lpi, rdbase + GICR_INVLPIR);
+-		while (gic_read_lpir(rdbase + GICR_SYNCR) & 1)
+-			cpu_relax();
++		wait_for_syncr(rdbase);
+ 	} else {
+ 		its_vpe_send_cmd(vpe, its_send_inv);
  	}
- 
- out:
--	mutex_unlock(&its_dev->event_map.vlpi_lock);
-+	raw_spin_unlock(&its_dev->event_map.vlpi_lock);
- 	return ret;
- }
- 
-@@ -2608,7 +2608,7 @@ static struct its_device *its_create_device(struct its_node *its, u32 dev_id,
- 	dev->event_map.col_map = col_map;
- 	dev->event_map.lpi_base = lpi_base;
- 	dev->event_map.nr_lpis = nr_lpis;
--	mutex_init(&dev->event_map.vlpi_lock);
-+	raw_spin_lock_init(&dev->event_map.vlpi_lock);
- 	dev->device_id = dev_id;
- 	INIT_LIST_HEAD(&dev->entry);
- 
+@@ -2975,8 +2979,7 @@ static int its_vpe_set_irqchip_state(struct irq_data *d,
+ 			gic_write_lpir(vpe->vpe_db_lpi, rdbase + GICR_SETLPIR);
+ 		} else {
+ 			gic_write_lpir(vpe->vpe_db_lpi, rdbase + GICR_CLRLPIR);
+-			while (gic_read_lpir(rdbase + GICR_SYNCR) & 1)
+-				cpu_relax();
++			wait_for_syncr(rdbase);
+ 		}
+ 	} else {
+ 		if (state)
