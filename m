@@ -2,36 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 60532103AFB
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 20 Nov 2019 14:21:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CEB3103B09
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 20 Nov 2019 14:22:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730333AbfKTNVb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 20 Nov 2019 08:21:31 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:56838 "EHLO
+        id S1730275AbfKTNVY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 20 Nov 2019 08:21:24 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:56816 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730313AbfKTNVa (ORCPT
+        with ESMTP id S1730264AbfKTNVY (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 20 Nov 2019 08:21:30 -0500
+        Wed, 20 Nov 2019 08:21:24 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iXPv7-0007GX-88; Wed, 20 Nov 2019 14:21:21 +0100
+        id 1iXPv5-0007Ez-Kl; Wed, 20 Nov 2019 14:21:19 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id F25B31C1A22;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5C8011C1A1E;
         Wed, 20 Nov 2019 14:21:06 +0100 (CET)
 Date:   Wed, 20 Nov 2019 13:21:06 -0000
-From:   "tip-bot2 for Ben Dooks (Codethink)" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Florian Fainelli" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] irqchip/gic-v3-its: Fix u64 to __le64 warnings
-Cc:     Ben Dooks <ben.dooks@codethink.co.uk>,
+Subject: [tip: irq/core] irqchip/irq-bcm7038-l1: Enable parent IRQ if necessary
+Cc:     Florian Fainelli <f.fainelli@gmail.com>,
         Marc Zyngier <maz@kernel.org>, Ingo Molnar <mingo@kernel.org>,
         Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
-In-Reply-To: <20191017112955.15853-1-ben.dooks@codethink.co.uk>
-References: <20191017112955.15853-1-ben.dooks@codethink.co.uk>
+In-Reply-To: <20191024201415.23454-4-f.fainelli@gmail.com>
+References: <20191024201415.23454-4-f.fainelli@gmail.com>
 MIME-Version: 1.0
-Message-ID: <157425606692.12247.2066915760987154004.tip-bot2@tip-bot2>
+Message-ID: <157425606627.12247.18304172423061718891.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,54 +47,37 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     2bbdfcc54ba857ce5da9a5741379dd03ba94c947
-Gitweb:        https://git.kernel.org/tip/2bbdfcc54ba857ce5da9a5741379dd03ba94c947
-Author:        Ben Dooks (Codethink) <ben.dooks@codethink.co.uk>
-AuthorDate:    Thu, 17 Oct 2019 12:29:55 +01:00
+Commit-ID:     27eebb60357ed5aa6659442f92907c0f7368d6ae
+Gitweb:        https://git.kernel.org/tip/27eebb60357ed5aa6659442f92907c0f7368d6ae
+Author:        Florian Fainelli <f.fainelli@gmail.com>
+AuthorDate:    Thu, 24 Oct 2019 13:14:13 -07:00
 Committer:     Marc Zyngier <maz@kernel.org>
-CommitterDate: Sun, 10 Nov 2019 18:47:45 
+CommitterDate: Sun, 10 Nov 2019 18:47:47 
 
-irqchip/gic-v3-its: Fix u64 to __le64 warnings
+irqchip/irq-bcm7038-l1: Enable parent IRQ if necessary
 
-The its_cmd_block struct can either have u64 or __le64
-data in it, so make a anonymous union to remove the
-sparse warnings when converting to/from these.
+If the 'brcm,irq-can-wake' property is specified, make sure we also
+enable the corresponding parent interrupt we are attached to.
 
-Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
+Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
 Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20191017112955.15853-1-ben.dooks@codethink.co.uk
+Link: https://lore.kernel.org/r/20191024201415.23454-4-f.fainelli@gmail.com
 ---
- drivers/irqchip/irq-gic-v3-its.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ drivers/irqchip/irq-bcm7038-l1.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
-index 787e8ee..021e0c7 100644
---- a/drivers/irqchip/irq-gic-v3-its.c
-+++ b/drivers/irqchip/irq-gic-v3-its.c
-@@ -305,7 +305,10 @@ struct its_cmd_desc {
-  * The ITS command block, which is what the ITS actually parses.
-  */
- struct its_cmd_block {
--	u64	raw_cmd[4];
-+	union {
-+		u64	raw_cmd[4];
-+		__le64	raw_cmd_le[4];
-+	};
- };
+diff --git a/drivers/irqchip/irq-bcm7038-l1.c b/drivers/irqchip/irq-bcm7038-l1.c
+index 689e487..45879e5 100644
+--- a/drivers/irqchip/irq-bcm7038-l1.c
++++ b/drivers/irqchip/irq-bcm7038-l1.c
+@@ -286,6 +286,10 @@ static int __init bcm7038_l1_init_one(struct device_node *dn,
+ 		pr_err("failed to map parent interrupt %d\n", parent_irq);
+ 		return -EINVAL;
+ 	}
++
++	if (of_property_read_bool(dn, "brcm,irq-can-wake"))
++		enable_irq_wake(parent_irq);
++
+ 	irq_set_chained_handler_and_data(parent_irq, bcm7038_l1_irq_handle,
+ 					 intc);
  
- #define ITS_CMD_QUEUE_SZ		SZ_64K
-@@ -414,10 +417,10 @@ static void its_encode_vpt_size(struct its_cmd_block *cmd, u8 vpt_size)
- static inline void its_fixup_cmd(struct its_cmd_block *cmd)
- {
- 	/* Let's fixup BE commands */
--	cmd->raw_cmd[0] = cpu_to_le64(cmd->raw_cmd[0]);
--	cmd->raw_cmd[1] = cpu_to_le64(cmd->raw_cmd[1]);
--	cmd->raw_cmd[2] = cpu_to_le64(cmd->raw_cmd[2]);
--	cmd->raw_cmd[3] = cpu_to_le64(cmd->raw_cmd[3]);
-+	cmd->raw_cmd_le[0] = cpu_to_le64(cmd->raw_cmd[0]);
-+	cmd->raw_cmd_le[1] = cpu_to_le64(cmd->raw_cmd[1]);
-+	cmd->raw_cmd_le[2] = cpu_to_le64(cmd->raw_cmd[2]);
-+	cmd->raw_cmd_le[3] = cpu_to_le64(cmd->raw_cmd[3]);
- }
- 
- static struct its_collection *its_build_mapd_cmd(struct its_node *its,
