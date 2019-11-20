@@ -2,36 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 48A9A103B19
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 20 Nov 2019 14:22:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BD4FD103B26
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 20 Nov 2019 14:22:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730424AbfKTNWV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 20 Nov 2019 08:22:21 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:56804 "EHLO
+        id S1730219AbfKTNVR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 20 Nov 2019 08:21:17 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:56746 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729073AbfKTNVX (ORCPT
+        with ESMTP id S1730207AbfKTNVQ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 20 Nov 2019 08:21:23 -0500
+        Wed, 20 Nov 2019 08:21:16 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iXPv0-0007BD-C9; Wed, 20 Nov 2019 14:21:14 +0100
+        id 1iXPuy-0007AH-1E; Wed, 20 Nov 2019 14:21:12 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id F21441C1A18;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 820E11C1A15;
         Wed, 20 Nov 2019 14:21:04 +0100 (CET)
 Date:   Wed, 20 Nov 2019 13:21:04 -0000
 From:   "tip-bot2 for Marc Zyngier" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] irqchip/gic-v3-its: Factor out wait_for_syncr primitive
+Subject: [tip: irq/core] irqchip/gic-v3-its: Kill its->ite_size and use TYPER
+ copy instead
 Cc:     Marc Zyngier <maz@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20191027144234.8395-3-maz@kernel.org>
-References: <20191027144234.8395-3-maz@kernel.org>
+In-Reply-To: <20191027144234.8395-6-maz@kernel.org>
+References: <20191027144234.8395-6-maz@kernel.org>
 MIME-Version: 1.0
-Message-ID: <157425606492.12247.5343904804762133353.tip-bot2@tip-bot2>
+Message-ID: <157425606440.12247.526387246151472820.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,72 +48,86 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     2f4f064b31315c7c8986522cf38ef6d11fb77986
-Gitweb:        https://git.kernel.org/tip/2f4f064b31315c7c8986522cf38ef6d11fb77986
+Commit-ID:     ffedbf0cba153c91a0da5d1280a5e639664c5ab3
+Gitweb:        https://git.kernel.org/tip/ffedbf0cba153c91a0da5d1280a5e639664c5ab3
 Author:        Marc Zyngier <maz@kernel.org>
-AuthorDate:    Fri, 08 Nov 2019 16:57:56 
+AuthorDate:    Fri, 08 Nov 2019 16:57:59 
 Committer:     Marc Zyngier <maz@kernel.org>
-CommitterDate: Sun, 10 Nov 2019 18:47:50 
+CommitterDate: Sun, 10 Nov 2019 18:47:52 
 
-irqchip/gic-v3-its: Factor out wait_for_syncr primitive
+irqchip/gic-v3-its: Kill its->ite_size and use TYPER copy instead
 
-Waiting for a redistributor to have performed an operation is a
-common thing to do, and the idiom is already spread around.
-As we're going to make even more use of this, let's have a primitive
-that does just that.
+Now that we have a copy of TYPER in the ITS structure, rely on this
+to provide the same service as its->ite_size, which gets axed.
+Errata workarounds are now updating the cached fields instead of
+requiring a separate field in the ITS structure.
 
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 Reviewed-by: Zenghui Yu <yuzenghui@huawei.com>
-Link: https://lore.kernel.org/r/20191027144234.8395-3-maz@kernel.org
-Link: https://lore.kernel.org/r/20191108165805.3071-3-maz@kernel.org
+Link: https://lore.kernel.org/r/20191027144234.8395-6-maz@kernel.org
+Link: https://lore.kernel.org/r/20191108165805.3071-6-maz@kernel.org
 ---
- drivers/irqchip/irq-gic-v3-its.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ drivers/irqchip/irq-gic-v3-its.c   | 8 ++++----
+ include/linux/irqchip/arm-gic-v3.h | 2 +-
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
-index d5d8f8f..78d3e73 100644
+index 5bb3eac..c3a1e47 100644
 --- a/drivers/irqchip/irq-gic-v3-its.c
 +++ b/drivers/irqchip/irq-gic-v3-its.c
-@@ -1093,6 +1093,12 @@ static void lpi_write_config(struct irq_data *d, u8 clr, u8 set)
- 		dsb(ishst);
+@@ -6,6 +6,7 @@
+ 
+ #include <linux/acpi.h>
+ #include <linux/acpi_iort.h>
++#include <linux/bitfield.h>
+ #include <linux/bitmap.h>
+ #include <linux/cpu.h>
+ #include <linux/crash_dump.h>
+@@ -108,7 +109,6 @@ struct its_node {
+ 	struct list_head	its_device_list;
+ 	u64			flags;
+ 	unsigned long		list_nr;
+-	u32			ite_size;
+ 	u32			device_ids;
+ 	int			numa_node;
+ 	unsigned int		msi_domain_flags;
+@@ -2453,7 +2453,7 @@ static struct its_device *its_create_device(struct its_node *its, u32 dev_id,
+ 	 * sized as a power of two (and you need at least one bit...).
+ 	 */
+ 	nr_ites = max(2, nvecs);
+-	sz = nr_ites * its->ite_size;
++	sz = nr_ites * (FIELD_GET(GITS_TYPER_ITT_ENTRY_SIZE, its->typer) + 1);
+ 	sz = max(sz, ITS_ITT_ALIGN) + ITS_ITT_ALIGN - 1;
+ 	itt = kzalloc_node(sz, GFP_KERNEL, its->numa_node);
+ 	if (alloc_lpis) {
+@@ -3268,7 +3268,8 @@ static bool __maybe_unused its_enable_quirk_qdf2400_e0065(void *data)
+ 	struct its_node *its = data;
+ 
+ 	/* On QDF2400, the size of the ITE is 16Bytes */
+-	its->ite_size = 16;
++	its->typer &= ~GITS_TYPER_ITT_ENTRY_SIZE;
++	its->typer |= FIELD_PREP(GITS_TYPER_ITT_ENTRY_SIZE, 16 - 1);
+ 
+ 	return true;
  }
- 
-+static void wait_for_syncr(void __iomem *rdbase)
-+{
-+	while (gic_read_lpir(rdbase + GICR_SYNCR) & 1)
-+		cpu_relax();
-+}
-+
- static void lpi_update_config(struct irq_data *d, u8 clr, u8 set)
- {
- 	struct its_device *its_dev = irq_data_get_irq_chip_data(d);
-@@ -2775,8 +2781,7 @@ static void its_vpe_db_proxy_move(struct its_vpe *vpe, int from, int to)
- 
- 		rdbase = per_cpu_ptr(gic_rdists->rdist, from)->rd_base;
- 		gic_write_lpir(vpe->vpe_db_lpi, rdbase + GICR_CLRLPIR);
--		while (gic_read_lpir(rdbase + GICR_SYNCR) & 1)
--			cpu_relax();
-+		wait_for_syncr(rdbase);
- 
- 		return;
- 	}
-@@ -2932,8 +2937,7 @@ static void its_vpe_send_inv(struct irq_data *d)
- 
- 		rdbase = per_cpu_ptr(gic_rdists->rdist, vpe->col_idx)->rd_base;
- 		gic_write_lpir(vpe->vpe_db_lpi, rdbase + GICR_INVLPIR);
--		while (gic_read_lpir(rdbase + GICR_SYNCR) & 1)
--			cpu_relax();
-+		wait_for_syncr(rdbase);
- 	} else {
- 		its_vpe_send_cmd(vpe, its_send_inv);
- 	}
-@@ -2975,8 +2979,7 @@ static int its_vpe_set_irqchip_state(struct irq_data *d,
- 			gic_write_lpir(vpe->vpe_db_lpi, rdbase + GICR_SETLPIR);
- 		} else {
- 			gic_write_lpir(vpe->vpe_db_lpi, rdbase + GICR_CLRLPIR);
--			while (gic_read_lpir(rdbase + GICR_SYNCR) & 1)
--				cpu_relax();
-+			wait_for_syncr(rdbase);
- 		}
- 	} else {
- 		if (state)
+@@ -3637,7 +3638,6 @@ static int __init its_probe_one(struct resource *res,
+ 	its->typer = typer;
+ 	its->base = its_base;
+ 	its->phys_base = res->start;
+-	its->ite_size = GITS_TYPER_ITT_ENTRY_SIZE(typer);
+ 	its->device_ids = GITS_TYPER_DEVBITS(typer);
+ 	if (is_v4(its)) {
+ 		if (!(typer & GITS_TYPER_VMOVP)) {
+diff --git a/include/linux/irqchip/arm-gic-v3.h b/include/linux/irqchip/arm-gic-v3.h
+index 5cc10cf..4bce7a9 100644
+--- a/include/linux/irqchip/arm-gic-v3.h
++++ b/include/linux/irqchip/arm-gic-v3.h
+@@ -334,7 +334,7 @@
+ #define GITS_TYPER_PLPIS		(1UL << 0)
+ #define GITS_TYPER_VLPIS		(1UL << 1)
+ #define GITS_TYPER_ITT_ENTRY_SIZE_SHIFT	4
+-#define GITS_TYPER_ITT_ENTRY_SIZE(r)	((((r) >> GITS_TYPER_ITT_ENTRY_SIZE_SHIFT) & 0xf) + 1)
++#define GITS_TYPER_ITT_ENTRY_SIZE	GENMASK_ULL(7, 4)
+ #define GITS_TYPER_IDBITS_SHIFT		8
+ #define GITS_TYPER_DEVBITS_SHIFT	13
+ #define GITS_TYPER_DEVBITS(r)		((((r) >> GITS_TYPER_DEVBITS_SHIFT) & 0x1f) + 1)
