@@ -2,44 +2,42 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 86010103B2C
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 20 Nov 2019 14:23:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EB1A103B23
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 20 Nov 2019 14:22:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730199AbfKTNVN convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 20 Nov 2019 08:21:13 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:56715 "EHLO
+        id S1730241AbfKTNVU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 20 Nov 2019 08:21:20 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:56765 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730186AbfKTNVN (ORCPT
+        with ESMTP id S1730220AbfKTNVT (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 20 Nov 2019 08:21:13 -0500
+        Wed, 20 Nov 2019 08:21:19 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iXPut-00077m-Jf; Wed, 20 Nov 2019 14:21:07 +0100
+        id 1iXPv0-000795-5z; Wed, 20 Nov 2019 14:21:14 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 3609A1C1A0F;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id EF2931C1A12;
         Wed, 20 Nov 2019 14:21:03 +0100 (CET)
 Date:   Wed, 20 Nov 2019 13:21:03 -0000
-From:   tip-bot2 for Jonathan =?utf-8?q?Neusch=C3=A4fer?= 
-        <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Marc Zyngier" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] irqchip: Place CONFIG_SIFIVE_PLIC into the menu
-Cc:     j.neuschaefer@gmx.net, Marc Zyngier <maz@kernel.org>,
-        Palmer Dabbelt <palmer@sifive.com>,
+Subject: [tip: irq/core] irqchip/gic-v3-its: Synchronise INV command
+ targetting a VLPI using VSYNC
+Cc:     Zenghui Yu <yuzenghui@huawei.com>, Marc Zyngier <maz@kernel.org>,
         Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20191002144452.10178-1-j.neuschaefer@gmx.net>
-References: <20191002144452.10178-1-j.neuschaefer@gmx.net>
+In-Reply-To: <20191108165805.3071-9-maz@kernel.org>
+References: <20191108165805.3071-9-maz@kernel.org>
 MIME-Version: 1.0
-Message-ID: <157425606311.12247.10868789826502631245.tip-bot2@tip-bot2>
+Message-ID: <157425606389.12247.13811391966540477532.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: 7bit
 X-Linutronix-Spam-Score: -1.0
 X-Linutronix-Spam-Level: -
 X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
@@ -50,44 +48,92 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     0149385537e6d36f535fcd83cfcabf83a32f0836
-Gitweb:        https://git.kernel.org/tip/0149385537e6d36f535fcd83cfcabf83a32f0836
-Author:        Jonathan Neuschäfer <j.neuschaefer@gmx.net>
-AuthorDate:    Wed, 02 Oct 2019 16:44:52 +02:00
+Commit-ID:     286146960a110cdae455a18cef47d5113d9a95c6
+Gitweb:        https://git.kernel.org/tip/286146960a110cdae455a18cef47d5113d9a95c6
+Author:        Marc Zyngier <maz@kernel.org>
+AuthorDate:    Fri, 08 Nov 2019 16:58:02 
 Committer:     Marc Zyngier <maz@kernel.org>
-CommitterDate: Sun, 10 Nov 2019 18:48:35 
+CommitterDate: Sun, 10 Nov 2019 18:47:53 
 
-irqchip: Place CONFIG_SIFIVE_PLIC into the menu
+irqchip/gic-v3-its: Synchronise INV command targetting a VLPI using VSYNC
 
-Somehow CONFIG_SIFIVE_PLIC ended up outside of the "IRQ chip support"
-menu.
+We have so far alwways invalidated VLPIs usinc an INV+SYNC
+sequence, but that's pretty wrong for two reasons:
 
-Fixes: 8237f8bc4f6e ("irqchip: add a SiFive PLIC driver")
-Signed-off-by: Jonathan Neuschäfer <j.neuschaefer@gmx.net>
+- SYNC only synchronises physical LPIs
+- The collection ID that for the associated LPI doesn't match
+  the redistributor the vPE is associated with
+
+Instead, send an INV+VSYNC for forwarded LPIs, ensuring that
+the ITS can properly synchronise the invalidation of VLPIs.
+
+Fixes: 015ec0386ab6 ("irqchip/gic-v3-its: Add VLPI configuration handling")
+Reported-by: Zenghui Yu <yuzenghui@huawei.com>
 Signed-off-by: Marc Zyngier <maz@kernel.org>
-Reviewed-by: Palmer Dabbelt <palmer@sifive.com>
-Acked-by: Palmer Dabbelt <palmer@sifive.com>
-Link: https://lore.kernel.org/r/20191002144452.10178-1-j.neuschaefer@gmx.net
+Link: https://lore.kernel.org/r/20191108165805.3071-9-maz@kernel.org
 ---
- drivers/irqchip/Kconfig | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/irqchip/irq-gic-v3-its.c | 36 ++++++++++++++++++++++++++++++-
+ 1 file changed, 35 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/irqchip/Kconfig b/drivers/irqchip/Kconfig
-index bbb3234..697e6a8 100644
---- a/drivers/irqchip/Kconfig
-+++ b/drivers/irqchip/Kconfig
-@@ -487,8 +487,6 @@ config TI_SCI_INTA_IRQCHIP
- 	  If you wish to use interrupt aggregator irq resources managed by the
- 	  TI System Controller, say Y here. Otherwise, say N.
+diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
+index e8d088c..6a18b01 100644
+--- a/drivers/irqchip/irq-gic-v3-its.c
++++ b/drivers/irqchip/irq-gic-v3-its.c
+@@ -703,6 +703,24 @@ static struct its_vpe *its_build_vmovp_cmd(struct its_node *its,
+ 	return valid_vpe(its, desc->its_vmovp_cmd.vpe);
+ }
  
--endmenu
--
- config SIFIVE_PLIC
- 	bool "SiFive Platform-Level Interrupt Controller"
- 	depends on RISCV
-@@ -500,3 +498,5 @@ config SIFIVE_PLIC
- 	   interrupt sources are subordinate to the PLIC.
- 
- 	   If you don't know what to do here, say Y.
++static struct its_vpe *its_build_vinv_cmd(struct its_node *its,
++					  struct its_cmd_block *cmd,
++					  struct its_cmd_desc *desc)
++{
++	struct its_vlpi_map *map;
 +
-+endmenu
++	map = dev_event_to_vlpi_map(desc->its_inv_cmd.dev,
++				    desc->its_inv_cmd.event_id);
++
++	its_encode_cmd(cmd, GITS_CMD_INV);
++	its_encode_devid(cmd, desc->its_inv_cmd.dev->device_id);
++	its_encode_event_id(cmd, desc->its_inv_cmd.event_id);
++
++	its_fixup_cmd(cmd);
++
++	return valid_vpe(its, map->vpe);
++}
++
+ static u64 its_cmd_ptr_to_offset(struct its_node *its,
+ 				 struct its_cmd_block *ptr)
+ {
+@@ -1069,6 +1087,20 @@ static void its_send_vinvall(struct its_node *its, struct its_vpe *vpe)
+ 	its_send_single_vcommand(its, its_build_vinvall_cmd, &desc);
+ }
+ 
++static void its_send_vinv(struct its_device *dev, u32 event_id)
++{
++	struct its_cmd_desc desc;
++
++	/*
++	 * There is no real VINV command. This is just a normal INV,
++	 * with a VSYNC instead of a SYNC.
++	 */
++	desc.its_inv_cmd.dev = dev;
++	desc.its_inv_cmd.event_id = event_id;
++
++	its_send_single_vcommand(dev->its, its_build_vinv_cmd, &desc);
++}
++
+ /*
+  * irqchip functions - assumes MSI, mostly.
+  */
+@@ -1143,8 +1175,10 @@ static void lpi_update_config(struct irq_data *d, u8 clr, u8 set)
+ 	lpi_write_config(d, clr, set);
+ 	if (gic_rdists->has_direct_lpi && !irqd_is_forwarded_to_vcpu(d))
+ 		direct_lpi_inv(d);
+-	else
++	else if (!irqd_is_forwarded_to_vcpu(d))
+ 		its_send_inv(its_dev, its_get_event_id(d));
++	else
++		its_send_vinv(its_dev, its_get_event_id(d));
+ }
+ 
+ static void its_vlpi_set_doorbell(struct irq_data *d, bool enable)
