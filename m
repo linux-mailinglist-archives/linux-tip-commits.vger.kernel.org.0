@@ -2,38 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CCBDA1036BE
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 20 Nov 2019 10:38:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E87A11036DE
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 20 Nov 2019 10:39:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728344AbfKTJib (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 20 Nov 2019 04:38:31 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:55850 "EHLO
+        id S1728467AbfKTJjP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 20 Nov 2019 04:39:15 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:55871 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727645AbfKTJib (ORCPT
+        with ESMTP id S1728378AbfKTJif (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 20 Nov 2019 04:38:31 -0500
+        Wed, 20 Nov 2019 04:38:35 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iXMRN-0003xM-Cj; Wed, 20 Nov 2019 10:38:25 +0100
+        id 1iXMRO-0003yA-5x; Wed, 20 Nov 2019 10:38:26 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 103CF1C19FE;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D4E8B1C1A00;
         Wed, 20 Nov 2019 10:38:25 +0100 (CET)
-Date:   Wed, 20 Nov 2019 09:38:24 -0000
+Date:   Wed, 20 Nov 2019 09:38:25 -0000
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] futex: Provide distinct return value when owner
- is exiting
+Subject: [tip: locking/core] futex: Mark the begin of futex exit explicitly
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@kernel.org>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
-In-Reply-To: <20191106224556.935606117@linutronix.de>
-References: <20191106224556.935606117@linutronix.de>
+In-Reply-To: <20191106224556.539409004@linutronix.de>
+References: <20191106224556.539409004@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <157424270496.12247.5516808949397011554.tip-bot2@tip-bot2>
+Message-ID: <157424270581.12247.8584011354093624248.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,87 +48,169 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     ac31c7ff8624409ba3c4901df9237a616c187a5d
-Gitweb:        https://git.kernel.org/tip/ac31c7ff8624409ba3c4901df9237a616c187a5d
+Commit-ID:     18f694385c4fd77a09851fd301236746ca83f3cb
+Gitweb:        https://git.kernel.org/tip/18f694385c4fd77a09851fd301236746ca83f3cb
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Wed, 06 Nov 2019 22:55:45 +01:00
+AuthorDate:    Wed, 06 Nov 2019 22:55:41 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 20 Nov 2019 09:40:10 +01:00
+CommitterDate: Wed, 20 Nov 2019 09:40:09 +01:00
 
-futex: Provide distinct return value when owner is exiting
+futex: Mark the begin of futex exit explicitly
 
-attach_to_pi_owner() returns -EAGAIN for various cases:
+Instead of relying on PF_EXITING use an explicit state for the futex exit
+and set it in the futex exit function. This moves the smp barrier and the
+lock/unlock serialization into the futex code.
 
- - Owner task is exiting
- - Futex value has changed
+As with the DEAD state this is restricted to the exit path as exec
+continues to use the same task struct.
 
-The caller drops the held locks (hash bucket, mmap_sem) and retries the
-operation. In case of the owner task exiting this can result in a live
-lock.
-
-As a preparatory step for seperating those cases, provide a distinct return
-value (EBUSY) for the owner exiting case.
-
-No functional change.
+This allows to simplify that logic in a next step.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Ingo Molnar <mingo@kernel.org>
 Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20191106224556.935606117@linutronix.de
+Link: https://lkml.kernel.org/r/20191106224556.539409004@linutronix.de
 
 
 ---
- kernel/futex.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ include/linux/futex.h | 31 +++----------------------------
+ kernel/exit.c         | 13 +------------
+ kernel/futex.c        | 37 ++++++++++++++++++++++++++++++++++++-
+ 3 files changed, 40 insertions(+), 41 deletions(-)
 
+diff --git a/include/linux/futex.h b/include/linux/futex.h
+index 6414cfa..9f27924 100644
+--- a/include/linux/futex.h
++++ b/include/linux/futex.h
+@@ -52,6 +52,7 @@ union futex_key {
+ #ifdef CONFIG_FUTEX
+ enum {
+ 	FUTEX_STATE_OK,
++	FUTEX_STATE_EXITING,
+ 	FUTEX_STATE_DEAD,
+ };
+ 
+@@ -66,33 +67,7 @@ static inline void futex_init_task(struct task_struct *tsk)
+ 	tsk->futex_state = FUTEX_STATE_OK;
+ }
+ 
+-/**
+- * futex_exit_done - Sets the tasks futex state to FUTEX_STATE_DEAD
+- * @tsk:	task to set the state on
+- *
+- * Set the futex exit state of the task lockless. The futex waiter code
+- * observes that state when a task is exiting and loops until the task has
+- * actually finished the futex cleanup. The worst case for this is that the
+- * waiter runs through the wait loop until the state becomes visible.
+- *
+- * This has two callers:
+- *
+- * - futex_mm_release() after the futex exit cleanup has been done
+- *
+- * - do_exit() from the recursive fault handling path.
+- *
+- * In case of a recursive fault this is best effort. Either the futex exit
+- * code has run already or not. If the OWNER_DIED bit has been set on the
+- * futex then the waiter can take it over. If not, the problem is pushed
+- * back to user space. If the futex exit code did not run yet, then an
+- * already queued waiter might block forever, but there is nothing which
+- * can be done about that.
+- */
+-static inline void futex_exit_done(struct task_struct *tsk)
+-{
+-	tsk->futex_state = FUTEX_STATE_DEAD;
+-}
+-
++void futex_exit_recursive(struct task_struct *tsk);
+ void futex_exit_release(struct task_struct *tsk);
+ void futex_exec_release(struct task_struct *tsk);
+ 
+@@ -100,7 +75,7 @@ long do_futex(u32 __user *uaddr, int op, u32 val, ktime_t *timeout,
+ 	      u32 __user *uaddr2, u32 val2, u32 val3);
+ #else
+ static inline void futex_init_task(struct task_struct *tsk) { }
+-static inline void futex_exit_done(struct task_struct *tsk) { }
++static inline void futex_exit_recursive(struct task_struct *tsk) { }
+ static inline void futex_exit_release(struct task_struct *tsk) { }
+ static inline void futex_exec_release(struct task_struct *tsk) { }
+ static inline long do_futex(u32 __user *uaddr, int op, u32 val,
+diff --git a/kernel/exit.c b/kernel/exit.c
+index f3b8fa1..d351fd0 100644
+--- a/kernel/exit.c
++++ b/kernel/exit.c
+@@ -746,23 +746,12 @@ void __noreturn do_exit(long code)
+ 	 */
+ 	if (unlikely(tsk->flags & PF_EXITING)) {
+ 		pr_alert("Fixing recursive fault but reboot is needed!\n");
+-		futex_exit_done(tsk);
++		futex_exit_recursive(tsk);
+ 		set_current_state(TASK_UNINTERRUPTIBLE);
+ 		schedule();
+ 	}
+ 
+ 	exit_signals(tsk);  /* sets PF_EXITING */
+-	/*
+-	 * Ensure that all new tsk->pi_lock acquisitions must observe
+-	 * PF_EXITING. Serializes against futex.c:attach_to_pi_owner().
+-	 */
+-	smp_mb();
+-	/*
+-	 * Ensure that we must observe the pi_state in exit_mm() ->
+-	 * mm_release() -> exit_pi_state_list().
+-	 */
+-	raw_spin_lock_irq(&tsk->pi_lock);
+-	raw_spin_unlock_irq(&tsk->pi_lock);
+ 
+ 	if (unlikely(in_atomic())) {
+ 		pr_info("note: %s[%d] exited with preempt_count %d\n",
 diff --git a/kernel/futex.c b/kernel/futex.c
-index 46a81e6..4f9d7a4 100644
+index 426dd71..3488fb0 100644
 --- a/kernel/futex.c
 +++ b/kernel/futex.c
-@@ -1182,11 +1182,11 @@ static int handle_exit_race(u32 __user *uaddr, u32 uval,
- 	u32 uval2;
+@@ -3679,10 +3679,45 @@ void futex_exec_release(struct task_struct *tsk)
+ 		exit_pi_state_list(tsk);
+ }
  
- 	/*
--	 * If the futex exit state is not yet FUTEX_STATE_DEAD, wait
--	 * for it to finish.
-+	 * If the futex exit state is not yet FUTEX_STATE_DEAD, tell the
-+	 * caller that the alleged owner is busy.
- 	 */
- 	if (tsk && tsk->futex_state != FUTEX_STATE_DEAD)
--		return -EAGAIN;
-+		return -EBUSY;
++/**
++ * futex_exit_recursive - Set the tasks futex state to FUTEX_STATE_DEAD
++ * @tsk:	task to set the state on
++ *
++ * Set the futex exit state of the task lockless. The futex waiter code
++ * observes that state when a task is exiting and loops until the task has
++ * actually finished the futex cleanup. The worst case for this is that the
++ * waiter runs through the wait loop until the state becomes visible.
++ *
++ * This is called from the recursive fault handling path in do_exit().
++ *
++ * This is best effort. Either the futex exit code has run already or
++ * not. If the OWNER_DIED bit has been set on the futex then the waiter can
++ * take it over. If not, the problem is pushed back to user space. If the
++ * futex exit code did not run yet, then an already queued waiter might
++ * block forever, but there is nothing which can be done about that.
++ */
++void futex_exit_recursive(struct task_struct *tsk)
++{
++	tsk->futex_state = FUTEX_STATE_DEAD;
++}
++
+ void futex_exit_release(struct task_struct *tsk)
+ {
++	tsk->futex_state = FUTEX_STATE_EXITING;
++	/*
++	 * Ensure that all new tsk->pi_lock acquisitions must observe
++	 * FUTEX_STATE_EXITING. Serializes against attach_to_pi_owner().
++	 */
++	smp_mb();
++	/*
++	 * Ensure that we must observe the pi_state in exit_pi_state_list().
++	 */
++	raw_spin_lock_irq(&tsk->pi_lock);
++	raw_spin_unlock_irq(&tsk->pi_lock);
++
+ 	futex_exec_release(tsk);
+-	futex_exit_done(tsk);
++
++	tsk->futex_state = FUTEX_STATE_DEAD;
+ }
  
- 	/*
- 	 * Reread the user space value to handle the following situation:
-@@ -2092,12 +2092,13 @@ retry_private:
- 			if (!ret)
- 				goto retry;
- 			goto out;
-+		case -EBUSY:
- 		case -EAGAIN:
- 			/*
- 			 * Two reasons for this:
--			 * - Owner is exiting and we just wait for the
-+			 * - EBUSY: Owner is exiting and we just wait for the
- 			 *   exit to complete.
--			 * - The user space value changed.
-+			 * - EAGAIN: The user space value changed.
- 			 */
- 			double_unlock_hb(hb1, hb2);
- 			hb_waiters_dec(hb2);
-@@ -2843,12 +2844,13 @@ retry_private:
- 			goto out_unlock_put_key;
- 		case -EFAULT:
- 			goto uaddr_faulted;
-+		case -EBUSY:
- 		case -EAGAIN:
- 			/*
- 			 * Two reasons for this:
--			 * - Task is exiting and we just wait for the
-+			 * - EBUSY: Task is exiting and we just wait for the
- 			 *   exit to complete.
--			 * - The user space value changed.
-+			 * - EAGAIN: The user space value changed.
- 			 */
- 			queue_unlock(hb);
- 			put_futex_key(&q.key);
+ long do_futex(u32 __user *uaddr, int op, u32 val, ktime_t *timeout,
