@@ -2,39 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4045A103B42
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 20 Nov 2019 14:24:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 28112103AF4
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 20 Nov 2019 14:21:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730505AbfKTNXQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 20 Nov 2019 08:23:16 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:56684 "EHLO
+        id S1730187AbfKTNVM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 20 Nov 2019 08:21:12 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:56713 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727998AbfKTNVK (ORCPT
+        with ESMTP id S1730184AbfKTNVL (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 20 Nov 2019 08:21:10 -0500
+        Wed, 20 Nov 2019 08:21:11 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iXPun-00074m-HD; Wed, 20 Nov 2019 14:21:01 +0100
+        id 1iXPuv-00076J-2j; Wed, 20 Nov 2019 14:21:09 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 382991C1A01;
-        Wed, 20 Nov 2019 14:21:01 +0100 (CET)
-Date:   Wed, 20 Nov 2019 13:21:01 -0000
-From:   "tip-bot2 for Lina Iyer" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 927CF1C19FE;
+        Wed, 20 Nov 2019 14:21:02 +0100 (CET)
+Date:   Wed, 20 Nov 2019 13:21:02 -0000
+From:   "tip-bot2 for Paul Cercueil" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] of/irq: Document properties for wakeup interrupt parent
-Cc:     Lina Iyer <ilina@codeaurora.org>, Marc Zyngier <maz@kernel.org>,
-        Rob Herring <robh@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <1573855915-9841-6-git-send-email-ilina@codeaurora.org>
-References: <1573855915-9841-6-git-send-email-ilina@codeaurora.org>
+Subject: [tip: irq/core] irqchip: ingenic: Get virq number from IRQ domain
+Cc:     Paul Cercueil <paul@crapouillou.net>,
+        Marc Zyngier <maz@kernel.org>, Ingo Molnar <mingo@kernel.org>,
+        Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
+In-Reply-To: <1570015525-27018-4-git-send-email-zhouyanjie@zoho.com>
+References: <1570015525-27018-4-git-send-email-zhouyanjie@zoho.com>
 MIME-Version: 1.0
-Message-ID: <157425606114.12247.3338140089041220755.tip-bot2@tip-bot2>
+Message-ID: <157425606250.12247.13541398452844645434.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,47 +47,61 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     09d31567f85b6cd0eddf28d90f7b83be09ee282b
-Gitweb:        https://git.kernel.org/tip/09d31567f85b6cd0eddf28d90f7b83be09ee282b
-Author:        Lina Iyer <ilina@codeaurora.org>
-AuthorDate:    Fri, 15 Nov 2019 15:11:48 -07:00
+Commit-ID:     208caadce5d4d38f48af965206bbd4473d265080
+Gitweb:        https://git.kernel.org/tip/208caadce5d4d38f48af965206bbd4473d265080
+Author:        Paul Cercueil <paul@crapouillou.net>
+AuthorDate:    Wed, 02 Oct 2019 19:25:23 +08:00
 Committer:     Marc Zyngier <maz@kernel.org>
-CommitterDate: Sat, 16 Nov 2019 10:20:02 
+CommitterDate: Sun, 10 Nov 2019 18:55:30 
 
-of/irq: Document properties for wakeup interrupt parent
+irqchip: ingenic: Get virq number from IRQ domain
 
-Some interrupt controllers in a SoC, are always powered on and have a
-select interrupts routed to them, so that they can wakeup the SoC from
-suspend. Add wakeup-parent DT property to refer to these interrupt
-controllers.
+Get the virq number from the IRQ domain instead of calculating it from
+the hardcoded irq base.
 
-Signed-off-by: Lina Iyer <ilina@codeaurora.org>
+Signed-off-by: Paul Cercueil <paul@crapouillou.net>
 Signed-off-by: Marc Zyngier <maz@kernel.org>
-Reviewed-by: Rob Herring <robh@kernel.org>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Stephen Boyd <swboyd@chromium.org>
-Link: https://lore.kernel.org/r/1573855915-9841-6-git-send-email-ilina@codeaurora.org
+Link: https://lore.kernel.org/r/1570015525-27018-4-git-send-email-zhouyanjie@zoho.com
 ---
- Documentation/devicetree/bindings/interrupt-controller/interrupts.txt | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/irqchip/irq-ingenic.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/interrupt-controller/interrupts.txt b/Documentation/devicetree/bindings/interrupt-controller/interrupts.txt
-index 4a3ee25..4ebfa00 100644
---- a/Documentation/devicetree/bindings/interrupt-controller/interrupts.txt
-+++ b/Documentation/devicetree/bindings/interrupt-controller/interrupts.txt
-@@ -108,3 +108,15 @@ commonly used:
- 			sensitivity = <7>;
- 		};
- 	};
+diff --git a/drivers/irqchip/irq-ingenic.c b/drivers/irqchip/irq-ingenic.c
+index d97a3a5..82a079f 100644
+--- a/drivers/irqchip/irq-ingenic.c
++++ b/drivers/irqchip/irq-ingenic.c
+@@ -21,6 +21,7 @@
+ 
+ struct ingenic_intc_data {
+ 	void __iomem *base;
++	struct irq_domain *domain;
+ 	unsigned num_chips;
+ };
+ 
+@@ -34,6 +35,7 @@ struct ingenic_intc_data {
+ static irqreturn_t intc_cascade(int irq, void *data)
+ {
+ 	struct ingenic_intc_data *intc = irq_get_handler_data(irq);
++	struct irq_domain *domain = intc->domain;
+ 	uint32_t irq_reg;
+ 	unsigned i;
+ 
+@@ -43,7 +45,8 @@ static irqreturn_t intc_cascade(int irq, void *data)
+ 		if (!irq_reg)
+ 			continue;
+ 
+-		generic_handle_irq(__fls(irq_reg) + (i * 32) + JZ4740_IRQ_BASE);
++		irq = irq_find_mapping(domain, __fls(irq_reg) + (i * 32));
++		generic_handle_irq(irq);
+ 	}
+ 
+ 	return IRQ_HANDLED;
+@@ -95,6 +98,8 @@ static int __init ingenic_intc_of_init(struct device_node *node,
+ 		goto out_unmap_base;
+ 	}
+ 
++	intc->domain = domain;
 +
-+3) Interrupt wakeup parent
-+--------------------------
-+
-+Some interrupt controllers in a SoC, are always powered on and have a select
-+interrupts routed to them, so that they can wakeup the SoC from suspend. These
-+interrupt controllers do not fall into the category of a parent interrupt
-+controller and can be specified by the "wakeup-parent" property and contain a
-+single phandle referring to the wakeup capable interrupt controller.
-+
-+   Example:
-+	wakeup-parent = <&pdc_intc>;
+ 	for (i = 0; i < num_chips; i++) {
+ 		/* Mask all irqs */
+ 		writel(0xffffffff, intc->base + (i * CHIP_SIZE) +
