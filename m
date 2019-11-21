@@ -2,41 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 22FD91046B5
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 20 Nov 2019 23:48:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B2C93104777
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 21 Nov 2019 01:23:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725842AbfKTWsx (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 20 Nov 2019 17:48:53 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:59095 "EHLO
+        id S1726701AbfKUAX3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 20 Nov 2019 19:23:29 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:59224 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725820AbfKTWsx (ORCPT
+        with ESMTP id S1726230AbfKUAX3 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 20 Nov 2019 17:48:53 -0500
+        Wed, 20 Nov 2019 19:23:29 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iXYmC-0000H4-Gu; Wed, 20 Nov 2019 23:48:44 +0100
+        id 1iXaFn-0001DS-9e; Thu, 21 Nov 2019 01:23:23 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id BEF351C1A27;
-        Wed, 20 Nov 2019 23:48:43 +0100 (CET)
-Date:   Wed, 20 Nov 2019 22:48:43 -0000
-From:   "tip-bot2 for Alexander Duyck" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C418A1C0070;
+        Thu, 21 Nov 2019 01:23:22 +0100 (CET)
+Date:   Thu, 21 Nov 2019 00:23:22 -0000
+From:   "tip-bot2 for Dmitry Safonov" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/iopl] x86/ioperm: Fix use of deprecated config option
-Cc:     Alexander Duyck <alexander.h.duyck@linux.intel.com>,
-        Borislav Petkov <bp@suse.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        Rik van Riel <riel@surriel.com>, "x86-ml" <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191120222426.3060.18462.stgit@localhost.localdomain>
-References: <20191120222426.3060.18462.stgit@localhost.localdomain>
+Subject: [tip: timers/urgent] time: Zero the upper 32-bits in
+ __kernel_timespec on 32-bit
+Cc:     Ben Hutchings <ben.hutchings@codethink.co.uk>,
+        Dmitry Safonov <dima@arista.com>,
+        Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20191121000303.126523-1-dima@arista.com>
+References: <20191121000303.126523-1-dima@arista.com>
 MIME-Version: 1.0
-Message-ID: <157429012364.21853.105281990076926777.tip-bot2@tip-bot2>
+Message-ID: <157429580269.21853.3914350918293284243.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,78 +47,46 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/iopl branch of tip:
+The following commit has been merged into the timers/urgent branch of tip:
 
-Commit-ID:     e3cb0c7102f04c83bf1a7cb1d052e92749310b46
-Gitweb:        https://git.kernel.org/tip/e3cb0c7102f04c83bf1a7cb1d052e92749310b46
-Author:        Alexander Duyck <alexander.h.duyck@linux.intel.com>
-AuthorDate:    Wed, 20 Nov 2019 14:25:53 -08:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 20 Nov 2019 23:40:05 +01:00
+Commit-ID:     7b8474466ed97be458c825f34a85f2c2b84c3f95
+Gitweb:        https://git.kernel.org/tip/7b8474466ed97be458c825f34a85f2c2b84c3f95
+Author:        Dmitry Safonov <dima@arista.com>
+AuthorDate:    Thu, 21 Nov 2019 00:03:03 
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Thu, 21 Nov 2019 01:17:58 +01:00
 
-x86/ioperm: Fix use of deprecated config option
+time: Zero the upper 32-bits in __kernel_timespec on 32-bit
 
-The commit
+On compat interfaces, the high order bits of nanoseconds should be zeroed
+out. This is because the application code or the libc do not guarantee
+zeroing of these. If used without zeroing, kernel might be at risk of using
+timespec values incorrectly.
 
-  111e7b15cf10 ("x86/ioperm: Extend IOPL config to control ioperm() as well")
+Originally it was handled correctly, but lost during is_compat_syscall()
+cleanup. Revert the condition back to check CONFIG_64BIT.
 
-replaced X86_IOPL_EMULATION with X86_IOPL_IOPERM. However it appears
-that there was at least one spot missed as tss_update_io_bitmap() still
-had a reference to it contained in the code.
-
-The result of this is that it exposed a NULL pointer dereference as seen
-below with a linux-next next-20191120 kernel:
-
-  BUG: kernel NULL pointer dereference, address: 0000000000000000
-  #PF: supervisor read access in kernel mode
-  #PF: error_code(0x0000) - not-present page
-  PGD 0 P4D 0
-  Oops: 0000 [#1] SMP PTI
-  CPU: 5 PID: 1542 Comm: ovs-vswitchd Tainted: G        W 5.4.0-rc8-next-20191120 #125
-  RIP: 0010:tss_update_io_bitmap+0x4e/0x180
-  Code: 10 31 c0 65 48 03 1d 69 54 5d 6d 65 48 8b 04 25 40 8c 01 00 48 8b 10 \
-	  f7 c2 00 00 40 00 0f 84 8c 00 00 00 4c 8b a0 c0 22 00 00 <49> 8b 04 \
-	  24 48 39 43 68 74 2e 8b 53 70 41 39 54 24 0c 48 8d 7b 78
-  RSP: 0018:ffffb8888a0ebf08 EFLAGS: 00010006
-  RAX: ffff8a429811a680 RBX: ffff8a4c3f946000 RCX: 0000000000000011
-  RDX: 0000000000400080 RSI: 0000000000400080 RDI: 0000000000000000
-  RBP: ffffb8888a0ebf30 R08: 00007ffffb5d7ce0 R09: 0000000000000000
-  R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
-  R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
-  FS:  00007f68a9635c40(0000) GS:ffff8a4c3f940000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 0000000000000000 CR3: 000000103572a001 CR4: 00000000001606e0
-  Call Trace:
-   ? syscall_slow_exit_work+0x39/0xdb
-   do_syscall_64+0x1a5/0x200
-   entry_SYSCALL_64_after_hwframe+0x44/0xa9
-  RIP: 0033:0x7f68a7aff797
-
-Fixes: 111e7b15cf10 ("x86/ioperm: Extend IOPL config to control ioperm() as well")
-Signed-off-by: Alexander Duyck <alexander.h.duyck@linux.intel.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: x86-ml <x86@kernel.org>
-Link: https://lkml.kernel.org/r/20191120222426.3060.18462.stgit@localhost.localdomain
+Fixes: 98f76206b335 ("compat: Cleanup in_compat_syscall() callers")
+Reported-by: Ben Hutchings <ben.hutchings@codethink.co.uk>
+Signed-off-by: Dmitry Safonov <dima@arista.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20191121000303.126523-1-dima@arista.com
 ---
- arch/x86/kernel/process.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ kernel/time/time.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/process.c b/arch/x86/kernel/process.c
-index 7964d7d..bd2a11c 100644
---- a/arch/x86/kernel/process.c
-+++ b/arch/x86/kernel/process.c
-@@ -382,8 +382,7 @@ void tss_update_io_bitmap(void)
- 	if (test_thread_flag(TIF_IO_BITMAP)) {
- 		struct thread_struct *t = &current->thread;
+diff --git a/kernel/time/time.c b/kernel/time/time.c
+index 5c54ca6..83f403e 100644
+--- a/kernel/time/time.c
++++ b/kernel/time/time.c
+@@ -881,7 +881,8 @@ int get_timespec64(struct timespec64 *ts,
+ 	ts->tv_sec = kts.tv_sec;
  
--		if (IS_ENABLED(CONFIG_X86_IOPL_EMULATION) &&
--		    t->iopl_emul == 3) {
-+		if (IS_ENABLED(CONFIG_X86_IOPL_IOPERM) && t->iopl_emul == 3) {
- 			*base = IO_BITMAP_OFFSET_VALID_ALL;
- 		} else {
- 			struct io_bitmap *iobm = t->io_bitmap;
+ 	/* Zero out the padding for 32 bit systems or in compat mode */
+-	if (IS_ENABLED(CONFIG_64BIT_TIME) && in_compat_syscall())
++	if (IS_ENABLED(CONFIG_64BIT_TIME) && (!IS_ENABLED(CONFIG_64BIT) ||
++					      in_compat_syscall()))
+ 		kts.tv_nsec &= 0xFFFFFFFFUL;
+ 
+ 	ts->tv_nsec = kts.tv_nsec;
