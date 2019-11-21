@@ -2,35 +2,35 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BC948105AE7
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 21 Nov 2019 21:15:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A4E1F105AE9
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 21 Nov 2019 21:15:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727105AbfKUUOc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 21 Nov 2019 15:14:32 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:33395 "EHLO
+        id S1727135AbfKUUOf (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 21 Nov 2019 15:14:35 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:33409 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726563AbfKUUOb (ORCPT
+        with ESMTP id S1727109AbfKUUOf (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 21 Nov 2019 15:14:31 -0500
+        Thu, 21 Nov 2019 15:14:35 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iXsqP-0004fO-Ko; Thu, 21 Nov 2019 21:14:25 +0100
+        id 1iXsqT-0004fb-Ea; Thu, 21 Nov 2019 21:14:29 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 318A31C1A4C;
-        Thu, 21 Nov 2019 21:14:25 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 03C4B1C1A4B;
+        Thu, 21 Nov 2019 21:14:26 +0100 (CET)
 Date:   Thu, 21 Nov 2019 20:14:25 -0000
-From:   "tip-bot2 for Andy Lutomirski" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/entry/32: Unwind the ESPFIX stack earlier on
- exception entry
-Cc:     Andy Lutomirski <luto@kernel.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, stable@kernel.org,
+Subject: [tip: x86/urgent] x86/pti/32: Size initial_page_table correctly
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Joerg Roedel <jroedel@suse.de>, stable@kernel.org,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <157436726513.21853.1350949697904778536.tip-bot2@tip-bot2>
+Message-ID: <157436726590.21853.2642908261946434695.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -46,120 +46,65 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     a1a338e5b6fe9e0a39c57c232dc96c198bb53e47
-Gitweb:        https://git.kernel.org/tip/a1a338e5b6fe9e0a39c57c232dc96c198bb53e47
-Author:        Andy Lutomirski <luto@kernel.org>
-AuthorDate:    Wed, 20 Nov 2019 10:10:49 +01:00
+Commit-ID:     f490e07c53d66045d9d739e134145ec9b38653d3
+Gitweb:        https://git.kernel.org/tip/f490e07c53d66045d9d739e134145ec9b38653d3
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Thu, 21 Nov 2019 00:40:23 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Thu, 21 Nov 2019 19:37:44 +01:00
+CommitterDate: Thu, 21 Nov 2019 19:37:43 +01:00
 
-x86/entry/32: Unwind the ESPFIX stack earlier on exception entry
+x86/pti/32: Size initial_page_table correctly
 
-Right now, we do some fancy parts of the exception entry path while SS
-might have a nonzero base: we fill in regs->ss and regs->sp, and we
-consider switching to the kernel stack. This results in regs->ss and
-regs->sp referring to a non-flat stack and it may result in
-overflowing the entry stack. The former issue means that we can try to
-call iret_exc on a non-flat stack, which doesn't work.
+Commit 945fd17ab6ba ("x86/cpu_entry_area: Sync cpu_entry_area to
+initial_page_table") introduced the sync for the initial page table for
+32bit.
 
-Tested with selftests/x86/sigreturn_32.
+sync_initial_page_table() uses clone_pgd_range() which does the update for
+the kernel page table. If PTI is enabled it also updates the user space
+page table counterpart, which is assumed to be in the next page after the
+target PGD.
 
-Fixes: 45d7b255747c ("x86/entry/32: Enter the kernel via trampoline stack")
-Signed-off-by: Andy Lutomirski <luto@kernel.org>
+At this point in time 32-bit did not have PTI support, so the user space
+page table update was not taking place.
+
+The support for PTI on 32-bit which was introduced later on, did not take
+that into account and missed to add the user space counter part for the
+initial page table.
+
+As a consequence sync_initial_page_table() overwrites any data which is
+located in the page behing initial_page_table causing random failures,
+e.g. by corrupting doublefault_tss and wreckaging the doublefault handler
+on 32bit.
+
+Fix it by adding a "user" page table right after initial_page_table.
+
+Fixes: 7757d607c6b3 ("x86/pti: Allow CONFIG_PAGE_TABLE_ISOLATION for x86_32")
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Joerg Roedel <jroedel@suse.de>
 Cc: stable@kernel.org
 ---
- arch/x86/entry/entry_32.S | 30 ++++++++++++++++--------------
- 1 file changed, 16 insertions(+), 14 deletions(-)
+ arch/x86/kernel/head_32.S | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/arch/x86/entry/entry_32.S b/arch/x86/entry/entry_32.S
-index d9f4019..647e2a2 100644
---- a/arch/x86/entry/entry_32.S
-+++ b/arch/x86/entry/entry_32.S
-@@ -210,8 +210,6 @@
- 	/*
- 	 * The high bits of the CS dword (__csh) are used for CS_FROM_*.
- 	 * Clear them in case hardware didn't do this for us.
--	 *
--	 * Be careful: we may have nonzero SS base due to ESPFIX.
- 	 */
- 	andl	$0x0000ffff, 4*4(%esp)
- 
-@@ -307,12 +305,21 @@
- .Lfinished_frame_\@:
- .endm
- 
--.macro SAVE_ALL pt_regs_ax=%eax switch_stacks=0 skip_gs=0
-+.macro SAVE_ALL pt_regs_ax=%eax switch_stacks=0 skip_gs=0 unwind_espfix=0
- 	cld
- .if \skip_gs == 0
- 	PUSH_GS
- .endif
- 	pushl	%fs
+diff --git a/arch/x86/kernel/head_32.S b/arch/x86/kernel/head_32.S
+index 30f9cb2..2e6a067 100644
+--- a/arch/x86/kernel/head_32.S
++++ b/arch/x86/kernel/head_32.S
+@@ -571,6 +571,16 @@ ENTRY(initial_page_table)
+ #  error "Kernel PMDs should be 1, 2 or 3"
+ # endif
+ 	.align PAGE_SIZE		/* needs to be page-sized too */
 +
-+	pushl	%eax
-+	movl	$(__KERNEL_PERCPU), %eax
-+	movl	%eax, %fs
-+.if \unwind_espfix > 0
-+	UNWIND_ESPFIX_STACK
-+.endif
-+	popl	%eax
++#ifdef CONFIG_PAGE_TABLE_ISOLATION
++	/*
++	 * PTI needs another page so sync_initial_pagetable() works correctly
++	 * and does not scribble over the data which is placed behind the
++	 * actual initial_page_table. See clone_pgd_range().
++	 */
++	.fill 1024, 4, 0
++#endif
 +
- 	FIXUP_FRAME
- 	pushl	%es
- 	pushl	%ds
-@@ -326,8 +333,6 @@
- 	movl	$(__USER_DS), %edx
- 	movl	%edx, %ds
- 	movl	%edx, %es
--	movl	$(__KERNEL_PERCPU), %edx
--	movl	%edx, %fs
- .if \skip_gs == 0
- 	SET_KERNEL_GS %edx
- .endif
-@@ -1153,18 +1158,17 @@ ENDPROC(entry_INT80_32)
- 	lss	(%esp), %esp			/* switch to the normal stack segment */
  #endif
- .endm
-+
- .macro UNWIND_ESPFIX_STACK
-+	/* It's safe to clobber %eax, all other regs need to be preserved */
- #ifdef CONFIG_X86_ESPFIX32
- 	movl	%ss, %eax
- 	/* see if on espfix stack */
- 	cmpw	$__ESPFIX_SS, %ax
--	jne	27f
--	movl	$__KERNEL_DS, %eax
--	movl	%eax, %ds
--	movl	%eax, %es
-+	jne	.Lno_fixup_\@
- 	/* switch to normal stack */
- 	FIXUP_ESPFIX_STACK
--27:
-+.Lno_fixup_\@:
- #endif
- .endm
  
-@@ -1458,10 +1462,9 @@ END(page_fault)
- 
- common_exception_read_cr2:
- 	/* the function address is in %gs's slot on the stack */
--	SAVE_ALL switch_stacks=1 skip_gs=1
-+	SAVE_ALL switch_stacks=1 skip_gs=1 unwind_espfix=1
- 
- 	ENCODE_FRAME_POINTER
--	UNWIND_ESPFIX_STACK
- 
- 	/* fixup %gs */
- 	GS_TO_REG %ecx
-@@ -1483,9 +1486,8 @@ END(common_exception_read_cr2)
- 
- common_exception:
- 	/* the function address is in %gs's slot on the stack */
--	SAVE_ALL switch_stacks=1 skip_gs=1
-+	SAVE_ALL switch_stacks=1 skip_gs=1 unwind_espfix=1
- 	ENCODE_FRAME_POINTER
--	UNWIND_ESPFIX_STACK
- 
- 	/* fixup %gs */
- 	GS_TO_REG %ecx
+ .data
