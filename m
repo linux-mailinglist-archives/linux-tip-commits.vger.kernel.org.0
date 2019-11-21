@@ -2,40 +2,41 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CD7310576B
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 21 Nov 2019 17:48:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C089105764
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 21 Nov 2019 17:48:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727165AbfKUQsT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 21 Nov 2019 11:48:19 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:32913 "EHLO
+        id S1727105AbfKUQsQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 21 Nov 2019 11:48:16 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:32908 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726690AbfKUQsS (ORCPT
+        with ESMTP id S1726714AbfKUQsQ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 21 Nov 2019 11:48:18 -0500
+        Thu, 21 Nov 2019 11:48:16 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iXpcl-0000Yu-UU; Thu, 21 Nov 2019 17:48:08 +0100
+        id 1iXpcm-0000Yx-64; Thu, 21 Nov 2019 17:48:08 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 860781C1A3C;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C971B1C1A3E;
         Thu, 21 Nov 2019 17:48:07 +0100 (CET)
 Date:   Thu, 21 Nov 2019 16:48:07 -0000
 From:   "tip-bot2 for Frederic Weisbecker" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] rackmeter: Use vtime aware kcpustat accessor
+Subject: [tip: sched/core] cpufreq: Use vtime aware kcpustat accessors for user time
 Cc:     Yauheni Kaliuta <yauheni.kaliuta@redhat.com>,
         Frederic Weisbecker <frederic@kernel.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
         Peter Zijlstra <peterz@infradead.org>,
         Wanpeng Li <wanpengli@tencent.com>,
         Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191121024430.19938-7-frederic@kernel.org>
-References: <20191121024430.19938-7-frederic@kernel.org>
+In-Reply-To: <20191121024430.19938-5-frederic@kernel.org>
+References: <20191121024430.19938-5-frederic@kernel.org>
 MIME-Version: 1.0
-Message-ID: <157435488743.21853.7693299705375133100.tip-bot2@tip-bot2>
+Message-ID: <157435488775.21853.13702570973874298046.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,48 +52,92 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     8392853e964c025b0616bd54c0cdf9cbc3c9a769
-Gitweb:        https://git.kernel.org/tip/8392853e964c025b0616bd54c0cdf9cbc3c9a769
+Commit-ID:     5720821ba1d845f0b91a9278137e9005c5f6931d
+Gitweb:        https://git.kernel.org/tip/5720821ba1d845f0b91a9278137e9005c5f6931d
 Author:        Frederic Weisbecker <frederic@kernel.org>
-AuthorDate:    Thu, 21 Nov 2019 03:44:30 +01:00
+AuthorDate:    Thu, 21 Nov 2019 03:44:28 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 21 Nov 2019 07:59:00 +01:00
+CommitterDate: Thu, 21 Nov 2019 07:33:25 +01:00
 
-rackmeter: Use vtime aware kcpustat accessor
+cpufreq: Use vtime aware kcpustat accessors for user time
 
-Now that we have a vtime safe kcpustat accessor, use it to fetch
-CPUTIME_NICE and fix frozen kcpustat values on nohz_full CPUs.
+We can now safely read user and guest kcpustat fields on nohz_full CPUs.
+Use the appropriate accessors.
 
 Reported-by: Yauheni Kaliuta <yauheni.kaliuta@redhat.com>
 Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Rafael J. Wysocki <rjw@rjwysocki.net>
+Cc: Viresh Kumar <viresh.kumar@linaro.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Wanpeng Li <wanpengli@tencent.com>
-Link: https://lkml.kernel.org/r/20191121024430.19938-7-frederic@kernel.org
+Link: https://lkml.kernel.org/r/20191121024430.19938-5-frederic@kernel.org
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- drivers/macintosh/rack-meter.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/cpufreq/cpufreq.c          | 17 ++++++++++-------
+ drivers/cpufreq/cpufreq_governor.c |  6 +++---
+ 2 files changed, 13 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/macintosh/rack-meter.c b/drivers/macintosh/rack-meter.c
-index 4134e58..60311e8 100644
---- a/drivers/macintosh/rack-meter.c
-+++ b/drivers/macintosh/rack-meter.c
-@@ -81,13 +81,14 @@ static int rackmeter_ignore_nice;
-  */
- static inline u64 get_cpu_idle_time(unsigned int cpu)
+diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
+index 527fd06..ee23eaf 100644
+--- a/drivers/cpufreq/cpufreq.c
++++ b/drivers/cpufreq/cpufreq.c
+@@ -113,18 +113,21 @@ EXPORT_SYMBOL_GPL(get_governor_parent_kobj);
+ 
+ static inline u64 get_cpu_idle_time_jiffy(unsigned int cpu, u64 *wall)
  {
-+	struct kernel_cpustat *kcpustat = &kcpustat_cpu(cpu);
- 	u64 retval;
+-	u64 idle_time;
++	struct kernel_cpustat kcpustat;
+ 	u64 cur_wall_time;
++	u64 idle_time;
+ 	u64 busy_time;
  
--	retval = kcpustat_cpu(cpu).cpustat[CPUTIME_IDLE] +
--		 kcpustat_cpu(cpu).cpustat[CPUTIME_IOWAIT];
-+	retval = kcpustat->cpustat[CPUTIME_IDLE] +
-+		 kcpustat->cpustat[CPUTIME_IOWAIT];
+ 	cur_wall_time = jiffies64_to_nsecs(get_jiffies_64());
  
- 	if (rackmeter_ignore_nice)
--		retval += kcpustat_cpu(cpu).cpustat[CPUTIME_NICE];
-+		retval += kcpustat_field(kcpustat, CPUTIME_NICE, cpu);
+-	busy_time = kcpustat_cpu(cpu).cpustat[CPUTIME_USER];
+-	busy_time += kcpustat_field(&kcpustat_cpu(cpu), CPUTIME_SYSTEM, cpu);
+-	busy_time += kcpustat_cpu(cpu).cpustat[CPUTIME_IRQ];
+-	busy_time += kcpustat_cpu(cpu).cpustat[CPUTIME_SOFTIRQ];
+-	busy_time += kcpustat_cpu(cpu).cpustat[CPUTIME_STEAL];
+-	busy_time += kcpustat_cpu(cpu).cpustat[CPUTIME_NICE];
++	kcpustat_cpu_fetch(&kcpustat, cpu);
++
++	busy_time = kcpustat.cpustat[CPUTIME_USER];
++	busy_time += kcpustat.cpustat[CPUTIME_SYSTEM];
++	busy_time += kcpustat.cpustat[CPUTIME_IRQ];
++	busy_time += kcpustat.cpustat[CPUTIME_SOFTIRQ];
++	busy_time += kcpustat.cpustat[CPUTIME_STEAL];
++	busy_time += kcpustat.cpustat[CPUTIME_NICE];
  
- 	return retval;
+ 	idle_time = cur_wall_time - busy_time;
+ 	if (wall)
+diff --git a/drivers/cpufreq/cpufreq_governor.c b/drivers/cpufreq/cpufreq_governor.c
+index 4bb054d..f99ae45 100644
+--- a/drivers/cpufreq/cpufreq_governor.c
++++ b/drivers/cpufreq/cpufreq_governor.c
+@@ -105,7 +105,7 @@ void gov_update_cpu_data(struct dbs_data *dbs_data)
+ 			j_cdbs->prev_cpu_idle = get_cpu_idle_time(j, &j_cdbs->prev_update_time,
+ 								  dbs_data->io_is_busy);
+ 			if (dbs_data->ignore_nice_load)
+-				j_cdbs->prev_cpu_nice = kcpustat_cpu(j).cpustat[CPUTIME_NICE];
++				j_cdbs->prev_cpu_nice = kcpustat_field(&kcpustat_cpu(j), CPUTIME_NICE, j);
+ 		}
+ 	}
  }
+@@ -149,7 +149,7 @@ unsigned int dbs_update(struct cpufreq_policy *policy)
+ 		j_cdbs->prev_cpu_idle = cur_idle_time;
+ 
+ 		if (ignore_nice) {
+-			u64 cur_nice = kcpustat_cpu(j).cpustat[CPUTIME_NICE];
++			u64 cur_nice = kcpustat_field(&kcpustat_cpu(j), CPUTIME_NICE, j);
+ 
+ 			idle_time += div_u64(cur_nice - j_cdbs->prev_cpu_nice, NSEC_PER_USEC);
+ 			j_cdbs->prev_cpu_nice = cur_nice;
+@@ -530,7 +530,7 @@ int cpufreq_dbs_governor_start(struct cpufreq_policy *policy)
+ 		j_cdbs->prev_load = 0;
+ 
+ 		if (ignore_nice)
+-			j_cdbs->prev_cpu_nice = kcpustat_cpu(j).cpustat[CPUTIME_NICE];
++			j_cdbs->prev_cpu_nice = kcpustat_field(&kcpustat_cpu(j), CPUTIME_NICE, j);
+ 	}
+ 
+ 	gov->start(policy);
