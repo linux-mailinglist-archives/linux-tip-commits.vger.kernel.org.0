@@ -2,42 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CC34E105771
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 21 Nov 2019 17:48:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A82910576E
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 21 Nov 2019 17:48:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727218AbfKUQsf (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 21 Nov 2019 11:48:35 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:32929 "EHLO
+        id S1727217AbfKUQs3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 21 Nov 2019 11:48:29 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:32915 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727113AbfKUQsf (ORCPT
+        with ESMTP id S1727113AbfKUQsS (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 21 Nov 2019 11:48:35 -0500
+        Thu, 21 Nov 2019 11:48:18 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iXpcl-0000Ys-N9; Thu, 21 Nov 2019 17:48:07 +0100
+        id 1iXpcn-0000ZA-LC; Thu, 21 Nov 2019 17:48:09 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 474531C1A3B;
-        Thu, 21 Nov 2019 17:48:07 +0100 (CET)
-Date:   Thu, 21 Nov 2019 16:48:07 -0000
-From:   "tip-bot2 for Alexander Shishkin" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 3E4D41C1A3C;
+        Thu, 21 Nov 2019 17:48:08 +0100 (CET)
+Date:   Thu, 21 Nov 2019 16:48:08 -0000
+From:   "tip-bot2 for Frederic Weisbecker" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf/core: Make the mlock accounting simple again
-Cc:     Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Song Liu <songliubraving@fb.com>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Jiri Olsa <jolsa@kernel.org>,
+Subject: [tip: sched/core] sched/cputime: Support other fields on kcpustat_field()
+Cc:     Frederic Weisbecker <frederic@kernel.org>,
         Peter Zijlstra <peterz@infradead.org>,
         Wanpeng Li <wanpengli@tencent.com>,
         Yauheni Kaliuta <yauheni.kaliuta@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191120170640.54123-1-alexander.shishkin@linux.intel.com>
-References: <20191120170640.54123-1-alexander.shishkin@linux.intel.com>
+In-Reply-To: <20191121024430.19938-2-frederic@kernel.org>
+References: <20191121024430.19938-2-frederic@kernel.org>
 MIME-Version: 1.0
-Message-ID: <157435488706.21853.9491431504510528730.tip-bot2@tip-bot2>
+Message-ID: <157435488818.21853.7585699144904848918.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,56 +48,131 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/urgent branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     c4b75479741c9c3a4f0abff5baa5013d27640ac1
-Gitweb:        https://git.kernel.org/tip/c4b75479741c9c3a4f0abff5baa5013d27640ac1
-Author:        Alexander Shishkin <alexander.shishkin@linux.intel.com>
-AuthorDate:    Wed, 20 Nov 2019 19:06:40 +02:00
+Commit-ID:     5a1c95580f1d89c8a736bb02ecd82a8858388b8a
+Gitweb:        https://git.kernel.org/tip/5a1c95580f1d89c8a736bb02ecd82a8858388b8a
+Author:        Frederic Weisbecker <frederic@kernel.org>
+AuthorDate:    Thu, 21 Nov 2019 03:44:25 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 21 Nov 2019 07:37:50 +01:00
+CommitterDate: Thu, 21 Nov 2019 07:33:23 +01:00
 
-perf/core: Make the mlock accounting simple again
+sched/cputime: Support other fields on kcpustat_field()
 
-Commit:
+Provide support for user, nice, guest and guest_nice fields through
+kcpustat_field().
 
-  d44248a41337 ("perf/core: Rework memory accounting in perf_mmap()")
+Whether we account the delta to a nice or not nice field is decided on
+top of the nice value snapshot taken at the time we call kcpustat_field().
+If the nice value of the task has been changed since the last vtime
+update, we may have inacurrate distribution of the nice VS unnice
+cputime.
 
-does a lot of things to the mlock accounting arithmetics, while the only
-thing that actually needed to happen is subtracting the part that is
-charged to the mm from the part that is charged to the user, so that the
-former isn't charged twice.
+However this is considered as a minor issue compared to the proper fix
+that would involve interrupting the target on nice updates, which is
+undesired on nohz_full CPUs.
 
-Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Acked-by: Song Liu <songliubraving@fb.com>
-Cc: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Wanpeng Li <wanpengli@tencent.com>
 Cc: Yauheni Kaliuta <yauheni.kaliuta@redhat.com>
-Cc: songliubraving@fb.com
-Link: https://lkml.kernel.org/r/20191120170640.54123-1-alexander.shishkin@linux.intel.com
+Link: https://lkml.kernel.org/r/20191121024430.19938-2-frederic@kernel.org
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- kernel/events/core.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ kernel/sched/cputime.c | 54 ++++++++++++++++++++++++++++++++---------
+ 1 file changed, 43 insertions(+), 11 deletions(-)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 8f66a48..7e8980d 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -5825,13 +5825,7 @@ accounting:
+diff --git a/kernel/sched/cputime.c b/kernel/sched/cputime.c
+index e0cd206..27b5406 100644
+--- a/kernel/sched/cputime.c
++++ b/kernel/sched/cputime.c
+@@ -912,11 +912,21 @@ void task_cputime(struct task_struct *t, u64 *utime, u64 *stime)
+ 	} while (read_seqcount_retry(&vtime->seqcount, seq));
+ }
  
- 	user_locked = atomic_long_read(&user->locked_vm) + user_extra;
++static u64 kcpustat_user_vtime(struct vtime *vtime)
++{
++	if (vtime->state == VTIME_USER)
++		return vtime->utime + vtime_delta(vtime);
++	else if (vtime->state == VTIME_GUEST)
++		return vtime->gtime + vtime_delta(vtime);
++	return 0;
++}
++
+ static int kcpustat_field_vtime(u64 *cpustat,
+-				struct vtime *vtime,
++				struct task_struct *tsk,
+ 				enum cpu_usage_stat usage,
+ 				int cpu, u64 *val)
+ {
++	struct vtime *vtime = &tsk->vtime;
+ 	unsigned int seq;
+ 	int err;
  
--	if (user_locked <= user_lock_limit) {
--		/* charge all to locked_vm */
--	} else if (atomic_long_read(&user->locked_vm) >= user_lock_limit) {
--		/* charge all to pinned_vm */
--		extra = user_extra;
--		user_extra = 0;
--	} else {
-+	if (user_locked > user_lock_limit) {
- 		/*
- 		 * charge locked_vm until it hits user_lock_limit;
- 		 * charge the rest from pinned_vm
+@@ -946,9 +956,37 @@ static int kcpustat_field_vtime(u64 *cpustat,
+ 
+ 		*val = cpustat[usage];
+ 
+-		if (vtime->state == VTIME_SYS)
+-			*val += vtime->stime + vtime_delta(vtime);
+-
++		/*
++		 * Nice VS unnice cputime accounting may be inaccurate if
++		 * the nice value has changed since the last vtime update.
++		 * But proper fix would involve interrupting target on nice
++		 * updates which is a no go on nohz_full (although the scheduler
++		 * may still interrupt the target if rescheduling is needed...)
++		 */
++		switch (usage) {
++		case CPUTIME_SYSTEM:
++			if (vtime->state == VTIME_SYS)
++				*val += vtime->stime + vtime_delta(vtime);
++			break;
++		case CPUTIME_USER:
++			if (task_nice(tsk) <= 0)
++				*val += kcpustat_user_vtime(vtime);
++			break;
++		case CPUTIME_NICE:
++			if (task_nice(tsk) > 0)
++				*val += kcpustat_user_vtime(vtime);
++			break;
++		case CPUTIME_GUEST:
++			if (vtime->state == VTIME_GUEST && task_nice(tsk) <= 0)
++				*val += vtime->gtime + vtime_delta(vtime);
++			break;
++		case CPUTIME_GUEST_NICE:
++			if (vtime->state == VTIME_GUEST && task_nice(tsk) > 0)
++				*val += vtime->gtime + vtime_delta(vtime);
++			break;
++		default:
++			break;
++		}
+ 	} while (read_seqcount_retry(&vtime->seqcount, seq));
+ 
+ 	return 0;
+@@ -965,15 +1003,10 @@ u64 kcpustat_field(struct kernel_cpustat *kcpustat,
+ 	if (!vtime_accounting_enabled_cpu(cpu))
+ 		return cpustat[usage];
+ 
+-	/* Only support sys vtime for now */
+-	if (usage != CPUTIME_SYSTEM)
+-		return cpustat[usage];
+-
+ 	rq = cpu_rq(cpu);
+ 
+ 	for (;;) {
+ 		struct task_struct *curr;
+-		struct vtime *vtime;
+ 
+ 		rcu_read_lock();
+ 		curr = rcu_dereference(rq->curr);
+@@ -982,8 +1015,7 @@ u64 kcpustat_field(struct kernel_cpustat *kcpustat,
+ 			return cpustat[usage];
+ 		}
+ 
+-		vtime = &curr->vtime;
+-		err = kcpustat_field_vtime(cpustat, vtime, usage, cpu, &val);
++		err = kcpustat_field_vtime(cpustat, curr, usage, cpu, &val);
+ 		rcu_read_unlock();
+ 
+ 		if (!err)
