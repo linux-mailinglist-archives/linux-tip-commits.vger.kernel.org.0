@@ -2,41 +2,42 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 81F1A10576C
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 21 Nov 2019 17:48:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CC34E105771
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 21 Nov 2019 17:48:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726881AbfKUQsX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 21 Nov 2019 11:48:23 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:32926 "EHLO
+        id S1727218AbfKUQsf (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 21 Nov 2019 11:48:35 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:32929 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726690AbfKUQsX (ORCPT
+        with ESMTP id S1727113AbfKUQsf (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 21 Nov 2019 11:48:23 -0500
+        Thu, 21 Nov 2019 11:48:35 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iXpcm-0000Yw-1p; Thu, 21 Nov 2019 17:48:08 +0100
+        id 1iXpcl-0000Ys-N9; Thu, 21 Nov 2019 17:48:07 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A807F1C1A3D;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 474531C1A3B;
         Thu, 21 Nov 2019 17:48:07 +0100 (CET)
 Date:   Thu, 21 Nov 2019 16:48:07 -0000
-From:   "tip-bot2 for Frederic Weisbecker" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Alexander Shishkin" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] leds: Use all-in-one vtime aware kcpustat accessor
-Cc:     Yauheni Kaliuta <yauheni.kaliuta@redhat.com>,
-        Frederic Weisbecker <frederic@kernel.org>,
-        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
-        Pavel Machek <pavel@ucw.cz>, Dan Murphy <dmurphy@ti.com>,
+Subject: [tip: perf/urgent] perf/core: Make the mlock accounting simple again
+Cc:     Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Song Liu <songliubraving@fb.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Jiri Olsa <jolsa@kernel.org>,
         Peter Zijlstra <peterz@infradead.org>,
         Wanpeng Li <wanpengli@tencent.com>,
+        Yauheni Kaliuta <yauheni.kaliuta@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191121024430.19938-6-frederic@kernel.org>
-References: <20191121024430.19938-6-frederic@kernel.org>
+In-Reply-To: <20191120170640.54123-1-alexander.shishkin@linux.intel.com>
+References: <20191120170640.54123-1-alexander.shishkin@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <157435488761.21853.4853862724156729541.tip-bot2@tip-bot2>
+Message-ID: <157435488706.21853.9491431504510528730.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,57 +51,56 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     8688f2fb671b2ed59b1b16083136b6edc3750435
-Gitweb:        https://git.kernel.org/tip/8688f2fb671b2ed59b1b16083136b6edc3750435
-Author:        Frederic Weisbecker <frederic@kernel.org>
-AuthorDate:    Thu, 21 Nov 2019 03:44:29 +01:00
+Commit-ID:     c4b75479741c9c3a4f0abff5baa5013d27640ac1
+Gitweb:        https://git.kernel.org/tip/c4b75479741c9c3a4f0abff5baa5013d27640ac1
+Author:        Alexander Shishkin <alexander.shishkin@linux.intel.com>
+AuthorDate:    Wed, 20 Nov 2019 19:06:40 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 21 Nov 2019 07:58:48 +01:00
+CommitterDate: Thu, 21 Nov 2019 07:37:50 +01:00
 
-leds: Use all-in-one vtime aware kcpustat accessor
+perf/core: Make the mlock accounting simple again
 
-We can now safely read user kcpustat fields on nohz_full CPUs.
-Use the appropriate accessor.
+Commit:
 
-[ mingo: Fixed build failure. ]
+  d44248a41337 ("perf/core: Rework memory accounting in perf_mmap()")
 
-Reported-by: Yauheni Kaliuta <yauheni.kaliuta@redhat.com>
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-Cc: Jacek Anaszewski <jacek.anaszewski@gmail.com> (maintainer:LED SUBSYSTEM)
-Cc: Pavel Machek <pavel@ucw.cz> (maintainer:LED SUBSYSTEM)
-Cc: Dan Murphy <dmurphy@ti.com> (reviewer:LED SUBSYSTEM)
+does a lot of things to the mlock accounting arithmetics, while the only
+thing that actually needed to happen is subtracting the part that is
+charged to the mm from the part that is charged to the user, so that the
+former isn't charged twice.
+
+Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Acked-by: Song Liu <songliubraving@fb.com>
+Cc: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Wanpeng Li <wanpengli@tencent.com>
-Link: https://lkml.kernel.org/r/20191121024430.19938-6-frederic@kernel.org
+Cc: Yauheni Kaliuta <yauheni.kaliuta@redhat.com>
+Cc: songliubraving@fb.com
+Link: https://lkml.kernel.org/r/20191120170640.54123-1-alexander.shishkin@linux.intel.com
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- drivers/leds/trigger/ledtrig-activity.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ kernel/events/core.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-diff --git a/drivers/leds/trigger/ledtrig-activity.c b/drivers/leds/trigger/ledtrig-activity.c
-index ddfc5ed..14ba7fa 100644
---- a/drivers/leds/trigger/ledtrig-activity.c
-+++ b/drivers/leds/trigger/ledtrig-activity.c
-@@ -57,11 +57,15 @@ static void led_activity_function(struct timer_list *t)
- 	curr_used = 0;
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 8f66a48..7e8980d 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -5825,13 +5825,7 @@ accounting:
  
- 	for_each_possible_cpu(i) {
--		curr_used += kcpustat_cpu(i).cpustat[CPUTIME_USER]
--			  +  kcpustat_cpu(i).cpustat[CPUTIME_NICE]
--			  +  kcpustat_field(&kcpustat_cpu(i), CPUTIME_SYSTEM, i)
--			  +  kcpustat_cpu(i).cpustat[CPUTIME_SOFTIRQ]
--			  +  kcpustat_cpu(i).cpustat[CPUTIME_IRQ];
-+		struct kernel_cpustat kcpustat;
-+
-+		kcpustat_cpu_fetch(&kcpustat, i);
-+
-+		curr_used += kcpustat.cpustat[CPUTIME_USER]
-+			  +  kcpustat.cpustat[CPUTIME_NICE]
-+			  +  kcpustat.cpustat[CPUTIME_SYSTEM]
-+			  +  kcpustat.cpustat[CPUTIME_SOFTIRQ]
-+			  +  kcpustat.cpustat[CPUTIME_IRQ];
- 		cpus++;
- 	}
+ 	user_locked = atomic_long_read(&user->locked_vm) + user_extra;
  
+-	if (user_locked <= user_lock_limit) {
+-		/* charge all to locked_vm */
+-	} else if (atomic_long_read(&user->locked_vm) >= user_lock_limit) {
+-		/* charge all to pinned_vm */
+-		extra = user_extra;
+-		user_extra = 0;
+-	} else {
++	if (user_locked > user_lock_limit) {
+ 		/*
+ 		 * charge locked_vm until it hits user_lock_limit;
+ 		 * charge the rest from pinned_vm
