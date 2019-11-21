@@ -2,167 +2,471 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 54F8A105806
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 21 Nov 2019 18:08:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 81C421058E7
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 21 Nov 2019 18:55:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726658AbfKURIz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 21 Nov 2019 12:08:55 -0500
-Received: from mail-wm1-f65.google.com ([209.85.128.65]:40683 "EHLO
-        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726655AbfKURIy (ORCPT
+        id S1727107AbfKURzk (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 21 Nov 2019 12:55:40 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:33114 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726293AbfKURzc (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 21 Nov 2019 12:08:54 -0500
-Received: by mail-wm1-f65.google.com with SMTP id y5so4573762wmi.5;
-        Thu, 21 Nov 2019 09:08:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=tJAmMjDZD3KRi/40xv3u3AIT54hpltbm49NEAdIVwBU=;
-        b=mC54IYR1i6qn0Y+OSbdyzF2QrFnw/ezm55P82m5v8ilvRuI4HCNpYwqwhicyYmuGfp
-         cOJg+kZMMaBg9cm0tiS2nKnNoOxYZaodchanU4IiBxws0PQhuJ267mjKA1uwS711nw0O
-         nOalDZ8wQcNqBz5SydywB3MClJ6itLWj2RLg6zxqY50cYysoQh0BMNxBO0QNia5Y3lMo
-         DxSFt6UUIOL5Jpog3VZMvLipW000KmErEjwd5iF3Bt1+GgD7LE9LnPSz9i1LN2RvPmUk
-         KS1M8aH/tKiGxf+xE9m6C3EdPw5OnOaMNn97vxFHdQ2S/nfr+U2KaDI+NFi2tu/+hZaL
-         Zmpg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=tJAmMjDZD3KRi/40xv3u3AIT54hpltbm49NEAdIVwBU=;
-        b=Qkzr2uB/30pJ3FCpbnRWmsot+R7nJQdl2Xd16e0k9j9X5lg2H23V5MlV7CRcxF2NyQ
-         RczP7NizZMkcm8Slx75gJXBnxSRTqanT50vYkBAbyofJ2qbYOcm44TSgjmN+TvEH0mLv
-         1oSWTBIsve08Y2pDnPirUY4wREE4L4WBWMpsSbZxjOcqP94ZhOOtPhUkwz6z4z3GAH3X
-         il/FLSeIpx0H2dITwVfDSzoa2/8rFtEw2jwYoTmHFq2FUpffCspH1+Wd8R3xGF2grXcJ
-         ARNZmzSzjoEE0OrLM3HCEQMPtC+1uy8vVvlMP6Xx2jlApbxCf6kv1tuHb7B8axL/vYFV
-         PKIw==
-X-Gm-Message-State: APjAAAU9gk7mTCb2GphKY3fjdAUeH8HMD98BiWNeInk2P4VybQFtCPWC
-        Ax9/v1Xlqf0YBM7Q/Gaba5k=
-X-Google-Smtp-Source: APXvYqyTRQoy9KCVb/TrsrP85AdKMlHufzE2RQ8tO/8ZduBeKnBJRct2hYDBTOgZ1h84TxN4k7AUhA==
-X-Received: by 2002:a1c:e915:: with SMTP id q21mr10421973wmc.148.1574356131945;
-        Thu, 21 Nov 2019 09:08:51 -0800 (PST)
-Received: from gmail.com (54033286.catv.pool.telekom.hu. [84.3.50.134])
-        by smtp.gmail.com with ESMTPSA id t14sm3925269wrw.87.2019.11.21.09.08.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Nov 2019 09:08:51 -0800 (PST)
-Date:   Thu, 21 Nov 2019 18:08:49 +0100
-From:   Ingo Molnar <mingo@kernel.org>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-tip-commits@vger.kernel.org,
-        Davidlohr Bueso <dbueso@suse.de>,
-        Andy Lutomirski <luto@kernel.org>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
+        Thu, 21 Nov 2019 12:55:32 -0500
+Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tip-bot2@linutronix.de>)
+        id 1iXqfr-0002F6-CK; Thu, 21 Nov 2019 18:55:23 +0100
+Received: from [127.0.1.1] (localhost [IPv6:::1])
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E24B11C1A45;
+        Thu, 21 Nov 2019 18:55:22 +0100 (CET)
+Date:   Thu, 21 Nov 2019 17:55:22 -0000
+From:   "tip-bot2 for Davidlohr Bueso" <tip-bot2@linutronix.de>
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/mm] x86/mm/pat: Rename pat_rbtree.c to pat_interval.c
+Cc:     Davidlohr Bueso <dbueso@suse.de>,
         Peter Zijlstra <peterz@infradead.org>,
-        Rik van Riel <riel@surriel.com>,
-        Thomas Gleixner <tglx@linutronix.de>, dave@stgolabs.net,
-        x86 <x86@kernel.org>
-Subject: Re: [tip: x86/mm] x86/mm/pat: Rename pat_rbtree.c to pat_interval.c
-Message-ID: <20191121170849.GB12042@gmail.com>
-References: <20191021231924.25373-5-dave@stgolabs.net>
- <157431619321.21853.6320580586819014584.tip-bot2@tip-bot2>
- <CAHk-=wg565YQe6Dmpjg6QJ9aPHvkT7G60iDYS12TZoG+q+hbTw@mail.gmail.com>
+        Borislav Petkov <bp@alien8.de>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20191121011601.20611-5-dave@stgolabs.net>
+References: <20191121011601.20611-5-dave@stgolabs.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHk-=wg565YQe6Dmpjg6QJ9aPHvkT7G60iDYS12TZoG+q+hbTw@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Message-ID: <157435892282.21853.15649757798933944731.tip-bot2@tip-bot2>
+X-Mailer: tip-git-log-daemon
+Robot-ID: <tip-bot2.linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
+The following commit has been merged into the x86/mm branch of tip:
 
-* Linus Torvalds <torvalds@linux-foundation.org> wrote:
+Commit-ID:     7f264dab5b60343358e788d4c939c166c22ea4a2
+Gitweb:        https://git.kernel.org/tip/7f264dab5b60343358e788d4c939c166c22ea4a2
+Author:        Davidlohr Bueso <dave@stgolabs.net>
+AuthorDate:    Wed, 20 Nov 2019 17:16:01 -08:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Thu, 21 Nov 2019 18:48:18 +01:00
 
-> On Wed, Nov 20, 2019, 22:03 tip-bot2 for Davidlohr Bueso <
-> tip-bot2@linutronix.de> wrote:
-> 
-> >
-> > x86/mm/pat: Rename pat_rbtree.c to pat_interval.c
-> >
-> > Considering that we don't use an rbtree but an interval tree,
-> > rename the main file accordingly.
-> >
-> 
-> Wouldn't it be even better to not make the same mistake all over again, and
-> instead of naming the file by an implementation detail, it should be named
-> by what it does?
-> 
-> Maybe pat_memtype.c or just pat_manage.c or something?
-> 
-> Or even just pat.c?
+x86/mm/pat: Rename pat_rbtree.c to pat_interval.c
 
-Yeah, so incidentally, just before you made this suggestion yesterday, I 
-rearranged the files quite a bit in tip:WIP.x86/mm, and the latest naming 
-scheme is:
+Considering the previous changes, this is a more proper name.
 
- dagon:~/tip> ls -l arch/x86/mm/pat/
- total 112
- -rw-r--r-- 1 mingo mingo  5782 Nov 21 06:41 cpa-test.c
- -rw-r--r-- 1 mingo mingo   117 Nov 21 06:41 Makefile
- -rw-r--r-- 1 mingo mingo 32026 Nov 21 06:41 memtype.c
- -rw-r--r-- 1 mingo mingo  1470 Nov 21 06:41 memtype.h
- -rw-r--r-- 1 mingo mingo  5003 Nov 21 06:41 memtype_interval.c
- -rw-r--r-- 1 mingo mingo 56668 Nov 21 06:41 set_memory.c
+Signed-off-by: Davidlohr Bueso <dbueso@suse.de>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lkml.kernel.org/r/20191121011601.20611-5-dave@stgolabs.net
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+---
+ arch/x86/mm/Makefile       |   2 +-
+ arch/x86/mm/pat_interval.c | 185 ++++++++++++++++++++++++++++++++++++-
+ arch/x86/mm/pat_rbtree.c   | 185 +------------------------------------
+ 3 files changed, 186 insertions(+), 186 deletions(-)
+ create mode 100644 arch/x86/mm/pat_interval.c
+ delete mode 100644 arch/x86/mm/pat_rbtree.c
 
-I named most of the files based on the API families they are 
-implementing:
-
- - memtype*.c for the <asm/memtype.h> APIs
- - set_memory.c for the <asm/set_memory.h> APIs.
-
-Is this close to what you had in mind?
-
- ( Note: cpa-test.c is a leftover that should probably be renamed to 
-   set_memory_test.c, with a few explicit set_memory() API tests added as 
-   well, not just the internal change_page_attribute() tests. )
-
-I also started the process of tidying up the API namespace which is a bit 
-of a historical accident as well, and I'm done with most of the memtype 
-funtions, which are now:
-
-            reserve_memtype()               => memtype_reserve()
-            free_memtype()                  => memtype_free()
-            kernel_map_sync_memtype()       => memtype_kernel_map_sync()
-            io_reserve_memtype()            => memtype_reserve_io()
-            io_free_memtype()               => memtype_free_io()
-
-            memtype_check_insert()          => memtype_check_insert()
-            memtype_erase()                 => memtype_erase()
-            memtype_lookup()                => memtype_lookup()
-            memtype_copy_nth_element()      => memtype_copy_nth_element()
-
-This work is in WIP.x86/mm:
-
- git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git WIP.x86/mm
-
- f53ee099dfac: x86/mm: Tabulate the page table encoding definitions
- 2ab1a9a197f7: x86/mm/pat: Fix typo in the Kconfig help text
- 0d2a9498e4db: x86/mm/pat: Clean up <asm/memtype.h> externs
- 2e2ee215db87: x86/mm/pat: Rename <asm/pat.h> => <asm/memtype.h>
- 84285e92bb7a: x86/mm/pat: Standardize on memtype_*() prefix for APIs
- b2c61e70ccca: x86/mm/pat: Move the memtype related files to arch/x86/mm/pat/
- f54b639ad101: x86/mm/pat: Clean up PAT initialization flags
- bca867e88012: x86/mm/pat: Harmonize 'struct memtype *' local variable and function parameter use
- 35459848e92f: x86/mm/pat: Simplify the free_memtype() control flow
- a71fbb6061dc: x86/mm/pat: Create fixed width output in /sys/kernel/debug/x86/pat_memtype_list, similar to the E820 debug printouts
- a252a95b6b91: x86/mm/pat: Disambiguate PAT-disabled boot messages
- 83d743db88c5: x86/mm/pat: Update the comments in pat.c and pat_interval.c and refresh the code a bit
-
- 820cac65197c: x86/mm/pat: Rename pat_rbtree.c to pat_interval.c
- 010ca1041da3: x86/mm/pat: Drop the rbt_ prefix from external memtype calls
- a2cb4c9af315: x86/mm/pat: Do not pass 'rb_root' down the memtype tree helper functions
- 2418ac70a9c1: x86/mm/pat: Convert the PAT tree to a generic interval tree
-
-But there's still quite some work left. I'll send out a series once I 
-think the end result is a coherent whole.
-
-Davidlohr's four patches are intended for v5.5, the remaining patches 
-from me on top of his work will probably need a bit more testing.
-
-Thanks,
-
-	Ingo
+diff --git a/arch/x86/mm/Makefile b/arch/x86/mm/Makefile
+index 84373dc..de403df 100644
+--- a/arch/x86/mm/Makefile
++++ b/arch/x86/mm/Makefile
+@@ -23,7 +23,7 @@ CFLAGS_mem_encrypt_identity.o	:= $(nostackp)
+ 
+ CFLAGS_fault.o := -I $(srctree)/$(src)/../include/asm/trace
+ 
+-obj-$(CONFIG_X86_PAT)		+= pat_rbtree.o
++obj-$(CONFIG_X86_PAT)		+= pat_interval.o
+ 
+ obj-$(CONFIG_X86_32)		+= pgtable_32.o iomap_32.o
+ 
+diff --git a/arch/x86/mm/pat_interval.c b/arch/x86/mm/pat_interval.c
+new file mode 100644
+index 0000000..47a1bf3
+--- /dev/null
++++ b/arch/x86/mm/pat_interval.c
+@@ -0,0 +1,185 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Handle caching attributes in page tables (PAT)
++ *
++ * Authors: Venkatesh Pallipadi <venkatesh.pallipadi@intel.com>
++ *          Suresh B Siddha <suresh.b.siddha@intel.com>
++ *
++ * Interval tree used to store the PAT memory type reservations.
++ */
++
++#include <linux/seq_file.h>
++#include <linux/debugfs.h>
++#include <linux/kernel.h>
++#include <linux/interval_tree_generic.h>
++#include <linux/sched.h>
++#include <linux/gfp.h>
++
++#include <asm/pgtable.h>
++#include <asm/pat.h>
++
++#include "pat_internal.h"
++
++/*
++ * The memtype tree keeps track of memory type for specific
++ * physical memory areas. Without proper tracking, conflicting memory
++ * types in different mappings can cause CPU cache corruption.
++ *
++ * The tree is an interval tree (augmented rbtree) with tree ordered
++ * on starting address. Tree can contain multiple entries for
++ * different regions which overlap. All the aliases have the same
++ * cache attributes of course.
++ *
++ * memtype_lock protects the rbtree.
++ */
++static inline u64 memtype_interval_start(struct memtype *memtype)
++{
++	return memtype->start;
++}
++
++static inline u64 memtype_interval_end(struct memtype *memtype)
++{
++	return memtype->end - 1;
++}
++INTERVAL_TREE_DEFINE(struct memtype, rb, u64, subtree_max_end,
++		     memtype_interval_start, memtype_interval_end,
++		     static, memtype_interval)
++
++static struct rb_root_cached memtype_rbroot = RB_ROOT_CACHED;
++
++enum {
++	MEMTYPE_EXACT_MATCH	= 0,
++	MEMTYPE_END_MATCH	= 1
++};
++
++static struct memtype *memtype_match(u64 start, u64 end, int match_type)
++{
++	struct memtype *match;
++
++	match = memtype_interval_iter_first(&memtype_rbroot, start, end);
++	while (match != NULL && match->start < end) {
++		if ((match_type == MEMTYPE_EXACT_MATCH) &&
++		    (match->start == start) && (match->end == end))
++			return match;
++
++		if ((match_type == MEMTYPE_END_MATCH) &&
++		    (match->start < start) && (match->end == end))
++			return match;
++
++		match = memtype_interval_iter_next(match, start, end);
++	}
++
++	return NULL; /* Returns NULL if there is no match */
++}
++
++static int memtype_check_conflict(u64 start, u64 end,
++				  enum page_cache_mode reqtype,
++				  enum page_cache_mode *newtype)
++{
++	struct memtype *match;
++	enum page_cache_mode found_type = reqtype;
++
++	match = memtype_interval_iter_first(&memtype_rbroot, start, end);
++	if (match == NULL)
++		goto success;
++
++	if (match->type != found_type && newtype == NULL)
++		goto failure;
++
++	dprintk("Overlap at 0x%Lx-0x%Lx\n", match->start, match->end);
++	found_type = match->type;
++
++	match = memtype_interval_iter_next(match, start, end);
++	while (match) {
++		if (match->type != found_type)
++			goto failure;
++
++		match = memtype_interval_iter_next(match, start, end);
++	}
++success:
++	if (newtype)
++		*newtype = found_type;
++
++	return 0;
++
++failure:
++	pr_info("x86/PAT: %s:%d conflicting memory types %Lx-%Lx %s<->%s\n",
++		current->comm, current->pid, start, end,
++		cattr_name(found_type), cattr_name(match->type));
++	return -EBUSY;
++}
++
++int memtype_check_insert(struct memtype *new,
++			 enum page_cache_mode *ret_type)
++{
++	int err = 0;
++
++	err = memtype_check_conflict(new->start, new->end, new->type, ret_type);
++	if (err)
++		return err;
++
++	if (ret_type)
++		new->type = *ret_type;
++
++	memtype_interval_insert(new, &memtype_rbroot);
++	return 0;
++}
++
++struct memtype *memtype_erase(u64 start, u64 end)
++{
++	struct memtype *data;
++
++	/*
++	 * Since the memtype_rbroot tree allows overlapping ranges,
++	 * memtype_erase() checks with EXACT_MATCH first, i.e. free
++	 * a whole node for the munmap case.  If no such entry is found,
++	 * it then checks with END_MATCH, i.e. shrink the size of a node
++	 * from the end for the mremap case.
++	 */
++	data = memtype_match(start, end, MEMTYPE_EXACT_MATCH);
++	if (!data) {
++		data = memtype_match(start, end, MEMTYPE_END_MATCH);
++		if (!data)
++			return ERR_PTR(-EINVAL);
++	}
++
++	if (data->start == start) {
++		/* munmap: erase this node */
++		memtype_interval_remove(data, &memtype_rbroot);
++	} else {
++		/* mremap: update the end value of this node */
++		memtype_interval_remove(data, &memtype_rbroot);
++		data->end = start;
++		memtype_interval_insert(data, &memtype_rbroot);
++		return NULL;
++	}
++
++	return data;
++}
++
++struct memtype *memtype_lookup(u64 addr)
++{
++	return memtype_interval_iter_first(&memtype_rbroot, addr,
++					   addr + PAGE_SIZE);
++}
++
++#if defined(CONFIG_DEBUG_FS)
++int memtype_copy_nth_element(struct memtype *out, loff_t pos)
++{
++	struct memtype *match;
++	int i = 1;
++
++	match = memtype_interval_iter_first(&memtype_rbroot, 0, ULONG_MAX);
++	while (match && pos != i) {
++		match = memtype_interval_iter_next(match, 0, ULONG_MAX);
++		i++;
++	}
++
++	if (match) { /* pos == i */
++		*out = *match;
++		return 0;
++	} else {
++		return 1;
++	}
++}
++#endif
+diff --git a/arch/x86/mm/pat_rbtree.c b/arch/x86/mm/pat_rbtree.c
+deleted file mode 100644
+index 47a1bf3..0000000
+--- a/arch/x86/mm/pat_rbtree.c
++++ /dev/null
+@@ -1,185 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0
+-/*
+- * Handle caching attributes in page tables (PAT)
+- *
+- * Authors: Venkatesh Pallipadi <venkatesh.pallipadi@intel.com>
+- *          Suresh B Siddha <suresh.b.siddha@intel.com>
+- *
+- * Interval tree used to store the PAT memory type reservations.
+- */
+-
+-#include <linux/seq_file.h>
+-#include <linux/debugfs.h>
+-#include <linux/kernel.h>
+-#include <linux/interval_tree_generic.h>
+-#include <linux/sched.h>
+-#include <linux/gfp.h>
+-
+-#include <asm/pgtable.h>
+-#include <asm/pat.h>
+-
+-#include "pat_internal.h"
+-
+-/*
+- * The memtype tree keeps track of memory type for specific
+- * physical memory areas. Without proper tracking, conflicting memory
+- * types in different mappings can cause CPU cache corruption.
+- *
+- * The tree is an interval tree (augmented rbtree) with tree ordered
+- * on starting address. Tree can contain multiple entries for
+- * different regions which overlap. All the aliases have the same
+- * cache attributes of course.
+- *
+- * memtype_lock protects the rbtree.
+- */
+-static inline u64 memtype_interval_start(struct memtype *memtype)
+-{
+-	return memtype->start;
+-}
+-
+-static inline u64 memtype_interval_end(struct memtype *memtype)
+-{
+-	return memtype->end - 1;
+-}
+-INTERVAL_TREE_DEFINE(struct memtype, rb, u64, subtree_max_end,
+-		     memtype_interval_start, memtype_interval_end,
+-		     static, memtype_interval)
+-
+-static struct rb_root_cached memtype_rbroot = RB_ROOT_CACHED;
+-
+-enum {
+-	MEMTYPE_EXACT_MATCH	= 0,
+-	MEMTYPE_END_MATCH	= 1
+-};
+-
+-static struct memtype *memtype_match(u64 start, u64 end, int match_type)
+-{
+-	struct memtype *match;
+-
+-	match = memtype_interval_iter_first(&memtype_rbroot, start, end);
+-	while (match != NULL && match->start < end) {
+-		if ((match_type == MEMTYPE_EXACT_MATCH) &&
+-		    (match->start == start) && (match->end == end))
+-			return match;
+-
+-		if ((match_type == MEMTYPE_END_MATCH) &&
+-		    (match->start < start) && (match->end == end))
+-			return match;
+-
+-		match = memtype_interval_iter_next(match, start, end);
+-	}
+-
+-	return NULL; /* Returns NULL if there is no match */
+-}
+-
+-static int memtype_check_conflict(u64 start, u64 end,
+-				  enum page_cache_mode reqtype,
+-				  enum page_cache_mode *newtype)
+-{
+-	struct memtype *match;
+-	enum page_cache_mode found_type = reqtype;
+-
+-	match = memtype_interval_iter_first(&memtype_rbroot, start, end);
+-	if (match == NULL)
+-		goto success;
+-
+-	if (match->type != found_type && newtype == NULL)
+-		goto failure;
+-
+-	dprintk("Overlap at 0x%Lx-0x%Lx\n", match->start, match->end);
+-	found_type = match->type;
+-
+-	match = memtype_interval_iter_next(match, start, end);
+-	while (match) {
+-		if (match->type != found_type)
+-			goto failure;
+-
+-		match = memtype_interval_iter_next(match, start, end);
+-	}
+-success:
+-	if (newtype)
+-		*newtype = found_type;
+-
+-	return 0;
+-
+-failure:
+-	pr_info("x86/PAT: %s:%d conflicting memory types %Lx-%Lx %s<->%s\n",
+-		current->comm, current->pid, start, end,
+-		cattr_name(found_type), cattr_name(match->type));
+-	return -EBUSY;
+-}
+-
+-int memtype_check_insert(struct memtype *new,
+-			 enum page_cache_mode *ret_type)
+-{
+-	int err = 0;
+-
+-	err = memtype_check_conflict(new->start, new->end, new->type, ret_type);
+-	if (err)
+-		return err;
+-
+-	if (ret_type)
+-		new->type = *ret_type;
+-
+-	memtype_interval_insert(new, &memtype_rbroot);
+-	return 0;
+-}
+-
+-struct memtype *memtype_erase(u64 start, u64 end)
+-{
+-	struct memtype *data;
+-
+-	/*
+-	 * Since the memtype_rbroot tree allows overlapping ranges,
+-	 * memtype_erase() checks with EXACT_MATCH first, i.e. free
+-	 * a whole node for the munmap case.  If no such entry is found,
+-	 * it then checks with END_MATCH, i.e. shrink the size of a node
+-	 * from the end for the mremap case.
+-	 */
+-	data = memtype_match(start, end, MEMTYPE_EXACT_MATCH);
+-	if (!data) {
+-		data = memtype_match(start, end, MEMTYPE_END_MATCH);
+-		if (!data)
+-			return ERR_PTR(-EINVAL);
+-	}
+-
+-	if (data->start == start) {
+-		/* munmap: erase this node */
+-		memtype_interval_remove(data, &memtype_rbroot);
+-	} else {
+-		/* mremap: update the end value of this node */
+-		memtype_interval_remove(data, &memtype_rbroot);
+-		data->end = start;
+-		memtype_interval_insert(data, &memtype_rbroot);
+-		return NULL;
+-	}
+-
+-	return data;
+-}
+-
+-struct memtype *memtype_lookup(u64 addr)
+-{
+-	return memtype_interval_iter_first(&memtype_rbroot, addr,
+-					   addr + PAGE_SIZE);
+-}
+-
+-#if defined(CONFIG_DEBUG_FS)
+-int memtype_copy_nth_element(struct memtype *out, loff_t pos)
+-{
+-	struct memtype *match;
+-	int i = 1;
+-
+-	match = memtype_interval_iter_first(&memtype_rbroot, 0, ULONG_MAX);
+-	while (match && pos != i) {
+-		match = memtype_interval_iter_next(match, 0, ULONG_MAX);
+-		i++;
+-	}
+-
+-	if (match) { /* pos == i */
+-		*out = *match;
+-		return 0;
+-	} else {
+-		return 1;
+-	}
+-}
+-#endif
