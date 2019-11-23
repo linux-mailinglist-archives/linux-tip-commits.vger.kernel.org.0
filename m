@@ -2,37 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 03D14107DA0
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 23 Nov 2019 09:16:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CE580107D7D
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 23 Nov 2019 09:15:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726825AbfKWIPM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 23 Nov 2019 03:15:12 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:36266 "EHLO
+        id S1726765AbfKWIPL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 23 Nov 2019 03:15:11 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:36258 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726747AbfKWIPM (ORCPT
+        with ESMTP id S1726721AbfKWIPL (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 23 Nov 2019 03:15:12 -0500
+        Sat, 23 Nov 2019 03:15:11 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iYQZO-0002WS-Gd; Sat, 23 Nov 2019 09:15:06 +0100
+        id 1iYQZI-0002WA-GZ; Sat, 23 Nov 2019 09:15:00 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 01BD61C1ACF;
-        Sat, 23 Nov 2019 09:15:01 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 381B81C1AD0;
+        Sat, 23 Nov 2019 09:15:00 +0100 (CET)
 Date:   Sat, 23 Nov 2019 08:15:00 -0000
-From:   "tip-bot2 for Adrian Hunter" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Sudip Mukherjee" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf session: Add facility to peek at all events
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Jiri Olsa <jolsa@redhat.com>,
+Subject: [tip: perf/core] libtraceevent: Fix header installation
+Cc:     Sudipm Mukherjee <sudipm.mukherjee@gmail.com>,
+        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
+        linux-trace-devel@vger.kernel.org,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191115124225.5247-11-adrian.hunter@intel.com>
-References: <20191115124225.5247-11-adrian.hunter@intel.com>
+In-Reply-To: <20191114133719.309-1-sudipm.mukherjee@gmail.com>
+References: <20191114133719.309-1-sudipm.mukherjee@gmail.com>
 MIME-Version: 1.0
-Message-ID: <157449690093.21853.12380294088272415245.tip-bot2@tip-bot2>
+Message-ID: <157449690015.21853.2630112930404018807.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,81 +49,53 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     103ed40e4bfa6986d80983b3e67be9d2f61fc9ee
-Gitweb:        https://git.kernel.org/tip/103ed40e4bfa6986d80983b3e67be9d2f61fc9ee
-Author:        Adrian Hunter <adrian.hunter@intel.com>
-AuthorDate:    Fri, 15 Nov 2019 14:42:20 +02:00
+Commit-ID:     68401a1799fa14cb72c2a129bbefdacd44279772
+Gitweb:        https://git.kernel.org/tip/68401a1799fa14cb72c2a129bbefdacd44279772
+Author:        Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+AuthorDate:    Thu, 14 Nov 2019 13:37:19 
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Fri, 22 Nov 2019 10:48:13 -03:00
+CommitterDate: Fri, 22 Nov 2019 10:48:14 -03:00
 
-perf session: Add facility to peek at all events
+libtraceevent: Fix header installation
 
-AUX area samples are not limited in how far back in time the sample
-could start. Consequently samples must be queued in advance to allow for
-time-ordered processing. To achieve that, add
-perf_session__peek_events() that walks and peeks at all the events.
+When we passed some location in DESTDIR, install_headers called
+do_install with DESTDIR as part of the second argument.
 
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Jiri Olsa <jolsa@redhat.com>
-Link: http://lore.kernel.org/lkml/20191115124225.5247-11-adrian.hunter@intel.com
+But do_install is again using '$(DESTDIR_SQ)$2', so as a result the
+headers were installed in a location $DESTDIR/$DESTDIR.
+
+In my testing I passed DESTDIR=/home/sudip/test and the headers were
+installed in: /home/sudip/test/home/sudip/test/usr/include/traceevent.
+
+Lets remove DESTDIR from the second argument of do_install so that the
+headers are installed in the correct location.
+
+Signed-off-by: Sudipm Mukherjee <sudipm.mukherjee@gmail.com>
+Reviewed-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
+Cc: Sudipm Mukherjee <sudipm.mukherjee@gmail.com>
+Cc: linux-trace-devel@vger.kernel.org
+Link: http://lore.kernel.org/lkml/20191114133719.309-1-sudipm.mukherjee@gmail.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/session.c | 28 ++++++++++++++++++++++++++++
- tools/perf/util/session.h |  5 +++++
- 2 files changed, 33 insertions(+)
+ tools/lib/traceevent/Makefile | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/tools/perf/util/session.c b/tools/perf/util/session.c
-index ab4dae1..d0d7d25 100644
---- a/tools/perf/util/session.c
-+++ b/tools/perf/util/session.c
-@@ -1659,6 +1659,34 @@ out_parse_sample:
- 	return 0;
- }
+diff --git a/tools/lib/traceevent/Makefile b/tools/lib/traceevent/Makefile
+index 5315f37..cbb429f 100644
+--- a/tools/lib/traceevent/Makefile
++++ b/tools/lib/traceevent/Makefile
+@@ -232,10 +232,10 @@ install_pkgconfig:
  
-+int perf_session__peek_events(struct perf_session *session, u64 offset,
-+			      u64 size, peek_events_cb_t cb, void *data)
-+{
-+	u64 max_offset = offset + size;
-+	char buf[PERF_SAMPLE_MAX_SIZE];
-+	union perf_event *event;
-+	int err;
-+
-+	do {
-+		err = perf_session__peek_event(session, offset, buf,
-+					       PERF_SAMPLE_MAX_SIZE, &event,
-+					       NULL);
-+		if (err)
-+			return err;
-+
-+		err = cb(session, event, offset, data);
-+		if (err)
-+			return err;
-+
-+		offset += event->header.size;
-+		if (event->header.type == PERF_RECORD_AUXTRACE)
-+			offset += event->auxtrace.size;
-+
-+	} while (offset < max_offset);
-+
-+	return err;
-+}
-+
- static s64 perf_session__process_event(struct perf_session *session,
- 				       union perf_event *event, u64 file_offset)
- {
-diff --git a/tools/perf/util/session.h b/tools/perf/util/session.h
-index 8456e1d..f764801 100644
---- a/tools/perf/util/session.h
-+++ b/tools/perf/util/session.h
-@@ -64,6 +64,11 @@ int perf_session__peek_event(struct perf_session *session, off_t file_offset,
- 			     void *buf, size_t buf_sz,
- 			     union perf_event **event_ptr,
- 			     struct perf_sample *sample);
-+typedef int (*peek_events_cb_t)(struct perf_session *session,
-+				union perf_event *event, u64 offset,
-+				void *data);
-+int perf_session__peek_events(struct perf_session *session, u64 offset,
-+			      u64 size, peek_events_cb_t cb, void *data);
+ install_headers:
+ 	$(call QUIET_INSTALL, headers) \
+-		$(call do_install,event-parse.h,$(DESTDIR)$(includedir_SQ),644); \
+-		$(call do_install,event-utils.h,$(DESTDIR)$(includedir_SQ),644); \
+-		$(call do_install,trace-seq.h,$(DESTDIR)$(includedir_SQ),644); \
+-		$(call do_install,kbuffer.h,$(DESTDIR)$(includedir_SQ),644)
++		$(call do_install,event-parse.h,$(includedir_SQ),644); \
++		$(call do_install,event-utils.h,$(includedir_SQ),644); \
++		$(call do_install,trace-seq.h,$(includedir_SQ),644); \
++		$(call do_install,kbuffer.h,$(includedir_SQ),644)
  
- int perf_session__process_events(struct perf_session *session);
+ install: install_lib
  
