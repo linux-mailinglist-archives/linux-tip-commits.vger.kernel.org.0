@@ -2,38 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E45E107D96
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 23 Nov 2019 09:16:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 58160107DA3
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 23 Nov 2019 09:16:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726760AbfKWIPx (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 23 Nov 2019 03:15:53 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:36309 "EHLO
+        id S1727315AbfKWIQM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 23 Nov 2019 03:16:12 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:36275 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726976AbfKWIPQ (ORCPT
+        with ESMTP id S1726757AbfKWIPN (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 23 Nov 2019 03:15:16 -0500
+        Sat, 23 Nov 2019 03:15:13 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iYQZI-0002W9-L9; Sat, 23 Nov 2019 09:15:00 +0100
+        id 1iYQZQ-0002Yz-15; Sat, 23 Nov 2019 09:15:08 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 17DD91C1ACF;
-        Sat, 23 Nov 2019 09:15:00 +0100 (CET)
-Date:   Sat, 23 Nov 2019 08:15:00 -0000
-From:   "tip-bot2 for Hewenliang" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 595E51C19FD;
+        Sat, 23 Nov 2019 09:15:01 +0100 (CET)
+Date:   Sat, 23 Nov 2019 08:15:01 -0000
+From:   "tip-bot2 for Adrian Hunter" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] libtraceevent: Fix memory leakage in copy_filter_type
-Cc:     Hewenliang <hewenliang4@huawei.com>,
-        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
-        Tzvetomir Stoyanov <tstoyanov@vmware.com>,
+Subject: [tip: perf/core] perf inject: Cut AUX area samples
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        Jiri Olsa <jolsa@redhat.com>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191119014415.57210-1-hewenliang4@huawei.com>
-References: <20191119014415.57210-1-hewenliang4@huawei.com>
+In-Reply-To: <20191115124225.5247-9-adrian.hunter@intel.com>
+References: <20191115124225.5247-9-adrian.hunter@intel.com>
 MIME-Version: 1.0
-Message-ID: <157449690001.21853.5746866915759646419.tip-bot2@tip-bot2>
+Message-ID: <157449690128.21853.4094754237556646489.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,54 +48,84 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     10992af6bf46a2048ad964985a5b77464e5563b1
-Gitweb:        https://git.kernel.org/tip/10992af6bf46a2048ad964985a5b77464e5563b1
-Author:        Hewenliang <hewenliang4@huawei.com>
-AuthorDate:    Mon, 18 Nov 2019 20:44:15 -05:00
+Commit-ID:     ba2675bf15fc3ec1d54b9bf938cf5b28392f79fb
+Gitweb:        https://git.kernel.org/tip/ba2675bf15fc3ec1d54b9bf938cf5b28392f79fb
+Author:        Adrian Hunter <adrian.hunter@intel.com>
+AuthorDate:    Fri, 15 Nov 2019 14:42:18 +02:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Fri, 22 Nov 2019 10:48:14 -03:00
+CommitterDate: Fri, 22 Nov 2019 10:48:13 -03:00
 
-libtraceevent: Fix memory leakage in copy_filter_type
+perf inject: Cut AUX area samples
 
-It is necessary to free the memory that we have allocated when error occurs.
+After decoding AUX area samples, the AUX area data is no longer needed
+(having been replaced by synthesized events) so cut it out.
 
-Fixes: ef3072cd1d5c ("tools lib traceevent: Get rid of die in add_filter_type()")
-Signed-off-by: Hewenliang <hewenliang4@huawei.com>
-Reviewed-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
-Cc: Tzvetomir Stoyanov <tstoyanov@vmware.com>
-Link: http://lore.kernel.org/lkml/20191119014415.57210-1-hewenliang4@huawei.com
-Signed-off-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Jiri Olsa <jolsa@redhat.com>
+Link: http://lore.kernel.org/lkml/20191115124225.5247-9-adrian.hunter@intel.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/lib/traceevent/parse-filter.c |  9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ tools/perf/builtin-inject.c | 29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
-diff --git a/tools/lib/traceevent/parse-filter.c b/tools/lib/traceevent/parse-filter.c
-index 552592d..f3cbf86 100644
---- a/tools/lib/traceevent/parse-filter.c
-+++ b/tools/lib/traceevent/parse-filter.c
-@@ -1473,8 +1473,10 @@ static int copy_filter_type(struct tep_event_filter *filter,
- 	if (strcmp(str, "TRUE") == 0 || strcmp(str, "FALSE") == 0) {
- 		/* Add trivial event */
- 		arg = allocate_arg();
--		if (arg == NULL)
-+		if (arg == NULL) {
-+			free(str);
- 			return -1;
-+		}
+diff --git a/tools/perf/builtin-inject.c b/tools/perf/builtin-inject.c
+index 1e5d283..9664a72 100644
+--- a/tools/perf/builtin-inject.c
++++ b/tools/perf/builtin-inject.c
+@@ -45,6 +45,7 @@ struct perf_inject {
+ 	u64			aux_id;
+ 	struct list_head	samples;
+ 	struct itrace_synth_opts itrace_synth_opts;
++	char			event_copy[PERF_SAMPLE_MAX_SIZE];
+ };
  
- 		arg->type = TEP_FILTER_ARG_BOOLEAN;
- 		if (strcmp(str, "TRUE") == 0)
-@@ -1483,8 +1485,11 @@ static int copy_filter_type(struct tep_event_filter *filter,
- 			arg->boolean.value = 0;
+ struct event_entry {
+@@ -214,6 +215,28 @@ static int perf_event__drop_aux(struct perf_tool *tool,
+ 	return 0;
+ }
  
- 		filter_type = add_filter_type(filter, event->id);
--		if (filter_type == NULL)
-+		if (filter_type == NULL) {
-+			free(str);
-+			free_arg(arg);
- 			return -1;
-+		}
++static union perf_event *
++perf_inject__cut_auxtrace_sample(struct perf_inject *inject,
++				 union perf_event *event,
++				 struct perf_sample *sample)
++{
++	size_t sz1 = sample->aux_sample.data - (void *)event;
++	size_t sz2 = event->header.size - sample->aux_sample.size - sz1;
++	union perf_event *ev = (union perf_event *)inject->event_copy;
++
++	if (sz1 > event->header.size || sz2 > event->header.size ||
++	    sz1 + sz2 > event->header.size ||
++	    sz1 < sizeof(struct perf_event_header) + sizeof(u64))
++		return event;
++
++	memcpy(ev, event, sz1);
++	memcpy((void *)ev + sz1, (void *)event + event->header.size - sz2, sz2);
++	ev->header.size = sz1 + sz2;
++	((u64 *)((void *)ev + sz1))[-1] = 0;
++
++	return ev;
++}
++
+ typedef int (*inject_handler)(struct perf_tool *tool,
+ 			      union perf_event *event,
+ 			      struct perf_sample *sample,
+@@ -226,6 +249,9 @@ static int perf_event__repipe_sample(struct perf_tool *tool,
+ 				     struct evsel *evsel,
+ 				     struct machine *machine)
+ {
++	struct perf_inject *inject = container_of(tool, struct perf_inject,
++						  tool);
++
+ 	if (evsel && evsel->handler) {
+ 		inject_handler f = evsel->handler;
+ 		return f(tool, event, sample, evsel, machine);
+@@ -233,6 +259,9 @@ static int perf_event__repipe_sample(struct perf_tool *tool,
  
- 		filter_type->filter = arg;
+ 	build_id__mark_dso_hit(tool, event, sample, evsel, machine);
+ 
++	if (inject->itrace_synth_opts.set && sample->aux_sample.size)
++		event = perf_inject__cut_auxtrace_sample(inject, event, sample);
++
+ 	return perf_event__repipe_synth(tool, event);
+ }
  
