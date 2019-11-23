@@ -2,38 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F9C4107D94
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 23 Nov 2019 09:16:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 68493107D80
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 23 Nov 2019 09:15:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727207AbfKWIPi (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 23 Nov 2019 03:15:38 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:36321 "EHLO
+        id S1727106AbfKWIPT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 23 Nov 2019 03:15:19 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:36327 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727046AbfKWIPS (ORCPT
+        with ESMTP id S1727095AbfKWIPS (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Sat, 23 Nov 2019 03:15:18 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iYQZT-0002d9-Az; Sat, 23 Nov 2019 09:15:11 +0100
+        id 1iYQZU-0002eQ-J0; Sat, 23 Nov 2019 09:15:13 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 2EF7D1C1ADB;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 7ECE51C1ADD;
         Sat, 23 Nov 2019 09:15:03 +0100 (CET)
 Date:   Sat, 23 Nov 2019 08:15:03 -0000
 From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf dsos: Remove unused dsos__find() method
+Subject: [tip: perf/core] perf map: Pass a dso_id to map__new()
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         Andi Kleen <ak@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>,
         Namhyung Kim <namhyung@kernel.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <tip-teqz0eqcw43mnt7i3me44esw@git.kernel.org>
-References: <tip-teqz0eqcw43mnt7i3me44esw@git.kernel.org>
+In-Reply-To: <tip-gp5s1xgxacurmih5d1l94ymy@git.kernel.org>
+References: <tip-gp5s1xgxacurmih5d1l94ymy@git.kernel.org>
 MIME-Version: 1.0
-Message-ID: <157449690310.21853.9705711021788218829.tip-bot2@tip-bot2>
+Message-ID: <157449690340.21853.17517616578399359386.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,57 +49,112 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     1f74b100c9d9406fa12b22675c6b2111e5f60e9c
-Gitweb:        https://git.kernel.org/tip/1f74b100c9d9406fa12b22675c6b2111e5f60e9c
+Commit-ID:     4a7380a52ec90fbb1565dd638ee7f5b6e709f7fb
+Gitweb:        https://git.kernel.org/tip/4a7380a52ec90fbb1565dd638ee7f5b6e709f7fb
 Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Tue, 19 Nov 2019 17:51:34 -03:00
+AuthorDate:    Tue, 19 Nov 2019 12:40:29 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Tue, 19 Nov 2019 17:51:34 -03:00
+CommitterDate: Tue, 19 Nov 2019 15:09:26 -03:00
 
-perf dsos: Remove unused dsos__find() method
+perf map: Pass a dso_id to map__new()
 
-Not used anywhere, nuke it.
+Instead of the 4 fields, a step in the direction of moving this to
+struct dso.
 
 Cc: Adrian Hunter <adrian.hunter@intel.com>
 Cc: Andi Kleen <ak@linux.intel.com>
 Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lkml.kernel.org/n/tip-teqz0eqcw43mnt7i3me44esw@git.kernel.org
+Link: https://lkml.kernel.org/n/tip-gp5s1xgxacurmih5d1l94ymy@git.kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/dsos.c |  9 ---------
- tools/perf/util/dsos.h |  1 -
- 2 files changed, 10 deletions(-)
+ tools/perf/util/machine.c | 15 ++++++++-------
+ tools/perf/util/map.c     | 13 +++++++------
+ tools/perf/util/map.h     |  3 +--
+ 3 files changed, 16 insertions(+), 15 deletions(-)
 
-diff --git a/tools/perf/util/dsos.c b/tools/perf/util/dsos.c
-index ecf8d73..1d38d6a 100644
---- a/tools/perf/util/dsos.c
-+++ b/tools/perf/util/dsos.c
-@@ -159,15 +159,6 @@ struct dso *__dsos__find(struct dsos *dsos, const char *name, bool cmp_short)
- 	return __dsos__findnew_by_longname(&dsos->root, name);
+diff --git a/tools/perf/util/machine.c b/tools/perf/util/machine.c
+index 71ee078..41b4263 100644
+--- a/tools/perf/util/machine.c
++++ b/tools/perf/util/machine.c
+@@ -1651,6 +1651,12 @@ int machine__process_mmap2_event(struct machine *machine,
+ {
+ 	struct thread *thread;
+ 	struct map *map;
++	struct dso_id dso_id = {
++		.maj = event->mmap2.maj,
++		.min = event->mmap2.min,
++		.ino = event->mmap2.ino,
++		.ino_generation = event->mmap2.ino_generation,
++	};
+ 	int ret = 0;
+ 
+ 	if (dump_trace)
+@@ -1671,10 +1677,7 @@ int machine__process_mmap2_event(struct machine *machine,
+ 
+ 	map = map__new(machine, event->mmap2.start,
+ 			event->mmap2.len, event->mmap2.pgoff,
+-			event->mmap2.maj,
+-			event->mmap2.min, event->mmap2.ino,
+-			event->mmap2.ino_generation,
+-			event->mmap2.prot,
++			&dso_id, event->mmap2.prot,
+ 			event->mmap2.flags,
+ 			event->mmap2.filename, thread);
+ 
+@@ -1727,9 +1730,7 @@ int machine__process_mmap_event(struct machine *machine, union perf_event *event
+ 
+ 	map = map__new(machine, event->mmap.start,
+ 			event->mmap.len, event->mmap.pgoff,
+-			0, 0, 0, 0, prot, 0,
+-			event->mmap.filename,
+-			thread);
++			NULL, prot, 0, event->mmap.filename, thread);
+ 
+ 	if (map == NULL)
+ 		goto out_problem_map;
+diff --git a/tools/perf/util/map.c b/tools/perf/util/map.c
+index 4f50b1b..812d663 100644
+--- a/tools/perf/util/map.c
++++ b/tools/perf/util/map.c
+@@ -144,8 +144,8 @@ void map__init(struct map *map, u64 start, u64 end, u64 pgoff, struct dso *dso)
  }
  
--struct dso *dsos__find(struct dsos *dsos, const char *name, bool cmp_short)
--{
--	struct dso *dso;
--	down_read(&dsos->lock);
--	dso = __dsos__find(dsos, name, cmp_short);
--	up_read(&dsos->lock);
--	return dso;
--}
--
- static void dso__set_basename(struct dso *dso)
+ struct map *map__new(struct machine *machine, u64 start, u64 len,
+-		     u64 pgoff, u32 d_maj, u32 d_min, u64 ino,
+-		     u64 ino_gen, u32 prot, u32 flags, char *filename,
++		     u64 pgoff, struct dso_id *id,
++		     u32 prot, u32 flags, char *filename,
+ 		     struct thread *thread)
  {
- 	char *base, *lname;
-diff --git a/tools/perf/util/dsos.h b/tools/perf/util/dsos.h
-index 32f1fbe..fd7ba51 100644
---- a/tools/perf/util/dsos.h
-+++ b/tools/perf/util/dsos.h
-@@ -24,7 +24,6 @@ void __dsos__add(struct dsos *dsos, struct dso *dso);
- void dsos__add(struct dsos *dsos, struct dso *dso);
- struct dso *__dsos__addnew(struct dsos *dsos, const char *name);
- struct dso *__dsos__find(struct dsos *dsos, const char *name, bool cmp_short);
--struct dso *dsos__find(struct dsos *dsos, const char *name, bool cmp_short);
- struct dso *__dsos__findnew(struct dsos *dsos, const char *name);
- struct dso *dsos__findnew(struct dsos *dsos, const char *name);
+ 	struct map *map = malloc(sizeof(*map));
+@@ -162,10 +162,11 @@ struct map *map__new(struct machine *machine, u64 start, u64 len,
+ 		vdso = is_vdso_map(filename);
+ 		no_dso = is_no_dso_memory(filename);
  
+-		map->dso_id.maj = d_maj;
+-		map->dso_id.min = d_min;
+-		map->dso_id.ino = ino;
+-		map->dso_id.ino_generation = ino_gen;
++		if (id)
++			map->dso_id = *id;
++		else
++			map->dso_id.min = map->dso_id.ino = map->dso_id.ino_generation = 0;
++
+ 		map->prot = prot;
+ 		map->flags = flags;
+ 		nsi = nsinfo__get(thread->nsinfo);
+diff --git a/tools/perf/util/map.h b/tools/perf/util/map.h
+index 70d87dc..f962eb9 100644
+--- a/tools/perf/util/map.h
++++ b/tools/perf/util/map.h
+@@ -117,8 +117,7 @@ struct thread;
+ void map__init(struct map *map,
+ 	       u64 start, u64 end, u64 pgoff, struct dso *dso);
+ struct map *map__new(struct machine *machine, u64 start, u64 len,
+-		     u64 pgoff, u32 d_maj, u32 d_min, u64 ino,
+-		     u64 ino_gen, u32 prot, u32 flags,
++		     u64 pgoff, struct dso_id *id, u32 prot, u32 flags,
+ 		     char *filename, struct thread *thread);
+ struct map *map__new2(u64 start, struct dso *dso);
+ void map__delete(struct map *map);
