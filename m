@@ -2,38 +2,42 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 61019107DAC
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 23 Nov 2019 09:16:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C8CCC107D86
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 23 Nov 2019 09:15:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727394AbfKWIQd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 23 Nov 2019 03:16:33 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:36262 "EHLO
+        id S1727111AbfKWIPc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 23 Nov 2019 03:15:32 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:36344 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726735AbfKWIPM (ORCPT
+        with ESMTP id S1727117AbfKWIPX (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 23 Nov 2019 03:15:12 -0500
+        Sat, 23 Nov 2019 03:15:23 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iYQZP-0002ac-6K; Sat, 23 Nov 2019 09:15:07 +0100
+        id 1iYQZV-0002bt-Nm; Sat, 23 Nov 2019 09:15:13 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 16A101C1AD6;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C873A1C1ACC;
         Sat, 23 Nov 2019 09:15:02 +0100 (CET)
 Date:   Sat, 23 Nov 2019 08:15:02 -0000
-From:   "tip-bot2 for Adrian Hunter" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Alexey Budankov" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf record: Add a function to test for kernel
- support for AUX area sampling
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Jiri Olsa <jolsa@redhat.com>,
+Subject: [tip: perf/core] perf session: Fix decompression of
+ PERF_RECORD_COMPRESSED records
+Cc:     Jiri Olsa <jolsa@kernel.org>,
+        Alexey Budankov <alexey.budankov@linux.intel.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Andi Kleen <ak@linux.intel.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191115124225.5247-4-adrian.hunter@intel.com>
-References: <20191115124225.5247-4-adrian.hunter@intel.com>
+In-Reply-To: <cf782c34-f3f8-2f9f-d6ab-145cee0d5322@linux.intel.com>
+References: <cf782c34-f3f8-2f9f-d6ab-145cee0d5322@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <157449690202.21853.14789264761246818665.tip-bot2@tip-bot2>
+Message-ID: <157449690272.21853.2015069761475695078.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,103 +53,143 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     9bca1a4ef5034f0a82861ac0375eb0272c5ce04e
-Gitweb:        https://git.kernel.org/tip/9bca1a4ef5034f0a82861ac0375eb0272c5ce04e
-Author:        Adrian Hunter <adrian.hunter@intel.com>
-AuthorDate:    Fri, 15 Nov 2019 14:42:13 +02:00
+Commit-ID:     bb1835a3b86c73aa534ef6430ad40223728dfbc0
+Gitweb:        https://git.kernel.org/tip/bb1835a3b86c73aa534ef6430ad40223728dfbc0
+Author:        Alexey Budankov <alexey.budankov@linux.intel.com>
+AuthorDate:    Mon, 18 Nov 2019 17:21:03 +03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Fri, 22 Nov 2019 10:43:24 -03:00
+CommitterDate: Tue, 19 Nov 2019 19:31:55 -03:00
 
-perf record: Add a function to test for kernel support for AUX area sampling
+perf session: Fix decompression of PERF_RECORD_COMPRESSED records
 
-Architectures are expected to know if AUX area sampling is supported by
-the hardware. Add a function perf_can_aux_sample() which will determine
-whether the kernel supports it.
+Avoid termination of trace loading in case the last record in the
+decompressed buffer partly resides in the following mmaped
+PERF_RECORD_COMPRESSED record.
 
-Committer notes:
+In this case NULL value returned by fetch_mmaped_event() means to
+proceed to the next mmaped record then decompress it and load compressed
+events.
 
-I reported that this message was taking place on a kernel without the
-required bits:
+The issue can be reproduced like this:
 
-  # perf record --aux-sample -e '{intel_pt//u,branch-misses:u}'
+  $ perf record -z -- some_long_running_workload
+  $ perf report --stdio -vv
+  decomp (B): 44519 to 163000
+  decomp (B): 48119 to 174800
+  decomp (B): 65527 to 131072
+  fetch_mmaped_event: head=0x1ffe0 event->header_size=0x28, mmap_size=0x20000: fuzzed perf.data?
   Error:
-  The sys_perf_event_open() syscall returned with 7 (Argument list too long) for event (branch-misses:u).
-  /bin/dmesg | grep -i perf may provide additional information.
+  failed to process sample
+  ...
 
-Adrian sent a patch addressing it, with this explanation:
+Testing:
 
- ----
-  perf_can_aux_sample_size() always returned true because it did not pass
-  the attribute size to sys_perf_event_open, nor correctly check the
-  return value and errno.
- ----
+  71: Zstd perf.data compression/decompression              : Ok
 
-After applying it I get, later in the series, when --aux-sample is
-added:
+  $ tools/perf/perf report -vv --stdio
+  decomp (B): 59593 to 262160
+  decomp (B): 4438 to 16512
+  decomp (B): 285 to 880
+  Looking at the vmlinux_path (8 entries long)
+  Using vmlinux for symbols
+  decomp (B): 57474 to 261248
+  prefetch_event: head=0x3fc78 event->header_size=0x28, mmap_size=0x3fc80: fuzzed or compressed perf.data?
+  decomp (B): 25 to 32
+  decomp (B): 52 to 120
+  ...
 
-  # perf record --aux-sample -e '{intel_pt//u,branch-misses:u}'
-  AUX area sampling is not supported by kernel
-
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Jiri Olsa <jolsa@redhat.com>
-Link: http://lore.kernel.org/lkml/20191115124225.5247-4-adrian.hunter@intel.com
+Fixes: 57fc032ad643 ("perf session: Avoid infinite loop when seeing invalid header.size")
+Link: https://marc.info/?l=linux-kernel&m=156580812427554&w=2
+Co-developed-by: Jiri Olsa <jolsa@kernel.org>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Signed-off-by: Alexey Budankov <alexey.budankov@linux.intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Andi Kleen <ak@linux.intel.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: http://lore.kernel.org/lkml/cf782c34-f3f8-2f9f-d6ab-145cee0d5322@linux.intel.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/evlist.h |  1 +
- tools/perf/util/record.c | 31 +++++++++++++++++++++++++++++++
- 2 files changed, 32 insertions(+)
+ tools/perf/util/session.c | 44 +++++++++++++++++++++++---------------
+ 1 file changed, 27 insertions(+), 17 deletions(-)
 
-diff --git a/tools/perf/util/evlist.h b/tools/perf/util/evlist.h
-index 1305140..3655b9e 100644
---- a/tools/perf/util/evlist.h
-+++ b/tools/perf/util/evlist.h
-@@ -176,6 +176,7 @@ void perf_evlist__set_id_pos(struct evlist *evlist);
- bool perf_can_sample_identifier(void);
- bool perf_can_record_switch_events(void);
- bool perf_can_record_cpu_wide(void);
-+bool perf_can_aux_sample(void);
- void perf_evlist__config(struct evlist *evlist, struct record_opts *opts,
- 			 struct callchain_param *callchain);
- int record_opts__config(struct record_opts *opts);
-diff --git a/tools/perf/util/record.c b/tools/perf/util/record.c
-index 8579505..7def661 100644
---- a/tools/perf/util/record.c
-+++ b/tools/perf/util/record.c
-@@ -136,6 +136,37 @@ bool perf_can_record_cpu_wide(void)
- 	return true;
+diff --git a/tools/perf/util/session.c b/tools/perf/util/session.c
+index f07b8ec..8454a65 100644
+--- a/tools/perf/util/session.c
++++ b/tools/perf/util/session.c
+@@ -1958,8 +1958,8 @@ out_err:
  }
  
-+/*
-+ * Architectures are expected to know if AUX area sampling is supported by the
-+ * hardware. Here we check for kernel support.
-+ */
-+bool perf_can_aux_sample(void)
-+{
-+	struct perf_event_attr attr = {
-+		.size = sizeof(struct perf_event_attr),
-+		.exclude_kernel = 1,
-+		/*
-+		 * Non-zero value causes the kernel to calculate the effective
-+		 * attribute size up to that byte.
-+		 */
-+		.aux_sample_size = 1,
-+	};
-+	int fd;
+ static union perf_event *
+-fetch_mmaped_event(struct perf_session *session,
+-		   u64 head, size_t mmap_size, char *buf)
++prefetch_event(char *buf, u64 head, size_t mmap_size,
++	       bool needs_swap, union perf_event *error)
+ {
+ 	union perf_event *event;
+ 
+@@ -1971,20 +1971,32 @@ fetch_mmaped_event(struct perf_session *session,
+ 		return NULL;
+ 
+ 	event = (union perf_event *)(buf + head);
++	if (needs_swap)
++		perf_event_header__bswap(&event->header);
+ 
+-	if (session->header.needs_swap)
++	if (head + event->header.size <= mmap_size)
++		return event;
 +
-+	fd = sys_perf_event_open(&attr, -1, 0, -1, 0);
-+	/*
-+	 * If the kernel attribute is big enough to contain aux_sample_size
-+	 * then we assume that it is supported. We are relying on the kernel to
-+	 * validate the attribute size before anything else that could be wrong.
-+	 */
-+	if (fd < 0 && errno == E2BIG)
-+		return false;
-+	if (fd >= 0)
-+		close(fd);
-+
-+	return true;
++	/* We're not fetching the event so swap back again */
++	if (needs_swap)
+ 		perf_event_header__bswap(&event->header);
+ 
+-	if (head + event->header.size > mmap_size) {
+-		/* We're not fetching the event so swap back again */
+-		if (session->header.needs_swap)
+-			perf_event_header__bswap(&event->header);
+-		pr_debug("%s: head=%#" PRIx64 " event->header_size=%#x, mmap_size=%#zx: fuzzed perf.data?\n",
+-			 __func__, head, event->header.size, mmap_size);
+-		return ERR_PTR(-EINVAL);
+-	}
++	pr_debug("%s: head=%#" PRIx64 " event->header_size=%#x, mmap_size=%#zx:"
++		 " fuzzed or compressed perf.data?\n",__func__, head, event->header.size, mmap_size);
+ 
+-	return event;
++	return error;
 +}
 +
- void perf_evlist__config(struct evlist *evlist, struct record_opts *opts,
- 			 struct callchain_param *callchain)
- {
++static union perf_event *
++fetch_mmaped_event(u64 head, size_t mmap_size, char *buf, bool needs_swap)
++{
++	return prefetch_event(buf, head, mmap_size, needs_swap, ERR_PTR(-EINVAL));
++}
++
++static union perf_event *
++fetch_decomp_event(u64 head, size_t mmap_size, char *buf, bool needs_swap)
++{
++	return prefetch_event(buf, head, mmap_size, needs_swap, NULL);
+ }
+ 
+ static int __perf_session__process_decomp_events(struct perf_session *session)
+@@ -1997,10 +2009,8 @@ static int __perf_session__process_decomp_events(struct perf_session *session)
+ 		return 0;
+ 
+ 	while (decomp->head < decomp->size && !session_done()) {
+-		union perf_event *event = fetch_mmaped_event(session, decomp->head, decomp->size, decomp->data);
+-
+-		if (IS_ERR(event))
+-			return PTR_ERR(event);
++		union perf_event *event = fetch_decomp_event(decomp->head, decomp->size, decomp->data,
++							     session->header.needs_swap);
+ 
+ 		if (!event)
+ 			break;
+@@ -2100,7 +2110,7 @@ remap:
+ 	}
+ 
+ more:
+-	event = fetch_mmaped_event(session, head, mmap_size, buf);
++	event = fetch_mmaped_event(head, mmap_size, buf, session->header.needs_swap);
+ 	if (IS_ERR(event))
+ 		return PTR_ERR(event);
+ 
