@@ -2,41 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BE2C107D83
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 23 Nov 2019 09:15:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 61019107DAC
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 23 Nov 2019 09:16:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727135AbfKWIPY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 23 Nov 2019 03:15:24 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:36345 "EHLO
+        id S1727394AbfKWIQd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 23 Nov 2019 03:16:33 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:36262 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727126AbfKWIPY (ORCPT
+        with ESMTP id S1726735AbfKWIPM (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 23 Nov 2019 03:15:24 -0500
+        Sat, 23 Nov 2019 03:15:12 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iYQZS-0002bI-Nj; Sat, 23 Nov 2019 09:15:10 +0100
+        id 1iYQZP-0002ac-6K; Sat, 23 Nov 2019 09:15:07 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 6768F1C1AD8;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 16A101C1AD6;
         Sat, 23 Nov 2019 09:15:02 +0100 (CET)
 Date:   Sat, 23 Nov 2019 08:15:02 -0000
-From:   "tip-bot2 for Jin Yao" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Adrian Hunter" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf report: Jump to symbol source view from total
- cycles view
-Cc:     Jin Yao <yao.jin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>,
+Subject: [tip: perf/core] perf record: Add a function to test for kernel
+ support for AUX area sampling
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        Jiri Olsa <jolsa@redhat.com>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Andi Kleen <ak@linux.intel.com>, Jin Yao <yao.jin@intel.com>,
-        Kan Liang <kan.liang@linux.intel.com>,
-        Peter Zijlstra <peterz@infradead.org>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191118140849.20714-2-yao.jin@linux.intel.com>
-References: <20191118140849.20714-2-yao.jin@linux.intel.com>
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20191115124225.5247-4-adrian.hunter@intel.com>
+References: <20191115124225.5247-4-adrian.hunter@intel.com>
 MIME-Version: 1.0
-Message-ID: <157449690231.21853.5391781706662892727.tip-bot2@tip-bot2>
+Message-ID: <157449690202.21853.14789264761246818665.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -52,214 +49,103 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     848a5e507e26176902e328bd8ae4a5e9c7d2bafe
-Gitweb:        https://git.kernel.org/tip/848a5e507e26176902e328bd8ae4a5e9c7d2bafe
-Author:        Jin Yao <yao.jin@linux.intel.com>
-AuthorDate:    Mon, 18 Nov 2019 22:08:49 +08:00
+Commit-ID:     9bca1a4ef5034f0a82861ac0375eb0272c5ce04e
+Gitweb:        https://git.kernel.org/tip/9bca1a4ef5034f0a82861ac0375eb0272c5ce04e
+Author:        Adrian Hunter <adrian.hunter@intel.com>
+AuthorDate:    Fri, 15 Nov 2019 14:42:13 +02:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Tue, 19 Nov 2019 19:37:04 -03:00
+CommitterDate: Fri, 22 Nov 2019 10:43:24 -03:00
 
-perf report: Jump to symbol source view from total cycles view
+perf record: Add a function to test for kernel support for AUX area sampling
 
-This patch supports jumping from tui total cycles view to symbol source
-view.
+Architectures are expected to know if AUX area sampling is supported by
+the hardware. Add a function perf_can_aux_sample() which will determine
+whether the kernel supports it.
 
-For example,
+Committer notes:
 
-  perf record -b ./div
-  perf report --total-cycles
+I reported that this message was taking place on a kernel without the
+required bits:
 
-In total cycles view, we can select one entry and press 'a' or press
-ENTER key to jump to symbol source view.
+  # perf record --aux-sample -e '{intel_pt//u,branch-misses:u}'
+  Error:
+  The sys_perf_event_open() syscall returned with 7 (Argument list too long) for event (branch-misses:u).
+  /bin/dmesg | grep -i perf may provide additional information.
 
-This patch also sets sort_order to NULL in cmd_report() which will use
-the default branch sort order. The percent value in new annotate view
-will be consistent with the percent in annotate view switched from perf
-report (we observed the original percent gap with previous patches).
+Adrian sent a patch addressing it, with this explanation:
 
- v2:
- ---
- Fix the 'make NO_SLANG=1' error. (set __maybe_unused to
- annotation_opts in block_hists_tui_browse()).
+ ----
+  perf_can_aux_sample_size() always returned true because it did not pass
+  the attribute size to sys_perf_event_open, nor correctly check the
+  return value and errno.
+ ----
 
-Signed-off-by: Jin Yao <yao.jin@linux.intel.com>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Jin Yao <yao.jin@intel.com>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: http://lore.kernel.org/lkml/20191118140849.20714-2-yao.jin@linux.intel.com
+After applying it I get, later in the series, when --aux-sample is
+added:
+
+  # perf record --aux-sample -e '{intel_pt//u,branch-misses:u}'
+  AUX area sampling is not supported by kernel
+
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Jiri Olsa <jolsa@redhat.com>
+Link: http://lore.kernel.org/lkml/20191115124225.5247-4-adrian.hunter@intel.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/builtin-report.c    |  9 ++++++---
- tools/perf/ui/browsers/hists.c | 25 +++++++++++++++++++++++--
- tools/perf/util/block-info.c   |  6 ++++--
- tools/perf/util/block-info.h   |  3 ++-
- tools/perf/util/hist.h         |  7 +++++--
- 5 files changed, 40 insertions(+), 10 deletions(-)
+ tools/perf/util/evlist.h |  1 +
+ tools/perf/util/record.c | 31 +++++++++++++++++++++++++++++++
+ 2 files changed, 32 insertions(+)
 
-diff --git a/tools/perf/builtin-report.c b/tools/perf/builtin-report.c
-index 0b6157c..ab0f6e5 100644
---- a/tools/perf/builtin-report.c
-+++ b/tools/perf/builtin-report.c
-@@ -493,7 +493,9 @@ static int perf_evlist__tui_block_hists_browse(struct evlist *evlist,
- 
- 	evlist__for_each_entry(evlist, pos) {
- 		ret = report__browse_block_hists(&rep->block_reports[i++].hist,
--						 rep->min_percent, pos);
-+						 rep->min_percent, pos,
-+						 &rep->session->header.env,
-+						 &rep->annotation_opts);
- 		if (ret != 0)
- 			return ret;
- 	}
-@@ -525,7 +527,8 @@ static int perf_evlist__tty_browse_hists(struct evlist *evlist,
- 
- 		if (rep->total_cycles_mode) {
- 			report__browse_block_hists(&rep->block_reports[i++].hist,
--						   rep->min_percent, pos);
-+						   rep->min_percent, pos,
-+						   NULL, NULL);
- 			continue;
- 		}
- 
-@@ -1418,7 +1421,7 @@ repeat:
- 		if (sort__mode != SORT_MODE__BRANCH)
- 			report.total_cycles_mode = false;
- 		else
--			sort_order = "sym";
-+			sort_order = NULL;
- 	}
- 
- 	if (strcmp(input_name, "-") != 0)
-diff --git a/tools/perf/ui/browsers/hists.c b/tools/perf/ui/browsers/hists.c
-index 87405dc..d4d3558 100644
---- a/tools/perf/ui/browsers/hists.c
-+++ b/tools/perf/ui/browsers/hists.c
-@@ -2385,7 +2385,11 @@ do_annotate(struct hist_browser *browser, struct popup_action *act)
- 	if (!notes->src)
- 		return 0;
- 
--	evsel = hists_to_evsel(browser->hists);
-+	if (browser->block_evsel)
-+		evsel = browser->block_evsel;
-+	else
-+		evsel = hists_to_evsel(browser->hists);
-+
- 	err = map_symbol__tui_annotate(&act->ms, evsel, browser->hbt,
- 				       browser->annotation_opts);
- 	he = hist_browser__selected_entry(browser);
-@@ -3461,11 +3465,13 @@ static int block_hists_browser__title(struct hist_browser *browser, char *bf,
+diff --git a/tools/perf/util/evlist.h b/tools/perf/util/evlist.h
+index 1305140..3655b9e 100644
+--- a/tools/perf/util/evlist.h
++++ b/tools/perf/util/evlist.h
+@@ -176,6 +176,7 @@ void perf_evlist__set_id_pos(struct evlist *evlist);
+ bool perf_can_sample_identifier(void);
+ bool perf_can_record_switch_events(void);
+ bool perf_can_record_cpu_wide(void);
++bool perf_can_aux_sample(void);
+ void perf_evlist__config(struct evlist *evlist, struct record_opts *opts,
+ 			 struct callchain_param *callchain);
+ int record_opts__config(struct record_opts *opts);
+diff --git a/tools/perf/util/record.c b/tools/perf/util/record.c
+index 8579505..7def661 100644
+--- a/tools/perf/util/record.c
++++ b/tools/perf/util/record.c
+@@ -136,6 +136,37 @@ bool perf_can_record_cpu_wide(void)
+ 	return true;
  }
  
- int block_hists_tui_browse(struct block_hist *bh, struct evsel *evsel,
--			   float min_percent)
-+			   float min_percent, struct perf_env *env,
-+			   struct annotation_options *annotation_opts)
- {
- 	struct hists *hists = &bh->block_hists;
- 	struct hist_browser *browser;
- 	int key = -1;
-+	struct popup_action action;
- 	static const char help[] =
- 	" q             Quit \n";
- 
-@@ -3476,11 +3482,15 @@ int block_hists_tui_browse(struct block_hist *bh, struct evsel *evsel,
- 	browser->block_evsel = evsel;
- 	browser->title = block_hists_browser__title;
- 	browser->min_pcnt = min_percent;
-+	browser->env = env;
-+	browser->annotation_opts = annotation_opts;
- 
- 	/* reset abort key so that it can get Ctrl-C as a key */
- 	SLang_reset_tty();
- 	SLang_init_tty(0, 0, 0);
- 
-+	memset(&action, 0, sizeof(action));
++/*
++ * Architectures are expected to know if AUX area sampling is supported by the
++ * hardware. Here we check for kernel support.
++ */
++bool perf_can_aux_sample(void)
++{
++	struct perf_event_attr attr = {
++		.size = sizeof(struct perf_event_attr),
++		.exclude_kernel = 1,
++		/*
++		 * Non-zero value causes the kernel to calculate the effective
++		 * attribute size up to that byte.
++		 */
++		.aux_sample_size = 1,
++	};
++	int fd;
 +
- 	while (1) {
- 		key = hist_browser__run(browser, "? - help", true);
- 
-@@ -3490,6 +3500,17 @@ int block_hists_tui_browse(struct block_hist *bh, struct evsel *evsel,
- 		case '?':
- 			ui_browser__help_window(&browser->b, help);
- 			break;
-+		case 'a':
-+		case K_ENTER:
-+			if (!browser->selection ||
-+			    !browser->selection->sym) {
-+				continue;
-+			}
++	fd = sys_perf_event_open(&attr, -1, 0, -1, 0);
++	/*
++	 * If the kernel attribute is big enough to contain aux_sample_size
++	 * then we assume that it is supported. We are relying on the kernel to
++	 * validate the attribute size before anything else that could be wrong.
++	 */
++	if (fd < 0 && errno == E2BIG)
++		return false;
++	if (fd >= 0)
++		close(fd);
 +
-+			action.ms.map = browser->selection->map;
-+			action.ms.sym = browser->selection->sym;
-+			do_annotate(browser, &action);
-+			continue;
- 		default:
- 			break;
- 		}
-diff --git a/tools/perf/util/block-info.c b/tools/perf/util/block-info.c
-index 5887f8f..c4b030b 100644
---- a/tools/perf/util/block-info.c
-+++ b/tools/perf/util/block-info.c
-@@ -441,7 +441,8 @@ struct block_report *block_info__create_report(struct evlist *evlist,
- }
- 
- int report__browse_block_hists(struct block_hist *bh, float min_percent,
--			       struct evsel *evsel)
-+			       struct evsel *evsel, struct perf_env *env,
-+			       struct annotation_options *annotation_opts)
++	return true;
++}
++
+ void perf_evlist__config(struct evlist *evlist, struct record_opts *opts,
+ 			 struct callchain_param *callchain)
  {
- 	int ret;
- 
-@@ -454,7 +455,8 @@ int report__browse_block_hists(struct block_hist *bh, float min_percent,
- 		return 0;
- 	case 1:
- 		symbol_conf.report_individual_block = true;
--		ret = block_hists_tui_browse(bh, evsel, min_percent);
-+		ret = block_hists_tui_browse(bh, evsel, min_percent,
-+					     env, annotation_opts);
- 		hists__delete_entries(&bh->block_hists);
- 		return ret;
- 	default:
-diff --git a/tools/perf/util/block-info.h b/tools/perf/util/block-info.h
-index e4d20bc..bef0d75 100644
---- a/tools/perf/util/block-info.h
-+++ b/tools/perf/util/block-info.h
-@@ -71,7 +71,8 @@ struct block_report *block_info__create_report(struct evlist *evlist,
- 					       u64 total_cycles);
- 
- int report__browse_block_hists(struct block_hist *bh, float min_percent,
--			       struct evsel *evsel);
-+			       struct evsel *evsel, struct perf_env *env,
-+			       struct annotation_options *annotation_opts);
- 
- float block_info__total_cycles_percent(struct hist_entry *he);
- 
-diff --git a/tools/perf/util/hist.h b/tools/perf/util/hist.h
-index 2aca8ce..4528690 100644
---- a/tools/perf/util/hist.h
-+++ b/tools/perf/util/hist.h
-@@ -478,7 +478,8 @@ int res_sample_browse(struct res_sample *res_samples, int num_res,
- void res_sample_init(void);
- 
- int block_hists_tui_browse(struct block_hist *bh, struct evsel *evsel,
--			   float min_percent);
-+			   float min_percent, struct perf_env *env,
-+			   struct annotation_options *annotation_opts);
- #else
- static inline
- int perf_evlist__tui_browse_hists(struct evlist *evlist __maybe_unused,
-@@ -525,7 +526,9 @@ static inline void res_sample_init(void) {}
- 
- static inline int block_hists_tui_browse(struct block_hist *bh __maybe_unused,
- 					 struct evsel *evsel __maybe_unused,
--					 float min_percent __maybe_unused)
-+					 float min_percent __maybe_unused,
-+					 struct perf_env *env __maybe_unused,
-+					 struct annotation_options *annotation_opts __maybe_unused)
- {
- 	return 0;
- }
