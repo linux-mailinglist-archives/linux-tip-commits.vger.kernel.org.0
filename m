@@ -2,37 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 78166107D9D
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 23 Nov 2019 09:16:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 25D55107DA7
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 23 Nov 2019 09:16:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726867AbfKWIPM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 23 Nov 2019 03:15:12 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:36255 "EHLO
+        id S1727341AbfKWIQU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 23 Nov 2019 03:16:20 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:36264 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726705AbfKWIPM (ORCPT
+        with ESMTP id S1726744AbfKWIPM (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Sat, 23 Nov 2019 03:15:12 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iYQZK-0002WR-Ge; Sat, 23 Nov 2019 09:15:02 +0100
+        id 1iYQZJ-0002WM-54; Sat, 23 Nov 2019 09:15:01 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D30691C1ACC;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B45CD1C19FD;
         Sat, 23 Nov 2019 09:15:00 +0100 (CET)
 Date:   Sat, 23 Nov 2019 08:15:00 -0000
 From:   "tip-bot2 for Adrian Hunter" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf auxtrace: Add support for queuing AUX area samples
+Subject: [tip: perf/core] perf pmu: When using default config, record which
+ bits of config were changed by the user
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         Jiri Olsa <jolsa@redhat.com>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191115124225.5247-12-adrian.hunter@intel.com>
-References: <20191115124225.5247-12-adrian.hunter@intel.com>
+In-Reply-To: <20191115124225.5247-13-adrian.hunter@intel.com>
+References: <20191115124225.5247-13-adrian.hunter@intel.com>
 MIME-Version: 1.0
-Message-ID: <157449690079.21853.17585003631960442237.tip-bot2@tip-bot2>
+Message-ID: <157449690066.21853.17967904681518450208.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,191 +49,163 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     ac2f445fc8989e152dc35eb7af368fd34b92e48a
-Gitweb:        https://git.kernel.org/tip/ac2f445fc8989e152dc35eb7af368fd34b92e48a
+Commit-ID:     a1ac7de6902c1ea6def7a743f1d2e6ba429684b3
+Gitweb:        https://git.kernel.org/tip/a1ac7de6902c1ea6def7a743f1d2e6ba429684b3
 Author:        Adrian Hunter <adrian.hunter@intel.com>
-AuthorDate:    Fri, 15 Nov 2019 14:42:21 +02:00
+AuthorDate:    Fri, 15 Nov 2019 14:42:22 +02:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Fri, 22 Nov 2019 10:48:13 -03:00
 
-perf auxtrace: Add support for queuing AUX area samples
+perf pmu: When using default config, record which bits of config were changed by the user
 
-Add functions to queue AUX area samples in advance
-(auxtrace_queue_data()) or individually (auxtrace_queues__add_sample())
-or find out what queue a sample belongs on
-(auxtrace_queues__sample_queue()).
+Default config for a PMU is defined before selected events are parsed.
+That allows the user-entered config to override the default config.
 
-auxtrace_queue_data() can also queue snapshot data which keeps snapshots
-and samples ordered with respect to each other in case support for that
-is desired.
+However that does not allow for changing the default config based on
+other options.
+
+For example, if the user chooses AUX area sampling mode, in the case of
+Intel PT, the psb_period needs to be small for sampling, so there is a
+need to set the default psb_period to 0 (2 KiB) in that case. However
+that should not override a value set by the user. To allow for that,
+when using default config, record which bits of config were changed by
+the user.
 
 Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
 Cc: Jiri Olsa <jolsa@redhat.com>
-Link: http://lore.kernel.org/lkml/20191115124225.5247-12-adrian.hunter@intel.com
+Link: http://lore.kernel.org/lkml/20191115124225.5247-13-adrian.hunter@intel.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/auxtrace.c | 107 ++++++++++++++++++++++++++++++++++++-
- tools/perf/util/auxtrace.h |  15 +++++-
- 2 files changed, 122 insertions(+)
+ tools/perf/util/evsel.c        |  2 ++-
+ tools/perf/util/evsel_config.h |  2 ++-
+ tools/perf/util/parse-events.c | 42 ++++++++++++++++++++++++++++++++-
+ tools/perf/util/pmu.c          | 10 ++++++++-
+ tools/perf/util/pmu.h          |  1 +-
+ 5 files changed, 56 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/util/auxtrace.c b/tools/perf/util/auxtrace.c
-index 4f5c5fe..eb087e7 100644
---- a/tools/perf/util/auxtrace.c
-+++ b/tools/perf/util/auxtrace.c
-@@ -1004,6 +1004,113 @@ struct auxtrace_buffer *auxtrace_buffer__next(struct auxtrace_queue *queue,
- 	}
- }
+diff --git a/tools/perf/util/evsel.c b/tools/perf/util/evsel.c
+index ad7665a..f4dea05 100644
+--- a/tools/perf/util/evsel.c
++++ b/tools/perf/util/evsel.c
+@@ -849,6 +849,8 @@ static void apply_config_terms(struct evsel *evsel,
+ 		case PERF_EVSEL__CONFIG_TERM_AUX_SAMPLE_SIZE:
+ 			/* Already applied by auxtrace */
+ 			break;
++		case PERF_EVSEL__CONFIG_TERM_CFG_CHG:
++			break;
+ 		default:
+ 			break;
+ 		}
+diff --git a/tools/perf/util/evsel_config.h b/tools/perf/util/evsel_config.h
+index 6e654ed..1f8d2fe 100644
+--- a/tools/perf/util/evsel_config.h
++++ b/tools/perf/util/evsel_config.h
+@@ -26,6 +26,7 @@ enum evsel_term_type {
+ 	PERF_EVSEL__CONFIG_TERM_PERCORE,
+ 	PERF_EVSEL__CONFIG_TERM_AUX_OUTPUT,
+ 	PERF_EVSEL__CONFIG_TERM_AUX_SAMPLE_SIZE,
++	PERF_EVSEL__CONFIG_TERM_CFG_CHG,
+ };
  
-+struct auxtrace_queue *auxtrace_queues__sample_queue(struct auxtrace_queues *queues,
-+						     struct perf_sample *sample,
-+						     struct perf_session *session)
-+{
-+	struct perf_sample_id *sid;
-+	unsigned int idx;
-+	u64 id;
-+
-+	id = sample->id;
-+	if (!id)
-+		return NULL;
-+
-+	sid = perf_evlist__id2sid(session->evlist, id);
-+	if (!sid)
-+		return NULL;
-+
-+	idx = sid->idx;
-+
-+	if (idx >= queues->nr_queues)
-+		return NULL;
-+
-+	return &queues->queue_array[idx];
+ struct perf_evsel_config_term {
+@@ -46,6 +47,7 @@ struct perf_evsel_config_term {
+ 		bool	      percore;
+ 		bool	      aux_output;
+ 		u32	      aux_sample_size;
++		u64	      cfg_chg;
+ 	} val;
+ 	bool weak;
+ };
+diff --git a/tools/perf/util/parse-events.c b/tools/perf/util/parse-events.c
+index fc5e27b..6c313c4 100644
+--- a/tools/perf/util/parse-events.c
++++ b/tools/perf/util/parse-events.c
+@@ -1290,7 +1290,40 @@ do {								\
+ 			break;
+ 		}
+ 	}
+-#undef ADD_EVSEL_CONFIG
++	return 0;
 +}
 +
-+int auxtrace_queues__add_sample(struct auxtrace_queues *queues,
-+				struct perf_session *session,
-+				struct perf_sample *sample, u64 data_offset,
-+				u64 reference)
++/*
++ * Add PERF_EVSEL__CONFIG_TERM_CFG_CHG where cfg_chg will have a bit set for
++ * each bit of attr->config that the user has changed.
++ */
++static int get_config_chgs(struct perf_pmu *pmu, struct list_head *head_config,
++			   struct list_head *head_terms)
 +{
-+	struct auxtrace_buffer buffer = {
-+		.pid = -1,
-+		.data_offset = data_offset,
-+		.reference = reference,
-+		.size = sample->aux_sample.size,
-+	};
-+	struct perf_sample_id *sid;
-+	u64 id = sample->id;
-+	unsigned int idx;
++	struct parse_events_term *term;
++	u64 bits = 0;
++	int type;
 +
-+	if (!id)
-+		return -EINVAL;
-+
-+	sid = perf_evlist__id2sid(session->evlist, id);
-+	if (!sid)
-+		return -ENOENT;
-+
-+	idx = sid->idx;
-+	buffer.tid = sid->tid;
-+	buffer.cpu = sid->cpu;
-+
-+	return auxtrace_queues__add_buffer(queues, session, idx, &buffer, NULL);
-+}
-+
-+struct queue_data {
-+	bool samples;
-+	bool events;
-+};
-+
-+static int auxtrace_queue_data_cb(struct perf_session *session,
-+				  union perf_event *event, u64 offset,
-+				  void *data)
-+{
-+	struct queue_data *qd = data;
-+	struct perf_sample sample;
-+	int err;
-+
-+	if (qd->events && event->header.type == PERF_RECORD_AUXTRACE) {
-+		if (event->header.size < sizeof(struct perf_record_auxtrace))
-+			return -EINVAL;
-+		offset += event->header.size;
-+		return session->auxtrace->queue_data(session, NULL, event,
-+						     offset);
++	list_for_each_entry(term, head_config, list) {
++		switch (term->type_term) {
++		case PARSE_EVENTS__TERM_TYPE_USER:
++			type = perf_pmu__format_type(&pmu->format, term->config);
++			if (type != PERF_PMU_FORMAT_VALUE_CONFIG)
++				continue;
++			bits |= perf_pmu__format_bits(&pmu->format, term->config);
++			break;
++		case PARSE_EVENTS__TERM_TYPE_CONFIG:
++			bits = ~(u64)0;
++			break;
++		default:
++			break;
++		}
 +	}
 +
-+	if (!qd->samples || event->header.type != PERF_RECORD_SAMPLE)
-+		return 0;
++	if (bits)
++		ADD_CONFIG_TERM(CFG_CHG, cfg_chg, bits);
 +
-+	err = perf_evlist__parse_sample(session->evlist, event, &sample);
-+	if (err)
-+		return err;
++#undef ADD_CONFIG_TERM
+ 	return 0;
+ }
+ 
+@@ -1419,6 +1452,13 @@ int parse_events_add_pmu(struct parse_events_state *parse_state,
+ 	if (get_config_terms(head_config, &config_terms))
+ 		return -ENOMEM;
+ 
++	/*
++	 * When using default config, record which bits of attr->config were
++	 * changed by the user.
++	 */
++	if (pmu->default_config && get_config_chgs(pmu, head_config, &config_terms))
++		return -ENOMEM;
 +
-+	if (!sample.aux_sample.size)
-+		return 0;
-+
-+	offset += sample.aux_sample.data - (void *)event;
-+
-+	return session->auxtrace->queue_data(session, &sample, NULL, offset);
-+}
-+
-+int auxtrace_queue_data(struct perf_session *session, bool samples, bool events)
+ 	if (perf_pmu__config(pmu, &attr, head_config, parse_state->error)) {
+ 		struct perf_evsel_config_term *pos, *tmp;
+ 
+diff --git a/tools/perf/util/pmu.c b/tools/perf/util/pmu.c
+index db1e571..e8d3489 100644
+--- a/tools/perf/util/pmu.c
++++ b/tools/perf/util/pmu.c
+@@ -931,6 +931,16 @@ __u64 perf_pmu__format_bits(struct list_head *formats, const char *name)
+ 	return bits;
+ }
+ 
++int perf_pmu__format_type(struct list_head *formats, const char *name)
 +{
-+	struct queue_data qd = {
-+		.samples = samples,
-+		.events = events,
-+	};
++	struct perf_pmu_format *format = pmu_find_format(formats, name);
 +
-+	if (auxtrace__dont_decode(session))
-+		return 0;
++	if (!format)
++		return -1;
 +
-+	if (!session->auxtrace || !session->auxtrace->queue_data)
-+		return -EINVAL;
-+
-+	return perf_session__peek_events(session, session->header.data_offset,
-+					 session->header.data_size,
-+					 auxtrace_queue_data_cb, &qd);
++	return format->value;
 +}
 +
- void *auxtrace_buffer__get_data(struct auxtrace_buffer *buffer, int fd)
- {
- 	size_t adj = buffer->data_offset & (page_size - 1);
-diff --git a/tools/perf/util/auxtrace.h b/tools/perf/util/auxtrace.h
-index 4a8ac7d..749d72c 100644
---- a/tools/perf/util/auxtrace.h
-+++ b/tools/perf/util/auxtrace.h
-@@ -141,6 +141,8 @@ struct auxtrace_index {
-  * struct auxtrace - session callbacks to allow AUX area data decoding.
-  * @process_event: lets the decoder see all session events
-  * @process_auxtrace_event: process a PERF_RECORD_AUXTRACE event
-+ * @queue_data: queue an AUX sample or PERF_RECORD_AUXTRACE event for later
-+ *              processing
-  * @dump_auxtrace_sample: dump AUX area sample data
-  * @flush_events: process any remaining data
-  * @free_events: free resources associated with event processing
-@@ -154,6 +156,9 @@ struct auxtrace {
- 	int (*process_auxtrace_event)(struct perf_session *session,
- 				      union perf_event *event,
- 				      struct perf_tool *tool);
-+	int (*queue_data)(struct perf_session *session,
-+			  struct perf_sample *sample, union perf_event *event,
-+			  u64 data_offset);
- 	void (*dump_auxtrace_sample)(struct perf_session *session,
- 				     struct perf_sample *sample);
- 	int (*flush_events)(struct perf_session *session,
-@@ -467,9 +472,19 @@ int auxtrace_queues__add_event(struct auxtrace_queues *queues,
- 			       struct perf_session *session,
- 			       union perf_event *event, off_t data_offset,
- 			       struct auxtrace_buffer **buffer_ptr);
-+struct auxtrace_queue *
-+auxtrace_queues__sample_queue(struct auxtrace_queues *queues,
-+			      struct perf_sample *sample,
-+			      struct perf_session *session);
-+int auxtrace_queues__add_sample(struct auxtrace_queues *queues,
-+				struct perf_session *session,
-+				struct perf_sample *sample, u64 data_offset,
-+				u64 reference);
- void auxtrace_queues__free(struct auxtrace_queues *queues);
- int auxtrace_queues__process_index(struct auxtrace_queues *queues,
- 				   struct perf_session *session);
-+int auxtrace_queue_data(struct perf_session *session, bool samples,
-+			bool events);
- struct auxtrace_buffer *auxtrace_buffer__next(struct auxtrace_queue *queue,
- 					      struct auxtrace_buffer *buffer);
- void *auxtrace_buffer__get_data(struct auxtrace_buffer *buffer, int fd);
+ /*
+  * Sets value based on the format definition (format parameter)
+  * and unformated value (value parameter).
+diff --git a/tools/perf/util/pmu.h b/tools/perf/util/pmu.h
+index 2eb7a70..6737e3d 100644
+--- a/tools/perf/util/pmu.h
++++ b/tools/perf/util/pmu.h
+@@ -72,6 +72,7 @@ int perf_pmu__config_terms(struct list_head *formats,
+ 			   struct list_head *head_terms,
+ 			   bool zero, struct parse_events_error *error);
+ __u64 perf_pmu__format_bits(struct list_head *formats, const char *name);
++int perf_pmu__format_type(struct list_head *formats, const char *name);
+ int perf_pmu__check_alias(struct perf_pmu *pmu, struct list_head *head_terms,
+ 			  struct perf_pmu_info *info);
+ struct list_head *perf_pmu__alias(struct perf_pmu *pmu,
