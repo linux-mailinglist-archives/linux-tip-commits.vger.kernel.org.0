@@ -2,43 +2,46 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 784F3107D9B
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 23 Nov 2019 09:16:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A337107DAA
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 23 Nov 2019 09:16:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726910AbfKWIPN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 23 Nov 2019 03:15:13 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:36274 "EHLO
+        id S1726451AbfKWIQ1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 23 Nov 2019 03:16:27 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:36263 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726752AbfKWIPM (ORCPT
+        with ESMTP id S1726736AbfKWIPM (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Sat, 23 Nov 2019 03:15:12 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iYQZI-0002W8-Ce; Sat, 23 Nov 2019 09:15:00 +0100
+        id 1iYQZI-0002W7-Ch; Sat, 23 Nov 2019 09:15:00 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E75891C1ACC;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id BAA2A1C19FD;
         Sat, 23 Nov 2019 09:14:59 +0100 (CET)
 Date:   Sat, 23 Nov 2019 08:14:59 -0000
-From:   "tip-bot2 for Colin Ian King" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Ian Rogers" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf probe: Fix spelling mistake "addrees" -> "address"
-Cc:     Colin King <colin.king@canonical.com>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
+Subject: [tip: perf/core] perf parse: Fix potential memory leak when handling
+ tracepoint errors
+Cc:     Ian Rogers <irogers@google.com>,
         Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Andi Kleen <ak@linux.intel.com>,
+        Jin Yao <yao.jin@linux.intel.com>,
         Jiri Olsa <jolsa@redhat.com>,
         Mark Rutland <mark.rutland@arm.com>,
         Namhyung Kim <namhyung@kernel.org>,
         Peter Zijlstra <peterz@infradead.org>,
-        kernel-janitors@vger.kernel.org,
+        Stephane Eranian <eranian@google.com>,
+        clang-built-linux@googlegroups.com,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191121092623.374896-1-colin.king@canonical.com>
-References: <20191121092623.374896-1-colin.king@canonical.com>
+In-Reply-To: <20191120180925.21787-1-irogers@google.com>
+References: <20191120180925.21787-1-irogers@google.com>
 MIME-Version: 1.0
-Message-ID: <157449689986.21853.15487968552772349737.tip-bot2@tip-bot2>
+Message-ID: <157449689963.21853.6064161775610748154.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -54,41 +57,84 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     358f98ee8a3578bbf464ac767b726c5de1ce0647
-Gitweb:        https://git.kernel.org/tip/358f98ee8a3578bbf464ac767b726c5de1ce0647
-Author:        Colin Ian King <colin.king@canonical.com>
-AuthorDate:    Thu, 21 Nov 2019 09:26:23 
+Commit-ID:     4584f084aa9d8033d5911935837dbee7b082d0e9
+Gitweb:        https://git.kernel.org/tip/4584f084aa9d8033d5911935837dbee7b082d0e9
+Author:        Ian Rogers <irogers@google.com>
+AuthorDate:    Wed, 20 Nov 2019 10:09:25 -08:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Fri, 22 Nov 2019 10:48:14 -03:00
 
-perf probe: Fix spelling mistake "addrees" -> "address"
+perf parse: Fix potential memory leak when handling tracepoint errors
 
-There is a spelling mistake in a pr_warning message. Fix it.
+An error may be in place when tracepoint_error is called, use
+parse_events__handle_error to avoid a memory leak and to capture the
+first and last error. Error detected by LLVM's libFuzzer using the
+following event:
 
-Signed-off-by: Colin King <colin.king@canonical.com>
-Acked-by: Masami Hiramatsu <mhiramat@kernel.org>
+$ perf stat -e 'msr/event/,f:e'
+event syntax error: 'msr/event/,f:e'
+                     \___ can't access trace events
+
+Error:  No permissions to read /sys/kernel/debug/tracing/events/f/e
+Hint:   Try 'sudo mount -o remount,mode=755 /sys/kernel/debug/tracing/'
+
+Initial error:
+event syntax error: 'msr/event/,f:e'
+                                \___ no value assigned for term
+Run 'perf list' for a list of valid events
+
+ Usage: perf stat [<options>] [<command>]
+
+    -e, --event <event>   event selector. use 'perf list' to list available events
+
+Signed-off-by: Ian Rogers <irogers@google.com>
 Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Andi Kleen <ak@linux.intel.com>
+Cc: Jin Yao <yao.jin@linux.intel.com>
 Cc: Jiri Olsa <jolsa@redhat.com>
 Cc: Mark Rutland <mark.rutland@arm.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: kernel-janitors@vger.kernel.org
-Link: http://lore.kernel.org/lkml/20191121092623.374896-1-colin.king@canonical.com
+Cc: Stephane Eranian <eranian@google.com>
+Cc: clang-built-linux@googlegroups.com
+Link: http://lore.kernel.org/lkml/20191120180925.21787-1-irogers@google.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/probe-finder.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/perf/util/parse-events.c |  9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/tools/perf/util/probe-finder.c b/tools/perf/util/probe-finder.c
-index 38d6cd2..c470c49 100644
---- a/tools/perf/util/probe-finder.c
-+++ b/tools/perf/util/probe-finder.c
-@@ -812,7 +812,7 @@ static int verify_representive_line(struct probe_finder *pf, const char *fname,
- 	if (strcmp(fname, __fname) || lineno == __lineno)
- 		return 0;
+diff --git a/tools/perf/util/parse-events.c b/tools/perf/util/parse-events.c
+index 6c313c4..ed7c008 100644
+--- a/tools/perf/util/parse-events.c
++++ b/tools/perf/util/parse-events.c
+@@ -511,6 +511,7 @@ int parse_events_add_cache(struct list_head *list, int *idx,
+ static void tracepoint_error(struct parse_events_error *e, int err,
+ 			     const char *sys, const char *name)
+ {
++	const char *str;
+ 	char help[BUFSIZ];
  
--	pr_warning("This line is sharing the addrees with other lines.\n");
-+	pr_warning("This line is sharing the address with other lines.\n");
+ 	if (!e)
+@@ -524,18 +525,18 @@ static void tracepoint_error(struct parse_events_error *e, int err,
  
- 	if (pf->pev->point.function) {
- 		/* Find best match function name and lines */
+ 	switch (err) {
+ 	case EACCES:
+-		e->str = strdup("can't access trace events");
++		str = "can't access trace events";
+ 		break;
+ 	case ENOENT:
+-		e->str = strdup("unknown tracepoint");
++		str = "unknown tracepoint";
+ 		break;
+ 	default:
+-		e->str = strdup("failed to add tracepoint");
++		str = "failed to add tracepoint";
+ 		break;
+ 	}
+ 
+ 	tracing_path__strerror_open_tp(err, help, sizeof(help), sys, name);
+-	e->help = strdup(help);
++	parse_events__handle_error(e, 0, strdup(str), strdup(help));
+ }
+ 
+ static int add_tracepoint(struct list_head *list, int *idx,
