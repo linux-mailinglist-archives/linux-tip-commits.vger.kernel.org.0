@@ -2,46 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A337107DAA
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 23 Nov 2019 09:16:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F8C9107D7B
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 23 Nov 2019 09:15:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726451AbfKWIQ1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 23 Nov 2019 03:16:27 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:36263 "EHLO
+        id S1726304AbfKWIPJ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 23 Nov 2019 03:15:09 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:36235 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726736AbfKWIPM (ORCPT
+        with ESMTP id S1725973AbfKWIPJ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 23 Nov 2019 03:15:12 -0500
+        Sat, 23 Nov 2019 03:15:09 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iYQZI-0002W7-Ch; Sat, 23 Nov 2019 09:15:00 +0100
+        id 1iYQZI-0002WH-WF; Sat, 23 Nov 2019 09:15:01 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id BAA2A1C19FD;
-        Sat, 23 Nov 2019 09:14:59 +0100 (CET)
-Date:   Sat, 23 Nov 2019 08:14:59 -0000
-From:   "tip-bot2 for Ian Rogers" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 56E141C1AD1;
+        Sat, 23 Nov 2019 09:15:00 +0100 (CET)
+Date:   Sat, 23 Nov 2019 08:15:00 -0000
+From:   "tip-bot2 for Adrian Hunter" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf parse: Fix potential memory leak when handling
- tracepoint errors
-Cc:     Ian Rogers <irogers@google.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Andi Kleen <ak@linux.intel.com>,
-        Jin Yao <yao.jin@linux.intel.com>,
+Subject: [tip: perf/core] perf intel-bts: Does not support AUX area sampling
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         Jiri Olsa <jolsa@redhat.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Stephane Eranian <eranian@google.com>,
-        clang-built-linux@googlegroups.com,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191120180925.21787-1-irogers@google.com>
-References: <20191120180925.21787-1-irogers@google.com>
+In-Reply-To: <20191115124225.5247-16-adrian.hunter@intel.com>
+References: <20191115124225.5247-16-adrian.hunter@intel.com>
 MIME-Version: 1.0
-Message-ID: <157449689963.21853.6064161775610748154.tip-bot2@tip-bot2>
+Message-ID: <157449690028.21853.18036761950310929738.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -57,84 +48,53 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     4584f084aa9d8033d5911935837dbee7b082d0e9
-Gitweb:        https://git.kernel.org/tip/4584f084aa9d8033d5911935837dbee7b082d0e9
-Author:        Ian Rogers <irogers@google.com>
-AuthorDate:    Wed, 20 Nov 2019 10:09:25 -08:00
+Commit-ID:     32a1ece4bdbde24734ab16484bad7316f03fc42d
+Gitweb:        https://git.kernel.org/tip/32a1ece4bdbde24734ab16484bad7316f03fc42d
+Author:        Adrian Hunter <adrian.hunter@intel.com>
+AuthorDate:    Fri, 15 Nov 2019 14:42:25 +02:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Fri, 22 Nov 2019 10:48:14 -03:00
+CommitterDate: Fri, 22 Nov 2019 10:48:13 -03:00
 
-perf parse: Fix potential memory leak when handling tracepoint errors
+perf intel-bts: Does not support AUX area sampling
 
-An error may be in place when tracepoint_error is called, use
-parse_events__handle_error to avoid a memory leak and to capture the
-first and last error. Error detected by LLVM's libFuzzer using the
-following event:
+Add an error message because Intel BTS does not support AUX area
+sampling.
 
-$ perf stat -e 'msr/event/,f:e'
-event syntax error: 'msr/event/,f:e'
-                     \___ can't access trace events
-
-Error:  No permissions to read /sys/kernel/debug/tracing/events/f/e
-Hint:   Try 'sudo mount -o remount,mode=755 /sys/kernel/debug/tracing/'
-
-Initial error:
-event syntax error: 'msr/event/,f:e'
-                                \___ no value assigned for term
-Run 'perf list' for a list of valid events
-
- Usage: perf stat [<options>] [<command>]
-
-    -e, --event <event>   event selector. use 'perf list' to list available events
-
-Signed-off-by: Ian Rogers <irogers@google.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Jin Yao <yao.jin@linux.intel.com>
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
 Cc: Jiri Olsa <jolsa@redhat.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Stephane Eranian <eranian@google.com>
-Cc: clang-built-linux@googlegroups.com
-Link: http://lore.kernel.org/lkml/20191120180925.21787-1-irogers@google.com
+Link: http://lore.kernel.org/lkml/20191115124225.5247-16-adrian.hunter@intel.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/parse-events.c |  9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ tools/perf/arch/x86/util/auxtrace.c  | 2 ++
+ tools/perf/arch/x86/util/intel-bts.c | 5 +++++
+ 2 files changed, 7 insertions(+)
 
-diff --git a/tools/perf/util/parse-events.c b/tools/perf/util/parse-events.c
-index 6c313c4..ed7c008 100644
---- a/tools/perf/util/parse-events.c
-+++ b/tools/perf/util/parse-events.c
-@@ -511,6 +511,7 @@ int parse_events_add_cache(struct list_head *list, int *idx,
- static void tracepoint_error(struct parse_events_error *e, int err,
- 			     const char *sys, const char *name)
- {
-+	const char *str;
- 	char help[BUFSIZ];
+diff --git a/tools/perf/arch/x86/util/auxtrace.c b/tools/perf/arch/x86/util/auxtrace.c
+index 092543c..7abc9fd 100644
+--- a/tools/perf/arch/x86/util/auxtrace.c
++++ b/tools/perf/arch/x86/util/auxtrace.c
+@@ -29,6 +29,8 @@ struct auxtrace_record *auxtrace_record__init_intel(struct evlist *evlist,
+ 	if (intel_pt_pmu)
+ 		intel_pt_pmu->auxtrace = true;
+ 	intel_bts_pmu = perf_pmu__find(INTEL_BTS_PMU_NAME);
++	if (intel_bts_pmu)
++		intel_bts_pmu->auxtrace = true;
  
- 	if (!e)
-@@ -524,18 +525,18 @@ static void tracepoint_error(struct parse_events_error *e, int err,
+ 	evlist__for_each_entry(evlist, evsel) {
+ 		if (intel_pt_pmu && evsel->core.attr.type == intel_pt_pmu->type)
+diff --git a/tools/perf/arch/x86/util/intel-bts.c b/tools/perf/arch/x86/util/intel-bts.c
+index f7f68a5..27d9e21 100644
+--- a/tools/perf/arch/x86/util/intel-bts.c
++++ b/tools/perf/arch/x86/util/intel-bts.c
+@@ -113,6 +113,11 @@ static int intel_bts_recording_options(struct auxtrace_record *itr,
+ 	const struct perf_cpu_map *cpus = evlist->core.cpus;
+ 	bool privileged = perf_event_paranoid_check(-1);
  
- 	switch (err) {
- 	case EACCES:
--		e->str = strdup("can't access trace events");
-+		str = "can't access trace events";
- 		break;
- 	case ENOENT:
--		e->str = strdup("unknown tracepoint");
-+		str = "unknown tracepoint";
- 		break;
- 	default:
--		e->str = strdup("failed to add tracepoint");
-+		str = "failed to add tracepoint";
- 		break;
- 	}
++	if (opts->auxtrace_sample_mode) {
++		pr_err("Intel BTS does not support AUX area sampling\n");
++		return -EINVAL;
++	}
++
+ 	btsr->evlist = evlist;
+ 	btsr->snapshot_mode = opts->auxtrace_snapshot_mode;
  
- 	tracing_path__strerror_open_tp(err, help, sizeof(help), sys, name);
--	e->help = strdup(help);
-+	parse_events__handle_error(e, 0, strdup(str), strdup(help));
- }
- 
- static int add_tracepoint(struct list_head *list, int *idx,
