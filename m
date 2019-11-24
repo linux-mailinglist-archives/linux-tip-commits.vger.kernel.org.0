@@ -2,159 +2,143 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 68493107D80
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 23 Nov 2019 09:15:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 95417108307
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 24 Nov 2019 12:02:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727106AbfKWIPT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 23 Nov 2019 03:15:19 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:36327 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727095AbfKWIPS (ORCPT
+        id S1726830AbfKXLCl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 24 Nov 2019 06:02:41 -0500
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:41890 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726090AbfKXLCl (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 23 Nov 2019 03:15:18 -0500
-Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tip-bot2@linutronix.de>)
-        id 1iYQZU-0002eQ-J0; Sat, 23 Nov 2019 09:15:13 +0100
-Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 7ECE51C1ADD;
-        Sat, 23 Nov 2019 09:15:03 +0100 (CET)
-Date:   Sat, 23 Nov 2019 08:15:03 -0000
-From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf map: Pass a dso_id to map__new()
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Andi Kleen <ak@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <tip-gp5s1xgxacurmih5d1l94ymy@git.kernel.org>
-References: <tip-gp5s1xgxacurmih5d1l94ymy@git.kernel.org>
+        Sun, 24 Nov 2019 06:02:41 -0500
+Received: by mail-wr1-f65.google.com with SMTP id b18so13932424wrj.8;
+        Sun, 24 Nov 2019 03:02:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=C2T7RRFPErosSbwjrbbw8iSP4bnBzM5uhxBucwjlDmc=;
+        b=iQzfOlAjpeJIEyHmd0/r/0tVUQU3e71ID2x4YbsZKDEIN+4et773DDnrdgtUemrTKa
+         +vhh1LvkOI+yrLCIpgNAvFLF4Ufu20TpeJLf7gmrDo+9DiDVFUs1TTScL2TNXjmcM0Ay
+         4kHJH7RWRe3fke+q7IKeMo7gHa8kmW5w6I8wJlcNtSAOk6QeaPxplxeul95z0WMTD3yV
+         sWCuhsjznAS6Cl28gg3fnxgYZuQyPkp76yk543fZrcyq9xOEmhpeJynzJj/6WTUafqLx
+         UJhie8Jz90iep1vCRLDmE5riUCzct0ITdlj9W9GoFoPsN8hC5Bb+MYA0FG0NIm9z36r1
+         x5yw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=C2T7RRFPErosSbwjrbbw8iSP4bnBzM5uhxBucwjlDmc=;
+        b=bz0EhrehdOM3maRucMjVM4TwE5/F2oNzZPYqdtkaw65jcOVw2hAZFpCdr4/Py0FETJ
+         kFjAU/RaxaKbT5yXlIzIckyjFOBtLGd0YkMlY3dLp1R4ENCeGRuKOP1sNM4GMpqNwtHq
+         lkcoDEV+PuyxLSOnxRxc4INRZz6R7+1gqjpRJinHW0OXj4Bugt92ywl62vTEVY+jnPV6
+         uSYe8RKhAuSZDT5FDNQbmZfOJoDQM4xWP/yQhxcKHZ12679EmRw15OvQCkdgDLtdraDJ
+         cTpe+FeZ0OxUtd0mmlQjkVjMyDhnW0Wjlcuid8kz9EOkOUd5+btwt4mq8Zc+uqX29Vx1
+         qoHg==
+X-Gm-Message-State: APjAAAU5/whQXJazx1LhTC9oBskmzKHjnhFny45FcLcCUUXW7f0DVDP3
+        0zBR2CSmfT1rwB5MEIvGUqsS0QFq
+X-Google-Smtp-Source: APXvYqxgMd/MLBT1r0SE07UajO6Mm4TNLpoTKQ9CRCo1Sv1IY4Cl5vfl7D4b4WDnI3aZR75BVzdr6w==
+X-Received: by 2002:a5d:5273:: with SMTP id l19mr25802196wrc.175.1574593358116;
+        Sun, 24 Nov 2019 03:02:38 -0800 (PST)
+Received: from gmail.com (54033286.catv.pool.telekom.hu. [84.3.50.134])
+        by smtp.gmail.com with ESMTPSA id l4sm4619113wml.33.2019.11.24.03.02.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 24 Nov 2019 03:02:37 -0800 (PST)
+Date:   Sun, 24 Nov 2019 12:02:35 +0100
+From:   Ingo Molnar <mingo@kernel.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-tip-commits@vger.kernel.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Andy Lutomirski <luto@kernel.org>,
+        Borislav Petkov <bp@alien8.de>,
+        Peter Zijlstra <a.p.zijlstra@chello.nl>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Subject: Re: [tip: x86/iopl] x86/iopl: Restrict iopl() permission scope
+Message-ID: <20191124110235.GA42804@gmail.com>
+References: <157390508247.12247.14556309921021621273.tip-bot2@tip-bot2>
 MIME-Version: 1.0
-Message-ID: <157449690340.21853.17517616578399359386.tip-bot2@tip-bot2>
-X-Mailer: tip-git-log-daemon
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <157390508247.12247.14556309921021621273.tip-bot2@tip-bot2>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     4a7380a52ec90fbb1565dd638ee7f5b6e709f7fb
-Gitweb:        https://git.kernel.org/tip/4a7380a52ec90fbb1565dd638ee7f5b6e709f7fb
-Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Tue, 19 Nov 2019 12:40:29 -03:00
-Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Tue, 19 Nov 2019 15:09:26 -03:00
+* tip-bot2 for Thomas Gleixner <tip-bot2@linutronix.de> wrote:
 
-perf map: Pass a dso_id to map__new()
+> The following commit has been merged into the x86/iopl branch of tip:
+> 
+> Commit-ID:     c8137ace56383688af911fea5934c71ad158135e
+> Gitweb:        https://git.kernel.org/tip/c8137ace56383688af911fea5934c71ad158135e
+> Author:        Thomas Gleixner <tglx@linutronix.de>
+> AuthorDate:    Mon, 11 Nov 2019 23:03:28 +01:00
+> Committer:     Thomas Gleixner <tglx@linutronix.de>
+> CommitterDate: Sat, 16 Nov 2019 11:24:05 +01:00
+> 
+> x86/iopl: Restrict iopl() permission scope
+> 
+> The access to the full I/O port range can be also provided by the TSS I/O
+> bitmap, but that would require to copy 8k of data on scheduling in the
+> task. As shown with the sched out optimization TSS.io_bitmap_base can be
+> used to switch the incoming task to a preallocated I/O bitmap which has all
+> bits zero, i.e. allows access to all I/O ports.
+> 
+> Implementing this allows to provide an iopl() emulation mode which restricts
+> the IOPL level 3 permissions to I/O port access but removes the STI/CLI
+> permission which is coming with the hardware IOPL mechansim.
+> 
+> Provide a config option to switch IOPL to emulation mode, make it the
+> default and while at it also provide an option to disable IOPL completely.
+> 
+> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+> Acked-by: Andy Lutomirski <luto@kernel.org>
+> ---
+>  arch/x86/Kconfig                        | 32 +++++++++-
+>  arch/x86/include/asm/pgtable_32_types.h |  2 +-
+>  arch/x86/include/asm/processor.h        | 28 ++++++--
+>  arch/x86/kernel/cpu/common.c            |  5 +-
+>  arch/x86/kernel/ioport.c                | 87 ++++++++++++++++--------
+>  arch/x86/kernel/process.c               | 32 +++++----
+>  6 files changed, 139 insertions(+), 47 deletions(-)
 
-Instead of the 4 fields, a step in the direction of moving this to
-struct dso.
+> --- a/arch/x86/include/asm/pgtable_32_types.h
+> +++ b/arch/x86/include/asm/pgtable_32_types.h
+> @@ -44,7 +44,7 @@ extern bool __vmalloc_start_set; /* set once high_memory is set */
+>   * Define this here and validate with BUILD_BUG_ON() in pgtable_32.c
+>   * to avoid include recursion hell
+>   */
+> -#define CPU_ENTRY_AREA_PAGES	(NR_CPUS * 40)
+> +#define CPU_ENTRY_AREA_PAGES	(NR_CPUS * 41)
 
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lkml.kernel.org/n/tip-gp5s1xgxacurmih5d1l94ymy@git.kernel.org
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
----
- tools/perf/util/machine.c | 15 ++++++++-------
- tools/perf/util/map.c     | 13 +++++++------
- tools/perf/util/map.h     |  3 +--
- 3 files changed, 16 insertions(+), 15 deletions(-)
+Note that this commit has two (fortunately harmless) bugs:
 
-diff --git a/tools/perf/util/machine.c b/tools/perf/util/machine.c
-index 71ee078..41b4263 100644
---- a/tools/perf/util/machine.c
-+++ b/tools/perf/util/machine.c
-@@ -1651,6 +1651,12 @@ int machine__process_mmap2_event(struct machine *machine,
- {
- 	struct thread *thread;
- 	struct map *map;
-+	struct dso_id dso_id = {
-+		.maj = event->mmap2.maj,
-+		.min = event->mmap2.min,
-+		.ino = event->mmap2.ino,
-+		.ino_generation = event->mmap2.ino_generation,
-+	};
- 	int ret = 0;
- 
- 	if (dump_trace)
-@@ -1671,10 +1677,7 @@ int machine__process_mmap2_event(struct machine *machine,
- 
- 	map = map__new(machine, event->mmap2.start,
- 			event->mmap2.len, event->mmap2.pgoff,
--			event->mmap2.maj,
--			event->mmap2.min, event->mmap2.ino,
--			event->mmap2.ino_generation,
--			event->mmap2.prot,
-+			&dso_id, event->mmap2.prot,
- 			event->mmap2.flags,
- 			event->mmap2.filename, thread);
- 
-@@ -1727,9 +1730,7 @@ int machine__process_mmap_event(struct machine *machine, union perf_event *event
- 
- 	map = map__new(machine, event->mmap.start,
- 			event->mmap.len, event->mmap.pgoff,
--			0, 0, 0, 0, prot, 0,
--			event->mmap.filename,
--			thread);
-+			NULL, prot, 0, event->mmap.filename, thread);
- 
- 	if (map == NULL)
- 		goto out_problem_map;
-diff --git a/tools/perf/util/map.c b/tools/perf/util/map.c
-index 4f50b1b..812d663 100644
---- a/tools/perf/util/map.c
-+++ b/tools/perf/util/map.c
-@@ -144,8 +144,8 @@ void map__init(struct map *map, u64 start, u64 end, u64 pgoff, struct dso *dso)
- }
- 
- struct map *map__new(struct machine *machine, u64 start, u64 len,
--		     u64 pgoff, u32 d_maj, u32 d_min, u64 ino,
--		     u64 ino_gen, u32 prot, u32 flags, char *filename,
-+		     u64 pgoff, struct dso_id *id,
-+		     u32 prot, u32 flags, char *filename,
- 		     struct thread *thread)
- {
- 	struct map *map = malloc(sizeof(*map));
-@@ -162,10 +162,11 @@ struct map *map__new(struct machine *machine, u64 start, u64 len,
- 		vdso = is_vdso_map(filename);
- 		no_dso = is_no_dso_memory(filename);
- 
--		map->dso_id.maj = d_maj;
--		map->dso_id.min = d_min;
--		map->dso_id.ino = ino;
--		map->dso_id.ino_generation = ino_gen;
-+		if (id)
-+			map->dso_id = *id;
-+		else
-+			map->dso_id.min = map->dso_id.ino = map->dso_id.ino_generation = 0;
-+
- 		map->prot = prot;
- 		map->flags = flags;
- 		nsi = nsinfo__get(thread->nsinfo);
-diff --git a/tools/perf/util/map.h b/tools/perf/util/map.h
-index 70d87dc..f962eb9 100644
---- a/tools/perf/util/map.h
-+++ b/tools/perf/util/map.h
-@@ -117,8 +117,7 @@ struct thread;
- void map__init(struct map *map,
- 	       u64 start, u64 end, u64 pgoff, struct dso *dso);
- struct map *map__new(struct machine *machine, u64 start, u64 len,
--		     u64 pgoff, u32 d_maj, u32 d_min, u64 ino,
--		     u64 ino_gen, u32 prot, u32 flags,
-+		     u64 pgoff, struct dso_id *id, u32 prot, u32 flags,
- 		     char *filename, struct thread *thread);
- struct map *map__new2(u64 start, struct dso *dso);
- void map__delete(struct map *map);
+ - On 32-bit kernels the actual size of 'struct cpu_entry_area' was, 
+   before this commit, 38 pages - while CPU_ENTRY_AREA_PAGES was 40, i.e.
+   it's a pre-existing bug.
+
+ - This commit increases cpu_entry_area by *TWO* pages (the new 
+   ->mapall[] ioperm array is 8k large), while CPU_ENTRY_AREA_PAGES is 
+   only increased by +1 page - but this is harmless, because we already 
+   had an accidental 'reserve' of pages.
+
+ - The resulting CPU_ENTRY_AREA_PAGES of 41 pages is still 1 page higher 
+   than the true size of 40 pages.
+
+The reason why these bugs remained undiscovered was that they are 
+harmless (too many pages allocated), and the assert that was supposed to 
+check these values was buggy.
+
+So I'd suggest not rebasing this commit - especially since fixing the 
+value will trigger the buggy assert, but wanted to give a heads-up.
+
+I'll send the fix patch with more details to x86/urgent separately - and 
+on merging x86/urgent to x86/iopl in -tip I made the merge accurate, to 
+resolve the resulting semantic conflict.
+
+Thanks,
+
+	Ingo
