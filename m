@@ -2,29 +2,30 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E5E41089E5
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 25 Nov 2019 09:19:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B79601089E0
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 25 Nov 2019 09:19:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727176AbfKYIT1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 25 Nov 2019 03:19:27 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:38701 "EHLO
+        id S1725938AbfKYITW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 25 Nov 2019 03:19:22 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:38680 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727124AbfKYIT0 (ORCPT
+        with ESMTP id S1725793AbfKYITV (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 25 Nov 2019 03:19:26 -0500
+        Mon, 25 Nov 2019 03:19:21 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iZ9aR-0001QQ-A3; Mon, 25 Nov 2019 09:19:11 +0100
+        id 1iZ9aR-0001QR-Gd; Mon, 25 Nov 2019 09:19:11 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id DB3CC1C1AF1;
-        Mon, 25 Nov 2019 09:19:10 +0100 (CET)
-Date:   Mon, 25 Nov 2019 08:19:10 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 23B611C1AF2;
+        Mon, 25 Nov 2019 09:19:11 +0100 (CET)
+Date:   Mon, 25 Nov 2019 08:19:11 -0000
 From:   "tip-bot2 for Will Deacon" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] lkdtm: Remove references to CONFIG_REFCOUNT_FULL
+Subject: [tip: locking/core] locking/refcount: Remove unused
+ 'refcount_error_report()' function
 Cc:     Will Deacon <will@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
         Kees Cook <keescook@chromium.org>,
         Hanjun Guo <guohanjun@huawei.com>,
@@ -35,10 +36,10 @@ Cc:     Will Deacon <will@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191121115902.2551-11-will@kernel.org>
-References: <20191121115902.2551-11-will@kernel.org>
+In-Reply-To: <20191121115902.2551-10-will@kernel.org>
+References: <20191121115902.2551-10-will@kernel.org>
 MIME-Version: 1.0
-Message-ID: <157466995070.21853.2022025390906689136.tip-bot2@tip-bot2>
+Message-ID: <157466995104.21853.2462265674410709018.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -54,16 +55,16 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     500543c53a54134ced386aed85cd93cf1363f981
-Gitweb:        https://git.kernel.org/tip/500543c53a54134ced386aed85cd93cf1363f981
+Commit-ID:     2f30b36943adca070f2e1551f701bd524ed1ae5a
+Gitweb:        https://git.kernel.org/tip/2f30b36943adca070f2e1551f701bd524ed1ae5a
 Author:        Will Deacon <will@kernel.org>
-AuthorDate:    Thu, 21 Nov 2019 11:59:02 
+AuthorDate:    Thu, 21 Nov 2019 11:59:01 
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Mon, 25 Nov 2019 09:15:46 +01:00
+CommitterDate: Mon, 25 Nov 2019 09:15:42 +01:00
 
-lkdtm: Remove references to CONFIG_REFCOUNT_FULL
+locking/refcount: Remove unused 'refcount_error_report()' function
 
-CONFIG_REFCOUNT_FULL no longer exists, so remove all references to it.
+'refcount_error_report()' has no callers. Remove it.
 
 Signed-off-by: Will Deacon <will@kernel.org>
 Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
@@ -74,30 +75,50 @@ Cc: Elena Reshetova <elena.reshetova@intel.com>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20191121115902.2551-11-will@kernel.org
+Link: https://lkml.kernel.org/r/20191121115902.2551-10-will@kernel.org
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- drivers/misc/lkdtm/refcount.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ include/linux/kernel.h |  7 -------
+ kernel/panic.c         | 11 -----------
+ 2 files changed, 18 deletions(-)
 
-diff --git a/drivers/misc/lkdtm/refcount.c b/drivers/misc/lkdtm/refcount.c
-index abf3b7c..de7c5ab 100644
---- a/drivers/misc/lkdtm/refcount.c
-+++ b/drivers/misc/lkdtm/refcount.c
-@@ -119,7 +119,7 @@ void lkdtm_REFCOUNT_DEC_ZERO(void)
- static void check_negative(refcount_t *ref, int start)
- {
- 	/*
--	 * CONFIG_REFCOUNT_FULL refuses to move a refcount at all on an
-+	 * refcount_t refuses to move a refcount at all on an
- 	 * over-sub, so we have to track our starting position instead of
- 	 * looking only at zero-pinning.
- 	 */
-@@ -202,7 +202,6 @@ static void check_from_zero(refcount_t *ref)
+diff --git a/include/linux/kernel.h b/include/linux/kernel.h
+index d83d403..09f7592 100644
+--- a/include/linux/kernel.h
++++ b/include/linux/kernel.h
+@@ -328,13 +328,6 @@ extern int oops_may_print(void);
+ void do_exit(long error_code) __noreturn;
+ void complete_and_exit(struct completion *, long) __noreturn;
  
- /*
-  * A refcount_inc() from zero should pin to zero or saturate and may WARN.
-- * Only CONFIG_REFCOUNT_FULL provides this protection currently.
-  */
- void lkdtm_REFCOUNT_INC_ZERO(void)
- {
+-#ifdef CONFIG_ARCH_HAS_REFCOUNT
+-void refcount_error_report(struct pt_regs *regs, const char *err);
+-#else
+-static inline void refcount_error_report(struct pt_regs *regs, const char *err)
+-{ }
+-#endif
+-
+ /* Internal, do not use. */
+ int __must_check _kstrtoul(const char *s, unsigned int base, unsigned long *res);
+ int __must_check _kstrtol(const char *s, unsigned int base, long *res);
+diff --git a/kernel/panic.c b/kernel/panic.c
+index f470a03..b69ee9e 100644
+--- a/kernel/panic.c
++++ b/kernel/panic.c
+@@ -671,17 +671,6 @@ EXPORT_SYMBOL(__stack_chk_fail);
+ 
+ #endif
+ 
+-#ifdef CONFIG_ARCH_HAS_REFCOUNT
+-void refcount_error_report(struct pt_regs *regs, const char *err)
+-{
+-	WARN_RATELIMIT(1, "refcount_t %s at %pB in %s[%d], uid/euid: %u/%u\n",
+-		err, (void *)instruction_pointer(regs),
+-		current->comm, task_pid_nr(current),
+-		from_kuid_munged(&init_user_ns, current_uid()),
+-		from_kuid_munged(&init_user_ns, current_euid()));
+-}
+-#endif
+-
+ core_param(panic, panic_timeout, int, 0644);
+ core_param(panic_print, panic_print, ulong, 0644);
+ core_param(pause_on_oops, pause_on_oops, int, 0644);
