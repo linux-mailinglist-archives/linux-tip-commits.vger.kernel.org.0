@@ -2,37 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F420C109146
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 25 Nov 2019 16:50:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 811CA1091D0
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 25 Nov 2019 17:29:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728661AbfKYPuv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 25 Nov 2019 10:50:51 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:39607 "EHLO
+        id S1728683AbfKYQ3y (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 25 Nov 2019 11:29:54 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:39724 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728592AbfKYPuv (ORCPT
+        with ESMTP id S1728843AbfKYQ3y (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 25 Nov 2019 10:50:51 -0500
+        Mon, 25 Nov 2019 11:29:54 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iZGdP-0008Sa-Ou; Mon, 25 Nov 2019 16:50:43 +0100
+        id 1iZHFE-0001Su-6B; Mon, 25 Nov 2019 17:29:48 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 467F51C1AF2;
-        Mon, 25 Nov 2019 16:50:43 +0100 (CET)
-Date:   Mon, 25 Nov 2019 15:50:43 -0000
-From:   "tip-bot2 for Andy Lutomirski" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C91361C1AFF;
+        Mon, 25 Nov 2019 17:29:47 +0100 (CET)
+Date:   Mon, 25 Nov 2019 16:29:47 -0000
+From:   "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/entry/32: Fix FIXUP_ESPFIX_STACK with user CR3
-Cc:     Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+Subject: [tip: x86/cleanups] x86/setup: Enhance the comments
+Cc:     linux-kernel@vger.kernel.org, Borislav Petkov <bp@alien8.de>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
         Peter Zijlstra <peterz@infradead.org>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        <stable@vger.kernel.org>, Ingo Molnar <mingo@kernel.org>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>
 MIME-Version: 1.0
-Message-ID: <157469704311.21853.13499142066823391029.tip-bot2@tip-bot2>
+Message-ID: <157469938760.21853.2579898398606046611.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -46,73 +45,125 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the x86/cleanups branch of tip:
 
-Commit-ID:     4a13b0e3e10996b9aa0b45a764ecfe49f6fcd360
-Gitweb:        https://git.kernel.org/tip/4a13b0e3e10996b9aa0b45a764ecfe49f6fcd360
-Author:        Andy Lutomirski <luto@kernel.org>
-AuthorDate:    Sun, 24 Nov 2019 08:50:03 -08:00
+Commit-ID:     b74374fef924e0adb8cb1d84313d467965ca0f00
+Gitweb:        https://git.kernel.org/tip/b74374fef924e0adb8cb1d84313d467965ca0f00
+Author:        Ingo Molnar <mingo@kernel.org>
+AuthorDate:    Mon, 18 Nov 2019 16:03:39 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Mon, 25 Nov 2019 09:36:47 +01:00
+CommitterDate: Tue, 19 Nov 2019 17:49:19 +01:00
 
-x86/entry/32: Fix FIXUP_ESPFIX_STACK with user CR3
+x86/setup: Enhance the comments
 
-UNWIND_ESPFIX_STACK needs to read the GDT, and the GDT mapping that
-can be accessed via %fs is not mapped in the user pagetables.  Use
-SGDT to find the cpu_entry_area mapping and read the espfix offset
-from that instead.
+Update various comments, fix outright mistakes and meaningless descriptions.
 
-Reported-and-tested-by: Borislav Petkov <bp@alien8.de>
-Signed-off-by: Andy Lutomirski <luto@kernel.org>
+Also harmonize the style across the file, both in form and in language.
+
+Cc: linux-kernel@vger.kernel.org
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: <stable@vger.kernel.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- arch/x86/entry/entry_32.S | 21 ++++++++++++++++++---
- 1 file changed, 18 insertions(+), 3 deletions(-)
+ arch/x86/kernel/setup.c | 41 ++++++++++++++++++++++++----------------
+ 1 file changed, 25 insertions(+), 16 deletions(-)
 
-diff --git a/arch/x86/entry/entry_32.S b/arch/x86/entry/entry_32.S
-index 0b8c931..f07baf0 100644
---- a/arch/x86/entry/entry_32.S
-+++ b/arch/x86/entry/entry_32.S
-@@ -415,7 +415,8 @@
+diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
+index 26a4a73..a871381 100644
+--- a/arch/x86/kernel/setup.c
++++ b/arch/x86/kernel/setup.c
+@@ -43,11 +43,11 @@
+ #include <asm/vsyscall.h>
  
- .macro CHECK_AND_APPLY_ESPFIX
- #ifdef CONFIG_X86_ESPFIX32
--#define GDT_ESPFIX_SS PER_CPU_VAR(gdt_page) + (GDT_ENTRY_ESPFIX_SS * 8)
-+#define GDT_ESPFIX_OFFSET (GDT_ENTRY_ESPFIX_SS * 8)
-+#define GDT_ESPFIX_SS PER_CPU_VAR(gdt_page) + GDT_ESPFIX_OFFSET
- 
- 	ALTERNATIVE	"jmp .Lend_\@", "", X86_BUG_ESPFIX
- 
-@@ -1147,12 +1148,26 @@ ENDPROC(entry_INT80_32)
-  * We can't call C functions using the ESPFIX stack. This code reads
-  * the high word of the segment base from the GDT and swiches to the
-  * normal stack and adjusts ESP with the matching offset.
-+ *
-+ * We might be on user CR3 here, so percpu data is not mapped and we can't
-+ * access the GDT through the percpu segment.  Instead, use SGDT to find
-+ * the cpu_entry_area alias of the GDT.
+ /*
+- * max_low_pfn_mapped: highest direct mapped pfn under 4GB
+- * max_pfn_mapped:     highest direct mapped pfn over 4GB
++ * max_low_pfn_mapped: highest directly mapped pfn < 4 GB
++ * max_pfn_mapped:     highest directly mapped pfn > 4 GB
+  *
+  * The direct mapping only covers E820_TYPE_RAM regions, so the ranges and gaps are
+- * represented by pfn_mapped
++ * represented by pfn_mapped[].
   */
- #ifdef CONFIG_X86_ESPFIX32
- 	/* fixup the stack */
--	mov	GDT_ESPFIX_SS + 4, %al /* bits 16..23 */
--	mov	GDT_ESPFIX_SS + 7, %ah /* bits 24..31 */
-+	pushl	%ecx
-+	subl	$2*4, %esp
-+	sgdt	(%esp)
-+	movl	2(%esp), %ecx				/* GDT address */
-+	/*
-+	 * Careful: ECX is a linear pointer, so we need to force base
-+	 * zero.  %cs is the only known-linear segment we have right now.
-+	 */
-+	mov	%cs:GDT_ESPFIX_OFFSET + 4(%ecx), %al	/* bits 16..23 */
-+	mov	%cs:GDT_ESPFIX_OFFSET + 7(%ecx), %ah	/* bits 24..31 */
- 	shl	$16, %eax
-+	addl	$2*4, %esp
-+	popl	%ecx
- 	addl	%esp, %eax			/* the adjusted stack pointer */
- 	pushl	$__KERNEL_DS
- 	pushl	%eax
+ unsigned long max_low_pfn_mapped;
+ unsigned long max_pfn_mapped;
+@@ -57,14 +57,23 @@ RESERVE_BRK(dmi_alloc, 65536);
+ #endif
+ 
+ 
+-static __initdata unsigned long _brk_start = (unsigned long)__brk_base;
+-unsigned long _brk_end = (unsigned long)__brk_base;
++/*
++ * Range of the BSS area. The size of the BSS area is determined
++ * at link time, with RESERVE_BRK*() facility reserving additional
++ * chunks.
++ */
++static __initdata
++unsigned long _brk_start = (unsigned long)__brk_base;
++unsigned long _brk_end   = (unsigned long)__brk_base;
+ 
+ struct boot_params boot_params;
+ 
+ /*
+- * Machine setup..
++ * These are the four main kernel memory regions, we put them into
++ * the resource tree so that kdump tools and other debugging tools
++ * recover it:
+  */
++
+ static struct resource rodata_resource = {
+ 	.name	= "Kernel rodata",
+ 	.start	= 0,
+@@ -95,16 +104,16 @@ static struct resource bss_resource = {
+ 
+ 
+ #ifdef CONFIG_X86_32
+-/* cpu data as detected by the assembly code in head_32.S */
++/* CPU data as detected by the assembly code in head_32.S */
+ struct cpuinfo_x86 new_cpu_data;
+ 
+-/* common cpu data for all cpus */
++/* Common CPU data for all CPUs */
+ struct cpuinfo_x86 boot_cpu_data __read_mostly;
+ EXPORT_SYMBOL(boot_cpu_data);
+ 
+ unsigned int def_to_bigsmp;
+ 
+-/* for MCA, but anyone else can use it if they want */
++/* For MCA, but anyone else can use it if they want */
+ unsigned int machine_id;
+ unsigned int machine_submodel_id;
+ unsigned int BIOS_revision;
+@@ -384,15 +393,15 @@ static void __init memblock_x86_reserve_range_setup_data(void)
+ /*
+  * Keep the crash kernel below this limit.
+  *
+- * On 32 bits earlier kernels would limit the kernel to the low 512 MiB
++ * Earlier 32-bits kernels would limit the kernel to the low 512 MB range
+  * due to mapping restrictions.
+  *
+- * On 64bit, kdump kernel need be restricted to be under 64TB, which is
++ * 64-bit kdump kernels need to be restricted to be under 64 TB, which is
+  * the upper limit of system RAM in 4-level paging mode. Since the kdump
+- * jumping could be from 5-level to 4-level, the jumping will fail if
+- * kernel is put above 64TB, and there's no way to detect the paging mode
+- * of the kernel which will be loaded for dumping during the 1st kernel
+- * bootup.
++ * jump could be from 5-level paging to 4-level paging, the jump will fail if
++ * the kernel is put above 64 TB, and during the 1st kernel bootup there's
++ * no good way to detect the paging mode of the target kernel which will be
++ * loaded for dumping.
+  */
+ #ifdef CONFIG_X86_32
+ # define CRASH_ADDR_LOW_MAX	SZ_512M
+@@ -803,7 +812,7 @@ void __init setup_arch(char **cmdline_p)
+ 	/*
+ 	 * Note: Quark X1000 CPUs advertise PGE incorrectly and require
+ 	 * a cr3 based tlb flush, so the following __flush_tlb_all()
+-	 * will not flush anything because the cpu quirk which clears
++	 * will not flush anything because the CPU quirk which clears
+ 	 * X86_FEATURE_PGE has not been invoked yet. Though due to the
+ 	 * load_cr3() above the TLB has been flushed already. The
+ 	 * quirk is invoked before subsequent calls to __flush_tlb_all()
