@@ -2,36 +2,41 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C5D91091D2
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 25 Nov 2019 17:29:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 472611099C8
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 26 Nov 2019 09:00:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728843AbfKYQ35 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 25 Nov 2019 11:29:57 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:39727 "EHLO
+        id S1727073AbfKZIAV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 26 Nov 2019 03:00:21 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:40990 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728871AbfKYQ35 (ORCPT
+        with ESMTP id S1725794AbfKZIAV (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 25 Nov 2019 11:29:57 -0500
+        Tue, 26 Nov 2019 03:00:21 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iZHFE-0001Sw-CY; Mon, 25 Nov 2019 17:29:48 +0100
+        id 1iZVlc-00034e-Tu; Tue, 26 Nov 2019 09:00:13 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 0381F1C1B00;
-        Mon, 25 Nov 2019 17:29:48 +0100 (CET)
-Date:   Mon, 25 Nov 2019 16:29:47 -0000
-From:   "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 3ED971C1D95;
+        Tue, 26 Nov 2019 09:00:11 +0100 (CET)
+Date:   Tue, 26 Nov 2019 08:00:11 -0000
+From:   "tip-bot2 for Sean Christopherson" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] x86/setup: Clean up the header portion of setup.c
-Cc:     linux-kernel@vger.kernel.org, Borislav Petkov <bp@alien8.de>,
+Subject: [tip: core/headers] efi/capsule-loader: Explicitly include linux/io.h
+ for page_to_phys()
+Cc:     Sean Christopherson <sean.j.christopherson@intel.com>,
+        Borislav Petkov <bp@alien8.de>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Peter Zijlstra <peterz@infradead.org>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>
+        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20191119002121.4107-7-sean.j.christopherson@intel.com>
+References: <20191119002121.4107-7-sean.j.christopherson@intel.com>
 MIME-Version: 1.0
-Message-ID: <157469938792.21853.10716859022241922963.tip-bot2@tip-bot2>
+Message-ID: <157475521115.21853.448312899013638043.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -45,183 +50,44 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cleanups branch of tip:
+The following commit has been merged into the core/headers branch of tip:
 
-Commit-ID:     d3d9911e0e1258819e7a245dd200f3637aa3ee47
-Gitweb:        https://git.kernel.org/tip/d3d9911e0e1258819e7a245dd200f3637aa3ee47
-Author:        Ingo Molnar <mingo@kernel.org>
-AuthorDate:    Mon, 18 Nov 2019 15:49:22 +01:00
+Commit-ID:     53db61e1d344adda56a2a9dc8ae4fc099df0f95a
+Gitweb:        https://git.kernel.org/tip/53db61e1d344adda56a2a9dc8ae4fc099df0f95a
+Author:        Sean Christopherson <sean.j.christopherson@intel.com>
+AuthorDate:    Mon, 18 Nov 2019 16:21:15 -08:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 19 Nov 2019 17:49:15 +01:00
+CommitterDate: Tue, 19 Nov 2019 17:50:26 +01:00
 
-x86/setup: Clean up the header portion of setup.c
+efi/capsule-loader: Explicitly include linux/io.h for page_to_phys()
 
-In 20 years we accumulated 89 #include lines in setup.c,
-but we only need 30 of them (!) ...
+Through a labyrinthian sequence of includes, usage of page_to_phys() is
+dependent on the include of asm/io.h in x86's asm/realmode.h, which is
+included in x86's asm/acpi.h and thus by linux/acpi.h.  Explicitly
+include linux/io.h to break the dependency on realmode.h so that a
+future patch can remove the realmode.h include from acpi.h without
+breaking the build.
 
-Get rid of the excessive ones, and while at it, sort the
-remaining ones alphabetically.
-
-Also get rid of the incomplete changelogs at the header of the file,
-and explain better what this file does.
-
-Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Sean Christopherson <sean.j.christopherson@intel.com>
 Cc: Borislav Petkov <bp@alien8.de>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lkml.kernel.org/r/20191119002121.4107-7-sean.j.christopherson@intel.com
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- arch/x86/kernel/setup.c | 122 +++++++--------------------------------
- 1 file changed, 22 insertions(+), 100 deletions(-)
+ drivers/firmware/efi/capsule-loader.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
-index ea6496f..26a4a73 100644
---- a/arch/x86/kernel/setup.c
-+++ b/arch/x86/kernel/setup.c
-@@ -2,123 +2,45 @@
- /*
-  *  Copyright (C) 1995  Linus Torvalds
-  *
-- *  Support of BIGMEM added by Gerhard Wichert, Siemens AG, July 1999
-- *
-- *  Memory region support
-- *	David Parsons <orc@pell.chi.il.us>, July-August 1999
-- *
-- *  Added E820 sanitization routine (removes overlapping memory regions);
-- *  Brian Moyle <bmoyle@mvista.com>, February 2001
-- *
-- * Moved CPU detection code to cpu/${cpu}.c
-- *    Patrick Mochel <mochel@osdl.org>, March 2002
-- *
-- *  Provisions for empty E820 memory regions (reported by certain BIOSes).
-- *  Alex Achenbach <xela@slit.de>, December 2002.
-- *
-+ * This file contains the setup_arch() code, which handles the architecture-dependent
-+ * parts of early kernel initialization.
-  */
--
--/*
-- * This file handles the architecture-dependent parts of initialization
-- */
--
--#include <linux/sched.h>
--#include <linux/mm.h>
--#include <linux/mmzone.h>
--#include <linux/screen_info.h>
--#include <linux/ioport.h>
--#include <linux/acpi.h>
--#include <linux/sfi.h>
--#include <linux/apm_bios.h>
--#include <linux/initrd.h>
--#include <linux/memblock.h>
--#include <linux/seq_file.h>
- #include <linux/console.h>
--#include <linux/root_dev.h>
--#include <linux/highmem.h>
--#include <linux/export.h>
-+#include <linux/crash_dump.h>
-+#include <linux/dmi.h>
+diff --git a/drivers/firmware/efi/capsule-loader.c b/drivers/firmware/efi/capsule-loader.c
+index b139513..d3067cb 100644
+--- a/drivers/firmware/efi/capsule-loader.c
++++ b/drivers/firmware/efi/capsule-loader.c
+@@ -11,6 +11,7 @@
+ #include <linux/module.h>
+ #include <linux/miscdevice.h>
+ #include <linux/highmem.h>
++#include <linux/io.h>
+ #include <linux/slab.h>
+ #include <linux/mutex.h>
  #include <linux/efi.h>
--#include <linux/init.h>
--#include <linux/edd.h>
-+#include <linux/init_ohci1394_dma.h>
-+#include <linux/initrd.h>
- #include <linux/iscsi_ibft.h>
--#include <linux/nodemask.h>
--#include <linux/kexec.h>
--#include <linux/dmi.h>
--#include <linux/pfn.h>
-+#include <linux/memblock.h>
- #include <linux/pci.h>
--#include <asm/pci-direct.h>
--#include <linux/init_ohci1394_dma.h>
--#include <linux/kvm_para.h>
--#include <linux/dma-contiguous.h>
--#include <xen/xen.h>
--#include <uapi/linux/mount.h>
--
--#include <linux/errno.h>
--#include <linux/kernel.h>
--#include <linux/stddef.h>
--#include <linux/unistd.h>
--#include <linux/ptrace.h>
--#include <linux/user.h>
--#include <linux/delay.h>
--
--#include <linux/kallsyms.h>
--#include <linux/cpufreq.h>
--#include <linux/dma-mapping.h>
--#include <linux/ctype.h>
--#include <linux/uaccess.h>
--
--#include <linux/percpu.h>
--#include <linux/crash_dump.h>
-+#include <linux/root_dev.h>
-+#include <linux/sfi.h>
- #include <linux/tboot.h>
--#include <linux/jiffies.h>
--#include <linux/mem_encrypt.h>
--#include <linux/sizes.h>
--
- #include <linux/usb/xhci-dbgp.h>
--#include <video/edid.h>
- 
--#include <asm/mtrr.h>
-+#include <uapi/linux/mount.h>
-+
-+#include <xen/xen.h>
-+
- #include <asm/apic.h>
--#include <asm/realmode.h>
--#include <asm/e820/api.h>
--#include <asm/mpspec.h>
--#include <asm/setup.h>
--#include <asm/efi.h>
--#include <asm/timer.h>
--#include <asm/i8259.h>
--#include <asm/sections.h>
--#include <asm/io_apic.h>
--#include <asm/ist.h>
--#include <asm/setup_arch.h>
- #include <asm/bios_ebda.h>
--#include <asm/cacheflush.h>
--#include <asm/processor.h>
- #include <asm/bugs.h>
--#include <asm/kasan.h>
--
--#include <asm/vsyscall.h>
- #include <asm/cpu.h>
--#include <asm/desc.h>
--#include <asm/dma.h>
--#include <asm/iommu.h>
-+#include <asm/efi.h>
- #include <asm/gart.h>
--#include <asm/mmu_context.h>
--#include <asm/proto.h>
--
--#include <asm/paravirt.h>
- #include <asm/hypervisor.h>
--#include <asm/olpc_ofw.h>
--
--#include <asm/percpu.h>
--#include <asm/topology.h>
--#include <asm/apicdef.h>
--#include <asm/amd_nb.h>
-+#include <asm/io_apic.h>
-+#include <asm/kasan.h>
-+#include <asm/kaslr.h>
- #include <asm/mce.h>
--#include <asm/alternative.h>
-+#include <asm/mtrr.h>
-+#include <asm/olpc_ofw.h>
-+#include <asm/pci-direct.h>
- #include <asm/prom.h>
--#include <asm/microcode.h>
--#include <asm/kaslr.h>
-+#include <asm/proto.h>
- #include <asm/unwind.h>
-+#include <asm/vsyscall.h>
- 
- /*
-  * max_low_pfn_mapped: highest direct mapped pfn under 4GB
