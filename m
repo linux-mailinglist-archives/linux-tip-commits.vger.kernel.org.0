@@ -2,41 +2,42 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F09281099D3
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 26 Nov 2019 09:00:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C0F331099DB
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 26 Nov 2019 09:00:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727385AbfKZIA2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 26 Nov 2019 03:00:28 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:41028 "EHLO
+        id S1727322AbfKZIA0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 26 Nov 2019 03:00:26 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:41019 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727345AbfKZIA2 (ORCPT
+        with ESMTP id S1727313AbfKZIAZ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 26 Nov 2019 03:00:28 -0500
+        Tue, 26 Nov 2019 03:00:25 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iZVlc-00034b-Pt; Tue, 26 Nov 2019 09:00:12 +0100
+        id 1iZVlc-00034V-L0; Tue, 26 Nov 2019 09:00:12 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id F2ABC1C1D94;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 918271C1D92;
         Tue, 26 Nov 2019 09:00:10 +0100 (CET)
 Date:   Tue, 26 Nov 2019 08:00:10 -0000
 From:   "tip-bot2 for Sean Christopherson" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/headers] virt: vbox: Explicitly include linux/io.h to pick
- up various defs
+Subject: [tip: core/headers] ASoC: Intel: Skylake: Explicitly include
+ linux/io.h for virt_to_phys()
 Cc:     Sean Christopherson <sean.j.christopherson@intel.com>,
+        Mark Brown <broonie@kernel.org>,
         Borislav Petkov <bp@alien8.de>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Peter Zijlstra <peterz@infradead.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191119002121.4107-8-sean.j.christopherson@intel.com>
-References: <20191119002121.4107-8-sean.j.christopherson@intel.com>
+In-Reply-To: <20191119002121.4107-10-sean.j.christopherson@intel.com>
+References: <20191119002121.4107-10-sean.j.christopherson@intel.com>
 MIME-Version: 1.0
-Message-ID: <157475521085.21853.115937895521896740.tip-bot2@tip-bot2>
+Message-ID: <157475521050.21853.1897962495187818342.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -52,55 +53,43 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/headers branch of tip:
 
-Commit-ID:     3f61b293e48068606fac988f6d72a710c0dce668
-Gitweb:        https://git.kernel.org/tip/3f61b293e48068606fac988f6d72a710c0dce668
+Commit-ID:     6d1002c4229fa3cfdb5b73a2c8a45a4b6090ba0a
+Gitweb:        https://git.kernel.org/tip/6d1002c4229fa3cfdb5b73a2c8a45a4b6090ba0a
 Author:        Sean Christopherson <sean.j.christopherson@intel.com>
-AuthorDate:    Mon, 18 Nov 2019 16:21:16 -08:00
+AuthorDate:    Mon, 18 Nov 2019 16:21:18 -08:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Tue, 19 Nov 2019 17:50:27 +01:00
 
-virt: vbox: Explicitly include linux/io.h to pick up various defs
+ASoC: Intel: Skylake: Explicitly include linux/io.h for virt_to_phys()
 
-Through a labyrinthian sequence of includes, usage of page_to_phys(),
-virt_to_phys() and out*() is dependent on the include of asm/io.h in
-x86's asm/realmode.h, which is included in x86's asm/acpi.h and thus by
-linux/acpi.h.  Explicitly include linux/io.h to break the dependency on
-realmode.h so that a future patch can remove the realmode.h include from
-acpi.h without breaking the build.
+Through a labyrinthian sequence of includes, usage of virt_to_phys() is
+dependent on the include of asm/io.h in x86's asm/realmode.h, which is
+included in x86's asm/acpi.h and thus by linux/acpi.h.  Explicitly
+include linux/io.h to break the dependency on realmode.h so that a
+future patch can remove the realmode.h include from acpi.h without
+breaking the build.
 
 Signed-off-by: Sean Christopherson <sean.j.christopherson@intel.com>
+Acked-by: Mark Brown <broonie@kernel.org>
 Cc: Borislav Petkov <bp@alien8.de>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20191119002121.4107-8-sean.j.christopherson@intel.com
+Link: https://lkml.kernel.org/r/20191119002121.4107-10-sean.j.christopherson@intel.com
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- drivers/virt/vboxguest/vboxguest_core.c  | 1 +
- drivers/virt/vboxguest/vboxguest_utils.c | 1 +
- 2 files changed, 2 insertions(+)
+ sound/soc/intel/skylake/skl-sst-cldma.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/virt/vboxguest/vboxguest_core.c b/drivers/virt/vboxguest/vboxguest_core.c
-index 2307b03..d823d55 100644
---- a/drivers/virt/vboxguest/vboxguest_core.c
-+++ b/drivers/virt/vboxguest/vboxguest_core.c
-@@ -6,6 +6,7 @@
+diff --git a/sound/soc/intel/skylake/skl-sst-cldma.c b/sound/soc/intel/skylake/skl-sst-cldma.c
+index 5a2c35f..36f697c 100644
+--- a/sound/soc/intel/skylake/skl-sst-cldma.c
++++ b/sound/soc/intel/skylake/skl-sst-cldma.c
+@@ -8,6 +8,7 @@
   */
  
  #include <linux/device.h>
 +#include <linux/io.h>
  #include <linux/mm.h>
- #include <linux/sched.h>
- #include <linux/sizes.h>
-diff --git a/drivers/virt/vboxguest/vboxguest_utils.c b/drivers/virt/vboxguest/vboxguest_utils.c
-index 75fd140..80e0f12 100644
---- a/drivers/virt/vboxguest/vboxguest_utils.c
-+++ b/drivers/virt/vboxguest/vboxguest_utils.c
-@@ -7,6 +7,7 @@
-  */
- 
- #include <linux/errno.h>
-+#include <linux/io.h>
- #include <linux/kernel.h>
- #include <linux/mm.h>
- #include <linux/module.h>
+ #include <linux/delay.h>
+ #include "../common/sst-dsp.h"
