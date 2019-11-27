@@ -2,29 +2,30 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 42B4310ABA0
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 27 Nov 2019 09:20:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 85A5C10AB9F
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 27 Nov 2019 09:20:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726634AbfK0IUF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 27 Nov 2019 03:20:05 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:43968 "EHLO
+        id S1726664AbfK0ITh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 27 Nov 2019 03:19:37 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:43964 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726125AbfK0ITh (ORCPT
+        with ESMTP id S1726373AbfK0ITh (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Wed, 27 Nov 2019 03:19:37 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iZsXp-0002Pa-Iz; Wed, 27 Nov 2019 09:19:29 +0100
+        id 1iZsXp-0002Pb-LI; Wed, 27 Nov 2019 09:19:29 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 1F1811C004F;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4BE171C1E6D;
         Wed, 27 Nov 2019 09:19:29 +0100 (CET)
-Date:   Wed, 27 Nov 2019 08:19:28 -0000
+Date:   Wed, 27 Nov 2019 08:19:29 -0000
 From:   "tip-bot2 for Andy Lutomirski" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/ptrace: Document FSBASE and GSBASE ABI oddities
+Subject: [tip: x86/urgent] x86/ptrace: Remove set_segment_reg()
+ implementations for current
 Cc:     Andy Lutomirski <luto@kernel.org>, Borislav Petkov <bp@alien8.de>,
         Peter Zijlstra <peterz@infradead.org>,
         Thomas Gleixner <tglx@linutronix.de>,
@@ -32,7 +33,7 @@ Cc:     Andy Lutomirski <luto@kernel.org>, Borislav Petkov <bp@alien8.de>,
         Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <157484276896.21853.7610159468997605731.tip-bot2@tip-bot2>
+Message-ID: <157484276921.21853.10028026818717673035.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,14 +49,21 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     56f2ab41b652251f336a0f471b1033afeaedd161
-Gitweb:        https://git.kernel.org/tip/56f2ab41b652251f336a0f471b1033afeaedd161
+Commit-ID:     8e05f1b4f27d07a0f93e7c6fd28525a5d082b85c
+Gitweb:        https://git.kernel.org/tip/8e05f1b4f27d07a0f93e7c6fd28525a5d082b85c
 Author:        Andy Lutomirski <luto@kernel.org>
-AuthorDate:    Wed, 17 Jul 2019 06:44:16 -07:00
+AuthorDate:    Mon, 15 Jul 2019 10:08:48 -07:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Tue, 26 Nov 2019 22:00:12 +01:00
 
-x86/ptrace: Document FSBASE and GSBASE ABI oddities
+x86/ptrace: Remove set_segment_reg() implementations for current
+
+seg_segment_reg() should be unreachable with task == current.
+Rather than confusingly trying to make it work, just explicitly
+disable this case.
+
+(regset->get is used for current in the coredump code, but the ->set
+ interface is only used for ptrace, and you can't ptrace yourself.)
 
 Signed-off-by: Andy Lutomirski <luto@kernel.org>
 Cc: Borislav Petkov <bp@alien8.de>
@@ -64,41 +72,66 @@ Cc: Thomas Gleixner <tglx@linutronix.de>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- arch/x86/kernel/ptrace.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ arch/x86/kernel/ptrace.c | 19 +++++++------------
+ 1 file changed, 7 insertions(+), 12 deletions(-)
 
 diff --git a/arch/x86/kernel/ptrace.c b/arch/x86/kernel/ptrace.c
-index 3b3b169..f0e1ddb 100644
+index 066e5b0..3b3b169 100644
 --- a/arch/x86/kernel/ptrace.c
 +++ b/arch/x86/kernel/ptrace.c
-@@ -281,6 +281,20 @@ static int set_segment_reg(struct task_struct *task,
- 	if (invalid_selector(value))
- 		return -EIO;
- 
-+	/*
-+	 * This function has some ABI oddities.
-+	 *
-+	 * A 32-bit ptracer probably expects that writing FS or GS will change
-+	 * FSBASE or GSBASE respectively.  In the absence of FSGSBASE support,
-+	 * this code indeed has that effect.  When FSGSBASE is added, this
-+	 * will require a special case.
-+	 *
-+	 * For existing 64-bit ptracers, writing FS or GS *also* currently
-+	 * changes the base if the selector is nonzero the next time the task
-+	 * is run.  This behavior may not be needed, and trying to preserve it
-+	 * when FSGSBASE is added would be complicated at best.
-+	 */
+@@ -182,6 +182,9 @@ static u16 get_segment_reg(struct task_struct *task, unsigned long offset)
+ static int set_segment_reg(struct task_struct *task,
+ 			   unsigned long offset, u16 value)
+ {
++	if (WARN_ON_ONCE(task == current))
++		return -EIO;
 +
+ 	/*
+ 	 * The value argument was already truncated to 16 bits.
+ 	 */
+@@ -209,10 +212,7 @@ static int set_segment_reg(struct task_struct *task,
+ 		break;
+ 
+ 	case offsetof(struct user_regs_struct, gs):
+-		if (task == current)
+-			set_user_gs(task_pt_regs(task), value);
+-		else
+-			task_user_gs(task) = value;
++		task_user_gs(task) = value;
+ 	}
+ 
+ 	return 0;
+@@ -272,6 +272,9 @@ static u16 get_segment_reg(struct task_struct *task, unsigned long offset)
+ static int set_segment_reg(struct task_struct *task,
+ 			   unsigned long offset, u16 value)
+ {
++	if (WARN_ON_ONCE(task == current))
++		return -EIO;
++
+ 	/*
+ 	 * The value argument was already truncated to 16 bits.
+ 	 */
+@@ -281,23 +284,15 @@ static int set_segment_reg(struct task_struct *task,
  	switch (offset) {
  	case offsetof(struct user_regs_struct,fs):
  		task->thread.fsindex = value;
-@@ -370,6 +384,9 @@ static int putreg(struct task_struct *child,
- 		 * When changing the FS base, use do_arch_prctl_64()
- 		 * to set the index to zero and to set the base
- 		 * as requested.
-+		 *
-+		 * NB: This behavior is nonsensical and likely needs to
-+		 * change when FSGSBASE support is added.
- 		 */
- 		if (child->thread.fsbase != value)
- 			return do_arch_prctl_64(child, ARCH_SET_FS, value);
+-		if (task == current)
+-			loadsegment(fs, task->thread.fsindex);
+ 		break;
+ 	case offsetof(struct user_regs_struct,gs):
+ 		task->thread.gsindex = value;
+-		if (task == current)
+-			load_gs_index(task->thread.gsindex);
+ 		break;
+ 	case offsetof(struct user_regs_struct,ds):
+ 		task->thread.ds = value;
+-		if (task == current)
+-			loadsegment(ds, task->thread.ds);
+ 		break;
+ 	case offsetof(struct user_regs_struct,es):
+ 		task->thread.es = value;
+-		if (task == current)
+-			loadsegment(es, task->thread.es);
+ 		break;
+ 
+ 		/*
