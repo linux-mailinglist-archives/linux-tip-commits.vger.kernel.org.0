@@ -2,37 +2,41 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5627210AB93
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 27 Nov 2019 09:20:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CB4EB10AB9B
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 27 Nov 2019 09:20:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727050AbfK0ITs (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 27 Nov 2019 03:19:48 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:43985 "EHLO
+        id S1726722AbfK0ITi (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 27 Nov 2019 03:19:38 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:43966 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726980AbfK0ITo (ORCPT
+        with ESMTP id S1726545AbfK0ITh (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 27 Nov 2019 03:19:44 -0500
+        Wed, 27 Nov 2019 03:19:37 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iZsXu-0002Rj-1S; Wed, 27 Nov 2019 09:19:34 +0100
+        id 1iZsXs-0002RI-01; Wed, 27 Nov 2019 09:19:32 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 502A81C1E72;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 2D71A1C1E6D;
         Wed, 27 Nov 2019 09:19:30 +0100 (CET)
 Date:   Wed, 27 Nov 2019 08:19:30 -0000
 From:   "tip-bot2 for Andy Lutomirski" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] selftests/x86/single_step_syscall: Check SYSENTER directly
-Cc:     Andy Lutomirski <luto@kernel.org>, Borislav Petkov <bp@alien8.de>,
+Subject: [tip: x86/urgent] lkdtm: Add a DOUBLE_FAULT crash type on x86
+Cc:     Andy Lutomirski <luto@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+        Borislav Petkov <bp@alien8.de>,
         Peter Zijlstra <peterz@infradead.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <157484277024.21853.2643521750694270592.tip-bot2@tip-bot2>
+Message-ID: <157484277010.21853.17013724751521586684.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,154 +52,113 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     3300c4f3afbb59a1f4bfdbe0f0b6c91e241541b1
-Gitweb:        https://git.kernel.org/tip/3300c4f3afbb59a1f4bfdbe0f0b6c91e241541b1
+Commit-ID:     b09511c253e5c739a60952b97c071a93e92b2e88
+Gitweb:        https://git.kernel.org/tip/b09511c253e5c739a60952b97c071a93e92b2e88
 Author:        Andy Lutomirski <luto@kernel.org>
-AuthorDate:    Wed, 20 Nov 2019 12:22:46 -08:00
+AuthorDate:    Sun, 24 Nov 2019 21:18:04 -08:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Tue, 26 Nov 2019 21:53:34 +01:00
 
-selftests/x86/single_step_syscall: Check SYSENTER directly
+lkdtm: Add a DOUBLE_FAULT crash type on x86
 
-We used to test SYSENTER only through the vDSO.  Test it directly
-too, just in case.
+The DOUBLE_FAULT crash does INT $8, which is a decent approximation
+of a double fault.  This is useful for testing the double fault
+handling.  Use it like:
 
 Signed-off-by: Andy Lutomirski <luto@kernel.org>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: Borislav Petkov <bp@alien8.de>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Thomas Gleixner <tglx@linutronix.de>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- tools/testing/selftests/x86/single_step_syscall.c | 94 ++++++++++++--
- 1 file changed, 85 insertions(+), 9 deletions(-)
+ drivers/misc/lkdtm/bugs.c  | 39 +++++++++++++++++++++++++++++++++++++-
+ drivers/misc/lkdtm/core.c  |  3 +++-
+ drivers/misc/lkdtm/lkdtm.h |  3 +++-
+ 3 files changed, 45 insertions(+)
 
-diff --git a/tools/testing/selftests/x86/single_step_syscall.c b/tools/testing/selftests/x86/single_step_syscall.c
-index 50ce6c3..1063328 100644
---- a/tools/testing/selftests/x86/single_step_syscall.c
-+++ b/tools/testing/selftests/x86/single_step_syscall.c
-@@ -43,7 +43,19 @@ static void sethandler(int sig, void (*handler)(int, siginfo_t *, void *),
- 		err(1, "sigaction");
+diff --git a/drivers/misc/lkdtm/bugs.c b/drivers/misc/lkdtm/bugs.c
+index 7284a22..a4fdad0 100644
+--- a/drivers/misc/lkdtm/bugs.c
++++ b/drivers/misc/lkdtm/bugs.c
+@@ -12,6 +12,10 @@
+ #include <linux/sched/task_stack.h>
+ #include <linux/uaccess.h>
+ 
++#ifdef CONFIG_X86_32
++#include <asm/desc.h>
++#endif
++
+ struct lkdtm_list {
+ 	struct list_head node;
+ };
+@@ -337,3 +341,38 @@ void lkdtm_UNSET_SMEP(void)
+ 	pr_err("FAIL: this test is x86_64-only\n");
+ #endif
  }
- 
--static volatile sig_atomic_t sig_traps;
-+static void clearhandler(int sig)
++
++#ifdef CONFIG_X86_32
++void lkdtm_DOUBLE_FAULT(void)
 +{
-+	struct sigaction sa;
-+	memset(&sa, 0, sizeof(sa));
-+	sa.sa_handler = SIG_DFL;
-+	sigemptyset(&sa.sa_mask);
-+	if (sigaction(sig, &sa, 0))
-+		err(1, "sigaction");
-+}
++	/*
++	 * Trigger #DF by setting the stack limit to zero.  This clobbers
++	 * a GDT TLS slot, which is okay because the current task will die
++	 * anyway due to the double fault.
++	 */
++	struct desc_struct d = {
++		.type = 3,	/* expand-up, writable, accessed data */
++		.p = 1,		/* present */
++		.d = 1,		/* 32-bit */
++		.g = 0,		/* limit in bytes */
++		.s = 1,		/* not system */
++	};
 +
-+static volatile sig_atomic_t sig_traps, sig_eflags;
-+sigjmp_buf jmpbuf;
-+static unsigned char altstack_data[SIGSTKSZ];
- 
- #ifdef __x86_64__
- # define REG_IP REG_RIP
-@@ -90,6 +102,25 @@ static void sigtrap(int sig, siginfo_t *info, void *ctx_void)
- 	}
- }
- 
-+static char const * const signames[] = {
-+	[SIGSEGV] = "SIGSEGV",
-+	[SIGBUS] = "SIBGUS",
-+	[SIGTRAP] = "SIGTRAP",
-+	[SIGILL] = "SIGILL",
-+};
-+
-+static void print_and_longjmp(int sig, siginfo_t *si, void *ctx_void)
-+{
-+	ucontext_t *ctx = ctx_void;
-+
-+	printf("\tGot %s with RIP=%lx, TF=%ld\n", signames[sig],
-+	       (unsigned long)ctx->uc_mcontext.gregs[REG_IP],
-+	       (unsigned long)ctx->uc_mcontext.gregs[REG_EFL] & X86_EFLAGS_TF);
-+
-+	sig_eflags = (unsigned long)ctx->uc_mcontext.gregs[REG_EFL];
-+	siglongjmp(jmpbuf, 1);
-+}
-+
- static void check_result(void)
- {
- 	unsigned long new_eflags = get_eflags();
-@@ -109,6 +140,22 @@ static void check_result(void)
- 	sig_traps = 0;
- }
- 
-+static void fast_syscall_no_tf(void)
-+{
-+	sig_traps = 0;
-+	printf("[RUN]\tFast syscall with TF cleared\n");
-+	fflush(stdout);  /* Force a syscall */
-+	if (get_eflags() & X86_EFLAGS_TF) {
-+		printf("[FAIL]\tTF is now set\n");
-+		exit(1);
-+	}
-+	if (sig_traps) {
-+		printf("[FAIL]\tGot SIGTRAP\n");
-+		exit(1);
-+	}
-+	printf("[OK]\tNothing unexpected happened\n");
-+}
-+
- int main()
- {
- #ifdef CAN_BUILD_32
-@@ -163,17 +210,46 @@ int main()
- 	check_result();
- 
- 	/* Now make sure that another fast syscall doesn't set TF again. */
--	printf("[RUN]\tFast syscall with TF cleared\n");
--	fflush(stdout);  /* Force a syscall */
--	if (get_eflags() & X86_EFLAGS_TF) {
--		printf("[FAIL]\tTF is now set\n");
--		exit(1);
-+	fast_syscall_no_tf();
++	local_irq_disable();
++	write_gdt_entry(get_cpu_gdt_rw(smp_processor_id()),
++			GDT_ENTRY_TLS_MIN, &d, DESCTYPE_S);
 +
 +	/*
-+	 * And do a forced SYSENTER to make sure that this works even if
-+	 * fast syscalls don't use SYSENTER.
-+	 *
-+	 * Invoking SYSENTER directly breaks all the rules.  Just handle
-+	 * the SIGSEGV.
++	 * Put our zero-limit segment in SS and then trigger a fault.  The
++	 * 4-byte access to (%esp) will fault with #SS, and the attempt to
++	 * deliver the fault will recursively cause #SS and result in #DF.
++	 * This whole process happens while NMIs and MCEs are blocked by the
++	 * MOV SS window.  This is nice because an NMI with an invalid SS
++	 * would also double-fault, resulting in the NMI or MCE being lost.
 +	 */
-+	if (sigsetjmp(jmpbuf, 1) == 0) {
-+		unsigned long nr = SYS_getpid;
-+		printf("[RUN]\tSet TF and check SYSENTER\n");
-+		stack_t stack = {
-+			.ss_sp = altstack_data,
-+			.ss_size = SIGSTKSZ,
-+		};
-+		if (sigaltstack(&stack, NULL) != 0)
-+			err(1, "sigaltstack");
-+		sethandler(SIGSEGV, print_and_longjmp,
-+			   SA_RESETHAND | SA_ONSTACK);
-+		sethandler(SIGILL, print_and_longjmp, SA_RESETHAND);
-+		set_eflags(get_eflags() | X86_EFLAGS_TF);
-+		/* Clear EBP first to make sure we segfault cleanly. */
-+		asm volatile ("xorl %%ebp, %%ebp; SYSENTER" : "+a" (nr) :: "flags", "rcx"
-+#ifdef __x86_64__
-+				, "r11"
++	asm volatile ("movw %0, %%ss; addl $0, (%%esp)" ::
++		      "r" ((unsigned short)(GDT_ENTRY_TLS_MIN << 3)));
++
++	panic("tried to double fault but didn't die\n");
++}
 +#endif
-+			);
-+
-+		/* We're unreachable here.  SYSENTER forgets RIP. */
- 	}
--	if (sig_traps) {
--		printf("[FAIL]\tGot SIGTRAP\n");
-+	clearhandler(SIGSEGV);
-+	clearhandler(SIGILL);
-+	if (!(sig_eflags & X86_EFLAGS_TF)) {
-+		printf("[FAIL]\tTF was cleared\n");
- 		exit(1);
- 	}
--	printf("[OK]\tNothing unexpected happened\n");
-+
-+	/* Now make sure that another fast syscall doesn't set TF again. */
-+	fast_syscall_no_tf();
+diff --git a/drivers/misc/lkdtm/core.c b/drivers/misc/lkdtm/core.c
+index cbc4c90..ee0d6e7 100644
+--- a/drivers/misc/lkdtm/core.c
++++ b/drivers/misc/lkdtm/core.c
+@@ -171,6 +171,9 @@ static const struct crashtype crashtypes[] = {
+ 	CRASHTYPE(USERCOPY_KERNEL_DS),
+ 	CRASHTYPE(STACKLEAK_ERASING),
+ 	CRASHTYPE(CFI_FORWARD_PROTO),
++#ifdef CONFIG_X86_32
++	CRASHTYPE(DOUBLE_FAULT),
++#endif
+ };
  
- 	return 0;
- }
+ 
+diff --git a/drivers/misc/lkdtm/lkdtm.h b/drivers/misc/lkdtm/lkdtm.h
+index ab446e0..c56d23e 100644
+--- a/drivers/misc/lkdtm/lkdtm.h
++++ b/drivers/misc/lkdtm/lkdtm.h
+@@ -28,6 +28,9 @@ void lkdtm_CORRUPT_USER_DS(void);
+ void lkdtm_STACK_GUARD_PAGE_LEADING(void);
+ void lkdtm_STACK_GUARD_PAGE_TRAILING(void);
+ void lkdtm_UNSET_SMEP(void);
++#ifdef CONFIG_X86_32
++void lkdtm_DOUBLE_FAULT(void);
++#endif
+ 
+ /* lkdtm_heap.c */
+ void __init lkdtm_heap_init(void);
