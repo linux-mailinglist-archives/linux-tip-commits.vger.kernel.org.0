@@ -2,30 +2,30 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BEF7A10AB94
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 27 Nov 2019 09:20:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D0D210AB9E
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 27 Nov 2019 09:20:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727031AbfK0ITs (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 27 Nov 2019 03:19:48 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:43990 "EHLO
+        id S1726698AbfK0ITh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 27 Nov 2019 03:19:37 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:43960 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726985AbfK0ITo (ORCPT
+        with ESMTP id S1726240AbfK0ITh (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 27 Nov 2019 03:19:44 -0500
+        Wed, 27 Nov 2019 03:19:37 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iZsXp-0002Pf-Uz; Wed, 27 Nov 2019 09:19:30 +0100
+        id 1iZsXq-0002Qs-P0; Wed, 27 Nov 2019 09:19:31 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 9B4EF1C1E6F;
-        Wed, 27 Nov 2019 09:19:29 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 0C90D1C1E71;
+        Wed, 27 Nov 2019 09:19:30 +0100 (CET)
 Date:   Wed, 27 Nov 2019 08:19:29 -0000
 From:   "tip-bot2 for Andy Lutomirski" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/doublefault/32: Rewrite the x86_32 #DF handler
- and unify with 64-bit
+Subject: [tip: x86/urgent] x86/traps: Disentangle the 32-bit and 64-bit
+ doublefault code
 Cc:     Andy Lutomirski <luto@kernel.org>, Borislav Petkov <bp@alien8.de>,
         Peter Zijlstra <peterz@infradead.org>,
         Thomas Gleixner <tglx@linutronix.de>,
@@ -33,7 +33,7 @@ Cc:     Andy Lutomirski <luto@kernel.org>, Borislav Petkov <bp@alien8.de>,
         Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <157484276952.21853.12670331682805657771.tip-bot2@tip-bot2>
+Message-ID: <157484276997.21853.6533072564160468139.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,24 +49,24 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     7d8d8cfdee9a7bd6f9682f253fa98efdd8048a9e
-Gitweb:        https://git.kernel.org/tip/7d8d8cfdee9a7bd6f9682f253fa98efdd8048a9e
+Commit-ID:     93efbde2c331004d8053f04b4bf0ca3e630b474a
+Gitweb:        https://git.kernel.org/tip/93efbde2c331004d8053f04b4bf0ca3e630b474a
 Author:        Andy Lutomirski <luto@kernel.org>
-AuthorDate:    Wed, 20 Nov 2019 23:06:41 -08:00
+AuthorDate:    Wed, 20 Nov 2019 22:12:38 -08:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 26 Nov 2019 22:00:04 +01:00
+CommitterDate: Tue, 26 Nov 2019 21:53:34 +01:00
 
-x86/doublefault/32: Rewrite the x86_32 #DF handler and unify with 64-bit
+x86/traps: Disentangle the 32-bit and 64-bit doublefault code
 
-The old x86_32 doublefault_fn() was old and crufty, and it did not
-even try to recover.  do_double_fault() is much nicer.  Rewrite the
-32-bit double fault code to sanitize CPU state and call
-do_double_fault().  This is mostly an exercise i386 archaeology.
+The 64-bit doublefault handler is much nicer than the 32-bit one.
+As a first step toward unifying them, make the 64-bit handler
+self-contained.  This should have no effect no functional effect
+except in the odd case of x86_64 with CONFIG_DOUBLEFAULT=n in which
+case it will change the logging a bit.
 
-With this patch applied, 32-bit double faults get a real stack trace,
-just like 64-bit double faults.
-
-[ mingo: merged the patch to a later kernel base. ]
+This also gets rid of CONFIG_DOUBLEFAULT configurability on 64-bit
+kernels.  It didn't do anything useful -- CONFIG_DOUBLEFAULT=n
+didn't actually disable doublefault handling on x86_64.
 
 Signed-off-by: Andy Lutomirski <luto@kernel.org>
 Cc: Borislav Petkov <bp@alien8.de>
@@ -75,255 +75,77 @@ Cc: Thomas Gleixner <tglx@linutronix.de>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- arch/x86/entry/entry_32.S        |  42 ++++++++++++-
- arch/x86/include/asm/traps.h     |   3 +-
- arch/x86/kernel/doublefault_32.c | 107 +++++++++++++++++++++---------
- arch/x86/kernel/traps.c          |  19 ++++-
- 4 files changed, 138 insertions(+), 33 deletions(-)
+ arch/x86/Kconfig.debug           |  2 +-
+ arch/x86/include/asm/processor.h |  1 -
+ arch/x86/kernel/doublefault.c    | 11 -----------
+ arch/x86/kernel/traps.c          | 12 +++---------
+ 4 files changed, 4 insertions(+), 22 deletions(-)
 
-diff --git a/arch/x86/entry/entry_32.S b/arch/x86/entry/entry_32.S
-index 5832b11..632432b 100644
---- a/arch/x86/entry/entry_32.S
-+++ b/arch/x86/entry/entry_32.S
-@@ -1537,6 +1537,48 @@ SYM_CODE_START(debug)
- 	jmp	common_exception
- SYM_CODE_END(debug)
+diff --git a/arch/x86/Kconfig.debug b/arch/x86/Kconfig.debug
+index 409c00f..c4eab8e 100644
+--- a/arch/x86/Kconfig.debug
++++ b/arch/x86/Kconfig.debug
+@@ -117,7 +117,7 @@ config DEBUG_WX
  
-+#ifdef CONFIG_DOUBLEFAULT
-+SYM_CODE_START(double_fault)
-+1:
-+	/*
-+	 * This is a task gate handler, not an interrupt gate handler.
-+	 * The error code is on the stack, but the stack is otherwise
-+	 * empty.  Interrupts are off.  Our state is sane with the following
-+	 * exceptions:
-+	 *
-+	 *  - CR0.TS is set.  "TS" literally means "task switched".
-+	 *  - EFLAGS.NT is set because we're a "nested task".
-+	 *  - The doublefault TSS has back_link set and has been marked busy.
-+	 *  - TR points to the doublefault TSS and the normal TSS is busy.
-+	 *  - CR3 is the normal kernel PGD.  This would be delightful, except
-+	 *    that the CPU didn't bother to save the old CR3 anywhere.  This
-+	 *    would make it very awkward to return back to the context we came
-+	 *    from.
-+	 *
-+	 * The rest of EFLAGS is sanitized for us, so we don't need to
-+	 * worry about AC or DF.
-+	 *
-+	 * Don't even bother popping the error code.  It's always zero,
-+	 * and ignoring it makes us a bit more robust against buggy
-+	 * hypervisor task gate implementations.
-+	 *
-+	 * We will manually undo the task switch instead of doing a
-+	 * task-switching IRET.
-+	 */
-+
-+	clts				/* clear CR0.TS */
-+	pushl	$X86_EFLAGS_FIXED
-+	popfl				/* clear EFLAGS.NT */
-+
-+	call	doublefault_shim
-+
-+	/* We don't support returning, so we have no IRET here. */
-+1:
-+	hlt
-+	jmp 1b
-+SYM_CODE_END(double_fault)
-+#endif
-+
- /*
-  * NMI is doubly nasty.  It can happen on the first instruction of
-  * entry_SYSENTER_32 (just like #DB), but it can also interrupt the beginning
-diff --git a/arch/x86/include/asm/traps.h b/arch/x86/include/asm/traps.h
-index b25e633..ffa0dc8 100644
---- a/arch/x86/include/asm/traps.h
-+++ b/arch/x86/include/asm/traps.h
-@@ -69,6 +69,9 @@ dotraplinkage void do_overflow(struct pt_regs *regs, long error_code);
- dotraplinkage void do_bounds(struct pt_regs *regs, long error_code);
- dotraplinkage void do_invalid_op(struct pt_regs *regs, long error_code);
- dotraplinkage void do_device_not_available(struct pt_regs *regs, long error_code);
-+#if defined(CONFIG_X86_64) || defined(CONFIG_DOUBLEFAULT)
-+dotraplinkage void do_double_fault(struct pt_regs *regs, long error_code, unsigned long cr2);
-+#endif
- dotraplinkage void do_coprocessor_segment_overrun(struct pt_regs *regs, long error_code);
- dotraplinkage void do_invalid_TSS(struct pt_regs *regs, long error_code);
- dotraplinkage void do_segment_not_present(struct pt_regs *regs, long error_code);
-diff --git a/arch/x86/kernel/doublefault_32.c b/arch/x86/kernel/doublefault_32.c
-index 4eecfe4..3793646 100644
---- a/arch/x86/kernel/doublefault_32.c
-+++ b/arch/x86/kernel/doublefault_32.c
-@@ -9,42 +9,83 @@
- #include <asm/pgtable.h>
- #include <asm/processor.h>
- #include <asm/desc.h>
-+#include <asm/traps.h>
+ config DOUBLEFAULT
+ 	default y
+-	bool "Enable doublefault exception handler" if EXPERT
++	bool "Enable doublefault exception handler" if EXPERT && X86_32
+ 	---help---
+ 	  This option allows trapping of rare doublefault exceptions that
+ 	  would otherwise cause a system to silently reboot. Disabling this
+diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
+index e51afbb..f6c6300 100644
+--- a/arch/x86/include/asm/processor.h
++++ b/arch/x86/include/asm/processor.h
+@@ -997,7 +997,6 @@ bool xen_set_default_idle(void);
+ #endif
  
-+extern void double_fault(void);
- #define ptr_ok(x) ((x) > PAGE_OFFSET && (x) < PAGE_OFFSET + MAXMEM)
+ void stop_this_cpu(void *dummy);
+-void df_debug(struct pt_regs *regs, long error_code);
+ void microcode_check(void);
  
--static void doublefault_fn(void)
--{
--	struct desc_ptr gdt_desc = {0, 0};
--	unsigned long gdt, tss;
-+#define TSS(x) this_cpu_read(cpu_tss_rw.x86_tss.x)
- 
--	BUILD_BUG_ON(sizeof(struct doublefault_stack) != PAGE_SIZE);
-+static void set_df_gdt_entry(unsigned int cpu);
- 
--	native_store_gdt(&gdt_desc);
--	gdt = gdt_desc.address;
-+/*
-+ * Called by double_fault with CR0.TS and EFLAGS.NT cleared.  The CPU thinks
-+ * we're running the doublefault task.  Cannot return.
-+ */
-+asmlinkage notrace void __noreturn doublefault_shim(void)
-+{
-+	unsigned long cr2;
-+	struct pt_regs regs;
- 
--	printk(KERN_EMERG "PANIC: double fault, gdt at %08lx [%d bytes]\n", gdt, gdt_desc.size);
-+	BUILD_BUG_ON(sizeof(struct doublefault_stack) != PAGE_SIZE);
- 
--	if (ptr_ok(gdt)) {
--		gdt += GDT_ENTRY_TSS << 3;
--		tss = get_desc_base((struct desc_struct *)gdt);
--		printk(KERN_EMERG "double fault, tss at %08lx\n", tss);
-+	cr2 = native_read_cr2();
- 
--		if (ptr_ok(tss)) {
--			struct x86_hw_tss *t = (struct x86_hw_tss *)tss;
-+	/* Reset back to the normal kernel task. */
-+	force_reload_TR();
-+	set_df_gdt_entry(smp_processor_id());
- 
--			printk(KERN_EMERG "eip = %08lx, esp = %08lx\n",
--			       t->ip, t->sp);
-+	trace_hardirqs_off();
- 
--			printk(KERN_EMERG "eax = %08lx, ebx = %08lx, ecx = %08lx, edx = %08lx\n",
--				t->ax, t->bx, t->cx, t->dx);
--			printk(KERN_EMERG "esi = %08lx, edi = %08lx\n",
--				t->si, t->di);
--		}
--	}
-+	/*
-+	 * Fill in pt_regs.  A downside of doing this in C is that the unwinder
-+	 * won't see it (no ENCODE_FRAME_POINTER), so a nested stack dump
-+	 * won't successfully unwind to the source of the double fault.
-+	 * The main dump from do_double_fault() is fine, though, since it
-+	 * uses these regs directly.
-+	 *
-+	 * If anyone ever cares, this could be moved to asm.
-+	 */
-+	regs.ss		= TSS(ss);
-+	regs.__ssh	= 0;
-+	regs.sp		= TSS(sp);
-+	regs.flags	= TSS(flags);
-+	regs.cs		= TSS(cs);
-+	/* We won't go through the entry asm, so we can leave __csh as 0. */
-+	regs.__csh	= 0;
-+	regs.ip		= TSS(ip);
-+	regs.orig_ax	= 0;
-+	regs.gs		= TSS(gs);
-+	regs.__gsh	= 0;
-+	regs.fs		= TSS(fs);
-+	regs.__fsh	= 0;
-+	regs.es		= TSS(es);
-+	regs.__esh	= 0;
-+	regs.ds		= TSS(ds);
-+	regs.__dsh	= 0;
-+	regs.ax		= TSS(ax);
-+	regs.bp		= TSS(bp);
-+	regs.di		= TSS(di);
-+	regs.si		= TSS(si);
-+	regs.dx		= TSS(dx);
-+	regs.cx		= TSS(cx);
-+	regs.bx		= TSS(bx);
-+
-+	do_double_fault(&regs, 0, cr2);
- 
--	for (;;)
--		cpu_relax();
-+	/*
-+	 * x86_32 does not save the original CR3 anywhere on a task switch.
-+	 * This means that, even if we wanted to return, we would need to find
-+	 * some way to reconstruct CR3.  We could make a credible guess based
-+	 * on cpu_tlbstate, but that would be racy and would not account for
-+	 * PTI.
-+	 *
-+	 * Instead, don't bother.  We can return through
-+	 * rewind_stack_do_exit() instead.
-+	 */
-+	panic("cannot return from double fault\n");
- }
-+NOKPROBE_SYMBOL(doublefault_shim);
- 
- DEFINE_PER_CPU_PAGE_ALIGNED(struct doublefault_stack, doublefault_stack) = {
- 	.tss = {
-@@ -55,9 +96,8 @@ DEFINE_PER_CPU_PAGE_ALIGNED(struct doublefault_stack, doublefault_stack) = {
- 		.ldt		= 0,
- 	.io_bitmap_base	= IO_BITMAP_OFFSET_INVALID,
- 
--		.ip		= (unsigned long) doublefault_fn,
--		/* 0x2 bit is always set */
--		.flags		= X86_EFLAGS_SF | 0x2,
-+		.ip		= (unsigned long) double_fault,
-+		.flags		= X86_EFLAGS_FIXED,
- 		.es		= __USER_DS,
- 		.cs		= __KERNEL_CS,
- 		.ss		= __KERNEL_DS,
-@@ -71,6 +111,14 @@ DEFINE_PER_CPU_PAGE_ALIGNED(struct doublefault_stack, doublefault_stack) = {
- 	},
+ enum l1tf_mitigations {
+diff --git a/arch/x86/kernel/doublefault.c b/arch/x86/kernel/doublefault.c
+index 0d6c657..0b3c616 100644
+--- a/arch/x86/kernel/doublefault.c
++++ b/arch/x86/kernel/doublefault.c
+@@ -72,15 +72,4 @@ struct x86_hw_tss doublefault_tss __cacheline_aligned = {
+ 	.__cr3		= __pa_nodebug(swapper_pg_dir),
  };
  
-+static void set_df_gdt_entry(unsigned int cpu)
-+{
-+	/* Set up doublefault TSS pointer in the GDT */
-+	__set_tss_desc(cpu, GDT_ENTRY_DOUBLEFAULT_TSS,
-+		       &get_cpu_entry_area(cpu)->doublefault_stack.tss);
-+
-+}
-+
- void doublefault_init_cpu_tss(void)
- {
- 	unsigned int cpu = smp_processor_id();
-@@ -84,8 +132,5 @@ void doublefault_init_cpu_tss(void)
-                        (unsigned long)&cea->doublefault_stack.stack +
-                        sizeof(doublefault_stack.stack));
- 
--	/* Set up doublefault TSS pointer in the GDT */
--	__set_tss_desc(cpu, GDT_ENTRY_DOUBLEFAULT_TSS,
--		       &get_cpu_entry_area(cpu)->doublefault_stack.tss);
+-/* dummy for do_double_fault() call */
+-void df_debug(struct pt_regs *regs, long error_code) {}
 -
-+	set_df_gdt_entry(cpu);
- }
+-#else /* !CONFIG_X86_32 */
+-
+-void df_debug(struct pt_regs *regs, long error_code)
+-{
+-	pr_emerg("PANIC: double fault, error_code: 0x%lx\n", error_code);
+-	show_regs(regs);
+-	panic("Machine halted.");
+-}
+ #endif
 diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
-index 76381b0..a9b16c3 100644
+index c903121..76381b0 100644
 --- a/arch/x86/kernel/traps.c
 +++ b/arch/x86/kernel/traps.c
-@@ -306,8 +306,23 @@ __visible void __noreturn handle_stack_overflow(const char *message,
+@@ -411,15 +411,9 @@ dotraplinkage void do_double_fault(struct pt_regs *regs, long error_code, unsign
+ 		handle_stack_overflow("kernel stack overflow (double-fault)", regs, cr2);
+ #endif
+ 
+-#ifdef CONFIG_DOUBLEFAULT
+-	df_debug(regs, error_code);
+-#endif
+-	/*
+-	 * This is always a kernel trap and never fixable (and thus must
+-	 * never return).
+-	 */
+-	for (;;)
+-		die(str, regs, error_code);
++	pr_emerg("PANIC: double fault, error_code: 0x%lx\n", error_code);
++	show_regs(regs);
++	panic("Machine halted.");
  }
  #endif
  
--#ifdef CONFIG_X86_64
--/* Runs on IST stack */
-+#if defined(CONFIG_X86_64) || defined(CONFIG_DOUBLEFAULT)
-+/*
-+ * Runs on an IST stack for x86_64 and on a special task stack for x86_32.
-+ *
-+ * On x86_64, this is more or less a normal kernel entry.  Notwithstanding the
-+ * SDM's warnings about double faults being unrecoverable, returning works as
-+ * expected.  Presumably what the SDM actually means is that the CPU may get
-+ * the register state wrong on entry, so returning could be a bad idea.
-+ *
-+ * Various CPU engineers have promised that double faults due to an IRET fault
-+ * while the stack is read-only are, in fact, recoverable.
-+ *
-+ * On x86_32, this is entered through a task gate, and regs are synthesized
-+ * from the TSS.  Returning is, in principle, okay, but changes to regs will
-+ * be lost.  If, for some reason, we need to return to a context with modified
-+ * regs, the shim code could be adjusted to synchronize the registers.
-+ */
- dotraplinkage void do_double_fault(struct pt_regs *regs, long error_code, unsigned long cr2)
- {
- 	static const char str[] = "double fault";
