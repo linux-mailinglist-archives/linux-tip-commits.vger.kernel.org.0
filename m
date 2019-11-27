@@ -2,44 +2,42 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CD3910A5B3
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 26 Nov 2019 21:56:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 42B4310ABA0
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 27 Nov 2019 09:20:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726077AbfKZU4c convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 26 Nov 2019 15:56:32 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:42901 "EHLO
+        id S1726634AbfK0IUF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 27 Nov 2019 03:20:05 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:43968 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726033AbfKZU4c (ORCPT
+        with ESMTP id S1726125AbfK0ITh (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 26 Nov 2019 15:56:32 -0500
+        Wed, 27 Nov 2019 03:19:37 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iZhso-00067p-0b; Tue, 26 Nov 2019 21:56:26 +0100
+        id 1iZsXp-0002Pa-Iz; Wed, 27 Nov 2019 09:19:29 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 476B51C1DA4;
-        Tue, 26 Nov 2019 21:56:25 +0100 (CET)
-Date:   Tue, 26 Nov 2019 20:56:25 -0000
-From:   "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 1F1811C004F;
+        Wed, 27 Nov 2019 09:19:29 +0100 (CET)
+Date:   Wed, 27 Nov 2019 08:19:28 -0000
+From:   "tip-bot2 for Andy Lutomirski" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/iopl: Make 'struct tss_struct' constant size again
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Borislav Petkov <bp@alien8.de>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+Subject: [tip: x86/urgent] x86/ptrace: Document FSBASE and GSBASE ABI oddities
+Cc:     Andy Lutomirski <luto@kernel.org>, Borislav Petkov <bp@alien8.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
         Linus Torvalds <torvalds@linux-foundation.org>,
-        Andy Lutomirski <luto@kernel.org>,
         Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <157480178512.21853.8292665417533058103.tip-bot2@tip-bot2>
+Message-ID: <157484276896.21853.7610159468997605731.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: 7bit
 X-Linutronix-Spam-Score: -1.0
 X-Linutronix-Spam-Level: -
 X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
@@ -50,56 +48,57 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     0bcd7762727dd8ba9b9b6f828e5a4cbd5da4f725
-Gitweb:        https://git.kernel.org/tip/0bcd7762727dd8ba9b9b6f828e5a4cbd5da4f725
-Author:        Ingo Molnar <mingo@kernel.org>
-AuthorDate:    Tue, 26 Nov 2019 21:49:04 +01:00
+Commit-ID:     56f2ab41b652251f336a0f471b1033afeaedd161
+Gitweb:        https://git.kernel.org/tip/56f2ab41b652251f336a0f471b1033afeaedd161
+Author:        Andy Lutomirski <luto@kernel.org>
+AuthorDate:    Wed, 17 Jul 2019 06:44:16 -07:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 26 Nov 2019 21:49:04 +01:00
+CommitterDate: Tue, 26 Nov 2019 22:00:12 +01:00
 
-x86/iopl: Make 'struct tss_struct' constant size again
+x86/ptrace: Document FSBASE and GSBASE ABI oddities
 
-After the following commit:
-
-  05b042a19443: ("x86/pti/32: Calculate the various PTI cpu_entry_area sizes correctly, make the CPU_ENTRY_AREA_PAGES assert precise")
-
-'struct cpu_entry_area' has to be Kconfig invariant, so that we always
-have a matching CPU_ENTRY_AREA_PAGES size.
-
-This commit added a CONFIG_X86_IOPL_IOPERM dependency to tss_struct:
-
-  111e7b15cf10: ("x86/ioperm: Extend IOPL config to control ioperm() as well")
-
-Which, if CONFIG_X86_IOPL_IOPERM is turned off, reduces the size of
-cpu_entry_area by two pages, triggering the assert:
-
-  ./include/linux/compiler.h:391:38: error: call to ‘__compiletime_assert_202’ declared with attribute error: BUILD_BUG_ON failed: (CPU_ENTRY_AREA_PAGES+1)*PAGE_SIZE != CPU_ENTRY_AREA_MAP_SIZE
-
-Simplify the Kconfig dependencies and make cpu_entry_area constant
-size on 32-bit kernels again.
-
-Fixes: 05b042a19443: ("x86/pti/32: Calculate the various PTI cpu_entry_area sizes correctly, make the CPU_ENTRY_AREA_PAGES assert precise")
-Cc: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Andy Lutomirski <luto@kernel.org>
 Cc: Borislav Petkov <bp@alien8.de>
-Cc: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Andy Lutomirski <luto@kernel.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- arch/x86/include/asm/processor.h | 2 --
- 1 file changed, 2 deletions(-)
+ arch/x86/kernel/ptrace.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
-index b4e29d8..e51afbb 100644
---- a/arch/x86/include/asm/processor.h
-+++ b/arch/x86/include/asm/processor.h
-@@ -411,9 +411,7 @@ struct tss_struct {
- 	 */
- 	struct x86_hw_tss	x86_tss;
+diff --git a/arch/x86/kernel/ptrace.c b/arch/x86/kernel/ptrace.c
+index 3b3b169..f0e1ddb 100644
+--- a/arch/x86/kernel/ptrace.c
++++ b/arch/x86/kernel/ptrace.c
+@@ -281,6 +281,20 @@ static int set_segment_reg(struct task_struct *task,
+ 	if (invalid_selector(value))
+ 		return -EIO;
  
--#ifdef CONFIG_X86_IOPL_IOPERM
- 	struct x86_io_bitmap	io_bitmap;
--#endif
- } __aligned(PAGE_SIZE);
- 
- DECLARE_PER_CPU_PAGE_ALIGNED(struct tss_struct, cpu_tss_rw);
++	/*
++	 * This function has some ABI oddities.
++	 *
++	 * A 32-bit ptracer probably expects that writing FS or GS will change
++	 * FSBASE or GSBASE respectively.  In the absence of FSGSBASE support,
++	 * this code indeed has that effect.  When FSGSBASE is added, this
++	 * will require a special case.
++	 *
++	 * For existing 64-bit ptracers, writing FS or GS *also* currently
++	 * changes the base if the selector is nonzero the next time the task
++	 * is run.  This behavior may not be needed, and trying to preserve it
++	 * when FSGSBASE is added would be complicated at best.
++	 */
++
+ 	switch (offset) {
+ 	case offsetof(struct user_regs_struct,fs):
+ 		task->thread.fsindex = value;
+@@ -370,6 +384,9 @@ static int putreg(struct task_struct *child,
+ 		 * When changing the FS base, use do_arch_prctl_64()
+ 		 * to set the index to zero and to set the base
+ 		 * as requested.
++		 *
++		 * NB: This behavior is nonsensical and likely needs to
++		 * change when FSGSBASE support is added.
+ 		 */
+ 		if (child->thread.fsbase != value)
+ 			return do_arch_prctl_64(child, ARCH_SET_FS, value);
