@@ -2,51 +2,43 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 213A110C5E1
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 28 Nov 2019 10:22:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A13BE10D157
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 29 Nov 2019 07:04:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726778AbfK1JWf convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 28 Nov 2019 04:22:35 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:46415 "EHLO
+        id S1727329AbfK2GD4 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 29 Nov 2019 01:03:56 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:48048 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726092AbfK1JWf (ORCPT
+        with ESMTP id S1725860AbfK2GDE (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 28 Nov 2019 04:22:35 -0500
+        Fri, 29 Nov 2019 01:03:04 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iaG04-000467-9b; Thu, 28 Nov 2019 10:22:12 +0100
+        id 1iaZMg-0008Hd-B8; Fri, 29 Nov 2019 07:02:50 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B5F9A1C1AEF;
-        Thu, 28 Nov 2019 10:22:11 +0100 (CET)
-Date:   Thu, 28 Nov 2019 09:22:11 -0000
-From:   "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id ED98C1C1D25;
+        Fri, 29 Nov 2019 07:02:49 +0100 (CET)
+Date:   Fri, 29 Nov 2019 06:02:49 -0000
+From:   "tip-bot2 for Adrian Hunter" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/fpu: Don't cache access to fpu_fpregs_owner_ctx
-Cc:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Borislav Petkov <bp@suse.de>, Rik van Riel <riel@surriel.com>,
-        Aubrey Li <aubrey.li@intel.com>,
-        Austin Clements <austin@google.com>,
-        Barret Rhoden <brho@google.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        David Chase <drchase@golang.org>,
-        "H. Peter Anvin" <hpa@zytor.com>, ian@airs.com,
-        Ingo Molnar <mingo@redhat.com>,
-        Josh Bleecher Snyder <josharian@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "x86-ml" <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191128085306.hxfa2o3knqtu4wfn@linutronix.de>
-References: <20191128085306.hxfa2o3knqtu4wfn@linutronix.de>
+Subject: [tip: perf/urgent] perf script: Fix invalid LBR/binary mismatch error
+Cc:     Andi Kleen <ak@linux.intel.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20191127095631.15663-1-adrian.hunter@intel.com>
+References: <20191127095631.15663-1-adrian.hunter@intel.com>
 MIME-Version: 1.0
-Message-ID: <157493293150.21853.7731511969770345792.tip-bot2@tip-bot2>
+Message-ID: <157500736974.21853.16749925622988390147.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: 7bit
 X-Linutronix-Spam-Score: -1.0
 X-Linutronix-Spam-Level: -
 X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
@@ -55,115 +47,72 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     59c4bd853abcea95eccc167a7d7fd5f1a5f47b98
-Gitweb:        https://git.kernel.org/tip/59c4bd853abcea95eccc167a7d7fd5f1a5f47b98
-Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-AuthorDate:    Thu, 28 Nov 2019 09:53:06 +01:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Thu, 28 Nov 2019 10:16:46 +01:00
+Commit-ID:     5172672da02e483d9b3c4d814c3482d0c8ffb1a6
+Gitweb:        https://git.kernel.org/tip/5172672da02e483d9b3c4d814c3482d0c8ffb1a6
+Author:        Adrian Hunter <adrian.hunter@intel.com>
+AuthorDate:    Wed, 27 Nov 2019 11:56:31 +02:00
+Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
+CommitterDate: Thu, 28 Nov 2019 08:08:38 -03:00
 
-x86/fpu: Don't cache access to fpu_fpregs_owner_ctx
+perf script: Fix invalid LBR/binary mismatch error
 
-The state/owner of the FPU is saved to fpu_fpregs_owner_ctx by pointing
-to the context that is currently loaded. It never changed during the
-lifetime of a task - it remained stable/constant.
+The 'len' returned by grab_bb() includes an extra MAXINSN bytes to allow
+for the last instruction, so the the final 'offs' will not be 'len'.
+Fix the error condition logic accordingly.
 
-After deferred FPU registers loading until return to userland was
-implemented, the content of fpu_fpregs_owner_ctx may change during
-preemption and must not be cached.
+Before:
 
-This went unnoticed for some time and was now noticed, in particular
-since gcc 9 is caching that load in copy_fpstate_to_sigframe() and
-reusing it in the retry loop:
+  $ perf record -e '{intel_pt//,cpu/mem_inst_retired.all_loads,aux-sample-size=8192/pp}:u' grep -rqs jhgjhg /boot
+  [ perf record: Woken up 19 times to write data ]
+  [ perf record: Captured and wrote 2.274 MB perf.data ]
+  $ perf script -F +brstackinsn --xed --itrace=i1usl100 | head
+            grep 13759 [002]  8091.310257:       1862                                        instructions:uH:      5641d58069eb bmexec+0x86b (/bin/grep)
+        bmexec+2485:
+        00005641d5806b35                        jnz 0x5641d5806bd0              # MISPRED
+        00005641d5806bd0                        movzxb  (%r13,%rdx,1), %eax
+        00005641d5806bd6                        add %rdi, %rax
+        00005641d5806bd9                        movzxb  -0x1(%rax), %edx
+        00005641d5806bdd                        cmp %rax, %r14
+        00005641d5806be0                        jnb 0x5641d58069c0              # MISPRED
+        mismatch of LBR data and executable
+        00005641d58069c0                        movzxb  (%r13,%rdx,1), %edi
 
-  copy_fpstate_to_sigframe()
-    load fpu_fpregs_owner_ctx and save on stack
-    fpregs_lock()
-    copy_fpregs_to_sigframe() /* failed */
-    fpregs_unlock()
-         *** PREEMPTION, another uses FPU, changes fpu_fpregs_owner_ctx ***
+After:
 
-    fault_in_pages_writeable() /* succeed, retry */
+  $ perf script -F +brstackinsn --xed --itrace=i1usl100 | head
+            grep 13759 [002]  8091.310257:       1862                                        instructions:uH:      5641d58069eb bmexec+0x86b (/bin/grep)
+        bmexec+2485:
+        00005641d5806b35                        jnz 0x5641d5806bd0              # MISPRED
+        00005641d5806bd0                        movzxb  (%r13,%rdx,1), %eax
+        00005641d5806bd6                        add %rdi, %rax
+        00005641d5806bd9                        movzxb  -0x1(%rax), %edx
+        00005641d5806bdd                        cmp %rax, %r14
+        00005641d5806be0                        jnb 0x5641d58069c0              # MISPRED
+        00005641d58069c0                        movzxb  (%r13,%rdx,1), %edi
+        00005641d58069c6                        add %rax, %rdi
 
-    fpregs_lock()
-	__fpregs_load_activate()
-	  fpregs_state_valid() /* uses fpu_fpregs_owner_ctx from stack */
-    copy_fpregs_to_sigframe() /* succeeds, random FPU content */
-
-This is a comparison of the assembly produced by gcc 9, without vs with this
-patch:
-
-| # arch/x86/kernel/fpu/signal.c:173:      if (!access_ok(buf, size))
-|        cmpq    %rdx, %rax      # tmp183, _4
-|        jb      .L190   #,
-|-# arch/x86/include/asm/fpu/internal.h:512:       return fpu == this_cpu_read_stable(fpu_fpregs_owner_ctx) && cpu == fpu->last_cpu;
-|-#APP
-|-# 512 "arch/x86/include/asm/fpu/internal.h" 1
-|-       movq %gs:fpu_fpregs_owner_ctx,%rax      #, pfo_ret__
-|-# 0 "" 2
-|-#NO_APP
-|-       movq    %rax, -88(%rbp) # pfo_ret__, %sfp
-…
-|-# arch/x86/include/asm/fpu/internal.h:512:       return fpu == this_cpu_read_stable(fpu_fpregs_owner_ctx) && cpu == fpu->last_cpu;
-|-       movq    -88(%rbp), %rcx # %sfp, pfo_ret__
-|-       cmpq    %rcx, -64(%rbp) # pfo_ret__, %sfp
-|+# arch/x86/include/asm/fpu/internal.h:512:       return fpu == this_cpu_read(fpu_fpregs_owner_ctx) && cpu == fpu->last_cpu;
-|+#APP
-|+# 512 "arch/x86/include/asm/fpu/internal.h" 1
-|+       movq %gs:fpu_fpregs_owner_ctx(%rip),%rax        # fpu_fpregs_owner_ctx, pfo_ret__
-|+# 0 "" 2
-|+# arch/x86/include/asm/fpu/internal.h:512:       return fpu == this_cpu_read(fpu_fpregs_owner_ctx) && cpu == fpu->last_cpu;
-|+#NO_APP
-|+       cmpq    %rax, -64(%rbp) # pfo_ret__, %sfp
-
-Use this_cpu_read() instead this_cpu_read_stable() to avoid caching of
-fpu_fpregs_owner_ctx during preemption points.
-
-The Fixes: tag points to the commit where deferred FPU loading was
-added. Since this commit, the compiler is no longer allowed to move the
-load of fpu_fpregs_owner_ctx somewhere else / outside of the locked
-section. A task preemption will change its value and stale content will
-be observed.
-
- [ bp: Massage. ]
-
-Debugged-by: Austin Clements <austin@google.com>
-Debugged-by: David Chase <drchase@golang.org>
-Debugged-by: Ian Lance Taylor <ian@airs.com>
-Fixes: 5f409e20b7945 ("x86/fpu: Defer FPU state load until return to userspace")
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Rik van Riel <riel@surriel.com>
-Tested-by: Borislav Petkov <bp@suse.de>
-Cc: Aubrey Li <aubrey.li@intel.com>
-Cc: Austin Clements <austin@google.com>
-Cc: Barret Rhoden <brho@google.com>
-Cc: Dave Hansen <dave.hansen@intel.com>
-Cc: David Chase <drchase@golang.org>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: ian@airs.com
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Josh Bleecher Snyder <josharian@gmail.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: x86-ml <x86@kernel.org>
-Link: https://lkml.kernel.org/r/20191128085306.hxfa2o3knqtu4wfn@linutronix.de
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=205663
+Fixes: e98df280bc2a ("perf script brstackinsn: Fix recovery from LBR/binary mismatch")
+Reported-by: Andi Kleen <ak@linux.intel.com>
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Jiri Olsa <jolsa@redhat.com>
+Link: http://lore.kernel.org/lkml/20191127095631.15663-1-adrian.hunter@intel.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- arch/x86/include/asm/fpu/internal.h | 2 +-
+ tools/perf/builtin-script.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/fpu/internal.h b/arch/x86/include/asm/fpu/internal.h
-index 4c95c36..44c48e3 100644
---- a/arch/x86/include/asm/fpu/internal.h
-+++ b/arch/x86/include/asm/fpu/internal.h
-@@ -509,7 +509,7 @@ static inline void __fpu_invalidate_fpregs_state(struct fpu *fpu)
+diff --git a/tools/perf/builtin-script.c b/tools/perf/builtin-script.c
+index e8db26b..e2406b2 100644
+--- a/tools/perf/builtin-script.c
++++ b/tools/perf/builtin-script.c
+@@ -1126,7 +1126,7 @@ static int perf_sample__fprintf_brstackinsn(struct perf_sample *sample,
+ 				insn++;
+ 			}
+ 		}
+-		if (off != (unsigned)len)
++		if (off != end - start)
+ 			printed += fprintf(fp, "\tmismatch of LBR data and executable\n");
+ 	}
  
- static inline int fpregs_state_valid(struct fpu *fpu, unsigned int cpu)
- {
--	return fpu == this_cpu_read_stable(fpu_fpregs_owner_ctx) && cpu == fpu->last_cpu;
-+	return fpu == this_cpu_read(fpu_fpregs_owner_ctx) && cpu == fpu->last_cpu;
- }
- 
- /*
