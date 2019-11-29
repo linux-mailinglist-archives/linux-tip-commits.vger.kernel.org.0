@@ -2,42 +2,42 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A63910D271
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 29 Nov 2019 09:29:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F60610D38A
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 29 Nov 2019 10:59:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726143AbfK2I3X (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 29 Nov 2019 03:29:23 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:48314 "EHLO
+        id S1726684AbfK2J72 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 29 Nov 2019 04:59:28 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:48463 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725892AbfK2I3X (ORCPT
+        with ESMTP id S1726143AbfK2J72 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 29 Nov 2019 03:29:23 -0500
+        Fri, 29 Nov 2019 04:59:28 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iabeI-0001FB-3B; Fri, 29 Nov 2019 09:29:10 +0100
+        id 1iad3K-0002Qp-P6; Fri, 29 Nov 2019 10:59:06 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A7B7C1C2114;
-        Fri, 29 Nov 2019 09:29:09 +0100 (CET)
-Date:   Fri, 29 Nov 2019 08:29:09 -0000
-From:   "tip-bot2 for Srinivas Pandruvada" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 449691C2116;
+        Fri, 29 Nov 2019 10:59:06 +0100 (CET)
+Date:   Fri, 29 Nov 2019 09:59:06 -0000
+From:   "tip-bot2 for Zhenzhong Duan" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: ras/urgent] x86/mce/therm_throt: Mask out read-only and
- reserved MSR bits
-Cc:     Dominik Brodowski <linux@dominikbrodowski.net>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Borislav Petkov <bp@suse.de>, "H. Peter Anvin" <hpa@zytor.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        "linux-edac" <linux-edac@vger.kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tony Luck <tony.luck@intel.com>, "x86-ml" <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191128150824.22413-1-srinivas.pandruvada@linux.intel.com>
-References: <20191128150824.22413-1-srinivas.pandruvada@linux.intel.com>
+Subject: [tip: sched/urgent] sched/clock: Use static_branch_likely() with
+ sched_clock_running
+Cc:     Zhenzhong Duan <zhenzhong.duan@oracle.com>,
+        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>, bsegall@google.com,
+        dietmar.eggemann@arm.com, juri.lelli@redhat.com, mgorman@suse.de,
+        vincent.guittot@linaro.org, Ingo Molnar <mingo@kernel.org>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <1574843848-26825-1-git-send-email-zhenzhong.duan@oracle.com>
+References: <1574843848-26825-1-git-send-email-zhenzhong.duan@oracle.com>
 MIME-Version: 1.0
-Message-ID: <157501614949.21853.15507465165565649871.tip-bot2@tip-bot2>
+Message-ID: <157502154611.21853.4555592493571232440.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,70 +51,88 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the ras/urgent branch of tip:
+The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     5a43b87b3c62ad149ba6e9d0d3e5c0e5da02a5ca
-Gitweb:        https://git.kernel.org/tip/5a43b87b3c62ad149ba6e9d0d3e5c0e5da02a5ca
-Author:        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-AuthorDate:    Thu, 28 Nov 2019 07:08:24 -08:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Fri, 29 Nov 2019 09:17:52 +01:00
+Commit-ID:     c5105d764e0214bcc4c6d40d7ba231d01b2e9dda
+Gitweb:        https://git.kernel.org/tip/c5105d764e0214bcc4c6d40d7ba231d01b2e9dda
+Author:        Zhenzhong Duan <zhenzhong.duan@oracle.com>
+AuthorDate:    Wed, 27 Nov 2019 16:37:28 +08:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Fri, 29 Nov 2019 08:10:54 +01:00
 
-x86/mce/therm_throt: Mask out read-only and reserved MSR bits
+sched/clock: Use static_branch_likely() with sched_clock_running
 
-While writing to MSR IA32_THERM_STATUS/IA32_PKG_THERM_STATUS, avoid
-writing 1 to read only and reserved fields because updating some fields
-generates exception.
+sched_clock_running is enabled early at bootup stage and never
+disabled. So hint that to the compiler by using static_branch_likely()
+rather than static_branch_unlikely().
 
- [ bp: Vertically align for better readability. ]
+The branch probability mis-annotation was introduced in the original
+commit that converted the plain sched_clock_running flag to a static key:
 
-Fixes: f6656208f04e ("x86/mce/therm_throt: Optimize notifications of thermal throttle")
-Reported-by: Dominik Brodowski <linux@dominikbrodowski.net>
-Tested-by: Dominik Brodowski <linux@dominikbrodowski.net>
-Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: linux-edac <linux-edac@vger.kernel.org>
+  46457ea464f5 ("sched/clock: Use static key for sched_clock_running")
+
+Steve further notes:
+
+  | Looks like the confusion was the moving of the "!":
+  |
+  | -       if (unlikely(!sched_clock_running))
+  | +       if (!static_branch_unlikely(&sched_clock_running))
+  |
+  | Where, it was unlikely that !sched_clock_running would be true, but
+  | because the "!" was moved outside the "unlikely()" it makes the test
+  | "likely()". That is, if we added an intermediate step, it would have
+  | been:
+  |
+  |         if (!likely(sched_clock_running))
+  |
+  | which would have prevented the mistake that this patch fixes.
+
+  [ mingo: Edited the changelog. ]
+
+Signed-off-by: Zhenzhong Duan <zhenzhong.duan@oracle.com>
+Reviewed-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Tony Luck <tony.luck@intel.com>
-Cc: x86-ml <x86@kernel.org>
-Link: https://lkml.kernel.org/r/20191128150824.22413-1-srinivas.pandruvada@linux.intel.com
+Cc: bsegall@google.com
+Cc: dietmar.eggemann@arm.com
+Cc: juri.lelli@redhat.com
+Cc: mgorman@suse.de
+Cc: vincent.guittot@linaro.org
+Link: https://lkml.kernel.org/r/1574843848-26825-1-git-send-email-zhenzhong.duan@oracle.com
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- arch/x86/kernel/cpu/mce/therm_throt.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ kernel/sched/clock.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/mce/therm_throt.c b/arch/x86/kernel/cpu/mce/therm_throt.c
-index d01e0da..b38010b 100644
---- a/arch/x86/kernel/cpu/mce/therm_throt.c
-+++ b/arch/x86/kernel/cpu/mce/therm_throt.c
-@@ -195,17 +195,24 @@ static const struct attribute_group thermal_attr_group = {
- #define THERM_THROT_POLL_INTERVAL	HZ
- #define THERM_STATUS_PROCHOT_LOG	BIT(1)
+diff --git a/kernel/sched/clock.c b/kernel/sched/clock.c
+index 1152259..12bca64 100644
+--- a/kernel/sched/clock.c
++++ b/kernel/sched/clock.c
+@@ -370,7 +370,7 @@ u64 sched_clock_cpu(int cpu)
+ 	if (sched_clock_stable())
+ 		return sched_clock() + __sched_clock_offset;
  
-+#define THERM_STATUS_CLEAR_CORE_MASK (BIT(1) | BIT(3) | BIT(5) | BIT(7) | BIT(9) | BIT(11) | BIT(13) | BIT(15))
-+#define THERM_STATUS_CLEAR_PKG_MASK  (BIT(1) | BIT(3) | BIT(5) | BIT(7) | BIT(9) | BIT(11))
-+
- static void clear_therm_status_log(int level)
+-	if (!static_branch_unlikely(&sched_clock_running))
++	if (!static_branch_likely(&sched_clock_running))
+ 		return sched_clock();
+ 
+ 	preempt_disable_notrace();
+@@ -393,7 +393,7 @@ void sched_clock_tick(void)
+ 	if (sched_clock_stable())
+ 		return;
+ 
+-	if (!static_branch_unlikely(&sched_clock_running))
++	if (!static_branch_likely(&sched_clock_running))
+ 		return;
+ 
+ 	lockdep_assert_irqs_disabled();
+@@ -460,7 +460,7 @@ void __init sched_clock_init(void)
+ 
+ u64 sched_clock_cpu(int cpu)
  {
- 	int msr;
--	u64 msr_val;
-+	u64 mask, msr_val;
+-	if (!static_branch_unlikely(&sched_clock_running))
++	if (!static_branch_likely(&sched_clock_running))
+ 		return 0;
  
--	if (level == CORE_LEVEL)
--		msr = MSR_IA32_THERM_STATUS;
--	else
--		msr = MSR_IA32_PACKAGE_THERM_STATUS;
-+	if (level == CORE_LEVEL) {
-+		msr  = MSR_IA32_THERM_STATUS;
-+		mask = THERM_STATUS_CLEAR_CORE_MASK;
-+	} else {
-+		msr  = MSR_IA32_PACKAGE_THERM_STATUS;
-+		mask = THERM_STATUS_CLEAR_PKG_MASK;
-+	}
- 
- 	rdmsrl(msr, msr_val);
-+	msr_val &= mask;
- 	wrmsrl(msr, msr_val & ~THERM_STATUS_PROCHOT_LOG);
- }
- 
+ 	return sched_clock();
