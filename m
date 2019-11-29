@@ -2,54 +2,43 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E07D10D145
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 29 Nov 2019 07:03:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2632E10D158
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 29 Nov 2019 07:04:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727113AbfK2GDM convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 29 Nov 2019 01:03:12 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:48099 "EHLO
+        id S1727332AbfK2GD5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 29 Nov 2019 01:03:57 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:48051 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727047AbfK2GDL (ORCPT
+        with ESMTP id S1726804AbfK2GDE (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 29 Nov 2019 01:03:11 -0500
+        Fri, 29 Nov 2019 01:03:04 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iaZMi-0008I2-HE; Fri, 29 Nov 2019 07:02:52 +0100
+        id 1iaZMm-0008IM-Mb; Fri, 29 Nov 2019 07:02:56 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 384291C2102;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5FDD11C1D25;
         Fri, 29 Nov 2019 07:02:51 +0100 (CET)
 Date:   Fri, 29 Nov 2019 06:02:51 -0000
-From:   "tip-bot2 for Jiri Olsa" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf tools: Allow to link with libbpf dynamicaly
-Cc:     Jiri Olsa <jolsa@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        toke@redhat.com,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Alexei Starovoitov <alexei.starovoitov@gmail.com>,
-        Andrii Nakryiko <andriin@fb.com>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Jesper Dangaard Brouer <brouer@redhat.com>,
-        Martin KaFai Lau <kafai@fb.com>,
-        Michael Petlan <mpetlan@redhat.com>,
+Subject: [tip: perf/urgent] perf tests: Rename tests/map_groups.c to tests/maps.c
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        Andi Kleen <ak@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>,
         Namhyung Kim <namhyung@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
-        bpf@vger.kernel.org, netdev@vger.kernel.org, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191126121253.28253-1-jolsa@kernel.org>
-References: <20191126121253.28253-1-jolsa@kernel.org>
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <tip-bw6aagubqxc47m54k2maezfu@git.kernel.org>
+References: <tip-bw6aagubqxc47m54k2maezfu@git.kernel.org>
 MIME-Version: 1.0
-Message-ID: <157500737114.21853.14426283162041132071.tip-bot2@tip-bot2>
+Message-ID: <157500737129.21853.5454737946825912101.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: 7bit
 X-Linutronix-Spam-Score: -1.0
 X-Linutronix-Spam-Level: -
 X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
@@ -60,177 +49,323 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     7b65e2034fde011d090d4ec472902b71129c6cbd
-Gitweb:        https://git.kernel.org/tip/7b65e2034fde011d090d4ec472902b71129c6cbd
-Author:        Jiri Olsa <jolsa@kernel.org>
-AuthorDate:    Tue, 26 Nov 2019 13:12:53 +01:00
+Commit-ID:     a5732681e0e6ea0c3024f9d23bcf99b9237189ee
+Gitweb:        https://git.kernel.org/tip/a5732681e0e6ea0c3024f9d23bcf99b9237189ee
+Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
+AuthorDate:    Mon, 25 Nov 2019 22:33:02 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Tue, 26 Nov 2019 11:17:45 -03:00
+CommitterDate: Tue, 26 Nov 2019 11:07:46 -03:00
 
-perf tools: Allow to link with libbpf dynamicaly
+perf tests: Rename tests/map_groups.c to tests/maps.c
 
-Currently we support only static linking with kernel's libbpf
-(tools/lib/bpf). This patch adds libbpf package detection and support to
-link perf with it dynamically.
+One more step in mergint the maps and map_groups structs.
 
-The libbpf package status is displayed with:
-
-  $ make VF=1
-  Auto-detecting system features:
-  ...
-  ...                        libbpf: [ on  ]
-
-It's not checked by default, because it's quite new.  Once it's on most
-distros we can switch it on.
-
-For the same reason it's not added to the test-all check.
-
-Perf does not need advanced version of libbpf, so we can check just for
-the base bpf_object__open function.
-
-Adding new compile variable to detect libbpf package and link bpf
-dynamically:
-
-  $ make LIBBPF_DYNAMIC=1
-    ...
-    LINK     perf
-  $ ldd perf | grep bpf
-    libbpf.so.0 => /lib64/libbpf.so.0 (0x00007f46818bc000)
-
-If libbpf is not installed, build stops with:
-
-  Makefile.config:486: *** Error: No libbpf devel library found,\
-  please install libbpf-devel.  Stop.
-
-Committer testing:
-
-  $ make LIBBPF_DYNAMIC=1 -C tools/perf O=/tmp/build/perf
-  make: Entering directory '/home/acme/git/perf/tools/perf'
-    BUILD:   Doing 'make -j8' parallel build
-  Makefile.config:493: *** Error: No libbpf devel library found, please install libbpf-devel.  Stop.
-  make[1]: *** [Makefile.perf:225: sub-make] Error 2
-  make: *** [Makefile:70: all] Error 2
-  make: Leaving directory '/home/acme/git/perf/tools/perf'
-  $
-
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Toke Høiland-Jørgensen <toke@redhat.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Cc: Andrii Nakryiko <andriin@fb.com>
-Cc: Daniel Borkmann <daniel@iogearbox.net>
-Cc: Jesper Dangaard Brouer <brouer@redhat.com>
-Cc: Martin KaFai Lau <kafai@fb.com>
-Cc: Michael Petlan <mpetlan@redhat.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Andi Kleen <ak@linux.intel.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Song Liu <songliubraving@fb.com>
-Cc: Yonghong Song <yhs@fb.com>
-Cc: bpf@vger.kernel.org
-Cc: netdev@vger.kernel.org
-Link: http://lore.kernel.org/lkml/20191126121253.28253-1-jolsa@kernel.org
+Link: https://lkml.kernel.org/n/tip-bw6aagubqxc47m54k2maezfu@git.kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/build/Makefile.feature      |  3 ++-
- tools/build/feature/Makefile      |  4 ++++
- tools/build/feature/test-libbpf.c |  7 +++++++
- tools/perf/Makefile.config        | 10 ++++++++++
- tools/perf/Makefile.perf          |  6 +++++-
- 5 files changed, 28 insertions(+), 2 deletions(-)
- create mode 100644 tools/build/feature/test-libbpf.c
+ tools/perf/tests/Build          |   2 +-
+ tools/perf/tests/builtin-test.c |   4 +-
+ tools/perf/tests/map_groups.c   | 120 +-------------------------------
+ tools/perf/tests/maps.c         | 120 +++++++++++++++++++++++++++++++-
+ tools/perf/tests/tests.h        |   2 +-
+ 5 files changed, 124 insertions(+), 124 deletions(-)
+ delete mode 100644 tools/perf/tests/map_groups.c
+ create mode 100644 tools/perf/tests/maps.c
 
-diff --git a/tools/build/Makefile.feature b/tools/build/Makefile.feature
-index 8a19753..574c2e0 100644
---- a/tools/build/Makefile.feature
-+++ b/tools/build/Makefile.feature
-@@ -96,7 +96,8 @@ FEATURE_TESTS_EXTRA :=                  \
-          cxx                            \
-          llvm                           \
-          llvm-version                   \
--         clang
-+         clang                          \
-+         libbpf
+diff --git a/tools/perf/tests/Build b/tools/perf/tests/Build
+index 5b9b0a8..a3c595f 100644
+--- a/tools/perf/tests/Build
++++ b/tools/perf/tests/Build
+@@ -52,7 +52,7 @@ perf-y += perf-hooks.o
+ perf-y += clang.o
+ perf-y += unit_number__scnprintf.o
+ perf-y += mem2node.o
+-perf-y += map_groups.o
++perf-y += maps.o
+ perf-y += time-utils-test.o
  
- FEATURE_TESTS ?= $(FEATURE_TESTS_BASIC)
- 
-diff --git a/tools/build/feature/Makefile b/tools/build/feature/Makefile
-index 8499385..f30a890 100644
---- a/tools/build/feature/Makefile
-+++ b/tools/build/feature/Makefile
-@@ -53,6 +53,7 @@ FILES=                                          \
-          test-zlib.bin                          \
-          test-lzma.bin                          \
-          test-bpf.bin                           \
-+         test-libbpf.bin                        \
-          test-get_cpuid.bin                     \
-          test-sdt.bin                           \
-          test-cxx.bin                           \
-@@ -270,6 +271,9 @@ $(OUTPUT)test-get_cpuid.bin:
- $(OUTPUT)test-bpf.bin:
- 	$(BUILD)
- 
-+$(OUTPUT)test-libbpf.bin:
-+	$(BUILD) -lbpf
-+
- $(OUTPUT)test-sdt.bin:
- 	$(BUILD)
- 
-diff --git a/tools/build/feature/test-libbpf.c b/tools/build/feature/test-libbpf.c
+ $(OUTPUT)tests/llvm-src-base.c: tests/bpf-script-example.c tests/Build
+diff --git a/tools/perf/tests/builtin-test.c b/tools/perf/tests/builtin-test.c
+index 3a4b983..7115aa3 100644
+--- a/tools/perf/tests/builtin-test.c
++++ b/tools/perf/tests/builtin-test.c
+@@ -297,8 +297,8 @@ static struct test generic_tests[] = {
+ 		.func = test__time_utils,
+ 	},
+ 	{
+-		.desc = "map_groups__merge_in",
+-		.func = test__map_groups__merge_in,
++		.desc = "maps__merge_in",
++		.func = test__maps__merge_in,
+ 	},
+ 	{
+ 		.func = NULL,
+diff --git a/tools/perf/tests/map_groups.c b/tools/perf/tests/map_groups.c
+deleted file mode 100644
+index 7febd02..0000000
+--- a/tools/perf/tests/map_groups.c
++++ /dev/null
+@@ -1,120 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0
+-#include <linux/compiler.h>
+-#include <linux/kernel.h>
+-#include "tests.h"
+-#include "map.h"
+-#include "maps.h"
+-#include "dso.h"
+-#include "debug.h"
+-
+-struct map_def {
+-	const char *name;
+-	u64 start;
+-	u64 end;
+-};
+-
+-static int check_maps(struct map_def *merged, unsigned int size, struct maps *maps)
+-{
+-	struct map *map;
+-	unsigned int i = 0;
+-
+-	maps__for_each_entry(maps, map) {
+-		if (i > 0)
+-			TEST_ASSERT_VAL("less maps expected", (map && i < size) || (!map && i == size));
+-
+-		TEST_ASSERT_VAL("wrong map start",  map->start == merged[i].start);
+-		TEST_ASSERT_VAL("wrong map end",    map->end == merged[i].end);
+-		TEST_ASSERT_VAL("wrong map name",  !strcmp(map->dso->name, merged[i].name));
+-		TEST_ASSERT_VAL("wrong map refcnt", refcount_read(&map->refcnt) == 1);
+-
+-		i++;
+-	}
+-
+-	return TEST_OK;
+-}
+-
+-int test__map_groups__merge_in(struct test *t __maybe_unused, int subtest __maybe_unused)
+-{
+-	struct maps maps;
+-	unsigned int i;
+-	struct map_def bpf_progs[] = {
+-		{ "bpf_prog_1", 200, 300 },
+-		{ "bpf_prog_2", 500, 600 },
+-		{ "bpf_prog_3", 800, 900 },
+-	};
+-	struct map_def merged12[] = {
+-		{ "kcore1",     100,  200 },
+-		{ "bpf_prog_1", 200,  300 },
+-		{ "kcore1",     300,  500 },
+-		{ "bpf_prog_2", 500,  600 },
+-		{ "kcore1",     600,  800 },
+-		{ "bpf_prog_3", 800,  900 },
+-		{ "kcore1",     900, 1000 },
+-	};
+-	struct map_def merged3[] = {
+-		{ "kcore1",      100,  200 },
+-		{ "bpf_prog_1",  200,  300 },
+-		{ "kcore1",      300,  500 },
+-		{ "bpf_prog_2",  500,  600 },
+-		{ "kcore1",      600,  800 },
+-		{ "bpf_prog_3",  800,  900 },
+-		{ "kcore1",      900, 1000 },
+-		{ "kcore3",     1000, 1100 },
+-	};
+-	struct map *map_kcore1, *map_kcore2, *map_kcore3;
+-	int ret;
+-
+-	maps__init(&maps, NULL);
+-
+-	for (i = 0; i < ARRAY_SIZE(bpf_progs); i++) {
+-		struct map *map;
+-
+-		map = dso__new_map(bpf_progs[i].name);
+-		TEST_ASSERT_VAL("failed to create map", map);
+-
+-		map->start = bpf_progs[i].start;
+-		map->end   = bpf_progs[i].end;
+-		maps__insert(&maps, map);
+-		map__put(map);
+-	}
+-
+-	map_kcore1 = dso__new_map("kcore1");
+-	TEST_ASSERT_VAL("failed to create map", map_kcore1);
+-
+-	map_kcore2 = dso__new_map("kcore2");
+-	TEST_ASSERT_VAL("failed to create map", map_kcore2);
+-
+-	map_kcore3 = dso__new_map("kcore3");
+-	TEST_ASSERT_VAL("failed to create map", map_kcore3);
+-
+-	/* kcore1 map overlaps over all bpf maps */
+-	map_kcore1->start = 100;
+-	map_kcore1->end   = 1000;
+-
+-	/* kcore2 map hides behind bpf_prog_2 */
+-	map_kcore2->start = 550;
+-	map_kcore2->end   = 570;
+-
+-	/* kcore3 map hides behind bpf_prog_3, kcore1 and adds new map */
+-	map_kcore3->start = 880;
+-	map_kcore3->end   = 1100;
+-
+-	ret = maps__merge_in(&maps, map_kcore1);
+-	TEST_ASSERT_VAL("failed to merge map", !ret);
+-
+-	ret = check_maps(merged12, ARRAY_SIZE(merged12), &maps);
+-	TEST_ASSERT_VAL("merge check failed", !ret);
+-
+-	ret = maps__merge_in(&maps, map_kcore2);
+-	TEST_ASSERT_VAL("failed to merge map", !ret);
+-
+-	ret = check_maps(merged12, ARRAY_SIZE(merged12), &maps);
+-	TEST_ASSERT_VAL("merge check failed", !ret);
+-
+-	ret = maps__merge_in(&maps, map_kcore3);
+-	TEST_ASSERT_VAL("failed to merge map", !ret);
+-
+-	ret = check_maps(merged3, ARRAY_SIZE(merged3), &maps);
+-	TEST_ASSERT_VAL("merge check failed", !ret);
+-	return TEST_OK;
+-}
+diff --git a/tools/perf/tests/maps.c b/tools/perf/tests/maps.c
 new file mode 100644
-index 0000000..a508756
+index 0000000..edcbc70
 --- /dev/null
-+++ b/tools/build/feature/test-libbpf.c
-@@ -0,0 +1,7 @@
++++ b/tools/perf/tests/maps.c
+@@ -0,0 +1,120 @@
 +// SPDX-License-Identifier: GPL-2.0
-+#include <bpf/libbpf.h>
++#include <linux/compiler.h>
++#include <linux/kernel.h>
++#include "tests.h"
++#include "map.h"
++#include "maps.h"
++#include "dso.h"
++#include "debug.h"
 +
-+int main(void)
++struct map_def {
++	const char *name;
++	u64 start;
++	u64 end;
++};
++
++static int check_maps(struct map_def *merged, unsigned int size, struct maps *maps)
 +{
-+	return bpf_object__open("test") ? 0 : -1;
-+}
-diff --git a/tools/perf/Makefile.config b/tools/perf/Makefile.config
-index 1783427..c90f414 100644
---- a/tools/perf/Makefile.config
-+++ b/tools/perf/Makefile.config
-@@ -483,6 +483,16 @@ ifndef NO_LIBELF
-     ifeq ($(feature-bpf), 1)
-       CFLAGS += -DHAVE_LIBBPF_SUPPORT
-       $(call detected,CONFIG_LIBBPF)
++	struct map *map;
++	unsigned int i = 0;
 +
-+      # detecting libbpf without LIBBPF_DYNAMIC, so make VF=1 shows libbpf detection status
-+      $(call feature_check,libbpf)
-+      ifdef LIBBPF_DYNAMIC
-+        ifeq ($(feature-libbpf), 1)
-+          EXTLIBS += -lbpf
-+        else
-+          dummy := $(error Error: No libbpf devel library found, please install libbpf-devel);
-+        endif
-+      endif
-     endif
++	maps__for_each_entry(maps, map) {
++		if (i > 0)
++			TEST_ASSERT_VAL("less maps expected", (map && i < size) || (!map && i == size));
++
++		TEST_ASSERT_VAL("wrong map start",  map->start == merged[i].start);
++		TEST_ASSERT_VAL("wrong map end",    map->end == merged[i].end);
++		TEST_ASSERT_VAL("wrong map name",  !strcmp(map->dso->name, merged[i].name));
++		TEST_ASSERT_VAL("wrong map refcnt", refcount_read(&map->refcnt) == 1);
++
++		i++;
++	}
++
++	return TEST_OK;
++}
++
++int test__maps__merge_in(struct test *t __maybe_unused, int subtest __maybe_unused)
++{
++	struct maps maps;
++	unsigned int i;
++	struct map_def bpf_progs[] = {
++		{ "bpf_prog_1", 200, 300 },
++		{ "bpf_prog_2", 500, 600 },
++		{ "bpf_prog_3", 800, 900 },
++	};
++	struct map_def merged12[] = {
++		{ "kcore1",     100,  200 },
++		{ "bpf_prog_1", 200,  300 },
++		{ "kcore1",     300,  500 },
++		{ "bpf_prog_2", 500,  600 },
++		{ "kcore1",     600,  800 },
++		{ "bpf_prog_3", 800,  900 },
++		{ "kcore1",     900, 1000 },
++	};
++	struct map_def merged3[] = {
++		{ "kcore1",      100,  200 },
++		{ "bpf_prog_1",  200,  300 },
++		{ "kcore1",      300,  500 },
++		{ "bpf_prog_2",  500,  600 },
++		{ "kcore1",      600,  800 },
++		{ "bpf_prog_3",  800,  900 },
++		{ "kcore1",      900, 1000 },
++		{ "kcore3",     1000, 1100 },
++	};
++	struct map *map_kcore1, *map_kcore2, *map_kcore3;
++	int ret;
++
++	maps__init(&maps, NULL);
++
++	for (i = 0; i < ARRAY_SIZE(bpf_progs); i++) {
++		struct map *map;
++
++		map = dso__new_map(bpf_progs[i].name);
++		TEST_ASSERT_VAL("failed to create map", map);
++
++		map->start = bpf_progs[i].start;
++		map->end   = bpf_progs[i].end;
++		maps__insert(&maps, map);
++		map__put(map);
++	}
++
++	map_kcore1 = dso__new_map("kcore1");
++	TEST_ASSERT_VAL("failed to create map", map_kcore1);
++
++	map_kcore2 = dso__new_map("kcore2");
++	TEST_ASSERT_VAL("failed to create map", map_kcore2);
++
++	map_kcore3 = dso__new_map("kcore3");
++	TEST_ASSERT_VAL("failed to create map", map_kcore3);
++
++	/* kcore1 map overlaps over all bpf maps */
++	map_kcore1->start = 100;
++	map_kcore1->end   = 1000;
++
++	/* kcore2 map hides behind bpf_prog_2 */
++	map_kcore2->start = 550;
++	map_kcore2->end   = 570;
++
++	/* kcore3 map hides behind bpf_prog_3, kcore1 and adds new map */
++	map_kcore3->start = 880;
++	map_kcore3->end   = 1100;
++
++	ret = maps__merge_in(&maps, map_kcore1);
++	TEST_ASSERT_VAL("failed to merge map", !ret);
++
++	ret = check_maps(merged12, ARRAY_SIZE(merged12), &maps);
++	TEST_ASSERT_VAL("merge check failed", !ret);
++
++	ret = maps__merge_in(&maps, map_kcore2);
++	TEST_ASSERT_VAL("failed to merge map", !ret);
++
++	ret = check_maps(merged12, ARRAY_SIZE(merged12), &maps);
++	TEST_ASSERT_VAL("merge check failed", !ret);
++
++	ret = maps__merge_in(&maps, map_kcore3);
++	TEST_ASSERT_VAL("failed to merge map", !ret);
++
++	ret = check_maps(merged3, ARRAY_SIZE(merged3), &maps);
++	TEST_ASSERT_VAL("merge check failed", !ret);
++	return TEST_OK;
++}
+diff --git a/tools/perf/tests/tests.h b/tools/perf/tests/tests.h
+index f2b9bb0..25aea38 100644
+--- a/tools/perf/tests/tests.h
++++ b/tools/perf/tests/tests.h
+@@ -107,7 +107,7 @@ const char *test__clang_subtest_get_desc(int subtest);
+ int test__clang_subtest_get_nr(void);
+ int test__unit_number__scnprint(struct test *test, int subtest);
+ int test__mem2node(struct test *t, int subtest);
+-int test__map_groups__merge_in(struct test *t, int subtest);
++int test__maps__merge_in(struct test *t, int subtest);
+ int test__time_utils(struct test *t, int subtest);
  
-     ifndef NO_DWARF
-diff --git a/tools/perf/Makefile.perf b/tools/perf/Makefile.perf
-index 1cd2944..eae5d5e 100644
---- a/tools/perf/Makefile.perf
-+++ b/tools/perf/Makefile.perf
-@@ -116,6 +116,8 @@ include ../scripts/utilities.mak
- #
- # Define TCMALLOC to enable tcmalloc heap profiling.
- #
-+# Define LIBBPF_DYNAMIC to enable libbpf dynamic linking.
-+#
- 
- # As per kernel Makefile, avoid funny character set dependencies
- unexport LC_ALL
-@@ -360,7 +362,9 @@ export PERL_PATH
- 
- PERFLIBS = $(LIBAPI) $(LIBTRACEEVENT) $(LIBSUBCMD) $(LIBPERF)
- ifndef NO_LIBBPF
--  PERFLIBS += $(LIBBPF)
-+  ifndef LIBBPF_DYNAMIC
-+    PERFLIBS += $(LIBBPF)
-+  endif
- endif
- 
- # We choose to avoid "if .. else if .. else .. endif endif"
+ bool test__bp_signal_is_supported(void);
