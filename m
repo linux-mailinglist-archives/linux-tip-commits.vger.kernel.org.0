@@ -2,40 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2AA5710D4B8
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 29 Nov 2019 12:24:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 293B010DE62
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 30 Nov 2019 18:11:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726834AbfK2LX5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 29 Nov 2019 06:23:57 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:48628 "EHLO
+        id S1726799AbfK3RLr (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 30 Nov 2019 12:11:47 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:50282 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725892AbfK2LX4 (ORCPT
+        with ESMTP id S1726497AbfK3RLr (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 29 Nov 2019 06:23:56 -0500
+        Sat, 30 Nov 2019 12:11:47 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iaeND-0004KA-RM; Fri, 29 Nov 2019 12:23:43 +0100
+        id 1ib6HO-0003Jn-Mb; Sat, 30 Nov 2019 18:11:39 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 87C831C211B;
-        Fri, 29 Nov 2019 12:23:43 +0100 (CET)
-Date:   Fri, 29 Nov 2019 11:23:43 -0000
-From:   "tip-bot2 for Kai-Heng Feng" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4E1791C1E6C;
+        Sat, 30 Nov 2019 18:11:34 +0100 (CET)
+Date:   Sat, 30 Nov 2019 17:11:34 -0000
+From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/urgent] x86/intel: Disable HPET on Intel Coffee Lake H platforms
-Cc:     "Kai-Heng Feng" <kai.heng.feng@canonical.com>,
+Subject: [tip: x86/urgent] x86/ioperm: Save an indentation level in
+ tss_update_io_bitmap()
+Cc:     Borislav Petkov <bp@suse.de>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>, bp@alien8.de,
-        feng.tang@intel.com, harry.pan@intel.com, hpa@zytor.com,
+        Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191129062303.18982-1-kai.heng.feng@canonical.com>
-References: <20191129062303.18982-1-kai.heng.feng@canonical.com>
 MIME-Version: 1.0
-Message-ID: <157502662346.21853.2020803002455006858.tip-bot2@tip-bot2>
+Message-ID: <157513389416.21853.341175495479057538.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,46 +47,97 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/urgent branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     f8edbde885bbcab6a2b4a1b5ca614e6ccb807577
-Gitweb:        https://git.kernel.org/tip/f8edbde885bbcab6a2b4a1b5ca614e6ccb807577
-Author:        Kai-Heng Feng <kai.heng.feng@canonical.com>
-AuthorDate:    Fri, 29 Nov 2019 14:23:02 +08:00
+Commit-ID:     7b0b8cfd261c569177d64d6e9b1800fbe412fd65
+Gitweb:        https://git.kernel.org/tip/7b0b8cfd261c569177d64d6e9b1800fbe412fd65
+Author:        Borislav Petkov <bp@suse.de>
+AuthorDate:    Sat, 30 Nov 2019 16:00:53 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 29 Nov 2019 12:17:58 +01:00
+CommitterDate: Sat, 30 Nov 2019 18:06:56 +01:00
 
-x86/intel: Disable HPET on Intel Coffee Lake H platforms
+x86/ioperm: Save an indentation level in tss_update_io_bitmap()
 
-Coffee Lake H SoC has similar behavior as Coffee Lake, skewed HPET timer
-once the SoCs entered PC10.
+... for better readability.
 
-So let's disable HPET on CFL-H platforms.
+No functional changes.
 
-Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+[ Minor edit. ]
+
+Signed-off-by: Borislav Petkov <bp@suse.de>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: bp@alien8.de
-Cc: feng.tang@intel.com
-Cc: harry.pan@intel.com
-Cc: hpa@zytor.com
-Link: https://lkml.kernel.org/r/20191129062303.18982-1-kai.heng.feng@canonical.com
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- arch/x86/kernel/early-quirks.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/kernel/process.c | 52 +++++++++++++++++++-------------------
+ 1 file changed, 26 insertions(+), 26 deletions(-)
 
-diff --git a/arch/x86/kernel/early-quirks.c b/arch/x86/kernel/early-quirks.c
-index 4cba91e..606711f 100644
---- a/arch/x86/kernel/early-quirks.c
-+++ b/arch/x86/kernel/early-quirks.c
-@@ -710,6 +710,8 @@ static struct chipset early_qrk[] __initdata = {
- 	 */
- 	{ PCI_VENDOR_ID_INTEL, 0x0f00,
- 		PCI_CLASS_BRIDGE_HOST, PCI_ANY_ID, 0, force_disable_hpet},
-+	{ PCI_VENDOR_ID_INTEL, 0x3e20,
-+		PCI_CLASS_BRIDGE_HOST, PCI_ANY_ID, 0, force_disable_hpet},
- 	{ PCI_VENDOR_ID_INTEL, 0x3ec4,
- 		PCI_CLASS_BRIDGE_HOST, PCI_ANY_ID, 0, force_disable_hpet},
- 	{ PCI_VENDOR_ID_BROADCOM, 0x4331,
+diff --git a/arch/x86/kernel/process.c b/arch/x86/kernel/process.c
+index bd2a11c..61e93a3 100644
+--- a/arch/x86/kernel/process.c
++++ b/arch/x86/kernel/process.c
+@@ -377,37 +377,37 @@ static void tss_copy_io_bitmap(struct tss_struct *tss, struct io_bitmap *iobm)
+ void tss_update_io_bitmap(void)
+ {
+ 	struct tss_struct *tss = this_cpu_ptr(&cpu_tss_rw);
++	struct thread_struct *t = &current->thread;
+ 	u16 *base = &tss->x86_tss.io_bitmap_base;
+ 
+-	if (test_thread_flag(TIF_IO_BITMAP)) {
+-		struct thread_struct *t = &current->thread;
+-
+-		if (IS_ENABLED(CONFIG_X86_IOPL_IOPERM) && t->iopl_emul == 3) {
+-			*base = IO_BITMAP_OFFSET_VALID_ALL;
+-		} else {
+-			struct io_bitmap *iobm = t->io_bitmap;
+-			/*
+-			 * Only copy bitmap data when the sequence number
+-			 * differs. The update time is accounted to the
+-			 * incoming task.
+-			 */
+-			if (tss->io_bitmap.prev_sequence != iobm->sequence)
+-				tss_copy_io_bitmap(tss, iobm);
+-
+-			/* Enable the bitmap */
+-			*base = IO_BITMAP_OFFSET_VALID_MAP;
+-		}
++	if (!test_thread_flag(TIF_IO_BITMAP)) {
++		tss_invalidate_io_bitmap(tss);
++		return;
++	}
++
++	if (IS_ENABLED(CONFIG_X86_IOPL_IOPERM) && t->iopl_emul == 3) {
++		*base = IO_BITMAP_OFFSET_VALID_ALL;
++	} else {
++		struct io_bitmap *iobm = t->io_bitmap;
++
+ 		/*
+-		 * Make sure that the TSS limit is covering the io bitmap.
+-		 * It might have been cut down by a VMEXIT to 0x67 which
+-		 * would cause a subsequent I/O access from user space to
+-		 * trigger a #GP because tbe bitmap is outside the TSS
+-		 * limit.
++		 * Only copy bitmap data when the sequence number differs. The
++		 * update time is accounted to the incoming task.
+ 		 */
+-		refresh_tss_limit();
+-	} else {
+-		tss_invalidate_io_bitmap(tss);
++		if (tss->io_bitmap.prev_sequence != iobm->sequence)
++			tss_copy_io_bitmap(tss, iobm);
++
++		/* Enable the bitmap */
++		*base = IO_BITMAP_OFFSET_VALID_MAP;
+ 	}
++
++	/*
++	 * Make sure that the TSS limit is covering the IO bitmap. It might have
++	 * been cut down by a VMEXIT to 0x67 which would cause a subsequent I/O
++	 * access from user space to trigger a #GP because tbe bitmap is outside
++	 * the TSS limit.
++	 */
++	refresh_tss_limit();
+ }
+ #else /* CONFIG_X86_IOPL_IOPERM */
+ static inline void switch_to_bitmap(unsigned long tifp) { }
