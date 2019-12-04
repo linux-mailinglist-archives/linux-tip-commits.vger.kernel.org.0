@@ -2,39 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 313C71123BB
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  4 Dec 2019 08:54:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A0671123D4
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  4 Dec 2019 08:55:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727127AbfLDHyA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 4 Dec 2019 02:54:00 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:56063 "EHLO
+        id S1727384AbfLDHyG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 4 Dec 2019 02:54:06 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:56133 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726856AbfLDHyA (ORCPT
+        with ESMTP id S1727326AbfLDHyF (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 4 Dec 2019 02:54:00 -0500
+        Wed, 4 Dec 2019 02:54:05 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1icPTr-0004Qe-OC; Wed, 04 Dec 2019 08:53:51 +0100
+        id 1icPTs-0004Qq-UN; Wed, 04 Dec 2019 08:53:53 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5F3391C2217;
-        Wed,  4 Dec 2019 08:53:51 +0100 (CET)
-Date:   Wed, 04 Dec 2019 07:53:51 -0000
-From:   "tip-bot2 for Sudip Mukherjee" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 8B40C1C2644;
+        Wed,  4 Dec 2019 08:53:52 +0100 (CET)
+Date:   Wed, 04 Dec 2019 07:53:52 -0000
+From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] libtraceevent: Copy pkg-config file to output
- folder when using O=
-Cc:     Sudipm Mukherjee <sudipm.mukherjee@gmail.com>,
-        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
-        linux-trace-devel@vger.kernel.org,
+Subject: [tip: perf/urgent] tools headers UAPI: Sync sched.h with the kernel
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        Adrian Reber <areber@redhat.com>,
+        Christian Brauner <christian.brauner@ubuntu.com>,
+        Jiri Olsa <jolsa@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191115113610.21493-2-sudipm.mukherjee@gmail.com>
-References: <20191115113610.21493-2-sudipm.mukherjee@gmail.com>
+In-Reply-To: <tip-nprqsvvzbhzoy64cbvos6c5b@git.kernel.org>
+References: <tip-nprqsvvzbhzoy64cbvos6c5b@git.kernel.org>
 MIME-Version: 1.0
-Message-ID: <157544603119.21853.10423466148117634135.tip-bot2@tip-bot2>
+Message-ID: <157544603240.21853.7387317330852684748.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,44 +51,131 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     15b3904f8e884e0d34d5f09906cf6526d0b889a2
-Gitweb:        https://git.kernel.org/tip/15b3904f8e884e0d34d5f09906cf6526d0b889a2
-Author:        Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-AuthorDate:    Fri, 15 Nov 2019 11:36:10 
+Commit-ID:     2603a4903bf96d2fe15b7d9e2d03b7efdffbd99a
+Gitweb:        https://git.kernel.org/tip/2603a4903bf96d2fe15b7d9e2d03b7efdffbd99a
+Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
+AuthorDate:    Mon, 02 Dec 2019 12:56:39 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Mon, 02 Dec 2019 21:58:20 -03:00
+CommitterDate: Mon, 02 Dec 2019 12:56:39 -03:00
 
-libtraceevent: Copy pkg-config file to output folder when using O=
+tools headers UAPI: Sync sched.h with the kernel
 
-When we use 'O=' with make to build libtraceevent in a separate folder
-it still copies 'libtraceevent.pc' to its source folder. Modify the
-Makefile so that it uses the output folder to copy the pkg-config file
-and install from there.
+To get the changes in:
 
-Signed-off-by: Sudipm Mukherjee <sudipm.mukherjee@gmail.com>
-Reviewed-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
-Cc: linux-trace-devel@vger.kernel.org
-Link: http://lore.kernel.org/lkml/20191115113610.21493-2-sudipm.mukherjee@gmail.com
+  0acefef58451 ("Merge tag 'threads-v5.5' of git://git.kernel.org/pub/scm/linux/kernel/git/brauner/linux")
+  49cb2fc42ce4 ("fork: extend clone3() to support setting a PID")
+  fa729c4df558 ("clone3: validate stack arguments")
+  b612e5df4587 ("clone3: add CLONE_CLEAR_SIGHAND")
+
+This file gets rebuilt, but no changes ensues:
+
+   CC       /tmp/build/perf/trace/beauty/clone.o
+
+This addresses this perf build warning:
+
+  Warning: Kernel ABI header at 'tools/include/uapi/linux/sched.h' differs from latest version at 'include/uapi/linux/sched.h'
+  diff -u tools/include/uapi/linux/sched.h include/uapi/linux/sched.
+
+The CLONE_CLEAR_SIGHAND one will be used in tools/perf/trace/beauty/clone.c
+in a followup patch to show that string when this bit is set in the
+syscall arg. Keeping a copy of this file allows us to build this in
+older systems and have the binary support printing that flag whenever
+that system gets its kernel updated to one where this feature is
+present.
+
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Adrian Reber <areber@redhat.com>
+Cc: Christian Brauner <christian.brauner@ubuntu.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Link: https://lkml.kernel.org/n/tip-nprqsvvzbhzoy64cbvos6c5b@git.kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/lib/traceevent/Makefile | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ tools/include/uapi/linux/sched.h | 60 +++++++++++++++++++++----------
+ 1 file changed, 42 insertions(+), 18 deletions(-)
 
-diff --git a/tools/lib/traceevent/Makefile b/tools/lib/traceevent/Makefile
-index 83446fe..c5a0335 100644
---- a/tools/lib/traceevent/Makefile
-+++ b/tools/lib/traceevent/Makefile
-@@ -208,10 +208,11 @@ define do_install
- 	$(INSTALL) $(if $3,-m $3,) $1 '$(DESTDIR_SQ)$2'
- endef
+diff --git a/tools/include/uapi/linux/sched.h b/tools/include/uapi/linux/sched.h
+index 99335e1..4a02178 100644
+--- a/tools/include/uapi/linux/sched.h
++++ b/tools/include/uapi/linux/sched.h
+@@ -33,27 +33,48 @@
+ #define CLONE_NEWNET		0x40000000	/* New network namespace */
+ #define CLONE_IO		0x80000000	/* Clone io context */
  
--PKG_CONFIG_FILE = libtraceevent.pc
-+PKG_CONFIG_SOURCE_FILE = libtraceevent.pc
-+PKG_CONFIG_FILE := $(addprefix $(OUTPUT),$(PKG_CONFIG_SOURCE_FILE))
- define do_install_pkgconfig_file
- 	if [ -n "${pkgconfig_dir}" ]; then 					\
--		cp -f ${PKG_CONFIG_FILE}.template ${PKG_CONFIG_FILE}; 		\
-+		cp -f ${PKG_CONFIG_SOURCE_FILE}.template ${PKG_CONFIG_FILE};	\
- 		sed -i "s|INSTALL_PREFIX|${1}|g" ${PKG_CONFIG_FILE}; 		\
- 		sed -i "s|LIB_VERSION|${EVENT_PARSE_VERSION}|g" ${PKG_CONFIG_FILE}; \
- 		sed -i "s|LIB_DIR|${libdir}|g" ${PKG_CONFIG_FILE}; \
++/* Flags for the clone3() syscall. */
++#define CLONE_CLEAR_SIGHAND 0x100000000ULL /* Clear any signal handler and reset to SIG_DFL. */
++
+ #ifndef __ASSEMBLY__
+ /**
+  * struct clone_args - arguments for the clone3 syscall
+- * @flags:       Flags for the new process as listed above.
+- *               All flags are valid except for CSIGNAL and
+- *               CLONE_DETACHED.
+- * @pidfd:       If CLONE_PIDFD is set, a pidfd will be
+- *               returned in this argument.
+- * @child_tid:   If CLONE_CHILD_SETTID is set, the TID of the
+- *               child process will be returned in the child's
+- *               memory.
+- * @parent_tid:  If CLONE_PARENT_SETTID is set, the TID of
+- *               the child process will be returned in the
+- *               parent's memory.
+- * @exit_signal: The exit_signal the parent process will be
+- *               sent when the child exits.
+- * @stack:       Specify the location of the stack for the
+- *               child process.
+- * @stack_size:  The size of the stack for the child process.
+- * @tls:         If CLONE_SETTLS is set, the tls descriptor
+- *               is set to tls.
++ * @flags:        Flags for the new process as listed above.
++ *                All flags are valid except for CSIGNAL and
++ *                CLONE_DETACHED.
++ * @pidfd:        If CLONE_PIDFD is set, a pidfd will be
++ *                returned in this argument.
++ * @child_tid:    If CLONE_CHILD_SETTID is set, the TID of the
++ *                child process will be returned in the child's
++ *                memory.
++ * @parent_tid:   If CLONE_PARENT_SETTID is set, the TID of
++ *                the child process will be returned in the
++ *                parent's memory.
++ * @exit_signal:  The exit_signal the parent process will be
++ *                sent when the child exits.
++ * @stack:        Specify the location of the stack for the
++ *                child process.
++ *                Note, @stack is expected to point to the
++ *                lowest address. The stack direction will be
++ *                determined by the kernel and set up
++ *                appropriately based on @stack_size.
++ * @stack_size:   The size of the stack for the child process.
++ * @tls:          If CLONE_SETTLS is set, the tls descriptor
++ *                is set to tls.
++ * @set_tid:      Pointer to an array of type *pid_t. The size
++ *                of the array is defined using @set_tid_size.
++ *                This array is used to select PIDs/TIDs for
++ *                newly created processes. The first element in
++ *                this defines the PID in the most nested PID
++ *                namespace. Each additional element in the array
++ *                defines the PID in the parent PID namespace of
++ *                the original PID namespace. If the array has
++ *                less entries than the number of currently
++ *                nested PID namespaces only the PIDs in the
++ *                corresponding namespaces are set.
++ * @set_tid_size: This defines the size of the array referenced
++ *                in @set_tid. This cannot be larger than the
++ *                kernel's limit of nested PID namespaces.
+  *
+  * The structure is versioned by size and thus extensible.
+  * New struct members must go at the end of the struct and
+@@ -68,10 +89,13 @@ struct clone_args {
+ 	__aligned_u64 stack;
+ 	__aligned_u64 stack_size;
+ 	__aligned_u64 tls;
++	__aligned_u64 set_tid;
++	__aligned_u64 set_tid_size;
+ };
+ #endif
+ 
+ #define CLONE_ARGS_SIZE_VER0 64 /* sizeof first published struct */
++#define CLONE_ARGS_SIZE_VER1 80 /* sizeof second published struct */
+ 
+ /*
+  * Scheduling policies
