@@ -2,36 +2,45 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2AEF71123CB
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  4 Dec 2019 08:54:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B03BC112540
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  4 Dec 2019 09:35:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727438AbfLDHyL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 4 Dec 2019 02:54:11 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:56169 "EHLO
+        id S1727212AbfLDIdr (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 4 Dec 2019 03:33:47 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:56343 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727429AbfLDHyL (ORCPT
+        with ESMTP id S1725951AbfLDIdr (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 4 Dec 2019 02:54:11 -0500
+        Wed, 4 Dec 2019 03:33:47 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1icPU4-0004Wu-C5; Wed, 04 Dec 2019 08:54:04 +0100
+        id 1icQ6J-0005Fp-9a; Wed, 04 Dec 2019 09:33:35 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 340AB1C264F;
-        Wed,  4 Dec 2019 08:53:55 +0100 (CET)
-Date:   Wed, 04 Dec 2019 07:53:55 -0000
-From:   "tip-bot2 for Andi Kleen" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id EFB611C2657;
+        Wed,  4 Dec 2019 09:33:34 +0100 (CET)
+Date:   Wed, 04 Dec 2019 08:33:34 -0000
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf evsel: Add functions to close evsel on a CPU
-Cc:     Andi Kleen <ak@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191121001522.180827-7-andi@firstfloor.org>
-References: <20191121001522.180827-7-andi@firstfloor.org>
+Subject: [tip: core/kprobes] x86/alternatives: Use INT3_INSN_SIZE
+Cc:     Ingo Molnar <mingo@kernel.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Andy Lutomirski <luto@kernel.org>,
+        Borislav Petkov <bp@alien8.de>,
+        Brian Gerst <brgerst@gmail.com>,
+        Denys Vlasenko <dvlasenk@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20191111132458.460144656@infradead.org>
+References: <20191111132458.460144656@infradead.org>
 MIME-Version: 1.0
-Message-ID: <157544603512.21853.17683771347871037830.tip-bot2@tip-bot2>
+Message-ID: <157544841488.21853.11724270583897887740.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -45,89 +54,72 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/urgent branch of tip:
+The following commit has been merged into the core/kprobes branch of tip:
 
-Commit-ID:     99d6141d677a8cd0b35390a29527c8def42538b1
-Gitweb:        https://git.kernel.org/tip/99d6141d677a8cd0b35390a29527c8def42538b1
-Author:        Andi Kleen <ak@linux.intel.com>
-AuthorDate:    Wed, 20 Nov 2019 16:15:16 -08:00
-Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Fri, 29 Nov 2019 12:20:45 -03:00
+Commit-ID:     76ffa7204b1ad7d321ac3a0292fdf3975d14866b
+Gitweb:        https://git.kernel.org/tip/76ffa7204b1ad7d321ac3a0292fdf3975d14866b
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Mon, 11 Nov 2019 14:08:26 +01:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Wed, 27 Nov 2019 07:44:25 +01:00
 
-perf evsel: Add functions to close evsel on a CPU
+x86/alternatives: Use INT3_INSN_SIZE
 
-Refactor the existing all CPU function to use the per CPU close
-internally.
+Use INT3_INSN_SIZE instead of sizeof(int3).
 
-Export APIs to close per CPU.
-
-Signed-off-by: Andi Kleen <ak@linux.intel.com>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-Link: http://lore.kernel.org/lkml/20191121001522.180827-7-andi@firstfloor.org
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Suggested-by: Ingo Molnar <mingo@kernel.org>
+Tested-by: Alexei Starovoitov <ast@kernel.org>
+Tested-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Alexei Starovoitov <ast@kernel.org>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Brian Gerst <brgerst@gmail.com>
+Cc: Denys Vlasenko <dvlasenk@redhat.com>
+Cc: H. Peter Anvin <hpa@zytor.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lkml.kernel.org/r/20191111132458.460144656@infradead.org
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- tools/perf/lib/evsel.c              | 27 +++++++++++++++++++++------
- tools/perf/lib/include/perf/evsel.h |  1 +
- 2 files changed, 22 insertions(+), 6 deletions(-)
+ arch/x86/kernel/alternative.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/tools/perf/lib/evsel.c b/tools/perf/lib/evsel.c
-index 5a89857..ea775da 100644
---- a/tools/perf/lib/evsel.c
-+++ b/tools/perf/lib/evsel.c
-@@ -114,16 +114,23 @@ int perf_evsel__open(struct perf_evsel *evsel, struct perf_cpu_map *cpus,
- 	return err;
- }
+diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
+index 6455902..4552795 100644
+--- a/arch/x86/kernel/alternative.c
++++ b/arch/x86/kernel/alternative.c
+@@ -1088,7 +1088,7 @@ static void text_poke_bp_batch(struct text_poke_loc *tp, unsigned int nr_entries
+ 	 * First step: add a int3 trap to the address that will be patched.
+ 	 */
+ 	for (i = 0; i < nr_entries; i++)
+-		text_poke(text_poke_addr(&tp[i]), &int3, sizeof(int3));
++		text_poke(text_poke_addr(&tp[i]), &int3, INT3_INSN_SIZE);
  
-+static void perf_evsel__close_fd_cpu(struct perf_evsel *evsel, int cpu)
-+{
-+	int thread;
-+
-+	for (thread = 0; thread < xyarray__max_y(evsel->fd); ++thread) {
-+		if (FD(evsel, cpu, thread) >= 0)
-+			close(FD(evsel, cpu, thread));
-+		FD(evsel, cpu, thread) = -1;
-+	}
-+}
-+
- void perf_evsel__close_fd(struct perf_evsel *evsel)
- {
--	int cpu, thread;
-+	int cpu;
+ 	text_poke_sync();
  
- 	for (cpu = 0; cpu < xyarray__max_x(evsel->fd); cpu++)
--		for (thread = 0; thread < xyarray__max_y(evsel->fd); ++thread) {
--			if (FD(evsel, cpu, thread) >= 0)
--				close(FD(evsel, cpu, thread));
--			FD(evsel, cpu, thread) = -1;
--		}
-+		perf_evsel__close_fd_cpu(evsel, cpu);
- }
+@@ -1098,10 +1098,10 @@ static void text_poke_bp_batch(struct text_poke_loc *tp, unsigned int nr_entries
+ 	for (do_sync = 0, i = 0; i < nr_entries; i++) {
+ 		int len = text_opcode_size(tp[i].opcode);
  
- void perf_evsel__free_fd(struct perf_evsel *evsel)
-@@ -141,6 +148,14 @@ void perf_evsel__close(struct perf_evsel *evsel)
- 	perf_evsel__free_fd(evsel);
- }
+-		if (len - sizeof(int3) > 0) {
+-			text_poke(text_poke_addr(&tp[i]) + sizeof(int3),
+-				  (const char *)tp[i].text + sizeof(int3),
+-				  len - sizeof(int3));
++		if (len - INT3_INSN_SIZE > 0) {
++			text_poke(text_poke_addr(&tp[i]) + INT3_INSN_SIZE,
++				  (const char *)tp[i].text + INT3_INSN_SIZE,
++				  len - INT3_INSN_SIZE);
+ 			do_sync++;
+ 		}
+ 	}
+@@ -1123,7 +1123,7 @@ static void text_poke_bp_batch(struct text_poke_loc *tp, unsigned int nr_entries
+ 		if (tp[i].text[0] == INT3_INSN_OPCODE)
+ 			continue;
  
-+void perf_evsel__close_cpu(struct perf_evsel *evsel, int cpu)
-+{
-+	if (evsel->fd == NULL)
-+		return;
-+
-+	perf_evsel__close_fd_cpu(evsel, cpu);
-+}
-+
- int perf_evsel__read_size(struct perf_evsel *evsel)
- {
- 	u64 read_format = evsel->attr.read_format;
-diff --git a/tools/perf/lib/include/perf/evsel.h b/tools/perf/lib/include/perf/evsel.h
-index 557f581..e7add55 100644
---- a/tools/perf/lib/include/perf/evsel.h
-+++ b/tools/perf/lib/include/perf/evsel.h
-@@ -26,6 +26,7 @@ LIBPERF_API void perf_evsel__delete(struct perf_evsel *evsel);
- LIBPERF_API int perf_evsel__open(struct perf_evsel *evsel, struct perf_cpu_map *cpus,
- 				 struct perf_thread_map *threads);
- LIBPERF_API void perf_evsel__close(struct perf_evsel *evsel);
-+LIBPERF_API void perf_evsel__close_cpu(struct perf_evsel *evsel, int cpu);
- LIBPERF_API int perf_evsel__read(struct perf_evsel *evsel, int cpu, int thread,
- 				 struct perf_counts_values *count);
- LIBPERF_API int perf_evsel__enable(struct perf_evsel *evsel);
+-		text_poke(text_poke_addr(&tp[i]), tp[i].text, sizeof(int3));
++		text_poke(text_poke_addr(&tp[i]), tp[i].text, INT3_INSN_SIZE);
+ 		do_sync++;
+ 	}
+ 
