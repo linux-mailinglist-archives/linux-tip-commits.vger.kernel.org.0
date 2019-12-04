@@ -2,45 +2,47 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CA231112525
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  4 Dec 2019 09:34:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B013E11251B
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  4 Dec 2019 09:34:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727438AbfLDIeS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 4 Dec 2019 03:34:18 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:56434 "EHLO
+        id S1727507AbfLDIeE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 4 Dec 2019 03:34:04 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:56452 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727425AbfLDIeC (ORCPT
+        with ESMTP id S1727484AbfLDIeE (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 4 Dec 2019 03:34:02 -0500
+        Wed, 4 Dec 2019 03:34:04 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1icQ6Q-0005N9-3V; Wed, 04 Dec 2019 09:33:42 +0100
+        id 1icQ6T-0005Na-Ct; Wed, 04 Dec 2019 09:33:45 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5479A1C265D;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B84471C265E;
         Wed,  4 Dec 2019 09:33:37 +0100 (CET)
 Date:   Wed, 04 Dec 2019 08:33:37 -0000
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/kprobes] x86/ftrace: Use text_poke()
+Subject: [tip: core/kprobes] x86/alternatives, jump_label: Provide better
+ text_poke() batching interface
 Cc:     Alexei Starovoitov <ast@kernel.org>,
         "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Daniel Bristot de Oliveira <bristot@redhat.com>,
         Andy Lutomirski <luto@kernel.org>,
         Borislav Petkov <bp@alien8.de>,
-        Daniel Bristot de Oliveira <bristot@redhat.com>,
         "H. Peter Anvin" <hpa@zytor.com>,
         Josh Poimboeuf <jpoimboe@redhat.com>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191111132457.761255803@infradead.org>
-References: <20191111132457.761255803@infradead.org>
+In-Reply-To: <20191111132457.646280715@infradead.org>
+References: <20191111132457.646280715@infradead.org>
 MIME-Version: 1.0
-Message-ID: <157544841724.21853.2329696693665725289.tip-bot2@tip-bot2>
+Message-ID: <157544841762.21853.1501350726294283123.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -56,1004 +58,352 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/kprobes branch of tip:
 
-Commit-ID:     768ae4406a5cab7e8702550f2446dbeb377b798d
-Gitweb:        https://git.kernel.org/tip/768ae4406a5cab7e8702550f2446dbeb377b798d
+Commit-ID:     18cbc8bed0c70795d2064217c89894e28eafdf04
+Gitweb:        https://git.kernel.org/tip/18cbc8bed0c70795d2064217c89894e28eafdf04
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Mon, 26 Aug 2019 14:48:23 +02:00
+AuthorDate:    Mon, 26 Aug 2019 13:38:58 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Wed, 27 Nov 2019 07:44:24 +01:00
 
-x86/ftrace: Use text_poke()
+x86/alternatives, jump_label: Provide better text_poke() batching interface
 
-Move ftrace over to using the generic x86 text_poke functions; this
-avoids having a second/different copy of that code around.
+Adding another text_poke_bp_batch() user made me realize the interface
+is all sorts of wrong. The text poke vector should be internal to the
+implementation.
 
-This also avoids ftrace violating the (new) W^X rule and avoids
-fragmenting the kernel text page-tables, due to no longer having to
-toggle them RW.
+This then results in a trivial interface:
+
+  text_poke_queue()  - which has the 'normal' text_poke_bp() interface
+  text_poke_finish() - which takes no arguments and flushes any
+                       pending text_poke()s.
 
 Tested-by: Alexei Starovoitov <ast@kernel.org>
 Tested-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
+Reviewed-by: Masami Hiramatsu <mhiramat@kernel.org>
+Reviewed-by: Daniel Bristot de Oliveira <bristot@redhat.com>
 Acked-by: Alexei Starovoitov <ast@kernel.org>
 Cc: Andy Lutomirski <luto@kernel.org>
 Cc: Borislav Petkov <bp@alien8.de>
-Cc: Daniel Bristot de Oliveira <bristot@redhat.com>
 Cc: H. Peter Anvin <hpa@zytor.com>
 Cc: Josh Poimboeuf <jpoimboe@redhat.com>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20191111132457.761255803@infradead.org
+Link: https://lkml.kernel.org/r/20191111132457.646280715@infradead.org
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- arch/x86/include/asm/ftrace.h |   2 +-
- arch/x86/kernel/alternative.c |  18 +-
- arch/x86/kernel/ftrace.c      | 663 +++++----------------------------
- arch/x86/kernel/traps.c       |   9 +-
- 4 files changed, 134 insertions(+), 558 deletions(-)
+ arch/x86/include/asm/text-patching.h |  15 +---
+ arch/x86/kernel/alternative.c        |  64 +++++++++++++++--
+ arch/x86/kernel/jump_label.c         |  99 ++++++++------------------
+ 3 files changed, 96 insertions(+), 82 deletions(-)
 
-diff --git a/arch/x86/include/asm/ftrace.h b/arch/x86/include/asm/ftrace.h
-index c38a666..dbd9b08 100644
---- a/arch/x86/include/asm/ftrace.h
-+++ b/arch/x86/include/asm/ftrace.h
-@@ -34,8 +34,6 @@ struct dyn_arch_ftrace {
- 	/* No extra data needed for x86 */
- };
- 
--int ftrace_int3_handler(struct pt_regs *regs);
--
- #define FTRACE_GRAPH_TRAMP_ADDR FTRACE_GRAPH_ADDR
- 
- #endif /*  CONFIG_DYNAMIC_FTRACE */
-diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
-index 714b4a2..ce737f1 100644
---- a/arch/x86/kernel/alternative.c
-+++ b/arch/x86/kernel/alternative.c
-@@ -949,7 +949,7 @@ static struct bp_patching_desc {
- 	int nr_entries;
- } bp_patching;
- 
--static int patch_cmp(const void *key, const void *elt)
-+static int notrace patch_cmp(const void *key, const void *elt)
- {
- 	struct text_poke_loc *tp = (struct text_poke_loc *) elt;
- 
-@@ -961,7 +961,7 @@ static int patch_cmp(const void *key, const void *elt)
- }
- NOKPROBE_SYMBOL(patch_cmp);
- 
--int poke_int3_handler(struct pt_regs *regs)
-+int notrace poke_int3_handler(struct pt_regs *regs)
- {
- 	struct text_poke_loc *tp;
- 	void *ip;
-@@ -1209,10 +1209,15 @@ void text_poke_finish(void)
- 	text_poke_flush(NULL);
- }
- 
--void text_poke_queue(void *addr, const void *opcode, size_t len, const void *emulate)
-+void __ref text_poke_queue(void *addr, const void *opcode, size_t len, const void *emulate)
- {
- 	struct text_poke_loc *tp;
- 
-+	if (unlikely(system_state == SYSTEM_BOOTING)) {
-+		text_poke_early(addr, opcode, len);
-+		return;
-+	}
-+
- 	text_poke_flush(addr);
- 
- 	tp = &tp_vec[tp_vec_nr++];
-@@ -1230,10 +1235,15 @@ void text_poke_queue(void *addr, const void *opcode, size_t len, const void *emu
-  * dynamically allocated memory. This function should be used when it is
-  * not possible to allocate memory.
+diff --git a/arch/x86/include/asm/text-patching.h b/arch/x86/include/asm/text-patching.h
+index ea91049..3bcd266 100644
+--- a/arch/x86/include/asm/text-patching.h
++++ b/arch/x86/include/asm/text-patching.h
+@@ -25,14 +25,6 @@ static inline void apply_paravirt(struct paravirt_patch_site *start,
   */
--void text_poke_bp(void *addr, const void *opcode, size_t len, const void *emulate)
-+void __ref text_poke_bp(void *addr, const void *opcode, size_t len, const void *emulate)
- {
- 	struct text_poke_loc tp;
+ #define POKE_MAX_OPCODE_SIZE	5
  
-+	if (unlikely(system_state == SYSTEM_BOOTING)) {
-+		text_poke_early(addr, opcode, len);
-+		return;
-+	}
-+
- 	text_poke_loc_init(&tp, addr, opcode, len, emulate);
- 	text_poke_bp_batch(&tp, 1);
- }
-diff --git a/arch/x86/kernel/ftrace.c b/arch/x86/kernel/ftrace.c
-index 024c305..3d8adeb 100644
---- a/arch/x86/kernel/ftrace.c
-+++ b/arch/x86/kernel/ftrace.c
-@@ -34,6 +34,8 @@
- 
- #ifdef CONFIG_DYNAMIC_FTRACE
- 
-+static int ftrace_poke_late = 0;
-+
- int ftrace_arch_code_modify_prepare(void)
-     __acquires(&text_mutex)
- {
-@@ -43,16 +45,20 @@ int ftrace_arch_code_modify_prepare(void)
- 	 * ftrace has it set to "read/write".
- 	 */
- 	mutex_lock(&text_mutex);
--	set_kernel_text_rw();
--	set_all_modules_text_rw();
-+	ftrace_poke_late = 1;
- 	return 0;
- }
- 
- int ftrace_arch_code_modify_post_process(void)
-     __releases(&text_mutex)
- {
--	set_all_modules_text_ro();
--	set_kernel_text_ro();
-+	/*
-+	 * ftrace_make_{call,nop}() may be called during
-+	 * module load, and we need to finish the text_poke_queue()
-+	 * that they do, here.
-+	 */
-+	text_poke_finish();
-+	ftrace_poke_late = 0;
- 	mutex_unlock(&text_mutex);
- 	return 0;
- }
-@@ -60,67 +66,34 @@ int ftrace_arch_code_modify_post_process(void)
- union ftrace_code_union {
- 	char code[MCOUNT_INSN_SIZE];
- 	struct {
--		unsigned char op;
-+		char op;
- 		int offset;
- 	} __attribute__((packed));
- };
- 
--static int ftrace_calc_offset(long ip, long addr)
--{
--	return (int)(addr - ip);
--}
+-struct text_poke_loc {
+-	void *addr;
+-	int len;
+-	s32 rel32;
+-	u8 opcode;
+-	const u8 text[POKE_MAX_OPCODE_SIZE];
+-};
 -
--static unsigned char *
--ftrace_text_replace(unsigned char op, unsigned long ip, unsigned long addr)
-+static const char *ftrace_text_replace(char op, unsigned long ip, unsigned long addr)
- {
- 	static union ftrace_code_union calc;
- 
--	calc.op		= op;
--	calc.offset	= ftrace_calc_offset(ip + MCOUNT_INSN_SIZE, addr);
-+	calc.op = op;
-+	calc.offset = (int)(addr - (ip + MCOUNT_INSN_SIZE));
- 
- 	return calc.code;
- }
- 
--static unsigned char *
--ftrace_call_replace(unsigned long ip, unsigned long addr)
--{
--	return ftrace_text_replace(0xe8, ip, addr);
--}
--
--static inline int
--within(unsigned long addr, unsigned long start, unsigned long end)
-+static const char *ftrace_nop_replace(void)
- {
--	return addr >= start && addr < end;
--}
--
--static unsigned long text_ip_addr(unsigned long ip)
--{
--	/*
--	 * On x86_64, kernel text mappings are mapped read-only, so we use
--	 * the kernel identity mapping instead of the kernel text mapping
--	 * to modify the kernel text.
--	 *
--	 * For 32bit kernels, these mappings are same and we can use
--	 * kernel identity mapping to modify code.
--	 */
--	if (within(ip, (unsigned long)_text, (unsigned long)_etext))
--		ip = (unsigned long)__va(__pa_symbol(ip));
--
--	return ip;
-+	return ideal_nops[NOP_ATOMIC5];
- }
- 
--static const unsigned char *ftrace_nop_replace(void)
-+static const char *ftrace_call_replace(unsigned long ip, unsigned long addr)
- {
--	return ideal_nops[NOP_ATOMIC5];
-+	return ftrace_text_replace(CALL_INSN_OPCODE, ip, addr);
- }
- 
--static int
--ftrace_modify_code_direct(unsigned long ip, unsigned const char *old_code,
--		   unsigned const char *new_code)
-+static int ftrace_verify_code(unsigned long ip, const char *old_code)
- {
--	unsigned char replaced[MCOUNT_INSN_SIZE];
--
--	ftrace_expected = old_code;
-+	char cur_code[MCOUNT_INSN_SIZE];
- 
- 	/*
- 	 * Note:
-@@ -129,31 +102,41 @@ ftrace_modify_code_direct(unsigned long ip, unsigned const char *old_code,
- 	 * Carefully read and modify the code with probe_kernel_*(), and make
- 	 * sure what we read is what we expected it to be before modifying it.
- 	 */
--
- 	/* read the text we want to modify */
--	if (probe_kernel_read(replaced, (void *)ip, MCOUNT_INSN_SIZE))
-+	if (probe_kernel_read(cur_code, (void *)ip, MCOUNT_INSN_SIZE)) {
-+		WARN_ON(1);
- 		return -EFAULT;
-+	}
- 
- 	/* Make sure it is what we expect it to be */
--	if (memcmp(replaced, old_code, MCOUNT_INSN_SIZE) != 0)
-+	if (memcmp(cur_code, old_code, MCOUNT_INSN_SIZE) != 0) {
-+		WARN_ON(1);
- 		return -EINVAL;
-+	}
- 
--	ip = text_ip_addr(ip);
--
--	/* replace the text with the new text */
--	if (probe_kernel_write((void *)ip, new_code, MCOUNT_INSN_SIZE))
--		return -EPERM;
-+	return 0;
-+}
- 
--	sync_core();
-+static int
-+ftrace_modify_code_direct(unsigned long ip, const char *old_code,
-+			  const char *new_code)
-+{
-+	int ret = ftrace_verify_code(ip, old_code);
-+	if (ret)
-+		return ret;
- 
-+	/* replace the text with the new text */
-+	if (ftrace_poke_late)
-+		text_poke_queue((void *)ip, new_code, MCOUNT_INSN_SIZE, NULL);
-+	else
-+		text_poke_early((void *)ip, new_code, MCOUNT_INSN_SIZE);
- 	return 0;
- }
- 
--int ftrace_make_nop(struct module *mod,
--		    struct dyn_ftrace *rec, unsigned long addr)
-+int ftrace_make_nop(struct module *mod, struct dyn_ftrace *rec, unsigned long addr)
- {
--	unsigned const char *new, *old;
- 	unsigned long ip = rec->ip;
-+	const char *new, *old;
- 
- 	old = ftrace_call_replace(ip, addr);
- 	new = ftrace_nop_replace();
-@@ -167,19 +150,20 @@ int ftrace_make_nop(struct module *mod,
- 	 * just modify the code directly.
- 	 */
- 	if (addr == MCOUNT_ADDR)
--		return ftrace_modify_code_direct(rec->ip, old, new);
-+		return ftrace_modify_code_direct(ip, old, new);
- 
--	ftrace_expected = NULL;
--
--	/* Normal cases use add_brk_on_nop */
-+	/*
-+	 * x86 overrides ftrace_replace_code -- this function will never be used
-+	 * in this case.
-+	 */
- 	WARN_ONCE(1, "invalid use of ftrace_make_nop");
- 	return -EINVAL;
- }
- 
- int ftrace_make_call(struct dyn_ftrace *rec, unsigned long addr)
- {
--	unsigned const char *new, *old;
- 	unsigned long ip = rec->ip;
-+	const char *new, *old;
- 
- 	old = ftrace_nop_replace();
- 	new = ftrace_call_replace(ip, addr);
-@@ -189,43 +173,6 @@ int ftrace_make_call(struct dyn_ftrace *rec, unsigned long addr)
- }
+ extern void text_poke_early(void *addr, const void *opcode, size_t len);
  
  /*
-- * The modifying_ftrace_code is used to tell the breakpoint
-- * handler to call ftrace_int3_handler(). If it fails to
-- * call this handler for a breakpoint added by ftrace, then
-- * the kernel may crash.
-- *
-- * As atomic_writes on x86 do not need a barrier, we do not
-- * need to add smp_mb()s for this to work. It is also considered
-- * that we can not read the modifying_ftrace_code before
-- * executing the breakpoint. That would be quite remarkable if
-- * it could do that. Here's the flow that is required:
-- *
-- *   CPU-0                          CPU-1
-- *
-- * atomic_inc(mfc);
-- * write int3s
-- *				<trap-int3> // implicit (r)mb
-- *				if (atomic_read(mfc))
-- *					call ftrace_int3_handler()
-- *
-- * Then when we are finished:
-- *
-- * atomic_dec(mfc);
-- *
-- * If we hit a breakpoint that was not set by ftrace, it does not
-- * matter if ftrace_int3_handler() is called or not. It will
-- * simply be ignored. But it is crucial that a ftrace nop/caller
-- * breakpoint is handled. No other user should ever place a
-- * breakpoint on an ftrace nop/caller location. It must only
-- * be done by this code.
-- */
--atomic_t modifying_ftrace_code __read_mostly;
--
--static int
--ftrace_modify_code(unsigned long ip, unsigned const char *old_code,
--		   unsigned const char *new_code);
--
--/*
-  * Should never be called:
-  *  As it is only called by __ftrace_replace_code() which is called by
-  *  ftrace_replace_code() that x86 overrides, and by ftrace_update_code()
-@@ -237,452 +184,84 @@ int ftrace_modify_call(struct dyn_ftrace *rec, unsigned long old_addr,
- 				 unsigned long addr)
- {
- 	WARN_ON(1);
--	ftrace_expected = NULL;
- 	return -EINVAL;
+@@ -53,9 +45,10 @@ extern void *text_poke(void *addr, const void *opcode, size_t len);
+ extern void *text_poke_kgdb(void *addr, const void *opcode, size_t len);
+ extern int poke_int3_handler(struct pt_regs *regs);
+ extern void text_poke_bp(void *addr, const void *opcode, size_t len, const void *emulate);
+-extern void text_poke_bp_batch(struct text_poke_loc *tp, unsigned int nr_entries);
+-extern void text_poke_loc_init(struct text_poke_loc *tp, void *addr,
+-			       const void *opcode, size_t len, const void *emulate);
++
++extern void text_poke_queue(void *addr, const void *opcode, size_t len, const void *emulate);
++extern void text_poke_finish(void);
++
+ extern int after_bootmem;
+ extern __ro_after_init struct mm_struct *poking_mm;
+ extern __ro_after_init unsigned long poking_addr;
+diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
+index 9ec463f..42e7f0a 100644
+--- a/arch/x86/kernel/alternative.c
++++ b/arch/x86/kernel/alternative.c
+@@ -936,6 +936,14 @@ static void do_sync_core(void *info)
+ 	sync_core();
  }
  
--static unsigned long ftrace_update_func;
--static unsigned long ftrace_update_func_call;
--
--static int update_ftrace_func(unsigned long ip, void *new)
--{
--	unsigned char old[MCOUNT_INSN_SIZE];
--	int ret;
--
--	memcpy(old, (void *)ip, MCOUNT_INSN_SIZE);
--
--	ftrace_update_func = ip;
--	/* Make sure the breakpoints see the ftrace_update_func update */
--	smp_wmb();
--
--	/* See comment above by declaration of modifying_ftrace_code */
--	atomic_inc(&modifying_ftrace_code);
--
--	ret = ftrace_modify_code(ip, old, new);
--
--	atomic_dec(&modifying_ftrace_code);
--
--	return ret;
--}
--
- int ftrace_update_ftrace_func(ftrace_func_t func)
- {
--	unsigned long ip = (unsigned long)(&ftrace_call);
--	unsigned char *new;
--	int ret;
--
--	ftrace_update_func_call = (unsigned long)func;
--
--	new = ftrace_call_replace(ip, (unsigned long)func);
--	ret = update_ftrace_func(ip, new);
--
--	/* Also update the regs callback function */
--	if (!ret) {
--		ip = (unsigned long)(&ftrace_regs_call);
--		new = ftrace_call_replace(ip, (unsigned long)func);
--		ret = update_ftrace_func(ip, new);
--	}
--
--	return ret;
--}
--
--static nokprobe_inline int is_ftrace_caller(unsigned long ip)
--{
--	if (ip == ftrace_update_func)
--		return 1;
--
--	return 0;
--}
--
--/*
-- * A breakpoint was added to the code address we are about to
-- * modify, and this is the handle that will just skip over it.
-- * We are either changing a nop into a trace call, or a trace
-- * call to a nop. While the change is taking place, we treat
-- * it just like it was a nop.
-- */
--int ftrace_int3_handler(struct pt_regs *regs)
--{
- 	unsigned long ip;
-+	const char *new;
- 
--	if (WARN_ON_ONCE(!regs))
--		return 0;
--
--	ip = regs->ip - INT3_INSN_SIZE;
--
--	if (ftrace_location(ip)) {
--		int3_emulate_call(regs, (unsigned long)ftrace_regs_caller);
--		return 1;
--	} else if (is_ftrace_caller(ip)) {
--		if (!ftrace_update_func_call) {
--			int3_emulate_jmp(regs, ip + CALL_INSN_SIZE);
--			return 1;
--		}
--		int3_emulate_call(regs, ftrace_update_func_call);
--		return 1;
--	}
--
--	return 0;
--}
--NOKPROBE_SYMBOL(ftrace_int3_handler);
--
--static int ftrace_write(unsigned long ip, const char *val, int size)
--{
--	ip = text_ip_addr(ip);
--
--	if (probe_kernel_write((void *)ip, val, size))
--		return -EPERM;
--
--	return 0;
--}
--
--static int add_break(unsigned long ip, const char *old)
--{
--	unsigned char replaced[MCOUNT_INSN_SIZE];
--	unsigned char brk = BREAKPOINT_INSTRUCTION;
--
--	if (probe_kernel_read(replaced, (void *)ip, MCOUNT_INSN_SIZE))
--		return -EFAULT;
--
--	ftrace_expected = old;
--
--	/* Make sure it is what we expect it to be */
--	if (memcmp(replaced, old, MCOUNT_INSN_SIZE) != 0)
--		return -EINVAL;
--
--	return ftrace_write(ip, &brk, 1);
--}
--
--static int add_brk_on_call(struct dyn_ftrace *rec, unsigned long addr)
--{
--	unsigned const char *old;
--	unsigned long ip = rec->ip;
--
--	old = ftrace_call_replace(ip, addr);
--
--	return add_break(rec->ip, old);
--}
--
--
--static int add_brk_on_nop(struct dyn_ftrace *rec)
--{
--	unsigned const char *old;
--
--	old = ftrace_nop_replace();
--
--	return add_break(rec->ip, old);
--}
--
--static int add_breakpoints(struct dyn_ftrace *rec, bool enable)
--{
--	unsigned long ftrace_addr;
--	int ret;
--
--	ftrace_addr = ftrace_get_addr_curr(rec);
--
--	ret = ftrace_test_record(rec, enable);
--
--	switch (ret) {
--	case FTRACE_UPDATE_IGNORE:
--		return 0;
--
--	case FTRACE_UPDATE_MAKE_CALL:
--		/* converting nop to call */
--		return add_brk_on_nop(rec);
--
--	case FTRACE_UPDATE_MODIFY_CALL:
--	case FTRACE_UPDATE_MAKE_NOP:
--		/* converting a call to a nop */
--		return add_brk_on_call(rec, ftrace_addr);
--	}
--	return 0;
--}
--
--/*
-- * On error, we need to remove breakpoints. This needs to
-- * be done caefully. If the address does not currently have a
-- * breakpoint, we know we are done. Otherwise, we look at the
-- * remaining 4 bytes of the instruction. If it matches a nop
-- * we replace the breakpoint with the nop. Otherwise we replace
-- * it with the call instruction.
-- */
--static int remove_breakpoint(struct dyn_ftrace *rec)
--{
--	unsigned char ins[MCOUNT_INSN_SIZE];
--	unsigned char brk = BREAKPOINT_INSTRUCTION;
--	const unsigned char *nop;
--	unsigned long ftrace_addr;
--	unsigned long ip = rec->ip;
--
--	/* If we fail the read, just give up */
--	if (probe_kernel_read(ins, (void *)ip, MCOUNT_INSN_SIZE))
--		return -EFAULT;
--
--	/* If this does not have a breakpoint, we are done */
--	if (ins[0] != brk)
--		return 0;
--
--	nop = ftrace_nop_replace();
--
--	/*
--	 * If the last 4 bytes of the instruction do not match
--	 * a nop, then we assume that this is a call to ftrace_addr.
--	 */
--	if (memcmp(&ins[1], &nop[1], MCOUNT_INSN_SIZE - 1) != 0) {
--		/*
--		 * For extra paranoidism, we check if the breakpoint is on
--		 * a call that would actually jump to the ftrace_addr.
--		 * If not, don't touch the breakpoint, we make just create
--		 * a disaster.
--		 */
--		ftrace_addr = ftrace_get_addr_new(rec);
--		nop = ftrace_call_replace(ip, ftrace_addr);
--
--		if (memcmp(&ins[1], &nop[1], MCOUNT_INSN_SIZE - 1) == 0)
--			goto update;
--
--		/* Check both ftrace_addr and ftrace_old_addr */
--		ftrace_addr = ftrace_get_addr_curr(rec);
--		nop = ftrace_call_replace(ip, ftrace_addr);
--
--		ftrace_expected = nop;
--
--		if (memcmp(&ins[1], &nop[1], MCOUNT_INSN_SIZE - 1) != 0)
--			return -EINVAL;
--	}
--
-- update:
--	return ftrace_write(ip, nop, 1);
--}
--
--static int add_update_code(unsigned long ip, unsigned const char *new)
--{
--	/* skip breakpoint */
--	ip++;
--	new++;
--	return ftrace_write(ip, new, MCOUNT_INSN_SIZE - 1);
--}
--
--static int add_update_call(struct dyn_ftrace *rec, unsigned long addr)
--{
--	unsigned long ip = rec->ip;
--	unsigned const char *new;
--
--	new = ftrace_call_replace(ip, addr);
--	return add_update_code(ip, new);
--}
--
--static int add_update_nop(struct dyn_ftrace *rec)
--{
--	unsigned long ip = rec->ip;
--	unsigned const char *new;
--
--	new = ftrace_nop_replace();
--	return add_update_code(ip, new);
--}
--
--static int add_update(struct dyn_ftrace *rec, bool enable)
--{
--	unsigned long ftrace_addr;
--	int ret;
--
--	ret = ftrace_test_record(rec, enable);
--
--	ftrace_addr  = ftrace_get_addr_new(rec);
--
--	switch (ret) {
--	case FTRACE_UPDATE_IGNORE:
--		return 0;
--
--	case FTRACE_UPDATE_MODIFY_CALL:
--	case FTRACE_UPDATE_MAKE_CALL:
--		/* converting nop to call */
--		return add_update_call(rec, ftrace_addr);
--
--	case FTRACE_UPDATE_MAKE_NOP:
--		/* converting a call to a nop */
--		return add_update_nop(rec);
--	}
--
--	return 0;
--}
--
--static int finish_update_call(struct dyn_ftrace *rec, unsigned long addr)
--{
--	unsigned long ip = rec->ip;
--	unsigned const char *new;
--
--	new = ftrace_call_replace(ip, addr);
--
--	return ftrace_write(ip, new, 1);
--}
--
--static int finish_update_nop(struct dyn_ftrace *rec)
--{
--	unsigned long ip = rec->ip;
--	unsigned const char *new;
--
--	new = ftrace_nop_replace();
--
--	return ftrace_write(ip, new, 1);
--}
--
--static int finish_update(struct dyn_ftrace *rec, bool enable)
--{
--	unsigned long ftrace_addr;
--	int ret;
--
--	ret = ftrace_update_record(rec, enable);
--
--	ftrace_addr = ftrace_get_addr_new(rec);
--
--	switch (ret) {
--	case FTRACE_UPDATE_IGNORE:
--		return 0;
--
--	case FTRACE_UPDATE_MODIFY_CALL:
--	case FTRACE_UPDATE_MAKE_CALL:
--		/* converting nop to call */
--		return finish_update_call(rec, ftrace_addr);
-+	ip = (unsigned long)(&ftrace_call);
-+	new = ftrace_call_replace(ip, (unsigned long)func);
-+	text_poke_bp((void *)ip, new, MCOUNT_INSN_SIZE, NULL);
- 
--	case FTRACE_UPDATE_MAKE_NOP:
--		/* converting a call to a nop */
--		return finish_update_nop(rec);
--	}
-+	ip = (unsigned long)(&ftrace_regs_call);
-+	new = ftrace_call_replace(ip, (unsigned long)func);
-+	text_poke_bp((void *)ip, new, MCOUNT_INSN_SIZE, NULL);
- 
- 	return 0;
++struct text_poke_loc {
++	void *addr;
++	int len;
++	s32 rel32;
++	u8 opcode;
++	const u8 text[POKE_MAX_OPCODE_SIZE];
++};
++
+ static struct bp_patching_desc {
+ 	struct text_poke_loc *vec;
+ 	int nr_entries;
+@@ -1023,6 +1031,10 @@ int poke_int3_handler(struct pt_regs *regs)
  }
+ NOKPROBE_SYMBOL(poke_int3_handler);
  
--static void do_sync_core(void *data)
--{
--	sync_core();
--}
--
--static void run_sync(void)
--{
--	int enable_irqs;
--
--	/* No need to sync if there's only one CPU */
--	if (num_online_cpus() == 1)
--		return;
--
--	enable_irqs = irqs_disabled();
--
--	/* We may be called with interrupts disabled (on bootup). */
--	if (enable_irqs)
--		local_irq_enable();
--	on_each_cpu(do_sync_core, NULL, 1);
--	if (enable_irqs)
--		local_irq_disable();
--}
--
- void ftrace_replace_code(int enable)
++#define TP_VEC_MAX (PAGE_SIZE / sizeof(struct text_poke_loc))
++static struct text_poke_loc tp_vec[TP_VEC_MAX];
++static int tp_vec_nr;
++
+ /**
+  * text_poke_bp_batch() -- update instructions on live kernel on SMP
+  * @tp:			vector of instructions to patch
+@@ -1044,7 +1056,7 @@ NOKPROBE_SYMBOL(poke_int3_handler);
+  *		  replacing opcode
+  *	- sync cores
+  */
+-void text_poke_bp_batch(struct text_poke_loc *tp, unsigned int nr_entries)
++static void text_poke_bp_batch(struct text_poke_loc *tp, unsigned int nr_entries)
  {
- 	struct ftrace_rec_iter *iter;
- 	struct dyn_ftrace *rec;
--	const char *report = "adding breakpoints";
--	int count = 0;
-+	const char *new, *old;
- 	int ret;
+ 	unsigned char int3 = INT3_INSN_OPCODE;
+ 	unsigned int i;
+@@ -1118,11 +1130,7 @@ void text_poke_loc_init(struct text_poke_loc *tp, void *addr,
+ {
+ 	struct insn insn;
  
- 	for_ftrace_rec_iter(iter) {
- 		rec = ftrace_rec_iter_record(iter);
- 
--		ret = add_breakpoints(rec, enable);
--		if (ret)
--			goto remove_breakpoints;
--		count++;
--	}
+-	if (!opcode)
+-		opcode = (void *)tp->text;
+-	else
+-		memcpy((void *)tp->text, opcode, len);
 -
--	run_sync();
-+		switch (ftrace_test_record(rec, enable)) {
-+		case FTRACE_UPDATE_IGNORE:
-+		default:
-+			continue;
++	memcpy((void *)tp->text, opcode, len);
+ 	if (!emulate)
+ 		emulate = opcode;
  
--	report = "updating code";
--	count = 0;
-+		case FTRACE_UPDATE_MAKE_CALL:
-+			old = ftrace_nop_replace();
-+			break;
- 
--	for_ftrace_rec_iter(iter) {
--		rec = ftrace_rec_iter_record(iter);
-+		case FTRACE_UPDATE_MODIFY_CALL:
-+		case FTRACE_UPDATE_MAKE_NOP:
-+			old = ftrace_call_replace(rec->ip, ftrace_get_addr_curr(rec));
-+			break;
-+		}
- 
--		ret = add_update(rec, enable);
--		if (ret)
--			goto remove_breakpoints;
--		count++;
-+		ret = ftrace_verify_code(rec->ip, old);
-+		if (ret) {
-+			ftrace_bug(ret, rec);
-+			return;
-+		}
+@@ -1167,6 +1175,50 @@ void text_poke_loc_init(struct text_poke_loc *tp, void *addr,
  	}
- 
--	run_sync();
--
--	report = "removing breakpoints";
--	count = 0;
--
- 	for_ftrace_rec_iter(iter) {
- 		rec = ftrace_rec_iter_record(iter);
- 
--		ret = finish_update(rec, enable);
--		if (ret)
--			goto remove_breakpoints;
--		count++;
--	}
-+		switch (ftrace_test_record(rec, enable)) {
-+		case FTRACE_UPDATE_IGNORE:
-+		default:
-+			continue;
- 
--	run_sync();
-+		case FTRACE_UPDATE_MAKE_CALL:
-+		case FTRACE_UPDATE_MODIFY_CALL:
-+			new = ftrace_call_replace(rec->ip, ftrace_get_addr_new(rec));
-+			break;
- 
--	return;
-+		case FTRACE_UPDATE_MAKE_NOP:
-+			new = ftrace_nop_replace();
-+			break;
-+		}
- 
-- remove_breakpoints:
--	pr_warn("Failed on %s (%d):\n", report, count);
--	ftrace_bug(ret, rec);
--	for_ftrace_rec_iter(iter) {
--		rec = ftrace_rec_iter_record(iter);
--		/*
--		 * Breakpoints are handled only when this function is in
--		 * progress. The system could not work with them.
--		 */
--		if (remove_breakpoint(rec))
--			BUG();
-+		text_poke_queue((void *)rec->ip, new, MCOUNT_INSN_SIZE, NULL);
-+		ftrace_update_record(rec, enable);
- 	}
--	run_sync();
--}
--
--static int
--ftrace_modify_code(unsigned long ip, unsigned const char *old_code,
--		   unsigned const char *new_code)
--{
--	int ret;
--
--	ret = add_break(ip, old_code);
--	if (ret)
--		goto out;
--
--	run_sync();
--
--	ret = add_update_code(ip, new_code);
--	if (ret)
--		goto fail_update;
--
--	run_sync();
--
--	ret = ftrace_write(ip, new_code, 1);
--	/*
--	 * The breakpoint is handled only when this function is in progress.
--	 * The system could not work if we could not remove it.
--	 */
--	BUG_ON(ret);
-- out:
--	run_sync();
--	return ret;
--
-- fail_update:
--	/* Also here the system could not work with the breakpoint */
--	if (ftrace_write(ip, old_code, 1))
--		BUG();
--	goto out;
-+	text_poke_finish();
  }
  
- void arch_ftrace_update_code(int command)
++/*
++ * We hard rely on the tp_vec being ordered; ensure this is so by flushing
++ * early if needed.
++ */
++static bool tp_order_fail(void *addr)
++{
++	struct text_poke_loc *tp;
++
++	if (!tp_vec_nr)
++		return false;
++
++	if (!addr) /* force */
++		return true;
++
++	tp = &tp_vec[tp_vec_nr - 1];
++	if ((unsigned long)tp->addr > (unsigned long)addr)
++		return true;
++
++	return false;
++}
++
++static void text_poke_flush(void *addr)
++{
++	if (tp_vec_nr == TP_VEC_MAX || tp_order_fail(addr)) {
++		text_poke_bp_batch(tp_vec, tp_vec_nr);
++		tp_vec_nr = 0;
++	}
++}
++
++void text_poke_finish(void)
++{
++	text_poke_flush(NULL);
++}
++
++void text_poke_queue(void *addr, const void *opcode, size_t len, const void *emulate)
++{
++	struct text_poke_loc *tp;
++
++	text_poke_flush(addr);
++
++	tp = &tp_vec[tp_vec_nr++];
++	text_poke_loc_init(tp, addr, opcode, len, emulate);
++}
++
+ /**
+  * text_poke_bp() -- update instructions on live kernel on SMP
+  * @addr:	address to patch
+diff --git a/arch/x86/kernel/jump_label.c b/arch/x86/kernel/jump_label.c
+index c1a8b9e..cf8c847 100644
+--- a/arch/x86/kernel/jump_label.c
++++ b/arch/x86/kernel/jump_label.c
+@@ -35,18 +35,19 @@ static void bug_at(unsigned char *ip, int line)
+ 	BUG();
+ }
+ 
+-static void __jump_label_set_jump_code(struct jump_entry *entry,
+-				       enum jump_label_type type,
+-				       union jump_code_union *code,
+-				       int init)
++static const void *
++__jump_label_set_jump_code(struct jump_entry *entry, enum jump_label_type type, int init)
  {
--	/* See comment above by declaration of modifying_ftrace_code */
--	atomic_inc(&modifying_ftrace_code);
--
- 	ftrace_modify_all_code(command);
--
--	atomic_dec(&modifying_ftrace_code);
- }
++	static union jump_code_union code; /* relies on text_mutex */
+ 	const unsigned char default_nop[] = { STATIC_KEY_INIT_NOP };
+ 	const unsigned char *ideal_nop = ideal_nops[NOP_ATOMIC5];
+ 	const void *expect;
+ 	int line;
  
- int __init ftrace_dyn_arch_init(void)
-@@ -747,6 +326,7 @@ create_trampoline(struct ftrace_ops *ops, unsigned int *tramp_size)
- 	unsigned long start_offset;
- 	unsigned long end_offset;
- 	unsigned long op_offset;
-+	unsigned long call_offset;
- 	unsigned long offset;
- 	unsigned long npages;
- 	unsigned long size;
-@@ -763,10 +343,12 @@ create_trampoline(struct ftrace_ops *ops, unsigned int *tramp_size)
- 		start_offset = (unsigned long)ftrace_regs_caller;
- 		end_offset = (unsigned long)ftrace_regs_caller_end;
- 		op_offset = (unsigned long)ftrace_regs_caller_op_ptr;
-+		call_offset = (unsigned long)ftrace_regs_call;
+-	code->jump = 0xe9;
+-	code->offset = jump_entry_target(entry) -
++	lockdep_assert_held(&text_mutex);
++
++	code.jump = JMP32_INSN_OPCODE;
++	code.offset = jump_entry_target(entry) -
+ 		       (jump_entry_code(entry) + JUMP_LABEL_NOP_SIZE);
+ 
+ 	if (init) {
+@@ -54,23 +55,23 @@ static void __jump_label_set_jump_code(struct jump_entry *entry,
+ 	} else if (type == JUMP_LABEL_JMP) {
+ 		expect = ideal_nop; line = __LINE__;
  	} else {
- 		start_offset = (unsigned long)ftrace_caller;
- 		end_offset = (unsigned long)ftrace_epilogue;
- 		op_offset = (unsigned long)ftrace_caller_op_ptr;
-+		call_offset = (unsigned long)ftrace_call;
+-		expect = code->code; line = __LINE__;
++		expect = code.code; line = __LINE__;
  	}
  
- 	size = end_offset - start_offset;
-@@ -823,16 +405,21 @@ create_trampoline(struct ftrace_ops *ops, unsigned int *tramp_size)
- 	/* put in the new offset to the ftrace_ops */
- 	memcpy(trampoline + op_offset, &op_ptr, OP_REF_SIZE);
+ 	if (memcmp((void *)jump_entry_code(entry), expect, JUMP_LABEL_NOP_SIZE))
+ 		bug_at((void *)jump_entry_code(entry), line);
  
-+	/* put in the call to the function */
-+	mutex_lock(&text_mutex);
-+	call_offset -= start_offset;
-+	memcpy(trampoline + call_offset,
-+	       text_gen_insn(CALL_INSN_OPCODE,
-+			     trampoline + call_offset,
-+			     ftrace_ops_get_func(ops)), CALL_INSN_SIZE);
-+	mutex_unlock(&text_mutex);
+ 	if (type == JUMP_LABEL_NOP)
+-		memcpy(code, ideal_nop, JUMP_LABEL_NOP_SIZE);
++		memcpy(&code, ideal_nop, JUMP_LABEL_NOP_SIZE);
 +
- 	/* ALLOC_TRAMP flags lets us know we created it */
- 	ops->flags |= FTRACE_OPS_FL_ALLOC_TRAMP;
- 
- 	set_vm_flush_reset_perms(trampoline);
- 
--	/*
--	 * Module allocation needs to be completed by making the page
--	 * executable. The page is still writable, which is a security hazard,
--	 * but anyhow ftrace breaks W^X completely.
--	 */
-+	set_memory_ro((unsigned long)trampoline, npages);
- 	set_memory_x((unsigned long)trampoline, npages);
- 	return (unsigned long)trampoline;
- fail:
-@@ -859,43 +446,35 @@ static unsigned long calc_trampoline_call_offset(bool save_regs)
- void arch_ftrace_update_trampoline(struct ftrace_ops *ops)
- {
- 	ftrace_func_t func;
--	unsigned char *new;
- 	unsigned long offset;
- 	unsigned long ip;
- 	unsigned int size;
--	int ret, npages;
-+	const char *new;
- 
--	if (ops->trampoline) {
--		/*
--		 * The ftrace_ops caller may set up its own trampoline.
--		 * In such a case, this code must not modify it.
--		 */
--		if (!(ops->flags & FTRACE_OPS_FL_ALLOC_TRAMP))
--			return;
--		npages = PAGE_ALIGN(ops->trampoline_size) >> PAGE_SHIFT;
--		set_memory_rw(ops->trampoline, npages);
--	} else {
-+	if (!ops->trampoline) {
- 		ops->trampoline = create_trampoline(ops, &size);
- 		if (!ops->trampoline)
- 			return;
- 		ops->trampoline_size = size;
--		npages = PAGE_ALIGN(size) >> PAGE_SHIFT;
-+		return;
- 	}
- 
-+	/*
-+	 * The ftrace_ops caller may set up its own trampoline.
-+	 * In such a case, this code must not modify it.
-+	 */
-+	if (!(ops->flags & FTRACE_OPS_FL_ALLOC_TRAMP))
-+		return;
-+
- 	offset = calc_trampoline_call_offset(ops->flags & FTRACE_OPS_FL_SAVE_REGS);
- 	ip = ops->trampoline + offset;
--
- 	func = ftrace_ops_get_func(ops);
- 
--	ftrace_update_func_call = (unsigned long)func;
--
-+	mutex_lock(&text_mutex);
- 	/* Do a safe modify in case the trampoline is executing */
- 	new = ftrace_call_replace(ip, (unsigned long)func);
--	ret = update_ftrace_func(ip, new);
--	set_memory_ro(ops->trampoline, npages);
--
--	/* The update should never fail */
--	WARN_ON(ret);
-+	text_poke_bp((void *)ip, new, MCOUNT_INSN_SIZE, NULL);
-+	mutex_unlock(&text_mutex);
++	return &code;
  }
  
- /* Return the address of the function the trampoline calls */
-@@ -981,19 +560,18 @@ void arch_ftrace_trampoline_free(struct ftrace_ops *ops)
- #ifdef CONFIG_DYNAMIC_FTRACE
- extern void ftrace_graph_call(void);
- 
--static unsigned char *ftrace_jmp_replace(unsigned long ip, unsigned long addr)
-+static const char *ftrace_jmp_replace(unsigned long ip, unsigned long addr)
+-static void __ref __jump_label_transform(struct jump_entry *entry,
+-					 enum jump_label_type type,
+-					 int init)
++static void inline __jump_label_transform(struct jump_entry *entry,
++					  enum jump_label_type type,
++					  int init)
  {
--	return ftrace_text_replace(0xe9, ip, addr);
-+	return ftrace_text_replace(JMP32_INSN_OPCODE, ip, addr);
- }
- 
- static int ftrace_mod_jmp(unsigned long ip, void *func)
- {
--	unsigned char *new;
-+	const char *new;
- 
--	ftrace_update_func_call = 0UL;
- 	new = ftrace_jmp_replace(ip, (unsigned long)func);
+-	union jump_code_union code;
 -
--	return update_ftrace_func(ip, new);
-+	text_poke_bp((void *)ip, new, MCOUNT_INSN_SIZE, NULL);
-+	return 0;
- }
- 
- int ftrace_enable_ftrace_graph_caller(void)
-@@ -1019,10 +597,9 @@ int ftrace_disable_ftrace_graph_caller(void)
- void prepare_ftrace_return(unsigned long self_addr, unsigned long *parent,
- 			   unsigned long frame_pointer)
- {
-+	unsigned long return_hooker = (unsigned long)&return_to_handler;
- 	unsigned long old;
- 	int faulted;
--	unsigned long return_hooker = (unsigned long)
--				&return_to_handler;
+-	__jump_label_set_jump_code(entry, type, &code, init);
++	const void *opcode = __jump_label_set_jump_code(entry, type, init);
  
  	/*
- 	 * When resuming from suspend-to-ram, this function can be indirectly
-diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
-index c903121..3451a00 100644
---- a/arch/x86/kernel/traps.c
-+++ b/arch/x86/kernel/traps.c
-@@ -563,15 +563,6 @@ NOKPROBE_SYMBOL(do_general_protection);
- 
- dotraplinkage void notrace do_int3(struct pt_regs *regs, long error_code)
- {
--#ifdef CONFIG_DYNAMIC_FTRACE
--	/*
--	 * ftrace must be first, everything else may cause a recursive crash.
--	 * See note by declaration of modifying_ftrace_code in ftrace.c
--	 */
--	if (unlikely(atomic_read(&modifying_ftrace_code)) &&
--	    ftrace_int3_handler(regs))
--		return;
--#endif
- 	if (poke_int3_handler(regs))
+ 	 * As long as only a single processor is running and the code is still
+@@ -84,31 +85,33 @@ static void __ref __jump_label_transform(struct jump_entry *entry,
+ 	 * always nop being the 'currently valid' instruction
+ 	 */
+ 	if (init || system_state == SYSTEM_BOOTING) {
+-		text_poke_early((void *)jump_entry_code(entry), &code,
++		text_poke_early((void *)jump_entry_code(entry), opcode,
+ 				JUMP_LABEL_NOP_SIZE);
  		return;
+ 	}
  
+-	text_poke_bp((void *)jump_entry_code(entry), &code, JUMP_LABEL_NOP_SIZE, NULL);
++	text_poke_bp((void *)jump_entry_code(entry), opcode, JUMP_LABEL_NOP_SIZE, NULL);
+ }
+ 
+-void arch_jump_label_transform(struct jump_entry *entry,
+-			       enum jump_label_type type)
++static void __ref jump_label_transform(struct jump_entry *entry,
++				       enum jump_label_type type,
++				       int init)
+ {
+ 	mutex_lock(&text_mutex);
+-	__jump_label_transform(entry, type, 0);
++	__jump_label_transform(entry, type, init);
+ 	mutex_unlock(&text_mutex);
+ }
+ 
+-#define TP_VEC_MAX (PAGE_SIZE / sizeof(struct text_poke_loc))
+-static struct text_poke_loc tp_vec[TP_VEC_MAX];
+-static int tp_vec_nr;
++void arch_jump_label_transform(struct jump_entry *entry,
++			       enum jump_label_type type)
++{
++	jump_label_transform(entry, type, 0);
++}
+ 
+ bool arch_jump_label_transform_queue(struct jump_entry *entry,
+ 				     enum jump_label_type type)
+ {
+-	struct text_poke_loc *tp;
+-	void *entry_code;
++	const void *opcode;
+ 
+ 	if (system_state == SYSTEM_BOOTING) {
+ 		/*
+@@ -118,53 +121,19 @@ bool arch_jump_label_transform_queue(struct jump_entry *entry,
+ 		return true;
+ 	}
+ 
+-	/*
+-	 * No more space in the vector, tell upper layer to apply
+-	 * the queue before continuing.
+-	 */
+-	if (tp_vec_nr == TP_VEC_MAX)
+-		return false;
+-
+-	tp = &tp_vec[tp_vec_nr];
+-
+-	entry_code = (void *)jump_entry_code(entry);
+-
+-	/*
+-	 * The INT3 handler will do a bsearch in the queue, so we need entries
+-	 * to be sorted. We can survive an unsorted list by rejecting the entry,
+-	 * forcing the generic jump_label code to apply the queue. Warning once,
+-	 * to raise the attention to the case of an unsorted entry that is
+-	 * better not happen, because, in the worst case we will perform in the
+-	 * same way as we do without batching - with some more overhead.
+-	 */
+-	if (tp_vec_nr > 0) {
+-		int prev = tp_vec_nr - 1;
+-		struct text_poke_loc *prev_tp = &tp_vec[prev];
+-
+-		if (WARN_ON_ONCE(prev_tp->addr > entry_code))
+-			return false;
+-	}
+-
+-	__jump_label_set_jump_code(entry, type,
+-				   (union jump_code_union *)&tp->text, 0);
+-
+-	text_poke_loc_init(tp, entry_code, NULL, JUMP_LABEL_NOP_SIZE, NULL);
+-
+-	tp_vec_nr++;
+-
++	mutex_lock(&text_mutex);
++	opcode = __jump_label_set_jump_code(entry, type, 0);
++	text_poke_queue((void *)jump_entry_code(entry),
++			opcode, JUMP_LABEL_NOP_SIZE, NULL);
++	mutex_unlock(&text_mutex);
+ 	return true;
+ }
+ 
+ void arch_jump_label_transform_apply(void)
+ {
+-	if (!tp_vec_nr)
+-		return;
+-
+ 	mutex_lock(&text_mutex);
+-	text_poke_bp_batch(tp_vec, tp_vec_nr);
++	text_poke_finish();
+ 	mutex_unlock(&text_mutex);
+-
+-	tp_vec_nr = 0;
+ }
+ 
+ static enum {
+@@ -193,5 +162,5 @@ __init_or_module void arch_jump_label_transform_static(struct jump_entry *entry,
+ 			jlstate = JL_STATE_NO_UPDATE;
+ 	}
+ 	if (jlstate == JL_STATE_UPDATE)
+-		__jump_label_transform(entry, type, 1);
++		jump_label_transform(entry, type, 1);
+ }
