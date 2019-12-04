@@ -2,44 +2,47 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 099F9112539
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  4 Dec 2019 09:34:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 88A2D112528
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  4 Dec 2019 09:34:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727653AbfLDIek (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 4 Dec 2019 03:34:40 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:56391 "EHLO
+        id S1727562AbfLDIeX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 4 Dec 2019 03:34:23 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:56435 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727331AbfLDIdw (ORCPT
+        with ESMTP id S1727433AbfLDIeA (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 4 Dec 2019 03:33:52 -0500
+        Wed, 4 Dec 2019 03:34:00 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1icQ6J-0005Fm-4C; Wed, 04 Dec 2019 09:33:35 +0100
+        id 1icQ6J-0005Fx-Sb; Wed, 04 Dec 2019 09:33:36 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C8E351C2656;
-        Wed,  4 Dec 2019 09:33:34 +0100 (CET)
-Date:   Wed, 04 Dec 2019 08:33:34 -0000
-From:   "tip-bot2 for Masami Hiramatsu" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 896191C2656;
+        Wed,  4 Dec 2019 09:33:35 +0100 (CET)
+Date:   Wed, 04 Dec 2019 08:33:35 -0000
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/kprobes] x86/alternatives: Sync bp_patching update for
- avoiding NULL pointer exception
-Cc:     "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
+Subject: [tip: core/kprobes] module: Remove set_all_modules_text_*()
+Cc:     Alexei Starovoitov <ast@kernel.org>,
+        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Andy Lutomirski <luto@kernel.org>,
         Borislav Petkov <bp@alien8.de>,
+        Brian Gerst <brgerst@gmail.com>,
+        Denys Vlasenko <dvlasenk@redhat.com>,
+        Greentime Hu <green.hu@gmail.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Jessica Yu <jeyu@kernel.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>, bristot@redhat.com,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Vincent Chen <deanbo422@gmail.com>,
         Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <157483421229.25881.15314414408559963162.stgit@devnote2>
-References: <157483421229.25881.15314414408559963162.stgit@devnote2>
+In-Reply-To: <20191111132458.284298307@infradead.org>
+References: <20191111132458.284298307@infradead.org>
 MIME-Version: 1.0
-Message-ID: <157544841472.21853.14922550331474190716.tip-bot2@tip-bot2>
+Message-ID: <157544841542.21853.3750826406774748874.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -55,79 +58,136 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/kprobes branch of tip:
 
-Commit-ID:     285a54efe3861976af9d15e85ff8c91a78d1407b
-Gitweb:        https://git.kernel.org/tip/285a54efe3861976af9d15e85ff8c91a78d1407b
-Author:        Masami Hiramatsu <mhiramat@kernel.org>
-AuthorDate:    Wed, 27 Nov 2019 14:56:52 +09:00
+Commit-ID:     958de668197651bbf2b4b9528f204ab5a0f1af65
+Gitweb:        https://git.kernel.org/tip/958de668197651bbf2b4b9528f204ab5a0f1af65
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Tue, 15 Oct 2019 21:07:31 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Wed, 27 Nov 2019 07:44:25 +01:00
 
-x86/alternatives: Sync bp_patching update for avoiding NULL pointer exception
+module: Remove set_all_modules_text_*()
 
-ftracetest multiple_kprobes.tc testcase hits the following NULL pointer
-exception:
+Now that there are no users of set_all_modules_text_*() left, remove
+it.
 
- BUG: kernel NULL pointer dereference, address: 0000000000000000
- PGD 800000007bf60067 P4D 800000007bf60067 PUD 7bf5f067 PMD 0
- Oops: 0000 [#1] PREEMPT SMP PTI
- RIP: 0010:poke_int3_handler+0x39/0x100
- Call Trace:
-  <IRQ>
-  do_int3+0xd/0xf0
-  int3+0x42/0x50
-  RIP: 0010:sched_clock+0x6/0x10
+While it appears nds32 uses it, it does not have STRICT_MODULE_RWX and
+therefore ends up with the NOP stubs.
 
-poke_int3_handler+0x39 was alternatives:958:
-
-  static inline void *text_poke_addr(struct text_poke_loc *tp)
-  {
-          return _stext + tp->rel_addr; <------ Here is line #958
-  }
-
-This seems to be caused by tp (bp_patching.vec) being NULL but
-bp_patching.nr_entries != 0. There is a small chance for this
-to happen, because we have no synchronization between the zeroing
-of bp_patching.nr_entries and before clearing bp_patching.vec.
-
-Steve suggested we could fix this by adding sync_core(), because int3
-is done with interrupts disabled, and the on_each_cpu() requires
-all CPUs to have had their interrupts enabled.
-
- [ mingo: Edited the comments and the changelog. ]
-
-Suggested-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
 Tested-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Masami Hiramatsu <mhiramat@kernel.org>
+Tested-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Alexei Starovoitov <ast@kernel.org>
 Cc: Andy Lutomirski <luto@kernel.org>
 Cc: Borislav Petkov <bp@alien8.de>
+Cc: Brian Gerst <brgerst@gmail.com>
+Cc: Denys Vlasenko <dvlasenk@redhat.com>
+Cc: Greentime Hu <green.hu@gmail.com>
+Cc: H. Peter Anvin <hpa@zytor.com>
+Cc: Jessica Yu <jeyu@kernel.org>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: bristot@redhat.com
-Fixes: c0213b0ac03c ("x86/alternative: Batch of patch operations")
-Link: https://lkml.kernel.org/r/157483421229.25881.15314414408559963162.stgit@devnote2
+Cc: Vincent Chen <deanbo422@gmail.com>
+Link: https://lkml.kernel.org/r/20191111132458.284298307@infradead.org
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- arch/x86/kernel/alternative.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ arch/nds32/kernel/ftrace.c | 12 +----------
+ include/linux/module.h     |  4 +---
+ kernel/module.c            | 43 +-------------------------------------
+ 3 files changed, 59 deletions(-)
 
-diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
-index 4552795..30e8673 100644
---- a/arch/x86/kernel/alternative.c
-+++ b/arch/x86/kernel/alternative.c
-@@ -1134,8 +1134,14 @@ static void text_poke_bp_batch(struct text_poke_loc *tp, unsigned int nr_entries
- 	 * sync_core() implies an smp_mb() and orders this store against
- 	 * the writing of the new instruction.
- 	 */
--	bp_patching.vec = NULL;
- 	bp_patching.nr_entries = 0;
-+	/*
-+	 * This sync_core () call ensures that all INT3 handlers in progress
-+	 * have finished. This allows poke_int3_handler() after this to
-+	 * avoid touching bp_paching.vec by checking nr_entries == 0.
-+	 */
-+	text_poke_sync();
-+	bp_patching.vec = NULL;
+diff --git a/arch/nds32/kernel/ftrace.c b/arch/nds32/kernel/ftrace.c
+index fd2a54b..22ab77e 100644
+--- a/arch/nds32/kernel/ftrace.c
++++ b/arch/nds32/kernel/ftrace.c
+@@ -89,18 +89,6 @@ int __init ftrace_dyn_arch_init(void)
+ 	return 0;
  }
  
- void text_poke_loc_init(struct text_poke_loc *tp, void *addr,
+-int ftrace_arch_code_modify_prepare(void)
+-{
+-	set_all_modules_text_rw();
+-	return 0;
+-}
+-
+-int ftrace_arch_code_modify_post_process(void)
+-{
+-	set_all_modules_text_ro();
+-	return 0;
+-}
+-
+ static unsigned long gen_sethi_insn(unsigned long addr)
+ {
+ 	unsigned long opcode = 0x46000000;
+diff --git a/include/linux/module.h b/include/linux/module.h
+index 6d20895..daae847 100644
+--- a/include/linux/module.h
++++ b/include/linux/module.h
+@@ -846,13 +846,9 @@ extern int module_sysfs_initialized;
+ #define __MODULE_STRING(x) __stringify(x)
+ 
+ #ifdef CONFIG_STRICT_MODULE_RWX
+-extern void set_all_modules_text_rw(void);
+-extern void set_all_modules_text_ro(void);
+ extern void module_enable_ro(const struct module *mod, bool after_init);
+ extern void module_disable_ro(const struct module *mod);
+ #else
+-static inline void set_all_modules_text_rw(void) { }
+-static inline void set_all_modules_text_ro(void) { }
+ static inline void module_enable_ro(const struct module *mod, bool after_init) { }
+ static inline void module_disable_ro(const struct module *mod) { }
+ #endif
+diff --git a/kernel/module.c b/kernel/module.c
+index acf7962..5cd9bed 100644
+--- a/kernel/module.c
++++ b/kernel/module.c
+@@ -2029,49 +2029,6 @@ static void module_enable_nx(const struct module *mod)
+ 	frob_writable_data(&mod->init_layout, set_memory_nx);
+ }
+ 
+-/* Iterate through all modules and set each module's text as RW */
+-void set_all_modules_text_rw(void)
+-{
+-	struct module *mod;
+-
+-	if (!rodata_enabled)
+-		return;
+-
+-	mutex_lock(&module_mutex);
+-	list_for_each_entry_rcu(mod, &modules, list) {
+-		if (mod->state == MODULE_STATE_UNFORMED)
+-			continue;
+-
+-		frob_text(&mod->core_layout, set_memory_rw);
+-		frob_text(&mod->init_layout, set_memory_rw);
+-	}
+-	mutex_unlock(&module_mutex);
+-}
+-
+-/* Iterate through all modules and set each module's text as RO */
+-void set_all_modules_text_ro(void)
+-{
+-	struct module *mod;
+-
+-	if (!rodata_enabled)
+-		return;
+-
+-	mutex_lock(&module_mutex);
+-	list_for_each_entry_rcu(mod, &modules, list) {
+-		/*
+-		 * Ignore going modules since it's possible that ro
+-		 * protection has already been disabled, otherwise we'll
+-		 * run into protection faults at module deallocation.
+-		 */
+-		if (mod->state == MODULE_STATE_UNFORMED ||
+-			mod->state == MODULE_STATE_GOING)
+-			continue;
+-
+-		frob_text(&mod->core_layout, set_memory_ro);
+-		frob_text(&mod->init_layout, set_memory_ro);
+-	}
+-	mutex_unlock(&module_mutex);
+-}
+ #else /* !CONFIG_STRICT_MODULE_RWX */
+ static void module_enable_nx(const struct module *mod) { }
+ #endif /*  CONFIG_STRICT_MODULE_RWX */
