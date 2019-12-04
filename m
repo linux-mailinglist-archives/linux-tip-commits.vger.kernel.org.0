@@ -2,44 +2,44 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BFCF6112519
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  4 Dec 2019 09:34:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E9C0B112523
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  4 Dec 2019 09:34:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725951AbfLDIdx (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 4 Dec 2019 03:33:53 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:56394 "EHLO
+        id S1727466AbfLDIeB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 4 Dec 2019 03:34:01 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:56441 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727332AbfLDIdx (ORCPT
+        with ESMTP id S1727438AbfLDIeA (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 4 Dec 2019 03:33:53 -0500
+        Wed, 4 Dec 2019 03:34:00 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1icQ6O-0005Lf-8k; Wed, 04 Dec 2019 09:33:40 +0100
+        id 1icQ6P-0005JD-Ij; Wed, 04 Dec 2019 09:33:41 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id F39981C265B;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 42FFD1C2656;
         Wed,  4 Dec 2019 09:33:36 +0100 (CET)
 Date:   Wed, 04 Dec 2019 08:33:36 -0000
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/kprobes] x86/alternative: Add text_opcode_size()
-Cc:     Alexei Starovoitov <ast@kernel.org>,
+Subject: [tip: core/kprobes] x86/ftrace: Mark ftrace_modify_code_direct() __ref
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Borislav Petkov <bp@suse.de>,
         "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Alexei Starovoitov <ast@kernel.org>,
         Andy Lutomirski <luto@kernel.org>,
-        Borislav Petkov <bp@alien8.de>,
-        "H. Peter Anvin" <hpa@zytor.com>,
+        Daniel Bristot de Oliveira <bristot@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@kernel.org>,
         Josh Poimboeuf <jpoimboe@redhat.com>,
         Linus Torvalds <torvalds@linux-foundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191111132457.875666061@infradead.org>
-References: <20191111132457.875666061@infradead.org>
+In-Reply-To: <20191116204607.GC23231@zn.tnic>
+References: <20191116204607.GC23231@zn.tnic>
 MIME-Version: 1.0
-Message-ID: <157544841687.21853.7672694301829898415.tip-bot2@tip-bot2>
+Message-ID: <157544841616.21853.11033937966281103251.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -55,120 +55,50 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/kprobes branch of tip:
 
-Commit-ID:     254d2c04515ea4532a503cc5d8649e1513042e56
-Gitweb:        https://git.kernel.org/tip/254d2c04515ea4532a503cc5d8649e1513042e56
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Wed, 09 Oct 2019 12:44:17 +02:00
+Commit-ID:     38ebd8d119245eecb99fe00b0f57e269baf22767
+Gitweb:        https://git.kernel.org/tip/38ebd8d119245eecb99fe00b0f57e269baf22767
+Author:        Borislav Petkov <bp@suse.de>
+AuthorDate:    Mon, 18 Nov 2019 18:20:12 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Wed, 27 Nov 2019 07:44:24 +01:00
 
-x86/alternative: Add text_opcode_size()
+x86/ftrace: Mark ftrace_modify_code_direct() __ref
 
-Introduce a common helper to map *_INSN_OPCODE to *_INSN_SIZE.
+... because it calls the .init.text function text_poke_early(). That is
+ok because it does call that function early, during boot.
 
-Tested-by: Alexei Starovoitov <ast@kernel.org>
-Tested-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 9706f7c3531f ("x86/ftrace: Use text_poke()")
+Suggested-by: Peter Zijlstra <peterz@infradead.org>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Acked-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
+Cc: Alexei Starovoitov <ast@kernel.org>
 Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Borislav Petkov <bp@alien8.de>
+Cc: Daniel Bristot de Oliveira <bristot@redhat.com>
 Cc: H. Peter Anvin <hpa@zytor.com>
+Cc: Ingo Molnar <mingo@kernel.org>
 Cc: Josh Poimboeuf <jpoimboe@redhat.com>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20191111132457.875666061@infradead.org
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lkml.kernel.org/r/20191116204607.GC23231@zn.tnic
 ---
- arch/x86/include/asm/text-patching.h | 43 +++++++++++++++++++--------
- arch/x86/kernel/alternative.c        | 12 +--------
- 2 files changed, 32 insertions(+), 23 deletions(-)
+ arch/x86/kernel/ftrace.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/text-patching.h b/arch/x86/include/asm/text-patching.h
-index 95beb85..93e4266 100644
---- a/arch/x86/include/asm/text-patching.h
-+++ b/arch/x86/include/asm/text-patching.h
-@@ -49,18 +49,6 @@ extern void text_poke_bp(void *addr, const void *opcode, size_t len, const void 
- extern void text_poke_queue(void *addr, const void *opcode, size_t len, const void *emulate);
- extern void text_poke_finish(void);
+diff --git a/arch/x86/kernel/ftrace.c b/arch/x86/kernel/ftrace.c
+index 2a179fb..108ee96 100644
+--- a/arch/x86/kernel/ftrace.c
++++ b/arch/x86/kernel/ftrace.c
+@@ -99,7 +99,12 @@ static int ftrace_verify_code(unsigned long ip, const char *old_code)
+ 	return 0;
+ }
  
--extern void *text_gen_insn(u8 opcode, const void *addr, const void *dest);
--
--extern int after_bootmem;
--extern __ro_after_init struct mm_struct *poking_mm;
--extern __ro_after_init unsigned long poking_addr;
--
--#ifndef CONFIG_UML_X86
--static inline void int3_emulate_jmp(struct pt_regs *regs, unsigned long ip)
--{
--	regs->ip = ip;
--}
--
- #define INT3_INSN_SIZE		1
- #define INT3_INSN_OPCODE	0xCC
- 
-@@ -73,6 +61,37 @@ static inline void int3_emulate_jmp(struct pt_regs *regs, unsigned long ip)
- #define JMP8_INSN_SIZE		2
- #define JMP8_INSN_OPCODE	0xEB
- 
-+static inline int text_opcode_size(u8 opcode)
-+{
-+	int size = 0;
-+
-+#define __CASE(insn)	\
-+	case insn##_INSN_OPCODE: size = insn##_INSN_SIZE; break
-+
-+	switch(opcode) {
-+	__CASE(INT3);
-+	__CASE(CALL);
-+	__CASE(JMP32);
-+	__CASE(JMP8);
-+	}
-+
-+#undef __CASE
-+
-+	return size;
-+}
-+
-+extern void *text_gen_insn(u8 opcode, const void *addr, const void *dest);
-+
-+extern int after_bootmem;
-+extern __ro_after_init struct mm_struct *poking_mm;
-+extern __ro_after_init unsigned long poking_addr;
-+
-+#ifndef CONFIG_UML_X86
-+static inline void int3_emulate_jmp(struct pt_regs *regs, unsigned long ip)
-+{
-+	regs->ip = ip;
-+}
-+
- static inline void int3_emulate_push(struct pt_regs *regs, unsigned long val)
+-static int
++/*
++ * Marked __ref because it calls text_poke_early() which is .init.text. That is
++ * ok because that call will happen early, during boot, when .init sections are
++ * still present.
++ */
++static int __ref
+ ftrace_modify_code_direct(unsigned long ip, const char *old_code,
+ 			  const char *new_code)
  {
- 	/*
-diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
-index ce737f1..f8f34f9 100644
---- a/arch/x86/kernel/alternative.c
-+++ b/arch/x86/kernel/alternative.c
-@@ -1259,22 +1259,12 @@ union text_poke_insn {
- void *text_gen_insn(u8 opcode, const void *addr, const void *dest)
- {
- 	static union text_poke_insn insn; /* text_mutex */
--	int size = 0;
-+	int size = text_opcode_size(opcode);
- 
- 	lockdep_assert_held(&text_mutex);
- 
- 	insn.opcode = opcode;
- 
--#define __CASE(insn)	\
--	case insn##_INSN_OPCODE: size = insn##_INSN_SIZE; break
--
--	switch(opcode) {
--	__CASE(INT3);
--	__CASE(CALL);
--	__CASE(JMP32);
--	__CASE(JMP8);
--	}
--
- 	if (size > 1) {
- 		insn.disp = (long)dest - (long)(addr + size);
- 		if (size == 2)
