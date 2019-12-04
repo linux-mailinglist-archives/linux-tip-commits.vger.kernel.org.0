@@ -2,41 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B96631123D5
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  4 Dec 2019 08:55:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 38C571123BF
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  4 Dec 2019 08:54:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727378AbfLDHyG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 4 Dec 2019 02:54:06 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:56132 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727322AbfLDHyF (ORCPT
-        <rfc822;linux-tip-commits@vger.kernel.org>);
+        id S1727351AbfLDHyF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Wed, 4 Dec 2019 02:54:05 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:56129 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727321AbfLDHyE (ORCPT
+        <rfc822;linux-tip-commits@vger.kernel.org>);
+        Wed, 4 Dec 2019 02:54:04 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1icPTs-0004Qp-KX; Wed, 04 Dec 2019 08:53:52 +0100
+        id 1icPTy-0004RS-Bf; Wed, 04 Dec 2019 08:53:58 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4CC211C2563;
-        Wed,  4 Dec 2019 08:53:52 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 0F2AA1C2563;
+        Wed,  4 Dec 2019 08:53:53 +0100 (CET)
 Date:   Wed, 04 Dec 2019 07:53:52 -0000
 From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf beauty: Add CLEAR_SIGHAND support for clone's
- flags arg
+Subject: [tip: perf/urgent] tools headers uapi: Sync linux/stat.h with the
+ kernel sources
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Adrian Reber <areber@redhat.com>,
-        Christian Brauner <christian.brauner@ubuntu.com>,
+        Eric Biggers <ebiggers@google.com>,
         Jiri Olsa <jolsa@kernel.org>,
         Namhyung Kim <namhyung@kernel.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <tip-1vnz497ubtu5oz16ygdcul0e@git.kernel.org>
-References: <tip-1vnz497ubtu5oz16ygdcul0e@git.kernel.org>
+In-Reply-To: <tip-thcy60dpry5qrpn7nmc58bwg@git.kernel.org>
+References: <tip-thcy60dpry5qrpn7nmc58bwg@git.kernel.org>
 MIME-Version: 1.0
-Message-ID: <157544603216.21853.6648523151374904014.tip-bot2@tip-bot2>
+Message-ID: <157544603294.21853.9731827151832315062.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -52,42 +51,52 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     f6661125ff41e27b488f36422226653baad3c382
-Gitweb:        https://git.kernel.org/tip/f6661125ff41e27b488f36422226653baad3c382
+Commit-ID:     c66f2566db340b04c113ea1d930651246d9d4049
+Gitweb:        https://git.kernel.org/tip/c66f2566db340b04c113ea1d930651246d9d4049
 Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Mon, 02 Dec 2019 13:02:25 -03:00
+AuthorDate:    Mon, 02 Dec 2019 12:24:52 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Mon, 02 Dec 2019 15:19:52 -03:00
+CommitterDate: Mon, 02 Dec 2019 12:24:52 -03:00
 
-perf beauty: Add CLEAR_SIGHAND support for clone's flags arg
+tools headers uapi: Sync linux/stat.h with the kernel sources
 
-Add support for the recently added CLONE_CLEAR_SIGHAND flag.
+To pick the changes from:
 
-This takes advantage of the copy of the uapi/linux/sched.h we have in
-tools/include, which allows us to build tools/perf in older systems and
-have the binary support printing that flag whenever that system gets its
-kernel updated to one where this feature is present.
+  3ad2522c64cf ("statx: define STATX_ATTR_VERITY")
+
+That don't trigger any changes in tooling.
+
+This silences this perf build warning:
+
+  Warning: Kernel ABI header at 'tools/include/uapi/linux/stat.h' differs from latest version at 'include/uapi/linux/stat.h'
+  diff -u tools/include/uapi/linux/stat.h include/uapi/linux/stat.h
+
+At some point we wi'll beautify structs passed in pointers to syscalls
+and then we'll need to have tables for these defines, for now update the
+file to silence the warning as this file is used for doing this type of
+number -> string translations for other defines found in these file.
 
 Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Adrian Reber <areber@redhat.com>
-Cc: Christian Brauner <christian.brauner@ubuntu.com>
+Cc: Eric Biggers <ebiggers@google.com>
 Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Namhyung Kim <namhyung@kernel.org
-Link: https://lkml.kernel.org/n/tip-1vnz497ubtu5oz16ygdcul0e@git.kernel.org
+Cc: Namhyung Kim <namhyung@kernel.org>
+Link: https://lkml.kernel.org/n/tip-thcy60dpry5qrpn7nmc58bwg@git.kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/trace/beauty/clone.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/include/uapi/linux/stat.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/trace/beauty/clone.c b/tools/perf/trace/beauty/clone.c
-index 1a8d3be..062ca84 100644
---- a/tools/perf/trace/beauty/clone.c
-+++ b/tools/perf/trace/beauty/clone.c
-@@ -45,6 +45,7 @@ static size_t clone__scnprintf_flags(unsigned long flags, char *bf, size_t size,
- 	P_FLAG(NEWPID);
- 	P_FLAG(NEWNET);
- 	P_FLAG(IO);
-+	P_FLAG(CLEAR_SIGHAND);
- #undef P_FLAG
+diff --git a/tools/include/uapi/linux/stat.h b/tools/include/uapi/linux/stat.h
+index 7b35e98..ad80a5c 100644
+--- a/tools/include/uapi/linux/stat.h
++++ b/tools/include/uapi/linux/stat.h
+@@ -167,8 +167,8 @@ struct statx {
+ #define STATX_ATTR_APPEND		0x00000020 /* [I] File is append-only */
+ #define STATX_ATTR_NODUMP		0x00000040 /* [I] File is not to be dumped */
+ #define STATX_ATTR_ENCRYPTED		0x00000800 /* [I] File requires key to decrypt in fs */
+-
+ #define STATX_ATTR_AUTOMOUNT		0x00001000 /* Dir: Automount trigger */
++#define STATX_ATTR_VERITY		0x00100000 /* [I] Verity protected file */
  
- 	if (flags)
+ 
+ #endif /* _UAPI_LINUX_STAT_H */
