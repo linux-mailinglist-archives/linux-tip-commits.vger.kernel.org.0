@@ -2,44 +2,44 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E9C0B112523
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  4 Dec 2019 09:34:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 285C911252E
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  4 Dec 2019 09:34:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727466AbfLDIeB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 4 Dec 2019 03:34:01 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:56441 "EHLO
+        id S1727606AbfLDIeb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 4 Dec 2019 03:34:31 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:56437 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727438AbfLDIeA (ORCPT
+        with ESMTP id S1727434AbfLDId7 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 4 Dec 2019 03:34:00 -0500
+        Wed, 4 Dec 2019 03:33:59 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1icQ6P-0005JD-Ij; Wed, 04 Dec 2019 09:33:41 +0100
+        id 1icQ6P-0005JL-RL; Wed, 04 Dec 2019 09:33:41 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 42FFD1C2656;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 69FBA1C2659;
         Wed,  4 Dec 2019 09:33:36 +0100 (CET)
 Date:   Wed, 04 Dec 2019 08:33:36 -0000
-From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/kprobes] x86/ftrace: Mark ftrace_modify_code_direct() __ref
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        Borislav Petkov <bp@suse.de>,
+Subject: [tip: core/kprobes] x86/alternative: Shrink text_poke_loc
+Cc:     Alexei Starovoitov <ast@kernel.org>,
         "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
-        Alexei Starovoitov <ast@kernel.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Andy Lutomirski <luto@kernel.org>,
-        Daniel Bristot de Oliveira <bristot@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@kernel.org>,
+        Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>,
         Josh Poimboeuf <jpoimboe@redhat.com>,
         Linus Torvalds <torvalds@linux-foundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191116204607.GC23231@zn.tnic>
-References: <20191116204607.GC23231@zn.tnic>
+In-Reply-To: <20191111132458.047052889@infradead.org>
+References: <20191111132458.047052889@infradead.org>
 MIME-Version: 1.0
-Message-ID: <157544841616.21853.11033937966281103251.tip-bot2@tip-bot2>
+Message-ID: <157544841633.21853.4174660841263079781.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -55,50 +55,123 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/kprobes branch of tip:
 
-Commit-ID:     38ebd8d119245eecb99fe00b0f57e269baf22767
-Gitweb:        https://git.kernel.org/tip/38ebd8d119245eecb99fe00b0f57e269baf22767
-Author:        Borislav Petkov <bp@suse.de>
-AuthorDate:    Mon, 18 Nov 2019 18:20:12 +01:00
+Commit-ID:     4531ef6a8aaf132aa32e2e26670c652942540633
+Gitweb:        https://git.kernel.org/tip/4531ef6a8aaf132aa32e2e26670c652942540633
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Wed, 09 Oct 2019 12:26:53 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Wed, 27 Nov 2019 07:44:24 +01:00
 
-x86/ftrace: Mark ftrace_modify_code_direct() __ref
+x86/alternative: Shrink text_poke_loc
 
-... because it calls the .init.text function text_poke_early(). That is
-ok because it does call that function early, during boot.
+Employ the fact that all text must be within a s32 displacement of one
+another to shrink the text_poke_loc::addr field. Make it relative to
+_stext.
 
-Fixes: 9706f7c3531f ("x86/ftrace: Use text_poke()")
-Suggested-by: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Acked-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
-Cc: Alexei Starovoitov <ast@kernel.org>
+This then shrinks struct text_poke_loc to 16 bytes, and consequently
+increases TP_VEC_MAX from 170 to 256.
+
+Tested-by: Alexei Starovoitov <ast@kernel.org>
+Tested-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Alexei Starovoitov <ast@kernel.org>
 Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Daniel Bristot de Oliveira <bristot@redhat.com>
+Cc: Borislav Petkov <bp@alien8.de>
 Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Ingo Molnar <mingo@kernel.org>
 Cc: Josh Poimboeuf <jpoimboe@redhat.com>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20191116204607.GC23231@zn.tnic
+Link: https://lkml.kernel.org/r/20191111132458.047052889@infradead.org
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- arch/x86/kernel/ftrace.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/x86/kernel/alternative.c | 23 ++++++++++++++---------
+ 1 file changed, 14 insertions(+), 9 deletions(-)
 
-diff --git a/arch/x86/kernel/ftrace.c b/arch/x86/kernel/ftrace.c
-index 2a179fb..108ee96 100644
---- a/arch/x86/kernel/ftrace.c
-+++ b/arch/x86/kernel/ftrace.c
-@@ -99,7 +99,12 @@ static int ftrace_verify_code(unsigned long ip, const char *old_code)
- 	return 0;
+diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
+index 6e3ee73..526cc5f 100644
+--- a/arch/x86/kernel/alternative.c
++++ b/arch/x86/kernel/alternative.c
+@@ -937,7 +937,7 @@ static void do_sync_core(void *info)
  }
  
--static int
-+/*
-+ * Marked __ref because it calls text_poke_early() which is .init.text. That is
-+ * ok because that call will happen early, during boot, when .init sections are
-+ * still present.
-+ */
-+static int __ref
- ftrace_modify_code_direct(unsigned long ip, const char *old_code,
- 			  const char *new_code)
+ struct text_poke_loc {
+-	void *addr;
++	s32 rel_addr; /* addr := _stext + rel_addr */
+ 	s32 rel32;
+ 	u8 opcode;
+ 	const u8 text[POKE_MAX_OPCODE_SIZE];
+@@ -948,13 +948,18 @@ static struct bp_patching_desc {
+ 	int nr_entries;
+ } bp_patching;
+ 
++static inline void *text_poke_addr(struct text_poke_loc *tp)
++{
++	return _stext + tp->rel_addr;
++}
++
+ static int notrace patch_cmp(const void *key, const void *elt)
  {
+ 	struct text_poke_loc *tp = (struct text_poke_loc *) elt;
+ 
+-	if (key < tp->addr)
++	if (key < text_poke_addr(tp))
+ 		return -1;
+-	if (key > tp->addr)
++	if (key > text_poke_addr(tp))
+ 		return 1;
+ 	return 0;
+ }
+@@ -1000,7 +1005,7 @@ int notrace poke_int3_handler(struct pt_regs *regs)
+ 			return 0;
+ 	} else {
+ 		tp = bp_patching.vec;
+-		if (tp->addr != ip)
++		if (text_poke_addr(tp) != ip)
+ 			return 0;
+ 	}
+ 
+@@ -1078,7 +1083,7 @@ static void text_poke_bp_batch(struct text_poke_loc *tp, unsigned int nr_entries
+ 	 * First step: add a int3 trap to the address that will be patched.
+ 	 */
+ 	for (i = 0; i < nr_entries; i++)
+-		text_poke(tp[i].addr, &int3, sizeof(int3));
++		text_poke(text_poke_addr(&tp[i]), &int3, sizeof(int3));
+ 
+ 	on_each_cpu(do_sync_core, NULL, 1);
+ 
+@@ -1089,7 +1094,7 @@ static void text_poke_bp_batch(struct text_poke_loc *tp, unsigned int nr_entries
+ 		int len = text_opcode_size(tp[i].opcode);
+ 
+ 		if (len - sizeof(int3) > 0) {
+-			text_poke((char *)tp[i].addr + sizeof(int3),
++			text_poke(text_poke_addr(&tp[i]) + sizeof(int3),
+ 				  (const char *)tp[i].text + sizeof(int3),
+ 				  len - sizeof(int3));
+ 			do_sync++;
+@@ -1113,7 +1118,7 @@ static void text_poke_bp_batch(struct text_poke_loc *tp, unsigned int nr_entries
+ 		if (tp[i].text[0] == INT3_INSN_OPCODE)
+ 			continue;
+ 
+-		text_poke(tp[i].addr, tp[i].text, sizeof(int3));
++		text_poke(text_poke_addr(&tp[i]), tp[i].text, sizeof(int3));
+ 		do_sync++;
+ 	}
+ 
+@@ -1143,7 +1148,7 @@ void text_poke_loc_init(struct text_poke_loc *tp, void *addr,
+ 	BUG_ON(!insn_complete(&insn));
+ 	BUG_ON(len != insn.length);
+ 
+-	tp->addr = addr;
++	tp->rel_addr = addr - (void *)_stext;
+ 	tp->opcode = insn.opcode.bytes[0];
+ 
+ 	switch (tp->opcode) {
+@@ -1192,7 +1197,7 @@ static bool tp_order_fail(void *addr)
+ 		return true;
+ 
+ 	tp = &tp_vec[tp_vec_nr - 1];
+-	if ((unsigned long)tp->addr > (unsigned long)addr)
++	if ((unsigned long)text_poke_addr(tp) > (unsigned long)addr)
+ 		return true;
+ 
+ 	return false;
