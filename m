@@ -2,48 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 47F6D10E362
-	for <lists+linux-tip-commits@lfdr.de>; Sun,  1 Dec 2019 21:04:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 92F4C1123C8
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  4 Dec 2019 08:54:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726519AbfLAUEg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 1 Dec 2019 15:04:36 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:51313 "EHLO
+        id S1727493AbfLDHyY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 4 Dec 2019 02:54:24 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:56192 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726173AbfLAUEg (ORCPT
+        with ESMTP id S1727429AbfLDHyY (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 1 Dec 2019 15:04:36 -0500
+        Wed, 4 Dec 2019 02:54:24 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1ibVRv-00024M-RZ; Sun, 01 Dec 2019 21:04:08 +0100
+        id 1icPTr-0004Qf-U9; Wed, 04 Dec 2019 08:53:51 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 04A071C1FFA;
-        Sun,  1 Dec 2019 21:04:04 +0100 (CET)
-Date:   Sun, 01 Dec 2019 20:04:03 -0000
-From:   "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 8CB0E1C2563;
+        Wed,  4 Dec 2019 08:53:51 +0100 (CET)
+Date:   Wed, 04 Dec 2019 07:53:51 -0000
+From:   "tip-bot2 for Sudip Mukherjee" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/mm/pat: Fix off-by-one bugs in interval tree search
-Cc:     kernel test robot <rong.a.chen@intel.com>,
-        "Kenneth R. Crudup" <kenny@panix.com>,
-        Mariusz Ceier <mceier+kernel@gmail.com>,
-        Mariusz Ceier <mceier@gmail.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Davidlohr Bueso <dave@stgolabs.net>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Rik van Riel <riel@surriel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191201144947.GA4167@gmail.com>
-References: <20191201144947.GA4167@gmail.com>
+Subject: [tip: perf/urgent] libtraceevent: Fix lib installation with O=
+Cc:     Sudipm Mukherjee <sudipm.mukherjee@gmail.com>,
+        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
+        linux-trace-devel@vger.kernel.org,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20191115113610.21493-1-sudipm.mukherjee@gmail.com>
+References: <20191115113610.21493-1-sudipm.mukherjee@gmail.com>
 MIME-Version: 1.0
-Message-ID: <157523064382.21853.5318954116634654015.tip-bot2@tip-bot2>
+Message-ID: <157544603147.21853.6345719846964569767.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -57,211 +47,57 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     91298f1a302dad0f0f630413c812818636faa8a0
-Gitweb:        https://git.kernel.org/tip/91298f1a302dad0f0f630413c812818636faa8a0
-Author:        Ingo Molnar <mingo@kernel.org>
-AuthorDate:    Sun, 01 Dec 2019 15:49:47 +01:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sun, 01 Dec 2019 20:57:25 +01:00
+Commit-ID:     587db8ebdac2c5eb3a8851e16b26f2e2711ab797
+Gitweb:        https://git.kernel.org/tip/587db8ebdac2c5eb3a8851e16b26f2e2711ab797
+Author:        Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+AuthorDate:    Fri, 15 Nov 2019 11:36:09 
+Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
+CommitterDate: Mon, 02 Dec 2019 21:58:20 -03:00
 
-x86/mm/pat: Fix off-by-one bugs in interval tree search
+libtraceevent: Fix lib installation with O=
 
-There's a bug in the new PAT code, the conversion of memtype_check_conflict()
-is buggy:
+When we use 'O=' with make to build libtraceevent in a separate folder
+it fails to install libtraceevent.a and libtraceevent.so.1.1.0 with the
+error:
 
-   8d04a5f97a5f: ("x86/mm/pat: Convert the PAT tree to a generic interval tree")
+  INSTALL  /home/sudip/linux/obj-trace/libtraceevent.a
+  INSTALL  /home/sudip/linux/obj-trace/libtraceevent.so.1.1.0
 
-        dprintk("Overlap at 0x%Lx-0x%Lx\n", match->start, match->end);
-        found_type = match->type;
+  cp: cannot stat 'libtraceevent.a': No such file or directory
+  Makefile:225: recipe for target 'install_lib' failed
+  make: *** [install_lib] Error 1
 
--       node = rb_next(&match->rb);
--       while (node) {
--               match = rb_entry(node, struct memtype, rb);
--
--               if (match->start >= end) /* Checked all possible matches */
--                       goto success;
--
--               if (is_node_overlap(match, start, end) &&
--                   match->type != found_type) {
-+       match = memtype_interval_iter_next(match, start, end);
-+       while (match) {
-+               if (match->type != found_type)
-                        goto failure;
--               }
+I used the command:
 
--               node = rb_next(&match->rb);
-+               match = memtype_interval_iter_next(match, start, end);
-        }
+  make O=../../../obj-trace DESTDIR=~/test prefix==/usr  install
 
-Note how the '>= end' condition to end the interval check, got converted
-into:
+It turns out libtraceevent Makefile, even though it builds in a separate
+folder, searches for libtraceevent.a and libtraceevent.so.1.1.0 in its
+source folder.
 
-+       match = memtype_interval_iter_next(match, start, end);
+So, add the 'OUTPUT' prefix to the source path so that 'make' looks for
+the files in the correct place.
 
-This is subtly off by one, because the interval trees interfaces require
-closed interval parameters:
-
-  include/linux/interval_tree_generic.h
-
- /*                                                                            \
-  * Iterate over intervals intersecting [start;last]                           \
-  *                                                                            \
-  * Note that a node's interval intersects [start;last] iff:                   \
-  *   Cond1: ITSTART(node) <= last                                             \
-  * and                                                                        \
-  *   Cond2: start <= ITLAST(node)                                             \
-  */                                                                           \
-
-  ...
-
-                if (ITSTART(node) <= last) {            /* Cond1 */           \
-                        if (start <= ITLAST(node))      /* Cond2 */           \
-                                return node;    /* node is leftmost match */  \
-
-[start;last] is a closed interval (note that '<= last' check) - while the
-PAT 'end' parameter is 1 byte beyond the end of the range, because
-ioremap() and the other mapping APIs usually use the [start,end)
-half-open interval, derived from 'size'.
-
-This is what ioremap() does for example:
-
-        /*
-         * Mappings have to be page-aligned
-         */
-        offset = phys_addr & ~PAGE_MASK;
-        phys_addr &= PHYSICAL_PAGE_MASK;
-        size = PAGE_ALIGN(last_addr+1) - phys_addr;
-
-        retval = reserve_memtype(phys_addr, (u64)phys_addr + size,
-                                                pcm, &new_pcm);
-
-phys_addr+size will be on a page boundary, after the last byte of the
-mapped interval.
-
-So the correct parameter to use in the interval tree searches is not
-'end' but 'end-1'.
-
-This could have relevance if conflicting PAT ranges are exactly adjacent,
-for example a future WC region is followed immediately by an already
-mapped UC- region - in this case memtype_check_conflict() would
-incorrectly deny the WC memtype region and downgrade the memtype to UC-.
-
-BTW., rather annoyingly this downgrading is done silently in
-memtype_check_insert():
-
-int memtype_check_insert(struct memtype *new,
-                         enum page_cache_mode *ret_type)
-{
-        int err = 0;
-
-        err = memtype_check_conflict(new->start, new->end, new->type, ret_type);
-        if (err)
-                return err;
-
-        if (ret_type)
-                new->type = *ret_type;
-
-        memtype_interval_insert(new, &memtype_rbroot);
-        return 0;
-}
-
-So on such a conflict we'd just silently get UC- in *ret_type, and write
-it into the new region, never the wiser ...
-
-So assuming that the patch below fixes the primary bug the diagnostics
-side of ioremap() cache attribute downgrades would be another thing to
-fix.
-
-Anyway, I checked all the interval-tree iterations, and most of them are
-off by one - but I think the one related to memtype_check_conflict() is
-the one causing this particular performance regression.
-
-The only correct interval-tree searches were these two:
-
-  arch/x86/mm/pat_interval.c:     match = memtype_interval_iter_first(&memtype_rbroot, 0, ULONG_MAX);
-  arch/x86/mm/pat_interval.c:             match = memtype_interval_iter_next(match, 0, ULONG_MAX);
-
-The ULONG_MAX was hiding the off-by-one in plain sight. :-)
-
-Note that the bug was probably benign in the sense of implementing a too
-strict cache attribute conflict policy and downgrading cache attributes,
-so AFAICS the worst outcome of this bug would be a performance regression,
-not any instabilities.
-
-Reported-by: kernel test robot <rong.a.chen@intel.com>
-Reported-by: Kenneth R. Crudup <kenny@panix.com>
-Reported-by: Mariusz Ceier <mceier+kernel@gmail.com>
-Tested-by: Mariusz Ceier <mceier@gmail.com>
-Tested-by: Kenneth R. Crudup <kenny@panix.com>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Davidlohr Bueso <dave@stgolabs.net>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20191201144947.GA4167@gmail.com
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Signed-off-by: Sudipm Mukherjee <sudipm.mukherjee@gmail.com>
+Reviewed-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
+Cc: linux-trace-devel@vger.kernel.org
+Link: http://lore.kernel.org/lkml/20191115113610.21493-1-sudipm.mukherjee@gmail.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- arch/x86/mm/pat_interval.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ tools/lib/traceevent/Makefile | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/mm/pat_interval.c b/arch/x86/mm/pat_interval.c
-index 47a1bf3..6855362 100644
---- a/arch/x86/mm/pat_interval.c
-+++ b/arch/x86/mm/pat_interval.c
-@@ -56,7 +56,7 @@ static struct memtype *memtype_match(u64 start, u64 end, int match_type)
- {
- 	struct memtype *match;
+diff --git a/tools/lib/traceevent/Makefile b/tools/lib/traceevent/Makefile
+index cbb429f..83446fe 100644
+--- a/tools/lib/traceevent/Makefile
++++ b/tools/lib/traceevent/Makefile
+@@ -97,6 +97,7 @@ EVENT_PARSE_VERSION = $(EP_VERSION).$(EP_PATCHLEVEL).$(EP_EXTRAVERSION)
  
--	match = memtype_interval_iter_first(&memtype_rbroot, start, end);
-+	match = memtype_interval_iter_first(&memtype_rbroot, start, end-1);
- 	while (match != NULL && match->start < end) {
- 		if ((match_type == MEMTYPE_EXACT_MATCH) &&
- 		    (match->start == start) && (match->end == end))
-@@ -66,7 +66,7 @@ static struct memtype *memtype_match(u64 start, u64 end, int match_type)
- 		    (match->start < start) && (match->end == end))
- 			return match;
+ LIB_TARGET  = libtraceevent.a libtraceevent.so.$(EVENT_PARSE_VERSION)
+ LIB_INSTALL = libtraceevent.a libtraceevent.so*
++LIB_INSTALL := $(addprefix $(OUTPUT),$(LIB_INSTALL))
  
--		match = memtype_interval_iter_next(match, start, end);
-+		match = memtype_interval_iter_next(match, start, end-1);
- 	}
+ INCLUDES = -I. -I $(srctree)/tools/include $(CONFIG_INCLUDES)
  
- 	return NULL; /* Returns NULL if there is no match */
-@@ -79,7 +79,7 @@ static int memtype_check_conflict(u64 start, u64 end,
- 	struct memtype *match;
- 	enum page_cache_mode found_type = reqtype;
- 
--	match = memtype_interval_iter_first(&memtype_rbroot, start, end);
-+	match = memtype_interval_iter_first(&memtype_rbroot, start, end-1);
- 	if (match == NULL)
- 		goto success;
- 
-@@ -89,12 +89,12 @@ static int memtype_check_conflict(u64 start, u64 end,
- 	dprintk("Overlap at 0x%Lx-0x%Lx\n", match->start, match->end);
- 	found_type = match->type;
- 
--	match = memtype_interval_iter_next(match, start, end);
-+	match = memtype_interval_iter_next(match, start, end-1);
- 	while (match) {
- 		if (match->type != found_type)
- 			goto failure;
- 
--		match = memtype_interval_iter_next(match, start, end);
-+		match = memtype_interval_iter_next(match, start, end-1);
- 	}
- success:
- 	if (newtype)
-@@ -160,7 +160,7 @@ struct memtype *memtype_erase(u64 start, u64 end)
- struct memtype *memtype_lookup(u64 addr)
- {
- 	return memtype_interval_iter_first(&memtype_rbroot, addr,
--					   addr + PAGE_SIZE);
-+					   addr + PAGE_SIZE-1);
- }
- 
- #if defined(CONFIG_DEBUG_FS)
