@@ -2,38 +2,41 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 92F4C1123C8
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  4 Dec 2019 08:54:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D47E21123D3
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  4 Dec 2019 08:55:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727493AbfLDHyY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 4 Dec 2019 02:54:24 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:56192 "EHLO
+        id S1727345AbfLDHyF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 4 Dec 2019 02:54:05 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:56126 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727429AbfLDHyY (ORCPT
+        with ESMTP id S1727317AbfLDHyE (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 4 Dec 2019 02:54:24 -0500
+        Wed, 4 Dec 2019 02:54:04 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1icPTr-0004Qf-U9; Wed, 04 Dec 2019 08:53:51 +0100
+        id 1icPTs-0004Qh-5h; Wed, 04 Dec 2019 08:53:52 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 8CB0E1C2563;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id CA25B1C2644;
         Wed,  4 Dec 2019 08:53:51 +0100 (CET)
 Date:   Wed, 04 Dec 2019 07:53:51 -0000
-From:   "tip-bot2 for Sudip Mukherjee" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] libtraceevent: Fix lib installation with O=
-Cc:     Sudipm Mukherjee <sudipm.mukherjee@gmail.com>,
-        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
-        linux-trace-devel@vger.kernel.org,
+Subject: [tip: perf/urgent] perf kvm: Clarify the 'perf kvm' -i and -o command
+ line options
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        Jiri Olsa <jolsa@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Steve Dickson <steved@redhat.com>,
+        William Cohen <wcohen@redhat.com>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191115113610.21493-1-sudipm.mukherjee@gmail.com>
-References: <20191115113610.21493-1-sudipm.mukherjee@gmail.com>
+In-Reply-To: <tip-tclbttvmgtm525fvmh85f7d9@git.kernel.org>
+References: <tip-tclbttvmgtm525fvmh85f7d9@git.kernel.org>
 MIME-Version: 1.0
-Message-ID: <157544603147.21853.6345719846964569767.tip-bot2@tip-bot2>
+Message-ID: <157544603168.21853.2876185097279528728.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,55 +52,54 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     587db8ebdac2c5eb3a8851e16b26f2e2711ab797
-Gitweb:        https://git.kernel.org/tip/587db8ebdac2c5eb3a8851e16b26f2e2711ab797
-Author:        Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-AuthorDate:    Fri, 15 Nov 2019 11:36:09 
+Commit-ID:     9974406884459c9301597c2c9f7def6c38099ab4
+Gitweb:        https://git.kernel.org/tip/9974406884459c9301597c2c9f7def6c38099ab4
+Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
+AuthorDate:    Mon, 02 Dec 2019 15:38:59 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Mon, 02 Dec 2019 21:58:20 -03:00
+CommitterDate: Mon, 02 Dec 2019 15:38:59 -03:00
 
-libtraceevent: Fix lib installation with O=
+perf kvm: Clarify the 'perf kvm' -i and -o command line options
 
-When we use 'O=' with make to build libtraceevent in a separate folder
-it fails to install libtraceevent.a and libtraceevent.so.1.1.0 with the
-error:
+The 'perf kvm' subcommand has options that it in turn passes to other
+perf subcommands such as 'report' and 'record', particularly -i and -o
+end up setting the same variable that will then be used for 'record's -o
+and report '-i', which ends up being confusing, leading some to think
+that both -i and -o can be used with 'report'.
 
-  INSTALL  /home/sudip/linux/obj-trace/libtraceevent.a
-  INSTALL  /home/sudip/linux/obj-trace/libtraceevent.so.1.1.0
+Improve the man page to state that -i is used with the post-processing
+subcommands while -o is used just with 'record' and that to save the
+output of 'report' one should simply redirect its output to a file.
 
-  cp: cannot stat 'libtraceevent.a': No such file or directory
-  Makefile:225: recipe for target 'install_lib' failed
-  make: *** [install_lib] Error 1
+Noticed while reading the https://www.linux-kvm.org/page/Perf_events
+page.
 
-I used the command:
-
-  make O=../../../obj-trace DESTDIR=~/test prefix==/usr  install
-
-It turns out libtraceevent Makefile, even though it builds in a separate
-folder, searches for libtraceevent.a and libtraceevent.so.1.1.0 in its
-source folder.
-
-So, add the 'OUTPUT' prefix to the source path so that 'make' looks for
-the files in the correct place.
-
-Signed-off-by: Sudipm Mukherjee <sudipm.mukherjee@gmail.com>
-Reviewed-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
-Cc: linux-trace-devel@vger.kernel.org
-Link: http://lore.kernel.org/lkml/20191115113610.21493-1-sudipm.mukherjee@gmail.com
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Steve Dickson <steved@redhat.com>
+Cc: William Cohen <wcohen@redhat.com>
+Link: https://lkml.kernel.org/n/tip-tclbttvmgtm525fvmh85f7d9@git.kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/lib/traceevent/Makefile | 1 +
- 1 file changed, 1 insertion(+)
+ tools/perf/Documentation/perf-kvm.txt | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/tools/lib/traceevent/Makefile b/tools/lib/traceevent/Makefile
-index cbb429f..83446fe 100644
---- a/tools/lib/traceevent/Makefile
-+++ b/tools/lib/traceevent/Makefile
-@@ -97,6 +97,7 @@ EVENT_PARSE_VERSION = $(EP_VERSION).$(EP_PATCHLEVEL).$(EP_EXTRAVERSION)
- 
- LIB_TARGET  = libtraceevent.a libtraceevent.so.$(EVENT_PARSE_VERSION)
- LIB_INSTALL = libtraceevent.a libtraceevent.so*
-+LIB_INSTALL := $(addprefix $(OUTPUT),$(LIB_INSTALL))
- 
- INCLUDES = -I. -I $(srctree)/tools/include $(CONFIG_INCLUDES)
- 
+diff --git a/tools/perf/Documentation/perf-kvm.txt b/tools/perf/Documentation/perf-kvm.txt
+index 6a5bb2b..cf95bae 100644
+--- a/tools/perf/Documentation/perf-kvm.txt
++++ b/tools/perf/Documentation/perf-kvm.txt
+@@ -68,10 +68,11 @@ OPTIONS
+ -------
+ -i::
+ --input=<path>::
+-        Input file name.
++        Input file name, for the 'report', 'diff' and 'buildid-list' subcommands.
+ -o::
+ --output=<path>::
+-        Output file name.
++        Output file name, for the 'record' subcommand. Doesn't work with 'report',
++        just redirect the output to a file when using 'report'.
+ --host::
+         Collect host side performance profile.
+ --guest::
