@@ -2,43 +2,44 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 63D99112513
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  4 Dec 2019 09:33:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 099F9112539
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  4 Dec 2019 09:34:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726899AbfLDIdr (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 4 Dec 2019 03:33:47 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:56342 "EHLO
+        id S1727653AbfLDIek (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 4 Dec 2019 03:34:40 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:56391 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725839AbfLDIdr (ORCPT
+        with ESMTP id S1727331AbfLDIdw (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 4 Dec 2019 03:33:47 -0500
+        Wed, 4 Dec 2019 03:33:52 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1icQ6J-0005Fk-0b; Wed, 04 Dec 2019 09:33:35 +0100
+        id 1icQ6J-0005Fm-4C; Wed, 04 Dec 2019 09:33:35 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 961681C2655;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C8E351C2656;
         Wed,  4 Dec 2019 09:33:34 +0100 (CET)
 Date:   Wed, 04 Dec 2019 08:33:34 -0000
 From:   "tip-bot2 for Masami Hiramatsu" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/kprobes] kprobes: Set unoptimized flag after unoptimizing code
-Cc:     Alexei Starovoitov <ast@kernel.org>,
+Subject: [tip: core/kprobes] x86/alternatives: Sync bp_patching update for
+ avoiding NULL pointer exception
+Cc:     "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
+        Alexei Starovoitov <ast@kernel.org>,
         Masami Hiramatsu <mhiramat@kernel.org>,
         Andy Lutomirski <luto@kernel.org>,
         Borislav Petkov <bp@alien8.de>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Peter Zijlstra <peterz@infradead.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
         Thomas Gleixner <tglx@linutronix.de>, bristot@redhat.com,
         Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <157483422375.25881.13508326028469515760.stgit@devnote2>
-References: <157483422375.25881.13508326028469515760.stgit@devnote2>
+In-Reply-To: <157483421229.25881.15314414408559963162.stgit@devnote2>
+References: <157483421229.25881.15314414408559963162.stgit@devnote2>
 MIME-Version: 1.0
-Message-ID: <157544841446.21853.5014344352579147600.tip-bot2@tip-bot2>
+Message-ID: <157544841472.21853.14922550331474190716.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -54,92 +55,79 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/kprobes branch of tip:
 
-Commit-ID:     f66c0447cca1281116224d474cdb37d6a18e4b5b
-Gitweb:        https://git.kernel.org/tip/f66c0447cca1281116224d474cdb37d6a18e4b5b
+Commit-ID:     285a54efe3861976af9d15e85ff8c91a78d1407b
+Gitweb:        https://git.kernel.org/tip/285a54efe3861976af9d15e85ff8c91a78d1407b
 Author:        Masami Hiramatsu <mhiramat@kernel.org>
-AuthorDate:    Wed, 27 Nov 2019 14:57:04 +09:00
+AuthorDate:    Wed, 27 Nov 2019 14:56:52 +09:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Wed, 27 Nov 2019 07:44:25 +01:00
 
-kprobes: Set unoptimized flag after unoptimizing code
+x86/alternatives: Sync bp_patching update for avoiding NULL pointer exception
 
-Set the unoptimized flag after confirming the code is completely
-unoptimized. Without this fix, when a kprobe hits the intermediate
-modified instruction (the first byte is replaced by an INT3, but
-later bytes can still be a jump address operand) while unoptimizing,
-it can return to the middle byte of the modified code, which causes
-an invalid instruction exception in the kernel.
+ftracetest multiple_kprobes.tc testcase hits the following NULL pointer
+exception:
 
-Usually, this is a rare case, but if we put a probe on the function
-call while text patching, it always causes a kernel panic as below:
-
- # echo p text_poke+5 > kprobe_events
- # echo 1 > events/kprobes/enable
- # echo 0 > events/kprobes/enable
-
-invalid opcode: 0000 [#1] PREEMPT SMP PTI
- RIP: 0010:text_poke+0x9/0x50
+ BUG: kernel NULL pointer dereference, address: 0000000000000000
+ PGD 800000007bf60067 P4D 800000007bf60067 PUD 7bf5f067 PMD 0
+ Oops: 0000 [#1] PREEMPT SMP PTI
+ RIP: 0010:poke_int3_handler+0x39/0x100
  Call Trace:
-  arch_unoptimize_kprobe+0x22/0x28
-  arch_unoptimize_kprobes+0x39/0x87
-  kprobe_optimizer+0x6e/0x290
-  process_one_work+0x2a0/0x610
-  worker_thread+0x28/0x3d0
-  ? process_one_work+0x610/0x610
-  kthread+0x10d/0x130
-  ? kthread_park+0x80/0x80
-  ret_from_fork+0x3a/0x50
+  <IRQ>
+  do_int3+0xd/0xf0
+  int3+0x42/0x50
+  RIP: 0010:sched_clock+0x6/0x10
 
-text_poke() is used for patching the code in optprobes.
+poke_int3_handler+0x39 was alternatives:958:
 
-This can happen even if we blacklist text_poke() and other functions,
-because there is a small time window during which we show the intermediate
-code to other CPUs.
+  static inline void *text_poke_addr(struct text_poke_loc *tp)
+  {
+          return _stext + tp->rel_addr; <------ Here is line #958
+  }
 
- [ mingo: Edited the changelog. ]
+This seems to be caused by tp (bp_patching.vec) being NULL but
+bp_patching.nr_entries != 0. There is a small chance for this
+to happen, because we have no synchronization between the zeroing
+of bp_patching.nr_entries and before clearing bp_patching.vec.
 
+Steve suggested we could fix this by adding sync_core(), because int3
+is done with interrupts disabled, and the on_each_cpu() requires
+all CPUs to have had their interrupts enabled.
+
+ [ mingo: Edited the comments and the changelog. ]
+
+Suggested-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
 Tested-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Masami Hiramatsu <mhiramat@kernel.org>
 Cc: Andy Lutomirski <luto@kernel.org>
 Cc: Borislav Petkov <bp@alien8.de>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>
 Cc: Thomas Gleixner <tglx@linutronix.de>
 Cc: bristot@redhat.com
-Fixes: 6274de4984a6 ("kprobes: Support delayed unoptimizing")
-Link: https://lkml.kernel.org/r/157483422375.25881.13508326028469515760.stgit@devnote2
+Fixes: c0213b0ac03c ("x86/alternative: Batch of patch operations")
+Link: https://lkml.kernel.org/r/157483421229.25881.15314414408559963162.stgit@devnote2
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- kernel/kprobes.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/x86/kernel/alternative.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/kprobes.c b/kernel/kprobes.c
-index 53534aa..34e28b2 100644
---- a/kernel/kprobes.c
-+++ b/kernel/kprobes.c
-@@ -510,6 +510,8 @@ static void do_unoptimize_kprobes(void)
- 	arch_unoptimize_kprobes(&unoptimizing_list, &freeing_list);
- 	/* Loop free_list for disarming */
- 	list_for_each_entry_safe(op, tmp, &freeing_list, list) {
-+		/* Switching from detour code to origin */
-+		op->kp.flags &= ~KPROBE_FLAG_OPTIMIZED;
- 		/* Disarm probes if marked disabled */
- 		if (kprobe_disabled(&op->kp))
- 			arch_disarm_kprobe(&op->kp);
-@@ -649,6 +651,7 @@ static void force_unoptimize_kprobe(struct optimized_kprobe *op)
- {
- 	lockdep_assert_cpus_held();
- 	arch_unoptimize_kprobe(op);
-+	op->kp.flags &= ~KPROBE_FLAG_OPTIMIZED;
- 	if (kprobe_disabled(&op->kp))
- 		arch_disarm_kprobe(&op->kp);
+diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
+index 4552795..30e8673 100644
+--- a/arch/x86/kernel/alternative.c
++++ b/arch/x86/kernel/alternative.c
+@@ -1134,8 +1134,14 @@ static void text_poke_bp_batch(struct text_poke_loc *tp, unsigned int nr_entries
+ 	 * sync_core() implies an smp_mb() and orders this store against
+ 	 * the writing of the new instruction.
+ 	 */
+-	bp_patching.vec = NULL;
+ 	bp_patching.nr_entries = 0;
++	/*
++	 * This sync_core () call ensures that all INT3 handlers in progress
++	 * have finished. This allows poke_int3_handler() after this to
++	 * avoid touching bp_paching.vec by checking nr_entries == 0.
++	 */
++	text_poke_sync();
++	bp_patching.vec = NULL;
  }
-@@ -676,7 +679,6 @@ static void unoptimize_kprobe(struct kprobe *p, bool force)
- 		return;
- 	}
  
--	op->kp.flags &= ~KPROBE_FLAG_OPTIMIZED;
- 	if (!list_empty(&op->list)) {
- 		/* Dequeue from the optimization queue */
- 		list_del_init(&op->list);
+ void text_poke_loc_init(struct text_poke_loc *tp, void *addr,
