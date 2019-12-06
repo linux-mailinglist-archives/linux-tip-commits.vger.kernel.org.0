@@ -2,46 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 909B011292F
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  4 Dec 2019 11:21:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DDE63114D13
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Dec 2019 09:03:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727351AbfLDKV2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 4 Dec 2019 05:21:28 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:56697 "EHLO
+        id S1725858AbfLFIDr (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 6 Dec 2019 03:03:47 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:60497 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726899AbfLDKV1 (ORCPT
+        with ESMTP id S1726225AbfLFIDq (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 4 Dec 2019 05:21:27 -0500
+        Fri, 6 Dec 2019 03:03:46 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1icRmU-0006v8-1R; Wed, 04 Dec 2019 11:21:14 +0100
+        id 1id8aN-00053E-80; Fri, 06 Dec 2019 09:03:35 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A21A21C2667;
-        Wed,  4 Dec 2019 11:21:13 +0100 (CET)
-Date:   Wed, 04 Dec 2019 10:21:13 -0000
-From:   "tip-bot2 for Dave Young" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E01361C2784;
+        Fri,  6 Dec 2019 09:03:34 +0100 (CET)
+Date:   Fri, 06 Dec 2019 08:03:34 -0000
+From:   "tip-bot2 for Adrian Hunter" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/efi: Update e820 with reserved EFI boot
- services data to fix kexec breakage
-Cc:     Michael Weiser <michael@weiser.dinsnail.net>,
-        Dave Young <dyoung@redhat.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Borislav Petkov <bp@alien8.de>,
-        "Eric W. Biederman" <ebiederm@xmission.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        kexec@lists.infradead.org, linux-efi@vger.kernel.org,
-        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191204075233.GA10520@dhcp-128-65.nay.redhat.com>
-References: <20191204075233.GA10520@dhcp-128-65.nay.redhat.com>
+Subject: [tip: perf/urgent] perf inject: Fix processing of ID index for
+ injected instruction tracing
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20191204120800.8138-1-adrian.hunter@intel.com>
+References: <20191204120800.8138-1-adrian.hunter@intel.com>
 MIME-Version: 1.0
-Message-ID: <157545487347.21853.1786279419838113209.tip-bot2@tip-bot2>
+Message-ID: <157561941481.21853.14727169121373627514.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -55,86 +47,64 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     af164898482817a1d487964b68f3c21bae7a1beb
-Gitweb:        https://git.kernel.org/tip/af164898482817a1d487964b68f3c21bae7a1beb
-Author:        Dave Young <dyoung@redhat.com>
-AuthorDate:    Wed, 04 Dec 2019 15:52:33 +08:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 04 Dec 2019 11:15:30 +01:00
+Commit-ID:     29f6eeca0e14b301d9c03a3164b852c318d6348a
+Gitweb:        https://git.kernel.org/tip/29f6eeca0e14b301d9c03a3164b852c318d6348a
+Author:        Adrian Hunter <adrian.hunter@intel.com>
+AuthorDate:    Wed, 04 Dec 2019 14:08:00 +02:00
+Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
+CommitterDate: Wed, 04 Dec 2019 12:39:53 -03:00
 
-x86/efi: Update e820 with reserved EFI boot services data to fix kexec breakage
+perf inject: Fix processing of ID index for injected instruction tracing
 
-Michael Weiser reported that he got this error during a kexec rebooting:
+The ID index event is used when decoding, but can result in the
+following error:
 
-  esrt: Unsupported ESRT version 2904149718861218184.
+ $ perf record --aux-sample -e '{intel_pt//,branch-misses}:u' ls
+ $ perf inject -i perf.data -o perf.data.inj --itrace=be
+ $ perf script -i perf.data.inj
+ 0x1020 [0x410]: failed to process type: 69 [No such file or directory]
 
-The ESRT memory stays in EFI boot services data, and it was reserved
-in kernel via efi_mem_reserve().  The initial purpose of the reservation
-is to reuse the EFI boot services data across kexec reboot. For example
-the BGRT image data and some ESRT memory like Michael reported.
+Fix by having 'perf inject' drop the ID index event.
 
-But although the memory is reserved it is not updated in the X86 E820 table,
-and kexec_file_load() iterates system RAM in the IO resource list to find places
-for kernel, initramfs and other stuff. In Michael's case the kexec loaded
-initramfs overwrote the ESRT memory and then the failure happened.
-
-Since kexec_file_load() depends on the E820 table being updated, just fix this
-by updating the reserved EFI boot services memory as reserved type in E820.
-
-Originally any memory descriptors with EFI_MEMORY_RUNTIME attribute are
-bypassed in the reservation code path because they are assumed as reserved.
-
-But the reservation is still needed for multiple kexec reboots,
-and it is the only possible case we come here thus just drop the code
-chunk, then everything works without side effects.
-
-On my machine the ESRT memory sits in an EFI runtime data range, it does
-not trigger the problem, but I successfully tested with BGRT instead.
-both kexec_load() and kexec_file_load() work and kdump works as well.
-
-[ mingo: Edited the changelog. ]
-
-Reported-by: Michael Weiser <michael@weiser.dinsnail.net>
-Tested-by: Michael Weiser <michael@weiser.dinsnail.net>
-Signed-off-by: Dave Young <dyoung@redhat.com>
-Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Eric W. Biederman <ebiederm@xmission.com>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: kexec@lists.infradead.org
-Cc: linux-efi@vger.kernel.org
-Link: https://lkml.kernel.org/r/20191204075233.GA10520@dhcp-128-65.nay.redhat.com
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Fixes: c0a6de06c446 ("perf record: Add support for AUX area sampling")
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Jiri Olsa <jolsa@redhat.com>
+Link: http://lore.kernel.org/lkml/20191204120800.8138-1-adrian.hunter@intel.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- arch/x86/platform/efi/quirks.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ tools/perf/builtin-inject.c | 13 +------------
+ 1 file changed, 1 insertion(+), 12 deletions(-)
 
-diff --git a/arch/x86/platform/efi/quirks.c b/arch/x86/platform/efi/quirks.c
-index 7675cf7..f8f0220 100644
---- a/arch/x86/platform/efi/quirks.c
-+++ b/arch/x86/platform/efi/quirks.c
-@@ -260,10 +260,6 @@ void __init efi_arch_mem_reserve(phys_addr_t addr, u64 size)
- 		return;
- 	}
- 
--	/* No need to reserve regions that will never be freed. */
--	if (md.attribute & EFI_MEMORY_RUNTIME)
--		return;
--
- 	size += addr % EFI_PAGE_SIZE;
- 	size = round_up(size, EFI_PAGE_SIZE);
- 	addr = round_down(addr, EFI_PAGE_SIZE);
-@@ -293,6 +289,8 @@ void __init efi_arch_mem_reserve(phys_addr_t addr, u64 size)
- 	early_memunmap(new, new_size);
- 
- 	efi_memmap_install(new_phys, num_entries);
-+	e820__range_update(addr, size, E820_TYPE_RAM, E820_TYPE_RESERVED);
-+	e820__update_table(e820_table);
+diff --git a/tools/perf/builtin-inject.c b/tools/perf/builtin-inject.c
+index 9664a72..7e124a7 100644
+--- a/tools/perf/builtin-inject.c
++++ b/tools/perf/builtin-inject.c
+@@ -403,17 +403,6 @@ static int perf_event__repipe_tracing_data(struct perf_session *session,
+ 	return err;
  }
  
- /*
+-static int perf_event__repipe_id_index(struct perf_session *session,
+-				       union perf_event *event)
+-{
+-	int err;
+-
+-	perf_event__repipe_synth(session->tool, event);
+-	err = perf_event__process_id_index(session, event);
+-
+-	return err;
+-}
+-
+ static int dso__read_build_id(struct dso *dso)
+ {
+ 	if (dso->has_build_id)
+@@ -651,7 +640,7 @@ static int __cmd_inject(struct perf_inject *inject)
+ 		inject->tool.comm	    = perf_event__repipe_comm;
+ 		inject->tool.namespaces	    = perf_event__repipe_namespaces;
+ 		inject->tool.exit	    = perf_event__repipe_exit;
+-		inject->tool.id_index	    = perf_event__repipe_id_index;
++		inject->tool.id_index	    = perf_event__process_id_index;
+ 		inject->tool.auxtrace_info  = perf_event__process_auxtrace_info;
+ 		inject->tool.auxtrace	    = perf_event__process_auxtrace;
+ 		inject->tool.aux	    = perf_event__drop_aux;
