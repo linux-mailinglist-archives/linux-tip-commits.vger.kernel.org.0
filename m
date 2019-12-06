@@ -2,49 +2,49 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 231FF114D19
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Dec 2019 09:04:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2984B114D11
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Dec 2019 09:03:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726628AbfLFIDt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 6 Dec 2019 03:03:49 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:60505 "EHLO
+        id S1726353AbfLFIDp convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 6 Dec 2019 03:03:45 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:60492 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726509AbfLFIDs (ORCPT
+        with ESMTP id S1725858AbfLFIDp (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 6 Dec 2019 03:03:48 -0500
+        Fri, 6 Dec 2019 03:03:45 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1id8aN-00053M-Q9; Fri, 06 Dec 2019 09:03:35 +0100
+        id 1id8aN-00053O-R8; Fri, 06 Dec 2019 09:03:36 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 3EE0C1C2786;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 6414A1C2787;
         Fri,  6 Dec 2019 09:03:35 +0100 (CET)
 Date:   Fri, 06 Dec 2019 08:03:35 -0000
 From:   "tip-bot2 for Ravi Bangoria" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf report: Make -F more strict like -s
-Cc:     Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Ravi Bangoria <ravi.bangoria@linux.ibm.com>,
+Subject: [tip: perf/urgent] perf report/top TUI: Replace pr_err() with ui__error()
+Cc:     Ravi Bangoria <ravi.bangoria@linux.ibm.com>,
         Jiri Olsa <jolsa@kernel.org>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
         Alexander Shishkin <alexander.shishkin@linux.intel.com>,
         Andi Kleen <ak@linux.intel.com>,
         Jin Yao <yao.jin@linux.intel.com>,
         Kan Liang <kan.liang@linux.intel.com>,
         Mark Rutland <mark.rutland@arm.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191114132213.5419-3-ravi.bangoria@linux.ibm.com>
-References: <20191114132213.5419-3-ravi.bangoria@linux.ibm.com>
+        Namhyung Kim <namhyung@kernel.org>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20191114132213.5419-2-ravi.bangoria@linux.ibm.com>
+References: <20191114132213.5419-2-ravi.bangoria@linux.ibm.com>
 MIME-Version: 1.0
-Message-ID: <157561941516.21853.8956813920047526893.tip-bot2@tip-bot2>
+Message-ID: <157561941531.21853.3292049704449436636.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8BIT
 X-Linutronix-Spam-Score: -1.0
 X-Linutronix-Spam-Level: -
 X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
@@ -55,54 +55,85 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     aa6b3c99236b49a3e842d7272efa2529f15f7d8a
-Gitweb:        https://git.kernel.org/tip/aa6b3c99236b49a3e842d7272efa2529f15f7d8a
+Commit-ID:     ae87405fb511d6220ce86b9a60807fef92e1a934
+Gitweb:        https://git.kernel.org/tip/ae87405fb511d6220ce86b9a60807fef92e1a934
 Author:        Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-AuthorDate:    Thu, 14 Nov 2019 18:52:12 +05:30
+AuthorDate:    Thu, 14 Nov 2019 18:52:11 +05:30
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Wed, 04 Dec 2019 12:32:40 -03:00
+CommitterDate: Wed, 04 Dec 2019 12:27:14 -03:00
 
-perf report: Make -F more strict like -s
+perf report/top TUI: Replace pr_err() with ui__error()
 
-Currently -F allows branch-mode / mem-mode fields with -F even
-when perf report is not running in that mode. Don't allow that.
+pr_err() in TUI mode does not print anyting on the screen and just
+quits.
 
-Suggested-by: Arnaldo Carvalho de Melo <acme@kernel.org>
+Replace such pr_err() with ui__error().
+
+Before:
+
+  $ perf report -s +
+  $
+
+After:
+
+  $ perf report -s +
+
+    ┌─Error:────────────────┐
+    │Invalid --sort key: `+'│
+    │                       │
+    │Press any key...       │
+    └───────────────────────┘
+
 Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
 Acked-by: Jiri Olsa <jolsa@kernel.org>
+Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 Cc: Andi Kleen <ak@linux.intel.com>
 Cc: Jin Yao <yao.jin@linux.intel.com>
 Cc: Kan Liang <kan.liang@linux.intel.com>
 Cc: Mark Rutland <mark.rutland@arm.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Link: http://lore.kernel.org/lkml/20191114132213.5419-3-ravi.bangoria@linux.ibm.com
+Link: http://lore.kernel.org/lkml/20191114132213.5419-2-ravi.bangoria@linux.ibm.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/sort.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ tools/perf/util/sort.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/tools/perf/util/sort.c b/tools/perf/util/sort.c
-index 106d795..9fcba28 100644
+index 345b5cc..106d795 100644
 --- a/tools/perf/util/sort.c
 +++ b/tools/perf/util/sort.c
-@@ -2959,6 +2959,9 @@ int output_field_add(struct perf_hpp_list *list, char *tok)
- 		if (strncasecmp(tok, sd->name, strlen(tok)))
- 			continue;
+@@ -2681,12 +2681,12 @@ static int setup_sort_list(struct perf_hpp_list *list, char *str,
+ 			ret = sort_dimension__add(list, tok, evlist, level);
+ 			if (ret == -EINVAL) {
+ 				if (!cacheline_size() && !strncasecmp(tok, "dcacheline", strlen(tok)))
+-					pr_err("The \"dcacheline\" --sort key needs to know the cacheline size and it couldn't be determined on this system");
++					ui__error("The \"dcacheline\" --sort key needs to know the cacheline size and it couldn't be determined on this system");
+ 				else
+-					pr_err("Invalid --sort key: `%s'", tok);
++					ui__error("Invalid --sort key: `%s'", tok);
+ 				break;
+ 			} else if (ret == -ESRCH) {
+-				pr_err("Unknown --sort key: `%s'", tok);
++				ui__error("Unknown --sort key: `%s'", tok);
+ 				break;
+ 			}
+ 		}
+@@ -2743,7 +2743,7 @@ static int setup_sort_order(struct evlist *evlist)
+ 		return 0;
  
-+		if (sort__mode != SORT_MODE__MEMORY)
-+			return -EINVAL;
-+
- 		return __sort_dimension__add_output(list, sd);
+ 	if (sort_order[1] == '\0') {
+-		pr_err("Invalid --sort key: `+'");
++		ui__error("Invalid --sort key: `+'");
+ 		return -EINVAL;
  	}
  
-@@ -2968,6 +2971,9 @@ int output_field_add(struct perf_hpp_list *list, char *tok)
- 		if (strncasecmp(tok, sd->name, strlen(tok)))
- 			continue;
+@@ -3034,7 +3034,7 @@ static int __setup_output_field(void)
+ 		strp++;
  
-+		if (sort__mode != SORT_MODE__BRANCH)
-+			return -EINVAL;
-+
- 		return __sort_dimension__add_output(list, sd);
+ 	if (!strlen(strp)) {
+-		pr_err("Invalid --fields key: `+'");
++		ui__error("Invalid --fields key: `+'");
+ 		goto out;
  	}
  
