@@ -2,50 +2,45 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F523114D1D
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Dec 2019 09:04:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EB545114D16
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Dec 2019 09:03:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726353AbfLFIEC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 6 Dec 2019 03:04:02 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:60500 "EHLO
+        id S1726810AbfLFIDy convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 6 Dec 2019 03:03:54 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:60507 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726302AbfLFIDr (ORCPT
+        with ESMTP id S1726653AbfLFIDv (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 6 Dec 2019 03:03:47 -0500
+        Fri, 6 Dec 2019 03:03:51 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1id8aN-00053F-E9; Fri, 06 Dec 2019 09:03:35 +0100
+        id 1id8aN-00053C-7X; Fri, 06 Dec 2019 09:03:35 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 14AE11C2785;
-        Fri,  6 Dec 2019 09:03:35 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 7A3161C24C6;
+        Fri,  6 Dec 2019 09:03:34 +0100 (CET)
 Date:   Fri, 06 Dec 2019 08:03:34 -0000
-From:   "tip-bot2 for Ravi Bangoria" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf report: Bail out --mem-mode if mem info is
- not available
-Cc:     Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Ravi Bangoria <ravi.bangoria@linux.ibm.com>,
+Subject: [tip: perf/urgent] tools headers UAPI: Update tools's copy of drm.h headers
+Cc:     Adrian Hunter <adrian.hunter@intel.com>, christian.koenig@amd.com,
+        Chunming Zhou <david1.zhou@amd.com>,
         Jiri Olsa <jolsa@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Andi Kleen <ak@linux.intel.com>,
-        Jin Yao <yao.jin@linux.intel.com>,
-        Kan Liang <kan.liang@linux.intel.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Namhyung Kim <namhyung@kernel.org>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191114132213.5419-4-ravi.bangoria@linux.ibm.com>
-References: <20191114132213.5419-4-ravi.bangoria@linux.ibm.com>
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <tip-t1xqmjffo4rxdw395dsnu34j@git.kernel.org>
+References: <tip-t1xqmjffo4rxdw395dsnu34j@git.kernel.org>
 MIME-Version: 1.0
-Message-ID: <157561941498.21853.1471285577751914913.tip-bot2@tip-bot2>
+Message-ID: <157561941435.21853.6754518610466999114.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8BIT
 X-Linutronix-Spam-Score: -1.0
 X-Linutronix-Spam-Level: -
 X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
@@ -56,65 +51,50 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     bb30acae4c4dacfa2622387c5ad5563246810583
-Gitweb:        https://git.kernel.org/tip/bb30acae4c4dacfa2622387c5ad5563246810583
-Author:        Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-AuthorDate:    Thu, 14 Nov 2019 18:52:13 +05:30
+Commit-ID:     fd9bee5e24141d00e23b66d1b51bc759efa7e3fe
+Gitweb:        https://git.kernel.org/tip/fd9bee5e24141d00e23b66d1b51bc759efa7e3fe
+Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
+AuthorDate:    Wed, 04 Dec 2019 12:53:16 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Wed, 04 Dec 2019 12:34:02 -03:00
+CommitterDate: Wed, 04 Dec 2019 16:22:38 -03:00
 
-perf report: Bail out --mem-mode if mem info is not available
+tools headers UAPI: Update tools's copy of drm.h headers
 
-If perf.data is recorded without -d, don't allow user to use --mem-mode
-with 'perf report'. symbol_daddr and phys_daddr can be recorded
-separately and may be present in the perf.data but at the report time
-they are associated with mem-mode fields and thus this restriction
-applies to them as well.
+Picking the changes from:
 
-Before:
-  $ perf record ls
-  $ perf report --mem-mode --stdio
-  # Overhead  Local Weight  Memory access  Symbol
-  # ........  ............  .............  .......................
-      55.56%  0             N/A            [k] 0xffffffff81a00ae7
+  2093dea3def9 ("drm/syncobj: extend syncobj query ability v3")
 
-After:
-  $ perf report --mem-mode --stdio
-  Error:
-  Selected --mem-mode but no mem data. Did you call perf record without -d?
+Which doesn't affect tooling, just silences this perf build warning:
 
-Suggested-by: Arnaldo Carvalho de Melo <acme@kernel.org>
-Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Jin Yao <yao.jin@linux.intel.com>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
+  Warning: Kernel ABI header at 'tools/include/uapi/drm/drm.h' differs from latest version at 'include/uapi/drm/drm.h'
+  diff -u tools/include/uapi/drm/drm.h include/uapi/drm/drm.h
+
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Chunming Zhou <david1.zhou@amd.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Link: http://lore.kernel.org/lkml/20191114132213.5419-4-ravi.bangoria@linux.ibm.com
+Link: https://lkml.kernel.org/n/tip-t1xqmjffo4rxdw395dsnu34j@git.kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/builtin-report.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ tools/include/uapi/drm/drm.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/builtin-report.c b/tools/perf/builtin-report.c
-index 830d563..387311c 100644
---- a/tools/perf/builtin-report.c
-+++ b/tools/perf/builtin-report.c
-@@ -388,6 +388,14 @@ static int report__setup_sample_type(struct report *rep)
- 		}
- 	}
+diff --git a/tools/include/uapi/drm/drm.h b/tools/include/uapi/drm/drm.h
+index 8a5b2f8..868bf79 100644
+--- a/tools/include/uapi/drm/drm.h
++++ b/tools/include/uapi/drm/drm.h
+@@ -778,11 +778,12 @@ struct drm_syncobj_array {
+ 	__u32 pad;
+ };
  
-+	if (sort__mode == SORT_MODE__MEMORY) {
-+		if (!is_pipe && !(sample_type & PERF_SAMPLE_DATA_SRC)) {
-+			ui__error("Selected --mem-mode but no mem data. "
-+				  "Did you call perf record without -d?\n");
-+			return -1;
-+		}
-+	}
-+
- 	if (symbol_conf.use_callchain || symbol_conf.cumulate_callchain) {
- 		if ((sample_type & PERF_SAMPLE_REGS_USER) &&
- 		    (sample_type & PERF_SAMPLE_STACK_USER)) {
++#define DRM_SYNCOBJ_QUERY_FLAGS_LAST_SUBMITTED (1 << 0) /* last available point on timeline syncobj */
+ struct drm_syncobj_timeline_array {
+ 	__u64 handles;
+ 	__u64 points;
+ 	__u32 count_handles;
+-	__u32 pad;
++	__u32 flags;
+ };
+ 
+ 
