@@ -2,47 +2,45 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C903C1162B0
-	for <lists+linux-tip-commits@lfdr.de>; Sun,  8 Dec 2019 16:00:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B1D39116283
+	for <lists+linux-tip-commits@lfdr.de>; Sun,  8 Dec 2019 15:58:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726608AbfLHO7p convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 8 Dec 2019 09:59:45 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:36835 "EHLO
+        id S1726406AbfLHO6g (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 8 Dec 2019 09:58:36 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:36703 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726677AbfLHO6u (ORCPT
+        with ESMTP id S1725957AbfLHO6g (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 8 Dec 2019 09:58:50 -0500
+        Sun, 8 Dec 2019 09:58:36 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1idy11-0000R1-5N; Sun, 08 Dec 2019 15:58:31 +0100
+        id 1idy10-0000Qw-Ho; Sun, 08 Dec 2019 15:58:30 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B18EC1C2888;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 319851C2885;
         Sun,  8 Dec 2019 15:58:30 +0100 (CET)
 Date:   Sun, 08 Dec 2019 14:58:30 -0000
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] sched/rt, btrfs: Use CONFIG_PREEMPTION
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        David Sterba <dsterba@suse.com>, Chris Mason <clm@fb.com>,
-        Josef Bacik <josef@toxicpanda.com>,
+Subject: [tip: sched/urgent] sched/core: Use CONFIG_PREEMPTION
+Cc:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Andrew Morton <akpm@linux-foundation.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Peter Zijlstra <peterz@infradead.org>,
-        linux-btrfs@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191015191821.11479-25-bigeasy@linutronix.de>
-References: <20191015191821.11479-25-bigeasy@linutronix.de>
+        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20191015191821.11479-33-bigeasy@linutronix.de>
+References: <20191015191821.11479-33-bigeasy@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <157581711061.21853.12879571106733700850.tip-bot2@tip-bot2>
+Message-ID: <157581711009.21853.9428537635122324854.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: 7bit
 X-Linutronix-Spam-Score: -1.0
 X-Linutronix-Spam-Level: -
 X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
@@ -53,46 +51,42 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     94545870b14b5eb6d8a887fab845d1918f4f62ac
-Gitweb:        https://git.kernel.org/tip/94545870b14b5eb6d8a887fab845d1918f4f62ac
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Tue, 15 Oct 2019 21:18:11 +02:00
+Commit-ID:     9f47286924f2f868760a528c14596370e32d86b4
+Gitweb:        https://git.kernel.org/tip/9f47286924f2f868760a528c14596370e32d86b4
+Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+AuthorDate:    Tue, 15 Oct 2019 21:18:19 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sun, 08 Dec 2019 14:37:36 +01:00
+CommitterDate: Sun, 08 Dec 2019 14:37:37 +01:00
 
-sched/rt, btrfs: Use CONFIG_PREEMPTION
+sched/core: Use CONFIG_PREEMPTION
 
 CONFIG_PREEMPTION is selected by CONFIG_PREEMPT and by CONFIG_PREEMPT_RT.
 Both PREEMPT and PREEMPT_RT require the same functionality which today
 depends on CONFIG_PREEMPT.
 
-Switch the btrfs_device_set_…() macro over to use CONFIG_PREEMPTION.
+Let DEBUG_PREEMPT depend on CONFIG_PREEMPTION.
 
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: David Sterba <dsterba@suse.com>
-Cc: Chris Mason <clm@fb.com>
-Cc: Josef Bacik <josef@toxicpanda.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: linux-btrfs@vger.kernel.org
-Link: https://lore.kernel.org/r/20191015191821.11479-25-bigeasy@linutronix.de
+Link: https://lore.kernel.org/r/20191015191821.11479-33-bigeasy@linutronix.de
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- fs/btrfs/volumes.h | 2 +-
+ lib/Kconfig.debug | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/volumes.h b/fs/btrfs/volumes.h
-index fc1b564..0ee5386 100644
---- a/fs/btrfs/volumes.h
-+++ b/fs/btrfs/volumes.h
-@@ -168,7 +168,7 @@ btrfs_device_set_##name(struct btrfs_device *dev, u64 size)		\
- 	write_seqcount_end(&dev->data_seqcount);			\
- 	preempt_enable();						\
- }
--#elif BITS_PER_LONG==32 && defined(CONFIG_PREEMPT)
-+#elif BITS_PER_LONG==32 && defined(CONFIG_PREEMPTION)
- #define BTRFS_DEVICE_GETSET_FUNCS(name)					\
- static inline u64							\
- btrfs_device_get_##name(const struct btrfs_device *dev)			\
+diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+index 2f6fb96..d03e2b1 100644
+--- a/lib/Kconfig.debug
++++ b/lib/Kconfig.debug
+@@ -1051,7 +1051,7 @@ config DEBUG_TIMEKEEPING
+ 
+ config DEBUG_PREEMPT
+ 	bool "Debug preemptible kernel"
+-	depends on DEBUG_KERNEL && PREEMPT && TRACE_IRQFLAGS_SUPPORT
++	depends on DEBUG_KERNEL && PREEMPTION && TRACE_IRQFLAGS_SUPPORT
+ 	default y
+ 	help
+ 	  If you say Y here then the kernel will use a debug variant of the
