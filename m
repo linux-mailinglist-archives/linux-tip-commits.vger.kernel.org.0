@@ -2,321 +2,198 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E5C96114DF4
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Dec 2019 10:02:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C10E51161B3
+	for <lists+linux-tip-commits@lfdr.de>; Sun,  8 Dec 2019 14:34:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726246AbfLFJCp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 6 Dec 2019 04:02:45 -0500
-Received: from mga04.intel.com ([192.55.52.120]:57964 "EHLO mga04.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726168AbfLFJCp (ORCPT
+        id S1726440AbfLHNeH (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 8 Dec 2019 08:34:07 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:36598 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726378AbfLHNdu (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 6 Dec 2019 04:02:45 -0500
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 06 Dec 2019 01:02:44 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.69,283,1571727600"; 
-   d="scan'208";a="294805778"
-Received: from anishraw-mobl.ger.corp.intel.com (HELO [10.252.35.105]) ([10.252.35.105])
-  by orsmga001.jf.intel.com with ESMTP; 06 Dec 2019 01:02:41 -0800
-Subject: Re: [tip: perf/urgent] tools headers UAPI: Sync drm/i915_drm.h with
- the kernel sources
-To:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Chris Wilson <chris@chris-wilson.co.uk>,
-        Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
-        Jiri Olsa <jolsa@kernel.org>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        x86 <x86@kernel.org>
-References: <tip-qwzjrgwj55y3g6rjdf9spkpr@git.kernel.org>
- <157561941460.21853.2764754016587862850.tip-bot2@tip-bot2>
-From:   Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Organization: Intel Corporation (UK) Ltd. - Co. Reg. #1134945 - Pipers Way,
- Swindon SN3 1RJ
-Message-ID: <67313606-63d4-ae56-bca8-6dbc2717aa24@intel.com>
-Date:   Fri, 6 Dec 2019 11:02:40 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
+        Sun, 8 Dec 2019 08:33:50 -0500
+Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tip-bot2@linutronix.de>)
+        id 1idwgo-0007gO-Fq; Sun, 08 Dec 2019 14:33:34 +0100
+Received: from [127.0.1.1] (localhost [IPv6:::1])
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C22561C2880;
+        Sun,  8 Dec 2019 14:33:33 +0100 (CET)
+Date:   Sun, 08 Dec 2019 13:33:33 -0000
+From:   "tip-bot2 for Arvind Sankar" <tip-bot2@linutronix.de>
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: efi/urgent] efi/gop: Fix memory leak in __gop_query32/64()
+Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Bhupesh Sharma <bhsharma@redhat.com>,
+        Masayoshi Mizuma <m.mizuma@jp.fujitsu.com>,
+        linux-efi@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20191206165542.31469-5-ardb@kernel.org>
+References: <20191206165542.31469-5-ardb@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <157561941460.21853.2764754016587862850.tip-bot2@tip-bot2>
-Content-Type: text/plain; charset=utf-8; format=flowed
+Message-ID: <157581201369.21853.10246677238795985040.tip-bot2@tip-bot2>
+X-Mailer: tip-git-log-daemon
+Robot-ID: <tip-bot2.linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On 06/12/2019 10:03, tip-bot2 for Arnaldo Carvalho de Melo wrote:
-> The following commit has been merged into the perf/urgent branch of tip:
->
-> Commit-ID:     0b3fca6ad3283866e9d2376554b3e4fbf23bfd5d
-> Gitweb:        https://git.kernel.org/tip/0b3fca6ad3283866e9d2376554b3e4fbf23bfd5d
-> Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-> AuthorDate:    Wed, 04 Dec 2019 12:49:43 -03:00
-> Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-> CommitterDate: Wed, 04 Dec 2019 16:22:28 -03:00
->
-> tools headers UAPI: Sync drm/i915_drm.h with the kernel sources
->
-> To pick the change in:
->
->    a0e047156cde ("drm/i915/gem: Make context persistence optional")
->    9cd20ef7803c ("drm/i915/perf: allow holding preemption on filtered ctx")
->    7831e9a965ea ("drm/i915/perf: Allow dynamic reconfiguration of the OA stream")
->    4f6ccc74a85c ("drm/i915: add support for perf configuration queries")
->    b8d49f28aa03 ("drm/i915/perf: introduce a versioning of the i915-perf uapi")
->    601734f7aabd ("drm/i915/tgl: s/ss/eu fuse reading support")
->
-> That don't result in any changes in tooling, just silences this perf
-> build warning:
->
->    Warning: Kernel ABI header at 'tools/include/uapi/drm/i915_drm.h' differs from latest version at 'include/uapi/drm/i915_drm.h'
->    diff -u tools/include/uapi/drm/i915_drm.h include/uapi/drm/i915_drm.h
->
-> Cc: Adrian Hunter <adrian.hunter@intel.com>
-> Cc: Chris Wilson <chris@chris-wilson.co.uk>
-> Cc: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-> Cc: Jiri Olsa <jolsa@kernel.org>
-> Cc: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-> Cc: Namhyung Kim <namhyung@kernel.org>
-> Link: https://lkml.kernel.org/n/tip-qwzjrgwj55y3g6rjdf9spkpr@git.kernel.org
-> Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Acked-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-> ---
->   tools/include/uapi/drm/i915_drm.h | 128 ++++++++++++++++++++++++++++-
->   1 file changed, 125 insertions(+), 3 deletions(-)
->
-> diff --git a/tools/include/uapi/drm/i915_drm.h b/tools/include/uapi/drm/i915_drm.h
-> index 469dc51..5400d7e 100644
-> --- a/tools/include/uapi/drm/i915_drm.h
-> +++ b/tools/include/uapi/drm/i915_drm.h
-> @@ -611,6 +611,13 @@ typedef struct drm_i915_irq_wait {
->    * See I915_EXEC_FENCE_OUT and I915_EXEC_FENCE_SUBMIT.
->    */
->   #define I915_PARAM_HAS_EXEC_SUBMIT_FENCE 53
-> +
-> +/*
-> + * Revision of the i915-perf uAPI. The value returned helps determine what
-> + * i915-perf features are available. See drm_i915_perf_property_id.
-> + */
-> +#define I915_PARAM_PERF_REVISION	54
-> +
->   /* Must be kept compact -- no holes and well documented */
->   
->   typedef struct drm_i915_getparam {
-> @@ -1565,6 +1572,21 @@ struct drm_i915_gem_context_param {
->    *   i915_context_engines_bond (I915_CONTEXT_ENGINES_EXT_BOND)
->    */
->   #define I915_CONTEXT_PARAM_ENGINES	0xa
-> +
-> +/*
-> + * I915_CONTEXT_PARAM_PERSISTENCE:
-> + *
-> + * Allow the context and active rendering to survive the process until
-> + * completion. Persistence allows fire-and-forget clients to queue up a
-> + * bunch of work, hand the output over to a display server and then quit.
-> + * If the context is marked as not persistent, upon closing (either via
-> + * an explicit DRM_I915_GEM_CONTEXT_DESTROY or implicitly from file closure
-> + * or process termination), the context and any outstanding requests will be
-> + * cancelled (and exported fences for cancelled requests marked as -EIO).
-> + *
-> + * By default, new contexts allow persistence.
-> + */
-> +#define I915_CONTEXT_PARAM_PERSISTENCE	0xb
->   /* Must be kept compact -- no holes and well documented */
->   
->   	__u64 value;
-> @@ -1844,23 +1866,31 @@ enum drm_i915_perf_property_id {
->   	 * Open the stream for a specific context handle (as used with
->   	 * execbuffer2). A stream opened for a specific context this way
->   	 * won't typically require root privileges.
-> +	 *
-> +	 * This property is available in perf revision 1.
->   	 */
->   	DRM_I915_PERF_PROP_CTX_HANDLE = 1,
->   
->   	/**
->   	 * A value of 1 requests the inclusion of raw OA unit reports as
->   	 * part of stream samples.
-> +	 *
-> +	 * This property is available in perf revision 1.
->   	 */
->   	DRM_I915_PERF_PROP_SAMPLE_OA,
->   
->   	/**
->   	 * The value specifies which set of OA unit metrics should be
->   	 * be configured, defining the contents of any OA unit reports.
-> +	 *
-> +	 * This property is available in perf revision 1.
->   	 */
->   	DRM_I915_PERF_PROP_OA_METRICS_SET,
->   
->   	/**
->   	 * The value specifies the size and layout of OA unit reports.
-> +	 *
-> +	 * This property is available in perf revision 1.
->   	 */
->   	DRM_I915_PERF_PROP_OA_FORMAT,
->   
-> @@ -1870,9 +1900,22 @@ enum drm_i915_perf_property_id {
->   	 * from this exponent as follows:
->   	 *
->   	 *   80ns * 2^(period_exponent + 1)
-> +	 *
-> +	 * This property is available in perf revision 1.
->   	 */
->   	DRM_I915_PERF_PROP_OA_EXPONENT,
->   
-> +	/**
-> +	 * Specifying this property is only valid when specify a context to
-> +	 * filter with DRM_I915_PERF_PROP_CTX_HANDLE. Specifying this property
-> +	 * will hold preemption of the particular context we want to gather
-> +	 * performance data about. The execbuf2 submissions must include a
-> +	 * drm_i915_gem_execbuffer_ext_perf parameter for this to apply.
-> +	 *
-> +	 * This property is available in perf revision 3.
-> +	 */
-> +	DRM_I915_PERF_PROP_HOLD_PREEMPTION,
-> +
->   	DRM_I915_PERF_PROP_MAX /* non-ABI */
->   };
->   
-> @@ -1901,6 +1944,8 @@ struct drm_i915_perf_open_param {
->    * to close and re-open a stream with the same configuration.
->    *
->    * It's undefined whether any pending data for the stream will be lost.
-> + *
-> + * This ioctl is available in perf revision 1.
->    */
->   #define I915_PERF_IOCTL_ENABLE	_IO('i', 0x0)
->   
-> @@ -1908,10 +1953,25 @@ struct drm_i915_perf_open_param {
->    * Disable data capture for a stream.
->    *
->    * It is an error to try and read a stream that is disabled.
-> + *
-> + * This ioctl is available in perf revision 1.
->    */
->   #define I915_PERF_IOCTL_DISABLE	_IO('i', 0x1)
->   
->   /**
-> + * Change metrics_set captured by a stream.
-> + *
-> + * If the stream is bound to a specific context, the configuration change
-> + * will performed inline with that context such that it takes effect before
-> + * the next execbuf submission.
-> + *
-> + * Returns the previously bound metrics set id, or a negative error code.
-> + *
-> + * This ioctl is available in perf revision 2.
-> + */
-> +#define I915_PERF_IOCTL_CONFIG	_IO('i', 0x2)
-> +
-> +/**
->    * Common to all i915 perf records
->    */
->   struct drm_i915_perf_record_header {
-> @@ -1984,6 +2044,7 @@ struct drm_i915_query_item {
->   	__u64 query_id;
->   #define DRM_I915_QUERY_TOPOLOGY_INFO    1
->   #define DRM_I915_QUERY_ENGINE_INFO	2
-> +#define DRM_I915_QUERY_PERF_CONFIG      3
->   /* Must be kept compact -- no holes and well documented */
->   
->   	/*
-> @@ -1995,9 +2056,18 @@ struct drm_i915_query_item {
->   	__s32 length;
->   
->   	/*
-> -	 * Unused for now. Must be cleared to zero.
-> +	 * When query_id == DRM_I915_QUERY_TOPOLOGY_INFO, must be 0.
-> +	 *
-> +	 * When query_id == DRM_I915_QUERY_PERF_CONFIG, must be one of the
-> +	 * following :
-> +	 *         - DRM_I915_QUERY_PERF_CONFIG_LIST
-> +	 *         - DRM_I915_QUERY_PERF_CONFIG_DATA_FOR_UUID
-> +	 *         - DRM_I915_QUERY_PERF_CONFIG_FOR_UUID
->   	 */
->   	__u32 flags;
-> +#define DRM_I915_QUERY_PERF_CONFIG_LIST          1
-> +#define DRM_I915_QUERY_PERF_CONFIG_DATA_FOR_UUID 2
-> +#define DRM_I915_QUERY_PERF_CONFIG_DATA_FOR_ID   3
->   
->   	/*
->   	 * Data will be written at the location pointed by data_ptr when the
-> @@ -2033,8 +2103,10 @@ struct drm_i915_query {
->    *           (data[X / 8] >> (X % 8)) & 1
->    *
->    * - the subslice mask for each slice with one bit per subslice telling
-> - *   whether a subslice is available. The availability of subslice Y in slice
-> - *   X can be queried with the following formula :
-> + *   whether a subslice is available. Gen12 has dual-subslices, which are
-> + *   similar to two gen11 subslices. For gen12, this array represents dual-
-> + *   subslices. The availability of subslice Y in slice X can be queried
-> + *   with the following formula :
->    *
->    *           (data[subslice_offset +
->    *                 X * subslice_stride +
-> @@ -2123,6 +2195,56 @@ struct drm_i915_query_engine_info {
->   	struct drm_i915_engine_info engines[];
->   };
->   
-> +/*
-> + * Data written by the kernel with query DRM_I915_QUERY_PERF_CONFIG.
-> + */
-> +struct drm_i915_query_perf_config {
-> +	union {
-> +		/*
-> +		 * When query_item.flags == DRM_I915_QUERY_PERF_CONFIG_LIST, i915 sets
-> +		 * this fields to the number of configurations available.
-> +		 */
-> +		__u64 n_configs;
-> +
-> +		/*
-> +		 * When query_id == DRM_I915_QUERY_PERF_CONFIG_DATA_FOR_ID,
-> +		 * i915 will use the value in this field as configuration
-> +		 * identifier to decide what data to write into config_ptr.
-> +		 */
-> +		__u64 config;
-> +
-> +		/*
-> +		 * When query_id == DRM_I915_QUERY_PERF_CONFIG_DATA_FOR_UUID,
-> +		 * i915 will use the value in this field as configuration
-> +		 * identifier to decide what data to write into config_ptr.
-> +		 *
-> +		 * String formatted like "%08x-%04x-%04x-%04x-%012x"
-> +		 */
-> +		char uuid[36];
-> +	};
-> +
-> +	/*
-> +	 * Unused for now. Must be cleared to zero.
-> +	 */
-> +	__u32 flags;
-> +
-> +	/*
-> +	 * When query_item.flags == DRM_I915_QUERY_PERF_CONFIG_LIST, i915 will
-> +	 * write an array of __u64 of configuration identifiers.
-> +	 *
-> +	 * When query_item.flags == DRM_I915_QUERY_PERF_CONFIG_DATA, i915 will
-> +	 * write a struct drm_i915_perf_oa_config. If the following fields of
-> +	 * drm_i915_perf_oa_config are set not set to 0, i915 will write into
-> +	 * the associated pointers the values of submitted when the
-> +	 * configuration was created :
-> +	 *
-> +	 *         - n_mux_regs
-> +	 *         - n_boolean_regs
-> +	 *         - n_flex_regs
-> +	 */
-> +	__u8 data[];
-> +};
-> +
->   #if defined(__cplusplus)
->   }
->   #endif
+The following commit has been merged into the efi/urgent branch of tip:
 
+Commit-ID:     ff397be685e410a59c34b21ce0c55d4daa466bb7
+Gitweb:        https://git.kernel.org/tip/ff397be685e410a59c34b21ce0c55d4daa466bb7
+Author:        Arvind Sankar <nivedita@alum.mit.edu>
+AuthorDate:    Fri, 06 Dec 2019 16:55:40 
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Sun, 08 Dec 2019 12:42:18 +01:00
 
+efi/gop: Fix memory leak in __gop_query32/64()
+
+efi_graphics_output_protocol::query_mode() returns info in
+callee-allocated memory which must be freed by the caller, which
+we aren't doing.
+
+We don't actually need to call query_mode() in order to obtain the
+info for the current graphics mode, which is already there in
+gop->mode->info, so just access it directly in the setup_gop32/64()
+functions.
+
+Also nothing uses the size of the info structure, so don't update the
+passed-in size (which is the size of the gop_handle table in bytes)
+unnecessarily.
+
+Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Bhupesh Sharma <bhsharma@redhat.com>
+Cc: Masayoshi Mizuma <m.mizuma@jp.fujitsu.com>
+Cc: linux-efi@vger.kernel.org
+Link: https://lkml.kernel.org/r/20191206165542.31469-5-ardb@kernel.org
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+---
+ drivers/firmware/efi/libstub/gop.c | 66 +++++------------------------
+ 1 file changed, 12 insertions(+), 54 deletions(-)
+
+diff --git a/drivers/firmware/efi/libstub/gop.c b/drivers/firmware/efi/libstub/gop.c
+index 69b2b01..b7bf1e9 100644
+--- a/drivers/firmware/efi/libstub/gop.c
++++ b/drivers/firmware/efi/libstub/gop.c
+@@ -84,30 +84,6 @@ setup_pixel_info(struct screen_info *si, u32 pixels_per_scan_line,
+ }
+ 
+ static efi_status_t
+-__gop_query32(efi_system_table_t *sys_table_arg,
+-	      struct efi_graphics_output_protocol_32 *gop32,
+-	      struct efi_graphics_output_mode_info **info,
+-	      unsigned long *size, u64 *fb_base)
+-{
+-	struct efi_graphics_output_protocol_mode_32 *mode;
+-	efi_graphics_output_protocol_query_mode query_mode;
+-	efi_status_t status;
+-	unsigned long m;
+-
+-	m = gop32->mode;
+-	mode = (struct efi_graphics_output_protocol_mode_32 *)m;
+-	query_mode = (void *)(unsigned long)gop32->query_mode;
+-
+-	status = __efi_call_early(query_mode, (void *)gop32, mode->mode, size,
+-				  info);
+-	if (status != EFI_SUCCESS)
+-		return status;
+-
+-	*fb_base = mode->frame_buffer_base;
+-	return status;
+-}
+-
+-static efi_status_t
+ setup_gop32(efi_system_table_t *sys_table_arg, struct screen_info *si,
+             efi_guid_t *proto, unsigned long size, void **gop_handle)
+ {
+@@ -128,6 +104,7 @@ setup_gop32(efi_system_table_t *sys_table_arg, struct screen_info *si,
+ 
+ 	nr_gops = size / sizeof(u32);
+ 	for (i = 0; i < nr_gops; i++) {
++		struct efi_graphics_output_protocol_mode_32 *mode;
+ 		struct efi_graphics_output_mode_info *info = NULL;
+ 		efi_guid_t conout_proto = EFI_CONSOLE_OUT_DEVICE_GUID;
+ 		bool conout_found = false;
+@@ -145,9 +122,11 @@ setup_gop32(efi_system_table_t *sys_table_arg, struct screen_info *si,
+ 		if (status == EFI_SUCCESS)
+ 			conout_found = true;
+ 
+-		status = __gop_query32(sys_table_arg, gop32, &info, &size,
+-				       &current_fb_base);
+-		if (status == EFI_SUCCESS && (!first_gop || conout_found) &&
++		mode = (void *)(unsigned long)gop32->mode;
++		info = (void *)(unsigned long)mode->info;
++		current_fb_base = mode->frame_buffer_base;
++
++		if ((!first_gop || conout_found) &&
+ 		    info->pixel_format != PIXEL_BLT_ONLY) {
+ 			/*
+ 			 * Systems that use the UEFI Console Splitter may
+@@ -202,30 +181,6 @@ setup_gop32(efi_system_table_t *sys_table_arg, struct screen_info *si,
+ }
+ 
+ static efi_status_t
+-__gop_query64(efi_system_table_t *sys_table_arg,
+-	      struct efi_graphics_output_protocol_64 *gop64,
+-	      struct efi_graphics_output_mode_info **info,
+-	      unsigned long *size, u64 *fb_base)
+-{
+-	struct efi_graphics_output_protocol_mode_64 *mode;
+-	efi_graphics_output_protocol_query_mode query_mode;
+-	efi_status_t status;
+-	unsigned long m;
+-
+-	m = gop64->mode;
+-	mode = (struct efi_graphics_output_protocol_mode_64 *)m;
+-	query_mode = (void *)(unsigned long)gop64->query_mode;
+-
+-	status = __efi_call_early(query_mode, (void *)gop64, mode->mode, size,
+-				  info);
+-	if (status != EFI_SUCCESS)
+-		return status;
+-
+-	*fb_base = mode->frame_buffer_base;
+-	return status;
+-}
+-
+-static efi_status_t
+ setup_gop64(efi_system_table_t *sys_table_arg, struct screen_info *si,
+ 	    efi_guid_t *proto, unsigned long size, void **gop_handle)
+ {
+@@ -246,6 +201,7 @@ setup_gop64(efi_system_table_t *sys_table_arg, struct screen_info *si,
+ 
+ 	nr_gops = size / sizeof(u64);
+ 	for (i = 0; i < nr_gops; i++) {
++		struct efi_graphics_output_protocol_mode_64 *mode;
+ 		struct efi_graphics_output_mode_info *info = NULL;
+ 		efi_guid_t conout_proto = EFI_CONSOLE_OUT_DEVICE_GUID;
+ 		bool conout_found = false;
+@@ -263,9 +219,11 @@ setup_gop64(efi_system_table_t *sys_table_arg, struct screen_info *si,
+ 		if (status == EFI_SUCCESS)
+ 			conout_found = true;
+ 
+-		status = __gop_query64(sys_table_arg, gop64, &info, &size,
+-				       &current_fb_base);
+-		if (status == EFI_SUCCESS && (!first_gop || conout_found) &&
++		mode = (void *)(unsigned long)gop64->mode;
++		info = (void *)(unsigned long)mode->info;
++		current_fb_base = mode->frame_buffer_base;
++
++		if ((!first_gop || conout_found) &&
+ 		    info->pixel_format != PIXEL_BLT_ONLY) {
+ 			/*
+ 			 * Systems that use the UEFI Console Splitter may
