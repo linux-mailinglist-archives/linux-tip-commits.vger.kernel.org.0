@@ -2,44 +2,47 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 944F11162C1
-	for <lists+linux-tip-commits@lfdr.de>; Sun,  8 Dec 2019 16:00:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C903C1162B0
+	for <lists+linux-tip-commits@lfdr.de>; Sun,  8 Dec 2019 16:00:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726584AbfLHO6m (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 8 Dec 2019 09:58:42 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:36725 "EHLO
+        id S1726608AbfLHO7p convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 8 Dec 2019 09:59:45 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:36835 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725957AbfLHO6i (ORCPT
+        with ESMTP id S1726677AbfLHO6u (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 8 Dec 2019 09:58:38 -0500
+        Sun, 8 Dec 2019 09:58:50 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1idy10-0000Qx-NE; Sun, 08 Dec 2019 15:58:30 +0100
+        id 1idy11-0000R1-5N; Sun, 08 Dec 2019 15:58:31 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5B0271C2886;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B18EC1C2888;
         Sun,  8 Dec 2019 15:58:30 +0100 (CET)
 Date:   Sun, 08 Dec 2019 14:58:30 -0000
-From:   "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] sched/rt, locking: Use CONFIG_PREEMPTION
-Cc:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+Subject: [tip: sched/urgent] sched/rt, btrfs: Use CONFIG_PREEMPTION
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        David Sterba <dsterba@suse.com>, Chris Mason <clm@fb.com>,
+        Josef Bacik <josef@toxicpanda.com>,
         Linus Torvalds <torvalds@linux-foundation.org>,
-        Will Deacon <will@kernel.org>, Ingo Molnar <mingo@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        linux-btrfs@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191015191821.11479-32-bigeasy@linutronix.de>
-References: <20191015191821.11479-32-bigeasy@linutronix.de>
+In-Reply-To: <20191015191821.11479-25-bigeasy@linutronix.de>
+References: <20191015191821.11479-25-bigeasy@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <157581711027.21853.10949763858370689710.tip-bot2@tip-bot2>
+Message-ID: <157581711061.21853.12879571106733700850.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8BIT
 X-Linutronix-Spam-Score: -1.0
 X-Linutronix-Spam-Level: -
 X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
@@ -50,88 +53,46 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     1b40cd56f3bcffcfedb43bc30bd431b52240fb3b
-Gitweb:        https://git.kernel.org/tip/1b40cd56f3bcffcfedb43bc30bd431b52240fb3b
-Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-AuthorDate:    Tue, 15 Oct 2019 21:18:18 +02:00
+Commit-ID:     94545870b14b5eb6d8a887fab845d1918f4f62ac
+Gitweb:        https://git.kernel.org/tip/94545870b14b5eb6d8a887fab845d1918f4f62ac
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Tue, 15 Oct 2019 21:18:11 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Sun, 08 Dec 2019 14:37:36 +01:00
 
-sched/rt, locking: Use CONFIG_PREEMPTION
+sched/rt, btrfs: Use CONFIG_PREEMPTION
 
 CONFIG_PREEMPTION is selected by CONFIG_PREEMPT and by CONFIG_PREEMPT_RT.
 Both PREEMPT and PREEMPT_RT require the same functionality which today
 depends on CONFIG_PREEMPT.
 
-Switch the Kconfig dependency to use CONFIG_PREEMPTION.
+Switch the btrfs_device_set_…() macro over to use CONFIG_PREEMPTION.
 
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: David Sterba <dsterba@suse.com>
+Cc: Chris Mason <clm@fb.com>
+Cc: Josef Bacik <josef@toxicpanda.com>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20191015191821.11479-32-bigeasy@linutronix.de
+Cc: linux-btrfs@vger.kernel.org
+Link: https://lore.kernel.org/r/20191015191821.11479-25-bigeasy@linutronix.de
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- kernel/Kconfig.locks | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ fs/btrfs/volumes.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/Kconfig.locks b/kernel/Kconfig.locks
-index e0852dc..3de8fd1 100644
---- a/kernel/Kconfig.locks
-+++ b/kernel/Kconfig.locks
-@@ -101,7 +101,7 @@ config UNINLINE_SPIN_UNLOCK
- # unlock and unlock_irq functions are inlined when:
- #   - DEBUG_SPINLOCK=n and ARCH_INLINE_*LOCK=y
- #  or
--#   - DEBUG_SPINLOCK=n and PREEMPT=n
-+#   - DEBUG_SPINLOCK=n and PREEMPTION=n
- #
- # unlock_bh and unlock_irqrestore functions are inlined when:
- #   - DEBUG_SPINLOCK=n and ARCH_INLINE_*LOCK=y
-@@ -139,7 +139,7 @@ config INLINE_SPIN_UNLOCK_BH
- 
- config INLINE_SPIN_UNLOCK_IRQ
- 	def_bool y
--	depends on !PREEMPT || ARCH_INLINE_SPIN_UNLOCK_IRQ
-+	depends on !PREEMPTION || ARCH_INLINE_SPIN_UNLOCK_IRQ
- 
- config INLINE_SPIN_UNLOCK_IRQRESTORE
- 	def_bool y
-@@ -168,7 +168,7 @@ config INLINE_READ_LOCK_IRQSAVE
- 
- config INLINE_READ_UNLOCK
- 	def_bool y
--	depends on !PREEMPT || ARCH_INLINE_READ_UNLOCK
-+	depends on !PREEMPTION || ARCH_INLINE_READ_UNLOCK
- 
- config INLINE_READ_UNLOCK_BH
- 	def_bool y
-@@ -176,7 +176,7 @@ config INLINE_READ_UNLOCK_BH
- 
- config INLINE_READ_UNLOCK_IRQ
- 	def_bool y
--	depends on !PREEMPT || ARCH_INLINE_READ_UNLOCK_IRQ
-+	depends on !PREEMPTION || ARCH_INLINE_READ_UNLOCK_IRQ
- 
- config INLINE_READ_UNLOCK_IRQRESTORE
- 	def_bool y
-@@ -205,7 +205,7 @@ config INLINE_WRITE_LOCK_IRQSAVE
- 
- config INLINE_WRITE_UNLOCK
- 	def_bool y
--	depends on !PREEMPT || ARCH_INLINE_WRITE_UNLOCK
-+	depends on !PREEMPTION || ARCH_INLINE_WRITE_UNLOCK
- 
- config INLINE_WRITE_UNLOCK_BH
- 	def_bool y
-@@ -213,7 +213,7 @@ config INLINE_WRITE_UNLOCK_BH
- 
- config INLINE_WRITE_UNLOCK_IRQ
- 	def_bool y
--	depends on !PREEMPT || ARCH_INLINE_WRITE_UNLOCK_IRQ
-+	depends on !PREEMPTION || ARCH_INLINE_WRITE_UNLOCK_IRQ
- 
- config INLINE_WRITE_UNLOCK_IRQRESTORE
- 	def_bool y
+diff --git a/fs/btrfs/volumes.h b/fs/btrfs/volumes.h
+index fc1b564..0ee5386 100644
+--- a/fs/btrfs/volumes.h
++++ b/fs/btrfs/volumes.h
+@@ -168,7 +168,7 @@ btrfs_device_set_##name(struct btrfs_device *dev, u64 size)		\
+ 	write_seqcount_end(&dev->data_seqcount);			\
+ 	preempt_enable();						\
+ }
+-#elif BITS_PER_LONG==32 && defined(CONFIG_PREEMPT)
++#elif BITS_PER_LONG==32 && defined(CONFIG_PREEMPTION)
+ #define BTRFS_DEVICE_GETSET_FUNCS(name)					\
+ static inline u64							\
+ btrfs_device_get_##name(const struct btrfs_device *dev)			\
