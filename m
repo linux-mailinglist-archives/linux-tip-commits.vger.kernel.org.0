@@ -2,41 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 446DA1162B1
-	for <lists+linux-tip-commits@lfdr.de>; Sun,  8 Dec 2019 16:00:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A05051162A3
+	for <lists+linux-tip-commits@lfdr.de>; Sun,  8 Dec 2019 16:00:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726491AbfLHO7t (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 8 Dec 2019 09:59:49 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:36832 "EHLO
+        id S1725957AbfLHO7Y (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 8 Dec 2019 09:59:24 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:36877 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726595AbfLHO6t (ORCPT
+        with ESMTP id S1726787AbfLHO6y (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 8 Dec 2019 09:58:49 -0500
+        Sun, 8 Dec 2019 09:58:54 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1idy19-0000aN-Fq; Sun, 08 Dec 2019 15:58:39 +0100
+        id 1idy1D-0000Yr-4U; Sun, 08 Dec 2019 15:58:43 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 7C5731C2888;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 3D5441C288F;
         Sun,  8 Dec 2019 15:58:34 +0100 (CET)
 Date:   Sun, 08 Dec 2019 14:58:34 -0000
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] sched/rt, h8300: Use CONFIG_PREEMPTION
+Subject: [tip: sched/urgent] sched/rt, hexagon: Use CONFIG_PREEMPTION
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Brian Cain <bcain@codeaurora.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Peter Zijlstra <peterz@infradead.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        uclinux-h8-devel@lists.sourceforge.jp,
-        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191015191821.11479-8-bigeasy@linutronix.de>
-References: <20191015191821.11479-8-bigeasy@linutronix.de>
+        linux-hexagon@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20191015191821.11479-9-bigeasy@linutronix.de>
+References: <20191015191821.11479-9-bigeasy@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <157581711433.21853.1402813487750004125.tip-bot2@tip-bot2>
+Message-ID: <157581711407.21853.6051212819041129601.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -52,14 +51,14 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     7462b759b1c2fc3848fe54f71bf553f8f4e6d323
-Gitweb:        https://git.kernel.org/tip/7462b759b1c2fc3848fe54f71bf553f8f4e6d323
+Commit-ID:     143cd41f50e0c074fbdb06c3ab75a45e3076b5a6
+Gitweb:        https://git.kernel.org/tip/143cd41f50e0c074fbdb06c3ab75a45e3076b5a6
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Tue, 15 Oct 2019 21:17:54 +02:00
+AuthorDate:    Tue, 15 Oct 2019 21:17:55 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Sun, 08 Dec 2019 14:37:33 +01:00
 
-sched/rt, h8300: Use CONFIG_PREEMPTION
+sched/rt, hexagon: Use CONFIG_PREEMPTION
 
 CONFIG_PREEMPTION is selected by CONFIG_PREEMPT and by CONFIG_PREEMPT_RT.
 Both PREEMPT and PREEMPT_RT require the same functionality which today
@@ -70,41 +69,33 @@ Switch the entry code over to use CONFIG_PREEMPTION.
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: Brian Cain <bcain@codeaurora.org>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-Cc: uclinux-h8-devel@lists.sourceforge.jp
-Link: https://lore.kernel.org/r/20191015191821.11479-8-bigeasy@linutronix.de
+Cc: linux-hexagon@vger.kernel.org
+Link: https://lore.kernel.org/r/20191015191821.11479-9-bigeasy@linutronix.de
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- arch/h8300/kernel/entry.S | 6 +++---
+ arch/hexagon/kernel/vm_entry.S | 6 +++---
  1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/h8300/kernel/entry.S b/arch/h8300/kernel/entry.S
-index 4ade5f8..c6e289b 100644
---- a/arch/h8300/kernel/entry.S
-+++ b/arch/h8300/kernel/entry.S
-@@ -284,12 +284,12 @@ badsys:
- 	mov.l	er0,@(LER0:16,sp)
- 	bra	resume_userspace
+diff --git a/arch/hexagon/kernel/vm_entry.S b/arch/hexagon/kernel/vm_entry.S
+index 12242c2..65a1ea0 100644
+--- a/arch/hexagon/kernel/vm_entry.S
++++ b/arch/hexagon/kernel/vm_entry.S
+@@ -265,12 +265,12 @@ event_dispatch:
+ 	 * should be in the designated register (usually R19)
+ 	 *
+ 	 * If we were in kernel mode, we don't need to check scheduler
+-	 * or signals if CONFIG_PREEMPT is not set.  If set, then it has
++	 * or signals if CONFIG_PREEMPTION is not set.  If set, then it has
+ 	 * to jump to a need_resched kind of block.
+-	 * BTW, CONFIG_PREEMPT is not supported yet.
++	 * BTW, CONFIG_PREEMPTION is not supported yet.
+ 	 */
  
--#if !defined(CONFIG_PREEMPT)
-+#if !defined(CONFIG_PREEMPTION)
- #define resume_kernel restore_all
+-#ifdef CONFIG_PREEMPT
++#ifdef CONFIG_PREEMPTION
+ 	R0 = #VM_INT_DISABLE
+ 	trap1(#HVM_TRAP1_VMSETIE)
  #endif
- 
- ret_from_exception:
--#if defined(CONFIG_PREEMPT)
-+#if defined(CONFIG_PREEMPTION)
- 	orc	#0xc0,ccr
- #endif
- ret_from_interrupt:
-@@ -319,7 +319,7 @@ work_resched:
- restore_all:
- 	RESTORE_ALL			/* Does RTE */
- 
--#if defined(CONFIG_PREEMPT)
-+#if defined(CONFIG_PREEMPTION)
- resume_kernel:
- 	mov.l	@(TI_PRE_COUNT:16,er4),er0
- 	bne	restore_all:8
