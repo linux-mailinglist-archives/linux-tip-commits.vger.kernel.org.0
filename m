@@ -2,40 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 127781161A9
-	for <lists+linux-tip-commits@lfdr.de>; Sun,  8 Dec 2019 14:33:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 803B41162C3
+	for <lists+linux-tip-commits@lfdr.de>; Sun,  8 Dec 2019 16:00:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726523AbfLHNdw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 8 Dec 2019 08:33:52 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:36610 "EHLO
+        id S1726535AbfLHPAQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 8 Dec 2019 10:00:16 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:36708 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726418AbfLHNdv (ORCPT
+        with ESMTP id S1726308AbfLHO6g (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 8 Dec 2019 08:33:51 -0500
+        Sun, 8 Dec 2019 09:58:36 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1idwgp-0007gW-4F; Sun, 08 Dec 2019 14:33:35 +0100
+        id 1idy10-0000Qv-JV; Sun, 08 Dec 2019 15:58:30 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 269171C2882;
-        Sun,  8 Dec 2019 14:33:34 +0100 (CET)
-Date:   Sun, 08 Dec 2019 13:33:34 -0000
-From:   "tip-bot2 for Arvind Sankar" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id F39901C2884;
+        Sun,  8 Dec 2019 15:58:29 +0100 (CET)
+Date:   Sun, 08 Dec 2019 14:58:29 -0000
+From:   "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: efi/urgent] efi/gop: Return EFI_NOT_FOUND if there are no usable GOPs
-Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Bhupesh Sharma <bhsharma@redhat.com>,
-        Masayoshi Mizuma <m.mizuma@jp.fujitsu.com>,
-        linux-efi@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
+Subject: [tip: sched/urgent] sched/rt, workqueue: Use PREEMPTION
+Cc:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Lai Jiangshan <jiangshanlai@gmail.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Tejun Heo <tj@kernel.org>, Ingo Molnar <mingo@kernel.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191206165542.31469-3-ardb@kernel.org>
-References: <20191206165542.31469-3-ardb@kernel.org>
+In-Reply-To: <20191015191821.11479-35-bigeasy@linutronix.de>
+References: <20191015191821.11479-35-bigeasy@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <157581201403.21853.7025589605824516098.tip-bot2@tip-bot2>
+Message-ID: <157581710980.21853.10591538571662051255.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,92 +49,46 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the efi/urgent branch of tip:
+The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     6fc3cec30dfeee7d3c5db8154016aff9d65503c5
-Gitweb:        https://git.kernel.org/tip/6fc3cec30dfeee7d3c5db8154016aff9d65503c5
-Author:        Arvind Sankar <nivedita@alum.mit.edu>
-AuthorDate:    Fri, 06 Dec 2019 16:55:38 
+Commit-ID:     025f50f3866486a5278afa91f0d3b6b780141050
+Gitweb:        https://git.kernel.org/tip/025f50f3866486a5278afa91f0d3b6b780141050
+Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+AuthorDate:    Tue, 15 Oct 2019 21:18:21 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sun, 08 Dec 2019 12:42:18 +01:00
+CommitterDate: Sun, 08 Dec 2019 14:37:37 +01:00
 
-efi/gop: Return EFI_NOT_FOUND if there are no usable GOPs
+sched/rt, workqueue: Use PREEMPTION
 
-If we don't find a usable instance of the Graphics Output Protocol
-(GOP) because none of them have a framebuffer (i.e. they were all
-PIXEL_BLT_ONLY), but all the EFI calls succeeded, we will return
-EFI_SUCCESS even though we didn't find a usable GOP.
+CONFIG_PREEMPTION is selected by CONFIG_PREEMPT and by CONFIG_PREEMPT_RT.
+Both PREEMPT and PREEMPT_RT require the same functionality which today
+depends on CONFIG_PREEMPT.
 
-Fix this by explicitly returning EFI_NOT_FOUND if no usable GOPs are
-found, allowing the caller to probe for UGA instead.
+Update the comment to use PREEMPTION because it is true for both
+preemption models.
 
-Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Bhupesh Sharma <bhsharma@redhat.com>
-Cc: Masayoshi Mizuma <m.mizuma@jp.fujitsu.com>
-Cc: linux-efi@vger.kernel.org
-Link: https://lkml.kernel.org/r/20191206165542.31469-3-ardb@kernel.org
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: Lai Jiangshan <jiangshanlai@gmail.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Tejun Heo <tj@kernel.org>
+Link: https://lore.kernel.org/r/20191015191821.11479-35-bigeasy@linutronix.de
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- drivers/firmware/efi/libstub/gop.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ kernel/workqueue.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/efi/libstub/gop.c b/drivers/firmware/efi/libstub/gop.c
-index 0101ca4..08f3c1a 100644
---- a/drivers/firmware/efi/libstub/gop.c
-+++ b/drivers/firmware/efi/libstub/gop.c
-@@ -119,7 +119,7 @@ setup_gop32(efi_system_table_t *sys_table_arg, struct screen_info *si,
- 	u64 fb_base;
- 	struct efi_pixel_bitmask pixel_info;
- 	int pixel_format;
--	efi_status_t status = EFI_NOT_FOUND;
-+	efi_status_t status;
- 	u32 *handles = (u32 *)(unsigned long)gop_handle;
- 	int i;
+diff --git a/kernel/workqueue.c b/kernel/workqueue.c
+index bc88fd9..bf57dc7 100644
+--- a/kernel/workqueue.c
++++ b/kernel/workqueue.c
+@@ -2280,7 +2280,7 @@ __acquires(&pool->lock)
+ 	}
  
-@@ -175,7 +175,7 @@ setup_gop32(efi_system_table_t *sys_table_arg, struct screen_info *si,
- 
- 	/* Did we find any GOPs? */
- 	if (!first_gop)
--		goto out;
-+		return EFI_NOT_FOUND;
- 
- 	/* EFI framebuffer */
- 	si->orig_video_isVGA = VIDEO_TYPE_EFI;
-@@ -197,7 +197,7 @@ setup_gop32(efi_system_table_t *sys_table_arg, struct screen_info *si,
- 	si->lfb_size = si->lfb_linelength * si->lfb_height;
- 
- 	si->capabilities |= VIDEO_CAPABILITY_SKIP_QUIRKS;
--out:
-+
- 	return status;
- }
- 
-@@ -237,7 +237,7 @@ setup_gop64(efi_system_table_t *sys_table_arg, struct screen_info *si,
- 	u64 fb_base;
- 	struct efi_pixel_bitmask pixel_info;
- 	int pixel_format;
--	efi_status_t status = EFI_NOT_FOUND;
-+	efi_status_t status;
- 	u64 *handles = (u64 *)(unsigned long)gop_handle;
- 	int i;
- 
-@@ -293,7 +293,7 @@ setup_gop64(efi_system_table_t *sys_table_arg, struct screen_info *si,
- 
- 	/* Did we find any GOPs? */
- 	if (!first_gop)
--		goto out;
-+		return EFI_NOT_FOUND;
- 
- 	/* EFI framebuffer */
- 	si->orig_video_isVGA = VIDEO_TYPE_EFI;
-@@ -315,7 +315,7 @@ setup_gop64(efi_system_table_t *sys_table_arg, struct screen_info *si,
- 	si->lfb_size = si->lfb_linelength * si->lfb_height;
- 
- 	si->capabilities |= VIDEO_CAPABILITY_SKIP_QUIRKS;
--out:
-+
- 	return status;
- }
- 
+ 	/*
+-	 * The following prevents a kworker from hogging CPU on !PREEMPT
++	 * The following prevents a kworker from hogging CPU on !PREEMPTION
+ 	 * kernels, where a requeueing work item waiting for something to
+ 	 * happen could deadlock with stop_machine as such work item could
+ 	 * indefinitely requeue itself while all other CPUs are trapped in
