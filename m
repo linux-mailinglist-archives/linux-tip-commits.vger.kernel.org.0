@@ -2,42 +2,45 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B515116299
-	for <lists+linux-tip-commits@lfdr.de>; Sun,  8 Dec 2019 16:00:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D7E2B1168A6
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  9 Dec 2019 09:51:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726863AbfLHO66 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 8 Dec 2019 09:58:58 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:36881 "EHLO
+        id S1727346AbfLIIvs (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 9 Dec 2019 03:51:48 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:37918 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726806AbfLHO65 (ORCPT
+        with ESMTP id S1727044AbfLIIvs (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 8 Dec 2019 09:58:57 -0500
+        Mon, 9 Dec 2019 03:51:48 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1idy1F-0000ed-0R; Sun, 08 Dec 2019 15:58:45 +0100
+        id 1ieElS-000546-TS; Mon, 09 Dec 2019 09:51:35 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 89DFE1C2893;
-        Sun,  8 Dec 2019 15:58:35 +0100 (CET)
-Date:   Sun, 08 Dec 2019 14:58:35 -0000
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4739D1C2782;
+        Mon,  9 Dec 2019 09:51:34 +0100 (CET)
+Date:   Mon, 09 Dec 2019 08:51:34 -0000
+From:   "tip-bot2 for Kees Cook" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] sched/rt, arm64: Use CONFIG_PREEMPTION
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Will Deacon <will@kernel.org>,
-        linux-arm-kernel@lists.infradead.org,
-        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
+Subject: [tip: x86/mtrr] x86/mtrr: Require CAP_SYS_ADMIN for all access
+Cc:     Zhang Xiaoxu <zhangxiaoxu5@huawei.com>,
+        Kees Cook <keescook@chromium.org>,
+        Borislav Petkov <bp@suse.de>,
+        James Morris <jamorris@linux.microsoft.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Colin Ian King <colin.king@canonical.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        linux-security-module@vger.kernel.org,
+        Matthew Garrett <mjg59@google.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tyler Hicks <tyhicks@canonical.com>, "x86-ml" <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191015191821.11479-3-bigeasy@linutronix.de>
-References: <20191015191821.11479-3-bigeasy@linutronix.de>
+In-Reply-To: <201911181308.63F06502A1@keescook>
+References: <201911181308.63F06502A1@keescook>
 MIME-Version: 1.0
-Message-ID: <157581711542.21853.1019709376413820687.tip-bot2@tip-bot2>
+Message-ID: <157588149410.21853.5799502733139367173.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,190 +54,151 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/urgent branch of tip:
+The following commit has been merged into the x86/mtrr branch of tip:
 
-Commit-ID:     7ef858dad9fa6cabfe3b78997c3114cd641de6e3
-Gitweb:        https://git.kernel.org/tip/7ef858dad9fa6cabfe3b78997c3114cd641de6e3
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Tue, 15 Oct 2019 21:17:49 +02:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sun, 08 Dec 2019 14:37:32 +01:00
+Commit-ID:     4fc265a9c9b258ddd7eafbd0dbfca66687c3d8aa
+Gitweb:        https://git.kernel.org/tip/4fc265a9c9b258ddd7eafbd0dbfca66687c3d8aa
+Author:        Kees Cook <keescook@chromium.org>
+AuthorDate:    Mon, 18 Nov 2019 13:09:21 -08:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Mon, 09 Dec 2019 09:24:24 +01:00
 
-sched/rt, arm64: Use CONFIG_PREEMPTION
+x86/mtrr: Require CAP_SYS_ADMIN for all access
 
-CONFIG_PREEMPTION is selected by CONFIG_PREEMPT and by CONFIG_PREEMPT_RT.
-Both PREEMPT and PREEMPT_RT require the same functionality which today
-depends on CONFIG_PREEMPT.
+Zhang Xiaoxu noted that physical address locations for MTRR were visible
+to non-root users, which could be considered an information leak.
+In discussing[1] the options for solving this, it sounded like just
+moving the capable check into open() was the first step.
 
-Switch the Kconfig dependency, entry code and preemption handling over
-to use CONFIG_PREEMPTION. Add PREEMPT_RT output in show_stack().
+If this breaks userspace, then we will have a test case for the more
+conservative approaches discussed in the thread. In summary:
 
-[bigeasy: +traps.c, Kconfig]
+- MTRR should check capabilities at open time (or retain the
+  checks on the opener's permissions for later checks).
 
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Will Deacon <will@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org
-Link: https://lore.kernel.org/r/20191015191821.11479-3-bigeasy@linutronix.de
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
+- changing the DAC permissions might break something that expects to
+  open mtrr when not uid 0.
+
+- if we leave the DAC permissions alone and just move the capable check
+  to the opener, we should get the desired protection. (i.e. check
+  against CAP_SYS_ADMIN not just the wider uid 0.)
+
+- if that still breaks things, as in userspace expects to be able to
+  read other parts of the file as non-uid-0 and non-CAP_SYS_ADMIN, then
+  we need to censor the contents using the opener's permissions. For
+  example, as done in other /proc cases, like commit
+
+  51d7b120418e ("/proc/iomem: only expose physical resource addresses to privileged users").
+
+[1] https://lore.kernel.org/lkml/201911110934.AC5BA313@keescook/
+
+Reported-by: Zhang Xiaoxu <zhangxiaoxu5@huawei.com>
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Acked-by: James Morris <jamorris@linux.microsoft.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Colin Ian King <colin.king@canonical.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: linux-security-module@vger.kernel.org
+Cc: Matthew Garrett <mjg59@google.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Tyler Hicks <tyhicks@canonical.com>
+Cc: x86-ml <x86@kernel.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lkml.kernel.org/r/201911181308.63F06502A1@keescook
 ---
- arch/arm64/Kconfig                 | 52 ++++++++++++++---------------
- arch/arm64/crypto/sha256-glue.c    |  2 +-
- arch/arm64/include/asm/assembler.h |  6 +--
- arch/arm64/include/asm/preempt.h   |  4 +-
- arch/arm64/kernel/entry.S          |  2 +-
- arch/arm64/kernel/traps.c          |  3 ++-
- 6 files changed, 36 insertions(+), 33 deletions(-)
+ arch/x86/kernel/cpu/mtrr/if.c | 21 ++-------------------
+ 1 file changed, 2 insertions(+), 19 deletions(-)
 
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index b1b4476..3ab0585 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -34,32 +34,32 @@ config ARM64
- 	select ARCH_HAS_TEARDOWN_DMA_OPS if IOMMU_SUPPORT
- 	select ARCH_HAS_TICK_BROADCAST if GENERIC_CLOCKEVENTS_BROADCAST
- 	select ARCH_HAVE_NMI_SAFE_CMPXCHG
--	select ARCH_INLINE_READ_LOCK if !PREEMPT
--	select ARCH_INLINE_READ_LOCK_BH if !PREEMPT
--	select ARCH_INLINE_READ_LOCK_IRQ if !PREEMPT
--	select ARCH_INLINE_READ_LOCK_IRQSAVE if !PREEMPT
--	select ARCH_INLINE_READ_UNLOCK if !PREEMPT
--	select ARCH_INLINE_READ_UNLOCK_BH if !PREEMPT
--	select ARCH_INLINE_READ_UNLOCK_IRQ if !PREEMPT
--	select ARCH_INLINE_READ_UNLOCK_IRQRESTORE if !PREEMPT
--	select ARCH_INLINE_WRITE_LOCK if !PREEMPT
--	select ARCH_INLINE_WRITE_LOCK_BH if !PREEMPT
--	select ARCH_INLINE_WRITE_LOCK_IRQ if !PREEMPT
--	select ARCH_INLINE_WRITE_LOCK_IRQSAVE if !PREEMPT
--	select ARCH_INLINE_WRITE_UNLOCK if !PREEMPT
--	select ARCH_INLINE_WRITE_UNLOCK_BH if !PREEMPT
--	select ARCH_INLINE_WRITE_UNLOCK_IRQ if !PREEMPT
--	select ARCH_INLINE_WRITE_UNLOCK_IRQRESTORE if !PREEMPT
--	select ARCH_INLINE_SPIN_TRYLOCK if !PREEMPT
--	select ARCH_INLINE_SPIN_TRYLOCK_BH if !PREEMPT
--	select ARCH_INLINE_SPIN_LOCK if !PREEMPT
--	select ARCH_INLINE_SPIN_LOCK_BH if !PREEMPT
--	select ARCH_INLINE_SPIN_LOCK_IRQ if !PREEMPT
--	select ARCH_INLINE_SPIN_LOCK_IRQSAVE if !PREEMPT
--	select ARCH_INLINE_SPIN_UNLOCK if !PREEMPT
--	select ARCH_INLINE_SPIN_UNLOCK_BH if !PREEMPT
--	select ARCH_INLINE_SPIN_UNLOCK_IRQ if !PREEMPT
--	select ARCH_INLINE_SPIN_UNLOCK_IRQRESTORE if !PREEMPT
-+	select ARCH_INLINE_READ_LOCK if !PREEMPTION
-+	select ARCH_INLINE_READ_LOCK_BH if !PREEMPTION
-+	select ARCH_INLINE_READ_LOCK_IRQ if !PREEMPTION
-+	select ARCH_INLINE_READ_LOCK_IRQSAVE if !PREEMPTION
-+	select ARCH_INLINE_READ_UNLOCK if !PREEMPTION
-+	select ARCH_INLINE_READ_UNLOCK_BH if !PREEMPTION
-+	select ARCH_INLINE_READ_UNLOCK_IRQ if !PREEMPTION
-+	select ARCH_INLINE_READ_UNLOCK_IRQRESTORE if !PREEMPTION
-+	select ARCH_INLINE_WRITE_LOCK if !PREEMPTION
-+	select ARCH_INLINE_WRITE_LOCK_BH if !PREEMPTION
-+	select ARCH_INLINE_WRITE_LOCK_IRQ if !PREEMPTION
-+	select ARCH_INLINE_WRITE_LOCK_IRQSAVE if !PREEMPTION
-+	select ARCH_INLINE_WRITE_UNLOCK if !PREEMPTION
-+	select ARCH_INLINE_WRITE_UNLOCK_BH if !PREEMPTION
-+	select ARCH_INLINE_WRITE_UNLOCK_IRQ if !PREEMPTION
-+	select ARCH_INLINE_WRITE_UNLOCK_IRQRESTORE if !PREEMPTION
-+	select ARCH_INLINE_SPIN_TRYLOCK if !PREEMPTION
-+	select ARCH_INLINE_SPIN_TRYLOCK_BH if !PREEMPTION
-+	select ARCH_INLINE_SPIN_LOCK if !PREEMPTION
-+	select ARCH_INLINE_SPIN_LOCK_BH if !PREEMPTION
-+	select ARCH_INLINE_SPIN_LOCK_IRQ if !PREEMPTION
-+	select ARCH_INLINE_SPIN_LOCK_IRQSAVE if !PREEMPTION
-+	select ARCH_INLINE_SPIN_UNLOCK if !PREEMPTION
-+	select ARCH_INLINE_SPIN_UNLOCK_BH if !PREEMPTION
-+	select ARCH_INLINE_SPIN_UNLOCK_IRQ if !PREEMPTION
-+	select ARCH_INLINE_SPIN_UNLOCK_IRQRESTORE if !PREEMPTION
- 	select ARCH_KEEP_MEMBLOCK
- 	select ARCH_USE_CMPXCHG_LOCKREF
- 	select ARCH_USE_QUEUED_RWLOCKS
-diff --git a/arch/arm64/crypto/sha256-glue.c b/arch/arm64/crypto/sha256-glue.c
-index e273fac..999da59 100644
---- a/arch/arm64/crypto/sha256-glue.c
-+++ b/arch/arm64/crypto/sha256-glue.c
-@@ -97,7 +97,7 @@ static int sha256_update_neon(struct shash_desc *desc, const u8 *data,
- 		 * input when running on a preemptible kernel, but process the
- 		 * data block by block instead.
- 		 */
--		if (IS_ENABLED(CONFIG_PREEMPT) &&
-+		if (IS_ENABLED(CONFIG_PREEMPTION) &&
- 		    chunk + sctx->count % SHA256_BLOCK_SIZE > SHA256_BLOCK_SIZE)
- 			chunk = SHA256_BLOCK_SIZE -
- 				sctx->count % SHA256_BLOCK_SIZE;
-diff --git a/arch/arm64/include/asm/assembler.h b/arch/arm64/include/asm/assembler.h
-index b8cf7c8..2cc0dd8 100644
---- a/arch/arm64/include/asm/assembler.h
-+++ b/arch/arm64/include/asm/assembler.h
-@@ -699,8 +699,8 @@ USER(\label, ic	ivau, \tmp2)			// invalidate I line PoU
-  * where <label> is optional, and marks the point where execution will resume
-  * after a yield has been performed. If omitted, execution resumes right after
-  * the endif_yield_neon invocation. Note that the entire sequence, including
-- * the provided patchup code, will be omitted from the image if CONFIG_PREEMPT
-- * is not defined.
-+ * the provided patchup code, will be omitted from the image if
-+ * CONFIG_PREEMPTION is not defined.
-  *
-  * As a convenience, in the case where no patchup code is required, the above
-  * sequence may be abbreviated to
-@@ -728,7 +728,7 @@ USER(\label, ic	ivau, \tmp2)			// invalidate I line PoU
- 	.endm
+diff --git a/arch/x86/kernel/cpu/mtrr/if.c b/arch/x86/kernel/cpu/mtrr/if.c
+index 268d318..da532f6 100644
+--- a/arch/x86/kernel/cpu/mtrr/if.c
++++ b/arch/x86/kernel/cpu/mtrr/if.c
+@@ -101,9 +101,6 @@ mtrr_write(struct file *file, const char __user *buf, size_t len, loff_t * ppos)
+ 	int length;
+ 	size_t linelen;
  
- 	.macro		if_will_cond_yield_neon
--#ifdef CONFIG_PREEMPT
-+#ifdef CONFIG_PREEMPTION
- 	get_current_task	x0
- 	ldr		x0, [x0, #TSK_TI_PREEMPT]
- 	sub		x0, x0, #PREEMPT_DISABLE_OFFSET
-diff --git a/arch/arm64/include/asm/preempt.h b/arch/arm64/include/asm/preempt.h
-index d499516..80e946b 100644
---- a/arch/arm64/include/asm/preempt.h
-+++ b/arch/arm64/include/asm/preempt.h
-@@ -79,11 +79,11 @@ static inline bool should_resched(int preempt_offset)
- 	return pc == preempt_offset;
+-	if (!capable(CAP_SYS_ADMIN))
+-		return -EPERM;
+-
+ 	memset(line, 0, LINE_SIZE);
+ 
+ 	len = min_t(size_t, len, LINE_SIZE - 1);
+@@ -226,8 +223,6 @@ mtrr_ioctl(struct file *file, unsigned int cmd, unsigned long __arg)
+ #ifdef CONFIG_COMPAT
+ 	case MTRRIOC32_ADD_ENTRY:
+ #endif
+-		if (!capable(CAP_SYS_ADMIN))
+-			return -EPERM;
+ 		err =
+ 		    mtrr_file_add(sentry.base, sentry.size, sentry.type, true,
+ 				  file, 0);
+@@ -236,24 +231,18 @@ mtrr_ioctl(struct file *file, unsigned int cmd, unsigned long __arg)
+ #ifdef CONFIG_COMPAT
+ 	case MTRRIOC32_SET_ENTRY:
+ #endif
+-		if (!capable(CAP_SYS_ADMIN))
+-			return -EPERM;
+ 		err = mtrr_add(sentry.base, sentry.size, sentry.type, false);
+ 		break;
+ 	case MTRRIOC_DEL_ENTRY:
+ #ifdef CONFIG_COMPAT
+ 	case MTRRIOC32_DEL_ENTRY:
+ #endif
+-		if (!capable(CAP_SYS_ADMIN))
+-			return -EPERM;
+ 		err = mtrr_file_del(sentry.base, sentry.size, file, 0);
+ 		break;
+ 	case MTRRIOC_KILL_ENTRY:
+ #ifdef CONFIG_COMPAT
+ 	case MTRRIOC32_KILL_ENTRY:
+ #endif
+-		if (!capable(CAP_SYS_ADMIN))
+-			return -EPERM;
+ 		err = mtrr_del(-1, sentry.base, sentry.size);
+ 		break;
+ 	case MTRRIOC_GET_ENTRY:
+@@ -279,8 +268,6 @@ mtrr_ioctl(struct file *file, unsigned int cmd, unsigned long __arg)
+ #ifdef CONFIG_COMPAT
+ 	case MTRRIOC32_ADD_PAGE_ENTRY:
+ #endif
+-		if (!capable(CAP_SYS_ADMIN))
+-			return -EPERM;
+ 		err =
+ 		    mtrr_file_add(sentry.base, sentry.size, sentry.type, true,
+ 				  file, 1);
+@@ -289,8 +276,6 @@ mtrr_ioctl(struct file *file, unsigned int cmd, unsigned long __arg)
+ #ifdef CONFIG_COMPAT
+ 	case MTRRIOC32_SET_PAGE_ENTRY:
+ #endif
+-		if (!capable(CAP_SYS_ADMIN))
+-			return -EPERM;
+ 		err =
+ 		    mtrr_add_page(sentry.base, sentry.size, sentry.type, false);
+ 		break;
+@@ -298,16 +283,12 @@ mtrr_ioctl(struct file *file, unsigned int cmd, unsigned long __arg)
+ #ifdef CONFIG_COMPAT
+ 	case MTRRIOC32_DEL_PAGE_ENTRY:
+ #endif
+-		if (!capable(CAP_SYS_ADMIN))
+-			return -EPERM;
+ 		err = mtrr_file_del(sentry.base, sentry.size, file, 1);
+ 		break;
+ 	case MTRRIOC_KILL_PAGE_ENTRY:
+ #ifdef CONFIG_COMPAT
+ 	case MTRRIOC32_KILL_PAGE_ENTRY:
+ #endif
+-		if (!capable(CAP_SYS_ADMIN))
+-			return -EPERM;
+ 		err = mtrr_del_page(-1, sentry.base, sentry.size);
+ 		break;
+ 	case MTRRIOC_GET_PAGE_ENTRY:
+@@ -410,6 +391,8 @@ static int mtrr_open(struct inode *inode, struct file *file)
+ 		return -EIO;
+ 	if (!mtrr_if->get)
+ 		return -ENXIO;
++	if (!capable(CAP_SYS_ADMIN))
++		return -EPERM;
+ 	return single_open(file, mtrr_seq_show, NULL);
  }
  
--#ifdef CONFIG_PREEMPT
-+#ifdef CONFIG_PREEMPTION
- void preempt_schedule(void);
- #define __preempt_schedule() preempt_schedule()
- void preempt_schedule_notrace(void);
- #define __preempt_schedule_notrace() preempt_schedule_notrace()
--#endif /* CONFIG_PREEMPT */
-+#endif /* CONFIG_PREEMPTION */
- 
- #endif /* __ASM_PREEMPT_H */
-diff --git a/arch/arm64/kernel/entry.S b/arch/arm64/kernel/entry.S
-index 583f71a..6fcb62d 100644
---- a/arch/arm64/kernel/entry.S
-+++ b/arch/arm64/kernel/entry.S
-@@ -604,7 +604,7 @@ el1_irq:
- 
- 	irq_handler
- 
--#ifdef CONFIG_PREEMPT
-+#ifdef CONFIG_PREEMPTION
- 	ldr	x24, [tsk, #TSK_TI_PREEMPT]	// get preempt count
- alternative_if ARM64_HAS_IRQ_PRIO_MASKING
- 	/*
-diff --git a/arch/arm64/kernel/traps.c b/arch/arm64/kernel/traps.c
-index 73caf35..cf402be 100644
---- a/arch/arm64/kernel/traps.c
-+++ b/arch/arm64/kernel/traps.c
-@@ -144,9 +144,12 @@ void show_stack(struct task_struct *tsk, unsigned long *sp)
- 
- #ifdef CONFIG_PREEMPT
- #define S_PREEMPT " PREEMPT"
-+#elif defined(CONFIG_PREEMPT_RT)
-+#define S_PREEMPT " PREEMPT_RT"
- #else
- #define S_PREEMPT ""
- #endif
-+
- #define S_SMP " SMP"
- 
- static int __die(const char *str, int err, struct pt_regs *regs)
