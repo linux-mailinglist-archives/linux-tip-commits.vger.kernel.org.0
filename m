@@ -2,35 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 42A6211689F
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  9 Dec 2019 09:51:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 815DA118371
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 10 Dec 2019 10:22:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727122AbfLIIvi (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 9 Dec 2019 03:51:38 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:37907 "EHLO
+        id S1727069AbfLJJWO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 10 Dec 2019 04:22:14 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:40477 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726377AbfLIIvh (ORCPT
+        with ESMTP id S1726574AbfLJJWN (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 9 Dec 2019 03:51:37 -0500
+        Tue, 10 Dec 2019 04:22:13 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1ieElS-000547-VQ; Mon, 09 Dec 2019 09:51:35 +0100
+        id 1iebiV-0005Wh-IH; Tue, 10 Dec 2019 10:22:03 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 781451C28F2;
-        Mon,  9 Dec 2019 09:51:34 +0100 (CET)
-Date:   Mon, 09 Dec 2019 08:51:34 -0000
-From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 32E291C281A;
+        Tue, 10 Dec 2019 10:22:03 +0100 (CET)
+Date:   Tue, 10 Dec 2019 09:22:02 -0000
+From:   "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/mtrr] x86/mtrr: Get rid of mtrr_seq_show() forward declaration
-Cc:     Borislav Petkov <bp@suse.de>, x86@kernel.org,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191108200815.24589-1-bp@alien8.de>
-References: <20191108200815.24589-1-bp@alien8.de>
+Subject: [tip: x86/cleanups] x86/setup: Enhance the comments
+Cc:     linux-kernel@vger.kernel.org, Borislav Petkov <bp@alien8.de>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>
 MIME-Version: 1.0
-Message-ID: <157588149438.21853.11921626365712409629.tip-bot2@tip-bot2>
+Message-ID: <157596972292.29619.10068918068668240468.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -44,85 +45,125 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/mtrr branch of tip:
+The following commit has been merged into the x86/cleanups branch of tip:
 
-Commit-ID:     2e30dd9e0698d5a04698f38e932a6e29893d8a93
-Gitweb:        https://git.kernel.org/tip/2e30dd9e0698d5a04698f38e932a6e29893d8a93
-Author:        Borislav Petkov <bp@suse.de>
-AuthorDate:    Fri, 08 Nov 2019 21:05:45 +01:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 09 Dec 2019 09:23:44 +01:00
+Commit-ID:     360db4ace3117ac1d9936d529f59c653e337b0f5
+Gitweb:        https://git.kernel.org/tip/360db4ace3117ac1d9936d529f59c653e337b0f5
+Author:        Ingo Molnar <mingo@kernel.org>
+AuthorDate:    Mon, 18 Nov 2019 16:03:39 +01:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Tue, 10 Dec 2019 09:59:38 +01:00
 
-x86/mtrr: Get rid of mtrr_seq_show() forward declaration
+x86/setup: Enhance the comments
 
-... by moving the function up in the file.
+Update various comments, fix outright mistakes and meaningless descriptions.
 
-No functional changes.
+Also harmonize the style across the file, both in form and in language.
 
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Cc: x86@kernel.org
-Link: https://lkml.kernel.org/r/20191108200815.24589-1-bp@alien8.de
+Cc: linux-kernel@vger.kernel.org
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- arch/x86/kernel/cpu/mtrr/if.c | 42 ++++++++++++++++------------------
- 1 file changed, 20 insertions(+), 22 deletions(-)
+ arch/x86/kernel/setup.c | 41 ++++++++++++++++++++++++----------------
+ 1 file changed, 25 insertions(+), 16 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/mtrr/if.c b/arch/x86/kernel/cpu/mtrr/if.c
-index 4d36dcc..268d318 100644
---- a/arch/x86/kernel/cpu/mtrr/if.c
-+++ b/arch/x86/kernel/cpu/mtrr/if.c
-@@ -373,28 +373,6 @@ static int mtrr_close(struct inode *ino, struct file *file)
- 	return single_release(ino, file);
- }
+diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
+index 7778ee0..b5ac993 100644
+--- a/arch/x86/kernel/setup.c
++++ b/arch/x86/kernel/setup.c
+@@ -43,11 +43,11 @@
+ #include <asm/vsyscall.h>
  
--static int mtrr_seq_show(struct seq_file *seq, void *offset);
--
--static int mtrr_open(struct inode *inode, struct file *file)
--{
--	if (!mtrr_if)
--		return -EIO;
--	if (!mtrr_if->get)
--		return -ENXIO;
--	return single_open(file, mtrr_seq_show, NULL);
--}
--
--static const struct file_operations mtrr_fops = {
--	.owner			= THIS_MODULE,
--	.open			= mtrr_open,
--	.read			= seq_read,
--	.llseek			= seq_lseek,
--	.write			= mtrr_write,
--	.unlocked_ioctl		= mtrr_ioctl,
--	.compat_ioctl		= mtrr_ioctl,
--	.release		= mtrr_close,
--};
--
- static int mtrr_seq_show(struct seq_file *seq, void *offset)
- {
- 	char factor;
-@@ -426,6 +404,26 @@ static int mtrr_seq_show(struct seq_file *seq, void *offset)
- 	return 0;
- }
+ /*
+- * max_low_pfn_mapped: highest direct mapped pfn under 4GB
+- * max_pfn_mapped:     highest direct mapped pfn over 4GB
++ * max_low_pfn_mapped: highest directly mapped pfn < 4 GB
++ * max_pfn_mapped:     highest directly mapped pfn > 4 GB
+  *
+  * The direct mapping only covers E820_TYPE_RAM regions, so the ranges and gaps are
+- * represented by pfn_mapped
++ * represented by pfn_mapped[].
+  */
+ unsigned long max_low_pfn_mapped;
+ unsigned long max_pfn_mapped;
+@@ -57,14 +57,23 @@ RESERVE_BRK(dmi_alloc, 65536);
+ #endif
  
-+static int mtrr_open(struct inode *inode, struct file *file)
-+{
-+	if (!mtrr_if)
-+		return -EIO;
-+	if (!mtrr_if->get)
-+		return -ENXIO;
-+	return single_open(file, mtrr_seq_show, NULL);
-+}
+ 
+-static __initdata unsigned long _brk_start = (unsigned long)__brk_base;
+-unsigned long _brk_end = (unsigned long)__brk_base;
++/*
++ * Range of the BSS area. The size of the BSS area is determined
++ * at link time, with RESERVE_BRK*() facility reserving additional
++ * chunks.
++ */
++static __initdata
++unsigned long _brk_start = (unsigned long)__brk_base;
++unsigned long _brk_end   = (unsigned long)__brk_base;
+ 
+ struct boot_params boot_params;
+ 
+ /*
+- * Machine setup..
++ * These are the four main kernel memory regions, we put them into
++ * the resource tree so that kdump tools and other debugging tools
++ * recover it:
+  */
 +
-+static const struct file_operations mtrr_fops = {
-+	.owner			= THIS_MODULE,
-+	.open			= mtrr_open,
-+	.read			= seq_read,
-+	.llseek			= seq_lseek,
-+	.write			= mtrr_write,
-+	.unlocked_ioctl		= mtrr_ioctl,
-+	.compat_ioctl		= mtrr_ioctl,
-+	.release		= mtrr_close,
-+};
-+
- static int __init mtrr_if_init(void)
- {
- 	struct cpuinfo_x86 *c = &boot_cpu_data;
+ static struct resource rodata_resource = {
+ 	.name	= "Kernel rodata",
+ 	.start	= 0,
+@@ -95,16 +104,16 @@ static struct resource bss_resource = {
+ 
+ 
+ #ifdef CONFIG_X86_32
+-/* cpu data as detected by the assembly code in head_32.S */
++/* CPU data as detected by the assembly code in head_32.S */
+ struct cpuinfo_x86 new_cpu_data;
+ 
+-/* common cpu data for all cpus */
++/* Common CPU data for all CPUs */
+ struct cpuinfo_x86 boot_cpu_data __read_mostly;
+ EXPORT_SYMBOL(boot_cpu_data);
+ 
+ unsigned int def_to_bigsmp;
+ 
+-/* for MCA, but anyone else can use it if they want */
++/* For MCA, but anyone else can use it if they want */
+ unsigned int machine_id;
+ unsigned int machine_submodel_id;
+ unsigned int BIOS_revision;
+@@ -390,15 +399,15 @@ static void __init memblock_x86_reserve_range_setup_data(void)
+ /*
+  * Keep the crash kernel below this limit.
+  *
+- * On 32 bits earlier kernels would limit the kernel to the low 512 MiB
++ * Earlier 32-bits kernels would limit the kernel to the low 512 MB range
+  * due to mapping restrictions.
+  *
+- * On 64bit, kdump kernel need be restricted to be under 64TB, which is
++ * 64-bit kdump kernels need to be restricted to be under 64 TB, which is
+  * the upper limit of system RAM in 4-level paging mode. Since the kdump
+- * jumping could be from 5-level to 4-level, the jumping will fail if
+- * kernel is put above 64TB, and there's no way to detect the paging mode
+- * of the kernel which will be loaded for dumping during the 1st kernel
+- * bootup.
++ * jump could be from 5-level paging to 4-level paging, the jump will fail if
++ * the kernel is put above 64 TB, and during the 1st kernel bootup there's
++ * no good way to detect the paging mode of the target kernel which will be
++ * loaded for dumping.
+  */
+ #ifdef CONFIG_X86_32
+ # define CRASH_ADDR_LOW_MAX	SZ_512M
+@@ -809,7 +818,7 @@ void __init setup_arch(char **cmdline_p)
+ 	/*
+ 	 * Note: Quark X1000 CPUs advertise PGE incorrectly and require
+ 	 * a cr3 based tlb flush, so the following __flush_tlb_all()
+-	 * will not flush anything because the cpu quirk which clears
++	 * will not flush anything because the CPU quirk which clears
+ 	 * X86_FEATURE_PGE has not been invoked yet. Though due to the
+ 	 * load_cr3() above the TLB has been flushed already. The
+ 	 * quirk is invoked before subsequent calls to __flush_tlb_all()
