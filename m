@@ -2,39 +2,44 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 60A2211A455
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 11 Dec 2019 07:16:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 96C0911BC6F
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 11 Dec 2019 20:03:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725800AbfLKGQL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 11 Dec 2019 01:16:11 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:42570 "EHLO
+        id S1727128AbfLKTDO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 11 Dec 2019 14:03:14 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:44316 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726687AbfLKGQL (ORCPT
+        with ESMTP id S1726877AbfLKTDN (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 11 Dec 2019 01:16:11 -0500
+        Wed, 11 Dec 2019 14:03:13 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1ievHy-0002WE-K0; Wed, 11 Dec 2019 07:15:58 +0100
+        id 1if7GA-0002R7-Ht; Wed, 11 Dec 2019 20:02:54 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 32F801C287E;
-        Wed, 11 Dec 2019 07:15:58 +0100 (CET)
-Date:   Wed, 11 Dec 2019 06:15:57 -0000
-From:   "tip-bot2 for Flavio Leitner" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E4E311C2917;
+        Wed, 11 Dec 2019 20:02:53 +0100 (CET)
+Date:   Wed, 11 Dec 2019 19:02:53 -0000
+From:   "tip-bot2 for Arnd Bergmann" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] sched/cputime, proc/stat: Fix incorrect guest
- nice cpustat value
-Cc:     Flavio Leitner <fbl@sysclose.org>,
-        Frederic Weisbecker <frederic@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
+Subject: [tip: ras/core] x86/mce/therm_throt: Mark throttle_active_work() as
+ __maybe_unused
+Cc:     Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@suse.de>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        bberg@redhat.com, ckellner@redhat.com,
+        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+        hdegoede@redhat.com, "H. Peter Anvin" <hpa@zytor.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        "linux-edac" <linux-edac@vger.kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tony Luck <tony.luck@intel.com>, "x86-ml" <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191205020344.14940-1-frederic@kernel.org>
-References: <20191205020344.14940-1-frederic@kernel.org>
+In-Reply-To: <20191210203925.3119091-1-arnd@arndb.de>
+References: <20191210203925.3119091-1-arnd@arndb.de>
 MIME-Version: 1.0
-Message-ID: <157604495799.30329.13726573688253240256.tip-bot2@tip-bot2>
+Message-ID: <157609097376.30329.7393768210336577758.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,49 +53,54 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/urgent branch of tip:
+The following commit has been merged into the ras/core branch of tip:
 
-Commit-ID:     346da4d2c7ea39de65487b249aaa4733317a40ec
-Gitweb:        https://git.kernel.org/tip/346da4d2c7ea39de65487b249aaa4733317a40ec
-Author:        Flavio Leitner <fbl@sysclose.org>
-AuthorDate:    Thu, 05 Dec 2019 03:03:44 +01:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 11 Dec 2019 07:09:58 +01:00
+Commit-ID:     30357ea370345133949dbba199e8a5137a2b419c
+Gitweb:        https://git.kernel.org/tip/30357ea370345133949dbba199e8a5137a2b419c
+Author:        Arnd Bergmann <arnd@arndb.de>
+AuthorDate:    Tue, 10 Dec 2019 21:39:13 +01:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Wed, 11 Dec 2019 19:54:29 +01:00
 
-sched/cputime, proc/stat: Fix incorrect guest nice cpustat value
+x86/mce/therm_throt: Mark throttle_active_work() as __maybe_unused
 
-The value being used for guest_nice should be CPUTIME_GUEST_NICE
-and not CPUTIME_USER.
+throttle_active_work() is only called if CONFIG_SYSFS is set, otherwise
+we get a harmless warning:
 
-Fixes: 26dae145a76c ("procfs: Use all-in-one vtime aware kcpustat accessor")
-Signed-off-by: Flavio Leitner <fbl@sysclose.org>
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20191205020344.14940-1-frederic@kernel.org
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
+  arch/x86/kernel/cpu/mce/therm_throt.c:238:13: error: 'throttle_active_work' \
+	  defined but not used [-Werror=unused-function]
+
+Mark the function as __maybe_unused to avoid the warning.
+
+Fixes: f6656208f04e ("x86/mce/therm_throt: Optimize notifications of thermal throttle")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Reviewed-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Cc: bberg@redhat.com
+Cc: ckellner@redhat.com
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: hdegoede@redhat.com
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: linux-edac <linux-edac@vger.kernel.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Tony Luck <tony.luck@intel.com>
+Cc: x86-ml <x86@kernel.org>
+Link: https://lkml.kernel.org/r/20191210203925.3119091-1-arnd@arndb.de
 ---
- fs/proc/stat.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/kernel/cpu/mce/therm_throt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/proc/stat.c b/fs/proc/stat.c
-index 37bdbec..fd931d3 100644
---- a/fs/proc/stat.c
-+++ b/fs/proc/stat.c
-@@ -134,7 +134,7 @@ static int show_stat(struct seq_file *p, void *v)
- 		softirq		+= cpustat[CPUTIME_SOFTIRQ];
- 		steal		+= cpustat[CPUTIME_STEAL];
- 		guest		+= cpustat[CPUTIME_GUEST];
--		guest_nice	+= cpustat[CPUTIME_USER];
-+		guest_nice	+= cpustat[CPUTIME_GUEST_NICE];
- 		sum		+= kstat_cpu_irqs_sum(i);
- 		sum		+= arch_irq_stat_cpu(i);
+diff --git a/arch/x86/kernel/cpu/mce/therm_throt.c b/arch/x86/kernel/cpu/mce/therm_throt.c
+index b38010b..8963493 100644
+--- a/arch/x86/kernel/cpu/mce/therm_throt.c
++++ b/arch/x86/kernel/cpu/mce/therm_throt.c
+@@ -235,7 +235,7 @@ static void get_therm_status(int level, bool *proc_hot, u8 *temp)
+ 	*temp = (msr_val >> 16) & 0x7F;
+ }
  
-@@ -175,7 +175,7 @@ static int show_stat(struct seq_file *p, void *v)
- 		softirq		= cpustat[CPUTIME_SOFTIRQ];
- 		steal		= cpustat[CPUTIME_STEAL];
- 		guest		= cpustat[CPUTIME_GUEST];
--		guest_nice	= cpustat[CPUTIME_USER];
-+		guest_nice	= cpustat[CPUTIME_GUEST_NICE];
- 		seq_printf(p, "cpu%d", i);
- 		seq_put_decimal_ull(p, " ", nsec_to_clock_t(user));
- 		seq_put_decimal_ull(p, " ", nsec_to_clock_t(nice));
+-static void throttle_active_work(struct work_struct *work)
++static void __maybe_unused throttle_active_work(struct work_struct *work)
+ {
+ 	struct _thermal_state *state = container_of(to_delayed_work(work),
+ 						struct _thermal_state, therm_work);
