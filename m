@@ -2,49 +2,43 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 96C0911BC6F
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 11 Dec 2019 20:03:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0024911D898
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 12 Dec 2019 22:34:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727128AbfLKTDO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 11 Dec 2019 14:03:14 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:44316 "EHLO
+        id S1731086AbfLLVeC convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 12 Dec 2019 16:34:02 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:46915 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726877AbfLKTDN (ORCPT
+        with ESMTP id S1730902AbfLLVeC (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 11 Dec 2019 14:03:13 -0500
+        Thu, 12 Dec 2019 16:34:02 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1if7GA-0002R7-Ht; Wed, 11 Dec 2019 20:02:54 +0100
+        id 1ifW5s-0002Gz-6F; Thu, 12 Dec 2019 22:33:56 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E4E311C2917;
-        Wed, 11 Dec 2019 20:02:53 +0100 (CET)
-Date:   Wed, 11 Dec 2019 19:02:53 -0000
-From:   "tip-bot2 for Arnd Bergmann" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id CA17D1C2930;
+        Thu, 12 Dec 2019 22:33:55 +0100 (CET)
+Date:   Thu, 12 Dec 2019 21:33:55 -0000
+From:   tip-bot2 for Valdis =?utf-8?q?Kl=C4=93tnieks?= 
+        <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: ras/core] x86/mce/therm_throt: Mark throttle_active_work() as
- __maybe_unused
-Cc:     Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@suse.de>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        bberg@redhat.com, ckellner@redhat.com,
-        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
-        hdegoede@redhat.com, "H. Peter Anvin" <hpa@zytor.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        "linux-edac" <linux-edac@vger.kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tony Luck <tony.luck@intel.com>, "x86-ml" <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191210203925.3119091-1-arnd@arndb.de>
-References: <20191210203925.3119091-1-arnd@arndb.de>
+Subject: [tip: x86/microcode] x86/microcode/AMD: Make stub function static inline
+Cc:     valdis.kletnieks@vt.edu, Borislav Petkov <bp@suse.de>,
+        Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
+        x86@kernel.org, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <52170.1575603873@turing-police>
+References: <52170.1575603873@turing-police>
 MIME-Version: 1.0
-Message-ID: <157609097376.30329.7393768210336577758.tip-bot2@tip-bot2>
+Message-ID: <157618643564.30329.7127565633998846101.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8BIT
 X-Linutronix-Spam-Score: -1.0
 X-Linutronix-Spam-Level: -
 X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
@@ -53,54 +47,51 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the ras/core branch of tip:
+The following commit has been merged into the x86/microcode branch of tip:
 
-Commit-ID:     30357ea370345133949dbba199e8a5137a2b419c
-Gitweb:        https://git.kernel.org/tip/30357ea370345133949dbba199e8a5137a2b419c
-Author:        Arnd Bergmann <arnd@arndb.de>
-AuthorDate:    Tue, 10 Dec 2019 21:39:13 +01:00
+Commit-ID:     82c881b28aa89215a760e39c5f6bcde2d6ce4918
+Gitweb:        https://git.kernel.org/tip/82c881b28aa89215a760e39c5f6bcde2d6ce4918
+Author:        Valdis Klētnieks <valdis.kletnieks@vt.edu>
+AuthorDate:    Thu, 05 Dec 2019 22:44:33 -05:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 11 Dec 2019 19:54:29 +01:00
+CommitterDate: Thu, 12 Dec 2019 22:29:00 +01:00
 
-x86/mce/therm_throt: Mark throttle_active_work() as __maybe_unused
+x86/microcode/AMD: Make stub function static inline
 
-throttle_active_work() is only called if CONFIG_SYSFS is set, otherwise
-we get a harmless warning:
+When building with C=1 W=1 (and when CONFIG_MICROCODE_AMD=n, as Luc Van
+Oostenryck correctly points out) both sparse and gcc complain:
 
-  arch/x86/kernel/cpu/mce/therm_throt.c:238:13: error: 'throttle_active_work' \
-	  defined but not used [-Werror=unused-function]
+  CHECK   arch/x86/kernel/cpu/microcode/core.c
+  ./arch/x86/include/asm/microcode_amd.h:56:6: warning: symbol \
+	  'reload_ucode_amd' was not declared. Should it be static?
+    CC      arch/x86/kernel/cpu/microcode/core.o
+  In file included from arch/x86/kernel/cpu/microcode/core.c:36:
+  ./arch/x86/include/asm/microcode_amd.h:56:6: warning: no previous \
+	  prototype for 'reload_ucode_amd' [-Wmissing-prototypes]
+     56 | void reload_ucode_amd(void) {}
+        |      ^~~~~~~~~~~~~~~~
 
-Mark the function as __maybe_unused to avoid the warning.
+And they're right - that function can be a static inline like its
+brethren.
 
-Fixes: f6656208f04e ("x86/mce/therm_throt: Optimize notifications of thermal throttle")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Valdis Klētnieks <valdis.kletnieks@vt.edu>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Cc: bberg@redhat.com
-Cc: ckellner@redhat.com
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: hdegoede@redhat.com
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: linux-edac <linux-edac@vger.kernel.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Tony Luck <tony.luck@intel.com>
-Cc: x86-ml <x86@kernel.org>
-Link: https://lkml.kernel.org/r/20191210203925.3119091-1-arnd@arndb.de
+Cc: Luc Van Oostenryck <luc.vanoostenryck@gmail.com>
+Cc: x86@kernel.org
+Link: https://lkml.kernel.org/r/52170.1575603873@turing-police
 ---
- arch/x86/kernel/cpu/mce/therm_throt.c | 2 +-
+ arch/x86/include/asm/microcode_amd.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/cpu/mce/therm_throt.c b/arch/x86/kernel/cpu/mce/therm_throt.c
-index b38010b..8963493 100644
---- a/arch/x86/kernel/cpu/mce/therm_throt.c
-+++ b/arch/x86/kernel/cpu/mce/therm_throt.c
-@@ -235,7 +235,7 @@ static void get_therm_status(int level, bool *proc_hot, u8 *temp)
- 	*temp = (msr_val >> 16) & 0x7F;
- }
- 
--static void throttle_active_work(struct work_struct *work)
-+static void __maybe_unused throttle_active_work(struct work_struct *work)
- {
- 	struct _thermal_state *state = container_of(to_delayed_work(work),
- 						struct _thermal_state, therm_work);
+diff --git a/arch/x86/include/asm/microcode_amd.h b/arch/x86/include/asm/microcode_amd.h
+index 2094928..6685e12 100644
+--- a/arch/x86/include/asm/microcode_amd.h
++++ b/arch/x86/include/asm/microcode_amd.h
+@@ -53,6 +53,6 @@ static inline void __init load_ucode_amd_bsp(unsigned int family) {}
+ static inline void load_ucode_amd_ap(unsigned int family) {}
+ static inline int __init
+ save_microcode_in_initrd_amd(unsigned int family) { return -EINVAL; }
+-void reload_ucode_amd(void) {}
++static inline void reload_ucode_amd(void) {}
+ #endif
+ #endif /* _ASM_X86_MICROCODE_AMD_H */
