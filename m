@@ -2,35 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A4C6511F723
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 15 Dec 2019 11:18:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 77F3112072B
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 16 Dec 2019 14:30:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726112AbfLOKSZ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 15 Dec 2019 05:18:25 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:51108 "EHLO
+        id S1727763AbfLPNaA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 16 Dec 2019 08:30:00 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:52817 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726081AbfLOKSY (ORCPT
+        with ESMTP id S1727601AbfLPNaA (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 15 Dec 2019 05:18:24 -0500
+        Mon, 16 Dec 2019 08:30:00 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1igQyj-0005P9-1Z; Sun, 15 Dec 2019 11:18:21 +0100
+        id 1igqRZ-0001o6-A1; Mon, 16 Dec 2019 14:29:49 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B19671C2817;
-        Sun, 15 Dec 2019 11:18:19 +0100 (CET)
-Date:   Sun, 15 Dec 2019 10:18:19 -0000
-From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E2A461C0480;
+        Mon, 16 Dec 2019 14:29:48 +0100 (CET)
+Date:   Mon, 16 Dec 2019 13:29:48 -0000
+From:   "tip-bot2 for Sean Christopherson" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cpu] x86/cpu/tsx: Define pr_fmt()
-Cc:     Borislav Petkov <bp@suse.de>, x86@kernel.org,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191112221823.19677-2-bp@alien8.de>
-References: <20191112221823.19677-2-bp@alien8.de>
+Subject: [tip: x86/cleanups] x86/boot: Fix a comment's incorrect file reference
+Cc:     Sean Christopherson <sean.j.christopherson@intel.com>,
+        Borislav Petkov <bp@suse.de>, "H. Peter Anvin" <hpa@zytor.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "x86-ml" <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20191126195911.3429-1-sean.j.christopherson@intel.com>
+References: <20191126195911.3429-1-sean.j.christopherson@intel.com>
 MIME-Version: 1.0
-Message-ID: <157640509952.30329.3290134732886823091.tip-bot2@tip-bot2>
+Message-ID: <157650298869.30329.17330469299720257853.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -44,49 +47,58 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cpu branch of tip:
+The following commit has been merged into the x86/cleanups branch of tip:
 
-Commit-ID:     d157aa0fb241646e8818f699653ed983e6581b11
-Gitweb:        https://git.kernel.org/tip/d157aa0fb241646e8818f699653ed983e6581b11
-Author:        Borislav Petkov <bp@suse.de>
-AuthorDate:    Tue, 12 Nov 2019 22:06:03 +01:00
+Commit-ID:     957a227d413b06130b7d57d1954d821edf6991c1
+Gitweb:        https://git.kernel.org/tip/957a227d413b06130b7d57d1954d821edf6991c1
+Author:        Sean Christopherson <sean.j.christopherson@intel.com>
+AuthorDate:    Tue, 26 Nov 2019 11:59:11 -08:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Sun, 15 Dec 2019 10:58:54 +01:00
+CommitterDate: Mon, 16 Dec 2019 14:09:33 +01:00
 
-x86/cpu/tsx: Define pr_fmt()
+x86/boot: Fix a comment's incorrect file reference
 
-... so that all current and future pr_* statements in this file have the
-proper prefix.
+Fix the comment for 'struct real_mode_header' to reference the correct
+assembly file, realmode/rm/header.S.  The comment has always incorrectly
+referenced realmode.S, which doesn't exist, as defining the associated
+asm blob.
 
-No functional changes.
+Specify the file's path relative to arch/x86 to avoid confusion with
+boot/header.S.  Update the comment for 'struct trampoline_header' to
+also include the relative path to keep things consistent, and tweak the
+dual 64/32 reference so that it doesn't appear to be an extension of the
+relative path, i.e. avoid "realmode/rm/trampoline_32/64.S".
 
+Signed-off-by: Sean Christopherson <sean.j.christopherson@intel.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Cc: x86@kernel.org
-Link: https://lkml.kernel.org/r/20191112221823.19677-2-bp@alien8.de
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: x86-ml <x86@kernel.org>
+Link: https://lkml.kernel.org/r/20191126195911.3429-1-sean.j.christopherson@intel.com
 ---
- arch/x86/kernel/cpu/tsx.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/x86/include/asm/realmode.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/tsx.c b/arch/x86/kernel/cpu/tsx.c
-index 3e20d32..1674c8d 100644
---- a/arch/x86/kernel/cpu/tsx.c
-+++ b/arch/x86/kernel/cpu/tsx.c
-@@ -14,6 +14,9 @@
+diff --git a/arch/x86/include/asm/realmode.h b/arch/x86/include/asm/realmode.h
+index 09ecc32..b35030e 100644
+--- a/arch/x86/include/asm/realmode.h
++++ b/arch/x86/include/asm/realmode.h
+@@ -14,7 +14,7 @@
+ #include <linux/types.h>
+ #include <asm/io.h>
  
- #include "cpu.h"
+-/* This must match data at realmode.S */
++/* This must match data at realmode/rm/header.S */
+ struct real_mode_header {
+ 	u32	text_start;
+ 	u32	ro_end;
+@@ -36,7 +36,7 @@ struct real_mode_header {
+ #endif
+ };
  
-+#undef pr_fmt
-+#define pr_fmt(fmt) "tsx: " fmt
-+
- enum tsx_ctrl_states tsx_ctrl_state __ro_after_init = TSX_CTRL_NOT_SUPPORTED;
- 
- void tsx_disable(void)
-@@ -99,7 +102,7 @@ void __init tsx_init(void)
- 			tsx_ctrl_state = x86_get_tsx_auto_mode();
- 		} else {
- 			tsx_ctrl_state = TSX_CTRL_DISABLE;
--			pr_err("tsx: invalid option, defaulting to off\n");
-+			pr_err("invalid option, defaulting to off\n");
- 		}
- 	} else {
- 		/* tsx= not provided */
+-/* This must match data at trampoline_32/64.S */
++/* This must match data at realmode/rm/trampoline_{32,64}.S */
+ struct trampoline_header {
+ #ifdef CONFIG_X86_32
+ 	u32 start;
