@@ -2,34 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A981122BEF
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Dec 2019 13:40:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EBA2F122C00
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Dec 2019 13:41:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728237AbfLQMj5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 17 Dec 2019 07:39:57 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:55235 "EHLO
+        id S1728114AbfLQMkb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 17 Dec 2019 07:40:31 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:55286 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727975AbfLQMj5 (ORCPT
+        with ESMTP id S1728269AbfLQMkE (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 17 Dec 2019 07:39:57 -0500
+        Tue, 17 Dec 2019 07:40:04 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1ihC8l-0001o6-L9; Tue, 17 Dec 2019 13:39:51 +0100
+        id 1ihC8l-0001o4-Cg; Tue, 17 Dec 2019 13:39:51 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id F35531C2A3E;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id BC1451C2A3D;
         Tue, 17 Dec 2019 13:39:50 +0100 (CET)
 Date:   Tue, 17 Dec 2019 12:39:50 -0000
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Alexander Shishkin" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf/x86: Fix potential out-of-bounds access
-Cc:     Meelis Roos <mroos@linux.ee>,
+Subject: [tip: perf/urgent] perf/x86/intel/bts: Fix the use of page_private()
+Cc:     Alexander Shishkin <alexander.shishkin@linux.intel.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Jiri Olsa <jolsa@kernel.org>,
+        Vince Weaver <vincent.weaver@maine.edu>,
+        Ingo Molnar <mingo@redhat.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20191205142853.28894-2-alexander.shishkin@linux.intel.com>
+References: <20191205142853.28894-2-alexander.shishkin@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <157658639085.30329.2905901089064836333.tip-bot2@tip-bot2>
+Message-ID: <157658639063.30329.9964492624988033137.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -45,52 +51,94 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     1e69a0efc0bd0e02b8327e7186fbb4a81878ea0b
-Gitweb:        https://git.kernel.org/tip/1e69a0efc0bd0e02b8327e7186fbb4a81878ea0b
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Fri, 06 Dec 2019 12:50:16 +01:00
+Commit-ID:     ff61541cc6c1962957758ba433c574b76f588d23
+Gitweb:        https://git.kernel.org/tip/ff61541cc6c1962957758ba433c574b76f588d23
+Author:        Alexander Shishkin <alexander.shishkin@linux.intel.com>
+AuthorDate:    Thu, 05 Dec 2019 17:28:52 +03:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Tue, 17 Dec 2019 13:32:46 +01:00
 
-perf/x86: Fix potential out-of-bounds access
+perf/x86/intel/bts: Fix the use of page_private()
 
-UBSAN reported out-of-bound accesses for x86_pmu.event_map(), it's
-arguments should be < x86_pmu.max_events. Make sure all users observe
-this constraint.
+Commit
 
-Reported-by: Meelis Roos <mroos@linux.ee>
+  8062382c8dbe2 ("perf/x86/intel/bts: Add BTS PMU driver")
+
+brought in a warning with the BTS buffer initialization
+that is easily tripped with (assuming KPTI is disabled):
+
+instantly throwing:
+
+> ------------[ cut here ]------------
+> WARNING: CPU: 2 PID: 326 at arch/x86/events/intel/bts.c:86 bts_buffer_setup_aux+0x117/0x3d0
+> Modules linked in:
+> CPU: 2 PID: 326 Comm: perf Not tainted 5.4.0-rc8-00291-gceb9e77324fa #904
+> RIP: 0010:bts_buffer_setup_aux+0x117/0x3d0
+> Call Trace:
+>  rb_alloc_aux+0x339/0x550
+>  perf_mmap+0x607/0xc70
+>  mmap_region+0x76b/0xbd0
+...
+
+It appears to assume (for lost raisins) that PagePrivate() is set,
+while later it actually tests for PagePrivate() before using
+page_private().
+
+Make it consistent and always check PagePrivate() before using
+page_private().
+
+Fixes: 8062382c8dbe2 ("perf/x86/intel/bts: Add BTS PMU driver")
+Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Meelis Roos <mroos@linux.ee>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Vince Weaver <vincent.weaver@maine.edu>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Arnaldo Carvalho de Melo <acme@redhat.com>
+Link: https://lkml.kernel.org/r/20191205142853.28894-2-alexander.shishkin@linux.intel.com
 ---
- arch/x86/events/core.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ arch/x86/events/intel/bts.c | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/events/core.c b/arch/x86/events/core.c
-index 9a89d98..84fe1be 100644
---- a/arch/x86/events/core.c
-+++ b/arch/x86/events/core.c
-@@ -1642,9 +1642,12 @@ static struct attribute_group x86_pmu_format_group __ro_after_init = {
+diff --git a/arch/x86/events/intel/bts.c b/arch/x86/events/intel/bts.c
+index 38de4a7..6a3b599 100644
+--- a/arch/x86/events/intel/bts.c
++++ b/arch/x86/events/intel/bts.c
+@@ -63,9 +63,17 @@ struct bts_buffer {
  
- ssize_t events_sysfs_show(struct device *dev, struct device_attribute *attr, char *page)
- {
--	struct perf_pmu_events_attr *pmu_attr = \
-+	struct perf_pmu_events_attr *pmu_attr =
- 		container_of(attr, struct perf_pmu_events_attr, attr);
--	u64 config = x86_pmu.event_map(pmu_attr->id);
-+	u64 config = 0;
+ static struct pmu bts_pmu;
+ 
++static int buf_nr_pages(struct page *page)
++{
++	if (!PagePrivate(page))
++		return 1;
 +
-+	if (pmu_attr->id < x86_pmu.max_events)
-+		config = x86_pmu.event_map(pmu_attr->id);
- 
- 	/* string trumps id */
- 	if (pmu_attr->event_str)
-@@ -1713,6 +1716,9 @@ is_visible(struct kobject *kobj, struct attribute *attr, int idx)
- {
- 	struct perf_pmu_events_attr *pmu_attr;
- 
-+	if (idx >= x86_pmu.max_events)
-+		return 0;
++	return 1 << page_private(page);
++}
 +
- 	pmu_attr = container_of(attr, struct perf_pmu_events_attr, attr.attr);
- 	/* str trumps id */
- 	return pmu_attr->event_str || x86_pmu.event_map(idx) ? attr->mode : 0;
+ static size_t buf_size(struct page *page)
+ {
+-	return 1 << (PAGE_SHIFT + page_private(page));
++	return buf_nr_pages(page) * PAGE_SIZE;
+ }
+ 
+ static void *
+@@ -83,9 +91,7 @@ bts_buffer_setup_aux(struct perf_event *event, void **pages,
+ 	/* count all the high order buffers */
+ 	for (pg = 0, nbuf = 0; pg < nr_pages;) {
+ 		page = virt_to_page(pages[pg]);
+-		if (WARN_ON_ONCE(!PagePrivate(page) && nr_pages > 1))
+-			return NULL;
+-		pg += 1 << page_private(page);
++		pg += buf_nr_pages(page);
+ 		nbuf++;
+ 	}
+ 
+@@ -109,7 +115,7 @@ bts_buffer_setup_aux(struct perf_event *event, void **pages,
+ 		unsigned int __nr_pages;
+ 
+ 		page = virt_to_page(pages[pg]);
+-		__nr_pages = PagePrivate(page) ? 1 << page_private(page) : 1;
++		__nr_pages = buf_nr_pages(page);
+ 		buf->buf[nbuf].page = page;
+ 		buf->buf[nbuf].offset = offset;
+ 		buf->buf[nbuf].displacement = (pad ? BTS_RECORD_SIZE - pad : 0);
