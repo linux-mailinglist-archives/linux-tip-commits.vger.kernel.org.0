@@ -2,38 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D5105122C02
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Dec 2019 13:41:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 513DC122BF8
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Dec 2019 13:40:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727940AbfLQMkh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 17 Dec 2019 07:40:37 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:55280 "EHLO
+        id S1727952AbfLQMkM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 17 Dec 2019 07:40:12 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:55303 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727935AbfLQMkC (ORCPT
+        with ESMTP id S1728306AbfLQMkL (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 17 Dec 2019 07:40:02 -0500
+        Tue, 17 Dec 2019 07:40:11 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1ihC8s-0001ro-UJ; Tue, 17 Dec 2019 13:39:59 +0100
+        id 1ihC8s-0001pj-BH; Tue, 17 Dec 2019 13:39:58 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 15EDB1C2A40;
-        Tue, 17 Dec 2019 13:39:53 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 6C3D11C2A41;
+        Tue, 17 Dec 2019 13:39:52 +0100 (CET)
 Date:   Tue, 17 Dec 2019 12:39:52 -0000
-From:   "tip-bot2 for Frederic Weisbecker" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Cheng Jian" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched: Use fair:prio_changed() instead of ad-hoc
- implementation
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        Frederic Weisbecker <frederic@kernel.org>,
-        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191203160106.18806-3-frederic@kernel.org>
-References: <20191203160106.18806-3-frederic@kernel.org>
+Subject: [tip: sched/core] sched/fair: Optimize select_idle_cpu
+Cc:     Cheng Jian <cj.chengjian@huawei.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Valentin Schneider <valentin.schneider@arm.com>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20191213024530.28052-1-cj.chengjian@huawei.com>
+References: <20191213024530.28052-1-cj.chengjian@huawei.com>
 MIME-Version: 1.0
-Message-ID: <157658639295.30329.4061098261424663170.tip-bot2@tip-bot2>
+Message-ID: <157658639229.30329.254182650055773886.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,56 +50,65 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     5443a0be6121d557e12951537e10159e4c61035d
-Gitweb:        https://git.kernel.org/tip/5443a0be6121d557e12951537e10159e4c61035d
-Author:        Frederic Weisbecker <frederic@kernel.org>
-AuthorDate:    Tue, 03 Dec 2019 17:01:06 +01:00
+Commit-ID:     60588bfa223ff675b95f866249f90616613fbe31
+Gitweb:        https://git.kernel.org/tip/60588bfa223ff675b95f866249f90616613fbe31
+Author:        Cheng Jian <cj.chengjian@huawei.com>
+AuthorDate:    Fri, 13 Dec 2019 10:45:30 +08:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 17 Dec 2019 13:32:50 +01:00
+CommitterDate: Tue, 17 Dec 2019 13:32:51 +01:00
 
-sched: Use fair:prio_changed() instead of ad-hoc implementation
+sched/fair: Optimize select_idle_cpu
 
-set_user_nice() implements its own version of fair::prio_changed() and
-therefore misses a specific optimization towards nohz_full CPUs that
-avoid sending an resched IPI to a reniced task running alone. Use the
-proper callback instead.
+select_idle_cpu() will scan the LLC domain for idle CPUs,
+it's always expensive. so the next commit :
 
-Reported-by: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+	1ad3aaf3fcd2 ("sched/core: Implement new approach to scale select_idle_cpu()")
+
+introduces a way to limit how many CPUs we scan.
+
+But it consume some CPUs out of 'nr' that are not allowed
+for the task and thus waste our attempts. The function
+always return nr_cpumask_bits, and we can't find a CPU
+which our task is allowed to run.
+
+Cpumask may be too big, similar to select_idle_core(), use
+per_cpu_ptr 'select_idle_mask' to prevent stack overflow.
+
+Fixes: 1ad3aaf3fcd2 ("sched/core: Implement new approach to scale select_idle_cpu()")
+Signed-off-by: Cheng Jian <cj.chengjian@huawei.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: Ingo Molnar <mingo@kernel.org>
-Link: https://lkml.kernel.org/r/20191203160106.18806-3-frederic@kernel.org
+Reviewed-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
+Reviewed-by: Valentin Schneider <valentin.schneider@arm.com>
+Link: https://lkml.kernel.org/r/20191213024530.28052-1-cj.chengjian@huawei.com
 ---
- kernel/sched/core.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ kernel/sched/fair.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 90e4b00..15508c2 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -4540,17 +4540,17 @@ void set_user_nice(struct task_struct *p, long nice)
- 	p->prio = effective_prio(p);
- 	delta = p->prio - old_prio;
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 846f50b..280d54c 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -5828,6 +5828,7 @@ static inline int select_idle_smt(struct task_struct *p, int target)
+  */
+ static int select_idle_cpu(struct task_struct *p, struct sched_domain *sd, int target)
+ {
++	struct cpumask *cpus = this_cpu_cpumask_var_ptr(select_idle_mask);
+ 	struct sched_domain *this_sd;
+ 	u64 avg_cost, avg_idle;
+ 	u64 time, cost;
+@@ -5859,11 +5860,11 @@ static int select_idle_cpu(struct task_struct *p, struct sched_domain *sd, int t
  
--	if (queued) {
-+	if (queued)
- 		enqueue_task(rq, p, ENQUEUE_RESTORE | ENQUEUE_NOCLOCK);
--		/*
--		 * If the task increased its priority or is running and
--		 * lowered its priority, then reschedule its CPU:
--		 */
--		if (delta < 0 || (delta > 0 && task_running(rq, p)))
--			resched_curr(rq);
--	}
- 	if (running)
- 		set_next_task(rq, p);
+ 	time = cpu_clock(this);
+ 
+-	for_each_cpu_wrap(cpu, sched_domain_span(sd), target) {
++	cpumask_and(cpus, sched_domain_span(sd), p->cpus_ptr);
 +
-+	/*
-+	 * If the task increased its priority or is running and
-+	 * lowered its priority, then reschedule its CPU:
-+	 */
-+	p->sched_class->prio_changed(rq, p, old_prio);
-+
- out_unlock:
- 	task_rq_unlock(rq, p, &rf);
- }
++	for_each_cpu_wrap(cpu, cpus, target) {
+ 		if (!--nr)
+ 			return si_cpu;
+-		if (!cpumask_test_cpu(cpu, p->cpus_ptr))
+-			continue;
+ 		if (available_idle_cpu(cpu))
+ 			break;
+ 		if (si_cpu == -1 && sched_idle_cpu(cpu))
