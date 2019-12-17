@@ -2,37 +2,35 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CD66122BFF
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Dec 2019 13:41:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 90CBE122BED
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Dec 2019 13:40:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727996AbfLQMk2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 17 Dec 2019 07:40:28 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:55284 "EHLO
+        id S1728263AbfLQMkC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 17 Dec 2019 07:40:02 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:55268 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728264AbfLQMkF (ORCPT
+        with ESMTP id S1728251AbfLQMkC (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 17 Dec 2019 07:40:05 -0500
+        Tue, 17 Dec 2019 07:40:02 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1ihC8q-0001pe-Ce; Tue, 17 Dec 2019 13:39:56 +0100
+        id 1ihC8o-0001pn-6Y; Tue, 17 Dec 2019 13:39:54 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 36EE71C2A3D;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A95331C2A3F;
         Tue, 17 Dec 2019 13:39:52 +0100 (CET)
 Date:   Tue, 17 Dec 2019 12:39:52 -0000
-From:   "tip-bot2 for Peng Wang" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] schied/fair: Skip calculating @contrib without load
-Cc:     Peng Wang <rocking@linux.alibaba.com>,
+Subject: [tip: sched/core] cpu/hotplug, stop_machine: Fix stop_machine vs
+ hotplug order
+Cc:     "Paul E. McKenney" <paulmck@kernel.org>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <1576208740-35609-1-git-send-email-rocking@linux.alibaba.com>
-References: <1576208740-35609-1-git-send-email-rocking@linux.alibaba.com>
 MIME-Version: 1.0
-Message-ID: <157658639209.30329.5550277285445533985.tip-bot2@tip-bot2>
+Message-ID: <157658639252.30329.1683017961505048318.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,107 +46,90 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     d040e0734fb3dedfe24c3d94f5a32b4812eca610
-Gitweb:        https://git.kernel.org/tip/d040e0734fb3dedfe24c3d94f5a32b4812eca610
-Author:        Peng Wang <rocking@linux.alibaba.com>
-AuthorDate:    Fri, 13 Dec 2019 11:45:40 +08:00
+Commit-ID:     45178ac0cea853fe0e405bf11e101bdebea57b15
+Gitweb:        https://git.kernel.org/tip/45178ac0cea853fe0e405bf11e101bdebea57b15
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Tue, 10 Dec 2019 09:34:54 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 17 Dec 2019 13:32:51 +01:00
+CommitterDate: Tue, 17 Dec 2019 13:32:50 +01:00
 
-schied/fair: Skip calculating @contrib without load
+cpu/hotplug, stop_machine: Fix stop_machine vs hotplug order
 
-Because of the:
+Paul reported a very sporadic, rcutorture induced, workqueue failure.
+When the planets align, the workqueue rescuer's self-migrate fails and
+then triggers a WARN for running a work on the wrong CPU.
 
-	if (!load)
-		runnable = running = 0;
+Tejun then figured that set_cpus_allowed_ptr()'s stop_one_cpu() call
+could be ignored! When stopper->enabled is false, stop_machine will
+insta complete the work, without actually doing the work. Worse, it
+will not WARN about this (we really should fix this).
 
-clause in ___update_load_sum(), all the actual users of @contrib in
-accumulate_sum():
+It turns out there is a small window where a freshly online'ed CPU is
+marked 'online' but doesn't yet have the stopper task running:
 
-	if (load)
-		sa->load_sum += load * contrib;
-	if (runnable)
-		sa->runnable_load_sum += runnable * contrib;
-	if (running)
-		sa->util_sum += contrib << SCHED_CAPACITY_SHIFT;
+	BP				AP
 
-don't happen, and therefore we don't care what @contrib actually is and
-calculating it is pointless.
+	bringup_cpu()
+	  __cpu_up(cpu, idle)	 -->	start_secondary()
+					...
+					cpu_startup_entry()
+	  bringup_wait_for_ap()
+	    wait_for_ap_thread() <--	  cpuhp_online_idle()
+					  while (1)
+					    do_idle()
 
-If we count the times when @load equals zero and not as below:
+					... available to run kthreads ...
 
-	if (load) {
-		load_is_not_zero_count++;
-		contrib = __accumulate_pelt_segments(periods,
-				1024 - sa->period_contrib,delta);
-	} else
-		load_is_zero_count++;
+	    stop_machine_unpark()
+	      stopper->enable = true;
 
-As we can see, load_is_zero_count is much bigger than
-load_is_zero_count, and the gap is gradually widening:
+Close this by moving the stop_machine_unpark() into
+cpuhp_online_idle(), such that the stopper thread is ready before we
+start the idle loop and schedule.
 
-	load_is_zero_count:            6016044 times
-	load_is_not_zero_count:         244316 times
-	19:50:43 up 1 min,  1 user,  load average: 0.09, 0.06, 0.02
-
-	load_is_zero_count:            7956168 times
-	load_is_not_zero_count:         261472 times
-	19:51:42 up 2 min,  1 user,  load average: 0.03, 0.05, 0.01
-
-	load_is_zero_count:           10199896 times
-	load_is_not_zero_count:         278364 times
-	19:52:51 up 3 min,  1 user,  load average: 0.06, 0.05, 0.01
-
-	load_is_zero_count:           14333700 times
-	load_is_not_zero_count:         318424 times
-	19:54:53 up 5 min,  1 user,  load average: 0.01, 0.03, 0.00
-
-Perhaps we can gain some performance advantage by saving these
-unnecessary calculation.
-
-Signed-off-by: Peng Wang <rocking@linux.alibaba.com>
+Reported-by: "Paul E. McKenney" <paulmck@kernel.org>
+Debugged-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Vincent Guittot < vincent.guittot@linaro.org>
-Link: https://lkml.kernel.org/r/1576208740-35609-1-git-send-email-rocking@linux.alibaba.com
+Tested-by: "Paul E. McKenney" <paulmck@kernel.org>
 ---
- kernel/sched/pelt.c | 20 +++++++++++++++++---
- 1 file changed, 17 insertions(+), 3 deletions(-)
+ kernel/cpu.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/sched/pelt.c b/kernel/sched/pelt.c
-index a96db50..bd006b7 100644
---- a/kernel/sched/pelt.c
-+++ b/kernel/sched/pelt.c
-@@ -129,8 +129,20 @@ accumulate_sum(u64 delta, struct sched_avg *sa,
- 		 * Step 2
- 		 */
- 		delta %= 1024;
--		contrib = __accumulate_pelt_segments(periods,
--				1024 - sa->period_contrib, delta);
-+		if (load) {
-+			/*
-+			 * This relies on the:
-+			 *
-+			 * if (!load)
-+			 *	runnable = running = 0;
-+			 *
-+			 * clause from ___update_load_sum(); this results in
-+			 * the below usage of @contrib to dissapear entirely,
-+			 * so no point in calculating it.
-+			 */
-+			contrib = __accumulate_pelt_segments(periods,
-+					1024 - sa->period_contrib, delta);
-+		}
- 	}
- 	sa->period_contrib = delta;
+diff --git a/kernel/cpu.c b/kernel/cpu.c
+index a59cc98..e7f7967 100644
+--- a/kernel/cpu.c
++++ b/kernel/cpu.c
+@@ -525,8 +525,7 @@ static int bringup_wait_for_ap(unsigned int cpu)
+ 	if (WARN_ON_ONCE((!cpu_online(cpu))))
+ 		return -ECANCELED;
  
-@@ -205,7 +217,9 @@ ___update_load_sum(u64 now, struct sched_avg *sa,
- 	 * This means that weight will be 0 but not running for a sched_entity
- 	 * but also for a cfs_rq if the latter becomes idle. As an example,
- 	 * this happens during idle_balance() which calls
--	 * update_blocked_averages()
-+	 * update_blocked_averages().
-+	 *
-+	 * Also see the comment in accumulate_sum().
- 	 */
- 	if (!load)
- 		runnable = running = 0;
+-	/* Unpark the stopper thread and the hotplug thread of the target cpu */
+-	stop_machine_unpark(cpu);
++	/* Unpark the hotplug thread of the target cpu */
+ 	kthread_unpark(st->thread);
+ 
+ 	/*
+@@ -1089,8 +1088,8 @@ void notify_cpu_starting(unsigned int cpu)
+ 
+ /*
+  * Called from the idle task. Wake up the controlling task which brings the
+- * stopper and the hotplug thread of the upcoming CPU up and then delegates
+- * the rest of the online bringup to the hotplug thread.
++ * hotplug thread of the upcoming CPU up and then delegates the rest of the
++ * online bringup to the hotplug thread.
+  */
+ void cpuhp_online_idle(enum cpuhp_state state)
+ {
+@@ -1100,6 +1099,12 @@ void cpuhp_online_idle(enum cpuhp_state state)
+ 	if (state != CPUHP_AP_ONLINE_IDLE)
+ 		return;
+ 
++	/*
++	 * Unpart the stopper thread before we start the idle loop (and start
++	 * scheduling); this ensures the stopper task is always available.
++	 */
++	stop_machine_unpark(smp_processor_id());
++
+ 	st->state = CPUHP_AP_ONLINE_IDLE;
+ 	complete_ap_thread(st, true);
+ }
