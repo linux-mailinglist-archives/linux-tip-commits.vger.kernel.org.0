@@ -2,42 +2,41 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 83889122A25
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Dec 2019 12:32:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CE67122A29
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Dec 2019 12:32:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727717AbfLQLcY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 17 Dec 2019 06:32:24 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:55073 "EHLO
+        id S1727648AbfLQLcI (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 17 Dec 2019 06:32:08 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:55065 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727637AbfLQLcJ (ORCPT
+        with ESMTP id S1726756AbfLQLcH (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 17 Dec 2019 06:32:09 -0500
+        Tue, 17 Dec 2019 06:32:07 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1ihB50-0007Mk-M3; Tue, 17 Dec 2019 12:31:54 +0100
+        id 1ihB54-0007Mr-3z; Tue, 17 Dec 2019 12:31:58 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 56AEC1C2A34;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C60831C2A37;
         Tue, 17 Dec 2019 12:31:54 +0100 (CET)
 Date:   Tue, 17 Dec 2019 11:31:54 -0000
 From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf top: Do not bail out when
- perf_env__read_cpuid() returns ENOSYS
-Cc:     John Garry <john.garry@huawei.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Jiri Olsa <jolsa@redhat.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
+Subject: [tip: perf/urgent] tools headers kvm: Sync linux/kvm.h with the
+ kernel sources
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        Bharata B Rao <bharata@linux.ibm.com>,
+        Jiri Olsa <jolsa@kernel.org>,
         Namhyung Kim <namhyung@kernel.org>,
-        Will Deacon <will@kernel.org>,
+        Paul Mackerras <paulus@ozlabs.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <tip-lxwjr0cd2eggzx04a780ffrv@git.kernel.org>
-References: <tip-lxwjr0cd2eggzx04a780ffrv@git.kernel.org>
+In-Reply-To: <tip-bdbe4x02johhul05a03o27zj@git.kernel.org>
+References: <tip-bdbe4x02johhul05a03o27zj@git.kernel.org>
 MIME-Version: 1.0
-Message-ID: <157658231424.30329.14769800099775764092.tip-bot2@tip-bot2>
+Message-ID: <157658231463.30329.1504346716469355514.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -53,78 +52,51 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     61208e6e1003b3fd8d2d1f2a72ec27be43955c0b
-Gitweb:        https://git.kernel.org/tip/61208e6e1003b3fd8d2d1f2a72ec27be43955c0b
+Commit-ID:     b444268801a29b10c9edea037efcf4c7c4db9283
+Gitweb:        https://git.kernel.org/tip/b444268801a29b10c9edea037efcf4c7c4db9283
 Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Wed, 11 Dec 2019 10:21:59 -03:00
+AuthorDate:    Wed, 11 Dec 2019 10:06:45 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Wed, 11 Dec 2019 12:26:25 -03:00
+CommitterDate: Wed, 11 Dec 2019 10:08:35 -03:00
 
-perf top: Do not bail out when perf_env__read_cpuid() returns ENOSYS
+tools headers kvm: Sync linux/kvm.h with the kernel sources
 
-'perf top' stopped working on hw architectures that do not provide a
-get_cpuid() implementation and thus fallback to the weak get_cpuid()
-default function.
+To pick up the changes from:
 
-This is done because at annotation time we may need it in the arch
-specific annotation init routine, but that is only being used by arches
-that do provide a get_cpuid() implementation:
+  22945688acd4 ("KVM: PPC: Book3S HV: Support reset of secure guest")
 
-  $ find tools/  -name "*.[ch]" | xargs grep 'evlist->env'
-  tools/perf/builtin-top.c:	top.evlist->env = &perf_env;
-  tools/perf/util/evsel.c:		return evsel->evlist->env;
-  tools/perf/util/s390-cpumsf.c:	sf->machine_type = s390_cpumsf_get_type(session->evlist->env->cpuid);
-  tools/perf/util/header.c:	session->evlist->env = &header->env;
-  tools/perf/util/sample-raw.c:	const char *arch_pf = perf_env__arch(evlist->env);
+No tools changes are caused by this, as the only defines so far used
+from these files are for syscall arg pretty printing are:
+
+  $ grep KVM tools/perf/trace/beauty/*.sh
+  tools/perf/trace/beauty/kvm_ioctl.sh:regex='^#[[:space:]]*define[[:space:]]+KVM_(\w+)[[:space:]]+_IO[RW]*\([[:space:]]*KVMIO[[:space:]]*,[[:space:]]*(0x[[:xdigit:]]+).*'
   $
 
-  $ find tools/perf/arch  -name "*.[ch]" | xargs grep -w get_cpuid
-  tools/perf/arch/x86/util/auxtrace.c:	ret = get_cpuid(buffer, sizeof(buffer));
-  tools/perf/arch/x86/util/header.c:get_cpuid(char *buffer, size_t sz)
-  tools/perf/arch/powerpc/util/header.c:get_cpuid(char *buffer, size_t sz)
-  tools/perf/arch/s390/util/header.c: * Implementation of get_cpuid().
-  tools/perf/arch/s390/util/header.c:int get_cpuid(char *buffer, size_t sz)
-  tools/perf/arch/s390/util/header.c:	if (buf && get_cpuid(buf, 128))
-  $
+This addresses these tools/perf build warnings:
 
-For 'report' or 'script', i.e. tools working on perf.data files, that is
-setup while reading the header, its just top that needs to explicitely
-read it at tool start.
+  Warning: Kernel ABI header at 'tools/include/uapi/linux/kvm.h' differs from latest version at 'include/uapi/linux/kvm.h'
+  diff -u tools/include/uapi/linux/kvm.h include/uapi/linux/kvm.h
 
-Fixes: 608127f73779 ("perf top: Initialize perf_env->cpuid, needed by the per arch annotation init routine")
-Reported-by: John Garry <john.garry@huawei.com>
-Analysed-by: Jiri Olsa <jolsa@kernel.org>
-Reviewed-by: Mark Rutland <mark.rutland@arm.com>
-Tested-by: Mark Rutland <mark.rutland@arm.com>
-Tested-by: John Garry <john.garry@huawei.com> # arm64
-Acked-by: Jiri Olsa <jolsa@redhat.com>
 Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Bharata B Rao <bharata@linux.ibm.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Will Deacon <will@kernel.org>
-Link: https://lkml.kernel.org/n/tip-lxwjr0cd2eggzx04a780ffrv@git.kernel.org
+Cc: Paul Mackerras <paulus@ozlabs.org>
+Link: https://lkml.kernel.org/n/tip-bdbe4x02johhul05a03o27zj@git.kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/builtin-top.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ tools/include/uapi/linux/kvm.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/perf/builtin-top.c b/tools/perf/builtin-top.c
-index dc80044..795e353 100644
---- a/tools/perf/builtin-top.c
-+++ b/tools/perf/builtin-top.c
-@@ -1568,9 +1568,13 @@ int cmd_top(int argc, const char **argv)
- 	 */
- 	status = perf_env__read_cpuid(&perf_env);
- 	if (status) {
--		pr_err("Couldn't read the cpuid for this machine: %s\n",
--		       str_error_r(errno, errbuf, sizeof(errbuf)));
--		goto out_delete_evlist;
-+		/*
-+		 * Some arches do not provide a get_cpuid(), so just use pr_debug, otherwise
-+		 * warn the user explicitely.
-+		 */
-+		eprintf(status == ENOSYS ? 1 : 0, verbose,
-+			"Couldn't read the cpuid for this machine: %s\n",
-+			str_error_r(errno, errbuf, sizeof(errbuf)));
- 	}
- 	top.evlist->env = &perf_env;
+diff --git a/tools/include/uapi/linux/kvm.h b/tools/include/uapi/linux/kvm.h
+index e6f17c8..f0a16b4 100644
+--- a/tools/include/uapi/linux/kvm.h
++++ b/tools/include/uapi/linux/kvm.h
+@@ -1348,6 +1348,7 @@ struct kvm_s390_ucas_mapping {
+ #define KVM_PPC_GET_CPU_CHAR	  _IOR(KVMIO,  0xb1, struct kvm_ppc_cpu_char)
+ /* Available with KVM_CAP_PMU_EVENT_FILTER */
+ #define KVM_SET_PMU_EVENT_FILTER  _IOW(KVMIO,  0xb2, struct kvm_pmu_event_filter)
++#define KVM_PPC_SVM_OFF		  _IO(KVMIO,  0xb3)
  
+ /* ioctl for vm fd */
+ #define KVM_CREATE_DEVICE	  _IOWR(KVMIO,  0xe0, struct kvm_create_device)
