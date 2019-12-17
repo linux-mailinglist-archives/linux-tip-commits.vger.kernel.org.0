@@ -2,42 +2,46 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A8F60122826
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Dec 2019 11:01:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 14E3E122A24
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Dec 2019 12:32:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727395AbfLQKBY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 17 Dec 2019 05:01:24 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:54861 "EHLO
+        id S1727462AbfLQLcY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 17 Dec 2019 06:32:24 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:55071 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727039AbfLQKBX (ORCPT
+        with ESMTP id S1727632AbfLQLcJ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 17 Dec 2019 05:01:23 -0500
+        Tue, 17 Dec 2019 06:32:09 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1ih9fB-0003qk-Hn; Tue, 17 Dec 2019 11:01:09 +0100
+        id 1ihB4z-0007MI-Ry; Tue, 17 Dec 2019 12:31:53 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 3E6311C2A30;
-        Tue, 17 Dec 2019 11:01:09 +0100 (CET)
-Date:   Tue, 17 Dec 2019 10:01:09 -0000
-From:   "tip-bot2 for Konstantin Khlebnikov" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id F3A6F1C2A34;
+        Tue, 17 Dec 2019 12:31:52 +0100 (CET)
+Date:   Tue, 17 Dec 2019 11:31:52 -0000
+From:   "tip-bot2 for Ed Maste" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: ras/urgent] x86/MCE/AMD: Do not use rdmsr_safe_on_cpu() in
- smca_configure()
-Cc:     Konstantin Khlebnikov <khlebnikov@yandex-team.ru>,
-        Borislav Petkov <bp@suse.de>,
-        Yazen Ghannam <yazen.ghannam@amd.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        "linux-edac" <linux-edac@vger.kernel.org>,
-        <stable@vger.kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
-        Tony Luck <tony.luck@intel.com>, "x86-ml" <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <157252708836.3876.4604398213417262402.stgit@buzz>
-References: <157252708836.3876.4604398213417262402.stgit@buzz>
+Subject: [tip: perf/urgent] perf vendor events s390: Remove name from
+ L1D_RO_EXCL_WRITES description
+Cc:     Ed Maste <emaste@freebsd.org>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Greentime Hu <green.hu@gmail.com>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Nick Hu <nickhu@andestech.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Richter <tmricht@linux.ibm.com>,
+        Vincent Chen <deanbo422@gmail.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20191212145346.5026-1-emaste@freefall.freebsd.org>
+References: <20191212145346.5026-1-emaste@freefall.freebsd.org>
 MIME-Version: 1.0
-Message-ID: <157657686913.30329.12674595394156740801.tip-bot2@tip-bot2>
+Message-ID: <157658231276.30329.18331050645912292704.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,78 +55,48 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the ras/urgent branch of tip:
+The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     246ff09f89e54fdf740a8d496176c86743db3ec7
-Gitweb:        https://git.kernel.org/tip/246ff09f89e54fdf740a8d496176c86743db3ec7
-Author:        Konstantin Khlebnikov <khlebnikov@yandex-team.ru>
-AuthorDate:    Thu, 31 Oct 2019 16:04:48 +03:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 17 Dec 2019 09:39:33 +01:00
+Commit-ID:     58b3bafff8257c6946df5d6aeb215b8ac839ed2a
+Gitweb:        https://git.kernel.org/tip/58b3bafff8257c6946df5d6aeb215b8ac839ed2a
+Author:        Ed Maste <emaste@freebsd.org>
+AuthorDate:    Thu, 12 Dec 2019 14:53:46 
+Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
+CommitterDate: Mon, 16 Dec 2019 13:40:26 -03:00
 
-x86/MCE/AMD: Do not use rdmsr_safe_on_cpu() in smca_configure()
+perf vendor events s390: Remove name from L1D_RO_EXCL_WRITES description
 
-... because interrupts are disabled that early and sending IPIs can
-deadlock:
+In 7fcfa9a2d9 an unintended prefix "Counter:18 Name:" was removed from
+the description for L1D_RO_EXCL_WRITES, but the extra name remained in
+the description.  Remove it too.
 
-  BUG: sleeping function called from invalid context at kernel/sched/completion.c:99
-  in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 0, name: swapper/1
-  no locks held by swapper/1/0.
-  irq event stamp: 0
-  hardirqs last  enabled at (0): [<0000000000000000>] 0x0
-  hardirqs last disabled at (0): [<ffffffff8106dda9>] copy_process+0x8b9/0x1ca0
-  softirqs last  enabled at (0): [<ffffffff8106dda9>] copy_process+0x8b9/0x1ca0
-  softirqs last disabled at (0): [<0000000000000000>] 0x0
-  Preemption disabled at:
-  [<ffffffff8104703b>] start_secondary+0x3b/0x190
-  CPU: 1 PID: 0 Comm: swapper/1 Not tainted 5.5.0-rc2+ #1
-  Hardware name: GIGABYTE MZ01-CE1-00/MZ01-CE1-00, BIOS F02 08/29/2018
-  Call Trace:
-   dump_stack
-   ___might_sleep.cold.92
-   wait_for_completion
-   ? generic_exec_single
-   rdmsr_safe_on_cpu
-   ? wrmsr_on_cpus
-   mce_amd_feature_init
-   mcheck_cpu_init
-   identify_cpu
-   identify_secondary_cpu
-   smp_store_cpu_info
-   start_secondary
-   secondary_startup_64
-
-The function smca_configure() is called only on the current CPU anyway,
-therefore replace rdmsr_safe_on_cpu() with atomic rdmsr_safe() and avoid
-the IPI.
-
- [ bp: Update commit message. ]
-
-Signed-off-by: Konstantin Khlebnikov <khlebnikov@yandex-team.ru>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Yazen Ghannam <yazen.ghannam@amd.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: linux-edac <linux-edac@vger.kernel.org>
-Cc: <stable@vger.kernel.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Tony Luck <tony.luck@intel.com>
-Cc: x86-ml <x86@kernel.org>
-Link: https://lkml.kernel.org/r/157252708836.3876.4604398213417262402.stgit@buzz
+Fixes: 7fcfa9a2d9a7 ("perf list: Fix s390 counter long description for L1D_RO_EXCL_WRITES")
+Signed-off-by: Ed Maste <emaste@freebsd.org>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Greentime Hu <green.hu@gmail.com>
+Cc: Jiri Olsa <jolsa@redhat.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Nick Hu <nickhu@andestech.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Thomas Richter <tmricht@linux.ibm.com>
+Cc: Vincent Chen <deanbo422@gmail.com>
+Link: http://lore.kernel.org/lkml/20191212145346.5026-1-emaste@freefall.freebsd.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- arch/x86/kernel/cpu/mce/amd.c | 2 +-
+ tools/perf/pmu-events/arch/s390/cf_z14/extended.json | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/cpu/mce/amd.c b/arch/x86/kernel/cpu/mce/amd.c
-index 5167bd2..e41e3b4 100644
---- a/arch/x86/kernel/cpu/mce/amd.c
-+++ b/arch/x86/kernel/cpu/mce/amd.c
-@@ -269,7 +269,7 @@ static void smca_configure(unsigned int bank, unsigned int cpu)
- 	if (smca_banks[bank].hwid)
- 		return;
- 
--	if (rdmsr_safe_on_cpu(cpu, MSR_AMD64_SMCA_MCx_IPID(bank), &low, &high)) {
-+	if (rdmsr_safe(MSR_AMD64_SMCA_MCx_IPID(bank), &low, &high)) {
- 		pr_warn("Failed to read MCA_IPID for bank %d\n", bank);
- 		return;
- 	}
+diff --git a/tools/perf/pmu-events/arch/s390/cf_z14/extended.json b/tools/perf/pmu-events/arch/s390/cf_z14/extended.json
+index 6861815..89e0707 100644
+--- a/tools/perf/pmu-events/arch/s390/cf_z14/extended.json
++++ b/tools/perf/pmu-events/arch/s390/cf_z14/extended.json
+@@ -4,7 +4,7 @@
+ 		"EventCode": "128",
+ 		"EventName": "L1D_RO_EXCL_WRITES",
+ 		"BriefDescription": "L1D Read-only Exclusive Writes",
+-		"PublicDescription": "L1D_RO_EXCL_WRITES A directory write to the Level-1 Data cache where the line was originally in a Read-Only state in the cache but has been updated to be in the Exclusive state that allows stores to the cache line"
++		"PublicDescription": "A directory write to the Level-1 Data cache where the line was originally in a Read-Only state in the cache but has been updated to be in the Exclusive state that allows stores to the cache line"
+ 	},
+ 	{
+ 		"Unit": "CPU-M-CF",
