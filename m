@@ -2,35 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 90CBE122BED
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Dec 2019 13:40:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D5105122C02
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Dec 2019 13:41:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728263AbfLQMkC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 17 Dec 2019 07:40:02 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:55268 "EHLO
+        id S1727940AbfLQMkh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 17 Dec 2019 07:40:37 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:55280 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728251AbfLQMkC (ORCPT
+        with ESMTP id S1727935AbfLQMkC (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Tue, 17 Dec 2019 07:40:02 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1ihC8o-0001pn-6Y; Tue, 17 Dec 2019 13:39:54 +0100
+        id 1ihC8s-0001ro-UJ; Tue, 17 Dec 2019 13:39:59 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A95331C2A3F;
-        Tue, 17 Dec 2019 13:39:52 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 15EDB1C2A40;
+        Tue, 17 Dec 2019 13:39:53 +0100 (CET)
 Date:   Tue, 17 Dec 2019 12:39:52 -0000
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Frederic Weisbecker" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] cpu/hotplug, stop_machine: Fix stop_machine vs
- hotplug order
-Cc:     "Paul E. McKenney" <paulmck@kernel.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+Subject: [tip: sched/core] sched: Use fair:prio_changed() instead of ad-hoc
+ implementation
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Frederic Weisbecker <frederic@kernel.org>,
+        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20191203160106.18806-3-frederic@kernel.org>
+References: <20191203160106.18806-3-frederic@kernel.org>
 MIME-Version: 1.0
-Message-ID: <157658639252.30329.1683017961505048318.tip-bot2@tip-bot2>
+Message-ID: <157658639295.30329.4061098261424663170.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -46,90 +49,56 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     45178ac0cea853fe0e405bf11e101bdebea57b15
-Gitweb:        https://git.kernel.org/tip/45178ac0cea853fe0e405bf11e101bdebea57b15
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Tue, 10 Dec 2019 09:34:54 +01:00
+Commit-ID:     5443a0be6121d557e12951537e10159e4c61035d
+Gitweb:        https://git.kernel.org/tip/5443a0be6121d557e12951537e10159e4c61035d
+Author:        Frederic Weisbecker <frederic@kernel.org>
+AuthorDate:    Tue, 03 Dec 2019 17:01:06 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Tue, 17 Dec 2019 13:32:50 +01:00
 
-cpu/hotplug, stop_machine: Fix stop_machine vs hotplug order
+sched: Use fair:prio_changed() instead of ad-hoc implementation
 
-Paul reported a very sporadic, rcutorture induced, workqueue failure.
-When the planets align, the workqueue rescuer's self-migrate fails and
-then triggers a WARN for running a work on the wrong CPU.
+set_user_nice() implements its own version of fair::prio_changed() and
+therefore misses a specific optimization towards nohz_full CPUs that
+avoid sending an resched IPI to a reniced task running alone. Use the
+proper callback instead.
 
-Tejun then figured that set_cpus_allowed_ptr()'s stop_one_cpu() call
-could be ignored! When stopper->enabled is false, stop_machine will
-insta complete the work, without actually doing the work. Worse, it
-will not WARN about this (we really should fix this).
-
-It turns out there is a small window where a freshly online'ed CPU is
-marked 'online' but doesn't yet have the stopper task running:
-
-	BP				AP
-
-	bringup_cpu()
-	  __cpu_up(cpu, idle)	 -->	start_secondary()
-					...
-					cpu_startup_entry()
-	  bringup_wait_for_ap()
-	    wait_for_ap_thread() <--	  cpuhp_online_idle()
-					  while (1)
-					    do_idle()
-
-					... available to run kthreads ...
-
-	    stop_machine_unpark()
-	      stopper->enable = true;
-
-Close this by moving the stop_machine_unpark() into
-cpuhp_online_idle(), such that the stopper thread is ready before we
-start the idle loop and schedule.
-
-Reported-by: "Paul E. McKenney" <paulmck@kernel.org>
-Debugged-by: Tejun Heo <tj@kernel.org>
+Reported-by: Peter Zijlstra <peterz@infradead.org>
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: "Paul E. McKenney" <paulmck@kernel.org>
+Cc: Ingo Molnar <mingo@kernel.org>
+Link: https://lkml.kernel.org/r/20191203160106.18806-3-frederic@kernel.org
 ---
- kernel/cpu.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ kernel/sched/core.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/kernel/cpu.c b/kernel/cpu.c
-index a59cc98..e7f7967 100644
---- a/kernel/cpu.c
-+++ b/kernel/cpu.c
-@@ -525,8 +525,7 @@ static int bringup_wait_for_ap(unsigned int cpu)
- 	if (WARN_ON_ONCE((!cpu_online(cpu))))
- 		return -ECANCELED;
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 90e4b00..15508c2 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -4540,17 +4540,17 @@ void set_user_nice(struct task_struct *p, long nice)
+ 	p->prio = effective_prio(p);
+ 	delta = p->prio - old_prio;
  
--	/* Unpark the stopper thread and the hotplug thread of the target cpu */
--	stop_machine_unpark(cpu);
-+	/* Unpark the hotplug thread of the target cpu */
- 	kthread_unpark(st->thread);
- 
- 	/*
-@@ -1089,8 +1088,8 @@ void notify_cpu_starting(unsigned int cpu)
- 
- /*
-  * Called from the idle task. Wake up the controlling task which brings the
-- * stopper and the hotplug thread of the upcoming CPU up and then delegates
-- * the rest of the online bringup to the hotplug thread.
-+ * hotplug thread of the upcoming CPU up and then delegates the rest of the
-+ * online bringup to the hotplug thread.
-  */
- void cpuhp_online_idle(enum cpuhp_state state)
- {
-@@ -1100,6 +1099,12 @@ void cpuhp_online_idle(enum cpuhp_state state)
- 	if (state != CPUHP_AP_ONLINE_IDLE)
- 		return;
- 
-+	/*
-+	 * Unpart the stopper thread before we start the idle loop (and start
-+	 * scheduling); this ensures the stopper task is always available.
-+	 */
-+	stop_machine_unpark(smp_processor_id());
+-	if (queued) {
++	if (queued)
+ 		enqueue_task(rq, p, ENQUEUE_RESTORE | ENQUEUE_NOCLOCK);
+-		/*
+-		 * If the task increased its priority or is running and
+-		 * lowered its priority, then reschedule its CPU:
+-		 */
+-		if (delta < 0 || (delta > 0 && task_running(rq, p)))
+-			resched_curr(rq);
+-	}
+ 	if (running)
+ 		set_next_task(rq, p);
 +
- 	st->state = CPUHP_AP_ONLINE_IDLE;
- 	complete_ap_thread(st, true);
++	/*
++	 * If the task increased its priority or is running and
++	 * lowered its priority, then reschedule its CPU:
++	 */
++	p->sched_class->prio_changed(rq, p, old_prio);
++
+ out_unlock:
+ 	task_rq_unlock(rq, p, &rf);
  }
