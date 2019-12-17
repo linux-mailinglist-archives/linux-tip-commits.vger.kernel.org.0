@@ -2,40 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 24679122BFC
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Dec 2019 13:41:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F34C122BEA
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Dec 2019 13:40:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728286AbfLQMkX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 17 Dec 2019 07:40:23 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:55287 "EHLO
+        id S1728249AbfLQMj7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 17 Dec 2019 07:39:59 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:55240 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728275AbfLQMkG (ORCPT
+        with ESMTP id S1727935AbfLQMj6 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 17 Dec 2019 07:40:06 -0500
+        Tue, 17 Dec 2019 07:39:58 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1ihC8l-0001o0-6M; Tue, 17 Dec 2019 13:39:51 +0100
+        id 1ihC8m-0001oD-5Q; Tue, 17 Dec 2019 13:39:52 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 896D61C2A3C;
-        Tue, 17 Dec 2019 13:39:50 +0100 (CET)
-Date:   Tue, 17 Dec 2019 12:39:50 -0000
-From:   "tip-bot2 for Alexander Shishkin" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 3E6501C2A3F;
+        Tue, 17 Dec 2019 13:39:51 +0100 (CET)
+Date:   Tue, 17 Dec 2019 12:39:51 -0000
+From:   "tip-bot2 for Vincent Guittot" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf/x86/intel: Fix PT PMI handling
-Cc:     Vitaly Slobodskoy <vitaly.slobodskoy@intel.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+Subject: [tip: sched/urgent] sched/cfs: fix spurious active migration
+Cc:     Vincent Guittot <vincent.guittot@linaro.org>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Alexey Budankov <alexey.budankov@linux.intel.com>,
-        Jiri Olsa <jolsa@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191210105101.77210-1-alexander.shishkin@linux.intel.com>
-References: <20191210105101.77210-1-alexander.shishkin@linux.intel.com>
+In-Reply-To: <1575036287-6052-1-git-send-email-vincent.guittot@linaro.org>
+References: <1575036287-6052-1-git-send-email-vincent.guittot@linaro.org>
 MIME-Version: 1.0
-Message-ID: <157658639044.30329.8671733952601494347.tip-bot2@tip-bot2>
+Message-ID: <157658639113.30329.18388929547654840709.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,77 +45,59 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/urgent branch of tip:
+The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     92ca7da4bdc24d63bb0bcd241c11441ddb63b80a
-Gitweb:        https://git.kernel.org/tip/92ca7da4bdc24d63bb0bcd241c11441ddb63b80a
-Author:        Alexander Shishkin <alexander.shishkin@linux.intel.com>
-AuthorDate:    Tue, 10 Dec 2019 12:51:01 +02:00
+Commit-ID:     6cf82d559e1a1d89f06ff4d428aca479c1dd0be6
+Gitweb:        https://git.kernel.org/tip/6cf82d559e1a1d89f06ff4d428aca479c1dd0be6
+Author:        Vincent Guittot <vincent.guittot@linaro.org>
+AuthorDate:    Fri, 29 Nov 2019 15:04:47 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 17 Dec 2019 13:32:46 +01:00
+CommitterDate: Tue, 17 Dec 2019 13:32:48 +01:00
 
-perf/x86/intel: Fix PT PMI handling
+sched/cfs: fix spurious active migration
 
-Commit:
+The load balance can fail to find a suitable task during the periodic check
+because  the imbalance is smaller than half of the load of the waiting
+tasks. This results in the increase of the number of failed load balance,
+which can end up to start an active migration. This active migration is
+useless because the current running task is not a better choice than the
+waiting ones. In fact, the current task was probably not running but
+waiting for the CPU during one of the previous attempts and it had already
+not been selected.
 
-  ccbebba4c6bf ("perf/x86/intel/pt: Bypass PT vs. LBR exclusivity if the core supports it")
+When load balance fails too many times to migrate a task, we should relax
+the contraint on the maximum load of the tasks that can be migrated
+similarly to what is done with cache hotness.
 
-skips the PT/LBR exclusivity check on CPUs where PT and LBRs coexist, but
-also inadvertently skips the active_events bump for PT in that case, which
-is a bug. If there aren't any hardware events at the same time as PT, the
-PMI handler will ignore PT PMIs, as active_events reads zero in that case,
-resulting in the "Uhhuh" spurious NMI warning and PT data loss.
+Before the rework, load balance used to set the imbalance to the average
+load_per_task in order to mitigate such situation. This increased the
+likelihood of migrating a task but also of selecting a larger task than
+needed while more appropriate ones were in the list.
 
-Fix this by always increasing active_events for PT events.
-
-Fixes: ccbebba4c6bf ("perf/x86/intel/pt: Bypass PT vs. LBR exclusivity if the core supports it")
-Reported-by: Vitaly Slobodskoy <vitaly.slobodskoy@intel.com>
-Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Alexey Budankov <alexey.budankov@linux.intel.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Arnaldo Carvalho de Melo <acme@redhat.com>
-Link: https://lkml.kernel.org/r/20191210105101.77210-1-alexander.shishkin@linux.intel.com
+Link: https://lkml.kernel.org/r/1575036287-6052-1-git-send-email-vincent.guittot@linaro.org
 ---
- arch/x86/events/core.c |  9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ kernel/sched/fair.c |  9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/events/core.c b/arch/x86/events/core.c
-index 84fe1be..f118af9 100644
---- a/arch/x86/events/core.c
-+++ b/arch/x86/events/core.c
-@@ -376,7 +376,7 @@ int x86_add_exclusive(unsigned int what)
- 	 * LBR and BTS are still mutually exclusive.
- 	 */
- 	if (x86_pmu.lbr_pt_coexist && what == x86_lbr_exclusive_pt)
--		return 0;
-+		goto out;
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 146b6c8..ba749f5 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -7328,7 +7328,14 @@ static int detach_tasks(struct lb_env *env)
+ 			    load < 16 && !env->sd->nr_balance_failed)
+ 				goto next;
  
- 	if (!atomic_inc_not_zero(&x86_pmu.lbr_exclusive[what])) {
- 		mutex_lock(&pmc_reserve_mutex);
-@@ -388,6 +388,7 @@ int x86_add_exclusive(unsigned int what)
- 		mutex_unlock(&pmc_reserve_mutex);
- 	}
+-			if (load/2 > env->imbalance)
++			/*
++			 * Make sure that we don't migrate too much load.
++			 * Nevertheless, let relax the constraint if
++			 * scheduler fails to find a good waiting task to
++			 * migrate.
++			 */
++			if (load/2 > env->imbalance &&
++			    env->sd->nr_balance_failed <= env->sd->cache_nice_tries)
+ 				goto next;
  
-+out:
- 	atomic_inc(&active_events);
- 	return 0;
- 
-@@ -398,11 +399,15 @@ fail_unlock:
- 
- void x86_del_exclusive(unsigned int what)
- {
-+	atomic_dec(&active_events);
-+
-+	/*
-+	 * See the comment in x86_add_exclusive().
-+	 */
- 	if (x86_pmu.lbr_pt_coexist && what == x86_lbr_exclusive_pt)
- 		return;
- 
- 	atomic_dec(&x86_pmu.lbr_exclusive[what]);
--	atomic_dec(&active_events);
- }
- 
- int x86_setup_perfctr(struct perf_event *event)
+ 			env->imbalance -= load;
