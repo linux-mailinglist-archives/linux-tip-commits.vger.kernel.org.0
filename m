@@ -2,38 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 18269122BEC
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Dec 2019 13:40:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B9F1612464B
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 18 Dec 2019 12:57:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728259AbfLQMkC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 17 Dec 2019 07:40:02 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:55269 "EHLO
+        id S1726551AbfLRL5p (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 18 Dec 2019 06:57:45 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:57528 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728250AbfLQMkB (ORCPT
+        with ESMTP id S1726141AbfLRL5o (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 17 Dec 2019 07:40:01 -0500
+        Wed, 18 Dec 2019 06:57:44 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1ihC8r-0001sK-8T; Tue, 17 Dec 2019 13:39:57 +0100
+        id 1ihXxQ-0000ek-Me; Wed, 18 Dec 2019 12:57:36 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5F2631C2A42;
-        Tue, 17 Dec 2019 13:39:53 +0100 (CET)
-Date:   Tue, 17 Dec 2019 12:39:53 -0000
-From:   "tip-bot2 for Frederic Weisbecker" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E1F3D1C268E;
+        Wed, 18 Dec 2019 12:57:35 +0100 (CET)
+Date:   Wed, 18 Dec 2019 11:57:35 -0000
+From:   "tip-bot2 for Enrico Weigelt" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched: Spare resched IPI when prio changes on a
- single fair task
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        Frederic Weisbecker <frederic@kernel.org>,
-        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191203160106.18806-2-frederic@kernel.org>
-References: <20191203160106.18806-2-frederic@kernel.org>
+Subject: [tip: x86/cleanups] Documentation/x86/boot: Fix typo
+Cc:     "Enrico Weigelt, metux IT consult" <info@metux.net>,
+        Borislav Petkov <bp@suse.de>, "H. Peter Anvin" <hpa@zytor.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "x86-ml" <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20191203113314.26810-1-info@metux.net>
+References: <20191203113314.26810-1-info@metux.net>
 MIME-Version: 1.0
-Message-ID: <157658639317.30329.4178285376901273238.tip-bot2@tip-bot2>
+Message-ID: <157667025572.30329.18057346282277945641.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,43 +48,42 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the x86/cleanups branch of tip:
 
-Commit-ID:     7c2e8bbd87db661122e92d71a394dd7bb3ada4d3
-Gitweb:        https://git.kernel.org/tip/7c2e8bbd87db661122e92d71a394dd7bb3ada4d3
-Author:        Frederic Weisbecker <frederic@kernel.org>
-AuthorDate:    Tue, 03 Dec 2019 17:01:05 +01:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 17 Dec 2019 13:32:50 +01:00
+Commit-ID:     e156c6176c9d6e69e166fb20e3b4e9f85ead8d77
+Gitweb:        https://git.kernel.org/tip/e156c6176c9d6e69e166fb20e3b4e9f85ead8d77
+Author:        Enrico Weigelt <info@metux.net>
+AuthorDate:    Tue, 03 Dec 2019 12:33:14 +01:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Wed, 18 Dec 2019 12:50:27 +01:00
 
-sched: Spare resched IPI when prio changes on a single fair task
+Documentation/x86/boot: Fix typo
 
-The runqueue of a fair task being remotely reniced is going to get a
-resched IPI in order to reassess which task should be the current
-running on the CPU. However that evaluation is useless if the fair task
-is running alone, in which case we can spare that IPI, preventing
-nohz_full CPUs from being disturbed.
+s/Fileds/Fields/g
 
-Reported-by: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: Ingo Molnar <mingo@kernel.org>
-Link: https://lkml.kernel.org/r/20191203160106.18806-2-frederic@kernel.org
+Signed-off-by: Enrico Weigelt, metux IT consult <info@metux.net>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: linux-doc@vger.kernel.org
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: x86-ml <x86@kernel.org>
+Link: https://lkml.kernel.org/r/20191203113314.26810-1-info@metux.net
 ---
- kernel/sched/fair.c | 3 +++
- 1 file changed, 3 insertions(+)
+ Documentation/x86/boot.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 08a233e..846f50b 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -10322,6 +10322,9 @@ prio_changed_fair(struct rq *rq, struct task_struct *p, int oldprio)
- 	if (!task_on_rq_queued(p))
- 		return;
+diff --git a/Documentation/x86/boot.rst b/Documentation/x86/boot.rst
+index 90bb8f5..692ce57 100644
+--- a/Documentation/x86/boot.rst
++++ b/Documentation/x86/boot.rst
+@@ -251,7 +251,7 @@ setting fields in the header, you must make sure only to set fields
+ supported by the protocol version in use.
  
-+	if (rq->cfs.nr_running == 1)
-+		return;
-+
- 	/*
- 	 * Reschedule if we are currently running on this runqueue and
- 	 * our priority decreased, or if we are not currently running on
+ 
+-Details of Harder Fileds
++Details of Header Fields
+ ========================
+ 
+ For each field, some are information from the kernel to the bootloader
