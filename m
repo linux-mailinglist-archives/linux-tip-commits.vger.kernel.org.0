@@ -2,39 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B9F1612464B
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 18 Dec 2019 12:57:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AF644124695
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 18 Dec 2019 13:14:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726551AbfLRL5p (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 18 Dec 2019 06:57:45 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:57528 "EHLO
+        id S1726787AbfLRMOz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 18 Dec 2019 07:14:55 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:57586 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726141AbfLRL5o (ORCPT
+        with ESMTP id S1726029AbfLRMOy (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 18 Dec 2019 06:57:44 -0500
+        Wed, 18 Dec 2019 07:14:54 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1ihXxQ-0000ek-Me; Wed, 18 Dec 2019 12:57:36 +0100
+        id 1ihYE2-00013W-04; Wed, 18 Dec 2019 13:14:46 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E1F3D1C268E;
-        Wed, 18 Dec 2019 12:57:35 +0100 (CET)
-Date:   Wed, 18 Dec 2019 11:57:35 -0000
-From:   "tip-bot2 for Enrico Weigelt" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A3D451C2A74;
+        Wed, 18 Dec 2019 13:14:45 +0100 (CET)
+Date:   Wed, 18 Dec 2019 12:14:45 -0000
+From:   "tip-bot2 for Randy Dunlap" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] Documentation/x86/boot: Fix typo
-Cc:     "Enrico Weigelt, metux IT consult" <info@metux.net>,
-        Borislav Petkov <bp@suse.de>, "H. Peter Anvin" <hpa@zytor.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "x86-ml" <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191203113314.26810-1-info@metux.net>
-References: <20191203113314.26810-1-info@metux.net>
+Subject: [tip: x86/cleanups] x86/Kconfig: Correct spelling and punctuation
+Cc:     Randy Dunlap <rdunlap@infradead.org>, Borislav Petkov <bp@suse.de>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>, X86 ML <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <443ed0a8-783d-6c7c-3258-e1c44df03fd7@infradead.org>
+References: <443ed0a8-783d-6c7c-3258-e1c44df03fd7@infradead.org>
 MIME-Version: 1.0
-Message-ID: <157667025572.30329.18057346282277945641.tip-bot2@tip-bot2>
+Message-ID: <157667128550.30329.11583222842063841039.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,40 +48,59 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/cleanups branch of tip:
 
-Commit-ID:     e156c6176c9d6e69e166fb20e3b4e9f85ead8d77
-Gitweb:        https://git.kernel.org/tip/e156c6176c9d6e69e166fb20e3b4e9f85ead8d77
-Author:        Enrico Weigelt <info@metux.net>
-AuthorDate:    Tue, 03 Dec 2019 12:33:14 +01:00
+Commit-ID:     e133f6eac3fa6591384133b2270b24376813d231
+Gitweb:        https://git.kernel.org/tip/e133f6eac3fa6591384133b2270b24376813d231
+Author:        Randy Dunlap <rdunlap@infradead.org>
+AuthorDate:    Tue, 03 Dec 2019 16:06:47 -08:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 18 Dec 2019 12:50:27 +01:00
+CommitterDate: Wed, 18 Dec 2019 13:06:53 +01:00
 
-Documentation/x86/boot: Fix typo
+x86/Kconfig: Correct spelling and punctuation
 
-s/Fileds/Fields/g
+End a sentence with a period (aka full stop) in Kconfig help text. Fix
+minor NUMA-related Kconfig text:
 
-Signed-off-by: Enrico Weigelt, metux IT consult <info@metux.net>
+- Use capital letters for NUMA acronym.
+- Hyphenate Non-Uniform.
+
+ [ bp: Merge into a single patch. ]
+
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
 Signed-off-by: Borislav Petkov <bp@suse.de>
 Cc: "H. Peter Anvin" <hpa@zytor.com>
 Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: linux-doc@vger.kernel.org
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: x86-ml <x86@kernel.org>
-Link: https://lkml.kernel.org/r/20191203113314.26810-1-info@metux.net
+Cc: X86 ML <x86@kernel.org>
+Link: https://lkml.kernel.org/r/443ed0a8-783d-6c7c-3258-e1c44df03fd7@infradead.org
 ---
- Documentation/x86/boot.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/Kconfig | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/x86/boot.rst b/Documentation/x86/boot.rst
-index 90bb8f5..692ce57 100644
---- a/Documentation/x86/boot.rst
-+++ b/Documentation/x86/boot.rst
-@@ -251,7 +251,7 @@ setting fields in the header, you must make sure only to set fields
- supported by the protocol version in use.
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index d7bbed5..97956b5 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -477,7 +477,7 @@ config X86_BIGSMP
+ 	bool "Support for big SMP systems with more than 8 CPUs"
+ 	depends on SMP
+ 	---help---
+-	  This option is needed for the systems that have more than 8 CPUs
++	  This option is needed for the systems that have more than 8 CPUs.
  
+ config X86_EXTENDED_PLATFORM
+ 	bool "Support for extended (non-PC) x86 platforms"
+@@ -1543,12 +1543,12 @@ config AMD_MEM_ENCRYPT_ACTIVE_BY_DEFAULT
  
--Details of Harder Fileds
-+Details of Header Fields
- ========================
+ # Common NUMA Features
+ config NUMA
+-	bool "Numa Memory Allocation and Scheduler Support"
++	bool "NUMA Memory Allocation and Scheduler Support"
+ 	depends on SMP
+ 	depends on X86_64 || (X86_32 && HIGHMEM64G && X86_BIGSMP)
+ 	default y if X86_BIGSMP
+ 	---help---
+-	  Enable NUMA (Non Uniform Memory Access) support.
++	  Enable NUMA (Non-Uniform Memory Access) support.
  
- For each field, some are information from the kernel to the bootloader
+ 	  The kernel will try to allocate memory used by a CPU on the
+ 	  local memory controller of the CPU and add some more
