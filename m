@@ -2,37 +2,44 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AF644124695
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 18 Dec 2019 13:14:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BFE961295FF
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 23 Dec 2019 13:28:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726787AbfLRMOz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 18 Dec 2019 07:14:55 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:57586 "EHLO
+        id S1726663AbfLWM2m (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 23 Dec 2019 07:28:42 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:37620 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726029AbfLRMOy (ORCPT
+        with ESMTP id S1726257AbfLWM2l (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 18 Dec 2019 07:14:54 -0500
+        Mon, 23 Dec 2019 07:28:41 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1ihYE2-00013W-04; Wed, 18 Dec 2019 13:14:46 +0100
+        id 1ijMou-0002FA-Ui; Mon, 23 Dec 2019 13:28:21 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A3D451C2A74;
-        Wed, 18 Dec 2019 13:14:45 +0100 (CET)
-Date:   Wed, 18 Dec 2019 12:14:45 -0000
-From:   "tip-bot2 for Randy Dunlap" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 76C311C0105;
+        Mon, 23 Dec 2019 13:28:20 +0100 (CET)
+Date:   Mon, 23 Dec 2019 12:28:20 -0000
+From:   "tip-bot2 for Omar Sandoval" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] x86/Kconfig: Correct spelling and punctuation
-Cc:     Randy Dunlap <rdunlap@infradead.org>, Borislav Petkov <bp@suse.de>,
+Subject: [tip: x86/kdump] x86/crash: Define arch_crash_save_vmcoreinfo() if
+ CONFIG_CRASH_CORE=y
+Cc:     Omar Sandoval <osandov@fb.com>, Borislav Petkov <bp@suse.de>,
+        Andy Lutomirski <luto@kernel.org>,
+        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
         "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>, X86 ML <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <443ed0a8-783d-6c7c-3258-e1c44df03fd7@infradead.org>
-References: <443ed0a8-783d-6c7c-3258-e1c44df03fd7@infradead.org>
+        Kairui Song <kasong@redhat.com>,
+        Lianbo Jiang <lijiang@redhat.com>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "x86-ml" <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <0589961254102cca23e3618b96541b89f2b249e2.1576858905.git.osandov@fb.com>
+References: <0589961254102cca23e3618b96541b89f2b249e2.1576858905.git.osandov@fb.com>
 MIME-Version: 1.0
-Message-ID: <157667128550.30329.11583222842063841039.tip-bot2@tip-bot2>
+Message-ID: <157710410032.30329.7180720417870538436.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -46,61 +53,183 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cleanups branch of tip:
+The following commit has been merged into the x86/kdump branch of tip:
 
-Commit-ID:     e133f6eac3fa6591384133b2270b24376813d231
-Gitweb:        https://git.kernel.org/tip/e133f6eac3fa6591384133b2270b24376813d231
-Author:        Randy Dunlap <rdunlap@infradead.org>
-AuthorDate:    Tue, 03 Dec 2019 16:06:47 -08:00
+Commit-ID:     8757dc970f550dc399f899be0e7a2c00b7e82e8f
+Gitweb:        https://git.kernel.org/tip/8757dc970f550dc399f899be0e7a2c00b7e82e8f
+Author:        Omar Sandoval <osandov@fb.com>
+AuthorDate:    Fri, 20 Dec 2019 08:22:49 -08:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 18 Dec 2019 13:06:53 +01:00
+CommitterDate: Mon, 23 Dec 2019 12:58:41 +01:00
 
-x86/Kconfig: Correct spelling and punctuation
+x86/crash: Define arch_crash_save_vmcoreinfo() if CONFIG_CRASH_CORE=y
 
-End a sentence with a period (aka full stop) in Kconfig help text. Fix
-minor NUMA-related Kconfig text:
+On x86 kernels configured with CONFIG_PROC_KCORE=y and
+CONFIG_KEXEC_CORE=n, the vmcoreinfo note in /proc/kcore is incomplete.
 
-- Use capital letters for NUMA acronym.
-- Hyphenate Non-Uniform.
+Specifically, it is missing arch-specific information like the KASLR
+offset and whether 5-level page tables are enabled. This breaks
+applications like drgn [1] and crash [2], which need this information
+for live debugging via /proc/kcore.
 
- [ bp: Merge into a single patch. ]
+This happens because:
 
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+1. CONFIG_PROC_KCORE selects CONFIG_CRASH_CORE.
+2. kernel/crash_core.c (compiled if CONFIG_CRASH_CORE=y) calls
+   arch_crash_save_vmcoreinfo() to get the arch-specific parts of
+   vmcoreinfo. If it is not defined, then it uses a no-op fallback.
+3. x86 defines arch_crash_save_vmcoreinfo() in
+   arch/x86/kernel/machine_kexec_*.c, which is only compiled if
+   CONFIG_KEXEC_CORE=y.
+
+Therefore, an x86 kernel with CONFIG_CRASH_CORE=y and
+CONFIG_KEXEC_CORE=n uses the no-op fallback and gets incomplete
+vmcoreinfo data. This isn't relevant to kdump, which requires
+CONFIG_KEXEC_CORE. It only affects applications which read vmcoreinfo at
+runtime, like the ones mentioned above.
+
+Fix it by moving arch_crash_save_vmcoreinfo() into two new
+arch/x86/kernel/crash_core_*.c files, which are gated behind
+CONFIG_CRASH_CORE.
+
+1: https://github.com/osandov/drgn/blob/73dd7def1217e24cc83d8ca95c995decbd9ba24c/libdrgn/program.c#L385
+2: https://github.com/crash-utility/crash/commit/60a42d709280cdf38ab06327a5b4fa9d9208ef86
+
+Signed-off-by: Omar Sandoval <osandov@fb.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: "H. Peter Anvin" <hpa@zytor.com>
 Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Kairui Song <kasong@redhat.com>
+Cc: Lianbo Jiang <lijiang@redhat.com>
+Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
+Cc: "Peter Zijlstra (Intel)" <peterz@infradead.org>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: X86 ML <x86@kernel.org>
-Link: https://lkml.kernel.org/r/443ed0a8-783d-6c7c-3258-e1c44df03fd7@infradead.org
+Cc: x86-ml <x86@kernel.org>
+Link: https://lkml.kernel.org/r/0589961254102cca23e3618b96541b89f2b249e2.1576858905.git.osandov@fb.com
 ---
- arch/x86/Kconfig | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/x86/kernel/Makefile           |  1 +
+ arch/x86/kernel/crash_core_32.c    | 17 +++++++++++++++++
+ arch/x86/kernel/crash_core_64.c    | 24 ++++++++++++++++++++++++
+ arch/x86/kernel/machine_kexec_32.c | 12 ------------
+ arch/x86/kernel/machine_kexec_64.c | 19 -------------------
+ 5 files changed, 42 insertions(+), 31 deletions(-)
+ create mode 100644 arch/x86/kernel/crash_core_32.c
+ create mode 100644 arch/x86/kernel/crash_core_64.c
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index d7bbed5..97956b5 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -477,7 +477,7 @@ config X86_BIGSMP
- 	bool "Support for big SMP systems with more than 8 CPUs"
- 	depends on SMP
- 	---help---
--	  This option is needed for the systems that have more than 8 CPUs
-+	  This option is needed for the systems that have more than 8 CPUs.
+diff --git a/arch/x86/kernel/Makefile b/arch/x86/kernel/Makefile
+index 6175e37..9b294c1 100644
+--- a/arch/x86/kernel/Makefile
++++ b/arch/x86/kernel/Makefile
+@@ -94,6 +94,7 @@ obj-$(CONFIG_FUNCTION_TRACER)	+= ftrace_$(BITS).o
+ obj-$(CONFIG_FUNCTION_GRAPH_TRACER) += ftrace.o
+ obj-$(CONFIG_FTRACE_SYSCALLS)	+= ftrace.o
+ obj-$(CONFIG_X86_TSC)		+= trace_clock.o
++obj-$(CONFIG_CRASH_CORE)	+= crash_core_$(BITS).o
+ obj-$(CONFIG_KEXEC_CORE)	+= machine_kexec_$(BITS).o
+ obj-$(CONFIG_KEXEC_CORE)	+= relocate_kernel_$(BITS).o crash.o
+ obj-$(CONFIG_KEXEC_FILE)	+= kexec-bzimage64.o
+diff --git a/arch/x86/kernel/crash_core_32.c b/arch/x86/kernel/crash_core_32.c
+new file mode 100644
+index 0000000..c0159a7
+--- /dev/null
++++ b/arch/x86/kernel/crash_core_32.c
+@@ -0,0 +1,17 @@
++// SPDX-License-Identifier: GPL-2.0-only
++
++#include <linux/crash_core.h>
++
++#include <asm/pgtable.h>
++#include <asm/setup.h>
++
++void arch_crash_save_vmcoreinfo(void)
++{
++#ifdef CONFIG_NUMA
++	VMCOREINFO_SYMBOL(node_data);
++	VMCOREINFO_LENGTH(node_data, MAX_NUMNODES);
++#endif
++#ifdef CONFIG_X86_PAE
++	VMCOREINFO_CONFIG(X86_PAE);
++#endif
++}
+diff --git a/arch/x86/kernel/crash_core_64.c b/arch/x86/kernel/crash_core_64.c
+new file mode 100644
+index 0000000..845a57e
+--- /dev/null
++++ b/arch/x86/kernel/crash_core_64.c
+@@ -0,0 +1,24 @@
++// SPDX-License-Identifier: GPL-2.0-only
++
++#include <linux/crash_core.h>
++
++#include <asm/pgtable.h>
++#include <asm/setup.h>
++
++void arch_crash_save_vmcoreinfo(void)
++{
++	u64 sme_mask = sme_me_mask;
++
++	VMCOREINFO_NUMBER(phys_base);
++	VMCOREINFO_SYMBOL(init_top_pgt);
++	vmcoreinfo_append_str("NUMBER(pgtable_l5_enabled)=%d\n",
++			      pgtable_l5_enabled());
++
++#ifdef CONFIG_NUMA
++	VMCOREINFO_SYMBOL(node_data);
++	VMCOREINFO_LENGTH(node_data, MAX_NUMNODES);
++#endif
++	vmcoreinfo_append_str("KERNELOFFSET=%lx\n", kaslr_offset());
++	VMCOREINFO_NUMBER(KERNEL_IMAGE_SIZE);
++	VMCOREINFO_NUMBER(sme_mask);
++}
+diff --git a/arch/x86/kernel/machine_kexec_32.c b/arch/x86/kernel/machine_kexec_32.c
+index 7b45e8d..02bddfc 100644
+--- a/arch/x86/kernel/machine_kexec_32.c
++++ b/arch/x86/kernel/machine_kexec_32.c
+@@ -250,15 +250,3 @@ void machine_kexec(struct kimage *image)
  
- config X86_EXTENDED_PLATFORM
- 	bool "Support for extended (non-PC) x86 platforms"
-@@ -1543,12 +1543,12 @@ config AMD_MEM_ENCRYPT_ACTIVE_BY_DEFAULT
+ 	__ftrace_enabled_restore(save_ftrace_enabled);
+ }
+-
+-void arch_crash_save_vmcoreinfo(void)
+-{
+-#ifdef CONFIG_NUMA
+-	VMCOREINFO_SYMBOL(node_data);
+-	VMCOREINFO_LENGTH(node_data, MAX_NUMNODES);
+-#endif
+-#ifdef CONFIG_X86_PAE
+-	VMCOREINFO_CONFIG(X86_PAE);
+-#endif
+-}
+-
+diff --git a/arch/x86/kernel/machine_kexec_64.c b/arch/x86/kernel/machine_kexec_64.c
+index 16e125a..ad5cdd6 100644
+--- a/arch/x86/kernel/machine_kexec_64.c
++++ b/arch/x86/kernel/machine_kexec_64.c
+@@ -398,25 +398,6 @@ void machine_kexec(struct kimage *image)
+ 	__ftrace_enabled_restore(save_ftrace_enabled);
+ }
  
- # Common NUMA Features
- config NUMA
--	bool "Numa Memory Allocation and Scheduler Support"
-+	bool "NUMA Memory Allocation and Scheduler Support"
- 	depends on SMP
- 	depends on X86_64 || (X86_32 && HIGHMEM64G && X86_BIGSMP)
- 	default y if X86_BIGSMP
- 	---help---
--	  Enable NUMA (Non Uniform Memory Access) support.
-+	  Enable NUMA (Non-Uniform Memory Access) support.
+-void arch_crash_save_vmcoreinfo(void)
+-{
+-	u64 sme_mask = sme_me_mask;
+-
+-	VMCOREINFO_NUMBER(phys_base);
+-	VMCOREINFO_SYMBOL(init_top_pgt);
+-	vmcoreinfo_append_str("NUMBER(pgtable_l5_enabled)=%d\n",
+-			pgtable_l5_enabled());
+-
+-#ifdef CONFIG_NUMA
+-	VMCOREINFO_SYMBOL(node_data);
+-	VMCOREINFO_LENGTH(node_data, MAX_NUMNODES);
+-#endif
+-	vmcoreinfo_append_str("KERNELOFFSET=%lx\n",
+-			      kaslr_offset());
+-	VMCOREINFO_NUMBER(KERNEL_IMAGE_SIZE);
+-	VMCOREINFO_NUMBER(sme_mask);
+-}
+-
+ /* arch-dependent functionality related to kexec file-based syscall */
  
- 	  The kernel will try to allocate memory used by a CPU on the
- 	  local memory controller of the CPU and add some more
+ #ifdef CONFIG_KEXEC_FILE
