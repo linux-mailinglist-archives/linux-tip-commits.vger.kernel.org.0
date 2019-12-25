@@ -2,43 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A17E12A770
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 25 Dec 2019 11:39:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 612CC12A784
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 25 Dec 2019 11:39:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727070AbfLYKjK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 25 Dec 2019 05:39:10 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:40622 "EHLO
+        id S1726960AbfLYKjG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 25 Dec 2019 05:39:06 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:40589 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727015AbfLYKjJ (ORCPT
+        with ESMTP id S1726879AbfLYKjF (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 25 Dec 2019 05:39:09 -0500
+        Wed, 25 Dec 2019 05:39:05 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1ik44C-00088w-FT; Wed, 25 Dec 2019 11:39:00 +0100
+        id 1ik44B-00088W-U1; Wed, 25 Dec 2019 11:39:00 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 19D001C2BA3;
-        Wed, 25 Dec 2019 11:39:00 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 8B0CB1C2B1E;
+        Wed, 25 Dec 2019 11:38:59 +0100 (CET)
 Date:   Wed, 25 Dec 2019 10:38:59 -0000
-From:   "tip-bot2 for Valentin Schneider" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/fair: Make EAS wakeup placement consider
- uclamp restrictions
-Cc:     Quentin Perret <qperret@google.com>,
-        Valentin Schneider <valentin.schneider@arm.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+Subject: [tip: perf/core] x86/alternatives: Implement a better
+ poke_int3_handler() completion scheme
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Daniel Bristot de Oliveira <bristot@redhat.com>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191211113851.24241-6-valentin.schneider@arm.com>
-References: <20191211113851.24241-6-valentin.schneider@arm.com>
 MIME-Version: 1.0
-Message-ID: <157727033997.30329.10913355096896914803.tip-bot2@tip-bot2>
+Message-ID: <157727033938.30329.14333219738427372011.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -52,104 +48,197 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     1d42509e475cdc8542aa5b3e03a7e845244f4f57
-Gitweb:        https://git.kernel.org/tip/1d42509e475cdc8542aa5b3e03a7e845244f4f57
-Author:        Valentin Schneider <valentin.schneider@arm.com>
-AuthorDate:    Wed, 11 Dec 2019 11:38:51 
+Commit-ID:     1f676247f36a4bdea134de5e8bc5041db9678c4e
+Gitweb:        https://git.kernel.org/tip/1f676247f36a4bdea134de5e8bc5041db9678c4e
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Wed, 11 Dec 2019 01:25:57 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 25 Dec 2019 10:42:09 +01:00
+CommitterDate: Wed, 25 Dec 2019 10:43:29 +01:00
 
-sched/fair: Make EAS wakeup placement consider uclamp restrictions
+x86/alternatives: Implement a better poke_int3_handler() completion scheme
 
-task_fits_capacity() has just been made uclamp-aware, and
-find_energy_efficient_cpu() needs to go through the same treatment.
+Commit:
 
-Things are somewhat different here however - using the task max clamp isn't
-sufficient. Consider the following setup:
+  285a54efe386 ("x86/alternatives: Sync bp_patching update for avoiding NULL pointer exception")
 
-  The target runqueue, rq:
-    rq.cpu_capacity_orig = 512
-    rq.cfs.avg.util_avg = 200
-    rq.uclamp.max = 768 // the max p.uclamp.max of all enqueued p's is 768
+added an additional text_poke_sync() IPI to text_poke_bp_batch() to
+handle the rare case where another CPU is still inside an INT3 handler
+while we clear the global state.
 
-  The waking task, p (not yet enqueued on rq):
-    p.util_est = 600
-    p.uclamp.max = 100
+Instead of spraying IPIs around, count the active INT3 handlers and
+wait for them to go away before proceeding to clear/reuse the data.
 
-Now, consider the following code which doesn't use the rq clamps:
-
-  util = uclamp_task_util(p);
-  // Does the task fit in the spare CPU capacity?
-  cpu = cpu_of(rq);
-  fits_capacity(util, cpu_capacity(cpu) - cpu_util(cpu))
-
-This would lead to:
-
-  util = 100;
-  fits_capacity(100, 512 - 200)
-
-fits_capacity() would return true. However, enqueuing p on that CPU *will*
-cause it to become overutilized since rq clamp values are max-aggregated,
-so we'd remain with
-
-  rq.uclamp.max = 768
-
-which comes from the other tasks already enqueued on rq. Thus, we could
-select a high enough frequency to reach beyond 0.8 * 512 utilization
-(== overutilized) after enqueuing p on rq. What find_energy_efficient_cpu()
-needs here is uclamp_rq_util_with() which lets us peek at the future
-utilization landscape, including rq-wide uclamp values.
-
-Make find_energy_efficient_cpu() use uclamp_rq_util_with() for its
-fits_capacity() check. This is in line with what compute_energy() ends up
-using for estimating utilization.
-
-Tested-By: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Suggested-by: Quentin Perret <qperret@google.com>
-Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
-Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Reviewed-by: Masami Hiramatsu <mhiramat@kernel.org>
+Reviewed-by: Daniel Bristot de Oliveira <bristot@redhat.com>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20191211113851.24241-6-valentin.schneider@arm.com
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- kernel/sched/fair.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ arch/x86/kernel/alternative.c | 84 +++++++++++++++++++++-------------
+ 1 file changed, 53 insertions(+), 31 deletions(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 26c59bc..2d170b5 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -6273,9 +6273,18 @@ static int find_energy_efficient_cpu(struct task_struct *p, int prev_cpu)
- 			if (!cpumask_test_cpu(cpu, p->cpus_ptr))
- 				continue;
+diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
+index 30e8673..34360ca 100644
+--- a/arch/x86/kernel/alternative.c
++++ b/arch/x86/kernel/alternative.c
+@@ -948,10 +948,29 @@ struct text_poke_loc {
+ 	const u8 text[POKE_MAX_OPCODE_SIZE];
+ };
  
--			/* Skip CPUs that will be overutilized. */
- 			util = cpu_util_next(cpu, p, cpu);
- 			cpu_cap = capacity_of(cpu);
-+			spare_cap = cpu_cap - util;
+-static struct bp_patching_desc {
++struct bp_patching_desc {
+ 	struct text_poke_loc *vec;
+ 	int nr_entries;
+-} bp_patching;
++	atomic_t refs;
++};
 +
-+			/*
-+			 * Skip CPUs that cannot satisfy the capacity request.
-+			 * IOW, placing the task there would make the CPU
-+			 * overutilized. Take uclamp into account to see how
-+			 * much capacity we can get out of the CPU; this is
-+			 * aligned with schedutil_cpu_util().
-+			 */
-+			util = uclamp_rq_util_with(cpu_rq(cpu), util, p);
- 			if (!fits_capacity(util, cpu_cap))
- 				continue;
++static struct bp_patching_desc *bp_desc;
++
++static inline struct bp_patching_desc *try_get_desc(struct bp_patching_desc **descp)
++{
++	struct bp_patching_desc *desc = READ_ONCE(*descp); /* rcu_dereference */
++
++	if (!desc || !atomic_inc_not_zero(&desc->refs))
++		return NULL;
++
++	return desc;
++}
++
++static inline void put_desc(struct bp_patching_desc *desc)
++{
++	smp_mb__before_atomic();
++	atomic_dec(&desc->refs);
++}
  
-@@ -6290,7 +6299,6 @@ static int find_energy_efficient_cpu(struct task_struct *p, int prev_cpu)
- 			 * Find the CPU with the maximum spare capacity in
- 			 * the performance domain
- 			 */
--			spare_cap = cpu_cap - util;
- 			if (spare_cap > max_spare_cap) {
- 				max_spare_cap = spare_cap;
- 				max_spare_cap_cpu = cpu;
+ static inline void *text_poke_addr(struct text_poke_loc *tp)
+ {
+@@ -972,26 +991,26 @@ NOKPROBE_SYMBOL(patch_cmp);
+ 
+ int notrace poke_int3_handler(struct pt_regs *regs)
+ {
++	struct bp_patching_desc *desc;
+ 	struct text_poke_loc *tp;
++	int len, ret = 0;
+ 	void *ip;
+-	int len;
++
++	if (user_mode(regs))
++		return 0;
+ 
+ 	/*
+ 	 * Having observed our INT3 instruction, we now must observe
+-	 * bp_patching.nr_entries.
++	 * bp_desc:
+ 	 *
+-	 *	nr_entries != 0			INT3
++	 *	bp_desc = desc			INT3
+ 	 *	WMB				RMB
+-	 *	write INT3			if (nr_entries)
+-	 *
+-	 * Idem for other elements in bp_patching.
++	 *	write INT3			if (desc)
+ 	 */
+ 	smp_rmb();
+ 
+-	if (likely(!bp_patching.nr_entries))
+-		return 0;
+-
+-	if (user_mode(regs))
++	desc = try_get_desc(&bp_desc);
++	if (!desc)
+ 		return 0;
+ 
+ 	/*
+@@ -1002,16 +1021,16 @@ int notrace poke_int3_handler(struct pt_regs *regs)
+ 	/*
+ 	 * Skip the binary search if there is a single member in the vector.
+ 	 */
+-	if (unlikely(bp_patching.nr_entries > 1)) {
+-		tp = bsearch(ip, bp_patching.vec, bp_patching.nr_entries,
++	if (unlikely(desc->nr_entries > 1)) {
++		tp = bsearch(ip, desc->vec, desc->nr_entries,
+ 			     sizeof(struct text_poke_loc),
+ 			     patch_cmp);
+ 		if (!tp)
+-			return 0;
++			goto out_put;
+ 	} else {
+-		tp = bp_patching.vec;
++		tp = desc->vec;
+ 		if (text_poke_addr(tp) != ip)
+-			return 0;
++			goto out_put;
+ 	}
+ 
+ 	len = text_opcode_size(tp->opcode);
+@@ -1023,7 +1042,7 @@ int notrace poke_int3_handler(struct pt_regs *regs)
+ 		 * Someone poked an explicit INT3, they'll want to handle it,
+ 		 * do not consume.
+ 		 */
+-		return 0;
++		goto out_put;
+ 
+ 	case CALL_INSN_OPCODE:
+ 		int3_emulate_call(regs, (long)ip + tp->rel32);
+@@ -1038,7 +1057,11 @@ int notrace poke_int3_handler(struct pt_regs *regs)
+ 		BUG();
+ 	}
+ 
+-	return 1;
++	ret = 1;
++
++out_put:
++	put_desc(desc);
++	return ret;
+ }
+ NOKPROBE_SYMBOL(poke_int3_handler);
+ 
+@@ -1069,14 +1092,18 @@ static int tp_vec_nr;
+  */
+ static void text_poke_bp_batch(struct text_poke_loc *tp, unsigned int nr_entries)
+ {
++	struct bp_patching_desc desc = {
++		.vec = tp,
++		.nr_entries = nr_entries,
++		.refs = ATOMIC_INIT(1),
++	};
+ 	unsigned char int3 = INT3_INSN_OPCODE;
+ 	unsigned int i;
+ 	int do_sync;
+ 
+ 	lockdep_assert_held(&text_mutex);
+ 
+-	bp_patching.vec = tp;
+-	bp_patching.nr_entries = nr_entries;
++	smp_store_release(&bp_desc, &desc); /* rcu_assign_pointer */
+ 
+ 	/*
+ 	 * Corresponding read barrier in int3 notifier for making sure the
+@@ -1131,17 +1158,12 @@ static void text_poke_bp_batch(struct text_poke_loc *tp, unsigned int nr_entries
+ 		text_poke_sync();
+ 
+ 	/*
+-	 * sync_core() implies an smp_mb() and orders this store against
+-	 * the writing of the new instruction.
++	 * Remove and synchronize_rcu(), except we have a very primitive
++	 * refcount based completion.
+ 	 */
+-	bp_patching.nr_entries = 0;
+-	/*
+-	 * This sync_core () call ensures that all INT3 handlers in progress
+-	 * have finished. This allows poke_int3_handler() after this to
+-	 * avoid touching bp_paching.vec by checking nr_entries == 0.
+-	 */
+-	text_poke_sync();
+-	bp_patching.vec = NULL;
++	WRITE_ONCE(bp_desc, NULL); /* RCU_INIT_POINTER */
++	if (!atomic_dec_and_test(&desc.refs))
++		atomic_cond_read_acquire(&desc.refs, !VAL);
+ }
+ 
+ void text_poke_loc_init(struct text_poke_loc *tp, void *addr,
