@@ -2,43 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B612A12A77A
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 25 Dec 2019 11:39:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E8F112A781
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 25 Dec 2019 11:39:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726407AbfLYKjb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 25 Dec 2019 05:39:31 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:40624 "EHLO
+        id S1727005AbfLYKjH (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 25 Dec 2019 05:39:07 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:40605 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727021AbfLYKjK (ORCPT
+        with ESMTP id S1726942AbfLYKjG (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 25 Dec 2019 05:39:10 -0500
+        Wed, 25 Dec 2019 05:39:06 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1ik44G-0008Ac-Nm; Wed, 25 Dec 2019 11:39:04 +0100
+        id 1ik44D-0008Bh-Ss; Wed, 25 Dec 2019 11:39:02 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4FFA41C2BA3;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 976021C2B24;
         Wed, 25 Dec 2019 11:39:01 +0100 (CET)
 Date:   Wed, 25 Dec 2019 10:39:01 -0000
-From:   "tip-bot2 for Viresh Kumar" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Qian Cai" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/fair: Make sched-idle CPU selection
- consistent throughout
-Cc:     Viresh Kumar <viresh.kumar@linaro.org>,
+Subject: [tip: sched/core] sched/core: Remove unused variable from set_user_nice()
+Cc:     Qian Cai <cai@lca.pw>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: =?utf-8?q?=3Cb90cbcce608cef4e02a7bbfe178335f76d201bab=2E15737?=
- =?utf-8?q?28344=2Egit=2Eviresh=2Ekumar=40linaro=2Eorg=3E?=
-References: =?utf-8?q?=3Cb90cbcce608cef4e02a7bbfe178335f76d201bab=2E157372?=
- =?utf-8?q?8344=2Egit=2Eviresh=2Ekumar=40linaro=2Eorg=3E?=
+In-Reply-To: <20191219140314.1252-1-cai@lca.pw>
+References: <20191219140314.1252-1-cai@lca.pw>
 MIME-Version: 1.0
-Message-ID: <157727034115.30329.920144434327367815.tip-bot2@tip-bot2>
+Message-ID: <157727034142.30329.18157750547564791762.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -54,182 +50,54 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     17346452b25b98acfb395d2a82ec2e4ad0cb7a01
-Gitweb:        https://git.kernel.org/tip/17346452b25b98acfb395d2a82ec2e4ad0cb7a01
-Author:        Viresh Kumar <viresh.kumar@linaro.org>
-AuthorDate:    Thu, 14 Nov 2019 16:19:27 +05:30
+Commit-ID:     53a23364b6b0c679a8ecfc48e74d652f18e3631f
+Gitweb:        https://git.kernel.org/tip/53a23364b6b0c679a8ecfc48e74d652f18e3631f
+Author:        Qian Cai <cai@lca.pw>
+AuthorDate:    Thu, 19 Dec 2019 09:03:14 -05:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 25 Dec 2019 10:42:07 +01:00
+CommitterDate: Wed, 25 Dec 2019 10:42:06 +01:00
 
-sched/fair: Make sched-idle CPU selection consistent throughout
+sched/core: Remove unused variable from set_user_nice()
 
-There are instances where we keep searching for an idle CPU despite
-already having a sched-idle CPU (in find_idlest_group_cpu(),
-select_idle_smt() and select_idle_cpu() and then there are places where
-we don't necessarily do that and return a sched-idle CPU as soon as we
-find one (in select_idle_sibling()). This looks a bit inconsistent and
-it may be worth having the same policy everywhere.
+This commit left behind an unused variable:
 
-On the other hand, choosing a sched-idle CPU over a idle one shall be
-beneficial from performance and power point of view as well, as we don't
-need to get the CPU online from a deep idle state which wastes quite a
-lot of time and energy and delays the scheduling of the newly woken up
-task.
+  5443a0be6121 ("sched: Use fair:prio_changed() instead of ad-hoc implementation") left behind an unused variable.
 
-This patch tries to simplify code around sched-idle CPU selection and
-make it consistent throughout.
+  kernel/sched/core.c: In function 'set_user_nice':
+  kernel/sched/core.c:4507:16: warning: variable 'delta' set but not used
+    int old_prio, delta;
+                ^~~~~
 
-Testing is done with the help of rt-app on hikey board (ARM64 octa-core,
-2 clusters, 0-3 and 4-7). The cpufreq governor was set to performance to
-avoid any side affects from CPU frequency. Following are the tests
-performed:
-
-Test 1: 1-cfs-task:
-
- A single SCHED_NORMAL task is pinned to CPU5 which runs for 2333 us
- out of 7777 us (so gives time for the cluster to go in deep idle
- state).
-
-Test 2: 1-cfs-1-idle-task:
-
- A single SCHED_NORMAL task is pinned on CPU5 and single SCHED_IDLE
- task is pinned on CPU6 (to make sure cluster 1 doesn't go in deep idle
- state).
-
-Test 3: 1-cfs-8-idle-task:
-
- A single SCHED_NORMAL task is pinned on CPU5 and eight SCHED_IDLE
- tasks are created which run forever (not pinned anywhere, so they run
- on all CPUs). Checked with kernelshark that as soon as NORMAL task
- sleeps, the SCHED_IDLE task starts running on CPU5.
-
-And here are the results on mean latency (in us), using the "st" tool.
-
-  $ st 1-cfs-task/rt-app-cfs_thread-0.log
-  N       min     max     sum     mean    stddev
-  642     90      592     197180  307.134 109.906
-
-  $ st 1-cfs-1-idle-task/rt-app-cfs_thread-0.log
-  N       min     max     sum     mean    stddev
-  642     67      311     113850  177.336 41.4251
-
-  $ st 1-cfs-8-idle-task/rt-app-cfs_thread-0.log
-  N       min     max     sum     mean    stddev
-  643     29      173     41364   64.3297 13.2344
-
-The mean latency when we need to:
-
- - wakeup from deep idle state is 307 us.
- - wakeup from shallow idle state is 177 us.
- - preempt a SCHED_IDLE task is 64 us.
-
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Signed-off-by: Qian Cai <cai@lca.pw>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/b90cbcce608cef4e02a7bbfe178335f76d201bab.1573728344.git.viresh.kumar@linaro.org
+Fixes: 5443a0be6121 ("sched: Use fair:prio_changed() instead of ad-hoc implementation")
+Link: https://lkml.kernel.org/r/20191219140314.1252-1-cai@lca.pw
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- kernel/sched/fair.c | 34 ++++++++++++----------------------
- 1 file changed, 12 insertions(+), 22 deletions(-)
+ kernel/sched/core.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 8da0222..1f34fa9 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -5588,7 +5588,7 @@ find_idlest_group_cpu(struct sched_group *group, struct task_struct *p, int this
- 	unsigned int min_exit_latency = UINT_MAX;
- 	u64 latest_idle_timestamp = 0;
- 	int least_loaded_cpu = this_cpu;
--	int shallowest_idle_cpu = -1, si_cpu = -1;
-+	int shallowest_idle_cpu = -1;
- 	int i;
- 
- 	/* Check if we have any choice: */
-@@ -5597,6 +5597,9 @@ find_idlest_group_cpu(struct sched_group *group, struct task_struct *p, int this
- 
- 	/* Traverse only the allowed CPUs */
- 	for_each_cpu_and(i, sched_group_span(group), p->cpus_ptr) {
-+		if (sched_idle_cpu(i))
-+			return i;
-+
- 		if (available_idle_cpu(i)) {
- 			struct rq *rq = cpu_rq(i);
- 			struct cpuidle_state *idle = idle_get_state(rq);
-@@ -5619,12 +5622,7 @@ find_idlest_group_cpu(struct sched_group *group, struct task_struct *p, int this
- 				latest_idle_timestamp = rq->idle_stamp;
- 				shallowest_idle_cpu = i;
- 			}
--		} else if (shallowest_idle_cpu == -1 && si_cpu == -1) {
--			if (sched_idle_cpu(i)) {
--				si_cpu = i;
--				continue;
--			}
--
-+		} else if (shallowest_idle_cpu == -1) {
- 			load = cpu_load(cpu_rq(i));
- 			if (load < min_load) {
- 				min_load = load;
-@@ -5633,11 +5631,7 @@ find_idlest_group_cpu(struct sched_group *group, struct task_struct *p, int this
- 		}
- 	}
- 
--	if (shallowest_idle_cpu != -1)
--		return shallowest_idle_cpu;
--	if (si_cpu != -1)
--		return si_cpu;
--	return least_loaded_cpu;
-+	return shallowest_idle_cpu != -1 ? shallowest_idle_cpu : least_loaded_cpu;
- }
- 
- static inline int find_idlest_cpu(struct sched_domain *sd, struct task_struct *p,
-@@ -5790,7 +5784,7 @@ static int select_idle_core(struct task_struct *p, struct sched_domain *sd, int 
-  */
- static int select_idle_smt(struct task_struct *p, int target)
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 15508c2..1f6c094 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -4504,7 +4504,7 @@ static inline int rt_effective_prio(struct task_struct *p, int prio)
+ void set_user_nice(struct task_struct *p, long nice)
  {
--	int cpu, si_cpu = -1;
-+	int cpu;
+ 	bool queued, running;
+-	int old_prio, delta;
++	int old_prio;
+ 	struct rq_flags rf;
+ 	struct rq *rq;
  
- 	if (!static_branch_likely(&sched_smt_present))
- 		return -1;
-@@ -5798,13 +5792,11 @@ static int select_idle_smt(struct task_struct *p, int target)
- 	for_each_cpu(cpu, cpu_smt_mask(target)) {
- 		if (!cpumask_test_cpu(cpu, p->cpus_ptr))
- 			continue;
--		if (available_idle_cpu(cpu))
-+		if (available_idle_cpu(cpu) || sched_idle_cpu(cpu))
- 			return cpu;
--		if (si_cpu == -1 && sched_idle_cpu(cpu))
--			si_cpu = cpu;
- 	}
+@@ -4538,7 +4538,6 @@ void set_user_nice(struct task_struct *p, long nice)
+ 	set_load_weight(p, true);
+ 	old_prio = p->prio;
+ 	p->prio = effective_prio(p);
+-	delta = p->prio - old_prio;
  
--	return si_cpu;
-+	return -1;
- }
- 
- #else /* CONFIG_SCHED_SMT */
-@@ -5834,7 +5826,7 @@ static int select_idle_cpu(struct task_struct *p, struct sched_domain *sd, int t
- 	u64 time, cost;
- 	s64 delta;
- 	int this = smp_processor_id();
--	int cpu, nr = INT_MAX, si_cpu = -1;
-+	int cpu, nr = INT_MAX;
- 
- 	this_sd = rcu_dereference(*this_cpu_ptr(&sd_llc));
- 	if (!this_sd)
-@@ -5864,11 +5856,9 @@ static int select_idle_cpu(struct task_struct *p, struct sched_domain *sd, int t
- 
- 	for_each_cpu_wrap(cpu, cpus, target) {
- 		if (!--nr)
--			return si_cpu;
--		if (available_idle_cpu(cpu))
-+			return -1;
-+		if (available_idle_cpu(cpu) || sched_idle_cpu(cpu))
- 			break;
--		if (si_cpu == -1 && sched_idle_cpu(cpu))
--			si_cpu = cpu;
- 	}
- 
- 	time = cpu_clock(this) - time;
+ 	if (queued)
+ 		enqueue_task(rq, p, ENQUEUE_RESTORE | ENQUEUE_NOCLOCK);
