@@ -2,39 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B258212A789
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 25 Dec 2019 11:40:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CE4712A777
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 25 Dec 2019 11:39:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726908AbfLYKjF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 25 Dec 2019 05:39:05 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:40587 "EHLO
+        id S1727201AbfLYKjc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 25 Dec 2019 05:39:32 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:40617 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726395AbfLYKjE (ORCPT
+        with ESMTP id S1726307AbfLYKjJ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 25 Dec 2019 05:39:04 -0500
+        Wed, 25 Dec 2019 05:39:09 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1ik445-00085z-V3; Wed, 25 Dec 2019 11:38:54 +0100
+        id 1ik445-00085y-Vi; Wed, 25 Dec 2019 11:38:54 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 6765A1C2B24;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 35AFD1C2B1E;
         Wed, 25 Dec 2019 11:38:53 +0100 (CET)
 Date:   Wed, 25 Dec 2019 10:38:53 -0000
 From:   "tip-bot2 for Mathieu Desnoyers" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/urgent] rseq: Reject unknown flags on rseq unregister
+Subject: [tip: core/urgent] rseq: Unregister rseq for clone CLONE_VM
 Cc:     Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191211161713.4490-2-mathieu.desnoyers@efficios.com>
-References: <20191211161713.4490-2-mathieu.desnoyers@efficios.com>
+In-Reply-To: <20191211161713.4490-3-mathieu.desnoyers@efficios.com>
+References: <20191211161713.4490-3-mathieu.desnoyers@efficios.com>
 MIME-Version: 1.0
-Message-ID: <157727033331.30329.17206832903007175600.tip-bot2@tip-bot2>
+Message-ID: <157727033304.30329.10105916023248676597.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,40 +50,70 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/urgent branch of tip:
 
-Commit-ID:     66528a4575eee9f5a5270219894ab6178f146e84
-Gitweb:        https://git.kernel.org/tip/66528a4575eee9f5a5270219894ab6178f146e84
+Commit-ID:     463f550fb47bede3a5d7d5177f363a6c3b45d50b
+Gitweb:        https://git.kernel.org/tip/463f550fb47bede3a5d7d5177f363a6c3b45d50b
 Author:        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-AuthorDate:    Wed, 11 Dec 2019 11:17:11 -05:00
+AuthorDate:    Wed, 11 Dec 2019 11:17:12 -05:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Wed, 25 Dec 2019 10:41:20 +01:00
 
-rseq: Reject unknown flags on rseq unregister
+rseq: Unregister rseq for clone CLONE_VM
 
-It is preferrable to reject unknown flags within rseq unregistration
-rather than to ignore them. It is an oversight caused by the fact that
-the check for unknown flags is after the rseq unregister flag check.
+It has been reported by Google that rseq is not behaving properly
+with respect to clone when CLONE_VM is used without CLONE_THREAD.
+
+It keeps the prior thread's rseq TLS registered when the TLS of the
+thread has moved, so the kernel can corrupt the TLS of the parent.
+
+The approach of clearing the per task-struct rseq registration
+on clone with CLONE_THREAD flag is incomplete. It does not cover
+the use-case of clone with CLONE_VM set, but without CLONE_THREAD.
+
+Here is the rationale for unregistering rseq on clone with CLONE_VM
+flag set:
+
+1) CLONE_THREAD requires CLONE_SIGHAND, which requires CLONE_VM to be
+   set. Therefore, just checking for CLONE_VM covers all CLONE_THREAD
+   uses. There is no point in checking for both CLONE_THREAD and
+   CLONE_VM,
+
+2) There is the possibility of an unlikely scenario where CLONE_SETTLS
+   is used without CLONE_VM. In order to be an issue, it would require
+   that the rseq TLS is in a shared memory area.
+
+   I do not plan on adding CLONE_SETTLS to the set of clone flags which
+   unregister RSEQ, because it would require that we also unregister RSEQ
+   on set_thread_area(2) and arch_prctl(2) ARCH_SET_FS for completeness.
+   So rather than doing a partial solution, it appears better to let
+   user-space explicitly perform rseq unregistration across clone if
+   needed in scenarios where CLONE_VM is not set.
 
 Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20191211161713.4490-2-mathieu.desnoyers@efficios.com
+Link: https://lkml.kernel.org/r/20191211161713.4490-3-mathieu.desnoyers@efficios.com
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- kernel/rseq.c | 2 ++
- 1 file changed, 2 insertions(+)
+ include/linux/sched.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/rseq.c b/kernel/rseq.c
-index 27c48eb..a4f86a9 100644
---- a/kernel/rseq.c
-+++ b/kernel/rseq.c
-@@ -310,6 +310,8 @@ SYSCALL_DEFINE4(rseq, struct rseq __user *, rseq, u32, rseq_len,
- 	int ret;
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index 467d260..716ad1d 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -1929,11 +1929,11 @@ static inline void rseq_migrate(struct task_struct *t)
  
- 	if (flags & RSEQ_FLAG_UNREGISTER) {
-+		if (flags & ~RSEQ_FLAG_UNREGISTER)
-+			return -EINVAL;
- 		/* Unregister rseq for current thread. */
- 		if (current->rseq != rseq || !current->rseq)
- 			return -EINVAL;
+ /*
+  * If parent process has a registered restartable sequences area, the
+- * child inherits. Only applies when forking a process, not a thread.
++ * child inherits. Unregister rseq for a clone with CLONE_VM set.
+  */
+ static inline void rseq_fork(struct task_struct *t, unsigned long clone_flags)
+ {
+-	if (clone_flags & CLONE_THREAD) {
++	if (clone_flags & CLONE_VM) {
+ 		t->rseq = NULL;
+ 		t->rseq_sig = 0;
+ 		t->rseq_event_mask = 0;
