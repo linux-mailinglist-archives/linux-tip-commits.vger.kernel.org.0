@@ -2,37 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DA7CC129B20
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 23 Dec 2019 22:35:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B258212A789
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 25 Dec 2019 11:40:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726877AbfLWVfZ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 23 Dec 2019 16:35:25 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:38398 "EHLO
+        id S1726908AbfLYKjF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 25 Dec 2019 05:39:05 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:40587 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726832AbfLWVfY (ORCPT
+        with ESMTP id S1726395AbfLYKjE (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 23 Dec 2019 16:35:24 -0500
+        Wed, 25 Dec 2019 05:39:04 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1ijVMB-0007BH-E3; Mon, 23 Dec 2019 22:35:15 +0100
+        id 1ik445-00085z-V3; Wed, 25 Dec 2019 11:38:54 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B9D7D1C2BAB;
-        Mon, 23 Dec 2019 22:35:14 +0100 (CET)
-Date:   Mon, 23 Dec 2019 21:35:14 -0000
-From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 6765A1C2B24;
+        Wed, 25 Dec 2019 11:38:53 +0100 (CET)
+Date:   Wed, 25 Dec 2019 10:38:53 -0000
+From:   "tip-bot2 for Mathieu Desnoyers" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf map: Set kmap->kmaps backpointer for main
- kernel map chunks
-Cc:     Jiri Olsa <jolsa@kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+Subject: [tip: core/urgent] rseq: Reject unknown flags on rseq unregister
+Cc:     Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20191211161713.4490-2-mathieu.desnoyers@efficios.com>
+References: <20191211161713.4490-2-mathieu.desnoyers@efficios.com>
 MIME-Version: 1.0
-Message-ID: <157713691465.30329.7250943333107007692.tip-bot2@tip-bot2>
+Message-ID: <157727033331.30329.17206832903007175600.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -46,65 +48,42 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/urgent branch of tip:
+The following commit has been merged into the core/urgent branch of tip:
 
-Commit-ID:     a75af86b6f344f99825cc894596804a91a2ee9cf
-Gitweb:        https://git.kernel.org/tip/a75af86b6f344f99825cc894596804a91a2ee9cf
-Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Wed, 18 Dec 2019 15:23:14 -03:00
-Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Fri, 20 Dec 2019 18:55:40 -03:00
+Commit-ID:     66528a4575eee9f5a5270219894ab6178f146e84
+Gitweb:        https://git.kernel.org/tip/66528a4575eee9f5a5270219894ab6178f146e84
+Author:        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+AuthorDate:    Wed, 11 Dec 2019 11:17:11 -05:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Wed, 25 Dec 2019 10:41:20 +01:00
 
-perf map: Set kmap->kmaps backpointer for main kernel map chunks
+rseq: Reject unknown flags on rseq unregister
 
-When a map is create to represent the main kernel area (vmlinux) with
-map__new2() we allocate an extra area to store a pointer to the 'struct
-maps' for the kernel maps, so that we can access that struct when
-loading ELF files or kallsyms, as we will need to split it in multiple
-maps, one per kernel module or ELF section (such as ".init.text").
+It is preferrable to reject unknown flags within rseq unregistration
+rather than to ignore them. It is an oversight caused by the fact that
+the check for unknown flags is after the rseq unregister flag check.
 
-So when map->dso->kernel is non-zero, it is expected that
-map__kmap(map)->kmaps to be set to the tree of kernel maps (modules,
-chunks of the main kernel, bpf progs put in place via
-PERF_RECORD_KSYMBOL, the main kernel).
-
-This was not the case when we were splitting the main kernel into chunks
-for its ELF sections, which ended up making 'perf report --children'
-processing a perf.data file with callchains to trip on
-__map__is_kernel(), when we press ENTER to see the popup menu for main
-histogram entries that starts at a symbol in the ".init.text" ELF
-section, e.g.:
-
--    8.83%     0.00%  swapper     [kernel.vmlinux].init.text  [k] start_kernel
-     start_kernel
-     cpu_startup_entry
-     do_idle
-     cpuidle_enter
-     cpuidle_enter_state
-     intel_idle
-
-Fix it.
-
-Reviewed-by: Jiri Olsa <jolsa@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lore.kernel.org/lkml/20191218190120.GB13282@kernel.org/
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lkml.kernel.org/r/20191211161713.4490-2-mathieu.desnoyers@efficios.com
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- tools/perf/util/symbol-elf.c | 3 +++
- 1 file changed, 3 insertions(+)
+ kernel/rseq.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tools/perf/util/symbol-elf.c b/tools/perf/util/symbol-elf.c
-index 6658fbf..1965aef 100644
---- a/tools/perf/util/symbol-elf.c
-+++ b/tools/perf/util/symbol-elf.c
-@@ -920,6 +920,9 @@ static int dso__process_kernel_symbol(struct dso *dso, struct map *map,
- 		if (curr_map == NULL)
- 			return -1;
+diff --git a/kernel/rseq.c b/kernel/rseq.c
+index 27c48eb..a4f86a9 100644
+--- a/kernel/rseq.c
++++ b/kernel/rseq.c
+@@ -310,6 +310,8 @@ SYSCALL_DEFINE4(rseq, struct rseq __user *, rseq, u32, rseq_len,
+ 	int ret;
  
-+		if (curr_dso->kernel)
-+			map__kmap(curr_map)->kmaps = kmaps;
-+
- 		if (adjust_kernel_syms) {
- 			curr_map->start  = shdr->sh_addr + ref_reloc(kmap);
- 			curr_map->end	 = curr_map->start + shdr->sh_size;
+ 	if (flags & RSEQ_FLAG_UNREGISTER) {
++		if (flags & ~RSEQ_FLAG_UNREGISTER)
++			return -EINVAL;
+ 		/* Unregister rseq for current thread. */
+ 		if (current->rseq != rseq || !current->rseq)
+ 			return -EINVAL;
