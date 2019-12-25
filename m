@@ -2,39 +2,41 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E8F112A781
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 25 Dec 2019 11:39:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F41612A77F
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 25 Dec 2019 11:39:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727005AbfLYKjH (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 25 Dec 2019 05:39:07 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:40605 "EHLO
+        id S1726461AbfLYKjs (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 25 Dec 2019 05:39:48 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:40657 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726942AbfLYKjG (ORCPT
+        with ESMTP id S1726307AbfLYKjl (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 25 Dec 2019 05:39:06 -0500
+        Wed, 25 Dec 2019 05:39:41 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1ik44D-0008Bh-Ss; Wed, 25 Dec 2019 11:39:02 +0100
+        id 1ik44e-0008GV-TS; Wed, 25 Dec 2019 11:39:29 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 976021C2B24;
-        Wed, 25 Dec 2019 11:39:01 +0100 (CET)
-Date:   Wed, 25 Dec 2019 10:39:01 -0000
-From:   "tip-bot2 for Qian Cai" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 8D7C11C2B1E;
+        Wed, 25 Dec 2019 11:39:28 +0100 (CET)
+Date:   Wed, 25 Dec 2019 10:39:28 -0000
+From:   "tip-bot2 for Waiman Long" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/core: Remove unused variable from set_user_nice()
-Cc:     Qian Cai <cai@lca.pw>,
+Subject: [tip: locking/urgent] locking/lockdep: Fix buffer overrun problem in
+ stack_trace[]
+Cc:     Waiman Long <longman@redhat.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Bart Van Assche <bvanassche@acm.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191219140314.1252-1-cai@lca.pw>
-References: <20191219140314.1252-1-cai@lca.pw>
+In-Reply-To: <20191220135128.14876-1-longman@redhat.com>
+References: <20191220135128.14876-1-longman@redhat.com>
 MIME-Version: 1.0
-Message-ID: <157727034142.30329.18157750547564791762.tip-bot2@tip-bot2>
+Message-ID: <157727036841.30329.5537146240257959465.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,56 +50,71 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the locking/urgent branch of tip:
 
-Commit-ID:     53a23364b6b0c679a8ecfc48e74d652f18e3631f
-Gitweb:        https://git.kernel.org/tip/53a23364b6b0c679a8ecfc48e74d652f18e3631f
-Author:        Qian Cai <cai@lca.pw>
-AuthorDate:    Thu, 19 Dec 2019 09:03:14 -05:00
+Commit-ID:     d91f3057263ceb691ef527e71b41a56b17f6c869
+Gitweb:        https://git.kernel.org/tip/d91f3057263ceb691ef527e71b41a56b17f6c869
+Author:        Waiman Long <longman@redhat.com>
+AuthorDate:    Fri, 20 Dec 2019 08:51:28 -05:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 25 Dec 2019 10:42:06 +01:00
+CommitterDate: Wed, 25 Dec 2019 10:42:32 +01:00
 
-sched/core: Remove unused variable from set_user_nice()
+locking/lockdep: Fix buffer overrun problem in stack_trace[]
 
-This commit left behind an unused variable:
+If the lockdep code is really running out of the stack_trace entries,
+it is likely that buffer overrun can happen and the data immediately
+after stack_trace[] will be corrupted.
 
-  5443a0be6121 ("sched: Use fair:prio_changed() instead of ad-hoc implementation") left behind an unused variable.
+If there is less than LOCK_TRACE_SIZE_IN_LONGS entries left before
+the call to save_trace(), the max_entries computation will leave it
+with a very large positive number because of its unsigned nature. The
+subsequent call to stack_trace_save() will then corrupt the data after
+stack_trace[]. Fix that by changing max_entries to a signed integer
+and check for negative value before calling stack_trace_save().
 
-  kernel/sched/core.c: In function 'set_user_nice':
-  kernel/sched/core.c:4507:16: warning: variable 'delta' set but not used
-    int old_prio, delta;
-                ^~~~~
-
-Signed-off-by: Qian Cai <cai@lca.pw>
+Signed-off-by: Waiman Long <longman@redhat.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Fixes: 5443a0be6121 ("sched: Use fair:prio_changed() instead of ad-hoc implementation")
-Link: https://lkml.kernel.org/r/20191219140314.1252-1-cai@lca.pw
+Fixes: 12593b7467f9 ("locking/lockdep: Reduce space occupied by stack traces")
+Link: https://lkml.kernel.org/r/20191220135128.14876-1-longman@redhat.com
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- kernel/sched/core.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ kernel/locking/lockdep.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 15508c2..1f6c094 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -4504,7 +4504,7 @@ static inline int rt_effective_prio(struct task_struct *p, int prio)
- void set_user_nice(struct task_struct *p, long nice)
- {
- 	bool queued, running;
--	int old_prio, delta;
-+	int old_prio;
- 	struct rq_flags rf;
- 	struct rq *rq;
+diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
+index 32282e7..32406ef 100644
+--- a/kernel/locking/lockdep.c
++++ b/kernel/locking/lockdep.c
+@@ -482,7 +482,7 @@ static struct lock_trace *save_trace(void)
+ 	struct lock_trace *trace, *t2;
+ 	struct hlist_head *hash_head;
+ 	u32 hash;
+-	unsigned int max_entries;
++	int max_entries;
  
-@@ -4538,7 +4538,6 @@ void set_user_nice(struct task_struct *p, long nice)
- 	set_load_weight(p, true);
- 	old_prio = p->prio;
- 	p->prio = effective_prio(p);
--	delta = p->prio - old_prio;
+ 	BUILD_BUG_ON_NOT_POWER_OF_2(STACK_TRACE_HASH_SIZE);
+ 	BUILD_BUG_ON(LOCK_TRACE_SIZE_IN_LONGS >= MAX_STACK_TRACE_ENTRIES);
+@@ -490,10 +490,8 @@ static struct lock_trace *save_trace(void)
+ 	trace = (struct lock_trace *)(stack_trace + nr_stack_trace_entries);
+ 	max_entries = MAX_STACK_TRACE_ENTRIES - nr_stack_trace_entries -
+ 		LOCK_TRACE_SIZE_IN_LONGS;
+-	trace->nr_entries = stack_trace_save(trace->entries, max_entries, 3);
  
- 	if (queued)
- 		enqueue_task(rq, p, ENQUEUE_RESTORE | ENQUEUE_NOCLOCK);
+-	if (nr_stack_trace_entries >= MAX_STACK_TRACE_ENTRIES -
+-	    LOCK_TRACE_SIZE_IN_LONGS - 1) {
++	if (max_entries <= 0) {
+ 		if (!debug_locks_off_graph_unlock())
+ 			return NULL;
+ 
+@@ -502,6 +500,7 @@ static struct lock_trace *save_trace(void)
+ 
+ 		return NULL;
+ 	}
++	trace->nr_entries = stack_trace_save(trace->entries, max_entries, 3);
+ 
+ 	hash = jhash(trace->entries, trace->nr_entries *
+ 		     sizeof(trace->entries[0]), 0);
