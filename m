@@ -2,98 +2,129 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C692F12A7BA
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 25 Dec 2019 12:39:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5048B12AF4E
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 26 Dec 2019 23:32:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726289AbfLYLjj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 25 Dec 2019 06:39:39 -0500
-Received: from mail.skyhub.de ([5.9.137.197]:45278 "EHLO mail.skyhub.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726025AbfLYLjj (ORCPT
+        id S1726911AbfLZWcQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 26 Dec 2019 17:32:16 -0500
+Received: from mail.efficios.com ([167.114.142.138]:56804 "EHLO
+        mail.efficios.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726653AbfLZWcQ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 25 Dec 2019 06:39:39 -0500
-Received: from zn.tnic (p200300EC2F0ED600EC808D3B89E41380.dip0.t-ipconnect.de [IPv6:2003:ec:2f0e:d600:ec80:8d3b:89e4:1380])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 016031EC05B5;
-        Wed, 25 Dec 2019 12:39:36 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1577273977;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=BOpJVFIA2qniQ9Bo8EMJuWfsf1ZZVYCz4G3dfSzw3m0=;
-        b=NdjckrlcApT428Zvf8AGb3ViwmHwYVjwno9sG1RMzK9cTPBtk1nfnd0aIjOZPJWX6YPkO5
-        yzG+XqcGo9gmLZRO9uRJQFeruZEtMqtvJXsVPu46N4jIroclRDp/wA0TQpn88g/9N9qweH
-        JEfSITV+cujgruLras39iUYWcwfw14M=
-Date:   Wed, 25 Dec 2019 12:39:32 +0100
-From:   Borislav Petkov <bp@alien8.de>
-To:     linux-kernel@vger.kernel.org
-Cc:     linux-tip-commits@vger.kernel.org,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Thu, 26 Dec 2019 17:32:16 -0500
+Received: from localhost (ip6-localhost [IPv6:::1])
+        by mail.efficios.com (Postfix) with ESMTP id A887E691136;
+        Thu, 26 Dec 2019 17:32:14 -0500 (EST)
+Received: from mail.efficios.com ([IPv6:::1])
+        by localhost (mail02.efficios.com [IPv6:::1]) (amavisd-new, port 10032)
+        with ESMTP id Wgk_AfSnlKw7; Thu, 26 Dec 2019 17:32:14 -0500 (EST)
+Received: from localhost (ip6-localhost [IPv6:::1])
+        by mail.efficios.com (Postfix) with ESMTP id 0A349691131;
+        Thu, 26 Dec 2019 17:32:14 -0500 (EST)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.efficios.com 0A349691131
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
+        s=default; t=1577399534;
+        bh=Vu4bJnahkfBAh27AEmQtcTGKd5gsUZyTGrhSMJ/F/ag=;
+        h=Date:From:To:Message-ID:MIME-Version;
+        b=Y1MGTqeVknIAi0F/zMV9W7UG2DVSzalXonDMzMwwmwh/rWHhNh1k4kXb5R/b4vPyz
+         XiwtZ/9uPCVYndQ6yBrsfKbtQG4Dloa/w37EJDx1RJnE2XYwqTmaZFixtxfYADNu2h
+         ITm+XaGv25I4zlcWuKc97v+OV1hhNW4t9ocBQoLxijHmteRX0JUCarguowrBo1A2AK
+         9T1ConwwCSWWkrPhNDJm7LEzh1FeJWbi1DIGd12+guYH14sXXI/IBY6dMW8PV9bDZ7
+         xDpA4i8J/uEi5TEGevZjMecyr86VyxzFSMwfvF+TUq6ecEYsk4kjfx5p638Iwi1dh5
+         8ROaLE5OypWUA==
+X-Virus-Scanned: amavisd-new at efficios.com
+Received: from mail.efficios.com ([IPv6:::1])
+        by localhost (mail02.efficios.com [IPv6:::1]) (amavisd-new, port 10026)
+        with ESMTP id KMkEVBw-_XO2; Thu, 26 Dec 2019 17:32:13 -0500 (EST)
+Received: from mail02.efficios.com (mail02.efficios.com [167.114.142.138])
+        by mail.efficios.com (Postfix) with ESMTP id DF1F769111B;
+        Thu, 26 Dec 2019 17:32:13 -0500 (EST)
+Date:   Thu, 26 Dec 2019 17:32:13 -0500 (EST)
+From:   Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+To:     Borislav Petkov <bp@alien8.de>
+Cc:     linux-kernel <linux-kernel@vger.kernel.org>,
+        linux-tip-commits <linux-tip-commits@vger.kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>
-Subject: Re: [tip: core/urgent] rseq: Reject unknown flags on rseq unregister
-Message-ID: <20191225113932.GD18098@zn.tnic>
-References: <20191211161713.4490-2-mathieu.desnoyers@efficios.com>
- <157727033331.30329.17206832903007175600.tip-bot2@tip-bot2>
+        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
+        stable <stable@vger.kernel.org>
+Message-ID: <1460494267.15769.1577399533860.JavaMail.zimbra@efficios.com>
+In-Reply-To: <20191225113932.GD18098@zn.tnic>
+References: <20191211161713.4490-2-mathieu.desnoyers@efficios.com> <157727033331.30329.17206832903007175600.tip-bot2@tip-bot2> <20191225113932.GD18098@zn.tnic>
+Subject: Re: [tip: core/urgent] rseq: Reject unknown flags on rseq
+ unregister
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <157727033331.30329.17206832903007175600.tip-bot2@tip-bot2>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [167.114.142.138]
+X-Mailer: Zimbra 8.8.15_GA_3888 (ZimbraWebClient - FF71 (Linux)/8.8.15_GA_3890)
+Thread-Topic: core/urgent] rseq: Reject unknown flags on rseq unregister
+Thread-Index: BWaWCVXVOJYWOEoxqutpfh8/ngqLyA==
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Wed, Dec 25, 2019 at 10:38:53AM -0000, tip-bot2 for Mathieu Desnoyers wrote:
-> The following commit has been merged into the core/urgent branch of tip:
-> 
-> Commit-ID:     66528a4575eee9f5a5270219894ab6178f146e84
-> Gitweb:        https://git.kernel.org/tip/66528a4575eee9f5a5270219894ab6178f146e84
-> Author:        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-> AuthorDate:    Wed, 11 Dec 2019 11:17:11 -05:00
-> Committer:     Ingo Molnar <mingo@kernel.org>
-> CommitterDate: Wed, 25 Dec 2019 10:41:20 +01:00
-> 
-> rseq: Reject unknown flags on rseq unregister
-> 
-> It is preferrable to reject unknown flags within rseq unregistration
-> rather than to ignore them. It is an oversight caused by the fact that
-> the check for unknown flags is after the rseq unregister flag check.
-> 
-> Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> Cc: Linus Torvalds <torvalds@linux-foundation.org>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Link: https://lkml.kernel.org/r/20191211161713.4490-2-mathieu.desnoyers@efficios.com
-> Signed-off-by: Ingo Molnar <mingo@kernel.org>
-> ---
->  kernel/rseq.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/kernel/rseq.c b/kernel/rseq.c
-> index 27c48eb..a4f86a9 100644
-> --- a/kernel/rseq.c
-> +++ b/kernel/rseq.c
-> @@ -310,6 +310,8 @@ SYSCALL_DEFINE4(rseq, struct rseq __user *, rseq, u32, rseq_len,
->  	int ret;
->  
->  	if (flags & RSEQ_FLAG_UNREGISTER) {
-> +		if (flags & ~RSEQ_FLAG_UNREGISTER)
-> +			return -EINVAL;
->  		/* Unregister rseq for current thread. */
->  		if (current->rseq != rseq || !current->rseq)
->  			return -EINVAL;
+----- On Dec 25, 2019, at 6:39 AM, Borislav Petkov bp@alien8.de wrote:
 
-Cc: stable perhaps?
+> On Wed, Dec 25, 2019 at 10:38:53AM -0000, tip-bot2 for Mathieu Desnoyers wrote:
+>> The following commit has been merged into the core/urgent branch of tip:
+>> 
+>> Commit-ID:     66528a4575eee9f5a5270219894ab6178f146e84
+>> Gitweb:
+>> https://git.kernel.org/tip/66528a4575eee9f5a5270219894ab6178f146e84
+>> Author:        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+>> AuthorDate:    Wed, 11 Dec 2019 11:17:11 -05:00
+>> Committer:     Ingo Molnar <mingo@kernel.org>
+>> CommitterDate: Wed, 25 Dec 2019 10:41:20 +01:00
+>> 
+>> rseq: Reject unknown flags on rseq unregister
+>> 
+>> It is preferrable to reject unknown flags within rseq unregistration
+>> rather than to ignore them. It is an oversight caused by the fact that
+>> the check for unknown flags is after the rseq unregister flag check.
+>> 
+>> Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+>> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+>> Cc: Linus Torvalds <torvalds@linux-foundation.org>
+>> Cc: Peter Zijlstra <peterz@infradead.org>
+>> Cc: Thomas Gleixner <tglx@linutronix.de>
+>> Link:
+>> https://lkml.kernel.org/r/20191211161713.4490-2-mathieu.desnoyers@efficios.com
+>> Signed-off-by: Ingo Molnar <mingo@kernel.org>
+>> ---
+>>  kernel/rseq.c | 2 ++
+>>  1 file changed, 2 insertions(+)
+>> 
+>> diff --git a/kernel/rseq.c b/kernel/rseq.c
+>> index 27c48eb..a4f86a9 100644
+>> --- a/kernel/rseq.c
+>> +++ b/kernel/rseq.c
+>> @@ -310,6 +310,8 @@ SYSCALL_DEFINE4(rseq, struct rseq __user *, rseq, u32,
+>> rseq_len,
+>>  	int ret;
+>>  
+>>  	if (flags & RSEQ_FLAG_UNREGISTER) {
+>> +		if (flags & ~RSEQ_FLAG_UNREGISTER)
+>> +			return -EINVAL;
+>>  		/* Unregister rseq for current thread. */
+>>  		if (current->rseq != rseq || !current->rseq)
+>>  			return -EINVAL;
+> 
+> Cc: stable perhaps?
+
+This could indeed be a candidate for stable, even though it's just a stricter
+checking of unknown flags (returning an error rather than ignoring them).
+
+Adding stable in CC here.
+
+Thanks,
+
+Mathieu
+
 
 -- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Mathieu Desnoyers
+EfficiOS Inc.
+http://www.efficios.com
