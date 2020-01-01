@@ -2,42 +2,47 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CB75E12D374
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 30 Dec 2019 19:42:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E7F3912DE79
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  1 Jan 2020 11:07:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727547AbfL3SmU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 30 Dec 2019 13:42:20 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:48083 "EHLO
+        id S1726358AbgAAKHc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 1 Jan 2020 05:07:32 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:52325 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727532AbfL3SmT (ORCPT
+        with ESMTP id S1726687AbgAAKHb (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 30 Dec 2019 13:42:19 -0500
+        Wed, 1 Jan 2020 05:07:31 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1ilzzO-0006Ji-I1; Mon, 30 Dec 2019 19:42:02 +0100
+        id 1imauH-0004P0-MQ; Wed, 01 Jan 2020 11:07:14 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4F6851C0450;
-        Mon, 30 Dec 2019 19:42:01 +0100 (CET)
-Date:   Mon, 30 Dec 2019 18:42:01 -0000
-From:   "tip-bot2 for Qian Cai" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 169A81C2BFF;
+        Wed,  1 Jan 2020 11:07:13 +0100 (CET)
+Date:   Wed, 01 Jan 2020 10:07:12 -0000
+From:   "tip-bot2 for Jann Horn" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/resctrl: Fix an imbalance in domain_remove_cpu()
-Cc:     Qian Cai <cai@lca.pw>, Borislav Petkov <bp@suse.de>,
-        Reinette Chatre <reinette.chatre@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
+Subject: [tip: x86/core] x86/kasan: Print original address on #GP
+Cc:     Jann Horn <jannh@google.com>, Borislav Petkov <bp@suse.de>,
+        Dmitry Vyukov <dvyukov@google.com>,
+        Alexander Potapenko <glider@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Andrey Konovalov <andreyknvl@google.com>,
+        Andrey Ryabinin <aryabinin@virtuozzo.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
         "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        john.stultz@linaro.org, sboyd@kernel.org, <stable@vger.kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>, tj@kernel.org,
-        Tony Luck <tony.luck@intel.com>,
-        Vikas Shivappa <vikas.shivappa@linux.intel.com>,
+        kasan-dev@googlegroups.com, "linux-mm" <linux-mm@kvack.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Sean Christopherson <sean.j.christopherson@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
         "x86-ml" <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191211033042.2188-1-cai@lca.pw>
-References: <20191211033042.2188-1-cai@lca.pw>
+In-Reply-To: <20191218231150.12139-4-jannh@google.com>
+References: <20191218231150.12139-4-jannh@google.com>
 MIME-Version: 1.0
-Message-ID: <157773132107.30329.13477468873808479241.tip-bot2@tip-bot2>
+Message-ID: <157787323296.30329.6279558999926427913.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,80 +56,177 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the x86/core branch of tip:
 
-Commit-ID:     e278af89f1ba0a9ef20947db6afc2c9afa37e85b
-Gitweb:        https://git.kernel.org/tip/e278af89f1ba0a9ef20947db6afc2c9afa37e85b
-Author:        Qian Cai <cai@lca.pw>
-AuthorDate:    Tue, 10 Dec 2019 22:30:42 -05:00
+Commit-ID:     2f004eea0fc8f86b45dfc2007add2d4986de8d02
+Gitweb:        https://git.kernel.org/tip/2f004eea0fc8f86b45dfc2007add2d4986de8d02
+Author:        Jann Horn <jannh@google.com>
+AuthorDate:    Thu, 19 Dec 2019 00:11:50 +01:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 30 Dec 2019 19:25:59 +01:00
+CommitterDate: Tue, 31 Dec 2019 13:15:38 +01:00
 
-x86/resctrl: Fix an imbalance in domain_remove_cpu()
+x86/kasan: Print original address on #GP
 
-A system that supports resource monitoring may have multiple resources
-while not all of these resources are capable of monitoring. Monitoring
-related state is initialized only for resources that are capable of
-monitoring and correspondingly this state should subsequently only be
-removed from these resources that are capable of monitoring.
+Make #GP exceptions caused by out-of-bounds KASAN shadow accesses easier
+to understand by computing the address of the original access and
+printing that. More details are in the comments in the patch.
 
-domain_add_cpu() calls domain_setup_mon_state() only when r->mon_capable
-is true where it will initialize d->mbm_over. However,
-domain_remove_cpu() calls cancel_delayed_work(&d->mbm_over) without
-checking r->mon_capable resulting in an attempt to cancel d->mbm_over on
-all resources, even those that never initialized d->mbm_over because
-they are not capable of monitoring. Hence, it triggers a debugobjects
-warning when offlining CPUs because those timer debugobjects are never
-initialized:
+This turns an error like this:
 
-  ODEBUG: assert_init not available (active state 0) object type:
-  timer_list hint: 0x0
-  WARNING: CPU: 143 PID: 789 at lib/debugobjects.c:484
-  debug_print_object
-  Hardware name: HP Synergy 680 Gen9/Synergy 680 Gen9 Compute Module, BIOS I40 05/23/2018
-  RIP: 0010:debug_print_object
-  Call Trace:
-  debug_object_assert_init
-  del_timer
-  try_to_grab_pending
-  cancel_delayed_work
-  resctrl_offline_cpu
-  cpuhp_invoke_callback
-  cpuhp_thread_fun
-  smpboot_thread_fn
-  kthread
-  ret_from_fork
+  kasan: CONFIG_KASAN_INLINE enabled
+  kasan: GPF could be caused by NULL-ptr deref or user memory access
+  general protection fault, probably for non-canonical address
+      0xe017577ddf75b7dd: 0000 [#1] PREEMPT SMP KASAN PTI
 
-Fixes: e33026831bdb ("x86/intel_rdt/mbm: Handle counter overflow")
-Signed-off-by: Qian Cai <cai@lca.pw>
+into this:
+
+  general protection fault, probably for non-canonical address
+      0xe017577ddf75b7dd: 0000 [#1] PREEMPT SMP KASAN PTI
+  KASAN: maybe wild-memory-access in range
+      [0x00badbeefbadbee8-0x00badbeefbadbeef]
+
+The hook is placed in architecture-independent code, but is currently
+only wired up to the X86 exception handler because I'm not sufficiently
+familiar with the address space layout and exception handling mechanisms
+on other architectures.
+
+Signed-off-by: Jann Horn <jannh@google.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Acked-by: Reinette Chatre <reinette.chatre@intel.com>
-Cc: Fenghua Yu <fenghua.yu@intel.com>
+Reviewed-by: Dmitry Vyukov <dvyukov@google.com>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Andrey Konovalov <andreyknvl@google.com>
+Cc: Andrey Ryabinin <aryabinin@virtuozzo.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
 Cc: "H. Peter Anvin" <hpa@zytor.com>
 Cc: Ingo Molnar <mingo@redhat.com>
-Cc: john.stultz@linaro.org
-Cc: sboyd@kernel.org
-Cc: <stable@vger.kernel.org>
+Cc: kasan-dev@googlegroups.com
+Cc: linux-mm <linux-mm@kvack.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Sean Christopherson <sean.j.christopherson@intel.com>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: tj@kernel.org
-Cc: Tony Luck <tony.luck@intel.com>
-Cc: Vikas Shivappa <vikas.shivappa@linux.intel.com>
 Cc: x86-ml <x86@kernel.org>
-Link: https://lkml.kernel.org/r/20191211033042.2188-1-cai@lca.pw
+Link: https://lkml.kernel.org/r/20191218231150.12139-4-jannh@google.com
 ---
- arch/x86/kernel/cpu/resctrl/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/dumpstack.c |  2 ++-
+ arch/x86/mm/kasan_init_64.c | 21 +-------------------
+ include/linux/kasan.h       |  6 +++++-
+ mm/kasan/report.c           | 40 ++++++++++++++++++++++++++++++++++++-
+ 4 files changed, 48 insertions(+), 21 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/resctrl/core.c b/arch/x86/kernel/cpu/resctrl/core.c
-index 03eb90d..89049b3 100644
---- a/arch/x86/kernel/cpu/resctrl/core.c
-+++ b/arch/x86/kernel/cpu/resctrl/core.c
-@@ -618,7 +618,7 @@ static void domain_remove_cpu(int cpu, struct rdt_resource *r)
- 		if (static_branch_unlikely(&rdt_mon_enable_key))
- 			rmdir_mondata_subdir_allrdtgrp(r, d->id);
- 		list_del(&d->list);
--		if (is_mbm_enabled())
-+		if (r->mon_capable && is_mbm_enabled())
- 			cancel_delayed_work(&d->mbm_over);
- 		if (is_llc_occupancy_enabled() &&  has_busy_rmid(r, d)) {
- 			/*
+diff --git a/arch/x86/kernel/dumpstack.c b/arch/x86/kernel/dumpstack.c
+index 8995bf1..ae64ec7 100644
+--- a/arch/x86/kernel/dumpstack.c
++++ b/arch/x86/kernel/dumpstack.c
+@@ -427,6 +427,8 @@ void die_addr(const char *str, struct pt_regs *regs, long err, long gp_addr)
+ 	int sig = SIGSEGV;
+ 
+ 	__die_header(str, regs, err);
++	if (gp_addr)
++		kasan_non_canonical_hook(gp_addr);
+ 	if (__die_body(str, regs, err))
+ 		sig = 0;
+ 	oops_end(flags, regs, sig);
+diff --git a/arch/x86/mm/kasan_init_64.c b/arch/x86/mm/kasan_init_64.c
+index cf5bc37..763e71a 100644
+--- a/arch/x86/mm/kasan_init_64.c
++++ b/arch/x86/mm/kasan_init_64.c
+@@ -288,23 +288,6 @@ static void __init kasan_shallow_populate_pgds(void *start, void *end)
+ 	} while (pgd++, addr = next, addr != (unsigned long)end);
+ }
+ 
+-#ifdef CONFIG_KASAN_INLINE
+-static int kasan_die_handler(struct notifier_block *self,
+-			     unsigned long val,
+-			     void *data)
+-{
+-	if (val == DIE_GPF) {
+-		pr_emerg("CONFIG_KASAN_INLINE enabled\n");
+-		pr_emerg("GPF could be caused by NULL-ptr deref or user memory access\n");
+-	}
+-	return NOTIFY_OK;
+-}
+-
+-static struct notifier_block kasan_die_notifier = {
+-	.notifier_call = kasan_die_handler,
+-};
+-#endif
+-
+ void __init kasan_early_init(void)
+ {
+ 	int i;
+@@ -341,10 +324,6 @@ void __init kasan_init(void)
+ 	int i;
+ 	void *shadow_cpu_entry_begin, *shadow_cpu_entry_end;
+ 
+-#ifdef CONFIG_KASAN_INLINE
+-	register_die_notifier(&kasan_die_notifier);
+-#endif
+-
+ 	memcpy(early_top_pgt, init_top_pgt, sizeof(early_top_pgt));
+ 
+ 	/*
+diff --git a/include/linux/kasan.h b/include/linux/kasan.h
+index e18fe54..5cde9e7 100644
+--- a/include/linux/kasan.h
++++ b/include/linux/kasan.h
+@@ -228,4 +228,10 @@ static inline void kasan_release_vmalloc(unsigned long start,
+ 					 unsigned long free_region_end) {}
+ #endif
+ 
++#ifdef CONFIG_KASAN_INLINE
++void kasan_non_canonical_hook(unsigned long addr);
++#else /* CONFIG_KASAN_INLINE */
++static inline void kasan_non_canonical_hook(unsigned long addr) { }
++#endif /* CONFIG_KASAN_INLINE */
++
+ #endif /* LINUX_KASAN_H */
+diff --git a/mm/kasan/report.c b/mm/kasan/report.c
+index 6217821..5ef9f24 100644
+--- a/mm/kasan/report.c
++++ b/mm/kasan/report.c
+@@ -512,3 +512,43 @@ void __kasan_report(unsigned long addr, size_t size, bool is_write, unsigned lon
+ 
+ 	end_report(&flags);
+ }
++
++#ifdef CONFIG_KASAN_INLINE
++/*
++ * With CONFIG_KASAN_INLINE, accesses to bogus pointers (outside the high
++ * canonical half of the address space) cause out-of-bounds shadow memory reads
++ * before the actual access. For addresses in the low canonical half of the
++ * address space, as well as most non-canonical addresses, that out-of-bounds
++ * shadow memory access lands in the non-canonical part of the address space.
++ * Help the user figure out what the original bogus pointer was.
++ */
++void kasan_non_canonical_hook(unsigned long addr)
++{
++	unsigned long orig_addr;
++	const char *bug_type;
++
++	if (addr < KASAN_SHADOW_OFFSET)
++		return;
++
++	orig_addr = (addr - KASAN_SHADOW_OFFSET) << KASAN_SHADOW_SCALE_SHIFT;
++	/*
++	 * For faults near the shadow address for NULL, we can be fairly certain
++	 * that this is a KASAN shadow memory access.
++	 * For faults that correspond to shadow for low canonical addresses, we
++	 * can still be pretty sure - that shadow region is a fairly narrow
++	 * chunk of the non-canonical address space.
++	 * But faults that look like shadow for non-canonical addresses are a
++	 * really large chunk of the address space. In that case, we still
++	 * print the decoded address, but make it clear that this is not
++	 * necessarily what's actually going on.
++	 */
++	if (orig_addr < PAGE_SIZE)
++		bug_type = "null-ptr-deref";
++	else if (orig_addr < TASK_SIZE)
++		bug_type = "probably user-memory-access";
++	else
++		bug_type = "maybe wild-memory-access";
++	pr_alert("KASAN: %s in range [0x%016lx-0x%016lx]\n", bug_type,
++		 orig_addr, orig_addr + KASAN_SHADOW_MASK);
++}
++#endif
