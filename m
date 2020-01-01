@@ -2,45 +2,47 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E593112DE7B
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  1 Jan 2020 11:07:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A70F12DE75
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  1 Jan 2020 11:07:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725943AbgAAKHa (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 1 Jan 2020 05:07:30 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:52322 "EHLO
+        id S1725945AbgAAKH1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 1 Jan 2020 05:07:27 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:52315 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726358AbgAAKHa (ORCPT
+        with ESMTP id S1725943AbgAAKH1 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 1 Jan 2020 05:07:30 -0500
+        Wed, 1 Jan 2020 05:07:27 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1imauI-0004P7-2q; Wed, 01 Jan 2020 11:07:14 +0100
+        id 1imauH-0004P3-LA; Wed, 01 Jan 2020 11:07:13 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A273C1C2C2F;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 456A41C2C2B;
         Wed,  1 Jan 2020 11:07:13 +0100 (CET)
 Date:   Wed, 01 Jan 2020 10:07:13 -0000
 From:   "tip-bot2 for Jann Horn" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/core] x86/insn-eval: Add support for 64-bit kernel mode
+Subject: [tip: x86/core] x86/dumpstack: Introduce die_addr() for die() with
+ #GP fault address
 Cc:     Jann Horn <jannh@google.com>, Borislav Petkov <bp@suse.de>,
         Alexander Potapenko <glider@google.com>,
         Andrey Konovalov <andreyknvl@google.com>,
         Andrey Ryabinin <aryabinin@virtuozzo.com>,
         Andy Lutomirski <luto@kernel.org>,
         Dmitry Vyukov <dvyukov@google.com>,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
+        "Eric W. Biederman" <ebiederm@xmission.com>,
         "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        kasan-dev@googlegroups.com, Oleg Nesterov <oleg@redhat.com>,
+        kasan-dev@googlegroups.com, Masami Hiramatsu <mhiramat@kernel.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Sean Christopherson <sean.j.christopherson@intel.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         "x86-ml" <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191218231150.12139-1-jannh@google.com>
-References: <20191218231150.12139-1-jannh@google.com>
+In-Reply-To: <20191218231150.12139-3-jannh@google.com>
+References: <20191218231150.12139-3-jannh@google.com>
 MIME-Version: 1.0
-Message-ID: <157787323354.30329.6908978173787271263.tip-bot2@tip-bot2>
+Message-ID: <157787323316.30329.2945432496766517547.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -56,23 +58,23 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/core branch of tip:
 
-Commit-ID:     7be4412721aee25e35583a20a896085dc6b99c3e
-Gitweb:        https://git.kernel.org/tip/7be4412721aee25e35583a20a896085dc6b99c3e
+Commit-ID:     aa49f20462c90df4150f33d245cbcfe0d9c80350
+Gitweb:        https://git.kernel.org/tip/aa49f20462c90df4150f33d245cbcfe0d9c80350
 Author:        Jann Horn <jannh@google.com>
-AuthorDate:    Thu, 19 Dec 2019 00:11:47 +01:00
+AuthorDate:    Thu, 19 Dec 2019 00:11:49 +01:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 30 Dec 2019 20:17:15 +01:00
+CommitterDate: Tue, 31 Dec 2019 13:11:35 +01:00
 
-x86/insn-eval: Add support for 64-bit kernel mode
+x86/dumpstack: Introduce die_addr() for die() with #GP fault address
 
-To support evaluating 64-bit kernel mode instructions:
+Split __die() into __die_header() and __die_body(). This allows inserting
+extra information below the header line that initiates the bug report.
 
-* Replace existing checks for user_64bit_mode() with a new helper that
-checks whether code is being executed in either 64-bit kernel mode or
-64-bit user mode.
+Introduce a new function die_addr() that behaves like die(), but is for
+faults only and uses __die_header() and __die_body() so that a future
+commit can print extra information after the header line.
 
-* Select the GS base depending on whether the instruction is being
-evaluated in kernel mode.
+ [ bp: Comment the KASAN-specific usage of gp_addr. ]
 
 Signed-off-by: Jann Horn <jannh@google.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
@@ -81,132 +83,108 @@ Cc: Andrey Konovalov <andreyknvl@google.com>
 Cc: Andrey Ryabinin <aryabinin@virtuozzo.com>
 Cc: Andy Lutomirski <luto@kernel.org>
 Cc: Dmitry Vyukov <dvyukov@google.com>
-Cc: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+Cc: "Eric W. Biederman" <ebiederm@xmission.com>
 Cc: "H. Peter Anvin" <hpa@zytor.com>
 Cc: Ingo Molnar <mingo@redhat.com>
 Cc: kasan-dev@googlegroups.com
-Cc: Oleg Nesterov <oleg@redhat.com>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: "Peter Zijlstra (Intel)" <peterz@infradead.org>
 Cc: Sean Christopherson <sean.j.christopherson@intel.com>
 Cc: Thomas Gleixner <tglx@linutronix.de>
 Cc: x86-ml <x86@kernel.org>
-Link: https://lkml.kernel.org/r/20191218231150.12139-1-jannh@google.com
+Link: https://lkml.kernel.org/r/20191218231150.12139-3-jannh@google.com
 ---
- arch/x86/include/asm/ptrace.h | 13 +++++++++++++
- arch/x86/lib/insn-eval.c      | 26 +++++++++++++++-----------
- 2 files changed, 28 insertions(+), 11 deletions(-)
+ arch/x86/include/asm/kdebug.h |  1 +
+ arch/x86/kernel/dumpstack.c   | 24 +++++++++++++++++++++++-
+ arch/x86/kernel/traps.c       |  9 ++++++++-
+ 3 files changed, 32 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/include/asm/ptrace.h b/arch/x86/include/asm/ptrace.h
-index 5057a8e..ac45b06 100644
---- a/arch/x86/include/asm/ptrace.h
-+++ b/arch/x86/include/asm/ptrace.h
-@@ -159,6 +159,19 @@ static inline bool user_64bit_mode(struct pt_regs *regs)
- #endif
+diff --git a/arch/x86/include/asm/kdebug.h b/arch/x86/include/asm/kdebug.h
+index 75f1e35..247ab14 100644
+--- a/arch/x86/include/asm/kdebug.h
++++ b/arch/x86/include/asm/kdebug.h
+@@ -33,6 +33,7 @@ enum show_regs_mode {
+ };
+ 
+ extern void die(const char *, struct pt_regs *,long);
++void die_addr(const char *str, struct pt_regs *regs, long err, long gp_addr);
+ extern int __must_check __die(const char *, struct pt_regs *, long);
+ extern void show_stack_regs(struct pt_regs *regs);
+ extern void __show_regs(struct pt_regs *regs, enum show_regs_mode);
+diff --git a/arch/x86/kernel/dumpstack.c b/arch/x86/kernel/dumpstack.c
+index e07424e..8995bf1 100644
+--- a/arch/x86/kernel/dumpstack.c
++++ b/arch/x86/kernel/dumpstack.c
+@@ -365,7 +365,7 @@ void oops_end(unsigned long flags, struct pt_regs *regs, int signr)
+ }
+ NOKPROBE_SYMBOL(oops_end);
+ 
+-int __die(const char *str, struct pt_regs *regs, long err)
++static void __die_header(const char *str, struct pt_regs *regs, long err)
+ {
+ 	const char *pr = "";
+ 
+@@ -384,7 +384,11 @@ int __die(const char *str, struct pt_regs *regs, long err)
+ 	       IS_ENABLED(CONFIG_KASAN)   ? " KASAN"           : "",
+ 	       IS_ENABLED(CONFIG_PAGE_TABLE_ISOLATION) ?
+ 	       (boot_cpu_has(X86_FEATURE_PTI) ? " PTI" : " NOPTI") : "");
++}
++NOKPROBE_SYMBOL(__die_header);
+ 
++static int __die_body(const char *str, struct pt_regs *regs, long err)
++{
+ 	show_regs(regs);
+ 	print_modules();
+ 
+@@ -394,6 +398,13 @@ int __die(const char *str, struct pt_regs *regs, long err)
+ 
+ 	return 0;
+ }
++NOKPROBE_SYMBOL(__die_body);
++
++int __die(const char *str, struct pt_regs *regs, long err)
++{
++	__die_header(str, regs, err);
++	return __die_body(str, regs, err);
++}
+ NOKPROBE_SYMBOL(__die);
+ 
+ /*
+@@ -410,6 +421,17 @@ void die(const char *str, struct pt_regs *regs, long err)
+ 	oops_end(flags, regs, sig);
  }
  
-+/*
-+ * Determine whether the register set came from any context that is running in
-+ * 64-bit mode.
-+ */
-+static inline bool any_64bit_mode(struct pt_regs *regs)
++void die_addr(const char *str, struct pt_regs *regs, long err, long gp_addr)
 +{
-+#ifdef CONFIG_X86_64
-+	return !user_mode(regs) || user_64bit_mode(regs);
-+#else
-+	return false;
-+#endif
++	unsigned long flags = oops_begin();
++	int sig = SIGSEGV;
++
++	__die_header(str, regs, err);
++	if (__die_body(str, regs, err))
++		sig = 0;
++	oops_end(flags, regs, sig);
 +}
 +
- #ifdef CONFIG_X86_64
- #define current_user_stack_pointer()	current_pt_regs()->sp
- #define compat_user_stack_pointer()	current_pt_regs()->sp
-diff --git a/arch/x86/lib/insn-eval.c b/arch/x86/lib/insn-eval.c
-index 306c3a0..31600d8 100644
---- a/arch/x86/lib/insn-eval.c
-+++ b/arch/x86/lib/insn-eval.c
-@@ -155,7 +155,7 @@ static bool check_seg_overrides(struct insn *insn, int regoff)
-  */
- static int resolve_default_seg(struct insn *insn, struct pt_regs *regs, int off)
+ void show_regs(struct pt_regs *regs)
  {
--	if (user_64bit_mode(regs))
-+	if (any_64bit_mode(regs))
- 		return INAT_SEG_REG_IGNORE;
- 	/*
- 	 * Resolve the default segment register as described in Section 3.7.4
-@@ -266,7 +266,7 @@ static int resolve_seg_reg(struct insn *insn, struct pt_regs *regs, int regoff)
- 	 * which may be invalid at this point.
- 	 */
- 	if (regoff == offsetof(struct pt_regs, ip)) {
--		if (user_64bit_mode(regs))
-+		if (any_64bit_mode(regs))
- 			return INAT_SEG_REG_IGNORE;
- 		else
- 			return INAT_SEG_REG_CS;
-@@ -289,7 +289,7 @@ static int resolve_seg_reg(struct insn *insn, struct pt_regs *regs, int regoff)
- 	 * In long mode, segment override prefixes are ignored, except for
- 	 * overrides for FS and GS.
- 	 */
--	if (user_64bit_mode(regs)) {
-+	if (any_64bit_mode(regs)) {
- 		if (idx != INAT_SEG_REG_FS &&
- 		    idx != INAT_SEG_REG_GS)
- 			idx = INAT_SEG_REG_IGNORE;
-@@ -646,23 +646,27 @@ unsigned long insn_get_seg_base(struct pt_regs *regs, int seg_reg_idx)
- 		 */
- 		return (unsigned long)(sel << 4);
+ 	show_regs_print_info(KERN_DEFAULT);
+diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
+index 108ab1e..2afd7d8 100644
+--- a/arch/x86/kernel/traps.c
++++ b/arch/x86/kernel/traps.c
+@@ -619,7 +619,14 @@ dotraplinkage void do_general_protection(struct pt_regs *regs, long error_code)
+ 				 "maybe for address",
+ 				 gp_addr);
  
--	if (user_64bit_mode(regs)) {
-+	if (any_64bit_mode(regs)) {
- 		/*
- 		 * Only FS or GS will have a base address, the rest of
- 		 * the segments' bases are forced to 0.
- 		 */
- 		unsigned long base;
- 
--		if (seg_reg_idx == INAT_SEG_REG_FS)
-+		if (seg_reg_idx == INAT_SEG_REG_FS) {
- 			rdmsrl(MSR_FS_BASE, base);
--		else if (seg_reg_idx == INAT_SEG_REG_GS)
-+		} else if (seg_reg_idx == INAT_SEG_REG_GS) {
- 			/*
- 			 * swapgs was called at the kernel entry point. Thus,
- 			 * MSR_KERNEL_GS_BASE will have the user-space GS base.
- 			 */
--			rdmsrl(MSR_KERNEL_GS_BASE, base);
--		else
-+			if (user_mode(regs))
-+				rdmsrl(MSR_KERNEL_GS_BASE, base);
-+			else
-+				rdmsrl(MSR_GS_BASE, base);
-+		} else {
- 			base = 0;
-+		}
- 		return base;
+-		die(desc, regs, error_code);
++		/*
++		 * KASAN is interested only in the non-canonical case, clear it
++		 * otherwise.
++		 */
++		if (hint != GP_NON_CANONICAL)
++			gp_addr = 0;
++
++		die_addr(desc, regs, error_code, gp_addr);
+ 		return;
  	}
  
-@@ -703,7 +707,7 @@ static unsigned long get_seg_limit(struct pt_regs *regs, int seg_reg_idx)
- 	if (sel < 0)
- 		return 0;
- 
--	if (user_64bit_mode(regs) || v8086_mode(regs))
-+	if (any_64bit_mode(regs) || v8086_mode(regs))
- 		return -1L;
- 
- 	if (!sel)
-@@ -948,7 +952,7 @@ static int get_eff_addr_modrm(struct insn *insn, struct pt_regs *regs,
- 	 * following instruction.
- 	 */
- 	if (*regoff == -EDOM) {
--		if (user_64bit_mode(regs))
-+		if (any_64bit_mode(regs))
- 			tmp = regs->ip + insn->length;
- 		else
- 			tmp = 0;
-@@ -1250,7 +1254,7 @@ static void __user *get_addr_ref_32(struct insn *insn, struct pt_regs *regs)
- 	 * After computed, the effective address is treated as an unsigned
- 	 * quantity.
- 	 */
--	if (!user_64bit_mode(regs) && ((unsigned int)eff_addr > seg_limit))
-+	if (!any_64bit_mode(regs) && ((unsigned int)eff_addr > seg_limit))
- 		goto out;
- 
- 	/*
