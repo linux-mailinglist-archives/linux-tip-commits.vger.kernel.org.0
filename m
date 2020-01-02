@@ -2,39 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DD76E12E4CB
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  2 Jan 2020 11:07:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 94AFA12E96E
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  2 Jan 2020 18:31:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727987AbgABKHX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 2 Jan 2020 05:07:23 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:55351 "EHLO
+        id S1727706AbgABRbz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 2 Jan 2020 12:31:55 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:56497 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727978AbgABKHX (ORCPT
+        with ESMTP id S1726125AbgABRbz (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 2 Jan 2020 05:07:23 -0500
+        Thu, 2 Jan 2020 12:31:55 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1imxNp-0007Sk-0f; Thu, 02 Jan 2020 11:07:13 +0100
+        id 1in4Jv-0004ab-J1; Thu, 02 Jan 2020 18:31:39 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4A5CD1C2BEB;
-        Thu,  2 Jan 2020 11:07:12 +0100 (CET)
-Date:   Thu, 02 Jan 2020 10:07:12 -0000
-From:   "tip-bot2 for Anthony Steinhauser" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id ED1A71C2C36;
+        Thu,  2 Jan 2020 18:31:38 +0100 (CET)
+Date:   Thu, 02 Jan 2020 17:31:38 -0000
+From:   "tip-bot2 for Shakeel Butt" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] x86/nospec: Remove unused RSB_FILL_LOOPS
-Cc:     Anthony Steinhauser <asteinhauser@google.com>,
-        Borislav Petkov <bp@suse.de>, "H. Peter Anvin" <hpa@zytor.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
+Subject: [tip: x86/urgent] x86/resctrl: Fix potential memory leak
+Cc:     Shakeel Butt <shakeelb@google.com>, Borislav Petkov <bp@suse.de>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        Reinette Chatre <reinette.chatre@intel.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         "x86-ml" <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191226204512.24524-1-asteinhauser@google.com>
-References: <20191226204512.24524-1-asteinhauser@google.com>
+In-Reply-To: <20200102165844.133133-1-shakeelb@google.com>
+References: <20200102165844.133133-1-shakeelb@google.com>
 MIME-Version: 1.0
-Message-ID: <157795963208.30329.11151985298082895162.tip-bot2@tip-bot2>
+Message-ID: <157798629877.30329.16535112345007751592.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,44 +48,59 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cleanups branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     fae7bfcc78146057ac2730719de8d5e41de19540
-Gitweb:        https://git.kernel.org/tip/fae7bfcc78146057ac2730719de8d5e41de19540
-Author:        Anthony Steinhauser <asteinhauser@google.com>
-AuthorDate:    Thu, 26 Dec 2019 12:45:12 -08:00
+Commit-ID:     ab6a2114433a3b5b555983dcb9b752a85255f04b
+Gitweb:        https://git.kernel.org/tip/ab6a2114433a3b5b555983dcb9b752a85255f04b
+Author:        Shakeel Butt <shakeelb@google.com>
+AuthorDate:    Thu, 02 Jan 2020 08:58:44 -08:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Thu, 02 Jan 2020 10:54:53 +01:00
+CommitterDate: Thu, 02 Jan 2020 18:26:27 +01:00
 
-x86/nospec: Remove unused RSB_FILL_LOOPS
+x86/resctrl: Fix potential memory leak
 
-It was never really used, see
+set_cache_qos_cfg() is leaking memory when the given level is not
+RDT_RESOURCE_L3 or RDT_RESOURCE_L2. At the moment, this function is
+called with only valid levels but move the allocation after the valid
+level checks in order to make it more robust and future proof.
 
-  117cc7a908c8 ("x86/retpoline: Fill return stack buffer on vmexit")
+ [ bp: Massage commit message. ]
 
-  [ bp: Massage. ]
-
-Signed-off-by: Anthony Steinhauser <asteinhauser@google.com>
+Fixes: 99adde9b370de ("x86/intel_rdt: Enable L2 CDP in MSR IA32_L2_QOS_CFG")
+Signed-off-by: Shakeel Butt <shakeelb@google.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
+Cc: Fenghua Yu <fenghua.yu@intel.com>
 Cc: "H. Peter Anvin" <hpa@zytor.com>
 Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Reinette Chatre <reinette.chatre@intel.com>
 Cc: Thomas Gleixner <tglx@linutronix.de>
 Cc: x86-ml <x86@kernel.org>
-Link: https://lkml.kernel.org/r/20191226204512.24524-1-asteinhauser@google.com
+Link: https://lkml.kernel.org/r/20200102165844.133133-1-shakeelb@google.com
 ---
- arch/x86/include/asm/nospec-branch.h | 1 -
- 1 file changed, 1 deletion(-)
+ arch/x86/kernel/cpu/resctrl/rdtgroup.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
-index 5c24a7b..07e95dc 100644
---- a/arch/x86/include/asm/nospec-branch.h
-+++ b/arch/x86/include/asm/nospec-branch.h
-@@ -37,7 +37,6 @@
-  */
+diff --git a/arch/x86/kernel/cpu/resctrl/rdtgroup.c b/arch/x86/kernel/cpu/resctrl/rdtgroup.c
+index 2e3b06d..dac7209 100644
+--- a/arch/x86/kernel/cpu/resctrl/rdtgroup.c
++++ b/arch/x86/kernel/cpu/resctrl/rdtgroup.c
+@@ -1741,9 +1741,6 @@ static int set_cache_qos_cfg(int level, bool enable)
+ 	struct rdt_domain *d;
+ 	int cpu;
  
- #define RSB_CLEAR_LOOPS		32	/* To forcibly overwrite all entries */
--#define RSB_FILL_LOOPS		16	/* To avoid underflow */
+-	if (!zalloc_cpumask_var(&cpu_mask, GFP_KERNEL))
+-		return -ENOMEM;
+-
+ 	if (level == RDT_RESOURCE_L3)
+ 		update = l3_qos_cfg_update;
+ 	else if (level == RDT_RESOURCE_L2)
+@@ -1751,6 +1748,9 @@ static int set_cache_qos_cfg(int level, bool enable)
+ 	else
+ 		return -EINVAL;
  
- /*
-  * Google experimented with loop-unrolling and this turned out to be
++	if (!zalloc_cpumask_var(&cpu_mask, GFP_KERNEL))
++		return -ENOMEM;
++
+ 	r_l = &rdt_resources_all[level];
+ 	list_for_each_entry(d, &r_l->domains, list) {
+ 		/* Pick one CPU from each domain instance to update MSR */
