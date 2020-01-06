@@ -2,39 +2,47 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 94AFA12E96E
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  2 Jan 2020 18:31:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 88FFE131757
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  6 Jan 2020 19:16:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727706AbgABRbz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 2 Jan 2020 12:31:55 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:56497 "EHLO
+        id S1726698AbgAFSQL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 6 Jan 2020 13:16:11 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:41916 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726125AbgABRbz (ORCPT
+        with ESMTP id S1726657AbgAFSQL (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 2 Jan 2020 12:31:55 -0500
+        Mon, 6 Jan 2020 13:16:11 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1in4Jv-0004ab-J1; Thu, 02 Jan 2020 18:31:39 +0100
+        id 1ioWuo-0005eb-Mx; Mon, 06 Jan 2020 19:15:46 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id ED1A71C2C36;
-        Thu,  2 Jan 2020 18:31:38 +0100 (CET)
-Date:   Thu, 02 Jan 2020 17:31:38 -0000
-From:   "tip-bot2 for Shakeel Butt" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 10FF11C2C34;
+        Mon,  6 Jan 2020 19:15:44 +0100 (CET)
+Date:   Mon, 06 Jan 2020 18:15:43 -0000
+From:   "tip-bot2 for Yu-cheng Yu" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/resctrl: Fix potential memory leak
-Cc:     Shakeel Butt <shakeelb@google.com>, Borislav Petkov <bp@suse.de>,
+Subject: [tip: x86/fpu] x86/fpu/xstate: Make
+ xfeature_is_supervisor()/xfeature_is_user() return bool
+Cc:     Borislav Petkov <bp@suse.de>,
+        "Yu-cheng Yu" <yu-cheng.yu@intel.com>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
         Fenghua Yu <fenghua.yu@intel.com>,
         "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        Reinette Chatre <reinette.chatre@intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        "Ravi V. Shankar" <ravi.v.shankar@intel.com>,
+        Rik van Riel <riel@surriel.com>,
         Thomas Gleixner <tglx@linutronix.de>,
-        "x86-ml" <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200102165844.133133-1-shakeelb@google.com>
-References: <20200102165844.133133-1-shakeelb@google.com>
+        Tony Luck <tony.luck@intel.com>, "x86-ml" <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20191212210855.19260-3-yu-cheng.yu@intel.com>
+References: <20191212210855.19260-3-yu-cheng.yu@intel.com>
 MIME-Version: 1.0
-Message-ID: <157798629877.30329.16535112345007751592.tip-bot2@tip-bot2>
+Message-ID: <157833454385.30329.3292220275280944464.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,59 +56,63 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the x86/fpu branch of tip:
 
-Commit-ID:     ab6a2114433a3b5b555983dcb9b752a85255f04b
-Gitweb:        https://git.kernel.org/tip/ab6a2114433a3b5b555983dcb9b752a85255f04b
-Author:        Shakeel Butt <shakeelb@google.com>
-AuthorDate:    Thu, 02 Jan 2020 08:58:44 -08:00
+Commit-ID:     158e2ee61f22b878d61de92bea5aad3d2df1c146
+Gitweb:        https://git.kernel.org/tip/158e2ee61f22b878d61de92bea5aad3d2df1c146
+Author:        Yu-cheng Yu <yu-cheng.yu@intel.com>
+AuthorDate:    Thu, 12 Dec 2019 13:08:54 -08:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Thu, 02 Jan 2020 18:26:27 +01:00
+CommitterDate: Mon, 06 Jan 2020 19:08:40 +01:00
 
-x86/resctrl: Fix potential memory leak
+x86/fpu/xstate: Make xfeature_is_supervisor()/xfeature_is_user() return bool
 
-set_cache_qos_cfg() is leaking memory when the given level is not
-RDT_RESOURCE_L3 or RDT_RESOURCE_L2. At the moment, this function is
-called with only valid levels but move the allocation after the valid
-level checks in order to make it more robust and future proof.
+Have both xfeature_is_supervisor()/xfeature_is_user() return bool
+because they are used only in boolean context.
 
- [ bp: Massage commit message. ]
-
-Fixes: 99adde9b370de ("x86/intel_rdt: Enable L2 CDP in MSR IA32_L2_QOS_CFG")
-Signed-off-by: Shakeel Butt <shakeelb@google.com>
+Suggested-by: Borislav Petkov <bp@suse.de>
+Signed-off-by: Yu-cheng Yu <yu-cheng.yu@intel.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
+Acked-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
 Cc: Fenghua Yu <fenghua.yu@intel.com>
 Cc: "H. Peter Anvin" <hpa@zytor.com>
 Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Reinette Chatre <reinette.chatre@intel.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: "Ravi V. Shankar" <ravi.v.shankar@intel.com>
+Cc: Rik van Riel <riel@surriel.com>
 Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Tony Luck <tony.luck@intel.com>
 Cc: x86-ml <x86@kernel.org>
-Link: https://lkml.kernel.org/r/20200102165844.133133-1-shakeelb@google.com
+Link: https://lkml.kernel.org/r/20191212210855.19260-3-yu-cheng.yu@intel.com
 ---
- arch/x86/kernel/cpu/resctrl/rdtgroup.c | 6 +++---
+ arch/x86/kernel/fpu/xstate.c | 6 +++---
  1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/resctrl/rdtgroup.c b/arch/x86/kernel/cpu/resctrl/rdtgroup.c
-index 2e3b06d..dac7209 100644
---- a/arch/x86/kernel/cpu/resctrl/rdtgroup.c
-+++ b/arch/x86/kernel/cpu/resctrl/rdtgroup.c
-@@ -1741,9 +1741,6 @@ static int set_cache_qos_cfg(int level, bool enable)
- 	struct rdt_domain *d;
- 	int cpu;
+diff --git a/arch/x86/kernel/fpu/xstate.c b/arch/x86/kernel/fpu/xstate.c
+index 4588fc5..a180659 100644
+--- a/arch/x86/kernel/fpu/xstate.c
++++ b/arch/x86/kernel/fpu/xstate.c
+@@ -107,7 +107,7 @@ int cpu_has_xfeatures(u64 xfeatures_needed, const char **feature_name)
+ }
+ EXPORT_SYMBOL_GPL(cpu_has_xfeatures);
  
--	if (!zalloc_cpumask_var(&cpu_mask, GFP_KERNEL))
--		return -ENOMEM;
--
- 	if (level == RDT_RESOURCE_L3)
- 		update = l3_qos_cfg_update;
- 	else if (level == RDT_RESOURCE_L2)
-@@ -1751,6 +1748,9 @@ static int set_cache_qos_cfg(int level, bool enable)
- 	else
- 		return -EINVAL;
+-static int xfeature_is_supervisor(int xfeature_nr)
++static bool xfeature_is_supervisor(int xfeature_nr)
+ {
+ 	/*
+ 	 * Extended State Enumeration Sub-leaves (EAX = 0DH, ECX = n, n > 1)
+@@ -117,10 +117,10 @@ static int xfeature_is_supervisor(int xfeature_nr)
+ 	u32 eax, ebx, ecx, edx;
  
-+	if (!zalloc_cpumask_var(&cpu_mask, GFP_KERNEL))
-+		return -ENOMEM;
-+
- 	r_l = &rdt_resources_all[level];
- 	list_for_each_entry(d, &r_l->domains, list) {
- 		/* Pick one CPU from each domain instance to update MSR */
+ 	cpuid_count(XSTATE_CPUID, xfeature_nr, &eax, &ebx, &ecx, &edx);
+-	return !!(ecx & 1);
++	return ecx & 1;
+ }
+ 
+-static int xfeature_is_user(int xfeature_nr)
++static bool xfeature_is_user(int xfeature_nr)
+ {
+ 	return !xfeature_is_supervisor(xfeature_nr);
+ }
