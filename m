@@ -2,54 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 08CD213208C
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  7 Jan 2020 08:37:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 78D671326C2
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  7 Jan 2020 13:53:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727347AbgAGHhE convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 7 Jan 2020 02:37:04 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:44287 "EHLO
+        id S1728065AbgAGMxB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 7 Jan 2020 07:53:01 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:45336 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727327AbgAGHhE (ORCPT
+        with ESMTP id S1727834AbgAGMxB (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 7 Jan 2020 02:37:04 -0500
+        Tue, 7 Jan 2020 07:53:01 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iojPs-0002Uz-Fh; Tue, 07 Jan 2020 08:36:42 +0100
+        id 1iooLg-00009S-7J; Tue, 07 Jan 2020 13:52:40 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 2544E1C2CCD;
-        Tue,  7 Jan 2020 08:36:40 +0100 (CET)
-Date:   Tue, 07 Jan 2020 07:36:40 -0000
-From:   "tip-bot2 for Frederic Weisbecker" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D28C01C2CD0;
+        Tue,  7 Jan 2020 13:52:39 +0100 (CET)
+Date:   Tue, 07 Jan 2020 12:52:39 -0000
+From:   "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/asm] x86/context-tracking: Remove exception_enter/exit()
- from do_page_fault()
-Cc:     Frederic Weisbecker <frederic@kernel.org>,
+Subject: [tip: x86/fpu] x86/fpu: Deactivate FPU state after failure during state load
+Cc:     "Yu-cheng Yu" <yu-cheng.yu@intel.com>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Borislav Petkov <bp@suse.de>,
         Andy Lutomirski <luto@kernel.org>,
-        Borislav Petkov <bp@alien8.de>,
-        Jim Mattson <jmattson@google.com>,
-        Joerg Roedel <joro@8bytes.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>, rkrcmar@redhat.com,
-        Sean Christopherson <sean.j.christopherson@intel.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        Jann Horn <jannh@google.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        "Ravi V. Shankar" <ravi.v.shankar@intel.com>,
+        Rik van Riel <riel@surriel.com>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Wanpeng Li <wanpengli@tencent.com>,
-        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
+        Tony Luck <tony.luck@intel.com>, "x86-ml" <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191227163612.10039-2-frederic@kernel.org>
-References: <20191227163612.10039-2-frederic@kernel.org>
+In-Reply-To: <20191220195906.plk6kpmsrikvbcfn@linutronix.de>
+References: <20191220195906.plk6kpmsrikvbcfn@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <157838260004.30329.1599335012779534814.tip-bot2@tip-bot2>
+Message-ID: <157840155965.30329.313988118654552721.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: 7bit
 X-Linutronix-Spam-Score: -1.0
 X-Linutronix-Spam-Level: -
 X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
@@ -58,112 +56,89 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/asm branch of tip:
+The following commit has been merged into the x86/fpu branch of tip:
 
-Commit-ID:     ee6352b2c47a24234398e06381edd93a8e965976
-Gitweb:        https://git.kernel.org/tip/ee6352b2c47a24234398e06381edd93a8e965976
-Author:        Frederic Weisbecker <frederic@kernel.org>
-AuthorDate:    Fri, 27 Dec 2019 17:36:11 +01:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 07 Jan 2020 08:11:23 +01:00
+Commit-ID:     bbc55341b9c67645d1a5471506370caf7dd4a203
+Gitweb:        https://git.kernel.org/tip/bbc55341b9c67645d1a5471506370caf7dd4a203
+Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+AuthorDate:    Fri, 20 Dec 2019 20:59:06 +01:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Tue, 07 Jan 2020 13:44:42 +01:00
 
-x86/context-tracking: Remove exception_enter/exit() from do_page_fault()
+x86/fpu: Deactivate FPU state after failure during state load
 
-do_page_fault(), like other exceptions, is already covered by
-user_enter() and user_exit() when the exception triggers in userspace.
+In __fpu__restore_sig(), fpu_fpregs_owner_ctx needs to be reset if the
+FPU state was not fully restored. Otherwise the following may happen (on
+the same CPU):
 
-As explained in:
+  Task A                     Task B               fpu_fpregs_owner_ctx
+  *active*                                        A.fpu
+  __fpu__restore_sig()
+                             ctx switch           load B.fpu
+                             *active*             B.fpu
+  fpregs_lock()
+  copy_user_to_fpregs_zeroing()
+    copy_kernel_to_xregs() *modify*
+    copy_user_to_xregs() *fails*
+  fpregs_unlock()
+                            ctx switch            skip loading B.fpu,
+                            *active*              B.fpu
 
-  8c84014f3bbb11 ("x86/entry: Remove exception_enter() from most trap handlers")
+In the success case, fpu_fpregs_owner_ctx is set to the current task.
 
-exception_enter/exit() only remained to handle possible page fault from
-kernel mode while context tracking is in CONTEXT_USER mode, ie: on
-kernel entry before we manage to call user_exit(). The only known
-offender was do_fast_syscall_32() fetching EBP register from where
-vDSO stashed it.
+In the failure case, the FPU state might have been modified by loading
+the init state.
 
-Meanwhile this got fixed in:
+In this case, fpu_fpregs_owner_ctx needs to be reset in order to ensure
+that the FPU state of the following task is loaded from saved state (and
+not skipped because it was the previous state).
 
-  9999c8c01f34c9 ("x86/entry: Call enter_from_user_mode() with IRQs off")
+Reset fpu_fpregs_owner_ctx after a failure during restore occurred, to
+ensure that the FPU state for the next task is always loaded.
 
-that moved enter_from_user_mode() before the call to get_user().
+The problem was debugged-by Yu-cheng Yu <yu-cheng.yu@intel.com>.
 
-So we can safely remove it now.
+ [ bp: Massage commit message. ]
 
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Fixes: 5f409e20b7945 ("x86/fpu: Defer FPU state load until return to userspace")
+Reported-by: Yu-cheng Yu <yu-cheng.yu@intel.com>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Borislav Petkov <bp@suse.de>
 Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Jim Mattson <jmattson@google.com>
-Cc: Joerg Roedel <joro@8bytes.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Fenghua Yu <fenghua.yu@intel.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jann Horn <jannh@google.com>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Radim Krčmář <rkrcmar@redhat.com>
-Cc: Sean Christopherson <sean.j.christopherson@intel.com>
+Cc: "Ravi V. Shankar" <ravi.v.shankar@intel.com>
+Cc: Rik van Riel <riel@surriel.com>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Vitaly Kuznetsov <vkuznets@redhat.com>
-Cc: Wanpeng Li <wanpengli@tencent.com>
-Link: https://lkml.kernel.org/r/20191227163612.10039-2-frederic@kernel.org
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Tony Luck <tony.luck@intel.com>
+Cc: x86-ml <x86@kernel.org>
+Link: https://lkml.kernel.org/r/20191220195906.plk6kpmsrikvbcfn@linutronix.de
 ---
- arch/x86/mm/fault.c | 39 ++++++++++++---------------------------
- 1 file changed, 12 insertions(+), 27 deletions(-)
+ arch/x86/kernel/fpu/signal.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
-index 304d31d..2b4ab28 100644
---- a/arch/x86/mm/fault.c
-+++ b/arch/x86/mm/fault.c
-@@ -1486,27 +1486,6 @@ good_area:
- }
- NOKPROBE_SYMBOL(do_user_addr_fault);
+diff --git a/arch/x86/kernel/fpu/signal.c b/arch/x86/kernel/fpu/signal.c
+index 0071b79..400a05e 100644
+--- a/arch/x86/kernel/fpu/signal.c
++++ b/arch/x86/kernel/fpu/signal.c
+@@ -352,6 +352,7 @@ static int __fpu__restore_sig(void __user *buf, void __user *buf_fx, int size)
+ 			fpregs_unlock();
+ 			return 0;
+ 		}
++		fpregs_deactivate(fpu);
+ 		fpregs_unlock();
+ 	}
  
--/*
-- * Explicitly marked noinline such that the function tracer sees this as the
-- * page_fault entry point.
-- */
--static noinline void
--__do_page_fault(struct pt_regs *regs, unsigned long hw_error_code,
--		unsigned long address)
--{
--	prefetchw(&current->mm->mmap_sem);
--
--	if (unlikely(kmmio_fault(regs, address)))
--		return;
--
--	/* Was the fault on kernel-controlled part of the address space? */
--	if (unlikely(fault_in_kernel_space(address)))
--		do_kern_addr_fault(regs, hw_error_code, address);
--	else
--		do_user_addr_fault(regs, hw_error_code, address);
--}
--NOKPROBE_SYMBOL(__do_page_fault);
--
- static __always_inline void
- trace_page_fault_entries(struct pt_regs *regs, unsigned long error_code,
- 			 unsigned long address)
-@@ -1521,13 +1500,19 @@ trace_page_fault_entries(struct pt_regs *regs, unsigned long error_code,
- }
- 
- dotraplinkage void
--do_page_fault(struct pt_regs *regs, unsigned long error_code, unsigned long address)
-+do_page_fault(struct pt_regs *regs, unsigned long hw_error_code,
-+		unsigned long address)
- {
--	enum ctx_state prev_state;
-+	prefetchw(&current->mm->mmap_sem);
-+	trace_page_fault_entries(regs, hw_error_code, address);
- 
--	prev_state = exception_enter();
--	trace_page_fault_entries(regs, error_code, address);
--	__do_page_fault(regs, error_code, address);
--	exception_exit(prev_state);
-+	if (unlikely(kmmio_fault(regs, address)))
-+		return;
-+
-+	/* Was the fault on kernel-controlled part of the address space? */
-+	if (unlikely(fault_in_kernel_space(address)))
-+		do_kern_addr_fault(regs, hw_error_code, address);
+@@ -403,6 +404,8 @@ static int __fpu__restore_sig(void __user *buf, void __user *buf_fx, int size)
+ 	}
+ 	if (!ret)
+ 		fpregs_mark_activate();
 +	else
-+		do_user_addr_fault(regs, hw_error_code, address);
- }
- NOKPROBE_SYMBOL(do_page_fault);
++		fpregs_deactivate(fpu);
+ 	fpregs_unlock();
+ 
+ err_out:
