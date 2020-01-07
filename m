@@ -2,43 +2,49 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CB00813208A
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  7 Jan 2020 08:36:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0018F13208F
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  7 Jan 2020 08:37:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727559AbgAGHgk convert rfc822-to-8bit (ORCPT
+        id S1727629AbgAGHhG convert rfc822-to-8bit (ORCPT
         <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 7 Jan 2020 02:36:40 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:44254 "EHLO
+        Tue, 7 Jan 2020 02:37:06 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:44289 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727554AbgAGHgk (ORCPT
+        with ESMTP id S1727328AbgAGHhF (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 7 Jan 2020 02:36:40 -0500
+        Tue, 7 Jan 2020 02:37:05 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iojPc-0002Tl-Ka; Tue, 07 Jan 2020 08:36:24 +0100
+        id 1iojPs-0002Uy-A7; Tue, 07 Jan 2020 08:36:42 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 170B11C2818;
-        Tue,  7 Jan 2020 08:36:24 +0100 (CET)
-Date:   Tue, 07 Jan 2020 07:36:23 -0000
-From:   "tip-bot2 for Shile Zhang" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id ECC161C2818;
+        Tue,  7 Jan 2020 08:36:39 +0100 (CET)
+Date:   Tue, 07 Jan 2020 07:36:39 -0000
+From:   "tip-bot2 for Frederic Weisbecker" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/objtool] x86/unwind/orc: Fix !CONFIG_MODULES build warning
-Cc:     Shile Zhang <shile.zhang@linux.alibaba.com>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Andy Lutomirski <luto@amacapital.net>,
+Subject: [tip: x86/asm] x86/context-tracking: Remove exception_enter/exit()
+ from KVM_PV_REASON_PAGE_NOT_PRESENT async page fault
+Cc:     Frederic Weisbecker <frederic@kernel.org>,
+        Andy Lutomirski <luto@kernel.org>,
         Borislav Petkov <bp@alien8.de>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
+        Jim Mattson <jmattson@google.com>,
+        Joerg Roedel <joro@8bytes.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>, rkrcmar@redhat.com,
+        Sean Christopherson <sean.j.christopherson@intel.com>,
         Thomas Gleixner <tglx@linutronix.de>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Wanpeng Li <wanpengli@tencent.com>,
         Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <c9c81536-2afc-c8aa-c5f8-c7618ecd4f54@linux.alibaba.com>
-References: <c9c81536-2afc-c8aa-c5f8-c7618ecd4f54@linux.alibaba.com>
+In-Reply-To: <20191227163612.10039-3-frederic@kernel.org>
+References: <20191227163612.10039-3-frederic@kernel.org>
 MIME-Version: 1.0
-Message-ID: <157838258393.30329.5371781726464192052.tip-bot2@tip-bot2>
+Message-ID: <157838259976.30329.2361880432274714654.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -52,53 +58,59 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the core/objtool branch of tip:
+The following commit has been merged into the x86/asm branch of tip:
 
-Commit-ID:     22a7fa8848c5e881d87ef2f7f3c2ea77b286e6f9
-Gitweb:        https://git.kernel.org/tip/22a7fa8848c5e881d87ef2f7f3c2ea77b286e6f9
-Author:        Shile Zhang <shile.zhang@linux.alibaba.com>
-AuthorDate:    Mon, 16 Dec 2019 11:07:29 +08:00
+Commit-ID:     50cc02e599ef1e049473358604dc07d32b751e2c
+Gitweb:        https://git.kernel.org/tip/50cc02e599ef1e049473358604dc07d32b751e2c
+Author:        Frederic Weisbecker <frederic@kernel.org>
+AuthorDate:    Fri, 27 Dec 2019 17:36:12 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 07 Jan 2020 08:15:11 +01:00
+CommitterDate: Tue, 07 Jan 2020 08:11:23 +01:00
 
-x86/unwind/orc: Fix !CONFIG_MODULES build warning
+x86/context-tracking: Remove exception_enter/exit() from KVM_PV_REASON_PAGE_NOT_PRESENT async page fault
 
-To fix follwowing warning due to ORC sort moved to build time:
+This is a leftover. Page faults, just like most other exceptions,
+are protected inside user_exit() / user_enter() calls in x86 entry code
+when we fault from userspace. So this pair of calls is now superfluous.
 
-  arch/x86/kernel/unwind_orc.c:210:12: warning: ‘orc_sort_cmp’ defined but not used [-Wunused-function]
-  arch/x86/kernel/unwind_orc.c:190:13: warning: ‘orc_sort_swap’ defined but not used [-Wunused-function]
-
-Signed-off-by: Shile Zhang <shile.zhang@linux.alibaba.com>
-Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Cc: Andy Lutomirski <luto@amacapital.net>
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Cc: Andy Lutomirski <luto@kernel.org>
 Cc: Borislav Petkov <bp@alien8.de>
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
+Cc: Jim Mattson <jmattson@google.com>
+Cc: Joerg Roedel <joro@8bytes.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
 Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Radim Krčmář <rkrcmar@redhat.com>
+Cc: Sean Christopherson <sean.j.christopherson@intel.com>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/c9c81536-2afc-c8aa-c5f8-c7618ecd4f54@linux.alibaba.com
+Cc: Vitaly Kuznetsov <vkuznets@redhat.com>
+Cc: Wanpeng Li <wanpengli@tencent.com>
+Link: https://lkml.kernel.org/r/20191227163612.10039-3-frederic@kernel.org
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- arch/x86/kernel/unwind_orc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/x86/kernel/kvm.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/arch/x86/kernel/unwind_orc.c b/arch/x86/kernel/unwind_orc.c
-index abdf891..e9cc182 100644
---- a/arch/x86/kernel/unwind_orc.c
-+++ b/arch/x86/kernel/unwind_orc.c
-@@ -187,6 +187,8 @@ static struct orc_entry *orc_find(unsigned long ip)
- 	return orc_ftrace_find(ip);
- }
- 
-+#ifdef CONFIG_MODULES
-+
- static void orc_sort_swap(void *_a, void *_b, int size)
+diff --git a/arch/x86/kernel/kvm.c b/arch/x86/kernel/kvm.c
+index 32ef1ee..81045aa 100644
+--- a/arch/x86/kernel/kvm.c
++++ b/arch/x86/kernel/kvm.c
+@@ -245,17 +245,13 @@ NOKPROBE_SYMBOL(kvm_read_and_reset_pf_reason);
+ dotraplinkage void
+ do_async_page_fault(struct pt_regs *regs, unsigned long error_code, unsigned long address)
  {
- 	struct orc_entry *orc_a, *orc_b;
-@@ -229,7 +231,6 @@ static int orc_sort_cmp(const void *_a, const void *_b)
- 	return orc_a->sp_reg == ORC_REG_UNDEFINED && !orc_a->end ? -1 : 1;
- }
- 
--#ifdef CONFIG_MODULES
- void unwind_module_init(struct module *mod, void *_orc_ip, size_t orc_ip_size,
- 			void *_orc, size_t orc_size)
- {
+-	enum ctx_state prev_state;
+-
+ 	switch (kvm_read_and_reset_pf_reason()) {
+ 	default:
+ 		do_page_fault(regs, error_code, address);
+ 		break;
+ 	case KVM_PV_REASON_PAGE_NOT_PRESENT:
+ 		/* page is swapped out by the host. */
+-		prev_state = exception_enter();
+ 		kvm_async_pf_task_wait((u32)address, !user_mode(regs));
+-		exception_exit(prev_state);
+ 		break;
+ 	case KVM_PV_REASON_PAGE_READY:
+ 		rcu_irq_enter();
