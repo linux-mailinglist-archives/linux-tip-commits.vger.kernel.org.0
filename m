@@ -2,36 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D04A134110
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  8 Jan 2020 12:45:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D7A10134114
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  8 Jan 2020 12:47:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727149AbgAHLpu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 8 Jan 2020 06:45:50 -0500
-Received: from mail.skyhub.de ([5.9.137.197]:57334 "EHLO mail.skyhub.de"
+        id S1726823AbgAHLq5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 8 Jan 2020 06:46:57 -0500
+Received: from mail.skyhub.de ([5.9.137.197]:57594 "EHLO mail.skyhub.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726323AbgAHLpu (ORCPT
+        id S1726290AbgAHLq5 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 8 Jan 2020 06:45:50 -0500
+        Wed, 8 Jan 2020 06:46:57 -0500
 Received: from zn.tnic (p200300EC2F0BD40029EAD32D10B1B629.dip0.t-ipconnect.de [IPv6:2003:ec:2f0b:d400:29ea:d32d:10b1:b629])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 206671EC0CC9;
-        Wed,  8 Jan 2020 12:45:48 +0100 (CET)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id F0C1E1EC0CC9;
+        Wed,  8 Jan 2020 12:46:55 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1578483948;
+        t=1578484016;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=SJM3P7TJUHuFQReR8fpWR/Ki+TmMG3NXbYCvLcSh8ig=;
-        b=eRAtCz8R6+9GheroYOqJ2ttJGmZC9/ghrm5BBZTSWZGFSLPI0jt1zP8pgu2PsRF++dFifr
-        V5+Ost87lUSURC/rr6ojO3NiRxM96Jk4DjEHxt8PS1P+JvBJtnsQjUFiKcG+FPn/h64hlQ
-        BCB1u+PDlaE/eokYWvM66hZKUtsKBhI=
-Date:   Wed, 8 Jan 2020 12:45:39 +0100
+        bh=2K49B1IvTuR8ugKnVnlZ1/Wn6pxxM4e0MAEkpZoeWEI=;
+        b=j2E/j3/etEDUZgeHXudiatxCesvrsc9YPfXpU/we3L4Pylef+UCj+BtIu0utmVmHja5UNJ
+        EhkZPMoRj4/nPvWZsbdTdlpme5xaKLDpcZI7J1TRhK3omBY29RApTpxO2cdD0ArAJI/Y7m
+        4h1ZUakhzJ49IWemkuSjGzV+Amf2Jpo=
+Date:   Wed, 8 Jan 2020 12:46:51 +0100
 From:   Borislav Petkov <bp@alien8.de>
-To:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc:     Andy Lutomirski <luto@amacapital.net>,
-        linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
+To:     Andy Lutomirski <luto@amacapital.net>
+Cc:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
         Yu-cheng Yu <yu-cheng.yu@intel.com>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Borislav Petkov <bp@suse.de>,
         Andy Lutomirski <luto@kernel.org>,
         Dave Hansen <dave.hansen@linux.intel.com>,
         Fenghua Yu <fenghua.yu@intel.com>,
@@ -44,37 +45,25 @@ Cc:     Andy Lutomirski <luto@amacapital.net>,
         Tony Luck <tony.luck@intel.com>, x86-ml <x86@kernel.org>
 Subject: Re: [tip: x86/fpu] x86/fpu: Deactivate FPU state after failure
  during state load
-Message-ID: <20200108114539.GE27363@zn.tnic>
+Message-ID: <20200108114651.GF27363@zn.tnic>
 References: <157840155965.30329.313988118654552721.tip-bot2@tip-bot2>
  <FA0D2929-63D0-4473-A492-42227D7A5D98@amacapital.net>
- <20200107211134.tckhc5knkthmjsj6@linutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20200107211134.tckhc5knkthmjsj6@linutronix.de>
+In-Reply-To: <FA0D2929-63D0-4473-A492-42227D7A5D98@amacapital.net>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Tue, Jan 07, 2020 at 10:11:34PM +0100, Sebastian Andrzej Siewior wrote:
-> The go people contirbuted a testcase. Maybe I should hack up it up so
-> that we trigger each path and post since it obviously did not happen.
+On Tue, Jan 07, 2020 at 10:41:52AM -1000, Andy Lutomirski wrote:
+> Wow, __fpu__restore_sig is a mess.
 
-Yes, please do.
-
-> Boris, do you remember why we did not include their testcase yet?
-
-It is in my ever-growing TODO list so if you could find some time to add
-it to selftests, I'd appreciate it a lot:
-
-https://lkml.kernel.org/r/20191126221328.GH31379@zn.tnic
-
-And Andy wants it in the slow category (see reply) and that's fine with
-me - I'm happy with some tests than none at all.
-
-Thx.
+FWIW, I share your sentiment and I'd very much take patches which
+simplify that flow. It is causing me headaches each time I have to look
+at it.
 
 -- 
 Regards/Gruss,
