@@ -2,135 +2,187 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4491113413F
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  8 Jan 2020 12:54:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 122D6134D9A
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  8 Jan 2020 21:30:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727695AbgAHLye (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 8 Jan 2020 06:54:34 -0500
-Received: from mail-wm1-f66.google.com ([209.85.128.66]:39312 "EHLO
-        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727207AbgAHLye (ORCPT
+        id S1726179AbgAHUag (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 8 Jan 2020 15:30:36 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:51620 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725446AbgAHUag (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 8 Jan 2020 06:54:34 -0500
-Received: by mail-wm1-f66.google.com with SMTP id 20so2180326wmj.4;
-        Wed, 08 Jan 2020 03:54:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=ml+uPc3URz8hniItnTAxtQ8gvJipo7FyGt8CdYgqhS8=;
-        b=S1jSzrB0kPlH6z3Px5sO4+12scG4yf1fud4c6NHOniE49Ycg3dfX2E+SvWwhsFFd6k
-         3ooZRxm/POKhHurT7o0Xzg8k2RVvspAqA5jDN2+yvZMhvIsH1EINkIujyrav26OdbSE9
-         kRk0/KDOx3vbZ9BaPasjgkMFHlJsVXZzRmd2LBQFBpTPTfJhDqBLP8S9fCtPpLR5vXar
-         Fe/hFgm3Ta5erVompNvBSJfMuaomDt5e4VNtbzROZuduEUzboB+XZZG+JheTpTQGuNUA
-         ZSJLUoiPlcaIESn6TOYnpNyNzmAzhZOEDxlOZXxwBZET2D8ucPZC6lxsAypP8mdqcyDx
-         FgsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=ml+uPc3URz8hniItnTAxtQ8gvJipo7FyGt8CdYgqhS8=;
-        b=Vj4B00u5sdxvPlGKD1/P85XZvTlTZcpyS2KcUsk2OHgpsqDbDVi6kNzGOB5GwDb6UP
-         7H1HWi92nQ+HbuEsIq4YaWGCBCQ4Oz03CS5fl2gwsJ2lLu+LtBtjaXO3UA2IVAEPfcrx
-         zXBKmV1uNnPiZBYJ/MddpkQhQzBlxgMLI8kY8tBW2esVt0y0M+54rOPIPWXNWUQjcOKZ
-         qPOLkNddbnHM2zLJDHjGVhcuXMUCLaRBqVlU2+nTb8DGiSHPA636EBtReHUVzwCiVbxS
-         6S20XmphDhzHfQhoULVwhVIJc4gxh725cfYSIhfbd2df8zNc6LaYxBHLjV9Te8DptCfY
-         6+Sw==
-X-Gm-Message-State: APjAAAUZqy8pIc0gbwHD5GaFtqH4nC1RsK+BbipEi39ypYfIgFSTO2rl
-        FXEdJTKNFiOrG0bJNRZ/UnKgiFu2
-X-Google-Smtp-Source: APXvYqzExp1XsdTC1+JsEavuJpBkVRfUxmBPrxW2OHdr7wK8xqoAA2krdy6q5RhCUk2/5CLpgvTWqA==
-X-Received: by 2002:a7b:c450:: with SMTP id l16mr3438585wmi.31.1578484472103;
-        Wed, 08 Jan 2020 03:54:32 -0800 (PST)
-Received: from gmail.com (54033286.catv.pool.telekom.hu. [84.3.50.134])
-        by smtp.gmail.com with ESMTPSA id u24sm3528053wml.10.2020.01.08.03.54.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Jan 2020 03:54:31 -0800 (PST)
-Date:   Wed, 8 Jan 2020 12:54:29 +0100
-From:   Ingo Molnar <mingo@kernel.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     linux-tip-commits@vger.kernel.org, Tony Luck <tony.luck@intel.com>,
-        Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Peter Zijlstra <a.p.zijlstra@chello.nl>
-Subject: Re: [tip: x86/asm] x86/cpufeatures: Add support for fast short REP;
- MOVSB
-Message-ID: <20200108115429.GA96801@gmail.com>
-References: <20191216214254.26492-1-tony.luck@intel.com>
- <157847991723.30329.17038297307002446505.tip-bot2@tip-bot2>
+        Wed, 8 Jan 2020 15:30:36 -0500
+Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tip-bot2@linutronix.de>)
+        id 1ipHyH-0004Sb-Lp; Wed, 08 Jan 2020 21:30:29 +0100
+Received: from [127.0.1.1] (localhost [IPv6:::1])
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 095071C2CD8;
+        Wed,  8 Jan 2020 21:30:29 +0100 (CET)
+Date:   Wed, 08 Jan 2020 20:30:28 -0000
+From:   "tip-bot2 for Brian Gerst" <tip-bot2@linutronix.de>
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/asm] x86: Remove force_iret()
+Cc:     Brian Gerst <brgerst@gmail.com>, Borislav Petkov <bp@suse.de>,
+        Oleg Nesterov <oleg@redhat.com>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20191219115812.102620-1-brgerst@gmail.com>
+References: <20191219115812.102620-1-brgerst@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <157847991723.30329.17038297307002446505.tip-bot2@tip-bot2>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Message-ID: <157851542886.30329.11477399027279492843.tip-bot2@tip-bot2>
+X-Mailer: tip-git-log-daemon
+Robot-ID: <tip-bot2.linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
+The following commit has been merged into the x86/asm branch of tip:
 
-* tip-bot2 for Tony Luck <tip-bot2@linutronix.de> wrote:
+Commit-ID:     2b10906f2d25515bba58070b8183babc89063597
+Gitweb:        https://git.kernel.org/tip/2b10906f2d25515bba58070b8183babc89063597
+Author:        Brian Gerst <brgerst@gmail.com>
+AuthorDate:    Thu, 19 Dec 2019 06:58:12 -05:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Wed, 08 Jan 2020 19:40:51 +01:00
 
-> The following commit has been merged into the x86/asm branch of tip:
-> 
-> Commit-ID:     f444a5ff95dce07cf4353cbb85fc3e785019d430
-> Gitweb:        https://git.kernel.org/tip/f444a5ff95dce07cf4353cbb85fc3e785019d430
-> Author:        Tony Luck <tony.luck@intel.com>
-> AuthorDate:    Mon, 16 Dec 2019 13:42:54 -08:00
-> Committer:     Borislav Petkov <bp@suse.de>
-> CommitterDate: Wed, 08 Jan 2020 11:29:25 +01:00
-> 
-> x86/cpufeatures: Add support for fast short REP; MOVSB
-> 
-> >From the Intel Optimization Reference Manual:
-> 
-> 3.7.6.1 Fast Short REP MOVSB
-> Beginning with processors based on Ice Lake Client microarchitecture,
-> REP MOVSB performance of short operations is enhanced. The enhancement
-> applies to string lengths between 1 and 128 bytes long.  Support for
-> fast-short REP MOVSB is enumerated by the CPUID feature flag: CPUID
-> [EAX=7H, ECX=0H).EDX.FAST_SHORT_REP_MOVSB[bit 4] = 1. There is no change
-> in the REP STOS performance.
-> 
-> Add an X86_FEATURE_FSRM flag for this.
-> 
-> memmove() avoids REP MOVSB for short (< 32 byte) copies. Check FSRM and
-> use REP MOVSB for short copies on systems that support it.
-> 
->  [ bp: Massage and add comment. ]
-> 
-> Signed-off-by: Tony Luck <tony.luck@intel.com>
-> Signed-off-by: Borislav Petkov <bp@suse.de>
-> Link: https://lkml.kernel.org/r/20191216214254.26492-1-tony.luck@intel.com
+x86: Remove force_iret()
 
-BTW., just for the record, the 32-bit version of memmove() has a similar 
-cut-off as well, at 680 bytes (!):
+force_iret() was originally intended to prevent the return to user mode with
+the SYSRET or SYSEXIT instructions, in cases where the register state could
+have been changed to be incompatible with those instructions.  The entry code
+has been significantly reworked since then, and register state is validated
+before SYSRET or SYSEXIT are used.  force_iret() no longer serves its original
+purpose and can be eliminated.
 
-                /*
-                 * movs instruction have many startup latency
-                 * so we handle small size by general register.
-                 */
-                "cmp  $680, %0\n\t"
-                "jb 3f\n\t"
+Signed-off-by: Brian Gerst <brgerst@gmail.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Acked-by: Oleg Nesterov <oleg@redhat.com>
+Link: https://lkml.kernel.org/r/20191219115812.102620-1-brgerst@gmail.com
+---
+ arch/x86/ia32/ia32_signal.c        |  2 --
+ arch/x86/include/asm/ptrace.h      | 16 ----------------
+ arch/x86/include/asm/thread_info.h |  9 ---------
+ arch/x86/kernel/process_32.c       |  1 -
+ arch/x86/kernel/process_64.c       |  1 -
+ arch/x86/kernel/signal.c           |  2 --
+ arch/x86/kernel/vm86_32.c          |  1 -
+ 7 files changed, 32 deletions(-)
 
-...
-
-                /*
-                 * Start to prepare for backward copy.
-                 */
-                ".p2align 4\n\t"
-                "2:\n\t"
-                "cmp  $680, %0\n\t"
-                "jb 5f\n\t"
-
-This logic was introduced in 2010 via:
-
-   3b4b682becdf: ("x86, mem: Optimize memmove for small size and unaligned cases")
-
-However because those patches came without actual performance 
-measurements, I'd be inclined to switch back to the old REP MOVSB version 
-- which would also automatically improve it should anyone run 32-bit 
-kernels on the very latest CPUs.
-
-Thanks,
-
-	Ingo
+diff --git a/arch/x86/ia32/ia32_signal.c b/arch/x86/ia32/ia32_signal.c
+index 30416d7..a3aefe9 100644
+--- a/arch/x86/ia32/ia32_signal.c
++++ b/arch/x86/ia32/ia32_signal.c
+@@ -114,8 +114,6 @@ static int ia32_restore_sigcontext(struct pt_regs *regs,
+ 
+ 	err |= fpu__restore_sig(buf, 1);
+ 
+-	force_iret();
+-
+ 	return err;
+ }
+ 
+diff --git a/arch/x86/include/asm/ptrace.h b/arch/x86/include/asm/ptrace.h
+index 5057a8e..78897a8 100644
+--- a/arch/x86/include/asm/ptrace.h
++++ b/arch/x86/include/asm/ptrace.h
+@@ -339,22 +339,6 @@ static inline unsigned long regs_get_kernel_argument(struct pt_regs *regs,
+ 
+ #define ARCH_HAS_USER_SINGLE_STEP_REPORT
+ 
+-/*
+- * When hitting ptrace_stop(), we cannot return using SYSRET because
+- * that does not restore the full CPU state, only a minimal set.  The
+- * ptracer can change arbitrary register values, which is usually okay
+- * because the usual ptrace stops run off the signal delivery path which
+- * forces IRET; however, ptrace_event() stops happen in arbitrary places
+- * in the kernel and don't force IRET path.
+- *
+- * So force IRET path after a ptrace stop.
+- */
+-#define arch_ptrace_stop_needed(code, info)				\
+-({									\
+-	force_iret();							\
+-	false;								\
+-})
+-
+ struct user_desc;
+ extern int do_get_thread_area(struct task_struct *p, int idx,
+ 			      struct user_desc __user *info);
+diff --git a/arch/x86/include/asm/thread_info.h b/arch/x86/include/asm/thread_info.h
+index d779366..cf43279 100644
+--- a/arch/x86/include/asm/thread_info.h
++++ b/arch/x86/include/asm/thread_info.h
+@@ -239,15 +239,6 @@ static inline int arch_within_stack_frames(const void * const stack,
+ 			   current_thread_info()->status & TS_COMPAT)
+ #endif
+ 
+-/*
+- * Force syscall return via IRET by making it look as if there was
+- * some work pending. IRET is our most capable (but slowest) syscall
+- * return path, which is able to restore modified SS, CS and certain
+- * EFLAGS values that other (fast) syscall return instructions
+- * are not able to restore properly.
+- */
+-#define force_iret() set_thread_flag(TIF_NOTIFY_RESUME)
+-
+ extern void arch_task_cache_init(void);
+ extern int arch_dup_task_struct(struct task_struct *dst, struct task_struct *src);
+ extern void arch_release_task_struct(struct task_struct *tsk);
+diff --git a/arch/x86/kernel/process_32.c b/arch/x86/kernel/process_32.c
+index 323499f..5052ced 100644
+--- a/arch/x86/kernel/process_32.c
++++ b/arch/x86/kernel/process_32.c
+@@ -124,7 +124,6 @@ start_thread(struct pt_regs *regs, unsigned long new_ip, unsigned long new_sp)
+ 	regs->ip		= new_ip;
+ 	regs->sp		= new_sp;
+ 	regs->flags		= X86_EFLAGS_IF;
+-	force_iret();
+ }
+ EXPORT_SYMBOL_GPL(start_thread);
+ 
+diff --git a/arch/x86/kernel/process_64.c b/arch/x86/kernel/process_64.c
+index 506d668..ffd4978 100644
+--- a/arch/x86/kernel/process_64.c
++++ b/arch/x86/kernel/process_64.c
+@@ -394,7 +394,6 @@ start_thread_common(struct pt_regs *regs, unsigned long new_ip,
+ 	regs->cs		= _cs;
+ 	regs->ss		= _ss;
+ 	regs->flags		= X86_EFLAGS_IF;
+-	force_iret();
+ }
+ 
+ void
+diff --git a/arch/x86/kernel/signal.c b/arch/x86/kernel/signal.c
+index 8eb7193..8a29573 100644
+--- a/arch/x86/kernel/signal.c
++++ b/arch/x86/kernel/signal.c
+@@ -151,8 +151,6 @@ static int restore_sigcontext(struct pt_regs *regs,
+ 
+ 	err |= fpu__restore_sig(buf, IS_ENABLED(CONFIG_X86_32));
+ 
+-	force_iret();
+-
+ 	return err;
+ }
+ 
+diff --git a/arch/x86/kernel/vm86_32.c b/arch/x86/kernel/vm86_32.c
+index a76c12b..91d5545 100644
+--- a/arch/x86/kernel/vm86_32.c
++++ b/arch/x86/kernel/vm86_32.c
+@@ -381,7 +381,6 @@ static long do_sys_vm86(struct vm86plus_struct __user *user_vm86, bool plus)
+ 		mark_screen_rdonly(tsk->mm);
+ 
+ 	memcpy((struct kernel_vm86_regs *)regs, &vm86regs, sizeof(vm86regs));
+-	force_iret();
+ 	return regs->ax;
+ }
+ 
