@@ -2,93 +2,127 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B09E133292
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  7 Jan 2020 22:12:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 29277133F69
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  8 Jan 2020 11:38:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729869AbgAGVL6 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 7 Jan 2020 16:11:58 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:47030 "EHLO
+        id S1727239AbgAHKir (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 8 Jan 2020 05:38:47 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:49243 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730123AbgAGVLg (ORCPT
+        with ESMTP id S1727148AbgAHKir (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 7 Jan 2020 16:11:36 -0500
-Received: from bigeasy by Galois.linutronix.de with local (Exim 4.80)
-        (envelope-from <bigeasy@linutronix.de>)
-        id 1iow8U-0000TK-GS; Tue, 07 Jan 2020 22:11:34 +0100
-Date:   Tue, 7 Jan 2020 22:11:34 +0100
-From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To:     Andy Lutomirski <luto@amacapital.net>
-Cc:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-        Yu-cheng Yu <yu-cheng.yu@intel.com>,
-        Borislav Petkov <bp@suse.de>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        Jann Horn <jannh@google.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        "Ravi V. Shankar" <ravi.v.shankar@intel.com>,
-        Rik van Riel <riel@surriel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tony Luck <tony.luck@intel.com>, x86-ml <x86@kernel.org>
-Subject: Re: [tip: x86/fpu] x86/fpu: Deactivate FPU state after failure
- during state load
-Message-ID: <20200107211134.tckhc5knkthmjsj6@linutronix.de>
-References: <157840155965.30329.313988118654552721.tip-bot2@tip-bot2>
- <FA0D2929-63D0-4473-A492-42227D7A5D98@amacapital.net>
+        Wed, 8 Jan 2020 05:38:47 -0500
+Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tip-bot2@linutronix.de>)
+        id 1ip8jW-0003WJ-4T; Wed, 08 Jan 2020 11:38:38 +0100
+Received: from [127.0.1.1] (localhost [IPv6:::1])
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 731AA1C2C92;
+        Wed,  8 Jan 2020 11:38:37 +0100 (CET)
+Date:   Wed, 08 Jan 2020 10:38:37 -0000
+From:   "tip-bot2 for Tony Luck" <tip-bot2@linutronix.de>
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/asm] x86/cpufeatures: Add support for fast short REP; MOVSB
+Cc:     Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@suse.de>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20191216214254.26492-1-tony.luck@intel.com>
+References: <20191216214254.26492-1-tony.luck@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8BIT
-In-Reply-To: <FA0D2929-63D0-4473-A492-42227D7A5D98@amacapital.net>
+Message-ID: <157847991723.30329.17038297307002446505.tip-bot2@tip-bot2>
+X-Mailer: tip-git-log-daemon
+Robot-ID: <tip-bot2.linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On 2020-01-07 10:41:52 [-1000], Andy Lutomirski wrote:
-> Wow, __fpu__restore_sig is a mess. We have __copy_from... that is
-> Obviously Incorrect (tm) even though it’s not obviously exploitable.
-> (It’s wrong because the *wrong pointer* is checked with access_ok().).
-> We have a fast path that will execute just enough of the time to make
-> debugging the slow path really annoying. (We should probably delete
-> the fast path.)  There are pagefault_disable() call in there mostly to
-> confuse people. (So we take a fault and sleep — big deal.  We have
-> temporarily corrupt state, but no one will ever read it.  The retry
-> after sleeping will clobber xstate, but lazy save is long gone and
-> this should be fine now.  The real issue is that, if we’re preempted
-> after a successful a successful restore, then the new state will get
-> lost.)
+The following commit has been merged into the x86/asm branch of tip:
 
-There is preempt_disable() as part of FPU locking since we can't change
-the content of the FPU registers (CPU's or within task's state) and get
-interrupted by task preemption. With disabled preemption we can't take a
-page fault.
+Commit-ID:     f444a5ff95dce07cf4353cbb85fc3e785019d430
+Gitweb:        https://git.kernel.org/tip/f444a5ff95dce07cf4353cbb85fc3e785019d430
+Author:        Tony Luck <tony.luck@intel.com>
+AuthorDate:    Mon, 16 Dec 2019 13:42:54 -08:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Wed, 08 Jan 2020 11:29:25 +01:00
 
-We need to load the page from userland which may fault. The context
-switch saves _current_ FPU state only if TIF_NEED_FPU_LOAD is cleared.
-This needs to happen atomic.
+x86/cpufeatures: Add support for fast short REP; MOVSB
 
-The fast path may fail if stack is not faulted-in (custom stack,
-madvise(,, MADV_DONTNEED))
+>From the Intel Optimization Reference Manual:
 
-> So either we should delete the fast path or we should make it work
-> reliably and delete the slow path.  And we should get rid of the
-> __copy. And we should have some test cases.
+3.7.6.1 Fast Short REP MOVSB
+Beginning with processors based on Ice Lake Client microarchitecture,
+REP MOVSB performance of short operations is enhanced. The enhancement
+applies to string lengths between 1 and 128 bytes long.  Support for
+fast-short REP MOVSB is enumerated by the CPUID feature flag: CPUID
+[EAX=7H, ECX=0H).EDX.FAST_SHORT_REP_MOVSB[bit 4] = 1. There is no change
+in the REP STOS performance.
 
-without the fastpath the average case is too slow.
-People-complained-about-this-slow. That is why we ended up with the
-fastpath in the last revision of the series.
+Add an X86_FEATURE_FSRM flag for this.
 
-The go people contirbuted a testcase. Maybe I should hack up it up so
-that we trigger each path and post since it obviously did not happen.
-Boris, do you remember why we did not include their testcase yet?
+memmove() avoids REP MOVSB for short (< 32 byte) copies. Check FSRM and
+use REP MOVSB for short copies on systems that support it.
+
+ [ bp: Massage and add comment. ]
+
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lkml.kernel.org/r/20191216214254.26492-1-tony.luck@intel.com
+---
+ arch/x86/include/asm/cpufeatures.h | 1 +
+ arch/x86/lib/memmove_64.S          | 7 ++++---
+ 2 files changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
+index e9b6249..98c60fa 100644
+--- a/arch/x86/include/asm/cpufeatures.h
++++ b/arch/x86/include/asm/cpufeatures.h
+@@ -357,6 +357,7 @@
+ /* Intel-defined CPU features, CPUID level 0x00000007:0 (EDX), word 18 */
+ #define X86_FEATURE_AVX512_4VNNIW	(18*32+ 2) /* AVX-512 Neural Network Instructions */
+ #define X86_FEATURE_AVX512_4FMAPS	(18*32+ 3) /* AVX-512 Multiply Accumulation Single precision */
++#define X86_FEATURE_FSRM		(18*32+ 4) /* Fast Short Rep Mov */
+ #define X86_FEATURE_AVX512_VP2INTERSECT (18*32+ 8) /* AVX-512 Intersect for D/Q */
+ #define X86_FEATURE_MD_CLEAR		(18*32+10) /* VERW clears CPU buffers */
+ #define X86_FEATURE_TSX_FORCE_ABORT	(18*32+13) /* "" TSX_FORCE_ABORT */
+diff --git a/arch/x86/lib/memmove_64.S b/arch/x86/lib/memmove_64.S
+index 337830d..7ff00ea 100644
+--- a/arch/x86/lib/memmove_64.S
++++ b/arch/x86/lib/memmove_64.S
+@@ -29,10 +29,7 @@
+ SYM_FUNC_START_ALIAS(memmove)
+ SYM_FUNC_START(__memmove)
  
-> BTW, how was the bug in here discovered?  It looks like it only
-> affects signal restore failure, which is usually not survivable unless
-> the user program is really trying.
-
-The glibc test suite.
-
-Sebastian
+-	/* Handle more 32 bytes in loop */
+ 	mov %rdi, %rax
+-	cmp $0x20, %rdx
+-	jb	1f
+ 
+ 	/* Decide forward/backward copy mode */
+ 	cmp %rdi, %rsi
+@@ -42,7 +39,9 @@ SYM_FUNC_START(__memmove)
+ 	cmp %rdi, %r8
+ 	jg 2f
+ 
++	/* FSRM implies ERMS => no length checks, do the copy directly */
+ .Lmemmove_begin_forward:
++	ALTERNATIVE "cmp $0x20, %rdx; jb 1f", "", X86_FEATURE_FSRM
+ 	ALTERNATIVE "", "movq %rdx, %rcx; rep movsb; retq", X86_FEATURE_ERMS
+ 
+ 	/*
+@@ -114,6 +113,8 @@ SYM_FUNC_START(__memmove)
+ 	 */
+ 	.p2align 4
+ 2:
++	cmp $0x20, %rdx
++	jb 1f
+ 	cmp $680, %rdx
+ 	jb 6f
+ 	cmp %dil, %sil
