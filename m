@@ -2,36 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D34D3135EED
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  9 Jan 2020 18:10:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B0FED135F49
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  9 Jan 2020 18:28:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387978AbgAIRK6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 9 Jan 2020 12:10:58 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:55049 "EHLO
+        id S1731701AbgAIR2V (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 9 Jan 2020 12:28:21 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:55110 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731544AbgAIRK6 (ORCPT
+        with ESMTP id S1728444AbgAIR2U (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 9 Jan 2020 12:10:58 -0500
+        Thu, 9 Jan 2020 12:28:20 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1ipbKg-00086y-W2; Thu, 09 Jan 2020 18:10:55 +0100
+        id 1ipbbK-0008ON-7u; Thu, 09 Jan 2020 18:28:06 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 942D81C2CE9;
-        Thu,  9 Jan 2020 18:10:54 +0100 (CET)
-Date:   Thu, 09 Jan 2020 17:10:54 -0000
-From:   "tip-bot2 for Jules Irenge" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 897CB1C2CED;
+        Thu,  9 Jan 2020 18:28:05 +0100 (CET)
+Date:   Thu, 09 Jan 2020 17:28:05 -0000
+From:   "tip-bot2 for Arnd Bergmann" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] genirq: Add missing __must_hold() sparse annotation
-Cc:     Jules Irenge <jbi.octave@gmail.com>,
+Subject: [tip: timers/urgent] time/posix-stubs: Provide compat itimer supoprt
+ for alpha
+Cc:     Guenter Roeck <linux@roeck-us.net>,
+        kbuild test robot <lkp@intel.com>,
+        Arnd Bergmann <arnd@arndb.de>,
         Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191216144208.29852-2-jbi.octave@gmail.com>
-References: <20191216144208.29852-2-jbi.octave@gmail.com>
+In-Reply-To: <20191207191043.656328-1-arnd@arndb.de>
+References: <20191207191043.656328-1-arnd@arndb.de>
 MIME-Version: 1.0
-Message-ID: <157858985444.30329.16284662324525124496.tip-bot2@tip-bot2>
+Message-ID: <157859088532.30329.4386380919465542175.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -45,37 +48,45 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the irq/core branch of tip:
+The following commit has been merged into the timers/urgent branch of tip:
 
-Commit-ID:     099368bb10c0e340f0b236b169e8b13235e0907c
-Gitweb:        https://git.kernel.org/tip/099368bb10c0e340f0b236b169e8b13235e0907c
-Author:        Jules Irenge <jbi.octave@gmail.com>
-AuthorDate:    Mon, 16 Dec 2019 14:42:08 
+Commit-ID:     f35deaff1b8eadb9897e4fb8b3edc7717f4ec6fa
+Gitweb:        https://git.kernel.org/tip/f35deaff1b8eadb9897e4fb8b3edc7717f4ec6fa
+Author:        Arnd Bergmann <arnd@arndb.de>
+AuthorDate:    Sat, 07 Dec 2019 20:10:26 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 09 Jan 2020 18:03:37 +01:00
+CommitterDate: Thu, 09 Jan 2020 18:20:23 +01:00
 
-genirq: Add missing __must_hold() sparse annotation
+time/posix-stubs: Provide compat itimer supoprt for alpha
 
-Add __must_hold() annotation to address the following sparse warning:
+Using compat_sys_getitimer and compat_sys_setitimer on alpha
+causes a link failure in the Alpha tinyconfig and other configurations
+that turn off CONFIG_POSIX_TIMERS.
 
-  warning: context imbalance in irq_wait_for_poll - unexpected unlock
+Use the same #ifdef check for the stub version as well.
 
-Signed-off-by: Jules Irenge <jbi.octave@gmail.com>
+Fixes: 4c22ea2b9120 ("y2038: use compat_{get,set}_itimer on alpha")
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Reported-by: kbuild test robot <lkp@intel.com>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20191216144208.29852-2-jbi.octave@gmail.com
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20191207191043.656328-1-arnd@arndb.de
 ---
- kernel/irq/spurious.c | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/time/posix-stubs.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/kernel/irq/spurious.c b/kernel/irq/spurious.c
-index 2ed97a7..f865e5f 100644
---- a/kernel/irq/spurious.c
-+++ b/kernel/irq/spurious.c
-@@ -34,6 +34,7 @@ static atomic_t irq_poll_active;
-  * true and let the handler run.
-  */
- bool irq_wait_for_poll(struct irq_desc *desc)
-+	__must_hold(&desc->lock)
- {
- 	if (WARN_ONCE(irq_poll_cpu == smp_processor_id(),
- 		      "irq poll in progress on cpu %d for irq %d\n",
+diff --git a/kernel/time/posix-stubs.c b/kernel/time/posix-stubs.c
+index 67df65f..20c65a7 100644
+--- a/kernel/time/posix-stubs.c
++++ b/kernel/time/posix-stubs.c
+@@ -151,6 +151,9 @@ SYSCALL_DEFINE4(clock_nanosleep, const clockid_t, which_clock, int, flags,
+ 
+ #ifdef CONFIG_COMPAT
+ COMPAT_SYS_NI(timer_create);
++#endif
++
++#if defined(CONFIG_COMPAT) || defined(CONFIG_ALPHA)
+ COMPAT_SYS_NI(getitimer);
+ COMPAT_SYS_NI(setitimer);
+ #endif
