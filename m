@@ -2,36 +2,35 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AFD2F135932
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  9 Jan 2020 13:28:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 89586135A69
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  9 Jan 2020 14:41:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730428AbgAIM2e (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 9 Jan 2020 07:28:34 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:54142 "EHLO
+        id S1728435AbgAINlt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 9 Jan 2020 08:41:49 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:54343 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730392AbgAIM2e (ORCPT
+        with ESMTP id S1725839AbgAINlt (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 9 Jan 2020 07:28:34 -0500
+        Thu, 9 Jan 2020 08:41:49 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1ipWvN-0001Is-RW; Thu, 09 Jan 2020 13:28:29 +0100
+        id 1ipY4D-0002uw-9l; Thu, 09 Jan 2020 14:41:41 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 7196A1C2CDA;
-        Thu,  9 Jan 2020 13:28:29 +0100 (CET)
-Date:   Thu, 09 Jan 2020 12:28:29 -0000
-From:   "tip-bot2 for Randy Dunlap" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B22C31C2CDE;
+        Thu,  9 Jan 2020 14:41:40 +0100 (CET)
+Date:   Thu, 09 Jan 2020 13:41:40 -0000
+From:   "tip-bot2 for Benjamin Thiel" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/urgent] futex: Fix kernel-doc notation warning
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <223be78c-f3c8-52df-836d-c5fb8e7907e9@infradead.org>
-References: <223be78c-f3c8-52df-836d-c5fb8e7907e9@infradead.org>
+Subject: [tip: x86/cleanups] x86/cpu: Add a missing prototype for arch_smt_update()
+Cc:     Benjamin Thiel <b.thiel@posteo.de>, Borislav Petkov <bp@suse.de>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200109121723.8151-1-b.thiel@posteo.de>
+References: <20200109121723.8151-1-b.thiel@posteo.de>
 MIME-Version: 1.0
-Message-ID: <157857290920.30329.4383548737653158496.tip-bot2@tip-bot2>
+Message-ID: <157857730052.30329.4376004076938160494.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -45,40 +44,37 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/urgent branch of tip:
+The following commit has been merged into the x86/cleanups branch of tip:
 
-Commit-ID:     51bfb1d11d6daf095addf9fe8471c20992caae0b
-Gitweb:        https://git.kernel.org/tip/51bfb1d11d6daf095addf9fe8471c20992caae0b
-Author:        Randy Dunlap <rdunlap@infradead.org>
-AuthorDate:    Sun, 08 Dec 2019 20:26:55 -08:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 09 Jan 2020 13:23:40 +01:00
+Commit-ID:     b47a36982dbdcd9d96fdce5169af984ef5bdd110
+Gitweb:        https://git.kernel.org/tip/b47a36982dbdcd9d96fdce5169af984ef5bdd110
+Author:        Benjamin Thiel <b.thiel@posteo.de>
+AuthorDate:    Thu, 09 Jan 2020 13:17:23 +01:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Thu, 09 Jan 2020 14:31:53 +01:00
 
-futex: Fix kernel-doc notation warning
+x86/cpu: Add a missing prototype for arch_smt_update()
 
-Fix a kernel-doc warning in kernel/futex.c by adding notation
-for @ret.
+.. in order to fix a -Wmissing-prototype warning.
 
-../kernel/futex.c:1187: warning: Function parameter or member 'ret' not described in 'wait_for_owner_exiting'
+No functional change.
 
-Fixes: 3ef240eaff36 ("futex: Prevent exit livelock")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/223be78c-f3c8-52df-836d-c5fb8e7907e9@infradead.org
-
+Signed-off-by: Benjamin Thiel <b.thiel@posteo.de>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lkml.kernel.org/r/20200109121723.8151-1-b.thiel@posteo.de
 ---
- kernel/futex.c | 1 +
+ arch/x86/kernel/cpu/common.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/kernel/futex.c b/kernel/futex.c
-index 03c518e..0cf84c8 100644
---- a/kernel/futex.c
-+++ b/kernel/futex.c
-@@ -1178,6 +1178,7 @@ out_error:
- 
- /**
-  * wait_for_owner_exiting - Block until the owner has exited
-+ * @ret: owner's current futex lock status
-  * @exiting:	Pointer to the exiting task
-  *
-  * Caller must hold a refcount on @exiting.
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index 2e4d902..6b95f18 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -14,6 +14,7 @@
+ #include <linux/sched/mm.h>
+ #include <linux/sched/clock.h>
+ #include <linux/sched/task.h>
++#include <linux/sched/smt.h>
+ #include <linux/init.h>
+ #include <linux/kprobes.h>
+ #include <linux/kgdb.h>
