@@ -2,36 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 43F80135EEF
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  9 Jan 2020 18:11:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D34D3135EED
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  9 Jan 2020 18:10:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387989AbgAIRLB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 9 Jan 2020 12:11:01 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:55052 "EHLO
+        id S2387978AbgAIRK6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 9 Jan 2020 12:10:58 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:55049 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731544AbgAIRLB (ORCPT
+        with ESMTP id S1731544AbgAIRK6 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 9 Jan 2020 12:11:01 -0500
+        Thu, 9 Jan 2020 12:10:58 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1ipbKh-00086z-6A; Thu, 09 Jan 2020 18:10:55 +0100
+        id 1ipbKg-00086y-W2; Thu, 09 Jan 2020 18:10:55 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C73101C2CEA;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 942D81C2CE9;
         Thu,  9 Jan 2020 18:10:54 +0100 (CET)
 Date:   Thu, 09 Jan 2020 17:10:54 -0000
 From:   "tip-bot2 for Jules Irenge" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] genirq: Add missing __releases() sparse annotation
+Subject: [tip: irq/core] genirq: Add missing __must_hold() sparse annotation
 Cc:     Jules Irenge <jbi.octave@gmail.com>,
         Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191216144208.29852-1-jbi.octave@gmail.com>
-References: <20191216144208.29852-1-jbi.octave@gmail.com>
+In-Reply-To: <20191216144208.29852-2-jbi.octave@gmail.com>
+References: <20191216144208.29852-2-jbi.octave@gmail.com>
 MIME-Version: 1.0
-Message-ID: <157858985468.30329.13715110536356164954.tip-bot2@tip-bot2>
+Message-ID: <157858985444.30329.16284662324525124496.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,36 +47,35 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     8b3b54799b99de59d25a3947d539662f47300ced
-Gitweb:        https://git.kernel.org/tip/8b3b54799b99de59d25a3947d539662f47300ced
+Commit-ID:     099368bb10c0e340f0b236b169e8b13235e0907c
+Gitweb:        https://git.kernel.org/tip/099368bb10c0e340f0b236b169e8b13235e0907c
 Author:        Jules Irenge <jbi.octave@gmail.com>
-AuthorDate:    Mon, 16 Dec 2019 14:42:07 
+AuthorDate:    Mon, 16 Dec 2019 14:42:08 
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 09 Jan 2020 18:03:24 +01:00
+CommitterDate: Thu, 09 Jan 2020 18:03:37 +01:00
 
-genirq: Add missing __releases() sparse annotation
+genirq: Add missing __must_hold() sparse annotation
 
-Add __releases() annotation to address the following sparse warning:
+Add __must_hold() annotation to address the following sparse warning:
 
-  warning: context imbalance in __irq_put_desc_unlock() - unexpected unlock
+  warning: context imbalance in irq_wait_for_poll - unexpected unlock
 
 Signed-off-by: Jules Irenge <jbi.octave@gmail.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20191216144208.29852-1-jbi.octave@gmail.com
-
+Link: https://lore.kernel.org/r/20191216144208.29852-2-jbi.octave@gmail.com
 ---
- kernel/irq/irqdesc.c | 1 +
+ kernel/irq/spurious.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/kernel/irq/irqdesc.c b/kernel/irq/irqdesc.c
-index 5b8fdd6..98a5f10 100644
---- a/kernel/irq/irqdesc.c
-+++ b/kernel/irq/irqdesc.c
-@@ -891,6 +891,7 @@ __irq_get_desc_lock(unsigned int irq, unsigned long *flags, bool bus,
- }
- 
- void __irq_put_desc_unlock(struct irq_desc *desc, unsigned long flags, bool bus)
-+	__releases(&desc->lock)
+diff --git a/kernel/irq/spurious.c b/kernel/irq/spurious.c
+index 2ed97a7..f865e5f 100644
+--- a/kernel/irq/spurious.c
++++ b/kernel/irq/spurious.c
+@@ -34,6 +34,7 @@ static atomic_t irq_poll_active;
+  * true and let the handler run.
+  */
+ bool irq_wait_for_poll(struct irq_desc *desc)
++	__must_hold(&desc->lock)
  {
- 	raw_spin_unlock_irqrestore(&desc->lock, flags);
- 	if (bus)
+ 	if (WARN_ONCE(irq_poll_cpu == smp_processor_id(),
+ 		      "irq poll in progress on cpu %d for irq %d\n",
