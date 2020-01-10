@@ -2,33 +2,33 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 59F811375A7
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 10 Jan 2020 18:59:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 347B213759D
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 10 Jan 2020 18:59:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728937AbgAJR7k (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 10 Jan 2020 12:59:40 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:59300 "EHLO
+        id S1728735AbgAJR7Y (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 10 Jan 2020 12:59:24 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:59274 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728884AbgAJR72 (ORCPT
+        with ESMTP id S1728654AbgAJR7X (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 10 Jan 2020 12:59:28 -0500
+        Fri, 10 Jan 2020 12:59:23 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1ipyZC-0002At-D7; Fri, 10 Jan 2020 18:59:26 +0100
+        id 1ipyZ6-0002Al-O9; Fri, 10 Jan 2020 18:59:20 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D48741C2D6E;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4F9761C2D6A;
         Fri, 10 Jan 2020 18:59:20 +0100 (CET)
 Date:   Fri, 10 Jan 2020 17:59:20 -0000
 From:   "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/mm] x86/mm/pat: Simplify the free_memtype() control flow
+Subject: [tip: x86/mm] x86/mm/pat: Clean up PAT initialization flags
 Cc:     Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <157867916069.30329.4589587679342870123.tip-bot2@tip-bot2>
+Message-ID: <157867916017.30329.6367738814205384697.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -44,50 +44,134 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/mm branch of tip:
 
-Commit-ID:     47553d42c55f7b85e72ce6f3a18030102f8f93a3
-Gitweb:        https://git.kernel.org/tip/47553d42c55f7b85e72ce6f3a18030102f8f93a3
+Commit-ID:     d891b9219d2a73640d2f2a216ecb6fb29d832013
+Gitweb:        https://git.kernel.org/tip/d891b9219d2a73640d2f2a216ecb6fb29d832013
 Author:        Ingo Molnar <mingo@kernel.org>
-AuthorDate:    Tue, 19 Nov 2019 10:18:56 +01:00
+AuthorDate:    Tue, 19 Nov 2019 11:46:36 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Tue, 10 Dec 2019 10:12:55 +01:00
 
-x86/mm/pat: Simplify the free_memtype() control flow
+x86/mm/pat: Clean up PAT initialization flags
 
-Simplify/streamline the quirky handling of the pat_pagerange_is_ram() logic,
-and get rid of the 'err' local variable.
+Right now we have these variables that impact the PAT initialization sequence:
+
+  pat_disabled
+  boot_cpu_done
+  pat_initialized
+  init_cm_done
+
+Some have a pat_ prefix, some not, and the naming is random,
+which makes their purpose rather opaque.
+
+Name them consistently and according to their role:
+
+  pat_disabled
+  pat_bp_initialized
+  pat_bp_enabled
+  pat_cm_initialized
+
+Also rename pat_bsp_init() => pat_bp_init(), to use the canonical
+abbreviation.
+
+Also add a warning for double calls of init_cache_modes(), the call chains
+leading to this are complex and I couldn't convince myself that we never
+call this function twice - so utilize the flag for a debug check.
+
+No change in functionality intended.
 
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- arch/x86/mm/pat.c | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ arch/x86/mm/pat.c | 26 ++++++++++++++------------
+ 1 file changed, 14 insertions(+), 12 deletions(-)
 
 diff --git a/arch/x86/mm/pat.c b/arch/x86/mm/pat.c
-index ea7da7e..af04992 100644
+index 4a18049..f1677fa 100644
 --- a/arch/x86/mm/pat.c
 +++ b/arch/x86/mm/pat.c
-@@ -656,7 +656,6 @@ int reserve_memtype(u64 start, u64 end, enum page_cache_mode req_type,
+@@ -61,10 +61,10 @@
+ #undef pr_fmt
+ #define pr_fmt(fmt) "" fmt
  
- int free_memtype(u64 start, u64 end)
+-static bool __read_mostly boot_cpu_done;
++static bool __read_mostly pat_bp_initialized;
+ static bool __read_mostly pat_disabled = !IS_ENABLED(CONFIG_X86_PAT);
+-static bool __read_mostly pat_initialized;
+-static bool __read_mostly init_cm_done;
++static bool __read_mostly pat_bp_enabled;
++static bool __read_mostly pat_cm_initialized;
+ 
+ /*
+  * PAT support is enabled by default, but can be disabled for
+@@ -75,7 +75,7 @@ void pat_disable(const char *msg_reason)
+ 	if (pat_disabled)
+ 		return;
+ 
+-	if (boot_cpu_done) {
++	if (pat_bp_initialized) {
+ 		WARN_ONCE(1, "x86/PAT: PAT cannot be disabled after initialization\n");
+ 		return;
+ 	}
+@@ -93,7 +93,7 @@ early_param("nopat", nopat);
+ 
+ bool pat_enabled(void)
  {
--	int err = -EINVAL;
- 	int is_range_ram;
- 	struct memtype *entry;
+-	return pat_initialized;
++	return pat_bp_enabled;
+ }
+ EXPORT_SYMBOL_GPL(pat_enabled);
  
-@@ -671,14 +670,10 @@ int free_memtype(u64 start, u64 end)
- 		return 0;
+@@ -224,6 +224,8 @@ static void __init_cache_modes(u64 pat)
+ 	char pat_msg[33];
+ 	int i;
  
- 	is_range_ram = pat_pagerange_is_ram(start, end);
--	if (is_range_ram == 1) {
--
--		err = free_ram_pages_type(start, end);
--
--		return err;
--	} else if (is_range_ram < 0) {
-+	if (is_range_ram == 1)
-+		return free_ram_pages_type(start, end);
-+	if (is_range_ram < 0)
- 		return -EINVAL;
--	}
++	WARN_ON_ONCE(pat_cm_initialized);
++
+ 	pat_msg[32] = 0;
+ 	for (i = 7; i >= 0; i--) {
+ 		cache = pat_get_cache_mode((pat >> (i * 8)) & 7,
+@@ -232,12 +234,12 @@ static void __init_cache_modes(u64 pat)
+ 	}
+ 	pr_info("x86/PAT: Configuration [0-7]: %s\n", pat_msg);
  
- 	spin_lock(&memtype_lock);
- 	entry = memtype_erase(start, end);
+-	init_cm_done = true;
++	pat_cm_initialized = true;
+ }
+ 
+ #define PAT(x, y)	((u64)PAT_ ## y << ((x)*8))
+ 
+-static void pat_bsp_init(u64 pat)
++static void pat_bp_init(u64 pat)
+ {
+ 	u64 tmp_pat;
+ 
+@@ -253,7 +255,7 @@ static void pat_bsp_init(u64 pat)
+ 	}
+ 
+ 	wrmsrl(MSR_IA32_CR_PAT, pat);
+-	pat_initialized = true;
++	pat_bp_enabled = true;
+ 
+ 	__init_cache_modes(pat);
+ }
+@@ -275,7 +277,7 @@ void init_cache_modes(void)
+ {
+ 	u64 pat = 0;
+ 
+-	if (init_cm_done)
++	if (pat_cm_initialized)
+ 		return;
+ 
+ 	if (boot_cpu_has(X86_FEATURE_PAT)) {
+@@ -395,9 +397,9 @@ void pat_init(void)
+ 		      PAT(4, WB) | PAT(5, WP) | PAT(6, UC_MINUS) | PAT(7, WT);
+ 	}
+ 
+-	if (!boot_cpu_done) {
+-		pat_bsp_init(pat);
+-		boot_cpu_done = true;
++	if (!pat_bp_initialized) {
++		pat_bp_init(pat);
++		pat_bp_initialized = true;
+ 	} else {
+ 		pat_ap_init(pat);
+ 	}
