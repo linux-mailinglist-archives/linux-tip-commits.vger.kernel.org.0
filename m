@@ -2,33 +2,33 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CCB321375A8
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 10 Jan 2020 18:59:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ED1C91375BB
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 10 Jan 2020 19:01:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728898AbgAJR72 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 10 Jan 2020 12:59:28 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:59284 "EHLO
+        id S1729069AbgAJSAG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 10 Jan 2020 13:00:06 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:59260 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728794AbgAJR70 (ORCPT
+        with ESMTP id S1728485AbgAJR7W (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 10 Jan 2020 12:59:26 -0500
+        Fri, 10 Jan 2020 12:59:22 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1ipyZA-0002BZ-CC; Fri, 10 Jan 2020 18:59:24 +0100
+        id 1ipyZ5-00028s-8x; Fri, 10 Jan 2020 18:59:19 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4F3CD1C2D6F;
-        Fri, 10 Jan 2020 18:59:21 +0100 (CET)
-Date:   Fri, 10 Jan 2020 17:59:21 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D01FF1C2D6A;
+        Fri, 10 Jan 2020 18:59:18 +0100 (CET)
+Date:   Fri, 10 Jan 2020 17:59:18 -0000
 From:   "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/mm] x86/mm/pat: Disambiguate PAT-disabled boot messages
+Subject: [tip: x86/mm] x86/mm: Tabulate the page table encoding definitions
 Cc:     Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <157867916118.30329.2988948694507302150.tip-bot2@tip-bot2>
+Message-ID: <157867915870.30329.18073165130921919060.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -44,132 +44,232 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/mm branch of tip:
 
-Commit-ID:     5557e831f68878ef202c0e5296235442cff9b41e
-Gitweb:        https://git.kernel.org/tip/5557e831f68878ef202c0e5296235442cff9b41e
+Commit-ID:     4efb56649132687b5093d90aa62887595e65a09d
+Gitweb:        https://git.kernel.org/tip/4efb56649132687b5093d90aa62887595e65a09d
 Author:        Ingo Molnar <mingo@kernel.org>
-AuthorDate:    Tue, 19 Nov 2019 09:50:19 +01:00
+AuthorDate:    Wed, 20 Nov 2019 17:38:39 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Tue, 10 Dec 2019 10:12:55 +01:00
 
-x86/mm/pat: Disambiguate PAT-disabled boot messages
+x86/mm: Tabulate the page table encoding definitions
 
-Right now we have these four types of PAT-disabled boot messages:
+I got lost in trying to figure out which bits were enabled
+in one of the PTE masks, so let's make it pretty
+obvious at the definition site already:
 
-  x86/PAT: PAT support disabled.
-  x86/PAT: PAT MSR is 0, disabled.
-  x86/PAT: MTRRs disabled, skipping PAT initialization too.
-  x86/PAT: PAT not supported by CPU.
+ #define PAGE_NONE            __pg(   0|   0|   0|___A|   0|   0|   0|___G)
+ #define PAGE_SHARED          __pg(__PP|__RW|_USR|___A|__NX|   0|   0|   0)
+ #define PAGE_SHARED_EXEC     __pg(__PP|__RW|_USR|___A|   0|   0|   0|   0)
+ #define PAGE_COPY_NOEXEC     __pg(__PP|   0|_USR|___A|__NX|   0|   0|   0)
+ #define PAGE_COPY_EXEC       __pg(__PP|   0|_USR|___A|   0|   0|   0|   0)
+ #define PAGE_COPY            __pg(__PP|   0|_USR|___A|__NX|   0|   0|   0)
+ #define PAGE_READONLY        __pg(__PP|   0|_USR|___A|__NX|   0|   0|   0)
+ #define PAGE_READONLY_EXEC   __pg(__PP|   0|_USR|___A|   0|   0|   0|   0)
 
-The first message is ambiguous in that it doesn't signal that PAT is off
-due to a boot option.
+ #define __PAGE_KERNEL            (__PP|__RW|   0|___A|__NX|___D|   0|___G)
+ #define __PAGE_KERNEL_EXEC       (__PP|__RW|   0|___A|   0|___D|   0|___G)
+ #define _KERNPG_TABLE_NOENC      (__PP|__RW|   0|___A|   0|___D|   0|   0)
+ #define _KERNPG_TABLE            (__PP|__RW|   0|___A|   0|___D|   0|   0| _ENC)
+ #define _PAGE_TABLE_NOENC        (__PP|__RW|_USR|___A|   0|___D|   0|   0)
+ #define _PAGE_TABLE              (__PP|__RW|_USR|___A|   0|___D|   0|   0| _ENC)
+ #define __PAGE_KERNEL_RO         (__PP|   0|   0|___A|__NX|___D|   0|___G)
+ #define __PAGE_KERNEL_RX         (__PP|   0|   0|___A|   0|___D|   0|___G)
+ #define __PAGE_KERNEL_NOCACHE    (__PP|__RW|   0|___A|__NX|___D|   0|___G| __NC)
+ #define __PAGE_KERNEL_VVAR       (__PP|   0|_USR|___A|__NX|___D|   0|___G)
+ #define __PAGE_KERNEL_LARGE      (__PP|__RW|   0|___A|__NX|___D|_PSE|___G)
+ #define __PAGE_KERNEL_LARGE_EXEC (__PP|__RW|   0|___A|   0|___D|_PSE|___G)
+ #define __PAGE_KERNEL_WP         (__PP|__RW|   0|___A|__NX|___D|   0|___G| __WP)
 
-The second message doesn't really make it clear that this is the MSR value
-during early bootup and it's the firmware environment that disabled PAT
-support.
+Especially security relevant bits like 'NX' or coherence related bits like 'G'
+are now super easy to read based on a single grep.
 
-The fourth message doesn't really make it clear that we disable PAT support
-because CONFIG_MTRR is off in the kernel.
-
-Clarify, harmonize and fix the spelling in these user-visible messages:
-
-  x86/PAT: PAT support disabled via boot option.
-  x86/PAT: PAT support disabled by the firmware.
-  x86/PAT: PAT support disabled because CONFIG_MTRR is disabled in the kernel.
-  x86/PAT: PAT not supported by the CPU.
-
-Also add a fifth message, in case PAT support is disabled at build time:
-
-  x86/PAT: PAT support disabled because CONFIG_X86_PAT is disabled in the kernel.
-
-Previously we'd just silently return from pat_init() without giving any indication
-that PAT support is off.
-
-Finally, clarify/extend some of the comments related to PAT initialization.
+We do the underscore gymnastics to not pollute the kernel's symbol namespace,
+and the longest line still fits into 80 columns, so this should be readable
+for everyone.
 
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- arch/x86/include/asm/mtrr.h |  2 +-
- arch/x86/mm/pat.c           | 20 ++++++++++++++------
- 2 files changed, 15 insertions(+), 7 deletions(-)
+ arch/x86/include/asm/pgtable_types.h | 143 +++++++++++++-------------
+ 1 file changed, 74 insertions(+), 69 deletions(-)
 
-diff --git a/arch/x86/include/asm/mtrr.h b/arch/x86/include/asm/mtrr.h
-index dbff145..3337d22 100644
---- a/arch/x86/include/asm/mtrr.h
-+++ b/arch/x86/include/asm/mtrr.h
-@@ -86,7 +86,7 @@ static inline void mtrr_centaur_report_mcr(int mcr, u32 lo, u32 hi)
- }
- static inline void mtrr_bp_init(void)
- {
--	pat_disable("MTRRs disabled, skipping PAT initialization too.");
-+	pat_disable("PAT support disabled because CONFIG_MTRR is disabled in the kernel.");
- }
+diff --git a/arch/x86/include/asm/pgtable_types.h b/arch/x86/include/asm/pgtable_types.h
+index b5e49e6..ea74007 100644
+--- a/arch/x86/include/asm/pgtable_types.h
++++ b/arch/x86/include/asm/pgtable_types.h
+@@ -110,11 +110,6 @@
  
- #define mtrr_ap_init() do {} while (0)
-diff --git a/arch/x86/mm/pat.c b/arch/x86/mm/pat.c
-index 560ac51..e26b81c 100644
---- a/arch/x86/mm/pat.c
-+++ b/arch/x86/mm/pat.c
-@@ -66,7 +66,11 @@ static bool __read_mostly pat_disabled = !IS_ENABLED(CONFIG_X86_PAT);
- static bool __read_mostly pat_initialized;
- static bool __read_mostly init_cm_done;
+ #define _PAGE_PROTNONE	(_AT(pteval_t, 1) << _PAGE_BIT_PROTNONE)
  
--void pat_disable(const char *reason)
-+/*
-+ * PAT support is enabled by default, but can be disabled for
-+ * various user-requested or hardware-forced reasons:
-+ */
-+void pat_disable(const char *msg_reason)
- {
- 	if (pat_disabled)
- 		return;
-@@ -77,12 +81,12 @@ void pat_disable(const char *reason)
- 	}
- 
- 	pat_disabled = true;
--	pr_info("x86/PAT: %s\n", reason);
-+	pr_info("x86/PAT: %s\n", msg_reason);
- }
- 
- static int __init nopat(char *str)
- {
--	pat_disable("PAT support disabled.");
-+	pat_disable("PAT support disabled via boot option.");
- 	return 0;
- }
- early_param("nopat", nopat);
-@@ -238,13 +242,13 @@ static void pat_bsp_init(u64 pat)
- 	u64 tmp_pat;
- 
- 	if (!boot_cpu_has(X86_FEATURE_PAT)) {
--		pat_disable("PAT not supported by CPU.");
-+		pat_disable("PAT not supported by the CPU.");
- 		return;
- 	}
- 
- 	rdmsrl(MSR_IA32_CR_PAT, tmp_pat);
- 	if (!tmp_pat) {
--		pat_disable("PAT MSR is 0, disabled.");
-+		pat_disable("PAT support disabled by the firmware.");
- 		return;
- 	}
- 
-@@ -314,7 +318,7 @@ void init_cache_modes(void)
- }
- 
- /**
-- * pat_init - Initialize PAT MSR and PAT table
-+ * pat_init - Initialize the PAT MSR and PAT table on the current CPU
-  *
-  * This function initializes PAT MSR and PAT table with an OS-defined value
-  * to enable additional cache attributes, WC, WT and WP.
-@@ -328,6 +332,10 @@ void pat_init(void)
- 	u64 pat;
- 	struct cpuinfo_x86 *c = &boot_cpu_data;
- 
-+#ifndef CONFIG_X86_PAT
-+	pr_info_once("x86/PAT: PAT support disabled because CONFIG_X86_PAT is disabled in the kernel.\n");
-+#endif
+-#define _PAGE_TABLE_NOENC	(_PAGE_PRESENT | _PAGE_RW | _PAGE_USER |\
+-				 _PAGE_ACCESSED | _PAGE_DIRTY)
+-#define _KERNPG_TABLE_NOENC	(_PAGE_PRESENT | _PAGE_RW |		\
+-				 _PAGE_ACCESSED | _PAGE_DIRTY)
+-
+ /*
+  * Set of bits not changed in pte_modify.  The pte's
+  * protection key is treated like _PAGE_RW, for
+@@ -136,80 +131,93 @@
+  */
+ #ifndef __ASSEMBLY__
+ enum page_cache_mode {
+-	_PAGE_CACHE_MODE_WB = 0,
+-	_PAGE_CACHE_MODE_WC = 1,
++	_PAGE_CACHE_MODE_WB       = 0,
++	_PAGE_CACHE_MODE_WC       = 1,
+ 	_PAGE_CACHE_MODE_UC_MINUS = 2,
+-	_PAGE_CACHE_MODE_UC = 3,
+-	_PAGE_CACHE_MODE_WT = 4,
+-	_PAGE_CACHE_MODE_WP = 5,
+-	_PAGE_CACHE_MODE_NUM = 8
++	_PAGE_CACHE_MODE_UC       = 3,
++	_PAGE_CACHE_MODE_WT       = 4,
++	_PAGE_CACHE_MODE_WP       = 5,
 +
- 	if (pat_disabled)
- 		return;
++	_PAGE_CACHE_MODE_NUM      = 8
+ };
+ #endif
+ 
+-#define _PAGE_CACHE_MASK	(_PAGE_PAT | _PAGE_PCD | _PAGE_PWT)
+-#define _PAGE_NOCACHE		(cachemode2protval(_PAGE_CACHE_MODE_UC))
+-#define _PAGE_CACHE_WP		(cachemode2protval(_PAGE_CACHE_MODE_WP))
++#define _PAGE_ENC		(_AT(pteval_t, sme_me_mask))
+ 
+-#define PAGE_NONE	__pgprot(_PAGE_PROTNONE | _PAGE_ACCESSED)
+-#define PAGE_SHARED	__pgprot(_PAGE_PRESENT | _PAGE_RW | _PAGE_USER | \
+-				 _PAGE_ACCESSED | _PAGE_NX)
+-
+-#define PAGE_SHARED_EXEC	__pgprot(_PAGE_PRESENT | _PAGE_RW |	\
+-					 _PAGE_USER | _PAGE_ACCESSED)
+-#define PAGE_COPY_NOEXEC	__pgprot(_PAGE_PRESENT | _PAGE_USER |	\
+-					 _PAGE_ACCESSED | _PAGE_NX)
+-#define PAGE_COPY_EXEC		__pgprot(_PAGE_PRESENT | _PAGE_USER |	\
+-					 _PAGE_ACCESSED)
+-#define PAGE_COPY		PAGE_COPY_NOEXEC
+-#define PAGE_READONLY		__pgprot(_PAGE_PRESENT | _PAGE_USER |	\
+-					 _PAGE_ACCESSED | _PAGE_NX)
+-#define PAGE_READONLY_EXEC	__pgprot(_PAGE_PRESENT | _PAGE_USER |	\
+-					 _PAGE_ACCESSED)
+-
+-#define __PAGE_KERNEL_EXEC						\
+-	(_PAGE_PRESENT | _PAGE_RW | _PAGE_DIRTY | _PAGE_ACCESSED | _PAGE_GLOBAL)
+-#define __PAGE_KERNEL		(__PAGE_KERNEL_EXEC | _PAGE_NX)
+-
+-#define __PAGE_KERNEL_RO		(__PAGE_KERNEL & ~_PAGE_RW)
+-#define __PAGE_KERNEL_RX		(__PAGE_KERNEL_EXEC & ~_PAGE_RW)
+-#define __PAGE_KERNEL_NOCACHE		(__PAGE_KERNEL | _PAGE_NOCACHE)
+-#define __PAGE_KERNEL_VVAR		(__PAGE_KERNEL_RO | _PAGE_USER)
+-#define __PAGE_KERNEL_LARGE		(__PAGE_KERNEL | _PAGE_PSE)
+-#define __PAGE_KERNEL_LARGE_EXEC	(__PAGE_KERNEL_EXEC | _PAGE_PSE)
+-#define __PAGE_KERNEL_WP		(__PAGE_KERNEL | _PAGE_CACHE_WP)
+-
+-#define __PAGE_KERNEL_IO		(__PAGE_KERNEL)
+-#define __PAGE_KERNEL_IO_NOCACHE	(__PAGE_KERNEL_NOCACHE)
++#define _PAGE_CACHE_MASK	(_PAGE_PWT | _PAGE_PCD | _PAGE_PAT)
+ 
+-#ifndef __ASSEMBLY__
++#define _PAGE_NOCACHE		(cachemode2protval(_PAGE_CACHE_MODE_UC))
++#define _PAGE_CACHE_WP		(cachemode2protval(_PAGE_CACHE_MODE_WP))
+ 
+-#define _PAGE_ENC	(_AT(pteval_t, sme_me_mask))
++#define __PP _PAGE_PRESENT
++#define __RW _PAGE_RW
++#define _USR _PAGE_USER
++#define ___A _PAGE_ACCESSED
++#define ___D _PAGE_DIRTY
++#define ___G _PAGE_GLOBAL
++#define __NX _PAGE_NX
++
++#define _ENC _PAGE_ENC
++#define __WP _PAGE_CACHE_WP
++#define __NC _PAGE_NOCACHE
++#define _PSE _PAGE_PSE
++
++#define pgprot_val(x)		((x).pgprot)
++#define __pgprot(x)		((pgprot_t) { (x) } )
++#define __pg(x)			__pgprot(x)
++
++#define _PAGE_PAT_LARGE		(_AT(pteval_t, 1) << _PAGE_BIT_PAT_LARGE)
++
++#define PAGE_NONE	     __pg(   0|   0|   0|___A|   0|   0|   0|___G)
++#define PAGE_SHARED	     __pg(__PP|__RW|_USR|___A|__NX|   0|   0|   0)
++#define PAGE_SHARED_EXEC     __pg(__PP|__RW|_USR|___A|   0|   0|   0|   0)
++#define PAGE_COPY_NOEXEC     __pg(__PP|   0|_USR|___A|__NX|   0|   0|   0)
++#define PAGE_COPY_EXEC	     __pg(__PP|   0|_USR|___A|   0|   0|   0|   0)
++#define PAGE_COPY	     __pg(__PP|   0|_USR|___A|__NX|   0|   0|   0)
++#define PAGE_READONLY	     __pg(__PP|   0|_USR|___A|__NX|   0|   0|   0)
++#define PAGE_READONLY_EXEC   __pg(__PP|   0|_USR|___A|   0|   0|   0|   0)
++
++#define __PAGE_KERNEL		 (__PP|__RW|   0|___A|__NX|___D|   0|___G)
++#define __PAGE_KERNEL_EXEC	 (__PP|__RW|   0|___A|   0|___D|   0|___G)
++#define _KERNPG_TABLE_NOENC	 (__PP|__RW|   0|___A|   0|___D|   0|   0)
++#define _KERNPG_TABLE		 (__PP|__RW|   0|___A|   0|___D|   0|   0| _ENC)
++#define _PAGE_TABLE_NOENC	 (__PP|__RW|_USR|___A|   0|___D|   0|   0)
++#define _PAGE_TABLE		 (__PP|__RW|_USR|___A|   0|___D|   0|   0| _ENC)
++#define __PAGE_KERNEL_RO	 (__PP|   0|   0|___A|__NX|___D|   0|___G)
++#define __PAGE_KERNEL_RX	 (__PP|   0|   0|___A|   0|___D|   0|___G)
++#define __PAGE_KERNEL_NOCACHE	 (__PP|__RW|   0|___A|__NX|___D|   0|___G| __NC)
++#define __PAGE_KERNEL_VVAR	 (__PP|   0|_USR|___A|__NX|___D|   0|___G)
++#define __PAGE_KERNEL_LARGE	 (__PP|__RW|   0|___A|__NX|___D|_PSE|___G)
++#define __PAGE_KERNEL_LARGE_EXEC (__PP|__RW|   0|___A|   0|___D|_PSE|___G)
++#define __PAGE_KERNEL_WP	 (__PP|__RW|   0|___A|__NX|___D|   0|___G| __WP)
++
++
++#define __PAGE_KERNEL_IO		__PAGE_KERNEL
++#define __PAGE_KERNEL_IO_NOCACHE	__PAGE_KERNEL_NOCACHE
+ 
+-#define _KERNPG_TABLE	(_PAGE_PRESENT | _PAGE_RW | _PAGE_ACCESSED |	\
+-			 _PAGE_DIRTY | _PAGE_ENC)
+-#define _PAGE_TABLE	(_KERNPG_TABLE | _PAGE_USER)
+ 
+-#define __PAGE_KERNEL_ENC	(__PAGE_KERNEL | _PAGE_ENC)
+-#define __PAGE_KERNEL_ENC_WP	(__PAGE_KERNEL_WP | _PAGE_ENC)
++#ifndef __ASSEMBLY__
+ 
+-#define __PAGE_KERNEL_NOENC	(__PAGE_KERNEL)
+-#define __PAGE_KERNEL_NOENC_WP	(__PAGE_KERNEL_WP)
++#define __PAGE_KERNEL_ENC	(__PAGE_KERNEL    | _ENC)
++#define __PAGE_KERNEL_ENC_WP	(__PAGE_KERNEL_WP | _ENC)
++#define __PAGE_KERNEL_NOENC	(__PAGE_KERNEL    |    0)
++#define __PAGE_KERNEL_NOENC_WP	(__PAGE_KERNEL_WP |    0)
+ 
+-#define default_pgprot(x)	__pgprot((x) & __default_kernel_pte_mask)
++#define __pgprot_mask(x)	__pgprot((x) & __default_kernel_pte_mask)
+ 
+-#define PAGE_KERNEL		default_pgprot(__PAGE_KERNEL | _PAGE_ENC)
+-#define PAGE_KERNEL_NOENC	default_pgprot(__PAGE_KERNEL)
+-#define PAGE_KERNEL_RO		default_pgprot(__PAGE_KERNEL_RO | _PAGE_ENC)
+-#define PAGE_KERNEL_EXEC	default_pgprot(__PAGE_KERNEL_EXEC | _PAGE_ENC)
+-#define PAGE_KERNEL_EXEC_NOENC	default_pgprot(__PAGE_KERNEL_EXEC)
+-#define PAGE_KERNEL_RX		default_pgprot(__PAGE_KERNEL_RX | _PAGE_ENC)
+-#define PAGE_KERNEL_NOCACHE	default_pgprot(__PAGE_KERNEL_NOCACHE | _PAGE_ENC)
+-#define PAGE_KERNEL_LARGE	default_pgprot(__PAGE_KERNEL_LARGE | _PAGE_ENC)
+-#define PAGE_KERNEL_LARGE_EXEC	default_pgprot(__PAGE_KERNEL_LARGE_EXEC | _PAGE_ENC)
+-#define PAGE_KERNEL_VVAR	default_pgprot(__PAGE_KERNEL_VVAR | _PAGE_ENC)
++#define PAGE_KERNEL		__pgprot_mask(__PAGE_KERNEL            | _ENC)
++#define PAGE_KERNEL_NOENC	__pgprot_mask(__PAGE_KERNEL            |    0)
++#define PAGE_KERNEL_RO		__pgprot_mask(__PAGE_KERNEL_RO         | _ENC)
++#define PAGE_KERNEL_EXEC	__pgprot_mask(__PAGE_KERNEL_EXEC       | _ENC)
++#define PAGE_KERNEL_EXEC_NOENC	__pgprot_mask(__PAGE_KERNEL_EXEC       |    0)
++#define PAGE_KERNEL_RX		__pgprot_mask(__PAGE_KERNEL_RX         | _ENC)
++#define PAGE_KERNEL_NOCACHE	__pgprot_mask(__PAGE_KERNEL_NOCACHE    | _ENC)
++#define PAGE_KERNEL_LARGE	__pgprot_mask(__PAGE_KERNEL_LARGE      | _ENC)
++#define PAGE_KERNEL_LARGE_EXEC	__pgprot_mask(__PAGE_KERNEL_LARGE_EXEC | _ENC)
++#define PAGE_KERNEL_VVAR	__pgprot_mask(__PAGE_KERNEL_VVAR       | _ENC)
+ 
+-#define PAGE_KERNEL_IO		default_pgprot(__PAGE_KERNEL_IO)
+-#define PAGE_KERNEL_IO_NOCACHE	default_pgprot(__PAGE_KERNEL_IO_NOCACHE)
++#define PAGE_KERNEL_IO		__pgprot_mask(__PAGE_KERNEL_IO)
++#define PAGE_KERNEL_IO_NOCACHE	__pgprot_mask(__PAGE_KERNEL_IO_NOCACHE)
+ 
+ #endif	/* __ASSEMBLY__ */
+ 
+@@ -449,9 +457,6 @@ static inline pteval_t pte_flags(pte_t pte)
+ 	return native_pte_val(pte) & PTE_FLAGS_MASK;
+ }
+ 
+-#define pgprot_val(x)	((x).pgprot)
+-#define __pgprot(x)	((pgprot_t) { (x) } )
+-
+ extern uint16_t __cachemode2pte_tbl[_PAGE_CACHE_MODE_NUM];
+ extern uint8_t __pte2cachemode_tbl[8];
  
