@@ -2,38 +2,41 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C639135FE4
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  9 Jan 2020 18:56:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1843013670B
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 10 Jan 2020 07:03:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731989AbgAIR4p (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 9 Jan 2020 12:56:45 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:55186 "EHLO
+        id S1726824AbgAJGD5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 10 Jan 2020 01:03:57 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:56667 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728653AbgAIR4p (ORCPT
+        with ESMTP id S1726676AbgAJGD5 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 9 Jan 2020 12:56:45 -0500
+        Fri, 10 Jan 2020 01:03:57 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1ipc2y-0000X4-HN; Thu, 09 Jan 2020 18:56:40 +0100
+        id 1ipnOZ-00064L-E6; Fri, 10 Jan 2020 07:03:43 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 1B8FD1C2CF2;
-        Thu,  9 Jan 2020 18:56:40 +0100 (CET)
-Date:   Thu, 09 Jan 2020 17:56:39 -0000
-From:   "tip-bot2 for Paul Cercueil" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B24901C2D4F;
+        Fri, 10 Jan 2020 07:03:42 +0100 (CET)
+Date:   Fri, 10 Jan 2020 06:03:42 -0000
+From:   "tip-bot2 for Masami Hiramatsu" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] time/sched_clock: Disable interrupts in
- sched_clock_register()
-Cc:     Paul Cercueil <paul@crapouillou.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200107010630.954648-1-paul@crapouillou.net>
-References: <20200107010630.954648-1-paul@crapouillou.net>
+Subject: [tip: core/kprobes] kprobes: Fix
+ optimize_kprobe()/unoptimize_kprobe() cancellation logic
+Cc:     Masami Hiramatsu <mhiramat@kernel.org>,
+        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>, bristot@redhat.com,
+        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <157840814418.7181.13478003006386303481.stgit@devnote2>
+References: <157840814418.7181.13478003006386303481.stgit@devnote2>
 MIME-Version: 1.0
-Message-ID: <157859259991.30329.14883934581378219356.tip-bot2@tip-bot2>
+Message-ID: <157863622256.30329.5004888454070050302.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,58 +50,167 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/core branch of tip:
+The following commit has been merged into the core/kprobes branch of tip:
 
-Commit-ID:     2707745533d6d38fa7d3a2212f1fd599c3879491
-Gitweb:        https://git.kernel.org/tip/2707745533d6d38fa7d3a2212f1fd599c3879491
-Author:        Paul Cercueil <paul@crapouillou.net>
-AuthorDate:    Tue, 07 Jan 2020 02:06:29 +01:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 09 Jan 2020 18:50:18 +01:00
+Commit-ID:     e4add247789e4ba5e08ad8256183ce2e211877d4
+Gitweb:        https://git.kernel.org/tip/e4add247789e4ba5e08ad8256183ce2e211877d4
+Author:        Masami Hiramatsu <mhiramat@kernel.org>
+AuthorDate:    Tue, 07 Jan 2020 23:42:24 +09:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Thu, 09 Jan 2020 12:40:13 +01:00
 
-time/sched_clock: Disable interrupts in sched_clock_register()
+kprobes: Fix optimize_kprobe()/unoptimize_kprobe() cancellation logic
 
-Instead of issueing a warning if sched_clock_register() is called from a
-context where IRQs are enabled, the code now ensures that IRQs are indeed
-disabled.
+optimize_kprobe() and unoptimize_kprobe() cancels if a given kprobe
+is on the optimizing_list or unoptimizing_list already. However, since
+the following commit:
 
-Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20200107010630.954648-1-paul@crapouillou.net
+  f66c0447cca1 ("kprobes: Set unoptimized flag after unoptimizing code")
 
+modified the update timing of the KPROBE_FLAG_OPTIMIZED, it doesn't
+work as expected anymore.
+
+The optimized_kprobe could be in the following states:
+
+- [optimizing]: Before inserting jump instruction
+  op.kp->flags has KPROBE_FLAG_OPTIMIZED and
+  op->list is not empty.
+
+- [optimized]: jump inserted
+  op.kp->flags has KPROBE_FLAG_OPTIMIZED and
+  op->list is empty.
+
+- [unoptimizing]: Before removing jump instruction (including unused
+  optprobe)
+  op.kp->flags has KPROBE_FLAG_OPTIMIZED and
+  op->list is not empty.
+
+- [unoptimized]: jump removed
+  op.kp->flags doesn't have KPROBE_FLAG_OPTIMIZED and
+  op->list is empty.
+
+Current code mis-expects [unoptimizing] state doesn't have
+KPROBE_FLAG_OPTIMIZED, and that can cause incorrect results.
+
+To fix this, introduce optprobe_queued_unopt() to distinguish [optimizing]
+and [unoptimizing] states and fixes the logic in optimize_kprobe() and
+unoptimize_kprobe().
+
+[ mingo: Cleaned up the changelog and the code a bit. ]
+
+Signed-off-by: Masami Hiramatsu <mhiramat@kernel.org>
+Reviewed-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
+Cc: Alexei Starovoitov <ast@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: bristot@redhat.com
+Fixes: f66c0447cca1 ("kprobes: Set unoptimized flag after unoptimizing code")
+Link: https://lkml.kernel.org/r/157840814418.7181.13478003006386303481.stgit@devnote2
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- kernel/time/sched_clock.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ kernel/kprobes.c | 67 ++++++++++++++++++++++++++++++-----------------
+ 1 file changed, 43 insertions(+), 24 deletions(-)
 
-diff --git a/kernel/time/sched_clock.c b/kernel/time/sched_clock.c
-index dbd6905..e4332e3 100644
---- a/kernel/time/sched_clock.c
-+++ b/kernel/time/sched_clock.c
-@@ -169,14 +169,15 @@ sched_clock_register(u64 (*read)(void), int bits, unsigned long rate)
- {
- 	u64 res, wrap, new_mask, new_epoch, cyc, ns;
- 	u32 new_mult, new_shift;
--	unsigned long r;
-+	unsigned long r, flags;
- 	char r_unit;
- 	struct clock_read_data rd;
- 
- 	if (cd.rate > rate)
- 		return;
- 
--	WARN_ON(!irqs_disabled());
-+	/* Cannot register a sched_clock with interrupts on */
-+	local_irq_save(flags);
- 
- 	/* Calculate the mult/shift to convert counter ticks to ns. */
- 	clocks_calc_mult_shift(&new_mult, &new_shift, rate, NSEC_PER_SEC, 3600);
-@@ -233,6 +234,8 @@ sched_clock_register(u64 (*read)(void), int bits, unsigned long rate)
- 	if (irqtime > 0 || (irqtime == -1 && rate >= 1000000))
- 		enable_sched_clock_irqtime();
- 
-+	local_irq_restore(flags);
-+
- 	pr_debug("Registered %pS as sched_clock source\n", read);
+diff --git a/kernel/kprobes.c b/kernel/kprobes.c
+index 34e28b2..2625c24 100644
+--- a/kernel/kprobes.c
++++ b/kernel/kprobes.c
+@@ -612,6 +612,18 @@ void wait_for_kprobe_optimizer(void)
+ 	mutex_unlock(&kprobe_mutex);
  }
  
++static bool optprobe_queued_unopt(struct optimized_kprobe *op)
++{
++	struct optimized_kprobe *_op;
++
++	list_for_each_entry(_op, &unoptimizing_list, list) {
++		if (op == _op)
++			return true;
++	}
++
++	return false;
++}
++
+ /* Optimize kprobe if p is ready to be optimized */
+ static void optimize_kprobe(struct kprobe *p)
+ {
+@@ -633,17 +645,21 @@ static void optimize_kprobe(struct kprobe *p)
+ 		return;
+ 
+ 	/* Check if it is already optimized. */
+-	if (op->kp.flags & KPROBE_FLAG_OPTIMIZED)
++	if (op->kp.flags & KPROBE_FLAG_OPTIMIZED) {
++		if (optprobe_queued_unopt(op)) {
++			/* This is under unoptimizing. Just dequeue the probe */
++			list_del_init(&op->list);
++		}
+ 		return;
++	}
+ 	op->kp.flags |= KPROBE_FLAG_OPTIMIZED;
+ 
+-	if (!list_empty(&op->list))
+-		/* This is under unoptimizing. Just dequeue the probe */
+-		list_del_init(&op->list);
+-	else {
+-		list_add(&op->list, &optimizing_list);
+-		kick_kprobe_optimizer();
+-	}
++	/* On unoptimizing/optimizing_list, op must have OPTIMIZED flag */
++	if (WARN_ON_ONCE(!list_empty(&op->list)))
++		return;
++
++	list_add(&op->list, &optimizing_list);
++	kick_kprobe_optimizer();
+ }
+ 
+ /* Short cut to direct unoptimizing */
+@@ -665,30 +681,33 @@ static void unoptimize_kprobe(struct kprobe *p, bool force)
+ 		return; /* This is not an optprobe nor optimized */
+ 
+ 	op = container_of(p, struct optimized_kprobe, kp);
+-	if (!kprobe_optimized(p)) {
+-		/* Unoptimized or unoptimizing case */
+-		if (force && !list_empty(&op->list)) {
+-			/*
+-			 * Only if this is unoptimizing kprobe and forced,
+-			 * forcibly unoptimize it. (No need to unoptimize
+-			 * unoptimized kprobe again :)
+-			 */
+-			list_del_init(&op->list);
+-			force_unoptimize_kprobe(op);
+-		}
++	if (!kprobe_optimized(p))
+ 		return;
+-	}
+ 
+ 	if (!list_empty(&op->list)) {
+-		/* Dequeue from the optimization queue */
+-		list_del_init(&op->list);
++		if (optprobe_queued_unopt(op)) {
++			/* Queued in unoptimizing queue */
++			if (force) {
++				/*
++				 * Forcibly unoptimize the kprobe here, and queue it
++				 * in the freeing list for release afterwards.
++				 */
++				force_unoptimize_kprobe(op);
++				list_move(&op->list, &freeing_list);
++			}
++		} else {
++			/* Dequeue from the optimizing queue */
++			list_del_init(&op->list);
++			op->kp.flags &= ~KPROBE_FLAG_OPTIMIZED;
++		}
+ 		return;
+ 	}
++
+ 	/* Optimized kprobe case */
+-	if (force)
++	if (force) {
+ 		/* Forcibly update the code: this is a special case */
+ 		force_unoptimize_kprobe(op);
+-	else {
++	} else {
+ 		list_add(&op->list, &unoptimizing_list);
+ 		kick_kprobe_optimizer();
+ 	}
