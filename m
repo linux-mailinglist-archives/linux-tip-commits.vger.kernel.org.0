@@ -2,30 +2,29 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 60FFD13757A
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 10 Jan 2020 18:56:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B453137557
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 10 Jan 2020 18:56:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729011AbgAJRyW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 10 Jan 2020 12:54:22 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:59181 "EHLO
+        id S1728676AbgAJRxZ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 10 Jan 2020 12:53:25 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:59145 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728689AbgAJRx1 (ORCPT
+        with ESMTP id S1728496AbgAJRxY (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 10 Jan 2020 12:53:27 -0500
+        Fri, 10 Jan 2020 12:53:24 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1ipyTE-0001iu-RX; Fri, 10 Jan 2020 18:53:16 +0100
+        id 1ipyTG-0001jN-0u; Fri, 10 Jan 2020 18:53:18 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 6CA1C1C2D59;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 9CF4E1C2D5A;
         Fri, 10 Jan 2020 18:53:16 +0100 (CET)
 Date:   Fri, 10 Jan 2020 17:53:16 -0000
 From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf report/top: Add menu entry for toggling
- callchain expansion
+Subject: [tip: perf/core] perf report/top: Make ENTER consistently bring up menu
 Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
         Jiri Olsa <jolsa@kernel.org>,
         Adrian Hunter <adrian.hunter@intel.com>,
@@ -35,10 +34,10 @@ Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
         Namhyung Kim <namhyung@kernel.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <tip-f9o03jo29fypvd8ly3j49d36@git.kernel.org>
-References: <tip-f9o03jo29fypvd8ly3j49d36@git.kernel.org>
+In-Reply-To: <tip-bjz35omktig8cwn6lbj1ifns@git.kernel.org>
+References: <tip-bjz35omktig8cwn6lbj1ifns@git.kernel.org>
 MIME-Version: 1.0
-Message-ID: <157867879632.30329.14639179893458772589.tip-bot2@tip-bot2>
+Message-ID: <157867879652.30329.10909347338770447370.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -54,72 +53,55 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     d5a599d9890f51cb2cabfa21f8c38bb6f51f4bb2
-Gitweb:        https://git.kernel.org/tip/d5a599d9890f51cb2cabfa21f8c38bb6f51f4bb2
+Commit-ID:     9218a9132f83d2c08cd23c1fd8e8e9b63b47cb5f
+Gitweb:        https://git.kernel.org/tip/9218a9132f83d2c08cd23c1fd8e8e9b63b47cb5f
 Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Thu, 12 Dec 2019 10:58:21 -03:00
+AuthorDate:    Thu, 12 Dec 2019 10:02:33 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Mon, 06 Jan 2020 11:46:10 -03:00
 
-perf report/top: Add menu entry for toggling callchain expansion
+perf report/top: Make ENTER consistently bring up menu
 
-Since previously pressing ENTER toggled expansion/collapse of callchain
-entries and now brings up the same menu used when callchains are not
-present, add an entry so that users can quickly figure out the change in
-behaviour.
+When callchains are present the ENTER key switches from bringing up the
+menu that offers Annotation, Zoom by DSO, etc to expanding/collapsing
+one callchain level, causing confusion, fix it by making it consistently
+bring up the menu and use '+' to expand/collapse one callchain level.
 
-Its worth mentioning that we also always had 'e'/'c' to expand/collapse
-all entries in a hist entry and 'E'/'C' for all hist entries.
+Next patch will also add an entry to the menu to allow
+expanding/collapsing, so that people used to ENTER expanding one
+callchain level can quickly find it and use it instead.
 
-Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+Reported-by: Linus Torvalds <torvalds@linux-foundation.org>
 Reviewed-by: Jiri Olsa <jolsa@kernel.org>
 Cc: Adrian Hunter <adrian.hunter@intel.com>
 Cc: Andi Kleen <ak@linux.intel.com>
 Cc: Jin Yao <yao.jin@linux.intel.com>
 Cc: Kan Liang <kan.liang@intel.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lkml.kernel.org/n/tip-f9o03jo29fypvd8ly3j49d36@git.kernel.org
+Link: https://lkml.kernel.org/n/tip-bjz35omktig8cwn6lbj1ifns@git.kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/ui/browsers/hists.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ tools/perf/ui/browsers/hists.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/tools/perf/ui/browsers/hists.c b/tools/perf/ui/browsers/hists.c
-index fefa505..1b5a599 100644
+index cfc6172..fefa505 100644
 --- a/tools/perf/ui/browsers/hists.c
 +++ b/tools/perf/ui/browsers/hists.c
-@@ -2527,6 +2527,26 @@ add_dso_opt(struct hist_browser *browser, struct popup_action *act,
- 	return 1;
- }
- 
-+static int do_toggle_callchain(struct hist_browser *browser, struct popup_action *act __maybe_unused)
-+{
-+	hist_browser__toggle_fold(browser);
-+	return 0;
-+}
-+
-+static int add_callchain_toggle_opt(struct hist_browser *browser, struct popup_action *act, char **optstr)
-+{
-+	struct hist_entry *he = browser->he_selection;
-+
-+        if (!he->has_children)
-+                return 0;
-+
-+	if (asprintf(optstr, "Expand/Collapse callchain") < 0)
-+		return 0;
-+
-+	act->fn = do_toggle_callchain;
-+	return 1;
-+}
-+
- static int
- do_browse_map(struct hist_browser *browser __maybe_unused,
- 	      struct popup_action *act)
-@@ -3137,6 +3157,7 @@ skip_annotation:
- 					     &options[nr_options], thread);
- 		nr_options += add_dso_opt(browser, &actions[nr_options],
- 					  &options[nr_options], map);
-+		nr_options += add_callchain_toggle_opt(browser, &actions[nr_options], &options[nr_options]);
- 		nr_options += add_map_opt(browser, &actions[nr_options],
- 					  &options[nr_options],
- 					  browser->selection ?
+@@ -706,7 +706,7 @@ int hist_browser__run(struct hist_browser *browser, const char *help,
+ 			browser->show_headers = !browser->show_headers;
+ 			hist_browser__update_rows(browser);
+ 			break;
+-		case K_ENTER:
++		case '+':
+ 			if (hist_browser__toggle_fold(browser))
+ 				break;
+ 			/* fall thru */
+@@ -2858,6 +2858,7 @@ static int perf_evsel__hists_browse(struct evsel *evsel, int nr_events,
+ 	"For symbolic views (--sort has sym):\n\n"			\
+ 	"ENTER         Zoom into DSO/Threads & Annotate current symbol\n" \
+ 	"ESC           Zoom out\n"					\
++	"+             Expand/Collapse one callchain level\n"		\
+ 	"a             Annotate current symbol\n"			\
+ 	"C             Collapse all callchains\n"			\
+ 	"d             Zoom into current DSO\n"				\
