@@ -2,38 +2,41 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 72630137576
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 10 Jan 2020 18:56:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 80ACC137574
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 10 Jan 2020 18:56:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728984AbgAJRyL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 10 Jan 2020 12:54:11 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:59193 "EHLO
+        id S1728904AbgAJRyG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 10 Jan 2020 12:54:06 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:59201 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728754AbgAJRxa (ORCPT
+        with ESMTP id S1728771AbgAJRxb (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 10 Jan 2020 12:53:30 -0500
+        Fri, 10 Jan 2020 12:53:31 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1ipyTN-0001m9-8v; Fri, 10 Jan 2020 18:53:25 +0100
+        id 1ipyTL-0001mo-4Q; Fri, 10 Jan 2020 18:53:23 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id EC8971C2D5E;
-        Fri, 10 Jan 2020 18:53:17 +0100 (CET)
-Date:   Fri, 10 Jan 2020 17:53:17 -0000
-From:   "tip-bot2 for David Ahern" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5AC9D1C2D5A;
+        Fri, 10 Jan 2020 18:53:18 +0100 (CET)
+Date:   Fri, 10 Jan 2020 17:53:18 -0000
+From:   "tip-bot2 for Alexey Budankov" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf sched timehist: Add support for filtering on CPU
-Cc:     David Ahern <dsahern@gmail.com>,
+Subject: [tip: perf/core] perf mmap: Declare type for cpu mask of arbitrary length
+Cc:     Alexey Budankov <alexey.budankov@linux.intel.com>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Andi Kleen <ak@linux.intel.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Jiri Olsa <jolsa@kernel.org>,
-        Namhyung Kim <namhyung@kernel.org>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191204173925.66976-1-dsahern@kernel.org>
-References: <20191204173925.66976-1-dsahern@kernel.org>
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <0fd2454f-477f-d15a-f4ee-79bcbd2585ff@linux.intel.com>
+References: <0fd2454f-477f-d15a-f4ee-79bcbd2585ff@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <157867879783.30329.14601250233681313833.tip-bot2@tip-bot2>
+Message-ID: <157867879823.30329.8276302610164757060.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,118 +52,90 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     c30d630d1bcfad8d2f70ff0cbb2a86d5a43bc152
-Gitweb:        https://git.kernel.org/tip/c30d630d1bcfad8d2f70ff0cbb2a86d5a43bc152
-Author:        David Ahern <dsahern@gmail.com>
-AuthorDate:    Wed, 04 Dec 2019 10:39:25 -07:00
+Commit-ID:     9c080c0279a80057cad3dfc05d09fb283ddf72f4
+Gitweb:        https://git.kernel.org/tip/9c080c0279a80057cad3dfc05d09fb283ddf72f4
+Author:        Alexey Budankov <alexey.budankov@linux.intel.com>
+AuthorDate:    Tue, 03 Dec 2019 14:44:18 +03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Mon, 06 Jan 2020 11:46:09 -03:00
 
-perf sched timehist: Add support for filtering on CPU
+perf mmap: Declare type for cpu mask of arbitrary length
 
-Allow user to limit output to one or more CPUs. Really helpful on
-systems with a large number of cpus.
+Declare a dedicated struct map_cpu_mask type for cpu masks of arbitrary
+length.
 
-Committer testing:
+The mask is available thru bits pointer and the mask length is kept in
+nbits field. MMAP_CPU_MASK_BYTES() macro returns mask storage size in
+bytes.
 
-  # perf sched record -a sleep 1
-  [ perf record: Woken up 1 times to write data ]
-  [ perf record: Captured and wrote 1.765 MB perf.data (1412 samples) ]
-  [root@quaco ~]# perf sched timehist | head
-  Samples do not have callchains.
-             time    cpu  task name                       wait time  sch delay   run time
-                          [tid/pid]                          (msec)     (msec)     (msec)
-  --------------- ------  ------------------------------  ---------  ---------  ---------
-     66307.802686 [0000]  perf[13086]                         0.000      0.000      0.000
-     66307.802700 [0000]  migration/0[12]                     0.000      0.001      0.014
-     66307.802766 [0001]  perf[13086]                         0.000      0.000      0.000
-     66307.802774 [0001]  migration/1[15]                     0.000      0.001      0.007
-     66307.802841 [0002]  perf[13086]                         0.000      0.000      0.000
-     66307.802849 [0002]  migration/2[20]                     0.000      0.001      0.008
-     66307.802913 [0003]  perf[13086]                         0.000      0.000      0.000
-  #
-  # perf sched timehist --cpu 2 | head
-  Samples do not have callchains.
-             time    cpu  task name                       wait time  sch delay   run time
-                          [tid/pid]                          (msec)     (msec)     (msec)
-  --------------- ------  ------------------------------  ---------  ---------  ---------
-     66307.802841 [0002]  perf[13086]                         0.000      0.000      0.000
-     66307.802849 [0002]  migration/2[20]                     0.000      0.001      0.008
-     66307.964485 [0002]  <idle>                              0.000      0.000    161.635
-     66307.964811 [0002]  CPU 0/KVM[3589/3561]                0.000      0.056      0.325
-     66307.965477 [0002]  <idle>                              0.325      0.000      0.666
-     66307.965553 [0002]  CPU 0/KVM[3589/3561]                0.666      0.024      0.076
-     66307.966456 [0002]  <idle>                              0.076      0.000      0.903
-  #
+The mmap_cpu_mask__scnprintf() function can be used to log text
+representation of the mask.
 
-Signed-off-by: David Ahern <dsahern@gmail.com>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
+Committer notes:
+
+To print the 'nbits' struct member we must use %zd, since it is a
+size_t, this fixes the build in some toolchains/arches.
+
+Signed-off-by: Alexey Budankov <alexey.budankov@linux.intel.com>
+Acked-by: Jiri Olsa <jolsa@redhat.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Andi Kleen <ak@linux.intel.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Link: http://lore.kernel.org/lkml/20191204173925.66976-1-dsahern@kernel.org
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: http://lore.kernel.org/lkml/0fd2454f-477f-d15a-f4ee-79bcbd2585ff@linux.intel.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/Documentation/perf-sched.txt |  4 ++++
- tools/perf/builtin-sched.c              | 13 +++++++++++++
- 2 files changed, 17 insertions(+)
+ tools/perf/util/mmap.c | 12 ++++++++++++
+ tools/perf/util/mmap.h | 11 +++++++++++
+ 2 files changed, 23 insertions(+)
 
-diff --git a/tools/perf/Documentation/perf-sched.txt b/tools/perf/Documentation/perf-sched.txt
-index 63f938b..5fbe42b 100644
---- a/tools/perf/Documentation/perf-sched.txt
-+++ b/tools/perf/Documentation/perf-sched.txt
-@@ -110,6 +110,10 @@ OPTIONS for 'perf sched timehist'
- --max-stack::
- 	Maximum number of functions to display in backtrace, default 5.
- 
-+-C=::
-+--cpu=::
-+	Only show events for the given CPU(s) (comma separated list).
+diff --git a/tools/perf/util/mmap.c b/tools/perf/util/mmap.c
+index 063d1b9..2ee4faa 100644
+--- a/tools/perf/util/mmap.c
++++ b/tools/perf/util/mmap.c
+@@ -23,6 +23,18 @@
+ #include "mmap.h"
+ #include "../perf.h"
+ #include <internal/lib.h> /* page_size */
++#include <linux/bitmap.h>
 +
- -p=::
- --pid=::
- 	Only show events for given process ID (comma separated list).
-diff --git a/tools/perf/builtin-sched.c b/tools/perf/builtin-sched.c
-index 8a12d71..82fcc2c 100644
---- a/tools/perf/builtin-sched.c
-+++ b/tools/perf/builtin-sched.c
-@@ -51,6 +51,9 @@
- #define SYM_LEN			129
- #define MAX_PID			1024000
- 
-+static const char *cpu_list;
-+static DECLARE_BITMAP(cpu_bitmap, MAX_NR_CPUS);
++#define MASK_SIZE 1023
++void mmap_cpu_mask__scnprintf(struct mmap_cpu_mask *mask, const char *tag)
++{
++	char buf[MASK_SIZE + 1];
++	size_t len;
 +
- struct sched_atom;
++	len = bitmap_scnprintf(mask->bits, mask->nbits, buf, MASK_SIZE);
++	buf[len] = '\0';
++	pr_debug("%p: %s mask[%zd]: %s\n", mask, tag, mask->nbits, buf);
++}
  
- struct task_desc {
-@@ -2008,6 +2011,9 @@ static void timehist_print_sample(struct perf_sched *sched,
- 	char nstr[30];
- 	u64 wait_time;
+ size_t mmap__mmap_len(struct mmap *map)
+ {
+diff --git a/tools/perf/util/mmap.h b/tools/perf/util/mmap.h
+index bee4e83..ef51667 100644
+--- a/tools/perf/util/mmap.h
++++ b/tools/perf/util/mmap.h
+@@ -15,6 +15,15 @@
+ #include "event.h"
  
-+	if (cpu_list && !test_bit(sample->cpu, cpu_bitmap))
-+		return;
+ struct aiocb;
 +
- 	timestamp__scnprintf_usec(t, tstr, sizeof(tstr));
- 	printf("%15s [%04d] ", tstr, sample->cpu);
- 
-@@ -2994,6 +3000,12 @@ static int perf_sched__timehist(struct perf_sched *sched)
- 	if (IS_ERR(session))
- 		return PTR_ERR(session);
- 
-+	if (cpu_list) {
-+		err = perf_session__cpu_bitmap(session, cpu_list, cpu_bitmap);
-+		if (err < 0)
-+			goto out;
-+	}
++struct mmap_cpu_mask {
++	unsigned long *bits;
++	size_t nbits;
++};
 +
- 	evlist = session->evlist;
++#define MMAP_CPU_MASK_BYTES(m) \
++	(BITS_TO_LONGS(((struct mmap_cpu_mask *)m)->nbits) * sizeof(unsigned long))
++
+ /**
+  * struct mmap - perf's ring buffer mmap details
+  *
+@@ -52,4 +61,6 @@ int perf_mmap__push(struct mmap *md, void *to,
  
- 	symbol__init(&session->header.env);
-@@ -3429,6 +3441,7 @@ int cmd_sched(int argc, const char **argv)
- 		   "analyze events only for given process id(s)"),
- 	OPT_STRING('t', "tid", &symbol_conf.tid_list_str, "tid[,tid...]",
- 		   "analyze events only for given thread id(s)"),
-+	OPT_STRING('C', "cpu", &cpu_list, "cpu", "list of cpus to profile"),
- 	OPT_PARENT(sched_options)
- 	};
+ size_t mmap__mmap_len(struct mmap *map);
  
++void mmap_cpu_mask__scnprintf(struct mmap_cpu_mask *mask, const char *tag);
++
+ #endif /*__PERF_MMAP_H */
