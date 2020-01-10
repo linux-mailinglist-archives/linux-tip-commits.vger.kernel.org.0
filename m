@@ -2,41 +2,41 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1843013670B
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 10 Jan 2020 07:03:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 00EEC1371B3
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 10 Jan 2020 16:49:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726824AbgAJGD5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 10 Jan 2020 01:03:57 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:56667 "EHLO
+        id S1728151AbgAJPtu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 10 Jan 2020 10:49:50 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:58682 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726676AbgAJGD5 (ORCPT
+        with ESMTP id S1728245AbgAJPtu (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 10 Jan 2020 01:03:57 -0500
+        Fri, 10 Jan 2020 10:49:50 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1ipnOZ-00064L-E6; Fri, 10 Jan 2020 07:03:43 +0100
+        id 1ipwXf-0007XA-7M; Fri, 10 Jan 2020 16:49:43 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B24901C2D4F;
-        Fri, 10 Jan 2020 07:03:42 +0100 (CET)
-Date:   Fri, 10 Jan 2020 06:03:42 -0000
-From:   "tip-bot2 for Masami Hiramatsu" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C932D1C2D52;
+        Fri, 10 Jan 2020 16:49:42 +0100 (CET)
+Date:   Fri, 10 Jan 2020 15:49:42 -0000
+From:   "tip-bot2 for Jann Horn" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/kprobes] kprobes: Fix
- optimize_kprobe()/unoptimize_kprobe() cancellation logic
-Cc:     Masami Hiramatsu <mhiramat@kernel.org>,
-        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
-        Alexei Starovoitov <ast@kernel.org>,
+Subject: [tip: locking/kcsan] x86/vdso: Enable sanitizers for vma.o
+Cc:     Jann Horn <jannh@google.com>, Andy Lutomirski <luto@kernel.org>,
+        Borislav Petkov <bp@alien8.de>,
         Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>, bristot@redhat.com,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Marco Elver <elver@google.com>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
         Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <157840814418.7181.13478003006386303481.stgit@devnote2>
-References: <157840814418.7181.13478003006386303481.stgit@devnote2>
+In-Reply-To: <20200106200204.94782-1-jannh@google.com>
+References: <20200106200204.94782-1-jannh@google.com>
 MIME-Version: 1.0
-Message-ID: <157863622256.30329.5004888454070050302.tip-bot2@tip-bot2>
+Message-ID: <157867138265.30329.9605534460877020678.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,167 +50,46 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the core/kprobes branch of tip:
+The following commit has been merged into the locking/kcsan branch of tip:
 
-Commit-ID:     e4add247789e4ba5e08ad8256183ce2e211877d4
-Gitweb:        https://git.kernel.org/tip/e4add247789e4ba5e08ad8256183ce2e211877d4
-Author:        Masami Hiramatsu <mhiramat@kernel.org>
-AuthorDate:    Tue, 07 Jan 2020 23:42:24 +09:00
+Commit-ID:     c29a59e43829beabc4c26036ebcc6a32dd0b6a01
+Gitweb:        https://git.kernel.org/tip/c29a59e43829beabc4c26036ebcc6a32dd0b6a01
+Author:        Jann Horn <jannh@google.com>
+AuthorDate:    Mon, 06 Jan 2020 21:02:04 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 09 Jan 2020 12:40:13 +01:00
+CommitterDate: Fri, 10 Jan 2020 16:47:32 +01:00
 
-kprobes: Fix optimize_kprobe()/unoptimize_kprobe() cancellation logic
+x86/vdso: Enable sanitizers for vma.o
 
-optimize_kprobe() and unoptimize_kprobe() cancels if a given kprobe
-is on the optimizing_list or unoptimizing_list already. However, since
-the following commit:
+The vDSO makefile opts out of all sanitizers (and objtool validation);
+however, vma.o is a normal kernel object file (and already has objtool
+validation selectively enabled), so turn the sanitizers back on for that
+file.
 
-  f66c0447cca1 ("kprobes: Set unoptimized flag after unoptimizing code")
-
-modified the update timing of the KPROBE_FLAG_OPTIMIZED, it doesn't
-work as expected anymore.
-
-The optimized_kprobe could be in the following states:
-
-- [optimizing]: Before inserting jump instruction
-  op.kp->flags has KPROBE_FLAG_OPTIMIZED and
-  op->list is not empty.
-
-- [optimized]: jump inserted
-  op.kp->flags has KPROBE_FLAG_OPTIMIZED and
-  op->list is empty.
-
-- [unoptimizing]: Before removing jump instruction (including unused
-  optprobe)
-  op.kp->flags has KPROBE_FLAG_OPTIMIZED and
-  op->list is not empty.
-
-- [unoptimized]: jump removed
-  op.kp->flags doesn't have KPROBE_FLAG_OPTIMIZED and
-  op->list is empty.
-
-Current code mis-expects [unoptimizing] state doesn't have
-KPROBE_FLAG_OPTIMIZED, and that can cause incorrect results.
-
-To fix this, introduce optprobe_queued_unopt() to distinguish [optimizing]
-and [unoptimizing] states and fixes the logic in optimize_kprobe() and
-unoptimize_kprobe().
-
-[ mingo: Cleaned up the changelog and the code a bit. ]
-
-Signed-off-by: Masami Hiramatsu <mhiramat@kernel.org>
-Reviewed-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
-Cc: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Jann Horn <jannh@google.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Borislav Petkov <bp@alien8.de>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: bristot@redhat.com
-Fixes: f66c0447cca1 ("kprobes: Set unoptimized flag after unoptimizing code")
-Link: https://lkml.kernel.org/r/157840814418.7181.13478003006386303481.stgit@devnote2
+Cc: Marco Elver <elver@google.com>
+Cc: Paul E. McKenney <paulmck@kernel.org>
+Link: https://lkml.kernel.org/r/20200106200204.94782-1-jannh@google.com
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- kernel/kprobes.c | 67 ++++++++++++++++++++++++++++++-----------------
- 1 file changed, 43 insertions(+), 24 deletions(-)
+ arch/x86/entry/vdso/Makefile | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/kernel/kprobes.c b/kernel/kprobes.c
-index 34e28b2..2625c24 100644
---- a/kernel/kprobes.c
-+++ b/kernel/kprobes.c
-@@ -612,6 +612,18 @@ void wait_for_kprobe_optimizer(void)
- 	mutex_unlock(&kprobe_mutex);
- }
+diff --git a/arch/x86/entry/vdso/Makefile b/arch/x86/entry/vdso/Makefile
+index 0f46273..50a1c90 100644
+--- a/arch/x86/entry/vdso/Makefile
++++ b/arch/x86/entry/vdso/Makefile
+@@ -30,6 +30,9 @@ vobjs-y := vdso-note.o vclock_gettime.o vgetcpu.o
  
-+static bool optprobe_queued_unopt(struct optimized_kprobe *op)
-+{
-+	struct optimized_kprobe *_op;
-+
-+	list_for_each_entry(_op, &unoptimizing_list, list) {
-+		if (op == _op)
-+			return true;
-+	}
-+
-+	return false;
-+}
-+
- /* Optimize kprobe if p is ready to be optimized */
- static void optimize_kprobe(struct kprobe *p)
- {
-@@ -633,17 +645,21 @@ static void optimize_kprobe(struct kprobe *p)
- 		return;
+ # files to link into kernel
+ obj-y				+= vma.o
++KASAN_SANITIZE_vma.o		:= y
++UBSAN_SANITIZE_vma.o		:= y
++KCSAN_SANITIZE_vma.o		:= y
+ OBJECT_FILES_NON_STANDARD_vma.o	:= n
  
- 	/* Check if it is already optimized. */
--	if (op->kp.flags & KPROBE_FLAG_OPTIMIZED)
-+	if (op->kp.flags & KPROBE_FLAG_OPTIMIZED) {
-+		if (optprobe_queued_unopt(op)) {
-+			/* This is under unoptimizing. Just dequeue the probe */
-+			list_del_init(&op->list);
-+		}
- 		return;
-+	}
- 	op->kp.flags |= KPROBE_FLAG_OPTIMIZED;
- 
--	if (!list_empty(&op->list))
--		/* This is under unoptimizing. Just dequeue the probe */
--		list_del_init(&op->list);
--	else {
--		list_add(&op->list, &optimizing_list);
--		kick_kprobe_optimizer();
--	}
-+	/* On unoptimizing/optimizing_list, op must have OPTIMIZED flag */
-+	if (WARN_ON_ONCE(!list_empty(&op->list)))
-+		return;
-+
-+	list_add(&op->list, &optimizing_list);
-+	kick_kprobe_optimizer();
- }
- 
- /* Short cut to direct unoptimizing */
-@@ -665,30 +681,33 @@ static void unoptimize_kprobe(struct kprobe *p, bool force)
- 		return; /* This is not an optprobe nor optimized */
- 
- 	op = container_of(p, struct optimized_kprobe, kp);
--	if (!kprobe_optimized(p)) {
--		/* Unoptimized or unoptimizing case */
--		if (force && !list_empty(&op->list)) {
--			/*
--			 * Only if this is unoptimizing kprobe and forced,
--			 * forcibly unoptimize it. (No need to unoptimize
--			 * unoptimized kprobe again :)
--			 */
--			list_del_init(&op->list);
--			force_unoptimize_kprobe(op);
--		}
-+	if (!kprobe_optimized(p))
- 		return;
--	}
- 
- 	if (!list_empty(&op->list)) {
--		/* Dequeue from the optimization queue */
--		list_del_init(&op->list);
-+		if (optprobe_queued_unopt(op)) {
-+			/* Queued in unoptimizing queue */
-+			if (force) {
-+				/*
-+				 * Forcibly unoptimize the kprobe here, and queue it
-+				 * in the freeing list for release afterwards.
-+				 */
-+				force_unoptimize_kprobe(op);
-+				list_move(&op->list, &freeing_list);
-+			}
-+		} else {
-+			/* Dequeue from the optimizing queue */
-+			list_del_init(&op->list);
-+			op->kp.flags &= ~KPROBE_FLAG_OPTIMIZED;
-+		}
- 		return;
- 	}
-+
- 	/* Optimized kprobe case */
--	if (force)
-+	if (force) {
- 		/* Forcibly update the code: this is a special case */
- 		force_unoptimize_kprobe(op);
--	else {
-+	} else {
- 		list_add(&op->list, &unoptimizing_list);
- 		kick_kprobe_optimizer();
- 	}
+ # vDSO images to build
