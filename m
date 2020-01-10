@@ -2,41 +2,43 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 00EEC1371B3
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 10 Jan 2020 16:49:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E404113754C
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 10 Jan 2020 18:53:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728151AbgAJPtu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 10 Jan 2020 10:49:50 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:58682 "EHLO
+        id S1728643AbgAJRxX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 10 Jan 2020 12:53:23 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:59124 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728245AbgAJPtu (ORCPT
+        with ESMTP id S1728215AbgAJRxX (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 10 Jan 2020 10:49:50 -0500
+        Fri, 10 Jan 2020 12:53:23 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1ipwXf-0007XA-7M; Fri, 10 Jan 2020 16:49:43 +0100
+        id 1ipyTD-0001gH-7h; Fri, 10 Jan 2020 18:53:15 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C932D1C2D52;
-        Fri, 10 Jan 2020 16:49:42 +0100 (CET)
-Date:   Fri, 10 Jan 2020 15:49:42 -0000
-From:   "tip-bot2 for Jann Horn" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id CD3F31C2D58;
+        Fri, 10 Jan 2020 18:53:14 +0100 (CET)
+Date:   Fri, 10 Jan 2020 17:53:14 -0000
+From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/kcsan] x86/vdso: Enable sanitizers for vma.o
-Cc:     Jann Horn <jannh@google.com>, Andy Lutomirski <luto@kernel.org>,
-        Borislav Petkov <bp@alien8.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Marco Elver <elver@google.com>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200106200204.94782-1-jannh@google.com>
-References: <20200106200204.94782-1-jannh@google.com>
+Subject: [tip: perf/core] perf report/top: Do not offer annotation for symbols
+ without samples
+Cc:     Jiri Olsa <jolsa@kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Andi Kleen <ak@linux.intel.com>,
+        Jin Yao <yao.jin@linux.intel.com>,
+        Kan Liang <kan.liang@intel.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <tip-0hhzj2de15o88cguy7h66zre@git.kernel.org>
+References: <tip-0hhzj2de15o88cguy7h66zre@git.kernel.org>
 MIME-Version: 1.0
-Message-ID: <157867138265.30329.9605534460877020678.tip-bot2@tip-bot2>
+Message-ID: <157867879472.30329.7638280404072934286.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,46 +52,67 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/kcsan branch of tip:
+The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     c29a59e43829beabc4c26036ebcc6a32dd0b6a01
-Gitweb:        https://git.kernel.org/tip/c29a59e43829beabc4c26036ebcc6a32dd0b6a01
-Author:        Jann Horn <jannh@google.com>
-AuthorDate:    Mon, 06 Jan 2020 21:02:04 +01:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 10 Jan 2020 16:47:32 +01:00
+Commit-ID:     ea537f22f6e5b3e2026fc58419cc937d833b1a61
+Gitweb:        https://git.kernel.org/tip/ea537f22f6e5b3e2026fc58419cc937d833b1a61
+Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
+AuthorDate:    Mon, 16 Dec 2019 18:21:16 -03:00
+Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
+CommitterDate: Mon, 06 Jan 2020 11:46:10 -03:00
 
-x86/vdso: Enable sanitizers for vma.o
+perf report/top: Do not offer annotation for symbols without samples
 
-The vDSO makefile opts out of all sanitizers (and objtool validation);
-however, vma.o is a normal kernel object file (and already has objtool
-validation selectively enabled), so turn the sanitizers back on for that
-file.
+This can happen in the --children mode, i.e. the default mode when
+callchains are present, where one of the main entries may be a callchain
+entry with no samples.
 
-Signed-off-by: Jann Horn <jannh@google.com>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Marco Elver <elver@google.com>
-Cc: Paul E. McKenney <paulmck@kernel.org>
-Link: https://lkml.kernel.org/r/20200106200204.94782-1-jannh@google.com
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
+So far we were not providing any information about why an annotation
+couldn't be provided even offering the Annotation option in the popup
+menu.
+
+Work is needed to allow for no-samples "annotation', i.e. to show the
+disassembly anyway and allow for navigation, etc.
+
+Reviewed-by: Jiri Olsa <jolsa@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Andi Kleen <ak@linux.intel.com>
+Cc: Jin Yao <yao.jin@linux.intel.com>
+Cc: Kan Liang <kan.liang@intel.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Link: https://lkml.kernel.org/n/tip-0hhzj2de15o88cguy7h66zre@git.kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- arch/x86/entry/vdso/Makefile | 3 +++
- 1 file changed, 3 insertions(+)
+ tools/perf/ui/browsers/hists.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/entry/vdso/Makefile b/arch/x86/entry/vdso/Makefile
-index 0f46273..50a1c90 100644
---- a/arch/x86/entry/vdso/Makefile
-+++ b/arch/x86/entry/vdso/Makefile
-@@ -30,6 +30,9 @@ vobjs-y := vdso-note.o vclock_gettime.o vgetcpu.o
+diff --git a/tools/perf/ui/browsers/hists.c b/tools/perf/ui/browsers/hists.c
+index 8776b1c..3bec8de 100644
+--- a/tools/perf/ui/browsers/hists.c
++++ b/tools/perf/ui/browsers/hists.c
+@@ -2465,7 +2465,8 @@ add_annotate_opt(struct hist_browser *browser __maybe_unused,
+ 		 struct popup_action *act, char **optstr,
+ 		 struct map_symbol *ms)
+ {
+-	if (ms->sym == NULL || ms->map->dso->annotate_warned)
++	if (ms->sym == NULL || ms->map->dso->annotate_warned ||
++	    symbol__annotation(ms->sym)->src == NULL)
+ 		return 0;
  
- # files to link into kernel
- obj-y				+= vma.o
-+KASAN_SANITIZE_vma.o		:= y
-+UBSAN_SANITIZE_vma.o		:= y
-+KCSAN_SANITIZE_vma.o		:= y
- OBJECT_FILES_NON_STANDARD_vma.o	:= n
+ 	if (asprintf(optstr, "Annotate %s", ms->sym->name) < 0)
+@@ -3031,6 +3032,14 @@ do_hotkey:		 // key came straight from options ui__popup_menu()
+ 			    browser->selection->map->dso->annotate_warned)
+ 				continue;
  
- # vDSO images to build
++			if (symbol__annotation(browser->selection->sym)->src == NULL) {
++				ui_browser__warning(&browser->b, delay_secs * 2,
++						    "No samples for the \"%s\" symbol.\n\n"
++						    "Probably appeared just in a callchain",
++						    browser->selection->sym->name);
++				continue;
++			}
++
+ 			actions->ms.map = browser->selection->map;
+ 			actions->ms.sym = browser->selection->sym;
+ 			do_annotate(browser, actions);
