@@ -2,46 +2,48 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D0C53137561
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 10 Jan 2020 18:56:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 78AB113755B
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 10 Jan 2020 18:56:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728816AbgAJRxb convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 10 Jan 2020 12:53:31 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:59200 "EHLO
+        id S1728713AbgAJRx1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 10 Jan 2020 12:53:27 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:59154 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728761AbgAJRxb (ORCPT
+        with ESMTP id S1728215AbgAJRx0 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 10 Jan 2020 12:53:31 -0500
+        Fri, 10 Jan 2020 12:53:26 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1ipyTC-0001gD-U4; Fri, 10 Jan 2020 18:53:15 +0100
+        id 1ipyTD-0001gJ-Dp; Fri, 10 Jan 2020 18:53:15 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 64B1D1C2D52;
-        Fri, 10 Jan 2020 18:53:14 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 077B51C2D59;
+        Fri, 10 Jan 2020 18:53:15 +0100 (CET)
 Date:   Fri, 10 Jan 2020 17:53:14 -0000
-From:   "tip-bot2 for Vitaly Chikunov" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] tools lib: Fix builds when glibc contains strlcpy()
-Cc:     Vitaly Chikunov <vt@altlinux.org>, Dmitry Levin <ldv@altlinux.org>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        kbuild test robot <lkp@intel.com>,
-        Peter Zijlstra <peterz@infradead.org>, stable@vger.kernel.org,
-        Vineet Gupta <vineet.gupta1@synopsys.com>,
+Subject: [tip: perf/core] perf report/top: Allow pressing hotkeys in the
+ options popup menu
+Cc:     Jiri Olsa <jolsa@kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Andi Kleen <ak@linux.intel.com>,
+        Jin Yao <yao.jin@linux.intel.com>,
+        Kan Liang <kan.liang@intel.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Namhyung Kim <namhyung@kernel.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191224172029.19690-1-vt@altlinux.org>
-References: <20191224172029.19690-1-vt@altlinux.org>
+In-Reply-To: <tip-ujfq3fw44kf6qrtfajl5dcsp@git.kernel.org>
+References: <tip-ujfq3fw44kf6qrtfajl5dcsp@git.kernel.org>
 MIME-Version: 1.0
-Message-ID: <157867879422.30329.10586213416057633540.tip-bot2@tip-bot2>
+Message-ID: <157867879490.30329.7142461166858480110.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: 7bit
 X-Linutronix-Spam-Score: -1.0
 X-Linutronix-Spam-Level: -
 X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
@@ -52,105 +54,74 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     6c4798d3f08b81c2c52936b10e0fa872590c96ae
-Gitweb:        https://git.kernel.org/tip/6c4798d3f08b81c2c52936b10e0fa872590c96ae
-Author:        Vitaly Chikunov <vt@altlinux.org>
-AuthorDate:    Tue, 24 Dec 2019 20:20:29 +03:00
+Commit-ID:     4c8b9c0f4281c8517542c26425aade3a31988575
+Gitweb:        https://git.kernel.org/tip/4c8b9c0f4281c8517542c26425aade3a31988575
+Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
+AuthorDate:    Mon, 16 Dec 2019 13:27:47 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Mon, 06 Jan 2020 11:46:10 -03:00
 
-tools lib: Fix builds when glibc contains strlcpy()
+perf report/top: Allow pressing hotkeys in the options popup menu
 
-Disable a couple of compilation warnings (which are treated as errors)
-on strlcpy() definition and declaration, allowing users to compile perf
-and kernel (objtool) when:
+When the users presses ENTER in the main 'perf report/top' screen a
+popup menu is presented, in it some hotkeys are suggested as
+alternatives to using the menu, or for additional features.
 
-1. glibc have strlcpy() (such as in ALT Linux since 2004) objtool and
-   perf build fails with this (in gcc):
+At that point the user may try those hotkeys, so allow for that by
+recording the key used and exiting, the caller then can check for that
+possibility and process the hotkey.
 
-  In file included from exec-cmd.c:3:
-  tools/include/linux/string.h:20:15: error: redundant redeclaration of ‘strlcpy’ [-Werror=redundant-decls]
-     20 | extern size_t strlcpy(char *dest, const char *src, size_t size);
+I.e. try pressing ENTER, and then 'k' to exit and zoom into the kernel
+map, using ESC then zooms out, etc.
 
-2. clang ignores `-Wredundant-decls', but produces another warning when
-   building perf:
-
-    CC       util/string.o
-  ../lib/string.c:99:8: error: attribute declaration must precede definition [-Werror,-Wignored-attributes]
-  size_t __weak strlcpy(char *dest, const char *src, size_t size)
-  ../../tools/include/linux/compiler.h:66:34: note: expanded from macro '__weak'
-  # define __weak                 __attribute__((weak))
-  /usr/include/bits/string_fortified.h:151:8: note: previous definition is here
-  __NTH (strlcpy (char *__restrict __dest, const char *__restrict __src,
-
-Committer notes:
-
-The
-
- #pragma GCC diagnostic
-
-directive was introduced in gcc 4.6, so check for that as well.
-
-Fixes: ce99091 ("perf tools: Move strlcpy() from perf to tools/lib/string.c")
-Fixes: 0215d59 ("tools lib: Reinstate strlcpy() header guard with __UCLIBC__")
-Resolves: https://bugzilla.kernel.org/show_bug.cgi?id=118481
-Signed-off-by: Vitaly Chikunov <vt@altlinux.org>
-Reviewed-by: Dmitry Levin <ldv@altlinux.org>
-Cc: Dmitry Levin <ldv@altlinux.org>
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Cc: kbuild test robot <lkp@intel.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: stable@vger.kernel.org
-Cc: Vineet Gupta <vineet.gupta1@synopsys.com>
-Link: http://lore.kernel.org/lkml/20191224172029.19690-1-vt@altlinux.org
+Reviewed-by: Jiri Olsa <jolsa@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Andi Kleen <ak@linux.intel.com>
+Cc: Jin Yao <yao.jin@linux.intel.com>
+Cc: Kan Liang <kan.liang@intel.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Link: https://lkml.kernel.org/n/tip-ujfq3fw44kf6qrtfajl5dcsp@git.kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/include/linux/string.h | 8 ++++++++
- tools/lib/string.c           | 7 +++++++
- 2 files changed, 15 insertions(+)
+ tools/perf/ui/browsers/hists.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/tools/include/linux/string.h b/tools/include/linux/string.h
-index 980cb92..5e9e781 100644
---- a/tools/include/linux/string.h
-+++ b/tools/include/linux/string.h
-@@ -17,7 +17,15 @@ int strtobool(const char *s, bool *res);
-  * However uClibc headers also define __GLIBC__ hence the hack below
-  */
- #if defined(__GLIBC__) && !defined(__UCLIBC__)
-+// pragma diagnostic was introduced in gcc 4.6
-+#if __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 6)
-+#pragma GCC diagnostic push
-+#pragma GCC diagnostic ignored "-Wredundant-decls"
-+#endif
- extern size_t strlcpy(char *dest, const char *src, size_t size);
-+#if __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 6)
-+#pragma GCC diagnostic pop
-+#endif
- #endif
+diff --git a/tools/perf/ui/browsers/hists.c b/tools/perf/ui/browsers/hists.c
+index c44b508..8776b1c 100644
+--- a/tools/perf/ui/browsers/hists.c
++++ b/tools/perf/ui/browsers/hists.c
+@@ -2995,12 +2995,13 @@ static int perf_evsel__hists_browse(struct evsel *evsel, int nr_events,
+ 	while (1) {
+ 		struct thread *thread = NULL;
+ 		struct map *map = NULL;
+-		int choice = 0;
++		int choice;
+ 		int socked_id = -1;
  
- char *str_error_r(int errnum, char *buf, size_t buflen);
-diff --git a/tools/lib/string.c b/tools/lib/string.c
-index f2ae1b8..f645343 100644
---- a/tools/lib/string.c
-+++ b/tools/lib/string.c
-@@ -96,6 +96,10 @@ int strtobool(const char *s, bool *res)
-  * If libc has strlcpy() then that version will override this
-  * implementation:
-  */
-+#ifdef __clang__
-+#pragma clang diagnostic push
-+#pragma clang diagnostic ignored "-Wignored-attributes"
-+#endif
- size_t __weak strlcpy(char *dest, const char *src, size_t size)
- {
- 	size_t ret = strlen(src);
-@@ -107,6 +111,9 @@ size_t __weak strlcpy(char *dest, const char *src, size_t size)
- 	}
- 	return ret;
- }
-+#ifdef __clang__
-+#pragma clang diagnostic pop
-+#endif
+-		nr_options = 0;
+-
+-		key = hist_browser__run(browser, helpline, warn_lost_event, 0);
++		key = 0; // reset key
++do_hotkey:		 // key came straight from options ui__popup_menu()
++		choice = nr_options = 0;
++		key = hist_browser__run(browser, helpline, warn_lost_event, key);
  
- /**
-  * skip_spaces - Removes leading whitespace from @str.
+ 		if (browser->he_selection != NULL) {
+ 			thread = hist_browser__selected_thread(browser);
+@@ -3279,10 +3280,13 @@ skip_scripting:
+ 		do {
+ 			struct popup_action *act;
+ 
+-			choice = ui__popup_menu(nr_options, options, NULL);
+-			if (choice == -1 || choice >= nr_options)
++			choice = ui__popup_menu(nr_options, options, &key);
++			if (choice == -1)
+ 				break;
+ 
++			if (choice == nr_options)
++				goto do_hotkey;
++
+ 			act = &actions[choice];
+ 			key = act->fn(browser, act);
+ 		} while (key == 1);
