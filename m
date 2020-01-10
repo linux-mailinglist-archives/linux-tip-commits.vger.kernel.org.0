@@ -2,38 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B75EA137581
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 10 Jan 2020 18:56:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 72630137576
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 10 Jan 2020 18:56:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728232AbgAJRyj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 10 Jan 2020 12:54:39 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:59163 "EHLO
+        id S1728984AbgAJRyL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 10 Jan 2020 12:54:11 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:59193 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728673AbgAJRx0 (ORCPT
+        with ESMTP id S1728754AbgAJRxa (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 10 Jan 2020 12:53:26 -0500
+        Fri, 10 Jan 2020 12:53:30 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1ipyTK-0001m8-8M; Fri, 10 Jan 2020 18:53:22 +0100
+        id 1ipyTN-0001m9-8v; Fri, 10 Jan 2020 18:53:25 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id BBD291C2D5D;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id EC8971C2D5E;
         Fri, 10 Jan 2020 18:53:17 +0100 (CET)
 Date:   Fri, 10 Jan 2020 17:53:17 -0000
-From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for David Ahern" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf tests bp_signal: Show expected versus obtained values
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Jiri Olsa <jolsa@kernel.org>,
-        Namhyung Kim <namhyung@kernel.org>,
+Subject: [tip: perf/core] perf sched timehist: Add support for filtering on CPU
+Cc:     David Ahern <dsahern@gmail.com>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <tip-c951j3gvrgnrsyg7ki7pwkiz@git.kernel.org>
-References: <tip-c951j3gvrgnrsyg7ki7pwkiz@git.kernel.org>
+        Jiri Olsa <jolsa@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20191204173925.66976-1-dsahern@kernel.org>
+References: <20191204173925.66976-1-dsahern@kernel.org>
 MIME-Version: 1.0
-Message-ID: <157867879762.30329.2741458358842867256.tip-bot2@tip-bot2>
+Message-ID: <157867879783.30329.14601250233681313833.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,53 +49,118 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     6ae9c10b7cd50ac9080880204f8d9ff6381b2869
-Gitweb:        https://git.kernel.org/tip/6ae9c10b7cd50ac9080880204f8d9ff6381b2869
-Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Thu, 05 Dec 2019 16:09:59 -03:00
+Commit-ID:     c30d630d1bcfad8d2f70ff0cbb2a86d5a43bc152
+Gitweb:        https://git.kernel.org/tip/c30d630d1bcfad8d2f70ff0cbb2a86d5a43bc152
+Author:        David Ahern <dsahern@gmail.com>
+AuthorDate:    Wed, 04 Dec 2019 10:39:25 -07:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Mon, 06 Jan 2020 11:46:09 -03:00
 
-perf tests bp_signal: Show expected versus obtained values
+perf sched timehist: Add support for filtering on CPU
 
-To help understand failures.
+Allow user to limit output to one or more CPUs. Really helpful on
+systems with a large number of cpus.
 
-Cc: Adrian Hunter <adrian.hunter@intel.com>
+Committer testing:
+
+  # perf sched record -a sleep 1
+  [ perf record: Woken up 1 times to write data ]
+  [ perf record: Captured and wrote 1.765 MB perf.data (1412 samples) ]
+  [root@quaco ~]# perf sched timehist | head
+  Samples do not have callchains.
+             time    cpu  task name                       wait time  sch delay   run time
+                          [tid/pid]                          (msec)     (msec)     (msec)
+  --------------- ------  ------------------------------  ---------  ---------  ---------
+     66307.802686 [0000]  perf[13086]                         0.000      0.000      0.000
+     66307.802700 [0000]  migration/0[12]                     0.000      0.001      0.014
+     66307.802766 [0001]  perf[13086]                         0.000      0.000      0.000
+     66307.802774 [0001]  migration/1[15]                     0.000      0.001      0.007
+     66307.802841 [0002]  perf[13086]                         0.000      0.000      0.000
+     66307.802849 [0002]  migration/2[20]                     0.000      0.001      0.008
+     66307.802913 [0003]  perf[13086]                         0.000      0.000      0.000
+  #
+  # perf sched timehist --cpu 2 | head
+  Samples do not have callchains.
+             time    cpu  task name                       wait time  sch delay   run time
+                          [tid/pid]                          (msec)     (msec)     (msec)
+  --------------- ------  ------------------------------  ---------  ---------  ---------
+     66307.802841 [0002]  perf[13086]                         0.000      0.000      0.000
+     66307.802849 [0002]  migration/2[20]                     0.000      0.001      0.008
+     66307.964485 [0002]  <idle>                              0.000      0.000    161.635
+     66307.964811 [0002]  CPU 0/KVM[3589/3561]                0.000      0.056      0.325
+     66307.965477 [0002]  <idle>                              0.325      0.000      0.666
+     66307.965553 [0002]  CPU 0/KVM[3589/3561]                0.666      0.024      0.076
+     66307.966456 [0002]  <idle>                              0.076      0.000      0.903
+  #
+
+Signed-off-by: David Ahern <dsahern@gmail.com>
+Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lkml.kernel.org/n/tip-c951j3gvrgnrsyg7ki7pwkiz@git.kernel.org
+Link: http://lore.kernel.org/lkml/20191204173925.66976-1-dsahern@kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/tests/bp_signal.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ tools/perf/Documentation/perf-sched.txt |  4 ++++
+ tools/perf/builtin-sched.c              | 13 +++++++++++++
+ 2 files changed, 17 insertions(+)
 
-diff --git a/tools/perf/tests/bp_signal.c b/tools/perf/tests/bp_signal.c
-index 415903b..da8ec1e 100644
---- a/tools/perf/tests/bp_signal.c
-+++ b/tools/perf/tests/bp_signal.c
-@@ -263,20 +263,20 @@ int test__bp_signal(struct test *test __maybe_unused, int subtest __maybe_unused
- 		if (count1 == 11)
- 			pr_debug("failed: RF EFLAG recursion issue detected\n");
- 		else
--			pr_debug("failed: wrong count for bp1%lld\n", count1);
-+			pr_debug("failed: wrong count for bp1: %lld, expected 1\n", count1);
- 	}
+diff --git a/tools/perf/Documentation/perf-sched.txt b/tools/perf/Documentation/perf-sched.txt
+index 63f938b..5fbe42b 100644
+--- a/tools/perf/Documentation/perf-sched.txt
++++ b/tools/perf/Documentation/perf-sched.txt
+@@ -110,6 +110,10 @@ OPTIONS for 'perf sched timehist'
+ --max-stack::
+ 	Maximum number of functions to display in backtrace, default 5.
  
- 	if (overflows != 3)
--		pr_debug("failed: wrong overflow hit\n");
-+		pr_debug("failed: wrong overflow (%d) hit, expected 3\n", overflows);
++-C=::
++--cpu=::
++	Only show events for the given CPU(s) (comma separated list).
++
+ -p=::
+ --pid=::
+ 	Only show events for given process ID (comma separated list).
+diff --git a/tools/perf/builtin-sched.c b/tools/perf/builtin-sched.c
+index 8a12d71..82fcc2c 100644
+--- a/tools/perf/builtin-sched.c
++++ b/tools/perf/builtin-sched.c
+@@ -51,6 +51,9 @@
+ #define SYM_LEN			129
+ #define MAX_PID			1024000
  
- 	if (overflows_2 != 3)
--		pr_debug("failed: wrong overflow_2 hit\n");
-+		pr_debug("failed: wrong overflow_2 (%d) hit, expected 3\n", overflows_2);
++static const char *cpu_list;
++static DECLARE_BITMAP(cpu_bitmap, MAX_NR_CPUS);
++
+ struct sched_atom;
  
- 	if (count2 != 3)
--		pr_debug("failed: wrong count for bp2\n");
-+		pr_debug("failed: wrong count for bp2 (%lld), expected 3\n", count2);
+ struct task_desc {
+@@ -2008,6 +2011,9 @@ static void timehist_print_sample(struct perf_sched *sched,
+ 	char nstr[30];
+ 	u64 wait_time;
  
- 	if (count3 != 2)
--		pr_debug("failed: wrong count for bp3\n");
-+		pr_debug("failed: wrong count for bp3 (%lld), expected 2\n", count3);
++	if (cpu_list && !test_bit(sample->cpu, cpu_bitmap))
++		return;
++
+ 	timestamp__scnprintf_usec(t, tstr, sizeof(tstr));
+ 	printf("%15s [%04d] ", tstr, sample->cpu);
  
- 	return count1 == 1 && overflows == 3 && count2 == 3 && overflows_2 == 3 && count3 == 2 ?
- 		TEST_OK : TEST_FAIL;
+@@ -2994,6 +3000,12 @@ static int perf_sched__timehist(struct perf_sched *sched)
+ 	if (IS_ERR(session))
+ 		return PTR_ERR(session);
+ 
++	if (cpu_list) {
++		err = perf_session__cpu_bitmap(session, cpu_list, cpu_bitmap);
++		if (err < 0)
++			goto out;
++	}
++
+ 	evlist = session->evlist;
+ 
+ 	symbol__init(&session->header.env);
+@@ -3429,6 +3441,7 @@ int cmd_sched(int argc, const char **argv)
+ 		   "analyze events only for given process id(s)"),
+ 	OPT_STRING('t', "tid", &symbol_conf.tid_list_str, "tid[,tid...]",
+ 		   "analyze events only for given thread id(s)"),
++	OPT_STRING('C', "cpu", &cpu_list, "cpu", "list of cpus to profile"),
+ 	OPT_PARENT(sched_options)
+ 	};
+ 
