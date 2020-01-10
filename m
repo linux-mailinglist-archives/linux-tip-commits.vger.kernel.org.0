@@ -2,42 +2,41 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BC2AB13756E
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 10 Jan 2020 18:56:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E6AD9137568
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 10 Jan 2020 18:56:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728550AbgAJRxy (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 10 Jan 2020 12:53:54 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:59214 "EHLO
+        id S1728910AbgAJRxl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 10 Jan 2020 12:53:41 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:59215 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728852AbgAJRxf (ORCPT
+        with ESMTP id S1728860AbgAJRxh (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 10 Jan 2020 12:53:35 -0500
+        Fri, 10 Jan 2020 12:53:37 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1ipyTM-0001nK-RA; Fri, 10 Jan 2020 18:53:25 +0100
+        id 1ipyTP-0001mG-Uv; Fri, 10 Jan 2020 18:53:28 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 891321C2D60;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 2B3ED1C2D5F;
         Fri, 10 Jan 2020 18:53:18 +0100 (CET)
 Date:   Fri, 10 Jan 2020 17:53:18 -0000
 From:   "tip-bot2 for Alexey Budankov" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] tools bitmap: Implement bitmap_equal() operation at
- bitmap API
-Cc:     Alexey Budankov <alexey.budankov@linux.intel.com>,
+Subject: [tip: perf/core] perf record: Adapt affinity to machines with #CPUs > 1K
+Cc:     Andi Kleen <ak@linux.intel.com>,
+        Alexey Budankov <alexey.budankov@linux.intel.com>,
         Jiri Olsa <jolsa@redhat.com>,
         Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Andi Kleen <ak@linux.intel.com>,
         Namhyung Kim <namhyung@kernel.org>,
         Peter Zijlstra <peterz@infradead.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <43757993-0b28-d8af-a6c7-ede12e3a6877@linux.intel.com>
-References: <43757993-0b28-d8af-a6c7-ede12e3a6877@linux.intel.com>
+In-Reply-To: <96d7e2ff-ce8b-c1e0-d52c-aa59ea96f0ea@linux.intel.com>
+References: <96d7e2ff-ce8b-c1e0-d52c-aa59ea96f0ea@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <157867879843.30329.11026919173397316723.tip-bot2@tip-bot2>
+Message-ID: <157867879803.30329.14199943602079781895.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -53,108 +52,197 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     8812ad412f851216d6c39488a7e563ccc5c604cc
-Gitweb:        https://git.kernel.org/tip/8812ad412f851216d6c39488a7e563ccc5c604cc
+Commit-ID:     8384a2600c7ddfc875f64e160d8b423aca4e203a
+Gitweb:        https://git.kernel.org/tip/8384a2600c7ddfc875f64e160d8b423aca4e203a
 Author:        Alexey Budankov <alexey.budankov@linux.intel.com>
-AuthorDate:    Tue, 03 Dec 2019 14:43:33 +03:00
+AuthorDate:    Tue, 03 Dec 2019 14:45:27 +03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Mon, 06 Jan 2020 11:46:04 -03:00
+CommitterDate: Mon, 06 Jan 2020 11:46:09 -03:00
 
-tools bitmap: Implement bitmap_equal() operation at bitmap API
+perf record: Adapt affinity to machines with #CPUs > 1K
 
-Extend tools bitmap API with bitmap_equal() implementation.
+Use struct mmap_cpu_mask type for the tool's thread and mmap data
+buffers to overcome current 1024 CPUs mask size limitation of cpu_set_t
+type.
 
-The implementation has been derived from the kernel.
+Currently glibc's cpu_set_t type has an internal mask size limit of 1024
+CPUs.
 
-Extend tools bitmap API with bitmap_free() implementation for symmetry
-with bitmap_alloc() function.
+Moving to the 'struct mmap_cpu_mask' type allows overcoming that limit.
 
+The tools bitmap API is used to manipulate objects of 'struct mmap_cpu_mask'
+type.
+
+Committer notes:
+
+To print the 'nbits' struct member we must use %zd, since it is a
+size_t, this fixes the build in some toolchains/arches.
+
+Reported-by: Andi Kleen <ak@linux.intel.com>
 Signed-off-by: Alexey Budankov <alexey.budankov@linux.intel.com>
 Acked-by: Jiri Olsa <jolsa@redhat.com>
 Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Andi Kleen <ak@linux.intel.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Link: http://lore.kernel.org/lkml/43757993-0b28-d8af-a6c7-ede12e3a6877@linux.intel.com
+Link: http://lore.kernel.org/lkml/96d7e2ff-ce8b-c1e0-d52c-aa59ea96f0ea@linux.intel.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/include/linux/bitmap.h | 30 ++++++++++++++++++++++++++++++
- tools/lib/bitmap.c           | 15 +++++++++++++++
- 2 files changed, 45 insertions(+)
+ tools/perf/builtin-record.c | 28 ++++++++++++++++++++++------
+ tools/perf/util/mmap.c      | 28 ++++++++++++++++++++++------
+ tools/perf/util/mmap.h      |  2 +-
+ 3 files changed, 45 insertions(+), 13 deletions(-)
 
-diff --git a/tools/include/linux/bitmap.h b/tools/include/linux/bitmap.h
-index 05dca5c..477a1ca 100644
---- a/tools/include/linux/bitmap.h
-+++ b/tools/include/linux/bitmap.h
-@@ -15,6 +15,8 @@ void __bitmap_or(unsigned long *dst, const unsigned long *bitmap1,
- 		 const unsigned long *bitmap2, int bits);
- int __bitmap_and(unsigned long *dst, const unsigned long *bitmap1,
- 		 const unsigned long *bitmap2, unsigned int bits);
-+int __bitmap_equal(const unsigned long *bitmap1,
-+		   const unsigned long *bitmap2, unsigned int bits);
- void bitmap_clear(unsigned long *map, unsigned int start, int len);
+diff --git a/tools/perf/builtin-record.c b/tools/perf/builtin-record.c
+index fb19ef6..4c30146 100644
+--- a/tools/perf/builtin-record.c
++++ b/tools/perf/builtin-record.c
+@@ -62,6 +62,7 @@
+ #include <linux/string.h>
+ #include <linux/time64.h>
+ #include <linux/zalloc.h>
++#include <linux/bitmap.h>
  
- #define BITMAP_FIRST_WORD_MASK(start) (~0UL << ((start) & (BITS_PER_LONG - 1)))
-@@ -124,6 +126,15 @@ static inline unsigned long *bitmap_alloc(int nbits)
+ struct switch_output {
+ 	bool		 enabled;
+@@ -93,7 +94,7 @@ struct record {
+ 	bool			timestamp_boundary;
+ 	struct switch_output	switch_output;
+ 	unsigned long long	samples;
+-	cpu_set_t		affinity_mask;
++	struct mmap_cpu_mask	affinity_mask;
+ 	unsigned long		output_max_size;	/* = 0: unlimited */
+ };
+ 
+@@ -961,10 +962,15 @@ static struct perf_event_header finished_round_event = {
+ static void record__adjust_affinity(struct record *rec, struct mmap *map)
+ {
+ 	if (rec->opts.affinity != PERF_AFFINITY_SYS &&
+-	    !CPU_EQUAL(&rec->affinity_mask, &map->affinity_mask)) {
+-		CPU_ZERO(&rec->affinity_mask);
+-		CPU_OR(&rec->affinity_mask, &rec->affinity_mask, &map->affinity_mask);
+-		sched_setaffinity(0, sizeof(rec->affinity_mask), &rec->affinity_mask);
++	    !bitmap_equal(rec->affinity_mask.bits, map->affinity_mask.bits,
++			  rec->affinity_mask.nbits)) {
++		bitmap_zero(rec->affinity_mask.bits, rec->affinity_mask.nbits);
++		bitmap_or(rec->affinity_mask.bits, rec->affinity_mask.bits,
++			  map->affinity_mask.bits, rec->affinity_mask.nbits);
++		sched_setaffinity(0, MMAP_CPU_MASK_BYTES(&rec->affinity_mask),
++				  (cpu_set_t *)rec->affinity_mask.bits);
++		if (verbose == 2)
++			mmap_cpu_mask__scnprintf(&rec->affinity_mask, "thread");
+ 	}
  }
  
- /*
-+ * bitmap_free - Free bitmap
-+ * @bitmap: pointer to bitmap
-+ */
-+static inline void bitmap_free(unsigned long *bitmap)
-+{
-+	free(bitmap);
-+}
+@@ -2433,7 +2439,6 @@ int cmd_record(int argc, const char **argv)
+ # undef REASON
+ #endif
+ 
+-	CPU_ZERO(&rec->affinity_mask);
+ 	rec->opts.affinity = PERF_AFFINITY_SYS;
+ 
+ 	rec->evlist = evlist__new();
+@@ -2499,6 +2504,16 @@ int cmd_record(int argc, const char **argv)
+ 
+ 	symbol__init(NULL);
+ 
++	if (rec->opts.affinity != PERF_AFFINITY_SYS) {
++		rec->affinity_mask.nbits = cpu__max_cpu();
++		rec->affinity_mask.bits = bitmap_alloc(rec->affinity_mask.nbits);
++		if (!rec->affinity_mask.bits) {
++			pr_err("Failed to allocate thread mask for %zd cpus\n", rec->affinity_mask.nbits);
++			return -ENOMEM;
++		}
++		pr_debug2("thread mask[%zd]: empty\n", rec->affinity_mask.nbits);
++	}
 +
-+/*
-  * bitmap_scnprintf - print bitmap list into buffer
-  * @bitmap: bitmap
-  * @nbits: size of bitmap
-@@ -148,4 +159,23 @@ static inline int bitmap_and(unsigned long *dst, const unsigned long *src1,
- 	return __bitmap_and(dst, src1, src2, nbits);
+ 	err = record__auxtrace_init(rec);
+ 	if (err)
+ 		goto out;
+@@ -2613,6 +2628,7 @@ int cmd_record(int argc, const char **argv)
+ 
+ 	err = __cmd_record(&record, argc, argv);
+ out:
++	bitmap_free(rec->affinity_mask.bits);
+ 	evlist__delete(rec->evlist);
+ 	symbol__exit();
+ 	auxtrace_record__free(rec->itr);
+diff --git a/tools/perf/util/mmap.c b/tools/perf/util/mmap.c
+index 2ee4faa..3b664fa 100644
+--- a/tools/perf/util/mmap.c
++++ b/tools/perf/util/mmap.c
+@@ -219,6 +219,8 @@ static void perf_mmap__aio_munmap(struct mmap *map __maybe_unused)
+ 
+ void mmap__munmap(struct mmap *map)
+ {
++	bitmap_free(map->affinity_mask.bits);
++
+ 	perf_mmap__aio_munmap(map);
+ 	if (map->data != NULL) {
+ 		munmap(map->data, mmap__mmap_len(map));
+@@ -227,7 +229,7 @@ void mmap__munmap(struct mmap *map)
+ 	auxtrace_mmap__munmap(&map->auxtrace_mmap);
  }
  
-+#ifdef __LITTLE_ENDIAN
-+#define BITMAP_MEM_ALIGNMENT 8
-+#else
-+#define BITMAP_MEM_ALIGNMENT (8 * sizeof(unsigned long))
-+#endif
-+#define BITMAP_MEM_MASK (BITMAP_MEM_ALIGNMENT - 1)
-+#define IS_ALIGNED(x, a) (((x) & ((typeof(x))(a) - 1)) == 0)
-+
-+static inline int bitmap_equal(const unsigned long *src1,
-+			const unsigned long *src2, unsigned int nbits)
-+{
-+	if (small_const_nbits(nbits))
-+		return !((*src1 ^ *src2) & BITMAP_LAST_WORD_MASK(nbits));
-+	if (__builtin_constant_p(nbits & BITMAP_MEM_MASK) &&
-+	    IS_ALIGNED(nbits, BITMAP_MEM_ALIGNMENT))
-+		return !memcmp(src1, src2, nbits / 8);
-+	return __bitmap_equal(src1, src2, nbits);
-+}
-+
- #endif /* _PERF_BITOPS_H */
-diff --git a/tools/lib/bitmap.c b/tools/lib/bitmap.c
-index 3849478..5043747 100644
---- a/tools/lib/bitmap.c
-+++ b/tools/lib/bitmap.c
-@@ -71,3 +71,18 @@ int __bitmap_and(unsigned long *dst, const unsigned long *bitmap1,
- 			   BITMAP_LAST_WORD_MASK(bits));
- 	return result != 0;
+-static void build_node_mask(int node, cpu_set_t *mask)
++static void build_node_mask(int node, struct mmap_cpu_mask *mask)
+ {
+ 	int c, cpu, nr_cpus;
+ 	const struct perf_cpu_map *cpu_map = NULL;
+@@ -240,17 +242,23 @@ static void build_node_mask(int node, cpu_set_t *mask)
+ 	for (c = 0; c < nr_cpus; c++) {
+ 		cpu = cpu_map->map[c]; /* map c index to online cpu index */
+ 		if (cpu__get_node(cpu) == node)
+-			CPU_SET(cpu, mask);
++			set_bit(cpu, mask->bits);
+ 	}
  }
+ 
+-static void perf_mmap__setup_affinity_mask(struct mmap *map, struct mmap_params *mp)
++static int perf_mmap__setup_affinity_mask(struct mmap *map, struct mmap_params *mp)
+ {
+-	CPU_ZERO(&map->affinity_mask);
++	map->affinity_mask.nbits = cpu__max_cpu();
++	map->affinity_mask.bits = bitmap_alloc(map->affinity_mask.nbits);
++	if (!map->affinity_mask.bits)
++		return -1;
 +
-+int __bitmap_equal(const unsigned long *bitmap1,
-+		const unsigned long *bitmap2, unsigned int bits)
-+{
-+	unsigned int k, lim = bits/BITS_PER_LONG;
-+	for (k = 0; k < lim; ++k)
-+		if (bitmap1[k] != bitmap2[k])
-+			return 0;
+ 	if (mp->affinity == PERF_AFFINITY_NODE && cpu__max_node() > 1)
+ 		build_node_mask(cpu__get_node(map->core.cpu), &map->affinity_mask);
+ 	else if (mp->affinity == PERF_AFFINITY_CPU)
+-		CPU_SET(map->core.cpu, &map->affinity_mask);
++		set_bit(map->core.cpu, map->affinity_mask.bits);
 +
-+	if (bits % BITS_PER_LONG)
-+		if ((bitmap1[k] ^ bitmap2[k]) & BITMAP_LAST_WORD_MASK(bits))
-+			return 0;
++	return 0;
+ }
+ 
+ int mmap__mmap(struct mmap *map, struct mmap_params *mp, int fd, int cpu)
+@@ -261,7 +269,15 @@ int mmap__mmap(struct mmap *map, struct mmap_params *mp, int fd, int cpu)
+ 		return -1;
+ 	}
+ 
+-	perf_mmap__setup_affinity_mask(map, mp);
++	if (mp->affinity != PERF_AFFINITY_SYS &&
++		perf_mmap__setup_affinity_mask(map, mp)) {
++		pr_debug2("failed to alloc mmap affinity mask, error %d\n",
++			  errno);
++		return -1;
++	}
 +
-+	return 1;
-+}
++	if (verbose == 2)
++		mmap_cpu_mask__scnprintf(&map->affinity_mask, "mmap");
+ 
+ 	map->core.flush = mp->flush;
+ 
+diff --git a/tools/perf/util/mmap.h b/tools/perf/util/mmap.h
+index ef51667..9d5f589 100644
+--- a/tools/perf/util/mmap.h
++++ b/tools/perf/util/mmap.h
+@@ -40,7 +40,7 @@ struct mmap {
+ 		int		 nr_cblocks;
+ 	} aio;
+ #endif
+-	cpu_set_t	affinity_mask;
++	struct mmap_cpu_mask	affinity_mask;
+ 	void		*data;
+ 	int		comp_level;
+ };
