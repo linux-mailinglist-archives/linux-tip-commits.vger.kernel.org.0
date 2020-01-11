@@ -2,37 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A1FE1137612
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 10 Jan 2020 19:33:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3AB4B1381ED
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 11 Jan 2020 16:01:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728412AbgAJSdX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 10 Jan 2020 13:33:23 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:59379 "EHLO
+        id S1729792AbgAKPBi (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 11 Jan 2020 10:01:38 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:33352 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726346AbgAJSdX (ORCPT
+        with ESMTP id S1729696AbgAKPBh (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 10 Jan 2020 13:33:23 -0500
+        Sat, 11 Jan 2020 10:01:37 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1ipz5z-0002hp-NY; Fri, 10 Jan 2020 19:33:19 +0100
+        id 1iqIGb-0004an-4o; Sat, 11 Jan 2020 16:01:33 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4DBDF1C2D77;
-        Fri, 10 Jan 2020 19:33:19 +0100 (CET)
-Date:   Fri, 10 Jan 2020 18:33:19 -0000
-From:   "tip-bot2 for Vincenzo Frascino" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id AAC4A1C1944;
+        Sat, 11 Jan 2020 16:01:32 +0100 (CET)
+Date:   Sat, 11 Jan 2020 15:01:32 -0000
+From:   "tip-bot2 for Changbin Du" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/urgent] lib/vdso: Make __cvdso_clock_getres() static
-Cc:     Marc Gonzalez <marc.w.gonzalez@free.fr>,
-        Vincenzo Frascino <vincenzo.frascino@arm.com>,
+Subject: [tip: x86/core] x86/nmi: Remove irq_work from the long duration NMI handler
+Cc:     Changbin Du <changbin.du@gmail.com>, Borislav Petkov <bp@suse.de>,
         Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191128111719.8282-1-vincenzo.frascino@arm.com>
-References: <20191128111719.8282-1-vincenzo.frascino@arm.com>
+In-Reply-To: <20200111125427.15662-1-changbin.du@gmail.com>
+References: <20200111125427.15662-1-changbin.du@gmail.com>
 MIME-Version: 1.0
-Message-ID: <157868119905.30329.14304133573747134138.tip-bot2@tip-bot2>
+Message-ID: <157875489248.30329.781797148985800902.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -46,42 +45,101 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/urgent branch of tip:
+The following commit has been merged into the x86/core branch of tip:
 
-Commit-ID:     ffd08731b2d632459428612431060cf902324a8d
-Gitweb:        https://git.kernel.org/tip/ffd08731b2d632459428612431060cf902324a8d
-Author:        Vincenzo Frascino <vincenzo.frascino@arm.com>
-AuthorDate:    Thu, 28 Nov 2019 11:17:19 
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 10 Jan 2020 19:29:01 +01:00
+Commit-ID:     248ed51048c40d36728e70914e38bffd7821da57
+Gitweb:        https://git.kernel.org/tip/248ed51048c40d36728e70914e38bffd7821da57
+Author:        Changbin Du <changbin.du@gmail.com>
+AuthorDate:    Sat, 11 Jan 2020 20:54:27 +08:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Sat, 11 Jan 2020 15:55:39 +01:00
 
-lib/vdso: Make __cvdso_clock_getres() static
+x86/nmi: Remove irq_work from the long duration NMI handler
 
-Fix the following sparse warning in the generic vDSO library:
+First, printk() is NMI-context safe now since the safe printk() has been
+implemented and it already has an irq_work to make NMI-context safe.
 
-  linux/lib/vdso/gettimeofday.c:224:5: warning: symbol
-  '__cvdso_clock_getres' was not declared. Should it be static?
+Second, this NMI irq_work actually does not work if a NMI handler causes
+panic by watchdog timeout. It has no chance to run in such case, while
+the safe printk() will flush its per-cpu buffers before panicking.
 
-Make it static and also mark it __maybe_unsed.
+While at it, repurpose the irq_work callback into a function which
+concentrates the NMI duration checking and makes the code easier to
+follow.
 
-Fixes: 502a590a170b ("lib/vdso: Move fallback invocation to the callers")
-Reported-by: Marc Gonzalez <marc.w.gonzalez@free.fr>
-Signed-off-by: Vincenzo Frascino <vincenzo.frascino@arm.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20191128111719.8282-1-vincenzo.frascino@arm.com
+ [ bp: Massage. ]
+
+Signed-off-by: Changbin Du <changbin.du@gmail.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Acked-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lkml.kernel.org/r/20200111125427.15662-1-changbin.du@gmail.com
 ---
- lib/vdso/gettimeofday.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/include/asm/nmi.h |  1 -
+ arch/x86/kernel/nmi.c      | 20 +++++++++-----------
+ 2 files changed, 9 insertions(+), 12 deletions(-)
 
-diff --git a/lib/vdso/gettimeofday.c b/lib/vdso/gettimeofday.c
-index 9ecfd3b..42bd8ab 100644
---- a/lib/vdso/gettimeofday.c
-+++ b/lib/vdso/gettimeofday.c
-@@ -221,6 +221,7 @@ int __cvdso_clock_getres_common(clockid_t clock, struct __kernel_timespec *res)
- 	return 0;
+diff --git a/arch/x86/include/asm/nmi.h b/arch/x86/include/asm/nmi.h
+index 75ded1d..9d5d949 100644
+--- a/arch/x86/include/asm/nmi.h
++++ b/arch/x86/include/asm/nmi.h
+@@ -41,7 +41,6 @@ struct nmiaction {
+ 	struct list_head	list;
+ 	nmi_handler_t		handler;
+ 	u64			max_duration;
+-	struct irq_work		irq_work;
+ 	unsigned long		flags;
+ 	const char		*name;
+ };
+diff --git a/arch/x86/kernel/nmi.c b/arch/x86/kernel/nmi.c
+index e676a99..54c21d6 100644
+--- a/arch/x86/kernel/nmi.c
++++ b/arch/x86/kernel/nmi.c
+@@ -104,18 +104,22 @@ static int __init nmi_warning_debugfs(void)
+ }
+ fs_initcall(nmi_warning_debugfs);
+ 
+-static void nmi_max_handler(struct irq_work *w)
++static void nmi_check_duration(struct nmiaction *action, u64 duration)
+ {
+-	struct nmiaction *a = container_of(w, struct nmiaction, irq_work);
++	u64 whole_msecs = READ_ONCE(action->max_duration);
+ 	int remainder_ns, decimal_msecs;
+-	u64 whole_msecs = READ_ONCE(a->max_duration);
++
++	if (duration < nmi_longest_ns || duration < action->max_duration)
++		return;
++
++	action->max_duration = duration;
+ 
+ 	remainder_ns = do_div(whole_msecs, (1000 * 1000));
+ 	decimal_msecs = remainder_ns / 1000;
+ 
+ 	printk_ratelimited(KERN_INFO
+ 		"INFO: NMI handler (%ps) took too long to run: %lld.%03d msecs\n",
+-		a->handler, whole_msecs, decimal_msecs);
++		action->handler, whole_msecs, decimal_msecs);
  }
  
-+static __maybe_unused
- int __cvdso_clock_getres(clockid_t clock, struct __kernel_timespec *res)
- {
- 	int ret = __cvdso_clock_getres_common(clock, res);
+ static int nmi_handle(unsigned int type, struct pt_regs *regs)
+@@ -142,11 +146,7 @@ static int nmi_handle(unsigned int type, struct pt_regs *regs)
+ 		delta = sched_clock() - delta;
+ 		trace_nmi_handler(a->handler, (int)delta, thishandled);
+ 
+-		if (delta < nmi_longest_ns || delta < a->max_duration)
+-			continue;
+-
+-		a->max_duration = delta;
+-		irq_work_queue(&a->irq_work);
++		nmi_check_duration(a, delta);
+ 	}
+ 
+ 	rcu_read_unlock();
+@@ -164,8 +164,6 @@ int __register_nmi_handler(unsigned int type, struct nmiaction *action)
+ 	if (!action->handler)
+ 		return -EINVAL;
+ 
+-	init_irq_work(&action->irq_work, nmi_max_handler);
+-
+ 	raw_spin_lock_irqsave(&desc->lock, flags);
+ 
+ 	/*
