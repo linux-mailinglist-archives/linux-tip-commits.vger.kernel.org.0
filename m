@@ -2,36 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2576E13999D
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 13 Jan 2020 20:09:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 95FD71399E5
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 13 Jan 2020 20:11:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728859AbgAMTJg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 13 Jan 2020 14:09:36 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:39869 "EHLO
+        id S1728921AbgAMTLS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 13 Jan 2020 14:11:18 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:39948 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728836AbgAMTJf (ORCPT
+        with ESMTP id S1728965AbgAMTJr (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 13 Jan 2020 14:09:35 -0500
+        Mon, 13 Jan 2020 14:09:47 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1ir55f-0000xD-Sg; Mon, 13 Jan 2020 20:09:32 +0100
+        id 1ir55f-0000yX-2s; Mon, 13 Jan 2020 20:09:31 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 8EA941C18DC;
-        Mon, 13 Jan 2020 20:09:26 +0100 (CET)
-Date:   Mon, 13 Jan 2020 19:09:26 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5B68F1C18DA;
+        Mon, 13 Jan 2020 20:09:27 +0100 (CET)
+Date:   Mon, 13 Jan 2020 19:09:27 -0000
 From:   "tip-bot2 for Dmitry Safonov" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] x86/vdso: Handle faults on timens page
-Cc:     Andrei Vagin <avagin@gmail.com>, Dmitry Safonov <dima@arista.com>,
+Subject: [tip: timers/core] x86/vdso: Provide vdso_data offset on vvar_page
+Cc:     Andrei Vagin <avagin@openvz.org>, Dmitry Safonov <dima@arista.com>,
         Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191112012724.250792-25-dima@arista.com>
-References: <20191112012724.250792-25-dima@arista.com>
+In-Reply-To: <20191112012724.250792-22-dima@arista.com>
+References: <20191112012724.250792-22-dima@arista.com>
 MIME-Version: 1.0
-Message-ID: <157894256643.19145.12197846390131767365.tip-bot2@tip-bot2>
+Message-ID: <157894256719.19145.16909720920023468772.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,135 +47,121 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     ad22c315d67e713e4e107f9db2b7c27e2a245377
-Gitweb:        https://git.kernel.org/tip/ad22c315d67e713e4e107f9db2b7c27e2a245377
+Commit-ID:     9bec781deb4d5f23ee6346873805058bd0f6c88b
+Gitweb:        https://git.kernel.org/tip/9bec781deb4d5f23ee6346873805058bd0f6c88b
 Author:        Dmitry Safonov <dima@arista.com>
-AuthorDate:    Tue, 12 Nov 2019 01:27:13 
+AuthorDate:    Tue, 12 Nov 2019 01:27:10 
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 13 Jan 2020 08:10:56 +01:00
+CommitterDate: Mon, 13 Jan 2020 08:10:55 +01:00
 
-x86/vdso: Handle faults on timens page
+x86/vdso: Provide vdso_data offset on vvar_page
 
-If a task belongs to a time namespace then the VVAR page which contains
-the system wide VDSO data is replaced with a namespace specific page
-which has the same layout as the VVAR page.
+VDSO support for time namespaces needs to set up a page with the same
+layout as VVAR. That timens page will be placed on position of VVAR page
+inside namespace. That page has vdso_data->seq set to 1 to enforce
+the slow path and vdso_data->clock_mode set to VCLOCK_TIMENS to enforce
+the time namespace handling path.
 
-Co-developed-by: Andrei Vagin <avagin@gmail.com>
-Signed-off-by: Andrei Vagin <avagin@gmail.com>
+To prepare the time namespace page the kernel needs to know the vdso_data
+offset.  Provide arch_get_vdso_data() helper for locating vdso_data on VVAR
+page.
+
+Co-developed-by: Andrei Vagin <avagin@openvz.org>
+Signed-off-by: Andrei Vagin <avagin@openvz.org>
 Signed-off-by: Dmitry Safonov <dima@arista.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20191112012724.250792-25-dima@arista.com
+Link: https://lore.kernel.org/r/20191112012724.250792-22-dima@arista.com
 
 ---
- arch/x86/entry/vdso/vma.c | 54 ++++++++++++++++++++++++++++++++++++--
- mm/mmap.c                 |  2 +-
- 2 files changed, 54 insertions(+), 2 deletions(-)
+ arch/x86/entry/vdso/vdso-layout.lds.S |  2 --
+ arch/x86/entry/vdso/vma.c             | 11 +++++++++++
+ arch/x86/include/asm/vvar.h           |  8 ++++----
+ arch/x86/kernel/vmlinux.lds.S         |  4 +---
+ include/linux/time_namespace.h        |  1 +
+ 5 files changed, 17 insertions(+), 9 deletions(-)
 
+diff --git a/arch/x86/entry/vdso/vdso-layout.lds.S b/arch/x86/entry/vdso/vdso-layout.lds.S
+index 93c6dc7..2330daa 100644
+--- a/arch/x86/entry/vdso/vdso-layout.lds.S
++++ b/arch/x86/entry/vdso/vdso-layout.lds.S
+@@ -21,9 +21,7 @@ SECTIONS
+ 
+ 	/* Place all vvars at the offsets in asm/vvar.h. */
+ #define EMIT_VVAR(name, offset) vvar_ ## name = vvar_page + offset;
+-#define __VVAR_KERNEL_LDS
+ #include <asm/vvar.h>
+-#undef __VVAR_KERNEL_LDS
+ #undef EMIT_VVAR
+ 
+ 	pvclock_page = vvar_start + PAGE_SIZE;
 diff --git a/arch/x86/entry/vdso/vma.c b/arch/x86/entry/vdso/vma.c
-index 04e3498..e5f3361 100644
+index 76cbe54..04e3498 100644
 --- a/arch/x86/entry/vdso/vma.c
 +++ b/arch/x86/entry/vdso/vma.c
-@@ -14,11 +14,14 @@
- #include <linux/elf.h>
- #include <linux/cpu.h>
- #include <linux/ptrace.h>
-+#include <linux/time_namespace.h>
-+
- #include <asm/pvclock.h>
- #include <asm/vgtod.h>
- #include <asm/proto.h>
- #include <asm/vdso.h>
- #include <asm/vvar.h>
-+#include <asm/tlb.h>
- #include <asm/page.h>
- #include <asm/desc.h>
+@@ -24,6 +24,17 @@
  #include <asm/cpufeature.h>
-@@ -107,10 +110,36 @@ static int vvar_mremap(const struct vm_special_mapping *sm,
- 	return 0;
- }
+ #include <clocksource/hyperv_timer.h>
  
-+#ifdef CONFIG_TIME_NS
-+static struct page *find_timens_vvar_page(struct vm_area_struct *vma)
++#undef _ASM_X86_VVAR_H
++#define EMIT_VVAR(name, offset)	\
++	const size_t name ## _offset = offset;
++#include <asm/vvar.h>
++
++struct vdso_data *arch_get_vdso_data(void *vvar_page)
 +{
-+	if (likely(vma->vm_mm == current->mm))
-+		return current->nsproxy->time_ns->vvar_page;
-+
-+	/*
-+	 * VM_PFNMAP | VM_IO protect .fault() handler from being called
-+	 * through interfaces like /proc/$pid/mem or
-+	 * process_vm_{readv,writev}() as long as there's no .access()
-+	 * in special_mapping_vmops().
-+	 * For more details check_vma_flags() and __access_remote_vm()
-+	 */
-+
-+	WARN(1, "vvar_page accessed remotely");
-+
-+	return NULL;
++	return (struct vdso_data *)(vvar_page + _vdso_data_offset);
 +}
-+#else
-+static inline struct page *find_timens_vvar_page(struct vm_area_struct *vma)
-+{
-+	return NULL;
-+}
-+#endif
++#undef EMIT_VVAR
 +
- static vm_fault_t vvar_fault(const struct vm_special_mapping *sm,
- 		      struct vm_area_struct *vma, struct vm_fault *vmf)
+ #if defined(CONFIG_X86_64)
+ unsigned int __read_mostly vdso64_enabled = 1;
+ #endif
+diff --git a/arch/x86/include/asm/vvar.h b/arch/x86/include/asm/vvar.h
+index 32f5d9a..ff2de30 100644
+--- a/arch/x86/include/asm/vvar.h
++++ b/arch/x86/include/asm/vvar.h
+@@ -19,10 +19,10 @@
+ #ifndef _ASM_X86_VVAR_H
+ #define _ASM_X86_VVAR_H
+ 
+-#if defined(__VVAR_KERNEL_LDS)
+-
+-/* The kernel linker script defines its own magic to put vvars in the
+- * right place.
++#ifdef EMIT_VVAR
++/*
++ * EMIT_VVAR() is used by the kernel linker script to put vvars in the
++ * right place. Also, it's used by kernel code to import offsets values.
+  */
+ #define DECLARE_VVAR(offset, type, name) \
+ 	EMIT_VVAR(name, offset)
+diff --git a/arch/x86/kernel/vmlinux.lds.S b/arch/x86/kernel/vmlinux.lds.S
+index 3a1a819..e3296aa 100644
+--- a/arch/x86/kernel/vmlinux.lds.S
++++ b/arch/x86/kernel/vmlinux.lds.S
+@@ -193,12 +193,10 @@ SECTIONS
+ 		__vvar_beginning_hack = .;
+ 
+ 		/* Place all vvars at the offsets in asm/vvar.h. */
+-#define EMIT_VVAR(name, offset) 			\
++#define EMIT_VVAR(name, offset)				\
+ 		. = __vvar_beginning_hack + offset;	\
+ 		*(.vvar_ ## name)
+-#define __VVAR_KERNEL_LDS
+ #include <asm/vvar.h>
+-#undef __VVAR_KERNEL_LDS
+ #undef EMIT_VVAR
+ 
+ 		/*
+diff --git a/include/linux/time_namespace.h b/include/linux/time_namespace.h
+index 34ee110..063a343 100644
+--- a/include/linux/time_namespace.h
++++ b/include/linux/time_namespace.h
+@@ -39,6 +39,7 @@ struct time_namespace *copy_time_ns(unsigned long flags,
+ 				    struct time_namespace *old_ns);
+ void free_time_ns(struct kref *kref);
+ int timens_on_fork(struct nsproxy *nsproxy, struct task_struct *tsk);
++struct vdso_data *arch_get_vdso_data(void *vvar_page);
+ 
+ static inline void put_time_ns(struct time_namespace *ns)
  {
- 	const struct vdso_image *image = vma->vm_mm->context.vdso_image;
-+	unsigned long pfn;
- 	long sym_offset;
- 
- 	if (!image)
-@@ -130,8 +159,21 @@ static vm_fault_t vvar_fault(const struct vm_special_mapping *sm,
- 		return VM_FAULT_SIGBUS;
- 
- 	if (sym_offset == image->sym_vvar_page) {
--		return vmf_insert_pfn(vma, vmf->address,
--				__pa_symbol(&__vvar_page) >> PAGE_SHIFT);
-+		struct page *timens_page = find_timens_vvar_page(vma);
-+
-+		pfn = __pa_symbol(&__vvar_page) >> PAGE_SHIFT;
-+
-+		/*
-+		 * If a task belongs to a time namespace then a namespace
-+		 * specific VVAR is mapped with the sym_vvar_page offset and
-+		 * the real VVAR page is mapped with the sym_timens_page
-+		 * offset.
-+		 * See also the comment near timens_setup_vdso_data().
-+		 */
-+		if (timens_page)
-+			pfn = page_to_pfn(timens_page);
-+
-+		return vmf_insert_pfn(vma, vmf->address, pfn);
- 	} else if (sym_offset == image->sym_pvclock_page) {
- 		struct pvclock_vsyscall_time_info *pvti =
- 			pvclock_get_pvti_cpu0_va();
-@@ -146,6 +188,14 @@ static vm_fault_t vvar_fault(const struct vm_special_mapping *sm,
- 		if (tsc_pg && vclock_was_used(VCLOCK_HVCLOCK))
- 			return vmf_insert_pfn(vma, vmf->address,
- 					virt_to_phys(tsc_pg) >> PAGE_SHIFT);
-+	} else if (sym_offset == image->sym_timens_page) {
-+		struct page *timens_page = find_timens_vvar_page(vma);
-+
-+		if (!timens_page)
-+			return VM_FAULT_SIGBUS;
-+
-+		pfn = __pa_symbol(&__vvar_page) >> PAGE_SHIFT;
-+		return vmf_insert_pfn(vma, vmf->address, pfn);
- 	}
- 
- 	return VM_FAULT_SIGBUS;
-diff --git a/mm/mmap.c b/mm/mmap.c
-index 9c64852..60c17d3 100644
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -3342,6 +3342,8 @@ static const struct vm_operations_struct special_mapping_vmops = {
- 	.fault = special_mapping_fault,
- 	.mremap = special_mapping_mremap,
- 	.name = special_mapping_name,
-+	/* vDSO code relies that VVAR can't be accessed remotely */
-+	.access = NULL,
- };
- 
- static const struct vm_operations_struct legacy_special_mapping_vmops = {
