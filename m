@@ -2,36 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DD738139999
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 13 Jan 2020 20:09:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 178A81399DD
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 13 Jan 2020 20:11:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728803AbgAMTJc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 13 Jan 2020 14:09:32 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:39830 "EHLO
+        id S1729262AbgAMTKp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 13 Jan 2020 14:10:45 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:39943 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727726AbgAMTJa (ORCPT
+        with ESMTP id S1728961AbgAMTJr (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 13 Jan 2020 14:09:30 -0500
+        Mon, 13 Jan 2020 14:09:47 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1ir55Z-0000vf-RE; Mon, 13 Jan 2020 20:09:26 +0100
+        id 1ir55d-0000y2-87; Mon, 13 Jan 2020 20:09:29 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4F3001C18DB;
-        Mon, 13 Jan 2020 20:09:25 +0100 (CET)
-Date:   Mon, 13 Jan 2020 19:09:25 -0000
-From:   "tip-bot2 for Andrei Vagin" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 1C7411C18DF;
+        Mon, 13 Jan 2020 20:09:27 +0100 (CET)
+Date:   Mon, 13 Jan 2020 19:09:26 -0000
+From:   "tip-bot2 for Dmitry Safonov" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] selftests/timens: Add a test for timerfd
-Cc:     Andrei Vagin <avagin@gmail.com>, Dmitry Safonov <dima@arista.com>,
+Subject: [tip: timers/core] x86/vdso: Add time napespace page
+Cc:     Andrei Vagin <avagin@openvz.org>, Dmitry Safonov <dima@arista.com>,
         Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191112012724.250792-30-dima@arista.com>
-References: <20191112012724.250792-30-dima@arista.com>
+In-Reply-To: <20191112012724.250792-23-dima@arista.com>
+References: <20191112012724.250792-23-dima@arista.com>
 MIME-Version: 1.0
-Message-ID: <157894256511.19145.13095414759650638633.tip-bot2@tip-bot2>
+Message-ID: <157894256689.19145.7705447890779194117.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,200 +47,176 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     6024b1e796435154034cf11d5e250fd716394ca8
-Gitweb:        https://git.kernel.org/tip/6024b1e796435154034cf11d5e250fd716394ca8
-Author:        Andrei Vagin <avagin@gmail.com>
-AuthorDate:    Tue, 12 Nov 2019 01:27:18 
+Commit-ID:     f02341d83a4d071dbc85431fa3d51c0dcd02dec9
+Gitweb:        https://git.kernel.org/tip/f02341d83a4d071dbc85431fa3d51c0dcd02dec9
+Author:        Dmitry Safonov <dima@arista.com>
+AuthorDate:    Tue, 12 Nov 2019 01:27:11 
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 13 Jan 2020 08:10:58 +01:00
+CommitterDate: Mon, 13 Jan 2020 08:10:55 +01:00
 
-selftests/timens: Add a test for timerfd
+x86/vdso: Add time napespace page
 
-Check that timerfd_create() takes into account clock offsets.
+To support time namespaces in the VDSO with a minimal impact on regular non
+time namespace affected tasks, the namespace handling needs to be hidden in
+a slow path.
 
-Output on success:
- 1..3
- ok 1 clockid=7
- ok 2 clockid=1
- ok 3 clockid=9
- # Pass 3 Fail 0 Xfail 0 Xpass 0 Skip 0 Error 0
+The most obvious place is vdso_seq_begin(). If a task belongs to a time
+namespace then the VVAR page which contains the system wide VDSO data is
+replaced with a namespace specific page which has the same layout as the
+VVAR page. That page has vdso_data->seq set to 1 to enforce the slow path
+and vdso_data->clock_mode set to VCLOCK_TIMENS to enforce the time
+namespace handling path.
 
-Output on failure:
- 1..3
- not ok 1 clockid: 7 elapsed: 0
- not ok 2 clockid: 1 elapsed: 0
- not ok 3 clockid: 9 elapsed: 0
- Bail out!
+The extra check in the case that vdso_data->seq is odd, e.g. a concurrent
+update of the VDSO data is in progress, is not really affecting regular
+tasks which are not part of a time namespace as the task is spin waiting
+for the update to finish and vdso_data->seq to become even again.
 
-Output with lack of permissions:
- 1..3
- not ok 1 # SKIP need to run as root
+If a time namespace task hits that code path, it invokes the corresponding
+time getter function which retrieves the real VVAR page, reads host time
+and then adds the offset for the requested clock which is stored in the
+special VVAR page.
 
-Output without support of time namespaces:
- 1..3
- not ok 1 # SKIP Time namespaces are not supported
+Allocate the time namespace page among VVAR pages and place vdso_data on
+it.  Provide __arch_get_timens_vdso_data() helper for VDSO code to get the
+code-relative position of VVARs on that special page.
 
-Co-developed-by: Dmitry Safonov <dima@arista.com>
-Signed-off-by: Andrei Vagin <avagin@gmail.com>
+Co-developed-by: Andrei Vagin <avagin@openvz.org>
+Signed-off-by: Andrei Vagin <avagin@openvz.org>
 Signed-off-by: Dmitry Safonov <dima@arista.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20191112012724.250792-30-dima@arista.com
+Link: https://lore.kernel.org/r/20191112012724.250792-23-dima@arista.com
 
 ---
- tools/testing/selftests/timens/.gitignore |   1 +-
- tools/testing/selftests/timens/Makefile   |   2 +-
- tools/testing/selftests/timens/timerfd.c  | 128 +++++++++++++++++++++-
- 3 files changed, 130 insertions(+), 1 deletion(-)
- create mode 100644 tools/testing/selftests/timens/timerfd.c
+ arch/x86/Kconfig                         |  1 +
+ arch/x86/entry/vdso/vdso-layout.lds.S    | 11 +++++++++--
+ arch/x86/entry/vdso/vdso2c.c             |  3 +++
+ arch/x86/include/asm/vdso.h              |  1 +
+ arch/x86/include/asm/vdso/gettimeofday.h |  8 ++++++++
+ arch/x86/include/asm/vvar.h              |  5 ++++-
+ 6 files changed, 26 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/timens/.gitignore b/tools/testing/selftests/timens/.gitignore
-index 27a6932..b609f6e 100644
---- a/tools/testing/selftests/timens/.gitignore
-+++ b/tools/testing/selftests/timens/.gitignore
-@@ -1 +1,2 @@
- timens
-+timerfd
-diff --git a/tools/testing/selftests/timens/Makefile b/tools/testing/selftests/timens/Makefile
-index 49a9dcc..293aed6 100644
---- a/tools/testing/selftests/timens/Makefile
-+++ b/tools/testing/selftests/timens/Makefile
-@@ -1,4 +1,4 @@
--TEST_GEN_PROGS := timens
-+TEST_GEN_PROGS := timens timerfd
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 5e89499..a2488c3 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -124,6 +124,7 @@ config X86
+ 	select GENERIC_STRNLEN_USER
+ 	select GENERIC_TIME_VSYSCALL
+ 	select GENERIC_GETTIMEOFDAY
++	select GENERIC_VDSO_TIME_NS
+ 	select GUP_GET_PTE_LOW_HIGH		if X86_PAE
+ 	select HARDLOCKUP_CHECK_TIMESTAMP	if X86_64
+ 	select HAVE_ACPI_APEI			if ACPI
+diff --git a/arch/x86/entry/vdso/vdso-layout.lds.S b/arch/x86/entry/vdso/vdso-layout.lds.S
+index 2330daa..ea7e015 100644
+--- a/arch/x86/entry/vdso/vdso-layout.lds.S
++++ b/arch/x86/entry/vdso/vdso-layout.lds.S
+@@ -16,8 +16,8 @@ SECTIONS
+ 	 * segment.
+ 	 */
  
- CFLAGS := -Wall -Werror
- LDFLAGS := -lrt
-diff --git a/tools/testing/selftests/timens/timerfd.c b/tools/testing/selftests/timens/timerfd.c
-new file mode 100644
-index 0000000..eff1ec5
---- /dev/null
-+++ b/tools/testing/selftests/timens/timerfd.c
-@@ -0,0 +1,128 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#define _GNU_SOURCE
-+#include <sched.h>
+-	vvar_start = . - 3 * PAGE_SIZE;
+-	vvar_page = vvar_start;
++	vvar_start = . - 4 * PAGE_SIZE;
++	vvar_page  = vvar_start;
+ 
+ 	/* Place all vvars at the offsets in asm/vvar.h. */
+ #define EMIT_VVAR(name, offset) vvar_ ## name = vvar_page + offset;
+@@ -26,6 +26,13 @@ SECTIONS
+ 
+ 	pvclock_page = vvar_start + PAGE_SIZE;
+ 	hvclock_page = vvar_start + 2 * PAGE_SIZE;
++	timens_page  = vvar_start + 3 * PAGE_SIZE;
 +
-+#include <sys/timerfd.h>
-+#include <sys/syscall.h>
-+#include <sys/types.h>
-+#include <sys/wait.h>
-+#include <time.h>
-+#include <unistd.h>
-+#include <stdlib.h>
-+#include <stdio.h>
-+#include <stdint.h>
-+
-+#include "log.h"
-+#include "timens.h"
-+
-+static int tclock_gettime(clock_t clockid, struct timespec *now)
++#undef _ASM_X86_VVAR_H
++	/* Place all vvars in timens too at the offsets in asm/vvar.h. */
++#define EMIT_VVAR(name, offset) timens_ ## name = timens_page + offset;
++#include <asm/vvar.h>
++#undef EMIT_VVAR
+ 
+ 	. = SIZEOF_HEADERS;
+ 
+diff --git a/arch/x86/entry/vdso/vdso2c.c b/arch/x86/entry/vdso/vdso2c.c
+index 3a4d8d4..3842873 100644
+--- a/arch/x86/entry/vdso/vdso2c.c
++++ b/arch/x86/entry/vdso/vdso2c.c
+@@ -75,12 +75,14 @@ enum {
+ 	sym_vvar_page,
+ 	sym_pvclock_page,
+ 	sym_hvclock_page,
++	sym_timens_page,
+ };
+ 
+ const int special_pages[] = {
+ 	sym_vvar_page,
+ 	sym_pvclock_page,
+ 	sym_hvclock_page,
++	sym_timens_page,
+ };
+ 
+ struct vdso_sym {
+@@ -93,6 +95,7 @@ struct vdso_sym required_syms[] = {
+ 	[sym_vvar_page] = {"vvar_page", true},
+ 	[sym_pvclock_page] = {"pvclock_page", true},
+ 	[sym_hvclock_page] = {"hvclock_page", true},
++	[sym_timens_page] = {"timens_page", true},
+ 	{"VDSO32_NOTE_MASK", true},
+ 	{"__kernel_vsyscall", true},
+ 	{"__kernel_sigreturn", true},
+diff --git a/arch/x86/include/asm/vdso.h b/arch/x86/include/asm/vdso.h
+index 230474e..bbcdc7b 100644
+--- a/arch/x86/include/asm/vdso.h
++++ b/arch/x86/include/asm/vdso.h
+@@ -21,6 +21,7 @@ struct vdso_image {
+ 	long sym_vvar_page;
+ 	long sym_pvclock_page;
+ 	long sym_hvclock_page;
++	long sym_timens_page;
+ 	long sym_VDSO32_NOTE_MASK;
+ 	long sym___kernel_sigreturn;
+ 	long sym___kernel_rt_sigreturn;
+diff --git a/arch/x86/include/asm/vdso/gettimeofday.h b/arch/x86/include/asm/vdso/gettimeofday.h
+index 52c3bcd..6ee1f7d 100644
+--- a/arch/x86/include/asm/vdso/gettimeofday.h
++++ b/arch/x86/include/asm/vdso/gettimeofday.h
+@@ -21,6 +21,7 @@
+ #include <clocksource/hyperv_timer.h>
+ 
+ #define __vdso_data (VVAR(_vdso_data))
++#define __timens_vdso_data (TIMENS(_vdso_data))
+ 
+ #define VDSO_HAS_TIME 1
+ 
+@@ -56,6 +57,13 @@ extern struct ms_hyperv_tsc_page hvclock_page
+ 	__attribute__((visibility("hidden")));
+ #endif
+ 
++#ifdef CONFIG_TIME_NS
++static __always_inline const struct vdso_data *__arch_get_timens_vdso_data(void)
 +{
-+	if (clockid == CLOCK_BOOTTIME_ALARM)
-+		clockid = CLOCK_BOOTTIME;
-+	return clock_gettime(clockid, now);
++	return __timens_vdso_data;
 +}
++#endif
 +
-+int run_test(int clockid, struct timespec now)
-+{
-+	struct itimerspec new_value;
-+	long long elapsed;
-+	int fd, i;
-+
-+	if (tclock_gettime(clockid, &now))
-+		return pr_perror("clock_gettime(%d)", clockid);
-+
-+	for (i = 0; i < 2; i++) {
-+		int flags = 0;
-+
-+		new_value.it_value.tv_sec = 3600;
-+		new_value.it_value.tv_nsec = 0;
-+		new_value.it_interval.tv_sec = 1;
-+		new_value.it_interval.tv_nsec = 0;
-+
-+		if (i == 1) {
-+			new_value.it_value.tv_sec += now.tv_sec;
-+			new_value.it_value.tv_nsec += now.tv_nsec;
-+		}
-+
-+		fd = timerfd_create(clockid, 0);
-+		if (fd == -1)
-+			return pr_perror("timerfd_create(%d)", clockid);
-+
-+		if (i == 1)
-+			flags |= TFD_TIMER_ABSTIME;
-+
-+		if (timerfd_settime(fd, flags, &new_value, NULL))
-+			return pr_perror("timerfd_settime(%d)", clockid);
-+
-+		if (timerfd_gettime(fd, &new_value))
-+			return pr_perror("timerfd_gettime(%d)", clockid);
-+
-+		elapsed = new_value.it_value.tv_sec;
-+		if (abs(elapsed - 3600) > 60) {
-+			ksft_test_result_fail("clockid: %d elapsed: %lld\n",
-+					      clockid, elapsed);
-+			return 1;
-+		}
-+
-+		close(fd);
-+	}
-+
-+	ksft_test_result_pass("clockid=%d\n", clockid);
-+
-+	return 0;
-+}
-+
-+int main(int argc, char *argv[])
-+{
-+	int ret, status, len, fd;
-+	char buf[4096];
-+	pid_t pid;
-+	struct timespec btime_now, mtime_now;
-+
-+	nscheck();
-+
-+	ksft_set_plan(3);
-+
-+	clock_gettime(CLOCK_MONOTONIC, &mtime_now);
-+	clock_gettime(CLOCK_BOOTTIME, &btime_now);
-+
-+	if (unshare_timens())
-+		return 1;
-+
-+	len = snprintf(buf, sizeof(buf), "%d %d 0\n%d %d 0",
-+			CLOCK_MONOTONIC, 70 * 24 * 3600,
-+			CLOCK_BOOTTIME, 9 * 24 * 3600);
-+	fd = open("/proc/self/timens_offsets", O_WRONLY);
-+	if (fd < 0)
-+		return pr_perror("/proc/self/timens_offsets");
-+
-+	if (write(fd, buf, len) != len)
-+		return pr_perror("/proc/self/timens_offsets");
-+
-+	close(fd);
-+	mtime_now.tv_sec += 70 * 24 * 3600;
-+	btime_now.tv_sec += 9 * 24 * 3600;
-+
-+	pid = fork();
-+	if (pid < 0)
-+		return pr_perror("Unable to fork");
-+	if (pid == 0) {
-+		ret = 0;
-+		ret |= run_test(CLOCK_BOOTTIME, btime_now);
-+		ret |= run_test(CLOCK_MONOTONIC, mtime_now);
-+		ret |= run_test(CLOCK_BOOTTIME_ALARM, btime_now);
-+
-+		if (ret)
-+			ksft_exit_fail();
-+		ksft_exit_pass();
-+		return ret;
-+	}
-+
-+	if (waitpid(pid, &status, 0) != pid)
-+		return pr_perror("Unable to wait the child process");
-+
-+	if (WIFEXITED(status))
-+		return WEXITSTATUS(status);
-+
-+	return 1;
-+}
+ #ifndef BUILD_VDSO32
+ 
+ static __always_inline
+diff --git a/arch/x86/include/asm/vvar.h b/arch/x86/include/asm/vvar.h
+index ff2de30..183e98e 100644
+--- a/arch/x86/include/asm/vvar.h
++++ b/arch/x86/include/asm/vvar.h
+@@ -33,9 +33,12 @@ extern char __vvar_page;
+ 
+ #define DECLARE_VVAR(offset, type, name)				\
+ 	extern type vvar_ ## name[CS_BASES]				\
+-	__attribute__((visibility("hidden")));
++	__attribute__((visibility("hidden")));				\
++	extern type timens_ ## name[CS_BASES]				\
++	__attribute__((visibility("hidden")));				\
+ 
+ #define VVAR(name) (vvar_ ## name)
++#define TIMENS(name) (timens_ ## name)
+ 
+ #define DEFINE_VVAR(type, name)						\
+ 	type name[CS_BASES]						\
