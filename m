@@ -2,37 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1AD991399E8
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 13 Jan 2020 20:11:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 535BC1399A8
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 13 Jan 2020 20:09:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728959AbgAMTLb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 13 Jan 2020 14:11:31 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:39917 "EHLO
+        id S1728883AbgAMTJu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 13 Jan 2020 14:09:50 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:39958 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728900AbgAMTJl (ORCPT
+        with ESMTP id S1728978AbgAMTJs (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 13 Jan 2020 14:09:41 -0500
+        Mon, 13 Jan 2020 14:09:48 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1ir55m-00016D-Ip; Mon, 13 Jan 2020 20:09:38 +0100
+        id 1ir55t-00018t-0u; Mon, 13 Jan 2020 20:09:45 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 6EEC11C18E9;
-        Mon, 13 Jan 2020 20:09:30 +0100 (CET)
-Date:   Mon, 13 Jan 2020 19:09:30 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D8B541C18DD;
+        Mon, 13 Jan 2020 20:09:31 +0100 (CET)
+Date:   Mon, 13 Jan 2020 19:09:31 -0000
 From:   "tip-bot2 for Andrei Vagin" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] alarmtimer: Provide get_timespec() callback
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Andrei Vagin <avagin@gmail.com>,
-        Dmitry Safonov <dima@arista.com>, x86 <x86@kernel.org>,
+Subject: [tip: timers/core] lib/vdso: Mark do_hres() and do_coarse() as
+ __always_inline
+Cc:     Andrei Vagin <avagin@gmail.com>, Dmitry Safonov <dima@arista.com>,
+        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191112012724.250792-9-dima@arista.com>
-References: <20191112012724.250792-9-dima@arista.com>
+In-Reply-To: <20191112012724.250792-3-dima@arista.com>
+References: <20191112012724.250792-3-dima@arista.com>
 MIME-Version: 1.0
-Message-ID: <157894257026.19145.5596406959536995134.tip-bot2@tip-bot2>
+Message-ID: <157894257170.19145.3085263448023270279.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,70 +48,85 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     c8ff8b6c6f12d13dcdf2c948b197eb3d362600e0
-Gitweb:        https://git.kernel.org/tip/c8ff8b6c6f12d13dcdf2c948b197eb3d362600e0
+Commit-ID:     9d66475e9b680afb70a49a531287513f1307e623
+Gitweb:        https://git.kernel.org/tip/9d66475e9b680afb70a49a531287513f1307e623
 Author:        Andrei Vagin <avagin@gmail.com>
-AuthorDate:    Tue, 12 Nov 2019 01:26:57 
+AuthorDate:    Tue, 12 Nov 2019 01:26:51 
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 13 Jan 2020 08:10:49 +01:00
+CommitterDate: Mon, 13 Jan 2020 08:10:47 +01:00
 
-alarmtimer: Provide get_timespec() callback
+lib/vdso: Mark do_hres() and do_coarse() as __always_inline
 
-The upcoming support for time namespaces requires to have access to:
+Performance numbers for Intel(R) Core(TM) i5-6300U CPU @ 2.40GHz
+(more clock_gettime() cycles - the better):
 
-  - The time in a task's time namespace for sys_clock_gettime()
-  - The time in the root name space for common_timer_get()
+clock            | before     | after      | diff
+----------------------------------------------------------
+monotonic        |  153222105 |  166775025 | 8.8%
+monotonic-coarse |  671557054 |  691513017 | 3.0%
+monotonic-raw    |  147116067 |  161057395 | 9.5%
+boottime         |  153446224 |  166962668 | 9.1%
 
-Wire up alarm bases with get_timespec().
+The improvement for arm64 for monotonic and boottime is around 3.5%.
 
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Co-developed-by: Dmitry Safonov <dima@arista.com>
+clock            | before     | after      | diff
+==================================================
+monotonic          17326692     17951770     3.6%
+monotonic-coarse   43624027     44215292     1.3%
+monotonic-raw      17541809     17554932     0.1%
+boottime           17334982     17954361     3.5%
+
+[ tglx: Avoid the goto ]
+
 Signed-off-by: Andrei Vagin <avagin@gmail.com>
 Signed-off-by: Dmitry Safonov <dima@arista.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20191112012724.250792-9-dima@arista.com
+Link: https://lore.kernel.org/r/20191112012724.250792-3-dima@arista.com
 
 ---
- kernel/time/alarmtimer.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ lib/vdso/gettimeofday.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/kernel/time/alarmtimer.c b/kernel/time/alarmtimer.c
-index 22b6f9b..357be1f 100644
---- a/kernel/time/alarmtimer.c
-+++ b/kernel/time/alarmtimer.c
-@@ -37,12 +37,14 @@
-  * @lock:		Lock for syncrhonized access to the base
-  * @timerqueue:		Timerqueue head managing the list of events
-  * @get_ktime:		Function to read the time correlating to the base
-+ * @get_timespec:	Function to read the namespace time correlating to the base
-  * @base_clockid:	clockid for the base
-  */
- static struct alarm_base {
- 	spinlock_t		lock;
- 	struct timerqueue_head	timerqueue;
- 	ktime_t			(*get_ktime)(void);
-+	void			(*get_timespec)(struct timespec64 *tp);
- 	clockid_t		base_clockid;
- } alarm_bases[ALARM_NUMTYPE];
+diff --git a/lib/vdso/gettimeofday.c b/lib/vdso/gettimeofday.c
+index fac9e86..b453d24 100644
+--- a/lib/vdso/gettimeofday.c
++++ b/lib/vdso/gettimeofday.c
+@@ -38,7 +38,7 @@ u64 vdso_calc_delta(u64 cycles, u64 last, u64 mask, u32 mult)
+ }
+ #endif
  
-@@ -670,7 +672,8 @@ static int alarm_clock_get_timespec(clockid_t which_clock, struct timespec64 *tp
- 	if (!alarmtimer_get_rtcdev())
- 		return -EINVAL;
- 
--	*tp = ktime_to_timespec64(base->get_ktime());
-+	base->get_timespec(tp);
-+
+-static int do_hres(const struct vdso_data *vd, clockid_t clk,
++static __always_inline int do_hres(const struct vdso_data *vd, clockid_t clk,
+ 		   struct __kernel_timespec *ts)
+ {
+ 	const struct vdso_timestamp *vdso_ts = &vd->basetime[clk];
+@@ -68,8 +68,8 @@ static int do_hres(const struct vdso_data *vd, clockid_t clk,
  	return 0;
  }
  
-@@ -883,8 +886,10 @@ static int __init alarmtimer_init(void)
- 	/* Initialize alarm bases */
- 	alarm_bases[ALARM_REALTIME].base_clockid = CLOCK_REALTIME;
- 	alarm_bases[ALARM_REALTIME].get_ktime = &ktime_get_real;
-+	alarm_bases[ALARM_REALTIME].get_timespec = ktime_get_real_ts64,
- 	alarm_bases[ALARM_BOOTTIME].base_clockid = CLOCK_BOOTTIME;
- 	alarm_bases[ALARM_BOOTTIME].get_ktime = &ktime_get_boottime;
-+	alarm_bases[ALARM_BOOTTIME].get_timespec = ktime_get_boottime_ts64;
- 	for (i = 0; i < ALARM_NUMTYPE; i++) {
- 		timerqueue_init_head(&alarm_bases[i].timerqueue);
- 		spin_lock_init(&alarm_bases[i].lock);
+-static int do_coarse(const struct vdso_data *vd, clockid_t clk,
+-		      struct __kernel_timespec *ts)
++static __always_inline int do_coarse(const struct vdso_data *vd, clockid_t clk,
++				     struct __kernel_timespec *ts)
+ {
+ 	const struct vdso_timestamp *vdso_ts = &vd->basetime[clk];
+ 	u32 seq;
+@@ -99,13 +99,15 @@ __cvdso_clock_gettime_common(clockid_t clock, struct __kernel_timespec *ts)
+ 	 */
+ 	msk = 1U << clock;
+ 	if (likely(msk & VDSO_HRES))
+-		return do_hres(&vd[CS_HRES_COARSE], clock, ts);
++		vd = &vd[CS_HRES_COARSE];
+ 	else if (msk & VDSO_COARSE)
+ 		return do_coarse(&vd[CS_HRES_COARSE], clock, ts);
+ 	else if (msk & VDSO_RAW)
+-		return do_hres(&vd[CS_RAW], clock, ts);
++		vd = &vd[CS_RAW];
++	else
++		return -1;
+ 
+-	return -1;
++	return do_hres(vd, clock, ts);
+ }
+ 
+ static __maybe_unused int
