@@ -2,36 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E87881399EF
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 13 Jan 2020 20:11:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0CD7C1399EB
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 13 Jan 2020 20:11:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727726AbgAMTLs (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 13 Jan 2020 14:11:48 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:39892 "EHLO
+        id S1729153AbgAMTLh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 13 Jan 2020 14:11:37 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:39904 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728869AbgAMTJi (ORCPT
+        with ESMTP id S1728880AbgAMTJk (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 13 Jan 2020 14:09:38 -0500
+        Mon, 13 Jan 2020 14:09:40 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1ir55i-00012F-IF; Mon, 13 Jan 2020 20:09:34 +0100
+        id 1ir55k-00014L-Pl; Mon, 13 Jan 2020 20:09:36 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E1D1B1C18E5;
-        Mon, 13 Jan 2020 20:09:28 +0100 (CET)
-Date:   Mon, 13 Jan 2020 19:09:28 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A36F81C18E8;
+        Mon, 13 Jan 2020 20:09:29 +0100 (CET)
+Date:   Mon, 13 Jan 2020 19:09:29 -0000
 From:   "tip-bot2 for Andrei Vagin" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] posix-timers: Make timer_settime() time namespace aware
-Cc:     Andrei Vagin <avagin@openvz.org>, Dmitry Safonov <dima@arista.com>,
+Subject: [tip: timers/core] posix-clocks: Wire up clock_gettime() with timens offsets
+Cc:     Andrei Vagin <avagin@gmail.com>, Dmitry Safonov <dima@arista.com>,
         Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191112012724.250792-15-dima@arista.com>
-References: <20191112012724.250792-15-dima@arista.com>
+In-Reply-To: <20191112012724.250792-12-dima@arista.com>
+References: <20191112012724.250792-12-dima@arista.com>
 MIME-Version: 1.0
-Message-ID: <157894256874.19145.1461750936143633317.tip-bot2@tip-bot2>
+Message-ID: <157894256948.19145.4271984133241700853.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,48 +47,134 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     d1ba7dda1bc0129bc8f85bff530748aef1e99e70
-Gitweb:        https://git.kernel.org/tip/d1ba7dda1bc0129bc8f85bff530748aef1e99e70
-Author:        Andrei Vagin <avagin@gmail.com>
-AuthorDate:    Tue, 12 Nov 2019 01:27:03 
+Commit-ID:     22b16bfa948bca922614699c717aea055d759d82
+Gitweb:        https://git.kernel.org/tip/22b16bfa948bca922614699c717aea055d759d82
+Author:        Andrei Vagin <avagin@openvz.org>
+AuthorDate:    Tue, 12 Nov 2019 01:27:00 
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 13 Jan 2020 08:10:52 +01:00
+CommitterDate: Mon, 13 Jan 2020 08:10:50 +01:00
 
-posix-timers: Make timer_settime() time namespace aware
+posix-clocks: Wire up clock_gettime() with timens offsets
 
-Wire timer_settime() syscall into time namespace virtualization.
+Adjust monotonic and boottime clocks with per-timens offsets.  As the
+result a process inside time namespace will see timers and clocks corrected
+to offsets that were set when the namespace was created
 
-sys_timer_settime() calls the ktime->timer_set() callback. Right now,
-common_timer_set() is the only implementation for the callback.
-
-The user-supplied expiry value is converted from timespec64 to ktime and
-then timens_ktime_to_host() can be used to convert namespace's time to the
-host time.
-
-Inside a time namespace kernel's time differs by a fixed offset from a
-user-supplied time, but only absolute values (TIMER_ABSTIME) must be
-converted.
+Note that applications usually go through vDSO to get time, which is not
+yet adjusted. Further changes will complete time namespace virtualisation
+with vDSO support.
 
 Co-developed-by: Dmitry Safonov <dima@arista.com>
-Signed-off-by: Andrei Vagin <avagin@openvz.org>
+Signed-off-by: Andrei Vagin <avagin@gmail.com>
 Signed-off-by: Dmitry Safonov <dima@arista.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20191112012724.250792-15-dima@arista.com
+Link: https://lore.kernel.org/r/20191112012724.250792-12-dima@arista.com
 
 ---
- kernel/time/posix-timers.c | 2 ++
- 1 file changed, 2 insertions(+)
+ kernel/time/alarmtimer.c   |  9 ++++++++-
+ kernel/time/posix-stubs.c  |  3 +++
+ kernel/time/posix-timers.c |  5 +++++
+ 3 files changed, 16 insertions(+), 1 deletion(-)
 
+diff --git a/kernel/time/alarmtimer.c b/kernel/time/alarmtimer.c
+index 4d8c905..9a8e81b 100644
+--- a/kernel/time/alarmtimer.c
++++ b/kernel/time/alarmtimer.c
+@@ -26,6 +26,7 @@
+ #include <linux/freezer.h>
+ #include <linux/compat.h>
+ #include <linux/module.h>
++#include <linux/time_namespace.h>
+ 
+ #include "posix-timers.h"
+ 
+@@ -886,6 +887,12 @@ static struct platform_driver alarmtimer_driver = {
+ 	}
+ };
+ 
++static void get_boottime_timespec(struct timespec64 *tp)
++{
++	ktime_get_boottime_ts64(tp);
++	timens_add_boottime(tp);
++}
++
+ /**
+  * alarmtimer_init - Initialize alarm timer code
+  *
+@@ -906,7 +913,7 @@ static int __init alarmtimer_init(void)
+ 	alarm_bases[ALARM_REALTIME].get_timespec = ktime_get_real_ts64,
+ 	alarm_bases[ALARM_BOOTTIME].base_clockid = CLOCK_BOOTTIME;
+ 	alarm_bases[ALARM_BOOTTIME].get_ktime = &ktime_get_boottime;
+-	alarm_bases[ALARM_BOOTTIME].get_timespec = ktime_get_boottime_ts64;
++	alarm_bases[ALARM_BOOTTIME].get_timespec = get_boottime_timespec;
+ 	for (i = 0; i < ALARM_NUMTYPE; i++) {
+ 		timerqueue_init_head(&alarm_bases[i].timerqueue);
+ 		spin_lock_init(&alarm_bases[i].lock);
+diff --git a/kernel/time/posix-stubs.c b/kernel/time/posix-stubs.c
+index 20c65a7..bcbaa20 100644
+--- a/kernel/time/posix-stubs.c
++++ b/kernel/time/posix-stubs.c
+@@ -14,6 +14,7 @@
+ #include <linux/ktime.h>
+ #include <linux/timekeeping.h>
+ #include <linux/posix-timers.h>
++#include <linux/time_namespace.h>
+ #include <linux/compat.h>
+ 
+ #ifdef CONFIG_ARCH_HAS_SYSCALL_WRAPPER
+@@ -77,9 +78,11 @@ int do_clock_gettime(clockid_t which_clock, struct timespec64 *tp)
+ 		break;
+ 	case CLOCK_MONOTONIC:
+ 		ktime_get_ts64(tp);
++		timens_add_monotonic(tp);
+ 		break;
+ 	case CLOCK_BOOTTIME:
+ 		ktime_get_boottime_ts64(tp);
++		timens_add_boottime(tp);
+ 		break;
+ 	default:
+ 		return -EINVAL;
 diff --git a/kernel/time/posix-timers.c b/kernel/time/posix-timers.c
-index d26b915..473082b 100644
+index fe1de4f..d26b915 100644
 --- a/kernel/time/posix-timers.c
 +++ b/kernel/time/posix-timers.c
-@@ -885,6 +885,8 @@ int common_timer_set(struct k_itimer *timr, int flags,
+@@ -30,6 +30,7 @@
+ #include <linux/hashtable.h>
+ #include <linux/compat.h>
+ #include <linux/nospec.h>
++#include <linux/time_namespace.h>
  
- 	timr->it_interval = timespec64_to_ktime(new_setting->it_interval);
- 	expires = timespec64_to_ktime(new_setting->it_value);
-+	if (flags & TIMER_ABSTIME)
-+		expires = timens_ktime_to_host(timr->it_clock, expires);
- 	sigev_none = timr->it_sigev_notify == SIGEV_NONE;
+ #include "timekeeping.h"
+ #include "posix-timers.h"
+@@ -195,6 +196,7 @@ static int posix_clock_realtime_adj(const clockid_t which_clock,
+ static int posix_get_monotonic_timespec(clockid_t which_clock, struct timespec64 *tp)
+ {
+ 	ktime_get_ts64(tp);
++	timens_add_monotonic(tp);
+ 	return 0;
+ }
  
- 	kc->timer_arm(timr, expires, flags & TIMER_ABSTIME, sigev_none);
+@@ -209,6 +211,7 @@ static ktime_t posix_get_monotonic_ktime(clockid_t which_clock)
+ static int posix_get_monotonic_raw(clockid_t which_clock, struct timespec64 *tp)
+ {
+ 	ktime_get_raw_ts64(tp);
++	timens_add_monotonic(tp);
+ 	return 0;
+ }
+ 
+@@ -223,6 +226,7 @@ static int posix_get_monotonic_coarse(clockid_t which_clock,
+ 						struct timespec64 *tp)
+ {
+ 	ktime_get_coarse_ts64(tp);
++	timens_add_monotonic(tp);
+ 	return 0;
+ }
+ 
+@@ -235,6 +239,7 @@ static int posix_get_coarse_res(const clockid_t which_clock, struct timespec64 *
+ static int posix_get_boottime_timespec(const clockid_t which_clock, struct timespec64 *tp)
+ {
+ 	ktime_get_boottime_ts64(tp);
++	timens_add_boottime(tp);
+ 	return 0;
+ }
+ 
