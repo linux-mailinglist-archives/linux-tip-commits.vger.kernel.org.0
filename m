@@ -2,44 +2,42 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 891091396B8
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 13 Jan 2020 17:48:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CCD5C1399F5
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 13 Jan 2020 20:12:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728641AbgAMQso convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 13 Jan 2020 11:48:44 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:39421 "EHLO
+        id S1728757AbgAMTJ3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 13 Jan 2020 14:09:29 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:39818 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726567AbgAMQso (ORCPT
+        with ESMTP id S1726435AbgAMTJ2 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 13 Jan 2020 11:48:44 -0500
+        Mon, 13 Jan 2020 14:09:28 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1ir2tJ-0006Bx-7X; Mon, 13 Jan 2020 17:48:37 +0100
+        id 1ir55Y-0000uj-KE; Mon, 13 Jan 2020 20:09:24 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 75C971C18D2;
-        Mon, 13 Jan 2020 17:48:36 +0100 (CET)
-Date:   Mon, 13 Jan 2020 16:48:36 -0000
-From:   "tip-bot2 for Paul Cercueil" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 092311C18DA;
+        Mon, 13 Jan 2020 20:09:24 +0100 (CET)
+Date:   Mon, 13 Jan 2020 19:09:23 -0000
+From:   "tip-bot2 for Andrei Vagin" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/urgent] irqchip/ingenic: Get rid of the legacy IRQ domain
-Cc:     Paul Cercueil <paul@crapouillou.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>,
-        zhouyanjie@wanyeetech.com, Marc Zyngier <maz@kernel.org>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200113163329.34282-2-paul@crapouillou.net>
-References: <20200113163329.34282-2-paul@crapouillou.net>
+Subject: [tip: timers/core] selftests/timens: Check for right timens offsets
+ after fork and exec
+Cc:     Andrei Vagin <avagin@gmail.com>, Dmitry Safonov <dima@arista.com>,
+        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20191112012724.250792-35-dima@arista.com>
+References: <20191112012724.250792-35-dima@arista.com>
 MIME-Version: 1.0
-Message-ID: <157893411629.19145.7825622073651467564.tip-bot2@tip-bot2>
+Message-ID: <157894256385.19145.15685314954853732698.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: 7bit
 X-Linutronix-Spam-Score: -1.0
 X-Linutronix-Spam-Level: -
 X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
@@ -48,63 +46,165 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the irq/urgent branch of tip:
+The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     1fd224e35c1493e9f5d4d932c175616cccce8df9
-Gitweb:        https://git.kernel.org/tip/1fd224e35c1493e9f5d4d932c175616cccce8df9
-Author:        Paul Cercueil <paul@crapouillou.net>
-AuthorDate:    Mon, 13 Jan 2020 13:33:29 -03:00
+Commit-ID:     b21f89bf26e8645852eea0c5c2bd179dd25ff124
+Gitweb:        https://git.kernel.org/tip/b21f89bf26e8645852eea0c5c2bd179dd25ff124
+Author:        Andrei Vagin <avagin@gmail.com>
+AuthorDate:    Tue, 12 Nov 2019 01:27:23 
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 13 Jan 2020 17:45:23 +01:00
+CommitterDate: Mon, 13 Jan 2020 08:11:00 +01:00
 
-irqchip/ingenic: Get rid of the legacy IRQ domain
+selftests/timens: Check for right timens offsets after fork and exec
 
-Get rid of the legacy IRQ domain and hardcoded IRQ base, since all the
-Ingenic drivers and platform code have been updated to use devicetree.
+Output on success:
+ 1..1
+ ok 1 exec
+ # Pass 1 Fail 0 Xfail 0 Xpass 0 Skip 0 Error 0
 
-This also fixes the kernel being flooded with messages like:
+Output on failure:
+ 1..1
+ not ok 1 36016 16
+ Bail out!
 
- irq: interrupt-controller@10001000 didn't like hwirq-0x0 to VIRQ8 mapping (rc=-19)
+Output with lack of permissions:
+ 1..1
+ not ok 1 # SKIP need to run as root
 
-Fixes: 8bc7464b5140 ("irqchip: ingenic: Alloc generic chips from IRQ domain").
-Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+Output without support of time namespaces:
+ 1..1
+ not ok 1 # SKIP Time namespaces are not supported
+
+Co-developed-by: Dmitry Safonov <dima@arista.com>
+Signed-off-by: Andrei Vagin <avagin@gmail.com>
+Signed-off-by: Dmitry Safonov <dima@arista.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: H. Nikolaus Schaller <hns@goldelico.com>
-Tested-by: 周琰杰 (Zhou Yanjie) <zhouyanjie@wanyeetech.com>
-Acked-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20200113163329.34282-2-paul@crapouillou.net
----
- drivers/irqchip/irq-ingenic.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+Link: https://lore.kernel.org/r/20191112012724.250792-35-dima@arista.com
 
-diff --git a/drivers/irqchip/irq-ingenic.c b/drivers/irqchip/irq-ingenic.c
-index 01d18b3..c5589ee 100644
---- a/drivers/irqchip/irq-ingenic.c
-+++ b/drivers/irqchip/irq-ingenic.c
-@@ -17,7 +17,6 @@
- #include <linux/delay.h>
+---
+ tools/testing/selftests/timens/.gitignore |  1 +-
+ tools/testing/selftests/timens/Makefile   |  2 +-
+ tools/testing/selftests/timens/exec.c     | 94 ++++++++++++++++++++++-
+ 3 files changed, 96 insertions(+), 1 deletion(-)
+ create mode 100644 tools/testing/selftests/timens/exec.c
+
+diff --git a/tools/testing/selftests/timens/.gitignore b/tools/testing/selftests/timens/.gitignore
+index 16292e4..789f21e 100644
+--- a/tools/testing/selftests/timens/.gitignore
++++ b/tools/testing/selftests/timens/.gitignore
+@@ -1,4 +1,5 @@
+ clock_nanosleep
++exec
+ gettime_perf
+ gettime_perf_cold
+ procfs
+diff --git a/tools/testing/selftests/timens/Makefile b/tools/testing/selftests/timens/Makefile
+index 6aefcac..e9fb30b 100644
+--- a/tools/testing/selftests/timens/Makefile
++++ b/tools/testing/selftests/timens/Makefile
+@@ -1,4 +1,4 @@
+-TEST_GEN_PROGS := timens timerfd timer clock_nanosleep procfs
++TEST_GEN_PROGS := timens timerfd timer clock_nanosleep procfs exec
+ TEST_GEN_PROGS_EXTENDED := gettime_perf
  
- #include <asm/io.h>
--#include <asm/mach-jz4740/irq.h>
- 
- struct ingenic_intc_data {
- 	void __iomem *base;
-@@ -50,7 +49,7 @@ static irqreturn_t intc_cascade(int irq, void *data)
- 		while (pending) {
- 			int bit = __fls(pending);
- 
--			irq = irq_find_mapping(domain, bit + (i * 32));
-+			irq = irq_linear_revmap(domain, bit + (i * 32));
- 			generic_handle_irq(irq);
- 			pending &= ~BIT(bit);
- 		}
-@@ -97,8 +96,7 @@ static int __init ingenic_intc_of_init(struct device_node *node,
- 		goto out_unmap_irq;
- 	}
- 
--	domain = irq_domain_add_legacy(node, num_chips * 32,
--				       JZ4740_IRQ_BASE, 0,
-+	domain = irq_domain_add_linear(node, num_chips * 32,
- 				       &irq_generic_chip_ops, NULL);
- 	if (!domain) {
- 		err = -ENOMEM;
+ CFLAGS := -Wall -Werror -pthread
+diff --git a/tools/testing/selftests/timens/exec.c b/tools/testing/selftests/timens/exec.c
+new file mode 100644
+index 0000000..87b47b5
+--- /dev/null
++++ b/tools/testing/selftests/timens/exec.c
+@@ -0,0 +1,94 @@
++// SPDX-License-Identifier: GPL-2.0
++#define _GNU_SOURCE
++#include <errno.h>
++#include <fcntl.h>
++#include <sched.h>
++#include <stdio.h>
++#include <stdbool.h>
++#include <sys/stat.h>
++#include <sys/syscall.h>
++#include <sys/types.h>
++#include <sys/wait.h>
++#include <time.h>
++#include <unistd.h>
++#include <time.h>
++#include <string.h>
++
++#include "log.h"
++#include "timens.h"
++
++#define OFFSET (36000)
++
++int main(int argc, char *argv[])
++{
++	struct timespec now, tst;
++	int status, i;
++	pid_t pid;
++
++	if (argc > 1) {
++		if (sscanf(argv[1], "%ld", &now.tv_sec) != 1)
++			return pr_perror("sscanf");
++
++		for (i = 0; i < 2; i++) {
++			_gettime(CLOCK_MONOTONIC, &tst, i);
++			if (abs(tst.tv_sec - now.tv_sec) > 5)
++				return pr_fail("%ld %ld\n", now.tv_sec, tst.tv_sec);
++		}
++		return 0;
++	}
++
++	nscheck();
++
++	ksft_set_plan(1);
++
++	clock_gettime(CLOCK_MONOTONIC, &now);
++
++	if (unshare_timens())
++		return 1;
++
++	if (_settime(CLOCK_MONOTONIC, OFFSET))
++		return 1;
++
++	for (i = 0; i < 2; i++) {
++		_gettime(CLOCK_MONOTONIC, &tst, i);
++		if (abs(tst.tv_sec - now.tv_sec) > 5)
++			return pr_fail("%ld %ld\n",
++					now.tv_sec, tst.tv_sec);
++	}
++
++	if (argc > 1)
++		return 0;
++
++	pid = fork();
++	if (pid < 0)
++		return pr_perror("fork");
++
++	if (pid == 0) {
++		char now_str[64];
++		char *cargv[] = {"exec", now_str, NULL};
++		char *cenv[] = {NULL};
++
++		/* Check that a child process is in the new timens. */
++		for (i = 0; i < 2; i++) {
++			_gettime(CLOCK_MONOTONIC, &tst, i);
++			if (abs(tst.tv_sec - now.tv_sec - OFFSET) > 5)
++				return pr_fail("%ld %ld\n",
++						now.tv_sec + OFFSET, tst.tv_sec);
++		}
++
++		/* Check for proper vvar offsets after execve. */
++		snprintf(now_str, sizeof(now_str), "%ld", now.tv_sec + OFFSET);
++		execve("/proc/self/exe", cargv, cenv);
++		return pr_perror("execve");
++	}
++
++	if (waitpid(pid, &status, 0) != pid)
++		return pr_perror("waitpid");
++
++	if (status)
++		ksft_exit_fail();
++
++	ksft_test_result_pass("exec\n");
++	ksft_exit_pass();
++	return 0;
++}
