@@ -2,37 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 246471399BD
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 13 Jan 2020 20:10:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2324413A70B
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 14 Jan 2020 11:26:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729085AbgAMTJ4 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 13 Jan 2020 14:09:56 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:40011 "EHLO
+        id S1731015AbgANKRe (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 14 Jan 2020 05:17:34 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:42354 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729048AbgAMTJ4 (ORCPT
+        with ESMTP id S1732267AbgANKRC (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 13 Jan 2020 14:09:56 -0500
+        Tue, 14 Jan 2020 05:17:02 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1ir55z-0001Dh-JN; Mon, 13 Jan 2020 20:09:51 +0100
+        id 1irJFj-0007ex-Py; Tue, 14 Jan 2020 11:16:51 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 351E01C18F4;
-        Mon, 13 Jan 2020 20:09:34 +0100 (CET)
-Date:   Mon, 13 Jan 2020 19:09:34 -0000
-From:   "tip-bot2 for Vincenzo Frascino" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 120D81C001A;
+        Tue, 14 Jan 2020 11:16:51 +0100 (CET)
+Date:   Tue, 14 Jan 2020 10:16:50 -0000
+From:   "tip-bot2 for Sean Christopherson" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] arm64: compat: vdso: Expose BUILD_VDSO32
-Cc:     Vincenzo Frascino <vincenzo.frascino@arm.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20190830135902.20861-2-vincenzo.frascino@arm.com>
-References: <20190830135902.20861-2-vincenzo.frascino@arm.com>
+Subject: [tip: x86/cpu] KVM: VMX: Allow KVM_INTEL when building for Centaur
+ and/or Zhaoxin CPUs
+Cc:     Sean Christopherson <sean.j.christopherson@intel.com>,
+        Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20191221044513.21680-20-sean.j.christopherson@intel.com>
+References: <20191221044513.21680-20-sean.j.christopherson@intel.com>
 MIME-Version: 1.0
-Message-ID: <157894257404.19145.1701846128821842403.tip-bot2@tip-bot2>
+Message-ID: <157899701088.1022.10241551646411306885.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -46,41 +46,47 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/core branch of tip:
+The following commit has been merged into the x86/cpu branch of tip:
 
-Commit-ID:     4845c25326cf1db48e010a0fb162da4dfb07665a
-Gitweb:        https://git.kernel.org/tip/4845c25326cf1db48e010a0fb162da4dfb07665a
-Author:        Vincenzo Frascino <vincenzo.frascino@arm.com>
-AuthorDate:    Fri, 30 Aug 2019 14:58:55 +01:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 10 Jan 2020 21:14:04 +01:00
+Commit-ID:     8f63aaf5c493c6502a058585cdfa3c71cdf8c44a
+Gitweb:        https://git.kernel.org/tip/8f63aaf5c493c6502a058585cdfa3c71cdf8c44a
+Author:        Sean Christopherson <sean.j.christopherson@intel.com>
+AuthorDate:    Fri, 20 Dec 2019 20:45:13 -08:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Mon, 13 Jan 2020 19:35:33 +01:00
 
-arm64: compat: vdso: Expose BUILD_VDSO32
+KVM: VMX: Allow KVM_INTEL when building for Centaur and/or Zhaoxin CPUs
 
-clock_gettime32 and clock_getres_time32 should be compiled only with the
-32 bit vdso library.
+Change the dependency for KVM_INTEL, i.e. KVM w/ VMX, from Intel CPUs to
+any CPU that supports the IA32_FEAT_CTL MSR and thus VMX functionality.
+This effectively allows building KVM_INTEL for Centaur and Zhaoxin CPUs.
 
-Expose BUILD_VDSO32 when arm64 compat is compiled, to provide an
-indication to the generic library to include these symbols.
-
-Signed-off-by: Vincenzo Frascino <vincenzo.frascino@arm.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
-Link: https://lore.kernel.org/r/20190830135902.20861-2-vincenzo.frascino@arm.com
-
+Signed-off-by: Sean Christopherson <sean.j.christopherson@intel.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lkml.kernel.org/r/20191221044513.21680-20-sean.j.christopherson@intel.com
 ---
- arch/arm64/include/asm/vdso/compat_gettimeofday.h | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/kvm/Kconfig | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm64/include/asm/vdso/compat_gettimeofday.h b/arch/arm64/include/asm/vdso/compat_gettimeofday.h
-index c50ee1b..fe7afe0 100644
---- a/arch/arm64/include/asm/vdso/compat_gettimeofday.h
-+++ b/arch/arm64/include/asm/vdso/compat_gettimeofday.h
-@@ -17,6 +17,7 @@
- #define VDSO_HAS_CLOCK_GETRES		1
+diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
+index 840e125..991019d 100644
+--- a/arch/x86/kvm/Kconfig
++++ b/arch/x86/kvm/Kconfig
+@@ -60,13 +60,11 @@ config KVM
+ 	  If unsure, say N.
  
- #define VDSO_HAS_32BIT_FALLBACK		1
-+#define BUILD_VDSO32			1
+ config KVM_INTEL
+-	tristate "KVM for Intel processors support"
+-	depends on KVM
+-	# for perf_guest_get_msrs():
+-	depends on CPU_SUP_INTEL
++	tristate "KVM for Intel (and compatible) processors support"
++	depends on KVM && IA32_FEAT_CTL
+ 	---help---
+-	  Provides support for KVM on Intel processors equipped with the VT
+-	  extensions.
++	  Provides support for KVM on processors equipped with Intel's VT
++	  extensions, a.k.a. Virtual Machine Extensions (VMX).
  
- static __always_inline
- int gettimeofday_fallback(struct __kernel_old_timeval *_tv,
+ 	  To compile this as a module, choose M here: the module
+ 	  will be called kvm-intel.
