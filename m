@@ -2,141 +2,94 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ABD0013AA01
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 14 Jan 2020 14:03:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3150713AAE2
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 14 Jan 2020 14:25:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729239AbgANNDJ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 14 Jan 2020 08:03:09 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:43278 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729064AbgANNCq (ORCPT
+        id S1726379AbgANNZ5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 14 Jan 2020 08:25:57 -0500
+Received: from mout.kundenserver.de ([212.227.17.10]:53131 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725994AbgANNZ5 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 14 Jan 2020 08:02:46 -0500
-Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tip-bot2@linutronix.de>)
-        id 1irLqC-0004rS-57; Tue, 14 Jan 2020 14:02:40 +0100
-Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4105D1C085B;
-        Tue, 14 Jan 2020 14:02:24 +0100 (CET)
-Date:   Tue, 14 Jan 2020 13:02:24 -0000
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] ARM: vdso: Set BUILD_VDSO32 and provide 32bit fallbacks
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Vincenzo Frascino <vincenzo.frascino@arm.com>,
-        linux-arm-kernel@lists.infradead.org, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <87tv4zq9dc.fsf@nanos.tec.linutronix.de>
-References: <87tv4zq9dc.fsf@nanos.tec.linutronix.de>
+        Tue, 14 Jan 2020 08:25:57 -0500
+Received: from mail-qv1-f47.google.com ([209.85.219.47]) by
+ mrelayeu.kundenserver.de (mreue106 [212.227.15.145]) with ESMTPSA (Nemesis)
+ id 1MLQl3-1j9AAa2gF9-00IWIF; Tue, 14 Jan 2020 14:25:55 +0100
+Received: by mail-qv1-f47.google.com with SMTP id f16so5624337qvi.4;
+        Tue, 14 Jan 2020 05:25:55 -0800 (PST)
+X-Gm-Message-State: APjAAAVvNkoecJ3BGs8OotCyPhaOyeEiHSbMIJEOIbSXQIS5qc3kSt+c
+        vsQin6yMvCHV8rtPAbUqoEsk6IXIXCDY7oqeqOk=
+X-Google-Smtp-Source: APXvYqxKBFJwxdm1IsfQ2pWB2NZNq11dYRZSUB388qTjEFgYJ2C/j5g292CLulv5pnMTjoZScAr8EDMMVlvvB247yH0=
+X-Received: by 2002:a0c:e7c7:: with SMTP id c7mr16849404qvo.222.1579008354403;
+ Tue, 14 Jan 2020 05:25:54 -0800 (PST)
 MIME-Version: 1.0
-Message-ID: <157900694409.396.3651284834298683513.tip-bot2@tip-bot2>
-X-Mailer: tip-git-log-daemon
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+References: <157858781831.30329.9402583283109438334.tip-bot2@tip-bot2> <20200114130955.2EAC824685@mail.kernel.org>
+In-Reply-To: <20200114130955.2EAC824685@mail.kernel.org>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Tue, 14 Jan 2020 14:25:36 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a2JXFZ2cu4djeKwSNGpNusTiLcqtK6P-czTbG1h=T2m=w@mail.gmail.com>
+Message-ID: <CAK8P3a2JXFZ2cu4djeKwSNGpNusTiLcqtK6P-czTbG1h=T2m=w@mail.gmail.com>
+Subject: Re: [tip: smp/urgent] cpu/SMT: Fix x86 link error without CONFIG_SYSFS
+To:     Sasha Levin <sashal@kernel.org>
+Cc:     tip-bot2 for Arnd Bergmann <tip-bot2@linutronix.de>,
+        linux-tip-commits@vger.kernel.org,
+        "# 3.4.x" <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:xtP8VfJxZCNnWVXa44BqVIy2nqMNG81fMXQAyB3KsKvTIwPVabv
+ UShsXL4tarrk7/9iy5uGZED5taVlnZwiW7JuGY6QErn5+vFx7m3FgfAx/MShvSisaSEDUHI
+ BtiZRw8Qf9z9c5CCydb2DIPfm1nPw2Y91E1jdeyT7A4mdKLiHMx5C1/wgDNo9txitFzLuF0
+ yFbKAhajUJ639FvsV7pmw==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:SoOa7GDRIgY=:c8ShLUzIZyJ1vbb+9gVFaW
+ 8humtsbUTCjdLlyDRTeU5nDixhKs+7OkqaMdlD+12O/gQ2bdyunEA7UhE+wQp9oVPAdIFFLyM
+ QofV68R618DJBhGmED6L9h3kPIo/++ge0oIhu8Ia81r5oByTEKVfDM9oQ9v1vKXufLlSwsssP
+ fBWz2HUORI7AtPKdqcrxIFeKKjAoeOnampGsw73BFTttJzrR+ZJrvjYRje4IZayJ+i1Gp0MTr
+ Q991rYzaJjZYEG3vBPS7iUu+YfdKwEG5B4tlcOuXl0QerB/jjJJuULo06iREvYuvrmPq9umm3
+ Ip1H0B/tM3bLZ7BSTOIyWcOY+a2y7Nocf4/GidH7RaozhUnns2U5H1LsJ1mWTRS0gGhHVonOy
+ vcWqZC3Jugxt9lJ2uLjVClwjB49ai8JH78nS1Bxle12Hojp3Bw9O+GcyvHm+71PvId4jXomDZ
+ mg7deBLcSQ39TTR/bmcLSvuvhJKlOgbhB/uDi30XP19JBm8SgS8eVUYy9750Ox/xy6LU9lU26
+ BwL02PDwqK8Q6fbAfxjt6rLdMG2T2AhfIPkZtHH5R/4zv+BOuPSxd34G7eD14InGsqQ+Bqevl
+ /PTCNhHiAqCllAQAN/TAATdO99tUh5br4E9Napm3HZV4beUuKLklhsRVfuUOcE9u6SafW9lxE
+ 339y0aYpCc10+MDPnRsTIg/5UBszNi4FMv13SwK1GTHkgREagIPkmzRXb2GcHRl88+AHJ/aFW
+ YuRNtw45eOf2vB49khpf5XaoW1VJNP6z/h7Ylwgw6mJhmTf1BJP/ty8s5vVRaXPGDRjy1obRn
+ J/4Mv9cit9tZgiS9CDvEomILpNb1Thk/pSVdoknxlPZCTwEbJ1ihTUfN7/B2WYZEcXdyam/tA
+ zgNdF5/njSziW3hfYPaA==
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/core branch of tip:
+On Tue, Jan 14, 2020 at 2:09 PM Sasha Levin <sashal@kernel.org> wrote:
+>
+> Hi,
+>
+> [This is an automated email]
+>
+> This commit has been processed because it contains a "Fixes:" tag,
+> fixing commit: ec527c318036 ("x86/power: Fix 'nosmt' vs hibernation triple fault during resume").
+>
+> The bot has tested the following trees: v5.4.11, v4.19.95, v4.14.164, v4.9.209.
+>
+> v5.4.11: Build OK!
+> v4.19.95: Failed to apply! Possible dependencies:
+>     34d66caf251d ("x86/speculation: Remove redundant arch_smt_update() invocation")
+>     de7b77e5bb94 ("cpu/hotplug: Create SMT sysfs interface for all arches")
+>
+> v4.14.164: Failed to apply! Possible dependencies:
+>     34d66caf251d ("x86/speculation: Remove redundant arch_smt_update() invocation")
+>     de7b77e5bb94 ("cpu/hotplug: Create SMT sysfs interface for all arches")
+>
+> v4.9.209: Failed to apply! Possible dependencies:
+>     34d66caf251d ("x86/speculation: Remove redundant arch_smt_update() invocation")
+>     de7b77e5bb94 ("cpu/hotplug: Create SMT sysfs interface for all arches")
+>
+>
+> NOTE: The patch will not be queued to stable trees until it is upstream.
+>
+> How should we proceed with this patch?
 
-Commit-ID:     715f23b6104aa297feea20d4f200ca81941e23de
-Gitweb:        https://git.kernel.org/tip/715f23b6104aa297feea20d4f200ca81941e23de
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Tue, 14 Jan 2020 09:41:09 +01:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 14 Jan 2020 12:20:43 +01:00
+According to the changelog text, the patch is only needed on v5.2 and
+higher, so this
+is all good.
 
-ARM: vdso: Set BUILD_VDSO32 and provide 32bit fallbacks
-
-Setting BUILD_VDSO32 is required to expose the legacy 32bit interfaces in
-the generic VDSO code which are going to be hidden behind an #ifdef
-BUILD_VDSO32.
-
-The 32bit fallbacks are necessary to remove the existing
-VDSO_HAS_32BIT_FALLBACK hackery.
-
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Vincenzo Frascino <vincenzo.frascino@arm.com>
-Cc: linux-arm-kernel@lists.infradead.org
-Link: https://lore.kernel.org/r/87tv4zq9dc.fsf@nanos.tec.linutronix.de
----
- arch/arm/include/asm/vdso/gettimeofday.h | 36 +++++++++++++++++++++++-
- arch/arm/vdso/Makefile                   |  2 +-
- 2 files changed, 37 insertions(+), 1 deletion(-)
-
-diff --git a/arch/arm/include/asm/vdso/gettimeofday.h b/arch/arm/include/asm/vdso/gettimeofday.h
-index 0ad2429..fe6e1f6 100644
---- a/arch/arm/include/asm/vdso/gettimeofday.h
-+++ b/arch/arm/include/asm/vdso/gettimeofday.h
-@@ -52,6 +52,24 @@ static __always_inline long clock_gettime_fallback(
- 	return ret;
- }
- 
-+static __always_inline long clock_gettime32_fallback(
-+					clockid_t _clkid,
-+					struct old_timespec32 *_ts)
-+{
-+	register struct old_timespec32 *ts asm("r1") = _ts;
-+	register clockid_t clkid asm("r0") = _clkid;
-+	register long ret asm ("r0");
-+	register long nr asm("r7") = __NR_clock_gettime;
-+
-+	asm volatile(
-+	"	swi #0\n"
-+	: "=r" (ret)
-+	: "r" (clkid), "r" (ts), "r" (nr)
-+	: "memory");
-+
-+	return ret;
-+}
-+
- static __always_inline int clock_getres_fallback(
- 					clockid_t _clkid,
- 					struct __kernel_timespec *_ts)
-@@ -70,6 +88,24 @@ static __always_inline int clock_getres_fallback(
- 	return ret;
- }
- 
-+static __always_inline int clock_getres32_fallback(
-+					clockid_t _clkid,
-+					struct old_timespec32 *_ts)
-+{
-+	register struct old_timespec32 *ts asm("r1") = _ts;
-+	register clockid_t clkid asm("r0") = _clkid;
-+	register long ret asm ("r0");
-+	register long nr asm("r7") = __NR_clock_getres;
-+
-+	asm volatile(
-+	"       swi #0\n"
-+	: "=r" (ret)
-+	: "r" (clkid), "r" (ts), "r" (nr)
-+	: "memory");
-+
-+	return ret;
-+}
-+
- static __always_inline u64 __arch_get_hw_counter(int clock_mode)
- {
- #ifdef CONFIG_ARM_ARCH_TIMER
-diff --git a/arch/arm/vdso/Makefile b/arch/arm/vdso/Makefile
-index 0fda344..1babb39 100644
---- a/arch/arm/vdso/Makefile
-+++ b/arch/arm/vdso/Makefile
-@@ -14,7 +14,7 @@ targets := $(obj-vdso) vdso.so vdso.so.dbg vdso.so.raw vdso.lds
- obj-vdso := $(addprefix $(obj)/, $(obj-vdso))
- 
- ccflags-y := -fPIC -fno-common -fno-builtin -fno-stack-protector
--ccflags-y += -DDISABLE_BRANCH_PROFILING
-+ccflags-y += -DDISABLE_BRANCH_PROFILING -DBUILD_VDSO32
- 
- ldflags-$(CONFIG_CPU_ENDIAN_BE8) := --be8
- ldflags-y := -Bsymbolic --no-undefined -soname=linux-vdso.so.1 \
+        Arnd
