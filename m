@@ -2,36 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A11613AA33
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 14 Jan 2020 14:06:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C23D613A9ED
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 14 Jan 2020 14:03:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728935AbgANNEB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 14 Jan 2020 08:04:01 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:43192 "EHLO
+        id S1728899AbgANNCa (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 14 Jan 2020 08:02:30 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:43176 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728894AbgANNCb (ORCPT
+        with ESMTP id S1728877AbgANNC3 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 14 Jan 2020 08:02:31 -0500
+        Tue, 14 Jan 2020 08:02:29 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1irLpw-0004gf-4o; Tue, 14 Jan 2020 14:02:24 +0100
+        id 1irLpy-0004jB-Au; Tue, 14 Jan 2020 14:02:26 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 2C0441C0805;
-        Tue, 14 Jan 2020 14:02:18 +0100 (CET)
-Date:   Tue, 14 Jan 2020 13:02:18 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5FDA71C0833;
+        Tue, 14 Jan 2020 14:02:19 +0100 (CET)
+Date:   Tue, 14 Jan 2020 13:02:19 -0000
 From:   "tip-bot2 for Andrei Vagin" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] posix-timers: Make timer_settime() time namespace aware
-Cc:     Andrei Vagin <avagin@openvz.org>, Dmitry Safonov <dima@arista.com>,
-        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
+Subject: [tip: timers/core] posix-timers: Use clock_get_ktime() in common_timer_get()
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Andrei Vagin <avagin@gmail.com>,
+        Dmitry Safonov <dima@arista.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191112012724.250792-15-dima@arista.com>
-References: <20191112012724.250792-15-dima@arista.com>
+In-Reply-To: <20191112012724.250792-11-dima@arista.com>
+References: <20191112012724.250792-11-dima@arista.com>
 MIME-Version: 1.0
-Message-ID: <157900693801.396.4434514969684868264.tip-bot2@tip-bot2>
+Message-ID: <157900693919.396.5081348938759568990.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,49 +48,53 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     7da8b3a44bb426a43670b3a97ed61085018a9d43
-Gitweb:        https://git.kernel.org/tip/7da8b3a44bb426a43670b3a97ed61085018a9d43
+Commit-ID:     198fa445d5c4c1a1c6c1d39f962559f8d008e79d
+Gitweb:        https://git.kernel.org/tip/198fa445d5c4c1a1c6c1d39f962559f8d008e79d
 Author:        Andrei Vagin <avagin@gmail.com>
-AuthorDate:    Tue, 12 Nov 2019 01:27:03 
+AuthorDate:    Tue, 12 Nov 2019 01:26:59 
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 14 Jan 2020 12:20:54 +01:00
+CommitterDate: Tue, 14 Jan 2020 12:20:52 +01:00
 
-posix-timers: Make timer_settime() time namespace aware
+posix-timers: Use clock_get_ktime() in common_timer_get()
 
-Wire timer_settime() syscall into time namespace virtualization.
+Now, when the clock_get_ktime() callback exists, the suboptimal
+timespec64-based conversion can be removed from common_timer_get().
 
-sys_timer_settime() calls the ktime->timer_set() callback. Right now,
-common_timer_set() is the only implementation for the callback.
-
-The user-supplied expiry value is converted from timespec64 to ktime and
-then timens_ktime_to_host() can be used to convert namespace's time to the
-host time.
-
-Inside a time namespace kernel's time differs by a fixed offset from a
-user-supplied time, but only absolute values (TIMER_ABSTIME) must be
-converted.
-
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
 Co-developed-by: Dmitry Safonov <dima@arista.com>
-Signed-off-by: Andrei Vagin <avagin@openvz.org>
+Signed-off-by: Andrei Vagin <avagin@gmail.com>
 Signed-off-by: Dmitry Safonov <dima@arista.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20191112012724.250792-15-dima@arista.com
+Link: https://lore.kernel.org/r/20191112012724.250792-11-dima@arista.com
 
 
 ---
- kernel/time/posix-timers.c | 2 ++
- 1 file changed, 2 insertions(+)
+ kernel/time/posix-timers.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
 diff --git a/kernel/time/posix-timers.c b/kernel/time/posix-timers.c
-index d26b915..473082b 100644
+index a1f6b96..fe1de4f 100644
 --- a/kernel/time/posix-timers.c
 +++ b/kernel/time/posix-timers.c
-@@ -885,6 +885,8 @@ int common_timer_set(struct k_itimer *timr, int flags,
+@@ -665,7 +665,6 @@ void common_timer_get(struct k_itimer *timr, struct itimerspec64 *cur_setting)
+ {
+ 	const struct k_clock *kc = timr->kclock;
+ 	ktime_t now, remaining, iv;
+-	struct timespec64 ts64;
+ 	bool sig_none;
  
- 	timr->it_interval = timespec64_to_ktime(new_setting->it_interval);
- 	expires = timespec64_to_ktime(new_setting->it_value);
-+	if (flags & TIMER_ABSTIME)
-+		expires = timens_ktime_to_host(timr->it_clock, expires);
- 	sigev_none = timr->it_sigev_notify == SIGEV_NONE;
+ 	sig_none = timr->it_sigev_notify == SIGEV_NONE;
+@@ -683,12 +682,7 @@ void common_timer_get(struct k_itimer *timr, struct itimerspec64 *cur_setting)
+ 			return;
+ 	}
  
- 	kc->timer_arm(timr, expires, flags & TIMER_ABSTIME, sigev_none);
+-	/*
+-	 * The timespec64 based conversion is suboptimal, but it's not
+-	 * worth to implement yet another callback.
+-	 */
+-	kc->clock_get_timespec(timr->it_clock, &ts64);
+-	now = timespec64_to_ktime(ts64);
++	now = kc->clock_get_ktime(timr->it_clock);
+ 
+ 	/*
+ 	 * When a requeue is pending or this is a SIGEV_NONE timer move the
