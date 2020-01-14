@@ -2,37 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B81913AA0E
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 14 Jan 2020 14:06:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 36CC513AA14
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 14 Jan 2020 14:06:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728721AbgANNCT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 14 Jan 2020 08:02:19 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:43101 "EHLO
+        id S1728813AbgANNCY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 14 Jan 2020 08:02:24 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:43128 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726014AbgANNCT (ORCPT
+        with ESMTP id S1728765AbgANNCX (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 14 Jan 2020 08:02:19 -0500
+        Tue, 14 Jan 2020 08:02:23 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1irLpm-0004ar-Ry; Tue, 14 Jan 2020 14:02:15 +0100
+        id 1irLpp-0004cy-QO; Tue, 14 Jan 2020 14:02:17 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 705971C07F8;
-        Tue, 14 Jan 2020 14:02:14 +0100 (CET)
-Date:   Tue, 14 Jan 2020 13:02:14 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 1BCFA1C0805;
+        Tue, 14 Jan 2020 14:02:16 +0100 (CET)
+Date:   Tue, 14 Jan 2020 13:02:15 -0000
 From:   "tip-bot2 for Dmitry Safonov" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] selftests/timens: Add Time Namespace test for
- supported clocks
-Cc:     Andrei Vagin <avagin@gmail.com>, Dmitry Safonov <dima@arista.com>,
+Subject: [tip: timers/core] x86/vdso: Add time napespace page
+Cc:     Andrei Vagin <avagin@openvz.org>, Dmitry Safonov <dima@arista.com>,
         Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191112012724.250792-29-dima@arista.com>
-References: <20191112012724.250792-29-dima@arista.com>
+In-Reply-To: <20191112012724.250792-23-dima@arista.com>
+References: <20191112012724.250792-23-dima@arista.com>
 MIME-Version: 1.0
-Message-ID: <157900693429.396.1799405970422259878.tip-bot2@tip-bot2>
+Message-ID: <157900693593.396.8255299205804387369.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,436 +47,177 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     61c57676035df29a0a61991f4389e884ba0b68d7
-Gitweb:        https://git.kernel.org/tip/61c57676035df29a0a61991f4389e884ba0b68d7
+Commit-ID:     550a77a74c87ecfdadc2214fef4b25ff125f65ab
+Gitweb:        https://git.kernel.org/tip/550a77a74c87ecfdadc2214fef4b25ff125f65ab
 Author:        Dmitry Safonov <dima@arista.com>
-AuthorDate:    Tue, 12 Nov 2019 01:27:17 
+AuthorDate:    Tue, 12 Nov 2019 01:27:11 
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 14 Jan 2020 12:21:00 +01:00
+CommitterDate: Tue, 14 Jan 2020 12:20:58 +01:00
 
-selftests/timens: Add Time Namespace test for supported clocks
+x86/vdso: Add time napespace page
 
-A test to check that all supported clocks work on host and inside
-a new time namespace. Use both ways to get time: through VDSO and
-by entering the kernel with implicit syscall.
+To support time namespaces in the VDSO with a minimal impact on regular non
+time namespace affected tasks, the namespace handling needs to be hidden in
+a slow path.
 
-Introduce a new timens directory in selftests framework for
-the next timens tests.
+The most obvious place is vdso_seq_begin(). If a task belongs to a time
+namespace then the VVAR page which contains the system wide VDSO data is
+replaced with a namespace specific page which has the same layout as the
+VVAR page. That page has vdso_data->seq set to 1 to enforce the slow path
+and vdso_data->clock_mode set to VCLOCK_TIMENS to enforce the time
+namespace handling path.
 
-Output on success:
- 1..10
- ok 1 Passed for CLOCK_BOOTTIME (syscall)
- ok 2 Passed for CLOCK_BOOTTIME (vdso)
- ok 3 Passed for CLOCK_BOOTTIME_ALARM (syscall)
- ok 4 Passed for CLOCK_BOOTTIME_ALARM (vdso)
- ok 5 Passed for CLOCK_MONOTONIC (syscall)
- ok 6 Passed for CLOCK_MONOTONIC (vdso)
- ok 7 Passed for CLOCK_MONOTONIC_COARSE (syscall)
- ok 8 Passed for CLOCK_MONOTONIC_COARSE (vdso)
- ok 9 Passed for CLOCK_MONOTONIC_RAW (syscall)
- ok 10 Passed for CLOCK_MONOTONIC_RAW (vdso)
- # Pass 10 Fail 0 Xfail 0 Xpass 0 Skip 0 Error 0
+The extra check in the case that vdso_data->seq is odd, e.g. a concurrent
+update of the VDSO data is in progress, is not really affecting regular
+tasks which are not part of a time namespace as the task is spin waiting
+for the update to finish and vdso_data->seq to become even again.
 
-Output with lack of permissions:
- 1..10
- not ok 1 # SKIP need to run as root
+If a time namespace task hits that code path, it invokes the corresponding
+time getter function which retrieves the real VVAR page, reads host time
+and then adds the offset for the requested clock which is stored in the
+special VVAR page.
 
-Output without support of time namespaces:
- 1..10
- not ok 1 # SKIP Time namespaces are not supported
+Allocate the time namespace page among VVAR pages and place vdso_data on
+it.  Provide __arch_get_timens_vdso_data() helper for VDSO code to get the
+code-relative position of VVARs on that special page.
 
 Co-developed-by: Andrei Vagin <avagin@openvz.org>
-Signed-off-by: Andrei Vagin <avagin@gmail.com>
+Signed-off-by: Andrei Vagin <avagin@openvz.org>
 Signed-off-by: Dmitry Safonov <dima@arista.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20191112012724.250792-29-dima@arista.com
+Link: https://lore.kernel.org/r/20191112012724.250792-23-dima@arista.com
 
 
 ---
- tools/testing/selftests/Makefile          |   1 +-
- tools/testing/selftests/timens/.gitignore |   1 +-
- tools/testing/selftests/timens/Makefile   |   6 +-
- tools/testing/selftests/timens/config     |   1 +-
- tools/testing/selftests/timens/log.h      |  26 +++-
- tools/testing/selftests/timens/timens.c   | 190 +++++++++++++++++++++-
- tools/testing/selftests/timens/timens.h   | 100 +++++++++++-
- 7 files changed, 325 insertions(+)
- create mode 100644 tools/testing/selftests/timens/.gitignore
- create mode 100644 tools/testing/selftests/timens/Makefile
- create mode 100644 tools/testing/selftests/timens/config
- create mode 100644 tools/testing/selftests/timens/log.h
- create mode 100644 tools/testing/selftests/timens/timens.c
- create mode 100644 tools/testing/selftests/timens/timens.h
+ arch/x86/Kconfig                         |  1 +
+ arch/x86/entry/vdso/vdso-layout.lds.S    | 11 +++++++++--
+ arch/x86/entry/vdso/vdso2c.c             |  3 +++
+ arch/x86/include/asm/vdso.h              |  1 +
+ arch/x86/include/asm/vdso/gettimeofday.h |  8 ++++++++
+ arch/x86/include/asm/vvar.h              |  5 ++++-
+ 6 files changed, 26 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/Makefile b/tools/testing/selftests/Makefile
-index b001c60..c4939a2 100644
---- a/tools/testing/selftests/Makefile
-+++ b/tools/testing/selftests/Makefile
-@@ -50,6 +50,7 @@ TARGETS += splice
- TARGETS += static_keys
- TARGETS += sync
- TARGETS += sysctl
-+TARGETS += timens
- ifneq (1, $(quicktest))
- TARGETS += timers
- endif
-diff --git a/tools/testing/selftests/timens/.gitignore b/tools/testing/selftests/timens/.gitignore
-new file mode 100644
-index 0000000..27a6932
---- /dev/null
-+++ b/tools/testing/selftests/timens/.gitignore
-@@ -0,0 +1 @@
-+timens
-diff --git a/tools/testing/selftests/timens/Makefile b/tools/testing/selftests/timens/Makefile
-new file mode 100644
-index 0000000..49a9dcc
---- /dev/null
-+++ b/tools/testing/selftests/timens/Makefile
-@@ -0,0 +1,6 @@
-+TEST_GEN_PROGS := timens
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 5e89499..a2488c3 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -124,6 +124,7 @@ config X86
+ 	select GENERIC_STRNLEN_USER
+ 	select GENERIC_TIME_VSYSCALL
+ 	select GENERIC_GETTIMEOFDAY
++	select GENERIC_VDSO_TIME_NS
+ 	select GUP_GET_PTE_LOW_HIGH		if X86_PAE
+ 	select HARDLOCKUP_CHECK_TIMESTAMP	if X86_64
+ 	select HAVE_ACPI_APEI			if ACPI
+diff --git a/arch/x86/entry/vdso/vdso-layout.lds.S b/arch/x86/entry/vdso/vdso-layout.lds.S
+index 2330daa..ea7e015 100644
+--- a/arch/x86/entry/vdso/vdso-layout.lds.S
++++ b/arch/x86/entry/vdso/vdso-layout.lds.S
+@@ -16,8 +16,8 @@ SECTIONS
+ 	 * segment.
+ 	 */
+ 
+-	vvar_start = . - 3 * PAGE_SIZE;
+-	vvar_page = vvar_start;
++	vvar_start = . - 4 * PAGE_SIZE;
++	vvar_page  = vvar_start;
+ 
+ 	/* Place all vvars at the offsets in asm/vvar.h. */
+ #define EMIT_VVAR(name, offset) vvar_ ## name = vvar_page + offset;
+@@ -26,6 +26,13 @@ SECTIONS
+ 
+ 	pvclock_page = vvar_start + PAGE_SIZE;
+ 	hvclock_page = vvar_start + 2 * PAGE_SIZE;
++	timens_page  = vvar_start + 3 * PAGE_SIZE;
 +
-+CFLAGS := -Wall -Werror
-+LDFLAGS := -lrt
-+
-+include ../lib.mk
-diff --git a/tools/testing/selftests/timens/config b/tools/testing/selftests/timens/config
-new file mode 100644
-index 0000000..4480620
---- /dev/null
-+++ b/tools/testing/selftests/timens/config
-@@ -0,0 +1 @@
-+CONFIG_TIME_NS=y
-diff --git a/tools/testing/selftests/timens/log.h b/tools/testing/selftests/timens/log.h
-new file mode 100644
-index 0000000..db64df2
---- /dev/null
-+++ b/tools/testing/selftests/timens/log.h
-@@ -0,0 +1,26 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+
-+#ifndef __SELFTEST_TIMENS_LOG_H__
-+#define __SELFTEST_TIMENS_LOG_H__
-+
-+#define pr_msg(fmt, lvl, ...)						\
-+	ksft_print_msg("[%s] (%s:%d)\t" fmt "\n",			\
-+			lvl, __FILE__, __LINE__, ##__VA_ARGS__)
-+
-+#define pr_p(func, fmt, ...)	func(fmt ": %m", ##__VA_ARGS__)
-+
-+#define pr_err(fmt, ...)						\
-+	({								\
-+		ksft_test_result_error(fmt "\n", ##__VA_ARGS__);		\
-+		-1;							\
-+	})
-+
-+#define pr_fail(fmt, ...)					\
-+	({							\
-+		ksft_test_result_fail(fmt, ##__VA_ARGS__);	\
-+		-1;						\
-+	})
-+
-+#define pr_perror(fmt, ...)	pr_p(pr_err, fmt, ##__VA_ARGS__)
-+
-+#endif
-diff --git a/tools/testing/selftests/timens/timens.c b/tools/testing/selftests/timens/timens.c
-new file mode 100644
-index 0000000..559d26e
---- /dev/null
-+++ b/tools/testing/selftests/timens/timens.c
-@@ -0,0 +1,190 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#define _GNU_SOURCE
-+#include <errno.h>
-+#include <fcntl.h>
-+#include <sched.h>
-+#include <stdio.h>
-+#include <stdbool.h>
-+#include <sys/stat.h>
-+#include <sys/syscall.h>
-+#include <sys/types.h>
-+#include <time.h>
-+#include <unistd.h>
-+#include <time.h>
-+#include <string.h>
-+
-+#include "log.h"
-+#include "timens.h"
-+
-+/*
-+ * Test shouldn't be run for a day, so add 10 days to child
-+ * time and check parent's time to be in the same day.
-+ */
-+#define DAY_IN_SEC			(60*60*24)
-+#define TEN_DAYS_IN_SEC			(10*DAY_IN_SEC)
-+
-+#define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
-+
-+struct test_clock {
-+	clockid_t id;
-+	char *name;
-+	/*
-+	 * off_id is -1 if a clock has own offset, or it contains an index
-+	 * which contains a right offset of this clock.
-+	 */
-+	int off_id;
-+	time_t offset;
-+};
-+
-+#define ct(clock, off_id)	{ clock, #clock, off_id }
-+static struct test_clock clocks[] = {
-+	ct(CLOCK_BOOTTIME, -1),
-+	ct(CLOCK_BOOTTIME_ALARM, 1),
-+	ct(CLOCK_MONOTONIC, -1),
-+	ct(CLOCK_MONOTONIC_COARSE, 1),
-+	ct(CLOCK_MONOTONIC_RAW, 1),
-+};
-+#undef ct
-+
-+static int child_ns, parent_ns = -1;
-+
-+static int switch_ns(int fd)
++#undef _ASM_X86_VVAR_H
++	/* Place all vvars in timens too at the offsets in asm/vvar.h. */
++#define EMIT_VVAR(name, offset) timens_ ## name = timens_page + offset;
++#include <asm/vvar.h>
++#undef EMIT_VVAR
+ 
+ 	. = SIZEOF_HEADERS;
+ 
+diff --git a/arch/x86/entry/vdso/vdso2c.c b/arch/x86/entry/vdso/vdso2c.c
+index 3a4d8d4..3842873 100644
+--- a/arch/x86/entry/vdso/vdso2c.c
++++ b/arch/x86/entry/vdso/vdso2c.c
+@@ -75,12 +75,14 @@ enum {
+ 	sym_vvar_page,
+ 	sym_pvclock_page,
+ 	sym_hvclock_page,
++	sym_timens_page,
+ };
+ 
+ const int special_pages[] = {
+ 	sym_vvar_page,
+ 	sym_pvclock_page,
+ 	sym_hvclock_page,
++	sym_timens_page,
+ };
+ 
+ struct vdso_sym {
+@@ -93,6 +95,7 @@ struct vdso_sym required_syms[] = {
+ 	[sym_vvar_page] = {"vvar_page", true},
+ 	[sym_pvclock_page] = {"pvclock_page", true},
+ 	[sym_hvclock_page] = {"hvclock_page", true},
++	[sym_timens_page] = {"timens_page", true},
+ 	{"VDSO32_NOTE_MASK", true},
+ 	{"__kernel_vsyscall", true},
+ 	{"__kernel_sigreturn", true},
+diff --git a/arch/x86/include/asm/vdso.h b/arch/x86/include/asm/vdso.h
+index 230474e..bbcdc7b 100644
+--- a/arch/x86/include/asm/vdso.h
++++ b/arch/x86/include/asm/vdso.h
+@@ -21,6 +21,7 @@ struct vdso_image {
+ 	long sym_vvar_page;
+ 	long sym_pvclock_page;
+ 	long sym_hvclock_page;
++	long sym_timens_page;
+ 	long sym_VDSO32_NOTE_MASK;
+ 	long sym___kernel_sigreturn;
+ 	long sym___kernel_rt_sigreturn;
+diff --git a/arch/x86/include/asm/vdso/gettimeofday.h b/arch/x86/include/asm/vdso/gettimeofday.h
+index 52c3bcd..6ee1f7d 100644
+--- a/arch/x86/include/asm/vdso/gettimeofday.h
++++ b/arch/x86/include/asm/vdso/gettimeofday.h
+@@ -21,6 +21,7 @@
+ #include <clocksource/hyperv_timer.h>
+ 
+ #define __vdso_data (VVAR(_vdso_data))
++#define __timens_vdso_data (TIMENS(_vdso_data))
+ 
+ #define VDSO_HAS_TIME 1
+ 
+@@ -56,6 +57,13 @@ extern struct ms_hyperv_tsc_page hvclock_page
+ 	__attribute__((visibility("hidden")));
+ #endif
+ 
++#ifdef CONFIG_TIME_NS
++static __always_inline const struct vdso_data *__arch_get_timens_vdso_data(void)
 +{
-+	if (setns(fd, CLONE_NEWTIME)) {
-+		pr_perror("setns()");
-+		return -1;
-+	}
-+
-+	return 0;
++	return __timens_vdso_data;
 +}
-+
-+static int init_namespaces(void)
-+{
-+	char path[] = "/proc/self/ns/time_for_children";
-+	struct stat st1, st2;
-+
-+	if (parent_ns == -1) {
-+		parent_ns = open(path, O_RDONLY);
-+		if (parent_ns <= 0)
-+			return pr_perror("Unable to open %s", path);
-+	}
-+
-+	if (fstat(parent_ns, &st1))
-+		return pr_perror("Unable to stat the parent timens");
-+
-+	if (unshare_timens())
-+		return  -1;
-+
-+	child_ns = open(path, O_RDONLY);
-+	if (child_ns <= 0)
-+		return pr_perror("Unable to open %s", path);
-+
-+	if (fstat(child_ns, &st2))
-+		return pr_perror("Unable to stat the timens");
-+
-+	if (st1.st_ino == st2.st_ino)
-+		return pr_perror("The same child_ns after CLONE_NEWTIME");
-+
-+	return 0;
-+}
-+
-+static int test_gettime(clockid_t clock_index, bool raw_syscall, time_t offset)
-+{
-+	struct timespec child_ts_new, parent_ts_old, cur_ts;
-+	char *entry = raw_syscall ? "syscall" : "vdso";
-+	double precision = 0.0;
-+
-+	if (check_skip(clocks[clock_index].id))
-+		return 0;
-+
-+	switch (clocks[clock_index].id) {
-+	case CLOCK_MONOTONIC_COARSE:
-+	case CLOCK_MONOTONIC_RAW:
-+		precision = -2.0;
-+		break;
-+	}
-+
-+	if (switch_ns(parent_ns))
-+		return pr_err("switch_ns(%d)", child_ns);
-+
-+	if (_gettime(clocks[clock_index].id, &parent_ts_old, raw_syscall))
-+		return -1;
-+
-+	child_ts_new.tv_nsec = parent_ts_old.tv_nsec;
-+	child_ts_new.tv_sec = parent_ts_old.tv_sec + offset;
-+
-+	if (switch_ns(child_ns))
-+		return pr_err("switch_ns(%d)", child_ns);
-+
-+	if (_gettime(clocks[clock_index].id, &cur_ts, raw_syscall))
-+		return -1;
-+
-+	if (difftime(cur_ts.tv_sec, child_ts_new.tv_sec) < precision) {
-+		ksft_test_result_fail(
-+			"Child's %s (%s) time has not changed: %lu -> %lu [%lu]\n",
-+			clocks[clock_index].name, entry, parent_ts_old.tv_sec,
-+			child_ts_new.tv_sec, cur_ts.tv_sec);
-+		return -1;
-+	}
-+
-+	if (switch_ns(parent_ns))
-+		return pr_err("switch_ns(%d)", parent_ns);
-+
-+	if (_gettime(clocks[clock_index].id, &cur_ts, raw_syscall))
-+		return -1;
-+
-+	if (difftime(cur_ts.tv_sec, parent_ts_old.tv_sec) > DAY_IN_SEC) {
-+		ksft_test_result_fail(
-+			"Parent's %s (%s) time has changed: %lu -> %lu [%lu]\n",
-+			clocks[clock_index].name, entry, parent_ts_old.tv_sec,
-+			child_ts_new.tv_sec, cur_ts.tv_sec);
-+		/* Let's play nice and put it closer to original */
-+		clock_settime(clocks[clock_index].id, &cur_ts);
-+		return -1;
-+	}
-+
-+	ksft_test_result_pass("Passed for %s (%s)\n",
-+				clocks[clock_index].name, entry);
-+	return 0;
-+}
-+
-+int main(int argc, char *argv[])
-+{
-+	unsigned int i;
-+	time_t offset;
-+	int ret = 0;
-+
-+	nscheck();
-+
-+	check_config_posix_timers();
-+
-+	ksft_set_plan(ARRAY_SIZE(clocks) * 2);
-+
-+	if (init_namespaces())
-+		return 1;
-+
-+	/* Offsets have to be set before tasks enter the namespace. */
-+	for (i = 0; i < ARRAY_SIZE(clocks); i++) {
-+		if (clocks[i].off_id != -1)
-+			continue;
-+		offset = TEN_DAYS_IN_SEC + i * 1000;
-+		clocks[i].offset = offset;
-+		if (_settime(clocks[i].id, offset))
-+			return 1;
-+	}
-+
-+	for (i = 0; i < ARRAY_SIZE(clocks); i++) {
-+		if (clocks[i].off_id != -1)
-+			offset = clocks[clocks[i].off_id].offset;
-+		else
-+			offset = clocks[i].offset;
-+		ret |= test_gettime(i, true, offset);
-+		ret |= test_gettime(i, false, offset);
-+	}
-+
-+	if (ret)
-+		ksft_exit_fail();
-+
-+	ksft_exit_pass();
-+	return !!ret;
-+}
-diff --git a/tools/testing/selftests/timens/timens.h b/tools/testing/selftests/timens/timens.h
-new file mode 100644
-index 0000000..e09e7e3
---- /dev/null
-+++ b/tools/testing/selftests/timens/timens.h
-@@ -0,0 +1,100 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef __TIMENS_H__
-+#define __TIMENS_H__
-+
-+#include <fcntl.h>
-+#include <unistd.h>
-+#include <stdlib.h>
-+#include <stdbool.h>
-+
-+#include "../kselftest.h"
-+
-+#ifndef CLONE_NEWTIME
-+# define CLONE_NEWTIME	0x00000080
 +#endif
 +
-+static int config_posix_timers = true;
-+
-+static inline void check_config_posix_timers(void)
-+{
-+	if (timer_create(-1, 0, 0) == -1 && errno == ENOSYS)
-+		config_posix_timers = false;
-+}
-+
-+static inline bool check_skip(int clockid)
-+{
-+	if (config_posix_timers)
-+		return false;
-+
-+	switch (clockid) {
-+	/* Only these clocks are supported without CONFIG_POSIX_TIMERS. */
-+	case CLOCK_BOOTTIME:
-+	case CLOCK_MONOTONIC:
-+	case CLOCK_REALTIME:
-+		return false;
-+	default:
-+		ksft_test_result_skip("Posix Clocks & timers are not supported\n");
-+		return true;
-+	}
-+
-+	return false;
-+}
-+
-+static inline int unshare_timens(void)
-+{
-+	if (unshare(CLONE_NEWTIME)) {
-+		if (errno == EPERM)
-+			ksft_exit_skip("need to run as root\n");
-+		return pr_perror("Can't unshare() timens");
-+	}
-+	return 0;
-+}
-+
-+static inline int _settime(clockid_t clk_id, time_t offset)
-+{
-+	int fd, len;
-+	char buf[4096];
-+
-+	if (clk_id == CLOCK_MONOTONIC_COARSE || clk_id == CLOCK_MONOTONIC_RAW)
-+		clk_id = CLOCK_MONOTONIC;
-+
-+	len = snprintf(buf, sizeof(buf), "%d %ld 0", clk_id, offset);
-+
-+	fd = open("/proc/self/timens_offsets", O_WRONLY);
-+	if (fd < 0)
-+		return pr_perror("/proc/self/timens_offsets");
-+
-+	if (write(fd, buf, len) != len)
-+		return pr_perror("/proc/self/timens_offsets");
-+
-+	close(fd);
-+
-+	return 0;
-+}
-+
-+static inline int _gettime(clockid_t clk_id, struct timespec *res, bool raw_syscall)
-+{
-+	int err;
-+
-+	if (!raw_syscall) {
-+		if (clock_gettime(clk_id, res)) {
-+			pr_perror("clock_gettime(%d)", (int)clk_id);
-+			return -1;
-+		}
-+		return 0;
-+	}
-+
-+	err = syscall(SYS_clock_gettime, clk_id, res);
-+	if (err)
-+		pr_perror("syscall(SYS_clock_gettime(%d))", (int)clk_id);
-+
-+	return err;
-+}
-+
-+static inline void nscheck(void)
-+{
-+	if (access("/proc/self/ns/time", F_OK) < 0)
-+		ksft_exit_skip("Time namespaces are not supported\n");
-+}
-+
-+#endif
+ #ifndef BUILD_VDSO32
+ 
+ static __always_inline
+diff --git a/arch/x86/include/asm/vvar.h b/arch/x86/include/asm/vvar.h
+index ff2de30..183e98e 100644
+--- a/arch/x86/include/asm/vvar.h
++++ b/arch/x86/include/asm/vvar.h
+@@ -33,9 +33,12 @@ extern char __vvar_page;
+ 
+ #define DECLARE_VVAR(offset, type, name)				\
+ 	extern type vvar_ ## name[CS_BASES]				\
+-	__attribute__((visibility("hidden")));
++	__attribute__((visibility("hidden")));				\
++	extern type timens_ ## name[CS_BASES]				\
++	__attribute__((visibility("hidden")));				\
+ 
+ #define VVAR(name) (vvar_ ## name)
++#define TIMENS(name) (timens_ ## name)
+ 
+ #define DEFINE_VVAR(type, name)						\
+ 	type name[CS_BASES]						\
