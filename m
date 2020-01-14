@@ -2,38 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EA3113AA03
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 14 Jan 2020 14:03:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B9EAD13A9FF
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 14 Jan 2020 14:03:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726133AbgANNDO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 14 Jan 2020 08:03:14 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:43281 "EHLO
+        id S1729127AbgANNDF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 14 Jan 2020 08:03:05 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:43282 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729074AbgANNCp (ORCPT
+        with ESMTP id S1729075AbgANNCq (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 14 Jan 2020 08:02:45 -0500
+        Tue, 14 Jan 2020 08:02:46 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1irLqB-0004qi-Il; Tue, 14 Jan 2020 14:02:39 +0100
+        id 1irLqE-0004qj-IA; Tue, 14 Jan 2020 14:02:42 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 0505D1C085A;
-        Tue, 14 Jan 2020 14:02:24 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id BCAAE1C0859;
+        Tue, 14 Jan 2020 14:02:23 +0100 (CET)
 Date:   Tue, 14 Jan 2020 13:02:23 -0000
 From:   "tip-bot2 for Vincenzo Frascino" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] lib/vdso: Build 32 bit specific functions in the
- right context
+Subject: [tip: timers/core] lib/vdso: Remove VDSO_HAS_32BIT_FALLBACK
 Cc:     Vincenzo Frascino <vincenzo.frascino@arm.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Andy Lutomirski <luto@kernel.org>, x86 <x86@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20190830135902.20861-3-vincenzo.frascino@arm.com>
-References: <20190830135902.20861-3-vincenzo.frascino@arm.com>
+In-Reply-To: <20190830135902.20861-5-vincenzo.frascino@arm.com>
+References: <20190830135902.20861-5-vincenzo.frascino@arm.com>
 MIME-Version: 1.0
-Message-ID: <157900694383.396.6172623174438789034.tip-bot2@tip-bot2>
+Message-ID: <157900694361.396.14575643195272387916.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,61 +47,66 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     bf279849ad59538a1518c667c0795ec1fe9dbd66
-Gitweb:        https://git.kernel.org/tip/bf279849ad59538a1518c667c0795ec1fe9dbd66
+Commit-ID:     b767081c07a400ff1c6f95b87639a9405886e7a6
+Gitweb:        https://git.kernel.org/tip/b767081c07a400ff1c6f95b87639a9405886e7a6
 Author:        Vincenzo Frascino <vincenzo.frascino@arm.com>
-AuthorDate:    Fri, 30 Aug 2019 14:58:56 +01:00
+AuthorDate:    Fri, 30 Aug 2019 14:58:58 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Tue, 14 Jan 2020 12:20:44 +01:00
 
-lib/vdso: Build 32 bit specific functions in the right context
+lib/vdso: Remove VDSO_HAS_32BIT_FALLBACK
 
-clock_gettime32 and clock_getres_time32 should be compiled only with a
-32 bit vdso library.
+VDSO_HAS_32BIT_FALLBACK was introduced to address a regression which
+caused seccomp to deny access to the applications to clock_gettime64()
+and clock_getres64() because they are not enabled in the existing
+filters.
 
-Exclude these symbols when BUILD_VDSO32 is not defined.
+The purpose of VDSO_HAS_32BIT_FALLBACK was to simplify the conditional
+implementation of __cvdso_clock_get*time32() variants.
+
+Now that all the architectures that support the generic vDSO library
+have been converted to support the 32 bit fallbacks the conditional
+can be removed.
 
 Signed-off-by: Vincenzo Frascino <vincenzo.frascino@arm.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Andy Lutomirski <luto@kernel.org>
-Link: https://lore.kernel.org/r/20190830135902.20861-3-vincenzo.frascino@arm.com
+Link: https://lore.kernel.org/r/20190830135902.20861-5-vincenzo.frascino@arm.com
 
+References: c60a32ea4f45 ("lib/vdso/32: Provide legacy syscall fallbacks")
 
 ---
- lib/vdso/gettimeofday.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ lib/vdso/gettimeofday.c | 10 ----------
+ 1 file changed, 10 deletions(-)
 
 diff --git a/lib/vdso/gettimeofday.c b/lib/vdso/gettimeofday.c
-index 42bd8ab..8e77071 100644
+index 8e77071..cd3aacf 100644
 --- a/lib/vdso/gettimeofday.c
 +++ b/lib/vdso/gettimeofday.c
-@@ -117,6 +117,7 @@ __cvdso_clock_gettime(clockid_t clock, struct __kernel_timespec *ts)
- 	return 0;
- }
+@@ -126,13 +126,8 @@ __cvdso_clock_gettime32(clockid_t clock, struct old_timespec32 *res)
  
-+#ifdef BUILD_VDSO32
- static __maybe_unused int
- __cvdso_clock_gettime32(clockid_t clock, struct old_timespec32 *res)
- {
-@@ -139,6 +140,7 @@ __cvdso_clock_gettime32(clockid_t clock, struct old_timespec32 *res)
- 	}
- 	return ret;
- }
-+#endif /* BUILD_VDSO32 */
+ 	ret = __cvdso_clock_gettime_common(clock, &ts);
  
- static __maybe_unused int
- __cvdso_gettimeofday(struct __kernel_old_timeval *tv, struct timezone *tz)
-@@ -231,6 +233,7 @@ int __cvdso_clock_getres(clockid_t clock, struct __kernel_timespec *res)
- 	return 0;
- }
+-#ifdef VDSO_HAS_32BIT_FALLBACK
+ 	if (unlikely(ret))
+ 		return clock_gettime32_fallback(clock, res);
+-#else
+-	if (unlikely(ret))
+-		ret = clock_gettime_fallback(clock, &ts);
+-#endif
  
-+#ifdef BUILD_VDSO32
- static __maybe_unused int
- __cvdso_clock_getres_time32(clockid_t clock, struct old_timespec32 *res)
- {
-@@ -253,4 +256,5 @@ __cvdso_clock_getres_time32(clockid_t clock, struct old_timespec32 *res)
- 	}
- 	return ret;
- }
-+#endif /* BUILD_VDSO32 */
- #endif /* VDSO_HAS_CLOCK_GETRES */
+ 	if (likely(!ret)) {
+ 		res->tv_sec = ts.tv_sec;
+@@ -242,13 +237,8 @@ __cvdso_clock_getres_time32(clockid_t clock, struct old_timespec32 *res)
+ 
+ 	ret = __cvdso_clock_getres_common(clock, &ts);
+ 
+-#ifdef VDSO_HAS_32BIT_FALLBACK
+ 	if (unlikely(ret))
+ 		return clock_getres32_fallback(clock, res);
+-#else
+-	if (unlikely(ret))
+-		ret = clock_getres_fallback(clock, &ts);
+-#endif
+ 
+ 	if (likely(!ret && res)) {
+ 		res->tv_sec = ts.tv_sec;
