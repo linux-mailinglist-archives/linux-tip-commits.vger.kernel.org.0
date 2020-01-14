@@ -2,36 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 36CC513AA14
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 14 Jan 2020 14:06:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 779CF13AA48
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 14 Jan 2020 14:06:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728813AbgANNCY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 14 Jan 2020 08:02:24 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:43128 "EHLO
+        id S1729021AbgANNEs (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 14 Jan 2020 08:04:48 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:43111 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728765AbgANNCX (ORCPT
+        with ESMTP id S1727231AbgANNCU (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 14 Jan 2020 08:02:23 -0500
+        Tue, 14 Jan 2020 08:02:20 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1irLpp-0004cy-QO; Tue, 14 Jan 2020 14:02:17 +0100
+        id 1irLpo-0004cl-6n; Tue, 14 Jan 2020 14:02:16 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 1BCFA1C0805;
-        Tue, 14 Jan 2020 14:02:16 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D24171C07EC;
+        Tue, 14 Jan 2020 14:02:15 +0100 (CET)
 Date:   Tue, 14 Jan 2020 13:02:15 -0000
 From:   "tip-bot2 for Dmitry Safonov" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] x86/vdso: Add time napespace page
-Cc:     Andrei Vagin <avagin@openvz.org>, Dmitry Safonov <dima@arista.com>,
+Subject: [tip: timers/core] time: Allocate per-timens vvar page
+Cc:     Andy Lutomirski <luto@kernel.org>, Andrei Vagin <avagin@gmail.com>,
+        Dmitry Safonov <dima@arista.com>,
         Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191112012724.250792-23-dima@arista.com>
-References: <20191112012724.250792-23-dima@arista.com>
+In-Reply-To: <20191112012724.250792-24-dima@arista.com>
+References: <20191112012724.250792-24-dima@arista.com>
 MIME-Version: 1.0
-Message-ID: <157900693593.396.8255299205804387369.tip-bot2@tip-bot2>
+Message-ID: <157900693562.396.13657991719182841848.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,177 +48,222 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     550a77a74c87ecfdadc2214fef4b25ff125f65ab
-Gitweb:        https://git.kernel.org/tip/550a77a74c87ecfdadc2214fef4b25ff125f65ab
+Commit-ID:     afaa7b5ac7c87479fb5a626f87d2157af30d6401
+Gitweb:        https://git.kernel.org/tip/afaa7b5ac7c87479fb5a626f87d2157af30d6401
 Author:        Dmitry Safonov <dima@arista.com>
-AuthorDate:    Tue, 12 Nov 2019 01:27:11 
+AuthorDate:    Tue, 12 Nov 2019 01:27:12 
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Tue, 14 Jan 2020 12:20:58 +01:00
 
-x86/vdso: Add time napespace page
+time: Allocate per-timens vvar page
 
-To support time namespaces in the VDSO with a minimal impact on regular non
-time namespace affected tasks, the namespace handling needs to be hidden in
-a slow path.
+VDSO support for Time namespace needs to set up a page with the same
+layout as VVAR. That timens page will be placed on position of VVAR page
+inside namespace. That page contains time namespace clock offsets and it
+has vdso_data->seq set to 1 to enforce the slow path and
+vdso_data->clock_mode set to VCLOCK_TIMENS to enforce the time namespace
+handling path.
 
-The most obvious place is vdso_seq_begin(). If a task belongs to a time
-namespace then the VVAR page which contains the system wide VDSO data is
-replaced with a namespace specific page which has the same layout as the
-VVAR page. That page has vdso_data->seq set to 1 to enforce the slow path
-and vdso_data->clock_mode set to VCLOCK_TIMENS to enforce the time
-namespace handling path.
+Allocate the timens page during namespace creation. Setup the offsets
+when the first task enters the ns and freeze them to guarantee the pace
+of monotonic/boottime clocks and to avoid breakage of applications.
 
-The extra check in the case that vdso_data->seq is odd, e.g. a concurrent
-update of the VDSO data is in progress, is not really affecting regular
-tasks which are not part of a time namespace as the task is spin waiting
-for the update to finish and vdso_data->seq to become even again.
+The design decision is to have a global offset_lock which is used during
+namespace offsets setup and to freeze offsets when the first task joins the
+new time namespace. That is better in terms of memory usage compared to
+having a per namespace mutex that's used only during the setup period.
 
-If a time namespace task hits that code path, it invokes the corresponding
-time getter function which retrieves the real VVAR page, reads host time
-and then adds the offset for the requested clock which is stored in the
-special VVAR page.
-
-Allocate the time namespace page among VVAR pages and place vdso_data on
-it.  Provide __arch_get_timens_vdso_data() helper for VDSO code to get the
-code-relative position of VVARs on that special page.
-
-Co-developed-by: Andrei Vagin <avagin@openvz.org>
-Signed-off-by: Andrei Vagin <avagin@openvz.org>
+Suggested-by: Andy Lutomirski <luto@kernel.org>
+Based-on-work-by: Thomas Gleixner <tglx@linutronix.de>
+Co-developed-by: Andrei Vagin <avagin@gmail.com>
+Signed-off-by: Andrei Vagin <avagin@gmail.com>
 Signed-off-by: Dmitry Safonov <dima@arista.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20191112012724.250792-23-dima@arista.com
+Link: https://lore.kernel.org/r/20191112012724.250792-24-dima@arista.com
 
 
 ---
- arch/x86/Kconfig                         |  1 +
- arch/x86/entry/vdso/vdso-layout.lds.S    | 11 +++++++++--
- arch/x86/entry/vdso/vdso2c.c             |  3 +++
- arch/x86/include/asm/vdso.h              |  1 +
- arch/x86/include/asm/vdso/gettimeofday.h |  8 ++++++++
- arch/x86/include/asm/vvar.h              |  5 ++++-
- 6 files changed, 26 insertions(+), 3 deletions(-)
+ include/linux/time_namespace.h |   3 +-
+ kernel/time/namespace.c        | 104 +++++++++++++++++++++++++++++++-
+ 2 files changed, 106 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 5e89499..a2488c3 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -124,6 +124,7 @@ config X86
- 	select GENERIC_STRNLEN_USER
- 	select GENERIC_TIME_VSYSCALL
- 	select GENERIC_GETTIMEOFDAY
-+	select GENERIC_VDSO_TIME_NS
- 	select GUP_GET_PTE_LOW_HIGH		if X86_PAE
- 	select HARDLOCKUP_CHECK_TIMESTAMP	if X86_64
- 	select HAVE_ACPI_APEI			if ACPI
-diff --git a/arch/x86/entry/vdso/vdso-layout.lds.S b/arch/x86/entry/vdso/vdso-layout.lds.S
-index 2330daa..ea7e015 100644
---- a/arch/x86/entry/vdso/vdso-layout.lds.S
-+++ b/arch/x86/entry/vdso/vdso-layout.lds.S
-@@ -16,8 +16,8 @@ SECTIONS
- 	 * segment.
- 	 */
+diff --git a/include/linux/time_namespace.h b/include/linux/time_namespace.h
+index 063a343..6b7767f 100644
+--- a/include/linux/time_namespace.h
++++ b/include/linux/time_namespace.h
+@@ -23,6 +23,9 @@ struct time_namespace {
+ 	struct ucounts		*ucounts;
+ 	struct ns_common	ns;
+ 	struct timens_offsets	offsets;
++	struct page		*vvar_page;
++	/* If set prevents changing offsets after any task joined namespace. */
++	bool			frozen_offsets;
+ } __randomize_layout;
  
--	vvar_start = . - 3 * PAGE_SIZE;
--	vvar_page = vvar_start;
-+	vvar_start = . - 4 * PAGE_SIZE;
-+	vvar_page  = vvar_start;
+ extern struct time_namespace init_time_ns;
+diff --git a/kernel/time/namespace.c b/kernel/time/namespace.c
+index 1a0fbaa..d705c15 100644
+--- a/kernel/time/namespace.c
++++ b/kernel/time/namespace.c
+@@ -16,6 +16,8 @@
+ #include <linux/err.h>
+ #include <linux/mm.h>
  
- 	/* Place all vvars at the offsets in asm/vvar.h. */
- #define EMIT_VVAR(name, offset) vvar_ ## name = vvar_page + offset;
-@@ -26,6 +26,13 @@ SECTIONS
- 
- 	pvclock_page = vvar_start + PAGE_SIZE;
- 	hvclock_page = vvar_start + 2 * PAGE_SIZE;
-+	timens_page  = vvar_start + 3 * PAGE_SIZE;
++#include <vdso/datapage.h>
 +
-+#undef _ASM_X86_VVAR_H
-+	/* Place all vvars in timens too at the offsets in asm/vvar.h. */
-+#define EMIT_VVAR(name, offset) timens_ ## name = timens_page + offset;
-+#include <asm/vvar.h>
-+#undef EMIT_VVAR
+ ktime_t do_timens_ktime_to_host(clockid_t clockid, ktime_t tim,
+ 				struct timens_offsets *ns_offsets)
+ {
+@@ -90,16 +92,23 @@ static struct time_namespace *clone_time_ns(struct user_namespace *user_ns,
  
- 	. = SIZEOF_HEADERS;
+ 	kref_init(&ns->kref);
  
-diff --git a/arch/x86/entry/vdso/vdso2c.c b/arch/x86/entry/vdso/vdso2c.c
-index 3a4d8d4..3842873 100644
---- a/arch/x86/entry/vdso/vdso2c.c
-+++ b/arch/x86/entry/vdso/vdso2c.c
-@@ -75,12 +75,14 @@ enum {
- 	sym_vvar_page,
- 	sym_pvclock_page,
- 	sym_hvclock_page,
-+	sym_timens_page,
- };
++	ns->vvar_page = alloc_page(GFP_KERNEL | __GFP_ZERO);
++	if (!ns->vvar_page)
++		goto fail_free;
++
+ 	err = ns_alloc_inum(&ns->ns);
+ 	if (err)
+-		goto fail_free;
++		goto fail_free_page;
  
- const int special_pages[] = {
- 	sym_vvar_page,
- 	sym_pvclock_page,
- 	sym_hvclock_page,
-+	sym_timens_page,
- };
+ 	ns->ucounts = ucounts;
+ 	ns->ns.ops = &timens_operations;
+ 	ns->user_ns = get_user_ns(user_ns);
+ 	ns->offsets = old_ns->offsets;
++	ns->frozen_offsets = false;
+ 	return ns;
  
- struct vdso_sym {
-@@ -93,6 +95,7 @@ struct vdso_sym required_syms[] = {
- 	[sym_vvar_page] = {"vvar_page", true},
- 	[sym_pvclock_page] = {"pvclock_page", true},
- 	[sym_hvclock_page] = {"hvclock_page", true},
-+	[sym_timens_page] = {"timens_page", true},
- 	{"VDSO32_NOTE_MASK", true},
- 	{"__kernel_vsyscall", true},
- 	{"__kernel_sigreturn", true},
-diff --git a/arch/x86/include/asm/vdso.h b/arch/x86/include/asm/vdso.h
-index 230474e..bbcdc7b 100644
---- a/arch/x86/include/asm/vdso.h
-+++ b/arch/x86/include/asm/vdso.h
-@@ -21,6 +21,7 @@ struct vdso_image {
- 	long sym_vvar_page;
- 	long sym_pvclock_page;
- 	long sym_hvclock_page;
-+	long sym_timens_page;
- 	long sym_VDSO32_NOTE_MASK;
- 	long sym___kernel_sigreturn;
- 	long sym___kernel_rt_sigreturn;
-diff --git a/arch/x86/include/asm/vdso/gettimeofday.h b/arch/x86/include/asm/vdso/gettimeofday.h
-index 52c3bcd..6ee1f7d 100644
---- a/arch/x86/include/asm/vdso/gettimeofday.h
-+++ b/arch/x86/include/asm/vdso/gettimeofday.h
-@@ -21,6 +21,7 @@
- #include <clocksource/hyperv_timer.h>
++fail_free_page:
++	__free_page(ns->vvar_page);
+ fail_free:
+ 	kfree(ns);
+ fail_dec:
+@@ -128,6 +137,93 @@ struct time_namespace *copy_time_ns(unsigned long flags,
+ 	return clone_time_ns(user_ns, old_ns);
+ }
  
- #define __vdso_data (VVAR(_vdso_data))
-+#define __timens_vdso_data (TIMENS(_vdso_data))
- 
- #define VDSO_HAS_TIME 1
- 
-@@ -56,6 +57,13 @@ extern struct ms_hyperv_tsc_page hvclock_page
- 	__attribute__((visibility("hidden")));
- #endif
- 
-+#ifdef CONFIG_TIME_NS
-+static __always_inline const struct vdso_data *__arch_get_timens_vdso_data(void)
++static struct timens_offset offset_from_ts(struct timespec64 off)
 +{
-+	return __timens_vdso_data;
-+}
-+#endif
++	struct timens_offset ret;
 +
- #ifndef BUILD_VDSO32
++	ret.sec = off.tv_sec;
++	ret.nsec = off.tv_nsec;
++
++	return ret;
++}
++
++/*
++ * A time namespace VVAR page has the same layout as the VVAR page which
++ * contains the system wide VDSO data.
++ *
++ * For a normal task the VVAR pages are installed in the normal ordering:
++ *     VVAR
++ *     PVCLOCK
++ *     HVCLOCK
++ *     TIMENS   <- Not really required
++ *
++ * Now for a timens task the pages are installed in the following order:
++ *     TIMENS
++ *     PVCLOCK
++ *     HVCLOCK
++ *     VVAR
++ *
++ * The check for vdso_data->clock_mode is in the unlikely path of
++ * the seq begin magic. So for the non-timens case most of the time
++ * 'seq' is even, so the branch is not taken.
++ *
++ * If 'seq' is odd, i.e. a concurrent update is in progress, the extra check
++ * for vdso_data->clock_mode is a non-issue. The task is spin waiting for the
++ * update to finish and for 'seq' to become even anyway.
++ *
++ * Timens page has vdso_data->clock_mode set to VCLOCK_TIMENS which enforces
++ * the time namespace handling path.
++ */
++static void timens_setup_vdso_data(struct vdso_data *vdata,
++				   struct time_namespace *ns)
++{
++	struct timens_offset *offset = vdata->offset;
++	struct timens_offset monotonic = offset_from_ts(ns->offsets.monotonic);
++	struct timens_offset boottime = offset_from_ts(ns->offsets.boottime);
++
++	vdata->seq			= 1;
++	vdata->clock_mode		= VCLOCK_TIMENS;
++	offset[CLOCK_MONOTONIC]		= monotonic;
++	offset[CLOCK_MONOTONIC_RAW]	= monotonic;
++	offset[CLOCK_MONOTONIC_COARSE]	= monotonic;
++	offset[CLOCK_BOOTTIME]		= boottime;
++	offset[CLOCK_BOOTTIME_ALARM]	= boottime;
++}
++
++/*
++ * Protects possibly multiple offsets writers racing each other
++ * and tasks entering the namespace.
++ */
++static DEFINE_MUTEX(offset_lock);
++
++static void timens_set_vvar_page(struct task_struct *task,
++				struct time_namespace *ns)
++{
++	struct vdso_data *vdata;
++	unsigned int i;
++
++	if (ns == &init_time_ns)
++		return;
++
++	/* Fast-path, taken by every task in namespace except the first. */
++	if (likely(ns->frozen_offsets))
++		return;
++
++	mutex_lock(&offset_lock);
++	/* Nothing to-do: vvar_page has been already initialized. */
++	if (ns->frozen_offsets)
++		goto out;
++
++	ns->frozen_offsets = true;
++	vdata = arch_get_vdso_data(page_address(ns->vvar_page));
++
++	for (i = 0; i < CS_BASES; i++)
++		timens_setup_vdso_data(&vdata[i], ns);
++
++out:
++	mutex_unlock(&offset_lock);
++}
++
+ void free_time_ns(struct kref *kref)
+ {
+ 	struct time_namespace *ns;
+@@ -136,6 +232,7 @@ void free_time_ns(struct kref *kref)
+ 	dec_time_namespaces(ns->ucounts);
+ 	put_user_ns(ns->user_ns);
+ 	ns_free_inum(&ns->ns);
++	__free_page(ns->vvar_page);
+ 	kfree(ns);
+ }
  
- static __always_inline
-diff --git a/arch/x86/include/asm/vvar.h b/arch/x86/include/asm/vvar.h
-index ff2de30..183e98e 100644
---- a/arch/x86/include/asm/vvar.h
-+++ b/arch/x86/include/asm/vvar.h
-@@ -33,9 +33,12 @@ extern char __vvar_page;
+@@ -192,6 +289,8 @@ static int timens_install(struct nsproxy *nsproxy, struct ns_common *new)
+ 	    !ns_capable(current_user_ns(), CAP_SYS_ADMIN))
+ 		return -EPERM;
  
- #define DECLARE_VVAR(offset, type, name)				\
- 	extern type vvar_ ## name[CS_BASES]				\
--	__attribute__((visibility("hidden")));
-+	__attribute__((visibility("hidden")));				\
-+	extern type timens_ ## name[CS_BASES]				\
-+	__attribute__((visibility("hidden")));				\
++	timens_set_vvar_page(current, ns);
++
+ 	get_time_ns(ns);
+ 	put_time_ns(nsproxy->time_ns);
+ 	nsproxy->time_ns = ns;
+@@ -211,6 +310,8 @@ int timens_on_fork(struct nsproxy *nsproxy, struct task_struct *tsk)
+ 	if (nsproxy->time_ns == nsproxy->time_ns_for_children)
+ 		return 0;
  
- #define VVAR(name) (vvar_ ## name)
-+#define TIMENS(name) (timens_ ## name)
++	timens_set_vvar_page(tsk, ns);
++
+ 	get_time_ns(ns);
+ 	put_time_ns(nsproxy->time_ns);
+ 	nsproxy->time_ns = ns;
+@@ -246,6 +347,7 @@ struct time_namespace init_time_ns = {
+ 	.user_ns	= &init_user_ns,
+ 	.ns.inum	= PROC_TIME_INIT_INO,
+ 	.ns.ops		= &timens_operations,
++	.frozen_offsets	= true,
+ };
  
- #define DEFINE_VVAR(type, name)						\
- 	type name[CS_BASES]						\
+ static int __init time_ns_init(void)
