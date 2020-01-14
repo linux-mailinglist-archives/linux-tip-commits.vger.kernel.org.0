@@ -2,37 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BC7013AA18
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 14 Jan 2020 14:06:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9782B13A9F3
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 14 Jan 2020 14:03:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728925AbgANNCc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 14 Jan 2020 08:02:32 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:43194 "EHLO
+        id S1729078AbgANNCp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 14 Jan 2020 08:02:45 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:43264 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728896AbgANNCc (ORCPT
+        with ESMTP id S1729035AbgANNCn (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 14 Jan 2020 08:02:32 -0500
+        Tue, 14 Jan 2020 08:02:43 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1irLq0-0004kw-G5; Tue, 14 Jan 2020 14:02:28 +0100
+        id 1irLq7-0004mi-JL; Tue, 14 Jan 2020 14:02:38 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 381941C0838;
-        Tue, 14 Jan 2020 14:02:20 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 01CBE1C07FA;
+        Tue, 14 Jan 2020 14:02:21 +0100 (CET)
 Date:   Tue, 14 Jan 2020 13:02:20 -0000
 From:   "tip-bot2 for Andrei Vagin" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] alarmtimer: Rename gettime() callback to get_ktime()
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Andrei Vagin <avagin@gmail.com>,
-        Dmitry Safonov <dima@arista.com>, x86 <x86@kernel.org>,
+Subject: [tip: timers/core] time: Add timens_offsets to be used for tasks in
+ time namespace
+Cc:     Andrei Vagin <avagin@openvz.org>, Dmitry Safonov <dima@arista.com>,
+        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191112012724.250792-8-dima@arista.com>
-References: <20191112012724.250792-8-dima@arista.com>
+In-Reply-To: <20191112012724.250792-5-dima@arista.com>
+References: <20191112012724.250792-5-dima@arista.com>
 MIME-Version: 1.0
-Message-ID: <157900694002.396.7319795790821380803.tip-bot2@tip-bot2>
+Message-ID: <157900694083.396.6789904611289992625.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,182 +48,102 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     41b3b8dffc1f84e581addfbc09bec0289db3315e
-Gitweb:        https://git.kernel.org/tip/41b3b8dffc1f84e581addfbc09bec0289db3315e
-Author:        Andrei Vagin <avagin@gmail.com>
-AuthorDate:    Tue, 12 Nov 2019 01:26:56 
+Commit-ID:     af993f58d69ee9c1f421dfc87c3ed231c113989c
+Gitweb:        https://git.kernel.org/tip/af993f58d69ee9c1f421dfc87c3ed231c113989c
+Author:        Andrei Vagin <avagin@openvz.org>
+AuthorDate:    Tue, 12 Nov 2019 01:26:53 
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 14 Jan 2020 12:20:50 +01:00
+CommitterDate: Tue, 14 Jan 2020 12:20:49 +01:00
 
-alarmtimer: Rename gettime() callback to get_ktime()
+time: Add timens_offsets to be used for tasks in time namespace
 
-The upcoming support for time namespaces requires to have access to:
+Introduce offsets for time namespace. They will contain an adjustment
+needed to convert clocks to/from host's.
 
-  - The time in a tasks time namespace for sys_clock_gettime()
-  - The time in the root name space for common_timer_get()
+A new namespace is created with the same offsets as the time namespace
+of the current process.
 
-struct alarm_base needs to follow the same naming convention, so rename
-.gettime() callback into get_ktime() as a preparation for introducing
-get_timespec().
-
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
 Co-developed-by: Dmitry Safonov <dima@arista.com>
-Signed-off-by: Andrei Vagin <avagin@gmail.com>
+Signed-off-by: Andrei Vagin <avagin@openvz.org>
 Signed-off-by: Dmitry Safonov <dima@arista.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20191112012724.250792-8-dima@arista.com
+Link: https://lore.kernel.org/r/20191112012724.250792-5-dima@arista.com
 
 
 ---
- kernel/time/alarmtimer.c | 34 +++++++++++++++++-----------------
- 1 file changed, 17 insertions(+), 17 deletions(-)
+ include/linux/time_namespace.h | 22 ++++++++++++++++++++++
+ kernel/time/namespace.c        |  2 ++
+ 2 files changed, 24 insertions(+)
 
-diff --git a/kernel/time/alarmtimer.c b/kernel/time/alarmtimer.c
-index 62b06cf..22b6f9b 100644
---- a/kernel/time/alarmtimer.c
-+++ b/kernel/time/alarmtimer.c
-@@ -36,13 +36,13 @@
-  * struct alarm_base - Alarm timer bases
-  * @lock:		Lock for syncrhonized access to the base
-  * @timerqueue:		Timerqueue head managing the list of events
-- * @gettime:		Function to read the time correlating to the base
-+ * @get_ktime:		Function to read the time correlating to the base
-  * @base_clockid:	clockid for the base
-  */
- static struct alarm_base {
- 	spinlock_t		lock;
- 	struct timerqueue_head	timerqueue;
--	ktime_t			(*gettime)(void);
-+	ktime_t			(*get_ktime)(void);
- 	clockid_t		base_clockid;
- } alarm_bases[ALARM_NUMTYPE];
+diff --git a/include/linux/time_namespace.h b/include/linux/time_namespace.h
+index 8c74cc1..d7e3b49 100644
+--- a/include/linux/time_namespace.h
++++ b/include/linux/time_namespace.h
+@@ -12,11 +12,17 @@
+ struct user_namespace;
+ extern struct user_namespace init_user_ns;
  
-@@ -207,7 +207,7 @@ static enum hrtimer_restart alarmtimer_fired(struct hrtimer *timer)
- 	spin_unlock_irqrestore(&base->lock, flags);
++struct timens_offsets {
++	struct timespec64 monotonic;
++	struct timespec64 boottime;
++};
++
+ struct time_namespace {
+ 	struct kref		kref;
+ 	struct user_namespace	*user_ns;
+ 	struct ucounts		*ucounts;
+ 	struct ns_common	ns;
++	struct timens_offsets	offsets;
+ } __randomize_layout;
  
- 	if (alarm->function)
--		restart = alarm->function(alarm, base->gettime());
-+		restart = alarm->function(alarm, base->get_ktime());
- 
- 	spin_lock_irqsave(&base->lock, flags);
- 	if (restart != ALARMTIMER_NORESTART) {
-@@ -217,7 +217,7 @@ static enum hrtimer_restart alarmtimer_fired(struct hrtimer *timer)
- 	}
- 	spin_unlock_irqrestore(&base->lock, flags);
- 
--	trace_alarmtimer_fired(alarm, base->gettime());
-+	trace_alarmtimer_fired(alarm, base->get_ktime());
- 	return ret;
- 
+ extern struct time_namespace init_time_ns;
+@@ -39,6 +45,20 @@ static inline void put_time_ns(struct time_namespace *ns)
+ 	kref_put(&ns->kref, free_time_ns);
  }
-@@ -225,7 +225,7 @@ static enum hrtimer_restart alarmtimer_fired(struct hrtimer *timer)
- ktime_t alarm_expires_remaining(const struct alarm *alarm)
+ 
++static inline void timens_add_monotonic(struct timespec64 *ts)
++{
++	struct timens_offsets *ns_offsets = &current->nsproxy->time_ns->offsets;
++
++	*ts = timespec64_add(*ts, ns_offsets->monotonic);
++}
++
++static inline void timens_add_boottime(struct timespec64 *ts)
++{
++	struct timens_offsets *ns_offsets = &current->nsproxy->time_ns->offsets;
++
++	*ts = timespec64_add(*ts, ns_offsets->boottime);
++}
++
+ #else
+ static inline struct time_namespace *get_time_ns(struct time_namespace *ns)
  {
- 	struct alarm_base *base = &alarm_bases[alarm->type];
--	return ktime_sub(alarm->node.expires, base->gettime());
-+	return ktime_sub(alarm->node.expires, base->get_ktime());
- }
- EXPORT_SYMBOL_GPL(alarm_expires_remaining);
- 
-@@ -270,7 +270,7 @@ static int alarmtimer_suspend(struct device *dev)
- 		spin_unlock_irqrestore(&base->lock, flags);
- 		if (!next)
- 			continue;
--		delta = ktime_sub(next->expires, base->gettime());
-+		delta = ktime_sub(next->expires, base->get_ktime());
- 		if (!min || (delta < min)) {
- 			expires = next->expires;
- 			min = delta;
-@@ -364,7 +364,7 @@ void alarm_start(struct alarm *alarm, ktime_t start)
- 	hrtimer_start(&alarm->timer, alarm->node.expires, HRTIMER_MODE_ABS);
- 	spin_unlock_irqrestore(&base->lock, flags);
- 
--	trace_alarmtimer_start(alarm, base->gettime());
-+	trace_alarmtimer_start(alarm, base->get_ktime());
- }
- EXPORT_SYMBOL_GPL(alarm_start);
- 
-@@ -377,7 +377,7 @@ void alarm_start_relative(struct alarm *alarm, ktime_t start)
- {
- 	struct alarm_base *base = &alarm_bases[alarm->type];
- 
--	start = ktime_add_safe(start, base->gettime());
-+	start = ktime_add_safe(start, base->get_ktime());
- 	alarm_start(alarm, start);
- }
- EXPORT_SYMBOL_GPL(alarm_start_relative);
-@@ -414,7 +414,7 @@ int alarm_try_to_cancel(struct alarm *alarm)
- 		alarmtimer_dequeue(base, alarm);
- 	spin_unlock_irqrestore(&base->lock, flags);
- 
--	trace_alarmtimer_cancel(alarm, base->gettime());
-+	trace_alarmtimer_cancel(alarm, base->get_ktime());
- 	return ret;
- }
- EXPORT_SYMBOL_GPL(alarm_try_to_cancel);
-@@ -474,7 +474,7 @@ u64 alarm_forward_now(struct alarm *alarm, ktime_t interval)
- {
- 	struct alarm_base *base = &alarm_bases[alarm->type];
- 
--	return alarm_forward(alarm, base->gettime(), interval);
-+	return alarm_forward(alarm, base->get_ktime(), interval);
- }
- EXPORT_SYMBOL_GPL(alarm_forward_now);
- 
-@@ -500,7 +500,7 @@ static void alarmtimer_freezerset(ktime_t absexp, enum alarmtimer_type type)
- 		return;
- 	}
- 
--	delta = ktime_sub(absexp, base->gettime());
-+	delta = ktime_sub(absexp, base->get_ktime());
- 
- 	spin_lock_irqsave(&freezer_delta_lock, flags);
- 	if (!freezer_delta || (delta < freezer_delta)) {
-@@ -632,7 +632,7 @@ static void alarm_timer_arm(struct k_itimer *timr, ktime_t expires,
- 	struct alarm_base *base = &alarm_bases[alarm->type];
- 
- 	if (!absolute)
--		expires = ktime_add_safe(expires, base->gettime());
-+		expires = ktime_add_safe(expires, base->get_ktime());
- 	if (sigev_none)
- 		alarm->node.expires = expires;
- 	else
-@@ -670,7 +670,7 @@ static int alarm_clock_get_timespec(clockid_t which_clock, struct timespec64 *tp
- 	if (!alarmtimer_get_rtcdev())
- 		return -EINVAL;
- 
--	*tp = ktime_to_timespec64(base->gettime());
-+	*tp = ktime_to_timespec64(base->get_ktime());
+@@ -66,6 +86,8 @@ static inline int timens_on_fork(struct nsproxy *nsproxy,
  	return 0;
  }
  
-@@ -747,7 +747,7 @@ static int alarmtimer_do_nsleep(struct alarm *alarm, ktime_t absexp,
- 		struct timespec64 rmt;
- 		ktime_t rem;
++static inline void timens_add_monotonic(struct timespec64 *ts) { }
++static inline void timens_add_boottime(struct timespec64 *ts) { }
+ #endif
  
--		rem = ktime_sub(absexp, alarm_bases[type].gettime());
-+		rem = ktime_sub(absexp, alarm_bases[type].get_ktime());
+ #endif /* _LINUX_TIMENS_H */
+diff --git a/kernel/time/namespace.c b/kernel/time/namespace.c
+index 2662a69..c2a58e4 100644
+--- a/kernel/time/namespace.c
++++ b/kernel/time/namespace.c
+@@ -14,6 +14,7 @@
+ #include <linux/slab.h>
+ #include <linux/cred.h>
+ #include <linux/err.h>
++#include <linux/mm.h>
  
- 		if (rem <= 0)
- 			return 0;
-@@ -816,7 +816,7 @@ static int alarm_timer_nsleep(const clockid_t which_clock, int flags,
- 	exp = timespec64_to_ktime(*tsreq);
- 	/* Convert (if necessary) to absolute time */
- 	if (flags != TIMER_ABSTIME) {
--		ktime_t now = alarm_bases[type].gettime();
-+		ktime_t now = alarm_bases[type].get_ktime();
+ static struct ucounts *inc_time_namespaces(struct user_namespace *ns)
+ {
+@@ -60,6 +61,7 @@ static struct time_namespace *clone_time_ns(struct user_namespace *user_ns,
+ 	ns->ucounts = ucounts;
+ 	ns->ns.ops = &timens_operations;
+ 	ns->user_ns = get_user_ns(user_ns);
++	ns->offsets = old_ns->offsets;
+ 	return ns;
  
- 		exp = ktime_add_safe(now, exp);
- 	}
-@@ -882,9 +882,9 @@ static int __init alarmtimer_init(void)
- 
- 	/* Initialize alarm bases */
- 	alarm_bases[ALARM_REALTIME].base_clockid = CLOCK_REALTIME;
--	alarm_bases[ALARM_REALTIME].gettime = &ktime_get_real;
-+	alarm_bases[ALARM_REALTIME].get_ktime = &ktime_get_real;
- 	alarm_bases[ALARM_BOOTTIME].base_clockid = CLOCK_BOOTTIME;
--	alarm_bases[ALARM_BOOTTIME].gettime = &ktime_get_boottime;
-+	alarm_bases[ALARM_BOOTTIME].get_ktime = &ktime_get_boottime;
- 	for (i = 0; i < ALARM_NUMTYPE; i++) {
- 		timerqueue_init_head(&alarm_bases[i].timerqueue);
- 		spin_lock_init(&alarm_bases[i].lock);
+ fail_free:
