@@ -2,39 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A080013AA1E
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 14 Jan 2020 14:06:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EDECD13A9F8
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 14 Jan 2020 14:03:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728988AbgANNCh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 14 Jan 2020 08:02:37 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:43242 "EHLO
+        id S1729138AbgANNCu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 14 Jan 2020 08:02:50 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:43291 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728961AbgANNCh (ORCPT
+        with ESMTP id S1729103AbgANNCt (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 14 Jan 2020 08:02:37 -0500
+        Tue, 14 Jan 2020 08:02:49 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1irLq5-0004ny-Cn; Tue, 14 Jan 2020 14:02:33 +0100
+        id 1irLq7-0004pV-EI; Tue, 14 Jan 2020 14:02:38 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4B0F31C0852;
-        Tue, 14 Jan 2020 14:02:22 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 13FA01C0854;
+        Tue, 14 Jan 2020 14:02:23 +0100 (CET)
 Date:   Tue, 14 Jan 2020 13:02:22 -0000
-From:   "tip-bot2 for Christophe Leroy" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Vincenzo Frascino" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] lib/vdso: Avoid duplication in __cvdso_clock_getres()
-Cc:     Christophe Leroy <christophe.leroy@c-s.fr>,
+Subject: [tip: timers/core] mips: vdso: Remove unused VDSO_HAS_32BIT_FALLBACK
+Cc:     Vincenzo Frascino <vincenzo.frascino@arm.com>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Andy Lutomirski <luto@kernel.org>, x86 <x86@kernel.org>,
+        Paul Burton <paul.burton@mips.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: =?utf-8?q?=3Cfdf1a968a8f7edd61456f1689ac44082ebb19c15=2E15771?=
- =?utf-8?q?11367=2Egit=2Echristophe=2Eleroy=40c-s=2Efr=3E?=
-References: =?utf-8?q?=3Cfdf1a968a8f7edd61456f1689ac44082ebb19c15=2E157711?=
- =?utf-8?q?1367=2Egit=2Echristophe=2Eleroy=40c-s=2Efr=3E?=
+In-Reply-To: <20190830135902.20861-8-vincenzo.frascino@arm.com>
+References: <20190830135902.20861-8-vincenzo.frascino@arm.com>
 MIME-Version: 1.0
-Message-ID: <157900694207.396.9782329695399222834.tip-bot2@tip-bot2>
+Message-ID: <157900694292.396.11587171255240025940.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,51 +48,41 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     cdb7c5a9c897ab2e5c56df647dd84c84e150e925
-Gitweb:        https://git.kernel.org/tip/cdb7c5a9c897ab2e5c56df647dd84c84e150e925
-Author:        Christophe Leroy <christophe.leroy@c-s.fr>
-AuthorDate:    Mon, 23 Dec 2019 14:31:09 
+Commit-ID:     de0209f53aba44d9b57d0739a076dfb2db767584
+Gitweb:        https://git.kernel.org/tip/de0209f53aba44d9b57d0739a076dfb2db767584
+Author:        Vincenzo Frascino <vincenzo.frascino@arm.com>
+AuthorDate:    Fri, 30 Aug 2019 14:59:01 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 14 Jan 2020 12:20:47 +01:00
+CommitterDate: Tue, 14 Jan 2020 12:20:46 +01:00
 
-lib/vdso: Avoid duplication in __cvdso_clock_getres()
+mips: vdso: Remove unused VDSO_HAS_32BIT_FALLBACK
 
-VDSO_HRES and VDSO_RAW clocks are handled the same way.
+VDSO_HAS_32BIT_FALLBACK has been removed from the core since
+the architectures that support the generic vDSO library have
+been converted to support the 32 bit fallbacks.
 
-Avoid the code duplication.
+Remove unused VDSO_HAS_32BIT_FALLBACK from mips vdso.
 
-Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+Signed-off-by: Vincenzo Frascino <vincenzo.frascino@arm.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Andy Lutomirski <luto@kernel.org>
-Link: https://lore.kernel.org/r/fdf1a968a8f7edd61456f1689ac44082ebb19c15.1577111367.git.christophe.leroy@c-s.fr
+Acked-by: Paul Burton <paul.burton@mips.com>
+Link: https://lore.kernel.org/r/20190830135902.20861-8-vincenzo.frascino@arm.com
 
 
 ---
- lib/vdso/gettimeofday.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ arch/mips/include/asm/vdso/gettimeofday.h | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/lib/vdso/gettimeofday.c b/lib/vdso/gettimeofday.c
-index 5a5ec89..fac9e86 100644
---- a/lib/vdso/gettimeofday.c
-+++ b/lib/vdso/gettimeofday.c
-@@ -193,7 +193,7 @@ int __cvdso_clock_getres_common(clockid_t clock, struct __kernel_timespec *res)
- 	 * clocks are handled in the VDSO directly.
- 	 */
- 	msk = 1U << clock;
--	if (msk & VDSO_HRES) {
-+	if (msk & (VDSO_HRES | VDSO_RAW)) {
- 		/*
- 		 * Preserves the behaviour of posix_get_hrtimer_res().
- 		 */
-@@ -203,11 +203,6 @@ int __cvdso_clock_getres_common(clockid_t clock, struct __kernel_timespec *res)
- 		 * Preserves the behaviour of posix_get_coarse_res().
- 		 */
- 		ns = LOW_RES_NSEC;
--	} else if (msk & VDSO_RAW) {
--		/*
--		 * Preserves the behaviour of posix_get_hrtimer_res().
--		 */
--		ns = hrtimer_res;
- 	} else {
- 		return -1;
- 	}
+diff --git a/arch/mips/include/asm/vdso/gettimeofday.h b/arch/mips/include/asm/vdso/gettimeofday.h
+index 0ae9b4c..a58687e 100644
+--- a/arch/mips/include/asm/vdso/gettimeofday.h
++++ b/arch/mips/include/asm/vdso/gettimeofday.h
+@@ -96,8 +96,6 @@ static __always_inline int clock_getres_fallback(
+ 
+ #if _MIPS_SIM != _MIPS_SIM_ABI64
+ 
+-#define VDSO_HAS_32BIT_FALLBACK	1
+-
+ static __always_inline long clock_gettime32_fallback(
+ 					clockid_t _clkid,
+ 					struct old_timespec32 *_ts)
