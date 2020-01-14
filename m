@@ -2,36 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 03D1D13A710
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 14 Jan 2020 11:26:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 045B413AA47
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 14 Jan 2020 14:06:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731185AbgANKRn (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 14 Jan 2020 05:17:43 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:42356 "EHLO
+        id S1729091AbgANNEs (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 14 Jan 2020 08:04:48 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:43110 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732372AbgANKRC (ORCPT
+        with ESMTP id S1727100AbgANNCU (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 14 Jan 2020 05:17:02 -0500
+        Tue, 14 Jan 2020 08:02:20 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1irJFq-0007iQ-Jt; Tue, 14 Jan 2020 11:16:58 +0100
+        id 1irLpl-0004Zp-9m; Tue, 14 Jan 2020 14:02:13 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 41B231C192E;
-        Tue, 14 Jan 2020 11:16:55 +0100 (CET)
-Date:   Tue, 14 Jan 2020 10:16:55 -0000
-From:   "tip-bot2 for Sean Christopherson" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id AAA7F1C07EC;
+        Tue, 14 Jan 2020 14:02:12 +0100 (CET)
+Date:   Tue, 14 Jan 2020 13:02:11 -0000
+From:   "tip-bot2 for Andrei Vagin" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cpu] x86/intel: Initialize IA32_FEAT_CTL MSR at boot
-Cc:     Borislav Petkov <bp@suse.de>,
-        Sean Christopherson <sean.j.christopherson@intel.com>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191221044513.21680-5-sean.j.christopherson@intel.com>
-References: <20191221044513.21680-5-sean.j.christopherson@intel.com>
+Subject: [tip: timers/core] selftests/timens: Check for right timens offsets
+ after fork and exec
+Cc:     Andrei Vagin <avagin@gmail.com>, Dmitry Safonov <dima@arista.com>,
+        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20191112012724.250792-35-dima@arista.com>
+References: <20191112012724.250792-35-dima@arista.com>
 MIME-Version: 1.0
-Message-ID: <157899701511.1022.2964277695773063539.tip-bot2@tip-bot2>
+Message-ID: <157900693197.396.4728909396918417956.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -45,149 +46,166 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cpu branch of tip:
+The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     1db2a6e1e29ff994443a9eef7cf3d26104c777a7
-Gitweb:        https://git.kernel.org/tip/1db2a6e1e29ff994443a9eef7cf3d26104c777a7
-Author:        Sean Christopherson <sean.j.christopherson@intel.com>
-AuthorDate:    Fri, 20 Dec 2019 20:44:58 -08:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 13 Jan 2020 17:45:45 +01:00
+Commit-ID:     a750c7474a5333a76e7278d353c460d26012deb6
+Gitweb:        https://git.kernel.org/tip/a750c7474a5333a76e7278d353c460d26012deb6
+Author:        Andrei Vagin <avagin@gmail.com>
+AuthorDate:    Tue, 12 Nov 2019 01:27:23 
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Tue, 14 Jan 2020 12:21:02 +01:00
 
-x86/intel: Initialize IA32_FEAT_CTL MSR at boot
+selftests/timens: Check for right timens offsets after fork and exec
 
-Opportunistically initialize IA32_FEAT_CTL to enable VMX when the MSR is
-left unlocked by BIOS.  Configuring feature control at boot time paves
-the way for similar enabling of other features, e.g. Software Guard
-Extensions (SGX).
+Output on success:
+ 1..1
+ ok 1 exec
+ # Pass 1 Fail 0 Xfail 0 Xpass 0 Skip 0 Error 0
 
-Temporarily leave equivalent KVM code in place in order to avoid
-introducing a regression on Centaur and Zhaoxin CPUs, e.g. removing
-KVM's code would leave the MSR unlocked on those CPUs and would break
-existing functionality if people are loading kvm_intel on Centaur and/or
-Zhaoxin.  Defer enablement of the boot-time configuration on Centaur and
-Zhaoxin to future patches to aid bisection.
+Output on failure:
+ 1..1
+ not ok 1 36016 16
+ Bail out!
 
-Note, Local Machine Check Exceptions (LMCE) are also supported by the
-kernel and enabled via feature control, but the kernel currently uses
-LMCE if and only if the feature is explicitly enabled by BIOS.  Keep
-the current behavior to avoid introducing bugs, future patches can opt
-in to opportunistic enabling if it's deemed desirable to do so.
+Output with lack of permissions:
+ 1..1
+ not ok 1 # SKIP need to run as root
 
-Always lock IA32_FEAT_CTL if it exists, even if the CPU doesn't support
-VMX, so that other existing and future kernel code that queries the MSR
-can assume it's locked.
+Output without support of time namespaces:
+ 1..1
+ not ok 1 # SKIP Time namespaces are not supported
 
-Start from a clean slate when constructing the value to write to
-IA32_FEAT_CTL, i.e. ignore whatever value BIOS left in the MSR so as not
-to enable random features or fault on the WRMSR.
+Co-developed-by: Dmitry Safonov <dima@arista.com>
+Signed-off-by: Andrei Vagin <avagin@gmail.com>
+Signed-off-by: Dmitry Safonov <dima@arista.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20191112012724.250792-35-dima@arista.com
 
-Suggested-by: Borislav Petkov <bp@suse.de>
-Signed-off-by: Sean Christopherson <sean.j.christopherson@intel.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20191221044513.21680-5-sean.j.christopherson@intel.com
+
 ---
- arch/x86/Kconfig.cpu           |  4 ++++-
- arch/x86/kernel/cpu/Makefile   |  1 +-
- arch/x86/kernel/cpu/cpu.h      |  4 ++++-
- arch/x86/kernel/cpu/feat_ctl.c | 37 +++++++++++++++++++++++++++++++++-
- arch/x86/kernel/cpu/intel.c    |  2 ++-
- 5 files changed, 48 insertions(+)
- create mode 100644 arch/x86/kernel/cpu/feat_ctl.c
+ tools/testing/selftests/timens/.gitignore |  1 +-
+ tools/testing/selftests/timens/Makefile   |  2 +-
+ tools/testing/selftests/timens/exec.c     | 94 ++++++++++++++++++++++-
+ 3 files changed, 96 insertions(+), 1 deletion(-)
+ create mode 100644 tools/testing/selftests/timens/exec.c
 
-diff --git a/arch/x86/Kconfig.cpu b/arch/x86/Kconfig.cpu
-index af9c967..98be76f 100644
---- a/arch/x86/Kconfig.cpu
-+++ b/arch/x86/Kconfig.cpu
-@@ -387,6 +387,10 @@ config X86_DEBUGCTLMSR
- 	def_bool y
- 	depends on !(MK6 || MWINCHIPC6 || MWINCHIP3D || MCYRIXIII || M586MMX || M586TSC || M586 || M486SX || M486) && !UML
+diff --git a/tools/testing/selftests/timens/.gitignore b/tools/testing/selftests/timens/.gitignore
+index 16292e4..789f21e 100644
+--- a/tools/testing/selftests/timens/.gitignore
++++ b/tools/testing/selftests/timens/.gitignore
+@@ -1,4 +1,5 @@
+ clock_nanosleep
++exec
+ gettime_perf
+ gettime_perf_cold
+ procfs
+diff --git a/tools/testing/selftests/timens/Makefile b/tools/testing/selftests/timens/Makefile
+index 6aefcac..e9fb30b 100644
+--- a/tools/testing/selftests/timens/Makefile
++++ b/tools/testing/selftests/timens/Makefile
+@@ -1,4 +1,4 @@
+-TEST_GEN_PROGS := timens timerfd timer clock_nanosleep procfs
++TEST_GEN_PROGS := timens timerfd timer clock_nanosleep procfs exec
+ TEST_GEN_PROGS_EXTENDED := gettime_perf
  
-+config IA32_FEAT_CTL
-+	def_bool y
-+	depends on CPU_SUP_INTEL
-+
- menuconfig PROCESSOR_SELECT
- 	bool "Supported processor vendors" if EXPERT
- 	---help---
-diff --git a/arch/x86/kernel/cpu/Makefile b/arch/x86/kernel/cpu/Makefile
-index 890f600..57652c6 100644
---- a/arch/x86/kernel/cpu/Makefile
-+++ b/arch/x86/kernel/cpu/Makefile
-@@ -29,6 +29,7 @@ obj-y			+= umwait.o
- obj-$(CONFIG_PROC_FS)	+= proc.o
- obj-$(CONFIG_X86_FEATURE_NAMES) += capflags.o powerflags.o
- 
-+obj-$(CONFIG_IA32_FEAT_CTL) += feat_ctl.o
- ifdef CONFIG_CPU_SUP_INTEL
- obj-y			+= intel.o intel_pconfig.o tsx.o
- obj-$(CONFIG_PM)	+= intel_epb.o
-diff --git a/arch/x86/kernel/cpu/cpu.h b/arch/x86/kernel/cpu/cpu.h
-index 38ab6e1..37fdefd 100644
---- a/arch/x86/kernel/cpu/cpu.h
-+++ b/arch/x86/kernel/cpu/cpu.h
-@@ -80,4 +80,8 @@ extern void x86_spec_ctrl_setup_ap(void);
- 
- extern u64 x86_read_arch_cap_msr(void);
- 
-+#ifdef CONFIG_IA32_FEAT_CTL
-+void init_ia32_feat_ctl(struct cpuinfo_x86 *c);
-+#endif
-+
- #endif /* ARCH_X86_CPU_H */
-diff --git a/arch/x86/kernel/cpu/feat_ctl.c b/arch/x86/kernel/cpu/feat_ctl.c
+ CFLAGS := -Wall -Werror -pthread
+diff --git a/tools/testing/selftests/timens/exec.c b/tools/testing/selftests/timens/exec.c
 new file mode 100644
-index 0000000..c4f8f76
+index 0000000..87b47b5
 --- /dev/null
-+++ b/arch/x86/kernel/cpu/feat_ctl.c
-@@ -0,0 +1,37 @@
++++ b/tools/testing/selftests/timens/exec.c
+@@ -0,0 +1,94 @@
 +// SPDX-License-Identifier: GPL-2.0
-+#include <linux/tboot.h>
++#define _GNU_SOURCE
++#include <errno.h>
++#include <fcntl.h>
++#include <sched.h>
++#include <stdio.h>
++#include <stdbool.h>
++#include <sys/stat.h>
++#include <sys/syscall.h>
++#include <sys/types.h>
++#include <sys/wait.h>
++#include <time.h>
++#include <unistd.h>
++#include <time.h>
++#include <string.h>
 +
-+#include <asm/cpufeature.h>
-+#include <asm/msr-index.h>
-+#include <asm/processor.h>
++#include "log.h"
++#include "timens.h"
 +
-+void init_ia32_feat_ctl(struct cpuinfo_x86 *c)
++#define OFFSET (36000)
++
++int main(int argc, char *argv[])
 +{
-+	u64 msr;
++	struct timespec now, tst;
++	int status, i;
++	pid_t pid;
 +
-+	if (rdmsrl_safe(MSR_IA32_FEAT_CTL, &msr))
-+		return;
++	if (argc > 1) {
++		if (sscanf(argv[1], "%ld", &now.tv_sec) != 1)
++			return pr_perror("sscanf");
 +
-+	if (msr & FEAT_CTL_LOCKED)
-+		return;
-+
-+	/*
-+	 * Ignore whatever value BIOS left in the MSR to avoid enabling random
-+	 * features or faulting on the WRMSR.
-+	 */
-+	msr = FEAT_CTL_LOCKED;
-+
-+	/*
-+	 * Enable VMX if and only if the kernel may do VMXON at some point,
-+	 * i.e. KVM is enabled, to avoid unnecessarily adding an attack vector
-+	 * for the kernel, e.g. using VMX to hide malicious code.
-+	 */
-+	if (cpu_has(c, X86_FEATURE_VMX) && IS_ENABLED(CONFIG_KVM_INTEL)) {
-+		msr |= FEAT_CTL_VMX_ENABLED_OUTSIDE_SMX;
-+
-+		if (tboot_enabled())
-+			msr |= FEAT_CTL_VMX_ENABLED_INSIDE_SMX;
++		for (i = 0; i < 2; i++) {
++			_gettime(CLOCK_MONOTONIC, &tst, i);
++			if (abs(tst.tv_sec - now.tv_sec) > 5)
++				return pr_fail("%ld %ld\n", now.tv_sec, tst.tv_sec);
++		}
++		return 0;
 +	}
 +
-+	wrmsrl(MSR_IA32_FEAT_CTL, msr);
-+}
-diff --git a/arch/x86/kernel/cpu/intel.c b/arch/x86/kernel/cpu/intel.c
-index 4a90080..9129c17 100644
---- a/arch/x86/kernel/cpu/intel.c
-+++ b/arch/x86/kernel/cpu/intel.c
-@@ -755,6 +755,8 @@ static void init_intel(struct cpuinfo_x86 *c)
- 	/* Work around errata */
- 	srat_detect_node(c);
- 
-+	init_ia32_feat_ctl(c);
++	nscheck();
 +
- 	if (cpu_has(c, X86_FEATURE_VMX))
- 		detect_vmx_virtcap(c);
- 
++	ksft_set_plan(1);
++
++	clock_gettime(CLOCK_MONOTONIC, &now);
++
++	if (unshare_timens())
++		return 1;
++
++	if (_settime(CLOCK_MONOTONIC, OFFSET))
++		return 1;
++
++	for (i = 0; i < 2; i++) {
++		_gettime(CLOCK_MONOTONIC, &tst, i);
++		if (abs(tst.tv_sec - now.tv_sec) > 5)
++			return pr_fail("%ld %ld\n",
++					now.tv_sec, tst.tv_sec);
++	}
++
++	if (argc > 1)
++		return 0;
++
++	pid = fork();
++	if (pid < 0)
++		return pr_perror("fork");
++
++	if (pid == 0) {
++		char now_str[64];
++		char *cargv[] = {"exec", now_str, NULL};
++		char *cenv[] = {NULL};
++
++		/* Check that a child process is in the new timens. */
++		for (i = 0; i < 2; i++) {
++			_gettime(CLOCK_MONOTONIC, &tst, i);
++			if (abs(tst.tv_sec - now.tv_sec - OFFSET) > 5)
++				return pr_fail("%ld %ld\n",
++						now.tv_sec + OFFSET, tst.tv_sec);
++		}
++
++		/* Check for proper vvar offsets after execve. */
++		snprintf(now_str, sizeof(now_str), "%ld", now.tv_sec + OFFSET);
++		execve("/proc/self/exe", cargv, cenv);
++		return pr_perror("execve");
++	}
++
++	if (waitpid(pid, &status, 0) != pid)
++		return pr_perror("waitpid");
++
++	if (status)
++		ksft_exit_fail();
++
++	ksft_test_result_pass("exec\n");
++	ksft_exit_pass();
++	return 0;
++}
