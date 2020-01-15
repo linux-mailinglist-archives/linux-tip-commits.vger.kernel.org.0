@@ -2,38 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BEFC913BD4F
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 15 Jan 2020 11:24:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DC0E613BE9A
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 15 Jan 2020 12:37:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729631AbgAOKYK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 15 Jan 2020 05:24:10 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:46714 "EHLO
+        id S1729903AbgAOLhS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 15 Jan 2020 06:37:18 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:46866 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729539AbgAOKYK (ORCPT
+        with ESMTP id S1729892AbgAOLhS (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 15 Jan 2020 05:24:10 -0500
+        Wed, 15 Jan 2020 06:37:18 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1irfqI-0000rf-Dv; Wed, 15 Jan 2020 11:24:06 +0100
+        id 1irgyx-0002fw-Ud; Wed, 15 Jan 2020 12:37:08 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id F37D81C0864;
-        Wed, 15 Jan 2020 11:24:05 +0100 (CET)
-Date:   Wed, 15 Jan 2020 10:24:05 -0000
-From:   "tip-bot2 for Stephen Boyd" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 8546E1C086F;
+        Wed, 15 Jan 2020 12:37:07 +0100 (CET)
+Date:   Wed, 15 Jan 2020 11:37:07 -0000
+From:   "tip-bot2 for Chuansheng Liu" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] alarmtimer: Unregister wakeup source when module get fails
-Cc:     Stephen Boyd <swboyd@chromium.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Douglas Anderson <dianders@chromium.org>,
-        stable@vger.kernel.org, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200109155910.907-2-swboyd@chromium.org>
-References: <20200109155910.907-2-swboyd@chromium.org>
+Subject: [tip: ras/urgent] x86/mce/therm_throt: Do not access uninitialized therm_work
+Cc:     Chuansheng Liu <chuansheng.liu@intel.com>,
+        Borislav Petkov <bp@suse.de>, Tony Luck <tony.luck@intel.com>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200107004116.59353-1-chuansheng.liu@intel.com>
+References: <20200107004116.59353-1-chuansheng.liu@intel.com>
 MIME-Version: 1.0
-Message-ID: <157908384579.396.18418981905772146869.tip-bot2@tip-bot2>
+Message-ID: <157908822728.396.5161866899997303064.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,69 +45,81 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/core branch of tip:
+The following commit has been merged into the ras/urgent branch of tip:
 
-Commit-ID:     6b6d188aae79a630957aefd88ff5c42af6553ee3
-Gitweb:        https://git.kernel.org/tip/6b6d188aae79a630957aefd88ff5c42af6553ee3
-Author:        Stephen Boyd <swboyd@chromium.org>
-AuthorDate:    Thu, 09 Jan 2020 07:59:07 -08:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 15 Jan 2020 11:16:54 +01:00
+Commit-ID:     978370956d2046b19313659ce65ed12d5b996626
+Gitweb:        https://git.kernel.org/tip/978370956d2046b19313659ce65ed12d5b996626
+Author:        Chuansheng Liu <chuansheng.liu@intel.com>
+AuthorDate:    Tue, 07 Jan 2020 00:41:16 
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Wed, 15 Jan 2020 11:31:33 +01:00
 
-alarmtimer: Unregister wakeup source when module get fails
+x86/mce/therm_throt: Do not access uninitialized therm_work
 
-The alarmtimer_rtc_add_device() function creates a wakeup source and then
-tries to grab a module reference. If that fails the function returns early
-with an error code, but fails to remove the wakeup source.
+It is relatively easy to trigger the following boot splat on an Ice Lake
+client platform. The call stack is like:
 
-Cleanup this exit path so there is no dangling wakeup source, which is
-named 'alarmtime' left allocated which will conflict with another RTC
-device that may be registered later.
+  kernel BUG at kernel/timer/timer.c:1152!
 
-Fixes: 51218298a25e ("alarmtimer: Ensure RTC module is not unloaded")
-Signed-off-by: Stephen Boyd <swboyd@chromium.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20200109155910.907-2-swboyd@chromium.org
+  Call Trace:
+  __queue_delayed_work
+  queue_delayed_work_on
+  therm_throt_process
+  intel_thermal_interrupt
+  ...
+
+The reason is that a CPU's thermal interrupt is enabled prior to
+executing its hotplug onlining callback which will initialize the
+throttling workqueues.
+
+Such a race can lead to therm_throt_process() accessing an uninitialized
+therm_work, leading to the above BUG at a very early bootup stage.
+
+Therefore, unmask the thermal interrupt vector only after having setup
+the workqueues completely.
+
+ [ bp: Heavily massage commit message and correct comment formatting. ]
+
+Fixes: f6656208f04e ("x86/mce/therm_throt: Optimize notifications of thermal throttle")
+Signed-off-by: Chuansheng Liu <chuansheng.liu@intel.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Acked-by: Tony Luck <tony.luck@intel.com>
+Link: https://lkml.kernel.org/r/20200107004116.59353-1-chuansheng.liu@intel.com
 ---
- kernel/time/alarmtimer.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ arch/x86/kernel/cpu/mce/therm_throt.c |  9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/time/alarmtimer.c b/kernel/time/alarmtimer.c
-index b51b36e..9dc7a09 100644
---- a/kernel/time/alarmtimer.c
-+++ b/kernel/time/alarmtimer.c
-@@ -91,6 +91,7 @@ static int alarmtimer_rtc_add_device(struct device *dev,
- 	unsigned long flags;
- 	struct rtc_device *rtc = to_rtc_device(dev);
- 	struct wakeup_source *__ws;
-+	int ret = 0;
+diff --git a/arch/x86/kernel/cpu/mce/therm_throt.c b/arch/x86/kernel/cpu/mce/therm_throt.c
+index b38010b..6c3e1c9 100644
+--- a/arch/x86/kernel/cpu/mce/therm_throt.c
++++ b/arch/x86/kernel/cpu/mce/therm_throt.c
+@@ -467,6 +467,7 @@ static int thermal_throttle_online(unsigned int cpu)
+ {
+ 	struct thermal_state *state = &per_cpu(thermal_state, cpu);
+ 	struct device *dev = get_cpu_device(cpu);
++	u32 l;
  
- 	if (rtcdev)
- 		return -EBUSY;
-@@ -105,8 +106,8 @@ static int alarmtimer_rtc_add_device(struct device *dev,
- 	spin_lock_irqsave(&rtcdev_lock, flags);
- 	if (!rtcdev) {
- 		if (!try_module_get(rtc->owner)) {
--			spin_unlock_irqrestore(&rtcdev_lock, flags);
--			return -1;
-+			ret = -1;
-+			goto unlock;
- 		}
+ 	state->package_throttle.level = PACKAGE_LEVEL;
+ 	state->core_throttle.level = CORE_LEVEL;
+@@ -474,6 +475,10 @@ static int thermal_throttle_online(unsigned int cpu)
+ 	INIT_DELAYED_WORK(&state->package_throttle.therm_work, throttle_active_work);
+ 	INIT_DELAYED_WORK(&state->core_throttle.therm_work, throttle_active_work);
  
- 		rtcdev = rtc;
-@@ -115,11 +116,12 @@ static int alarmtimer_rtc_add_device(struct device *dev,
- 		ws = __ws;
- 		__ws = NULL;
- 	}
-+unlock:
- 	spin_unlock_irqrestore(&rtcdev_lock, flags);
- 
- 	wakeup_source_unregister(__ws);
- 
--	return 0;
-+	return ret;
++	/* Unmask the thermal vector after the above workqueues are initialized. */
++	l = apic_read(APIC_LVTTHMR);
++	apic_write(APIC_LVTTHMR, l & ~APIC_LVT_MASKED);
++
+ 	return thermal_throttle_add_dev(dev, cpu);
  }
  
- static inline void alarmtimer_rtc_timer_init(void)
+@@ -722,10 +727,6 @@ void intel_init_thermal(struct cpuinfo_x86 *c)
+ 	rdmsr(MSR_IA32_MISC_ENABLE, l, h);
+ 	wrmsr(MSR_IA32_MISC_ENABLE, l | MSR_IA32_MISC_ENABLE_TM1, h);
+ 
+-	/* Unmask the thermal vector: */
+-	l = apic_read(APIC_LVTTHMR);
+-	apic_write(APIC_LVTTHMR, l & ~APIC_LVT_MASKED);
+-
+ 	pr_info_once("CPU0: Thermal monitoring enabled (%s)\n",
+ 		      tm2 ? "TM2" : "TM1");
+ 
