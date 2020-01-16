@@ -2,36 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 959A213FAF5
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Jan 2020 22:03:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D74813FAF6
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Jan 2020 22:03:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388278AbgAPVCn (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 16 Jan 2020 16:02:43 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:53377 "EHLO
+        id S2388324AbgAPVCq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 16 Jan 2020 16:02:46 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:53385 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726994AbgAPVCm (ORCPT
+        with ESMTP id S2388272AbgAPVCo (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 16 Jan 2020 16:02:42 -0500
+        Thu, 16 Jan 2020 16:02:44 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1isCHl-00013g-0y; Thu, 16 Jan 2020 22:02:37 +0100
+        id 1isCHk-00013U-Rl; Thu, 16 Jan 2020 22:02:36 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 7F7901C0E70;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 352FE1C1929;
         Thu, 16 Jan 2020 22:02:36 +0100 (CET)
 Date:   Thu, 16 Jan 2020 21:02:36 -0000
 From:   "tip-bot2 for Yazen Ghannam" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: ras/core] x86/MCE/AMD, EDAC/mce_amd: Add new Load Store unit McaType
+Subject: [tip: ras/core] EDAC/mce_amd: Always load on SMCA systems
 Cc:     Yazen Ghannam <yazen.ghannam@amd.com>,
         Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200110015651.14887-2-Yazen.Ghannam@amd.com>
-References: <20200110015651.14887-2-Yazen.Ghannam@amd.com>
+In-Reply-To: <20200110015651.14887-3-Yazen.Ghannam@amd.com>
+References: <20200110015651.14887-3-Yazen.Ghannam@amd.com>
 MIME-Version: 1.0
-Message-ID: <157920855629.396.3345590993818919194.tip-bot2@tip-bot2>
+Message-ID: <157920855605.396.13628660534731252208.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,108 +47,60 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the ras/core branch of tip:
 
-Commit-ID:     89a76171bf50bd20d44338408b8c09433c302956
-Gitweb:        https://git.kernel.org/tip/89a76171bf50bd20d44338408b8c09433c302956
+Commit-ID:     9f6aef86315ac31481a288ba1b3f43b2aac93757
+Gitweb:        https://git.kernel.org/tip/9f6aef86315ac31481a288ba1b3f43b2aac93757
 Author:        Yazen Ghannam <yazen.ghannam@amd.com>
-AuthorDate:    Fri, 10 Jan 2020 01:56:47 
+AuthorDate:    Fri, 10 Jan 2020 01:56:48 
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Thu, 16 Jan 2020 17:09:02 +01:00
+CommitterDate: Thu, 16 Jan 2020 17:09:13 +01:00
 
-x86/MCE/AMD, EDAC/mce_amd: Add new Load Store unit McaType
+EDAC/mce_amd: Always load on SMCA systems
 
-Add support for a new version of the Load Store unit bank type as
-indicated by its McaType value, which will be present in future SMCA
-systems.
-
-Add the new (HWID, MCATYPE) tuple. Reuse the same name, since this is
-logically the same to the user.
-
-Also, add the new error descriptions to edac_mce_amd.
+MCA error decoding on SMCA systems is not dependent on family. Return
+success early if the system supports the SMCA feature.
 
 Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20200110015651.14887-2-Yazen.Ghannam@amd.com
+Link: https://lkml.kernel.org/r/20200110015651.14887-3-Yazen.Ghannam@amd.com
 ---
- arch/x86/include/asm/mce.h    |  1 +
- arch/x86/kernel/cpu/mce/amd.c |  2 ++
- drivers/edac/mce_amd.c        | 28 ++++++++++++++++++++++++++++
- 3 files changed, 31 insertions(+)
+ drivers/edac/mce_amd.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/include/asm/mce.h b/arch/x86/include/asm/mce.h
-index c8ff6f6..4359b95 100644
---- a/arch/x86/include/asm/mce.h
-+++ b/arch/x86/include/asm/mce.h
-@@ -290,6 +290,7 @@ extern void apei_mce_report_mem_error(int corrected,
- /* These may be used by multiple smca_hwid_mcatypes */
- enum smca_bank_types {
- 	SMCA_LS = 0,	/* Load Store */
-+	SMCA_LS_V2,	/* Load Store */
- 	SMCA_IF,	/* Instruction Fetch */
- 	SMCA_L2_CACHE,	/* L2 Cache */
- 	SMCA_DE,	/* Decoder Unit */
-diff --git a/arch/x86/kernel/cpu/mce/amd.c b/arch/x86/kernel/cpu/mce/amd.c
-index 5167bd2..36211b9 100644
---- a/arch/x86/kernel/cpu/mce/amd.c
-+++ b/arch/x86/kernel/cpu/mce/amd.c
-@@ -78,6 +78,7 @@ struct smca_bank_name {
- 
- static struct smca_bank_name smca_names[] = {
- 	[SMCA_LS]	= { "load_store",	"Load Store Unit" },
-+	[SMCA_LS_V2]	= { "load_store",	"Load Store Unit" },
- 	[SMCA_IF]	= { "insn_fetch",	"Instruction Fetch Unit" },
- 	[SMCA_L2_CACHE]	= { "l2_cache",		"L2 Cache" },
- 	[SMCA_DE]	= { "decode_unit",	"Decode Unit" },
-@@ -138,6 +139,7 @@ static struct smca_hwid smca_hwid_mcatypes[] = {
- 
- 	/* ZN Core (HWID=0xB0) MCA types */
- 	{ SMCA_LS,	 HWID_MCATYPE(0xB0, 0x0), 0x1FFFFF },
-+	{ SMCA_LS_V2,	 HWID_MCATYPE(0xB0, 0x10), 0xFFFFFF },
- 	{ SMCA_IF,	 HWID_MCATYPE(0xB0, 0x1), 0x3FFF },
- 	{ SMCA_L2_CACHE, HWID_MCATYPE(0xB0, 0x2), 0xF },
- 	{ SMCA_DE,	 HWID_MCATYPE(0xB0, 0x3), 0x1FF },
 diff --git a/drivers/edac/mce_amd.c b/drivers/edac/mce_amd.c
-index ea622c6..aa6ea53 100644
+index aa6ea53..524c63f 100644
 --- a/drivers/edac/mce_amd.c
 +++ b/drivers/edac/mce_amd.c
-@@ -175,6 +175,33 @@ static const char * const smca_ls_mce_desc[] = {
- 	"L2 Fill Data error",
- };
+@@ -1189,6 +1189,11 @@ static int __init mce_amd_init(void)
+ 	if (!fam_ops)
+ 		return -ENOMEM;
  
-+static const char * const smca_ls2_mce_desc[] = {
-+	"An ECC error was detected on a data cache read by a probe or victimization",
-+	"An ECC error or L2 poison was detected on a data cache read by a load",
-+	"An ECC error was detected on a data cache read-modify-write by a store",
-+	"An ECC error or poison bit mismatch was detected on a tag read by a probe or victimization",
-+	"An ECC error or poison bit mismatch was detected on a tag read by a load",
-+	"An ECC error or poison bit mismatch was detected on a tag read by a store",
-+	"An ECC error was detected on an EMEM read by a load",
-+	"An ECC error was detected on an EMEM read-modify-write by a store",
-+	"A parity error was detected in an L1 TLB entry by any access",
-+	"A parity error was detected in an L2 TLB entry by any access",
-+	"A parity error was detected in a PWC entry by any access",
-+	"A parity error was detected in an STQ entry by any access",
-+	"A parity error was detected in an LDQ entry by any access",
-+	"A parity error was detected in a MAB entry by any access",
-+	"A parity error was detected in an SCB entry state field by any access",
-+	"A parity error was detected in an SCB entry address field by any access",
-+	"A parity error was detected in an SCB entry data field by any access",
-+	"A parity error was detected in a WCB entry by any access",
-+	"A poisoned line was detected in an SCB entry by any access",
-+	"A SystemReadDataError error was reported on read data returned from L2 for a load",
-+	"A SystemReadDataError error was reported on read data returned from L2 for an SCB store",
-+	"A SystemReadDataError error was reported on read data returned from L2 for a WCB store",
-+	"A hardware assertion error was reported",
-+	"A parity error was detected in an STLF, SCB EMEM entry or SRB store data by any access",
-+};
++	if (boot_cpu_has(X86_FEATURE_SMCA)) {
++		xec_mask = 0x3f;
++		goto out;
++	}
 +
- static const char * const smca_if_mce_desc[] = {
- 	"Op Cache Microtag Probe Port Parity Error",
- 	"IC Microtag or Full Tag Multi-hit Error",
-@@ -378,6 +405,7 @@ struct smca_mce_desc {
+ 	switch (c->x86) {
+ 	case 0xf:
+ 		fam_ops->mc0_mce = k8_mc0_mce;
+@@ -1237,11 +1242,8 @@ static int __init mce_amd_init(void)
  
- static struct smca_mce_desc smca_mce_descs[] = {
- 	[SMCA_LS]	= { smca_ls_mce_desc,	ARRAY_SIZE(smca_ls_mce_desc)	},
-+	[SMCA_LS_V2]	= { smca_ls2_mce_desc,	ARRAY_SIZE(smca_ls2_mce_desc)	},
- 	[SMCA_IF]	= { smca_if_mce_desc,	ARRAY_SIZE(smca_if_mce_desc)	},
- 	[SMCA_L2_CACHE]	= { smca_l2_mce_desc,	ARRAY_SIZE(smca_l2_mce_desc)	},
- 	[SMCA_DE]	= { smca_de_mce_desc,	ARRAY_SIZE(smca_de_mce_desc)	},
+ 	case 0x17:
+ 	case 0x18:
+-		xec_mask = 0x3f;
+-		if (!boot_cpu_has(X86_FEATURE_SMCA)) {
+-			printk(KERN_WARNING "Decoding supported only on Scalable MCA processors.\n");
+-			goto err_out;
+-		}
++		pr_warn("Decoding supported only on Scalable MCA processors.\n");
++		goto err_out;
+ 		break;
+ 
+ 	default:
+@@ -1249,6 +1251,7 @@ static int __init mce_amd_init(void)
+ 		goto err_out;
+ 	}
+ 
++out:
+ 	pr_info("MCE: In-kernel MCE decoding enabled.\n");
+ 
+ 	mce_register_decode_chain(&amd_mce_dec_nb);
