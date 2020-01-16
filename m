@@ -2,36 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D74813FAF6
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Jan 2020 22:03:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F367213FB91
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Jan 2020 22:32:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388324AbgAPVCq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 16 Jan 2020 16:02:46 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:53385 "EHLO
+        id S2389319AbgAPVbu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 16 Jan 2020 16:31:50 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:53546 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388272AbgAPVCo (ORCPT
+        with ESMTP id S2388949AbgAPVbI (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 16 Jan 2020 16:02:44 -0500
+        Thu, 16 Jan 2020 16:31:08 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1isCHk-00013U-Rl; Thu, 16 Jan 2020 22:02:36 +0100
+        id 1isCjD-0001Vr-PU; Thu, 16 Jan 2020 22:30:59 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 352FE1C1929;
-        Thu, 16 Jan 2020 22:02:36 +0100 (CET)
-Date:   Thu, 16 Jan 2020 21:02:36 -0000
-From:   "tip-bot2 for Yazen Ghannam" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 248441C1970;
+        Thu, 16 Jan 2020 22:30:59 +0100 (CET)
+Date:   Thu, 16 Jan 2020 21:30:58 -0000
+From:   "tip-bot2 for Andrea Parri" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: ras/core] EDAC/mce_amd: Always load on SMCA systems
-Cc:     Yazen Ghannam <yazen.ghannam@amd.com>,
-        Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200110015651.14887-3-Yazen.Ghannam@amd.com>
-References: <20200110015651.14887-3-Yazen.Ghannam@amd.com>
+Subject: [tip: timers/core] clocksource/drivers/hyper-v: Set TSC clocksource
+ as default w/ InvariantTSC
+Cc:     Andrea Parri <parri.andrea@gmail.com>,
+        Michael Kelley <mikelley@microsoft.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200109160650.16150-3-parri.andrea@gmail.com>
+References: <20200109160650.16150-3-parri.andrea@gmail.com>
 MIME-Version: 1.0
-Message-ID: <157920855605.396.13628660534731252208.tip-bot2@tip-bot2>
+Message-ID: <157921025889.396.394289795605229140.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -45,62 +47,67 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the ras/core branch of tip:
+The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     9f6aef86315ac31481a288ba1b3f43b2aac93757
-Gitweb:        https://git.kernel.org/tip/9f6aef86315ac31481a288ba1b3f43b2aac93757
-Author:        Yazen Ghannam <yazen.ghannam@amd.com>
-AuthorDate:    Fri, 10 Jan 2020 01:56:48 
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Thu, 16 Jan 2020 17:09:13 +01:00
+Commit-ID:     9e0333ae38eeb42249e10f95d209244a6e22ac9f
+Gitweb:        https://git.kernel.org/tip/9e0333ae38eeb42249e10f95d209244a6e22ac9f
+Author:        Andrea Parri <parri.andrea@gmail.com>
+AuthorDate:    Thu, 09 Jan 2020 17:06:50 +01:00
+Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
+CommitterDate: Thu, 16 Jan 2020 19:09:02 +01:00
 
-EDAC/mce_amd: Always load on SMCA systems
+clocksource/drivers/hyper-v: Set TSC clocksource as default w/ InvariantTSC
 
-MCA error decoding on SMCA systems is not dependent on family. Return
-success early if the system supports the SMCA feature.
+Change the Hyper-V clocksource ratings to 250, below the TSC clocksource
+rating of 300.  In configurations where Hyper-V offers an InvariantTSC,
+the TSC is not marked "unstable", so the TSC clocksource is available
+and preferred.  With the higher rating, it will be the default.  On
+older hardware and Hyper-V versions, the TSC is marked "unstable", so no
+TSC clocksource is created and the selected Hyper-V clocksource will be
+the default.
 
-Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20200110015651.14887-3-Yazen.Ghannam@amd.com
+Signed-off-by: Andrea Parri <parri.andrea@gmail.com>
+Reviewed-by: Michael Kelley <mikelley@microsoft.com>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://lore.kernel.org/r/20200109160650.16150-3-parri.andrea@gmail.com
 ---
- drivers/edac/mce_amd.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ drivers/clocksource/hyperv_timer.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/edac/mce_amd.c b/drivers/edac/mce_amd.c
-index aa6ea53..524c63f 100644
---- a/drivers/edac/mce_amd.c
-+++ b/drivers/edac/mce_amd.c
-@@ -1189,6 +1189,11 @@ static int __init mce_amd_init(void)
- 	if (!fam_ops)
- 		return -ENOMEM;
+diff --git a/drivers/clocksource/hyperv_timer.c b/drivers/clocksource/hyperv_timer.c
+index 42748ad..9d808d5 100644
+--- a/drivers/clocksource/hyperv_timer.c
++++ b/drivers/clocksource/hyperv_timer.c
+@@ -302,6 +302,14 @@ EXPORT_SYMBOL_GPL(hv_stimer_global_cleanup);
+  * the other that uses the TSC reference page feature as defined in the
+  * TLFS.  The MSR version is for compatibility with old versions of
+  * Hyper-V and 32-bit x86.  The TSC reference page version is preferred.
++ *
++ * The Hyper-V clocksource ratings of 250 are chosen to be below the
++ * TSC clocksource rating of 300.  In configurations where Hyper-V offers
++ * an InvariantTSC, the TSC is not marked "unstable", so the TSC clocksource
++ * is available and preferred.  With the higher rating, it will be the
++ * default.  On older hardware and Hyper-V versions, the TSC is marked
++ * "unstable", so no TSC clocksource is created and the selected Hyper-V
++ * clocksource will be the default.
+  */
  
-+	if (boot_cpu_has(X86_FEATURE_SMCA)) {
-+		xec_mask = 0x3f;
-+		goto out;
-+	}
-+
- 	switch (c->x86) {
- 	case 0xf:
- 		fam_ops->mc0_mce = k8_mc0_mce;
-@@ -1237,11 +1242,8 @@ static int __init mce_amd_init(void)
+ u64 (*hv_read_reference_counter)(void);
+@@ -363,7 +371,7 @@ static void resume_hv_clock_tsc(struct clocksource *arg)
  
- 	case 0x17:
- 	case 0x18:
--		xec_mask = 0x3f;
--		if (!boot_cpu_has(X86_FEATURE_SMCA)) {
--			printk(KERN_WARNING "Decoding supported only on Scalable MCA processors.\n");
--			goto err_out;
--		}
-+		pr_warn("Decoding supported only on Scalable MCA processors.\n");
-+		goto err_out;
- 		break;
+ static struct clocksource hyperv_cs_tsc = {
+ 	.name	= "hyperv_clocksource_tsc_page",
+-	.rating	= 400,
++	.rating	= 250,
+ 	.read	= read_hv_clock_tsc_cs,
+ 	.mask	= CLOCKSOURCE_MASK(64),
+ 	.flags	= CLOCK_SOURCE_IS_CONTINUOUS,
+@@ -395,7 +403,7 @@ static u64 read_hv_sched_clock_msr(void)
  
- 	default:
-@@ -1249,6 +1251,7 @@ static int __init mce_amd_init(void)
- 		goto err_out;
- 	}
- 
-+out:
- 	pr_info("MCE: In-kernel MCE decoding enabled.\n");
- 
- 	mce_register_decode_chain(&amd_mce_dec_nb);
+ static struct clocksource hyperv_cs_msr = {
+ 	.name	= "hyperv_clocksource_msr",
+-	.rating	= 400,
++	.rating	= 250,
+ 	.read	= read_hv_clock_msr_cs,
+ 	.mask	= CLOCKSOURCE_MASK(64),
+ 	.flags	= CLOCK_SOURCE_IS_CONTINUOUS,
