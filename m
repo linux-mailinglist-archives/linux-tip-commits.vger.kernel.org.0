@@ -2,36 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 91C6A13FB8A
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Jan 2020 22:32:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2ED2B13FB81
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Jan 2020 22:32:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389218AbgAPVbc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 16 Jan 2020 16:31:32 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:53582 "EHLO
+        id S2389054AbgAPVbM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 16 Jan 2020 16:31:12 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:53577 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389037AbgAPVbN (ORCPT
+        with ESMTP id S2389023AbgAPVbM (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 16 Jan 2020 16:31:13 -0500
+        Thu, 16 Jan 2020 16:31:12 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1isCjL-0001ZU-Bk; Thu, 16 Jan 2020 22:31:07 +0100
+        id 1isCjL-0001Zr-N2; Thu, 16 Jan 2020 22:31:07 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5A76A1C1996;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 9C4A01C1997;
         Thu, 16 Jan 2020 22:31:03 +0100 (CET)
 Date:   Thu, 16 Jan 2020 21:31:03 -0000
-From:   "tip-bot2 for Krzysztof Kozlowski" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Dexuan Cui" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] clocksource: Fix Kconfig indentation
-Cc:     Krzysztof Kozlowski <krzk@kernel.org>,
+Subject: [tip: timers/core] clocksource/drivers/hyper-v: Suspend/resume
+ Hyper-V clocksource for hibernation
+Cc:     Dexuan Cui <decui@microsoft.com>,
+        Michael Kelley <mikelley@microsoft.com>,
         Daniel Lezcano <daniel.lezcano@linaro.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191120134236.15959-1-krzk@kernel.org>
-References: <20191120134236.15959-1-krzk@kernel.org>
+In-Reply-To: <1574233946-48377-1-git-send-email-decui@microsoft.com>
+References: <1574233946-48377-1-git-send-email-decui@microsoft.com>
 MIME-Version: 1.0
-Message-ID: <157921026318.396.3072238434185037949.tip-bot2@tip-bot2>
+Message-ID: <157921026342.396.802266094475126495.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,81 +49,65 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     9ca9fe69eedb483c0811a4db7cb94942edfb1404
-Gitweb:        https://git.kernel.org/tip/9ca9fe69eedb483c0811a4db7cb94942edfb1404
-Author:        Krzysztof Kozlowski <krzk@kernel.org>
-AuthorDate:    Wed, 20 Nov 2019 21:42:36 +08:00
+Commit-ID:     1349401ff1aa425e7381ed26feb63e0d6b557fc6
+Gitweb:        https://git.kernel.org/tip/1349401ff1aa425e7381ed26feb63e0d6b557fc6
+Author:        Dexuan Cui <decui@microsoft.com>
+AuthorDate:    Tue, 19 Nov 2019 23:12:26 -08:00
 Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
 CommitterDate: Thu, 16 Jan 2020 19:06:57 +01:00
 
-clocksource: Fix Kconfig indentation
+clocksource/drivers/hyper-v: Suspend/resume Hyper-V clocksource for hibernation
 
-Adjust indentation from spaces to tab (+optional two spaces) as in
-coding style with command like:
-	$ sed -e 's/^        /\t/' -i */Kconfig
+This is needed for hibernation, e.g. when we resume the old kernel, we need
+to disable the "current" kernel's TSC page and then resume the old kernel's.
 
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+Signed-off-by: Dexuan Cui <decui@microsoft.com>
+Reviewed-by: Michael Kelley <mikelley@microsoft.com>
 Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20191120134236.15959-1-krzk@kernel.org
+Link: https://lore.kernel.org/r/1574233946-48377-1-git-send-email-decui@microsoft.com
 ---
- drivers/clocksource/Kconfig | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ drivers/clocksource/hyperv_timer.c | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
-index 5fdd76c..c981ff6 100644
---- a/drivers/clocksource/Kconfig
-+++ b/drivers/clocksource/Kconfig
-@@ -470,7 +470,7 @@ config OXNAS_RPS_TIMER
- 	  This enables support for the Oxford Semiconductor OXNAS RPS timers.
+diff --git a/drivers/clocksource/hyperv_timer.c b/drivers/clocksource/hyperv_timer.c
+index 287d8d5..1aec08e 100644
+--- a/drivers/clocksource/hyperv_timer.c
++++ b/drivers/clocksource/hyperv_timer.c
+@@ -330,12 +330,37 @@ static u64 read_hv_sched_clock_tsc(void)
+ 	return read_hv_clock_tsc(NULL) - hv_sched_clock_offset;
+ }
  
- config SYS_SUPPORTS_SH_CMT
--        bool
-+	bool
++static void suspend_hv_clock_tsc(struct clocksource *arg)
++{
++	u64 tsc_msr;
++
++	/* Disable the TSC page */
++	hv_get_reference_tsc(tsc_msr);
++	tsc_msr &= ~BIT_ULL(0);
++	hv_set_reference_tsc(tsc_msr);
++}
++
++
++static void resume_hv_clock_tsc(struct clocksource *arg)
++{
++	phys_addr_t phys_addr = virt_to_phys(&tsc_pg);
++	u64 tsc_msr;
++
++	/* Re-enable the TSC page */
++	hv_get_reference_tsc(tsc_msr);
++	tsc_msr &= GENMASK_ULL(11, 0);
++	tsc_msr |= BIT_ULL(0) | (u64)phys_addr;
++	hv_set_reference_tsc(tsc_msr);
++}
++
+ static struct clocksource hyperv_cs_tsc = {
+ 	.name	= "hyperv_clocksource_tsc_page",
+ 	.rating	= 400,
+ 	.read	= read_hv_clock_tsc,
+ 	.mask	= CLOCKSOURCE_MASK(64),
+ 	.flags	= CLOCK_SOURCE_IS_CONTINUOUS,
++	.suspend= suspend_hv_clock_tsc,
++	.resume	= resume_hv_clock_tsc,
+ };
  
- config MTK_TIMER
- 	bool "Mediatek timer driver" if COMPILE_TEST
-@@ -490,13 +490,13 @@ config SPRD_TIMER
- 	  Enables support for the Spreadtrum timer driver.
- 
- config SYS_SUPPORTS_SH_MTU2
--        bool
-+	bool
- 
- config SYS_SUPPORTS_SH_TMU
--        bool
-+	bool
- 
- config SYS_SUPPORTS_EM_STI
--        bool
-+	bool
- 
- config CLKSRC_JCORE_PIT
- 	bool "J-Core PIT timer driver" if COMPILE_TEST
-@@ -591,21 +591,21 @@ config CLKSRC_PXA
- 	  platforms.
- 
- config H8300_TMR8
--        bool "Clockevent timer for the H8300 platform" if COMPILE_TEST
--        depends on HAS_IOMEM
-+	bool "Clockevent timer for the H8300 platform" if COMPILE_TEST
-+	depends on HAS_IOMEM
- 	help
- 	  This enables the 8 bits timer for the H8300 platform.
- 
- config H8300_TMR16
--        bool "Clockevent timer for the H83069 platform" if COMPILE_TEST
--        depends on HAS_IOMEM
-+	bool "Clockevent timer for the H83069 platform" if COMPILE_TEST
-+	depends on HAS_IOMEM
- 	help
- 	  This enables the 16 bits timer for the H8300 platform with the
- 	  H83069 cpu.
- 
- config H8300_TPU
--        bool "Clocksource for the H8300 platform" if COMPILE_TEST
--        depends on HAS_IOMEM
-+	bool "Clocksource for the H8300 platform" if COMPILE_TEST
-+	depends on HAS_IOMEM
- 	help
- 	  This enables the clocksource for the H8300 platform with the
- 	  H8S2678 cpu.
+ static u64 notrace read_hv_clock_msr(struct clocksource *arg)
