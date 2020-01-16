@@ -2,36 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B509213CE55
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 15 Jan 2020 21:53:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C919F13D91D
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Jan 2020 12:36:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726220AbgAOUxu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 15 Jan 2020 15:53:50 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:48976 "EHLO
+        id S1726100AbgAPLfT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 16 Jan 2020 06:35:19 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:51358 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729208AbgAOUxu (ORCPT
+        with ESMTP id S1726018AbgAPLfT (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 15 Jan 2020 15:53:50 -0500
+        Thu, 16 Jan 2020 06:35:19 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1irpfb-0000cw-2s; Wed, 15 Jan 2020 21:53:43 +0100
+        id 1is3Qg-0005Pk-4r; Thu, 16 Jan 2020 12:35:14 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 919D71C0879;
-        Wed, 15 Jan 2020 21:53:42 +0100 (CET)
-Date:   Wed, 15 Jan 2020 20:53:42 -0000
-From:   "tip-bot2 for Chunyan Zhang" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 91B831C0334;
+        Thu, 16 Jan 2020 12:35:13 +0100 (CET)
+Date:   Thu, 16 Jan 2020 11:35:13 -0000
+From:   "tip-bot2 for Jisheng Zhang" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] tick/common: Touch watchdog in tick_unfreeze() on all CPUs
-Cc:     Chunyan Zhang <chunyan.zhang@unisoc.com>,
+Subject: [tip: core/core] watchdog: Remove soft_lockup_hrtimer_cnt and related code
+Cc:     Jisheng Zhang <Jisheng.Zhang@synaptics.com>,
         Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200110083902.27276-1-chunyan.zhang@unisoc.com>
-References: <20200110083902.27276-1-chunyan.zhang@unisoc.com>
+In-Reply-To: <20191218131720.4146aea2@xhacker.debian>
+References: <20191218131720.4146aea2@xhacker.debian>
 MIME-Version: 1.0
-Message-ID: <157912162226.396.7446117828577037844.tip-bot2@tip-bot2>
+Message-ID: <157917451326.396.13435521512432492165.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -45,54 +45,47 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/core branch of tip:
+The following commit has been merged into the core/core branch of tip:
 
-Commit-ID:     5167c506d62dd9ffab73eba23c79b0a8845c9fe1
-Gitweb:        https://git.kernel.org/tip/5167c506d62dd9ffab73eba23c79b0a8845c9fe1
-Author:        Chunyan Zhang <zhang.lyra@gmail.com>
-AuthorDate:    Fri, 10 Jan 2020 16:39:02 +08:00
+Commit-ID:     d129479f1fff5c88adbf8dff7649664916d28f81
+Gitweb:        https://git.kernel.org/tip/d129479f1fff5c88adbf8dff7649664916d28f81
+Author:        Jisheng Zhang <Jisheng.Zhang@synaptics.com>
+AuthorDate:    Wed, 18 Dec 2019 05:31:25 
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 15 Jan 2020 21:29:45 +01:00
+CommitterDate: Thu, 16 Jan 2020 12:25:51 +01:00
 
-tick/common: Touch watchdog in tick_unfreeze() on all CPUs
+watchdog: Remove soft_lockup_hrtimer_cnt and related code
 
-Suspend to IDLE invokes tick_unfreeze() on resume. tick_unfreeze() on the
-first resuming CPU resumes timekeeping, which also has the side effect of
-resetting the softlockup watchdog on this CPU.
+After commit 9cf57731b63e ("watchdog/softlockup: Replace "watchdog/%u"
+threads with cpu_stop_work"), the percpu soft_lockup_hrtimer_cnt is
+not used any more, so remove it and related code.
 
-But on the secondary CPUs the watchdog is not reset in the resume /
-unfreeze() path, which can result in false softlockup warnings on those
-CPUs depending on the time spent in suspend.
-
-Prevent this by clearing the softlock watchdog in the unfreeze path also
-on the secondary resuming CPUs.
-
-[ tglx: Massaged changelog ]
-
-Signed-off-by: Chunyan Zhang <chunyan.zhang@unisoc.com>
+Signed-off-by: Jisheng Zhang <Jisheng.Zhang@synaptics.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20200110083902.27276-1-chunyan.zhang@unisoc.com
----
- kernel/time/tick-common.c | 2 ++
- 1 file changed, 2 insertions(+)
+Link: https://lore.kernel.org/r/20191218131720.4146aea2@xhacker.debian
 
-diff --git a/kernel/time/tick-common.c b/kernel/time/tick-common.c
-index 59225b4..7e5d352 100644
---- a/kernel/time/tick-common.c
-+++ b/kernel/time/tick-common.c
-@@ -11,6 +11,7 @@
- #include <linux/err.h>
- #include <linux/hrtimer.h>
- #include <linux/interrupt.h>
-+#include <linux/nmi.h>
- #include <linux/percpu.h>
- #include <linux/profile.h>
- #include <linux/sched.h>
-@@ -558,6 +559,7 @@ void tick_unfreeze(void)
- 		trace_suspend_resume(TPS("timekeeping_freeze"),
- 				     smp_processor_id(), false);
- 	} else {
-+		touch_softlockup_watchdog();
- 		tick_resume_local();
- 	}
+---
+ kernel/watchdog.c | 3 ---
+ 1 file changed, 3 deletions(-)
+
+diff --git a/kernel/watchdog.c b/kernel/watchdog.c
+index f41334e..0621301 100644
+--- a/kernel/watchdog.c
++++ b/kernel/watchdog.c
+@@ -173,7 +173,6 @@ static DEFINE_PER_CPU(struct hrtimer, watchdog_hrtimer);
+ static DEFINE_PER_CPU(bool, softlockup_touch_sync);
+ static DEFINE_PER_CPU(bool, soft_watchdog_warn);
+ static DEFINE_PER_CPU(unsigned long, hrtimer_interrupts);
+-static DEFINE_PER_CPU(unsigned long, soft_lockup_hrtimer_cnt);
+ static DEFINE_PER_CPU(struct task_struct *, softlockup_task_ptr_saved);
+ static DEFINE_PER_CPU(unsigned long, hrtimer_interrupts_saved);
+ static unsigned long soft_lockup_nmi_warn;
+@@ -350,8 +349,6 @@ static DEFINE_PER_CPU(struct cpu_stop_work, softlockup_stop_work);
+  */
+ static int softlockup_fn(void *data)
+ {
+-	__this_cpu_write(soft_lockup_hrtimer_cnt,
+-			 __this_cpu_read(hrtimer_interrupts));
+ 	__touch_watchdog();
+ 	complete(this_cpu_ptr(&softlockup_completion));
  
