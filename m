@@ -2,38 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 750CE13DCA9
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Jan 2020 14:57:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CC25C13F8D3
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Jan 2020 20:21:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726474AbgAPNzk (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 16 Jan 2020 08:55:40 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:51797 "EHLO
+        id S2393384AbgAPTVP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 16 Jan 2020 14:21:15 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:53078 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726362AbgAPNzk (ORCPT
+        with ESMTP id S1731179AbgAPTVO (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 16 Jan 2020 08:55:40 -0500
+        Thu, 16 Jan 2020 14:21:14 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1is5cP-0000FV-WE; Thu, 16 Jan 2020 14:55:30 +0100
+        id 1isAhZ-0007xm-EH; Thu, 16 Jan 2020 20:21:09 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4CBAD1C086C;
-        Thu, 16 Jan 2020 14:55:29 +0100 (CET)
-Date:   Thu, 16 Jan 2020 13:55:29 -0000
-From:   "tip-bot2 for Petr Mladek" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id EECA41C0882;
+        Thu, 16 Jan 2020 20:21:08 +0100 (CET)
+Date:   Thu, 16 Jan 2020 19:21:08 -0000
+From:   "tip-bot2 for Tom Lendacky" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/core] watchdog/softlockup: Remove obsolete check of last
- reported task
-Cc:     Petr Mladek <pmladek@suse.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Peter Ziljstra <peterz@infradead.org>, x86 <x86@kernel.org>,
+Subject: [tip: x86/urgent] x86/CPU/AMD: Ensure clearing of SME/SEV features is
+ maintained
+Cc:     Tom Lendacky <thomas.lendacky@amd.com>,
+        Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191024114928.15377-2-pmladek@suse.com>
-References: <20191024114928.15377-2-pmladek@suse.com>
+In-Reply-To: =?utf-8?q?=3C226de90a703c3c0be5a49565047905ac4e94e8f3=2E15791?=
+ =?utf-8?q?25915=2Egit=2Ethomas=2Elendacky=40amd=2Ecom=3E?=
+References: =?utf-8?q?=3C226de90a703c3c0be5a49565047905ac4e94e8f3=2E157912?=
+ =?utf-8?q?5915=2Egit=2Ethomas=2Elendacky=40amd=2Ecom=3E?=
 MIME-Version: 1.0
-Message-ID: <157918292903.396.3828152178044862176.tip-bot2@tip-bot2>
+Message-ID: <157920246871.396.11570015734463738210.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,76 +48,45 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the core/core branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     3a51449b7959f68cc45abe67298e40c7eb57167b
-Gitweb:        https://git.kernel.org/tip/3a51449b7959f68cc45abe67298e40c7eb57167b
-Author:        Petr Mladek <pmladek@suse.com>
-AuthorDate:    Thu, 24 Oct 2019 13:49:26 +02:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 16 Jan 2020 14:52:48 +01:00
+Commit-ID:     c575dc89440e838ba27dff1a36b599dbbc8a0c18
+Gitweb:        https://git.kernel.org/tip/c575dc89440e838ba27dff1a36b599dbbc8a0c18
+Author:        Tom Lendacky <thomas.lendacky@amd.com>
+AuthorDate:    Wed, 15 Jan 2020 16:05:16 -06:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Thu, 16 Jan 2020 20:17:53 +01:00
 
-watchdog/softlockup: Remove obsolete check of last reported task
+x86/CPU/AMD: Ensure clearing of SME/SEV features is maintained
 
-commit 9cf57731b63e ("watchdog/softlockup: Replace "watchdog/%u" threads
- with cpu_stop_work") ensures that the watchdog is reliably touched during
-a task switch.
+If the SME and SEV features are present via CPUID, but memory encryption
+support is not enabled (MSR 0xC001_0010[23]), the feature flags are cleared
+using clear_cpu_cap(). However, if get_cpu_cap() is later called, these
+feature flags will be reset back to present, which is not desired.
 
-As a result the check for an unnoticed task switch is not longer needed.
+Change from using clear_cpu_cap() to setup_clear_cpu_cap() so that the
+clearing of the flags is maintained.
 
-Remove the relevant code, which effectively reverts commit b1a8de1f5343
-("softlockup: make detector be aware of task switch of processes hogging
-cpu")
-
-Signed-off-by: Petr Mladek <pmladek@suse.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Peter Ziljstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20191024114928.15377-2-pmladek@suse.com
+Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lkml.kernel.org/r/226de90a703c3c0be5a49565047905ac4e94e8f3.1579125915.git.thomas.lendacky@amd.com
 ---
- kernel/watchdog.c | 18 +-----------------
- 1 file changed, 1 insertion(+), 17 deletions(-)
+ arch/x86/kernel/cpu/amd.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/watchdog.c b/kernel/watchdog.c
-index 0621301..e3774e9 100644
---- a/kernel/watchdog.c
-+++ b/kernel/watchdog.c
-@@ -173,7 +173,6 @@ static DEFINE_PER_CPU(struct hrtimer, watchdog_hrtimer);
- static DEFINE_PER_CPU(bool, softlockup_touch_sync);
- static DEFINE_PER_CPU(bool, soft_watchdog_warn);
- static DEFINE_PER_CPU(unsigned long, hrtimer_interrupts);
--static DEFINE_PER_CPU(struct task_struct *, softlockup_task_ptr_saved);
- static DEFINE_PER_CPU(unsigned long, hrtimer_interrupts_saved);
- static unsigned long soft_lockup_nmi_warn;
+diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
+index 90f75e5..62c3027 100644
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -615,9 +615,9 @@ static void early_detect_mem_encrypt(struct cpuinfo_x86 *c)
+ 		return;
  
-@@ -413,22 +412,8 @@ static enum hrtimer_restart watchdog_timer_fn(struct hrtimer *hrtimer)
- 			return HRTIMER_RESTART;
+ clear_all:
+-		clear_cpu_cap(c, X86_FEATURE_SME);
++		setup_clear_cpu_cap(X86_FEATURE_SME);
+ clear_sev:
+-		clear_cpu_cap(c, X86_FEATURE_SEV);
++		setup_clear_cpu_cap(X86_FEATURE_SEV);
+ 	}
+ }
  
- 		/* only warn once */
--		if (__this_cpu_read(soft_watchdog_warn) == true) {
--			/*
--			 * When multiple processes are causing softlockups the
--			 * softlockup detector only warns on the first one
--			 * because the code relies on a full quiet cycle to
--			 * re-arm.  The second process prevents the quiet cycle
--			 * and never gets reported.  Use task pointers to detect
--			 * this.
--			 */
--			if (__this_cpu_read(softlockup_task_ptr_saved) !=
--			    current) {
--				__this_cpu_write(soft_watchdog_warn, false);
--				__touch_watchdog();
--			}
-+		if (__this_cpu_read(soft_watchdog_warn) == true)
- 			return HRTIMER_RESTART;
--		}
- 
- 		if (softlockup_all_cpu_backtrace) {
- 			/* Prevent multiple soft-lockup reports if one cpu is already
-@@ -444,7 +429,6 @@ static enum hrtimer_restart watchdog_timer_fn(struct hrtimer *hrtimer)
- 		pr_emerg("BUG: soft lockup - CPU#%d stuck for %us! [%s:%d]\n",
- 			smp_processor_id(), duration,
- 			current->comm, task_pid_nr(current));
--		__this_cpu_write(softlockup_task_ptr_saved, current);
- 		print_modules();
- 		print_irqtrace_events(current);
- 		if (regs)
