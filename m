@@ -2,36 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F5AE13FAF2
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Jan 2020 22:02:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C854813FAEE
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Jan 2020 22:02:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388359AbgAPVCr (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 16 Jan 2020 16:02:47 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:53389 "EHLO
+        id S2388232AbgAPVCm (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 16 Jan 2020 16:02:42 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:53375 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726994AbgAPVCr (ORCPT
+        with ESMTP id S1729890AbgAPVCl (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 16 Jan 2020 16:02:47 -0500
+        Thu, 16 Jan 2020 16:02:41 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1isCHk-00013P-E9; Thu, 16 Jan 2020 22:02:36 +0100
+        id 1isCHk-00013O-Ce; Thu, 16 Jan 2020 22:02:36 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id F0BB91C18C0;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id BB9E61C1886;
         Thu, 16 Jan 2020 22:02:35 +0100 (CET)
 Date:   Thu, 16 Jan 2020 21:02:35 -0000
 From:   "tip-bot2 for Yazen Ghannam" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: ras/core] x86/amd_nb: Add Family 19h PCI IDs
+Subject: [tip: ras/core] EDAC/amd64: Add family ops for Family 19h Models 00h-0Fh
 Cc:     Yazen Ghannam <yazen.ghannam@amd.com>,
         Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200110015651.14887-4-Yazen.Ghannam@amd.com>
-References: <20200110015651.14887-4-Yazen.Ghannam@amd.com>
+In-Reply-To: <20200110015651.14887-5-Yazen.Ghannam@amd.com>
+References: <20200110015651.14887-5-Yazen.Ghannam@amd.com>
 MIME-Version: 1.0
-Message-ID: <157920855582.396.16470693063688916445.tip-bot2@tip-bot2>
+Message-ID: <157920855560.396.17119230849166470415.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,63 +47,87 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the ras/core branch of tip:
 
-Commit-ID:     b3f79ae45904ae987a7c06a9e8d6084d7b73e67f
-Gitweb:        https://git.kernel.org/tip/b3f79ae45904ae987a7c06a9e8d6084d7b73e67f
+Commit-ID:     2eb61c91c3e2738218e55f2eaf7e78a4435c233d
+Gitweb:        https://git.kernel.org/tip/2eb61c91c3e2738218e55f2eaf7e78a4435c233d
 Author:        Yazen Ghannam <yazen.ghannam@amd.com>
-AuthorDate:    Fri, 10 Jan 2020 01:56:49 
+AuthorDate:    Fri, 10 Jan 2020 01:56:50 
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Thu, 16 Jan 2020 17:09:18 +01:00
+CommitterDate: Thu, 16 Jan 2020 17:09:23 +01:00
 
-x86/amd_nb: Add Family 19h PCI IDs
+EDAC/amd64: Add family ops for Family 19h Models 00h-0Fh
 
-Add the new PCI Device 18h IDs for AMD Family 19h systems. Note that
-Family 19h systems will not have a new PCI root device ID.
+Add family ops to support AMD Family 19h systems. Existing Family 17h
+functions can be used. Also, add Family 19h to the list of families to
+automatically load the module.
 
 Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20200110015651.14887-4-Yazen.Ghannam@amd.com
+Link: https://lkml.kernel.org/r/20200110015651.14887-5-Yazen.Ghannam@amd.com
 ---
- arch/x86/kernel/amd_nb.c | 3 +++
- include/linux/pci_ids.h  | 1 +
- 2 files changed, 4 insertions(+)
+ drivers/edac/amd64_edac.c | 17 +++++++++++++++++
+ drivers/edac/amd64_edac.h |  3 +++
+ 2 files changed, 20 insertions(+)
 
-diff --git a/arch/x86/kernel/amd_nb.c b/arch/x86/kernel/amd_nb.c
-index 251c795..69aed0e 100644
---- a/arch/x86/kernel/amd_nb.c
-+++ b/arch/x86/kernel/amd_nb.c
-@@ -22,6 +22,7 @@
- #define PCI_DEVICE_ID_AMD_17H_M10H_DF_F4 0x15ec
- #define PCI_DEVICE_ID_AMD_17H_M30H_DF_F4 0x1494
- #define PCI_DEVICE_ID_AMD_17H_M70H_DF_F4 0x1444
-+#define PCI_DEVICE_ID_AMD_19H_DF_F4	0x1654
+diff --git a/drivers/edac/amd64_edac.c b/drivers/edac/amd64_edac.c
+index 428ce98..2488cbf 100644
+--- a/drivers/edac/amd64_edac.c
++++ b/drivers/edac/amd64_edac.c
+@@ -2336,6 +2336,16 @@ static struct amd64_family_type family_types[] = {
+ 			.dbam_to_cs		= f17_addr_mask_to_cs_size,
+ 		}
+ 	},
++	[F19_CPUS] = {
++		.ctl_name = "F19h",
++		.f0_id = PCI_DEVICE_ID_AMD_19H_DF_F0,
++		.f6_id = PCI_DEVICE_ID_AMD_19H_DF_F6,
++		.max_mcs = 8,
++		.ops = {
++			.early_channel_count	= f17_early_channel_count,
++			.dbam_to_cs		= f17_addr_mask_to_cs_size,
++		}
++	},
+ };
  
- /* Protect the PCI config register pairs used for SMN and DF indirect access. */
- static DEFINE_MUTEX(smn_mutex);
-@@ -52,6 +53,7 @@ const struct pci_device_id amd_nb_misc_ids[] = {
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_17H_M30H_DF_F3) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_CNB17H_F3) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_17H_M70H_DF_F3) },
-+	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_19H_DF_F3) },
- 	{}
+ /*
+@@ -3368,6 +3378,12 @@ static struct amd64_family_type *per_family_init(struct amd64_pvt *pvt)
+ 			family_types[F17_CPUS].ctl_name = "F18h";
+ 		break;
+ 
++	case 0x19:
++		fam_type	= &family_types[F19_CPUS];
++		pvt->ops	= &family_types[F19_CPUS].ops;
++		family_types[F19_CPUS].ctl_name = "F19h";
++		break;
++
+ 	default:
+ 		amd64_err("Unsupported family!\n");
+ 		return NULL;
+@@ -3626,6 +3642,7 @@ static const struct x86_cpu_id amd64_cpuids[] = {
+ 	{ X86_VENDOR_AMD, 0x16, X86_MODEL_ANY,	X86_FEATURE_ANY, 0 },
+ 	{ X86_VENDOR_AMD, 0x17, X86_MODEL_ANY,	X86_FEATURE_ANY, 0 },
+ 	{ X86_VENDOR_HYGON, 0x18, X86_MODEL_ANY, X86_FEATURE_ANY, 0 },
++	{ X86_VENDOR_AMD, 0x19, X86_MODEL_ANY,	X86_FEATURE_ANY, 0 },
+ 	{ }
  };
- EXPORT_SYMBOL_GPL(amd_nb_misc_ids);
-@@ -66,6 +68,7 @@ static const struct pci_device_id amd_nb_link_ids[] = {
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_17H_M10H_DF_F4) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_17H_M30H_DF_F4) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_17H_M70H_DF_F4) },
-+	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_19H_DF_F4) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_CNB17H_F4) },
- 	{}
+ MODULE_DEVICE_TABLE(x86cpu, amd64_cpuids);
+diff --git a/drivers/edac/amd64_edac.h b/drivers/edac/amd64_edac.h
+index 9be3168..abbf3c2 100644
+--- a/drivers/edac/amd64_edac.h
++++ b/drivers/edac/amd64_edac.h
+@@ -122,6 +122,8 @@
+ #define PCI_DEVICE_ID_AMD_17H_M30H_DF_F6 0x1496
+ #define PCI_DEVICE_ID_AMD_17H_M70H_DF_F0 0x1440
+ #define PCI_DEVICE_ID_AMD_17H_M70H_DF_F6 0x1446
++#define PCI_DEVICE_ID_AMD_19H_DF_F0	0x1650
++#define PCI_DEVICE_ID_AMD_19H_DF_F6	0x1656
+ 
+ /*
+  * Function 1 - Address Map
+@@ -292,6 +294,7 @@ enum amd_families {
+ 	F17_M10H_CPUS,
+ 	F17_M30H_CPUS,
+ 	F17_M70H_CPUS,
++	F19_CPUS,
+ 	NUM_FAMILIES,
  };
-diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
-index 2302d13..352c0d7 100644
---- a/include/linux/pci_ids.h
-+++ b/include/linux/pci_ids.h
-@@ -549,6 +549,7 @@
- #define PCI_DEVICE_ID_AMD_17H_M10H_DF_F3 0x15eb
- #define PCI_DEVICE_ID_AMD_17H_M30H_DF_F3 0x1493
- #define PCI_DEVICE_ID_AMD_17H_M70H_DF_F3 0x1443
-+#define PCI_DEVICE_ID_AMD_19H_DF_F3	0x1653
- #define PCI_DEVICE_ID_AMD_CNB17H_F3	0x1703
- #define PCI_DEVICE_ID_AMD_LANCE		0x2000
- #define PCI_DEVICE_ID_AMD_LANCE_HOME	0x2001
+ 
