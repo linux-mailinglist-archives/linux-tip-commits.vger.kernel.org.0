@@ -2,39 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9793613F976
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Jan 2020 20:27:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2883213FA93
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Jan 2020 21:28:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729271AbgAPT1E (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 16 Jan 2020 14:27:04 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:53100 "EHLO
+        id S1731740AbgAPU2y (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 16 Jan 2020 15:28:54 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:53286 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729094AbgAPT1E (ORCPT
+        with ESMTP id S1731117AbgAPU2y (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 16 Jan 2020 14:27:04 -0500
+        Thu, 16 Jan 2020 15:28:54 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1isAnD-0008Jw-Js; Thu, 16 Jan 2020 20:26:59 +0100
+        id 1isBl5-0000hN-2T; Thu, 16 Jan 2020 21:28:51 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 2BCCF1C0888;
-        Thu, 16 Jan 2020 20:26:59 +0100 (CET)
-Date:   Thu, 16 Jan 2020 19:26:58 -0000
-From:   "tip-bot2 for Tom Lendacky" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 3E3FE1C0E34;
+        Thu, 16 Jan 2020 21:28:50 +0100 (CET)
+Date:   Thu, 16 Jan 2020 20:28:49 -0000
+From:   "tip-bot2 for Christophe Leroy" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/CPU/AMD: Ensure clearing of SME/SEV features is
- maintained
-Cc:     Tom Lendacky <thomas.lendacky@amd.com>,
-        Borislav Petkov <bp@suse.de>, <stable@vger.kernel.org>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: =?utf-8?q?=3C226de90a703c3c0be5a49565047905ac4e94e8f3=2E15791?=
- =?utf-8?q?25915=2Egit=2Ethomas=2Elendacky=40amd=2Ecom=3E?=
-References: =?utf-8?q?=3C226de90a703c3c0be5a49565047905ac4e94e8f3=2E157912?=
- =?utf-8?q?5915=2Egit=2Ethomas=2Elendacky=40amd=2Ecom=3E?=
+Subject: [tip: timers/core] lib/vdso: Only read hrtimer_res when needed in
+ __cvdso_clock_getres()
+Cc:     Christophe Leroy <christophe.leroy@c-s.fr>,
+        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: =?utf-8?q?=3C7ac2f0d21652f95e2bbdfa6bd514ae6c7caf53ab=2E15791?=
+ =?utf-8?q?96675=2Egit=2Echristophe=2Eleroy=40c-s=2Efr=3E?=
+References: =?utf-8?q?=3C7ac2f0d21652f95e2bbdfa6bd514ae6c7caf53ab=2E157919?=
+ =?utf-8?q?6675=2Egit=2Echristophe=2Eleroy=40c-s=2Efr=3E?=
 MIME-Version: 1.0
-Message-ID: <157920281894.396.1775591603409814126.tip-bot2@tip-bot2>
+Message-ID: <157920652995.396.11214684857545426237.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,46 +48,53 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     a006483b2f97af685f0e60f3a547c9ad4c9b9e94
-Gitweb:        https://git.kernel.org/tip/a006483b2f97af685f0e60f3a547c9ad4c9b9e94
-Author:        Tom Lendacky <thomas.lendacky@amd.com>
-AuthorDate:    Wed, 15 Jan 2020 16:05:16 -06:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Thu, 16 Jan 2020 20:23:20 +01:00
+Commit-ID:     49a101d7169c7729c7bab6b2f896faae34bd6c3d
+Gitweb:        https://git.kernel.org/tip/49a101d7169c7729c7bab6b2f896faae34bd6c3d
+Author:        Christophe Leroy <christophe.leroy@c-s.fr>
+AuthorDate:    Thu, 16 Jan 2020 17:58:27 
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Thu, 16 Jan 2020 21:24:46 +01:00
 
-x86/CPU/AMD: Ensure clearing of SME/SEV features is maintained
+lib/vdso: Only read hrtimer_res when needed in __cvdso_clock_getres()
 
-If the SME and SEV features are present via CPUID, but memory encryption
-support is not enabled (MSR 0xC001_0010[23]), the feature flags are cleared
-using clear_cpu_cap(). However, if get_cpu_cap() is later called, these
-feature flags will be reset back to present, which is not desired.
+Only perform READ_ONCE(vd[CS_HRES_COARSE].hrtimer_res) for
+HRES and RAW clocks.
 
-Change from using clear_cpu_cap() to setup_clear_cpu_cap() so that the
-clearing of the flags is maintained.
-
-Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Cc: <stable@vger.kernel.org> # 4.16.x-
-Link: https://lkml.kernel.org/r/226de90a703c3c0be5a49565047905ac4e94e8f3.1579125915.git.thomas.lendacky@amd.com
+Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/7ac2f0d21652f95e2bbdfa6bd514ae6c7caf53ab.1579196675.git.christophe.leroy@c-s.fr
 ---
- arch/x86/kernel/cpu/amd.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ lib/vdso/gettimeofday.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
-index 90f75e5..62c3027 100644
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -615,9 +615,9 @@ static void early_detect_mem_encrypt(struct cpuinfo_x86 *c)
- 		return;
+diff --git a/lib/vdso/gettimeofday.c b/lib/vdso/gettimeofday.c
+index f342ac1..f8b8ec5 100644
+--- a/lib/vdso/gettimeofday.c
++++ b/lib/vdso/gettimeofday.c
+@@ -312,7 +312,6 @@ static __maybe_unused
+ int __cvdso_clock_getres_common(clockid_t clock, struct __kernel_timespec *res)
+ {
+ 	const struct vdso_data *vd = __arch_get_vdso_data();
+-	u64 hrtimer_res;
+ 	u32 msk;
+ 	u64 ns;
  
- clear_all:
--		clear_cpu_cap(c, X86_FEATURE_SME);
-+		setup_clear_cpu_cap(X86_FEATURE_SME);
- clear_sev:
--		clear_cpu_cap(c, X86_FEATURE_SEV);
-+		setup_clear_cpu_cap(X86_FEATURE_SEV);
- 	}
- }
+@@ -323,7 +322,6 @@ int __cvdso_clock_getres_common(clockid_t clock, struct __kernel_timespec *res)
+ 	if (IS_ENABLED(CONFIG_TIME_NS) && vd->clock_mode == VCLOCK_TIMENS)
+ 		vd = __arch_get_timens_vdso_data();
  
+-	hrtimer_res = READ_ONCE(vd[CS_HRES_COARSE].hrtimer_res);
+ 	/*
+ 	 * Convert the clockid to a bitmask and use it to check which
+ 	 * clocks are handled in the VDSO directly.
+@@ -333,7 +331,7 @@ int __cvdso_clock_getres_common(clockid_t clock, struct __kernel_timespec *res)
+ 		/*
+ 		 * Preserves the behaviour of posix_get_hrtimer_res().
+ 		 */
+-		ns = hrtimer_res;
++		ns = READ_ONCE(vd[CS_HRES_COARSE].hrtimer_res);
+ 	} else if (msk & VDSO_COARSE) {
+ 		/*
+ 		 * Preserves the behaviour of posix_get_coarse_res().
