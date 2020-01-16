@@ -2,35 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5289A13FAEC
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Jan 2020 22:02:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C047813FAF7
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Jan 2020 22:03:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730610AbgAPVCj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 16 Jan 2020 16:02:39 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:53368 "EHLO
+        id S2388420AbgAPVCz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 16 Jan 2020 16:02:55 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:53384 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726994AbgAPVCj (ORCPT
+        with ESMTP id S2388271AbgAPVCn (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 16 Jan 2020 16:02:39 -0500
+        Thu, 16 Jan 2020 16:02:43 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1isCHj-00013L-RQ; Thu, 16 Jan 2020 22:02:36 +0100
+        id 1isCHj-00013M-W1; Thu, 16 Jan 2020 22:02:36 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 471551C0E70;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 849ED1C0EA3;
         Thu, 16 Jan 2020 22:02:35 +0100 (CET)
 Date:   Thu, 16 Jan 2020 21:02:35 -0000
-From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Yazen Ghannam" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: ras/core] EDAC/mce_amd: Make fam_ops static global
-Cc:     Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
+Subject: [tip: ras/core] EDAC/amd64: Drop some family checks for newer systems
+Cc:     Yazen Ghannam <yazen.ghannam@amd.com>,
+        Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200116163403.GF27148@zn.tnic>
-References: <20200116163403.GF27148@zn.tnic>
+In-Reply-To: <20200110015651.14887-6-Yazen.Ghannam@amd.com>
+References: <20200110015651.14887-6-Yazen.Ghannam@amd.com>
 MIME-Version: 1.0
-Message-ID: <157920855506.396.12217713594707433235.tip-bot2@tip-bot2>
+Message-ID: <157920855537.396.336310673693730601.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -46,187 +47,111 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the ras/core branch of tip:
 
-Commit-ID:     86e9f9d60eb5e0c5d99ddf6b79f4d308d6453bd0
-Gitweb:        https://git.kernel.org/tip/86e9f9d60eb5e0c5d99ddf6b79f4d308d6453bd0
-Author:        Borislav Petkov <bp@suse.de>
-AuthorDate:    Thu, 16 Jan 2020 17:28:39 +01:00
+Commit-ID:     dcd01394ce7cd7d25bb15c81ad2e804d8090611f
+Gitweb:        https://git.kernel.org/tip/dcd01394ce7cd7d25bb15c81ad2e804d8090611f
+Author:        Yazen Ghannam <yazen.ghannam@amd.com>
+AuthorDate:    Fri, 10 Jan 2020 01:56:51 
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Thu, 16 Jan 2020 21:52:48 +01:00
+CommitterDate: Thu, 16 Jan 2020 17:09:29 +01:00
 
-EDAC/mce_amd: Make fam_ops static global
+EDAC/amd64: Drop some family checks for newer systems
 
-... and do not kmalloc a three-pointer struct. Which simplifies
-mce_amd_init() a bit.
+In general, "pvt->umc != NULL" is used to check if the system is Family
+17h+. However, there are a few places that are using direct family
+checks.
 
-No functional changes.
+Replace the remaining family checks with a check for "pvt->umc != NULL".
 
+Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20200116163403.GF27148@zn.tnic
+Link: https://lkml.kernel.org/r/20200110015651.14887-6-Yazen.Ghannam@amd.com
 ---
- drivers/edac/mce_amd.c | 68 +++++++++++++++++------------------------
- 1 file changed, 29 insertions(+), 39 deletions(-)
+ drivers/edac/amd64_edac.c | 45 ++++++++++++++++----------------------
+ 1 file changed, 19 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/edac/mce_amd.c b/drivers/edac/mce_amd.c
-index 524c63f..ea980c5 100644
---- a/drivers/edac/mce_amd.c
-+++ b/drivers/edac/mce_amd.c
-@@ -6,7 +6,7 @@
+diff --git a/drivers/edac/amd64_edac.c b/drivers/edac/amd64_edac.c
+index 2488cbf..4fc9f0b 100644
+--- a/drivers/edac/amd64_edac.c
++++ b/drivers/edac/amd64_edac.c
+@@ -214,7 +214,7 @@ static int __set_scrub_rate(struct amd64_pvt *pvt, u32 new_bw, u32 min_rate)
  
- #include "mce_amd.h"
+ 	scrubval = scrubrates[i].scrubval;
  
--static struct amd_decoder_ops *fam_ops;
-+static struct amd_decoder_ops fam_ops;
+-	if (pvt->fam == 0x17 || pvt->fam == 0x18) {
++	if (pvt->umc) {
+ 		__f17h_set_scrubval(pvt, scrubval);
+ 	} else if (pvt->fam == 0x15 && pvt->model == 0x60) {
+ 		f15h_select_dct(pvt, 0);
+@@ -256,18 +256,7 @@ static int get_scrub_rate(struct mem_ctl_info *mci)
+ 	int i, retval = -EINVAL;
+ 	u32 scrubval = 0;
  
- static u8 xec_mask	 = 0xf;
- 
-@@ -583,7 +583,7 @@ static void decode_mc0_mce(struct mce *m)
- 					    : (xec ? "multimatch" : "parity")));
- 			return;
- 		}
--	} else if (fam_ops->mc0_mce(ec, xec))
-+	} else if (fam_ops.mc0_mce(ec, xec))
- 		;
- 	else
- 		pr_emerg(HW_ERR "Corrupted MC0 MCE info?\n");
-@@ -697,7 +697,7 @@ static void decode_mc1_mce(struct mce *m)
- 			pr_cont("Hardware Assert.\n");
- 		else
- 			goto wrong_mc1_mce;
--	} else if (fam_ops->mc1_mce(ec, xec))
-+	} else if (fam_ops.mc1_mce(ec, xec))
- 		;
- 	else
- 		goto wrong_mc1_mce;
-@@ -831,7 +831,7 @@ static void decode_mc2_mce(struct mce *m)
- 
- 	pr_emerg(HW_ERR "MC2 Error: ");
- 
--	if (!fam_ops->mc2_mce(ec, xec))
-+	if (!fam_ops.mc2_mce(ec, xec))
- 		pr_cont(HW_ERR "Corrupted MC2 MCE info?\n");
- }
- 
-@@ -1130,7 +1130,8 @@ amd_decode_mce(struct notifier_block *nb, unsigned long val, void *data)
- 	if (m->tsc)
- 		pr_emerg(HW_ERR "TSC: %llu\n", m->tsc);
- 
--	if (!fam_ops)
-+	/* Doesn't matter which member to test. */
-+	if (!fam_ops.mc0_mce)
- 		goto err_code;
- 
- 	switch (m->bank) {
-@@ -1185,10 +1186,6 @@ static int __init mce_amd_init(void)
- 	    c->x86_vendor != X86_VENDOR_HYGON)
- 		return -ENODEV;
- 
--	fam_ops = kzalloc(sizeof(struct amd_decoder_ops), GFP_KERNEL);
--	if (!fam_ops)
--		return -ENOMEM;
+-	switch (pvt->fam) {
+-	case 0x15:
+-		/* Erratum #505 */
+-		if (pvt->model < 0x10)
+-			f15h_select_dct(pvt, 0);
 -
- 	if (boot_cpu_has(X86_FEATURE_SMCA)) {
- 		xec_mask = 0x3f;
- 		goto out;
-@@ -1196,59 +1193,58 @@ static int __init mce_amd_init(void)
- 
- 	switch (c->x86) {
- 	case 0xf:
--		fam_ops->mc0_mce = k8_mc0_mce;
--		fam_ops->mc1_mce = k8_mc1_mce;
--		fam_ops->mc2_mce = k8_mc2_mce;
-+		fam_ops.mc0_mce = k8_mc0_mce;
-+		fam_ops.mc1_mce = k8_mc1_mce;
-+		fam_ops.mc2_mce = k8_mc2_mce;
- 		break;
- 
- 	case 0x10:
--		fam_ops->mc0_mce = f10h_mc0_mce;
--		fam_ops->mc1_mce = k8_mc1_mce;
--		fam_ops->mc2_mce = k8_mc2_mce;
-+		fam_ops.mc0_mce = f10h_mc0_mce;
-+		fam_ops.mc1_mce = k8_mc1_mce;
-+		fam_ops.mc2_mce = k8_mc2_mce;
- 		break;
- 
- 	case 0x11:
--		fam_ops->mc0_mce = k8_mc0_mce;
--		fam_ops->mc1_mce = k8_mc1_mce;
--		fam_ops->mc2_mce = k8_mc2_mce;
-+		fam_ops.mc0_mce = k8_mc0_mce;
-+		fam_ops.mc1_mce = k8_mc1_mce;
-+		fam_ops.mc2_mce = k8_mc2_mce;
- 		break;
- 
- 	case 0x12:
--		fam_ops->mc0_mce = f12h_mc0_mce;
--		fam_ops->mc1_mce = k8_mc1_mce;
--		fam_ops->mc2_mce = k8_mc2_mce;
-+		fam_ops.mc0_mce = f12h_mc0_mce;
-+		fam_ops.mc1_mce = k8_mc1_mce;
-+		fam_ops.mc2_mce = k8_mc2_mce;
- 		break;
- 
- 	case 0x14:
--		fam_ops->mc0_mce = cat_mc0_mce;
--		fam_ops->mc1_mce = cat_mc1_mce;
--		fam_ops->mc2_mce = k8_mc2_mce;
-+		fam_ops.mc0_mce = cat_mc0_mce;
-+		fam_ops.mc1_mce = cat_mc1_mce;
-+		fam_ops.mc2_mce = k8_mc2_mce;
- 		break;
- 
- 	case 0x15:
- 		xec_mask = c->x86_model == 0x60 ? 0x3f : 0x1f;
- 
--		fam_ops->mc0_mce = f15h_mc0_mce;
--		fam_ops->mc1_mce = f15h_mc1_mce;
--		fam_ops->mc2_mce = f15h_mc2_mce;
-+		fam_ops.mc0_mce = f15h_mc0_mce;
-+		fam_ops.mc1_mce = f15h_mc1_mce;
-+		fam_ops.mc2_mce = f15h_mc2_mce;
- 		break;
- 
- 	case 0x16:
- 		xec_mask = 0x1f;
--		fam_ops->mc0_mce = cat_mc0_mce;
--		fam_ops->mc1_mce = cat_mc1_mce;
--		fam_ops->mc2_mce = f16h_mc2_mce;
-+		fam_ops.mc0_mce = cat_mc0_mce;
-+		fam_ops.mc1_mce = cat_mc1_mce;
-+		fam_ops.mc2_mce = f16h_mc2_mce;
- 		break;
- 
- 	case 0x17:
- 	case 0x18:
- 		pr_warn("Decoding supported only on Scalable MCA processors.\n");
--		goto err_out;
+-		if (pvt->model == 0x60)
+-			amd64_read_pci_cfg(pvt->F2, F15H_M60H_SCRCTRL, &scrubval);
 -		break;
-+		return -EINVAL;
+-
+-	case 0x17:
+-	case 0x18:
++	if (pvt->umc) {
+ 		amd64_read_pci_cfg(pvt->F6, F17H_SCR_BASE_ADDR, &scrubval);
+ 		if (scrubval & BIT(0)) {
+ 			amd64_read_pci_cfg(pvt->F6, F17H_SCR_LIMIT_ADDR, &scrubval);
+@@ -276,11 +265,15 @@ static int get_scrub_rate(struct mem_ctl_info *mci)
+ 		} else {
+ 			scrubval = 0;
+ 		}
+-		break;
++	} else if (pvt->fam == 0x15) {
++		/* Erratum #505 */
++		if (pvt->model < 0x10)
++			f15h_select_dct(pvt, 0);
  
- 	default:
- 		printk(KERN_WARNING "Huh? What family is it: 0x%x?!\n", c->x86);
--		goto err_out;
-+		return -EINVAL;
+-	default:
++		if (pvt->model == 0x60)
++			amd64_read_pci_cfg(pvt->F2, F15H_M60H_SCRCTRL, &scrubval);
++	} else {
+ 		amd64_read_pci_cfg(pvt->F3, SCRCTRL, &scrubval);
+-		break;
  	}
  
- out:
-@@ -1257,11 +1253,6 @@ out:
- 	mce_register_decode_chain(&amd_mce_dec_nb);
- 
- 	return 0;
--
--err_out:
--	kfree(fam_ops);
--	fam_ops = NULL;
--	return -EINVAL;
- }
- early_initcall(mce_amd_init);
- 
-@@ -1269,7 +1260,6 @@ early_initcall(mce_amd_init);
- static void __exit mce_amd_exit(void)
+ 	scrubval = scrubval & 0x001F;
+@@ -1055,6 +1048,16 @@ static void determine_memory_type(struct amd64_pvt *pvt)
  {
- 	mce_unregister_decode_chain(&amd_mce_dec_nb);
--	kfree(fam_ops);
- }
+ 	u32 dram_ctrl, dcsm;
  
- MODULE_DESCRIPTION("AMD MCE decoder");
++	if (pvt->umc) {
++		if ((pvt->umc[0].dimm_cfg | pvt->umc[1].dimm_cfg) & BIT(5))
++			pvt->dram_type = MEM_LRDDR4;
++		else if ((pvt->umc[0].dimm_cfg | pvt->umc[1].dimm_cfg) & BIT(4))
++			pvt->dram_type = MEM_RDDR4;
++		else
++			pvt->dram_type = MEM_DDR4;
++		return;
++	}
++
+ 	switch (pvt->fam) {
+ 	case 0xf:
+ 		if (pvt->ext_model >= K8_REV_F)
+@@ -1100,16 +1103,6 @@ static void determine_memory_type(struct amd64_pvt *pvt)
+ 	case 0x16:
+ 		goto ddr3;
+ 
+-	case 0x17:
+-	case 0x18:
+-		if ((pvt->umc[0].dimm_cfg | pvt->umc[1].dimm_cfg) & BIT(5))
+-			pvt->dram_type = MEM_LRDDR4;
+-		else if ((pvt->umc[0].dimm_cfg | pvt->umc[1].dimm_cfg) & BIT(4))
+-			pvt->dram_type = MEM_RDDR4;
+-		else
+-			pvt->dram_type = MEM_DDR4;
+-		return;
+-
+ 	default:
+ 		WARN(1, KERN_ERR "%s: Family??? 0x%x\n", __func__, pvt->fam);
+ 		pvt->dram_type = MEM_EMPTY;
