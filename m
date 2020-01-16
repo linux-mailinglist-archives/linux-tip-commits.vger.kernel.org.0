@@ -2,36 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C854813FAEE
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Jan 2020 22:02:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 959A213FAF5
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Jan 2020 22:03:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388232AbgAPVCm (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 16 Jan 2020 16:02:42 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:53375 "EHLO
+        id S2388278AbgAPVCn (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 16 Jan 2020 16:02:43 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:53377 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729890AbgAPVCl (ORCPT
+        with ESMTP id S1726994AbgAPVCm (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 16 Jan 2020 16:02:41 -0500
+        Thu, 16 Jan 2020 16:02:42 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1isCHk-00013O-Ce; Thu, 16 Jan 2020 22:02:36 +0100
+        id 1isCHl-00013g-0y; Thu, 16 Jan 2020 22:02:37 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id BB9E61C1886;
-        Thu, 16 Jan 2020 22:02:35 +0100 (CET)
-Date:   Thu, 16 Jan 2020 21:02:35 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 7F7901C0E70;
+        Thu, 16 Jan 2020 22:02:36 +0100 (CET)
+Date:   Thu, 16 Jan 2020 21:02:36 -0000
 From:   "tip-bot2 for Yazen Ghannam" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: ras/core] EDAC/amd64: Add family ops for Family 19h Models 00h-0Fh
+Subject: [tip: ras/core] x86/MCE/AMD, EDAC/mce_amd: Add new Load Store unit McaType
 Cc:     Yazen Ghannam <yazen.ghannam@amd.com>,
         Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200110015651.14887-5-Yazen.Ghannam@amd.com>
-References: <20200110015651.14887-5-Yazen.Ghannam@amd.com>
+In-Reply-To: <20200110015651.14887-2-Yazen.Ghannam@amd.com>
+References: <20200110015651.14887-2-Yazen.Ghannam@amd.com>
 MIME-Version: 1.0
-Message-ID: <157920855560.396.17119230849166470415.tip-bot2@tip-bot2>
+Message-ID: <157920855629.396.3345590993818919194.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,87 +47,108 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the ras/core branch of tip:
 
-Commit-ID:     2eb61c91c3e2738218e55f2eaf7e78a4435c233d
-Gitweb:        https://git.kernel.org/tip/2eb61c91c3e2738218e55f2eaf7e78a4435c233d
+Commit-ID:     89a76171bf50bd20d44338408b8c09433c302956
+Gitweb:        https://git.kernel.org/tip/89a76171bf50bd20d44338408b8c09433c302956
 Author:        Yazen Ghannam <yazen.ghannam@amd.com>
-AuthorDate:    Fri, 10 Jan 2020 01:56:50 
+AuthorDate:    Fri, 10 Jan 2020 01:56:47 
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Thu, 16 Jan 2020 17:09:23 +01:00
+CommitterDate: Thu, 16 Jan 2020 17:09:02 +01:00
 
-EDAC/amd64: Add family ops for Family 19h Models 00h-0Fh
+x86/MCE/AMD, EDAC/mce_amd: Add new Load Store unit McaType
 
-Add family ops to support AMD Family 19h systems. Existing Family 17h
-functions can be used. Also, add Family 19h to the list of families to
-automatically load the module.
+Add support for a new version of the Load Store unit bank type as
+indicated by its McaType value, which will be present in future SMCA
+systems.
+
+Add the new (HWID, MCATYPE) tuple. Reuse the same name, since this is
+logically the same to the user.
+
+Also, add the new error descriptions to edac_mce_amd.
 
 Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20200110015651.14887-5-Yazen.Ghannam@amd.com
+Link: https://lkml.kernel.org/r/20200110015651.14887-2-Yazen.Ghannam@amd.com
 ---
- drivers/edac/amd64_edac.c | 17 +++++++++++++++++
- drivers/edac/amd64_edac.h |  3 +++
- 2 files changed, 20 insertions(+)
+ arch/x86/include/asm/mce.h    |  1 +
+ arch/x86/kernel/cpu/mce/amd.c |  2 ++
+ drivers/edac/mce_amd.c        | 28 ++++++++++++++++++++++++++++
+ 3 files changed, 31 insertions(+)
 
-diff --git a/drivers/edac/amd64_edac.c b/drivers/edac/amd64_edac.c
-index 428ce98..2488cbf 100644
---- a/drivers/edac/amd64_edac.c
-+++ b/drivers/edac/amd64_edac.c
-@@ -2336,6 +2336,16 @@ static struct amd64_family_type family_types[] = {
- 			.dbam_to_cs		= f17_addr_mask_to_cs_size,
- 		}
- 	},
-+	[F19_CPUS] = {
-+		.ctl_name = "F19h",
-+		.f0_id = PCI_DEVICE_ID_AMD_19H_DF_F0,
-+		.f6_id = PCI_DEVICE_ID_AMD_19H_DF_F6,
-+		.max_mcs = 8,
-+		.ops = {
-+			.early_channel_count	= f17_early_channel_count,
-+			.dbam_to_cs		= f17_addr_mask_to_cs_size,
-+		}
-+	},
+diff --git a/arch/x86/include/asm/mce.h b/arch/x86/include/asm/mce.h
+index c8ff6f6..4359b95 100644
+--- a/arch/x86/include/asm/mce.h
++++ b/arch/x86/include/asm/mce.h
+@@ -290,6 +290,7 @@ extern void apei_mce_report_mem_error(int corrected,
+ /* These may be used by multiple smca_hwid_mcatypes */
+ enum smca_bank_types {
+ 	SMCA_LS = 0,	/* Load Store */
++	SMCA_LS_V2,	/* Load Store */
+ 	SMCA_IF,	/* Instruction Fetch */
+ 	SMCA_L2_CACHE,	/* L2 Cache */
+ 	SMCA_DE,	/* Decoder Unit */
+diff --git a/arch/x86/kernel/cpu/mce/amd.c b/arch/x86/kernel/cpu/mce/amd.c
+index 5167bd2..36211b9 100644
+--- a/arch/x86/kernel/cpu/mce/amd.c
++++ b/arch/x86/kernel/cpu/mce/amd.c
+@@ -78,6 +78,7 @@ struct smca_bank_name {
+ 
+ static struct smca_bank_name smca_names[] = {
+ 	[SMCA_LS]	= { "load_store",	"Load Store Unit" },
++	[SMCA_LS_V2]	= { "load_store",	"Load Store Unit" },
+ 	[SMCA_IF]	= { "insn_fetch",	"Instruction Fetch Unit" },
+ 	[SMCA_L2_CACHE]	= { "l2_cache",		"L2 Cache" },
+ 	[SMCA_DE]	= { "decode_unit",	"Decode Unit" },
+@@ -138,6 +139,7 @@ static struct smca_hwid smca_hwid_mcatypes[] = {
+ 
+ 	/* ZN Core (HWID=0xB0) MCA types */
+ 	{ SMCA_LS,	 HWID_MCATYPE(0xB0, 0x0), 0x1FFFFF },
++	{ SMCA_LS_V2,	 HWID_MCATYPE(0xB0, 0x10), 0xFFFFFF },
+ 	{ SMCA_IF,	 HWID_MCATYPE(0xB0, 0x1), 0x3FFF },
+ 	{ SMCA_L2_CACHE, HWID_MCATYPE(0xB0, 0x2), 0xF },
+ 	{ SMCA_DE,	 HWID_MCATYPE(0xB0, 0x3), 0x1FF },
+diff --git a/drivers/edac/mce_amd.c b/drivers/edac/mce_amd.c
+index ea622c6..aa6ea53 100644
+--- a/drivers/edac/mce_amd.c
++++ b/drivers/edac/mce_amd.c
+@@ -175,6 +175,33 @@ static const char * const smca_ls_mce_desc[] = {
+ 	"L2 Fill Data error",
  };
  
- /*
-@@ -3368,6 +3378,12 @@ static struct amd64_family_type *per_family_init(struct amd64_pvt *pvt)
- 			family_types[F17_CPUS].ctl_name = "F18h";
- 		break;
- 
-+	case 0x19:
-+		fam_type	= &family_types[F19_CPUS];
-+		pvt->ops	= &family_types[F19_CPUS].ops;
-+		family_types[F19_CPUS].ctl_name = "F19h";
-+		break;
++static const char * const smca_ls2_mce_desc[] = {
++	"An ECC error was detected on a data cache read by a probe or victimization",
++	"An ECC error or L2 poison was detected on a data cache read by a load",
++	"An ECC error was detected on a data cache read-modify-write by a store",
++	"An ECC error or poison bit mismatch was detected on a tag read by a probe or victimization",
++	"An ECC error or poison bit mismatch was detected on a tag read by a load",
++	"An ECC error or poison bit mismatch was detected on a tag read by a store",
++	"An ECC error was detected on an EMEM read by a load",
++	"An ECC error was detected on an EMEM read-modify-write by a store",
++	"A parity error was detected in an L1 TLB entry by any access",
++	"A parity error was detected in an L2 TLB entry by any access",
++	"A parity error was detected in a PWC entry by any access",
++	"A parity error was detected in an STQ entry by any access",
++	"A parity error was detected in an LDQ entry by any access",
++	"A parity error was detected in a MAB entry by any access",
++	"A parity error was detected in an SCB entry state field by any access",
++	"A parity error was detected in an SCB entry address field by any access",
++	"A parity error was detected in an SCB entry data field by any access",
++	"A parity error was detected in a WCB entry by any access",
++	"A poisoned line was detected in an SCB entry by any access",
++	"A SystemReadDataError error was reported on read data returned from L2 for a load",
++	"A SystemReadDataError error was reported on read data returned from L2 for an SCB store",
++	"A SystemReadDataError error was reported on read data returned from L2 for a WCB store",
++	"A hardware assertion error was reported",
++	"A parity error was detected in an STLF, SCB EMEM entry or SRB store data by any access",
++};
 +
- 	default:
- 		amd64_err("Unsupported family!\n");
- 		return NULL;
-@@ -3626,6 +3642,7 @@ static const struct x86_cpu_id amd64_cpuids[] = {
- 	{ X86_VENDOR_AMD, 0x16, X86_MODEL_ANY,	X86_FEATURE_ANY, 0 },
- 	{ X86_VENDOR_AMD, 0x17, X86_MODEL_ANY,	X86_FEATURE_ANY, 0 },
- 	{ X86_VENDOR_HYGON, 0x18, X86_MODEL_ANY, X86_FEATURE_ANY, 0 },
-+	{ X86_VENDOR_AMD, 0x19, X86_MODEL_ANY,	X86_FEATURE_ANY, 0 },
- 	{ }
- };
- MODULE_DEVICE_TABLE(x86cpu, amd64_cpuids);
-diff --git a/drivers/edac/amd64_edac.h b/drivers/edac/amd64_edac.h
-index 9be3168..abbf3c2 100644
---- a/drivers/edac/amd64_edac.h
-+++ b/drivers/edac/amd64_edac.h
-@@ -122,6 +122,8 @@
- #define PCI_DEVICE_ID_AMD_17H_M30H_DF_F6 0x1496
- #define PCI_DEVICE_ID_AMD_17H_M70H_DF_F0 0x1440
- #define PCI_DEVICE_ID_AMD_17H_M70H_DF_F6 0x1446
-+#define PCI_DEVICE_ID_AMD_19H_DF_F0	0x1650
-+#define PCI_DEVICE_ID_AMD_19H_DF_F6	0x1656
+ static const char * const smca_if_mce_desc[] = {
+ 	"Op Cache Microtag Probe Port Parity Error",
+ 	"IC Microtag or Full Tag Multi-hit Error",
+@@ -378,6 +405,7 @@ struct smca_mce_desc {
  
- /*
-  * Function 1 - Address Map
-@@ -292,6 +294,7 @@ enum amd_families {
- 	F17_M10H_CPUS,
- 	F17_M30H_CPUS,
- 	F17_M70H_CPUS,
-+	F19_CPUS,
- 	NUM_FAMILIES,
- };
- 
+ static struct smca_mce_desc smca_mce_descs[] = {
+ 	[SMCA_LS]	= { smca_ls_mce_desc,	ARRAY_SIZE(smca_ls_mce_desc)	},
++	[SMCA_LS_V2]	= { smca_ls2_mce_desc,	ARRAY_SIZE(smca_ls2_mce_desc)	},
+ 	[SMCA_IF]	= { smca_if_mce_desc,	ARRAY_SIZE(smca_if_mce_desc)	},
+ 	[SMCA_L2_CACHE]	= { smca_l2_mce_desc,	ARRAY_SIZE(smca_l2_mce_desc)	},
+ 	[SMCA_DE]	= { smca_de_mce_desc,	ARRAY_SIZE(smca_de_mce_desc)	},
