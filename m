@@ -2,37 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A92E9140769
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 17 Jan 2020 11:09:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2945A140780
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 17 Jan 2020 11:10:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729031AbgAQKI6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 17 Jan 2020 05:08:58 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:55395 "EHLO
+        id S1726755AbgAQKJm (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 17 Jan 2020 05:09:42 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:55397 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728951AbgAQKI5 (ORCPT
+        with ESMTP id S1728998AbgAQKI4 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 17 Jan 2020 05:08:57 -0500
+        Fri, 17 Jan 2020 05:08:56 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1isOYe-0005UC-1l; Fri, 17 Jan 2020 11:08:52 +0100
+        id 1isOYb-0005UV-3O; Fri, 17 Jan 2020 11:08:50 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 7B0101C19CF;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B83291C19D6;
         Fri, 17 Jan 2020 11:08:43 +0100 (CET)
 Date:   Fri, 17 Jan 2020 10:08:43 -0000
-From:   "tip-bot2 for Vincent Guittot" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Jisheng Zhang" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/fair : Improve update_sd_pick_busiest for
- spare capacity case
-Cc:     Vincent Guittot <vincent.guittot@linaro.org>,
+Subject: [tip: sched/core] watchdog: Remove soft_lockup_hrtimer_cnt and related code
+Cc:     Jisheng Zhang <Jisheng.Zhang@synaptics.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <1576839893-26930-1-git-send-email-vincent.guittot@linaro.org>
-References: <1576839893-26930-1-git-send-email-vincent.guittot@linaro.org>
+In-Reply-To: <20191218131720.4146aea2@xhacker.debian>
+References: <20191218131720.4146aea2@xhacker.debian>
 MIME-Version: 1.0
-Message-ID: <157925572333.396.14134699274514143888.tip-bot2@tip-bot2>
+Message-ID: <157925572357.396.16669974473851122331.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,58 +47,44 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     5f68eb19b5716f8cf3ccfa833cffd1522813b0e8
-Gitweb:        https://git.kernel.org/tip/5f68eb19b5716f8cf3ccfa833cffd1522813b0e8
-Author:        Vincent Guittot <vincent.guittot@linaro.org>
-AuthorDate:    Fri, 20 Dec 2019 12:04:53 +01:00
+Commit-ID:     db5793c5993d265fe6644b6638fcb0758f6b5347
+Gitweb:        https://git.kernel.org/tip/db5793c5993d265fe6644b6638fcb0758f6b5347
+Author:        Jisheng Zhang <Jisheng.Zhang@synaptics.com>
+AuthorDate:    Wed, 18 Dec 2019 05:31:25 
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Fri, 17 Jan 2020 10:19:19 +01:00
 
-sched/fair : Improve update_sd_pick_busiest for spare capacity case
+watchdog: Remove soft_lockup_hrtimer_cnt and related code
 
-Similarly to calculate_imbalance() and find_busiest_group(), using the
-number of idle CPUs when there is only 1 CPU in the group is not efficient
-because we can't make a difference between a CPU running 1 task and a CPU
-running dozens of small tasks competing for the same CPU but not enough
-to overload it. More generally speaking, we should use the number of
-running tasks when there is the same number of idle CPUs in a group instead
-of blindly select the 1st one.
+After commit 9cf57731b63e ("watchdog/softlockup: Replace "watchdog/%u"
+threads with cpu_stop_work"), the percpu soft_lockup_hrtimer_cnt is
+not used any more, so remove it and related code.
 
-When the groups have spare capacity and the same number of idle CPUs, we
-compare the number of running tasks to select the busiest group.
-
-Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
+Signed-off-by: Jisheng Zhang <Jisheng.Zhang@synaptics.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/1576839893-26930-1-git-send-email-vincent.guittot@linaro.org
+Link: https://lkml.kernel.org/r/20191218131720.4146aea2@xhacker.debian
 ---
- kernel/sched/fair.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ kernel/watchdog.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 2d170b5..35c1057 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -8181,14 +8181,18 @@ static bool update_sd_pick_busiest(struct lb_env *env,
- 
- 	case group_has_spare:
- 		/*
--		 * Select not overloaded group with lowest number of
--		 * idle cpus. We could also compare the spare capacity
--		 * which is more stable but it can end up that the
--		 * group has less spare capacity but finally more idle
-+		 * Select not overloaded group with lowest number of idle cpus
-+		 * and highest number of running tasks. We could also compare
-+		 * the spare capacity which is more stable but it can end up
-+		 * that the group has less spare capacity but finally more idle
- 		 * CPUs which means less opportunity to pull tasks.
- 		 */
--		if (sgs->idle_cpus >= busiest->idle_cpus)
-+		if (sgs->idle_cpus > busiest->idle_cpus)
- 			return false;
-+		else if ((sgs->idle_cpus == busiest->idle_cpus) &&
-+			 (sgs->sum_nr_running <= busiest->sum_nr_running))
-+			return false;
-+
- 		break;
- 	}
+diff --git a/kernel/watchdog.c b/kernel/watchdog.c
+index f41334e..0621301 100644
+--- a/kernel/watchdog.c
++++ b/kernel/watchdog.c
+@@ -173,7 +173,6 @@ static DEFINE_PER_CPU(struct hrtimer, watchdog_hrtimer);
+ static DEFINE_PER_CPU(bool, softlockup_touch_sync);
+ static DEFINE_PER_CPU(bool, soft_watchdog_warn);
+ static DEFINE_PER_CPU(unsigned long, hrtimer_interrupts);
+-static DEFINE_PER_CPU(unsigned long, soft_lockup_hrtimer_cnt);
+ static DEFINE_PER_CPU(struct task_struct *, softlockup_task_ptr_saved);
+ static DEFINE_PER_CPU(unsigned long, hrtimer_interrupts_saved);
+ static unsigned long soft_lockup_nmi_warn;
+@@ -350,8 +349,6 @@ static DEFINE_PER_CPU(struct cpu_stop_work, softlockup_stop_work);
+  */
+ static int softlockup_fn(void *data)
+ {
+-	__this_cpu_write(soft_lockup_hrtimer_cnt,
+-			 __this_cpu_read(hrtimer_interrupts));
+ 	__touch_watchdog();
+ 	complete(this_cpu_ptr(&softlockup_completion));
  
