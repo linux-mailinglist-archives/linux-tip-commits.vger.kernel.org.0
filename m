@@ -2,37 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ECBBE140778
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 17 Jan 2020 11:09:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EE908140776
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 17 Jan 2020 11:09:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729246AbgAQKJR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 17 Jan 2020 05:09:17 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:55438 "EHLO
+        id S1729324AbgAQKJ1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 17 Jan 2020 05:09:27 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:55448 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729208AbgAQKJQ (ORCPT
+        with ESMTP id S1729304AbgAQKJ1 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 17 Jan 2020 05:09:16 -0500
+        Fri, 17 Jan 2020 05:09:27 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1isOYv-0005ay-OB; Fri, 17 Jan 2020 11:09:09 +0100
+        id 1isOYw-0005b0-6A; Fri, 17 Jan 2020 11:09:10 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 6994C1C0330;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E07E61C19CD;
         Fri, 17 Jan 2020 11:09:09 +0100 (CET)
 Date:   Fri, 17 Jan 2020 10:09:09 -0000
 From:   "tip-bot2 for Waiman Long" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] locking/osq: Use optimized spinning loop for arm64
+Subject: [tip: locking/core] locking/lockdep: Fix lockdep_stats indentation problem
 Cc:     Waiman Long <longman@redhat.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Will Deacon <will@kernel.org>, x86 <x86@kernel.org>,
+        Bart Van Assche <bvanassche@acm.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200113150735.21956-1-longman@redhat.com>
-References: <20200113150735.21956-1-longman@redhat.com>
+In-Reply-To: <20191211213139.29934-1-longman@redhat.com>
+References: <20191211213139.29934-1-longman@redhat.com>
 MIME-Version: 1.0
-Message-ID: <157925574923.396.5221009397252239087.tip-bot2@tip-bot2>
+Message-ID: <157925574974.396.9931702297640535543.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,108 +48,56 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     f5bfdc8e3947a7ae489cf8ae9cfd6b3fb357b952
-Gitweb:        https://git.kernel.org/tip/f5bfdc8e3947a7ae489cf8ae9cfd6b3fb357b952
+Commit-ID:     a030f9767da1a6bbcec840fc54770eb11c2414b6
+Gitweb:        https://git.kernel.org/tip/a030f9767da1a6bbcec840fc54770eb11c2414b6
 Author:        Waiman Long <longman@redhat.com>
-AuthorDate:    Mon, 13 Jan 2020 10:07:35 -05:00
+AuthorDate:    Wed, 11 Dec 2019 16:31:39 -05:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Fri, 17 Jan 2020 10:19:30 +01:00
 
-locking/osq: Use optimized spinning loop for arm64
+locking/lockdep: Fix lockdep_stats indentation problem
 
-Arm64 has a more optimized spinning loop (atomic_cond_read_acquire)
-using wfe for spinlock that can boost performance of sibling threads
-by putting the current cpu to a wait state that is broken only when
-the monitored variable changes or an external event happens.
+It was found that two lines in the output of /proc/lockdep_stats have
+indentation problem:
 
-OSQ has a more complicated spinning loop. Besides the lock value, it
-also checks for need_resched() and vcpu_is_preempted(). The check for
-need_resched() is not a problem as it is only set by the tick interrupt
-handler. That will be detected by the spinning cpu right after iret.
+  # cat /proc/lockdep_stats
+     :
+   in-process chains:                   25057
+   stack-trace entries:                137827 [max: 524288]
+   number of stack traces:        7973
+   number of stack hash chains:   6355
+   combined max dependencies:      1356414598
+   hardirq-safe locks:                     57
+   hardirq-unsafe locks:                 1286
+     :
 
-The vcpu_is_preempted() check, however, is a problem as changes to the
-preempt state of of previous node will not affect the wait state. For
-ARM64, vcpu_is_preempted is not currently defined and so is a no-op.
-Will has indicated that he is planning to para-virtualize wfe instead
-of defining vcpu_is_preempted for PV support. So just add a comment in
-arch/arm64/include/asm/spinlock.h to indicate that vcpu_is_preempted()
-should not be defined as suggested.
+All the numbers displayed in /proc/lockdep_stats except the two stack
+trace numbers are formatted with a field with of 11. To properly align
+all the numbers, a field width of 11 is now added to the two stack
+trace numbers.
 
-On a 2-socket 56-core 224-thread ARM64 system, a kernel mutex locking
-microbenchmark was run for 10s with and without the patch. The
-performance numbers before patch were:
-
-Running locktest with mutex [runtime = 10s, load = 1]
-Threads = 224, Min/Mean/Max = 316/123,143/2,121,269
-Threads = 224, Total Rate = 2,757 kop/s; Percpu Rate = 12 kop/s
-
-After patch, the numbers were:
-
-Running locktest with mutex [runtime = 10s, load = 1]
-Threads = 224, Min/Mean/Max = 334/147,836/1,304,787
-Threads = 224, Total Rate = 3,311 kop/s; Percpu Rate = 15 kop/s
-
-So there was about 20% performance improvement.
-
+Fixes: 8c779229d0f4 ("locking/lockdep: Report more stack trace statistics")
 Signed-off-by: Waiman Long <longman@redhat.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Will Deacon <will@kernel.org>
-Link: https://lkml.kernel.org/r/20200113150735.21956-1-longman@redhat.com
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lkml.kernel.org/r/20191211213139.29934-1-longman@redhat.com
 ---
- arch/arm64/include/asm/spinlock.h |  9 +++++++++
- kernel/locking/osq_lock.c         | 23 ++++++++++-------------
- 2 files changed, 19 insertions(+), 13 deletions(-)
+ kernel/locking/lockdep_proc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/include/asm/spinlock.h b/arch/arm64/include/asm/spinlock.h
-index b093b28..102404d 100644
---- a/arch/arm64/include/asm/spinlock.h
-+++ b/arch/arm64/include/asm/spinlock.h
-@@ -11,4 +11,13 @@
- /* See include/linux/spinlock.h */
- #define smp_mb__after_spinlock()	smp_mb()
- 
-+/*
-+ * Changing this will break osq_lock() thanks to the call inside
-+ * smp_cond_load_relaxed().
-+ *
-+ * See:
-+ * https://lore.kernel.org/lkml/20200110100612.GC2827@hirez.programming.kicks-ass.net
-+ */
-+#define vcpu_is_preempted(cpu)	false
-+
- #endif /* __ASM_SPINLOCK_H */
-diff --git a/kernel/locking/osq_lock.c b/kernel/locking/osq_lock.c
-index 6ef600a..1f77349 100644
---- a/kernel/locking/osq_lock.c
-+++ b/kernel/locking/osq_lock.c
-@@ -134,20 +134,17 @@ bool osq_lock(struct optimistic_spin_queue *lock)
- 	 * cmpxchg in an attempt to undo our queueing.
- 	 */
- 
--	while (!READ_ONCE(node->locked)) {
--		/*
--		 * If we need to reschedule bail... so we can block.
--		 * Use vcpu_is_preempted() to avoid waiting for a preempted
--		 * lock holder:
--		 */
--		if (need_resched() || vcpu_is_preempted(node_cpu(node->prev)))
--			goto unqueue;
--
--		cpu_relax();
--	}
--	return true;
-+	/*
-+	 * Wait to acquire the lock or cancelation. Note that need_resched()
-+	 * will come with an IPI, which will wake smp_cond_load_relaxed() if it
-+	 * is implemented with a monitor-wait. vcpu_is_preempted() relies on
-+	 * polling, be careful.
-+	 */
-+	if (smp_cond_load_relaxed(&node->locked, VAL || need_resched() ||
-+				  vcpu_is_preempted(node_cpu(node->prev))))
-+		return true;
- 
--unqueue:
-+	/* unqueue */
- 	/*
- 	 * Step - A  -- stabilize @prev
- 	 *
+diff --git a/kernel/locking/lockdep_proc.c b/kernel/locking/lockdep_proc.c
+index dadb7b7..9bb6d24 100644
+--- a/kernel/locking/lockdep_proc.c
++++ b/kernel/locking/lockdep_proc.c
+@@ -286,9 +286,9 @@ static int lockdep_stats_show(struct seq_file *m, void *v)
+ 	seq_printf(m, " stack-trace entries:           %11lu [max: %lu]\n",
+ 			nr_stack_trace_entries, MAX_STACK_TRACE_ENTRIES);
+ #if defined(CONFIG_TRACE_IRQFLAGS) && defined(CONFIG_PROVE_LOCKING)
+-	seq_printf(m, " number of stack traces:        %llu\n",
++	seq_printf(m, " number of stack traces:        %11llu\n",
+ 		   lockdep_stack_trace_count());
+-	seq_printf(m, " number of stack hash chains:   %llu\n",
++	seq_printf(m, " number of stack hash chains:   %11llu\n",
+ 		   lockdep_stack_hash_count());
+ #endif
+ 	seq_printf(m, " combined max dependencies:     %11u\n",
