@@ -2,36 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A025140D6C
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 17 Jan 2020 16:08:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 10BE71410A4
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 17 Jan 2020 19:19:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729017AbgAQPID (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 17 Jan 2020 10:08:03 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:56526 "EHLO
+        id S1729035AbgAQSTO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 17 Jan 2020 13:19:14 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:57223 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728739AbgAQPID (ORCPT
+        with ESMTP id S1726970AbgAQSTO (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 17 Jan 2020 10:08:03 -0500
+        Fri, 17 Jan 2020 13:19:14 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1isTE7-0002eh-OF; Fri, 17 Jan 2020 16:07:59 +0100
+        id 1isWD8-00068M-Go; Fri, 17 Jan 2020 19:19:10 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 6E8501C19E6;
-        Fri, 17 Jan 2020 16:07:59 +0100 (CET)
-Date:   Fri, 17 Jan 2020 15:07:59 -0000
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 134441C19EF;
+        Fri, 17 Jan 2020 19:19:10 +0100 (CET)
+Date:   Fri, 17 Jan 2020 18:19:09 -0000
+From:   "tip-bot2 for Tony W Wang-oc" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/urgent] lib/vdso: Make __arch_update_vdso_data() logic
- understandable
-Cc:     Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
+Subject: [tip: x86/pti] x86/speculation/swapgs: Exclude Zhaoxin CPUs from
+ SWAPGS vulnerability
+Cc:     "Tony W Wang-oc" <TonyWWang-oc@zhaoxin.com>,
+        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200114185946.656652824@linutronix.de>
-References: <20200114185946.656652824@linutronix.de>
+In-Reply-To: <1579227872-26972-3-git-send-email-TonyWWang-oc@zhaoxin.com>
+References: <1579227872-26972-3-git-send-email-TonyWWang-oc@zhaoxin.com>
 MIME-Version: 1.0
-Message-ID: <157927367926.396.7299991507019936952.tip-bot2@tip-bot2>
+Message-ID: <157928514982.396.3134965085356599913.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -45,73 +46,40 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/urgent branch of tip:
+The following commit has been merged into the x86/pti branch of tip:
 
-Commit-ID:     9a6b55ac4a44060bcb782baf002859b2a2c63267
-Gitweb:        https://git.kernel.org/tip/9a6b55ac4a44060bcb782baf002859b2a2c63267
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Tue, 14 Jan 2020 19:52:38 +01:00
+Commit-ID:     a84de2fa962c1b0551653fe245d6cb5f6129179c
+Gitweb:        https://git.kernel.org/tip/a84de2fa962c1b0551653fe245d6cb5f6129179c
+Author:        Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>
+AuthorDate:    Fri, 17 Jan 2020 10:24:32 +08:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 17 Jan 2020 15:53:50 +01:00
+CommitterDate: Fri, 17 Jan 2020 19:13:47 +01:00
 
-lib/vdso: Make __arch_update_vdso_data() logic understandable
+x86/speculation/swapgs: Exclude Zhaoxin CPUs from SWAPGS vulnerability
 
-The function name suggests that this is a boolean checking whether the
-architecture asks for an update of the VDSO data, but it works the other
-way round. To spare further confusion invert the logic.
+New Zhaoxin family 7 CPUs are not affected by the SWAPGS vulnerability. So
+mark these CPUs in the cpu vulnerability whitelist accordingly.
 
-Fixes: 44f57d788e7d ("timekeeping: Provide a generic update_vsyscall() implementation")
+Signed-off-by: Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20200114185946.656652824@linutronix.de
+Link: https://lore.kernel.org/r/1579227872-26972-3-git-send-email-TonyWWang-oc@zhaoxin.com
 
 ---
- arch/arm/include/asm/vdso/vsyscall.h | 4 ++--
- include/asm-generic/vdso/vsyscall.h  | 4 ++--
- kernel/time/vsyscall.c               | 2 +-
- 3 files changed, 5 insertions(+), 5 deletions(-)
+ arch/x86/kernel/cpu/common.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/include/asm/vdso/vsyscall.h b/arch/arm/include/asm/vdso/vsyscall.h
-index c4166f3..cff87d8 100644
---- a/arch/arm/include/asm/vdso/vsyscall.h
-+++ b/arch/arm/include/asm/vdso/vsyscall.h
-@@ -34,9 +34,9 @@ struct vdso_data *__arm_get_k_vdso_data(void)
- #define __arch_get_k_vdso_data __arm_get_k_vdso_data
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index 6048bd3..ca4a0d2 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -1087,8 +1087,8 @@ static const __initconst struct x86_cpu_id cpu_vuln_whitelist[] = {
+ 	VULNWL_HYGON(X86_FAMILY_ANY,	NO_MELTDOWN | NO_L1TF | NO_MDS | NO_SWAPGS | NO_ITLB_MULTIHIT),
  
- static __always_inline
--int __arm_update_vdso_data(void)
-+bool __arm_update_vdso_data(void)
- {
--	return !cntvct_ok;
-+	return cntvct_ok;
- }
- #define __arch_update_vdso_data __arm_update_vdso_data
+ 	/* Zhaoxin Family 7 */
+-	VULNWL(CENTAUR,	7, X86_MODEL_ANY,	NO_SPECTRE_V2),
+-	VULNWL(ZHAOXIN,	7, X86_MODEL_ANY,	NO_SPECTRE_V2),
++	VULNWL(CENTAUR,	7, X86_MODEL_ANY,	NO_SPECTRE_V2 | NO_SWAPGS),
++	VULNWL(ZHAOXIN,	7, X86_MODEL_ANY,	NO_SPECTRE_V2 | NO_SWAPGS),
+ 	{}
+ };
  
-diff --git a/include/asm-generic/vdso/vsyscall.h b/include/asm-generic/vdso/vsyscall.h
-index ce41032..cec543d 100644
---- a/include/asm-generic/vdso/vsyscall.h
-+++ b/include/asm-generic/vdso/vsyscall.h
-@@ -12,9 +12,9 @@ static __always_inline struct vdso_data *__arch_get_k_vdso_data(void)
- #endif /* __arch_get_k_vdso_data */
- 
- #ifndef __arch_update_vdso_data
--static __always_inline int __arch_update_vdso_data(void)
-+static __always_inline bool __arch_update_vdso_data(void)
- {
--	return 0;
-+	return true;
- }
- #endif /* __arch_update_vdso_data */
- 
-diff --git a/kernel/time/vsyscall.c b/kernel/time/vsyscall.c
-index 5ee0f77..f0aab61 100644
---- a/kernel/time/vsyscall.c
-+++ b/kernel/time/vsyscall.c
-@@ -84,7 +84,7 @@ void update_vsyscall(struct timekeeper *tk)
- 	struct vdso_timestamp *vdso_ts;
- 	u64 nsec;
- 
--	if (__arch_update_vdso_data()) {
-+	if (!__arch_update_vdso_data()) {
- 		/*
- 		 * Some architectures might want to skip the update of the
- 		 * data page.
