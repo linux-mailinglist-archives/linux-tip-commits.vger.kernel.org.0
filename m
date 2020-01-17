@@ -2,36 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FC15140B09
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 17 Jan 2020 14:38:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 20DE3140B47
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 17 Jan 2020 14:45:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727026AbgAQNha (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 17 Jan 2020 08:37:30 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:56180 "EHLO
+        id S1727029AbgAQNna (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 17 Jan 2020 08:43:30 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:56203 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729073AbgAQNh3 (ORCPT
+        with ESMTP id S1726970AbgAQNna (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 17 Jan 2020 08:37:29 -0500
+        Fri, 17 Jan 2020 08:43:30 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1isRoT-0000eM-J8; Fri, 17 Jan 2020 14:37:25 +0100
+        id 1isRuH-0000sJ-JM; Fri, 17 Jan 2020 14:43:25 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id DF1391C19DE;
-        Fri, 17 Jan 2020 14:37:24 +0100 (CET)
-Date:   Fri, 17 Jan 2020 13:37:24 -0000
-From:   "tip-bot2 for Arnd Bergmann" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id DA3001C19DF;
+        Fri, 17 Jan 2020 14:43:24 +0100 (CET)
+Date:   Fri, 17 Jan 2020 13:43:24 -0000
+From:   "tip-bot2 for Wei Liu" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/apic] x86/apic/uv: Avoid unused variable warning
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
+Subject: [tip: x86/hyperv] x86/hyper-v: Add "polling" bit to hv_synic_sint
+Cc:     Wei Liu <wei.liu@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+        Michael Kelley <mikelley@microsoft.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191212140419.315264-1-arnd@arndb.de>
-References: <20191212140419.315264-1-arnd@arndb.de>
+In-Reply-To: <20191222233404.1629-1-wei.liu@kernel.org>
+References: <20191222233404.1629-1-wei.liu@kernel.org>
 MIME-Version: 1.0
-Message-ID: <157926824469.396.6088993162462441082.tip-bot2@tip-bot2>
+Message-ID: <157926860444.396.6394055329835484109.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -45,108 +45,42 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/apic branch of tip:
+The following commit has been merged into the x86/hyperv branch of tip:
 
-Commit-ID:     d0b7788804482b2689946cd8d910ac3e03126c8d
-Gitweb:        https://git.kernel.org/tip/d0b7788804482b2689946cd8d910ac3e03126c8d
-Author:        Arnd Bergmann <arnd@arndb.de>
-AuthorDate:    Thu, 12 Dec 2019 15:03:57 +01:00
+Commit-ID:     538f127cd3bcf76071139f4bfe9cc3b2a46f3b3d
+Gitweb:        https://git.kernel.org/tip/538f127cd3bcf76071139f4bfe9cc3b2a46f3b3d
+Author:        Wei Liu <wei.liu@kernel.org>
+AuthorDate:    Sun, 22 Dec 2019 23:34:04 
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 17 Jan 2020 14:34:41 +01:00
+CommitterDate: Fri, 17 Jan 2020 14:38:21 +01:00
 
-x86/apic/uv: Avoid unused variable warning
+x86/hyper-v: Add "polling" bit to hv_synic_sint
 
-When CONFIG_PROC_FS is disabled, the compiler warns about an unused
-variable:
+That bit is documented in TLFS 5.0c as follows:
 
-arch/x86/kernel/apic/x2apic_uv_x.c: In function 'uv_setup_proc_files':
-arch/x86/kernel/apic/x2apic_uv_x.c:1546:8: error: unused variable 'name' [-Werror=unused-variable]
-  char *name = hubless ? "hubless" : "hubbed";
+  Setting the polling bit will have the effect of unmasking an
+  interrupt source, except that an actual interrupt is not generated.
 
-Simplify the code so this variable is no longer needed.
-
-Fixes: 8785968bce1c ("x86/platform/uv: Add UV Hubbed/Hubless Proc FS Files")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20191212140419.315264-1-arnd@arndb.de
+Reviewed-by: Michael Kelley <mikelley@microsoft.com>
+Link: https://lore.kernel.org/r/20191222233404.1629-1-wei.liu@kernel.org
 
 ---
- arch/x86/kernel/apic/x2apic_uv_x.c | 43 ++++-------------------------
- 1 file changed, 6 insertions(+), 37 deletions(-)
+ arch/x86/include/asm/hyperv-tlfs.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/apic/x2apic_uv_x.c b/arch/x86/kernel/apic/x2apic_uv_x.c
-index d5b51a7..ad53b2a 100644
---- a/arch/x86/kernel/apic/x2apic_uv_x.c
-+++ b/arch/x86/kernel/apic/x2apic_uv_x.c
-@@ -1493,65 +1493,34 @@ static void check_efi_reboot(void)
- }
+diff --git a/arch/x86/include/asm/hyperv-tlfs.h b/arch/x86/include/asm/hyperv-tlfs.h
+index 5f10f7f..92abc1e 100644
+--- a/arch/x86/include/asm/hyperv-tlfs.h
++++ b/arch/x86/include/asm/hyperv-tlfs.h
+@@ -809,7 +809,8 @@ union hv_synic_sint {
+ 		u64 reserved1:8;
+ 		u64 masked:1;
+ 		u64 auto_eoi:1;
+-		u64 reserved2:46;
++		u64 polling:1;
++		u64 reserved2:45;
+ 	} __packed;
+ };
  
- /* Setup user proc fs files */
--static int proc_hubbed_show(struct seq_file *file, void *data)
-+static int __maybe_unused proc_hubbed_show(struct seq_file *file, void *data)
- {
- 	seq_printf(file, "0x%x\n", uv_hubbed_system);
- 	return 0;
- }
- 
--static int proc_hubless_show(struct seq_file *file, void *data)
-+static int __maybe_unused proc_hubless_show(struct seq_file *file, void *data)
- {
- 	seq_printf(file, "0x%x\n", uv_hubless_system);
- 	return 0;
- }
- 
--static int proc_oemid_show(struct seq_file *file, void *data)
-+static int __maybe_unused proc_oemid_show(struct seq_file *file, void *data)
- {
- 	seq_printf(file, "%s/%s\n", oem_id, oem_table_id);
- 	return 0;
- }
- 
--static int proc_hubbed_open(struct inode *inode, struct file *file)
--{
--	return single_open(file, proc_hubbed_show, (void *)NULL);
--}
--
--static int proc_hubless_open(struct inode *inode, struct file *file)
--{
--	return single_open(file, proc_hubless_show, (void *)NULL);
--}
--
--static int proc_oemid_open(struct inode *inode, struct file *file)
--{
--	return single_open(file, proc_oemid_show, (void *)NULL);
--}
--
--/* (struct is "non-const" as open function is set at runtime) */
--static struct file_operations proc_version_fops = {
--	.read		= seq_read,
--	.llseek		= seq_lseek,
--	.release	= single_release,
--};
--
--static const struct file_operations proc_oemid_fops = {
--	.open		= proc_oemid_open,
--	.read		= seq_read,
--	.llseek		= seq_lseek,
--	.release	= single_release,
--};
--
- static __init void uv_setup_proc_files(int hubless)
- {
- 	struct proc_dir_entry *pde;
--	char *name = hubless ? "hubless" : "hubbed";
- 
- 	pde = proc_mkdir(UV_PROC_NODE, NULL);
--	proc_create("oemid", 0, pde, &proc_oemid_fops);
--	proc_create(name, 0, pde, &proc_version_fops);
-+	proc_create_single("oemid", 0, pde, proc_oemid_show);
- 	if (hubless)
--		proc_version_fops.open = proc_hubless_open;
-+		proc_create_single("hubless", 0, pde, proc_hubless_show);
- 	else
--		proc_version_fops.open = proc_hubbed_open;
-+		proc_create_single("hubbed", 0, pde, proc_hubbed_show);
- }
- 
- /* Initialize UV hubless systems */
