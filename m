@@ -2,39 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 39872140819
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 17 Jan 2020 11:37:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FC15140B09
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 17 Jan 2020 14:38:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728682AbgAQKhe (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 17 Jan 2020 05:37:34 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:55549 "EHLO
+        id S1727026AbgAQNha (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 17 Jan 2020 08:37:30 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:56180 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726343AbgAQKhd (ORCPT
+        with ESMTP id S1729073AbgAQNh3 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 17 Jan 2020 05:37:33 -0500
+        Fri, 17 Jan 2020 08:37:29 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1isP0A-0006Hn-Ki; Fri, 17 Jan 2020 11:37:18 +0100
+        id 1isRoT-0000eM-J8; Fri, 17 Jan 2020 14:37:25 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4743E1C19DC;
-        Fri, 17 Jan 2020 11:37:18 +0100 (CET)
-Date:   Fri, 17 Jan 2020 10:37:18 -0000
-From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id DF1391C19DE;
+        Fri, 17 Jan 2020 14:37:24 +0100 (CET)
+Date:   Fri, 17 Jan 2020 13:37:24 -0000
+From:   "tip-bot2 for Arnd Bergmann" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf/x86/intel/uncore: Add PCI ID of IMC for Xeon
- E3 V5 Family
-Cc:     "Rosales-fernandez, Carlos" <carlos.rosales-fernandez@intel.com>,
-        Kan Liang <kan.liang@linux.intel.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
+Subject: [tip: x86/apic] x86/apic/uv: Avoid unused variable warning
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <1578687311-158748-1-git-send-email-kan.liang@linux.intel.com>
-References: <1578687311-158748-1-git-send-email-kan.liang@linux.intel.com>
+In-Reply-To: <20191212140419.315264-1-arnd@arndb.de>
+References: <20191212140419.315264-1-arnd@arndb.de>
 MIME-Version: 1.0
-Message-ID: <157925743809.396.16389498590955839229.tip-bot2@tip-bot2>
+Message-ID: <157926824469.396.6088993162462441082.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,60 +45,108 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/urgent branch of tip:
+The following commit has been merged into the x86/apic branch of tip:
 
-Commit-ID:     e74383045119fb8055cf31cb39e0fe951d67163a
-Gitweb:        https://git.kernel.org/tip/e74383045119fb8055cf31cb39e0fe951d67163a
-Author:        Kan Liang <kan.liang@linux.intel.com>
-AuthorDate:    Fri, 10 Jan 2020 12:15:11 -08:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 17 Jan 2020 11:33:18 +01:00
+Commit-ID:     d0b7788804482b2689946cd8d910ac3e03126c8d
+Gitweb:        https://git.kernel.org/tip/d0b7788804482b2689946cd8d910ac3e03126c8d
+Author:        Arnd Bergmann <arnd@arndb.de>
+AuthorDate:    Thu, 12 Dec 2019 15:03:57 +01:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Fri, 17 Jan 2020 14:34:41 +01:00
 
-perf/x86/intel/uncore: Add PCI ID of IMC for Xeon E3 V5 Family
+x86/apic/uv: Avoid unused variable warning
 
-The IMC uncore support is missed for E3-1585 v5 CPU.
+When CONFIG_PROC_FS is disabled, the compiler warns about an unused
+variable:
 
-Intel Xeon E3 V5 Family has Sky Lake CPU.
-Add the PCI ID of IMC for Intel Xeon E3 V5 Family.
+arch/x86/kernel/apic/x2apic_uv_x.c: In function 'uv_setup_proc_files':
+arch/x86/kernel/apic/x2apic_uv_x.c:1546:8: error: unused variable 'name' [-Werror=unused-variable]
+  char *name = hubless ? "hubless" : "hubbed";
 
-Reported-by: Rosales-fernandez, Carlos <carlos.rosales-fernandez@intel.com>
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: Rosales-fernandez, Carlos <carlos.rosales-fernandez@intel.com>
-Link: https://lkml.kernel.org/r/1578687311-158748-1-git-send-email-kan.liang@linux.intel.com
+Simplify the code so this variable is no longer needed.
+
+Fixes: 8785968bce1c ("x86/platform/uv: Add UV Hubbed/Hubless Proc FS Files")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20191212140419.315264-1-arnd@arndb.de
+
 ---
- arch/x86/events/intel/uncore_snb.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/x86/kernel/apic/x2apic_uv_x.c | 43 ++++-------------------------
+ 1 file changed, 6 insertions(+), 37 deletions(-)
 
-diff --git a/arch/x86/events/intel/uncore_snb.c b/arch/x86/events/intel/uncore_snb.c
-index dbaa1b0..c37cb12 100644
---- a/arch/x86/events/intel/uncore_snb.c
-+++ b/arch/x86/events/intel/uncore_snb.c
-@@ -15,6 +15,7 @@
- #define PCI_DEVICE_ID_INTEL_SKL_HQ_IMC		0x1910
- #define PCI_DEVICE_ID_INTEL_SKL_SD_IMC		0x190f
- #define PCI_DEVICE_ID_INTEL_SKL_SQ_IMC		0x191f
-+#define PCI_DEVICE_ID_INTEL_SKL_E3_IMC		0x1918
- #define PCI_DEVICE_ID_INTEL_KBL_Y_IMC		0x590c
- #define PCI_DEVICE_ID_INTEL_KBL_U_IMC		0x5904
- #define PCI_DEVICE_ID_INTEL_KBL_UQ_IMC		0x5914
-@@ -658,6 +659,10 @@ static const struct pci_device_id skl_uncore_pci_ids[] = {
- 		.driver_data = UNCORE_PCI_DEV_DATA(SNB_PCI_UNCORE_IMC, 0),
- 	},
- 	{ /* IMC */
-+		PCI_DEVICE(PCI_VENDOR_ID_INTEL, PCI_DEVICE_ID_INTEL_SKL_E3_IMC),
-+		.driver_data = UNCORE_PCI_DEV_DATA(SNB_PCI_UNCORE_IMC, 0),
-+	},
-+	{ /* IMC */
- 		PCI_DEVICE(PCI_VENDOR_ID_INTEL, PCI_DEVICE_ID_INTEL_KBL_Y_IMC),
- 		.driver_data = UNCORE_PCI_DEV_DATA(SNB_PCI_UNCORE_IMC, 0),
- 	},
-@@ -826,6 +831,7 @@ static const struct imc_uncore_pci_dev desktop_imc_pci_ids[] = {
- 	IMC_DEV(SKL_HQ_IMC, &skl_uncore_pci_driver),  /* 6th Gen Core H Quad Core */
- 	IMC_DEV(SKL_SD_IMC, &skl_uncore_pci_driver),  /* 6th Gen Core S Dual Core */
- 	IMC_DEV(SKL_SQ_IMC, &skl_uncore_pci_driver),  /* 6th Gen Core S Quad Core */
-+	IMC_DEV(SKL_E3_IMC, &skl_uncore_pci_driver),  /* Xeon E3 V5 Gen Core processor */
- 	IMC_DEV(KBL_Y_IMC, &skl_uncore_pci_driver),  /* 7th Gen Core Y */
- 	IMC_DEV(KBL_U_IMC, &skl_uncore_pci_driver),  /* 7th Gen Core U */
- 	IMC_DEV(KBL_UQ_IMC, &skl_uncore_pci_driver),  /* 7th Gen Core U Quad Core */
+diff --git a/arch/x86/kernel/apic/x2apic_uv_x.c b/arch/x86/kernel/apic/x2apic_uv_x.c
+index d5b51a7..ad53b2a 100644
+--- a/arch/x86/kernel/apic/x2apic_uv_x.c
++++ b/arch/x86/kernel/apic/x2apic_uv_x.c
+@@ -1493,65 +1493,34 @@ static void check_efi_reboot(void)
+ }
+ 
+ /* Setup user proc fs files */
+-static int proc_hubbed_show(struct seq_file *file, void *data)
++static int __maybe_unused proc_hubbed_show(struct seq_file *file, void *data)
+ {
+ 	seq_printf(file, "0x%x\n", uv_hubbed_system);
+ 	return 0;
+ }
+ 
+-static int proc_hubless_show(struct seq_file *file, void *data)
++static int __maybe_unused proc_hubless_show(struct seq_file *file, void *data)
+ {
+ 	seq_printf(file, "0x%x\n", uv_hubless_system);
+ 	return 0;
+ }
+ 
+-static int proc_oemid_show(struct seq_file *file, void *data)
++static int __maybe_unused proc_oemid_show(struct seq_file *file, void *data)
+ {
+ 	seq_printf(file, "%s/%s\n", oem_id, oem_table_id);
+ 	return 0;
+ }
+ 
+-static int proc_hubbed_open(struct inode *inode, struct file *file)
+-{
+-	return single_open(file, proc_hubbed_show, (void *)NULL);
+-}
+-
+-static int proc_hubless_open(struct inode *inode, struct file *file)
+-{
+-	return single_open(file, proc_hubless_show, (void *)NULL);
+-}
+-
+-static int proc_oemid_open(struct inode *inode, struct file *file)
+-{
+-	return single_open(file, proc_oemid_show, (void *)NULL);
+-}
+-
+-/* (struct is "non-const" as open function is set at runtime) */
+-static struct file_operations proc_version_fops = {
+-	.read		= seq_read,
+-	.llseek		= seq_lseek,
+-	.release	= single_release,
+-};
+-
+-static const struct file_operations proc_oemid_fops = {
+-	.open		= proc_oemid_open,
+-	.read		= seq_read,
+-	.llseek		= seq_lseek,
+-	.release	= single_release,
+-};
+-
+ static __init void uv_setup_proc_files(int hubless)
+ {
+ 	struct proc_dir_entry *pde;
+-	char *name = hubless ? "hubless" : "hubbed";
+ 
+ 	pde = proc_mkdir(UV_PROC_NODE, NULL);
+-	proc_create("oemid", 0, pde, &proc_oemid_fops);
+-	proc_create(name, 0, pde, &proc_version_fops);
++	proc_create_single("oemid", 0, pde, proc_oemid_show);
+ 	if (hubless)
+-		proc_version_fops.open = proc_hubless_open;
++		proc_create_single("hubless", 0, pde, proc_hubless_show);
+ 	else
+-		proc_version_fops.open = proc_hubbed_open;
++		proc_create_single("hubbed", 0, pde, proc_hubbed_show);
+ }
+ 
+ /* Initialize UV hubless systems */
