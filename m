@@ -2,38 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EACA214078D
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 17 Jan 2020 11:10:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 69C2714078E
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 17 Jan 2020 11:10:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728831AbgAQKIu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 17 Jan 2020 05:08:50 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:55358 "EHLO
+        id S1729031AbgAQKKF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 17 Jan 2020 05:10:05 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:55368 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728780AbgAQKIu (ORCPT
+        with ESMTP id S1728826AbgAQKIv (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 17 Jan 2020 05:08:50 -0500
+        Fri, 17 Jan 2020 05:08:51 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1isOYT-0005RL-GZ; Fri, 17 Jan 2020 11:08:41 +0100
+        id 1isOYX-0005Sk-NW; Fri, 17 Jan 2020 11:08:45 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 2F1741C19CE;
-        Fri, 17 Jan 2020 11:08:41 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 239431C19D1;
+        Fri, 17 Jan 2020 11:08:42 +0100 (CET)
 Date:   Fri, 17 Jan 2020 10:08:41 -0000
-From:   "tip-bot2 for Wang Long" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Yangtao Li" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/psi: create /proc/pressure and
- /proc/pressure/{io|memory|cpu} only when psi enabled
-Cc:     Wang Long <w@laoqinren.net>,
+Subject: [tip: sched/core] stop_machine: Make stop_cpus() static
+Cc:     Yangtao Li <tiny.windzz@gmail.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Johannes Weiner <hannes@cmpxchg.org>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <1576672698-32504-1-git-send-email-w@laoqinren.net>
-References: <1576672698-32504-1-git-send-email-w@laoqinren.net>
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20191228161912.24082-1-tiny.windzz@gmail.com>
+References: <20191228161912.24082-1-tiny.windzz@gmail.com>
 MIME-Version: 1.0
-Message-ID: <157925572102.396.13781861787054630755.tip-bot2@tip-bot2>
+Message-ID: <157925572197.396.6580962318661308779.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,49 +47,65 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     3d817689a62cf71bbb290af18cd26cf9764f38fe
-Gitweb:        https://git.kernel.org/tip/3d817689a62cf71bbb290af18cd26cf9764f38fe
-Author:        Wang Long <w@laoqinren.net>
-AuthorDate:    Wed, 18 Dec 2019 20:38:18 +08:00
+Commit-ID:     35f4cd96f5551dc1b2641159e7bb7bf91de6600f
+Gitweb:        https://git.kernel.org/tip/35f4cd96f5551dc1b2641159e7bb7bf91de6600f
+Author:        Yangtao Li <tiny.windzz@gmail.com>
+AuthorDate:    Sat, 28 Dec 2019 16:19:12 
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 17 Jan 2020 10:19:22 +01:00
+CommitterDate: Fri, 17 Jan 2020 10:19:21 +01:00
 
-sched/psi: create /proc/pressure and /proc/pressure/{io|memory|cpu} only when psi enabled
+stop_machine: Make stop_cpus() static
 
-when CONFIG_PSI_DEFAULT_DISABLED set to N or the command line set psi=0,
-I think we should not create /proc/pressure and
-/proc/pressure/{io|memory|cpu}.
+The function stop_cpus() is only used internally by the
+stop_machine for stop multiple cpus.
 
-In the future, user maybe determine whether the psi feature is enabled by
-checking the existence of the /proc/pressure dir or
-/proc/pressure/{io|memory|cpu} files.
+Make it static.
 
-Signed-off-by: Wang Long <w@laoqinren.net>
+Signed-off-by: Yangtao Li <tiny.windzz@gmail.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-Link: https://lkml.kernel.org/r/1576672698-32504-1-git-send-email-w@laoqinren.net
+Link: https://lkml.kernel.org/r/20191228161912.24082-1-tiny.windzz@gmail.com
 ---
- kernel/sched/psi.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ include/linux/stop_machine.h |  9 ---------
+ kernel/stop_machine.c        |  2 +-
+ 2 files changed, 1 insertion(+), 10 deletions(-)
 
-diff --git a/kernel/sched/psi.c b/kernel/sched/psi.c
-index ce8f674..db7b50b 100644
---- a/kernel/sched/psi.c
-+++ b/kernel/sched/psi.c
-@@ -1280,10 +1280,12 @@ static const struct file_operations psi_cpu_fops = {
- 
- static int __init psi_proc_init(void)
- {
--	proc_mkdir("pressure", NULL);
--	proc_create("pressure/io", 0, NULL, &psi_io_fops);
--	proc_create("pressure/memory", 0, NULL, &psi_memory_fops);
--	proc_create("pressure/cpu", 0, NULL, &psi_cpu_fops);
-+	if (psi_enable) {
-+		proc_mkdir("pressure", NULL);
-+		proc_create("pressure/io", 0, NULL, &psi_io_fops);
-+		proc_create("pressure/memory", 0, NULL, &psi_memory_fops);
-+		proc_create("pressure/cpu", 0, NULL, &psi_cpu_fops);
-+	}
- 	return 0;
+diff --git a/include/linux/stop_machine.h b/include/linux/stop_machine.h
+index 648298f..76d8b09 100644
+--- a/include/linux/stop_machine.h
++++ b/include/linux/stop_machine.h
+@@ -32,7 +32,6 @@ int stop_one_cpu(unsigned int cpu, cpu_stop_fn_t fn, void *arg);
+ int stop_two_cpus(unsigned int cpu1, unsigned int cpu2, cpu_stop_fn_t fn, void *arg);
+ bool stop_one_cpu_nowait(unsigned int cpu, cpu_stop_fn_t fn, void *arg,
+ 			 struct cpu_stop_work *work_buf);
+-int stop_cpus(const struct cpumask *cpumask, cpu_stop_fn_t fn, void *arg);
+ void stop_machine_park(int cpu);
+ void stop_machine_unpark(int cpu);
+ void stop_machine_yield(const struct cpumask *cpumask);
+@@ -81,14 +80,6 @@ static inline bool stop_one_cpu_nowait(unsigned int cpu,
+ 	return false;
  }
- module_init(psi_proc_init);
+ 
+-static inline int stop_cpus(const struct cpumask *cpumask,
+-			    cpu_stop_fn_t fn, void *arg)
+-{
+-	if (cpumask_test_cpu(raw_smp_processor_id(), cpumask))
+-		return stop_one_cpu(raw_smp_processor_id(), fn, arg);
+-	return -ENOENT;
+-}
+-
+ #endif	/* CONFIG_SMP */
+ 
+ /*
+diff --git a/kernel/stop_machine.c b/kernel/stop_machine.c
+index 5d68ec4..865bb02 100644
+--- a/kernel/stop_machine.c
++++ b/kernel/stop_machine.c
+@@ -442,7 +442,7 @@ static int __stop_cpus(const struct cpumask *cpumask,
+  * @cpumask were offline; otherwise, 0 if all executions of @fn
+  * returned 0, any non zero return value if any returned non zero.
+  */
+-int stop_cpus(const struct cpumask *cpumask, cpu_stop_fn_t fn, void *arg)
++static int stop_cpus(const struct cpumask *cpumask, cpu_stop_fn_t fn, void *arg)
+ {
+ 	int ret;
+ 
