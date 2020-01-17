@@ -2,38 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 775A714078C
+	by mail.lfdr.de (Postfix) with ESMTP id EACA214078D
 	for <lists+linux-tip-commits@lfdr.de>; Fri, 17 Jan 2020 11:10:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728799AbgAQKIt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 17 Jan 2020 05:08:49 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:55338 "EHLO
+        id S1728831AbgAQKIu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 17 Jan 2020 05:08:50 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:55358 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727243AbgAQKIs (ORCPT
+        with ESMTP id S1728780AbgAQKIu (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 17 Jan 2020 05:08:48 -0500
+        Fri, 17 Jan 2020 05:08:50 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1isOYV-0005RS-27; Fri, 17 Jan 2020 11:08:43 +0100
+        id 1isOYT-0005RL-GZ; Fri, 17 Jan 2020 11:08:41 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 6A42F1C19CF;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 2F1741C19CE;
         Fri, 17 Jan 2020 11:08:41 +0100 (CET)
 Date:   Fri, 17 Jan 2020 10:08:41 -0000
-From:   "tip-bot2 for Peng Liu" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Wang Long" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/fair: Fix sgc->{min,max}_capacity calculation
- for SD_OVERLAP
-Cc:     Peng Liu <iwtbavbm@gmail.com>,
+Subject: [tip: sched/core] sched/psi: create /proc/pressure and
+ /proc/pressure/{io|memory|cpu} only when psi enabled
+Cc:     Wang Long <w@laoqinren.net>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Valentin Schneider <valentin.schneider@arm.com>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200104130828.GA7718@iZj6chx1xj0e0buvshuecpZ>
-References: <20200104130828.GA7718@iZj6chx1xj0e0buvshuecpZ>
+        Johannes Weiner <hannes@cmpxchg.org>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <1576672698-32504-1-git-send-email-w@laoqinren.net>
+References: <1576672698-32504-1-git-send-email-w@laoqinren.net>
 MIME-Version: 1.0
-Message-ID: <157925572126.396.16039413045911352646.tip-bot2@tip-bot2>
+Message-ID: <157925572102.396.13781861787054630755.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,78 +49,49 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     4c58f57fa6e93318a0899f70d8b99fe6bac22ce8
-Gitweb:        https://git.kernel.org/tip/4c58f57fa6e93318a0899f70d8b99fe6bac22ce8
-Author:        Peng Liu <iwtbavbm@gmail.com>
-AuthorDate:    Sat, 04 Jan 2020 21:08:28 +08:00
+Commit-ID:     3d817689a62cf71bbb290af18cd26cf9764f38fe
+Gitweb:        https://git.kernel.org/tip/3d817689a62cf71bbb290af18cd26cf9764f38fe
+Author:        Wang Long <w@laoqinren.net>
+AuthorDate:    Wed, 18 Dec 2019 20:38:18 +08:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 17 Jan 2020 10:19:21 +01:00
+CommitterDate: Fri, 17 Jan 2020 10:19:22 +01:00
 
-sched/fair: Fix sgc->{min,max}_capacity calculation for SD_OVERLAP
+sched/psi: create /proc/pressure and /proc/pressure/{io|memory|cpu} only when psi enabled
 
-commit bf475ce0a3dd ("sched/fair: Add per-CPU min capacity to
-sched_group_capacity") introduced per-cpu min_capacity.
+when CONFIG_PSI_DEFAULT_DISABLED set to N or the command line set psi=0,
+I think we should not create /proc/pressure and
+/proc/pressure/{io|memory|cpu}.
 
-commit e3d6d0cb66f2 ("sched/fair: Add sched_group per-CPU max capacity")
-introduced per-cpu max_capacity.
+In the future, user maybe determine whether the psi feature is enabled by
+checking the existence of the /proc/pressure dir or
+/proc/pressure/{io|memory|cpu} files.
 
-In the SD_OVERLAP case, the local variable 'capacity' represents the sum
-of CPU capacity of all CPUs in the first sched group (sg) of the sched
-domain (sd).
-
-It is erroneously used to calculate sg's min and max CPU capacity.
-To fix this use capacity_of(cpu) instead of 'capacity'.
-
-The code which achieves this via cpu_rq(cpu)->sd->groups->sgc->capacity
-(for rq->sd != NULL) can be removed since it delivers the same value as
-capacity_of(cpu) which is currently only used for the (!rq->sd) case
-(see update_cpu_capacity()).
-An sg of the lowest sd (rq->sd or sd->child == NULL) represents a single
-CPU (and hence sg->sgc->capacity == capacity_of(cpu)).
-
-Signed-off-by: Peng Liu <iwtbavbm@gmail.com>
+Signed-off-by: Wang Long <w@laoqinren.net>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Valentin Schneider <valentin.schneider@arm.com>
-Link: https://lkml.kernel.org/r/20200104130828.GA7718@iZj6chx1xj0e0buvshuecpZ
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Link: https://lkml.kernel.org/r/1576672698-32504-1-git-send-email-w@laoqinren.net
 ---
- kernel/sched/fair.c | 26 ++++----------------------
- 1 file changed, 4 insertions(+), 22 deletions(-)
+ kernel/sched/psi.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 32c5421..e84723c 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -7802,29 +7802,11 @@ void update_group_capacity(struct sched_domain *sd, int cpu)
- 		 */
+diff --git a/kernel/sched/psi.c b/kernel/sched/psi.c
+index ce8f674..db7b50b 100644
+--- a/kernel/sched/psi.c
++++ b/kernel/sched/psi.c
+@@ -1280,10 +1280,12 @@ static const struct file_operations psi_cpu_fops = {
  
- 		for_each_cpu(cpu, sched_group_span(sdg)) {
--			struct sched_group_capacity *sgc;
--			struct rq *rq = cpu_rq(cpu);
-+			unsigned long cpu_cap = capacity_of(cpu);
- 
--			/*
--			 * build_sched_domains() -> init_sched_groups_capacity()
--			 * gets here before we've attached the domains to the
--			 * runqueues.
--			 *
--			 * Use capacity_of(), which is set irrespective of domains
--			 * in update_cpu_capacity().
--			 *
--			 * This avoids capacity from being 0 and
--			 * causing divide-by-zero issues on boot.
--			 */
--			if (unlikely(!rq->sd)) {
--				capacity += capacity_of(cpu);
--			} else {
--				sgc = rq->sd->groups->sgc;
--				capacity += sgc->capacity;
--			}
--
--			min_capacity = min(capacity, min_capacity);
--			max_capacity = max(capacity, max_capacity);
-+			capacity += cpu_cap;
-+			min_capacity = min(cpu_cap, min_capacity);
-+			max_capacity = max(cpu_cap, max_capacity);
- 		}
- 	} else  {
- 		/*
+ static int __init psi_proc_init(void)
+ {
+-	proc_mkdir("pressure", NULL);
+-	proc_create("pressure/io", 0, NULL, &psi_io_fops);
+-	proc_create("pressure/memory", 0, NULL, &psi_memory_fops);
+-	proc_create("pressure/cpu", 0, NULL, &psi_cpu_fops);
++	if (psi_enable) {
++		proc_mkdir("pressure", NULL);
++		proc_create("pressure/io", 0, NULL, &psi_io_fops);
++		proc_create("pressure/memory", 0, NULL, &psi_memory_fops);
++		proc_create("pressure/cpu", 0, NULL, &psi_cpu_fops);
++	}
+ 	return 0;
+ }
+ module_init(psi_proc_init);
