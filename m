@@ -2,37 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 82F0A140790
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 17 Jan 2020 11:10:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CE8A140761
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 17 Jan 2020 11:08:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728851AbgAQKKK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 17 Jan 2020 05:10:10 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:55364 "EHLO
+        id S1729011AbgAQKI4 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 17 Jan 2020 05:08:56 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:55385 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727123AbgAQKIv (ORCPT
+        with ESMTP id S1727243AbgAQKIz (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 17 Jan 2020 05:08:51 -0500
+        Fri, 17 Jan 2020 05:08:55 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1isOYX-0005SH-42; Fri, 17 Jan 2020 11:08:45 +0100
+        id 1isOYV-0005Rw-HZ; Fri, 17 Jan 2020 11:08:43 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id DC8EF1C19CE;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A4E6A1C19D0;
         Fri, 17 Jan 2020 11:08:41 +0100 (CET)
 Date:   Fri, 17 Jan 2020 10:08:41 -0000
-From:   "tip-bot2 for Alex Shi" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Peng Wang" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/cputime: move rq parameter in
- irqtime_account_process_tick
-Cc:     Alex Shi <alex.shi@linux.alibaba.com>,
+Subject: [tip: sched/core] sched/fair: calculate delta runnable load only when
+ it's needed
+Cc:     Peng Wang <rocking@linux.alibaba.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <1577959674-255537-1-git-send-email-alex.shi@linux.alibaba.com>
-References: <1577959674-255537-1-git-send-email-alex.shi@linux.alibaba.com>
+In-Reply-To: <20200103114400.17668-1-rocking@linux.alibaba.com>
+References: <20200103114400.17668-1-rocking@linux.alibaba.com>
 MIME-Version: 1.0
-Message-ID: <157925572173.396.14623531131441259192.tip-bot2@tip-bot2>
+Message-ID: <157925572151.396.5137433460252396733.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,90 +49,50 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     9dec1b6949ae9509cdc3edb2d75fda39c9db9fa2
-Gitweb:        https://git.kernel.org/tip/9dec1b6949ae9509cdc3edb2d75fda39c9db9fa2
-Author:        Alex Shi <alex.shi@linux.alibaba.com>
-AuthorDate:    Thu, 02 Jan 2020 18:07:52 +08:00
+Commit-ID:     fe71bbb21ee14160f73f81b113d71145327a1c0d
+Gitweb:        https://git.kernel.org/tip/fe71bbb21ee14160f73f81b113d71145327a1c0d
+Author:        Peng Wang <rocking@linux.alibaba.com>
+AuthorDate:    Fri, 03 Jan 2020 19:44:00 +08:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Fri, 17 Jan 2020 10:19:21 +01:00
 
-sched/cputime: move rq parameter in irqtime_account_process_tick
+sched/fair: calculate delta runnable load only when it's needed
 
-Every time we call irqtime_account_process_tick() is in a interrupt,
-Every caller will get and assign a parameter rq = this_rq(), This is
-unnecessary and increase the code size a little bit. Move the rq getting
-action to irqtime_account_process_tick internally is better.
+Move the code of calculation for delta_sum/delta_avg to where
+it is really needed to be done.
 
-             base               with this patch
-cputime.o    578792 bytes        577888 bytes
-
-Signed-off-by: Alex Shi <alex.shi@linux.alibaba.com>
+Signed-off-by: Peng Wang <rocking@linux.alibaba.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/1577959674-255537-1-git-send-email-alex.shi@linux.alibaba.com
+Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
+Link: https://lkml.kernel.org/r/20200103114400.17668-1-rocking@linux.alibaba.com
 ---
- kernel/sched/cputime.c | 15 ++++++---------
- 1 file changed, 6 insertions(+), 9 deletions(-)
+ kernel/sched/fair.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/kernel/sched/cputime.c b/kernel/sched/cputime.c
-index d43318a..cff3e65 100644
---- a/kernel/sched/cputime.c
-+++ b/kernel/sched/cputime.c
-@@ -355,7 +355,7 @@ void thread_group_cputime(struct task_struct *tsk, struct task_cputime *times)
-  * softirq as those do not count in task exec_runtime any more.
-  */
- static void irqtime_account_process_tick(struct task_struct *p, int user_tick,
--					 struct rq *rq, int ticks)
-+					 int ticks)
- {
- 	u64 other, cputime = TICK_NSEC * ticks;
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index d292883..32c5421 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -3366,16 +3366,17 @@ update_tg_cfs_runnable(struct cfs_rq *cfs_rq, struct sched_entity *se, struct cf
  
-@@ -381,7 +381,7 @@ static void irqtime_account_process_tick(struct task_struct *p, int user_tick,
- 		account_system_index_time(p, cputime, CPUTIME_SOFTIRQ);
- 	} else if (user_tick) {
- 		account_user_time(p, cputime);
--	} else if (p == rq->idle) {
-+	} else if (p == this_rq()->idle) {
- 		account_idle_time(cputime);
- 	} else if (p->flags & PF_VCPU) { /* System time or guest time */
- 		account_guest_time(p, cputime);
-@@ -392,14 +392,12 @@ static void irqtime_account_process_tick(struct task_struct *p, int user_tick,
- 
- static void irqtime_account_idle_ticks(int ticks)
- {
--	struct rq *rq = this_rq();
+ 	runnable_load_sum = (s64)se_runnable(se) * runnable_sum;
+ 	runnable_load_avg = div_s64(runnable_load_sum, LOAD_AVG_MAX);
+-	delta_sum = runnable_load_sum - se_weight(se) * se->avg.runnable_load_sum;
+-	delta_avg = runnable_load_avg - se->avg.runnable_load_avg;
 -
--	irqtime_account_process_tick(current, 0, rq, ticks);
-+	irqtime_account_process_tick(current, 0, ticks);
- }
- #else /* CONFIG_IRQ_TIME_ACCOUNTING */
- static inline void irqtime_account_idle_ticks(int ticks) { }
- static inline void irqtime_account_process_tick(struct task_struct *p, int user_tick,
--						struct rq *rq, int nr_ticks) { }
-+						int nr_ticks) { }
- #endif /* CONFIG_IRQ_TIME_ACCOUNTING */
+-	se->avg.runnable_load_sum = runnable_sum;
+-	se->avg.runnable_load_avg = runnable_load_avg;
  
- /*
-@@ -473,13 +471,12 @@ void thread_group_cputime_adjusted(struct task_struct *p, u64 *ut, u64 *st)
- void account_process_tick(struct task_struct *p, int user_tick)
- {
- 	u64 cputime, steal;
--	struct rq *rq = this_rq();
- 
- 	if (vtime_accounting_enabled_this_cpu())
- 		return;
- 
- 	if (sched_clock_irqtime) {
--		irqtime_account_process_tick(p, user_tick, rq, 1);
-+		irqtime_account_process_tick(p, user_tick, 1);
- 		return;
+ 	if (se->on_rq) {
++		delta_sum = runnable_load_sum -
++				se_weight(se) * se->avg.runnable_load_sum;
++		delta_avg = runnable_load_avg - se->avg.runnable_load_avg;
+ 		add_positive(&cfs_rq->avg.runnable_load_avg, delta_avg);
+ 		add_positive(&cfs_rq->avg.runnable_load_sum, delta_sum);
  	}
++
++	se->avg.runnable_load_sum = runnable_sum;
++	se->avg.runnable_load_avg = runnable_load_avg;
+ }
  
-@@ -493,7 +490,7 @@ void account_process_tick(struct task_struct *p, int user_tick)
- 
- 	if (user_tick)
- 		account_user_time(p, cputime);
--	else if ((p != rq->idle) || (irq_count() != HARDIRQ_OFFSET))
-+	else if ((p != this_rq()->idle) || (irq_count() != HARDIRQ_OFFSET))
- 		account_system_time(p, HARDIRQ_OFFSET, cputime);
- 	else
- 		account_idle_time(cputime);
+ static inline void add_tg_cfs_propagate(struct cfs_rq *cfs_rq, long runnable_sum)
