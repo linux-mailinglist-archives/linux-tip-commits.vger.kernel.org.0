@@ -2,37 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EE908140776
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 17 Jan 2020 11:09:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 375F914076E
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 17 Jan 2020 11:09:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729324AbgAQKJ1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 17 Jan 2020 05:09:27 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:55448 "EHLO
+        id S1729236AbgAQKJR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 17 Jan 2020 05:09:17 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:55439 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729304AbgAQKJ1 (ORCPT
+        with ESMTP id S1729213AbgAQKJQ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 17 Jan 2020 05:09:27 -0500
+        Fri, 17 Jan 2020 05:09:16 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1isOYw-0005b0-6A; Fri, 17 Jan 2020 11:09:10 +0100
+        id 1isOYv-0005az-Uy; Fri, 17 Jan 2020 11:09:10 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E07E61C19CD;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A6F851C19CC;
         Fri, 17 Jan 2020 11:09:09 +0100 (CET)
 Date:   Fri, 17 Jan 2020 10:09:09 -0000
 From:   "tip-bot2 for Waiman Long" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] locking/lockdep: Fix lockdep_stats indentation problem
+Subject: [tip: locking/core] locking/qspinlock: Fix inaccessible URL of MCS lock paper
 Cc:     Waiman Long <longman@redhat.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Bart Van Assche <bvanassche@acm.org>, x86 <x86@kernel.org>,
+        Will Deacon <will@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191211213139.29934-1-longman@redhat.com>
-References: <20191211213139.29934-1-longman@redhat.com>
+In-Reply-To: <20200107174914.4187-1-longman@redhat.com>
+References: <20200107174914.4187-1-longman@redhat.com>
 MIME-Version: 1.0
-Message-ID: <157925574974.396.9931702297640535543.tip-bot2@tip-bot2>
+Message-ID: <157925574948.396.17056541510267349194.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,56 +48,53 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     a030f9767da1a6bbcec840fc54770eb11c2414b6
-Gitweb:        https://git.kernel.org/tip/a030f9767da1a6bbcec840fc54770eb11c2414b6
+Commit-ID:     57097124cbbd310cc2b5884189e22e60a3c20514
+Gitweb:        https://git.kernel.org/tip/57097124cbbd310cc2b5884189e22e60a3c20514
 Author:        Waiman Long <longman@redhat.com>
-AuthorDate:    Wed, 11 Dec 2019 16:31:39 -05:00
+AuthorDate:    Tue, 07 Jan 2020 12:49:14 -05:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Fri, 17 Jan 2020 10:19:30 +01:00
 
-locking/lockdep: Fix lockdep_stats indentation problem
+locking/qspinlock: Fix inaccessible URL of MCS lock paper
 
-It was found that two lines in the output of /proc/lockdep_stats have
-indentation problem:
+It turns out that the URL of the MCS lock paper listed in the source
+code is no longer accessible. I did got question about where the paper
+was. This patch updates the URL to BZ 206115 which contains a copy of
+the paper from
 
-  # cat /proc/lockdep_stats
-     :
-   in-process chains:                   25057
-   stack-trace entries:                137827 [max: 524288]
-   number of stack traces:        7973
-   number of stack hash chains:   6355
-   combined max dependencies:      1356414598
-   hardirq-safe locks:                     57
-   hardirq-unsafe locks:                 1286
-     :
+  https://www.cs.rochester.edu/u/scott/papers/1991_TOCS_synch.pdf
 
-All the numbers displayed in /proc/lockdep_stats except the two stack
-trace numbers are formatted with a field with of 11. To properly align
-all the numbers, a field width of 11 is now added to the two stack
-trace numbers.
-
-Fixes: 8c779229d0f4 ("locking/lockdep: Report more stack trace statistics")
 Signed-off-by: Waiman Long <longman@redhat.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://lkml.kernel.org/r/20191211213139.29934-1-longman@redhat.com
+Acked-by: Will Deacon <will@kernel.org>
+Link: https://lkml.kernel.org/r/20200107174914.4187-1-longman@redhat.com
 ---
- kernel/locking/lockdep_proc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/locking/qspinlock.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/kernel/locking/lockdep_proc.c b/kernel/locking/lockdep_proc.c
-index dadb7b7..9bb6d24 100644
---- a/kernel/locking/lockdep_proc.c
-+++ b/kernel/locking/lockdep_proc.c
-@@ -286,9 +286,9 @@ static int lockdep_stats_show(struct seq_file *m, void *v)
- 	seq_printf(m, " stack-trace entries:           %11lu [max: %lu]\n",
- 			nr_stack_trace_entries, MAX_STACK_TRACE_ENTRIES);
- #if defined(CONFIG_TRACE_IRQFLAGS) && defined(CONFIG_PROVE_LOCKING)
--	seq_printf(m, " number of stack traces:        %llu\n",
-+	seq_printf(m, " number of stack traces:        %11llu\n",
- 		   lockdep_stack_trace_count());
--	seq_printf(m, " number of stack hash chains:   %llu\n",
-+	seq_printf(m, " number of stack hash chains:   %11llu\n",
- 		   lockdep_stack_hash_count());
- #endif
- 	seq_printf(m, " combined max dependencies:     %11u\n",
+diff --git a/kernel/locking/qspinlock.c b/kernel/locking/qspinlock.c
+index 2473f10..b9515fc 100644
+--- a/kernel/locking/qspinlock.c
++++ b/kernel/locking/qspinlock.c
+@@ -31,14 +31,15 @@
+ /*
+  * The basic principle of a queue-based spinlock can best be understood
+  * by studying a classic queue-based spinlock implementation called the
+- * MCS lock. The paper below provides a good description for this kind
+- * of lock.
++ * MCS lock. A copy of the original MCS lock paper ("Algorithms for Scalable
++ * Synchronization on Shared-Memory Multiprocessors by Mellor-Crummey and
++ * Scott") is available at
+  *
+- * http://www.cise.ufl.edu/tr/DOC/REP-1992-71.pdf
++ * https://bugzilla.kernel.org/show_bug.cgi?id=206115
+  *
+- * This queued spinlock implementation is based on the MCS lock, however to make
+- * it fit the 4 bytes we assume spinlock_t to be, and preserve its existing
+- * API, we must modify it somehow.
++ * This queued spinlock implementation is based on the MCS lock, however to
++ * make it fit the 4 bytes we assume spinlock_t to be, and preserve its
++ * existing API, we must modify it somehow.
+  *
+  * In particular; where the traditional MCS lock consists of a tail pointer
+  * (8 bytes) and needs the next pointer (another 8 bytes) of its own node to
