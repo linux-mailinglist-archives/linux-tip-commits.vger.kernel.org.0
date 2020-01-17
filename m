@@ -2,37 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 375F914076E
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 17 Jan 2020 11:09:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 10309140770
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 17 Jan 2020 11:09:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729236AbgAQKJR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 17 Jan 2020 05:09:17 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:55439 "EHLO
+        id S1729263AbgAQKJS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 17 Jan 2020 05:09:18 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:55440 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729213AbgAQKJQ (ORCPT
+        with ESMTP id S1729224AbgAQKJR (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 17 Jan 2020 05:09:16 -0500
+        Fri, 17 Jan 2020 05:09:17 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1isOYv-0005az-Uy; Fri, 17 Jan 2020 11:09:10 +0100
+        id 1isOYw-0005b3-F7; Fri, 17 Jan 2020 11:09:10 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A6F851C19CC;
-        Fri, 17 Jan 2020 11:09:09 +0100 (CET)
-Date:   Fri, 17 Jan 2020 10:09:09 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 2D2CD1C19CE;
+        Fri, 17 Jan 2020 11:09:10 +0100 (CET)
+Date:   Fri, 17 Jan 2020 10:09:10 -0000
 From:   "tip-bot2 for Waiman Long" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] locking/qspinlock: Fix inaccessible URL of MCS lock paper
-Cc:     Waiman Long <longman@redhat.com>,
+Subject: [tip: locking/urgent] locking/rwsem: Fix kernel crash when spinning
+ on RWSEM_OWNER_UNKNOWN
+Cc:     Christoph Hellwig <hch@lst.de>, Waiman Long <longman@redhat.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Will Deacon <will@kernel.org>, x86 <x86@kernel.org>,
+        stable@vger.kernel.org, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200107174914.4187-1-longman@redhat.com>
-References: <20200107174914.4187-1-longman@redhat.com>
+In-Reply-To: <20200115154336.8679-1-longman@redhat.com>
+References: <20200115154336.8679-1-longman@redhat.com>
 MIME-Version: 1.0
-Message-ID: <157925574948.396.17056541510267349194.tip-bot2@tip-bot2>
+Message-ID: <157925575001.396.11932253245740441268.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -46,55 +47,49 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/core branch of tip:
+The following commit has been merged into the locking/urgent branch of tip:
 
-Commit-ID:     57097124cbbd310cc2b5884189e22e60a3c20514
-Gitweb:        https://git.kernel.org/tip/57097124cbbd310cc2b5884189e22e60a3c20514
+Commit-ID:     39e7234f00bc93613c086ae42d852d5f4147120a
+Gitweb:        https://git.kernel.org/tip/39e7234f00bc93613c086ae42d852d5f4147120a
 Author:        Waiman Long <longman@redhat.com>
-AuthorDate:    Tue, 07 Jan 2020 12:49:14 -05:00
+AuthorDate:    Wed, 15 Jan 2020 10:43:36 -05:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 17 Jan 2020 10:19:30 +01:00
+CommitterDate: Fri, 17 Jan 2020 10:19:27 +01:00
 
-locking/qspinlock: Fix inaccessible URL of MCS lock paper
+locking/rwsem: Fix kernel crash when spinning on RWSEM_OWNER_UNKNOWN
 
-It turns out that the URL of the MCS lock paper listed in the source
-code is no longer accessible. I did got question about where the paper
-was. This patch updates the URL to BZ 206115 which contains a copy of
-the paper from
+The commit 91d2a812dfb9 ("locking/rwsem: Make handoff writer
+optimistically spin on owner") will allow a recently woken up waiting
+writer to spin on the owner. Unfortunately, if the owner happens to be
+RWSEM_OWNER_UNKNOWN, the code will incorrectly spin on it leading to a
+kernel crash. This is fixed by passing the proper non-spinnable bits
+to rwsem_spin_on_owner() so that RWSEM_OWNER_UNKNOWN will be treated
+as a non-spinnable target.
 
-  https://www.cs.rochester.edu/u/scott/papers/1991_TOCS_synch.pdf
+Fixes: 91d2a812dfb9 ("locking/rwsem: Make handoff writer optimistically spin on owner")
 
+Reported-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Waiman Long <longman@redhat.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Will Deacon <will@kernel.org>
-Link: https://lkml.kernel.org/r/20200107174914.4187-1-longman@redhat.com
+Tested-by: Christoph Hellwig <hch@lst.de>
+Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/20200115154336.8679-1-longman@redhat.com
 ---
- kernel/locking/qspinlock.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ kernel/locking/rwsem.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/locking/qspinlock.c b/kernel/locking/qspinlock.c
-index 2473f10..b9515fc 100644
---- a/kernel/locking/qspinlock.c
-+++ b/kernel/locking/qspinlock.c
-@@ -31,14 +31,15 @@
- /*
-  * The basic principle of a queue-based spinlock can best be understood
-  * by studying a classic queue-based spinlock implementation called the
-- * MCS lock. The paper below provides a good description for this kind
-- * of lock.
-+ * MCS lock. A copy of the original MCS lock paper ("Algorithms for Scalable
-+ * Synchronization on Shared-Memory Multiprocessors by Mellor-Crummey and
-+ * Scott") is available at
-  *
-- * http://www.cise.ufl.edu/tr/DOC/REP-1992-71.pdf
-+ * https://bugzilla.kernel.org/show_bug.cgi?id=206115
-  *
-- * This queued spinlock implementation is based on the MCS lock, however to make
-- * it fit the 4 bytes we assume spinlock_t to be, and preserve its existing
-- * API, we must modify it somehow.
-+ * This queued spinlock implementation is based on the MCS lock, however to
-+ * make it fit the 4 bytes we assume spinlock_t to be, and preserve its
-+ * existing API, we must modify it somehow.
-  *
-  * In particular; where the traditional MCS lock consists of a tail pointer
-  * (8 bytes) and needs the next pointer (another 8 bytes) of its own node to
+diff --git a/kernel/locking/rwsem.c b/kernel/locking/rwsem.c
+index 44e6876..0d9b6be 100644
+--- a/kernel/locking/rwsem.c
++++ b/kernel/locking/rwsem.c
+@@ -1226,8 +1226,8 @@ wait:
+ 		 * In this case, we attempt to acquire the lock again
+ 		 * without sleeping.
+ 		 */
+-		if ((wstate == WRITER_HANDOFF) &&
+-		    (rwsem_spin_on_owner(sem, 0) == OWNER_NULL))
++		if (wstate == WRITER_HANDOFF &&
++		    rwsem_spin_on_owner(sem, RWSEM_NONSPINNABLE) == OWNER_NULL)
+ 			goto trylock_again;
+ 
+ 		/* Block until there are no active lockers. */
