@@ -2,37 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E09291410F5
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 17 Jan 2020 19:41:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 71F18141703
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 18 Jan 2020 11:45:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729332AbgAQSlq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 17 Jan 2020 13:41:46 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:57330 "EHLO
+        id S1726956AbgARKpB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 18 Jan 2020 05:45:01 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:58943 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726935AbgAQSlp (ORCPT
+        with ESMTP id S1726831AbgARKpB (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 17 Jan 2020 13:41:45 -0500
+        Sat, 18 Jan 2020 05:45:01 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1isWYr-0006WV-N7; Fri, 17 Jan 2020 19:41:37 +0100
+        id 1islb6-0006sd-CF; Sat, 18 Jan 2020 11:44:56 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 437AC1C19F0;
-        Fri, 17 Jan 2020 19:41:37 +0100 (CET)
-Date:   Fri, 17 Jan 2020 18:41:37 -0000
-From:   "tip-bot2 for Xiaochen Shen" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id EC0011C0325;
+        Sat, 18 Jan 2020 11:44:55 +0100 (CET)
+Date:   Sat, 18 Jan 2020 10:44:55 -0000
+From:   "tip-bot2 for Lukas Bulwahn" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cache] x86/resctrl: Check monitoring static key in the MBM
- overflow handler
-Cc:     Xiaochen Shen <xiaochen.shen@intel.com>,
+Subject: [tip: core/documentation] MAINTAINERS: Mark simple firmware interface
+ (SFI) obsolete
+Cc:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
         Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <1576094705-13660-1-git-send-email-xiaochen.shen@intel.com>
-References: <1576094705-13660-1-git-send-email-xiaochen.shen@intel.com>
+In-Reply-To: <20200118082545.23464-1-lukas.bulwahn@gmail.com>
+References: <20200118082545.23464-1-lukas.bulwahn@gmail.com>
 MIME-Version: 1.0
-Message-ID: <157928649703.396.16058225567355678427.tip-bot2@tip-bot2>
+Message-ID: <157934429574.396.10093505590671688891.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -46,76 +46,53 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cache branch of tip:
+The following commit has been merged into the core/documentation branch of tip:
 
-Commit-ID:     536a0d8e79fb928f2735db37dda95682b6754f9a
-Gitweb:        https://git.kernel.org/tip/536a0d8e79fb928f2735db37dda95682b6754f9a
-Author:        Xiaochen Shen <xiaochen.shen@intel.com>
-AuthorDate:    Thu, 12 Dec 2019 04:05:05 +08:00
+Commit-ID:     b2aa09178d1132bc6731af609a079dde83feddc1
+Gitweb:        https://git.kernel.org/tip/b2aa09178d1132bc6731af609a079dde83feddc1
+Author:        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+AuthorDate:    Sat, 18 Jan 2020 09:25:45 +01:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Fri, 17 Jan 2020 19:32:32 +01:00
+CommitterDate: Sat, 18 Jan 2020 11:38:37 +01:00
 
-x86/resctrl: Check monitoring static key in the MBM overflow handler
+MAINTAINERS: Mark simple firmware interface (SFI) obsolete
 
-Currently, there are three static keys in the resctrl file system:
-rdt_mon_enable_key and rdt_alloc_enable_key indicate if the monitoring
-feature and the allocation feature are enabled, respectively. The
-rdt_enable_key is enabled when either the monitoring feature or the
-allocation feature is enabled.
+Len Brown has not been active in this part since around 2010 and
+confirmed that he is not maintaining this part of the kernel sources
+anymore and the git log suggests that nobody is actively maintaining it.
 
-If no monitoring feature is present (either hardware doesn't support a
-monitoring feature or the feature is disabled by the kernel command line
-option "rdt="), rdt_enable_key is still enabled but rdt_mon_enable_key
-is disabled.
+The referenced git tree does not exist. Instead, I found an sfi branch
+in Len's kernel git repository, but that has not been updated since 2014;
+so that is not worth to be mentioned in MAINTAINERS now anymore either.
 
-MBM is a monitoring feature. The MBM overflow handler intends to
-check if the monitoring feature is not enabled for fast return.
+Len Brown expects no further systems to be shipped with SFI, so we can
+mark it obsolete and schedule it for deletion.
 
-So check the rdt_mon_enable_key in it instead of the rdt_enable_key as
-former is the more accurate check.
+This change was motivated after I found that I could not send any mails
+to the sfi-devel mailing list, and that the mailing list does not exist
+anymore.
 
- [ bp: Massage commit message. ]
-
-Fixes: e33026831bdb ("x86/intel_rdt/mbm: Handle counter overflow")
-Signed-off-by: Xiaochen Shen <xiaochen.shen@intel.com>
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/1576094705-13660-1-git-send-email-xiaochen.shen@intel.com
+Link: https://lkml.kernel.org/r/20200118082545.23464-1-lukas.bulwahn@gmail.com
 ---
- arch/x86/kernel/cpu/resctrl/internal.h | 1 +
- arch/x86/kernel/cpu/resctrl/monitor.c  | 4 ++--
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ MAINTAINERS | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/resctrl/internal.h b/arch/x86/kernel/cpu/resctrl/internal.h
-index e49b772..181c992 100644
---- a/arch/x86/kernel/cpu/resctrl/internal.h
-+++ b/arch/x86/kernel/cpu/resctrl/internal.h
-@@ -57,6 +57,7 @@ static inline struct rdt_fs_context *rdt_fc2context(struct fs_context *fc)
- }
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 4017e6b..fe82a0d 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -15044,11 +15044,8 @@ F:	drivers/video/fbdev/sm712*
+ F:	Documentation/fb/sm712fb.rst
  
- DECLARE_STATIC_KEY_FALSE(rdt_enable_key);
-+DECLARE_STATIC_KEY_FALSE(rdt_mon_enable_key);
- 
- /**
-  * struct mon_evt - Entry in the event list of a resource
-diff --git a/arch/x86/kernel/cpu/resctrl/monitor.c b/arch/x86/kernel/cpu/resctrl/monitor.c
-index 397206f..773124b 100644
---- a/arch/x86/kernel/cpu/resctrl/monitor.c
-+++ b/arch/x86/kernel/cpu/resctrl/monitor.c
-@@ -514,7 +514,7 @@ void mbm_handle_overflow(struct work_struct *work)
- 
- 	mutex_lock(&rdtgroup_mutex);
- 
--	if (!static_branch_likely(&rdt_enable_key))
-+	if (!static_branch_likely(&rdt_mon_enable_key))
- 		goto out_unlock;
- 
- 	d = get_domain_from_cpu(cpu, &rdt_resources_all[RDT_RESOURCE_L3]);
-@@ -543,7 +543,7 @@ void mbm_setup_overflow_handler(struct rdt_domain *dom, unsigned long delay_ms)
- 	unsigned long delay = msecs_to_jiffies(delay_ms);
- 	int cpu;
- 
--	if (!static_branch_likely(&rdt_enable_key))
-+	if (!static_branch_likely(&rdt_mon_enable_key))
- 		return;
- 	cpu = cpumask_any(&dom->cpu_mask);
- 	dom->mbm_work_cpu = cpu;
+ SIMPLE FIRMWARE INTERFACE (SFI)
+-M:	Len Brown <lenb@kernel.org>
+-L:	sfi-devel@simplefirmware.org
+ W:	http://simplefirmware.org/
+-T:	git git://git.kernel.org/pub/scm/linux/kernel/git/lenb/linux-sfi-2.6.git
+-S:	Supported
++S:	Obsolete
+ F:	arch/x86/platform/sfi/
+ F:	drivers/sfi/
+ F:	include/linux/sfi*.h
