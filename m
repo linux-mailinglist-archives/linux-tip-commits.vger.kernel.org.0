@@ -2,38 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A8B78141D60
+	by mail.lfdr.de (Postfix) with ESMTP id 28C07141D5F
 	for <lists+linux-tip-commits@lfdr.de>; Sun, 19 Jan 2020 11:41:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726816AbgASKky (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S1727117AbgASKky (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Sun, 19 Jan 2020 05:40:54 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:60037 "EHLO
+Received: from Galois.linutronix.de ([193.142.43.55]:60036 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726874AbgASKky (ORCPT
+        with ESMTP id S1726857AbgASKkx (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 19 Jan 2020 05:40:54 -0500
+        Sun, 19 Jan 2020 05:40:53 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1it80b-0001fR-UF; Sun, 19 Jan 2020 11:40:46 +0100
+        id 1it80c-0001fU-5X; Sun, 19 Jan 2020 11:40:46 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 7DF671C1A1B;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C80821C0315;
         Sun, 19 Jan 2020 11:40:45 +0100 (CET)
 Date:   Sun, 19 Jan 2020 10:40:45 -0000
 From:   "tip-bot2 for Sean Christopherson" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/headers] x86/ACPI/sleep: Remove an unnecessary include of
- asm/realmode.h
+Subject: [tip: core/headers] ASoC: Intel: Skylake: Explicitly include
+ linux/io.h for virt_to_phys()
 Cc:     Sean Christopherson <sean.j.christopherson@intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Mark Brown <broonie@kernel.org>,
         Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191126165417.22423-11-sean.j.christopherson@intel.com>
-References: <20191126165417.22423-11-sean.j.christopherson@intel.com>
+In-Reply-To: <20191126165417.22423-10-sean.j.christopherson@intel.com>
+References: <20191126165417.22423-10-sean.j.christopherson@intel.com>
 MIME-Version: 1.0
-Message-ID: <157943044530.396.4574110491392220728.tip-bot2@tip-bot2>
+Message-ID: <157943044560.396.11643987994795560623.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,38 +49,39 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/headers branch of tip:
 
-Commit-ID:     cb28909525acdd1a89c5b2de761eaf2f788c0057
-Gitweb:        https://git.kernel.org/tip/cb28909525acdd1a89c5b2de761eaf2f788c0057
+Commit-ID:     321354ba6883b5151fd283dc14fb29280e1fbd2e
+Gitweb:        https://git.kernel.org/tip/321354ba6883b5151fd283dc14fb29280e1fbd2e
 Author:        Sean Christopherson <sean.j.christopherson@intel.com>
-AuthorDate:    Tue, 26 Nov 2019 08:54:15 -08:00
+AuthorDate:    Tue, 26 Nov 2019 08:54:14 -08:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Tue, 10 Dec 2019 10:15:48 +01:00
 
-x86/ACPI/sleep: Remove an unnecessary include of asm/realmode.h
+ASoC: Intel: Skylake: Explicitly include linux/io.h for virt_to_phys()
 
-None of the declarations in x86's acpi/sleep.h are in any way dependent
-on the real mode boot code.  Remove sleep.h's include of asm/realmode.h
-to limit the dependencies on realmode.h to code that actually interacts
-with the boot code.
+Through a labyrinthian sequence of includes, usage of virt_to_phys() is
+dependent on the include of asm/io.h in x86's asm/realmode.h, which is
+included in x86's asm/acpi.h and thus by linux/acpi.h.  Explicitly
+include linux/io.h to break the dependency on realmode.h so that a
+future patch can remove the realmode.h include from acpi.h without
+breaking the build.
 
 Signed-off-by: Sean Christopherson <sean.j.christopherson@intel.com>
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://lkml.kernel.org/r/20191126165417.22423-11-sean.j.christopherson@intel.com
+Acked-by: Mark Brown <broonie@kernel.org>
+Link: https://lkml.kernel.org/r/20191126165417.22423-10-sean.j.christopherson@intel.com
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- arch/x86/kernel/acpi/sleep.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/intel/skylake/skl-sst-cldma.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/kernel/acpi/sleep.h b/arch/x86/kernel/acpi/sleep.h
-index fbb60ca..d06c207 100644
---- a/arch/x86/kernel/acpi/sleep.h
-+++ b/arch/x86/kernel/acpi/sleep.h
-@@ -3,7 +3,7 @@
-  *	Variables and functions used by the code in sleep.c
+diff --git a/sound/soc/intel/skylake/skl-sst-cldma.c b/sound/soc/intel/skylake/skl-sst-cldma.c
+index 5a2c35f..36f697c 100644
+--- a/sound/soc/intel/skylake/skl-sst-cldma.c
++++ b/sound/soc/intel/skylake/skl-sst-cldma.c
+@@ -8,6 +8,7 @@
   */
  
--#include <asm/realmode.h>
-+#include <linux/linkage.h>
- 
- extern unsigned long saved_video_mode;
- extern long saved_magic;
+ #include <linux/device.h>
++#include <linux/io.h>
+ #include <linux/mm.h>
+ #include <linux/delay.h>
+ #include "../common/sst-dsp.h"
