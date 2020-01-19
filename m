@@ -2,37 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3138F141D69
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 19 Jan 2020 11:41:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AA3F2141D5B
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 19 Jan 2020 11:41:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726956AbgASKkw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 19 Jan 2020 05:40:52 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:60022 "EHLO
+        id S1728799AbgASKlL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 19 Jan 2020 05:41:11 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:60048 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726775AbgASKkw (ORCPT
+        with ESMTP id S1727113AbgASKk4 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 19 Jan 2020 05:40:52 -0500
+        Sun, 19 Jan 2020 05:40:56 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1it80d-0001fg-0W; Sun, 19 Jan 2020 11:40:47 +0100
+        id 1it80i-0001fj-96; Sun, 19 Jan 2020 11:40:52 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 9C9101C1A1B;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id DDD971C0315;
         Sun, 19 Jan 2020 11:40:46 +0100 (CET)
 Date:   Sun, 19 Jan 2020 10:40:46 -0000
 From:   "tip-bot2 for Sean Christopherson" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/headers] efi/capsule-loader: Explicitly include linux/io.h
- for page_to_phys()
+Subject: [tip: core/headers] perf/x86/intel: Explicitly include asm/io.h to
+ use virt_to_phys()
 Cc:     Sean Christopherson <sean.j.christopherson@intel.com>,
         Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191126165417.22423-7-sean.j.christopherson@intel.com>
-References: <20191126165417.22423-7-sean.j.christopherson@intel.com>
+In-Reply-To: <20191126165417.22423-6-sean.j.christopherson@intel.com>
+References: <20191126165417.22423-6-sean.j.christopherson@intel.com>
 MIME-Version: 1.0
-Message-ID: <157943044646.396.15130430056668189892.tip-bot2@tip-bot2>
+Message-ID: <157943044671.396.9729014222121250775.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,38 +48,37 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/headers branch of tip:
 
-Commit-ID:     c6625a314cb81149718390c6be01a9294a016966
-Gitweb:        https://git.kernel.org/tip/c6625a314cb81149718390c6be01a9294a016966
+Commit-ID:     59e9f58749cb85df314fd189a6bf58ae34170cf0
+Gitweb:        https://git.kernel.org/tip/59e9f58749cb85df314fd189a6bf58ae34170cf0
 Author:        Sean Christopherson <sean.j.christopherson@intel.com>
-AuthorDate:    Tue, 26 Nov 2019 08:54:11 -08:00
+AuthorDate:    Tue, 26 Nov 2019 08:54:10 -08:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Tue, 10 Dec 2019 10:15:48 +01:00
 
-efi/capsule-loader: Explicitly include linux/io.h for page_to_phys()
+perf/x86/intel: Explicitly include asm/io.h to use virt_to_phys()
 
-Through a labyrinthian sequence of includes, usage of page_to_phys() is
-dependent on the include of asm/io.h in x86's asm/realmode.h, which is
-included in x86's asm/acpi.h and thus by linux/acpi.h.  Explicitly
-include linux/io.h to break the dependency on realmode.h so that a
-future patch can remove the realmode.h include from acpi.h without
-breaking the build.
+Through a labyrinthian sequence of includes, usage of virt_to_phys() is
+dependent on the include of asm/io.h in asm/realmode.h via asm/acpi.h.
+Explicitly include asm/io.h to break the dependency on realmode.h so
+that a future patch can remove the realmode.h include from acpi.h
+without breaking the build.
 
 Signed-off-by: Sean Christopherson <sean.j.christopherson@intel.com>
-Link: https://lkml.kernel.org/r/20191126165417.22423-7-sean.j.christopherson@intel.com
+Link: https://lkml.kernel.org/r/20191126165417.22423-6-sean.j.christopherson@intel.com
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- drivers/firmware/efi/capsule-loader.c | 1 +
+ arch/x86/events/intel/ds.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/firmware/efi/capsule-loader.c b/drivers/firmware/efi/capsule-loader.c
-index b139513..d3067cb 100644
---- a/drivers/firmware/efi/capsule-loader.c
-+++ b/drivers/firmware/efi/capsule-loader.c
-@@ -11,6 +11,7 @@
- #include <linux/module.h>
- #include <linux/miscdevice.h>
- #include <linux/highmem.h>
-+#include <linux/io.h>
- #include <linux/slab.h>
- #include <linux/mutex.h>
- #include <linux/efi.h>
+diff --git a/arch/x86/events/intel/ds.c b/arch/x86/events/intel/ds.c
+index ce83950..4b94ae4 100644
+--- a/arch/x86/events/intel/ds.c
++++ b/arch/x86/events/intel/ds.c
+@@ -7,6 +7,7 @@
+ #include <asm/perf_event.h>
+ #include <asm/tlbflush.h>
+ #include <asm/insn.h>
++#include <asm/io.h>
+ 
+ #include "../perf_event.h"
+ 
