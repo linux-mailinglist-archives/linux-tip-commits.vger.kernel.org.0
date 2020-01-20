@@ -2,40 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CBB014257B
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 20 Jan 2020 09:28:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 571B414258B
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 20 Jan 2020 09:28:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727075AbgATI10 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 20 Jan 2020 03:27:26 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:60778 "EHLO
+        id S1728863AbgATI1x (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 20 Jan 2020 03:27:53 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:60782 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727032AbgATI1Z (ORCPT
+        with ESMTP id S1726075AbgATI10 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 20 Jan 2020 03:27:25 -0500
+        Mon, 20 Jan 2020 03:27:26 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1itSOz-0002uc-TQ; Mon, 20 Jan 2020 09:27:18 +0100
+        id 1itSP2-0002uk-6B; Mon, 20 Jan 2020 09:27:20 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 7C99F1C1A3D;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id BD41B1C1A3A;
         Mon, 20 Jan 2020 09:27:14 +0100 (CET)
 Date:   Mon, 20 Jan 2020 08:27:14 -0000
 From:   "tip-bot2 for Andi Kleen" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf tools: Support --prefix/--prefix-strip
-Cc:     Andi Kleen <ak@linux.intel.com>, Jiri Olsa <jolsa@redhat.com>,
+Subject: [tip: perf/core] perf report: Clarify in help that --children is default
+Cc:     Andi Kleen <ak@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <157950883427.396.3928162486983105129.tip-bot2@tip-bot2>
+Message-ID: <157950883458.396.1601409182987803095.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: 7bit
 X-Linutronix-Spam-Score: -1.0
 X-Linutronix-Spam-Level: -
 X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
@@ -46,234 +45,36 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     3b0b16bf8cb92ae67968c1abb7b335032b899b33
-Gitweb:        https://git.kernel.org/tip/3b0b16bf8cb92ae67968c1abb7b335032b899b33
+Commit-ID:     aa9d1f8334dfe220aff58c6bb4daf1fdae81add6
+Gitweb:        https://git.kernel.org/tip/aa9d1f8334dfe220aff58c6bb4daf1fdae81add6
 Author:        Andi Kleen <ak@linux.intel.com>
-AuthorDate:    Tue, 07 Jan 2020 13:04:44 -08:00
+AuthorDate:    Fri, 03 Jan 2020 10:36:43 -08:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Tue, 14 Jan 2020 12:02:19 -03:00
 
-perf tools: Support --prefix/--prefix-strip
+perf report: Clarify in help that --children is default
 
-The objdump utility has useful --prefix / --prefix-strip options to
-allow changing source code file names hardcoded into executables' debug
-info. Add options to 'perf report', 'perf top' and 'perf annotate',
-which are then passed to objdump.
-
-  $ mkdir foo
-  $ echo 'main() { for (;;); }' > foo/foo.c
-  $ gcc -g foo/foo.c
-  foo/foo.c:1:1: warning: return type defaults to ‘int’ [-Wimplicit-int]
-      1 | main() { for (;;); }
-        | ^~~~
-  $ perf record ./a.out
-  ^C[ perf record: Woken up 1 times to write data ]
-  [ perf record: Captured and wrote 0.230 MB perf.data (5721 samples) ]
-  $ mv foo bar
-  $ perf annotate
-  <does not show source code>
-  $ perf annotate --prefix=/home/ak/lsrc/git/bar --prefix-strip=5
-  <does show source code>
+Refer to --no-children, which is what most people probably want.
 
 Signed-off-by: Andi Kleen <ak@linux.intel.com>
-Tested-by: Jiri Olsa <jolsa@redhat.com>
-LPU-Reference: 20200107210444.214071-1-andi@firstfloor.org
+Cc: Jiri Olsa <jolsa@kernel.org>
+LPU-Reference: 20200103183643.149150-1-andi@firstfloor.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/Documentation/perf-annotate.txt |  6 ++++++
- tools/perf/Documentation/perf-report.txt   |  6 ++++++
- tools/perf/Documentation/perf-top.txt      |  6 ++++++
- tools/perf/builtin-annotate.c              |  7 +++++++
- tools/perf/builtin-report.c                |  7 +++++++
- tools/perf/builtin-top.c                   |  7 +++++++
- tools/perf/util/annotate.c                 | 19 +++++++++++++++++--
- tools/perf/util/annotate.h                 |  5 +++++
- 8 files changed, 61 insertions(+), 2 deletions(-)
+ tools/perf/builtin-report.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/Documentation/perf-annotate.txt b/tools/perf/Documentation/perf-annotate.txt
-index e8c972f..1b5042f 100644
---- a/tools/perf/Documentation/perf-annotate.txt
-+++ b/tools/perf/Documentation/perf-annotate.txt
-@@ -112,6 +112,12 @@ OPTIONS
- --objdump=<path>::
-         Path to objdump binary.
- 
-+--prefix=PREFIX::
-+--prefix-strip=N::
-+	Remove first N entries from source file path names in executables
-+	and add PREFIX. This allows to display source code compiled on systems
-+	with different file system layout.
-+
- --skip-missing::
- 	Skip symbols that cannot be annotated.
- 
-diff --git a/tools/perf/Documentation/perf-report.txt b/tools/perf/Documentation/perf-report.txt
-index 8dbe211..db61f16 100644
---- a/tools/perf/Documentation/perf-report.txt
-+++ b/tools/perf/Documentation/perf-report.txt
-@@ -367,6 +367,12 @@ OPTIONS
- --objdump=<path>::
-         Path to objdump binary.
- 
-+--prefix=PREFIX::
-+--prefix-strip=N::
-+	Remove first N entries from source file path names in executables
-+	and add PREFIX. This allows to display source code compiled on systems
-+	with different file system layout.
-+
- --group::
- 	Show event group information together. It forces group output also
- 	if there are no groups defined in data file.
-diff --git a/tools/perf/Documentation/perf-top.txt b/tools/perf/Documentation/perf-top.txt
-index 5596129..324b6b5 100644
---- a/tools/perf/Documentation/perf-top.txt
-+++ b/tools/perf/Documentation/perf-top.txt
-@@ -158,6 +158,12 @@ Default is to monitor all CPUS.
- -M::
- --disassembler-style=:: Set disassembler style for objdump.
- 
-+--prefix=PREFIX::
-+--prefix-strip=N::
-+        Remove first N entries from source file path names in executables
-+        and add PREFIX. This allows to display source code compiled on systems
-+        with different file system layout.
-+
- --source::
- 	Interleave source code with assembly code. Enabled by default,
- 	disable with --no-source.
-diff --git a/tools/perf/builtin-annotate.c b/tools/perf/builtin-annotate.c
-index 5898662..ff61795 100644
---- a/tools/perf/builtin-annotate.c
-+++ b/tools/perf/builtin-annotate.c
-@@ -535,6 +535,10 @@ int cmd_annotate(int argc, const char **argv)
- 		    "Display raw encoding of assembly instructions (default)"),
- 	OPT_STRING('M', "disassembler-style", &annotate.opts.disassembler_style, "disassembler style",
- 		   "Specify disassembler style (e.g. -M intel for intel syntax)"),
-+	OPT_STRING(0, "prefix", &annotate.opts.prefix, "prefix",
-+		    "Add prefix to source file path names in programs (with --prefix-strip)"),
-+	OPT_STRING(0, "prefix-strip", &annotate.opts.prefix_strip, "N",
-+		    "Strip first N entries of source file path name in programs (with --prefix)"),
- 	OPT_STRING(0, "objdump", &annotate.opts.objdump_path, "path",
- 		   "objdump binary to use for disassembly and annotations"),
- 	OPT_BOOLEAN(0, "group", &symbol_conf.event_group,
-@@ -574,6 +578,9 @@ int cmd_annotate(int argc, const char **argv)
- 		annotate.sym_hist_filter = argv[0];
- 	}
- 
-+	if (annotate_check_args(&annotate.opts) < 0)
-+		return -EINVAL;
-+
- 	if (symbol_conf.show_nr_samples && annotate.use_gtk) {
- 		pr_err("--show-nr-samples is not available in --gtk mode at this time\n");
- 		return ret;
 diff --git a/tools/perf/builtin-report.c b/tools/perf/builtin-report.c
-index 3048c1b..627bb65 100644
+index de98858..3048c1b 100644
 --- a/tools/perf/builtin-report.c
 +++ b/tools/perf/builtin-report.c
-@@ -1208,6 +1208,10 @@ int cmd_report(int argc, const char **argv)
- 		    "Display raw encoding of assembly instructions (default)"),
- 	OPT_STRING('M', "disassembler-style", &report.annotation_opts.disassembler_style, "disassembler style",
- 		   "Specify disassembler style (e.g. -M intel for intel syntax)"),
-+	OPT_STRING(0, "prefix", &report.annotation_opts.prefix, "prefix",
-+		    "Add prefix to source file path names in programs (with --prefix-strip)"),
-+	OPT_STRING(0, "prefix-strip", &report.annotation_opts.prefix_strip, "N",
-+		    "Strip first N entries of source file path name in programs (with --prefix)"),
- 	OPT_BOOLEAN(0, "show-total-period", &symbol_conf.show_total_period,
- 		    "Show a column with the sum of periods"),
- 	OPT_BOOLEAN_SET(0, "group", &symbol_conf.event_group, &report.group_set,
-@@ -1287,6 +1291,9 @@ int cmd_report(int argc, const char **argv)
- 		report.symbol_filter_str = argv[0];
- 	}
- 
-+	if (annotate_check_args(&report.annotation_opts) < 0)
-+		return -EINVAL;
-+
- 	if (report.mmaps_mode)
- 		report.tasks_mode = true;
- 
-diff --git a/tools/perf/builtin-top.c b/tools/perf/builtin-top.c
-index 795e353..8affcab 100644
---- a/tools/perf/builtin-top.c
-+++ b/tools/perf/builtin-top.c
-@@ -1512,6 +1512,10 @@ int cmd_top(int argc, const char **argv)
- 		    "objdump binary to use for disassembly and annotations"),
- 	OPT_STRING('M', "disassembler-style", &top.annotation_opts.disassembler_style, "disassembler style",
- 		   "Specify disassembler style (e.g. -M intel for intel syntax)"),
-+	OPT_STRING(0, "prefix", &top.annotation_opts.prefix, "prefix",
-+		    "Add prefix to source file path names in programs (with --prefix-strip)"),
-+	OPT_STRING(0, "prefix-strip", &top.annotation_opts.prefix_strip, "N",
-+		    "Strip first N entries of source file path name in programs (with --prefix)"),
- 	OPT_STRING('u', "uid", &target->uid_str, "user", "user to profile"),
- 	OPT_CALLBACK(0, "percent-limit", &top, "percent",
- 		     "Don't show entries under that percent", parse_percent_limit),
-@@ -1582,6 +1586,9 @@ int cmd_top(int argc, const char **argv)
- 	if (argc)
- 		usage_with_options(top_usage, options);
- 
-+	if (annotate_check_args(&top.annotation_opts) < 0)
-+		goto out_delete_evlist;
-+
- 	if (!top.evlist->core.nr_entries &&
- 	    perf_evlist__add_default(top.evlist) < 0) {
- 		pr_err("Not enough memory for event selector list\n");
-diff --git a/tools/perf/util/annotate.c b/tools/perf/util/annotate.c
-index f5e77ed..ca73fb7 100644
---- a/tools/perf/util/annotate.c
-+++ b/tools/perf/util/annotate.c
-@@ -1966,14 +1966,20 @@ static int symbol__disassemble(struct symbol *sym, struct annotate_args *args)
- 	err = asprintf(&command,
- 		 "%s %s%s --start-address=0x%016" PRIx64
- 		 " --stop-address=0x%016" PRIx64
--		 " -l -d %s %s -C \"$1\"",
-+		 " -l -d %s %s %s %c%s%c %s%s -C \"$1\"",
- 		 opts->objdump_path ?: "objdump",
- 		 opts->disassembler_style ? "-M " : "",
- 		 opts->disassembler_style ?: "",
- 		 map__rip_2objdump(map, sym->start),
- 		 map__rip_2objdump(map, sym->end),
- 		 opts->show_asm_raw ? "" : "--no-show-raw-insn",
--		 opts->annotate_src ? "-S" : "");
-+		 opts->annotate_src ? "-S" : "",
-+		 opts->prefix ? "--prefix " : "",
-+		 opts->prefix ? '"' : ' ',
-+		 opts->prefix ?: "",
-+		 opts->prefix ? '"' : ' ',
-+		 opts->prefix_strip ? "--prefix-strip=" : "",
-+		 opts->prefix_strip ?: "");
- 
- 	if (err < 0) {
- 		pr_err("Failure allocating memory for the command to run\n");
-@@ -3204,3 +3210,12 @@ out:
- 	free(str1);
- 	return err;
- }
-+
-+int annotate_check_args(struct annotation_options *args)
-+{
-+	if (args->prefix_strip && !args->prefix) {
-+		pr_err("--prefix-strip requires --prefix\n");
-+		return -1;
-+	}
-+	return 0;
-+}
-diff --git a/tools/perf/util/annotate.h b/tools/perf/util/annotate.h
-index 7075d98..455403e 100644
---- a/tools/perf/util/annotate.h
-+++ b/tools/perf/util/annotate.h
-@@ -94,6 +94,8 @@ struct annotation_options {
- 	int  context;
- 	const char *objdump_path;
- 	const char *disassembler_style;
-+	const char *prefix;
-+	const char *prefix_strip;
- 	unsigned int percent_type;
- };
- 
-@@ -415,4 +417,7 @@ void annotation_config__init(void);
- 
- int annotate_parse_percent_type(const struct option *opt, const char *_str,
- 				int unset);
-+
-+int annotate_check_args(struct annotation_options *args);
-+
- #endif	/* __PERF_ANNOTATE_H */
+@@ -1164,7 +1164,8 @@ int cmd_report(int argc, const char **argv)
+ 			     report_callchain_help, &report_parse_callchain_opt,
+ 			     callchain_default_opt),
+ 	OPT_BOOLEAN(0, "children", &symbol_conf.cumulate_callchain,
+-		    "Accumulate callchains of children and show total overhead as well"),
++		    "Accumulate callchains of children and show total overhead as well. "
++		    "Enabled by default, use --no-children to disable."),
+ 	OPT_INTEGER(0, "max-stack", &report.max_stack,
+ 		    "Set the maximum stack depth when parsing the callchain, "
+ 		    "anything beyond the specified depth will be ignored. "
