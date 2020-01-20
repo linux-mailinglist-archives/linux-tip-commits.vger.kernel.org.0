@@ -2,41 +2,43 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AEAED14257D
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 20 Jan 2020 09:28:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E232142584
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 20 Jan 2020 09:28:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727107AbgATI10 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 20 Jan 2020 03:27:26 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:60784 "EHLO
+        id S1728682AbgATI1c (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 20 Jan 2020 03:27:32 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:60809 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727065AbgATI1Z (ORCPT
+        with ESMTP id S1727071AbgATI1c (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 20 Jan 2020 03:27:25 -0500
+        Mon, 20 Jan 2020 03:27:32 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1itSOw-0002te-89; Mon, 20 Jan 2020 09:27:14 +0100
+        id 1itSOw-0002uA-Hf; Mon, 20 Jan 2020 09:27:14 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id CD7A41C1A3E;
-        Mon, 20 Jan 2020 09:27:13 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 2D2C51C1A3A;
+        Mon, 20 Jan 2020 09:27:14 +0100 (CET)
 Date:   Mon, 20 Jan 2020 08:27:13 -0000
-From:   "tip-bot2 for Jiri Olsa" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Jin Yao" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] libperf: Setup initial evlist::all_cpus value
-Cc:     Jann Horn <jannh@google.com>, Jiri Olsa <jolsa@kernel.org>,
-        Andi Kleen <ak@linux.intel.com>,
+Subject: [tip: perf/core] perf report: Fix no libunwind compiled warning break
+ s390 issue
+Cc:     Jin Yao <yao.jin@linux.intel.com>,
+        Thomas Richter <tmricht@linux.ibm.com>,
+        Jiri Olsa <jolsa@redhat.com>,
         Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Michael Petlan <mpetlan@redhat.com>,
-        Namhyung Kim <namhyung@kernel.org>,
+        Andi Kleen <ak@linux.intel.com>, Jin Yao <yao.jin@intel.com>,
+        Kan Liang <kan.liang@linux.intel.com>,
         Peter Zijlstra <peterz@infradead.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200110151537.153012-1-jolsa@kernel.org>
-References: <20200110151537.153012-1-jolsa@kernel.org>
+In-Reply-To: <20200107191745.18415-1-yao.jin@linux.intel.com>
+References: <20200107191745.18415-1-yao.jin@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <157950883357.396.5010464056338949713.tip-bot2@tip-bot2>
+Message-ID: <157950883398.396.13939624873812632938.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -52,47 +54,57 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     cb71f7d43ece3d5a4f400f510c61b2ec7c9ce9a1
-Gitweb:        https://git.kernel.org/tip/cb71f7d43ece3d5a4f400f510c61b2ec7c9ce9a1
-Author:        Jiri Olsa <jolsa@kernel.org>
-AuthorDate:    Fri, 10 Jan 2020 16:15:37 +01:00
+Commit-ID:     c3314a74f86dc00827e0945c8e5039fc3aebaa3c
+Gitweb:        https://git.kernel.org/tip/c3314a74f86dc00827e0945c8e5039fc3aebaa3c
+Author:        Jin Yao <yao.jin@linux.intel.com>
+AuthorDate:    Wed, 08 Jan 2020 03:17:45 +08:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Tue, 14 Jan 2020 12:02:19 -03:00
 
-libperf: Setup initial evlist::all_cpus value
+perf report: Fix no libunwind compiled warning break s390 issue
 
-Jann Horn reported crash in perf ftrace because evlist::all_cpus isn't
-initialized if there's evlist without events, which is the case for perf
-ftrace.
+Commit 800d3f561659 ("perf report: Add warning when libunwind not
+compiled in") breaks the s390 platform. S390 uses libdw-dwarf-unwind for
+call chain unwinding and had no support for libunwind.
 
-Adding initial initialization of evlist::all_cpus from given cpus,
-regardless of events in the evlist.
+So the warning "Please install libunwind development packages during the
+perf build." caused the confusion even if the call-graph is displayed
+correctly.
 
-Fixes: 7736627b865d ("perf stat: Use affinity for closing file descriptors")
-Reported-by: Jann Horn <jannh@google.com>
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-Acked-by: Andi Kleen <ak@linux.intel.com>
+This patch adds checking for HAVE_DWARF_SUPPORT, which is set when
+libdw-dwarf-unwind is compiled in.
+
+Fixes: 800d3f561659 ("perf report: Add warning when libunwind not compiled in")
+Signed-off-by: Jin Yao <yao.jin@linux.intel.com>
+Reviewed-by: Thomas Richter <tmricht@linux.ibm.com>
+Tested-by: Thomas Richter <tmricht@linux.ibm.com>
+Acked-by: Jiri Olsa <jolsa@redhat.com>
 Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Michael Petlan <mpetlan@redhat.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Andi Kleen <ak@linux.intel.com>
+Cc: Jin Yao <yao.jin@intel.com>
+Cc: Kan Liang <kan.liang@linux.intel.com>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Link: http://lore.kernel.org/lkml/20200110151537.153012-1-jolsa@kernel.org
+Link: http://lore.kernel.org/lkml/20200107191745.18415-1-yao.jin@linux.intel.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/lib/perf/evlist.c | 3 +++
- 1 file changed, 3 insertions(+)
+ tools/perf/builtin-report.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tools/lib/perf/evlist.c b/tools/lib/perf/evlist.c
-index ae9e65a..5b9f2ca 100644
---- a/tools/lib/perf/evlist.c
-+++ b/tools/lib/perf/evlist.c
-@@ -164,6 +164,9 @@ void perf_evlist__set_maps(struct perf_evlist *evlist,
- 		evlist->threads = perf_thread_map__get(threads);
- 	}
+diff --git a/tools/perf/builtin-report.c b/tools/perf/builtin-report.c
+index 627bb65..9483b3f 100644
+--- a/tools/perf/builtin-report.c
++++ b/tools/perf/builtin-report.c
+@@ -412,10 +412,10 @@ static int report__setup_sample_type(struct report *rep)
+ 				PERF_SAMPLE_BRANCH_ANY))
+ 		rep->nonany_branch_mode = true;
  
-+	if (!evlist->all_cpus && cpus)
-+		evlist->all_cpus = perf_cpu_map__get(cpus);
-+
- 	perf_evlist__propagate_maps(evlist);
- }
+-#ifndef HAVE_LIBUNWIND_SUPPORT
++#if !defined(HAVE_LIBUNWIND_SUPPORT) && !defined(HAVE_DWARF_SUPPORT)
+ 	if (dwarf_callchain_users) {
+-		ui__warning("Please install libunwind development packages "
+-			    "during the perf build.\n");
++		ui__warning("Please install libunwind or libdw "
++			    "development packages during the perf build.\n");
+ 	}
+ #endif
  
