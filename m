@@ -2,42 +2,45 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F3BF142583
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 20 Jan 2020 09:28:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E65F5142588
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 20 Jan 2020 09:28:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728587AbgATI1b (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 20 Jan 2020 03:27:31 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:60807 "EHLO
+        id S1728794AbgATI1n (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 20 Jan 2020 03:27:43 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:60803 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727692AbgATI1a (ORCPT
+        with ESMTP id S1727465AbgATI12 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 20 Jan 2020 03:27:30 -0500
+        Mon, 20 Jan 2020 03:27:28 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1itSOv-0002sd-RW; Mon, 20 Jan 2020 09:27:13 +0100
+        id 1itSOx-0002uo-Db; Mon, 20 Jan 2020 09:27:15 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 770DE1C1A3D;
-        Mon, 20 Jan 2020 09:27:13 +0100 (CET)
-Date:   Mon, 20 Jan 2020 08:27:13 -0000
-From:   "tip-bot2 for Jiri Olsa" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 135B91C1A3E;
+        Mon, 20 Jan 2020 09:27:15 +0100 (CET)
+Date:   Mon, 20 Jan 2020 08:27:14 -0000
+From:   "tip-bot2 for Maciej S. Szmigiero" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf tools: Use %define api.pure full instead of
- %pure-parser
-Cc:     Jiri Olsa <jolsa@kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Clark Williams <williams@redhat.com>,
+Subject: [tip: perf/core] tools build: Fix test-clang.cpp with Clang 8+
+Cc:     "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Denis Pronin <dannftk@yandex.ru>,
+        Dennis Schridde <devurandom@gmx.net>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Mark Rutland <mark.rutland@arm.com>,
         Namhyung Kim <namhyung@kernel.org>,
-        Ravi Bangoria <ravi.bangoria@linux.ibm.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
+        Naohiro Aota <naota@elisp.net>,
+        Peter Zijlstra <peterz@infradead.org>,
+        clang-built-linux@googlegroups.com,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200112192259.GA35080@krava>
-References: <20200112192259.GA35080@krava>
+In-Reply-To: <20191228171314.946469-1-mail@maciej.szmigiero.name>
+References: <20191228171314.946469-1-mail@maciej.szmigiero.name>
 MIME-Version: 1.0
-Message-ID: <157950883323.396.4232988721783545505.tip-bot2@tip-bot2>
+Message-ID: <157950883490.396.9434688341680423539.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -53,56 +56,53 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     fc8c0a99223367b071c83711259d754b6bb7a379
-Gitweb:        https://git.kernel.org/tip/fc8c0a99223367b071c83711259d754b6bb7a379
-Author:        Jiri Olsa <jolsa@redhat.com>
-AuthorDate:    Sun, 12 Jan 2020 20:22:59 +01:00
+Commit-ID:     d8007772a5541b4711d1286b788ad4295b2c7eaa
+Gitweb:        https://git.kernel.org/tip/d8007772a5541b4711d1286b788ad4295b2c7eaa
+Author:        Maciej S. Szmigiero <mail@maciej.szmigiero.name>
+AuthorDate:    Sat, 28 Dec 2019 18:13:13 +01:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Tue, 14 Jan 2020 12:02:19 -03:00
 
-perf tools: Use %define api.pure full instead of %pure-parser
+tools build: Fix test-clang.cpp with Clang 8+
 
-bison deprecated the "%pure-parser" directive in favor of "%define
-api.pure full".
+LLVM rL344140 (included in Clang 8+) moved VFS from Clang to LLVM, so
+paths to its include files have changed.
 
-The api.pure got introduced in bison 2.3 (Oct 2007), so it seems safe to
-use it without any version check.
+This broke the Clang test in tools/build - let's fix it.
 
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Clark Williams <williams@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
+Signed-off-by: Maciej S. Szmigiero <mail@maciej.szmigiero.name>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Denis Pronin <dannftk@yandex.ru>
+Cc: Dennis Schridde <devurandom@gmx.net>
+Cc: Jiri Olsa <jolsa@redhat.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Link: http://lore.kernel.org/lkml/20200112192259.GA35080@krava
+Cc: Naohiro Aota <naota@elisp.net>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: clang-built-linux@googlegroups.com
+Link: http://lore.kernel.org/lkml/20191228171314.946469-1-mail@maciej.szmigiero.name
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/expr.y         | 3 ++-
- tools/perf/util/parse-events.y | 2 +-
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ tools/build/feature/test-clang.cpp | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/tools/perf/util/expr.y b/tools/perf/util/expr.y
-index f9a20a3..7d22624 100644
---- a/tools/perf/util/expr.y
-+++ b/tools/perf/util/expr.y
-@@ -12,7 +12,8 @@
- #define MAXIDLEN 256
- %}
+diff --git a/tools/build/feature/test-clang.cpp b/tools/build/feature/test-clang.cpp
+index a2b3f09..7d87075 100644
+--- a/tools/build/feature/test-clang.cpp
++++ b/tools/build/feature/test-clang.cpp
+@@ -1,9 +1,15 @@
+ // SPDX-License-Identifier: GPL-2.0
++#include "clang/Basic/Version.h"
++#if CLANG_VERSION_MAJOR < 8
+ #include "clang/Basic/VirtualFileSystem.h"
++#endif
+ #include "clang/Driver/Driver.h"
+ #include "clang/Frontend/TextDiagnosticPrinter.h"
+ #include "llvm/ADT/IntrusiveRefCntPtr.h"
+ #include "llvm/Support/ManagedStatic.h"
++#if CLANG_VERSION_MAJOR >= 8
++#include "llvm/Support/VirtualFileSystem.h"
++#endif
+ #include "llvm/Support/raw_ostream.h"
  
--%pure-parser
-+%define api.pure full
-+
- %parse-param { double *final_val }
- %parse-param { struct parse_ctx *ctx }
- %parse-param { const char **pp }
-diff --git a/tools/perf/util/parse-events.y b/tools/perf/util/parse-events.y
-index e2eea4e..94f8bcd 100644
---- a/tools/perf/util/parse-events.y
-+++ b/tools/perf/util/parse-events.y
-@@ -1,4 +1,4 @@
--%pure-parser
-+%define api.pure full
- %parse-param {void *_parse_state}
- %parse-param {void *scanner}
- %lex-param {void* scanner}
+ using namespace clang;
