@@ -2,49 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 160AE142410
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 20 Jan 2020 08:08:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9427A142577
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 20 Jan 2020 09:28:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725933AbgATHIa convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 20 Jan 2020 02:08:30 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:60637 "EHLO
+        id S1726936AbgATI1R (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 20 Jan 2020 03:27:17 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:60732 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725872AbgATHIa (ORCPT
+        with ESMTP id S1726075AbgATI1R (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 20 Jan 2020 02:08:30 -0500
+        Mon, 20 Jan 2020 03:27:17 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1itRAa-0001vh-8R; Mon, 20 Jan 2020 08:08:20 +0100
+        id 1itSOu-0002sB-OE; Mon, 20 Jan 2020 09:27:12 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B6D581C19A6;
-        Mon, 20 Jan 2020 08:08:19 +0100 (CET)
-Date:   Mon, 20 Jan 2020 07:08:19 -0000
-From:   "tip-bot2 for Viresh Kumar" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id ED7121C1A3A;
+        Mon, 20 Jan 2020 09:27:11 +0100 (CET)
+Date:   Mon, 20 Jan 2020 08:27:11 -0000
+From:   "tip-bot2 for Michael Petlan" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/fair: Define sched_idle_cpu() only for SMP
- configurations
-Cc:     Stephen Rothwell <sfr@canb.auug.org.au>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+Subject: [tip: perf/core] perf header: Use last modification time for timestamp
+Cc:     Michael Petlan <mpetlan@redhat.com>, Jiri Olsa <jolsa@kernel.org>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: =?utf-8?q?=3Cf0554f590687478b33914a4aff9f0e6a62886d44=2E15794?=
- =?utf-8?q?99907=2Egit=2Eviresh=2Ekumar=40linaro=2Eorg=3E?=
-References: =?utf-8?q?=3Cf0554f590687478b33914a4aff9f0e6a62886d44=2E157949?=
- =?utf-8?q?9907=2Egit=2Eviresh=2Ekumar=40linaro=2Eorg=3E?=
 MIME-Version: 1.0
-Message-ID: <157950409950.396.10173546303615983871.tip-bot2@tip-bot2>
+Message-ID: <157950883176.396.4878083330473631264.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: 7bit
 X-Linutronix-Spam-Score: -1.0
 X-Linutronix-Spam-Level: -
 X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
@@ -53,50 +43,70 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     afa70d941f663c69c9a64ec1021bbcfa82f0e54a
-Gitweb:        https://git.kernel.org/tip/afa70d941f663c69c9a64ec1021bbcfa82f0e54a
-Author:        Viresh Kumar <viresh.kumar@linaro.org>
-AuthorDate:    Mon, 20 Jan 2020 11:29:05 +05:30
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Mon, 20 Jan 2020 08:03:39 +01:00
+Commit-ID:     8af19d66b956401bab1ef24049eec9421be93862
+Gitweb:        https://git.kernel.org/tip/8af19d66b956401bab1ef24049eec9421be93862
+Author:        Michael Petlan <mpetlan@redhat.com>
+AuthorDate:    Tue, 14 Jan 2020 11:42:36 +01:00
+Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
+CommitterDate: Wed, 15 Jan 2020 10:17:20 -03:00
 
-sched/fair: Define sched_idle_cpu() only for SMP configurations
+perf header: Use last modification time for timestamp
 
-sched_idle_cpu() isn't used for non SMP configuration and with a recent
-change, we have started getting following warning:
+Using .st_ctime clobbers the timestamp information in perf report header
+whenever any operation is done with the file. Even tar-ing and untar-ing
+the perf.data file (which preserves the file last modification timestamp)
+doesn't prevent that:
 
-  kernel/sched/fair.c:5221:12: warning: ‘sched_idle_cpu’ defined but not used [-Wunused-function]
+    [Michael@Diego tmp]$ ls -l perf.data
+->	-rw-------. 1 Michael Michael 169888 Dec  2 15:23 perf.data
 
-Fix that by defining sched_idle_cpu() only for SMP configurations.
+	[Michael@Diego tmp]$ perf report --header-only
+	# ========
+->	# captured on    : Mon Dec  2 15:23:42 2019
+	 [...]
 
-Fixes: 323af6deaf70 ("sched/fair: Load balance aggressively for SCHED_IDLE CPUs")
-Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Juri Lelli <juri.lelli@redhat.com>
-Cc: Vincent Guittot <vincent.guittot@linaro.org>
-Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Link: https://lore.kernel.org/r/f0554f590687478b33914a4aff9f0e6a62886d44.1579499907.git.viresh.kumar@linaro.org
+	[Michael@Diego tmp]$ tar c perf.data | xz > perf.data.tar.xz
+	[Michael@Diego tmp]$ mkdir aaa
+	[Michael@Diego tmp]$ cd aaa
+	[Michael@Diego aaa]$ xzcat ../perf.data.tar.xz | tar x
+	[Michael@Diego aaa]$ ls -l -a
+	total 172
+	drwxrwxr-x. 2 Michael Michael     23 Jan 14 11:26 .
+	drwxrwxr-x. 6 Michael Michael   4096 Jan 14 11:26 ..
+->	-rw-------. 1 Michael Michael 169888 Dec  2 15:23 perf.data
+
+	[Michael@Diego aaa]$ perf report --header-only
+	# ========
+->	# captured on    : Tue Jan 14 11:26:16 2020
+	 [...]
+
+When using .st_mtime instead, correct information is printed:
+
+	[Michael@Diego aaa]$ ~/acme/tools/perf/perf report --header-only
+	# ========
+->	# captured on    : Mon Dec  2 15:23:42 2019
+	 [...]
+
+Signed-off-by: Michael Petlan <mpetlan@redhat.com>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+LPU-Reference: 20200114104236.31555-1-mpetlan@redhat.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- kernel/sched/fair.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/perf/util/header.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index ebf5095..fe4e0d7 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -5218,10 +5218,12 @@ static int sched_idle_rq(struct rq *rq)
- 			rq->nr_running);
- }
+diff --git a/tools/perf/util/header.c b/tools/perf/util/header.c
+index 93ad278..4246e74 100644
+--- a/tools/perf/util/header.c
++++ b/tools/perf/util/header.c
+@@ -2922,7 +2922,7 @@ int perf_header__fprintf_info(struct perf_session *session, FILE *fp, bool full)
+ 	if (ret == -1)
+ 		return -1;
  
-+#ifdef CONFIG_SMP
- static int sched_idle_cpu(int cpu)
- {
- 	return sched_idle_rq(cpu_rq(cpu));
- }
-+#endif
+-	stctime = st.st_ctime;
++	stctime = st.st_mtime;
+ 	fprintf(fp, "# captured on    : %s", ctime(&stctime));
  
- /*
-  * The enqueue_task method is called before nr_running is
+ 	fprintf(fp, "# header version : %u\n", header->version);
