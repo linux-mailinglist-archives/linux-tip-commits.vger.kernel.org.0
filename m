@@ -2,44 +2,42 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AE189144C2B
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Jan 2020 07:58:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CDBA144C26
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Jan 2020 07:58:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725836AbgAVG5a convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 22 Jan 2020 01:57:30 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:36794 "EHLO
+        id S1729075AbgAVG5Y (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 22 Jan 2020 01:57:24 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:36789 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729130AbgAVG53 (ORCPT
+        with ESMTP id S1725836AbgAVG5Y (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 22 Jan 2020 01:57:29 -0500
+        Wed, 22 Jan 2020 01:57:24 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iu9x1-00034q-DJ; Wed, 22 Jan 2020 07:57:19 +0100
+        id 1iu9x1-00034r-Kq; Wed, 22 Jan 2020 07:57:19 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 1FB3B1C1A19;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 565471C1A3B;
         Wed, 22 Jan 2020 07:57:19 +0100 (CET)
-Date:   Wed, 22 Jan 2020 06:57:18 -0000
-From:   "tip-bot2 for Shile Zhang" <tip-bot2@linutronix.de>
+Date:   Wed, 22 Jan 2020 06:57:19 -0000
+From:   "tip-bot2 for Olof Johansson" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/urgent] objtool: Fix ARCH=x86_64 build error
-Cc:     Shile Zhang <shile.zhang@linux.alibaba.com>,
+Subject: [tip: core/urgent] objtool: Silence build output
+Cc:     Olof Johansson <olof@lixom.net>,
         Josh Poimboeuf <jpoimboe@redhat.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        Kamalesh Babulal <kamalesh@linux.vnet.ibm.com>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <d5d11370ae116df6c653493acd300ec3d7f5e925.1579543924.git.jpoimboe@redhat.com>
-References: <d5d11370ae116df6c653493acd300ec3d7f5e925.1579543924.git.jpoimboe@redhat.com>
+        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <cb002857fafa8186cfb9c3e43fb62e4108a1bab9.1579543924.git.jpoimboe@redhat.com>
+References: <cb002857fafa8186cfb9c3e43fb62e4108a1bab9.1579543924.git.jpoimboe@redhat.com>
 MIME-Version: 1.0
-Message-ID: <157967623889.396.5023943251678285610.tip-bot2@tip-bot2>
+Message-ID: <157967623918.396.15730242469027669851.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: 7bit
 X-Linutronix-Spam-Score: -1.0
 X-Linutronix-Spam-Level: -
 X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
@@ -50,62 +48,38 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/urgent branch of tip:
 
-Commit-ID:     8580bed7e751e6d4f17881e059daf3cb37ba4717
-Gitweb:        https://git.kernel.org/tip/8580bed7e751e6d4f17881e059daf3cb37ba4717
-Author:        Shile Zhang <shile.zhang@linux.alibaba.com>
-AuthorDate:    Mon, 20 Jan 2020 12:14:08 -06:00
+Commit-ID:     6ec14aa7a58a1c2fb303692f8cb1ff82d9abd10a
+Gitweb:        https://git.kernel.org/tip/6ec14aa7a58a1c2fb303692f8cb1ff82d9abd10a
+Author:        Olof Johansson <olof@lixom.net>
+AuthorDate:    Mon, 20 Jan 2020 12:14:07 -06:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 22 Jan 2020 07:54:57 +01:00
+CommitterDate: Wed, 22 Jan 2020 07:54:34 +01:00
 
-objtool: Fix ARCH=x86_64 build error
+objtool: Silence build output
 
-Building objtool with ARCH=x86_64 fails with:
+The sync-check.sh script prints out the path due to a "cd -" at the end
+of the script, even on silent builds. This isn't even needed, since the
+script is executed in our build instead of sourced (so it won't change
+the working directory of the surrounding build anyway).
 
-   $make ARCH=x86_64 -C tools/objtool
-   ...
-     CC       arch/x86/decode.o
-   arch/x86/decode.c:10:22: fatal error: asm/insn.h: No such file or directory
-    #include <asm/insn.h>
-                         ^
-   compilation terminated.
-   mv: cannot stat ‘arch/x86/.decode.o.tmp’: No such file or directory
-   make[2]: *** [arch/x86/decode.o] Error 1
-   ...
+Just remove the cd to make the build silent.
 
-The root cause is that the command-line variable 'ARCH' cannot be
-overridden.  It can be replaced by 'SRCARCH', which is defined in
-'tools/scripts/Makefile.arch'.
-
-Signed-off-by: Shile Zhang <shile.zhang@linux.alibaba.com>
+Fixes: 2ffd84ae973b ("objtool: Update sync-check.sh from perf's check-headers.sh")
+Signed-off-by: Olof Johansson <olof@lixom.net>
 Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Kamalesh Babulal <kamalesh@linux.vnet.ibm.com>
-Link: https://lore.kernel.org/r/d5d11370ae116df6c653493acd300ec3d7f5e925.1579543924.git.jpoimboe@redhat.com
+Link: https://lore.kernel.org/r/cb002857fafa8186cfb9c3e43fb62e4108a1bab9.1579543924.git.jpoimboe@redhat.com
 ---
- tools/objtool/Makefile | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ tools/objtool/sync-check.sh | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/tools/objtool/Makefile b/tools/objtool/Makefile
-index d2a19b0..ee08aef 100644
---- a/tools/objtool/Makefile
-+++ b/tools/objtool/Makefile
-@@ -2,10 +2,6 @@
- include ../scripts/Makefile.include
- include ../scripts/Makefile.arch
- 
--ifeq ($(ARCH),x86_64)
--ARCH := x86
--endif
+diff --git a/tools/objtool/sync-check.sh b/tools/objtool/sync-check.sh
+index 9bd04bb..2a1261b 100755
+--- a/tools/objtool/sync-check.sh
++++ b/tools/objtool/sync-check.sh
+@@ -48,5 +48,3 @@ check arch/x86/include/asm/inat.h     '-I "^#include [\"<]\(asm/\)*inat_types.h[
+ check arch/x86/include/asm/insn.h     '-I "^#include [\"<]\(asm/\)*inat.h[\">]"'
+ check arch/x86/lib/inat.c             '-I "^#include [\"<]\(../include/\)*asm/insn.h[\">]"'
+ check arch/x86/lib/insn.c             '-I "^#include [\"<]\(../include/\)*asm/in\(at\|sn\).h[\">]" -I "^#include [\"<]\(../include/\)*asm/emulate_prefix.h[\">]"'
 -
- # always use the host compiler
- HOSTAR	?= ar
- HOSTCC	?= gcc
-@@ -33,7 +29,7 @@ all: $(OBJTOOL)
- 
- INCLUDES := -I$(srctree)/tools/include \
- 	    -I$(srctree)/tools/arch/$(HOSTARCH)/include/uapi \
--	    -I$(srctree)/tools/arch/$(ARCH)/include
-+	    -I$(srctree)/tools/arch/$(SRCARCH)/include
- WARNINGS := $(EXTRA_WARNINGS) -Wno-switch-default -Wno-switch-enum -Wno-packed
- CFLAGS   := -Werror $(WARNINGS) $(KBUILD_HOSTCFLAGS) -g $(INCLUDES) $(LIBELF_FLAGS)
- LDFLAGS  += $(LIBELF_LIBS) $(LIBSUBCMD) $(KBUILD_HOSTLDFLAGS)
+-cd -
