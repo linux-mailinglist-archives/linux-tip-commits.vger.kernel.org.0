@@ -2,37 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CDBA144C26
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Jan 2020 07:58:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B7FC1453C1
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Jan 2020 12:27:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729075AbgAVG5Y (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 22 Jan 2020 01:57:24 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:36789 "EHLO
+        id S1726049AbgAVL1X (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 22 Jan 2020 06:27:23 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:37395 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725836AbgAVG5Y (ORCPT
+        with ESMTP id S1725911AbgAVL1X (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 22 Jan 2020 01:57:24 -0500
+        Wed, 22 Jan 2020 06:27:23 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iu9x1-00034r-Kq; Wed, 22 Jan 2020 07:57:19 +0100
+        id 1iuEAI-0001aX-LX; Wed, 22 Jan 2020 12:27:18 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 565471C1A3B;
-        Wed, 22 Jan 2020 07:57:19 +0100 (CET)
-Date:   Wed, 22 Jan 2020 06:57:19 -0000
-From:   "tip-bot2 for Olof Johansson" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 3DE1E1C1A3B;
+        Wed, 22 Jan 2020 12:27:18 +0100 (CET)
+Date:   Wed, 22 Jan 2020 11:27:18 -0000
+From:   "tip-bot2 for Masami Hiramatsu" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/urgent] objtool: Silence build output
-Cc:     Olof Johansson <olof@lixom.net>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
+Subject: [tip: x86/misc] x86/decoder: Add TEST opcode to Group3-2
+Cc:     Randy Dunlap <rdunlap@infradead.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <cb002857fafa8186cfb9c3e43fb62e4108a1bab9.1579543924.git.jpoimboe@redhat.com>
-References: <cb002857fafa8186cfb9c3e43fb62e4108a1bab9.1579543924.git.jpoimboe@redhat.com>
+In-Reply-To: <157966631413.9580.10311036595431878351.stgit@devnote2>
+References: <157966631413.9580.10311036595431878351.stgit@devnote2>
 MIME-Version: 1.0
-Message-ID: <157967623918.396.15730242469027669851.tip-bot2@tip-bot2>
+Message-ID: <157969243800.396.2663775329967340720.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -46,40 +46,81 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the core/urgent branch of tip:
+The following commit has been merged into the x86/misc branch of tip:
 
-Commit-ID:     6ec14aa7a58a1c2fb303692f8cb1ff82d9abd10a
-Gitweb:        https://git.kernel.org/tip/6ec14aa7a58a1c2fb303692f8cb1ff82d9abd10a
-Author:        Olof Johansson <olof@lixom.net>
-AuthorDate:    Mon, 20 Jan 2020 12:14:07 -06:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 22 Jan 2020 07:54:34 +01:00
+Commit-ID:     8b7e20a7ba54836076ff35a28349dabea4cec48f
+Gitweb:        https://git.kernel.org/tip/8b7e20a7ba54836076ff35a28349dabea4cec48f
+Author:        Masami Hiramatsu <mhiramat@kernel.org>
+AuthorDate:    Wed, 22 Jan 2020 13:11:54 +09:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Wed, 22 Jan 2020 12:17:32 +01:00
 
-objtool: Silence build output
+x86/decoder: Add TEST opcode to Group3-2
 
-The sync-check.sh script prints out the path due to a "cd -" at the end
-of the script, even on silent builds. This isn't even needed, since the
-script is executed in our build instead of sourced (so it won't change
-the working directory of the surrounding build anyway).
+Add TEST opcode to Group3-2 reg=001b as same as Group3-1 does.
 
-Just remove the cd to make the build silent.
+Commit
 
-Fixes: 2ffd84ae973b ("objtool: Update sync-check.sh from perf's check-headers.sh")
-Signed-off-by: Olof Johansson <olof@lixom.net>
-Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/cb002857fafa8186cfb9c3e43fb62e4108a1bab9.1579543924.git.jpoimboe@redhat.com
+  12a78d43de76 ("x86/decoder: Add new TEST instruction pattern")
+
+added a TEST opcode assignment to f6 XX/001/XXX (Group 3-1), but did
+not add f7 XX/001/XXX (Group 3-2).
+
+Actually, this TEST opcode variant (ModRM.reg /1) is not described in
+the Intel SDM Vol2 but in AMD64 Architecture Programmer's Manual Vol.3,
+Appendix A.2 Table A-6. ModRM.reg Extensions for the Primary Opcode Map.
+
+Without this fix, Randy found a warning by insn_decoder_test related
+to this issue as below.
+
+    HOSTCC  arch/x86/tools/insn_decoder_test
+    HOSTCC  arch/x86/tools/insn_sanity
+    TEST    posttest
+  arch/x86/tools/insn_decoder_test: warning: Found an x86 instruction decoder bug, please report this.
+  arch/x86/tools/insn_decoder_test: warning: ffffffff81000bf1:	f7 0b 00 01 08 00    	testl  $0x80100,(%rbx)
+  arch/x86/tools/insn_decoder_test: warning: objdump says 6 bytes, but insn_get_length() says 2
+  arch/x86/tools/insn_decoder_test: warning: Decoded and checked 11913894 instructions with 1 failures
+    TEST    posttest
+  arch/x86/tools/insn_sanity: Success: decoded and checked 1000000 random instructions with 0 errors (seed:0x871ce29c)
+
+To fix this error, add the TEST opcode according to AMD64 APM Vol.3.
+
+ [ bp: Massage commit message. ]
+
+Reported-by: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Masami Hiramatsu <mhiramat@kernel.org>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Tested-by: Randy Dunlap <rdunlap@infradead.org>
+Link: https://lkml.kernel.org/r/157966631413.9580.10311036595431878351.stgit@devnote2
 ---
- tools/objtool/sync-check.sh | 2 --
- 1 file changed, 2 deletions(-)
+ arch/x86/lib/x86-opcode-map.txt       | 2 +-
+ tools/arch/x86/lib/x86-opcode-map.txt | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/objtool/sync-check.sh b/tools/objtool/sync-check.sh
-index 9bd04bb..2a1261b 100755
---- a/tools/objtool/sync-check.sh
-+++ b/tools/objtool/sync-check.sh
-@@ -48,5 +48,3 @@ check arch/x86/include/asm/inat.h     '-I "^#include [\"<]\(asm/\)*inat_types.h[
- check arch/x86/include/asm/insn.h     '-I "^#include [\"<]\(asm/\)*inat.h[\">]"'
- check arch/x86/lib/inat.c             '-I "^#include [\"<]\(../include/\)*asm/insn.h[\">]"'
- check arch/x86/lib/insn.c             '-I "^#include [\"<]\(../include/\)*asm/in\(at\|sn\).h[\">]" -I "^#include [\"<]\(../include/\)*asm/emulate_prefix.h[\">]"'
--
--cd -
+diff --git a/arch/x86/lib/x86-opcode-map.txt b/arch/x86/lib/x86-opcode-map.txt
+index 8908c58..53adc17 100644
+--- a/arch/x86/lib/x86-opcode-map.txt
++++ b/arch/x86/lib/x86-opcode-map.txt
+@@ -929,7 +929,7 @@ EndTable
+ 
+ GrpTable: Grp3_2
+ 0: TEST Ev,Iz
+-1:
++1: TEST Ev,Iz
+ 2: NOT Ev
+ 3: NEG Ev
+ 4: MUL rAX,Ev
+diff --git a/tools/arch/x86/lib/x86-opcode-map.txt b/tools/arch/x86/lib/x86-opcode-map.txt
+index 8908c58..53adc17 100644
+--- a/tools/arch/x86/lib/x86-opcode-map.txt
++++ b/tools/arch/x86/lib/x86-opcode-map.txt
+@@ -929,7 +929,7 @@ EndTable
+ 
+ GrpTable: Grp3_2
+ 0: TEST Ev,Iz
+-1:
++1: TEST Ev,Iz
+ 2: NOT Ev
+ 3: NEG Ev
+ 4: MUL rAX,Ev
