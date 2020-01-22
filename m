@@ -2,36 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BEF131454B1
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Jan 2020 14:02:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E32A214583E
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Jan 2020 15:54:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728731AbgAVNCo (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 22 Jan 2020 08:02:44 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:37685 "EHLO
+        id S1725868AbgAVOyz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 22 Jan 2020 09:54:55 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:38074 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727022AbgAVNCn (ORCPT
+        with ESMTP id S1725836AbgAVOyz (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 22 Jan 2020 08:02:43 -0500
+        Wed, 22 Jan 2020 09:54:55 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iuFea-0003nU-8Q; Wed, 22 Jan 2020 14:02:40 +0100
+        id 1iuHP9-0007Pr-Vz; Wed, 22 Jan 2020 15:54:52 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A11061C1A46;
-        Wed, 22 Jan 2020 14:02:39 +0100 (CET)
-Date:   Wed, 22 Jan 2020 13:02:39 -0000
-From:   "tip-bot2 for Mateusz Nosek" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 9BF441C1A46;
+        Wed, 22 Jan 2020 15:54:51 +0100 (CET)
+Date:   Wed, 22 Jan 2020 14:54:51 -0000
+From:   "tip-bot2 for Jules Irenge" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] x86/tsc: Remove redundant assignment
-Cc:     Mateusz Nosek <mateusznosek0@gmail.com>,
-        Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
+Subject: [tip: timers/core] hrtimer: Add missing sparse annotation for __run_timer()
+Cc:     Jules Irenge <jbi.octave@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200118171143.25178-1-mateusznosek0@gmail.com>
-References: <20200118171143.25178-1-mateusznosek0@gmail.com>
+In-Reply-To: <20200120224347.51843-1-jbi.octave@gmail.com>
+References: <20200120224347.51843-1-jbi.octave@gmail.com>
 MIME-Version: 1.0
-Message-ID: <157969815944.396.7323567000945686325.tip-bot2@tip-bot2>
+Message-ID: <157970489138.396.2731472419371278003.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -45,53 +45,40 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cleanups branch of tip:
+The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     4144fddbd3932b59370e6e279002991c3e2b2fc6
-Gitweb:        https://git.kernel.org/tip/4144fddbd3932b59370e6e279002991c3e2b2fc6
-Author:        Mateusz Nosek <mateusznosek0@gmail.com>
-AuthorDate:    Sat, 18 Jan 2020 18:11:43 +01:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 22 Jan 2020 13:52:42 +01:00
+Commit-ID:     eb5a4d0a9ee976008d1add75e3d64545399e80a3
+Gitweb:        https://git.kernel.org/tip/eb5a4d0a9ee976008d1add75e3d64545399e80a3
+Author:        Jules Irenge <jbi.octave@gmail.com>
+AuthorDate:    Mon, 20 Jan 2020 22:43:47 
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Wed, 22 Jan 2020 15:50:11 +01:00
 
-x86/tsc: Remove redundant assignment
+hrtimer: Add missing sparse annotation for __run_timer()
 
-Previously, the assignment to the local variable 'now' took place
-before the for loop. The loop is unconditional so it will be entered
-at least once. The variable 'now' is reassigned in the loop and is not
-used before reassigning. Therefore, the assignment before the loop is
-unnecessary and can be removed.
+Sparse reports a warning at __run_hrtimer()
+|warning: context imbalance in __run_hrtimer() - unexpected unlock
 
-No code changed:
+Add the missing must_hold() annotation.
 
-  # arch/x86/kernel/tsc_sync.o:
+Signed-off-by: Jules Irenge <jbi.octave@gmail.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20200120224347.51843-1-jbi.octave@gmail.com
 
-   text    data     bss     dec     hex filename
-   3569     198      44    3811     ee3 tsc_sync.o.before
-   3569     198      44    3811     ee3 tsc_sync.o.after
-
-md5:
-   36216de29b208edbcd34fed9fe7f7b69  tsc_sync.o.before.asm
-   36216de29b208edbcd34fed9fe7f7b69  tsc_sync.o.after.asm
-
- [ bp: Massage commit message. ]
-
-Signed-off-by: Mateusz Nosek <mateusznosek0@gmail.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20200118171143.25178-1-mateusznosek0@gmail.com
 ---
- arch/x86/kernel/tsc_sync.c | 1 -
- 1 file changed, 1 deletion(-)
+ kernel/time/hrtimer.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/tsc_sync.c b/arch/x86/kernel/tsc_sync.c
-index b8acf63..32a8187 100644
---- a/arch/x86/kernel/tsc_sync.c
-+++ b/arch/x86/kernel/tsc_sync.c
-@@ -233,7 +233,6 @@ static cycles_t check_tsc_warp(unsigned int timeout)
- 	 * The measurement runs for 'timeout' msecs:
- 	 */
- 	end = start + (cycles_t) tsc_khz * timeout;
--	now = start;
- 
- 	for (i = 0; ; i++) {
- 		/*
+diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
+index d8b62f9..3a609e7 100644
+--- a/kernel/time/hrtimer.c
++++ b/kernel/time/hrtimer.c
+@@ -1477,7 +1477,7 @@ EXPORT_SYMBOL_GPL(hrtimer_active);
+ static void __run_hrtimer(struct hrtimer_cpu_base *cpu_base,
+ 			  struct hrtimer_clock_base *base,
+ 			  struct hrtimer *timer, ktime_t *now,
+-			  unsigned long flags)
++			  unsigned long flags) __must_hold(&cpu_base->lock)
+ {
+ 	enum hrtimer_restart (*fn)(struct hrtimer *);
+ 	int restart;
