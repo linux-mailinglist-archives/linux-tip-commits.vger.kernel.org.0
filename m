@@ -2,36 +2,34 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 09993146648
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 23 Jan 2020 12:04:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 67760147A2B
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 24 Jan 2020 10:14:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726260AbgAWLEx (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 23 Jan 2020 06:04:53 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:39685 "EHLO
+        id S1730142AbgAXJNi (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 24 Jan 2020 04:13:38 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:41855 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726026AbgAWLEx (ORCPT
+        with ESMTP id S1729384AbgAXJNh (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 23 Jan 2020 06:04:53 -0500
+        Fri, 24 Jan 2020 04:13:37 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iuaI3-0006g1-Fk; Thu, 23 Jan 2020 12:04:47 +0100
+        id 1iuv1u-0007dI-7S; Fri, 24 Jan 2020 10:13:30 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id F04A61C1A13;
-        Thu, 23 Jan 2020 12:04:46 +0100 (CET)
-Date:   Thu, 23 Jan 2020 11:04:46 -0000
-From:   "tip-bot2 for Arvind Sankar" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id DD9321C1A4E;
+        Fri, 24 Jan 2020 10:13:29 +0100 (CET)
+Date:   Fri, 24 Jan 2020 09:13:29 -0000
+From:   "tip-bot2 for Marco Elver" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/asm] x86/boot: Simplify calculation of output address
-Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
-        Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
+Subject: [tip: locking/kcsan] kcsan: Document static blacklisting options
+Cc:     Marco Elver <elver@google.com>,
+        "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200107194436.2166846-1-nivedita@alum.mit.edu>
-References: <20200107194436.2166846-1-nivedita@alum.mit.edu>
 MIME-Version: 1.0
-Message-ID: <157977748674.396.4073029577161163163.tip-bot2@tip-bot2>
+Message-ID: <157985720971.396.14375878627578374891.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -45,60 +43,69 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/asm branch of tip:
+The following commit has been merged into the locking/kcsan branch of tip:
 
-Commit-ID:     183ef7adf4ed638ac0fb0c3c9a71fc00e8512b61
-Gitweb:        https://git.kernel.org/tip/183ef7adf4ed638ac0fb0c3c9a71fc00e8512b61
-Author:        Arvind Sankar <nivedita@alum.mit.edu>
-AuthorDate:    Tue, 07 Jan 2020 14:44:34 -05:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Thu, 23 Jan 2020 11:58:43 +01:00
+Commit-ID:     7161177481d521e725a7bc6c9308ac2968fee038
+Gitweb:        https://git.kernel.org/tip/7161177481d521e725a7bc6c9308ac2968fee038
+Author:        Marco Elver <elver@google.com>
+AuthorDate:    Thu, 12 Dec 2019 01:07:08 +01:00
+Committer:     Paul E. McKenney <paulmck@kernel.org>
+CommitterDate: Tue, 07 Jan 2020 07:47:23 -08:00
 
-x86/boot: Simplify calculation of output address
+kcsan: Document static blacklisting options
 
-Condense the calculation of decompressed kernel start a little.
+Updates the section on "Selective analysis", listing all available
+options to blacklist reporting data races for: specific accesses,
+functions, compilation units, and entire directories.
 
-Committer notes:
+These options should provide adequate control for maintainers to opt out
+of KCSAN analysis at varying levels of granularity. It is hoped to
+provide the required control to reflect preferences for handling data
+races across the kernel.
 
-before:
-
-ebp = ebx - (init_size - _end)
-
-after:
-
-eax = (ebx + _end) - init_size
-
-where in both ebx contains the temporary address the kernel is moved to
-for in-place decompression.
-
-The before and after difference in register state is %eax and %ebp
-but that is immaterial because the compressed image is not built with
--mregparm, i.e., all arguments of the following extract_kernel() call
-are passed on the stack.
-
-Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20200107194436.2166846-1-nivedita@alum.mit.edu
+Signed-off-by: Marco Elver <elver@google.com>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- arch/x86/boot/compressed/head_32.S | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ Documentation/dev-tools/kcsan.rst | 24 +++++++++++++++++-------
+ 1 file changed, 17 insertions(+), 7 deletions(-)
 
-diff --git a/arch/x86/boot/compressed/head_32.S b/arch/x86/boot/compressed/head_32.S
-index f2dfd6d..1cc55c7 100644
---- a/arch/x86/boot/compressed/head_32.S
-+++ b/arch/x86/boot/compressed/head_32.S
-@@ -240,11 +240,9 @@ SYM_FUNC_START_LOCAL_NOALIGN(.Lrelocated)
- 				/* push arguments for extract_kernel: */
- 	pushl	$z_output_len	/* decompressed length, end of relocs */
+diff --git a/Documentation/dev-tools/kcsan.rst b/Documentation/dev-tools/kcsan.rst
+index a6f4f92..65a0be5 100644
+--- a/Documentation/dev-tools/kcsan.rst
++++ b/Documentation/dev-tools/kcsan.rst
+@@ -101,18 +101,28 @@ instrumentation or e.g. DMA accesses.
+ Selective analysis
+ ~~~~~~~~~~~~~~~~~~
  
--	movl    BP_init_size(%esi), %eax
--	subl    $_end, %eax
--	movl    %ebx, %ebp
--	subl    %eax, %ebp
--	pushl	%ebp		/* output address */
-+	leal	_end(%ebx), %eax
-+	subl    BP_init_size(%esi), %eax
-+	pushl	%eax		/* output address */
+-To disable KCSAN data race detection for an entire subsystem, add to the
+-respective ``Makefile``::
++It may be desirable to disable data race detection for specific accesses,
++functions, compilation units, or entire subsystems.  For static blacklisting,
++the below options are available:
  
- 	pushl	$z_input_len	/* input_len */
- 	leal	input_data(%ebx), %eax
+-    KCSAN_SANITIZE := n
++* KCSAN understands the ``data_race(expr)`` annotation, which tells KCSAN that
++  any data races due to accesses in ``expr`` should be ignored and resulting
++  behaviour when encountering a data race is deemed safe.
++
++* Disabling data race detection for entire functions can be accomplished by
++  using the function attribute ``__no_kcsan`` (or ``__no_kcsan_or_inline`` for
++  ``__always_inline`` functions). To dynamically control for which functions
++  data races are reported, see the `debugfs`_ blacklist/whitelist feature.
+ 
+-To disable KCSAN on a per-file basis, add to the ``Makefile``::
++* To disable data race detection for a particular compilation unit, add to the
++  ``Makefile``::
+ 
+     KCSAN_SANITIZE_file.o := n
+ 
+-KCSAN also understands the ``data_race(expr)`` annotation, which tells KCSAN
+-that any data races due to accesses in ``expr`` should be ignored and resulting
+-behaviour when encountering a data race is deemed safe.
++* To disable data race detection for all compilation units listed in a
++  ``Makefile``, add to the respective ``Makefile``::
++
++    KCSAN_SANITIZE := n
+ 
+ debugfs
+ ~~~~~~~
