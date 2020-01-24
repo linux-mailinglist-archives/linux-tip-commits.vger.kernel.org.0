@@ -2,37 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F3767148E4A
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 24 Jan 2020 20:12:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 903B8148E50
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 24 Jan 2020 20:12:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404086AbgAXTL0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 24 Jan 2020 14:11:26 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:43065 "EHLO
+        id S2404137AbgAXTL3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 24 Jan 2020 14:11:29 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:43095 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2403988AbgAXTLZ (ORCPT
+        with ESMTP id S2404117AbgAXTL3 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 24 Jan 2020 14:11:25 -0500
+        Fri, 24 Jan 2020 14:11:29 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iv4MS-0007f4-N0; Fri, 24 Jan 2020 20:11:20 +0100
+        id 1iv4MW-0007gs-OQ; Fri, 24 Jan 2020 20:11:24 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 3F29E1C1A60;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id BBB4F1C1A6C;
         Fri, 24 Jan 2020 20:11:12 +0100 (CET)
 Date:   Fri, 24 Jan 2020 19:11:12 -0000
-From:   "tip-bot2 for John Garry" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Eddie James" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] irqchip/mbigen: Set driver .suppress_bind_attrs to
- avoid remove problems
-Cc:     John Garry <john.garry@huawei.com>, Marc Zyngier <maz@kernel.org>,
-        Hanjun Guo <guohanjun@huawei.com>, x86 <x86@kernel.org>,
+Subject: [tip: irq/core] dt-bindings: interrupt-controller: Add Aspeed SCU
+ interrupt controller
+Cc:     Eddie James <eajames@linux.ibm.com>, Marc Zyngier <maz@kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        Andrew Jeffery <andrew@aj.id.au>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <1579196323-180137-1-git-send-email-john.garry@huawei.com>
-References: <1579196323-180137-1-git-send-email-john.garry@huawei.com>
+In-Reply-To: <1579123790-6894-2-git-send-email-eajames@linux.ibm.com>
+References: <1579123790-6894-2-git-send-email-eajames@linux.ibm.com>
 MIME-Version: 1.0
-Message-ID: <157989307202.396.10033194386520544016.tip-bot2@tip-bot2>
+Message-ID: <157989307259.396.4926585690020301872.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,125 +49,104 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     d6152e6ec9e2171280436f7b31a571509b9287e1
-Gitweb:        https://git.kernel.org/tip/d6152e6ec9e2171280436f7b31a571509b9287e1
-Author:        John Garry <john.garry@huawei.com>
-AuthorDate:    Fri, 17 Jan 2020 01:38:43 +08:00
+Commit-ID:     5350a237b4525ad12170f16239c9e9c7797df02f
+Gitweb:        https://git.kernel.org/tip/5350a237b4525ad12170f16239c9e9c7797df02f
+Author:        Eddie James <eajames@linux.ibm.com>
+AuthorDate:    Wed, 15 Jan 2020 15:29:39 -06:00
 Committer:     Marc Zyngier <maz@kernel.org>
-CommitterDate: Mon, 20 Jan 2020 19:10:04 
+CommitterDate: Mon, 20 Jan 2020 19:10:03 
 
-irqchip/mbigen: Set driver .suppress_bind_attrs to avoid remove problems
+dt-bindings: interrupt-controller: Add Aspeed SCU interrupt controller
 
-The following crash can be seen for setting
-CONFIG_DEBUG_TEST_DRIVER_REMOVE=y for DT FW (which some people still use):
+Document the Aspeed SCU interrupt controller and add an include file
+for the interrupts it provides.
 
-Hisilicon MBIGEN-V2 60080000.interrupt-controller: Failed to create mbi-gen irqdomain
-Hisilicon MBIGEN-V2: probe of 60080000.interrupt-controller failed with error -12
-
-[...]
-
-Unable to handle kernel paging request at virtual address 0000000000005008
- Mem abort info:
-   ESR = 0x96000004
-   EC = 0x25: DABT (current EL), IL = 32 bits
-   SET = 0, FnV = 0
-   EA = 0, S1PTW = 0
- Data abort info:
-   ISV = 0, ISS = 0x00000004
-   CM = 0, WnR = 0
- user pgtable: 4k pages, 48-bit VAs, pgdp=0000041fb9990000
- [0000000000005008] pgd=0000000000000000
- Internal error: Oops: 96000004 [#1] PREEMPT SMP
- Modules linked in:
- CPU: 7 PID: 1 Comm: swapper/0 Not tainted 5.5.0-rc6-00002-g3fc42638a506-dirty #1622
- Hardware name: Huawei Taishan 2280 /D05, BIOS Hisilicon D05 IT21 Nemo 2.0 RC0 04/18/2018
- pstate: 40000085 (nZcv daIf -PAN -UAO)
- pc : mbigen_set_type+0x38/0x60
- lr : __irq_set_trigger+0x6c/0x188
- sp : ffff800014b4b400
- x29: ffff800014b4b400 x28: 0000000000000007
- x27: 0000000000000000 x26: 0000000000000000
- x25: ffff041fd83bd0d4 x24: ffff041fd83bd188
- x23: 0000000000000000 x22: ffff80001193ce00
- x21: 0000000000000004 x20: 0000000000000000
- x19: ffff041fd83bd000 x18: ffffffffffffffff
- x17: 0000000000000000 x16: 0000000000000000
- x15: ffff8000119098c8 x14: ffff041fb94ec91c
- x13: ffff041fb94ec1a1 x12: 0000000000000030
- x11: 0101010101010101 x10: 0000000000000040
- x9 : 0000000000000000 x8 : ffff041fb98c6680
- x7 : ffff800014b4b380 x6 : ffff041fd81636c8
- x5 : 0000000000000000 x4 : 000000000000025f
- x3 : 0000000000005000 x2 : 0000000000005008
- x1 : 0000000000000004 x0 : 0000000080000000
- Call trace:
-  mbigen_set_type+0x38/0x60
-  __setup_irq+0x744/0x900
-  request_threaded_irq+0xe0/0x198
-  pcie_pme_probe+0x98/0x118
-  pcie_port_probe_service+0x38/0x78
-  really_probe+0xa0/0x3e0
-  driver_probe_device+0x58/0x100
-  __device_attach_driver+0x90/0xb0
-  bus_for_each_drv+0x64/0xc8
-  __device_attach+0xd8/0x138
-  device_initial_probe+0x10/0x18
-  bus_probe_device+0x90/0x98
-  device_add+0x4c4/0x770
-  device_register+0x1c/0x28
-  pcie_port_device_register+0x1e4/0x4f0
-  pcie_portdrv_probe+0x34/0xd8
-  local_pci_probe+0x3c/0xa0
-  pci_device_probe+0x128/0x1c0
-  really_probe+0xa0/0x3e0
-  driver_probe_device+0x58/0x100
-  __device_attach_driver+0x90/0xb0
-  bus_for_each_drv+0x64/0xc8
-  __device_attach+0xd8/0x138
-  device_attach+0x10/0x18
-  pci_bus_add_device+0x4c/0xb8
-  pci_bus_add_devices+0x38/0x88
-  pci_host_probe+0x3c/0xc0
-  pci_host_common_probe+0xf0/0x208
-  hisi_pcie_almost_ecam_probe+0x24/0x30
-  platform_drv_probe+0x50/0xa0
-  really_probe+0xa0/0x3e0
-  driver_probe_device+0x58/0x100
-  device_driver_attach+0x6c/0x90
-  __driver_attach+0x84/0xc8
-  bus_for_each_dev+0x74/0xc8
-  driver_attach+0x20/0x28
-  bus_add_driver+0x148/0x1f0
-  driver_register+0x60/0x110
-  __platform_driver_register+0x40/0x48
-  hisi_pcie_almost_ecam_driver_init+0x1c/0x24
-
-The specific problem here is that the mbigen driver real probe has failed
-as the mbigen_of_create_domain()->of_platform_device_create() call fails,
-the reason for that being that we never destroyed the platform device
-created during the remove test dry run and there is some conflict.
-
-Since we generally would never want to unbind this driver, and to save
-adding a driver tear down path for that, just set the driver
-.suppress_bind_attrs member to avoid this possibility.
-
-Signed-off-by: John Garry <john.garry@huawei.com>
+Signed-off-by: Eddie James <eajames@linux.ibm.com>
 Signed-off-by: Marc Zyngier <maz@kernel.org>
-Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
-Link: https://lore.kernel.org/r/1579196323-180137-1-git-send-email-john.garry@huawei.com
+Reviewed-by: Rob Herring <robh@kernel.org>
+Acked-by: Andrew Jeffery <andrew@aj.id.au>
+Link: https://lore.kernel.org/r/1579123790-6894-2-git-send-email-eajames@linux.ibm.com
 ---
- drivers/irqchip/irq-mbigen.c | 1 +
- 1 file changed, 1 insertion(+)
+ Documentation/devicetree/bindings/interrupt-controller/aspeed,ast2xxx-scu-ic.txt | 23 +++++++++++++++++++++++
+ MAINTAINERS                                                                      |  7 +++++++
+ include/dt-bindings/interrupt-controller/aspeed-scu-ic.h                         | 23 +++++++++++++++++++++++
+ 3 files changed, 53 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/interrupt-controller/aspeed,ast2xxx-scu-ic.txt
+ create mode 100644 include/dt-bindings/interrupt-controller/aspeed-scu-ic.h
 
-diff --git a/drivers/irqchip/irq-mbigen.c b/drivers/irqchip/irq-mbigen.c
-index 3f09f65..6b566bb 100644
---- a/drivers/irqchip/irq-mbigen.c
-+++ b/drivers/irqchip/irq-mbigen.c
-@@ -374,6 +374,7 @@ static struct platform_driver mbigen_platform_driver = {
- 		.name		= "Hisilicon MBIGEN-V2",
- 		.of_match_table	= mbigen_of_match,
- 		.acpi_match_table = ACPI_PTR(mbigen_acpi_match),
-+		.suppress_bind_attrs = true,
- 	},
- 	.probe			= mbigen_device_probe,
- };
+diff --git a/Documentation/devicetree/bindings/interrupt-controller/aspeed,ast2xxx-scu-ic.txt b/Documentation/devicetree/bindings/interrupt-controller/aspeed,ast2xxx-scu-ic.txt
+new file mode 100644
+index 0000000..251ed44
+--- /dev/null
++++ b/Documentation/devicetree/bindings/interrupt-controller/aspeed,ast2xxx-scu-ic.txt
+@@ -0,0 +1,23 @@
++Aspeed AST25XX and AST26XX SCU Interrupt Controller
++
++Required Properties:
++ - #interrupt-cells		: must be 1
++ - compatible			: must be "aspeed,ast2500-scu-ic",
++				  "aspeed,ast2600-scu-ic0" or
++				  "aspeed,ast2600-scu-ic1"
++ - interrupts			: interrupt from the parent controller
++ - interrupt-controller		: indicates that the controller receives and
++				  fires new interrupts for child busses
++
++Example:
++
++    syscon@1e6e2000 {
++        ranges = <0 0x1e6e2000 0x1a8>;
++
++        scu_ic: interrupt-controller@18 {
++            #interrupt-cells = <1>;
++            compatible = "aspeed,ast2500-scu-ic";
++            interrupts = <21>;
++            interrupt-controller;
++        };
++    };
+diff --git a/MAINTAINERS b/MAINTAINERS
+index e09bd92..f9f6e40 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -2692,6 +2692,13 @@ S:	Maintained
+ F:	drivers/pinctrl/aspeed/
+ F:	Documentation/devicetree/bindings/pinctrl/aspeed,*
+ 
++ASPEED SCU INTERRUPT CONTROLLER DRIVER
++M:	Eddie James <eajames@linux.ibm.com>
++L:	linux-aspeed@lists.ozlabs.org (moderated for non-subscribers)
++S:	Maintained
++F:	Documentation/devicetree/bindings/interrupt-controller/aspeed,ast2xxx-scu-ic.txt
++F:	include/dt-bindings/interrupt-controller/aspeed-scu-ic.h
++
+ ASPEED VIDEO ENGINE DRIVER
+ M:	Eddie James <eajames@linux.ibm.com>
+ L:	linux-media@vger.kernel.org
+diff --git a/include/dt-bindings/interrupt-controller/aspeed-scu-ic.h b/include/dt-bindings/interrupt-controller/aspeed-scu-ic.h
+new file mode 100644
+index 0000000..f315d5a
+--- /dev/null
++++ b/include/dt-bindings/interrupt-controller/aspeed-scu-ic.h
+@@ -0,0 +1,23 @@
++/* SPDX-License-Identifier: GPL-2.0+ */
++
++#ifndef _DT_BINDINGS_INTERRUPT_CONTROLLER_ASPEED_SCU_IC_H_
++#define _DT_BINDINGS_INTERRUPT_CONTROLLER_ASPEED_SCU_IC_H_
++
++#define ASPEED_SCU_IC_VGA_CURSOR_CHANGE			0
++#define ASPEED_SCU_IC_VGA_SCRATCH_REG_CHANGE		1
++
++#define ASPEED_AST2500_SCU_IC_PCIE_RESET_LO_TO_HI	2
++#define ASPEED_AST2500_SCU_IC_PCIE_RESET_HI_TO_LO	3
++#define ASPEED_AST2500_SCU_IC_LPC_RESET_LO_TO_HI	4
++#define ASPEED_AST2500_SCU_IC_LPC_RESET_HI_TO_LO	5
++#define ASPEED_AST2500_SCU_IC_ISSUE_MSI			6
++
++#define ASPEED_AST2600_SCU_IC0_PCIE_PERST_LO_TO_HI	2
++#define ASPEED_AST2600_SCU_IC0_PCIE_PERST_HI_TO_LO	3
++#define ASPEED_AST2600_SCU_IC0_PCIE_RCRST_LO_TO_HI	4
++#define ASPEED_AST2600_SCU_IC0_PCIE_RCRST_HI_TO_LO	5
++
++#define ASPEED_AST2600_SCU_IC1_LPC_RESET_LO_TO_HI	0
++#define ASPEED_AST2600_SCU_IC1_LPC_RESET_HI_TO_LO	1
++
++#endif /* _DT_BINDINGS_INTERRUPT_CONTROLLER_ASPEED_SCU_IC_H_ */
