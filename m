@@ -2,36 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E4381148E70
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 24 Jan 2020 20:13:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D0F05148E64
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 24 Jan 2020 20:12:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404000AbgAXTLS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 24 Jan 2020 14:11:18 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:43022 "EHLO
+        id S2392123AbgAXTMK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 24 Jan 2020 14:12:10 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:43060 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2403967AbgAXTLR (ORCPT
+        with ESMTP id S2404058AbgAXTLY (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 24 Jan 2020 14:11:17 -0500
+        Fri, 24 Jan 2020 14:11:24 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iv4ML-0007d0-UM; Fri, 24 Jan 2020 20:11:14 +0100
+        id 1iv4MR-0007e4-GE; Fri, 24 Jan 2020 20:11:19 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 6B7F41C1A66;
-        Fri, 24 Jan 2020 20:11:10 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 3B25E1C1A67;
+        Fri, 24 Jan 2020 20:11:11 +0100 (CET)
 Date:   Fri, 24 Jan 2020 19:11:10 -0000
-From:   "tip-bot2 for Kevin Hao" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Hyunki Koo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] irqdomain: Fix a memory leak in irq_domain_push_irq()
-Cc:     Kevin Hao <haokexin@gmail.com>, Marc Zyngier <maz@kernel.org>,
-        stable@vger.kernel.org, x86 <x86@kernel.org>,
+Subject: [tip: irq/core] irqchip: Define EXYNOS_IRQ_COMBINER
+Cc:     Hyunki Koo <hyunki00.koo@samsung.com>,
+        Marc Zyngier <maz@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200120043547.22271-1-haokexin@gmail.com>
-References: <20200120043547.22271-1-haokexin@gmail.com>
+In-Reply-To: <20191224211108.7128-1-hyunki00.koo@gmail.com>
+References: <20191224211108.7128-1-hyunki00.koo@gmail.com>
 MIME-Version: 1.0
-Message-ID: <157989307023.396.17538071242529894019.tip-bot2@tip-bot2>
+Message-ID: <157989307099.396.8907203815822945291.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,57 +48,70 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     0f394daef89b38d58c91118a2b08b8a1b316703b
-Gitweb:        https://git.kernel.org/tip/0f394daef89b38d58c91118a2b08b8a1b316703b
-Author:        Kevin Hao <haokexin@gmail.com>
-AuthorDate:    Mon, 20 Jan 2020 12:35:47 +08:00
+Commit-ID:     b74416dba33be3ed934e21df8286076cbd85b97f
+Gitweb:        https://git.kernel.org/tip/b74416dba33be3ed934e21df8286076cbd85b97f
+Author:        Hyunki Koo <hyunki00.koo@samsung.com>
+AuthorDate:    Wed, 25 Dec 2019 06:11:07 +09:00
 Committer:     Marc Zyngier <maz@kernel.org>
 CommitterDate: Mon, 20 Jan 2020 19:10:05 
 
-irqdomain: Fix a memory leak in irq_domain_push_irq()
+irqchip: Define EXYNOS_IRQ_COMBINER
 
-Fix a memory leak reported by kmemleak:
-unreferenced object 0xffff000bc6f50e80 (size 128):
-  comm "kworker/23:2", pid 201, jiffies 4294894947 (age 942.132s)
-  hex dump (first 32 bytes):
-    00 00 00 00 41 00 00 00 86 c0 03 00 00 00 00 00  ....A...........
-    00 a0 b2 c6 0b 00 ff ff 40 51 fd 10 00 80 ff ff  ........@Q......
-  backtrace:
-    [<00000000e62d2240>] kmem_cache_alloc_trace+0x1a4/0x320
-    [<00000000279143c9>] irq_domain_push_irq+0x7c/0x188
-    [<00000000d9f4c154>] thunderx_gpio_probe+0x3ac/0x438
-    [<00000000fd09ec22>] pci_device_probe+0xe4/0x198
-    [<00000000d43eca75>] really_probe+0xdc/0x320
-    [<00000000d3ebab09>] driver_probe_device+0x5c/0xf0
-    [<000000005b3ecaa0>] __device_attach_driver+0x88/0xc0
-    [<000000004e5915f5>] bus_for_each_drv+0x7c/0xc8
-    [<0000000079d4db41>] __device_attach+0xe4/0x140
-    [<00000000883bbda9>] device_initial_probe+0x18/0x20
-    [<000000003be59ef6>] bus_probe_device+0x98/0xa0
-    [<0000000039b03d3f>] deferred_probe_work_func+0x74/0xa8
-    [<00000000870934ce>] process_one_work+0x1c8/0x470
-    [<00000000e3cce570>] worker_thread+0x1f8/0x428
-    [<000000005d64975e>] kthread+0xfc/0x128
-    [<00000000f0eaa764>] ret_from_fork+0x10/0x18
+This patch is written to clean up dependency of ARCH_EXYNOS
+Not all exynos device have IRQ_COMBINER, especially aarch64 EXYNOS
+but it is built for all exynos devices.
+Thus add the config for EXYNOS_IRQ_COMBINER
+remove direct dependency between ARCH_EXYNOS and exynos-combiner.c
+and only selected on the aarch32 devices
 
-Fixes: 495c38d3001f ("irqdomain: Add irq_domain_{push,pop}_irq() functions")
-Signed-off-by: Kevin Hao <haokexin@gmail.com>
+Signed-off-by: Hyunki Koo <hyunki00.koo@samsung.com>
 Signed-off-by: Marc Zyngier <maz@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20200120043547.22271-1-haokexin@gmail.com
+Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
+Link: https://lore.kernel.org/r/20191224211108.7128-1-hyunki00.koo@gmail.com
 ---
- kernel/irq/irqdomain.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/mach-exynos/Kconfig | 1 +
+ drivers/irqchip/Kconfig      | 7 +++++++
+ drivers/irqchip/Makefile     | 2 +-
+ 3 files changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/irq/irqdomain.c b/kernel/irq/irqdomain.c
-index 7a8808c..7527e5e 100644
---- a/kernel/irq/irqdomain.c
-+++ b/kernel/irq/irqdomain.c
-@@ -1476,6 +1476,7 @@ int irq_domain_push_irq(struct irq_domain *domain, int virq, void *arg)
- 	if (rv) {
- 		/* Restore the original irq_data. */
- 		*root_irq_data = *child_irq_data;
-+		kfree(child_irq_data);
- 		goto error;
- 	}
+diff --git a/arch/arm/mach-exynos/Kconfig b/arch/arm/mach-exynos/Kconfig
+index 4ef5657..6e7f10c 100644
+--- a/arch/arm/mach-exynos/Kconfig
++++ b/arch/arm/mach-exynos/Kconfig
+@@ -12,6 +12,7 @@ menuconfig ARCH_EXYNOS
+ 	select ARCH_SUPPORTS_BIG_ENDIAN
+ 	select ARM_AMBA
+ 	select ARM_GIC
++	select EXYNOS_IRQ_COMBINER
+ 	select COMMON_CLK_SAMSUNG
+ 	select EXYNOS_ASV
+ 	select EXYNOS_CHIPID
+diff --git a/drivers/irqchip/Kconfig b/drivers/irqchip/Kconfig
+index bb89dfc..20c62d7 100644
+--- a/drivers/irqchip/Kconfig
++++ b/drivers/irqchip/Kconfig
+@@ -500,4 +500,11 @@ config SIFIVE_PLIC
  
+ 	   If you don't know what to do here, say Y.
+ 
++config EXYNOS_IRQ_COMBINER
++	bool "Samsung Exynos IRQ combiner support" if COMPILE_TEST
++	depends on (ARCH_EXYNOS && ARM) || COMPILE_TEST
++	help
++	  Say yes here to add support for the IRQ combiner devices embedded
++	  in Samsung Exynos chips.
++
+ endmenu
+diff --git a/drivers/irqchip/Makefile b/drivers/irqchip/Makefile
+index 6c9262c..4b1c511 100644
+--- a/drivers/irqchip/Makefile
++++ b/drivers/irqchip/Makefile
+@@ -9,7 +9,7 @@ obj-$(CONFIG_ARCH_BCM2835)		+= irq-bcm2835.o
+ obj-$(CONFIG_ARCH_BCM2835)		+= irq-bcm2836.o
+ obj-$(CONFIG_DAVINCI_AINTC)		+= irq-davinci-aintc.o
+ obj-$(CONFIG_DAVINCI_CP_INTC)		+= irq-davinci-cp-intc.o
+-obj-$(CONFIG_ARCH_EXYNOS)		+= exynos-combiner.o
++obj-$(CONFIG_EXYNOS_IRQ_COMBINER)	+= exynos-combiner.o
+ obj-$(CONFIG_FARADAY_FTINTC010)		+= irq-ftintc010.o
+ obj-$(CONFIG_ARCH_HIP04)		+= irq-hip04.o
+ obj-$(CONFIG_ARCH_LPC32XX)		+= irq-lpc32xx.o
