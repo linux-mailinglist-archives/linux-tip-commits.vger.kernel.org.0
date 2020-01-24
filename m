@@ -2,35 +2,35 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B1C22147A29
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 24 Jan 2020 10:13:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A1AA148E6C
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 24 Jan 2020 20:13:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730157AbgAXJNi (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 24 Jan 2020 04:13:38 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:41856 "EHLO
+        id S2391897AbgAXTLN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 24 Jan 2020 14:11:13 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:42988 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730135AbgAXJNi (ORCPT
+        with ESMTP id S2389077AbgAXTLM (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 24 Jan 2020 04:13:38 -0500
+        Fri, 24 Jan 2020 14:11:12 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iuv1v-0007dp-4K; Fri, 24 Jan 2020 10:13:31 +0100
+        id 1iv4MF-0007Zy-Ks; Fri, 24 Jan 2020 20:11:07 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B2DF51C1A4E;
-        Fri, 24 Jan 2020 10:13:30 +0100 (CET)
-Date:   Fri, 24 Jan 2020 09:13:30 -0000
-From:   "tip-bot2 for Marco Elver" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A8E081C1A60;
+        Fri, 24 Jan 2020 20:11:06 +0100 (CET)
+Date:   Fri, 24 Jan 2020 19:11:06 -0000
+From:   "tip-bot2 for Marc Zyngier" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/kcsan] kcsan, ubsan: Make KCSAN+UBSAN work together
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
-        Marco Elver <elver@google.com>,
-        "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
+Subject: [tip: irq/core] irqchip/gic-v4.1: Suppress per-VLPI doorbell
+Cc:     Marc Zyngier <maz@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20191224111055.11836-15-maz@kernel.org>
+References: <20191224111055.11836-15-maz@kernel.org>
 MIME-Version: 1.0
-Message-ID: <157985721055.396.8618031890943312175.tip-bot2@tip-bot2>
+Message-ID: <157989306648.396.11181770657733195391.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -44,50 +44,61 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/kcsan branch of tip:
+The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     d47715f50e833f12c5e829ce9dcc4a65104fa74f
-Gitweb:        https://git.kernel.org/tip/d47715f50e833f12c5e829ce9dcc4a65104fa74f
-Author:        Marco Elver <elver@google.com>
-AuthorDate:    Tue, 19 Nov 2019 19:57:42 +01:00
-Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Tue, 07 Jan 2020 07:47:23 -08:00
+Commit-ID:     3858d4dfdfb845e51ee8b4045f61ccba2c3111ee
+Gitweb:        https://git.kernel.org/tip/3858d4dfdfb845e51ee8b4045f61ccba2c3111ee
+Author:        Marc Zyngier <maz@kernel.org>
+AuthorDate:    Tue, 24 Dec 2019 11:10:37 
+Committer:     Marc Zyngier <maz@kernel.org>
+CommitterDate: Wed, 22 Jan 2020 14:22:21 
 
-kcsan, ubsan: Make KCSAN+UBSAN work together
+irqchip/gic-v4.1: Suppress per-VLPI doorbell
 
-Context:
-http://lkml.kernel.org/r/fb7e25d8-aba4-3dcf-7761-cb7ecb3ebb71@infradead.org
+Since GICv4.1 gives us a per-VPE doorbell, avoid programming anything
+else on VMOVI/VMAPI/VMAPTI and on any other action that would have
+otherwise resulted in a per-VLPI doorbell to be programmed.
 
-Reported-by: Randy Dunlap <rdunlap@infradead.org>
-Signed-off-by: Marco Elver <elver@google.com>
-Acked-by: Randy Dunlap <rdunlap@infradead.org> # build-tested
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Reviewed-by: Zenghui Yu <yuzenghui@huawei.com>
+Link: https://lore.kernel.org/r/20191224111055.11836-15-maz@kernel.org
 ---
- kernel/kcsan/Makefile | 1 +
- lib/Makefile          | 1 +
- 2 files changed, 2 insertions(+)
+ drivers/irqchip/irq-gic-v3-its.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/kcsan/Makefile b/kernel/kcsan/Makefile
-index dd15b62..df6b779 100644
---- a/kernel/kcsan/Makefile
-+++ b/kernel/kcsan/Makefile
-@@ -1,6 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0
- KCSAN_SANITIZE := n
- KCOV_INSTRUMENT := n
-+UBSAN_SANITIZE := n
+diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
+index 1d8d96a..53e91c9 100644
+--- a/drivers/irqchip/irq-gic-v3-its.c
++++ b/drivers/irqchip/irq-gic-v3-its.c
+@@ -718,7 +718,7 @@ static struct its_vpe *its_build_vmapti_cmd(struct its_node *its,
+ {
+ 	u32 db;
  
- CFLAGS_REMOVE_core.o = $(CC_FLAGS_FTRACE)
+-	if (desc->its_vmapti_cmd.db_enabled)
++	if (!is_v4_1(its) && desc->its_vmapti_cmd.db_enabled)
+ 		db = desc->its_vmapti_cmd.vpe->vpe_db_lpi;
+ 	else
+ 		db = 1023;
+@@ -741,7 +741,7 @@ static struct its_vpe *its_build_vmovi_cmd(struct its_node *its,
+ {
+ 	u32 db;
  
-diff --git a/lib/Makefile b/lib/Makefile
-index 778ab70..9d5bda9 100644
---- a/lib/Makefile
-+++ b/lib/Makefile
-@@ -279,6 +279,7 @@ obj-$(CONFIG_UBSAN) += ubsan.o
+-	if (desc->its_vmovi_cmd.db_enabled)
++	if (!is_v4_1(its) && desc->its_vmovi_cmd.db_enabled)
+ 		db = desc->its_vmovi_cmd.vpe->vpe_db_lpi;
+ 	else
+ 		db = 1023;
+@@ -1353,6 +1353,13 @@ static void its_vlpi_set_doorbell(struct irq_data *d, bool enable)
+ 	u32 event = its_get_event_id(d);
+ 	struct its_vlpi_map *map;
  
- UBSAN_SANITIZE_ubsan.o := n
- KASAN_SANITIZE_ubsan.o := n
-+KCSAN_SANITIZE_ubsan.o := n
- CFLAGS_ubsan.o := $(call cc-option, -fno-stack-protector) $(DISABLE_STACKLEAK_PLUGIN)
++	/*
++	 * GICv4.1 does away with the per-LPI nonsense, nothing to do
++	 * here.
++	 */
++	if (is_v4_1(its_dev->its))
++		return;
++
+ 	map = dev_event_to_vlpi_map(its_dev, event);
  
- obj-$(CONFIG_SBITMAP) += sbitmap.o
+ 	if (map->db_enabled == enable)
