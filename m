@@ -2,35 +2,35 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B506A148E6B
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 24 Jan 2020 20:13:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A1CBF148E76
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 24 Jan 2020 20:13:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2403888AbgAXTLN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 24 Jan 2020 14:11:13 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:42991 "EHLO
+        id S2389699AbgAXTMf (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 24 Jan 2020 14:12:35 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:43025 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2391877AbgAXTLM (ORCPT
+        with ESMTP id S2403972AbgAXTLS (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 24 Jan 2020 14:11:12 -0500
+        Fri, 24 Jan 2020 14:11:18 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iv4MG-0007a5-IW; Fri, 24 Jan 2020 20:11:08 +0100
+        id 1iv4MM-0007aC-5U; Fri, 24 Jan 2020 20:11:14 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 81F311C1A63;
-        Fri, 24 Jan 2020 20:11:07 +0100 (CET)
-Date:   Fri, 24 Jan 2020 19:11:07 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 673DA1C1A61;
+        Fri, 24 Jan 2020 20:11:08 +0100 (CET)
+Date:   Fri, 24 Jan 2020 19:11:08 -0000
 From:   "tip-bot2 for Marc Zyngier" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] irqchip/gic-v4.1: Add VPE residency callback
+Subject: [tip: irq/core] irqchip/gic-v4.1: Implement the v4.1 flavour of VMOVP
 Cc:     Marc Zyngier <maz@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191224111055.11836-12-maz@kernel.org>
-References: <20191224111055.11836-12-maz@kernel.org>
+In-Reply-To: <20191224111055.11836-9-maz@kernel.org>
+References: <20191224111055.11836-9-maz@kernel.org>
 MIME-Version: 1.0
-Message-ID: <157989306735.396.13318292050521196157.tip-bot2@tip-bot2>
+Message-ID: <157989306824.396.8718529101220247643.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -46,95 +46,101 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     91bf6395f7b8614a5a9934a0ae9c8b5312d77b29
-Gitweb:        https://git.kernel.org/tip/91bf6395f7b8614a5a9934a0ae9c8b5312d77b29
+Commit-ID:     dd3f050a216ef7c8ce21ba48fd3b2ece2155382f
+Gitweb:        https://git.kernel.org/tip/dd3f050a216ef7c8ce21ba48fd3b2ece2155382f
 Author:        Marc Zyngier <maz@kernel.org>
-AuthorDate:    Tue, 24 Dec 2019 11:10:34 
+AuthorDate:    Tue, 24 Dec 2019 11:10:31 
 Committer:     Marc Zyngier <maz@kernel.org>
 CommitterDate: Wed, 22 Jan 2020 14:22:20 
 
-irqchip/gic-v4.1: Add VPE residency callback
+irqchip/gic-v4.1: Implement the v4.1 flavour of VMOVP
 
-Making a VPE resident on GICv4.1 is pretty simple, as it is just a
-single write to the local redistributor. We just need extra information
-about which groups to enable, which the KVM code will have to provide.
+With GICv4.1, VMOVP is extended to allow a default doorbell to be
+specified, as well as a validity bit for this doorbell. As an added
+bonus, VMOVP isn't required anymore of moving a VPE between
+redistributors that share the same affinity.
+
+Let's add this support to the VMOVP builder, and make sure we don't
+issue the command if we don't really need to.
 
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 Reviewed-by: Zenghui Yu <yuzenghui@huawei.com>
-Link: https://lore.kernel.org/r/20191224111055.11836-12-maz@kernel.org
+Link: https://lore.kernel.org/r/20191224111055.11836-9-maz@kernel.org
 ---
- drivers/irqchip/irq-gic-v3-its.c   | 17 +++++++++++++++++
- include/linux/irqchip/arm-gic-v3.h |  9 +++++++++
- include/linux/irqchip/arm-gic-v4.h |  5 +++++
- 3 files changed, 31 insertions(+)
+ drivers/irqchip/irq-gic-v3-its.c | 40 +++++++++++++++++++++++++------
+ 1 file changed, 33 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
-index 5ef706e..3adc597 100644
+index 9bc8adf..53a7663 100644
 --- a/drivers/irqchip/irq-gic-v3-its.c
 +++ b/drivers/irqchip/irq-gic-v3-its.c
-@@ -3624,12 +3624,29 @@ static void its_vpe_4_1_unmask_irq(struct irq_data *d)
- 	its_vpe_4_1_send_inv(d);
+@@ -470,6 +470,17 @@ static void its_encode_vmapp_default_db(struct its_cmd_block *cmd,
+ 	its_mask_encode(&cmd->raw_cmd[1], vpe_db_lpi, 31, 0);
  }
  
-+static void its_vpe_4_1_schedule(struct its_vpe *vpe,
-+				 struct its_cmd_info *info)
++static void its_encode_vmovp_default_db(struct its_cmd_block *cmd,
++					u32 vpe_db_lpi)
 +{
-+	void __iomem *vlpi_base = gic_data_rdist_vlpi_base();
-+	u64 val = 0;
-+
-+	/* Schedule the VPE */
-+	val |= GICR_VPENDBASER_Valid;
-+	val |= info->g0en ? GICR_VPENDBASER_4_1_VGRP0EN : 0;
-+	val |= info->g1en ? GICR_VPENDBASER_4_1_VGRP1EN : 0;
-+	val |= FIELD_PREP(GICR_VPENDBASER_4_1_VPEID, vpe->vpe_id);
-+
-+	gits_write_vpendbaser(val, vlpi_base + GICR_VPENDBASER);
++	its_mask_encode(&cmd->raw_cmd[3], vpe_db_lpi, 31, 0);
 +}
 +
- static int its_vpe_4_1_set_vcpu_affinity(struct irq_data *d, void *vcpu_info)
- {
-+	struct its_vpe *vpe = irq_data_get_irq_chip_data(d);
- 	struct its_cmd_info *info = vcpu_info;
- 
- 	switch (info->cmd_type) {
- 	case SCHEDULE_VPE:
-+		its_vpe_4_1_schedule(vpe, info);
- 		return 0;
- 
- 	case DESCHEDULE_VPE:
-diff --git a/include/linux/irqchip/arm-gic-v3.h b/include/linux/irqchip/arm-gic-v3.h
-index 1f17181..822dae6 100644
---- a/include/linux/irqchip/arm-gic-v3.h
-+++ b/include/linux/irqchip/arm-gic-v3.h
-@@ -328,6 +328,15 @@
- #define GICR_VPENDBASER_Valid		(1ULL << 63)
- 
- /*
-+ * GICv4.1 VPENDBASER, used for VPE residency. On top of these fields,
-+ * also use the above Valid, PendingLast and Dirty.
-+ */
-+#define GICR_VPENDBASER_4_1_DB		(1ULL << 62)
-+#define GICR_VPENDBASER_4_1_VGRP0EN	(1ULL << 59)
-+#define GICR_VPENDBASER_4_1_VGRP1EN	(1ULL << 58)
-+#define GICR_VPENDBASER_4_1_VPEID	GENMASK_ULL(15, 0)
++static void its_encode_db(struct its_cmd_block *cmd, bool db)
++{
++	its_mask_encode(&cmd->raw_cmd[2], db, 63, 63);
++}
 +
-+/*
-  * ITS registers, offsets from ITS_base
-  */
- #define GITS_CTLR			0x0000
-diff --git a/include/linux/irqchip/arm-gic-v4.h b/include/linux/irqchip/arm-gic-v4.h
-index 498e523..d9c3496 100644
---- a/include/linux/irqchip/arm-gic-v4.h
-+++ b/include/linux/irqchip/arm-gic-v4.h
-@@ -100,6 +100,11 @@ struct its_cmd_info {
- 	union {
- 		struct its_vlpi_map	*map;
- 		u8			config;
-+		bool			req_db;
-+		struct {
-+			bool		g0en;
-+			bool		g1en;
-+		};
- 	};
- };
+ static inline void its_fixup_cmd(struct its_cmd_block *cmd)
+ {
+ 	/* Let's fixup BE commands */
+@@ -756,6 +767,11 @@ static struct its_vpe *its_build_vmovp_cmd(struct its_node *its,
+ 	its_encode_vpeid(cmd, desc->its_vmovp_cmd.vpe->vpe_id);
+ 	its_encode_target(cmd, target);
  
++	if (is_v4_1(its)) {
++		its_encode_db(cmd, true);
++		its_encode_vmovp_default_db(cmd, desc->its_vmovp_cmd.vpe->vpe_db_lpi);
++	}
++
+ 	its_fixup_cmd(cmd);
+ 
+ 	return valid_vpe(its, desc->its_vmovp_cmd.vpe);
+@@ -3327,7 +3343,7 @@ static int its_vpe_set_affinity(struct irq_data *d,
+ 				bool force)
+ {
+ 	struct its_vpe *vpe = irq_data_get_irq_chip_data(d);
+-	int cpu = cpumask_first(mask_val);
++	int from, cpu = cpumask_first(mask_val);
+ 
+ 	/*
+ 	 * Changing affinity is mega expensive, so let's be as lazy as
+@@ -3335,14 +3351,24 @@ static int its_vpe_set_affinity(struct irq_data *d,
+ 	 * into the proxy device, we need to move the doorbell
+ 	 * interrupt to its new location.
+ 	 */
+-	if (vpe->col_idx != cpu) {
+-		int from = vpe->col_idx;
++	if (vpe->col_idx == cpu)
++		goto out;
+ 
+-		vpe->col_idx = cpu;
+-		its_send_vmovp(vpe);
+-		its_vpe_db_proxy_move(vpe, from, cpu);
+-	}
++	from = vpe->col_idx;
++	vpe->col_idx = cpu;
++
++	/*
++	 * GICv4.1 allows us to skip VMOVP if moving to a cpu whose RD
++	 * is sharing its VPE table with the current one.
++	 */
++	if (gic_data_rdist_cpu(cpu)->vpe_table_mask &&
++	    cpumask_test_cpu(from, gic_data_rdist_cpu(cpu)->vpe_table_mask))
++		goto out;
+ 
++	its_send_vmovp(vpe);
++	its_vpe_db_proxy_move(vpe, from, cpu);
++
++out:
+ 	irq_data_update_effective_affinity(d, cpumask_of(cpu));
+ 
+ 	return IRQ_SET_MASK_OK_DONE;
