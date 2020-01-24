@@ -2,35 +2,35 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CB12B148E82
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 24 Jan 2020 20:13:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FE80148E78
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 24 Jan 2020 20:13:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391306AbgAXTNF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 24 Jan 2020 14:13:05 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:42989 "EHLO
+        id S2391924AbgAXTMl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 24 Jan 2020 14:12:41 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:43008 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2391868AbgAXTLN (ORCPT
+        with ESMTP id S2403921AbgAXTLQ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 24 Jan 2020 14:11:13 -0500
+        Fri, 24 Jan 2020 14:11:16 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iv4MF-0007Zx-G4; Fri, 24 Jan 2020 20:11:07 +0100
+        id 1iv4MG-0007a0-4H; Fri, 24 Jan 2020 20:11:08 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5F4281C1A5F;
-        Fri, 24 Jan 2020 20:11:06 +0100 (CET)
-Date:   Fri, 24 Jan 2020 19:11:06 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 42C041C1A62;
+        Fri, 24 Jan 2020 20:11:07 +0100 (CET)
+Date:   Fri, 24 Jan 2020 19:11:07 -0000
 From:   "tip-bot2 for Marc Zyngier" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] irqchip/gic-v4.1: Allow direct invalidation of VLPIs
+Subject: [tip: irq/core] irqchip/gic-v4.1: Add VPE eviction callback
 Cc:     Marc Zyngier <maz@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191224111055.11836-16-maz@kernel.org>
-References: <20191224111055.11836-16-maz@kernel.org>
+In-Reply-To: <20191224111055.11836-13-maz@kernel.org>
+References: <20191224111055.11836-13-maz@kernel.org>
 MIME-Version: 1.0
-Message-ID: <157989306616.396.4857020829910411251.tip-bot2@tip-bot2>
+Message-ID: <157989306704.396.6901889458265160578.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -46,128 +46,131 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     f4a81f5a853e0b7c38bfad3afd6d0365d654e777
-Gitweb:        https://git.kernel.org/tip/f4a81f5a853e0b7c38bfad3afd6d0365d654e777
+Commit-ID:     e64fab1a1477dbf0c355691914511612ba312932
+Gitweb:        https://git.kernel.org/tip/e64fab1a1477dbf0c355691914511612ba312932
 Author:        Marc Zyngier <maz@kernel.org>
-AuthorDate:    Tue, 24 Dec 2019 11:10:38 
+AuthorDate:    Tue, 24 Dec 2019 11:10:35 
 Committer:     Marc Zyngier <maz@kernel.org>
-CommitterDate: Wed, 22 Jan 2020 14:22:21 
+CommitterDate: Wed, 22 Jan 2020 14:22:20 
 
-irqchip/gic-v4.1: Allow direct invalidation of VLPIs
+irqchip/gic-v4.1: Add VPE eviction callback
 
-Just like for INVALL, GICv4.1 has grown a VPE-aware INVLPI register.
-Let's plumb it in and make use of the DirectLPI code in that case.
+When descheduling a VPE, special care must be taken to tell the GIC
+about whether we want to receive a doorbell or not. This is a
+major improvement on GICv4.0, where the doorbell had to be separately
+enabled/disabled.
 
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 Reviewed-by: Zenghui Yu <yuzenghui@huawei.com>
-Link: https://lore.kernel.org/r/20191224111055.11836-16-maz@kernel.org
+Link: https://lore.kernel.org/r/20191224111055.11836-13-maz@kernel.org
 ---
- drivers/irqchip/irq-gic-v3-its.c   | 55 ++++++++++++++++++-----------
- include/linux/irqchip/arm-gic-v3.h |  1 +-
- 2 files changed, 37 insertions(+), 19 deletions(-)
+ drivers/irqchip/irq-gic-v3-its.c | 53 ++++++++++++++++++++++++-------
+ 1 file changed, 42 insertions(+), 11 deletions(-)
 
 diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
-index 53e91c9..f717586 100644
+index 3adc597..69b16e5 100644
 --- a/drivers/irqchip/irq-gic-v3-its.c
 +++ b/drivers/irqchip/irq-gic-v3-its.c
-@@ -227,11 +227,27 @@ static struct its_vlpi_map *dev_event_to_vlpi_map(struct its_device *its_dev,
- 	return &its_dev->event_map.vlpi_maps[event];
+@@ -2630,7 +2630,7 @@ static int __init allocate_lpi_tables(void)
+ 	return 0;
  }
  
--static struct its_collection *irq_to_col(struct irq_data *d)
-+static struct its_vlpi_map *get_vlpi_map(struct irq_data *d)
-+{
-+	if (irqd_is_forwarded_to_vcpu(d)) {
-+		struct its_device *its_dev = irq_data_get_irq_chip_data(d);
-+		u32 event = its_get_event_id(d);
-+
-+		return dev_event_to_vlpi_map(its_dev, event);
+-static u64 its_clear_vpend_valid(void __iomem *vlpi_base)
++static u64 its_clear_vpend_valid(void __iomem *vlpi_base, u64 clr, u64 set)
+ {
+ 	u32 count = 1000000;	/* 1s! */
+ 	bool clean;
+@@ -2638,6 +2638,8 @@ static u64 its_clear_vpend_valid(void __iomem *vlpi_base)
+ 
+ 	val = gits_read_vpendbaser(vlpi_base + GICR_VPENDBASER);
+ 	val &= ~GICR_VPENDBASER_Valid;
++	val &= ~clr;
++	val |= set;
+ 	gits_write_vpendbaser(val, vlpi_base + GICR_VPENDBASER);
+ 
+ 	do {
+@@ -2650,6 +2652,11 @@ static u64 its_clear_vpend_valid(void __iomem *vlpi_base)
+ 		}
+ 	} while (!clean && count);
+ 
++	if (unlikely(val & GICR_VPENDBASER_Dirty)) {
++		pr_err_ratelimited("ITS virtual pending table not cleaning\n");
++		val |= GICR_VPENDBASER_PendingLast;
 +	}
 +
-+	return NULL;
-+}
-+
-+static int irq_to_cpuid(struct irq_data *d)
- {
- 	struct its_device *its_dev = irq_data_get_irq_chip_data(d);
-+	struct its_vlpi_map *map = get_vlpi_map(d);
-+
-+	if (map)
-+		return map->vpe->col_idx;
- 
--	return dev_event_to_col(its_dev, its_get_event_id(d));
-+	return its_dev->event_map.col_map[its_get_event_id(d)];
+ 	return val;
  }
  
- static struct its_collection *valid_col(struct its_collection *col)
-@@ -1269,18 +1285,6 @@ static void its_send_invdb(struct its_node *its, struct its_vpe *vpe)
- /*
-  * irqchip functions - assumes MSI, mostly.
-  */
--static struct its_vlpi_map *get_vlpi_map(struct irq_data *d)
--{
--	if (irqd_is_forwarded_to_vcpu(d)) {
--		struct its_device *its_dev = irq_data_get_irq_chip_data(d);
--		u32 event = its_get_event_id(d);
--
--		return dev_event_to_vlpi_map(its_dev, event);
--	}
--
--	return NULL;
--}
--
- static void lpi_write_config(struct irq_data *d, u8 clr, u8 set)
- {
- 	struct its_vlpi_map *map = get_vlpi_map(d);
-@@ -1323,13 +1327,25 @@ static void wait_for_syncr(void __iomem *rdbase)
+@@ -2758,7 +2765,7 @@ static void its_cpu_init_lpis(void)
+ 		 * ancient programming gets left in and has possibility of
+ 		 * corrupting memory.
+ 		 */
+-		val = its_clear_vpend_valid(vlpi_base);
++		val = its_clear_vpend_valid(vlpi_base, 0, 0);
+ 		WARN_ON(val & GICR_VPENDBASER_Dirty);
+ 	}
  
- static void direct_lpi_inv(struct irq_data *d)
- {
--	struct its_collection *col;
-+	struct its_vlpi_map *map = get_vlpi_map(d);
- 	void __iomem *rdbase;
+@@ -3438,16 +3445,10 @@ static void its_vpe_deschedule(struct its_vpe *vpe)
+ 	void __iomem *vlpi_base = gic_data_rdist_vlpi_base();
+ 	u64 val;
+ 
+-	val = its_clear_vpend_valid(vlpi_base);
++	val = its_clear_vpend_valid(vlpi_base, 0, 0);
+ 
+-	if (unlikely(val & GICR_VPENDBASER_Dirty)) {
+-		pr_err_ratelimited("ITS virtual pending table not cleaning\n");
+-		vpe->idai = false;
+-		vpe->pending_last = true;
+-	} else {
+-		vpe->idai = !!(val & GICR_VPENDBASER_IDAI);
+-		vpe->pending_last = !!(val & GICR_VPENDBASER_PendingLast);
+-	}
++	vpe->idai = !!(val & GICR_VPENDBASER_IDAI);
++	vpe->pending_last = !!(val & GICR_VPENDBASER_PendingLast);
+ }
+ 
+ static void its_vpe_invall(struct its_vpe *vpe)
+@@ -3639,6 +3640,35 @@ static void its_vpe_4_1_schedule(struct its_vpe *vpe,
+ 	gits_write_vpendbaser(val, vlpi_base + GICR_VPENDBASER);
+ }
+ 
++static void its_vpe_4_1_deschedule(struct its_vpe *vpe,
++				   struct its_cmd_info *info)
++{
++	void __iomem *vlpi_base = gic_data_rdist_vlpi_base();
 +	u64 val;
 +
-+	if (map) {
-+		struct its_device *its_dev = irq_data_get_irq_chip_data(d);
-+
-+		WARN_ON(!is_v4_1(its_dev->its));
-+
-+		val  = GICR_INVLPIR_V;
-+		val |= FIELD_PREP(GICR_INVLPIR_VPEID, map->vpe->vpe_id);
-+		val |= FIELD_PREP(GICR_INVLPIR_INTID, map->vintid);
++	if (info->req_db) {
++		/*
++		 * vPE is going to block: make the vPE non-resident with
++		 * PendingLast clear and DB set. The GIC guarantees that if
++		 * we read-back PendingLast clear, then a doorbell will be
++		 * delivered when an interrupt comes.
++		 */
++		val = its_clear_vpend_valid(vlpi_base,
++					    GICR_VPENDBASER_PendingLast,
++					    GICR_VPENDBASER_4_1_DB);
++		vpe->pending_last = !!(val & GICR_VPENDBASER_PendingLast);
 +	} else {
-+		val = d->hwirq;
++		/*
++		 * We're not blocking, so just make the vPE non-resident
++		 * with PendingLast set, indicating that we'll be back.
++		 */
++		val = its_clear_vpend_valid(vlpi_base,
++					    0,
++					    GICR_VPENDBASER_PendingLast);
++		vpe->pending_last = true;
 +	}
++}
++
+ static int its_vpe_4_1_set_vcpu_affinity(struct irq_data *d, void *vcpu_info)
+ {
+ 	struct its_vpe *vpe = irq_data_get_irq_chip_data(d);
+@@ -3650,6 +3680,7 @@ static int its_vpe_4_1_set_vcpu_affinity(struct irq_data *d, void *vcpu_info)
+ 		return 0;
  
- 	/* Target the redistributor this LPI is currently routed to */
--	col = irq_to_col(d);
--	rdbase = per_cpu_ptr(gic_rdists->rdist, col->col_id)->rd_base;
--	gic_write_lpir(d->hwirq, rdbase + GICR_INVLPIR);
-+	rdbase = per_cpu_ptr(gic_rdists->rdist, irq_to_cpuid(d))->rd_base;
-+	gic_write_lpir(val, rdbase + GICR_INVLPIR);
+ 	case DESCHEDULE_VPE:
++		its_vpe_4_1_deschedule(vpe, info);
+ 		return 0;
  
- 	wait_for_syncr(rdbase);
- }
-@@ -1339,7 +1355,8 @@ static void lpi_update_config(struct irq_data *d, u8 clr, u8 set)
- 	struct its_device *its_dev = irq_data_get_irq_chip_data(d);
- 
- 	lpi_write_config(d, clr, set);
--	if (gic_rdists->has_direct_lpi && !irqd_is_forwarded_to_vcpu(d))
-+	if (gic_rdists->has_direct_lpi &&
-+	    (is_v4_1(its_dev->its) || !irqd_is_forwarded_to_vcpu(d)))
- 		direct_lpi_inv(d);
- 	else if (!irqd_is_forwarded_to_vcpu(d))
- 		its_send_inv(its_dev, its_get_event_id(d));
-diff --git a/include/linux/irqchip/arm-gic-v3.h b/include/linux/irqchip/arm-gic-v3.h
-index 49ed6fa..f0b8ca7 100644
---- a/include/linux/irqchip/arm-gic-v3.h
-+++ b/include/linux/irqchip/arm-gic-v3.h
-@@ -247,6 +247,7 @@
- #define GICR_TYPER_COMMON_LPI_AFF	GENMASK_ULL(25, 24)
- #define GICR_TYPER_AFFINITY		GENMASK_ULL(63, 32)
- 
-+#define GICR_INVLPIR_INTID		GENMASK_ULL(31, 0)
- #define GICR_INVLPIR_VPEID		GENMASK_ULL(47, 32)
- #define GICR_INVLPIR_V			GENMASK_ULL(63, 63)
- 
+ 	case INVALL_VPE:
