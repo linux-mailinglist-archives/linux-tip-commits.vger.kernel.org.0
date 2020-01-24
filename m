@@ -2,35 +2,35 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A1CBF148E76
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 24 Jan 2020 20:13:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1AFBB148E7E
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 24 Jan 2020 20:13:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389699AbgAXTMf (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 24 Jan 2020 14:12:35 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:43025 "EHLO
+        id S2388814AbgAXTM5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 24 Jan 2020 14:12:57 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:43000 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2403972AbgAXTLS (ORCPT
+        with ESMTP id S2389363AbgAXTLN (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 24 Jan 2020 14:11:18 -0500
+        Fri, 24 Jan 2020 14:11:13 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iv4MM-0007aC-5U; Fri, 24 Jan 2020 20:11:14 +0100
+        id 1iv4MI-0007bR-1G; Fri, 24 Jan 2020 20:11:10 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 673DA1C1A61;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B10CC1C1A62;
         Fri, 24 Jan 2020 20:11:08 +0100 (CET)
 Date:   Fri, 24 Jan 2020 19:11:08 -0000
 From:   "tip-bot2 for Marc Zyngier" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] irqchip/gic-v4.1: Implement the v4.1 flavour of VMOVP
+Subject: [tip: irq/core] irqchip/gic-v4.1: Don't use the VPE proxy if RVPEID is set
 Cc:     Marc Zyngier <maz@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191224111055.11836-9-maz@kernel.org>
-References: <20191224111055.11836-9-maz@kernel.org>
+In-Reply-To: <20191224111055.11836-8-maz@kernel.org>
+References: <20191224111055.11836-8-maz@kernel.org>
 MIME-Version: 1.0
-Message-ID: <157989306824.396.8718529101220247643.tip-bot2@tip-bot2>
+Message-ID: <157989306847.396.9104611654547024981.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -46,101 +46,94 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     dd3f050a216ef7c8ce21ba48fd3b2ece2155382f
-Gitweb:        https://git.kernel.org/tip/dd3f050a216ef7c8ce21ba48fd3b2ece2155382f
+Commit-ID:     0684c7046590dd1e8047e187aaf4c7910cc35bce
+Gitweb:        https://git.kernel.org/tip/0684c7046590dd1e8047e187aaf4c7910cc35bce
 Author:        Marc Zyngier <maz@kernel.org>
-AuthorDate:    Tue, 24 Dec 2019 11:10:31 
+AuthorDate:    Tue, 24 Dec 2019 11:10:30 
 Committer:     Marc Zyngier <maz@kernel.org>
 CommitterDate: Wed, 22 Jan 2020 14:22:20 
 
-irqchip/gic-v4.1: Implement the v4.1 flavour of VMOVP
+irqchip/gic-v4.1: Don't use the VPE proxy if RVPEID is set
 
-With GICv4.1, VMOVP is extended to allow a default doorbell to be
-specified, as well as a validity bit for this doorbell. As an added
-bonus, VMOVP isn't required anymore of moving a VPE between
-redistributors that share the same affinity.
+The infamous VPE proxy device isn't used with GICv4.1 because:
+- we can invalidate any LPI from the DirectLPI MMIO interface
+- the ITS and redistributors understand the life cycle of
+  the doorbell, so we don't need to enable/disable it all
+  the time
 
-Let's add this support to the VMOVP builder, and make sure we don't
-issue the command if we don't really need to.
+So let's escape early from the proxy related functions.
 
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 Reviewed-by: Zenghui Yu <yuzenghui@huawei.com>
-Link: https://lore.kernel.org/r/20191224111055.11836-9-maz@kernel.org
+Link: https://lore.kernel.org/r/20191224111055.11836-8-maz@kernel.org
 ---
- drivers/irqchip/irq-gic-v3-its.c | 40 +++++++++++++++++++++++++------
- 1 file changed, 33 insertions(+), 7 deletions(-)
+ drivers/irqchip/irq-gic-v3-its.c | 25 ++++++++++++++++++++++++-
+ 1 file changed, 24 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
-index 9bc8adf..53a7663 100644
+index fbf4ca7..9bc8adf 100644
 --- a/drivers/irqchip/irq-gic-v3-its.c
 +++ b/drivers/irqchip/irq-gic-v3-its.c
-@@ -470,6 +470,17 @@ static void its_encode_vmapp_default_db(struct its_cmd_block *cmd,
- 	its_mask_encode(&cmd->raw_cmd[1], vpe_db_lpi, 31, 0);
- }
- 
-+static void its_encode_vmovp_default_db(struct its_cmd_block *cmd,
-+					u32 vpe_db_lpi)
-+{
-+	its_mask_encode(&cmd->raw_cmd[3], vpe_db_lpi, 31, 0);
-+}
-+
-+static void its_encode_db(struct its_cmd_block *cmd, bool db)
-+{
-+	its_mask_encode(&cmd->raw_cmd[2], db, 63, 63);
-+}
-+
- static inline void its_fixup_cmd(struct its_cmd_block *cmd)
+@@ -3212,7 +3212,7 @@ static const struct irq_domain_ops its_domain_ops = {
+ /*
+  * This is insane.
+  *
+- * If a GICv4 doesn't implement Direct LPIs (which is extremely
++ * If a GICv4.0 doesn't implement Direct LPIs (which is extremely
+  * likely), the only way to perform an invalidate is to use a fake
+  * device to issue an INV command, implying that the LPI has first
+  * been mapped to some event on that device. Since this is not exactly
+@@ -3220,9 +3220,20 @@ static const struct irq_domain_ops its_domain_ops = {
+  * only issue an UNMAP if we're short on available slots.
+  *
+  * Broken by design(tm).
++ *
++ * GICv4.1, on the other hand, mandates that we're able to invalidate
++ * by writing to a MMIO register. It doesn't implement the whole of
++ * DirectLPI, but that's good enough. And most of the time, we don't
++ * even have to invalidate anything, as the redistributor can be told
++ * whether to generate a doorbell or not (we thus leave it enabled,
++ * always).
+  */
+ static void its_vpe_db_proxy_unmap_locked(struct its_vpe *vpe)
  {
- 	/* Let's fixup BE commands */
-@@ -756,6 +767,11 @@ static struct its_vpe *its_build_vmovp_cmd(struct its_node *its,
- 	its_encode_vpeid(cmd, desc->its_vmovp_cmd.vpe->vpe_id);
- 	its_encode_target(cmd, target);
- 
-+	if (is_v4_1(its)) {
-+		its_encode_db(cmd, true);
-+		its_encode_vmovp_default_db(cmd, desc->its_vmovp_cmd.vpe->vpe_db_lpi);
-+	}
++	/* GICv4.1 doesn't use a proxy, so nothing to do here */
++	if (gic_rdists->has_rvpeid)
++		return;
 +
- 	its_fixup_cmd(cmd);
+ 	/* Already unmapped? */
+ 	if (vpe->vpe_proxy_event == -1)
+ 		return;
+@@ -3245,6 +3256,10 @@ static void its_vpe_db_proxy_unmap_locked(struct its_vpe *vpe)
  
- 	return valid_vpe(its, desc->its_vmovp_cmd.vpe);
-@@ -3327,7 +3343,7 @@ static int its_vpe_set_affinity(struct irq_data *d,
- 				bool force)
+ static void its_vpe_db_proxy_unmap(struct its_vpe *vpe)
  {
- 	struct its_vpe *vpe = irq_data_get_irq_chip_data(d);
--	int cpu = cpumask_first(mask_val);
-+	int from, cpu = cpumask_first(mask_val);
- 
- 	/*
- 	 * Changing affinity is mega expensive, so let's be as lazy as
-@@ -3335,14 +3351,24 @@ static int its_vpe_set_affinity(struct irq_data *d,
- 	 * into the proxy device, we need to move the doorbell
- 	 * interrupt to its new location.
- 	 */
--	if (vpe->col_idx != cpu) {
--		int from = vpe->col_idx;
-+	if (vpe->col_idx == cpu)
-+		goto out;
- 
--		vpe->col_idx = cpu;
--		its_send_vmovp(vpe);
--		its_vpe_db_proxy_move(vpe, from, cpu);
--	}
-+	from = vpe->col_idx;
-+	vpe->col_idx = cpu;
++	/* GICv4.1 doesn't use a proxy, so nothing to do here */
++	if (gic_rdists->has_rvpeid)
++		return;
 +
-+	/*
-+	 * GICv4.1 allows us to skip VMOVP if moving to a cpu whose RD
-+	 * is sharing its VPE table with the current one.
-+	 */
-+	if (gic_data_rdist_cpu(cpu)->vpe_table_mask &&
-+	    cpumask_test_cpu(from, gic_data_rdist_cpu(cpu)->vpe_table_mask))
-+		goto out;
+ 	if (!gic_rdists->has_direct_lpi) {
+ 		unsigned long flags;
  
-+	its_send_vmovp(vpe);
-+	its_vpe_db_proxy_move(vpe, from, cpu);
+@@ -3256,6 +3271,10 @@ static void its_vpe_db_proxy_unmap(struct its_vpe *vpe)
+ 
+ static void its_vpe_db_proxy_map_locked(struct its_vpe *vpe)
+ {
++	/* GICv4.1 doesn't use a proxy, so nothing to do here */
++	if (gic_rdists->has_rvpeid)
++		return;
 +
-+out:
- 	irq_data_update_effective_affinity(d, cpumask_of(cpu));
+ 	/* Already mapped? */
+ 	if (vpe->vpe_proxy_event != -1)
+ 		return;
+@@ -3278,6 +3297,10 @@ static void its_vpe_db_proxy_move(struct its_vpe *vpe, int from, int to)
+ 	unsigned long flags;
+ 	struct its_collection *target_col;
  
- 	return IRQ_SET_MASK_OK_DONE;
++	/* GICv4.1 doesn't use a proxy, so nothing to do here */
++	if (gic_rdists->has_rvpeid)
++		return;
++
+ 	if (gic_rdists->has_direct_lpi) {
+ 		void __iomem *rdbase;
+ 
