@@ -2,35 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F1FAD148E62
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 24 Jan 2020 20:12:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F990148E52
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 24 Jan 2020 20:12:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391886AbgAXTMF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 24 Jan 2020 14:12:05 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:43075 "EHLO
+        id S2404152AbgAXTLb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 24 Jan 2020 14:11:31 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:43100 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404077AbgAXTL0 (ORCPT
+        with ESMTP id S2404134AbgAXTLa (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 24 Jan 2020 14:11:26 -0500
+        Fri, 24 Jan 2020 14:11:30 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iv4MV-0007jC-Go; Fri, 24 Jan 2020 20:11:23 +0100
+        id 1iv4MW-0007iC-Op; Fri, 24 Jan 2020 20:11:24 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 08BA41C1A70;
-        Fri, 24 Jan 2020 20:11:14 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 41F711C1A6E;
+        Fri, 24 Jan 2020 20:11:13 +0100 (CET)
 Date:   Fri, 24 Jan 2020 19:11:13 -0000
 From:   "tip-bot2 for Yash Shah" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] genirq: Introduce irq_domain_translate_onecell
-Cc:     Yash Shah <yash.shah@sifive.com>, Marc Zyngier <maz@kernel.org>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <1575976274-13487-2-git-send-email-yash.shah@sifive.com>
-References: <1575976274-13487-2-git-send-email-yash.shah@sifive.com>
+Subject: [tip: irq/core] gpio/sifive: Add DT documentation for SiFive GPIO
+Cc:     "Wesley W. Terpstra" <wesley@sifive.com>,
+        Atish Patra <atish.patra@wdc.com>,
+        Yash Shah <yash.shah@sifive.com>,
+        Marc Zyngier <maz@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Rob Herring <robh@kernel.org>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <1575976274-13487-5-git-send-email-yash.shah@sifive.com>
+References: <1575976274-13487-5-git-send-email-yash.shah@sifive.com>
 MIME-Version: 1.0
-Message-ID: <157989307384.396.11975428136518341219.tip-bot2@tip-bot2>
+Message-ID: <157989307309.396.12029128798763007003.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -46,67 +51,101 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     b01ecceaf2c0c4b3f2d24aa0adcf096ab1648253
-Gitweb:        https://git.kernel.org/tip/b01ecceaf2c0c4b3f2d24aa0adcf096ab1648253
+Commit-ID:     7875f8242494f8e4c8a75f2aeab4a6fb742599bd
+Gitweb:        https://git.kernel.org/tip/7875f8242494f8e4c8a75f2aeab4a6fb742599bd
 Author:        Yash Shah <yash.shah@sifive.com>
-AuthorDate:    Tue, 10 Dec 2019 16:41:09 +05:30
+AuthorDate:    Tue, 10 Dec 2019 16:41:12 +05:30
 Committer:     Marc Zyngier <maz@kernel.org>
-CommitterDate: Mon, 20 Jan 2020 09:19:33 
+CommitterDate: Mon, 20 Jan 2020 09:26:05 
 
-genirq: Introduce irq_domain_translate_onecell
+gpio/sifive: Add DT documentation for SiFive GPIO
 
-Add a new function irq_domain_translate_onecell() that is to be used as
-the translate function in struct irq_domain_ops.
+DT json-schema for GPIO controller added.
 
+Signed-off-by: Wesley W. Terpstra <wesley@sifive.com>
+[Atish: Compatible string update]
+Signed-off-by: Atish Patra <atish.patra@wdc.com>
 Signed-off-by: Yash Shah <yash.shah@sifive.com>
 Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/1575976274-13487-2-git-send-email-yash.shah@sifive.com
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Rob Herring <robh@kernel.org>
+Link: https://lore.kernel.org/r/1575976274-13487-5-git-send-email-yash.shah@sifive.com
 ---
- include/linux/irqdomain.h |  5 +++++
- kernel/irq/irqdomain.c    | 17 +++++++++++++++++
- 2 files changed, 22 insertions(+)
+ Documentation/devicetree/bindings/gpio/sifive,gpio.yaml | 68 ++++++++-
+ 1 file changed, 68 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/gpio/sifive,gpio.yaml
 
-diff --git a/include/linux/irqdomain.h b/include/linux/irqdomain.h
-index 3c340db..698749f 100644
---- a/include/linux/irqdomain.h
-+++ b/include/linux/irqdomain.h
-@@ -427,6 +427,11 @@ int irq_domain_translate_twocell(struct irq_domain *d,
- 				 unsigned long *out_hwirq,
- 				 unsigned int *out_type);
- 
-+int irq_domain_translate_onecell(struct irq_domain *d,
-+				 struct irq_fwspec *fwspec,
-+				 unsigned long *out_hwirq,
-+				 unsigned int *out_type);
+diff --git a/Documentation/devicetree/bindings/gpio/sifive,gpio.yaml b/Documentation/devicetree/bindings/gpio/sifive,gpio.yaml
+new file mode 100644
+index 0000000..418e838
+--- /dev/null
++++ b/Documentation/devicetree/bindings/gpio/sifive,gpio.yaml
+@@ -0,0 +1,68 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/gpio/sifive,gpio.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
- /* IPI functions */
- int irq_reserve_ipi(struct irq_domain *domain, const struct cpumask *dest);
- int irq_destroy_ipi(unsigned int irq, const struct cpumask *dest);
-diff --git a/kernel/irq/irqdomain.c b/kernel/irq/irqdomain.c
-index dd822fd..7a8808c 100644
---- a/kernel/irq/irqdomain.c
-+++ b/kernel/irq/irqdomain.c
-@@ -987,6 +987,23 @@ const struct irq_domain_ops irq_domain_simple_ops = {
- EXPORT_SYMBOL_GPL(irq_domain_simple_ops);
- 
- /**
-+ * irq_domain_translate_onecell() - Generic translate for direct one cell
-+ * bindings
-+ */
-+int irq_domain_translate_onecell(struct irq_domain *d,
-+				 struct irq_fwspec *fwspec,
-+				 unsigned long *out_hwirq,
-+				 unsigned int *out_type)
-+{
-+	if (WARN_ON(fwspec->param_count < 1))
-+		return -EINVAL;
-+	*out_hwirq = fwspec->param[0];
-+	*out_type = IRQ_TYPE_NONE;
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(irq_domain_translate_onecell);
++title: SiFive GPIO controller
 +
-+/**
-  * irq_domain_translate_twocell() - Generic translate for direct two cell
-  * bindings
-  *
++maintainers:
++  - Yash Shah <yash.shah@sifive.com>
++  - Paul Walmsley <paul.walmsley@sifive.com>
++
++properties:
++  compatible:
++    items:
++      - const: sifive,fu540-c000-gpio
++      - const: sifive,gpio0
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    description:
++      interrupt mapping one per GPIO. Maximum 16 GPIOs.
++    minItems: 1
++    maxItems: 16
++
++  interrupt-controller: true
++
++  "#interrupt-cells":
++    const: 2
++
++  clocks:
++    maxItems: 1
++
++  "#gpio-cells":
++    const: 2
++
++  gpio-controller: true
++
++required:
++  - compatible
++  - reg
++  - interrupts
++  - interrupt-controller
++  - "#interrupt-cells"
++  - clocks
++  - "#gpio-cells"
++  - gpio-controller
++
++additionalProperties: false
++
++examples:
++  - |
++      #include <dt-bindings/clock/sifive-fu540-prci.h>
++      gpio@10060000 {
++        compatible = "sifive,fu540-c000-gpio", "sifive,gpio0";
++        interrupt-parent = <&plic>;
++        interrupts = <7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22>;
++        reg = <0x0 0x10060000 0x0 0x1000>;
++        clocks = <&tlclk PRCI_CLK_TLCLK>;
++        gpio-controller;
++        #gpio-cells = <2>;
++        interrupt-controller;
++        #interrupt-cells = <2>;
++      };
++
++...
