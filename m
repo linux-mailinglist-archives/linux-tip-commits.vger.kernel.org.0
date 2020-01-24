@@ -2,36 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 68A6E148E4B
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 24 Jan 2020 20:12:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B0A4D148E4E
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 24 Jan 2020 20:12:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404011AbgAXTL0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 24 Jan 2020 14:11:26 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:43063 "EHLO
+        id S2404128AbgAXTL2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 24 Jan 2020 14:11:28 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:43080 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404060AbgAXTLZ (ORCPT
+        with ESMTP id S2404082AbgAXTL2 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 24 Jan 2020 14:11:25 -0500
+        Fri, 24 Jan 2020 14:11:28 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iv4MQ-0007ff-Hw; Fri, 24 Jan 2020 20:11:18 +0100
+        id 1iv4MT-0007hZ-Ld; Fri, 24 Jan 2020 20:11:21 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 7E6BB1C1A6B;
-        Fri, 24 Jan 2020 20:11:12 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 08EE51C1A6D;
+        Fri, 24 Jan 2020 20:11:13 +0100 (CET)
 Date:   Fri, 24 Jan 2020 19:11:12 -0000
-From:   "tip-bot2 for Eddie James" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Yash Shah" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] irqchip: Add Aspeed SCU interrupt controller
-Cc:     Eddie James <eajames@linux.ibm.com>, Marc Zyngier <maz@kernel.org>,
-        Andrew Jeffery <andrew@aj.id.au>, x86 <x86@kernel.org>,
+Subject: [tip: irq/core] gpio/sifive: Add GPIO driver for SiFive SoCs
+Cc:     "Wesley W. Terpstra" <wesley@sifive.com>,
+        Atish Patra <atish.patra@wdc.com>,
+        Yash Shah <yash.shah@sifive.com>,
+        Marc Zyngier <maz@kernel.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Linus Walleij <linus.walleij@linaro.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <1579123790-6894-3-git-send-email-eajames@linux.ibm.com>
-References: <1579123790-6894-3-git-send-email-eajames@linux.ibm.com>
+In-Reply-To: <1575976274-13487-6-git-send-email-yash.shah@sifive.com>
+References: <1575976274-13487-6-git-send-email-yash.shah@sifive.com>
 MIME-Version: 1.0
-Message-ID: <157989307233.396.14715044506500950079.tip-bot2@tip-bot2>
+Message-ID: <157989307283.396.8643506329199494285.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,297 +51,319 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     04f605906ff00c649751519ca73d3058372cdc78
-Gitweb:        https://git.kernel.org/tip/04f605906ff00c649751519ca73d3058372cdc78
-Author:        Eddie James <eajames@linux.ibm.com>
-AuthorDate:    Wed, 15 Jan 2020 15:29:40 -06:00
+Commit-ID:     96868dce644d002383f6d5eb575a6ce3c8779f39
+Gitweb:        https://git.kernel.org/tip/96868dce644d002383f6d5eb575a6ce3c8779f39
+Author:        Yash Shah <yash.shah@sifive.com>
+AuthorDate:    Tue, 10 Dec 2019 16:41:13 +05:30
 Committer:     Marc Zyngier <maz@kernel.org>
-CommitterDate: Mon, 20 Jan 2020 19:10:04 
+CommitterDate: Mon, 20 Jan 2020 19:10:03 
 
-irqchip: Add Aspeed SCU interrupt controller
+gpio/sifive: Add GPIO driver for SiFive SoCs
 
-The Aspeed SOCs provide some interrupts through the System Control
-Unit registers. Add an interrupt controller that provides these
-interrupts to the system.
+Adds the GPIO driver for SiFive RISC-V SoCs.
 
-Signed-off-by: Eddie James <eajames@linux.ibm.com>
+Signed-off-by: Wesley W. Terpstra <wesley@sifive.com>
+[Atish: Various fixes and code cleanup]
+Signed-off-by: Atish Patra <atish.patra@wdc.com>
+Signed-off-by: Yash Shah <yash.shah@sifive.com>
 Signed-off-by: Marc Zyngier <maz@kernel.org>
-Reviewed-by: Andrew Jeffery <andrew@aj.id.au>
-Link: https://lore.kernel.org/r/1579123790-6894-3-git-send-email-eajames@linux.ibm.com
+Reviewed-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/1575976274-13487-6-git-send-email-yash.shah@sifive.com
 ---
- MAINTAINERS                         |   1 +-
- drivers/irqchip/Makefile            |   2 +-
- drivers/irqchip/irq-aspeed-scu-ic.c | 239 +++++++++++++++++++++++++++-
- 3 files changed, 241 insertions(+), 1 deletion(-)
- create mode 100644 drivers/irqchip/irq-aspeed-scu-ic.c
+ drivers/gpio/Kconfig       |   9 +-
+ drivers/gpio/Makefile      |   1 +-
+ drivers/gpio/gpio-sifive.c | 252 ++++++++++++++++++++++++++++++++++++-
+ 3 files changed, 262 insertions(+)
+ create mode 100644 drivers/gpio/gpio-sifive.c
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index f9f6e40..ac21e7b 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -2697,6 +2697,7 @@ M:	Eddie James <eajames@linux.ibm.com>
- L:	linux-aspeed@lists.ozlabs.org (moderated for non-subscribers)
- S:	Maintained
- F:	Documentation/devicetree/bindings/interrupt-controller/aspeed,ast2xxx-scu-ic.txt
-+F:	drivers/irqchip/irq-aspeed-scu-ic.c
- F:	include/dt-bindings/interrupt-controller/aspeed-scu-ic.h
+diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
+index 6ab25fe..809dd54 100644
+--- a/drivers/gpio/Kconfig
++++ b/drivers/gpio/Kconfig
+@@ -479,6 +479,15 @@ config GPIO_SAMA5D2_PIOBU
+ 	  The difference from regular GPIOs is that they
+ 	  maintain their value during backup/self-refresh.
  
- ASPEED VIDEO ENGINE DRIVER
-diff --git a/drivers/irqchip/Makefile b/drivers/irqchip/Makefile
-index e806dda..6c9262c 100644
---- a/drivers/irqchip/Makefile
-+++ b/drivers/irqchip/Makefile
-@@ -87,7 +87,7 @@ obj-$(CONFIG_MVEBU_SEI)			+= irq-mvebu-sei.o
- obj-$(CONFIG_LS_EXTIRQ)			+= irq-ls-extirq.o
- obj-$(CONFIG_LS_SCFG_MSI)		+= irq-ls-scfg-msi.o
- obj-$(CONFIG_EZNPS_GIC)			+= irq-eznps.o
--obj-$(CONFIG_ARCH_ASPEED)		+= irq-aspeed-vic.o irq-aspeed-i2c-ic.o
-+obj-$(CONFIG_ARCH_ASPEED)		+= irq-aspeed-vic.o irq-aspeed-i2c-ic.o irq-aspeed-scu-ic.o
- obj-$(CONFIG_STM32_EXTI) 		+= irq-stm32-exti.o
- obj-$(CONFIG_QCOM_IRQ_COMBINER)		+= qcom-irq-combiner.o
- obj-$(CONFIG_IRQ_UNIPHIER_AIDET)	+= irq-uniphier-aidet.o
-diff --git a/drivers/irqchip/irq-aspeed-scu-ic.c b/drivers/irqchip/irq-aspeed-scu-ic.c
++config GPIO_SIFIVE
++	bool "SiFive GPIO support"
++	depends on OF_GPIO && IRQ_DOMAIN_HIERARCHY
++	select GPIO_GENERIC
++	select GPIOLIB_IRQCHIP
++	select REGMAP_MMIO
++	help
++	  Say yes here to support the GPIO device on SiFive SoCs.
++
+ config GPIO_SIOX
+ 	tristate "SIOX GPIO support"
+ 	depends on SIOX
+diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
+index 34eb8b2..11eeeeb 100644
+--- a/drivers/gpio/Makefile
++++ b/drivers/gpio/Makefile
+@@ -124,6 +124,7 @@ obj-$(CONFIG_ARCH_SA1100)		+= gpio-sa1100.o
+ obj-$(CONFIG_GPIO_SAMA5D2_PIOBU)	+= gpio-sama5d2-piobu.o
+ obj-$(CONFIG_GPIO_SCH311X)		+= gpio-sch311x.o
+ obj-$(CONFIG_GPIO_SCH)			+= gpio-sch.o
++obj-$(CONFIG_GPIO_SIFIVE)		+= gpio-sifive.o
+ obj-$(CONFIG_GPIO_SIOX)			+= gpio-siox.o
+ obj-$(CONFIG_GPIO_SODAVILLE)		+= gpio-sodaville.o
+ obj-$(CONFIG_GPIO_SPEAR_SPICS)		+= gpio-spear-spics.o
+diff --git a/drivers/gpio/gpio-sifive.c b/drivers/gpio/gpio-sifive.c
 new file mode 100644
-index 0000000..c90a334
+index 0000000..147a1bd
 --- /dev/null
-+++ b/drivers/irqchip/irq-aspeed-scu-ic.c
-@@ -0,0 +1,239 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
++++ b/drivers/gpio/gpio-sifive.c
+@@ -0,0 +1,252 @@
++// SPDX-License-Identifier: GPL-2.0
 +/*
-+ * Aspeed AST24XX, AST25XX, and AST26XX SCU Interrupt Controller
-+ * Copyright 2019 IBM Corporation
-+ *
-+ * Eddie James <eajames@linux.ibm.com>
++ * Copyright (C) 2019 SiFive
 + */
 +
 +#include <linux/bitops.h>
-+#include <linux/irq.h>
-+#include <linux/irqchip.h>
-+#include <linux/irqchip/chained_irq.h>
-+#include <linux/irqdomain.h>
-+#include <linux/mfd/syscon.h>
++#include <linux/device.h>
++#include <linux/errno.h>
 +#include <linux/of_irq.h>
++#include <linux/gpio/driver.h>
++#include <linux/init.h>
++#include <linux/platform_device.h>
++#include <linux/slab.h>
++#include <linux/spinlock.h>
 +#include <linux/regmap.h>
 +
-+#define ASPEED_SCU_IC_REG		0x018
-+#define ASPEED_SCU_IC_SHIFT		0
-+#define ASPEED_SCU_IC_ENABLE		GENMASK(6, ASPEED_SCU_IC_SHIFT)
-+#define ASPEED_SCU_IC_NUM_IRQS		7
-+#define ASPEED_SCU_IC_STATUS_SHIFT	16
++#define SIFIVE_GPIO_INPUT_VAL	0x00
++#define SIFIVE_GPIO_INPUT_EN	0x04
++#define SIFIVE_GPIO_OUTPUT_EN	0x08
++#define SIFIVE_GPIO_OUTPUT_VAL	0x0C
++#define SIFIVE_GPIO_RISE_IE	0x18
++#define SIFIVE_GPIO_RISE_IP	0x1C
++#define SIFIVE_GPIO_FALL_IE	0x20
++#define SIFIVE_GPIO_FALL_IP	0x24
++#define SIFIVE_GPIO_HIGH_IE	0x28
++#define SIFIVE_GPIO_HIGH_IP	0x2C
++#define SIFIVE_GPIO_LOW_IE	0x30
++#define SIFIVE_GPIO_LOW_IP	0x34
++#define SIFIVE_GPIO_OUTPUT_XOR	0x40
 +
-+#define ASPEED_AST2600_SCU_IC0_REG	0x560
-+#define ASPEED_AST2600_SCU_IC0_SHIFT	0
-+#define ASPEED_AST2600_SCU_IC0_ENABLE	\
-+	GENMASK(5, ASPEED_AST2600_SCU_IC0_SHIFT)
-+#define ASPEED_AST2600_SCU_IC0_NUM_IRQS	6
++#define SIFIVE_GPIO_MAX		32
++#define SIFIVE_GPIO_IRQ_OFFSET	7
 +
-+#define ASPEED_AST2600_SCU_IC1_REG	0x570
-+#define ASPEED_AST2600_SCU_IC1_SHIFT	4
-+#define ASPEED_AST2600_SCU_IC1_ENABLE	\
-+	GENMASK(5, ASPEED_AST2600_SCU_IC1_SHIFT)
-+#define ASPEED_AST2600_SCU_IC1_NUM_IRQS	2
-+
-+struct aspeed_scu_ic {
-+	unsigned long irq_enable;
-+	unsigned long irq_shift;
-+	unsigned int num_irqs;
-+	unsigned int reg;
-+	struct regmap *scu;
-+	struct irq_domain *irq_domain;
++struct sifive_gpio {
++	void __iomem		*base;
++	struct gpio_chip	gc;
++	struct regmap		*regs;
++	u32			irq_state;
++	unsigned int		trigger[SIFIVE_GPIO_MAX];
++	unsigned int		irq_parent[SIFIVE_GPIO_MAX];
 +};
 +
-+static void aspeed_scu_ic_irq_handler(struct irq_desc *desc)
++static void sifive_gpio_set_ie(struct sifive_gpio *chip, unsigned int offset)
 +{
-+	unsigned int irq;
-+	unsigned int sts;
-+	unsigned long bit;
-+	unsigned long enabled;
-+	unsigned long max;
-+	unsigned long status;
-+	struct aspeed_scu_ic *scu_ic = irq_desc_get_handler_data(desc);
-+	struct irq_chip *chip = irq_desc_get_chip(desc);
-+	unsigned int mask = scu_ic->irq_enable << ASPEED_SCU_IC_STATUS_SHIFT;
++	unsigned long flags;
++	unsigned int trigger;
 +
-+	chained_irq_enter(chip, desc);
-+
-+	/*
-+	 * The SCU IC has just one register to control its operation and read
-+	 * status. The interrupt enable bits occupy the lower 16 bits of the
-+	 * register, while the interrupt status bits occupy the upper 16 bits.
-+	 * The status bit for a given interrupt is always 16 bits shifted from
-+	 * the enable bit for the same interrupt.
-+	 * Therefore, perform the IRQ operations in the enable bit space by
-+	 * shifting the status down to get the mapping and then back up to
-+	 * clear the bit.
-+	 */
-+	regmap_read(scu_ic->scu, scu_ic->reg, &sts);
-+	enabled = sts & scu_ic->irq_enable;
-+	status = (sts >> ASPEED_SCU_IC_STATUS_SHIFT) & enabled;
-+
-+	bit = scu_ic->irq_shift;
-+	max = scu_ic->num_irqs + bit;
-+
-+	for_each_set_bit_from(bit, &status, max) {
-+		irq = irq_find_mapping(scu_ic->irq_domain,
-+				       bit - scu_ic->irq_shift);
-+		generic_handle_irq(irq);
-+
-+		regmap_update_bits(scu_ic->scu, scu_ic->reg, mask,
-+				   BIT(bit + ASPEED_SCU_IC_STATUS_SHIFT));
-+	}
-+
-+	chained_irq_exit(chip, desc);
++	spin_lock_irqsave(&chip->gc.bgpio_lock, flags);
++	trigger = (chip->irq_state & BIT(offset)) ? chip->trigger[offset] : 0;
++	regmap_update_bits(chip->regs, SIFIVE_GPIO_RISE_IE, BIT(offset),
++			   (trigger & IRQ_TYPE_EDGE_RISING) ? BIT(offset) : 0);
++	regmap_update_bits(chip->regs, SIFIVE_GPIO_FALL_IE, BIT(offset),
++			   (trigger & IRQ_TYPE_EDGE_FALLING) ? BIT(offset) : 0);
++	regmap_update_bits(chip->regs, SIFIVE_GPIO_HIGH_IE, BIT(offset),
++			   (trigger & IRQ_TYPE_LEVEL_HIGH) ? BIT(offset) : 0);
++	regmap_update_bits(chip->regs, SIFIVE_GPIO_LOW_IE, BIT(offset),
++			   (trigger & IRQ_TYPE_LEVEL_LOW) ? BIT(offset) : 0);
++	spin_unlock_irqrestore(&chip->gc.bgpio_lock, flags);
 +}
 +
-+static void aspeed_scu_ic_irq_mask(struct irq_data *data)
++static int sifive_gpio_irq_set_type(struct irq_data *d, unsigned int trigger)
 +{
-+	struct aspeed_scu_ic *scu_ic = irq_data_get_irq_chip_data(data);
-+	unsigned int mask = BIT(data->hwirq + scu_ic->irq_shift) |
-+		(scu_ic->irq_enable << ASPEED_SCU_IC_STATUS_SHIFT);
++	struct gpio_chip *gc = irq_data_get_irq_chip_data(d);
++	struct sifive_gpio *chip = gpiochip_get_data(gc);
++	int offset = irqd_to_hwirq(d);
 +
-+	/*
-+	 * Status bits are cleared by writing 1. In order to prevent the mask
-+	 * operation from clearing the status bits, they should be under the
-+	 * mask and written with 0.
-+	 */
-+	regmap_update_bits(scu_ic->scu, scu_ic->reg, mask, 0);
-+}
++	if (offset < 0 || offset >= gc->ngpio)
++		return -EINVAL;
 +
-+static void aspeed_scu_ic_irq_unmask(struct irq_data *data)
-+{
-+	struct aspeed_scu_ic *scu_ic = irq_data_get_irq_chip_data(data);
-+	unsigned int bit = BIT(data->hwirq + scu_ic->irq_shift);
-+	unsigned int mask = bit |
-+		(scu_ic->irq_enable << ASPEED_SCU_IC_STATUS_SHIFT);
-+
-+	/*
-+	 * Status bits are cleared by writing 1. In order to prevent the unmask
-+	 * operation from clearing the status bits, they should be under the
-+	 * mask and written with 0.
-+	 */
-+	regmap_update_bits(scu_ic->scu, scu_ic->reg, mask, bit);
-+}
-+
-+static int aspeed_scu_ic_irq_set_affinity(struct irq_data *data,
-+					  const struct cpumask *dest,
-+					  bool force)
-+{
-+	return -EINVAL;
-+}
-+
-+static struct irq_chip aspeed_scu_ic_chip = {
-+	.name			= "aspeed-scu-ic",
-+	.irq_mask		= aspeed_scu_ic_irq_mask,
-+	.irq_unmask		= aspeed_scu_ic_irq_unmask,
-+	.irq_set_affinity	= aspeed_scu_ic_irq_set_affinity,
-+};
-+
-+static int aspeed_scu_ic_map(struct irq_domain *domain, unsigned int irq,
-+			     irq_hw_number_t hwirq)
-+{
-+	irq_set_chip_and_handler(irq, &aspeed_scu_ic_chip, handle_level_irq);
-+	irq_set_chip_data(irq, domain->host_data);
-+
++	chip->trigger[offset] = trigger;
++	sifive_gpio_set_ie(chip, offset);
 +	return 0;
 +}
 +
-+static const struct irq_domain_ops aspeed_scu_ic_domain_ops = {
-+	.map = aspeed_scu_ic_map,
++static void sifive_gpio_irq_enable(struct irq_data *d)
++{
++	struct gpio_chip *gc = irq_data_get_irq_chip_data(d);
++	struct sifive_gpio *chip = gpiochip_get_data(gc);
++	int offset = irqd_to_hwirq(d) % SIFIVE_GPIO_MAX;
++	u32 bit = BIT(offset);
++	unsigned long flags;
++
++	irq_chip_enable_parent(d);
++
++	/* Switch to input */
++	gc->direction_input(gc, offset);
++
++	spin_lock_irqsave(&gc->bgpio_lock, flags);
++	/* Clear any sticky pending interrupts */
++	regmap_write(chip->regs, SIFIVE_GPIO_RISE_IP, bit);
++	regmap_write(chip->regs, SIFIVE_GPIO_FALL_IP, bit);
++	regmap_write(chip->regs, SIFIVE_GPIO_HIGH_IP, bit);
++	regmap_write(chip->regs, SIFIVE_GPIO_LOW_IP, bit);
++	spin_unlock_irqrestore(&gc->bgpio_lock, flags);
++
++	/* Enable interrupts */
++	assign_bit(offset, (unsigned long *)&chip->irq_state, 1);
++	sifive_gpio_set_ie(chip, offset);
++}
++
++static void sifive_gpio_irq_disable(struct irq_data *d)
++{
++	struct gpio_chip *gc = irq_data_get_irq_chip_data(d);
++	struct sifive_gpio *chip = gpiochip_get_data(gc);
++	int offset = irqd_to_hwirq(d) % SIFIVE_GPIO_MAX;
++
++	assign_bit(offset, (unsigned long *)&chip->irq_state, 0);
++	sifive_gpio_set_ie(chip, offset);
++	irq_chip_disable_parent(d);
++}
++
++static void sifive_gpio_irq_eoi(struct irq_data *d)
++{
++	struct gpio_chip *gc = irq_data_get_irq_chip_data(d);
++	struct sifive_gpio *chip = gpiochip_get_data(gc);
++	int offset = irqd_to_hwirq(d) % SIFIVE_GPIO_MAX;
++	u32 bit = BIT(offset);
++	unsigned long flags;
++
++	spin_lock_irqsave(&gc->bgpio_lock, flags);
++	/* Clear all pending interrupts */
++	regmap_write(chip->regs, SIFIVE_GPIO_RISE_IP, bit);
++	regmap_write(chip->regs, SIFIVE_GPIO_FALL_IP, bit);
++	regmap_write(chip->regs, SIFIVE_GPIO_HIGH_IP, bit);
++	regmap_write(chip->regs, SIFIVE_GPIO_LOW_IP, bit);
++	spin_unlock_irqrestore(&gc->bgpio_lock, flags);
++
++	irq_chip_eoi_parent(d);
++}
++
++static struct irq_chip sifive_gpio_irqchip = {
++	.name		= "sifive-gpio",
++	.irq_set_type	= sifive_gpio_irq_set_type,
++	.irq_mask	= irq_chip_mask_parent,
++	.irq_unmask	= irq_chip_unmask_parent,
++	.irq_enable	= sifive_gpio_irq_enable,
++	.irq_disable	= sifive_gpio_irq_disable,
++	.irq_eoi	= sifive_gpio_irq_eoi,
 +};
 +
-+static int aspeed_scu_ic_of_init_common(struct aspeed_scu_ic *scu_ic,
-+					struct device_node *node)
++static int sifive_gpio_child_to_parent_hwirq(struct gpio_chip *gc,
++					     unsigned int child,
++					     unsigned int child_type,
++					     unsigned int *parent,
++					     unsigned int *parent_type)
 +{
-+	int irq;
-+	int rc = 0;
-+
-+	if (!node->parent) {
-+		rc = -ENODEV;
-+		goto err;
-+	}
-+
-+	scu_ic->scu = syscon_node_to_regmap(node->parent);
-+	if (IS_ERR(scu_ic->scu)) {
-+		rc = PTR_ERR(scu_ic->scu);
-+		goto err;
-+	}
-+
-+	irq = irq_of_parse_and_map(node, 0);
-+	if (irq < 0) {
-+		rc = irq;
-+		goto err;
-+	}
-+
-+	scu_ic->irq_domain = irq_domain_add_linear(node, scu_ic->num_irqs,
-+						   &aspeed_scu_ic_domain_ops,
-+						   scu_ic);
-+	if (!scu_ic->irq_domain) {
-+		rc = -ENOMEM;
-+		goto err;
-+	}
-+
-+	irq_set_chained_handler_and_data(irq, aspeed_scu_ic_irq_handler,
-+					 scu_ic);
-+
++	*parent_type = IRQ_TYPE_NONE;
++	*parent = child + SIFIVE_GPIO_IRQ_OFFSET;
 +	return 0;
-+
-+err:
-+	kfree(scu_ic);
-+
-+	return rc;
 +}
 +
-+static int __init aspeed_scu_ic_of_init(struct device_node *node,
-+					struct device_node *parent)
-+{
-+	struct aspeed_scu_ic *scu_ic = kzalloc(sizeof(*scu_ic), GFP_KERNEL);
++static const struct regmap_config sifive_gpio_regmap_config = {
++	.reg_bits = 32,
++	.reg_stride = 4,
++	.val_bits = 32,
++	.fast_io = true,
++	.disable_locking = true,
++};
 +
-+	if (!scu_ic)
++static int sifive_gpio_probe(struct platform_device *pdev)
++{
++	struct device *dev = &pdev->dev;
++	struct device_node *node = pdev->dev.of_node;
++	struct device_node *irq_parent;
++	struct irq_domain *parent;
++	struct gpio_irq_chip *girq;
++	struct sifive_gpio *chip;
++	int ret, ngpio;
++
++	chip = devm_kzalloc(dev, sizeof(*chip), GFP_KERNEL);
++	if (!chip)
 +		return -ENOMEM;
 +
-+	scu_ic->irq_enable = ASPEED_SCU_IC_ENABLE;
-+	scu_ic->irq_shift = ASPEED_SCU_IC_SHIFT;
-+	scu_ic->num_irqs = ASPEED_SCU_IC_NUM_IRQS;
-+	scu_ic->reg = ASPEED_SCU_IC_REG;
++	chip->base = devm_platform_ioremap_resource(pdev, 0);
++	if (IS_ERR(chip->base)) {
++		dev_err(dev, "failed to allocate device memory\n");
++		return PTR_ERR(chip->base);
++	}
 +
-+	return aspeed_scu_ic_of_init_common(scu_ic, node);
++	chip->regs = devm_regmap_init_mmio(dev, chip->base,
++					   &sifive_gpio_regmap_config);
++	if (IS_ERR(chip->regs))
++		return PTR_ERR(chip->regs);
++
++	ngpio = of_irq_count(node);
++	if (ngpio >= SIFIVE_GPIO_MAX) {
++		dev_err(dev, "Too many GPIO interrupts (max=%d)\n",
++			SIFIVE_GPIO_MAX);
++		return -ENXIO;
++	}
++
++	irq_parent = of_irq_find_parent(node);
++	if (!irq_parent) {
++		dev_err(dev, "no IRQ parent node\n");
++		return -ENODEV;
++	}
++	parent = irq_find_host(irq_parent);
++	if (!parent) {
++		dev_err(dev, "no IRQ parent domain\n");
++		return -ENODEV;
++	}
++
++	ret = bgpio_init(&chip->gc, dev, 4,
++			 chip->base + SIFIVE_GPIO_INPUT_VAL,
++			 chip->base + SIFIVE_GPIO_OUTPUT_VAL,
++			 NULL,
++			 chip->base + SIFIVE_GPIO_OUTPUT_EN,
++			 chip->base + SIFIVE_GPIO_INPUT_EN,
++			 0);
++	if (ret) {
++		dev_err(dev, "unable to init generic GPIO\n");
++		return ret;
++	}
++
++	/* Disable all GPIO interrupts before enabling parent interrupts */
++	regmap_write(chip->regs, SIFIVE_GPIO_RISE_IE, 0);
++	regmap_write(chip->regs, SIFIVE_GPIO_FALL_IE, 0);
++	regmap_write(chip->regs, SIFIVE_GPIO_HIGH_IE, 0);
++	regmap_write(chip->regs, SIFIVE_GPIO_LOW_IE, 0);
++	chip->irq_state = 0;
++
++	chip->gc.base = -1;
++	chip->gc.ngpio = ngpio;
++	chip->gc.label = dev_name(dev);
++	chip->gc.parent = dev;
++	chip->gc.owner = THIS_MODULE;
++	girq = &chip->gc.irq;
++	girq->chip = &sifive_gpio_irqchip;
++	girq->fwnode = of_node_to_fwnode(node);
++	girq->parent_domain = parent;
++	girq->child_to_parent_hwirq = sifive_gpio_child_to_parent_hwirq;
++	girq->handler = handle_bad_irq;
++	girq->default_type = IRQ_TYPE_NONE;
++
++	platform_set_drvdata(pdev, chip);
++	return gpiochip_add_data(&chip->gc, chip);
 +}
 +
-+static int __init aspeed_ast2600_scu_ic0_of_init(struct device_node *node,
-+						 struct device_node *parent)
-+{
-+	struct aspeed_scu_ic *scu_ic = kzalloc(sizeof(*scu_ic), GFP_KERNEL);
++static const struct of_device_id sifive_gpio_match[] = {
++	{ .compatible = "sifive,gpio0" },
++	{ .compatible = "sifive,fu540-c000-gpio" },
++	{ },
++};
 +
-+	if (!scu_ic)
-+		return -ENOMEM;
-+
-+	scu_ic->irq_enable = ASPEED_AST2600_SCU_IC0_ENABLE;
-+	scu_ic->irq_shift = ASPEED_AST2600_SCU_IC0_SHIFT;
-+	scu_ic->num_irqs = ASPEED_AST2600_SCU_IC0_NUM_IRQS;
-+	scu_ic->reg = ASPEED_AST2600_SCU_IC0_REG;
-+
-+	return aspeed_scu_ic_of_init_common(scu_ic, node);
-+}
-+
-+static int __init aspeed_ast2600_scu_ic1_of_init(struct device_node *node,
-+						 struct device_node *parent)
-+{
-+	struct aspeed_scu_ic *scu_ic = kzalloc(sizeof(*scu_ic), GFP_KERNEL);
-+
-+	if (!scu_ic)
-+		return -ENOMEM;
-+
-+	scu_ic->irq_enable = ASPEED_AST2600_SCU_IC1_ENABLE;
-+	scu_ic->irq_shift = ASPEED_AST2600_SCU_IC1_SHIFT;
-+	scu_ic->num_irqs = ASPEED_AST2600_SCU_IC1_NUM_IRQS;
-+	scu_ic->reg = ASPEED_AST2600_SCU_IC1_REG;
-+
-+	return aspeed_scu_ic_of_init_common(scu_ic, node);
-+}
-+
-+IRQCHIP_DECLARE(ast2400_scu_ic, "aspeed,ast2400-scu-ic", aspeed_scu_ic_of_init);
-+IRQCHIP_DECLARE(ast2500_scu_ic, "aspeed,ast2500-scu-ic", aspeed_scu_ic_of_init);
-+IRQCHIP_DECLARE(ast2600_scu_ic0, "aspeed,ast2600-scu-ic0",
-+		aspeed_ast2600_scu_ic0_of_init);
-+IRQCHIP_DECLARE(ast2600_scu_ic1, "aspeed,ast2600-scu-ic1",
-+		aspeed_ast2600_scu_ic1_of_init);
++static struct platform_driver sifive_gpio_driver = {
++	.probe		= sifive_gpio_probe,
++	.driver = {
++		.name	= "sifive_gpio",
++		.of_match_table = of_match_ptr(sifive_gpio_match),
++	},
++};
++builtin_platform_driver(sifive_gpio_driver)
