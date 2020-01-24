@@ -2,40 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F990148E52
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 24 Jan 2020 20:12:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B9D94148ECC
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 24 Jan 2020 20:45:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404152AbgAXTLb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 24 Jan 2020 14:11:31 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:43100 "EHLO
+        id S2391433AbgAXTp2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 24 Jan 2020 14:45:28 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:43561 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404134AbgAXTLa (ORCPT
+        with ESMTP id S2390664AbgAXTp2 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 24 Jan 2020 14:11:30 -0500
+        Fri, 24 Jan 2020 14:45:28 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iv4MW-0007iC-Op; Fri, 24 Jan 2020 20:11:24 +0100
+        id 1iv4tO-0000Bq-KI; Fri, 24 Jan 2020 20:45:22 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 41F711C1A6E;
-        Fri, 24 Jan 2020 20:11:13 +0100 (CET)
-Date:   Fri, 24 Jan 2020 19:11:13 -0000
-From:   "tip-bot2 for Yash Shah" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 395051C1A69;
+        Fri, 24 Jan 2020 20:45:22 +0100 (CET)
+Date:   Fri, 24 Jan 2020 19:45:21 -0000
+From:   "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] gpio/sifive: Add DT documentation for SiFive GPIO
-Cc:     "Wesley W. Terpstra" <wesley@sifive.com>,
-        Atish Patra <atish.patra@wdc.com>,
-        Yash Shah <yash.shah@sifive.com>,
-        Marc Zyngier <maz@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Rob Herring <robh@kernel.org>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <1575976274-13487-5-git-send-email-yash.shah@sifive.com>
-References: <1575976274-13487-5-git-send-email-yash.shah@sifive.com>
+Subject: [tip: smp/core] smp: Remove allocation mask from on_each_cpu_cond.*()
+Cc:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200117090137.1205765-4-bigeasy@linutronix.de>
+References: <20200117090137.1205765-4-bigeasy@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <157989307309.396.12029128798763007003.tip-bot2@tip-bot2>
+Message-ID: <157989512196.396.4216786603220868613.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,103 +46,153 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the irq/core branch of tip:
+The following commit has been merged into the smp/core branch of tip:
 
-Commit-ID:     7875f8242494f8e4c8a75f2aeab4a6fb742599bd
-Gitweb:        https://git.kernel.org/tip/7875f8242494f8e4c8a75f2aeab4a6fb742599bd
-Author:        Yash Shah <yash.shah@sifive.com>
-AuthorDate:    Tue, 10 Dec 2019 16:41:12 +05:30
-Committer:     Marc Zyngier <maz@kernel.org>
-CommitterDate: Mon, 20 Jan 2020 09:26:05 
+Commit-ID:     cb923159bbb8cc8fe09c19a3435ee11fd546f3d3
+Gitweb:        https://git.kernel.org/tip/cb923159bbb8cc8fe09c19a3435ee11fd546f3d3
+Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+AuthorDate:    Fri, 17 Jan 2020 10:01:37 +01:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Fri, 24 Jan 2020 20:40:09 +01:00
 
-gpio/sifive: Add DT documentation for SiFive GPIO
+smp: Remove allocation mask from on_each_cpu_cond.*()
 
-DT json-schema for GPIO controller added.
+The allocation mask is no longer used by on_each_cpu_cond() and
+on_each_cpu_cond_mask() and can be removed.
 
-Signed-off-by: Wesley W. Terpstra <wesley@sifive.com>
-[Atish: Compatible string update]
-Signed-off-by: Atish Patra <atish.patra@wdc.com>
-Signed-off-by: Yash Shah <yash.shah@sifive.com>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Rob Herring <robh@kernel.org>
-Link: https://lore.kernel.org/r/1575976274-13487-5-git-send-email-yash.shah@sifive.com
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20200117090137.1205765-4-bigeasy@linutronix.de
+
 ---
- Documentation/devicetree/bindings/gpio/sifive,gpio.yaml | 68 ++++++++-
- 1 file changed, 68 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/gpio/sifive,gpio.yaml
+ arch/x86/mm/tlb.c   |  2 +-
+ fs/buffer.c         |  2 +-
+ include/linux/smp.h |  5 ++---
+ kernel/smp.c        | 13 +++----------
+ kernel/up.c         |  7 +++----
+ mm/slub.c           |  2 +-
+ 6 files changed, 11 insertions(+), 20 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/gpio/sifive,gpio.yaml b/Documentation/devicetree/bindings/gpio/sifive,gpio.yaml
-new file mode 100644
-index 0000000..418e838
---- /dev/null
-+++ b/Documentation/devicetree/bindings/gpio/sifive,gpio.yaml
-@@ -0,0 +1,68 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/gpio/sifive,gpio.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: SiFive GPIO controller
-+
-+maintainers:
-+  - Yash Shah <yash.shah@sifive.com>
-+  - Paul Walmsley <paul.walmsley@sifive.com>
-+
-+properties:
-+  compatible:
-+    items:
-+      - const: sifive,fu540-c000-gpio
-+      - const: sifive,gpio0
-+
-+  reg:
-+    maxItems: 1
-+
-+  interrupts:
-+    description:
-+      interrupt mapping one per GPIO. Maximum 16 GPIOs.
-+    minItems: 1
-+    maxItems: 16
-+
-+  interrupt-controller: true
-+
-+  "#interrupt-cells":
-+    const: 2
-+
-+  clocks:
-+    maxItems: 1
-+
-+  "#gpio-cells":
-+    const: 2
-+
-+  gpio-controller: true
-+
-+required:
-+  - compatible
-+  - reg
-+  - interrupts
-+  - interrupt-controller
-+  - "#interrupt-cells"
-+  - clocks
-+  - "#gpio-cells"
-+  - gpio-controller
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+      #include <dt-bindings/clock/sifive-fu540-prci.h>
-+      gpio@10060000 {
-+        compatible = "sifive,fu540-c000-gpio", "sifive,gpio0";
-+        interrupt-parent = <&plic>;
-+        interrupts = <7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22>;
-+        reg = <0x0 0x10060000 0x0 0x1000>;
-+        clocks = <&tlclk PRCI_CLK_TLCLK>;
-+        gpio-controller;
-+        #gpio-cells = <2>;
-+        interrupt-controller;
-+        #interrupt-cells = <2>;
-+      };
-+
-+...
+diff --git a/arch/x86/mm/tlb.c b/arch/x86/mm/tlb.c
+index e6a9edc..66f96f2 100644
+--- a/arch/x86/mm/tlb.c
++++ b/arch/x86/mm/tlb.c
+@@ -708,7 +708,7 @@ void native_flush_tlb_others(const struct cpumask *cpumask,
+ 			       (void *)info, 1);
+ 	else
+ 		on_each_cpu_cond_mask(tlb_is_not_lazy, flush_tlb_func_remote,
+-				(void *)info, 1, GFP_ATOMIC, cpumask);
++				(void *)info, 1, cpumask);
+ }
+ 
+ /*
+diff --git a/fs/buffer.c b/fs/buffer.c
+index 18a87ec..b8d2837 100644
+--- a/fs/buffer.c
++++ b/fs/buffer.c
+@@ -1433,7 +1433,7 @@ static bool has_bh_in_lru(int cpu, void *dummy)
+ 
+ void invalidate_bh_lrus(void)
+ {
+-	on_each_cpu_cond(has_bh_in_lru, invalidate_bh_lru, NULL, 1, GFP_KERNEL);
++	on_each_cpu_cond(has_bh_in_lru, invalidate_bh_lru, NULL, 1);
+ }
+ EXPORT_SYMBOL_GPL(invalidate_bh_lrus);
+ 
+diff --git a/include/linux/smp.h b/include/linux/smp.h
+index 4734416..cbc9162 100644
+--- a/include/linux/smp.h
++++ b/include/linux/smp.h
+@@ -51,11 +51,10 @@ void on_each_cpu_mask(const struct cpumask *mask, smp_call_func_t func,
+  * processor.
+  */
+ void on_each_cpu_cond(smp_cond_func_t cond_func, smp_call_func_t func,
+-		      void *info, bool wait, gfp_t gfp_flags);
++		      void *info, bool wait);
+ 
+ void on_each_cpu_cond_mask(smp_cond_func_t cond_func, smp_call_func_t func,
+-			   void *info, bool wait, gfp_t gfp_flags,
+-			   const struct cpumask *mask);
++			   void *info, bool wait, const struct cpumask *mask);
+ 
+ int smp_call_function_single_async(int cpu, call_single_data_t *csd);
+ 
+diff --git a/kernel/smp.c b/kernel/smp.c
+index e17e634..3b7bedc 100644
+--- a/kernel/smp.c
++++ b/kernel/smp.c
+@@ -679,11 +679,6 @@ EXPORT_SYMBOL(on_each_cpu_mask);
+  * @info:	An arbitrary pointer to pass to both functions.
+  * @wait:	If true, wait (atomically) until function has
+  *		completed on other CPUs.
+- * @gfp_flags:	GFP flags to use when allocating the cpumask
+- *		used internally by the function.
+- *
+- * The function might sleep if the GFP flags indicates a non
+- * atomic allocation is allowed.
+  *
+  * Preemption is disabled to protect against CPUs going offline but not online.
+  * CPUs going online during the call will not be seen or sent an IPI.
+@@ -692,8 +687,7 @@ EXPORT_SYMBOL(on_each_cpu_mask);
+  * from a hardware interrupt handler or from a bottom half handler.
+  */
+ void on_each_cpu_cond_mask(smp_cond_func_t cond_func, smp_call_func_t func,
+-			   void *info, bool wait, gfp_t gfp_flags,
+-			   const struct cpumask *mask)
++			   void *info, bool wait, const struct cpumask *mask)
+ {
+ 	int cpu = get_cpu();
+ 
+@@ -710,10 +704,9 @@ void on_each_cpu_cond_mask(smp_cond_func_t cond_func, smp_call_func_t func,
+ EXPORT_SYMBOL(on_each_cpu_cond_mask);
+ 
+ void on_each_cpu_cond(smp_cond_func_t cond_func, smp_call_func_t func,
+-		      void *info, bool wait, gfp_t gfp_flags)
++		      void *info, bool wait)
+ {
+-	on_each_cpu_cond_mask(cond_func, func, info, wait, gfp_flags,
+-				cpu_online_mask);
++	on_each_cpu_cond_mask(cond_func, func, info, wait, cpu_online_mask);
+ }
+ EXPORT_SYMBOL(on_each_cpu_cond);
+ 
+diff --git a/kernel/up.c b/kernel/up.c
+index 5c0d4f2..53144d0 100644
+--- a/kernel/up.c
++++ b/kernel/up.c
+@@ -69,8 +69,7 @@ EXPORT_SYMBOL(on_each_cpu_mask);
+  * same condtions in UP and SMP.
+  */
+ void on_each_cpu_cond_mask(smp_cond_func_t cond_func, smp_call_func_t func,
+-			   void *info, bool wait, gfp_t gfp_flags,
+-			   const struct cpumask *mask)
++			   void *info, bool wait, const struct cpumask *mask)
+ {
+ 	unsigned long flags;
+ 
+@@ -85,9 +84,9 @@ void on_each_cpu_cond_mask(smp_cond_func_t cond_func, smp_call_func_t func,
+ EXPORT_SYMBOL(on_each_cpu_cond_mask);
+ 
+ void on_each_cpu_cond(smp_cond_func_t cond_func, smp_call_func_t func,
+-		      void *info, bool wait, gfp_t gfp_flags)
++		      void *info, bool wait)
+ {
+-	on_each_cpu_cond_mask(cond_func, func, info, wait, gfp_flags, NULL);
++	on_each_cpu_cond_mask(cond_func, func, info, wait, NULL);
+ }
+ EXPORT_SYMBOL(on_each_cpu_cond);
+ 
+diff --git a/mm/slub.c b/mm/slub.c
+index 8eafccf..2e1a577 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -2341,7 +2341,7 @@ static bool has_cpu_slab(int cpu, void *info)
+ 
+ static void flush_all(struct kmem_cache *s)
+ {
+-	on_each_cpu_cond(has_cpu_slab, flush_cpu_slab, s, 1, GFP_ATOMIC);
++	on_each_cpu_cond(has_cpu_slab, flush_cpu_slab, s, 1);
+ }
+ 
+ /*
