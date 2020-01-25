@@ -2,36 +2,35 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C82971494D1
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 25 Jan 2020 11:48:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EC1591494D7
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 25 Jan 2020 11:48:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730059AbgAYKpi (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 25 Jan 2020 05:45:38 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:44247 "EHLO
+        id S1730189AbgAYKpv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 25 Jan 2020 05:45:51 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:44239 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729473AbgAYKnG (ORCPT
+        with ESMTP id S1729463AbgAYKnF (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 25 Jan 2020 05:43:06 -0500
+        Sat, 25 Jan 2020 05:43:05 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1ivIu6-00006Z-VW; Sat, 25 Jan 2020 11:43:03 +0100
+        id 1ivIu5-00006L-TN; Sat, 25 Jan 2020 11:43:02 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B81BA1C1A85;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 6CCF71C1A7A;
         Sat, 25 Jan 2020 11:42:50 +0100 (CET)
 Date:   Sat, 25 Jan 2020 10:42:50 -0000
 From:   "tip-bot2 for Madhuparna Bhowmik" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] doc: Convert arrayRCU.txt to arrayRCU.rst
+Subject: [tip: core/rcu] doc: Converted NMI-RCU.txt to NMI-RCU.rst.
 Cc:     Madhuparna Bhowmik <madhuparnabhowmik04@gmail.com>,
         Phong Tran <tranmanphong@gmail.com>,
-        Amol Grover <frextrite@gmail.com>,
         "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <157994897055.396.1213883219008520117.tip-bot2@tip-bot2>
+Message-ID: <157994897017.396.17671881349411288806.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,370 +46,296 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     9ffdd7982417e2e227e295c4dea9cec652a71983
-Gitweb:        https://git.kernel.org/tip/9ffdd7982417e2e227e295c4dea9cec652a71983
+Commit-ID:     6705cae433cffc37b183ded6ca9fe5c6d8ae8a9d
+Gitweb:        https://git.kernel.org/tip/6705cae433cffc37b183ded6ca9fe5c6d8ae8a9d
 Author:        Madhuparna Bhowmik <madhuparnabhowmik04@gmail.com>
-AuthorDate:    Tue, 29 Oct 2019 01:54:17 +05:30
+AuthorDate:    Tue, 29 Oct 2019 03:12:52 +05:30
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Tue, 10 Dec 2019 18:51:19 -08:00
+CommitterDate: Tue, 10 Dec 2019 18:51:52 -08:00
 
-doc: Convert arrayRCU.txt to arrayRCU.rst
+doc: Converted NMI-RCU.txt to NMI-RCU.rst.
 
-This patch converts arrayRCU from .txt to .rst format, and also adds
-it to the index.rst file.
+This patch converts NMI-RCU from txt to rst format.
+Also adds NMI-RCU in the index.rst file.
 
 Signed-off-by: Madhuparna Bhowmik <madhuparnabhowmik04@gmail.com>
-[ paulmck: Trimmed trailing whitespace. ]
+[ paulmck: Apply feedback from Phong Tran. ]
 Tested-by: Phong Tran <tranmanphong@gmail.com>
-Tested-by: Amol Grover <frextrite@gmail.com>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- Documentation/RCU/arrayRCU.rst | 165 ++++++++++++++++++++++++++++++++-
- Documentation/RCU/arrayRCU.txt | 153 +------------------------------
- Documentation/RCU/index.rst    |   1 +-
- 3 files changed, 166 insertions(+), 153 deletions(-)
- create mode 100644 Documentation/RCU/arrayRCU.rst
- delete mode 100644 Documentation/RCU/arrayRCU.txt
+ Documentation/RCU/NMI-RCU.rst | 124 +++++++++++++++++++++++++++++++++-
+ Documentation/RCU/NMI-RCU.txt | 121 +--------------------------------
+ Documentation/RCU/index.rst   |   1 +-
+ 3 files changed, 125 insertions(+), 121 deletions(-)
+ create mode 100644 Documentation/RCU/NMI-RCU.rst
+ delete mode 100644 Documentation/RCU/NMI-RCU.txt
 
-diff --git a/Documentation/RCU/arrayRCU.rst b/Documentation/RCU/arrayRCU.rst
+diff --git a/Documentation/RCU/NMI-RCU.rst b/Documentation/RCU/NMI-RCU.rst
 new file mode 100644
-index 0000000..4051ea3
+index 0000000..1809583
 --- /dev/null
-+++ b/Documentation/RCU/arrayRCU.rst
-@@ -0,0 +1,165 @@
-+.. _array_rcu_doc:
++++ b/Documentation/RCU/NMI-RCU.rst
+@@ -0,0 +1,124 @@
++.. _NMI_rcu_doc:
 +
-+Using RCU to Protect Read-Mostly Arrays
-+=======================================
++Using RCU to Protect Dynamic NMI Handlers
++=========================================
 +
-+Although RCU is more commonly used to protect linked lists, it can
-+also be used to protect arrays.  Three situations are as follows:
 +
-+1.  :ref:`Hash Tables <hash_tables>`
++Although RCU is usually used to protect read-mostly data structures,
++it is possible to use RCU to provide dynamic non-maskable interrupt
++handlers, as well as dynamic irq handlers.  This document describes
++how to do this, drawing loosely from Zwane Mwaikambo's NMI-timer
++work in "arch/x86/oprofile/nmi_timer_int.c" and in
++"arch/x86/kernel/traps.c".
 +
-+2.  :ref:`Static Arrays <static_arrays>`
++The relevant pieces of code are listed below, each followed by a
++brief explanation::
 +
-+3.  :ref:`Resizable Arrays <resizable_arrays>`
++	static int dummy_nmi_callback(struct pt_regs *regs, int cpu)
++	{
++		return 0;
++	}
 +
-+Each of these three situations involves an RCU-protected pointer to an
-+array that is separately indexed.  It might be tempting to consider use
-+of RCU to instead protect the index into an array, however, this use
-+case is **not** supported.  The problem with RCU-protected indexes into
-+arrays is that compilers can play way too many optimization games with
-+integers, which means that the rules governing handling of these indexes
-+are far more trouble than they are worth.  If RCU-protected indexes into
-+arrays prove to be particularly valuable (which they have not thus far),
-+explicit cooperation from the compiler will be required to permit them
-+to be safely used.
++The dummy_nmi_callback() function is a "dummy" NMI handler that does
++nothing, but returns zero, thus saying that it did nothing, allowing
++the NMI handler to take the default machine-specific action::
 +
-+That aside, each of the three RCU-protected pointer situations are
-+described in the following sections.
++	static nmi_callback_t nmi_callback = dummy_nmi_callback;
 +
-+.. _hash_tables:
++This nmi_callback variable is a global function pointer to the current
++NMI handler::
 +
-+Situation 1: Hash Tables
-+------------------------
++	void do_nmi(struct pt_regs * regs, long error_code)
++	{
++		int cpu;
 +
-+Hash tables are often implemented as an array, where each array entry
-+has a linked-list hash chain.  Each hash chain can be protected by RCU
-+as described in the listRCU.txt document.  This approach also applies
-+to other array-of-list situations, such as radix trees.
++		nmi_enter();
 +
-+.. _static_arrays:
++		cpu = smp_processor_id();
++		++nmi_count(cpu);
 +
-+Situation 2: Static Arrays
-+--------------------------
++		if (!rcu_dereference_sched(nmi_callback)(regs, cpu))
++			default_do_nmi(regs);
 +
-+Static arrays, where the data (rather than a pointer to the data) is
-+located in each array element, and where the array is never resized,
-+have not been used with RCU.  Rik van Riel recommends using seqlock in
-+this situation, which would also have minimal read-side overhead as long
-+as updates are rare.
++		nmi_exit();
++	}
++
++The do_nmi() function processes each NMI.  It first disables preemption
++in the same way that a hardware irq would, then increments the per-CPU
++count of NMIs.  It then invokes the NMI handler stored in the nmi_callback
++function pointer.  If this handler returns zero, do_nmi() invokes the
++default_do_nmi() function to handle a machine-specific NMI.  Finally,
++preemption is restored.
++
++In theory, rcu_dereference_sched() is not needed, since this code runs
++only on i386, which in theory does not need rcu_dereference_sched()
++anyway.  However, in practice it is a good documentation aid, particularly
++for anyone attempting to do something similar on Alpha or on systems
++with aggressive optimizing compilers.
 +
 +Quick Quiz:
-+		Why is it so important that updates be rare when using seqlock?
++		Why might the rcu_dereference_sched() be necessary on Alpha, given that the code referenced by the pointer is read-only?
 +
-+:ref:`Answer to Quick Quiz <answer_quick_quiz_seqlock>`
++:ref:`Answer to Quick Quiz <answer_quick_quiz_NMI>`
 +
-+.. _resizable_arrays:
++Back to the discussion of NMI and RCU::
 +
-+Situation 3: Resizable Arrays
-+------------------------------
-+
-+Use of RCU for resizable arrays is demonstrated by the grow_ary()
-+function formerly used by the System V IPC code.  The array is used
-+to map from semaphore, message-queue, and shared-memory IDs to the data
-+structure that represents the corresponding IPC construct.  The grow_ary()
-+function does not acquire any locks; instead its caller must hold the
-+ids->sem semaphore.
-+
-+The grow_ary() function, shown below, does some limit checks, allocates a
-+new ipc_id_ary, copies the old to the new portion of the new, initializes
-+the remainder of the new, updates the ids->entries pointer to point to
-+the new array, and invokes ipc_rcu_putref() to free up the old array.
-+Note that rcu_assign_pointer() is used to update the ids->entries pointer,
-+which includes any memory barriers required on whatever architecture
-+you are running on::
-+
-+	static int grow_ary(struct ipc_ids* ids, int newsize)
++	void set_nmi_callback(nmi_callback_t callback)
 +	{
-+		struct ipc_id_ary* new;
-+		struct ipc_id_ary* old;
-+		int i;
-+		int size = ids->entries->size;
-+
-+		if(newsize > IPCMNI)
-+			newsize = IPCMNI;
-+		if(newsize <= size)
-+			return newsize;
-+
-+		new = ipc_rcu_alloc(sizeof(struct kern_ipc_perm *)*newsize +
-+				    sizeof(struct ipc_id_ary));
-+		if(new == NULL)
-+			return size;
-+		new->size = newsize;
-+		memcpy(new->p, ids->entries->p,
-+		       sizeof(struct kern_ipc_perm *)*size +
-+		       sizeof(struct ipc_id_ary));
-+		for(i=size;i<newsize;i++) {
-+			new->p[i] = NULL;
-+		}
-+		old = ids->entries;
-+
-+		/*
-+		 * Use rcu_assign_pointer() to make sure the memcpyed
-+		 * contents of the new array are visible before the new
-+		 * array becomes visible.
-+		 */
-+		rcu_assign_pointer(ids->entries, new);
-+
-+		ipc_rcu_putref(old);
-+		return newsize;
++		rcu_assign_pointer(nmi_callback, callback);
 +	}
 +
-+The ipc_rcu_putref() function decrements the array's reference count
-+and then, if the reference count has dropped to zero, uses call_rcu()
-+to free the array after a grace period has elapsed.
++The set_nmi_callback() function registers an NMI handler.  Note that any
++data that is to be used by the callback must be initialized up -before-
++the call to set_nmi_callback().  On architectures that do not order
++writes, the rcu_assign_pointer() ensures that the NMI handler sees the
++initialized values::
 +
-+The array is traversed by the ipc_lock() function.  This function
-+indexes into the array under the protection of rcu_read_lock(),
-+using rcu_dereference() to pick up the pointer to the array so
-+that it may later safely be dereferenced -- memory barriers are
-+required on the Alpha CPU.  Since the size of the array is stored
-+with the array itself, there can be no array-size mismatches, so
-+a simple check suffices.  The pointer to the structure corresponding
-+to the desired IPC object is placed in "out", with NULL indicating
-+a non-existent entry.  After acquiring "out->lock", the "out->deleted"
-+flag indicates whether the IPC object is in the process of being
-+deleted, and, if not, the pointer is returned::
-+
-+	struct kern_ipc_perm* ipc_lock(struct ipc_ids* ids, int id)
++	void unset_nmi_callback(void)
 +	{
-+		struct kern_ipc_perm* out;
-+		int lid = id % SEQ_MULTIPLIER;
-+		struct ipc_id_ary* entries;
-+
-+		rcu_read_lock();
-+		entries = rcu_dereference(ids->entries);
-+		if(lid >= entries->size) {
-+			rcu_read_unlock();
-+			return NULL;
-+		}
-+		out = entries->p[lid];
-+		if(out == NULL) {
-+			rcu_read_unlock();
-+			return NULL;
-+		}
-+		spin_lock(&out->lock);
-+
-+		/* ipc_rmid() may have already freed the ID while ipc_lock
-+		 * was spinning: here verify that the structure is still valid
-+		 */
-+		if (out->deleted) {
-+			spin_unlock(&out->lock);
-+			rcu_read_unlock();
-+			return NULL;
-+		}
-+		return out;
++		rcu_assign_pointer(nmi_callback, dummy_nmi_callback);
 +	}
 +
-+.. _answer_quick_quiz_seqlock:
++This function unregisters an NMI handler, restoring the original
++dummy_nmi_handler().  However, there may well be an NMI handler
++currently executing on some other CPU.  We therefore cannot free
++up any data structures used by the old NMI handler until execution
++of it completes on all other CPUs.
++
++One way to accomplish this is via synchronize_rcu(), perhaps as
++follows::
++
++	unset_nmi_callback();
++	synchronize_rcu();
++	kfree(my_nmi_data);
++
++This works because (as of v4.20) synchronize_rcu() blocks until all
++CPUs complete any preemption-disabled segments of code that they were
++executing.
++Since NMI handlers disable preemption, synchronize_rcu() is guaranteed
++not to return until all ongoing NMI handlers exit.  It is therefore safe
++to free up the handler's data as soon as synchronize_rcu() returns.
++
++Important note: for this to work, the architecture in question must
++invoke nmi_enter() and nmi_exit() on NMI entry and exit, respectively.
++
++.. _answer_quick_quiz_NMI:
 +
 +Answer to Quick Quiz:
-+	Why is it so important that updates be rare when using seqlock?
++	Why might the rcu_dereference_sched() be necessary on Alpha, given that the code referenced by the pointer is read-only?
 +
-+	The reason that it is important that updates be rare when
-+	using seqlock is that frequent updates can livelock readers.
-+	One way to avoid this problem is to assign a seqlock for
-+	each array entry rather than to the entire array.
-diff --git a/Documentation/RCU/arrayRCU.txt b/Documentation/RCU/arrayRCU.txt
++	The caller to set_nmi_callback() might well have
++	initialized some data that is to be used by the new NMI
++	handler.  In this case, the rcu_dereference_sched() would
++	be needed, because otherwise a CPU that received an NMI
++	just after the new handler was set might see the pointer
++	to the new NMI handler, but the old pre-initialized
++	version of the handler's data.
++
++	This same sad story can happen on other CPUs when using
++	a compiler with aggressive pointer-value speculation
++	optimizations.
++
++	More important, the rcu_dereference_sched() makes it
++	clear to someone reading the code that the pointer is
++	being protected by RCU-sched.
+diff --git a/Documentation/RCU/NMI-RCU.txt b/Documentation/RCU/NMI-RCU.txt
 deleted file mode 100644
-index f05a9af..0000000
---- a/Documentation/RCU/arrayRCU.txt
+index 881353f..0000000
+--- a/Documentation/RCU/NMI-RCU.txt
 +++ /dev/null
-@@ -1,153 +0,0 @@
--Using RCU to Protect Read-Mostly Arrays
+@@ -1,121 +0,0 @@
+-Using RCU to Protect Dynamic NMI Handlers
 -
 -
--Although RCU is more commonly used to protect linked lists, it can
--also be used to protect arrays.  Three situations are as follows:
+-Although RCU is usually used to protect read-mostly data structures,
+-it is possible to use RCU to provide dynamic non-maskable interrupt
+-handlers, as well as dynamic irq handlers.  This document describes
+-how to do this, drawing loosely from Zwane Mwaikambo's NMI-timer
+-work in "arch/x86/oprofile/nmi_timer_int.c" and in
+-"arch/x86/kernel/traps.c".
 -
--1.  Hash Tables
+-The relevant pieces of code are listed below, each followed by a
+-brief explanation.
 -
--2.  Static Arrays
--
--3.  Resizeable Arrays
--
--Each of these three situations involves an RCU-protected pointer to an
--array that is separately indexed.  It might be tempting to consider use
--of RCU to instead protect the index into an array, however, this use
--case is -not- supported.  The problem with RCU-protected indexes into
--arrays is that compilers can play way too many optimization games with
--integers, which means that the rules governing handling of these indexes
--are far more trouble than they are worth.  If RCU-protected indexes into
--arrays prove to be particularly valuable (which they have not thus far),
--explicit cooperation from the compiler will be required to permit them
--to be safely used.
--
--That aside, each of the three RCU-protected pointer situations are
--described in the following sections.
--
--
--Situation 1: Hash Tables
--
--Hash tables are often implemented as an array, where each array entry
--has a linked-list hash chain.  Each hash chain can be protected by RCU
--as described in the listRCU.txt document.  This approach also applies
--to other array-of-list situations, such as radix trees.
--
--
--Situation 2: Static Arrays
--
--Static arrays, where the data (rather than a pointer to the data) is
--located in each array element, and where the array is never resized,
--have not been used with RCU.  Rik van Riel recommends using seqlock in
--this situation, which would also have minimal read-side overhead as long
--as updates are rare.
--
--Quick Quiz:  Why is it so important that updates be rare when
--	     using seqlock?
--
--
--Situation 3: Resizeable Arrays
--
--Use of RCU for resizeable arrays is demonstrated by the grow_ary()
--function formerly used by the System V IPC code.  The array is used
--to map from semaphore, message-queue, and shared-memory IDs to the data
--structure that represents the corresponding IPC construct.  The grow_ary()
--function does not acquire any locks; instead its caller must hold the
--ids->sem semaphore.
--
--The grow_ary() function, shown below, does some limit checks, allocates a
--new ipc_id_ary, copies the old to the new portion of the new, initializes
--the remainder of the new, updates the ids->entries pointer to point to
--the new array, and invokes ipc_rcu_putref() to free up the old array.
--Note that rcu_assign_pointer() is used to update the ids->entries pointer,
--which includes any memory barriers required on whatever architecture
--you are running on.
--
--	static int grow_ary(struct ipc_ids* ids, int newsize)
+-	static int dummy_nmi_callback(struct pt_regs *regs, int cpu)
 -	{
--		struct ipc_id_ary* new;
--		struct ipc_id_ary* old;
--		int i;
--		int size = ids->entries->size;
--
--		if(newsize > IPCMNI)
--			newsize = IPCMNI;
--		if(newsize <= size)
--			return newsize;
--
--		new = ipc_rcu_alloc(sizeof(struct kern_ipc_perm *)*newsize +
--				    sizeof(struct ipc_id_ary));
--		if(new == NULL)
--			return size;
--		new->size = newsize;
--		memcpy(new->p, ids->entries->p,
--		       sizeof(struct kern_ipc_perm *)*size +
--		       sizeof(struct ipc_id_ary));
--		for(i=size;i<newsize;i++) {
--			new->p[i] = NULL;
--		}
--		old = ids->entries;
--
--		/*
--		 * Use rcu_assign_pointer() to make sure the memcpyed
--		 * contents of the new array are visible before the new
--		 * array becomes visible.
--		 */
--		rcu_assign_pointer(ids->entries, new);
--
--		ipc_rcu_putref(old);
--		return newsize;
+-		return 0;
 -	}
 -
--The ipc_rcu_putref() function decrements the array's reference count
--and then, if the reference count has dropped to zero, uses call_rcu()
--to free the array after a grace period has elapsed.
+-The dummy_nmi_callback() function is a "dummy" NMI handler that does
+-nothing, but returns zero, thus saying that it did nothing, allowing
+-the NMI handler to take the default machine-specific action.
 -
--The array is traversed by the ipc_lock() function.  This function
--indexes into the array under the protection of rcu_read_lock(),
--using rcu_dereference() to pick up the pointer to the array so
--that it may later safely be dereferenced -- memory barriers are
--required on the Alpha CPU.  Since the size of the array is stored
--with the array itself, there can be no array-size mismatches, so
--a simple check suffices.  The pointer to the structure corresponding
--to the desired IPC object is placed in "out", with NULL indicating
--a non-existent entry.  After acquiring "out->lock", the "out->deleted"
--flag indicates whether the IPC object is in the process of being
--deleted, and, if not, the pointer is returned.
+-	static nmi_callback_t nmi_callback = dummy_nmi_callback;
 -
--	struct kern_ipc_perm* ipc_lock(struct ipc_ids* ids, int id)
+-This nmi_callback variable is a global function pointer to the current
+-NMI handler.
+-
+-	void do_nmi(struct pt_regs * regs, long error_code)
 -	{
--		struct kern_ipc_perm* out;
--		int lid = id % SEQ_MULTIPLIER;
--		struct ipc_id_ary* entries;
+-		int cpu;
 -
--		rcu_read_lock();
--		entries = rcu_dereference(ids->entries);
--		if(lid >= entries->size) {
--			rcu_read_unlock();
--			return NULL;
--		}
--		out = entries->p[lid];
--		if(out == NULL) {
--			rcu_read_unlock();
--			return NULL;
--		}
--		spin_lock(&out->lock);
+-		nmi_enter();
 -
--		/* ipc_rmid() may have already freed the ID while ipc_lock
--		 * was spinning: here verify that the structure is still valid
--		 */
--		if (out->deleted) {
--			spin_unlock(&out->lock);
--			rcu_read_unlock();
--			return NULL;
--		}
--		return out;
+-		cpu = smp_processor_id();
+-		++nmi_count(cpu);
+-
+-		if (!rcu_dereference_sched(nmi_callback)(regs, cpu))
+-			default_do_nmi(regs);
+-
+-		nmi_exit();
 -	}
 -
+-The do_nmi() function processes each NMI.  It first disables preemption
+-in the same way that a hardware irq would, then increments the per-CPU
+-count of NMIs.  It then invokes the NMI handler stored in the nmi_callback
+-function pointer.  If this handler returns zero, do_nmi() invokes the
+-default_do_nmi() function to handle a machine-specific NMI.  Finally,
+-preemption is restored.
 -
--Answer to Quick Quiz:
+-In theory, rcu_dereference_sched() is not needed, since this code runs
+-only on i386, which in theory does not need rcu_dereference_sched()
+-anyway.  However, in practice it is a good documentation aid, particularly
+-for anyone attempting to do something similar on Alpha or on systems
+-with aggressive optimizing compilers.
 -
--	The reason that it is important that updates be rare when
--	using seqlock is that frequent updates can livelock readers.
--	One way to avoid this problem is to assign a seqlock for
--	each array entry rather than to the entire array.
+-Quick Quiz:  Why might the rcu_dereference_sched() be necessary on Alpha,
+-	     given that the code referenced by the pointer is read-only?
+-
+-
+-Back to the discussion of NMI and RCU...
+-
+-	void set_nmi_callback(nmi_callback_t callback)
+-	{
+-		rcu_assign_pointer(nmi_callback, callback);
+-	}
+-
+-The set_nmi_callback() function registers an NMI handler.  Note that any
+-data that is to be used by the callback must be initialized up -before-
+-the call to set_nmi_callback().  On architectures that do not order
+-writes, the rcu_assign_pointer() ensures that the NMI handler sees the
+-initialized values.
+-
+-	void unset_nmi_callback(void)
+-	{
+-		rcu_assign_pointer(nmi_callback, dummy_nmi_callback);
+-	}
+-
+-This function unregisters an NMI handler, restoring the original
+-dummy_nmi_handler().  However, there may well be an NMI handler
+-currently executing on some other CPU.  We therefore cannot free
+-up any data structures used by the old NMI handler until execution
+-of it completes on all other CPUs.
+-
+-One way to accomplish this is via synchronize_rcu(), perhaps as
+-follows:
+-
+-	unset_nmi_callback();
+-	synchronize_rcu();
+-	kfree(my_nmi_data);
+-
+-This works because (as of v4.20) synchronize_rcu() blocks until all
+-CPUs complete any preemption-disabled segments of code that they were
+-executing.
+-Since NMI handlers disable preemption, synchronize_rcu() is guaranteed
+-not to return until all ongoing NMI handlers exit.  It is therefore safe
+-to free up the handler's data as soon as synchronize_rcu() returns.
+-
+-Important note: for this to work, the architecture in question must
+-invoke nmi_enter() and nmi_exit() on NMI entry and exit, respectively.
+-
+-
+-Answer to Quick Quiz
+-
+-	Why might the rcu_dereference_sched() be necessary on Alpha, given
+-	that the code referenced by the pointer is read-only?
+-
+-	Answer: The caller to set_nmi_callback() might well have
+-		initialized some data that is to be used by the new NMI
+-		handler.  In this case, the rcu_dereference_sched() would
+-		be needed, because otherwise a CPU that received an NMI
+-		just after the new handler was set might see the pointer
+-		to the new NMI handler, but the old pre-initialized
+-		version of the handler's data.
+-
+-		This same sad story can happen on other CPUs when using
+-		a compiler with aggressive pointer-value speculation
+-		optimizations.
+-
+-		More important, the rcu_dereference_sched() makes it
+-		clear to someone reading the code that the pointer is
+-		being protected by RCU-sched.
 diff --git a/Documentation/RCU/index.rst b/Documentation/RCU/index.rst
-index 5c99185..8d20d44 100644
+index 8d20d44..627128c 100644
 --- a/Documentation/RCU/index.rst
 +++ b/Documentation/RCU/index.rst
-@@ -7,6 +7,7 @@ RCU concepts
- .. toctree::
-    :maxdepth: 3
- 
-+   arrayRCU
+@@ -10,6 +10,7 @@ RCU concepts
+    arrayRCU
     rcu
     listRCU
++   NMI-RCU
     UP
+ 
+    Design/Memory-Ordering/Tree-RCU-Memory-Ordering
