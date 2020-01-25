@@ -2,34 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F70B1494E3
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 25 Jan 2020 11:48:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 16E051494E9
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 25 Jan 2020 11:48:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729236AbgAYKqU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 25 Jan 2020 05:46:20 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:44168 "EHLO
+        id S1729714AbgAYKqd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 25 Jan 2020 05:46:33 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:44136 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729235AbgAYKmz (ORCPT
+        with ESMTP id S1729159AbgAYKmv (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 25 Jan 2020 05:42:55 -0500
+        Sat, 25 Jan 2020 05:42:51 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1ivItw-0008Nv-HX; Sat, 25 Jan 2020 11:42:52 +0100
+        id 1ivItq-0008NZ-R6; Sat, 25 Jan 2020 11:42:46 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 1D2F61C1A78;
-        Sat, 25 Jan 2020 11:42:44 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id BA99A1C1A77;
+        Sat, 25 Jan 2020 11:42:43 +0100 (CET)
 Date:   Sat, 25 Jan 2020 10:42:43 -0000
-From:   "tip-bot2 for Joel Fernandes (Google)" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Lai Jiangshan" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcu: Remove kfree_call_rcu_nobatch()
-Cc:     "Joel Fernandes (Google)" <joel@joelfernandes.org>,
+Subject: [tip: core/rcu] rcu: Rename some instance of CONFIG_PREEMPTION to
+ CONFIG_PREEMPT_RCU
+Cc:     Lai Jiangshan <jiangshanlai@gmail.com>,
+        Lai Jiangshan <laijs@linux.alibaba.com>,
         "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <157994896385.396.7647975391977110099.tip-bot2@tip-bot2>
+Message-ID: <157994896357.396.12909607905434566210.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -45,139 +47,78 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     189a6883dcf7fa70e17403ae4225c60ffc9e404b
-Gitweb:        https://git.kernel.org/tip/189a6883dcf7fa70e17403ae4225c60ffc9e404b
-Author:        Joel Fernandes (Google) <joel@joelfernandes.org>
-AuthorDate:    Fri, 30 Aug 2019 12:36:33 -04:00
+Commit-ID:     c130d2dc93cd03323494d82dbe7b5fb0d101ab62
+Gitweb:        https://git.kernel.org/tip/c130d2dc93cd03323494d82dbe7b5fb0d101ab62
+Author:        Lai Jiangshan <jiangshanlai@gmail.com>
+AuthorDate:    Tue, 15 Oct 2019 10:28:48 
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Fri, 24 Jan 2020 10:24:31 -08:00
+CommitterDate: Fri, 24 Jan 2020 10:26:28 -08:00
 
-rcu: Remove kfree_call_rcu_nobatch()
+rcu: Rename some instance of CONFIG_PREEMPTION to CONFIG_PREEMPT_RCU
 
-Now that the kfree_rcu() special-casing has been removed from tree RCU,
-this commit removes kfree_call_rcu_nobatch() since it is no longer needed.
+CONFIG_PREEMPTION and CONFIG_PREEMPT_RCU are always identical,
+but some code depends on CONFIG_PREEMPTION to access to
+rcu_preempt functionality. This patch changes CONFIG_PREEMPTION
+to CONFIG_PREEMPT_RCU in these cases.
 
-Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+Signed-off-by: Lai Jiangshan <jiangshanlai@gmail.com>
+Signed-off-by: Lai Jiangshan <laijs@linux.alibaba.com>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- Documentation/admin-guide/kernel-parameters.txt |  4 +----
- include/linux/rcutiny.h                         |  5 +----
- include/linux/rcutree.h                         |  1 +-
- kernel/rcu/rcuperf.c                            | 10 +---------
- kernel/rcu/tree.c                               | 18 +++-------------
- 5 files changed, 5 insertions(+), 33 deletions(-)
+ kernel/rcu/tree.c       | 4 ++--
+ kernel/rcu/tree_stall.h | 6 +++---
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 3ce270b..ed83d6d 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -3991,10 +3991,6 @@
- 			Number of loops doing rcuperf.kfree_alloc_num number
- 			of allocations and frees.
- 
--	rcuperf.kfree_no_batch= [KNL]
--			Use the non-batching (less efficient) version of kfree_rcu().
--			This is useful for comparing with the batched version.
--
- 	rcuperf.nreaders= [KNL]
- 			Set number of RCU readers.  The value -1 selects
- 			N, where N is the number of CPUs.  A value
-diff --git a/include/linux/rcutiny.h b/include/linux/rcutiny.h
-index 1bd166a..b2b2dc9 100644
---- a/include/linux/rcutiny.h
-+++ b/include/linux/rcutiny.h
-@@ -39,11 +39,6 @@ static inline void kfree_call_rcu(struct rcu_head *head, rcu_callback_t func)
- 	call_rcu(head, func);
- }
- 
--static inline void kfree_call_rcu_nobatch(struct rcu_head *head, rcu_callback_t func)
--{
--	call_rcu(head, func);
--}
--
- void rcu_qs(void);
- 
- static inline void rcu_softirq_qs(void)
-diff --git a/include/linux/rcutree.h b/include/linux/rcutree.h
-index 6a65d3a..2f787b9 100644
---- a/include/linux/rcutree.h
-+++ b/include/linux/rcutree.h
-@@ -34,7 +34,6 @@ static inline void rcu_virt_note_context_switch(int cpu)
- 
- void synchronize_rcu_expedited(void);
- void kfree_call_rcu(struct rcu_head *head, rcu_callback_t func);
--void kfree_call_rcu_nobatch(struct rcu_head *head, rcu_callback_t func);
- 
- void rcu_barrier(void);
- bool rcu_eqs_special_set(int cpu);
-diff --git a/kernel/rcu/rcuperf.c b/kernel/rcu/rcuperf.c
-index c1e25fd..da94b89 100644
---- a/kernel/rcu/rcuperf.c
-+++ b/kernel/rcu/rcuperf.c
-@@ -593,7 +593,6 @@ rcu_perf_shutdown(void *arg)
- torture_param(int, kfree_nthreads, -1, "Number of threads running loops of kfree_rcu().");
- torture_param(int, kfree_alloc_num, 8000, "Number of allocations and frees done in an iteration.");
- torture_param(int, kfree_loops, 10, "Number of loops doing kfree_alloc_num allocations and frees.");
--torture_param(int, kfree_no_batch, 0, "Use the non-batching (slower) version of kfree_rcu().");
- 
- static struct task_struct **kfree_reader_tasks;
- static int kfree_nrealthreads;
-@@ -632,14 +631,7 @@ kfree_perf_thread(void *arg)
- 			if (!alloc_ptr)
- 				return -ENOMEM;
- 
--			if (!kfree_no_batch) {
--				kfree_rcu(alloc_ptr, rh);
--			} else {
--				rcu_callback_t cb;
--
--				cb = (rcu_callback_t)(unsigned long)offsetof(struct kfree_obj, rh);
--				kfree_call_rcu_nobatch(&(alloc_ptr->rh), cb);
--			}
-+			kfree_rcu(alloc_ptr, rh);
- 		}
- 
- 		cond_resched();
 diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
-index a8dd612..31d2d92 100644
+index c9dbb05..5445da2 100644
 --- a/kernel/rcu/tree.c
 +++ b/kernel/rcu/tree.c
-@@ -2763,8 +2763,10 @@ static void kfree_rcu_work(struct work_struct *work)
- 		rcu_lock_acquire(&rcu_callback_map);
- 		trace_rcu_invoke_kfree_callback(rcu_state.name, head, offset);
+@@ -1934,7 +1934,7 @@ rcu_report_unblock_qs_rnp(struct rcu_node *rnp, unsigned long flags)
+ 	struct rcu_node *rnp_p;
  
--		/* Could be possible to optimize with kfree_bulk in future */
--		kfree((void *)head - offset);
-+		if (!WARN_ON_ONCE(!__is_kfree_rcu_offset(offset))) {
-+			/* Could be optimized with kfree_bulk() in future. */
-+			kfree((void *)head - offset);
-+		}
+ 	raw_lockdep_assert_held_rcu_node(rnp);
+-	if (WARN_ON_ONCE(!IS_ENABLED(CONFIG_PREEMPTION)) ||
++	if (WARN_ON_ONCE(!IS_ENABLED(CONFIG_PREEMPT_RCU)) ||
+ 	    WARN_ON_ONCE(rcu_preempt_blocked_readers_cgp(rnp)) ||
+ 	    rnp->qsmask != 0) {
+ 		raw_spin_unlock_irqrestore_rcu_node(rnp, flags);
+@@ -2294,7 +2294,7 @@ static void force_qs_rnp(int (*f)(struct rcu_data *rdp))
+ 		mask = 0;
+ 		raw_spin_lock_irqsave_rcu_node(rnp, flags);
+ 		if (rnp->qsmask == 0) {
+-			if (!IS_ENABLED(CONFIG_PREEMPTION) ||
++			if (!IS_ENABLED(CONFIG_PREEMPT_RCU) ||
+ 			    rcu_preempt_blocked_readers_cgp(rnp)) {
+ 				/*
+ 				 * No point in scanning bits because they
+diff --git a/kernel/rcu/tree_stall.h b/kernel/rcu/tree_stall.h
+index c0b8c45..a6652ef 100644
+--- a/kernel/rcu/tree_stall.h
++++ b/kernel/rcu/tree_stall.h
+@@ -163,7 +163,7 @@ static void rcu_iw_handler(struct irq_work *iwp)
+ //
+ // Printing RCU CPU stall warnings
  
- 		rcu_lock_release(&rcu_callback_map);
- 		cond_resched_tasks_rcu_qs();
-@@ -2836,16 +2838,6 @@ static void kfree_rcu_monitor(struct work_struct *work)
- }
+-#ifdef CONFIG_PREEMPTION
++#ifdef CONFIG_PREEMPT_RCU
  
  /*
-- * This version of kfree_call_rcu does not do batching of kfree_rcu() requests.
-- * Used only by rcuperf torture test for comparison with kfree_rcu_batch().
-- */
--void kfree_call_rcu_nobatch(struct rcu_head *head, rcu_callback_t func)
--{
--	__call_rcu(head, func);
--}
--EXPORT_SYMBOL_GPL(kfree_call_rcu_nobatch);
--
--/*
-  * Queue a request for lazy invocation of kfree() after a grace period.
-  *
-  * Each kfree_call_rcu() request is added to a batch. The batch will be drained
-@@ -2864,8 +2856,6 @@ void kfree_call_rcu(struct rcu_head *head, rcu_callback_t func)
- 	unsigned long flags;
- 	struct kfree_rcu_cpu *krcp;
+  * Dump detailed information for all tasks blocking the current RCU
+@@ -215,7 +215,7 @@ static int rcu_print_task_stall(struct rcu_node *rnp)
+ 	return ndetected;
+ }
  
--	head->func = func;
--
- 	local_irq_save(flags);	// For safely calling this_cpu_ptr().
- 	krcp = this_cpu_ptr(&krc);
- 	if (krcp->initialized)
+-#else /* #ifdef CONFIG_PREEMPTION */
++#else /* #ifdef CONFIG_PREEMPT_RCU */
+ 
+ /*
+  * Because preemptible RCU does not exist, we never have to check for
+@@ -233,7 +233,7 @@ static int rcu_print_task_stall(struct rcu_node *rnp)
+ {
+ 	return 0;
+ }
+-#endif /* #else #ifdef CONFIG_PREEMPTION */
++#endif /* #else #ifdef CONFIG_PREEMPT_RCU */
+ 
+ /*
+  * Dump stacks of all tasks running on stalled CPUs.  First try using
