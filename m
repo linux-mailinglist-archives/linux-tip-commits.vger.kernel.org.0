@@ -2,34 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CDD0E1494BE
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 25 Jan 2020 11:47:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 43CAA14948B
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 25 Jan 2020 11:44:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729930AbgAYKo5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 25 Jan 2020 05:44:57 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:44349 "EHLO
+        id S1727322AbgAYKoI (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 25 Jan 2020 05:44:08 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:44416 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729794AbgAYKnU (ORCPT
+        with ESMTP id S1729967AbgAYKng (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 25 Jan 2020 05:43:20 -0500
+        Sat, 25 Jan 2020 05:43:36 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1ivIuM-0000Fc-T1; Sat, 25 Jan 2020 11:43:19 +0100
+        id 1ivIuR-0000Gl-AO; Sat, 25 Jan 2020 11:43:23 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id ABC1D1C1A80;
-        Sat, 25 Jan 2020 11:42:57 +0100 (CET)
-Date:   Sat, 25 Jan 2020 10:42:57 -0000
-From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C44A61C1A76;
+        Sat, 25 Jan 2020 11:42:58 +0100 (CET)
+Date:   Sat, 25 Jan 2020 10:42:58 -0000
+From:   "tip-bot2 for Marco Elver" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcu: Rename sync_rcu_preempt_exp_done() to
- sync_rcu_exp_done()
-Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
+Subject: [tip: core/rcu] rcu: Fix data-race due to atomic_t copy-by-value
+Cc:     Marco Elver <elver@google.com>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Josh Triplett <josh@joshtriplett.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Joel Fernandes <joel@joelfernandes.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Dmitry Vyukov <dvyukov@google.com>, rcu@vger.kernel.org,
+        linux-kernel@vger.kernel.org, x86 <x86@kernel.org>
 MIME-Version: 1.0
-Message-ID: <157994897747.396.6589643149912732458.tip-bot2@tip-bot2>
+Message-ID: <157994897860.396.6879509763648984595.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -45,112 +51,131 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     6c7d7dbf5b7f965eda0d39fbbb8fee005b08f340
-Gitweb:        https://git.kernel.org/tip/6c7d7dbf5b7f965eda0d39fbbb8fee005b08f340
-Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Wed, 27 Nov 2019 13:59:37 -08:00
+Commit-ID:     6cf539a87a61a4fbc43f625267dbcbcf283872ed
+Gitweb:        https://git.kernel.org/tip/6cf539a87a61a4fbc43f625267dbcbcf283872ed
+Author:        Marco Elver <elver@google.com>
+AuthorDate:    Wed, 09 Oct 2019 17:57:43 +02:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Mon, 09 Dec 2019 12:24:58 -08:00
+CommitterDate: Mon, 09 Dec 2019 12:24:56 -08:00
 
-rcu: Rename sync_rcu_preempt_exp_done() to sync_rcu_exp_done()
+rcu: Fix data-race due to atomic_t copy-by-value
 
-Now that the RCU flavors have been consolidated, there is one common
-function for checking to see if an expedited RCU grace period has
-completed, namely sync_rcu_preempt_exp_done().  Because this function is
-no longer specific to RCU-preempt, this commit removes the "_preempt" from
-its name.  This commit also changes sync_rcu_preempt_exp_done_unlocked()
-to sync_rcu_exp_done_unlocked() for the same reason.
+This fixes a data-race where `atomic_t dynticks` is copied by value. The
+copy is performed non-atomically, resulting in a data-race if `dynticks`
+is updated concurrently.
 
+This data-race was found with KCSAN:
+==================================================================
+BUG: KCSAN: data-race in dyntick_save_progress_counter / rcu_irq_enter
+
+write to 0xffff989dbdbe98e0 of 4 bytes by task 10 on cpu 3:
+ atomic_add_return include/asm-generic/atomic-instrumented.h:78 [inline]
+ rcu_dynticks_snap kernel/rcu/tree.c:310 [inline]
+ dyntick_save_progress_counter+0x43/0x1b0 kernel/rcu/tree.c:984
+ force_qs_rnp+0x183/0x200 kernel/rcu/tree.c:2286
+ rcu_gp_fqs kernel/rcu/tree.c:1601 [inline]
+ rcu_gp_fqs_loop+0x71/0x880 kernel/rcu/tree.c:1653
+ rcu_gp_kthread+0x22c/0x3b0 kernel/rcu/tree.c:1799
+ kthread+0x1b5/0x200 kernel/kthread.c:255
+ <snip>
+
+read to 0xffff989dbdbe98e0 of 4 bytes by task 154 on cpu 7:
+ rcu_nmi_enter_common kernel/rcu/tree.c:828 [inline]
+ rcu_irq_enter+0xda/0x240 kernel/rcu/tree.c:870
+ irq_enter+0x5/0x50 kernel/softirq.c:347
+ <snip>
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 7 PID: 154 Comm: kworker/7:1H Not tainted 5.3.0+ #5
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
+Workqueue: kblockd blk_mq_run_work_fn
+==================================================================
+
+Signed-off-by: Marco Elver <elver@google.com>
+Cc: Paul E. McKenney <paulmck@kernel.org>
+Cc: Josh Triplett <josh@joshtriplett.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Joel Fernandes <joel@joelfernandes.org>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: rcu@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Reviewed-by: Joel Fernandes (Google) <joel@joelfernandes.org>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/rcu/tree_exp.h    | 19 +++++++++----------
- kernel/rcu/tree_plugin.h |  4 ++--
- 2 files changed, 11 insertions(+), 12 deletions(-)
+ include/trace/events/rcu.h |  4 ++--
+ kernel/rcu/tree.c          | 11 ++++++-----
+ 2 files changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/kernel/rcu/tree_exp.h b/kernel/rcu/tree_exp.h
-index 7a1f093..3923c07 100644
---- a/kernel/rcu/tree_exp.h
-+++ b/kernel/rcu/tree_exp.h
-@@ -148,7 +148,7 @@ static void __maybe_unused sync_exp_reset_tree(void)
-  *
-  * Caller must hold the specificed rcu_node structure's ->lock
+diff --git a/include/trace/events/rcu.h b/include/trace/events/rcu.h
+index 6612260..697e2c0 100644
+--- a/include/trace/events/rcu.h
++++ b/include/trace/events/rcu.h
+@@ -449,7 +449,7 @@ TRACE_EVENT_RCU(rcu_fqs,
   */
--static bool sync_rcu_preempt_exp_done(struct rcu_node *rnp)
-+static bool sync_rcu_exp_done(struct rcu_node *rnp)
- {
- 	raw_lockdep_assert_held_rcu_node(rnp);
+ TRACE_EVENT_RCU(rcu_dyntick,
  
-@@ -157,17 +157,16 @@ static bool sync_rcu_preempt_exp_done(struct rcu_node *rnp)
- }
+-	TP_PROTO(const char *polarity, long oldnesting, long newnesting, atomic_t dynticks),
++	TP_PROTO(const char *polarity, long oldnesting, long newnesting, int dynticks),
  
- /*
-- * Like sync_rcu_preempt_exp_done(), but this function assumes the caller
-- * doesn't hold the rcu_node's ->lock, and will acquire and release the lock
-- * itself
-+ * Like sync_rcu_exp_done(), but this function assumes the caller doesn't
-+ * hold the rcu_node's ->lock, and will acquire and release the lock itself
-  */
--static bool sync_rcu_preempt_exp_done_unlocked(struct rcu_node *rnp)
-+static bool sync_rcu_exp_done_unlocked(struct rcu_node *rnp)
- {
- 	unsigned long flags;
- 	bool ret;
+ 	TP_ARGS(polarity, oldnesting, newnesting, dynticks),
  
- 	raw_spin_lock_irqsave_rcu_node(rnp, flags);
--	ret = sync_rcu_preempt_exp_done(rnp);
-+	ret = sync_rcu_exp_done(rnp);
- 	raw_spin_unlock_irqrestore_rcu_node(rnp, flags);
+@@ -464,7 +464,7 @@ TRACE_EVENT_RCU(rcu_dyntick,
+ 		__entry->polarity = polarity;
+ 		__entry->oldnesting = oldnesting;
+ 		__entry->newnesting = newnesting;
+-		__entry->dynticks = atomic_read(&dynticks);
++		__entry->dynticks = dynticks;
+ 	),
  
- 	return ret;
-@@ -191,7 +190,7 @@ static void __rcu_report_exp_rnp(struct rcu_node *rnp,
- 	unsigned long mask;
+ 	TP_printk("%s %lx %lx %#3x", __entry->polarity,
+diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
+index 1694a6b..6145e08 100644
+--- a/kernel/rcu/tree.c
++++ b/kernel/rcu/tree.c
+@@ -577,7 +577,7 @@ static void rcu_eqs_enter(bool user)
+ 	}
  
- 	for (;;) {
--		if (!sync_rcu_preempt_exp_done(rnp)) {
-+		if (!sync_rcu_exp_done(rnp)) {
- 			if (!rnp->expmask)
- 				rcu_initiate_boost(rnp, flags);
- 			else
-@@ -471,9 +470,9 @@ static void synchronize_sched_expedited_wait(void)
- 	for (;;) {
- 		ret = swait_event_timeout_exclusive(
- 				rcu_state.expedited_wq,
--				sync_rcu_preempt_exp_done_unlocked(rnp_root),
-+				sync_rcu_exp_done_unlocked(rnp_root),
- 				jiffies_stall);
--		if (ret > 0 || sync_rcu_preempt_exp_done_unlocked(rnp_root))
-+		if (ret > 0 || sync_rcu_exp_done_unlocked(rnp_root))
- 			return;
- 		WARN_ON(ret < 0);  /* workqueues should not be signaled. */
- 		if (rcu_cpu_stall_suppress)
-@@ -507,7 +506,7 @@ static void synchronize_sched_expedited_wait(void)
- 			rcu_for_each_node_breadth_first(rnp) {
- 				if (rnp == rnp_root)
- 					continue; /* printed unconditionally */
--				if (sync_rcu_preempt_exp_done_unlocked(rnp))
-+				if (sync_rcu_exp_done_unlocked(rnp))
- 					continue;
- 				pr_cont(" l=%u:%d-%d:%#lx/%c",
- 					rnp->level, rnp->grplo, rnp->grphi,
-diff --git a/kernel/rcu/tree_plugin.h b/kernel/rcu/tree_plugin.h
-index fa08d55..6dbea4b 100644
---- a/kernel/rcu/tree_plugin.h
-+++ b/kernel/rcu/tree_plugin.h
-@@ -485,7 +485,7 @@ rcu_preempt_deferred_qs_irqrestore(struct task_struct *t, unsigned long flags)
- 		empty_norm = !rcu_preempt_blocked_readers_cgp(rnp);
- 		WARN_ON_ONCE(rnp->completedqs == rnp->gp_seq &&
- 			     (!empty_norm || rnp->qsmask));
--		empty_exp = sync_rcu_preempt_exp_done(rnp);
-+		empty_exp = sync_rcu_exp_done(rnp);
- 		smp_mb(); /* ensure expedited fastpath sees end of RCU c-s. */
- 		np = rcu_next_node_entry(t, rnp);
- 		list_del_init(&t->rcu_node_entry);
-@@ -509,7 +509,7 @@ rcu_preempt_deferred_qs_irqrestore(struct task_struct *t, unsigned long flags)
- 		 * Note that rcu_report_unblock_qs_rnp() releases rnp->lock,
- 		 * so we must take a snapshot of the expedited state.
- 		 */
--		empty_exp_now = sync_rcu_preempt_exp_done(rnp);
-+		empty_exp_now = sync_rcu_exp_done(rnp);
- 		if (!empty_norm && !rcu_preempt_blocked_readers_cgp(rnp)) {
- 			trace_rcu_quiescent_state_report(TPS("preempt_rcu"),
- 							 rnp->gp_seq,
+ 	lockdep_assert_irqs_disabled();
+-	trace_rcu_dyntick(TPS("Start"), rdp->dynticks_nesting, 0, rdp->dynticks);
++	trace_rcu_dyntick(TPS("Start"), rdp->dynticks_nesting, 0, atomic_read(&rdp->dynticks));
+ 	WARN_ON_ONCE(IS_ENABLED(CONFIG_RCU_EQS_DEBUG) && !user && !is_idle_task(current));
+ 	rdp = this_cpu_ptr(&rcu_data);
+ 	do_nocb_deferred_wakeup(rdp);
+@@ -650,14 +650,15 @@ static __always_inline void rcu_nmi_exit_common(bool irq)
+ 	 * leave it in non-RCU-idle state.
+ 	 */
+ 	if (rdp->dynticks_nmi_nesting != 1) {
+-		trace_rcu_dyntick(TPS("--="), rdp->dynticks_nmi_nesting, rdp->dynticks_nmi_nesting - 2, rdp->dynticks);
++		trace_rcu_dyntick(TPS("--="), rdp->dynticks_nmi_nesting, rdp->dynticks_nmi_nesting - 2,
++				  atomic_read(&rdp->dynticks));
+ 		WRITE_ONCE(rdp->dynticks_nmi_nesting, /* No store tearing. */
+ 			   rdp->dynticks_nmi_nesting - 2);
+ 		return;
+ 	}
+ 
+ 	/* This NMI interrupted an RCU-idle CPU, restore RCU-idleness. */
+-	trace_rcu_dyntick(TPS("Startirq"), rdp->dynticks_nmi_nesting, 0, rdp->dynticks);
++	trace_rcu_dyntick(TPS("Startirq"), rdp->dynticks_nmi_nesting, 0, atomic_read(&rdp->dynticks));
+ 	WRITE_ONCE(rdp->dynticks_nmi_nesting, 0); /* Avoid store tearing. */
+ 
+ 	if (irq)
+@@ -744,7 +745,7 @@ static void rcu_eqs_exit(bool user)
+ 	rcu_dynticks_task_exit();
+ 	rcu_dynticks_eqs_exit();
+ 	rcu_cleanup_after_idle();
+-	trace_rcu_dyntick(TPS("End"), rdp->dynticks_nesting, 1, rdp->dynticks);
++	trace_rcu_dyntick(TPS("End"), rdp->dynticks_nesting, 1, atomic_read(&rdp->dynticks));
+ 	WARN_ON_ONCE(IS_ENABLED(CONFIG_RCU_EQS_DEBUG) && !user && !is_idle_task(current));
+ 	WRITE_ONCE(rdp->dynticks_nesting, 1);
+ 	WARN_ON_ONCE(rdp->dynticks_nmi_nesting);
+@@ -833,7 +834,7 @@ static __always_inline void rcu_nmi_enter_common(bool irq)
+ 	}
+ 	trace_rcu_dyntick(incby == 1 ? TPS("Endirq") : TPS("++="),
+ 			  rdp->dynticks_nmi_nesting,
+-			  rdp->dynticks_nmi_nesting + incby, rdp->dynticks);
++			  rdp->dynticks_nmi_nesting + incby, atomic_read(&rdp->dynticks));
+ 	WRITE_ONCE(rdp->dynticks_nmi_nesting, /* Prevent store tearing. */
+ 		   rdp->dynticks_nmi_nesting + incby);
+ 	barrier();
