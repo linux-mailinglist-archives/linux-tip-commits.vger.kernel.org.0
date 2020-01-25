@@ -2,33 +2,34 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1733814949D
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 25 Jan 2020 11:47:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D4F0C1494F1
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 25 Jan 2020 11:48:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727307AbgAYKmp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 25 Jan 2020 05:42:45 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:44091 "EHLO
+        id S1726135AbgAYKqw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 25 Jan 2020 05:46:52 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:44108 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726194AbgAYKmo (ORCPT
+        with ESMTP id S1729008AbgAYKms (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 25 Jan 2020 05:42:44 -0500
+        Sat, 25 Jan 2020 05:42:48 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1ivItm-0008Lg-Q8; Sat, 25 Jan 2020 11:42:42 +0100
+        id 1ivIto-0008Ln-2Z; Sat, 25 Jan 2020 11:42:44 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 61DB61C0105;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B343E1C1A72;
         Sat, 25 Jan 2020 11:42:42 +0100 (CET)
 Date:   Sat, 25 Jan 2020 10:42:42 -0000
-From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Lai Jiangshan" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcu: Avoid tick_dep_set_cpu() misordering
-Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
+Subject: [tip: core/rcu] rcu: Provide wrappers for uses of ->rcu_read_lock_nesting
+Cc:     Lai Jiangshan <laijs@linux.alibaba.com>,
+        "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <157994896211.396.14885465096262437698.tip-bot2@tip-bot2>
+Message-ID: <157994896248.396.15169661003351967632.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -44,66 +45,188 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     5b14557b073c96a7cf79adc4d7b6c4a8c26b2a43
-Gitweb:        https://git.kernel.org/tip/5b14557b073c96a7cf79adc4d7b6c4a8c26b2a43
-Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Tue, 26 Nov 2019 18:05:45 -08:00
+Commit-ID:     77339e61aa309310a535bd01eb3388f7a27b36f9
+Gitweb:        https://git.kernel.org/tip/77339e61aa309310a535bd01eb3388f7a27b36f9
+Author:        Lai Jiangshan <laijs@linux.alibaba.com>
+AuthorDate:    Fri, 15 Nov 2019 14:08:53 -08:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Fri, 24 Jan 2020 10:27:33 -08:00
 
-rcu: Avoid tick_dep_set_cpu() misordering
+rcu: Provide wrappers for uses of ->rcu_read_lock_nesting
 
-In the current code, rcu_nmi_enter_common() might decide to turn on
-the tick using tick_dep_set_cpu(), but be delayed just before doing so.
-Then the grace-period kthread might notice that the CPU in question had
-in fact gone through a quiescent state, thus turning off the tick using
-tick_dep_clear_cpu().  The later invocation of tick_dep_set_cpu() would
-then incorrectly leave the tick on.
+This commit provides wrapper functions for uses of ->rcu_read_lock_nesting
+to improve readability and to ease future changes to support inlining
+of __rcu_read_lock() and __rcu_read_unlock().
 
-This commit therefore enlists the aid of the leaf rcu_node structure's
-->lock to ensure that decisions to enable or disable the tick are
-carried out before they can be reversed.
-
+Signed-off-by: Lai Jiangshan <laijs@linux.alibaba.com>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/rcu/tree.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ kernel/rcu/tree_exp.h    |  4 +--
+ kernel/rcu/tree_plugin.h | 53 +++++++++++++++++++++++++--------------
+ 2 files changed, 36 insertions(+), 21 deletions(-)
 
-diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
-index 5445da2..b0e0612 100644
---- a/kernel/rcu/tree.c
-+++ b/kernel/rcu/tree.c
-@@ -800,8 +800,8 @@ void rcu_user_exit(void)
-  */
- static __always_inline void rcu_nmi_enter_common(bool irq)
- {
--	struct rcu_data *rdp = this_cpu_ptr(&rcu_data);
- 	long incby = 2;
-+	struct rcu_data *rdp = this_cpu_ptr(&rcu_data);
+diff --git a/kernel/rcu/tree_exp.h b/kernel/rcu/tree_exp.h
+index 98d078c..d8da6b1 100644
+--- a/kernel/rcu/tree_exp.h
++++ b/kernel/rcu/tree_exp.h
+@@ -610,7 +610,7 @@ static void rcu_exp_handler(void *unused)
+ 	 * critical section.  If also enabled or idle, immediately
+ 	 * report the quiescent state, otherwise defer.
+ 	 */
+-	if (!t->rcu_read_lock_nesting) {
++	if (!rcu_preempt_depth()) {
+ 		if (!(preempt_count() & (PREEMPT_MASK | SOFTIRQ_MASK)) ||
+ 		    rcu_dynticks_curr_cpu_in_eqs()) {
+ 			rcu_report_exp_rdp(rdp);
+@@ -634,7 +634,7 @@ static void rcu_exp_handler(void *unused)
+ 	 * can have caused this quiescent state to already have been
+ 	 * reported, so we really do need to check ->expmask.
+ 	 */
+-	if (t->rcu_read_lock_nesting > 0) {
++	if (rcu_preempt_depth() > 0) {
+ 		raw_spin_lock_irqsave_rcu_node(rnp, flags);
+ 		if (rnp->expmask & rdp->grpmask) {
+ 			rdp->exp_deferred_qs = true;
+diff --git a/kernel/rcu/tree_plugin.h b/kernel/rcu/tree_plugin.h
+index 698a7f1..ebdbdec 100644
+--- a/kernel/rcu/tree_plugin.h
++++ b/kernel/rcu/tree_plugin.h
+@@ -290,8 +290,8 @@ void rcu_note_context_switch(bool preempt)
  
- 	/* Complain about underflow. */
- 	WARN_ON_ONCE(rdp->dynticks_nmi_nesting < 0);
-@@ -828,8 +828,13 @@ static __always_inline void rcu_nmi_enter_common(bool irq)
- 	} else if (tick_nohz_full_cpu(rdp->cpu) &&
- 		   rdp->dynticks_nmi_nesting == DYNTICK_IRQ_NONIDLE &&
- 		   READ_ONCE(rdp->rcu_urgent_qs) && !rdp->rcu_forced_tick) {
--		rdp->rcu_forced_tick = true;
--		tick_dep_set_cpu(rdp->cpu, TICK_DEP_BIT_RCU);
-+		raw_spin_lock_rcu_node(rdp->mynode);
-+		// Recheck under lock.
-+		if (rdp->rcu_urgent_qs && !rdp->rcu_forced_tick) {
-+			rdp->rcu_forced_tick = true;
-+			tick_dep_set_cpu(rdp->cpu, TICK_DEP_BIT_RCU);
-+		}
-+		raw_spin_unlock_rcu_node(rdp->mynode);
- 	}
- 	trace_rcu_dyntick(incby == 1 ? TPS("Endirq") : TPS("++="),
- 			  rdp->dynticks_nmi_nesting,
-@@ -898,6 +903,7 @@ void rcu_irq_enter_irqson(void)
+ 	trace_rcu_utilization(TPS("Start context switch"));
+ 	lockdep_assert_irqs_disabled();
+-	WARN_ON_ONCE(!preempt && t->rcu_read_lock_nesting > 0);
+-	if (t->rcu_read_lock_nesting > 0 &&
++	WARN_ON_ONCE(!preempt && rcu_preempt_depth() > 0);
++	if (rcu_preempt_depth() > 0 &&
+ 	    !t->rcu_read_unlock_special.b.blocked) {
+ 
+ 		/* Possibly blocking in an RCU read-side critical section. */
+@@ -348,6 +348,21 @@ static int rcu_preempt_blocked_readers_cgp(struct rcu_node *rnp)
+ #define RCU_NEST_NMAX (-INT_MAX / 2)
+ #define RCU_NEST_PMAX (INT_MAX / 2)
+ 
++static void rcu_preempt_read_enter(void)
++{
++	current->rcu_read_lock_nesting++;
++}
++
++static void rcu_preempt_read_exit(void)
++{
++	current->rcu_read_lock_nesting--;
++}
++
++static void rcu_preempt_depth_set(int val)
++{
++	current->rcu_read_lock_nesting = val;
++}
++
+ /*
+  * Preemptible RCU implementation for rcu_read_lock().
+  * Just increment ->rcu_read_lock_nesting, shared state will be updated
+@@ -355,9 +370,9 @@ static int rcu_preempt_blocked_readers_cgp(struct rcu_node *rnp)
   */
- static void rcu_disable_urgency_upon_qs(struct rcu_data *rdp)
+ void __rcu_read_lock(void)
  {
-+	raw_lockdep_assert_held_rcu_node(rdp->mynode);
- 	WRITE_ONCE(rdp->rcu_urgent_qs, false);
- 	WRITE_ONCE(rdp->rcu_need_heavy_qs, false);
- 	if (tick_nohz_full_cpu(rdp->cpu) && rdp->rcu_forced_tick) {
+-	current->rcu_read_lock_nesting++;
++	rcu_preempt_read_enter();
+ 	if (IS_ENABLED(CONFIG_PROVE_LOCKING))
+-		WARN_ON_ONCE(current->rcu_read_lock_nesting > RCU_NEST_PMAX);
++		WARN_ON_ONCE(rcu_preempt_depth() > RCU_NEST_PMAX);
+ 	barrier();  /* critical section after entry code. */
+ }
+ EXPORT_SYMBOL_GPL(__rcu_read_lock);
+@@ -373,19 +388,19 @@ void __rcu_read_unlock(void)
+ {
+ 	struct task_struct *t = current;
+ 
+-	if (t->rcu_read_lock_nesting != 1) {
+-		--t->rcu_read_lock_nesting;
++	if (rcu_preempt_depth() != 1) {
++		rcu_preempt_read_exit();
+ 	} else {
+ 		barrier();  /* critical section before exit code. */
+-		t->rcu_read_lock_nesting = -RCU_NEST_BIAS;
++		rcu_preempt_depth_set(-RCU_NEST_BIAS);
+ 		barrier();  /* assign before ->rcu_read_unlock_special load */
+ 		if (unlikely(READ_ONCE(t->rcu_read_unlock_special.s)))
+ 			rcu_read_unlock_special(t);
+ 		barrier();  /* ->rcu_read_unlock_special load before assign */
+-		t->rcu_read_lock_nesting = 0;
++		rcu_preempt_depth_set(0);
+ 	}
+ 	if (IS_ENABLED(CONFIG_PROVE_LOCKING)) {
+-		int rrln = t->rcu_read_lock_nesting;
++		int rrln = rcu_preempt_depth();
+ 
+ 		WARN_ON_ONCE(rrln < 0 && rrln > RCU_NEST_NMAX);
+ 	}
+@@ -539,7 +554,7 @@ static bool rcu_preempt_need_deferred_qs(struct task_struct *t)
+ {
+ 	return (__this_cpu_read(rcu_data.exp_deferred_qs) ||
+ 		READ_ONCE(t->rcu_read_unlock_special.s)) &&
+-	       t->rcu_read_lock_nesting <= 0;
++	       rcu_preempt_depth() <= 0;
+ }
+ 
+ /*
+@@ -552,16 +567,16 @@ static bool rcu_preempt_need_deferred_qs(struct task_struct *t)
+ static void rcu_preempt_deferred_qs(struct task_struct *t)
+ {
+ 	unsigned long flags;
+-	bool couldrecurse = t->rcu_read_lock_nesting >= 0;
++	bool couldrecurse = rcu_preempt_depth() >= 0;
+ 
+ 	if (!rcu_preempt_need_deferred_qs(t))
+ 		return;
+ 	if (couldrecurse)
+-		t->rcu_read_lock_nesting -= RCU_NEST_BIAS;
++		rcu_preempt_depth_set(rcu_preempt_depth() - RCU_NEST_BIAS);
+ 	local_irq_save(flags);
+ 	rcu_preempt_deferred_qs_irqrestore(t, flags);
+ 	if (couldrecurse)
+-		t->rcu_read_lock_nesting += RCU_NEST_BIAS;
++		rcu_preempt_depth_set(rcu_preempt_depth() + RCU_NEST_BIAS);
+ }
+ 
+ /*
+@@ -672,7 +687,7 @@ static void rcu_flavor_sched_clock_irq(int user)
+ 	if (user || rcu_is_cpu_rrupt_from_idle()) {
+ 		rcu_note_voluntary_context_switch(current);
+ 	}
+-	if (t->rcu_read_lock_nesting > 0 ||
++	if (rcu_preempt_depth() > 0 ||
+ 	    (preempt_count() & (PREEMPT_MASK | SOFTIRQ_MASK))) {
+ 		/* No QS, force context switch if deferred. */
+ 		if (rcu_preempt_need_deferred_qs(t)) {
+@@ -682,13 +697,13 @@ static void rcu_flavor_sched_clock_irq(int user)
+ 	} else if (rcu_preempt_need_deferred_qs(t)) {
+ 		rcu_preempt_deferred_qs(t); /* Report deferred QS. */
+ 		return;
+-	} else if (!t->rcu_read_lock_nesting) {
++	} else if (!rcu_preempt_depth()) {
+ 		rcu_qs(); /* Report immediate QS. */
+ 		return;
+ 	}
+ 
+ 	/* If GP is oldish, ask for help from rcu_read_unlock_special(). */
+-	if (t->rcu_read_lock_nesting > 0 &&
++	if (rcu_preempt_depth() > 0 &&
+ 	    __this_cpu_read(rcu_data.core_needs_qs) &&
+ 	    __this_cpu_read(rcu_data.cpu_no_qs.b.norm) &&
+ 	    !t->rcu_read_unlock_special.b.need_qs &&
+@@ -709,11 +724,11 @@ void exit_rcu(void)
+ 	struct task_struct *t = current;
+ 
+ 	if (unlikely(!list_empty(&current->rcu_node_entry))) {
+-		t->rcu_read_lock_nesting = 1;
++		rcu_preempt_depth_set(1);
+ 		barrier();
+ 		WRITE_ONCE(t->rcu_read_unlock_special.b.blocked, true);
+-	} else if (unlikely(t->rcu_read_lock_nesting)) {
+-		t->rcu_read_lock_nesting = 1;
++	} else if (unlikely(rcu_preempt_depth())) {
++		rcu_preempt_depth_set(1);
+ 	} else {
+ 		return;
+ 	}
