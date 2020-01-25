@@ -2,33 +2,33 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E3CAB1494CD
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 25 Jan 2020 11:48:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F1A991494CB
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 25 Jan 2020 11:48:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729605AbgAYKpd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 25 Jan 2020 05:45:33 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:44273 "EHLO
+        id S1729632AbgAYKp1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 25 Jan 2020 05:45:27 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:44287 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729536AbgAYKnK (ORCPT
+        with ESMTP id S1729605AbgAYKnM (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 25 Jan 2020 05:43:10 -0500
+        Sat, 25 Jan 2020 05:43:12 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1ivIuA-000070-LZ; Sat, 25 Jan 2020 11:43:06 +0100
+        id 1ivIuA-00008Q-Mb; Sat, 25 Jan 2020 11:43:06 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 580841C1A87;
-        Sat, 25 Jan 2020 11:42:51 +0100 (CET)
-Date:   Sat, 25 Jan 2020 10:42:51 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 427D61C1A7C;
+        Sat, 25 Jan 2020 11:42:52 +0100 (CET)
+Date:   Sat, 25 Jan 2020 10:42:52 -0000
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] torture: Allow "CFLIST" to specify default list of scenarios
+Subject: [tip: core/rcu] rcutorture: Move to dynamic initialization of rcu_fwds
 Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <157994897114.396.4771544853246554716.tip-bot2@tip-bot2>
+Message-ID: <157994897201.396.899346796754256601.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -44,82 +44,48 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     25b4da74a955bf956428ab29e54aadf4fffab0a3
-Gitweb:        https://git.kernel.org/tip/25b4da74a955bf956428ab29e54aadf4fffab0a3
+Commit-ID:     7beba0c06b588c725962bcc0273a489d46e81ccf
+Gitweb:        https://git.kernel.org/tip/7beba0c06b588c725962bcc0273a489d46e81ccf
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Fri, 22 Nov 2019 06:14:21 -08:00
+AuthorDate:    Wed, 06 Nov 2019 07:49:31 -08:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Mon, 09 Dec 2019 13:00:29 -08:00
+CommitterDate: Mon, 09 Dec 2019 13:00:28 -08:00
 
-torture: Allow "CFLIST" to specify default list of scenarios
+rcutorture: Move to dynamic initialization of rcu_fwds
 
-On a large system, it can be convenient to tell rcutorture to run
-several instances of the default scenarios.  Currently, this requires
-explicitly listing them, for example, "--configs '2*SRCU-N 2*SRCU-P...'".
-Although this works, it is rather inconvenient.
-
-This commit therefore allows "CFLIST" to be specified to indicate the
-default list of scenarios called out in the relevant CFLIST file, for
-example, for RCU, tools/testing/selftests/rcutorture/configs/rcu/CFLIST.
-In addition, multipliers may be used to run multiple instances of all
-the scenarios.  For example, on a 256-CPU system, "--configs '3*CFLIST'"
-would run three instances of each scenario concurrently with one CPU
-left over.  Thus "--configs '3*CFLIST TINY01'" would exactly consume all
-256 CPUs, which makes rcutorture's jitter feature more effective.
+In order to add multiple call_rcu() forward-progress kthreads, it will
+be necessary to dynamically allocate and initialize.  This commit
+therefore moves the initialization from compile time to instead
+immediately precede thread-creation time.
 
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- tools/testing/selftests/rcutorture/bin/kvm.sh | 19 ++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+ kernel/rcu/rcutorture.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/tools/testing/selftests/rcutorture/bin/kvm.sh b/tools/testing/selftests/rcutorture/bin/kvm.sh
-index 7251858..e19151c 100755
---- a/tools/testing/selftests/rcutorture/bin/kvm.sh
-+++ b/tools/testing/selftests/rcutorture/bin/kvm.sh
-@@ -198,9 +198,10 @@ fi
+diff --git a/kernel/rcu/rcutorture.c b/kernel/rcu/rcutorture.c
+index cc88ce9..6f540fe 100644
+--- a/kernel/rcu/rcutorture.c
++++ b/kernel/rcu/rcutorture.c
+@@ -1686,11 +1686,7 @@ struct rcu_fwd {
+ 	unsigned long rcu_launder_gp_seq_start;
+ };
  
- CONFIGFRAG=${KVM}/configs/${TORTURE_SUITE}; export CONFIGFRAG
+-struct rcu_fwd rcu_fwds = {
+-	.rcu_fwd_lock = __SPIN_LOCK_UNLOCKED(rcu_fwds.rcu_fwd_lock),
+-	.rcu_fwd_cb_tail = &rcu_fwds.rcu_fwd_cb_head,
+-};
+-
++struct rcu_fwd rcu_fwds;
+ bool rcu_fwd_emergency_stop;
  
-+defaultconfigs="`tr '\012' ' ' < $CONFIGFRAG/CFLIST`"
- if test -z "$configs"
- then
--	configs="`cat $CONFIGFRAG/CFLIST`"
-+	configs=$defaultconfigs
- fi
- 
- if test -z "$resdir"
-@@ -209,7 +210,7 @@ then
- fi
- 
- # Create a file of test-name/#cpus pairs, sorted by decreasing #cpus.
--touch $T/cfgcpu
-+configs_derep=
- for CF in $configs
- do
- 	case $CF in
-@@ -222,15 +223,21 @@ do
- 		CF1=$CF
- 		;;
- 	esac
-+	for ((cur_rep=0;cur_rep<$config_reps;cur_rep++))
-+	do
-+		configs_derep="$configs_derep $CF1"
-+	done
-+done
-+touch $T/cfgcpu
-+configs_derep="`echo $configs_derep | sed -e "s/\<CFLIST\>/$defaultconfigs/g"`"
-+for CF1 in $configs_derep
-+do
- 	if test -f "$CONFIGFRAG/$CF1"
- 	then
- 		cpu_count=`configNR_CPUS.sh $CONFIGFRAG/$CF1`
- 		cpu_count=`configfrag_boot_cpus "$TORTURE_BOOTARGS" "$CONFIGFRAG/$CF1" "$cpu_count"`
- 		cpu_count=`configfrag_boot_maxcpus "$TORTURE_BOOTARGS" "$CONFIGFRAG/$CF1" "$cpu_count"`
--		for ((cur_rep=0;cur_rep<$config_reps;cur_rep++))
--		do
--			echo $CF1 $cpu_count >> $T/cfgcpu
--		done
-+		echo $CF1 $cpu_count >> $T/cfgcpu
- 	else
- 		echo "The --configs file $CF1 does not exist, terminating."
- 		exit 1
+ static void rcu_torture_fwd_cb_hist(struct rcu_fwd *rfp)
+@@ -2026,6 +2022,8 @@ static int __init rcu_torture_fwd_prog_init(void)
+ 		WARN_ON(1); /* Make sure rcutorture notices conflict. */
+ 		return 0;
+ 	}
++	spin_lock_init(&rcu_fwds.rcu_fwd_lock);
++	rcu_fwds.rcu_fwd_cb_tail = &rcu_fwds.rcu_fwd_cb_head;
+ 	if (fwd_progress_holdoff <= 0)
+ 		fwd_progress_holdoff = 1;
+ 	if (fwd_progress_div <= 0)
