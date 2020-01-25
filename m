@@ -2,40 +2,33 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 156F7149480
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 25 Jan 2020 11:44:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D937B149476
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 25 Jan 2020 11:44:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729959AbgAYKne (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 25 Jan 2020 05:43:34 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:44413 "EHLO
+        id S1729664AbgAYKnO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 25 Jan 2020 05:43:14 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:44291 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729934AbgAYKnd (ORCPT
+        with ESMTP id S1729612AbgAYKnN (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 25 Jan 2020 05:43:33 -0500
+        Sat, 25 Jan 2020 05:43:13 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1ivIuG-0000Br-KB; Sat, 25 Jan 2020 11:43:12 +0100
+        id 1ivIuE-0000Ba-MP; Sat, 25 Jan 2020 11:43:10 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A20781C1A8C;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5CA321C1A7F;
         Sat, 25 Jan 2020 11:42:54 +0100 (CET)
 Date:   Sat, 25 Jan 2020 10:42:54 -0000
-From:   "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcu: Use CONFIG_PREEMPTION where appropriate
-Cc:     "Paul E. McKenney" <paulmck@kernel.org>,
-        Josh Triplett <josh@joshtriplett.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        Lai Jiangshan <jiangshanlai@gmail.com>,
-        Joel Fernandes <joel@joelfernandes.org>,
-        Davidlohr Bueso <dave@stgolabs.net>, rcu@vger.kernel.org,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+Subject: [tip: core/rcu] torture: Use gawk instead of awk for systime() function
+Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <157994897444.396.410592911890723402.tip-bot2@tip-bot2>
+Message-ID: <157994897417.396.8674695189827096548.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,154 +44,72 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     90326f0521a88004194f88f1b597b54347482b5c
-Gitweb:        https://git.kernel.org/tip/90326f0521a88004194f88f1b597b54347482b5c
-Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-AuthorDate:    Tue, 15 Oct 2019 21:18:14 +02:00
+Commit-ID:     c493f1c9c4094afae7f3a0693ae395f3859022b4
+Gitweb:        https://git.kernel.org/tip/c493f1c9c4094afae7f3a0693ae395f3859022b4
+Author:        Paul E. McKenney <paulmck@kernel.org>
+AuthorDate:    Sun, 06 Oct 2019 14:33:22 -07:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Mon, 09 Dec 2019 12:37:51 -08:00
+CommitterDate: Mon, 09 Dec 2019 13:00:26 -08:00
 
-rcu: Use CONFIG_PREEMPTION where appropriate
+torture: Use gawk instead of awk for systime() function
 
-The config option `CONFIG_PREEMPT' is used for the preemption model
-"Low-Latency Desktop". The config option `CONFIG_PREEMPTION' is enabled
-when kernel preemption is enabled which is true for the preemption model
-`CONFIG_PREEMPT' and `CONFIG_PREEMPT_RT'.
+In many environments, gawk provides systime(), but awk doesn't.
+This commit therefore changes awk scripts using systime() to instead be
+gawk scripts.
 
-Use `CONFIG_PREEMPTION' if it applies to both preemption models and not
-just to `CONFIG_PREEMPT'.
-
-Cc: "Paul E. McKenney" <paulmck@kernel.org>
-Cc: Josh Triplett <josh@joshtriplett.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Lai Jiangshan <jiangshanlai@gmail.com>
-Cc: Joel Fernandes <joel@joelfernandes.org>
-Cc: Davidlohr Bueso <dave@stgolabs.net>
-Cc: rcu@vger.kernel.org
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- include/linux/rcupdate.h | 4 ++--
- kernel/rcu/Kconfig       | 4 ++--
- kernel/rcu/rcutorture.c  | 2 +-
- kernel/rcu/srcutiny.c    | 2 +-
- kernel/rcu/tree.c        | 4 ++--
- kernel/rcu/tree_exp.h    | 2 +-
- kernel/rcu/tree_plugin.h | 4 ++--
- 7 files changed, 11 insertions(+), 11 deletions(-)
+ tools/testing/selftests/rcutorture/bin/jitter.sh         | 4 ++--
+ tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh | 6 +++---
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/rcupdate.h b/include/linux/rcupdate.h
-index 70a41cd..eb32fff 100644
---- a/include/linux/rcupdate.h
-+++ b/include/linux/rcupdate.h
-@@ -154,7 +154,7 @@ static inline void exit_tasks_rcu_finish(void) { }
-  *
-  * This macro resembles cond_resched(), except that it is defined to
-  * report potential quiescent states to RCU-tasks even if the cond_resched()
-- * machinery were to be shut off, as some advocate for PREEMPT kernels.
-+ * machinery were to be shut off, as some advocate for PREEMPTION kernels.
-  */
- #define cond_resched_tasks_rcu_qs() \
- do { \
-@@ -598,7 +598,7 @@ do {									      \
-  *
-  * You can avoid reading and understanding the next paragraph by
-  * following this rule: don't put anything in an rcu_read_lock() RCU
-- * read-side critical section that would block in a !PREEMPT kernel.
-+ * read-side critical section that would block in a !PREEMPTION kernel.
-  * But if you want the full story, read on!
-  *
-  * In non-preemptible RCU implementations (pure TREE_RCU and TINY_RCU),
-diff --git a/kernel/rcu/Kconfig b/kernel/rcu/Kconfig
-index 0303934..1cc940f 100644
---- a/kernel/rcu/Kconfig
-+++ b/kernel/rcu/Kconfig
-@@ -201,8 +201,8 @@ config RCU_NOCB_CPU
- 	  specified at boot time by the rcu_nocbs parameter.  For each
- 	  such CPU, a kthread ("rcuox/N") will be created to invoke
- 	  callbacks, where the "N" is the CPU being offloaded, and where
--	  the "p" for RCU-preempt (PREEMPT kernels) and "s" for RCU-sched
--	  (!PREEMPT kernels).  Nothing prevents this kthread from running
-+	  the "p" for RCU-preempt (PREEMPTION kernels) and "s" for RCU-sched
-+	  (!PREEMPTION kernels).  Nothing prevents this kthread from running
- 	  on the specified CPUs, but (1) the kthreads may be preempted
- 	  between each callback, and (2) affinity or cgroups can be used
- 	  to force the kthreads to run on whatever set of CPUs is desired.
-diff --git a/kernel/rcu/rcutorture.c b/kernel/rcu/rcutorture.c
-index dee043f..121a050 100644
---- a/kernel/rcu/rcutorture.c
-+++ b/kernel/rcu/rcutorture.c
-@@ -1730,7 +1730,7 @@ static void rcu_torture_fwd_cb_cr(struct rcu_head *rhp)
- // Give the scheduler a chance, even on nohz_full CPUs.
- static void rcu_torture_fwd_prog_cond_resched(unsigned long iter)
- {
--	if (IS_ENABLED(CONFIG_PREEMPT) && IS_ENABLED(CONFIG_NO_HZ_FULL)) {
-+	if (IS_ENABLED(CONFIG_PREEMPTION) && IS_ENABLED(CONFIG_NO_HZ_FULL)) {
- 		// Real call_rcu() floods hit userspace, so emulate that.
- 		if (need_resched() || (iter & 0xfff))
- 			schedule();
-diff --git a/kernel/rcu/srcutiny.c b/kernel/rcu/srcutiny.c
-index 44d6606..6208c1d 100644
---- a/kernel/rcu/srcutiny.c
-+++ b/kernel/rcu/srcutiny.c
-@@ -103,7 +103,7 @@ EXPORT_SYMBOL_GPL(__srcu_read_unlock);
+diff --git a/tools/testing/selftests/rcutorture/bin/jitter.sh b/tools/testing/selftests/rcutorture/bin/jitter.sh
+index dc49a3b..86a217b 100755
+--- a/tools/testing/selftests/rcutorture/bin/jitter.sh
++++ b/tools/testing/selftests/rcutorture/bin/jitter.sh
+@@ -23,12 +23,12 @@ spinmax=${4-1000}
  
- /*
-  * Workqueue handler to drive one grace period and invoke any callbacks
-- * that become ready as a result.  Single-CPU and !PREEMPT operation
-+ * that become ready as a result.  Single-CPU and !PREEMPTION operation
-  * means that we get away with murder on synchronization.  ;-)
-  */
- void srcu_drive_gp(struct work_struct *wp)
-diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
-index 1694a6b..c9dbb05 100644
---- a/kernel/rcu/tree.c
-+++ b/kernel/rcu/tree.c
-@@ -2698,9 +2698,9 @@ EXPORT_SYMBOL_GPL(kfree_call_rcu);
+ n=1
  
- /*
-  * During early boot, any blocking grace-period wait automatically
-- * implies a grace period.  Later on, this is never the case for PREEMPT.
-+ * implies a grace period.  Later on, this is never the case for PREEMPTION.
-  *
-- * Howevr, because a context switch is a grace period for !PREEMPT, any
-+ * Howevr, because a context switch is a grace period for !PREEMPTION, any
-  * blocking grace-period wait automatically implies a grace period if
-  * there is only one CPU online at any point time during execution of
-  * either synchronize_rcu() or synchronize_rcu_expedited().  It is OK to
-diff --git a/kernel/rcu/tree_exp.h b/kernel/rcu/tree_exp.h
-index d632cd0..98d078c 100644
---- a/kernel/rcu/tree_exp.h
-+++ b/kernel/rcu/tree_exp.h
-@@ -670,7 +670,7 @@ static void rcu_exp_handler(void *unused)
- 	}
- }
+-starttime=`awk 'BEGIN { print systime(); }' < /dev/null`
++starttime=`gawk 'BEGIN { print systime(); }' < /dev/null`
  
--/* PREEMPT=y, so no PREEMPT=n expedited grace period to clean up after. */
-+/* PREEMPTION=y, so no PREEMPTION=n expedited grace period to clean up after. */
- static void sync_sched_exp_online_cleanup(int cpu)
- {
- }
-diff --git a/kernel/rcu/tree_plugin.h b/kernel/rcu/tree_plugin.h
-index ed54d36..8cdce11 100644
---- a/kernel/rcu/tree_plugin.h
-+++ b/kernel/rcu/tree_plugin.h
-@@ -789,7 +789,7 @@ static void __init rcu_bootup_announce(void)
- }
+ while :
+ do
+ 	# Check for done.
+-	t=`awk -v s=$starttime 'BEGIN { print systime() - s; }' < /dev/null`
++	t=`gawk -v s=$starttime 'BEGIN { print systime() - s; }' < /dev/null`
+ 	if test "$t" -gt "$duration"
+ 	then
+ 		exit 0;
+diff --git a/tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh b/tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh
+index 33c6696..1d98992 100755
+--- a/tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh
++++ b/tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh
+@@ -123,7 +123,7 @@ qemu_args=$5
+ boot_args=$6
  
- /*
-- * Note a quiescent state for PREEMPT=n.  Because we do not need to know
-+ * Note a quiescent state for PREEMPTION=n.  Because we do not need to know
-  * how many quiescent states passed, just if there was at least one since
-  * the start of the grace period, this just sets a flag.  The caller must
-  * have disabled preemption.
-@@ -839,7 +839,7 @@ void rcu_all_qs(void)
- EXPORT_SYMBOL_GPL(rcu_all_qs);
- 
- /*
-- * Note a PREEMPT=n context switch.  The caller must have disabled interrupts.
-+ * Note a PREEMPTION=n context switch. The caller must have disabled interrupts.
-  */
- void rcu_note_context_switch(bool preempt)
- {
+ cd $KVM
+-kstarttime=`awk 'BEGIN { print systime() }' < /dev/null`
++kstarttime=`gawk 'BEGIN { print systime() }' < /dev/null`
+ if test -z "$TORTURE_BUILDONLY"
+ then
+ 	echo ' ---' `date`: Starting kernel
+@@ -177,7 +177,7 @@ do
+ 	then
+ 		qemu_pid=`cat "$resdir/qemu_pid"`
+ 	fi
+-	kruntime=`awk 'BEGIN { print systime() - '"$kstarttime"' }' < /dev/null`
++	kruntime=`gawk 'BEGIN { print systime() - '"$kstarttime"' }' < /dev/null`
+ 	if test -z "$qemu_pid" || kill -0 "$qemu_pid" > /dev/null 2>&1
+ 	then
+ 		if test $kruntime -ge $seconds
+@@ -213,7 +213,7 @@ then
+ 	oldline="`tail $resdir/console.log`"
+ 	while :
+ 	do
+-		kruntime=`awk 'BEGIN { print systime() - '"$kstarttime"' }' < /dev/null`
++		kruntime=`gawk 'BEGIN { print systime() - '"$kstarttime"' }' < /dev/null`
+ 		if kill -0 $qemu_pid > /dev/null 2>&1
+ 		then
+ 			:
