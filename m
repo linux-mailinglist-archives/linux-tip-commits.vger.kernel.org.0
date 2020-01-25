@@ -2,33 +2,33 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A6321494B2
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 25 Jan 2020 11:47:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 328601494C3
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 25 Jan 2020 11:48:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729715AbgAYKnQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 25 Jan 2020 05:43:16 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:44310 "EHLO
+        id S1729992AbgAYKpF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 25 Jan 2020 05:45:05 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:44325 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729401AbgAYKnP (ORCPT
+        with ESMTP id S1729701AbgAYKnR (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 25 Jan 2020 05:43:15 -0500
+        Sat, 25 Jan 2020 05:43:17 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1ivIuH-0000AW-FR; Sat, 25 Jan 2020 11:43:13 +0100
+        id 1ivIuI-0000BE-EP; Sat, 25 Jan 2020 11:43:14 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C38921C1A8B;
-        Sat, 25 Jan 2020 11:42:53 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 132B51C1A79;
+        Sat, 25 Jan 2020 11:42:54 +0100 (CET)
 Date:   Sat, 25 Jan 2020 10:42:53 -0000
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] torture: Handle jitter for CPUs that cannot be offlined
+Subject: [tip: core/rcu] rcutorture: Dispense with Dracut for initrd creation
 Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <157994897358.396.12993561123302180210.tip-bot2@tip-bot2>
+Message-ID: <157994897387.396.11740216561501375357.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -44,69 +44,88 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     517f17aed0ce678dfa82d7dd4e2593fc1bac799c
-Gitweb:        https://git.kernel.org/tip/517f17aed0ce678dfa82d7dd4e2593fc1bac799c
+Commit-ID:     9aa55ec206a6841e297c9df7e737b3d57f048a82
+Gitweb:        https://git.kernel.org/tip/9aa55ec206a6841e297c9df7e737b3d57f048a82
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Mon, 14 Oct 2019 07:05:38 -07:00
+AuthorDate:    Sat, 12 Oct 2019 15:29:02 -07:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Mon, 09 Dec 2019 13:00:26 -08:00
 
-torture: Handle jitter for CPUs that cannot be offlined
+rcutorture: Dispense with Dracut for initrd creation
 
-Currently, jitter.sh assumes that the underlying hypervisor will be
-configured with all CPUs hotpluggable, with the possible exception
-of CPU 0.  However, there are installations where the hypervisor
-prohibits offlining, which breaks jitter.sh.  This commit therefore
-lists the CPUs that cannot be offlined up front, and checks for the
-case where no CPU can be offlined in the loop.
+The dracut scripting does not work on all platforms, and there are no
+known failures from the init binary based on the statically linked C
+program.  This commit therefore removes the dracut scripting so that the
+statically linked C program is always used to create the init "script".
 
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- tools/testing/selftests/rcutorture/bin/jitter.sh | 26 +++++++++++----
- 1 file changed, 20 insertions(+), 6 deletions(-)
+ tools/testing/selftests/rcutorture/bin/mkinitrd.sh | 55 +-------------
+ 1 file changed, 3 insertions(+), 52 deletions(-)
 
-diff --git a/tools/testing/selftests/rcutorture/bin/jitter.sh b/tools/testing/selftests/rcutorture/bin/jitter.sh
-index 86a217b..30cb5b2 100755
---- a/tools/testing/selftests/rcutorture/bin/jitter.sh
-+++ b/tools/testing/selftests/rcutorture/bin/jitter.sh
-@@ -25,6 +25,18 @@ n=1
+diff --git a/tools/testing/selftests/rcutorture/bin/mkinitrd.sh b/tools/testing/selftests/rcutorture/bin/mkinitrd.sh
+index 6fa9bd1..38e424d 100755
+--- a/tools/testing/selftests/rcutorture/bin/mkinitrd.sh
++++ b/tools/testing/selftests/rcutorture/bin/mkinitrd.sh
+@@ -20,58 +20,9 @@ if [ -s "$D/initrd/init" ]; then
+     exit 0
+ fi
  
- starttime=`gawk 'BEGIN { print systime(); }' < /dev/null`
- 
-+nohotplugcpus=
-+for i in /sys/devices/system/cpu/cpu[0-9]*
-+do
-+	if test -f $i/online
-+	then
-+		:
-+	else
-+		curcpu=`echo $i | sed -e 's/^[^0-9]*//'`
-+		nohotplugcpus="$nohotplugcpus $curcpu"
-+	fi
-+done
-+
- while :
- do
- 	# Check for done.
-@@ -35,13 +47,15 @@ do
- 	fi
- 
- 	# Set affinity to randomly selected online CPU
--	cpus=`grep 1 /sys/devices/system/cpu/*/online |
--		sed -e 's,/[^/]*$,,' -e 's/^[^0-9]*//'`
+-T=${TMPDIR-/tmp}/mkinitrd.sh.$$
+-trap 'rm -rf $T' 0 2
+-mkdir $T
 -
--	# Do not leave out poor old cpu0 which may not be hot-pluggable
--	if [ ! -f "/sys/devices/system/cpu/cpu0/online" ]; then
--		cpus="0 $cpus"
-+	if cpus=`grep 1 /sys/devices/system/cpu/*/online 2>&1 |
-+		 sed -e 's,/[^/]*$,,' -e 's/^[^0-9]*//'`
-+	then
-+		:
-+	else
-+		cpus=
- 	fi
-+	# Do not leave out non-hot-pluggable CPUs
-+	cpus="$cpus $nohotplugcpus"
- 
- 	cpumask=`awk -v cpus="$cpus" -v me=$me -v n=$n 'BEGIN {
- 		srand(n + me + systime());
+-cat > $T/init << '__EOF___'
+-#!/bin/sh
+-# Run in userspace a few milliseconds every second.  This helps to
+-# exercise the NO_HZ_FULL portions of RCU.  The 192 instances of "a" was
+-# empirically shown to give a nice multi-millisecond burst of user-mode
+-# execution on a 2GHz CPU, as desired.  Modern CPUs will vary from a
+-# couple of milliseconds up to perhaps 100 milliseconds, which is an
+-# acceptable range.
+-#
+-# Why not calibrate an exact delay?  Because within this initrd, we
+-# are restricted to Bourne-shell builtins, which as far as I know do not
+-# provide any means of obtaining a fine-grained timestamp.
+-
+-a4="a a a a"
+-a16="$a4 $a4 $a4 $a4"
+-a64="$a16 $a16 $a16 $a16"
+-a192="$a64 $a64 $a64"
+-while :
+-do
+-	q=
+-	for i in $a192
+-	do
+-		q="$q $i"
+-	done
+-	sleep 1
+-done
+-__EOF___
+-
+-# Try using dracut to create initrd
+-if command -v dracut >/dev/null 2>&1
+-then
+-	echo Creating $D/initrd using dracut.
+-	# Filesystem creation
+-	dracut --force --no-hostonly --no-hostonly-cmdline --module "base" $T/initramfs.img
+-	cd $D
+-	mkdir -p initrd
+-	cd initrd
+-	zcat $T/initramfs.img | cpio -id
+-	cp $T/init init
+-	chmod +x init
+-	echo Done creating $D/initrd using dracut
+-	exit 0
+-fi
+-
+-# No dracut, so create a C-language initrd/init program and statically
+-# link it.  This results in a very small initrd, but might be a bit less
+-# future-proof than dracut.
+-echo "Could not find dracut, attempting C initrd"
++# Create a C-language initrd/init infinite-loop program and statically
++# link it.  This results in a very small initrd.
++echo "Creating a statically linked C-language initrd"
+ cd $D
+ mkdir -p initrd
+ cd initrd
