@@ -2,34 +2,35 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CC5D2149467
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 25 Jan 2020 11:42:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 320B11494E5
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 25 Jan 2020 11:48:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729152AbgAYKmt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 25 Jan 2020 05:42:49 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:44117 "EHLO
+        id S1729588AbgAYKqY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 25 Jan 2020 05:46:24 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:44149 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727215AbgAYKmt (ORCPT
+        with ESMTP id S1729190AbgAYKmw (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 25 Jan 2020 05:42:49 -0500
+        Sat, 25 Jan 2020 05:42:52 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1ivIto-0008Mm-Nh; Sat, 25 Jan 2020 11:42:44 +0100
+        id 1ivIts-0008P6-Me; Sat, 25 Jan 2020 11:42:48 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4003C1C0105;
-        Sat, 25 Jan 2020 11:42:43 +0100 (CET)
-Date:   Sat, 25 Jan 2020 10:42:43 -0000
-From:   "tip-bot2 for Lai Jiangshan" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id ED55D1C0105;
+        Sat, 25 Jan 2020 11:42:44 +0100 (CET)
+Date:   Sat, 25 Jan 2020 10:42:44 -0000
+From:   "tip-bot2 for Joel Fernandes (Google)" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcu: Clear ->rcu_read_unlock_special only once
-Cc:     Lai Jiangshan <laijs@linux.alibaba.com>,
+Subject: [tip: core/rcu] rcu: Add multiple in-flight batches of kfree_rcu() work
+Cc:     "Paul E. McKenney" <paulmck@linux.ibm.com>,
+        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
         "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <157994896305.396.11466393272376454172.tip-bot2@tip-bot2>
+Message-ID: <157994896478.396.2239574946078408927.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -45,66 +46,150 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     3717e1e9f25ec7059e421ab6fc602cab7063c11c
-Gitweb:        https://git.kernel.org/tip/3717e1e9f25ec7059e421ab6fc602cab7063c11c
-Author:        Lai Jiangshan <laijs@linux.alibaba.com>
-AuthorDate:    Fri, 01 Nov 2019 05:06:21 -07:00
+Commit-ID:     0392bebebf26f09434e6c7ca4c09c014efeef76a
+Gitweb:        https://git.kernel.org/tip/0392bebebf26f09434e6c7ca4c09c014efeef76a
+Author:        Joel Fernandes (Google) <joel@joelfernandes.org>
+AuthorDate:    Thu, 19 Sep 2019 14:58:26 -07:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Fri, 24 Jan 2020 10:27:33 -08:00
+CommitterDate: Fri, 24 Jan 2020 10:24:31 -08:00
 
-rcu: Clear ->rcu_read_unlock_special only once
+rcu: Add multiple in-flight batches of kfree_rcu() work
 
-In rcu_preempt_deferred_qs_irqrestore(), ->rcu_read_unlock_special is
-cleared one piece at a time.  Given that the "if" statements in this
-function use the copy in "special", this commit removes the clearing
-of the individual pieces in favor of clearing ->rcu_read_unlock_special
-in one go just after it has been determined to be non-zero.
+During testing, it was observed that amount of memory consumed due
+kfree_rcu() batching is 300-400MB. Previously we had only a single
+head_free pointer pointing to the list of rcu_head(s) that are to be
+freed after a grace period. Until this list is drained, we cannot queue
+any more objects on it since such objects may not be ready to be
+reclaimed when the worker thread eventually gets to drainin g the
+head_free list.
 
-Signed-off-by: Lai Jiangshan <laijs@linux.alibaba.com>
+We can do better by maintaining multiple lists as done by this patch.
+Testing shows that memory consumption came down by around 100-150MB with
+just adding another list. Adding more than 1 additional list did not
+show any improvement.
+
+Suggested-by: Paul E. McKenney <paulmck@linux.ibm.com>
+Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+[ paulmck: Code style and initialization handling. ]
+[ paulmck: Fix field name, reported by kbuild test robot <lkp@intel.com>. ]
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/rcu/tree_plugin.h | 19 +++----------------
- 1 file changed, 3 insertions(+), 16 deletions(-)
+ kernel/rcu/tree.c | 51 +++++++++++++++++++++++++++++++++++-----------
+ 1 file changed, 39 insertions(+), 12 deletions(-)
 
-diff --git a/kernel/rcu/tree_plugin.h b/kernel/rcu/tree_plugin.h
-index 7487c79..c3a3271 100644
---- a/kernel/rcu/tree_plugin.h
-+++ b/kernel/rcu/tree_plugin.h
-@@ -444,16 +444,9 @@ rcu_preempt_deferred_qs_irqrestore(struct task_struct *t, unsigned long flags)
- 		local_irq_restore(flags);
- 		return;
+diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
+index 6106b9e..a40fd58 100644
+--- a/kernel/rcu/tree.c
++++ b/kernel/rcu/tree.c
+@@ -2686,12 +2686,25 @@ EXPORT_SYMBOL_GPL(call_rcu);
+ 
+ /* Maximum number of jiffies to wait before draining a batch. */
+ #define KFREE_DRAIN_JIFFIES (HZ / 50)
++#define KFREE_N_BATCHES 2
+ 
+ /**
+- * struct kfree_rcu_cpu - batch up kfree_rcu() requests for RCU grace period
++ * struct kfree_rcu_cpu_work - single batch of kfree_rcu() requests
+  * @rcu_work: Let queue_rcu_work() invoke workqueue handler after grace period
++ * @head_free: List of kfree_rcu() objects waiting for a grace period
++ * @krcp: Pointer to @kfree_rcu_cpu structure
++ */
++
++struct kfree_rcu_cpu_work {
++	struct rcu_work rcu_work;
++	struct rcu_head *head_free;
++	struct kfree_rcu_cpu *krcp;
++};
++
++/**
++ * struct kfree_rcu_cpu - batch up kfree_rcu() requests for RCU grace period
+  * @head: List of kfree_rcu() objects not yet waiting for a grace period
+- * @head_free: List of kfree_rcu() objects already waiting for a grace period
++ * @krw_arr: Array of batches of kfree_rcu() objects waiting for a grace period
+  * @lock: Synchronize access to this structure
+  * @monitor_work: Promote @head to @head_free after KFREE_DRAIN_JIFFIES
+  * @monitor_todo: Tracks whether a @monitor_work delayed work is pending
+@@ -2703,9 +2716,8 @@ EXPORT_SYMBOL_GPL(call_rcu);
+  * the interactions with the slab allocators.
+  */
+ struct kfree_rcu_cpu {
+-	struct rcu_work rcu_work;
+ 	struct rcu_head *head;
+-	struct rcu_head *head_free;
++	struct kfree_rcu_cpu_work krw_arr[KFREE_N_BATCHES];
+ 	spinlock_t lock;
+ 	struct delayed_work monitor_work;
+ 	bool monitor_todo;
+@@ -2723,11 +2735,14 @@ static void kfree_rcu_work(struct work_struct *work)
+ 	unsigned long flags;
+ 	struct rcu_head *head, *next;
+ 	struct kfree_rcu_cpu *krcp;
++	struct kfree_rcu_cpu_work *krwp;
+ 
+-	krcp = container_of(to_rcu_work(work), struct kfree_rcu_cpu, rcu_work);
++	krwp = container_of(to_rcu_work(work),
++			    struct kfree_rcu_cpu_work, rcu_work);
++	krcp = krwp->krcp;
+ 	spin_lock_irqsave(&krcp->lock, flags);
+-	head = krcp->head_free;
+-	krcp->head_free = NULL;
++	head = krwp->head_free;
++	krwp->head_free = NULL;
+ 	spin_unlock_irqrestore(&krcp->lock, flags);
+ 
+ 	// List "head" is now private, so traverse locklessly.
+@@ -2747,17 +2762,25 @@ static void kfree_rcu_work(struct work_struct *work)
+  */
+ static inline bool queue_kfree_rcu_work(struct kfree_rcu_cpu *krcp)
+ {
++	int i;
++	struct kfree_rcu_cpu_work *krwp = NULL;
++
+ 	lockdep_assert_held(&krcp->lock);
++	for (i = 0; i < KFREE_N_BATCHES; i++)
++		if (!krcp->krw_arr[i].head_free) {
++			krwp = &(krcp->krw_arr[i]);
++			break;
++		}
+ 
+ 	// If a previous RCU batch is in progress, we cannot immediately
+ 	// queue another one, so return false to tell caller to retry.
+-	if (krcp->head_free)
++	if (!krwp)
+ 		return false;
+ 
+-	krcp->head_free = krcp->head;
++	krwp->head_free = krcp->head;
+ 	krcp->head = NULL;
+-	INIT_RCU_WORK(&krcp->rcu_work, kfree_rcu_work);
+-	queue_rcu_work(system_wq, &krcp->rcu_work);
++	INIT_RCU_WORK(&krwp->rcu_work, kfree_rcu_work);
++	queue_rcu_work(system_wq, &krwp->rcu_work);
+ 	return true;
+ }
+ 
+@@ -2863,7 +2886,8 @@ void __init kfree_rcu_scheduler_running(void)
+ 			continue;
+ 		}
+ 		krcp->monitor_todo = true;
+-		schedule_delayed_work(&krcp->monitor_work, KFREE_DRAIN_JIFFIES);
++		schedule_delayed_work_on(cpu, &krcp->monitor_work,
++					 KFREE_DRAIN_JIFFIES);
+ 		spin_unlock_irqrestore(&krcp->lock, flags);
  	}
--	t->rcu_read_unlock_special.b.exp_hint = false;
--	t->rcu_read_unlock_special.b.deferred_qs = false;
--	if (special.b.need_qs) {
-+	t->rcu_read_unlock_special.s = 0;
-+	if (special.b.need_qs)
- 		rcu_qs();
--		t->rcu_read_unlock_special.b.need_qs = false;
--		if (!t->rcu_read_unlock_special.s && !rdp->exp_deferred_qs) {
--			local_irq_restore(flags);
--			return;
--		}
--	}
+ }
+@@ -3732,11 +3756,14 @@ struct workqueue_struct *rcu_par_gp_wq;
+ static void __init kfree_rcu_batch_init(void)
+ {
+ 	int cpu;
++	int i;
  
- 	/*
- 	 * Respond to a request by an expedited grace period for a
-@@ -461,17 +454,11 @@ rcu_preempt_deferred_qs_irqrestore(struct task_struct *t, unsigned long flags)
- 	 * tasks are handled when removing the task from the
- 	 * blocked-tasks list below.
- 	 */
--	if (rdp->exp_deferred_qs) {
-+	if (rdp->exp_deferred_qs)
- 		rcu_report_exp_rdp(rdp);
--		if (!t->rcu_read_unlock_special.s) {
--			local_irq_restore(flags);
--			return;
--		}
--	}
+ 	for_each_possible_cpu(cpu) {
+ 		struct kfree_rcu_cpu *krcp = per_cpu_ptr(&krc, cpu);
  
- 	/* Clean up if blocked during RCU read-side critical section. */
- 	if (special.b.blocked) {
--		t->rcu_read_unlock_special.b.blocked = false;
- 
- 		/*
- 		 * Remove this task from the list it blocked on.  The task
+ 		spin_lock_init(&krcp->lock);
++		for (i = 0; i < KFREE_N_BATCHES; i++)
++			krcp->krw_arr[i].krcp = krcp;
+ 		INIT_DELAYED_WORK(&krcp->monitor_work, kfree_rcu_monitor);
+ 		krcp->initialized = true;
+ 	}
