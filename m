@@ -2,33 +2,34 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DB9F1494A3
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 25 Jan 2020 11:47:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 46CE71494A9
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 25 Jan 2020 11:47:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729305AbgAYKm4 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 25 Jan 2020 05:42:56 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:44178 "EHLO
+        id S1729451AbgAYKnD (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 25 Jan 2020 05:43:03 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:44215 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729247AbgAYKm4 (ORCPT
+        with ESMTP id S1729388AbgAYKnB (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 25 Jan 2020 05:42:56 -0500
+        Sat, 25 Jan 2020 05:43:01 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1ivItx-0008T7-OT; Sat, 25 Jan 2020 11:42:53 +0100
+        id 1ivIu2-0008Sq-Ez; Sat, 25 Jan 2020 11:42:58 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E78AA1C1A7F;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A2A251C1A76;
         Sat, 25 Jan 2020 11:42:46 +0100 (CET)
 Date:   Sat, 25 Jan 2020 10:42:46 -0000
-From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Madhuparna Bhowmik" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcu: Add a hlist_nulls_unhashed_lockless() function
-Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
+Subject: [tip: core/rcu] rculist_nulls: Add docbook comments
+Cc:     Madhuparna Bhowmik <madhuparnabhowmik04@gmail.com>,
+        "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <157994896674.396.10350805017692383753.tip-bot2@tip-bot2>
+Message-ID: <157994896647.396.11467334487017924378.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -44,60 +45,43 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     02b99b38f3d96c77cf0a368d99952aa372dfe58a
-Gitweb:        https://git.kernel.org/tip/02b99b38f3d96c77cf0a368d99952aa372dfe58a
-Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Sat, 09 Nov 2019 10:45:47 -08:00
+Commit-ID:     7f5d51e26a471f771b8dae1b9ef417f5fd5e9c85
+Gitweb:        https://git.kernel.org/tip/7f5d51e26a471f771b8dae1b9ef417f5fd5e9c85
+Author:        Madhuparna Bhowmik <madhuparnabhowmik04@gmail.com>
+AuthorDate:    Thu, 05 Dec 2019 11:46:49 +05:30
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Fri, 10 Jan 2020 14:00:57 -08:00
 
-rcu: Add a hlist_nulls_unhashed_lockless() function
+rculist_nulls: Add docbook comments
 
-This commit adds an hlist_nulls_unhashed_lockless() to allow lockless
-checking for whether or note an hlist_nulls_node is hashed or not.
-While in the area, this commit also adds a docbook comment to the existing
-hlist_nulls_unhashed() function.
+This patch adds docbook comment headers for hlist_nulls_first_rcu()
+and hlist_nulls_next_rcu() in rculist_nulls.h.
 
+Signed-off-by: Madhuparna Bhowmik <madhuparnabhowmik04@gmail.com>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- include/linux/list_nulls.h | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ include/linux/rculist_nulls.h | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/include/linux/list_nulls.h b/include/linux/list_nulls.h
-index 1ecd356..fa6e847 100644
---- a/include/linux/list_nulls.h
-+++ b/include/linux/list_nulls.h
-@@ -56,11 +56,33 @@ static inline unsigned long get_nulls_value(const struct hlist_nulls_node *ptr)
- 	return ((unsigned long)ptr) >> 1;
+diff --git a/include/linux/rculist_nulls.h b/include/linux/rculist_nulls.h
+index 517a06f..25952c4 100644
+--- a/include/linux/rculist_nulls.h
++++ b/include/linux/rculist_nulls.h
+@@ -38,9 +38,17 @@ static inline void hlist_nulls_del_init_rcu(struct hlist_nulls_node *n)
+ 	}
  }
  
 +/**
-+ * hlist_nulls_unhashed - Has node been removed and reinitialized?
-+ * @h: Node to be checked
-+ *
-+ * Not that not all removal functions will leave a node in unhashed state.
-+ * For example, hlist_del_init_rcu() leaves the node in unhashed state,
-+ * but hlist_nulls_del() does not.
++ * hlist_nulls_first_rcu - returns the first element of the hash list.
++ * @head: the head of the list.
 + */
- static inline int hlist_nulls_unhashed(const struct hlist_nulls_node *h)
- {
- 	return !h->pprev;
- }
+ #define hlist_nulls_first_rcu(head) \
+ 	(*((struct hlist_nulls_node __rcu __force **)&(head)->first))
  
 +/**
-+ * hlist_nulls_unhashed_lockless - Has node been removed and reinitialized?
-+ * @h: Node to be checked
-+ *
-+ * Not that not all removal functions will leave a node in unhashed state.
-+ * For example, hlist_del_init_rcu() leaves the node in unhashed state,
-+ * but hlist_nulls_del() does not.  Unlike hlist_nulls_unhashed(), this
-+ * function may be used locklessly.
++ * hlist_nulls_next_rcu - returns the element of the list after @node.
++ * @node: element of the list.
 + */
-+static inline int hlist_nulls_unhashed_lockless(const struct hlist_nulls_node *h)
-+{
-+	return !READ_ONCE(h->pprev);
-+}
-+
- static inline int hlist_nulls_empty(const struct hlist_nulls_head *h)
- {
- 	return is_a_nulls(READ_ONCE(h->first));
+ #define hlist_nulls_next_rcu(node) \
+ 	(*((struct hlist_nulls_node __rcu __force **)&(node)->next))
+ 
