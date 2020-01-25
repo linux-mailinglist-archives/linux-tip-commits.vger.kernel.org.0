@@ -2,38 +2,35 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D016148F14
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 24 Jan 2020 21:08:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 466F31494F4
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 25 Jan 2020 11:48:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388974AbgAXUIJ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 24 Jan 2020 15:08:09 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:43603 "EHLO
+        id S1729008AbgAYKq4 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 25 Jan 2020 05:46:56 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:44113 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390416AbgAXUIJ (ORCPT
+        with ESMTP id S1729050AbgAYKms (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 24 Jan 2020 15:08:09 -0500
+        Sat, 25 Jan 2020 05:42:48 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iv5FN-0000vm-12; Fri, 24 Jan 2020 21:08:05 +0100
+        id 1ivItk-0008KC-Sg; Sat, 25 Jan 2020 11:42:41 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 495231C1A6C;
-        Fri, 24 Jan 2020 21:08:04 +0100 (CET)
-Date:   Fri, 24 Jan 2020 20:08:04 -0000
-From:   "tip-bot2 for Stephen Boyd" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 1A8C91C1A74;
+        Sat, 25 Jan 2020 11:42:40 +0100 (CET)
+Date:   Sat, 25 Jan 2020 10:42:39 -0000
+From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] alarmtimer: Make alarmtimer platform device child
- of RTC device
-Cc:     Douglas Anderson <dianders@chromium.org>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
+Subject: [tip: core/rcu] srcu: Apply *_ONCE() to ->srcu_last_gp_end
+Cc:     syzbot+08f3e9d26e5541e1ecf2@syzkaller.appspotmail.com,
+        Marco Elver <elver@google.com>,
+        "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200124055849.154411-2-swboyd@chromium.org>
-References: <20200124055849.154411-2-swboyd@chromium.org>
 MIME-Version: 1.0
-Message-ID: <157989648407.396.9289380582610356719.tip-bot2@tip-bot2>
+Message-ID: <157994895991.396.12412703935829811861.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,104 +44,58 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/core branch of tip:
+The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     c79108bd19a8490315847e0c95ac6526fcd8e770
-Gitweb:        https://git.kernel.org/tip/c79108bd19a8490315847e0c95ac6526fcd8e770
-Author:        Stephen Boyd <swboyd@chromium.org>
-AuthorDate:    Thu, 23 Jan 2020 21:58:46 -08:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 24 Jan 2020 21:00:20 +01:00
+Commit-ID:     844a378de3372c923909681706d62336d702531e
+Gitweb:        https://git.kernel.org/tip/844a378de3372c923909681706d62336d702531e
+Author:        Paul E. McKenney <paulmck@kernel.org>
+AuthorDate:    Mon, 04 Nov 2019 08:08:30 -08:00
+Committer:     Paul E. McKenney <paulmck@kernel.org>
+CommitterDate: Fri, 24 Jan 2020 10:33:51 -08:00
 
-alarmtimer: Make alarmtimer platform device child of RTC device
+srcu: Apply *_ONCE() to ->srcu_last_gp_end
 
-The alarmtimer_suspend() function will fail if an RTC device is on a bus
-such as SPI or i2c and that RTC device registers and probes after
-alarmtimer_init() registers and probes the 'alarmtimer' platform device.
+The ->srcu_last_gp_end field is accessed from any CPU at any time
+by synchronize_srcu(), so non-initialization references need to use
+READ_ONCE() and WRITE_ONCE().  This commit therefore makes that change.
 
-This is because system wide suspend suspends devices in the reverse order
-of their probe. When alarmtimer_suspend() attempts to program the RTC for a
-wakeup it will try to program an RTC device on a bus that has already been
-suspended.
-
-Move the alarmtimer device registration to happen when the RTC which is
-used for wakeup is registered. Register the 'alarmtimer' platform device as
-a child of the RTC device too, so that it can be guaranteed that the RTC
-device won't be suspended when alarmtimer_suspend() is called.
-
-Reported-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Stephen Boyd <swboyd@chromium.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Link: https://lore.kernel.org/r/20200124055849.154411-2-swboyd@chromium.org
-
+Reported-by: syzbot+08f3e9d26e5541e1ecf2@syzkaller.appspotmail.com
+Acked-by: Marco Elver <elver@google.com>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/time/alarmtimer.c | 20 +++++++++-----------
- 1 file changed, 9 insertions(+), 11 deletions(-)
+ kernel/rcu/srcutree.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/time/alarmtimer.c b/kernel/time/alarmtimer.c
-index 564ff5d..f0469cc 100644
---- a/kernel/time/alarmtimer.c
-+++ b/kernel/time/alarmtimer.c
-@@ -89,6 +89,7 @@ static int alarmtimer_rtc_add_device(struct device *dev,
+diff --git a/kernel/rcu/srcutree.c b/kernel/rcu/srcutree.c
+index 5dffade..21acdff 100644
+--- a/kernel/rcu/srcutree.c
++++ b/kernel/rcu/srcutree.c
+@@ -530,7 +530,7 @@ static void srcu_gp_end(struct srcu_struct *ssp)
+ 	idx = rcu_seq_state(ssp->srcu_gp_seq);
+ 	WARN_ON_ONCE(idx != SRCU_STATE_SCAN2);
+ 	cbdelay = srcu_get_delay(ssp);
+-	ssp->srcu_last_gp_end = ktime_get_mono_fast_ns();
++	WRITE_ONCE(ssp->srcu_last_gp_end, ktime_get_mono_fast_ns());
+ 	rcu_seq_end(&ssp->srcu_gp_seq);
+ 	gpseq = rcu_seq_current(&ssp->srcu_gp_seq);
+ 	if (ULONG_CMP_LT(ssp->srcu_gp_seq_needed_exp, gpseq))
+@@ -762,6 +762,7 @@ static bool srcu_might_be_idle(struct srcu_struct *ssp)
  	unsigned long flags;
- 	struct rtc_device *rtc = to_rtc_device(dev);
- 	struct wakeup_source *__ws;
-+	struct platform_device *pdev;
- 	int ret = 0;
+ 	struct srcu_data *sdp;
+ 	unsigned long t;
++	unsigned long tlast;
  
- 	if (rtcdev)
-@@ -100,9 +101,11 @@ static int alarmtimer_rtc_add_device(struct device *dev,
- 		return -1;
+ 	/* If the local srcu_data structure has callbacks, not idle.  */
+ 	local_irq_save(flags);
+@@ -780,9 +781,9 @@ static bool srcu_might_be_idle(struct srcu_struct *ssp)
  
- 	__ws = wakeup_source_register(dev, "alarmtimer");
-+	pdev = platform_device_register_data(dev, "alarmtimer",
-+					     PLATFORM_DEVID_AUTO, NULL, 0);
+ 	/* First, see if enough time has passed since the last GP. */
+ 	t = ktime_get_mono_fast_ns();
++	tlast = READ_ONCE(ssp->srcu_last_gp_end);
+ 	if (exp_holdoff == 0 ||
+-	    time_in_range_open(t, ssp->srcu_last_gp_end,
+-			       ssp->srcu_last_gp_end + exp_holdoff))
++	    time_in_range_open(t, tlast, tlast + exp_holdoff))
+ 		return false; /* Too soon after last GP. */
  
- 	spin_lock_irqsave(&rtcdev_lock, flags);
--	if (!rtcdev) {
-+	if (__ws && !IS_ERR(pdev) && !rtcdev) {
- 		if (!try_module_get(rtc->owner)) {
- 			ret = -1;
- 			goto unlock;
-@@ -113,10 +116,14 @@ static int alarmtimer_rtc_add_device(struct device *dev,
- 		get_device(dev);
- 		ws = __ws;
- 		__ws = NULL;
-+		pdev = NULL;
-+	} else {
-+		ret = -1;
- 	}
- unlock:
- 	spin_unlock_irqrestore(&rtcdev_lock, flags);
- 
-+	platform_device_unregister(pdev);
- 	wakeup_source_unregister(__ws);
- 
- 	return ret;
-@@ -903,8 +910,7 @@ static void get_boottime_timespec(struct timespec64 *tp)
-  */
- static int __init alarmtimer_init(void)
- {
--	struct platform_device *pdev;
--	int error = 0;
-+	int error;
- 	int i;
- 
- 	alarmtimer_rtc_timer_init();
-@@ -929,15 +935,7 @@ static int __init alarmtimer_init(void)
- 	if (error)
- 		goto out_if;
- 
--	pdev = platform_device_register_simple("alarmtimer", -1, NULL, 0);
--	if (IS_ERR(pdev)) {
--		error = PTR_ERR(pdev);
--		goto out_drv;
--	}
- 	return 0;
--
--out_drv:
--	platform_driver_unregister(&alarmtimer_driver);
- out_if:
- 	alarmtimer_rtc_interface_remove();
- 	return error;
+ 	/* Next, check for probable idleness. */
