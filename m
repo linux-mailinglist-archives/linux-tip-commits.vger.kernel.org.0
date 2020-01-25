@@ -2,33 +2,33 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A2A51494C9
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 25 Jan 2020 11:48:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A6321494B2
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 25 Jan 2020 11:47:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729469AbgAYKpV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 25 Jan 2020 05:45:21 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:44307 "EHLO
+        id S1729715AbgAYKnQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 25 Jan 2020 05:43:16 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:44310 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729662AbgAYKnP (ORCPT
+        with ESMTP id S1729401AbgAYKnP (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Sat, 25 Jan 2020 05:43:15 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1ivIuH-0000AK-BW; Sat, 25 Jan 2020 11:43:13 +0100
+        id 1ivIuH-0000AW-FR; Sat, 25 Jan 2020 11:43:13 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 7D1FB1C1A7E;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C38921C1A8B;
         Sat, 25 Jan 2020 11:42:53 +0100 (CET)
 Date:   Sat, 25 Jan 2020 10:42:53 -0000
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] torture: Handle systems lacking the mpstat command
+Subject: [tip: core/rcu] torture: Handle jitter for CPUs that cannot be offlined
 Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <157994897328.396.5916411351748564697.tip-bot2@tip-bot2>
+Message-ID: <157994897358.396.12993561123302180210.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -44,47 +44,69 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     b8dfff975c370912c7ac633ca3e4a812dcd38f96
-Gitweb:        https://git.kernel.org/tip/b8dfff975c370912c7ac633ca3e4a812dcd38f96
+Commit-ID:     517f17aed0ce678dfa82d7dd4e2593fc1bac799c
+Gitweb:        https://git.kernel.org/tip/517f17aed0ce678dfa82d7dd4e2593fc1bac799c
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Mon, 21 Oct 2019 08:38:00 -07:00
+AuthorDate:    Mon, 14 Oct 2019 07:05:38 -07:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Mon, 09 Dec 2019 13:00:27 -08:00
+CommitterDate: Mon, 09 Dec 2019 13:00:26 -08:00
 
-torture: Handle systems lacking the mpstat command
+torture: Handle jitter for CPUs that cannot be offlined
 
-The rcutorture scripting uses the mpstat command to determine how much
-the system is being used, and adjusts make's -j argument accordingly.
-However, mpstat isn't installed by default, so it would be good if the
-scripting does something useful when mpstat isn't present.
-
-This commit therefore makes the scripts assumes that if mpstat is not
-present, they are free to use all the CPUs.
+Currently, jitter.sh assumes that the underlying hypervisor will be
+configured with all CPUs hotpluggable, with the possible exception
+of CPU 0.  However, there are installations where the hypervisor
+prohibits offlining, which breaks jitter.sh.  This commit therefore
+lists the CPUs that cannot be offlined up front, and checks for the
+case where no CPU can be offlined in the loop.
 
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- tools/testing/selftests/rcutorture/bin/cpus2use.sh | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ tools/testing/selftests/rcutorture/bin/jitter.sh | 26 +++++++++++----
+ 1 file changed, 20 insertions(+), 6 deletions(-)
 
-diff --git a/tools/testing/selftests/rcutorture/bin/cpus2use.sh b/tools/testing/selftests/rcutorture/bin/cpus2use.sh
-index 4e94855..1dbfb62 100755
---- a/tools/testing/selftests/rcutorture/bin/cpus2use.sh
-+++ b/tools/testing/selftests/rcutorture/bin/cpus2use.sh
-@@ -15,8 +15,15 @@ then
- 	exit 0
- fi
- ncpus=`grep '^processor' /proc/cpuinfo | wc -l`
--idlecpus=`mpstat | tail -1 | \
--	awk -v ncpus=$ncpus '{ print ncpus * ($7 + $NF) / 100 }'`
-+if mpstat -V > /dev/null 2>&1
-+then
-+	idlecpus=`mpstat | tail -1 | \
-+		awk -v ncpus=$ncpus '{ print ncpus * ($7 + $NF) / 100 }'`
-+else
-+	# No mpstat command, so use all available CPUs.
-+	echo The mpstat command is not available, so greedily using all CPUs.
-+	idlecpus=$ncpus
-+fi
- awk -v ncpus=$ncpus -v idlecpus=$idlecpus < /dev/null '
- BEGIN {
- 	cpus2use = idlecpus;
+diff --git a/tools/testing/selftests/rcutorture/bin/jitter.sh b/tools/testing/selftests/rcutorture/bin/jitter.sh
+index 86a217b..30cb5b2 100755
+--- a/tools/testing/selftests/rcutorture/bin/jitter.sh
++++ b/tools/testing/selftests/rcutorture/bin/jitter.sh
+@@ -25,6 +25,18 @@ n=1
+ 
+ starttime=`gawk 'BEGIN { print systime(); }' < /dev/null`
+ 
++nohotplugcpus=
++for i in /sys/devices/system/cpu/cpu[0-9]*
++do
++	if test -f $i/online
++	then
++		:
++	else
++		curcpu=`echo $i | sed -e 's/^[^0-9]*//'`
++		nohotplugcpus="$nohotplugcpus $curcpu"
++	fi
++done
++
+ while :
+ do
+ 	# Check for done.
+@@ -35,13 +47,15 @@ do
+ 	fi
+ 
+ 	# Set affinity to randomly selected online CPU
+-	cpus=`grep 1 /sys/devices/system/cpu/*/online |
+-		sed -e 's,/[^/]*$,,' -e 's/^[^0-9]*//'`
+-
+-	# Do not leave out poor old cpu0 which may not be hot-pluggable
+-	if [ ! -f "/sys/devices/system/cpu/cpu0/online" ]; then
+-		cpus="0 $cpus"
++	if cpus=`grep 1 /sys/devices/system/cpu/*/online 2>&1 |
++		 sed -e 's,/[^/]*$,,' -e 's/^[^0-9]*//'`
++	then
++		:
++	else
++		cpus=
+ 	fi
++	# Do not leave out non-hot-pluggable CPUs
++	cpus="$cpus $nohotplugcpus"
+ 
+ 	cpumask=`awk -v cpus="$cpus" -v me=$me -v n=$n 'BEGIN {
+ 		srand(n + me + systime());
