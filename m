@@ -2,37 +2,34 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 58B8C149497
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 25 Jan 2020 11:44:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 752D91494B9
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 25 Jan 2020 11:47:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729593AbgAYKo1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 25 Jan 2020 05:44:27 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:44388 "EHLO
+        id S1729765AbgAYKos (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 25 Jan 2020 05:44:48 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:44361 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729866AbgAYKn0 (ORCPT
+        with ESMTP id S1729819AbgAYKnX (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 25 Jan 2020 05:43:26 -0500
+        Sat, 25 Jan 2020 05:43:23 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1ivIuQ-0000HC-HW; Sat, 25 Jan 2020 11:43:22 +0100
+        id 1ivIuO-0000GL-TL; Sat, 25 Jan 2020 11:43:21 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 1A9521C1A95;
-        Sat, 25 Jan 2020 11:42:59 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 844401C1A94;
+        Sat, 25 Jan 2020 11:42:58 +0100 (CET)
 Date:   Sat, 25 Jan 2020 10:42:58 -0000
-From:   "tip-bot2 for Boqun Feng" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcu: Avoid modifying mask_ofl_ipi in
+Subject: [tip: core/rcu] rcu: Substitute lookup for bit-twiddling in
  sync_rcu_exp_select_node_cpus()
-Cc:     Boqun Feng <boqun.feng@gmail.com>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
-        Marco Elver <elver@google.com>, x86 <x86@kernel.org>,
+Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <157994897887.396.17380984006682495096.tip-bot2@tip-bot2>
+Message-ID: <157994897835.396.8404296707459413310.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,65 +45,46 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     9f08cf088676c12a5b53bd5a29cf04f00c787b5d
-Gitweb:        https://git.kernel.org/tip/9f08cf088676c12a5b53bd5a29cf04f00c787b5d
-Author:        Boqun Feng <boqun.feng@gmail.com>
-AuthorDate:    Tue, 08 Oct 2019 13:01:40 +08:00
+Commit-ID:     aca2991a25da03ca96127b1d21e1f4aba41f81a6
+Gitweb:        https://git.kernel.org/tip/aca2991a25da03ca96127b1d21e1f4aba41f81a6
+Author:        Paul E. McKenney <paulmck@kernel.org>
+AuthorDate:    Wed, 30 Oct 2019 06:51:57 -07:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Mon, 09 Dec 2019 12:24:56 -08:00
+CommitterDate: Mon, 09 Dec 2019 12:24:57 -08:00
 
-rcu: Avoid modifying mask_ofl_ipi in sync_rcu_exp_select_node_cpus()
+rcu: Substitute lookup for bit-twiddling in sync_rcu_exp_select_node_cpus()
 
-The "mask_ofl_ipi" is used to track which CPUs get IPIed, however
-in the IPI sending loop, "mask_ofl_ipi" along with another variable
-"mask_ofl_test" might also get modified to record which CPUs' quiesent
-states must be reported by the sync_rcu_exp_select_node_cpus() at
-the end of sync_rcu_exp_select_node_cpus().  This overlap of roles
-can be confusing, so this patch cleans things a little by using
-"mask_ofl_ipi" solely for determining which CPUs must be IPIed  and
-"mask_ofl_test" for solely determining on behalf of  which CPUs
-sync_rcu_exp_select_node_cpus() must report a quiscent state.
+The code in sync_rcu_exp_select_node_cpus() calculates the current
+CPU's mask within its rcu_node structure's bitmasks, but this has
+already been computed in the ->grpmask field of that CPU's rcu_data
+structure.  This commit therefore just uses this ->grpmask field.
 
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Reviewed-by: Joel Fernandes (Google) <joel@joelfernandes.org>
-Acked-by: Marco Elver <elver@google.com>
 ---
- kernel/rcu/tree_exp.h | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ kernel/rcu/tree_exp.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/kernel/rcu/tree_exp.h b/kernel/rcu/tree_exp.h
-index 69c5aa6..6a6f328 100644
+index 6a6f328..3b59c3e 100644
 --- a/kernel/rcu/tree_exp.h
 +++ b/kernel/rcu/tree_exp.h
-@@ -387,10 +387,10 @@ retry_ipi:
- 		}
- 		ret = smp_call_function_single(cpu, rcu_exp_handler, NULL, 0);
- 		put_cpu();
--		if (!ret) {
--			mask_ofl_ipi &= ~mask;
-+		/* The CPU will report the QS in response to the IPI. */
-+		if (!ret)
- 			continue;
--		}
-+
- 		/* Failed, raced with CPU hotplug operation. */
- 		raw_spin_lock_irqsave_rcu_node(rnp, flags);
- 		if ((rnp->qsmaskinitnext & mask) &&
-@@ -401,13 +401,12 @@ retry_ipi:
- 			schedule_timeout_uninterruptible(1);
- 			goto retry_ipi;
- 		}
--		/* CPU really is offline, so we can ignore it. */
--		if (!(rnp->expmask & mask))
--			mask_ofl_ipi &= ~mask;
-+		/* CPU really is offline, so we must report its QS. */
-+		if (rnp->expmask & mask)
-+			mask_ofl_test |= mask;
- 		raw_spin_unlock_irqrestore_rcu_node(rnp, flags);
- 	}
- 	/* Report quiescent states for those that went offline. */
--	mask_ofl_test |= mask_ofl_ipi;
- 	if (mask_ofl_test)
- 		rcu_report_exp_cpu_mult(rnp, mask_ofl_test, false);
- }
+@@ -345,8 +345,8 @@ static void sync_rcu_exp_select_node_cpus(struct work_struct *wp)
+ 	/* Each pass checks a CPU for identity, offline, and idle. */
+ 	mask_ofl_test = 0;
+ 	for_each_leaf_node_cpu_mask(rnp, cpu, rnp->expmask) {
+-		unsigned long mask = leaf_node_cpu_bit(rnp, cpu);
+ 		struct rcu_data *rdp = per_cpu_ptr(&rcu_data, cpu);
++		unsigned long mask = rdp->grpmask;
+ 		int snap;
+ 
+ 		if (raw_smp_processor_id() == cpu ||
+@@ -373,8 +373,8 @@ static void sync_rcu_exp_select_node_cpus(struct work_struct *wp)
+ 
+ 	/* IPI the remaining CPUs for expedited quiescent state. */
+ 	for_each_leaf_node_cpu_mask(rnp, cpu, mask_ofl_ipi) {
+-		unsigned long mask = leaf_node_cpu_bit(rnp, cpu);
+ 		struct rcu_data *rdp = per_cpu_ptr(&rcu_data, cpu);
++		unsigned long mask = rdp->grpmask;
+ 
+ retry_ipi:
+ 		if (rcu_dynticks_in_eqs_since(rdp, rdp->exp_dynticks_snap)) {
