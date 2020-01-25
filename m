@@ -2,90 +2,123 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D41FE14970C
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 25 Jan 2020 18:54:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C68A414978E
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 25 Jan 2020 20:48:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727084AbgAYRys (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 25 Jan 2020 12:54:48 -0500
-Received: from mail.skyhub.de ([5.9.137.197]:47910 "EHLO mail.skyhub.de"
+        id S1726690AbgAYTss (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 25 Jan 2020 14:48:48 -0500
+Received: from mail.kernel.org ([198.145.29.99]:34478 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726293AbgAYRys (ORCPT
+        id S1726612AbgAYTss (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 25 Jan 2020 12:54:48 -0500
-Received: from zn.tnic (p200300EC2F1CE9005D0519DC199D089A.dip0.t-ipconnect.de [IPv6:2003:ec:2f1c:e900:5d05:19dc:199d:89a])
+        Sat, 25 Jan 2020 14:48:48 -0500
+Received: from paulmck-ThinkPad-P72.home (50-39-105-78.bvtn.or.frontiernet.net [50.39.105.78])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 70B101EC0CD0;
-        Sat, 25 Jan 2020 18:54:46 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1579974886;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=8/QEBnGZzWynfauzlDvurEb7IGLRdsmpQsi9B2RTlqQ=;
-        b=mwKXJKhEBXerhu5Iv/tiq5hHqE/knLsBaUoBlRwrAeQgrNZaJbvSQOAcy5ZpjgPFzCXukX
-        WUwfpn7Y3zY1Q5fFVCCTMSe4gFVcIcOnBIxjyRfQFk93bV2tZLPDdvmuibHSMMx9U/vfVQ
-        bSDLFGCv3NGTGZru5u1dLSARpv2Co6w=
-Date:   Sat, 25 Jan 2020 18:54:42 +0100
-From:   Borislav Petkov <bp@alien8.de>
-To:     "Paul E. McKenney" <paulmck@kernel.org>
+        by mail.kernel.org (Postfix) with ESMTPSA id 134AE20708;
+        Sat, 25 Jan 2020 19:48:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1579981727;
+        bh=qc/oReZntO+DEJfAdW9I3PzrnYoGP3Q/Si+WAw90qlQ=;
+        h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
+        b=t06DNwJBZl5AeGt5+/RMncfvDWRW8Bl2zdc3jcSNFvEVMzc64Hbu6Cfws4Hhrskep
+         I+uudPMPaZqRQZ8tZ2i2pJDVoDdm1qOLbM0LrZ942YRTdwUcedVief+31WNWAJoDAL
+         J2ze1pMlCZChulVrZyu/O15yur3laVsLfSxpNZOI=
+Received: by paulmck-ThinkPad-P72.home (Postfix, from userid 1000)
+        id B69B3352274E; Sat, 25 Jan 2020 11:48:46 -0800 (PST)
+Date:   Sat, 25 Jan 2020 11:48:46 -0800
+From:   "Paul E. McKenney" <paulmck@kernel.org>
+To:     Borislav Petkov <bp@alien8.de>
 Cc:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
         x86 <x86@kernel.org>
 Subject: Re: [tip: core/rcu] rcu: Enable tick for nohz_full CPUs slow to
  provide expedited QS
-Message-ID: <20200125175442.GA4369@zn.tnic>
+Message-ID: <20200125194846.GF2935@paulmck-ThinkPad-P72>
+Reply-To: paulmck@kernel.org
 References: <157994897654.396.5667707782512768142.tip-bot2@tip-bot2>
  <20200125131425.GB16136@zn.tnic>
  <20200125161050.GE2935@paulmck-ThinkPad-P72>
+ <20200125175442.GA4369@zn.tnic>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200125161050.GE2935@paulmck-ThinkPad-P72>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20200125175442.GA4369@zn.tnic>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Sat, Jan 25, 2020 at 08:10:50AM -0800, Paul E. McKenney wrote:
-> How big?  (Seriously, given that the fix may depend on the number of CPUs.)
+On Sat, Jan 25, 2020 at 06:54:42PM +0100, Borislav Petkov wrote:
+> On Sat, Jan 25, 2020 at 08:10:50AM -0800, Paul E. McKenney wrote:
+> > How big?  (Seriously, given that the fix may depend on the number of CPUs.)
+> 
+> [    7.660017] smp: Brought up 2 nodes, 256 CPUs
+> 
+> > So the problem appears to be that some of the boot-time processing
+> > is looping in the kernel, which is preventing the grace period from
+> > completing.  One could argue that such code should be fixed, but on the
+> > other hand, boot time is a bit special.  Later in -rcu's dev branch,
+> > there are commits that forgive this boot-time misbehavior, but this is
+> > a bit late in process to dump all of those commits into -tip.
+> 
+> Aha.
+> 
+> > The RT guys might need the warning, and it was them that I was thinking
+> > of when adding it. 
+> 
+> But "boot time is a bit special". Or do they care about deadlines during
+> boot too?
 
-[    7.660017] smp: Brought up 2 nodes, 256 CPUs
+Maybe, but not that I know of.  If they do, this would be an excellent
+time for them to let me know!
 
-> So the problem appears to be that some of the boot-time processing
-> is looping in the kernel, which is preventing the grace period from
-> completing.  One could argue that such code should be fixed, but on the
-> other hand, boot time is a bit special.  Later in -rcu's dev branch,
-> there are commits that forgive this boot-time misbehavior, but this is
-> a bit late in process to dump all of those commits into -tip.
+My guess is "no" because the real-time application would not yet be
+running during boot.  On the other hand, if this issue is due not so much
+to boot, but to (say) expensive filesystem operations on large systems,
+that might be a different story.
 
-Aha.
+Except that I would have hard questions to ask of someone doing expensive
+filesystem operations while their deep-sub-millisecond real-time
+application was running.  So even then, I doubt that they would care.
 
-> The RT guys might need the warning, and it was them that I was thinking
-> of when adding it. 
+Again, if I am wrong about this, this would be an excellent time for
+them to let me know.
 
-But "boot time is a bit special". Or do they care about deadlines during
-boot too?
+> > But let's see what works for mainline first.  And
+> > since your box was booting fine without the warning before, I bet that
+> > it boots just fine with that warning removed.
+> 
+> Yes, it does.
 
-> But let's see what works for mainline first.  And
-> since your box was booting fine without the warning before, I bet that
-> it boots just fine with that warning removed.
+Woo-hoo!!!
 
-Yes, it does.
+> > So could you please try out the (untested) patch below?
+> 
+> Warning's gone.
 
-> So could you please try out the (untested) patch below?
+Very good.  I will get it property prepared and tested, then send it
+along to Ingo.
 
-Warning's gone.
+> > If that works, I will re-introduce the warning with proper protection
+> > for the merge window following this coming one.
+> 
+> My big box is at your service if you need stuff tested later.
 
-> If that works, I will re-introduce the warning with proper protection
-> for the merge window following this coming one.
+Thank you in advance!  I just might take you up on that!
 
-My big box is at your service if you need stuff tested later.
+In the meantime, one question...  Are you testing for realtime suitability
+on your big box?  If so, to what extent?
 
-Thx Paul.
+> Thx Paul.
+> 
+> -- 
+> Regards/Gruss,
+>     Boris.
+> 
+> https://people.kernel.org/tglx/notes-about-netiquette
 
--- 
-Regards/Gruss,
-    Boris.
+Aside from habitually failing to trim emails, which of these was I
+violating?  ;-)
 
-https://people.kernel.org/tglx/notes-about-netiquette
+							Thanx, Paul
