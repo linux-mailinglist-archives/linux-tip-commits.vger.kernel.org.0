@@ -2,35 +2,35 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 100411494A1
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 25 Jan 2020 11:47:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A5391494EA
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 25 Jan 2020 11:48:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729260AbgAYKmz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 25 Jan 2020 05:42:55 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:44160 "EHLO
+        id S1729936AbgAYKqe (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 25 Jan 2020 05:46:34 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:44142 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729222AbgAYKmy (ORCPT
+        with ESMTP id S1729180AbgAYKmv (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 25 Jan 2020 05:42:54 -0500
+        Sat, 25 Jan 2020 05:42:51 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1ivItr-0008LB-6Q; Sat, 25 Jan 2020 11:42:47 +0100
+        id 1ivItr-0008LH-N7; Sat, 25 Jan 2020 11:42:47 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B5C411C1A73;
-        Sat, 25 Jan 2020 11:42:41 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 03D6B1C1A74;
+        Sat, 25 Jan 2020 11:42:42 +0100 (CET)
 Date:   Sat, 25 Jan 2020 10:42:41 -0000
 From:   "tip-bot2 for Lai Jiangshan" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcu: Fix tracepoint tracking RCU CPU kthread utilization
+Subject: [tip: core/rcu] rcu: Fix harmless omission of "CONFIG_" from #if condition
 Cc:     Lai Jiangshan <jiangshanlai@gmail.com>,
         Lai Jiangshan <laijs@linux.alibaba.com>,
         "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <157994896139.396.8043787419911538929.tip-bot2@tip-bot2>
+Message-ID: <157994896181.396.7434875004503665801.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -46,39 +46,53 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     2488a5e695564897a0f8ea42cd3af71647cd26d2
-Gitweb:        https://git.kernel.org/tip/2488a5e695564897a0f8ea42cd3af71647cd26d2
+Commit-ID:     822175e72995a9ff7eeef4f5cd3f945f2697b67d
+Gitweb:        https://git.kernel.org/tip/822175e72995a9ff7eeef4f5cd3f945f2697b67d
 Author:        Lai Jiangshan <jiangshanlai@gmail.com>
-AuthorDate:    Tue, 15 Oct 2019 10:23:57 
+AuthorDate:    Tue, 15 Oct 2019 10:23:56 
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Fri, 24 Jan 2020 10:33:31 -08:00
+CommitterDate: Fri, 24 Jan 2020 10:33:13 -08:00
 
-rcu: Fix tracepoint tracking RCU CPU kthread utilization
+rcu: Fix harmless omission of "CONFIG_" from #if condition
 
-In the call to trace_rcu_utilization() at the start of the loop in
-rcu_cpu_kthread(), "rcu_wait" is incorrect, plus this trace event needs
-to be hoisted above the loop to balance with either the "rcu_wait" or
-"rcu_yield", depending on how the loop exits.  This commit therefore
-makes these changes.
+The C preprocessor macros SRCU and TINY_RCU should instead be CONFIG_SRCU
+and CONFIG_TINY_RCU, respectively in the #f in kernel/rcu/rcu.h. But
+there is no harm when "TINY_RCU" is wrongly used, which are always
+non-defined, which makes "!defined(TINY_RCU)" always true, which means
+the code block is always included, and the included code block doesn't
+cause any compilation error so far in CONFIG_TINY_RCU builds.  It is
+also the reason this change should not be taken in -stable.
+
+This commit adds the needed "CONFIG_" prefix to both macros.
+
+Not for -stable.
 
 Signed-off-by: Lai Jiangshan <jiangshanlai@gmail.com>
 Signed-off-by: Lai Jiangshan <laijs@linux.alibaba.com>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/rcu/tree.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/rcu/rcu.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
-index dd8cfc3..ba154a3 100644
---- a/kernel/rcu/tree.c
-+++ b/kernel/rcu/tree.c
-@@ -2474,8 +2474,8 @@ static void rcu_cpu_kthread(unsigned int cpu)
- 	char work, *workp = this_cpu_ptr(&rcu_data.rcu_cpu_has_work);
- 	int spincnt;
+diff --git a/kernel/rcu/rcu.h b/kernel/rcu/rcu.h
+index ab504fb..4732594 100644
+--- a/kernel/rcu/rcu.h
++++ b/kernel/rcu/rcu.h
+@@ -281,7 +281,7 @@ void rcu_test_sync_prims(void);
+  */
+ extern void resched_cpu(int cpu);
  
-+	trace_rcu_utilization(TPS("Start CPU kthread@rcu_run"));
- 	for (spincnt = 0; spincnt < 10; spincnt++) {
--		trace_rcu_utilization(TPS("Start CPU kthread@rcu_wait"));
- 		local_bh_disable();
- 		*statusp = RCU_KTHREAD_RUNNING;
- 		local_irq_disable();
+-#if defined(SRCU) || !defined(TINY_RCU)
++#if defined(CONFIG_SRCU) || !defined(CONFIG_TINY_RCU)
+ 
+ #include <linux/rcu_node_tree.h>
+ 
+@@ -418,7 +418,7 @@ do {									\
+ #define raw_lockdep_assert_held_rcu_node(p)				\
+ 	lockdep_assert_held(&ACCESS_PRIVATE(p, lock))
+ 
+-#endif /* #if defined(SRCU) || !defined(TINY_RCU) */
++#endif /* #if defined(CONFIG_SRCU) || !defined(CONFIG_TINY_RCU) */
+ 
+ #ifdef CONFIG_SRCU
+ void srcu_init(void);
