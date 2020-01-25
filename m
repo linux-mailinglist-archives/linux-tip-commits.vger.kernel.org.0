@@ -2,34 +2,46 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5502A1494D0
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 25 Jan 2020 11:48:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CCD2149499
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 25 Jan 2020 11:44:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730012AbgAYKpi (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 25 Jan 2020 05:45:38 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:44249 "EHLO
+        id S1729441AbgAYKo1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 25 Jan 2020 05:44:27 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:44387 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729475AbgAYKnG (ORCPT
+        with ESMTP id S1729868AbgAYKn0 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 25 Jan 2020 05:43:06 -0500
+        Sat, 25 Jan 2020 05:43:26 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1ivIu7-0008Vo-DW; Sat, 25 Jan 2020 11:43:03 +0100
+        id 1ivIu5-0008V2-8j; Sat, 25 Jan 2020 11:43:01 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id F30181C1A75;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 74CF51C1A72;
         Sat, 25 Jan 2020 11:42:48 +0100 (CET)
 Date:   Sat, 25 Jan 2020 10:42:48 -0000
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] doc: Fix typo "deference" to "dereference"
-Cc:     Jens Axboe <axboe@kernel.dk>,
-        "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
+Subject: [tip: core/rcu] wireless/mediatek: Replace rcu_swap_protected() with
+ rcu_replace_pointer()
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Roy Luo <royluo@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-mediatek@lists.infradead.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <157994896880.396.17967255195329015125.tip-bot2@tip-bot2>
+Message-ID: <157994896823.396.3709123757914257242.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -45,31 +57,52 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     6e6eca2ee79a23329093cdf8d1cc0bd86128981f
-Gitweb:        https://git.kernel.org/tip/6e6eca2ee79a23329093cdf8d1cc0bd86128981f
+Commit-ID:     a191c9e9f73a78e8801b5eeb3d43bbd6fd73b86f
+Gitweb:        https://git.kernel.org/tip/a191c9e9f73a78e8801b5eeb3d43bbd6fd73b86f
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Wed, 13 Nov 2019 09:12:59 -08:00
+AuthorDate:    Wed, 11 Dec 2019 10:30:21 -08:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Tue, 10 Dec 2019 18:51:54 -08:00
+CommitterDate: Thu, 12 Dec 2019 10:20:51 -08:00
 
-doc: Fix typo "deference" to "dereference"
+wireless/mediatek: Replace rcu_swap_protected() with rcu_replace_pointer()
 
-Reported-by: Jens Axboe <axboe@kernel.dk>
+This commit replaces the use of rcu_swap_protected() with the more
+intuitively appealing rcu_replace_pointer() as a step towards removing
+rcu_swap_protected().
+
+Link: https://lore.kernel.org/lkml/CAHk-=wiAsJLw1egFEE=Z7-GGtM6wcvtyytXZA1+BHqta4gg6Hw@mail.gmail.com/
+Reported-by: Linus Torvalds <torvalds@linux-foundation.org>
+Reported-by: "Martin K. Petersen" <martin.petersen@oracle.com>
+[ paulmck: Apply Matthias Brugger feedback. ]
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Reviewed-by: "Martin K. Petersen" <martin.petersen@oracle.com>
+Acked-by: Kalle Valo <kvalo@codeaurora.org>
+Cc: Felix Fietkau <nbd@nbd.name>
+Cc: Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
+Cc: Ryder Lee <ryder.lee@mediatek.com>
+Cc: Roy Luo <royluo@google.com>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Matthias Brugger <matthias.bgg@gmail.com>
+Cc: <linux-wireless@vger.kernel.org>
+Cc: <netdev@vger.kernel.org>
+Cc: <linux-arm-kernel@lists.infradead.org>
+Cc: <linux-mediatek@lists.infradead.org>
 ---
- Documentation/RCU/lockdep-splat.txt | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/agg-rx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/RCU/lockdep-splat.txt b/Documentation/RCU/lockdep-splat.txt
-index 9c01597..b809631 100644
---- a/Documentation/RCU/lockdep-splat.txt
-+++ b/Documentation/RCU/lockdep-splat.txt
-@@ -99,7 +99,7 @@ With this change, the rcu_dereference() is always within an RCU
- read-side critical section, which again would have suppressed the
- above lockdep-RCU splat.
+diff --git a/drivers/net/wireless/mediatek/mt76/agg-rx.c b/drivers/net/wireless/mediatek/mt76/agg-rx.c
+index 53b5a4b..59c1878 100644
+--- a/drivers/net/wireless/mediatek/mt76/agg-rx.c
++++ b/drivers/net/wireless/mediatek/mt76/agg-rx.c
+@@ -281,8 +281,8 @@ void mt76_rx_aggr_stop(struct mt76_dev *dev, struct mt76_wcid *wcid, u8 tidno)
+ {
+ 	struct mt76_rx_tid *tid = NULL;
  
--But in this particular case, we don't actually deference the pointer
-+But in this particular case, we don't actually dereference the pointer
- returned from rcu_dereference().  Instead, that pointer is just compared
- to the cic pointer, which means that the rcu_dereference() can be replaced
- by rcu_access_pointer() as follows:
+-	rcu_swap_protected(wcid->aggr[tidno], tid,
+-			   lockdep_is_held(&dev->mutex));
++	tid = rcu_replace_pointer(wcid->aggr[tidno], tid,
++				  lockdep_is_held(&dev->mutex));
+ 	if (tid) {
+ 		mt76_rx_aggr_shutdown(dev, tid);
+ 		kfree_rcu(tid, rcu_head);
