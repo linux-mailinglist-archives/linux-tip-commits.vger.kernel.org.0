@@ -2,39 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C944149B62
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 26 Jan 2020 16:28:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 07D9D149C11
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 26 Jan 2020 18:20:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725944AbgAZP2c (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 26 Jan 2020 10:28:32 -0500
-Received: from mail.kernel.org ([198.145.29.99]:57010 "EHLO mail.kernel.org"
+        id S1725944AbgAZRUC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 26 Jan 2020 12:20:02 -0500
+Received: from mail.skyhub.de ([5.9.137.197]:35196 "EHLO mail.skyhub.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725907AbgAZP2c (ORCPT
+        id S1725838AbgAZRUC (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 26 Jan 2020 10:28:32 -0500
-Received: from paulmck-ThinkPad-P72.home (50-39-105-78.bvtn.or.frontiernet.net [50.39.105.78])
+        Sun, 26 Jan 2020 12:20:02 -0500
+Received: from zn.tnic (p200300EC2F25DF00BC613C117BE1B9E7.dip0.t-ipconnect.de [IPv6:2003:ec:2f25:df00:bc61:3c11:7be1:b9e7])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id EA9D02071A;
-        Sun, 26 Jan 2020 15:28:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1580052512;
-        bh=WRUUtesK4qd1zdh5jOh2P9Vyhrpx1MsrofV4bN3ZABI=;
-        h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-        b=cNGyFWbpUyL9oSB6EG/ZVbFy1jFUtscaHF9QR69+eWe8WaK5CCxCY31msS6gKu8En
-         Koj0Igb7tMZTXl3+5FRu8hPRioABp1gvmL+O54qC9uo7k4MHd/YRb30aSKXMQFkBCp
-         TmW1nwgJiVcBLblu/RsxrJ+bKliJLgTDMJMgLFDY=
-Received: by paulmck-ThinkPad-P72.home (Postfix, from userid 1000)
-        id C6772352277B; Sun, 26 Jan 2020 07:28:31 -0800 (PST)
-Date:   Sun, 26 Jan 2020 07:28:31 -0800
-From:   "Paul E. McKenney" <paulmck@kernel.org>
-To:     Borislav Petkov <bp@alien8.de>
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id DE8BB1EC0B86;
+        Sun, 26 Jan 2020 18:20:00 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1580059201;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=n7aSfQAjmPocxoYvQlfxhkiRM5ozfGvvTpJJo0eEO6M=;
+        b=WXhtVuCcheWjdviXuCfy4VcWr/pVU8bUs6GWnc8GXbZce4mAqsmFcfwE2Vgoko2HDiLzIW
+        h6ut3htAmXO6/t2XtASvLEV+avpuEuj0vK5EfMQVvPL53CiDD+kDWzdeUrLFSxN6Og7YfA
+        t+N6Ei92L0HCBNBPlds1gOIZFkyUd9o=
+Date:   Sun, 26 Jan 2020 18:19:56 +0100
+From:   Borislav Petkov <bp@alien8.de>
+To:     "Paul E. McKenney" <paulmck@kernel.org>
 Cc:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
         x86 <x86@kernel.org>
 Subject: Re: [tip: core/rcu] rcu: Enable tick for nohz_full CPUs slow to
  provide expedited QS
-Message-ID: <20200126152831.GK2935@paulmck-ThinkPad-P72>
-Reply-To: paulmck@kernel.org
+Message-ID: <20200126171956.GB5714@zn.tnic>
 References: <157994897654.396.5667707782512768142.tip-bot2@tip-bot2>
  <20200125131425.GB16136@zn.tnic>
  <20200125161050.GE2935@paulmck-ThinkPad-P72>
@@ -42,30 +41,26 @@ References: <157994897654.396.5667707782512768142.tip-bot2@tip-bot2>
  <20200125194846.GF2935@paulmck-ThinkPad-P72>
  <20200126014318.GA5122@paulmck-ThinkPad-P72>
  <20200126112540.GA5714@zn.tnic>
+ <20200126152831.GK2935@paulmck-ThinkPad-P72>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20200126112540.GA5714@zn.tnic>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20200126152831.GK2935@paulmck-ThinkPad-P72>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Sun, Jan 26, 2020 at 12:25:40PM +0100, Borislav Petkov wrote:
-> On Sat, Jan 25, 2020 at 05:43:18PM -0800, Paul E. McKenney wrote:
-> > And it passes my rcutorture testing as well!  If it does fine with 0day
-> > and -next, I will send a pull request Sunday evening, Pacific Time.
-> > In the meantime, it is right here in -rcu:
-> > 
-> > 59d8cc6b2e37 ("rcu: Forgive slow expedited grace periods at boot time")
+On Sun, Jan 26, 2020 at 07:28:31AM -0800, Paul E. McKenney wrote:
+> And thank you for finding this and for the testing!
 > 
-> Yap, testing looks good here too.
-> 
-> Thx Paul.
+> May I add your Tested-by?
 
-And thank you for finding this and for the testing!
+Sure, thx.
 
-May I add your Tested-by?
+-- 
+Regards/Gruss,
+    Boris.
 
-							Thanx, Paul
+https://people.kernel.org/tglx/notes-about-netiquette
