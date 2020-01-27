@@ -2,65 +2,62 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 07D9D149C11
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 26 Jan 2020 18:20:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B564A149FF7
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 27 Jan 2020 09:41:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725944AbgAZRUC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 26 Jan 2020 12:20:02 -0500
-Received: from mail.skyhub.de ([5.9.137.197]:35196 "EHLO mail.skyhub.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725838AbgAZRUC (ORCPT
+        id S1729148AbgA0IjT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 27 Jan 2020 03:39:19 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:46082 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727326AbgA0IjT (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 26 Jan 2020 12:20:02 -0500
-Received: from zn.tnic (p200300EC2F25DF00BC613C117BE1B9E7.dip0.t-ipconnect.de [IPv6:2003:ec:2f25:df00:bc61:3c11:7be1:b9e7])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id DE8BB1EC0B86;
-        Sun, 26 Jan 2020 18:20:00 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1580059201;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=n7aSfQAjmPocxoYvQlfxhkiRM5ozfGvvTpJJo0eEO6M=;
-        b=WXhtVuCcheWjdviXuCfy4VcWr/pVU8bUs6GWnc8GXbZce4mAqsmFcfwE2Vgoko2HDiLzIW
-        h6ut3htAmXO6/t2XtASvLEV+avpuEuj0vK5EfMQVvPL53CiDD+kDWzdeUrLFSxN6Og7YfA
-        t+N6Ei92L0HCBNBPlds1gOIZFkyUd9o=
-Date:   Sun, 26 Jan 2020 18:19:56 +0100
-From:   Borislav Petkov <bp@alien8.de>
-To:     "Paul E. McKenney" <paulmck@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
+        Mon, 27 Jan 2020 03:39:19 -0500
+Received: from bigeasy by Galois.linutronix.de with local (Exim 4.80)
+        (envelope-from <bigeasy@linutronix.de>)
+        id 1ivzvQ-0007LH-L4; Mon, 27 Jan 2020 09:39:16 +0100
+Date:   Mon, 27 Jan 2020 09:39:15 +0100
+From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-tip-commits@vger.kernel.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         x86 <x86@kernel.org>
-Subject: Re: [tip: core/rcu] rcu: Enable tick for nohz_full CPUs slow to
- provide expedited QS
-Message-ID: <20200126171956.GB5714@zn.tnic>
-References: <157994897654.396.5667707782512768142.tip-bot2@tip-bot2>
- <20200125131425.GB16136@zn.tnic>
- <20200125161050.GE2935@paulmck-ThinkPad-P72>
- <20200125175442.GA4369@zn.tnic>
- <20200125194846.GF2935@paulmck-ThinkPad-P72>
- <20200126014318.GA5122@paulmck-ThinkPad-P72>
- <20200126112540.GA5714@zn.tnic>
- <20200126152831.GK2935@paulmck-ThinkPad-P72>
+Subject: [PATCH] smp: Remove superfluous cond_func check in
+ smp_call_function_many_cond()
+Message-ID: <20200127083915.434tdkztorkklpdu@linutronix.de>
+References: <20200117090137.1205765-3-bigeasy@linutronix.de>
+ <157989512234.396.13725764794800050132.tip-bot2@tip-bot2>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20200126152831.GK2935@paulmck-ThinkPad-P72>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <157989512234.396.13725764794800050132.tip-bot2@tip-bot2>
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Sun, Jan 26, 2020 at 07:28:31AM -0800, Paul E. McKenney wrote:
-> And thank you for finding this and for the testing!
-> 
-> May I add your Tested-by?
+It was requested to remove the cond_func check but the follow up patch
+was overlooked. Here is an incremental update.
 
-Sure, thx.
+Link: https://lore.kernel.org/lkml/20200117131510.GA14914@hirez.programming.kicks-ass.net/
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+---
+ kernel/smp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/kernel/smp.c b/kernel/smp.c
+index 3b7bedc97af38..d0ada39eb4d41 100644
+--- a/kernel/smp.c
++++ b/kernel/smp.c
+@@ -435,7 +435,7 @@ static void smp_call_function_many_cond(const struct cpumask *mask,
+ 
+ 	/* Fastpath: do that cpu by itself. */
+ 	if (next_cpu >= nr_cpu_ids) {
+-		if (!cond_func || (cond_func && cond_func(cpu, info)))
++		if (!cond_func || cond_func(cpu, info))
+ 			smp_call_function_single(cpu, func, info, wait);
+ 		return;
+ 	}
 -- 
-Regards/Gruss,
-    Boris.
+2.25.0
 
-https://people.kernel.org/tglx/notes-about-netiquette
