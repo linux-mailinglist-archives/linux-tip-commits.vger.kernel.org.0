@@ -2,38 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1453F14C9BB
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 29 Jan 2020 12:34:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2744914C9B7
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 29 Jan 2020 12:34:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726784AbgA2LdN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 29 Jan 2020 06:33:13 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:51112 "EHLO
+        id S1726742AbgA2LdL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 29 Jan 2020 06:33:11 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:51092 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726743AbgA2LdN (ORCPT
+        with ESMTP id S1726140AbgA2LdK (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 29 Jan 2020 06:33:13 -0500
+        Wed, 29 Jan 2020 06:33:10 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iwlab-0007lV-UJ; Wed, 29 Jan 2020 12:32:58 +0100
+        id 1iwlac-0007lh-7b; Wed, 29 Jan 2020 12:32:58 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 938A01C1C19;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D462A1C1C18;
         Wed, 29 Jan 2020 12:32:57 +0100 (CET)
 Date:   Wed, 29 Jan 2020 11:32:57 -0000
 From:   "tip-bot2 for Giovanni Gherdovich" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] x86, sched: Add support for frequency invariance on ATOM
+Subject: [tip: sched/core] x86, sched: Add support for frequency invariance on
+ ATOM_GOLDMONT*
 Cc:     Giovanni Gherdovich <ggherdovich@suse.cz>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Ingo Molnar <mingo@kernel.org>,
         "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200122151617.531-6-ggherdovich@suse.cz>
-References: <20200122151617.531-6-ggherdovich@suse.cz>
+In-Reply-To: <20200122151617.531-5-ggherdovich@suse.cz>
+References: <20200122151617.531-5-ggherdovich@suse.cz>
 MIME-Version: 1.0
-Message-ID: <158029757740.396.7740416876846086556.tip-bot2@tip-bot2>
+Message-ID: <158029757767.396.11378452463371953828.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,127 +50,69 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     298c6f99bf30ef735e79f7f6d086bdfae505d380
-Gitweb:        https://git.kernel.org/tip/298c6f99bf30ef735e79f7f6d086bdfae505d380
+Commit-ID:     eacf0474aec8bdccdc7f19386319127c67be3588
+Gitweb:        https://git.kernel.org/tip/eacf0474aec8bdccdc7f19386319127c67be3588
 Author:        Giovanni Gherdovich <ggherdovich@suse.cz>
-AuthorDate:    Wed, 22 Jan 2020 16:16:16 +01:00
+AuthorDate:    Wed, 22 Jan 2020 16:16:15 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 28 Jan 2020 21:37:05 +01:00
+CommitterDate: Tue, 28 Jan 2020 21:37:04 +01:00
 
-x86, sched: Add support for frequency invariance on ATOM
+x86, sched: Add support for frequency invariance on ATOM_GOLDMONT*
 
 The scheduler needs the ratio freq_curr/freq_max for frequency-invariant
-accounting. On all ATOM CPUs prior to Goldmont, set freq_max to the 1-core
-turbo ratio.
+accounting. On GOLDMONT (aka Apollo Lake), GOLDMONT_D (aka Denverton) and
+GOLDMONT_PLUS CPUs (aka Gemini Lake) set freq_max to the highest frequency
+reported by the CPU.
 
-We intended to perform tests validating that this patch doesn't regress in
-terms of energy efficiency, given that this is the primary concern on Atom
-processors. Alas, we found out that turbostat doesn't support reading RAPL
-interfaces on our test machine (Airmont), and we don't have external equipment
-to measure power consumption; all we have is the performance results of the
-benchmarks we ran.
-
-Test machine:
-
-Platform    : Dell Wyse 3040 Thin Client[1]
-CPU Model   : Intel Atom x5-Z8350 (aka Cherry Trail, aka Airmont)
-Fam/Mod/Ste : 6:76:4
-Topology    : 1 socket, 4 cores / 4 threads
-Memory      : 2G
-Storage     : onboard flash, XFS filesystem
-
-[1] https://www.dell.com/en-us/work/shop/wyse-endpoints-and-software/wyse-3040-thin-client/spd/wyse-3040-thin-client
-
-Base frequency and available turbo levels (MHz):
-
-    Min Operating Freq   266 |***
-    Low Freq Mode        800 |********
-    Base Freq           2400 |************************
-    4 Cores             2800 |****************************
-    3 Cores             2800 |****************************
-    2 Cores             3200 |********************************
-    1 Core              3200 |********************************
-
-Tested kernels:
-
-Baseline      : v5.4-rc1,              intel_pstate passive,  schedutil
-Comparison #1 : v5.4-rc1,              intel_pstate active ,  powersave
-Comparison #2 : v5.4-rc1, this patch,  intel_pstate passive,  schedutil
-
-tbench, hackbench and kernbench performed the same under all three kernels;
-dbench ran faster with intel_pstate/powersave and the git unit tests were a
-lot faster with intel_pstate/powersave and invariant schedutil wrt the
-baseline. Not that any of this is terrbily interesting anyway, one doesn't buy
-an Atom system to go fast. Power consumption regressions aren't expected but
-we lack the equipment to make that measurement. Turbostat seems to think that
-reading RAPL on this machine isn't a good idea and we're trusting that
-decision.
-
-comparison ratio of performance with baseline; 1.00 means neutral,
-lower is better:
-
-                      I_PSTATE      FREQ-INV
-    ----------------------------------------
-    dbench                0.90             ~
-    kernbench             0.98          0.97
-    gitsource             0.63          0.43
+The encoding of turbo ratios for GOLDMONT* is identical to the one for
+SKYLAKE_X, but we treat the Atom case apart because we want to set freq_max to
+a higher value, thus the ratio freq_curr/freq_max to be lower, leading to more
+conservative frequency selections (favoring power efficiency).
 
 Signed-off-by: Giovanni Gherdovich <ggherdovich@suse.cz>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://lkml.kernel.org/r/20200122151617.531-6-ggherdovich@suse.cz
+Link: https://lkml.kernel.org/r/20200122151617.531-5-ggherdovich@suse.cz
 ---
- arch/x86/kernel/smpboot.c | 27 +++++++++++++++++++++------
- 1 file changed, 21 insertions(+), 6 deletions(-)
+ arch/x86/kernel/smpboot.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
 diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
-index 3e32d62..5f04bf8 100644
+index 8cb3113..3e32d62 100644
 --- a/arch/x86/kernel/smpboot.c
 +++ b/arch/x86/kernel/smpboot.c
-@@ -1821,6 +1821,24 @@ static bool turbo_disabled(void)
- 	return (misc_en & MSR_IA32_MISC_ENABLE_TURBO_DISABLE);
- }
+@@ -1795,6 +1795,10 @@ void native_play_dead(void)
+  * which would ignore the entire turbo range (a conspicuous part, making
+  * freq_curr/freq_max always maxed out).
+  *
++ * An exception to the heuristic above is the Atom uarch, where we choose the
++ * highest turbo level for freq_max since Atom's are generally oriented towards
++ * power efficiency.
++ *
+  * Setting freq_max to anything less than the 1C turbo ratio makes the ratio
+  * freq_curr / freq_max to eventually grow >1, in which case we clip it to 1.
+  */
+@@ -1937,18 +1941,18 @@ static bool intel_set_max_freq_ratio(void)
+ 	/*
+ 	 * TODO: add support for:
+ 	 *
+-	 * - Atom Goldmont
+ 	 * - Atom Silvermont
+ 	 */
  
-+static bool slv_set_max_freq_ratio(u64 *base_freq, u64 *turbo_freq)
-+{
-+	int err;
-+
-+	err = rdmsrl_safe(MSR_ATOM_CORE_RATIOS, base_freq);
-+	if (err)
-+		return false;
-+
-+	err = rdmsrl_safe(MSR_ATOM_CORE_TURBO_RATIOS, turbo_freq);
-+	if (err)
-+		return false;
-+
-+	*base_freq = (*base_freq >> 16) & 0x3F;     /* max P state */
-+	*turbo_freq = *turbo_freq & 0x3F;           /* 1C turbo    */
-+
-+	return true;
-+}
-+
- #include <asm/cpu_device_id.h>
- #include <asm/intel-family.h>
- 
-@@ -1938,17 +1956,14 @@ static bool core_set_max_freq_ratio(u64 *base_freq, u64 *turbo_freq)
- 
- static bool intel_set_max_freq_ratio(void)
- {
--	/*
--	 * TODO: add support for:
--	 *
--	 * - Atom Silvermont
--	 */
--
  	u64 base_freq = 1, turbo_freq = 1;
  
+-	if (x86_match_cpu(has_glm_turbo_ratio_limits))
+-		return false;
+-
  	if (turbo_disabled())
  		goto out;
  
-+	if (slv_set_max_freq_ratio(&base_freq, &turbo_freq))
++	if (x86_match_cpu(has_glm_turbo_ratio_limits) &&
++	    skx_set_max_freq_ratio(&base_freq, &turbo_freq, 1))
 +		goto out;
 +
- 	if (x86_match_cpu(has_glm_turbo_ratio_limits) &&
- 	    skx_set_max_freq_ratio(&base_freq, &turbo_freq, 1))
+ 	if (knl_set_max_freq_ratio(&base_freq, &turbo_freq, 1))
  		goto out;
+ 
