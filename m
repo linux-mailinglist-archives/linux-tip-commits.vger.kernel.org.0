@@ -2,39 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2744914C9B7
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 29 Jan 2020 12:34:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 18E3B14C9B9
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 29 Jan 2020 12:34:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726742AbgA2LdL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 29 Jan 2020 06:33:11 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:51092 "EHLO
+        id S1726766AbgA2LdM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 29 Jan 2020 06:33:12 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:51104 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726140AbgA2LdK (ORCPT
+        with ESMTP id S1726679AbgA2LdM (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 29 Jan 2020 06:33:10 -0500
+        Wed, 29 Jan 2020 06:33:12 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iwlac-0007lh-7b; Wed, 29 Jan 2020 12:32:58 +0100
+        id 1iwlab-0007kn-Lp; Wed, 29 Jan 2020 12:32:57 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D462A1C1C18;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5153A1C0095;
         Wed, 29 Jan 2020 12:32:57 +0100 (CET)
 Date:   Wed, 29 Jan 2020 11:32:57 -0000
 From:   "tip-bot2 for Giovanni Gherdovich" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] x86, sched: Add support for frequency invariance on
- ATOM_GOLDMONT*
+Subject: [tip: sched/core] x86/intel_pstate: Handle runtime turbo
+ disablement/enablement in frequency invariance
 Cc:     Giovanni Gherdovich <ggherdovich@suse.cz>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Ingo Molnar <mingo@kernel.org>,
         "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200122151617.531-5-ggherdovich@suse.cz>
-References: <20200122151617.531-5-ggherdovich@suse.cz>
+In-Reply-To: <20200122151617.531-7-ggherdovich@suse.cz>
+References: <20200122151617.531-7-ggherdovich@suse.cz>
 MIME-Version: 1.0
-Message-ID: <158029757767.396.11378452463371953828.tip-bot2@tip-bot2>
+Message-ID: <158029757712.396.8991863522896309415.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,69 +50,103 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     eacf0474aec8bdccdc7f19386319127c67be3588
-Gitweb:        https://git.kernel.org/tip/eacf0474aec8bdccdc7f19386319127c67be3588
+Commit-ID:     918229cdd5abb50d8a2edfcd8dc6b6bc53afd765
+Gitweb:        https://git.kernel.org/tip/918229cdd5abb50d8a2edfcd8dc6b6bc53afd765
 Author:        Giovanni Gherdovich <ggherdovich@suse.cz>
-AuthorDate:    Wed, 22 Jan 2020 16:16:15 +01:00
+AuthorDate:    Wed, 22 Jan 2020 16:16:17 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 28 Jan 2020 21:37:04 +01:00
+CommitterDate: Tue, 28 Jan 2020 21:37:06 +01:00
 
-x86, sched: Add support for frequency invariance on ATOM_GOLDMONT*
+x86/intel_pstate: Handle runtime turbo disablement/enablement in frequency invariance
 
-The scheduler needs the ratio freq_curr/freq_max for frequency-invariant
-accounting. On GOLDMONT (aka Apollo Lake), GOLDMONT_D (aka Denverton) and
-GOLDMONT_PLUS CPUs (aka Gemini Lake) set freq_max to the highest frequency
-reported by the CPU.
+On some platforms such as the Dell XPS 13 laptop the firmware disables turbo
+when the machine is disconnected from AC, and viceversa it enables it again
+when it's reconnected. In these cases a _PPC ACPI notification is issued.
 
-The encoding of turbo ratios for GOLDMONT* is identical to the one for
-SKYLAKE_X, but we treat the Atom case apart because we want to set freq_max to
-a higher value, thus the ratio freq_curr/freq_max to be lower, leading to more
-conservative frequency selections (favoring power efficiency).
+The scheduler needs to know freq_max for frequency-invariant calculations.
+To account for turbo availability to come and go, record freq_max at boot as
+if turbo was available and store it in a helper variable. Use a setter
+function to swap between freq_base and freq_max every time turbo goes off or on.
 
 Signed-off-by: Giovanni Gherdovich <ggherdovich@suse.cz>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://lkml.kernel.org/r/20200122151617.531-5-ggherdovich@suse.cz
+Link: https://lkml.kernel.org/r/20200122151617.531-7-ggherdovich@suse.cz
 ---
- arch/x86/kernel/smpboot.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ arch/x86/include/asm/topology.h |  5 +++++
+ arch/x86/kernel/smpboot.c       | 15 ++++++++++-----
+ drivers/cpufreq/intel_pstate.c  |  1 +
+ 3 files changed, 16 insertions(+), 5 deletions(-)
 
+diff --git a/arch/x86/include/asm/topology.h b/arch/x86/include/asm/topology.h
+index 2ebf7b7..79d8d54 100644
+--- a/arch/x86/include/asm/topology.h
++++ b/arch/x86/include/asm/topology.h
+@@ -211,6 +211,11 @@ static inline long arch_scale_freq_capacity(int cpu)
+ extern void arch_scale_freq_tick(void);
+ #define arch_scale_freq_tick arch_scale_freq_tick
+ 
++extern void arch_set_max_freq_ratio(bool turbo_disabled);
++#else
++static inline void arch_set_max_freq_ratio(bool turbo_disabled)
++{
++}
+ #endif
+ 
+ #endif /* _ASM_X86_TOPOLOGY_H */
 diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
-index 8cb3113..3e32d62 100644
+index 5f04bf8..467191e 100644
 --- a/arch/x86/kernel/smpboot.c
 +++ b/arch/x86/kernel/smpboot.c
-@@ -1795,6 +1795,10 @@ void native_play_dead(void)
-  * which would ignore the entire turbo range (a conspicuous part, making
-  * freq_curr/freq_max always maxed out).
-  *
-+ * An exception to the heuristic above is the Atom uarch, where we choose the
-+ * highest turbo level for freq_max since Atom's are generally oriented towards
-+ * power efficiency.
-+ *
-  * Setting freq_max to anything less than the 1C turbo ratio makes the ratio
-  * freq_curr / freq_max to eventually grow >1, in which case we clip it to 1.
-  */
-@@ -1937,18 +1941,18 @@ static bool intel_set_max_freq_ratio(void)
- 	/*
- 	 * TODO: add support for:
- 	 *
--	 * - Atom Goldmont
- 	 * - Atom Silvermont
- 	 */
+@@ -1807,8 +1807,15 @@ DEFINE_STATIC_KEY_FALSE(arch_scale_freq_key);
  
- 	u64 base_freq = 1, turbo_freq = 1;
+ static DEFINE_PER_CPU(u64, arch_prev_aperf);
+ static DEFINE_PER_CPU(u64, arch_prev_mperf);
++static u64 arch_turbo_freq_ratio = SCHED_CAPACITY_SCALE;
+ static u64 arch_max_freq_ratio = SCHED_CAPACITY_SCALE;
  
--	if (x86_match_cpu(has_glm_turbo_ratio_limits))
--		return false;
--
- 	if (turbo_disabled())
- 		goto out;
- 
-+	if (x86_match_cpu(has_glm_turbo_ratio_limits) &&
-+	    skx_set_max_freq_ratio(&base_freq, &turbo_freq, 1))
-+		goto out;
++void arch_set_max_freq_ratio(bool turbo_disabled)
++{
++	arch_max_freq_ratio = turbo_disabled ? SCHED_CAPACITY_SCALE :
++					arch_turbo_freq_ratio;
++}
 +
- 	if (knl_set_max_freq_ratio(&base_freq, &turbo_freq, 1))
- 		goto out;
+ static bool turbo_disabled(void)
+ {
+ 	u64 misc_en;
+@@ -1956,10 +1963,7 @@ static bool core_set_max_freq_ratio(u64 *base_freq, u64 *turbo_freq)
  
+ static bool intel_set_max_freq_ratio(void)
+ {
+-	u64 base_freq = 1, turbo_freq = 1;
+-
+-	if (turbo_disabled())
+-		goto out;
++	u64 base_freq, turbo_freq;
+ 
+ 	if (slv_set_max_freq_ratio(&base_freq, &turbo_freq))
+ 		goto out;
+@@ -1981,8 +1985,9 @@ static bool intel_set_max_freq_ratio(void)
+ 	return false;
+ 
+ out:
+-	arch_max_freq_ratio = div_u64(turbo_freq * SCHED_CAPACITY_SCALE,
++	arch_turbo_freq_ratio = div_u64(turbo_freq * SCHED_CAPACITY_SCALE,
+ 					base_freq);
++	arch_set_max_freq_ratio(turbo_disabled());
+ 	return true;
+ }
+ 
+diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
+index d2fa3e9..abbeeca 100644
+--- a/drivers/cpufreq/intel_pstate.c
++++ b/drivers/cpufreq/intel_pstate.c
+@@ -922,6 +922,7 @@ static void intel_pstate_update_limits(unsigned int cpu)
+ 	 */
+ 	if (global.turbo_disabled_mf != global.turbo_disabled) {
+ 		global.turbo_disabled_mf = global.turbo_disabled;
++		arch_set_max_freq_ratio(global.turbo_disabled);
+ 		for_each_possible_cpu(cpu)
+ 			intel_pstate_update_max_freq(cpu);
+ 	} else {
