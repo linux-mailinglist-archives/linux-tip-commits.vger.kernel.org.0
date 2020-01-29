@@ -2,84 +2,108 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BA8C14C9A7
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 29 Jan 2020 12:33:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 36DFE14C9B5
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 29 Jan 2020 12:34:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726564AbgA2LdG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 29 Jan 2020 06:33:06 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:51052 "EHLO
+        id S1726271AbgA2LdI (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 29 Jan 2020 06:33:08 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:51080 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726484AbgA2LdF (ORCPT
+        with ESMTP id S1726679AbgA2LdI (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 29 Jan 2020 06:33:05 -0500
+        Wed, 29 Jan 2020 06:33:08 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iwlaa-0007kJ-GC; Wed, 29 Jan 2020 12:32:56 +0100
+        id 1iwlab-0007kk-Bm; Wed, 29 Jan 2020 12:32:57 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B0F581C0095;
-        Wed, 29 Jan 2020 12:32:55 +0100 (CET)
-Date:   Wed, 29 Jan 2020 11:32:55 -0000
-From:   "tip-bot2 for Benjamin Thiel" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 0A9561C1C18;
+        Wed, 29 Jan 2020 12:32:57 +0100 (CET)
+Date:   Wed, 29 Jan 2020 11:32:56 -0000
+From:   "tip-bot2 for Srikar Dronamraju" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] kernel/events: Add a missing prototype for
- arch_perf_update_userpage()
-Cc:     Benjamin Thiel <b.thiel@posteo.de>,
+Subject: [tip: sched/core] sched/fair: Optimize select_idle_core()
+Cc:     Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        Valentin Schneider <valentin.schneider@arm.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Mel Gorman <mgorman@techsingularity.net>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200109131351.9468-1-b.thiel@posteo.de>
-References: <20200109131351.9468-1-b.thiel@posteo.de>
+In-Reply-To: <20191206172422.6578-1-srikar@linux.vnet.ibm.com>
+References: <20191206172422.6578-1-srikar@linux.vnet.ibm.com>
 MIME-Version: 1.0
-Message-ID: <158029757541.396.4238678830980853491.tip-bot2@tip-bot2>
+Message-ID: <158029757682.396.5003778386647847776.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+X-Linutronix-Spam-Score: 1.5
+X-Linutronix-Spam-Level: +
+X-Linutronix-Spam-Status: No , 1.5 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001,URIBL_DBL_ABUSE_MALW=2.5
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/urgent branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     f1ec3a517b4352e78dbef6b1e591f43202ecb3fe
-Gitweb:        https://git.kernel.org/tip/f1ec3a517b4352e78dbef6b1e591f43202ecb3fe
-Author:        Benjamin Thiel <b.thiel@posteo.de>
-AuthorDate:    Thu, 09 Jan 2020 14:13:51 +01:00
+Commit-ID:     bec2860a2bd6cd38ea34434d04f4033eb32f0f31
+Gitweb:        https://git.kernel.org/tip/bec2860a2bd6cd38ea34434d04f4033eb32f0f31
+Author:        Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+AuthorDate:    Fri, 06 Dec 2019 22:54:22 +05:30
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 28 Jan 2020 21:26:44 +01:00
+CommitterDate: Tue, 28 Jan 2020 21:37:08 +01:00
 
-kernel/events: Add a missing prototype for arch_perf_update_userpage()
+sched/fair: Optimize select_idle_core()
 
-... in order to fix a -Wmissing-prototype warning.
+Currently we loop through all threads of a core to evaluate if the core is
+idle or not. This is unnecessary. If a thread of a core is not idle, skip
+evaluating other threads of a core. Also while clearing the cpumask, bits
+of all CPUs of a core can be cleared in one-shot.
 
-No functional changes.
+Collecting ticks on a Power 9 SMT 8 system around select_idle_core
+while running schbench shows us
 
-Signed-off-by: Benjamin Thiel <b.thiel@posteo.de>
+(units are in ticks, hence lesser is better)
+Without patch
+    N        Min     Max     Median         Avg      Stddev
+x 130        151    1083        284   322.72308   144.41494
+
+With patch
+    N        Min     Max     Median         Avg      Stddev   Improvement
+x 164         88     610        201   225.79268   106.78943        30.03%
+
+Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lkml.kernel.org/r/20200109131351.9468-1-b.thiel@posteo.de
+Reviewed-by: Valentin Schneider <valentin.schneider@arm.com>
+Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
+Acked-by: Mel Gorman <mgorman@techsingularity.net>
+Link: https://lkml.kernel.org/r/20191206172422.6578-1-srikar@linux.vnet.ibm.com
 ---
- include/linux/perf_event.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ kernel/sched/fair.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
-index 6d4c22a..52928e0 100644
---- a/include/linux/perf_event.h
-+++ b/include/linux/perf_event.h
-@@ -1544,4 +1544,8 @@ int perf_event_exit_cpu(unsigned int cpu);
- #define perf_event_exit_cpu	NULL
- #endif
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 25dffc0..1a0ce83 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -5787,10 +5787,12 @@ static int select_idle_core(struct task_struct *p, struct sched_domain *sd, int 
+ 		bool idle = true;
  
-+extern void __weak arch_perf_update_userpage(struct perf_event *event,
-+					     struct perf_event_mmap_page *userpg,
-+					     u64 now);
-+
- #endif /* _LINUX_PERF_EVENT_H */
+ 		for_each_cpu(cpu, cpu_smt_mask(core)) {
+-			__cpumask_clear_cpu(cpu, cpus);
+-			if (!available_idle_cpu(cpu))
++			if (!available_idle_cpu(cpu)) {
+ 				idle = false;
++				break;
++			}
+ 		}
++		cpumask_andnot(cpus, cpus, cpu_smt_mask(core));
+ 
+ 		if (idle)
+ 			return core;
