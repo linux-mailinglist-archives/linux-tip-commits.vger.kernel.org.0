@@ -2,83 +2,109 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C989314BB84
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 28 Jan 2020 15:48:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DACB314C9CA
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 29 Jan 2020 12:34:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726758AbgA1Oqm (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 28 Jan 2020 09:46:42 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:49126 "EHLO
+        id S1726558AbgA2Ld5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 29 Jan 2020 06:33:57 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:51066 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726266AbgA1Oql (ORCPT
+        with ESMTP id S1726551AbgA2LdG (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 28 Jan 2020 09:46:41 -0500
+        Wed, 29 Jan 2020 06:33:06 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iwS8U-0000J1-MK; Tue, 28 Jan 2020 15:46:38 +0100
+        id 1iwlaa-0007kL-Mh; Wed, 29 Jan 2020 12:32:56 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 433D91C1B3D;
-        Tue, 28 Jan 2020 15:46:38 +0100 (CET)
-Date:   Tue, 28 Jan 2020 14:46:38 -0000
-From:   "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 05EED1C1C18;
+        Wed, 29 Jan 2020 12:32:56 +0100 (CET)
+Date:   Wed, 29 Jan 2020 11:32:55 -0000
+From:   "tip-bot2 for Song Liu" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: smp/urgent] smp: Remove superfluous cond_func check in
- smp_call_function_many_cond()
-Cc:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200127083915.434tdkztorkklpdu@linutronix.de>
-References: <20200127083915.434tdkztorkklpdu@linutronix.de>
+Subject: [tip: perf/urgent] perf/cgroups: Install cgroup events to correct cpuctx
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Song Liu <songliubraving@fb.com>,
+        Ingo Molnar <mingo@kernel.org>, <stable@vger.kernel.org>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200122195027.2112449-1-songliubraving@fb.com>
+References: <20200122195027.2112449-1-songliubraving@fb.com>
 MIME-Version: 1.0
-Message-ID: <158022279803.396.3667557782682322607.tip-bot2@tip-bot2>
+Message-ID: <158029757582.396.8793803904243857564.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+X-Linutronix-Spam-Score: 1.5
+X-Linutronix-Spam-Level: +
+X-Linutronix-Spam-Status: No , 1.5 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001,URIBL_DBL_ABUSE_MALW=2.5
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the smp/urgent branch of tip:
+The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     25a3a15417cf4311f812f5a2b18c5fc2809f66d7
-Gitweb:        https://git.kernel.org/tip/25a3a15417cf4311f812f5a2b18c5fc2809f66d7
-Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-AuthorDate:    Mon, 27 Jan 2020 09:39:15 +01:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 28 Jan 2020 15:43:00 +01:00
+Commit-ID:     07c5972951f088094776038006a0592a46d14bbc
+Gitweb:        https://git.kernel.org/tip/07c5972951f088094776038006a0592a46d14bbc
+Author:        Song Liu <songliubraving@fb.com>
+AuthorDate:    Wed, 22 Jan 2020 11:50:27 -08:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Tue, 28 Jan 2020 21:20:19 +01:00
 
-smp: Remove superfluous cond_func check in smp_call_function_many_cond()
+perf/cgroups: Install cgroup events to correct cpuctx
 
-It was requested to remove the cond_func check but the follow up patch was
-overlooked. Remove it now.
+cgroup events are always installed in the cpuctx. However, when it is not
+installed via IPI, list_update_cgroup_event() adds it to cpuctx of current
+CPU, which triggers list corruption:
 
-Fixes: 67719ef25eeb ("smp: Add a smp_cond_func_t argument to smp_call_function_many()")
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20200127083915.434tdkztorkklpdu@linutronix.de
+  [] list_add double add: new=ffff888ff7cf0db0, prev=ffff888ff7ce82f0, next=ffff888ff7cf0db0.
 
+To reproduce this, we can simply run:
+
+  # perf stat -e cs -a &
+  # perf stat -e cs -G anycgroup
+
+Fix this by installing it to cpuctx that contains event->ctx, and the
+proper cgrp_cpuctx_list.
+
+Fixes: db0503e4f675 ("perf/core: Optimize perf_install_in_event()")
+Suggested-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Song Liu <songliubraving@fb.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: <stable@vger.kernel.org>
+Link: https://lkml.kernel.org/r/20200122195027.2112449-1-songliubraving@fb.com
 ---
- kernel/smp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/events/core.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/smp.c b/kernel/smp.c
-index 3b7bedc..d0ada39 100644
---- a/kernel/smp.c
-+++ b/kernel/smp.c
-@@ -435,7 +435,7 @@ static void smp_call_function_many_cond(const struct cpumask *mask,
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 2d9aeba..fdb7f7e 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -951,9 +951,9 @@ list_update_cgroup_event(struct perf_event *event,
  
- 	/* Fastpath: do that cpu by itself. */
- 	if (next_cpu >= nr_cpu_ids) {
--		if (!cond_func || (cond_func && cond_func(cpu, info)))
-+		if (!cond_func || cond_func(cpu, info))
- 			smp_call_function_single(cpu, func, info, wait);
- 		return;
- 	}
+ 	/*
+ 	 * Because cgroup events are always per-cpu events,
+-	 * this will always be called from the right CPU.
++	 * @ctx == &cpuctx->ctx.
+ 	 */
+-	cpuctx = __get_cpu_context(ctx);
++	cpuctx = container_of(ctx, struct perf_cpu_context, ctx);
+ 
+ 	/*
+ 	 * Since setting cpuctx->cgrp is conditional on the current @cgrp
+@@ -979,7 +979,8 @@ list_update_cgroup_event(struct perf_event *event,
+ 
+ 	cpuctx_entry = &cpuctx->cgrp_cpuctx_entry;
+ 	if (add)
+-		list_add(cpuctx_entry, this_cpu_ptr(&cgrp_cpuctx_list));
++		list_add(cpuctx_entry,
++			 per_cpu_ptr(&cgrp_cpuctx_list, event->cpu));
+ 	else
+ 		list_del(cpuctx_entry);
+ }
