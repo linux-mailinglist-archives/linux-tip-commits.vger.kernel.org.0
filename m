@@ -2,37 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2539714C9A5
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 29 Jan 2020 12:33:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1453F14C9BB
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 29 Jan 2020 12:34:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726186AbgA2LdC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 29 Jan 2020 06:33:02 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:51027 "EHLO
+        id S1726784AbgA2LdN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 29 Jan 2020 06:33:13 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:51112 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726140AbgA2LdC (ORCPT
+        with ESMTP id S1726743AbgA2LdN (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 29 Jan 2020 06:33:02 -0500
+        Wed, 29 Jan 2020 06:33:13 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iwlab-0007kQ-2E; Wed, 29 Jan 2020 12:32:57 +0100
+        id 1iwlab-0007lV-UJ; Wed, 29 Jan 2020 12:32:58 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B57291C0095;
-        Wed, 29 Jan 2020 12:32:56 +0100 (CET)
-Date:   Wed, 29 Jan 2020 11:32:56 -0000
-From:   "tip-bot2 for Konstantin Khlebnikov" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 938A01C1C19;
+        Wed, 29 Jan 2020 12:32:57 +0100 (CET)
+Date:   Wed, 29 Jan 2020 11:32:57 -0000
+From:   "tip-bot2 for Giovanni Gherdovich" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/rt: Optimize checking group RT scheduler constraints
-Cc:     Konstantin Khlebnikov <khlebnikov@yandex-team.ru>,
+Subject: [tip: sched/core] x86, sched: Add support for frequency invariance on ATOM
+Cc:     Giovanni Gherdovich <ggherdovich@suse.cz>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <157996383820.4651.11292439232549211693.stgit@buzz>
-References: <157996383820.4651.11292439232549211693.stgit@buzz>
+        Ingo Molnar <mingo@kernel.org>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200122151617.531-6-ggherdovich@suse.cz>
+References: <20200122151617.531-6-ggherdovich@suse.cz>
 MIME-Version: 1.0
-Message-ID: <158029757654.396.14560704856092377008.tip-bot2@tip-bot2>
+Message-ID: <158029757740.396.7740416876846086556.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,129 +49,127 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     b4fb015eeff7f3e5518a7dbe8061169a3e2f2bc7
-Gitweb:        https://git.kernel.org/tip/b4fb015eeff7f3e5518a7dbe8061169a3e2f2bc7
-Author:        Konstantin Khlebnikov <khlebnikov@yandex-team.ru>
-AuthorDate:    Sat, 25 Jan 2020 17:50:38 +03:00
+Commit-ID:     298c6f99bf30ef735e79f7f6d086bdfae505d380
+Gitweb:        https://git.kernel.org/tip/298c6f99bf30ef735e79f7f6d086bdfae505d380
+Author:        Giovanni Gherdovich <ggherdovich@suse.cz>
+AuthorDate:    Wed, 22 Jan 2020 16:16:16 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 28 Jan 2020 21:37:09 +01:00
+CommitterDate: Tue, 28 Jan 2020 21:37:05 +01:00
 
-sched/rt: Optimize checking group RT scheduler constraints
+x86, sched: Add support for frequency invariance on ATOM
 
-Group RT scheduler contains protection against setting zero runtime for
-cgroup with RT tasks. Right now function tg_set_rt_bandwidth() iterates
-over all CPU cgroups and calls tg_has_rt_tasks() for any cgroup which
-runtime is zero (not only for changed one). Default RT runtime is zero,
-thus tg_has_rt_tasks() will is called for almost at CPU cgroups.
+The scheduler needs the ratio freq_curr/freq_max for frequency-invariant
+accounting. On all ATOM CPUs prior to Goldmont, set freq_max to the 1-core
+turbo ratio.
 
-This protection already is slightly racy: runtime limit could be changed
-between cpu_cgroup_can_attach() and cpu_cgroup_attach() because changing
-cgroup attribute does not lock cgroup_mutex while attach does not lock
-rt_constraints_mutex. Changing task scheduler class also races with
-changing rt runtime: check in __sched_setscheduler() isn't protected.
+We intended to perform tests validating that this patch doesn't regress in
+terms of energy efficiency, given that this is the primary concern on Atom
+processors. Alas, we found out that turbostat doesn't support reading RAPL
+interfaces on our test machine (Airmont), and we don't have external equipment
+to measure power consumption; all we have is the performance results of the
+benchmarks we ran.
 
-Function tg_has_rt_tasks() iterates over all threads in the system.
-This gives NR_CGROUPS * NR_TASKS operations under single tasklist_lock
-locked for read tg_set_rt_bandwidth(). Any concurrent attempt of locking
-tasklist_lock for write (for example fork) will stuck with disabled irqs.
+Test machine:
 
-This patch makes two optimizations:
-1) Remove locking tasklist_lock and iterate only tasks in cgroup
-2) Call tg_has_rt_tasks() iff rt runtime changes from non-zero to zero
+Platform    : Dell Wyse 3040 Thin Client[1]
+CPU Model   : Intel Atom x5-Z8350 (aka Cherry Trail, aka Airmont)
+Fam/Mod/Ste : 6:76:4
+Topology    : 1 socket, 4 cores / 4 threads
+Memory      : 2G
+Storage     : onboard flash, XFS filesystem
 
-All changed code is under CONFIG_RT_GROUP_SCHED.
+[1] https://www.dell.com/en-us/work/shop/wyse-endpoints-and-software/wyse-3040-thin-client/spd/wyse-3040-thin-client
 
-Testcase:
+Base frequency and available turbo levels (MHz):
 
- # mkdir /sys/fs/cgroup/cpu/test{1..10000}
- # echo 0 | tee /sys/fs/cgroup/cpu/test*/cpu.rt_runtime_us
+    Min Operating Freq   266 |***
+    Low Freq Mode        800 |********
+    Base Freq           2400 |************************
+    4 Cores             2800 |****************************
+    3 Cores             2800 |****************************
+    2 Cores             3200 |********************************
+    1 Core              3200 |********************************
 
-At the same time without patch fork time will be >100ms:
+Tested kernels:
 
- # perf trace -e clone --duration 100 stress-ng --fork 1
+Baseline      : v5.4-rc1,              intel_pstate passive,  schedutil
+Comparison #1 : v5.4-rc1,              intel_pstate active ,  powersave
+Comparison #2 : v5.4-rc1, this patch,  intel_pstate passive,  schedutil
 
-Also remote ping will show timings >100ms caused by irq latency.
+tbench, hackbench and kernbench performed the same under all three kernels;
+dbench ran faster with intel_pstate/powersave and the git unit tests were a
+lot faster with intel_pstate/powersave and invariant schedutil wrt the
+baseline. Not that any of this is terrbily interesting anyway, one doesn't buy
+an Atom system to go fast. Power consumption regressions aren't expected but
+we lack the equipment to make that measurement. Turbostat seems to think that
+reading RAPL on this machine isn't a good idea and we're trusting that
+decision.
 
-Signed-off-by: Konstantin Khlebnikov <khlebnikov@yandex-team.ru>
+comparison ratio of performance with baseline; 1.00 means neutral,
+lower is better:
+
+                      I_PSTATE      FREQ-INV
+    ----------------------------------------
+    dbench                0.90             ~
+    kernbench             0.98          0.97
+    gitsource             0.63          0.43
+
+Signed-off-by: Giovanni Gherdovich <ggherdovich@suse.cz>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lkml.kernel.org/r/157996383820.4651.11292439232549211693.stgit@buzz
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://lkml.kernel.org/r/20200122151617.531-6-ggherdovich@suse.cz
 ---
- kernel/sched/rt.c | 24 +++++++++++-------------
- 1 file changed, 11 insertions(+), 13 deletions(-)
+ arch/x86/kernel/smpboot.c | 27 +++++++++++++++++++++------
+ 1 file changed, 21 insertions(+), 6 deletions(-)
 
-diff --git a/kernel/sched/rt.c b/kernel/sched/rt.c
-index 4043abe..55a4a50 100644
---- a/kernel/sched/rt.c
-+++ b/kernel/sched/rt.c
-@@ -2449,10 +2449,11 @@ const struct sched_class rt_sched_class = {
-  */
- static DEFINE_MUTEX(rt_constraints_mutex);
- 
--/* Must be called with tasklist_lock held */
- static inline int tg_has_rt_tasks(struct task_group *tg)
- {
--	struct task_struct *g, *p;
-+	struct task_struct *task;
-+	struct css_task_iter it;
-+	int ret = 0;
- 
- 	/*
- 	 * Autogroups do not have RT tasks; see autogroup_create().
-@@ -2460,12 +2461,12 @@ static inline int tg_has_rt_tasks(struct task_group *tg)
- 	if (task_group_is_autogroup(tg))
- 		return 0;
- 
--	for_each_process_thread(g, p) {
--		if (rt_task(p) && task_group(p) == tg)
--			return 1;
--	}
-+	css_task_iter_start(&tg->css, 0, &it);
-+	while (!ret && (task = css_task_iter_next(&it)))
-+		ret |= rt_task(task);
-+	css_task_iter_end(&it);
- 
--	return 0;
-+	return ret;
+diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
+index 3e32d62..5f04bf8 100644
+--- a/arch/x86/kernel/smpboot.c
++++ b/arch/x86/kernel/smpboot.c
+@@ -1821,6 +1821,24 @@ static bool turbo_disabled(void)
+ 	return (misc_en & MSR_IA32_MISC_ENABLE_TURBO_DISABLE);
  }
  
- struct rt_schedulable_data {
-@@ -2496,9 +2497,10 @@ static int tg_rt_schedulable(struct task_group *tg, void *data)
- 		return -EINVAL;
++static bool slv_set_max_freq_ratio(u64 *base_freq, u64 *turbo_freq)
++{
++	int err;
++
++	err = rdmsrl_safe(MSR_ATOM_CORE_RATIOS, base_freq);
++	if (err)
++		return false;
++
++	err = rdmsrl_safe(MSR_ATOM_CORE_TURBO_RATIOS, turbo_freq);
++	if (err)
++		return false;
++
++	*base_freq = (*base_freq >> 16) & 0x3F;     /* max P state */
++	*turbo_freq = *turbo_freq & 0x3F;           /* 1C turbo    */
++
++	return true;
++}
++
+ #include <asm/cpu_device_id.h>
+ #include <asm/intel-family.h>
  
- 	/*
--	 * Ensure we don't starve existing RT tasks.
-+	 * Ensure we don't starve existing RT tasks if runtime turns zero.
- 	 */
--	if (rt_bandwidth_enabled() && !runtime && tg_has_rt_tasks(tg))
-+	if (rt_bandwidth_enabled() && !runtime &&
-+	    tg->rt_bandwidth.rt_runtime && tg_has_rt_tasks(tg))
- 		return -EBUSY;
+@@ -1938,17 +1956,14 @@ static bool core_set_max_freq_ratio(u64 *base_freq, u64 *turbo_freq)
  
- 	total = to_ratio(period, runtime);
-@@ -2564,7 +2566,6 @@ static int tg_set_rt_bandwidth(struct task_group *tg,
- 		return -EINVAL;
+ static bool intel_set_max_freq_ratio(void)
+ {
+-	/*
+-	 * TODO: add support for:
+-	 *
+-	 * - Atom Silvermont
+-	 */
+-
+ 	u64 base_freq = 1, turbo_freq = 1;
  
- 	mutex_lock(&rt_constraints_mutex);
--	read_lock(&tasklist_lock);
- 	err = __rt_schedulable(tg, rt_period, rt_runtime);
- 	if (err)
- 		goto unlock;
-@@ -2582,7 +2583,6 @@ static int tg_set_rt_bandwidth(struct task_group *tg,
- 	}
- 	raw_spin_unlock_irq(&tg->rt_bandwidth.rt_runtime_lock);
- unlock:
--	read_unlock(&tasklist_lock);
- 	mutex_unlock(&rt_constraints_mutex);
+ 	if (turbo_disabled())
+ 		goto out;
  
- 	return err;
-@@ -2641,9 +2641,7 @@ static int sched_rt_global_constraints(void)
- 	int ret = 0;
- 
- 	mutex_lock(&rt_constraints_mutex);
--	read_lock(&tasklist_lock);
- 	ret = __rt_schedulable(NULL, 0, 0);
--	read_unlock(&tasklist_lock);
- 	mutex_unlock(&rt_constraints_mutex);
- 
- 	return ret;
++	if (slv_set_max_freq_ratio(&base_freq, &turbo_freq))
++		goto out;
++
+ 	if (x86_match_cpu(has_glm_turbo_ratio_limits) &&
+ 	    skx_set_max_freq_ratio(&base_freq, &turbo_freq, 1))
+ 		goto out;
