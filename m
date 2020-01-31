@@ -2,39 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A2A7E14EC79
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 31 Jan 2020 13:28:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 776C114F27B
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 31 Jan 2020 19:59:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728484AbgAaM2S (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 31 Jan 2020 07:28:18 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:55184 "EHLO
+        id S1725954AbgAaS7D (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 31 Jan 2020 13:59:03 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:56561 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728479AbgAaM2R (ORCPT
+        with ESMTP id S1725939AbgAaS7D (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 31 Jan 2020 07:28:17 -0500
+        Fri, 31 Jan 2020 13:59:03 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1ixVPB-00048x-GT; Fri, 31 Jan 2020 13:28:13 +0100
+        id 1ixbVH-00045g-FQ; Fri, 31 Jan 2020 19:58:55 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 12A231C1B3C;
-        Fri, 31 Jan 2020 13:28:13 +0100 (CET)
-Date:   Fri, 31 Jan 2020 12:28:12 -0000
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C2E821C1D5A;
+        Fri, 31 Jan 2020 19:58:54 +0100 (CET)
+Date:   Fri, 31 Jan 2020 18:58:54 -0000
+From:   "tip-bot2 for Steven Clarkson" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/timer: Don't skip PIT setup when APIC is
- disabled or in legacy mode
-Cc:     Anthony Buckley <tony.buckley000@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@kernel.org>,
-        Daniel Drake <drake@endlessm.com>, x86 <x86@kernel.org>,
+Subject: [tip: x86/urgent] x86/boot: Handle malformed SRAT tables during early
+ ACPI parsing
+Cc:     Steven Clarkson <sc@lambdal.com>, Borislav Petkov <bp@suse.de>,
+        linux-acpi@vger.kernel.org, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <87sgk6tmk2.fsf@nanos.tec.linutronix.de>
-References: <87sgk6tmk2.fsf@nanos.tec.linutronix.de>
+In-Reply-To: <CAHKq8taGzj0u1E_i=poHUam60Bko5BpiJ9jn0fAupFUYexvdUQ@mail.gmail.com>
+References: <CAHKq8taGzj0u1E_i=poHUam60Bko5BpiJ9jn0fAupFUYexvdUQ@mail.gmail.com>
 MIME-Version: 1.0
-Message-ID: <158047369280.396.809676542150582676.tip-bot2@tip-bot2>
+Message-ID: <158049713455.396.18295937467351025626.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,190 +48,49 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     979923871f69a4dc926658f9f9a1a4c1bde57552
-Gitweb:        https://git.kernel.org/tip/979923871f69a4dc926658f9f9a1a4c1bde57552
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Thu, 23 Jan 2020 12:54:53 +01:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 29 Jan 2020 12:50:12 +01:00
+Commit-ID:     32ea5bc7ab8344600e87acf68cd6981c845d6edc
+Gitweb:        https://git.kernel.org/tip/32ea5bc7ab8344600e87acf68cd6981c845d6edc
+Author:        Steven Clarkson <sc@lambdal.com>
+AuthorDate:    Thu, 30 Jan 2020 16:48:16 -08:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Fri, 31 Jan 2020 19:54:35 +01:00
 
-x86/timer: Don't skip PIT setup when APIC is disabled or in legacy mode
+x86/boot: Handle malformed SRAT tables during early ACPI parsing
 
-Tony reported a boot regression caused by the recent workaround for systems
-which have a disabled (clock gate off) PIT.
+Break an infinite loop when early parsing of the SRAT table is caused
+by a subtable with zero length. Known to affect the ASUS WS X299 SAGE
+motherboard with firmware version 1201 which has a large block of
+zeros in its SRAT table. The kernel could boot successfully on this
+board/firmware prior to the introduction of early parsing this table or
+after a BIOS update.
 
-On his machine the kernel fails to initialize the PIT because
-apic_needs_pit() does not take into account whether the local APIC
-interrupt delivery mode will actually allow to setup and use the local
-APIC timer. This should be easy to reproduce with acpi=off on the
-command line which also disables HPET.
+ [ bp: Fixup whitespace damage and commit message. ]
 
-Due to the way the PIT/HPET and APIC setup ordering works (APIC setup can
-require working PIT/HPET) the information is not available at the point
-where apic_needs_pit() makes this decision.
-
-To address this, split out the interrupt mode selection from
-apic_intr_mode_init(), invoke the selection before making the decision
-whether PIT is required or not, and add the missing checks into
-apic_needs_pit().
-
-Fixes: c8c4076723da ("x86/timer: Skip PIT initialization on modern chipsets")
-Reported-by: Anthony Buckley <tony.buckley000@gmail.com>
-Tested-by: Anthony Buckley <tony.buckley000@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Daniel Drake <drake@endlessm.com>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=206125
-Link: https://lore.kernel.org/r/87sgk6tmk2.fsf@nanos.tec.linutronix.de
+Fixes: 02a3e3cdb7f1 ("x86/boot: Parse SRAT table and count immovable memory regions")
+Signed-off-by: Steven Clarkson <sc@lambdal.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Cc: linux-acpi@vger.kernel.org
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=206343
+Link: https://lkml.kernel.org/r/CAHKq8taGzj0u1E_i=poHUam60Bko5BpiJ9jn0fAupFUYexvdUQ@mail.gmail.com
 ---
- arch/x86/include/asm/apic.h     |  2 ++
- arch/x86/include/asm/x86_init.h |  2 ++
- arch/x86/kernel/apic/apic.c     | 23 ++++++++++++++++++-----
- arch/x86/kernel/time.c          | 12 ++++++++++--
- arch/x86/kernel/x86_init.c      |  1 +
- arch/x86/xen/enlighten_pv.c     |  1 +
- 6 files changed, 34 insertions(+), 7 deletions(-)
+ arch/x86/boot/compressed/acpi.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/arch/x86/include/asm/apic.h b/arch/x86/include/asm/apic.h
-index 2ebc17d..be0b9cf 100644
---- a/arch/x86/include/asm/apic.h
-+++ b/arch/x86/include/asm/apic.h
-@@ -140,6 +140,7 @@ extern void apic_soft_disable(void);
- extern void lapic_shutdown(void);
- extern void sync_Arb_IDs(void);
- extern void init_bsp_APIC(void);
-+extern void apic_intr_mode_select(void);
- extern void apic_intr_mode_init(void);
- extern void init_apic_mappings(void);
- void register_lapic_address(unsigned long address);
-@@ -188,6 +189,7 @@ static inline void disable_local_APIC(void) { }
- # define setup_secondary_APIC_clock x86_init_noop
- static inline void lapic_update_tsc_freq(void) { }
- static inline void init_bsp_APIC(void) { }
-+static inline void apic_intr_mode_select(void) { }
- static inline void apic_intr_mode_init(void) { }
- static inline void lapic_assign_system_vectors(void) { }
- static inline void lapic_assign_legacy_vector(unsigned int i, bool r) { }
-diff --git a/arch/x86/include/asm/x86_init.h b/arch/x86/include/asm/x86_init.h
-index 1943585..96d9cd2 100644
---- a/arch/x86/include/asm/x86_init.h
-+++ b/arch/x86/include/asm/x86_init.h
-@@ -51,12 +51,14 @@ struct x86_init_resources {
-  *				are set up.
-  * @intr_init:			interrupt init code
-  * @trap_init:			platform specific trap setup
-+ * @intr_mode_select:		interrupt delivery mode selection
-  * @intr_mode_init:		interrupt delivery mode setup
-  */
- struct x86_init_irqs {
- 	void (*pre_vector_init)(void);
- 	void (*intr_init)(void);
- 	void (*trap_init)(void);
-+	void (*intr_mode_select)(void);
- 	void (*intr_mode_init)(void);
- };
+diff --git a/arch/x86/boot/compressed/acpi.c b/arch/x86/boot/compressed/acpi.c
+index 25019d4..ef2ad72 100644
+--- a/arch/x86/boot/compressed/acpi.c
++++ b/arch/x86/boot/compressed/acpi.c
+@@ -393,7 +393,13 @@ int count_immovable_mem_regions(void)
+ 	table = table_addr + sizeof(struct acpi_table_srat);
  
-diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
-index 28446fa..4b0f911 100644
---- a/arch/x86/kernel/apic/apic.c
-+++ b/arch/x86/kernel/apic/apic.c
-@@ -830,8 +830,17 @@ bool __init apic_needs_pit(void)
- 	if (!tsc_khz || !cpu_khz)
- 		return true;
- 
--	/* Is there an APIC at all? */
--	if (!boot_cpu_has(X86_FEATURE_APIC))
-+	/* Is there an APIC at all or is it disabled? */
-+	if (!boot_cpu_has(X86_FEATURE_APIC) || disable_apic)
-+		return true;
+ 	while (table + sizeof(struct acpi_subtable_header) < table_end) {
 +
-+	/*
-+	 * If interrupt delivery mode is legacy PIC or virtual wire without
-+	 * configuration, the local APIC timer wont be set up. Make sure
-+	 * that the PIT is initialized.
-+	 */
-+	if (apic_intr_mode == APIC_PIC ||
-+	    apic_intr_mode == APIC_VIRTUAL_WIRE_NO_CONFIG)
- 		return true;
- 
- 	/* Virt guests may lack ARAT, but still have DEADLINE */
-@@ -1322,7 +1331,7 @@ void __init sync_Arb_IDs(void)
- 
- enum apic_intr_mode_id apic_intr_mode __ro_after_init;
- 
--static int __init apic_intr_mode_select(void)
-+static int __init __apic_intr_mode_select(void)
- {
- 	/* Check kernel option */
- 	if (disable_apic) {
-@@ -1384,6 +1393,12 @@ static int __init apic_intr_mode_select(void)
- 	return APIC_SYMMETRIC_IO;
- }
- 
-+/* Select the interrupt delivery mode for the BSP */
-+void __init apic_intr_mode_select(void)
-+{
-+	apic_intr_mode = __apic_intr_mode_select();
-+}
+ 		sub_table = (struct acpi_subtable_header *)table;
++		if (!sub_table->length) {
++			debug_putstr("Invalid zero length SRAT subtable.\n");
++			return 0;
++		}
 +
- /*
-  * An initial setup of the virtual wire mode.
-  */
-@@ -1440,8 +1455,6 @@ void __init apic_intr_mode_init(void)
- {
- 	bool upmode = IS_ENABLED(CONFIG_UP_LATE_INIT);
+ 		if (sub_table->type == ACPI_SRAT_TYPE_MEMORY_AFFINITY) {
+ 			struct acpi_srat_mem_affinity *ma;
  
--	apic_intr_mode = apic_intr_mode_select();
--
- 	switch (apic_intr_mode) {
- 	case APIC_PIC:
- 		pr_info("APIC: Keep in PIC mode(8259)\n");
-diff --git a/arch/x86/kernel/time.c b/arch/x86/kernel/time.c
-index 7ce29ce..d8673d8 100644
---- a/arch/x86/kernel/time.c
-+++ b/arch/x86/kernel/time.c
-@@ -91,10 +91,18 @@ void __init hpet_time_init(void)
- 
- static __init void x86_late_time_init(void)
- {
-+	/*
-+	 * Before PIT/HPET init, select the interrupt mode. This is required
-+	 * to make the decision whether PIT should be initialized correct.
-+	 */
-+	x86_init.irqs.intr_mode_select();
-+
-+	/* Setup the legacy timers */
- 	x86_init.timers.timer_init();
-+
- 	/*
--	 * After PIT/HPET timers init, select and setup
--	 * the final interrupt mode for delivering IRQs.
-+	 * After PIT/HPET timers init, set up the final interrupt mode for
-+	 * delivering IRQs.
- 	 */
- 	x86_init.irqs.intr_mode_init();
- 	tsc_init();
-diff --git a/arch/x86/kernel/x86_init.c b/arch/x86/kernel/x86_init.c
-index ce89430..9a89261 100644
---- a/arch/x86/kernel/x86_init.c
-+++ b/arch/x86/kernel/x86_init.c
-@@ -80,6 +80,7 @@ struct x86_init_ops x86_init __initdata = {
- 		.pre_vector_init	= init_ISA_irqs,
- 		.intr_init		= native_init_IRQ,
- 		.trap_init		= x86_init_noop,
-+		.intr_mode_select	= apic_intr_mode_select,
- 		.intr_mode_init		= apic_intr_mode_init
- 	},
- 
-diff --git a/arch/x86/xen/enlighten_pv.c b/arch/x86/xen/enlighten_pv.c
-index ae4a41c..1f756ff 100644
---- a/arch/x86/xen/enlighten_pv.c
-+++ b/arch/x86/xen/enlighten_pv.c
-@@ -1205,6 +1205,7 @@ asmlinkage __visible void __init xen_start_kernel(void)
- 	x86_platform.get_nmi_reason = xen_get_nmi_reason;
- 
- 	x86_init.resources.memory_setup = xen_memory_setup;
-+	x86_init.irqs.intr_mode_select	= x86_init_noop;
- 	x86_init.irqs.intr_mode_init	= x86_init_noop;
- 	x86_init.oem.arch_setup = xen_arch_setup;
- 	x86_init.oem.banner = xen_banner;
