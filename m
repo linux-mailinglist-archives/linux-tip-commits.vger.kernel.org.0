@@ -2,201 +2,238 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 107E914E2F4
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 30 Jan 2020 20:10:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A2A7E14EC79
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 31 Jan 2020 13:28:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727681AbgA3TKl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 30 Jan 2020 14:10:41 -0500
-Received: from us-smtp-2.mimecast.com ([205.139.110.61]:51407 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728117AbgA3TKk (ORCPT
+        id S1728484AbgAaM2S (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 31 Jan 2020 07:28:18 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:55184 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728479AbgAaM2R (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 30 Jan 2020 14:10:40 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1580411439;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=B7IGI24AigTwnXKXuKEDpYn2wUd7tYIh5QTDfOmmhr4=;
-        b=Z5PgwBgIFrohWIRPVIdFGbdD4tkdu9AEt7swAJ4dxZ+VjN3elPPsoGbFFW89vtDCwgHl1g
-        TAoxiwrfmBBobHbl2mI8/C1Yj9yNT/WMXgiWRqwO3RHVkgJITX4kB8uJeqBsAbslPEf8z0
-        ENBceOopMRxq/iriB/kuwTXPR8iVBTc=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-42-Fq1NOeeCNGq1EvxZg3dYOg-1; Thu, 30 Jan 2020 14:10:17 -0500
-X-MC-Unique: Fq1NOeeCNGq1EvxZg3dYOg-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 5FF9D800D4C;
-        Thu, 30 Jan 2020 19:10:16 +0000 (UTC)
-Received: from pauld.bos.csb (dhcp-17-51.bos.redhat.com [10.18.17.51])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 81C4D5C1B2;
-        Thu, 30 Jan 2020 19:10:15 +0000 (UTC)
-Date:   Thu, 30 Jan 2020 14:10:13 -0500
-From:   Phil Auld <pauld@redhat.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     linux-tip-commits@vger.kernel.org,
-        Konstantin Khlebnikov <khlebnikov@yandex-team.ru>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>
-Subject: Re: [tip: sched/core] sched/rt: Optimize checking group RT scheduler
- constraints
-Message-ID: <20200130191013.GA24632@pauld.bos.csb>
-References: <157996383820.4651.11292439232549211693.stgit@buzz>
- <158029757654.396.14560704856092377008.tip-bot2@tip-bot2>
+        Fri, 31 Jan 2020 07:28:17 -0500
+Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tip-bot2@linutronix.de>)
+        id 1ixVPB-00048x-GT; Fri, 31 Jan 2020 13:28:13 +0100
+Received: from [127.0.1.1] (localhost [IPv6:::1])
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 12A231C1B3C;
+        Fri, 31 Jan 2020 13:28:13 +0100 (CET)
+Date:   Fri, 31 Jan 2020 12:28:12 -0000
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/urgent] x86/timer: Don't skip PIT setup when APIC is
+ disabled or in legacy mode
+Cc:     Anthony Buckley <tony.buckley000@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@kernel.org>,
+        Daniel Drake <drake@endlessm.com>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <87sgk6tmk2.fsf@nanos.tec.linutronix.de>
+References: <87sgk6tmk2.fsf@nanos.tec.linutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <158029757654.396.14560704856092377008.tip-bot2@tip-bot2>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+Message-ID: <158047369280.396.809676542150582676.tip-bot2@tip-bot2>
+X-Mailer: tip-git-log-daemon
+Robot-ID: <tip-bot2.linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Wed, Jan 29, 2020 at 11:32:56AM -0000 tip-bot2 for Konstantin Khlebnikov wrote:
-> The following commit has been merged into the sched/core branch of tip:
-> 
-> Commit-ID:     b4fb015eeff7f3e5518a7dbe8061169a3e2f2bc7
-> Gitweb:        https://git.kernel.org/tip/b4fb015eeff7f3e5518a7dbe8061169a3e2f2bc7
-> Author:        Konstantin Khlebnikov <khlebnikov@yandex-team.ru>
-> AuthorDate:    Sat, 25 Jan 2020 17:50:38 +03:00
-> Committer:     Ingo Molnar <mingo@kernel.org>
-> CommitterDate: Tue, 28 Jan 2020 21:37:09 +01:00
-> 
-> sched/rt: Optimize checking group RT scheduler constraints
-> 
-> Group RT scheduler contains protection against setting zero runtime for
-> cgroup with RT tasks. Right now function tg_set_rt_bandwidth() iterates
-> over all CPU cgroups and calls tg_has_rt_tasks() for any cgroup which
-> runtime is zero (not only for changed one). Default RT runtime is zero,
-> thus tg_has_rt_tasks() will is called for almost at CPU cgroups.
-> 
-> This protection already is slightly racy: runtime limit could be changed
-> between cpu_cgroup_can_attach() and cpu_cgroup_attach() because changing
-> cgroup attribute does not lock cgroup_mutex while attach does not lock
-> rt_constraints_mutex. Changing task scheduler class also races with
-> changing rt runtime: check in __sched_setscheduler() isn't protected.
-> 
-> Function tg_has_rt_tasks() iterates over all threads in the system.
-> This gives NR_CGROUPS * NR_TASKS operations under single tasklist_lock
-> locked for read tg_set_rt_bandwidth(). Any concurrent attempt of locking
-> tasklist_lock for write (for example fork) will stuck with disabled irqs.
-> 
-> This patch makes two optimizations:
-> 1) Remove locking tasklist_lock and iterate only tasks in cgroup
-> 2) Call tg_has_rt_tasks() iff rt runtime changes from non-zero to zero
-> 
-> All changed code is under CONFIG_RT_GROUP_SCHED.
-> 
-> Testcase:
-> 
->  # mkdir /sys/fs/cgroup/cpu/test{1..10000}
->  # echo 0 | tee /sys/fs/cgroup/cpu/test*/cpu.rt_runtime_us
-> 
-> At the same time without patch fork time will be >100ms:
-> 
->  # perf trace -e clone --duration 100 stress-ng --fork 1
-> 
-> Also remote ping will show timings >100ms caused by irq latency.
-> 
-> Signed-off-by: Konstantin Khlebnikov <khlebnikov@yandex-team.ru>
-> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> Signed-off-by: Ingo Molnar <mingo@kernel.org>
-> Link: https://lkml.kernel.org/r/157996383820.4651.11292439232549211693.stgit@buzz
-> ---
->  kernel/sched/rt.c | 24 +++++++++++-------------
->  1 file changed, 11 insertions(+), 13 deletions(-)
-> 
-> diff --git a/kernel/sched/rt.c b/kernel/sched/rt.c
-> index 4043abe..55a4a50 100644
-> --- a/kernel/sched/rt.c
-> +++ b/kernel/sched/rt.c
-> @@ -2449,10 +2449,11 @@ const struct sched_class rt_sched_class = {
->   */
->  static DEFINE_MUTEX(rt_constraints_mutex);
->  
-> -/* Must be called with tasklist_lock held */
->  static inline int tg_has_rt_tasks(struct task_group *tg)
->  {
-> -	struct task_struct *g, *p;
-> +	struct task_struct *task;
-> +	struct css_task_iter it;
-> +	int ret = 0;
->  
->  	/*
->  	 * Autogroups do not have RT tasks; see autogroup_create().
-> @@ -2460,12 +2461,12 @@ static inline int tg_has_rt_tasks(struct task_group *tg)
->  	if (task_group_is_autogroup(tg))
->  		return 0;
->  
-> -	for_each_process_thread(g, p) {
-> -		if (rt_task(p) && task_group(p) == tg)
-> -			return 1;
-> -	}
-> +	css_task_iter_start(&tg->css, 0, &it);
-> +	while (!ret && (task = css_task_iter_next(&it)))
-> +		ret |= rt_task(task);
-> +	css_task_iter_end(&it);
->  
+The following commit has been merged into the x86/urgent branch of tip:
 
-Heh, I misread it the first time and didn't see the !ret condition. But I think 
-it should be just "ret = ".
+Commit-ID:     979923871f69a4dc926658f9f9a1a4c1bde57552
+Gitweb:        https://git.kernel.org/tip/979923871f69a4dc926658f9f9a1a4c1bde57552
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Thu, 23 Jan 2020 12:54:53 +01:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Wed, 29 Jan 2020 12:50:12 +01:00
 
-But thanks for getting this fixed.
+x86/timer: Don't skip PIT setup when APIC is disabled or in legacy mode
 
+Tony reported a boot regression caused by the recent workaround for systems
+which have a disabled (clock gate off) PIT.
 
-Cheers,
-Phil
+On his machine the kernel fails to initialize the PIT because
+apic_needs_pit() does not take into account whether the local APIC
+interrupt delivery mode will actually allow to setup and use the local
+APIC timer. This should be easy to reproduce with acpi=off on the
+command line which also disables HPET.
 
+Due to the way the PIT/HPET and APIC setup ordering works (APIC setup can
+require working PIT/HPET) the information is not available at the point
+where apic_needs_pit() makes this decision.
 
-> -	return 0;
-> +	return ret;
->  }
->  
->  struct rt_schedulable_data {
-> @@ -2496,9 +2497,10 @@ static int tg_rt_schedulable(struct task_group *tg, void *data)
->  		return -EINVAL;
->  
->  	/*
-> -	 * Ensure we don't starve existing RT tasks.
-> +	 * Ensure we don't starve existing RT tasks if runtime turns zero.
->  	 */
-> -	if (rt_bandwidth_enabled() && !runtime && tg_has_rt_tasks(tg))
-> +	if (rt_bandwidth_enabled() && !runtime &&
-> +	    tg->rt_bandwidth.rt_runtime && tg_has_rt_tasks(tg))
->  		return -EBUSY;
->  
->  	total = to_ratio(period, runtime);
-> @@ -2564,7 +2566,6 @@ static int tg_set_rt_bandwidth(struct task_group *tg,
->  		return -EINVAL;
->  
->  	mutex_lock(&rt_constraints_mutex);
-> -	read_lock(&tasklist_lock);
->  	err = __rt_schedulable(tg, rt_period, rt_runtime);
->  	if (err)
->  		goto unlock;
-> @@ -2582,7 +2583,6 @@ static int tg_set_rt_bandwidth(struct task_group *tg,
->  	}
->  	raw_spin_unlock_irq(&tg->rt_bandwidth.rt_runtime_lock);
->  unlock:
-> -	read_unlock(&tasklist_lock);
->  	mutex_unlock(&rt_constraints_mutex);
->  
->  	return err;
-> @@ -2641,9 +2641,7 @@ static int sched_rt_global_constraints(void)
->  	int ret = 0;
->  
->  	mutex_lock(&rt_constraints_mutex);
-> -	read_lock(&tasklist_lock);
->  	ret = __rt_schedulable(NULL, 0, 0);
-> -	read_unlock(&tasklist_lock);
->  	mutex_unlock(&rt_constraints_mutex);
->  
->  	return ret;
-> 
+To address this, split out the interrupt mode selection from
+apic_intr_mode_init(), invoke the selection before making the decision
+whether PIT is required or not, and add the missing checks into
+apic_needs_pit().
 
--- 
+Fixes: c8c4076723da ("x86/timer: Skip PIT initialization on modern chipsets")
+Reported-by: Anthony Buckley <tony.buckley000@gmail.com>
+Tested-by: Anthony Buckley <tony.buckley000@gmail.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Daniel Drake <drake@endlessm.com>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=206125
+Link: https://lore.kernel.org/r/87sgk6tmk2.fsf@nanos.tec.linutronix.de
+---
+ arch/x86/include/asm/apic.h     |  2 ++
+ arch/x86/include/asm/x86_init.h |  2 ++
+ arch/x86/kernel/apic/apic.c     | 23 ++++++++++++++++++-----
+ arch/x86/kernel/time.c          | 12 ++++++++++--
+ arch/x86/kernel/x86_init.c      |  1 +
+ arch/x86/xen/enlighten_pv.c     |  1 +
+ 6 files changed, 34 insertions(+), 7 deletions(-)
 
+diff --git a/arch/x86/include/asm/apic.h b/arch/x86/include/asm/apic.h
+index 2ebc17d..be0b9cf 100644
+--- a/arch/x86/include/asm/apic.h
++++ b/arch/x86/include/asm/apic.h
+@@ -140,6 +140,7 @@ extern void apic_soft_disable(void);
+ extern void lapic_shutdown(void);
+ extern void sync_Arb_IDs(void);
+ extern void init_bsp_APIC(void);
++extern void apic_intr_mode_select(void);
+ extern void apic_intr_mode_init(void);
+ extern void init_apic_mappings(void);
+ void register_lapic_address(unsigned long address);
+@@ -188,6 +189,7 @@ static inline void disable_local_APIC(void) { }
+ # define setup_secondary_APIC_clock x86_init_noop
+ static inline void lapic_update_tsc_freq(void) { }
+ static inline void init_bsp_APIC(void) { }
++static inline void apic_intr_mode_select(void) { }
+ static inline void apic_intr_mode_init(void) { }
+ static inline void lapic_assign_system_vectors(void) { }
+ static inline void lapic_assign_legacy_vector(unsigned int i, bool r) { }
+diff --git a/arch/x86/include/asm/x86_init.h b/arch/x86/include/asm/x86_init.h
+index 1943585..96d9cd2 100644
+--- a/arch/x86/include/asm/x86_init.h
++++ b/arch/x86/include/asm/x86_init.h
+@@ -51,12 +51,14 @@ struct x86_init_resources {
+  *				are set up.
+  * @intr_init:			interrupt init code
+  * @trap_init:			platform specific trap setup
++ * @intr_mode_select:		interrupt delivery mode selection
+  * @intr_mode_init:		interrupt delivery mode setup
+  */
+ struct x86_init_irqs {
+ 	void (*pre_vector_init)(void);
+ 	void (*intr_init)(void);
+ 	void (*trap_init)(void);
++	void (*intr_mode_select)(void);
+ 	void (*intr_mode_init)(void);
+ };
+ 
+diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
+index 28446fa..4b0f911 100644
+--- a/arch/x86/kernel/apic/apic.c
++++ b/arch/x86/kernel/apic/apic.c
+@@ -830,8 +830,17 @@ bool __init apic_needs_pit(void)
+ 	if (!tsc_khz || !cpu_khz)
+ 		return true;
+ 
+-	/* Is there an APIC at all? */
+-	if (!boot_cpu_has(X86_FEATURE_APIC))
++	/* Is there an APIC at all or is it disabled? */
++	if (!boot_cpu_has(X86_FEATURE_APIC) || disable_apic)
++		return true;
++
++	/*
++	 * If interrupt delivery mode is legacy PIC or virtual wire without
++	 * configuration, the local APIC timer wont be set up. Make sure
++	 * that the PIT is initialized.
++	 */
++	if (apic_intr_mode == APIC_PIC ||
++	    apic_intr_mode == APIC_VIRTUAL_WIRE_NO_CONFIG)
+ 		return true;
+ 
+ 	/* Virt guests may lack ARAT, but still have DEADLINE */
+@@ -1322,7 +1331,7 @@ void __init sync_Arb_IDs(void)
+ 
+ enum apic_intr_mode_id apic_intr_mode __ro_after_init;
+ 
+-static int __init apic_intr_mode_select(void)
++static int __init __apic_intr_mode_select(void)
+ {
+ 	/* Check kernel option */
+ 	if (disable_apic) {
+@@ -1384,6 +1393,12 @@ static int __init apic_intr_mode_select(void)
+ 	return APIC_SYMMETRIC_IO;
+ }
+ 
++/* Select the interrupt delivery mode for the BSP */
++void __init apic_intr_mode_select(void)
++{
++	apic_intr_mode = __apic_intr_mode_select();
++}
++
+ /*
+  * An initial setup of the virtual wire mode.
+  */
+@@ -1440,8 +1455,6 @@ void __init apic_intr_mode_init(void)
+ {
+ 	bool upmode = IS_ENABLED(CONFIG_UP_LATE_INIT);
+ 
+-	apic_intr_mode = apic_intr_mode_select();
+-
+ 	switch (apic_intr_mode) {
+ 	case APIC_PIC:
+ 		pr_info("APIC: Keep in PIC mode(8259)\n");
+diff --git a/arch/x86/kernel/time.c b/arch/x86/kernel/time.c
+index 7ce29ce..d8673d8 100644
+--- a/arch/x86/kernel/time.c
++++ b/arch/x86/kernel/time.c
+@@ -91,10 +91,18 @@ void __init hpet_time_init(void)
+ 
+ static __init void x86_late_time_init(void)
+ {
++	/*
++	 * Before PIT/HPET init, select the interrupt mode. This is required
++	 * to make the decision whether PIT should be initialized correct.
++	 */
++	x86_init.irqs.intr_mode_select();
++
++	/* Setup the legacy timers */
+ 	x86_init.timers.timer_init();
++
+ 	/*
+-	 * After PIT/HPET timers init, select and setup
+-	 * the final interrupt mode for delivering IRQs.
++	 * After PIT/HPET timers init, set up the final interrupt mode for
++	 * delivering IRQs.
+ 	 */
+ 	x86_init.irqs.intr_mode_init();
+ 	tsc_init();
+diff --git a/arch/x86/kernel/x86_init.c b/arch/x86/kernel/x86_init.c
+index ce89430..9a89261 100644
+--- a/arch/x86/kernel/x86_init.c
++++ b/arch/x86/kernel/x86_init.c
+@@ -80,6 +80,7 @@ struct x86_init_ops x86_init __initdata = {
+ 		.pre_vector_init	= init_ISA_irqs,
+ 		.intr_init		= native_init_IRQ,
+ 		.trap_init		= x86_init_noop,
++		.intr_mode_select	= apic_intr_mode_select,
+ 		.intr_mode_init		= apic_intr_mode_init
+ 	},
+ 
+diff --git a/arch/x86/xen/enlighten_pv.c b/arch/x86/xen/enlighten_pv.c
+index ae4a41c..1f756ff 100644
+--- a/arch/x86/xen/enlighten_pv.c
++++ b/arch/x86/xen/enlighten_pv.c
+@@ -1205,6 +1205,7 @@ asmlinkage __visible void __init xen_start_kernel(void)
+ 	x86_platform.get_nmi_reason = xen_get_nmi_reason;
+ 
+ 	x86_init.resources.memory_setup = xen_memory_setup;
++	x86_init.irqs.intr_mode_select	= x86_init_noop;
+ 	x86_init.irqs.intr_mode_init	= x86_init_noop;
+ 	x86_init.oem.arch_setup = xen_arch_setup;
+ 	x86_init.oem.banner = xen_banner;
