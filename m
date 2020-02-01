@@ -2,38 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C66F14F74C
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  1 Feb 2020 09:48:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3988314F79D
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  1 Feb 2020 12:21:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726379AbgBAIsT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 1 Feb 2020 03:48:19 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:56920 "EHLO
+        id S1726379AbgBALVX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 1 Feb 2020 06:21:23 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:57170 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726133AbgBAIsT (ORCPT
+        with ESMTP id S1726265AbgBALVX (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 1 Feb 2020 03:48:19 -0500
+        Sat, 1 Feb 2020 06:21:23 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1ixoRr-0003ea-93; Sat, 01 Feb 2020 09:48:15 +0100
+        id 1ixqpz-0005Kk-Po; Sat, 01 Feb 2020 12:21:19 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E2ADC1C1DF9;
-        Sat,  1 Feb 2020 09:48:14 +0100 (CET)
-Date:   Sat, 01 Feb 2020 08:48:14 -0000
-From:   "tip-bot2 for Dexuan Cui" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 13DC11C1DFA;
+        Sat,  1 Feb 2020 12:21:19 +0100 (CET)
+Date:   Sat, 01 Feb 2020 11:21:18 -0000
+From:   "tip-bot2 for Konstantin Khlebnikov" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/hyperv: Suspend/resume the hypercall page for
- hibernation
-Cc:     Dexuan Cui <decui@microsoft.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Michael Kelley <mikelley@microsoft.com>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <1578350559-130275-1-git-send-email-decui@microsoft.com>
-References: <1578350559-130275-1-git-send-email-decui@microsoft.com>
+Subject: [tip: timers/urgent] clocksource: Prevent double add_timer_on() for
+ watchdog_timer
+Cc:     Konstantin Khlebnikov <khlebnikov@yandex-team.ru>,
+        Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <158048693917.4378.13823603769948933793.stgit@buzz>
+References: <158048693917.4378.13823603769948933793.stgit@buzz>
 MIME-Version: 1.0
-Message-ID: <158054689467.396.9318913619625622500.tip-bot2@tip-bot2>
+Message-ID: <158055607880.396.15231854905152208691.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,119 +46,101 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the timers/urgent branch of tip:
 
-Commit-ID:     05bd330a7fd8875c423fc07d8ddcad73c10e556e
-Gitweb:        https://git.kernel.org/tip/05bd330a7fd8875c423fc07d8ddcad73c10e556e
-Author:        Dexuan Cui <decui@microsoft.com>
-AuthorDate:    Mon, 06 Jan 2020 14:42:39 -08:00
+Commit-ID:     febac332a819f0e764aa4da62757ba21d18c182b
+Gitweb:        https://git.kernel.org/tip/febac332a819f0e764aa4da62757ba21d18c182b
+Author:        Konstantin Khlebnikov <khlebnikov@yandex-team.ru>
+AuthorDate:    Fri, 31 Jan 2020 19:08:59 +03:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sat, 01 Feb 2020 09:41:16 +01:00
+CommitterDate: Sat, 01 Feb 2020 11:07:56 +01:00
 
-x86/hyperv: Suspend/resume the hypercall page for hibernation
+clocksource: Prevent double add_timer_on() for watchdog_timer
 
-For hibernation the hypercall page must be disabled before the hibernation
-image is created so that subsequent hypercall operations fail safely. On
-resume the hypercall page has to be restored and reenabled to ensure proper
-operation of the resumed kernel.
+Kernel crashes inside QEMU/KVM are observed:
 
-Implement the necessary suspend/resume callbacks.
+  kernel BUG at kernel/time/timer.c:1154!
+  BUG_ON(timer_pending(timer) || !timer->function) in add_timer_on().
 
-[ tglx: Decrypted changelog ]
+At the same time another cpu got:
 
-Signed-off-by: Dexuan Cui <decui@microsoft.com>
+  general protection fault: 0000 [#1] SMP PTI of poinson pointer 0xdead000000000200 in:
+
+  __hlist_del at include/linux/list.h:681
+  (inlined by) detach_timer at kernel/time/timer.c:818
+  (inlined by) expire_timers at kernel/time/timer.c:1355
+  (inlined by) __run_timers at kernel/time/timer.c:1686
+  (inlined by) run_timer_softirq at kernel/time/timer.c:1699
+
+Unfortunately kernel logs are badly scrambled, stacktraces are lost.
+
+Printing the timer->function before the BUG_ON() pointed to
+clocksource_watchdog().
+
+The execution of clocksource_watchdog() can race with a sequence of
+clocksource_stop_watchdog() .. clocksource_start_watchdog():
+
+expire_timers()
+ detach_timer(timer, true);
+  timer->entry.pprev = NULL;
+ raw_spin_unlock_irq(&base->lock);
+ call_timer_fn
+  clocksource_watchdog()
+
+					clocksource_watchdog_kthread() or
+					clocksource_unbind()
+
+					spin_lock_irqsave(&watchdog_lock, flags);
+					clocksource_stop_watchdog();
+					 del_timer(&watchdog_timer);
+					 watchdog_running = 0;
+					spin_unlock_irqrestore(&watchdog_lock, flags);
+
+					spin_lock_irqsave(&watchdog_lock, flags);
+					clocksource_start_watchdog();
+					 add_timer_on(&watchdog_timer, ...);
+					 watchdog_running = 1;
+					spin_unlock_irqrestore(&watchdog_lock, flags);
+
+  spin_lock(&watchdog_lock);
+  add_timer_on(&watchdog_timer, ...);
+   BUG_ON(timer_pending(timer) || !timer->function);
+    timer_pending() -> true
+    BUG()
+
+I.e. inside clocksource_watchdog() watchdog_timer could be already armed.
+
+Check timer_pending() before calling add_timer_on(). This is sufficient as
+all operations are synchronized by watchdog_lock.
+
+Fixes: 75c5158f70c0 ("timekeeping: Update clocksource with stop_machine")
+Signed-off-by: Konstantin Khlebnikov <khlebnikov@yandex-team.ru>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Michael Kelley <mikelley@microsoft.com>
-Link: https://lore.kernel.org/r/1578350559-130275-1-git-send-email-decui@microsoft.com
-
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/158048693917.4378.13823603769948933793.stgit@buzz
 ---
- arch/x86/hyperv/hv_init.c | 50 ++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 50 insertions(+)
+ kernel/time/clocksource.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/hyperv/hv_init.c b/arch/x86/hyperv/hv_init.c
-index caaf4dc..b0da532 100644
---- a/arch/x86/hyperv/hv_init.c
-+++ b/arch/x86/hyperv/hv_init.c
-@@ -21,11 +21,15 @@
- #include <linux/hyperv.h>
- #include <linux/slab.h>
- #include <linux/cpuhotplug.h>
-+#include <linux/syscore_ops.h>
- #include <clocksource/hyperv_timer.h>
- 
- void *hv_hypercall_pg;
- EXPORT_SYMBOL_GPL(hv_hypercall_pg);
- 
-+/* Storage to save the hypercall page temporarily for hibernation */
-+static void *hv_hypercall_pg_saved;
-+
- u32 *hv_vp_index;
- EXPORT_SYMBOL_GPL(hv_vp_index);
- 
-@@ -246,6 +250,48 @@ static int __init hv_pci_init(void)
- 	return 1;
- }
- 
-+static int hv_suspend(void)
-+{
-+	union hv_x64_msr_hypercall_contents hypercall_msr;
+diff --git a/kernel/time/clocksource.c b/kernel/time/clocksource.c
+index fff5f64..428beb6 100644
+--- a/kernel/time/clocksource.c
++++ b/kernel/time/clocksource.c
+@@ -293,8 +293,15 @@ static void clocksource_watchdog(struct timer_list *unused)
+ 	next_cpu = cpumask_next(raw_smp_processor_id(), cpu_online_mask);
+ 	if (next_cpu >= nr_cpu_ids)
+ 		next_cpu = cpumask_first(cpu_online_mask);
+-	watchdog_timer.expires += WATCHDOG_INTERVAL;
+-	add_timer_on(&watchdog_timer, next_cpu);
 +
 +	/*
-+	 * Reset the hypercall page as it is going to be invalidated
-+	 * accross hibernation. Setting hv_hypercall_pg to NULL ensures
-+	 * that any subsequent hypercall operation fails safely instead of
-+	 * crashing due to an access of an invalid page. The hypercall page
-+	 * pointer is restored on resume.
++	 * Arm timer if not already pending: could race with concurrent
++	 * pair clocksource_stop_watchdog() clocksource_start_watchdog().
 +	 */
-+	hv_hypercall_pg_saved = hv_hypercall_pg;
-+	hv_hypercall_pg = NULL;
-+
-+	/* Disable the hypercall page in the hypervisor */
-+	rdmsrl(HV_X64_MSR_HYPERCALL, hypercall_msr.as_uint64);
-+	hypercall_msr.enable = 0;
-+	wrmsrl(HV_X64_MSR_HYPERCALL, hypercall_msr.as_uint64);
-+
-+	return 0;
-+}
-+
-+static void hv_resume(void)
-+{
-+	union hv_x64_msr_hypercall_contents hypercall_msr;
-+
-+	/* Re-enable the hypercall page */
-+	rdmsrl(HV_X64_MSR_HYPERCALL, hypercall_msr.as_uint64);
-+	hypercall_msr.enable = 1;
-+	hypercall_msr.guest_physical_address =
-+		vmalloc_to_pfn(hv_hypercall_pg_saved);
-+	wrmsrl(HV_X64_MSR_HYPERCALL, hypercall_msr.as_uint64);
-+
-+	hv_hypercall_pg = hv_hypercall_pg_saved;
-+	hv_hypercall_pg_saved = NULL;
-+}
-+
-+static struct syscore_ops hv_syscore_ops = {
-+	.suspend	= hv_suspend,
-+	.resume		= hv_resume,
-+};
-+
- /*
-  * This function is to be invoked early in the boot sequence after the
-  * hypervisor has been detected.
-@@ -330,6 +376,8 @@ void __init hyperv_init(void)
- 
- 	x86_init.pci.arch_init = hv_pci_init;
- 
-+	register_syscore_ops(&hv_syscore_ops);
-+
- 	return;
- 
- remove_cpuhp_state:
-@@ -349,6 +397,8 @@ void hyperv_cleanup(void)
- {
- 	union hv_x64_msr_hypercall_contents hypercall_msr;
- 
-+	unregister_syscore_ops(&hv_syscore_ops);
-+
- 	/* Reset our OS id */
- 	wrmsrl(HV_X64_MSR_GUEST_OS_ID, 0);
- 
++	if (!timer_pending(&watchdog_timer)) {
++		watchdog_timer.expires += WATCHDOG_INTERVAL;
++		add_timer_on(&watchdog_timer, next_cpu);
++	}
+ out:
+ 	spin_unlock(&watchdog_lock);
+ }
