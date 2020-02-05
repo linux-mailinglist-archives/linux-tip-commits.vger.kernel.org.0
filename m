@@ -2,45 +2,44 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B546B14FC70
-	for <lists+linux-tip-commits@lfdr.de>; Sun,  2 Feb 2020 10:39:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 870FF153476
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  5 Feb 2020 16:45:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725962AbgBBJjt convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 2 Feb 2020 04:39:49 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:57746 "EHLO
+        id S1727231AbgBEPpO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 5 Feb 2020 10:45:14 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:35852 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725942AbgBBJjs (ORCPT
+        with ESMTP id S1726334AbgBEPpO (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 2 Feb 2020 04:39:48 -0500
+        Wed, 5 Feb 2020 10:45:14 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iyBjA-0000MD-TY; Sun, 02 Feb 2020 10:39:41 +0100
+        id 1izMrR-0004Qd-EA; Wed, 05 Feb 2020 16:45:05 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 384551C1CE2;
-        Sun,  2 Feb 2020 10:39:40 +0100 (CET)
-Date:   Sun, 02 Feb 2020 09:39:39 -0000
-From:   "tip-bot2 for Ard Biesheuvel" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 15E561C1EC4;
+        Wed,  5 Feb 2020 16:45:05 +0100 (CET)
+Date:   Wed, 05 Feb 2020 15:45:04 -0000
+From:   "tip-bot2 for Cengiz Can" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: efi/urgent] efi/x86: Fix boot regression on systems with
- invalid memmap entries
-Cc:     jrg.otte@gmail.com, Dan Williams <dan.j.williams@intel.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Ingo Molnar <mingo@kernel.org>, linux-efi@vger.kernel.org,
-        torvalds@linux-foundation.org, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200201233304.18322-1-ardb@kernel.org>
-References: <20200201233304.18322-1-ardb@kernel.org>
+Subject: [tip: perf/urgent] perf maps: Add missing unlock to maps__insert() error case
+Cc:     Cengiz Can <cengiz@kernel.wtf>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Jiri Olsa <jolsa@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200120141553.23934-1-cengiz@kernel.wtf>
+References: <20200120141553.23934-1-cengiz@kernel.wtf>
 MIME-Version: 1.0
-Message-ID: <158063637918.411.14525312464973256998.tip-bot2@tip-bot2>
+Message-ID: <158091750477.411.16676804316136284961.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: 7bit
 X-Linutronix-Spam-Score: -1.0
 X-Linutronix-Spam-Level: -
 X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
@@ -49,57 +48,46 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the efi/urgent branch of tip:
+The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     59365cadfbcd299b8cdbe0c165faf15767c5f166
-Gitweb:        https://git.kernel.org/tip/59365cadfbcd299b8cdbe0c165faf15767c5f166
-Author:        Ard Biesheuvel <ardb@kernel.org>
-AuthorDate:    Sun, 02 Feb 2020 00:33:04 +01:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sun, 02 Feb 2020 10:25:43 +01:00
+Commit-ID:     85fc95d75970ee7dd8e01904e7fb1197c275ba6b
+Gitweb:        https://git.kernel.org/tip/85fc95d75970ee7dd8e01904e7fb1197c275ba6b
+Author:        Cengiz Can <cengiz@kernel.wtf>
+AuthorDate:    Mon, 20 Jan 2020 17:15:54 +03:00
+Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
+CommitterDate: Fri, 31 Jan 2020 09:40:50 +01:00
 
-efi/x86: Fix boot regression on systems with invalid memmap entries
+perf maps: Add missing unlock to maps__insert() error case
 
-In efi_clean_memmap(), we do a pass over the EFI memory map to remove
-bogus entries that may be returned on certain systems.
+`tools/perf/util/map.c` has a function named `maps__insert` that
+acquires a write lock if its in multithread context.
 
-This recent commit:
+Even though this lock is released when function successfully completes,
+there's a branch that is executed when `maps_by_name == NULL` that
+returns from this function without releasing the write lock.
 
-  1db91035d01aa8bf ("efi: Add tracking for dynamically allocated memmaps")
+Added an `up_write` to release the lock when this happens.
 
-refactored this code to pass the input to efi_memmap_install() via a
-temporary struct on the stack, which is populated using an initializer
-which inadvertently defines the value of its size field in terms of its
-desc_size field, which value cannot be relied upon yet in the initializer
-itself.
-
-Fix this by using efi.memmap.desc_size instead, which is where we get
-the value for desc_size from in the first place.
-
-Reported-by: Jörg Otte <jrg.otte@gmail.com>
-Tested-by: Jörg Otte <jrg.otte@gmail.com>
-Tested-by: Dan Williams <dan.j.williams@intel.com>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: linux-efi@vger.kernel.org
-Cc: jrg.otte@gmail.com
-Cc: torvalds@linux-foundation.org
-Cc: mingo@kernel.org
-Link: https://lore.kernel.org/r/20200201233304.18322-1-ardb@kernel.org
+Fixes: a7c2b572e217 ("perf map_groups: Auto sort maps by name, if needed")
+Signed-off-by: Cengiz Can <cengiz@kernel.wtf>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Link: http://lore.kernel.org/lkml/20200120141553.23934-1-cengiz@kernel.wtf
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- arch/x86/platform/efi/efi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/perf/util/map.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
-index 59f7f6d..ae923ee 100644
---- a/arch/x86/platform/efi/efi.c
-+++ b/arch/x86/platform/efi/efi.c
-@@ -308,7 +308,7 @@ static void __init efi_clean_memmap(void)
- 			.phys_map = efi.memmap.phys_map,
- 			.desc_version = efi.memmap.desc_version,
- 			.desc_size = efi.memmap.desc_size,
--			.size = data.desc_size * (efi.memmap.nr_map - n_removal),
-+			.size = efi.memmap.desc_size * (efi.memmap.nr_map - n_removal),
- 			.flags = 0,
- 		};
+diff --git a/tools/perf/util/map.c b/tools/perf/util/map.c
+index fdd5bdd..f67960b 100644
+--- a/tools/perf/util/map.c
++++ b/tools/perf/util/map.c
+@@ -549,6 +549,7 @@ void maps__insert(struct maps *maps, struct map *map)
+ 
+ 			if (maps_by_name == NULL) {
+ 				__maps__free_maps_by_name(maps);
++				up_write(&maps->lock);
+ 				return;
+ 			}
  
