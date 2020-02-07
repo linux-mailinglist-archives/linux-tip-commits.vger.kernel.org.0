@@ -2,113 +2,91 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A01DA1556AD
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  7 Feb 2020 12:27:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 17E3E1559BF
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  7 Feb 2020 15:37:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726857AbgBGL1m (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 7 Feb 2020 06:27:42 -0500
-Received: from merlin.infradead.org ([205.233.59.134]:47660 "EHLO
-        merlin.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726798AbgBGL1m (ORCPT
+        id S1726982AbgBGOhW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 7 Feb 2020 09:37:22 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:40980 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726674AbgBGOhW (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 7 Feb 2020 06:27:42 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Transfer-Encoding:
-        Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-        Sender:Reply-To:Content-ID:Content-Description;
-        bh=x1VnWLZd/ipfmC11QBc/PnLMdism1SxK3sdpzs5jQ+A=; b=EcLtczvFv2RmHlp3a5ImArwhAD
-        pN0JdKwHen2jMwv7Io6UFiAwwvjle6kowP+mCMj6Ppq4LzvkPtTcqkZdf96KfO/RraQ6b/pc0DK3S
-        Gc3G1J267WTyqGoFifChMxPzLBvLpXXe5k6L3GsPQo+aFHtpHkE5MgoGBCmDiojLD59T93Ul8Jnp6
-        3e7k/1Plax/0nzyQVvj0i4XFR2NGFNvLDePaPgvXiBHe+0I1VkZwmOKoO2FhH4FHfBTCEXGon3fIH
-        R21IpYLYa8Rnk72iPQWv3FouYHP+D2jU/MO6Mxte9+qgK3eUCvOnizgisNOgjBAWAOV4t9v1R3Hd4
-        NoTiJldQ==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
-        by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1j01n9-00073o-Dr; Fri, 07 Feb 2020 11:27:23 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id C8D543011E8;
-        Fri,  7 Feb 2020 12:25:33 +0100 (CET)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id A3B422B836D8C; Fri,  7 Feb 2020 12:27:20 +0100 (CET)
-Date:   Fri, 7 Feb 2020 12:27:20 +0100
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Dmitry Osipenko <digetx@gmail.com>
-Cc:     linux-kernel@vger.kernel.org,
-        tip-bot2 for Peter Zijlstra <tip-bot2@linutronix.de>,
-        linux-tip-commits@vger.kernel.org, Will Deacon <will@kernel.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jon Hunter <jonathanh@nvidia.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Borislav Petkov <bp@alien8.de>,
-        Brian Gerst <brgerst@gmail.com>,
-        Denys Vlasenko <dvlasenk@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        ard.biesheuvel@linaro.org, james.morse@arm.com, rabin@rab.in,
-        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
-        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [tip: core/kprobes] arm/ftrace: Use __patch_text()
-Message-ID: <20200207112720.GF14914@hirez.programming.kicks-ass.net>
-References: <20191113092636.GG4131@hirez.programming.kicks-ass.net>
- <157544841563.21853.2859696202562513480.tip-bot2@tip-bot2>
- <10cbfd9e-2f1f-0a0c-0160-afe6c2ccbebd@gmail.com>
+        Fri, 7 Feb 2020 09:37:22 -0500
+Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tip-bot2@linutronix.de>)
+        id 1j04kw-0005HH-Sc; Fri, 07 Feb 2020 15:37:18 +0100
+Received: from [127.0.1.1] (localhost [IPv6:::1])
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 1D4CC1C1A0E;
+        Fri,  7 Feb 2020 15:37:18 +0100 (CET)
+Date:   Fri, 07 Feb 2020 14:37:17 -0000
+From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: smp/urgent] smp/up: Make smp_call_function_single() match SMP semantics
+Cc:     "Paul E. McKenney" <paulmck@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200205143409.GA7021@paulmck-ThinkPad-P72>
+References: <20200205143409.GA7021@paulmck-ThinkPad-P72>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <10cbfd9e-2f1f-0a0c-0160-afe6c2ccbebd@gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Message-ID: <158108623779.411.17538736321432389803.tip-bot2@tip-bot2>
+X-Mailer: tip-git-log-daemon
+Robot-ID: <tip-bot2.linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Thu, Jan 23, 2020 at 12:26:46AM +0300, Dmitry Osipenko wrote:
-> 04.12.2019 11:33, tip-bot2 for Peter Zijlstra пишет:
-> > @@ -97,10 +94,7 @@ static int ftrace_modify_code(unsigned long pc, unsigned long old,
-> >  			return -EINVAL;
-> >  	}
-> >  
-> > -	if (probe_kernel_write((void *)pc, &new, MCOUNT_INSN_SIZE))
-> > -		return -EPERM;
-> > -
-> > -	flush_icache_range(pc, pc + MCOUNT_INSN_SIZE);
-> > +	__patch_text((void *)pc, new);
-> >  
-> >  	return 0;
-> >  }
-> > 
-> 
-> Hello,
-> 
-> NVIDIA Tegra20/30 are not booting with CONFIG_FTRACE=y, but even with
-> CONFIG_FTRACE=n things are not working well.
+The following commit has been merged into the smp/urgent branch of tip:
 
-Ooh, I think I see. Can you try this:
+Commit-ID:     1e474b28e78897d0d170fab3b28ba683149cb9ea
+Gitweb:        https://git.kernel.org/tip/1e474b28e78897d0d170fab3b28ba683149cb9ea
+Author:        Paul E. McKenney <paulmck@kernel.org>
+AuthorDate:    Wed, 05 Feb 2020 06:34:09 -08:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Fri, 07 Feb 2020 15:34:12 +01:00
 
-diff --git a/arch/arm/kernel/ftrace.c b/arch/arm/kernel/ftrace.c
-index 2a5ff69c28e6..10499d44964a 100644
---- a/arch/arm/kernel/ftrace.c
-+++ b/arch/arm/kernel/ftrace.c
-@@ -78,13 +78,10 @@ static int ftrace_modify_code(unsigned long pc, unsigned long old,
+smp/up: Make smp_call_function_single() match SMP semantics
+
+In CONFIG_SMP=y kernels, smp_call_function_single() returns -ENXIO when
+invoked for a non-existent CPU.  In contrast, in CONFIG_SMP=n kernels,
+a splat is emitted and smp_call_function_single() otherwise silently
+ignores its "cpu" argument, instead pretending that the caller intended
+to have something happen on CPU 0.  Given that there is now code that
+expects smp_call_function_single() to return an error if a bad CPU was
+specified, this difference in semantics needs to be addressed.
+
+Bring the semantics of the CONFIG_SMP=n version of
+smp_call_function_single() into alignment with its CONFIG_SMP=y
+counterpart.
+
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lkml.kernel.org/r/20200205143409.GA7021@paulmck-ThinkPad-P72
+
+---
+ kernel/up.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/kernel/up.c b/kernel/up.c
+index 53144d0..c6f323d 100644
+--- a/kernel/up.c
++++ b/kernel/up.c
+@@ -14,7 +14,8 @@ int smp_call_function_single(int cpu, void (*func) (void *info), void *info,
  {
- 	unsigned long replaced;
+ 	unsigned long flags;
  
--	if (IS_ENABLED(CONFIG_THUMB2_KERNEL)) {
-+	if (IS_ENABLED(CONFIG_THUMB2_KERNEL))
- 		old = __opcode_to_mem_thumb32(old);
--		new = __opcode_to_mem_thumb32(new);
--	} else {
-+	else
- 		old = __opcode_to_mem_arm(old);
--		new = __opcode_to_mem_arm(new);
--	}
+-	WARN_ON(cpu != 0);
++	if (cpu != 0)
++		return -ENXIO;
  
- 	if (validate) {
- 		if (probe_kernel_read(&replaced, (void *)pc, MCOUNT_INSN_SIZE))
+ 	local_irq_save(flags);
+ 	func(info);
