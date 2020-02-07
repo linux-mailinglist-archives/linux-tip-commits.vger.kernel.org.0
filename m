@@ -2,101 +2,120 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DD3401559C3
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  7 Feb 2020 15:37:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A616155C10
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  7 Feb 2020 17:47:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726982AbgBGOha (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 7 Feb 2020 09:37:30 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:40983 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726674AbgBGOha (ORCPT
+        id S1726951AbgBGQrp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 7 Feb 2020 11:47:45 -0500
+Received: from mail-lj1-f195.google.com ([209.85.208.195]:36708 "EHLO
+        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726874AbgBGQrp (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 7 Feb 2020 09:37:30 -0500
-Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tip-bot2@linutronix.de>)
-        id 1j04l3-0005Ho-QT; Fri, 07 Feb 2020 15:37:25 +0100
-Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 676671C1A0E;
-        Fri,  7 Feb 2020 15:37:25 +0100 (CET)
-Date:   Fri, 07 Feb 2020 14:37:25 -0000
-From:   "tip-bot2 for Tony W Wang-oc" <tip-bot2@linutronix.de>
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/apic: Mask IOAPIC entries when disabling the local APIC
-Cc:     "Tony W Wang-oc" <TonyWWang-oc@zhaoxin.com>,
-        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <1579076539-7267-1-git-send-email-TonyWWang-oc@zhaoxin.com>
-References: <1579076539-7267-1-git-send-email-TonyWWang-oc@zhaoxin.com>
+        Fri, 7 Feb 2020 11:47:45 -0500
+Received: by mail-lj1-f195.google.com with SMTP id r19so8229ljg.3;
+        Fri, 07 Feb 2020 08:47:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=2NMoRT30iQ+tCo0o0Sn90sldXaVgelaqy3SMc26eMtE=;
+        b=pJAUC0TsXgq8V5q0nrf82Olq+fHeZmx4A+vXaFdqCwqBniHusEs5vD8tsVePEJQ0VN
+         OD/7GI77Pg1RtMeKJYnk+t3MVsZ90WZ5q0/tWtNGYeBMIx6HhUxM9KdzoJpSuAQLqiDz
+         lD5ejn9V87l0JzWmz9AnsJ8M0nX3K10M9fgUhc0Q0DIy+kg3V18BgkbQ2I+WxulTAmSd
+         9lMreixRIylJAIuSE48keuOcSpvpyeS0LDVdqpj6Oult4eGtrHwNYylBEwETnEBHBMxi
+         ilqzd94/HH94uDlOOGpVbB2FHN7LJfxWyeYkap/9/9Cznd5zttkCVleaH423dUVodumC
+         8xWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=2NMoRT30iQ+tCo0o0Sn90sldXaVgelaqy3SMc26eMtE=;
+        b=kYRlC9wC2Kugc0xvMh3wFS6BBwRjS5yni//9E9BBk9XWw49vndDNCt8HXSa1VEjgOA
+         6RBCkLvTa0ZXhkk2IK8Pz3fG2S2Mjv2aKjP9MFzHPuYfQoQ7vorb3Zdm9OblYS1IUa5j
+         KzeEaOcyWhF11PBRk0P4BT8kFa8OgSaku0wrOIh6jaP1vxsdmLgaaGUPv4oSMKeuW1Kd
+         84rgXJjlsacPQ6CJrdvM6Pms5SA5DxORk6luzSSRID7PFj+n+SpBwtv3rNTlfFL2IghT
+         lkIdf0grhSKKZ2I08q2wl5hBNIFXfiWgAIi8EiAWo1ogvMOQwppuIjlQJEU3qIiNPzTF
+         Pe1Q==
+X-Gm-Message-State: APjAAAVQPe2F6IkGrmlIJzl7XB2q8KJQbqjFlEp/Hil00xjF4T5ZrUiw
+        2gW0b27gSDpV9aPKQ6OEj4A=
+X-Google-Smtp-Source: APXvYqw0/SNfI1cihxngPVjF8J849HZFhXP/YpBwLSsMLOgVrBJYt0XZMy9zqY0e10k9XX/vCTxcow==
+X-Received: by 2002:a2e:88c5:: with SMTP id a5mr67349ljk.201.1581094062464;
+        Fri, 07 Feb 2020 08:47:42 -0800 (PST)
+Received: from [192.168.2.145] (79-139-233-37.dynamic.spd-mgts.ru. [79.139.233.37])
+        by smtp.googlemail.com with ESMTPSA id e12sm1292984lfc.70.2020.02.07.08.47.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 07 Feb 2020 08:47:41 -0800 (PST)
+Subject: Re: [tip: core/kprobes] arm/ftrace: Use __patch_text()
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     linux-kernel@vger.kernel.org,
+        tip-bot2 for Peter Zijlstra <tip-bot2@linutronix.de>,
+        linux-tip-commits@vger.kernel.org, Will Deacon <will@kernel.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jon Hunter <jonathanh@nvidia.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Borislav Petkov <bp@alien8.de>,
+        Brian Gerst <brgerst@gmail.com>,
+        Denys Vlasenko <dvlasenk@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        ard.biesheuvel@linaro.org, james.morse@arm.com, rabin@rab.in,
+        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
+        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>
+References: <20191113092636.GG4131@hirez.programming.kicks-ass.net>
+ <157544841563.21853.2859696202562513480.tip-bot2@tip-bot2>
+ <10cbfd9e-2f1f-0a0c-0160-afe6c2ccbebd@gmail.com>
+ <20200207112720.GF14914@hirez.programming.kicks-ass.net>
+From:   Dmitry Osipenko <digetx@gmail.com>
+Message-ID: <039eac1a-cafe-b20b-77c8-bad019d4320c@gmail.com>
+Date:   Fri, 7 Feb 2020 19:47:28 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.3.0
 MIME-Version: 1.0
-Message-ID: <158108624517.411.12215803760859503260.tip-bot2@tip-bot2>
-X-Mailer: tip-git-log-daemon
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+In-Reply-To: <20200207112720.GF14914@hirez.programming.kicks-ass.net>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+07.02.2020 14:27, Peter Zijlstra пишет:
+>> NVIDIA Tegra20/30 are not booting with CONFIG_FTRACE=y, but even with
+>> CONFIG_FTRACE=n things are not working well.
+> 
+> Ooh, I think I see. Can you try this:
+> 
+> diff --git a/arch/arm/kernel/ftrace.c b/arch/arm/kernel/ftrace.c
+> index 2a5ff69c28e6..10499d44964a 100644
+> --- a/arch/arm/kernel/ftrace.c
+> +++ b/arch/arm/kernel/ftrace.c
+> @@ -78,13 +78,10 @@ static int ftrace_modify_code(unsigned long pc, unsigned long old,
+>  {
+>  	unsigned long replaced;
+>  
+> -	if (IS_ENABLED(CONFIG_THUMB2_KERNEL)) {
+> +	if (IS_ENABLED(CONFIG_THUMB2_KERNEL))
+>  		old = __opcode_to_mem_thumb32(old);
+> -		new = __opcode_to_mem_thumb32(new);
+> -	} else {
+> +	else
+>  		old = __opcode_to_mem_arm(old);
+> -		new = __opcode_to_mem_arm(new);
+> -	}
+>  
+>  	if (validate) {
+>  		if (probe_kernel_read(&replaced, (void *)pc, MCOUNT_INSN_SIZE))
+> 
 
-Commit-ID:     0f378d73d429d5f73fe2f00be4c9a15dbe9779ee
-Gitweb:        https://git.kernel.org/tip/0f378d73d429d5f73fe2f00be4c9a15dbe9779ee
-Author:        Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>
-AuthorDate:    Wed, 15 Jan 2020 16:22:19 +08:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 07 Feb 2020 15:32:16 +01:00
+Hello Peter,
 
-x86/apic: Mask IOAPIC entries when disabling the local APIC
+It fixes the problem, at least kernel is booting fine now and I can't
+notice any problems. Thank you very much! :)
 
-When a system suspends, the local APIC is disabled in the suspend sequence,
-but the IOAPIC is left in the current state. This means unmasked interrupt
-lines stay unmasked. This is usually the case for IOAPIC pin 9 to which the
-ACPI interrupt is connected.
-
-That means that in suspended state the IOAPIC can respond to an external
-interrupt, e.g. the wakeup via keyboard/RTC/ACPI, but the interrupt message
-cannot be handled by the disabled local APIC. As a consequence the Remote
-IRR bit is set, but the local APIC does not send an EOI to acknowledge
-it. This causes the affected interrupt line to become stale and the stale
-Remote IRR bit will cause a hang when __synchronize_hardirq() is invoked
-for that interrupt line.
-
-To prevent this, mask all IOAPIC entries before disabling the local
-APIC. The resume code already has the unmask operation inside.
-
-[ tglx: Massaged changelog ]
-
-Signed-off-by: Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/1579076539-7267-1-git-send-email-TonyWWang-oc@zhaoxin.com
-
----
- arch/x86/kernel/apic/apic.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
-index 4b0f911..5f973fe 100644
---- a/arch/x86/kernel/apic/apic.c
-+++ b/arch/x86/kernel/apic/apic.c
-@@ -2639,6 +2639,13 @@ static int lapic_suspend(void)
- #endif
- 
- 	local_irq_save(flags);
-+
-+	/*
-+	 * Mask IOAPIC before disabling the local APIC to prevent stale IRR
-+	 * entries on some implementations.
-+	 */
-+	mask_ioapic_entries();
-+
- 	disable_local_APIC();
- 
- 	irq_remapping_disable();
+Tested-by: Dmitry Osipenko <digetx@gmail.com>
