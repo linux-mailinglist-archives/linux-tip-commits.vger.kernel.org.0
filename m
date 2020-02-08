@@ -2,36 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C49561564EF
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  8 Feb 2020 15:59:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C1D31564E9
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  8 Feb 2020 15:58:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727579AbgBHO6d (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 8 Feb 2020 09:58:33 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:42048 "EHLO
+        id S1727540AbgBHO6L (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 8 Feb 2020 09:58:11 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:42053 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727379AbgBHO6K (ORCPT
+        with ESMTP id S1727387AbgBHO6K (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Sat, 8 Feb 2020 09:58:10 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1j0RYc-0003Bz-BR; Sat, 08 Feb 2020 15:58:06 +0100
+        id 1j0RYc-0003CF-JU; Sat, 08 Feb 2020 15:58:06 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E4B601C1F87;
-        Sat,  8 Feb 2020 15:58:05 +0100 (CET)
-Date:   Sat, 08 Feb 2020 14:58:05 -0000
-From:   "tip-bot2 for Zenghui Yu" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 3A09B1C1A0D;
+        Sat,  8 Feb 2020 15:58:06 +0100 (CET)
+Date:   Sat, 08 Feb 2020 14:58:06 -0000
+From:   "tip-bot2 for Randy Dunlap" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/urgent] irqchip/gic-v3-its: Reference to its_invall_cmd
- descriptor when building INVALL
-Cc:     Zenghui Yu <yuzenghui@huawei.com>, Marc Zyngier <maz@kernel.org>,
+Subject: [tip: irq/urgent] irqchip: Some Kconfig cleanup for C-SKY
+Cc:     Randy Dunlap <rdunlap@infradead.org>,
+        Marc Zyngier <maz@kernel.org>, Guo Ren <guoren@kernel.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191202071021.1251-1-yuzenghui@huawei.com>
-References: <20191202071021.1251-1-yuzenghui@huawei.com>
+In-Reply-To: <d44baeee-cceb-7c02-7249-e6b4817f0847@infradead.org>
+References: <d44baeee-cceb-7c02-7249-e6b4817f0847@infradead.org>
 MIME-Version: 1.0
-Message-ID: <158117388570.411.1371363012639946024.tip-bot2@tip-bot2>
+Message-ID: <158117388600.411.10874687119247493337.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,38 +47,47 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/urgent branch of tip:
 
-Commit-ID:     107945227ac5d4c37911c7841b27c64b489ce9a9
-Gitweb:        https://git.kernel.org/tip/107945227ac5d4c37911c7841b27c64b489ce9a9
-Author:        Zenghui Yu <yuzenghui@huawei.com>
-AuthorDate:    Mon, 02 Dec 2019 15:10:21 +08:00
+Commit-ID:     656b42deddea57e55a570671db9403af0ed3c439
+Gitweb:        https://git.kernel.org/tip/656b42deddea57e55a570671db9403af0ed3c439
+Author:        Randy Dunlap <rdunlap@infradead.org>
+AuthorDate:    Tue, 28 Jan 2020 18:25:14 -08:00
 Committer:     Marc Zyngier <maz@kernel.org>
-CommitterDate: Mon, 03 Feb 2020 10:04:19 
+CommitterDate: Wed, 29 Jan 2020 12:19:58 
 
-irqchip/gic-v3-its: Reference to its_invall_cmd descriptor when building INVALL
+irqchip: Some Kconfig cleanup for C-SKY
 
-It looks like an obvious mistake to use its_mapc_cmd descriptor when
-building the INVALL command block. It so far worked by luck because
-both its_mapc_cmd.col and its_invall_cmd.col sit at the same offset of
-the ITS command descriptor, but we should not rely on it.
+Fixes to Kconfig help text:
 
-Fixes: cc2d3216f53c ("irqchip: GICv3: ITS command queue")
-Signed-off-by: Zenghui Yu <yuzenghui@huawei.com>
+- spell out "hardware"
+- fix verb usage
+
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
 Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20191202071021.1251-1-yuzenghui@huawei.com
+Acked-by: Guo Ren <guoren@kernel.org>
+Link: https://lore.kernel.org/r/d44baeee-cceb-7c02-7249-e6b4817f0847@infradead.org
 ---
- drivers/irqchip/irq-gic-v3-its.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/irqchip/Kconfig | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
-index f717586..e5a25d9 100644
---- a/drivers/irqchip/irq-gic-v3-its.c
-+++ b/drivers/irqchip/irq-gic-v3-its.c
-@@ -661,7 +661,7 @@ static struct its_collection *its_build_invall_cmd(struct its_node *its,
- 						   struct its_cmd_desc *desc)
- {
- 	its_encode_cmd(cmd, GITS_CMD_INVALL);
--	its_encode_collection(cmd, desc->its_mapc_cmd.col->col_id);
-+	its_encode_collection(cmd, desc->its_invall_cmd.col->col_id);
+diff --git a/drivers/irqchip/Kconfig b/drivers/irqchip/Kconfig
+index 1006c69..6d39773 100644
+--- a/drivers/irqchip/Kconfig
++++ b/drivers/irqchip/Kconfig
+@@ -438,7 +438,7 @@ config CSKY_MPINTC
+ 	help
+ 	  Say yes here to enable C-SKY SMP interrupt controller driver used
+ 	  for C-SKY SMP system.
+-	  In fact it's not mmio map in hw and it use ld/st to visit the
++	  In fact it's not mmio map in hardware and it uses ld/st to visit the
+ 	  controller's register inside CPU.
  
- 	its_fixup_cmd(cmd);
+ config CSKY_APB_INTC
+@@ -446,7 +446,7 @@ config CSKY_APB_INTC
+ 	depends on CSKY
+ 	help
+ 	  Say yes here to enable C-SKY APB interrupt controller driver used
+-	  by C-SKY single core SOC system. It use mmio map apb-bus to visit
++	  by C-SKY single core SOC system. It uses mmio map apb-bus to visit
+ 	  the controller's register.
  
+ config IMX_IRQSTEER
