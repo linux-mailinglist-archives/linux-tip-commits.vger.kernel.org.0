@@ -2,36 +2,43 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A3FBA1564E7
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  8 Feb 2020 15:58:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 67E66156C37
+	for <lists+linux-tip-commits@lfdr.de>; Sun,  9 Feb 2020 20:12:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727584AbgBHO6S (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 8 Feb 2020 09:58:18 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:42054 "EHLO
+        id S1727416AbgBITMN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 9 Feb 2020 14:12:13 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:42627 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727505AbgBHO6M (ORCPT
+        with ESMTP id S1727413AbgBITMM (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 8 Feb 2020 09:58:12 -0500
+        Sun, 9 Feb 2020 14:12:12 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1j0RYd-0003CK-Va; Sat, 08 Feb 2020 15:58:08 +0100
+        id 1j0rzc-0006gk-FK; Sun, 09 Feb 2020 20:11:44 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 80A7D1C1F88;
-        Sat,  8 Feb 2020 15:58:06 +0100 (CET)
-Date:   Sat, 08 Feb 2020 14:58:06 -0000
-From:   "tip-bot2 for Marc Zyngier" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B78621C04CC;
+        Sun,  9 Feb 2020 20:11:41 +0100 (CET)
+Date:   Sun, 09 Feb 2020 19:11:41 -0000
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/urgent] irqchip/gic-v3: Only provision redistributors that
- are enabled in ACPI
-Cc:     Marc Zyngier <maz@kernel.org>, Heyi Guo <guoheyi@huawei.com>,
+Subject: [tip: sched/core] sched/rt: Provide migrate_disable/enable() inlines
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Juri Lelli <juri.lelli@redhat.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191216062745.63397-1-guoheyi@huawei.com>
-References: <20191216062745.63397-1-guoheyi@huawei.com>
+In-Reply-To: <878slclv1u.fsf@nanos.tec.linutronix.de>
+References: <878slclv1u.fsf@nanos.tec.linutronix.de>
 MIME-Version: 1.0
-Message-ID: <158117388630.411.8917464413594181344.tip-bot2@tip-bot2>
+Message-ID: <158127550143.411.9644440031937252653.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -45,71 +52,87 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the irq/urgent branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     926b5dfa6b8dc666ff398044af6906b156e1d949
-Gitweb:        https://git.kernel.org/tip/926b5dfa6b8dc666ff398044af6906b156e1d949
-Author:        Marc Zyngier <maz@kernel.org>
-AuthorDate:    Mon, 16 Dec 2019 11:24:57 
-Committer:     Marc Zyngier <maz@kernel.org>
-CommitterDate: Tue, 28 Jan 2020 13:17:46 
+Commit-ID:     9fe65747dbacf0c9fcf12350c3afb5fcf7e78534
+Gitweb:        https://git.kernel.org/tip/9fe65747dbacf0c9fcf12350c3afb5fcf7e78534
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Sat, 08 Feb 2020 20:48:29 +01:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Sun, 09 Feb 2020 20:07:41 +01:00
 
-irqchip/gic-v3: Only provision redistributors that are enabled in ACPI
+sched/rt: Provide migrate_disable/enable() inlines
 
-We currently allocate redistributor region structures for
-individual redistributors when ACPI doesn't present us with
-compact MMIO regions covering multiple redistributors.
+Code which solely needs to prevent migration of a task uses
+preempt_disable()/enable() pairs. This is the only reliable way to do so
+as setting the task affinity to a single CPU can be undone by a
+setaffinity operation from a different task/process.
 
-It turns out that we allocate these structures even when
-the redistributor is flagged as disabled by ACPI. It works
-fine until someone actually tries to tarse one of these
-structures, and access the corresponding MMIO region.
+RT provides a seperate migrate_disable/enable() mechanism which does not
+disable preemption to achieve the semantic requirements of a (almost) fully
+preemptible kernel.
 
-Instead, track the number of enabled redistributors, and
-only allocate what is required. This makes sure that there
-is no invalid data to misuse.
+As it is unclear from looking at a given code path whether the intention is
+to disable preemption or migration, introduce migrate_disable/enable()
+inline functions which can be used to annotate code which merely needs to
+disable migration. Map them to preempt_disable/enable() for now. The RT
+substitution will be provided later.
 
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Reported-by: Heyi Guo <guoheyi@huawei.com>
-Tested-by: Heyi Guo <guoheyi@huawei.com>
-Link: https://lore.kernel.org/r/20191216062745.63397-1-guoheyi@huawei.com
+Code which is annotated that way documents that it has no requirement to
+protect against reentrancy of a preempting task. Either this is not
+required at all or the call sites are already serialized by other means.
+
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Juri Lelli <juri.lelli@redhat.com>
+Cc: Vincent Guittot <vincent.guittot@linaro.org>
+Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Ben Segall <bsegall@google.com>
+Cc: Mel Gorman <mgorman@suse.de>
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://lore.kernel.org/r/878slclv1u.fsf@nanos.tec.linutronix.de
 ---
- drivers/irqchip/irq-gic-v3.c |  9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ include/linux/preempt.h | 30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
-diff --git a/drivers/irqchip/irq-gic-v3.c b/drivers/irqchip/irq-gic-v3.c
-index 286f982..c1f7af9 100644
---- a/drivers/irqchip/irq-gic-v3.c
-+++ b/drivers/irqchip/irq-gic-v3.c
-@@ -1839,6 +1839,7 @@ static struct
- 	struct redist_region *redist_regs;
- 	u32 nr_redist_regions;
- 	bool single_redist;
-+	int enabled_rdists;
- 	u32 maint_irq;
- 	int maint_irq_mode;
- 	phys_addr_t vcpu_base;
-@@ -1933,8 +1934,10 @@ static int __init gic_acpi_match_gicc(union acpi_subtable_headers *header,
- 	 * If GICC is enabled and has valid gicr base address, then it means
- 	 * GICR base is presented via GICC
- 	 */
--	if ((gicc->flags & ACPI_MADT_ENABLED) && gicc->gicr_base_address)
-+	if ((gicc->flags & ACPI_MADT_ENABLED) && gicc->gicr_base_address) {
-+		acpi_data.enabled_rdists++;
- 		return 0;
-+	}
+diff --git a/include/linux/preempt.h b/include/linux/preempt.h
+index bbb68db..bc3f1ae 100644
+--- a/include/linux/preempt.h
++++ b/include/linux/preempt.h
+@@ -322,4 +322,34 @@ static inline void preempt_notifier_init(struct preempt_notifier *notifier,
  
- 	/*
- 	 * It's perfectly valid firmware can pass disabled GICC entry, driver
-@@ -1964,8 +1967,10 @@ static int __init gic_acpi_count_gicr_regions(void)
+ #endif
  
- 	count = acpi_table_parse_madt(ACPI_MADT_TYPE_GENERIC_INTERRUPT,
- 				      gic_acpi_match_gicc, 0);
--	if (count > 0)
-+	if (count > 0) {
- 		acpi_data.single_redist = true;
-+		count = acpi_data.enabled_rdists;
-+	}
- 
- 	return count;
- }
++/**
++ * migrate_disable - Prevent migration of the current task
++ *
++ * Maps to preempt_disable() which also disables preemption. Use
++ * migrate_disable() to annotate that the intent is to prevent migration,
++ * but not necessarily preemption.
++ *
++ * Can be invoked nested like preempt_disable() and needs the corresponding
++ * number of migrate_enable() invocations.
++ */
++static __always_inline void migrate_disable(void)
++{
++	preempt_disable();
++}
++
++/**
++ * migrate_enable - Allow migration of the current task
++ *
++ * Counterpart to migrate_disable().
++ *
++ * As migrate_disable() can be invoked nested, only the outermost invocation
++ * reenables migration.
++ *
++ * Currently mapped to preempt_enable().
++ */
++static __always_inline void migrate_enable(void)
++{
++	preempt_enable();
++}
++
+ #endif /* __LINUX_PREEMPT_H */
