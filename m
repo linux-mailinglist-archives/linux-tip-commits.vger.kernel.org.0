@@ -2,38 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C385158F29
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 11 Feb 2020 13:50:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F3C2158EE5
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 11 Feb 2020 13:48:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728088AbgBKMtz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 11 Feb 2020 07:49:55 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:45988 "EHLO
+        id S1728510AbgBKMrw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 11 Feb 2020 07:47:52 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:45986 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728493AbgBKMrx (ORCPT
+        with ESMTP id S1728492AbgBKMrw (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 11 Feb 2020 07:47:53 -0500
+        Tue, 11 Feb 2020 07:47:52 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1j1Ux7-0007YB-9f; Tue, 11 Feb 2020 13:47:45 +0100
+        id 1j1Ux7-0007Yg-K0; Tue, 11 Feb 2020 13:47:45 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E168B1C2017;
-        Tue, 11 Feb 2020 13:47:44 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 3B8F61C2018;
+        Tue, 11 Feb 2020 13:47:45 +0100 (CET)
 Date:   Tue, 11 Feb 2020 12:47:44 -0000
 From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/core: Add new branch sample type for HW index
- of raw branch records
+Subject: [tip: perf/core] perf/x86/intel: Avoid unnecessary PEBS_ENABLE MSR
+ access in PMI
 Cc:     Kan Liang <kan.liang@linux.intel.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200127165355.27495-2-kan.liang@linux.intel.com>
-References: <20200127165355.27495-2-kan.liang@linux.intel.com>
+In-Reply-To: <20200121181338.3234-1-kan.liang@linux.intel.com>
+References: <20200121181338.3234-1-kan.liang@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <158142526469.411.17102678591362898511.tip-bot2@tip-bot2>
+Message-ID: <158142526498.411.9050167977316432936.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,184 +49,117 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     bbfd5e4fab63703375eafaf241a0c696024a59e1
-Gitweb:        https://git.kernel.org/tip/bbfd5e4fab63703375eafaf241a0c696024a59e1
+Commit-ID:     6c1c07b33eb093e5a2a313ece89baa596ba6135e
+Gitweb:        https://git.kernel.org/tip/6c1c07b33eb093e5a2a313ece89baa596ba6135e
 Author:        Kan Liang <kan.liang@linux.intel.com>
-AuthorDate:    Mon, 27 Jan 2020 08:53:54 -08:00
+AuthorDate:    Tue, 21 Jan 2020 10:13:38 -08:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 11 Feb 2020 13:23:49 +01:00
+CommitterDate: Tue, 11 Feb 2020 13:23:48 +01:00
 
-perf/core: Add new branch sample type for HW index of raw branch records
+perf/x86/intel: Avoid unnecessary PEBS_ENABLE MSR access in PMI
 
-The low level index is the index in the underlying hardware buffer of
-the most recently captured taken branch which is always saved in
-branch_entries[0]. It is very useful for reconstructing the call stack.
-For example, in Intel LBR call stack mode, the depth of reconstructed
-LBR call stack limits to the number of LBR registers. With the low level
-index information, perf tool may stitch the stacks of two samples. The
-reconstructed LBR call stack can break the HW limitation.
+The perf PMI handler, intel_pmu_handle_irq(), currently does
+unnecessary MSR accesses for PEBS_ENABLE MSR in
+__intel_pmu_enable/disable_all() when PEBS is enabled.
 
-Add a new branch sample type to retrieve low level index of raw branch
-records. The low level index is between -1 (unknown) and max depth which
-can be retrieved in /sys/devices/cpu/caps/branches.
+When entering the handler, global ctrl is explicitly disabled. All
+counters do not count anymore. It doesn't matter if PEBS is enabled
+or not in a PMI handler.
+Furthermore, for most cases, the cpuc->pebs_enabled is not changed in
+PMI. The PEBS status doesn't change. The PEBS_ENABLE MSR doesn't need to
+be changed either when exiting the handler.
 
-Only when the new branch sample type is set, the low level index
-information is dumped into the PERF_SAMPLE_BRANCH_STACK output.
-Perf tool should check the attr.branch_sample_type, and apply the
-corresponding format for PERF_SAMPLE_BRANCH_STACK samples.
-Otherwise, some user case may be broken. For example, users may parse a
-perf.data, which include the new branch sample type, with an old version
-perf tool (without the check). Users probably get incorrect information
-without any warning.
+PMI throttle may change the PEBS status during PMI handler. The
+x86_pmu_stop() ends up in intel_pmu_pebs_disable() which can update
+cpuc->pebs_enabled. But the MSR_IA32_PEBS_ENABLE is not updated
+at the same time. Because the cpuc->enabled has been forced to 0.
+The patch explicitly update the MSR_IA32_PEBS_ENABLE for this case.
+
+Use ftrace to measure the duration of intel_pmu_handle_irq() on BDX.
+   #perf record -e cycles:P -- ./tchain_edit
+
+The average duration of intel_pmu_handle_irq():
+
+  Without the patch       1.144 us
+  With the patch          1.025 us
 
 Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lkml.kernel.org/r/20200127165355.27495-2-kan.liang@linux.intel.com
+Link: https://lkml.kernel.org/r/20200121181338.3234-1-kan.liang@linux.intel.com
 ---
- arch/powerpc/perf/core-book3s.c |  1 +
- arch/x86/events/intel/lbr.c     |  3 +++
- include/linux/perf_event.h      | 12 ++++++++++++
- include/uapi/linux/perf_event.h |  8 +++++++-
- kernel/events/core.c            | 10 ++++++++++
- 5 files changed, 33 insertions(+), 1 deletion(-)
+ arch/x86/events/intel/core.c | 25 ++++++++++++++++++++++---
+ 1 file changed, 22 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
-index 3086055..3dcfecf 100644
---- a/arch/powerpc/perf/core-book3s.c
-+++ b/arch/powerpc/perf/core-book3s.c
-@@ -518,6 +518,7 @@ static void power_pmu_bhrb_read(struct perf_event *event, struct cpu_hw_events *
- 		}
- 	}
- 	cpuhw->bhrb_stack.nr = u_index;
-+	cpuhw->bhrb_stack.hw_idx = -1ULL;
- 	return;
- }
- 
-diff --git a/arch/x86/events/intel/lbr.c b/arch/x86/events/intel/lbr.c
-index 534c766..7639e20 100644
---- a/arch/x86/events/intel/lbr.c
-+++ b/arch/x86/events/intel/lbr.c
-@@ -585,6 +585,7 @@ static void intel_pmu_lbr_read_32(struct cpu_hw_events *cpuc)
- 		cpuc->lbr_entries[i].reserved	= 0;
- 	}
- 	cpuc->lbr_stack.nr = i;
-+	cpuc->lbr_stack.hw_idx = -1ULL;
- }
- 
- /*
-@@ -680,6 +681,7 @@ static void intel_pmu_lbr_read_64(struct cpu_hw_events *cpuc)
- 		out++;
- 	}
- 	cpuc->lbr_stack.nr = out;
-+	cpuc->lbr_stack.hw_idx = -1ULL;
- }
- 
- void intel_pmu_lbr_read(void)
-@@ -1120,6 +1122,7 @@ void intel_pmu_store_pebs_lbrs(struct pebs_lbr *lbr)
- 	int i;
- 
- 	cpuc->lbr_stack.nr = x86_pmu.lbr_nr;
-+	cpuc->lbr_stack.hw_idx = -1ULL;
- 	for (i = 0; i < x86_pmu.lbr_nr; i++) {
- 		u64 info = lbr->lbr[i].info;
- 		struct perf_branch_entry *e = &cpuc->lbr_entries[i];
-diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
-index 547773f..68e21e8 100644
---- a/include/linux/perf_event.h
-+++ b/include/linux/perf_event.h
-@@ -93,14 +93,26 @@ struct perf_raw_record {
- /*
-  * branch stack layout:
-  *  nr: number of taken branches stored in entries[]
-+ *  hw_idx: The low level index of raw branch records
-+ *          for the most recent branch.
-+ *          -1ULL means invalid/unknown.
-  *
-  * Note that nr can vary from sample to sample
-  * branches (to, from) are stored from most recent
-  * to least recent, i.e., entries[0] contains the most
-  * recent branch.
-+ * The entries[] is an abstraction of raw branch records,
-+ * which may not be stored in age order in HW, e.g. Intel LBR.
-+ * The hw_idx is to expose the low level index of raw
-+ * branch record for the most recent branch aka entries[0].
-+ * The hw_idx index is between -1 (unknown) and max depth,
-+ * which can be retrieved in /sys/devices/cpu/caps/branches.
-+ * For the architectures whose raw branch records are
-+ * already stored in age order, the hw_idx should be 0.
+diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+index dff6623..332954c 100644
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -1945,6 +1945,14 @@ static __initconst const u64 knl_hw_cache_extra_regs
+  * intel_bts events don't coexist with intel PMU's BTS events because of
+  * x86_add_exclusive(x86_lbr_exclusive_lbr); there's no need to keep them
+  * disabled around intel PMU's event batching etc, only inside the PMI handler.
++ *
++ * Avoid PEBS_ENABLE MSR access in PMIs.
++ * The GLOBAL_CTRL has been disabled. All the counters do not count anymore.
++ * It doesn't matter if the PEBS is enabled or not.
++ * Usually, the PEBS status are not changed in PMIs. It's unnecessary to
++ * access PEBS_ENABLE MSR in disable_all()/enable_all().
++ * However, there are some cases which may change PEBS status, e.g. PMI
++ * throttle. The PEBS_ENABLE should be updated where the status changes.
   */
- struct perf_branch_stack {
- 	__u64				nr;
-+	__u64				hw_idx;
- 	struct perf_branch_entry	entries[0];
- };
+ static void __intel_pmu_disable_all(void)
+ {
+@@ -1954,13 +1962,12 @@ static void __intel_pmu_disable_all(void)
  
-diff --git a/include/uapi/linux/perf_event.h b/include/uapi/linux/perf_event.h
-index 377d794..397cfd6 100644
---- a/include/uapi/linux/perf_event.h
-+++ b/include/uapi/linux/perf_event.h
-@@ -181,6 +181,8 @@ enum perf_branch_sample_type_shift {
- 
- 	PERF_SAMPLE_BRANCH_TYPE_SAVE_SHIFT	= 16, /* save branch type */
- 
-+	PERF_SAMPLE_BRANCH_HW_INDEX_SHIFT	= 17, /* save low level index of raw branch records */
-+
- 	PERF_SAMPLE_BRANCH_MAX_SHIFT		/* non-ABI */
- };
- 
-@@ -208,6 +210,8 @@ enum perf_branch_sample_type {
- 	PERF_SAMPLE_BRANCH_TYPE_SAVE	=
- 		1U << PERF_SAMPLE_BRANCH_TYPE_SAVE_SHIFT,
- 
-+	PERF_SAMPLE_BRANCH_HW_INDEX	= 1U << PERF_SAMPLE_BRANCH_HW_INDEX_SHIFT,
-+
- 	PERF_SAMPLE_BRANCH_MAX		= 1U << PERF_SAMPLE_BRANCH_MAX_SHIFT,
- };
- 
-@@ -853,7 +857,9 @@ enum perf_event_type {
- 	 *	  char                  data[size];}&& PERF_SAMPLE_RAW
- 	 *
- 	 *	{ u64                   nr;
--	 *        { u64 from, to, flags } lbr[nr];} && PERF_SAMPLE_BRANCH_STACK
-+	 *	  { u64	hw_idx; } && PERF_SAMPLE_BRANCH_HW_INDEX
-+	 *        { u64 from, to, flags } lbr[nr];
-+	 *      } && PERF_SAMPLE_BRANCH_STACK
- 	 *
- 	 * 	{ u64			abi; # enum perf_sample_regs_abi
- 	 * 	  u64			regs[weight(mask)]; } && PERF_SAMPLE_REGS_USER
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index e453589..3f1f77d 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -6555,6 +6555,11 @@ static void perf_output_read(struct perf_output_handle *handle,
- 		perf_output_read_one(handle, event, enabled, running);
+ 	if (test_bit(INTEL_PMC_IDX_FIXED_BTS, cpuc->active_mask))
+ 		intel_pmu_disable_bts();
+-
+-	intel_pmu_pebs_disable_all();
  }
  
-+static inline bool perf_sample_save_hw_index(struct perf_event *event)
-+{
-+	return event->attr.branch_sample_type & PERF_SAMPLE_BRANCH_HW_INDEX;
-+}
-+
- void perf_output_sample(struct perf_output_handle *handle,
- 			struct perf_event_header *header,
- 			struct perf_sample_data *data,
-@@ -6643,6 +6648,8 @@ void perf_output_sample(struct perf_output_handle *handle,
- 			     * sizeof(struct perf_branch_entry);
+ static void intel_pmu_disable_all(void)
+ {
+ 	__intel_pmu_disable_all();
++	intel_pmu_pebs_disable_all();
+ 	intel_pmu_lbr_disable_all();
+ }
  
- 			perf_output_put(handle, data->br_stack->nr);
-+			if (perf_sample_save_hw_index(event))
-+				perf_output_put(handle, data->br_stack->hw_idx);
- 			perf_output_copy(handle, data->br_stack->entries, size);
- 		} else {
- 			/*
-@@ -6836,6 +6843,9 @@ void perf_prepare_sample(struct perf_event_header *header,
- 	if (sample_type & PERF_SAMPLE_BRANCH_STACK) {
- 		int size = sizeof(u64); /* nr */
- 		if (data->br_stack) {
-+			if (perf_sample_save_hw_index(event))
-+				size += sizeof(u64);
+@@ -1968,7 +1975,6 @@ static void __intel_pmu_enable_all(int added, bool pmi)
+ {
+ 	struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
+ 
+-	intel_pmu_pebs_enable_all();
+ 	intel_pmu_lbr_enable_all(pmi);
+ 	wrmsrl(MSR_CORE_PERF_GLOBAL_CTRL,
+ 			x86_pmu.intel_ctrl & ~cpuc->intel_ctrl_guest_mask);
+@@ -1986,6 +1992,7 @@ static void __intel_pmu_enable_all(int added, bool pmi)
+ 
+ static void intel_pmu_enable_all(int added)
+ {
++	intel_pmu_pebs_enable_all();
+ 	__intel_pmu_enable_all(added, false);
+ }
+ 
+@@ -2374,9 +2381,21 @@ static int handle_pmi_common(struct pt_regs *regs, u64 status)
+ 	 * PEBS overflow sets bit 62 in the global status register
+ 	 */
+ 	if (__test_and_clear_bit(62, (unsigned long *)&status)) {
++		u64 pebs_enabled = cpuc->pebs_enabled;
 +
- 			size += data->br_stack->nr
- 			      * sizeof(struct perf_branch_entry);
- 		}
+ 		handled++;
+ 		x86_pmu.drain_pebs(regs);
+ 		status &= x86_pmu.intel_ctrl | GLOBAL_STATUS_TRACE_TOPAPMI;
++
++		/*
++		 * PMI throttle may be triggered, which stops the PEBS event.
++		 * Although cpuc->pebs_enabled is updated accordingly, the
++		 * MSR_IA32_PEBS_ENABLE is not updated. Because the
++		 * cpuc->enabled has been forced to 0 in PMI.
++		 * Update the MSR if pebs_enabled is changed.
++		 */
++		if (pebs_enabled != cpuc->pebs_enabled)
++			wrmsrl(MSR_IA32_PEBS_ENABLE, cpuc->pebs_enabled);
+ 	}
+ 
+ 	/*
