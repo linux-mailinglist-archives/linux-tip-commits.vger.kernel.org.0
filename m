@@ -2,38 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9867E158F24
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 11 Feb 2020 13:50:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 90A32158F28
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 11 Feb 2020 13:50:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728543AbgBKMrw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 11 Feb 2020 07:47:52 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:45969 "EHLO
+        id S1728573AbgBKMtz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 11 Feb 2020 07:49:55 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:45981 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728458AbgBKMru (ORCPT
+        with ESMTP id S1728475AbgBKMrw (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 11 Feb 2020 07:47:50 -0500
+        Tue, 11 Feb 2020 07:47:52 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1j1Ux7-0007Yh-RC; Tue, 11 Feb 2020 13:47:46 +0100
+        id 1j1Ux8-0007ZN-F9; Tue, 11 Feb 2020 13:47:46 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 8287B1C2019;
-        Tue, 11 Feb 2020 13:47:45 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 2451D1C201A;
+        Tue, 11 Feb 2020 13:47:46 +0100 (CET)
 Date:   Tue, 11 Feb 2020 12:47:45 -0000
 From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/x86/intel: Fix inaccurate period in context
- switch for auto-reload
+Subject: [tip: perf/core] perf/x86/msr: Add Tremont support
 Cc:     Kan Liang <kan.liang@linux.intel.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        Andi Kleen <ak@linux.intel.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200121190125.3389-1-kan.liang@linux.intel.com>
-References: <20200121190125.3389-1-kan.liang@linux.intel.com>
+In-Reply-To: <1580236279-35492-3-git-send-email-kan.liang@linux.intel.com>
+References: <1580236279-35492-3-git-send-email-kan.liang@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <158142526530.411.5475130040049526511.tip-bot2@tip-bot2>
+Message-ID: <158142526590.411.18101591279795143973.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,90 +49,39 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     f861854e1b435b27197417f6f90d87188003cb24
-Gitweb:        https://git.kernel.org/tip/f861854e1b435b27197417f6f90d87188003cb24
+Commit-ID:     0aa0e0d6b34b89649e6b5882a7e025a0eb9bd832
+Gitweb:        https://git.kernel.org/tip/0aa0e0d6b34b89649e6b5882a7e025a0eb9bd832
 Author:        Kan Liang <kan.liang@linux.intel.com>
-AuthorDate:    Tue, 21 Jan 2020 11:01:25 -08:00
+AuthorDate:    Tue, 28 Jan 2020 10:31:19 -08:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 11 Feb 2020 13:23:27 +01:00
+CommitterDate: Tue, 11 Feb 2020 13:17:50 +01:00
 
-perf/x86/intel: Fix inaccurate period in context switch for auto-reload
+perf/x86/msr: Add Tremont support
 
-Perf doesn't take the left period into account when auto-reload is
-enabled with fixed period sampling mode in context switch.
+Tremont is Intel's successor to Goldmont Plus. SMI_COUNT MSR is also
+supported.
 
-Here is the MSR trace of the perf command as below.
-(The MSR trace is simplified from a ftrace log.)
-
-    #perf record -e cycles:p -c 2000000 -- ./triad_loop
-
-      //The MSR trace of task schedule out
-      //perf disable all counters, disable PEBS, disable GP counter 0,
-      //read GP counter 0, and re-enable all counters.
-      //The counter 0 stops at 0xfffffff82840
-      write_msr: MSR_CORE_PERF_GLOBAL_CTRL(38f), value 0
-      write_msr: MSR_IA32_PEBS_ENABLE(3f1), value 0
-      write_msr: MSR_P6_EVNTSEL0(186), value 40003003c
-      rdpmc: 0, value fffffff82840
-      write_msr: MSR_CORE_PERF_GLOBAL_CTRL(38f), value f000000ff
-
-      //The MSR trace of the same task schedule in again
-      //perf disable all counters, enable and set GP counter 0,
-      //enable PEBS, and re-enable all counters.
-      //0xffffffe17b80 (-2000000) is written to GP counter 0.
-      write_msr: MSR_CORE_PERF_GLOBAL_CTRL(38f), value 0
-      write_msr: MSR_IA32_PMC0(4c1), value ffffffe17b80
-      write_msr: MSR_P6_EVNTSEL0(186), value 40043003c
-      write_msr: MSR_IA32_PEBS_ENABLE(3f1), value 1
-      write_msr: MSR_CORE_PERF_GLOBAL_CTRL(38f), value f000000ff
-
-When the same task schedule in again, the counter should starts from
-previous left. However, it starts from the fixed period -2000000 again.
-
-A special variant of intel_pmu_save_and_restart() is used for
-auto-reload, which doesn't update the hwc->period_left.
-When the monitored task schedules in again, perf doesn't know the left
-period. The fixed period is used, which is inaccurate.
-
-With auto-reload, the counter always has a negative counter value. So
-the left period is -value. Update the period_left in
-intel_pmu_save_and_restart_reload().
-
-With the patch:
-
-      //The MSR trace of task schedule out
-      write_msr: MSR_CORE_PERF_GLOBAL_CTRL(38f), value 0
-      write_msr: MSR_IA32_PEBS_ENABLE(3f1), value 0
-      write_msr: MSR_P6_EVNTSEL0(186), value 40003003c
-      rdpmc: 0, value ffffffe25cbc
-      write_msr: MSR_CORE_PERF_GLOBAL_CTRL(38f), value f000000ff
-
-      //The MSR trace of the same task schedule in again
-      write_msr: MSR_CORE_PERF_GLOBAL_CTRL(38f), value 0
-      write_msr: MSR_IA32_PMC0(4c1), value ffffffe25cbc
-      write_msr: MSR_P6_EVNTSEL0(186), value 40043003c
-      write_msr: MSR_IA32_PEBS_ENABLE(3f1), value 1
-      write_msr: MSR_CORE_PERF_GLOBAL_CTRL(38f), value f000000ff
-
-Fixes: d31fc13fdcb2 ("perf/x86/intel: Fix event update for auto-reload")
 Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lkml.kernel.org/r/20200121190125.3389-1-kan.liang@linux.intel.com
+Reviewed-by: Andi Kleen <ak@linux.intel.com>
+Link: https://lkml.kernel.org/r/1580236279-35492-3-git-send-email-kan.liang@linux.intel.com
 ---
- arch/x86/events/intel/ds.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/events/msr.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/events/intel/ds.c b/arch/x86/events/intel/ds.c
-index 4b94ae4..dc43cc1 100644
---- a/arch/x86/events/intel/ds.c
-+++ b/arch/x86/events/intel/ds.c
-@@ -1714,6 +1714,8 @@ intel_pmu_save_and_restart_reload(struct perf_event *event, int count)
- 	old = ((s64)(prev_raw_count << shift) >> shift);
- 	local64_add(new - old + count * period, &event->count);
+diff --git a/arch/x86/events/msr.c b/arch/x86/events/msr.c
+index 6f86650..a949f6f 100644
+--- a/arch/x86/events/msr.c
++++ b/arch/x86/events/msr.c
+@@ -75,8 +75,9 @@ static bool test_intel(int idx, void *data)
  
-+	local64_set(&hwc->period_left, -new);
-+
- 	perf_event_update_userpage(event);
+ 	case INTEL_FAM6_ATOM_GOLDMONT:
+ 	case INTEL_FAM6_ATOM_GOLDMONT_D:
+-
+ 	case INTEL_FAM6_ATOM_GOLDMONT_PLUS:
++	case INTEL_FAM6_ATOM_TREMONT_D:
++	case INTEL_FAM6_ATOM_TREMONT:
  
- 	return 0;
+ 	case INTEL_FAM6_XEON_PHI_KNL:
+ 	case INTEL_FAM6_XEON_PHI_KNM:
