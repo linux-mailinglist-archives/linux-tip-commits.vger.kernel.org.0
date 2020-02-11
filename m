@@ -2,38 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A4E2158EE9
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 11 Feb 2020 13:48:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A9750158F1A
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 11 Feb 2020 13:49:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728672AbgBKMr7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 11 Feb 2020 07:47:59 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:46031 "EHLO
+        id S1729159AbgBKMte (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 11 Feb 2020 07:49:34 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:46008 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728646AbgBKMr7 (ORCPT
+        with ESMTP id S1727723AbgBKMrz (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 11 Feb 2020 07:47:59 -0500
+        Tue, 11 Feb 2020 07:47:55 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1j1UxF-0007dY-6w; Tue, 11 Feb 2020 13:47:53 +0100
+        id 1j1UxD-0007cl-0M; Tue, 11 Feb 2020 13:47:51 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 255491C201D;
-        Tue, 11 Feb 2020 13:47:50 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 72B081C201A;
+        Tue, 11 Feb 2020 13:47:49 +0100 (CET)
 Date:   Tue, 11 Feb 2020 12:47:49 -0000
-From:   "tip-bot2 for Scott Wood" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Morten Rasmussen" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/core: Remove duplicate assignment in
- sched_tick_remote()
-Cc:     Scott Wood <swood@redhat.com>,
+Subject: [tip: sched/core] sched/topology: Remove SD_BALANCE_WAKE on
+ asymmetric capacity systems
+Cc:     Morten Rasmussen <morten.rasmussen@arm.com>,
+        Valentin Schneider <valentin.schneider@arm.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        Quentin Perret <qperret@google.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <1580776558-12882-1-git-send-email-swood@redhat.com>
-References: <1580776558-12882-1-git-send-email-swood@redhat.com>
+In-Reply-To: <20200206191957.12325-3-valentin.schneider@arm.com>
+References: <20200206191957.12325-3-valentin.schneider@arm.com>
 MIME-Version: 1.0
-Message-ID: <158142526992.411.11702564238794183662.tip-bot2@tip-bot2>
+Message-ID: <158142526917.411.14392005872156192791.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,35 +51,63 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     4ccfaab0853bfea772558db6a5e289e87cba57ed
-Gitweb:        https://git.kernel.org/tip/4ccfaab0853bfea772558db6a5e289e87cba57ed
-Author:        Scott Wood <swood@redhat.com>
-AuthorDate:    Mon, 03 Feb 2020 19:35:58 -05:00
+Commit-ID:     38c6e4963b509c47c33539534b84195558c0376d
+Gitweb:        https://git.kernel.org/tip/38c6e4963b509c47c33539534b84195558c0376d
+Author:        Morten Rasmussen <morten.rasmussen@arm.com>
+AuthorDate:    Thu, 06 Feb 2020 19:19:55 
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 11 Feb 2020 12:59:22 +01:00
+CommitterDate: Tue, 11 Feb 2020 13:02:50 +01:00
 
-sched/core: Remove duplicate assignment in sched_tick_remote()
+sched/topology: Remove SD_BALANCE_WAKE on asymmetric capacity systems
 
-A redundant "curr = rq->curr" was added; remove it.
+SD_BALANCE_WAKE was previously added to lower sched_domain levels on
+asymmetric CPU capacity systems by commit:
 
-Fixes: ebc0f83c78a2 ("timers/nohz: Update NOHZ load in remote tick")
-Signed-off-by: Scott Wood <swood@redhat.com>
+  9ee1cda5ee25 ("sched/core: Enable SD_BALANCE_WAKE for asymmetric capacity systems")
+
+to enable the use of find_idlest_cpu() and friends to find an appropriate
+CPU for tasks.
+
+That responsibility has now been shifted to select_idle_sibling() and
+friends, and hence the flag can be removed. Note that this causes
+asymmetric CPU capacity systems to no longer enter the slow wakeup path
+(find_idlest_cpu()) on wakeups - only on execs and forks (which is aligned
+with all other mainline topologies).
+
+Signed-off-by: Morten Rasmussen <morten.rasmussen@arm.com>
+[Changelog tweaks]
+Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lkml.kernel.org/r/1580776558-12882-1-git-send-email-swood@redhat.com
+Reviewed-by: Quentin Perret <qperret@google.com>
+Link: https://lkml.kernel.org/r/20200206191957.12325-3-valentin.schneider@arm.com
 ---
- kernel/sched/core.c | 1 -
- 1 file changed, 1 deletion(-)
+ kernel/sched/topology.c | 15 +++------------
+ 1 file changed, 3 insertions(+), 12 deletions(-)
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 45f79bc..377ec26 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -3683,7 +3683,6 @@ static void sched_tick_remote(struct work_struct *work)
- 	if (cpu_is_offline(cpu))
- 		goto out_unlock;
+diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
+index dfb64c0..0091188 100644
+--- a/kernel/sched/topology.c
++++ b/kernel/sched/topology.c
+@@ -1374,18 +1374,9 @@ sd_init(struct sched_domain_topology_level *tl,
+ 	 * Convert topological properties into behaviour.
+ 	 */
  
--	curr = rq->curr;
- 	update_rq_clock(rq);
+-	if (sd->flags & SD_ASYM_CPUCAPACITY) {
+-		struct sched_domain *t = sd;
+-
+-		/*
+-		 * Don't attempt to spread across CPUs of different capacities.
+-		 */
+-		if (sd->child)
+-			sd->child->flags &= ~SD_PREFER_SIBLING;
+-
+-		for_each_lower_domain(t)
+-			t->flags |= SD_BALANCE_WAKE;
+-	}
++	/* Don't attempt to spread across CPUs of different capacities. */
++	if ((sd->flags & SD_ASYM_CPUCAPACITY) && sd->child)
++		sd->child->flags &= ~SD_PREFER_SIBLING;
  
- 	if (!is_idle_task(curr)) {
+ 	if (sd->flags & SD_SHARE_CPUCAPACITY) {
+ 		sd->imbalance_pct = 110;
