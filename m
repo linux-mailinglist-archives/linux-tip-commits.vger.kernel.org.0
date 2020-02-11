@@ -2,39 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FF5B158F26
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 11 Feb 2020 13:50:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A01ED158F1C
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 11 Feb 2020 13:49:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728526AbgBKMrw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 11 Feb 2020 07:47:52 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:45979 "EHLO
+        id S1728872AbgBKMtj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 11 Feb 2020 07:49:39 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:45994 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728023AbgBKMrv (ORCPT
+        with ESMTP id S1728541AbgBKMry (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 11 Feb 2020 07:47:51 -0500
+        Tue, 11 Feb 2020 07:47:54 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1j1Ux9-0007b5-Qy; Tue, 11 Feb 2020 13:47:47 +0100
+        id 1j1UxB-0007bl-2i; Tue, 11 Feb 2020 13:47:49 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 7455D1C2018;
-        Tue, 11 Feb 2020 13:47:47 +0100 (CET)
-Date:   Tue, 11 Feb 2020 12:47:47 -0000
-From:   "tip-bot2 for Randy Dunlap" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B1AF61C201A;
+        Tue, 11 Feb 2020 13:47:48 +0100 (CET)
+Date:   Tue, 11 Feb 2020 12:47:48 -0000
+From:   "tip-bot2 for Morten Rasmussen" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] sched/fair: Fix kernel-doc warning in
- attach_entity_load_avg()
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
+Subject: [tip: sched/core] sched/fair: Remove wake_cap()
+Cc:     Morten Rasmussen <morten.rasmussen@arm.com>,
+        Valentin Schneider <valentin.schneider@arm.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <cbe964e4-6879-fd08-41c9-ef1917414af4@infradead.org>
-References: <cbe964e4-6879-fd08-41c9-ef1917414af4@infradead.org>
+        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200206191957.12325-5-valentin.schneider@arm.com>
+References: <20200206191957.12325-5-valentin.schneider@arm.com>
 MIME-Version: 1.0
-Message-ID: <158142526720.411.14848051383270906553.tip-bot2@tip-bot2>
+Message-ID: <158142526837.411.5720078180177527135.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,41 +47,79 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/urgent branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     e9f5490c3574b435ce7fe7a71724aa3866babc7f
-Gitweb:        https://git.kernel.org/tip/e9f5490c3574b435ce7fe7a71724aa3866babc7f
-Author:        Randy Dunlap <rdunlap@infradead.org>
-AuthorDate:    Sun, 09 Feb 2020 19:29:12 -08:00
+Commit-ID:     25ac227a25ac946e0356772012398cd1710a8bab
+Gitweb:        https://git.kernel.org/tip/25ac227a25ac946e0356772012398cd1710a8bab
+Author:        Morten Rasmussen <morten.rasmussen@arm.com>
+AuthorDate:    Thu, 06 Feb 2020 19:19:57 
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 11 Feb 2020 13:05:10 +01:00
+CommitterDate: Tue, 11 Feb 2020 13:04:16 +01:00
 
-sched/fair: Fix kernel-doc warning in attach_entity_load_avg()
+sched/fair: Remove wake_cap()
 
-Fix kernel-doc warning in kernel/sched/fair.c, caused by a recent
-function parameter removal:
+Capacity-awareness in the wake-up path previously involved disabling
+wake_affine in certain scenarios. We have just made select_idle_sibling()
+capacity-aware, so this isn't needed anymore.
 
-  ../kernel/sched/fair.c:3526: warning: Excess function parameter 'flags' description in 'attach_entity_load_avg'
+Remove wake_cap() entirely.
 
-Fixes: a4f9a0e51bbf ("sched/fair: Remove redundant call to cpufreq_update_util()")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Morten Rasmussen <morten.rasmussen@arm.com>
+[Changelog tweaks]
+Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+[Changelog tweaks]
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
-Link: https://lkml.kernel.org/r/cbe964e4-6879-fd08-41c9-ef1917414af4@infradead.org
+Link: https://lkml.kernel.org/r/20200206191957.12325-5-valentin.schneider@arm.com
 ---
- kernel/sched/fair.c | 1 -
- 1 file changed, 1 deletion(-)
+ kernel/sched/fair.c | 30 +-----------------------------
+ 1 file changed, 1 insertion(+), 29 deletions(-)
 
 diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 94c3b84..3c8a379 100644
+index 6fb47a2..a7e11b1 100644
 --- a/kernel/sched/fair.c
 +++ b/kernel/sched/fair.c
-@@ -3516,7 +3516,6 @@ update_cfs_rq_load_avg(u64 now, struct cfs_rq *cfs_rq)
-  * attach_entity_load_avg - attach this entity to its cfs_rq load avg
-  * @cfs_rq: cfs_rq to attach to
-  * @se: sched_entity to attach
-- * @flags: migration hints
-  *
-  * Must call update_cfs_rq_load_avg() before this, since we rely on
-  * cfs_rq->avg.last_update_time being current.
+@@ -6146,33 +6146,6 @@ static unsigned long cpu_util_without(int cpu, struct task_struct *p)
+ }
+ 
+ /*
+- * Disable WAKE_AFFINE in the case where task @p doesn't fit in the
+- * capacity of either the waking CPU @cpu or the previous CPU @prev_cpu.
+- *
+- * In that case WAKE_AFFINE doesn't make sense and we'll let
+- * BALANCE_WAKE sort things out.
+- */
+-static int wake_cap(struct task_struct *p, int cpu, int prev_cpu)
+-{
+-	long min_cap, max_cap;
+-
+-	if (!static_branch_unlikely(&sched_asym_cpucapacity))
+-		return 0;
+-
+-	min_cap = min(capacity_orig_of(prev_cpu), capacity_orig_of(cpu));
+-	max_cap = cpu_rq(cpu)->rd->max_cpu_capacity;
+-
+-	/* Minimum capacity is close to max, no need to abort wake_affine */
+-	if (max_cap - min_cap < max_cap >> 3)
+-		return 0;
+-
+-	/* Bring task utilization in sync with prev_cpu */
+-	sync_entity_load_avg(&p->se);
+-
+-	return !task_fits_capacity(p, min_cap);
+-}
+-
+-/*
+  * Predicts what cpu_util(@cpu) would return if @p was migrated (and enqueued)
+  * to @dst_cpu.
+  */
+@@ -6436,8 +6409,7 @@ select_task_rq_fair(struct task_struct *p, int prev_cpu, int sd_flag, int wake_f
+ 			new_cpu = prev_cpu;
+ 		}
+ 
+-		want_affine = !wake_wide(p) && !wake_cap(p, cpu, prev_cpu) &&
+-			      cpumask_test_cpu(cpu, p->cpus_ptr);
++		want_affine = !wake_wide(p) && cpumask_test_cpu(cpu, p->cpus_ptr);
+ 	}
+ 
+ 	rcu_read_lock();
