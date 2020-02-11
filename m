@@ -2,37 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A541B158F12
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 11 Feb 2020 13:49:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FF5B158F26
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 11 Feb 2020 13:50:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728021AbgBKMsX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 11 Feb 2020 07:48:23 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:46027 "EHLO
+        id S1728526AbgBKMrw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 11 Feb 2020 07:47:52 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:45979 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728629AbgBKMr4 (ORCPT
+        with ESMTP id S1728023AbgBKMrv (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 11 Feb 2020 07:47:56 -0500
+        Tue, 11 Feb 2020 07:47:51 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1j1UxF-0007b9-6A; Tue, 11 Feb 2020 13:47:53 +0100
+        id 1j1Ux9-0007b5-Qy; Tue, 11 Feb 2020 13:47:47 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id CAFA61C2019;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 7455D1C2018;
         Tue, 11 Feb 2020 13:47:47 +0100 (CET)
 Date:   Tue, 11 Feb 2020 12:47:47 -0000
-From:   "tip-bot2 for Madhuparna Bhowmik" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Randy Dunlap" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] sched/core: Annotate curr pointer in rq with __rcu
-Cc:     Madhuparna Bhowmik <madhuparnabhowmik10@gmail.com>,
+Subject: [tip: sched/urgent] sched/fair: Fix kernel-doc warning in
+ attach_entity_load_avg()
+Cc:     Randy Dunlap <rdunlap@infradead.org>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200201125803.20245-1-madhuparnabhowmik10@gmail.com>
-References: <20200201125803.20245-1-madhuparnabhowmik10@gmail.com>
+        Ingo Molnar <mingo@kernel.org>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <cbe964e4-6879-fd08-41c9-ef1917414af4@infradead.org>
+References: <cbe964e4-6879-fd08-41c9-ef1917414af4@infradead.org>
 MIME-Version: 1.0
-Message-ID: <158142526758.411.13426115731353964686.tip-bot2@tip-bot2>
+Message-ID: <158142526720.411.14848051383270906553.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,43 +50,39 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     4104a562e0ca62e971089db9d3c47794a0d7d4eb
-Gitweb:        https://git.kernel.org/tip/4104a562e0ca62e971089db9d3c47794a0d7d4eb
-Author:        Madhuparna Bhowmik <madhuparnabhowmik10@gmail.com>
-AuthorDate:    Sat, 01 Feb 2020 18:28:03 +05:30
+Commit-ID:     e9f5490c3574b435ce7fe7a71724aa3866babc7f
+Gitweb:        https://git.kernel.org/tip/e9f5490c3574b435ce7fe7a71724aa3866babc7f
+Author:        Randy Dunlap <rdunlap@infradead.org>
+AuthorDate:    Sun, 09 Feb 2020 19:29:12 -08:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 11 Feb 2020 13:00:37 +01:00
+CommitterDate: Tue, 11 Feb 2020 13:05:10 +01:00
 
-sched/core: Annotate curr pointer in rq with __rcu
+sched/fair: Fix kernel-doc warning in attach_entity_load_avg()
 
-This patch fixes the following sparse warnings in sched/core.c
-and sched/membarrier.c:
+Fix kernel-doc warning in kernel/sched/fair.c, caused by a recent
+function parameter removal:
 
-  kernel/sched/core.c:2372:27: error: incompatible types in comparison expression
-  kernel/sched/core.c:4061:17: error: incompatible types in comparison expression
-  kernel/sched/core.c:6067:9: error: incompatible types in comparison expression
-  kernel/sched/membarrier.c:108:21: error: incompatible types in comparison expression
-  kernel/sched/membarrier.c:177:21: error: incompatible types in comparison expression
-  kernel/sched/membarrier.c:243:21: error: incompatible types in comparison expression
+  ../kernel/sched/fair.c:3526: warning: Excess function parameter 'flags' description in 'attach_entity_load_avg'
 
-Signed-off-by: Madhuparna Bhowmik <madhuparnabhowmik10@gmail.com>
+Fixes: a4f9a0e51bbf ("sched/fair: Remove redundant call to cpufreq_update_util()")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lkml.kernel.org/r/20200201125803.20245-1-madhuparnabhowmik10@gmail.com
+Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
+Link: https://lkml.kernel.org/r/cbe964e4-6879-fd08-41c9-ef1917414af4@infradead.org
 ---
- kernel/sched/sched.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/sched/fair.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index 5876e6b..9ea6478 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -896,7 +896,7 @@ struct rq {
- 	 */
- 	unsigned long		nr_uninterruptible;
- 
--	struct task_struct	*curr;
-+	struct task_struct __rcu	*curr;
- 	struct task_struct	*idle;
- 	struct task_struct	*stop;
- 	unsigned long		next_balance;
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 94c3b84..3c8a379 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -3516,7 +3516,6 @@ update_cfs_rq_load_avg(u64 now, struct cfs_rq *cfs_rq)
+  * attach_entity_load_avg - attach this entity to its cfs_rq load avg
+  * @cfs_rq: cfs_rq to attach to
+  * @se: sched_entity to attach
+- * @flags: migration hints
+  *
+  * Must call update_cfs_rq_load_avg() before this, since we rely on
+  * cfs_rq->avg.last_update_time being current.
