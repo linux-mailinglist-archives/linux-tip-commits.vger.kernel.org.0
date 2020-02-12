@@ -2,38 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E1B1315AB51
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 12 Feb 2020 15:51:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6424415AB54
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 12 Feb 2020 15:51:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728457AbgBLOvC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 12 Feb 2020 09:51:02 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:49136 "EHLO
+        id S1727531AbgBLOvH (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 12 Feb 2020 09:51:07 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:49137 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727531AbgBLOvC (ORCPT
+        with ESMTP id S1728286AbgBLOvB (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 12 Feb 2020 09:51:02 -0500
+        Wed, 12 Feb 2020 09:51:01 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1j1tLl-0006ic-Tu; Wed, 12 Feb 2020 15:50:50 +0100
+        id 1j1tLm-0006ig-KN; Wed, 12 Feb 2020 15:50:50 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 89A1D1C202C;
-        Wed, 12 Feb 2020 15:50:49 +0100 (CET)
-Date:   Wed, 12 Feb 2020 14:50:49 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 42B951C202C;
+        Wed, 12 Feb 2020 15:50:50 +0100 (CET)
+Date:   Wed, 12 Feb 2020 14:50:50 -0000
 From:   "tip-bot2 for Yu-cheng Yu" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/fpu] x86/fpu/xstate: Warn when checking alignment of
- disabled xfeatures
+Subject: [tip: x86/fpu] x86/fpu/xstate: Fix last_good_offset in
+ setup_xstate_features()
 Cc:     "Yu-cheng Yu" <yu-cheng.yu@intel.com>,
         Borislav Petkov <bp@suse.de>,
         Dave Hansen <dave.hansen@linux.intel.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200109211452.27369-4-yu-cheng.yu@intel.com>
-References: <20200109211452.27369-4-yu-cheng.yu@intel.com>
+In-Reply-To: <20200109211452.27369-2-yu-cheng.yu@intel.com>
+References: <20200109211452.27369-2-yu-cheng.yu@intel.com>
 MIME-Version: 1.0
-Message-ID: <158151904924.411.12474197700112093867.tip-bot2@tip-bot2>
+Message-ID: <158151905003.411.10979205277016627753.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,42 +49,82 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/fpu branch of tip:
 
-Commit-ID:     e70b100806d63fb79775858ea92e1a716da46186
-Gitweb:        https://git.kernel.org/tip/e70b100806d63fb79775858ea92e1a716da46186
+Commit-ID:     c12e13dcd814023a903399ec5ac2e7082d664b8b
+Gitweb:        https://git.kernel.org/tip/c12e13dcd814023a903399ec5ac2e7082d664b8b
 Author:        Yu-cheng Yu <yu-cheng.yu@intel.com>
-AuthorDate:    Thu, 09 Jan 2020 13:14:52 -08:00
+AuthorDate:    Thu, 09 Jan 2020 13:14:50 -08:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 12 Feb 2020 15:43:34 +01:00
+CommitterDate: Tue, 11 Feb 2020 19:54:04 +01:00
 
-x86/fpu/xstate: Warn when checking alignment of disabled xfeatures
+x86/fpu/xstate: Fix last_good_offset in setup_xstate_features()
 
-An XSAVES component's alignment/offset is meaningful only when the
-feature is enabled. Return zero and WARN_ONCE on checking alignment of
-disabled features.
+The function setup_xstate_features() uses CPUID to find each xfeature's
+standard-format offset and size.  Since XSAVES always uses the compacted
+format, supervisor xstates are *NEVER* in the standard-format and their
+offsets are left as -1's.  However, they are still being tracked as
+last_good_offset.
+
+Fix it by tracking only user xstate offsets.
+
+ [ bp: Use xfeature_is_supervisor() and save an indentation level. Drop
+   now unused xfeature_is_user(). ]
 
 Signed-off-by: Yu-cheng Yu <yu-cheng.yu@intel.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
 Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lkml.kernel.org/r/20200109211452.27369-4-yu-cheng.yu@intel.com
+Link: https://lkml.kernel.org/r/20200109211452.27369-2-yu-cheng.yu@intel.com
 ---
- arch/x86/kernel/fpu/xstate.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/x86/kernel/fpu/xstate.c | 27 +++++++++++++--------------
+ 1 file changed, 13 insertions(+), 14 deletions(-)
 
 diff --git a/arch/x86/kernel/fpu/xstate.c b/arch/x86/kernel/fpu/xstate.c
-index edcaacd..73fe597 100644
+index a180659..fe67cab 100644
 --- a/arch/x86/kernel/fpu/xstate.c
 +++ b/arch/x86/kernel/fpu/xstate.c
-@@ -325,6 +325,13 @@ static int xfeature_is_aligned(int xfeature_nr)
- 	u32 eax, ebx, ecx, edx;
+@@ -120,11 +120,6 @@ static bool xfeature_is_supervisor(int xfeature_nr)
+ 	return ecx & 1;
+ }
  
- 	CHECK_XFEATURE(xfeature_nr);
+-static bool xfeature_is_user(int xfeature_nr)
+-{
+-	return !xfeature_is_supervisor(xfeature_nr);
+-}
+-
+ /*
+  * When executing XSAVEOPT (or other optimized XSAVE instructions), if
+  * a processor implementation detects that an FPU state component is still
+@@ -265,21 +260,25 @@ static void __init setup_xstate_features(void)
+ 
+ 		cpuid_count(XSTATE_CPUID, i, &eax, &ebx, &ecx, &edx);
+ 
++		xstate_sizes[i] = eax;
 +
-+	if (!xfeature_enabled(xfeature_nr)) {
-+		WARN_ONCE(1, "Checking alignment of disabled xfeature %d\n",
-+			  xfeature_nr);
-+		return 0;
-+	}
+ 		/*
+-		 * If an xfeature is supervisor state, the offset
+-		 * in EBX is invalid. We leave it to -1.
++		 * If an xfeature is supervisor state, the offset in EBX is
++		 * invalid, leave it to -1.
+ 		 */
+-		if (xfeature_is_user(i))
+-			xstate_offsets[i] = ebx;
++		if (xfeature_is_supervisor(i))
++			continue;
 +
- 	cpuid_count(XSTATE_CPUID, xfeature_nr, &eax, &ebx, &ecx, &edx);
- 	/*
- 	 * The value returned by ECX[1] indicates the alignment
++		xstate_offsets[i] = ebx;
+ 
+-		xstate_sizes[i] = eax;
+ 		/*
+-		 * In our xstate size checks, we assume that the
+-		 * highest-numbered xstate feature has the
+-		 * highest offset in the buffer.  Ensure it does.
++		 * In our xstate size checks, we assume that the highest-numbered
++		 * xstate feature has the highest offset in the buffer.  Ensure
++		 * it does.
+ 		 */
+ 		WARN_ONCE(last_good_offset > xstate_offsets[i],
+-			"x86/fpu: misordered xstate at %d\n", last_good_offset);
++			  "x86/fpu: misordered xstate at %d\n", last_good_offset);
++
+ 		last_good_offset = xstate_offsets[i];
+ 	}
+ }
