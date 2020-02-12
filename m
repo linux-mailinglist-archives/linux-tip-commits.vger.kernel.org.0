@@ -2,38 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F2402158EFC
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 11 Feb 2020 13:49:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BC1715A8BA
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 12 Feb 2020 13:05:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729057AbgBKMsf (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 11 Feb 2020 07:48:35 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:46117 "EHLO
+        id S1728092AbgBLMEv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 12 Feb 2020 07:04:51 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:48419 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729042AbgBKMsd (ORCPT
+        with ESMTP id S1728452AbgBLMEn (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 11 Feb 2020 07:48:33 -0500
+        Wed, 12 Feb 2020 07:04:43 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1j1Uxo-0007p2-58; Tue, 11 Feb 2020 13:48:28 +0100
+        id 1j1qkw-0003Zu-UF; Wed, 12 Feb 2020 13:04:39 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 88E671C201B;
-        Tue, 11 Feb 2020 13:48:26 +0100 (CET)
-Date:   Tue, 11 Feb 2020 12:48:26 -0000
-From:   "tip-bot2 for Waiman Long" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 8B67D1C2005;
+        Wed, 12 Feb 2020 13:04:37 +0100 (CET)
+Date:   Wed, 12 Feb 2020 12:04:37 -0000
+From:   "tip-bot2 for Arvind Sankar" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] locking/lockdep: Decrement IRQ context counters
- when removing lock chain
-Cc:     Waiman Long <longman@redhat.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
+Subject: [tip: x86/boot] x86/boot/compressed/64: Use 32-bit (zero-extended)
+ MOV for z_output_len
+Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
+        Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200206152408.24165-2-longman@redhat.com>
-References: <20200206152408.24165-2-longman@redhat.com>
+In-Reply-To: <20200211173333.1722739-1-nivedita@alum.mit.edu>
+References: <20200211173333.1722739-1-nivedita@alum.mit.edu>
 MIME-Version: 1.0
-Message-ID: <158142530623.411.14020420897822218115.tip-bot2@tip-bot2>
+Message-ID: <158150907715.411.11504187337643136234.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,143 +46,63 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/core branch of tip:
+The following commit has been merged into the x86/boot branch of tip:
 
-Commit-ID:     b3b9c187dc2544923a601733a85352b9ddaba9b3
-Gitweb:        https://git.kernel.org/tip/b3b9c187dc2544923a601733a85352b9ddaba9b3
-Author:        Waiman Long <longman@redhat.com>
-AuthorDate:    Thu, 06 Feb 2020 10:24:03 -05:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 11 Feb 2020 13:10:48 +01:00
+Commit-ID:     a86255fe5258714e1f7c1bdfe95f08e4d098d450
+Gitweb:        https://git.kernel.org/tip/a86255fe5258714e1f7c1bdfe95f08e4d098d450
+Author:        Arvind Sankar <nivedita@alum.mit.edu>
+AuthorDate:    Tue, 11 Feb 2020 12:33:33 -05:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Wed, 12 Feb 2020 11:15:31 +01:00
 
-locking/lockdep: Decrement IRQ context counters when removing lock chain
+x86/boot/compressed/64: Use 32-bit (zero-extended) MOV for z_output_len
 
-There are currently three counters to track the IRQ context of a lock
-chain - nr_hardirq_chains, nr_softirq_chains and nr_process_chains.
-They are incremented when a new lock chain is added, but they are
-not decremented when a lock chain is removed. That causes some of the
-statistic counts reported by /proc/lockdep_stats to be incorrect.
-IRQ
-Fix that by decrementing the right counter when a lock chain is removed.
+z_output_len is the size of the decompressed payload (i.e. vmlinux +
+vmlinux.relocs) and is generated as an unsigned 32-bit quantity by
+mkpiggy.c.
 
-Since inc_chains() no longer accesses hardirq_context and softirq_context
-directly, it is moved out from the CONFIG_TRACE_IRQFLAGS conditional
-compilation block.
+The current
 
-Fixes: a0b0fd53e1e6 ("locking/lockdep: Free lock classes that are no longer in use")
-Signed-off-by: Waiman Long <longman@redhat.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lkml.kernel.org/r/20200206152408.24165-2-longman@redhat.com
+  movq $z_output_len, %r9
+
+instruction generates a sign-extended move to %r9. Using
+
+  movl $z_output_len, %r9d
+
+will instead zero-extend into %r9, which is appropriate for an unsigned
+32-bit quantity. This is also what is already done for z_input_len, the
+size of the compressed payload.
+
+[ bp:
+
+  Also, z_output_len cannot be a 64-bit quantity because it participates
+  in:
+
+  init_size:              .long INIT_SIZE         # kernel initialization size
+
+  through INIT_SIZE which is a 32-bit quantity determined by the .long
+  directive (vs .quad for 64-bit). Furthermore, if it really must be a
+  64-bit quantity, then the insn must be MOVABS which can accommodate a
+  64-bit immediate and which the toolchain does not generate automatically.
+]
+
+Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lkml.kernel.org/r/20200211173333.1722739-1-nivedita@alum.mit.edu
 ---
- kernel/locking/lockdep.c           | 40 ++++++++++++++++-------------
- kernel/locking/lockdep_internals.h |  6 ++++-
- 2 files changed, 29 insertions(+), 17 deletions(-)
+ arch/x86/boot/compressed/head_64.S | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
-index 32406ef..35449f5 100644
---- a/kernel/locking/lockdep.c
-+++ b/kernel/locking/lockdep.c
-@@ -2298,18 +2298,6 @@ static int check_irq_usage(struct task_struct *curr, struct held_lock *prev,
- 	return 0;
- }
+diff --git a/arch/x86/boot/compressed/head_64.S b/arch/x86/boot/compressed/head_64.S
+index d1220de..68f31c4 100644
+--- a/arch/x86/boot/compressed/head_64.S
++++ b/arch/x86/boot/compressed/head_64.S
+@@ -482,7 +482,7 @@ SYM_FUNC_START_LOCAL_NOALIGN(.Lrelocated)
+ 	leaq	input_data(%rip), %rdx  /* input_data */
+ 	movl	$z_input_len, %ecx	/* input_len */
+ 	movq	%rbp, %r8		/* output target address */
+-	movq	$z_output_len, %r9	/* decompressed length, end of relocs */
++	movl	$z_output_len, %r9d	/* decompressed length, end of relocs */
+ 	call	extract_kernel		/* returns kernel location in %rax */
+ 	popq	%rsi
  
--static void inc_chains(void)
--{
--	if (current->hardirq_context)
--		nr_hardirq_chains++;
--	else {
--		if (current->softirq_context)
--			nr_softirq_chains++;
--		else
--			nr_process_chains++;
--	}
--}
--
- #else
- 
- static inline int check_irq_usage(struct task_struct *curr,
-@@ -2317,13 +2305,27 @@ static inline int check_irq_usage(struct task_struct *curr,
- {
- 	return 1;
- }
-+#endif /* CONFIG_TRACE_IRQFLAGS */
- 
--static inline void inc_chains(void)
-+static void inc_chains(int irq_context)
- {
--	nr_process_chains++;
-+	if (irq_context & LOCK_CHAIN_HARDIRQ_CONTEXT)
-+		nr_hardirq_chains++;
-+	else if (irq_context & LOCK_CHAIN_SOFTIRQ_CONTEXT)
-+		nr_softirq_chains++;
-+	else
-+		nr_process_chains++;
- }
- 
--#endif /* CONFIG_TRACE_IRQFLAGS */
-+static void dec_chains(int irq_context)
-+{
-+	if (irq_context & LOCK_CHAIN_HARDIRQ_CONTEXT)
-+		nr_hardirq_chains--;
-+	else if (irq_context & LOCK_CHAIN_SOFTIRQ_CONTEXT)
-+		nr_softirq_chains--;
-+	else
-+		nr_process_chains--;
-+}
- 
- static void
- print_deadlock_scenario(struct held_lock *nxt, struct held_lock *prv)
-@@ -2843,7 +2845,7 @@ static inline int add_chain_cache(struct task_struct *curr,
- 
- 	hlist_add_head_rcu(&chain->entry, hash_head);
- 	debug_atomic_inc(chain_lookup_misses);
--	inc_chains();
-+	inc_chains(chain->irq_context);
- 
- 	return 1;
- }
-@@ -3596,7 +3598,8 @@ lock_used:
- 
- static inline unsigned int task_irq_context(struct task_struct *task)
- {
--	return 2 * !!task->hardirq_context + !!task->softirq_context;
-+	return LOCK_CHAIN_HARDIRQ_CONTEXT * !!task->hardirq_context +
-+	       LOCK_CHAIN_SOFTIRQ_CONTEXT * !!task->softirq_context;
- }
- 
- static int separate_irq_context(struct task_struct *curr,
-@@ -4798,6 +4801,8 @@ recalc:
- 		return;
- 	/* Overwrite the chain key for concurrent RCU readers. */
- 	WRITE_ONCE(chain->chain_key, chain_key);
-+	dec_chains(chain->irq_context);
-+
- 	/*
- 	 * Note: calling hlist_del_rcu() from inside a
- 	 * hlist_for_each_entry_rcu() loop is safe.
-@@ -4819,6 +4824,7 @@ recalc:
- 	}
- 	*new_chain = *chain;
- 	hlist_add_head_rcu(&new_chain->entry, chainhashentry(chain_key));
-+	inc_chains(new_chain->irq_context);
- #endif
- }
- 
-diff --git a/kernel/locking/lockdep_internals.h b/kernel/locking/lockdep_internals.h
-index 18d85ae..a525368 100644
---- a/kernel/locking/lockdep_internals.h
-+++ b/kernel/locking/lockdep_internals.h
-@@ -106,6 +106,12 @@ static const unsigned long LOCKF_USED_IN_IRQ_READ =
- #define STACK_TRACE_HASH_SIZE	16384
- #endif
- 
-+/*
-+ * Bit definitions for lock_chain.irq_context
-+ */
-+#define LOCK_CHAIN_SOFTIRQ_CONTEXT	(1 << 0)
-+#define LOCK_CHAIN_HARDIRQ_CONTEXT	(1 << 1)
-+
- #define MAX_LOCKDEP_CHAINS	(1UL << MAX_LOCKDEP_CHAINS_BITS)
- 
- #define MAX_LOCKDEP_CHAIN_HLOCKS (MAX_LOCKDEP_CHAINS*5)
