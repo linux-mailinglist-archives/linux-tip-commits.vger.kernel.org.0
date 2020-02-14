@@ -2,88 +2,87 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C596415CDE4
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 13 Feb 2020 23:11:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CD27315CEDF
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 14 Feb 2020 01:10:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727916AbgBMWLW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 13 Feb 2020 17:11:22 -0500
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:32668 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726282AbgBMWLV (ORCPT
+        id S1727595AbgBNAKg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 13 Feb 2020 19:10:36 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:53522 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727594AbgBNAKf (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 13 Feb 2020 17:11:21 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1581631880;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=L8CYIylXszw5T12nzwhCt2wOP17igubFfMw076GDMa8=;
-        b=RAdpu5qFwLkwa57yNe4+SaAIid5CBmLJZZgJ3Dvc+KHjmePuynQXlvrBIBzWomyZAuSeSW
-        fuAtrgmMndVqawuIoplIGGjsRabEPhTRPPP22WQTsWKP/9IEW7iFCsNc2v/xXU37y5Myk8
-        Rs8Eqs7FH7LTyn29SL/rIe0ziOxz+08=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-318-ClN-4b6NMPa4-IJWdfJHLw-1; Thu, 13 Feb 2020 17:11:04 -0500
-X-MC-Unique: ClN-4b6NMPa4-IJWdfJHLw-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 9746D1005514;
-        Thu, 13 Feb 2020 22:11:03 +0000 (UTC)
-Received: from treble (ovpn-121-12.rdu2.redhat.com [10.10.121.12])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id AFB14272A1;
-        Thu, 13 Feb 2020 22:11:02 +0000 (UTC)
-Date:   Thu, 13 Feb 2020 16:11:00 -0600
-From:   Josh Poimboeuf <jpoimboe@redhat.com>
-To:     tip-bot2 for Josh Poimboeuf <tip-bot2@linutronix.de>
+        Thu, 13 Feb 2020 19:10:35 -0500
+Received: from p5b06da22.dip0.t-ipconnect.de ([91.6.218.34] helo=nanos.tec.linutronix.de)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tglx@linutronix.de>)
+        id 1j2OYt-0005cO-DU; Fri, 14 Feb 2020 01:10:27 +0100
+Received: by nanos.tec.linutronix.de (Postfix, from userid 1000)
+        id E60DA101115; Fri, 14 Feb 2020 01:10:26 +0100 (CET)
+From:   Thomas Gleixner <tglx@linutronix.de>
+To:     Josh Poimboeuf <jpoimboe@redhat.com>,
+        tip-bot2 for Josh Poimboeuf <tip-bot2@linutronix.de>
 Cc:     linux-tip-commits@vger.kernel.org, Borislav Petkov <bp@suse.de>,
         Julien Thierry <jthierry@redhat.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [tip: core/objtool] objtool: Fail the kernel build on fatal
- errors
-Message-ID: <20200213221100.odwg5gan3dwcpk6g@treble>
-References: <f18c3743de0fef673d49dd35760f26bdef7f6fc3.1581359535.git.jpoimboe@redhat.com>
- <158142525822.411.5401976987070210798.tip-bot2@tip-bot2>
+Subject: Re: [tip: core/objtool] objtool: Fail the kernel build on fatal errors
+In-Reply-To: <20200213221100.odwg5gan3dwcpk6g@treble>
+References: <f18c3743de0fef673d49dd35760f26bdef7f6fc3.1581359535.git.jpoimboe@redhat.com> <158142525822.411.5401976987070210798.tip-bot2@tip-bot2> <20200213221100.odwg5gan3dwcpk6g@treble>
+Date:   Fri, 14 Feb 2020 01:10:26 +0100
+Message-ID: <87sgjeghal.fsf@nanos.tec.linutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <158142525822.411.5401976987070210798.tip-bot2@tip-bot2>
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+Content-Type: text/plain
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Tue, Feb 11, 2020 at 12:47:38PM -0000, tip-bot2 for Josh Poimboeuf wrote:
-> The following commit has been merged into the core/objtool branch of tip:
-> 
-> Commit-ID:     644592d328370af4b3e027b7b1ae9f81613782d8
-> Gitweb:        https://git.kernel.org/tip/644592d328370af4b3e027b7b1ae9f81613782d8
-> Author:        Josh Poimboeuf <jpoimboe@redhat.com>
-> AuthorDate:    Mon, 10 Feb 2020 12:32:38 -06:00
-> Committer:     Borislav Petkov <bp@suse.de>
-> CommitterDate: Tue, 11 Feb 2020 13:27:03 +01:00
-> 
-> objtool: Fail the kernel build on fatal errors
-> 
-> When objtool encounters a fatal error, it usually means the binary is
-> corrupt or otherwise broken in some way.  Up until now, such errors were
-> just treated as warnings which didn't fail the kernel build.
-> 
-> However, objtool is now stable enough that if a fatal error is
-> discovered, it most likely means something is seriously wrong and it
-> should fail the kernel build.
-> 
-> Note that this doesn't apply to "normal" objtool warnings; only fatal
-> ones.
+Josh Poimboeuf <jpoimboe@redhat.com> writes:
+> On Tue, Feb 11, 2020 at 12:47:38PM -0000, tip-bot2 for Josh Poimboeuf wrote:
+>> The following commit has been merged into the core/objtool branch of tip:
+>> 
+>> Commit-ID:     644592d328370af4b3e027b7b1ae9f81613782d8
+>> Gitweb:        https://git.kernel.org/tip/644592d328370af4b3e027b7b1ae9f81613782d8
+>> Author:        Josh Poimboeuf <jpoimboe@redhat.com>
+>> AuthorDate:    Mon, 10 Feb 2020 12:32:38 -06:00
+>> Committer:     Borislav Petkov <bp@suse.de>
+>> CommitterDate: Tue, 11 Feb 2020 13:27:03 +01:00
+>> 
+>> objtool: Fail the kernel build on fatal errors
+>> 
+>> When objtool encounters a fatal error, it usually means the binary is
+>> corrupt or otherwise broken in some way.  Up until now, such errors were
+>> just treated as warnings which didn't fail the kernel build.
+>> 
+>> However, objtool is now stable enough that if a fatal error is
+>> discovered, it most likely means something is seriously wrong and it
+>> should fail the kernel build.
+>> 
+>> Note that this doesn't apply to "normal" objtool warnings; only fatal
+>> ones.
+>
+> Clang still has some toolchain issues which need to be sorted out, so
+> upgrading the fatal errors is causing their CI to fail.
 
-Clang still has some toolchain issues which need to be sorted out, so
-upgrading the fatal errors is causing their CI to fail.
+Good. Last time we made it fail they just fixed their stuff.
 
-So I think we need to drop this one for now.
+> So I think we need to drop this one for now.
 
-Boris, are you able to just drop it or should I send a revert?
+Why? It's our decision to define which level of toolchain brokeness is
+tolerable.
 
--- 
-Josh
+> Boris, are you able to just drop it or should I send a revert?
+
+I really want to see a revert which has a proper justification why the
+issues of clang are tolerable along with a clear statement when this
+fatal error will come back. And 'when' means a date, not 'when clang is
+fixed'.
+
+Thanks,
+
+        tglx
+
 
