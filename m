@@ -2,39 +2,42 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4254515FDAB
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 15 Feb 2020 09:43:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F3BA15FD8C
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 15 Feb 2020 09:42:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727894AbgBOImw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 15 Feb 2020 03:42:52 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:56751 "EHLO
+        id S1726594AbgBOImG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 15 Feb 2020 03:42:06 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:56816 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726233AbgBOIl5 (ORCPT
+        with ESMTP id S1726546AbgBOImF (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 15 Feb 2020 03:41:57 -0500
+        Sat, 15 Feb 2020 03:42:05 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1j2t1M-0005HY-1u; Sat, 15 Feb 2020 09:41:52 +0100
+        id 1j2t1R-0005Ha-HT; Sat, 15 Feb 2020 09:41:57 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A45B31C2019;
-        Sat, 15 Feb 2020 09:41:51 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 23CF11C205B;
+        Sat, 15 Feb 2020 09:41:52 +0100 (CET)
 Date:   Sat, 15 Feb 2020 08:41:51 -0000
-From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Jiri Olsa" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] tools headers UAPI: Sync copy of arm64's
- asm/unistd.h with the kernel sources
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        "Amanieu d'Antras" <amanieu@gmail.com>,
-        Christian Brauner <christian.brauner@ubuntu.com>,
+Subject: [tip: perf/urgent] perf maps: Move kmap::kmaps setup to maps__insert()
+Cc:     Ravi Bangoria <ravi.bangoria@linux.ibm.com>,
         Jiri Olsa <jolsa@kernel.org>,
+        Kim Phillips <kim.phillips@amd.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Michael Petlan <mpetlan@redhat.com>,
         Namhyung Kim <namhyung@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200210143218.24948-5-jolsa@kernel.org>
+References: <20200210143218.24948-5-jolsa@kernel.org>
 MIME-Version: 1.0
-Message-ID: <158175611136.13786.2812535110611017412.tip-bot2@tip-bot2>
+Message-ID: <158175611190.13786.10981561917449396493.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,45 +53,90 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     c75bec79fc080039e4575a0f239ea7b111aabe88
-Gitweb:        https://git.kernel.org/tip/c75bec79fc080039e4575a0f239ea7b111aabe88
-Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Tue, 11 Feb 2020 15:19:42 -03:00
+Commit-ID:     484214f49bd0948d716832a94e4737ca4dd02c16
+Gitweb:        https://git.kernel.org/tip/484214f49bd0948d716832a94e4737ca4dd02c16
+Author:        Jiri Olsa <jolsa@kernel.org>
+AuthorDate:    Mon, 10 Feb 2020 15:32:18 +01:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Tue, 11 Feb 2020 16:41:50 -03:00
+CommitterDate: Tue, 11 Feb 2020 16:41:49 -03:00
 
-tools headers UAPI: Sync copy of arm64's asm/unistd.h with the kernel sources
+perf maps: Move kmap::kmaps setup to maps__insert()
 
-To get the changes in:
+So the kmaps pointer setup is centralized and we do not need to update
+it in all those places (2 current places and few more missing) after
+calling maps__insert().
 
-  3e3c8ca5a351 ("arm64: Move __ARCH_WANT_SYS_CLONE3 definition to uapi headers")
-
-Silencing this tools/perf/ build warning:
-
-  Warning: Kernel ABI header at 'tools/arch/arm64/include/uapi/asm/unistd.h' differs from latest version at 'arch/arm64/include/uapi/asm/unistd.h'
-  diff -u tools/arch/arm64/include/uapi/asm/unistd.h arch/arm64/include/uapi/asm/unistd.h
-
-Which will probably end up enabling the use of "clone3" in 'perf trace -e',
-haven't checked the build with this change on an arm64 system.
-
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Amanieu d'Antras <amanieu@gmail.com>
-Cc: Christian Brauner <christian.brauner@ubuntu.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
+Reported-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+Tested-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+Tested-by: Kim Phillips <kim.phillips@amd.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Michael Petlan <mpetlan@redhat.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: http://lore.kernel.org/lkml/20200210143218.24948-5-jolsa@kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/arch/arm64/include/uapi/asm/unistd.h | 1 +
- 1 file changed, 1 insertion(+)
+ tools/perf/util/machine.c | 13 +------------
+ tools/perf/util/map.c     | 10 ++++++++++
+ 2 files changed, 11 insertions(+), 12 deletions(-)
 
-diff --git a/tools/arch/arm64/include/uapi/asm/unistd.h b/tools/arch/arm64/include/uapi/asm/unistd.h
-index 4703d21..f83a70e 100644
---- a/tools/arch/arm64/include/uapi/asm/unistd.h
-+++ b/tools/arch/arm64/include/uapi/asm/unistd.h
-@@ -19,5 +19,6 @@
- #define __ARCH_WANT_NEW_STAT
- #define __ARCH_WANT_SET_GET_RLIMIT
- #define __ARCH_WANT_TIME32_SYSCALLS
-+#define __ARCH_WANT_SYS_CLONE3
+diff --git a/tools/perf/util/machine.c b/tools/perf/util/machine.c
+index 0ad0265..fb5c2cd 100644
+--- a/tools/perf/util/machine.c
++++ b/tools/perf/util/machine.c
+@@ -981,7 +981,6 @@ int machine__create_extra_kernel_map(struct machine *machine,
  
- #include <asm-generic/unistd.h>
+ 	kmap = map__kmap(map);
+ 
+-	kmap->kmaps = &machine->kmaps;
+ 	strlcpy(kmap->name, xm->name, KMAP_NAME_LEN);
+ 
+ 	maps__insert(&machine->kmaps, map);
+@@ -1091,9 +1090,6 @@ int __weak machine__create_extra_kernel_maps(struct machine *machine __maybe_unu
+ static int
+ __machine__create_kernel_maps(struct machine *machine, struct dso *kernel)
+ {
+-	struct kmap *kmap;
+-	struct map *map;
+-
+ 	/* In case of renewal the kernel map, destroy previous one */
+ 	machine__destroy_kernel_maps(machine);
+ 
+@@ -1102,14 +1098,7 @@ __machine__create_kernel_maps(struct machine *machine, struct dso *kernel)
+ 		return -1;
+ 
+ 	machine->vmlinux_map->map_ip = machine->vmlinux_map->unmap_ip = identity__map_ip;
+-	map = machine__kernel_map(machine);
+-	kmap = map__kmap(map);
+-	if (!kmap)
+-		return -1;
+-
+-	kmap->kmaps = &machine->kmaps;
+-	maps__insert(&machine->kmaps, map);
+-
++	maps__insert(&machine->kmaps, machine->vmlinux_map);
+ 	return 0;
+ }
+ 
+diff --git a/tools/perf/util/map.c b/tools/perf/util/map.c
+index cea05fc..a08ca27 100644
+--- a/tools/perf/util/map.c
++++ b/tools/perf/util/map.c
+@@ -543,6 +543,16 @@ void maps__insert(struct maps *maps, struct map *map)
+ 	__maps__insert(maps, map);
+ 	++maps->nr_maps;
+ 
++	if (map->dso && map->dso->kernel) {
++		struct kmap *kmap = map__kmap(map);
++
++		if (kmap)
++			kmap->kmaps = maps;
++		else
++			pr_err("Internal error: kernel dso with non kernel map\n");
++	}
++
++
+ 	/*
+ 	 * If we already performed some search by name, then we need to add the just
+ 	 * inserted map and resort.
