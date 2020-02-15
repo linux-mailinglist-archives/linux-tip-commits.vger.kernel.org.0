@@ -2,118 +2,193 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E05D015F0EC
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 14 Feb 2020 18:59:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 521AC15FD9D
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 15 Feb 2020 09:43:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388743AbgBNR6M (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 14 Feb 2020 12:58:12 -0500
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:26252 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S2388594AbgBNR6L (ORCPT
+        id S1726705AbgBOImN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 15 Feb 2020 03:42:13 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:56857 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726682AbgBOImN (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 14 Feb 2020 12:58:11 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1581703090;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=UACjdQjNAv3xbfQac1fzgBHkjusv+pnqBnjrSiF1gFM=;
-        b=NqTMs3eVxfGYtDA+LLs+ZA1ER+frVmSrQY4vdEA4pEx5QEVs/JHnfHWhgwtX/Dk/qW6sSd
-        8ve6vOEK0ribwTq6ulxoqPoAFXl53M8xjfACqITIa7qEPXCg1SzEG+1t06owgR2f/XdiaR
-        MTGs6MMN9QBr4rB3cyCa3oKuf1Cu5Zk=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-201-xzsdBgemOAGsM2iDbVFUUg-1; Fri, 14 Feb 2020 12:58:03 -0500
-X-MC-Unique: xzsdBgemOAGsM2iDbVFUUg-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 4488D800D53;
-        Fri, 14 Feb 2020 17:58:01 +0000 (UTC)
-Received: from treble (ovpn-121-12.rdu2.redhat.com [10.10.121.12])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 315429050E;
-        Fri, 14 Feb 2020 17:58:00 +0000 (UTC)
-Date:   Fri, 14 Feb 2020 11:57:58 -0600
-From:   Josh Poimboeuf <jpoimboe@redhat.com>
-To:     Thomas Gleixner <tglx@linutronix.de>
-Cc:     tip-bot2 for Josh Poimboeuf <tip-bot2@linutronix.de>,
-        linux-tip-commits@vger.kernel.org, Borislav Petkov <bp@suse.de>,
-        Julien Thierry <jthierry@redhat.com>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>
-Subject: Re: [tip: core/objtool] objtool: Fail the kernel build on fatal
- errors
-Message-ID: <20200214175758.s34rdwmwgiq6qwq7@treble>
-References: <f18c3743de0fef673d49dd35760f26bdef7f6fc3.1581359535.git.jpoimboe@redhat.com>
- <158142525822.411.5401976987070210798.tip-bot2@tip-bot2>
- <20200213221100.odwg5gan3dwcpk6g@treble>
- <87sgjeghal.fsf@nanos.tec.linutronix.de>
+        Sat, 15 Feb 2020 03:42:13 -0500
+Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tip-bot2@linutronix.de>)
+        id 1j2t1E-0005C0-NW; Sat, 15 Feb 2020 09:41:44 +0100
+Received: from [127.0.1.1] (localhost [IPv6:::1])
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 2077C1C2019;
+        Sat, 15 Feb 2020 09:41:44 +0100 (CET)
+Date:   Sat, 15 Feb 2020 08:41:43 -0000
+From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: perf/urgent] perf llvm: Fix script used to obtain kernel make
+ directives to work with new kbuild
+Cc:     Thomas Richter <tmricht@linux.ibm.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        He Kuang <hekuang@huawei.com>, Jiri Olsa <jolsa@kernel.org>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Sumanth Korikkar <sumanthk@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Wang Nan <wangnan0@huawei.com>, Zefan Li <lizefan@huawei.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <87sgjeghal.fsf@nanos.tec.linutronix.de>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+Message-ID: <158175610361.13786.10260519734785923475.tip-bot2@tip-bot2>
+X-Mailer: tip-git-log-daemon
+Robot-ID: <tip-bot2.linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Fri, Feb 14, 2020 at 01:10:26AM +0100, Thomas Gleixner wrote:
-> Josh Poimboeuf <jpoimboe@redhat.com> writes:
-> > On Tue, Feb 11, 2020 at 12:47:38PM -0000, tip-bot2 for Josh Poimboeuf wrote:
-> >> The following commit has been merged into the core/objtool branch of tip:
-> >> 
-> >> Commit-ID:     644592d328370af4b3e027b7b1ae9f81613782d8
-> >> Gitweb:        https://git.kernel.org/tip/644592d328370af4b3e027b7b1ae9f81613782d8
-> >> Author:        Josh Poimboeuf <jpoimboe@redhat.com>
-> >> AuthorDate:    Mon, 10 Feb 2020 12:32:38 -06:00
-> >> Committer:     Borislav Petkov <bp@suse.de>
-> >> CommitterDate: Tue, 11 Feb 2020 13:27:03 +01:00
-> >> 
-> >> objtool: Fail the kernel build on fatal errors
-> >> 
-> >> When objtool encounters a fatal error, it usually means the binary is
-> >> corrupt or otherwise broken in some way.  Up until now, such errors were
-> >> just treated as warnings which didn't fail the kernel build.
-> >> 
-> >> However, objtool is now stable enough that if a fatal error is
-> >> discovered, it most likely means something is seriously wrong and it
-> >> should fail the kernel build.
-> >> 
-> >> Note that this doesn't apply to "normal" objtool warnings; only fatal
-> >> ones.
-> >
-> > Clang still has some toolchain issues which need to be sorted out, so
-> > upgrading the fatal errors is causing their CI to fail.
-> 
-> Good. Last time we made it fail they just fixed their stuff.
-> 
-> > So I think we need to drop this one for now.
-> 
-> Why? It's our decision to define which level of toolchain brokeness is
-> tolerable.
-> 
-> > Boris, are you able to just drop it or should I send a revert?
-> 
-> I really want to see a revert which has a proper justification why the
-> issues of clang are tolerable along with a clear statement when this
-> fatal error will come back. And 'when' means a date, not 'when clang is
-> fixed'.
+The following commit has been merged into the perf/urgent branch of tip:
 
-Fair enough.  The root cause was actually a bug in binutils which gets
-triggered by a new clang feature.  So instead of reverting the above
-patch, I think I've figured out a way to work around the binutils bug,
-while also improving objtool at the same time (win-win).
+Commit-ID:     62765941155e487b351a72479078bd6fec973563
+Gitweb:        https://git.kernel.org/tip/62765941155e487b351a72479078bd6fec973563
+Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
+AuthorDate:    Fri, 14 Feb 2020 09:34:43 -03:00
+Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
+CommitterDate: Fri, 14 Feb 2020 10:06:00 -03:00
 
-The binutils bug will be fixed in binutils 2.35.
+perf llvm: Fix script used to obtain kernel make directives to work with new kbuild
 
-BTW, to be fair, this was less "Clang has issues" and more "Josh is
-lazy".  I didn't test the patch with Clang -- I tend to rely on 0-day
-bot reports because I don't have the bandwidth to test the
-kernel/config/toolchain combinations.  Nick tells me Clang will soon be
-integrated with the 0-day bot, which should help prevent this type of
-thing in the future.
+Before this patch:
 
--- 
-Josh
+  # ./perf test 39 41
+  39: LLVM search and compile                               :
+  39.1: Basic BPF llvm compile                              : Ok
+  39.2: kbuild searching                                    : FAILED!
+  39.3: Compile source for BPF prologue generation          : Skip
+  39.4: Compile source for BPF relocation                   : Skip
+  41: BPF filter                                            :
+  41.1: Basic BPF filtering                                 : Ok
+  41.2: BPF pinning                                         : Ok
+  41.3: BPF prologue generation                             : FAILED!
+  41.4: BPF relocation checker                              : Skip
+  #
 
+Using 'perf test -v' for these tests shows that it is not finding
+uapi/linux/fs.h, which ends up being because we don't setup the right header
+path. Fix it.
+
+After this patch:
+
+  # perf test 39 41
+  39: LLVM search and compile                               :
+  39.1: Basic BPF llvm compile                              : Ok
+  39.2: kbuild searching                                    : Ok
+  39.3: Compile source for BPF prologue generation          : Ok
+  39.4: Compile source for BPF relocation                   : Ok
+  41: BPF filter                                            :
+  41.1: Basic BPF filtering                                 : Ok
+  41.2: BPF pinning                                         : Ok
+  41.3: BPF prologue generation                             : Ok
+  41.4: BPF relocation checker                              : Ok
+  #
+
+Longer description:
+
+In llvm-utils.c we use some techniques to obtain the kbuild make
+directives and that recently stopped working as now 'ar' gets called and
+expects to find the dummy.o used to echo these variables:
+
+  $(NOSTDINC_FLAGS) $(LINUXINCLUDE) $(EXTRA_CFLAGS)
+
+Add the $(CC) line to satisfy that, making sure this works with all
+kernels, i.e. preserving the temp directory and files in it used for
+this technique we can see that it works everywhere:
+
+  # make -s -C /lib/modules/5.4.18-100.fc30.x86_64/build M=/tmp/tmp.qgaFHgxjZ4/ clean
+  # ls -la /tmp/tmp.qgaFHgxjZ4/
+  total 4
+  drwx------.  2 root root   80 Feb 14 09:42 .
+  drwxrwxrwt. 47 root root 1200 Feb 14 09:42 ..
+  -rw-r--r--.  1 root root    0 Feb 13 17:14 dummy.c
+  -rw-r--r--.  1 root root  121 Feb 13 17:14 Makefile
+  #
+  # cat /tmp/tmp.qgaFHgxjZ4/Makefile
+  obj-y := dummy.o
+  $(obj)/%.o: $(src)/%.c
+          @echo -n "$(NOSTDINC_FLAGS) $(LINUXINCLUDE) $(EXTRA_CFLAGS)"
+          $(CC) -c -o $@ $<
+  #
+
+Then build with an old kernel Makefile:
+
+  # make -s -C /lib/modules/5.4.18-100.fc30.x86_64/build M=/tmp/tmp.qgaFHgxjZ4/ dummy.o
+  -nostdinc -isystem /usr/lib/gcc/x86_64-redhat-linux/9/include -I./arch/x86/include -I./arch/x86/include/generated  -I./include -I./arch/x86/include/uapi -I./arch/x86/include/generated/uapi -I./include/uapi -I./include/generated/uapi -include ./include/linux/kconfig.h
+  #
+  # ls -la /tmp/tmp.qgaFHgxjZ4/
+  total 8
+  drwx------.  2 root root  100 Feb 14 09:43 .
+  drwxrwxrwt. 47 root root 1200 Feb 14 09:43 ..
+  -rw-r--r--.  1 root root    0 Feb 13 17:14 dummy.c
+  -rw-r--r--.  1 root root  936 Feb 14 09:43 dummy.o
+  -rw-r--r--.  1 root root  121 Feb 13 17:14 Makefile
+  #
+
+And a new one:
+
+  # make -s -C /lib/modules/5.4.18-100.fc30.x86_64/build M=/tmp/tmp.qgaFHgxjZ4/ clean
+  # ls -la /tmp/tmp.qgaFHgxjZ4/
+  total 4
+  drwx------.  2 root root   80 Feb 14 09:43 .
+  drwxrwxrwt. 47 root root 1200 Feb 14 09:43 ..
+  -rw-r--r--.  1 root root    0 Feb 13 17:14 dummy.c
+  -rw-r--r--.  1 root root  121 Feb 13 17:14 Makefile
+  # make -s -C /lib/modules/5.6.0-rc1+/build M=/tmp/tmp.qgaFHgxjZ4/ dummy.o
+   -nostdinc -isystem /usr/lib/gcc/x86_64-redhat-linux/9/include -I/home/acme/git/linux/arch/x86/include -I./arch/x86/include/generated -I/home/acme/git/linux/include -I./include -I/home/acme/git/linux/arch/x86/include/uapi -I./arch/x86/include/generated/uapi -I/home/acme/git/linux/include/uapi -I./include/generated/uapi -include /home/acme/git/linux/include/linux/kconfig.h
+  #
+  # ls -la /tmp/tmp.qgaFHgxjZ4/
+  total 16
+  drwx------.  2 root root  160 Feb 14 09:44 .
+  drwxrwxrwt. 47 root root 1200 Feb 14 09:44 ..
+  -rw-r--r--.  1 root root  158 Feb 14 09:44 built-in.a
+  -rw-r--r--.  1 root root  149 Feb 14 09:44 .built-in.a.cmd
+  -rw-r--r--.  1 root root    0 Feb 13 17:14 dummy.c
+  -rw-r--r--.  1 root root  936 Feb 14 09:44 dummy.o
+  -rw-r--r--.  1 root root  121 Feb 13 17:14 Makefile
+  -rw-r--r--.  1 root root    0 Feb 14 09:44 modules.order
+  #
+
+Reported-by: Thomas Richter <tmricht@linux.ibm.com>
+Tested-by: Thomas Richter <tmricht@linux.ibm.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Daniel Borkmann <daniel@iogearbox.net>
+Cc: He Kuang <hekuang@huawei.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Sumanth Korikkar <sumanthk@linux.ibm.com>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: Wang Nan <wangnan0@huawei.com>
+Cc: Zefan Li <lizefan@huawei.com>
+Link: https://www.spinics.net/lists/linux-perf-users/msg10600.html
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+---
+ tools/perf/util/llvm-utils.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/tools/perf/util/llvm-utils.c b/tools/perf/util/llvm-utils.c
+index eae47c2..b5af680 100644
+--- a/tools/perf/util/llvm-utils.c
++++ b/tools/perf/util/llvm-utils.c
+@@ -288,6 +288,7 @@ static const char *kinc_fetch_script =
+ "obj-y := dummy.o\n"
+ "\\$(obj)/%.o: \\$(src)/%.c\n"
+ "\t@echo -n \"\\$(NOSTDINC_FLAGS) \\$(LINUXINCLUDE) \\$(EXTRA_CFLAGS)\"\n"
++"\t\\$(CC) -c -o \\$@ \\$<\n"
+ "EOF\n"
+ "touch $TMPDIR/dummy.c\n"
+ "make -s -C $KBUILD_DIR M=$TMPDIR $KBUILD_OPTS dummy.o 2>/dev/null\n"
