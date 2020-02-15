@@ -2,38 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 118C515FD91
+	by mail.lfdr.de (Postfix) with ESMTP id 7D69A15FD92
 	for <lists+linux-tip-commits@lfdr.de>; Sat, 15 Feb 2020 09:43:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726257AbgBOIl5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S1726243AbgBOIl5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Sat, 15 Feb 2020 03:41:57 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:56735 "EHLO
+Received: from Galois.linutronix.de ([193.142.43.55]:56736 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726209AbgBOIl4 (ORCPT
+        with ESMTP id S1725914AbgBOIl5 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 15 Feb 2020 03:41:56 -0500
+        Sat, 15 Feb 2020 03:41:57 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1j2t1J-0005FA-9H; Sat, 15 Feb 2020 09:41:49 +0100
+        id 1j2t1K-0005Fu-0a; Sat, 15 Feb 2020 09:41:50 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id EA0E91C2039;
-        Sat, 15 Feb 2020 09:41:48 +0100 (CET)
-Date:   Sat, 15 Feb 2020 08:41:48 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A4C9B1C2019;
+        Sat, 15 Feb 2020 09:41:49 +0100 (CET)
+Date:   Sat, 15 Feb 2020 08:41:49 -0000
 From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] tools headers uapi: Sync linux/fscrypt.h with the
- kernel sources
+Subject: [tip: perf/urgent] tools headers UAPI: Sync sched.h with the kernel
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Eric Biggers <ebiggers@google.com>,
-        Jiri Olsa <jolsa@kernel.org>,
+        Andrei Vagin <avagin@openvz.org>, Jiri Olsa <jolsa@kernel.org>,
         Namhyung Kim <namhyung@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158175610867.13786.18152904193402952285.tip-bot2@tip-bot2>
+Message-ID: <158175610929.13786.5915095172087744827.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,69 +48,62 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     f65b9dba5733de8e285cf9d7e8672b46dd0cb709
-Gitweb:        https://git.kernel.org/tip/f65b9dba5733de8e285cf9d7e8672b46dd0cb709
+Commit-ID:     d6d829d92c6e82b2627d3bb0058403ff15ee0592
+Gitweb:        https://git.kernel.org/tip/d6d829d92c6e82b2627d3bb0058403ff15ee0592
 Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Wed, 12 Feb 2020 10:13:25 -03:00
+AuthorDate:    Tue, 11 Feb 2020 16:03:47 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Wed, 12 Feb 2020 10:13:25 -03:00
+CommitterDate: Tue, 11 Feb 2020 16:41:50 -03:00
 
-tools headers uapi: Sync linux/fscrypt.h with the kernel sources
+tools headers UAPI: Sync sched.h with the kernel
 
-To pick the changes from:
+To get the changes in:
 
-  e933adde6f97 ("fscrypt: include <linux/ioctl.h> in UAPI header")
-  93edd392cad7 ("fscrypt: support passing a keyring key to FS_IOC_ADD_ENCRYPTION_KEY")
+  769071ac9f20 ("ns: Introduce Time Namespace")
 
-That don't trigger any changes in tooling.
+Silencing this tools/perf build warning:
 
-This silences this perf build warning:
+  Warning: Kernel ABI header at 'tools/include/uapi/linux/sched.h' differs from latest version at 'include/uapi/linux/sched.h'
+  diff -u tools/include/uapi/linux/sched.h include/uapi/linux/sched.h
 
-  Warning: Kernel ABI header at 'tools/include/uapi/linux/fscrypt.h' differs from latest version at 'include/uapi/linux/fscrypt.h'
-  diff -u tools/include/uapi/linux/fscrypt.h include/uapi/linux/fscrypt.h
+Which enables 'perf trace' to decode the CLONE_NEWTIME bit in the
+'flags' argument to the clone syscalls.
+
+Example of clone flags being decoded:
+
+  [root@quaco ~]# perf trace -e clone*
+       0.000 qemu-system-x8/23923 clone(clone_flags: VM|FS|FILES|SIGHAND|THREAD|SYSVSEM|SETTLS|PARENT_SETTID|CHILD_CLEARTID, newsp: 0x7f0dad7f9870, parent_tidptr: 0x7f0dad7fa9d0, child_tidptr: 0x7f0dad7fa9d0, tls: 0x7f0dad7fa700) = 6806 (qemu-system-x86)
+           ? qemu-system-x8/6806  ... [continued]: clone())              = 0
+  ^C[root@quaco ~]#
+
+At some point this should enable things like:
+
+  # perf trace -e 'clone*/clone_flags&NEWTIME/'
 
 Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Eric Biggers <ebiggers@google.com>
+Cc: Andrei Vagin <avagin@openvz.org>
 Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/include/uapi/linux/fscrypt.h | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ tools/include/uapi/linux/sched.h | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/tools/include/uapi/linux/fscrypt.h b/tools/include/uapi/linux/fscrypt.h
-index 1beb174..0d8a6f4 100644
---- a/tools/include/uapi/linux/fscrypt.h
-+++ b/tools/include/uapi/linux/fscrypt.h
-@@ -8,6 +8,7 @@
- #ifndef _UAPI_LINUX_FSCRYPT_H
- #define _UAPI_LINUX_FSCRYPT_H
- 
-+#include <linux/ioctl.h>
- #include <linux/types.h>
- 
- /* Encryption policy flags */
-@@ -109,11 +110,22 @@ struct fscrypt_key_specifier {
- 	} u;
- };
+diff --git a/tools/include/uapi/linux/sched.h b/tools/include/uapi/linux/sched.h
+index 4a02178..2e3bc22 100644
+--- a/tools/include/uapi/linux/sched.h
++++ b/tools/include/uapi/linux/sched.h
+@@ -36,6 +36,12 @@
+ /* Flags for the clone3() syscall. */
+ #define CLONE_CLEAR_SIGHAND 0x100000000ULL /* Clear any signal handler and reset to SIG_DFL. */
  
 +/*
-+ * Payload of Linux keyring key of type "fscrypt-provisioning", referenced by
-+ * fscrypt_add_key_arg::key_id as an alternative to fscrypt_add_key_arg::raw.
++ * cloning flags intersect with CSIGNAL so can be used with unshare and clone3
++ * syscalls only:
 + */
-+struct fscrypt_provisioning_key_payload {
-+	__u32 type;
-+	__u32 __reserved;
-+	__u8 raw[];
-+};
++#define CLONE_NEWTIME	0x00000080	/* New time namespace */
 +
- /* Struct passed to FS_IOC_ADD_ENCRYPTION_KEY */
- struct fscrypt_add_key_arg {
- 	struct fscrypt_key_specifier key_spec;
- 	__u32 raw_size;
--	__u32 __reserved[9];
-+	__u32 key_id;
-+	__u32 __reserved[8];
- 	__u8 raw[];
- };
- 
+ #ifndef __ASSEMBLY__
+ /**
+  * struct clone_args - arguments for the clone3 syscall
