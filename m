@@ -2,39 +2,44 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 31E0A15FD8F
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 15 Feb 2020 09:43:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B8B915FDA2
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 15 Feb 2020 09:43:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726097AbgBOIlz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 15 Feb 2020 03:41:55 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:56726 "EHLO
+        id S1725959AbgBOImW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 15 Feb 2020 03:42:22 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:56862 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725914AbgBOIlz (ORCPT
+        with ESMTP id S1727716AbgBOImV (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 15 Feb 2020 03:41:55 -0500
+        Sat, 15 Feb 2020 03:42:21 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1j2t1H-0005E8-Pa; Sat, 15 Feb 2020 09:41:47 +0100
+        id 1j2t1I-0005EB-7B; Sat, 15 Feb 2020 09:41:48 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 66A701C2019;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D93401C2039;
         Sat, 15 Feb 2020 09:41:47 +0100 (CET)
 Date:   Sat, 15 Feb 2020 08:41:47 -0000
-From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for John Garry" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] tools headers UAPI: Sync asm-generic/mman-common.h
- with the kernel
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Dave Martin <Dave.Martin@arm.com>,
-        Jiri Olsa <jolsa@kernel.org>,
+Subject: [tip: perf/urgent] perf tools: Add arm64 version of get_cpuid()
+Cc:     John Garry <john.garry@huawei.com>,
+        Shaokun Zhang <zhangshaokun@hisilicon.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Mark Rutland <mark.rutland@arm.com>,
         Namhyung Kim <namhyung@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
         Will Deacon <will@kernel.org>,
+        linux-arm-kernel@lists.infradead.org, linuxarm@huawei.com,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <1576245255-210926-1-git-send-email-john.garry@huawei.com>
+References: <1576245255-210926-1-git-send-email-john.garry@huawei.com>
 MIME-Version: 1.0
-Message-ID: <158175610709.13786.17138902669240833210.tip-bot2@tip-bot2>
+Message-ID: <158175610764.13786.7405634863354226474.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,46 +55,152 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     47f8d94ac5241e30a5ab0b6b91b963b54765ec7c
-Gitweb:        https://git.kernel.org/tip/47f8d94ac5241e30a5ab0b6b91b963b54765ec7c
-Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Wed, 12 Feb 2020 10:53:06 -03:00
+Commit-ID:     df5a5f3cf24608457bb5e57297dd9f0d528be58f
+Gitweb:        https://git.kernel.org/tip/df5a5f3cf24608457bb5e57297dd9f0d528be58f
+Author:        John Garry <john.garry@huawei.com>
+AuthorDate:    Fri, 13 Dec 2019 21:54:15 +08:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Wed, 12 Feb 2020 10:53:06 -03:00
+CommitterDate: Wed, 12 Feb 2020 10:36:51 -03:00
 
-tools headers UAPI: Sync asm-generic/mman-common.h with the kernel
+perf tools: Add arm64 version of get_cpuid()
 
-To pick the changes from:
+Add an arm64 version of get_cpuid(), which is used for various annotation
+and headers - for example, I now get the CPUID in "perf report --header",
+as shown in this snippet:
 
-  d41938d2cbee ("mm: Reserve asm-generic prot flags 0x10 and 0x20 for arch use")
+  # hostname : ubuntu
+  # os release : 5.5.0-rc1-dirty
+  # perf version : 5.5.rc1.gbf8a13dc9851
+  # arch : aarch64
+  # nrcpus online : 96
+  # nrcpus avail : 96
+  # cpuid : 0x00000000480fd010
 
-No changes in tooling, just a rebuild as files needed got touched.
+Since much of the code to read the MIDR is already in get_cpuid_str(),
+factor out this code.
 
-This addresses the following perf build warning:
+Tester notes:
 
-  Warning: Kernel ABI header at 'tools/include/uapi/asm-generic/mman-common.h' differs from latest version at 'include/uapi/asm-generic/mman-common.h'
-  diff -u tools/include/uapi/asm-generic/mman-common.h include/uapi/asm-generic/mman-common.h
+I tested this patch on my new ARM64 Kunpeng 920 server.
+[root@node1 zsk]# ./perf --version
+perf version 5.6.rc1.g2cdb955b7252
 
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Dave Martin <Dave.Martin@arm.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
+Both perf list and perf stat can work.
+
+Signed-off-by: John Garry <john.garry@huawei.com>
+Tested-by: Shaokun Zhang <zhangshaokun@hisilicon.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Jiri Olsa <jolsa@redhat.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Will Deacon <will@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linuxarm@huawei.com
+Link: http://lore.kernel.org/lkml/1576245255-210926-1-git-send-email-john.garry@huawei.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/include/uapi/asm-generic/mman-common.h | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/perf/arch/arm64/util/header.c | 63 +++++++++++++++++++++-------
+ 1 file changed, 48 insertions(+), 15 deletions(-)
 
-diff --git a/tools/include/uapi/asm-generic/mman-common.h b/tools/include/uapi/asm-generic/mman-common.h
-index c160a53..f94f65d 100644
---- a/tools/include/uapi/asm-generic/mman-common.h
-+++ b/tools/include/uapi/asm-generic/mman-common.h
-@@ -11,6 +11,8 @@
- #define PROT_WRITE	0x2		/* page can be written */
- #define PROT_EXEC	0x4		/* page can be executed */
- #define PROT_SEM	0x8		/* page may be used for atomic ops */
-+/*			0x10		   reserved for arch-specific use */
-+/*			0x20		   reserved for arch-specific use */
- #define PROT_NONE	0x0		/* page can not be accessed */
- #define PROT_GROWSDOWN	0x01000000	/* mprotect flag: extend change to start of growsdown vma */
- #define PROT_GROWSUP	0x02000000	/* mprotect flag: extend change to end of growsup vma */
+diff --git a/tools/perf/arch/arm64/util/header.c b/tools/perf/arch/arm64/util/header.c
+index a32e4b7..d730666 100644
+--- a/tools/perf/arch/arm64/util/header.c
++++ b/tools/perf/arch/arm64/util/header.c
+@@ -1,8 +1,10 @@
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <perf/cpumap.h>
++#include <util/cpumap.h>
+ #include <internal/cpumap.h>
+ #include <api/fs/fs.h>
++#include <errno.h>
+ #include "debug.h"
+ #include "header.h"
+ 
+@@ -12,26 +14,21 @@
+ #define MIDR_VARIANT_SHIFT      20
+ #define MIDR_VARIANT_MASK       (0xf << MIDR_VARIANT_SHIFT)
+ 
+-char *get_cpuid_str(struct perf_pmu *pmu)
++static int _get_cpuid(char *buf, size_t sz, struct perf_cpu_map *cpus)
+ {
+-	char *buf = NULL;
+-	char path[PATH_MAX];
+ 	const char *sysfs = sysfs__mountpoint();
+-	int cpu;
+ 	u64 midr = 0;
+-	struct perf_cpu_map *cpus;
+-	FILE *file;
++	int cpu;
+ 
+-	if (!sysfs || !pmu || !pmu->cpus)
+-		return NULL;
++	if (!sysfs || sz < MIDR_SIZE)
++		return EINVAL;
+ 
+-	buf = malloc(MIDR_SIZE);
+-	if (!buf)
+-		return NULL;
++	cpus = perf_cpu_map__get(cpus);
+ 
+-	/* read midr from list of cpus mapped to this pmu */
+-	cpus = perf_cpu_map__get(pmu->cpus);
+ 	for (cpu = 0; cpu < perf_cpu_map__nr(cpus); cpu++) {
++		char path[PATH_MAX];
++		FILE *file;
++
+ 		scnprintf(path, PATH_MAX, "%s/devices/system/cpu/cpu%d"MIDR,
+ 				sysfs, cpus->map[cpu]);
+ 
+@@ -57,12 +54,48 @@ char *get_cpuid_str(struct perf_pmu *pmu)
+ 		break;
+ 	}
+ 
+-	if (!midr) {
++	perf_cpu_map__put(cpus);
++
++	if (!midr)
++		return EINVAL;
++
++	return 0;
++}
++
++int get_cpuid(char *buf, size_t sz)
++{
++	struct perf_cpu_map *cpus = perf_cpu_map__new(NULL);
++	int ret;
++
++	if (!cpus)
++		return EINVAL;
++
++	ret = _get_cpuid(buf, sz, cpus);
++
++	perf_cpu_map__put(cpus);
++
++	return ret;
++}
++
++char *get_cpuid_str(struct perf_pmu *pmu)
++{
++	char *buf = NULL;
++	int res;
++
++	if (!pmu || !pmu->cpus)
++		return NULL;
++
++	buf = malloc(MIDR_SIZE);
++	if (!buf)
++		return NULL;
++
++	/* read midr from list of cpus mapped to this pmu */
++	res = _get_cpuid(buf, MIDR_SIZE, pmu->cpus);
++	if (res) {
+ 		pr_err("failed to get cpuid string for PMU %s\n", pmu->name);
+ 		free(buf);
+ 		buf = NULL;
+ 	}
+ 
+-	perf_cpu_map__put(cpus);
+ 	return buf;
+ }
