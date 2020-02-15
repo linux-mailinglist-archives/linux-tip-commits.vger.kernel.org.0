@@ -2,30 +2,29 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CF1F15FD94
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 15 Feb 2020 09:43:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0231515FDAF
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 15 Feb 2020 09:43:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726438AbgBOImA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 15 Feb 2020 03:42:00 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:56775 "EHLO
+        id S1726063AbgBOInC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 15 Feb 2020 03:43:02 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:56748 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726391AbgBOImA (ORCPT
+        with ESMTP id S1726217AbgBOIl5 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 15 Feb 2020 03:42:00 -0500
+        Sat, 15 Feb 2020 03:41:57 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1j2t1P-0005Fx-GB; Sat, 15 Feb 2020 09:41:55 +0100
+        id 1j2t1L-0005H0-1P; Sat, 15 Feb 2020 09:41:51 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 26E511C2039;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A76BF1C2019;
         Sat, 15 Feb 2020 09:41:50 +0100 (CET)
-Date:   Sat, 15 Feb 2020 08:41:49 -0000
+Date:   Sat, 15 Feb 2020 08:41:50 -0000
 From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf trace: Resolve prctl's 'option' arg strings
- to numbers
+Subject: [tip: perf/urgent] perf beauty prctl: Export the 'options' strarray
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         Christian Brauner <christian.brauner@ubuntu.com>,
         Jiri Olsa <jolsa@kernel.org>,
@@ -34,7 +33,7 @@ Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158175610991.13786.8051798173112946702.tip-bot2@tip-bot2>
+Message-ID: <158175611041.13786.11528849507837324747.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,35 +49,17 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     d7a07b293216e5561705303751bc0d213e9fb328
-Gitweb:        https://git.kernel.org/tip/d7a07b293216e5561705303751bc0d213e9fb328
+Commit-ID:     c0134b3366ba5f0aba41d56006b574d3be7f5ed3
+Gitweb:        https://git.kernel.org/tip/c0134b3366ba5f0aba41d56006b574d3be7f5ed3
 Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Tue, 11 Feb 2020 15:54:08 -03:00
+AuthorDate:    Tue, 11 Feb 2020 15:46:10 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Tue, 11 Feb 2020 16:41:50 -03:00
 
-perf trace: Resolve prctl's 'option' arg strings to numbers
+perf beauty prctl: Export the 'options' strarray
 
-  # perf trace -e syscalls:sys_enter_prctl --filter="option==SET_NAME"
-     0.000 Socket Thread/3860 syscalls:sys_enter_prctl(option: SET_NAME, arg2: 0x7fc50b9733e8)
-     0.053 SSL Cert #78/3860 syscalls:sys_enter_prctl(option: SET_NAME, arg2: 0x7fc50b9733e8)
-^C  #
-
-If one uses '-v' with 'perf trace', we can see the filter it puts in
-place:
-
-  New filter for syscalls:sys_enter_prctl: (option==0xf) && (common_pid != 3859 && common_pid != 2757)
-
-We still need to allow using plain '-e prctl' and have this turn into
-creating a 'syscalls:sys_enter_prctl' event so that the filter can be
-applied only to it as right now '-e prctl' ends up using the
-'raw_syscalls:sys_enter/sys_exit'.
-
-The end goal is to have something like:
-
-  # perf trace -e prctl/option==SET_NAME/
-
-And have that use tracepoint filters or eBPF ones.
+So that we can use it with strtoul, allowing string to number
+conversions in filter expressions.
 
 Cc: Adrian Hunter <adrian.hunter@intel.com>
 Cc: Christian Brauner <christian.brauner@ubuntu.com>
@@ -87,21 +68,36 @@ Cc: Mike Christie <mchristi@redhat.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/builtin-trace.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tools/perf/trace/beauty/beauty.h | 2 ++
+ tools/perf/trace/beauty/prctl.c  | 3 ++-
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/builtin-trace.c b/tools/perf/builtin-trace.c
-index 46a72ec..01d5420 100644
---- a/tools/perf/builtin-trace.c
-+++ b/tools/perf/builtin-trace.c
-@@ -1065,7 +1065,9 @@ static struct syscall_fmt syscall_fmts[] = {
- 	{ .name	    = "poll", .timeout = true, },
- 	{ .name	    = "ppoll", .timeout = true, },
- 	{ .name	    = "prctl",
--	  .arg = { [0] = { .scnprintf = SCA_PRCTL_OPTION, /* option */ },
-+	  .arg = { [0] = { .scnprintf = SCA_PRCTL_OPTION, /* option */
-+			   .strtoul   = STUL_STRARRAY,
-+			   .parm      = &strarray__prctl_options, },
- 		   [1] = { .scnprintf = SCA_PRCTL_ARG2, /* arg2 */ },
- 		   [2] = { .scnprintf = SCA_PRCTL_ARG3, /* arg3 */ }, }, },
- 	{ .name	    = "pread", .alias = "pread64", },
+diff --git a/tools/perf/trace/beauty/beauty.h b/tools/perf/trace/beauty/beauty.h
+index 5a61043..d6dfe68 100644
+--- a/tools/perf/trace/beauty/beauty.h
++++ b/tools/perf/trace/beauty/beauty.h
+@@ -213,6 +213,8 @@ size_t syscall_arg__scnprintf_x86_arch_prctl_code(char *bf, size_t size, struct 
+ size_t syscall_arg__scnprintf_prctl_option(char *bf, size_t size, struct syscall_arg *arg);
+ #define SCA_PRCTL_OPTION syscall_arg__scnprintf_prctl_option
+ 
++extern struct strarray strarray__prctl_options;
++
+ size_t syscall_arg__scnprintf_prctl_arg2(char *bf, size_t size, struct syscall_arg *arg);
+ #define SCA_PRCTL_ARG2 syscall_arg__scnprintf_prctl_arg2
+ 
+diff --git a/tools/perf/trace/beauty/prctl.c b/tools/perf/trace/beauty/prctl.c
+index ba2179a..6fe5ad5 100644
+--- a/tools/perf/trace/beauty/prctl.c
++++ b/tools/perf/trace/beauty/prctl.c
+@@ -11,9 +11,10 @@
+ 
+ #include "trace/beauty/generated/prctl_option_array.c"
+ 
++DEFINE_STRARRAY(prctl_options, "PR_");
++
+ static size_t prctl__scnprintf_option(int option, char *bf, size_t size, bool show_prefix)
+ {
+-	static DEFINE_STRARRAY(prctl_options, "PR_");
+ 	return strarray__scnprintf(&strarray__prctl_options, bf, size, "%d", show_prefix, option);
+ }
+ 
