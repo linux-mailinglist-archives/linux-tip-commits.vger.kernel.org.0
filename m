@@ -2,29 +2,29 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0231515FDAF
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 15 Feb 2020 09:43:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4748D15FD96
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 15 Feb 2020 09:43:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726063AbgBOInC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 15 Feb 2020 03:43:02 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:56748 "EHLO
+        id S1726478AbgBOImC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 15 Feb 2020 03:42:02 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:56782 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726217AbgBOIl5 (ORCPT
+        with ESMTP id S1726215AbgBOImC (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 15 Feb 2020 03:41:57 -0500
+        Sat, 15 Feb 2020 03:42:02 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1j2t1L-0005H0-1P; Sat, 15 Feb 2020 09:41:51 +0100
+        id 1j2t1Q-0005H6-Do; Sat, 15 Feb 2020 09:41:56 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A76BF1C2019;
-        Sat, 15 Feb 2020 09:41:50 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 23D371C205A;
+        Sat, 15 Feb 2020 09:41:51 +0100 (CET)
 Date:   Sat, 15 Feb 2020 08:41:50 -0000
 From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf beauty prctl: Export the 'options' strarray
+Subject: [tip: perf/urgent] tools headers UAPI: Sync prctl.h with the kernel sources
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         Christian Brauner <christian.brauner@ubuntu.com>,
         Jiri Olsa <jolsa@kernel.org>,
@@ -33,7 +33,7 @@ Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158175611041.13786.11528849507837324747.tip-bot2@tip-bot2>
+Message-ID: <158175611091.13786.17864955942021040219.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,17 +49,52 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     c0134b3366ba5f0aba41d56006b574d3be7f5ed3
-Gitweb:        https://git.kernel.org/tip/c0134b3366ba5f0aba41d56006b574d3be7f5ed3
+Commit-ID:     fc9199d46e644e6a978f69195cb849b21d2f485c
+Gitweb:        https://git.kernel.org/tip/fc9199d46e644e6a978f69195cb849b21d2f485c
 Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Tue, 11 Feb 2020 15:46:10 -03:00
+AuthorDate:    Tue, 11 Feb 2020 15:25:21 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Tue, 11 Feb 2020 16:41:50 -03:00
 
-perf beauty prctl: Export the 'options' strarray
+tools headers UAPI: Sync prctl.h with the kernel sources
 
-So that we can use it with strtoul, allowing string to number
-conversions in filter expressions.
+To get the changes in:
+
+  8d19f1c8e193 ("prctl: PR_{G,S}ET_IO_FLUSHER to support controlling memory reclaim")
+
+Which ends up having this effect in tooling, i.e. the addition of the
+support to those prctl's options:
+
+  $ tools/perf/trace/beauty/prctl_option.sh > before
+  $ cp include/uapi/linux/prctl.h tools/include/uapi/linux/prctl.h
+  $ git diff
+  diff --git a/tools/include/uapi/linux/prctl.h b/tools/include/uapi/linux/prctl.h
+  index 7da1b37b27aa..07b4f8131e36 100644
+  --- a/tools/include/uapi/linux/prctl.h
+  +++ b/tools/include/uapi/linux/prctl.h
+  @@ -234,4 +234,8 @@ struct prctl_mm_map {
+   #define PR_GET_TAGGED_ADDR_CTRL                56
+   # define PR_TAGGED_ADDR_ENABLE         (1UL << 0)
+
+  +/* Control reclaim behavior when allocating memory */
+  +#define PR_SET_IO_FLUSHER              57
+  +#define PR_GET_IO_FLUSHER              58
+  +
+   #endif /* _LINUX_PRCTL_H */
+  $ tools/perf/trace/beauty/prctl_option.sh > after
+  $ diff -u before after
+  --- before	2020-02-11 15:24:35.339289912 -0300
+  +++ after	2020-02-11 15:24:56.319711315 -0300
+  @@ -51,6 +51,8 @@
+   	[54] = "PAC_RESET_KEYS",
+   	[55] = "SET_TAGGED_ADDR_CTRL",
+   	[56] = "GET_TAGGED_ADDR_CTRL",
+  +	[57] = "SET_IO_FLUSHER",
+  +	[58] = "GET_IO_FLUSHER",
+   };
+   static const char *prctl_set_mm_options[] = {
+   	[1] = "START_CODE",
+  $
 
 Cc: Adrian Hunter <adrian.hunter@intel.com>
 Cc: Christian Brauner <christian.brauner@ubuntu.com>
@@ -68,36 +103,19 @@ Cc: Mike Christie <mchristi@redhat.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/trace/beauty/beauty.h | 2 ++
- tools/perf/trace/beauty/prctl.c  | 3 ++-
- 2 files changed, 4 insertions(+), 1 deletion(-)
+ tools/include/uapi/linux/prctl.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/tools/perf/trace/beauty/beauty.h b/tools/perf/trace/beauty/beauty.h
-index 5a61043..d6dfe68 100644
---- a/tools/perf/trace/beauty/beauty.h
-+++ b/tools/perf/trace/beauty/beauty.h
-@@ -213,6 +213,8 @@ size_t syscall_arg__scnprintf_x86_arch_prctl_code(char *bf, size_t size, struct 
- size_t syscall_arg__scnprintf_prctl_option(char *bf, size_t size, struct syscall_arg *arg);
- #define SCA_PRCTL_OPTION syscall_arg__scnprintf_prctl_option
+diff --git a/tools/include/uapi/linux/prctl.h b/tools/include/uapi/linux/prctl.h
+index 7da1b37..07b4f81 100644
+--- a/tools/include/uapi/linux/prctl.h
++++ b/tools/include/uapi/linux/prctl.h
+@@ -234,4 +234,8 @@ struct prctl_mm_map {
+ #define PR_GET_TAGGED_ADDR_CTRL		56
+ # define PR_TAGGED_ADDR_ENABLE		(1UL << 0)
  
-+extern struct strarray strarray__prctl_options;
++/* Control reclaim behavior when allocating memory */
++#define PR_SET_IO_FLUSHER		57
++#define PR_GET_IO_FLUSHER		58
 +
- size_t syscall_arg__scnprintf_prctl_arg2(char *bf, size_t size, struct syscall_arg *arg);
- #define SCA_PRCTL_ARG2 syscall_arg__scnprintf_prctl_arg2
- 
-diff --git a/tools/perf/trace/beauty/prctl.c b/tools/perf/trace/beauty/prctl.c
-index ba2179a..6fe5ad5 100644
---- a/tools/perf/trace/beauty/prctl.c
-+++ b/tools/perf/trace/beauty/prctl.c
-@@ -11,9 +11,10 @@
- 
- #include "trace/beauty/generated/prctl_option_array.c"
- 
-+DEFINE_STRARRAY(prctl_options, "PR_");
-+
- static size_t prctl__scnprintf_option(int option, char *bf, size_t size, bool show_prefix)
- {
--	static DEFINE_STRARRAY(prctl_options, "PR_");
- 	return strarray__scnprintf(&strarray__prctl_options, bf, size, "%d", show_prefix, option);
- }
- 
+ #endif /* _LINUX_PRCTL_H */
