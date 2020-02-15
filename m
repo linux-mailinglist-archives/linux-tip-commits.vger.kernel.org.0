@@ -2,37 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D69A15FD92
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 15 Feb 2020 09:43:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CF1F15FD94
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 15 Feb 2020 09:43:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726243AbgBOIl5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 15 Feb 2020 03:41:57 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:56736 "EHLO
+        id S1726438AbgBOImA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 15 Feb 2020 03:42:00 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:56775 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725914AbgBOIl5 (ORCPT
+        with ESMTP id S1726391AbgBOImA (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 15 Feb 2020 03:41:57 -0500
+        Sat, 15 Feb 2020 03:42:00 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1j2t1K-0005Fu-0a; Sat, 15 Feb 2020 09:41:50 +0100
+        id 1j2t1P-0005Fx-GB; Sat, 15 Feb 2020 09:41:55 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A4C9B1C2019;
-        Sat, 15 Feb 2020 09:41:49 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 26E511C2039;
+        Sat, 15 Feb 2020 09:41:50 +0100 (CET)
 Date:   Sat, 15 Feb 2020 08:41:49 -0000
 From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] tools headers UAPI: Sync sched.h with the kernel
+Subject: [tip: perf/urgent] perf trace: Resolve prctl's 'option' arg strings
+ to numbers
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Andrei Vagin <avagin@openvz.org>, Jiri Olsa <jolsa@kernel.org>,
+        Christian Brauner <christian.brauner@ubuntu.com>,
+        Jiri Olsa <jolsa@kernel.org>,
+        Mike Christie <mchristi@redhat.com>,
         Namhyung Kim <namhyung@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158175610929.13786.5915095172087744827.tip-bot2@tip-bot2>
+Message-ID: <158175610991.13786.8051798173112946702.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,62 +50,58 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     d6d829d92c6e82b2627d3bb0058403ff15ee0592
-Gitweb:        https://git.kernel.org/tip/d6d829d92c6e82b2627d3bb0058403ff15ee0592
+Commit-ID:     d7a07b293216e5561705303751bc0d213e9fb328
+Gitweb:        https://git.kernel.org/tip/d7a07b293216e5561705303751bc0d213e9fb328
 Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Tue, 11 Feb 2020 16:03:47 -03:00
+AuthorDate:    Tue, 11 Feb 2020 15:54:08 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Tue, 11 Feb 2020 16:41:50 -03:00
 
-tools headers UAPI: Sync sched.h with the kernel
+perf trace: Resolve prctl's 'option' arg strings to numbers
 
-To get the changes in:
+  # perf trace -e syscalls:sys_enter_prctl --filter="option==SET_NAME"
+     0.000 Socket Thread/3860 syscalls:sys_enter_prctl(option: SET_NAME, arg2: 0x7fc50b9733e8)
+     0.053 SSL Cert #78/3860 syscalls:sys_enter_prctl(option: SET_NAME, arg2: 0x7fc50b9733e8)
+^C  #
 
-  769071ac9f20 ("ns: Introduce Time Namespace")
+If one uses '-v' with 'perf trace', we can see the filter it puts in
+place:
 
-Silencing this tools/perf build warning:
+  New filter for syscalls:sys_enter_prctl: (option==0xf) && (common_pid != 3859 && common_pid != 2757)
 
-  Warning: Kernel ABI header at 'tools/include/uapi/linux/sched.h' differs from latest version at 'include/uapi/linux/sched.h'
-  diff -u tools/include/uapi/linux/sched.h include/uapi/linux/sched.h
+We still need to allow using plain '-e prctl' and have this turn into
+creating a 'syscalls:sys_enter_prctl' event so that the filter can be
+applied only to it as right now '-e prctl' ends up using the
+'raw_syscalls:sys_enter/sys_exit'.
 
-Which enables 'perf trace' to decode the CLONE_NEWTIME bit in the
-'flags' argument to the clone syscalls.
+The end goal is to have something like:
 
-Example of clone flags being decoded:
+  # perf trace -e prctl/option==SET_NAME/
 
-  [root@quaco ~]# perf trace -e clone*
-       0.000 qemu-system-x8/23923 clone(clone_flags: VM|FS|FILES|SIGHAND|THREAD|SYSVSEM|SETTLS|PARENT_SETTID|CHILD_CLEARTID, newsp: 0x7f0dad7f9870, parent_tidptr: 0x7f0dad7fa9d0, child_tidptr: 0x7f0dad7fa9d0, tls: 0x7f0dad7fa700) = 6806 (qemu-system-x86)
-           ? qemu-system-x8/6806  ... [continued]: clone())              = 0
-  ^C[root@quaco ~]#
-
-At some point this should enable things like:
-
-  # perf trace -e 'clone*/clone_flags&NEWTIME/'
+And have that use tracepoint filters or eBPF ones.
 
 Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Andrei Vagin <avagin@openvz.org>
+Cc: Christian Brauner <christian.brauner@ubuntu.com>
 Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Mike Christie <mchristi@redhat.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/include/uapi/linux/sched.h | 6 ++++++
- 1 file changed, 6 insertions(+)
+ tools/perf/builtin-trace.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tools/include/uapi/linux/sched.h b/tools/include/uapi/linux/sched.h
-index 4a02178..2e3bc22 100644
---- a/tools/include/uapi/linux/sched.h
-+++ b/tools/include/uapi/linux/sched.h
-@@ -36,6 +36,12 @@
- /* Flags for the clone3() syscall. */
- #define CLONE_CLEAR_SIGHAND 0x100000000ULL /* Clear any signal handler and reset to SIG_DFL. */
- 
-+/*
-+ * cloning flags intersect with CSIGNAL so can be used with unshare and clone3
-+ * syscalls only:
-+ */
-+#define CLONE_NEWTIME	0x00000080	/* New time namespace */
-+
- #ifndef __ASSEMBLY__
- /**
-  * struct clone_args - arguments for the clone3 syscall
+diff --git a/tools/perf/builtin-trace.c b/tools/perf/builtin-trace.c
+index 46a72ec..01d5420 100644
+--- a/tools/perf/builtin-trace.c
++++ b/tools/perf/builtin-trace.c
+@@ -1065,7 +1065,9 @@ static struct syscall_fmt syscall_fmts[] = {
+ 	{ .name	    = "poll", .timeout = true, },
+ 	{ .name	    = "ppoll", .timeout = true, },
+ 	{ .name	    = "prctl",
+-	  .arg = { [0] = { .scnprintf = SCA_PRCTL_OPTION, /* option */ },
++	  .arg = { [0] = { .scnprintf = SCA_PRCTL_OPTION, /* option */
++			   .strtoul   = STUL_STRARRAY,
++			   .parm      = &strarray__prctl_options, },
+ 		   [1] = { .scnprintf = SCA_PRCTL_ARG2, /* arg2 */ },
+ 		   [2] = { .scnprintf = SCA_PRCTL_ARG3, /* arg3 */ }, }, },
+ 	{ .name	    = "pread", .alias = "pread64", },
