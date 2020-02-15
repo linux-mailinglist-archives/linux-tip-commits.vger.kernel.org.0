@@ -2,29 +2,29 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9168315FD99
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 15 Feb 2020 09:43:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A571E15FDA7
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 15 Feb 2020 09:43:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726641AbgBOImJ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 15 Feb 2020 03:42:09 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:56813 "EHLO
+        id S1726594AbgBOImi (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 15 Feb 2020 03:42:38 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:56851 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726540AbgBOImE (ORCPT
+        with ESMTP id S1726680AbgBOImM (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 15 Feb 2020 03:42:04 -0500
+        Sat, 15 Feb 2020 03:42:12 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1j2t1N-0005I6-KU; Sat, 15 Feb 2020 09:41:53 +0100
+        id 1j2t1P-0005Ik-FV; Sat, 15 Feb 2020 09:41:55 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 424561C205E;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id BFB5F1C2019;
         Sat, 15 Feb 2020 09:41:53 +0100 (CET)
-Date:   Sat, 15 Feb 2020 08:41:52 -0000
+Date:   Sat, 15 Feb 2020 08:41:53 -0000
 From:   "tip-bot2 for Jiri Olsa" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf maps: Mark ksymbol DSOs with kernel type
+Subject: [tip: perf/urgent] perf maps: Mark module DSOs with kernel type
 Cc:     Ravi Bangoria <ravi.bangoria@linux.ibm.com>,
         Jiri Olsa <jolsa@kernel.org>,
         Kim Phillips <kim.phillips@amd.com>,
@@ -34,10 +34,10 @@ Cc:     Ravi Bangoria <ravi.bangoria@linux.ibm.com>,
         Peter Zijlstra <peterz@infradead.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200210200847.GA36715@krava>
-References: <20200210200847.GA36715@krava>
+In-Reply-To: <20200210143218.24948-2-jolsa@kernel.org>
+References: <20200210143218.24948-2-jolsa@kernel.org>
 MIME-Version: 1.0
-Message-ID: <158175611298.13786.3290516837550970527.tip-bot2@tip-bot2>
+Message-ID: <158175611352.13786.5573354817667707801.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -53,53 +53,41 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     4a4eb6154d67f7766cc7eb74e9f1db424073e832
-Gitweb:        https://git.kernel.org/tip/4a4eb6154d67f7766cc7eb74e9f1db424073e832
-Author:        Jiri Olsa <jolsa@redhat.com>
-AuthorDate:    Mon, 10 Feb 2020 21:08:47 +01:00
+Commit-ID:     02213cec64bbef66d7ad9ddc3b7c47236da64343
+Gitweb:        https://git.kernel.org/tip/02213cec64bbef66d7ad9ddc3b7c47236da64343
+Author:        Jiri Olsa <jolsa@kernel.org>
+AuthorDate:    Mon, 10 Feb 2020 15:32:15 +01:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Tue, 11 Feb 2020 16:41:49 -03:00
 
-perf maps: Mark ksymbol DSOs with kernel type
+perf maps: Mark module DSOs with kernel type
 
-We add ksymbol map into machine->kmaps, so it needs to be created as
-'struct kmap', which is dependent on its dso having kernel type.
+We add kernel module map into machine->kmaps, so it needs to be created
+as 'struct kmap', which is dependent on its dso having kernel type.
 
 Reported-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
 Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-Tested-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
 Tested-by: Kim Phillips <kim.phillips@amd.com>
+Tested-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
 Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 Cc: Michael Petlan <mpetlan@redhat.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Link: http://lore.kernel.org/lkml/20200210200847.GA36715@krava
+Link: http://lore.kernel.org/lkml/20200210143218.24948-2-jolsa@kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/machine.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ tools/perf/util/machine.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/tools/perf/util/machine.c b/tools/perf/util/machine.c
-index e3e5490..0ad0265 100644
+index c8c5410..e3e5490 100644
 --- a/tools/perf/util/machine.c
 +++ b/tools/perf/util/machine.c
-@@ -727,9 +727,17 @@ static int machine__process_ksymbol_register(struct machine *machine,
- 	struct map *map = maps__find(&machine->kmaps, event->ksymbol.addr);
+@@ -686,6 +686,7 @@ static struct dso *machine__findnew_module_dso(struct machine *machine,
  
- 	if (!map) {
--		map = dso__new_map(event->ksymbol.name);
--		if (!map)
-+		struct dso *dso = dso__new(event->ksymbol.name);
-+
-+		if (dso) {
-+			dso->kernel = DSO_TYPE_KERNEL;
-+			map = map__new2(0, dso);
-+		}
-+
-+		if (!dso || !map) {
-+			dso__put(dso);
- 			return -ENOMEM;
-+		}
+ 		dso__set_module_info(dso, m, machine);
+ 		dso__set_long_name(dso, strdup(filename), true);
++		dso->kernel = DSO_TYPE_KERNEL;
+ 	}
  
- 		map->start = event->ksymbol.addr;
- 		map->end = map->start + event->ksymbol.len;
+ 	dso__get(dso);
