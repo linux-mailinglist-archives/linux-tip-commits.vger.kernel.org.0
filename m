@@ -2,41 +2,47 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6273215FDA9
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 15 Feb 2020 09:43:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 70F4B15FD9B
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 15 Feb 2020 09:43:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726680AbgBOImm (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 15 Feb 2020 03:42:42 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:56804 "EHLO
+        id S1726681AbgBOImL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 15 Feb 2020 03:42:11 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:56846 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726508AbgBOImE (ORCPT
+        with ESMTP id S1726634AbgBOImL (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 15 Feb 2020 03:42:04 -0500
+        Sat, 15 Feb 2020 03:42:11 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1j2t1Q-0005Kj-BF; Sat, 15 Feb 2020 09:41:56 +0100
+        id 1j2t1S-0005Lc-Bd; Sat, 15 Feb 2020 09:41:58 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 535701C205E;
-        Sat, 15 Feb 2020 09:41:54 +0100 (CET)
-Date:   Sat, 15 Feb 2020 08:41:54 -0000
-From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id ECE281C2061;
+        Sat, 15 Feb 2020 09:41:55 +0100 (CET)
+Date:   Sat, 15 Feb 2020 08:41:55 -0000
+From:   "tip-bot2 for Kim Phillips" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] tools include UAPI: Sync x86's syscalls_64.tbl,
- generic unistd.h and fcntl.h to pick up openat2 and pidfd_getfd
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Aleksa Sarai <cyphar@cyphar.com>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Christian Brauner <christian.brauner@ubuntu.com>,
-        Jiri Olsa <jolsa@kernel.org>,
+Subject: [tip: perf/urgent] perf stat: Don't report a null stalled cycles per
+ insn metric
+Cc:     Kim Phillips <kim.phillips@amd.com>,
+        Andi Kleen <ak@linux.intel.com>, Jiri Olsa <jolsa@redhat.com>,
+        Song Liu <songliubraving@fb.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Cong Wang <xiyou.wangcong@gmail.com>,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        Jin Yao <yao.jin@linux.intel.com>,
+        Kan Liang <kan.liang@linux.intel.com>,
+        Mark Rutland <mark.rutland@arm.com>,
         Namhyung Kim <namhyung@kernel.org>,
-        Sargun Dhillon <sargun@sargun.me>,
+        Peter Zijlstra <peterz@infradead.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200207230613.26709-1-kim.phillips@amd.com>
+References: <20200207230613.26709-1-kim.phillips@amd.com>
 MIME-Version: 1.0
-Message-ID: <158175611405.13786.14264078224920446308.tip-bot2@tip-bot2>
+Message-ID: <158175611568.13786.9820089707207947311.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -52,190 +58,127 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     c452833387624d1990c9bbb0ee1e98c10c147478
-Gitweb:        https://git.kernel.org/tip/c452833387624d1990c9bbb0ee1e98c10c147478
-Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Tue, 11 Feb 2020 11:58:56 -03:00
+Commit-ID:     80cc7bb6c104d733bff60ddda09f19139c61507c
+Gitweb:        https://git.kernel.org/tip/80cc7bb6c104d733bff60ddda09f19139c61507c
+Author:        Kim Phillips <kim.phillips@amd.com>
+AuthorDate:    Fri, 07 Feb 2020 17:06:11 -06:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Tue, 11 Feb 2020 16:41:06 -03:00
+CommitterDate: Mon, 10 Feb 2020 16:30:09 -03:00
 
-tools include UAPI: Sync x86's syscalls_64.tbl, generic unistd.h and fcntl.h to pick up openat2 and pidfd_getfd
+perf stat: Don't report a null stalled cycles per insn metric
 
-  fddb5d430ad9 ("open: introduce openat2(2) syscall")
-  9a2cef09c801 ("arch: wire up pidfd_getfd syscall")
+For data collected on machines with front end stalled cycles supported,
+such as found on modern AMD CPU families, commit 146540fb545b ("perf
+stat: Always separate stalled cycles per insn") introduces a new line in
+CSV output with a leading comma that upsets some automated scripts.
+Scripts have to use "-e ex_ret_instr" to work around this issue, after
+upgrading to a version of perf with that commit.
 
-We also need to grab a copy of uapi/linux/openat2.h since it is now
-needed by fcntl.h, add it to tools/perf/check_headers.h.
+We could add "if (have_frontend_stalled && !config->csv_sep)" to the not
+(total && avg) else clause, to emphasize that CSV users are usually
+scripts, and are written to do only what is needed, i.e., they wouldn't
+typically invoke "perf stat" without specifying an explicit event list.
 
-  $ diff -u tools/perf/arch/x86/entry/syscalls/syscall_64.tbl arch/x86/entry/syscalls/syscall_64.tbl
-  --- tools/perf/arch/x86/entry/syscalls/syscall_64.tbl	2019-12-20 16:43:57.662429958 -0300
-  +++ arch/x86/entry/syscalls/syscall_64.tbl	2020-02-10 16:36:22.070012468 -0300
-  @@ -357,6 +357,8 @@
-   433	common	fspick			__x64_sys_fspick
-   434	common	pidfd_open		__x64_sys_pidfd_open
-   435	common	clone3			__x64_sys_clone3/ptregs
-  +437	common	openat2			__x64_sys_openat2
-  +438	common	pidfd_getfd		__x64_sys_pidfd_getfd
+But - let alone CSV output - why should users now tolerate a constant
+0-reporting extra line in regular terminal output?:
 
-   #
-   # x32-specific system call numbers start at 512 to avoid cache impact
-  $
+BEFORE:
 
-Update tools/'s copy of that file:
+$ sudo perf stat --all-cpus -einstructions,cycles -- sleep 1
 
-  $ cp arch/x86/entry/syscalls/syscall_64.tbl tools/perf/arch/x86/entry/syscalls/syscall_64.tbl
+ Performance counter stats for 'system wide':
 
-See the result:
+       181,110,981      instructions              #    0.58  insn per cycle
+                                                  #    0.00  stalled cycles per insn
+       309,876,469      cycles
 
-  $ diff -u /tmp/build/perf/arch/x86/include/generated/asm/syscalls_64.c.before /tmp/build/perf/arch/x86/include/generated/asm/syscalls_64.c
-  --- /tmp/build/perf/arch/x86/include/generated/asm/syscalls_64.c.before	2020-02-10 16:42:59.010636041 -0300
-  +++ /tmp/build/perf/arch/x86/include/generated/asm/syscalls_64.c	2020-02-10 16:43:24.149958337 -0300
-  @@ -346,5 +346,7 @@
-   	[433] = "fspick",
-   	[434] = "pidfd_open",
-   	[435] = "clone3",
-  +	[437] = "openat2",
-  +	[438] = "pidfd_getfd",
-   };
-  -#define SYSCALLTBL_x86_64_MAX_ID 435
-  +#define SYSCALLTBL_x86_64_MAX_ID 438
-  $
+       1.002202582 seconds time elapsed
 
-Now one can use:
+The user would not like to see the now permanent:
 
-  perf trace -e openat2,pidfd_getfd
+  "0.00  stalled cycles per insn"
 
-To get just those syscalls or use in things like:
+line fixture, as it gives no useful information.
 
-  perf trace -e open*
+So this patch removes the printing of the zeroed stalled cycles line
+altogether, almost reverting the very original commit fb4605ba47e7
+("perf stat: Check for frontend stalled for metrics"), which seems like
+it was written to normalize --metric-only column output of common Intel
+machines at the time: modern Intel machines have ceased to support the
+genericised frontend stalled metrics AFAICT.
 
-To get all the open variant (open, openat, openat2, etc) or:
+AFTER:
 
-  perf trace pidfd*
+$ sudo perf stat --all-cpus -einstructions,cycles -- sleep 1
 
-To get the pidfd syscalls.
+ Performance counter stats for 'system wide':
 
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Aleksa Sarai <cyphar@cyphar.com>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Christian Brauner <christian.brauner@ubuntu.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
+       244,071,432      instructions              #    0.69  insn per cycle
+       355,353,490      cycles
+
+       1.001862516 seconds time elapsed
+
+Output behaviour when stalled cycles is indeed measured is not affected
+(BEFORE == AFTER):
+
+$ sudo perf stat --all-cpus -einstructions,cycles,stalled-cycles-frontend -- sleep 1
+
+ Performance counter stats for 'system wide':
+
+       247,227,799      instructions              #    0.63  insn per cycle
+                                                  #    0.26  stalled cycles per insn
+       394,745,636      cycles
+        63,194,485      stalled-cycles-frontend   #   16.01% frontend cycles idle
+
+       1.002079770 seconds time elapsed
+
+Fixes: 146540fb545b ("perf stat: Always separate stalled cycles per insn")
+Signed-off-by: Kim Phillips <kim.phillips@amd.com>
+Acked-by: Andi Kleen <ak@linux.intel.com>
+Acked-by: Jiri Olsa <jolsa@redhat.com>
+Acked-by: Song Liu <songliubraving@fb.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Cong Wang <xiyou.wangcong@gmail.com>
+Cc: Davidlohr Bueso <dave@stgolabs.net>
+Cc: Jin Yao <yao.jin@linux.intel.com>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Sargun Dhillon <sargun@sargun.me>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: http://lore.kernel.org/lkml/20200207230613.26709-1-kim.phillips@amd.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/include/uapi/asm-generic/unistd.h           |  7 ++-
- tools/include/uapi/linux/fcntl.h                  |  2 +-
- tools/include/uapi/linux/openat2.h                | 39 ++++++++++++++-
- tools/perf/arch/x86/entry/syscalls/syscall_64.tbl |  2 +-
- tools/perf/check-headers.sh                       |  1 +-
- 5 files changed, 49 insertions(+), 2 deletions(-)
- create mode 100644 tools/include/uapi/linux/openat2.h
+ tools/perf/util/stat-shadow.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/tools/include/uapi/asm-generic/unistd.h b/tools/include/uapi/asm-generic/unistd.h
-index 1fc8faa..3a3201e 100644
---- a/tools/include/uapi/asm-generic/unistd.h
-+++ b/tools/include/uapi/asm-generic/unistd.h
-@@ -851,8 +851,13 @@ __SYSCALL(__NR_pidfd_open, sys_pidfd_open)
- __SYSCALL(__NR_clone3, sys_clone3)
- #endif
+diff --git a/tools/perf/util/stat-shadow.c b/tools/perf/util/stat-shadow.c
+index 2c41d47..90d23cc 100644
+--- a/tools/perf/util/stat-shadow.c
++++ b/tools/perf/util/stat-shadow.c
+@@ -18,7 +18,6 @@
+  * AGGR_NONE: Use matching CPU
+  * AGGR_THREAD: Not supported?
+  */
+-static bool have_frontend_stalled;
  
-+#define __NR_openat2 437
-+__SYSCALL(__NR_openat2, sys_openat2)
-+#define __NR_pidfd_getfd 438
-+__SYSCALL(__NR_pidfd_getfd, sys_pidfd_getfd)
-+
- #undef __NR_syscalls
--#define __NR_syscalls 436
-+#define __NR_syscalls 439
+ struct runtime_stat rt_stat;
+ struct stats walltime_nsecs_stats;
+@@ -144,7 +143,6 @@ void runtime_stat__exit(struct runtime_stat *st)
  
- /*
-  * 32 bit systems traditionally used different
-diff --git a/tools/include/uapi/linux/fcntl.h b/tools/include/uapi/linux/fcntl.h
-index 1f97b33..ca88b7b 100644
---- a/tools/include/uapi/linux/fcntl.h
-+++ b/tools/include/uapi/linux/fcntl.h
-@@ -3,6 +3,7 @@
- #define _UAPI_LINUX_FCNTL_H
+ void perf_stat__init_shadow_stats(void)
+ {
+-	have_frontend_stalled = pmu_have_event("cpu", "stalled-cycles-frontend");
+ 	runtime_stat__init(&rt_stat);
+ }
  
- #include <asm/fcntl.h>
-+#include <linux/openat2.h>
- 
- #define F_SETLEASE	(F_LINUX_SPECIFIC_BASE + 0)
- #define F_GETLEASE	(F_LINUX_SPECIFIC_BASE + 1)
-@@ -100,5 +101,4 @@
- 
- #define AT_RECURSIVE		0x8000	/* Apply to the entire subtree */
- 
--
- #endif /* _UAPI_LINUX_FCNTL_H */
-diff --git a/tools/include/uapi/linux/openat2.h b/tools/include/uapi/linux/openat2.h
-new file mode 100644
-index 0000000..58b1eb7
---- /dev/null
-+++ b/tools/include/uapi/linux/openat2.h
-@@ -0,0 +1,39 @@
-+/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
-+#ifndef _UAPI_LINUX_OPENAT2_H
-+#define _UAPI_LINUX_OPENAT2_H
-+
-+#include <linux/types.h>
-+
-+/*
-+ * Arguments for how openat2(2) should open the target path. If only @flags and
-+ * @mode are non-zero, then openat2(2) operates very similarly to openat(2).
-+ *
-+ * However, unlike openat(2), unknown or invalid bits in @flags result in
-+ * -EINVAL rather than being silently ignored. @mode must be zero unless one of
-+ * {O_CREAT, O_TMPFILE} are set.
-+ *
-+ * @flags: O_* flags.
-+ * @mode: O_CREAT/O_TMPFILE file mode.
-+ * @resolve: RESOLVE_* flags.
-+ */
-+struct open_how {
-+	__u64 flags;
-+	__u64 mode;
-+	__u64 resolve;
-+};
-+
-+/* how->resolve flags for openat2(2). */
-+#define RESOLVE_NO_XDEV		0x01 /* Block mount-point crossings
-+					(includes bind-mounts). */
-+#define RESOLVE_NO_MAGICLINKS	0x02 /* Block traversal through procfs-style
-+					"magic-links". */
-+#define RESOLVE_NO_SYMLINKS	0x04 /* Block traversal through all symlinks
-+					(implies OEXT_NO_MAGICLINKS) */
-+#define RESOLVE_BENEATH		0x08 /* Block "lexical" trickery like
-+					"..", symlinks, and absolute
-+					paths which escape the dirfd. */
-+#define RESOLVE_IN_ROOT		0x10 /* Make all jumps to "/" and ".."
-+					be scoped inside the dirfd
-+					(similar to chroot(2)). */
-+
-+#endif /* _UAPI_LINUX_OPENAT2_H */
-diff --git a/tools/perf/arch/x86/entry/syscalls/syscall_64.tbl b/tools/perf/arch/x86/entry/syscalls/syscall_64.tbl
-index c29976e..44d510b 100644
---- a/tools/perf/arch/x86/entry/syscalls/syscall_64.tbl
-+++ b/tools/perf/arch/x86/entry/syscalls/syscall_64.tbl
-@@ -357,6 +357,8 @@
- 433	common	fspick			__x64_sys_fspick
- 434	common	pidfd_open		__x64_sys_pidfd_open
- 435	common	clone3			__x64_sys_clone3/ptregs
-+437	common	openat2			__x64_sys_openat2
-+438	common	pidfd_getfd		__x64_sys_pidfd_getfd
- 
- #
- # x32-specific system call numbers start at 512 to avoid cache impact
-diff --git a/tools/perf/check-headers.sh b/tools/perf/check-headers.sh
-index 68039a9..bfb21d0 100755
---- a/tools/perf/check-headers.sh
-+++ b/tools/perf/check-headers.sh
-@@ -13,6 +13,7 @@ include/uapi/linux/kcmp.h
- include/uapi/linux/kvm.h
- include/uapi/linux/in.h
- include/uapi/linux/mount.h
-+include/uapi/linux/openat2.h
- include/uapi/linux/perf_event.h
- include/uapi/linux/prctl.h
- include/uapi/linux/sched.h
+@@ -853,10 +851,6 @@ void perf_stat__print_shadow_stats(struct perf_stat_config *config,
+ 			print_metric(config, ctxp, NULL, "%7.2f ",
+ 					"stalled cycles per insn",
+ 					ratio);
+-		} else if (have_frontend_stalled) {
+-			out->new_line(config, ctxp);
+-			print_metric(config, ctxp, NULL, "%7.2f ",
+-				     "stalled cycles per insn", 0);
+ 		}
+ 	} else if (perf_evsel__match(evsel, HARDWARE, HW_BRANCH_MISSES)) {
+ 		if (runtime_stat_n(st, STAT_BRANCHES, ctx, cpu) != 0)
