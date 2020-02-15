@@ -2,39 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E72F515FD93
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 15 Feb 2020 09:43:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BB48A15FD85
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 15 Feb 2020 09:41:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726363AbgBOIl7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 15 Feb 2020 03:41:59 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:56746 "EHLO
+        id S1725920AbgBOIlx (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 15 Feb 2020 03:41:53 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:56705 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726215AbgBOIl6 (ORCPT
+        with ESMTP id S1725839AbgBOIlw (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 15 Feb 2020 03:41:58 -0500
+        Sat, 15 Feb 2020 03:41:52 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1j2t1G-0005C7-5B; Sat, 15 Feb 2020 09:41:46 +0100
+        id 1j2t1F-0005C6-LH; Sat, 15 Feb 2020 09:41:45 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C1FC01C2039;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4C7461C2019;
         Sat, 15 Feb 2020 09:41:45 +0100 (CET)
 Date:   Sat, 15 Feb 2020 08:41:45 -0000
 From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] tools arch x86: Sync asm/cpufeatures.h with the
+Subject: [tip: perf/urgent] tools headers kvm: Sync kvm headers with the
  kernel sources
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Borislav Petkov <bp@suse.de>, Jiri Olsa <jolsa@kernel.org>,
+        Andrew Jones <drjones@redhat.com>,
+        Jiri Olsa <jolsa@kernel.org>, Marc Zyngier <maz@kernel.org>,
         Namhyung Kim <namhyung@kernel.org>,
-        Sean Christopherson <sean.j.christopherson@intel.com>,
-        Tony Luck <tony.luck@intel.com>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158175610555.13786.7224584301888903578.tip-bot2@tip-bot2>
+Message-ID: <158175610507.13786.11402532654877704407.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,54 +49,55 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     71dd65289793df31e9f10c6b112e5e32dfd89c1d
-Gitweb:        https://git.kernel.org/tip/71dd65289793df31e9f10c6b112e5e32dfd89c1d
+Commit-ID:     391df72fbd144878e2f905d86f1e9a85a059216a
+Gitweb:        https://git.kernel.org/tip/391df72fbd144878e2f905d86f1e9a85a059216a
 Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Wed, 12 Feb 2020 12:33:34 -03:00
+AuthorDate:    Wed, 12 Feb 2020 12:41:20 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Wed, 12 Feb 2020 12:33:34 -03:00
+CommitterDate: Wed, 12 Feb 2020 12:41:20 -03:00
 
-tools arch x86: Sync asm/cpufeatures.h with the kernel sources
+tools headers kvm: Sync kvm headers with the kernel sources
 
 To pick up the changes from:
 
-  85c17291e2eb ("x86/cpufeatures: Add flag to track whether MSR IA32_FEAT_CTL is configured")
-  f444a5ff95dc ("x86/cpufeatures: Add support for fast short REP; MOVSB")
+  290a6bb06de9 ("arm64: KVM: Add UAPI notes for swapped registers")
 
-These don't cause any changes in tooling, just silences this perf build
-warning:
+No tools changes are caused by this.
 
-  Warning: Kernel ABI header at 'tools/arch/x86/include/asm/cpufeatures.h' differs from latest version at 'arch/x86/include/asm/cpufeatures.h'
-  diff -u tools/arch/x86/include/asm/cpufeatures.h arch/x86/include/asm/cpufeatures.h
+This addresses these tools/perf build warnings:
 
 Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Borislav Petkov <bp@suse.de>
+Cc: Andrew Jones <drjones@redhat.com>
 Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Marc Zyngier <maz@kernel.org>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Sean Christopherson <sean.j.christopherson@intel.com>
-Cc: Tony Luck <tony.luck@intel.com>
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/arch/x86/include/asm/cpufeatures.h | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/arch/arm64/include/uapi/asm/kvm.h | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/tools/arch/x86/include/asm/cpufeatures.h b/tools/arch/x86/include/asm/cpufeatures.h
-index e9b6249..f3327cb 100644
---- a/tools/arch/x86/include/asm/cpufeatures.h
-+++ b/tools/arch/x86/include/asm/cpufeatures.h
-@@ -220,6 +220,7 @@
- #define X86_FEATURE_ZEN			( 7*32+28) /* "" CPU is AMD family 0x17 (Zen) */
- #define X86_FEATURE_L1TF_PTEINV		( 7*32+29) /* "" L1TF workaround PTE inversion */
- #define X86_FEATURE_IBRS_ENHANCED	( 7*32+30) /* Enhanced IBRS */
-+#define X86_FEATURE_MSR_IA32_FEAT_CTL	( 7*32+31) /* "" MSR IA32_FEAT_CTL configured */
+diff --git a/tools/arch/arm64/include/uapi/asm/kvm.h b/tools/arch/arm64/include/uapi/asm/kvm.h
+index 820e575..ba85bb2 100644
+--- a/tools/arch/arm64/include/uapi/asm/kvm.h
++++ b/tools/arch/arm64/include/uapi/asm/kvm.h
+@@ -220,10 +220,18 @@ struct kvm_vcpu_events {
+ #define KVM_REG_ARM_PTIMER_CVAL		ARM64_SYS_REG(3, 3, 14, 2, 2)
+ #define KVM_REG_ARM_PTIMER_CNT		ARM64_SYS_REG(3, 3, 14, 0, 1)
  
- /* Virtualization flags: Linux defined, word 8 */
- #define X86_FEATURE_TPR_SHADOW		( 8*32+ 0) /* Intel TPR Shadow */
-@@ -357,6 +358,7 @@
- /* Intel-defined CPU features, CPUID level 0x00000007:0 (EDX), word 18 */
- #define X86_FEATURE_AVX512_4VNNIW	(18*32+ 2) /* AVX-512 Neural Network Instructions */
- #define X86_FEATURE_AVX512_4FMAPS	(18*32+ 3) /* AVX-512 Multiply Accumulation Single precision */
-+#define X86_FEATURE_FSRM		(18*32+ 4) /* Fast Short Rep Mov */
- #define X86_FEATURE_AVX512_VP2INTERSECT (18*32+ 8) /* AVX-512 Intersect for D/Q */
- #define X86_FEATURE_MD_CLEAR		(18*32+10) /* VERW clears CPU buffers */
- #define X86_FEATURE_TSX_FORCE_ABORT	(18*32+13) /* "" TSX_FORCE_ABORT */
+-/* EL0 Virtual Timer Registers */
++/*
++ * EL0 Virtual Timer Registers
++ *
++ * WARNING:
++ *      KVM_REG_ARM_TIMER_CVAL and KVM_REG_ARM_TIMER_CNT are not defined
++ *      with the appropriate register encodings.  Their values have been
++ *      accidentally swapped.  As this is set API, the definitions here
++ *      must be used, rather than ones derived from the encodings.
++ */
+ #define KVM_REG_ARM_TIMER_CTL		ARM64_SYS_REG(3, 3, 14, 3, 1)
+-#define KVM_REG_ARM_TIMER_CNT		ARM64_SYS_REG(3, 3, 14, 3, 2)
+ #define KVM_REG_ARM_TIMER_CVAL		ARM64_SYS_REG(3, 3, 14, 0, 2)
++#define KVM_REG_ARM_TIMER_CNT		ARM64_SYS_REG(3, 3, 14, 3, 2)
+ 
+ /* KVM-as-firmware specific pseudo-registers */
+ #define KVM_REG_ARM_FW			(0x0014 << KVM_REG_ARM_COPROC_SHIFT)
