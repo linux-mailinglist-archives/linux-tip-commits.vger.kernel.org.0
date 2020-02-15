@@ -2,43 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 521AC15FD9D
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 15 Feb 2020 09:43:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D637A15FDB1
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 15 Feb 2020 09:43:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726705AbgBOImN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 15 Feb 2020 03:42:13 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:56857 "EHLO
+        id S1725977AbgBOInG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 15 Feb 2020 03:43:06 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:56741 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726682AbgBOImN (ORCPT
+        with ESMTP id S1726212AbgBOIl5 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 15 Feb 2020 03:42:13 -0500
+        Sat, 15 Feb 2020 03:41:57 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1j2t1E-0005C0-NW; Sat, 15 Feb 2020 09:41:44 +0100
+        id 1j2t1F-0005C1-4b; Sat, 15 Feb 2020 09:41:45 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 2077C1C2019;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id BB9061C2039;
         Sat, 15 Feb 2020 09:41:44 +0100 (CET)
-Date:   Sat, 15 Feb 2020 08:41:43 -0000
+Date:   Sat, 15 Feb 2020 08:41:44 -0000
 From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf llvm: Fix script used to obtain kernel make
- directives to work with new kbuild
-Cc:     Thomas Richter <tmricht@linux.ibm.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        He Kuang <hekuang@huawei.com>, Jiri Olsa <jolsa@kernel.org>,
-        Masahiro Yamada <masahiroy@kernel.org>,
+Subject: [tip: perf/urgent] tools headers kvm: Sync linux/kvm.h with the
+ kernel sources
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Janosch Frank <frankja@linux.ibm.com>,
+        Jiri Olsa <jolsa@kernel.org>,
         Namhyung Kim <namhyung@kernel.org>,
-        Sumanth Korikkar <sumanthk@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Wang Nan <wangnan0@huawei.com>, Zefan Li <lizefan@huawei.com>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158175610361.13786.10260519734785923475.tip-bot2@tip-bot2>
+Message-ID: <158175610446.13786.14230107443175409107.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -54,141 +50,61 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     62765941155e487b351a72479078bd6fec973563
-Gitweb:        https://git.kernel.org/tip/62765941155e487b351a72479078bd6fec973563
+Commit-ID:     2a8d017d46a3f48dad3319e569cd0aee61bab8fc
+Gitweb:        https://git.kernel.org/tip/2a8d017d46a3f48dad3319e569cd0aee61bab8fc
 Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Fri, 14 Feb 2020 09:34:43 -03:00
+AuthorDate:    Wed, 12 Feb 2020 12:45:24 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Fri, 14 Feb 2020 10:06:00 -03:00
+CommitterDate: Wed, 12 Feb 2020 12:45:24 -03:00
 
-perf llvm: Fix script used to obtain kernel make directives to work with new kbuild
+tools headers kvm: Sync linux/kvm.h with the kernel sources
 
-Before this patch:
+To pick up the changes from:
 
-  # ./perf test 39 41
-  39: LLVM search and compile                               :
-  39.1: Basic BPF llvm compile                              : Ok
-  39.2: kbuild searching                                    : FAILED!
-  39.3: Compile source for BPF prologue generation          : Skip
-  39.4: Compile source for BPF relocation                   : Skip
-  41: BPF filter                                            :
-  41.1: Basic BPF filtering                                 : Ok
-  41.2: BPF pinning                                         : Ok
-  41.3: BPF prologue generation                             : FAILED!
-  41.4: BPF relocation checker                              : Skip
-  #
+  7de3f1423ff9 ("KVM: s390: Add new reset vcpu API")
 
-Using 'perf test -v' for these tests shows that it is not finding
-uapi/linux/fs.h, which ends up being because we don't setup the right header
-path. Fix it.
+So far we're ignoring those arch specific ioctls, we need to revisit
+this at some time to have arch specific tables, etc:
 
-After this patch:
+  $ grep S390 tools/perf/trace/beauty/kvm_ioctl.sh
+  	egrep -v " ((ARM|PPC|S390)_|[GS]ET_(DEBUGREGS|PIT2|XSAVE|TSC_KHZ)|CREATE_SPAPR_TCE_64)" | \
+  $
 
-  # perf test 39 41
-  39: LLVM search and compile                               :
-  39.1: Basic BPF llvm compile                              : Ok
-  39.2: kbuild searching                                    : Ok
-  39.3: Compile source for BPF prologue generation          : Ok
-  39.4: Compile source for BPF relocation                   : Ok
-  41: BPF filter                                            :
-  41.1: Basic BPF filtering                                 : Ok
-  41.2: BPF pinning                                         : Ok
-  41.3: BPF prologue generation                             : Ok
-  41.4: BPF relocation checker                              : Ok
-  #
+This addresses these tools/perf build warnings:
 
-Longer description:
+  Warning: Kernel ABI header at 'tools/arch/arm/include/uapi/asm/kvm.h' differs from latest version at 'arch/arm/include/uapi/asm/kvm.h'
+  diff -u tools/arch/arm/include/uapi/asm/kvm.h arch/arm/include/uapi/asm/kvm.h
 
-In llvm-utils.c we use some techniques to obtain the kbuild make
-directives and that recently stopped working as now 'ar' gets called and
-expects to find the dummy.o used to echo these variables:
-
-  $(NOSTDINC_FLAGS) $(LINUXINCLUDE) $(EXTRA_CFLAGS)
-
-Add the $(CC) line to satisfy that, making sure this works with all
-kernels, i.e. preserving the temp directory and files in it used for
-this technique we can see that it works everywhere:
-
-  # make -s -C /lib/modules/5.4.18-100.fc30.x86_64/build M=/tmp/tmp.qgaFHgxjZ4/ clean
-  # ls -la /tmp/tmp.qgaFHgxjZ4/
-  total 4
-  drwx------.  2 root root   80 Feb 14 09:42 .
-  drwxrwxrwt. 47 root root 1200 Feb 14 09:42 ..
-  -rw-r--r--.  1 root root    0 Feb 13 17:14 dummy.c
-  -rw-r--r--.  1 root root  121 Feb 13 17:14 Makefile
-  #
-  # cat /tmp/tmp.qgaFHgxjZ4/Makefile
-  obj-y := dummy.o
-  $(obj)/%.o: $(src)/%.c
-          @echo -n "$(NOSTDINC_FLAGS) $(LINUXINCLUDE) $(EXTRA_CFLAGS)"
-          $(CC) -c -o $@ $<
-  #
-
-Then build with an old kernel Makefile:
-
-  # make -s -C /lib/modules/5.4.18-100.fc30.x86_64/build M=/tmp/tmp.qgaFHgxjZ4/ dummy.o
-  -nostdinc -isystem /usr/lib/gcc/x86_64-redhat-linux/9/include -I./arch/x86/include -I./arch/x86/include/generated  -I./include -I./arch/x86/include/uapi -I./arch/x86/include/generated/uapi -I./include/uapi -I./include/generated/uapi -include ./include/linux/kconfig.h
-  #
-  # ls -la /tmp/tmp.qgaFHgxjZ4/
-  total 8
-  drwx------.  2 root root  100 Feb 14 09:43 .
-  drwxrwxrwt. 47 root root 1200 Feb 14 09:43 ..
-  -rw-r--r--.  1 root root    0 Feb 13 17:14 dummy.c
-  -rw-r--r--.  1 root root  936 Feb 14 09:43 dummy.o
-  -rw-r--r--.  1 root root  121 Feb 13 17:14 Makefile
-  #
-
-And a new one:
-
-  # make -s -C /lib/modules/5.4.18-100.fc30.x86_64/build M=/tmp/tmp.qgaFHgxjZ4/ clean
-  # ls -la /tmp/tmp.qgaFHgxjZ4/
-  total 4
-  drwx------.  2 root root   80 Feb 14 09:43 .
-  drwxrwxrwt. 47 root root 1200 Feb 14 09:43 ..
-  -rw-r--r--.  1 root root    0 Feb 13 17:14 dummy.c
-  -rw-r--r--.  1 root root  121 Feb 13 17:14 Makefile
-  # make -s -C /lib/modules/5.6.0-rc1+/build M=/tmp/tmp.qgaFHgxjZ4/ dummy.o
-   -nostdinc -isystem /usr/lib/gcc/x86_64-redhat-linux/9/include -I/home/acme/git/linux/arch/x86/include -I./arch/x86/include/generated -I/home/acme/git/linux/include -I./include -I/home/acme/git/linux/arch/x86/include/uapi -I./arch/x86/include/generated/uapi -I/home/acme/git/linux/include/uapi -I./include/generated/uapi -include /home/acme/git/linux/include/linux/kconfig.h
-  #
-  # ls -la /tmp/tmp.qgaFHgxjZ4/
-  total 16
-  drwx------.  2 root root  160 Feb 14 09:44 .
-  drwxrwxrwt. 47 root root 1200 Feb 14 09:44 ..
-  -rw-r--r--.  1 root root  158 Feb 14 09:44 built-in.a
-  -rw-r--r--.  1 root root  149 Feb 14 09:44 .built-in.a.cmd
-  -rw-r--r--.  1 root root    0 Feb 13 17:14 dummy.c
-  -rw-r--r--.  1 root root  936 Feb 14 09:44 dummy.o
-  -rw-r--r--.  1 root root  121 Feb 13 17:14 Makefile
-  -rw-r--r--.  1 root root    0 Feb 14 09:44 modules.order
-  #
-
-Reported-by: Thomas Richter <tmricht@linux.ibm.com>
-Tested-by: Thomas Richter <tmricht@linux.ibm.com>
 Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Daniel Borkmann <daniel@iogearbox.net>
-Cc: He Kuang <hekuang@huawei.com>
+Cc: Christian Borntraeger <borntraeger@de.ibm.com>
+Cc: Janosch Frank <frankja@linux.ibm.com>
 Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Sumanth Korikkar <sumanthk@linux.ibm.com>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: Wang Nan <wangnan0@huawei.com>
-Cc: Zefan Li <lizefan@huawei.com>
-Link: https://www.spinics.net/lists/linux-perf-users/msg10600.html
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/llvm-utils.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/include/uapi/linux/kvm.h | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/tools/perf/util/llvm-utils.c b/tools/perf/util/llvm-utils.c
-index eae47c2..b5af680 100644
---- a/tools/perf/util/llvm-utils.c
-+++ b/tools/perf/util/llvm-utils.c
-@@ -288,6 +288,7 @@ static const char *kinc_fetch_script =
- "obj-y := dummy.o\n"
- "\\$(obj)/%.o: \\$(src)/%.c\n"
- "\t@echo -n \"\\$(NOSTDINC_FLAGS) \\$(LINUXINCLUDE) \\$(EXTRA_CFLAGS)\"\n"
-+"\t\\$(CC) -c -o \\$@ \\$<\n"
- "EOF\n"
- "touch $TMPDIR/dummy.c\n"
- "make -s -C $KBUILD_DIR M=$TMPDIR $KBUILD_OPTS dummy.o 2>/dev/null\n"
+diff --git a/tools/include/uapi/linux/kvm.h b/tools/include/uapi/linux/kvm.h
+index f0a16b4..4b95f9a 100644
+--- a/tools/include/uapi/linux/kvm.h
++++ b/tools/include/uapi/linux/kvm.h
+@@ -1009,6 +1009,7 @@ struct kvm_ppc_resize_hpt {
+ #define KVM_CAP_PPC_GUEST_DEBUG_SSTEP 176
+ #define KVM_CAP_ARM_NISV_TO_USER 177
+ #define KVM_CAP_ARM_INJECT_EXT_DABT 178
++#define KVM_CAP_S390_VCPU_RESETS 179
+ 
+ #ifdef KVM_CAP_IRQ_ROUTING
+ 
+@@ -1473,6 +1474,10 @@ struct kvm_enc_region {
+ /* Available with KVM_CAP_ARM_SVE */
+ #define KVM_ARM_VCPU_FINALIZE	  _IOW(KVMIO,  0xc2, int)
+ 
++/* Available with  KVM_CAP_S390_VCPU_RESETS */
++#define KVM_S390_NORMAL_RESET	_IO(KVMIO,   0xc3)
++#define KVM_S390_CLEAR_RESET	_IO(KVMIO,   0xc4)
++
+ /* Secure Encrypted Virtualization command */
+ enum sev_cmd_id {
+ 	/* Guest initialization commands */
