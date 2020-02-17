@@ -2,37 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 100D21619D1
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Feb 2020 19:38:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F1405161B71
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Feb 2020 20:18:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729558AbgBQSio (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 17 Feb 2020 13:38:44 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:34317 "EHLO
+        id S1729728AbgBQTSt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 17 Feb 2020 14:18:49 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:34627 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727601AbgBQSio (ORCPT
+        with ESMTP id S1729705AbgBQTSt (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 17 Feb 2020 13:38:44 -0500
+        Mon, 17 Feb 2020 14:18:49 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1j3lHz-0005C0-7x; Mon, 17 Feb 2020 19:38:39 +0100
+        id 1j3luo-0006BQ-1W; Mon, 17 Feb 2020 20:18:46 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id CC90D1C20B4;
-        Mon, 17 Feb 2020 19:38:38 +0100 (CET)
-Date:   Mon, 17 Feb 2020 18:38:38 -0000
-From:   "tip-bot2 for Benjamin Thiel" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 7026A1C20B8;
+        Mon, 17 Feb 2020 20:18:45 +0100 (CET)
+Date:   Mon, 17 Feb 2020 19:18:45 -0000
+From:   "tip-bot2 for Amol Grover" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] x86/cpu: Move prototype for
- get_umwait_control_msr() to a global location
-Cc:     Benjamin Thiel <b.thiel@posteo.de>, Borislav Petkov <bp@suse.de>,
-        kvm@vger.kernel.org, x86 <x86@kernel.org>,
+Subject: [tip: timers/core] posix-timers: Pass lockdep expression to RCU lists
+Cc:     Amol Grover <frextrite@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200123172945.7235-1-b.thiel@posteo.de>
-References: <20200123172945.7235-1-b.thiel@posteo.de>
+In-Reply-To: <20200216074330.GA14025@workstation-portable>
+References: <20200216074330.GA14025@workstation-portable>
 MIME-Version: 1.0
-Message-ID: <158196471850.13786.2863222761853021206.tip-bot2@tip-bot2>
+Message-ID: <158196712510.13786.4601056224517728789.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -46,79 +45,45 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cleanups branch of tip:
+The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     b10c307f6f314c068814d0e23c86f06d5d57004b
-Gitweb:        https://git.kernel.org/tip/b10c307f6f314c068814d0e23c86f06d5d57004b
-Author:        Benjamin Thiel <b.thiel@posteo.de>
-AuthorDate:    Thu, 23 Jan 2020 18:29:45 +01:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 17 Feb 2020 19:32:45 +01:00
+Commit-ID:     5fb1c2a5bbf79ccca8d17cf97f66085be5808027
+Gitweb:        https://git.kernel.org/tip/5fb1c2a5bbf79ccca8d17cf97f66085be5808027
+Author:        Amol Grover <frextrite@gmail.com>
+AuthorDate:    Sun, 16 Feb 2020 13:13:30 +05:30
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Mon, 17 Feb 2020 20:12:19 +01:00
 
-x86/cpu: Move prototype for get_umwait_control_msr() to a global location
+posix-timers: Pass lockdep expression to RCU lists
 
-.. in order to fix a -Wmissing-prototypes warning.
+head is traversed using hlist_for_each_entry_rcu outside an RCU read-side
+critical section but under the protection of hash_lock.
 
-No functional change.
+Hence, add corresponding lockdep expression to silence false-positive
+lockdep warnings, and harden RCU lists.
 
-Signed-off-by: Benjamin Thiel <b.thiel@posteo.de>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Cc: kvm@vger.kernel.org
-Link: https://lkml.kernel.org/r/20200123172945.7235-1-b.thiel@posteo.de
+[ tglx: Removed the macro and put the condition right where it's used ]
+
+Signed-off-by: Amol Grover <frextrite@gmail.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lkml.kernel.org/r/20200216074330.GA14025@workstation-portable
+
+
 ---
- arch/x86/include/asm/mwait.h | 2 ++
- arch/x86/kernel/cpu/umwait.c | 1 +
- arch/x86/kvm/vmx/vmx.c       | 1 +
- arch/x86/kvm/vmx/vmx.h       | 2 --
- 4 files changed, 4 insertions(+), 2 deletions(-)
+ kernel/time/posix-timers.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/mwait.h b/arch/x86/include/asm/mwait.h
-index 9d5252c..b809f11 100644
---- a/arch/x86/include/asm/mwait.h
-+++ b/arch/x86/include/asm/mwait.h
-@@ -23,6 +23,8 @@
- #define MWAITX_MAX_LOOPS		((u32)-1)
- #define MWAITX_DISABLE_CSTATES		0xf0
- 
-+u32 get_umwait_control_msr(void);
-+
- static inline void __monitor(const void *eax, unsigned long ecx,
- 			     unsigned long edx)
+diff --git a/kernel/time/posix-timers.c b/kernel/time/posix-timers.c
+index ff0eb30..07709ac 100644
+--- a/kernel/time/posix-timers.c
++++ b/kernel/time/posix-timers.c
+@@ -121,7 +121,8 @@ static struct k_itimer *__posix_timers_find(struct hlist_head *head,
  {
-diff --git a/arch/x86/kernel/cpu/umwait.c b/arch/x86/kernel/cpu/umwait.c
-index c222f28..300e3fd 100644
---- a/arch/x86/kernel/cpu/umwait.c
-+++ b/arch/x86/kernel/cpu/umwait.c
-@@ -4,6 +4,7 @@
- #include <linux/cpu.h>
+ 	struct k_itimer *timer;
  
- #include <asm/msr.h>
-+#include <asm/mwait.h>
- 
- #define UMWAIT_C02_ENABLE	0
- 
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 9a66648..2068cda 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -41,6 +41,7 @@
- #include <asm/mce.h>
- #include <asm/mmu_context.h>
- #include <asm/mshyperv.h>
-+#include <asm/mwait.h>
- #include <asm/spec-ctrl.h>
- #include <asm/virtext.h>
- #include <asm/vmx.h>
-diff --git a/arch/x86/kvm/vmx/vmx.h b/arch/x86/kvm/vmx/vmx.h
-index 7f42cf3..b4e14ed 100644
---- a/arch/x86/kvm/vmx/vmx.h
-+++ b/arch/x86/kvm/vmx/vmx.h
-@@ -14,8 +14,6 @@
- extern const u32 vmx_msr_index[];
- extern u64 host_efer;
- 
--extern u32 get_umwait_control_msr(void);
--
- #define MSR_TYPE_R	1
- #define MSR_TYPE_W	2
- #define MSR_TYPE_RW	3
+-	hlist_for_each_entry_rcu(timer, head, t_hash) {
++	hlist_for_each_entry_rcu(timer, head, t_hash,
++				 lockdep_is_held(&hash_lock)) {
+ 		if ((timer->it_signal == sig) && (timer->it_id == id))
+ 			return timer;
+ 	}
