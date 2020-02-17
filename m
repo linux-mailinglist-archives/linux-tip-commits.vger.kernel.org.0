@@ -2,35 +2,35 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D81841616A8
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Feb 2020 16:52:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F105F161929
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Feb 2020 18:52:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729376AbgBQPwl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 17 Feb 2020 10:52:41 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:60080 "EHLO
+        id S1728463AbgBQRws (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 17 Feb 2020 12:52:48 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:33695 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727553AbgBQPwl (ORCPT
+        with ESMTP id S1726818AbgBQRws (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 17 Feb 2020 10:52:41 -0500
+        Mon, 17 Feb 2020 12:52:48 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1j3ihI-0000Y4-Em; Mon, 17 Feb 2020 16:52:36 +0100
+        id 1j3kZW-0003nw-Ux; Mon, 17 Feb 2020 18:52:43 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E2E281C20B0;
-        Mon, 17 Feb 2020 16:52:35 +0100 (CET)
-Date:   Mon, 17 Feb 2020 15:52:35 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 3D4D31C20B2;
+        Mon, 17 Feb 2020 18:52:42 +0100 (CET)
+Date:   Mon, 17 Feb 2020 17:52:41 -0000
 From:   "tip-bot2 for Benjamin Thiel" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] x86/iopl: Include prototype header for ksys_ioperm()
+Subject: [tip: x86/cleanups] x86/syscalls: Add prototypes for C syscall callbacks
 Cc:     Benjamin Thiel <b.thiel@posteo.de>, Borislav Petkov <bp@suse.de>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200123133051.5974-1-b.thiel@posteo.de>
-References: <20200123133051.5974-1-b.thiel@posteo.de>
+In-Reply-To: <20200123152754.20149-1-b.thiel@posteo.de>
+References: <20200123152754.20149-1-b.thiel@posteo.de>
 MIME-Version: 1.0
-Message-ID: <158195475557.13786.12758785543744091411.tip-bot2@tip-bot2>
+Message-ID: <158196196194.13786.17938311473984803785.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -46,35 +46,54 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/cleanups branch of tip:
 
-Commit-ID:     cdcb58cc05ed9a7f74509a023762488c111cdfb3
-Gitweb:        https://git.kernel.org/tip/cdcb58cc05ed9a7f74509a023762488c111cdfb3
+Commit-ID:     99ce3255fddf08fca9249488793c9b5c909ff0ab
+Gitweb:        https://git.kernel.org/tip/99ce3255fddf08fca9249488793c9b5c909ff0ab
 Author:        Benjamin Thiel <b.thiel@posteo.de>
-AuthorDate:    Thu, 23 Jan 2020 14:30:51 +01:00
+AuthorDate:    Thu, 23 Jan 2020 16:27:54 +01:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 17 Feb 2020 16:36:53 +01:00
+CommitterDate: Mon, 17 Feb 2020 18:22:25 +01:00
 
-x86/iopl: Include prototype header for ksys_ioperm()
+x86/syscalls: Add prototypes for C syscall callbacks
 
-.. in order to fix a -Wmissing-prototype warning.
+.. in order to fix a couple of -Wmissing-prototypes warnings.
 
 No functional change.
 
+ [ bp: Massage commit message and drop newlines. ]
+
 Signed-off-by: Benjamin Thiel <b.thiel@posteo.de>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20200123133051.5974-1-b.thiel@posteo.de
+Link: https://lkml.kernel.org/r/20200123152754.20149-1-b.thiel@posteo.de
 ---
- arch/x86/kernel/ioport.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/entry/common.c        | 1 +
+ arch/x86/include/asm/syscall.h | 5 +++++
+ 2 files changed, 6 insertions(+)
 
-diff --git a/arch/x86/kernel/ioport.c b/arch/x86/kernel/ioport.c
-index 8abeee0..a53e7b4 100644
---- a/arch/x86/kernel/ioport.c
-+++ b/arch/x86/kernel/ioport.c
-@@ -13,6 +13,7 @@
- 
+diff --git a/arch/x86/entry/common.c b/arch/x86/entry/common.c
+index 9747876..ec167d8 100644
+--- a/arch/x86/entry/common.c
++++ b/arch/x86/entry/common.c
+@@ -34,6 +34,7 @@
+ #include <asm/fpu/api.h>
+ #include <asm/nospec-branch.h>
  #include <asm/io_bitmap.h>
- #include <asm/desc.h>
-+#include <asm/syscalls.h>
++#include <asm/syscall.h>
  
- #ifdef CONFIG_X86_IOPL_IOPERM
+ #define CREATE_TRACE_POINTS
+ #include <trace/events/syscalls.h>
+diff --git a/arch/x86/include/asm/syscall.h b/arch/x86/include/asm/syscall.h
+index 8db3fdb..d20ffc5 100644
+--- a/arch/x86/include/asm/syscall.h
++++ b/arch/x86/include/asm/syscall.h
+@@ -168,6 +168,11 @@ static inline int syscall_get_arch(struct task_struct *task)
+ 		task->thread_info.status & TS_COMPAT)
+ 		? AUDIT_ARCH_I386 : AUDIT_ARCH_X86_64;
+ }
++
++void do_syscall_64(unsigned long nr, struct pt_regs *regs);
++void do_int80_syscall_32(struct pt_regs *regs);
++long do_fast_syscall_32(struct pt_regs *regs);
++
+ #endif	/* CONFIG_X86_32 */
  
+ #endif	/* _ASM_X86_SYSCALL_H */
