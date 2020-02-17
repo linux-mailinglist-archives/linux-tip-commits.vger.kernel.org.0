@@ -2,36 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 91FA5161B7A
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Feb 2020 20:19:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 81FA7161B7E
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Feb 2020 20:19:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729794AbgBQTSy (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 17 Feb 2020 14:18:54 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:34657 "EHLO
+        id S1729899AbgBQTTL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 17 Feb 2020 14:19:11 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:34660 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729717AbgBQTSx (ORCPT
+        with ESMTP id S1729761AbgBQTSy (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 17 Feb 2020 14:18:53 -0500
+        Mon, 17 Feb 2020 14:18:54 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1j3lus-0006E4-6m; Mon, 17 Feb 2020 20:18:50 +0100
+        id 1j3lus-0006ES-Pm; Mon, 17 Feb 2020 20:18:50 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D52D01C20B8;
-        Mon, 17 Feb 2020 20:18:49 +0100 (CET)
-Date:   Mon, 17 Feb 2020 19:18:49 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 676151C20B9;
+        Mon, 17 Feb 2020 20:18:50 +0100 (CET)
+Date:   Mon, 17 Feb 2020 19:18:50 -0000
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] ARM/arm64: vdso: Use common vdso clock mode storage
+Subject: [tip: timers/core] mips: vdso: Use generic VDSO clock mode storage
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Vincenzo Frascino <vincenzo.frascino@arm.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200207124403.363235229@linutronix.de>
-References: <20200207124403.363235229@linutronix.de>
+In-Reply-To: <20200207124403.244684017@linutronix.de>
+References: <20200207124403.244684017@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <158196712962.13786.1978693561495394786.tip-bot2@tip-bot2>
+Message-ID: <158196713010.13786.25109064840760644.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,291 +47,184 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     5e3c6a312a0946d2d83e32359612cbb925a8bed0
-Gitweb:        https://git.kernel.org/tip/5e3c6a312a0946d2d83e32359612cbb925a8bed0
+Commit-ID:     e1bdb22ebe5363ed75ddedf836ca9f19e1195337
+Gitweb:        https://git.kernel.org/tip/e1bdb22ebe5363ed75ddedf836ca9f19e1195337
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Fri, 07 Feb 2020 13:38:58 +01:00
+AuthorDate:    Fri, 07 Feb 2020 13:38:57 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Mon, 17 Feb 2020 20:12:16 +01:00
 
-ARM/arm64: vdso: Use common vdso clock mode storage
+mips: vdso: Use generic VDSO clock mode storage
 
-Convert ARM/ARM64 to the generic VDSO clock mode storage. This needs to
-happen in one go as they share the clocksource driver.
+Switch to the generic VDSO clock mode storage.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Vincenzo Frascino <vincenzo.frascino@arm.com>
 Reviewed-by: Vincenzo Frascino <vincenzo.frascino@arm.com>
-Link: https://lkml.kernel.org/r/20200207124403.363235229@linutronix.de
+Link: https://lkml.kernel.org/r/20200207124403.244684017@linutronix.de
 
 
 
 ---
- arch/arm/Kconfig                                  |  1 +-
- arch/arm/include/asm/clocksource.h                |  5 +--
- arch/arm/include/asm/vdso/gettimeofday.h          | 12 ++++++--
- arch/arm/include/asm/vdso/vsyscall.h              | 21 +--------------
- arch/arm/mm/Kconfig                               |  1 +-
- arch/arm64/Kconfig                                |  2 +-
- arch/arm64/include/asm/clocksource.h              |  5 +--
- arch/arm64/include/asm/vdso/compat_gettimeofday.h | 11 +++----
- arch/arm64/include/asm/vdso/gettimeofday.h        | 11 +++----
- arch/arm64/include/asm/vdso/vsyscall.h            |  9 +------
- drivers/clocksource/arm_arch_timer.c              |  8 ++---
- 11 files changed, 29 insertions(+), 57 deletions(-)
+ arch/mips/Kconfig                         |  2 +-
+ arch/mips/include/asm/clocksource.h       | 18 ++-----------
+ arch/mips/include/asm/vdso/gettimeofday.h | 30 +++++++---------------
+ arch/mips/include/asm/vdso/vsyscall.h     |  9 +-------
+ arch/mips/kernel/csrc-r4k.c               |  2 +-
+ drivers/clocksource/mips-gic-timer.c      |  8 +++---
+ 6 files changed, 19 insertions(+), 50 deletions(-)
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 97864aa..03bbfc3 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -3,7 +3,6 @@ config ARM
- 	bool
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 797d7f1..23b5c05 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -4,7 +4,6 @@ config MIPS
  	default y
- 	select ARCH_32BIT_OFF_T
+ 	select ARCH_32BIT_OFF_T if !64BIT
+ 	select ARCH_BINFMT_ELF_STATE if MIPS_FP_SUPPORT
 -	select ARCH_CLOCKSOURCE_DATA
- 	select ARCH_HAS_BINFMT_FLAT
- 	select ARCH_HAS_DEBUG_VIRTUAL if MMU
- 	select ARCH_HAS_DEVMEM_IS_ALLOWED
-diff --git a/arch/arm/include/asm/clocksource.h b/arch/arm/include/asm/clocksource.h
-index 0b350a7..73beb7f 100644
---- a/arch/arm/include/asm/clocksource.h
-+++ b/arch/arm/include/asm/clocksource.h
-@@ -1,8 +1,7 @@
- #ifndef _ASM_CLOCKSOURCE_H
- #define _ASM_CLOCKSOURCE_H
- 
--struct arch_clocksource_data {
--	bool vdso_direct;	/* Usable for direct VDSO access? */
--};
-+#define VDSO_ARCH_CLOCKMODES	\
-+	VDSO_CLOCKMODE_ARCHTIMER
- 
- #endif
-diff --git a/arch/arm/include/asm/vdso/gettimeofday.h b/arch/arm/include/asm/vdso/gettimeofday.h
-index f4757d3..07d791c 100644
---- a/arch/arm/include/asm/vdso/gettimeofday.h
-+++ b/arch/arm/include/asm/vdso/gettimeofday.h
-@@ -117,15 +117,21 @@ static __always_inline u64 __arch_get_hw_counter(int clock_mode)
- #ifdef CONFIG_ARM_ARCH_TIMER
- 	u64 cycle_now;
- 
--	if (!clock_mode)
--		return -EINVAL;
-+	/*
-+	 * Core checks for mode already, so this raced against a concurrent
-+	 * update. Return something. Core will do another round and then
-+	 * see the mode change and fallback to the syscall.
-+	 */
-+	if (clock_mode == VDSO_CLOCKMODE_NONE)
-+		return 0;
- 
- 	isb();
- 	cycle_now = read_sysreg(CNTVCT);
- 
- 	return cycle_now;
- #else
--	return -EINVAL; /* use fallback */
-+	/* Make GCC happy. This is compiled out anyway */
-+	return 0;
- #endif
- }
- 
-diff --git a/arch/arm/include/asm/vdso/vsyscall.h b/arch/arm/include/asm/vdso/vsyscall.h
-index 85a7e58..002f9ed 100644
---- a/arch/arm/include/asm/vdso/vsyscall.h
-+++ b/arch/arm/include/asm/vdso/vsyscall.h
-@@ -11,18 +11,6 @@
- extern struct vdso_data *vdso_data;
- extern bool cntvct_ok;
- 
--static __always_inline
--bool tk_is_cntvct(const struct timekeeper *tk)
--{
--	if (!IS_ENABLED(CONFIG_ARM_ARCH_TIMER))
--		return false;
--
--	if (!tk->tkr_mono.clock->archdata.vdso_direct)
--		return false;
--
--	return true;
--}
--
- /*
-  * Update the vDSO data page to keep in sync with kernel timekeeping.
-  */
-@@ -41,15 +29,6 @@ bool __arm_update_vdso_data(void)
- #define __arch_update_vdso_data __arm_update_vdso_data
- 
- static __always_inline
--int __arm_get_clock_mode(struct timekeeper *tk)
--{
--	u32 __tk_is_cntvct = tk_is_cntvct(tk);
--
--	return __tk_is_cntvct;
--}
--#define __arch_get_clock_mode __arm_get_clock_mode
--
--static __always_inline
- void __arm_sync_vdso_data(struct vdso_data *vdata)
- {
- 	flush_dcache_page(virt_to_page(vdata));
-diff --git a/arch/arm/mm/Kconfig b/arch/arm/mm/Kconfig
-index 65e4482..865e888 100644
---- a/arch/arm/mm/Kconfig
-+++ b/arch/arm/mm/Kconfig
-@@ -900,6 +900,7 @@ config VDSO
+ 	select ARCH_HAS_FORTIFY_SOURCE
+ 	select ARCH_HAS_KCOV
+ 	select ARCH_HAS_PTE_SPECIAL if !(32BIT && CPU_HAS_RIXI)
+@@ -38,6 +37,7 @@ config MIPS
+ 	select GENERIC_SCHED_CLOCK if !CAVIUM_OCTEON_SOC
+ 	select GENERIC_SMP_IDLE_THREAD
  	select GENERIC_TIME_VSYSCALL
- 	select GENERIC_VDSO_32
- 	select GENERIC_GETTIMEOFDAY
 +	select GENERIC_VDSO_CLOCK_MODE
- 	help
- 	  Place in the process address space an ELF shared object
- 	  providing fast implementations of gettimeofday and
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index 0b30e88..7809d49 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -9,7 +9,6 @@ config ARM64
- 	select ACPI_MCFG if (ACPI && PCI)
- 	select ACPI_SPCR_TABLE if ACPI
- 	select ACPI_PPTT if ACPI
--	select ARCH_CLOCKSOURCE_DATA
- 	select ARCH_HAS_DEBUG_VIRTUAL
- 	select ARCH_HAS_DEVMEM_IS_ALLOWED
- 	select ARCH_HAS_DMA_PREP_COHERENT
-@@ -111,6 +110,7 @@ config ARM64
- 	select GENERIC_STRNLEN_USER
- 	select GENERIC_TIME_VSYSCALL
- 	select GENERIC_GETTIMEOFDAY
-+	select GENERIC_VDSO_CLOCK_MODE
+ 	select GUP_GET_PTE_LOW_HIGH if CPU_MIPS32 && PHYS_ADDR_T_64BIT
  	select HANDLE_DOMAIN_IRQ
- 	select HARDIRQS_SW_RESEND
- 	select HAVE_PCI
-diff --git a/arch/arm64/include/asm/clocksource.h b/arch/arm64/include/asm/clocksource.h
-index 0ece64a..eb82e9d 100644
---- a/arch/arm64/include/asm/clocksource.h
-+++ b/arch/arm64/include/asm/clocksource.h
-@@ -2,8 +2,7 @@
- #ifndef _ASM_CLOCKSOURCE_H
- #define _ASM_CLOCKSOURCE_H
+ 	select HAVE_ARCH_COMPILER_H
+diff --git a/arch/mips/include/asm/clocksource.h b/arch/mips/include/asm/clocksource.h
+index cab9ae9..de659ca 100644
+--- a/arch/mips/include/asm/clocksource.h
++++ b/arch/mips/include/asm/clocksource.h
+@@ -3,23 +3,11 @@
+  * Copyright (C) 2015 Imagination Technologies
+  * Author: Alex Smith <alex.smith@imgtec.com>
+  */
+-
+ #ifndef __ASM_CLOCKSOURCE_H
+ #define __ASM_CLOCKSOURCE_H
  
+-#include <linux/types.h>
+-
+-/* VDSO clocksources. */
+-#define VDSO_CLOCK_NONE		0	/* No suitable clocksource. */
+-#define VDSO_CLOCK_R4K		1	/* Use the coprocessor 0 count. */
+-#define VDSO_CLOCK_GIC		2	/* Use the GIC. */
+-
+-/**
+- * struct arch_clocksource_data - Architecture-specific clocksource information.
+- * @vdso_clock_mode: Method the VDSO should use to access the clocksource.
+- */
 -struct arch_clocksource_data {
--	bool vdso_direct;	/* Usable for direct VDSO access? */
+-	u8 vdso_clock_mode;
 -};
 +#define VDSO_ARCH_CLOCKMODES	\
-+	VDSO_CLOCKMODE_ARCHTIMER
++	VDSO_CLOCKMODE_R4K,	\
++	VDSO_CLOCKMODE_GIC
  
- #endif
-diff --git a/arch/arm64/include/asm/vdso/compat_gettimeofday.h b/arch/arm64/include/asm/vdso/compat_gettimeofday.h
-index 537b1e6..81b0c39 100644
---- a/arch/arm64/include/asm/vdso/compat_gettimeofday.h
-+++ b/arch/arm64/include/asm/vdso/compat_gettimeofday.h
-@@ -12,8 +12,6 @@
+ #endif /* __ASM_CLOCKSOURCE_H */
+diff --git a/arch/mips/include/asm/vdso/gettimeofday.h b/arch/mips/include/asm/vdso/gettimeofday.h
+index a9f846b..88c3de1 100644
+--- a/arch/mips/include/asm/vdso/gettimeofday.h
++++ b/arch/mips/include/asm/vdso/gettimeofday.h
+@@ -24,8 +24,6 @@
  
- #include <asm/vdso/compat_barrier.h>
+ #define VDSO_HAS_CLOCK_GETRES		1
  
 -#define __VDSO_USE_SYSCALL		ULLONG_MAX
 -
- #define VDSO_HAS_CLOCK_GETRES		1
+ static __always_inline long gettimeofday_fallback(
+ 				struct __kernel_old_timeval *_tv,
+ 				struct timezone *_tz)
+@@ -175,28 +173,20 @@ static __always_inline u64 read_gic_count(const struct vdso_data *data)
  
- #define BUILD_VDSO32			1
-@@ -117,11 +115,12 @@ static __always_inline u64 __arch_get_hw_counter(s32 clock_mode)
- 	u64 res;
- 
- 	/*
--	 * clock_mode == 0 implies that vDSO are enabled otherwise
--	 * fallback on syscall.
-+	 * Core checks for mode already, so this raced against a concurrent
-+	 * update. Return something. Core will do another round and then
-+	 * see the mode change and fallback to the syscall.
- 	 */
--	if (clock_mode)
--		return __VDSO_USE_SYSCALL;
-+	if (clock_mode == VDSO_CLOCKMODE_NONE)
-+		return 0;
- 
- 	/*
- 	 * This isb() is required to prevent that the counter value
-diff --git a/arch/arm64/include/asm/vdso/gettimeofday.h b/arch/arm64/include/asm/vdso/gettimeofday.h
-index b08f476..5a53443 100644
---- a/arch/arm64/include/asm/vdso/gettimeofday.h
-+++ b/arch/arm64/include/asm/vdso/gettimeofday.h
-@@ -10,8 +10,6 @@
- #include <asm/unistd.h>
- #include <uapi/linux/time.h>
- 
--#define __VDSO_USE_SYSCALL		ULLONG_MAX
--
- #define VDSO_HAS_CLOCK_GETRES		1
- 
- static __always_inline
-@@ -71,11 +69,12 @@ static __always_inline u64 __arch_get_hw_counter(s32 clock_mode)
- 	u64 res;
- 
- 	/*
--	 * clock_mode == 0 implies that vDSO are enabled otherwise
--	 * fallback on syscall.
-+	 * Core checks for mode already, so this raced against a concurrent
-+	 * update. Return something. Core will do another round and then
-+	 * see the mode change and fallback to the syscall.
- 	 */
--	if (clock_mode)
--		return __VDSO_USE_SYSCALL;
-+	if (clock_mode == VDSO_CLOCKMODE_NONE)
-+		return 0;
- 
- 	/*
- 	 * This isb() is required to prevent that the counter value
-diff --git a/arch/arm64/include/asm/vdso/vsyscall.h b/arch/arm64/include/asm/vdso/vsyscall.h
-index 0c20a7c..f94b145 100644
---- a/arch/arm64/include/asm/vdso/vsyscall.h
-+++ b/arch/arm64/include/asm/vdso/vsyscall.h
-@@ -22,15 +22,6 @@ struct vdso_data *__arm64_get_k_vdso_data(void)
- #define __arch_get_k_vdso_data __arm64_get_k_vdso_data
- 
- static __always_inline
--int __arm64_get_clock_mode(struct timekeeper *tk)
--{
--	u32 use_syscall = !tk->tkr_mono.clock->archdata.vdso_direct;
--
--	return use_syscall;
--}
--#define __arch_get_clock_mode __arm64_get_clock_mode
--
--static __always_inline
- void __arm64_update_vsyscall(struct vdso_data *vdata, struct timekeeper *tk)
+ static __always_inline u64 __arch_get_hw_counter(s32 clock_mode)
  {
- 	vdata[CS_HRES_COARSE].mask	= VDSO_PRECISION_MASK;
-diff --git a/drivers/clocksource/arm_arch_timer.c b/drivers/clocksource/arm_arch_timer.c
-index 9a5464c..ee2420d 100644
---- a/drivers/clocksource/arm_arch_timer.c
-+++ b/drivers/clocksource/arm_arch_timer.c
-@@ -69,7 +69,7 @@ static enum arch_timer_ppi_nr arch_timer_uses_ppi = ARCH_TIMER_VIRT_PPI;
- static bool arch_timer_c3stop;
- static bool arch_timer_mem_use_virtual;
- static bool arch_counter_suspend_stop;
--static bool vdso_default = true;
-+static enum vdso_clock_mode vdso_default = VDSO_CLOCKMODE_ARCHTIMER;
- 
- static cpumask_t evtstrm_available = CPU_MASK_NONE;
- static bool evtstrm_enable = IS_ENABLED(CONFIG_ARM_ARCH_TIMER_EVTSTREAM);
-@@ -560,8 +560,8 @@ void arch_timer_enable_workaround(const struct arch_timer_erratum_workaround *wa
- 	 * change both the default value and the vdso itself.
- 	 */
- 	if (wa->read_cntvct_el0) {
--		clocksource_counter.archdata.vdso_direct = false;
--		vdso_default = false;
-+		clocksource_counter.vdso_clock_mode = VDSO_CLOCKMODE_NONE;
-+		vdso_default = VDSO_CLOCKMODE_NONE;
- 	}
+-#ifdef CONFIG_CLKSRC_MIPS_GIC
+-	const struct vdso_data *data = get_vdso_data();
+-#endif
+-	u64 cycle_now;
+-
+-	switch (clock_mode) {
+ #ifdef CONFIG_CSRC_R4K
+-	case VDSO_CLOCK_R4K:
+-		cycle_now = read_r4k_count();
+-		break;
++	if (clock_mode == VDSO_CLOCKMODE_R4K)
++		return read_r4k_count();
+ #endif
+ #ifdef CONFIG_CLKSRC_MIPS_GIC
+-	case VDSO_CLOCK_GIC:
+-		cycle_now = read_gic_count(data);
+-		break;
++	if (clock_mode == VDSO_CLOCKMODE_GIC)
++		return read_gic_count(get_vdso_data());
+ #endif
+-	default:
+-		cycle_now = __VDSO_USE_SYSCALL;
+-		break;
+-	}
+-
+-	return cycle_now;
++	/*
++	 * Core checks mode already. So this raced against a concurrent
++	 * update. Return something. Core will do another round see the
++	 * change and fallback to syscall.
++	 */
++	return 0;
  }
  
-@@ -979,7 +979,7 @@ static void __init arch_counter_register(unsigned type)
- 		}
+ static inline bool mips_vdso_hres_capable(void)
+diff --git a/arch/mips/include/asm/vdso/vsyscall.h b/arch/mips/include/asm/vdso/vsyscall.h
+index 00d41b9..47168aa 100644
+--- a/arch/mips/include/asm/vdso/vsyscall.h
++++ b/arch/mips/include/asm/vdso/vsyscall.h
+@@ -19,15 +19,6 @@ struct vdso_data *__mips_get_k_vdso_data(void)
+ }
+ #define __arch_get_k_vdso_data __mips_get_k_vdso_data
  
- 		arch_timer_read_counter = rd;
--		clocksource_counter.archdata.vdso_direct = vdso_default;
-+		clocksource_counter.vdso_clock_mode = vdso_default;
- 	} else {
- 		arch_timer_read_counter = arch_counter_get_cntvct_mem;
- 	}
+-static __always_inline
+-int __mips_get_clock_mode(struct timekeeper *tk)
+-{
+-	u32 clock_mode = tk->tkr_mono.clock->archdata.vdso_clock_mode;
+-
+-	return clock_mode;
+-}
+-#define __arch_get_clock_mode __mips_get_clock_mode
+-
+ /* The asm-generic header needs to be included after the definitions above */
+ #include <asm-generic/vdso/vsyscall.h>
+ 
+diff --git a/arch/mips/kernel/csrc-r4k.c b/arch/mips/kernel/csrc-r4k.c
+index eed099f..437dda6 100644
+--- a/arch/mips/kernel/csrc-r4k.c
++++ b/arch/mips/kernel/csrc-r4k.c
+@@ -78,7 +78,7 @@ int __init init_r4k_clocksource(void)
+ 	 * by the VDSO (HWREna is configured by configure_hwrena()).
+ 	 */
+ 	if (cpu_has_mips_r2_r6 && rdhwr_count_usable())
+-		clocksource_mips.archdata.vdso_clock_mode = VDSO_CLOCK_R4K;
++		clocksource_mips.vdso_clock_mode = VDSO_CLOCKMODE_R4K;
+ 
+ 	clocksource_register_hz(&clocksource_mips, mips_hpt_frequency);
+ 
+diff --git a/drivers/clocksource/mips-gic-timer.c b/drivers/clocksource/mips-gic-timer.c
+index 37671a5..8b5f8ae 100644
+--- a/drivers/clocksource/mips-gic-timer.c
++++ b/drivers/clocksource/mips-gic-timer.c
+@@ -155,10 +155,10 @@ static u64 gic_hpt_read(struct clocksource *cs)
+ }
+ 
+ static struct clocksource gic_clocksource = {
+-	.name		= "GIC",
+-	.read		= gic_hpt_read,
+-	.flags		= CLOCK_SOURCE_IS_CONTINUOUS,
+-	.archdata	= { .vdso_clock_mode = VDSO_CLOCK_GIC },
++	.name			= "GIC",
++	.read			= gic_hpt_read,
++	.flags			= CLOCK_SOURCE_IS_CONTINUOUS,
++	.vdso_clock_mode	= VDSO_CLOCKMODE_GIC,
+ };
+ 
+ static int __init __gic_clocksource_init(void)
