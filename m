@@ -2,36 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FEC51615BF
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Feb 2020 16:12:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6792F161666
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Feb 2020 16:40:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729550AbgBQPMZ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 17 Feb 2020 10:12:25 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:59966 "EHLO
+        id S1728873AbgBQPkx (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 17 Feb 2020 10:40:53 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:60067 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729468AbgBQPME (ORCPT
+        with ESMTP id S1729163AbgBQPkx (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 17 Feb 2020 10:12:04 -0500
+        Mon, 17 Feb 2020 10:40:53 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1j3i40-0007gn-Rb; Mon, 17 Feb 2020 16:12:00 +0100
+        id 1j3iVt-0000DK-Al; Mon, 17 Feb 2020 16:40:49 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 634841C20AC;
-        Mon, 17 Feb 2020 16:12:00 +0100 (CET)
-Date:   Mon, 17 Feb 2020 15:12:00 -0000
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id ED0B31C20B0;
+        Mon, 17 Feb 2020 16:40:48 +0100 (CET)
+Date:   Mon, 17 Feb 2020 15:40:48 -0000
+From:   "tip-bot2 for Alexander Popov" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] x86/vdso: Mark the TSC clocksource path likely
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Vincenzo Frascino <vincenzo.frascino@arm.com>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200207124402.328922847@linutronix.de>
-References: <20200207124402.328922847@linutronix.de>
+Subject: [tip: timers/core] timer: Improve the comment describing schedule_timeout()
+Cc:     Alexander Popov <alex.popov@linux.com>,
+        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200117225900.16340-1-alex.popov@linux.com>
+References: <20200117225900.16340-1-alex.popov@linux.com>
 MIME-Version: 1.0
-Message-ID: <158195232016.13786.8518739445057683116.tip-bot2@tip-bot2>
+Message-ID: <158195404873.13786.15386976838867455888.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,38 +47,78 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     50e818715821b89c7abac90a97721f106e893d83
-Gitweb:        https://git.kernel.org/tip/50e818715821b89c7abac90a97721f106e893d83
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Fri, 07 Feb 2020 13:38:48 +01:00
+Commit-ID:     1b8020618b8922b9128b3015224221d0f869b471
+Gitweb:        https://git.kernel.org/tip/1b8020618b8922b9128b3015224221d0f869b471
+Author:        Alexander Popov <alex.popov@linux.com>
+AuthorDate:    Sat, 18 Jan 2020 01:59:00 +03:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 17 Feb 2020 14:40:19 +01:00
+CommitterDate: Mon, 17 Feb 2020 16:36:05 +01:00
 
-x86/vdso: Mark the TSC clocksource path likely
+timer: Improve the comment describing schedule_timeout()
 
-Jumping out of line for the TSC clcoksource read is creating awful
-code. TSC is likely to be the clocksource at least on bare metal and the PV
-interfaces are sufficiently more work that the jump over the TSC read is
-just in the noise.
+When working commit 6dcd5d7a7a29c1e, a mistake was noticed by Linus:
+schedule_timeout() was called without setting the task state to anything
+particular.
 
+It calls the scheduler, but doesn't delay anything, because the task stays
+runnable. That happens because sched_submit_work() does nothing for tasks
+in TASK_RUNNING state.
+
+That turned out to be the intended behavior. Adding a WARN() is not useful
+as the task could be woken up right after setting the state and before
+reaching schedule_timeout().
+
+Improve the comment about schedule_timeout() and describe that more
+explicitly.
+
+Signed-off-by: Alexander Popov <alex.popov@linux.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Vincenzo Frascino <vincenzo.frascino@arm.com>
-Link: https://lkml.kernel.org/r/20200207124402.328922847@linutronix.de
+Link: https://lkml.kernel.org/r/20200117225900.16340-1-alex.popov@linux.com
 
 ---
- arch/x86/include/asm/vdso/gettimeofday.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/time/timer.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/arch/x86/include/asm/vdso/gettimeofday.h b/arch/x86/include/asm/vdso/gettimeofday.h
-index 6ee1f7d..264d4fd 100644
---- a/arch/x86/include/asm/vdso/gettimeofday.h
-+++ b/arch/x86/include/asm/vdso/gettimeofday.h
-@@ -243,7 +243,7 @@ static u64 vread_hvclock(void)
- 
- static inline u64 __arch_get_hw_counter(s32 clock_mode)
- {
--	if (clock_mode == VCLOCK_TSC)
-+	if (likely(clock_mode == VCLOCK_TSC))
- 		return (u64)rdtsc_ordered();
- 	/*
- 	 * For any memory-mapped vclock type, we need to make sure that gcc
+diff --git a/kernel/time/timer.c b/kernel/time/timer.c
+index 4820823..cb34fac 100644
+--- a/kernel/time/timer.c
++++ b/kernel/time/timer.c
+@@ -1828,21 +1828,23 @@ static void process_timeout(struct timer_list *t)
+  * schedule_timeout - sleep until timeout
+  * @timeout: timeout value in jiffies
+  *
+- * Make the current task sleep until @timeout jiffies have
+- * elapsed. The routine will return immediately unless
+- * the current task state has been set (see set_current_state()).
++ * Make the current task sleep until @timeout jiffies have elapsed.
++ * The function behavior depends on the current task state
++ * (see also set_current_state() description):
+  *
+- * You can set the task state as follows -
++ * %TASK_RUNNING - the scheduler is called, but the task does not sleep
++ * at all. That happens because sched_submit_work() does nothing for
++ * tasks in %TASK_RUNNING state.
+  *
+  * %TASK_UNINTERRUPTIBLE - at least @timeout jiffies are guaranteed to
+  * pass before the routine returns unless the current task is explicitly
+- * woken up, (e.g. by wake_up_process())".
++ * woken up, (e.g. by wake_up_process()).
+  *
+  * %TASK_INTERRUPTIBLE - the routine may return early if a signal is
+  * delivered to the current task or the current task is explicitly woken
+  * up.
+  *
+- * The current task state is guaranteed to be TASK_RUNNING when this
++ * The current task state is guaranteed to be %TASK_RUNNING when this
+  * routine returns.
+  *
+  * Specifying a @timeout value of %MAX_SCHEDULE_TIMEOUT will schedule
+@@ -1850,7 +1852,7 @@ static void process_timeout(struct timer_list *t)
+  * value will be %MAX_SCHEDULE_TIMEOUT.
+  *
+  * Returns 0 when the timer has expired otherwise the remaining time in
+- * jiffies will be returned.  In all cases the return value is guaranteed
++ * jiffies will be returned. In all cases the return value is guaranteed
+  * to be non-negative.
+  */
+ signed long __sched schedule_timeout(signed long timeout)
