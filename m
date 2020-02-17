@@ -2,36 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B0F091615BB
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Feb 2020 16:12:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E03EA1615B3
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Feb 2020 16:12:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727428AbgBQPMY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 17 Feb 2020 10:12:24 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:59959 "EHLO
+        id S1729489AbgBQPMI (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 17 Feb 2020 10:12:08 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:59983 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728842AbgBQPMD (ORCPT
+        with ESMTP id S1729486AbgBQPMH (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 17 Feb 2020 10:12:03 -0500
+        Mon, 17 Feb 2020 10:12:07 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1j3i40-0007gd-9j; Mon, 17 Feb 2020 16:12:00 +0100
+        id 1j3i44-0007gW-O6; Mon, 17 Feb 2020 16:12:04 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E2F801C20A9;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 693D81C20A8;
         Mon, 17 Feb 2020 16:11:59 +0100 (CET)
 Date:   Mon, 17 Feb 2020 15:11:59 -0000
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] ARM: vdso: Remove unused function
+Subject: [tip: timers/core] lib/vdso: Allow the high resolution parts to be
+ compiled out
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Vincenzo Frascino <vincenzo.frascino@arm.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200207124402.438179009@linutronix.de>
-References: <20200207124402.438179009@linutronix.de>
+In-Reply-To: <20200207124402.530143168@linutronix.de>
+References: <20200207124402.530143168@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <158195231964.13786.18210528997361706809.tip-bot2@tip-bot2>
+Message-ID: <158195231918.13786.6436106739044110452.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,45 +48,57 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     78560d41064ad3d377e3d1a1ee87526301f4e946
-Gitweb:        https://git.kernel.org/tip/78560d41064ad3d377e3d1a1ee87526301f4e946
+Commit-ID:     1dff4156d1f63b525c54aea7f097a657cbbbf837
+Gitweb:        https://git.kernel.org/tip/1dff4156d1f63b525c54aea7f097a657cbbbf837
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Fri, 07 Feb 2020 13:38:49 +01:00
+AuthorDate:    Fri, 07 Feb 2020 13:38:50 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Mon, 17 Feb 2020 14:40:20 +01:00
 
-ARM: vdso: Remove unused function
+lib/vdso: Allow the high resolution parts to be compiled out
 
-The function is nowhere used. Aside of that this check should only cover
-the high resolution parts of the VDSO which require a VDSO capable
-clocksource and not the complete functionality as the name suggests. Will
-be replaced with something more useful.
+If the architecture knows at compile time that there is no VDSO capable
+clocksource supported it makes sense to optimize the guts of the high
+resolution parts of the VDSO out at build time. Add a helper function to
+check whether the VDSO should be high resolution capable and provide a stub
+which can be overridden by an architecture.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Tested-by: Vincenzo Frascino <vincenzo.frascino@arm.com>
 Reviewed-by: Vincenzo Frascino <vincenzo.frascino@arm.com>
-Link: https://lkml.kernel.org/r/20200207124402.438179009@linutronix.de
+Link: https://lkml.kernel.org/r/20200207124402.530143168@linutronix.de
 
 
 ---
- arch/arm/include/asm/vdso/vsyscall.h | 7 -------
- 1 file changed, 7 deletions(-)
+ lib/vdso/gettimeofday.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/arch/arm/include/asm/vdso/vsyscall.h b/arch/arm/include/asm/vdso/vsyscall.h
-index cff87d8..85a7e58 100644
---- a/arch/arm/include/asm/vdso/vsyscall.h
-+++ b/arch/arm/include/asm/vdso/vsyscall.h
-@@ -50,13 +50,6 @@ int __arm_get_clock_mode(struct timekeeper *tk)
- #define __arch_get_clock_mode __arm_get_clock_mode
+diff --git a/lib/vdso/gettimeofday.c b/lib/vdso/gettimeofday.c
+index f8b8ec5..5804e4e 100644
+--- a/lib/vdso/gettimeofday.c
++++ b/lib/vdso/gettimeofday.c
+@@ -38,6 +38,13 @@ u64 vdso_calc_delta(u64 cycles, u64 last, u64 mask, u32 mult)
+ }
+ #endif
  
- static __always_inline
--int __arm_use_vsyscall(struct vdso_data *vdata)
--{
--	return vdata[CS_HRES_COARSE].clock_mode;
--}
--#define __arch_use_vsyscall __arm_use_vsyscall
--
--static __always_inline
- void __arm_sync_vdso_data(struct vdso_data *vdata)
- {
- 	flush_dcache_page(virt_to_page(vdata));
++#ifndef __arch_vdso_hres_capable
++static inline bool __arch_vdso_hres_capable(void)
++{
++	return true;
++}
++#endif
++
+ #ifdef CONFIG_TIME_NS
+ static int do_hres_timens(const struct vdso_data *vdns, clockid_t clk,
+ 			  struct __kernel_timespec *ts)
+@@ -101,6 +108,10 @@ static __always_inline int do_hres(const struct vdso_data *vd, clockid_t clk,
+ 	u64 cycles, last, sec, ns;
+ 	u32 seq;
+ 
++	/* Allows to compile the high resolution parts out */
++	if (!__arch_vdso_hres_capable())
++		return -1;
++
+ 	do {
+ 		/*
+ 		 * Open coded to handle VCLOCK_TIMENS. Time namespace
