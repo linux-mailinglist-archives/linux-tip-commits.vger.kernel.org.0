@@ -2,36 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C51116290B
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 18 Feb 2020 16:07:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BDE0164A73
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 Feb 2020 17:32:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726634AbgBRPH3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 18 Feb 2020 10:07:29 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:36326 "EHLO
+        id S1726773AbgBSQcL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 19 Feb 2020 11:32:11 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:38714 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726540AbgBRPH3 (ORCPT
+        with ESMTP id S1726729AbgBSQcL (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 18 Feb 2020 10:07:29 -0500
+        Wed, 19 Feb 2020 11:32:11 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1j44T7-0006Db-N0; Tue, 18 Feb 2020 16:07:25 +0100
+        id 1j4SGd-0008EU-QO; Wed, 19 Feb 2020 17:32:07 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5887D1C20BD;
-        Tue, 18 Feb 2020 16:07:25 +0100 (CET)
-Date:   Tue, 18 Feb 2020 15:07:24 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 744E71C2080;
+        Wed, 19 Feb 2020 17:32:07 +0100 (CET)
+Date:   Wed, 19 Feb 2020 16:32:07 -0000
 From:   "tip-bot2 for H.J. Lu" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/boot] x86/boot/compressed: Don't declare __force_order in
+Subject: [tip: x86/urgent] x86/boot/compressed: Don't declare __force_order in
  kaslr_64.c
 Cc:     "H.J. Lu" <hjl.tools@gmail.com>, Borislav Petkov <bp@suse.de>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
 In-Reply-To: <20200124181811.4780-1-hjl.tools@gmail.com>
 References: <20200124181811.4780-1-hjl.tools@gmail.com>
 MIME-Version: 1.0
-Message-ID: <158203844496.13786.14610614257521764500.tip-bot2@tip-bot2>
+Message-ID: <158212992717.13786.4423005345858721779.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -45,14 +45,14 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/boot branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     970b41399925e34fdf5783a53fe8cc73f04fec37
-Gitweb:        https://git.kernel.org/tip/970b41399925e34fdf5783a53fe8cc73f04fec37
+Commit-ID:     df6d4f9db79c1a5d6f48b59db35ccd1e9ff9adfc
+Gitweb:        https://git.kernel.org/tip/df6d4f9db79c1a5d6f48b59db35ccd1e9ff9adfc
 Author:        H.J. Lu <hjl.tools@gmail.com>
 AuthorDate:    Thu, 16 Jan 2020 12:46:51 -08:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 18 Feb 2020 14:40:53 +01:00
+CommitterDate: Wed, 19 Feb 2020 17:23:59 +01:00
 
 x86/boot/compressed: Don't declare __force_order in kaslr_64.c
 
