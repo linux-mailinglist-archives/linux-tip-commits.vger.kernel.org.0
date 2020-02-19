@@ -2,37 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A857164B29
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 Feb 2020 17:55:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 39B51164E2A
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 Feb 2020 19:55:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726725AbgBSQzV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 19 Feb 2020 11:55:21 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:38822 "EHLO
+        id S1726708AbgBSSzn (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 19 Feb 2020 13:55:43 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:39089 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726551AbgBSQzV (ORCPT
+        with ESMTP id S1726683AbgBSSzn (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 19 Feb 2020 11:55:21 -0500
+        Wed, 19 Feb 2020 13:55:43 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1j4Sd2-0000GR-Kk; Wed, 19 Feb 2020 17:55:16 +0100
+        id 1j4UVV-0002CX-Rc; Wed, 19 Feb 2020 19:55:38 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 488A41C20C7;
-        Wed, 19 Feb 2020 17:55:16 +0100 (CET)
-Date:   Wed, 19 Feb 2020 16:55:16 -0000
-From:   "tip-bot2 for Arvind Sankar" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 646F81C20D5;
+        Wed, 19 Feb 2020 19:55:37 +0100 (CET)
+Date:   Wed, 19 Feb 2020 18:55:37 -0000
+From:   "tip-bot2 for Prarit Bhargava" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/boot] x86/boot/compressed/64: Remove .bss/.pgtable from bzImage
-Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
-        Borislav Petkov <bp@suse.de>,
-        Kees Cook <keescook@chromium.org>, x86 <x86@kernel.org>,
+Subject: [tip: ras/core] x86/mce: Do not log spurious corrected mce errors
+Cc:     Alexander Krupp <centos@akr.yagii.de>,
+        Prarit Bhargava <prarit@redhat.com>,
+        Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200109150218.16544-1-nivedita@alum.mit.edu>
-References: <20200109150218.16544-1-nivedita@alum.mit.edu>
+In-Reply-To: <20200219131611.36816-1-prarit@redhat.com>
+References: <20200219131611.36816-1-prarit@redhat.com>
 MIME-Version: 1.0
-Message-ID: <158213131602.13786.16571739495363216175.tip-bot2@tip-bot2>
+Message-ID: <158213853701.13786.14681165672201600813.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -46,61 +46,99 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/boot branch of tip:
+The following commit has been merged into the ras/core branch of tip:
 
-Commit-ID:     3ee372ccce4d4e7c610748d0583979d3ed3a0cf4
-Gitweb:        https://git.kernel.org/tip/3ee372ccce4d4e7c610748d0583979d3ed3a0cf4
-Author:        Arvind Sankar <nivedita@alum.mit.edu>
-AuthorDate:    Thu, 09 Jan 2020 10:02:17 -05:00
+Commit-ID:     2976908e4198aa02fc3f76802358f69396267189
+Gitweb:        https://git.kernel.org/tip/2976908e4198aa02fc3f76802358f69396267189
+Author:        Prarit Bhargava <prarit@redhat.com>
+AuthorDate:    Wed, 19 Feb 2020 08:16:11 -05:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 19 Feb 2020 17:28:57 +01:00
+CommitterDate: Wed, 19 Feb 2020 18:14:49 +01:00
 
-x86/boot/compressed/64: Remove .bss/.pgtable from bzImage
+x86/mce: Do not log spurious corrected mce errors
 
-Commit
+A user has reported that they are seeing spurious corrected errors on
+their hardware.
 
-  5b11f1cee579 ("x86, boot: straighten out ranges to copy/zero in
-  compressed/head*.S")
+Intel Errata HSD131, HSM142, HSW131, and BDM48 report that "spurious
+corrected errors may be logged in the IA32_MC0_STATUS register with
+the valid field (bit 63) set, the uncorrected error field (bit 61) not
+set, a Model Specific Error Code (bits [31:16]) of 0x000F, and an MCA
+Error Code (bits [15:0]) of 0x0005." The Errata PDFs are linked in the
+bugzilla below.
 
-introduced a separate .pgtable section, splitting it out from the rest
-of .bss. This section was added without the writeable flag, marking it
-as read-only. This results in the linker putting the .rela.dyn section
-(containing bogus dynamic relocations from head_64.o) after the .bss and
-.pgtable sections.
+Block these spurious errors from the console and logs.
 
-When objcopy is used to convert compressed/vmlinux into a binary for
-the bzImage:
+ [ bp: Move the intel_filter_mce() header declarations into the already
+   existing CONFIG_X86_MCE_INTEL ifdeffery. ]
 
-$ objcopy  -O binary -R .note -R .comment -S arch/x86/boot/compressed/vmlinux \
-		arch/x86/boot/vmlinux.bin
-
-the .bss and .pgtable sections get materialized as ~176KiB of zero
-bytes in the binary in order to place .rela.dyn at the correct location.
-
-Fix this by marking .pgtable as writeable. This moves the .rela.dyn
-section up in the ELF image layout so that .bss and .pgtable are the
-last allocated sections and so don't appear in bzImage.
-
- [ bp: Massage commit message. ]
-
-Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
+Co-developed-by: Alexander Krupp <centos@akr.yagii.de>
+Signed-off-by: Alexander Krupp <centos@akr.yagii.de>
+Signed-off-by: Prarit Bhargava <prarit@redhat.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Acked-by: Kees Cook <keescook@chromium.org>
-Link: https://lkml.kernel.org/r/20200109150218.16544-1-nivedita@alum.mit.edu
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=206587
+Link: https://lkml.kernel.org/r/20200219131611.36816-1-prarit@redhat.com
 ---
- arch/x86/boot/compressed/head_64.S | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/cpu/mce/core.c     |  2 ++
+ arch/x86/kernel/cpu/mce/intel.c    | 17 +++++++++++++++++
+ arch/x86/kernel/cpu/mce/internal.h |  2 ++
+ 3 files changed, 21 insertions(+)
 
-diff --git a/arch/x86/boot/compressed/head_64.S b/arch/x86/boot/compressed/head_64.S
-index 68f31c4..c8ee6ef 100644
---- a/arch/x86/boot/compressed/head_64.S
-+++ b/arch/x86/boot/compressed/head_64.S
-@@ -645,7 +645,7 @@ SYM_DATA_END_LABEL(boot_stack, SYM_L_LOCAL, boot_stack_end)
- /*
-  * Space for page tables (not in .bss so not zeroed)
-  */
--	.section ".pgtable","a",@nobits
-+	.section ".pgtable","aw",@nobits
- 	.balign 4096
- SYM_DATA_LOCAL(pgtable,		.fill BOOT_PGT_SIZE, 1, 0)
+diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
+index 2c4f949..fe3983d 100644
+--- a/arch/x86/kernel/cpu/mce/core.c
++++ b/arch/x86/kernel/cpu/mce/core.c
+@@ -1877,6 +1877,8 @@ bool filter_mce(struct mce *m)
+ {
+ 	if (boot_cpu_data.x86_vendor == X86_VENDOR_AMD)
+ 		return amd_filter_mce(m);
++	if (boot_cpu_data.x86_vendor == X86_VENDOR_INTEL)
++		return intel_filter_mce(m);
  
+ 	return false;
+ }
+diff --git a/arch/x86/kernel/cpu/mce/intel.c b/arch/x86/kernel/cpu/mce/intel.c
+index 5627b10..989148e 100644
+--- a/arch/x86/kernel/cpu/mce/intel.c
++++ b/arch/x86/kernel/cpu/mce/intel.c
+@@ -520,3 +520,20 @@ void mce_intel_feature_clear(struct cpuinfo_x86 *c)
+ {
+ 	intel_clear_lmce();
+ }
++
++bool intel_filter_mce(struct mce *m)
++{
++	struct cpuinfo_x86 *c = &boot_cpu_data;
++
++	/* MCE errata HSD131, HSM142, HSW131, BDM48, and HSM142 */
++	if ((c->x86 == 6) &&
++	    ((c->x86_model == INTEL_FAM6_HASWELL) ||
++	     (c->x86_model == INTEL_FAM6_HASWELL_L) ||
++	     (c->x86_model == INTEL_FAM6_BROADWELL) ||
++	     (c->x86_model == INTEL_FAM6_HASWELL_G)) &&
++	    (m->bank == 0) &&
++	    ((m->status & 0xa0000000ffffffff) == 0x80000000000f0005))
++		return true;
++
++	return false;
++}
+diff --git a/arch/x86/kernel/cpu/mce/internal.h b/arch/x86/kernel/cpu/mce/internal.h
+index b785c0d..97db184 100644
+--- a/arch/x86/kernel/cpu/mce/internal.h
++++ b/arch/x86/kernel/cpu/mce/internal.h
+@@ -48,6 +48,7 @@ void cmci_disable_bank(int bank);
+ void intel_init_cmci(void);
+ void intel_init_lmce(void);
+ void intel_clear_lmce(void);
++bool intel_filter_mce(struct mce *m);
+ #else
+ # define cmci_intel_adjust_timer mce_adjust_timer_default
+ static inline bool mce_intel_cmci_poll(void) { return false; }
+@@ -56,6 +57,7 @@ static inline void cmci_disable_bank(int bank) { }
+ static inline void intel_init_cmci(void) { }
+ static inline void intel_init_lmce(void) { }
+ static inline void intel_clear_lmce(void) { }
++static inline bool intel_filter_mce(struct mce *m) { return false; };
+ #endif
+ 
+ void mce_timer_kick(unsigned long interval);
