@@ -2,164 +2,129 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F18D164E76
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 Feb 2020 20:07:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 17B6F1652A3
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 Feb 2020 23:43:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726725AbgBSTHl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 19 Feb 2020 14:07:41 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:39118 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726613AbgBSTHl (ORCPT
+        id S1727469AbgBSWnv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 19 Feb 2020 17:43:51 -0500
+Received: from mail-pg1-f196.google.com ([209.85.215.196]:41558 "EHLO
+        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727429AbgBSWnv (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 19 Feb 2020 14:07:41 -0500
-Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tip-bot2@linutronix.de>)
-        id 1j4Uh2-0002Ro-UH; Wed, 19 Feb 2020 20:07:33 +0100
-Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 8527C1C20D7;
-        Wed, 19 Feb 2020 20:07:32 +0100 (CET)
-Date:   Wed, 19 Feb 2020 19:07:32 -0000
-From:   "tip-bot2 for Kim Phillips" <tip-bot2@linutronix.de>
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/cpu/amd: Enable the fixed Instructions Retired
- counter IRPERF
-Cc:     Kim Phillips <kim.phillips@amd.com>, Borislav Petkov <bp@suse.de>,
-        Peter Zijlstra <peterz@infradead.org>, stable@vger.kernel.org,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200214201805.13830-1-kim.phillips@amd.com>
-References: <20200214201805.13830-1-kim.phillips@amd.com>
+        Wed, 19 Feb 2020 17:43:51 -0500
+Received: by mail-pg1-f196.google.com with SMTP id 70so842972pgf.8
+        for <linux-tip-commits@vger.kernel.org>; Wed, 19 Feb 2020 14:43:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=DarAl82PcxJAMUan8osRqiWJP5zrzBNFn2my/A9LRV0=;
+        b=SI2uasgQc9FMfi5L8cj/jMw5i/igTpq5jC76d8Ym788Dg4qfgnAUOue0gF1t/Q//25
+         CuR3r/WGfAOahQVIpbSGoeK53gfYTf6gBU6A+NGdEbBkR6qgO3pEjsY/wulM9RBIXpkb
+         lfZ3o+uAQLoYpJKeEHu+KySxpiicUAPB7ek0vQX+MF2S2SqgG03zrU6fc7s6lWDC6Vjc
+         F7tdFfJ5Rq1FOUk2FKQqFq+okBgPsCEEB9chHVPLm9iDwZ1hz+VnIxib6yUAW6BtmKwR
+         u6vFhBzCyzsLm5snKXcTsbkh/i9rk8FFZVVUAbtsHXJf85L5lkyWQSY3nSTuF7zXr8R8
+         sU3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=DarAl82PcxJAMUan8osRqiWJP5zrzBNFn2my/A9LRV0=;
+        b=L1CLpTRNAgCZIYgBMi7l6yeX7Fkm9ljEkZYvWg06Dleu/yHfuthudDtIsf/Z3/rNT7
+         p5WYNHW2gyxlwy89gFqiiASzQYoHwnokpeF54MiCR/wYa2YFeVHxwn/aKApYJYQl2/aN
+         1X9qMBBSiEMCSdYIr0j2e05Gg033wDS+whpTyAw93LKnGBfMBsjZusTsG6PdWBGnP2o1
+         YqKOXgJfXTYMLUdb6ArLFmo8YCip1wssf0imdgtH9Thq7dDl/zgLub/Fc3q3v0XcgyDi
+         Wmhr39Ys/X9Gj7+IQB6QZZvRhGoAD1iYUlDy9gDjMi6+IJ3P/2/ulyO1ecVaViWSgH04
+         7tVg==
+X-Gm-Message-State: APjAAAXZcyKh0sbQ4lFDWJG2PRVccVwaHTRG/E5MJXOolrQJtc4zDonx
+        5Ktl63d9DcXpRfzcv3h8rA9XLWqQP8zHejkIh8sDnA==
+X-Google-Smtp-Source: APXvYqxEZxyzj2o3h2/4b2lxiDR3ZyXP5vS3IdPCQrTBEhnxDQlQi2PAtKFWTpf2l/rL2e36VXoG7CgtC1N0WJrPr48=
+X-Received: by 2002:a63:f24b:: with SMTP id d11mr29148152pgk.381.1582152230079;
+ Wed, 19 Feb 2020 14:43:50 -0800 (PST)
 MIME-Version: 1.0
-Message-ID: <158213925220.13786.9146323471825204537.tip-bot2@tip-bot2>
-X-Mailer: tip-git-log-daemon
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+References: <f18c3743de0fef673d49dd35760f26bdef7f6fc3.1581359535.git.jpoimboe@redhat.com>
+ <158142525822.411.5401976987070210798.tip-bot2@tip-bot2> <20200213221100.odwg5gan3dwcpk6g@treble>
+ <87sgjeghal.fsf@nanos.tec.linutronix.de> <20200214175758.s34rdwmwgiq6qwq7@treble>
+In-Reply-To: <20200214175758.s34rdwmwgiq6qwq7@treble>
+From:   Nick Desaulniers <ndesaulniers@google.com>
+Date:   Wed, 19 Feb 2020 14:43:39 -0800
+Message-ID: <CAKwvOdmJvWpmbP3GyzaZxyiuwooFXA8D7ui05QE7+f8Oaz+rXg@mail.gmail.com>
+Subject: Re: [tip: core/objtool] objtool: Fail the kernel build on fatal errors
+To:     Chen Rong <rong.a.chen@intel.com>, Philip Li <philip.li@intel.com>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        tip-bot2 for Josh Poimboeuf <tip-bot2@linutronix.de>,
+        linux-tip-commits@vger.kernel.org, Borislav Petkov <bp@suse.de>,
+        Julien Thierry <jthierry@redhat.com>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Josh Poimboeuf <jpoimboe@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+On Fri, Feb 14, 2020 at 9:58 AM Josh Poimboeuf <jpoimboe@redhat.com> wrote:
+>
+> On Fri, Feb 14, 2020 at 01:10:26AM +0100, Thomas Gleixner wrote:
+> > Josh Poimboeuf <jpoimboe@redhat.com> writes:
+> > > On Tue, Feb 11, 2020 at 12:47:38PM -0000, tip-bot2 for Josh Poimboeuf wrote:
+> > >> The following commit has been merged into the core/objtool branch of tip:
+> > >>
+> > >> Commit-ID:     644592d328370af4b3e027b7b1ae9f81613782d8
+> > >> Gitweb:        https://git.kernel.org/tip/644592d328370af4b3e027b7b1ae9f81613782d8
+> > >> Author:        Josh Poimboeuf <jpoimboe@redhat.com>
+> > >> AuthorDate:    Mon, 10 Feb 2020 12:32:38 -06:00
+> > >> Committer:     Borislav Petkov <bp@suse.de>
+> > >> CommitterDate: Tue, 11 Feb 2020 13:27:03 +01:00
+> > >>
+> > >> objtool: Fail the kernel build on fatal errors
+> > >>
+> > >> When objtool encounters a fatal error, it usually means the binary is
+> > >> corrupt or otherwise broken in some way.  Up until now, such errors were
+> > >> just treated as warnings which didn't fail the kernel build.
+> > >>
+> > >> However, objtool is now stable enough that if a fatal error is
+> > >> discovered, it most likely means something is seriously wrong and it
+> > >> should fail the kernel build.
+> > >>
+> > >> Note that this doesn't apply to "normal" objtool warnings; only fatal
+> > >> ones.
+> > >
+> > > Clang still has some toolchain issues which need to be sorted out, so
+> > > upgrading the fatal errors is causing their CI to fail.
+> >
+> > Good. Last time we made it fail they just fixed their stuff.
+> >
+> > > So I think we need to drop this one for now.
+> >
+> > Why? It's our decision to define which level of toolchain brokeness is
+> > tolerable.
+> >
+> > > Boris, are you able to just drop it or should I send a revert?
+> >
+> > I really want to see a revert which has a proper justification why the
+> > issues of clang are tolerable along with a clear statement when this
+> > fatal error will come back. And 'when' means a date, not 'when clang is
+> > fixed'.
+>
+> Fair enough.  The root cause was actually a bug in binutils which gets
+> triggered by a new clang feature.  So instead of reverting the above
+> patch, I think I've figured out a way to work around the binutils bug,
+> while also improving objtool at the same time (win-win).
+>
+> The binutils bug will be fixed in binutils 2.35.
+>
+> BTW, to be fair, this was less "Clang has issues" and more "Josh is
+> lazy".  I didn't test the patch with Clang -- I tend to rely on 0-day
+> bot reports because I don't have the bandwidth to test the
+> kernel/config/toolchain combinations.  Nick tells me Clang will soon be
+> integrated with the 0-day bot, which should help prevent this type of
+> thing in the future.
 
-Commit-ID:     21b5ee59ef18e27d85810584caf1f7ddc705ea83
-Gitweb:        https://git.kernel.org/tip/21b5ee59ef18e27d85810584caf1f7ddc705ea83
-Author:        Kim Phillips <kim.phillips@amd.com>
-AuthorDate:    Wed, 19 Feb 2020 18:52:43 +01:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 19 Feb 2020 20:01:54 +01:00
-
-x86/cpu/amd: Enable the fixed Instructions Retired counter IRPERF
-
-Commit
-
-  aaf248848db50 ("perf/x86/msr: Add AMD IRPERF (Instructions Retired)
-		  performance counter")
-
-added support for access to the free-running counter via 'perf -e
-msr/irperf/', but when exercised, it always returns a 0 count:
-
-BEFORE:
-
-  $ perf stat -e instructions,msr/irperf/ true
-
-   Performance counter stats for 'true':
-
-             624,833      instructions
-                   0      msr/irperf/
-
-Simply set its enable bit - HWCR bit 30 - to make it start counting.
-
-Enablement is restricted to all machines advertising IRPERF capability,
-except those susceptible to an erratum that makes the IRPERF return
-bad values.
-
-That erratum occurs in Family 17h models 00-1fh [1], but not in F17h
-models 20h and above [2].
-
-AFTER (on a family 17h model 31h machine):
-
-  $ perf stat -e instructions,msr/irperf/ true
-
-   Performance counter stats for 'true':
-
-             621,690      instructions
-             622,490      msr/irperf/
-
-[1] Revision Guide for AMD Family 17h Models 00h-0Fh Processors
-[2] Revision Guide for AMD Family 17h Models 30h-3Fh Processors
-
-The revision guides are available from the bugzilla Link below.
-
- [ bp: Massage commit message. ]
-
-Fixes: aaf248848db50 ("perf/x86/msr: Add AMD IRPERF (Instructions Retired) performance counter")
-Signed-off-by: Kim Phillips <kim.phillips@amd.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: stable@vger.kernel.org
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=206537
-Link: http://lkml.kernel.org/r/20200214201805.13830-1-kim.phillips@amd.com
----
- arch/x86/include/asm/msr-index.h |  2 ++
- arch/x86/kernel/cpu/amd.c        | 14 ++++++++++++++
- 2 files changed, 16 insertions(+)
-
-diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
-index ebe1685..d5e517d 100644
---- a/arch/x86/include/asm/msr-index.h
-+++ b/arch/x86/include/asm/msr-index.h
-@@ -512,6 +512,8 @@
- #define MSR_K7_HWCR			0xc0010015
- #define MSR_K7_HWCR_SMMLOCK_BIT		0
- #define MSR_K7_HWCR_SMMLOCK		BIT_ULL(MSR_K7_HWCR_SMMLOCK_BIT)
-+#define MSR_K7_HWCR_IRPERF_EN_BIT	30
-+#define MSR_K7_HWCR_IRPERF_EN		BIT_ULL(MSR_K7_HWCR_IRPERF_EN_BIT)
- #define MSR_K7_FID_VID_CTL		0xc0010041
- #define MSR_K7_FID_VID_STATUS		0xc0010042
- 
-diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
-index ac83a0f..1f875fb 100644
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -28,6 +28,7 @@
- 
- static const int amd_erratum_383[];
- static const int amd_erratum_400[];
-+static const int amd_erratum_1054[];
- static bool cpu_has_amd_erratum(struct cpuinfo_x86 *cpu, const int *erratum);
- 
- /*
-@@ -972,6 +973,15 @@ static void init_amd(struct cpuinfo_x86 *c)
- 	/* AMD CPUs don't reset SS attributes on SYSRET, Xen does. */
- 	if (!cpu_has(c, X86_FEATURE_XENPV))
- 		set_cpu_bug(c, X86_BUG_SYSRET_SS_ATTRS);
-+
-+	/*
-+	 * Turn on the Instructions Retired free counter on machines not
-+	 * susceptible to erratum #1054 "Instructions Retired Performance
-+	 * Counter May Be Inaccurate".
-+	 */
-+	if (cpu_has(c, X86_FEATURE_IRPERF) &&
-+	    !cpu_has_amd_erratum(c, amd_erratum_1054))
-+		msr_set_bit(MSR_K7_HWCR, MSR_K7_HWCR_IRPERF_EN_BIT);
- }
- 
- #ifdef CONFIG_X86_32
-@@ -1099,6 +1109,10 @@ static const int amd_erratum_400[] =
- static const int amd_erratum_383[] =
- 	AMD_OSVW_ERRATUM(3, AMD_MODEL_RANGE(0x10, 0, 0, 0xff, 0xf));
- 
-+/* #1054: Instructions Retired Performance Counter May Be Inaccurate */
-+static const int amd_erratum_1054[] =
-+	AMD_OSVW_ERRATUM(0, AMD_MODEL_RANGE(0x17, 0, 0, 0x2f, 0xf));
-+
- 
- static bool cpu_has_amd_erratum(struct cpuinfo_x86 *cpu, const int *erratum)
- {
+Hi Rong, Philip,
+Do you have any status updates on turning on the 0day bot emails to
+the patch authors in production?  It's been quite handy in helping us
+find issues, for the private mails we've been triaging daily.
+-- 
+Thanks,
+~Nick Desaulniers
