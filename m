@@ -2,37 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D203D164B22
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 Feb 2020 17:55:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A857164B29
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 Feb 2020 17:55:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726731AbgBSQzV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S1726725AbgBSQzV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Wed, 19 Feb 2020 11:55:21 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:38823 "EHLO
+Received: from Galois.linutronix.de ([193.142.43.55]:38822 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726700AbgBSQzV (ORCPT
+        with ESMTP id S1726551AbgBSQzV (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Wed, 19 Feb 2020 11:55:21 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1j4Sd2-0000GM-40; Wed, 19 Feb 2020 17:55:16 +0100
+        id 1j4Sd2-0000GR-Kk; Wed, 19 Feb 2020 17:55:16 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B88D01C20C6;
-        Wed, 19 Feb 2020 17:55:15 +0100 (CET)
-Date:   Wed, 19 Feb 2020 16:55:15 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 488A41C20C7;
+        Wed, 19 Feb 2020 17:55:16 +0100 (CET)
+Date:   Wed, 19 Feb 2020 16:55:16 -0000
 From:   "tip-bot2 for Arvind Sankar" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/boot] x86/boot/compressed: Remove unnecessary sections from bzImage
+Subject: [tip: x86/boot] x86/boot/compressed/64: Remove .bss/.pgtable from bzImage
 Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
         Borislav Petkov <bp@suse.de>,
         Kees Cook <keescook@chromium.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200109150218.16544-2-nivedita@alum.mit.edu>
-References: <20200109150218.16544-2-nivedita@alum.mit.edu>
+In-Reply-To: <20200109150218.16544-1-nivedita@alum.mit.edu>
+References: <20200109150218.16544-1-nivedita@alum.mit.edu>
 MIME-Version: 1.0
-Message-ID: <158213131544.13786.16073593038276169304.tip-bot2@tip-bot2>
+Message-ID: <158213131602.13786.16571739495363216175.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,37 +48,59 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/boot branch of tip:
 
-Commit-ID:     e11831d0ada3efc7f9268f35c80257f7e1b1dd0c
-Gitweb:        https://git.kernel.org/tip/e11831d0ada3efc7f9268f35c80257f7e1b1dd0c
+Commit-ID:     3ee372ccce4d4e7c610748d0583979d3ed3a0cf4
+Gitweb:        https://git.kernel.org/tip/3ee372ccce4d4e7c610748d0583979d3ed3a0cf4
 Author:        Arvind Sankar <nivedita@alum.mit.edu>
-AuthorDate:    Thu, 09 Jan 2020 10:02:18 -05:00
+AuthorDate:    Thu, 09 Jan 2020 10:02:17 -05:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 19 Feb 2020 17:35:30 +01:00
+CommitterDate: Wed, 19 Feb 2020 17:28:57 +01:00
 
-x86/boot/compressed: Remove unnecessary sections from bzImage
+x86/boot/compressed/64: Remove .bss/.pgtable from bzImage
 
-Discarding the sections that are unused in the compressed kernel saves
-about 10 KiB on 32-bit and 6 KiB on 64-bit, mostly from .eh_frame.
+Commit
+
+  5b11f1cee579 ("x86, boot: straighten out ranges to copy/zero in
+  compressed/head*.S")
+
+introduced a separate .pgtable section, splitting it out from the rest
+of .bss. This section was added without the writeable flag, marking it
+as read-only. This results in the linker putting the .rela.dyn section
+(containing bogus dynamic relocations from head_64.o) after the .bss and
+.pgtable sections.
+
+When objcopy is used to convert compressed/vmlinux into a binary for
+the bzImage:
+
+$ objcopy  -O binary -R .note -R .comment -S arch/x86/boot/compressed/vmlinux \
+		arch/x86/boot/vmlinux.bin
+
+the .bss and .pgtable sections get materialized as ~176KiB of zero
+bytes in the binary in order to place .rela.dyn at the correct location.
+
+Fix this by marking .pgtable as writeable. This moves the .rela.dyn
+section up in the ELF image layout so that .bss and .pgtable are the
+last allocated sections and so don't appear in bzImage.
+
+ [ bp: Massage commit message. ]
 
 Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
 Signed-off-by: Borislav Petkov <bp@suse.de>
 Acked-by: Kees Cook <keescook@chromium.org>
-Link: https://lkml.kernel.org/r/20200109150218.16544-2-nivedita@alum.mit.edu
+Link: https://lkml.kernel.org/r/20200109150218.16544-1-nivedita@alum.mit.edu
 ---
- arch/x86/boot/compressed/vmlinux.lds.S | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/x86/boot/compressed/head_64.S | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/boot/compressed/vmlinux.lds.S b/arch/x86/boot/compressed/vmlinux.lds.S
-index 508cfa6..12a2060 100644
---- a/arch/x86/boot/compressed/vmlinux.lds.S
-+++ b/arch/x86/boot/compressed/vmlinux.lds.S
-@@ -73,4 +73,9 @@ SECTIONS
- #endif
- 	. = ALIGN(PAGE_SIZE);	/* keep ZO size page aligned */
- 	_end = .;
-+
-+	/* Discard all remaining sections */
-+	/DISCARD/ : {
-+		*(*)
-+	}
- }
+diff --git a/arch/x86/boot/compressed/head_64.S b/arch/x86/boot/compressed/head_64.S
+index 68f31c4..c8ee6ef 100644
+--- a/arch/x86/boot/compressed/head_64.S
++++ b/arch/x86/boot/compressed/head_64.S
+@@ -645,7 +645,7 @@ SYM_DATA_END_LABEL(boot_stack, SYM_L_LOCAL, boot_stack_end)
+ /*
+  * Space for page tables (not in .bss so not zeroed)
+  */
+-	.section ".pgtable","a",@nobits
++	.section ".pgtable","aw",@nobits
+ 	.balign 4096
+ SYM_DATA_LOCAL(pgtable,		.fill BOOT_PGT_SIZE, 1, 0)
+ 
