@@ -2,36 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BDE0164A73
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 Feb 2020 17:32:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D203D164B22
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 Feb 2020 17:55:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726773AbgBSQcL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 19 Feb 2020 11:32:11 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:38714 "EHLO
+        id S1726731AbgBSQzV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 19 Feb 2020 11:55:21 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:38823 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726729AbgBSQcL (ORCPT
+        with ESMTP id S1726700AbgBSQzV (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 19 Feb 2020 11:32:11 -0500
+        Wed, 19 Feb 2020 11:55:21 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1j4SGd-0008EU-QO; Wed, 19 Feb 2020 17:32:07 +0100
+        id 1j4Sd2-0000GM-40; Wed, 19 Feb 2020 17:55:16 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 744E71C2080;
-        Wed, 19 Feb 2020 17:32:07 +0100 (CET)
-Date:   Wed, 19 Feb 2020 16:32:07 -0000
-From:   "tip-bot2 for H.J. Lu" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B88D01C20C6;
+        Wed, 19 Feb 2020 17:55:15 +0100 (CET)
+Date:   Wed, 19 Feb 2020 16:55:15 -0000
+From:   "tip-bot2 for Arvind Sankar" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/boot/compressed: Don't declare __force_order in
- kaslr_64.c
-Cc:     "H.J. Lu" <hjl.tools@gmail.com>, Borislav Petkov <bp@suse.de>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200124181811.4780-1-hjl.tools@gmail.com>
-References: <20200124181811.4780-1-hjl.tools@gmail.com>
+Subject: [tip: x86/boot] x86/boot/compressed: Remove unnecessary sections from bzImage
+Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
+        Borislav Petkov <bp@suse.de>,
+        Kees Cook <keescook@chromium.org>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200109150218.16544-2-nivedita@alum.mit.edu>
+References: <20200109150218.16544-2-nivedita@alum.mit.edu>
 MIME-Version: 1.0
-Message-ID: <158212992717.13786.4423005345858721779.tip-bot2@tip-bot2>
+Message-ID: <158213131544.13786.16073593038276169304.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -45,45 +46,39 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the x86/boot branch of tip:
 
-Commit-ID:     df6d4f9db79c1a5d6f48b59db35ccd1e9ff9adfc
-Gitweb:        https://git.kernel.org/tip/df6d4f9db79c1a5d6f48b59db35ccd1e9ff9adfc
-Author:        H.J. Lu <hjl.tools@gmail.com>
-AuthorDate:    Thu, 16 Jan 2020 12:46:51 -08:00
+Commit-ID:     e11831d0ada3efc7f9268f35c80257f7e1b1dd0c
+Gitweb:        https://git.kernel.org/tip/e11831d0ada3efc7f9268f35c80257f7e1b1dd0c
+Author:        Arvind Sankar <nivedita@alum.mit.edu>
+AuthorDate:    Thu, 09 Jan 2020 10:02:18 -05:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 19 Feb 2020 17:23:59 +01:00
+CommitterDate: Wed, 19 Feb 2020 17:35:30 +01:00
 
-x86/boot/compressed: Don't declare __force_order in kaslr_64.c
+x86/boot/compressed: Remove unnecessary sections from bzImage
 
-GCC 10 changed the default to -fno-common, which leads to
+Discarding the sections that are unused in the compressed kernel saves
+about 10 KiB on 32-bit and 6 KiB on 64-bit, mostly from .eh_frame.
 
-    LD      arch/x86/boot/compressed/vmlinux
-  ld: arch/x86/boot/compressed/pgtable_64.o:(.bss+0x0): multiple definition of `__force_order'; \
-    arch/x86/boot/compressed/kaslr_64.o:(.bss+0x0): first defined here
-  make[2]: *** [arch/x86/boot/compressed/Makefile:119: arch/x86/boot/compressed/vmlinux] Error 1
-
-Since __force_order is already provided in pgtable_64.c, there is no
-need to declare __force_order in kaslr_64.c.
-
-Signed-off-by: H.J. Lu <hjl.tools@gmail.com>
+Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20200124181811.4780-1-hjl.tools@gmail.com
+Acked-by: Kees Cook <keescook@chromium.org>
+Link: https://lkml.kernel.org/r/20200109150218.16544-2-nivedita@alum.mit.edu
 ---
- arch/x86/boot/compressed/kaslr_64.c | 3 ---
- 1 file changed, 3 deletions(-)
+ arch/x86/boot/compressed/vmlinux.lds.S | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/x86/boot/compressed/kaslr_64.c b/arch/x86/boot/compressed/kaslr_64.c
-index 748456c..9557c5a 100644
---- a/arch/x86/boot/compressed/kaslr_64.c
-+++ b/arch/x86/boot/compressed/kaslr_64.c
-@@ -29,9 +29,6 @@
- #define __PAGE_OFFSET __PAGE_OFFSET_BASE
- #include "../../mm/ident_map.c"
- 
--/* Used by pgtable.h asm code to force instruction serialization. */
--unsigned long __force_order;
--
- /* Used to track our page table allocation area. */
- struct alloc_pgt_data {
- 	unsigned char *pgt_buf;
+diff --git a/arch/x86/boot/compressed/vmlinux.lds.S b/arch/x86/boot/compressed/vmlinux.lds.S
+index 508cfa6..12a2060 100644
+--- a/arch/x86/boot/compressed/vmlinux.lds.S
++++ b/arch/x86/boot/compressed/vmlinux.lds.S
+@@ -73,4 +73,9 @@ SECTIONS
+ #endif
+ 	. = ALIGN(PAGE_SIZE);	/* keep ZO size page aligned */
+ 	_end = .;
++
++	/* Discard all remaining sections */
++	/DISCARD/ : {
++		*(*)
++	}
+ }
