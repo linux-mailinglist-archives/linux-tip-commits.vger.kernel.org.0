@@ -2,37 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 39B51164E2A
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 Feb 2020 19:55:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F18D164E76
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 Feb 2020 20:07:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726708AbgBSSzn (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 19 Feb 2020 13:55:43 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:39089 "EHLO
+        id S1726725AbgBSTHl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 19 Feb 2020 14:07:41 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:39118 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726683AbgBSSzn (ORCPT
+        with ESMTP id S1726613AbgBSTHl (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 19 Feb 2020 13:55:43 -0500
+        Wed, 19 Feb 2020 14:07:41 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1j4UVV-0002CX-Rc; Wed, 19 Feb 2020 19:55:38 +0100
+        id 1j4Uh2-0002Ro-UH; Wed, 19 Feb 2020 20:07:33 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 646F81C20D5;
-        Wed, 19 Feb 2020 19:55:37 +0100 (CET)
-Date:   Wed, 19 Feb 2020 18:55:37 -0000
-From:   "tip-bot2 for Prarit Bhargava" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 8527C1C20D7;
+        Wed, 19 Feb 2020 20:07:32 +0100 (CET)
+Date:   Wed, 19 Feb 2020 19:07:32 -0000
+From:   "tip-bot2 for Kim Phillips" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: ras/core] x86/mce: Do not log spurious corrected mce errors
-Cc:     Alexander Krupp <centos@akr.yagii.de>,
-        Prarit Bhargava <prarit@redhat.com>,
-        Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200219131611.36816-1-prarit@redhat.com>
-References: <20200219131611.36816-1-prarit@redhat.com>
+Subject: [tip: x86/urgent] x86/cpu/amd: Enable the fixed Instructions Retired
+ counter IRPERF
+Cc:     Kim Phillips <kim.phillips@amd.com>, Borislav Petkov <bp@suse.de>,
+        Peter Zijlstra <peterz@infradead.org>, stable@vger.kernel.org,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200214201805.13830-1-kim.phillips@amd.com>
+References: <20200214201805.13830-1-kim.phillips@amd.com>
 MIME-Version: 1.0
-Message-ID: <158213853701.13786.14681165672201600813.tip-bot2@tip-bot2>
+Message-ID: <158213925220.13786.9146323471825204537.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -46,99 +46,120 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the ras/core branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     2976908e4198aa02fc3f76802358f69396267189
-Gitweb:        https://git.kernel.org/tip/2976908e4198aa02fc3f76802358f69396267189
-Author:        Prarit Bhargava <prarit@redhat.com>
-AuthorDate:    Wed, 19 Feb 2020 08:16:11 -05:00
+Commit-ID:     21b5ee59ef18e27d85810584caf1f7ddc705ea83
+Gitweb:        https://git.kernel.org/tip/21b5ee59ef18e27d85810584caf1f7ddc705ea83
+Author:        Kim Phillips <kim.phillips@amd.com>
+AuthorDate:    Wed, 19 Feb 2020 18:52:43 +01:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 19 Feb 2020 18:14:49 +01:00
+CommitterDate: Wed, 19 Feb 2020 20:01:54 +01:00
 
-x86/mce: Do not log spurious corrected mce errors
+x86/cpu/amd: Enable the fixed Instructions Retired counter IRPERF
 
-A user has reported that they are seeing spurious corrected errors on
-their hardware.
+Commit
 
-Intel Errata HSD131, HSM142, HSW131, and BDM48 report that "spurious
-corrected errors may be logged in the IA32_MC0_STATUS register with
-the valid field (bit 63) set, the uncorrected error field (bit 61) not
-set, a Model Specific Error Code (bits [31:16]) of 0x000F, and an MCA
-Error Code (bits [15:0]) of 0x0005." The Errata PDFs are linked in the
-bugzilla below.
+  aaf248848db50 ("perf/x86/msr: Add AMD IRPERF (Instructions Retired)
+		  performance counter")
 
-Block these spurious errors from the console and logs.
+added support for access to the free-running counter via 'perf -e
+msr/irperf/', but when exercised, it always returns a 0 count:
 
- [ bp: Move the intel_filter_mce() header declarations into the already
-   existing CONFIG_X86_MCE_INTEL ifdeffery. ]
+BEFORE:
 
-Co-developed-by: Alexander Krupp <centos@akr.yagii.de>
-Signed-off-by: Alexander Krupp <centos@akr.yagii.de>
-Signed-off-by: Prarit Bhargava <prarit@redhat.com>
+  $ perf stat -e instructions,msr/irperf/ true
+
+   Performance counter stats for 'true':
+
+             624,833      instructions
+                   0      msr/irperf/
+
+Simply set its enable bit - HWCR bit 30 - to make it start counting.
+
+Enablement is restricted to all machines advertising IRPERF capability,
+except those susceptible to an erratum that makes the IRPERF return
+bad values.
+
+That erratum occurs in Family 17h models 00-1fh [1], but not in F17h
+models 20h and above [2].
+
+AFTER (on a family 17h model 31h machine):
+
+  $ perf stat -e instructions,msr/irperf/ true
+
+   Performance counter stats for 'true':
+
+             621,690      instructions
+             622,490      msr/irperf/
+
+[1] Revision Guide for AMD Family 17h Models 00h-0Fh Processors
+[2] Revision Guide for AMD Family 17h Models 30h-3Fh Processors
+
+The revision guides are available from the bugzilla Link below.
+
+ [ bp: Massage commit message. ]
+
+Fixes: aaf248848db50 ("perf/x86/msr: Add AMD IRPERF (Instructions Retired) performance counter")
+Signed-off-by: Kim Phillips <kim.phillips@amd.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=206587
-Link: https://lkml.kernel.org/r/20200219131611.36816-1-prarit@redhat.com
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: stable@vger.kernel.org
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=206537
+Link: http://lkml.kernel.org/r/20200214201805.13830-1-kim.phillips@amd.com
 ---
- arch/x86/kernel/cpu/mce/core.c     |  2 ++
- arch/x86/kernel/cpu/mce/intel.c    | 17 +++++++++++++++++
- arch/x86/kernel/cpu/mce/internal.h |  2 ++
- 3 files changed, 21 insertions(+)
+ arch/x86/include/asm/msr-index.h |  2 ++
+ arch/x86/kernel/cpu/amd.c        | 14 ++++++++++++++
+ 2 files changed, 16 insertions(+)
 
-diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
-index 2c4f949..fe3983d 100644
---- a/arch/x86/kernel/cpu/mce/core.c
-+++ b/arch/x86/kernel/cpu/mce/core.c
-@@ -1877,6 +1877,8 @@ bool filter_mce(struct mce *m)
- {
- 	if (boot_cpu_data.x86_vendor == X86_VENDOR_AMD)
- 		return amd_filter_mce(m);
-+	if (boot_cpu_data.x86_vendor == X86_VENDOR_INTEL)
-+		return intel_filter_mce(m);
+diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
+index ebe1685..d5e517d 100644
+--- a/arch/x86/include/asm/msr-index.h
++++ b/arch/x86/include/asm/msr-index.h
+@@ -512,6 +512,8 @@
+ #define MSR_K7_HWCR			0xc0010015
+ #define MSR_K7_HWCR_SMMLOCK_BIT		0
+ #define MSR_K7_HWCR_SMMLOCK		BIT_ULL(MSR_K7_HWCR_SMMLOCK_BIT)
++#define MSR_K7_HWCR_IRPERF_EN_BIT	30
++#define MSR_K7_HWCR_IRPERF_EN		BIT_ULL(MSR_K7_HWCR_IRPERF_EN_BIT)
+ #define MSR_K7_FID_VID_CTL		0xc0010041
+ #define MSR_K7_FID_VID_STATUS		0xc0010042
  
- 	return false;
- }
-diff --git a/arch/x86/kernel/cpu/mce/intel.c b/arch/x86/kernel/cpu/mce/intel.c
-index 5627b10..989148e 100644
---- a/arch/x86/kernel/cpu/mce/intel.c
-+++ b/arch/x86/kernel/cpu/mce/intel.c
-@@ -520,3 +520,20 @@ void mce_intel_feature_clear(struct cpuinfo_x86 *c)
- {
- 	intel_clear_lmce();
- }
-+
-+bool intel_filter_mce(struct mce *m)
-+{
-+	struct cpuinfo_x86 *c = &boot_cpu_data;
-+
-+	/* MCE errata HSD131, HSM142, HSW131, BDM48, and HSM142 */
-+	if ((c->x86 == 6) &&
-+	    ((c->x86_model == INTEL_FAM6_HASWELL) ||
-+	     (c->x86_model == INTEL_FAM6_HASWELL_L) ||
-+	     (c->x86_model == INTEL_FAM6_BROADWELL) ||
-+	     (c->x86_model == INTEL_FAM6_HASWELL_G)) &&
-+	    (m->bank == 0) &&
-+	    ((m->status & 0xa0000000ffffffff) == 0x80000000000f0005))
-+		return true;
-+
-+	return false;
-+}
-diff --git a/arch/x86/kernel/cpu/mce/internal.h b/arch/x86/kernel/cpu/mce/internal.h
-index b785c0d..97db184 100644
---- a/arch/x86/kernel/cpu/mce/internal.h
-+++ b/arch/x86/kernel/cpu/mce/internal.h
-@@ -48,6 +48,7 @@ void cmci_disable_bank(int bank);
- void intel_init_cmci(void);
- void intel_init_lmce(void);
- void intel_clear_lmce(void);
-+bool intel_filter_mce(struct mce *m);
- #else
- # define cmci_intel_adjust_timer mce_adjust_timer_default
- static inline bool mce_intel_cmci_poll(void) { return false; }
-@@ -56,6 +57,7 @@ static inline void cmci_disable_bank(int bank) { }
- static inline void intel_init_cmci(void) { }
- static inline void intel_init_lmce(void) { }
- static inline void intel_clear_lmce(void) { }
-+static inline bool intel_filter_mce(struct mce *m) { return false; };
- #endif
+diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
+index ac83a0f..1f875fb 100644
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -28,6 +28,7 @@
  
- void mce_timer_kick(unsigned long interval);
+ static const int amd_erratum_383[];
+ static const int amd_erratum_400[];
++static const int amd_erratum_1054[];
+ static bool cpu_has_amd_erratum(struct cpuinfo_x86 *cpu, const int *erratum);
+ 
+ /*
+@@ -972,6 +973,15 @@ static void init_amd(struct cpuinfo_x86 *c)
+ 	/* AMD CPUs don't reset SS attributes on SYSRET, Xen does. */
+ 	if (!cpu_has(c, X86_FEATURE_XENPV))
+ 		set_cpu_bug(c, X86_BUG_SYSRET_SS_ATTRS);
++
++	/*
++	 * Turn on the Instructions Retired free counter on machines not
++	 * susceptible to erratum #1054 "Instructions Retired Performance
++	 * Counter May Be Inaccurate".
++	 */
++	if (cpu_has(c, X86_FEATURE_IRPERF) &&
++	    !cpu_has_amd_erratum(c, amd_erratum_1054))
++		msr_set_bit(MSR_K7_HWCR, MSR_K7_HWCR_IRPERF_EN_BIT);
+ }
+ 
+ #ifdef CONFIG_X86_32
+@@ -1099,6 +1109,10 @@ static const int amd_erratum_400[] =
+ static const int amd_erratum_383[] =
+ 	AMD_OSVW_ERRATUM(3, AMD_MODEL_RANGE(0x10, 0, 0, 0xff, 0xf));
+ 
++/* #1054: Instructions Retired Performance Counter May Be Inaccurate */
++static const int amd_erratum_1054[] =
++	AMD_OSVW_ERRATUM(0, AMD_MODEL_RANGE(0x17, 0, 0, 0x2f, 0xf));
++
+ 
+ static bool cpu_has_amd_erratum(struct cpuinfo_x86 *cpu, const int *erratum)
+ {
