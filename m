@@ -2,70 +2,88 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BE8716ABDA
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 24 Feb 2020 17:43:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E43B16ABD4
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 24 Feb 2020 17:41:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727438AbgBXQnS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 24 Feb 2020 11:43:18 -0500
-Received: from outbound-smtp10.blacknight.com ([46.22.139.15]:32883 "EHLO
-        outbound-smtp10.blacknight.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727426AbgBXQnR (ORCPT
+        id S1727763AbgBXQld (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 24 Feb 2020 11:41:33 -0500
+Received: from mail-qk1-f193.google.com ([209.85.222.193]:39399 "EHLO
+        mail-qk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727673AbgBXQld (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 24 Feb 2020 11:43:17 -0500
-X-Greylist: delayed 508 seconds by postgrey-1.27 at vger.kernel.org; Mon, 24 Feb 2020 11:43:17 EST
-Received: from mail.blacknight.com (pemlinmail05.blacknight.ie [81.17.254.26])
-        by outbound-smtp10.blacknight.com (Postfix) with ESMTPS id 087D61C38EB
-        for <linux-tip-commits@vger.kernel.org>; Mon, 24 Feb 2020 16:34:49 +0000 (GMT)
-Received: (qmail 20607 invoked from network); 24 Feb 2020 16:34:48 -0000
-Received: from unknown (HELO techsingularity.net) (mgorman@techsingularity.net@[84.203.18.57])
-  by 81.17.254.9 with ESMTPSA (AES256-SHA encrypted, authenticated); 24 Feb 2020 16:34:48 -0000
-Date:   Mon, 24 Feb 2020 16:34:46 +0000
-From:   Mel Gorman <mgorman@techsingularity.net>
-To:     Valentin Schneider <valentin.schneider@arm.com>
-Cc:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Peter Zijlstra <a.p.zijlstra@chello.nl>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Phil Auld <pauld@redhat.com>, Hillf Danton <hdanton@sina.com>,
-        x86 <x86@kernel.org>
-Subject: Re: [tip: sched/core] sched/pelt: Add a new runnable average signal
-Message-ID: <20200224163446.GA3466@techsingularity.net>
-References: <20200224095223.13361-9-mgorman@techsingularity.net>
- <158255763157.28353.3693734020236686000.tip-bot2@tip-bot2>
- <jhj36b06klb.fsf@arm.com>
+        Mon, 24 Feb 2020 11:41:33 -0500
+Received: by mail-qk1-f193.google.com with SMTP id e16so6416963qkl.6;
+        Mon, 24 Feb 2020 08:41:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:from:date:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=KgaP9kfhgbQPcLmwOVvyl3qUPWyDRWXIggQgrOZJnPU=;
+        b=VqshzTI1c2dtcWeo7t2Iz1lROlK0exHkZtWqTk0/QudIUBDQcTSj/AdNExlGIBjo/G
+         tod4bSblMawKNPN7xMYHqMYJjJrW6rWb8S+TmXz34PQ2SNZuKn98VmqpLdMi2JDPla9M
+         i6lBZV8Pxy/zciCTWqHrTtvq2QreyPRDS3BE9XIYAiPzNCGI5RzUUnEZYsuu+ydeksmW
+         xMQ5P66N5H/KVqH2lmhrxwUS+UPgNRBiu2o+N2zxuYhmX6PHsLqzA6s3TosbK5VgQfaE
+         fQ5bkmUDPQAjttOZfFuv4LwpyNl1amGx/t2IjL4mP3jLMCBZt5qPjvBUMGcshVX+l/fr
+         qNww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:from:date:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=KgaP9kfhgbQPcLmwOVvyl3qUPWyDRWXIggQgrOZJnPU=;
+        b=L+Gb8i6ZaL2mxvDhG4hLyXY3UdGofI61O3fr9zlTlLL9u7xs1Ez2cjGKIAhxNAwyWB
+         KtbQc+TptATORJ/l0Hj20mmwqURRtvNsgMEZsF5ig1OVsI7CSyj979Y0cGHuy9LRtyZd
+         QCa+SXQm22AlcttLPN4O+LZtX3jKFUyrxlZqWz2wfoeqWAJ5HP/2wf1O+DxaDRLVKtPn
+         wG1BlHqdOqzbxmt2jgQkwWgTJg5BEaBW3AzG6BKdukYA3roXhEeGvjpaj7ozajGcMrGd
+         WbqPmvJNbGtisw7nV+ps8MLS6vm6ftF/YJGjx7fXosrk425R6i+YkzCdBNR2k6eCmISu
+         qYGg==
+X-Gm-Message-State: APjAAAUH3PhIqZNAQUKwYOvFSHSSwHfPM5cHDoIcAsqvQ40qfp4r0zGp
+        UIyyiIfkvDC3WjrzFjKSBSM=
+X-Google-Smtp-Source: APXvYqyG9rasJcmAxXd/HsQxuO6sM/fXQAyqQlhlbY9+JUzKIR8upAMXrWKSxBZHwBnt4Q3n/hhnnA==
+X-Received: by 2002:a37:7a04:: with SMTP id v4mr15387961qkc.246.1582562491536;
+        Mon, 24 Feb 2020 08:41:31 -0800 (PST)
+Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
+        by smtp.gmail.com with ESMTPSA id l184sm5913461qkc.107.2020.02.24.08.41.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Feb 2020 08:41:31 -0800 (PST)
+From:   Arvind Sankar <nivedita@alum.mit.edu>
+X-Google-Original-From: Arvind Sankar <arvind@rani.riverdale.lan>
+Date:   Mon, 24 Feb 2020 11:41:29 -0500
+To:     Borislav Petkov <bp@suse.de>
+Cc:     linux-tip-commits@vger.kernel.org,
+        Arvind Sankar <nivedita@alum.mit.edu>,
+        Borislav Petkov <bp@suse.de>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [tip: x86/boot] x86/boot/compressed: Remove .eh_frame section
+ from bzImage
+Message-ID: <20200224164129.GA312716@rani.riverdale.lan>
+References: <20200109150218.16544-2-nivedita@alum.mit.edu>
+ <158254422067.28353.10866888120950973607.tip-bot2@tip-bot2>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-15
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <jhj36b06klb.fsf@arm.com>
+In-Reply-To: <158254422067.28353.10866888120950973607.tip-bot2@tip-bot2>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Mon, Feb 24, 2020 at 04:01:04PM +0000, Valentin Schneider wrote:
+On Mon, Feb 24, 2020 at 11:37:00AM -0000, tip-bot2 for Arvind Sankar wrote:
+> The following commit has been merged into the x86/boot branch of tip:
 > 
-> tip-bot2 for Vincent Guittot writes:
+> Commit-ID:     0eea39a234dc52063d14541fabcb2c64516a2328
+> Gitweb:        https://git.kernel.org/tip/0eea39a234dc52063d14541fabcb2c64516a2328
+> Author:        Arvind Sankar <nivedita@alum.mit.edu>
+> AuthorDate:    Thu, 09 Jan 2020 10:02:18 -05:00
+> Committer:     Borislav Petkov <bp@suse.de>
+> CommitterDate: Mon, 24 Feb 2020 12:30:28 +01:00
 > 
-> > Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
-> > Signed-off-by: Mel Gorman <mgorman@techsingularity.net>
-> > Signed-off-by: Ingo Molnar <mingo@kernel.org>
-> > Reviewed-by: "Dietmar Eggemann <dietmar.eggemann@arm.com>"
-> > Acked-by: Peter Zijlstra <a.p.zijlstra@chello.nl>
+> x86/boot/compressed: Remove .eh_frame section from bzImage
 > 
-> With the fork time initialization thing being sorted out, the rest of the
-> runnable series can claim my
-> 
-> Reviewed-by: Valentin Schneider <valentin.schneider@arm.com>
-> 
-> but I doubt any of that is worth the hassle since it's in tip already. Just
-> figured I'd mention it, being in Cc and all :-)
 
-Whether the tag gets included or not, it's nice to have definite
-confirmation that you're ok with this version!
+Hi Boris, apologies for the confusion and unnecessary work I've created,
+but I think the preference is to merge the 2-patch series I posted
+yesterday [1] instead of this.
 
--- 
-Mel Gorman
-SUSE Labs
+[1] https://lore.kernel.org/lkml/20200223193715.83729-1-nivedita@alum.mit.edu/
