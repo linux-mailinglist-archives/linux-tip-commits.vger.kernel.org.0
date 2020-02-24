@@ -2,42 +2,44 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CAB016A9D5
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 24 Feb 2020 16:20:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FE6E16A9E4
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 24 Feb 2020 16:21:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727830AbgBXPUr (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 24 Feb 2020 10:20:47 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:50323 "EHLO
+        id S1728168AbgBXPVJ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 24 Feb 2020 10:21:09 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:50374 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727796AbgBXPUq (ORCPT
+        with ESMTP id S1728143AbgBXPVH (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 24 Feb 2020 10:20:46 -0500
+        Mon, 24 Feb 2020 10:21:07 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1j6FX7-0005tv-QC; Mon, 24 Feb 2020 16:20:33 +0100
+        id 1j6FXB-0005tw-5a; Mon, 24 Feb 2020 16:20:37 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 67FD01C213A;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id CBE071C213E;
         Mon, 24 Feb 2020 16:20:33 +0100 (CET)
 Date:   Mon, 24 Feb 2020 15:20:33 -0000
-From:   "tip-bot2 for Vincent Guittot" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Mel Gorman" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/fair: Reorder enqueue/dequeue_task_fair path
-Cc:     Vincent Guittot <vincent.guittot@linaro.org>,
-        Mel Gorman <mgorman@techsingularity.net>,
+Subject: [tip: sched/core] sched/numa: Distinguish between the different
+ task_numa_migrate() failure cases
+Cc:     Mel Gorman <mgorman@techsingularity.net>,
         Ingo Molnar <mingo@kernel.org>,
-        "Dietmar Eggemann" <dietmar.eggemann@arm.com>,
         Peter Zijlstra <a.p.zijlstra@chello.nl>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
         Juri Lelli <juri.lelli@redhat.com>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
         Valentin Schneider <valentin.schneider@arm.com>,
         Phil Auld <pauld@redhat.com>, Hillf Danton <hdanton@sina.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200224095223.13361-5-mgorman@techsingularity.net>
-References: <20200224095223.13361-5-mgorman@techsingularity.net>
+In-Reply-To: <20200224095223.13361-4-mgorman@techsingularity.net>
+References: <20200224095223.13361-4-mgorman@techsingularity.net>
 MIME-Version: 1.0
-Message-ID: <158255763308.28353.12582539740202499085.tip-bot2@tip-bot2>
+Message-ID: <158255763355.28353.13311849953336678946.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -53,136 +55,147 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     6d4d22468dae3d8757af9f8b81b848a76ef4409d
-Gitweb:        https://git.kernel.org/tip/6d4d22468dae3d8757af9f8b81b848a76ef4409d
-Author:        Vincent Guittot <vincent.guittot@linaro.org>
-AuthorDate:    Mon, 24 Feb 2020 09:52:14 
+Commit-ID:     b2b2042b204796190af7c20069ab790a614c36d0
+Gitweb:        https://git.kernel.org/tip/b2b2042b204796190af7c20069ab790a614c36d0
+Author:        Mel Gorman <mgorman@techsingularity.net>
+AuthorDate:    Mon, 24 Feb 2020 09:52:13 
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Mon, 24 Feb 2020 11:36:34 +01:00
+CommitterDate: Mon, 24 Feb 2020 11:36:33 +01:00
 
-sched/fair: Reorder enqueue/dequeue_task_fair path
+sched/numa: Distinguish between the different task_numa_migrate() failure cases
 
-The walk through the cgroup hierarchy during the enqueue/dequeue of a task
-is split in 2 distinct parts for throttled cfs_rq without any added value
-but making code less readable.
+sched:sched_stick_numa is meant to fire when a task is unable to migrate
+to the preferred node but from the trace, it's possibile to tell the
+difference between "no CPU found", "migration to idle CPU failed" and
+"tasks could not be swapped". Extend the tracepoint accordingly.
 
-Change the code ordering such that everything related to a cfs_rq
-(throttled or not) will be done in the same loop.
-
-In addition, the same steps ordering is used when updating a cfs_rq:
-
- - update_load_avg
- - update_cfs_group
- - update *h_nr_running
-
-This reordering enables the use of h_nr_running in PELT algorithm.
-
-No functional and performance changes are expected and have been noticed
-during tests.
-
-Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
 Signed-off-by: Mel Gorman <mgorman@techsingularity.net>
+[ Minor edits. ]
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: "Dietmar Eggemann <dietmar.eggemann@arm.com>"
 Acked-by: Peter Zijlstra <a.p.zijlstra@chello.nl>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Vincent Guittot <vincent.guittot@linaro.org>
 Cc: Juri Lelli <juri.lelli@redhat.com>
+Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
 Cc: Valentin Schneider <valentin.schneider@arm.com>
 Cc: Phil Auld <pauld@redhat.com>
 Cc: Hillf Danton <hdanton@sina.com>
-Link: https://lore.kernel.org/r/20200224095223.13361-5-mgorman@techsingularity.net
+Link: https://lore.kernel.org/r/20200224095223.13361-4-mgorman@techsingularity.net
 ---
- kernel/sched/fair.c | 42 ++++++++++++++++++++----------------------
- 1 file changed, 20 insertions(+), 22 deletions(-)
+ include/trace/events/sched.h | 49 +++++++++++++++++++----------------
+ kernel/sched/fair.c          |  6 ++--
+ 2 files changed, 30 insertions(+), 25 deletions(-)
 
+diff --git a/include/trace/events/sched.h b/include/trace/events/sched.h
+index 420e80e..9c3ebb7 100644
+--- a/include/trace/events/sched.h
++++ b/include/trace/events/sched.h
+@@ -487,7 +487,11 @@ TRACE_EVENT(sched_process_hang,
+ );
+ #endif /* CONFIG_DETECT_HUNG_TASK */
+ 
+-DECLARE_EVENT_CLASS(sched_move_task_template,
++/*
++ * Tracks migration of tasks from one runqueue to another. Can be used to
++ * detect if automatic NUMA balancing is bouncing between nodes.
++ */
++TRACE_EVENT(sched_move_numa,
+ 
+ 	TP_PROTO(struct task_struct *tsk, int src_cpu, int dst_cpu),
+ 
+@@ -519,23 +523,7 @@ DECLARE_EVENT_CLASS(sched_move_task_template,
+ 			__entry->dst_cpu, __entry->dst_nid)
+ );
+ 
+-/*
+- * Tracks migration of tasks from one runqueue to another. Can be used to
+- * detect if automatic NUMA balancing is bouncing between nodes
+- */
+-DEFINE_EVENT(sched_move_task_template, sched_move_numa,
+-	TP_PROTO(struct task_struct *tsk, int src_cpu, int dst_cpu),
+-
+-	TP_ARGS(tsk, src_cpu, dst_cpu)
+-);
+-
+-DEFINE_EVENT(sched_move_task_template, sched_stick_numa,
+-	TP_PROTO(struct task_struct *tsk, int src_cpu, int dst_cpu),
+-
+-	TP_ARGS(tsk, src_cpu, dst_cpu)
+-);
+-
+-TRACE_EVENT(sched_swap_numa,
++DECLARE_EVENT_CLASS(sched_numa_pair_template,
+ 
+ 	TP_PROTO(struct task_struct *src_tsk, int src_cpu,
+ 		 struct task_struct *dst_tsk, int dst_cpu),
+@@ -561,11 +549,11 @@ TRACE_EVENT(sched_swap_numa,
+ 		__entry->src_ngid	= task_numa_group_id(src_tsk);
+ 		__entry->src_cpu	= src_cpu;
+ 		__entry->src_nid	= cpu_to_node(src_cpu);
+-		__entry->dst_pid	= task_pid_nr(dst_tsk);
+-		__entry->dst_tgid	= task_tgid_nr(dst_tsk);
+-		__entry->dst_ngid	= task_numa_group_id(dst_tsk);
++		__entry->dst_pid	= dst_tsk ? task_pid_nr(dst_tsk) : 0;
++		__entry->dst_tgid	= dst_tsk ? task_tgid_nr(dst_tsk) : 0;
++		__entry->dst_ngid	= dst_tsk ? task_numa_group_id(dst_tsk) : 0;
+ 		__entry->dst_cpu	= dst_cpu;
+-		__entry->dst_nid	= cpu_to_node(dst_cpu);
++		__entry->dst_nid	= dst_cpu >= 0 ? cpu_to_node(dst_cpu) : -1;
+ 	),
+ 
+ 	TP_printk("src_pid=%d src_tgid=%d src_ngid=%d src_cpu=%d src_nid=%d dst_pid=%d dst_tgid=%d dst_ngid=%d dst_cpu=%d dst_nid=%d",
+@@ -575,6 +563,23 @@ TRACE_EVENT(sched_swap_numa,
+ 			__entry->dst_cpu, __entry->dst_nid)
+ );
+ 
++DEFINE_EVENT(sched_numa_pair_template, sched_stick_numa,
++
++	TP_PROTO(struct task_struct *src_tsk, int src_cpu,
++		 struct task_struct *dst_tsk, int dst_cpu),
++
++	TP_ARGS(src_tsk, src_cpu, dst_tsk, dst_cpu)
++);
++
++DEFINE_EVENT(sched_numa_pair_template, sched_swap_numa,
++
++	TP_PROTO(struct task_struct *src_tsk, int src_cpu,
++		 struct task_struct *dst_tsk, int dst_cpu),
++
++	TP_ARGS(src_tsk, src_cpu, dst_tsk, dst_cpu)
++);
++
++
+ /*
+  * Tracepoint for waking a polling cpu without an IPI.
+  */
 diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 5d9c23c..a6c7f8b 100644
+index f524ce3..5d9c23c 100644
 --- a/kernel/sched/fair.c
 +++ b/kernel/sched/fair.c
-@@ -5260,32 +5260,31 @@ enqueue_task_fair(struct rq *rq, struct task_struct *p, int flags)
- 		cfs_rq = cfs_rq_of(se);
- 		enqueue_entity(cfs_rq, se, flags);
+@@ -1849,7 +1849,7 @@ static int task_numa_migrate(struct task_struct *p)
  
--		/*
--		 * end evaluation on encountering a throttled cfs_rq
--		 *
--		 * note: in the case of encountering a throttled cfs_rq we will
--		 * post the final h_nr_running increment below.
--		 */
--		if (cfs_rq_throttled(cfs_rq))
--			break;
- 		cfs_rq->h_nr_running++;
- 		cfs_rq->idle_h_nr_running += idle_h_nr_running;
- 
-+		/* end evaluation on encountering a throttled cfs_rq */
-+		if (cfs_rq_throttled(cfs_rq))
-+			goto enqueue_throttle;
-+
- 		flags = ENQUEUE_WAKEUP;
+ 	/* No better CPU than the current one was found. */
+ 	if (env.best_cpu == -1) {
+-		trace_sched_stick_numa(p, env.src_cpu, -1);
++		trace_sched_stick_numa(p, env.src_cpu, NULL, -1);
+ 		return -EAGAIN;
  	}
  
- 	for_each_sched_entity(se) {
- 		cfs_rq = cfs_rq_of(se);
--		cfs_rq->h_nr_running++;
--		cfs_rq->idle_h_nr_running += idle_h_nr_running;
- 
-+		/* end evaluation on encountering a throttled cfs_rq */
- 		if (cfs_rq_throttled(cfs_rq))
--			break;
-+			goto enqueue_throttle;
- 
- 		update_load_avg(cfs_rq, se, UPDATE_TG);
- 		update_cfs_group(se);
-+
-+		cfs_rq->h_nr_running++;
-+		cfs_rq->idle_h_nr_running += idle_h_nr_running;
+@@ -1858,7 +1858,7 @@ static int task_numa_migrate(struct task_struct *p)
+ 		ret = migrate_task_to(p, env.best_cpu);
+ 		WRITE_ONCE(best_rq->numa_migrate_on, 0);
+ 		if (ret != 0)
+-			trace_sched_stick_numa(p, env.src_cpu, env.best_cpu);
++			trace_sched_stick_numa(p, env.src_cpu, NULL, env.best_cpu);
+ 		return ret;
  	}
  
-+enqueue_throttle:
- 	if (!se) {
- 		add_nr_running(rq, 1);
- 		/*
-@@ -5346,17 +5345,13 @@ static void dequeue_task_fair(struct rq *rq, struct task_struct *p, int flags)
- 		cfs_rq = cfs_rq_of(se);
- 		dequeue_entity(cfs_rq, se, flags);
+@@ -1866,7 +1866,7 @@ static int task_numa_migrate(struct task_struct *p)
+ 	WRITE_ONCE(best_rq->numa_migrate_on, 0);
  
--		/*
--		 * end evaluation on encountering a throttled cfs_rq
--		 *
--		 * note: in the case of encountering a throttled cfs_rq we will
--		 * post the final h_nr_running decrement below.
--		*/
--		if (cfs_rq_throttled(cfs_rq))
--			break;
- 		cfs_rq->h_nr_running--;
- 		cfs_rq->idle_h_nr_running -= idle_h_nr_running;
- 
-+		/* end evaluation on encountering a throttled cfs_rq */
-+		if (cfs_rq_throttled(cfs_rq))
-+			goto dequeue_throttle;
-+
- 		/* Don't dequeue parent if it has other entities besides us */
- 		if (cfs_rq->load.weight) {
- 			/* Avoid re-evaluating load for this entity: */
-@@ -5374,16 +5369,19 @@ static void dequeue_task_fair(struct rq *rq, struct task_struct *p, int flags)
- 
- 	for_each_sched_entity(se) {
- 		cfs_rq = cfs_rq_of(se);
--		cfs_rq->h_nr_running--;
--		cfs_rq->idle_h_nr_running -= idle_h_nr_running;
- 
-+		/* end evaluation on encountering a throttled cfs_rq */
- 		if (cfs_rq_throttled(cfs_rq))
--			break;
-+			goto dequeue_throttle;
- 
- 		update_load_avg(cfs_rq, se, UPDATE_TG);
- 		update_cfs_group(se);
-+
-+		cfs_rq->h_nr_running--;
-+		cfs_rq->idle_h_nr_running -= idle_h_nr_running;
- 	}
- 
-+dequeue_throttle:
- 	if (!se)
- 		sub_nr_running(rq, 1);
- 
+ 	if (ret != 0)
+-		trace_sched_stick_numa(p, env.src_cpu, task_cpu(env.best_task));
++		trace_sched_stick_numa(p, env.src_cpu, env.best_task, env.best_cpu);
+ 	put_task_struct(env.best_task);
+ 	return ret;
+ }
