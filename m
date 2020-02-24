@@ -2,30 +2,30 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EE7D516A9DF
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 24 Feb 2020 16:21:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DCA6516A9DB
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 24 Feb 2020 16:21:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727889AbgBXPVC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 24 Feb 2020 10:21:02 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:50363 "EHLO
+        id S1728023AbgBXPUw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 24 Feb 2020 10:20:52 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:50348 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727701AbgBXPU6 (ORCPT
+        with ESMTP id S1727701AbgBXPUv (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 24 Feb 2020 10:20:58 -0500
+        Mon, 24 Feb 2020 10:20:51 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1j6FX4-0005py-P3; Mon, 24 Feb 2020 16:20:30 +0100
+        id 1j6FX5-0005q4-DG; Mon, 24 Feb 2020 16:20:31 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 0CC001C213A;
-        Mon, 24 Feb 2020 16:20:30 +0100 (CET)
-Date:   Mon, 24 Feb 2020 15:20:29 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 115EF1C213A;
+        Mon, 24 Feb 2020 16:20:31 +0100 (CET)
+Date:   Mon, 24 Feb 2020 15:20:30 -0000
 From:   "tip-bot2 for Mel Gorman" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/numa: Stop an exhastive search if a
- reasonable swap candidate or idle CPU is found
+Subject: [tip: sched/core] sched/numa: Prefer using an idle CPU as a migration
+ target instead of comparing tasks
 Cc:     Mel Gorman <mgorman@techsingularity.net>,
         Ingo Molnar <mingo@kernel.org>,
         Peter Zijlstra <a.p.zijlstra@chello.nl>,
@@ -36,10 +36,10 @@ Cc:     Mel Gorman <mgorman@techsingularity.net>,
         Valentin Schneider <valentin.schneider@arm.com>,
         Phil Auld <pauld@redhat.com>, Hillf Danton <hdanton@sina.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200224095223.13361-14-mgorman@techsingularity.net>
-References: <20200224095223.13361-14-mgorman@techsingularity.net>
+In-Reply-To: <20200224095223.13361-11-mgorman@techsingularity.net>
+References: <20200224095223.13361-11-mgorman@techsingularity.net>
 MIME-Version: 1.0
-Message-ID: <158255762967.28353.14025771290351307714.tip-bot2@tip-bot2>
+Message-ID: <158255763082.28353.16689616186297155982.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -55,23 +55,32 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     a0f03b617c3b2644d3d47bf7d9e60aed01bd5b10
-Gitweb:        https://git.kernel.org/tip/a0f03b617c3b2644d3d47bf7d9e60aed01bd5b10
+Commit-ID:     ff7db0bf24db919f69121bf5df8f3cb6d79f49af
+Gitweb:        https://git.kernel.org/tip/ff7db0bf24db919f69121bf5df8f3cb6d79f49af
 Author:        Mel Gorman <mgorman@techsingularity.net>
-AuthorDate:    Mon, 24 Feb 2020 09:52:23 
+AuthorDate:    Mon, 24 Feb 2020 09:52:20 
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Mon, 24 Feb 2020 11:36:40 +01:00
+CommitterDate: Mon, 24 Feb 2020 11:36:38 +01:00
 
-sched/numa: Stop an exhastive search if a reasonable swap candidate or idle CPU is found
+sched/numa: Prefer using an idle CPU as a migration target instead of comparing tasks
 
-When domains are imbalanced or overloaded a search of all CPUs on the
-target domain is searched and compared with task_numa_compare. In some
-circumstances, a candidate is found that is an obvious win.
+task_numa_find_cpu() can scan a node multiple times. Minimally it scans to
+gather statistics and later to find a suitable target. In some cases, the
+second scan will simply pick an idle CPU if the load is not imbalanced.
 
- o A task can move to an idle CPU and an idle CPU is found
- o A swap candidate is found that would move to its preferred domain
+This patch caches information on an idle core while gathering statistics
+and uses it immediately if load is not imbalanced to avoid a second scan
+of the node runqueues. Preference is given to an idle core rather than an
+idle SMT sibling to avoid packing HT siblings due to linearly scanning the
+node cpumask.
 
-This patch terminates the search when either condition is met.
+As a side-effect, even when the second scan is necessary, the importance
+of using select_idle_sibling is much reduced because information on idle
+CPUs is cached and can be reused.
+
+Note that this patch actually makes is harder to move to an idle CPU
+as multiple tasks can race for the same idle CPU due to a race checking
+numa_migrate_on. This is addressed in the next patch.
 
 Signed-off-by: Mel Gorman <mgorman@techsingularity.net>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
@@ -83,83 +92,207 @@ Cc: Steven Rostedt <rostedt@goodmis.org>
 Cc: Valentin Schneider <valentin.schneider@arm.com>
 Cc: Phil Auld <pauld@redhat.com>
 Cc: Hillf Danton <hdanton@sina.com>
-Link: https://lore.kernel.org/r/20200224095223.13361-14-mgorman@techsingularity.net
+Link: https://lore.kernel.org/r/20200224095223.13361-11-mgorman@techsingularity.net
 ---
- kernel/sched/fair.c | 31 +++++++++++++++++++++++++++----
- 1 file changed, 27 insertions(+), 4 deletions(-)
+ kernel/sched/fair.c | 119 ++++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 102 insertions(+), 17 deletions(-)
 
 diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 8c1ac01..fcc9686 100644
+index 87521ac..2da21f4 100644
 --- a/kernel/sched/fair.c
 +++ b/kernel/sched/fair.c
-@@ -1707,7 +1707,7 @@ static bool load_too_imbalanced(long src_load, long dst_load,
-  * into account that it might be best if task running on the dst_cpu should
-  * be exchanged with the source task
-  */
--static void task_numa_compare(struct task_numa_env *env,
-+static bool task_numa_compare(struct task_numa_env *env,
- 			      long taskimp, long groupimp, bool maymove)
- {
- 	struct numa_group *cur_ng, *p_ng = deref_curr_numa_group(env->p);
-@@ -1718,9 +1718,10 @@ static void task_numa_compare(struct task_numa_env *env,
- 	int dist = env->dist;
- 	long moveimp = imp;
- 	long load;
-+	bool stopsearch = false;
+@@ -1500,8 +1500,29 @@ struct numa_stats {
+ 	unsigned int nr_running;
+ 	unsigned int weight;
+ 	enum numa_type node_type;
++	int idle_cpu;
+ };
  
- 	if (READ_ONCE(dst_rq->numa_migrate_on))
--		return;
-+		return false;
- 
- 	rcu_read_lock();
- 	cur = rcu_dereference(dst_rq->curr);
-@@ -1731,8 +1732,10 @@ static void task_numa_compare(struct task_numa_env *env,
- 	 * Because we have preemption enabled we can get migrated around and
- 	 * end try selecting ourselves (current == env->p) as a swap candidate.
- 	 */
--	if (cur == env->p)
-+	if (cur == env->p) {
-+		stopsearch = true;
- 		goto unlock;
++static inline bool is_core_idle(int cpu)
++{
++#ifdef CONFIG_SCHED_SMT
++	int sibling;
++
++	for_each_cpu(sibling, cpu_smt_mask(cpu)) {
++		if (cpu == sibling)
++			continue;
++
++		if (!idle_cpu(cpu))
++			return false;
 +	}
++#endif
++
++	return true;
++}
++
++/* Forward declarations of select_idle_sibling helpers */
++static inline bool test_idle_cores(int cpu, bool def);
++
+ struct task_numa_env {
+ 	struct task_struct *p;
  
+@@ -1537,15 +1558,39 @@ numa_type numa_classify(unsigned int imbalance_pct,
+ 	return node_fully_busy;
+ }
+ 
++static inline int numa_idle_core(int idle_core, int cpu)
++{
++#ifdef CONFIG_SCHED_SMT
++	if (!static_branch_likely(&sched_smt_present) ||
++	    idle_core >= 0 || !test_idle_cores(cpu, false))
++		return idle_core;
++
++	/*
++	 * Prefer cores instead of packing HT siblings
++	 * and triggering future load balancing.
++	 */
++	if (is_core_idle(cpu))
++		idle_core = cpu;
++#endif
++
++	return idle_core;
++}
++
+ /*
+- * XXX borrowed from update_sg_lb_stats
++ * Gather all necessary information to make NUMA balancing placement
++ * decisions that are compatible with standard load balancer. This
++ * borrows code and logic from update_sg_lb_stats but sharing a
++ * common implementation is impractical.
+  */
+ static void update_numa_stats(struct task_numa_env *env,
+-			      struct numa_stats *ns, int nid)
++			      struct numa_stats *ns, int nid,
++			      bool find_idle)
+ {
+-	int cpu;
++	int cpu, idle_core = -1;
+ 
+ 	memset(ns, 0, sizeof(*ns));
++	ns->idle_cpu = -1;
++
+ 	for_each_cpu(cpu, cpumask_of_node(nid)) {
+ 		struct rq *rq = cpu_rq(cpu);
+ 
+@@ -1553,11 +1598,25 @@ static void update_numa_stats(struct task_numa_env *env,
+ 		ns->util += cpu_util(cpu);
+ 		ns->nr_running += rq->cfs.h_nr_running;
+ 		ns->compute_capacity += capacity_of(cpu);
++
++		if (find_idle && !rq->nr_running && idle_cpu(cpu)) {
++			if (READ_ONCE(rq->numa_migrate_on) ||
++			    !cpumask_test_cpu(cpu, env->p->cpus_ptr))
++				continue;
++
++			if (ns->idle_cpu == -1)
++				ns->idle_cpu = cpu;
++
++			idle_core = numa_idle_core(idle_core, cpu);
++		}
+ 	}
+ 
+ 	ns->weight = cpumask_weight(cpumask_of_node(nid));
+ 
+ 	ns->node_type = numa_classify(env->imbalance_pct, ns);
++
++	if (idle_core >= 0)
++		ns->idle_cpu = idle_core;
+ }
+ 
+ static void task_numa_assign(struct task_numa_env *env,
+@@ -1566,7 +1625,7 @@ static void task_numa_assign(struct task_numa_env *env,
+ 	struct rq *rq = cpu_rq(env->dst_cpu);
+ 
+ 	/* Bail out if run-queue part of active NUMA balance. */
+-	if (xchg(&rq->numa_migrate_on, 1))
++	if (env->best_cpu != env->dst_cpu && xchg(&rq->numa_migrate_on, 1))
+ 		return;
+ 
+ 	/*
+@@ -1730,19 +1789,39 @@ static void task_numa_compare(struct task_numa_env *env,
+ 		goto unlock;
+ 
+ assign:
+-	/*
+-	 * One idle CPU per node is evaluated for a task numa move.
+-	 * Call select_idle_sibling to maybe find a better one.
+-	 */
++	/* Evaluate an idle CPU for a task numa move. */
  	if (!cur) {
- 		if (maymove && moveimp >= env->best_imp)
-@@ -1860,8 +1863,27 @@ assign:
++		int cpu = env->dst_stats.idle_cpu;
++
++		/* Nothing cached so current CPU went idle since the search. */
++		if (cpu < 0)
++			cpu = env->dst_cpu;
++
+ 		/*
+-		 * select_idle_siblings() uses an per-CPU cpumask that
+-		 * can be used from IRQ context.
++		 * If the CPU is no longer truly idle and the previous best CPU
++		 * is, keep using it.
+ 		 */
+-		local_irq_disable();
+-		env->dst_cpu = select_idle_sibling(env->p, env->src_cpu,
++		if (!idle_cpu(cpu) && env->best_cpu >= 0 &&
++		    idle_cpu(env->best_cpu)) {
++			cpu = env->best_cpu;
++		}
++
++		/*
++		 * Use select_idle_sibling if the previously found idle CPU is
++		 * not idle any more.
++		 */
++		if (!idle_cpu(cpu)) {
++			/*
++			 * select_idle_siblings() uses an per-CPU cpumask that
++			 * can be used from IRQ context.
++			 */
++			local_irq_disable();
++			cpu = select_idle_sibling(env->p, env->src_cpu,
+ 						   env->dst_cpu);
+-		local_irq_enable();
++			local_irq_enable();
++		}
++
++		env->dst_cpu = cpu;
  	}
  
  	task_numa_assign(env, cur, imp);
-+
-+	/*
-+	 * If a move to idle is allowed because there is capacity or load
-+	 * balance improves then stop the search. While a better swap
-+	 * candidate may exist, a search is not free.
-+	 */
-+	if (maymove && !cur && env->best_cpu >= 0 && idle_cpu(env->best_cpu))
-+		stopsearch = true;
-+
-+	/*
-+	 * If a swap candidate must be identified and the current best task
-+	 * moves its preferred node then stop the search.
-+	 */
-+	if (!maymove && env->best_task &&
-+	    env->best_task->numa_preferred_nid == env->src_nid) {
-+		stopsearch = true;
-+	}
- unlock:
- 	rcu_read_unlock();
-+
-+	return stopsearch;
- }
+@@ -1776,8 +1855,14 @@ static void task_numa_find_cpu(struct task_numa_env *env,
+ 		imbalance = adjust_numa_imbalance(imbalance, src_running);
  
- static void task_numa_find_cpu(struct task_numa_env *env,
-@@ -1916,7 +1938,8 @@ static void task_numa_find_cpu(struct task_numa_env *env,
- 			continue;
+ 		/* Use idle CPU if there is no imbalance */
+-		if (!imbalance)
++		if (!imbalance) {
+ 			maymove = true;
++			if (env->dst_stats.idle_cpu >= 0) {
++				env->dst_cpu = env->dst_stats.idle_cpu;
++				task_numa_assign(env, NULL, 0);
++				return;
++			}
++		}
+ 	} else {
+ 		long src_load, dst_load, load;
+ 		/*
+@@ -1850,10 +1935,10 @@ static int task_numa_migrate(struct task_struct *p)
+ 	dist = env.dist = node_distance(env.src_nid, env.dst_nid);
+ 	taskweight = task_weight(p, env.src_nid, dist);
+ 	groupweight = group_weight(p, env.src_nid, dist);
+-	update_numa_stats(&env, &env.src_stats, env.src_nid);
++	update_numa_stats(&env, &env.src_stats, env.src_nid, false);
+ 	taskimp = task_weight(p, env.dst_nid, dist) - taskweight;
+ 	groupimp = group_weight(p, env.dst_nid, dist) - groupweight;
+-	update_numa_stats(&env, &env.dst_stats, env.dst_nid);
++	update_numa_stats(&env, &env.dst_stats, env.dst_nid, true);
  
- 		env->dst_cpu = cpu;
--		task_numa_compare(env, taskimp, groupimp, maymove);
-+		if (task_numa_compare(env, taskimp, groupimp, maymove))
-+			break;
+ 	/* Try to find a spot on the preferred nid. */
+ 	task_numa_find_cpu(&env, taskimp, groupimp);
+@@ -1886,7 +1971,7 @@ static int task_numa_migrate(struct task_struct *p)
+ 
+ 			env.dist = dist;
+ 			env.dst_nid = nid;
+-			update_numa_stats(&env, &env.dst_stats, env.dst_nid);
++			update_numa_stats(&env, &env.dst_stats, env.dst_nid, true);
+ 			task_numa_find_cpu(&env, taskimp, groupimp);
+ 		}
  	}
- }
- 
