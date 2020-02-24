@@ -2,37 +2,44 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1EF8A16A4FF
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 24 Feb 2020 12:37:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EE7D516A9DF
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 24 Feb 2020 16:21:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727183AbgBXLhG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 24 Feb 2020 06:37:06 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:49584 "EHLO
+        id S1727889AbgBXPVC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 24 Feb 2020 10:21:02 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:50363 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726778AbgBXLhG (ORCPT
+        with ESMTP id S1727701AbgBXPU6 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 24 Feb 2020 06:37:06 -0500
+        Mon, 24 Feb 2020 10:20:58 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1j6C2n-0000qe-AV; Mon, 24 Feb 2020 12:37:01 +0100
+        id 1j6FX4-0005py-P3; Mon, 24 Feb 2020 16:20:30 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id ED6F21C2134;
-        Mon, 24 Feb 2020 12:37:00 +0100 (CET)
-Date:   Mon, 24 Feb 2020 11:37:00 -0000
-From:   "tip-bot2 for Arvind Sankar" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 0CC001C213A;
+        Mon, 24 Feb 2020 16:20:30 +0100 (CET)
+Date:   Mon, 24 Feb 2020 15:20:29 -0000
+From:   "tip-bot2 for Mel Gorman" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/boot] x86/boot/compressed: Remove .eh_frame section from bzImage
-Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
-        Borislav Petkov <bp@suse.de>,
-        Nathan Chancellor <natechancellor@gmail.com>,
+Subject: [tip: sched/core] sched/numa: Stop an exhastive search if a
+ reasonable swap candidate or idle CPU is found
+Cc:     Mel Gorman <mgorman@techsingularity.net>,
+        Ingo Molnar <mingo@kernel.org>,
+        Peter Zijlstra <a.p.zijlstra@chello.nl>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Juri Lelli <juri.lelli@redhat.com>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Valentin Schneider <valentin.schneider@arm.com>,
+        Phil Auld <pauld@redhat.com>, Hillf Danton <hdanton@sina.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200109150218.16544-2-nivedita@alum.mit.edu>
-References: <20200109150218.16544-2-nivedita@alum.mit.edu>
+In-Reply-To: <20200224095223.13361-14-mgorman@techsingularity.net>
+References: <20200224095223.13361-14-mgorman@techsingularity.net>
 MIME-Version: 1.0
-Message-ID: <158254422067.28353.10866888120950973607.tip-bot2@tip-bot2>
+Message-ID: <158255762967.28353.14025771290351307714.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -46,56 +53,113 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/boot branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     0eea39a234dc52063d14541fabcb2c64516a2328
-Gitweb:        https://git.kernel.org/tip/0eea39a234dc52063d14541fabcb2c64516a2328
-Author:        Arvind Sankar <nivedita@alum.mit.edu>
-AuthorDate:    Thu, 09 Jan 2020 10:02:18 -05:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 24 Feb 2020 12:30:28 +01:00
+Commit-ID:     a0f03b617c3b2644d3d47bf7d9e60aed01bd5b10
+Gitweb:        https://git.kernel.org/tip/a0f03b617c3b2644d3d47bf7d9e60aed01bd5b10
+Author:        Mel Gorman <mgorman@techsingularity.net>
+AuthorDate:    Mon, 24 Feb 2020 09:52:23 
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Mon, 24 Feb 2020 11:36:40 +01:00
 
-x86/boot/compressed: Remove .eh_frame section from bzImage
+sched/numa: Stop an exhastive search if a reasonable swap candidate or idle CPU is found
 
-Discarding unnecessary sections with "*(*)" (see thread at Link: below)
-works fine with the bfd linker but fails with lld:
+When domains are imbalanced or overloaded a search of all CPUs on the
+target domain is searched and compared with task_numa_compare. In some
+circumstances, a candidate is found that is an obvious win.
 
-  $ make -j$(nproc) -s CC=clang LD=ld.lld O=out.x86_64 distclean defconfig bzImage
-  ld.lld: error: discarding .shstrtab section is not allowed
+ o A task can move to an idle CPU and an idle CPU is found
+ o A swap candidate is found that would move to its preferred domain
 
-lld tries to also discard essential sections like .shstrtab, .symtab and
-.strtab, which results in the link failing since .shstrtab is required
-by the ELF specification: the e_shstrndx field in the ELF header is the
-index of .shstrtab, and each section in the section table is required to
-have an sh_name that points into the .shstrtab.
+This patch terminates the search when either condition is met.
 
-.symtab and .strtab are also necessary to generate the zoffset.h file
-for the bzImage header.
-
-Since the only sizeable section that can be discarded is .eh_frame,
-restrict the discard to only .eh_frame to be safe.
-
- [ bp: Flesh out commit message and replace offending commit with this one. ]
-
-Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Tested-by: Nathan Chancellor <natechancellor@gmail.com>
-Link: https://lkml.kernel.org/r/20200109150218.16544-2-nivedita@alum.mit.edu
+Signed-off-by: Mel Gorman <mgorman@techsingularity.net>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Peter Zijlstra <a.p.zijlstra@chello.nl>
+Cc: Vincent Guittot <vincent.guittot@linaro.org>
+Cc: Juri Lelli <juri.lelli@redhat.com>
+Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Valentin Schneider <valentin.schneider@arm.com>
+Cc: Phil Auld <pauld@redhat.com>
+Cc: Hillf Danton <hdanton@sina.com>
+Link: https://lore.kernel.org/r/20200224095223.13361-14-mgorman@techsingularity.net
 ---
- arch/x86/boot/compressed/vmlinux.lds.S | 5 +++++
- 1 file changed, 5 insertions(+)
+ kernel/sched/fair.c | 31 +++++++++++++++++++++++++++----
+ 1 file changed, 27 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/boot/compressed/vmlinux.lds.S b/arch/x86/boot/compressed/vmlinux.lds.S
-index 508cfa6..469dcf8 100644
---- a/arch/x86/boot/compressed/vmlinux.lds.S
-+++ b/arch/x86/boot/compressed/vmlinux.lds.S
-@@ -73,4 +73,9 @@ SECTIONS
- #endif
- 	. = ALIGN(PAGE_SIZE);	/* keep ZO size page aligned */
- 	_end = .;
-+
-+	/* Discard .eh_frame to save some space */
-+	/DISCARD/ : {
-+		*(.eh_frame)
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 8c1ac01..fcc9686 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -1707,7 +1707,7 @@ static bool load_too_imbalanced(long src_load, long dst_load,
+  * into account that it might be best if task running on the dst_cpu should
+  * be exchanged with the source task
+  */
+-static void task_numa_compare(struct task_numa_env *env,
++static bool task_numa_compare(struct task_numa_env *env,
+ 			      long taskimp, long groupimp, bool maymove)
+ {
+ 	struct numa_group *cur_ng, *p_ng = deref_curr_numa_group(env->p);
+@@ -1718,9 +1718,10 @@ static void task_numa_compare(struct task_numa_env *env,
+ 	int dist = env->dist;
+ 	long moveimp = imp;
+ 	long load;
++	bool stopsearch = false;
+ 
+ 	if (READ_ONCE(dst_rq->numa_migrate_on))
+-		return;
++		return false;
+ 
+ 	rcu_read_lock();
+ 	cur = rcu_dereference(dst_rq->curr);
+@@ -1731,8 +1732,10 @@ static void task_numa_compare(struct task_numa_env *env,
+ 	 * Because we have preemption enabled we can get migrated around and
+ 	 * end try selecting ourselves (current == env->p) as a swap candidate.
+ 	 */
+-	if (cur == env->p)
++	if (cur == env->p) {
++		stopsearch = true;
+ 		goto unlock;
 +	}
+ 
+ 	if (!cur) {
+ 		if (maymove && moveimp >= env->best_imp)
+@@ -1860,8 +1863,27 @@ assign:
+ 	}
+ 
+ 	task_numa_assign(env, cur, imp);
++
++	/*
++	 * If a move to idle is allowed because there is capacity or load
++	 * balance improves then stop the search. While a better swap
++	 * candidate may exist, a search is not free.
++	 */
++	if (maymove && !cur && env->best_cpu >= 0 && idle_cpu(env->best_cpu))
++		stopsearch = true;
++
++	/*
++	 * If a swap candidate must be identified and the current best task
++	 * moves its preferred node then stop the search.
++	 */
++	if (!maymove && env->best_task &&
++	    env->best_task->numa_preferred_nid == env->src_nid) {
++		stopsearch = true;
++	}
+ unlock:
+ 	rcu_read_unlock();
++
++	return stopsearch;
  }
+ 
+ static void task_numa_find_cpu(struct task_numa_env *env,
+@@ -1916,7 +1938,8 @@ static void task_numa_find_cpu(struct task_numa_env *env,
+ 			continue;
+ 
+ 		env->dst_cpu = cpu;
+-		task_numa_compare(env, taskimp, groupimp, maymove);
++		if (task_numa_compare(env, taskimp, groupimp, maymove))
++			break;
+ 	}
+ }
+ 
