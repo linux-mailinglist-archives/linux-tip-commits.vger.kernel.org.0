@@ -2,37 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B03F5167ACC
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 21 Feb 2020 11:31:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E76116A452
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 24 Feb 2020 11:51:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726100AbgBUKbS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 21 Feb 2020 05:31:18 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:45509 "EHLO
+        id S1727282AbgBXKvP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 24 Feb 2020 05:51:15 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:49463 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726325AbgBUKbS (ORCPT
+        with ESMTP id S1726673AbgBXKvP (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 21 Feb 2020 05:31:18 -0500
+        Mon, 24 Feb 2020 05:51:15 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1j55aT-0007x8-Qb; Fri, 21 Feb 2020 11:31:14 +0100
+        id 1j6BKP-0008RK-V6; Mon, 24 Feb 2020 11:51:10 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 3F9D71C20C5;
-        Fri, 21 Feb 2020 11:31:13 +0100 (CET)
-Date:   Fri, 21 Feb 2020 10:31:12 -0000
-From:   "tip-bot2 for Zenghui Yu" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 6EF3D1C1A0F;
+        Mon, 24 Feb 2020 11:51:09 +0100 (CET)
+Date:   Mon, 24 Feb 2020 10:51:08 -0000
+From:   "tip-bot2 for Dave Young" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/urgent] genirq/irqdomain: Make sure all irq domain flags
- are distinct
-Cc:     Zenghui Yu <yuzenghui@huawei.com>,
-        Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org,
+Subject: [tip: x86/kdump] x86/kexec: Do not reserve EFI setup_data in the
+ kexec e820 table
+Cc:     Dave Young <dyoung@redhat.com>, Borislav Petkov <bp@suse.de>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200221020725.2038-1-yuzenghui@huawei.com>
-References: <20200221020725.2038-1-yuzenghui@huawei.com>
+In-Reply-To: <20200212110424.GA2938@dhcp-128-65.nay.redhat.com>
+References: <20200212110424.GA2938@dhcp-128-65.nay.redhat.com>
 MIME-Version: 1.0
-Message-ID: <158228107291.28353.2579324041035414462.tip-bot2@tip-bot2>
+Message-ID: <158254146897.28353.4247096498069522547.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -46,45 +45,71 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the irq/urgent branch of tip:
+The following commit has been merged into the x86/kdump branch of tip:
 
-Commit-ID:     2546287c5fb363a0165933ae2181c92f03e701d0
-Gitweb:        https://git.kernel.org/tip/2546287c5fb363a0165933ae2181c92f03e701d0
-Author:        Zenghui Yu <yuzenghui@huawei.com>
-AuthorDate:    Fri, 21 Feb 2020 10:07:25 +08:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 21 Feb 2020 11:29:15 +01:00
+Commit-ID:     8efbc518b884e1db2dd6a6fce62d0112ab871dcf
+Gitweb:        https://git.kernel.org/tip/8efbc518b884e1db2dd6a6fce62d0112ab871dcf
+Author:        Dave Young <dyoung@redhat.com>
+AuthorDate:    Wed, 12 Feb 2020 19:04:24 +08:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Mon, 24 Feb 2020 11:41:57 +01:00
 
-genirq/irqdomain: Make sure all irq domain flags are distinct
+x86/kexec: Do not reserve EFI setup_data in the kexec e820 table
 
-This was noticed when printing debugfs for MSIs on my ARM64 server.  The
-new dstate IRQD_MSI_NOMASK_QUIRK came out surprisingly while it should only
-be the x86 stuff for the time being...
+The e820 table for the kexec kernel unconditionally marks setup_data as
+reserved because the second kernel can reuse setup_data passed by the
+1st kernel's boot loader, for example SETUP_PCI marked regions like PCI
+BIOS, etc.
 
-The new MSI quirk flag uses the same bit as IRQ_DOMAIN_NAME_ALLOCATED which
-is oddly defined as bit 6 for no good reason.
+SETUP_EFI types, however, are used by kexec itself to enable EFI in the
+2nd kernel. Thus, it is pointless to add this type of setup_data to the
+kexec e820 table as reserved.
 
-Switch it to the non used bit 1.
+IOW, what happens is this:
 
-Fixes: 6f1a4891a592 ("x86/apic/msi: Plug non-maskable MSI affinity race")
-Signed-off-by: Zenghui Yu <yuzenghui@huawei.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20200221020725.2038-1-yuzenghui@huawei.com
+  -  1st physical boot: no SETUP_EFI.
+
+  - kexec loads a new kernel and prepares a SETUP_EFI setup_data blob, then
+  reboots the machine.
+
+  - 2nd kernel sees SETUP_EFI, reserves it both in the e820 and in the
+  kexec e820 table.
+
+  - If another kexec load is executed, it prepares a new SETUP_EFI blob and
+  then reboots the machine into the new kernel.
+
+  5. The 3rd kexec-ed kernel has two SETUP_EFI ranges reserved. And so on...
+
+Thus skip SETUP_EFI while reserving setup_data in the e820_table_kexec
+table because it is not needed.
+
+ [ bp: Heavily massage commit message, shorten line and improve comment. ]
+
+Signed-off-by: Dave Young <dyoung@redhat.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lkml.kernel.org/r/20200212110424.GA2938@dhcp-128-65.nay.redhat.com
 ---
- include/linux/irqdomain.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/e820.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/irqdomain.h b/include/linux/irqdomain.h
-index b2d4757..8d062e8 100644
---- a/include/linux/irqdomain.h
-+++ b/include/linux/irqdomain.h
-@@ -192,7 +192,7 @@ enum {
- 	IRQ_DOMAIN_FLAG_HIERARCHY	= (1 << 0),
+diff --git a/arch/x86/kernel/e820.c b/arch/x86/kernel/e820.c
+index c5399e8..c920296 100644
+--- a/arch/x86/kernel/e820.c
++++ b/arch/x86/kernel/e820.c
+@@ -999,7 +999,15 @@ void __init e820__reserve_setup_data(void)
+ 	while (pa_data) {
+ 		data = early_memremap(pa_data, sizeof(*data));
+ 		e820__range_update(pa_data, sizeof(*data)+data->len, E820_TYPE_RAM, E820_TYPE_RESERVED_KERN);
+-		e820__range_update_kexec(pa_data, sizeof(*data)+data->len, E820_TYPE_RAM, E820_TYPE_RESERVED_KERN);
++
++		/*
++		 * SETUP_EFI is supplied by kexec and does not need to be
++		 * reserved.
++		 */
++		if (data->type != SETUP_EFI)
++			e820__range_update_kexec(pa_data,
++						 sizeof(*data) + data->len,
++						 E820_TYPE_RAM, E820_TYPE_RESERVED_KERN);
  
- 	/* Irq domain name was allocated in __irq_domain_add() */
--	IRQ_DOMAIN_NAME_ALLOCATED	= (1 << 6),
-+	IRQ_DOMAIN_NAME_ALLOCATED	= (1 << 1),
- 
- 	/* Irq domain is an IPI domain with virq per cpu */
- 	IRQ_DOMAIN_FLAG_IPI_PER_CPU	= (1 << 2),
+ 		if (data->type == SETUP_INDIRECT &&
+ 		    ((struct setup_indirect *)data->data)->type != SETUP_INDIRECT) {
