@@ -2,102 +2,88 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 779F216B759
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 25 Feb 2020 02:49:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 07D4716BBCA
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 25 Feb 2020 09:24:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728529AbgBYBt3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 24 Feb 2020 20:49:29 -0500
-Received: from us-smtp-1.mimecast.com ([207.211.31.81]:48521 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728516AbgBYBt3 (ORCPT
+        id S1729725AbgBYIYH (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 25 Feb 2020 03:24:07 -0500
+Received: from mail-lj1-f169.google.com ([209.85.208.169]:37061 "EHLO
+        mail-lj1-f169.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729648AbgBYIYH (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 24 Feb 2020 20:49:29 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1582595368;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=wc7tZyJ6iU/QokJr3t6fWMYT5Rf36+F0rsTqeX+IMo4=;
-        b=ivpk23W4aoUduM2wKLW5NNIou+nHR/Uriv6s650DSNxJWwDRax34toPwoUH2pTE/K5b9Vz
-        jhBeGGsK1POpoR/Pv1goaHHAs7xPBwtCWx5+HTX4LwLuTOnJhWJJiDm0FhaZVyqSSf3oqN
-        sFxW5HGzoz3UUVS/LRgUvHE8QyhnPHs=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-7-LDxbto9CN5SO2iVJGfLBGw-1; Mon, 24 Feb 2020 20:49:20 -0500
-X-MC-Unique: LDxbto9CN5SO2iVJGfLBGw-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id AF134800D50;
-        Tue, 25 Feb 2020 01:49:19 +0000 (UTC)
-Received: from dhcp-128-65.nay.redhat.com (ovpn-12-179.pek2.redhat.com [10.72.12.179])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 998C060BF7;
-        Tue, 25 Feb 2020 01:49:17 +0000 (UTC)
-Date:   Tue, 25 Feb 2020 09:49:12 +0800
-From:   Dave Young <dyoung@redhat.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     linux-tip-commits@vger.kernel.org, Borislav Petkov <bp@suse.de>,
-        x86 <x86@kernel.org>
-Subject: Re: [tip: x86/kdump] x86/kexec: Do not reserve EFI setup_data in the
- kexec e820 table
-Message-ID: <20200225014912.GA13800@dhcp-128-65.nay.redhat.com>
-References: <20200212110424.GA2938@dhcp-128-65.nay.redhat.com>
- <158254146897.28353.4247096498069522547.tip-bot2@tip-bot2>
+        Tue, 25 Feb 2020 03:24:07 -0500
+Received: by mail-lj1-f169.google.com with SMTP id q23so13048627ljm.4
+        for <linux-tip-commits@vger.kernel.org>; Tue, 25 Feb 2020 00:24:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=+KBmyMZAeqjL/dWehJYWIZj/HK+sTTg1x4dJjtWNJz4=;
+        b=Wd1ymYRw9ghLg/v6CP8+SveZ4OsVVukkCJXUZ+7SUt/vxJsv4eaS/BLi0CELES5LvM
+         u+/5grfOt1wKhyrfkyIMNumcHaIsS/tUhp7iedp58BWEj9mKJf9q6edsZseaFujO/J4v
+         vFK+l9T1tlyC4e1Z+oXvztoTGVSB9/eTRDALR35uR10+F6mqe6PqCelVTTZItYMW/TH2
+         6vbJnSD2DsMY6074zMOVSqSZnGve+cPA4QB9rI6piJ+EHbuQrknS8NdnTxQjF5TGYjfl
+         Oa2EzmUjgPGCTm+2M+zdwtZWMq555nr4lUMRqirC+hurQ8IW6s8rJO6WJlegs6yfrV9a
+         nN8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=+KBmyMZAeqjL/dWehJYWIZj/HK+sTTg1x4dJjtWNJz4=;
+        b=taDdoDXmMKsbf7Zvenku/pJO4Ylh7FVPJV921GWUO6YrWCK+lmEWt3WI+B/lJDpamY
+         HAkBG6hmLFp6z8peC+csevsSkrjLUHCGspzq2z2sR/HV1YI5kcP0PuqKO0wgcodAVIGH
+         N3GeYRW9SE8x17f1iZ+J/Nx9Prs4YFz/5EYAXKzugSTqw870TUDv0qv2NZ3rPKMxCz6u
+         2uZOa6X8R20aKW+fG2B/NU8PeVFB02rKiRVySIOTcXpJdTEUwk+YQwxEj7yWISFZkfHM
+         rVNiJOiBUcx/j0QR9+erkEOOApvW7oebDLa6US7CvHd3FOWvH8N0e8F/JH8GpbUstAZN
+         6h8Q==
+X-Gm-Message-State: APjAAAUK6p77c4aIDM4a2Eaigrafn+0u7Bb1RjVJ9Xygw6bdG4svPgNp
+        RyOSP+OkQy+MBDXCj9irMzEXl93WEm1tgZ5h51O9vMb2
+X-Google-Smtp-Source: APXvYqy8RsIavee13RX2Ng/Iy0dV1rVHxkrrl/x6+fmkPYOKcK8Y0NEg8xCGCBuHo+/9wPVTBt/y2eFuiRQQ6SmYM7o=
+X-Received: by 2002:a2e:9596:: with SMTP id w22mr30879694ljh.21.1582619045157;
+ Tue, 25 Feb 2020 00:24:05 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <158254146897.28353.4247096498069522547.tip-bot2@tip-bot2>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+References: <20200224095223.13361-9-mgorman@techsingularity.net>
+ <158255763157.28353.3693734020236686000.tip-bot2@tip-bot2> <jhj36b06klb.fsf@arm.com>
+In-Reply-To: <jhj36b06klb.fsf@arm.com>
+From:   Vincent Guittot <vincent.guittot@linaro.org>
+Date:   Tue, 25 Feb 2020 09:23:53 +0100
+Message-ID: <CAKfTPtDSYRaLsxBLi4+=Z8zT4mpXo269MX3TYdxkjD1GSq5d7A@mail.gmail.com>
+Subject: Re: [tip: sched/core] sched/pelt: Add a new runnable average signal
+To:     Valentin Schneider <valentin.schneider@arm.com>
+Cc:     linux-kernel <linux-kernel@vger.kernel.org>,
+        linux-tip-commits@vger.kernel.org,
+        Mel Gorman <mgorman@techsingularity.net>,
+        Ingo Molnar <mingo@kernel.org>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Peter Zijlstra <a.p.zijlstra@chello.nl>,
+        Juri Lelli <juri.lelli@redhat.com>,
+        Phil Auld <pauld@redhat.com>, Hillf Danton <hdanton@sina.com>,
+        x86 <x86@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On 02/24/20 at 10:51am, tip-bot2 for Dave Young wrote:
-> The following commit has been merged into the x86/kdump branch of tip:
-> 
-> Commit-ID:     8efbc518b884e1db2dd6a6fce62d0112ab871dcf
-> Gitweb:        https://git.kernel.org/tip/8efbc518b884e1db2dd6a6fce62d0112ab871dcf
-> Author:        Dave Young <dyoung@redhat.com>
-> AuthorDate:    Wed, 12 Feb 2020 19:04:24 +08:00
-> Committer:     Borislav Petkov <bp@suse.de>
-> CommitterDate: Mon, 24 Feb 2020 11:41:57 +01:00
-> 
-> x86/kexec: Do not reserve EFI setup_data in the kexec e820 table
-> 
-> The e820 table for the kexec kernel unconditionally marks setup_data as
-> reserved because the second kernel can reuse setup_data passed by the
-> 1st kernel's boot loader, for example SETUP_PCI marked regions like PCI
-> BIOS, etc.
-> 
-> SETUP_EFI types, however, are used by kexec itself to enable EFI in the
-> 2nd kernel. Thus, it is pointless to add this type of setup_data to the
-> kexec e820 table as reserved.
-> 
-> IOW, what happens is this:
-> 
->   -  1st physical boot: no SETUP_EFI.
-> 
->   - kexec loads a new kernel and prepares a SETUP_EFI setup_data blob, then
->   reboots the machine.
-> 
->   - 2nd kernel sees SETUP_EFI, reserves it both in the e820 and in the
->   kexec e820 table.
-> 
->   - If another kexec load is executed, it prepares a new SETUP_EFI blob and
->   then reboots the machine into the new kernel.
-> 
->   5. The 3rd kexec-ed kernel has two SETUP_EFI ranges reserved. And so on...
-> 
-> Thus skip SETUP_EFI while reserving setup_data in the e820_table_kexec
-> table because it is not needed.
-> 
->  [ bp: Heavily massage commit message, shorten line and improve comment. ]
-
-Boris, thanks for the amending and log massage.
-I was hesitating to break the long line or not and then I choosed
-leaving it as is.  Both are not very good and either of them is fine to me.
+On Mon, 24 Feb 2020 at 17:01, Valentin Schneider
+<valentin.schneider@arm.com> wrote:
+>
+>
+> tip-bot2 for Vincent Guittot writes:
+>
+> > Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
+> > Signed-off-by: Mel Gorman <mgorman@techsingularity.net>
+> > Signed-off-by: Ingo Molnar <mingo@kernel.org>
+> > Reviewed-by: "Dietmar Eggemann <dietmar.eggemann@arm.com>"
+> > Acked-by: Peter Zijlstra <a.p.zijlstra@chello.nl>
+>
+> With the fork time initialization thing being sorted out, the rest of the
+> runnable series can claim my
+>
+> Reviewed-by: Valentin Schneider <valentin.schneider@arm.com>
 
 Thanks
-Dave
 
+>
+> but I doubt any of that is worth the hassle since it's in tip already. Just
+> figured I'd mention it, being in Cc and all :-)
