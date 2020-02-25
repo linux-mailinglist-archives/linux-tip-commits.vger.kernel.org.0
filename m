@@ -2,44 +2,44 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A3AAD16F034
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 25 Feb 2020 21:36:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 691AD16F0EC
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 25 Feb 2020 22:11:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731375AbgBYUgw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 25 Feb 2020 15:36:52 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:54474 "EHLO
+        id S1728770AbgBYVLb convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 25 Feb 2020 16:11:31 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:54641 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731354AbgBYUgv (ORCPT
+        with ESMTP id S1726130AbgBYVLb (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 25 Feb 2020 15:36:51 -0500
+        Tue, 25 Feb 2020 16:11:31 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1j6gwd-0002P5-Bw; Tue, 25 Feb 2020 21:36:43 +0100
+        id 1j6hUE-0002y5-DK; Tue, 25 Feb 2020 22:11:26 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C56181C2153;
-        Tue, 25 Feb 2020 21:36:42 +0100 (CET)
-Date:   Tue, 25 Feb 2020 20:36:42 -0000
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 0F93C1C2154;
+        Tue, 25 Feb 2020 22:11:26 +0100 (CET)
+Date:   Tue, 25 Feb 2020 21:11:25 -0000
+From:   "tip-bot2 for Vincenzo Frascino" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: ras/urgent] x86/mce/therm_throt: Undo thermal polling properly
- on CPU offline
-Cc:     Chris Wilson <chris@chris-wilson.co.uk>,
-        "Pandruvada, Srinivas" <srinivas.pandruvada@linux.intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
+Subject: [tip: timers/core] clocksource/drivers/arm_arch_timer: Fix vDSO
+ clockmode when vDSO disabled
+Cc:     Marek Szyprowski <m.szyprowski@samsung.com>,
+        Vincenzo Frascino <vincenzo.frascino@arm.com>,
+        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <158120068234.18291.7938335950259651295@skylake-alporthouse-com>
-References: <158120068234.18291.7938335950259651295@skylake-alporthouse-com>
+In-Reply-To: <20200224151552.57274-1-vincenzo.frascino@arm.com>
+References: <20200224151552.57274-1-vincenzo.frascino@arm.com>
 MIME-Version: 1.0
-Message-ID: <158266300251.28353.3340868799140664997.tip-bot2@tip-bot2>
+Message-ID: <158266508571.28353.6918690655943094425.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8BIT
 X-Linutronix-Spam-Score: -1.0
 X-Linutronix-Spam-Level: -
 X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
@@ -48,60 +48,58 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the ras/urgent branch of tip:
+The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     d364847eed890211444ad74496bb549f838c6018
-Gitweb:        https://git.kernel.org/tip/d364847eed890211444ad74496bb549f838c6018
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Tue, 25 Feb 2020 14:55:15 +01:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 25 Feb 2020 21:21:44 +01:00
+Commit-ID:     a67de48b3075cbb6ec030205d7b78981def6596d
+Gitweb:        https://git.kernel.org/tip/a67de48b3075cbb6ec030205d7b78981def6596d
+Author:        Vincenzo Frascino <vincenzo.frascino@arm.com>
+AuthorDate:    Mon, 24 Feb 2020 15:15:52 
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Tue, 25 Feb 2020 22:08:39 +01:00
 
-x86/mce/therm_throt: Undo thermal polling properly on CPU offline
+clocksource/drivers/arm_arch_timer: Fix vDSO clockmode when vDSO disabled
 
-Chris Wilson reported splats from running the thermal throttling
-workqueue callback on offlined CPUs. The problem is that that callback
-should not even run on offlined CPUs but it happens nevertheless because
-the offlining callback thermal_throttle_offline() does not symmetrically
-undo the setup work done in its onlining counterpart. IOW,
+The arm_arch_timer requires VDSO_CLOCKMODE_ARCHTIMER to be defined to
+compile correctly. On ARM the vDSO can be disabled and when this is the
+case the compilation ends prematurely with an error:
 
- 1. The thermal interrupt vector should be masked out before ...
+ $ make ARCH=arm multi_v7_defconfig
+ $ ./scripts/config -d VDSO
+ $ make
 
- 2. ... cancelling any pending work synchronously so that no new work is
- enqueued anymore.
+drivers/clocksource/arm_arch_timer.c:73:44: error:
+‘VDSO_CLOCKMODE_ARCHTIMER’ undeclared here (not in a function)
+  static enum vdso_clock_mode vdso_default = VDSO_CLOCKMODE_ARCHTIMER;
 
-Do those things and fix the issue properly.
+Make the usage of VDSO_CLOCKMODE_ARCHTIMER depend on the VDSO enablement
+and initialize the vdso clockmode variable with VDSO_CLOCKMODE_NONE
+otherwise.
 
- [ bp: Write commit message. ]
+[ tglx: Match changelog and patch content. ]
 
-Fixes: f6656208f04e ("x86/mce/therm_throt: Optimize notifications of thermal throttle")
-Reported-by: Chris Wilson <chris@chris-wilson.co.uk>
-Tested-by: Pandruvada, Srinivas <srinivas.pandruvada@linux.intel.com>
+Fixes: 5e3c6a312a09 ("ARM/arm64: vdso: Use common vdso clock mode storage")
+Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Signed-off-by: Vincenzo Frascino <vincenzo.frascino@arm.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/158120068234.18291.7938335950259651295@skylake-alporthouse-com
----
- arch/x86/kernel/cpu/mce/therm_throt.c |  9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+Link: https://lkml.kernel.org/r/20200224151552.57274-1-vincenzo.frascino@arm.com
 
-diff --git a/arch/x86/kernel/cpu/mce/therm_throt.c b/arch/x86/kernel/cpu/mce/therm_throt.c
-index 58b4ee3..f36dc07 100644
---- a/arch/x86/kernel/cpu/mce/therm_throt.c
-+++ b/arch/x86/kernel/cpu/mce/therm_throt.c
-@@ -486,9 +486,14 @@ static int thermal_throttle_offline(unsigned int cpu)
- {
- 	struct thermal_state *state = &per_cpu(thermal_state, cpu);
- 	struct device *dev = get_cpu_device(cpu);
-+	u32 l;
-+
-+	/* Mask the thermal vector before draining evtl. pending work */
-+	l = apic_read(APIC_LVTTHMR);
-+	apic_write(APIC_LVTTHMR, l | APIC_LVT_MASKED);
+---
+ drivers/clocksource/arm_arch_timer.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/drivers/clocksource/arm_arch_timer.c b/drivers/clocksource/arm_arch_timer.c
+index ee2420d..d53f4c7 100644
+--- a/drivers/clocksource/arm_arch_timer.c
++++ b/drivers/clocksource/arm_arch_timer.c
+@@ -69,7 +69,11 @@ static enum arch_timer_ppi_nr arch_timer_uses_ppi = ARCH_TIMER_VIRT_PPI;
+ static bool arch_timer_c3stop;
+ static bool arch_timer_mem_use_virtual;
+ static bool arch_counter_suspend_stop;
++#ifdef CONFIG_GENERIC_GETTIMEOFDAY
+ static enum vdso_clock_mode vdso_default = VDSO_CLOCKMODE_ARCHTIMER;
++#else
++static enum vdso_clock_mode vdso_default = VDSO_CLOCKMODE_NONE;
++#endif /* CONFIG_GENERIC_GETTIMEOFDAY */
  
--	cancel_delayed_work(&state->package_throttle.therm_work);
--	cancel_delayed_work(&state->core_throttle.therm_work);
-+	cancel_delayed_work_sync(&state->package_throttle.therm_work);
-+	cancel_delayed_work_sync(&state->core_throttle.therm_work);
- 
- 	state->package_throttle.rate_control_active = false;
- 	state->core_throttle.rate_control_active = false;
+ static cpumask_t evtstrm_available = CPU_MASK_NONE;
+ static bool evtstrm_enable = IS_ENABLED(CONFIG_ARM_ARCH_TIMER_EVTSTREAM);
