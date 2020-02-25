@@ -2,88 +2,104 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 07D4716BBCA
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 25 Feb 2020 09:24:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D05416E9CC
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 25 Feb 2020 16:16:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729725AbgBYIYH (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 25 Feb 2020 03:24:07 -0500
-Received: from mail-lj1-f169.google.com ([209.85.208.169]:37061 "EHLO
-        mail-lj1-f169.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729648AbgBYIYH (ORCPT
+        id S1730777AbgBYPQu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 25 Feb 2020 10:16:50 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:53768 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730172AbgBYPQu (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 25 Feb 2020 03:24:07 -0500
-Received: by mail-lj1-f169.google.com with SMTP id q23so13048627ljm.4
-        for <linux-tip-commits@vger.kernel.org>; Tue, 25 Feb 2020 00:24:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=+KBmyMZAeqjL/dWehJYWIZj/HK+sTTg1x4dJjtWNJz4=;
-        b=Wd1ymYRw9ghLg/v6CP8+SveZ4OsVVukkCJXUZ+7SUt/vxJsv4eaS/BLi0CELES5LvM
-         u+/5grfOt1wKhyrfkyIMNumcHaIsS/tUhp7iedp58BWEj9mKJf9q6edsZseaFujO/J4v
-         vFK+l9T1tlyC4e1Z+oXvztoTGVSB9/eTRDALR35uR10+F6mqe6PqCelVTTZItYMW/TH2
-         6vbJnSD2DsMY6074zMOVSqSZnGve+cPA4QB9rI6piJ+EHbuQrknS8NdnTxQjF5TGYjfl
-         Oa2EzmUjgPGCTm+2M+zdwtZWMq555nr4lUMRqirC+hurQ8IW6s8rJO6WJlegs6yfrV9a
-         nN8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=+KBmyMZAeqjL/dWehJYWIZj/HK+sTTg1x4dJjtWNJz4=;
-        b=taDdoDXmMKsbf7Zvenku/pJO4Ylh7FVPJV921GWUO6YrWCK+lmEWt3WI+B/lJDpamY
-         HAkBG6hmLFp6z8peC+csevsSkrjLUHCGspzq2z2sR/HV1YI5kcP0PuqKO0wgcodAVIGH
-         N3GeYRW9SE8x17f1iZ+J/Nx9Prs4YFz/5EYAXKzugSTqw870TUDv0qv2NZ3rPKMxCz6u
-         2uZOa6X8R20aKW+fG2B/NU8PeVFB02rKiRVySIOTcXpJdTEUwk+YQwxEj7yWISFZkfHM
-         rVNiJOiBUcx/j0QR9+erkEOOApvW7oebDLa6US7CvHd3FOWvH8N0e8F/JH8GpbUstAZN
-         6h8Q==
-X-Gm-Message-State: APjAAAUK6p77c4aIDM4a2Eaigrafn+0u7Bb1RjVJ9Xygw6bdG4svPgNp
-        RyOSP+OkQy+MBDXCj9irMzEXl93WEm1tgZ5h51O9vMb2
-X-Google-Smtp-Source: APXvYqy8RsIavee13RX2Ng/Iy0dV1rVHxkrrl/x6+fmkPYOKcK8Y0NEg8xCGCBuHo+/9wPVTBt/y2eFuiRQQ6SmYM7o=
-X-Received: by 2002:a2e:9596:: with SMTP id w22mr30879694ljh.21.1582619045157;
- Tue, 25 Feb 2020 00:24:05 -0800 (PST)
+        Tue, 25 Feb 2020 10:16:50 -0500
+Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tip-bot2@linutronix.de>)
+        id 1j6bwx-0006BL-Cq; Tue, 25 Feb 2020 16:16:43 +0100
+Received: from [127.0.1.1] (localhost [IPv6:::1])
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id DF4A01C2032;
+        Tue, 25 Feb 2020 16:16:42 +0100 (CET)
+Date:   Tue, 25 Feb 2020 15:16:42 -0000
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: ras/urgent] x86/mce/therm_throt: Undo thermal polling properly
+ on CPU offline
+Cc:     Chris Wilson <chris@chris-wilson.co.uk>,
+        "Pandruvada, Srinivas" <srinivas.pandruvada@linux.intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <158120068234.18291.7938335950259651295@skylake-alporthouse-com>
+References: <158120068234.18291.7938335950259651295@skylake-alporthouse-com>
 MIME-Version: 1.0
-References: <20200224095223.13361-9-mgorman@techsingularity.net>
- <158255763157.28353.3693734020236686000.tip-bot2@tip-bot2> <jhj36b06klb.fsf@arm.com>
-In-Reply-To: <jhj36b06klb.fsf@arm.com>
-From:   Vincent Guittot <vincent.guittot@linaro.org>
-Date:   Tue, 25 Feb 2020 09:23:53 +0100
-Message-ID: <CAKfTPtDSYRaLsxBLi4+=Z8zT4mpXo269MX3TYdxkjD1GSq5d7A@mail.gmail.com>
-Subject: Re: [tip: sched/core] sched/pelt: Add a new runnable average signal
-To:     Valentin Schneider <valentin.schneider@arm.com>
-Cc:     linux-kernel <linux-kernel@vger.kernel.org>,
-        linux-tip-commits@vger.kernel.org,
-        Mel Gorman <mgorman@techsingularity.net>,
-        Ingo Molnar <mingo@kernel.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Peter Zijlstra <a.p.zijlstra@chello.nl>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Phil Auld <pauld@redhat.com>, Hillf Danton <hdanton@sina.com>,
-        x86 <x86@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Message-ID: <158264380248.28353.10359759226402874808.tip-bot2@tip-bot2>
+X-Mailer: tip-git-log-daemon
+Robot-ID: <tip-bot2.linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Mon, 24 Feb 2020 at 17:01, Valentin Schneider
-<valentin.schneider@arm.com> wrote:
->
->
-> tip-bot2 for Vincent Guittot writes:
->
-> > Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
-> > Signed-off-by: Mel Gorman <mgorman@techsingularity.net>
-> > Signed-off-by: Ingo Molnar <mingo@kernel.org>
-> > Reviewed-by: "Dietmar Eggemann <dietmar.eggemann@arm.com>"
-> > Acked-by: Peter Zijlstra <a.p.zijlstra@chello.nl>
->
-> With the fork time initialization thing being sorted out, the rest of the
-> runnable series can claim my
->
-> Reviewed-by: Valentin Schneider <valentin.schneider@arm.com>
+The following commit has been merged into the ras/urgent branch of tip:
 
-Thanks
+Commit-ID:     bf69bac4d3ef188ee8cf536a31ecbb230a8ba91a
+Gitweb:        https://git.kernel.org/tip/bf69bac4d3ef188ee8cf536a31ecbb230a8ba91a
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Tue, 25 Feb 2020 14:55:15 +01:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Tue, 25 Feb 2020 15:05:56 +01:00
 
->
-> but I doubt any of that is worth the hassle since it's in tip already. Just
-> figured I'd mention it, being in Cc and all :-)
+x86/mce/therm_throt: Undo thermal polling properly on CPU offline
+
+Chris Wilson reported splats from running the thermal throttling
+workqueue callback on offlined CPUs. The problem is that that callback
+should not even run on offlined CPUs but it happens nevertheless because
+the offlining callback thermal_throttle_offline() does not symmetrically
+undo the setup work done in its onlining counterpart. IOW,
+
+ 1. The thermal interrupt vector should be masked out before ...
+
+ 2. ... cancelling any pending work synchronously so that no new work is
+ enqueued anymore.
+
+Do those things and fix the issue properly.
+
+ [ bp: Write commit message. ]
+
+Fixes: f6656208f04e ("x86/mce/therm_throt: Optimize notifications of thermal throttle")
+Reported-by: Chris Wilson <chris@chris-wilson.co.uk>
+Tested-by: Pandruvada, Srinivas <srinivas.pandruvada@linux.intel.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lkml.kernel.org/r/158120068234.18291.7938335950259651295@skylake-alporthouse-com
+---
+ arch/x86/kernel/cpu/mce/therm_throt.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/arch/x86/kernel/cpu/mce/therm_throt.c b/arch/x86/kernel/cpu/mce/therm_throt.c
+index 58b4ee3..5d8971c 100644
+--- a/arch/x86/kernel/cpu/mce/therm_throt.c
++++ b/arch/x86/kernel/cpu/mce/therm_throt.c
+@@ -487,8 +487,12 @@ static int thermal_throttle_offline(unsigned int cpu)
+ 	struct thermal_state *state = &per_cpu(thermal_state, cpu);
+ 	struct device *dev = get_cpu_device(cpu);
+ 
+-	cancel_delayed_work(&state->package_throttle.therm_work);
+-	cancel_delayed_work(&state->core_throttle.therm_work);
++	/* Mask the thermal vector before draining evtl. pending work */
++	l = apic_read(APIC_LVTTHMR);
++	apic_write(APIC_LVTTHMR, l | APIC_LVT_MASKED);
++
++	cancel_delayed_work_sync(&state->package_throttle.therm_work);
++	cancel_delayed_work_sync(&state->core_throttle.therm_work);
+ 
+ 	state->package_throttle.rate_control_active = false;
+ 	state->core_throttle.rate_control_active = false;
