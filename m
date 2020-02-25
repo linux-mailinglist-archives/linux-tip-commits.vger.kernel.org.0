@@ -2,41 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8633516EBC4
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 25 Feb 2020 17:53:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A3AAD16F034
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 25 Feb 2020 21:36:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730790AbgBYQx3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 25 Feb 2020 11:53:29 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:53928 "EHLO
+        id S1731375AbgBYUgw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 25 Feb 2020 15:36:52 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:54474 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730704AbgBYQx3 (ORCPT
+        with ESMTP id S1731354AbgBYUgv (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 25 Feb 2020 11:53:29 -0500
+        Tue, 25 Feb 2020 15:36:51 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1j6dSV-0007Y9-0x; Tue, 25 Feb 2020 17:53:23 +0100
+        id 1j6gwd-0002P5-Bw; Tue, 25 Feb 2020 21:36:43 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 9FB261C214D;
-        Tue, 25 Feb 2020 17:53:22 +0100 (CET)
-Date:   Tue, 25 Feb 2020 16:53:22 -0000
-From:   "tip-bot2 for Arvind Sankar" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C56181C2153;
+        Tue, 25 Feb 2020 21:36:42 +0100 (CET)
+Date:   Tue, 25 Feb 2020 20:36:42 -0000
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/boot] x86/*/Makefile: Use -fno-asynchronous-unwind-tables
- to suppress .eh_frame sections
-Cc:     Fangrui Song <maskray@google.com>,
-        Arvind Sankar <nivedita@alum.mit.edu>,
-        Borislav Petkov <bp@suse.de>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Kees Cook <keescook@chromium.org>, x86 <x86@kernel.org>,
+Subject: [tip: ras/urgent] x86/mce/therm_throt: Undo thermal polling properly
+ on CPU offline
+Cc:     Chris Wilson <chris@chris-wilson.co.uk>,
+        "Pandruvada, Srinivas" <srinivas.pandruvada@linux.intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200224232129.597160-2-nivedita@alum.mit.edu>
-References: <20200224232129.597160-2-nivedita@alum.mit.edu>
+In-Reply-To: <158120068234.18291.7938335950259651295@skylake-alporthouse-com>
+References: <158120068234.18291.7938335950259651295@skylake-alporthouse-com>
 MIME-Version: 1.0
-Message-ID: <158264960240.28353.7022349340832312858.tip-bot2@tip-bot2>
+Message-ID: <158266300251.28353.3340868799140664997.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,96 +48,60 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/boot branch of tip:
+The following commit has been merged into the ras/urgent branch of tip:
 
-Commit-ID:     003602ad5516e59940de42e44c8d8033387bb363
-Gitweb:        https://git.kernel.org/tip/003602ad5516e59940de42e44c8d8033387bb363
-Author:        Arvind Sankar <nivedita@alum.mit.edu>
-AuthorDate:    Mon, 24 Feb 2020 18:21:28 -05:00
+Commit-ID:     d364847eed890211444ad74496bb549f838c6018
+Gitweb:        https://git.kernel.org/tip/d364847eed890211444ad74496bb549f838c6018
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Tue, 25 Feb 2020 14:55:15 +01:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 25 Feb 2020 13:18:29 +01:00
+CommitterDate: Tue, 25 Feb 2020 21:21:44 +01:00
 
-x86/*/Makefile: Use -fno-asynchronous-unwind-tables to suppress .eh_frame sections
+x86/mce/therm_throt: Undo thermal polling properly on CPU offline
 
-While discussing a patch to discard .eh_frame from the compressed
-vmlinux using the linker script, Fangrui Song pointed out [1] that these
-sections shouldn't exist in the first place because arch/x86/Makefile
-uses -fno-asynchronous-unwind-tables.
+Chris Wilson reported splats from running the thermal throttling
+workqueue callback on offlined CPUs. The problem is that that callback
+should not even run on offlined CPUs but it happens nevertheless because
+the offlining callback thermal_throttle_offline() does not symmetrically
+undo the setup work done in its onlining counterpart. IOW,
 
-It turns out this is because the Makefiles used to build the compressed
-kernel redefine KBUILD_CFLAGS, dropping this flag.
+ 1. The thermal interrupt vector should be masked out before ...
 
-Add the flag to the Makefile for the compressed kernel, as well as the
-EFI stub Makefile to fix this.
+ 2. ... cancelling any pending work synchronously so that no new work is
+ enqueued anymore.
 
-Also add the flag to boot/Makefile and realmode/rm/Makefile so that the
-kernel's boot code (boot/setup.elf) and realmode trampoline
-(realmode/rm/realmode.elf) won't be compiled with .eh_frame sections,
-since their linker scripts also just discard them.
+Do those things and fix the issue properly.
 
-  [1] https://lore.kernel.org/lkml/20200222185806.ywnqhfqmy67akfsa@google.com/
+ [ bp: Write commit message. ]
 
-Suggested-by: Fangrui Song <maskray@google.com>
-Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
+Fixes: f6656208f04e ("x86/mce/therm_throt: Optimize notifications of thermal throttle")
+Reported-by: Chris Wilson <chris@chris-wilson.co.uk>
+Tested-by: Pandruvada, Srinivas <srinivas.pandruvada@linux.intel.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Nathan Chancellor <natechancellor@gmail.com>
-Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Tested-by: Nathan Chancellor <natechancellor@gmail.com>
-Link: https://lkml.kernel.org/r/20200224232129.597160-2-nivedita@alum.mit.edu
+Link: https://lkml.kernel.org/r/158120068234.18291.7938335950259651295@skylake-alporthouse-com
 ---
- arch/x86/boot/Makefile                | 1 +
- arch/x86/boot/compressed/Makefile     | 1 +
- arch/x86/realmode/rm/Makefile         | 1 +
- drivers/firmware/efi/libstub/Makefile | 3 ++-
- 4 files changed, 5 insertions(+), 1 deletion(-)
+ arch/x86/kernel/cpu/mce/therm_throt.c |  9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/boot/Makefile b/arch/x86/boot/Makefile
-index 012b82f..24f011e 100644
---- a/arch/x86/boot/Makefile
-+++ b/arch/x86/boot/Makefile
-@@ -68,6 +68,7 @@ clean-files += cpustr.h
- KBUILD_CFLAGS	:= $(REALMODE_CFLAGS) -D_SETUP
- KBUILD_AFLAGS	:= $(KBUILD_CFLAGS) -D__ASSEMBLY__
- KBUILD_CFLAGS	+= $(call cc-option,-fmacro-prefix-map=$(srctree)/=)
-+KBUILD_CFLAGS	+= -fno-asynchronous-unwind-tables
- GCOV_PROFILE := n
- UBSAN_SANITIZE := n
+diff --git a/arch/x86/kernel/cpu/mce/therm_throt.c b/arch/x86/kernel/cpu/mce/therm_throt.c
+index 58b4ee3..f36dc07 100644
+--- a/arch/x86/kernel/cpu/mce/therm_throt.c
++++ b/arch/x86/kernel/cpu/mce/therm_throt.c
+@@ -486,9 +486,14 @@ static int thermal_throttle_offline(unsigned int cpu)
+ {
+ 	struct thermal_state *state = &per_cpu(thermal_state, cpu);
+ 	struct device *dev = get_cpu_device(cpu);
++	u32 l;
++
++	/* Mask the thermal vector before draining evtl. pending work */
++	l = apic_read(APIC_LVTTHMR);
++	apic_write(APIC_LVTTHMR, l | APIC_LVT_MASKED);
  
-diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
-index 26050ae..c331113 100644
---- a/arch/x86/boot/compressed/Makefile
-+++ b/arch/x86/boot/compressed/Makefile
-@@ -39,6 +39,7 @@ KBUILD_CFLAGS += $(call cc-disable-warning, address-of-packed-member)
- KBUILD_CFLAGS += $(call cc-disable-warning, gnu)
- KBUILD_CFLAGS += -Wno-pointer-sign
- KBUILD_CFLAGS += $(call cc-option,-fmacro-prefix-map=$(srctree)/=)
-+KBUILD_CFLAGS += -fno-asynchronous-unwind-tables
+-	cancel_delayed_work(&state->package_throttle.therm_work);
+-	cancel_delayed_work(&state->core_throttle.therm_work);
++	cancel_delayed_work_sync(&state->package_throttle.therm_work);
++	cancel_delayed_work_sync(&state->core_throttle.therm_work);
  
- KBUILD_AFLAGS  := $(KBUILD_CFLAGS) -D__ASSEMBLY__
- GCOV_PROFILE := n
-diff --git a/arch/x86/realmode/rm/Makefile b/arch/x86/realmode/rm/Makefile
-index 99b6332..b11ec5d 100644
---- a/arch/x86/realmode/rm/Makefile
-+++ b/arch/x86/realmode/rm/Makefile
-@@ -71,5 +71,6 @@ $(obj)/realmode.relocs: $(obj)/realmode.elf FORCE
- KBUILD_CFLAGS	:= $(REALMODE_CFLAGS) -D_SETUP -D_WAKEUP \
- 		   -I$(srctree)/arch/x86/boot
- KBUILD_AFLAGS	:= $(KBUILD_CFLAGS) -D__ASSEMBLY__
-+KBUILD_CFLAGS	+= -fno-asynchronous-unwind-tables
- GCOV_PROFILE := n
- UBSAN_SANITIZE := n
-diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
-index 98a8157..a1140c4 100644
---- a/drivers/firmware/efi/libstub/Makefile
-+++ b/drivers/firmware/efi/libstub/Makefile
-@@ -12,7 +12,8 @@ cflags-$(CONFIG_X86)		+= -m$(BITS) -D__KERNEL__ -O2 \
- 				   -mno-mmx -mno-sse -fshort-wchar \
- 				   -Wno-pointer-sign \
- 				   $(call cc-disable-warning, address-of-packed-member) \
--				   $(call cc-disable-warning, gnu)
-+				   $(call cc-disable-warning, gnu) \
-+				   -fno-asynchronous-unwind-tables
- 
- # arm64 uses the full KBUILD_CFLAGS so it's necessary to explicitly
- # disable the stackleak plugin
+ 	state->package_throttle.rate_control_active = false;
+ 	state->core_throttle.rate_control_active = false;
