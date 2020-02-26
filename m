@@ -2,39 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DB2DE1700FD
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 26 Feb 2020 15:20:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 80C4A1700FB
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 26 Feb 2020 15:20:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727253AbgBZOUv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 26 Feb 2020 09:20:51 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:57927 "EHLO
+        id S1726359AbgBZOUp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 26 Feb 2020 09:20:45 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:57921 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726278AbgBZOUv (ORCPT
+        with ESMTP id S1726278AbgBZOUo (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 26 Feb 2020 09:20:51 -0500
+        Wed, 26 Feb 2020 09:20:44 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1j6xYG-00080k-EN; Wed, 26 Feb 2020 15:20:40 +0100
+        id 1j6xYG-00080h-2G; Wed, 26 Feb 2020 15:20:40 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 12ABF1C2156;
-        Wed, 26 Feb 2020 15:20:40 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A6C181C2157;
+        Wed, 26 Feb 2020 15:20:39 +0100 (CET)
 Date:   Wed, 26 Feb 2020 14:20:39 -0000
-From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Thomas Richter" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf bpf: Remove bpf/ subdir from bpf.h headers
- used to build bpf events
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Jiri Olsa <jolsa@kernel.org>,
-        Namhyung Kim <namhyung@kernel.org>,
+Subject: [tip: perf/urgent] perf test: Fix test trace+probe_vfs_getname.sh on s390
+Cc:     Thomas Richter <tmricht@linux.ibm.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <tip-d9myswhgo8gfi3vmehdqpxa7@git.kernel.org>
-References: <tip-d9myswhgo8gfi3vmehdqpxa7@git.kernel.org>
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Sumanth Korikkar <sumanthk@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200217102111.61137-1-tmricht@linux.ibm.com>
+References: <20200217102111.61137-1-tmricht@linux.ibm.com>
 MIME-Version: 1.0
-Message-ID: <158272683976.28353.3519947924913490182.tip-bot2@tip-bot2>
+Message-ID: <158272683942.28353.13346247455892179046.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,88 +51,81 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     3b573bf318d894b4290e194c4d7dbcba8c1f6ead
-Gitweb:        https://git.kernel.org/tip/3b573bf318d894b4290e194c4d7dbcba8c1f6ead
-Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Fri, 14 Feb 2020 16:21:40 -03:00
+Commit-ID:     2bbc83537614517730e9f2811195004b712de207
+Gitweb:        https://git.kernel.org/tip/2bbc83537614517730e9f2811195004b712de207
+Author:        Thomas Richter <tmricht@linux.ibm.com>
+AuthorDate:    Mon, 17 Feb 2020 11:21:11 +01:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Tue, 18 Feb 2020 10:13:28 -03:00
 
-perf bpf: Remove bpf/ subdir from bpf.h headers used to build bpf events
+perf test: Fix test trace+probe_vfs_getname.sh on s390
 
-The bpf.h file needed gets installed in /usr/lib/include/perf/bpf/bpf.h,
-and /usr/lib/include/perf/ is added to the include path passed to clang
-to build the eBPF bytecode, so just remove "bpf/", its directly in the
-path passed already. This was working by accident, fix it.
+This test places a kprobe to function getname_flags() in the kernel
+which has the following prototype:
 
-I.e. now this is back working:
+  struct filename *getname_flags(const char __user *filename, int flags, int *empty)
 
-  # cat /home/acme/git/perf/tools/perf/examples/bpf/hello.c
-  #include <stdio.h>
+The 'filename' argument points to a filename located in user space memory.
 
-  int syscall_enter(openat)(void *args)
-  {
-  	puts("Hello, world\n");
-  	return 0;
-  }
+Looking at commit 88903c464321c ("tracing/probe: Add ustring type for
+user-space string") the kprobe should indicate that user space memory is
+accessed.
 
-  license(GPL);
-  # perf trace -e /home/acme/git/perf/tools/perf/examples/bpf/hello.c
-       0.000 pickup/21493 __bpf_stdout__(Hello, world)
-      56.462 sh/13539 __bpf_stdout__(Hello, world)
-      56.536 sh/13539 __bpf_stdout__(Hello, world)
-      56.673 sh/13539 __bpf_stdout__(Hello, world)
-      56.781 sh/13539 __bpf_stdout__(Hello, world)
-      56.707 perf/13182 __bpf_stdout__(Hello, world)
-      56.849 perf/13182 __bpf_stdout__(Hello, world)
-  ^C
-  #
+Output before:
 
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lkml.kernel.org/n/tip-d9myswhgo8gfi3vmehdqpxa7@git.kernel.org
+   [root@m35lp76 perf]# ./perf test 66 67
+   66: Use vfs_getname probe to get syscall args filenames   : FAILED!
+   67: Check open filename arg using perf trace + vfs_getname: FAILED!
+   [root@m35lp76 perf]#
+
+Output after:
+
+   [root@m35lp76 perf]# ./perf test 66 67
+   66: Use vfs_getname probe to get syscall args filenames   : Ok
+   67: Check open filename arg using perf trace + vfs_getname: Ok
+   [root@m35lp76 perf]#
+
+Comments from Masami Hiramatsu:
+
+This bug doesn't happen on x86 or other archs on which user address
+space and kernel address space is the same. On some arches (ppc64 in
+this case?) user address space is partially or completely the same as
+kernel address space.
+
+(Yes, they switch the world when running into the kernel) In this case,
+we need to use different data access functions for each space.
+
+That is why I introduced the "ustring" type for kprobe events.
+
+As far as I can see, Thomas's patch is sane. Thomas, could you show us
+your result on your test environment?
+
+Comments from Thomas Richter:
+
+Test results for s/390 included above.
+
+Signed-off-by: Thomas Richter <tmricht@linux.ibm.com>
+Acked-by: Masami Hiramatsu <mhiramat@kernel.org>
+Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
+Cc: Sumanth Korikkar <sumanthk@linux.ibm.com>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Link: http://lore.kernel.org/lkml/20200217102111.61137-1-tmricht@linux.ibm.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/include/bpf/pid_filter.h | 2 +-
- tools/perf/include/bpf/stdio.h      | 2 +-
- tools/perf/include/bpf/unistd.h     | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ tools/perf/tests/shell/lib/probe_vfs_getname.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/include/bpf/pid_filter.h b/tools/perf/include/bpf/pid_filter.h
-index 607189a..6e61c4b 100644
---- a/tools/perf/include/bpf/pid_filter.h
-+++ b/tools/perf/include/bpf/pid_filter.h
-@@ -3,7 +3,7 @@
- #ifndef _PERF_BPF_PID_FILTER_
- #define _PERF_BPF_PID_FILTER_
- 
--#include <bpf/bpf.h>
-+#include <bpf.h>
- 
- #define pid_filter(name) pid_map(name, bool)
- 
-diff --git a/tools/perf/include/bpf/stdio.h b/tools/perf/include/bpf/stdio.h
-index 7ca6fa5..316af5b 100644
---- a/tools/perf/include/bpf/stdio.h
-+++ b/tools/perf/include/bpf/stdio.h
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
- 
--#include <bpf/bpf.h>
-+#include <bpf.h>
- 
- struct bpf_map SEC("maps") __bpf_stdout__ = {
-        .type = BPF_MAP_TYPE_PERF_EVENT_ARRAY,
-diff --git a/tools/perf/include/bpf/unistd.h b/tools/perf/include/bpf/unistd.h
-index d1a35b6..ca7877f 100644
---- a/tools/perf/include/bpf/unistd.h
-+++ b/tools/perf/include/bpf/unistd.h
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: LGPL-2.1
- 
--#include <bpf/bpf.h>
-+#include <bpf.h>
- 
- static int (*bpf_get_current_pid_tgid)(void) = (void *)BPF_FUNC_get_current_pid_tgid;
+diff --git a/tools/perf/tests/shell/lib/probe_vfs_getname.sh b/tools/perf/tests/shell/lib/probe_vfs_getname.sh
+index 7cb99b4..c2cc42d 100644
+--- a/tools/perf/tests/shell/lib/probe_vfs_getname.sh
++++ b/tools/perf/tests/shell/lib/probe_vfs_getname.sh
+@@ -14,7 +14,7 @@ add_probe_vfs_getname() {
+ 	if [ $had_vfs_getname -eq 1 ] ; then
+ 		line=$(perf probe -L getname_flags 2>&1 | egrep 'result.*=.*filename;' | sed -r 's/[[:space:]]+([[:digit:]]+)[[:space:]]+result->uptr.*/\1/')
+ 		perf probe -q       "vfs_getname=getname_flags:${line} pathname=result->name:string" || \
+-		perf probe $verbose "vfs_getname=getname_flags:${line} pathname=filename:string"
++		perf probe $verbose "vfs_getname=getname_flags:${line} pathname=filename:ustring"
+ 	fi
+ }
  
