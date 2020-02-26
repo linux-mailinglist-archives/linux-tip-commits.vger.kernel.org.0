@@ -2,39 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8556417010C
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 26 Feb 2020 15:21:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 336AF1704E9
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 26 Feb 2020 17:55:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727755AbgBZOVL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 26 Feb 2020 09:21:11 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:57954 "EHLO
+        id S1727341AbgBZQzR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 26 Feb 2020 11:55:17 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:58288 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727534AbgBZOU4 (ORCPT
+        with ESMTP id S1726214AbgBZQzQ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 26 Feb 2020 09:20:56 -0500
+        Wed, 26 Feb 2020 11:55:16 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1j6xYF-00080e-Lm; Wed, 26 Feb 2020 15:20:39 +0100
+        id 1j6zxp-0002Dj-BO; Wed, 26 Feb 2020 17:55:13 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 577081C2156;
-        Wed, 26 Feb 2020 15:20:39 +0100 (CET)
-Date:   Wed, 26 Feb 2020 14:20:39 -0000
-From:   "tip-bot2 for Wei Li" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id EB54E1C215C;
+        Wed, 26 Feb 2020 17:55:12 +0100 (CET)
+Date:   Wed, 26 Feb 2020 16:55:12 -0000
+From:   "tip-bot2 for Jason A. Donenfeld" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf intel-pt: Fix endless record after being terminated
-Cc:     Wei Li <liwei391@huawei.com>, Jiri Olsa <jolsa@redhat.com>,
-        Tan Xiaojun <tanxiaojun@huawei.com>, stable@vger.kernel.org,
-        #@tip-bot2.tec.linutronix.de, 5.4+@tip-bot2.tec.linutronix.de,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200214132654.20395-2-adrian.hunter@intel.com>
-References: <20200214132654.20395-2-adrian.hunter@intel.com>
+Subject: [tip: efi/urgent] efi: READ_ONCE rng seed size before munmap
+Cc:     "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Ingo Molnar <mingo@kernel.org>, linux-efi@vger.kernel.org,
+        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200217123354.21140-1-Jason@zx2c4.com>
+References: <20200217123354.21140-1-Jason@zx2c4.com>
 MIME-Version: 1.0
-Message-ID: <158272683905.28353.4992287081120700782.tip-bot2@tip-bot2>
+Message-ID: <158273611261.28353.8523357540114932134.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,68 +47,55 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/urgent branch of tip:
+The following commit has been merged into the efi/urgent branch of tip:
 
-Commit-ID:     2da4dd3d6973ffdfba4fa07f53240fda7ab22929
-Gitweb:        https://git.kernel.org/tip/2da4dd3d6973ffdfba4fa07f53240fda7ab22929
-Author:        Wei Li <liwei391@huawei.com>
-AuthorDate:    Fri, 14 Feb 2020 15:26:50 +02:00
-Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Tue, 18 Feb 2020 10:13:29 -03:00
+Commit-ID:     be36f9e7517e17810ec369626a128d7948942259
+Gitweb:        https://git.kernel.org/tip/be36f9e7517e17810ec369626a128d7948942259
+Author:        Jason A. Donenfeld <Jason@zx2c4.com>
+AuthorDate:    Fri, 21 Feb 2020 09:48:49 +01:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Wed, 26 Feb 2020 15:31:43 +01:00
 
-perf intel-pt: Fix endless record after being terminated
+efi: READ_ONCE rng seed size before munmap
 
-In __cmd_record(), when receiving SIGINT(ctrl + c), a 'done' flag will
-be set and the event list will be disabled by evlist__disable() once.
+This function is consistent with using size instead of seed->size
+(except for one place that this patch fixes), but it reads seed->size
+without using READ_ONCE, which means the compiler might still do
+something unwanted. So, this commit simply adds the READ_ONCE
+wrapper.
 
-While in auxtrace_record.read_finish(), the related events will be
-enabled again, if they are continuous, the recording seems to be endless.
-
-If the intel_pt event is disabled, we don't enable it again here.
-
-Before the patch:
-
-  huawei@huawei-2288H-V5:~/linux-5.5-rc4/tools/perf$ ./perf record -e \
-  intel_pt//u -p 46803
-  ^C^C^C^C^C^C
-
-After the patch:
-
-  huawei@huawei-2288H-V5:~/linux-5.5-rc4/tools/perf$ ./perf record -e \
-  intel_pt//u -p 48591
-  ^C[ perf record: Woken up 0 times to write data ]
-  Warning:
-  AUX data lost 504 times out of 4816!
-
-  [ perf record: Captured and wrote 2024.405 MB perf.data ]
-
-Signed-off-by: Wei Li <liwei391@huawei.com>
-Cc: Jiri Olsa <jolsa@redhat.com>
-Cc: Tan Xiaojun <tanxiaojun@huawei.com>
-Cc: stable@vger.kernel.org # 5.4+
-Link: http://lore.kernel.org/lkml/20200214132654.20395-2-adrian.hunter@intel.com
-[ ahunter: removed redundant 'else' after 'return' ]
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 636259880a7e ("efi: Add support for seeding the RNG from a UEFI ...")
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: linux-efi@vger.kernel.org
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20200217123354.21140-1-Jason@zx2c4.com
+Link: https://lore.kernel.org/r/20200221084849.26878-5-ardb@kernel.org
 ---
- tools/perf/arch/x86/util/intel-pt.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/firmware/efi/efi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/arch/x86/util/intel-pt.c b/tools/perf/arch/x86/util/intel-pt.c
-index 20df442..be07d68 100644
---- a/tools/perf/arch/x86/util/intel-pt.c
-+++ b/tools/perf/arch/x86/util/intel-pt.c
-@@ -1173,9 +1173,12 @@ static int intel_pt_read_finish(struct auxtrace_record *itr, int idx)
- 	struct evsel *evsel;
+diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+index 621220a..21ea99f 100644
+--- a/drivers/firmware/efi/efi.c
++++ b/drivers/firmware/efi/efi.c
+@@ -552,7 +552,7 @@ int __init efi_config_parse_tables(void *config_tables, int count, int sz,
  
- 	evlist__for_each_entry(ptr->evlist, evsel) {
--		if (evsel->core.attr.type == ptr->intel_pt_pmu->type)
-+		if (evsel->core.attr.type == ptr->intel_pt_pmu->type) {
-+			if (evsel->disabled)
-+				return 0;
- 			return perf_evlist__enable_event_idx(ptr->evlist, evsel,
- 							     idx);
-+		}
- 	}
- 	return -EINVAL;
- }
+ 		seed = early_memremap(efi.rng_seed, sizeof(*seed));
+ 		if (seed != NULL) {
+-			size = seed->size;
++			size = READ_ONCE(seed->size);
+ 			early_memunmap(seed, sizeof(*seed));
+ 		} else {
+ 			pr_err("Could not map UEFI random seed!\n");
+@@ -562,7 +562,7 @@ int __init efi_config_parse_tables(void *config_tables, int count, int sz,
+ 					      sizeof(*seed) + size);
+ 			if (seed != NULL) {
+ 				pr_notice("seeding entropy pool\n");
+-				add_bootloader_randomness(seed->bits, seed->size);
++				add_bootloader_randomness(seed->bits, size);
+ 				early_memunmap(seed, sizeof(*seed) + size);
+ 			} else {
+ 				pr_err("Could not map UEFI random seed!\n");
