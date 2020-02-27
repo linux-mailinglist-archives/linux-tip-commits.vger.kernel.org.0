@@ -2,38 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BBC71713D0
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Feb 2020 10:12:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EAA4C171DA4
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Feb 2020 15:22:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728626AbgB0JM4 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 27 Feb 2020 04:12:56 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:33726 "EHLO
+        id S2389208AbgB0OWN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 27 Feb 2020 09:22:13 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:34459 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728555AbgB0JM4 (ORCPT
+        with ESMTP id S2389020AbgB0OQK (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 27 Feb 2020 04:12:56 -0500
+        Thu, 27 Feb 2020 09:16:10 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1j7FDv-0006Fu-7U; Thu, 27 Feb 2020 10:12:51 +0100
+        id 1j7JxF-0005AW-Cp; Thu, 27 Feb 2020 15:15:57 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C4B941C0244;
-        Thu, 27 Feb 2020 10:12:50 +0100 (CET)
-Date:   Thu, 27 Feb 2020 09:12:50 -0000
-From:   "tip-bot2 for Vincent Guittot" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 014FF1C216F;
+        Thu, 27 Feb 2020 15:15:57 +0100 (CET)
+Date:   Thu, 27 Feb 2020 14:15:56 -0000
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] sched/fair: Fix statistics for find_idlest_group()
-Cc:     Vincent Guittot <vincent.guittot@linaro.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        Peter Zijlstra <a.p.zijlstra@chello.nl>,
-        Mel Gorman <mgorman@techsingularity.net>, x86 <x86@kernel.org>,
+Subject: [tip: x86/entry] x86/entry/entry_32: Route int3 through common_exception
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Frederic Weisbecker <frederic@kernel.org>,
+        Alexandre Chartre <alexandre.chartre@oracle.com>,
+        Andy Lutomirski <luto@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200218144534.4564-1-vincent.guittot@linaro.org>
-References: <20200218144534.4564-1-vincent.guittot@linaro.org>
+In-Reply-To: <20200225220217.042369808@linutronix.de>
+References: <20200225220217.042369808@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <158279477043.28353.9447896028790075438.tip-bot2@tip-bot2>
+Message-ID: <158281295675.28353.17857855711857005767.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,43 +47,51 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/urgent branch of tip:
+The following commit has been merged into the x86/entry branch of tip:
 
-Commit-ID:     289de35984815576793f579ec27248609e75976e
-Gitweb:        https://git.kernel.org/tip/289de35984815576793f579ec27248609e75976e
-Author:        Vincent Guittot <vincent.guittot@linaro.org>
-AuthorDate:    Tue, 18 Feb 2020 15:45:34 +01:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 27 Feb 2020 10:08:27 +01:00
+Commit-ID:     ac3607f92f70c762e24d0ae731168f7584de51ec
+Gitweb:        https://git.kernel.org/tip/ac3607f92f70c762e24d0ae731168f7584de51ec
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Tue, 25 Feb 2020 22:36:45 +01:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Thu, 27 Feb 2020 14:48:41 +01:00
 
-sched/fair: Fix statistics for find_idlest_group()
+x86/entry/entry_32: Route int3 through common_exception
 
-sgs->group_weight is not set while gathering statistics in
-update_sg_wakeup_stats(). This means that a group can be classified as
-fully busy with 0 running tasks if utilization is high enough.
+int3 is not using the common_exception path for purely historical reasons,
+but there is no reason to keep it the only exception which is different.
 
-This path is mainly used for fork and exec.
+Make it use common_exception so the upcoming changes to autogenerate the
+entry stubs do not have to special case int3.
 
-Fixes: 57abff067a08 ("sched/fair: Rework find_idlest_group()")
-Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Peter Zijlstra <a.p.zijlstra@chello.nl>
-Acked-by: Mel Gorman <mgorman@techsingularity.net>
-Link: https://lore.kernel.org/r/20200218144534.4564-1-vincent.guittot@linaro.org
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
+Reviewed-by: Andy Lutomirski <luto@kernel.org>
+Link: https://lkml.kernel.org/r/20200225220217.042369808@linutronix.de
+
 ---
- kernel/sched/fair.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/entry/entry_32.S | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 3c8a379..c1217bf 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -8337,6 +8337,8 @@ static inline void update_sg_wakeup_stats(struct sched_domain *sd,
+diff --git a/arch/x86/entry/entry_32.S b/arch/x86/entry/entry_32.S
+index a8b4438..0753f48 100644
+--- a/arch/x86/entry/entry_32.S
++++ b/arch/x86/entry/entry_32.S
+@@ -1683,14 +1683,8 @@ SYM_CODE_END(nmi)
+ SYM_CODE_START(int3)
+ 	ASM_CLAC
+ 	pushl	$-1				# mark this as an int
+-
+-	SAVE_ALL switch_stacks=1
+-	ENCODE_FRAME_POINTER
+-	TRACE_IRQS_OFF
+-	xorl	%edx, %edx			# zero error code
+-	movl	%esp, %eax			# pt_regs pointer
+-	call	do_int3
+-	jmp	ret_from_exception
++	pushl	$do_int3
++	jmp	common_exception
+ SYM_CODE_END(int3)
  
- 	sgs->group_capacity = group->sgc->capacity;
- 
-+	sgs->group_weight = group->group_weight;
-+
- 	sgs->group_type = group_classify(sd->imbalance_pct, group, sgs);
- 
- 	/*
+ SYM_CODE_START(general_protection)
