@@ -2,37 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DBBFE171DB6
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Feb 2020 15:22:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F806171CDF
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Feb 2020 15:16:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389425AbgB0OW2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 27 Feb 2020 09:22:28 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:34432 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389399AbgB0OQD (ORCPT
-        <rfc822;linux-tip-commits@vger.kernel.org>);
+        id S2389411AbgB0OQD (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Thu, 27 Feb 2020 09:16:03 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:34438 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389402AbgB0OQC (ORCPT
+        <rfc822;linux-tip-commits@vger.kernel.org>);
+        Thu, 27 Feb 2020 09:16:02 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1j7JxF-0005AO-0v; Thu, 27 Feb 2020 15:15:57 +0100
+        id 1j7JxF-0005B5-Vk; Thu, 27 Feb 2020 15:15:58 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A03F81C216C;
-        Thu, 27 Feb 2020 15:15:56 +0100 (CET)
-Date:   Thu, 27 Feb 2020 14:15:56 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 9D3DA1C216C;
+        Thu, 27 Feb 2020 15:15:57 +0100 (CET)
+Date:   Thu, 27 Feb 2020 14:15:57 -0000
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/entry] x86/traps: Stop using ist_enter/exit() in do_int3()
-Cc:     Andy Lutomirski <luto@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
+Subject: [tip: x86/entry] x86/traps: Remove redundant declaration of do_double_fault()
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Alexandre Chartre <alexandre.chartre@oracle.com>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200225220217.150607679@linutronix.de>
-References: <20200225220217.150607679@linutronix.de>
+        Andy Lutomirski <luto@kernel.org>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200225220216.720335354@linutronix.de>
+References: <20200225220216.720335354@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <158281295631.28353.8756369159356002472.tip-bot2@tip-bot2>
+Message-ID: <158281295739.28353.15003553494431699964.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,69 +48,55 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/entry branch of tip:
 
-Commit-ID:     009cae30b6cb2e0af56c8fa44d89d11ba89fb2d1
-Gitweb:        https://git.kernel.org/tip/009cae30b6cb2e0af56c8fa44d89d11ba89fb2d1
+Commit-ID:     3ba4f0a633ca4bfeadb24eba19cb53ebe246eabf
+Gitweb:        https://git.kernel.org/tip/3ba4f0a633ca4bfeadb24eba19cb53ebe246eabf
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Tue, 25 Feb 2020 22:36:46 +01:00
+AuthorDate:    Tue, 25 Feb 2020 22:36:42 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 27 Feb 2020 14:48:41 +01:00
+CommitterDate: Thu, 27 Feb 2020 14:48:40 +01:00
 
-x86/traps: Stop using ist_enter/exit() in do_int3()
+x86/traps: Remove redundant declaration of do_double_fault()
 
-#BP is not longer using IST and using ist_enter() and ist_exit() makes it
-harder to change ist_enter() and ist_exit()'s behavior.  Instead open-code
-the very small amount of required logic.
 
-Signed-off-by: Andy Lutomirski <luto@kernel.org>
+
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
 Reviewed-by: Andy Lutomirski <luto@kernel.org>
-Link: https://lkml.kernel.org/r/20200225220217.150607679@linutronix.de
-
+Link: https://lkml.kernel.org/r/20200225220216.720335354@linutronix.de
 
 ---
- arch/x86/kernel/traps.c | 21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
+ arch/x86/include/asm/traps.h | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
-index 7ffb6f4..c0bc9df 100644
---- a/arch/x86/kernel/traps.c
-+++ b/arch/x86/kernel/traps.c
-@@ -572,14 +572,20 @@ dotraplinkage void notrace do_int3(struct pt_regs *regs, long error_code)
- 		return;
+diff --git a/arch/x86/include/asm/traps.h b/arch/x86/include/asm/traps.h
+index e1c660b..c26a7e1 100644
+--- a/arch/x86/include/asm/traps.h
++++ b/arch/x86/include/asm/traps.h
+@@ -76,13 +76,6 @@ dotraplinkage void do_coprocessor_segment_overrun(struct pt_regs *regs, long err
+ dotraplinkage void do_invalid_TSS(struct pt_regs *regs, long error_code);
+ dotraplinkage void do_segment_not_present(struct pt_regs *regs, long error_code);
+ dotraplinkage void do_stack_segment(struct pt_regs *regs, long error_code);
+-#ifdef CONFIG_X86_64
+-dotraplinkage void do_double_fault(struct pt_regs *regs, long error_code, unsigned long address);
+-asmlinkage __visible notrace struct pt_regs *sync_regs(struct pt_regs *eregs);
+-asmlinkage __visible notrace
+-struct bad_iret_stack *fixup_bad_iret(struct bad_iret_stack *s);
+-void __init trap_init(void);
+-#endif
+ dotraplinkage void do_general_protection(struct pt_regs *regs, long error_code);
+ dotraplinkage void do_page_fault(struct pt_regs *regs, unsigned long error_code, unsigned long address);
+ dotraplinkage void do_spurious_interrupt_bug(struct pt_regs *regs, long error_code);
+@@ -94,6 +87,13 @@ dotraplinkage void do_iret_error(struct pt_regs *regs, long error_code);
+ #endif
+ dotraplinkage void do_mce(struct pt_regs *regs, long error_code);
  
- 	/*
--	 * Use ist_enter despite the fact that we don't use an IST stack.
--	 * We can be called from a kprobe in non-CONTEXT_KERNEL kernel
--	 * mode or even during context tracking state changes.
-+	 * Unlike any other non-IST entry, we can be called from a kprobe in
-+	 * non-CONTEXT_KERNEL kernel mode or even during context tracking
-+	 * state changes.  Make sure that we wake up RCU even if we're coming
-+	 * from kernel code.
- 	 *
--	 * This means that we can't schedule.  That's okay.
-+	 * This means that we can't schedule even if we came from a
-+	 * preemptible kernel context.  That's okay.
- 	 */
--	ist_enter(regs);
-+	if (!user_mode(regs)) {
-+		rcu_nmi_enter();
-+		preempt_disable();
-+	}
- 	RCU_LOCKDEP_WARN(!rcu_is_watching(), "entry code didn't wake RCU");
++#ifdef CONFIG_X86_64
++asmlinkage __visible notrace struct pt_regs *sync_regs(struct pt_regs *eregs);
++asmlinkage __visible notrace
++struct bad_iret_stack *fixup_bad_iret(struct bad_iret_stack *s);
++void __init trap_init(void);
++#endif
 +
- #ifdef CONFIG_KGDB_LOW_LEVEL_TRAP
- 	if (kgdb_ll_trap(DIE_INT3, "int3", regs, error_code, X86_TRAP_BP,
- 				SIGTRAP) == NOTIFY_STOP)
-@@ -600,7 +606,10 @@ dotraplinkage void notrace do_int3(struct pt_regs *regs, long error_code)
- 	cond_local_irq_disable(regs);
- 
- exit:
--	ist_exit(regs);
-+	if (!user_mode(regs)) {
-+		preempt_enable_no_resched();
-+		rcu_nmi_exit();
-+	}
- }
- NOKPROBE_SYMBOL(do_int3);
- 
+ static inline int get_si_code(unsigned long condition)
+ {
+ 	if (condition & DR_STEP)
