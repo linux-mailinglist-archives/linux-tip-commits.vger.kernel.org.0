@@ -2,37 +2,41 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 70A44171DB3
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Feb 2020 15:22:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 87994171D9F
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Feb 2020 15:22:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389400AbgB0OQG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 27 Feb 2020 09:16:06 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:34446 "EHLO
+        id S2389461AbgB0OWF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 27 Feb 2020 09:22:05 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:34462 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389389AbgB0OQF (ORCPT
+        with ESMTP id S2389445AbgB0OQN (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 27 Feb 2020 09:16:05 -0500
+        Thu, 27 Feb 2020 09:16:13 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1j7JxF-0005AY-KQ; Thu, 27 Feb 2020 15:15:57 +0100
+        id 1j7JxG-0005Bu-PZ; Thu, 27 Feb 2020 15:15:59 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4DAA81C2170;
-        Thu, 27 Feb 2020 15:15:57 +0100 (CET)
-Date:   Thu, 27 Feb 2020 14:15:57 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 69E1D1C2170;
+        Thu, 27 Feb 2020 15:15:58 +0100 (CET)
+Date:   Thu, 27 Feb 2020 14:15:58 -0000
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/entry] x86/irq: Remove useless return value from do_IRQ()
+Subject: [tip: x86/entry] x86/traps: Remove pointless irq enable from
+ do_spurious_interrupt_bug()
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Sean Christopherson <sean.j.christopherson@intel.com>,
         Alexandre Chartre <alexandre.chartre@oracle.com>,
-        Andy Lutomirski <luto@kernel.org>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200225220216.826870369@linutronix.de>
-References: <20200225220216.826870369@linutronix.de>
+        Frederic Weisbecker <frederic@kernel.org>,
+        Andy Lutomirski <luto@kernel.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20191023123117.871608831@linutronix.de>
+References: <20191023123117.871608831@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <158281295706.28353.9151423427467602652.tip-bot2@tip-bot2>
+Message-ID: <158281295805.28353.16374560066347927254.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,58 +52,41 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/entry branch of tip:
 
-Commit-ID:     17dbedb5da184b501c5c51fc78d1071005139e48
-Gitweb:        https://git.kernel.org/tip/17dbedb5da184b501c5c51fc78d1071005139e48
+Commit-ID:     e039dd815941e785203142261397da6ec64d20cc
+Gitweb:        https://git.kernel.org/tip/e039dd815941e785203142261397da6ec64d20cc
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Tue, 25 Feb 2020 22:36:43 +01:00
+AuthorDate:    Tue, 25 Feb 2020 22:36:40 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 27 Feb 2020 14:48:40 +01:00
+CommitterDate: Thu, 27 Feb 2020 14:48:39 +01:00
 
-x86/irq: Remove useless return value from do_IRQ()
+x86/traps: Remove pointless irq enable from do_spurious_interrupt_bug()
 
-Nothing is using it.
+That function returns immediately after conditionally reenabling interrupts which
+is more than pointless and requires the ASM code to disable interrupts again.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Sean Christopherson <sean.j.christopherson@intel.com>
 Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
 Reviewed-by: Andy Lutomirski <luto@kernel.org>
-Link: https://lkml.kernel.org/r/20200225220216.826870369@linutronix.de
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20191023123117.871608831@linutronix.de
+Link: https://lkml.kernel.org/r/20200225220216.518575042@linutronix.de
+
 
 ---
- arch/x86/include/asm/irq.h | 2 +-
- arch/x86/kernel/irq.c      | 3 +--
- 2 files changed, 2 insertions(+), 3 deletions(-)
+ arch/x86/kernel/traps.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/irq.h b/arch/x86/include/asm/irq.h
-index a176f61..72fba0e 100644
---- a/arch/x86/include/asm/irq.h
-+++ b/arch/x86/include/asm/irq.h
-@@ -36,7 +36,7 @@ extern void native_init_IRQ(void);
- 
- extern void handle_irq(struct irq_desc *desc, struct pt_regs *regs);
- 
--extern __visible unsigned int do_IRQ(struct pt_regs *regs);
-+extern __visible void do_IRQ(struct pt_regs *regs);
- 
- extern void init_ISA_irqs(void);
- 
-diff --git a/arch/x86/kernel/irq.c b/arch/x86/kernel/irq.c
-index 21efee3..c7965ff 100644
---- a/arch/x86/kernel/irq.c
-+++ b/arch/x86/kernel/irq.c
-@@ -230,7 +230,7 @@ u64 arch_irq_stat(void)
-  * SMP cross-CPU interrupts have their own specific
-  * handlers).
-  */
--__visible unsigned int __irq_entry do_IRQ(struct pt_regs *regs)
-+__visible void __irq_entry do_IRQ(struct pt_regs *regs)
+diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
+index 6ef00eb..474b8cb 100644
+--- a/arch/x86/kernel/traps.c
++++ b/arch/x86/kernel/traps.c
+@@ -862,7 +862,6 @@ do_simd_coprocessor_error(struct pt_regs *regs, long error_code)
+ dotraplinkage void
+ do_spurious_interrupt_bug(struct pt_regs *regs, long error_code)
  {
- 	struct pt_regs *old_regs = set_irq_regs(regs);
- 	struct irq_desc * desc;
-@@ -263,7 +263,6 @@ __visible unsigned int __irq_entry do_IRQ(struct pt_regs *regs)
- 	exiting_irq();
- 
- 	set_irq_regs(old_regs);
--	return 1;
+-	cond_local_irq_enable(regs);
  }
  
- #ifdef CONFIG_X86_LOCAL_APIC
+ dotraplinkage void
