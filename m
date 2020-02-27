@@ -2,38 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 39434171CE1
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Feb 2020 15:16:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 70A44171DB3
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Feb 2020 15:22:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389417AbgB0OQF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 27 Feb 2020 09:16:05 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:34441 "EHLO
+        id S2389400AbgB0OQG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 27 Feb 2020 09:16:06 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:34446 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388997AbgB0OQD (ORCPT
+        with ESMTP id S2389389AbgB0OQF (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 27 Feb 2020 09:16:03 -0500
+        Thu, 27 Feb 2020 09:16:05 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1j7JxG-0005BW-9N; Thu, 27 Feb 2020 15:15:58 +0100
+        id 1j7JxF-0005AY-KQ; Thu, 27 Feb 2020 15:15:57 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id ECFAF1C216F;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4DAA81C2170;
         Thu, 27 Feb 2020 15:15:57 +0100 (CET)
 Date:   Thu, 27 Feb 2020 14:15:57 -0000
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/entry] x86/traps: Document do_spurious_interrupt_bug()
+Subject: [tip: x86/entry] x86/irq: Remove useless return value from do_IRQ()
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Frederic Weisbecker <frederic@kernel.org>,
         Alexandre Chartre <alexandre.chartre@oracle.com>,
         Andy Lutomirski <luto@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200225220216.624165786@linutronix.de>
-References: <20200225220216.624165786@linutronix.de>
+In-Reply-To: <20200225220216.826870369@linutronix.de>
+References: <20200225220216.826870369@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <158281295772.28353.8582733776925406910.tip-bot2@tip-bot2>
+Message-ID: <158281295706.28353.9151423427467602652.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,57 +48,58 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/entry branch of tip:
 
-Commit-ID:     d244d0e195bc12964bcf3b8eef45e715a7f203b0
-Gitweb:        https://git.kernel.org/tip/d244d0e195bc12964bcf3b8eef45e715a7f203b0
+Commit-ID:     17dbedb5da184b501c5c51fc78d1071005139e48
+Gitweb:        https://git.kernel.org/tip/17dbedb5da184b501c5c51fc78d1071005139e48
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Tue, 25 Feb 2020 22:36:41 +01:00
+AuthorDate:    Tue, 25 Feb 2020 22:36:43 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Thu, 27 Feb 2020 14:48:40 +01:00
 
-x86/traps: Document do_spurious_interrupt_bug()
+x86/irq: Remove useless return value from do_IRQ()
 
-Add a comment which explains why this empty handler for a reserved vector
-exists.
-
-Requested-by: Josh Poimboeuf <jpoimboe@redhat.com>
+Nothing is using it.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
 Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
 Reviewed-by: Andy Lutomirski <luto@kernel.org>
-Link: https://lkml.kernel.org/r/20200225220216.624165786@linutronix.de
+Link: https://lkml.kernel.org/r/20200225220216.826870369@linutronix.de
 
 ---
- arch/x86/kernel/traps.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ arch/x86/include/asm/irq.h | 2 +-
+ arch/x86/kernel/irq.c      | 3 +--
+ 2 files changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
-index 474b8cb..7ffb6f4 100644
---- a/arch/x86/kernel/traps.c
-+++ b/arch/x86/kernel/traps.c
-@@ -862,6 +862,25 @@ do_simd_coprocessor_error(struct pt_regs *regs, long error_code)
- dotraplinkage void
- do_spurious_interrupt_bug(struct pt_regs *regs, long error_code)
+diff --git a/arch/x86/include/asm/irq.h b/arch/x86/include/asm/irq.h
+index a176f61..72fba0e 100644
+--- a/arch/x86/include/asm/irq.h
++++ b/arch/x86/include/asm/irq.h
+@@ -36,7 +36,7 @@ extern void native_init_IRQ(void);
+ 
+ extern void handle_irq(struct irq_desc *desc, struct pt_regs *regs);
+ 
+-extern __visible unsigned int do_IRQ(struct pt_regs *regs);
++extern __visible void do_IRQ(struct pt_regs *regs);
+ 
+ extern void init_ISA_irqs(void);
+ 
+diff --git a/arch/x86/kernel/irq.c b/arch/x86/kernel/irq.c
+index 21efee3..c7965ff 100644
+--- a/arch/x86/kernel/irq.c
++++ b/arch/x86/kernel/irq.c
+@@ -230,7 +230,7 @@ u64 arch_irq_stat(void)
+  * SMP cross-CPU interrupts have their own specific
+  * handlers).
+  */
+-__visible unsigned int __irq_entry do_IRQ(struct pt_regs *regs)
++__visible void __irq_entry do_IRQ(struct pt_regs *regs)
  {
-+	/*
-+	 * This addresses a Pentium Pro Erratum:
-+	 *
-+	 * PROBLEM: If the APIC subsystem is configured in mixed mode with
-+	 * Virtual Wire mode implemented through the local APIC, an
-+	 * interrupt vector of 0Fh (Intel reserved encoding) may be
-+	 * generated by the local APIC (Int 15).  This vector may be
-+	 * generated upon receipt of a spurious interrupt (an interrupt
-+	 * which is removed before the system receives the INTA sequence)
-+	 * instead of the programmed 8259 spurious interrupt vector.
-+	 *
-+	 * IMPLICATION: The spurious interrupt vector programmed in the
-+	 * 8259 is normally handled by an operating system's spurious
-+	 * interrupt handler. However, a vector of 0Fh is unknown to some
-+	 * operating systems, which would crash if this erratum occurred.
-+	 *
-+	 * In theory this could be limited to 32bit, but the handler is not
-+	 * hurting and who knows which other CPUs suffer from this.
-+	 */
+ 	struct pt_regs *old_regs = set_irq_regs(regs);
+ 	struct irq_desc * desc;
+@@ -263,7 +263,6 @@ __visible unsigned int __irq_entry do_IRQ(struct pt_regs *regs)
+ 	exiting_irq();
+ 
+ 	set_irq_regs(old_regs);
+-	return 1;
  }
  
- dotraplinkage void
+ #ifdef CONFIG_X86_LOCAL_APIC
