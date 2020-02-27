@@ -2,40 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EBDFC1725F7
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Feb 2020 19:08:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 78C0C1729A8
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Feb 2020 21:45:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729501AbgB0SIC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 27 Feb 2020 13:08:02 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:35032 "EHLO
+        id S1729590AbgB0Ups (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 27 Feb 2020 15:45:48 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:35257 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729142AbgB0SIC (ORCPT
+        with ESMTP id S1726758AbgB0Ups (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 27 Feb 2020 13:08:02 -0500
+        Thu, 27 Feb 2020 15:45:48 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1j7NZf-0002LJ-8H; Thu, 27 Feb 2020 19:07:51 +0100
+        id 1j7Q2Q-0004in-Ts; Thu, 27 Feb 2020 21:45:43 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id CBF161C2172;
-        Thu, 27 Feb 2020 19:07:50 +0100 (CET)
-Date:   Thu, 27 Feb 2020 18:07:50 -0000
-From:   "tip-bot2 for Sean Christopherson" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 771831C217A;
+        Thu, 27 Feb 2020 21:45:42 +0100 (CET)
+Date:   Thu, 27 Feb 2020 20:45:42 -0000
+From:   "tip-bot2 for Tony Luck" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/pkeys: Manually set X86_FEATURE_OSPKE to
- preserve existing changes
-Cc:     Jacob Keller <jacob.e.keller@intel.com>,
-        Sean Christopherson <sean.j.christopherson@intel.com>,
-        Borislav Petkov <bp@suse.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        stable@vger.kernel.org, x86 <x86@kernel.org>,
+Subject: [tip: ras/urgent] x86/mce: Fix logic and comments around MSR_PPIN_CTL
+Cc:     Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@suse.de>,
+        <stable@vger.kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200226231615.13664-1-sean.j.christopherson@intel.com>
-References: <20200226231615.13664-1-sean.j.christopherson@intel.com>
+In-Reply-To: <20200226011737.9958-1-tony.luck@intel.com>
+References: <20200226011737.9958-1-tony.luck@intel.com>
 MIME-Version: 1.0
-Message-ID: <158282687050.28353.6531125831614540420.tip-bot2@tip-bot2>
+Message-ID: <158283634211.28353.177653676147385432.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,61 +45,71 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the ras/urgent branch of tip:
 
-Commit-ID:     735a6dd02222d8d070c7bb748f25895239ca8c92
-Gitweb:        https://git.kernel.org/tip/735a6dd02222d8d070c7bb748f25895239ca8c92
-Author:        Sean Christopherson <sean.j.christopherson@intel.com>
-AuthorDate:    Wed, 26 Feb 2020 15:16:15 -08:00
+Commit-ID:     59b5809655bdafb0767d3fd00a3e41711aab07e6
+Gitweb:        https://git.kernel.org/tip/59b5809655bdafb0767d3fd00a3e41711aab07e6
+Author:        Tony Luck <tony.luck@intel.com>
+AuthorDate:    Tue, 25 Feb 2020 17:17:37 -08:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Thu, 27 Feb 2020 19:02:45 +01:00
+CommitterDate: Thu, 27 Feb 2020 21:36:42 +01:00
 
-x86/pkeys: Manually set X86_FEATURE_OSPKE to preserve existing changes
+x86/mce: Fix logic and comments around MSR_PPIN_CTL
 
-Explicitly set X86_FEATURE_OSPKE via set_cpu_cap() instead of calling
-get_cpu_cap() to pull the feature bit from CPUID after enabling CR4.PKE.
-Invoking get_cpu_cap() effectively wipes out any {set,clear}_cpu_cap()
-changes that were made between this_cpu->c_init() and setup_pku(), as
-all non-synthetic feature words are reinitialized from the CPU's CPUID
-values.
+There are two implemented bits in the PPIN_CTL MSR:
 
-Blasting away capability updates manifests most visibility when running
-on a VMX capable CPU, but with VMX disabled by BIOS.  To indicate that
-VMX is disabled, init_ia32_feat_ctl() clears X86_FEATURE_VMX, using
-clear_cpu_cap() instead of setup_clear_cpu_cap() so that KVM can report
-which CPU is misconfigured (KVM needs to probe every CPU anyways).
-Restoring X86_FEATURE_VMX from CPUID causes KVM to think VMX is enabled,
-ultimately leading to an unexpected #GP when KVM attempts to do VMXON.
+Bit 0: LockOut (R/WO)
+      Set 1 to prevent further writes to MSR_PPIN_CTL.
 
-Arguably, init_ia32_feat_ctl() should use setup_clear_cpu_cap() and let
-KVM figure out a different way to report the misconfigured CPU, but VMX
-is not the only feature bit that is affected, i.e. there is precedent
-that tweaking feature bits via {set,clear}_cpu_cap() after ->c_init()
-is expected to work.  Most notably, x86_init_rdrand()'s clearing of
-X86_FEATURE_RDRAND when RDRAND malfunctions is also overwritten.
+Bit 1: Enable_PPIN (R/W)
+       If 1, enables MSR_PPIN to be accessible using RDMSR.
+       If 0, an attempt to read MSR_PPIN will cause #GP.
 
-Fixes: 0697694564c8 ("x86/mm/pkeys: Actually enable Memory Protection Keys in the CPU")
-Reported-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: Sean Christopherson <sean.j.christopherson@intel.com>
+So there are four defined values:
+	0: PPIN is disabled, PPIN_CTL may be updated
+	1: PPIN is disabled. PPIN_CTL is locked against updates
+	2: PPIN is enabled. PPIN_CTL may be updated
+	3: PPIN is enabled. PPIN_CTL is locked against updates
+
+Code would only enable the X86_FEATURE_INTEL_PPIN feature for case "2".
+When it should have done so for both case "2" and case "3".
+
+Fix the final test to just check for the enable bit. Also fix some of
+the other comments in this function.
+
+Fixes: 3f5a7896a509 ("x86/mce: Include the PPIN in MCE records when available")
+Signed-off-by: Tony Luck <tony.luck@intel.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-Tested-by: Jacob Keller <jacob.e.keller@intel.com>
-Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20200226231615.13664-1-sean.j.christopherson@intel.com
+Cc: <stable@vger.kernel.org>
+Link: https://lkml.kernel.org/r/20200226011737.9958-1-tony.luck@intel.com
 ---
- arch/x86/kernel/cpu/common.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/cpu/mce/intel.c |  9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index 52c9bfb..4cdb123 100644
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -445,7 +445,7 @@ static __always_inline void setup_pku(struct cpuinfo_x86 *c)
- 	 * cpuid bit to be set.  We need to ensure that we
- 	 * update that bit in this CPU's "cpu_info".
- 	 */
--	get_cpu_cap(c);
-+	set_cpu_cap(c, X86_FEATURE_OSPKE);
- }
+diff --git a/arch/x86/kernel/cpu/mce/intel.c b/arch/x86/kernel/cpu/mce/intel.c
+index 5627b10..f996ffb 100644
+--- a/arch/x86/kernel/cpu/mce/intel.c
++++ b/arch/x86/kernel/cpu/mce/intel.c
+@@ -493,17 +493,18 @@ static void intel_ppin_init(struct cpuinfo_x86 *c)
+ 			return;
  
- #ifdef CONFIG_X86_INTEL_MEMORY_PROTECTION_KEYS
+ 		if ((val & 3UL) == 1UL) {
+-			/* PPIN available but disabled: */
++			/* PPIN locked in disabled mode */
+ 			return;
+ 		}
+ 
+-		/* If PPIN is disabled, but not locked, try to enable: */
+-		if (!(val & 3UL)) {
++		/* If PPIN is disabled, try to enable */
++		if (!(val & 2UL)) {
+ 			wrmsrl_safe(MSR_PPIN_CTL,  val | 2UL);
+ 			rdmsrl_safe(MSR_PPIN_CTL, &val);
+ 		}
+ 
+-		if ((val & 3UL) == 2UL)
++		/* Is the enable bit set? */
++		if (val & 2UL)
+ 			set_cpu_cap(c, X86_FEATURE_INTEL_PPIN);
+ 	}
+ }
