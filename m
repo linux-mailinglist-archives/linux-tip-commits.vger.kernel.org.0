@@ -2,37 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 49557171F3D
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Feb 2020 15:33:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AA8881721EB
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Feb 2020 16:13:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387474AbgB0Od0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 27 Feb 2020 09:33:26 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:34503 "EHLO
+        id S1729153AbgB0PNd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 27 Feb 2020 10:13:33 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:34600 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1733290AbgB0Od0 (ORCPT
+        with ESMTP id S1729096AbgB0PNc (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 27 Feb 2020 09:33:26 -0500
+        Thu, 27 Feb 2020 10:13:32 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1j7KE5-0006Yr-Dk; Thu, 27 Feb 2020 15:33:21 +0100
+        id 1j7Kqj-00086o-Ng; Thu, 27 Feb 2020 16:13:18 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id EA3791C2170;
-        Thu, 27 Feb 2020 15:33:20 +0100 (CET)
-Date:   Thu, 27 Feb 2020 14:33:20 -0000
-From:   "tip-bot2 for Andy Lutomirski" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 2F0511C2170;
+        Thu, 27 Feb 2020 16:13:17 +0100 (CET)
+Date:   Thu, 27 Feb 2020 15:13:16 -0000
+From:   "tip-bot2 for Frederic Weisbecker" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/entry] x86/traps: Stop using ist_enter/exit() in do_int3()
-Cc:     Andy Lutomirski <luto@kernel.org>,
+Subject: [tip: timers/nohz] arm64: Remove TIF_NOHZ
+Cc:     Will Deacon <will@kernel.org>,
+        Frederic Weisbecker <frederic@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Alexandre Chartre <alexandre.chartre@oracle.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Borislav Petkov <bp@alien8.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200225220217.150607679@linutronix.de>
-References: <20200225220217.150607679@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <158281400060.28353.1918321204020549760.tip-bot2@tip-bot2>
+Message-ID: <158281639685.28353.3337165276924693428.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -46,71 +48,73 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/entry branch of tip:
+The following commit has been merged into the timers/nohz branch of tip:
 
-Commit-ID:     65c668f5faebf549db086b7a6841b6f4187b4e4f
-Gitweb:        https://git.kernel.org/tip/65c668f5faebf549db086b7a6841b6f4187b4e4f
-Author:        Andy Lutomirski <luto@kernel.org>
-AuthorDate:    Tue, 25 Feb 2020 22:36:46 +01:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 27 Feb 2020 15:28:39 +01:00
+Commit-ID:     320a4fc2d1b0c2314342dfdd3348270f126196a4
+Gitweb:        https://git.kernel.org/tip/320a4fc2d1b0c2314342dfdd3348270f126196a4
+Author:        Frederic Weisbecker <frederic@kernel.org>
+AuthorDate:    Tue, 28 Jan 2020 13:50:32 +01:00
+Committer:     Frederic Weisbecker <frederic@kernel.org>
+CommitterDate: Thu, 20 Feb 2020 16:07:19 +01:00
 
-x86/traps: Stop using ist_enter/exit() in do_int3()
+arm64: Remove TIF_NOHZ
 
-#BP is not longer using IST and using ist_enter() and ist_exit() makes it
-harder to change ist_enter() and ist_exit()'s behavior.  Instead open-code
-the very small amount of required logic.
+The syscall slow path is spuriously invoked when context tracking is
+activated while the entry code calls context tracking from fast path.
 
-Signed-off-by: Andy Lutomirski <luto@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
-Reviewed-by: Andy Lutomirski <luto@kernel.org>
-Link: https://lkml.kernel.org/r/20200225220217.150607679@linutronix.de
+Remove that overhead and the unused flag itself while at it.
 
-
+Acked-by: Will Deacon <will@kernel.org>
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
 ---
- arch/x86/kernel/traps.c | 21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
+ arch/arm64/Kconfig                   | 1 -
+ arch/arm64/include/asm/thread_info.h | 4 +---
+ 2 files changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
-index 7ffb6f4..c0bc9df 100644
---- a/arch/x86/kernel/traps.c
-+++ b/arch/x86/kernel/traps.c
-@@ -572,14 +572,20 @@ dotraplinkage void notrace do_int3(struct pt_regs *regs, long error_code)
- 		return;
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index 5c945fa..0b30e88 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -140,7 +140,6 @@ config ARM64
+ 	select HAVE_CMPXCHG_DOUBLE
+ 	select HAVE_CMPXCHG_LOCAL
+ 	select HAVE_CONTEXT_TRACKING
+-	select HAVE_TIF_NOHZ
+ 	select HAVE_COPY_THREAD_TLS
+ 	select HAVE_DEBUG_BUGVERBOSE
+ 	select HAVE_DEBUG_KMEMLEAK
+diff --git a/arch/arm64/include/asm/thread_info.h b/arch/arm64/include/asm/thread_info.h
+index f0cec41..512174a 100644
+--- a/arch/arm64/include/asm/thread_info.h
++++ b/arch/arm64/include/asm/thread_info.h
+@@ -63,7 +63,6 @@ void arch_release_task_struct(struct task_struct *tsk);
+ #define TIF_FOREIGN_FPSTATE	3	/* CPU's FP state is not current's */
+ #define TIF_UPROBE		4	/* uprobe breakpoint or singlestep */
+ #define TIF_FSCHECK		5	/* Check FS is USER_DS on return */
+-#define TIF_NOHZ		7
+ #define TIF_SYSCALL_TRACE	8	/* syscall trace active */
+ #define TIF_SYSCALL_AUDIT	9	/* syscall auditing */
+ #define TIF_SYSCALL_TRACEPOINT	10	/* syscall tracepoint for ftrace */
+@@ -83,7 +82,6 @@ void arch_release_task_struct(struct task_struct *tsk);
+ #define _TIF_NEED_RESCHED	(1 << TIF_NEED_RESCHED)
+ #define _TIF_NOTIFY_RESUME	(1 << TIF_NOTIFY_RESUME)
+ #define _TIF_FOREIGN_FPSTATE	(1 << TIF_FOREIGN_FPSTATE)
+-#define _TIF_NOHZ		(1 << TIF_NOHZ)
+ #define _TIF_SYSCALL_TRACE	(1 << TIF_SYSCALL_TRACE)
+ #define _TIF_SYSCALL_AUDIT	(1 << TIF_SYSCALL_AUDIT)
+ #define _TIF_SYSCALL_TRACEPOINT	(1 << TIF_SYSCALL_TRACEPOINT)
+@@ -100,7 +98,7 @@ void arch_release_task_struct(struct task_struct *tsk);
  
- 	/*
--	 * Use ist_enter despite the fact that we don't use an IST stack.
--	 * We can be called from a kprobe in non-CONTEXT_KERNEL kernel
--	 * mode or even during context tracking state changes.
-+	 * Unlike any other non-IST entry, we can be called from a kprobe in
-+	 * non-CONTEXT_KERNEL kernel mode or even during context tracking
-+	 * state changes.  Make sure that we wake up RCU even if we're coming
-+	 * from kernel code.
- 	 *
--	 * This means that we can't schedule.  That's okay.
-+	 * This means that we can't schedule even if we came from a
-+	 * preemptible kernel context.  That's okay.
- 	 */
--	ist_enter(regs);
-+	if (!user_mode(regs)) {
-+		rcu_nmi_enter();
-+		preempt_disable();
-+	}
- 	RCU_LOCKDEP_WARN(!rcu_is_watching(), "entry code didn't wake RCU");
-+
- #ifdef CONFIG_KGDB_LOW_LEVEL_TRAP
- 	if (kgdb_ll_trap(DIE_INT3, "int3", regs, error_code, X86_TRAP_BP,
- 				SIGTRAP) == NOTIFY_STOP)
-@@ -600,7 +606,10 @@ dotraplinkage void notrace do_int3(struct pt_regs *regs, long error_code)
- 	cond_local_irq_disable(regs);
+ #define _TIF_SYSCALL_WORK	(_TIF_SYSCALL_TRACE | _TIF_SYSCALL_AUDIT | \
+ 				 _TIF_SYSCALL_TRACEPOINT | _TIF_SECCOMP | \
+-				 _TIF_NOHZ | _TIF_SYSCALL_EMU)
++				 _TIF_SYSCALL_EMU)
  
- exit:
--	ist_exit(regs);
-+	if (!user_mode(regs)) {
-+		preempt_enable_no_resched();
-+		rcu_nmi_exit();
-+	}
- }
- NOKPROBE_SYMBOL(do_int3);
- 
+ #define INIT_THREAD_INFO(tsk)						\
+ {									\
