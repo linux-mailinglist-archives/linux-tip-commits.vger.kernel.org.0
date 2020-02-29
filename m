@@ -2,48 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 917A11745CF
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 29 Feb 2020 10:17:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9ADE31745CD
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 29 Feb 2020 10:17:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727067AbgB2JRb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 29 Feb 2020 04:17:31 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:38883 "EHLO
+        id S1726960AbgB2JRB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 29 Feb 2020 04:17:01 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:38841 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727045AbgB2JRG (ORCPT
+        with ESMTP id S1726755AbgB2JRA (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 29 Feb 2020 04:17:06 -0500
+        Sat, 29 Feb 2020 04:17:00 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1j7yEu-0005sO-89; Sat, 29 Feb 2020 10:16:52 +0100
+        id 1j7yEu-0005u4-PY; Sat, 29 Feb 2020 10:16:53 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D4BFF1C219B;
-        Sat, 29 Feb 2020 10:16:50 +0100 (CET)
-Date:   Sat, 29 Feb 2020 09:16:50 -0000
-From:   "tip-bot2 for Ravi Bangoria" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 9088D1C219E;
+        Sat, 29 Feb 2020 10:16:51 +0100 (CET)
+Date:   Sat, 29 Feb 2020 09:16:51 -0000
+From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf annotate/tui: Re-render title bar after
- switching back from script browser
-Cc:     Ravi Bangoria <ravi.bangoria@linux.ibm.com>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Alexey Budankov <alexey.budankov@linux.intel.com>,
-        Changbin Du <changbin.du@intel.com>,
-        Ian Rogers <irogers@google.com>,
-        Jin Yao <yao.jin@linux.intel.com>,
-        Jiri Olsa <jolsa@kernel.org>, Leo Yan <leo.yan@linaro.org>,
+Subject: [tip: perf/urgent] tools arch x86: Sync the msr-index.h copy with the
+ kernel sources
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        Borislav Petkov <bp@suse.de>, Jiri Olsa <jolsa@kernel.org>,
+        Kim Phillips <kim.phillips@amd.com>,
         Namhyung Kim <namhyung@kernel.org>,
-        Song Liu <songliubraving@fb.com>,
-        Taeung Song <treeze.taeung@gmail.com>,
-        Thomas Richter <tmricht@linux.ibm.com>,
-        Yisheng Xie <xieyisheng1@huawei.com>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200213064306.160480-2-ravi.bangoria@linux.ibm.com>
-References: <20200213064306.160480-2-ravi.bangoria@linux.ibm.com>
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158296781060.28353.11158644321842269368.tip-bot2@tip-bot2>
+Message-ID: <158296781131.28353.6184599188781210087.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -59,54 +49,67 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     54cf752cfb75602c256e94db6fdfd3de9dfbbef1
-Gitweb:        https://git.kernel.org/tip/54cf752cfb75602c256e94db6fdfd3de9dfbbef1
-Author:        Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-AuthorDate:    Thu, 13 Feb 2020 12:12:59 +05:30
+Commit-ID:     d8e3ee2e2b4ef36d7be3dd8a8fb6e136f2661203
+Gitweb:        https://git.kernel.org/tip/d8e3ee2e2b4ef36d7be3dd8a8fb6e136f2661203
+Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
+AuthorDate:    Thu, 27 Feb 2020 09:23:35 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Thu, 27 Feb 2020 10:44:14 -03:00
+CommitterDate: Thu, 27 Feb 2020 09:49:56 -03:00
 
-perf annotate/tui: Re-render title bar after switching back from script browser
+tools arch x86: Sync the msr-index.h copy with the kernel sources
 
-The 'perf annotate' TUI browser provides a 'r' hot key to switch to a
-script browser. But the annotate browser title bar becomes hidden while
-switching back from script browser. Fix it.
+To pick up the changes from these csets:
 
-Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+  21b5ee59ef18 ("x86/cpu/amd: Enable the fixed Instructions Retired counter IRPERF")
+
+  $ tools/perf/trace/beauty/tracepoints/x86_msr.sh > before
+  $ cp arch/x86/include/asm/msr-index.h tools/arch/x86/include/asm/msr-index.h
+  $ git diff
+  diff --git a/tools/arch/x86/include/asm/msr-index.h b/tools/arch/x86/include/asm/msr-index.h
+  index ebe1685e92dd..d5e517d1c3dd 100644
+  --- a/tools/arch/x86/include/asm/msr-index.h
+  +++ b/tools/arch/x86/include/asm/msr-index.h
+  @@ -512,6 +512,8 @@
+   #define MSR_K7_HWCR                    0xc0010015
+   #define MSR_K7_HWCR_SMMLOCK_BIT                0
+   #define MSR_K7_HWCR_SMMLOCK            BIT_ULL(MSR_K7_HWCR_SMMLOCK_BIT)
+  +#define MSR_K7_HWCR_IRPERF_EN_BIT      30
+  +#define MSR_K7_HWCR_IRPERF_EN          BIT_ULL(MSR_K7_HWCR_IRPERF_EN_BIT)
+   #define MSR_K7_FID_VID_CTL             0xc0010041
+   #define MSR_K7_FID_VID_STATUS          0xc0010042
+  $
+
+That don't result in any change in tooling:
+
+  $ tools/perf/trace/beauty/tracepoints/x86_msr.sh > after
+  $ diff -u before after
+  $
+
+To silence this perf build warning:
+
+  Warning: Kernel ABI header at 'tools/arch/x86/include/asm/msr-index.h' differs from latest version at 'arch/x86/include/asm/msr-index.h'
+  diff -u tools/arch/x86/include/asm/msr-index.h arch/x86/include/asm/msr-index.h
+
 Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexey Budankov <alexey.budankov@linux.intel.com>
-Cc: Changbin Du <changbin.du@intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Jin Yao <yao.jin@linux.intel.com>
+Cc: Borislav Petkov <bp@suse.de>
 Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Leo Yan <leo.yan@linaro.org>
+Cc: Kim Phillips <kim.phillips@amd.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Song Liu <songliubraving@fb.com>
-Cc: Taeung Song <treeze.taeung@gmail.com>
-Cc: Thomas Richter <tmricht@linux.ibm.com>
-Cc: Yisheng Xie <xieyisheng1@huawei.com>
-Link: http://lore.kernel.org/lkml/20200213064306.160480-2-ravi.bangoria@linux.ibm.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/ui/browsers/annotate.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ tools/arch/x86/include/asm/msr-index.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tools/perf/ui/browsers/annotate.c b/tools/perf/ui/browsers/annotate.c
-index badbddb..0dbbf35 100644
---- a/tools/perf/ui/browsers/annotate.c
-+++ b/tools/perf/ui/browsers/annotate.c
-@@ -754,10 +754,9 @@ static int annotate_browser__run(struct annotate_browser *browser,
- 		"?             Search string backwards\n");
- 			continue;
- 		case 'r':
--			{
--				script_browse(NULL, NULL);
--				continue;
--			}
-+			script_browse(NULL, NULL);
-+			annotate_browser__show(&browser->b, title, help);
-+			continue;
- 		case 'k':
- 			notes->options->show_linenr = !notes->options->show_linenr;
- 			break;
+diff --git a/tools/arch/x86/include/asm/msr-index.h b/tools/arch/x86/include/asm/msr-index.h
+index ebe1685..d5e517d 100644
+--- a/tools/arch/x86/include/asm/msr-index.h
++++ b/tools/arch/x86/include/asm/msr-index.h
+@@ -512,6 +512,8 @@
+ #define MSR_K7_HWCR			0xc0010015
+ #define MSR_K7_HWCR_SMMLOCK_BIT		0
+ #define MSR_K7_HWCR_SMMLOCK		BIT_ULL(MSR_K7_HWCR_SMMLOCK_BIT)
++#define MSR_K7_HWCR_IRPERF_EN_BIT	30
++#define MSR_K7_HWCR_IRPERF_EN		BIT_ULL(MSR_K7_HWCR_IRPERF_EN_BIT)
+ #define MSR_K7_FID_VID_CTL		0xc0010041
+ #define MSR_K7_FID_VID_STATUS		0xc0010042
+ 
