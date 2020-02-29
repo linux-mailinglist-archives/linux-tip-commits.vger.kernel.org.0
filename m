@@ -2,49 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 488F61745BB
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 29 Feb 2020 10:17:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 90BA91745C6
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 29 Feb 2020 10:17:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726674AbgB2JRD (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 29 Feb 2020 04:17:03 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:38862 "EHLO
+        id S1726798AbgB2JR0 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 29 Feb 2020 04:17:26 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:38901 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726994AbgB2JRC (ORCPT
+        with ESMTP id S1727067AbgB2JRK (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 29 Feb 2020 04:17:02 -0500
+        Sat, 29 Feb 2020 04:17:10 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1j7yEq-0005oH-1s; Sat, 29 Feb 2020 10:16:48 +0100
+        id 1j7yEq-0005pp-S5; Sat, 29 Feb 2020 10:16:49 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id AEE1D1C2187;
-        Sat, 29 Feb 2020 10:16:47 +0100 (CET)
-Date:   Sat, 29 Feb 2020 09:16:47 -0000
-From:   "tip-bot2 for He Zhe" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 809E51C2187;
+        Sat, 29 Feb 2020 10:16:48 +0100 (CET)
+Date:   Sat, 29 Feb 2020 09:16:48 -0000
+From:   "tip-bot2 for Ravi Bangoria" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf probe: Check return value of strlist__add()
- for -ENOMEM
-Cc:     He Zhe <zhe.he@windriver.com>, Jiri Olsa <jolsa@redhat.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Kate Stewart <kstewart@linuxfoundation.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
+Subject: [tip: perf/urgent] perf annotate: Fix perf config option description
+Cc:     Ravi Bangoria <ravi.bangoria@linux.ibm.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Alexey Budankov <alexey.budankov@linux.intel.com>,
+        Changbin Du <changbin.du@intel.com>,
+        Ian Rogers <irogers@google.com>,
+        Jin Yao <yao.jin@linux.intel.com>,
+        Jiri Olsa <jolsa@kernel.org>, Leo Yan <leo.yan@linaro.org>,
         Namhyung Kim <namhyung@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
+        Song Liu <songliubraving@fb.com>,
+        Taeung Song <treeze.taeung@gmail.com>,
+        Thomas Richter <tmricht@linux.ibm.com>,
+        Yisheng Xie <xieyisheng1@huawei.com>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <1582727404-180095-1-git-send-email-zhe.he@windriver.com>
-References: <1582727404-180095-1-git-send-email-zhe.he@windriver.com>
+In-Reply-To: <20200213064306.160480-8-ravi.bangoria@linux.ibm.com>
+References: <20200213064306.160480-8-ravi.bangoria@linux.ibm.com>
 MIME-Version: 1.0
-Message-ID: <158296780745.28353.11946839303577702274.tip-bot2@tip-bot2>
+Message-ID: <158296780822.28353.7462284638060309141.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8BIT
 X-Linutronix-Spam-Score: -1.0
 X-Linutronix-Spam-Level: -
 X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
@@ -55,120 +59,125 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     bd862b1d839221322b2e38eb8a06861604804b5e
-Gitweb:        https://git.kernel.org/tip/bd862b1d839221322b2e38eb8a06861604804b5e
-Author:        He Zhe <zhe.he@windriver.com>
-AuthorDate:    Wed, 26 Feb 2020 22:30:04 +08:00
+Commit-ID:     cd0a9c518db123e2097e03eae374e822d82493fd
+Gitweb:        https://git.kernel.org/tip/cd0a9c518db123e2097e03eae374e822d82493fd
+Author:        Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+AuthorDate:    Thu, 13 Feb 2020 12:13:05 +05:30
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Thu, 27 Feb 2020 11:03:13 -03:00
+CommitterDate: Thu, 27 Feb 2020 10:45:13 -03:00
 
-perf probe: Check return value of strlist__add() for -ENOMEM
+perf annotate: Fix perf config option description
 
-strlist__add() may fail with -ENOMEM. Check it and give debugging hint
-in advance.
+perf config annotate options says it works only with TUI, which is wrong.
+Most of the TUI options are applicable to stdio2 as well. So remove that
+generic line and add individual line with each option stating which
+browsers supports that option. Also, annotate.show_nr_samples config is
+missing in Documentation. Describe it.
 
-Signed-off-by: He Zhe <zhe.he@windriver.com>
-Acked-by: Jiri Olsa <jolsa@redhat.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Kate Stewart <kstewart@linuxfoundation.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexey Budankov <alexey.budankov@linux.intel.com>
+Cc: Changbin Du <changbin.du@intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Jin Yao <yao.jin@linux.intel.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Leo Yan <leo.yan@linaro.org>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Link: http://lore.kernel.org/lkml/1582727404-180095-1-git-send-email-zhe.he@windriver.com
+Cc: Song Liu <songliubraving@fb.com>
+Cc: Taeung Song <treeze.taeung@gmail.com>
+Cc: Thomas Richter <tmricht@linux.ibm.com>
+Cc: Yisheng Xie <xieyisheng1@huawei.com>
+Link: http://lore.kernel.org/lkml/20200213064306.160480-8-ravi.bangoria@linux.ibm.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/builtin-probe.c   |  6 ++++--
- tools/perf/util/probe-file.c | 28 ++++++++++++++++++++++++----
- 2 files changed, 28 insertions(+), 6 deletions(-)
+ tools/perf/Documentation/perf-config.txt | 30 ++++++++++++++++++++++-
+ 1 file changed, 29 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/builtin-probe.c b/tools/perf/builtin-probe.c
-index 26bc592..70548df 100644
---- a/tools/perf/builtin-probe.c
-+++ b/tools/perf/builtin-probe.c
-@@ -449,7 +449,8 @@ static int perf_del_probe_events(struct strfilter *filter)
- 		ret = probe_file__del_strlist(kfd, klist);
- 		if (ret < 0)
- 			goto error;
--	}
-+	} else if (ret == -ENOMEM)
-+		goto error;
+diff --git a/tools/perf/Documentation/perf-config.txt b/tools/perf/Documentation/perf-config.txt
+index c4dd23c..9dae0df 100644
+--- a/tools/perf/Documentation/perf-config.txt
++++ b/tools/perf/Documentation/perf-config.txt
+@@ -239,7 +239,6 @@ buildid.*::
+ 		set buildid.dir to /dev/null. The default is $HOME/.debug
  
- 	ret2 = probe_file__get_events(ufd, filter, ulist);
- 	if (ret2 == 0) {
-@@ -459,7 +460,8 @@ static int perf_del_probe_events(struct strfilter *filter)
- 		ret2 = probe_file__del_strlist(ufd, ulist);
- 		if (ret2 < 0)
- 			goto error;
--	}
-+	} else if (ret2 == -ENOMEM)
-+		goto error;
+ annotate.*::
+-	These options work only for TUI.
+ 	These are in control of addresses, jump function, source code
+ 	in lines of assembly code from a specific program.
  
- 	if (ret == -ENOENT && ret2 == -ENOENT)
- 		pr_warning("\"%s\" does not hit any event.\n", str);
-diff --git a/tools/perf/util/probe-file.c b/tools/perf/util/probe-file.c
-index 5003ba4..0f5fda1 100644
---- a/tools/perf/util/probe-file.c
-+++ b/tools/perf/util/probe-file.c
-@@ -301,10 +301,15 @@ int probe_file__get_events(int fd, struct strfilter *filter,
- 		p = strchr(ent->s, ':');
- 		if ((p && strfilter__compare(filter, p + 1)) ||
- 		    strfilter__compare(filter, ent->s)) {
--			strlist__add(plist, ent->s);
-+			ret = strlist__add(plist, ent->s);
-+			if (ret == -ENOMEM) {
-+				pr_err("strlist__add failed with -ENOMEM\n");
-+				goto out;
-+			}
- 			ret = 0;
- 		}
- 	}
-+out:
- 	strlist__delete(namelist);
+@@ -269,6 +268,8 @@ annotate.*::
+ 		│        mov    (%rdi),%rdx
+ 		│              return n;
  
- 	return ret;
-@@ -511,7 +516,11 @@ static int probe_cache__load(struct probe_cache *pcache)
- 				ret = -EINVAL;
- 				goto out;
- 			}
--			strlist__add(entry->tevlist, buf);
-+			ret = strlist__add(entry->tevlist, buf);
-+			if (ret == -ENOMEM) {
-+				pr_err("strlist__add failed with -ENOMEM\n");
-+				goto out;
-+			}
- 		}
- 	}
- out:
-@@ -672,7 +681,12 @@ int probe_cache__add_entry(struct probe_cache *pcache,
- 		command = synthesize_probe_trace_command(&tevs[i]);
- 		if (!command)
- 			goto out_err;
--		strlist__add(entry->tevlist, command);
-+		ret = strlist__add(entry->tevlist, command);
-+		if (ret == -ENOMEM) {
-+			pr_err("strlist__add failed with -ENOMEM\n");
-+			goto out_err;
-+		}
++		This option works with tui, stdio2 browsers.
 +
- 		free(command);
- 	}
- 	list_add_tail(&entry->node, &pcache->entries);
-@@ -853,9 +867,15 @@ int probe_cache__scan_sdt(struct probe_cache *pcache, const char *pathname)
- 			break;
- 		}
+         annotate.use_offset::
+ 		Basing on a first address of a loaded function, offset can be used.
+ 		Instead of using original addresses of assembly code,
+@@ -287,6 +288,8 @@ annotate.*::
  
--		strlist__add(entry->tevlist, buf);
-+		ret = strlist__add(entry->tevlist, buf);
+ 		             368:│  mov    0x8(%r14),%rdi
+ 
++		This option works with tui, stdio2 browsers.
 +
- 		free(buf);
- 		entry = NULL;
+ 	annotate.jump_arrows::
+ 		There can be jump instruction among assembly code.
+ 		Depending on a boolean value of jump_arrows,
+@@ -306,6 +309,8 @@ annotate.*::
+ 		│1330:   mov    %r15,%r10
+ 		│1333:   cmp    %r15,%r14
+ 
++		This option works with tui browser.
 +
-+		if (ret == -ENOMEM) {
-+			pr_err("strlist__add failed with -ENOMEM\n");
-+			break;
-+		}
- 	}
- 	if (entry) {
- 		list_del_init(&entry->node);
+         annotate.show_linenr::
+ 		When showing source code if this option is 'true',
+ 		line numbers are printed as below.
+@@ -325,6 +330,8 @@ annotate.*::
+ 		│                     array++;
+ 		│             }
+ 
++		This option works with tui, stdio2 browsers.
++
+         annotate.show_nr_jumps::
+ 		Let's see a part of assembly code.
+ 
+@@ -335,6 +342,8 @@ annotate.*::
+ 
+ 		│1 1382:   movb   $0x1,-0x270(%rbp)
+ 
++		This option works with tui, stdio2 browsers.
++
+         annotate.show_total_period::
+ 		To compare two records on an instruction base, with this option
+ 		provided, display total number of samples that belong to a line
+@@ -348,11 +357,30 @@ annotate.*::
+ 
+ 		99.93 │      mov    %eax,%eax
+ 
++		This option works with tui, stdio2, stdio browsers.
++
++	annotate.show_nr_samples::
++		By default perf annotate shows percentage of samples. This option
++		can be used to print absolute number of samples. Ex, when set as
++		false:
++
++		Percent│
++		 74.03 │      mov    %fs:0x28,%rax
++
++		When set as true:
++
++		Samples│
++		     6 │      mov    %fs:0x28,%rax
++
++		This option works with tui, stdio2, stdio browsers.
++
+ 	annotate.offset_level::
+ 		Default is '1', meaning just jump targets will have offsets show right beside
+ 		the instruction. When set to '2' 'call' instructions will also have its offsets
+ 		shown, 3 or higher will show offsets for all instructions.
+ 
++		This option works with tui, stdio2 browsers.
++
+ hist.*::
+ 	hist.percentage::
+ 		This option control the way to calculate overhead of filtered entries -
