@@ -2,37 +2,34 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A301174699
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 29 Feb 2020 12:49:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9410E17496D
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 29 Feb 2020 21:50:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727025AbgB2Lt1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 29 Feb 2020 06:49:27 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:39034 "EHLO
+        id S1727247AbgB2Ut5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 29 Feb 2020 15:49:57 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:39485 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726944AbgB2Lt0 (ORCPT
+        with ESMTP id S1727538AbgB2Ut5 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 29 Feb 2020 06:49:26 -0500
+        Sat, 29 Feb 2020 15:49:57 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1j80cU-0007f3-SA; Sat, 29 Feb 2020 12:49:22 +0100
+        id 1j893Y-0004iM-Ho; Sat, 29 Feb 2020 21:49:52 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 859371C219A;
-        Sat, 29 Feb 2020 12:49:22 +0100 (CET)
-Date:   Sat, 29 Feb 2020 11:49:22 -0000
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 2B4851C21A4;
+        Sat, 29 Feb 2020 21:49:52 +0100 (CET)
+Date:   Sat, 29 Feb 2020 20:49:51 -0000
+From:   "tip-bot2 for Eric W. Biederman" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/entry] x86/entry/32: Remove the 0/-1 distinction from
- exception entries
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Alexandre Chartre <alexandre.chartre@oracle.com>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <87mu94m7ky.fsf@nanos.tec.linutronix.de>
-References: <87mu94m7ky.fsf@nanos.tec.linutronix.de>
+Subject: [tip: timers/core] posix-cpu-timers: Pass the task into arm_timer()
+Cc:     "Eric W. Biederman" <ebiederm@xmission.com>,
+        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158297696222.28353.18163314498317163313.tip-bot2@tip-bot2>
+Message-ID: <158300939188.28353.3850435420808912787.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -46,72 +43,60 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/entry branch of tip:
+The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     e441a2ae0e9e9bb12fd3fbe2d59d923fadfe8ef7
-Gitweb:        https://git.kernel.org/tip/e441a2ae0e9e9bb12fd3fbe2d59d923fadfe8ef7
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Thu, 27 Feb 2020 15:24:29 +01:00
+Commit-ID:     197ba902548386e966bb7848d3148a130bb01bd9
+Gitweb:        https://git.kernel.org/tip/197ba902548386e966bb7848d3148a130bb01bd9
+Author:        Eric W. Biederman <ebiederm@xmission.com>
+AuthorDate:    Fri, 28 Feb 2020 11:09:46 -06:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sat, 29 Feb 2020 12:45:54 +01:00
+CommitterDate: Sat, 29 Feb 2020 21:44:46 +01:00
 
-x86/entry/32: Remove the 0/-1 distinction from exception entries
+posix-cpu-timers: Pass the task into arm_timer()
 
-Nothing cares about the -1 "mark as interrupt" in the errorcode of
-exception entries. It's only used to fill the error code when a signal is
-delivered, but this is already inconsistent vs. 64 bit as there all
-exceptions which do not have an error code set it to 0. So if 32 bit
-applications would care about this, then they would have noticed more than
-a decade ago.
+The task has been already computed to take siglock before calling
+arm_timer. So pass the benefit of that labor into arm_timer().
 
-Just use 0 for all excpetions which do not have an errorcode consistently.
-
-This does neither break /proc/$PID/syscall because this interface examines
-the error code / syscall number which is on the stack and that is set to -1
-(no syscall) in common_exception unconditionally for all exceptions. The
-push in the entry stub is just there to fill the hardware error code slot
-on the stack for consistency of the stack layout.
-
-A transient observation of 0 is possible, but that's true for the other
-exceptions which use 0 already as well and that interface is an unreliable
-snapshot of dubious correctness anyway.
-
+Signed-off-by: "Eric W. Biederman" <ebiederm@xmission.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
-Link: https://lkml.kernel.org/r/87mu94m7ky.fsf@nanos.tec.linutronix.de
 
 ---
- arch/x86/entry/entry_32.S | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ kernel/time/posix-cpu-timers.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/entry/entry_32.S b/arch/x86/entry/entry_32.S
-index 0753f48..ddc87f2 100644
---- a/arch/x86/entry/entry_32.S
-+++ b/arch/x86/entry/entry_32.S
-@@ -1290,7 +1290,7 @@ SYM_CODE_END(simd_coprocessor_error)
+diff --git a/kernel/time/posix-cpu-timers.c b/kernel/time/posix-cpu-timers.c
+index 40c2d83..ef936c5 100644
+--- a/kernel/time/posix-cpu-timers.c
++++ b/kernel/time/posix-cpu-timers.c
+@@ -482,12 +482,11 @@ void posix_cpu_timers_exit_group(struct task_struct *tsk)
+  * Insert the timer on the appropriate list before any timers that
+  * expire later.  This must be called with the sighand lock held.
+  */
+-static void arm_timer(struct k_itimer *timer)
++static void arm_timer(struct k_itimer *timer, struct task_struct *p)
+ {
+ 	int clkidx = CPUCLOCK_WHICH(timer->it_clock);
+ 	struct cpu_timer *ctmr = &timer->it.cpu;
+ 	u64 newexp = cpu_timer_getexpires(ctmr);
+-	struct task_struct *p = ctmr->task;
+ 	struct posix_cputimer_base *base;
  
- SYM_CODE_START(device_not_available)
- 	ASM_CLAC
--	pushl	$-1				# mark this as an int
-+	pushl	$0
- 	pushl	$do_device_not_available
- 	jmp	common_exception
- SYM_CODE_END(device_not_available)
-@@ -1531,7 +1531,7 @@ SYM_CODE_START(debug)
- 	 * Entry from sysenter is now handled in common_exception
+ 	if (CPUCLOCK_PERTHREAD(timer->it_clock))
+@@ -660,7 +659,7 @@ static int posix_cpu_timer_set(struct k_itimer *timer, int timer_flags,
  	 */
- 	ASM_CLAC
--	pushl	$-1				# mark this as an int
-+	pushl	$0
- 	pushl	$do_debug
- 	jmp	common_exception
- SYM_CODE_END(debug)
-@@ -1682,7 +1682,7 @@ SYM_CODE_END(nmi)
+ 	cpu_timer_setexpires(ctmr, new_expires);
+ 	if (new_expires != 0 && val < new_expires) {
+-		arm_timer(timer);
++		arm_timer(timer, p);
+ 	}
  
- SYM_CODE_START(int3)
- 	ASM_CLAC
--	pushl	$-1				# mark this as an int
-+	pushl	$0
- 	pushl	$do_int3
- 	jmp	common_exception
- SYM_CODE_END(int3)
+ 	unlock_task_sighand(p, &flags);
+@@ -980,7 +979,7 @@ static void posix_cpu_timer_rearm(struct k_itimer *timer)
+ 	/*
+ 	 * Now re-arm for the new expiry time.
+ 	 */
+-	arm_timer(timer);
++	arm_timer(timer, p);
+ 	unlock_task_sighand(p, &flags);
+ }
+ 
