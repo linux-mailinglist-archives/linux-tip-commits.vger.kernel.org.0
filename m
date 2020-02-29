@@ -2,36 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 023A2174694
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 29 Feb 2020 12:49:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A301174699
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 29 Feb 2020 12:49:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726956AbgB2LtU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 29 Feb 2020 06:49:20 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:39028 "EHLO
+        id S1727025AbgB2Lt1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 29 Feb 2020 06:49:27 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:39034 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726933AbgB2LtU (ORCPT
+        with ESMTP id S1726944AbgB2Lt0 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 29 Feb 2020 06:49:20 -0500
+        Sat, 29 Feb 2020 06:49:26 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1j80cN-0007dg-8J; Sat, 29 Feb 2020 12:49:15 +0100
+        id 1j80cU-0007f3-SA; Sat, 29 Feb 2020 12:49:22 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 9593D1C219A;
-        Sat, 29 Feb 2020 12:49:13 +0100 (CET)
-Date:   Sat, 29 Feb 2020 11:49:13 -0000
-From:   "tip-bot2 for Juergen Gross" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 859371C219A;
+        Sat, 29 Feb 2020 12:49:22 +0100 (CET)
+Date:   Sat, 29 Feb 2020 11:49:22 -0000
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/mm: Fix dump_pagetables with Xen PV
-Cc:     Julien Grall <julien@xen.org>, Juergen Gross <jgross@suse.com>,
-        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200221103851.7855-1-jgross@suse.com>
-References: <20200221103851.7855-1-jgross@suse.com>
+Subject: [tip: x86/entry] x86/entry/32: Remove the 0/-1 distinction from
+ exception entries
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Alexandre Chartre <alexandre.chartre@oracle.com>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <87mu94m7ky.fsf@nanos.tec.linutronix.de>
+References: <87mu94m7ky.fsf@nanos.tec.linutronix.de>
 MIME-Version: 1.0
-Message-ID: <158297695326.28353.10741733297553166672.tip-bot2@tip-bot2>
+Message-ID: <158297696222.28353.18163314498317163313.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -45,50 +46,72 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the x86/entry branch of tip:
 
-Commit-ID:     bba42affa732d6fd5bd5c9678e6deacde2de1547
-Gitweb:        https://git.kernel.org/tip/bba42affa732d6fd5bd5c9678e6deacde2de1547
-Author:        Juergen Gross <jgross@suse.com>
-AuthorDate:    Fri, 21 Feb 2020 11:38:51 +01:00
+Commit-ID:     e441a2ae0e9e9bb12fd3fbe2d59d923fadfe8ef7
+Gitweb:        https://git.kernel.org/tip/e441a2ae0e9e9bb12fd3fbe2d59d923fadfe8ef7
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Thu, 27 Feb 2020 15:24:29 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sat, 29 Feb 2020 12:43:10 +01:00
+CommitterDate: Sat, 29 Feb 2020 12:45:54 +01:00
 
-x86/mm: Fix dump_pagetables with Xen PV
+x86/entry/32: Remove the 0/-1 distinction from exception entries
 
-Commit 2ae27137b2db89 ("x86: mm: convert dump_pagetables to use
-walk_page_range") broke Xen PV guests as the hypervisor reserved hole in
-the memory map was not taken into account.
+Nothing cares about the -1 "mark as interrupt" in the errorcode of
+exception entries. It's only used to fill the error code when a signal is
+delivered, but this is already inconsistent vs. 64 bit as there all
+exceptions which do not have an error code set it to 0. So if 32 bit
+applications would care about this, then they would have noticed more than
+a decade ago.
 
-Fix that by starting the kernel range only at GUARD_HOLE_END_ADDR.
+Just use 0 for all excpetions which do not have an errorcode consistently.
 
-Fixes: 2ae27137b2db89 ("x86: mm: convert dump_pagetables to use walk_page_range")
-Reported-by: Julien Grall <julien@xen.org>
-Signed-off-by: Juergen Gross <jgross@suse.com>
+This does neither break /proc/$PID/syscall because this interface examines
+the error code / syscall number which is on the stack and that is set to -1
+(no syscall) in common_exception unconditionally for all exceptions. The
+push in the entry stub is just there to fill the hardware error code slot
+on the stack for consistency of the stack layout.
+
+A transient observation of 0 is possible, but that's true for the other
+exceptions which use 0 already as well and that interface is an unreliable
+snapshot of dubious correctness anyway.
+
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Julien Grall <julien@xen.org>
-Link: https://lkml.kernel.org/r/20200221103851.7855-1-jgross@suse.com
+Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
+Link: https://lkml.kernel.org/r/87mu94m7ky.fsf@nanos.tec.linutronix.de
 
 ---
- arch/x86/mm/dump_pagetables.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ arch/x86/entry/entry_32.S | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/mm/dump_pagetables.c b/arch/x86/mm/dump_pagetables.c
-index 64229da..69309cd 100644
---- a/arch/x86/mm/dump_pagetables.c
-+++ b/arch/x86/mm/dump_pagetables.c
-@@ -363,13 +363,8 @@ static void ptdump_walk_pgd_level_core(struct seq_file *m,
- {
- 	const struct ptdump_range ptdump_ranges[] = {
- #ifdef CONFIG_X86_64
--
--#define normalize_addr_shift (64 - (__VIRTUAL_MASK_SHIFT + 1))
--#define normalize_addr(u) ((signed long)((u) << normalize_addr_shift) >> \
--			   normalize_addr_shift)
--
- 	{0, PTRS_PER_PGD * PGD_LEVEL_MULT / 2},
--	{normalize_addr(PTRS_PER_PGD * PGD_LEVEL_MULT / 2), ~0UL},
-+	{GUARD_HOLE_END_ADDR, ~0UL},
- #else
- 	{0, ~0UL},
- #endif
+diff --git a/arch/x86/entry/entry_32.S b/arch/x86/entry/entry_32.S
+index 0753f48..ddc87f2 100644
+--- a/arch/x86/entry/entry_32.S
++++ b/arch/x86/entry/entry_32.S
+@@ -1290,7 +1290,7 @@ SYM_CODE_END(simd_coprocessor_error)
+ 
+ SYM_CODE_START(device_not_available)
+ 	ASM_CLAC
+-	pushl	$-1				# mark this as an int
++	pushl	$0
+ 	pushl	$do_device_not_available
+ 	jmp	common_exception
+ SYM_CODE_END(device_not_available)
+@@ -1531,7 +1531,7 @@ SYM_CODE_START(debug)
+ 	 * Entry from sysenter is now handled in common_exception
+ 	 */
+ 	ASM_CLAC
+-	pushl	$-1				# mark this as an int
++	pushl	$0
+ 	pushl	$do_debug
+ 	jmp	common_exception
+ SYM_CODE_END(debug)
+@@ -1682,7 +1682,7 @@ SYM_CODE_END(nmi)
+ 
+ SYM_CODE_START(int3)
+ 	ASM_CLAC
+-	pushl	$-1				# mark this as an int
++	pushl	$0
+ 	pushl	$do_int3
+ 	jmp	common_exception
+ SYM_CODE_END(int3)
