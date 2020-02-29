@@ -2,41 +2,47 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 253461745CC
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 29 Feb 2020 10:17:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 526CF1745BD
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 29 Feb 2020 10:17:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726755AbgB2JRB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 29 Feb 2020 04:17:01 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:38857 "EHLO
+        id S1727075AbgB2JRK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 29 Feb 2020 04:17:10 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:38896 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726674AbgB2JRB (ORCPT
+        with ESMTP id S1727052AbgB2JRI (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 29 Feb 2020 04:17:01 -0500
+        Sat, 29 Feb 2020 04:17:08 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1j7yEp-0005oD-PS; Sat, 29 Feb 2020 10:16:47 +0100
+        id 1j7yEq-0005pN-HP; Sat, 29 Feb 2020 10:16:48 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 605251C0243;
-        Sat, 29 Feb 2020 10:16:47 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 2179B1C0243;
+        Sat, 29 Feb 2020 10:16:48 +0100 (CET)
 Date:   Sat, 29 Feb 2020 09:16:47 -0000
 From:   "tip-bot2 for Ravi Bangoria" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf annotate: Remove privsize from
- symbol__annotate() args
+Subject: [tip: perf/urgent] perf config: Document missing config options
 Cc:     Ravi Bangoria <ravi.bangoria@linux.ibm.com>,
-        Jiri Olsa <jolsa@redhat.com>, Ian Rogers <irogers@google.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Alexey Budankov <alexey.budankov@linux.intel.com>,
+        Changbin Du <changbin.du@intel.com>,
+        Ian Rogers <irogers@google.com>,
         Jin Yao <yao.jin@linux.intel.com>,
+        Jiri Olsa <jolsa@kernel.org>, Leo Yan <leo.yan@linaro.org>,
         Namhyung Kim <namhyung@kernel.org>,
         Song Liu <songliubraving@fb.com>,
+        Taeung Song <treeze.taeung@gmail.com>,
+        Thomas Richter <tmricht@linux.ibm.com>,
+        Yisheng Xie <xieyisheng1@huawei.com>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200204045233.474937-2-ravi.bangoria@linux.ibm.com>
-References: <20200204045233.474937-2-ravi.bangoria@linux.ibm.com>
+In-Reply-To: <20200213064306.160480-9-ravi.bangoria@linux.ibm.com>
+References: <20200213064306.160480-9-ravi.bangoria@linux.ibm.com>
 MIME-Version: 1.0
-Message-ID: <158296780711.28353.2174081588550964113.tip-bot2@tip-bot2>
+Message-ID: <158296780778.28353.1161299418025837042.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -52,103 +58,110 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     e0ad4d68548005adb54cc7c35fd9abf760a2a050
-Gitweb:        https://git.kernel.org/tip/e0ad4d68548005adb54cc7c35fd9abf760a2a050
+Commit-ID:     b0aaf4c8f31feb21de59df723231c286df2d6be3
+Gitweb:        https://git.kernel.org/tip/b0aaf4c8f31feb21de59df723231c286df2d6be3
 Author:        Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-AuthorDate:    Tue, 04 Feb 2020 10:22:28 +05:30
+AuthorDate:    Thu, 13 Feb 2020 12:13:06 +05:30
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Thu, 27 Feb 2020 11:06:14 -03:00
+CommitterDate: Thu, 27 Feb 2020 10:45:19 -03:00
 
-perf annotate: Remove privsize from symbol__annotate() args
+perf config: Document missing config options
 
-privsize is passed as 0 from all the symbol__annotate() callers.
-Remove it from argument list.
+While documenting annotate.show_nr_samples config option, I found many
+other config options missing in perf-config documentation. Add them.
 
 Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Acked-by: Jiri Olsa <jolsa@redhat.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexey Budankov <alexey.budankov@linux.intel.com>
+Cc: Changbin Du <changbin.du@intel.com>
 Cc: Ian Rogers <irogers@google.com>
 Cc: Jin Yao <yao.jin@linux.intel.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Leo Yan <leo.yan@linaro.org>
 Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Song Liu <songliubraving@fb.com>
-Link: http://lore.kernel.org/lkml/20200204045233.474937-2-ravi.bangoria@linux.ibm.com
+Cc: Taeung Song <treeze.taeung@gmail.com>
+Cc: Thomas Richter <tmricht@linux.ibm.com>
+Cc: Yisheng Xie <xieyisheng1@huawei.com>
+Link: http://lore.kernel.org/lkml/20200213064306.160480-9-ravi.bangoria@linux.ibm.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/builtin-top.c     | 2 +-
- tools/perf/ui/gtk/annotate.c | 2 +-
- tools/perf/util/annotate.c   | 7 ++++---
- tools/perf/util/annotate.h   | 2 +-
- 4 files changed, 7 insertions(+), 6 deletions(-)
+ tools/perf/Documentation/perf-config.txt | 44 +++++++++++++++++++++++-
+ 1 file changed, 44 insertions(+)
 
-diff --git a/tools/perf/builtin-top.c b/tools/perf/builtin-top.c
-index cc26aea..f6dd1a6 100644
---- a/tools/perf/builtin-top.c
-+++ b/tools/perf/builtin-top.c
-@@ -143,7 +143,7 @@ static int perf_top__parse_source(struct perf_top *top, struct hist_entry *he)
- 		return err;
- 	}
+diff --git a/tools/perf/Documentation/perf-config.txt b/tools/perf/Documentation/perf-config.txt
+index 9dae0df..8ead555 100644
+--- a/tools/perf/Documentation/perf-config.txt
++++ b/tools/perf/Documentation/perf-config.txt
+@@ -518,6 +518,12 @@ top.*::
+ 		column by default.
+ 		The default is 'true'.
  
--	err = symbol__annotate(&he->ms, evsel, 0, &top->annotation_opts, NULL);
-+	err = symbol__annotate(&he->ms, evsel, &top->annotation_opts, NULL);
- 	if (err == 0) {
- 		top->sym_filter_entry = he;
- 	} else {
-diff --git a/tools/perf/ui/gtk/annotate.c b/tools/perf/ui/gtk/annotate.c
-index 22cc240..35f9641 100644
---- a/tools/perf/ui/gtk/annotate.c
-+++ b/tools/perf/ui/gtk/annotate.c
-@@ -174,7 +174,7 @@ static int symbol__gtk_annotate(struct map_symbol *ms, struct evsel *evsel,
- 	if (ms->map->dso->annotate_warned)
- 		return -1;
++	top.call-graph::
++		This is identical to 'call-graph.record-mode', except it is
++		applicable only for 'top' subcommand. This option ONLY setup
++		the unwind method. To enable 'perf top' to actually use it,
++		the command line option -g must be specified.
++
+ man.*::
+ 	man.viewer::
+ 		This option can assign a tool to view manual pages when 'help'
+@@ -545,6 +551,16 @@ record.*::
+ 		But if this option is 'no-cache', it will not update the build-id cache.
+ 		'skip' skips post-processing and does not update the cache.
  
--	err = symbol__annotate(ms, evsel, 0, &annotation__default_options, NULL);
-+	err = symbol__annotate(ms, evsel, &annotation__default_options, NULL);
- 	if (err) {
- 		char msg[BUFSIZ];
- 		symbol__strerror_disassemble(ms, err, msg, sizeof(msg));
-diff --git a/tools/perf/util/annotate.c b/tools/perf/util/annotate.c
-index 3b79da5..a76309f 100644
---- a/tools/perf/util/annotate.c
-+++ b/tools/perf/util/annotate.c
-@@ -2149,9 +2149,10 @@ void symbol__calc_percent(struct symbol *sym, struct evsel *evsel)
- 	annotation__calc_percent(notes, evsel, symbol__size(sym));
- }
++	record.call-graph::
++		This is identical to 'call-graph.record-mode', except it is
++		applicable only for 'record' subcommand. This option ONLY setup
++		the unwind method. To enable 'perf record' to actually use it,
++		the command line option -g must be specified.
++
++	record.aio::
++		Use 'n' control blocks in asynchronous (Posix AIO) trace writing
++		mode ('n' default: 1, max: 4).
++
+ diff.*::
+ 	diff.order::
+ 		This option sets the number of columns to sort the result.
+@@ -594,6 +610,11 @@ trace.*::
+ 		"libbeauty", the default, to use the same argument beautifiers used in the
+ 		strace-like sys_enter+sys_exit lines.
  
--int symbol__annotate(struct map_symbol *ms, struct evsel *evsel, size_t privsize,
-+int symbol__annotate(struct map_symbol *ms, struct evsel *evsel,
- 		     struct annotation_options *options, struct arch **parch)
- {
-+	size_t privsize = 0;
- 	struct symbol *sym = ms->sym;
- 	struct annotation *notes = symbol__annotation(sym);
- 	struct annotate_args args = {
-@@ -2790,7 +2791,7 @@ int symbol__tty_annotate(struct map_symbol *ms, struct evsel *evsel,
- 	struct symbol *sym = ms->sym;
- 	struct rb_root source_line = RB_ROOT;
++ftrace.*::
++	ftrace.tracer::
++		Can be used to select the default tracer. Possible values are
++		'function' and 'function_graph'.
++
+ llvm.*::
+ 	llvm.clang-path::
+ 		Path to clang. If omit, search it from $PATH.
+@@ -638,6 +659,29 @@ scripts.*::
+ 	The script gets the same options passed as a full perf script,
+ 	in particular -i perfdata file, --cpu, --tid
  
--	if (symbol__annotate(ms, evsel, 0, opts, NULL) < 0)
-+	if (symbol__annotate(ms, evsel, opts, NULL) < 0)
- 		return -1;
- 
- 	symbol__calc_percent(sym, evsel);
-@@ -3070,7 +3071,7 @@ int symbol__annotate2(struct map_symbol *ms, struct evsel *evsel,
- 	if (perf_evsel__is_group_event(evsel))
- 		nr_pcnt = evsel->core.nr_members;
- 
--	err = symbol__annotate(ms, evsel, 0, options, parch);
-+	err = symbol__annotate(ms, evsel, options, parch);
- 	if (err)
- 		goto out_free_offsets;
- 
-diff --git a/tools/perf/util/annotate.h b/tools/perf/util/annotate.h
-index 8e54184..7bc6098 100644
---- a/tools/perf/util/annotate.h
-+++ b/tools/perf/util/annotate.h
-@@ -350,7 +350,7 @@ struct annotated_source *symbol__hists(struct symbol *sym, int nr_hists);
- void symbol__annotate_zero_histograms(struct symbol *sym);
- 
- int symbol__annotate(struct map_symbol *ms,
--		     struct evsel *evsel, size_t privsize,
-+		     struct evsel *evsel,
- 		     struct annotation_options *options,
- 		     struct arch **parch);
- int symbol__annotate2(struct map_symbol *ms,
++convert.*::
++
++	convert.queue-size::
++		Limit the size of ordered_events queue, so we could control
++		allocation size of perf data files without proper finished
++		round events.
++
++intel-pt.*::
++
++	intel-pt.cache-divisor::
++
++	intel-pt.mispred-all::
++		If set, Intel PT decoder will set the mispred flag on all
++		branches.
++
++auxtrace.*::
++
++	auxtrace.dumpdir::
++		s390 only. The directory to save the auxiliary trace buffer
++		can be changed using this option. Ex, auxtrace.dumpdir=/tmp.
++		If the directory does not exist or has the wrong file type,
++		the current directory is used.
++
+ SEE ALSO
+ --------
+ linkperf:perf[1]
