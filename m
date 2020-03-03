@@ -2,37 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DE9B174CBF
-	for <lists+linux-tip-commits@lfdr.de>; Sun,  1 Mar 2020 11:28:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 217B91770D3
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  3 Mar 2020 09:10:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726561AbgCAK2A (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 1 Mar 2020 05:28:00 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:40040 "EHLO
+        id S1727686AbgCCIK0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 3 Mar 2020 03:10:26 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:43716 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725874AbgCAK16 (ORCPT
+        with ESMTP id S1727654AbgCCIK0 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 1 Mar 2020 05:27:58 -0500
+        Tue, 3 Mar 2020 03:10:26 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1j8LpE-0003OA-76; Sun, 01 Mar 2020 11:27:56 +0100
+        id 1j92dB-00026M-HL; Tue, 03 Mar 2020 09:10:21 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D1A8A1C20DB;
-        Sun,  1 Mar 2020 11:27:55 +0100 (CET)
-Date:   Sun, 01 Mar 2020 10:27:55 -0000
-From:   "tip-bot2 for Eric W. Biederman" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 2E9651C1A9F;
+        Tue,  3 Mar 2020 09:10:21 +0100 (CET)
+Date:   Tue, 03 Mar 2020 08:10:20 -0000
+From:   "tip-bot2 for luanshi" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] posix-cpu-timers: cpu_clock_sample_group() no
- longer needs siglock
-Cc:     "Eric W. Biederman" <ebiederm@xmission.com>,
+Subject: [tip: irq/core] irqdomain: Fix function documentation of
+ __irq_domain_alloc_fwnode()
+Cc:     luanshi <zhangliguang@linux.alibaba.com>,
         Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <87eeuevduq.fsf@x220.int.ebiederm.org>
-References: <87eeuevduq.fsf@x220.int.ebiederm.org>
+In-Reply-To: <1583200125-58806-1-git-send-email-zhangliguang@linux.alibaba.com>
+References: <1583200125-58806-1-git-send-email-zhangliguang@linux.alibaba.com>
 MIME-Version: 1.0
-Message-ID: <158305847559.28353.10057852158165316296.tip-bot2@tip-bot2>
+Message-ID: <158322302088.28353.3499023675334636073.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -46,40 +46,42 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/core branch of tip:
+The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     a2efdbf4fcb38ec1ae99c9d54d52c34fa867dc71
-Gitweb:        https://git.kernel.org/tip/a2efdbf4fcb38ec1ae99c9d54d52c34fa867dc71
-Author:        Eric W. Biederman <ebiederm@xmission.com>
-AuthorDate:    Fri, 28 Feb 2020 11:08:45 -06:00
+Commit-ID:     30073b2c0bcad41f1b0d01068e07fd81b812c916
+Gitweb:        https://git.kernel.org/tip/30073b2c0bcad41f1b0d01068e07fd81b812c916
+Author:        luanshi <zhangliguang@linux.alibaba.com>
+AuthorDate:    Tue, 03 Mar 2020 09:48:45 +08:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sun, 01 Mar 2020 11:21:43 +01:00
+CommitterDate: Tue, 03 Mar 2020 09:06:25 +01:00
 
-posix-cpu-timers: cpu_clock_sample_group() no longer needs siglock
+irqdomain: Fix function documentation of __irq_domain_alloc_fwnode()
 
-As of e78c3496790e ("time, signal: Protect resource use statistics with
-seqlock") cpu_clock_sample_group() no longer needs siglock protection so
-remove the stale comment.
+The function got renamed at some point, but the kernel-doc was not updated.
 
-Signed-off-by: "Eric W. Biederman" <ebiederm@xmission.com>
+Signed-off-by: luanshi <zhangliguang@linux.alibaba.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/87eeuevduq.fsf@x220.int.ebiederm.org
----
- kernel/time/posix-cpu-timers.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+Link: https://lkml.kernel.org/r/1583200125-58806-1-git-send-email-zhangliguang@linux.alibaba.com
 
-diff --git a/kernel/time/posix-cpu-timers.c b/kernel/time/posix-cpu-timers.c
-index 8ff6da7..46cc188 100644
---- a/kernel/time/posix-cpu-timers.c
-+++ b/kernel/time/posix-cpu-timers.c
-@@ -336,9 +336,7 @@ static void __thread_group_cputime(struct task_struct *tsk, u64 *samples)
- /*
-  * Sample a process (thread group) clock for the given task clkid. If the
-  * group's cputime accounting is already enabled, read the atomic
-- * store. Otherwise a full update is required.  Task's sighand lock must be
-- * held to protect the task traversal on a full update. clkid is already
-- * validated.
-+ * store. Otherwise a full update is required.  clkid is already validated.
-  */
- static u64 cpu_clock_sample_group(const clockid_t clkid, struct task_struct *p,
- 				  bool start)
+---
+ kernel/irq/irqdomain.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/kernel/irq/irqdomain.c b/kernel/irq/irqdomain.c
+index 7527e5e..fdfc213 100644
+--- a/kernel/irq/irqdomain.c
++++ b/kernel/irq/irqdomain.c
+@@ -46,11 +46,11 @@ const struct fwnode_operations irqchip_fwnode_ops;
+ EXPORT_SYMBOL_GPL(irqchip_fwnode_ops);
+ 
+ /**
+- * irq_domain_alloc_fwnode - Allocate a fwnode_handle suitable for
++ * __irq_domain_alloc_fwnode - Allocate a fwnode_handle suitable for
+  *                           identifying an irq domain
+  * @type:	Type of irqchip_fwnode. See linux/irqdomain.h
+- * @name:	Optional user provided domain name
+  * @id:		Optional user provided id if name != NULL
++ * @name:	Optional user provided domain name
+  * @pa:		Optional user-provided physical address
+  *
+  * Allocate a struct irqchip_fwid, and return a poiner to the embedded
