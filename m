@@ -2,37 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B382417828E
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  3 Mar 2020 20:03:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DDEF178CEF
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  4 Mar 2020 09:57:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729612AbgCCSkp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 3 Mar 2020 13:40:45 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:45149 "EHLO
+        id S2387665AbgCDI51 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 4 Mar 2020 03:57:27 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:46286 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728787AbgCCSko (ORCPT
+        with ESMTP id S1727734AbgCDI51 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 3 Mar 2020 13:40:44 -0500
+        Wed, 4 Mar 2020 03:57:27 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1j9CTA-0003Uu-LP; Tue, 03 Mar 2020 19:40:40 +0100
+        id 1j9PqH-0007Aw-5o; Wed, 04 Mar 2020 09:57:25 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id F00981C1A9F;
-        Tue,  3 Mar 2020 19:40:39 +0100 (CET)
-Date:   Tue, 03 Mar 2020 18:40:39 -0000
-From:   "tip-bot2 for Cyril Hrubis" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 57EE11C20C4;
+        Wed,  4 Mar 2020 09:57:24 +0100 (CET)
+Date:   Wed, 04 Mar 2020 08:57:23 -0000
+From:   "tip-bot2 for Eric W. Biederman" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/urgent] sys/sysinfo: Respect boottime inside time namespace
-Cc:     Cyril Hrubis <chrubis@suse.cz>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Dmitry Safonov <dima@arista.com>, x86 <x86@kernel.org>,
+Subject: [tip: timers/core] posix-cpu-timers: Stop disabling timers on mt-exec
+Cc:     "Eric W. Biederman" <ebiederm@xmission.com>,
+        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200303150638.7329-1-chrubis@suse.cz>
-References: <20200303150638.7329-1-chrubis@suse.cz>
+In-Reply-To: <87o8tityzs.fsf@x220.int.ebiederm.org>
+References: <87o8tityzs.fsf@x220.int.ebiederm.org>
 MIME-Version: 1.0
-Message-ID: <158326083954.28353.16922158200341050554.tip-bot2@tip-bot2>
+Message-ID: <158331224395.28353.17725920486129300292.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -46,49 +45,60 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/urgent branch of tip:
+The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     ecc421e05bab97cf3ff4fe456ade47ef84dba8c2
-Gitweb:        https://git.kernel.org/tip/ecc421e05bab97cf3ff4fe456ade47ef84dba8c2
-Author:        Cyril Hrubis <chrubis@suse.cz>
-AuthorDate:    Tue, 03 Mar 2020 16:06:38 +01:00
+Commit-ID:     b95e31c07c5eb4f5c0769f12b38b0343d7961040
+Gitweb:        https://git.kernel.org/tip/b95e31c07c5eb4f5c0769f12b38b0343d7961040
+Author:        Eric W. Biederman <ebiederm@xmission.com>
+AuthorDate:    Fri, 28 Feb 2020 11:15:03 -06:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 03 Mar 2020 19:34:32 +01:00
+CommitterDate: Wed, 04 Mar 2020 09:54:55 +01:00
 
-sys/sysinfo: Respect boottime inside time namespace
+posix-cpu-timers: Stop disabling timers on mt-exec
 
-The sysinfo() syscall includes uptime in seconds but has no correction for
-time namespaces which makes it inconsistent with the /proc/uptime inside of
-a time namespace.
+The reasons why the extra posix_cpu_timers_exit_group() invocation has been
+added are not entirely clear from the commit message.  Today all that
+posix_cpu_timers_exit_group() does is stop timers that are tracking the
+task from firing.  Every other operation on those timers is still allowed.
 
-Add the missing time namespace adjustment call.
+The practical implication of this is posix_cpu_timer_del() which could
+not get the siglock after the thread group leader has exited (because
+sighand == NULL) would be able to run successfully because the timer
+was already dequeued.
 
-Signed-off-by: Cyril Hrubis <chrubis@suse.cz>
+With that locking issue fixed there is no point in disabling all of the
+timers.  So remove this ``tempoary'' hack.
+
+Fixes: e0a70217107e ("posix-cpu-timers: workaround to suppress the problems with mt exec")
+Signed-off-by: "Eric W. Biederman" <ebiederm@xmission.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Dmitry Safonov <dima@arista.com>
-Link: https://lkml.kernel.org/r/20200303150638.7329-1-chrubis@suse.cz
+Link: https://lkml.kernel.org/r/87o8tityzs.fsf@x220.int.ebiederm.org
+
 
 ---
- kernel/sys.c | 2 ++
- 1 file changed, 2 insertions(+)
+ kernel/exit.c | 11 +----------
+ 1 file changed, 1 insertion(+), 10 deletions(-)
 
-diff --git a/kernel/sys.c b/kernel/sys.c
-index f9bc5c3..d325f3a 100644
---- a/kernel/sys.c
-+++ b/kernel/sys.c
-@@ -47,6 +47,7 @@
- #include <linux/syscalls.h>
- #include <linux/kprobes.h>
- #include <linux/user_namespace.h>
-+#include <linux/time_namespace.h>
- #include <linux/binfmts.h>
+diff --git a/kernel/exit.c b/kernel/exit.c
+index 2833ffb..df54631 100644
+--- a/kernel/exit.c
++++ b/kernel/exit.c
+@@ -103,17 +103,8 @@ static void __exit_signal(struct task_struct *tsk)
  
- #include <linux/sched.h>
-@@ -2546,6 +2547,7 @@ static int do_sysinfo(struct sysinfo *info)
- 	memset(info, 0, sizeof(struct sysinfo));
+ #ifdef CONFIG_POSIX_TIMERS
+ 	posix_cpu_timers_exit(tsk);
+-	if (group_dead) {
++	if (group_dead)
+ 		posix_cpu_timers_exit_group(tsk);
+-	} else {
+-		/*
+-		 * This can only happen if the caller is de_thread().
+-		 * FIXME: this is the temporary hack, we should teach
+-		 * posix-cpu-timers to handle this case correctly.
+-		 */
+-		if (unlikely(has_group_leader_pid(tsk)))
+-			posix_cpu_timers_exit_group(tsk);
+-	}
+ #endif
  
- 	ktime_get_boottime_ts64(&tp);
-+	timens_add_boottime(&tp);
- 	info->uptime = tp.tv_sec + (tp.tv_nsec ? 1 : 0);
- 
- 	get_avenrun(info->loads, 0, SI_LOAD_SHIFT - FSHIFT);
+ 	if (group_dead) {
