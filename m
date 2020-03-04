@@ -2,36 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D4D6C178F2D
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  4 Mar 2020 12:02:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C3A2178F23
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  4 Mar 2020 12:01:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387971AbgCDLB5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S2387863AbgCDLB5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Wed, 4 Mar 2020 06:01:57 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:46650 "EHLO
+Received: from Galois.linutronix.de ([193.142.43.55]:46649 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387688AbgCDLB5 (ORCPT
+        with ESMTP id S2387626AbgCDLB4 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 4 Mar 2020 06:01:57 -0500
+        Wed, 4 Mar 2020 06:01:56 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1j9Rmg-0001YS-5g; Wed, 04 Mar 2020 12:01:50 +0100
+        id 1j9Rmf-0001YP-Rf; Wed, 04 Mar 2020 12:01:49 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id CB4CC1C21B2;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 7B4761C21B3;
         Wed,  4 Mar 2020 12:01:49 +0100 (CET)
 Date:   Wed, 04 Mar 2020 11:01:49 -0000
 From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf tests bp_account: Make global variable static
+Subject: [tip: perf/urgent] perf env: Do not return pointers to local variables
 Cc:     Jiri Olsa <jolsa@kernel.org>,
         Adrian Hunter <adrian.hunter@intel.com>,
         Namhyung Kim <namhyung@kernel.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158331970957.28353.16382895991011482208.tip-bot2@tip-bot2>
+Message-ID: <158331970925.28353.877143831315554725.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,22 +47,25 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     cff20b3151ccab690715cb6cf0f5da5cccb32adf
-Gitweb:        https://git.kernel.org/tip/cff20b3151ccab690715cb6cf0f5da5cccb32adf
+Commit-ID:     ebcb9464a2ae3a547e97de476575c82ece0e93e2
+Gitweb:        https://git.kernel.org/tip/ebcb9464a2ae3a547e97de476575c82ece0e93e2
 Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Mon, 02 Mar 2020 11:13:19 -03:00
+AuthorDate:    Mon, 02 Mar 2020 11:23:03 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Mon, 02 Mar 2020 11:15:07 -03:00
+CommitterDate: Mon, 02 Mar 2020 11:23:03 -03:00
 
-perf tests bp_account: Make global variable static
+perf env: Do not return pointers to local variables
 
-To fix the build with newer gccs, that without this patch exit with:
+It is possible to return a pointer to a local variable when looking up
+the architecture name for the running system and no normalization is
+done on that value, i.e. we may end up returning the uts.machine local
+variable.
 
-    LD       /tmp/build/perf/tests/perf-in.o
-  ld: /tmp/build/perf/tests/bp_account.o:/git/perf/tools/perf/tests/bp_account.c:22: multiple definition of `the_var'; /tmp/build/perf/tests/bp_signal.o:/git/perf/tools/perf/tests/bp_signal.c:38: first defined here
-  make[4]: *** [/git/perf/tools/build/Makefile.build:145: /tmp/build/perf/tests/perf-in.o] Error 1
+While this doesn't happen on most arches, as normalization takes place,
+lets fix this by making that a static variable and optimize it a bit by
+not always running uname(), only the first time.
 
-First noticed in fedora:rawhide/32 with:
+Noticed in fedora rawhide running with:
 
   [perfbuilder@a5ff49d6e6e4 ~]$ gcc --version
   gcc (GCC) 10.0.1 20200216 (Red Hat 10.0.1-0.8)
@@ -72,19 +75,24 @@ Cc: Adrian Hunter <adrian.hunter@intel.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/tests/bp_account.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/perf/util/env.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/tests/bp_account.c b/tools/perf/tests/bp_account.c
-index d0b9353..489b506 100644
---- a/tools/perf/tests/bp_account.c
-+++ b/tools/perf/tests/bp_account.c
-@@ -19,7 +19,7 @@
- #include "../perf-sys.h"
- #include "cloexec.h"
+diff --git a/tools/perf/util/env.c b/tools/perf/util/env.c
+index 6242a92..4154f94 100644
+--- a/tools/perf/util/env.c
++++ b/tools/perf/util/env.c
+@@ -343,11 +343,11 @@ static const char *normalize_arch(char *arch)
  
--volatile long the_var;
-+static volatile long the_var;
- 
- static noinline int test_function(void)
+ const char *perf_env__arch(struct perf_env *env)
  {
+-	struct utsname uts;
+ 	char *arch_name;
+ 
+ 	if (!env || !env->arch) { /* Assume local operation */
+-		if (uname(&uts) < 0)
++		static struct utsname uts = { .machine[0] = '\0', };
++		if (uts.machine[0] == '\0' && uname(&uts) < 0)
+ 			return NULL;
+ 		arch_name = uts.machine;
+ 	} else
