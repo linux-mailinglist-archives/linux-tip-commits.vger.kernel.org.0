@@ -2,36 +2,42 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F086178D48
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  4 Mar 2020 10:20:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5672A178F27
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  4 Mar 2020 12:02:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726860AbgCDJUR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 4 Mar 2020 04:20:17 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:46366 "EHLO
+        id S2388013AbgCDLCB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 4 Mar 2020 06:02:01 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:46657 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728953AbgCDJUQ (ORCPT
+        with ESMTP id S2387688AbgCDLCA (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 4 Mar 2020 04:20:16 -0500
+        Wed, 4 Mar 2020 06:02:00 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1j9QCJ-0007fz-7g; Wed, 04 Mar 2020 10:20:11 +0100
+        id 1j9Rme-0001YG-Qn; Wed, 04 Mar 2020 12:01:48 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D1B151C21B0;
-        Wed,  4 Mar 2020 10:20:10 +0100 (CET)
-Date:   Wed, 04 Mar 2020 09:20:10 -0000
-From:   "tip-bot2 for Wen Yang" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 624D31C21B2;
+        Wed,  4 Mar 2020 12:01:48 +0100 (CET)
+Date:   Wed, 04 Mar 2020 11:01:48 -0000
+From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] hrtimer: Cast explicitely to u32t in __ktime_divns()
-Cc:     Wen Yang <wenyang@linux.alibaba.com>,
-        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200130130851.29204-1-wenyang@linux.alibaba.com>
-References: <20200130130851.29204-1-wenyang@linux.alibaba.com>
+Subject: [tip: perf/urgent] perf symbols: Don't try to find a vmlinux file
+ when looking for kernel modules
+Cc:     Jiri Olsa <jolsa@redhat.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Kim Phillips <kim.phillips@amd.com>,
+        Michael Petlan <mpetlan@redhat.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Ravi Bangoria <ravi.bangoria@linux.ibm.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200302191007.GD10335@kernel.org>
+References: <20200302191007.GD10335@kernel.org>
 MIME-Version: 1.0
-Message-ID: <158331361059.28353.6154145435691851897.tip-bot2@tip-bot2>
+Message-ID: <158331970807.28353.6153474651149655292.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -45,42 +51,99 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/core branch of tip:
+The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     38f7b0b1316d435f38ec3f2bb078897b7a1cfdea
-Gitweb:        https://git.kernel.org/tip/38f7b0b1316d435f38ec3f2bb078897b7a1cfdea
-Author:        Wen Yang <wenyang@linux.alibaba.com>
-AuthorDate:    Thu, 30 Jan 2020 21:08:51 +08:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 04 Mar 2020 10:17:51 +01:00
+Commit-ID:     b5c0951860ba98cfe1936b5c0739450875d51451
+Gitweb:        https://git.kernel.org/tip/b5c0951860ba98cfe1936b5c0739450875d51451
+Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
+AuthorDate:    Mon, 02 Mar 2020 16:03:34 -03:00
+Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
+CommitterDate: Tue, 03 Mar 2020 16:20:01 -03:00
 
-hrtimer: Cast explicitely to u32t in __ktime_divns()
+perf symbols: Don't try to find a vmlinux file when looking for kernel modules
 
-do_div() does a 64-by-32 division at least on 32bit platforms, while the
-divisor 'div' is explicitly casted to unsigned long, thus 64-bit on 64-bit
-platforms.
+The dso->kernel value is now set to everything that is in
+machine->kmaps, but that was being used to decide if vmlinux lookup is
+needed, which ended up making that lookup be made for kernel modules,
+that now have dso->kernel set, leading to these kinds of warnings when
+running on a machine with compressed kernel modules, like fedora:31:
 
-The code already ensures that the divisor is less than 2^32. Hence the
-proper cast type is u32.
+  [root@five ~]# perf record -F 10000 -a sleep 2
+  [ perf record: Woken up 1 times to write data ]
+  lzma: fopen failed on vmlinux: 'No such file or directory'
+  lzma: fopen failed on /boot/vmlinux: 'No such file or directory'
+  lzma: fopen failed on /boot/vmlinux-5.5.5-200.fc31.x86_64: 'No such file or directory'
+  lzma: fopen failed on /usr/lib/debug/boot/vmlinux-5.5.5-200.fc31.x86_64: 'No such file or directory'
+  lzma: fopen failed on /lib/modules/5.5.5-200.fc31.x86_64/build/vmlinux: 'No such file or directory'
+  lzma: fopen failed on vmlinux: 'No such file or directory'
+  lzma: fopen failed on /boot/vmlinux: 'No such file or directory'
+  lzma: fopen failed on /boot/vmlinux-5.5.5-200.fc31.x86_64: 'No such file or directory'
+  lzma: fopen failed on /usr/lib/debug/boot/vmlinux-5.5.5-200.fc31.x86_64: 'No such file or directory'
+  lzma: fopen failed on /lib/modules/5.5.5-200.fc31.x86_64/build/vmlinux: 'No such file or directory'
+  lzma: fopen failed on vmlinux: 'No such file or directory'
+  lzma: fopen failed on /boot/vmlinux: 'No such file or directory'
+  lzma: fopen failed on /boot/vmlinux-5.5.5-200.fc31.x86_64: 'No such file or directory'
+  lzma: fopen failed on /usr/lib/debug/boot/vmlinux-5.5.5-200.fc31.x86_64: 'No such file or directory'
+  lzma: fopen failed on /lib/modules/5.5.5-200.fc31.x86_64/build/vmlinux: 'No such file or directory'
+  lzma: fopen failed on vmlinux: 'No such file or directory'
+  lzma: fopen failed on /boot/vmlinux: 'No such file or directory'
+  lzma: fopen failed on /boot/vmlinux-5.5.5-200.fc31.x86_64: 'No such file or directory'
+  lzma: fopen failed on /usr/lib/debug/boot/vmlinux-5.5.5-200.fc31.x86_64: 'No such file or directory'
+  lzma: fopen failed on /lib/modules/5.5.5-200.fc31.x86_64/build/vmlinux: 'No such file or directory'
+  lzma: fopen failed on vmlinux: 'No such file or directory'
+  lzma: fopen failed on /boot/vmlinux: 'No such file or directory'
+  lzma: fopen failed on /boot/vmlinux-5.5.5-200.fc31.x86_64: 'No such file or directory'
+  lzma: fopen failed on /usr/lib/debug/boot/vmlinux-5.5.5-200.fc31.x86_64: 'No such file or directory'
+  lzma: fopen failed on /lib/modules/5.5.5-200.fc31.x86_64/build/vmlinux: 'No such file or directory'
+  [ perf record: Captured and wrote 1.024 MB perf.data (1366 samples) ]
+  [root@five ~]#
 
-Signed-off-by: Wen Yang <wenyang@linux.alibaba.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20200130130851.29204-1-wenyang@linux.alibaba.com
+This happens when collecting the buildid, when we find samples for
+kernel modules, fix it by checking if the looked up DSO is a kernel
+module by other means.
 
+Fixes: 02213cec64bb ("perf maps: Mark module DSOs with kernel type")
+Tested-by: Jiri Olsa <jolsa@redhat.com>
+Acked-by: Jiri Olsa <jolsa@redhat.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Kim Phillips <kim.phillips@amd.com>
+Cc: Michael Petlan <mpetlan@redhat.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+Link: http://lore.kernel.org/lkml/20200302191007.GD10335@kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- kernel/time/hrtimer.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/perf/util/symbol.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
-index 3a609e7..d74fdcd 100644
---- a/kernel/time/hrtimer.c
-+++ b/kernel/time/hrtimer.c
-@@ -311,7 +311,7 @@ s64 __ktime_divns(const ktime_t kt, s64 div)
- 		div >>= 1;
+diff --git a/tools/perf/util/symbol.c b/tools/perf/util/symbol.c
+index 1077013..26bc6a0 100644
+--- a/tools/perf/util/symbol.c
++++ b/tools/perf/util/symbol.c
+@@ -1622,7 +1622,12 @@ int dso__load(struct dso *dso, struct map *map)
+ 		goto out;
  	}
- 	tmp >>= sft;
--	do_div(tmp, (unsigned long) div);
-+	do_div(tmp, (u32) div);
- 	return dclc < 0 ? -tmp : tmp;
- }
- EXPORT_SYMBOL_GPL(__ktime_divns);
+ 
+-	if (dso->kernel) {
++	kmod = dso->symtab_type == DSO_BINARY_TYPE__SYSTEM_PATH_KMODULE ||
++		dso->symtab_type == DSO_BINARY_TYPE__SYSTEM_PATH_KMODULE_COMP ||
++		dso->symtab_type == DSO_BINARY_TYPE__GUEST_KMODULE ||
++		dso->symtab_type == DSO_BINARY_TYPE__GUEST_KMODULE_COMP;
++
++	if (dso->kernel && !kmod) {
+ 		if (dso->kernel == DSO_TYPE_KERNEL)
+ 			ret = dso__load_kernel_sym(dso, map);
+ 		else if (dso->kernel == DSO_TYPE_GUEST_KERNEL)
+@@ -1650,12 +1655,6 @@ int dso__load(struct dso *dso, struct map *map)
+ 	if (!name)
+ 		goto out;
+ 
+-	kmod = dso->symtab_type == DSO_BINARY_TYPE__SYSTEM_PATH_KMODULE ||
+-		dso->symtab_type == DSO_BINARY_TYPE__SYSTEM_PATH_KMODULE_COMP ||
+-		dso->symtab_type == DSO_BINARY_TYPE__GUEST_KMODULE ||
+-		dso->symtab_type == DSO_BINARY_TYPE__GUEST_KMODULE_COMP;
+-
+-
+ 	/*
+ 	 * Read the build id if possible. This is required for
+ 	 * DSO_BINARY_TYPE__BUILDID_DEBUGINFO to work
