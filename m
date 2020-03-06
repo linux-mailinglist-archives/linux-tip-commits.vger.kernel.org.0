@@ -2,37 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4EF7717C0A4
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Mar 2020 15:44:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 86F7217C095
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Mar 2020 15:43:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727067AbgCFOn2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 6 Mar 2020 09:43:28 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:53798 "EHLO
+        id S1727263AbgCFOmW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 6 Mar 2020 09:42:22 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:53844 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727097AbgCFOmR (ORCPT
+        with ESMTP id S1727222AbgCFOmW (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 6 Mar 2020 09:42:17 -0500
+        Fri, 6 Mar 2020 09:42:22 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jAEB2-0006KN-Dl; Fri, 06 Mar 2020 15:42:12 +0100
+        id 1jAEB6-0006Kw-Sz; Fri, 06 Mar 2020 15:42:17 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 7D4221C21DC;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D075A1C21DD;
         Fri,  6 Mar 2020 15:42:08 +0100 (CET)
 Date:   Fri, 06 Mar 2020 14:42:08 -0000
 From:   "tip-bot2 for Thara Gopinath" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/fair: Enable tuning of decay period
+Subject: [tip: sched/core] thermal/cpu-cooling: Update thermal pressure in
+ case of a maximum frequency capping
 Cc:     Thara Gopinath <thara.gopinath@linaro.org>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200222005213.3873-10-thara.gopinath@linaro.org>
-References: <20200222005213.3873-10-thara.gopinath@linaro.org>
+In-Reply-To: <20200222005213.3873-9-thara.gopinath@linaro.org>
+References: <20200222005213.3873-9-thara.gopinath@linaro.org>
 MIME-Version: 1.0
-Message-ID: <158350572817.28353.10208505701731851476.tip-bot2@tip-bot2>
+Message-ID: <158350572857.28353.7469807947344049697.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,132 +49,64 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     05289b90c2e40ae80f5c70431cd0be4cc8a6038d
-Gitweb:        https://git.kernel.org/tip/05289b90c2e40ae80f5c70431cd0be4cc8a6038d
+Commit-ID:     f12e4f66ab6a31f17da386b682e5fec87ae46537
+Gitweb:        https://git.kernel.org/tip/f12e4f66ab6a31f17da386b682e5fec87ae46537
 Author:        Thara Gopinath <thara.gopinath@linaro.org>
-AuthorDate:    Fri, 21 Feb 2020 19:52:13 -05:00
+AuthorDate:    Fri, 21 Feb 2020 19:52:12 -05:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Fri, 06 Mar 2020 12:57:21 +01:00
 
-sched/fair: Enable tuning of decay period
+thermal/cpu-cooling: Update thermal pressure in case of a maximum frequency capping
 
-Thermal pressure follows pelt signals which means the decay period for
-thermal pressure is the default pelt decay period. Depending on SoC
-characteristics and thermal activity, it might be beneficial to decay
-thermal pressure slower, but still in-tune with the pelt signals.  One way
-to achieve this is to provide a command line parameter to set a decay
-shift parameter to an integer between 0 and 10.
+Thermal governors can request for a CPU's maximum supported frequency to
+be capped in case of an overheat event. This in turn means that the
+maximum capacity available for tasks to run on the particular CPU is
+reduced. Delta between the original maximum capacity and capped maximum
+capacity is known as thermal pressure. Enable cpufreq cooling device to
+update the thermal pressure in event of a capped maximum frequency.
 
 Signed-off-by: Thara Gopinath <thara.gopinath@linaro.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lkml.kernel.org/r/20200222005213.3873-10-thara.gopinath@linaro.org
+Link: https://lkml.kernel.org/r/20200222005213.3873-9-thara.gopinath@linaro.org
 ---
- Documentation/admin-guide/kernel-parameters.txt | 16 ++++++++++++++-
- kernel/sched/core.c                             |  2 +-
- kernel/sched/fair.c                             | 15 ++++++++++++-
- kernel/sched/sched.h                            | 18 ++++++++++++++++-
- 4 files changed, 49 insertions(+), 2 deletions(-)
+ drivers/thermal/cpufreq_cooling.c | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index c07815d..dac8245 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -4392,6 +4392,22 @@
- 			incurs a small amount of overhead in the scheduler
- 			but is useful for debugging and performance tuning.
+diff --git a/drivers/thermal/cpufreq_cooling.c b/drivers/thermal/cpufreq_cooling.c
+index fe83d7a..4ae8c85 100644
+--- a/drivers/thermal/cpufreq_cooling.c
++++ b/drivers/thermal/cpufreq_cooling.c
+@@ -431,6 +431,10 @@ static int cpufreq_set_cur_state(struct thermal_cooling_device *cdev,
+ 				 unsigned long state)
+ {
+ 	struct cpufreq_cooling_device *cpufreq_cdev = cdev->devdata;
++	struct cpumask *cpus;
++	unsigned int frequency;
++	unsigned long max_capacity, capacity;
++	int ret;
  
-+	sched_thermal_decay_shift=
-+			[KNL, SMP] Set a decay shift for scheduler thermal
-+			pressure signal. Thermal pressure signal follows the
-+			default decay period of other scheduler pelt
-+			signals(usually 32 ms but configurable). Setting
-+			sched_thermal_decay_shift will left shift the decay
-+			period for the thermal pressure signal by the shift
-+			value.
-+			i.e. with the default pelt decay period of 32 ms
-+			sched_thermal_decay_shift   thermal pressure decay pr
-+				1			64 ms
-+				2			128 ms
-+			and so on.
-+			Format: integer between 0 and 10
-+			Default is 0.
+ 	/* Request state should be less than max_level */
+ 	if (WARN_ON(state > cpufreq_cdev->max_level))
+@@ -442,8 +446,19 @@ static int cpufreq_set_cur_state(struct thermal_cooling_device *cdev,
+ 
+ 	cpufreq_cdev->cpufreq_state = state;
+ 
+-	return freq_qos_update_request(&cpufreq_cdev->qos_req,
+-				get_state_freq(cpufreq_cdev, state));
++	frequency = get_state_freq(cpufreq_cdev, state);
 +
- 	skew_tick=	[KNL] Offset the periodic timer tick per cpu to mitigate
- 			xtime_lock contention on larger systems, and/or RCU lock
- 			contention on all systems with CONFIG_MAXSMP set.
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 3e620fe..4d76df3 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -3595,7 +3595,7 @@ void scheduler_tick(void)
- 
- 	update_rq_clock(rq);
- 	thermal_pressure = arch_scale_thermal_pressure(cpu_of(rq));
--	update_thermal_load_avg(rq_clock_task(rq), rq, thermal_pressure);
-+	update_thermal_load_avg(rq_clock_thermal(rq), rq, thermal_pressure);
- 	curr->sched_class->task_tick(rq, curr, 0);
- 	calc_global_load_tick(rq);
- 	psi_task_tick(rq);
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index aa51286..79bb423 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -86,6 +86,19 @@ static unsigned int normalized_sysctl_sched_wakeup_granularity	= 1000000UL;
- 
- const_debug unsigned int sysctl_sched_migration_cost	= 500000UL;
- 
-+int sched_thermal_decay_shift;
-+static int __init setup_sched_thermal_decay_shift(char *str)
-+{
-+	int _shift = 0;
++	ret = freq_qos_update_request(&cpufreq_cdev->qos_req, frequency);
 +
-+	if (kstrtoint(str, 0, &_shift))
-+		pr_warn("Unable to set scheduler thermal pressure decay shift parameter\n");
++	if (ret > 0) {
++		cpus = cpufreq_cdev->policy->cpus;
++		max_capacity = arch_scale_cpu_capacity(cpumask_first(cpus));
++		capacity = frequency * max_capacity;
++		capacity /= cpufreq_cdev->policy->cpuinfo.max_freq;
++		arch_set_thermal_pressure(cpus, max_capacity - capacity);
++	}
 +
-+	sched_thermal_decay_shift = clamp(_shift, 0, 10);
-+	return 1;
-+}
-+__setup("sched_thermal_decay_shift=", setup_sched_thermal_decay_shift);
-+
- #ifdef CONFIG_SMP
- /*
-  * For asym packing, by default the lower numbered CPU has higher priority.
-@@ -7760,7 +7773,7 @@ static bool __update_blocked_others(struct rq *rq, bool *done)
- 
- 	decayed = update_rt_rq_load_avg(now, rq, curr_class == &rt_sched_class) |
- 		  update_dl_rq_load_avg(now, rq, curr_class == &dl_sched_class) |
--		  update_thermal_load_avg(rq_clock_task(rq), rq, thermal_pressure) |
-+		  update_thermal_load_avg(rq_clock_thermal(rq), rq, thermal_pressure) |
- 		  update_irq_load_avg(rq, 0);
- 
- 	if (others_have_blocked(rq))
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index 6c839f8..7f1a85b 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -1127,6 +1127,24 @@ static inline u64 rq_clock_task(struct rq *rq)
- 	return rq->clock_task;
++	return ret;
  }
  
-+/**
-+ * By default the decay is the default pelt decay period.
-+ * The decay shift can change the decay period in
-+ * multiples of 32.
-+ *  Decay shift		Decay period(ms)
-+ *	0			32
-+ *	1			64
-+ *	2			128
-+ *	3			256
-+ *	4			512
-+ */
-+extern int sched_thermal_decay_shift;
-+
-+static inline u64 rq_clock_thermal(struct rq *rq)
-+{
-+	return rq_clock_task(rq) >> sched_thermal_decay_shift;
-+}
-+
- static inline void rq_clock_skip_update(struct rq *rq)
- {
- 	lockdep_assert_held(&rq->lock);
+ /* Bind cpufreq callbacks to thermal cooling device ops */
