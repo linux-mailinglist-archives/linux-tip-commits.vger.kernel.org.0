@@ -2,38 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C866517C070
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Mar 2020 15:42:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 832F417C0B2
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Mar 2020 15:44:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726490AbgCFOmO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 6 Mar 2020 09:42:14 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:53785 "EHLO
+        id S1727059AbgCFOn4 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 6 Mar 2020 09:43:56 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:53755 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727066AbgCFOmO (ORCPT
+        with ESMTP id S1726990AbgCFOmL (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 6 Mar 2020 09:42:14 -0500
+        Fri, 6 Mar 2020 09:42:11 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jAEAy-0006Ir-MR; Fri, 06 Mar 2020 15:42:08 +0100
+        id 1jAEAx-0006IS-3n; Fri, 06 Mar 2020 15:42:07 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 324841C21D8;
-        Fri,  6 Mar 2020 15:42:06 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C52A71C21D5;
+        Fri,  6 Mar 2020 15:42:05 +0100 (CET)
 Date:   Fri, 06 Mar 2020 14:42:05 -0000
 From:   "tip-bot2 for Vincent Guittot" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/fair: Fix runnable_avg for throttled cfs
-Cc:     Ben Segall <bsegall@google.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
+Subject: [tip: sched/core] sched/fair: Fix reordering of enqueue/dequeue_task_fair()
+Cc:     Vincent Guittot <vincent.guittot@linaro.org>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200227154115.8332-1-vincent.guittot@linaro.org>
-References: <20200227154115.8332-1-vincent.guittot@linaro.org>
+In-Reply-To: <20200306084208.12583-1-vincent.guittot@linaro.org>
+References: <20200306084208.12583-1-vincent.guittot@linaro.org>
 MIME-Version: 1.0
-Message-ID: <158350572588.28353.11229882686518065235.tip-bot2@tip-bot2>
+Message-ID: <158350572554.28353.7875541187781600400.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,61 +48,83 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     6212437f0f6043e825e021e4afc5cd63e248a2b4
-Gitweb:        https://git.kernel.org/tip/6212437f0f6043e825e021e4afc5cd63e248a2b4
+Commit-ID:     5ab297bab984310267734dfbcc8104566658ebef
+Gitweb:        https://git.kernel.org/tip/5ab297bab984310267734dfbcc8104566658ebef
 Author:        Vincent Guittot <vincent.guittot@linaro.org>
-AuthorDate:    Thu, 27 Feb 2020 16:41:15 +01:00
+AuthorDate:    Fri, 06 Mar 2020 09:42:08 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Fri, 06 Mar 2020 12:57:25 +01:00
 
-sched/fair: Fix runnable_avg for throttled cfs
+sched/fair: Fix reordering of enqueue/dequeue_task_fair()
 
-When a cfs_rq is throttled, its group entity is dequeued and its running
-tasks are removed. We must update runnable_avg with the old h_nr_running
-and update group_se->runnable_weight with the new h_nr_running at each
-level of the hierarchy.
+Even when a cgroup is throttled, the group se of a child cgroup can still
+be enqueued and its gse->on_rq stays true. When a task is enqueued on such
+child, we still have to update the load_avg and increase
+h_nr_running of the throttled cfs. Nevertheless, the 1st
+for_each_sched_entity() loop is skipped because of gse->on_rq == true and the
+2nd loop because the cfs is throttled whereas we have to update both
+load_avg with the old h_nr_running and increase h_nr_running in such case.
 
-Reviewed-by: Ben Segall <bsegall@google.com>
+The same sequence can happen during dequeue when se moves to parent before
+breaking in the 1st loop.
+
+Note that the update of load_avg will effectively happen only once in order
+to sync up to the throttled time. Next call for updating load_avg will stop
+early because the clock stays unchanged.
+
 Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Fixes: 9f68395333ad ("sched/pelt: Add a new runnable average signal")
-Link: https://lkml.kernel.org/r/20200227154115.8332-1-vincent.guittot@linaro.org
+Fixes: 6d4d22468dae ("sched/fair: Reorder enqueue/dequeue_task_fair path")
+Link: https://lkml.kernel.org/r/20200306084208.12583-1-vincent.guittot@linaro.org
 ---
- kernel/sched/fair.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ kernel/sched/fair.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
 diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 3887b73..54bd628 100644
+index 54bd628..1dea855 100644
 --- a/kernel/sched/fair.c
 +++ b/kernel/sched/fair.c
-@@ -4720,8 +4720,13 @@ static void throttle_cfs_rq(struct cfs_rq *cfs_rq)
- 		if (!se->on_rq)
- 			break;
- 
--		if (dequeue)
-+		if (dequeue) {
- 			dequeue_entity(qcfs_rq, se, DEQUEUE_SLEEP);
-+		} else {
-+			update_load_avg(qcfs_rq, se, 0);
-+			se_update_runnable(se);
-+		}
-+
- 		qcfs_rq->h_nr_running -= task_delta;
- 		qcfs_rq->idle_h_nr_running -= idle_task_delta;
- 
-@@ -4789,8 +4794,13 @@ void unthrottle_cfs_rq(struct cfs_rq *cfs_rq)
- 			enqueue = 0;
- 
+@@ -5460,16 +5460,16 @@ enqueue_task_fair(struct rq *rq, struct task_struct *p, int flags)
+ 	for_each_sched_entity(se) {
  		cfs_rq = cfs_rq_of(se);
--		if (enqueue)
-+		if (enqueue) {
- 			enqueue_entity(cfs_rq, se, ENQUEUE_WAKEUP);
-+		} else {
-+			update_load_avg(cfs_rq, se, 0);
-+			se_update_runnable(se);
-+		}
-+
- 		cfs_rq->h_nr_running += task_delta;
- 		cfs_rq->idle_h_nr_running += idle_task_delta;
  
+-		/* end evaluation on encountering a throttled cfs_rq */
+-		if (cfs_rq_throttled(cfs_rq))
+-			goto enqueue_throttle;
+-
+ 		update_load_avg(cfs_rq, se, UPDATE_TG);
+ 		se_update_runnable(se);
+ 		update_cfs_group(se);
+ 
+ 		cfs_rq->h_nr_running++;
+ 		cfs_rq->idle_h_nr_running += idle_h_nr_running;
++
++		/* end evaluation on encountering a throttled cfs_rq */
++		if (cfs_rq_throttled(cfs_rq))
++			goto enqueue_throttle;
+ 	}
+ 
+ enqueue_throttle:
+@@ -5558,16 +5558,17 @@ static void dequeue_task_fair(struct rq *rq, struct task_struct *p, int flags)
+ 	for_each_sched_entity(se) {
+ 		cfs_rq = cfs_rq_of(se);
+ 
+-		/* end evaluation on encountering a throttled cfs_rq */
+-		if (cfs_rq_throttled(cfs_rq))
+-			goto dequeue_throttle;
+-
+ 		update_load_avg(cfs_rq, se, UPDATE_TG);
+ 		se_update_runnable(se);
+ 		update_cfs_group(se);
+ 
+ 		cfs_rq->h_nr_running--;
+ 		cfs_rq->idle_h_nr_running -= idle_h_nr_running;
++
++		/* end evaluation on encountering a throttled cfs_rq */
++		if (cfs_rq_throttled(cfs_rq))
++			goto dequeue_throttle;
++
+ 	}
+ 
+ dequeue_throttle:
