@@ -2,38 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D9EE17C08F
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Mar 2020 15:43:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1227117C094
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Mar 2020 15:43:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727121AbgCFOmQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 6 Mar 2020 09:42:16 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:53786 "EHLO
+        id S1727069AbgCFOmU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 6 Mar 2020 09:42:20 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:53815 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727069AbgCFOmP (ORCPT
+        with ESMTP id S1727152AbgCFOmT (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 6 Mar 2020 09:42:15 -0500
+        Fri, 6 Mar 2020 09:42:19 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jAEB0-0006JX-7b; Fri, 06 Mar 2020 15:42:10 +0100
+        id 1jAEB3-0006Js-Dk; Fri, 06 Mar 2020 15:42:13 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 045ED1C21D6;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A71AD1C21D5;
         Fri,  6 Mar 2020 15:42:07 +0100 (CET)
-Date:   Fri, 06 Mar 2020 14:42:06 -0000
-From:   "tip-bot2 for Valentin Schneider" <tip-bot2@linutronix.de>
+Date:   Fri, 06 Mar 2020 14:42:07 -0000
+From:   "tip-bot2 for Mel Gorman" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] arm64: defconfig: enable CONFIG_SCHED_SMT
-Cc:     Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Valentin Schneider <valentin.schneider@arm.com>,
+Subject: [tip: sched/core] sched/numa: Acquire RCU lock for checking idle
+ cores during NUMA balancing
+Cc:     Qian Cai <cai@lca.pw>, "Paul E. McKenney" <paulmck@kernel.org>,
+        Mel Gorman <mgorman@techsingularity.net>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200227191433.31994-3-valentin.schneider@arm.com>
-References: <20200227191433.31994-3-valentin.schneider@arm.com>
+In-Reply-To: <20200227191804.GJ3818@techsingularity.net>
+References: <20200227191804.GJ3818@techsingularity.net>
 MIME-Version: 1.0
-Message-ID: <158350572670.28353.3510356909714591940.tip-bot2@tip-bot2>
+Message-ID: <158350572742.28353.9668880281521573284.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,96 +50,76 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     6f693dd5be08237b337f557c510d99addb9eb9ec
-Gitweb:        https://git.kernel.org/tip/6f693dd5be08237b337f557c510d99addb9eb9ec
-Author:        Valentin Schneider <valentin.schneider@arm.com>
-AuthorDate:    Thu, 27 Feb 2020 19:14:33 
+Commit-ID:     0621df315402dd7bc56f7272fae9778701289825
+Gitweb:        https://git.kernel.org/tip/0621df315402dd7bc56f7272fae9778701289825
+Author:        Mel Gorman <mgorman@techsingularity.net>
+AuthorDate:    Thu, 27 Feb 2020 19:18:04 
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 06 Mar 2020 12:57:23 +01:00
+CommitterDate: Fri, 06 Mar 2020 12:57:22 +01:00
 
-arm64: defconfig: enable CONFIG_SCHED_SMT
+sched/numa: Acquire RCU lock for checking idle cores during NUMA balancing
 
-The (CFS) scheduler has some extra logic catering to systems with SMT, but
-that logic won't be compiled in unless the above config is set.
+Qian Cai reported the following bug:
 
-Note that the SMT-centric codepaths are gated by the sched_smt_present
-static key, and the SMT sched_domains will only survive if the platform has
-SMT. As such, the only impact on !SMT platforms should be a slightly
-bigger kernel - no behavioural change.
+  The linux-next commit ff7db0bf24db ("sched/numa: Prefer using an idle CPU as a
+  migration target instead of comparing tasks") introduced a boot warning,
 
-Distro kernels already enable it, which makes sense since there already are
-things like ThunderX2 out in the wild. Enable it for the defconfig.
+  [   86.520534][    T1] WARNING: suspicious RCU usage
+  [   86.520540][    T1] 5.6.0-rc3-next-20200227 #7 Not tainted
+  [   86.520545][    T1] -----------------------------
+  [   86.520551][    T1] kernel/sched/fair.c:5914 suspicious rcu_dereference_check() usage!
+  [   86.520555][    T1]
+  [   86.520555][    T1] other info that might help us debug this:
+  [   86.520555][    T1]
+  [   86.520561][    T1]
+  [   86.520561][    T1] rcu_scheduler_active = 2, debug_locks = 1
+  [   86.520567][    T1] 1 lock held by systemd/1:
+  [   86.520571][    T1]  #0: ffff8887f4b14848 (&mm->mmap_sem#2){++++}, at: do_page_fault+0x1d2/0x998
+  [   86.520594][    T1]
+  [   86.520594][    T1] stack backtrace:
+  [   86.520602][    T1] CPU: 1 PID: 1 Comm: systemd Not tainted 5.6.0-rc3-next-20200227 #7
 
-Some deltas
-===========
+task_numa_migrate() checks for idle cores when updating NUMA-related statistics.
+This relies on reading a RCU-protected structure in test_idle_cores() via this
+call chain
 
-FWIW my ELF symbol table diff looks something like this:
+task_numa_migrate
+  -> update_numa_stats
+    -> numa_idle_core
+      -> test_idle_cores
 
-  NAME                                BEFORE    AFTER     DELTA
-  update_sd_lb_stats.constprop.135    0         1864      +1864
-  find_idlest_group.isra.115          0         1808      +1808
-  update_numa_stats.isra.121          0         628       +628
-  select_task_rq_fair                 3236      3732      +496
-  compute_energy.isra.112             0         420       +420
-  score_nearby_nodes.part.120         0         380       +380
-  __update_idle_core                  0         232       +232
-  nohz_balance_exit_idle.part.127     0         216       +216
-  sched_slice.isra.99                 0         172       +172
-  update_load_avg.part.107            0         116       +116
-  wakeup_preempt_entity.isra.101      0         92        +92
-  sched_cpu_activate                  340       396       +56
-  pick_next_task_idle                 8         56        +48
-  sched_cpu_deactivate                252       292       +40
-  show_smt_active                     44        80        +36
-  cpu_smt_mask                        0         28        +28
-  set_next_task_idle                  4         32        +28
-  task_numa_work                      680       692       +12
-  cpu_smt_flags                       0         8         +8
-  enqueue_task_fair                   2608      2612      +4
-  wakeup_preempt_entity.isra.104      92        0         -92
-  update_load_avg                     1028      932       -96
-  task_numa_migrate                   1824      1728      -96
-  sched_slice.isra.102                172       0         -172
-  nohz_balance_exit_idle.part.130     216       0         -216
-  task_numa_find_cpu                  2116      1868      -248
-  score_nearby_nodes.part.123         380       0         -380
-  compute_energy.isra.115             420       0         -420
-  update_numa_stats.isra.124          472       0         -472
-  find_idlest_group.isra.118          1808      0         -1808
-  update_sd_lb_stats.constprop.138    1864      0         -1864
-  ------------------------------------------------------------------
-  DELTA SUM                                               +820
+While the locking could be fine-grained, it is more appropriate to acquire
+the RCU lock for the entire scan of the domain. This patch removes the
+warning triggered at boot time.
 
-As for the sched_domains, this is on a hikey960:
-
-before:
-  $ cat /proc/sys/kernel/sched_domain/cpu*/domain*/name | sort | uniq
-  DIE
-  MC
-
-after:
-  $ cat /proc/sys/kernel/sched_domain/cpu*/domain*/name | sort | uniq
-  DIE
-  MC
-
-Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
+Reported-by: Qian Cai <cai@lca.pw>
+Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Mel Gorman <mgorman@techsingularity.net>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lkml.kernel.org/r/20200227191433.31994-3-valentin.schneider@arm.com
+Fixes: ff7db0bf24db ("sched/numa: Prefer using an idle CPU as a migration target instead of comparing tasks")
+Link: https://lkml.kernel.org/r/20200227191804.GJ3818@techsingularity.net
 ---
- arch/arm64/configs/defconfig | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/sched/fair.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
-index 905109f..3e75007 100644
---- a/arch/arm64/configs/defconfig
-+++ b/arch/arm64/configs/defconfig
-@@ -62,6 +62,7 @@ CONFIG_ARCH_ZX=y
- CONFIG_ARCH_ZYNQMP=y
- CONFIG_ARM64_VA_BITS_48=y
- CONFIG_SCHED_MC=y
-+CONFIG_SCHED_SMT=y
- CONFIG_NUMA=y
- CONFIG_SECCOMP=y
- CONFIG_KEXEC=y
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index bba9452..3887b73 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -1608,6 +1608,7 @@ static void update_numa_stats(struct task_numa_env *env,
+ 	memset(ns, 0, sizeof(*ns));
+ 	ns->idle_cpu = -1;
+ 
++	rcu_read_lock();
+ 	for_each_cpu(cpu, cpumask_of_node(nid)) {
+ 		struct rq *rq = cpu_rq(cpu);
+ 
+@@ -1627,6 +1628,7 @@ static void update_numa_stats(struct task_numa_env *env,
+ 			idle_core = numa_idle_core(idle_core, cpu);
+ 		}
+ 	}
++	rcu_read_unlock();
+ 
+ 	ns->weight = cpumask_weight(cpumask_of_node(nid));
+ 
