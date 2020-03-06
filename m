@@ -2,34 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E32B17C06C
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Mar 2020 15:42:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 19CA117C0B7
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Mar 2020 15:44:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726565AbgCFOmH (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 6 Mar 2020 09:42:07 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:53727 "EHLO
+        id S1727386AbgCFOoB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 6 Mar 2020 09:44:01 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:53739 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726171AbgCFOmH (ORCPT
+        with ESMTP id S1726533AbgCFOmI (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 6 Mar 2020 09:42:07 -0500
+        Fri, 6 Mar 2020 09:42:08 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jAEAt-0006Gs-IV; Fri, 06 Mar 2020 15:42:03 +0100
+        id 1jAEAs-0006GG-P5; Fri, 06 Mar 2020 15:42:02 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 397C61C21D4;
-        Fri,  6 Mar 2020 15:42:03 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 633BC1C21D5;
+        Fri,  6 Mar 2020 15:42:02 +0100 (CET)
 Date:   Fri, 06 Mar 2020 14:42:02 -0000
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/core: Unify {pinned,flexible}_sched_in()
+Subject: [tip: perf/core] perf/cgroup: Reorder perf_cgroup_connect()
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Ian Rogers <irogers@google.com>,
         Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200214075133.181299-2-irogers@google.com>
+References: <20200214075133.181299-2-irogers@google.com>
 MIME-Version: 1.0
-Message-ID: <158350572291.28353.3266380896499443707.tip-bot2@tip-bot2>
+Message-ID: <158350572214.28353.13646888224864250072.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -45,137 +48,69 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     ab6f824cfdf7363b5e529621cbc72ae6519c78d1
-Gitweb:        https://git.kernel.org/tip/ab6f824cfdf7363b5e529621cbc72ae6519c78d1
+Commit-ID:     98add2af89bbfe8241e189b490fd91e5751c7900
+Gitweb:        https://git.kernel.org/tip/98add2af89bbfe8241e189b490fd91e5751c7900
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Wed, 07 Aug 2019 11:17:00 +02:00
+AuthorDate:    Thu, 13 Feb 2020 23:51:28 -08:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 06 Mar 2020 11:56:55 +01:00
+CommitterDate: Fri, 06 Mar 2020 11:56:58 +01:00
 
-perf/core: Unify {pinned,flexible}_sched_in()
+perf/cgroup: Reorder perf_cgroup_connect()
 
-Less is more; unify the two very nearly identical function.
+Move perf_cgroup_connect() after perf_event_alloc(), such that we can
+find/use the PMU's cpu context.
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Ian Rogers <irogers@google.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lkml.kernel.org/r/20200214075133.181299-2-irogers@google.com
 ---
- kernel/events/core.c | 58 +++++++++++++++----------------------------
- 1 file changed, 21 insertions(+), 37 deletions(-)
+ kernel/events/core.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
 diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 3f1f77d..b713080 100644
+index b7eaaba..dceeeb1 100644
 --- a/kernel/events/core.c
 +++ b/kernel/events/core.c
-@@ -1986,6 +1986,12 @@ static int perf_get_aux_event(struct perf_event *event,
- 	return 1;
- }
+@@ -10774,12 +10774,6 @@ perf_event_alloc(struct perf_event_attr *attr, int cpu,
+ 	if (!has_branch_stack(event))
+ 		event->attr.branch_sample_type = 0;
  
-+static inline struct list_head *get_event_list(struct perf_event *event)
-+{
-+	struct perf_event_context *ctx = event->ctx;
-+	return event->attr.pinned ? &ctx->pinned_active : &ctx->flexible_active;
-+}
-+
- static void perf_group_detach(struct perf_event *event)
- {
- 	struct perf_event *sibling, *tmp;
-@@ -2028,12 +2034,8 @@ static void perf_group_detach(struct perf_event *event)
- 		if (!RB_EMPTY_NODE(&event->group_node)) {
- 			add_event_to_groups(sibling, event->ctx);
- 
--			if (sibling->state == PERF_EVENT_STATE_ACTIVE) {
--				struct list_head *list = sibling->attr.pinned ?
--					&ctx->pinned_active : &ctx->flexible_active;
+-	if (cgroup_fd != -1) {
+-		err = perf_cgroup_connect(cgroup_fd, event, attr, group_leader);
+-		if (err)
+-			goto err_ns;
+-	}
 -
--				list_add_tail(&sibling->active_list, list);
--			}
-+			if (sibling->state == PERF_EVENT_STATE_ACTIVE)
-+				list_add_tail(&sibling->active_list, get_event_list(sibling));
- 		}
- 
- 		WARN_ON_ONCE(sibling->ctx != event->ctx);
-@@ -2350,6 +2352,8 @@ event_sched_in(struct perf_event *event,
- {
- 	int ret = 0;
- 
-+	WARN_ON_ONCE(event->ctx != ctx);
-+
- 	lockdep_assert_held(&ctx->lock);
- 
- 	if (event->state <= PERF_EVENT_STATE_OFF)
-@@ -3425,10 +3429,12 @@ struct sched_in_data {
- 	int can_add_hw;
- };
- 
--static int pinned_sched_in(struct perf_event *event, void *data)
-+static int merge_sched_in(struct perf_event *event, void *data)
- {
- 	struct sched_in_data *sid = data;
- 
-+	WARN_ON_ONCE(event->ctx != sid->ctx);
-+
- 	if (event->state <= PERF_EVENT_STATE_OFF)
- 		return 0;
- 
-@@ -3437,37 +3443,15 @@ static int pinned_sched_in(struct perf_event *event, void *data)
- 
- 	if (group_can_go_on(event, sid->cpuctx, sid->can_add_hw)) {
- 		if (!group_sched_in(event, sid->cpuctx, sid->ctx))
--			list_add_tail(&event->active_list, &sid->ctx->pinned_active);
-+			list_add_tail(&event->active_list, get_event_list(event));
+ 	pmu = perf_init_event(event);
+ 	if (IS_ERR(pmu)) {
+ 		err = PTR_ERR(pmu);
+@@ -10801,6 +10795,12 @@ perf_event_alloc(struct perf_event_attr *attr, int cpu,
+ 		goto err_pmu;
  	}
  
--	/*
--	 * If this pinned group hasn't been scheduled,
--	 * put it in error state.
--	 */
--	if (event->state == PERF_EVENT_STATE_INACTIVE)
--		perf_event_set_state(event, PERF_EVENT_STATE_ERROR);
--
--	return 0;
--}
--
--static int flexible_sched_in(struct perf_event *event, void *data)
--{
--	struct sched_in_data *sid = data;
--
--	if (event->state <= PERF_EVENT_STATE_OFF)
--		return 0;
--
--	if (!event_filter_match(event))
--		return 0;
-+	if (event->state == PERF_EVENT_STATE_INACTIVE) {
-+		if (event->attr.pinned)
-+			perf_event_set_state(event, PERF_EVENT_STATE_ERROR);
++	if (cgroup_fd != -1) {
++		err = perf_cgroup_connect(cgroup_fd, event, attr, group_leader);
++		if (err)
++			goto err_pmu;
++	}
++
+ 	err = exclusive_event_init(event);
+ 	if (err)
+ 		goto err_pmu;
+@@ -10861,12 +10861,12 @@ err_per_task:
+ 	exclusive_event_destroy(event);
  
--	if (group_can_go_on(event, sid->cpuctx, sid->can_add_hw)) {
--		int ret = group_sched_in(event, sid->cpuctx, sid->ctx);
--		if (ret) {
--			sid->can_add_hw = 0;
--			sid->ctx->rotate_necessary = 1;
--			return 0;
--		}
--		list_add_tail(&event->active_list, &sid->ctx->flexible_active);
-+		sid->can_add_hw = 0;
-+		sid->ctx->rotate_necessary = 1;
- 	}
- 
- 	return 0;
-@@ -3485,7 +3469,7 @@ ctx_pinned_sched_in(struct perf_event_context *ctx,
- 
- 	visit_groups_merge(&ctx->pinned_groups,
- 			   smp_processor_id(),
--			   pinned_sched_in, &sid);
-+			   merge_sched_in, &sid);
- }
- 
- static void
-@@ -3500,7 +3484,7 @@ ctx_flexible_sched_in(struct perf_event_context *ctx,
- 
- 	visit_groups_merge(&ctx->flexible_groups,
- 			   smp_processor_id(),
--			   flexible_sched_in, &sid);
-+			   merge_sched_in, &sid);
- }
- 
- static void
+ err_pmu:
++	if (is_cgroup_event(event))
++		perf_detach_cgroup(event);
+ 	if (event->destroy)
+ 		event->destroy(event);
+ 	module_put(pmu->module);
+ err_ns:
+-	if (is_cgroup_event(event))
+-		perf_detach_cgroup(event);
+ 	if (event->ns)
+ 		put_pid_ns(event->ns);
+ 	if (event->hw.target)
