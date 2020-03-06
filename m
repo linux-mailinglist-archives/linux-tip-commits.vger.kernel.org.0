@@ -2,37 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EFA9D17C09A
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Mar 2020 15:43:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D9EE17C08F
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Mar 2020 15:43:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726650AbgCFOnJ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 6 Mar 2020 09:43:09 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:53845 "EHLO
+        id S1727121AbgCFOmQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 6 Mar 2020 09:42:16 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:53786 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727234AbgCFOmW (ORCPT
+        with ESMTP id S1727069AbgCFOmP (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 6 Mar 2020 09:42:22 -0500
+        Fri, 6 Mar 2020 09:42:15 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jAEAz-0006JQ-Ds; Fri, 06 Mar 2020 15:42:09 +0100
+        id 1jAEB0-0006JX-7b; Fri, 06 Mar 2020 15:42:10 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 91C5D1C21D9;
-        Fri,  6 Mar 2020 15:42:06 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 045ED1C21D6;
+        Fri,  6 Mar 2020 15:42:07 +0100 (CET)
 Date:   Fri, 06 Mar 2020 14:42:06 -0000
-From:   "tip-bot2 for Yu Chen" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Valentin Schneider" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/deadline: Make two functions static
-Cc:     Yu Chen <chen.yu@easystack.cn>,
+Subject: [tip: sched/core] arm64: defconfig: enable CONFIG_SCHED_SMT
+Cc:     Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Valentin Schneider <valentin.schneider@arm.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200228100329.16927-1-chen.yu@easystack.cn>
-References: <20200228100329.16927-1-chen.yu@easystack.cn>
+In-Reply-To: <20200227191433.31994-3-valentin.schneider@arm.com>
+References: <20200227191433.31994-3-valentin.schneider@arm.com>
 MIME-Version: 1.0
-Message-ID: <158350572628.28353.5626371504382178233.tip-bot2@tip-bot2>
+Message-ID: <158350572670.28353.3510356909714591940.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,82 +49,96 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     ba4f7bc1dee318a0fd9c0e3bd46227aca21ac2f2
-Gitweb:        https://git.kernel.org/tip/ba4f7bc1dee318a0fd9c0e3bd46227aca21ac2f2
-Author:        Yu Chen <chen.yu@easystack.cn>
-AuthorDate:    Fri, 28 Feb 2020 18:03:29 +08:00
+Commit-ID:     6f693dd5be08237b337f557c510d99addb9eb9ec
+Gitweb:        https://git.kernel.org/tip/6f693dd5be08237b337f557c510d99addb9eb9ec
+Author:        Valentin Schneider <valentin.schneider@arm.com>
+AuthorDate:    Thu, 27 Feb 2020 19:14:33 
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 06 Mar 2020 12:57:24 +01:00
+CommitterDate: Fri, 06 Mar 2020 12:57:23 +01:00
 
-sched/deadline: Make two functions static
+arm64: defconfig: enable CONFIG_SCHED_SMT
 
-Since commit 06a76fe08d4 ("sched/deadline: Move DL related code
-from sched/core.c to sched/deadline.c"), DL related code moved to
-deadline.c.
+The (CFS) scheduler has some extra logic catering to systems with SMT, but
+that logic won't be compiled in unless the above config is set.
 
-Make the following two functions static since they're only used in
-deadline.c:
+Note that the SMT-centric codepaths are gated by the sched_smt_present
+static key, and the SMT sched_domains will only survive if the platform has
+SMT. As such, the only impact on !SMT platforms should be a slightly
+bigger kernel - no behavioural change.
 
-	dl_change_utilization()
-	init_dl_rq_bw_ratio()
+Distro kernels already enable it, which makes sense since there already are
+things like ThunderX2 out in the wild. Enable it for the defconfig.
 
-Signed-off-by: Yu Chen <chen.yu@easystack.cn>
+Some deltas
+===========
+
+FWIW my ELF symbol table diff looks something like this:
+
+  NAME                                BEFORE    AFTER     DELTA
+  update_sd_lb_stats.constprop.135    0         1864      +1864
+  find_idlest_group.isra.115          0         1808      +1808
+  update_numa_stats.isra.121          0         628       +628
+  select_task_rq_fair                 3236      3732      +496
+  compute_energy.isra.112             0         420       +420
+  score_nearby_nodes.part.120         0         380       +380
+  __update_idle_core                  0         232       +232
+  nohz_balance_exit_idle.part.127     0         216       +216
+  sched_slice.isra.99                 0         172       +172
+  update_load_avg.part.107            0         116       +116
+  wakeup_preempt_entity.isra.101      0         92        +92
+  sched_cpu_activate                  340       396       +56
+  pick_next_task_idle                 8         56        +48
+  sched_cpu_deactivate                252       292       +40
+  show_smt_active                     44        80        +36
+  cpu_smt_mask                        0         28        +28
+  set_next_task_idle                  4         32        +28
+  task_numa_work                      680       692       +12
+  cpu_smt_flags                       0         8         +8
+  enqueue_task_fair                   2608      2612      +4
+  wakeup_preempt_entity.isra.104      92        0         -92
+  update_load_avg                     1028      932       -96
+  task_numa_migrate                   1824      1728      -96
+  sched_slice.isra.102                172       0         -172
+  nohz_balance_exit_idle.part.130     216       0         -216
+  task_numa_find_cpu                  2116      1868      -248
+  score_nearby_nodes.part.123         380       0         -380
+  compute_energy.isra.115             420       0         -420
+  update_numa_stats.isra.124          472       0         -472
+  find_idlest_group.isra.118          1808      0         -1808
+  update_sd_lb_stats.constprop.138    1864      0         -1864
+  ------------------------------------------------------------------
+  DELTA SUM                                               +820
+
+As for the sched_domains, this is on a hikey960:
+
+before:
+  $ cat /proc/sys/kernel/sched_domain/cpu*/domain*/name | sort | uniq
+  DIE
+  MC
+
+after:
+  $ cat /proc/sys/kernel/sched_domain/cpu*/domain*/name | sort | uniq
+  DIE
+  MC
+
+Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lkml.kernel.org/r/20200228100329.16927-1-chen.yu@easystack.cn
+Link: https://lkml.kernel.org/r/20200227191433.31994-3-valentin.schneider@arm.com
 ---
- kernel/sched/deadline.c | 6 ++++--
- kernel/sched/sched.h    | 2 --
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ arch/arm64/configs/defconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
-index 43323f8..504d2f5 100644
---- a/kernel/sched/deadline.c
-+++ b/kernel/sched/deadline.c
-@@ -153,7 +153,7 @@ void sub_running_bw(struct sched_dl_entity *dl_se, struct dl_rq *dl_rq)
- 		__sub_running_bw(dl_se->dl_bw, dl_rq);
- }
- 
--void dl_change_utilization(struct task_struct *p, u64 new_bw)
-+static void dl_change_utilization(struct task_struct *p, u64 new_bw)
- {
- 	struct rq *rq;
- 
-@@ -334,6 +334,8 @@ static inline int is_leftmost(struct task_struct *p, struct dl_rq *dl_rq)
- 	return dl_rq->root.rb_leftmost == &dl_se->rb_node;
- }
- 
-+static void init_dl_rq_bw_ratio(struct dl_rq *dl_rq);
-+
- void init_dl_bandwidth(struct dl_bandwidth *dl_b, u64 period, u64 runtime)
- {
- 	raw_spin_lock_init(&dl_b->dl_runtime_lock);
-@@ -2496,7 +2498,7 @@ int sched_dl_global_validate(void)
- 	return ret;
- }
- 
--void init_dl_rq_bw_ratio(struct dl_rq *dl_rq)
-+static void init_dl_rq_bw_ratio(struct dl_rq *dl_rq)
- {
- 	if (global_rt_runtime() == RUNTIME_INF) {
- 		dl_rq->bw_ratio = 1 << RATIO_SHIFT;
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index 7f1a85b..9e173fa 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -305,7 +305,6 @@ bool __dl_overflow(struct dl_bw *dl_b, int cpus, u64 old_bw, u64 new_bw)
- 	       dl_b->bw * cpus < dl_b->total_bw - old_bw + new_bw;
- }
- 
--extern void dl_change_utilization(struct task_struct *p, u64 new_bw);
- extern void init_dl_bw(struct dl_bw *dl_b);
- extern int  sched_dl_global_validate(void);
- extern void sched_dl_do_global(void);
-@@ -1905,7 +1904,6 @@ extern struct dl_bandwidth def_dl_bandwidth;
- extern void init_dl_bandwidth(struct dl_bandwidth *dl_b, u64 period, u64 runtime);
- extern void init_dl_task_timer(struct sched_dl_entity *dl_se);
- extern void init_dl_inactive_task_timer(struct sched_dl_entity *dl_se);
--extern void init_dl_rq_bw_ratio(struct dl_rq *dl_rq);
- 
- #define BW_SHIFT		20
- #define BW_UNIT			(1 << BW_SHIFT)
+diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
+index 905109f..3e75007 100644
+--- a/arch/arm64/configs/defconfig
++++ b/arch/arm64/configs/defconfig
+@@ -62,6 +62,7 @@ CONFIG_ARCH_ZX=y
+ CONFIG_ARCH_ZYNQMP=y
+ CONFIG_ARM64_VA_BITS_48=y
+ CONFIG_SCHED_MC=y
++CONFIG_SCHED_SMT=y
+ CONFIG_NUMA=y
+ CONFIG_SECCOMP=y
+ CONFIG_KEXEC=y
