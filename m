@@ -2,39 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D47F17C092
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Mar 2020 15:43:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EFA9D17C09A
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Mar 2020 15:43:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727179AbgCFOmS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 6 Mar 2020 09:42:18 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:53800 "EHLO
+        id S1726650AbgCFOnJ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 6 Mar 2020 09:43:09 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:53845 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727101AbgCFOmS (ORCPT
+        with ESMTP id S1727234AbgCFOmW (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 6 Mar 2020 09:42:18 -0500
+        Fri, 6 Mar 2020 09:42:22 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jAEB0-0006Hv-Rk; Fri, 06 Mar 2020 15:42:10 +0100
+        id 1jAEAz-0006JQ-Ds; Fri, 06 Mar 2020 15:42:09 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 726B01C21D7;
-        Fri,  6 Mar 2020 15:42:05 +0100 (CET)
-Date:   Fri, 06 Mar 2020 14:42:05 -0000
-From:   "tip-bot2 for Qais Yousef" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 91C5D1C21D9;
+        Fri,  6 Mar 2020 15:42:06 +0100 (CET)
+Date:   Fri, 06 Mar 2020 14:42:06 -0000
+From:   "tip-bot2 for Yu Chen" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/rt: cpupri_find: Implement fallback mechanism
- for !fit case
-Cc:     Pavan Kondeti <pkondeti@codeaurora.org>,
-        Qais Yousef <qais.yousef@arm.com>,
+Subject: [tip: sched/core] sched/deadline: Make two functions static
+Cc:     Yu Chen <chen.yu@easystack.cn>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200302132721.8353-2-qais.yousef@arm.com>
-References: <20200302132721.8353-2-qais.yousef@arm.com>
+In-Reply-To: <20200228100329.16927-1-chen.yu@easystack.cn>
+References: <20200228100329.16927-1-chen.yu@easystack.cn>
 MIME-Version: 1.0
-Message-ID: <158350572520.28353.11588620733544296269.tip-bot2@tip-bot2>
+Message-ID: <158350572628.28353.5626371504382178233.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,232 +48,82 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     d9cb236b9429044dc694ea70a50163ddd283cea6
-Gitweb:        https://git.kernel.org/tip/d9cb236b9429044dc694ea70a50163ddd283cea6
-Author:        Qais Yousef <qais.yousef@arm.com>
-AuthorDate:    Mon, 02 Mar 2020 13:27:16 
+Commit-ID:     ba4f7bc1dee318a0fd9c0e3bd46227aca21ac2f2
+Gitweb:        https://git.kernel.org/tip/ba4f7bc1dee318a0fd9c0e3bd46227aca21ac2f2
+Author:        Yu Chen <chen.yu@easystack.cn>
+AuthorDate:    Fri, 28 Feb 2020 18:03:29 +08:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 06 Mar 2020 12:57:26 +01:00
+CommitterDate: Fri, 06 Mar 2020 12:57:24 +01:00
 
-sched/rt: cpupri_find: Implement fallback mechanism for !fit case
+sched/deadline: Make two functions static
 
-When searching for the best lowest_mask with a fitness_fn passed, make
-sure we record the lowest_level that returns a valid lowest_mask so that
-we can use that as a fallback in case we fail to find a fitting CPU at
-all levels.
+Since commit 06a76fe08d4 ("sched/deadline: Move DL related code
+from sched/core.c to sched/deadline.c"), DL related code moved to
+deadline.c.
 
-The intention in the original patch was not to allow a down migration to
-unfitting CPU. But this missed the case where we are already running on
-unfitting one.
+Make the following two functions static since they're only used in
+deadline.c:
 
-With this change now RT tasks can still move between unfitting CPUs when
-they're already running on such CPU.
+	dl_change_utilization()
+	init_dl_rq_bw_ratio()
 
-And as Steve suggested; to adhere to the strict priority rules of RT, if
-a task is already running on a fitting CPU but due to priority it can't
-run on it, allow it to downmigrate to unfitting CPU so it can run.
-
-Reported-by: Pavan Kondeti <pkondeti@codeaurora.org>
-Signed-off-by: Qais Yousef <qais.yousef@arm.com>
+Signed-off-by: Yu Chen <chen.yu@easystack.cn>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Fixes: 804d402fb6f6 ("sched/rt: Make RT capacity-aware")
-Link: https://lkml.kernel.org/r/20200302132721.8353-2-qais.yousef@arm.com
-Link: https://lore.kernel.org/lkml/20200203142712.a7yvlyo2y3le5cpn@e107158-lin/
+Link: https://lkml.kernel.org/r/20200228100329.16927-1-chen.yu@easystack.cn
 ---
- kernel/sched/cpupri.c | 157 ++++++++++++++++++++++++++---------------
- 1 file changed, 101 insertions(+), 56 deletions(-)
+ kernel/sched/deadline.c | 6 ++++--
+ kernel/sched/sched.h    | 2 --
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/sched/cpupri.c b/kernel/sched/cpupri.c
-index 1a2719e..1bcfa19 100644
---- a/kernel/sched/cpupri.c
-+++ b/kernel/sched/cpupri.c
-@@ -41,6 +41,59 @@ static int convert_prio(int prio)
- 	return cpupri;
+diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
+index 43323f8..504d2f5 100644
+--- a/kernel/sched/deadline.c
++++ b/kernel/sched/deadline.c
+@@ -153,7 +153,7 @@ void sub_running_bw(struct sched_dl_entity *dl_se, struct dl_rq *dl_rq)
+ 		__sub_running_bw(dl_se->dl_bw, dl_rq);
  }
  
-+static inline int __cpupri_find(struct cpupri *cp, struct task_struct *p,
-+				struct cpumask *lowest_mask, int idx)
-+{
-+	struct cpupri_vec *vec  = &cp->pri_to_cpu[idx];
-+	int skip = 0;
-+
-+	if (!atomic_read(&(vec)->count))
-+		skip = 1;
-+	/*
-+	 * When looking at the vector, we need to read the counter,
-+	 * do a memory barrier, then read the mask.
-+	 *
-+	 * Note: This is still all racey, but we can deal with it.
-+	 *  Ideally, we only want to look at masks that are set.
-+	 *
-+	 *  If a mask is not set, then the only thing wrong is that we
-+	 *  did a little more work than necessary.
-+	 *
-+	 *  If we read a zero count but the mask is set, because of the
-+	 *  memory barriers, that can only happen when the highest prio
-+	 *  task for a run queue has left the run queue, in which case,
-+	 *  it will be followed by a pull. If the task we are processing
-+	 *  fails to find a proper place to go, that pull request will
-+	 *  pull this task if the run queue is running at a lower
-+	 *  priority.
-+	 */
-+	smp_rmb();
-+
-+	/* Need to do the rmb for every iteration */
-+	if (skip)
-+		return 0;
-+
-+	if (cpumask_any_and(p->cpus_ptr, vec->mask) >= nr_cpu_ids)
-+		return 0;
-+
-+	if (lowest_mask) {
-+		cpumask_and(lowest_mask, p->cpus_ptr, vec->mask);
-+
-+		/*
-+		 * We have to ensure that we have at least one bit
-+		 * still set in the array, since the map could have
-+		 * been concurrently emptied between the first and
-+		 * second reads of vec->mask.  If we hit this
-+		 * condition, simply act as though we never hit this
-+		 * priority level and continue on.
-+		 */
-+		if (cpumask_empty(lowest_mask))
-+			return 0;
-+	}
-+
-+	return 1;
-+}
-+
- /**
-  * cpupri_find - find the best (lowest-pri) CPU in the system
-  * @cp: The cpupri context
-@@ -62,80 +115,72 @@ int cpupri_find(struct cpupri *cp, struct task_struct *p,
- 		struct cpumask *lowest_mask,
- 		bool (*fitness_fn)(struct task_struct *p, int cpu))
+-void dl_change_utilization(struct task_struct *p, u64 new_bw)
++static void dl_change_utilization(struct task_struct *p, u64 new_bw)
  {
--	int idx = 0;
- 	int task_pri = convert_prio(p->prio);
-+	int best_unfit_idx = -1;
-+	int idx = 0, cpu;
+ 	struct rq *rq;
  
- 	BUG_ON(task_pri >= CPUPRI_NR_PRIORITIES);
- 
- 	for (idx = 0; idx < task_pri; idx++) {
--		struct cpupri_vec *vec  = &cp->pri_to_cpu[idx];
--		int skip = 0;
- 
--		if (!atomic_read(&(vec)->count))
--			skip = 1;
--		/*
--		 * When looking at the vector, we need to read the counter,
--		 * do a memory barrier, then read the mask.
--		 *
--		 * Note: This is still all racey, but we can deal with it.
--		 *  Ideally, we only want to look at masks that are set.
--		 *
--		 *  If a mask is not set, then the only thing wrong is that we
--		 *  did a little more work than necessary.
--		 *
--		 *  If we read a zero count but the mask is set, because of the
--		 *  memory barriers, that can only happen when the highest prio
--		 *  task for a run queue has left the run queue, in which case,
--		 *  it will be followed by a pull. If the task we are processing
--		 *  fails to find a proper place to go, that pull request will
--		 *  pull this task if the run queue is running at a lower
--		 *  priority.
--		 */
--		smp_rmb();
--
--		/* Need to do the rmb for every iteration */
--		if (skip)
--			continue;
--
--		if (cpumask_any_and(p->cpus_ptr, vec->mask) >= nr_cpu_ids)
-+		if (!__cpupri_find(cp, p, lowest_mask, idx))
- 			continue;
- 
--		if (lowest_mask) {
--			int cpu;
-+		if (!lowest_mask || !fitness_fn)
-+			return 1;
- 
--			cpumask_and(lowest_mask, p->cpus_ptr, vec->mask);
-+		/* Ensure the capacity of the CPUs fit the task */
-+		for_each_cpu(cpu, lowest_mask) {
-+			if (!fitness_fn(p, cpu))
-+				cpumask_clear_cpu(cpu, lowest_mask);
-+		}
- 
-+		/*
-+		 * If no CPU at the current priority can fit the task
-+		 * continue looking
-+		 */
-+		if (cpumask_empty(lowest_mask)) {
- 			/*
--			 * We have to ensure that we have at least one bit
--			 * still set in the array, since the map could have
--			 * been concurrently emptied between the first and
--			 * second reads of vec->mask.  If we hit this
--			 * condition, simply act as though we never hit this
--			 * priority level and continue on.
-+			 * Store our fallback priority in case we
-+			 * didn't find a fitting CPU
- 			 */
--			if (cpumask_empty(lowest_mask))
--				continue;
-+			if (best_unfit_idx == -1)
-+				best_unfit_idx = idx;
- 
--			if (!fitness_fn)
--				return 1;
--
--			/* Ensure the capacity of the CPUs fit the task */
--			for_each_cpu(cpu, lowest_mask) {
--				if (!fitness_fn(p, cpu))
--					cpumask_clear_cpu(cpu, lowest_mask);
--			}
--
--			/*
--			 * If no CPU at the current priority can fit the task
--			 * continue looking
--			 */
--			if (cpumask_empty(lowest_mask))
--				continue;
-+			continue;
- 		}
- 
- 		return 1;
- 	}
- 
-+	/*
-+	 * If we failed to find a fitting lowest_mask, make sure we fall back
-+	 * to the last known unfitting lowest_mask.
-+	 *
-+	 * Note that the map of the recorded idx might have changed since then,
-+	 * so we must ensure to do the full dance to make sure that level still
-+	 * holds a valid lowest_mask.
-+	 *
-+	 * As per above, the map could have been concurrently emptied while we
-+	 * were busy searching for a fitting lowest_mask at the other priority
-+	 * levels.
-+	 *
-+	 * This rule favours honouring priority over fitting the task in the
-+	 * correct CPU (Capacity Awareness being the only user now).
-+	 * The idea is that if a higher priority task can run, then it should
-+	 * run even if this ends up being on unfitting CPU.
-+	 *
-+	 * The cost of this trade-off is not entirely clear and will probably
-+	 * be good for some workloads and bad for others.
-+	 *
-+	 * The main idea here is that if some CPUs were overcommitted, we try
-+	 * to spread which is what the scheduler traditionally did. Sys admins
-+	 * must do proper RT planning to avoid overloading the system if they
-+	 * really care.
-+	 */
-+	if (best_unfit_idx != -1)
-+		return __cpupri_find(cp, p, lowest_mask, best_unfit_idx);
-+
- 	return 0;
+@@ -334,6 +334,8 @@ static inline int is_leftmost(struct task_struct *p, struct dl_rq *dl_rq)
+ 	return dl_rq->root.rb_leftmost == &dl_se->rb_node;
  }
  
++static void init_dl_rq_bw_ratio(struct dl_rq *dl_rq);
++
+ void init_dl_bandwidth(struct dl_bandwidth *dl_b, u64 period, u64 runtime)
+ {
+ 	raw_spin_lock_init(&dl_b->dl_runtime_lock);
+@@ -2496,7 +2498,7 @@ int sched_dl_global_validate(void)
+ 	return ret;
+ }
+ 
+-void init_dl_rq_bw_ratio(struct dl_rq *dl_rq)
++static void init_dl_rq_bw_ratio(struct dl_rq *dl_rq)
+ {
+ 	if (global_rt_runtime() == RUNTIME_INF) {
+ 		dl_rq->bw_ratio = 1 << RATIO_SHIFT;
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index 7f1a85b..9e173fa 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -305,7 +305,6 @@ bool __dl_overflow(struct dl_bw *dl_b, int cpus, u64 old_bw, u64 new_bw)
+ 	       dl_b->bw * cpus < dl_b->total_bw - old_bw + new_bw;
+ }
+ 
+-extern void dl_change_utilization(struct task_struct *p, u64 new_bw);
+ extern void init_dl_bw(struct dl_bw *dl_b);
+ extern int  sched_dl_global_validate(void);
+ extern void sched_dl_do_global(void);
+@@ -1905,7 +1904,6 @@ extern struct dl_bandwidth def_dl_bandwidth;
+ extern void init_dl_bandwidth(struct dl_bandwidth *dl_b, u64 period, u64 runtime);
+ extern void init_dl_task_timer(struct sched_dl_entity *dl_se);
+ extern void init_dl_inactive_task_timer(struct sched_dl_entity *dl_se);
+-extern void init_dl_rq_bw_ratio(struct dl_rq *dl_rq);
+ 
+ #define BW_SHIFT		20
+ #define BW_UNIT			(1 << BW_SHIFT)
