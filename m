@@ -2,38 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 86F7217C095
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Mar 2020 15:43:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FC7D17C08B
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Mar 2020 15:43:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727263AbgCFOmW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 6 Mar 2020 09:42:22 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:53844 "EHLO
+        id S1726674AbgCFOm6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 6 Mar 2020 09:42:58 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:53859 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727222AbgCFOmW (ORCPT
+        with ESMTP id S1727257AbgCFOmX (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 6 Mar 2020 09:42:22 -0500
+        Fri, 6 Mar 2020 09:42:23 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jAEB6-0006Kw-Sz; Fri, 06 Mar 2020 15:42:17 +0100
+        id 1jAEB8-0006MJ-Dx; Fri, 06 Mar 2020 15:42:18 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D075A1C21DD;
-        Fri,  6 Mar 2020 15:42:08 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 3FD321C21D8;
+        Fri,  6 Mar 2020 15:42:09 +0100 (CET)
 Date:   Fri, 06 Mar 2020 14:42:08 -0000
 From:   "tip-bot2 for Thara Gopinath" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] thermal/cpu-cooling: Update thermal pressure in
- case of a maximum frequency capping
+Subject: [tip: sched/core] sched/fair: Update cpu_capacity to reflect thermal pressure
 Cc:     Thara Gopinath <thara.gopinath@linaro.org>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200222005213.3873-9-thara.gopinath@linaro.org>
-References: <20200222005213.3873-9-thara.gopinath@linaro.org>
+In-Reply-To: <20200222005213.3873-8-thara.gopinath@linaro.org>
+References: <20200222005213.3873-8-thara.gopinath@linaro.org>
 MIME-Version: 1.0
-Message-ID: <158350572857.28353.7469807947344049697.tip-bot2@tip-bot2>
+Message-ID: <158350572893.28353.7818128953864188600.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,64 +48,46 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     f12e4f66ab6a31f17da386b682e5fec87ae46537
-Gitweb:        https://git.kernel.org/tip/f12e4f66ab6a31f17da386b682e5fec87ae46537
+Commit-ID:     467b7d01c469dc6aa492c17d1f1d1952632728f1
+Gitweb:        https://git.kernel.org/tip/467b7d01c469dc6aa492c17d1f1d1952632728f1
 Author:        Thara Gopinath <thara.gopinath@linaro.org>
-AuthorDate:    Fri, 21 Feb 2020 19:52:12 -05:00
+AuthorDate:    Fri, 21 Feb 2020 19:52:11 -05:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 06 Mar 2020 12:57:21 +01:00
+CommitterDate: Fri, 06 Mar 2020 12:57:20 +01:00
 
-thermal/cpu-cooling: Update thermal pressure in case of a maximum frequency capping
+sched/fair: Update cpu_capacity to reflect thermal pressure
 
-Thermal governors can request for a CPU's maximum supported frequency to
-be capped in case of an overheat event. This in turn means that the
-maximum capacity available for tasks to run on the particular CPU is
-reduced. Delta between the original maximum capacity and capped maximum
-capacity is known as thermal pressure. Enable cpufreq cooling device to
-update the thermal pressure in event of a capped maximum frequency.
+cpu_capacity initially reflects the maximum possible capacity of a CPU.
+Thermal pressure on a CPU means this maximum possible capacity is
+unavailable due to thermal events. This patch subtracts the average
+thermal pressure for a CPU from its maximum possible capacity so that
+cpu_capacity reflects the remaining maximum capacity.
 
 Signed-off-by: Thara Gopinath <thara.gopinath@linaro.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lkml.kernel.org/r/20200222005213.3873-9-thara.gopinath@linaro.org
+Link: https://lkml.kernel.org/r/20200222005213.3873-8-thara.gopinath@linaro.org
 ---
- drivers/thermal/cpufreq_cooling.c | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+ kernel/sched/fair.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/thermal/cpufreq_cooling.c b/drivers/thermal/cpufreq_cooling.c
-index fe83d7a..4ae8c85 100644
---- a/drivers/thermal/cpufreq_cooling.c
-+++ b/drivers/thermal/cpufreq_cooling.c
-@@ -431,6 +431,10 @@ static int cpufreq_set_cur_state(struct thermal_cooling_device *cdev,
- 				 unsigned long state)
- {
- 	struct cpufreq_cooling_device *cpufreq_cdev = cdev->devdata;
-+	struct cpumask *cpus;
-+	unsigned int frequency;
-+	unsigned long max_capacity, capacity;
-+	int ret;
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 11f8488..aa51286 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -7984,8 +7984,15 @@ static unsigned long scale_rt_capacity(struct sched_domain *sd, int cpu)
+ 	if (unlikely(irq >= max))
+ 		return 1;
  
- 	/* Request state should be less than max_level */
- 	if (WARN_ON(state > cpufreq_cdev->max_level))
-@@ -442,8 +446,19 @@ static int cpufreq_set_cur_state(struct thermal_cooling_device *cdev,
++	/*
++	 * avg_rt.util_avg and avg_dl.util_avg track binary signals
++	 * (running and not running) with weights 0 and 1024 respectively.
++	 * avg_thermal.load_avg tracks thermal pressure and the weighted
++	 * average uses the actual delta max capacity(load).
++	 */
+ 	used = READ_ONCE(rq->avg_rt.util_avg);
+ 	used += READ_ONCE(rq->avg_dl.util_avg);
++	used += thermal_load_avg(rq);
  
- 	cpufreq_cdev->cpufreq_state = state;
- 
--	return freq_qos_update_request(&cpufreq_cdev->qos_req,
--				get_state_freq(cpufreq_cdev, state));
-+	frequency = get_state_freq(cpufreq_cdev, state);
-+
-+	ret = freq_qos_update_request(&cpufreq_cdev->qos_req, frequency);
-+
-+	if (ret > 0) {
-+		cpus = cpufreq_cdev->policy->cpus;
-+		max_capacity = arch_scale_cpu_capacity(cpumask_first(cpus));
-+		capacity = frequency * max_capacity;
-+		capacity /= cpufreq_cdev->policy->cpuinfo.max_freq;
-+		arch_set_thermal_pressure(cpus, max_capacity - capacity);
-+	}
-+
-+	return ret;
- }
- 
- /* Bind cpufreq callbacks to thermal cooling device ops */
+ 	if (unlikely(used >= max))
+ 		return 1;
