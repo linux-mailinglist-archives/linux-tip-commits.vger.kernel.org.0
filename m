@@ -2,39 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F81917C06F
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Mar 2020 15:42:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B48ED17C085
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Mar 2020 15:42:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727050AbgCFOmL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 6 Mar 2020 09:42:11 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:53748 "EHLO
+        id S1727312AbgCFOm1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 6 Mar 2020 09:42:27 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:53876 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726979AbgCFOmL (ORCPT
+        with ESMTP id S1727291AbgCFOm0 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 6 Mar 2020 09:42:11 -0500
+        Fri, 6 Mar 2020 09:42:26 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jAEAv-0006Hm-5C; Fri, 06 Mar 2020 15:42:05 +0100
+        id 1jAEAz-0006Hg-QI; Fri, 06 Mar 2020 15:42:09 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C4F931C21D5;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 70FE91C21D3;
         Fri,  6 Mar 2020 15:42:04 +0100 (CET)
 Date:   Fri, 06 Mar 2020 14:42:04 -0000
 From:   "tip-bot2 for Qais Yousef" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/rt: Optimize cpupri_find() on
- non-heterogenous systems
-Cc:     Dietmar Eggemann <dietmar.eggemann@arm.com>,
+Subject: [tip: sched/core] sched/rt: Allow pulling unfitting task
+Cc:     Steven Rostedt <rostedt@goodmis.org>,
         Qais Yousef <qais.yousef@arm.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200302132721.8353-4-qais.yousef@arm.com>
-References: <20200302132721.8353-4-qais.yousef@arm.com>
+In-Reply-To: <20200302132721.8353-5-qais.yousef@arm.com>
+References: <20200302132721.8353-5-qais.yousef@arm.com>
 MIME-Version: 1.0
-Message-ID: <158350572453.28353.9922528021955517987.tip-bot2@tip-bot2>
+Message-ID: <158350572419.28353.10129133387433061878.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,134 +49,45 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     a1bd02e1f28b1939cac8c64072a0e578c3cbc345
-Gitweb:        https://git.kernel.org/tip/a1bd02e1f28b1939cac8c64072a0e578c3cbc345
+Commit-ID:     98ca645f824301bde72e0a51cdc8bdbbea6774a5
+Gitweb:        https://git.kernel.org/tip/98ca645f824301bde72e0a51cdc8bdbbea6774a5
 Author:        Qais Yousef <qais.yousef@arm.com>
-AuthorDate:    Mon, 02 Mar 2020 13:27:18 
+AuthorDate:    Mon, 02 Mar 2020 13:27:19 
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 06 Mar 2020 12:57:27 +01:00
+CommitterDate: Fri, 06 Mar 2020 12:57:28 +01:00
 
-sched/rt: Optimize cpupri_find() on non-heterogenous systems
+sched/rt: Allow pulling unfitting task
 
-By introducing a new cpupri_find_fitness() function that takes the
-fitness_fn as an argument and only called when asym_system static key is
-enabled.
+When implemented RT Capacity Awareness; the logic was done such that if
+a task was running on a fitting CPU, then it was sticky and we would try
+our best to keep it there.
 
-cpupri_find() is now a wrapper function that calls cpupri_find_fitness()
-passing NULL as a fitness_fn, hence disabling the logic that handles
-fitness by default.
+But as Steve suggested, to adhere to the strict priority rules of RT
+class; allow pulling an RT task to unfitting CPU to ensure it gets a
+chance to run ASAP.
 
-LINK: https://lore.kernel.org/lkml/c0772fca-0a4b-c88d-fdf2-5715fcf8447b@arm.com/
-Reported-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
+LINK: https://lore.kernel.org/lkml/20200203111451.0d1da58f@oasis.local.home/
+Suggested-by: Steven Rostedt <rostedt@goodmis.org>
 Signed-off-by: Qais Yousef <qais.yousef@arm.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Fixes: 804d402fb6f6 ("sched/rt: Make RT capacity-aware")
-Link: https://lkml.kernel.org/r/20200302132721.8353-4-qais.yousef@arm.com
+Link: https://lkml.kernel.org/r/20200302132721.8353-5-qais.yousef@arm.com
 ---
- kernel/sched/cpupri.c | 10 ++++++++--
- kernel/sched/cpupri.h |  6 ++++--
- kernel/sched/rt.c     | 23 +++++++++++++++++++----
- 3 files changed, 31 insertions(+), 8 deletions(-)
+ kernel/sched/rt.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/kernel/sched/cpupri.c b/kernel/sched/cpupri.c
-index 1bcfa19..dd3f16d 100644
---- a/kernel/sched/cpupri.c
-+++ b/kernel/sched/cpupri.c
-@@ -94,8 +94,14 @@ static inline int __cpupri_find(struct cpupri *cp, struct task_struct *p,
- 	return 1;
- }
- 
-+int cpupri_find(struct cpupri *cp, struct task_struct *p,
-+		struct cpumask *lowest_mask)
-+{
-+	return cpupri_find_fitness(cp, p, lowest_mask, NULL);
-+}
-+
- /**
-- * cpupri_find - find the best (lowest-pri) CPU in the system
-+ * cpupri_find_fitness - find the best (lowest-pri) CPU in the system
-  * @cp: The cpupri context
-  * @p: The task
-  * @lowest_mask: A mask to fill in with selected CPUs (or NULL)
-@@ -111,7 +117,7 @@ static inline int __cpupri_find(struct cpupri *cp, struct task_struct *p,
-  *
-  * Return: (int)bool - CPUs were found
-  */
--int cpupri_find(struct cpupri *cp, struct task_struct *p,
-+int cpupri_find_fitness(struct cpupri *cp, struct task_struct *p,
- 		struct cpumask *lowest_mask,
- 		bool (*fitness_fn)(struct task_struct *p, int cpu))
- {
-diff --git a/kernel/sched/cpupri.h b/kernel/sched/cpupri.h
-index 32dd520..efbb492 100644
---- a/kernel/sched/cpupri.h
-+++ b/kernel/sched/cpupri.h
-@@ -19,8 +19,10 @@ struct cpupri {
- 
- #ifdef CONFIG_SMP
- int  cpupri_find(struct cpupri *cp, struct task_struct *p,
--		 struct cpumask *lowest_mask,
--		 bool (*fitness_fn)(struct task_struct *p, int cpu));
-+		 struct cpumask *lowest_mask);
-+int  cpupri_find_fitness(struct cpupri *cp, struct task_struct *p,
-+			 struct cpumask *lowest_mask,
-+			 bool (*fitness_fn)(struct task_struct *p, int cpu));
- void cpupri_set(struct cpupri *cp, int cpu, int pri);
- int  cpupri_init(struct cpupri *cp);
- void cpupri_cleanup(struct cpupri *cp);
 diff --git a/kernel/sched/rt.c b/kernel/sched/rt.c
-index f0071fa..29a8695 100644
+index 29a8695..bcb1436 100644
 --- a/kernel/sched/rt.c
 +++ b/kernel/sched/rt.c
-@@ -1504,7 +1504,7 @@ static void check_preempt_equal_prio(struct rq *rq, struct task_struct *p)
- 	 * let's hope p can move out.
- 	 */
- 	if (rq->curr->nr_cpus_allowed == 1 ||
--	    !cpupri_find(&rq->rd->cpupri, rq->curr, NULL, NULL))
-+	    !cpupri_find(&rq->rd->cpupri, rq->curr, NULL))
- 		return;
+@@ -1656,8 +1656,7 @@ static void put_prev_task_rt(struct rq *rq, struct task_struct *p)
+ static int pick_rt_task(struct rq *rq, struct task_struct *p, int cpu)
+ {
+ 	if (!task_running(rq, p) &&
+-	    cpumask_test_cpu(cpu, p->cpus_ptr) &&
+-	    rt_task_fits_capacity(p, cpu))
++	    cpumask_test_cpu(cpu, p->cpus_ptr))
+ 		return 1;
  
- 	/*
-@@ -1512,7 +1512,7 @@ static void check_preempt_equal_prio(struct rq *rq, struct task_struct *p)
- 	 * see if it is pushed or pulled somewhere else.
- 	 */
- 	if (p->nr_cpus_allowed != 1 &&
--	    cpupri_find(&rq->rd->cpupri, p, NULL, NULL))
-+	    cpupri_find(&rq->rd->cpupri, p, NULL))
- 		return;
- 
- 	/*
-@@ -1691,6 +1691,7 @@ static int find_lowest_rq(struct task_struct *task)
- 	struct cpumask *lowest_mask = this_cpu_cpumask_var_ptr(local_cpu_mask);
- 	int this_cpu = smp_processor_id();
- 	int cpu      = task_cpu(task);
-+	int ret;
- 
- 	/* Make sure the mask is initialized first */
- 	if (unlikely(!lowest_mask))
-@@ -1699,8 +1700,22 @@ static int find_lowest_rq(struct task_struct *task)
- 	if (task->nr_cpus_allowed == 1)
- 		return -1; /* No other targets possible */
- 
--	if (!cpupri_find(&task_rq(task)->rd->cpupri, task, lowest_mask,
--			 rt_task_fits_capacity))
-+	/*
-+	 * If we're on asym system ensure we consider the different capacities
-+	 * of the CPUs when searching for the lowest_mask.
-+	 */
-+	if (static_branch_unlikely(&sched_asym_cpucapacity)) {
-+
-+		ret = cpupri_find_fitness(&task_rq(task)->rd->cpupri,
-+					  task, lowest_mask,
-+					  rt_task_fits_capacity);
-+	} else {
-+
-+		ret = cpupri_find(&task_rq(task)->rd->cpupri,
-+				  task, lowest_mask);
-+	}
-+
-+	if (!ret)
- 		return -1; /* No targets found */
- 
- 	/*
+ 	return 0;
