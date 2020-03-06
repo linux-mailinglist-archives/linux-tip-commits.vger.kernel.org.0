@@ -2,38 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DA12317C09E
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Mar 2020 15:43:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B63117C07B
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Mar 2020 15:42:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727049AbgCFOnP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 6 Mar 2020 09:43:15 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:53832 "EHLO
+        id S1727384AbgCFOmf (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 6 Mar 2020 09:42:35 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:53881 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727201AbgCFOmU (ORCPT
+        with ESMTP id S1727306AbgCFOm2 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 6 Mar 2020 09:42:20 -0500
+        Fri, 6 Mar 2020 09:42:28 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jAEB6-0006OA-3G; Fri, 06 Mar 2020 15:42:16 +0100
+        id 1jAEBC-0006PX-QI; Fri, 06 Mar 2020 15:42:23 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 7A7431C21D4;
-        Fri,  6 Mar 2020 15:42:10 +0100 (CET)
-Date:   Fri, 06 Mar 2020 14:42:10 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 86CF01C21D9;
+        Fri,  6 Mar 2020 15:42:11 +0100 (CET)
+Date:   Fri, 06 Mar 2020 14:42:11 -0000
 From:   "tip-bot2 for Thara Gopinath" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] arm64/topology: Populate
- arch_scale_thermal_pressure() for arm64 platforms
-Cc:     Thara Gopinath <thara.gopinath@linaro.org>,
+Subject: [tip: sched/core] sched/pelt: Add support to track thermal pressure
+Cc:     Vincent Guittot <vincent.guittot@linaro.org>,
+        Thara Gopinath <thara.gopinath@linaro.org>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200222005213.3873-5-thara.gopinath@linaro.org>
-References: <20200222005213.3873-5-thara.gopinath@linaro.org>
+In-Reply-To: <20200222005213.3873-2-thara.gopinath@linaro.org>
+References: <20200222005213.3873-2-thara.gopinath@linaro.org>
 MIME-Version: 1.0
-Message-ID: <158350573019.28353.350404434656839771.tip-bot2@tip-bot2>
+Message-ID: <158350573124.28353.7802371753363408650.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,37 +49,174 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     ae1677c0bbe23fe30d634ac0d9f5c147ee4adbc1
-Gitweb:        https://git.kernel.org/tip/ae1677c0bbe23fe30d634ac0d9f5c147ee4adbc1
+Commit-ID:     765047932f153265db6ef15be208d6cbfc03dc62
+Gitweb:        https://git.kernel.org/tip/765047932f153265db6ef15be208d6cbfc03dc62
 Author:        Thara Gopinath <thara.gopinath@linaro.org>
-AuthorDate:    Fri, 21 Feb 2020 19:52:08 -05:00
+AuthorDate:    Fri, 21 Feb 2020 19:52:05 -05:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 06 Mar 2020 12:57:19 +01:00
+CommitterDate: Fri, 06 Mar 2020 12:57:17 +01:00
 
-arm64/topology: Populate arch_scale_thermal_pressure() for arm64 platforms
+sched/pelt: Add support to track thermal pressure
 
-Hook up topology_get_thermal_pressure to arch_scale_thermal_pressure thus
-enabling scheduler to retrieve instantaneous thermal pressure of a CPU.
+Extrapolating on the existing framework to track rt/dl utilization using
+pelt signals, add a similar mechanism to track thermal pressure. The
+difference here from rt/dl utilization tracking is that, instead of
+tracking time spent by a CPU running a RT/DL task through util_avg, the
+average thermal pressure is tracked through load_avg. This is because
+thermal pressure signal is weighted time "delta" capacity unlike util_avg
+which is binary. "delta capacity" here means delta between the actual
+capacity of a CPU and the decreased capacity a CPU due to a thermal event.
 
+In order to track average thermal pressure, a new sched_avg variable
+avg_thermal is introduced. Function update_thermal_load_avg can be called
+to do the periodic bookkeeping (accumulate, decay and average) of the
+thermal pressure.
+
+Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
 Signed-off-by: Thara Gopinath <thara.gopinath@linaro.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lkml.kernel.org/r/20200222005213.3873-5-thara.gopinath@linaro.org
+Link: https://lkml.kernel.org/r/20200222005213.3873-2-thara.gopinath@linaro.org
 ---
- arch/arm64/include/asm/topology.h | 3 +++
- 1 file changed, 3 insertions(+)
+ include/trace/events/sched.h |  4 ++++
+ init/Kconfig                 |  4 ++++
+ kernel/sched/pelt.c          | 31 +++++++++++++++++++++++++++++++
+ kernel/sched/pelt.h          | 31 +++++++++++++++++++++++++++++++
+ kernel/sched/sched.h         |  3 +++
+ 5 files changed, 73 insertions(+)
 
-diff --git a/arch/arm64/include/asm/topology.h b/arch/arm64/include/asm/topology.h
-index a4d945d..cbd70d7 100644
---- a/arch/arm64/include/asm/topology.h
-+++ b/arch/arm64/include/asm/topology.h
-@@ -25,6 +25,9 @@ int pcibus_to_node(struct pci_bus *bus);
- /* Enable topology flag updates */
- #define arch_update_cpu_topology topology_update_cpu_topology
+diff --git a/include/trace/events/sched.h b/include/trace/events/sched.h
+index 9c3ebb7..ed168b0 100644
+--- a/include/trace/events/sched.h
++++ b/include/trace/events/sched.h
+@@ -618,6 +618,10 @@ DECLARE_TRACE(pelt_dl_tp,
+ 	TP_PROTO(struct rq *rq),
+ 	TP_ARGS(rq));
  
-+/* Replace task scheduler's default thermal pressure retrieve API */
-+#define arch_scale_thermal_pressure topology_get_thermal_pressure
++DECLARE_TRACE(pelt_thermal_tp,
++	TP_PROTO(struct rq *rq),
++	TP_ARGS(rq));
 +
- #include <asm-generic/topology.h>
+ DECLARE_TRACE(pelt_irq_tp,
+ 	TP_PROTO(struct rq *rq),
+ 	TP_ARGS(rq));
+diff --git a/init/Kconfig b/init/Kconfig
+index 20a6ac3..275c848 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -451,6 +451,10 @@ config HAVE_SCHED_AVG_IRQ
+ 	depends on IRQ_TIME_ACCOUNTING || PARAVIRT_TIME_ACCOUNTING
+ 	depends on SMP
  
- #endif /* _ASM_ARM_TOPOLOGY_H */
++config SCHED_THERMAL_PRESSURE
++	bool "Enable periodic averaging of thermal pressure"
++	depends on SMP
++
+ config BSD_PROCESS_ACCT
+ 	bool "BSD Process Accounting"
+ 	depends on MULTIUSER
+diff --git a/kernel/sched/pelt.c b/kernel/sched/pelt.c
+index c40d57a..b647d04 100644
+--- a/kernel/sched/pelt.c
++++ b/kernel/sched/pelt.c
+@@ -368,6 +368,37 @@ int update_dl_rq_load_avg(u64 now, struct rq *rq, int running)
+ 	return 0;
+ }
+ 
++#ifdef CONFIG_SCHED_THERMAL_PRESSURE
++/*
++ * thermal:
++ *
++ *   load_sum = \Sum se->avg.load_sum but se->avg.load_sum is not tracked
++ *
++ *   util_avg and runnable_load_avg are not supported and meaningless.
++ *
++ * Unlike rt/dl utilization tracking that track time spent by a cpu
++ * running a rt/dl task through util_avg, the average thermal pressure is
++ * tracked through load_avg. This is because thermal pressure signal is
++ * time weighted "delta" capacity unlike util_avg which is binary.
++ * "delta capacity" =  actual capacity  -
++ *			capped capacity a cpu due to a thermal event.
++ */
++
++int update_thermal_load_avg(u64 now, struct rq *rq, u64 capacity)
++{
++	if (___update_load_sum(now, &rq->avg_thermal,
++			       capacity,
++			       capacity,
++			       capacity)) {
++		___update_load_avg(&rq->avg_thermal, 1);
++		trace_pelt_thermal_tp(rq);
++		return 1;
++	}
++
++	return 0;
++}
++#endif
++
+ #ifdef CONFIG_HAVE_SCHED_AVG_IRQ
+ /*
+  * irq:
+diff --git a/kernel/sched/pelt.h b/kernel/sched/pelt.h
+index afff644..eb034d9 100644
+--- a/kernel/sched/pelt.h
++++ b/kernel/sched/pelt.h
+@@ -7,6 +7,26 @@ int __update_load_avg_cfs_rq(u64 now, struct cfs_rq *cfs_rq);
+ int update_rt_rq_load_avg(u64 now, struct rq *rq, int running);
+ int update_dl_rq_load_avg(u64 now, struct rq *rq, int running);
+ 
++#ifdef CONFIG_SCHED_THERMAL_PRESSURE
++int update_thermal_load_avg(u64 now, struct rq *rq, u64 capacity);
++
++static inline u64 thermal_load_avg(struct rq *rq)
++{
++	return READ_ONCE(rq->avg_thermal.load_avg);
++}
++#else
++static inline int
++update_thermal_load_avg(u64 now, struct rq *rq, u64 capacity)
++{
++	return 0;
++}
++
++static inline u64 thermal_load_avg(struct rq *rq)
++{
++	return 0;
++}
++#endif
++
+ #ifdef CONFIG_HAVE_SCHED_AVG_IRQ
+ int update_irq_load_avg(struct rq *rq, u64 running);
+ #else
+@@ -159,6 +179,17 @@ update_dl_rq_load_avg(u64 now, struct rq *rq, int running)
+ }
+ 
+ static inline int
++update_thermal_load_avg(u64 now, struct rq *rq, u64 capacity)
++{
++	return 0;
++}
++
++static inline u64 thermal_load_avg(struct rq *rq)
++{
++	return 0;
++}
++
++static inline int
+ update_irq_load_avg(struct rq *rq, u64 running)
+ {
+ 	return 0;
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index 2a0caf3..6c839f8 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -961,6 +961,9 @@ struct rq {
+ #ifdef CONFIG_HAVE_SCHED_AVG_IRQ
+ 	struct sched_avg	avg_irq;
+ #endif
++#ifdef CONFIG_SCHED_THERMAL_PRESSURE
++	struct sched_avg	avg_thermal;
++#endif
+ 	u64			idle_stamp;
+ 	u64			avg_idle;
+ 
