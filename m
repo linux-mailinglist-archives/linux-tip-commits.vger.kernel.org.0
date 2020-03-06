@@ -2,39 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 433CF17C084
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Mar 2020 15:42:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2028C17C088
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Mar 2020 15:42:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727422AbgCFOmp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 6 Mar 2020 09:42:45 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:53873 "EHLO
+        id S1727450AbgCFOmv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 6 Mar 2020 09:42:51 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:53874 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727283AbgCFOm1 (ORCPT
+        with ESMTP id S1727270AbgCFOm0 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 6 Mar 2020 09:42:27 -0500
+        Fri, 6 Mar 2020 09:42:26 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jAEB8-0006Pr-C4; Fri, 06 Mar 2020 15:42:18 +0100
+        id 1jAEB9-0006Q1-Ex; Fri, 06 Mar 2020 15:42:19 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 052301C21DA;
-        Fri,  6 Mar 2020 15:42:12 +0100 (CET)
-Date:   Fri, 06 Mar 2020 14:42:11 -0000
-From:   "tip-bot2 for Chris Wilson" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 68DEB1C21D5;
+        Fri,  6 Mar 2020 15:42:14 +0100 (CET)
+Date:   Fri, 06 Mar 2020 14:42:14 -0000
+From:   "tip-bot2 for Peter Xu" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/vtime: Prevent unstable evaluation of
- WARN(vtime->state)
-Cc:     Chris Wilson <chris@chris-wilson.co.uk>,
-        Frederic Weisbecker <frederic@kernel.org>,
+Subject: [tip: smp/core] sched/core: Remove rq.hrtick_csd_pending
+Cc:     Peter Xu <peterx@redhat.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200123180849.28486-1-frederic@kernel.org>
-References: <20200123180849.28486-1-frederic@kernel.org>
+In-Reply-To: <20191216213125.9536-4-peterx@redhat.com>
+References: <20191216213125.9536-4-peterx@redhat.com>
 MIME-Version: 1.0
-Message-ID: <158350573164.28353.4653670207940680914.tip-bot2@tip-bot2>
+Message-ID: <158350573414.28353.9184925891014185535.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,157 +46,75 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the smp/core branch of tip:
 
-Commit-ID:     f1dfdab694eb3838ac26f4b73695929c07d92a33
-Gitweb:        https://git.kernel.org/tip/f1dfdab694eb3838ac26f4b73695929c07d92a33
-Author:        Chris Wilson <chris@chris-wilson.co.uk>
-AuthorDate:    Thu, 23 Jan 2020 19:08:49 +01:00
+Commit-ID:     fd3eafda8f146d4ad8f95f91a8c2b9a5319ff6b2
+Gitweb:        https://git.kernel.org/tip/fd3eafda8f146d4ad8f95f91a8c2b9a5319ff6b2
+Author:        Peter Xu <peterx@redhat.com>
+AuthorDate:    Mon, 16 Dec 2019 16:31:25 -05:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 06 Mar 2020 12:57:16 +01:00
+CommitterDate: Fri, 06 Mar 2020 13:42:28 +01:00
 
-sched/vtime: Prevent unstable evaluation of WARN(vtime->state)
+sched/core: Remove rq.hrtick_csd_pending
 
-As the vtime is sampled under loose seqcount protection by kcpustat, the
-vtime fields may change as the code flows. Where logic dictates a field
-has a static value, use a READ_ONCE.
+Now smp_call_function_single_async() provides the protection that
+we'll return with -EBUSY if the csd object is still pending, then we
+don't need the rq.hrtick_csd_pending any more.
 
-Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Fixes: 74722bb223d0 ("sched/vtime: Bring up complete kcpustat accessor")
-Link: https://lkml.kernel.org/r/20200123180849.28486-1-frederic@kernel.org
+Link: https://lkml.kernel.org/r/20191216213125.9536-4-peterx@redhat.com
 ---
- kernel/sched/cputime.c | 41 ++++++++++++++++++++++-------------------
- 1 file changed, 22 insertions(+), 19 deletions(-)
+ kernel/sched/core.c  |  9 ++-------
+ kernel/sched/sched.h |  1 -
+ 2 files changed, 2 insertions(+), 8 deletions(-)
 
-diff --git a/kernel/sched/cputime.c b/kernel/sched/cputime.c
-index cff3e65..dac9104 100644
---- a/kernel/sched/cputime.c
-+++ b/kernel/sched/cputime.c
-@@ -909,8 +909,10 @@ void task_cputime(struct task_struct *t, u64 *utime, u64 *stime)
- 	} while (read_seqcount_retry(&vtime->seqcount, seq));
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 1a9983d..b70ec38 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -269,7 +269,6 @@ static void __hrtick_start(void *arg)
+ 
+ 	rq_lock(rq, &rf);
+ 	__hrtick_restart(rq);
+-	rq->hrtick_csd_pending = 0;
+ 	rq_unlock(rq, &rf);
  }
  
--static int vtime_state_check(struct vtime *vtime, int cpu)
-+static int vtime_state_fetch(struct vtime *vtime, int cpu)
- {
-+	int state = READ_ONCE(vtime->state);
-+
- 	/*
- 	 * We raced against a context switch, fetch the
- 	 * kcpustat task again.
-@@ -927,10 +929,10 @@ static int vtime_state_check(struct vtime *vtime, int cpu)
- 	 *
- 	 * Case 1) is ok but 2) is not. So wait for a safe VTIME state.
- 	 */
--	if (vtime->state == VTIME_INACTIVE)
-+	if (state == VTIME_INACTIVE)
- 		return -EAGAIN;
+@@ -293,12 +292,10 @@ void hrtick_start(struct rq *rq, u64 delay)
  
--	return 0;
-+	return state;
+ 	hrtimer_set_expires(timer, time);
+ 
+-	if (rq == this_rq()) {
++	if (rq == this_rq())
+ 		__hrtick_restart(rq);
+-	} else if (!rq->hrtick_csd_pending) {
++	else
+ 		smp_call_function_single_async(cpu_of(rq), &rq->hrtick_csd);
+-		rq->hrtick_csd_pending = 1;
+-	}
  }
  
- static u64 kcpustat_user_vtime(struct vtime *vtime)
-@@ -949,14 +951,15 @@ static int kcpustat_field_vtime(u64 *cpustat,
+ #else
+@@ -322,8 +319,6 @@ void hrtick_start(struct rq *rq, u64 delay)
+ static void hrtick_rq_init(struct rq *rq)
  {
- 	struct vtime *vtime = &tsk->vtime;
- 	unsigned int seq;
--	int err;
+ #ifdef CONFIG_SMP
+-	rq->hrtick_csd_pending = 0;
+-
+ 	rq->hrtick_csd.flags = 0;
+ 	rq->hrtick_csd.func = __hrtick_start;
+ 	rq->hrtick_csd.info = rq;
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index 9ea6478..38e60b8 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -967,7 +967,6 @@ struct rq {
  
- 	do {
-+		int state;
-+
- 		seq = read_seqcount_begin(&vtime->seqcount);
- 
--		err = vtime_state_check(vtime, cpu);
--		if (err < 0)
--			return err;
-+		state = vtime_state_fetch(vtime, cpu);
-+		if (state < 0)
-+			return state;
- 
- 		*val = cpustat[usage];
- 
-@@ -969,7 +972,7 @@ static int kcpustat_field_vtime(u64 *cpustat,
- 		 */
- 		switch (usage) {
- 		case CPUTIME_SYSTEM:
--			if (vtime->state == VTIME_SYS)
-+			if (state == VTIME_SYS)
- 				*val += vtime->stime + vtime_delta(vtime);
- 			break;
- 		case CPUTIME_USER:
-@@ -981,11 +984,11 @@ static int kcpustat_field_vtime(u64 *cpustat,
- 				*val += kcpustat_user_vtime(vtime);
- 			break;
- 		case CPUTIME_GUEST:
--			if (vtime->state == VTIME_GUEST && task_nice(tsk) <= 0)
-+			if (state == VTIME_GUEST && task_nice(tsk) <= 0)
- 				*val += vtime->gtime + vtime_delta(vtime);
- 			break;
- 		case CPUTIME_GUEST_NICE:
--			if (vtime->state == VTIME_GUEST && task_nice(tsk) > 0)
-+			if (state == VTIME_GUEST && task_nice(tsk) > 0)
- 				*val += vtime->gtime + vtime_delta(vtime);
- 			break;
- 		default:
-@@ -1036,23 +1039,23 @@ static int kcpustat_cpu_fetch_vtime(struct kernel_cpustat *dst,
- {
- 	struct vtime *vtime = &tsk->vtime;
- 	unsigned int seq;
--	int err;
- 
- 	do {
- 		u64 *cpustat;
- 		u64 delta;
-+		int state;
- 
- 		seq = read_seqcount_begin(&vtime->seqcount);
- 
--		err = vtime_state_check(vtime, cpu);
--		if (err < 0)
--			return err;
-+		state = vtime_state_fetch(vtime, cpu);
-+		if (state < 0)
-+			return state;
- 
- 		*dst = *src;
- 		cpustat = dst->cpustat;
- 
- 		/* Task is sleeping, dead or idle, nothing to add */
--		if (vtime->state < VTIME_SYS)
-+		if (state < VTIME_SYS)
- 			continue;
- 
- 		delta = vtime_delta(vtime);
-@@ -1061,15 +1064,15 @@ static int kcpustat_cpu_fetch_vtime(struct kernel_cpustat *dst,
- 		 * Task runs either in user (including guest) or kernel space,
- 		 * add pending nohz time to the right place.
- 		 */
--		if (vtime->state == VTIME_SYS) {
-+		if (state == VTIME_SYS) {
- 			cpustat[CPUTIME_SYSTEM] += vtime->stime + delta;
--		} else if (vtime->state == VTIME_USER) {
-+		} else if (state == VTIME_USER) {
- 			if (task_nice(tsk) > 0)
- 				cpustat[CPUTIME_NICE] += vtime->utime + delta;
- 			else
- 				cpustat[CPUTIME_USER] += vtime->utime + delta;
- 		} else {
--			WARN_ON_ONCE(vtime->state != VTIME_GUEST);
-+			WARN_ON_ONCE(state != VTIME_GUEST);
- 			if (task_nice(tsk) > 0) {
- 				cpustat[CPUTIME_GUEST_NICE] += vtime->gtime + delta;
- 				cpustat[CPUTIME_NICE] += vtime->gtime + delta;
-@@ -1080,7 +1083,7 @@ static int kcpustat_cpu_fetch_vtime(struct kernel_cpustat *dst,
- 		}
- 	} while (read_seqcount_retry(&vtime->seqcount, seq));
- 
--	return err;
-+	return 0;
- }
- 
- void kcpustat_cpu_fetch(struct kernel_cpustat *dst, int cpu)
+ #ifdef CONFIG_SCHED_HRTICK
+ #ifdef CONFIG_SMP
+-	int			hrtick_csd_pending;
+ 	call_single_data_t	hrtick_csd;
+ #endif
+ 	struct hrtimer		hrtick_timer;
