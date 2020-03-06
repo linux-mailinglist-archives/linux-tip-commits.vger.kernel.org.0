@@ -2,38 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CAC4C17B1FF
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Mar 2020 00:01:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 698A717BA62
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Mar 2020 11:39:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726162AbgCEXBA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 5 Mar 2020 18:01:00 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:51638 "EHLO
+        id S1726633AbgCFKjJ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 6 Mar 2020 05:39:09 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:52912 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726049AbgCEXA7 (ORCPT
+        with ESMTP id S1726212AbgCFKjJ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 5 Mar 2020 18:00:59 -0500
+        Fri, 6 Mar 2020 05:39:09 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1j9zU6-0007Gu-3y; Fri, 06 Mar 2020 00:00:54 +0100
+        id 1jAANk-0000CP-1q; Fri, 06 Mar 2020 11:39:04 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C038F1C1F67;
-        Fri,  6 Mar 2020 00:00:53 +0100 (CET)
-Date:   Thu, 05 Mar 2020 23:00:53 -0000
-From:   "tip-bot2 for Arvind Sankar" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 71EFC1C0081;
+        Fri,  6 Mar 2020 11:39:03 +0100 (CET)
+Date:   Fri, 06 Mar 2020 10:39:03 -0000
+From:   "tip-bot2 for Will Deacon" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/mm] x86/mm/init/32: Stop printing the virtual memory layout
-Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tycho Andersen <tycho@tycho.ws>,
-        Kees Cook <keescook@chromium.org>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200305150152.831697-1-nivedita@alum.mit.edu>
-References: <20200305150152.831697-1-nivedita@alum.mit.edu>
+Subject: [tip: locking/core] asm-generic/bitops: Update stale comment
+Cc:     Stefan Asserhall <stefana@xilinx.com>,
+        Will Deacon <will@kernel.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200213093927.1836-1-will@kernel.org>
+References: <20200213093927.1836-1-will@kernel.org>
 MIME-Version: 1.0
-Message-ID: <158344925342.28353.8367194721815610047.tip-bot2@tip-bot2>
+Message-ID: <158349114313.28353.2410503196690088637.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,85 +46,44 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/mm branch of tip:
+The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     681ff0181bbfb183e32bc6beb6ec076304470479
-Gitweb:        https://git.kernel.org/tip/681ff0181bbfb183e32bc6beb6ec076304470479
-Author:        Arvind Sankar <nivedita@alum.mit.edu>
-AuthorDate:    Thu, 05 Mar 2020 10:01:52 -05:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 05 Mar 2020 23:53:55 +01:00
+Commit-ID:     5d0c9b0eb8ab2dd540919174abe75aa3b86b802f
+Gitweb:        https://git.kernel.org/tip/5d0c9b0eb8ab2dd540919174abe75aa3b86b802f
+Author:        Will Deacon <will@kernel.org>
+AuthorDate:    Thu, 13 Feb 2020 09:39:27 
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Fri, 06 Mar 2020 11:06:19 +01:00
 
-x86/mm/init/32: Stop printing the virtual memory layout
+asm-generic/bitops: Update stale comment
 
-For security reasons, don't display the kernel's virtual memory layout.
+The comment in 'asm-generic/bitops.h' states that you should "recode
+these in the native assembly language, if at all possible". This is
+pretty crappy advice now that the generic implementation is defined in
+terms of atomic_long_t rather than a spinlock, so update the comment and
+hopefully save future architecture maintainers a bit of work.
 
-Kees Cook points out:
-"These have been entirely removed on other architectures, so let's
-just do the same for ia32 and remove it unconditionally."
-
-071929dbdd86 ("arm64: Stop printing the virtual memory layout")
-1c31d4e96b8c ("ARM: 8820/1: mm: Stop printing the virtual memory layout")
-31833332f798 ("m68k/mm: Stop printing the virtual memory layout")
-fd8d0ca25631 ("parisc: Hide virtual kernel memory layout")
-adb1fe9ae2ee ("mm/page_alloc: Remove kernel address exposure in free_reserved_area()")
-
-Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Tycho Andersen <tycho@tycho.ws>
-Acked-by: Kees Cook <keescook@chromium.org>
-Link: https://lkml.kernel.org/r/20200305150152.831697-1-nivedita@alum.mit.edu
-
+Reported-by: Stefan Asserhall <stefana@xilinx.com>
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20200213093927.1836-1-will@kernel.org
 ---
- arch/x86/mm/init_32.c | 38 --------------------------------------
- 1 file changed, 38 deletions(-)
+ include/asm-generic/bitops.h | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/mm/init_32.c b/arch/x86/mm/init_32.c
-index 23df488..8ae0272 100644
---- a/arch/x86/mm/init_32.c
-+++ b/arch/x86/mm/init_32.c
-@@ -788,44 +788,6 @@ void __init mem_init(void)
- 	x86_init.hyper.init_after_bootmem();
+diff --git a/include/asm-generic/bitops.h b/include/asm-generic/bitops.h
+index bfc96bf..df9b5bc 100644
+--- a/include/asm-generic/bitops.h
++++ b/include/asm-generic/bitops.h
+@@ -4,8 +4,9 @@
  
- 	mem_init_print_info(NULL);
--	printk(KERN_INFO "virtual kernel memory layout:\n"
--		"    fixmap  : 0x%08lx - 0x%08lx   (%4ld kB)\n"
--		"  cpu_entry : 0x%08lx - 0x%08lx   (%4ld kB)\n"
--#ifdef CONFIG_HIGHMEM
--		"    pkmap   : 0x%08lx - 0x%08lx   (%4ld kB)\n"
--#endif
--		"    vmalloc : 0x%08lx - 0x%08lx   (%4ld MB)\n"
--		"    lowmem  : 0x%08lx - 0x%08lx   (%4ld MB)\n"
--		"      .init : 0x%08lx - 0x%08lx   (%4ld kB)\n"
--		"      .data : 0x%08lx - 0x%08lx   (%4ld kB)\n"
--		"      .text : 0x%08lx - 0x%08lx   (%4ld kB)\n",
--		FIXADDR_START, FIXADDR_TOP,
--		(FIXADDR_TOP - FIXADDR_START) >> 10,
--
--		CPU_ENTRY_AREA_BASE,
--		CPU_ENTRY_AREA_BASE + CPU_ENTRY_AREA_MAP_SIZE,
--		CPU_ENTRY_AREA_MAP_SIZE >> 10,
--
--#ifdef CONFIG_HIGHMEM
--		PKMAP_BASE, PKMAP_BASE+LAST_PKMAP*PAGE_SIZE,
--		(LAST_PKMAP*PAGE_SIZE) >> 10,
--#endif
--
--		VMALLOC_START, VMALLOC_END,
--		(VMALLOC_END - VMALLOC_START) >> 20,
--
--		(unsigned long)__va(0), (unsigned long)high_memory,
--		((unsigned long)high_memory - (unsigned long)__va(0)) >> 20,
--
--		(unsigned long)&__init_begin, (unsigned long)&__init_end,
--		((unsigned long)&__init_end -
--		 (unsigned long)&__init_begin) >> 10,
--
--		(unsigned long)&_etext, (unsigned long)&_edata,
--		((unsigned long)&_edata - (unsigned long)&_etext) >> 10,
--
--		(unsigned long)&_text, (unsigned long)&_etext,
--		((unsigned long)&_etext - (unsigned long)&_text) >> 10);
- 
- 	/*
- 	 * Check boundaries twice: Some fundamental inconsistencies can
+ /*
+  * For the benefit of those who are trying to port Linux to another
+- * architecture, here are some C-language equivalents.  You should
+- * recode these in the native assembly language, if at all possible.
++ * architecture, here are some C-language equivalents.  They should
++ * generate reasonable code, so take a look at what your compiler spits
++ * out before rolling your own buggy implementation in assembly language.
+  *
+  * C language equivalents written by Theodore Ts'o, 9/26/92
+  */
