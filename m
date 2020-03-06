@@ -2,36 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E15F17C0C6
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Mar 2020 15:44:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 39E7A17C0A9
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Mar 2020 15:44:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726054AbgCFOmI (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 6 Mar 2020 09:42:08 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:53735 "EHLO
+        id S1727195AbgCFOnk (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 6 Mar 2020 09:43:40 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:53769 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726307AbgCFOmI (ORCPT
+        with ESMTP id S1727059AbgCFOmO (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 6 Mar 2020 09:42:08 -0500
+        Fri, 6 Mar 2020 09:42:14 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jAEAu-0006HH-3R; Fri, 06 Mar 2020 15:42:04 +0100
+        id 1jAEAw-0006Ho-Gy; Fri, 06 Mar 2020 15:42:06 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id BBCC91C21D3;
-        Fri,  6 Mar 2020 15:42:03 +0100 (CET)
-Date:   Fri, 06 Mar 2020 14:42:03 -0000
-From:   "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 21CF91C21D6;
+        Fri,  6 Mar 2020 15:42:05 +0100 (CET)
+Date:   Fri, 06 Mar 2020 14:42:04 -0000
+From:   "tip-bot2 for Qais Yousef" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] thermal/cpu-cooling, sched/core: Move the
- arch_set_thermal_pressure() API to generic scheduler code
-Cc:     Thara Gopinath <thara.gopinath@linaro.org>,
+Subject: [tip: sched/core] sched/rt: Re-instate old behavior in select_task_rq_rt()
+Cc:     Pavan Kondeti <pkondeti@codeaurora.org>,
+        Qais Yousef <qais.yousef@arm.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200302132721.8353-3-qais.yousef@arm.com>
+References: <20200302132721.8353-3-qais.yousef@arm.com>
 MIME-Version: 1.0
-Message-ID: <158350572343.28353.7289666129109152780.tip-bot2@tip-bot2>
+Message-ID: <158350572487.28353.5061886185700456995.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,73 +49,64 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     14533a16c46db70b8a75eda8fa633c25ac446d81
-Gitweb:        https://git.kernel.org/tip/14533a16c46db70b8a75eda8fa633c25ac446d81
-Author:        Ingo Molnar <mingo@kernel.org>
-AuthorDate:    Fri, 06 Mar 2020 14:26:31 +01:00
+Commit-ID:     b28bc1e002c23ff8a4999c4a2fb1d4d412bc6f5e
+Gitweb:        https://git.kernel.org/tip/b28bc1e002c23ff8a4999c4a2fb1d4d412bc6f5e
+Author:        Qais Yousef <qais.yousef@arm.com>
+AuthorDate:    Mon, 02 Mar 2020 13:27:17 
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 06 Mar 2020 14:26:31 +01:00
+CommitterDate: Fri, 06 Mar 2020 12:57:27 +01:00
 
-thermal/cpu-cooling, sched/core: Move the arch_set_thermal_pressure() API to generic scheduler code
+sched/rt: Re-instate old behavior in select_task_rq_rt()
 
-drivers/base/arch_topology.c is only built if CONFIG_GENERIC_ARCH_TOPOLOGY=y,
-resulting in such build failures:
+When RT Capacity Aware support was added, the logic in select_task_rq_rt
+was modified to force a search for a fitting CPU if the task currently
+doesn't run on one.
 
-  cpufreq_cooling.c:(.text+0x1e7): undefined reference to `arch_set_thermal_pressure'
+But if the search failed, and the search was only triggered to fulfill
+the fitness request; we could end up selecting a new CPU unnecessarily.
 
-Move it to sched/core.c instead, and keep it enabled on x86 despite
-us not having a arch_scale_thermal_pressure() facility there, to
-build-test this thing.
+Fix this and re-instate the original behavior by ensuring we bail out
+in that case.
 
-Cc: Thara Gopinath <thara.gopinath@linaro.org>
-Cc: Peter Zijlstra (Intel) <peterz@infradead.org>
+This behavior change only affected asymmetric systems that are using
+util_clamp to implement capacity aware. None asymmetric systems weren't
+affected.
+
+LINK: https://lore.kernel.org/lkml/20200218041620.GD28029@codeaurora.org/
+Reported-by: Pavan Kondeti <pkondeti@codeaurora.org>
+Signed-off-by: Qais Yousef <qais.yousef@arm.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Fixes: 804d402fb6f6 ("sched/rt: Make RT capacity-aware")
+Link: https://lkml.kernel.org/r/20200302132721.8353-3-qais.yousef@arm.com
 ---
- drivers/base/arch_topology.c | 11 -----------
- kernel/sched/core.c          | 11 +++++++++++
- 2 files changed, 11 insertions(+), 11 deletions(-)
+ kernel/sched/rt.c |  9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/base/arch_topology.c b/drivers/base/arch_topology.c
-index 68dfa49..6119e11 100644
---- a/drivers/base/arch_topology.c
-+++ b/drivers/base/arch_topology.c
-@@ -42,17 +42,6 @@ void topology_set_cpu_scale(unsigned int cpu, unsigned long capacity)
- 	per_cpu(cpu_scale, cpu) = capacity;
- }
+diff --git a/kernel/sched/rt.c b/kernel/sched/rt.c
+index 55a4a50..f0071fa 100644
+--- a/kernel/sched/rt.c
++++ b/kernel/sched/rt.c
+@@ -1475,6 +1475,13 @@ select_task_rq_rt(struct task_struct *p, int cpu, int sd_flag, int flags)
+ 		int target = find_lowest_rq(p);
  
--DEFINE_PER_CPU(unsigned long, thermal_pressure);
--
--void arch_set_thermal_pressure(struct cpumask *cpus,
--			       unsigned long th_pressure)
--{
--	int cpu;
--
--	for_each_cpu(cpu, cpus)
--		WRITE_ONCE(per_cpu(thermal_pressure, cpu), th_pressure);
--}
--
- static ssize_t cpu_capacity_show(struct device *dev,
- 				 struct device_attribute *attr,
- 				 char *buf)
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 4d76df3..978bf6f 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -3576,6 +3576,17 @@ unsigned long long task_sched_runtime(struct task_struct *p)
- 	return ns;
- }
+ 		/*
++		 * Bail out if we were forcing a migration to find a better
++		 * fitting CPU but our search failed.
++		 */
++		if (!test && target != -1 && !rt_task_fits_capacity(p, target))
++			goto out_unlock;
++
++		/*
+ 		 * Don't bother moving it if the destination CPU is
+ 		 * not running a lower priority task.
+ 		 */
+@@ -1482,6 +1489,8 @@ select_task_rq_rt(struct task_struct *p, int cpu, int sd_flag, int flags)
+ 		    p->prio < cpu_rq(target)->rt.highest_prio.curr)
+ 			cpu = target;
+ 	}
++
++out_unlock:
+ 	rcu_read_unlock();
  
-+DEFINE_PER_CPU(unsigned long, thermal_pressure);
-+
-+void arch_set_thermal_pressure(struct cpumask *cpus,
-+			       unsigned long th_pressure)
-+{
-+	int cpu;
-+
-+	for_each_cpu(cpu, cpus)
-+		WRITE_ONCE(per_cpu(thermal_pressure, cpu), th_pressure);
-+}
-+
- /*
-  * This function gets called by the timer code, with HZ frequency.
-  * We call it with interrupts disabled.
+ out:
