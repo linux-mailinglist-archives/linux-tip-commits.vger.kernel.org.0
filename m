@@ -2,37 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CC3217C0BF
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Mar 2020 15:44:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 32CA917C0C2
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Mar 2020 15:44:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726932AbgCFOmI (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 6 Mar 2020 09:42:08 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:53736 "EHLO
+        id S1727408AbgCFOoM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 6 Mar 2020 09:44:12 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:53728 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726485AbgCFOmI (ORCPT
+        with ESMTP id S1726240AbgCFOmI (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Fri, 6 Mar 2020 09:42:08 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jAEAr-0006FB-Ox; Fri, 06 Mar 2020 15:42:01 +0100
+        id 1jAEAs-0006Fg-4b; Fri, 06 Mar 2020 15:42:02 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5EADC1C21D5;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B28CF1C21D3;
         Fri,  6 Mar 2020 15:42:01 +0100 (CET)
 Date:   Fri, 06 Mar 2020 14:42:01 -0000
 From:   "tip-bot2 for Ian Rogers" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/core: Add per perf_cpu_context min_heap storage
+Subject: [tip: perf/core] perf/core: Use min_heap in visit_groups_merge()
 Cc:     Ian Rogers <irogers@google.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200214075133.181299-5-irogers@google.com>
-References: <20200214075133.181299-5-irogers@google.com>
+In-Reply-To: <20200214075133.181299-4-irogers@google.com>
+References: <20200214075133.181299-4-irogers@google.com>
 MIME-Version: 1.0
-Message-ID: <158350572112.28353.5843586926290087112.tip-bot2@tip-bot2>
+Message-ID: <158350572146.28353.4698357304879018456.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,127 +48,124 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     836196beb377e59e54ec9e04f7402076ef7a8bd8
-Gitweb:        https://git.kernel.org/tip/836196beb377e59e54ec9e04f7402076ef7a8bd8
+Commit-ID:     6eef8a7116deae0706ba6d897c0d7dd887cd2be2
+Gitweb:        https://git.kernel.org/tip/6eef8a7116deae0706ba6d897c0d7dd887cd2be2
 Author:        Ian Rogers <irogers@google.com>
-AuthorDate:    Thu, 13 Feb 2020 23:51:31 -08:00
+AuthorDate:    Thu, 13 Feb 2020 23:51:30 -08:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 06 Mar 2020 11:57:00 +01:00
+CommitterDate: Fri, 06 Mar 2020 11:56:59 +01:00
 
-perf/core: Add per perf_cpu_context min_heap storage
+perf/core: Use min_heap in visit_groups_merge()
 
-The storage required for visit_groups_merge's min heap needs to vary in
-order to support more iterators, such as when multiple nested cgroups'
-events are being visited. This change allows for 2 iterators and doesn't
-support growth.
+visit_groups_merge will pick the next event based on when it was
+inserted in to the context (perf_event group_index). Events may be per CPU
+or for any CPU, but in the future we'd also like to have per cgroup events
+to avoid searching all events for the events to schedule for a cgroup.
+Introduce a min heap for the events that maintains a property that the
+earliest inserted event is always at the 0th element. Initialize the heap
+with per-CPU and any-CPU events for the context.
 
 Based-on-work-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ian Rogers <irogers@google.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lkml.kernel.org/r/20200214075133.181299-5-irogers@google.com
+Link: https://lkml.kernel.org/r/20200214075133.181299-4-irogers@google.com
 ---
- include/linux/perf_event.h |  7 ++++++-
- kernel/events/core.c       | 43 +++++++++++++++++++++++++++----------
- 2 files changed, 39 insertions(+), 11 deletions(-)
+ kernel/events/core.c | 67 ++++++++++++++++++++++++++++++++-----------
+ 1 file changed, 51 insertions(+), 16 deletions(-)
 
-diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
-index 68e21e8..8768a39 100644
---- a/include/linux/perf_event.h
-+++ b/include/linux/perf_event.h
-@@ -862,6 +862,13 @@ struct perf_cpu_context {
- 	int				sched_cb_usage;
- 
- 	int				online;
-+	/*
-+	 * Per-CPU storage for iterators used in visit_groups_merge. The default
-+	 * storage is of size 2 to hold the CPU and any CPU event iterators.
-+	 */
-+	int				heap_size;
-+	struct perf_event		**heap;
-+	struct perf_event		*heap_default[2];
- };
- 
- struct perf_output_handle {
 diff --git a/kernel/events/core.c b/kernel/events/core.c
-index ddfb06c..7529e76 100644
+index dceeeb1..ddfb06c 100644
 --- a/kernel/events/core.c
 +++ b/kernel/events/core.c
-@@ -3423,22 +3423,34 @@ static void __heap_add(struct min_heap *heap, struct perf_event *event)
- 	}
+@@ -49,6 +49,7 @@
+ #include <linux/sched/mm.h>
+ #include <linux/proc_ns.h>
+ #include <linux/mount.h>
++#include <linux/min_heap.h>
+ 
+ #include "internal.h"
+ 
+@@ -3392,32 +3393,66 @@ static void cpu_ctx_sched_out(struct perf_cpu_context *cpuctx,
+ 	ctx_sched_out(&cpuctx->ctx, cpuctx, event_type);
  }
  
--static noinline int visit_groups_merge(struct perf_event_groups *groups,
--				int cpu,
-+static noinline int visit_groups_merge(struct perf_cpu_context *cpuctx,
-+				struct perf_event_groups *groups, int cpu,
- 				int (*func)(struct perf_event *, void *),
- 				void *data)
+-static int visit_groups_merge(struct perf_event_groups *groups, int cpu,
+-			      int (*func)(struct perf_event *, void *), void *data)
++static bool perf_less_group_idx(const void *l, const void *r)
  {
- 	/* Space for per CPU and/or any CPU event iterators. */
- 	struct perf_event *itrs[2];
--	struct min_heap event_heap = {
--		.data = itrs,
--		.nr = 0,
--		.size = ARRAY_SIZE(itrs),
--	};
--	struct perf_event **evt = event_heap.data;
-+	struct min_heap event_heap;
-+	struct perf_event **evt;
+-	struct perf_event **evt, *evt1, *evt2;
++	const struct perf_event *le = l, *re = r;
++
++	return le->group_index < re->group_index;
++}
++
++static void swap_ptr(void *l, void *r)
++{
++	void **lp = l, **rp = r;
++
++	swap(*lp, *rp);
++}
++
++static const struct min_heap_callbacks perf_min_heap = {
++	.elem_size = sizeof(struct perf_event *),
++	.less = perf_less_group_idx,
++	.swp = swap_ptr,
++};
++
++static void __heap_add(struct min_heap *heap, struct perf_event *event)
++{
++	struct perf_event **itrs = heap->data;
++
++	if (event) {
++		itrs[heap->nr] = event;
++		heap->nr++;
++	}
++}
++
++static noinline int visit_groups_merge(struct perf_event_groups *groups,
++				int cpu,
++				int (*func)(struct perf_event *, void *),
++				void *data)
++{
++	/* Space for per CPU and/or any CPU event iterators. */
++	struct perf_event *itrs[2];
++	struct min_heap event_heap = {
++		.data = itrs,
++		.nr = 0,
++		.size = ARRAY_SIZE(itrs),
++	};
++	struct perf_event **evt = event_heap.data;
  	int ret;
  
--	__heap_add(&event_heap, perf_event_groups_first(groups, -1));
-+	if (cpuctx) {
-+		event_heap = (struct min_heap){
-+			.data = cpuctx->heap,
-+			.nr = 0,
-+			.size = cpuctx->heap_size,
-+		};
-+	} else {
-+		event_heap = (struct min_heap){
-+			.data = itrs,
-+			.nr = 0,
-+			.size = ARRAY_SIZE(itrs),
-+		};
-+		/* Events not within a CPU context may be on any CPU. */
-+		__heap_add(&event_heap, perf_event_groups_first(groups, -1));
-+	}
-+	evt = event_heap.data;
-+
- 	__heap_add(&event_heap, perf_event_groups_first(groups, cpu));
+-	evt1 = perf_event_groups_first(groups, -1);
+-	evt2 = perf_event_groups_first(groups, cpu);
++	__heap_add(&event_heap, perf_event_groups_first(groups, -1));
++	__heap_add(&event_heap, perf_event_groups_first(groups, cpu));
  
- 	min_heapify_all(&event_heap, &perf_min_heap);
-@@ -3492,7 +3504,10 @@ ctx_pinned_sched_in(struct perf_event_context *ctx,
- {
- 	int can_add_hw = 1;
+-	while (evt1 || evt2) {
+-		if (evt1 && evt2) {
+-			if (evt1->group_index < evt2->group_index)
+-				evt = &evt1;
+-			else
+-				evt = &evt2;
+-		} else if (evt1) {
+-			evt = &evt1;
+-		} else {
+-			evt = &evt2;
+-		}
++	min_heapify_all(&event_heap, &perf_min_heap);
  
--	visit_groups_merge(&ctx->pinned_groups,
-+	if (ctx != &cpuctx->ctx)
-+		cpuctx = NULL;
-+
-+	visit_groups_merge(cpuctx, &ctx->pinned_groups,
- 			   smp_processor_id(),
- 			   merge_sched_in, &can_add_hw);
- }
-@@ -3503,7 +3518,10 @@ ctx_flexible_sched_in(struct perf_event_context *ctx,
- {
- 	int can_add_hw = 1;
++	while (event_heap.nr) {
+ 		ret = func(*evt, data);
+ 		if (ret)
+ 			return ret;
  
--	visit_groups_merge(&ctx->flexible_groups,
-+	if (ctx != &cpuctx->ctx)
-+		cpuctx = NULL;
-+
-+	visit_groups_merge(cpuctx, &ctx->flexible_groups,
- 			   smp_processor_id(),
- 			   merge_sched_in, &can_add_hw);
- }
-@@ -10364,6 +10382,9 @@ skip_type:
- 		cpuctx->online = cpumask_test_cpu(cpu, perf_online_mask);
- 
- 		__perf_mux_hrtimer_init(cpuctx, cpu);
-+
-+		cpuctx->heap_size = ARRAY_SIZE(cpuctx->heap_default);
-+		cpuctx->heap = cpuctx->heap_default;
+ 		*evt = perf_event_groups_next(*evt);
++		if (*evt)
++			min_heapify(&event_heap, 0, &perf_min_heap);
++		else
++			min_heap_pop(&event_heap, &perf_min_heap);
  	}
  
- got_cpu_context:
+ 	return 0;
