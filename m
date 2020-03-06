@@ -2,39 +2,42 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1227117C094
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Mar 2020 15:43:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F9BD17C074
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Mar 2020 15:42:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727069AbgCFOmU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 6 Mar 2020 09:42:20 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:53815 "EHLO
+        id S1727254AbgCFOmW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 6 Mar 2020 09:42:22 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:53838 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727152AbgCFOmT (ORCPT
+        with ESMTP id S1726702AbgCFOmV (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 6 Mar 2020 09:42:19 -0500
+        Fri, 6 Mar 2020 09:42:21 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jAEB3-0006Js-Dk; Fri, 06 Mar 2020 15:42:13 +0100
+        id 1jAEB5-0006Jv-QA; Fri, 06 Mar 2020 15:42:16 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A71AD1C21D5;
-        Fri,  6 Mar 2020 15:42:07 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 0B24D1C21DB;
+        Fri,  6 Mar 2020 15:42:08 +0100 (CET)
 Date:   Fri, 06 Mar 2020 14:42:07 -0000
-From:   "tip-bot2 for Mel Gorman" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Valentin Schneider" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/numa: Acquire RCU lock for checking idle
- cores during NUMA balancing
-Cc:     Qian Cai <cai@lca.pw>, "Paul E. McKenney" <paulmck@kernel.org>,
+Subject: [tip: sched/core] sched/fair: Fix kernel build warning in
+ test_idle_cores() for !SMT NUMA
+Cc:     Anshuman Khandual <anshuman.khandual@arm.com>,
+        Naresh Kamboju <naresh.kamboju@linaro.org>,
+        Lukasz Luba <lukasz.luba@arm.com>,
+        Valentin Schneider <valentin.schneider@arm.com>,
         Mel Gorman <mgorman@techsingularity.net>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200227191804.GJ3818@techsingularity.net>
-References: <20200227191804.GJ3818@techsingularity.net>
+In-Reply-To: <20200303110258.1092-3-mgorman@techsingularity.net>
+References: <20200303110258.1092-3-mgorman@techsingularity.net>
 MIME-Version: 1.0
-Message-ID: <158350572742.28353.9668880281521573284.tip-bot2@tip-bot2>
+Message-ID: <158350572776.28353.575560040960927128.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,76 +53,81 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     0621df315402dd7bc56f7272fae9778701289825
-Gitweb:        https://git.kernel.org/tip/0621df315402dd7bc56f7272fae9778701289825
-Author:        Mel Gorman <mgorman@techsingularity.net>
-AuthorDate:    Thu, 27 Feb 2020 19:18:04 
+Commit-ID:     76c389ab2b5e300698eab87f9d4b7916f14117ba
+Gitweb:        https://git.kernel.org/tip/76c389ab2b5e300698eab87f9d4b7916f14117ba
+Author:        Valentin Schneider <valentin.schneider@arm.com>
+AuthorDate:    Tue, 03 Mar 2020 11:02:57 
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Fri, 06 Mar 2020 12:57:22 +01:00
 
-sched/numa: Acquire RCU lock for checking idle cores during NUMA balancing
+sched/fair: Fix kernel build warning in test_idle_cores() for !SMT NUMA
 
-Qian Cai reported the following bug:
+Building against the tip/sched/core as ff7db0bf24db ("sched/numa: Prefer
+using an idle CPU as a migration target instead of comparing tasks") with
+the arm64 defconfig (which doesn't have CONFIG_SCHED_SMT set) leads to:
 
-  The linux-next commit ff7db0bf24db ("sched/numa: Prefer using an idle CPU as a
-  migration target instead of comparing tasks") introduced a boot warning,
+  kernel/sched/fair.c:1525:20: warning: 'test_idle_cores' declared 'static' but never defined [-Wunused-function]
+   static inline bool test_idle_cores(int cpu, bool def);
+		      ^~~~~~~~~~~~~~~
 
-  [   86.520534][    T1] WARNING: suspicious RCU usage
-  [   86.520540][    T1] 5.6.0-rc3-next-20200227 #7 Not tainted
-  [   86.520545][    T1] -----------------------------
-  [   86.520551][    T1] kernel/sched/fair.c:5914 suspicious rcu_dereference_check() usage!
-  [   86.520555][    T1]
-  [   86.520555][    T1] other info that might help us debug this:
-  [   86.520555][    T1]
-  [   86.520561][    T1]
-  [   86.520561][    T1] rcu_scheduler_active = 2, debug_locks = 1
-  [   86.520567][    T1] 1 lock held by systemd/1:
-  [   86.520571][    T1]  #0: ffff8887f4b14848 (&mm->mmap_sem#2){++++}, at: do_page_fault+0x1d2/0x998
-  [   86.520594][    T1]
-  [   86.520594][    T1] stack backtrace:
-  [   86.520602][    T1] CPU: 1 PID: 1 Comm: systemd Not tainted 5.6.0-rc3-next-20200227 #7
+Rather than define it in its own CONFIG_SCHED_SMT #define island, bunch it
+up with test_idle_cores().
 
-task_numa_migrate() checks for idle cores when updating NUMA-related statistics.
-This relies on reading a RCU-protected structure in test_idle_cores() via this
-call chain
-
-task_numa_migrate
-  -> update_numa_stats
-    -> numa_idle_core
-      -> test_idle_cores
-
-While the locking could be fine-grained, it is more appropriate to acquire
-the RCU lock for the entire scan of the domain. This patch removes the
-warning triggered at boot time.
-
-Reported-by: Qian Cai <cai@lca.pw>
-Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
+Reported-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
+Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
+[mgorman@techsingularity.net: Edit changelog, minor style change]
+Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
 Signed-off-by: Mel Gorman <mgorman@techsingularity.net>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Fixes: ff7db0bf24db ("sched/numa: Prefer using an idle CPU as a migration target instead of comparing tasks")
-Link: https://lkml.kernel.org/r/20200227191804.GJ3818@techsingularity.net
+Link: https://lkml.kernel.org/r/20200303110258.1092-3-mgorman@techsingularity.net
 ---
- kernel/sched/fair.c | 2 ++
- 1 file changed, 2 insertions(+)
+ kernel/sched/fair.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
 diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index bba9452..3887b73 100644
+index 79bb423..bba9452 100644
 --- a/kernel/sched/fair.c
 +++ b/kernel/sched/fair.c
-@@ -1608,6 +1608,7 @@ static void update_numa_stats(struct task_numa_env *env,
- 	memset(ns, 0, sizeof(*ns));
- 	ns->idle_cpu = -1;
+@@ -1533,9 +1533,6 @@ static inline bool is_core_idle(int cpu)
+ 	return true;
+ }
  
-+	rcu_read_lock();
- 	for_each_cpu(cpu, cpumask_of_node(nid)) {
- 		struct rq *rq = cpu_rq(cpu);
+-/* Forward declarations of select_idle_sibling helpers */
+-static inline bool test_idle_cores(int cpu, bool def);
+-
+ struct task_numa_env {
+ 	struct task_struct *p;
  
-@@ -1627,6 +1628,7 @@ static void update_numa_stats(struct task_numa_env *env,
- 			idle_core = numa_idle_core(idle_core, cpu);
- 		}
- 	}
-+	rcu_read_unlock();
+@@ -1571,9 +1568,11 @@ numa_type numa_classify(unsigned int imbalance_pct,
+ 	return node_fully_busy;
+ }
  
- 	ns->weight = cpumask_weight(cpumask_of_node(nid));
++#ifdef CONFIG_SCHED_SMT
++/* Forward declarations of select_idle_sibling helpers */
++static inline bool test_idle_cores(int cpu, bool def);
+ static inline int numa_idle_core(int idle_core, int cpu)
+ {
+-#ifdef CONFIG_SCHED_SMT
+ 	if (!static_branch_likely(&sched_smt_present) ||
+ 	    idle_core >= 0 || !test_idle_cores(cpu, false))
+ 		return idle_core;
+@@ -1584,10 +1583,15 @@ static inline int numa_idle_core(int idle_core, int cpu)
+ 	 */
+ 	if (is_core_idle(cpu))
+ 		idle_core = cpu;
+-#endif
  
+ 	return idle_core;
+ }
++#else
++static inline int numa_idle_core(int idle_core, int cpu)
++{
++	return idle_core;
++}
++#endif
+ 
+ /*
+  * Gather all necessary information to make NUMA balancing placement
