@@ -2,34 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 991DB17C0C7
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Mar 2020 15:44:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 19A2C17C0AF
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Mar 2020 15:44:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726240AbgCFOoP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 6 Mar 2020 09:44:15 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:53729 "EHLO
+        id S1726874AbgCFOnk (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 6 Mar 2020 09:43:40 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:53778 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726108AbgCFOmI (ORCPT
+        with ESMTP id S1727064AbgCFOmO (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 6 Mar 2020 09:42:08 -0500
+        Fri, 6 Mar 2020 09:42:14 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jAEAt-0006Ga-5U; Fri, 06 Mar 2020 15:42:03 +0100
+        id 1jAEAz-0006HP-F2; Fri, 06 Mar 2020 15:42:09 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id CBE571C21D3;
-        Fri,  6 Mar 2020 15:42:02 +0100 (CET)
-Date:   Fri, 06 Mar 2020 14:42:02 -0000
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 1CFE21C21D4;
+        Fri,  6 Mar 2020 15:42:04 +0100 (CET)
+Date:   Fri, 06 Mar 2020 14:42:03 -0000
+From:   "tip-bot2 for Qais Yousef" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/core: Remove 'struct sched_in_data'
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+Subject: [tip: sched/core] sched/rt: Remove unnecessary push for unfit tasks
+Cc:     Qais Yousef <qais.yousef@arm.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200302132721.8353-6-qais.yousef@arm.com>
+References: <20200302132721.8353-6-qais.yousef@arm.com>
 MIME-Version: 1.0
-Message-ID: <158350572249.28353.5136899529392624818.tip-bot2@tip-bot2>
+Message-ID: <158350572384.28353.8796340288964830522.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -43,105 +46,62 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/core branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     2c2366c7548ecee65adfd264517ddf50f9e2d029
-Gitweb:        https://git.kernel.org/tip/2c2366c7548ecee65adfd264517ddf50f9e2d029
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Wed, 07 Aug 2019 11:45:01 +02:00
+Commit-ID:     d94a9df49069ba8ff7c4aaeca1229e6471a01a15
+Gitweb:        https://git.kernel.org/tip/d94a9df49069ba8ff7c4aaeca1229e6471a01a15
+Author:        Qais Yousef <qais.yousef@arm.com>
+AuthorDate:    Mon, 02 Mar 2020 13:27:20 
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 06 Mar 2020 11:56:58 +01:00
+CommitterDate: Fri, 06 Mar 2020 12:57:29 +01:00
 
-perf/core: Remove 'struct sched_in_data'
+sched/rt: Remove unnecessary push for unfit tasks
 
-We can deduce the ctx and cpuctx from the event, no need to pass them
-along. Remove the structure and pass in can_add_hw directly.
+In task_woken_rt() and switched_to_rto() we try trigger push-pull if the
+task is unfit.
 
+But the logic is found lacking because if the task was the only one
+running on the CPU, then rt_rq is not in overloaded state and won't
+trigger a push.
+
+The necessity of this logic was under a debate as well, a summary of
+the discussion can be found in the following thread:
+
+  https://lore.kernel.org/lkml/20200226160247.iqvdakiqbakk2llz@e107158-lin.cambridge.arm.com/
+
+Remove the logic for now until a better approach is agreed upon.
+
+Signed-off-by: Qais Yousef <qais.yousef@arm.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Fixes: 804d402fb6f6 ("sched/rt: Make RT capacity-aware")
+Link: https://lkml.kernel.org/r/20200302132721.8353-6-qais.yousef@arm.com
 ---
- kernel/events/core.c | 36 +++++++++++-------------------------
- 1 file changed, 11 insertions(+), 25 deletions(-)
+ kernel/sched/rt.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index b713080..b7eaaba 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -3423,17 +3423,11 @@ static int visit_groups_merge(struct perf_event_groups *groups, int cpu,
- 	return 0;
+diff --git a/kernel/sched/rt.c b/kernel/sched/rt.c
+index bcb1436..df11d88 100644
+--- a/kernel/sched/rt.c
++++ b/kernel/sched/rt.c
+@@ -2225,7 +2225,7 @@ static void task_woken_rt(struct rq *rq, struct task_struct *p)
+ 			    (rq->curr->nr_cpus_allowed < 2 ||
+ 			     rq->curr->prio <= p->prio);
+ 
+-	if (need_to_push || !rt_task_fits_capacity(p, cpu_of(rq)))
++	if (need_to_push)
+ 		push_rt_tasks(rq);
  }
  
--struct sched_in_data {
--	struct perf_event_context *ctx;
--	struct perf_cpu_context *cpuctx;
--	int can_add_hw;
--};
+@@ -2297,10 +2297,7 @@ static void switched_to_rt(struct rq *rq, struct task_struct *p)
+ 	 */
+ 	if (task_on_rq_queued(p) && rq->curr != p) {
+ #ifdef CONFIG_SMP
+-		bool need_to_push = rq->rt.overloaded ||
+-				    !rt_task_fits_capacity(p, cpu_of(rq));
 -
- static int merge_sched_in(struct perf_event *event, void *data)
- {
--	struct sched_in_data *sid = data;
--
--	WARN_ON_ONCE(event->ctx != sid->ctx);
-+	struct perf_event_context *ctx = event->ctx;
-+	struct perf_cpu_context *cpuctx = __get_cpu_context(ctx);
-+	int *can_add_hw = data;
- 
- 	if (event->state <= PERF_EVENT_STATE_OFF)
- 		return 0;
-@@ -3441,8 +3435,8 @@ static int merge_sched_in(struct perf_event *event, void *data)
- 	if (!event_filter_match(event))
- 		return 0;
- 
--	if (group_can_go_on(event, sid->cpuctx, sid->can_add_hw)) {
--		if (!group_sched_in(event, sid->cpuctx, sid->ctx))
-+	if (group_can_go_on(event, cpuctx, *can_add_hw)) {
-+		if (!group_sched_in(event, cpuctx, ctx))
- 			list_add_tail(&event->active_list, get_event_list(event));
- 	}
- 
-@@ -3450,8 +3444,8 @@ static int merge_sched_in(struct perf_event *event, void *data)
- 		if (event->attr.pinned)
- 			perf_event_set_state(event, PERF_EVENT_STATE_ERROR);
- 
--		sid->can_add_hw = 0;
--		sid->ctx->rotate_necessary = 1;
-+		*can_add_hw = 0;
-+		ctx->rotate_necessary = 1;
- 	}
- 
- 	return 0;
-@@ -3461,30 +3455,22 @@ static void
- ctx_pinned_sched_in(struct perf_event_context *ctx,
- 		    struct perf_cpu_context *cpuctx)
- {
--	struct sched_in_data sid = {
--		.ctx = ctx,
--		.cpuctx = cpuctx,
--		.can_add_hw = 1,
--	};
-+	int can_add_hw = 1;
- 
- 	visit_groups_merge(&ctx->pinned_groups,
- 			   smp_processor_id(),
--			   merge_sched_in, &sid);
-+			   merge_sched_in, &can_add_hw);
- }
- 
- static void
- ctx_flexible_sched_in(struct perf_event_context *ctx,
- 		      struct perf_cpu_context *cpuctx)
- {
--	struct sched_in_data sid = {
--		.ctx = ctx,
--		.cpuctx = cpuctx,
--		.can_add_hw = 1,
--	};
-+	int can_add_hw = 1;
- 
- 	visit_groups_merge(&ctx->flexible_groups,
- 			   smp_processor_id(),
--			   merge_sched_in, &sid);
-+			   merge_sched_in, &can_add_hw);
- }
- 
- static void
+-		if (p->nr_cpus_allowed > 1 && need_to_push)
++		if (p->nr_cpus_allowed > 1 && rq->rt.overloaded)
+ 			rt_queue_push_tasks(rq);
+ #endif /* CONFIG_SMP */
+ 		if (p->prio < rq->curr->prio && cpu_online(cpu_of(rq)))
