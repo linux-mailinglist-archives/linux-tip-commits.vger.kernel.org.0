@@ -2,42 +2,47 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E66FF17CCA8
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  7 Mar 2020 08:37:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0338817CCB2
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  7 Mar 2020 08:38:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725832AbgCGHhB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 7 Mar 2020 02:37:01 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:55226 "EHLO
+        id S1726330AbgCGHhO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 7 Mar 2020 02:37:14 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:55247 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725815AbgCGHhB (ORCPT
+        with ESMTP id S1726086AbgCGHhI (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 7 Mar 2020 02:37:01 -0500
+        Sat, 7 Mar 2020 02:37:08 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jAU0u-0004Hj-SV; Sat, 07 Mar 2020 08:36:49 +0100
+        id 1jAU0v-0004Hm-8L; Sat, 07 Mar 2020 08:36:49 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 836ED1C21F3;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E35DC1C21A5;
         Sat,  7 Mar 2020 08:36:48 +0100 (CET)
 Date:   Sat, 07 Mar 2020 07:36:48 -0000
-From:   "tip-bot2 for Tommi Rantala" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Nick Desaulniers" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf top: Fix stdio interface input handling with
- glibc 2.28+
-Cc:     Tommi Rantala <tommi.t.rantala@nokia.com>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
+Subject: [tip: perf/urgent] perf diff: Fix undefined string comparision
+ spotted by clang's -Wstring-compare
+Cc:     Nick Desaulniers <nick.desaulniers@gmail.com>,
+        Ian Rogers <irogers@google.com>,
         Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Jiri Olsa <jolsa@redhat.com>,
+        Changbin Du <changbin.du@intel.com>,
+        Jin Yao <yao.jin@linux.intel.com>,
+        Jiri Olsa <jolsa@redhat.com>, John Keeping <john@metanate.com>,
         Mark Rutland <mark.rutland@arm.com>,
         Namhyung Kim <namhyung@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200305083714.9381-2-tommi.t.rantala@nokia.com>
-References: <20200305083714.9381-2-tommi.t.rantala@nokia.com>
+        Peter Zijlstra <peterz@infradead.org>,
+        Song Liu <songliubraving@fb.com>,
+        clang-built-linux@googlegroups.com,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200223193456.25291-1-nick.desaulniers@gmail.com>
+References: <20200223193456.25291-1-nick.desaulniers@gmail.com>
 MIME-Version: 1.0
-Message-ID: <158356660826.28353.13798195042914131443.tip-bot2@tip-bot2>
+Message-ID: <158356660863.28353.13163883291738121062.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -53,56 +58,111 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     29b4f5f188571c112713c35cc87eefb46efee612
-Gitweb:        https://git.kernel.org/tip/29b4f5f188571c112713c35cc87eefb46efee612
-Author:        Tommi Rantala <tommi.t.rantala@nokia.com>
-AuthorDate:    Thu, 05 Mar 2020 10:37:12 +02:00
+Commit-ID:     cfd3bc752a3f5529506d279deb42e3bc8055695b
+Gitweb:        https://git.kernel.org/tip/cfd3bc752a3f5529506d279deb42e3bc8055695b
+Author:        Nick Desaulniers <nick.desaulniers@gmail.com>
+AuthorDate:    Sun, 23 Feb 2020 11:34:49 -08:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Fri, 06 Mar 2020 08:30:47 -03:00
+CommitterDate: Fri, 06 Mar 2020 08:30:29 -03:00
 
-perf top: Fix stdio interface input handling with glibc 2.28+
+perf diff: Fix undefined string comparision spotted by clang's -Wstring-compare
 
-Since glibc 2.28 when running 'perf top --stdio', input handling no
-longer works, but hitting any key always just prints the "Mapped keys"
-help text.
+clang warns:
 
-To fix it, call clearerr() in the display_thread() loop to clear any EOF
-sticky errors, as instructed in the glibc NEWS file
-(https://sourceware.org/git/?p=glibc.git;a=blob;f=NEWS):
+  util/block-info.c:298:18: error: result of comparison against a string
+  literal is unspecified (use an explicit string comparison function
+  instead) [-Werror,-Wstring-compare]
+          if ((start_line != SRCLINE_UNKNOWN) && (end_line != SRCLINE_UNKNOWN)) {
+                          ^  ~~~~~~~~~~~~~~~
+  util/block-info.c:298:51: error: result of comparison against a string
+  literal is unspecified (use an explicit string comparison function
+  instead) [-Werror,-Wstring-compare]
+          if ((start_line != SRCLINE_UNKNOWN) && (end_line != SRCLINE_UNKNOWN)) {
+                                                           ^  ~~~~~~~~~~~~~~~
+  util/block-info.c:298:18: error: result of comparison against a string
+  literal is unspecified (use an explicit string
+  comparison function instead) [-Werror,-Wstring-compare]
+          if ((start_line != SRCLINE_UNKNOWN) && (end_line != SRCLINE_UNKNOWN)) {
+                          ^  ~~~~~~~~~~~~~~~
+  util/block-info.c:298:51: error: result of comparison against a string
+  literal is unspecified (use an explicit string comparison function
+  instead) [-Werror,-Wstring-compare]
+          if ((start_line != SRCLINE_UNKNOWN) && (end_line != SRCLINE_UNKNOWN)) {
+                                                           ^  ~~~~~~~~~~~~~~~
+  util/map.c:434:15: error: result of comparison against a string literal
+  is unspecified (use an explicit string comparison function instead)
+  [-Werror,-Wstring-compare]
+                  if (srcline != SRCLINE_UNKNOWN)
+                              ^  ~~~~~~~~~~~~~~~
 
- * All stdio functions now treat end-of-file as a sticky condition.  If you
-   read from a file until EOF, and then the file is enlarged by another
-   process, you must call clearerr or another function with the same effect
-   (e.g. fseek, rewind) before you can read the additional data.  This
-   corrects a longstanding C99 conformance bug.  It is most likely to affect
-   programs that use stdio to read interactive input from a terminal.
-   (Bug #1190.)
+Reviewer Notes:
 
-Signed-off-by: Tommi Rantala <tommi.t.rantala@nokia.com>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Looks good to me. Some more context:
+https://clang.llvm.org/docs/DiagnosticsReference.html#wstring-compare
+The spec says:
+J.1 Unspecified behavior
+The following are unspecified:
+.. Whether two string literals result in distinct arrays (6.4.5).
+
+Signed-off-by: Nick Desaulniers <nick.desaulniers@gmail.com>
+Reviewed-by: Ian Rogers <irogers@google.com>
 Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Changbin Du <changbin.du@intel.com>
+Cc: Jin Yao <yao.jin@linux.intel.com>
 Cc: Jiri Olsa <jolsa@redhat.com>
+Cc: John Keeping <john@metanate.com>
 Cc: Mark Rutland <mark.rutland@arm.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Link: http://lore.kernel.org/lkml/20200305083714.9381-2-tommi.t.rantala@nokia.com
+Cc: Song Liu <songliubraving@fb.com>
+Cc: clang-built-linux@googlegroups.com
+Link: https://github.com/ClangBuiltLinux/linux/issues/900
+Link: http://lore.kernel.org/lkml/20200223193456.25291-1-nick.desaulniers@gmail.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/builtin-top.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tools/perf/builtin-diff.c    | 3 ++-
+ tools/perf/util/block-info.c | 3 ++-
+ tools/perf/util/map.c        | 2 +-
+ 3 files changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/tools/perf/builtin-top.c b/tools/perf/builtin-top.c
-index f6dd1a6..d2539b7 100644
---- a/tools/perf/builtin-top.c
-+++ b/tools/perf/builtin-top.c
-@@ -684,7 +684,9 @@ repeat:
- 	delay_msecs = top->delay_secs * MSEC_PER_SEC;
- 	set_term_quiet_input(&save);
- 	/* trash return*/
--	getc(stdin);
-+	clearerr(stdin);
-+	if (poll(&stdin_poll, 1, 0) > 0)
-+		getc(stdin);
+diff --git a/tools/perf/builtin-diff.c b/tools/perf/builtin-diff.c
+index f8b6ae5..c03c36f 100644
+--- a/tools/perf/builtin-diff.c
++++ b/tools/perf/builtin-diff.c
+@@ -1312,7 +1312,8 @@ static int cycles_printf(struct hist_entry *he, struct hist_entry *pair,
+ 	end_line = map__srcline(he->ms.map, bi->sym->start + bi->end,
+ 				he->ms.sym);
  
- 	while (!done) {
- 		perf_top__print_sym_table(top);
+-	if ((start_line != SRCLINE_UNKNOWN) && (end_line != SRCLINE_UNKNOWN)) {
++	if ((strncmp(start_line, SRCLINE_UNKNOWN, strlen(SRCLINE_UNKNOWN)) != 0) &&
++	    (strncmp(end_line, SRCLINE_UNKNOWN, strlen(SRCLINE_UNKNOWN)) != 0)) {
+ 		scnprintf(buf, sizeof(buf), "[%s -> %s] %4ld",
+ 			  start_line, end_line, block_he->diff.cycles);
+ 	} else {
+diff --git a/tools/perf/util/block-info.c b/tools/perf/util/block-info.c
+index c4b030b..fbbb6d6 100644
+--- a/tools/perf/util/block-info.c
++++ b/tools/perf/util/block-info.c
+@@ -295,7 +295,8 @@ static int block_range_entry(struct perf_hpp_fmt *fmt, struct perf_hpp *hpp,
+ 	end_line = map__srcline(he->ms.map, bi->sym->start + bi->end,
+ 				he->ms.sym);
+ 
+-	if ((start_line != SRCLINE_UNKNOWN) && (end_line != SRCLINE_UNKNOWN)) {
++	if ((strncmp(start_line, SRCLINE_UNKNOWN, strlen(SRCLINE_UNKNOWN)) != 0) &&
++	    (strncmp(end_line, SRCLINE_UNKNOWN, strlen(SRCLINE_UNKNOWN)) != 0)) {
+ 		scnprintf(buf, sizeof(buf), "[%s -> %s]",
+ 			  start_line, end_line);
+ 	} else {
+diff --git a/tools/perf/util/map.c b/tools/perf/util/map.c
+index a08ca27..9542851 100644
+--- a/tools/perf/util/map.c
++++ b/tools/perf/util/map.c
+@@ -431,7 +431,7 @@ int map__fprintf_srcline(struct map *map, u64 addr, const char *prefix,
+ 
+ 	if (map && map->dso) {
+ 		char *srcline = map__srcline(map, addr, NULL);
+-		if (srcline != SRCLINE_UNKNOWN)
++		if (strncmp(srcline, SRCLINE_UNKNOWN, strlen(SRCLINE_UNKNOWN)) != 0)
+ 			ret = fprintf(fp, "%s%s", prefix, srcline);
+ 		free_srcline(srcline);
+ 	}
