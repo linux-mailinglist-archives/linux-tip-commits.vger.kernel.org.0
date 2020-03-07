@@ -2,44 +2,42 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A84217CCB0
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  7 Mar 2020 08:37:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E66FF17CCA8
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  7 Mar 2020 08:37:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726281AbgCGHhI (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 7 Mar 2020 02:37:08 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:55246 "EHLO
+        id S1725832AbgCGHhB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 7 Mar 2020 02:37:01 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:55226 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726271AbgCGHhH (ORCPT
+        with ESMTP id S1725815AbgCGHhB (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 7 Mar 2020 02:37:07 -0500
+        Sat, 7 Mar 2020 02:37:01 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jAU0t-0004Ha-RZ; Sat, 07 Mar 2020 08:36:47 +0100
+        id 1jAU0u-0004Hj-SV; Sat, 07 Mar 2020 08:36:49 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 6923E1C21F3;
-        Sat,  7 Mar 2020 08:36:47 +0100 (CET)
-Date:   Sat, 07 Mar 2020 07:36:47 -0000
-From:   "tip-bot2 for John Garry" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 836ED1C21F3;
+        Sat,  7 Mar 2020 08:36:48 +0100 (CET)
+Date:   Sat, 07 Mar 2020 07:36:48 -0000
+From:   "tip-bot2 for Tommi Rantala" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf jevents: Fix leak of mapfile memory
-Cc:     Jiri Olsa <jolsa@redhat.com>, John Garry <john.garry@huawei.com>,
+Subject: [tip: perf/urgent] perf top: Fix stdio interface input handling with
+ glibc 2.28+
+Cc:     Tommi Rantala <tommi.t.rantala@nokia.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
         Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Andi Kleen <ak@linux.intel.com>,
-        James Clark <james.clark@arm.com>,
-        Joakim Zhang <qiangqing.zhang@nxp.com>,
+        Jiri Olsa <jolsa@redhat.com>,
         Mark Rutland <mark.rutland@arm.com>,
         Namhyung Kim <namhyung@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Will Deacon <will@kernel.org>, linuxarm@huawei.com,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <1583406486-154841-2-git-send-email-john.garry@huawei.com>
-References: <1583406486-154841-2-git-send-email-john.garry@huawei.com>
+        Peter Zijlstra <peterz@infradead.org>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200305083714.9381-2-tommi.t.rantala@nokia.com>
+References: <20200305083714.9381-2-tommi.t.rantala@nokia.com>
 MIME-Version: 1.0
-Message-ID: <158356660717.28353.4900462593011224305.tip-bot2@tip-bot2>
+Message-ID: <158356660826.28353.13798195042914131443.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -55,82 +53,56 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     3f5777fbaf04c58d940526a22a2e0c813c837936
-Gitweb:        https://git.kernel.org/tip/3f5777fbaf04c58d940526a22a2e0c813c837936
-Author:        John Garry <john.garry@huawei.com>
-AuthorDate:    Thu, 05 Mar 2020 19:08:01 +08:00
+Commit-ID:     29b4f5f188571c112713c35cc87eefb46efee612
+Gitweb:        https://git.kernel.org/tip/29b4f5f188571c112713c35cc87eefb46efee612
+Author:        Tommi Rantala <tommi.t.rantala@nokia.com>
+AuthorDate:    Thu, 05 Mar 2020 10:37:12 +02:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Fri, 06 Mar 2020 08:30:47 -03:00
 
-perf jevents: Fix leak of mapfile memory
+perf top: Fix stdio interface input handling with glibc 2.28+
 
-The memory for global pointer is never freed during normal program
-execution, so let's do that in the main function exit as a good
-programming practice.
+Since glibc 2.28 when running 'perf top --stdio', input handling no
+longer works, but hitting any key always just prints the "Mapped keys"
+help text.
 
-A stray blank line is also removed.
+To fix it, call clearerr() in the display_thread() loop to clear any EOF
+sticky errors, as instructed in the glibc NEWS file
+(https://sourceware.org/git/?p=glibc.git;a=blob;f=NEWS):
 
-Reported-by: Jiri Olsa <jolsa@redhat.com>
-Signed-off-by: John Garry <john.garry@huawei.com>
+ * All stdio functions now treat end-of-file as a sticky condition.  If you
+   read from a file until EOF, and then the file is enlarged by another
+   process, you must call clearerr or another function with the same effect
+   (e.g. fseek, rewind) before you can read the additional data.  This
+   corrects a longstanding C99 conformance bug.  It is most likely to affect
+   programs that use stdio to read interactive input from a terminal.
+   (Bug #1190.)
+
+Signed-off-by: Tommi Rantala <tommi.t.rantala@nokia.com>
+Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: James Clark <james.clark@arm.com>
-Cc: Joakim Zhang <qiangqing.zhang@nxp.com>
+Cc: Jiri Olsa <jolsa@redhat.com>
 Cc: Mark Rutland <mark.rutland@arm.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Will Deacon <will@kernel.org>
-Cc: linuxarm@huawei.com
-Link: http://lore.kernel.org/lkml/1583406486-154841-2-git-send-email-john.garry@huawei.com
+Link: http://lore.kernel.org/lkml/20200305083714.9381-2-tommi.t.rantala@nokia.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/pmu-events/jevents.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ tools/perf/builtin-top.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/pmu-events/jevents.c b/tools/perf/pmu-events/jevents.c
-index 079c77b..27b4da8 100644
---- a/tools/perf/pmu-events/jevents.c
-+++ b/tools/perf/pmu-events/jevents.c
-@@ -1082,10 +1082,9 @@ static int process_one_file(const char *fpath, const struct stat *sb,
-  */
- int main(int argc, char *argv[])
- {
--	int rc;
-+	int rc, ret = 0;
- 	int maxfds;
- 	char ldirname[PATH_MAX];
--
- 	const char *arch;
- 	const char *output_file;
- 	const char *start_dirname;
-@@ -1156,7 +1155,8 @@ int main(int argc, char *argv[])
- 		/* Make build fail */
- 		fclose(eventsfp);
- 		free_arch_std_events();
--		return 1;
-+		ret = 1;
-+		goto out_free_mapfile;
- 	} else if (rc) {
- 		goto empty_map;
- 	}
-@@ -1174,14 +1174,17 @@ int main(int argc, char *argv[])
- 		/* Make build fail */
- 		fclose(eventsfp);
- 		free_arch_std_events();
--		return 1;
-+		ret = 1;
- 	}
+diff --git a/tools/perf/builtin-top.c b/tools/perf/builtin-top.c
+index f6dd1a6..d2539b7 100644
+--- a/tools/perf/builtin-top.c
++++ b/tools/perf/builtin-top.c
+@@ -684,7 +684,9 @@ repeat:
+ 	delay_msecs = top->delay_secs * MSEC_PER_SEC;
+ 	set_term_quiet_input(&save);
+ 	/* trash return*/
+-	getc(stdin);
++	clearerr(stdin);
++	if (poll(&stdin_poll, 1, 0) > 0)
++		getc(stdin);
  
--	return 0;
-+
-+	goto out_free_mapfile;
- 
- empty_map:
- 	fclose(eventsfp);
- 	create_empty_mapping(output_file);
- 	free_arch_std_events();
--	return 0;
-+out_free_mapfile:
-+	free(mapfile);
-+	return ret;
- }
+ 	while (!done) {
+ 		perf_top__print_sym_table(top);
