@@ -2,38 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B12717C07E
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Mar 2020 15:42:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7CB8917CCAF
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  7 Mar 2020 08:37:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727381AbgCFOmf (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 6 Mar 2020 09:42:35 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:53877 "EHLO
+        id S1726291AbgCGHhI (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 7 Mar 2020 02:37:08 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:55245 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727300AbgCFOm2 (ORCPT
+        with ESMTP id S1726109AbgCGHhH (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 6 Mar 2020 09:42:28 -0500
+        Sat, 7 Mar 2020 02:37:07 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jAEBA-0006Qh-AT; Fri, 06 Mar 2020 15:42:20 +0100
+        id 1jAU0t-0004HY-On; Sat, 07 Mar 2020 08:36:47 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 1AF081C21DE;
-        Fri,  6 Mar 2020 15:42:15 +0100 (CET)
-Date:   Fri, 06 Mar 2020 14:42:14 -0000
-From:   "tip-bot2 for Peter Xu" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 0EC1C1C21A5;
+        Sat,  7 Mar 2020 08:36:47 +0100 (CET)
+Date:   Sat, 07 Mar 2020 07:36:46 -0000
+From:   "tip-bot2 for Ian Rogers" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: smp/core] smp: Allow smp_call_function_single_async() to insert
- locked csd
-Cc:     Peter Xu <peterx@redhat.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
+Subject: [tip: perf/urgent] tools: Fix off-by 1 relative directory includes
+Cc:     Ian Rogers <irogers@google.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Jiri Olsa <jolsa@kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Alexios Zavras <alexios.zavras@intel.com>,
+        Andi Kleen <ak@linux.intel.com>,
+        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+        Igor Lubashev <ilubashe@akamai.com>,
+        Kan Liang <kan.liang@linux.intel.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Stephane Eranian <eranian@google.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Wei Li <liwei391@huawei.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191216213125.9536-2-peterx@redhat.com>
-References: <20191216213125.9536-2-peterx@redhat.com>
+In-Reply-To: <20200306071110.130202-2-irogers@google.com>
+References: <20200306071110.130202-2-irogers@google.com>
 MIME-Version: 1.0
-Message-ID: <158350573482.28353.599979818559142437.tip-bot2@tip-bot2>
+Message-ID: <158356660669.28353.345183437718949512.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,79 +61,357 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the smp/core branch of tip:
+The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     5a18ceca63502546d6c0cab1f3f79cb6900f947a
-Gitweb:        https://git.kernel.org/tip/5a18ceca63502546d6c0cab1f3f79cb6900f947a
-Author:        Peter Xu <peterx@redhat.com>
-AuthorDate:    Mon, 16 Dec 2019 16:31:23 -05:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 06 Mar 2020 13:42:28 +01:00
+Commit-ID:     441b62acd9c809e87bab45ad1d82b1b3b77cb4f0
+Gitweb:        https://git.kernel.org/tip/441b62acd9c809e87bab45ad1d82b1b3b77cb4f0
+Author:        Ian Rogers <irogers@google.com>
+AuthorDate:    Thu, 05 Mar 2020 23:11:08 -08:00
+Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
+CommitterDate: Fri, 06 Mar 2020 08:36:46 -03:00
 
-smp: Allow smp_call_function_single_async() to insert locked csd
+tools: Fix off-by 1 relative directory includes
 
-Previously we will raise an warning if we want to insert a csd object
-which is with the LOCK flag set, and if it happens we'll also wait for
-the lock to be released.  However, this operation does not match
-perfectly with how the function is named - the name with "_async"
-suffix hints that this function should not block, while we will.
+This is currently working due to extra include paths in the build.
 
-This patch changed this behavior by simply return -EBUSY instead of
-waiting, at the meantime we allow this operation to happen without
-warning the user to change this into a feature when the caller wants
-to "insert a csd object, if it's there, just wait for that one".
+Committer testing:
 
-This is pretty safe because in flush_smp_call_function_queue() for
-async csd objects (where csd->flags&SYNC is zero) we'll first do the
-unlock then we call the csd->func().  So if we see the csd->flags&LOCK
-is true in smp_call_function_single_async(), then it's guaranteed that
-csd->func() will be called after this smp_call_function_single_async()
-returns -EBUSY.
+  $ cd tools/include/uapi/asm/
 
-Update the comment of the function too to refect this.
+Before this patch:
 
-Signed-off-by: Peter Xu <peterx@redhat.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lkml.kernel.org/r/20191216213125.9536-2-peterx@redhat.com
+  $ ls -la ../../arch/x86/include/uapi/asm/errno.h
+  ls: cannot access '../../arch/x86/include/uapi/asm/errno.h': No such file or directory
+  $
+
+After this patch;
+
+  $ ls -la ../../../arch/x86/include/uapi/asm/errno.h
+  -rw-rw-r--. 1 acme acme 31 Feb 20 12:42 ../../../arch/x86/include/uapi/asm/errno.h
+  $
+
+Check that that is still under tools/, i.e. hasn't escaped into the main
+kernel sources:
+
+  $ cd ../../../arch/x86/include/uapi/asm/
+  $ pwd
+  /home/acme/git/perf/tools/arch/x86/include/uapi/asm
+  $
+
+Signed-off-by: Ian Rogers <irogers@google.com>
+Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Alexios Zavras <alexios.zavras@intel.com>
+Cc: Andi Kleen <ak@linux.intel.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Igor Lubashev <ilubashe@akamai.com>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Poirier <mathieu.poirier@linaro.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Nick Desaulniers <ndesaulniers@google.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Stephane Eranian <eranian@google.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Wei Li <liwei391@huawei.com>
+Link: http://lore.kernel.org/lkml/20200306071110.130202-2-irogers@google.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- kernel/smp.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ tools/include/uapi/asm/errno.h           | 14 +++++------
+ tools/perf/arch/arm64/util/arm-spe.c     | 20 +++++++--------
+ tools/perf/arch/arm64/util/perf_regs.c   |  2 +-
+ tools/perf/arch/powerpc/util/perf_regs.c |  4 +--
+ tools/perf/arch/x86/util/auxtrace.c      | 14 +++++------
+ tools/perf/arch/x86/util/event.c         | 12 ++++-----
+ tools/perf/arch/x86/util/header.c        |  4 +--
+ tools/perf/arch/x86/util/intel-bts.c     | 24 +++++++++---------
+ tools/perf/arch/x86/util/intel-pt.c      | 30 +++++++++++------------
+ tools/perf/arch/x86/util/machine.c       |  6 ++---
+ tools/perf/arch/x86/util/perf_regs.c     |  8 +++---
+ tools/perf/arch/x86/util/pmu.c           |  6 ++---
+ 12 files changed, 72 insertions(+), 72 deletions(-)
 
-diff --git a/kernel/smp.c b/kernel/smp.c
-index d0ada39..97f1d97 100644
---- a/kernel/smp.c
-+++ b/kernel/smp.c
-@@ -329,6 +329,11 @@ EXPORT_SYMBOL(smp_call_function_single);
-  * (ie: embedded in an object) and is responsible for synchronizing it
-  * such that the IPIs performed on the @csd are strictly serialized.
-  *
-+ * If the function is called with one csd which has not yet been
-+ * processed by previous call to smp_call_function_single_async(), the
-+ * function will return immediately with -EBUSY showing that the csd
-+ * object is still in progress.
-+ *
-  * NOTE: Be careful, there is unfortunately no current debugging facility to
-  * validate the correctness of this serialization.
-  */
-@@ -338,14 +343,17 @@ int smp_call_function_single_async(int cpu, call_single_data_t *csd)
+diff --git a/tools/include/uapi/asm/errno.h b/tools/include/uapi/asm/errno.h
+index ce3c594..637189e 100644
+--- a/tools/include/uapi/asm/errno.h
++++ b/tools/include/uapi/asm/errno.h
+@@ -1,18 +1,18 @@
+ /* SPDX-License-Identifier: GPL-2.0 */
+ #if defined(__i386__) || defined(__x86_64__)
+-#include "../../arch/x86/include/uapi/asm/errno.h"
++#include "../../../arch/x86/include/uapi/asm/errno.h"
+ #elif defined(__powerpc__)
+-#include "../../arch/powerpc/include/uapi/asm/errno.h"
++#include "../../../arch/powerpc/include/uapi/asm/errno.h"
+ #elif defined(__sparc__)
+-#include "../../arch/sparc/include/uapi/asm/errno.h"
++#include "../../../arch/sparc/include/uapi/asm/errno.h"
+ #elif defined(__alpha__)
+-#include "../../arch/alpha/include/uapi/asm/errno.h"
++#include "../../../arch/alpha/include/uapi/asm/errno.h"
+ #elif defined(__mips__)
+-#include "../../arch/mips/include/uapi/asm/errno.h"
++#include "../../../arch/mips/include/uapi/asm/errno.h"
+ #elif defined(__ia64__)
+-#include "../../arch/ia64/include/uapi/asm/errno.h"
++#include "../../../arch/ia64/include/uapi/asm/errno.h"
+ #elif defined(__xtensa__)
+-#include "../../arch/xtensa/include/uapi/asm/errno.h"
++#include "../../../arch/xtensa/include/uapi/asm/errno.h"
+ #else
+ #include <asm-generic/errno.h>
+ #endif
+diff --git a/tools/perf/arch/arm64/util/arm-spe.c b/tools/perf/arch/arm64/util/arm-spe.c
+index 8d6821d..27653be 100644
+--- a/tools/perf/arch/arm64/util/arm-spe.c
++++ b/tools/perf/arch/arm64/util/arm-spe.c
+@@ -11,17 +11,17 @@
+ #include <linux/zalloc.h>
+ #include <time.h>
  
- 	preempt_disable();
+-#include "../../util/cpumap.h"
+-#include "../../util/event.h"
+-#include "../../util/evsel.h"
+-#include "../../util/evlist.h"
+-#include "../../util/session.h"
++#include "../../../util/cpumap.h"
++#include "../../../util/event.h"
++#include "../../../util/evsel.h"
++#include "../../../util/evlist.h"
++#include "../../../util/session.h"
+ #include <internal/lib.h> // page_size
+-#include "../../util/pmu.h"
+-#include "../../util/debug.h"
+-#include "../../util/auxtrace.h"
+-#include "../../util/record.h"
+-#include "../../util/arm-spe.h"
++#include "../../../util/pmu.h"
++#include "../../../util/debug.h"
++#include "../../../util/auxtrace.h"
++#include "../../../util/record.h"
++#include "../../../util/arm-spe.h"
  
--	/* We could deadlock if we have to wait here with interrupts disabled! */
--	if (WARN_ON_ONCE(csd->flags & CSD_FLAG_LOCK))
--		csd_lock_wait(csd);
-+	if (csd->flags & CSD_FLAG_LOCK) {
-+		err = -EBUSY;
-+		goto out;
-+	}
+ #define KiB(x) ((x) * 1024)
+ #define MiB(x) ((x) * 1024 * 1024)
+diff --git a/tools/perf/arch/arm64/util/perf_regs.c b/tools/perf/arch/arm64/util/perf_regs.c
+index 2864e2e..2833e10 100644
+--- a/tools/perf/arch/arm64/util/perf_regs.c
++++ b/tools/perf/arch/arm64/util/perf_regs.c
+@@ -1,5 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0
+-#include "../../util/perf_regs.h"
++#include "../../../util/perf_regs.h"
  
- 	csd->flags = CSD_FLAG_LOCK;
- 	smp_wmb();
+ const struct sample_reg sample_reg_masks[] = {
+ 	SMPL_REG_END
+diff --git a/tools/perf/arch/powerpc/util/perf_regs.c b/tools/perf/arch/powerpc/util/perf_regs.c
+index e9c436e..0a52429 100644
+--- a/tools/perf/arch/powerpc/util/perf_regs.c
++++ b/tools/perf/arch/powerpc/util/perf_regs.c
+@@ -4,8 +4,8 @@
+ #include <regex.h>
+ #include <linux/zalloc.h>
  
- 	err = generic_exec_single(cpu, csd, csd->func, csd->info);
-+
-+out:
- 	preempt_enable();
+-#include "../../util/perf_regs.h"
+-#include "../../util/debug.h"
++#include "../../../util/perf_regs.h"
++#include "../../../util/debug.h"
  
- 	return err;
+ #include <linux/kernel.h>
+ 
+diff --git a/tools/perf/arch/x86/util/auxtrace.c b/tools/perf/arch/x86/util/auxtrace.c
+index 7abc9fd..3da506e 100644
+--- a/tools/perf/arch/x86/util/auxtrace.c
++++ b/tools/perf/arch/x86/util/auxtrace.c
+@@ -7,13 +7,13 @@
+ #include <errno.h>
+ #include <stdbool.h>
+ 
+-#include "../../util/header.h"
+-#include "../../util/debug.h"
+-#include "../../util/pmu.h"
+-#include "../../util/auxtrace.h"
+-#include "../../util/intel-pt.h"
+-#include "../../util/intel-bts.h"
+-#include "../../util/evlist.h"
++#include "../../../util/header.h"
++#include "../../../util/debug.h"
++#include "../../../util/pmu.h"
++#include "../../../util/auxtrace.h"
++#include "../../../util/intel-pt.h"
++#include "../../../util/intel-bts.h"
++#include "../../../util/evlist.h"
+ 
+ static
+ struct auxtrace_record *auxtrace_record__init_intel(struct evlist *evlist,
+diff --git a/tools/perf/arch/x86/util/event.c b/tools/perf/arch/x86/util/event.c
+index ac45015..047dc00 100644
+--- a/tools/perf/arch/x86/util/event.c
++++ b/tools/perf/arch/x86/util/event.c
+@@ -3,12 +3,12 @@
+ #include <linux/string.h>
+ #include <linux/zalloc.h>
+ 
+-#include "../../util/event.h"
+-#include "../../util/synthetic-events.h"
+-#include "../../util/machine.h"
+-#include "../../util/tool.h"
+-#include "../../util/map.h"
+-#include "../../util/debug.h"
++#include "../../../util/event.h"
++#include "../../../util/synthetic-events.h"
++#include "../../../util/machine.h"
++#include "../../../util/tool.h"
++#include "../../../util/map.h"
++#include "../../../util/debug.h"
+ 
+ #if defined(__x86_64__)
+ 
+diff --git a/tools/perf/arch/x86/util/header.c b/tools/perf/arch/x86/util/header.c
+index aa6deb4..578c8c5 100644
+--- a/tools/perf/arch/x86/util/header.c
++++ b/tools/perf/arch/x86/util/header.c
+@@ -7,8 +7,8 @@
+ #include <string.h>
+ #include <regex.h>
+ 
+-#include "../../util/debug.h"
+-#include "../../util/header.h"
++#include "../../../util/debug.h"
++#include "../../../util/header.h"
+ 
+ static inline void
+ cpuid(unsigned int op, unsigned int *a, unsigned int *b, unsigned int *c,
+diff --git a/tools/perf/arch/x86/util/intel-bts.c b/tools/perf/arch/x86/util/intel-bts.c
+index 26cee10..09f9380 100644
+--- a/tools/perf/arch/x86/util/intel-bts.c
++++ b/tools/perf/arch/x86/util/intel-bts.c
+@@ -11,18 +11,18 @@
+ #include <linux/log2.h>
+ #include <linux/zalloc.h>
+ 
+-#include "../../util/cpumap.h"
+-#include "../../util/event.h"
+-#include "../../util/evsel.h"
+-#include "../../util/evlist.h"
+-#include "../../util/mmap.h"
+-#include "../../util/session.h"
+-#include "../../util/pmu.h"
+-#include "../../util/debug.h"
+-#include "../../util/record.h"
+-#include "../../util/tsc.h"
+-#include "../../util/auxtrace.h"
+-#include "../../util/intel-bts.h"
++#include "../../../util/cpumap.h"
++#include "../../../util/event.h"
++#include "../../../util/evsel.h"
++#include "../../../util/evlist.h"
++#include "../../../util/mmap.h"
++#include "../../../util/session.h"
++#include "../../../util/pmu.h"
++#include "../../../util/debug.h"
++#include "../../../util/record.h"
++#include "../../../util/tsc.h"
++#include "../../../util/auxtrace.h"
++#include "../../../util/intel-bts.h"
+ #include <internal/lib.h> // page_size
+ 
+ #define KiB(x) ((x) * 1024)
+diff --git a/tools/perf/arch/x86/util/intel-pt.c b/tools/perf/arch/x86/util/intel-pt.c
+index 7eea4fd..1643aed 100644
+--- a/tools/perf/arch/x86/util/intel-pt.c
++++ b/tools/perf/arch/x86/util/intel-pt.c
+@@ -13,23 +13,23 @@
+ #include <linux/zalloc.h>
+ #include <cpuid.h>
+ 
+-#include "../../util/session.h"
+-#include "../../util/event.h"
+-#include "../../util/evlist.h"
+-#include "../../util/evsel.h"
+-#include "../../util/evsel_config.h"
+-#include "../../util/cpumap.h"
+-#include "../../util/mmap.h"
++#include "../../../util/session.h"
++#include "../../../util/event.h"
++#include "../../../util/evlist.h"
++#include "../../../util/evsel.h"
++#include "../../../util/evsel_config.h"
++#include "../../../util/cpumap.h"
++#include "../../../util/mmap.h"
+ #include <subcmd/parse-options.h>
+-#include "../../util/parse-events.h"
+-#include "../../util/pmu.h"
+-#include "../../util/debug.h"
+-#include "../../util/auxtrace.h"
+-#include "../../util/record.h"
+-#include "../../util/target.h"
+-#include "../../util/tsc.h"
++#include "../../../util/parse-events.h"
++#include "../../../util/pmu.h"
++#include "../../../util/debug.h"
++#include "../../../util/auxtrace.h"
++#include "../../../util/record.h"
++#include "../../../util/target.h"
++#include "../../../util/tsc.h"
+ #include <internal/lib.h> // page_size
+-#include "../../util/intel-pt.h"
++#include "../../../util/intel-pt.h"
+ 
+ #define KiB(x) ((x) * 1024)
+ #define MiB(x) ((x) * 1024 * 1024)
+diff --git a/tools/perf/arch/x86/util/machine.c b/tools/perf/arch/x86/util/machine.c
+index e17e080..31679c3 100644
+--- a/tools/perf/arch/x86/util/machine.c
++++ b/tools/perf/arch/x86/util/machine.c
+@@ -5,9 +5,9 @@
+ #include <stdlib.h>
+ 
+ #include <internal/lib.h> // page_size
+-#include "../../util/machine.h"
+-#include "../../util/map.h"
+-#include "../../util/symbol.h"
++#include "../../../util/machine.h"
++#include "../../../util/map.h"
++#include "../../../util/symbol.h"
+ #include <linux/ctype.h>
+ 
+ #include <symbol/kallsyms.h>
+diff --git a/tools/perf/arch/x86/util/perf_regs.c b/tools/perf/arch/x86/util/perf_regs.c
+index c218b83..fca81b3 100644
+--- a/tools/perf/arch/x86/util/perf_regs.c
++++ b/tools/perf/arch/x86/util/perf_regs.c
+@@ -5,10 +5,10 @@
+ #include <linux/kernel.h>
+ #include <linux/zalloc.h>
+ 
+-#include "../../perf-sys.h"
+-#include "../../util/perf_regs.h"
+-#include "../../util/debug.h"
+-#include "../../util/event.h"
++#include "../../../perf-sys.h"
++#include "../../../util/perf_regs.h"
++#include "../../../util/debug.h"
++#include "../../../util/event.h"
+ 
+ const struct sample_reg sample_reg_masks[] = {
+ 	SMPL_REG(AX, PERF_REG_X86_AX),
+diff --git a/tools/perf/arch/x86/util/pmu.c b/tools/perf/arch/x86/util/pmu.c
+index e33ef5b..d48d608 100644
+--- a/tools/perf/arch/x86/util/pmu.c
++++ b/tools/perf/arch/x86/util/pmu.c
+@@ -4,9 +4,9 @@
+ #include <linux/stddef.h>
+ #include <linux/perf_event.h>
+ 
+-#include "../../util/intel-pt.h"
+-#include "../../util/intel-bts.h"
+-#include "../../util/pmu.h"
++#include "../../../util/intel-pt.h"
++#include "../../../util/intel-bts.h"
++#include "../../../util/pmu.h"
+ 
+ struct perf_event_attr *perf_pmu__get_default_config(struct perf_pmu *pmu __maybe_unused)
+ {
