@@ -2,45 +2,45 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 64BC817CCAA
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  7 Mar 2020 08:37:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 03C2917CCAC
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  7 Mar 2020 08:37:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726116AbgCGHhF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S1726199AbgCGHhF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Sat, 7 Mar 2020 02:37:05 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:55237 "EHLO
+Received: from Galois.linutronix.de ([193.142.43.55]:55239 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725815AbgCGHhF (ORCPT
+        with ESMTP id S1726086AbgCGHhF (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Sat, 7 Mar 2020 02:37:05 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jAU0u-0004Hg-HB; Sat, 07 Mar 2020 08:36:48 +0100
+        id 1jAU0u-0004Hb-4t; Sat, 07 Mar 2020 08:36:48 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 313BF1C21A5;
-        Sat,  7 Mar 2020 08:36:48 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id CB8E11C21F4;
+        Sat,  7 Mar 2020 08:36:47 +0100 (CET)
 Date:   Sat, 07 Mar 2020 07:36:47 -0000
 From:   "tip-bot2 for Tommi Rantala" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf bench futex-wake: Restore thread count
- default to online CPU count
+Subject: [tip: perf/urgent] perf bench: Clear struct sigaction before
+ sigaction() syscall
 Cc:     Tommi Rantala <tommi.t.rantala@nokia.com>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
         Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Changbin Du <changbin.du@intel.com>,
         Darren Hart <dvhart@infradead.org>,
-        Davidlohr Bueso <dave@stgolabs.net>,
         Jiri Olsa <jolsa@redhat.com>,
         Mark Rutland <mark.rutland@arm.com>,
         Namhyung Kim <namhyung@kernel.org>,
         Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200305083714.9381-3-tommi.t.rantala@nokia.com>
-References: <20200305083714.9381-3-tommi.t.rantala@nokia.com>
+        Thomas Gleixner <tglx@linutronix.de>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200305083714.9381-4-tommi.t.rantala@nokia.com>
+References: <20200305083714.9381-4-tommi.t.rantala@nokia.com>
 MIME-Version: 1.0
-Message-ID: <158356660791.28353.2323821212643953114.tip-bot2@tip-bot2>
+Message-ID: <158356660757.28353.13657813598485713690.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -56,74 +56,120 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     f649bd9dd5d5004543bbc3c50b829577b49f5d75
-Gitweb:        https://git.kernel.org/tip/f649bd9dd5d5004543bbc3c50b829577b49f5d75
+Commit-ID:     7b919a53102d81cd2e310b4941ac51c465d249ca
+Gitweb:        https://git.kernel.org/tip/7b919a53102d81cd2e310b4941ac51c465d249ca
 Author:        Tommi Rantala <tommi.t.rantala@nokia.com>
-AuthorDate:    Thu, 05 Mar 2020 10:37:13 +02:00
+AuthorDate:    Thu, 05 Mar 2020 10:37:14 +02:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Fri, 06 Mar 2020 08:30:47 -03:00
 
-perf bench futex-wake: Restore thread count default to online CPU count
+perf bench: Clear struct sigaction before sigaction() syscall
 
-Since commit 3b2323c2c1c4 ("perf bench futex: Use cpumaps") the default
-number of threads the benchmark uses got changed from number of online
-CPUs to zero:
+Avoid garbage in sigaction structs used in sigaction() syscalls.
+Valgrind is complaining about it.
 
-  $ perf bench futex wake
-  # Running 'futex/wake' benchmark:
-  Run summary [PID 15930]: blocking on 0 threads (at [private] futex 0x558b8ee4bfac), waking up 1 at a time.
-  [Run 1]: Wokeup 0 of 0 threads in 0.0000 ms
-  [...]
-  [Run 10]: Wokeup 0 of 0 threads in 0.0000 ms
-  Wokeup 0 of 0 threads in 0.0004 ms (+-40.82%)
-
-Restore the old behavior by grabbing the number of online CPUs via
-cpu->nr:
-
-  $ perf bench futex wake
-  # Running 'futex/wake' benchmark:
-  Run summary [PID 18356]: blocking on 8 threads (at [private] futex 0xb3e62c), waking up 1 at a time.
-  [Run 1]: Wokeup 8 of 8 threads in 0.0260 ms
-  [...]
-  [Run 10]: Wokeup 8 of 8 threads in 0.0270 ms
-  Wokeup 8 of 8 threads in 0.0419 ms (+-24.35%)
-
-Fixes: 3b2323c2c1c4 ("perf bench futex: Use cpumaps")
 Signed-off-by: Tommi Rantala <tommi.t.rantala@nokia.com>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Changbin Du <changbin.du@intel.com>
 Cc: Darren Hart <dvhart@infradead.org>
-Cc: Davidlohr Bueso <dave@stgolabs.net>
 Cc: Jiri Olsa <jolsa@redhat.com>
 Cc: Mark Rutland <mark.rutland@arm.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Link: http://lore.kernel.org/lkml/20200305083714.9381-3-tommi.t.rantala@nokia.com
+Link: http://lore.kernel.org/lkml/20200305083714.9381-4-tommi.t.rantala@nokia.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/bench/futex-wake.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/perf/bench/epoll-ctl.c           | 1 +
+ tools/perf/bench/epoll-wait.c          | 1 +
+ tools/perf/bench/futex-hash.c          | 1 +
+ tools/perf/bench/futex-lock-pi.c       | 1 +
+ tools/perf/bench/futex-requeue.c       | 1 +
+ tools/perf/bench/futex-wake-parallel.c | 1 +
+ tools/perf/bench/futex-wake.c          | 1 +
+ 7 files changed, 7 insertions(+)
 
+diff --git a/tools/perf/bench/epoll-ctl.c b/tools/perf/bench/epoll-ctl.c
+index a7526c0..cadc18d 100644
+--- a/tools/perf/bench/epoll-ctl.c
++++ b/tools/perf/bench/epoll-ctl.c
+@@ -312,6 +312,7 @@ int bench_epoll_ctl(int argc, const char **argv)
+ 		exit(EXIT_FAILURE);
+ 	}
+ 
++	memset(&act, 0, sizeof(act));
+ 	sigfillset(&act.sa_mask);
+ 	act.sa_sigaction = toggle_done;
+ 	sigaction(SIGINT, &act, NULL);
+diff --git a/tools/perf/bench/epoll-wait.c b/tools/perf/bench/epoll-wait.c
+index d1c5cb5..f938c58 100644
+--- a/tools/perf/bench/epoll-wait.c
++++ b/tools/perf/bench/epoll-wait.c
+@@ -426,6 +426,7 @@ int bench_epoll_wait(int argc, const char **argv)
+ 		exit(EXIT_FAILURE);
+ 	}
+ 
++	memset(&act, 0, sizeof(act));
+ 	sigfillset(&act.sa_mask);
+ 	act.sa_sigaction = toggle_done;
+ 	sigaction(SIGINT, &act, NULL);
+diff --git a/tools/perf/bench/futex-hash.c b/tools/perf/bench/futex-hash.c
+index 2177686..65eebe0 100644
+--- a/tools/perf/bench/futex-hash.c
++++ b/tools/perf/bench/futex-hash.c
+@@ -137,6 +137,7 @@ int bench_futex_hash(int argc, const char **argv)
+ 	if (!cpu)
+ 		goto errmem;
+ 
++	memset(&act, 0, sizeof(act));
+ 	sigfillset(&act.sa_mask);
+ 	act.sa_sigaction = toggle_done;
+ 	sigaction(SIGINT, &act, NULL);
+diff --git a/tools/perf/bench/futex-lock-pi.c b/tools/perf/bench/futex-lock-pi.c
+index 30d9712..89fd8f3 100644
+--- a/tools/perf/bench/futex-lock-pi.c
++++ b/tools/perf/bench/futex-lock-pi.c
+@@ -160,6 +160,7 @@ int bench_futex_lock_pi(int argc, const char **argv)
+ 	if (!cpu)
+ 		err(EXIT_FAILURE, "calloc");
+ 
++	memset(&act, 0, sizeof(act));
+ 	sigfillset(&act.sa_mask);
+ 	act.sa_sigaction = toggle_done;
+ 	sigaction(SIGINT, &act, NULL);
+diff --git a/tools/perf/bench/futex-requeue.c b/tools/perf/bench/futex-requeue.c
+index a00a689..7a15c2e 100644
+--- a/tools/perf/bench/futex-requeue.c
++++ b/tools/perf/bench/futex-requeue.c
+@@ -128,6 +128,7 @@ int bench_futex_requeue(int argc, const char **argv)
+ 	if (!cpu)
+ 		err(EXIT_FAILURE, "cpu_map__new");
+ 
++	memset(&act, 0, sizeof(act));
+ 	sigfillset(&act.sa_mask);
+ 	act.sa_sigaction = toggle_done;
+ 	sigaction(SIGINT, &act, NULL);
+diff --git a/tools/perf/bench/futex-wake-parallel.c b/tools/perf/bench/futex-wake-parallel.c
+index a053cf2..cd2b81a 100644
+--- a/tools/perf/bench/futex-wake-parallel.c
++++ b/tools/perf/bench/futex-wake-parallel.c
+@@ -234,6 +234,7 @@ int bench_futex_wake_parallel(int argc, const char **argv)
+ 		exit(EXIT_FAILURE);
+ 	}
+ 
++	memset(&act, 0, sizeof(act));
+ 	sigfillset(&act.sa_mask);
+ 	act.sa_sigaction = toggle_done;
+ 	sigaction(SIGINT, &act, NULL);
 diff --git a/tools/perf/bench/futex-wake.c b/tools/perf/bench/futex-wake.c
-index df81009..58906e9 100644
+index 58906e9..2dfcef3 100644
 --- a/tools/perf/bench/futex-wake.c
 +++ b/tools/perf/bench/futex-wake.c
-@@ -43,7 +43,7 @@ static bool done = false, silent = false, fshared = false;
- static pthread_mutex_t thread_lock;
- static pthread_cond_t thread_parent, thread_worker;
- static struct stats waketime_stats, wakeup_stats;
--static unsigned int ncpus, threads_starting, nthreads = 0;
-+static unsigned int threads_starting, nthreads = 0;
- static int futex_flag = 0;
+@@ -136,6 +136,7 @@ int bench_futex_wake(int argc, const char **argv)
+ 	if (!cpu)
+ 		err(EXIT_FAILURE, "calloc");
  
- static const struct option options[] = {
-@@ -141,7 +141,7 @@ int bench_futex_wake(int argc, const char **argv)
++	memset(&act, 0, sizeof(act));
+ 	sigfillset(&act.sa_mask);
+ 	act.sa_sigaction = toggle_done;
  	sigaction(SIGINT, &act, NULL);
- 
- 	if (!nthreads)
--		nthreads = ncpus;
-+		nthreads = cpu->nr;
- 
- 	worker = calloc(nthreads, sizeof(*worker));
- 	if (!worker)
