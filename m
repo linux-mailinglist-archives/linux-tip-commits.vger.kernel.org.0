@@ -2,37 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A7E117D336
-	for <lists+linux-tip-commits@lfdr.de>; Sun,  8 Mar 2020 11:14:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6364117D3AA
+	for <lists+linux-tip-commits@lfdr.de>; Sun,  8 Mar 2020 13:07:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726138AbgCHKOf (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 8 Mar 2020 06:14:35 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:56467 "EHLO
+        id S1726279AbgCHMHh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 8 Mar 2020 08:07:37 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:56562 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726289AbgCHKOf (ORCPT
+        with ESMTP id S1726271AbgCHMHh (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 8 Mar 2020 06:14:35 -0400
+        Sun, 8 Mar 2020 08:07:37 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jAsx6-0004o6-AT; Sun, 08 Mar 2020 11:14:32 +0100
+        id 1jAuiU-0005fZ-CX; Sun, 08 Mar 2020 13:07:34 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 42D3A1C2215;
-        Sun,  8 Mar 2020 11:14:31 +0100 (CET)
-Date:   Sun, 08 Mar 2020 10:14:31 -0000
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B88711C220A;
+        Sun,  8 Mar 2020 13:07:33 +0100 (CET)
+Date:   Sun, 08 Mar 2020 12:07:33 -0000
+From:   "tip-bot2 for Alexander Sverdlin" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] genirq/debugfs: Add missing sanity checks to
- interrupt injection
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Marc Zyngier <maz@kernel.org>, stable@vger.kernel.org,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200306130623.500019114@linutronix.de>
-References: <20200306130623.500019114@linutronix.de>
+Subject: [tip: irq/core] genirq/irqdomain: Check pointer in
+ irq_domain_alloc_irqs_hierarchy()
+Cc:     Alexander Sverdlin <alexander.sverdlin@nokia.com>,
+        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200306174720.82604-1-alexander.sverdlin@nokia.com>
+References: <20200306174720.82604-1-alexander.sverdlin@nokia.com>
 MIME-Version: 1.0
-Message-ID: <158366247101.28353.9070665399389100228.tip-bot2@tip-bot2>
+Message-ID: <158366925336.28353.5904197587974966508.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,47 +48,66 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     a740a423c36932695b01a3e920f697bc55b05fec
-Gitweb:        https://git.kernel.org/tip/a740a423c36932695b01a3e920f697bc55b05fec
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Fri, 06 Mar 2020 14:03:42 +01:00
+Commit-ID:     87f2d1c662fa1761359fdf558246f97e484d177a
+Gitweb:        https://git.kernel.org/tip/87f2d1c662fa1761359fdf558246f97e484d177a
+Author:        Alexander Sverdlin <alexander.sverdlin@nokia.com>
+AuthorDate:    Fri, 06 Mar 2020 18:47:20 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sun, 08 Mar 2020 11:06:40 +01:00
+CommitterDate: Sun, 08 Mar 2020 13:03:41 +01:00
 
-genirq/debugfs: Add missing sanity checks to interrupt injection
+genirq/irqdomain: Check pointer in irq_domain_alloc_irqs_hierarchy()
 
-Interrupts cannot be injected when the interrupt is not activated and when
-a replay is already in progress.
+irq_domain_alloc_irqs_hierarchy() has 3 call sites in the compilation unit
+but only one of them checks for the pointer which is being dereferenced
+inside the called function. Move the check into the function. This allows
+for catching the error instead of the following crash:
 
-Fixes: 536e2e34bd00 ("genirq/debugfs: Triggering of interrupts from userspace")
+Unable to handle kernel NULL pointer dereference at virtual address 00000000
+PC is at 0x0
+LR is at gpiochip_hierarchy_irq_domain_alloc+0x11f/0x140
+...
+[<c06c23ff>] (gpiochip_hierarchy_irq_domain_alloc)
+[<c0462a89>] (__irq_domain_alloc_irqs)
+[<c0462dad>] (irq_create_fwspec_mapping)
+[<c06c2251>] (gpiochip_to_irq)
+[<c06c1c9b>] (gpiod_to_irq)
+[<bf973073>] (gpio_irqs_init [gpio_irqs])
+[<bf974048>] (gpio_irqs_exit+0xecc/0xe84 [gpio_irqs])
+Code: bad PC value
+
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@nokia.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Marc Zyngier <maz@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20200306130623.500019114@linutronix.de
+Link: https://lkml.kernel.org/r/20200306174720.82604-1-alexander.sverdlin@nokia.com
 
 ---
- kernel/irq/debugfs.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ kernel/irq/irqdomain.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/kernel/irq/debugfs.c b/kernel/irq/debugfs.c
-index a949bd3..d44c8fd 100644
---- a/kernel/irq/debugfs.c
-+++ b/kernel/irq/debugfs.c
-@@ -206,8 +206,15 @@ static ssize_t irq_debug_write(struct file *file, const char __user *user_buf,
- 		chip_bus_lock(desc);
- 		raw_spin_lock_irqsave(&desc->lock, flags);
+diff --git a/kernel/irq/irqdomain.c b/kernel/irq/irqdomain.c
+index fdfc213..35b8d97 100644
+--- a/kernel/irq/irqdomain.c
++++ b/kernel/irq/irqdomain.c
+@@ -1310,6 +1310,11 @@ int irq_domain_alloc_irqs_hierarchy(struct irq_domain *domain,
+ 				    unsigned int irq_base,
+ 				    unsigned int nr_irqs, void *arg)
+ {
++	if (!domain->ops->alloc) {
++		pr_debug("domain->ops->alloc() is NULL\n");
++		return -ENOSYS;
++	}
++
+ 	return domain->ops->alloc(domain, irq_base, nr_irqs, arg);
+ }
  
--		if (irq_settings_is_level(desc) || desc->istate & IRQS_NMI) {
--			/* Can't do level nor NMIs, sorry */
-+		/*
-+		 * Don't allow injection when the interrupt is:
-+		 *  - Level or NMI type
-+		 *  - not activated
-+		 *  - replaying already
-+		 */
-+		if (irq_settings_is_level(desc) ||
-+		    !irqd_is_activated(&desc->irq_data) ||
-+		    (desc->istate & (IRQS_NMI | IRQS_REPLAY))) {
- 			err = -EINVAL;
- 		} else {
- 			desc->istate |= IRQS_PENDING;
+@@ -1347,11 +1352,6 @@ int __irq_domain_alloc_irqs(struct irq_domain *domain, int irq_base,
+ 			return -EINVAL;
+ 	}
+ 
+-	if (!domain->ops->alloc) {
+-		pr_debug("domain->ops->alloc() is NULL\n");
+-		return -ENOSYS;
+-	}
+-
+ 	if (realloc && irq_base >= 0) {
+ 		virq = irq_base;
+ 	} else {
