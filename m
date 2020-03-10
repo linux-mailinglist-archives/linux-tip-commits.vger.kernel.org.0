@@ -2,36 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 68ECA17EB62
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  9 Mar 2020 22:42:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 30F7317F33E
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 10 Mar 2020 10:15:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727093AbgCIVmR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 9 Mar 2020 17:42:17 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:60342 "EHLO
+        id S1726295AbgCJJPz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 10 Mar 2020 05:15:55 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:33001 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727080AbgCIVmR (ORCPT
+        with ESMTP id S1726211AbgCJJPz (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 9 Mar 2020 17:42:17 -0400
+        Tue, 10 Mar 2020 05:15:55 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jBQA5-0000Bf-M0; Mon, 09 Mar 2020 22:42:09 +0100
+        id 1jBazO-00025d-Hq; Tue, 10 Mar 2020 10:15:50 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id EAB231C217D;
-        Mon,  9 Mar 2020 22:42:08 +0100 (CET)
-Date:   Mon, 09 Mar 2020 21:42:08 -0000
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C3E781C21F0;
+        Tue, 10 Mar 2020 10:15:49 +0100 (CET)
+Date:   Tue, 10 Mar 2020 09:15:49 -0000
+From:   "tip-bot2 for Tony W Wang-oc" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/urgent] futex: Unbreak futex hashing
-Cc:     Rong Chen <rong.a.chen@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
+Subject: [tip: x86/cpu] x86/Kconfig: Drop vendor dependency for X86_UMIP
+Cc:     "Tony W Wang-oc" <TonyWWang-oc@zhaoxin.com>,
+        Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <87h7yy90ve.fsf@nanos.tec.linutronix.de>
-References: <87h7yy90ve.fsf@nanos.tec.linutronix.de>
+In-Reply-To: <1583733990-2587-1-git-send-email-TonyWWang-oc@zhaoxin.com>
+References: <1583733990-2587-1-git-send-email-TonyWWang-oc@zhaoxin.com>
 MIME-Version: 1.0
-Message-ID: <158379012847.28353.9019650703766565146.tip-bot2@tip-bot2>
+Message-ID: <158383174941.28353.575378555250987688.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -45,50 +45,39 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/urgent branch of tip:
+The following commit has been merged into the x86/cpu branch of tip:
 
-Commit-ID:     8d67743653dce5a0e7aa500fcccb237cde7ad88e
-Gitweb:        https://git.kernel.org/tip/8d67743653dce5a0e7aa500fcccb237cde7ad88e
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Sun, 08 Mar 2020 19:07:17 +01:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 09 Mar 2020 22:33:09 +01:00
+Commit-ID:     bdb04a1abbf92c998f1afb5f00a037f2edaec1f7
+Gitweb:        https://git.kernel.org/tip/bdb04a1abbf92c998f1afb5f00a037f2edaec1f7
+Author:        Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>
+AuthorDate:    Mon, 09 Mar 2020 14:06:30 +08:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Tue, 10 Mar 2020 10:10:53 +01:00
 
-futex: Unbreak futex hashing
+x86/Kconfig: Drop vendor dependency for X86_UMIP
 
-The recent futex inode life time fix changed the ordering of the futex key
-union struct members, but forgot to adjust the hash function accordingly,
+Some Centaur family 7 CPUs and Zhaoxin family 7 CPUs support the UMIP
+feature too. The text size growth which UMIP adds is ~1K and distro
+kernels enable it anyway so remove the vendor dependency.
 
-As a result the hashing omits the leading 64bit and even hashes beyond the
-futex key causing a bad hash distribution which led to a ~100% performance
-regression.
+ [ bp: Rewrite commit message. ]
 
-Hand in the futex key pointer instead of a random struct member and make
-the size calculation based of the struct offset.
-
-Fixes: 8019ad13ef7f ("futex: Fix inode life-time issue")
-Reported-by: Rong Chen <rong.a.chen@intel.com>
-Decoded-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Rong Chen <rong.a.chen@intel.com>
-Link: https://lkml.kernel.org/r/87h7yy90ve.fsf@nanos.tec.linutronix.de
+Signed-off-by: Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lkml.kernel.org/r/1583733990-2587-1-git-send-email-TonyWWang-oc@zhaoxin.com
 ---
- kernel/futex.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/Kconfig | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/kernel/futex.c b/kernel/futex.c
-index e14f7cd..82dfacb 100644
---- a/kernel/futex.c
-+++ b/kernel/futex.c
-@@ -385,9 +385,9 @@ static inline int hb_waiters_pending(struct futex_hash_bucket *hb)
-  */
- static struct futex_hash_bucket *hash_futex(union futex_key *key)
- {
--	u32 hash = jhash2((u32*)&key->both.word,
--			  (sizeof(key->both.word)+sizeof(key->both.ptr))/4,
-+	u32 hash = jhash2((u32 *)key, offsetof(typeof(*key), both.offset) / 4,
- 			  key->both.offset);
-+
- 	return &futex_queues[hash & (futex_hashsize - 1)];
- }
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index beea770..cb3633d 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -1875,7 +1875,6 @@ config X86_SMAP
  
+ config X86_UMIP
+ 	def_bool y
+-	depends on CPU_SUP_INTEL || CPU_SUP_AMD
+ 	prompt "User Mode Instruction Prevention" if EXPERT
+ 	---help---
+ 	  User Mode Instruction Prevention (UMIP) is a security feature in
