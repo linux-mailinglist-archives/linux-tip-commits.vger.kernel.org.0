@@ -2,36 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FF6918241D
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 11 Mar 2020 22:42:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DC55A182463
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 11 Mar 2020 23:05:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729328AbgCKVmL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 11 Mar 2020 17:42:11 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:40764 "EHLO
+        id S1729691AbgCKWFV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 11 Mar 2020 18:05:21 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:40801 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729333AbgCKVmL (ORCPT
+        with ESMTP id S1729223AbgCKWFV (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 11 Mar 2020 17:42:11 -0400
+        Wed, 11 Mar 2020 18:05:21 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jC977-0000vp-RB; Wed, 11 Mar 2020 22:42:05 +0100
+        id 1jC9TZ-0001hC-J6; Wed, 11 Mar 2020 23:05:17 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5FB171C2246;
-        Wed, 11 Mar 2020 22:42:05 +0100 (CET)
-Date:   Wed, 11 Mar 2020 21:42:05 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 367D31C224A;
+        Wed, 11 Mar 2020 23:05:17 +0100 (CET)
+Date:   Wed, 11 Mar 2020 22:05:16 -0000
 From:   "tip-bot2 for Hans de Goede" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] x86: Select HARDIRQS_SW_RESEND on x86
+Subject: [tip: x86/timers] x86/tsc_msr: Fix MSR_FSB_FREQ mask for Cherry Trail devices
 Cc:     Hans de Goede <hdegoede@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200123210242.53367-1-hdegoede@redhat.com>
-References: <20200123210242.53367-1-hdegoede@redhat.com>
+        Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200223140610.59612-2-hdegoede@redhat.com>
+References: <20200223140610.59612-2-hdegoede@redhat.com>
 MIME-Version: 1.0
-Message-ID: <158396292503.28353.1070405680109587154.tip-bot2@tip-bot2>
+Message-ID: <158396431695.28353.14027321767001755746.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -45,97 +45,133 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the irq/core branch of tip:
+The following commit has been merged into the x86/timers branch of tip:
 
-Commit-ID:     17e5888e4e180b45af7bafe7f3a86440d42717f3
-Gitweb:        https://git.kernel.org/tip/17e5888e4e180b45af7bafe7f3a86440d42717f3
+Commit-ID:     c8810e2ffc30c7e1577f9c057c4b85d984bbc35a
+Gitweb:        https://git.kernel.org/tip/c8810e2ffc30c7e1577f9c057c4b85d984bbc35a
 Author:        Hans de Goede <hdegoede@redhat.com>
-AuthorDate:    Thu, 23 Jan 2020 22:02:42 +01:00
+AuthorDate:    Sun, 23 Feb 2020 15:06:09 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 11 Mar 2020 22:39:39 +01:00
+CommitterDate: Wed, 11 Mar 2020 22:57:39 +01:00
 
-x86: Select HARDIRQS_SW_RESEND on x86
+x86/tsc_msr: Fix MSR_FSB_FREQ mask for Cherry Trail devices
 
-Modern x86 laptops are starting to use GPIO pins as interrupts more
-and more, e.g. touchpads and touchscreens have almost all moved away
-from PS/2 and USB to using I2C with a GPIO pin as interrupt.
-Modern x86 laptops also have almost all moved to using s2idle instead
-of using the system S3 ACPI power state to suspend.
+According to the "Intel 64 and IA-32 Architectures Software Developer's
+Manual Volume 4: Model-Specific Registers" on Cherry Trail (Airmont)
+devices the 4 lowest bits of the MSR_FSB_FREQ mask indicate the bus freq
+unlike on e.g. Bay Trail where only the lowest 3 bits are used.
 
-The Intel and AMD pinctrl drivers do not define irq_retrigger handlers
-for the irqchips they register, this is causing edge triggered interrupts
-which happen while suspended using s2idle to get lost.
+This is also the reason why MAX_NUM_FREQS is defined as 9, since Cherry
+Trail SoCs have 9 possible frequencies, so the lo value from the MSR needs
+to be masked with 0x0f, not with 0x07 otherwise the 9th frequency will get
+interpreted as the 1st.
 
-One specific example of this is the lid switch on some devices, lid
-switches used to be handled by the embedded-controller, but now the
-lid open/closed sensor is sometimes directly connected to a GPIO pin.
-On most devices the ACPI code for this looks like this:
+Bump MAX_NUM_FREQS to 16 to avoid any possibility of addressing the array
+out of bounds and makes the mask part of the cpufreq struct so it can be
+set it per model.
 
-Method (_E00, ...) {
-	Notify (LID0, 0x80) // Status Change
-}
-
-Where _E00 is an ACPI event handler for changes on both edges of the GPIO
-connected to the lid sensor, this event handler is then combined with an
-_LID method which directly reads the pin. When the device is resumed by
-opening the lid, the GPIO interrupt will wake the system, but because the
-pinctrl irqchip doesn't have an irq_retrigger handler, the Notify will not
-happen. This is not a problem in the case the _LID method directly reads
-the GPIO, because the drivers/acpi/button.c code will call _LID on resume
-anyways.
-
-But some devices have an event handler for the GPIO connected to the
-lid sensor which looks like this:
-
-Method (_E00, ...) {
-	if (LID_GPIO == One)
-		LIDS = One
-	else
-		LIDS = Zero
-	Notify (LID0, 0x80) // Status Change
-}
-
-And the _LID method returns the cached LIDS value, since on open we
-do not re-run the edge-interrupt handler when we re-enable IRQS on resume
-(because of the missing irq_retrigger handler), _LID now will keep
-reporting closed, as LIDS was never changed to reflect the open status,
-this causes userspace to re-resume the laptop again shortly after opening
-the lid.
-
-The Intel GPIO controllers do not allow implementing irq_retrigger without
-emulating it in software, at which point we are better of just using the
-generic HARDIRQS_SW_RESEND mechanism rather then re-implementing software
-emulation for this separately in aprox. 14 different pinctrl drivers.
-
-Select HARDIRQS_SW_RESEND to solve the problem of edge-triggered GPIO
-interrupts not being re-triggered on resume when they were triggered during
-suspend (s2idle) and/or when they were the cause of the wakeup.
-
-This requires
-
- 008f1d60fe25 ("x86/apic/vector: Force interupt handler invocation to irq context")
- c16816acd086 ("genirq: Add protection against unsafe usage of generic_handle_irq()")
-
-to protect the APIC based interrupts from being wreckaged by a software
-resend.
+While at it also log an error when the index points to an uninitialized
+part of the freqs lookup-table.
 
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20200123210242.53367-1-hdegoede@redhat.com
+Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/20200223140610.59612-2-hdegoede@redhat.com
 
 ---
- arch/x86/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/kernel/tsc_msr.c | 17 +++++++++++++++--
+ 1 file changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index beea770..9128932 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -128,6 +128,7 @@ config X86
- 	select GENERIC_GETTIMEOFDAY
- 	select GENERIC_VDSO_TIME_NS
- 	select GUP_GET_PTE_LOW_HIGH		if X86_PAE
-+	select HARDIRQS_SW_RESEND
- 	select HARDLOCKUP_CHECK_TIMESTAMP	if X86_64
- 	select HAVE_ACPI_APEI			if ACPI
- 	select HAVE_ACPI_APEI_NMI		if ACPI
+diff --git a/arch/x86/kernel/tsc_msr.c b/arch/x86/kernel/tsc_msr.c
+index 5fa41ac..9503089 100644
+--- a/arch/x86/kernel/tsc_msr.c
++++ b/arch/x86/kernel/tsc_msr.c
+@@ -15,7 +15,7 @@
+ #include <asm/param.h>
+ #include <asm/tsc.h>
+ 
+-#define MAX_NUM_FREQS	9
++#define MAX_NUM_FREQS	16 /* 4 bits to select the frequency */
+ 
+ /*
+  * If MSR_PERF_STAT[31] is set, the maximum resolved bus ratio can be
+@@ -27,6 +27,7 @@
+ struct freq_desc {
+ 	bool use_msr_plat;
+ 	u32 freqs[MAX_NUM_FREQS];
++	u32 mask;
+ };
+ 
+ /*
+@@ -37,37 +38,44 @@ struct freq_desc {
+ static const struct freq_desc freq_desc_pnw = {
+ 	.use_msr_plat = false,
+ 	.freqs = { 0, 0, 0, 0, 0, 99840, 0, 83200 },
++	.mask = 0x07,
+ };
+ 
+ static const struct freq_desc freq_desc_clv = {
+ 	.use_msr_plat = false,
+ 	.freqs = { 0, 133200, 0, 0, 0, 99840, 0, 83200 },
++	.mask = 0x07,
+ };
+ 
+ static const struct freq_desc freq_desc_byt = {
+ 	.use_msr_plat = true,
+ 	.freqs = { 83300, 100000, 133300, 116700, 80000, 0, 0, 0 },
++	.mask = 0x07,
+ };
+ 
+ static const struct freq_desc freq_desc_cht = {
+ 	.use_msr_plat = true,
+ 	.freqs = { 83300, 100000, 133300, 116700, 80000, 93300, 90000,
+ 		   88900, 87500 },
++	.mask = 0x0f,
+ };
+ 
+ static const struct freq_desc freq_desc_tng = {
+ 	.use_msr_plat = true,
+ 	.freqs = { 0, 100000, 133300, 0, 0, 0, 0, 0 },
++	.mask = 0x07,
+ };
+ 
+ static const struct freq_desc freq_desc_ann = {
+ 	.use_msr_plat = true,
+ 	.freqs = { 83300, 100000, 133300, 100000, 0, 0, 0, 0 },
++	.mask = 0x0f,
+ };
+ 
+ static const struct freq_desc freq_desc_lgm = {
+ 	.use_msr_plat = true,
+ 	.freqs = { 78000, 78000, 78000, 78000, 78000, 78000, 78000, 78000 },
++	.mask = 0x0f,
+ };
+ 
+ static const struct x86_cpu_id tsc_msr_cpu_ids[] = {
+@@ -93,6 +101,7 @@ unsigned long cpu_khz_from_msr(void)
+ 	const struct freq_desc *freq_desc;
+ 	const struct x86_cpu_id *id;
+ 	unsigned long res;
++	int index;
+ 
+ 	id = x86_match_cpu(tsc_msr_cpu_ids);
+ 	if (!id)
+@@ -109,13 +118,17 @@ unsigned long cpu_khz_from_msr(void)
+ 
+ 	/* Get FSB FREQ ID */
+ 	rdmsr(MSR_FSB_FREQ, lo, hi);
++	index = lo & freq_desc->mask;
+ 
+ 	/* Map CPU reference clock freq ID(0-7) to CPU reference clock freq(KHz) */
+-	freq = freq_desc->freqs[lo & 0x7];
++	freq = freq_desc->freqs[index];
+ 
+ 	/* TSC frequency = maximum resolved freq * maximum resolved bus ratio */
+ 	res = freq * ratio;
+ 
++	if (freq == 0)
++		pr_err("Error MSR_FSB_FREQ index %d is unknown\n", index);
++
+ #ifdef CONFIG_X86_LOCAL_APIC
+ 	lapic_timer_period = (freq * 1000) / HZ;
+ #endif
