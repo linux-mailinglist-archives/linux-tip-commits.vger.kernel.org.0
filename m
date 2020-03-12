@@ -2,35 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 93B80182F4E
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 12 Mar 2020 12:33:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A7781830FE
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 12 Mar 2020 14:15:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726028AbgCLLdV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 12 Mar 2020 07:33:21 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:42949 "EHLO
+        id S1726641AbgCLNPB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 12 Mar 2020 09:15:01 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:43307 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726044AbgCLLdV (ORCPT
+        with ESMTP id S1725978AbgCLNPB (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 12 Mar 2020 07:33:21 -0400
+        Thu, 12 Mar 2020 09:15:01 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jCM5U-0001MW-HU; Thu, 12 Mar 2020 12:33:16 +0100
+        id 1jCNfo-0002Yi-Tt; Thu, 12 Mar 2020 14:14:53 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id EBA5E1C222D;
-        Thu, 12 Mar 2020 12:33:15 +0100 (CET)
-Date:   Thu, 12 Mar 2020 11:33:15 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 6DB3C1C223E;
+        Thu, 12 Mar 2020 14:14:52 +0100 (CET)
+Date:   Thu, 12 Mar 2020 13:14:52 -0000
 From:   "tip-bot2 for Kim Phillips" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cpu] x86/cpu/amd: Call init_amd_zn() om Family 19h processors too
+Subject: [tip: perf/urgent] perf/amd/uncore: Replace manual sampling check
+ with CAP_NO_INTERRUPT flag
 Cc:     Kim Phillips <kim.phillips@amd.com>, Borislav Petkov <bp@suse.de>,
+        Peter Zijlstra <peterz@infradead.org>, stable@vger.kernel.org,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200311191451.13221-1-kim.phillips@amd.com>
-References: <20200311191451.13221-1-kim.phillips@amd.com>
+In-Reply-To: <20200311191323.13124-1-kim.phillips@amd.com>
+References: <20200311191323.13124-1-kim.phillips@amd.com>
 MIME-Version: 1.0
-Message-ID: <158401279562.28353.13562420867204506851.tip-bot2@tip-bot2>
+Message-ID: <158401889210.28353.10962157777204769703.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -44,64 +46,85 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cpu branch of tip:
+The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     753039ef8b2f1078e5bff8cd42f80578bf6385b0
-Gitweb:        https://git.kernel.org/tip/753039ef8b2f1078e5bff8cd42f80578bf6385b0
+Commit-ID:     f967140dfb7442e2db0868b03b961f9c59418a1b
+Gitweb:        https://git.kernel.org/tip/f967140dfb7442e2db0868b03b961f9c59418a1b
 Author:        Kim Phillips <kim.phillips@amd.com>
-AuthorDate:    Wed, 11 Mar 2020 14:14:51 -05:00
+AuthorDate:    Wed, 11 Mar 2020 14:13:21 -05:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Thu, 12 Mar 2020 12:13:44 +01:00
+CommitterDate: Thu, 12 Mar 2020 14:08:50 +01:00
 
-x86/cpu/amd: Call init_amd_zn() om Family 19h processors too
+perf/amd/uncore: Replace manual sampling check with CAP_NO_INTERRUPT flag
 
-Family 19h CPUs are Zen-based and still share most architectural
-features with Family 17h CPUs, and therefore still need to call
-init_amd_zn() e.g., to set the RECLAIM_DISTANCE override.
+Enable the sampling check in kernel/events/core.c::perf_event_open(),
+which returns the more appropriate -EOPNOTSUPP.
 
-init_amd_zn() also sets X86_FEATURE_ZEN, which today is only used
-in amd_set_core_ssb_state(), which isn't called on some late
-model Family 17h CPUs, nor on any Family 19h CPUs:
-X86_FEATURE_AMD_SSBD replaces X86_FEATURE_LS_CFG_SSBD on those
-later model CPUs, where the SSBD mitigation is done via the
-SPEC_CTRL MSR instead of the LS_CFG MSR.
+BEFORE:
 
-Family 19h CPUs also don't have the erratum where the CPB feature
-bit isn't set, but that code can stay unchanged and run safely
-on Family 19h.
+  $ sudo perf record -a -e instructions,l3_request_g1.caching_l3_cache_accesses true
+  Error:
+  The sys_perf_event_open() syscall returned with 22 (Invalid argument) for event (l3_request_g1.caching_l3_cache_accesses).
+  /bin/dmesg | grep -i perf may provide additional information.
 
+With nothing relevant in dmesg.
+
+AFTER:
+
+  $ sudo perf record -a -e instructions,l3_request_g1.caching_l3_cache_accesses true
+  Error:
+  l3_request_g1.caching_l3_cache_accesses: PMU Hardware doesn't support sampling/overflow-interrupts. Try 'perf stat'
+
+Fixes: c43ca5091a37 ("perf/x86/amd: Add support for AMD NB and L2I "uncore" counters")
 Signed-off-by: Kim Phillips <kim.phillips@amd.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20200311191451.13221-1-kim.phillips@amd.com
+Acked-by: Peter Zijlstra <peterz@infradead.org>
+Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/20200311191323.13124-1-kim.phillips@amd.com
 ---
- arch/x86/include/asm/cpufeatures.h | 2 +-
- arch/x86/kernel/cpu/amd.c          | 3 ++-
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ arch/x86/events/amd/uncore.c | 17 +++++++----------
+ 1 file changed, 7 insertions(+), 10 deletions(-)
 
-diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
-index f3327cb..f980efc 100644
---- a/arch/x86/include/asm/cpufeatures.h
-+++ b/arch/x86/include/asm/cpufeatures.h
-@@ -217,7 +217,7 @@
- #define X86_FEATURE_IBRS		( 7*32+25) /* Indirect Branch Restricted Speculation */
- #define X86_FEATURE_IBPB		( 7*32+26) /* Indirect Branch Prediction Barrier */
- #define X86_FEATURE_STIBP		( 7*32+27) /* Single Thread Indirect Branch Predictors */
--#define X86_FEATURE_ZEN			( 7*32+28) /* "" CPU is AMD family 0x17 (Zen) */
-+#define X86_FEATURE_ZEN			( 7*32+28) /* "" CPU is AMD family 0x17 or above (Zen) */
- #define X86_FEATURE_L1TF_PTEINV		( 7*32+29) /* "" L1TF workaround PTE inversion */
- #define X86_FEATURE_IBRS_ENHANCED	( 7*32+30) /* Enhanced IBRS */
- #define X86_FEATURE_MSR_IA32_FEAT_CTL	( 7*32+31) /* "" MSR IA32_FEAT_CTL configured */
-diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
-index ac83a0f..dc6894a 100644
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -925,7 +925,8 @@ static void init_amd(struct cpuinfo_x86 *c)
- 	case 0x12: init_amd_ln(c); break;
- 	case 0x15: init_amd_bd(c); break;
- 	case 0x16: init_amd_jg(c); break;
--	case 0x17: init_amd_zn(c); break;
-+	case 0x17: fallthrough;
-+	case 0x19: init_amd_zn(c); break;
- 	}
+diff --git a/arch/x86/events/amd/uncore.c b/arch/x86/events/amd/uncore.c
+index a6ea07f..4d867a7 100644
+--- a/arch/x86/events/amd/uncore.c
++++ b/arch/x86/events/amd/uncore.c
+@@ -190,15 +190,12 @@ static int amd_uncore_event_init(struct perf_event *event)
  
  	/*
+ 	 * NB and Last level cache counters (MSRs) are shared across all cores
+-	 * that share the same NB / Last level cache. Interrupts can be directed
+-	 * to a single target core, however, event counts generated by processes
+-	 * running on other cores cannot be masked out. So we do not support
+-	 * sampling and per-thread events.
++	 * that share the same NB / Last level cache.  On family 16h and below,
++	 * Interrupts can be directed to a single target core, however, event
++	 * counts generated by processes running on other cores cannot be masked
++	 * out. So we do not support sampling and per-thread events via
++	 * CAP_NO_INTERRUPT, and we do not enable counter overflow interrupts:
+ 	 */
+-	if (is_sampling_event(event) || event->attach_state & PERF_ATTACH_TASK)
+-		return -EINVAL;
+-
+-	/* and we do not enable counter overflow interrupts */
+ 	hwc->config = event->attr.config & AMD64_RAW_EVENT_MASK_NB;
+ 	hwc->idx = -1;
+ 
+@@ -306,7 +303,7 @@ static struct pmu amd_nb_pmu = {
+ 	.start		= amd_uncore_start,
+ 	.stop		= amd_uncore_stop,
+ 	.read		= amd_uncore_read,
+-	.capabilities	= PERF_PMU_CAP_NO_EXCLUDE,
++	.capabilities	= PERF_PMU_CAP_NO_EXCLUDE | PERF_PMU_CAP_NO_INTERRUPT,
+ };
+ 
+ static struct pmu amd_llc_pmu = {
+@@ -317,7 +314,7 @@ static struct pmu amd_llc_pmu = {
+ 	.start		= amd_uncore_start,
+ 	.stop		= amd_uncore_stop,
+ 	.read		= amd_uncore_read,
+-	.capabilities	= PERF_PMU_CAP_NO_EXCLUDE,
++	.capabilities	= PERF_PMU_CAP_NO_EXCLUDE | PERF_PMU_CAP_NO_INTERRUPT,
+ };
+ 
+ static struct amd_uncore *amd_uncore_alloc(unsigned int cpu)
