@@ -2,107 +2,122 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F593183250
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 12 Mar 2020 15:05:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DD4BB183580
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 12 Mar 2020 16:53:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727320AbgCLOFp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 12 Mar 2020 10:05:45 -0400
-Received: from us-smtp-1.mimecast.com ([205.139.110.61]:59709 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727123AbgCLOFo (ORCPT
+        id S1726385AbgCLPxQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 12 Mar 2020 11:53:16 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:44194 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726395AbgCLPxQ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 12 Mar 2020 10:05:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1584021943;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=T/QcQ9yaW2B9Sro10c4GCfJinEur6UPsaYYhw3gFWCo=;
-        b=RdAmPlwrJIkeN/k5xNUMxUWpYFP9Ia5qOz6TVs6zJN4W08G2dCZOXsS/0BXDGsc7MJnZqD
-        ItIxcOZkzOI1oCC/wnDG/dYan+sBwedm7LN2V+/C5HMmf3A5whK//snxfjFPnVumxq4GBe
-        fE2T0PVRZkVWMkqlWjxWADJElsA3dzU=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-488-8y1vAQ5aMTiLvGz4J9xIgA-1; Thu, 12 Mar 2020 10:05:41 -0400
-X-MC-Unique: 8y1vAQ5aMTiLvGz4J9xIgA-1
-Received: by mail-wr1-f71.google.com with SMTP id l16so1941536wrr.6
-        for <linux-tip-commits@vger.kernel.org>; Thu, 12 Mar 2020 07:05:41 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=T/QcQ9yaW2B9Sro10c4GCfJinEur6UPsaYYhw3gFWCo=;
-        b=gq3+ZuggjXP4N/NibUVPs791PjEp/pRmvliSqpbegb7e/TRNQjy/d6+JA6OpnO9khR
-         EZc9+7OcnCxJEW7fqrEDe3hU/pJDCb/PlSR9qjGb8KGRiJQfQyMIkSb0L0r83j7q1E6f
-         tNU0sdAZgUPxPO3B3UKsfwLSjUdatSlTJMsfNeljlu4u0bhAGFpm/Z88LSXl8bK/ZYpx
-         rVZ2YusTPnK68VA2RuNssi8xdB8WX0pmT+IhzO843NY1KTdeactlVkGfNRS5XawgXy9y
-         v2YQ8UQkfhXvG2XwJnz08Tdemh/v+imLPrJbQtR4A2n/ozfvAp/UI1XNomVxZCoEECrq
-         ZMJA==
-X-Gm-Message-State: ANhLgQ0ZzYmsf5LS6N2zExC/tCzt5yvkiwh3XTBl59bjDX2ZgdWOTg1d
-        nj+FkkixYKy7zpgpoL9HqknnfdIjGBeDZQaxl+lHynL9XdL9ymi0d2sGWBNsrAWuqsDwJCYxcUP
-        Vu1ZHryy5W5CdW3WF6j+KIOdPtJKAvv4=
-X-Received: by 2002:a1c:26c4:: with SMTP id m187mr4956719wmm.43.1584021940555;
-        Thu, 12 Mar 2020 07:05:40 -0700 (PDT)
-X-Google-Smtp-Source: ADFU+vs4Ui/zFpmKBS9lbKSRR8lfOVrW1lT7LfaM80YHNXUVW7ArWydh/3x3vNaetG6WKUr0t32dAw==
-X-Received: by 2002:a1c:26c4:: with SMTP id m187mr4956687wmm.43.1584021940203;
-        Thu, 12 Mar 2020 07:05:40 -0700 (PDT)
-Received: from x1.localdomain (2001-1c00-0c0c-fe00-fc7e-fd47-85c1-1ab3.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:fc7e:fd47:85c1:1ab3])
-        by smtp.gmail.com with ESMTPSA id k133sm12979071wma.11.2020.03.12.07.05.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 12 Mar 2020 07:05:39 -0700 (PDT)
-Subject: Re: [tip: irq/core] x86: Select HARDIRQS_SW_RESEND on x86
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-tip-commits@vger.kernel.org,
-        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>
-References: <20200123210242.53367-1-hdegoede@redhat.com>
- <158396292503.28353.1070405680109587154.tip-bot2@tip-bot2>
- <CACRpkdYPy93bDwPe1wHhcwpgN9uXepKXS1Ca5yFmDVks=r0RoQ@mail.gmail.com>
- <1cb0397f-e583-3d7e-dff3-2cc916219846@redhat.com>
- <CACRpkdb7vxSaK1Df6gNX_Kq-LF=S1qx2iKdmBy1Ku0vEpDVPbA@mail.gmail.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <231875e7-fc72-edb4-a4de-fc7cfc3cdca3@redhat.com>
-Date:   Thu, 12 Mar 2020 15:05:38 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+        Thu, 12 Mar 2020 11:53:16 -0400
+Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tip-bot2@linutronix.de>)
+        id 1jCQ93-0005cI-3A; Thu, 12 Mar 2020 16:53:13 +0100
+Received: from [127.0.1.1] (localhost [IPv6:::1])
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 93E6C1C224A;
+        Thu, 12 Mar 2020 16:53:12 +0100 (CET)
+Date:   Thu, 12 Mar 2020 15:53:12 -0000
+From:   "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/mm] x86/mm/kmmio: Use this_cpu_ptr() instead get_cpu_var()
+ for kmmio_ctx
+Cc:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200205143426.2592512-1-bigeasy@linutronix.de>
+References: <20200205143426.2592512-1-bigeasy@linutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <CACRpkdb7vxSaK1Df6gNX_Kq-LF=S1qx2iKdmBy1Ku0vEpDVPbA@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+Message-ID: <158402839227.28353.593101974747491831.tip-bot2@tip-bot2>
+X-Mailer: tip-git-log-daemon
+Robot-ID: <tip-bot2.linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-Hi,
+The following commit has been merged into the x86/mm branch of tip:
 
-On 3/12/20 3:02 PM, Linus Walleij wrote:
-> On Thu, Mar 12, 2020 at 2:49 PM Hans de Goede <hdegoede@redhat.com> wrote:
-> 
-> [Me]
->>> I see that ARM and ARM64 simply just select this. What
->>> happens if you do that and why is x86 not selecting it in general?
->>
->> Erm, "selecting it in general" (well at least on x86) is what
->> this patch is doing.
-> 
-> Sorry that I was unclear, what I meant to say is why wasn't
-> this done ages ago since so many important architectures seem
-> to have it enabled by default.
-> 
-> I suppose the reason would be something like "firmware/BIOS
-> should handle that for us" and recently that has started to
-> break apart and x86 platforms started to be more like ARM?
+Commit-ID:     6a9feaa8774f3b8210dfe40626a75ca047e4ecae
+Gitweb:        https://git.kernel.org/tip/6a9feaa8774f3b8210dfe40626a75ca047e4ecae
+Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+AuthorDate:    Wed, 05 Feb 2020 15:34:26 +01:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Thu, 12 Mar 2020 16:41:40 +01:00
 
-That (x86 becoming more like ARM, sorta, kinda) as well as
-that turning it on on x86 was not safe until Thomas wrote
-the 2 patches which are marked as dependencies in the commit
-message for this patch.
+x86/mm/kmmio: Use this_cpu_ptr() instead get_cpu_var() for kmmio_ctx
 
-Regards,
+Both call sites that access kmmio_ctx, access kmmio_ctx with interrupts
+disabled. There is no need to use get_cpu_var() which additionally
+disables preemption.
 
-Hans
+Use this_cpu_ptr() to access the kmmio_ctx variable of the current CPU.
 
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lkml.kernel.org/r/20200205143426.2592512-1-bigeasy@linutronix.de
+---
+ arch/x86/mm/kmmio.c | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
+
+diff --git a/arch/x86/mm/kmmio.c b/arch/x86/mm/kmmio.c
+index 49d7814..9994353 100644
+--- a/arch/x86/mm/kmmio.c
++++ b/arch/x86/mm/kmmio.c
+@@ -260,7 +260,7 @@ int kmmio_handler(struct pt_regs *regs, unsigned long addr)
+ 		goto no_kmmio;
+ 	}
+ 
+-	ctx = &get_cpu_var(kmmio_ctx);
++	ctx = this_cpu_ptr(&kmmio_ctx);
+ 	if (ctx->active) {
+ 		if (page_base == ctx->addr) {
+ 			/*
+@@ -285,7 +285,7 @@ int kmmio_handler(struct pt_regs *regs, unsigned long addr)
+ 			pr_emerg("previous hit was at 0x%08lx.\n", ctx->addr);
+ 			disarm_kmmio_fault_page(faultpage);
+ 		}
+-		goto no_kmmio_ctx;
++		goto no_kmmio;
+ 	}
+ 	ctx->active++;
+ 
+@@ -314,11 +314,8 @@ int kmmio_handler(struct pt_regs *regs, unsigned long addr)
+ 	 * the user should drop to single cpu before tracing.
+ 	 */
+ 
+-	put_cpu_var(kmmio_ctx);
+ 	return 1; /* fault handled */
+ 
+-no_kmmio_ctx:
+-	put_cpu_var(kmmio_ctx);
+ no_kmmio:
+ 	rcu_read_unlock();
+ 	preempt_enable_no_resched();
+@@ -333,7 +330,7 @@ no_kmmio:
+ static int post_kmmio_handler(unsigned long condition, struct pt_regs *regs)
+ {
+ 	int ret = 0;
+-	struct kmmio_context *ctx = &get_cpu_var(kmmio_ctx);
++	struct kmmio_context *ctx = this_cpu_ptr(&kmmio_ctx);
+ 
+ 	if (!ctx->active) {
+ 		/*
+@@ -371,7 +368,6 @@ static int post_kmmio_handler(unsigned long condition, struct pt_regs *regs)
+ 	if (!(regs->flags & X86_EFLAGS_TF))
+ 		ret = 1;
+ out:
+-	put_cpu_var(kmmio_ctx);
+ 	return ret;
+ }
+ 
