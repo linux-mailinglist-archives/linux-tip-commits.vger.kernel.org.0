@@ -2,122 +2,110 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DD4BB183580
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 12 Mar 2020 16:53:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9560618358F
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 12 Mar 2020 16:55:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726385AbgCLPxQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 12 Mar 2020 11:53:16 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:44194 "EHLO
+        id S1727001AbgCLPzd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 12 Mar 2020 11:55:33 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:44209 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726395AbgCLPxQ (ORCPT
+        with ESMTP id S1726395AbgCLPzd (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 12 Mar 2020 11:53:16 -0400
-Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
+        Thu, 12 Mar 2020 11:55:33 -0400
+Received: from [5.158.153.52] (helo=nanos.tec.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
-        (envelope-from <tip-bot2@linutronix.de>)
-        id 1jCQ93-0005cI-3A; Thu, 12 Mar 2020 16:53:13 +0100
-Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 93E6C1C224A;
-        Thu, 12 Mar 2020 16:53:12 +0100 (CET)
-Date:   Thu, 12 Mar 2020 15:53:12 -0000
-From:   "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/mm] x86/mm/kmmio: Use this_cpu_ptr() instead get_cpu_var()
- for kmmio_ctx
-Cc:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200205143426.2592512-1-bigeasy@linutronix.de>
-References: <20200205143426.2592512-1-bigeasy@linutronix.de>
+        (envelope-from <tglx@linutronix.de>)
+        id 1jCQBF-0005ev-Tx; Thu, 12 Mar 2020 16:55:29 +0100
+Received: by nanos.tec.linutronix.de (Postfix, from userid 1000)
+        id 7E8DE10161D; Thu, 12 Mar 2020 16:55:29 +0100 (CET)
+From:   Thomas Gleixner <tglx@linutronix.de>
+To:     Linus Walleij <linus.walleij@linaro.org>,
+        "linux-kernel\@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc:     linux-tip-commits@vger.kernel.org,
+        Hans de Goede <hdegoede@redhat.com>, x86 <x86@kernel.org>
+Subject: Re: [tip: irq/core] x86: Select HARDIRQS_SW_RESEND on x86
+In-Reply-To: <CACRpkdYPy93bDwPe1wHhcwpgN9uXepKXS1Ca5yFmDVks=r0RoQ@mail.gmail.com>
+References: <20200123210242.53367-1-hdegoede@redhat.com> <158396292503.28353.1070405680109587154.tip-bot2@tip-bot2> <CACRpkdYPy93bDwPe1wHhcwpgN9uXepKXS1Ca5yFmDVks=r0RoQ@mail.gmail.com>
+Date:   Thu, 12 Mar 2020 16:55:29 +0100
+Message-ID: <87mu8lin4e.fsf@nanos.tec.linutronix.de>
 MIME-Version: 1.0
-Message-ID: <158402839227.28353.593101974747491831.tip-bot2@tip-bot2>
-X-Mailer: tip-git-log-daemon
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+Content-Type: text/plain
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/mm branch of tip:
+Linus Walleij <linus.walleij@linaro.org> writes:
+> On Wed, Mar 11, 2020 at 10:42 PM tip-bot2 for Hans de Goede
+> Just help me understand the semantics of this thing...
+>
+> According to the text in KConfig:
+>
+> # Tasklet based software resend for pending interrupts on enable_irq()
+> config HARDIRQS_SW_RESEND
+>        bool
+>
+> According to
+> commit a4633adcdbc15ac51afcd0e1395de58cee27cf92
+>
+>     [PATCH] genirq: add genirq sw IRQ-retrigger
+>
+>     Enable platforms that do not have a hardware-assisted
+> hardirq-resend mechanism
+>     to resend them via a softirq-driven IRQ emulation mechanism.
+>
+> so when enable_irq() is called, if the IRQ is already asserted,
+> it will be distributed in the form of a software irq?
+>
+> OK I give up I don't understand the semantics of this thing.
 
-Commit-ID:     6a9feaa8774f3b8210dfe40626a75ca047e4ecae
-Gitweb:        https://git.kernel.org/tip/6a9feaa8774f3b8210dfe40626a75ca047e4ecae
-Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-AuthorDate:    Wed, 05 Feb 2020 15:34:26 +01:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Thu, 12 Mar 2020 16:41:40 +01:00
+Level type interrupts are "resending" in hardware as long as the device
+interrupt is still asserted.
 
-x86/mm/kmmio: Use this_cpu_ptr() instead get_cpu_var() for kmmio_ctx
+The problem are edge interrupts.
 
-Both call sites that access kmmio_ctx, access kmmio_ctx with interrupts
-disabled. There is no need to use get_cpu_var() which additionally
-disables preemption.
+    When an edge interrupt is disabled via disable_irq() the core does
+    not mask the chip because if the device raises an interrupt not all
+    interrupt chips latch that and forward it to the CPU on unmask,
+    i.e. some interrupt chips simply ignore an etch when the line is
+    masked.
 
-Use this_cpu_ptr() to access the kmmio_ctx variable of the current CPU.
+    So when the device raises an edge while the interrupt is disabled
+    the core still handles the hardware interrupt and:
 
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20200205143426.2592512-1-bigeasy@linutronix.de
----
- arch/x86/mm/kmmio.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+      - masks the interrupt line
+      - sets the pending bit
+      - does not invoke the device handler
 
-diff --git a/arch/x86/mm/kmmio.c b/arch/x86/mm/kmmio.c
-index 49d7814..9994353 100644
---- a/arch/x86/mm/kmmio.c
-+++ b/arch/x86/mm/kmmio.c
-@@ -260,7 +260,7 @@ int kmmio_handler(struct pt_regs *regs, unsigned long addr)
- 		goto no_kmmio;
- 	}
- 
--	ctx = &get_cpu_var(kmmio_ctx);
-+	ctx = this_cpu_ptr(&kmmio_ctx);
- 	if (ctx->active) {
- 		if (page_base == ctx->addr) {
- 			/*
-@@ -285,7 +285,7 @@ int kmmio_handler(struct pt_regs *regs, unsigned long addr)
- 			pr_emerg("previous hit was at 0x%08lx.\n", ctx->addr);
- 			disarm_kmmio_fault_page(faultpage);
- 		}
--		goto no_kmmio_ctx;
-+		goto no_kmmio;
- 	}
- 	ctx->active++;
- 
-@@ -314,11 +314,8 @@ int kmmio_handler(struct pt_regs *regs, unsigned long addr)
- 	 * the user should drop to single cpu before tracing.
- 	 */
- 
--	put_cpu_var(kmmio_ctx);
- 	return 1; /* fault handled */
- 
--no_kmmio_ctx:
--	put_cpu_var(kmmio_ctx);
- no_kmmio:
- 	rcu_read_unlock();
- 	preempt_enable_no_resched();
-@@ -333,7 +330,7 @@ no_kmmio:
- static int post_kmmio_handler(unsigned long condition, struct pt_regs *regs)
- {
- 	int ret = 0;
--	struct kmmio_context *ctx = &get_cpu_var(kmmio_ctx);
-+	struct kmmio_context *ctx = this_cpu_ptr(&kmmio_ctx);
- 
- 	if (!ctx->active) {
- 		/*
-@@ -371,7 +368,6 @@ static int post_kmmio_handler(unsigned long condition, struct pt_regs *regs)
- 	if (!(regs->flags & X86_EFLAGS_TF))
- 		ret = 1;
- out:
--	put_cpu_var(kmmio_ctx);
- 	return ret;
- }
- 
+    On enable_irq() the pending bit is checked and if set the interrupt
+    is tried to be retriggered or resent, but only if it's edge type.
+    
+    So if the interrupt chip provides a irq_retrigger() callback the
+    core uses that and only if this fails or is not available it resorts
+    to software "resend" which means queueing it for execution in
+    tasklet context.
+
+> I see that ARM and ARM64 simply just select this. What
+> happens if you do that and why is x86 not selecting it in general?
+
+irq resending on X86 is not really problem free for interrupts
+which are directly connect to the local APIC. The only way which is
+halfways safe is the hardware retrigger. See
+
+    https://lkml.kernel.org/r/20200306130623.590923677@linutronix.de
+    https://lkml.kernel.org/r/20200306130623.684591280@linutronix.de
+
+for the gory details. The GPIO interrupts which hang off behind some
+slow bus or are multiplexed in other ways are not affected by this
+hardware design induced madness.
+
+As I don't know how many other architectures have trainwrecked interrupt
+delivery mechanisms (IA64 definitely does), I'm more than reluctant to
+inflict this on the world unconditionally.
+
+Hope that helps.
+
+Thanks,
+
+        tglx
