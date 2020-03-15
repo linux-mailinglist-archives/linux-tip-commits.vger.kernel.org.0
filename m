@@ -2,36 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3525818495E
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 13 Mar 2020 15:31:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 65EA4185BBF
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 15 Mar 2020 10:55:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726569AbgCMOb1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 13 Mar 2020 10:31:27 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:46919 "EHLO
+        id S1728159AbgCOJzu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 15 Mar 2020 05:55:50 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:49914 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726406AbgCMOb1 (ORCPT
+        with ESMTP id S1728135AbgCOJzu (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 13 Mar 2020 10:31:27 -0400
+        Sun, 15 Mar 2020 05:55:50 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jClLP-0005r2-1U; Fri, 13 Mar 2020 15:31:23 +0100
+        id 1jDPzg-0007OS-2W; Sun, 15 Mar 2020 10:55:40 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 8BA6F1C2230;
-        Fri, 13 Mar 2020 15:31:22 +0100 (CET)
-Date:   Fri, 13 Mar 2020 14:31:22 -0000
-From:   "tip-bot2 for Peter Xu" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 823BB1C1A14;
+        Sun, 15 Mar 2020 10:55:39 +0100 (CET)
+Date:   Sun, 15 Mar 2020 09:55:39 -0000
+From:   "tip-bot2 for Marc Zyngier" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/vector: Remove warning on managed interrupt migration
-Cc:     Peter Xu <peterx@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
-        Ming Lei <ming.lei@redhat.com>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200312205830.81796-1-peterx@redhat.com>
-References: <20200312205830.81796-1-peterx@redhat.com>
+Subject: [tip: irq/urgent] irqchip/gic-v3: Workaround Cavium erratum 38539
+ when reading GICD_TYPER2
+Cc:     Marc Zyngier <maz@kernel.org>,
+        Robert Richter <rrichter@marvell.com>,
+        Mark Salter <msalter@redhat.com>,
+        Tim Harvey <tharvey@gateworks.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20191027144234.8395-11-maz@kernel.org>
+References: <20191027144234.8395-11-maz@kernel.org>
 MIME-Version: 1.0
-Message-ID: <158410988219.28353.1324427859860216725.tip-bot2@tip-bot2>
+Message-ID: <158426613916.28353.17185941880218823765.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -45,96 +49,154 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the irq/urgent branch of tip:
 
-Commit-ID:     469ff207b4c4033540b50bc59587dc915faa1367
-Gitweb:        https://git.kernel.org/tip/469ff207b4c4033540b50bc59587dc915faa1367
-Author:        Peter Xu <peterx@redhat.com>
-AuthorDate:    Thu, 12 Mar 2020 16:58:30 -04:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 13 Mar 2020 15:29:26 +01:00
+Commit-ID:     d01fd161e85904064290435f67f4ed59af5daf74
+Gitweb:        https://git.kernel.org/tip/d01fd161e85904064290435f67f4ed59af5daf74
+Author:        Marc Zyngier <maz@kernel.org>
+AuthorDate:    Wed, 11 Mar 2020 11:56:49 
+Committer:     Marc Zyngier <maz@kernel.org>
+CommitterDate: Sat, 14 Mar 2020 10:15:19 
 
-x86/vector: Remove warning on managed interrupt migration
+irqchip/gic-v3: Workaround Cavium erratum 38539 when reading GICD_TYPER2
 
-The vector management code assumes that managed interrupts cannot be
-migrated away from an online CPU. free_moved_vector() has a WARN_ON_ONCE()
-which triggers when a managed interrupt vector association on a online CPU
-is cleared. The CPU offline code uses a different mechanism which cannot
-trigger this.
+Despite the architecture spec requiring that reserved registers in the GIC
+distributor memory map are RES0 (and thus are not allowed to generate
+an exception), the Cavium ThunderX (aka TX1) SoC explodes as such:
 
-This assumption is not longer correct because the new CPU isolation feature
-which affects the placement of managed interrupts must be able to move a
-managed interrupt away from an online CPU.
+[    0.000000] GICv3: GIC: Using split EOI/Deactivate mode
+[    0.000000] GICv3: 128 SPIs implemented
+[    0.000000] GICv3: 0 Extended SPIs implemented
+[    0.000000] Internal error: synchronous external abort: 96000210 [#1] SMP
+[    0.000000] Modules linked in:
+[    0.000000] CPU: 0 PID: 0 Comm: swapper/0 Not tainted 5.4.0-rc4-00035-g3cf6a3d5725f #7956
+[    0.000000] Hardware name: cavium,thunder-88xx (DT)
+[    0.000000] pstate: 60000085 (nZCv daIf -PAN -UAO)
+[    0.000000] pc : __raw_readl+0x0/0x8
+[    0.000000] lr : gic_init_bases+0x110/0x560
+[    0.000000] sp : ffff800011243d90
+[    0.000000] x29: ffff800011243d90 x28: 0000000000000000
+[    0.000000] x27: 0000000000000018 x26: 0000000000000002
+[    0.000000] x25: ffff8000116f0000 x24: ffff000fbe6a2c80
+[    0.000000] x23: 0000000000000000 x22: ffff010fdc322b68
+[    0.000000] x21: ffff800010a7a208 x20: 00000000009b0404
+[    0.000000] x19: ffff80001124dad0 x18: 0000000000000010
+[    0.000000] x17: 000000004d8d492b x16: 00000000f67eb9af
+[    0.000000] x15: ffffffffffffffff x14: ffff800011249908
+[    0.000000] x13: ffff800091243ae7 x12: ffff800011243af4
+[    0.000000] x11: ffff80001126e000 x10: ffff800011243a70
+[    0.000000] x9 : 00000000ffffffd0 x8 : ffff80001069c828
+[    0.000000] x7 : 0000000000000059 x6 : ffff8000113fb4d1
+[    0.000000] x5 : 0000000000000001 x4 : 0000000000000000
+[    0.000000] x3 : 0000000000000000 x2 : 0000000000000000
+[    0.000000] x1 : 0000000000000000 x0 : ffff8000116f000c
+[    0.000000] Call trace:
+[    0.000000]  __raw_readl+0x0/0x8
+[    0.000000]  gic_of_init+0x188/0x224
+[    0.000000]  of_irq_init+0x200/0x3cc
+[    0.000000]  irqchip_init+0x1c/0x40
+[    0.000000]  init_IRQ+0x160/0x1d0
+[    0.000000]  start_kernel+0x2ec/0x4b8
+[    0.000000] Code: a8c47bfd d65f03c0 d538d080 d65f03c0 (b9400000)
 
-There are two reasons why this can happen:
+when reading the GICv4.1 GICD_TYPER2 register, which is unexpected...
 
-  1) When the interrupt is activated the affinity mask which was
-     established in irq_create_affinity_masks() is handed in to
-     the vector allocation code. This mask contains all CPUs to which
-     the interrupt can be made affine to, but this does not take the
-     CPU isolation 'managed_irq' mask into account.
+Work around it by adding a new quirk for the following variants:
 
-     When the interrupt is finally requested by the device driver then the
-     affinity is checked again and the CPU isolation 'managed_irq' mask is
-     taken into account, which moves the interrupt to a non-isolated CPU if
-     possible.
+ ThunderX: CN88xx
+ OCTEON TX: CN83xx, CN81xx
+ OCTEON TX2: CN93xx, CN96xx, CN98xx, CNF95xx*
 
-  2) The interrupt can be affine to an isolated CPU because the
-     non-isolated CPUs in the calculated affinity mask are not online.
+and use this flag to avoid accessing GICD_TYPER2. Note that all
+reserved registers (including redistributors and ITS) are impacted
+by this erratum, but that only GICD_TYPER2 has to be worked around
+so far.
 
-     Once a non-isolated CPU which is in the mask comes online the
-     interrupt is migrated to this non-isolated CPU
-
-In both cases the regular online migration mechanism is used which triggers
-the WARN_ON_ONCE() in free_moved_vector().
-
-Case #1 could have been addressed by taking the isolation mask into
-account, but that would require a massive code change in the activation
-logic and the eventual migration event was accepted as a reasonable
-tradeoff when the isolation feature was developed. But even if #1 would be
-addressed, #2 would still trigger it.
-
-Of course the warning in free_moved_vector() was overlooked at that time
-and the above two cases which have been discussed during patch review have
-obviously never been tested before the final submission.
-
-So keep it simple and remove the warning.
-
-[ tglx: Rewrote changelog and added a comment to free_moved_vector() ]
-
-Fixes: 11ea68f553e2 ("genirq, sched/isolation: Isolate from handling managed interrupts")
-Signed-off-by: Peter Xu <peterx@redhat.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Ming Lei <ming.lei@redhat.com>                                                                                                                                                                       
-Link: https://lkml.kernel.org/r/20200312205830.81796-1-peterx@redhat.com
-
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Tested-by: Robert Richter <rrichter@marvell.com>
+Tested-by: Mark Salter <msalter@redhat.com>
+Tested-by: Tim Harvey <tharvey@gateworks.com>
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+Acked-by: Robert Richter <rrichter@marvell.com>
+Link: https://lore.kernel.org/r/20191027144234.8395-11-maz@kernel.org
+Link: https://lore.kernel.org/r/20200311115649.26060-1-maz@kernel.org
 ---
- arch/x86/kernel/apic/vector.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ Documentation/arm64/silicon-errata.rst |  2 ++-
+ drivers/irqchip/irq-gic-v3.c           | 30 ++++++++++++++++++++++++-
+ 2 files changed, 31 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/apic/vector.c b/arch/x86/kernel/apic/vector.c
-index 2c5676b..48293d1 100644
---- a/arch/x86/kernel/apic/vector.c
-+++ b/arch/x86/kernel/apic/vector.c
-@@ -838,13 +838,15 @@ static void free_moved_vector(struct apic_chip_data *apicd)
- 	bool managed = apicd->is_managed;
+diff --git a/Documentation/arm64/silicon-errata.rst b/Documentation/arm64/silicon-errata.rst
+index 99b2545..a1563da 100644
+--- a/Documentation/arm64/silicon-errata.rst
++++ b/Documentation/arm64/silicon-errata.rst
+@@ -108,6 +108,8 @@ stable kernels.
+ +----------------+-----------------+-----------------+-----------------------------+
+ | Cavium         | ThunderX GICv3  | #23154          | CAVIUM_ERRATUM_23154        |
+ +----------------+-----------------+-----------------+-----------------------------+
++| Cavium         | ThunderX GICv3  | #38539          | N/A                         |
+++----------------+-----------------+-----------------+-----------------------------+
+ | Cavium         | ThunderX Core   | #27456          | CAVIUM_ERRATUM_27456        |
+ +----------------+-----------------+-----------------+-----------------------------+
+ | Cavium         | ThunderX Core   | #30115          | CAVIUM_ERRATUM_30115        |
+diff --git a/drivers/irqchip/irq-gic-v3.c b/drivers/irqchip/irq-gic-v3.c
+index c1f7af9..1eec9d4 100644
+--- a/drivers/irqchip/irq-gic-v3.c
++++ b/drivers/irqchip/irq-gic-v3.c
+@@ -34,6 +34,7 @@
+ #define GICD_INT_NMI_PRI	(GICD_INT_DEF_PRI & ~0x80)
  
- 	/*
--	 * This should never happen. Managed interrupts are not
--	 * migrated except on CPU down, which does not involve the
--	 * cleanup vector. But try to keep the accounting correct
--	 * nevertheless.
-+	 * Managed interrupts are usually not migrated away
-+	 * from an online CPU, but CPU isolation 'managed_irq'
-+	 * can make that happen.
-+	 * 1) Activation does not take the isolation into account
-+	 *    to keep the code simple
-+	 * 2) Migration away from an isolated CPU can happen when
-+	 *    a non-isolated CPU which is in the calculated
-+	 *    affinity mask comes online.
- 	 */
--	WARN_ON_ONCE(managed);
--
- 	trace_vector_free_moved(apicd->irq, cpu, vector, managed);
- 	irq_matrix_free(vector_matrix, cpu, vector, managed);
- 	per_cpu(vector_irq, cpu)[vector] = VECTOR_UNUSED;
+ #define FLAGS_WORKAROUND_GICR_WAKER_MSM8996	(1ULL << 0)
++#define FLAGS_WORKAROUND_CAVIUM_ERRATUM_38539	(1ULL << 1)
+ 
+ struct redist_region {
+ 	void __iomem		*redist_base;
+@@ -1464,6 +1465,15 @@ static bool gic_enable_quirk_msm8996(void *data)
+ 	return true;
+ }
+ 
++static bool gic_enable_quirk_cavium_38539(void *data)
++{
++	struct gic_chip_data *d = data;
++
++	d->flags |= FLAGS_WORKAROUND_CAVIUM_ERRATUM_38539;
++
++	return true;
++}
++
+ static bool gic_enable_quirk_hip06_07(void *data)
+ {
+ 	struct gic_chip_data *d = data;
+@@ -1503,6 +1513,19 @@ static const struct gic_quirk gic_quirks[] = {
+ 		.init	= gic_enable_quirk_hip06_07,
+ 	},
+ 	{
++		/*
++		 * Reserved register accesses generate a Synchronous
++		 * External Abort. This erratum applies to:
++		 * - ThunderX: CN88xx
++		 * - OCTEON TX: CN83xx, CN81xx
++		 * - OCTEON TX2: CN93xx, CN96xx, CN98xx, CNF95xx*
++		 */
++		.desc	= "GICv3: Cavium erratum 38539",
++		.iidr	= 0xa000034c,
++		.mask	= 0xe8f00fff,
++		.init	= gic_enable_quirk_cavium_38539,
++	},
++	{
+ 	}
+ };
+ 
+@@ -1577,7 +1600,12 @@ static int __init gic_init_bases(void __iomem *dist_base,
+ 	pr_info("%d SPIs implemented\n", GIC_LINE_NR - 32);
+ 	pr_info("%d Extended SPIs implemented\n", GIC_ESPI_NR);
+ 
+-	gic_data.rdists.gicd_typer2 = readl_relaxed(gic_data.dist_base + GICD_TYPER2);
++	/*
++	 * ThunderX1 explodes on reading GICD_TYPER2, in violation of the
++	 * architecture spec (which says that reserved registers are RES0).
++	 */
++	if (!(gic_data.flags & FLAGS_WORKAROUND_CAVIUM_ERRATUM_38539))
++		gic_data.rdists.gicd_typer2 = readl_relaxed(gic_data.dist_base + GICD_TYPER2);
+ 
+ 	gic_data.domain = irq_domain_create_tree(handle, &gic_irq_domain_ops,
+ 						 &gic_data);
