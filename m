@@ -2,36 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F4DD1882F3
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Mar 2020 13:08:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AC347188863
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Mar 2020 15:57:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726550AbgCQMHu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 17 Mar 2020 08:07:50 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:54337 "EHLO
+        id S1726682AbgCQO52 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 17 Mar 2020 10:57:28 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:54792 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726452AbgCQMHu (ORCPT
+        with ESMTP id S1726278AbgCQO52 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 17 Mar 2020 08:07:50 -0400
+        Tue, 17 Mar 2020 10:57:28 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jEB0Z-0000Eo-Af; Tue, 17 Mar 2020 13:07:43 +0100
+        id 1jEDej-0002v3-J4; Tue, 17 Mar 2020 15:57:21 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E84A01C2291;
-        Tue, 17 Mar 2020 13:07:42 +0100 (CET)
-Date:   Tue, 17 Mar 2020 12:07:42 -0000
-From:   "tip-bot2 for Kim Phillips" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 2C61E1C2290;
+        Tue, 17 Mar 2020 15:57:21 +0100 (CET)
+Date:   Tue, 17 Mar 2020 14:57:20 -0000
+From:   "tip-bot2 for Thomas Hellstrom" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/amd/uncore: Prepare L3 thread mask code for Family 19h
-Cc:     Kim Phillips <kim.phillips@amd.com>, Borislav Petkov <bp@suse.de>,
-        Peter Zijlstra <peterz@infradead.org>, x86 <x86@kernel.org>,
+Subject: [tip: x86/mm] dma-mapping: Fix dma_pgprot() for unencrypted coherent pages
+Cc:     Thomas Hellstrom <thellstrom@vmware.com>,
+        Borislav Petkov <bp@suse.de>, Christoph Hellwig <hch@lst.de>,
+        Tom Lendacky <thomas.lendacky@amd.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200313231024.17601-1-kim.phillips@amd.com>
-References: <20200313231024.17601-1-kim.phillips@amd.com>
+In-Reply-To: <20200304114527.3636-3-thomas_os@shipmail.org>
+References: <20200304114527.3636-3-thomas_os@shipmail.org>
 MIME-Version: 1.0
-Message-ID: <158444686267.28353.9866951198015085818.tip-bot2@tip-bot2>
+Message-ID: <158445704082.28353.8744856923251332507.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -45,73 +46,48 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/core branch of tip:
+The following commit has been merged into the x86/mm branch of tip:
 
-Commit-ID:     4dcc3df82573a946c620dda5fb00e27c7b080105
-Gitweb:        https://git.kernel.org/tip/4dcc3df82573a946c620dda5fb00e27c7b080105
-Author:        Kim Phillips <kim.phillips@amd.com>
-AuthorDate:    Fri, 13 Mar 2020 18:10:22 -05:00
+Commit-ID:     17c4a2ae15a7aaefe84bdb271952678c5c9cd8e1
+Gitweb:        https://git.kernel.org/tip/17c4a2ae15a7aaefe84bdb271952678c5c9cd8e1
+Author:        Thomas Hellstrom <thellstrom@vmware.com>
+AuthorDate:    Wed, 04 Mar 2020 12:45:27 +01:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 17 Mar 2020 13:00:29 +01:00
+CommitterDate: Tue, 17 Mar 2020 11:52:58 +01:00
 
-perf/amd/uncore: Prepare L3 thread mask code for Family 19h
+dma-mapping: Fix dma_pgprot() for unencrypted coherent pages
 
-In order to better accommodate the upcoming Family 19h, given
-the 80-char line limit, move the existing code into a new
-l3_thread_slice_mask() function.
+When dma_mmap_coherent() sets up a mapping to unencrypted coherent memory
+under SEV encryption and sometimes under SME encryption, it will actually
+set up an encrypted mapping rather than an unencrypted, causing devices
+that DMAs from that memory to read encrypted contents. Fix this.
 
-No functional changes.
+When force_dma_unencrypted() returns true, the linear kernel map of the
+coherent pages have had the encryption bit explicitly cleared and the
+page content is unencrypted. Make sure that any additional PTEs we set
+up to these pages also have the encryption bit cleared by having
+dma_pgprot() return a protection with the encryption bit cleared in this
+case.
 
- [ bp: Touchups. ]
-
-Signed-off-by: Kim Phillips <kim.phillips@amd.com>
+Signed-off-by: Thomas Hellstrom <thellstrom@vmware.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Acked-by: Peter Zijlstra <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20200313231024.17601-1-kim.phillips@amd.com
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Acked-by: Tom Lendacky <thomas.lendacky@amd.com>
+Link: https://lkml.kernel.org/r/20200304114527.3636-3-thomas_os@shipmail.org
 ---
- arch/x86/events/amd/uncore.c | 25 ++++++++++++++++---------
- 1 file changed, 16 insertions(+), 9 deletions(-)
+ kernel/dma/mapping.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/x86/events/amd/uncore.c b/arch/x86/events/amd/uncore.c
-index a6ea07f..2abcb1a 100644
---- a/arch/x86/events/amd/uncore.c
-+++ b/arch/x86/events/amd/uncore.c
-@@ -180,6 +180,20 @@ static void amd_uncore_del(struct perf_event *event, int flags)
- 	hwc->idx = -1;
- }
- 
-+/*
-+ * Convert logical CPU number to L3 PMC Config ThreadMask format
-+ */
-+static u64 l3_thread_slice_mask(int cpu)
-+{
-+	int thread = 2 * (cpu_data(cpu).cpu_core_id % 4);
-+
-+	if (smp_num_siblings > 1)
-+		thread += cpu_data(cpu).apicid & 1;
-+
-+	return (1ULL << (AMD64_L3_THREAD_SHIFT + thread) &
-+		AMD64_L3_THREAD_MASK) | AMD64_L3_SLICE_MASK;
-+}
-+
- static int amd_uncore_event_init(struct perf_event *event)
+diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
+index 12ff766..98e3d87 100644
+--- a/kernel/dma/mapping.c
++++ b/kernel/dma/mapping.c
+@@ -154,6 +154,8 @@ EXPORT_SYMBOL(dma_get_sgtable_attrs);
+  */
+ pgprot_t dma_pgprot(struct device *dev, pgprot_t prot, unsigned long attrs)
  {
- 	struct amd_uncore *uncore;
-@@ -209,15 +223,8 @@ static int amd_uncore_event_init(struct perf_event *event)
- 	 * SliceMask and ThreadMask need to be set for certain L3 events in
- 	 * Family 17h. For other events, the two fields do not affect the count.
- 	 */
--	if (l3_mask && is_llc_event(event)) {
--		int thread = 2 * (cpu_data(event->cpu).cpu_core_id % 4);
--
--		if (smp_num_siblings > 1)
--			thread += cpu_data(event->cpu).apicid & 1;
--
--		hwc->config |= (1ULL << (AMD64_L3_THREAD_SHIFT + thread) &
--				AMD64_L3_THREAD_MASK) | AMD64_L3_SLICE_MASK;
--	}
-+	if (l3_mask && is_llc_event(event))
-+		hwc->config |= l3_thread_slice_mask(event->cpu);
- 
- 	uncore = event_to_amd_uncore(event);
- 	if (!uncore)
++	if (force_dma_unencrypted(dev))
++		prot = pgprot_decrypted(prot);
+ 	if (dev_is_dma_coherent(dev) ||
+ 	    (IS_ENABLED(CONFIG_DMA_NONCOHERENT_CACHE_SYNC) &&
+              (attrs & DMA_ATTR_NON_CONSISTENT)))
