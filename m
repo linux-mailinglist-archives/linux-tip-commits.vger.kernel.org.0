@@ -2,59 +2,120 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A2DEB186CF3
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 16 Mar 2020 15:21:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F047187C0C
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Mar 2020 10:29:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731144AbgCPOVw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 16 Mar 2020 10:21:52 -0400
-Received: from us-smtp-2.mimecast.com ([205.139.110.61]:35086 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1729631AbgCPOVw (ORCPT
+        id S1726148AbgCQJ3u (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 17 Mar 2020 05:29:50 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:53696 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725730AbgCQJ3u (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 16 Mar 2020 10:21:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1584368511;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=EPguWxlAycQreH6hAzLD5QV1HYeo+0AK3EDG3x5x0Gw=;
-        b=N0S1YyjlXr5LB7YVILRBy20UbotGBIe+7WbUnxWl8UjpWFvNxVocNfM5RcQjmT1pQAD9Fm
-        5m5f4axkAyj+8JdcGO9+AYn5pOzihFsSCZHe+KmIlGGhHCCzye+g8vWu+2fT1fC9qrkX0v
-        lM/yopXni6vrJo9aq9jNLmcUGclUPWA=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-284-JEb70QG1NZGdbhjOl0GXXQ-1; Mon, 16 Mar 2020 10:21:36 -0400
-X-MC-Unique: JEb70QG1NZGdbhjOl0GXXQ-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 9516F800D5C;
-        Mon, 16 Mar 2020 14:21:35 +0000 (UTC)
-Received: from rules.brq.redhat.com (ovpn-205-7.brq.redhat.com [10.40.205.7])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 2C0485C1B5;
-        Mon, 16 Mar 2020 14:21:29 +0000 (UTC)
-From:   Vladis Dronov <vdronov@redhat.com>
-To:     Sasha Levin <sashal@kernel.org>, linux-tip-commits@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [tip: efi/urgent] efi: Add a sanity check to efivar_store_raw()
-Date:   Mon, 16 Mar 2020 15:21:13 +0100
-Message-Id: <20200316142113.11992-1-vdronov@redhat.com>
-In-Reply-To: <20200309122504.3DA3A20848@mail.kernel.org>
-References: <20200309122504.3DA3A20848@mail.kernel.org>
+        Tue, 17 Mar 2020 05:29:50 -0400
+Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tip-bot2@linutronix.de>)
+        id 1jE8Xg-0004vw-2R; Tue, 17 Mar 2020 10:29:44 +0100
+Received: from [127.0.1.1] (localhost [IPv6:::1])
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 57B081C224C;
+        Tue, 17 Mar 2020 10:29:43 +0100 (CET)
+Date:   Tue, 17 Mar 2020 09:29:42 -0000
+From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/cpu] x86/amd_nb, char/amd64-agp: Use amd_nb_num() accessor
+Cc:     Borislav Petkov <bp@suse.de>, Michal Kubecek <mkubecek@suse.cz>,
+        Yazen Ghannam <yazen.ghannam@amd.com>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200316150725.925-1-bp@alien8.de>
+References: <20200316150725.925-1-bp@alien8.de>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
-Content-Transfer-Encoding: quoted-printable
+Message-ID: <158443738293.28353.8644910767364715065.tip-bot2@tip-bot2>
+X-Mailer: tip-git-log-daemon
+Robot-ID: <tip-bot2.linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-Backported:
-https://lore.kernel.org/stable/20200316131938.31453-1-vdronov@redhat.com/=
-T/#u
+The following commit has been merged into the x86/cpu branch of tip:
 
-Best regards,
-Vladis Dronov | Red Hat, Inc. | The Core Kernel | Senior Software Enginee=
-r
+Commit-ID:     19d33357ecdf6f4d591b4c17f119bacd6ae834eb
+Gitweb:        https://git.kernel.org/tip/19d33357ecdf6f4d591b4c17f119bacd6ae834eb
+Author:        Borislav Petkov <bp@suse.de>
+AuthorDate:    Mon, 16 Mar 2020 13:23:21 +01:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Tue, 17 Mar 2020 10:25:58 +01:00
 
+x86/amd_nb, char/amd64-agp: Use amd_nb_num() accessor
+
+... to find whether there are northbridges present on the
+system. Convert the last forgotten user and therefore, unexport
+amd_nb_misc_ids[] too.
+
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Cc: Michal Kubecek <mkubecek@suse.cz>
+Cc: Yazen Ghannam <yazen.ghannam@amd.com>
+Link: https://lkml.kernel.org/r/20200316150725.925-1-bp@alien8.de
+---
+ arch/x86/include/asm/amd_nb.h | 1 -
+ arch/x86/kernel/amd_nb.c      | 4 +---
+ drivers/char/agp/amd64-agp.c  | 2 +-
+ 3 files changed, 2 insertions(+), 5 deletions(-)
+
+diff --git a/arch/x86/include/asm/amd_nb.h b/arch/x86/include/asm/amd_nb.h
+index 1ae4e57..c7df20e 100644
+--- a/arch/x86/include/asm/amd_nb.h
++++ b/arch/x86/include/asm/amd_nb.h
+@@ -12,7 +12,6 @@ struct amd_nb_bus_dev_range {
+ 	u8 dev_limit;
+ };
+ 
+-extern const struct pci_device_id amd_nb_misc_ids[];
+ extern const struct amd_nb_bus_dev_range amd_nb_bus_dev_ranges[];
+ 
+ extern bool early_is_amd_nb(u32 value);
+diff --git a/arch/x86/kernel/amd_nb.c b/arch/x86/kernel/amd_nb.c
+index 69aed0e..b6b3297 100644
+--- a/arch/x86/kernel/amd_nb.c
++++ b/arch/x86/kernel/amd_nb.c
+@@ -36,10 +36,9 @@ static const struct pci_device_id amd_root_ids[] = {
+ 	{}
+ };
+ 
+-
+ #define PCI_DEVICE_ID_AMD_CNB17H_F4     0x1704
+ 
+-const struct pci_device_id amd_nb_misc_ids[] = {
++static const struct pci_device_id amd_nb_misc_ids[] = {
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_K8_NB_MISC) },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_10H_NB_MISC) },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_15H_NB_F3) },
+@@ -56,7 +55,6 @@ const struct pci_device_id amd_nb_misc_ids[] = {
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_19H_DF_F3) },
+ 	{}
+ };
+-EXPORT_SYMBOL_GPL(amd_nb_misc_ids);
+ 
+ static const struct pci_device_id amd_nb_link_ids[] = {
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_15H_NB_F4) },
+diff --git a/drivers/char/agp/amd64-agp.c b/drivers/char/agp/amd64-agp.c
+index 594aee2..b40edae 100644
+--- a/drivers/char/agp/amd64-agp.c
++++ b/drivers/char/agp/amd64-agp.c
+@@ -775,7 +775,7 @@ int __init agp_amd64_init(void)
+ 		}
+ 
+ 		/* First check that we have at least one AMD64 NB */
+-		if (!pci_dev_present(amd_nb_misc_ids)) {
++		if (!amd_nb_num()) {
+ 			pci_unregister_driver(&agp_amd64_pci_driver);
+ 			return -ENODEV;
+ 		}
