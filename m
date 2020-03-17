@@ -2,36 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CAFAB1882FA
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Mar 2020 13:08:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DE3F1882F5
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Mar 2020 13:08:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726498AbgCQMH4 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 17 Mar 2020 08:07:56 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:54345 "EHLO
+        id S1726823AbgCQMHw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 17 Mar 2020 08:07:52 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:54342 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726821AbgCQMHy (ORCPT
+        with ESMTP id S1726452AbgCQMHw (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 17 Mar 2020 08:07:54 -0400
+        Tue, 17 Mar 2020 08:07:52 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jEB0Y-0000Ej-PC; Tue, 17 Mar 2020 13:07:42 +0100
+        id 1jEB0Y-0000Ek-Tp; Tue, 17 Mar 2020 13:07:43 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 2E7951C228E;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 9037C1C2290;
         Tue, 17 Mar 2020 13:07:42 +0100 (CET)
-Date:   Tue, 17 Mar 2020 12:07:41 -0000
+Date:   Tue, 17 Mar 2020 12:07:42 -0000
 From:   "tip-bot2 for Kim Phillips" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/amd/uncore: Add support for Family 19h L3 PMU
+Subject: [tip: perf/core] perf/amd/uncore: Make L3 thread mask code more readable
 Cc:     Kim Phillips <kim.phillips@amd.com>, Borislav Petkov <bp@suse.de>,
         Peter Zijlstra <peterz@infradead.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200313231024.17601-3-kim.phillips@amd.com>
-References: <20200313231024.17601-3-kim.phillips@amd.com>
+In-Reply-To: <20200313231024.17601-2-kim.phillips@amd.com>
+References: <20200313231024.17601-2-kim.phillips@amd.com>
 MIME-Version: 1.0
-Message-ID: <158444686182.28353.8090928318657769294.tip-bot2@tip-bot2>
+Message-ID: <158444686229.28353.2736088400656740915.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,117 +47,52 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     e48667b865480d8bf0f1171a8b474ffc785b9ace
-Gitweb:        https://git.kernel.org/tip/e48667b865480d8bf0f1171a8b474ffc785b9ace
+Commit-ID:     9689dbbeaea884d19e3085439c6a247ef986b2af
+Gitweb:        https://git.kernel.org/tip/9689dbbeaea884d19e3085439c6a247ef986b2af
 Author:        Kim Phillips <kim.phillips@amd.com>
-AuthorDate:    Fri, 13 Mar 2020 18:10:24 -05:00
+AuthorDate:    Fri, 13 Mar 2020 18:10:23 -05:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 17 Mar 2020 13:01:03 +01:00
+CommitterDate: Tue, 17 Mar 2020 13:00:49 +01:00
 
-perf/amd/uncore: Add support for Family 19h L3 PMU
+perf/amd/uncore: Make L3 thread mask code more readable
 
-Family 19h introduces change in slice, core and thread specification in
-its L3 Performance Event Select (ChL3PmcCfg) h/w register. The change is
-incompatible with Family 17h's version of the register.
+Convert the l3_thread_slice_mask() function to use the more readable
+topology_* helper functions, more intuitive variable names like shift
+and thread_mask, and BIT_ULL().
 
-Introduce a new path in l3_thread_slice_mask() to do things differently
-for Family 19h vs. Family 17h, otherwise the new hardware doesn't get
-programmed correctly.
-
-Instead of a linear core--thread bitmask, Family 19h takes an encoded
-core number, and a separate thread mask. There are new bits that are set
-for all cores and all slices, of which only the latter is used, since
-the driver counts events for all slices on behalf of the specified CPU.
-
-Also update amd_uncore_init() to base its L2/NB vs. L3/Data Fabric mode
-decision based on Family 17h or above, not just 17h and 18h: the Family
-19h Data Fabric PMC is compatible with the Family 17h DF PMC.
-
- [ bp: Touchups. ]
+No functional changes.
 
 Signed-off-by: Kim Phillips <kim.phillips@amd.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
 Acked-by: Peter Zijlstra <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20200313231024.17601-3-kim.phillips@amd.com
+Link: https://lkml.kernel.org/r/20200313231024.17601-2-kim.phillips@amd.com
 ---
- arch/x86/events/amd/uncore.c      | 20 ++++++++++++++------
- arch/x86/include/asm/perf_event.h | 15 +++++++++++++--
- 2 files changed, 27 insertions(+), 8 deletions(-)
+ arch/x86/events/amd/uncore.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
 diff --git a/arch/x86/events/amd/uncore.c b/arch/x86/events/amd/uncore.c
-index 07af497..46018e5 100644
+index 2abcb1a..07af497 100644
 --- a/arch/x86/events/amd/uncore.c
 +++ b/arch/x86/events/amd/uncore.c
-@@ -191,10 +191,18 @@ static u64 l3_thread_slice_mask(int cpu)
- 	if (topology_smt_supported() && !topology_is_primary_thread(cpu))
- 		thread = 1;
+@@ -185,13 +185,16 @@ static void amd_uncore_del(struct perf_event *event, int flags)
+  */
+ static u64 l3_thread_slice_mask(int cpu)
+ {
+-	int thread = 2 * (cpu_data(cpu).cpu_core_id % 4);
++	u64 thread_mask, core = topology_core_id(cpu);
++	unsigned int shift, thread = 0;
  
--	shift = AMD64_L3_THREAD_SHIFT + 2 * (core % 4) + thread;
-+	if (boot_cpu_data.x86 <= 0x18) {
-+		shift = AMD64_L3_THREAD_SHIFT + 2 * (core % 4) + thread;
-+		thread_mask = BIT_ULL(shift);
-+
-+		return AMD64_L3_SLICE_MASK | thread_mask;
-+	}
-+
-+	core = (core << AMD64_L3_COREID_SHIFT) & AMD64_L3_COREID_MASK;
-+	shift = AMD64_L3_THREAD_SHIFT + thread;
- 	thread_mask = BIT_ULL(shift);
+-	if (smp_num_siblings > 1)
+-		thread += cpu_data(cpu).apicid & 1;
++	if (topology_smt_supported() && !topology_is_primary_thread(cpu))
++		thread = 1;
  
--	return AMD64_L3_SLICE_MASK | thread_mask;
-+	return AMD64_L3_EN_ALL_SLICES | core | thread_mask;
+-	return (1ULL << (AMD64_L3_THREAD_SHIFT + thread) &
+-		AMD64_L3_THREAD_MASK) | AMD64_L3_SLICE_MASK;
++	shift = AMD64_L3_THREAD_SHIFT + 2 * (core % 4) + thread;
++	thread_mask = BIT_ULL(shift);
++
++	return AMD64_L3_SLICE_MASK | thread_mask;
  }
  
  static int amd_uncore_event_init(struct perf_event *event)
-@@ -223,8 +231,8 @@ static int amd_uncore_event_init(struct perf_event *event)
- 		return -EINVAL;
- 
- 	/*
--	 * SliceMask and ThreadMask need to be set for certain L3 events in
--	 * Family 17h. For other events, the two fields do not affect the count.
-+	 * SliceMask and ThreadMask need to be set for certain L3 events.
-+	 * For other events, the two fields do not affect the count.
- 	 */
- 	if (l3_mask && is_llc_event(event))
- 		hwc->config |= l3_thread_slice_mask(event->cpu);
-@@ -533,9 +541,9 @@ static int __init amd_uncore_init(void)
- 	if (!boot_cpu_has(X86_FEATURE_TOPOEXT))
- 		return -ENODEV;
- 
--	if (boot_cpu_data.x86 == 0x17 || boot_cpu_data.x86 == 0x18) {
-+	if (boot_cpu_data.x86 >= 0x17) {
- 		/*
--		 * For F17h or F18h, the Northbridge counters are
-+		 * For F17h and above, the Northbridge counters are
- 		 * repurposed as Data Fabric counters. Also, L3
- 		 * counters are supported too. The PMUs are exported
- 		 * based on family as either L2 or L3 and NB or DF.
-diff --git a/arch/x86/include/asm/perf_event.h b/arch/x86/include/asm/perf_event.h
-index 29964b0..e855e9c 100644
---- a/arch/x86/include/asm/perf_event.h
-+++ b/arch/x86/include/asm/perf_event.h
-@@ -50,11 +50,22 @@
- 
- #define AMD64_L3_SLICE_SHIFT				48
- #define AMD64_L3_SLICE_MASK				\
--	((0xFULL) << AMD64_L3_SLICE_SHIFT)
-+	(0xFULL << AMD64_L3_SLICE_SHIFT)
-+#define AMD64_L3_SLICEID_MASK				\
-+	(0x7ULL << AMD64_L3_SLICE_SHIFT)
- 
- #define AMD64_L3_THREAD_SHIFT				56
- #define AMD64_L3_THREAD_MASK				\
--	((0xFFULL) << AMD64_L3_THREAD_SHIFT)
-+	(0xFFULL << AMD64_L3_THREAD_SHIFT)
-+#define AMD64_L3_F19H_THREAD_MASK			\
-+	(0x3ULL << AMD64_L3_THREAD_SHIFT)
-+
-+#define AMD64_L3_EN_ALL_CORES				BIT_ULL(47)
-+#define AMD64_L3_EN_ALL_SLICES				BIT_ULL(46)
-+
-+#define AMD64_L3_COREID_SHIFT				42
-+#define AMD64_L3_COREID_MASK				\
-+	(0x7ULL << AMD64_L3_COREID_SHIFT)
- 
- #define X86_RAW_EVENT_MASK		\
- 	(ARCH_PERFMON_EVENTSEL_EVENT |	\
