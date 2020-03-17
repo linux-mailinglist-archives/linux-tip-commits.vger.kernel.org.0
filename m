@@ -2,37 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D2778188CFF
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Mar 2020 19:21:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 18D9C189133
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Mar 2020 23:18:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726130AbgCQSVC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 17 Mar 2020 14:21:02 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:55441 "EHLO
+        id S1726984AbgCQWSB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 17 Mar 2020 18:18:01 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:56028 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726189AbgCQSVC (ORCPT
+        with ESMTP id S1726735AbgCQWSB (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 17 Mar 2020 14:21:02 -0400
+        Tue, 17 Mar 2020 18:18:01 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jEGpi-00060L-Tq; Tue, 17 Mar 2020 19:20:55 +0100
+        id 1jEKX7-0001CZ-5K; Tue, 17 Mar 2020 23:17:57 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 6764F1C2293;
-        Tue, 17 Mar 2020 19:20:54 +0100 (CET)
-Date:   Tue, 17 Mar 2020 18:20:54 -0000
-From:   "tip-bot2 for Baoquan He" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 94A571C2294;
+        Tue, 17 Mar 2020 23:17:56 +0100 (CET)
+Date:   Tue, 17 Mar 2020 22:17:56 -0000
+From:   "tip-bot2 for Hans de Goede" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/mm] x86/mm: Remove the now redundant N_MEMORY check
-Cc:     Baoquan He <bhe@redhat.com>, Borislav Petkov <bp@suse.de>,
-        Wei Yang <richard.weiyang@gmail.com>,
-        Michal Hocko <mhocko@suse.com>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200311011823.27740-1-bhe@redhat.com>
-References: <20200311011823.27740-1-bhe@redhat.com>
+Subject: [tip: x86/kdump] x86/purgatory: Fail the build if purgatory.ro has
+ missing symbols
+Cc:     Hans de Goede <hdegoede@redhat.com>, Borislav Petkov <bp@suse.de>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200317130841.290418-2-hdegoede@redhat.com>
+References: <20200317130841.290418-2-hdegoede@redhat.com>
 MIME-Version: 1.0
-Message-ID: <158446925404.28353.8374899643384906431.tip-bot2@tip-bot2>
+Message-ID: <158448347626.28353.9586222649550261454.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -46,50 +45,88 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/mm branch of tip:
+The following commit has been merged into the x86/kdump branch of tip:
 
-Commit-ID:     aa61ee7b9ee3cb84c0d3a842b0d17937bf024c46
-Gitweb:        https://git.kernel.org/tip/aa61ee7b9ee3cb84c0d3a842b0d17937bf024c46
-Author:        Baoquan He <bhe@redhat.com>
-AuthorDate:    Wed, 11 Mar 2020 09:18:23 +08:00
+Commit-ID:     e4160b2e4b02377c67f8ecd05786811598f39acd
+Gitweb:        https://git.kernel.org/tip/e4160b2e4b02377c67f8ecd05786811598f39acd
+Author:        Hans de Goede <hdegoede@redhat.com>
+AuthorDate:    Tue, 17 Mar 2020 14:08:41 +01:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 17 Mar 2020 19:12:39 +01:00
+CommitterDate: Tue, 17 Mar 2020 15:59:12 +01:00
 
-x86/mm: Remove the now redundant N_MEMORY check
+x86/purgatory: Fail the build if purgatory.ro has missing symbols
 
-In commit
+Linking purgatory.ro with -r enables "incremental linking"; this means
+no checks for unresolved symbols are done while linking purgatory.ro.
 
-  f70029bbaacb ("mm, memory_hotplug: drop CONFIG_MOVABLE_NODE")
+A change to the sha256 code has caused the purgatory in 5.4-rc1 to have
+a missing symbol on memzero_explicit(), yet things still happily build.
 
-the dependency on CONFIG_MOVABLE_NODE was removed for N_MEMORY.
-Before, CONFIG_HIGHMEM && !CONFIG_MOVABLE_NODE could make (N_MEMORY ==
-N_NORMAL_MEMORY) be true.
+Add an extra check for unresolved symbols by calling ld without -r
+before running bin2c to generate kexec-purgatory.c.
 
-After that commit, N_MEMORY cannot be equal to N_NORMAL_MEMORY. So the
-conditional check in paging_init() is not needed anymore, remove it.
+This causes a build of 5.4-rc1 with this patch added to fail as it should:
 
- [ bp: Massage. ]
+    CHK     arch/x86/purgatory/purgatory.ro
+  ld: arch/x86/purgatory/purgatory.ro: in function `sha256_transform':
+  sha256.c:(.text+0x1c0c): undefined reference to `memzero_explicit'
+  make[2]: *** [arch/x86/purgatory/Makefile:72:
+      arch/x86/purgatory/kexec-purgatory.c] Error 1
+  make[1]: *** [scripts/Makefile.build:509: arch/x86/purgatory] Error 2
+  make: *** [Makefile:1650: arch/x86] Error 2
 
-Signed-off-by: Baoquan He <bhe@redhat.com>
+Also remove --no-undefined from LDFLAGS_purgatory.ro as that has no
+effect.
+
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
-Acked-by: Michal Hocko <mhocko@suse.com>
-Link: https://lkml.kernel.org/r/20200311011823.27740-1-bhe@redhat.com
+Link: https://lkml.kernel.org/r/20200317130841.290418-2-hdegoede@redhat.com
 ---
- arch/x86/mm/init_64.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/x86/purgatory/.gitignore |  1 +
+ arch/x86/purgatory/Makefile   | 13 ++++++++++---
+ 2 files changed, 11 insertions(+), 3 deletions(-)
+ create mode 100644 arch/x86/purgatory/.gitignore
 
-diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
-index abbdecb..0a14711 100644
---- a/arch/x86/mm/init_64.c
-+++ b/arch/x86/mm/init_64.c
-@@ -818,8 +818,7 @@ void __init paging_init(void)
- 	 *	 will not set it back.
- 	 */
- 	node_clear_state(0, N_MEMORY);
--	if (N_MEMORY != N_NORMAL_MEMORY)
--		node_clear_state(0, N_NORMAL_MEMORY);
-+	node_clear_state(0, N_NORMAL_MEMORY);
+diff --git a/arch/x86/purgatory/.gitignore b/arch/x86/purgatory/.gitignore
+new file mode 100644
+index 0000000..d2be150
+--- /dev/null
++++ b/arch/x86/purgatory/.gitignore
+@@ -0,0 +1 @@
++purgatory.chk
+diff --git a/arch/x86/purgatory/Makefile b/arch/x86/purgatory/Makefile
+index 9733d1c..54aadbb 100644
+--- a/arch/x86/purgatory/Makefile
++++ b/arch/x86/purgatory/Makefile
+@@ -14,8 +14,12 @@ $(obj)/sha256.o: $(srctree)/lib/crypto/sha256.c FORCE
  
- 	zone_sizes_init();
- }
+ CFLAGS_sha256.o := -D__DISABLE_EXPORTS
+ 
+-LDFLAGS_purgatory.ro := -e purgatory_start -r --no-undefined -nostdlib -z nodefaultlib
+-targets += purgatory.ro
++# When linking purgatory.ro with -r unresolved symbols are not checked,
++# also link a purgatory.chk binary without -r to check for unresolved symbols.
++PURGATORY_LDFLAGS := -e purgatory_start -nostdlib -z nodefaultlib
++LDFLAGS_purgatory.ro := -r $(PURGATORY_LDFLAGS)
++LDFLAGS_purgatory.chk := $(PURGATORY_LDFLAGS)
++targets += purgatory.ro purgatory.chk
+ 
+ # Sanitizer, etc. runtimes are unavailable and cannot be linked here.
+ GCOV_PROFILE	:= n
+@@ -61,12 +65,15 @@ CFLAGS_string.o			+= $(PURGATORY_CFLAGS)
+ $(obj)/purgatory.ro: $(PURGATORY_OBJS) FORCE
+ 		$(call if_changed,ld)
+ 
++$(obj)/purgatory.chk: $(obj)/purgatory.ro FORCE
++		$(call if_changed,ld)
++
+ targets += kexec-purgatory.c
+ 
+ quiet_cmd_bin2c = BIN2C   $@
+       cmd_bin2c = $(objtree)/scripts/bin2c kexec_purgatory < $< > $@
+ 
+-$(obj)/kexec-purgatory.c: $(obj)/purgatory.ro FORCE
++$(obj)/kexec-purgatory.c: $(obj)/purgatory.ro $(obj)/purgatory.chk FORCE
+ 	$(call if_changed,bin2c)
+ 
+ obj-$(CONFIG_KEXEC_FILE)	+= kexec-purgatory.o
