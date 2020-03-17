@@ -2,106 +2,83 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D871C189136
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Mar 2020 23:18:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 069E3189179
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Mar 2020 23:30:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727046AbgCQWSF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 17 Mar 2020 18:18:05 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:56032 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726735AbgCQWSF (ORCPT
+        id S1727027AbgCQWa2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 17 Mar 2020 18:30:28 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38850 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727232AbgCQWa1 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 17 Mar 2020 18:18:05 -0400
-Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tip-bot2@linutronix.de>)
-        id 1jEKX7-0001Cb-AX; Tue, 17 Mar 2020 23:17:57 +0100
-Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id F06D71C2295;
-        Tue, 17 Mar 2020 23:17:56 +0100 (CET)
-Date:   Tue, 17 Mar 2020 22:17:56 -0000
-From:   "tip-bot2 for Hans de Goede" <tip-bot2@linutronix.de>
-Reply-to: linux-kernel@vger.kernel.org
+        Tue, 17 Mar 2020 18:30:27 -0400
+Received: from localhost (unknown [137.135.114.1])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3623120409;
+        Tue, 17 Mar 2020 22:30:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1584484227;
+        bh=u91BC3NXkPdPIVBTn/xMmycQLs8sWQ1e5NtnOF5IDVo=;
+        h=Date:From:To:To:Cc:Cc:Cc:Subject:In-Reply-To:References:From;
+        b=nBbMhx0SmUy5n0wd7DtRTrr1cMsQPPg3Ooi3vYddcp4QPxU+x3dFRJpY4LMel8UO1
+         W441wVJIKv+DdtOiz35F987n0LAjAZ8ow0pFdtPXGsD2VUg9mdo28hniga9E+pTasA
+         hw21CTeljUPpXcEMs2tKsB3suOXL1Fmx81ORqMgI=
+Date:   Tue, 17 Mar 2020 22:30:26 +0000
+From:   Sasha Levin <sashal@kernel.org>
+To:     Sasha Levin <sashal@kernel.org>
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/kdump] x86/purgatory: Disable various profiling and
- sanitizing options
-Cc:     Hans de Goede <hdegoede@redhat.com>, Borislav Petkov <bp@suse.de>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200317130841.290418-1-hdegoede@redhat.com>
-References: <20200317130841.290418-1-hdegoede@redhat.com>
-MIME-Version: 1.0
-Message-ID: <158448347670.28353.10536465598206779588.tip-bot2@tip-bot2>
-X-Mailer: tip-git-log-daemon
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+Cc:     Hans de Goede <hdegoede@redhat.com>
+Cc:     stable@vger.kernel.org
+Cc:     stable@vger.kernel.org
+Subject: Re: [tip: x86/timers] x86/tsc_msr: Use named struct initializers
+In-Reply-To: <158396431730.28353.16602854182721546383.tip-bot2@tip-bot2>
+References: <158396431730.28353.16602854182721546383.tip-bot2@tip-bot2>
+Message-Id: <20200317223027.3623120409@mail.kernel.org>
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/kdump branch of tip:
+Hi
 
-Commit-ID:     e2ac07c06058ae2d58b45bbf2a2a352771d76fcb
-Gitweb:        https://git.kernel.org/tip/e2ac07c06058ae2d58b45bbf2a2a352771d76fcb
-Author:        Hans de Goede <hdegoede@redhat.com>
-AuthorDate:    Tue, 17 Mar 2020 14:08:40 +01:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 17 Mar 2020 15:57:19 +01:00
+[This is an automated email]
 
-x86/purgatory: Disable various profiling and sanitizing options
+This commit has been processed because it contains a -stable tag.
+The stable tag indicates that it's relevant for the following trees: all
 
-Since the purgatory is a special stand-alone binary, various profiling
-and sanitizing options must be disabled. Having these options enabled
-typically will cause dependencies on various special symbols exported by
-special libs / stubs used by these frameworks. Since the purgatory is
-special, it is not linked against these stubs causing missing symbols in
-the purgatory if these options are not disabled.
+The bot has tested the following trees: v5.5.9, v5.4.25, v4.19.109, v4.14.173, v4.9.216, v4.4.216.
 
-Sync the set of disabled profiling and sanitizing options with that from
-drivers/firmware/efi/libstub/Makefile, adding
--DDISABLE_BRANCH_PROFILING to the CFLAGS and setting:
+v5.5.9: Build OK!
+v5.4.25: Build OK!
+v4.19.109: Failed to apply! Possible dependencies:
+    0cc5359d8fd4 ("x86/cpu: Update init data for new Airmont CPU model")
+    bba10c5cab4d ("x86/cpu: Use constant definitions for CPU models")
 
-  GCOV_PROFILE                    := n
-  UBSAN_SANITIZE                  := n
+v4.14.173: Failed to apply! Possible dependencies:
+    0cc5359d8fd4 ("x86/cpu: Update init data for new Airmont CPU model")
+    397d3ad18dc4 ("x86/tsc: Convert to use x86_match_cpu() and INTEL_CPU_FAM6()")
+    bba10c5cab4d ("x86/cpu: Use constant definitions for CPU models")
 
-This fixes broken references to ftrace_likely_update() when
-CONFIG_TRACE_BRANCH_PROFILING is enabled and to __gcov_init() and
-__gcov_exit() when CONFIG_GCOV_KERNEL is enabled.
+v4.9.216: Failed to apply! Possible dependencies:
+    0cc5359d8fd4 ("x86/cpu: Update init data for new Airmont CPU model")
+    397d3ad18dc4 ("x86/tsc: Convert to use x86_match_cpu() and INTEL_CPU_FAM6()")
+    bba10c5cab4d ("x86/cpu: Use constant definitions for CPU models")
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20200317130841.290418-1-hdegoede@redhat.com
----
- arch/x86/purgatory/Makefile | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+v4.4.216: Failed to apply! Possible dependencies:
+    05680e7fa8a4 ("x86/tsc_msr: Correct Silvermont reference clock values")
+    0cc5359d8fd4 ("x86/cpu: Update init data for new Airmont CPU model")
+    397d3ad18dc4 ("x86/tsc: Convert to use x86_match_cpu() and INTEL_CPU_FAM6()")
+    6fcb41cdaee5 ("x86/tsc_msr: Add Airmont reference clock values")
+    9e0cae9f6227 ("x86/tsc_msr: Update comments, expand definitions")
+    ba8268330dc1 ("x86/tsc_msr: Identify Intel-specific code")
+    bba10c5cab4d ("x86/cpu: Use constant definitions for CPU models")
 
-diff --git a/arch/x86/purgatory/Makefile b/arch/x86/purgatory/Makefile
-index fb4ee54..9733d1c 100644
---- a/arch/x86/purgatory/Makefile
-+++ b/arch/x86/purgatory/Makefile
-@@ -17,7 +17,10 @@ CFLAGS_sha256.o := -D__DISABLE_EXPORTS
- LDFLAGS_purgatory.ro := -e purgatory_start -r --no-undefined -nostdlib -z nodefaultlib
- targets += purgatory.ro
- 
-+# Sanitizer, etc. runtimes are unavailable and cannot be linked here.
-+GCOV_PROFILE	:= n
- KASAN_SANITIZE	:= n
-+UBSAN_SANITIZE	:= n
- KCOV_INSTRUMENT := n
- 
- # These are adjustments to the compiler flags used for objects that
-@@ -25,7 +28,7 @@ KCOV_INSTRUMENT := n
- 
- PURGATORY_CFLAGS_REMOVE := -mcmodel=kernel
- PURGATORY_CFLAGS := -mcmodel=large -ffreestanding -fno-zero-initialized-in-bss
--PURGATORY_CFLAGS += $(DISABLE_STACKLEAK_PLUGIN)
-+PURGATORY_CFLAGS += $(DISABLE_STACKLEAK_PLUGIN) -DDISABLE_BRANCH_PROFILING
- 
- # Default KBUILD_CFLAGS can have -pg option set when FTRACE is enabled. That
- # in turn leaves some undefined symbols like __fentry__ in purgatory and not
+
+NOTE: The patch will not be queued to stable trees until it is upstream.
+
+How should we proceed with this patch?
+
+-- 
+Thanks
+Sasha
