@@ -2,37 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AC347188863
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Mar 2020 15:57:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 77B9B188867
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Mar 2020 15:57:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726682AbgCQO52 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 17 Mar 2020 10:57:28 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:54792 "EHLO
+        id S1726478AbgCQO5e (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 17 Mar 2020 10:57:34 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:54797 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726278AbgCQO52 (ORCPT
+        with ESMTP id S1726781AbgCQO5d (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 17 Mar 2020 10:57:28 -0400
+        Tue, 17 Mar 2020 10:57:33 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jEDej-0002v3-J4; Tue, 17 Mar 2020 15:57:21 +0100
+        id 1jEDej-0002v4-Tg; Tue, 17 Mar 2020 15:57:22 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 2C61E1C2290;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 8371C1C2291;
         Tue, 17 Mar 2020 15:57:21 +0100 (CET)
-Date:   Tue, 17 Mar 2020 14:57:20 -0000
+Date:   Tue, 17 Mar 2020 14:57:21 -0000
 From:   "tip-bot2 for Thomas Hellstrom" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/mm] dma-mapping: Fix dma_pgprot() for unencrypted coherent pages
+Subject: [tip: x86/mm] x86: Don't let pgprot_modify() change the page encryption bit
 Cc:     Thomas Hellstrom <thellstrom@vmware.com>,
-        Borislav Petkov <bp@suse.de>, Christoph Hellwig <hch@lst.de>,
+        Borislav Petkov <bp@suse.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
         Tom Lendacky <thomas.lendacky@amd.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200304114527.3636-3-thomas_os@shipmail.org>
-References: <20200304114527.3636-3-thomas_os@shipmail.org>
+In-Reply-To: <20200304114527.3636-2-thomas_os@shipmail.org>
+References: <20200304114527.3636-2-thomas_os@shipmail.org>
 MIME-Version: 1.0
-Message-ID: <158445704082.28353.8744856923251332507.tip-bot2@tip-bot2>
+Message-ID: <158445704127.28353.16726920950830489620.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,46 +49,68 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/mm branch of tip:
 
-Commit-ID:     17c4a2ae15a7aaefe84bdb271952678c5c9cd8e1
-Gitweb:        https://git.kernel.org/tip/17c4a2ae15a7aaefe84bdb271952678c5c9cd8e1
+Commit-ID:     6db73f17c5f155dbcfd5e48e621c706270b84df0
+Gitweb:        https://git.kernel.org/tip/6db73f17c5f155dbcfd5e48e621c706270b84df0
 Author:        Thomas Hellstrom <thellstrom@vmware.com>
-AuthorDate:    Wed, 04 Mar 2020 12:45:27 +01:00
+AuthorDate:    Wed, 04 Mar 2020 12:45:26 +01:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 17 Mar 2020 11:52:58 +01:00
+CommitterDate: Tue, 17 Mar 2020 11:48:31 +01:00
 
-dma-mapping: Fix dma_pgprot() for unencrypted coherent pages
+x86: Don't let pgprot_modify() change the page encryption bit
 
-When dma_mmap_coherent() sets up a mapping to unencrypted coherent memory
-under SEV encryption and sometimes under SME encryption, it will actually
-set up an encrypted mapping rather than an unencrypted, causing devices
-that DMAs from that memory to read encrypted contents. Fix this.
+When SEV or SME is enabled and active, vm_get_page_prot() typically
+returns with the encryption bit set. This means that users of
+pgprot_modify(, vm_get_page_prot()) (mprotect_fixup(), do_mmap()) end up
+with a value of vma->vm_pg_prot that is not consistent with the intended
+protection of the PTEs.
 
-When force_dma_unencrypted() returns true, the linear kernel map of the
-coherent pages have had the encryption bit explicitly cleared and the
-page content is unencrypted. Make sure that any additional PTEs we set
-up to these pages also have the encryption bit cleared by having
-dma_pgprot() return a protection with the encryption bit cleared in this
-case.
+This is also important for fault handlers that rely on the VMA
+vm_page_prot to set the page protection. Fix this by not allowing
+pgprot_modify() to change the encryption bit, similar to how it's done
+for PAT bits.
 
 Signed-off-by: Thomas Hellstrom <thellstrom@vmware.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
 Acked-by: Tom Lendacky <thomas.lendacky@amd.com>
-Link: https://lkml.kernel.org/r/20200304114527.3636-3-thomas_os@shipmail.org
+Link: https://lkml.kernel.org/r/20200304114527.3636-2-thomas_os@shipmail.org
 ---
- kernel/dma/mapping.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/include/asm/pgtable.h       | 7 +++++--
+ arch/x86/include/asm/pgtable_types.h | 2 +-
+ 2 files changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
-index 12ff766..98e3d87 100644
---- a/kernel/dma/mapping.c
-+++ b/kernel/dma/mapping.c
-@@ -154,6 +154,8 @@ EXPORT_SYMBOL(dma_get_sgtable_attrs);
-  */
- pgprot_t dma_pgprot(struct device *dev, pgprot_t prot, unsigned long attrs)
+diff --git a/arch/x86/include/asm/pgtable.h b/arch/x86/include/asm/pgtable.h
+index 7e11866..64a03f2 100644
+--- a/arch/x86/include/asm/pgtable.h
++++ b/arch/x86/include/asm/pgtable.h
+@@ -627,12 +627,15 @@ static inline pmd_t pmd_modify(pmd_t pmd, pgprot_t newprot)
+ 	return __pmd(val);
+ }
+ 
+-/* mprotect needs to preserve PAT bits when updating vm_page_prot */
++/*
++ * mprotect needs to preserve PAT and encryption bits when updating
++ * vm_page_prot
++ */
+ #define pgprot_modify pgprot_modify
+ static inline pgprot_t pgprot_modify(pgprot_t oldprot, pgprot_t newprot)
  {
-+	if (force_dma_unencrypted(dev))
-+		prot = pgprot_decrypted(prot);
- 	if (dev_is_dma_coherent(dev) ||
- 	    (IS_ENABLED(CONFIG_DMA_NONCOHERENT_CACHE_SYNC) &&
-              (attrs & DMA_ATTR_NON_CONSISTENT)))
+ 	pgprotval_t preservebits = pgprot_val(oldprot) & _PAGE_CHG_MASK;
+-	pgprotval_t addbits = pgprot_val(newprot);
++	pgprotval_t addbits = pgprot_val(newprot) & ~_PAGE_CHG_MASK;
+ 	return __pgprot(preservebits | addbits);
+ }
+ 
+diff --git a/arch/x86/include/asm/pgtable_types.h b/arch/x86/include/asm/pgtable_types.h
+index 0239998..65c2ecd 100644
+--- a/arch/x86/include/asm/pgtable_types.h
++++ b/arch/x86/include/asm/pgtable_types.h
+@@ -118,7 +118,7 @@
+  */
+ #define _PAGE_CHG_MASK	(PTE_PFN_MASK | _PAGE_PCD | _PAGE_PWT |		\
+ 			 _PAGE_SPECIAL | _PAGE_ACCESSED | _PAGE_DIRTY |	\
+-			 _PAGE_SOFT_DIRTY | _PAGE_DEVMAP)
++			 _PAGE_SOFT_DIRTY | _PAGE_DEVMAP | _PAGE_ENC)
+ #define _HPAGE_CHG_MASK (_PAGE_CHG_MASK | _PAGE_PSE)
+ 
+ /*
