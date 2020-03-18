@@ -2,121 +2,119 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F5B8189787
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 18 Mar 2020 10:02:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B6E5E18A77D
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 18 Mar 2020 23:00:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727324AbgCRJCL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 18 Mar 2020 05:02:11 -0400
-Received: from us-smtp-delivery-74.mimecast.com ([216.205.24.74]:37464 "EHLO
-        us-smtp-delivery-74.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726523AbgCRJCL (ORCPT
+        id S1726663AbgCRWAU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 18 Mar 2020 18:00:20 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:58991 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726619AbgCRWAT (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 18 Mar 2020 05:02:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1584522129;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=NuaZbz5N2+w2+fsWF+Tlug+T6O+oQm2ursJ2AfBoRfo=;
-        b=KwC1XAdHEU+3X9VHhn34CkGUmZg+A3j5rrjcBSct91TEtc5N/4BZdR6RmnuSUekJac8wo3
-        x/U50pwrzEZhfLcb3zOiZXP/ZQiN64sZi692y2mDH/gh60HuadeSBUu5pgoI1vEkhmLgnp
-        iP77cEzXCxWgSlr4ohR9/8gVeAVVM48=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-405-so-mqAfjM6uPvbXydWkXBg-1; Wed, 18 Mar 2020 05:02:08 -0400
-X-MC-Unique: so-mqAfjM6uPvbXydWkXBg-1
-Received: by mail-wr1-f69.google.com with SMTP id t4so9073148wrv.9
-        for <linux-tip-commits@vger.kernel.org>; Wed, 18 Mar 2020 02:02:08 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=NuaZbz5N2+w2+fsWF+Tlug+T6O+oQm2ursJ2AfBoRfo=;
-        b=itS4HbtiRxtcUUWk09TPEiZiAuOq1spKiLQmc/1QgwqC0hi8N8C8Iw/PvGJqsmIWJx
-         W0z9PFoDhgb2Nv6/9/pVy25U0Dqqb2/j/jaBs4TQK47mShPPYZh9kuqVSDMnwJoobikT
-         0ObcwZoqiwWjd8telEUYyknVgv9r4GaMp2sZ9EZIDwbcSJ64o4urf2Ds9/b2dgtnqa0o
-         ZsIK+gPgjUVfL5ue8qslja/Hc4LbCk5tdRZK/UOYgRBVXcsfhZB1LSO5Q3NuymkbUWkO
-         V8Eh0/8mQYkBhlYn3mcLFZXN9Mz0LB9fDs2+tMn1FlOGDNMe1YCt6gsf1obA2tKOqFGx
-         UlbQ==
-X-Gm-Message-State: ANhLgQ1BgnI12o/F6u/vgt66bIML1VgEc/vYm3j3Kbc0FYyKE8v7vnPF
-        KOjWW1aJKzO+58ukgqS9rKppsrWmEizMb4uP2Mh2qx5QzOEfkSPGug8/0gf5KZU+JKVMOAsyOPH
-        X7S6HAGPGO9zUKmJ6RRgnm0uBdEJ1tlM=
-X-Received: by 2002:adf:fc08:: with SMTP id i8mr4204988wrr.378.1584522126851;
-        Wed, 18 Mar 2020 02:02:06 -0700 (PDT)
-X-Google-Smtp-Source: ADFU+vufT3OBEBb+u59Fkp6uNpNRU/gaf0uc9IcRRIbD+tsusVvID03cxB5FshCG91aQiJ+Db+1G3g==
-X-Received: by 2002:adf:fc08:: with SMTP id i8mr4204964wrr.378.1584522126617;
-        Wed, 18 Mar 2020 02:02:06 -0700 (PDT)
-Received: from x1.localdomain (2001-1c00-0c0c-fe00-fc7e-fd47-85c1-1ab3.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:fc7e:fd47:85c1:1ab3])
-        by smtp.gmail.com with ESMTPSA id c26sm2887419wmb.8.2020.03.18.02.02.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 18 Mar 2020 02:02:05 -0700 (PDT)
-Subject: Re: [tip: x86/timers] x86/tsc_msr: Use named struct initializers
-To:     Sasha Levin <sashal@kernel.org>, linux-tip-commits@vger.kernel.org
-Cc:     stable@vger.kernel.org
-References: <158396431730.28353.16602854182721546383.tip-bot2@tip-bot2>
- <20200317223027.3623120409@mail.kernel.org>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <b9de4d4f-2bcc-9751-54a0-4fb6b030c9f3@redhat.com>
-Date:   Wed, 18 Mar 2020 10:01:57 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+        Wed, 18 Mar 2020 18:00:19 -0400
+Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tip-bot2@linutronix.de>)
+        id 1jEgjP-0002kT-P7; Wed, 18 Mar 2020 23:00:09 +0100
+Received: from [127.0.1.1] (localhost [IPv6:::1])
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 8769E1C228C;
+        Wed, 18 Mar 2020 22:59:59 +0100 (CET)
+Date:   Wed, 18 Mar 2020 21:59:59 -0000
+From:   "tip-bot2 for Jesse Brandeburg" <tip-bot2@linutronix.de>
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/asm] x86: Fix bitops.h warning with a moved cast
+Cc:     Jesse Brandeburg <jesse.brandeburg@intel.com>,
+        Borislav Petkov <bp@suse.de>,
+        Andy Shevchenko <andriy.shevchenko@intel.com>,
+        Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200310221747.2848474-1-jesse.brandeburg@intel.com>
+References: <20200310221747.2848474-1-jesse.brandeburg@intel.com>
 MIME-Version: 1.0
-In-Reply-To: <20200317223027.3623120409@mail.kernel.org>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Language: en-US
+Message-ID: <158456879920.28353.9358875954563849711.tip-bot2@tip-bot2>
+X-Mailer: tip-git-log-daemon
+Robot-ID: <tip-bot2.linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-Hi,
+The following commit has been merged into the x86/asm branch of tip:
 
-On 3/17/20 11:30 PM, Sasha Levin wrote:
-> Hi
-> 
-> [This is an automated email]
-> 
-> This commit has been processed because it contains a -stable tag.
-> The stable tag indicates that it's relevant for the following trees: all
-> 
-> The bot has tested the following trees: v5.5.9, v5.4.25, v4.19.109, v4.14.173, v4.9.216, v4.4.216.
-> 
-> v5.5.9: Build OK!
-> v5.4.25: Build OK!
-> v4.19.109: Failed to apply! Possible dependencies:
->      0cc5359d8fd4 ("x86/cpu: Update init data for new Airmont CPU model")
->      bba10c5cab4d ("x86/cpu: Use constant definitions for CPU models")
-> 
-> v4.14.173: Failed to apply! Possible dependencies:
->      0cc5359d8fd4 ("x86/cpu: Update init data for new Airmont CPU model")
->      397d3ad18dc4 ("x86/tsc: Convert to use x86_match_cpu() and INTEL_CPU_FAM6()")
->      bba10c5cab4d ("x86/cpu: Use constant definitions for CPU models")
-> 
-> v4.9.216: Failed to apply! Possible dependencies:
->      0cc5359d8fd4 ("x86/cpu: Update init data for new Airmont CPU model")
->      397d3ad18dc4 ("x86/tsc: Convert to use x86_match_cpu() and INTEL_CPU_FAM6()")
->      bba10c5cab4d ("x86/cpu: Use constant definitions for CPU models")
-> 
-> v4.4.216: Failed to apply! Possible dependencies:
->      05680e7fa8a4 ("x86/tsc_msr: Correct Silvermont reference clock values")
->      0cc5359d8fd4 ("x86/cpu: Update init data for new Airmont CPU model")
->      397d3ad18dc4 ("x86/tsc: Convert to use x86_match_cpu() and INTEL_CPU_FAM6()")
->      6fcb41cdaee5 ("x86/tsc_msr: Add Airmont reference clock values")
->      9e0cae9f6227 ("x86/tsc_msr: Update comments, expand definitions")
->      ba8268330dc1 ("x86/tsc_msr: Identify Intel-specific code")
->      bba10c5cab4d ("x86/cpu: Use constant definitions for CPU models")
-> 
-> 
-> NOTE: The patch will not be queued to stable trees until it is upstream.
-> 
-> How should we proceed with this patch?
+Commit-ID:     1651e700664b4597ddf4f8adfe435252a0d11277
+Gitweb:        https://git.kernel.org/tip/1651e700664b4597ddf4f8adfe435252a0d11277
+Author:        Jesse Brandeburg <jesse.brandeburg@intel.com>
+AuthorDate:    Tue, 10 Mar 2020 15:17:46 -07:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Wed, 18 Mar 2020 12:30:19 +01:00
 
-Just adding it to 5.4 / 5.5 is fine. It is not really a high prio fix.
+x86: Fix bitops.h warning with a moved cast
 
-Regards,
+Fix many sparse warnings when building with C=1. These are useless noise
+from the bitops.h file and getting rid of them helps developers make
+more use of the tools and possibly find real bugs.
 
-Hans
+When the kernel is compiled with C=1, there are lots of messages like:
 
+  arch/x86/include/asm/bitops.h:77:37: warning: cast truncates bits from constant value (ffffff7f becomes 7f)
+
+CONST_MASK() is using a signed integer "1" to create the mask which is
+later cast to (u8), in order to yield an 8-bit value for the assembly
+instructions to use. Simplify the expressions used to clearly indicate
+they are working on 8-bit values only, which still keeps sparse happy
+without an accidental promotion to a 32 bit integer.
+
+The warning was occurring because certain bitmasks that end with a bit
+set next to a natural boundary like 7, 15, 23, 31, end up with a mask
+like 0x7f, which then results in sign extension due to the integer type
+promotion rules[1]. It was really only clear_bit() that was having
+problems, and it was only on some bit checks that resulted in a mask
+like 0xffffff7f being generated after the inversion.
+
+Verify with a test module (see next patch) and assembly inspection that
+the fix doesn't introduce any change in generated code.
+
+ [ bp: Massage. ]
+
+Signed-off-by: Jesse Brandeburg <jesse.brandeburg@intel.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Acked-by: Luc Van Oostenryck <luc.vanoostenryck@gmail.com>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://stackoverflow.com/questions/46073295/implicit-type-promotion-rules [1]
+Link: https://lkml.kernel.org/r/20200310221747.2848474-1-jesse.brandeburg@intel.com
+---
+ arch/x86/include/asm/bitops.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/x86/include/asm/bitops.h b/arch/x86/include/asm/bitops.h
+index 062cdec..53f246e 100644
+--- a/arch/x86/include/asm/bitops.h
++++ b/arch/x86/include/asm/bitops.h
+@@ -54,7 +54,7 @@ arch_set_bit(long nr, volatile unsigned long *addr)
+ 	if (__builtin_constant_p(nr)) {
+ 		asm volatile(LOCK_PREFIX "orb %1,%0"
+ 			: CONST_MASK_ADDR(nr, addr)
+-			: "iq" ((u8)CONST_MASK(nr))
++			: "iq" (CONST_MASK(nr) & 0xff)
+ 			: "memory");
+ 	} else {
+ 		asm volatile(LOCK_PREFIX __ASM_SIZE(bts) " %1,%0"
+@@ -74,7 +74,7 @@ arch_clear_bit(long nr, volatile unsigned long *addr)
+ 	if (__builtin_constant_p(nr)) {
+ 		asm volatile(LOCK_PREFIX "andb %1,%0"
+ 			: CONST_MASK_ADDR(nr, addr)
+-			: "iq" ((u8)~CONST_MASK(nr)));
++			: "iq" (CONST_MASK(nr) ^ 0xff));
+ 	} else {
+ 		asm volatile(LOCK_PREFIX __ASM_SIZE(btr) " %1,%0"
+ 			: : RLONG_ADDR(addr), "Ir" (nr) : "memory");
