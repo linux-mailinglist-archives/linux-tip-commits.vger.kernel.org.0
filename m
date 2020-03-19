@@ -2,50 +2,43 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D8E718AE99
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 19 Mar 2020 09:48:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C758C18AE96
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 19 Mar 2020 09:48:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726623AbgCSIsF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 19 Mar 2020 04:48:05 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:59805 "EHLO
+        id S1727099AbgCSIsB convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 19 Mar 2020 04:48:01 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:59776 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727129AbgCSIsE (ORCPT
+        with ESMTP id S1727047AbgCSIsB (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 19 Mar 2020 04:48:04 -0400
+        Thu, 19 Mar 2020 04:48:01 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jEqqH-00031l-S8; Thu, 19 Mar 2020 09:47:54 +0100
+        id 1jEqqL-00031N-Hy; Thu, 19 Mar 2020 09:47:57 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 252261C229E;
-        Thu, 19 Mar 2020 09:47:52 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C1E771C229D;
+        Thu, 19 Mar 2020 09:47:51 +0100 (CET)
 Date:   Thu, 19 Mar 2020 08:47:51 -0000
-From:   "tip-bot2 for Suman Anna" <tip-bot2@linutronix.de>
+From:   tip-bot2 for =?utf-8?b?5ZGo55Cw5p2w?= (Zhou Yanjie) 
+        <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] clocksource/drivers/timer-ti-dm: Drop bogus
- omap_dm_timer_of_set_source()
-Cc:     Tony Lindgren <tony@atomide.com>, Tero Kristo <t-kristo@ti.com>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Keerthy <j-keerthy@ti.com>,
-        Ladislav Michl <ladis@linux-mips.org>,
-        Pavel Machek <pavel@ucw.cz>,
-        Sebastian Reichel <sre@kernel.org>, Suman Anna <s-anna@ti.com>,
-        Lokesh Vutla <lokeshvutla@ti.com>,
+Subject: [tip: timers/core] dt-bindings: timer: Add X1000 bindings.
+Cc:     zhouyanjie@wanyeetech.com, Rob Herring <robh@kernel.org>,
         Daniel Lezcano <daniel.lezcano@linaro.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200213053504.22638-1-s-anna@ti.com>
-References: <20200213053504.22638-1-s-anna@ti.com>
+In-Reply-To: <1582100974-129559-3-git-send-email-zhouyanjie@wanyeetech.com>
+References: <1582100974-129559-3-git-send-email-zhouyanjie@wanyeetech.com>
 MIME-Version: 1.0
-Message-ID: <158460767187.28353.4410336602856187146.tip-bot2@tip-bot2>
+Message-ID: <158460767149.28353.3189793961377047125.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8BIT
 X-Linutronix-Spam-Score: -1.0
 X-Linutronix-Spam-Level: -
 X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
@@ -56,101 +49,34 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     753e83408b7f2980b7a5bfcf01f1175a937a2340
-Gitweb:        https://git.kernel.org/tip/753e83408b7f2980b7a5bfcf01f1175a937a2340
-Author:        Suman Anna <s-anna@ti.com>
-AuthorDate:    Wed, 12 Feb 2020 23:35:04 -06:00
+Commit-ID:     fe6c2d6a80680a875a856eb174d12acea7681247
+Gitweb:        https://git.kernel.org/tip/fe6c2d6a80680a875a856eb174d12acea7681247
+Author:        周琰杰 (Zhou Yanjie) <zhouyanjie@wanyeetech.com>
+AuthorDate:    Wed, 19 Feb 2020 16:29:31 +08:00
 Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
-CommitterDate: Thu, 27 Feb 2020 10:32:11 +01:00
+CommitterDate: Thu, 27 Feb 2020 11:21:38 +01:00
 
-clocksource/drivers/timer-ti-dm: Drop bogus omap_dm_timer_of_set_source()
+dt-bindings: timer: Add X1000 bindings.
 
-The function omap_dm_timer_of_set_source() was originally added in
-commit 31a7448f4fa8a ("ARM: OMAP: dmtimer: Add clock source from DT"),
-and is designed to set a clock source from DT using the clocks property
-of a timer node. This design choice is okay for clk provider nodes but
-otherwise is a bad design as typically the clocks property is used to
-specify the functional clocks for a device, and not its parents.
+Add the timer bindings for the X1000 Soc from Ingenic.
 
-The timer nodes now all define a timer functional clock after the
-conversion to ti-sysc and the new clkctrl layout, and this results
-in an attempt to set the same functional clock as its parent when a
-consumer driver attempts to acquire any of these timers in the
-omap_dm_timer_prepare() function. This was masked and worked around
-in commit 983a5a43ec25 ("clocksource: timer-ti-dm: Fix pwm dmtimer
-usage of fck reparenting"). Fix all of this by simply dropping the
-entire function.
-
-Any DT configuration of clock sources should be achieved using
-assigned-clocks and assigned-clock-parents properties provided
-by the Common Clock Framework.
-
-Cc: Tony Lindgren <tony@atomide.com>
-Cc: Tero Kristo <t-kristo@ti.com>
-Cc: Neil Armstrong <narmstrong@baylibre.com>
-Cc: H. Nikolaus Schaller <hns@goldelico.com>
-Cc: Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Cc: Keerthy <j-keerthy@ti.com>
-Cc: Ladislav Michl <ladis@linux-mips.org>
-Cc: Pavel Machek <pavel@ucw.cz>
-Cc: Sebastian Reichel <sre@kernel.org>
-Signed-off-by: Suman Anna <s-anna@ti.com>
-Tested-by: Lokesh Vutla <lokeshvutla@ti.com>
-Tested-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: 周琰杰 (Zhou Yanjie) <zhouyanjie@wanyeetech.com>
+Acked-by: Rob Herring <robh@kernel.org>
 Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20200213053504.22638-1-s-anna@ti.com
+Link: https://lore.kernel.org/r/1582100974-129559-3-git-send-email-zhouyanjie@wanyeetech.com
 ---
- drivers/clocksource/timer-ti-dm.c | 33 +------------------------------
- 1 file changed, 1 insertion(+), 32 deletions(-)
+ Documentation/devicetree/bindings/timer/ingenic,tcu.txt | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/clocksource/timer-ti-dm.c b/drivers/clocksource/timer-ti-dm.c
-index acc9360..6a0adb7 100644
---- a/drivers/clocksource/timer-ti-dm.c
-+++ b/drivers/clocksource/timer-ti-dm.c
-@@ -138,35 +138,6 @@ static int omap_dm_timer_reset(struct omap_dm_timer *timer)
- 	return 0;
- }
- 
--static int omap_dm_timer_of_set_source(struct omap_dm_timer *timer)
--{
--	int ret;
--	struct clk *parent;
--
--	/*
--	 * FIXME: OMAP1 devices do not use the clock framework for dmtimers so
--	 * do not call clk_get() for these devices.
--	 */
--	if (!timer->fclk)
--		return -ENODEV;
--
--	parent = clk_get(&timer->pdev->dev, NULL);
--	if (IS_ERR(parent))
--		return -ENODEV;
--
--	/* Bail out if both clocks point to fck */
--	if (clk_is_match(parent, timer->fclk))
--		return 0;
--
--	ret = clk_set_parent(timer->fclk, parent);
--	if (ret < 0)
--		pr_err("%s: failed to set parent\n", __func__);
--
--	clk_put(parent);
--
--	return ret;
--}
--
- static int omap_dm_timer_set_source(struct omap_dm_timer *timer, int source)
- {
- 	int ret;
-@@ -276,9 +247,7 @@ static int omap_dm_timer_prepare(struct omap_dm_timer *timer)
- 	__omap_dm_timer_enable_posted(timer);
- 	omap_dm_timer_disable(timer);
- 
--	rc = omap_dm_timer_of_set_source(timer);
--	if (rc == -ENODEV)
--		return omap_dm_timer_set_source(timer, OMAP_TIMER_SRC_32_KHZ);
-+	rc = omap_dm_timer_set_source(timer, OMAP_TIMER_SRC_32_KHZ);
- 
- 	return rc;
- }
+diff --git a/Documentation/devicetree/bindings/timer/ingenic,tcu.txt b/Documentation/devicetree/bindings/timer/ingenic,tcu.txt
+index 0b63ceb..91f7049 100644
+--- a/Documentation/devicetree/bindings/timer/ingenic,tcu.txt
++++ b/Documentation/devicetree/bindings/timer/ingenic,tcu.txt
+@@ -10,6 +10,7 @@ Required properties:
+   * ingenic,jz4740-tcu
+   * ingenic,jz4725b-tcu
+   * ingenic,jz4770-tcu
++  * ingenic,x1000-tcu
+   followed by "simple-mfd".
+ - reg: Should be the offset/length value corresponding to the TCU registers
+ - clocks: List of phandle & clock specifiers for clocks external to the TCU.
