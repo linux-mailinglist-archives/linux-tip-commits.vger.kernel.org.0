@@ -2,39 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B6E5E18A77D
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 18 Mar 2020 23:00:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 508D818AEC0
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 19 Mar 2020 09:49:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726663AbgCRWAU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 18 Mar 2020 18:00:20 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:58991 "EHLO
+        id S1726063AbgCSItK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 19 Mar 2020 04:49:10 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:59681 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726619AbgCRWAT (ORCPT
+        with ESMTP id S1725768AbgCSIrw (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 18 Mar 2020 18:00:19 -0400
+        Thu, 19 Mar 2020 04:47:52 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jEgjP-0002kT-P7; Wed, 18 Mar 2020 23:00:09 +0100
+        id 1jEqqC-0002xE-TU; Thu, 19 Mar 2020 09:47:49 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 8769E1C228C;
-        Wed, 18 Mar 2020 22:59:59 +0100 (CET)
-Date:   Wed, 18 Mar 2020 21:59:59 -0000
-From:   "tip-bot2 for Jesse Brandeburg" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 45A8B1C1DC3;
+        Thu, 19 Mar 2020 09:47:46 +0100 (CET)
+Date:   Thu, 19 Mar 2020 08:47:45 -0000
+From:   "tip-bot2 for Ahmed S. Darwish" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/asm] x86: Fix bitops.h warning with a moved cast
-Cc:     Jesse Brandeburg <jesse.brandeburg@intel.com>,
-        Borislav Petkov <bp@suse.de>,
-        Andy Shevchenko <andriy.shevchenko@intel.com>,
-        Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200310221747.2848474-1-jesse.brandeburg@intel.com>
-References: <20200310221747.2848474-1-jesse.brandeburg@intel.com>
+Subject: [tip: timers/core] time/sched_clock: Expire timer in hardirq context
+Cc:     "Ahmed S. Darwish" <a.darwish@linutronix.de>,
+        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200309181529.26558-1-a.darwish@linutronix.de>
+References: <20200309181529.26558-1-a.darwish@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <158456879920.28353.9358875954563849711.tip-bot2@tip-bot2>
+Message-ID: <158460766596.28353.12288239928107345497.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,73 +45,67 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/asm branch of tip:
+The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     1651e700664b4597ddf4f8adfe435252a0d11277
-Gitweb:        https://git.kernel.org/tip/1651e700664b4597ddf4f8adfe435252a0d11277
-Author:        Jesse Brandeburg <jesse.brandeburg@intel.com>
-AuthorDate:    Tue, 10 Mar 2020 15:17:46 -07:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 18 Mar 2020 12:30:19 +01:00
+Commit-ID:     2c8bd58812ee3dbf0d78b566822f7eacd34bdd7b
+Gitweb:        https://git.kernel.org/tip/2c8bd58812ee3dbf0d78b566822f7eacd34bdd7b
+Author:        Ahmed S. Darwish <a.darwish@linutronix.de>
+AuthorDate:    Mon, 09 Mar 2020 18:15:29 
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Thu, 19 Mar 2020 09:45:08 +01:00
 
-x86: Fix bitops.h warning with a moved cast
+time/sched_clock: Expire timer in hardirq context
 
-Fix many sparse warnings when building with C=1. These are useless noise
-from the bitops.h file and getting rid of them helps developers make
-more use of the tools and possibly find real bugs.
+To minimize latency, PREEMPT_RT kernels expires hrtimers in preemptible
+softirq context by default. This can be overriden by marking the timer's
+expiry with HRTIMER_MODE_HARD.
 
-When the kernel is compiled with C=1, there are lots of messages like:
+sched_clock_timer is missing this annotation: if its callback is preempted
+and the duration of the preemption exceeds the wrap around time of the
+underlying clocksource, sched clock will get out of sync.
 
-  arch/x86/include/asm/bitops.h:77:37: warning: cast truncates bits from constant value (ffffff7f becomes 7f)
+Mark the sched_clock_timer for expiry in hard interrupt context.
 
-CONST_MASK() is using a signed integer "1" to create the mask which is
-later cast to (u8), in order to yield an 8-bit value for the assembly
-instructions to use. Simplify the expressions used to clearly indicate
-they are working on 8-bit values only, which still keeps sparse happy
-without an accidental promotion to a 32 bit integer.
+Signed-off-by: Ahmed S. Darwish <a.darwish@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lkml.kernel.org/r/20200309181529.26558-1-a.darwish@linutronix.de
 
-The warning was occurring because certain bitmasks that end with a bit
-set next to a natural boundary like 7, 15, 23, 31, end up with a mask
-like 0x7f, which then results in sign extension due to the integer type
-promotion rules[1]. It was really only clear_bit() that was having
-problems, and it was only on some bit checks that resulted in a mask
-like 0xffffff7f being generated after the inversion.
-
-Verify with a test module (see next patch) and assembly inspection that
-the fix doesn't introduce any change in generated code.
-
- [ bp: Massage. ]
-
-Signed-off-by: Jesse Brandeburg <jesse.brandeburg@intel.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Acked-by: Luc Van Oostenryck <luc.vanoostenryck@gmail.com>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://stackoverflow.com/questions/46073295/implicit-type-promotion-rules [1]
-Link: https://lkml.kernel.org/r/20200310221747.2848474-1-jesse.brandeburg@intel.com
 ---
- arch/x86/include/asm/bitops.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/time/sched_clock.c |  9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/include/asm/bitops.h b/arch/x86/include/asm/bitops.h
-index 062cdec..53f246e 100644
---- a/arch/x86/include/asm/bitops.h
-+++ b/arch/x86/include/asm/bitops.h
-@@ -54,7 +54,7 @@ arch_set_bit(long nr, volatile unsigned long *addr)
- 	if (__builtin_constant_p(nr)) {
- 		asm volatile(LOCK_PREFIX "orb %1,%0"
- 			: CONST_MASK_ADDR(nr, addr)
--			: "iq" ((u8)CONST_MASK(nr))
-+			: "iq" (CONST_MASK(nr) & 0xff)
- 			: "memory");
- 	} else {
- 		asm volatile(LOCK_PREFIX __ASM_SIZE(bts) " %1,%0"
-@@ -74,7 +74,7 @@ arch_clear_bit(long nr, volatile unsigned long *addr)
- 	if (__builtin_constant_p(nr)) {
- 		asm volatile(LOCK_PREFIX "andb %1,%0"
- 			: CONST_MASK_ADDR(nr, addr)
--			: "iq" ((u8)~CONST_MASK(nr)));
-+			: "iq" (CONST_MASK(nr) ^ 0xff));
- 	} else {
- 		asm volatile(LOCK_PREFIX __ASM_SIZE(btr) " %1,%0"
- 			: : RLONG_ADDR(addr), "Ir" (nr) : "memory");
+diff --git a/kernel/time/sched_clock.c b/kernel/time/sched_clock.c
+index e4332e3..fa3f800 100644
+--- a/kernel/time/sched_clock.c
++++ b/kernel/time/sched_clock.c
+@@ -208,7 +208,8 @@ sched_clock_register(u64 (*read)(void), int bits, unsigned long rate)
+ 
+ 	if (sched_clock_timer.function != NULL) {
+ 		/* update timeout for clock wrap */
+-		hrtimer_start(&sched_clock_timer, cd.wrap_kt, HRTIMER_MODE_REL);
++		hrtimer_start(&sched_clock_timer, cd.wrap_kt,
++			      HRTIMER_MODE_REL_HARD);
+ 	}
+ 
+ 	r = rate;
+@@ -254,9 +255,9 @@ void __init generic_sched_clock_init(void)
+ 	 * Start the timer to keep sched_clock() properly updated and
+ 	 * sets the initial epoch.
+ 	 */
+-	hrtimer_init(&sched_clock_timer, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
++	hrtimer_init(&sched_clock_timer, CLOCK_MONOTONIC, HRTIMER_MODE_REL_HARD);
+ 	sched_clock_timer.function = sched_clock_poll;
+-	hrtimer_start(&sched_clock_timer, cd.wrap_kt, HRTIMER_MODE_REL);
++	hrtimer_start(&sched_clock_timer, cd.wrap_kt, HRTIMER_MODE_REL_HARD);
+ }
+ 
+ /*
+@@ -293,7 +294,7 @@ void sched_clock_resume(void)
+ 	struct clock_read_data *rd = &cd.read_data[0];
+ 
+ 	rd->epoch_cyc = cd.actual_read_sched_clock();
+-	hrtimer_start(&sched_clock_timer, cd.wrap_kt, HRTIMER_MODE_REL);
++	hrtimer_start(&sched_clock_timer, cd.wrap_kt, HRTIMER_MODE_REL_HARD);
+ 	rd->read_sched_clock = cd.actual_read_sched_clock;
+ }
+ 
