@@ -2,43 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 63C6F18B90B
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 19 Mar 2020 15:13:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CA5F018B915
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 19 Mar 2020 15:13:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727722AbgCSOKz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 19 Mar 2020 10:10:55 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:60877 "EHLO
+        id S1727576AbgCSOKs (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 19 Mar 2020 10:10:48 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:60799 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727668AbgCSOKy (ORCPT
+        with ESMTP id S1727141AbgCSOKs (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 19 Mar 2020 10:10:54 -0400
+        Thu, 19 Mar 2020 10:10:48 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jEvsf-0001zn-Jf; Thu, 19 Mar 2020 15:10:41 +0100
+        id 1jEvse-0001zK-QA; Thu, 19 Mar 2020 15:10:40 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 2B1121C22A4;
-        Thu, 19 Mar 2020 15:10:41 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 71B111C22A4;
+        Thu, 19 Mar 2020 15:10:40 +0100 (CET)
 Date:   Thu, 19 Mar 2020 14:10:40 -0000
-From:   "tip-bot2 for Ian Rogers" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Jin Yao" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf test: Print if shell directory isn't present
-Cc:     Ian Rogers <irogers@google.com>, Jiri Olsa <jolsa@kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
+Subject: [tip: perf/core] perf report: Fix no branch type statistics report issue
+Cc:     Jin Yao <yao.jin@linux.intel.com>,
         Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Andi Kleen <ak@linux.intel.com>, Leo Yan <leo.yan@linaro.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Namhyung Kim <namhyung@kernel.org>,
+        Andi Kleen <ak@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>,
+        Kan Liang <kan.liang@linux.intel.com>,
         Peter Zijlstra <peterz@infradead.org>,
-        Stephane Eranian <eranian@google.com>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200313005602.45236-1-irogers@google.com>
-References: <20200313005602.45236-1-irogers@google.com>
+In-Reply-To: <20200313134607.12873-1-yao.jin@linux.intel.com>
+References: <20200313134607.12873-1-yao.jin@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <158462704089.28353.3162161305484344.tip-bot2@tip-bot2>
+Message-ID: <158462704019.28353.915763794833070245.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -54,48 +51,87 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     b2bf6660709c3bdd92d7558f4aa3cf07c0b0dda8
-Gitweb:        https://git.kernel.org/tip/b2bf6660709c3bdd92d7558f4aa3cf07c0b0dda8
-Author:        Ian Rogers <irogers@google.com>
-AuthorDate:    Thu, 12 Mar 2020 17:56:02 -07:00
+Commit-ID:     c3b10649a80e9da2892c1fd3038c53abd57588f6
+Gitweb:        https://git.kernel.org/tip/c3b10649a80e9da2892c1fd3038c53abd57588f6
+Author:        Jin Yao <yao.jin@linux.intel.com>
+AuthorDate:    Fri, 13 Mar 2020 21:46:07 +08:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Fri, 13 Mar 2020 15:43:43 -03:00
+CommitterDate: Tue, 17 Mar 2020 18:01:40 -03:00
 
-perf test: Print if shell directory isn't present
+perf report: Fix no branch type statistics report issue
 
-If the shell test directory isn't present the exit code will be 255 but
-with no error messages printed. Add an error message.
+Previously we could get the report of branch type statistics.
 
-Signed-off-by: Ian Rogers <irogers@google.com>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
+For example:
+
+  # perf record -j any,save_type ...
+  # t perf report --stdio
+
+  #
+  # Branch Statistics:
+  #
+  COND_FWD:  40.6%
+  COND_BWD:   4.1%
+  CROSS_4K:  24.7%
+  CROSS_2M:  12.3%
+      COND:  44.7%
+    UNCOND:   0.0%
+       IND:   6.1%
+      CALL:  24.5%
+       RET:  24.7%
+
+But now for the recent perf, it can't report the branch type statistics.
+
+It's a regression issue caused by commit 40c39e304641 ("perf report: Fix
+a no annotate browser displayed issue"), which only counts the branch
+type statistics for browser mode.
+
+This patch moves the branch_type_count() outside of ui__has_annotation()
+checking, then branch type statistics can work for stdio mode.
+
+Fixes: 40c39e304641 ("perf report: Fix a no annotate browser displayed issue")
+Signed-off-by: Jin Yao <yao.jin@linux.intel.com>
 Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Leo Yan <leo.yan@linaro.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Stephane Eranian <eranian@google.com>
-Link: http://lore.kernel.org/lkml/20200313005602.45236-1-irogers@google.com
+Link: http://lore.kernel.org/lkml/20200313134607.12873-1-yao.jin@linux.intel.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/tests/builtin-test.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ tools/perf/builtin-report.c |  9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/tools/perf/tests/builtin-test.c b/tools/perf/tests/builtin-test.c
-index 5f05db7..54d9516 100644
---- a/tools/perf/tests/builtin-test.c
-+++ b/tools/perf/tests/builtin-test.c
-@@ -543,8 +543,11 @@ static int run_shell_tests(int argc, const char *argv[], int i, int width)
- 		return -1;
+diff --git a/tools/perf/builtin-report.c b/tools/perf/builtin-report.c
+index d7c905f..5f4045d 100644
+--- a/tools/perf/builtin-report.c
++++ b/tools/perf/builtin-report.c
+@@ -186,24 +186,23 @@ static int hist_iter__branch_callback(struct hist_entry_iter *iter,
+ {
+ 	struct hist_entry *he = iter->he;
+ 	struct report *rep = arg;
+-	struct branch_info *bi;
++	struct branch_info *bi = he->branch_info;
+ 	struct perf_sample *sample = iter->sample;
+ 	struct evsel *evsel = iter->evsel;
+ 	int err;
  
- 	dir = opendir(st.dir);
--	if (!dir)
-+	if (!dir) {
-+		pr_err("failed to open shell test directory: %s\n",
-+			st.dir);
- 		return -1;
-+	}
++	branch_type_count(&rep->brtype_stat, &bi->flags,
++			  bi->from.addr, bi->to.addr);
++
+ 	if (!ui__has_annotation() && !rep->symbol_ipc)
+ 		return 0;
  
- 	for_each_shell_test(dir, st.dir, ent) {
- 		int curr = i++;
+-	bi = he->branch_info;
+ 	err = addr_map_symbol__inc_samples(&bi->from, sample, evsel);
+ 	if (err)
+ 		goto out;
+ 
+ 	err = addr_map_symbol__inc_samples(&bi->to, sample, evsel);
+ 
+-	branch_type_count(&rep->brtype_stat, &bi->flags,
+-			  bi->from.addr, bi->to.addr);
+-
+ out:
+ 	return err;
+ }
