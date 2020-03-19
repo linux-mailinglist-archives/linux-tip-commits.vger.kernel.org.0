@@ -2,43 +2,44 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C14D518B8FD
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 19 Mar 2020 15:13:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 97B4E18B905
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 19 Mar 2020 15:13:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727875AbgCSOMd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 19 Mar 2020 10:12:33 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:60973 "EHLO
+        id S1727837AbgCSOMq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 19 Mar 2020 10:12:46 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:60926 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727828AbgCSOLC (ORCPT
+        with ESMTP id S1727755AbgCSOK7 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 19 Mar 2020 10:11:02 -0400
+        Thu, 19 Mar 2020 10:10:59 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jEvsr-00027B-2i; Thu, 19 Mar 2020 15:10:53 +0100
+        id 1jEvsn-00025y-Jt; Thu, 19 Mar 2020 15:10:49 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4DA1A1C22A6;
-        Thu, 19 Mar 2020 15:10:47 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 72E0F1C22AA;
+        Thu, 19 Mar 2020 15:10:46 +0100 (CET)
 Date:   Thu, 19 Mar 2020 14:10:46 -0000
 From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf util: Factor out sysctl__nmi_watchdog_enabled()
-Cc:     Andi Kleen <ak@linux.intel.com>,
-        Kan Liang <kan.liang@linux.intel.com>,
+Subject: [tip: perf/core] perf vendor events intel: Add NO_NMI_WATCHDOG metric
+ constraint
+Cc:     Kan Liang <kan.liang@linux.intel.com>,
         Jiri Olsa <jolsa@redhat.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Andi Kleen <ak@linux.intel.com>,
         Jin Yao <yao.jin@linux.intel.com>,
         Mark Rutland <mark.rutland@arm.com>,
         Namhyung Kim <namhyung@kernel.org>,
         Peter Zijlstra <peterz@infradead.org>,
         Ravi Bangoria <ravi.bangoria@linux.ibm.com>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <1582581564-184429-4-git-send-email-kan.liang@linux.intel.com>
-References: <1582581564-184429-4-git-send-email-kan.liang@linux.intel.com>
+In-Reply-To: <1582581564-184429-6-git-send-email-kan.liang@linux.intel.com>
+References: <1582581564-184429-6-git-send-email-kan.liang@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <158462704694.28353.6873127426138751069.tip-bot2@tip-bot2>
+Message-ID: <158462704613.28353.4328251690443058213.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -54,113 +55,179 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     2a14c1bf017f48a17c8c0ba26a22625363e77cc7
-Gitweb:        https://git.kernel.org/tip/2a14c1bf017f48a17c8c0ba26a22625363e77cc7
+Commit-ID:     b95fcd2c1c25bd14f55d5d6ab268b3ab00b8a774
+Gitweb:        https://git.kernel.org/tip/b95fcd2c1c25bd14f55d5d6ab268b3ab00b8a774
 Author:        Kan Liang <kan.liang@linux.intel.com>
-AuthorDate:    Mon, 24 Feb 2020 13:59:22 -08:00
+AuthorDate:    Mon, 24 Feb 2020 13:59:24 -08:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Tue, 10 Mar 2020 14:46:19 -03:00
+CommitterDate: Tue, 10 Mar 2020 14:56:46 -03:00
 
-perf util: Factor out sysctl__nmi_watchdog_enabled()
+perf vendor events intel: Add NO_NMI_WATCHDOG metric constraint
 
-The NMI watchdog status is required for metric group constraint
-examination.  Factor out sysctl__nmi_watchdog_enabled() to retrieve the
-NMI watchdog status.
+Add NO_NMI_WATCHDOG metric constraint to Page_Walks_Utilization for Sky Lake
+and Cascade Lake.
 
-Users may count more than one metric group each time. If so, the NMI
-watchdog status may be retrieved several times. To reduce the overhead,
-cache the NMI watchdog status.
+Committer testing:
 
-Replace the NMI watchdog status checking in print_footer() by
-sysctl__nmi_watchdog_enabled().
+On a Lenovo T480S, Intel(R) Core(TM) i7-8650U Kaby Lake, that looking at x86's
+mapfile.csv file is a:
 
-Suggested-by: Andi Kleen <ak@linux.intel.com>
+  $ grep -w skylake tools/perf/pmu-events/arch/x86/mapfile.csv
+  GenuineIntel-6-[4589]E,v24,skylake,core
+  $
+
+So uses the constraint added in this patch in this file:
+
+  tools/perf/pmu-events/arch/x86/skylake/skl-metrics.json
+
+Before:
+
+  # perf stat -a -M Page_Walks_Utilization sleep 2
+
+   Performance counter stats for 'system wide':
+
+       <not counted>      itlb_misses.walk_pending                                      (0.00%)
+       <not counted>      dtlb_load_misses.walk_pending                                     (0.00%)
+       <not counted>      dtlb_store_misses.walk_pending                                     (0.00%)
+       <not counted>      ept.walk_pending                                              (0.00%)
+       <not counted>      cycles                                                        (0.00%)
+
+         2.001750514 seconds time elapsed
+
+  Some events weren't counted. Try disabling the NMI watchdog:
+  	echo 0 > /proc/sys/kernel/nmi_watchdog
+  	perf stat ...
+  	echo 1 > /proc/sys/kernel/nmi_watchdog
+  The events in group usually have to be from the same PMU. Try reorganizing the group.
+  #
+
+After:
+
+  # perf stat -a -M Page_Walks_Utilization sleep 2
+  Splitting metric group Page_Walks_Utilization into standalone metrics.
+  Try disabling the NMI watchdog to comply NO_NMI_WATCHDOG metric constraint:
+      echo 0 > /proc/sys/kernel/nmi_watchdog
+      perf stat ...
+      echo 1 > /proc/sys/kernel/nmi_watchdog
+  ,
+   Performance counter stats for 'system wide':
+
+          36,883,102      itlb_misses.walk_pending  #      0.1 Page_Walks_Utilization   (79.99%)
+         123,104,146      dtlb_load_misses.walk_pending                                     (80.02%)
+          13,720,795      dtlb_store_misses.walk_pending                                     (79.99%)
+                   0      ept.walk_pending                                              (79.99%)
+       1,519,948,400      cycles                                                        (80.01%)
+
+         2.002170780 seconds time elapsed
+
+  #
+
+Before and after, if we disable the nmi_watchdog we get:
+
+  # echo 0 > /proc/sys/kernel/nmi_watchdog
+  # perf stat -a -M Page_Walks_Utilization sleep 2
+
+   Performance counter stats for 'system wide':
+
+          33,721,658      itlb_misses.walk_pending  #      0.1 Page_Walks_Utilization
+          84,070,996      dtlb_load_misses.walk_pending
+           9,816,071      dtlb_store_misses.walk_pending
+                   0      ept.walk_pending
+         704,920,899      cycles
+
+         2.002331670 seconds time elapsed
+
+  #
+
+  More information about the metric expressions:
+
+  # perf stat -v -a -M Page_Walks_Utilization sleep 2
+  Using CPUID GenuineIntel-6-8E-A
+  metric expr ( itlb_misses.walk_pending + dtlb_load_misses.walk_pending + dtlb_store_misses.walk_pending + ept.walk_pending ) / ( 2 * cycles ) for Page_Walks_Utilization
+  found event itlb_misses.walk_pending
+  found event dtlb_load_misses.walk_pending
+  found event dtlb_store_misses.walk_pending
+  found event ept.walk_pending
+  found event cycles
+  adding {itlb_misses.walk_pending,dtlb_load_misses.walk_pending,dtlb_store_misses.walk_pending,ept.walk_pending,cycles}:W
+   -> cpu/umask=0x10,(null)=0x186a3,event=0x85/
+   -> cpu/umask=0x10,(null)=0x1e8483,event=0x8/
+   -> cpu/umask=0x10,(null)=0x1e8483,event=0x49/
+   -> cpu/umask=0x10,(null)=0x1e8483,event=0x4f/
+  itlb_misses.walk_pending: 8085772 16010162799 16010162799
+  dtlb_load_misses.walk_pending: 28134579 16010162799 16010162799
+  dtlb_store_misses.walk_pending: 7276535 16010162799 16010162799
+  ept.walk_pending: 2 16010162799 16010162799
+  cycles: 315140605 16010162799 16010162799
+
+   Performance counter stats for 'system wide':
+
+           8,085,772      itlb_misses.walk_pending  #      0.1 Page_Walks_Utilization
+          28,134,579      dtlb_load_misses.walk_pending
+           7,276,535      dtlb_store_misses.walk_pending
+                   2      ept.walk_pending
+         315,140,605      cycles
+
+         2.002333181 seconds time elapsed
+
+  #
+
 Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
 Acked-by: Jiri Olsa <jolsa@redhat.com>
+Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Cc: Andi Kleen <ak@linux.intel.com>
 Cc: Jin Yao <yao.jin@linux.intel.com>
 Cc: Mark Rutland <mark.rutland@arm.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Link: http://lore.kernel.org/lkml/1582581564-184429-4-git-send-email-kan.liang@linux.intel.com
+Link: http://lore.kernel.org/lkml/1582581564-184429-6-git-send-email-kan.liang@linux.intel.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/stat-display.c |  6 ++----
- tools/perf/util/util.c         | 18 ++++++++++++++++++
- tools/perf/util/util.h         |  2 ++
- 3 files changed, 22 insertions(+), 4 deletions(-)
+ tools/perf/pmu-events/arch/x86/cascadelakex/clx-metrics.json | 3 ++-
+ tools/perf/pmu-events/arch/x86/skylake/skl-metrics.json      | 3 ++-
+ tools/perf/pmu-events/arch/x86/skylakex/skx-metrics.json     | 3 ++-
+ 3 files changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/tools/perf/util/stat-display.c b/tools/perf/util/stat-display.c
-index d89cb0d..76c6052 100644
---- a/tools/perf/util/stat-display.c
-+++ b/tools/perf/util/stat-display.c
-@@ -16,6 +16,7 @@
- #include <linux/ctype.h>
- #include "cgroup.h"
- #include <api/fs/fs.h>
-+#include "util.h"
- 
- #define CNTR_NOT_SUPPORTED	"<not supported>"
- #define CNTR_NOT_COUNTED	"<not counted>"
-@@ -1097,7 +1098,6 @@ static void print_footer(struct perf_stat_config *config)
- {
- 	double avg = avg_stats(config->walltime_nsecs_stats) / NSEC_PER_SEC;
- 	FILE *output = config->output;
--	int n;
- 
- 	if (!config->null_run)
- 		fprintf(output, "\n");
-@@ -1131,9 +1131,7 @@ static void print_footer(struct perf_stat_config *config)
- 	}
- 	fprintf(output, "\n\n");
- 
--	if (config->print_free_counters_hint &&
--	    sysctl__read_int("kernel/nmi_watchdog", &n) >= 0 &&
--	    n > 0)
-+	if (config->print_free_counters_hint && sysctl__nmi_watchdog_enabled())
- 		fprintf(output,
- "Some events weren't counted. Try disabling the NMI watchdog:\n"
- "	echo 0 > /proc/sys/kernel/nmi_watchdog\n"
-diff --git a/tools/perf/util/util.c b/tools/perf/util/util.c
-index 969ae56..d707c96 100644
---- a/tools/perf/util/util.c
-+++ b/tools/perf/util/util.c
-@@ -55,6 +55,24 @@ int sysctl__max_stack(void)
- 	return sysctl_perf_event_max_stack;
- }
- 
-+bool sysctl__nmi_watchdog_enabled(void)
-+{
-+	static bool cached;
-+	static bool nmi_watchdog;
-+	int value;
-+
-+	if (cached)
-+		return nmi_watchdog;
-+
-+	if (sysctl__read_int("kernel/nmi_watchdog", &value) < 0)
-+		return false;
-+
-+	nmi_watchdog = (value > 0) ? true : false;
-+	cached = true;
-+
-+	return nmi_watchdog;
-+}
-+
- bool test_attr__enabled;
- 
- bool perf_host  = true;
-diff --git a/tools/perf/util/util.h b/tools/perf/util/util.h
-index 9969b8b..f486fdd 100644
---- a/tools/perf/util/util.h
-+++ b/tools/perf/util/util.h
-@@ -29,6 +29,8 @@ size_t hex_width(u64 v);
- 
- int sysctl__max_stack(void);
- 
-+bool sysctl__nmi_watchdog_enabled(void);
-+
- int fetch_kernel_version(unsigned int *puint,
- 			 char *str, size_t str_sz);
- #define KVER_VERSION(x)		(((x) >> 16) & 0xff)
+diff --git a/tools/perf/pmu-events/arch/x86/cascadelakex/clx-metrics.json b/tools/perf/pmu-events/arch/x86/cascadelakex/clx-metrics.json
+index f946532..a728c6e 100644
+--- a/tools/perf/pmu-events/arch/x86/cascadelakex/clx-metrics.json
++++ b/tools/perf/pmu-events/arch/x86/cascadelakex/clx-metrics.json
+@@ -215,7 +215,8 @@
+         "BriefDescription": "Utilization of the core's Page Walker(s) serving STLB misses triggered by instruction/Load/Store accesses",
+         "MetricExpr": "( ITLB_MISSES.WALK_PENDING + DTLB_LOAD_MISSES.WALK_PENDING + DTLB_STORE_MISSES.WALK_PENDING + EPT.WALK_PENDING ) / ( 2 * cycles )",
+         "MetricGroup": "TLB",
+-        "MetricName": "Page_Walks_Utilization"
++        "MetricName": "Page_Walks_Utilization",
++        "MetricConstraint": "NO_NMI_WATCHDOG"
+     },
+     {
+         "BriefDescription": "Utilization of the core's Page Walker(s) serving STLB misses triggered by instruction/Load/Store accesses",
+diff --git a/tools/perf/pmu-events/arch/x86/skylake/skl-metrics.json b/tools/perf/pmu-events/arch/x86/skylake/skl-metrics.json
+index e7feb60..f97e831 100644
+--- a/tools/perf/pmu-events/arch/x86/skylake/skl-metrics.json
++++ b/tools/perf/pmu-events/arch/x86/skylake/skl-metrics.json
+@@ -215,7 +215,8 @@
+         "BriefDescription": "Utilization of the core's Page Walker(s) serving STLB misses triggered by instruction/Load/Store accesses",
+         "MetricExpr": "( ITLB_MISSES.WALK_PENDING + DTLB_LOAD_MISSES.WALK_PENDING + DTLB_STORE_MISSES.WALK_PENDING + EPT.WALK_PENDING ) / ( 2 * cycles )",
+         "MetricGroup": "TLB",
+-        "MetricName": "Page_Walks_Utilization"
++        "MetricName": "Page_Walks_Utilization",
++        "MetricConstraint": "NO_NMI_WATCHDOG"
+     },
+     {
+         "BriefDescription": "Utilization of the core's Page Walker(s) serving STLB misses triggered by instruction/Load/Store accesses",
+diff --git a/tools/perf/pmu-events/arch/x86/skylakex/skx-metrics.json b/tools/perf/pmu-events/arch/x86/skylakex/skx-metrics.json
+index 21d7a0c..35f5db1 100644
+--- a/tools/perf/pmu-events/arch/x86/skylakex/skx-metrics.json
++++ b/tools/perf/pmu-events/arch/x86/skylakex/skx-metrics.json
+@@ -215,7 +215,8 @@
+         "BriefDescription": "Utilization of the core's Page Walker(s) serving STLB misses triggered by instruction/Load/Store accesses",
+         "MetricExpr": "( ITLB_MISSES.WALK_PENDING + DTLB_LOAD_MISSES.WALK_PENDING + DTLB_STORE_MISSES.WALK_PENDING + EPT.WALK_PENDING ) / ( 2 * cycles )",
+         "MetricGroup": "TLB",
+-        "MetricName": "Page_Walks_Utilization"
++        "MetricName": "Page_Walks_Utilization",
++        "MetricConstraint": "NO_NMI_WATCHDOG"
+     },
+     {
+         "BriefDescription": "Utilization of the core's Page Walker(s) serving STLB misses triggered by instruction/Load/Store accesses",
