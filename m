@@ -2,36 +2,47 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B3A2B18B8D8
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 19 Mar 2020 15:12:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CC8FE18B8D3
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 19 Mar 2020 15:11:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727948AbgCSOLK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 19 Mar 2020 10:11:10 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:32828 "EHLO
+        id S1728051AbgCSOLd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 19 Mar 2020 10:11:33 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:32888 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727933AbgCSOLJ (ORCPT
+        with ESMTP id S1727966AbgCSOLU (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 19 Mar 2020 10:11:09 -0400
+        Thu, 19 Mar 2020 10:11:20 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jEvt3-0002Mj-Kz; Thu, 19 Mar 2020 15:11:05 +0100
+        id 1jEvt4-0002NJ-KD; Thu, 19 Mar 2020 15:11:06 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 8796D1C22AD;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id EA4E01C22A8;
         Thu, 19 Mar 2020 15:10:56 +0100 (CET)
 Date:   Thu, 19 Mar 2020 14:10:56 -0000
-From:   "tip-bot2 for Namhyung Kim" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Nick Desaulniers" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] tools lib api fs: Move cgroupsfs_find_mountpoint()
-Cc:     Jiri Olsa <jolsa@redhat.com>, Namhyung Kim <namhyung@kernel.org>,
+Subject: [tip: perf/core] perf diff: Fix undefined string comparison spotted
+ by clang's -Wstring-compare
+Cc:     Nick Desaulniers <nick.desaulniers@gmail.com>,
+        Ian Rogers <irogers@google.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Changbin Du <changbin.du@intel.com>,
+        Jin Yao <yao.jin@linux.intel.com>,
+        Jiri Olsa <jolsa@redhat.com>, John Keeping <john@metanate.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Song Liu <songliubraving@fb.com>,
+        clang-built-linux@googlegroups.com,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200127100031.1368732-1-namhyung@kernel.org>
-References: <20200127100031.1368732-1-namhyung@kernel.org>
+In-Reply-To: <20200223193456.25291-1-nick.desaulniers@gmail.com>
+References: <20200223193456.25291-1-nick.desaulniers@gmail.com>
 MIME-Version: 1.0
-Message-ID: <158462705621.28353.16079958689067092641.tip-bot2@tip-bot2>
+Message-ID: <158462705662.28353.6097630422293165073.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,216 +58,111 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     7982a898515064ba180d958bfc89ed22d13905ee
-Gitweb:        https://git.kernel.org/tip/7982a898515064ba180d958bfc89ed22d13905ee
-Author:        Namhyung Kim <namhyung@kernel.org>
-AuthorDate:    Mon, 27 Jan 2020 19:00:31 +09:00
+Commit-ID:     c395c3553d6870541f1c283479aea2a6f26364d5
+Gitweb:        https://git.kernel.org/tip/c395c3553d6870541f1c283479aea2a6f26364d5
+Author:        Nick Desaulniers <nick.desaulniers@gmail.com>
+AuthorDate:    Sun, 23 Feb 2020 11:34:49 -08:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Wed, 04 Mar 2020 10:34:09 -03:00
+CommitterDate: Wed, 04 Mar 2020 10:28:08 -03:00
 
-tools lib api fs: Move cgroupsfs_find_mountpoint()
+perf diff: Fix undefined string comparison spotted by clang's -Wstring-compare
 
-Move it from tools/perf/util/cgroup.c as it can be used by other places.
-Note that cgroup filesystem is different from others since it's usually
-mounted separately (in v1) for each subsystem.
+clang warns:
 
-I just copied the code with a little modification to pass a name of
-subsystem.
+  util/block-info.c:298:18: error: result of comparison against a string
+  literal is unspecified (use an explicit string comparison function
+  instead) [-Werror,-Wstring-compare]
+          if ((start_line != SRCLINE_UNKNOWN) && (end_line != SRCLINE_UNKNOWN)) {
+                          ^  ~~~~~~~~~~~~~~~
+  util/block-info.c:298:51: error: result of comparison against a string
+  literal is unspecified (use an explicit string comparison function
+  instead) [-Werror,-Wstring-compare]
+          if ((start_line != SRCLINE_UNKNOWN) && (end_line != SRCLINE_UNKNOWN)) {
+                                                           ^  ~~~~~~~~~~~~~~~
+  util/block-info.c:298:18: error: result of comparison against a string
+  literal is unspecified (use an explicit string
+  comparison function instead) [-Werror,-Wstring-compare]
+          if ((start_line != SRCLINE_UNKNOWN) && (end_line != SRCLINE_UNKNOWN)) {
+                          ^  ~~~~~~~~~~~~~~~
+  util/block-info.c:298:51: error: result of comparison against a string
+  literal is unspecified (use an explicit string comparison function
+  instead) [-Werror,-Wstring-compare]
+          if ((start_line != SRCLINE_UNKNOWN) && (end_line != SRCLINE_UNKNOWN)) {
+                                                           ^  ~~~~~~~~~~~~~~~
+  util/map.c:434:15: error: result of comparison against a string literal
+  is unspecified (use an explicit string comparison function instead)
+  [-Werror,-Wstring-compare]
+                  if (srcline != SRCLINE_UNKNOWN)
+                              ^  ~~~~~~~~~~~~~~~
 
-Suggested-by: Jiri Olsa <jolsa@redhat.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Reviewer Notes:
+
+Looks good to me. Some more context:
+https://clang.llvm.org/docs/DiagnosticsReference.html#wstring-compare
+The spec says:
+J.1 Unspecified behavior
+The following are unspecified:
+.. Whether two string literals result in distinct arrays (6.4.5).
+
+Signed-off-by: Nick Desaulniers <nick.desaulniers@gmail.com>
+Reviewed-by: Ian Rogers <irogers@google.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Changbin Du <changbin.du@intel.com>
+Cc: Jin Yao <yao.jin@linux.intel.com>
 Cc: Jiri Olsa <jolsa@redhat.com>
-Link: http://lore.kernel.org/lkml/20200127100031.1368732-1-namhyung@kernel.org
+Cc: John Keeping <john@metanate.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Song Liu <songliubraving@fb.com>
+Cc: clang-built-linux@googlegroups.com
+Link: https://github.com/ClangBuiltLinux/linux/issues/900
+Link: http://lore.kernel.org/lkml/20200223193456.25291-1-nick.desaulniers@gmail.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/lib/api/fs/Build    |  1 +-
- tools/lib/api/fs/cgroup.c | 67 ++++++++++++++++++++++++++++++++++++++-
- tools/lib/api/fs/fs.h     |  2 +-
- tools/perf/util/cgroup.c  | 63 +-----------------------------------
- 4 files changed, 72 insertions(+), 61 deletions(-)
- create mode 100644 tools/lib/api/fs/cgroup.c
+ tools/perf/builtin-diff.c    | 3 ++-
+ tools/perf/util/block-info.c | 3 ++-
+ tools/perf/util/map.c        | 2 +-
+ 3 files changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/tools/lib/api/fs/Build b/tools/lib/api/fs/Build
-index f4ed962..0f75b28 100644
---- a/tools/lib/api/fs/Build
-+++ b/tools/lib/api/fs/Build
-@@ -1,2 +1,3 @@
- libapi-y += fs.o
- libapi-y += tracing_path.o
-+libapi-y += cgroup.o
-diff --git a/tools/lib/api/fs/cgroup.c b/tools/lib/api/fs/cgroup.c
-new file mode 100644
-index 0000000..889a6eb
---- /dev/null
-+++ b/tools/lib/api/fs/cgroup.c
-@@ -0,0 +1,67 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#include <linux/stringify.h>
-+#include <sys/types.h>
-+#include <sys/stat.h>
-+#include <fcntl.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include "fs.h"
-+
-+int cgroupfs_find_mountpoint(char *buf, size_t maxlen, const char *subsys)
-+{
-+	FILE *fp;
-+	char mountpoint[PATH_MAX + 1], tokens[PATH_MAX + 1], type[PATH_MAX + 1];
-+	char path_v1[PATH_MAX + 1], path_v2[PATH_MAX + 2], *path;
-+	char *token, *saved_ptr = NULL;
-+
-+	fp = fopen("/proc/mounts", "r");
-+	if (!fp)
-+		return -1;
-+
-+	/*
-+	 * in order to handle split hierarchy, we need to scan /proc/mounts
-+	 * and inspect every cgroupfs mount point to find one that has
-+	 * perf_event subsystem
-+	 */
-+	path_v1[0] = '\0';
-+	path_v2[0] = '\0';
-+
-+	while (fscanf(fp, "%*s %"__stringify(PATH_MAX)"s %"__stringify(PATH_MAX)"s %"
-+				__stringify(PATH_MAX)"s %*d %*d\n",
-+				mountpoint, type, tokens) == 3) {
-+
-+		if (!path_v1[0] && !strcmp(type, "cgroup")) {
-+
-+			token = strtok_r(tokens, ",", &saved_ptr);
-+
-+			while (token != NULL) {
-+				if (subsys && !strcmp(token, subsys)) {
-+					strcpy(path_v1, mountpoint);
-+					break;
-+				}
-+				token = strtok_r(NULL, ",", &saved_ptr);
-+			}
-+		}
-+
-+		if (!path_v2[0] && !strcmp(type, "cgroup2"))
-+			strcpy(path_v2, mountpoint);
-+
-+		if (path_v1[0] && path_v2[0])
-+			break;
-+	}
-+	fclose(fp);
-+
-+	if (path_v1[0])
-+		path = path_v1;
-+	else if (path_v2[0])
-+		path = path_v2;
-+	else
-+		return -1;
-+
-+	if (strlen(path) < maxlen) {
-+		strcpy(buf, path);
-+		return 0;
-+	}
-+	return -1;
-+}
-diff --git a/tools/lib/api/fs/fs.h b/tools/lib/api/fs/fs.h
-index 92d03b8..936edb9 100644
---- a/tools/lib/api/fs/fs.h
-+++ b/tools/lib/api/fs/fs.h
-@@ -28,6 +28,8 @@ FS(bpf_fs)
- #undef FS
+diff --git a/tools/perf/builtin-diff.c b/tools/perf/builtin-diff.c
+index f8b6ae5..c03c36f 100644
+--- a/tools/perf/builtin-diff.c
++++ b/tools/perf/builtin-diff.c
+@@ -1312,7 +1312,8 @@ static int cycles_printf(struct hist_entry *he, struct hist_entry *pair,
+ 	end_line = map__srcline(he->ms.map, bi->sym->start + bi->end,
+ 				he->ms.sym);
  
+-	if ((start_line != SRCLINE_UNKNOWN) && (end_line != SRCLINE_UNKNOWN)) {
++	if ((strncmp(start_line, SRCLINE_UNKNOWN, strlen(SRCLINE_UNKNOWN)) != 0) &&
++	    (strncmp(end_line, SRCLINE_UNKNOWN, strlen(SRCLINE_UNKNOWN)) != 0)) {
+ 		scnprintf(buf, sizeof(buf), "[%s -> %s] %4ld",
+ 			  start_line, end_line, block_he->diff.cycles);
+ 	} else {
+diff --git a/tools/perf/util/block-info.c b/tools/perf/util/block-info.c
+index c4b030b..fbbb6d6 100644
+--- a/tools/perf/util/block-info.c
++++ b/tools/perf/util/block-info.c
+@@ -295,7 +295,8 @@ static int block_range_entry(struct perf_hpp_fmt *fmt, struct perf_hpp *hpp,
+ 	end_line = map__srcline(he->ms.map, bi->sym->start + bi->end,
+ 				he->ms.sym);
  
-+int cgroupfs_find_mountpoint(char *buf, size_t maxlen, const char *subsys);
-+
- int filename__read_int(const char *filename, int *value);
- int filename__read_ull(const char *filename, unsigned long long *value);
- int filename__read_xll(const char *filename, unsigned long long *value);
-diff --git a/tools/perf/util/cgroup.c b/tools/perf/util/cgroup.c
-index 4881d4a..5bc9d3b 100644
---- a/tools/perf/util/cgroup.c
-+++ b/tools/perf/util/cgroup.c
-@@ -3,75 +3,16 @@
- #include "evsel.h"
- #include "cgroup.h"
- #include "evlist.h"
--#include <linux/stringify.h>
- #include <linux/zalloc.h>
- #include <sys/types.h>
- #include <sys/stat.h>
- #include <fcntl.h>
- #include <stdlib.h>
- #include <string.h>
-+#include <api/fs/fs.h>
+-	if ((start_line != SRCLINE_UNKNOWN) && (end_line != SRCLINE_UNKNOWN)) {
++	if ((strncmp(start_line, SRCLINE_UNKNOWN, strlen(SRCLINE_UNKNOWN)) != 0) &&
++	    (strncmp(end_line, SRCLINE_UNKNOWN, strlen(SRCLINE_UNKNOWN)) != 0)) {
+ 		scnprintf(buf, sizeof(buf), "[%s -> %s]",
+ 			  start_line, end_line);
+ 	} else {
+diff --git a/tools/perf/util/map.c b/tools/perf/util/map.c
+index a08ca27..9542851 100644
+--- a/tools/perf/util/map.c
++++ b/tools/perf/util/map.c
+@@ -431,7 +431,7 @@ int map__fprintf_srcline(struct map *map, u64 addr, const char *prefix,
  
- int nr_cgroups;
- 
--static int
--cgroupfs_find_mountpoint(char *buf, size_t maxlen)
--{
--	FILE *fp;
--	char mountpoint[PATH_MAX + 1], tokens[PATH_MAX + 1], type[PATH_MAX + 1];
--	char path_v1[PATH_MAX + 1], path_v2[PATH_MAX + 2], *path;
--	char *token, *saved_ptr = NULL;
--
--	fp = fopen("/proc/mounts", "r");
--	if (!fp)
--		return -1;
--
--	/*
--	 * in order to handle split hierarchy, we need to scan /proc/mounts
--	 * and inspect every cgroupfs mount point to find one that has
--	 * perf_event subsystem
--	 */
--	path_v1[0] = '\0';
--	path_v2[0] = '\0';
--
--	while (fscanf(fp, "%*s %"__stringify(PATH_MAX)"s %"__stringify(PATH_MAX)"s %"
--				__stringify(PATH_MAX)"s %*d %*d\n",
--				mountpoint, type, tokens) == 3) {
--
--		if (!path_v1[0] && !strcmp(type, "cgroup")) {
--
--			token = strtok_r(tokens, ",", &saved_ptr);
--
--			while (token != NULL) {
--				if (!strcmp(token, "perf_event")) {
--					strcpy(path_v1, mountpoint);
--					break;
--				}
--				token = strtok_r(NULL, ",", &saved_ptr);
--			}
--		}
--
--		if (!path_v2[0] && !strcmp(type, "cgroup2"))
--			strcpy(path_v2, mountpoint);
--
--		if (path_v1[0] && path_v2[0])
--			break;
--	}
--	fclose(fp);
--
--	if (path_v1[0])
--		path = path_v1;
--	else if (path_v2[0])
--		path = path_v2;
--	else
--		return -1;
--
--	if (strlen(path) < maxlen) {
--		strcpy(buf, path);
--		return 0;
--	}
--	return -1;
--}
--
- static int open_cgroup(const char *name)
- {
- 	char path[PATH_MAX + 1];
-@@ -79,7 +20,7 @@ static int open_cgroup(const char *name)
- 	int fd;
- 
- 
--	if (cgroupfs_find_mountpoint(mnt, PATH_MAX + 1))
-+	if (cgroupfs_find_mountpoint(mnt, PATH_MAX + 1, "perf_event"))
- 		return -1;
- 
- 	scnprintf(path, PATH_MAX, "%s/%s", mnt, name);
+ 	if (map && map->dso) {
+ 		char *srcline = map__srcline(map, addr, NULL);
+-		if (srcline != SRCLINE_UNKNOWN)
++		if (strncmp(srcline, SRCLINE_UNKNOWN, strlen(SRCLINE_UNKNOWN)) != 0)
+ 			ret = fprintf(fp, "%s%s", prefix, srcline);
+ 		free_srcline(srcline);
+ 	}
