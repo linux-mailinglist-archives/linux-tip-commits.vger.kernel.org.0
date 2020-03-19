@@ -2,47 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CC8FE18B8D3
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 19 Mar 2020 15:11:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 12FF318B92A
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 19 Mar 2020 15:17:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728051AbgCSOLd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 19 Mar 2020 10:11:33 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:32888 "EHLO
+        id S1726926AbgCSORL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 19 Mar 2020 10:17:11 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:32910 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727966AbgCSOLU (ORCPT
+        with ESMTP id S1726817AbgCSORL (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 19 Mar 2020 10:11:20 -0400
+        Thu, 19 Mar 2020 10:17:11 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jEvt4-0002NJ-KD; Thu, 19 Mar 2020 15:11:06 +0100
+        id 1jEvyp-0002lm-4I; Thu, 19 Mar 2020 15:17:03 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id EA4E01C22A8;
-        Thu, 19 Mar 2020 15:10:56 +0100 (CET)
-Date:   Thu, 19 Mar 2020 14:10:56 -0000
-From:   "tip-bot2 for Nick Desaulniers" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A39E81C22B0;
+        Thu, 19 Mar 2020 15:17:02 +0100 (CET)
+Date:   Thu, 19 Mar 2020 14:17:02 -0000
+From:   "tip-bot2 for Guenter Roeck" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf diff: Fix undefined string comparison spotted
- by clang's -Wstring-compare
-Cc:     Nick Desaulniers <nick.desaulniers@gmail.com>,
-        Ian Rogers <irogers@google.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Changbin Du <changbin.du@intel.com>,
-        Jin Yao <yao.jin@linux.intel.com>,
-        Jiri Olsa <jolsa@redhat.com>, John Keeping <john@metanate.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Song Liu <songliubraving@fb.com>,
-        clang-built-linux@googlegroups.com,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200223193456.25291-1-nick.desaulniers@gmail.com>
-References: <20200223193456.25291-1-nick.desaulniers@gmail.com>
+Subject: [tip: x86/boot] x86/setup: Fix static memory detection
+Cc:     Guenter Roeck <linux@roeck-us.net>, Borislav Petkov <bp@suse.de>,
+        Peter Zijlstra <peterz@infradead.org>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200131021159.9178-1-linux@roeck-us.net>
+References: <20200131021159.9178-1-linux@roeck-us.net>
 MIME-Version: 1.0
-Message-ID: <158462705662.28353.6097630422293165073.tip-bot2@tip-bot2>
+Message-ID: <158462742211.28353.13380254694038883498.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -56,113 +45,94 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/core branch of tip:
+The following commit has been merged into the x86/boot branch of tip:
 
-Commit-ID:     c395c3553d6870541f1c283479aea2a6f26364d5
-Gitweb:        https://git.kernel.org/tip/c395c3553d6870541f1c283479aea2a6f26364d5
-Author:        Nick Desaulniers <nick.desaulniers@gmail.com>
-AuthorDate:    Sun, 23 Feb 2020 11:34:49 -08:00
-Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Wed, 04 Mar 2020 10:28:08 -03:00
+Commit-ID:     bac59d18c7018a2fd5e800a1e72a8271bf404977
+Gitweb:        https://git.kernel.org/tip/bac59d18c7018a2fd5e800a1e72a8271bf404977
+Author:        Guenter Roeck <linux@roeck-us.net>
+AuthorDate:    Thu, 30 Jan 2020 18:11:59 -08:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Thu, 19 Mar 2020 11:58:13 +01:00
 
-perf diff: Fix undefined string comparison spotted by clang's -Wstring-compare
+x86/setup: Fix static memory detection
 
-clang warns:
+When booting x86 images in qemu, the following warning is seen randomly
+if DEBUG_LOCKDEP is enabled.
 
-  util/block-info.c:298:18: error: result of comparison against a string
-  literal is unspecified (use an explicit string comparison function
-  instead) [-Werror,-Wstring-compare]
-          if ((start_line != SRCLINE_UNKNOWN) && (end_line != SRCLINE_UNKNOWN)) {
-                          ^  ~~~~~~~~~~~~~~~
-  util/block-info.c:298:51: error: result of comparison against a string
-  literal is unspecified (use an explicit string comparison function
-  instead) [-Werror,-Wstring-compare]
-          if ((start_line != SRCLINE_UNKNOWN) && (end_line != SRCLINE_UNKNOWN)) {
-                                                           ^  ~~~~~~~~~~~~~~~
-  util/block-info.c:298:18: error: result of comparison against a string
-  literal is unspecified (use an explicit string
-  comparison function instead) [-Werror,-Wstring-compare]
-          if ((start_line != SRCLINE_UNKNOWN) && (end_line != SRCLINE_UNKNOWN)) {
-                          ^  ~~~~~~~~~~~~~~~
-  util/block-info.c:298:51: error: result of comparison against a string
-  literal is unspecified (use an explicit string comparison function
-  instead) [-Werror,-Wstring-compare]
-          if ((start_line != SRCLINE_UNKNOWN) && (end_line != SRCLINE_UNKNOWN)) {
-                                                           ^  ~~~~~~~~~~~~~~~
-  util/map.c:434:15: error: result of comparison against a string literal
-  is unspecified (use an explicit string comparison function instead)
-  [-Werror,-Wstring-compare]
-                  if (srcline != SRCLINE_UNKNOWN)
-                              ^  ~~~~~~~~~~~~~~~
+  WARNING: CPU: 0 PID: 1 at kernel/locking/lockdep.c:1119
+	  lockdep_register_key+0xc0/0x100
 
-Reviewer Notes:
+static_obj() returns true if an address is between _stext and _end.
 
-Looks good to me. Some more context:
-https://clang.llvm.org/docs/DiagnosticsReference.html#wstring-compare
-The spec says:
-J.1 Unspecified behavior
-The following are unspecified:
-.. Whether two string literals result in distinct arrays (6.4.5).
+On x86, this includes the brk memory space. Problem is that this memory
+block is not static on x86; its unused portions are released after init
+and can be allocated. This results in the observed warning if a lockdep
+object is allocated from this memory.
 
-Signed-off-by: Nick Desaulniers <nick.desaulniers@gmail.com>
-Reviewed-by: Ian Rogers <irogers@google.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Changbin Du <changbin.du@intel.com>
-Cc: Jin Yao <yao.jin@linux.intel.com>
-Cc: Jiri Olsa <jolsa@redhat.com>
-Cc: John Keeping <john@metanate.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Song Liu <songliubraving@fb.com>
-Cc: clang-built-linux@googlegroups.com
-Link: https://github.com/ClangBuiltLinux/linux/issues/900
-Link: http://lore.kernel.org/lkml/20200223193456.25291-1-nick.desaulniers@gmail.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Solve the problem by implementing arch_is_kernel_initmem_freed() for
+x86 and have it return true if an address is within the released memory
+range.
+
+The same problem was solved for s390 with commit
+
+  7a5da02de8d6e ("locking/lockdep: check for freed initmem in static_obj()"),
+
+which introduced arch_is_kernel_initmem_freed().
+
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Acked-by: Peter Zijlstra <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20200131021159.9178-1-linux@roeck-us.net
 ---
- tools/perf/builtin-diff.c    | 3 ++-
- tools/perf/util/block-info.c | 3 ++-
- tools/perf/util/map.c        | 2 +-
- 3 files changed, 5 insertions(+), 3 deletions(-)
+ arch/x86/include/asm/sections.h | 20 ++++++++++++++++++++
+ arch/x86/kernel/setup.c         |  1 -
+ 2 files changed, 20 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/builtin-diff.c b/tools/perf/builtin-diff.c
-index f8b6ae5..c03c36f 100644
---- a/tools/perf/builtin-diff.c
-+++ b/tools/perf/builtin-diff.c
-@@ -1312,7 +1312,8 @@ static int cycles_printf(struct hist_entry *he, struct hist_entry *pair,
- 	end_line = map__srcline(he->ms.map, bi->sym->start + bi->end,
- 				he->ms.sym);
+diff --git a/arch/x86/include/asm/sections.h b/arch/x86/include/asm/sections.h
+index 036c360..a6e8373 100644
+--- a/arch/x86/include/asm/sections.h
++++ b/arch/x86/include/asm/sections.h
+@@ -2,6 +2,8 @@
+ #ifndef _ASM_X86_SECTIONS_H
+ #define _ASM_X86_SECTIONS_H
  
--	if ((start_line != SRCLINE_UNKNOWN) && (end_line != SRCLINE_UNKNOWN)) {
-+	if ((strncmp(start_line, SRCLINE_UNKNOWN, strlen(SRCLINE_UNKNOWN)) != 0) &&
-+	    (strncmp(end_line, SRCLINE_UNKNOWN, strlen(SRCLINE_UNKNOWN)) != 0)) {
- 		scnprintf(buf, sizeof(buf), "[%s -> %s] %4ld",
- 			  start_line, end_line, block_he->diff.cycles);
- 	} else {
-diff --git a/tools/perf/util/block-info.c b/tools/perf/util/block-info.c
-index c4b030b..fbbb6d6 100644
---- a/tools/perf/util/block-info.c
-+++ b/tools/perf/util/block-info.c
-@@ -295,7 +295,8 @@ static int block_range_entry(struct perf_hpp_fmt *fmt, struct perf_hpp *hpp,
- 	end_line = map__srcline(he->ms.map, bi->sym->start + bi->end,
- 				he->ms.sym);
++#define arch_is_kernel_initmem_freed arch_is_kernel_initmem_freed
++
+ #include <asm-generic/sections.h>
+ #include <asm/extable.h>
  
--	if ((start_line != SRCLINE_UNKNOWN) && (end_line != SRCLINE_UNKNOWN)) {
-+	if ((strncmp(start_line, SRCLINE_UNKNOWN, strlen(SRCLINE_UNKNOWN)) != 0) &&
-+	    (strncmp(end_line, SRCLINE_UNKNOWN, strlen(SRCLINE_UNKNOWN)) != 0)) {
- 		scnprintf(buf, sizeof(buf), "[%s -> %s]",
- 			  start_line, end_line);
- 	} else {
-diff --git a/tools/perf/util/map.c b/tools/perf/util/map.c
-index a08ca27..9542851 100644
---- a/tools/perf/util/map.c
-+++ b/tools/perf/util/map.c
-@@ -431,7 +431,7 @@ int map__fprintf_srcline(struct map *map, u64 addr, const char *prefix,
+@@ -14,4 +16,22 @@ extern char __end_rodata_hpage_align[];
  
- 	if (map && map->dso) {
- 		char *srcline = map__srcline(map, addr, NULL);
--		if (srcline != SRCLINE_UNKNOWN)
-+		if (strncmp(srcline, SRCLINE_UNKNOWN, strlen(SRCLINE_UNKNOWN)) != 0)
- 			ret = fprintf(fp, "%s%s", prefix, srcline);
- 		free_srcline(srcline);
- 	}
+ extern char __end_of_kernel_reserve[];
+ 
++extern unsigned long _brk_start, _brk_end;
++
++static inline bool arch_is_kernel_initmem_freed(unsigned long addr)
++{
++	/*
++	 * If _brk_start has not been cleared, brk allocation is incomplete,
++	 * and we can not make assumptions about its use.
++	 */
++	if (_brk_start)
++		return 0;
++
++	/*
++	 * After brk allocation is complete, space between _brk_end and _end
++	 * is available for allocation.
++	 */
++	return addr >= _brk_end && addr < (unsigned long)&_end;
++}
++
+ #endif	/* _ASM_X86_SECTIONS_H */
+diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
+index a74262c..e6b5450 100644
+--- a/arch/x86/kernel/setup.c
++++ b/arch/x86/kernel/setup.c
+@@ -64,7 +64,6 @@ RESERVE_BRK(dmi_alloc, 65536);
+  * at link time, with RESERVE_BRK*() facility reserving additional
+  * chunks.
+  */
+-static __initdata
+ unsigned long _brk_start = (unsigned long)__brk_base;
+ unsigned long _brk_end   = (unsigned long)__brk_base;
+ 
