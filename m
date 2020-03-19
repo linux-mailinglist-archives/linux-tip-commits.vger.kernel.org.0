@@ -2,36 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DCC618AE8E
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 19 Mar 2020 09:47:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C71B918AEB7
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 19 Mar 2020 09:49:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726063AbgCSIrw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 19 Mar 2020 04:47:52 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:59688 "EHLO
+        id S1727000AbgCSIrz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 19 Mar 2020 04:47:55 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:59706 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725887AbgCSIrw (ORCPT
+        with ESMTP id S1726623AbgCSIry (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 19 Mar 2020 04:47:52 -0400
+        Thu, 19 Mar 2020 04:47:54 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jEqqB-0002xH-PM; Thu, 19 Mar 2020 09:47:47 +0100
+        id 1jEqqC-0002xS-M0; Thu, 19 Mar 2020 09:47:48 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 127671C2298;
-        Thu, 19 Mar 2020 09:47:47 +0100 (CET)
-Date:   Thu, 19 Mar 2020 08:47:46 -0000
-From:   "tip-bot2 for Anson Huang" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4FCB31C2298;
+        Thu, 19 Mar 2020 09:47:48 +0100 (CET)
+Date:   Thu, 19 Mar 2020 08:47:47 -0000
+From:   "tip-bot2 for Lokesh Vutla" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] clocksource/drivers/imx-sysctr: Remove unused includes
-Cc:     Anson Huang <Anson.Huang@nxp.com>,
+Subject: [tip: timers/core] clocksource/drivers/timer-ti-dm: Add support to
+ get pwm current status
+Cc:     Lokesh Vutla <lokeshvutla@ti.com>, Tony Lindgen <tony@atomide.com>,
         Daniel Lezcano <daniel.lezcano@linaro.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <1584413713-7376-1-git-send-email-Anson.Huang@nxp.com>
-References: <1584413713-7376-1-git-send-email-Anson.Huang@nxp.com>
+In-Reply-To: <20200305082715.15861-6-lokeshvutla@ti.com>
+References: <20200305082715.15861-6-lokeshvutla@ti.com>
 MIME-Version: 1.0
-Message-ID: <158460766676.28353.3104579017864968564.tip-bot2@tip-bot2>
+Message-ID: <158460766792.28353.14134380643914951850.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,34 +48,71 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     3d17cee291e8a4bc4c8b29b1c8a1b79e12f95473
-Gitweb:        https://git.kernel.org/tip/3d17cee291e8a4bc4c8b29b1c8a1b79e12f95473
-Author:        Anson Huang <Anson.Huang@nxp.com>
-AuthorDate:    Tue, 17 Mar 2020 10:55:13 +08:00
+Commit-ID:     92fd86864ec4ac089de47f0f1f4c47418b343448
+Gitweb:        https://git.kernel.org/tip/92fd86864ec4ac089de47f0f1f4c47418b343448
+Author:        Lokesh Vutla <lokeshvutla@ti.com>
+AuthorDate:    Thu, 05 Mar 2020 13:57:14 +05:30
 Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
-CommitterDate: Tue, 17 Mar 2020 10:11:45 +01:00
+CommitterDate: Mon, 16 Mar 2020 12:40:42 +01:00
 
-clocksource/drivers/imx-sysctr: Remove unused includes
+clocksource/drivers/timer-ti-dm: Add support to get pwm current status
 
-There is nothing in use from of_address.h/of_irq.h, remove them.
+omap_dm_timer_ops provide support to configure the pwm but there is no
+support to get the current status. For configuring pwm it is advised to
+check the current hw status instead of relying on pwm framework. So
+implement a new timer ops to get the current status of pwm.
 
-Signed-off-by: Anson Huang <Anson.Huang@nxp.com>
+Signed-off-by: Lokesh Vutla <lokeshvutla@ti.com>
+Acked-by: Tony Lindgen <tony@atomide.com>
 Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/1584413713-7376-1-git-send-email-Anson.Huang@nxp.com
+Link: https://lore.kernel.org/r/20200305082715.15861-6-lokeshvutla@ti.com
 ---
- drivers/clocksource/timer-imx-sysctr.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/clocksource/timer-ti-dm.c          | 15 +++++++++++++++
+ include/linux/platform_data/dmtimer-omap.h |  1 +
+ 2 files changed, 16 insertions(+)
 
-diff --git a/drivers/clocksource/timer-imx-sysctr.c b/drivers/clocksource/timer-imx-sysctr.c
-index b7c80a3..18b90fc 100644
---- a/drivers/clocksource/timer-imx-sysctr.c
-+++ b/drivers/clocksource/timer-imx-sysctr.c
-@@ -4,8 +4,6 @@
+diff --git a/drivers/clocksource/timer-ti-dm.c b/drivers/clocksource/timer-ti-dm.c
+index b565b84..73ac73e 100644
+--- a/drivers/clocksource/timer-ti-dm.c
++++ b/drivers/clocksource/timer-ti-dm.c
+@@ -627,6 +627,20 @@ static int omap_dm_timer_set_pwm(struct omap_dm_timer *timer, int def_on,
+ 	return 0;
+ }
  
- #include <linux/interrupt.h>
- #include <linux/clockchips.h>
--#include <linux/of_address.h>
--#include <linux/of_irq.h>
++static int omap_dm_timer_get_pwm_status(struct omap_dm_timer *timer)
++{
++	u32 l;
++
++	if (unlikely(!timer))
++		return -EINVAL;
++
++	omap_dm_timer_enable(timer);
++	l = omap_dm_timer_read_reg(timer, OMAP_TIMER_CTRL_REG);
++	omap_dm_timer_disable(timer);
++
++	return l;
++}
++
+ static int omap_dm_timer_set_prescaler(struct omap_dm_timer *timer,
+ 					int prescaler)
+ {
+@@ -927,6 +941,7 @@ static const struct omap_dm_timer_ops dmtimer_ops = {
+ 	.set_load = omap_dm_timer_set_load,
+ 	.set_match = omap_dm_timer_set_match,
+ 	.set_pwm = omap_dm_timer_set_pwm,
++	.get_pwm_status = omap_dm_timer_get_pwm_status,
+ 	.set_prescaler = omap_dm_timer_set_prescaler,
+ 	.read_counter = omap_dm_timer_read_counter,
+ 	.write_counter = omap_dm_timer_write_counter,
+diff --git a/include/linux/platform_data/dmtimer-omap.h b/include/linux/platform_data/dmtimer-omap.h
+index bdaaf53..3173b7b 100644
+--- a/include/linux/platform_data/dmtimer-omap.h
++++ b/include/linux/platform_data/dmtimer-omap.h
+@@ -36,6 +36,7 @@ struct omap_dm_timer_ops {
+ 			     unsigned int match);
+ 	int	(*set_pwm)(struct omap_dm_timer *timer, int def_on,
+ 			   int toggle, int trigger);
++	int	(*get_pwm_status)(struct omap_dm_timer *timer);
+ 	int	(*set_prescaler)(struct omap_dm_timer *timer, int prescaler);
  
- #include "timer-of.h"
- 
+ 	unsigned int (*read_counter)(struct omap_dm_timer *timer);
