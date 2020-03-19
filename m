@@ -2,36 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 508D818AEC0
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 19 Mar 2020 09:49:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F4A218AEBC
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 19 Mar 2020 09:49:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726063AbgCSItK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 19 Mar 2020 04:49:10 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:59681 "EHLO
+        id S1726802AbgCSIrw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 19 Mar 2020 04:47:52 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:59687 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725768AbgCSIrw (ORCPT
+        with ESMTP id S1725787AbgCSIrw (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Thu, 19 Mar 2020 04:47:52 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jEqqC-0002xE-TU; Thu, 19 Mar 2020 09:47:49 +0100
+        id 1jEqqC-0002xG-5J; Thu, 19 Mar 2020 09:47:48 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 45A8B1C1DC3;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A07521C2297;
         Thu, 19 Mar 2020 09:47:46 +0100 (CET)
-Date:   Thu, 19 Mar 2020 08:47:45 -0000
-From:   "tip-bot2 for Ahmed S. Darwish" <tip-bot2@linutronix.de>
+Date:   Thu, 19 Mar 2020 08:47:46 -0000
+From:   "tip-bot2 for Saravana Kannan" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] time/sched_clock: Expire timer in hardirq context
-Cc:     "Ahmed S. Darwish" <a.darwish@linutronix.de>,
-        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200309181529.26558-1-a.darwish@linutronix.de>
-References: <20200309181529.26558-1-a.darwish@linutronix.de>
+Subject: [tip: timers/core] clocksource/drivers/timer-probe: Avoid creating
+ dead devices
+Cc:     Saravana Kannan <saravanak@google.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200111052125.238212-1-saravanak@google.com>
+References: <20200111052125.238212-1-saravanak@google.com>
 MIME-Version: 1.0
-Message-ID: <158460766596.28353.12288239928107345497.tip-bot2@tip-bot2>
+Message-ID: <158460766637.28353.11325960928759668587.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,65 +48,43 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     2c8bd58812ee3dbf0d78b566822f7eacd34bdd7b
-Gitweb:        https://git.kernel.org/tip/2c8bd58812ee3dbf0d78b566822f7eacd34bdd7b
-Author:        Ahmed S. Darwish <a.darwish@linutronix.de>
-AuthorDate:    Mon, 09 Mar 2020 18:15:29 
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 19 Mar 2020 09:45:08 +01:00
+Commit-ID:     4f41fe386a94639cd9a1831298d4f85db5662f1e
+Gitweb:        https://git.kernel.org/tip/4f41fe386a94639cd9a1831298d4f85db5662f1e
+Author:        Saravana Kannan <saravanak@google.com>
+AuthorDate:    Fri, 10 Jan 2020 21:21:25 -08:00
+Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
+CommitterDate: Tue, 17 Mar 2020 13:10:07 +01:00
 
-time/sched_clock: Expire timer in hardirq context
+clocksource/drivers/timer-probe: Avoid creating dead devices
 
-To minimize latency, PREEMPT_RT kernels expires hrtimers in preemptible
-softirq context by default. This can be overriden by marking the timer's
-expiry with HRTIMER_MODE_HARD.
+Timer initialization is done during early boot way before the driver
+core starts processing devices and drivers. Timers initialized during
+this early boot period don't really need or use a struct device.
 
-sched_clock_timer is missing this annotation: if its callback is preempted
-and the duration of the preemption exceeds the wrap around time of the
-underlying clocksource, sched clock will get out of sync.
+However, for timers represented as device tree nodes, the struct devices
+are still created and sit around unused and wasting memory. This change
+avoid this by marking the device tree nodes as "populated" if the
+corresponding timer is successfully initialized.
 
-Mark the sched_clock_timer for expiry in hard interrupt context.
-
-Signed-off-by: Ahmed S. Darwish <a.darwish@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20200309181529.26558-1-a.darwish@linutronix.de
-
+Signed-off-by: Saravana Kannan <saravanak@google.com>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://lore.kernel.org/r/20200111052125.238212-1-saravanak@google.com
 ---
- kernel/time/sched_clock.c |  9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/clocksource/timer-probe.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/kernel/time/sched_clock.c b/kernel/time/sched_clock.c
-index e4332e3..fa3f800 100644
---- a/kernel/time/sched_clock.c
-+++ b/kernel/time/sched_clock.c
-@@ -208,7 +208,8 @@ sched_clock_register(u64 (*read)(void), int bits, unsigned long rate)
+diff --git a/drivers/clocksource/timer-probe.c b/drivers/clocksource/timer-probe.c
+index ee9574d..a10f28d 100644
+--- a/drivers/clocksource/timer-probe.c
++++ b/drivers/clocksource/timer-probe.c
+@@ -27,8 +27,10 @@ void __init timer_probe(void)
  
- 	if (sched_clock_timer.function != NULL) {
- 		/* update timeout for clock wrap */
--		hrtimer_start(&sched_clock_timer, cd.wrap_kt, HRTIMER_MODE_REL);
-+		hrtimer_start(&sched_clock_timer, cd.wrap_kt,
-+			      HRTIMER_MODE_REL_HARD);
- 	}
+ 		init_func_ret = match->data;
  
- 	r = rate;
-@@ -254,9 +255,9 @@ void __init generic_sched_clock_init(void)
- 	 * Start the timer to keep sched_clock() properly updated and
- 	 * sets the initial epoch.
- 	 */
--	hrtimer_init(&sched_clock_timer, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
-+	hrtimer_init(&sched_clock_timer, CLOCK_MONOTONIC, HRTIMER_MODE_REL_HARD);
- 	sched_clock_timer.function = sched_clock_poll;
--	hrtimer_start(&sched_clock_timer, cd.wrap_kt, HRTIMER_MODE_REL);
-+	hrtimer_start(&sched_clock_timer, cd.wrap_kt, HRTIMER_MODE_REL_HARD);
- }
- 
- /*
-@@ -293,7 +294,7 @@ void sched_clock_resume(void)
- 	struct clock_read_data *rd = &cd.read_data[0];
- 
- 	rd->epoch_cyc = cd.actual_read_sched_clock();
--	hrtimer_start(&sched_clock_timer, cd.wrap_kt, HRTIMER_MODE_REL);
-+	hrtimer_start(&sched_clock_timer, cd.wrap_kt, HRTIMER_MODE_REL_HARD);
- 	rd->read_sched_clock = cd.actual_read_sched_clock;
- }
- 
++		of_node_set_flag(np, OF_POPULATED);
+ 		ret = init_func_ret(np);
+ 		if (ret) {
++			of_node_clear_flag(np, OF_POPULATED);
+ 			if (ret != -EPROBE_DEFER)
+ 				pr_err("Failed to initialize '%pOF': %d\n", np,
+ 				       ret);
