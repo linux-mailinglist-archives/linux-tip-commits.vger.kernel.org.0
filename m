@@ -2,46 +2,42 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E24518B89B
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 19 Mar 2020 15:05:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C1AD618B8BC
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 19 Mar 2020 15:11:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727601AbgCSOFL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 19 Mar 2020 10:05:11 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:60747 "EHLO
+        id S1727585AbgCSOKt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 19 Mar 2020 10:10:49 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:60811 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726998AbgCSOFL (ORCPT
+        with ESMTP id S1726936AbgCSOKs (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 19 Mar 2020 10:05:11 -0400
+        Thu, 19 Mar 2020 10:10:48 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jEvmv-0001p8-N1; Thu, 19 Mar 2020 15:04:46 +0100
+        id 1jEvse-0001zI-Hs; Thu, 19 Mar 2020 15:10:40 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5505B1C22A1;
-        Thu, 19 Mar 2020 15:04:45 +0100 (CET)
-Date:   Thu, 19 Mar 2020 14:04:45 -0000
-From:   "tip-bot2 for Masami Hiramatsu" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 09E671C22A3;
+        Thu, 19 Mar 2020 15:10:40 +0100 (CET)
+Date:   Thu, 19 Mar 2020 14:10:39 -0000
+From:   "tip-bot2 for Jiri Olsa" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] tools: Let O= makes handle a relative path with -C option
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Borislav Petkov <bp@alien8.de>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Jiri Olsa <jolsa@redhat.com>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Michal Marek <michal.lkml@markovi.net>,
+Subject: [tip: perf/core] perf expr: Fix copy/paste mistake
+Cc:     Jiri Olsa <jolsa@kernel.org>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Andi Kleen <ak@linux.intel.com>,
+        Kajol Jain <kjain@linux.ibm.com>,
+        Michael Petlan <mpetlan@redhat.com>,
+        Namhyung Kim <namhyung@kernel.org>,
         Peter Zijlstra <peterz@infradead.org>,
-        Sasha Levin <sashal@kernel.org>,
-        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
-        stable@vger.kernel.org, Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <158351957799.3363.15269768530697526765.stgit@devnote2>
-References: <158351957799.3363.15269768530697526765.stgit@devnote2>
+In-Reply-To: <20200315155609.603948-1-jolsa@kernel.org>
+References: <20200315155609.603948-1-jolsa@kernel.org>
 MIME-Version: 1.0
-Message-ID: <158462668507.28353.5229256080954046835.tip-bot2@tip-bot2>
+Message-ID: <158462703969.28353.11784055871858151116.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -55,79 +51,47 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/urgent branch of tip:
+The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     be40920fbf1003c38ccdc02b571e01a75d890c82
-Gitweb:        https://git.kernel.org/tip/be40920fbf1003c38ccdc02b571e01a75d890c82
-Author:        Masami Hiramatsu <mhiramat@kernel.org>
-AuthorDate:    Sat, 07 Mar 2020 03:32:58 +09:00
+Commit-ID:     59a08b4b3b1a9374adacd13cd7544c03e5582e0e
+Gitweb:        https://git.kernel.org/tip/59a08b4b3b1a9374adacd13cd7544c03e5582e0e
+Author:        Jiri Olsa <jolsa@kernel.org>
+AuthorDate:    Sun, 15 Mar 2020 16:56:09 +01:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Fri, 06 Mar 2020 17:08:28 -03:00
+CommitterDate: Tue, 17 Mar 2020 18:01:40 -03:00
 
-tools: Let O= makes handle a relative path with -C option
+perf expr: Fix copy/paste mistake
 
-When I tried to compile tools/perf from the top directory with the -C
-option, the O= option didn't work correctly if I passed a relative path:
+Copy/paste leftover from recent refactor.
 
-  $ make O=BUILD -C tools/perf/
-  make: Entering directory '/home/mhiramat/ksrc/linux/tools/perf'
-    BUILD:   Doing 'make -j8' parallel build
-  ../scripts/Makefile.include:4: *** O=/home/mhiramat/ksrc/linux/tools/perf/BUILD does not exist.  Stop.
-  make: *** [Makefile:70: all] Error 2
-  make: Leaving directory '/home/mhiramat/ksrc/linux/tools/perf'
-
-The O= directory existence check failed because the check script ran in
-the build target directory instead of the directory where I ran the make
-command.
-
-To fix that, once change directory to $(PWD) and check O= directory,
-since the PWD is set to where the make command runs.
-
-Fixes: c883122acc0d ("perf tools: Let O= makes handle relative paths")
-Reported-by: Randy Dunlap <rdunlap@infradead.org>
-Signed-off-by: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Jiri Olsa <jolsa@redhat.com>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Michal Marek <michal.lkml@markovi.net>
+Fixes: 26226a97724d ("perf expr: Move expr lexer to flex")
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Andi Kleen <ak@linux.intel.com>
+Cc: Kajol Jain <kjain@linux.ibm.com>
+Cc: Michael Petlan <mpetlan@redhat.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Sasha Levin <sashal@kernel.org>
-Cc: Steven Rostedt (VMware) <rostedt@goodmis.org>
-Cc: stable@vger.kernel.org
-Link: http://lore.kernel.org/lkml/158351957799.3363.15269768530697526765.stgit@devnote2
+Link: http://lore.kernel.org/lkml/20200315155609.603948-1-jolsa@kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/Makefile            | 2 +-
- tools/scripts/Makefile.include | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ tools/perf/util/expr.l | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/Makefile b/tools/perf/Makefile
-index 7902a56..b8fc7d9 100644
---- a/tools/perf/Makefile
-+++ b/tools/perf/Makefile
-@@ -35,7 +35,7 @@ endif
- # Only pass canonical directory names as the output directory:
- #
- ifneq ($(O),)
--  FULL_O := $(shell readlink -f $(O) || echo $(O))
-+  FULL_O := $(shell cd $(PWD); readlink -f $(O) || echo $(O))
- endif
+diff --git a/tools/perf/util/expr.l b/tools/perf/util/expr.l
+index 1928f2a..eaad292 100644
+--- a/tools/perf/util/expr.l
++++ b/tools/perf/util/expr.l
+@@ -79,10 +79,10 @@ symbol		{spec}*{sym}*{spec}*{sym}*
+ 	{
+ 		int start_token;
  
- #
-diff --git a/tools/scripts/Makefile.include b/tools/scripts/Makefile.include
-index ded7a95..6d2f3a1 100644
---- a/tools/scripts/Makefile.include
-+++ b/tools/scripts/Makefile.include
-@@ -1,8 +1,8 @@
- # SPDX-License-Identifier: GPL-2.0
- ifneq ($(O),)
- ifeq ($(origin O), command line)
--	dummy := $(if $(shell test -d $(O) || echo $(O)),$(error O=$(O) does not exist),)
--	ABSOLUTE_O := $(shell cd $(O) ; pwd)
-+	dummy := $(if $(shell cd $(PWD); test -d $(O) || echo $(O)),$(error O=$(O) does not exist),)
-+	ABSOLUTE_O := $(shell cd $(PWD); cd $(O) ; pwd)
- 	OUTPUT := $(ABSOLUTE_O)/$(if $(subdir),$(subdir)/)
- 	COMMAND_O := O=$(ABSOLUTE_O)
- ifeq ($(objtree),)
+-		start_token = parse_events_get_extra(yyscanner);
++		start_token = expr_get_extra(yyscanner);
+ 
+ 		if (start_token) {
+-			parse_events_set_extra(NULL, yyscanner);
++			expr_set_extra(NULL, yyscanner);
+ 			return start_token;
+ 		}
+ 	}
