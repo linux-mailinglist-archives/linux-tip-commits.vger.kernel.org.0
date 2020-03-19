@@ -2,123 +2,78 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 957AB18BFB1
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 19 Mar 2020 19:54:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4302818C107
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 19 Mar 2020 21:10:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726867AbgCSSy2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 19 Mar 2020 14:54:28 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:33984 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725787AbgCSSy2 (ORCPT
+        id S1726983AbgCSUKZ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 19 Mar 2020 16:10:25 -0400
+Received: from mail.skyhub.de ([5.9.137.197]:32962 "EHLO mail.skyhub.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725747AbgCSUKZ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 19 Mar 2020 14:54:28 -0400
-Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tip-bot2@linutronix.de>)
-        id 1jF0JD-0007lm-PT; Thu, 19 Mar 2020 19:54:23 +0100
-Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 528201C22B7;
-        Thu, 19 Mar 2020 19:54:23 +0100 (CET)
-Date:   Thu, 19 Mar 2020 18:54:22 -0000
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] Revert "tick/common: Make tick_periodic() check
- for missing ticks"
-Cc:     Qian Cai <cai@lca.pw>, Thomas Gleixner <tglx@linutronix.de>,
-        Waiman Long <longman@redhat.com>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
+        Thu, 19 Mar 2020 16:10:25 -0400
+Received: from zn.tnic (p200300EC2F0A85001D12B79F4268FE9A.dip0.t-ipconnect.de [IPv6:2003:ec:2f0a:8500:1d12:b79f:4268:fe9a])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 25F441EC0C89;
+        Thu, 19 Mar 2020 21:10:23 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1584648623;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=+HS0izfSYQQOnipoPaapcyspiM739Lng58jOQDsrp1s=;
+        b=BmY4+PFyddycgep4N1QRA69Ah/4jgqcJGG8qR5Z1zqJ3e14DF8mf95hySlRL7G7UWNtz41
+        EJiDhpHGju+qM+gSbrECSngmwzKiahVMnzGBQAzH2w9x8ci0lnmpzj+CA3c+ERzAacVC+j
+        T5+HWwgbmeA84FVXdZVuQ/gztW5jy80=
+Date:   Thu, 19 Mar 2020 21:10:28 +0100
+From:   Borislav Petkov <bp@alien8.de>
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-tip-commits@vger.kernel.org, Qian Cai <cai@lca.pw>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Waiman Long <longman@redhat.com>, x86 <x86@kernel.org>
+Subject: Re: [tip: timers/core] Revert "tick/common: Make tick_periodic()
+ check for missing ticks"
+Message-ID: <20200319201028.GF13073@zn.tnic>
+References: <158464406295.28353.3230662958771714087.tip-bot2@tip-bot2>
 MIME-Version: 1.0
-Message-ID: <158464406295.28353.3230662958771714087.tip-bot2@tip-bot2>
-X-Mailer: tip-git-log-daemon
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <158464406295.28353.3230662958771714087.tip-bot2@tip-bot2>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/core branch of tip:
+On Thu, Mar 19, 2020 at 06:54:22PM -0000, tip-bot2 for Thomas Gleixner wrote:
+> The following commit has been merged into the timers/core branch of tip:
+> 
+> Commit-ID:     52da479a9aee630d2cdf37d05edfe5bcfff3e17f
+> Gitweb:        https://git.kernel.org/tip/52da479a9aee630d2cdf37d05edfe5bcfff3e17f
+> Author:        Thomas Gleixner <tglx@linutronix.de>
+> AuthorDate:    Thu, 19 Mar 2020 19:47:06 +01:00
+> Committer:     Thomas Gleixner <tglx@linutronix.de>
+> CommitterDate: Thu, 19 Mar 2020 19:47:48 +01:00
+> 
+> Revert "tick/common: Make tick_periodic() check for missing ticks"
+> 
+> This reverts commit d441dceb5dce71150f28add80d36d91bbfccba99 due to
+> boot failures.
+> 
+> Reported-by: Qian Cai <cai@lca.pw>
+> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Waiman Long <longman@redhat.com>
+> ---
+>  kernel/time/tick-common.c | 36 +++---------------------------------
+>  1 file changed, 3 insertions(+), 33 deletions(-)
 
-Commit-ID:     52da479a9aee630d2cdf37d05edfe5bcfff3e17f
-Gitweb:        https://git.kernel.org/tip/52da479a9aee630d2cdf37d05edfe5bcfff3e17f
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Thu, 19 Mar 2020 19:47:06 +01:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 19 Mar 2020 19:47:48 +01:00
+ACK, this fixes an early boot freeze on one of my boxes too.
 
-Revert "tick/common: Make tick_periodic() check for missing ticks"
+Tested-by: Borislav Petkov <bp@suse.de>
 
-This reverts commit d441dceb5dce71150f28add80d36d91bbfccba99 due to
-boot failures.
+-- 
+Regards/Gruss,
+    Boris.
 
-Reported-by: Qian Cai <cai@lca.pw>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: Waiman Long <longman@redhat.com>
----
- kernel/time/tick-common.c | 36 +++---------------------------------
- 1 file changed, 3 insertions(+), 33 deletions(-)
-
-diff --git a/kernel/time/tick-common.c b/kernel/time/tick-common.c
-index cce4ed1..7e5d352 100644
---- a/kernel/time/tick-common.c
-+++ b/kernel/time/tick-common.c
-@@ -16,7 +16,6 @@
- #include <linux/profile.h>
- #include <linux/sched.h>
- #include <linux/module.h>
--#include <linux/sched/clock.h>
- #include <trace/events/power.h>
- 
- #include <asm/irq_regs.h>
-@@ -85,41 +84,12 @@ int tick_is_oneshot_available(void)
- static void tick_periodic(int cpu)
- {
- 	if (tick_do_timer_cpu == cpu) {
--		/*
--		 * Use running_clock() as reference to check for missing ticks.
--		 */
--		static ktime_t last_update;
--		ktime_t now;
--		int ticks = 1;
--
--		now = ns_to_ktime(running_clock());
- 		write_seqlock(&jiffies_lock);
- 
--		if (last_update) {
--			u64 delta = ktime_sub(now, last_update);
--
--			/*
--			 * Check for eventually missed ticks
--			 *
--			 * There is likely a persistent delta between
--			 * last_update and tick_next_period. So they are
--			 * updated separately.
--			 */
--			if (delta >= 2 * tick_period) {
--				s64 period = ktime_to_ns(tick_period);
--
--				ticks = ktime_divns(delta, period);
--			}
--			last_update = ktime_add(last_update,
--						ticks * tick_period);
--		} else {
--			last_update = now;
--		}
--
- 		/* Keep track of the next tick event */
--		tick_next_period = ktime_add(tick_next_period,
--					     ticks * tick_period);
--		do_timer(ticks);
-+		tick_next_period = ktime_add(tick_next_period, tick_period);
-+
-+		do_timer(1);
- 		write_sequnlock(&jiffies_lock);
- 		update_wall_time();
- 	}
+https://people.kernel.org/tglx/notes-about-netiquette
