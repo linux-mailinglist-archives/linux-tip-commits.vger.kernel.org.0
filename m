@@ -2,39 +2,45 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 432D218B8BF
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 19 Mar 2020 15:11:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D34B18B900
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 19 Mar 2020 15:13:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727690AbgCSOKy (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 19 Mar 2020 10:10:54 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:60852 "EHLO
+        id S1728383AbgCSOMi (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 19 Mar 2020 10:12:38 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:60961 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727613AbgCSOKx (ORCPT
+        with ESMTP id S1727403AbgCSOLA (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 19 Mar 2020 10:10:53 -0400
+        Thu, 19 Mar 2020 10:11:00 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jEvsl-00025K-Jq; Thu, 19 Mar 2020 15:10:47 +0100
+        id 1jEvsn-00025k-9k; Thu, 19 Mar 2020 15:10:49 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 9558B1C22A8;
-        Thu, 19 Mar 2020 15:10:45 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 0A7861C22A9;
+        Thu, 19 Mar 2020 15:10:46 +0100 (CET)
 Date:   Thu, 19 Mar 2020 14:10:45 -0000
-From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for disconnect3d" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf map: Use strstarts() to look for Android libraries
-Cc:     Dominik Czarnota <dominik.b.czarnota@gmail.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Jiri Olsa <jolsa@kernel.org>,
+Subject: [tip: perf/core] perf map: Fix off by one in strncpy() size argument
+Cc:     disconnect3d <dominik.b.czarnota@gmail.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Changbin Du <changbin.du@intel.com>,
+        Jiri Olsa <jolsa@redhat.com>, John Keeping <john@metanate.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Michael Lentine <mlentine@google.com>,
         Namhyung Kim <namhyung@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Song Liu <songliubraving@fb.com>,
+        Stephane Eranian <eranian@google.com>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <CABEVAa0_q-uC0vrrqpkqRHy_9RLOSXOJxizMLm1n5faHRy2AeA@mail.gmail.com>
-References: <CABEVAa0_q-uC0vrrqpkqRHy_9RLOSXOJxizMLm1n5faHRy2AeA@mail.gmail.com>
+In-Reply-To: <20200309104855.3775-1-dominik.b.czarnota@gmail.com>
+References: <20200309104855.3775-1-dominik.b.czarnota@gmail.com>
 MIME-Version: 1.0
-Message-ID: <158462704532.28353.11599935829036815046.tip-bot2@tip-bot2>
+Message-ID: <158462704570.28353.13532501439910836890.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,67 +56,58 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     bdadd647cbf7b6e7f5d5891bd4e711292793cf23
-Gitweb:        https://git.kernel.org/tip/bdadd647cbf7b6e7f5d5891bd4e711292793cf23
-Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Mon, 09 Mar 2020 16:53:41 -03:00
+Commit-ID:     b8fdcfb5a17f1d4fd503caef5c457005a765ecd7
+Gitweb:        https://git.kernel.org/tip/b8fdcfb5a17f1d4fd503caef5c457005a765ecd7
+Author:        disconnect3d <dominik.b.czarnota@gmail.com>
+AuthorDate:    Mon, 09 Mar 2020 11:48:53 +01:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Wed, 11 Mar 2020 10:48:44 -03:00
 
-perf map: Use strstarts() to look for Android libraries
+perf map: Fix off by one in strncpy() size argument
 
-And add the '/' to avoid looking at things like "/system/libsomething",
-when all we want to know if it is like "/system/lib/something", i.e. if
-it is in that system library dir.
+This patch fixes an off-by-one error in strncpy size argument in
+tools/perf/util/map.c. The issue is that in:
 
-Using strstarts() avoids off-by-one errors like recently fixed in this
-file.
+        strncmp(filename, "/system/lib/", 11)
 
-Since this adds the '/' I separated this patch, another patch will make
-this consistent by removing other strncmp(str, prefix, manually
-calculated prefix length) usage.
+the passed string literal: "/system/lib/" has 12 bytes (without the NULL
+byte) and the passed size argument is 11. As a result, the logic won't
+match the ending "/" byte and will pass filepaths that are stored in
+other directories e.g. "/system/libmalicious/bin" or just
+"/system/libmalicious".
 
-Reported-by: Dominik Czarnota <dominik.b.czarnota@gmail.com>
-Acked-by: Dominik Czarnota <dominik.b.czarnota@gmail.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
+This functionality seems to be present only on Android. I assume the
+/system/ directory is only writable by the root user, so I don't think
+this bug has much (or any) security impact.
+
+Fixes: eca818369996 ("perf tools: Add automatic remapping of Android libraries")
+Signed-off-by: disconnect3d <dominik.b.czarnota@gmail.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Changbin Du <changbin.du@intel.com>
+Cc: Jiri Olsa <jolsa@redhat.com>
+Cc: John Keeping <john@metanate.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Michael Lentine <mlentine@google.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Link: Link: http://lore.kernel.org/lkml/CABEVAa0_q-uC0vrrqpkqRHy_9RLOSXOJxizMLm1n5faHRy2AeA@mail.gmail.com
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Song Liu <songliubraving@fb.com>
+Cc: Stephane Eranian <eranian@google.com>
+Link: http://lore.kernel.org/lkml/20200309104855.3775-1-dominik.b.czarnota@gmail.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/map.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ tools/perf/util/map.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/tools/perf/util/map.c b/tools/perf/util/map.c
-index b342f74..53d9661 100644
+index 9542851..b342f74 100644
 --- a/tools/perf/util/map.c
 +++ b/tools/perf/util/map.c
-@@ -44,8 +44,8 @@ static inline int is_no_dso_memory(const char *filename)
- 
- static inline int is_android_lib(const char *filename)
- {
--	return !strncmp(filename, "/data/app-lib", 13) ||
--	       !strncmp(filename, "/system/lib", 11);
-+	return strstarts(filename, "/data/app-lib/") ||
-+	       strstarts(filename, "/system/lib/");
- }
- 
- static inline bool replace_android_lib(const char *filename, char *newfilename)
-@@ -65,7 +65,7 @@ static inline bool replace_android_lib(const char *filename, char *newfilename)
- 
- 	app_abi_length = strlen(app_abi);
- 
--	if (!strncmp(filename, "/data/app-lib", 13)) {
-+	if (strstarts(filename, "/data/app-lib/")) {
- 		char *apk_path;
- 
- 		if (!app_abi_length)
 @@ -89,7 +89,7 @@ static inline bool replace_android_lib(const char *filename, char *newfilename)
  		return true;
  	}
  
--	if (!strncmp(filename, "/system/lib/", 12)) {
-+	if (strstarts(filename, "/system/lib/")) {
+-	if (!strncmp(filename, "/system/lib/", 11)) {
++	if (!strncmp(filename, "/system/lib/", 12)) {
  		char *ndk, *app;
  		const char *arch;
  		size_t ndk_length;
