@@ -2,41 +2,45 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 17A5618B892
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 19 Mar 2020 15:05:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 09FAA18B896
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 19 Mar 2020 15:05:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727426AbgCSOEx (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 19 Mar 2020 10:04:53 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:60718 "EHLO
+        id S1727751AbgCSOE6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 19 Mar 2020 10:04:58 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:60733 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725787AbgCSOEx (ORCPT
+        with ESMTP id S1727695AbgCSOE5 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 19 Mar 2020 10:04:53 -0400
+        Thu, 19 Mar 2020 10:04:57 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jEvmu-0001oV-9g; Thu, 19 Mar 2020 15:04:44 +0100
+        id 1jEvmu-0001oY-OL; Thu, 19 Mar 2020 15:04:44 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D20671C22A2;
-        Thu, 19 Mar 2020 15:04:43 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 358171C22A1;
+        Thu, 19 Mar 2020 15:04:44 +0100 (CET)
 Date:   Thu, 19 Mar 2020 14:04:43 -0000
-From:   "tip-bot2 for Masami Hiramatsu" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Ian Rogers" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf probe: Fix to delete multiple probe event
-Cc:     Arnaldo Carvalho de Melo <acme@kernel.org>,
-        He Zhe <zhe.he@windriver.com>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
+Subject: [tip: perf/urgent] perf parse-events: Fix reading of invalid memory
+ in event parsing
+Cc:     Ian Rogers <irogers@google.com>, Jiri Olsa <jolsa@kernel.org>,
         Adrian Hunter <adrian.hunter@intel.com>,
-        Jiri Olsa <jolsa@kernel.org>,
-        Namhyung Kim <namhyung@kernel.org>, stable@vger.kernel.org,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Andi Kleen <ak@linux.intel.com>, Leo Yan <leo.yan@linaro.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Stephane Eranian <eranian@google.com>,
+        clang-built-linux@googlegroups.com,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <158287666197.16697.7514373548551863562.stgit@devnote2>
-References: <158287666197.16697.7514373548551863562.stgit@devnote2>
+In-Reply-To: <20200307073121.203816-1-irogers@google.com>
+References: <20200307073121.203816-1-irogers@google.com>
 MIME-Version: 1.0
-Message-ID: <158462668350.28353.16128321208340622107.tip-bot2@tip-bot2>
+Message-ID: <158462668393.28353.16174426995039122842.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -52,66 +56,164 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     6b8d68f1ce9266b05a55e93c62923ff51daae4c1
-Gitweb:        https://git.kernel.org/tip/6b8d68f1ce9266b05a55e93c62923ff51daae4c1
-Author:        Masami Hiramatsu <mhiramat@kernel.org>
-AuthorDate:    Fri, 28 Feb 2020 16:57:42 +09:00
+Commit-ID:     05e54e2386733dfdb62b6784b3d6e1b0bd9bb559
+Gitweb:        https://git.kernel.org/tip/05e54e2386733dfdb62b6784b3d6e1b0bd9bb559
+Author:        Ian Rogers <irogers@google.com>
+AuthorDate:    Fri, 06 Mar 2020 23:31:21 -08:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Mon, 09 Mar 2020 10:41:14 -03:00
+CommitterDate: Mon, 09 Mar 2020 10:29:45 -03:00
 
-perf probe: Fix to delete multiple probe event
+perf parse-events: Fix reading of invalid memory in event parsing
 
-When we put an event with multiple probes, perf-probe fails to delete
-with filters. This comes from a failure to list up the event name
-because of overwrapping its name.
+ADD_CONFIG_TERM accesses term->weak, however, in get_config_chgs this
+value is accessed outside of the list_for_each_entry and references
+invalid memory. Add an argument for ADD_CONFIG_TERM for weak and set it
+to false in the get_config_chgs case.
 
-To fix this issue, skip to list up the event which has same name.
+This bug was cause by clang's address sanitizer and libfuzzer. It can be
+reproduced with a command line of:
 
-Without this patch:
+  perf stat -a -e i/bs,tsc,L2/o
 
-  # perf probe -l \*
-    probe_perf:map__map_ip (on perf_sample__fprintf_brstackoff:21@
-    probe_perf:map__map_ip (on perf_sample__fprintf_brstackoff:25@
-    probe_perf:map__map_ip (on append_inlines:12@util/machine.c in
-    probe_perf:map__map_ip (on unwind_entry:19@util/machine.c in /
-    probe_perf:map__map_ip (on map__map_ip@util/map.h in /home/mhi
-    probe_perf:map__map_ip (on map__map_ip@util/map.h in /home/mhi
-  # perf probe -d \*
-  "*" does not hit any event.
-    Error: Failed to delete events. Reason: No such file or directory (Code: -2)
-
-With it:
-
-  # perf probe -d \*
-  Removed event: probe_perf:map__map_ip
-  #
-
-Fixes: 72363540c009 ("perf probe: Support multiprobe event")
-Reported-by: Arnaldo Carvalho de Melo <acme@kernel.org>
-Reported-by: He Zhe <zhe.he@windriver.com>
-Signed-off-by: Masami Hiramatsu <mhiramat@kernel.org>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Ian Rogers <irogers@google.com>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
 Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Andi Kleen <ak@linux.intel.com>
+Cc: Leo Yan <leo.yan@linaro.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: stable@vger.kernel.org
-Link: http://lore.kernel.org/lkml/158287666197.16697.7514373548551863562.stgit@devnote2
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Stephane Eranian <eranian@google.com>
+Cc: clang-built-linux@googlegroups.com
+Link: http://lore.kernel.org/lkml/20200307073121.203816-1-irogers@google.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/probe-file.c | 3 +++
- 1 file changed, 3 insertions(+)
+ tools/perf/util/parse-events.c | 46 ++++++++++++++++-----------------
+ 1 file changed, 23 insertions(+), 23 deletions(-)
 
-diff --git a/tools/perf/util/probe-file.c b/tools/perf/util/probe-file.c
-index 0f5fda1..8c85294 100644
---- a/tools/perf/util/probe-file.c
-+++ b/tools/perf/util/probe-file.c
-@@ -206,6 +206,9 @@ static struct strlist *__probe_file__get_namelist(int fd, bool include_group)
- 		} else
- 			ret = strlist__add(sl, tev.event);
- 		clear_probe_trace_event(&tev);
-+		/* Skip if there is same name multi-probe event in the list */
-+		if (ret == -EEXIST)
-+			ret = 0;
- 		if (ret < 0)
+diff --git a/tools/perf/util/parse-events.c b/tools/perf/util/parse-events.c
+index a149958..a7dc0b0 100644
+--- a/tools/perf/util/parse-events.c
++++ b/tools/perf/util/parse-events.c
+@@ -1213,7 +1213,7 @@ static int config_attr(struct perf_event_attr *attr,
+ static int get_config_terms(struct list_head *head_config,
+ 			    struct list_head *head_terms __maybe_unused)
+ {
+-#define ADD_CONFIG_TERM(__type)					\
++#define ADD_CONFIG_TERM(__type, __weak)				\
+ 	struct perf_evsel_config_term *__t;			\
+ 								\
+ 	__t = zalloc(sizeof(*__t));				\
+@@ -1222,18 +1222,18 @@ static int get_config_terms(struct list_head *head_config,
+ 								\
+ 	INIT_LIST_HEAD(&__t->list);				\
+ 	__t->type       = PERF_EVSEL__CONFIG_TERM_ ## __type;	\
+-	__t->weak	= term->weak;				\
++	__t->weak	= __weak;				\
+ 	list_add_tail(&__t->list, head_terms)
+ 
+-#define ADD_CONFIG_TERM_VAL(__type, __name, __val)		\
++#define ADD_CONFIG_TERM_VAL(__type, __name, __val, __weak)	\
+ do {								\
+-	ADD_CONFIG_TERM(__type);				\
++	ADD_CONFIG_TERM(__type, __weak);			\
+ 	__t->val.__name = __val;				\
+ } while (0)
+ 
+-#define ADD_CONFIG_TERM_STR(__type, __val)			\
++#define ADD_CONFIG_TERM_STR(__type, __val, __weak)		\
+ do {								\
+-	ADD_CONFIG_TERM(__type);				\
++	ADD_CONFIG_TERM(__type, __weak);			\
+ 	__t->val.str = strdup(__val);				\
+ 	if (!__t->val.str) {					\
+ 		zfree(&__t);					\
+@@ -1247,62 +1247,62 @@ do {								\
+ 	list_for_each_entry(term, head_config, list) {
+ 		switch (term->type_term) {
+ 		case PARSE_EVENTS__TERM_TYPE_SAMPLE_PERIOD:
+-			ADD_CONFIG_TERM_VAL(PERIOD, period, term->val.num);
++			ADD_CONFIG_TERM_VAL(PERIOD, period, term->val.num, term->weak);
  			break;
+ 		case PARSE_EVENTS__TERM_TYPE_SAMPLE_FREQ:
+-			ADD_CONFIG_TERM_VAL(FREQ, freq, term->val.num);
++			ADD_CONFIG_TERM_VAL(FREQ, freq, term->val.num, term->weak);
+ 			break;
+ 		case PARSE_EVENTS__TERM_TYPE_TIME:
+-			ADD_CONFIG_TERM_VAL(TIME, time, term->val.num);
++			ADD_CONFIG_TERM_VAL(TIME, time, term->val.num, term->weak);
+ 			break;
+ 		case PARSE_EVENTS__TERM_TYPE_CALLGRAPH:
+-			ADD_CONFIG_TERM_STR(CALLGRAPH, term->val.str);
++			ADD_CONFIG_TERM_STR(CALLGRAPH, term->val.str, term->weak);
+ 			break;
+ 		case PARSE_EVENTS__TERM_TYPE_BRANCH_SAMPLE_TYPE:
+-			ADD_CONFIG_TERM_STR(BRANCH, term->val.str);
++			ADD_CONFIG_TERM_STR(BRANCH, term->val.str, term->weak);
+ 			break;
+ 		case PARSE_EVENTS__TERM_TYPE_STACKSIZE:
+ 			ADD_CONFIG_TERM_VAL(STACK_USER, stack_user,
+-					    term->val.num);
++					    term->val.num, term->weak);
+ 			break;
+ 		case PARSE_EVENTS__TERM_TYPE_INHERIT:
+ 			ADD_CONFIG_TERM_VAL(INHERIT, inherit,
+-					    term->val.num ? 1 : 0);
++					    term->val.num ? 1 : 0, term->weak);
+ 			break;
+ 		case PARSE_EVENTS__TERM_TYPE_NOINHERIT:
+ 			ADD_CONFIG_TERM_VAL(INHERIT, inherit,
+-					    term->val.num ? 0 : 1);
++					    term->val.num ? 0 : 1, term->weak);
+ 			break;
+ 		case PARSE_EVENTS__TERM_TYPE_MAX_STACK:
+ 			ADD_CONFIG_TERM_VAL(MAX_STACK, max_stack,
+-					    term->val.num);
++					    term->val.num, term->weak);
+ 			break;
+ 		case PARSE_EVENTS__TERM_TYPE_MAX_EVENTS:
+ 			ADD_CONFIG_TERM_VAL(MAX_EVENTS, max_events,
+-					    term->val.num);
++					    term->val.num, term->weak);
+ 			break;
+ 		case PARSE_EVENTS__TERM_TYPE_OVERWRITE:
+ 			ADD_CONFIG_TERM_VAL(OVERWRITE, overwrite,
+-					    term->val.num ? 1 : 0);
++					    term->val.num ? 1 : 0, term->weak);
+ 			break;
+ 		case PARSE_EVENTS__TERM_TYPE_NOOVERWRITE:
+ 			ADD_CONFIG_TERM_VAL(OVERWRITE, overwrite,
+-					    term->val.num ? 0 : 1);
++					    term->val.num ? 0 : 1, term->weak);
+ 			break;
+ 		case PARSE_EVENTS__TERM_TYPE_DRV_CFG:
+-			ADD_CONFIG_TERM_STR(DRV_CFG, term->val.str);
++			ADD_CONFIG_TERM_STR(DRV_CFG, term->val.str, term->weak);
+ 			break;
+ 		case PARSE_EVENTS__TERM_TYPE_PERCORE:
+ 			ADD_CONFIG_TERM_VAL(PERCORE, percore,
+-					    term->val.num ? true : false);
++					    term->val.num ? true : false, term->weak);
+ 			break;
+ 		case PARSE_EVENTS__TERM_TYPE_AUX_OUTPUT:
+ 			ADD_CONFIG_TERM_VAL(AUX_OUTPUT, aux_output,
+-					    term->val.num ? 1 : 0);
++					    term->val.num ? 1 : 0, term->weak);
+ 			break;
+ 		case PARSE_EVENTS__TERM_TYPE_AUX_SAMPLE_SIZE:
+ 			ADD_CONFIG_TERM_VAL(AUX_SAMPLE_SIZE, aux_sample_size,
+-					    term->val.num);
++					    term->val.num, term->weak);
+ 			break;
+ 		default:
+ 			break;
+@@ -1339,7 +1339,7 @@ static int get_config_chgs(struct perf_pmu *pmu, struct list_head *head_config,
  	}
+ 
+ 	if (bits)
+-		ADD_CONFIG_TERM_VAL(CFG_CHG, cfg_chg, bits);
++		ADD_CONFIG_TERM_VAL(CFG_CHG, cfg_chg, bits, false);
+ 
+ #undef ADD_CONFIG_TERM
+ 	return 0;
