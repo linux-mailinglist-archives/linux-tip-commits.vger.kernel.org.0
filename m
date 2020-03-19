@@ -2,38 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8235518B8DF
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 19 Mar 2020 15:12:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 769D218B8E9
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 19 Mar 2020 15:12:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727993AbgCSOLs (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 19 Mar 2020 10:11:48 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:32865 "EHLO
+        id S1727114AbgCSOMJ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 19 Mar 2020 10:12:09 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:32832 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727982AbgCSOLO (ORCPT
+        with ESMTP id S1727938AbgCSOLK (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 19 Mar 2020 10:11:14 -0400
+        Thu, 19 Mar 2020 10:11:10 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jEvt5-0002Jx-7U; Thu, 19 Mar 2020 15:11:07 +0100
+        id 1jEvt0-0002Ky-M2; Thu, 19 Mar 2020 15:11:02 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 56D501C22B1;
-        Thu, 19 Mar 2020 15:10:54 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 450E51C22B3;
+        Thu, 19 Mar 2020 15:10:55 +0100 (CET)
 Date:   Thu, 19 Mar 2020 14:10:54 -0000
-From:   "tip-bot2 for Steven Rostedt (VMware)" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Ravi Bangoria" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] tools lib traceevent: Remove extra '\n' in
- print_event_time()
-Cc:     "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
-        Jiri Olsa <jolsa@redhat.com>,
+Subject: [tip: perf/core] perf annotate: Get rid of annotation->nr_jumps
+Cc:     Ravi Bangoria <ravi.bangoria@linux.ibm.com>,
+        Jiri Olsa <jolsa@redhat.com>, Ian Rogers <irogers@google.com>,
+        Jin Yao <yao.jin@linux.intel.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Song Liu <songliubraving@fb.com>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200303231852.6ab6882f@oasis.local.home>
-References: <20200303231852.6ab6882f@oasis.local.home>
+In-Reply-To: <20200204045233.474937-7-ravi.bangoria@linux.ibm.com>
+References: <20200204045233.474937-7-ravi.bangoria@linux.ibm.com>
 MIME-Version: 1.0
-Message-ID: <158462705403.28353.16455653786760721281.tip-bot2@tip-bot2>
+Message-ID: <158462705487.28353.1204866716441398517.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,50 +51,54 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     401d61cbd4d4c6b44b2a895ab4073c7f214c096b
-Gitweb:        https://git.kernel.org/tip/401d61cbd4d4c6b44b2a895ab4073c7f214c096b
-Author:        Steven Rostedt (VMware) <rostedt@goodmis.org>
-AuthorDate:    Tue, 03 Mar 2020 23:18:52 -05:00
+Commit-ID:     dabce16bd2926b82ef1bef70acd8b24828e9448b
+Gitweb:        https://git.kernel.org/tip/dabce16bd2926b82ef1bef70acd8b24828e9448b
+Author:        Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+AuthorDate:    Tue, 04 Feb 2020 10:22:33 +05:30
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Wed, 04 Mar 2020 10:34:10 -03:00
 
-tools lib traceevent: Remove extra '\n' in print_event_time()
+perf annotate: Get rid of annotation->nr_jumps
 
-If the precision of print_event_time() is zero or greater than the
-timestamp, it uses a different format. But that format had an extra new
-line at the end, and caused the output to not look right:
+The 'nr_jumps' field in 'struct annotation' is not used since it's
+inception in commit 2402e4a936a0 ("perf annotate browser: Show 'jumpy'
+functions").  Get rid of it.
 
-cpus=2
-           sleep-3946  [001]111264306005
-: function:             inotify_inode_queue_event
-           sleep-3946  [001]111264307158
-: function:             __fsnotify_parent
-           sleep-3946  [001]111264307637
-: function:             inotify_dentry_parent_queue_event
-           sleep-3946  [001]111264307989
-: function:             fsnotify
-           sleep-3946  [001]111264308401
-: function:             audit_syscall_exit
-
-Fixes: 38847db9740a ("libtraceevent, perf tools: Changes in tep_print_event_* APIs")
-Signed-off-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
-Cc: Jiri Olsa <jolsa@redhat.com>
-Link: http://lore.kernel.org/lkml/20200303231852.6ab6882f@oasis.local.home
+Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+Acked-by: Jiri Olsa <jolsa@redhat.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Jin Yao <yao.jin@linux.intel.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Song Liu <songliubraving@fb.com>
+Link: http://lore.kernel.org/lkml/20200204045233.474937-7-ravi.bangoria@linux.ibm.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/lib/traceevent/event-parse.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/perf/util/annotate.c | 2 --
+ tools/perf/util/annotate.h | 1 -
+ 2 files changed, 3 deletions(-)
 
-diff --git a/tools/lib/traceevent/event-parse.c b/tools/lib/traceevent/event-parse.c
-index beaa8b8..e1bd2a9 100644
---- a/tools/lib/traceevent/event-parse.c
-+++ b/tools/lib/traceevent/event-parse.c
-@@ -5541,7 +5541,7 @@ static void print_event_time(struct tep_handle *tep, struct trace_seq *s,
- 	if (p10 > 1 && p10 < time)
- 		trace_seq_printf(s, "%5llu.%0*llu", time / p10, prec, time % p10);
- 	else
--		trace_seq_printf(s, "%12llu\n", time);
-+		trace_seq_printf(s, "%12llu", time);
+diff --git a/tools/perf/util/annotate.c b/tools/perf/util/annotate.c
+index 0ea95be..f1ea0d6 100644
+--- a/tools/perf/util/annotate.c
++++ b/tools/perf/util/annotate.c
+@@ -2611,8 +2611,6 @@ void annotation__mark_jump_targets(struct annotation *notes, struct symbol *sym)
+ 
+ 		if (++al->jump_sources > notes->max_jump_sources)
+ 			notes->max_jump_sources = al->jump_sources;
+-
+-		++notes->nr_jumps;
+ 	}
  }
  
- struct print_event_type {
+diff --git a/tools/perf/util/annotate.h b/tools/perf/util/annotate.h
+index 0012586..07c7759 100644
+--- a/tools/perf/util/annotate.h
++++ b/tools/perf/util/annotate.h
+@@ -279,7 +279,6 @@ struct annotation {
+ 	struct annotation_options *options;
+ 	struct annotation_line	**offsets;
+ 	int			nr_events;
+-	int			nr_jumps;
+ 	int			max_jump_sources;
+ 	int			nr_entries;
+ 	int			nr_asm_entries;
