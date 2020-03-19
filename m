@@ -2,38 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 40A6F18B918
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 19 Mar 2020 15:13:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4AEF718B916
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 19 Mar 2020 15:13:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727628AbgCSONS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 19 Mar 2020 10:13:18 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:60855 "EHLO
+        id S1727542AbgCSOKs (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 19 Mar 2020 10:10:48 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:60804 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727616AbgCSOKw (ORCPT
+        with ESMTP id S1727533AbgCSOKr (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 19 Mar 2020 10:10:52 -0400
+        Thu, 19 Mar 2020 10:10:47 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jEvsg-00021a-KT; Thu, 19 Mar 2020 15:10:42 +0100
+        id 1jEvsf-00020F-Ry; Thu, 19 Mar 2020 15:10:41 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 2F1471C22A5;
-        Thu, 19 Mar 2020 15:10:42 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 823501C22A3;
+        Thu, 19 Mar 2020 15:10:41 +0100 (CET)
 Date:   Thu, 19 Mar 2020 14:10:41 -0000
-From:   "tip-bot2 for Adrian Hunter" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Alexey Budankov" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf intel-pt: Update intel-pt.txt file with new
- location of the documentation
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
+Subject: [tip: perf/core] perf record: Fix binding of AIO user space buffers to nodes
+Cc:     Alexey Budankov <alexey.budankov@linux.intel.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
         Andi Kleen <ak@linux.intel.com>, Jiri Olsa <jolsa@redhat.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200311122034.3697-4-adrian.hunter@intel.com>
-References: <20200311122034.3697-4-adrian.hunter@intel.com>
+In-Reply-To: <c7ea8ffe-1357-bf9e-3a89-1da1d8e9b75b@linux.intel.com>
+References: <c7ea8ffe-1357-bf9e-3a89-1da1d8e9b75b@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <158462704192.28353.6450958262487588981.tip-bot2@tip-bot2>
+Message-ID: <158462704123.28353.13994745078032026323.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,32 +51,70 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     ec2eab9deb8009fd8c69d61d04c66b77d438f17d
-Gitweb:        https://git.kernel.org/tip/ec2eab9deb8009fd8c69d61d04c66b77d438f17d
-Author:        Adrian Hunter <adrian.hunter@intel.com>
-AuthorDate:    Wed, 11 Mar 2020 14:20:34 +02:00
+Commit-ID:     44d462acc0bf3eabe1522471fd1f683d8ce612cb
+Gitweb:        https://git.kernel.org/tip/44d462acc0bf3eabe1522471fd1f683d8ce612cb
+Author:        Alexey Budankov <alexey.budankov@linux.intel.com>
+AuthorDate:    Thu, 12 Mar 2020 15:21:45 +03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Wed, 11 Mar 2020 11:00:33 -03:00
+CommitterDate: Thu, 12 Mar 2020 11:32:46 -03:00
 
-perf intel-pt: Update intel-pt.txt file with new location of the documentation
+perf record: Fix binding of AIO user space buffers to nodes
 
-Make it easy for people looking in intel-pt.txt to find the new file.
+Correct maxnode parameter value passed to mbind() syscall to be the
+amount of node mask bits to analyze plus 1. Dynamically allocate node
+mask memory depending on the index of node of cpu being profiled.
 
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: c44a8b44ca9f ("perf record: Bind the AIO user space buffers to nodes")
+Signed-off-by: Alexey Budankov <alexey.budankov@linux.intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 Cc: Andi Kleen <ak@linux.intel.com>
 Cc: Jiri Olsa <jolsa@redhat.com>
-Link: http://lore.kernel.org/lkml/20200311122034.3697-4-adrian.hunter@intel.com
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: http://lore.kernel.org/lkml/c7ea8ffe-1357-bf9e-3a89-1da1d8e9b75b@linux.intel.com
+[ Remove leftover nr_bits + 1 comment in mbind() call ]
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/Documentation/intel-pt.txt | 1 +
- 1 file changed, 1 insertion(+)
- create mode 100644 tools/perf/Documentation/intel-pt.txt
+ tools/perf/util/mmap.c | 21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
-diff --git a/tools/perf/Documentation/intel-pt.txt b/tools/perf/Documentation/intel-pt.txt
-new file mode 100644
-index 0000000..fd9241a
---- /dev/null
-+++ b/tools/perf/Documentation/intel-pt.txt
-@@ -0,0 +1 @@
-+Documentation for support for Intel Processor Trace within perf tools' has moved to file perf-intel-pt.txt
+diff --git a/tools/perf/util/mmap.c b/tools/perf/util/mmap.c
+index 3b664fa..ab7108d 100644
+--- a/tools/perf/util/mmap.c
++++ b/tools/perf/util/mmap.c
+@@ -98,20 +98,29 @@ static int perf_mmap__aio_bind(struct mmap *map, int idx, int cpu, int affinity)
+ {
+ 	void *data;
+ 	size_t mmap_len;
+-	unsigned long node_mask;
++	unsigned long *node_mask;
++	unsigned long node_index;
++	int err = 0;
+ 
+ 	if (affinity != PERF_AFFINITY_SYS && cpu__max_node() > 1) {
+ 		data = map->aio.data[idx];
+ 		mmap_len = mmap__mmap_len(map);
+-		node_mask = 1UL << cpu__get_node(cpu);
+-		if (mbind(data, mmap_len, MPOL_BIND, &node_mask, 1, 0)) {
+-			pr_err("Failed to bind [%p-%p] AIO buffer to node %d: error %m\n",
+-				data, data + mmap_len, cpu__get_node(cpu));
++		node_index = cpu__get_node(cpu);
++		node_mask = bitmap_alloc(node_index + 1);
++		if (!node_mask) {
++			pr_err("Failed to allocate node mask for mbind: error %m\n");
+ 			return -1;
+ 		}
++		set_bit(node_index, node_mask);
++		if (mbind(data, mmap_len, MPOL_BIND, node_mask, node_index + 1 + 1, 0)) {
++			pr_err("Failed to bind [%p-%p] AIO buffer to node %lu: error %m\n",
++				data, data + mmap_len, node_index);
++			err = -1;
++		}
++		bitmap_free(node_mask);
+ 	}
+ 
+-	return 0;
++	return err;
+ }
+ #else /* !HAVE_LIBNUMA_SUPPORT */
+ static int perf_mmap__aio_alloc(struct mmap *map, int idx)
