@@ -2,37 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 406FE18AEBA
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 19 Mar 2020 09:49:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 24DA818AE95
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 19 Mar 2020 09:48:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726987AbgCSIrz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 19 Mar 2020 04:47:55 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:59712 "EHLO
+        id S1727065AbgCSIsA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 19 Mar 2020 04:48:00 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:59761 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726825AbgCSIry (ORCPT
+        with ESMTP id S1727034AbgCSIr7 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 19 Mar 2020 04:47:54 -0400
+        Thu, 19 Mar 2020 04:47:59 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jEqqD-0002zL-Rx; Thu, 19 Mar 2020 09:47:50 +0100
+        id 1jEqqJ-0002zz-Ga; Thu, 19 Mar 2020 09:47:55 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 86B581C1DC3;
-        Thu, 19 Mar 2020 09:47:49 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 359751C1DC3;
+        Thu, 19 Mar 2020 09:47:50 +0100 (CET)
 Date:   Thu, 19 Mar 2020 08:47:49 -0000
-From:   "tip-bot2 for Tony Lindgren" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Claudiu Beznea" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] clocksource/drivers/timer-ti-dm: Prepare for using cpuidle
-Cc:     Tony Lindgren <tony@atomide.com>,
-        Lokesh Vutla <lokeshvutla@ti.com>,
+Subject: [tip: timers/core] clocksource/drivers/timer-microchip-pit64b: Fix
+ rate for gck
+Cc:     Claudiu Beznea <claudiu.beznea@microchip.com>,
         Daniel Lezcano <daniel.lezcano@linaro.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200305082715.15861-3-lokeshvutla@ti.com>
-References: <20200305082715.15861-3-lokeshvutla@ti.com>
+In-Reply-To: <1584352376-32585-1-git-send-email-claudiu.beznea@microchip.com>
+References: <1584352376-32585-1-git-send-email-claudiu.beznea@microchip.com>
 MIME-Version: 1.0
-Message-ID: <158460766913.28353.18101835082004521218.tip-bot2@tip-bot2>
+Message-ID: <158460766994.28353.13609666528266748170.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,138 +48,36 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     5e20931c6a750b4b1ea9a2f7b863cc2dd9222ead
-Gitweb:        https://git.kernel.org/tip/5e20931c6a750b4b1ea9a2f7b863cc2dd9222ead
-Author:        Tony Lindgren <tony@atomide.com>
-AuthorDate:    Thu, 05 Mar 2020 13:57:11 +05:30
+Commit-ID:     0585244523f0f4de7e4480375e871617a79cab98
+Gitweb:        https://git.kernel.org/tip/0585244523f0f4de7e4480375e871617a79cab98
+Author:        Claudiu Beznea <claudiu.beznea@microchip.com>
+AuthorDate:    Mon, 16 Mar 2020 11:52:56 +02:00
 Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
-CommitterDate: Mon, 16 Mar 2020 12:40:21 +01:00
+CommitterDate: Mon, 16 Mar 2020 11:19:37 +01:00
 
-clocksource/drivers/timer-ti-dm: Prepare for using cpuidle
+clocksource/drivers/timer-microchip-pit64b: Fix rate for gck
 
-Let's add runtime_suspend and resume functions and atomic enabled
-flag. This way we can use these when converting to use cpuidle
-for saving and restoring device context.
+Generic clock rate needs to be set in case it was selected as timer clock
+source in mchp_pit64b_init_mode(). Otherwise it will be enabled with wrong
+rate.
 
-And we need to maintain the driver state in the driver as documented
-in "9. Autosuspend, or automatically-delayed suspends" in the
-Documentation/power/runtime_pm.rst document related to using driver
-private lock and races with runtime_suspend().
-
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-Signed-off-by: Lokesh Vutla <lokeshvutla@ti.com>
+Fixes: 625022a5f160 ("clocksource/drivers/timer-microchip-pit64b: Add Microchip PIT64B support")
+Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
 Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20200305082715.15861-3-lokeshvutla@ti.com
+Link: https://lore.kernel.org/r/1584352376-32585-1-git-send-email-claudiu.beznea@microchip.com
 ---
- drivers/clocksource/timer-ti-dm.c | 36 +++++++++++++++++++++++++-----
- include/clocksource/timer-ti-dm.h |  1 +-
- 2 files changed, 32 insertions(+), 5 deletions(-)
+ drivers/clocksource/timer-microchip-pit64b.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/clocksource/timer-ti-dm.c b/drivers/clocksource/timer-ti-dm.c
-index c0e9e99..fe939d1 100644
---- a/drivers/clocksource/timer-ti-dm.c
-+++ b/drivers/clocksource/timer-ti-dm.c
-@@ -491,7 +491,7 @@ __u32 omap_dm_timer_modify_idlect_mask(__u32 inputmask)
+diff --git a/drivers/clocksource/timer-microchip-pit64b.c b/drivers/clocksource/timer-microchip-pit64b.c
+index bd63d34..59e11ca 100644
+--- a/drivers/clocksource/timer-microchip-pit64b.c
++++ b/drivers/clocksource/timer-microchip-pit64b.c
+@@ -264,6 +264,7 @@ static int __init mchp_pit64b_init_mode(struct mchp_pit64b_timer *timer,
  
- int omap_dm_timer_trigger(struct omap_dm_timer *timer)
- {
--	if (unlikely(!timer || pm_runtime_suspended(&timer->pdev->dev))) {
-+	if (unlikely(!timer || !atomic_read(&timer->enabled))) {
- 		pr_err("%s: timer not available or enabled.\n", __func__);
- 		return -EINVAL;
+ 	if (!best_diff) {
+ 		timer->mode |= MCHP_PIT64B_MR_SGCLK;
++		clk_set_rate(timer->gclk, gclk_round);
+ 		goto done;
  	}
-@@ -690,7 +690,7 @@ static unsigned int omap_dm_timer_read_status(struct omap_dm_timer *timer)
- {
- 	unsigned int l;
  
--	if (unlikely(!timer || pm_runtime_suspended(&timer->pdev->dev))) {
-+	if (unlikely(!timer || !atomic_read(&timer->enabled))) {
- 		pr_err("%s: timer not available or enabled.\n", __func__);
- 		return 0;
- 	}
-@@ -702,7 +702,7 @@ static unsigned int omap_dm_timer_read_status(struct omap_dm_timer *timer)
- 
- static int omap_dm_timer_write_status(struct omap_dm_timer *timer, unsigned int value)
- {
--	if (unlikely(!timer || pm_runtime_suspended(&timer->pdev->dev)))
-+	if (unlikely(!timer || !atomic_read(&timer->enabled)))
- 		return -EINVAL;
- 
- 	__omap_dm_timer_write_status(timer, value);
-@@ -712,7 +712,7 @@ static int omap_dm_timer_write_status(struct omap_dm_timer *timer, unsigned int 
- 
- static unsigned int omap_dm_timer_read_counter(struct omap_dm_timer *timer)
- {
--	if (unlikely(!timer || pm_runtime_suspended(&timer->pdev->dev))) {
-+	if (unlikely(!timer || !atomic_read(&timer->enabled))) {
- 		pr_err("%s: timer not iavailable or enabled.\n", __func__);
- 		return 0;
- 	}
-@@ -722,7 +722,7 @@ static unsigned int omap_dm_timer_read_counter(struct omap_dm_timer *timer)
- 
- static int omap_dm_timer_write_counter(struct omap_dm_timer *timer, unsigned int value)
- {
--	if (unlikely(!timer || pm_runtime_suspended(&timer->pdev->dev))) {
-+	if (unlikely(!timer || !atomic_read(&timer->enabled))) {
- 		pr_err("%s: timer not available or enabled.\n", __func__);
- 		return -EINVAL;
- 	}
-@@ -750,6 +750,29 @@ int omap_dm_timers_active(void)
- 	return 0;
- }
- 
-+static int __maybe_unused omap_dm_timer_runtime_suspend(struct device *dev)
-+{
-+	struct omap_dm_timer *timer = dev_get_drvdata(dev);
-+
-+	atomic_set(&timer->enabled, 0);
-+
-+	return 0;
-+}
-+
-+static int __maybe_unused omap_dm_timer_runtime_resume(struct device *dev)
-+{
-+	struct omap_dm_timer *timer = dev_get_drvdata(dev);
-+
-+	atomic_set(&timer->enabled, 1);
-+
-+	return 0;
-+}
-+
-+static const struct dev_pm_ops omap_dm_timer_pm_ops = {
-+	SET_RUNTIME_PM_OPS(omap_dm_timer_runtime_suspend,
-+			   omap_dm_timer_runtime_resume, NULL)
-+};
-+
- static const struct of_device_id omap_timer_match[];
- 
- /**
-@@ -791,6 +814,8 @@ static int omap_dm_timer_probe(struct platform_device *pdev)
- 	if (IS_ERR(timer->io_base))
- 		return PTR_ERR(timer->io_base);
- 
-+	platform_set_drvdata(pdev, timer);
-+
- 	if (dev->of_node) {
- 		if (of_find_property(dev->of_node, "ti,timer-alwon", NULL))
- 			timer->capability |= OMAP_TIMER_ALWON;
-@@ -936,6 +961,7 @@ static struct platform_driver omap_dm_timer_driver = {
- 	.driver = {
- 		.name   = "omap_timer",
- 		.of_match_table = of_match_ptr(omap_timer_match),
-+		.pm = &omap_dm_timer_pm_ops,
- 	},
- };
- 
-diff --git a/include/clocksource/timer-ti-dm.h b/include/clocksource/timer-ti-dm.h
-index 7d9598d..eef5de3 100644
---- a/include/clocksource/timer-ti-dm.h
-+++ b/include/clocksource/timer-ti-dm.h
-@@ -105,6 +105,7 @@ struct omap_dm_timer {
- 	void __iomem	*pend;		/* write pending */
- 	void __iomem	*func_base;	/* function register base */
- 
-+	atomic_t enabled;
- 	unsigned long rate;
- 	unsigned reserved:1;
- 	unsigned posted:1;
