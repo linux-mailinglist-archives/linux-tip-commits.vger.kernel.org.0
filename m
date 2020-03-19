@@ -2,38 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 92F0318AEB4
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 19 Mar 2020 09:49:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D245418AEB3
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 19 Mar 2020 09:49:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727082AbgCSIsA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 19 Mar 2020 04:48:00 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:59767 "EHLO
+        id S1727035AbgCSIs5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 19 Mar 2020 04:48:57 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:59783 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727045AbgCSIsA (ORCPT
+        with ESMTP id S1727050AbgCSIsB (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 19 Mar 2020 04:48:00 -0400
+        Thu, 19 Mar 2020 04:48:01 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jEqqJ-000327-GX; Thu, 19 Mar 2020 09:47:55 +0100
+        id 1jEqqJ-000334-Vo; Thu, 19 Mar 2020 09:47:56 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 7CB381C2298;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id CFB871C229F;
         Thu, 19 Mar 2020 09:47:52 +0100 (CET)
 Date:   Thu, 19 Mar 2020 08:47:52 -0000
-From:   "tip-bot2 for Lokesh Vutla" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Matheus Castello" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] clocksource/drivers/timer-ti-dm: Do not update
- counter on updating the period
-Cc:     Lokesh Vutla <lokeshvutla@ti.com>,
-        Tony Lindgren <tony@atomide.com>,
+Subject: [tip: timers/core] clocksource/drivers/owl: Improve owl_timer_init
+ fail messages
+Cc:     Matheus Castello <matheus@castello.eng.br>,
         Daniel Lezcano <daniel.lezcano@linaro.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200224050753.17784-3-lokeshvutla@ti.com>
-References: <20200224050753.17784-3-lokeshvutla@ti.com>
+In-Reply-To: <20200219004810.411190-1-matheus@castello.eng.br>
+References: <20200219004810.411190-1-matheus@castello.eng.br>
 MIME-Version: 1.0
-Message-ID: <158460767223.28353.3956921614051586529.tip-bot2@tip-bot2>
+Message-ID: <158460767257.28353.6675261030088110845.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,42 +48,55 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     6ce4fcb015a1a1290ffafcf3554901b40f9322df
-Gitweb:        https://git.kernel.org/tip/6ce4fcb015a1a1290ffafcf3554901b40f9322df
-Author:        Lokesh Vutla <lokeshvutla@ti.com>
-AuthorDate:    Mon, 24 Feb 2020 10:37:53 +05:30
+Commit-ID:     ad1ded9d2e3d1eb452ff58d325aadf237e187bd9
+Gitweb:        https://git.kernel.org/tip/ad1ded9d2e3d1eb452ff58d325aadf237e187bd9
+Author:        Matheus Castello <matheus@castello.eng.br>
+AuthorDate:    Tue, 18 Feb 2020 21:48:10 -03:00
 Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
-CommitterDate: Thu, 27 Feb 2020 10:26:23 +01:00
+CommitterDate: Thu, 27 Feb 2020 09:42:00 +01:00
 
-clocksource/drivers/timer-ti-dm: Do not update counter on updating the period
+clocksource/drivers/owl: Improve owl_timer_init fail messages
 
-Write to trigger register(OMAP_TIMER_TRIGGER_REG) will load the value
-in Load register(OMAP_TIMER_LOAD_REG) into Counter register
-(OMAP_TIMER_COUNTER_REG).
+Check the return from clocksource_mmio_init, add messages in case of
+an error and in case of not having a defined clock property.
 
-omap_dm_timer_set_load() writes into trigger register every time load
-register is updated. When timer is configured in pwm mode, this causes
-disruption in current pwm cycle, which is not expected especially when
-pwm is used as PPS signal for synchronized PTP clocks. So do not write
-into trigger register on updating the period.
-
-Signed-off-by: Lokesh Vutla <lokeshvutla@ti.com>
-Tested-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Matheus Castello <matheus@castello.eng.br>
 Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20200224050753.17784-3-lokeshvutla@ti.com
+Link: https://lore.kernel.org/r/20200219004810.411190-1-matheus@castello.eng.br
 ---
- drivers/clocksource/timer-ti-dm.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/clocksource/timer-owl.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/clocksource/timer-ti-dm.c b/drivers/clocksource/timer-ti-dm.c
-index 269a994..acc9360 100644
---- a/drivers/clocksource/timer-ti-dm.c
-+++ b/drivers/clocksource/timer-ti-dm.c
-@@ -577,7 +577,6 @@ static int omap_dm_timer_set_load(struct omap_dm_timer *timer, int autoreload,
- 	omap_dm_timer_write_reg(timer, OMAP_TIMER_CTRL_REG, l);
- 	omap_dm_timer_write_reg(timer, OMAP_TIMER_LOAD_REG, load);
+diff --git a/drivers/clocksource/timer-owl.c b/drivers/clocksource/timer-owl.c
+index 900fe73..ac97420 100644
+--- a/drivers/clocksource/timer-owl.c
++++ b/drivers/clocksource/timer-owl.c
+@@ -135,8 +135,11 @@ static int __init owl_timer_init(struct device_node *node)
+ 	}
  
--	omap_dm_timer_write_reg(timer, OMAP_TIMER_TRIGGER_REG, 0);
- 	/* Save the context */
- 	timer->context.tclr = l;
- 	timer->context.tldr = load;
+ 	clk = of_clk_get(node, 0);
+-	if (IS_ERR(clk))
+-		return PTR_ERR(clk);
++	if (IS_ERR(clk)) {
++		ret = PTR_ERR(clk);
++		pr_err("Failed to get clock for clocksource (%d)\n", ret);
++		return ret;
++	}
+ 
+ 	rate = clk_get_rate(clk);
+ 
+@@ -144,8 +147,12 @@ static int __init owl_timer_init(struct device_node *node)
+ 	owl_timer_set_enabled(owl_clksrc_base, true);
+ 
+ 	sched_clock_register(owl_timer_sched_read, 32, rate);
+-	clocksource_mmio_init(owl_clksrc_base + OWL_Tx_VAL, node->name,
+-			      rate, 200, 32, clocksource_mmio_readl_up);
++	ret = clocksource_mmio_init(owl_clksrc_base + OWL_Tx_VAL, node->name,
++				    rate, 200, 32, clocksource_mmio_readl_up);
++	if (ret) {
++		pr_err("Failed to register clocksource (%d)\n", ret);
++		return ret;
++	}
+ 
+ 	owl_timer_reset(owl_clkevt_base);
+ 
