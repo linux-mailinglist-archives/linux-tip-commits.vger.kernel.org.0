@@ -2,42 +2,43 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6CD6018AE90
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 19 Mar 2020 09:47:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B1FA018AEBB
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 19 Mar 2020 09:49:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726976AbgCSIry (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 19 Mar 2020 04:47:54 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:59715 "EHLO
+        id S1727006AbgCSIr4 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 19 Mar 2020 04:47:56 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:59729 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725887AbgCSIry (ORCPT
+        with ESMTP id S1726958AbgCSIrz (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 19 Mar 2020 04:47:54 -0400
+        Thu, 19 Mar 2020 04:47:55 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jEqqE-000307-U8; Thu, 19 Mar 2020 09:47:51 +0100
+        id 1jEqqF-00030V-OY; Thu, 19 Mar 2020 09:47:51 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 946381C2298;
-        Thu, 19 Mar 2020 09:47:50 +0100 (CET)
-Date:   Thu, 19 Mar 2020 08:47:50 -0000
-From:   "tip-bot2 for afzal mohammed" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 6A07C1C2298;
+        Thu, 19 Mar 2020 09:47:51 +0100 (CET)
+Date:   Thu, 19 Mar 2020 08:47:51 -0000
+From:   tip-bot2 for =?utf-8?b?5ZGo55Cw5p2w?= (Zhou Yanjie) 
+        <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] clocksource/drivers/timer-cs5535: Request irq with
- non-NULL dev_id
-Cc:     afzal mohammed <afzal.mohd.ma@gmail.com>,
+Subject: [tip: timers/core] clocksource/drivers/ingenic: Add support for TCU of X1000
+Cc:     zhouyanjie@wanyeetech.com,
         Daniel Lezcano <daniel.lezcano@linaro.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200312064817.19000-1-afzal.mohd.ma@gmail.com>
-References: <20200312064817.19000-1-afzal.mohd.ma@gmail.com>
+In-Reply-To: <1582100974-129559-5-git-send-email-zhouyanjie@wanyeetech.com>
+References: <1582100974-129559-5-git-send-email-zhouyanjie@wanyeetech.com>
 MIME-Version: 1.0
-Message-ID: <158460767029.28353.2138334938469821354.tip-bot2@tip-bot2>
+Message-ID: <158460767109.28353.9865381675905644674.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8BIT
 X-Linutronix-Spam-Score: -1.0
 X-Linutronix-Spam-Level: -
 X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
@@ -48,50 +49,43 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     470cf1c28d2f601ea666a96d676c10b09b2321ab
-Gitweb:        https://git.kernel.org/tip/470cf1c28d2f601ea666a96d676c10b09b2321ab
-Author:        afzal mohammed <afzal.mohd.ma@gmail.com>
-AuthorDate:    Thu, 12 Mar 2020 12:18:17 +05:30
+Commit-ID:     a7cd39552194954bcdecfd9ff775466a61bda5bb
+Gitweb:        https://git.kernel.org/tip/a7cd39552194954bcdecfd9ff775466a61bda5bb
+Author:        周琰杰 (Zhou Yanjie) <zhouyanjie@wanyeetech.com>
+AuthorDate:    Wed, 19 Feb 2020 16:29:33 +08:00
 Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
-CommitterDate: Thu, 12 Mar 2020 19:23:06 +01:00
+CommitterDate: Thu, 27 Feb 2020 11:22:22 +01:00
 
-clocksource/drivers/timer-cs5535: Request irq with non-NULL dev_id
+clocksource/drivers/ingenic: Add support for TCU of X1000
 
-Recently all usages of setup_irq() was replaced by request_irq().
-request_irq() does a few sanity checks that were not done in
-setup_irq(), if they fail irq registration will fail. One of the check
-is to ensure that non-NULL dev_id is passed in the case of shared irq.
+X1000 has a different TCU containing OST, since X1000, OST has been
+independent of TCU. This patch is prepare for later OST driver.
 
-Fix it by passing non-NULL dev_id while registering the shared irq.
-
-Fixes: cc2550b421aa ("clocksource: Replace setup_irq() by request_irq()")
-Signed-off-by: afzal mohammed <afzal.mohd.ma@gmail.com>
+Signed-off-by: 周琰杰 (Zhou Yanjie) <zhouyanjie@wanyeetech.com>
 Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20200312064817.19000-1-afzal.mohd.ma@gmail.com
+Link: https://lore.kernel.org/r/1582100974-129559-5-git-send-email-zhouyanjie@wanyeetech.com
 ---
- drivers/clocksource/timer-cs5535.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/clocksource/ingenic-timer.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clocksource/timer-cs5535.c b/drivers/clocksource/timer-cs5535.c
-index 51ea050..d47acfe 100644
---- a/drivers/clocksource/timer-cs5535.c
-+++ b/drivers/clocksource/timer-cs5535.c
-@@ -133,6 +133,7 @@ static irqreturn_t mfgpt_tick(int irq, void *dev_id)
+diff --git a/drivers/clocksource/ingenic-timer.c b/drivers/clocksource/ingenic-timer.c
+index 4bbdb3d..4963336 100644
+--- a/drivers/clocksource/ingenic-timer.c
++++ b/drivers/clocksource/ingenic-timer.c
+@@ -230,6 +230,7 @@ static const struct of_device_id ingenic_tcu_of_match[] = {
+ 	{ .compatible = "ingenic,jz4740-tcu", .data = &jz4740_soc_info, },
+ 	{ .compatible = "ingenic,jz4725b-tcu", .data = &jz4725b_soc_info, },
+ 	{ .compatible = "ingenic,jz4770-tcu", .data = &jz4740_soc_info, },
++	{ .compatible = "ingenic,x1000-tcu", .data = &jz4740_soc_info, },
+ 	{ /* sentinel */ }
+ };
  
- static int __init cs5535_mfgpt_init(void)
+@@ -302,7 +303,7 @@ err_free_ingenic_tcu:
+ TIMER_OF_DECLARE(jz4740_tcu_intc,  "ingenic,jz4740-tcu",  ingenic_tcu_init);
+ TIMER_OF_DECLARE(jz4725b_tcu_intc, "ingenic,jz4725b-tcu", ingenic_tcu_init);
+ TIMER_OF_DECLARE(jz4770_tcu_intc,  "ingenic,jz4770-tcu",  ingenic_tcu_init);
+-
++TIMER_OF_DECLARE(x1000_tcu_intc,  "ingenic,x1000-tcu",  ingenic_tcu_init);
+ 
+ static int __init ingenic_tcu_probe(struct platform_device *pdev)
  {
-+	unsigned long flags = IRQF_NOBALANCING | IRQF_TIMER | IRQF_SHARED;
- 	struct cs5535_mfgpt_timer *timer;
- 	int ret;
- 	uint16_t val;
-@@ -152,9 +153,7 @@ static int __init cs5535_mfgpt_init(void)
- 	}
- 
- 	/* And register it with the kernel */
--	ret = request_irq(timer_irq, mfgpt_tick,
--			  IRQF_NOBALANCING | IRQF_TIMER | IRQF_SHARED,
--			  DRV_NAME, NULL);
-+	ret = request_irq(timer_irq, mfgpt_tick, flags, DRV_NAME, timer);
- 	if (ret) {
- 		printk(KERN_ERR DRV_NAME ": Unable to set up the interrupt.\n");
- 		goto err_irq;
