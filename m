@@ -2,36 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0294318CE55
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 20 Mar 2020 13:59:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E379318CE24
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 20 Mar 2020 13:58:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727133AbgCTM7S (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 20 Mar 2020 08:59:18 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:35600 "EHLO
+        id S1726954AbgCTM6J (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 20 Mar 2020 08:58:09 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:35599 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727097AbgCTM6K (ORCPT
+        with ESMTP id S1727096AbgCTM6J (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 20 Mar 2020 08:58:10 -0400
+        Fri, 20 Mar 2020 08:58:09 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jFHDt-0003gx-AM; Fri, 20 Mar 2020 13:58:01 +0100
+        id 1jFHDt-0003h0-MB; Fri, 20 Mar 2020 13:58:01 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id DF09D1C22BF;
-        Fri, 20 Mar 2020 13:58:00 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 44FB21C22BE;
+        Fri, 20 Mar 2020 13:58:01 +0100 (CET)
 Date:   Fri, 20 Mar 2020 12:58:00 -0000
 From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/x86/intel/uncore: Factor out __snr_uncore_mmio_init_box
+Subject: [tip: perf/core] perf/x86/intel/uncore: Add box_offsets for
+ free-running counters
 Cc:     Kan Liang <kan.liang@linux.intel.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <1584470314-46657-2-git-send-email-kan.liang@linux.intel.com>
-References: <1584470314-46657-2-git-send-email-kan.liang@linux.intel.com>
+In-Reply-To: <1584470314-46657-1-git-send-email-kan.liang@linux.intel.com>
+References: <1584470314-46657-1-git-send-email-kan.liang@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <158470908062.28353.5000456330988388813.tip-bot2@tip-bot2>
+Message-ID: <158470908097.28353.2804105982601442401.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,65 +48,47 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     3442a9ecb8e72a33c28a2b969b766c659830e410
-Gitweb:        https://git.kernel.org/tip/3442a9ecb8e72a33c28a2b969b766c659830e410
+Commit-ID:     bc88a2fe216a51e8ab46d61f89d0c1b5a400470e
+Gitweb:        https://git.kernel.org/tip/bc88a2fe216a51e8ab46d61f89d0c1b5a400470e
 Author:        Kan Liang <kan.liang@linux.intel.com>
-AuthorDate:    Tue, 17 Mar 2020 11:38:33 -07:00
+AuthorDate:    Tue, 17 Mar 2020 11:38:32 -07:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Fri, 20 Mar 2020 13:06:23 +01:00
 
-perf/x86/intel/uncore: Factor out __snr_uncore_mmio_init_box
+perf/x86/intel/uncore: Add box_offsets for free-running counters
 
-The IMC uncore unit in Ice Lake server can only be accessed by MMIO,
-which is similar as Snow Ridge.
-Factor out __snr_uncore_mmio_init_box which can be shared with Ice Lake
-server in the following patch.
+The offset between uncore boxes of free-running counters varies, e.g.
+IIO free-running counters on Ice Lake server.
 
-No functional changes.
+Add box_offsets, an array of offsets between adjacent uncore boxes.
 
 Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/1584470314-46657-2-git-send-email-kan.liang@linux.intel.com
+Link: https://lkml.kernel.org/r/1584470314-46657-1-git-send-email-kan.liang@linux.intel.com
 ---
- arch/x86/events/intel/uncore_snbep.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ arch/x86/events/intel/uncore.h | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/events/intel/uncore_snbep.c b/arch/x86/events/intel/uncore_snbep.c
-index ad20220..01023f0 100644
---- a/arch/x86/events/intel/uncore_snbep.c
-+++ b/arch/x86/events/intel/uncore_snbep.c
-@@ -4380,10 +4380,10 @@ static struct pci_dev *snr_uncore_get_mc_dev(int id)
- 	return mc_dev;
+diff --git a/arch/x86/events/intel/uncore.h b/arch/x86/events/intel/uncore.h
+index 1204dcc..b30429f 100644
+--- a/arch/x86/events/intel/uncore.h
++++ b/arch/x86/events/intel/uncore.h
+@@ -154,6 +154,7 @@ struct freerunning_counters {
+ 	unsigned int box_offset;
+ 	unsigned int num_counters;
+ 	unsigned int bits;
++	unsigned *box_offsets;
+ };
+ 
+ struct pci2phy_map {
+@@ -310,7 +311,9 @@ unsigned int uncore_freerunning_counter(struct intel_uncore_box *box,
+ 
+ 	return pmu->type->freerunning[type].counter_base +
+ 	       pmu->type->freerunning[type].counter_offset * idx +
+-	       pmu->type->freerunning[type].box_offset * pmu->pmu_idx;
++	       (pmu->type->freerunning[type].box_offsets ?
++	        pmu->type->freerunning[type].box_offsets[pmu->pmu_idx] :
++	        pmu->type->freerunning[type].box_offset * pmu->pmu_idx);
  }
  
--static void snr_uncore_mmio_init_box(struct intel_uncore_box *box)
-+static void __snr_uncore_mmio_init_box(struct intel_uncore_box *box,
-+				       unsigned int box_ctl, int mem_offset)
- {
- 	struct pci_dev *pdev = snr_uncore_get_mc_dev(box->dieid);
--	unsigned int box_ctl = uncore_mmio_box_ctl(box);
- 	resource_size_t addr;
- 	u32 pci_dword;
- 
-@@ -4393,7 +4393,7 @@ static void snr_uncore_mmio_init_box(struct intel_uncore_box *box)
- 	pci_read_config_dword(pdev, SNR_IMC_MMIO_BASE_OFFSET, &pci_dword);
- 	addr = (pci_dword & SNR_IMC_MMIO_BASE_MASK) << 23;
- 
--	pci_read_config_dword(pdev, SNR_IMC_MMIO_MEM0_OFFSET, &pci_dword);
-+	pci_read_config_dword(pdev, mem_offset, &pci_dword);
- 	addr |= (pci_dword & SNR_IMC_MMIO_MEM0_MASK) << 12;
- 
- 	addr += box_ctl;
-@@ -4405,6 +4405,12 @@ static void snr_uncore_mmio_init_box(struct intel_uncore_box *box)
- 	writel(IVBEP_PMON_BOX_CTL_INT, box->io_addr);
- }
- 
-+static void snr_uncore_mmio_init_box(struct intel_uncore_box *box)
-+{
-+	__snr_uncore_mmio_init_box(box, uncore_mmio_box_ctl(box),
-+				   SNR_IMC_MMIO_MEM0_OFFSET);
-+}
-+
- static void snr_uncore_mmio_disable_box(struct intel_uncore_box *box)
- {
- 	u32 config;
+ static inline
