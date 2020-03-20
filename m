@@ -2,37 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ADC6718CE4B
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 20 Mar 2020 13:59:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B54B18CE28
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 20 Mar 2020 13:58:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727190AbgCTM6L (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 20 Mar 2020 08:58:11 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:35617 "EHLO
+        id S1727194AbgCTM6M (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 20 Mar 2020 08:58:12 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:35614 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727120AbgCTM6L (ORCPT
+        with ESMTP id S1727114AbgCTM6L (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Fri, 20 Mar 2020 08:58:11 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jFHDu-0003hh-E6; Fri, 20 Mar 2020 13:58:02 +0100
+        id 1jFHDv-0003iS-Hr; Fri, 20 Mar 2020 13:58:03 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 0A0A71C22BE;
-        Fri, 20 Mar 2020 13:58:02 +0100 (CET)
-Date:   Fri, 20 Mar 2020 12:58:01 -0000
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 0CD821C22BE;
+        Fri, 20 Mar 2020 13:58:03 +0100 (CET)
+Date:   Fri, 20 Mar 2020 12:58:02 -0000
+From:   "tip-bot2 for Tao Zhou" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/core: Fix endless multiplex timer
-Cc:     Andi Kleen <ak@linux.intel.com>,
-        Kan Liang <kan.liang@linux.intel.com>,
+Subject: [tip: sched/core] sched/fair: Fix condition of avg_load calculation
+Cc:     Tao Zhou <ouwen210@hotmail.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200305123851.GX2596@hirez.programming.kicks-ass.net>
-References: <20200305123851.GX2596@hirez.programming.kicks-ass.net>
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Mel Gorman <mgorman@suse.de>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158470908175.28353.4859180707604949658.tip-bot2@tip-bot2>
+Message-ID: <158470908271.28353.7933643223235675222.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -46,79 +45,50 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/core branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     90c91dfb86d0ff545bd329d3ddd72c147e2ae198
-Gitweb:        https://git.kernel.org/tip/90c91dfb86d0ff545bd329d3ddd72c147e2ae198
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Thu, 05 Mar 2020 13:38:51 +01:00
+Commit-ID:     6c8116c914b65be5e4d6f66d69c8142eb0648c22
+Gitweb:        https://git.kernel.org/tip/6c8116c914b65be5e4d6f66d69c8142eb0648c22
+Author:        Tao Zhou <ouwen210@hotmail.com>
+AuthorDate:    Thu, 19 Mar 2020 11:39:20 +08:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 20 Mar 2020 13:06:22 +01:00
+CommitterDate: Fri, 20 Mar 2020 13:06:20 +01:00
 
-perf/core: Fix endless multiplex timer
+sched/fair: Fix condition of avg_load calculation
 
-Kan and Andi reported that we fail to kill rotation when the flexible
-events go empty, but the context does not. XXX moar
+In update_sg_wakeup_stats(), the comment says:
 
-Fixes: fd7d55172d1e ("perf/cgroups: Don't rotate events for cgroups unnecessarily")
-Reported-by: Andi Kleen <ak@linux.intel.com>
-Reported-by: Kan Liang <kan.liang@linux.intel.com>
-Tested-by: Kan Liang <kan.liang@linux.intel.com>
+Computing avg_load makes sense only when group is fully
+busy or overloaded.
+
+But, the code below this comment does not check like this.
+
+>From reading the code about avg_load in other functions, I
+confirm that avg_load should be calculated in fully busy or
+overloaded case. The comment is correct and the checking
+condition is wrong. So, change that condition.
+
+Fixes: 57abff067a08 ("sched/fair: Rework find_idlest_group()")
+Signed-off-by: Tao Zhou <ouwen210@hotmail.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20200305123851.GX2596@hirez.programming.kicks-ass.net
+Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
+Acked-by: Mel Gorman <mgorman@suse.de>
+Link: https://lkml.kernel.org/r/Message-ID:
 ---
- kernel/events/core.c | 20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ kernel/sched/fair.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index ccf8d4f..b5a68d2 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -2291,6 +2291,7 @@ __perf_remove_from_context(struct perf_event *event,
- 
- 	if (!ctx->nr_events && ctx->is_active) {
- 		ctx->is_active = 0;
-+		ctx->rotate_necessary = 0;
- 		if (ctx->task) {
- 			WARN_ON_ONCE(cpuctx->task_ctx != ctx);
- 			cpuctx->task_ctx = NULL;
-@@ -3188,12 +3189,6 @@ static void ctx_sched_out(struct perf_event_context *ctx,
- 	if (!ctx->nr_active || !(is_active & EVENT_ALL))
- 		return;
- 
--	/*
--	 * If we had been multiplexing, no rotations are necessary, now no events
--	 * are active.
--	 */
--	ctx->rotate_necessary = 0;
--
- 	perf_pmu_disable(ctx->pmu);
- 	if (is_active & EVENT_PINNED) {
- 		list_for_each_entry_safe(event, tmp, &ctx->pinned_active, active_list)
-@@ -3203,6 +3198,13 @@ static void ctx_sched_out(struct perf_event_context *ctx,
- 	if (is_active & EVENT_FLEXIBLE) {
- 		list_for_each_entry_safe(event, tmp, &ctx->flexible_active, active_list)
- 			group_sched_out(event, cpuctx, ctx);
-+
-+		/*
-+		 * Since we cleared EVENT_FLEXIBLE, also clear
-+		 * rotate_necessary, is will be reset by
-+		 * ctx_flexible_sched_in() when needed.
-+		 */
-+		ctx->rotate_necessary = 0;
- 	}
- 	perf_pmu_enable(ctx->pmu);
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 783356f..d7fb20a 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -8631,7 +8631,8 @@ static inline void update_sg_wakeup_stats(struct sched_domain *sd,
+ 	 * Computing avg_load makes sense only when group is fully busy or
+ 	 * overloaded
+ 	 */
+-	if (sgs->group_type < group_fully_busy)
++	if (sgs->group_type == group_fully_busy ||
++		sgs->group_type == group_overloaded)
+ 		sgs->avg_load = (sgs->group_load * SCHED_CAPACITY_SCALE) /
+ 				sgs->group_capacity;
  }
-@@ -3985,6 +3987,12 @@ ctx_event_to_rotate(struct perf_event_context *ctx)
- 				      typeof(*event), group_node);
- 	}
- 
-+	/*
-+	 * Unconditionally clear rotate_necessary; if ctx_flexible_sched_in()
-+	 * finds there are unschedulable events, it will set it again.
-+	 */
-+	ctx->rotate_necessary = 0;
-+
- 	return event;
- }
- 
