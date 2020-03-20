@@ -2,36 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B97718CE27
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 20 Mar 2020 13:58:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 19FA118CE3D
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 20 Mar 2020 13:58:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727158AbgCTM6L (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 20 Mar 2020 08:58:11 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:35606 "EHLO
+        id S1727315AbgCTM6S (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 20 Mar 2020 08:58:18 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:35649 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727105AbgCTM6K (ORCPT
+        with ESMTP id S1727261AbgCTM6Q (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 20 Mar 2020 08:58:10 -0400
+        Fri, 20 Mar 2020 08:58:16 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jFHDy-0003jX-2j; Fri, 20 Mar 2020 13:58:06 +0100
+        id 1jFHE3-0003kI-JS; Fri, 20 Mar 2020 13:58:11 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A477D1C22C0;
-        Fri, 20 Mar 2020 13:58:05 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 06EC61C22C2;
+        Fri, 20 Mar 2020 13:58:06 +0100 (CET)
 Date:   Fri, 20 Mar 2020 12:58:05 -0000
 From:   "tip-bot2 for Johannes Weiner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] psi: Optimize switching tasks inside shared cgroups
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        Johannes Weiner <hannes@cmpxchg.org>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200316191333.115523-3-hannes@cmpxchg.org>
-References: <20200316191333.115523-3-hannes@cmpxchg.org>
+Subject: [tip: sched/core] psi: Fix cpu.pressure for cpu.max and competing cgroups
+Cc:     Johannes Weiner <hannes@cmpxchg.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200316191333.115523-2-hannes@cmpxchg.org>
+References: <20200316191333.115523-2-hannes@cmpxchg.org>
 MIME-Version: 1.0
-Message-ID: <158470908538.28353.4035583045093717977.tip-bot2@tip-bot2>
+Message-ID: <158470908574.28353.5889910600117208817.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,210 +47,178 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     36b238d5717279163859fb6ba0f4360abcafab83
-Gitweb:        https://git.kernel.org/tip/36b238d5717279163859fb6ba0f4360abcafab83
+Commit-ID:     b05e75d611380881e73edc58a20fd8c6bb71720b
+Gitweb:        https://git.kernel.org/tip/b05e75d611380881e73edc58a20fd8c6bb71720b
 Author:        Johannes Weiner <hannes@cmpxchg.org>
-AuthorDate:    Mon, 16 Mar 2020 15:13:32 -04:00
+AuthorDate:    Mon, 16 Mar 2020 15:13:31 -04:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 20 Mar 2020 13:06:19 +01:00
+CommitterDate: Fri, 20 Mar 2020 13:06:18 +01:00
 
-psi: Optimize switching tasks inside shared cgroups
+psi: Fix cpu.pressure for cpu.max and competing cgroups
 
-When switching tasks running on a CPU, the psi state of a cgroup
-containing both of these tasks does not change. Right now, we don't
-exploit that, and can perform many unnecessary state changes in nested
-hierarchies, especially when most activity comes from one leaf cgroup.
+For simplicity, cpu pressure is defined as having more than one
+runnable task on a given CPU. This works on the system-level, but it
+has limitations in a cgrouped reality: When cpu.max is in use, it
+doesn't capture the time in which a task is not executing on the CPU
+due to throttling. Likewise, it doesn't capture the time in which a
+competing cgroup is occupying the CPU - meaning it only reflects
+cgroup-internal competitive pressure, not outside pressure.
 
-This patch implements an optimization where we only update cgroups
-whose state actually changes during a task switch. These are all
-cgroups that contain one task but not the other, up to the first
-shared ancestor. When both tasks are in the same group, we don't need
-to update anything at all.
+Enable tracking of currently executing tasks, and then change the
+definition of cpu pressure in a cgroup from
 
-We can identify the first shared ancestor by walking the groups of the
-incoming task until we see TSK_ONCPU set on the local CPU; that's the
-first group that also contains the outgoing task.
+	NR_RUNNING > 1
 
-The new psi_task_switch() is similar to psi_task_change(). To allow
-code reuse, move the task flag maintenance code into a new function
-and the poll/avg worker wakeups into the shared psi_group_change().
+to
 
-Suggested-by: Peter Zijlstra <peterz@infradead.org>
+	NR_RUNNING > ON_CPU
+
+which will capture the effects of cpu.max as well as competition from
+outside the cgroup.
+
+After this patch, a cgroup running `stress -c 1` with a cpu.max
+setting of 5000 10000 shows ~50% continuous CPU pressure.
+
 Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20200316191333.115523-3-hannes@cmpxchg.org
+Link: https://lkml.kernel.org/r/20200316191333.115523-2-hannes@cmpxchg.org
 ---
- include/linux/psi.h  |  2 +-
- kernel/sched/psi.c   | 87 +++++++++++++++++++++++++++++++++----------
- kernel/sched/stats.h |  9 +----
- 3 files changed, 70 insertions(+), 28 deletions(-)
+ include/linux/psi_types.h | 10 +++++++++-
+ kernel/sched/core.c       |  2 ++
+ kernel/sched/psi.c        | 12 +++++++-----
+ kernel/sched/stats.h      | 28 ++++++++++++++++++++++++++++
+ 4 files changed, 46 insertions(+), 6 deletions(-)
 
-diff --git a/include/linux/psi.h b/include/linux/psi.h
-index 7b3de73..7361023 100644
---- a/include/linux/psi.h
-+++ b/include/linux/psi.h
-@@ -17,6 +17,8 @@ extern struct psi_group psi_system;
- void psi_init(void);
+diff --git a/include/linux/psi_types.h b/include/linux/psi_types.h
+index 07aaf9b..4b72584 100644
+--- a/include/linux/psi_types.h
++++ b/include/linux/psi_types.h
+@@ -14,13 +14,21 @@ enum psi_task_count {
+ 	NR_IOWAIT,
+ 	NR_MEMSTALL,
+ 	NR_RUNNING,
+-	NR_PSI_TASK_COUNTS = 3,
++	/*
++	 * This can't have values other than 0 or 1 and could be
++	 * implemented as a bit flag. But for now we still have room
++	 * in the first cacheline of psi_group_cpu, and this way we
++	 * don't have to special case any state tracking for it.
++	 */
++	NR_ONCPU,
++	NR_PSI_TASK_COUNTS = 4,
+ };
  
- void psi_task_change(struct task_struct *task, int clear, int set);
-+void psi_task_switch(struct task_struct *prev, struct task_struct *next,
-+		     bool sleep);
+ /* Task state bitmasks */
+ #define TSK_IOWAIT	(1 << NR_IOWAIT)
+ #define TSK_MEMSTALL	(1 << NR_MEMSTALL)
+ #define TSK_RUNNING	(1 << NR_RUNNING)
++#define TSK_ONCPU	(1 << NR_ONCPU)
  
- void psi_memstall_tick(struct task_struct *task, int cpu);
- void psi_memstall_enter(unsigned long *flags);
+ /* Resources that workloads could be stalled on */
+ enum psi_res {
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 014d4f7..c1f923d 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -4091,6 +4091,8 @@ static void __sched notrace __schedule(bool preempt)
+ 		 */
+ 		++*switch_count;
+ 
++		psi_sched_switch(prev, next, !task_on_rq_queued(prev));
++
+ 		trace_sched_switch(preempt, prev, next);
+ 
+ 		/* Also unlocks the rq: */
 diff --git a/kernel/sched/psi.c b/kernel/sched/psi.c
-index 5012829..955a124 100644
+index 0285207..5012829 100644
 --- a/kernel/sched/psi.c
 +++ b/kernel/sched/psi.c
-@@ -669,13 +669,14 @@ static void record_times(struct psi_group_cpu *groupc, int cpu,
- 		groupc->times[PSI_NONIDLE] += delta;
- }
+@@ -225,7 +225,7 @@ static bool test_state(unsigned int *tasks, enum psi_states state)
+ 	case PSI_MEM_FULL:
+ 		return tasks[NR_MEMSTALL] && !tasks[NR_RUNNING];
+ 	case PSI_CPU_SOME:
+-		return tasks[NR_RUNNING] > 1;
++		return tasks[NR_RUNNING] > tasks[NR_ONCPU];
+ 	case PSI_NONIDLE:
+ 		return tasks[NR_IOWAIT] || tasks[NR_MEMSTALL] ||
+ 			tasks[NR_RUNNING];
+@@ -695,10 +695,10 @@ static u32 psi_group_change(struct psi_group *group, int cpu,
+ 		if (!(m & (1 << t)))
+ 			continue;
+ 		if (groupc->tasks[t] == 0 && !psi_bug) {
+-			printk_deferred(KERN_ERR "psi: task underflow! cpu=%d t=%d tasks=[%u %u %u] clear=%x set=%x\n",
++			printk_deferred(KERN_ERR "psi: task underflow! cpu=%d t=%d tasks=[%u %u %u %u] clear=%x set=%x\n",
+ 					cpu, t, groupc->tasks[0],
+ 					groupc->tasks[1], groupc->tasks[2],
+-					clear, set);
++					groupc->tasks[3], clear, set);
+ 			psi_bug = 1;
+ 		}
+ 		groupc->tasks[t]--;
+@@ -916,9 +916,11 @@ void cgroup_move_task(struct task_struct *task, struct css_set *to)
  
--static u32 psi_group_change(struct psi_group *group, int cpu,
--			    unsigned int clear, unsigned int set)
-+static void psi_group_change(struct psi_group *group, int cpu,
-+			     unsigned int clear, unsigned int set,
-+			     bool wake_clock)
- {
- 	struct psi_group_cpu *groupc;
-+	u32 state_mask = 0;
- 	unsigned int t, m;
- 	enum psi_states s;
--	u32 state_mask = 0;
+ 	rq = task_rq_lock(task, &rf);
  
- 	groupc = per_cpu_ptr(group->pcpu, cpu);
+-	if (task_on_rq_queued(task))
++	if (task_on_rq_queued(task)) {
+ 		task_flags = TSK_RUNNING;
+-	else if (task->in_iowait)
++		if (task_current(rq, task))
++			task_flags |= TSK_ONCPU;
++	} else if (task->in_iowait)
+ 		task_flags = TSK_IOWAIT;
  
-@@ -717,7 +718,11 @@ static u32 psi_group_change(struct psi_group *group, int cpu,
- 
- 	write_seqcount_end(&groupc->seq);
- 
--	return state_mask;
-+	if (state_mask & group->poll_states)
-+		psi_schedule_poll_work(group, 1);
-+
-+	if (wake_clock && !delayed_work_pending(&group->avgs_work))
-+		schedule_delayed_work(&group->avgs_work, PSI_FREQ);
- }
- 
- static struct psi_group *iterate_groups(struct task_struct *task, void **iter)
-@@ -744,27 +749,32 @@ static struct psi_group *iterate_groups(struct task_struct *task, void **iter)
- 	return &psi_system;
- }
- 
--void psi_task_change(struct task_struct *task, int clear, int set)
-+static void psi_flags_change(struct task_struct *task, int clear, int set)
- {
--	int cpu = task_cpu(task);
--	struct psi_group *group;
--	bool wake_clock = true;
--	void *iter = NULL;
--
--	if (!task->pid)
--		return;
--
- 	if (((task->psi_flags & set) ||
- 	     (task->psi_flags & clear) != clear) &&
- 	    !psi_bug) {
- 		printk_deferred(KERN_ERR "psi: inconsistent task state! task=%d:%s cpu=%d psi_flags=%x clear=%x set=%x\n",
--				task->pid, task->comm, cpu,
-+				task->pid, task->comm, task_cpu(task),
- 				task->psi_flags, clear, set);
- 		psi_bug = 1;
- 	}
- 
- 	task->psi_flags &= ~clear;
- 	task->psi_flags |= set;
-+}
-+
-+void psi_task_change(struct task_struct *task, int clear, int set)
-+{
-+	int cpu = task_cpu(task);
-+	struct psi_group *group;
-+	bool wake_clock = true;
-+	void *iter = NULL;
-+
-+	if (!task->pid)
-+		return;
-+
-+	psi_flags_change(task, clear, set);
- 
- 	/*
- 	 * Periodic aggregation shuts off if there is a period of no
-@@ -777,14 +787,51 @@ void psi_task_change(struct task_struct *task, int clear, int set)
- 		     wq_worker_last_func(task) == psi_avgs_work))
- 		wake_clock = false;
- 
--	while ((group = iterate_groups(task, &iter))) {
--		u32 state_mask = psi_group_change(group, cpu, clear, set);
-+	while ((group = iterate_groups(task, &iter)))
-+		psi_group_change(group, cpu, clear, set, wake_clock);
-+}
-+
-+void psi_task_switch(struct task_struct *prev, struct task_struct *next,
-+		     bool sleep)
-+{
-+	struct psi_group *group, *common = NULL;
-+	int cpu = task_cpu(prev);
-+	void *iter;
-+
-+	if (next->pid) {
-+		psi_flags_change(next, 0, TSK_ONCPU);
-+		/*
-+		 * When moving state between tasks, the group that
-+		 * contains them both does not change: we can stop
-+		 * updating the tree once we reach the first common
-+		 * ancestor. Iterate @next's ancestors until we
-+		 * encounter @prev's state.
-+		 */
-+		iter = NULL;
-+		while ((group = iterate_groups(next, &iter))) {
-+			if (per_cpu_ptr(group->pcpu, cpu)->tasks[NR_ONCPU]) {
-+				common = group;
-+				break;
-+			}
-+
-+			psi_group_change(group, cpu, 0, TSK_ONCPU, true);
-+		}
-+	}
-+
-+	/*
-+	 * If this is a voluntary sleep, dequeue will have taken care
-+	 * of the outgoing TSK_ONCPU alongside TSK_RUNNING already. We
-+	 * only need to deal with it during preemption.
-+	 */
-+	if (sleep)
-+		return;
- 
--		if (state_mask & group->poll_states)
--			psi_schedule_poll_work(group, 1);
-+	if (prev->pid) {
-+		psi_flags_change(prev, TSK_ONCPU, 0);
- 
--		if (wake_clock && !delayed_work_pending(&group->avgs_work))
--			schedule_delayed_work(&group->avgs_work, PSI_FREQ);
-+		iter = NULL;
-+		while ((group = iterate_groups(prev, &iter)) && group != common)
-+			psi_group_change(group, cpu, TSK_ONCPU, 0, true);
- 	}
- }
- 
+ 	if (task->flags & PF_MEMSTALL)
 diff --git a/kernel/sched/stats.h b/kernel/sched/stats.h
-index 6ff0ac1..1339f5b 100644
+index ba683fe..6ff0ac1 100644
 --- a/kernel/sched/stats.h
 +++ b/kernel/sched/stats.h
-@@ -141,14 +141,7 @@ static inline void psi_sched_switch(struct task_struct *prev,
- 	if (static_branch_likely(&psi_disabled))
- 		return;
- 
--	/*
--	 * Clear the TSK_ONCPU state if the task was preempted. If
--	 * it's a voluntary sleep, dequeue will have taken care of it.
--	 */
--	if (!sleep)
--		psi_task_change(prev, TSK_ONCPU, 0);
--
--	psi_task_change(next, 0, TSK_ONCPU);
-+	psi_task_switch(prev, next, sleep);
+@@ -93,6 +93,14 @@ static inline void psi_dequeue(struct task_struct *p, bool sleep)
+ 		if (p->flags & PF_MEMSTALL)
+ 			clear |= TSK_MEMSTALL;
+ 	} else {
++		/*
++		 * When a task sleeps, schedule() dequeues it before
++		 * switching to the next one. Merge the clearing of
++		 * TSK_RUNNING and TSK_ONCPU to save an unnecessary
++		 * psi_task_change() call in psi_sched_switch().
++		 */
++		clear |= TSK_ONCPU;
++
+ 		if (p->in_iowait)
+ 			set |= TSK_IOWAIT;
+ 	}
+@@ -126,6 +134,23 @@ static inline void psi_ttwu_dequeue(struct task_struct *p)
+ 	}
  }
  
++static inline void psi_sched_switch(struct task_struct *prev,
++				    struct task_struct *next,
++				    bool sleep)
++{
++	if (static_branch_likely(&psi_disabled))
++		return;
++
++	/*
++	 * Clear the TSK_ONCPU state if the task was preempted. If
++	 * it's a voluntary sleep, dequeue will have taken care of it.
++	 */
++	if (!sleep)
++		psi_task_change(prev, TSK_ONCPU, 0);
++
++	psi_task_change(next, 0, TSK_ONCPU);
++}
++
  static inline void psi_task_tick(struct rq *rq)
+ {
+ 	if (static_branch_likely(&psi_disabled))
+@@ -138,6 +163,9 @@ static inline void psi_task_tick(struct rq *rq)
+ static inline void psi_enqueue(struct task_struct *p, bool wakeup) {}
+ static inline void psi_dequeue(struct task_struct *p, bool sleep) {}
+ static inline void psi_ttwu_dequeue(struct task_struct *p) {}
++static inline void psi_sched_switch(struct task_struct *prev,
++				    struct task_struct *next,
++				    bool sleep) {}
+ static inline void psi_task_tick(struct rq *rq) {}
+ #endif /* CONFIG_PSI */
+ 
