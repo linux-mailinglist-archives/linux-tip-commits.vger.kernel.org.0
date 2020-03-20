@@ -2,38 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DE7618CE2E
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 20 Mar 2020 13:58:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 736D018CE4F
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 20 Mar 2020 13:59:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727261AbgCTM62 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 20 Mar 2020 08:58:28 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:35660 "EHLO
+        id S1727128AbgCTM6K (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 20 Mar 2020 08:58:10 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:35604 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727365AbgCTM6Y (ORCPT
+        with ESMTP id S1727101AbgCTM6K (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 20 Mar 2020 08:58:24 -0400
+        Fri, 20 Mar 2020 08:58:10 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jFHDw-0003ia-5J; Fri, 20 Mar 2020 13:58:04 +0100
+        id 1jFHDx-0003j7-8t; Fri, 20 Mar 2020 13:58:05 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C054A1C22BE;
-        Fri, 20 Mar 2020 13:58:03 +0100 (CET)
-Date:   Fri, 20 Mar 2020 12:58:03 -0000
-From:   "tip-bot2 for Liang Chen" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id DD2721C22C0;
+        Fri, 20 Mar 2020 13:58:04 +0100 (CET)
+Date:   Fri, 20 Mar 2020 12:58:04 -0000
+From:   "tip-bot2 for Yafang Shao" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] kthread: Do not preempt current task if it is going
- to call schedule()
-Cc:     Liang Chen <cl@rock-chips.com>,
+Subject: [tip: sched/core] psi: Move PF_MEMSTALL out of task->flags
+Cc:     Johannes Weiner <hannes@cmpxchg.org>,
+        Yafang Shao <laoar.shao@gmail.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200306070133.18335-2-cl@rock-chips.com>
-References: <20200306070133.18335-2-cl@rock-chips.com>
+In-Reply-To: <1584408485-1921-1-git-send-email-laoar.shao@gmail.com>
+References: <1584408485-1921-1-git-send-email-laoar.shao@gmail.com>
 MIME-Version: 1.0
-Message-ID: <158470908349.28353.3855924848715964020.tip-bot2@tip-bot2>
+Message-ID: <158470908459.28353.7390210153247885071.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,79 +48,154 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     26c7295be0c5e6da3fa45970e9748be983175b1b
-Gitweb:        https://git.kernel.org/tip/26c7295be0c5e6da3fa45970e9748be983175b1b
-Author:        Liang Chen <cl@rock-chips.com>
-AuthorDate:    Fri, 06 Mar 2020 15:01:33 +08:00
+Commit-ID:     1066d1b6974e095d5a6c472ad9180a957b496cd6
+Gitweb:        https://git.kernel.org/tip/1066d1b6974e095d5a6c472ad9180a957b496cd6
+Author:        Yafang Shao <laoar.shao@gmail.com>
+AuthorDate:    Mon, 16 Mar 2020 21:28:05 -04:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 20 Mar 2020 13:06:20 +01:00
+CommitterDate: Fri, 20 Mar 2020 13:06:19 +01:00
 
-kthread: Do not preempt current task if it is going to call schedule()
+psi: Move PF_MEMSTALL out of task->flags
 
-when we create a kthread with ktrhead_create_on_cpu(),the child thread
-entry is ktread.c:ktrhead() which will be preempted by the parent after
-call complete(done) while schedule() is not called yet,then the parent
-will call wait_task_inactive(child) but the child is still on the runqueue,
-so the parent will schedule_hrtimeout() for 1 jiffy,it will waste a lot of
-time,especially on startup.
+The task->flags is a 32-bits flag, in which 31 bits have already been
+consumed. So it is hardly to introduce other new per process flag.
+Currently there're still enough spaces in the bit-field section of
+task_struct, so we can define the memstall state as a single bit in
+task_struct instead.
+This patch also removes an out-of-date comment pointed by Matthew.
 
-  parent                             child
-ktrhead_create_on_cpu()
-  wait_fo_completion(&done) -----> ktread.c:ktrhead()
-                             |----- complete(done);--wakeup and preempted by parent
- kthread_bind() <------------|  |-> schedule();--dequeue here
-  wait_task_inactive(child)     |
-   schedule_hrtimeout(1 jiffy) -|
-
-So we hope the child just wakeup parent but not preempted by parent, and the
-child is going to call schedule() soon,then the parent will not call
-schedule_hrtimeout(1 jiffy) as the child is already dequeue.
-
-The same issue for ktrhead_park()&&kthread_parkme().
-This patch can save 120ms on rk312x startup with CONFIG_HZ=300.
-
-Signed-off-by: Liang Chen <cl@rock-chips.com>
+Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
+Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
-Link: https://lkml.kernel.org/r/20200306070133.18335-2-cl@rock-chips.com
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Link: https://lkml.kernel.org/r/1584408485-1921-1-git-send-email-laoar.shao@gmail.com
 ---
- kernel/kthread.c | 17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
+ include/linux/sched.h |  6 ++++--
+ kernel/sched/psi.c    | 12 ++++++------
+ kernel/sched/stats.h  | 10 +++++-----
+ 3 files changed, 15 insertions(+), 13 deletions(-)
 
-diff --git a/kernel/kthread.c b/kernel/kthread.c
-index b262f47..bfbfa48 100644
---- a/kernel/kthread.c
-+++ b/kernel/kthread.c
-@@ -199,8 +199,15 @@ static void __kthread_parkme(struct kthread *self)
- 		if (!test_bit(KTHREAD_SHOULD_PARK, &self->flags))
- 			break;
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index 2e9199b..09bddd9 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -785,9 +785,12 @@ struct task_struct {
+ 	unsigned			frozen:1;
+ #endif
+ #ifdef CONFIG_BLK_CGROUP
+-	/* to be used once the psi infrastructure lands upstream. */
+ 	unsigned			use_memdelay:1;
+ #endif
++#ifdef CONFIG_PSI
++	/* Stalled due to lack of memory */
++	unsigned			in_memstall:1;
++#endif
  
-+		/*
-+		 * Thread is going to call schedule(), do not preempt it,
-+		 * or the caller of kthread_park() may spend more time in
-+		 * wait_task_inactive().
-+		 */
-+		preempt_disable();
- 		complete(&self->parked);
--		schedule();
-+		schedule_preempt_disabled();
-+		preempt_enable();
- 	}
- 	__set_current_state(TASK_RUNNING);
+ 	unsigned long			atomic_flags; /* Flags requiring atomic access. */
+ 
+@@ -1480,7 +1483,6 @@ extern struct pid *cad_pid;
+ #define PF_KTHREAD		0x00200000	/* I am a kernel thread */
+ #define PF_RANDOMIZE		0x00400000	/* Randomize virtual address space */
+ #define PF_SWAPWRITE		0x00800000	/* Allowed to write to swap */
+-#define PF_MEMSTALL		0x01000000	/* Stalled due to lack of memory */
+ #define PF_UMH			0x02000000	/* I'm an Usermodehelper process */
+ #define PF_NO_SETAFFINITY	0x04000000	/* Userland is not allowed to meddle with cpus_mask */
+ #define PF_MCE_EARLY		0x08000000      /* Early kill for mce process policy */
+diff --git a/kernel/sched/psi.c b/kernel/sched/psi.c
+index 955a124..8f45cdb 100644
+--- a/kernel/sched/psi.c
++++ b/kernel/sched/psi.c
+@@ -865,17 +865,17 @@ void psi_memstall_enter(unsigned long *flags)
+ 	if (static_branch_likely(&psi_disabled))
+ 		return;
+ 
+-	*flags = current->flags & PF_MEMSTALL;
++	*flags = current->in_memstall;
+ 	if (*flags)
+ 		return;
+ 	/*
+-	 * PF_MEMSTALL setting & accounting needs to be atomic wrt
++	 * in_memstall setting & accounting needs to be atomic wrt
+ 	 * changes to the task's scheduling state, otherwise we can
+ 	 * race with CPU migration.
+ 	 */
+ 	rq = this_rq_lock_irq(&rf);
+ 
+-	current->flags |= PF_MEMSTALL;
++	current->in_memstall = 1;
+ 	psi_task_change(current, 0, TSK_MEMSTALL);
+ 
+ 	rq_unlock_irq(rq, &rf);
+@@ -898,13 +898,13 @@ void psi_memstall_leave(unsigned long *flags)
+ 	if (*flags)
+ 		return;
+ 	/*
+-	 * PF_MEMSTALL clearing & accounting needs to be atomic wrt
++	 * in_memstall clearing & accounting needs to be atomic wrt
+ 	 * changes to the task's scheduling state, otherwise we could
+ 	 * race with CPU migration.
+ 	 */
+ 	rq = this_rq_lock_irq(&rf);
+ 
+-	current->flags &= ~PF_MEMSTALL;
++	current->in_memstall = 0;
+ 	psi_task_change(current, TSK_MEMSTALL, 0);
+ 
+ 	rq_unlock_irq(rq, &rf);
+@@ -970,7 +970,7 @@ void cgroup_move_task(struct task_struct *task, struct css_set *to)
+ 	} else if (task->in_iowait)
+ 		task_flags = TSK_IOWAIT;
+ 
+-	if (task->flags & PF_MEMSTALL)
++	if (task->in_memstall)
+ 		task_flags |= TSK_MEMSTALL;
+ 
+ 	if (task_flags)
+diff --git a/kernel/sched/stats.h b/kernel/sched/stats.h
+index 1339f5b..33d0daf 100644
+--- a/kernel/sched/stats.h
++++ b/kernel/sched/stats.h
+@@ -70,7 +70,7 @@ static inline void psi_enqueue(struct task_struct *p, bool wakeup)
+ 		return;
+ 
+ 	if (!wakeup || p->sched_psi_wake_requeue) {
+-		if (p->flags & PF_MEMSTALL)
++		if (p->in_memstall)
+ 			set |= TSK_MEMSTALL;
+ 		if (p->sched_psi_wake_requeue)
+ 			p->sched_psi_wake_requeue = 0;
+@@ -90,7 +90,7 @@ static inline void psi_dequeue(struct task_struct *p, bool sleep)
+ 		return;
+ 
+ 	if (!sleep) {
+-		if (p->flags & PF_MEMSTALL)
++		if (p->in_memstall)
+ 			clear |= TSK_MEMSTALL;
+ 	} else {
+ 		/*
+@@ -117,14 +117,14 @@ static inline void psi_ttwu_dequeue(struct task_struct *p)
+ 	 * deregister its sleep-persistent psi states from the old
+ 	 * queue, and let psi_enqueue() know it has to requeue.
+ 	 */
+-	if (unlikely(p->in_iowait || (p->flags & PF_MEMSTALL))) {
++	if (unlikely(p->in_iowait || p->in_memstall)) {
+ 		struct rq_flags rf;
+ 		struct rq *rq;
+ 		int clear = 0;
+ 
+ 		if (p->in_iowait)
+ 			clear |= TSK_IOWAIT;
+-		if (p->flags & PF_MEMSTALL)
++		if (p->in_memstall)
+ 			clear |= TSK_MEMSTALL;
+ 
+ 		rq = __task_rq_lock(p, &rf);
+@@ -149,7 +149,7 @@ static inline void psi_task_tick(struct rq *rq)
+ 	if (static_branch_likely(&psi_disabled))
+ 		return;
+ 
+-	if (unlikely(rq->curr->flags & PF_MEMSTALL))
++	if (unlikely(rq->curr->in_memstall))
+ 		psi_memstall_tick(rq->curr, cpu_of(rq));
  }
-@@ -245,8 +252,14 @@ static int kthread(void *_create)
- 	/* OK, tell user we're spawned, wait for stop or wakeup */
- 	__set_current_state(TASK_UNINTERRUPTIBLE);
- 	create->result = current;
-+	/*
-+	 * Thread is going to call schedule(), do not preempt it,
-+	 * or the creator may spend more time in wait_task_inactive().
-+	 */
-+	preempt_disable();
- 	complete(done);
--	schedule();
-+	schedule_preempt_disabled();
-+	preempt_enable();
- 
- 	ret = -EINTR;
- 	if (!test_bit(KTHREAD_SHOULD_STOP, &self->flags)) {
+ #else /* CONFIG_PSI */
