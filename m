@@ -2,36 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 880E718CE22
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 20 Mar 2020 13:58:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 26AA018CE42
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 20 Mar 2020 13:59:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726814AbgCTM6H (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 20 Mar 2020 08:58:07 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:35575 "EHLO
+        id S1727230AbgCTM6N (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 20 Mar 2020 08:58:13 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:35632 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726955AbgCTM6H (ORCPT
+        with ESMTP id S1727183AbgCTM6M (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 20 Mar 2020 08:58:07 -0400
+        Fri, 20 Mar 2020 08:58:12 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jFHDu-0003hk-P5; Fri, 20 Mar 2020 13:58:02 +0100
+        id 1jFHDv-0003iT-QJ; Fri, 20 Mar 2020 13:58:03 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5DB991C22BF;
-        Fri, 20 Mar 2020 13:58:02 +0100 (CET)
-Date:   Fri, 20 Mar 2020 12:58:02 -0000
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 685F31C22BF;
+        Fri, 20 Mar 2020 13:58:03 +0100 (CET)
+Date:   Fri, 20 Mar 2020 12:58:03 -0000
+From:   "tip-bot2 for Qais Yousef" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] x86/optprobe: Fix OPTPROBE vs UACCESS
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Masami Hiramatsu <mhiramat@kernel.org>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200305092130.GU2596@hirez.programming.kicks-ass.net>
-References: <20200305092130.GU2596@hirez.programming.kicks-ass.net>
+Subject: [tip: sched/core] sched/rt: cpupri_find: Trigger a full search as fallback
+Cc:     Steven Rostedt <rostedt@goodmis.org>,
+        Qais Yousef <qais.yousef@arm.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200310142219.syxzn5ljpdxqtbgx@e107158-lin.cambridge.arm.com>
+References: <20200310142219.syxzn5ljpdxqtbgx@e107158-lin.cambridge.arm.com>
 MIME-Version: 1.0
-Message-ID: <158470908209.28353.9034754166916134439.tip-bot2@tip-bot2>
+Message-ID: <158470908311.28353.10090988248383112451.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -45,108 +46,105 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/core branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     d8a738689794c42c3844284b99ddf165d10a724e
-Gitweb:        https://git.kernel.org/tip/d8a738689794c42c3844284b99ddf165d10a724e
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Thu, 05 Mar 2020 10:21:30 +01:00
+Commit-ID:     e94f80f6c49020008e6fa0f3d4b806b8595d17d8
+Gitweb:        https://git.kernel.org/tip/e94f80f6c49020008e6fa0f3d4b806b8595d17d8
+Author:        Qais Yousef <qais.yousef@arm.com>
+AuthorDate:    Thu, 05 Mar 2020 10:24:50 
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 20 Mar 2020 13:06:22 +01:00
+CommitterDate: Fri, 20 Mar 2020 13:06:20 +01:00
 
-x86/optprobe: Fix OPTPROBE vs UACCESS
+sched/rt: cpupri_find: Trigger a full search as fallback
 
-While looking at an objtool UACCESS warning, it suddenly occurred to me
-that it is entirely possible to have an OPTPROBE right in the middle of
-an UACCESS region.
+If we failed to find a fitting CPU, in cpupri_find(), we only fallback
+to the level we found a hit at.
 
-In this case we must of course clear FLAGS.AC while running the KPROBE.
-Luckily the trampoline already saves/restores [ER]FLAGS, so all we need
-to do is inject a CLAC. Unfortunately we cannot use ALTERNATIVE() in the
-trampoline text, so we have to frob that manually.
+But Steve suggested to fallback to a second full scan instead as this
+could be a better effort.
 
-Fixes: ca0bbc70f147 ("sched/x86_64: Don't save flags on context switch")
+	https://lore.kernel.org/lkml/20200304135404.146c56eb@gandalf.local.home/
+
+We trigger the 2nd search unconditionally since the argument about
+triggering a full search is that the recorded fall back level might have
+become empty by then. Which means storing any data about what happened
+would be meaningless and stale.
+
+I had a humble try at timing it and it seemed okay for the small 6 CPUs
+system I was running on
+
+	https://lore.kernel.org/lkml/20200305124324.42x6ehjxbnjkklnh@e107158-lin.cambridge.arm.com/
+
+On large system this second full scan could be expensive. But there are
+no users outside capacity awareness for this fitness function at the
+moment. Heterogeneous systems tend to be small with 8cores in total.
+
+Suggested-by: Steven Rostedt <rostedt@goodmis.org>
+Signed-off-by: Qais Yousef <qais.yousef@arm.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Masami Hiramatsu <mhiramat@kernel.org>
-Link: https://lkml.kernel.org/r/20200305092130.GU2596@hirez.programming.kicks-ass.net
+Reviewed-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
+Link: https://lkml.kernel.org/r/20200310142219.syxzn5ljpdxqtbgx@e107158-lin.cambridge.arm.com
 ---
- arch/x86/include/asm/kprobes.h |  1 +
- arch/x86/kernel/kprobes/opt.c  | 25 +++++++++++++++++++++++++
- 2 files changed, 26 insertions(+)
+ kernel/sched/cpupri.c | 29 ++++++-----------------------
+ 1 file changed, 6 insertions(+), 23 deletions(-)
 
-diff --git a/arch/x86/include/asm/kprobes.h b/arch/x86/include/asm/kprobes.h
-index 95b1f05..073eb7a 100644
---- a/arch/x86/include/asm/kprobes.h
-+++ b/arch/x86/include/asm/kprobes.h
-@@ -36,6 +36,7 @@ typedef u8 kprobe_opcode_t;
- 
- /* optinsn template addresses */
- extern __visible kprobe_opcode_t optprobe_template_entry[];
-+extern __visible kprobe_opcode_t optprobe_template_clac[];
- extern __visible kprobe_opcode_t optprobe_template_val[];
- extern __visible kprobe_opcode_t optprobe_template_call[];
- extern __visible kprobe_opcode_t optprobe_template_end[];
-diff --git a/arch/x86/kernel/kprobes/opt.c b/arch/x86/kernel/kprobes/opt.c
-index 3f45b5c..ea13f68 100644
---- a/arch/x86/kernel/kprobes/opt.c
-+++ b/arch/x86/kernel/kprobes/opt.c
-@@ -71,6 +71,21 @@ found:
- 	return (unsigned long)buf;
- }
- 
-+static void synthesize_clac(kprobe_opcode_t *addr)
-+{
-+	/*
-+	 * Can't be static_cpu_has() due to how objtool treats this feature bit.
-+	 * This isn't a fast path anyway.
-+	 */
-+	if (!boot_cpu_has(X86_FEATURE_SMAP))
-+		return;
-+
-+	/* Replace the NOP3 with CLAC */
-+	addr[0] = 0x0f;
-+	addr[1] = 0x01;
-+	addr[2] = 0xca;
-+}
-+
- /* Insert a move instruction which sets a pointer to eax/rdi (1st arg). */
- static void synthesize_set_arg1(kprobe_opcode_t *addr, unsigned long val)
+diff --git a/kernel/sched/cpupri.c b/kernel/sched/cpupri.c
+index dd3f16d..0033731 100644
+--- a/kernel/sched/cpupri.c
++++ b/kernel/sched/cpupri.c
+@@ -122,8 +122,7 @@ int cpupri_find_fitness(struct cpupri *cp, struct task_struct *p,
+ 		bool (*fitness_fn)(struct task_struct *p, int cpu))
  {
-@@ -92,6 +107,9 @@ asm (
- 			/* We don't bother saving the ss register */
- 			"	pushq %rsp\n"
- 			"	pushfq\n"
-+			".global optprobe_template_clac\n"
-+			"optprobe_template_clac:\n"
-+			ASM_NOP3
- 			SAVE_REGS_STRING
- 			"	movq %rsp, %rsi\n"
- 			".global optprobe_template_val\n"
-@@ -111,6 +129,9 @@ asm (
- #else /* CONFIG_X86_32 */
- 			"	pushl %esp\n"
- 			"	pushfl\n"
-+			".global optprobe_template_clac\n"
-+			"optprobe_template_clac:\n"
-+			ASM_NOP3
- 			SAVE_REGS_STRING
- 			"	movl %esp, %edx\n"
- 			".global optprobe_template_val\n"
-@@ -134,6 +155,8 @@ asm (
- void optprobe_template_func(void);
- STACK_FRAME_NON_STANDARD(optprobe_template_func);
+ 	int task_pri = convert_prio(p->prio);
+-	int best_unfit_idx = -1;
+-	int idx = 0, cpu;
++	int idx, cpu;
  
-+#define TMPL_CLAC_IDX \
-+	((long)optprobe_template_clac - (long)optprobe_template_entry)
- #define TMPL_MOVE_IDX \
- 	((long)optprobe_template_val - (long)optprobe_template_entry)
- #define TMPL_CALL_IDX \
-@@ -389,6 +412,8 @@ int arch_prepare_optimized_kprobe(struct optimized_kprobe *op,
- 	op->optinsn.size = ret;
- 	len = TMPL_END_IDX + op->optinsn.size;
+ 	BUG_ON(task_pri >= CPUPRI_NR_PRIORITIES);
  
-+	synthesize_clac(buf + TMPL_CLAC_IDX);
-+
- 	/* Set probe information */
- 	synthesize_set_arg1(buf + TMPL_MOVE_IDX, (unsigned long)op);
+@@ -145,31 +144,15 @@ int cpupri_find_fitness(struct cpupri *cp, struct task_struct *p,
+ 		 * If no CPU at the current priority can fit the task
+ 		 * continue looking
+ 		 */
+-		if (cpumask_empty(lowest_mask)) {
+-			/*
+-			 * Store our fallback priority in case we
+-			 * didn't find a fitting CPU
+-			 */
+-			if (best_unfit_idx == -1)
+-				best_unfit_idx = idx;
+-
++		if (cpumask_empty(lowest_mask))
+ 			continue;
+-		}
  
+ 		return 1;
+ 	}
+ 
+ 	/*
+-	 * If we failed to find a fitting lowest_mask, make sure we fall back
+-	 * to the last known unfitting lowest_mask.
+-	 *
+-	 * Note that the map of the recorded idx might have changed since then,
+-	 * so we must ensure to do the full dance to make sure that level still
+-	 * holds a valid lowest_mask.
+-	 *
+-	 * As per above, the map could have been concurrently emptied while we
+-	 * were busy searching for a fitting lowest_mask at the other priority
+-	 * levels.
++	 * If we failed to find a fitting lowest_mask, kick off a new search
++	 * but without taking into account any fitness criteria this time.
+ 	 *
+ 	 * This rule favours honouring priority over fitting the task in the
+ 	 * correct CPU (Capacity Awareness being the only user now).
+@@ -184,8 +167,8 @@ int cpupri_find_fitness(struct cpupri *cp, struct task_struct *p,
+ 	 * must do proper RT planning to avoid overloading the system if they
+ 	 * really care.
+ 	 */
+-	if (best_unfit_idx != -1)
+-		return __cpupri_find(cp, p, lowest_mask, best_unfit_idx);
++	if (fitness_fn)
++		return cpupri_find(cp, p, lowest_mask);
+ 
+ 	return 0;
+ }
