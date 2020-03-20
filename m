@@ -2,36 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B54B18CE28
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 20 Mar 2020 13:58:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 880E718CE22
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 20 Mar 2020 13:58:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727194AbgCTM6M (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 20 Mar 2020 08:58:12 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:35614 "EHLO
+        id S1726814AbgCTM6H (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 20 Mar 2020 08:58:07 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:35575 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727114AbgCTM6L (ORCPT
+        with ESMTP id S1726955AbgCTM6H (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 20 Mar 2020 08:58:11 -0400
+        Fri, 20 Mar 2020 08:58:07 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jFHDv-0003iS-Hr; Fri, 20 Mar 2020 13:58:03 +0100
+        id 1jFHDu-0003hk-P5; Fri, 20 Mar 2020 13:58:02 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 0CD821C22BE;
-        Fri, 20 Mar 2020 13:58:03 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5DB991C22BF;
+        Fri, 20 Mar 2020 13:58:02 +0100 (CET)
 Date:   Fri, 20 Mar 2020 12:58:02 -0000
-From:   "tip-bot2 for Tao Zhou" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/fair: Fix condition of avg_load calculation
-Cc:     Tao Zhou <ouwen210@hotmail.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Mel Gorman <mgorman@suse.de>, x86 <x86@kernel.org>,
+Subject: [tip: perf/core] x86/optprobe: Fix OPTPROBE vs UACCESS
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200305092130.GU2596@hirez.programming.kicks-ass.net>
+References: <20200305092130.GU2596@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-Message-ID: <158470908271.28353.7933643223235675222.tip-bot2@tip-bot2>
+Message-ID: <158470908209.28353.9034754166916134439.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -45,50 +45,108 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     6c8116c914b65be5e4d6f66d69c8142eb0648c22
-Gitweb:        https://git.kernel.org/tip/6c8116c914b65be5e4d6f66d69c8142eb0648c22
-Author:        Tao Zhou <ouwen210@hotmail.com>
-AuthorDate:    Thu, 19 Mar 2020 11:39:20 +08:00
+Commit-ID:     d8a738689794c42c3844284b99ddf165d10a724e
+Gitweb:        https://git.kernel.org/tip/d8a738689794c42c3844284b99ddf165d10a724e
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Thu, 05 Mar 2020 10:21:30 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 20 Mar 2020 13:06:20 +01:00
+CommitterDate: Fri, 20 Mar 2020 13:06:22 +01:00
 
-sched/fair: Fix condition of avg_load calculation
+x86/optprobe: Fix OPTPROBE vs UACCESS
 
-In update_sg_wakeup_stats(), the comment says:
+While looking at an objtool UACCESS warning, it suddenly occurred to me
+that it is entirely possible to have an OPTPROBE right in the middle of
+an UACCESS region.
 
-Computing avg_load makes sense only when group is fully
-busy or overloaded.
+In this case we must of course clear FLAGS.AC while running the KPROBE.
+Luckily the trampoline already saves/restores [ER]FLAGS, so all we need
+to do is inject a CLAC. Unfortunately we cannot use ALTERNATIVE() in the
+trampoline text, so we have to frob that manually.
 
-But, the code below this comment does not check like this.
-
->From reading the code about avg_load in other functions, I
-confirm that avg_load should be calculated in fully busy or
-overloaded case. The comment is correct and the checking
-condition is wrong. So, change that condition.
-
-Fixes: 57abff067a08 ("sched/fair: Rework find_idlest_group()")
-Signed-off-by: Tao Zhou <ouwen210@hotmail.com>
+Fixes: ca0bbc70f147 ("sched/x86_64: Don't save flags on context switch")
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
-Acked-by: Mel Gorman <mgorman@suse.de>
-Link: https://lkml.kernel.org/r/Message-ID:
+Acked-by: Masami Hiramatsu <mhiramat@kernel.org>
+Link: https://lkml.kernel.org/r/20200305092130.GU2596@hirez.programming.kicks-ass.net
 ---
- kernel/sched/fair.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/x86/include/asm/kprobes.h |  1 +
+ arch/x86/kernel/kprobes/opt.c  | 25 +++++++++++++++++++++++++
+ 2 files changed, 26 insertions(+)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 783356f..d7fb20a 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -8631,7 +8631,8 @@ static inline void update_sg_wakeup_stats(struct sched_domain *sd,
- 	 * Computing avg_load makes sense only when group is fully busy or
- 	 * overloaded
- 	 */
--	if (sgs->group_type < group_fully_busy)
-+	if (sgs->group_type == group_fully_busy ||
-+		sgs->group_type == group_overloaded)
- 		sgs->avg_load = (sgs->group_load * SCHED_CAPACITY_SCALE) /
- 				sgs->group_capacity;
+diff --git a/arch/x86/include/asm/kprobes.h b/arch/x86/include/asm/kprobes.h
+index 95b1f05..073eb7a 100644
+--- a/arch/x86/include/asm/kprobes.h
++++ b/arch/x86/include/asm/kprobes.h
+@@ -36,6 +36,7 @@ typedef u8 kprobe_opcode_t;
+ 
+ /* optinsn template addresses */
+ extern __visible kprobe_opcode_t optprobe_template_entry[];
++extern __visible kprobe_opcode_t optprobe_template_clac[];
+ extern __visible kprobe_opcode_t optprobe_template_val[];
+ extern __visible kprobe_opcode_t optprobe_template_call[];
+ extern __visible kprobe_opcode_t optprobe_template_end[];
+diff --git a/arch/x86/kernel/kprobes/opt.c b/arch/x86/kernel/kprobes/opt.c
+index 3f45b5c..ea13f68 100644
+--- a/arch/x86/kernel/kprobes/opt.c
++++ b/arch/x86/kernel/kprobes/opt.c
+@@ -71,6 +71,21 @@ found:
+ 	return (unsigned long)buf;
  }
+ 
++static void synthesize_clac(kprobe_opcode_t *addr)
++{
++	/*
++	 * Can't be static_cpu_has() due to how objtool treats this feature bit.
++	 * This isn't a fast path anyway.
++	 */
++	if (!boot_cpu_has(X86_FEATURE_SMAP))
++		return;
++
++	/* Replace the NOP3 with CLAC */
++	addr[0] = 0x0f;
++	addr[1] = 0x01;
++	addr[2] = 0xca;
++}
++
+ /* Insert a move instruction which sets a pointer to eax/rdi (1st arg). */
+ static void synthesize_set_arg1(kprobe_opcode_t *addr, unsigned long val)
+ {
+@@ -92,6 +107,9 @@ asm (
+ 			/* We don't bother saving the ss register */
+ 			"	pushq %rsp\n"
+ 			"	pushfq\n"
++			".global optprobe_template_clac\n"
++			"optprobe_template_clac:\n"
++			ASM_NOP3
+ 			SAVE_REGS_STRING
+ 			"	movq %rsp, %rsi\n"
+ 			".global optprobe_template_val\n"
+@@ -111,6 +129,9 @@ asm (
+ #else /* CONFIG_X86_32 */
+ 			"	pushl %esp\n"
+ 			"	pushfl\n"
++			".global optprobe_template_clac\n"
++			"optprobe_template_clac:\n"
++			ASM_NOP3
+ 			SAVE_REGS_STRING
+ 			"	movl %esp, %edx\n"
+ 			".global optprobe_template_val\n"
+@@ -134,6 +155,8 @@ asm (
+ void optprobe_template_func(void);
+ STACK_FRAME_NON_STANDARD(optprobe_template_func);
+ 
++#define TMPL_CLAC_IDX \
++	((long)optprobe_template_clac - (long)optprobe_template_entry)
+ #define TMPL_MOVE_IDX \
+ 	((long)optprobe_template_val - (long)optprobe_template_entry)
+ #define TMPL_CALL_IDX \
+@@ -389,6 +412,8 @@ int arch_prepare_optimized_kprobe(struct optimized_kprobe *op,
+ 	op->optinsn.size = ret;
+ 	len = TMPL_END_IDX + op->optinsn.size;
+ 
++	synthesize_clac(buf + TMPL_CLAC_IDX);
++
+ 	/* Set probe information */
+ 	synthesize_set_arg1(buf + TMPL_MOVE_IDX, (unsigned long)op);
+ 
