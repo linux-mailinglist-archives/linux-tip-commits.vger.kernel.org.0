@@ -2,37 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A969A18CBBC
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 20 Mar 2020 11:37:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0294318CE55
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 20 Mar 2020 13:59:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726767AbgCTKhC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 20 Mar 2020 06:37:02 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:35238 "EHLO
+        id S1727133AbgCTM7S (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 20 Mar 2020 08:59:18 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:35600 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726726AbgCTKhC (ORCPT
+        with ESMTP id S1727097AbgCTM6K (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 20 Mar 2020 06:37:02 -0400
+        Fri, 20 Mar 2020 08:58:10 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jFF1L-0001re-1t; Fri, 20 Mar 2020 11:36:55 +0100
+        id 1jFHDt-0003gx-AM; Fri, 20 Mar 2020 13:58:01 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 725111C0DD3;
-        Fri, 20 Mar 2020 11:36:54 +0100 (CET)
-Date:   Fri, 20 Mar 2020 10:36:54 -0000
-From:   "tip-bot2 for Andy Lutomirski" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id DF09D1C22BF;
+        Fri, 20 Mar 2020 13:58:00 +0100 (CET)
+Date:   Fri, 20 Mar 2020 12:58:00 -0000
+From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/misc] selftests/x86/ptrace_syscall_32: Fix no-vDSO segfault
-Cc:     kbuild test robot <lkp@intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <faaf688265a7e1a5b944d6f8bc0f6368158306d3.1584052409.git.luto@kernel.org>
-References: <faaf688265a7e1a5b944d6f8bc0f6368158306d3.1584052409.git.luto@kernel.org>
+Subject: [tip: perf/core] perf/x86/intel/uncore: Factor out __snr_uncore_mmio_init_box
+Cc:     Kan Liang <kan.liang@linux.intel.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <1584470314-46657-2-git-send-email-kan.liang@linux.intel.com>
+References: <1584470314-46657-2-git-send-email-kan.liang@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <158470061410.28353.14485077057273139954.tip-bot2@tip-bot2>
+Message-ID: <158470908062.28353.5000456330988388813.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -46,43 +45,67 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/misc branch of tip:
+The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     630b99ab60aa972052a4202a1ff96c7e45eb0054
-Gitweb:        https://git.kernel.org/tip/630b99ab60aa972052a4202a1ff96c7e45eb0054
-Author:        Andy Lutomirski <luto@kernel.org>
-AuthorDate:    Thu, 12 Mar 2020 15:35:51 -07:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Fri, 20 Mar 2020 11:28:47 +01:00
+Commit-ID:     3442a9ecb8e72a33c28a2b969b766c659830e410
+Gitweb:        https://git.kernel.org/tip/3442a9ecb8e72a33c28a2b969b766c659830e410
+Author:        Kan Liang <kan.liang@linux.intel.com>
+AuthorDate:    Tue, 17 Mar 2020 11:38:33 -07:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Fri, 20 Mar 2020 13:06:23 +01:00
 
-selftests/x86/ptrace_syscall_32: Fix no-vDSO segfault
+perf/x86/intel/uncore: Factor out __snr_uncore_mmio_init_box
 
-If AT_SYSINFO is not present, don't try to call a NULL pointer.
+The IMC uncore unit in Ice Lake server can only be accessed by MMIO,
+which is similar as Snow Ridge.
+Factor out __snr_uncore_mmio_init_box which can be shared with Ice Lake
+server in the following patch.
 
-Reported-by: kbuild test robot <lkp@intel.com>
-Signed-off-by: Andy Lutomirski <luto@kernel.org>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/faaf688265a7e1a5b944d6f8bc0f6368158306d3.1584052409.git.luto@kernel.org
+No functional changes.
+
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/1584470314-46657-2-git-send-email-kan.liang@linux.intel.com
 ---
- tools/testing/selftests/x86/ptrace_syscall.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ arch/x86/events/intel/uncore_snbep.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/x86/ptrace_syscall.c b/tools/testing/selftests/x86/ptrace_syscall.c
-index 6f22238..12aaa06 100644
---- a/tools/testing/selftests/x86/ptrace_syscall.c
-+++ b/tools/testing/selftests/x86/ptrace_syscall.c
-@@ -414,8 +414,12 @@ int main()
+diff --git a/arch/x86/events/intel/uncore_snbep.c b/arch/x86/events/intel/uncore_snbep.c
+index ad20220..01023f0 100644
+--- a/arch/x86/events/intel/uncore_snbep.c
++++ b/arch/x86/events/intel/uncore_snbep.c
+@@ -4380,10 +4380,10 @@ static struct pci_dev *snr_uncore_get_mc_dev(int id)
+ 	return mc_dev;
+ }
  
- #if defined(__i386__) && (!defined(__GLIBC__) || __GLIBC__ > 2 || __GLIBC_MINOR__ >= 16)
- 	vsyscall32 = (void *)getauxval(AT_SYSINFO);
--	printf("[RUN]\tCheck AT_SYSINFO return regs\n");
--	test_sys32_regs(do_full_vsyscall32);
-+	if (vsyscall32) {
-+		printf("[RUN]\tCheck AT_SYSINFO return regs\n");
-+		test_sys32_regs(do_full_vsyscall32);
-+	} else {
-+		printf("[SKIP]\tAT_SYSINFO is not available\n");
-+	}
- #endif
+-static void snr_uncore_mmio_init_box(struct intel_uncore_box *box)
++static void __snr_uncore_mmio_init_box(struct intel_uncore_box *box,
++				       unsigned int box_ctl, int mem_offset)
+ {
+ 	struct pci_dev *pdev = snr_uncore_get_mc_dev(box->dieid);
+-	unsigned int box_ctl = uncore_mmio_box_ctl(box);
+ 	resource_size_t addr;
+ 	u32 pci_dword;
  
- 	test_ptrace_syscall_restart();
+@@ -4393,7 +4393,7 @@ static void snr_uncore_mmio_init_box(struct intel_uncore_box *box)
+ 	pci_read_config_dword(pdev, SNR_IMC_MMIO_BASE_OFFSET, &pci_dword);
+ 	addr = (pci_dword & SNR_IMC_MMIO_BASE_MASK) << 23;
+ 
+-	pci_read_config_dword(pdev, SNR_IMC_MMIO_MEM0_OFFSET, &pci_dword);
++	pci_read_config_dword(pdev, mem_offset, &pci_dword);
+ 	addr |= (pci_dword & SNR_IMC_MMIO_MEM0_MASK) << 12;
+ 
+ 	addr += box_ctl;
+@@ -4405,6 +4405,12 @@ static void snr_uncore_mmio_init_box(struct intel_uncore_box *box)
+ 	writel(IVBEP_PMON_BOX_CTL_INT, box->io_addr);
+ }
+ 
++static void snr_uncore_mmio_init_box(struct intel_uncore_box *box)
++{
++	__snr_uncore_mmio_init_box(box, uncore_mmio_box_ctl(box),
++				   SNR_IMC_MMIO_MEM0_OFFSET);
++}
++
+ static void snr_uncore_mmio_disable_box(struct intel_uncore_box *box)
+ {
+ 	u32 config;
