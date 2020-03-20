@@ -2,37 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 736D018CE4F
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 20 Mar 2020 13:59:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9003218CE43
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 20 Mar 2020 13:59:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727128AbgCTM6K (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 20 Mar 2020 08:58:10 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:35604 "EHLO
+        id S1727504AbgCTM7B (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 20 Mar 2020 08:59:01 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:35648 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727101AbgCTM6K (ORCPT
+        with ESMTP id S1727224AbgCTM6O (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 20 Mar 2020 08:58:10 -0400
+        Fri, 20 Mar 2020 08:58:14 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jFHDx-0003j7-8t; Fri, 20 Mar 2020 13:58:05 +0100
+        id 1jFHE2-0003jO-LW; Fri, 20 Mar 2020 13:58:10 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id DD2721C22C0;
-        Fri, 20 Mar 2020 13:58:04 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4B3E51C22C1;
+        Fri, 20 Mar 2020 13:58:05 +0100 (CET)
 Date:   Fri, 20 Mar 2020 12:58:04 -0000
-From:   "tip-bot2 for Yafang Shao" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Johannes Weiner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] psi: Move PF_MEMSTALL out of task->flags
-Cc:     Johannes Weiner <hannes@cmpxchg.org>,
-        Yafang Shao <laoar.shao@gmail.com>,
+Subject: [tip: sched/core] MAINTAINERS: Add maintenance information for psi
+Cc:     Ivan Babrou <ivan@cloudflare.com>,
+        Johannes Weiner <hannes@cmpxchg.org>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <1584408485-1921-1-git-send-email-laoar.shao@gmail.com>
-References: <1584408485-1921-1-git-send-email-laoar.shao@gmail.com>
+In-Reply-To: <20200316191333.115523-4-hannes@cmpxchg.org>
+References: <20200316191333.115523-4-hannes@cmpxchg.org>
 MIME-Version: 1.0
-Message-ID: <158470908459.28353.7390210153247885071.tip-bot2@tip-bot2>
+Message-ID: <158470908499.28353.9637225580351813709.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,154 +48,50 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     1066d1b6974e095d5a6c472ad9180a957b496cd6
-Gitweb:        https://git.kernel.org/tip/1066d1b6974e095d5a6c472ad9180a957b496cd6
-Author:        Yafang Shao <laoar.shao@gmail.com>
-AuthorDate:    Mon, 16 Mar 2020 21:28:05 -04:00
+Commit-ID:     a0fe6ba69059266ba70ed5d3c4ac80713f6ffde7
+Gitweb:        https://git.kernel.org/tip/a0fe6ba69059266ba70ed5d3c4ac80713f6ffde7
+Author:        Johannes Weiner <hannes@cmpxchg.org>
+AuthorDate:    Mon, 16 Mar 2020 15:13:33 -04:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Fri, 20 Mar 2020 13:06:19 +01:00
 
-psi: Move PF_MEMSTALL out of task->flags
+MAINTAINERS: Add maintenance information for psi
 
-The task->flags is a 32-bits flag, in which 31 bits have already been
-consumed. So it is hardly to introduce other new per process flag.
-Currently there're still enough spaces in the bit-field section of
-task_struct, so we can define the memstall state as a single bit in
-task_struct instead.
-This patch also removes an out-of-date comment pointed by Matthew.
+Add a maintainer section for psi, as it's a user-visible, configurable
+kernel feature.
 
-Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
-Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
+The patches are still routed through the scheduler tree due to the
+close integration with that code, but get_maintainers.pl does the
+right thing and makes sure everybody gets CCd:
+
+$ ./scripts/get_maintainer.pl -f kernel/sched/psi.c
+Johannes Weiner <hannes@cmpxchg.org> (maintainer:PRESSURE STALL INFORMATION (PSI))
+Ingo Molnar <mingo@redhat.com> (maintainer:SCHEDULER)
+Peter Zijlstra <peterz@infradead.org> (maintainer:SCHEDULER)
+...
+
+Reported-by: Ivan Babrou <ivan@cloudflare.com>
+Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-Link: https://lkml.kernel.org/r/1584408485-1921-1-git-send-email-laoar.shao@gmail.com
+Link: https://lkml.kernel.org/r/20200316191333.115523-4-hannes@cmpxchg.org
 ---
- include/linux/sched.h |  6 ++++--
- kernel/sched/psi.c    | 12 ++++++------
- kernel/sched/stats.h  | 10 +++++-----
- 3 files changed, 15 insertions(+), 13 deletions(-)
+ MAINTAINERS | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index 2e9199b..09bddd9 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -785,9 +785,12 @@ struct task_struct {
- 	unsigned			frozen:1;
- #endif
- #ifdef CONFIG_BLK_CGROUP
--	/* to be used once the psi infrastructure lands upstream. */
- 	unsigned			use_memdelay:1;
- #endif
-+#ifdef CONFIG_PSI
-+	/* Stalled due to lack of memory */
-+	unsigned			in_memstall:1;
-+#endif
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 6158a14..5f82a70 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -13518,6 +13518,12 @@ F:	net/psample
+ F:	include/net/psample.h
+ F:	include/uapi/linux/psample.h
  
- 	unsigned long			atomic_flags; /* Flags requiring atomic access. */
- 
-@@ -1480,7 +1483,6 @@ extern struct pid *cad_pid;
- #define PF_KTHREAD		0x00200000	/* I am a kernel thread */
- #define PF_RANDOMIZE		0x00400000	/* Randomize virtual address space */
- #define PF_SWAPWRITE		0x00800000	/* Allowed to write to swap */
--#define PF_MEMSTALL		0x01000000	/* Stalled due to lack of memory */
- #define PF_UMH			0x02000000	/* I'm an Usermodehelper process */
- #define PF_NO_SETAFFINITY	0x04000000	/* Userland is not allowed to meddle with cpus_mask */
- #define PF_MCE_EARLY		0x08000000      /* Early kill for mce process policy */
-diff --git a/kernel/sched/psi.c b/kernel/sched/psi.c
-index 955a124..8f45cdb 100644
---- a/kernel/sched/psi.c
-+++ b/kernel/sched/psi.c
-@@ -865,17 +865,17 @@ void psi_memstall_enter(unsigned long *flags)
- 	if (static_branch_likely(&psi_disabled))
- 		return;
- 
--	*flags = current->flags & PF_MEMSTALL;
-+	*flags = current->in_memstall;
- 	if (*flags)
- 		return;
- 	/*
--	 * PF_MEMSTALL setting & accounting needs to be atomic wrt
-+	 * in_memstall setting & accounting needs to be atomic wrt
- 	 * changes to the task's scheduling state, otherwise we can
- 	 * race with CPU migration.
- 	 */
- 	rq = this_rq_lock_irq(&rf);
- 
--	current->flags |= PF_MEMSTALL;
-+	current->in_memstall = 1;
- 	psi_task_change(current, 0, TSK_MEMSTALL);
- 
- 	rq_unlock_irq(rq, &rf);
-@@ -898,13 +898,13 @@ void psi_memstall_leave(unsigned long *flags)
- 	if (*flags)
- 		return;
- 	/*
--	 * PF_MEMSTALL clearing & accounting needs to be atomic wrt
-+	 * in_memstall clearing & accounting needs to be atomic wrt
- 	 * changes to the task's scheduling state, otherwise we could
- 	 * race with CPU migration.
- 	 */
- 	rq = this_rq_lock_irq(&rf);
- 
--	current->flags &= ~PF_MEMSTALL;
-+	current->in_memstall = 0;
- 	psi_task_change(current, TSK_MEMSTALL, 0);
- 
- 	rq_unlock_irq(rq, &rf);
-@@ -970,7 +970,7 @@ void cgroup_move_task(struct task_struct *task, struct css_set *to)
- 	} else if (task->in_iowait)
- 		task_flags = TSK_IOWAIT;
- 
--	if (task->flags & PF_MEMSTALL)
-+	if (task->in_memstall)
- 		task_flags |= TSK_MEMSTALL;
- 
- 	if (task_flags)
-diff --git a/kernel/sched/stats.h b/kernel/sched/stats.h
-index 1339f5b..33d0daf 100644
---- a/kernel/sched/stats.h
-+++ b/kernel/sched/stats.h
-@@ -70,7 +70,7 @@ static inline void psi_enqueue(struct task_struct *p, bool wakeup)
- 		return;
- 
- 	if (!wakeup || p->sched_psi_wake_requeue) {
--		if (p->flags & PF_MEMSTALL)
-+		if (p->in_memstall)
- 			set |= TSK_MEMSTALL;
- 		if (p->sched_psi_wake_requeue)
- 			p->sched_psi_wake_requeue = 0;
-@@ -90,7 +90,7 @@ static inline void psi_dequeue(struct task_struct *p, bool sleep)
- 		return;
- 
- 	if (!sleep) {
--		if (p->flags & PF_MEMSTALL)
-+		if (p->in_memstall)
- 			clear |= TSK_MEMSTALL;
- 	} else {
- 		/*
-@@ -117,14 +117,14 @@ static inline void psi_ttwu_dequeue(struct task_struct *p)
- 	 * deregister its sleep-persistent psi states from the old
- 	 * queue, and let psi_enqueue() know it has to requeue.
- 	 */
--	if (unlikely(p->in_iowait || (p->flags & PF_MEMSTALL))) {
-+	if (unlikely(p->in_iowait || p->in_memstall)) {
- 		struct rq_flags rf;
- 		struct rq *rq;
- 		int clear = 0;
- 
- 		if (p->in_iowait)
- 			clear |= TSK_IOWAIT;
--		if (p->flags & PF_MEMSTALL)
-+		if (p->in_memstall)
- 			clear |= TSK_MEMSTALL;
- 
- 		rq = __task_rq_lock(p, &rf);
-@@ -149,7 +149,7 @@ static inline void psi_task_tick(struct rq *rq)
- 	if (static_branch_likely(&psi_disabled))
- 		return;
- 
--	if (unlikely(rq->curr->flags & PF_MEMSTALL))
-+	if (unlikely(rq->curr->in_memstall))
- 		psi_memstall_tick(rq->curr, cpu_of(rq));
- }
- #else /* CONFIG_PSI */
++PRESSURE STALL INFORMATION (PSI)
++M:	Johannes Weiner <hannes@cmpxchg.org>
++S:	Maintained
++F:	kernel/sched/psi.c
++F:	include/linux/psi*
++
+ PSTORE FILESYSTEM
+ M:	Kees Cook <keescook@chromium.org>
+ M:	Anton Vorontsov <anton@enomsg.org>
