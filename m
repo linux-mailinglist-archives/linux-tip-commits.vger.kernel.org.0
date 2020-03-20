@@ -2,35 +2,35 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A66DD18CE3A
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 20 Mar 2020 13:58:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2612718CE3B
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 20 Mar 2020 13:58:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727433AbgCTM6i (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S1727431AbgCTM6i (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Fri, 20 Mar 2020 08:58:38 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:35679 "EHLO
+Received: from Galois.linutronix.de ([193.142.43.55]:35680 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727417AbgCTM6h (ORCPT
+        with ESMTP id S1727422AbgCTM6h (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Fri, 20 Mar 2020 08:58:37 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jFHEP-0003qD-9f; Fri, 20 Mar 2020 13:58:33 +0100
+        id 1jFHEP-0003qd-Lp; Fri, 20 Mar 2020 13:58:33 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id DE3481C22BF;
-        Fri, 20 Mar 2020 13:58:32 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4129D1C22BE;
+        Fri, 20 Mar 2020 13:58:33 +0100 (CET)
 Date:   Fri, 20 Mar 2020 12:58:32 -0000
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] locking/lockdep: Rework lockdep_lock
+Subject: [tip: locking/core] locking/lockdep: Fix bad recursion pattern
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200313102107.GX12561@hirez.programming.kicks-ass.net>
-References: <20200313102107.GX12561@hirez.programming.kicks-ass.net>
+In-Reply-To: <20200313093325.GW12561@hirez.programming.kicks-ass.net>
+References: <20200313093325.GW12561@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-Message-ID: <158470911262.28353.5260029684693301810.tip-bot2@tip-bot2>
+Message-ID: <158470911297.28353.8139800721700138950.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -46,225 +46,294 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     248efb2158f1e23750728e92ad9db3ab60c14485
-Gitweb:        https://git.kernel.org/tip/248efb2158f1e23750728e92ad9db3ab60c14485
+Commit-ID:     10476e6304222ced7df9b3d5fb0a043b3c2a1ad8
+Gitweb:        https://git.kernel.org/tip/10476e6304222ced7df9b3d5fb0a043b3c2a1ad8
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Fri, 13 Mar 2020 11:09:49 +01:00
+AuthorDate:    Fri, 13 Mar 2020 09:56:38 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Fri, 20 Mar 2020 13:06:25 +01:00
 
-locking/lockdep: Rework lockdep_lock
+locking/lockdep: Fix bad recursion pattern
 
-A few sites want to assert we own the graph_lock/lockdep_lock, provide
-a more conventional lock interface for it with a number of trivial
-debug checks.
+There were two patterns for lockdep_recursion:
+
+Pattern-A:
+	if (current->lockdep_recursion)
+		return
+
+	current->lockdep_recursion = 1;
+	/* do stuff */
+	current->lockdep_recursion = 0;
+
+Pattern-B:
+	current->lockdep_recursion++;
+	/* do stuff */
+	current->lockdep_recursion--;
+
+But a third pattern has emerged:
+
+Pattern-C:
+	current->lockdep_recursion = 1;
+	/* do stuff */
+	current->lockdep_recursion = 0;
+
+And while this isn't broken per-se, it is highly dangerous because it
+doesn't nest properly.
+
+Get rid of all Pattern-C instances and shore up Pattern-A with a
+warning.
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20200313102107.GX12561@hirez.programming.kicks-ass.net
+Link: https://lkml.kernel.org/r/20200313093325.GW12561@hirez.programming.kicks-ass.net
 ---
- kernel/locking/lockdep.c | 89 +++++++++++++++++++++------------------
- 1 file changed, 48 insertions(+), 41 deletions(-)
+ kernel/locking/lockdep.c | 74 +++++++++++++++++++++------------------
+ 1 file changed, 40 insertions(+), 34 deletions(-)
 
 diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
-index 64ea69f..47e3acb 100644
+index 2564950..64ea69f 100644
 --- a/kernel/locking/lockdep.c
 +++ b/kernel/locking/lockdep.c
-@@ -84,12 +84,39 @@ module_param(lock_stat, int, 0644);
-  * to use a raw spinlock - we really dont want the spinlock
-  * code to recurse back into the lockdep code...
-  */
--static arch_spinlock_t lockdep_lock = (arch_spinlock_t)__ARCH_SPIN_LOCK_UNLOCKED;
-+static arch_spinlock_t __lock = (arch_spinlock_t)__ARCH_SPIN_LOCK_UNLOCKED;
-+static struct task_struct *__owner;
-+
-+static inline void lockdep_lock(void)
-+{
-+	DEBUG_LOCKS_WARN_ON(!irqs_disabled());
-+
-+	arch_spin_lock(&__lock);
-+	__owner = current;
-+	current->lockdep_recursion++;
-+}
-+
-+static inline void lockdep_unlock(void)
-+{
-+	if (debug_locks && DEBUG_LOCKS_WARN_ON(__owner != current))
-+		return;
-+
-+	current->lockdep_recursion--;
-+	__owner = NULL;
-+	arch_spin_unlock(&__lock);
-+}
-+
-+static inline bool lockdep_assert_locked(void)
-+{
-+	return DEBUG_LOCKS_WARN_ON(__owner != current);
-+}
-+
- static struct task_struct *lockdep_selftest_task_struct;
- 
-+
- static int graph_lock(void)
- {
--	arch_spin_lock(&lockdep_lock);
-+	lockdep_lock();
- 	/*
- 	 * Make sure that if another CPU detected a bug while
- 	 * walking the graph we dont change it (while the other
-@@ -97,27 +124,15 @@ static int graph_lock(void)
- 	 * dropped already)
- 	 */
- 	if (!debug_locks) {
--		arch_spin_unlock(&lockdep_lock);
-+		lockdep_unlock();
- 		return 0;
- 	}
--	/* prevent any recursions within lockdep from causing deadlocks */
--	current->lockdep_recursion++;
- 	return 1;
+@@ -390,6 +390,12 @@ void lockdep_on(void)
  }
+ EXPORT_SYMBOL(lockdep_on);
  
--static inline int graph_unlock(void)
-+static inline void graph_unlock(void)
++static inline void lockdep_recursion_finish(void)
++{
++	if (WARN_ON_ONCE(--current->lockdep_recursion))
++		current->lockdep_recursion = 0;
++}
++
+ void lockdep_set_selftest_task(struct task_struct *task)
  {
--	if (debug_locks && !arch_spin_is_locked(&lockdep_lock)) {
--		/*
--		 * The lockdep graph lock isn't locked while we expect it to
--		 * be, we're confused now, bye!
--		 */
--		return DEBUG_LOCKS_WARN_ON(1);
--	}
--
--	current->lockdep_recursion--;
--	arch_spin_unlock(&lockdep_lock);
--	return 0;
-+	lockdep_unlock();
+ 	lockdep_selftest_task_struct = task;
+@@ -1723,11 +1729,11 @@ unsigned long lockdep_count_forward_deps(struct lock_class *class)
+ 	this.class = class;
+ 
+ 	raw_local_irq_save(flags);
+-	current->lockdep_recursion = 1;
++	current->lockdep_recursion++;
+ 	arch_spin_lock(&lockdep_lock);
+ 	ret = __lockdep_count_forward_deps(&this);
+ 	arch_spin_unlock(&lockdep_lock);
+-	current->lockdep_recursion = 0;
++	current->lockdep_recursion--;
+ 	raw_local_irq_restore(flags);
+ 
+ 	return ret;
+@@ -1752,11 +1758,11 @@ unsigned long lockdep_count_backward_deps(struct lock_class *class)
+ 	this.class = class;
+ 
+ 	raw_local_irq_save(flags);
+-	current->lockdep_recursion = 1;
++	current->lockdep_recursion++;
+ 	arch_spin_lock(&lockdep_lock);
+ 	ret = __lockdep_count_backward_deps(&this);
+ 	arch_spin_unlock(&lockdep_lock);
+-	current->lockdep_recursion = 0;
++	current->lockdep_recursion--;
+ 	raw_local_irq_restore(flags);
+ 
+ 	return ret;
+@@ -3668,9 +3674,9 @@ void lockdep_hardirqs_on(unsigned long ip)
+ 	if (DEBUG_LOCKS_WARN_ON(current->hardirq_context))
+ 		return;
+ 
+-	current->lockdep_recursion = 1;
++	current->lockdep_recursion++;
+ 	__trace_hardirqs_on_caller(ip);
+-	current->lockdep_recursion = 0;
++	lockdep_recursion_finish();
+ }
+ NOKPROBE_SYMBOL(lockdep_hardirqs_on);
+ 
+@@ -3726,7 +3732,7 @@ void trace_softirqs_on(unsigned long ip)
+ 		return;
+ 	}
+ 
+-	current->lockdep_recursion = 1;
++	current->lockdep_recursion++;
+ 	/*
+ 	 * We'll do an OFF -> ON transition:
+ 	 */
+@@ -3741,7 +3747,7 @@ void trace_softirqs_on(unsigned long ip)
+ 	 */
+ 	if (curr->hardirqs_enabled)
+ 		mark_held_locks(curr, LOCK_ENABLED_SOFTIRQ);
+-	current->lockdep_recursion = 0;
++	lockdep_recursion_finish();
  }
  
  /*
-@@ -128,7 +143,7 @@ static inline int debug_locks_off_graph_unlock(void)
- {
- 	int ret = debug_locks_off();
+@@ -3995,9 +4001,9 @@ void lockdep_init_map(struct lockdep_map *lock, const char *name,
+ 			return;
  
--	arch_spin_unlock(&lockdep_lock);
-+	lockdep_unlock();
- 
- 	return ret;
+ 		raw_local_irq_save(flags);
+-		current->lockdep_recursion = 1;
++		current->lockdep_recursion++;
+ 		register_lock_class(lock, subclass, 1);
+-		current->lockdep_recursion = 0;
++		lockdep_recursion_finish();
+ 		raw_local_irq_restore(flags);
+ 	}
  }
-@@ -1479,6 +1494,8 @@ static int __bfs(struct lock_list *source_entry,
- 	struct circular_queue *cq = &lock_cq;
- 	int ret = 1;
- 
-+	lockdep_assert_locked();
-+
- 	if (match(source_entry, data)) {
- 		*target_entry = source_entry;
- 		ret = 0;
-@@ -1501,8 +1518,6 @@ static int __bfs(struct lock_list *source_entry,
- 
- 		head = get_dep_list(lock, offset);
- 
--		DEBUG_LOCKS_WARN_ON(!irqs_disabled());
--
- 		list_for_each_entry_rcu(entry, head, entry) {
- 			if (!lock_accessed(entry)) {
- 				unsigned int cq_depth;
-@@ -1729,11 +1744,9 @@ unsigned long lockdep_count_forward_deps(struct lock_class *class)
- 	this.class = class;
- 
- 	raw_local_irq_save(flags);
--	current->lockdep_recursion++;
--	arch_spin_lock(&lockdep_lock);
-+	lockdep_lock();
- 	ret = __lockdep_count_forward_deps(&this);
--	arch_spin_unlock(&lockdep_lock);
--	current->lockdep_recursion--;
-+	lockdep_unlock();
- 	raw_local_irq_restore(flags);
- 
- 	return ret;
-@@ -1758,11 +1771,9 @@ unsigned long lockdep_count_backward_deps(struct lock_class *class)
- 	this.class = class;
- 
- 	raw_local_irq_save(flags);
--	current->lockdep_recursion++;
--	arch_spin_lock(&lockdep_lock);
-+	lockdep_lock();
- 	ret = __lockdep_count_backward_deps(&this);
--	arch_spin_unlock(&lockdep_lock);
--	current->lockdep_recursion--;
-+	lockdep_unlock();
- 	raw_local_irq_restore(flags);
- 
- 	return ret;
-@@ -3046,7 +3057,7 @@ static inline int add_chain_cache(struct task_struct *curr,
- 	 * disabled to make this an IRQ-safe lock.. for recursion reasons
- 	 * lockdep won't complain about its own locking errors.
- 	 */
--	if (DEBUG_LOCKS_WARN_ON(!irqs_disabled()))
-+	if (lockdep_assert_locked())
- 		return 0;
- 
- 	chain = alloc_lock_chain();
-@@ -5181,8 +5192,7 @@ static void free_zapped_rcu(struct rcu_head *ch)
+@@ -4677,11 +4683,11 @@ void lock_set_class(struct lockdep_map *lock, const char *name,
  		return;
  
  	raw_local_irq_save(flags);
--	arch_spin_lock(&lockdep_lock);
--	current->lockdep_recursion++;
-+	lockdep_lock();
+-	current->lockdep_recursion = 1;
++	current->lockdep_recursion++;
+ 	check_flags(flags);
+ 	if (__lock_set_class(lock, name, key, subclass, ip))
+ 		check_chain_key(current);
+-	current->lockdep_recursion = 0;
++	lockdep_recursion_finish();
+ 	raw_local_irq_restore(flags);
+ }
+ EXPORT_SYMBOL_GPL(lock_set_class);
+@@ -4694,11 +4700,11 @@ void lock_downgrade(struct lockdep_map *lock, unsigned long ip)
+ 		return;
+ 
+ 	raw_local_irq_save(flags);
+-	current->lockdep_recursion = 1;
++	current->lockdep_recursion++;
+ 	check_flags(flags);
+ 	if (__lock_downgrade(lock, ip))
+ 		check_chain_key(current);
+-	current->lockdep_recursion = 0;
++	lockdep_recursion_finish();
+ 	raw_local_irq_restore(flags);
+ }
+ EXPORT_SYMBOL_GPL(lock_downgrade);
+@@ -4719,11 +4725,11 @@ void lock_acquire(struct lockdep_map *lock, unsigned int subclass,
+ 	raw_local_irq_save(flags);
+ 	check_flags(flags);
+ 
+-	current->lockdep_recursion = 1;
++	current->lockdep_recursion++;
+ 	trace_lock_acquire(lock, subclass, trylock, read, check, nest_lock, ip);
+ 	__lock_acquire(lock, subclass, trylock, read, check,
+ 		       irqs_disabled_flags(flags), nest_lock, ip, 0, 0);
+-	current->lockdep_recursion = 0;
++	lockdep_recursion_finish();
+ 	raw_local_irq_restore(flags);
+ }
+ EXPORT_SYMBOL_GPL(lock_acquire);
+@@ -4737,11 +4743,11 @@ void lock_release(struct lockdep_map *lock, unsigned long ip)
+ 
+ 	raw_local_irq_save(flags);
+ 	check_flags(flags);
+-	current->lockdep_recursion = 1;
++	current->lockdep_recursion++;
+ 	trace_lock_release(lock, ip);
+ 	if (__lock_release(lock, ip))
+ 		check_chain_key(current);
+-	current->lockdep_recursion = 0;
++	lockdep_recursion_finish();
+ 	raw_local_irq_restore(flags);
+ }
+ EXPORT_SYMBOL_GPL(lock_release);
+@@ -4757,9 +4763,9 @@ int lock_is_held_type(const struct lockdep_map *lock, int read)
+ 	raw_local_irq_save(flags);
+ 	check_flags(flags);
+ 
+-	current->lockdep_recursion = 1;
++	current->lockdep_recursion++;
+ 	ret = __lock_is_held(lock, read);
+-	current->lockdep_recursion = 0;
++	lockdep_recursion_finish();
+ 	raw_local_irq_restore(flags);
+ 
+ 	return ret;
+@@ -4778,9 +4784,9 @@ struct pin_cookie lock_pin_lock(struct lockdep_map *lock)
+ 	raw_local_irq_save(flags);
+ 	check_flags(flags);
+ 
+-	current->lockdep_recursion = 1;
++	current->lockdep_recursion++;
+ 	cookie = __lock_pin_lock(lock);
+-	current->lockdep_recursion = 0;
++	lockdep_recursion_finish();
+ 	raw_local_irq_restore(flags);
+ 
+ 	return cookie;
+@@ -4797,9 +4803,9 @@ void lock_repin_lock(struct lockdep_map *lock, struct pin_cookie cookie)
+ 	raw_local_irq_save(flags);
+ 	check_flags(flags);
+ 
+-	current->lockdep_recursion = 1;
++	current->lockdep_recursion++;
+ 	__lock_repin_lock(lock, cookie);
+-	current->lockdep_recursion = 0;
++	lockdep_recursion_finish();
+ 	raw_local_irq_restore(flags);
+ }
+ EXPORT_SYMBOL_GPL(lock_repin_lock);
+@@ -4814,9 +4820,9 @@ void lock_unpin_lock(struct lockdep_map *lock, struct pin_cookie cookie)
+ 	raw_local_irq_save(flags);
+ 	check_flags(flags);
+ 
+-	current->lockdep_recursion = 1;
++	current->lockdep_recursion++;
+ 	__lock_unpin_lock(lock, cookie);
+-	current->lockdep_recursion = 0;
++	lockdep_recursion_finish();
+ 	raw_local_irq_restore(flags);
+ }
+ EXPORT_SYMBOL_GPL(lock_unpin_lock);
+@@ -4952,10 +4958,10 @@ void lock_contended(struct lockdep_map *lock, unsigned long ip)
+ 
+ 	raw_local_irq_save(flags);
+ 	check_flags(flags);
+-	current->lockdep_recursion = 1;
++	current->lockdep_recursion++;
+ 	trace_lock_contended(lock, ip);
+ 	__lock_contended(lock, ip);
+-	current->lockdep_recursion = 0;
++	lockdep_recursion_finish();
+ 	raw_local_irq_restore(flags);
+ }
+ EXPORT_SYMBOL_GPL(lock_contended);
+@@ -4972,9 +4978,9 @@ void lock_acquired(struct lockdep_map *lock, unsigned long ip)
+ 
+ 	raw_local_irq_save(flags);
+ 	check_flags(flags);
+-	current->lockdep_recursion = 1;
++	current->lockdep_recursion++;
+ 	__lock_acquired(lock, ip);
+-	current->lockdep_recursion = 0;
++	lockdep_recursion_finish();
+ 	raw_local_irq_restore(flags);
+ }
+ EXPORT_SYMBOL_GPL(lock_acquired);
+@@ -5176,7 +5182,7 @@ static void free_zapped_rcu(struct rcu_head *ch)
+ 
+ 	raw_local_irq_save(flags);
+ 	arch_spin_lock(&lockdep_lock);
+-	current->lockdep_recursion = 1;
++	current->lockdep_recursion++;
  
  	/* closed head */
  	pf = delayed_free.pf + (delayed_free.index ^ 1);
-@@ -5194,8 +5204,7 @@ static void free_zapped_rcu(struct rcu_head *ch)
+@@ -5188,7 +5194,7 @@ static void free_zapped_rcu(struct rcu_head *ch)
  	 */
  	call_rcu_zapped(delayed_free.pf + delayed_free.index);
  
--	current->lockdep_recursion--;
--	arch_spin_unlock(&lockdep_lock);
-+	lockdep_unlock();
+-	current->lockdep_recursion = 0;
++	current->lockdep_recursion--;
+ 	arch_spin_unlock(&lockdep_lock);
  	raw_local_irq_restore(flags);
  }
- 
-@@ -5240,13 +5249,11 @@ static void lockdep_free_key_range_reg(void *start, unsigned long size)
- 	init_data_structures_once();
+@@ -5235,11 +5241,11 @@ static void lockdep_free_key_range_reg(void *start, unsigned long size)
  
  	raw_local_irq_save(flags);
--	arch_spin_lock(&lockdep_lock);
--	current->lockdep_recursion++;
-+	lockdep_lock();
+ 	arch_spin_lock(&lockdep_lock);
+-	current->lockdep_recursion = 1;
++	current->lockdep_recursion++;
  	pf = get_pending_free();
  	__lockdep_free_key_range(pf, start, size);
  	call_rcu_zapped(pf);
--	current->lockdep_recursion--;
--	arch_spin_unlock(&lockdep_lock);
-+	lockdep_unlock();
+-	current->lockdep_recursion = 0;
++	current->lockdep_recursion--;
+ 	arch_spin_unlock(&lockdep_lock);
  	raw_local_irq_restore(flags);
- 
- 	/*
-@@ -5268,10 +5275,10 @@ static void lockdep_free_key_range_imm(void *start, unsigned long size)
- 	init_data_structures_once();
- 
- 	raw_local_irq_save(flags);
--	arch_spin_lock(&lockdep_lock);
-+	lockdep_lock();
- 	__lockdep_free_key_range(pf, start, size);
- 	__free_zapped_classes(pf);
--	arch_spin_unlock(&lockdep_lock);
-+	lockdep_unlock();
- 	raw_local_irq_restore(flags);
- }
- 
-@@ -5367,10 +5374,10 @@ static void lockdep_reset_lock_imm(struct lockdep_map *lock)
- 	unsigned long flags;
- 
- 	raw_local_irq_save(flags);
--	arch_spin_lock(&lockdep_lock);
-+	lockdep_lock();
- 	__lockdep_reset_lock(pf, lock);
- 	__free_zapped_classes(pf);
--	arch_spin_unlock(&lockdep_lock);
-+	lockdep_unlock();
- 	raw_local_irq_restore(flags);
- }
  
