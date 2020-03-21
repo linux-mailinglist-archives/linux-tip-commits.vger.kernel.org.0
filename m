@@ -2,64 +2,75 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 827B418E37D
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 21 Mar 2020 18:48:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A82418E39A
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 21 Mar 2020 19:12:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727192AbgCURsE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 21 Mar 2020 13:48:04 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:39232 "EHLO
+        id S1727224AbgCUSMv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 21 Mar 2020 14:12:51 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:39242 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727039AbgCURsE (ORCPT
+        with ESMTP id S1727128AbgCUSMv (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 21 Mar 2020 13:48:04 -0400
-Received: from p5de0bf0b.dip0.t-ipconnect.de ([93.224.191.11] helo=nanos.tec.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tglx@linutronix.de>)
-        id 1jFiE6-0007K4-Nt; Sat, 21 Mar 2020 18:48:02 +0100
-Received: by nanos.tec.linutronix.de (Postfix, from userid 1000)
-        id 35B7F1040D4; Sat, 21 Mar 2020 18:48:02 +0100 (CET)
-From:   Thomas Gleixner <tglx@linutronix.de>
-To:     afzal mohammed <afzal.mohd.ma@gmail.com>,
-        linux-kernel@vger.kernel.org
-Cc:     linux-tip-commits@vger.kernel.org, x86 <x86@kernel.org>
-Subject: Re: [tip: x86/cleanups] x86: Replace setup_irq() by request_irq()
-In-Reply-To: <20200321172626.GA6323@afzalpc>
-References: <158480051619.28353.14186528712410718742.tip-bot2@tip-bot2> <20200321172626.GA6323@afzalpc>
-Date:   Sat, 21 Mar 2020 18:48:02 +0100
-Message-ID: <87imixr44t.fsf@nanos.tec.linutronix.de>
+        Sat, 21 Mar 2020 14:12:51 -0400
+Received: from bigeasy by Galois.linutronix.de with local (Exim 4.80)
+        (envelope-from <bigeasy@linutronix.de>)
+        id 1jFic5-0007YN-IM; Sat, 21 Mar 2020 19:12:49 +0100
+Date:   Sat, 21 Mar 2020 19:12:49 +0100
+From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To:     Frederic Weisbecker <frederic@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        x86 <x86@kernel.org>
+Subject: Re: [tip: locking/core] lockdep: Annotate irq_work
+Message-ID: <20200321181249.vy7xxkgrd65piapw@linutronix.de>
+References: <20200321113242.643576700@linutronix.de>
+ <158480602510.28353.4851999853077941579.tip-bot2@tip-bot2>
+ <20200321164057.GA9634@lenoir>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20200321164057.GA9634@lenoir>
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-afzal mohammed <afzal.mohd.ma@gmail.com> writes:
+On 2020-03-21 17:40:58 [+0100], Frederic Weisbecker wrote:
+> > diff --git a/include/linux/irqflags.h b/include/linux/irqflags.h
+> > index 9c17f9c..f23f540 100644
+> > --- a/include/linux/irqflags.h
+> > +++ b/include/linux/irqflags.h
+> > @@ -69,6 +69,17 @@ do {						\
+> >  			current->irq_config = 0;	\
+> >  	  } while (0)
+> >  
+> > +# define lockdep_irq_work_enter(__work)					\
+> > +	  do {								\
+> > +		  if (!(atomic_read(&__work->flags) & IRQ_WORK_HARD_IRQ))\
+> > +			current->irq_config = 1;			\
+> 
+> So, irq_config == 1 means we are in a softirq? Are there other values for
+> irq_config? In which case there should be enums or something?
+> I can't find the patch that describes this.
 
-> On Sat, Mar 21, 2020 at 02:21:56PM -0000, tip-bot2 for afzal mohammed wrote:
-> Oh Thomas, you picked up v2, i had sent v3 [2], wherein i had taken
-> care of your comments on v1 [1] as well as with more commit message
-> tweaking (v2 was sent before you commented on v1)
+0 means as-is, 1 means threaded / sleeping locks are okay.
 
-Bah. I somehow lost track ///
+> > --- a/kernel/time/tick-sched.c
+> > +++ b/kernel/time/tick-sched.c
+> > @@ -245,6 +245,7 @@ static void nohz_full_kick_func(struct irq_work *work)
+> >  
+> >  static DEFINE_PER_CPU(struct irq_work, nohz_full_kick_work) = {
+> >  	.func = nohz_full_kick_func,
+> > +	.flags = ATOMIC_INIT(IRQ_WORK_HARD_IRQ),
+> >  };
+> 
+> I get why these need to be in hardirq but some basic explanations for
+> ordinary mortals as to why those two specifically and not all the others
+> (and there are many) would have been nice.
 
-> powerpc - in patchworks it is shown as under review after passing all
-> the tests, so expecting it to go in soon.
+Is the documentation patch in this series any good?
 
-Ok.
+> Thanks.
 
-> ARM - i am expecting these to be picked up by Arnd/Olof shortly as
-> they are yet to pickup any of the pull requests for ARM, you have been
-> copied in the followup mail [4].
-
-Ok.
-
-> As of now only c6x, hexagon, sh, unicore32 & alpha are the ones that i
-> have to send you. All others have been picked up by respective
-> maintainers & are in next.
-
-Cool.
+Sebastian
