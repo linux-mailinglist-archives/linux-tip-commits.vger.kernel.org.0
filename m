@@ -2,37 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CF95C18E2CE
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 21 Mar 2020 16:54:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AE3EF18E2D0
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 21 Mar 2020 16:54:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727891AbgCUPyq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 21 Mar 2020 11:54:46 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:39018 "EHLO
+        id S1726955AbgCUPxx (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 21 Mar 2020 11:53:53 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:39017 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727593AbgCUPxy (ORCPT
+        with ESMTP id S1727495AbgCUPxx (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 21 Mar 2020 11:53:54 -0400
+        Sat, 21 Mar 2020 11:53:53 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jFgRY-0005SR-DF; Sat, 21 Mar 2020 16:53:48 +0100
+        id 1jFgRY-0005Ri-04; Sat, 21 Mar 2020 16:53:48 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 060D31C22EE;
-        Sat, 21 Mar 2020 16:53:48 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 975911C22F0;
+        Sat, 21 Mar 2020 16:53:47 +0100 (CET)
 Date:   Sat, 21 Mar 2020 15:53:47 -0000
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] Documentation: Add lock ordering and nesting
- documentation
+Subject: [tip: locking/core] timekeeping: Split jiffies seqlock
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200321113242.026561244@linutronix.de>
-References: <20200321113242.026561244@linutronix.de>
+In-Reply-To: <20200321113242.120587764@linutronix.de>
+References: <20200321113242.120587764@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <158480602768.28353.9549972836057301811.tip-bot2@tip-bot2>
+Message-ID: <158480602728.28353.11719217255276618127.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,344 +47,187 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     919e9e6395cfac23b7e71ed88930367459055daf
-Gitweb:        https://git.kernel.org/tip/919e9e6395cfac23b7e71ed88930367459055daf
+Commit-ID:     e5d4d1756b07d9490a0269a9e68c1e05ee1feb9b
+Gitweb:        https://git.kernel.org/tip/e5d4d1756b07d9490a0269a9e68c1e05ee1feb9b
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Sat, 21 Mar 2020 12:25:57 +01:00
+AuthorDate:    Sat, 21 Mar 2020 12:25:58 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Sat, 21 Mar 2020 16:00:23 +01:00
 
-Documentation: Add lock ordering and nesting documentation
+timekeeping: Split jiffies seqlock
 
-The kernel provides a variety of locking primitives. The nesting of these
-lock types and the implications of them on RT enabled kernels is nowhere
-documented.
+seqlock consists of a sequence counter and a spinlock_t which is used to
+serialize the writers. spinlock_t is substituted by a "sleeping" spinlock
+on PREEMPT_RT enabled kernels which breaks the usage in the timekeeping
+code as the writers are executed in hard interrupt and therefore
+non-preemptible context even on PREEMPT_RT.
 
-Add initial documentation.
+The spinlock in seqlock cannot be unconditionally replaced by a
+raw_spinlock_t as many seqlock users have nesting spinlock sections or
+other code which is not suitable to run in truly atomic context on RT.
+
+Instead of providing a raw_seqlock API for a single use case, open code the
+seqlock for the jiffies use case and implement it with a raw_spinlock_t and
+a sequence counter.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20200321113242.026561244@linutronix.de
+Link: https://lkml.kernel.org/r/20200321113242.120587764@linutronix.de
 ---
- Documentation/locking/index.rst     |   1 +-
- Documentation/locking/locktypes.rst | 299 +++++++++++++++++++++++++++-
- 2 files changed, 300 insertions(+)
- create mode 100644 Documentation/locking/locktypes.rst
+ kernel/time/jiffies.c     |  7 ++++---
+ kernel/time/tick-common.c | 10 ++++++----
+ kernel/time/tick-sched.c  | 19 ++++++++++++-------
+ kernel/time/timekeeping.c |  6 ++++--
+ kernel/time/timekeeping.h |  3 ++-
+ 5 files changed, 28 insertions(+), 17 deletions(-)
 
-diff --git a/Documentation/locking/index.rst b/Documentation/locking/index.rst
-index 626a463..5d6800a 100644
---- a/Documentation/locking/index.rst
-+++ b/Documentation/locking/index.rst
-@@ -7,6 +7,7 @@ locking
- .. toctree::
-     :maxdepth: 1
+diff --git a/kernel/time/jiffies.c b/kernel/time/jiffies.c
+index d23b434..eddcf49 100644
+--- a/kernel/time/jiffies.c
++++ b/kernel/time/jiffies.c
+@@ -58,7 +58,8 @@ static struct clocksource clocksource_jiffies = {
+ 	.max_cycles	= 10,
+ };
  
-+    locktypes
-     lockdep-design
-     lockstat
-     locktorture
-diff --git a/Documentation/locking/locktypes.rst b/Documentation/locking/locktypes.rst
-new file mode 100644
-index 0000000..f0aa911
---- /dev/null
-+++ b/Documentation/locking/locktypes.rst
-@@ -0,0 +1,299 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+.. _kernel_hacking_locktypes:
-+
-+==========================
-+Lock types and their rules
-+==========================
-+
-+Introduction
-+============
-+
-+The kernel provides a variety of locking primitives which can be divided
-+into two categories:
-+
-+ - Sleeping locks
-+ - Spinning locks
-+
-+This document conceptually describes these lock types and provides rules
-+for their nesting, including the rules for use under PREEMPT_RT.
-+
-+
-+Lock categories
-+===============
-+
-+Sleeping locks
-+--------------
-+
-+Sleeping locks can only be acquired in preemptible task context.
-+
-+Although implementations allow try_lock() from other contexts, it is
-+necessary to carefully evaluate the safety of unlock() as well as of
-+try_lock().  Furthermore, it is also necessary to evaluate the debugging
-+versions of these primitives.  In short, don't acquire sleeping locks from
-+other contexts unless there is no other option.
-+
-+Sleeping lock types:
-+
-+ - mutex
-+ - rt_mutex
-+ - semaphore
-+ - rw_semaphore
-+ - ww_mutex
-+ - percpu_rw_semaphore
-+
-+On PREEMPT_RT kernels, these lock types are converted to sleeping locks:
-+
-+ - spinlock_t
-+ - rwlock_t
-+
-+Spinning locks
-+--------------
-+
-+ - raw_spinlock_t
-+ - bit spinlocks
-+
-+On non-PREEMPT_RT kernels, these lock types are also spinning locks:
-+
-+ - spinlock_t
-+ - rwlock_t
-+
-+Spinning locks implicitly disable preemption and the lock / unlock functions
-+can have suffixes which apply further protections:
-+
-+ ===================  ====================================================
-+ _bh()                Disable / enable bottom halves (soft interrupts)
-+ _irq()               Disable / enable interrupts
-+ _irqsave/restore()   Save and disable / restore interrupt disabled state
-+ ===================  ====================================================
-+
-+
-+rtmutex
-+=======
-+
-+RT-mutexes are mutexes with support for priority inheritance (PI).
-+
-+PI has limitations on non PREEMPT_RT enabled kernels due to preemption and
-+interrupt disabled sections.
-+
-+PI clearly cannot preempt preemption-disabled or interrupt-disabled
-+regions of code, even on PREEMPT_RT kernels.  Instead, PREEMPT_RT kernels
-+execute most such regions of code in preemptible task context, especially
-+interrupt handlers and soft interrupts.  This conversion allows spinlock_t
-+and rwlock_t to be implemented via RT-mutexes.
-+
-+
-+raw_spinlock_t and spinlock_t
-+=============================
-+
-+raw_spinlock_t
-+--------------
-+
-+raw_spinlock_t is a strict spinning lock implementation regardless of the
-+kernel configuration including PREEMPT_RT enabled kernels.
-+
-+raw_spinlock_t is a strict spinning lock implementation in all kernels,
-+including PREEMPT_RT kernels.  Use raw_spinlock_t only in real critical
-+core code, low level interrupt handling and places where disabling
-+preemption or interrupts is required, for example, to safely access
-+hardware state.  raw_spinlock_t can sometimes also be used when the
-+critical section is tiny, thus avoiding RT-mutex overhead.
-+
-+spinlock_t
-+----------
-+
-+The semantics of spinlock_t change with the state of CONFIG_PREEMPT_RT.
-+
-+On a non PREEMPT_RT enabled kernel spinlock_t is mapped to raw_spinlock_t
-+and has exactly the same semantics.
-+
-+spinlock_t and PREEMPT_RT
-+-------------------------
-+
-+On a PREEMPT_RT enabled kernel spinlock_t is mapped to a separate
-+implementation based on rt_mutex which changes the semantics:
-+
-+ - Preemption is not disabled
-+
-+ - The hard interrupt related suffixes for spin_lock / spin_unlock
-+   operations (_irq, _irqsave / _irqrestore) do not affect the CPUs
-+   interrupt disabled state
-+
-+ - The soft interrupt related suffix (_bh()) still disables softirq
-+   handlers.
-+
-+   Non-PREEMPT_RT kernels disable preemption to get this effect.
-+
-+   PREEMPT_RT kernels use a per-CPU lock for serialization which keeps
-+   preemption disabled. The lock disables softirq handlers and also
-+   prevents reentrancy due to task preemption.
-+
-+PREEMPT_RT kernels preserve all other spinlock_t semantics:
-+
-+ - Tasks holding a spinlock_t do not migrate.  Non-PREEMPT_RT kernels
-+   avoid migration by disabling preemption.  PREEMPT_RT kernels instead
-+   disable migration, which ensures that pointers to per-CPU variables
-+   remain valid even if the task is preempted.
-+
-+ - Task state is preserved across spinlock acquisition, ensuring that the
-+   task-state rules apply to all kernel configurations.  Non-PREEMPT_RT
-+   kernels leave task state untouched.  However, PREEMPT_RT must change
-+   task state if the task blocks during acquisition.  Therefore, it saves
-+   the current task state before blocking and the corresponding lock wakeup
-+   restores it.
-+
-+   Other types of wakeups would normally unconditionally set the task state
-+   to RUNNING, but that does not work here because the task must remain
-+   blocked until the lock becomes available.  Therefore, when a non-lock
-+   wakeup attempts to awaken a task blocked waiting for a spinlock, it
-+   instead sets the saved state to RUNNING.  Then, when the lock
-+   acquisition completes, the lock wakeup sets the task state to the saved
-+   state, in this case setting it to RUNNING.
-+
-+rwlock_t
-+========
-+
-+rwlock_t is a multiple readers and single writer lock mechanism.
-+
-+Non-PREEMPT_RT kernels implement rwlock_t as a spinning lock and the
-+suffix rules of spinlock_t apply accordingly. The implementation is fair,
-+thus preventing writer starvation.
-+
-+rwlock_t and PREEMPT_RT
-+-----------------------
-+
-+PREEMPT_RT kernels map rwlock_t to a separate rt_mutex-based
-+implementation, thus changing semantics:
-+
-+ - All the spinlock_t changes also apply to rwlock_t.
-+
-+ - Because an rwlock_t writer cannot grant its priority to multiple
-+   readers, a preempted low-priority reader will continue holding its lock,
-+   thus starving even high-priority writers.  In contrast, because readers
-+   can grant their priority to a writer, a preempted low-priority writer
-+   will have its priority boosted until it releases the lock, thus
-+   preventing that writer from starving readers.
-+
-+
-+PREEMPT_RT caveats
-+==================
-+
-+spinlock_t and rwlock_t
-+-----------------------
-+
-+These changes in spinlock_t and rwlock_t semantics on PREEMPT_RT kernels
-+have a few implications.  For example, on a non-PREEMPT_RT kernel the
-+following code sequence works as expected::
-+
-+   local_irq_disable();
-+   spin_lock(&lock);
-+
-+and is fully equivalent to::
-+
-+   spin_lock_irq(&lock);
-+
-+Same applies to rwlock_t and the _irqsave() suffix variants.
-+
-+On PREEMPT_RT kernel this code sequence breaks because RT-mutex requires a
-+fully preemptible context.  Instead, use spin_lock_irq() or
-+spin_lock_irqsave() and their unlock counterparts.  In cases where the
-+interrupt disabling and locking must remain separate, PREEMPT_RT offers a
-+local_lock mechanism.  Acquiring the local_lock pins the task to a CPU,
-+allowing things like per-CPU irq-disabled locks to be acquired.  However,
-+this approach should be used only where absolutely necessary.
-+
-+
-+raw_spinlock_t
-+--------------
-+
-+Acquiring a raw_spinlock_t disables preemption and possibly also
-+interrupts, so the critical section must avoid acquiring a regular
-+spinlock_t or rwlock_t, for example, the critical section must avoid
-+allocating memory.  Thus, on a non-PREEMPT_RT kernel the following code
-+works perfectly::
-+
-+  raw_spin_lock(&lock);
-+  p = kmalloc(sizeof(*p), GFP_ATOMIC);
-+
-+But this code fails on PREEMPT_RT kernels because the memory allocator is
-+fully preemptible and therefore cannot be invoked from truly atomic
-+contexts.  However, it is perfectly fine to invoke the memory allocator
-+while holding normal non-raw spinlocks because they do not disable
-+preemption on PREEMPT_RT kernels::
-+
-+  spin_lock(&lock);
-+  p = kmalloc(sizeof(*p), GFP_ATOMIC);
-+
-+
-+bit spinlocks
-+-------------
-+
-+Bit spinlocks are problematic for PREEMPT_RT as they cannot be easily
-+substituted by an RT-mutex based implementation for obvious reasons.
-+
-+The semantics of bit spinlocks are preserved on PREEMPT_RT kernels and the
-+caveats vs. raw_spinlock_t apply.
-+
-+Some bit spinlocks are substituted by regular spinlock_t for PREEMPT_RT but
-+this requires conditional (#ifdef'ed) code changes at the usage site while
-+the spinlock_t substitution is simply done by the compiler and the
-+conditionals are restricted to header files and core implementation of the
-+locking primitives and the usage sites do not require any changes.
-+
-+
-+Lock type nesting rules
-+=======================
-+
-+The most basic rules are:
-+
-+  - Lock types of the same lock category (sleeping, spinning) can nest
-+    arbitrarily as long as they respect the general lock ordering rules to
-+    prevent deadlocks.
-+
-+  - Sleeping lock types cannot nest inside spinning lock types.
-+
-+  - Spinning lock types can nest inside sleeping lock types.
-+
-+These rules apply in general independent of CONFIG_PREEMPT_RT.
-+
-+As PREEMPT_RT changes the lock category of spinlock_t and rwlock_t from
-+spinning to sleeping this has obviously restrictions how they can nest with
-+raw_spinlock_t.
-+
-+This results in the following nest ordering:
-+
-+  1) Sleeping locks
-+  2) spinlock_t and rwlock_t
-+  3) raw_spinlock_t and bit spinlocks
-+
-+Lockdep is aware of these constraints to ensure that they are respected.
-+
-+
-+Owner semantics
-+===============
-+
-+Most lock types in the Linux kernel have strict owner semantics, i.e. the
-+context (task) which acquires a lock has to release it.
-+
-+There are two exceptions:
-+
-+  - semaphores
-+  - rwsems
-+
-+semaphores have no owner semantics for historical reason, and as such
-+trylock and release operations can be called from any context. They are
-+often used for both serialization and waiting purposes. That's generally
-+discouraged and should be replaced by separate serialization and wait
-+mechanisms, such as mutexes and completions.
-+
-+rwsems have grown interfaces which allow non owner release for special
-+purposes. This usage is problematic on PREEMPT_RT because PREEMPT_RT
-+substitutes all locking primitives except semaphores with RT-mutex based
-+implementations to provide priority inheritance for all lock types except
-+the truly spinning ones. Priority inheritance on ownerless locks is
-+obviously impossible.
-+
-+For now the rwsem non-owner release excludes code which utilizes it from
-+being used on PREEMPT_RT enabled kernels. In same cases this can be
-+mitigated by disabling portions of the code, in other cases the complete
-+functionality has to be disabled until a workable solution has been found.
+-__cacheline_aligned_in_smp DEFINE_SEQLOCK(jiffies_lock);
++__cacheline_aligned_in_smp DEFINE_RAW_SPINLOCK(jiffies_lock);
++__cacheline_aligned_in_smp seqcount_t jiffies_seq;
+ 
+ #if (BITS_PER_LONG < 64)
+ u64 get_jiffies_64(void)
+@@ -67,9 +68,9 @@ u64 get_jiffies_64(void)
+ 	u64 ret;
+ 
+ 	do {
+-		seq = read_seqbegin(&jiffies_lock);
++		seq = read_seqcount_begin(&jiffies_seq);
+ 		ret = jiffies_64;
+-	} while (read_seqretry(&jiffies_lock, seq));
++	} while (read_seqcount_retry(&jiffies_seq, seq));
+ 	return ret;
+ }
+ EXPORT_SYMBOL(get_jiffies_64);
+diff --git a/kernel/time/tick-common.c b/kernel/time/tick-common.c
+index 7e5d352..6c9c342 100644
+--- a/kernel/time/tick-common.c
++++ b/kernel/time/tick-common.c
+@@ -84,13 +84,15 @@ int tick_is_oneshot_available(void)
+ static void tick_periodic(int cpu)
+ {
+ 	if (tick_do_timer_cpu == cpu) {
+-		write_seqlock(&jiffies_lock);
++		raw_spin_lock(&jiffies_lock);
++		write_seqcount_begin(&jiffies_seq);
+ 
+ 		/* Keep track of the next tick event */
+ 		tick_next_period = ktime_add(tick_next_period, tick_period);
+ 
+ 		do_timer(1);
+-		write_sequnlock(&jiffies_lock);
++		write_seqcount_end(&jiffies_seq);
++		raw_spin_unlock(&jiffies_lock);
+ 		update_wall_time();
+ 	}
+ 
+@@ -162,9 +164,9 @@ void tick_setup_periodic(struct clock_event_device *dev, int broadcast)
+ 		ktime_t next;
+ 
+ 		do {
+-			seq = read_seqbegin(&jiffies_lock);
++			seq = read_seqcount_begin(&jiffies_seq);
+ 			next = tick_next_period;
+-		} while (read_seqretry(&jiffies_lock, seq));
++		} while (read_seqcount_retry(&jiffies_seq, seq));
+ 
+ 		clockevents_switch_state(dev, CLOCK_EVT_STATE_ONESHOT);
+ 
+diff --git a/kernel/time/tick-sched.c b/kernel/time/tick-sched.c
+index a792d21..4be756b 100644
+--- a/kernel/time/tick-sched.c
++++ b/kernel/time/tick-sched.c
+@@ -65,7 +65,8 @@ static void tick_do_update_jiffies64(ktime_t now)
+ 		return;
+ 
+ 	/* Reevaluate with jiffies_lock held */
+-	write_seqlock(&jiffies_lock);
++	raw_spin_lock(&jiffies_lock);
++	write_seqcount_begin(&jiffies_seq);
+ 
+ 	delta = ktime_sub(now, last_jiffies_update);
+ 	if (delta >= tick_period) {
+@@ -91,10 +92,12 @@ static void tick_do_update_jiffies64(ktime_t now)
+ 		/* Keep the tick_next_period variable up to date */
+ 		tick_next_period = ktime_add(last_jiffies_update, tick_period);
+ 	} else {
+-		write_sequnlock(&jiffies_lock);
++		write_seqcount_end(&jiffies_seq);
++		raw_spin_unlock(&jiffies_lock);
+ 		return;
+ 	}
+-	write_sequnlock(&jiffies_lock);
++	write_seqcount_end(&jiffies_seq);
++	raw_spin_unlock(&jiffies_lock);
+ 	update_wall_time();
+ }
+ 
+@@ -105,12 +108,14 @@ static ktime_t tick_init_jiffy_update(void)
+ {
+ 	ktime_t period;
+ 
+-	write_seqlock(&jiffies_lock);
++	raw_spin_lock(&jiffies_lock);
++	write_seqcount_begin(&jiffies_seq);
+ 	/* Did we start the jiffies update yet ? */
+ 	if (last_jiffies_update == 0)
+ 		last_jiffies_update = tick_next_period;
+ 	period = last_jiffies_update;
+-	write_sequnlock(&jiffies_lock);
++	write_seqcount_end(&jiffies_seq);
++	raw_spin_unlock(&jiffies_lock);
+ 	return period;
+ }
+ 
+@@ -676,10 +681,10 @@ static ktime_t tick_nohz_next_event(struct tick_sched *ts, int cpu)
+ 
+ 	/* Read jiffies and the time when jiffies were updated last */
+ 	do {
+-		seq = read_seqbegin(&jiffies_lock);
++		seq = read_seqcount_begin(&jiffies_seq);
+ 		basemono = last_jiffies_update;
+ 		basejiff = jiffies;
+-	} while (read_seqretry(&jiffies_lock, seq));
++	} while (read_seqcount_retry(&jiffies_seq, seq));
+ 	ts->last_jiffies = basejiff;
+ 	ts->timer_expires_base = basemono;
+ 
+diff --git a/kernel/time/timekeeping.c b/kernel/time/timekeeping.c
+index ca69290..856280d 100644
+--- a/kernel/time/timekeeping.c
++++ b/kernel/time/timekeeping.c
+@@ -2397,8 +2397,10 @@ EXPORT_SYMBOL(hardpps);
+  */
+ void xtime_update(unsigned long ticks)
+ {
+-	write_seqlock(&jiffies_lock);
++	raw_spin_lock(&jiffies_lock);
++	write_seqcount_begin(&jiffies_seq);
+ 	do_timer(ticks);
+-	write_sequnlock(&jiffies_lock);
++	write_seqcount_end(&jiffies_seq);
++	raw_spin_unlock(&jiffies_lock);
+ 	update_wall_time();
+ }
+diff --git a/kernel/time/timekeeping.h b/kernel/time/timekeeping.h
+index 141ab3a..099737f 100644
+--- a/kernel/time/timekeeping.h
++++ b/kernel/time/timekeeping.h
+@@ -25,7 +25,8 @@ static inline void sched_clock_resume(void) { }
+ extern void do_timer(unsigned long ticks);
+ extern void update_wall_time(void);
+ 
+-extern seqlock_t jiffies_lock;
++extern raw_spinlock_t jiffies_lock;
++extern seqcount_t jiffies_seq;
+ 
+ #define CS_NAME_LEN	32
+ 
