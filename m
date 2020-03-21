@@ -2,38 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CE2918E1CB
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 21 Mar 2020 15:22:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8116F18E200
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 21 Mar 2020 15:34:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727258AbgCUOWB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 21 Mar 2020 10:22:01 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:38662 "EHLO
+        id S1727518AbgCUOej (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 21 Mar 2020 10:34:39 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:38706 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727128AbgCUOWB (ORCPT
+        with ESMTP id S1726997AbgCUOda (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 21 Mar 2020 10:22:01 -0400
+        Sat, 21 Mar 2020 10:33:30 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jFf0f-0003yd-2p; Sat, 21 Mar 2020 15:21:57 +0100
+        id 1jFfBk-00044I-2x; Sat, 21 Mar 2020 15:33:24 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A48A51C1CA2;
-        Sat, 21 Mar 2020 15:21:56 +0100 (CET)
-Date:   Sat, 21 Mar 2020 14:21:56 -0000
-From:   "tip-bot2 for afzal mohammed" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A5C9C1C22BC;
+        Sat, 21 Mar 2020 15:33:23 +0100 (CET)
+Date:   Sat, 21 Mar 2020 14:33:23 -0000
+From:   "tip-bot2 for Vincenzo Frascino" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] x86: Replace setup_irq() by request_irq()
-Cc:     afzal mohammed <afzal.mohd.ma@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
+Subject: [tip: timers/core] arm64: vdso32: Enable Clang Compilation
+Cc:     Vincenzo Frascino <vincenzo.frascino@arm.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: =?utf-8?q?=3C17f85021f6877650a5b09e0212d88323e6a30fd0=2E15824?=
- =?utf-8?q?71508=2Egit=2Eafzal=2Emohd=2Ema=40gmail=2Ecom=3E?=
-References: =?utf-8?q?=3C17f85021f6877650a5b09e0212d88323e6a30fd0=2E158247?=
- =?utf-8?q?1508=2Egit=2Eafzal=2Emohd=2Ema=40gmail=2Ecom=3E?=
+In-Reply-To: <20200320145351.32292-27-vincenzo.frascino@arm.com>
+References: <20200320145351.32292-27-vincenzo.frascino@arm.com>
 MIME-Version: 1.0
-Message-ID: <158480051619.28353.14186528712410718742.tip-bot2@tip-bot2>
+Message-ID: <158480120332.28353.15188888538994089903.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,97 +49,52 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cleanups branch of tip:
+The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     4dd2a1b92b91b5f2acf853ee1dc0df135054698f
-Gitweb:        https://git.kernel.org/tip/4dd2a1b92b91b5f2acf853ee1dc0df135054698f
-Author:        afzal mohammed <afzal.mohd.ma@gmail.com>
-AuthorDate:    Mon, 24 Feb 2020 06:22:26 +05:30
+Commit-ID:     a5d442f50a41d7c5a6a97b19c49d8a1ee0cf128b
+Gitweb:        https://git.kernel.org/tip/a5d442f50a41d7c5a6a97b19c49d8a1ee0cf128b
+Author:        Vincenzo Frascino <vincenzo.frascino@arm.com>
+AuthorDate:    Fri, 20 Mar 2020 14:53:51 
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sat, 21 Mar 2020 15:15:47 +01:00
+CommitterDate: Sat, 21 Mar 2020 15:24:03 +01:00
 
-x86: Replace setup_irq() by request_irq()
+arm64: vdso32: Enable Clang Compilation
 
-request_irq() is preferred over setup_irq(). The early boot setup_irq()
-invocations happen either via 'init_IRQ()' or 'time_init()', while
-memory allocators are ready by 'mm_init()'.
+Enable Clang Compilation for the vdso32 library.
 
-setup_irq() was required in old kernels when allocators were not ready by
-the time early interrupts were initialized.
-
-Hence replace setup_irq() by request_irq().
-
-[ tglx: Use a local variable and get rid of the line break. Tweak the
-  	comment a bit ]
-
-Signed-off-by: afzal mohammed <afzal.mohd.ma@gmail.com>
+Signed-off-by: Vincenzo Frascino <vincenzo.frascino@arm.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/17f85021f6877650a5b09e0212d88323e6a30fd0.1582471508.git.afzal.mohd.ma@gmail.com
+Tested-by: Nathan Chancellor <natechancellor@gmail.com> # build
+Tested-by: Stephen Boyd <swboyd@chromium.org>
+Reviewed-by: Nathan Chancellor <natechancellor@gmail.com>
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Link: https://lkml.kernel.org/r/20200320145351.32292-27-vincenzo.frascino@arm.com
 
 ---
- arch/x86/kernel/irqinit.c | 16 +++++-----------
- arch/x86/kernel/time.c    | 15 ++++++---------
- 2 files changed, 11 insertions(+), 20 deletions(-)
+ arch/arm64/kernel/vdso32/Makefile | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/arch/x86/kernel/irqinit.c b/arch/x86/kernel/irqinit.c
-index 1e5ad12..5aa523c 100644
---- a/arch/x86/kernel/irqinit.c
-+++ b/arch/x86/kernel/irqinit.c
-@@ -44,15 +44,6 @@
-  * (these are usually mapped into the 0x30-0xff vector range)
-  */
+diff --git a/arch/arm64/kernel/vdso32/Makefile b/arch/arm64/kernel/vdso32/Makefile
+index 04df57b..3964738 100644
+--- a/arch/arm64/kernel/vdso32/Makefile
++++ b/arch/arm64/kernel/vdso32/Makefile
+@@ -10,7 +10,18 @@ include $(srctree)/lib/vdso/Makefile
  
--/*
-- * IRQ2 is cascade interrupt to second interrupt controller
-- */
--static struct irqaction irq2 = {
--	.handler = no_action,
--	.name = "cascade",
--	.flags = IRQF_NO_THREAD,
--};
--
- DEFINE_PER_CPU(vector_irq_t, vector_irq) = {
- 	[0 ... NR_VECTORS - 1] = VECTOR_UNUSED,
- };
-@@ -104,6 +95,9 @@ void __init native_init_IRQ(void)
- 	idt_setup_apic_and_irq_gates();
- 	lapic_assign_system_vectors();
- 
--	if (!acpi_ioapic && !of_ioapic && nr_legacy_irqs())
--		setup_irq(2, &irq2);
-+	if (!acpi_ioapic && !of_ioapic && nr_legacy_irqs()) {
-+		/* IRQ2 is cascade interrupt to second interrupt controller */
-+		if (request_irq(2, no_action, IRQF_NO_THREAD, "cascade", NULL))
-+			pr_err("%s: request_irq() failed\n", "cascade");
-+	}
- }
-diff --git a/arch/x86/kernel/time.c b/arch/x86/kernel/time.c
-index d8673d8..8c5213e 100644
---- a/arch/x86/kernel/time.c
-+++ b/arch/x86/kernel/time.c
-@@ -62,19 +62,16 @@ static irqreturn_t timer_interrupt(int irq, void *dev_id)
- 	return IRQ_HANDLED;
- }
- 
--static struct irqaction irq0  = {
--	.handler = timer_interrupt,
--	.flags = IRQF_NOBALANCING | IRQF_IRQPOLL | IRQF_TIMER,
--	.name = "timer"
--};
--
- static void __init setup_default_timer_irq(void)
- {
-+	unsigned long flags = IRQF_NOBALANCING | IRQF_IRQPOLL | IRQF_TIMER;
+ # Same as cc-*option, but using CC_COMPAT instead of CC
+ ifeq ($(CONFIG_CC_IS_CLANG), y)
++COMPAT_GCC_TOOLCHAIN_DIR := $(dir $(shell which $(CROSS_COMPILE_COMPAT)elfedit))
++COMPAT_GCC_TOOLCHAIN := $(realpath $(COMPAT_GCC_TOOLCHAIN_DIR)/..)
 +
- 	/*
--	 * Unconditionally register the legacy timer; even without legacy
--	 * PIC/PIT we need this for the HPET0 in legacy replacement mode.
-+	 * Unconditionally register the legacy timer interrupt; even
-+	 * without legacy PIC/PIT we need this for the HPET0 in legacy
-+	 * replacement mode.
- 	 */
--	if (setup_irq(0, &irq0))
-+	if (request_irq(0, timer_interrupt, flags, "timer", NULL))
- 		pr_info("Failed to register legacy timer interrupt\n");
- }
- 
++CC_COMPAT_CLANG_FLAGS := --target=$(notdir $(CROSS_COMPILE_COMPAT:%-=%))
++CC_COMPAT_CLANG_FLAGS += --prefix=$(COMPAT_GCC_TOOLCHAIN_DIR)
++CC_COMPAT_CLANG_FLAGS += -no-integrated-as -Qunused-arguments
++ifneq ($(COMPAT_GCC_TOOLCHAIN),)
++CC_COMPAT_CLANG_FLAGS += --gcc-toolchain=$(COMPAT_GCC_TOOLCHAIN)
++endif
++
+ CC_COMPAT ?= $(CC)
++CC_COMPAT += $(CC_COMPAT_CLANG_FLAGS)
+ else
+ CC_COMPAT ?= $(CROSS_COMPILE_COMPAT)gcc
+ endif
