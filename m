@@ -2,36 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B04A918E209
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 21 Mar 2020 15:34:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C871218E205
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 21 Mar 2020 15:34:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727354AbgCUOew (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 21 Mar 2020 10:34:52 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:38682 "EHLO
+        id S1727486AbgCUOda (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 21 Mar 2020 10:33:30 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:38694 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726961AbgCUOd3 (ORCPT
+        with ESMTP id S1726823AbgCUOda (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 21 Mar 2020 10:33:29 -0400
+        Sat, 21 Mar 2020 10:33:30 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jFfBl-00044P-8w; Sat, 21 Mar 2020 15:33:25 +0100
+        id 1jFfBm-00045n-FE; Sat, 21 Mar 2020 15:33:26 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id CF7E91C22DA;
-        Sat, 21 Mar 2020 15:33:24 +0100 (CET)
-Date:   Sat, 21 Mar 2020 14:33:24 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 19BAC1C22BC;
+        Sat, 21 Mar 2020 15:33:26 +0100 (CET)
+Date:   Sat, 21 Mar 2020 14:33:25 -0000
 From:   "tip-bot2 for Vincenzo Frascino" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] x86/vdso: Enable x86 to use common headers
+Subject: [tip: timers/core] arm64: vdso: Include common headers in the vdso library
 Cc:     Vincenzo Frascino <vincenzo.frascino@arm.com>,
-        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200320145351.32292-24-vincenzo.frascino@arm.com>
-References: <20200320145351.32292-24-vincenzo.frascino@arm.com>
+In-Reply-To: <20200320145351.32292-21-vincenzo.frascino@arm.com>
+References: <20200320145351.32292-21-vincenzo.frascino@arm.com>
 MIME-Version: 1.0
-Message-ID: <158480120455.28353.18216444318007349427.tip-bot2@tip-bot2>
+Message-ID: <158480120575.28353.8731361657812090008.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,84 +49,55 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     abc22418db02b986fc5623c035507b6357e191ed
-Gitweb:        https://git.kernel.org/tip/abc22418db02b986fc5623c035507b6357e191ed
+Commit-ID:     60ad903e9477a832e4575734540db32023a605e9
+Gitweb:        https://git.kernel.org/tip/60ad903e9477a832e4575734540db32023a605e9
 Author:        Vincenzo Frascino <vincenzo.frascino@arm.com>
-AuthorDate:    Fri, 20 Mar 2020 14:53:48 
+AuthorDate:    Fri, 20 Mar 2020 14:53:45 
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sat, 21 Mar 2020 15:24:02 +01:00
+CommitterDate: Sat, 21 Mar 2020 15:24:01 +01:00
 
-x86/vdso: Enable x86 to use common headers
+arm64: vdso: Include common headers in the vdso library
 
-Enable x86 to use only the common headers in the implementation
-of the vDSO library.
+The vDSO library should only include the necessary headers required for
+a userspace library (UAPI and a minimal set of kernel headers). To make
+this possible it is necessary to isolate from the kernel headers the
+common parts that are strictly necessary to build the library.
+
+Refactor the vdso implementation to include common headers.
 
 Signed-off-by: Vincenzo Frascino <vincenzo.frascino@arm.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20200320145351.32292-24-vincenzo.frascino@arm.com
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Link: https://lkml.kernel.org/r/20200320145351.32292-21-vincenzo.frascino@arm.com
 
 ---
- arch/x86/include/asm/processor.h      | 12 +-----------
- arch/x86/include/asm/vdso/processor.h | 23 +++++++++++++++++++++++
- 2 files changed, 24 insertions(+), 11 deletions(-)
- create mode 100644 arch/x86/include/asm/vdso/processor.h
+ arch/arm64/include/asm/vdso/gettimeofday.h | 1 -
+ arch/arm64/kernel/vdso/vgettimeofday.c     | 2 --
+ 2 files changed, 3 deletions(-)
 
-diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
-index 09705cc..94789db 100644
---- a/arch/x86/include/asm/processor.h
-+++ b/arch/x86/include/asm/processor.h
-@@ -26,6 +26,7 @@ struct vm86;
- #include <asm/fpu/types.h>
- #include <asm/unwind_hints.h>
- #include <asm/vmxfeatures.h>
-+#include <asm/vdso/processor.h>
+diff --git a/arch/arm64/include/asm/vdso/gettimeofday.h b/arch/arm64/include/asm/vdso/gettimeofday.h
+index 5a53443..afba6ba 100644
+--- a/arch/arm64/include/asm/vdso/gettimeofday.h
++++ b/arch/arm64/include/asm/vdso/gettimeofday.h
+@@ -8,7 +8,6 @@
+ #ifndef __ASSEMBLY__
  
- #include <linux/personality.h>
- #include <linux/cache.h>
-@@ -677,17 +678,6 @@ static inline unsigned int cpuid_edx(unsigned int op)
- 	return edx;
- }
+ #include <asm/unistd.h>
+-#include <uapi/linux/time.h>
  
--/* REP NOP (PAUSE) is a good thing to insert into busy-wait loops. */
--static __always_inline void rep_nop(void)
--{
--	asm volatile("rep; nop" ::: "memory");
--}
--
--static __always_inline void cpu_relax(void)
--{
--	rep_nop();
--}
--
- /*
-  * This function forces the icache and prefetched instruction stream to
-  * catch up with reality in two very specific cases:
-diff --git a/arch/x86/include/asm/vdso/processor.h b/arch/x86/include/asm/vdso/processor.h
-new file mode 100644
-index 0000000..57b1a70
---- /dev/null
-+++ b/arch/x86/include/asm/vdso/processor.h
-@@ -0,0 +1,23 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/*
-+ * Copyright (C) 2020 ARM Ltd.
-+ */
-+#ifndef __ASM_VDSO_PROCESSOR_H
-+#define __ASM_VDSO_PROCESSOR_H
-+
-+#ifndef __ASSEMBLY__
-+
-+/* REP NOP (PAUSE) is a good thing to insert into busy-wait loops. */
-+static __always_inline void rep_nop(void)
-+{
-+	asm volatile("rep; nop" ::: "memory");
-+}
-+
-+static __always_inline void cpu_relax(void)
-+{
-+	rep_nop();
-+}
-+
-+#endif /* __ASSEMBLY__ */
-+
-+#endif /* __ASM_VDSO_PROCESSOR_H */
+ #define VDSO_HAS_CLOCK_GETRES		1
+ 
+diff --git a/arch/arm64/kernel/vdso/vgettimeofday.c b/arch/arm64/kernel/vdso/vgettimeofday.c
+index 7476355..4236cf3 100644
+--- a/arch/arm64/kernel/vdso/vgettimeofday.c
++++ b/arch/arm64/kernel/vdso/vgettimeofday.c
+@@ -5,8 +5,6 @@
+  * Copyright (C) 2018 ARM Limited
+  *
+  */
+-#include <linux/time.h>
+-#include <linux/types.h>
+ 
+ int __kernel_clock_gettime(clockid_t clock,
+ 			   struct __kernel_timespec *ts)
