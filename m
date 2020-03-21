@@ -2,37 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 66B1C18E1EA
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 21 Mar 2020 15:34:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 57CE418E1F4
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 21 Mar 2020 15:34:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727805AbgCUOeG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 21 Mar 2020 10:34:06 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:38771 "EHLO
+        id S1727668AbgCUOeR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 21 Mar 2020 10:34:17 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:38751 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727689AbgCUOdn (ORCPT
+        with ESMTP id S1727647AbgCUOdj (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 21 Mar 2020 10:33:43 -0400
+        Sat, 21 Mar 2020 10:33:39 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jFfBy-0004Bb-D0; Sat, 21 Mar 2020 15:33:38 +0100
+        id 1jFfBv-0004AY-BT; Sat, 21 Mar 2020 15:33:35 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 18C141C22E3;
-        Sat, 21 Mar 2020 15:33:32 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A07A11C22DB;
+        Sat, 21 Mar 2020 15:33:31 +0100 (CET)
 Date:   Sat, 21 Mar 2020 14:33:31 -0000
 From:   "tip-bot2 for Vincenzo Frascino" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] arm: Introduce asm/vdso/clocksource.h
+Subject: [tip: timers/core] arm64: Introduce asm/vdso/clocksource.h
 Cc:     Vincenzo Frascino <vincenzo.frascino@arm.com>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Russell King <linux@armlinux.org.uk>, x86 <x86@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200320145351.32292-6-vincenzo.frascino@arm.com>
-References: <20200320145351.32292-6-vincenzo.frascino@arm.com>
+In-Reply-To: <20200320145351.32292-7-vincenzo.frascino@arm.com>
+References: <20200320145351.32292-7-vincenzo.frascino@arm.com>
 MIME-Version: 1.0
-Message-ID: <158480121171.28353.17233496150893905471.tip-bot2@tip-bot2>
+Message-ID: <158480121132.28353.8822226215960319255.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,14 +49,14 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     c16b270b171177d1a602b270aef9bff45585bfa2
-Gitweb:        https://git.kernel.org/tip/c16b270b171177d1a602b270aef9bff45585bfa2
+Commit-ID:     31fdcac07f679848b5ba371500292b685fd39217
+Gitweb:        https://git.kernel.org/tip/31fdcac07f679848b5ba371500292b685fd39217
 Author:        Vincenzo Frascino <vincenzo.frascino@arm.com>
-AuthorDate:    Fri, 20 Mar 2020 14:53:30 
+AuthorDate:    Fri, 20 Mar 2020 14:53:31 
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sat, 21 Mar 2020 15:23:54 +01:00
+CommitterDate: Sat, 21 Mar 2020 15:23:55 +01:00
 
-arm: Introduce asm/vdso/clocksource.h
+arm64: Introduce asm/vdso/clocksource.h
 
 The vDSO library should only include the necessary headers required for
 a userspace library (UAPI and a minimal set of kernel headers). To make
@@ -70,21 +71,21 @@ vdso/clocksource.h.
 
 Signed-off-by: Vincenzo Frascino <vincenzo.frascino@arm.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: Russell King <linux@armlinux.org.uk>
-Link: https://lkml.kernel.org/r/20200320145351.32292-6-vincenzo.frascino@arm.com
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Link: https://lkml.kernel.org/r/20200320145351.32292-7-vincenzo.frascino@arm.com
 
 ---
- arch/arm/include/asm/clocksource.h      | 6 +++---
- arch/arm/include/asm/vdso/clocksource.h | 8 ++++++++
- 2 files changed, 11 insertions(+), 3 deletions(-)
- create mode 100644 arch/arm/include/asm/vdso/clocksource.h
+ arch/arm64/include/asm/clocksource.h      | 3 +--
+ arch/arm64/include/asm/vdso/clocksource.h | 8 ++++++++
+ 2 files changed, 9 insertions(+), 2 deletions(-)
+ create mode 100644 arch/arm64/include/asm/vdso/clocksource.h
 
-diff --git a/arch/arm/include/asm/clocksource.h b/arch/arm/include/asm/clocksource.h
-index 73beb7f..13651c7 100644
---- a/arch/arm/include/asm/clocksource.h
-+++ b/arch/arm/include/asm/clocksource.h
-@@ -1,7 +1,7 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
+diff --git a/arch/arm64/include/asm/clocksource.h b/arch/arm64/include/asm/clocksource.h
+index eb82e9d..4821855 100644
+--- a/arch/arm64/include/asm/clocksource.h
++++ b/arch/arm64/include/asm/clocksource.h
+@@ -2,7 +2,6 @@
  #ifndef _ASM_CLOCKSOURCE_H
  #define _ASM_CLOCKSOURCE_H
  
@@ -92,13 +93,12 @@ index 73beb7f..13651c7 100644
 -	VDSO_CLOCKMODE_ARCHTIMER
 +#include <asm/vdso/clocksource.h>
  
--#endif
-+#endif /* _ASM_CLOCKSOURCE_H */
-diff --git a/arch/arm/include/asm/vdso/clocksource.h b/arch/arm/include/asm/vdso/clocksource.h
+ #endif
+diff --git a/arch/arm64/include/asm/vdso/clocksource.h b/arch/arm64/include/asm/vdso/clocksource.h
 new file mode 100644
-index 0000000..50c0b19
+index 0000000..df6ea65
 --- /dev/null
-+++ b/arch/arm/include/asm/vdso/clocksource.h
++++ b/arch/arm64/include/asm/vdso/clocksource.h
 @@ -0,0 +1,8 @@
 +/* SPDX-License-Identifier: GPL-2.0 */
 +#ifndef __ASM_VDSOCLOCKSOURCE_H
@@ -107,4 +107,4 @@ index 0000000..50c0b19
 +#define VDSO_ARCH_CLOCKMODES	\
 +	VDSO_CLOCKMODE_ARCHTIMER
 +
-+#endif /* __ASM_VDSOCLOCKSOURCE_H */
++#endif
