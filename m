@@ -2,37 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BD0F18E287
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 21 Mar 2020 16:32:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0177718E270
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 21 Mar 2020 16:30:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727579AbgCUPag (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S1727575AbgCUPag (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Sat, 21 Mar 2020 11:30:36 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:38871 "EHLO
+Received: from Galois.linutronix.de ([193.142.43.55]:38877 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727323AbgCUPae (ORCPT
+        with ESMTP id S1727495AbgCUPaf (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 21 Mar 2020 11:30:34 -0400
+        Sat, 21 Mar 2020 11:30:35 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jFg50-0004wI-Rb; Sat, 21 Mar 2020 16:30:30 +0100
+        id 1jFg51-0004wf-Jx; Sat, 21 Mar 2020 16:30:31 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 53D841C22E5;
-        Sat, 21 Mar 2020 16:30:30 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 280B81C22E5;
+        Sat, 21 Mar 2020 16:30:31 +0100 (CET)
 Date:   Sat, 21 Mar 2020 15:30:30 -0000
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/entry] lockdep: Rename trace_softirqs_{on,off}()
+Subject: [tip: x86/entry] x86/entry: Rename ___preempt_schedule
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Will Deacon <will@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200320115859.119434738@infradead.org>
-References: <20200320115859.119434738@infradead.org>
+In-Reply-To: <20200320115858.995685950@infradead.org>
+References: <20200320115858.995685950@infradead.org>
 MIME-Version: 1.0
-Message-ID: <158480463002.28353.16464317745293998156.tip-bot2@tip-bot2>
+Message-ID: <158480463081.28353.17673265563956442627.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,24 +48,20 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/entry branch of tip:
 
-Commit-ID:     0d38453c85b426e47375346812d2271680c47988
-Gitweb:        https://git.kernel.org/tip/0d38453c85b426e47375346812d2271680c47988
+Commit-ID:     46db36abc32dfd18041c57d571fe4945fc0057fe
+Gitweb:        https://git.kernel.org/tip/46db36abc32dfd18041c57d571fe4945fc0057fe
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Fri, 20 Mar 2020 12:56:41 +01:00
+AuthorDate:    Fri, 20 Mar 2020 12:56:39 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sat, 21 Mar 2020 16:03:54 +01:00
+CommitterDate: Sat, 21 Mar 2020 16:03:53 +01:00
 
-lockdep: Rename trace_softirqs_{on,off}()
+x86/entry: Rename ___preempt_schedule
 
-Continue what commit:
+Because moar '_' isn't always moar readable.
 
-  d820ac4c2fa8 ("locking: rename trace_softirq_[enter|exit] => lockdep_softirq_[enter|exit]")
-
-started, rename these to avoid confusing them with tracepoints.
-
-git grep -l "trace_softirqs_\(on\|off\)" | while read file;
+git grep -l "___preempt_schedule\(_notrace\)*" | while read file;
 do
-	sed -ie 's/trace_softirqs_\(on\|off\)/lockdep_softirqs_\1/g' $file;
+	sed -ie 's/___preempt_schedule\(_notrace\)*/preempt_schedule\1_thunk/g' $file;
 done
 
 Reported-by: Thomas Gleixner <tglx@linutronix.de>
@@ -73,89 +69,71 @@ Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
 Acked-by: Will Deacon <will@kernel.org>
-Link: https://lkml.kernel.org/r/20200320115859.119434738@infradead.org
+Link: https://lkml.kernel.org/r/20200320115858.995685950@infradead.org
 
 ---
- include/linux/irqflags.h | 10 +++++-----
- kernel/locking/lockdep.c |  4 ++--
- kernel/softirq.c         |  6 +++---
- 3 files changed, 10 insertions(+), 10 deletions(-)
+ arch/x86/entry/thunk_32.S      | 8 ++++----
+ arch/x86/entry/thunk_64.S      | 8 ++++----
+ arch/x86/include/asm/preempt.h | 8 ++++----
+ 3 files changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/include/linux/irqflags.h b/include/linux/irqflags.h
-index 7c4e645..7ca1f21 100644
---- a/include/linux/irqflags.h
-+++ b/include/linux/irqflags.h
-@@ -15,15 +15,15 @@
- #include <linux/typecheck.h>
- #include <asm/irqflags.h>
- 
--/* Currently trace_softirqs_on/off is used only by lockdep */
-+/* Currently lockdep_softirqs_on/off is used only by lockdep */
- #ifdef CONFIG_PROVE_LOCKING
--  extern void trace_softirqs_on(unsigned long ip);
--  extern void trace_softirqs_off(unsigned long ip);
-+  extern void lockdep_softirqs_on(unsigned long ip);
-+  extern void lockdep_softirqs_off(unsigned long ip);
-   extern void lockdep_hardirqs_on(unsigned long ip);
-   extern void lockdep_hardirqs_off(unsigned long ip);
- #else
--  static inline void trace_softirqs_on(unsigned long ip) { }
--  static inline void trace_softirqs_off(unsigned long ip) { }
-+  static inline void lockdep_softirqs_on(unsigned long ip) { }
-+  static inline void lockdep_softirqs_off(unsigned long ip) { }
-   static inline void lockdep_hardirqs_on(unsigned long ip) { }
-   static inline void lockdep_hardirqs_off(unsigned long ip) { }
+diff --git a/arch/x86/entry/thunk_32.S b/arch/x86/entry/thunk_32.S
+index e010d4a..3a07ce3 100644
+--- a/arch/x86/entry/thunk_32.S
++++ b/arch/x86/entry/thunk_32.S
+@@ -35,9 +35,9 @@ SYM_CODE_END(\name)
  #endif
-diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
-index 32406ef..26ef412 100644
---- a/kernel/locking/lockdep.c
-+++ b/kernel/locking/lockdep.c
-@@ -3468,7 +3468,7 @@ NOKPROBE_SYMBOL(lockdep_hardirqs_off);
- /*
-  * Softirqs will be enabled:
-  */
--void trace_softirqs_on(unsigned long ip)
-+void lockdep_softirqs_on(unsigned long ip)
- {
- 	struct task_struct *curr = current;
  
-@@ -3508,7 +3508,7 @@ void trace_softirqs_on(unsigned long ip)
- /*
-  * Softirqs were disabled:
-  */
--void trace_softirqs_off(unsigned long ip)
-+void lockdep_softirqs_off(unsigned long ip)
- {
- 	struct task_struct *curr = current;
+ #ifdef CONFIG_PREEMPTION
+-	THUNK ___preempt_schedule, preempt_schedule
+-	THUNK ___preempt_schedule_notrace, preempt_schedule_notrace
+-	EXPORT_SYMBOL(___preempt_schedule)
+-	EXPORT_SYMBOL(___preempt_schedule_notrace)
++	THUNK preempt_schedule_thunk, preempt_schedule
++	THUNK preempt_schedule_notrace_thunk, preempt_schedule_notrace
++	EXPORT_SYMBOL(preempt_schedule_thunk)
++	EXPORT_SYMBOL(preempt_schedule_notrace_thunk)
+ #endif
  
-diff --git a/kernel/softirq.c b/kernel/softirq.c
-index b328689..0112ca0 100644
---- a/kernel/softirq.c
-+++ b/kernel/softirq.c
-@@ -126,7 +126,7 @@ void __local_bh_disable_ip(unsigned long ip, unsigned int cnt)
- 	 * Were softirqs turned off above:
- 	 */
- 	if (softirq_count() == (cnt & SOFTIRQ_MASK))
--		trace_softirqs_off(ip);
-+		lockdep_softirqs_off(ip);
- 	raw_local_irq_restore(flags);
+diff --git a/arch/x86/entry/thunk_64.S b/arch/x86/entry/thunk_64.S
+index c5c3b6e..dbe4493 100644
+--- a/arch/x86/entry/thunk_64.S
++++ b/arch/x86/entry/thunk_64.S
+@@ -47,10 +47,10 @@ SYM_FUNC_END(\name)
+ #endif
  
- 	if (preempt_count() == cnt) {
-@@ -147,7 +147,7 @@ static void __local_bh_enable(unsigned int cnt)
- 		trace_preempt_on(CALLER_ADDR0, get_lock_parent_ip());
+ #ifdef CONFIG_PREEMPTION
+-	THUNK ___preempt_schedule, preempt_schedule
+-	THUNK ___preempt_schedule_notrace, preempt_schedule_notrace
+-	EXPORT_SYMBOL(___preempt_schedule)
+-	EXPORT_SYMBOL(___preempt_schedule_notrace)
++	THUNK preempt_schedule_thunk, preempt_schedule
++	THUNK preempt_schedule_notrace_thunk, preempt_schedule_notrace
++	EXPORT_SYMBOL(preempt_schedule_thunk)
++	EXPORT_SYMBOL(preempt_schedule_notrace_thunk)
+ #endif
  
- 	if (softirq_count() == (cnt & SOFTIRQ_MASK))
--		trace_softirqs_on(_RET_IP_);
-+		lockdep_softirqs_on(_RET_IP_);
- 
- 	__preempt_count_sub(cnt);
+ #if defined(CONFIG_TRACE_IRQFLAGS) \
+diff --git a/arch/x86/include/asm/preempt.h b/arch/x86/include/asm/preempt.h
+index 3d4cb83..69485ca 100644
+--- a/arch/x86/include/asm/preempt.h
++++ b/arch/x86/include/asm/preempt.h
+@@ -103,14 +103,14 @@ static __always_inline bool should_resched(int preempt_offset)
  }
-@@ -174,7 +174,7 @@ void __local_bh_enable_ip(unsigned long ip, unsigned int cnt)
- 	 * Are softirqs going to be turned on now:
- 	 */
- 	if (softirq_count() == SOFTIRQ_DISABLE_OFFSET)
--		trace_softirqs_on(ip);
-+		lockdep_softirqs_on(ip);
- 	/*
- 	 * Keep preemption disabled until we are done with
- 	 * softirq processing:
+ 
+ #ifdef CONFIG_PREEMPTION
+-  extern asmlinkage void ___preempt_schedule(void);
++  extern asmlinkage void preempt_schedule_thunk(void);
+ # define __preempt_schedule() \
+-	asm volatile ("call ___preempt_schedule" : ASM_CALL_CONSTRAINT)
++	asm volatile ("call preempt_schedule_thunk" : ASM_CALL_CONSTRAINT)
+ 
+   extern asmlinkage void preempt_schedule(void);
+-  extern asmlinkage void ___preempt_schedule_notrace(void);
++  extern asmlinkage void preempt_schedule_notrace_thunk(void);
+ # define __preempt_schedule_notrace() \
+-	asm volatile ("call ___preempt_schedule_notrace" : ASM_CALL_CONSTRAINT)
++	asm volatile ("call preempt_schedule_notrace_thunk" : ASM_CALL_CONSTRAINT)
+ 
+   extern asmlinkage void preempt_schedule_notrace(void);
+ #endif
