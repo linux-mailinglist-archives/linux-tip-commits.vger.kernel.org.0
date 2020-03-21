@@ -2,124 +2,230 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3287A18CE39
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 20 Mar 2020 13:58:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3341718DDB9
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 21 Mar 2020 03:47:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727289AbgCTM6j (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 20 Mar 2020 08:58:39 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:35682 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727426AbgCTM6j (ORCPT
+        id S1727158AbgCUCrn (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 20 Mar 2020 22:47:43 -0400
+Received: from mail-il1-f194.google.com ([209.85.166.194]:43923 "EHLO
+        mail-il1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726840AbgCUCrm (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 20 Mar 2020 08:58:39 -0400
-Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tip-bot2@linutronix.de>)
-        id 1jFHEQ-0003qv-0M; Fri, 20 Mar 2020 13:58:34 +0100
-Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 944B51C22C0;
-        Fri, 20 Mar 2020 13:58:33 +0100 (CET)
-Date:   Fri, 20 Mar 2020 12:58:33 -0000
-From:   "tip-bot2 for Boqun Feng" <tip-bot2@linutronix.de>
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] locking/lockdep: Avoid recursion in
- lockdep_count_{for,back}ward_deps()
-Cc:     Qian Cai <cai@lca.pw>, Boqun Feng <boqun.feng@gmail.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200312151258.128036-1-boqun.feng@gmail.com>
-References: <20200312151258.128036-1-boqun.feng@gmail.com>
+        Fri, 20 Mar 2020 22:47:42 -0400
+Received: by mail-il1-f194.google.com with SMTP id d14so7750659ilq.10;
+        Fri, 20 Mar 2020 19:47:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=P2k0WSrU2ZJXZjVaGAcVV0ERjfzvv5YtgF8yXRGmqTM=;
+        b=OT38GO/5P1zn2/sHIO+sZHLa0OI9KwhNQJKtcFbgKeTiKVu1TACH1x0bwqJ0rTKWBP
+         aiVFYdMWvdh/QkFdX4ER8vhDBqqaAN1pHCSlJLYNYVciWRqBXtaFJx2F9MvOnCU33LvK
+         MFuh4VR4T1TtPf/G1gtn/URn5G+vhj2FTNSyGv3PyAZOQSqTgAQbXH0Cj/01y3mIwMUg
+         jqljry4A0ObdRybqV3tkFHJR/I8MkmR/2mrnMaUOfXAOv/lJ8cPJaytYgBneJ2JiXvSX
+         ZNmUSHd0QuNqurIuQR6smKp75/x15MiCj5SZ3h9Tmggl7RclS84ugc1THsDK4Bkxek34
+         ehXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=P2k0WSrU2ZJXZjVaGAcVV0ERjfzvv5YtgF8yXRGmqTM=;
+        b=TXXb4yVbvr1PhEOUFmQRIgSHDPFCtnUEhO1Il2s65vYHXkLgwfhKFbd1qd85UAwKMi
+         sznp1zGF56dehMvbeLBHb6FymwjtomG3kNsHkr48FedtWhmnMpVLsrO4dVfks2UhAeGu
+         5buuPWHouI5L62MEc1ocSm5jkrXS/ojjOj4mYB/G9FluAiBTJjsswPB5RqkhYg8Gcf7b
+         247U3QGASaF3V9Fa9pkGHuLDBzPDZSBQTIg/LglrqRWReFYQVIreR09qNiKpvYTqTqoq
+         +Jq/qPj2ucjXiP+tGzxFbPzYremxGHdEQvw8DsmS2htN3IW4t1XB2cLSYXGlTuDOsqEY
+         VdRA==
+X-Gm-Message-State: ANhLgQ255a+F/LHFnW0kF3RjajNs+qC9vRiB7onvLqoseSjc+CTWeKiV
+        6ZsrQS5SAaHkqBOaFXSIaqiGTchhlPzL00jaME649Io8ENM=
+X-Google-Smtp-Source: ADFU+vuY0R1Q1Q1paA1QkcLiRlZza0f3IQihlav68tUfmh6Giyw+2YLUV5DOd1UF0abU/7hpcGn0Xy2Ckzq2kPsQiTE=
+X-Received: by 2002:a92:bb9d:: with SMTP id x29mr11774869ilk.137.1584758861451;
+ Fri, 20 Mar 2020 19:47:41 -0700 (PDT)
 MIME-Version: 1.0
-Message-ID: <158470911332.28353.7259360463548170185.tip-bot2@tip-bot2>
-X-Mailer: tip-git-log-daemon
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+References: <1584408485-1921-1-git-send-email-laoar.shao@gmail.com> <158470908459.28353.7390210153247885071.tip-bot2@tip-bot2>
+In-Reply-To: <158470908459.28353.7390210153247885071.tip-bot2@tip-bot2>
+From:   Yafang Shao <laoar.shao@gmail.com>
+Date:   Sat, 21 Mar 2020 10:47:05 +0800
+Message-ID: <CALOAHbDGvbZ6x6pDcPah3_3YV9mwMtuFWbLhi0hTQmRro73jqg@mail.gmail.com>
+Subject: Re: [tip: sched/core] psi: Move PF_MEMSTALL out of task->flags
+To:     LKML <linux-kernel@vger.kernel.org>
+Cc:     linux-tip-commits@vger.kernel.org,
+        Johannes Weiner <hannes@cmpxchg.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        x86 <x86@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/core branch of tip:
+On Fri, Mar 20, 2020 at 8:58 PM tip-bot2 for Yafang Shao
+<tip-bot2@linutronix.de> wrote:
+>
+> The following commit has been merged into the sched/core branch of tip:
+>
+> Commit-ID:     1066d1b6974e095d5a6c472ad9180a957b496cd6
+> Gitweb:        https://git.kernel.org/tip/1066d1b6974e095d5a6c472ad9180a957b496cd6
+> Author:        Yafang Shao <laoar.shao@gmail.com>
+> AuthorDate:    Mon, 16 Mar 2020 21:28:05 -04:00
+> Committer:     Peter Zijlstra <peterz@infradead.org>
+> CommitterDate: Fri, 20 Mar 2020 13:06:19 +01:00
+>
+> psi: Move PF_MEMSTALL out of task->flags
+>
+> The task->flags is a 32-bits flag, in which 31 bits have already been
+> consumed. So it is hardly to introduce other new per process flag.
+> Currently there're still enough spaces in the bit-field section of
+> task_struct, so we can define the memstall state as a single bit in
+> task_struct instead.
+> This patch also removes an out-of-date comment pointed by Matthew.
+>
+> Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
+> Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
+> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+> Link: https://lkml.kernel.org/r/1584408485-1921-1-git-send-email-laoar.shao@gmail.com
+> ---
+>  include/linux/sched.h |  6 ++++--
+>  kernel/sched/psi.c    | 12 ++++++------
+>  kernel/sched/stats.h  | 10 +++++-----
+>  3 files changed, 15 insertions(+), 13 deletions(-)
+>
+> diff --git a/include/linux/sched.h b/include/linux/sched.h
+> index 2e9199b..09bddd9 100644
+> --- a/include/linux/sched.h
+> +++ b/include/linux/sched.h
+> @@ -785,9 +785,12 @@ struct task_struct {
+>         unsigned                        frozen:1;
+>  #endif
+>  #ifdef CONFIG_BLK_CGROUP
+> -       /* to be used once the psi infrastructure lands upstream. */
+>         unsigned                        use_memdelay:1;
+>  #endif
+> +#ifdef CONFIG_PSI
+> +       /* Stalled due to lack of memory */
+> +       unsigned                        in_memstall:1;
+> +#endif
+>
+>         unsigned long                   atomic_flags; /* Flags requiring atomic access. */
+>
+> @@ -1480,7 +1483,6 @@ extern struct pid *cad_pid;
+>  #define PF_KTHREAD             0x00200000      /* I am a kernel thread */
+>  #define PF_RANDOMIZE           0x00400000      /* Randomize virtual address space */
+>  #define PF_SWAPWRITE           0x00800000      /* Allowed to write to swap */
+> -#define PF_MEMSTALL            0x01000000      /* Stalled due to lack of memory */
+>  #define PF_UMH                 0x02000000      /* I'm an Usermodehelper process */
+>  #define PF_NO_SETAFFINITY      0x04000000      /* Userland is not allowed to meddle with cpus_mask */
+>  #define PF_MCE_EARLY           0x08000000      /* Early kill for mce process policy */
+> diff --git a/kernel/sched/psi.c b/kernel/sched/psi.c
+> index 955a124..8f45cdb 100644
+> --- a/kernel/sched/psi.c
+> +++ b/kernel/sched/psi.c
+> @@ -865,17 +865,17 @@ void psi_memstall_enter(unsigned long *flags)
+>         if (static_branch_likely(&psi_disabled))
+>                 return;
+>
+> -       *flags = current->flags & PF_MEMSTALL;
+> +       *flags = current->in_memstall;
+>         if (*flags)
+>                 return;
+>         /*
+> -        * PF_MEMSTALL setting & accounting needs to be atomic wrt
+> +        * in_memstall setting & accounting needs to be atomic wrt
+>          * changes to the task's scheduling state, otherwise we can
+>          * race with CPU migration.
+>          */
+>         rq = this_rq_lock_irq(&rf);
+>
+> -       current->flags |= PF_MEMSTALL;
+> +       current->in_memstall = 1;
+>         psi_task_change(current, 0, TSK_MEMSTALL);
+>
+>         rq_unlock_irq(rq, &rf);
+> @@ -898,13 +898,13 @@ void psi_memstall_leave(unsigned long *flags)
+>         if (*flags)
+>                 return;
+>         /*
+> -        * PF_MEMSTALL clearing & accounting needs to be atomic wrt
+> +        * in_memstall clearing & accounting needs to be atomic wrt
+>          * changes to the task's scheduling state, otherwise we could
+>          * race with CPU migration.
+>          */
+>         rq = this_rq_lock_irq(&rf);
+>
+> -       current->flags &= ~PF_MEMSTALL;
+> +       current->in_memstall = 0;
+>         psi_task_change(current, TSK_MEMSTALL, 0);
+>
+>         rq_unlock_irq(rq, &rf);
+> @@ -970,7 +970,7 @@ void cgroup_move_task(struct task_struct *task, struct css_set *to)
+>         } else if (task->in_iowait)
+>                 task_flags = TSK_IOWAIT;
+>
+> -       if (task->flags & PF_MEMSTALL)
+> +       if (task->in_memstall)
+>                 task_flags |= TSK_MEMSTALL;
+>
+>         if (task_flags)
+> diff --git a/kernel/sched/stats.h b/kernel/sched/stats.h
+> index 1339f5b..33d0daf 100644
+> --- a/kernel/sched/stats.h
+> +++ b/kernel/sched/stats.h
+> @@ -70,7 +70,7 @@ static inline void psi_enqueue(struct task_struct *p, bool wakeup)
+>                 return;
+>
+>         if (!wakeup || p->sched_psi_wake_requeue) {
+> -               if (p->flags & PF_MEMSTALL)
+> +               if (p->in_memstall)
+>                         set |= TSK_MEMSTALL;
+>                 if (p->sched_psi_wake_requeue)
+>                         p->sched_psi_wake_requeue = 0;
+> @@ -90,7 +90,7 @@ static inline void psi_dequeue(struct task_struct *p, bool sleep)
+>                 return;
+>
+>         if (!sleep) {
+> -               if (p->flags & PF_MEMSTALL)
+> +               if (p->in_memstall)
+>                         clear |= TSK_MEMSTALL;
+>         } else {
+>                 /*
+> @@ -117,14 +117,14 @@ static inline void psi_ttwu_dequeue(struct task_struct *p)
+>          * deregister its sleep-persistent psi states from the old
+>          * queue, and let psi_enqueue() know it has to requeue.
+>          */
+> -       if (unlikely(p->in_iowait || (p->flags & PF_MEMSTALL))) {
+> +       if (unlikely(p->in_iowait || p->in_memstall)) {
+>                 struct rq_flags rf;
+>                 struct rq *rq;
+>                 int clear = 0;
+>
+>                 if (p->in_iowait)
+>                         clear |= TSK_IOWAIT;
+> -               if (p->flags & PF_MEMSTALL)
+> +               if (p->in_memstall)
+>                         clear |= TSK_MEMSTALL;
+>
+>                 rq = __task_rq_lock(p, &rf);
+> @@ -149,7 +149,7 @@ static inline void psi_task_tick(struct rq *rq)
+>         if (static_branch_likely(&psi_disabled))
+>                 return;
+>
+> -       if (unlikely(rq->curr->flags & PF_MEMSTALL))
+> +       if (unlikely(rq->curr->in_memstall))
+>                 psi_memstall_tick(rq->curr, cpu_of(rq));
+>  }
+>  #else /* CONFIG_PSI */
 
-Commit-ID:     25016bd7f4caf5fc983bbab7403d08e64cba3004
-Gitweb:        https://git.kernel.org/tip/25016bd7f4caf5fc983bbab7403d08e64cba3004
-Author:        Boqun Feng <boqun.feng@gmail.com>
-AuthorDate:    Thu, 12 Mar 2020 23:12:55 +08:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 20 Mar 2020 13:06:25 +01:00
++ Andrew
 
-locking/lockdep: Avoid recursion in lockdep_count_{for,back}ward_deps()
+Hi Peter,
 
-Qian Cai reported a bug when PROVE_RCU_LIST=y, and read on /proc/lockdep
-triggered a warning:
+This patch was aleady added into Andrew's -mm tree.[1]
+I'm not sure whether that could cause merge conflict when both of them
+are merged into Linus's tree.
 
-  [ ] DEBUG_LOCKS_WARN_ON(current->hardirqs_enabled)
-  ...
-  [ ] Call Trace:
-  [ ]  lock_is_held_type+0x5d/0x150
-  [ ]  ? rcu_lockdep_current_cpu_online+0x64/0x80
-  [ ]  rcu_read_lock_any_held+0xac/0x100
-  [ ]  ? rcu_read_lock_held+0xc0/0xc0
-  [ ]  ? __slab_free+0x421/0x540
-  [ ]  ? kasan_kmalloc+0x9/0x10
-  [ ]  ? __kmalloc_node+0x1d7/0x320
-  [ ]  ? kvmalloc_node+0x6f/0x80
-  [ ]  __bfs+0x28a/0x3c0
-  [ ]  ? class_equal+0x30/0x30
-  [ ]  lockdep_count_forward_deps+0x11a/0x1a0
+[1]. https://marc.info/?l=linux-mm-commits&m=158456557519886&w=2
 
-The warning got triggered because lockdep_count_forward_deps() call
-__bfs() without current->lockdep_recursion being set, as a result
-a lockdep internal function (__bfs()) is checked by lockdep, which is
-unexpected, and the inconsistency between the irq-off state and the
-state traced by lockdep caused the warning.
-
-Apart from this warning, lockdep internal functions like __bfs() should
-always be protected by current->lockdep_recursion to avoid potential
-deadlocks and data inconsistency, therefore add the
-current->lockdep_recursion on-and-off section to protect __bfs() in both
-lockdep_count_forward_deps() and lockdep_count_backward_deps()
-
-Reported-by: Qian Cai <cai@lca.pw>
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20200312151258.128036-1-boqun.feng@gmail.com
----
- kernel/locking/lockdep.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
-index e55c4ee..2564950 100644
---- a/kernel/locking/lockdep.c
-+++ b/kernel/locking/lockdep.c
-@@ -1723,9 +1723,11 @@ unsigned long lockdep_count_forward_deps(struct lock_class *class)
- 	this.class = class;
- 
- 	raw_local_irq_save(flags);
-+	current->lockdep_recursion = 1;
- 	arch_spin_lock(&lockdep_lock);
- 	ret = __lockdep_count_forward_deps(&this);
- 	arch_spin_unlock(&lockdep_lock);
-+	current->lockdep_recursion = 0;
- 	raw_local_irq_restore(flags);
- 
- 	return ret;
-@@ -1750,9 +1752,11 @@ unsigned long lockdep_count_backward_deps(struct lock_class *class)
- 	this.class = class;
- 
- 	raw_local_irq_save(flags);
-+	current->lockdep_recursion = 1;
- 	arch_spin_lock(&lockdep_lock);
- 	ret = __lockdep_count_backward_deps(&this);
- 	arch_spin_unlock(&lockdep_lock);
-+	current->lockdep_recursion = 0;
- 	raw_local_irq_restore(flags);
- 
- 	return ret;
+-- 
+Yafang Shao
+DiDi
