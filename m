@@ -2,38 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E52E518E2CA
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 21 Mar 2020 16:54:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 85E3718E2C1
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 21 Mar 2020 16:54:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727817AbgCUPx6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 21 Mar 2020 11:53:58 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:39054 "EHLO
+        id S1727859AbgCUPyA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 21 Mar 2020 11:54:00 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:39058 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727128AbgCUPx6 (ORCPT
+        with ESMTP id S1727789AbgCUPx7 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 21 Mar 2020 11:53:58 -0400
+        Sat, 21 Mar 2020 11:53:59 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jFgRd-0005VN-UF; Sat, 21 Mar 2020 16:53:54 +0100
+        id 1jFgRe-0005W3-Ed; Sat, 21 Mar 2020 16:53:54 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 296C41C22EF;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 8F40D1C22F3;
         Sat, 21 Mar 2020 16:53:52 +0100 (CET)
-Date:   Sat, 21 Mar 2020 15:53:51 -0000
+Date:   Sat, 21 Mar 2020 15:53:52 -0000
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] orinoco_usb: Use the regular completion interfaces
+Subject: [tip: locking/core] usb: gadget: Use completion interface instead of
+ open coding it
 Cc:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
         Thomas Gleixner <tglx@linutronix.de>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200321113241.150783464@linutronix.de>
-References: <20200321113241.150783464@linutronix.de>
+In-Reply-To: <20200321113241.043380271@linutronix.de>
+References: <20200321113241.043380271@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <158480603181.28353.15012270806617085954.tip-bot2@tip-bot2>
+Message-ID: <158480603223.28353.16829608560057265287.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,97 +50,58 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     9fe114ce0371223d2a0490f0aa52b8f108d92f37
-Gitweb:        https://git.kernel.org/tip/9fe114ce0371223d2a0490f0aa52b8f108d92f37
+Commit-ID:     c1d51dd505577b189bf33867a9c20015ca7efb46
+Gitweb:        https://git.kernel.org/tip/c1d51dd505577b189bf33867a9c20015ca7efb46
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Sat, 21 Mar 2020 12:25:48 +01:00
+AuthorDate:    Sat, 21 Mar 2020 12:25:47 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Sat, 21 Mar 2020 16:00:20 +01:00
 
-orinoco_usb: Use the regular completion interfaces
+usb: gadget: Use completion interface instead of open coding it
 
-The completion usage in this driver is interesting:
+ep_io() uses a completion on stack and open codes the waiting with:
 
-  - it uses a magic complete function which according to the comment was
-    implemented by invoking complete() four times in a row because
-    complete_all() was not exported at that time.
+  wait_event_interruptible (done.wait, done.done);
+and
+  wait_event (done.wait, done.done);
 
-  - it uses an open coded wait/poll which checks completion:done. Only one wait
-    side (device removal) uses the regular wait_for_completion() interface.
+This waits in non-exclusive mode for complete(), but there is no reason to
+do so because the completion can only be waited for by the task itself and
+complete() wakes exactly one exlusive waiter.
 
-The rationale behind this is to prevent that wait_for_completion() consumes
-completion::done which would prevent that all waiters are woken. This is not
-necessary with complete_all() as that sets completion::done to UINT_MAX which
-is left unmodified by the woken waiters.
+Replace the open coded implementation with the corresponding
+wait_for_completion*() functions.
 
-Replace the magic complete function with complete_all() and convert the
-open coded wait/poll to regular completion interfaces.
-
-This changes the wait to exclusive wait mode. But that does not make any
-difference because the wakers use complete_all() which ignores the
-exclusive mode.
+No functional change.
 
 Reported-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://lkml.kernel.org/r/20200321113241.150783464@linutronix.de
+Link: https://lkml.kernel.org/r/20200321113241.043380271@linutronix.de
 ---
- drivers/net/wireless/intersil/orinoco/orinoco_usb.c | 21 ++----------
- 1 file changed, 5 insertions(+), 16 deletions(-)
+ drivers/usb/gadget/legacy/inode.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intersil/orinoco/orinoco_usb.c b/drivers/net/wireless/intersil/orinoco/orinoco_usb.c
-index e753f43..0e42de2 100644
---- a/drivers/net/wireless/intersil/orinoco/orinoco_usb.c
-+++ b/drivers/net/wireless/intersil/orinoco/orinoco_usb.c
-@@ -365,17 +365,6 @@ static struct request_context *ezusb_alloc_ctx(struct ezusb_priv *upriv,
- 	return ctx;
- }
+diff --git a/drivers/usb/gadget/legacy/inode.c b/drivers/usb/gadget/legacy/inode.c
+index b47938d..4c3aff9 100644
+--- a/drivers/usb/gadget/legacy/inode.c
++++ b/drivers/usb/gadget/legacy/inode.c
+@@ -344,7 +344,7 @@ ep_io (struct ep_data *epdata, void *buf, unsigned len)
+ 	spin_unlock_irq (&epdata->dev->lock);
  
--
--/* Hopefully the real complete_all will soon be exported, in the mean
-- * while this should work. */
--static inline void ezusb_complete_all(struct completion *comp)
--{
--	complete(comp);
--	complete(comp);
--	complete(comp);
--	complete(comp);
--}
--
- static void ezusb_ctx_complete(struct request_context *ctx)
- {
- 	struct ezusb_priv *upriv = ctx->upriv;
-@@ -409,7 +398,7 @@ static void ezusb_ctx_complete(struct request_context *ctx)
+ 	if (likely (value == 0)) {
+-		value = wait_event_interruptible (done.wait, done.done);
++		value = wait_for_completion_interruptible(&done);
+ 		if (value != 0) {
+ 			spin_lock_irq (&epdata->dev->lock);
+ 			if (likely (epdata->ep != NULL)) {
+@@ -353,7 +353,7 @@ ep_io (struct ep_data *epdata, void *buf, unsigned len)
+ 				usb_ep_dequeue (epdata->ep, epdata->req);
+ 				spin_unlock_irq (&epdata->dev->lock);
  
- 			netif_wake_queue(dev);
- 		}
--		ezusb_complete_all(&ctx->done);
-+		complete_all(&ctx->done);
- 		ezusb_request_context_put(ctx);
- 		break;
- 
-@@ -419,7 +408,7 @@ static void ezusb_ctx_complete(struct request_context *ctx)
- 			/* This is normal, as all request contexts get flushed
- 			 * when the device is disconnected */
- 			err("Called, CTX not terminating, but device gone");
--			ezusb_complete_all(&ctx->done);
-+			complete_all(&ctx->done);
- 			ezusb_request_context_put(ctx);
- 			break;
- 		}
-@@ -690,11 +679,11 @@ static void ezusb_req_ctx_wait(struct ezusb_priv *upriv,
- 			 * get the chance to run themselves. So we make sure
- 			 * that we don't sleep for ever */
- 			int msecs = DEF_TIMEOUT * (1000 / HZ);
--			while (!ctx->done.done && msecs--)
-+
-+			while (!try_wait_for_completion(&ctx->done) && msecs--)
- 				udelay(1000);
- 		} else {
--			wait_event_interruptible(ctx->done.wait,
--						 ctx->done.done);
-+			wait_for_completion(&ctx->done);
- 		}
- 		break;
- 	default:
+-				wait_event (done.wait, done.done);
++				wait_for_completion(&done);
+ 				if (epdata->status == -ECONNRESET)
+ 					epdata->status = -EINTR;
+ 			} else {
