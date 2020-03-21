@@ -2,38 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0874818E28D
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 21 Mar 2020 16:32:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 60EE418E2D2
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 21 Mar 2020 16:54:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727323AbgCUPbQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 21 Mar 2020 11:31:16 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:38940 "EHLO
+        id S1727610AbgCUPxv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 21 Mar 2020 11:53:51 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:39000 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727699AbgCUPap (ORCPT
+        with ESMTP id S1726652AbgCUPxu (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 21 Mar 2020 11:30:45 -0400
+        Sat, 21 Mar 2020 11:53:50 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jFg5B-000541-FV; Sat, 21 Mar 2020 16:30:41 +0100
+        id 1jFgRV-0005Pu-Ds; Sat, 21 Mar 2020 16:53:45 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 62ADF1C22EC;
-        Sat, 21 Mar 2020 16:30:39 +0100 (CET)
-Date:   Sat, 21 Mar 2020 15:30:39 -0000
-From:   "tip-bot2 for Brian Gerst" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id EE3921C22EE;
+        Sat, 21 Mar 2020 16:53:44 +0100 (CET)
+Date:   Sat, 21 Mar 2020 15:53:44 -0000
+From:   "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/entry] x86/entry: Refactor SYSCALL_DEFINEx macros
-Cc:     Brian Gerst <brgerst@gmail.com>,
+Subject: [tip: locking/core] lockdep: Add posixtimer context tracing bits
+Cc:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Dominik Brodowski <linux@dominikbrodowski.net>,
-        Andy Lutomirski <luto@kernel.org>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200313195144.164260-2-brgerst@gmail.com>
-References: <20200313195144.164260-2-brgerst@gmail.com>
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200321113242.751182723@linutronix.de>
+References: <20200321113242.751182723@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <158480463905.28353.11646350090248656339.tip-bot2@tip-bot2>
+Message-ID: <158480602457.28353.11066346230705460485.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,120 +46,91 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/entry branch of tip:
+The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     4399e0cf494f739af7e0648f52fe43311ecd1bea
-Gitweb:        https://git.kernel.org/tip/4399e0cf494f739af7e0648f52fe43311ecd1bea
-Author:        Brian Gerst <brgerst@gmail.com>
-AuthorDate:    Fri, 13 Mar 2020 15:51:27 -04:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sat, 21 Mar 2020 16:03:18 +01:00
+Commit-ID:     d53f2b62fcb63f6547c10d8c62bca19e957b0eef
+Gitweb:        https://git.kernel.org/tip/d53f2b62fcb63f6547c10d8c62bca19e957b0eef
+Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+AuthorDate:    Sat, 21 Mar 2020 12:26:04 +01:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Sat, 21 Mar 2020 16:00:25 +01:00
 
-x86/entry: Refactor SYSCALL_DEFINEx macros
+lockdep: Add posixtimer context tracing bits
 
-Pull the common code out from the SYSCALL_DEFINEx macros into a new
-__SYS_STUBx macro.  Also conditionalize the X64 version in preparation for
-enabling syscall wrappers on 32-bit native kernels.
+Splitting run_posix_cpu_timers() into two parts is work in progress which
+is stuck on other entry code related problems. The heavy lifting which
+involves locking of sighand lock will be moved into task context so the
+necessary execution time is burdened on the task and not on interrupt
+context.
 
-Signed-off-by: Brian Gerst <brgerst@gmail.com>
+Until this work completes lockdep with the spinlock nesting rules enabled
+would emit warnings for this known context.
+
+Prevent it by setting "->irq_config = 1" for the invocation of
+run_posix_cpu_timers() so lockdep does not complain when sighand lock is
+acquried. This will be removed once the split is completed.
+
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Dominik Brodowski <linux@dominikbrodowski.net>
-Reviewed-by: Andy Lutomirski <luto@kernel.org>
-Link: https://lkml.kernel.org/r/20200313195144.164260-2-brgerst@gmail.com
-
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20200321113242.751182723@linutronix.de
 ---
- arch/x86/include/asm/syscall_wrapper.h | 49 ++++++++++++-------------
- 1 file changed, 24 insertions(+), 25 deletions(-)
+ include/linux/irqflags.h       | 12 ++++++++++++
+ kernel/time/posix-cpu-timers.c |  6 +++++-
+ 2 files changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/syscall_wrapper.h b/arch/x86/include/asm/syscall_wrapper.h
-index e2389ce..a1c090b 100644
---- a/arch/x86/include/asm/syscall_wrapper.h
-+++ b/arch/x86/include/asm/syscall_wrapper.h
-@@ -21,6 +21,22 @@ struct pt_regs;
- 	      ,,(unsigned int)regs->dx,,(unsigned int)regs->si		\
- 	      ,,(unsigned int)regs->di,,(unsigned int)regs->bp)
+diff --git a/include/linux/irqflags.h b/include/linux/irqflags.h
+index f23f540..a16adbb 100644
+--- a/include/linux/irqflags.h
++++ b/include/linux/irqflags.h
+@@ -69,6 +69,16 @@ do {						\
+ 			current->irq_config = 0;	\
+ 	  } while (0)
  
-+#define __SYS_STUBx(abi, name, ...)					\
-+	asmlinkage long __##abi##_##name(const struct pt_regs *regs);	\
-+	ALLOW_ERROR_INJECTION(__##abi##_##name, ERRNO);			\
-+	asmlinkage long __##abi##_##name(const struct pt_regs *regs)	\
-+	{								\
-+		return __se_##name(__VA_ARGS__);			\
++# define lockdep_posixtimer_enter()				\
++	  do {							\
++		  current->irq_config = 1;			\
++	  } while (0)
++
++# define lockdep_posixtimer_exit()				\
++	  do {							\
++		  current->irq_config = 0;			\
++	  } while (0)
++
+ # define lockdep_irq_work_enter(__work)					\
+ 	  do {								\
+ 		  if (!(atomic_read(&__work->flags) & IRQ_WORK_HARD_IRQ))\
+@@ -94,6 +104,8 @@ do {						\
+ # define lockdep_softirq_exit()		do { } while (0)
+ # define lockdep_hrtimer_enter(__hrtimer)		do { } while (0)
+ # define lockdep_hrtimer_exit(__hrtimer)		do { } while (0)
++# define lockdep_posixtimer_enter()		do { } while (0)
++# define lockdep_posixtimer_exit()		do { } while (0)
+ # define lockdep_irq_work_enter(__work)		do { } while (0)
+ # define lockdep_irq_work_exit(__work)		do { } while (0)
+ #endif
+diff --git a/kernel/time/posix-cpu-timers.c b/kernel/time/posix-cpu-timers.c
+index 8ff6da7..2c48a72 100644
+--- a/kernel/time/posix-cpu-timers.c
++++ b/kernel/time/posix-cpu-timers.c
+@@ -1126,8 +1126,11 @@ void run_posix_cpu_timers(void)
+ 	if (!fastpath_timer_check(tsk))
+ 		return;
+ 
+-	if (!lock_task_sighand(tsk, &flags))
++	lockdep_posixtimer_enter();
++	if (!lock_task_sighand(tsk, &flags)) {
++		lockdep_posixtimer_exit();
+ 		return;
 +	}
-+
-+#ifdef CONFIG_X86_64
-+#define __X64_SYS_STUBx(x, name, ...)					\
-+	__SYS_STUBx(x64, sys##name,					\
-+		    SC_X86_64_REGS_TO_ARGS(x, __VA_ARGS__))
-+#else /* CONFIG_X86_64 */
-+#define __X64_SYS_STUBx(x, name, ...)
-+#endif /* CONFIG_X86_64 */
-+
- #ifdef CONFIG_IA32_EMULATION
- /*
-  * For IA32 emulation, we need to handle "compat" syscalls *and* create
-@@ -39,20 +55,12 @@ struct pt_regs;
+ 	/*
+ 	 * Here we take off tsk->signal->cpu_timers[N] and
+ 	 * tsk->cpu_timers[N] all the timers that are firing, and
+@@ -1169,6 +1172,7 @@ void run_posix_cpu_timers(void)
+ 			cpu_timer_fire(timer);
+ 		spin_unlock(&timer->it_lock);
  	}
- 
- #define __IA32_COMPAT_SYS_STUBx(x, name, ...)				\
--	asmlinkage long __ia32_compat_sys##name(const struct pt_regs *regs);\
--	ALLOW_ERROR_INJECTION(__ia32_compat_sys##name, ERRNO);		\
--	asmlinkage long __ia32_compat_sys##name(const struct pt_regs *regs)\
--	{								\
--		return __se_compat_sys##name(SC_IA32_REGS_TO_ARGS(x,__VA_ARGS__));\
--	}
-+	__SYS_STUBx(ia32, compat_sys##name,				\
-+		    SC_IA32_REGS_TO_ARGS(x, __VA_ARGS__))
- 
- #define __IA32_SYS_STUBx(x, name, ...)					\
--	asmlinkage long __ia32_sys##name(const struct pt_regs *regs);	\
--	ALLOW_ERROR_INJECTION(__ia32_sys##name, ERRNO);			\
--	asmlinkage long __ia32_sys##name(const struct pt_regs *regs)	\
--	{								\
--		return __se_sys##name(SC_IA32_REGS_TO_ARGS(x,__VA_ARGS__));\
--	}
-+	__SYS_STUBx(ia32, sys##name,					\
-+		    SC_IA32_REGS_TO_ARGS(x, __VA_ARGS__))
++	lockdep_posixtimer_exit();
+ }
  
  /*
-  * To keep the naming coherent, re-define SYSCALL_DEFINE0 to create an alias
-@@ -82,7 +90,7 @@ struct pt_regs;
- 
- #else /* CONFIG_IA32_EMULATION */
- #define __IA32_COMPAT_SYS_STUBx(x, name, ...)
--#define __IA32_SYS_STUBx(x, fullname, name, ...)
-+#define __IA32_SYS_STUBx(x, name, ...)
- #endif /* CONFIG_IA32_EMULATION */
- 
- 
-@@ -101,12 +109,8 @@ struct pt_regs;
- 	}
- 
- #define __X32_COMPAT_SYS_STUBx(x, name, ...)				\
--	asmlinkage long __x32_compat_sys##name(const struct pt_regs *regs);\
--	ALLOW_ERROR_INJECTION(__x32_compat_sys##name, ERRNO);		\
--	asmlinkage long __x32_compat_sys##name(const struct pt_regs *regs)\
--	{								\
--		return __se_compat_sys##name(SC_X86_64_REGS_TO_ARGS(x,__VA_ARGS__));\
--	}
-+	__SYS_STUBx(x32, compat_sys##name,				\
-+		    SC_X86_64_REGS_TO_ARGS(x, __VA_ARGS__))
- 
- #else /* CONFIG_X86_X32 */
- #define __X32_COMPAT_SYS_STUB0(x, name)
-@@ -192,14 +196,9 @@ struct pt_regs;
-  * to the i386 calling convention (bx, cx, dx, si, di, bp).
-  */
- #define __SYSCALL_DEFINEx(x, name, ...)					\
--	asmlinkage long __x64_sys##name(const struct pt_regs *regs);	\
--	ALLOW_ERROR_INJECTION(__x64_sys##name, ERRNO);			\
- 	static long __se_sys##name(__MAP(x,__SC_LONG,__VA_ARGS__));	\
- 	static inline long __do_sys##name(__MAP(x,__SC_DECL,__VA_ARGS__));\
--	asmlinkage long __x64_sys##name(const struct pt_regs *regs)	\
--	{								\
--		return __se_sys##name(SC_X86_64_REGS_TO_ARGS(x,__VA_ARGS__));\
--	}								\
-+	__X64_SYS_STUBx(x, name, __VA_ARGS__)				\
- 	__IA32_SYS_STUBx(x, name, __VA_ARGS__)				\
- 	static long __se_sys##name(__MAP(x,__SC_LONG,__VA_ARGS__))	\
- 	{								\
