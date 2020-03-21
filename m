@@ -2,36 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 44C2918E2CF
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 21 Mar 2020 16:54:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A32E18E2B5
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 21 Mar 2020 16:54:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727495AbgCUPxx (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 21 Mar 2020 11:53:53 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:39020 "EHLO
+        id S1727836AbgCUPx7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 21 Mar 2020 11:53:59 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:39055 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726652AbgCUPxx (ORCPT
+        with ESMTP id S1727779AbgCUPx7 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 21 Mar 2020 11:53:53 -0400
+        Sat, 21 Mar 2020 11:53:59 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jFgRY-0005Sr-TH; Sat, 21 Mar 2020 16:53:49 +0100
+        id 1jFgRe-0005TF-Ck; Sat, 21 Mar 2020 16:53:54 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 7474C1C22EF;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id DFEEE1C22EE;
         Sat, 21 Mar 2020 16:53:48 +0100 (CET)
 Date:   Sat, 21 Mar 2020 15:53:48 -0000
 From:   "tip-bot2 for Peter Zijlstra (Intel)" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] powerpc/ps3: Convert half completion to rcuwait
+Subject: [tip: locking/core] rcuwait: Add @state argument to rcuwait_wait_event()
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200321113241.930037873@linutronix.de>
-References: <20200321113241.930037873@linutronix.de>
+In-Reply-To: <20200321113241.824030968@linutronix.de>
+References: <20200321113241.824030968@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <158480602810.28353.6194326413868575635.tip-bot2@tip-bot2>
+Message-ID: <158480602856.28353.10692996135466470181.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,100 +47,82 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     e21fee5368f46e211bc1f3cf118f2b122d644132
-Gitweb:        https://git.kernel.org/tip/e21fee5368f46e211bc1f3cf118f2b122d644132
+Commit-ID:     80fbaf1c3f2926c834f8ca915441dfe27ce5487e
+Gitweb:        https://git.kernel.org/tip/80fbaf1c3f2926c834f8ca915441dfe27ce5487e
 Author:        Peter Zijlstra (Intel) <peterz@infradead.org>
-AuthorDate:    Sat, 21 Mar 2020 12:25:56 +01:00
+AuthorDate:    Sat, 21 Mar 2020 12:25:55 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Sat, 21 Mar 2020 16:00:22 +01:00
 
-powerpc/ps3: Convert half completion to rcuwait
+rcuwait: Add @state argument to rcuwait_wait_event()
 
-The PS3 notification interrupt and kthread use a hacked up completion to
-communicate. Since we're wanting to change the completion implementation and
-this is abuse anyway, replace it with a simple rcuwait since there is only ever
-the one waiter.
-
-AFAICT the kthread uses TASK_INTERRUPTIBLE to not increase loadavg, kthreads
-cannot receive signals by default and this one doesn't look different. Use
-TASK_IDLE instead.
+Extend rcuwait_wait_event() with a state variable so that it is not
+restricted to UNINTERRUPTIBLE waits.
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20200321113241.930037873@linutronix.de
+Link: https://lkml.kernel.org/r/20200321113241.824030968@linutronix.de
 ---
- arch/powerpc/platforms/ps3/device-init.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ include/linux/rcuwait.h       | 12 ++++++++++--
+ kernel/locking/percpu-rwsem.c |  2 +-
+ 2 files changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/platforms/ps3/device-init.c b/arch/powerpc/platforms/ps3/device-init.c
-index 2735ec9..e87360a 100644
---- a/arch/powerpc/platforms/ps3/device-init.c
-+++ b/arch/powerpc/platforms/ps3/device-init.c
-@@ -13,6 +13,7 @@
- #include <linux/init.h>
- #include <linux/slab.h>
- #include <linux/reboot.h>
-+#include <linux/rcuwait.h>
+diff --git a/include/linux/rcuwait.h b/include/linux/rcuwait.h
+index 75c97e4..2ffe1ee 100644
+--- a/include/linux/rcuwait.h
++++ b/include/linux/rcuwait.h
+@@ -3,6 +3,7 @@
+ #define _LINUX_RCUWAIT_H_
  
- #include <asm/firmware.h>
- #include <asm/lv1call.h>
-@@ -670,7 +671,8 @@ struct ps3_notification_device {
- 	spinlock_t lock;
- 	u64 tag;
- 	u64 lv1_status;
--	struct completion done;
-+	struct rcuwait wait;
-+	bool done;
- };
+ #include <linux/rcupdate.h>
++#include <linux/sched/signal.h>
  
- enum ps3_notify_type {
-@@ -712,7 +714,8 @@ static irqreturn_t ps3_notification_interrupt(int irq, void *data)
- 		pr_debug("%s:%u: completed, status 0x%llx\n", __func__,
- 			 __LINE__, status);
- 		dev->lv1_status = status;
--		complete(&dev->done);
-+		dev->done = true;
-+		rcuwait_wake_up(&dev->wait);
- 	}
- 	spin_unlock(&dev->lock);
- 	return IRQ_HANDLED;
-@@ -725,12 +728,12 @@ static int ps3_notification_read_write(struct ps3_notification_device *dev,
- 	unsigned long flags;
- 	int res;
+ /*
+  * rcuwait provides a way of blocking and waking up a single
+@@ -30,23 +31,30 @@ extern void rcuwait_wake_up(struct rcuwait *w);
+  * The caller is responsible for locking around rcuwait_wait_event(),
+  * such that writes to @task are properly serialized.
+  */
+-#define rcuwait_wait_event(w, condition)				\
++#define rcuwait_wait_event(w, condition, state)				\
+ ({									\
++	int __ret = 0;							\
+ 	rcu_assign_pointer((w)->task, current);				\
+ 	for (;;) {							\
+ 		/*							\
+ 		 * Implicit barrier (A) pairs with (B) in		\
+ 		 * rcuwait_wake_up().					\
+ 		 */							\
+-		set_current_state(TASK_UNINTERRUPTIBLE);		\
++		set_current_state(state);				\
+ 		if (condition)						\
+ 			break;						\
+ 									\
++		if (signal_pending_state(state, current)) {		\
++			__ret = -EINTR;					\
++			break;						\
++		}							\
++									\
+ 		schedule();						\
+ 	}								\
+ 									\
+ 	WRITE_ONCE((w)->task, NULL);					\
+ 	__set_current_state(TASK_RUNNING);				\
++	__ret;								\
+ })
  
--	init_completion(&dev->done);
- 	spin_lock_irqsave(&dev->lock, flags);
- 	res = write ? lv1_storage_write(dev->sbd.dev_id, 0, 0, 1, 0, lpar,
- 					&dev->tag)
- 		    : lv1_storage_read(dev->sbd.dev_id, 0, 0, 1, 0, lpar,
- 				       &dev->tag);
-+	dev->done = false;
- 	spin_unlock_irqrestore(&dev->lock, flags);
- 	if (res) {
- 		pr_err("%s:%u: %s failed %d\n", __func__, __LINE__, op, res);
-@@ -738,14 +741,10 @@ static int ps3_notification_read_write(struct ps3_notification_device *dev,
- 	}
- 	pr_debug("%s:%u: notification %s issued\n", __func__, __LINE__, op);
+ #endif /* _LINUX_RCUWAIT_H_ */
+diff --git a/kernel/locking/percpu-rwsem.c b/kernel/locking/percpu-rwsem.c
+index 183a3aa..a008a1b 100644
+--- a/kernel/locking/percpu-rwsem.c
++++ b/kernel/locking/percpu-rwsem.c
+@@ -234,7 +234,7 @@ void percpu_down_write(struct percpu_rw_semaphore *sem)
+ 	 */
  
--	res = wait_event_interruptible(dev->done.wait,
--				       dev->done.done || kthread_should_stop());
-+	rcuwait_wait_event(&dev->wait, dev->done || kthread_should_stop(), TASK_IDLE);
-+
- 	if (kthread_should_stop())
- 		res = -EINTR;
--	if (res) {
--		pr_debug("%s:%u: interrupted %s\n", __func__, __LINE__, op);
--		return res;
--	}
+ 	/* Wait for all active readers to complete. */
+-	rcuwait_wait_event(&sem->writer, readers_active_check(sem));
++	rcuwait_wait_event(&sem->writer, readers_active_check(sem), TASK_UNINTERRUPTIBLE);
+ }
+ EXPORT_SYMBOL_GPL(percpu_down_write);
  
- 	if (dev->lv1_status) {
- 		pr_err("%s:%u: %s not completed, status 0x%llx\n", __func__,
-@@ -810,6 +809,7 @@ static int ps3_probe_thread(void *data)
- 	}
- 
- 	spin_lock_init(&dev.lock);
-+	rcuwait_init(&dev.wait);
- 
- 	res = request_irq(irq, ps3_notification_interrupt, 0,
- 			  "ps3_notification", &dev);
