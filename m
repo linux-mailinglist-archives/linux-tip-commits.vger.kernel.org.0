@@ -2,37 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0177718E270
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 21 Mar 2020 16:30:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1ED0418E26E
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 21 Mar 2020 16:30:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727575AbgCUPag (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 21 Mar 2020 11:30:36 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:38877 "EHLO
+        id S1727497AbgCUPae (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 21 Mar 2020 11:30:34 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:38860 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727495AbgCUPaf (ORCPT
+        with ESMTP id S1727028AbgCUPae (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 21 Mar 2020 11:30:35 -0400
+        Sat, 21 Mar 2020 11:30:34 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jFg51-0004wf-Jx; Sat, 21 Mar 2020 16:30:31 +0100
+        id 1jFg51-0004wK-6C; Sat, 21 Mar 2020 16:30:31 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 280B81C22E5;
-        Sat, 21 Mar 2020 16:30:31 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B640C1C22E6;
+        Sat, 21 Mar 2020 16:30:30 +0100 (CET)
 Date:   Sat, 21 Mar 2020 15:30:30 -0000
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/entry] x86/entry: Rename ___preempt_schedule
+Subject: [tip: x86/entry] lockdep: Rename trace_hardirq_{enter,exit}()
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Will Deacon <will@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200320115858.995685950@infradead.org>
-References: <20200320115858.995685950@infradead.org>
+In-Reply-To: <20200320115859.060481361@infradead.org>
+References: <20200320115859.060481361@infradead.org>
 MIME-Version: 1.0
-Message-ID: <158480463081.28353.17673265563956442627.tip-bot2@tip-bot2>
+Message-ID: <158480463041.28353.16689826264585245749.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,92 +47,143 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/entry branch of tip:
 
-Commit-ID:     46db36abc32dfd18041c57d571fe4945fc0057fe
-Gitweb:        https://git.kernel.org/tip/46db36abc32dfd18041c57d571fe4945fc0057fe
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Fri, 20 Mar 2020 12:56:39 +01:00
+Commit-ID:     2502ec37a7b228b34c1e2e89480f98b92f53046a
+Gitweb:        https://git.kernel.org/tip/2502ec37a7b228b34c1e2e89480f98b92f53046a
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Fri, 20 Mar 2020 12:56:40 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Sat, 21 Mar 2020 16:03:53 +01:00
 
-x86/entry: Rename ___preempt_schedule
+lockdep: Rename trace_hardirq_{enter,exit}()
 
-Because moar '_' isn't always moar readable.
+Continue what commit:
 
-git grep -l "___preempt_schedule\(_notrace\)*" | while read file;
-do
-	sed -ie 's/___preempt_schedule\(_notrace\)*/preempt_schedule\1_thunk/g' $file;
-done
+  d820ac4c2fa8 ("locking: rename trace_softirq_[enter|exit] => lockdep_softirq_[enter|exit]")
 
-Reported-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+started, rename these to avoid confusing them with tracepoints.
+
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
 Acked-by: Will Deacon <will@kernel.org>
-Link: https://lkml.kernel.org/r/20200320115858.995685950@infradead.org
+Link: https://lkml.kernel.org/r/20200320115859.060481361@infradead.org
 
 ---
- arch/x86/entry/thunk_32.S      | 8 ++++----
- arch/x86/entry/thunk_64.S      | 8 ++++----
- arch/x86/include/asm/preempt.h | 8 ++++----
- 3 files changed, 12 insertions(+), 12 deletions(-)
+ include/linux/hardirq.h        | 8 ++++----
+ include/linux/irqflags.h       | 8 ++++----
+ kernel/softirq.c               | 7 ++++---
+ tools/include/linux/irqflags.h | 4 ++--
+ 4 files changed, 14 insertions(+), 13 deletions(-)
 
-diff --git a/arch/x86/entry/thunk_32.S b/arch/x86/entry/thunk_32.S
-index e010d4a..3a07ce3 100644
---- a/arch/x86/entry/thunk_32.S
-+++ b/arch/x86/entry/thunk_32.S
-@@ -35,9 +35,9 @@ SYM_CODE_END(\name)
- #endif
+diff --git a/include/linux/hardirq.h b/include/linux/hardirq.h
+index da0af63..7c8b82f 100644
+--- a/include/linux/hardirq.h
++++ b/include/linux/hardirq.h
+@@ -37,7 +37,7 @@ extern void rcu_nmi_exit(void);
+ 	do {						\
+ 		account_irq_enter_time(current);	\
+ 		preempt_count_add(HARDIRQ_OFFSET);	\
+-		trace_hardirq_enter();			\
++		lockdep_hardirq_enter();		\
+ 	} while (0)
  
- #ifdef CONFIG_PREEMPTION
--	THUNK ___preempt_schedule, preempt_schedule
--	THUNK ___preempt_schedule_notrace, preempt_schedule_notrace
--	EXPORT_SYMBOL(___preempt_schedule)
--	EXPORT_SYMBOL(___preempt_schedule_notrace)
-+	THUNK preempt_schedule_thunk, preempt_schedule
-+	THUNK preempt_schedule_notrace_thunk, preempt_schedule_notrace
-+	EXPORT_SYMBOL(preempt_schedule_thunk)
-+	EXPORT_SYMBOL(preempt_schedule_notrace_thunk)
- #endif
+ /*
+@@ -50,7 +50,7 @@ extern void irq_enter(void);
+  */
+ #define __irq_exit()					\
+ 	do {						\
+-		trace_hardirq_exit();			\
++		lockdep_hardirq_exit();			\
+ 		account_irq_exit_time(current);		\
+ 		preempt_count_sub(HARDIRQ_OFFSET);	\
+ 	} while (0)
+@@ -74,12 +74,12 @@ extern void irq_exit(void);
+ 		BUG_ON(in_nmi());				\
+ 		preempt_count_add(NMI_OFFSET + HARDIRQ_OFFSET);	\
+ 		rcu_nmi_enter();				\
+-		trace_hardirq_enter();				\
++		lockdep_hardirq_enter();			\
+ 	} while (0)
  
-diff --git a/arch/x86/entry/thunk_64.S b/arch/x86/entry/thunk_64.S
-index c5c3b6e..dbe4493 100644
---- a/arch/x86/entry/thunk_64.S
-+++ b/arch/x86/entry/thunk_64.S
-@@ -47,10 +47,10 @@ SYM_FUNC_END(\name)
+ #define nmi_exit()						\
+ 	do {							\
+-		trace_hardirq_exit();				\
++		lockdep_hardirq_exit();				\
+ 		rcu_nmi_exit();					\
+ 		BUG_ON(!in_nmi());				\
+ 		preempt_count_sub(NMI_OFFSET + HARDIRQ_OFFSET);	\
+diff --git a/include/linux/irqflags.h b/include/linux/irqflags.h
+index 21619c9..7c4e645 100644
+--- a/include/linux/irqflags.h
++++ b/include/linux/irqflags.h
+@@ -35,11 +35,11 @@
+ # define trace_softirq_context(p)	((p)->softirq_context)
+ # define trace_hardirqs_enabled(p)	((p)->hardirqs_enabled)
+ # define trace_softirqs_enabled(p)	((p)->softirqs_enabled)
+-# define trace_hardirq_enter()			\
++# define lockdep_hardirq_enter()		\
+ do {						\
+ 	current->hardirq_context++;		\
+ } while (0)
+-# define trace_hardirq_exit()			\
++# define lockdep_hardirq_exit()			\
+ do {						\
+ 	current->hardirq_context--;		\
+ } while (0)
+@@ -58,8 +58,8 @@ do {						\
+ # define trace_softirq_context(p)	0
+ # define trace_hardirqs_enabled(p)	0
+ # define trace_softirqs_enabled(p)	0
+-# define trace_hardirq_enter()		do { } while (0)
+-# define trace_hardirq_exit()		do { } while (0)
++# define lockdep_hardirq_enter()	do { } while (0)
++# define lockdep_hardirq_exit()		do { } while (0)
+ # define lockdep_softirq_enter()	do { } while (0)
+ # define lockdep_softirq_exit()		do { } while (0)
  #endif
+diff --git a/kernel/softirq.c b/kernel/softirq.c
+index 0427a86..b328689 100644
+--- a/kernel/softirq.c
++++ b/kernel/softirq.c
+@@ -226,7 +226,7 @@ static inline bool lockdep_softirq_start(void)
  
- #ifdef CONFIG_PREEMPTION
--	THUNK ___preempt_schedule, preempt_schedule
--	THUNK ___preempt_schedule_notrace, preempt_schedule_notrace
--	EXPORT_SYMBOL(___preempt_schedule)
--	EXPORT_SYMBOL(___preempt_schedule_notrace)
-+	THUNK preempt_schedule_thunk, preempt_schedule
-+	THUNK preempt_schedule_notrace_thunk, preempt_schedule_notrace
-+	EXPORT_SYMBOL(preempt_schedule_thunk)
-+	EXPORT_SYMBOL(preempt_schedule_notrace_thunk)
- #endif
+ 	if (trace_hardirq_context(current)) {
+ 		in_hardirq = true;
+-		trace_hardirq_exit();
++		lockdep_hardirq_exit();
+ 	}
  
- #if defined(CONFIG_TRACE_IRQFLAGS) \
-diff --git a/arch/x86/include/asm/preempt.h b/arch/x86/include/asm/preempt.h
-index 3d4cb83..69485ca 100644
---- a/arch/x86/include/asm/preempt.h
-+++ b/arch/x86/include/asm/preempt.h
-@@ -103,14 +103,14 @@ static __always_inline bool should_resched(int preempt_offset)
+ 	lockdep_softirq_enter();
+@@ -239,7 +239,7 @@ static inline void lockdep_softirq_end(bool in_hardirq)
+ 	lockdep_softirq_exit();
+ 
+ 	if (in_hardirq)
+-		trace_hardirq_enter();
++		lockdep_hardirq_enter();
+ }
+ #else
+ static inline bool lockdep_softirq_start(void) { return false; }
+@@ -414,7 +414,8 @@ void irq_exit(void)
+ 
+ 	tick_irq_exit();
+ 	rcu_irq_exit();
+-	trace_hardirq_exit(); /* must be last! */
++	 /* must be last! */
++	lockdep_hardirq_exit();
  }
  
- #ifdef CONFIG_PREEMPTION
--  extern asmlinkage void ___preempt_schedule(void);
-+  extern asmlinkage void preempt_schedule_thunk(void);
- # define __preempt_schedule() \
--	asm volatile ("call ___preempt_schedule" : ASM_CALL_CONSTRAINT)
-+	asm volatile ("call preempt_schedule_thunk" : ASM_CALL_CONSTRAINT)
- 
-   extern asmlinkage void preempt_schedule(void);
--  extern asmlinkage void ___preempt_schedule_notrace(void);
-+  extern asmlinkage void preempt_schedule_notrace_thunk(void);
- # define __preempt_schedule_notrace() \
--	asm volatile ("call ___preempt_schedule_notrace" : ASM_CALL_CONSTRAINT)
-+	asm volatile ("call preempt_schedule_notrace_thunk" : ASM_CALL_CONSTRAINT)
- 
-   extern asmlinkage void preempt_schedule_notrace(void);
- #endif
+ /*
+diff --git a/tools/include/linux/irqflags.h b/tools/include/linux/irqflags.h
+index e734da3..ced6f64 100644
+--- a/tools/include/linux/irqflags.h
++++ b/tools/include/linux/irqflags.h
+@@ -6,8 +6,8 @@
+ # define trace_softirq_context(p)	0
+ # define trace_hardirqs_enabled(p)	0
+ # define trace_softirqs_enabled(p)	0
+-# define trace_hardirq_enter()		do { } while (0)
+-# define trace_hardirq_exit()		do { } while (0)
++# define lockdep_hardirq_enter()	do { } while (0)
++# define lockdep_hardirq_exit()		do { } while (0)
+ # define lockdep_softirq_enter()	do { } while (0)
+ # define lockdep_softirq_exit()		do { } while (0)
+ # define INIT_TRACE_IRQFLAGS
