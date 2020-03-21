@@ -2,37 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 315F118E292
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 21 Mar 2020 16:32:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BF5B618E273
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 21 Mar 2020 16:30:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728021AbgCUPb1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 21 Mar 2020 11:31:27 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:38903 "EHLO
+        id S1727323AbgCUPan (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 21 Mar 2020 11:30:43 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:38932 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727634AbgCUPaj (ORCPT
+        with ESMTP id S1727684AbgCUPam (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 21 Mar 2020 11:30:39 -0400
+        Sat, 21 Mar 2020 11:30:42 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jFg55-00050E-PW; Sat, 21 Mar 2020 16:30:35 +0100
+        id 1jFg5A-0004zu-7r; Sat, 21 Mar 2020 16:30:40 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5EBAB1C22E4;
-        Sat, 21 Mar 2020 16:30:35 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D64B31C22E6;
+        Sat, 21 Mar 2020 16:30:34 +0100 (CET)
 Date:   Sat, 21 Mar 2020 15:30:34 -0000
 From:   "tip-bot2 for Brian Gerst" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/entry] x86/entry: Remove syscall qualifier support
+Subject: [tip: x86/entry] x86/entry/64: Add __SYSCALL_COMMON()
 Cc:     Brian Gerst <brgerst@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Dominik Brodowski <linux@dominikbrodowski.net>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200313195144.164260-11-brgerst@gmail.com>
-References: <20200313195144.164260-11-brgerst@gmail.com>
+        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200313195144.164260-12-brgerst@gmail.com>
+References: <20200313195144.164260-12-brgerst@gmail.com>
 MIME-Version: 1.0
-Message-ID: <158480463497.28353.2748858752720907008.tip-bot2@tip-bot2>
+Message-ID: <158480463449.28353.8404279805273411879.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,153 +47,108 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/entry branch of tip:
 
-Commit-ID:     b5592e5c0d8682e0e82b42c91fd7265c3cce19e1
-Gitweb:        https://git.kernel.org/tip/b5592e5c0d8682e0e82b42c91fd7265c3cce19e1
+Commit-ID:     8210efcb153625d2bf4bb79875ddc78eee2aba3e
+Gitweb:        https://git.kernel.org/tip/8210efcb153625d2bf4bb79875ddc78eee2aba3e
 Author:        Brian Gerst <brgerst@gmail.com>
-AuthorDate:    Fri, 13 Mar 2020 15:51:36 -04:00
+AuthorDate:    Fri, 13 Mar 2020 15:51:37 -04:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Sat, 21 Mar 2020 16:03:22 +01:00
 
-x86/entry: Remove syscall qualifier support
+x86/entry/64: Add __SYSCALL_COMMON()
 
-Syscall qualifier support is no longer needed.
+Add a __SYSCALL_COMMON() macro to the syscall table, which simplifies syscalltbl.sh.
 
 Signed-off-by: Brian Gerst <brgerst@gmail.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Dominik Brodowski <linux@dominikbrodowski.net>
-Link: https://lkml.kernel.org/r/20200313195144.164260-11-brgerst@gmail.com
+Link: https://lkml.kernel.org/r/20200313195144.164260-12-brgerst@gmail.com
 
 ---
- arch/x86/entry/syscall_32.c           |  6 +++---
- arch/x86/entry/syscall_64.c           |  6 +++---
- arch/x86/entry/syscall_x32.c          |  6 +++---
- arch/x86/entry/syscalls/syscalltbl.sh | 10 +---------
- arch/x86/um/sys_call_table_32.c       |  4 ++--
- arch/x86/um/sys_call_table_64.c       |  4 ++--
- 6 files changed, 14 insertions(+), 22 deletions(-)
+ arch/x86/entry/syscall_64.c           |  1 +
+ arch/x86/entry/syscall_x32.c          |  3 +++
+ arch/x86/entry/syscalls/syscalltbl.sh | 22 ++--------------------
+ arch/x86/um/sys_call_table_64.c       |  3 +++
+ 4 files changed, 9 insertions(+), 20 deletions(-)
 
-diff --git a/arch/x86/entry/syscall_32.c b/arch/x86/entry/syscall_32.c
-index 3207cf6..9f4cab4 100644
---- a/arch/x86/entry/syscall_32.c
-+++ b/arch/x86/entry/syscall_32.c
-@@ -9,10 +9,10 @@
- 
- #ifdef CONFIG_IA32_EMULATION
- /* On X86_64, we use struct pt_regs * to pass parameters to syscalls */
--#define __SYSCALL_I386(nr, sym, qual) extern asmlinkage long sym(const struct pt_regs *);
-+#define __SYSCALL_I386(nr, sym) extern asmlinkage long sym(const struct pt_regs *);
- #define __sys_ni_syscall __ia32_sys_ni_syscall
- #else /* CONFIG_IA32_EMULATION */
--#define __SYSCALL_I386(nr, sym, qual) extern asmlinkage long sym(unsigned long, unsigned long, unsigned long, unsigned long, unsigned long, unsigned long);
-+#define __SYSCALL_I386(nr, sym) extern asmlinkage long sym(unsigned long, unsigned long, unsigned long, unsigned long, unsigned long, unsigned long);
- extern asmlinkage long sys_ni_syscall(unsigned long, unsigned long, unsigned long, unsigned long, unsigned long, unsigned long);
- #define __sys_ni_syscall sys_ni_syscall
- #endif /* CONFIG_IA32_EMULATION */
-@@ -20,7 +20,7 @@ extern asmlinkage long sys_ni_syscall(unsigned long, unsigned long, unsigned lon
- #include <asm/syscalls_32.h>
- #undef __SYSCALL_I386
- 
--#define __SYSCALL_I386(nr, sym, qual) [nr] = sym,
-+#define __SYSCALL_I386(nr, sym) [nr] = sym,
- 
- __visible const sys_call_ptr_t ia32_sys_call_table[__NR_ia32_syscall_max+1] = {
- 	/*
 diff --git a/arch/x86/entry/syscall_64.c b/arch/x86/entry/syscall_64.c
-index 5dc6846..bce4821 100644
+index bce4821..03645f9 100644
 --- a/arch/x86/entry/syscall_64.c
 +++ b/arch/x86/entry/syscall_64.c
-@@ -8,13 +8,13 @@
- #include <asm/unistd.h>
+@@ -9,6 +9,7 @@
  #include <asm/syscall.h>
  
--#define __SYSCALL_X32(nr, sym, qual)
-+#define __SYSCALL_X32(nr, sym)
+ #define __SYSCALL_X32(nr, sym)
++#define __SYSCALL_COMMON(nr, sym) __SYSCALL_64(nr, sym)
  
--#define __SYSCALL_64(nr, sym, qual) extern asmlinkage long sym(const struct pt_regs *);
-+#define __SYSCALL_64(nr, sym) extern asmlinkage long sym(const struct pt_regs *);
+ #define __SYSCALL_64(nr, sym) extern asmlinkage long sym(const struct pt_regs *);
  #include <asm/syscalls_64.h>
- #undef __SYSCALL_64
- 
--#define __SYSCALL_64(nr, sym, qual) [nr] = sym,
-+#define __SYSCALL_64(nr, sym) [nr] = sym,
- 
- asmlinkage const sys_call_ptr_t sys_call_table[__NR_syscall_max+1] = {
- 	/*
 diff --git a/arch/x86/entry/syscall_x32.c b/arch/x86/entry/syscall_x32.c
-index 95abb6d..21e306c 100644
+index 21e306c..57a151a 100644
 --- a/arch/x86/entry/syscall_x32.c
 +++ b/arch/x86/entry/syscall_x32.c
-@@ -8,13 +8,13 @@
- #include <asm/unistd.h>
- #include <asm/syscall.h>
+@@ -11,10 +11,13 @@
+ #define __SYSCALL_64(nr, sym)
  
--#define __SYSCALL_64(nr, sym, qual)
-+#define __SYSCALL_64(nr, sym)
- 
--#define __SYSCALL_X32(nr, sym, qual) extern asmlinkage long sym(const struct pt_regs *);
-+#define __SYSCALL_X32(nr, sym) extern asmlinkage long sym(const struct pt_regs *);
+ #define __SYSCALL_X32(nr, sym) extern asmlinkage long sym(const struct pt_regs *);
++#define __SYSCALL_COMMON(nr, sym) extern asmlinkage long sym(const struct pt_regs *);
  #include <asm/syscalls_64.h>
  #undef __SYSCALL_X32
++#undef __SYSCALL_COMMON
  
--#define __SYSCALL_X32(nr, sym, qual) [nr] = sym,
-+#define __SYSCALL_X32(nr, sym) [nr] = sym,
+ #define __SYSCALL_X32(nr, sym) [nr] = sym,
++#define __SYSCALL_COMMON(nr, sym) [nr] = sym,
  
  asmlinkage const sys_call_ptr_t x32_sys_call_table[__NR_x32_syscall_max+1] = {
  	/*
 diff --git a/arch/x86/entry/syscalls/syscalltbl.sh b/arch/x86/entry/syscalls/syscalltbl.sh
-index 1af2be3..b0519dd 100644
+index b0519dd..6106ed3 100644
 --- a/arch/x86/entry/syscalls/syscalltbl.sh
 +++ b/arch/x86/entry/syscalls/syscalltbl.sh
-@@ -9,15 +9,7 @@ syscall_macro() {
-     local nr="$2"
-     local entry="$3"
+@@ -25,7 +25,7 @@ emit() {
+     fi
  
--    # Entry can be either just a function name or "function/qualifier"
--    real_entry="${entry%%/*}"
--    if [ "$entry" = "$real_entry" ]; then
--        qualifier=
--    else
--        qualifier=${entry#*/}
--    fi
--
--    echo "__SYSCALL_${abi}($nr, $real_entry, $qualifier)"
-+    echo "__SYSCALL_${abi}($nr, $entry)"
- }
+     # For CONFIG_UML, we need to strip the __x64_sys prefix
+-    if [ "$abi" = "64" -a "${entry}" != "${entry#__x64_sys}" ]; then
++    if [ "${entry}" != "${entry#__x64_sys}" ]; then
+ 	    umlentry="sys${entry#__x64_sys}"
+     fi
  
- emit() {
-diff --git a/arch/x86/um/sys_call_table_32.c b/arch/x86/um/sys_call_table_32.c
-index a0d75c5..2ed81e5 100644
---- a/arch/x86/um/sys_call_table_32.c
-+++ b/arch/x86/um/sys_call_table_32.c
-@@ -26,11 +26,11 @@
- 
- #define old_mmap sys_old_mmap
- 
--#define __SYSCALL_I386(nr, sym, qual) extern asmlinkage long sym(unsigned long, unsigned long, unsigned long, unsigned long, unsigned long, unsigned long) ;
-+#define __SYSCALL_I386(nr, sym) extern asmlinkage long sym(unsigned long, unsigned long, unsigned long, unsigned long, unsigned long, unsigned long) ;
- #include <asm/syscalls_32.h>
- 
- #undef __SYSCALL_I386
--#define __SYSCALL_I386(nr, sym, qual) [ nr ] = sym,
-+#define __SYSCALL_I386(nr, sym) [ nr ] = sym,
- 
- extern asmlinkage long sys_ni_syscall(unsigned long, unsigned long, unsigned long, unsigned long, unsigned long, unsigned long);
- 
+@@ -53,24 +53,6 @@ emit() {
+ grep '^[0-9]' "$in" | sort -n | (
+     while read nr abi name entry compat; do
+ 	abi=`echo "$abi" | tr '[a-z]' '[A-Z]'`
+-	if [ "$abi" = "COMMON" -o "$abi" = "64" ]; then
+-	    emit 64 "$nr" "$entry" "$compat"
+-	    if [ "$abi" = "COMMON" ]; then
+-		# COMMON means that this syscall exists in the same form for
+-		# 64-bit and X32.
+-		echo "#ifdef CONFIG_X86_X32_ABI"
+-		emit X32 "$nr" "$entry" "$compat"
+-		echo "#endif"
+-	    fi
+-	elif [ "$abi" = "X32" ]; then
+-	    echo "#ifdef CONFIG_X86_X32_ABI"
+-	    emit X32 "$nr" "$entry" "$compat"
+-	    echo "#endif"
+-	elif [ "$abi" = "I386" ]; then
+-	    emit "$abi" "$nr" "$entry" "$compat"
+-	else
+-	    echo "Unknown abi $abi" >&2
+-	    exit 1
+-	fi
++	emit "$abi" "$nr" "$entry" "$compat"
+     done
+ ) > "$out"
 diff --git a/arch/x86/um/sys_call_table_64.c b/arch/x86/um/sys_call_table_64.c
-index fa97740..7d057ea 100644
+index 7d057ea..2e8544d 100644
 --- a/arch/x86/um/sys_call_table_64.c
 +++ b/arch/x86/um/sys_call_table_64.c
-@@ -36,11 +36,11 @@
+@@ -36,6 +36,9 @@
  #define stub_execveat sys_execveat
  #define stub_rt_sigreturn sys_rt_sigreturn
  
--#define __SYSCALL_64(nr, sym, qual) extern asmlinkage long sym(unsigned long, unsigned long, unsigned long, unsigned long, unsigned long, unsigned long) ;
-+#define __SYSCALL_64(nr, sym) extern asmlinkage long sym(unsigned long, unsigned long, unsigned long, unsigned long, unsigned long, unsigned long) ;
++#define __SYSCALL_X32(nr, sym)
++#define __SYSCALL_COMMON(nr, sym) __SYSCALL_64(nr, sym)
++
+ #define __SYSCALL_64(nr, sym) extern asmlinkage long sym(unsigned long, unsigned long, unsigned long, unsigned long, unsigned long, unsigned long) ;
  #include <asm/syscalls_64.h>
- 
- #undef __SYSCALL_64
--#define __SYSCALL_64(nr, sym, qual) [ nr ] = sym,
-+#define __SYSCALL_64(nr, sym) [ nr ] = sym,
- 
- extern asmlinkage long sys_ni_syscall(unsigned long, unsigned long, unsigned long, unsigned long, unsigned long, unsigned long);
  
