@@ -2,36 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 343B318E1EC
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 21 Mar 2020 15:34:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A25C718E1FD
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 21 Mar 2020 15:34:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727686AbgCUOdl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 21 Mar 2020 10:33:41 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:38754 "EHLO
+        id S1727560AbgCUOdc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 21 Mar 2020 10:33:32 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:38712 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727653AbgCUOdk (ORCPT
+        with ESMTP id S1727535AbgCUOdc (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 21 Mar 2020 10:33:40 -0400
+        Sat, 21 Mar 2020 10:33:32 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jFfBt-000481-Ql; Sat, 21 Mar 2020 15:33:33 +0100
+        id 1jFfBp-00048P-E1; Sat, 21 Mar 2020 15:33:29 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 6B8881C22DE;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E18A61C22DB;
         Sat, 21 Mar 2020 15:33:28 +0100 (CET)
 Date:   Sat, 21 Mar 2020 14:33:28 -0000
 From:   "tip-bot2 for Vincenzo Frascino" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] linux/ktime.h: Extract common header for vDSO
+Subject: [tip: timers/core] linux/jiffies.h: Extract common header for vDSO
 Cc:     Vincenzo Frascino <vincenzo.frascino@arm.com>,
         Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200320145351.32292-15-vincenzo.frascino@arm.com>
-References: <20200320145351.32292-15-vincenzo.frascino@arm.com>
+In-Reply-To: <20200320145351.32292-14-vincenzo.frascino@arm.com>
+References: <20200320145351.32292-14-vincenzo.frascino@arm.com>
 MIME-Version: 1.0
-Message-ID: <158480120810.28353.7915928459752085791.tip-bot2@tip-bot2>
+Message-ID: <158480120852.28353.4515472001902322954.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,72 +47,69 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     cc56f32f00154ff3586e8346c91f5253882cd8a5
-Gitweb:        https://git.kernel.org/tip/cc56f32f00154ff3586e8346c91f5253882cd8a5
+Commit-ID:     97b01d2eabd8c0fa650a9d513febeae35dbc6de4
+Gitweb:        https://git.kernel.org/tip/97b01d2eabd8c0fa650a9d513febeae35dbc6de4
 Author:        Vincenzo Frascino <vincenzo.frascino@arm.com>
-AuthorDate:    Fri, 20 Mar 2020 14:53:39 
+AuthorDate:    Fri, 20 Mar 2020 14:53:38 
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sat, 21 Mar 2020 15:23:59 +01:00
+CommitterDate: Sat, 21 Mar 2020 15:23:58 +01:00
 
-linux/ktime.h: Extract common header for vDSO
+linux/jiffies.h: Extract common header for vDSO
 
 The vDSO library should only include the necessary headers required for
 a userspace library (UAPI and a minimal set of kernel headers). To make
 this possible it is necessary to isolate from the kernel headers the
 common parts that are strictly necessary to build the library.
 
-Split ktime.h into linux and common headers to make the latter suitable
+Split jiffies.h into linux and common headers to make the latter suitable
 for inclusion in the vDSO library.
 
 Signed-off-by: Vincenzo Frascino <vincenzo.frascino@arm.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20200320145351.32292-15-vincenzo.frascino@arm.com
+Link: https://lkml.kernel.org/r/20200320145351.32292-14-vincenzo.frascino@arm.com
 
 ---
- include/linux/ktime.h |  9 +--------
- include/vdso/ktime.h  | 16 ++++++++++++++++
- 2 files changed, 17 insertions(+), 8 deletions(-)
- create mode 100644 include/vdso/ktime.h
+ include/linux/jiffies.h |  4 +---
+ include/vdso/jiffies.h  | 11 +++++++++++
+ 2 files changed, 12 insertions(+), 3 deletions(-)
+ create mode 100644 include/vdso/jiffies.h
 
-diff --git a/include/linux/ktime.h b/include/linux/ktime.h
-index b2bb44f..1fcfce9 100644
---- a/include/linux/ktime.h
-+++ b/include/linux/ktime.h
-@@ -253,14 +253,7 @@ static inline __must_check bool ktime_to_timespec64_cond(const ktime_t kt,
- 	}
- }
- 
--/*
-- * The resolution of the clocks. The resolution value is returned in
-- * the clock_getres() system call to give application programmers an
-- * idea of the (in)accuracy of timers. Timer values are rounded up to
-- * this resolution values.
-- */
--#define LOW_RES_NSEC		TICK_NSEC
--#define KTIME_LOW_RES		(LOW_RES_NSEC)
-+#include <vdso/ktime.h>
- 
- static inline ktime_t ns_to_ktime(u64 ns)
- {
-diff --git a/include/vdso/ktime.h b/include/vdso/ktime.h
-new file mode 100644
-index 0000000..a0fd072
---- /dev/null
-+++ b/include/vdso/ktime.h
-@@ -0,0 +1,16 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef __VDSO_KTIME_H
-+#define __VDSO_KTIME_H
-+
+diff --git a/include/linux/jiffies.h b/include/linux/jiffies.h
+index e3279ef..fed6ba9 100644
+--- a/include/linux/jiffies.h
++++ b/include/linux/jiffies.h
+@@ -8,6 +8,7 @@
+ #include <linux/types.h>
+ #include <linux/time.h>
+ #include <linux/timex.h>
 +#include <vdso/jiffies.h>
+ #include <asm/param.h>			/* for HZ */
+ #include <generated/timeconst.h>
+ 
+@@ -59,9 +60,6 @@
+ 
+ extern int register_refined_jiffies(long clock_tick_rate);
+ 
+-/* TICK_NSEC is the time between ticks in nsec assuming SHIFTED_HZ */
+-#define TICK_NSEC ((NSEC_PER_SEC+HZ/2)/HZ)
+-
+ /* TICK_USEC is the time between ticks in usec assuming SHIFTED_HZ */
+ #define TICK_USEC ((USEC_PER_SEC + HZ/2) / HZ)
+ 
+diff --git a/include/vdso/jiffies.h b/include/vdso/jiffies.h
+new file mode 100644
+index 0000000..2f9d596
+--- /dev/null
++++ b/include/vdso/jiffies.h
+@@ -0,0 +1,11 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef __VDSO_JIFFIES_H
++#define __VDSO_JIFFIES_H
 +
-+/*
-+ * The resolution of the clocks. The resolution value is returned in
-+ * the clock_getres() system call to give application programmers an
-+ * idea of the (in)accuracy of timers. Timer values are rounded up to
-+ * this resolution values.
-+ */
-+#define LOW_RES_NSEC		TICK_NSEC
-+#define KTIME_LOW_RES		(LOW_RES_NSEC)
++#include <asm/param.h>			/* for HZ */
++#include <vdso/time64.h>
 +
-+#endif /* __VDSO_KTIME_H */
++/* TICK_NSEC is the time between ticks in nsec assuming SHIFTED_HZ */
++#define TICK_NSEC ((NSEC_PER_SEC+HZ/2)/HZ)
++
++#endif /* __VDSO_JIFFIES_H */
