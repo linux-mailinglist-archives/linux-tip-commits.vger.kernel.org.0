@@ -2,36 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9319518E28C
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 21 Mar 2020 16:32:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C57018E278
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 21 Mar 2020 16:31:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727678AbgCUPam (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 21 Mar 2020 11:30:42 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:38919 "EHLO
+        id S1727763AbgCUPaq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 21 Mar 2020 11:30:46 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:38945 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727497AbgCUPal (ORCPT
+        with ESMTP id S1727719AbgCUPap (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 21 Mar 2020 11:30:41 -0400
+        Sat, 21 Mar 2020 11:30:45 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jFg59-00051Y-7C; Sat, 21 Mar 2020 16:30:39 +0100
+        id 1jFg5C-00052M-VO; Sat, 21 Mar 2020 16:30:43 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 156FB1C22E4;
-        Sat, 21 Mar 2020 16:30:37 +0100 (CET)
-Date:   Sat, 21 Mar 2020 15:30:36 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 0FC371C22E8;
+        Sat, 21 Mar 2020 16:30:38 +0100 (CET)
+Date:   Sat, 21 Mar 2020 15:30:37 -0000
 From:   "tip-bot2 for Brian Gerst" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/entry] x86/entry/64: Move sys_ni_syscall stub to common.c
+Subject: [tip: x86/entry] x86/entry: Refactor SYS_NI macros
 Cc:     Brian Gerst <brgerst@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Dominik Brodowski <linux@dominikbrodowski.net>,
+        Andy Lutomirski <luto@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200313195144.164260-7-brgerst@gmail.com>
-References: <20200313195144.164260-7-brgerst@gmail.com>
+In-Reply-To: <20200313195144.164260-5-brgerst@gmail.com>
+References: <20200313195144.164260-5-brgerst@gmail.com>
 MIME-Version: 1.0
-Message-ID: <158480463674.28353.6214614962833183223.tip-bot2@tip-bot2>
+Message-ID: <158480463767.28353.6872538225094443265.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,72 +49,126 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/entry branch of tip:
 
-Commit-ID:     cc42c045af1ff4dee875196f8fe7d6ed1f29ea64
-Gitweb:        https://git.kernel.org/tip/cc42c045af1ff4dee875196f8fe7d6ed1f29ea64
+Commit-ID:     a74d187c2df3a382b8ab6227da34cba690e71e4d
+Gitweb:        https://git.kernel.org/tip/a74d187c2df3a382b8ab6227da34cba690e71e4d
 Author:        Brian Gerst <brgerst@gmail.com>
-AuthorDate:    Fri, 13 Mar 2020 15:51:32 -04:00
+AuthorDate:    Fri, 13 Mar 2020 15:51:30 -04:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Sat, 21 Mar 2020 16:03:20 +01:00
 
-x86/entry/64: Move sys_ni_syscall stub to common.c
+x86/entry: Refactor SYS_NI macros
 
-so it can be available to multiple syscall tables.  Also directly return
--ENOSYS instead of bouncing to the generic sys_ni_syscall().
+Pull the common code out from the SYS_NI macros into a new __SYS_NI macro.
+Also conditionalize the X64 version in preparation for enabling syscall
+wrappers on 32-bit native kernels.
 
 Signed-off-by: Brian Gerst <brgerst@gmail.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20200313195144.164260-7-brgerst@gmail.com
+Reviewed-by: Dominik Brodowski <linux@dominikbrodowski.net>
+Reviewed-by: Andy Lutomirski <luto@kernel.org>
+Link: https://lkml.kernel.org/r/20200313195144.164260-5-brgerst@gmail.com
 
 ---
- arch/x86/entry/common.c                | 7 +++++++
- arch/x86/entry/syscall_64.c            | 7 -------
- arch/x86/include/asm/syscall_wrapper.h | 3 +++
- 3 files changed, 10 insertions(+), 7 deletions(-)
+ arch/x86/include/asm/syscall_wrapper.h | 32 +++++++++++++++++--------
+ 1 file changed, 23 insertions(+), 9 deletions(-)
 
-diff --git a/arch/x86/entry/common.c b/arch/x86/entry/common.c
-index 9747876..149bf54 100644
---- a/arch/x86/entry/common.c
-+++ b/arch/x86/entry/common.c
-@@ -438,3 +438,10 @@ __visible long do_fast_syscall_32(struct pt_regs *regs)
- #endif
- }
- #endif
-+
-+#ifdef CONFIG_X86_64
-+SYSCALL_DEFINE0(ni_syscall)
-+{
-+	return -ENOSYS;
-+}
-+#endif
-diff --git a/arch/x86/entry/syscall_64.c b/arch/x86/entry/syscall_64.c
-index adf619a..058dc1b 100644
---- a/arch/x86/entry/syscall_64.c
-+++ b/arch/x86/entry/syscall_64.c
-@@ -8,13 +8,6 @@
- #include <asm/asm-offsets.h>
- #include <asm/syscall.h>
- 
--extern asmlinkage long sys_ni_syscall(void);
--
--SYSCALL_DEFINE0(ni_syscall)
--{
--	return sys_ni_syscall();
--}
--
- #define __SYSCALL_64(nr, sym, qual) extern asmlinkage long sym(const struct pt_regs *);
- #define __SYSCALL_X32(nr, sym, qual) __SYSCALL_64(nr, sym, qual)
- #include <asm/syscalls_64.h>
 diff --git a/arch/x86/include/asm/syscall_wrapper.h b/arch/x86/include/asm/syscall_wrapper.h
-index 1d96cce..0f126e4 100644
+index 0117b25..1d96cce 100644
 --- a/arch/x86/include/asm/syscall_wrapper.h
 +++ b/arch/x86/include/asm/syscall_wrapper.h
-@@ -8,6 +8,9 @@
+@@ -42,6 +42,9 @@ struct pt_regs;
+ 		return sys_ni_syscall();				\
+ 	}
  
- struct pt_regs;
- 
-+extern asmlinkage long __x64_sys_ni_syscall(const struct pt_regs *regs);
-+extern asmlinkage long __ia32_sys_ni_syscall(const struct pt_regs *regs);
++#define __SYS_NI(abi, name)						\
++	SYSCALL_ALIAS(__##abi##_##name, sys_ni_posix_timers)
 +
- /* Mapping of registers to parameters for syscalls on x86-64 and x32 */
- #define SC_X86_64_REGS_TO_ARGS(x, ...)					\
- 	__MAP(x,__SC_ARGS						\
+ #ifdef CONFIG_X86_64
+ #define __X64_SYS_STUB0(name)						\
+ 	__SYS_STUB0(x64, sys_##name)
+@@ -52,10 +55,14 @@ struct pt_regs;
+ 
+ #define __X64_COND_SYSCALL(name)					\
+ 	__COND_SYSCALL(x64, sys_##name)
++
++#define __X64_SYS_NI(name)						\
++	__SYS_NI(x64, sys_##name)
+ #else /* CONFIG_X86_64 */
+ #define __X64_SYS_STUB0(name)
+ #define __X64_SYS_STUBx(x, name, ...)
+ #define __X64_COND_SYSCALL(name)
++#define __X64_SYS_NI(name)
+ #endif /* CONFIG_X86_64 */
+ 
+ #ifdef CONFIG_IA32_EMULATION
+@@ -77,6 +84,9 @@ struct pt_regs;
+ #define __IA32_COMPAT_COND_SYSCALL(name)				\
+ 	__COND_SYSCALL(ia32, compat_sys_##name)
+ 
++#define __IA32_COMPAT_SYS_NI(name)					\
++	__SYS_NI(ia32, compat_sys_##name)
++
+ #define __IA32_SYS_STUB0(name)						\
+ 	__SYS_STUB0(ia32, sys_##name)
+ 
+@@ -87,17 +97,17 @@ struct pt_regs;
+ #define __IA32_COND_SYSCALL(name)					\
+ 	__COND_SYSCALL(ia32, sys_##name)
+ 
+-#define SYS_NI(name)							\
+-	SYSCALL_ALIAS(__x64_sys_##name, sys_ni_posix_timers);		\
+-	SYSCALL_ALIAS(__ia32_sys_##name, sys_ni_posix_timers)
+-
++#define __IA32_SYS_NI(name)						\
++	__SYS_NI(ia32, sys_##name)
+ #else /* CONFIG_IA32_EMULATION */
+ #define __IA32_COMPAT_SYS_STUB0(name)
+ #define __IA32_COMPAT_SYS_STUBx(x, name, ...)
+ #define __IA32_COMPAT_COND_SYSCALL(name)
++#define __IA32_COMPAT_SYS_NI(name)
+ #define __IA32_SYS_STUB0(name)
+ #define __IA32_SYS_STUBx(x, name, ...)
+ #define __IA32_COND_SYSCALL(name)
++#define __IA32_SYS_NI(name)
+ #endif /* CONFIG_IA32_EMULATION */
+ 
+ 
+@@ -116,10 +126,14 @@ struct pt_regs;
+ 
+ #define __X32_COMPAT_COND_SYSCALL(name)					\
+ 	__COND_SYSCALL(x32, compat_sys_##name)
++
++#define __X32_COMPAT_SYS_NI(name)					\
++	__SYS_NI(x32, compat_sys_##name)
+ #else /* CONFIG_X86_X32 */
+ #define __X32_COMPAT_SYS_STUB0(name)
+ #define __X32_COMPAT_SYS_STUBx(x, name, ...)
+ #define __X32_COMPAT_COND_SYSCALL(name)
++#define __X32_COMPAT_SYS_NI(name)
+ #endif /* CONFIG_X86_X32 */
+ 
+ 
+@@ -158,8 +172,8 @@ struct pt_regs;
+ 	__X32_COMPAT_COND_SYSCALL(name)
+ 
+ #define COMPAT_SYS_NI(name)						\
+-	SYSCALL_ALIAS(__ia32_compat_sys_##name, sys_ni_posix_timers);	\
+-	SYSCALL_ALIAS(__x32_compat_sys_##name, sys_ni_posix_timers)
++	__IA32_COMPAT_SYS_NI(name)					\
++	__X32_COMPAT_SYS_NI(name)
+ 
+ #endif /* CONFIG_COMPAT */
+ 
+@@ -231,9 +245,9 @@ struct pt_regs;
+ 	__X64_COND_SYSCALL(name)					\
+ 	__IA32_COND_SYSCALL(name)
+ 
+-#ifndef SYS_NI
+-#define SYS_NI(name) SYSCALL_ALIAS(__x64_sys_##name, sys_ni_posix_timers);
+-#endif
++#define SYS_NI(name)							\
++	__X64_SYS_NI(name)						\
++	__IA32_SYS_NI(name)
+ 
+ 
+ /*
