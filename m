@@ -2,29 +2,29 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DFBB18E2EB
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 21 Mar 2020 17:41:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A00D18E2F5
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 21 Mar 2020 17:46:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727264AbgCUQlB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 21 Mar 2020 12:41:01 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40872 "EHLO mail.kernel.org"
+        id S1727128AbgCUQqq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 21 Mar 2020 12:46:46 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43688 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727033AbgCUQlB (ORCPT
+        id S1726955AbgCUQqq (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 21 Mar 2020 12:41:01 -0400
+        Sat, 21 Mar 2020 12:46:46 -0400
 Received: from localhost (lfbn-ncy-1-985-231.w90-101.abo.wanadoo.fr [90.101.63.231])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 39B9220732;
-        Sat, 21 Mar 2020 16:41:00 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 62B9020732;
+        Sat, 21 Mar 2020 16:46:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1584808860;
-        bh=aLFpN7azzh+LrYbTd9kSEjrYC/vM8kmZqvN4T5O775Q=;
+        s=default; t=1584809205;
+        bh=QXZ3hih49SW/eKC6b8fbzO+2xwWRjHJKDSnrNeDGG14=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=BCE8kiaDBhK/QW5fivlSowbUNNrZEFJibh2lRHO5S21B93DIqSyquPgRzvv5pdm0B
-         Kikdz+bwcHWP0aBvUPY/KUcHVB2DlFiKlnd/jgUbVwd2NwAw1g58Wk5ozO8THnKkTB
-         FG966KWkpVaH2CHFdEe2IiRDDZp1mr4uMk2Fz0us=
-Date:   Sat, 21 Mar 2020 17:40:58 +0100
+        b=nUZCQWSF1/DW4GZCJLEg847HO6T5Rc5egzBJI7Fzez2yKIoP20OjUbqH1nttazNUK
+         DNg/TRd4JW+qhyKVyUxEgtd011JN0k7sdx+bkZxzGDvM6ik7ddRImvCFQzzZxBzjCu
+         HQYb9ZB+UrJClKq6UuOYwmUe7GRSr2UanSG3huQE=
+Date:   Sat, 21 Mar 2020 17:46:43 +0100
 From:   Frederic Weisbecker <frederic@kernel.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     linux-tip-commits@vger.kernel.org,
@@ -32,14 +32,14 @@ Cc:     linux-tip-commits@vger.kernel.org,
         Thomas Gleixner <tglx@linutronix.de>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         x86 <x86@kernel.org>
-Subject: Re: [tip: locking/core] lockdep: Annotate irq_work
-Message-ID: <20200321164057.GA9634@lenoir>
-References: <20200321113242.643576700@linutronix.de>
- <158480602510.28353.4851999853077941579.tip-bot2@tip-bot2>
+Subject: Re: [tip: locking/core] lockdep: Add hrtimer context tracing bits
+Message-ID: <20200321164642.GB9634@lenoir>
+References: <20200321113242.534508206@linutronix.de>
+ <158480602563.28353.10602717934482974041.tip-bot2@tip-bot2>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <158480602510.28353.4851999853077941579.tip-bot2@tip-bot2>
+In-Reply-To: <158480602563.28353.10602717934482974041.tip-bot2@tip-bot2>
 User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
@@ -49,125 +49,79 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 On Sat, Mar 21, 2020 at 03:53:45PM -0000, tip-bot2 for Sebastian Andrzej Siewior wrote:
 > The following commit has been merged into the locking/core branch of tip:
 > 
-> Commit-ID:     49915ac35ca7b07c54295a72d905be5064afb89e
-> Gitweb:        https://git.kernel.org/tip/49915ac35ca7b07c54295a72d905be5064afb89e
+> Commit-ID:     40db173965c05a1d803451240ed41707d5bd978d
+> Gitweb:        https://git.kernel.org/tip/40db173965c05a1d803451240ed41707d5bd978d
 > Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-> AuthorDate:    Sat, 21 Mar 2020 12:26:03 +01:00
+> AuthorDate:    Sat, 21 Mar 2020 12:26:02 +01:00
 > Committer:     Peter Zijlstra <peterz@infradead.org>
 > CommitterDate: Sat, 21 Mar 2020 16:00:24 +01:00
 > 
-> lockdep: Annotate irq_work
+> lockdep: Add hrtimer context tracing bits
 > 
-> Mark irq_work items with IRQ_WORK_HARD_IRQ which should be invoked in
-> hardirq context even on PREEMPT_RT. IRQ_WORK without this flag will be
-> invoked in softirq context on PREEMPT_RT.
+> Set current->irq_config = 1 for hrtimers which are not marked to expire in
+> hard interrupt context during hrtimer_init(). These timers will expire in
+> softirq context on PREEMPT_RT.
 > 
-> Set ->irq_config to 1 for the IRQ_WORK items which are invoked in softirq
-> context so lockdep knows that these can safely acquire a spinlock_t.
+> Setting this allows lockdep to differentiate these timers. If a timer is
+> marked to expire in hard interrupt context then the timer callback is not
+> supposed to acquire a regular spinlock instead of a raw_spinlock in the
+> expiry callback.
 > 
 > Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 > Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 > Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> Link: https://lkml.kernel.org/r/20200321113242.643576700@linutronix.de
+> Link: https://lkml.kernel.org/r/20200321113242.534508206@linutronix.de
 > ---
->  include/linux/irq_work.h |  2 ++
->  include/linux/irqflags.h | 13 +++++++++++++
->  kernel/irq_work.c        |  2 ++
->  kernel/rcu/tree.c        |  1 +
->  kernel/time/tick-sched.c |  1 +
->  5 files changed, 19 insertions(+)
+>  include/linux/irqflags.h | 15 +++++++++++++++
+>  include/linux/sched.h    |  1 +
+>  kernel/locking/lockdep.c |  2 +-
+>  kernel/time/hrtimer.c    |  6 +++++-
+>  4 files changed, 22 insertions(+), 2 deletions(-)
 > 
-> diff --git a/include/linux/irq_work.h b/include/linux/irq_work.h
-> index 02da997..3b752e8 100644
-> --- a/include/linux/irq_work.h
-> +++ b/include/linux/irq_work.h
-> @@ -18,6 +18,8 @@
->  
->  /* Doesn't want IPI, wait for tick: */
->  #define IRQ_WORK_LAZY		BIT(2)
-> +/* Run hard IRQ context, even on RT */
-> +#define IRQ_WORK_HARD_IRQ	BIT(3)
->  
->  #define IRQ_WORK_CLAIMED	(IRQ_WORK_PENDING | IRQ_WORK_BUSY)
->  
 > diff --git a/include/linux/irqflags.h b/include/linux/irqflags.h
-> index 9c17f9c..f23f540 100644
+> index fdaf286..9c17f9c 100644
 > --- a/include/linux/irqflags.h
 > +++ b/include/linux/irqflags.h
-> @@ -69,6 +69,17 @@ do {						\
->  			current->irq_config = 0;	\
->  	  } while (0)
->  
-> +# define lockdep_irq_work_enter(__work)					\
-> +	  do {								\
-> +		  if (!(atomic_read(&__work->flags) & IRQ_WORK_HARD_IRQ))\
-> +			current->irq_config = 1;			\
-
-So, irq_config == 1 means we are in a softirq? Are there other values for
-irq_config? In which case there should be enums or something?
-I can't find the patch that describes this.
-
+> @@ -56,6 +56,19 @@ do {						\
+>  do {						\
+>  	current->softirq_context--;		\
+>  } while (0)
+> +
+> +# define lockdep_hrtimer_enter(__hrtimer)		\
+> +	  do {						\
+> +		  if (!__hrtimer->is_hard)		\
+> +			current->irq_config = 1;	\
 > +	  } while (0)
-> +# define lockdep_irq_work_exit(__work)					\
-> +	  do {								\
-> +		  if (!(atomic_read(&__work->flags) & IRQ_WORK_HARD_IRQ))\
-> +			current->irq_config = 0;			\
+> +
+> +# define lockdep_hrtimer_exit(__hrtimer)		\
+> +	  do {						\
+> +		  if (!__hrtimer->is_hard)		\
+> +			current->irq_config = 0;	\
 > +	  } while (0)
 > +
 >  #else
 >  # define trace_hardirqs_on()		do { } while (0)
 >  # define trace_hardirqs_off()		do { } while (0)
-> @@ -83,6 +94,8 @@ do {						\
+> @@ -68,6 +81,8 @@ do {						\
+>  # define trace_hardirq_exit()		do { } while (0)
+>  # define lockdep_softirq_enter()	do { } while (0)
 >  # define lockdep_softirq_exit()		do { } while (0)
->  # define lockdep_hrtimer_enter(__hrtimer)		do { } while (0)
->  # define lockdep_hrtimer_exit(__hrtimer)		do { } while (0)
-> +# define lockdep_irq_work_enter(__work)		do { } while (0)
-> +# define lockdep_irq_work_exit(__work)		do { } while (0)
+> +# define lockdep_hrtimer_enter(__hrtimer)		do { } while (0)
+> +# define lockdep_hrtimer_exit(__hrtimer)		do { } while (0)
 >  #endif
 >  
 >  #if defined(CONFIG_IRQSOFF_TRACER) || \
-> diff --git a/kernel/irq_work.c b/kernel/irq_work.c
-> index 828cc30..48b5d1b 100644
-> --- a/kernel/irq_work.c
-> +++ b/kernel/irq_work.c
-> @@ -153,7 +153,9 @@ static void irq_work_run_list(struct llist_head *list)
->  		 */
->  		flags = atomic_fetch_andnot(IRQ_WORK_PENDING, &work->flags);
->  
-> +		lockdep_irq_work_enter(work);
->  		work->func(work);
-> +		lockdep_irq_work_exit(work);
->  		/*
->  		 * Clear the BUSY bit and return to the free state if
->  		 * no-one else claimed it meanwhile.
-> diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
-> index d91c915..5066d1d 100644
-> --- a/kernel/rcu/tree.c
-> +++ b/kernel/rcu/tree.c
-> @@ -1113,6 +1113,7 @@ static int rcu_implicit_dynticks_qs(struct rcu_data *rdp)
->  		    !rdp->rcu_iw_pending && rdp->rcu_iw_gp_seq != rnp->gp_seq &&
->  		    (rnp->ffmask & rdp->grpmask)) {
->  			init_irq_work(&rdp->rcu_iw, rcu_iw_handler);
-> +			atomic_set(&rdp->rcu_iw.flags, IRQ_WORK_HARD_IRQ);
->  			rdp->rcu_iw_pending = true;
->  			rdp->rcu_iw_gp_seq = rnp->gp_seq;
->  			irq_work_queue_on(&rdp->rcu_iw, rdp->cpu);
-> diff --git a/kernel/time/tick-sched.c b/kernel/time/tick-sched.c
-> index 4be756b..3e2dc9b 100644
-> --- a/kernel/time/tick-sched.c
-> +++ b/kernel/time/tick-sched.c
-> @@ -245,6 +245,7 @@ static void nohz_full_kick_func(struct irq_work *work)
->  
->  static DEFINE_PER_CPU(struct irq_work, nohz_full_kick_work) = {
->  	.func = nohz_full_kick_func,
-> +	.flags = ATOMIC_INIT(IRQ_WORK_HARD_IRQ),
->  };
+> diff --git a/include/linux/sched.h b/include/linux/sched.h
+> index 4d3b9ec..933914c 100644
+> --- a/include/linux/sched.h
+> +++ b/include/linux/sched.h
+> @@ -983,6 +983,7 @@ struct task_struct {
+>  	unsigned int			softirq_enable_event;
+>  	int				softirqs_enabled;
+>  	int				softirq_context;
+> +	int				irq_config;
 
-I get why these need to be in hardirq but some basic explanations for
-ordinary mortals as to why those two specifically and not all the others
-(and there are many) would have been nice.
+There really need to be some explanation/comment/symbols to clarify
+what this field is about and the meaning of the values it can take.
 
 Thanks.
-
->  
->  /*
