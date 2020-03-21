@@ -2,37 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E82B18E2B6
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 21 Mar 2020 16:54:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E52E518E2CA
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 21 Mar 2020 16:54:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727883AbgCUPyB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 21 Mar 2020 11:54:01 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:39075 "EHLO
+        id S1727817AbgCUPx6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 21 Mar 2020 11:53:58 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:39054 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727847AbgCUPyB (ORCPT
+        with ESMTP id S1727128AbgCUPx6 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 21 Mar 2020 11:54:01 -0400
+        Sat, 21 Mar 2020 11:53:58 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jFgRh-0005V5-C0; Sat, 21 Mar 2020 16:53:57 +0100
+        id 1jFgRd-0005VN-UF; Sat, 21 Mar 2020 16:53:54 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B5DCD1C22F2;
-        Sat, 21 Mar 2020 16:53:51 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 296C41C22EF;
+        Sat, 21 Mar 2020 16:53:52 +0100 (CET)
 Date:   Sat, 21 Mar 2020 15:53:51 -0000
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] acpi: Remove header dependency
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+Subject: [tip: locking/core] orinoco_usb: Use the regular completion interfaces
+Cc:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200321113241.246190285@linutronix.de>
-References: <20200321113241.246190285@linutronix.de>
+In-Reply-To: <20200321113241.150783464@linutronix.de>
+References: <20200321113241.150783464@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <158480603133.28353.12839063456015319868.tip-bot2@tip-bot2>
+Message-ID: <158480603181.28353.15012270806617085954.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,77 +49,97 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     df23e2be3d240b67222375062ce873f5ec84854d
-Gitweb:        https://git.kernel.org/tip/df23e2be3d240b67222375062ce873f5ec84854d
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Sat, 21 Mar 2020 12:25:49 +01:00
+Commit-ID:     9fe114ce0371223d2a0490f0aa52b8f108d92f37
+Gitweb:        https://git.kernel.org/tip/9fe114ce0371223d2a0490f0aa52b8f108d92f37
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Sat, 21 Mar 2020 12:25:48 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Sat, 21 Mar 2020 16:00:21 +01:00
+CommitterDate: Sat, 21 Mar 2020 16:00:20 +01:00
 
-acpi: Remove header dependency
+orinoco_usb: Use the regular completion interfaces
 
-In order to avoid future header hell, remove the inclusion of
-proc_fs.h from acpi_bus.h. All it needs is a forward declaration of a
-struct.
+The completion usage in this driver is interesting:
 
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+  - it uses a magic complete function which according to the comment was
+    implemented by invoking complete() four times in a row because
+    complete_all() was not exported at that time.
+
+  - it uses an open coded wait/poll which checks completion:done. Only one wait
+    side (device removal) uses the regular wait_for_completion() interface.
+
+The rationale behind this is to prevent that wait_for_completion() consumes
+completion::done which would prevent that all waiters are woken. This is not
+necessary with complete_all() as that sets completion::done to UINT_MAX which
+is left unmodified by the woken waiters.
+
+Replace the magic complete function with complete_all() and convert the
+open coded wait/poll to regular completion interfaces.
+
+This changes the wait to exclusive wait mode. But that does not make any
+difference because the wakers use complete_all() which ignores the
+exclusive mode.
+
+Reported-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Link: https://lkml.kernel.org/r/20200321113241.246190285@linutronix.de
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lkml.kernel.org/r/20200321113241.150783464@linutronix.de
 ---
- drivers/platform/x86/dell-smo8800.c                      | 1 +
- drivers/platform/x86/wmi.c                               | 1 +
- drivers/thermal/intel/int340x_thermal/acpi_thermal_rel.c | 1 +
- include/acpi/acpi_bus.h                                  | 2 +-
- 4 files changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intersil/orinoco/orinoco_usb.c | 21 ++----------
+ 1 file changed, 5 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/platform/x86/dell-smo8800.c b/drivers/platform/x86/dell-smo8800.c
-index bfcc1d1..b531fe8 100644
---- a/drivers/platform/x86/dell-smo8800.c
-+++ b/drivers/platform/x86/dell-smo8800.c
-@@ -16,6 +16,7 @@
- #include <linux/interrupt.h>
- #include <linux/miscdevice.h>
- #include <linux/uaccess.h>
-+#include <linux/fs.h>
+diff --git a/drivers/net/wireless/intersil/orinoco/orinoco_usb.c b/drivers/net/wireless/intersil/orinoco/orinoco_usb.c
+index e753f43..0e42de2 100644
+--- a/drivers/net/wireless/intersil/orinoco/orinoco_usb.c
++++ b/drivers/net/wireless/intersil/orinoco/orinoco_usb.c
+@@ -365,17 +365,6 @@ static struct request_context *ezusb_alloc_ctx(struct ezusb_priv *upriv,
+ 	return ctx;
+ }
  
- struct smo8800_device {
- 	u32 irq;                     /* acpi device irq */
-diff --git a/drivers/platform/x86/wmi.c b/drivers/platform/x86/wmi.c
-index dc2e966..941739d 100644
---- a/drivers/platform/x86/wmi.c
-+++ b/drivers/platform/x86/wmi.c
-@@ -29,6 +29,7 @@
- #include <linux/uaccess.h>
- #include <linux/uuid.h>
- #include <linux/wmi.h>
-+#include <linux/fs.h>
- #include <uapi/linux/wmi.h>
+-
+-/* Hopefully the real complete_all will soon be exported, in the mean
+- * while this should work. */
+-static inline void ezusb_complete_all(struct completion *comp)
+-{
+-	complete(comp);
+-	complete(comp);
+-	complete(comp);
+-	complete(comp);
+-}
+-
+ static void ezusb_ctx_complete(struct request_context *ctx)
+ {
+ 	struct ezusb_priv *upriv = ctx->upriv;
+@@ -409,7 +398,7 @@ static void ezusb_ctx_complete(struct request_context *ctx)
  
- ACPI_MODULE_NAME("wmi");
-diff --git a/drivers/thermal/intel/int340x_thermal/acpi_thermal_rel.c b/drivers/thermal/intel/int340x_thermal/acpi_thermal_rel.c
-index 7130e90..a478cff 100644
---- a/drivers/thermal/intel/int340x_thermal/acpi_thermal_rel.c
-+++ b/drivers/thermal/intel/int340x_thermal/acpi_thermal_rel.c
-@@ -19,6 +19,7 @@
- #include <linux/acpi.h>
- #include <linux/uaccess.h>
- #include <linux/miscdevice.h>
-+#include <linux/fs.h>
- #include "acpi_thermal_rel.h"
+ 			netif_wake_queue(dev);
+ 		}
+-		ezusb_complete_all(&ctx->done);
++		complete_all(&ctx->done);
+ 		ezusb_request_context_put(ctx);
+ 		break;
  
- static acpi_handle acpi_thermal_rel_handle;
-diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
-index 0c23fd0..a92bea7 100644
---- a/include/acpi/acpi_bus.h
-+++ b/include/acpi/acpi_bus.h
-@@ -80,7 +80,7 @@ bool acpi_dev_present(const char *hid, const char *uid, s64 hrv);
- 
- #ifdef CONFIG_ACPI
- 
--#include <linux/proc_fs.h>
-+struct proc_dir_entry;
- 
- #define ACPI_BUS_FILE_ROOT	"acpi"
- extern struct proc_dir_entry *acpi_root_dir;
+@@ -419,7 +408,7 @@ static void ezusb_ctx_complete(struct request_context *ctx)
+ 			/* This is normal, as all request contexts get flushed
+ 			 * when the device is disconnected */
+ 			err("Called, CTX not terminating, but device gone");
+-			ezusb_complete_all(&ctx->done);
++			complete_all(&ctx->done);
+ 			ezusb_request_context_put(ctx);
+ 			break;
+ 		}
+@@ -690,11 +679,11 @@ static void ezusb_req_ctx_wait(struct ezusb_priv *upriv,
+ 			 * get the chance to run themselves. So we make sure
+ 			 * that we don't sleep for ever */
+ 			int msecs = DEF_TIMEOUT * (1000 / HZ);
+-			while (!ctx->done.done && msecs--)
++
++			while (!try_wait_for_completion(&ctx->done) && msecs--)
+ 				udelay(1000);
+ 		} else {
+-			wait_event_interruptible(ctx->done.wait,
+-						 ctx->done.done);
++			wait_for_completion(&ctx->done);
+ 		}
+ 		break;
+ 	default:
