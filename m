@@ -2,107 +2,64 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 002F218E351
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 21 Mar 2020 18:26:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 827B418E37D
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 21 Mar 2020 18:48:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727497AbgCUR0a (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 21 Mar 2020 13:26:30 -0400
-Received: from mail-pl1-f195.google.com ([209.85.214.195]:44976 "EHLO
-        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727495AbgCUR0a (ORCPT
+        id S1727192AbgCURsE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 21 Mar 2020 13:48:04 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:39232 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727039AbgCURsE (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 21 Mar 2020 13:26:30 -0400
-Received: by mail-pl1-f195.google.com with SMTP id h11so3895151plr.11;
-        Sat, 21 Mar 2020 10:26:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=wh+F5SIyKnqSR8r3BIW8m3yDVbB2dv6d+r55H9JcfeY=;
-        b=B6BxXPSleWUoByMhGFBHuFbyh0EkSMYwT8Mvf9cudRwZr+E7X8VXPZv2XfIKJmLQeY
-         BhIn27vlY30dy/hQn6/vWcthcixNmlBEx0+ur/erlCUDhq0eJrGNmT9aVRSVzE0Xn498
-         Q8B+uhW3TdBf2zFVbge+hTd0Hj6pyt97DKJWyaZwA7696yUgzM4EWvrQEVGDyd352hzz
-         NPQiFOYq2QHjYLTs4cWc2MmTGoS9nfzje56NTyz6NMdiqHZuUR3ZzakTeF/1MhvjmQ6L
-         bVEp4Ft9sRdLByDHzI66I/Y3ZwUZ1zll52BdA6fwN87vkHMxjoxXU+5mNC+ILS4jR65P
-         VE3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=wh+F5SIyKnqSR8r3BIW8m3yDVbB2dv6d+r55H9JcfeY=;
-        b=ZUjX6LtDhCwtq5AFvx7qYzMA1uhnJfl7Y5zuKd60BkJgpwroVm1aSj55KHhvlKZNia
-         aaIYIyDAsgDgZgdYqe0+CAnEyDPlM7DnhgvA+bDU9ji91Cm9M2HWrn0/gZ4wLtzcLx5D
-         MFQDHimIY9iUFuEiTNh51P7sdtTUs4bUJB+PV2cy+4V3MlvbTeZ4deT4qeNRduD5EQ1E
-         n7n0QBUqx47s3L8lpIH0iDzVP103XQTAHNu+ds1Mb+q0oYIq4uRnVFcN96m90wbEpwMd
-         fgUMJqehYUsVSJWEMClKsJhcprSy3eYousr6fgSCVZwb4u9FvX+yqEh5F6vHYBdO4yjx
-         8kcg==
-X-Gm-Message-State: ANhLgQ0DZlUTxHs+DccQ0OzEmC1LMQcETRiqt9NYfrZULLExZ2maCCWy
-        g/D/nx7BwjWO7/qja0d4iwLtmzrZ
-X-Google-Smtp-Source: ADFU+vsBdOq60T50L/6kP0lctVVpQ5Cm+zzONNsxk/Bi4edjZoedu8Z+XzVv2werpqD+5lbaTvzQMw==
-X-Received: by 2002:a17:902:6b48:: with SMTP id g8mr13881899plt.149.1584811588887;
-        Sat, 21 Mar 2020 10:26:28 -0700 (PDT)
-Received: from localhost ([49.207.51.24])
-        by smtp.gmail.com with ESMTPSA id b19sm7747200pju.12.2020.03.21.10.26.27
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Sat, 21 Mar 2020 10:26:28 -0700 (PDT)
-Date:   Sat, 21 Mar 2020 22:56:26 +0530
-From:   afzal mohammed <afzal.mohd.ma@gmail.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     linux-tip-commits@vger.kernel.org,
-        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>
+        Sat, 21 Mar 2020 13:48:04 -0400
+Received: from p5de0bf0b.dip0.t-ipconnect.de ([93.224.191.11] helo=nanos.tec.linutronix.de)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tglx@linutronix.de>)
+        id 1jFiE6-0007K4-Nt; Sat, 21 Mar 2020 18:48:02 +0100
+Received: by nanos.tec.linutronix.de (Postfix, from userid 1000)
+        id 35B7F1040D4; Sat, 21 Mar 2020 18:48:02 +0100 (CET)
+From:   Thomas Gleixner <tglx@linutronix.de>
+To:     afzal mohammed <afzal.mohd.ma@gmail.com>,
+        linux-kernel@vger.kernel.org
+Cc:     linux-tip-commits@vger.kernel.org, x86 <x86@kernel.org>
 Subject: Re: [tip: x86/cleanups] x86: Replace setup_irq() by request_irq()
-Message-ID: <20200321172626.GA6323@afzalpc>
-References: <158480051619.28353.14186528712410718742.tip-bot2@tip-bot2>
+In-Reply-To: <20200321172626.GA6323@afzalpc>
+References: <158480051619.28353.14186528712410718742.tip-bot2@tip-bot2> <20200321172626.GA6323@afzalpc>
+Date:   Sat, 21 Mar 2020 18:48:02 +0100
+Message-ID: <87imixr44t.fsf@nanos.tec.linutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <158480051619.28353.14186528712410718742.tip-bot2@tip-bot2>
-User-Agent: Mutt/1.9.3 (2018-01-21)
+Content-Type: text/plain
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Sat, Mar 21, 2020 at 02:21:56PM -0000, tip-bot2 for afzal mohammed wrote:
+afzal mohammed <afzal.mohd.ma@gmail.com> writes:
 
-> The following commit has been merged into the x86/cleanups branch of tip:
+> On Sat, Mar 21, 2020 at 02:21:56PM -0000, tip-bot2 for afzal mohammed wrote:
+> Oh Thomas, you picked up v2, i had sent v3 [2], wherein i had taken
+> care of your comments on v1 [1] as well as with more commit message
+> tweaking (v2 was sent before you commented on v1)
 
-> [ tglx: Use a local variable and get rid of the line break. Tweak the
->   	comment a bit ]
-> 
-> Signed-off-by: afzal mohammed <afzal.mohd.ma@gmail.com>
-> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-> Link: https://lkml.kernel.org/r/17f85021f6877650a5b09e0212d88323e6a30fd0.1582471508.git.afzal.mohd.ma@gmail.com
+Bah. I somehow lost track ///
 
-Oh Thomas, you picked up v2, i had sent v3 [2], wherein i had taken
-care of your comments on v1 [1] as well as with more commit message
-tweaking (v2 was sent before you commented on v1)
+> powerpc - in patchworks it is shown as under review after passing all
+> the tests, so expecting it to go in soon.
 
-You have mentioned about merging the series here [3], i have been
-keeping in mind that and proceeding, but is delayed due to the reason
-mentioned below.
+Ok.
 
-i was planning to send this as well as the patches that are not taken
-care by respective maintainers along with the core removal patch as a
-series. The reason to delay is the concern over ARM & powerpc patches -
-wanted to let the patches for those 2 arch's go in thr' respective
-maintainers in their natural flow rather than keep pinging them.
+> ARM - i am expecting these to be picked up by Arnd/Olof shortly as
+> they are yet to pickup any of the pull requests for ARM, you have been
+> copied in the followup mail [4].
 
-powerpc - in patchworks it is shown as under review after passing all
-the tests, so expecting it to go in soon.
+Ok.
 
-ARM - i am expecting these to be picked up by Arnd/Olof shortly as
-they are yet to pickup any of the pull requests for ARM, you have been
-copied in the followup mail [4].
+> As of now only c6x, hexagon, sh, unicore32 & alpha are the ones that i
+> have to send you. All others have been picked up by respective
+> maintainers & are in next.
 
-As of now only c6x, hexagon, sh, unicore32 & alpha are the ones that i
-have to send you. All others have been picked up by respective
-maintainers & are in next.
-
-Regards
-afzal
-
-[1] https://lkml.kernel.org/r/87v9nsmhjj.fsf@nanos.tec.linutronix.de
-[2] https://lkml.kernel.org/r/20200229125510.2897-1-afzal.mohd.ma@gmail.com
-[3] https://lkml.kernel.org/r/87y2somido.fsf@nanos.tec.linutronix.de
-[4] https://lkml.kernel.org/r/20200317043702.GA5852@afzalpc
+Cool.
