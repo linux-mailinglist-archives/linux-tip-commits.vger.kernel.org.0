@@ -2,38 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 340C618E289
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 21 Mar 2020 16:32:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BD0F18E287
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 21 Mar 2020 16:32:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727572AbgCUPag (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S1727579AbgCUPag (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Sat, 21 Mar 2020 11:30:36 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:38870 "EHLO
+Received: from Galois.linutronix.de ([193.142.43.55]:38871 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727056AbgCUPaf (ORCPT
+        with ESMTP id S1727323AbgCUPae (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 21 Mar 2020 11:30:35 -0400
+        Sat, 21 Mar 2020 11:30:34 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jFg50-0004wH-So; Sat, 21 Mar 2020 16:30:31 +0100
+        id 1jFg50-0004wI-Rb; Sat, 21 Mar 2020 16:30:30 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id DF2AB1C22E4;
-        Sat, 21 Mar 2020 16:30:29 +0100 (CET)
-Date:   Sat, 21 Mar 2020 15:30:29 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 53D841C22E5;
+        Sat, 21 Mar 2020 16:30:30 +0100 (CET)
+Date:   Sat, 21 Mar 2020 15:30:30 -0000
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/entry] lockdep: Rename
- trace_{hard,soft}{irq_context,irqs_enabled}()
+Subject: [tip: x86/entry] lockdep: Rename trace_softirqs_{on,off}()
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Will Deacon <will@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200320115859.178626842@infradead.org>
-References: <20200320115859.178626842@infradead.org>
+In-Reply-To: <20200320115859.119434738@infradead.org>
+References: <20200320115859.119434738@infradead.org>
 MIME-Version: 1.0
-Message-ID: <158480462951.28353.3034432377742014275.tip-bot2@tip-bot2>
+Message-ID: <158480463002.28353.16464317745293998156.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,14 +48,14 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/entry branch of tip:
 
-Commit-ID:     ef996916e78e03d25e56c2d372e5e21fdb471882
-Gitweb:        https://git.kernel.org/tip/ef996916e78e03d25e56c2d372e5e21fdb471882
+Commit-ID:     0d38453c85b426e47375346812d2271680c47988
+Gitweb:        https://git.kernel.org/tip/0d38453c85b426e47375346812d2271680c47988
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Fri, 20 Mar 2020 12:56:42 +01:00
+AuthorDate:    Fri, 20 Mar 2020 12:56:41 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Sat, 21 Mar 2020 16:03:54 +01:00
 
-lockdep: Rename trace_{hard,soft}{irq_context,irqs_enabled}()
+lockdep: Rename trace_softirqs_{on,off}()
 
 Continue what commit:
 
@@ -64,9 +63,9 @@ Continue what commit:
 
 started, rename these to avoid confusing them with tracepoints.
 
-git grep -l "trace_\(soft\|hard\)\(irq_context\|irqs_enabled\)" | while read file;
+git grep -l "trace_softirqs_\(on\|off\)" | while read file;
 do
-	sed -ie 's/trace_\(soft\|hard\)\(irq_context\|irqs_enabled\)/lockdep_\1\2/g' $file;
+	sed -ie 's/trace_softirqs_\(on\|off\)/lockdep_softirqs_\1/g' $file;
 done
 
 Reported-by: Thomas Gleixner <tglx@linutronix.de>
@@ -74,97 +73,89 @@ Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
 Acked-by: Will Deacon <will@kernel.org>
-Link: https://lkml.kernel.org/r/20200320115859.178626842@infradead.org
+Link: https://lkml.kernel.org/r/20200320115859.119434738@infradead.org
 
 ---
- include/linux/irqflags.h       | 16 ++++++++--------
- kernel/locking/lockdep.c       |  8 ++++----
- kernel/softirq.c               |  2 +-
- tools/include/linux/irqflags.h |  8 ++++----
- 4 files changed, 17 insertions(+), 17 deletions(-)
+ include/linux/irqflags.h | 10 +++++-----
+ kernel/locking/lockdep.c |  4 ++--
+ kernel/softirq.c         |  6 +++---
+ 3 files changed, 10 insertions(+), 10 deletions(-)
 
 diff --git a/include/linux/irqflags.h b/include/linux/irqflags.h
-index 7ca1f21..f4c3907 100644
+index 7c4e645..7ca1f21 100644
 --- a/include/linux/irqflags.h
 +++ b/include/linux/irqflags.h
-@@ -31,10 +31,10 @@
- #ifdef CONFIG_TRACE_IRQFLAGS
-   extern void trace_hardirqs_on(void);
-   extern void trace_hardirqs_off(void);
--# define trace_hardirq_context(p)	((p)->hardirq_context)
--# define trace_softirq_context(p)	((p)->softirq_context)
--# define trace_hardirqs_enabled(p)	((p)->hardirqs_enabled)
--# define trace_softirqs_enabled(p)	((p)->softirqs_enabled)
-+# define lockdep_hardirq_context(p)	((p)->hardirq_context)
-+# define lockdep_softirq_context(p)	((p)->softirq_context)
-+# define lockdep_hardirqs_enabled(p)	((p)->hardirqs_enabled)
-+# define lockdep_softirqs_enabled(p)	((p)->softirqs_enabled)
- # define lockdep_hardirq_enter()		\
- do {						\
- 	current->hardirq_context++;		\
-@@ -54,10 +54,10 @@ do {						\
+@@ -15,15 +15,15 @@
+ #include <linux/typecheck.h>
+ #include <asm/irqflags.h>
+ 
+-/* Currently trace_softirqs_on/off is used only by lockdep */
++/* Currently lockdep_softirqs_on/off is used only by lockdep */
+ #ifdef CONFIG_PROVE_LOCKING
+-  extern void trace_softirqs_on(unsigned long ip);
+-  extern void trace_softirqs_off(unsigned long ip);
++  extern void lockdep_softirqs_on(unsigned long ip);
++  extern void lockdep_softirqs_off(unsigned long ip);
+   extern void lockdep_hardirqs_on(unsigned long ip);
+   extern void lockdep_hardirqs_off(unsigned long ip);
  #else
- # define trace_hardirqs_on()		do { } while (0)
- # define trace_hardirqs_off()		do { } while (0)
--# define trace_hardirq_context(p)	0
--# define trace_softirq_context(p)	0
--# define trace_hardirqs_enabled(p)	0
--# define trace_softirqs_enabled(p)	0
-+# define lockdep_hardirq_context(p)	0
-+# define lockdep_softirq_context(p)	0
-+# define lockdep_hardirqs_enabled(p)	0
-+# define lockdep_softirqs_enabled(p)	0
- # define lockdep_hardirq_enter()	do { } while (0)
- # define lockdep_hardirq_exit()		do { } while (0)
- # define lockdep_softirq_enter()	do { } while (0)
+-  static inline void trace_softirqs_on(unsigned long ip) { }
+-  static inline void trace_softirqs_off(unsigned long ip) { }
++  static inline void lockdep_softirqs_on(unsigned long ip) { }
++  static inline void lockdep_softirqs_off(unsigned long ip) { }
+   static inline void lockdep_hardirqs_on(unsigned long ip) { }
+   static inline void lockdep_hardirqs_off(unsigned long ip) { }
+ #endif
 diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
-index 26ef412..4075e3e 100644
+index 32406ef..26ef412 100644
 --- a/kernel/locking/lockdep.c
 +++ b/kernel/locking/lockdep.c
-@@ -3081,10 +3081,10 @@ print_usage_bug(struct task_struct *curr, struct held_lock *this,
+@@ -3468,7 +3468,7 @@ NOKPROBE_SYMBOL(lockdep_hardirqs_off);
+ /*
+  * Softirqs will be enabled:
+  */
+-void trace_softirqs_on(unsigned long ip)
++void lockdep_softirqs_on(unsigned long ip)
+ {
+ 	struct task_struct *curr = current;
  
- 	pr_warn("%s/%d [HC%u[%lu]:SC%u[%lu]:HE%u:SE%u] takes:\n",
- 		curr->comm, task_pid_nr(curr),
--		trace_hardirq_context(curr), hardirq_count() >> HARDIRQ_SHIFT,
--		trace_softirq_context(curr), softirq_count() >> SOFTIRQ_SHIFT,
--		trace_hardirqs_enabled(curr),
--		trace_softirqs_enabled(curr));
-+		lockdep_hardirq_context(curr), hardirq_count() >> HARDIRQ_SHIFT,
-+		lockdep_softirq_context(curr), softirq_count() >> SOFTIRQ_SHIFT,
-+		lockdep_hardirqs_enabled(curr),
-+		lockdep_softirqs_enabled(curr));
- 	print_lock(this);
+@@ -3508,7 +3508,7 @@ void trace_softirqs_on(unsigned long ip)
+ /*
+  * Softirqs were disabled:
+  */
+-void trace_softirqs_off(unsigned long ip)
++void lockdep_softirqs_off(unsigned long ip)
+ {
+ 	struct task_struct *curr = current;
  
- 	pr_warn("{%s} state was registered at:\n", usage_str[prev_bit]);
 diff --git a/kernel/softirq.c b/kernel/softirq.c
-index 0112ca0..a47c6dd 100644
+index b328689..0112ca0 100644
 --- a/kernel/softirq.c
 +++ b/kernel/softirq.c
-@@ -224,7 +224,7 @@ static inline bool lockdep_softirq_start(void)
- {
- 	bool in_hardirq = false;
+@@ -126,7 +126,7 @@ void __local_bh_disable_ip(unsigned long ip, unsigned int cnt)
+ 	 * Were softirqs turned off above:
+ 	 */
+ 	if (softirq_count() == (cnt & SOFTIRQ_MASK))
+-		trace_softirqs_off(ip);
++		lockdep_softirqs_off(ip);
+ 	raw_local_irq_restore(flags);
  
--	if (trace_hardirq_context(current)) {
-+	if (lockdep_hardirq_context(current)) {
- 		in_hardirq = true;
- 		lockdep_hardirq_exit();
- 	}
-diff --git a/tools/include/linux/irqflags.h b/tools/include/linux/irqflags.h
-index ced6f64..67e01bb 100644
---- a/tools/include/linux/irqflags.h
-+++ b/tools/include/linux/irqflags.h
-@@ -2,10 +2,10 @@
- #ifndef _LIBLOCKDEP_LINUX_TRACE_IRQFLAGS_H_
- #define _LIBLOCKDEP_LINUX_TRACE_IRQFLAGS_H_
+ 	if (preempt_count() == cnt) {
+@@ -147,7 +147,7 @@ static void __local_bh_enable(unsigned int cnt)
+ 		trace_preempt_on(CALLER_ADDR0, get_lock_parent_ip());
  
--# define trace_hardirq_context(p)	0
--# define trace_softirq_context(p)	0
--# define trace_hardirqs_enabled(p)	0
--# define trace_softirqs_enabled(p)	0
-+# define lockdep_hardirq_context(p)	0
-+# define lockdep_softirq_context(p)	0
-+# define lockdep_hardirqs_enabled(p)	0
-+# define lockdep_softirqs_enabled(p)	0
- # define lockdep_hardirq_enter()	do { } while (0)
- # define lockdep_hardirq_exit()		do { } while (0)
- # define lockdep_softirq_enter()	do { } while (0)
+ 	if (softirq_count() == (cnt & SOFTIRQ_MASK))
+-		trace_softirqs_on(_RET_IP_);
++		lockdep_softirqs_on(_RET_IP_);
+ 
+ 	__preempt_count_sub(cnt);
+ }
+@@ -174,7 +174,7 @@ void __local_bh_enable_ip(unsigned long ip, unsigned int cnt)
+ 	 * Are softirqs going to be turned on now:
+ 	 */
+ 	if (softirq_count() == SOFTIRQ_DISABLE_OFFSET)
+-		trace_softirqs_on(ip);
++		lockdep_softirqs_on(ip);
+ 	/*
+ 	 * Keep preemption disabled until we are done with
+ 	 * softirq processing:
