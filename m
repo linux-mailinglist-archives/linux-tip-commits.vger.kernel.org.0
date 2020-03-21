@@ -2,37 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D3B6818E203
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 21 Mar 2020 15:34:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B04A918E209
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 21 Mar 2020 15:34:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727432AbgCUOd3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 21 Mar 2020 10:33:29 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:38684 "EHLO
+        id S1727354AbgCUOew (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 21 Mar 2020 10:34:52 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:38682 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726997AbgCUOd2 (ORCPT
+        with ESMTP id S1726961AbgCUOd3 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 21 Mar 2020 10:33:28 -0400
+        Sat, 21 Mar 2020 10:33:29 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jFfBl-000455-Kl; Sat, 21 Mar 2020 15:33:25 +0100
+        id 1jFfBl-00044P-8w; Sat, 21 Mar 2020 15:33:25 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 479541C22BC;
-        Sat, 21 Mar 2020 15:33:25 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id CF7E91C22DA;
+        Sat, 21 Mar 2020 15:33:24 +0100 (CET)
 Date:   Sat, 21 Mar 2020 14:33:24 -0000
 From:   "tip-bot2 for Vincenzo Frascino" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] mips: vdso: Enable mips to use common headers
+Subject: [tip: timers/core] x86/vdso: Enable x86 to use common headers
 Cc:     Vincenzo Frascino <vincenzo.frascino@arm.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Paul Burton <paulburton@kernel.org>, x86 <x86@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200320145351.32292-23-vincenzo.frascino@arm.com>
-References: <20200320145351.32292-23-vincenzo.frascino@arm.com>
+In-Reply-To: <20200320145351.32292-24-vincenzo.frascino@arm.com>
+References: <20200320145351.32292-24-vincenzo.frascino@arm.com>
 MIME-Version: 1.0
-Message-ID: <158480120493.28353.16624453777499675820.tip-bot2@tip-bot2>
+Message-ID: <158480120455.28353.18216444318007349427.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,87 +47,64 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     c135fc875ce363ff8405a8e64408bca0aa2a865b
-Gitweb:        https://git.kernel.org/tip/c135fc875ce363ff8405a8e64408bca0aa2a865b
+Commit-ID:     abc22418db02b986fc5623c035507b6357e191ed
+Gitweb:        https://git.kernel.org/tip/abc22418db02b986fc5623c035507b6357e191ed
 Author:        Vincenzo Frascino <vincenzo.frascino@arm.com>
-AuthorDate:    Fri, 20 Mar 2020 14:53:47 
+AuthorDate:    Fri, 20 Mar 2020 14:53:48 
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Sat, 21 Mar 2020 15:24:02 +01:00
 
-mips: vdso: Enable mips to use common headers
+x86/vdso: Enable x86 to use common headers
 
-Enable mips to use only the common headers in the implementation of
-the vDSO library.
+Enable x86 to use only the common headers in the implementation
+of the vDSO library.
 
 Signed-off-by: Vincenzo Frascino <vincenzo.frascino@arm.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: Paul Burton <paulburton@kernel.org>
-Link: https://lkml.kernel.org/r/20200320145351.32292-23-vincenzo.frascino@arm.com
+Link: https://lkml.kernel.org/r/20200320145351.32292-24-vincenzo.frascino@arm.com
 
 ---
- arch/mips/include/asm/processor.h         | 16 +-------------
- arch/mips/include/asm/vdso/gettimeofday.h |  4 +---
- arch/mips/include/asm/vdso/processor.h    | 27 ++++++++++++++++++++++-
- 3 files changed, 28 insertions(+), 19 deletions(-)
- create mode 100644 arch/mips/include/asm/vdso/processor.h
+ arch/x86/include/asm/processor.h      | 12 +-----------
+ arch/x86/include/asm/vdso/processor.h | 23 +++++++++++++++++++++++
+ 2 files changed, 24 insertions(+), 11 deletions(-)
+ create mode 100644 arch/x86/include/asm/vdso/processor.h
 
-diff --git a/arch/mips/include/asm/processor.h b/arch/mips/include/asm/processor.h
-index 7619ad3..4c9cc66 100644
---- a/arch/mips/include/asm/processor.h
-+++ b/arch/mips/include/asm/processor.h
-@@ -22,6 +22,7 @@
- #include <asm/dsemul.h>
- #include <asm/mipsregs.h>
- #include <asm/prefetch.h>
+diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
+index 09705cc..94789db 100644
+--- a/arch/x86/include/asm/processor.h
++++ b/arch/x86/include/asm/processor.h
+@@ -26,6 +26,7 @@ struct vm86;
+ #include <asm/fpu/types.h>
+ #include <asm/unwind_hints.h>
+ #include <asm/vmxfeatures.h>
 +#include <asm/vdso/processor.h>
  
- /*
-  * System setup and hardware flags..
-@@ -385,21 +386,6 @@ unsigned long get_wchan(struct task_struct *p);
- #define KSTK_ESP(tsk) (task_pt_regs(tsk)->regs[29])
- #define KSTK_STATUS(tsk) (task_pt_regs(tsk)->cp0_status)
+ #include <linux/personality.h>
+ #include <linux/cache.h>
+@@ -677,17 +678,6 @@ static inline unsigned int cpuid_edx(unsigned int op)
+ 	return edx;
+ }
  
--#ifdef CONFIG_CPU_LOONGSON64
--/*
-- * Loongson-3's SFB (Store-Fill-Buffer) may buffer writes indefinitely when a
-- * tight read loop is executed, because reads take priority over writes & the
-- * hardware (incorrectly) doesn't ensure that writes will eventually occur.
-- *
-- * Since spin loops of any kind should have a cpu_relax() in them, force an SFB
-- * flush from cpu_relax() such that any pending writes will become visible as
-- * expected.
-- */
--#define cpu_relax()	smp_mb()
--#else
--#define cpu_relax()	barrier()
--#endif
+-/* REP NOP (PAUSE) is a good thing to insert into busy-wait loops. */
+-static __always_inline void rep_nop(void)
+-{
+-	asm volatile("rep; nop" ::: "memory");
+-}
+-
+-static __always_inline void cpu_relax(void)
+-{
+-	rep_nop();
+-}
 -
  /*
-  * Return_address is a replacement for __builtin_return_address(count)
-  * which on certain architectures cannot reasonably be implemented in GCC
-diff --git a/arch/mips/include/asm/vdso/gettimeofday.h b/arch/mips/include/asm/vdso/gettimeofday.h
-index 88c3de1..c63ddca 100644
---- a/arch/mips/include/asm/vdso/gettimeofday.h
-+++ b/arch/mips/include/asm/vdso/gettimeofday.h
-@@ -13,12 +13,8 @@
- 
- #ifndef __ASSEMBLY__
- 
--#include <linux/compiler.h>
--#include <linux/time.h>
--
- #include <asm/vdso/vdso.h>
- #include <asm/clocksource.h>
--#include <asm/io.h>
- #include <asm/unistd.h>
- #include <asm/vdso.h>
- 
-diff --git a/arch/mips/include/asm/vdso/processor.h b/arch/mips/include/asm/vdso/processor.h
+  * This function forces the icache and prefetched instruction stream to
+  * catch up with reality in two very specific cases:
+diff --git a/arch/x86/include/asm/vdso/processor.h b/arch/x86/include/asm/vdso/processor.h
 new file mode 100644
-index 0000000..511c95d
+index 0000000..57b1a70
 --- /dev/null
-+++ b/arch/mips/include/asm/vdso/processor.h
-@@ -0,0 +1,27 @@
++++ b/arch/x86/include/asm/vdso/processor.h
+@@ -0,0 +1,23 @@
 +/* SPDX-License-Identifier: GPL-2.0-only */
 +/*
 + * Copyright (C) 2020 ARM Ltd.
@@ -138,20 +114,16 @@ index 0000000..511c95d
 +
 +#ifndef __ASSEMBLY__
 +
-+#ifdef CONFIG_CPU_LOONGSON64
-+/*
-+ * Loongson-3's SFB (Store-Fill-Buffer) may buffer writes indefinitely when a
-+ * tight read loop is executed, because reads take priority over writes & the
-+ * hardware (incorrectly) doesn't ensure that writes will eventually occur.
-+ *
-+ * Since spin loops of any kind should have a cpu_relax() in them, force an SFB
-+ * flush from cpu_relax() such that any pending writes will become visible as
-+ * expected.
-+ */
-+#define cpu_relax()	smp_mb()
-+#else
-+#define cpu_relax()	barrier()
-+#endif
++/* REP NOP (PAUSE) is a good thing to insert into busy-wait loops. */
++static __always_inline void rep_nop(void)
++{
++	asm volatile("rep; nop" ::: "memory");
++}
++
++static __always_inline void cpu_relax(void)
++{
++	rep_nop();
++}
 +
 +#endif /* __ASSEMBLY__ */
 +
