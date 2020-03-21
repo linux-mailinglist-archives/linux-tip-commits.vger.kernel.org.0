@@ -2,141 +2,107 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4467418E305
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 21 Mar 2020 17:51:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 002F218E351
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 21 Mar 2020 18:26:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727817AbgCUQux (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 21 Mar 2020 12:50:53 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:39142 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726961AbgCUQuv (ORCPT
+        id S1727497AbgCUR0a (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 21 Mar 2020 13:26:30 -0400
+Received: from mail-pl1-f195.google.com ([209.85.214.195]:44976 "EHLO
+        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727495AbgCUR0a (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 21 Mar 2020 12:50:51 -0400
-Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tip-bot2@linutronix.de>)
-        id 1jFhKh-0006U1-Q8; Sat, 21 Mar 2020 17:50:47 +0100
-Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 48BAC1C001A;
-        Sat, 21 Mar 2020 17:50:47 +0100 (CET)
-Date:   Sat, 21 Mar 2020 16:50:46 -0000
-From:   "tip-bot2 for Jann Horn" <tip-bot2@linutronix.de>
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] threads: Update PID limit comment according to
- futex UAPI change
-Cc:     Jann Horn <jannh@google.com>, Thomas Gleixner <tglx@linutronix.de>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200302112939.8068-1-jannh@google.com>
-References: <20200302112939.8068-1-jannh@google.com>
+        Sat, 21 Mar 2020 13:26:30 -0400
+Received: by mail-pl1-f195.google.com with SMTP id h11so3895151plr.11;
+        Sat, 21 Mar 2020 10:26:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=wh+F5SIyKnqSR8r3BIW8m3yDVbB2dv6d+r55H9JcfeY=;
+        b=B6BxXPSleWUoByMhGFBHuFbyh0EkSMYwT8Mvf9cudRwZr+E7X8VXPZv2XfIKJmLQeY
+         BhIn27vlY30dy/hQn6/vWcthcixNmlBEx0+ur/erlCUDhq0eJrGNmT9aVRSVzE0Xn498
+         Q8B+uhW3TdBf2zFVbge+hTd0Hj6pyt97DKJWyaZwA7696yUgzM4EWvrQEVGDyd352hzz
+         NPQiFOYq2QHjYLTs4cWc2MmTGoS9nfzje56NTyz6NMdiqHZuUR3ZzakTeF/1MhvjmQ6L
+         bVEp4Ft9sRdLByDHzI66I/Y3ZwUZ1zll52BdA6fwN87vkHMxjoxXU+5mNC+ILS4jR65P
+         VE3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=wh+F5SIyKnqSR8r3BIW8m3yDVbB2dv6d+r55H9JcfeY=;
+        b=ZUjX6LtDhCwtq5AFvx7qYzMA1uhnJfl7Y5zuKd60BkJgpwroVm1aSj55KHhvlKZNia
+         aaIYIyDAsgDgZgdYqe0+CAnEyDPlM7DnhgvA+bDU9ji91Cm9M2HWrn0/gZ4wLtzcLx5D
+         MFQDHimIY9iUFuEiTNh51P7sdtTUs4bUJB+PV2cy+4V3MlvbTeZ4deT4qeNRduD5EQ1E
+         n7n0QBUqx47s3L8lpIH0iDzVP103XQTAHNu+ds1Mb+q0oYIq4uRnVFcN96m90wbEpwMd
+         fgUMJqehYUsVSJWEMClKsJhcprSy3eYousr6fgSCVZwb4u9FvX+yqEh5F6vHYBdO4yjx
+         8kcg==
+X-Gm-Message-State: ANhLgQ0DZlUTxHs+DccQ0OzEmC1LMQcETRiqt9NYfrZULLExZ2maCCWy
+        g/D/nx7BwjWO7/qja0d4iwLtmzrZ
+X-Google-Smtp-Source: ADFU+vsBdOq60T50L/6kP0lctVVpQ5Cm+zzONNsxk/Bi4edjZoedu8Z+XzVv2werpqD+5lbaTvzQMw==
+X-Received: by 2002:a17:902:6b48:: with SMTP id g8mr13881899plt.149.1584811588887;
+        Sat, 21 Mar 2020 10:26:28 -0700 (PDT)
+Received: from localhost ([49.207.51.24])
+        by smtp.gmail.com with ESMTPSA id b19sm7747200pju.12.2020.03.21.10.26.27
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Sat, 21 Mar 2020 10:26:28 -0700 (PDT)
+Date:   Sat, 21 Mar 2020 22:56:26 +0530
+From:   afzal mohammed <afzal.mohd.ma@gmail.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-tip-commits@vger.kernel.org,
+        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>
+Subject: Re: [tip: x86/cleanups] x86: Replace setup_irq() by request_irq()
+Message-ID: <20200321172626.GA6323@afzalpc>
+References: <158480051619.28353.14186528712410718742.tip-bot2@tip-bot2>
 MIME-Version: 1.0
-Message-ID: <158480944688.28353.2744740796955783682.tip-bot2@tip-bot2>
-X-Mailer: tip-git-log-daemon
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <158480051619.28353.14186528712410718742.tip-bot2@tip-bot2>
+User-Agent: Mutt/1.9.3 (2018-01-21)
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+On Sat, Mar 21, 2020 at 02:21:56PM -0000, tip-bot2 for afzal mohammed wrote:
 
-Commit-ID:     9c40365a65d62d7c06a95fb331b3442cb02d2fd9
-Gitweb:        https://git.kernel.org/tip/9c40365a65d62d7c06a95fb331b3442cb02d2fd9
-Author:        Jann Horn <jannh@google.com>
-AuthorDate:    Mon, 02 Mar 2020 12:29:39 +01:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sat, 21 Mar 2020 17:48:13 +01:00
+> The following commit has been merged into the x86/cleanups branch of tip:
 
-threads: Update PID limit comment according to futex UAPI change
+> [ tglx: Use a local variable and get rid of the line break. Tweak the
+>   	comment a bit ]
+> 
+> Signed-off-by: afzal mohammed <afzal.mohd.ma@gmail.com>
+> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+> Link: https://lkml.kernel.org/r/17f85021f6877650a5b09e0212d88323e6a30fd0.1582471508.git.afzal.mohd.ma@gmail.com
 
-The futex UAPI changed back in commit 76b81e2b0e22 ("[PATCH] lightweight
-robust futexes updates 2"), which landed in v2.6.17: FUTEX_TID_MASK is now
-0x3fffffff instead of 0x1fffffff. Update the corresponding comment in
-include/linux/threads.h.
+Oh Thomas, you picked up v2, i had sent v3 [2], wherein i had taken
+care of your comments on v1 [1] as well as with more commit message
+tweaking (v2 was sent before you commented on v1)
 
-Documentation mentions that only the lower 29 bits are available for TID
-storage, but as the UAPI header released the bit already via
-FUTEX_TID_MASK, this is moot as well. Fix it up.
+You have mentioned about merging the series here [3], i have been
+keeping in mind that and proceeding, but is delayed due to the reason
+mentioned below.
 
-[ tglx: Fixed up documentation ]
+i was planning to send this as well as the patches that are not taken
+care by respective maintainers along with the core removal patch as a
+series. The reason to delay is the concern over ARM & powerpc patches -
+wanted to let the patches for those 2 arch's go in thr' respective
+maintainers in their natural flow rather than keep pinging them.
 
-Signed-off-by: Jann Horn <jannh@google.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20200302112939.8068-1-jannh@google.com
+powerpc - in patchworks it is shown as under review after passing all
+the tests, so expecting it to go in soon.
 
----
- Documentation/robust-futex-ABI.txt | 14 ++++++--------
- include/linux/threads.h            |  2 +-
- 2 files changed, 7 insertions(+), 9 deletions(-)
+ARM - i am expecting these to be picked up by Arnd/Olof shortly as
+they are yet to pickup any of the pull requests for ARM, you have been
+copied in the followup mail [4].
 
-diff --git a/Documentation/robust-futex-ABI.txt b/Documentation/robust-futex-ABI.txt
-index 8a5d34a..f24904f 100644
---- a/Documentation/robust-futex-ABI.txt
-+++ b/Documentation/robust-futex-ABI.txt
-@@ -61,8 +61,8 @@ setup that list.
-   address of the associated 'lock entry', plus or minus, of what will
-   be called the 'lock word', from that 'lock entry'.  The 'lock word'
-   is always a 32 bit word, unlike the other words above.  The 'lock
--  word' holds 3 flag bits in the upper 3 bits, and the thread id (TID)
--  of the thread holding the lock in the bottom 29 bits.  See further
-+  word' holds 2 flag bits in the upper 2 bits, and the thread id (TID)
-+  of the thread holding the lock in the bottom 30 bits.  See further
-   below for a description of the flag bits.
- 
-   The third word, called 'list_op_pending', contains transient copy of
-@@ -128,7 +128,7 @@ that thread's robust_futex linked lock list a given time.
- A given futex lock structure in a user shared memory region may be held
- at different times by any of the threads with access to that region. The
- thread currently holding such a lock, if any, is marked with the threads
--TID in the lower 29 bits of the 'lock word'.
-+TID in the lower 30 bits of the 'lock word'.
- 
- When adding or removing a lock from its list of held locks, in order for
- the kernel to correctly handle lock cleanup regardless of when the task
-@@ -141,7 +141,7 @@ On insertion:
-  1) set the 'list_op_pending' word to the address of the 'lock entry'
-     to be inserted,
-  2) acquire the futex lock,
-- 3) add the lock entry, with its thread id (TID) in the bottom 29 bits
-+ 3) add the lock entry, with its thread id (TID) in the bottom 30 bits
-     of the 'lock word', to the linked list starting at 'head', and
-  4) clear the 'list_op_pending' word.
- 
-@@ -155,7 +155,7 @@ On removal:
- 
- On exit, the kernel will consider the address stored in
- 'list_op_pending' and the address of each 'lock word' found by walking
--the list starting at 'head'.  For each such address, if the bottom 29
-+the list starting at 'head'.  For each such address, if the bottom 30
- bits of the 'lock word' at offset 'offset' from that address equals the
- exiting threads TID, then the kernel will do two things:
- 
-@@ -180,7 +180,5 @@ any point:
-     future kernel configuration changes) elements.
- 
- When the kernel sees a list entry whose 'lock word' doesn't have the
--current threads TID in the lower 29 bits, it does nothing with that
-+current threads TID in the lower 30 bits, it does nothing with that
- entry, and goes on to the next entry.
--
--Bit 29 (0x20000000) of the 'lock word' is reserved for future use.
-diff --git a/include/linux/threads.h b/include/linux/threads.h
-index 3086dba..18d5a74 100644
---- a/include/linux/threads.h
-+++ b/include/linux/threads.h
-@@ -29,7 +29,7 @@
- 
- /*
-  * A maximum of 4 million PIDs should be enough for a while.
-- * [NOTE: PID/TIDs are limited to 2^29 ~= 500+ million, see futex.h.]
-+ * [NOTE: PID/TIDs are limited to 2^30 ~= 1 billion, see FUTEX_TID_MASK.]
-  */
- #define PID_MAX_LIMIT (CONFIG_BASE_SMALL ? PAGE_SIZE * 8 : \
- 	(sizeof(long) > 4 ? 4 * 1024 * 1024 : PID_MAX_DEFAULT))
+As of now only c6x, hexagon, sh, unicore32 & alpha are the ones that i
+have to send you. All others have been picked up by respective
+maintainers & are in next.
+
+Regards
+afzal
+
+[1] https://lkml.kernel.org/r/87v9nsmhjj.fsf@nanos.tec.linutronix.de
+[2] https://lkml.kernel.org/r/20200229125510.2897-1-afzal.mohd.ma@gmail.com
+[3] https://lkml.kernel.org/r/87y2somido.fsf@nanos.tec.linutronix.de
+[4] https://lkml.kernel.org/r/20200317043702.GA5852@afzalpc
