@@ -2,38 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 53F4718E204
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 21 Mar 2020 15:34:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 15FBA18E1F8
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 21 Mar 2020 15:34:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727495AbgCUOda (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 21 Mar 2020 10:33:30 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:38695 "EHLO
+        id S1727628AbgCUOde (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 21 Mar 2020 10:33:34 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:38718 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727385AbgCUOda (ORCPT
+        with ESMTP id S1727579AbgCUOde (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 21 Mar 2020 10:33:30 -0400
+        Sat, 21 Mar 2020 10:33:34 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jFfBm-00045Q-1f; Sat, 21 Mar 2020 15:33:26 +0100
+        id 1jFfBq-00047J-Kw; Sat, 21 Mar 2020 15:33:30 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A57A61C22DA;
-        Sat, 21 Mar 2020 15:33:25 +0100 (CET)
-Date:   Sat, 21 Mar 2020 14:33:25 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 3056F1C22DA;
+        Sat, 21 Mar 2020 15:33:27 +0100 (CET)
+Date:   Sat, 21 Mar 2020 14:33:26 -0000
 From:   "tip-bot2 for Vincenzo Frascino" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] arm64: vdso32: Include common headers in the vdso library
+Subject: [tip: timers/core] linux/elfnote.h: Replace elf.h with UAPI equivalent
 Cc:     Vincenzo Frascino <vincenzo.frascino@arm.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, x86 <x86@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200320145351.32292-22-vincenzo.frascino@arm.com>
-References: <20200320145351.32292-22-vincenzo.frascino@arm.com>
+In-Reply-To: <20200320145351.32292-18-vincenzo.frascino@arm.com>
+References: <20200320145351.32292-18-vincenzo.frascino@arm.com>
 MIME-Version: 1.0
-Message-ID: <158480120536.28353.7718322208789745754.tip-bot2@tip-bot2>
+Message-ID: <158480120691.28353.6008977140225322262.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,56 +47,41 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     5340e873576ee04186eca3c70844c576d714cc6a
-Gitweb:        https://git.kernel.org/tip/5340e873576ee04186eca3c70844c576d714cc6a
+Commit-ID:     b558051725c5f7caa1f390ab28f3ab9db085cbfc
+Gitweb:        https://git.kernel.org/tip/b558051725c5f7caa1f390ab28f3ab9db085cbfc
 Author:        Vincenzo Frascino <vincenzo.frascino@arm.com>
-AuthorDate:    Fri, 20 Mar 2020 14:53:46 
+AuthorDate:    Fri, 20 Mar 2020 14:53:42 
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sat, 21 Mar 2020 15:24:02 +01:00
+CommitterDate: Sat, 21 Mar 2020 15:24:00 +01:00
 
-arm64: vdso32: Include common headers in the vdso library
+linux/elfnote.h: Replace elf.h with UAPI equivalent
 
 The vDSO library should only include the necessary headers required for
 a userspace library (UAPI and a minimal set of kernel headers). To make
 this possible it is necessary to isolate from the kernel headers the
 common parts that are strictly necessary to build the library.
 
-Refactor the vdso32 implementation to include common headers.
+Replace linux/elf.h with UAPI equivalent in elfnote.h to make the header
+suitable for vDSO inclusion.
 
 Signed-off-by: Vincenzo Frascino <vincenzo.frascino@arm.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Link: https://lkml.kernel.org/r/20200320145351.32292-22-vincenzo.frascino@arm.com
+Link: https://lkml.kernel.org/r/20200320145351.32292-18-vincenzo.frascino@arm.com
 
 ---
- arch/arm64/include/asm/vdso/compat_gettimeofday.h | 2 +-
- arch/arm64/kernel/vdso32/vgettimeofday.c          | 2 --
- 2 files changed, 1 insertion(+), 3 deletions(-)
+ include/linux/elfnote.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/include/asm/vdso/compat_gettimeofday.h b/arch/arm64/include/asm/vdso/compat_gettimeofday.h
-index 401df2b..b6907ae 100644
---- a/arch/arm64/include/asm/vdso/compat_gettimeofday.h
-+++ b/arch/arm64/include/asm/vdso/compat_gettimeofday.h
-@@ -8,7 +8,7 @@
- #ifndef __ASSEMBLY__
+diff --git a/include/linux/elfnote.h b/include/linux/elfnote.h
+index f236f5b..594d4e7 100644
+--- a/include/linux/elfnote.h
++++ b/include/linux/elfnote.h
+@@ -59,7 +59,7 @@
+ 	ELFNOTE_END
  
- #include <asm/unistd.h>
--#include <uapi/linux/time.h>
-+#include <asm/errno.h>
- 
- #include <asm/vdso/compat_barrier.h>
- 
-diff --git a/arch/arm64/kernel/vdso32/vgettimeofday.c b/arch/arm64/kernel/vdso32/vgettimeofday.c
-index ddbad47..5acff29 100644
---- a/arch/arm64/kernel/vdso32/vgettimeofday.c
-+++ b/arch/arm64/kernel/vdso32/vgettimeofday.c
-@@ -5,8 +5,6 @@
-  * Copyright (C) 2018 ARM Limited
-  *
-  */
--#include <linux/time.h>
--#include <linux/types.h>
- 
- int __vdso_clock_gettime(clockid_t clock,
- 			 struct old_timespec32 *ts)
+ #else	/* !__ASSEMBLER__ */
+-#include <linux/elf.h>
++#include <uapi/linux/elf.h>
+ /*
+  * Use an anonymous structure which matches the shape of
+  * Elf{32,64}_Nhdr, but includes the name and desc data.  The size and
