@@ -2,36 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 38EA118E1FC
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 21 Mar 2020 15:34:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ACC0718E1EB
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 21 Mar 2020 15:34:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727565AbgCUOdc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 21 Mar 2020 10:33:32 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:38710 "EHLO
+        id S1727579AbgCUOdm (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 21 Mar 2020 10:33:42 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:38766 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727499AbgCUOdc (ORCPT
+        with ESMTP id S1727666AbgCUOdm (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 21 Mar 2020 10:33:32 -0400
+        Sat, 21 Mar 2020 10:33:42 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jFfBo-00047s-FS; Sat, 21 Mar 2020 15:33:28 +0100
+        id 1jFfBt-00047n-0f; Sat, 21 Mar 2020 15:33:33 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 076991C22DB;
-        Sat, 21 Mar 2020 15:33:28 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 9A5241C22BC;
+        Sat, 21 Mar 2020 15:33:27 +0100 (CET)
 Date:   Sat, 21 Mar 2020 14:33:27 -0000
 From:   "tip-bot2 for Vincenzo Frascino" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] common: Introduce processor.h
-Cc:     Vincenzo Frascino <vincenzo.frascino@arm.com>,
-        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
+Subject: [tip: timers/core] scripts: Fix the inclusion order in modpost
+Cc:     kbuild test robot <lkp@intel.com>,
+        Vincenzo Frascino <vincenzo.frascino@arm.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Michal Marek <michal.lkml@markovi.net>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200320145351.32292-16-vincenzo.frascino@arm.com>
-References: <20200320145351.32292-16-vincenzo.frascino@arm.com>
+In-Reply-To: <20200320145351.32292-17-vincenzo.frascino@arm.com>
+References: <20200320145351.32292-17-vincenzo.frascino@arm.com>
 MIME-Version: 1.0
-Message-ID: <158480120769.28353.3165204341882194683.tip-bot2@tip-bot2>
+Message-ID: <158480120726.28353.6111013865150096917.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,49 +50,64 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     d8bb6993d871f5d3cd6d65d3772e4b1f4ef17380
-Gitweb:        https://git.kernel.org/tip/d8bb6993d871f5d3cd6d65d3772e4b1f4ef17380
+Commit-ID:     f58dd03b1157bdf3b64c36e9525f8d7f69c25df2
+Gitweb:        https://git.kernel.org/tip/f58dd03b1157bdf3b64c36e9525f8d7f69c25df2
 Author:        Vincenzo Frascino <vincenzo.frascino@arm.com>
-AuthorDate:    Fri, 20 Mar 2020 14:53:40 
+AuthorDate:    Fri, 20 Mar 2020 14:53:41 
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sat, 21 Mar 2020 15:23:59 +01:00
+CommitterDate: Sat, 21 Mar 2020 15:24:00 +01:00
 
-common: Introduce processor.h
+scripts: Fix the inclusion order in modpost
 
-The vDSO library should only include the necessary headers required for
-a userspace library (UAPI and a minimal set of kernel headers). To make
-this possible it is necessary to isolate from the kernel headers the
-common parts that are strictly necessary to build the library.
+In the process of creating the source file of a module modpost injects a
+set of includes that are not required if the compilation unit is
+statically built into the kernel.
 
-Introduce processor.h to contain all the processor specific functions
-that are suitable for vDSO inclusion.
+The order of inclusion of the headers can cause redefinition problems
+(e.g.):
 
+   In file included from include/linux/elf.h:5:0,
+                    from include/linux/module.h:18,
+                    from crypto/arc4.mod.c:2:
+    #define ELF_OSABI  ELFOSABI_LINUX
+
+   In file included from include/linux/elfnote.h:62:0,
+                    from include/linux/build-salt.h:4,
+                    from crypto/arc4.mod.c:1:
+   include/uapi/linux/elf.h:363:0: note: this is the location of
+   the previous definition
+    #define ELF_OSABI ELFOSABI_NONE
+
+The issue was exposed during the development of the series [1].
+
+[1] https://lore.kernel.org/lkml/20200306133242.26279-1-vincenzo.frascino@arm.com/
+
+Reported-by: kbuild test robot <lkp@intel.com>
 Signed-off-by: Vincenzo Frascino <vincenzo.frascino@arm.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20200320145351.32292-16-vincenzo.frascino@arm.com
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Michal Marek <michal.lkml@markovi.net>
+Link: https://lkml.kernel.org/r/20200320145351.32292-17-vincenzo.frascino@arm.com
 
 ---
- include/vdso/processor.h | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
- create mode 100644 include/vdso/processor.h
+ scripts/mod/modpost.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/include/vdso/processor.h b/include/vdso/processor.h
-new file mode 100644
-index 0000000..fbe8265
---- /dev/null
-+++ b/include/vdso/processor.h
-@@ -0,0 +1,14 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/*
-+ * Copyright (C) 2020 ARM Ltd.
-+ */
-+#ifndef __VDSO_PROCESSOR_H
-+#define __VDSO_PROCESSOR_H
-+
-+#ifndef __ASSEMBLY__
-+
-+#include <asm/vdso/processor.h>
-+
-+#endif /* __ASSEMBLY__ */
-+
-+#endif /* __VDSO_PROCESSOR_H */
+diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
+index 7edfdb2..0f354b1 100644
+--- a/scripts/mod/modpost.c
++++ b/scripts/mod/modpost.c
+@@ -2251,8 +2251,12 @@ static int check_modname_len(struct module *mod)
+  **/
+ static void add_header(struct buffer *b, struct module *mod)
+ {
+-	buf_printf(b, "#include <linux/build-salt.h>\n");
+ 	buf_printf(b, "#include <linux/module.h>\n");
++	/*
++	 * Include build-salt.h after module.h in order to
++	 * inherit the definitions.
++	 */
++	buf_printf(b, "#include <linux/build-salt.h>\n");
+ 	buf_printf(b, "#include <linux/vermagic.h>\n");
+ 	buf_printf(b, "#include <linux/compiler.h>\n");
+ 	buf_printf(b, "\n");
