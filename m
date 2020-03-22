@@ -2,89 +2,160 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D28A18E60B
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 22 Mar 2020 03:39:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2930818E803
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 22 Mar 2020 11:26:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726409AbgCVCjl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 21 Mar 2020 22:39:41 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49568 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726089AbgCVCjl (ORCPT
+        id S1726866AbgCVK0M (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 22 Mar 2020 06:26:12 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:39621 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726896AbgCVK0L (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 21 Mar 2020 22:39:41 -0400
-Received: from localhost (lfbn-ncy-1-985-231.w90-101.abo.wanadoo.fr [90.101.63.231])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1488820722;
-        Sun, 22 Mar 2020 02:39:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1584844780;
-        bh=hk8TOgV/Bgl5h0rHUCkgXd4I/M7T3C16ZLIR3BegUIY=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=THpX4cwmtL9BRbfZFHHMqoaC47B4dd9KDyNcA2l7zIoR08K/T2bMuQX2aX+DCnOvC
-         uLIQ29Yce3Cy5y5AGQ63hTCyyY6GLuOASltGgPmkMe1nong7PBOqFOongKgsO5s91M
-         jniWbwPg7dFBi+ZmOMVXwG3xwJ9+P48y9F6KzTEE=
-Date:   Sun, 22 Mar 2020 03:39:38 +0100
-From:   Frederic Weisbecker <frederic@kernel.org>
-To:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        x86 <x86@kernel.org>
-Subject: Re: [tip: locking/core] lockdep: Annotate irq_work
-Message-ID: <20200322023937.GD9634@lenoir>
-References: <20200321113242.643576700@linutronix.de>
- <158480602510.28353.4851999853077941579.tip-bot2@tip-bot2>
- <20200321164057.GA9634@lenoir>
- <20200321181249.vy7xxkgrd65piapw@linutronix.de>
- <20200322023329.GC9634@lenoir>
+        Sun, 22 Mar 2020 06:26:11 -0400
+Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tip-bot2@linutronix.de>)
+        id 1jFxnr-0006VV-0Z; Sun, 22 Mar 2020 11:25:59 +0100
+Received: from [127.0.1.1] (localhost [IPv6:::1])
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 26AA61C001F;
+        Sun, 22 Mar 2020 11:25:58 +0100 (CET)
+Date:   Sun, 22 Mar 2020 10:25:57 -0000
+From:   "tip-bot2 for Wei Huang" <tip-bot2@linutronix.de>
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: ras/core] x86/mce/amd: Add PPIN support for AMD MCE
+Cc:     Smita Koralahalli Channabasappa 
+        <smita.koralahallichannabasappa@amd.com>,
+        Wei Huang <wei.huang2@amd.com>, Borislav Petkov <bp@suse.de>,
+        Tony Luck <tony.luck@intel.com>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200321193800.3666964-1-wei.huang2@amd.com>
+References: <20200321193800.3666964-1-wei.huang2@amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200322023329.GC9634@lenoir>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Message-ID: <158487275776.28353.17966552354241526971.tip-bot2@tip-bot2>
+X-Mailer: tip-git-log-daemon
+Robot-ID: <tip-bot2.linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Sun, Mar 22, 2020 at 03:33:30AM +0100, Frederic Weisbecker wrote:
-> On Sat, Mar 21, 2020 at 07:12:49PM +0100, Sebastian Andrzej Siewior wrote:
-> > On 2020-03-21 17:40:58 [+0100], Frederic Weisbecker wrote:
-> > > > diff --git a/include/linux/irqflags.h b/include/linux/irqflags.h
-> > > > index 9c17f9c..f23f540 100644
-> > > > --- a/include/linux/irqflags.h
-> > > > +++ b/include/linux/irqflags.h
-> > > > @@ -69,6 +69,17 @@ do {						\
-> > > >  			current->irq_config = 0;	\
-> > > >  	  } while (0)
-> > > >  
-> > > > +# define lockdep_irq_work_enter(__work)					\
-> > > > +	  do {								\
-> > > > +		  if (!(atomic_read(&__work->flags) & IRQ_WORK_HARD_IRQ))\
-> > > > +			current->irq_config = 1;			\
-> > > 
-> > > So, irq_config == 1 means we are in a softirq? Are there other values for
-> > > irq_config? In which case there should be enums or something?
-> > > I can't find the patch that describes this.
-> > 
-> > 0 means as-is, 1 means threaded / sleeping locks are okay.
-> 
-> So that's the kind of comment we need :-)
-> 
-> Also how about current->irq_locking instead?
-> 
-> And something like:
-> 
-> enum {
->     IRQ_LOCKING_NO_SLEEP,
->     IRQ_LOCKING_CAN_SLEEP
-> }
+The following commit has been merged into the ras/core branch of tip:
 
-Or current->irq_preemptible
+Commit-ID:     077168e241ec5a3b273652acb1e85f8bc1dc2d81
+Gitweb:        https://git.kernel.org/tip/077168e241ec5a3b273652acb1e85f8bc1dc2d81
+Author:        Wei Huang <wei.huang2@amd.com>
+AuthorDate:    Sat, 21 Mar 2020 14:38:00 -05:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Sun, 22 Mar 2020 11:03:47 +01:00
 
-enum {
-    IRQ_NEVER_PREEMPTIBLE,
-    IRQ_MAYBE_PREEMPTIBLE
-}
+x86/mce/amd: Add PPIN support for AMD MCE
 
+Newer AMD CPUs support a feature called protected processor
+identification number (PPIN). This feature can be detected via
+CPUID_Fn80000008_EBX[23].
+
+However, CPUID alone is not enough to read the processor identification
+number - MSR_AMD_PPIN_CTL also needs to be configured properly. If, for
+any reason, MSR_AMD_PPIN_CTL[PPIN_EN] can not be turned on, such as
+disabled in BIOS, the CPU capability bit X86_FEATURE_AMD_PPIN needs to
+be cleared.
+
+When the X86_FEATURE_AMD_PPIN capability is available, the
+identification number is issued together with the MCE error info in
+order to keep track of the source of MCE errors.
+
+ [ bp: Massage. ]
+
+Co-developed-by: Smita Koralahalli Channabasappa <smita.koralahallichannabasappa@amd.com>
+Signed-off-by: Smita Koralahalli Channabasappa <smita.koralahallichannabasappa@amd.com>
+Signed-off-by: Wei Huang <wei.huang2@amd.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Acked-by: Tony Luck <tony.luck@intel.com>
+Link: https://lkml.kernel.org/r/20200321193800.3666964-1-wei.huang2@amd.com
+---
+ arch/x86/include/asm/cpufeatures.h |  1 +-
+ arch/x86/kernel/cpu/amd.c          | 30 +++++++++++++++++++++++++++++-
+ arch/x86/kernel/cpu/mce/core.c     |  2 ++-
+ 3 files changed, 33 insertions(+)
+
+diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
+index f3327cb..4b263ff 100644
+--- a/arch/x86/include/asm/cpufeatures.h
++++ b/arch/x86/include/asm/cpufeatures.h
+@@ -299,6 +299,7 @@
+ #define X86_FEATURE_AMD_IBRS		(13*32+14) /* "" Indirect Branch Restricted Speculation */
+ #define X86_FEATURE_AMD_STIBP		(13*32+15) /* "" Single Thread Indirect Branch Predictors */
+ #define X86_FEATURE_AMD_STIBP_ALWAYS_ON	(13*32+17) /* "" Single Thread Indirect Branch Predictors always-on preferred */
++#define X86_FEATURE_AMD_PPIN		(13*32+23) /* Protected Processor Inventory Number */
+ #define X86_FEATURE_AMD_SSBD		(13*32+24) /* "" Speculative Store Bypass Disable */
+ #define X86_FEATURE_VIRT_SSBD		(13*32+25) /* Virtualized Speculative Store Bypass Disable */
+ #define X86_FEATURE_AMD_SSB_NO		(13*32+26) /* "" Speculative Store Bypass is fixed in hardware. */
+diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
+index ac83a0f..a2cd870 100644
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -393,6 +393,35 @@ static void amd_detect_cmp(struct cpuinfo_x86 *c)
+ 	per_cpu(cpu_llc_id, cpu) = c->phys_proc_id;
+ }
+ 
++static void amd_detect_ppin(struct cpuinfo_x86 *c)
++{
++	unsigned long long val;
++
++	if (!cpu_has(c, X86_FEATURE_AMD_PPIN))
++		return;
++
++	/* When PPIN is defined in CPUID, still need to check PPIN_CTL MSR */
++	if (rdmsrl_safe(MSR_AMD_PPIN_CTL, &val))
++		goto clear_ppin;
++
++	/* PPIN is locked in disabled mode, clear feature bit */
++	if ((val & 3UL) == 1UL)
++		goto clear_ppin;
++
++	/* If PPIN is disabled, try to enable it */
++	if (!(val & 2UL)) {
++		wrmsrl_safe(MSR_AMD_PPIN_CTL,  val | 2UL);
++		rdmsrl_safe(MSR_AMD_PPIN_CTL, &val);
++	}
++
++	/* If PPIN_EN bit is 1, return from here; otherwise fall through */
++	if (val & 2UL)
++		return;
++
++clear_ppin:
++	clear_cpu_cap(c, X86_FEATURE_AMD_PPIN);
++}
++
+ u16 amd_get_nb_id(int cpu)
+ {
+ 	return per_cpu(cpu_llc_id, cpu);
+@@ -940,6 +969,7 @@ static void init_amd(struct cpuinfo_x86 *c)
+ 	amd_detect_cmp(c);
+ 	amd_get_topology(c);
+ 	srat_detect_node(c);
++	amd_detect_ppin(c);
+ 
+ 	init_amd_cacheinfo(c);
+ 
+diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
+index fe3983d..dd06fce 100644
+--- a/arch/x86/kernel/cpu/mce/core.c
++++ b/arch/x86/kernel/cpu/mce/core.c
+@@ -142,6 +142,8 @@ void mce_setup(struct mce *m)
+ 
+ 	if (this_cpu_has(X86_FEATURE_INTEL_PPIN))
+ 		rdmsrl(MSR_PPIN, m->ppin);
++	else if (this_cpu_has(X86_FEATURE_AMD_PPIN))
++		rdmsrl(MSR_AMD_PPIN, m->ppin);
+ 
+ 	m->microcode = boot_cpu_data.microcode;
+ }
