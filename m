@@ -2,37 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 36D6718FE2D
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 23 Mar 2020 20:55:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FBB218FE32
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 23 Mar 2020 20:55:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727103AbgCWTyd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 23 Mar 2020 15:54:33 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:42692 "EHLO
+        id S1727054AbgCWTyk (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 23 Mar 2020 15:54:40 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:42697 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727064AbgCWTyc (ORCPT
+        with ESMTP id S1727126AbgCWTyh (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 23 Mar 2020 15:54:32 -0400
+        Mon, 23 Mar 2020 15:54:37 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jGT9Y-00065W-JG; Mon, 23 Mar 2020 20:54:28 +0100
+        id 1jGT9Y-00065X-Mb; Mon, 23 Mar 2020 20:54:28 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B0CA61C0470;
-        Mon, 23 Mar 2020 20:54:27 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 2D20A1C0475;
+        Mon, 23 Mar 2020 20:54:28 +0100 (CET)
 Date:   Mon, 23 Mar 2020 19:54:27 -0000
 From:   "tip-bot2 for Vincenzo Frascino" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] vdso: Fix clocksource.h macro detection
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
+Subject: [tip: timers/core] um: Fix header inclusion
+Cc:     kbuild test robot <lkp@intel.com>,
         Vincenzo Frascino <vincenzo.frascino@arm.com>,
         Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200323133920.46546-1-vincenzo.frascino@arm.com>
-References: <20200323133920.46546-1-vincenzo.frascino@arm.com>
+In-Reply-To: <20200323124109.7104-1-vincenzo.frascino@arm.com>
+References: <20200323124109.7104-1-vincenzo.frascino@arm.com>
 MIME-Version: 1.0
-Message-ID: <158499326733.28353.8842220324373081169.tip-bot2@tip-bot2>
+Message-ID: <158499326782.28353.14321453432536168841.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,56 +48,67 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     ca214e2c1793058e3a1387f9e343cc5b1731db15
-Gitweb:        https://git.kernel.org/tip/ca214e2c1793058e3a1387f9e343cc5b1731db15
+Commit-ID:     1c1a18b00d7e25d1bed3507880de2da07be704a2
+Gitweb:        https://git.kernel.org/tip/1c1a18b00d7e25d1bed3507880de2da07be704a2
 Author:        Vincenzo Frascino <vincenzo.frascino@arm.com>
-AuthorDate:    Mon, 23 Mar 2020 13:39:20 
+AuthorDate:    Mon, 23 Mar 2020 12:41:09 
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 23 Mar 2020 18:51:08 +01:00
+CommitterDate: Mon, 23 Mar 2020 18:45:14 +01:00
 
-vdso: Fix clocksource.h macro detection
+um: Fix header inclusion
 
-CONFIG_GENERIC_GETTIMEOFDAY is a sufficient condition to verify if an
-architecture implements asm/vdso/clocksource.h or not. The current
-implementation wrongly assumes that the same is true for the config
-option CONFIG_ARCH_CLOCKSOURCE_DATA.
+User Mode Linux is a flavor of x86 that from the vDSO prospective always
+falls back on system calls. This implies that it does not require any
+of the unified vDSO definitions and their inclusion causes side effects
+like this:
 
-This results in a series of build errors on ia64/sparc/sparc64 like this:
+  In file included from include/vdso/processor.h:10:0,
+                      from include/vdso/datapage.h:17,
+                      from arch/x86/include/asm/vgtod.h:7,
+                      from arch/x86/um/../kernel/sys_ia32.c:49:
+  >> arch/x86/include/asm/vdso/processor.h:11:29: error: redefinition of 'rep_nop'
+      static __always_inline void rep_nop(void)
+                                  ^~~~~~~
+     In file included from include/linux/rcupdate.h:30:0,
+                      from include/linux/rculist.h:11,
+                      from include/linux/pid.h:5,
+                      from include/linux/sched.h:14,
+                      from arch/x86/um/../kernel/sys_ia32.c:25:
+     arch/x86/um/asm/processor.h:24:20: note: previous definition of 'rep_nop' was here
+      static inline void rep_nop(void)
 
-  In file included from ./include/linux/clocksource.h:31,
-                   from ./include/linux/clockchips.h:14,
-                   from ./include/linux/tick.h:8,
-                   from fs/proc/stat.c:15:
-  ./include/vdso/clocksource.h:9:10: fatal error: asm/vdso/clocksource.h:
-  No such file or directory
-      9 | #include <asm/vdso/clocksource.h>
-        |          ^~~~~~~~~~~~~~~~~~~~~~~~
+Make sure that the unnecessary headers are not included when um is built
+to address the problem.
 
-Fix the issue removing the unneeded config condition.
-
-Fixes: 14ee2ac618e4 ("linux/clocksource.h: Extract common header for vDSO")
-Reported-by: Thomas Gleixner <tglx@linutronix.de>
+Fixes: abc22418db02 ("x86/vdso: Enable x86 to use common headers")
+Reported-by: kbuild test robot <lkp@intel.com>
 Signed-off-by: Vincenzo Frascino <vincenzo.frascino@arm.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20200323133920.46546-1-vincenzo.frascino@arm.com
+Link: https://lkml.kernel.org/r/20200323124109.7104-1-vincenzo.frascino@arm.com
 ---
- include/vdso/clocksource.h | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ arch/x86/include/asm/vgtod.h | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/include/vdso/clocksource.h b/include/vdso/clocksource.h
-index ab58330..c682e7c 100644
---- a/include/vdso/clocksource.h
-+++ b/include/vdso/clocksource.h
-@@ -4,10 +4,9 @@
+diff --git a/arch/x86/include/asm/vgtod.h b/arch/x86/include/asm/vgtod.h
+index fc8e4cd..7aa38b2 100644
+--- a/arch/x86/include/asm/vgtod.h
++++ b/arch/x86/include/asm/vgtod.h
+@@ -2,6 +2,11 @@
+ #ifndef _ASM_X86_VGTOD_H
+ #define _ASM_X86_VGTOD_H
  
- #include <vdso/limits.h>
- 
--#if defined(CONFIG_ARCH_CLOCKSOURCE_DATA) || \
--	defined(CONFIG_GENERIC_GETTIMEOFDAY)
++/*
++ * This check is required to prevent ARCH=um to include
++ * unwanted headers.
++ */
 +#ifdef CONFIG_GENERIC_GETTIMEOFDAY
- #include <asm/vdso/clocksource.h>
--#endif /* CONFIG_ARCH_CLOCKSOURCE_DATA || CONFIG_GENERIC_GETTIMEOFDAY */
+ #include <linux/compiler.h>
+ #include <asm/clocksource.h>
+ #include <vdso/datapage.h>
+@@ -14,5 +19,6 @@ typedef u64 gtod_long_t;
+ #else
+ typedef unsigned long gtod_long_t;
+ #endif
 +#endif /* CONFIG_GENERIC_GETTIMEOFDAY */
  
- enum vdso_clock_mode {
- 	VDSO_CLOCKMODE_NONE,
+ #endif /* _ASM_X86_VGTOD_H */
