@@ -2,38 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 34C7318FBDA
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 23 Mar 2020 18:50:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 36D6718FE2D
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 23 Mar 2020 20:55:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725880AbgCWRuX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 23 Mar 2020 13:50:23 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:42245 "EHLO
+        id S1727103AbgCWTyd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 23 Mar 2020 15:54:33 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:42692 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726962AbgCWRuX (ORCPT
+        with ESMTP id S1727064AbgCWTyc (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 23 Mar 2020 13:50:23 -0400
+        Mon, 23 Mar 2020 15:54:32 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jGRDK-0003k0-8t; Mon, 23 Mar 2020 18:50:14 +0100
+        id 1jGT9Y-00065W-JG; Mon, 23 Mar 2020 20:54:28 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C96AD1C0470;
-        Mon, 23 Mar 2020 18:50:13 +0100 (CET)
-Date:   Mon, 23 Mar 2020 17:50:13 -0000
-From:   "tip-bot2 for Sebastian Siewior" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B0CA61C0470;
+        Mon, 23 Mar 2020 20:54:27 +0100 (CET)
+Date:   Mon, 23 Mar 2020 19:54:27 -0000
+From:   "tip-bot2 for Vincenzo Frascino" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] completion: Use
- lockdep_assert_RT_in_threaded_ctx() in complete_all()
-Cc:     kernel test robot <rong.a.chen@intel.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200323152019.4qjwluldohuh3by5@linutronix.de>
-References: <20200323152019.4qjwluldohuh3by5@linutronix.de>
+Subject: [tip: timers/core] vdso: Fix clocksource.h macro detection
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Vincenzo Frascino <vincenzo.frascino@arm.com>,
+        Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200323133920.46546-1-vincenzo.frascino@arm.com>
+References: <20200323133920.46546-1-vincenzo.frascino@arm.com>
 MIME-Version: 1.0
-Message-ID: <158498581343.28353.9984368947985225939.tip-bot2@tip-bot2>
+Message-ID: <158499326733.28353.8842220324373081169.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,71 +46,58 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/core branch of tip:
+The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     8bf6c677ddb9c922423ea3bf494fe7c508bfbb8c
-Gitweb:        https://git.kernel.org/tip/8bf6c677ddb9c922423ea3bf494fe7c508bfbb8c
-Author:        Sebastian Siewior <bigeasy@linutronix.de>
-AuthorDate:    Mon, 23 Mar 2020 16:20:19 +01:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Mon, 23 Mar 2020 18:40:25 +01:00
+Commit-ID:     ca214e2c1793058e3a1387f9e343cc5b1731db15
+Gitweb:        https://git.kernel.org/tip/ca214e2c1793058e3a1387f9e343cc5b1731db15
+Author:        Vincenzo Frascino <vincenzo.frascino@arm.com>
+AuthorDate:    Mon, 23 Mar 2020 13:39:20 
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Mon, 23 Mar 2020 18:51:08 +01:00
 
-completion: Use lockdep_assert_RT_in_threaded_ctx() in complete_all()
+vdso: Fix clocksource.h macro detection
 
-The warning was intended to spot complete_all() users from hardirq
-context on PREEMPT_RT. The warning as-is will also trigger in interrupt
-handlers, which are threaded on PREEMPT_RT, which was not intended.
+CONFIG_GENERIC_GETTIMEOFDAY is a sufficient condition to verify if an
+architecture implements asm/vdso/clocksource.h or not. The current
+implementation wrongly assumes that the same is true for the config
+option CONFIG_ARCH_CLOCKSOURCE_DATA.
 
-Use lockdep_assert_RT_in_threaded_ctx() which triggers in non-preemptive
-context on PREEMPT_RT.
+This results in a series of build errors on ia64/sparc/sparc64 like this:
 
-Fixes: a5c6234e1028 ("completion: Use simple wait queues")
-Reported-by: kernel test robot <rong.a.chen@intel.com>
-Suggested-by: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20200323152019.4qjwluldohuh3by5@linutronix.de
+  In file included from ./include/linux/clocksource.h:31,
+                   from ./include/linux/clockchips.h:14,
+                   from ./include/linux/tick.h:8,
+                   from fs/proc/stat.c:15:
+  ./include/vdso/clocksource.h:9:10: fatal error: asm/vdso/clocksource.h:
+  No such file or directory
+      9 | #include <asm/vdso/clocksource.h>
+        |          ^~~~~~~~~~~~~~~~~~~~~~~~
+
+Fix the issue removing the unneeded config condition.
+
+Fixes: 14ee2ac618e4 ("linux/clocksource.h: Extract common header for vDSO")
+Reported-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Vincenzo Frascino <vincenzo.frascino@arm.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lkml.kernel.org/r/20200323133920.46546-1-vincenzo.frascino@arm.com
 ---
- include/linux/lockdep.h   | 15 +++++++++++++++
- kernel/sched/completion.c |  2 +-
- 2 files changed, 16 insertions(+), 1 deletion(-)
+ include/vdso/clocksource.h | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/lockdep.h b/include/linux/lockdep.h
-index 425b4ce..206774a 100644
---- a/include/linux/lockdep.h
-+++ b/include/linux/lockdep.h
-@@ -711,6 +711,21 @@ do {									\
- # define lockdep_assert_in_irq() do { } while (0)
- #endif
+diff --git a/include/vdso/clocksource.h b/include/vdso/clocksource.h
+index ab58330..c682e7c 100644
+--- a/include/vdso/clocksource.h
++++ b/include/vdso/clocksource.h
+@@ -4,10 +4,9 @@
  
-+#ifdef CONFIG_PROVE_RAW_LOCK_NESTING
-+
-+# define lockdep_assert_RT_in_threaded_ctx() do {			\
-+		WARN_ONCE(debug_locks && !current->lockdep_recursion &&	\
-+			  current->hardirq_context &&			\
-+			  !(current->hardirq_threaded || current->irq_config),	\
-+			  "Not in threaded context on PREEMPT_RT as expected\n");	\
-+} while (0)
-+
-+#else
-+
-+# define lockdep_assert_RT_in_threaded_ctx() do { } while (0)
-+
-+#endif
-+
- #ifdef CONFIG_LOCKDEP
- void lockdep_rcu_suspicious(const char *file, const int line, const char *s);
- #else
-diff --git a/kernel/sched/completion.c b/kernel/sched/completion.c
-index f15e961..a778554 100644
---- a/kernel/sched/completion.c
-+++ b/kernel/sched/completion.c
-@@ -58,7 +58,7 @@ void complete_all(struct completion *x)
- {
- 	unsigned long flags;
+ #include <vdso/limits.h>
  
--	WARN_ON(irqs_disabled());
-+	lockdep_assert_RT_in_threaded_ctx();
+-#if defined(CONFIG_ARCH_CLOCKSOURCE_DATA) || \
+-	defined(CONFIG_GENERIC_GETTIMEOFDAY)
++#ifdef CONFIG_GENERIC_GETTIMEOFDAY
+ #include <asm/vdso/clocksource.h>
+-#endif /* CONFIG_ARCH_CLOCKSOURCE_DATA || CONFIG_GENERIC_GETTIMEOFDAY */
++#endif /* CONFIG_GENERIC_GETTIMEOFDAY */
  
- 	raw_spin_lock_irqsave(&x->wait.lock, flags);
- 	x->done = UINT_MAX;
+ enum vdso_clock_mode {
+ 	VDSO_CLOCKMODE_NONE,
