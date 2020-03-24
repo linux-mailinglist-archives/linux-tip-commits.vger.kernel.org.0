@@ -2,36 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EB954191CDC
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 23:33:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A632A191CB0
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 23:32:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728551AbgCXWcZ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 24 Mar 2020 18:32:25 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:46370 "EHLO
+        id S1728555AbgCXWc0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 24 Mar 2020 18:32:26 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:46377 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728289AbgCXWcU (ORCPT
+        with ESMTP id S1728294AbgCXWcU (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Tue, 24 Mar 2020 18:32:20 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jGs5n-0006sa-SK; Tue, 24 Mar 2020 23:32:16 +0100
+        id 1jGs5o-0006tN-OE; Tue, 24 Mar 2020 23:32:16 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 788C81C0451;
-        Tue, 24 Mar 2020 23:32:15 +0100 (CET)
-Date:   Tue, 24 Mar 2020 22:32:15 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 61EE01C0451;
+        Tue, 24 Mar 2020 23:32:16 +0100 (CET)
+Date:   Tue, 24 Mar 2020 22:32:16 -0000
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cpu] powercap/intel_rapl: Convert to new X86 CPU match macros
+Subject: [tip: x86/cpu] mmc: sdhci-acpi: Convert to new X86 CPU match macros
 Cc:     Thomas Gleixner <tglx@linutronix.de>, Borislav Petkov <bp@suse.de>,
         "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200320131510.501728797@linutronix.de>
-References: <20200320131510.501728797@linutronix.de>
+In-Reply-To: <20200320131510.285691129@linutronix.de>
+References: <20200320131510.285691129@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <158508913506.28353.9986072676088338857.tip-bot2@tip-bot2>
+Message-ID: <158508913603.28353.9748836391655211522.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,125 +47,45 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/cpu branch of tip:
 
-Commit-ID:     f07225128865b30093c9ccf946564673c77d0233
-Gitweb:        https://git.kernel.org/tip/f07225128865b30093c9ccf946564673c77d0233
+Commit-ID:     1e41eb1524798d6863169ccbcce8bf8f0a63db18
+Gitweb:        https://git.kernel.org/tip/1e41eb1524798d6863169ccbcce8bf8f0a63db18
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Fri, 20 Mar 2020 14:14:03 +01:00
+AuthorDate:    Fri, 20 Mar 2020 14:14:01 +01:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 24 Mar 2020 21:35:32 +01:00
+CommitterDate: Tue, 24 Mar 2020 21:34:49 +01:00
 
-powercap/intel_rapl: Convert to new X86 CPU match macros
+mmc: sdhci-acpi: Convert to new X86 CPU match macros
 
 The new macro set has a consistent namespace and uses C99 initializers
 instead of the grufty C89 ones.
 
-Get rid the of the local macro wrappers for consistency.
-
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Borislav Petkov <bp@suse.de>
 Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://lkml.kernel.org/r/20200320131510.501728797@linutronix.de
+Link: https://lkml.kernel.org/r/20200320131510.285691129@linutronix.de
 ---
- drivers/powercap/intel_rapl_common.c | 87 +++++++++++++--------------
- 1 file changed, 43 insertions(+), 44 deletions(-)
+ drivers/mmc/host/sdhci-acpi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/powercap/intel_rapl_common.c b/drivers/powercap/intel_rapl_common.c
-index 73257cf..eb32865 100644
---- a/drivers/powercap/intel_rapl_common.c
-+++ b/drivers/powercap/intel_rapl_common.c
-@@ -951,52 +951,51 @@ static const struct rapl_defaults rapl_defaults_cht = {
- };
+diff --git a/drivers/mmc/host/sdhci-acpi.c b/drivers/mmc/host/sdhci-acpi.c
+index 9651dca..a439754 100644
+--- a/drivers/mmc/host/sdhci-acpi.c
++++ b/drivers/mmc/host/sdhci-acpi.c
+@@ -234,7 +234,7 @@ static const struct sdhci_acpi_chip sdhci_acpi_chip_int = {
+ static bool sdhci_acpi_byt(void)
+ {
+ 	static const struct x86_cpu_id byt[] = {
+-		{ X86_VENDOR_INTEL, 6, INTEL_FAM6_ATOM_SILVERMONT },
++		X86_MATCH_INTEL_FAM6_MODEL(ATOM_SILVERMONT, NULL),
+ 		{}
+ 	};
  
- static const struct x86_cpu_id rapl_ids[] __initconst = {
--	INTEL_CPU_FAM6(SANDYBRIDGE, rapl_defaults_core),
--	INTEL_CPU_FAM6(SANDYBRIDGE_X, rapl_defaults_core),
--
--	INTEL_CPU_FAM6(IVYBRIDGE, rapl_defaults_core),
--	INTEL_CPU_FAM6(IVYBRIDGE_X, rapl_defaults_core),
--
--	INTEL_CPU_FAM6(HASWELL, rapl_defaults_core),
--	INTEL_CPU_FAM6(HASWELL_L, rapl_defaults_core),
--	INTEL_CPU_FAM6(HASWELL_G, rapl_defaults_core),
--	INTEL_CPU_FAM6(HASWELL_X, rapl_defaults_hsw_server),
--
--	INTEL_CPU_FAM6(BROADWELL, rapl_defaults_core),
--	INTEL_CPU_FAM6(BROADWELL_G, rapl_defaults_core),
--	INTEL_CPU_FAM6(BROADWELL_D, rapl_defaults_core),
--	INTEL_CPU_FAM6(BROADWELL_X, rapl_defaults_hsw_server),
--
--	INTEL_CPU_FAM6(SKYLAKE, rapl_defaults_core),
--	INTEL_CPU_FAM6(SKYLAKE_L, rapl_defaults_core),
--	INTEL_CPU_FAM6(SKYLAKE_X, rapl_defaults_hsw_server),
--	INTEL_CPU_FAM6(KABYLAKE_L, rapl_defaults_core),
--	INTEL_CPU_FAM6(KABYLAKE, rapl_defaults_core),
--	INTEL_CPU_FAM6(CANNONLAKE_L, rapl_defaults_core),
--	INTEL_CPU_FAM6(ICELAKE_L, rapl_defaults_core),
--	INTEL_CPU_FAM6(ICELAKE, rapl_defaults_core),
--	INTEL_CPU_FAM6(ICELAKE_NNPI, rapl_defaults_core),
--	INTEL_CPU_FAM6(ICELAKE_X, rapl_defaults_hsw_server),
--	INTEL_CPU_FAM6(ICELAKE_D, rapl_defaults_hsw_server),
--	INTEL_CPU_FAM6(COMETLAKE_L, rapl_defaults_core),
--	INTEL_CPU_FAM6(COMETLAKE, rapl_defaults_core),
--	INTEL_CPU_FAM6(TIGERLAKE_L, rapl_defaults_core),
--
--	INTEL_CPU_FAM6(ATOM_SILVERMONT, rapl_defaults_byt),
--	INTEL_CPU_FAM6(ATOM_AIRMONT, rapl_defaults_cht),
--	INTEL_CPU_FAM6(ATOM_SILVERMONT_MID, rapl_defaults_tng),
--	INTEL_CPU_FAM6(ATOM_AIRMONT_MID, rapl_defaults_ann),
--	INTEL_CPU_FAM6(ATOM_GOLDMONT, rapl_defaults_core),
--	INTEL_CPU_FAM6(ATOM_GOLDMONT_PLUS, rapl_defaults_core),
--	INTEL_CPU_FAM6(ATOM_GOLDMONT_D, rapl_defaults_core),
--	INTEL_CPU_FAM6(ATOM_TREMONT_D, rapl_defaults_core),
--	INTEL_CPU_FAM6(ATOM_TREMONT_L, rapl_defaults_core),
--
--	INTEL_CPU_FAM6(XEON_PHI_KNL, rapl_defaults_hsw_server),
--	INTEL_CPU_FAM6(XEON_PHI_KNM, rapl_defaults_hsw_server),
-+	X86_MATCH_INTEL_FAM6_MODEL(SANDYBRIDGE,		&rapl_defaults_core),
-+	X86_MATCH_INTEL_FAM6_MODEL(SANDYBRIDGE_X,	&rapl_defaults_core),
-+
-+	X86_MATCH_INTEL_FAM6_MODEL(IVYBRIDGE,		&rapl_defaults_core),
-+	X86_MATCH_INTEL_FAM6_MODEL(IVYBRIDGE_X,		&rapl_defaults_core),
-+
-+	X86_MATCH_INTEL_FAM6_MODEL(HASWELL,		&rapl_defaults_core),
-+	X86_MATCH_INTEL_FAM6_MODEL(HASWELL_L,		&rapl_defaults_core),
-+	X86_MATCH_INTEL_FAM6_MODEL(HASWELL_G,		&rapl_defaults_core),
-+	X86_MATCH_INTEL_FAM6_MODEL(HASWELL_X,		&rapl_defaults_hsw_server),
-+
-+	X86_MATCH_INTEL_FAM6_MODEL(BROADWELL,		&rapl_defaults_core),
-+	X86_MATCH_INTEL_FAM6_MODEL(BROADWELL_G,		&rapl_defaults_core),
-+	X86_MATCH_INTEL_FAM6_MODEL(BROADWELL_D,		&rapl_defaults_core),
-+	X86_MATCH_INTEL_FAM6_MODEL(BROADWELL_X,		&rapl_defaults_hsw_server),
-+
-+	X86_MATCH_INTEL_FAM6_MODEL(SKYLAKE,		&rapl_defaults_core),
-+	X86_MATCH_INTEL_FAM6_MODEL(SKYLAKE_L,		&rapl_defaults_core),
-+	X86_MATCH_INTEL_FAM6_MODEL(SKYLAKE_X,		&rapl_defaults_hsw_server),
-+	X86_MATCH_INTEL_FAM6_MODEL(KABYLAKE_L,		&rapl_defaults_core),
-+	X86_MATCH_INTEL_FAM6_MODEL(KABYLAKE,		&rapl_defaults_core),
-+	X86_MATCH_INTEL_FAM6_MODEL(CANNONLAKE_L,	&rapl_defaults_core),
-+	X86_MATCH_INTEL_FAM6_MODEL(ICELAKE_L,		&rapl_defaults_core),
-+	X86_MATCH_INTEL_FAM6_MODEL(ICELAKE,		&rapl_defaults_core),
-+	X86_MATCH_INTEL_FAM6_MODEL(ICELAKE_NNPI,	&rapl_defaults_core),
-+	X86_MATCH_INTEL_FAM6_MODEL(ICELAKE_X,		&rapl_defaults_hsw_server),
-+	X86_MATCH_INTEL_FAM6_MODEL(ICELAKE_D,		&rapl_defaults_hsw_server),
-+	X86_MATCH_INTEL_FAM6_MODEL(COMETLAKE_L,		&rapl_defaults_core),
-+	X86_MATCH_INTEL_FAM6_MODEL(COMETLAKE,		&rapl_defaults_core),
-+	X86_MATCH_INTEL_FAM6_MODEL(TIGERLAKE_L,		&rapl_defaults_core),
-+
-+	X86_MATCH_INTEL_FAM6_MODEL(ATOM_SILVERMONT,	&rapl_defaults_byt),
-+	X86_MATCH_INTEL_FAM6_MODEL(ATOM_AIRMONT,	&rapl_defaults_cht),
-+	X86_MATCH_INTEL_FAM6_MODEL(ATOM_SILVERMONT_MID,	&rapl_defaults_tng),
-+	X86_MATCH_INTEL_FAM6_MODEL(ATOM_AIRMONT_MID,	&rapl_defaults_ann),
-+	X86_MATCH_INTEL_FAM6_MODEL(ATOM_GOLDMONT,	&rapl_defaults_core),
-+	X86_MATCH_INTEL_FAM6_MODEL(ATOM_GOLDMONT_PLUS,	&rapl_defaults_core),
-+	X86_MATCH_INTEL_FAM6_MODEL(ATOM_GOLDMONT_D,	&rapl_defaults_core),
-+	X86_MATCH_INTEL_FAM6_MODEL(ATOM_TREMONT_D,	&rapl_defaults_core),
-+	X86_MATCH_INTEL_FAM6_MODEL(ATOM_TREMONT_L,	&rapl_defaults_core),
-+
-+	X86_MATCH_INTEL_FAM6_MODEL(XEON_PHI_KNL,	&rapl_defaults_hsw_server),
-+	X86_MATCH_INTEL_FAM6_MODEL(XEON_PHI_KNM,	&rapl_defaults_hsw_server),
- 	{}
- };
--
- MODULE_DEVICE_TABLE(x86cpu, rapl_ids);
+@@ -244,7 +244,7 @@ static bool sdhci_acpi_byt(void)
+ static bool sdhci_acpi_cht(void)
+ {
+ 	static const struct x86_cpu_id cht[] = {
+-		{ X86_VENDOR_INTEL, 6, INTEL_FAM6_ATOM_AIRMONT },
++		X86_MATCH_INTEL_FAM6_MODEL(ATOM_AIRMONT, NULL),
+ 		{}
+ 	};
  
- /* Read once for all raw primitive data for domains */
