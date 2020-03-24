@@ -2,34 +2,34 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CDAA619093C
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 10:21:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 02700190973
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 10:21:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727305AbgCXJQd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 24 Mar 2020 05:16:33 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:43877 "EHLO
+        id S1727124AbgCXJUq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 24 Mar 2020 05:20:46 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:43876 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727253AbgCXJQc (ORCPT
+        with ESMTP id S1726697AbgCXJQb (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 24 Mar 2020 05:16:32 -0400
+        Tue, 24 Mar 2020 05:16:31 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jGffg-0007uw-Jt; Tue, 24 Mar 2020 10:16:28 +0100
+        id 1jGffg-0007uX-8T; Tue, 24 Mar 2020 10:16:28 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 3D1BE1C0451;
-        Tue, 24 Mar 2020 10:16:28 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D566C1C0470;
+        Tue, 24 Mar 2020 10:16:27 +0100 (CET)
 Date:   Tue, 24 Mar 2020 09:16:27 -0000
 From:   "tip-bot2 for SeongJae Park" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] doc/RCU/rcu: Use absolute paths for non-rst files
+Subject: [tip: core/rcu] doc/RCU/rcu: Use https instead of http if possible
 Cc:     SeongJae Park <sjpark@amazon.de>,
         "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158504138793.28353.3111773984458392919.tip-bot2@tip-bot2>
+Message-ID: <158504138752.28353.11257216746174831460.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -45,38 +45,31 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     6a534b299ab20bdb345d3a6df0fc557c963fc50d
-Gitweb:        https://git.kernel.org/tip/6a534b299ab20bdb345d3a6df0fc557c963fc50d
+Commit-ID:     06a649b314b3e579cfe1c50112c30e3127a36dba
+Gitweb:        https://git.kernel.org/tip/06a649b314b3e579cfe1c50112c30e3127a36dba
 Author:        SeongJae Park <sjpark@amazon.de>
-AuthorDate:    Mon, 06 Jan 2020 21:08:00 +01:00
+AuthorDate:    Mon, 06 Jan 2020 21:08:01 +01:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Thu, 27 Feb 2020 07:03:13 -08:00
 
-doc/RCU/rcu: Use absolute paths for non-rst files
+doc/RCU/rcu: Use https instead of http if possible
 
 Signed-off-by: SeongJae Park <sjpark@amazon.de>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- Documentation/RCU/rcu.rst | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ Documentation/RCU/rcu.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/Documentation/RCU/rcu.rst b/Documentation/RCU/rcu.rst
-index a1dd71d..2a830c5 100644
+index 2a830c5..0e03c6e 100644
 --- a/Documentation/RCU/rcu.rst
 +++ b/Documentation/RCU/rcu.rst
-@@ -75,7 +75,7 @@ Frequently Asked Questions
- - I hear that RCU is patented?  What is with that?
- 
-   Yes, it is.  There are several known patents related to RCU,
--  search for the string "Patent" in RTFP.txt to find them.
-+  search for the string "Patent" in Documentation/RCU/RTFP.txt to find them.
+@@ -79,7 +79,7 @@ Frequently Asked Questions
    Of these, one was allowed to lapse by the assignee, and the
    others have been contributed to the Linux kernel under GPL.
    There are now also LGPL implementations of user-level RCU
-@@ -88,5 +88,5 @@ Frequently Asked Questions
+-  available (http://liburcu.org/).
++  available (https://liburcu.org/).
  
- - Where can I find more information on RCU?
+ - I hear that RCU needs work in order to support realtime kernels?
  
--  See the RTFP.txt file in this directory.
-+  See the Documentation/RCU/RTFP.txt file.
-   Or point your browser at (http://www.rdrop.com/users/paulmck/RCU/).
