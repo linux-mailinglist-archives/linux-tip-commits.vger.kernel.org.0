@@ -2,34 +2,33 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B6FF19091E
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 10:18:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 55AB119092C
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 10:18:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727732AbgCXJST (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 24 Mar 2020 05:18:19 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:44075 "EHLO
+        id S1727838AbgCXJSm (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 24 Mar 2020 05:18:42 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:44028 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727736AbgCXJRF (ORCPT
+        with ESMTP id S1727683AbgCXJQ7 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 24 Mar 2020 05:17:05 -0400
+        Tue, 24 Mar 2020 05:16:59 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jGfgC-00089L-8o; Tue, 24 Mar 2020 10:17:00 +0100
+        id 1jGfg9-0008AE-AB; Tue, 24 Mar 2020 10:16:57 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 258D51C04D1;
-        Tue, 24 Mar 2020 10:16:46 +0100 (CET)
-Date:   Tue, 24 Mar 2020 09:16:45 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 2418E1C04D7;
+        Tue, 24 Mar 2020 10:16:47 +0100 (CET)
+Date:   Tue, 24 Mar 2020 09:16:46 -0000
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcu: Make nocb_gp_wait() double-check
- unexpected-callback warning
+Subject: [tip: core/rcu] rcu: Optimize and protect atomic_cmpxchg() loop
 Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158504140582.28353.1542065767349968391.tip-bot2@tip-bot2>
+Message-ID: <158504140668.28353.2014121522030682311.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -45,56 +44,46 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     3d05031ae6de6ad084aa41263aed1343065233d5
-Gitweb:        https://git.kernel.org/tip/3d05031ae6de6ad084aa41263aed1343065233d5
+Commit-ID:     faa059c397dec8a452c79e9dba64419113ea64e2
+Gitweb:        https://git.kernel.org/tip/faa059c397dec8a452c79e9dba64419113ea64e2
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Tue, 04 Feb 2020 14:55:29 -08:00
+AuthorDate:    Mon, 03 Feb 2020 14:20:00 -08:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Thu, 20 Feb 2020 15:58:23 -08:00
 
-rcu: Make nocb_gp_wait() double-check unexpected-callback warning
+rcu: Optimize and protect atomic_cmpxchg() loop
 
-Currently, nocb_gp_wait() unconditionally complains if there is a
-callback not already associated with a grace period.  This assumes that
-either there was no such callback initially on the one hand, or that
-the rcu_advance_cbs() function assigned all such callbacks to a grace
-period on the other.  However, in theory there are some situations that
-would prevent rcu_advance_cbs() from assigning all of the callbacks.
-
-This commit therefore checks for unassociated callbacks immediately after
-rcu_advance_cbs() returns, while the corresponding rcu_node structure's
-->lock is still held.  If there are unassociated callbacks at that point,
-the subsequent WARN_ON_ONCE() is disabled.
+This commit reworks the atomic_cmpxchg() loop in rcu_eqs_special_set()
+to do only the initial read from the current CPU's rcu_data structure's
+->dynticks field explicitly.  On subsequent passes, this value is instead
+retained from the failing atomic_cmpxchg() operation.
 
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/rcu/tree_plugin.h | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ kernel/rcu/tree.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/rcu/tree_plugin.h b/kernel/rcu/tree_plugin.h
-index 70b3c0f..36e71c9 100644
---- a/kernel/rcu/tree_plugin.h
-+++ b/kernel/rcu/tree_plugin.h
-@@ -1931,6 +1931,7 @@ static void nocb_gp_wait(struct rcu_data *my_rdp)
- 	struct rcu_data *rdp;
- 	struct rcu_node *rnp;
- 	unsigned long wait_gp_seq = 0; // Suppress "use uninitialized" warning.
-+	bool wasempty = false;
+diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
+index 4a4a975..6c62481 100644
+--- a/kernel/rcu/tree.c
++++ b/kernel/rcu/tree.c
+@@ -342,14 +342,17 @@ bool rcu_eqs_special_set(int cpu)
+ {
+ 	int old;
+ 	int new;
++	int new_old;
+ 	struct rcu_data *rdp = &per_cpu(rcu_data, cpu);
  
- 	/*
- 	 * Each pass through the following loop checks for CBs and for the
-@@ -1970,10 +1971,13 @@ static void nocb_gp_wait(struct rcu_data *my_rdp)
- 		     rcu_seq_done(&rnp->gp_seq, cur_gp_seq))) {
- 			raw_spin_lock_rcu_node(rnp); /* irqs disabled. */
- 			needwake_gp = rcu_advance_cbs(rnp, rdp);
-+			wasempty = rcu_segcblist_restempty(&rdp->cblist,
-+							   RCU_NEXT_READY_TAIL);
- 			raw_spin_unlock_rcu_node(rnp); /* irqs disabled. */
- 		}
- 		// Need to wait on some grace period?
--		WARN_ON_ONCE(!rcu_segcblist_restempty(&rdp->cblist,
-+		WARN_ON_ONCE(wasempty &&
-+			     !rcu_segcblist_restempty(&rdp->cblist,
- 						      RCU_NEXT_READY_TAIL));
- 		if (rcu_segcblist_nextgp(&rdp->cblist, &cur_gp_seq)) {
- 			if (!needwait_gp ||
++	new_old = atomic_read(&rdp->dynticks);
+ 	do {
+-		old = atomic_read(&rdp->dynticks);
++		old = new_old;
+ 		if (old & RCU_DYNTICK_CTRL_CTR)
+ 			return false;
+ 		new = old | RCU_DYNTICK_CTRL_MASK;
+-	} while (atomic_cmpxchg(&rdp->dynticks, old, new) != old);
++		new_old = atomic_cmpxchg(&rdp->dynticks, old, new);
++	} while (new_old != old);
+ 	return true;
+ }
+ 
