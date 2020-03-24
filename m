@@ -2,34 +2,33 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CB7AB190965
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 10:21:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8860619095A
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 10:21:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727325AbgCXJUE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 24 Mar 2020 05:20:04 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:43911 "EHLO
+        id S1727388AbgCXJTf (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 24 Mar 2020 05:19:35 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:43949 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727398AbgCXJQi (ORCPT
+        with ESMTP id S1727525AbgCXJQp (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 24 Mar 2020 05:16:38 -0400
+        Tue, 24 Mar 2020 05:16:45 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jGffn-0007yI-Sv; Tue, 24 Mar 2020 10:16:36 +0100
+        id 1jGffs-0007zG-FG; Tue, 24 Mar 2020 10:16:40 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 8FC0F1C0494;
-        Tue, 24 Mar 2020 10:16:33 +0100 (CET)
-Date:   Tue, 24 Mar 2020 09:16:33 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 6208C1C0475;
+        Tue, 24 Mar 2020 10:16:34 +0100 (CET)
+Date:   Tue, 24 Mar 2020 09:16:34 -0000
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcutorture: Fix
- rcu_torture_one_read()/rcu_torture_writer() data race
+Subject: [tip: core/rcu] rcutorture: Summarize summary of build and run results
 Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158504139328.28353.6353053425817942706.tip-bot2@tip-bot2>
+Message-ID: <158504139404.28353.3714499963063430190.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -45,63 +44,62 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     202489101f2e6cee3f6dffc087a4abd5fdfcebda
-Gitweb:        https://git.kernel.org/tip/202489101f2e6cee3f6dffc087a4abd5fdfcebda
+Commit-ID:     c0b94ffb66845d13f9ec537a28bd1466b4de2e14
+Gitweb:        https://git.kernel.org/tip/c0b94ffb66845d13f9ec537a28bd1466b4de2e14
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Sat, 21 Dec 2019 10:41:48 -08:00
+AuthorDate:    Mon, 16 Dec 2019 12:04:33 -08:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Thu, 20 Feb 2020 16:03:31 -08:00
+CommitterDate: Thu, 20 Feb 2020 16:03:30 -08:00
 
-rcutorture: Fix rcu_torture_one_read()/rcu_torture_writer() data race
+rcutorture: Summarize summary of build and run results
 
-The ->rtort_pipe_count field in the rcu_torture structure checks for
-too-short grace periods, and is therefore read by rcutorture's readers
-while being updated by rcutorture's writers.  This commit therefore
-adds the needed READ_ONCE() and WRITE_ONCE() invocations.
+When running the default list of tests, the run summary of a successful
+(that is, failed to find any errors) run fits easily on a 24-line screen.
+But a run with something like "--configs '5*CFLIST'" will be 80 lines long,
+and it is all too easy to miss a failure message when scrolling back.
+This commit therefore prints out the number of runs with failing builds
+or runtime failures, but only if there are any such failures.
 
-This data race was reported by KCSAN.  Not appropriate for backporting
-due to failure being unlikely and due to this being rcutorture.
+For example, a run with a single build error and a single runtime error
+would print two lines like this:
+
+1 runs with build errors.
+1 runs with runtime errors.
 
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/rcu/rcutorture.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ tools/testing/selftests/rcutorture/bin/kvm-recheck.sh | 17 +++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/rcu/rcutorture.c b/kernel/rcu/rcutorture.c
-index 5efd950..edd9746 100644
---- a/kernel/rcu/rcutorture.c
-+++ b/kernel/rcu/rcutorture.c
-@@ -375,11 +375,12 @@ rcu_torture_pipe_update_one(struct rcu_torture *rp)
- {
- 	int i;
+diff --git a/tools/testing/selftests/rcutorture/bin/kvm-recheck.sh b/tools/testing/selftests/rcutorture/bin/kvm-recheck.sh
+index e5edd51..0326f4a 100755
+--- a/tools/testing/selftests/rcutorture/bin/kvm-recheck.sh
++++ b/tools/testing/selftests/rcutorture/bin/kvm-recheck.sh
+@@ -13,6 +13,9 @@
+ #
+ # Authors: Paul E. McKenney <paulmck@linux.ibm.com>
  
--	i = rp->rtort_pipe_count;
-+	i = READ_ONCE(rp->rtort_pipe_count);
- 	if (i > RCU_TORTURE_PIPE_LEN)
- 		i = RCU_TORTURE_PIPE_LEN;
- 	atomic_inc(&rcu_torture_wcount[i]);
--	if (++rp->rtort_pipe_count >= RCU_TORTURE_PIPE_LEN) {
-+	WRITE_ONCE(rp->rtort_pipe_count, i + 1);
-+	if (rp->rtort_pipe_count >= RCU_TORTURE_PIPE_LEN) {
- 		rp->rtort_mbtest = 0;
- 		return true;
- 	}
-@@ -1015,7 +1016,8 @@ rcu_torture_writer(void *arg)
- 			if (i > RCU_TORTURE_PIPE_LEN)
- 				i = RCU_TORTURE_PIPE_LEN;
- 			atomic_inc(&rcu_torture_wcount[i]);
--			old_rp->rtort_pipe_count++;
-+			WRITE_ONCE(old_rp->rtort_pipe_count,
-+				   old_rp->rtort_pipe_count + 1);
- 			switch (synctype[torture_random(&rand) % nsynctypes]) {
- 			case RTWS_DEF_FREE:
- 				rcu_torture_writer_state = RTWS_DEF_FREE;
-@@ -1291,7 +1293,7 @@ static bool rcu_torture_one_read(struct torture_random_state *trsp)
- 		atomic_inc(&n_rcu_torture_mberror);
- 	rtrsp = rcutorture_loop_extend(&readstate, trsp, rtrsp);
- 	preempt_disable();
--	pipe_count = p->rtort_pipe_count;
-+	pipe_count = READ_ONCE(p->rtort_pipe_count);
- 	if (pipe_count > RCU_TORTURE_PIPE_LEN) {
- 		/* Should not happen, but... */
- 		pipe_count = RCU_TORTURE_PIPE_LEN;
++T=/tmp/kvm-recheck.sh.$$
++trap 'rm -f $T' 0 2
++
+ PATH=`pwd`/tools/testing/selftests/rcutorture/bin:$PATH; export PATH
+ . functions.sh
+ for rd in "$@"
+@@ -68,4 +71,16 @@ do
+ 		fi
+ 	done
+ done
+-EDITOR=echo kvm-find-errors.sh "${@: -1}" > /dev/null 2>&1
++EDITOR=echo kvm-find-errors.sh "${@: -1}" > $T 2>&1
++ret=$?
++builderrors="`tr ' ' '\012' < $T | grep -c '/Make.out.diags'`"
++if test "$builderrors" -gt 0
++then
++	echo $builderrors runs with build errors.
++fi
++runerrors="`tr ' ' '\012' < $T | grep -c '/console.log.diags'`"
++if test "$runerrors" -gt 0
++then
++	echo $runerrors runs with runtime errors.
++fi
++exit $ret
