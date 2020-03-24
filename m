@@ -2,34 +2,33 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CD74819093E
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 10:21:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C09EF190967
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 10:21:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727374AbgCXJQg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 24 Mar 2020 05:16:36 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:43895 "EHLO
+        id S1727238AbgCXJUJ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 24 Mar 2020 05:20:09 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:43913 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727119AbgCXJQg (ORCPT
+        with ESMTP id S1727416AbgCXJQi (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 24 Mar 2020 05:16:36 -0400
+        Tue, 24 Mar 2020 05:16:38 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jGffm-0007wX-37; Tue, 24 Mar 2020 10:16:34 +0100
+        id 1jGffo-0007wb-Gt; Tue, 24 Mar 2020 10:16:36 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A16D41C0475;
-        Tue, 24 Mar 2020 10:16:30 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 2801C1C0470;
+        Tue, 24 Mar 2020 10:16:31 +0100 (CET)
 Date:   Tue, 24 Mar 2020 09:16:30 -0000
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcutorture: Set KCSAN Kconfig options to detect more
- data races
+Subject: [tip: core/rcu] rcutorture: Manually clean up after rcu_barrier() failure
 Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158504139035.28353.7411727478339304632.tip-bot2@tip-bot2>
+Message-ID: <158504139074.28353.12661964318347740564.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -45,33 +44,57 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     a144935ceaed277c3e640b85f4cff89d7cce4b8f
-Gitweb:        https://git.kernel.org/tip/a144935ceaed277c3e640b85f4cff89d7cce4b8f
+Commit-ID:     9470a18fabd056e67ee12059dab04faf6e1f253c
+Gitweb:        https://git.kernel.org/tip/9470a18fabd056e67ee12059dab04faf6e1f253c
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Thu, 06 Feb 2020 05:20:18 -08:00
+AuthorDate:    Wed, 05 Feb 2020 12:54:34 -08:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Thu, 20 Feb 2020 16:03:31 -08:00
 
-rcutorture: Set KCSAN Kconfig options to detect more data races
+rcutorture: Manually clean up after rcu_barrier() failure
 
-This commit enables the KCSAN Kconfig options that (1) detect data
-races between reads and writes even when the writes do not change the
-variable's value and (2) detect data races involving plain C-language
-writes.  These changes only affect scripted rcutorture runs and can be
-overridden using the kvm.sh --kconfig argument.
+Currently, if rcu_barrier() returns too soon, the test waits 100ms and
+then does another instance of the test.  However, if rcu_barrier() were
+to have waited for more than 100ms too short a time, this could cause
+the test's rcu_head structures to be reused while they were still on
+RCU's callback lists.  This can result in knock-on errors that obscure
+the original rcu_barrier() test failure.
+
+This commit therefore adds code that attempts to wait until all of
+the test's callbacks have been invoked.  Of course, if RCU completely
+lost track of the corresponding rcu_head structures, this wait could be
+forever.  This commit therefore also complains if this attempted recovery
+takes more than one second, and it also gives up when the test ends.
 
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- tools/testing/selftests/rcutorture/configs/rcu/CFcommon | 2 ++
- 1 file changed, 2 insertions(+)
+ kernel/rcu/rcutorture.c | 16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/rcutorture/configs/rcu/CFcommon b/tools/testing/selftests/rcutorture/configs/rcu/CFcommon
-index e19a444..0e92d85 100644
---- a/tools/testing/selftests/rcutorture/configs/rcu/CFcommon
-+++ b/tools/testing/selftests/rcutorture/configs/rcu/CFcommon
-@@ -3,3 +3,5 @@ CONFIG_PRINTK_TIME=y
- CONFIG_HYPERVISOR_GUEST=y
- CONFIG_PARAVIRT=y
- CONFIG_KVM_GUEST=y
-+CONFIG_KCSAN_ASSUME_PLAIN_WRITES_ATOMIC=n
-+CONFIG_KCSAN_REPORT_VALUE_CHANGE_ONLY=n
+diff --git a/kernel/rcu/rcutorture.c b/kernel/rcu/rcutorture.c
+index f82515c..5453bd5 100644
+--- a/kernel/rcu/rcutorture.c
++++ b/kernel/rcu/rcutorture.c
+@@ -2124,7 +2124,21 @@ static int rcu_torture_barrier(void *arg)
+ 			pr_err("barrier_cbs_invoked = %d, n_barrier_cbs = %d\n",
+ 			       atomic_read(&barrier_cbs_invoked),
+ 			       n_barrier_cbs);
+-			WARN_ON_ONCE(1);
++			WARN_ON(1);
++			// Wait manually for the remaining callbacks
++			i = 0;
++			do {
++				if (WARN_ON(i++ > HZ))
++					i = INT_MIN;
++				schedule_timeout_interruptible(1);
++				cur_ops->cb_barrier();
++			} while (atomic_read(&barrier_cbs_invoked) !=
++				 n_barrier_cbs &&
++				 !torture_must_stop());
++			smp_mb(); // Can't trust ordering if broken.
++			if (!torture_must_stop())
++				pr_err("Recovered: barrier_cbs_invoked = %d\n",
++				       atomic_read(&barrier_cbs_invoked));
+ 		} else {
+ 			n_barrier_successes++;
+ 		}
