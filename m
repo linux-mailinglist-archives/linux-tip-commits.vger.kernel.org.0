@@ -2,35 +2,35 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E8A4D1908BF
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 10:13:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D08D1908BB
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 10:13:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727071AbgCXJML (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 24 Mar 2020 05:12:11 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:43757 "EHLO
+        id S1727161AbgCXJL4 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 24 Mar 2020 05:11:56 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:43788 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726166AbgCXJLE (ORCPT
+        with ESMTP id S1727262AbgCXJLJ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 24 Mar 2020 05:11:04 -0400
+        Tue, 24 Mar 2020 05:11:09 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jGfaP-0007Wf-89; Tue, 24 Mar 2020 10:11:01 +0100
+        id 1jGfaU-0007X1-4B; Tue, 24 Mar 2020 10:11:06 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 343651C0470;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 9B8281C0493;
         Tue, 24 Mar 2020 10:10:58 +0100 (CET)
-Date:   Tue, 24 Mar 2020 09:10:57 -0000
+Date:   Tue, 24 Mar 2020 09:10:58 -0000
 From:   "tip-bot2 for Marco Elver" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/kcsan] kcsan: Clean up the main KCSAN Kconfig option
+Subject: [tip: locking/kcsan] kcsan: Clarify Kconfig option KCSAN_IGNORE_ATOMICS
 Cc:     Marco Elver <elver@google.com>,
         "Paul E. McKenney" <paulmck@kernel.org>,
         Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158504105785.28353.9595072129299439556.tip-bot2@tip-bot2>
+Message-ID: <158504105829.28353.13995420302647105677.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -46,51 +46,48 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/kcsan branch of tip:
 
-Commit-ID:     8cfbb04fae75260eae07ab8c74c1dcd44294d739
-Gitweb:        https://git.kernel.org/tip/8cfbb04fae75260eae07ab8c74c1dcd44294d739
+Commit-ID:     a249a73231e2e30944b948c5351025e5ff65f6d1
+Gitweb:        https://git.kernel.org/tip/a249a73231e2e30944b948c5351025e5ff65f6d1
 Author:        Marco Elver <elver@google.com>
-AuthorDate:    Tue, 04 Feb 2020 18:21:12 +01:00
+AuthorDate:    Tue, 04 Feb 2020 18:21:11 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sat, 21 Mar 2020 09:42:26 +01:00
+CommitterDate: Sat, 21 Mar 2020 09:42:21 +01:00
 
-kcsan: Clean up the main KCSAN Kconfig option
+kcsan: Clarify Kconfig option KCSAN_IGNORE_ATOMICS
 
-This patch cleans up the rules of the 'KCSAN' Kconfig option by:
-
-  1. implicitly selecting 'STACKTRACE' instead of depending on it;
-  2. depending on DEBUG_KERNEL, to avoid accidentally turning KCSAN on if
-     the kernel is not meant to be a debug kernel;
-  3. updating the short and long summaries.
+Clarify difference between options KCSAN_IGNORE_ATOMICS and
+KCSAN_ASSUME_PLAIN_WRITES_ATOMIC in help text.
 
 Signed-off-by: Marco Elver <elver@google.com>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- lib/Kconfig.kcsan | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ lib/Kconfig.kcsan | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
 diff --git a/lib/Kconfig.kcsan b/lib/Kconfig.kcsan
-index 020ac63..9785bbf 100644
+index 6612685..020ac63 100644
 --- a/lib/Kconfig.kcsan
 +++ b/lib/Kconfig.kcsan
-@@ -4,12 +4,15 @@ config HAVE_ARCH_KCSAN
- 	bool
- 
- menuconfig KCSAN
--	bool "KCSAN: watchpoint-based dynamic data race detector"
--	depends on HAVE_ARCH_KCSAN && !KASAN && STACKTRACE
-+	bool "KCSAN: dynamic data race detector"
-+	depends on HAVE_ARCH_KCSAN && DEBUG_KERNEL && !KASAN
-+	select STACKTRACE
+@@ -132,8 +132,18 @@ config KCSAN_ASSUME_PLAIN_WRITES_ATOMIC
+ config KCSAN_IGNORE_ATOMICS
+ 	bool "Do not instrument marked atomic accesses"
  	help
--	  Kernel Concurrency Sanitizer is a dynamic data race detector, which
--	  uses a watchpoint-based sampling approach to detect races. See
--	  <file:Documentation/dev-tools/kcsan.rst> for more details.
-+	  The Kernel Concurrency Sanitizer (KCSAN) is a dynamic data race
-+	  detector, which relies on compile-time instrumentation, and uses a
-+	  watchpoint-based sampling approach to detect data races.
+-	  If enabled, never instruments marked atomic accesses. This results in
+-	  not reporting data races where one access is atomic and the other is
+-	  a plain access.
++	  Never instrument marked atomic accesses. This option can be used for
++	  additional filtering. Conflicting marked atomic reads and plain
++	  writes will never be reported as a data race, however, will cause
++	  plain reads and marked writes to result in "unknown origin" reports.
++	  If combined with CONFIG_KCSAN_REPORT_RACE_UNKNOWN_ORIGIN=n, data
++	  races where at least one access is marked atomic will never be
++	  reported.
 +
-+	  See <file:Documentation/dev-tools/kcsan.rst> for more details.
++	  Similar to KCSAN_ASSUME_PLAIN_WRITES_ATOMIC, but including unaligned
++	  accesses, conflicting marked atomic reads and plain writes will not
++	  be reported as data races; however, unlike that option, data races
++	  due to two conflicting plain writes will be reported (aligned and
++	  unaligned, if CONFIG_KCSAN_ASSUME_PLAIN_WRITES_ATOMIC=n).
  
- if KCSAN
- 
+ endif # KCSAN
