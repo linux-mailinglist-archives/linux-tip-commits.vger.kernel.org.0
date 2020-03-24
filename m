@@ -2,35 +2,35 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D0B11908BA
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 10:13:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DB3091908A1
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 10:12:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727600AbgCXJL4 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 24 Mar 2020 05:11:56 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:43783 "EHLO
+        id S1727317AbgCXJLH (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 24 Mar 2020 05:11:07 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:43764 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726962AbgCXJLJ (ORCPT
+        with ESMTP id S1727286AbgCXJLG (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 24 Mar 2020 05:11:09 -0400
+        Tue, 24 Mar 2020 05:11:06 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jGfaS-0007Xx-QA; Tue, 24 Mar 2020 10:11:05 +0100
+        id 1jGfaR-0007Xl-9g; Tue, 24 Mar 2020 10:11:03 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D9CA11C0481;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 7D9C81C0475;
         Tue, 24 Mar 2020 10:10:59 +0100 (CET)
 Date:   Tue, 24 Mar 2020 09:10:59 -0000
-From:   "tip-bot2 for Marco Elver" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/kcsan] copy_to_user, copy_from_user: Use generic instrumented.h
-Cc:     Arnd Bergmann <arnd@arndb.de>, Marco Elver <elver@google.com>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
+Subject: [tip: locking/kcsan] kcsan: Add docbook header for data_race()
+Cc:     "Paul E. McKenney" <paulmck@kernel.org>,
+        Ingo Molnar <mingo@kernel.org>, Marco Elver <elver@google.com>,
+        Dmitry Vyukov <dvyukov@google.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158504105957.28353.10836597651287975970.tip-bot2@tip-bot2>
+Message-ID: <158504105916.28353.16249742968546516818.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -46,126 +46,46 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/kcsan branch of tip:
 
-Commit-ID:     76d6f06c36a3b5cc402eeeb709613cb211fdaa8f
-Gitweb:        https://git.kernel.org/tip/76d6f06c36a3b5cc402eeeb709613cb211fdaa8f
-Author:        Marco Elver <elver@google.com>
-AuthorDate:    Tue, 21 Jan 2020 17:05:12 +01:00
+Commit-ID:     7ad900d35b49af5a05f595d2274c32e69e01b055
+Gitweb:        https://git.kernel.org/tip/7ad900d35b49af5a05f595d2274c32e69e01b055
+Author:        Paul E. McKenney <paulmck@kernel.org>
+AuthorDate:    Mon, 03 Feb 2020 14:42:18 -08:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sat, 21 Mar 2020 09:41:59 +01:00
+CommitterDate: Sat, 21 Mar 2020 09:42:04 +01:00
 
-copy_to_user, copy_from_user: Use generic instrumented.h
+kcsan: Add docbook header for data_race()
 
-This replaces the KASAN instrumentation with generic instrumentation,
-implicitly adding KCSAN instrumentation support.
-
-For KASAN no functional change is intended.
-
-Suggested-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Marco Elver <elver@google.com>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Marco Elver <elver@google.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
 ---
- include/linux/uaccess.h | 14 +++++++-------
- lib/usercopy.c          |  7 ++++---
- 2 files changed, 11 insertions(+), 10 deletions(-)
+ include/linux/compiler.h | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/include/linux/uaccess.h b/include/linux/uaccess.h
-index 67f0160..8a215c5 100644
---- a/include/linux/uaccess.h
-+++ b/include/linux/uaccess.h
-@@ -2,9 +2,9 @@
- #ifndef __LINUX_UACCESS_H__
- #define __LINUX_UACCESS_H__
+diff --git a/include/linux/compiler.h b/include/linux/compiler.h
+index 8c0beb1..c1bdf37 100644
+--- a/include/linux/compiler.h
++++ b/include/linux/compiler.h
+@@ -315,13 +315,15 @@ unsigned long read_word_at_a_time(const void *addr)
  
-+#include <linux/instrumented.h>
- #include <linux/sched.h>
- #include <linux/thread_info.h>
--#include <linux/kasan-checks.h>
+ #include <linux/kcsan.h>
  
- #define uaccess_kernel() segment_eq(get_fs(), KERNEL_DS)
- 
-@@ -58,7 +58,7 @@
- static __always_inline __must_check unsigned long
- __copy_from_user_inatomic(void *to, const void __user *from, unsigned long n)
- {
--	kasan_check_write(to, n);
-+	instrument_copy_from_user(to, from, n);
- 	check_object_size(to, n, false);
- 	return raw_copy_from_user(to, from, n);
- }
-@@ -67,7 +67,7 @@ static __always_inline __must_check unsigned long
- __copy_from_user(void *to, const void __user *from, unsigned long n)
- {
- 	might_fault();
--	kasan_check_write(to, n);
-+	instrument_copy_from_user(to, from, n);
- 	check_object_size(to, n, false);
- 	return raw_copy_from_user(to, from, n);
- }
-@@ -88,7 +88,7 @@ __copy_from_user(void *to, const void __user *from, unsigned long n)
- static __always_inline __must_check unsigned long
- __copy_to_user_inatomic(void __user *to, const void *from, unsigned long n)
- {
--	kasan_check_read(from, n);
-+	instrument_copy_to_user(to, from, n);
- 	check_object_size(from, n, true);
- 	return raw_copy_to_user(to, from, n);
- }
-@@ -97,7 +97,7 @@ static __always_inline __must_check unsigned long
- __copy_to_user(void __user *to, const void *from, unsigned long n)
- {
- 	might_fault();
--	kasan_check_read(from, n);
-+	instrument_copy_to_user(to, from, n);
- 	check_object_size(from, n, true);
- 	return raw_copy_to_user(to, from, n);
- }
-@@ -109,7 +109,7 @@ _copy_from_user(void *to, const void __user *from, unsigned long n)
- 	unsigned long res = n;
- 	might_fault();
- 	if (likely(access_ok(from, n))) {
--		kasan_check_write(to, n);
-+		instrument_copy_from_user(to, from, n);
- 		res = raw_copy_from_user(to, from, n);
- 	}
- 	if (unlikely(res))
-@@ -127,7 +127,7 @@ _copy_to_user(void __user *to, const void *from, unsigned long n)
- {
- 	might_fault();
- 	if (access_ok(to, n)) {
--		kasan_check_read(from, n);
-+		instrument_copy_to_user(to, from, n);
- 		n = raw_copy_to_user(to, from, n);
- 	}
- 	return n;
-diff --git a/lib/usercopy.c b/lib/usercopy.c
-index cbb4d9e..4bb1c5e 100644
---- a/lib/usercopy.c
-+++ b/lib/usercopy.c
-@@ -1,6 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0
--#include <linux/uaccess.h>
- #include <linux/bitops.h>
-+#include <linux/instrumented.h>
-+#include <linux/uaccess.h>
- 
- /* out-of-line parts */
- 
-@@ -10,7 +11,7 @@ unsigned long _copy_from_user(void *to, const void __user *from, unsigned long n
- 	unsigned long res = n;
- 	might_fault();
- 	if (likely(access_ok(from, n))) {
--		kasan_check_write(to, n);
-+		instrument_copy_from_user(to, from, n);
- 		res = raw_copy_from_user(to, from, n);
- 	}
- 	if (unlikely(res))
-@@ -25,7 +26,7 @@ unsigned long _copy_to_user(void __user *to, const void *from, unsigned long n)
- {
- 	might_fault();
- 	if (likely(access_ok(to, n))) {
--		kasan_check_read(from, n);
-+		instrument_copy_to_user(to, from, n);
- 		n = raw_copy_to_user(to, from, n);
- 	}
- 	return n;
+-/*
+- * data_race(): macro to document that accesses in an expression may conflict with
+- * other concurrent accesses resulting in data races, but the resulting
+- * behaviour is deemed safe regardless.
++/**
++ * data_race - mark an expression as containing intentional data races
++ *
++ * This data_race() macro is useful for situations in which data races
++ * should be forgiven.  One example is diagnostic code that accesses
++ * shared variables but is not a part of the core synchronization design.
+  *
+- * This macro *does not* affect normal code generation, but is a hint to tooling
+- * that data races here should be ignored.
++ * This macro *does not* affect normal code generation, but is a hint
++ * to tooling that data races here are to be ignored.
+  */
+ #define data_race(expr)                                                        \
+ 	({                                                                     \
