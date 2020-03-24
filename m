@@ -2,33 +2,33 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ACDD61908FA
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 10:18:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 37143190909
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 10:18:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727846AbgCXJRO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 24 Mar 2020 05:17:14 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:44123 "EHLO
+        id S1727066AbgCXJRj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 24 Mar 2020 05:17:39 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:44147 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727820AbgCXJRO (ORCPT
+        with ESMTP id S1727877AbgCXJRS (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 24 Mar 2020 05:17:14 -0400
+        Tue, 24 Mar 2020 05:17:18 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jGfgN-0008Jl-Nc; Tue, 24 Mar 2020 10:17:11 +0100
+        id 1jGfgR-0008JG-IF; Tue, 24 Mar 2020 10:17:15 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 3C8FE1C0494;
-        Tue, 24 Mar 2020 10:16:56 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 6695C1C04D0;
+        Tue, 24 Mar 2020 10:16:55 +0100 (CET)
 Date:   Tue, 24 Mar 2020 09:16:55 -0000
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcu: Fix exp_funnel_lock()/rcu_exp_wait_wake() datarace
+Subject: [tip: core/rcu] rcu: Add WRITE_ONCE() to rcu_node ->qsmask update
 Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158504141592.28353.18207853706999408322.tip-bot2@tip-bot2>
+Message-ID: <158504141506.28353.4429655818390185733.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -44,37 +44,37 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     24bb9eccf7ff335c16c2970ac7cd5c32a92821a6
-Gitweb:        https://git.kernel.org/tip/24bb9eccf7ff335c16c2970ac7cd5c32a92821a6
+Commit-ID:     7672d647ddae37d2ea267159950bcc311e962434
+Gitweb:        https://git.kernel.org/tip/7672d647ddae37d2ea267159950bcc311e962434
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Sun, 22 Dec 2019 19:55:50 -08:00
+AuthorDate:    Fri, 03 Jan 2020 11:38:51 -08:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Thu, 20 Feb 2020 15:58:21 -08:00
+CommitterDate: Thu, 20 Feb 2020 15:58:22 -08:00
 
-rcu: Fix exp_funnel_lock()/rcu_exp_wait_wake() datarace
+rcu: Add WRITE_ONCE() to rcu_node ->qsmask update
 
-The rcu_node structure's ->exp_seq_rq field is accessed locklessly, so
-updates must use WRITE_ONCE().  This commit therefore adds the needed
-WRITE_ONCE() invocation where it was missed.
+The rcu_node structure's ->qsmask field is read locklessly, so this
+commit adds the WRITE_ONCE() to an update in order to provide proper
+documentation and READ_ONCE()/WRITE_ONCE() pairing.
 
 This data race was reported by KCSAN.  Not appropriate for backporting
 due to failure being unlikely.
 
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/rcu/tree_exp.h | 2 +-
+ kernel/rcu/tree.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/rcu/tree_exp.h b/kernel/rcu/tree_exp.h
-index dcbd757..d7e0484 100644
---- a/kernel/rcu/tree_exp.h
-+++ b/kernel/rcu/tree_exp.h
-@@ -589,7 +589,7 @@ static void rcu_exp_wait_wake(unsigned long s)
- 			spin_lock(&rnp->exp_lock);
- 			/* Recheck, avoid hang in case someone just arrived. */
- 			if (ULONG_CMP_LT(rnp->exp_seq_rq, s))
--				rnp->exp_seq_rq = s;
-+				WRITE_ONCE(rnp->exp_seq_rq, s);
- 			spin_unlock(&rnp->exp_lock);
- 		}
- 		smp_mb(); /* All above changes before wakeup. */
+diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
+index d91c915..bb57c24 100644
+--- a/kernel/rcu/tree.c
++++ b/kernel/rcu/tree.c
+@@ -1881,7 +1881,7 @@ static void rcu_report_qs_rnp(unsigned long mask, struct rcu_node *rnp,
+ 		WARN_ON_ONCE(oldmask); /* Any child must be all zeroed! */
+ 		WARN_ON_ONCE(!rcu_is_leaf_node(rnp) &&
+ 			     rcu_preempt_blocked_readers_cgp(rnp));
+-		rnp->qsmask &= ~mask;
++		WRITE_ONCE(rnp->qsmask, rnp->qsmask & ~mask);
+ 		trace_rcu_quiescent_state_report(rcu_state.name, rnp->gp_seq,
+ 						 mask, rnp->qsmask, rnp->level,
+ 						 rnp->grplo, rnp->grphi,
