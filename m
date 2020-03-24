@@ -2,328 +2,119 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B21FE1912F7
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 15:25:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 25B8C191859
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 19:00:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728104AbgCXOYN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 24 Mar 2020 10:24:13 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:45068 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727667AbgCXOYC (ORCPT
+        id S1727553AbgCXR76 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 24 Mar 2020 13:59:58 -0400
+Received: from foss.arm.com ([217.140.110.172]:39104 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727509AbgCXR76 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 24 Mar 2020 10:24:02 -0400
-Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tip-bot2@linutronix.de>)
-        id 1jGkTE-0006zA-OC; Tue, 24 Mar 2020 15:23:56 +0100
-Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 645371C0475;
-        Tue, 24 Mar 2020 15:23:56 +0100 (CET)
-Date:   Tue, 24 Mar 2020 14:23:56 -0000
-From:   "tip-bot2 for Alexey Makhalov" <tip-bot2@linutronix.de>
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/vmware] x86/vmware: Add steal time clock support for VMware guests
-Cc:     Alexey Makhalov <amakhalov@vmware.com>,
-        Tomer Zeltzer <tomerr90@gmail.com>,
-        Borislav Petkov <bp@suse.de>,
-        Thomas Hellstrom <thellstrom@vmware.com>,
-        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200323195707.31242-4-amakhalov@vmware.com>
-References: <20200323195707.31242-4-amakhalov@vmware.com>
+        Tue, 24 Mar 2020 13:59:58 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 328D031B;
+        Tue, 24 Mar 2020 10:59:57 -0700 (PDT)
+Received: from localhost (unknown [10.1.198.53])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C79FA3F71F;
+        Tue, 24 Mar 2020 10:59:56 -0700 (PDT)
+Date:   Tue, 24 Mar 2020 17:59:55 +0000
+From:   Ionela Voinescu <ionela.voinescu@arm.com>
+To:     linux-kernel@vger.kernel.org,
+        Saravana Kannan <saravanak@google.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc:     linux-tip-commits@vger.kernel.org, x86 <x86@kernel.org>,
+        liviu.dudau@arm.com, sudeep.holla@arm.com,
+        lorenzo.pieralisi@arm.com
+Subject: Re: [tip: timers/core] clocksource/drivers/timer-probe: Avoid
+ creating dead devices
+Message-ID: <20200324175955.GA16972@arm.com>
+References: <20200111052125.238212-1-saravanak@google.com>
+ <158460766637.28353.11325960928759668587.tip-bot2@tip-bot2>
 MIME-Version: 1.0
-Message-ID: <158505983605.28353.17805135011922181422.tip-bot2@tip-bot2>
-X-Mailer: tip-git-log-daemon
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <158460766637.28353.11325960928759668587.tip-bot2@tip-bot2>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/vmware branch of tip:
+Hi guys,
 
-Commit-ID:     ab02bb3f55f58e7608a88188000c3353398ebe3b
-Gitweb:        https://git.kernel.org/tip/ab02bb3f55f58e7608a88188000c3353398ebe3b
-Author:        Alexey Makhalov <amakhalov@vmware.com>
-AuthorDate:    Mon, 23 Mar 2020 19:57:05 
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 24 Mar 2020 10:04:51 +01:00
+On Thursday 19 Mar 2020 at 08:47:46 (-0000), tip-bot2 for Saravana Kannan wrote:
+> The following commit has been merged into the timers/core branch of tip:
+> 
+> Commit-ID:     4f41fe386a94639cd9a1831298d4f85db5662f1e
+> Gitweb:        https://git.kernel.org/tip/4f41fe386a94639cd9a1831298d4f85db5662f1e
+> Author:        Saravana Kannan <saravanak@google.com>
+> AuthorDate:    Fri, 10 Jan 2020 21:21:25 -08:00
+> Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
+> CommitterDate: Tue, 17 Mar 2020 13:10:07 +01:00
+> 
+> clocksource/drivers/timer-probe: Avoid creating dead devices
+> 
+> Timer initialization is done during early boot way before the driver
+> core starts processing devices and drivers. Timers initialized during
+> this early boot period don't really need or use a struct device.
+> 
+> However, for timers represented as device tree nodes, the struct devices
+> are still created and sit around unused and wasting memory. This change
+> avoid this by marking the device tree nodes as "populated" if the
+> corresponding timer is successfully initialized.
+> 
+> Signed-off-by: Saravana Kannan <saravanak@google.com>
+> Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+> Link: https://lore.kernel.org/r/20200111052125.238212-1-saravanak@google.com
+> ---
+>  drivers/clocksource/timer-probe.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/clocksource/timer-probe.c b/drivers/clocksource/timer-probe.c
+> index ee9574d..a10f28d 100644
+> --- a/drivers/clocksource/timer-probe.c
+> +++ b/drivers/clocksource/timer-probe.c
+> @@ -27,8 +27,10 @@ void __init timer_probe(void)
+>  
+>  		init_func_ret = match->data;
+>  
+> +		of_node_set_flag(np, OF_POPULATED);
+>  		ret = init_func_ret(np);
+>  		if (ret) {
+> +			of_node_clear_flag(np, OF_POPULATED);
+>  			if (ret != -EPROBE_DEFER)
+>  				pr_err("Failed to initialize '%pOF': %d\n", np,
+>  				       ret);
+> 
 
-x86/vmware: Add steal time clock support for VMware guests
+This patch is creating problems on some vexpress platforms - ones that
+are using CLKSRC_VERSATILE (drivers/clocksource/timer-versatile.c).
+I noticed issues on TC2 and FVPs (fixed virtual platforms) starting with
+next-20200318 and still reproducible with next-20200323.
 
-Steal time is the amount of CPU time needed by a guest virtual machine
-that is not provided by the host. Steal time occurs when the host
-allocates this CPU time elsewhere, for example, to another guest.
+It seems the issue this patch causes on TC2 and FVP is related to the
+vexpress-sysreg node being used early for sched_clock_init
+(timer_versatile.c: versatile_sched_clock_init). At this point (at
+time_init) the node will be marked as OF_POPULATED, which flags that a
+device is already created for it, but it is not, in this case.
 
-Steal time can be enabled by adding the VM configuration option
-stealclock.enable = "TRUE". It is supported by VMs that run hardware
-version 13 or newer.
+Later at sysreg_init (vexpress-sysreg.c) a device will fail to be created
+for it, as one already exists. This will result in a failure to create a
+bridge and a system controller for a bunch of devices (mostly clocks and
+regulators).
 
-Introduce the VMware steal time infrastructure. The high level code
-(such as enabling, disabling and hot-plug routines) was derived from KVM.
+I think on the FVP it does not cause many issues as clocks are fixed and
+regulator settings are probably nops so it boots fine and throws only
+some warnings. On TC2 on the other hand it fails to boot and it hangs at
+starting the kernel.
 
- [ Tomer: use READ_ONCE macros and 32bit guests support. ]
- [ bp: Massage. ]
+In my opinion the idea of the patch is not bad, but I'm not an expert on
+this so the most I can offer for now is the basic understanding of the
+issue. I've Cc-ed a few folks to potentially suggest alternatives/fixes.
 
-Co-developed-by: Tomer Zeltzer <tomerr90@gmail.com>
-Signed-off-by: Alexey Makhalov <amakhalov@vmware.com>
-Signed-off-by: Tomer Zeltzer <tomerr90@gmail.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Thomas Hellstrom <thellstrom@vmware.com>
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20200323195707.31242-4-amakhalov@vmware.com
----
- arch/x86/kernel/cpu/vmware.c | 197 ++++++++++++++++++++++++++++++++++-
- 1 file changed, 197 insertions(+)
+For now, reverting this patch solves the problems on both platforms.
+I tested this on next-20200318 which introduced the problem.
 
-diff --git a/arch/x86/kernel/cpu/vmware.c b/arch/x86/kernel/cpu/vmware.c
-index efb22fa..cc60461 100644
---- a/arch/x86/kernel/cpu/vmware.c
-+++ b/arch/x86/kernel/cpu/vmware.c
-@@ -25,6 +25,8 @@
- #include <linux/init.h>
- #include <linux/export.h>
- #include <linux/clocksource.h>
-+#include <linux/cpu.h>
-+#include <linux/reboot.h>
- #include <asm/div64.h>
- #include <asm/x86_init.h>
- #include <asm/hypervisor.h>
-@@ -47,6 +49,11 @@
- #define VMWARE_CMD_GETVCPU_INFO  68
- #define VMWARE_CMD_LEGACY_X2APIC  3
- #define VMWARE_CMD_VCPU_RESERVED 31
-+#define VMWARE_CMD_STEALCLOCK    91
-+
-+#define STEALCLOCK_NOT_AVAILABLE (-1)
-+#define STEALCLOCK_DISABLED        0
-+#define STEALCLOCK_ENABLED         1
- 
- #define VMWARE_PORT(cmd, eax, ebx, ecx, edx)				\
- 	__asm__("inl (%%dx), %%eax" :					\
-@@ -86,6 +93,18 @@
- 	}							\
- 	} while (0)
- 
-+struct vmware_steal_time {
-+	union {
-+		uint64_t clock;	/* stolen time counter in units of vtsc */
-+		struct {
-+			/* only for little-endian */
-+			uint32_t clock_low;
-+			uint32_t clock_high;
-+		};
-+	};
-+	uint64_t reserved[7];
-+};
-+
- static unsigned long vmware_tsc_khz __ro_after_init;
- static u8 vmware_hypercall_mode     __ro_after_init;
- 
-@@ -104,6 +123,8 @@ static unsigned long vmware_get_tsc_khz(void)
- #ifdef CONFIG_PARAVIRT
- static struct cyc2ns_data vmware_cyc2ns __ro_after_init;
- static int vmw_sched_clock __initdata = 1;
-+static DEFINE_PER_CPU_DECRYPTED(struct vmware_steal_time, vmw_steal_time) __aligned(64);
-+static bool has_steal_clock;
- 
- static __init int setup_vmw_sched_clock(char *s)
- {
-@@ -135,6 +156,163 @@ static void __init vmware_cyc2ns_setup(void)
- 	pr_info("using clock offset of %llu ns\n", d->cyc2ns_offset);
- }
- 
-+static int vmware_cmd_stealclock(uint32_t arg1, uint32_t arg2)
-+{
-+	uint32_t result, info;
-+
-+	asm volatile (VMWARE_HYPERCALL :
-+		"=a"(result),
-+		"=c"(info) :
-+		"a"(VMWARE_HYPERVISOR_MAGIC),
-+		"b"(0),
-+		"c"(VMWARE_CMD_STEALCLOCK),
-+		"d"(0),
-+		"S"(arg1),
-+		"D"(arg2) :
-+		"memory");
-+	return result;
-+}
-+
-+static bool stealclock_enable(phys_addr_t pa)
-+{
-+	return vmware_cmd_stealclock(upper_32_bits(pa),
-+				     lower_32_bits(pa)) == STEALCLOCK_ENABLED;
-+}
-+
-+static int __stealclock_disable(void)
-+{
-+	return vmware_cmd_stealclock(0, 1);
-+}
-+
-+static void stealclock_disable(void)
-+{
-+	__stealclock_disable();
-+}
-+
-+static bool vmware_is_stealclock_available(void)
-+{
-+	return __stealclock_disable() != STEALCLOCK_NOT_AVAILABLE;
-+}
-+
-+/**
-+ * vmware_steal_clock() - read the per-cpu steal clock
-+ * @cpu:            the cpu number whose steal clock we want to read
-+ *
-+ * The function reads the steal clock if we are on a 64-bit system, otherwise
-+ * reads it in parts, checking that the high part didn't change in the
-+ * meantime.
-+ *
-+ * Return:
-+ *      The steal clock reading in ns.
-+ */
-+static uint64_t vmware_steal_clock(int cpu)
-+{
-+	struct vmware_steal_time *steal = &per_cpu(vmw_steal_time, cpu);
-+	uint64_t clock;
-+
-+	if (IS_ENABLED(CONFIG_64BIT))
-+		clock = READ_ONCE(steal->clock);
-+	else {
-+		uint32_t initial_high, low, high;
-+
-+		do {
-+			initial_high = READ_ONCE(steal->clock_high);
-+			/* Do not reorder initial_high and high readings */
-+			virt_rmb();
-+			low = READ_ONCE(steal->clock_low);
-+			/* Keep low reading in between */
-+			virt_rmb();
-+			high = READ_ONCE(steal->clock_high);
-+		} while (initial_high != high);
-+
-+		clock = ((uint64_t)high << 32) | low;
-+	}
-+
-+	return mul_u64_u32_shr(clock, vmware_cyc2ns.cyc2ns_mul,
-+			     vmware_cyc2ns.cyc2ns_shift);
-+}
-+
-+static void vmware_register_steal_time(void)
-+{
-+	int cpu = smp_processor_id();
-+	struct vmware_steal_time *st = &per_cpu(vmw_steal_time, cpu);
-+
-+	if (!has_steal_clock)
-+		return;
-+
-+	if (!stealclock_enable(slow_virt_to_phys(st))) {
-+		has_steal_clock = false;
-+		return;
-+	}
-+
-+	pr_info("vmware-stealtime: cpu %d, pa %llx\n",
-+		cpu, (unsigned long long) slow_virt_to_phys(st));
-+}
-+
-+static void vmware_disable_steal_time(void)
-+{
-+	if (!has_steal_clock)
-+		return;
-+
-+	stealclock_disable();
-+}
-+
-+static void vmware_guest_cpu_init(void)
-+{
-+	if (has_steal_clock)
-+		vmware_register_steal_time();
-+}
-+
-+static void vmware_pv_guest_cpu_reboot(void *unused)
-+{
-+	vmware_disable_steal_time();
-+}
-+
-+static int vmware_pv_reboot_notify(struct notifier_block *nb,
-+				unsigned long code, void *unused)
-+{
-+	if (code == SYS_RESTART)
-+		on_each_cpu(vmware_pv_guest_cpu_reboot, NULL, 1);
-+	return NOTIFY_DONE;
-+}
-+
-+static struct notifier_block vmware_pv_reboot_nb = {
-+	.notifier_call = vmware_pv_reboot_notify,
-+};
-+
-+#ifdef CONFIG_SMP
-+static void __init vmware_smp_prepare_boot_cpu(void)
-+{
-+	vmware_guest_cpu_init();
-+	native_smp_prepare_boot_cpu();
-+}
-+
-+static int vmware_cpu_online(unsigned int cpu)
-+{
-+	local_irq_disable();
-+	vmware_guest_cpu_init();
-+	local_irq_enable();
-+	return 0;
-+}
-+
-+static int vmware_cpu_down_prepare(unsigned int cpu)
-+{
-+	local_irq_disable();
-+	vmware_disable_steal_time();
-+	local_irq_enable();
-+	return 0;
-+}
-+#endif
-+
-+static __init int activate_jump_labels(void)
-+{
-+	if (has_steal_clock)
-+		static_key_slow_inc(&paravirt_steal_enabled);
-+
-+	return 0;
-+}
-+arch_initcall(activate_jump_labels);
-+
- static void __init vmware_paravirt_ops_setup(void)
- {
- 	pv_info.name = "VMware hypervisor";
-@@ -148,6 +326,25 @@ static void __init vmware_paravirt_ops_setup(void)
- 	if (vmw_sched_clock)
- 		pv_ops.time.sched_clock = vmware_sched_clock;
- 
-+	if (vmware_is_stealclock_available()) {
-+		has_steal_clock = true;
-+		pv_ops.time.steal_clock = vmware_steal_clock;
-+
-+		/* We use reboot notifier only to disable steal clock */
-+		register_reboot_notifier(&vmware_pv_reboot_nb);
-+
-+#ifdef CONFIG_SMP
-+		smp_ops.smp_prepare_boot_cpu =
-+			vmware_smp_prepare_boot_cpu;
-+		if (cpuhp_setup_state_nocalls(CPUHP_AP_ONLINE_DYN,
-+					      "x86/vmware:online",
-+					      vmware_cpu_online,
-+					      vmware_cpu_down_prepare) < 0)
-+			pr_err("vmware_guest: Failed to install cpu hotplug callbacks\n");
-+#else
-+		vmware_guest_cpu_init();
-+#endif
-+	}
- }
- #else
- #define vmware_paravirt_ops_setup() do {} while (0)
+Hope it helps,
+Ionela.
