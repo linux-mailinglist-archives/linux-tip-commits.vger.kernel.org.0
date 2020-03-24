@@ -2,34 +2,34 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D3BD19096B
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 10:21:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5855719093D
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 10:21:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727066AbgCXJU2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 24 Mar 2020 05:20:28 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:43887 "EHLO
+        id S1727253AbgCXJQg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 24 Mar 2020 05:16:36 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:43892 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727298AbgCXJQe (ORCPT
+        with ESMTP id S1727323AbgCXJQg (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 24 Mar 2020 05:16:34 -0400
+        Tue, 24 Mar 2020 05:16:36 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jGffj-0007wr-TX; Tue, 24 Mar 2020 10:16:32 +0100
+        id 1jGffk-0007x8-Ls; Tue, 24 Mar 2020 10:16:32 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 857B01C0481;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id F30371C048C;
         Tue, 24 Mar 2020 10:16:31 +0100 (CET)
 Date:   Tue, 24 Mar 2020 09:16:31 -0000
-From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Joel Fernandes (Google)" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcutorture: Make rcu_torture_barrier_cbs() post from
- corresponding CPU
-Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
+Subject: [tip: core/rcu] rcuperf: Measure memory footprint during kfree_rcu() test
+Cc:     "Joel Fernandes (Google)" <joel@joelfernandes.org>,
+        "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158504139123.28353.17748031342974553550.tip-bot2@tip-bot2>
+Message-ID: <158504139161.28353.17549436590999126020.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -45,61 +45,76 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     50d4b62970e21e9573daf0e3c1138b4d1ebcca47
-Gitweb:        https://git.kernel.org/tip/50d4b62970e21e9573daf0e3c1138b4d1ebcca47
-Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Tue, 04 Feb 2020 15:00:56 -08:00
+Commit-ID:     12af660321263d7744d5d06b765c7b03fade3858
+Gitweb:        https://git.kernel.org/tip/12af660321263d7744d5d06b765c7b03fade3858
+Author:        Joel Fernandes (Google) <joel@joelfernandes.org>
+AuthorDate:    Thu, 19 Dec 2019 11:22:42 -05:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Thu, 20 Feb 2020 16:03:31 -08:00
 
-rcutorture: Make rcu_torture_barrier_cbs() post from corresponding CPU
+rcuperf: Measure memory footprint during kfree_rcu() test
 
-Currently, rcu_torture_barrier_cbs() posts callbacks from whatever CPU
-it is running on, which means that all these kthreads might well be
-posting from the same CPU, which would drastically reduce the effectiveness
-of this test.  This commit therefore uses IPIs to make the callbacks be
-posted from the corresponding CPU (given by local variable myid).
+During changes to kfree_rcu() code, we often check the amount of free
+memory.  As an alternative to checking this manually, this commit adds a
+measurement in the test itself.  It measures four times during the test
+for available memory, digitally filters these measurements to produce a
+running average with a weight of 0.5, and compares this digitally filtered
+value with the amount of available memory at the beginning of the test.
 
-If the IPI fails (which can happen if the target CPU is offline or does
-not exist at all), the callback is posted on whatever CPU is currently
-running.
+Something like the following is printed at the end of the run:
 
+Total time taken by all kfree'ers: 6369738407 ns, loops: 10000, batches: 764, memory footprint: 216MB
+
+Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/rcu/rcutorture.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ kernel/rcu/rcuperf.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/rcu/rcutorture.c b/kernel/rcu/rcutorture.c
-index 7e01e9a..f82515c 100644
---- a/kernel/rcu/rcutorture.c
-+++ b/kernel/rcu/rcutorture.c
-@@ -2053,6 +2053,14 @@ static void rcu_torture_barrier_cbf(struct rcu_head *rcu)
- 	atomic_inc(&barrier_cbs_invoked);
- }
+diff --git a/kernel/rcu/rcuperf.c b/kernel/rcu/rcuperf.c
+index da94b89..a4a8d09 100644
+--- a/kernel/rcu/rcuperf.c
++++ b/kernel/rcu/rcuperf.c
+@@ -12,6 +12,7 @@
+ #include <linux/types.h>
+ #include <linux/kernel.h>
+ #include <linux/init.h>
++#include <linux/mm.h>
+ #include <linux/module.h>
+ #include <linux/kthread.h>
+ #include <linux/err.h>
+@@ -611,6 +612,7 @@ kfree_perf_thread(void *arg)
+ 	long me = (long)arg;
+ 	struct kfree_obj *alloc_ptr;
+ 	u64 start_time, end_time;
++	long long mem_begin, mem_during = 0;
  
-+/* IPI handler to get callback posted on desired CPU, if online. */
-+static void rcu_torture_barrier1cb(void *rcu_void)
-+{
-+	struct rcu_head *rhp = rcu_void;
-+
-+	cur_ops->call(rhp, rcu_torture_barrier_cbf);
-+}
-+
- /* kthread function to register callbacks used to test RCU barriers. */
- static int rcu_torture_barrier_cbs(void *arg)
- {
-@@ -2076,9 +2084,11 @@ static int rcu_torture_barrier_cbs(void *arg)
- 		 * The above smp_load_acquire() ensures barrier_phase load
- 		 * is ordered before the following ->call().
- 		 */
--		local_irq_disable(); /* Just to test no-irq call_rcu(). */
--		cur_ops->call(&rcu, rcu_torture_barrier_cbf);
--		local_irq_enable();
-+		if (smp_call_function_single(myid, rcu_torture_barrier1cb,
-+					     &rcu, 1)) {
-+			// IPI failed, so use direct call from current CPU.
-+			cur_ops->call(&rcu, rcu_torture_barrier_cbf);
+ 	VERBOSE_PERFOUT_STRING("kfree_perf_thread task started");
+ 	set_cpus_allowed_ptr(current, cpumask_of(me % nr_cpu_ids));
+@@ -626,6 +628,12 @@ kfree_perf_thread(void *arg)
+ 	}
+ 
+ 	do {
++		if (!mem_during) {
++			mem_during = mem_begin = si_mem_available();
++		} else if (loop % (kfree_loops / 4) == 0) {
++			mem_during = (mem_during + si_mem_available()) / 2;
 +		}
- 		if (atomic_dec_and_test(&barrier_cbs_count))
- 			wake_up(&barrier_wq);
- 	} while (!torture_must_stop());
++
+ 		for (i = 0; i < kfree_alloc_num; i++) {
+ 			alloc_ptr = kmalloc(sizeof(struct kfree_obj), GFP_KERNEL);
+ 			if (!alloc_ptr)
+@@ -645,9 +653,11 @@ kfree_perf_thread(void *arg)
+ 		else
+ 			b_rcu_gp_test_finished = cur_ops->get_gp_seq();
+ 
+-		pr_alert("Total time taken by all kfree'ers: %llu ns, loops: %d, batches: %ld\n",
++		pr_alert("Total time taken by all kfree'ers: %llu ns, loops: %d, batches: %ld, memory footprint: %lldMB\n",
+ 		       (unsigned long long)(end_time - start_time), kfree_loops,
+-		       rcuperf_seq_diff(b_rcu_gp_test_finished, b_rcu_gp_test_started));
++		       rcuperf_seq_diff(b_rcu_gp_test_finished, b_rcu_gp_test_started),
++		       (mem_begin - mem_during) >> (20 - PAGE_SHIFT));
++
+ 		if (shutdown) {
+ 			smp_mb(); /* Assign before wake. */
+ 			wake_up(&shutdown_wq);
