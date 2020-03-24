@@ -2,34 +2,33 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E318190939
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 10:21:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D703A190936
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 10:21:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727280AbgCXJQc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 24 Mar 2020 05:16:32 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:43869 "EHLO
+        id S1727133AbgCXJQa (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 24 Mar 2020 05:16:30 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:43854 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727213AbgCXJQb (ORCPT
+        with ESMTP id S1726818AbgCXJQa (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 24 Mar 2020 05:16:31 -0400
+        Tue, 24 Mar 2020 05:16:30 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jGfff-0007u1-E8; Tue, 24 Mar 2020 10:16:27 +0100
+        id 1jGfff-0007tz-57; Tue, 24 Mar 2020 10:16:27 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 12B3B1C0475;
-        Tue, 24 Mar 2020 10:16:27 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A3DD81C0470;
+        Tue, 24 Mar 2020 10:16:26 +0100 (CET)
 Date:   Tue, 24 Mar 2020 09:16:26 -0000
-From:   "tip-bot2 for SeongJae Park" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] Documentation/memory-barriers: Fix typos
-Cc:     SeongJae Park <sjpark@amazon.de>,
-        "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
+Subject: [tip: core/rcu] rcu: Mark rcu_state.gp_seq to detect concurrent writes
+Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158504138676.28353.6448892854421862536.tip-bot2@tip-bot2>
+Message-ID: <158504138633.28353.3396536353132335945.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -45,58 +44,99 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     8149b5cbfa1540cd7542fd4e790a2874afbc5001
-Gitweb:        https://git.kernel.org/tip/8149b5cbfa1540cd7542fd4e790a2874afbc5001
-Author:        SeongJae Park <sjpark@amazon.de>
-AuthorDate:    Fri, 31 Jan 2020 21:52:37 +01:00
+Commit-ID:     0f11ad323dd3d316830152de63b5737a6261ad14
+Gitweb:        https://git.kernel.org/tip/0f11ad323dd3d316830152de63b5737a6261ad14
+Author:        Paul E. McKenney <paulmck@kernel.org>
+AuthorDate:    Mon, 10 Feb 2020 09:58:37 -08:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Thu, 27 Feb 2020 07:03:14 -08:00
+CommitterDate: Sat, 21 Mar 2020 16:13:39 -07:00
 
-Documentation/memory-barriers: Fix typos
+rcu: Mark rcu_state.gp_seq to detect concurrent writes
 
-Signed-off-by: SeongJae Park <sjpark@amazon.de>
+The rcu_state structure's gp_seq field is only to be modified by the RCU
+grace-period kthread, which is single-threaded.  This commit therefore
+enlists KCSAN's help in enforcing this restriction.
+
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- Documentation/memory-barriers.txt | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ kernel/rcu/tree.c | 22 ++++++++--------------
+ 1 file changed, 8 insertions(+), 14 deletions(-)
 
-diff --git a/Documentation/memory-barriers.txt b/Documentation/memory-barriers.txt
-index 7146da0..e1c355e 100644
---- a/Documentation/memory-barriers.txt
-+++ b/Documentation/memory-barriers.txt
-@@ -185,7 +185,7 @@ As a further example, consider this sequence of events:
- 	===============	===============
- 	{ A == 1, B == 2, C == 3, P == &A, Q == &C }
- 	B = 4;		Q = P;
--	P = &B		D = *Q;
-+	P = &B;		D = *Q;
+diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
+index 6c62481..739788f 100644
+--- a/kernel/rcu/tree.c
++++ b/kernel/rcu/tree.c
+@@ -1209,7 +1209,7 @@ static bool rcu_start_this_gp(struct rcu_node *rnp_start, struct rcu_data *rdp,
+ 		trace_rcu_this_gp(rnp, rdp, gp_seq_req, TPS("NoGPkthread"));
+ 		goto unlock_out;
+ 	}
+-	trace_rcu_grace_period(rcu_state.name, READ_ONCE(rcu_state.gp_seq), TPS("newreq"));
++	trace_rcu_grace_period(rcu_state.name, rcu_state.gp_seq, TPS("newreq"));
+ 	ret = true;  /* Caller must wake GP kthread. */
+ unlock_out:
+ 	/* Push furthest requested GP to leaf node and rcu_data structure. */
+@@ -1657,8 +1657,7 @@ static void rcu_gp_fqs_loop(void)
+ 			WRITE_ONCE(rcu_state.jiffies_kick_kthreads,
+ 				   jiffies + (j ? 3 * j : 2));
+ 		}
+-		trace_rcu_grace_period(rcu_state.name,
+-				       READ_ONCE(rcu_state.gp_seq),
++		trace_rcu_grace_period(rcu_state.name, rcu_state.gp_seq,
+ 				       TPS("fqswait"));
+ 		rcu_state.gp_state = RCU_GP_WAIT_FQS;
+ 		ret = swait_event_idle_timeout_exclusive(
+@@ -1672,13 +1671,11 @@ static void rcu_gp_fqs_loop(void)
+ 		/* If time for quiescent-state forcing, do it. */
+ 		if (ULONG_CMP_GE(jiffies, rcu_state.jiffies_force_qs) ||
+ 		    (gf & RCU_GP_FLAG_FQS)) {
+-			trace_rcu_grace_period(rcu_state.name,
+-					       READ_ONCE(rcu_state.gp_seq),
++			trace_rcu_grace_period(rcu_state.name, rcu_state.gp_seq,
+ 					       TPS("fqsstart"));
+ 			rcu_gp_fqs(first_gp_fqs);
+ 			first_gp_fqs = false;
+-			trace_rcu_grace_period(rcu_state.name,
+-					       READ_ONCE(rcu_state.gp_seq),
++			trace_rcu_grace_period(rcu_state.name, rcu_state.gp_seq,
+ 					       TPS("fqsend"));
+ 			cond_resched_tasks_rcu_qs();
+ 			WRITE_ONCE(rcu_state.gp_activity, jiffies);
+@@ -1689,8 +1686,7 @@ static void rcu_gp_fqs_loop(void)
+ 			cond_resched_tasks_rcu_qs();
+ 			WRITE_ONCE(rcu_state.gp_activity, jiffies);
+ 			WARN_ON(signal_pending(current));
+-			trace_rcu_grace_period(rcu_state.name,
+-					       READ_ONCE(rcu_state.gp_seq),
++			trace_rcu_grace_period(rcu_state.name, rcu_state.gp_seq,
+ 					       TPS("fqswaitsig"));
+ 			ret = 1; /* Keep old FQS timing. */
+ 			j = jiffies;
+@@ -1782,7 +1778,7 @@ static void rcu_gp_cleanup(void)
+ 		WRITE_ONCE(rcu_state.gp_flags, RCU_GP_FLAG_INIT);
+ 		WRITE_ONCE(rcu_state.gp_req_activity, jiffies);
+ 		trace_rcu_grace_period(rcu_state.name,
+-				       READ_ONCE(rcu_state.gp_seq),
++				       rcu_state.gp_seq,
+ 				       TPS("newreq"));
+ 	} else {
+ 		WRITE_ONCE(rcu_state.gp_flags,
+@@ -1801,8 +1797,7 @@ static int __noreturn rcu_gp_kthread(void *unused)
  
- There is an obvious data dependency here, as the value loaded into D depends on
- the address retrieved from P by CPU 2.  At the end of the sequence, any of the
-@@ -569,7 +569,7 @@ following sequence of events:
- 	{ A == 1, B == 2, C == 3, P == &A, Q == &C }
- 	B = 4;
- 	<write barrier>
--	WRITE_ONCE(P, &B)
-+	WRITE_ONCE(P, &B);
- 			      Q = READ_ONCE(P);
- 			      D = *Q;
+ 		/* Handle grace-period start. */
+ 		for (;;) {
+-			trace_rcu_grace_period(rcu_state.name,
+-					       READ_ONCE(rcu_state.gp_seq),
++			trace_rcu_grace_period(rcu_state.name, rcu_state.gp_seq,
+ 					       TPS("reqwait"));
+ 			rcu_state.gp_state = RCU_GP_WAIT_GPS;
+ 			swait_event_idle_exclusive(rcu_state.gp_wq,
+@@ -1815,8 +1810,7 @@ static int __noreturn rcu_gp_kthread(void *unused)
+ 			cond_resched_tasks_rcu_qs();
+ 			WRITE_ONCE(rcu_state.gp_activity, jiffies);
+ 			WARN_ON(signal_pending(current));
+-			trace_rcu_grace_period(rcu_state.name,
+-					       READ_ONCE(rcu_state.gp_seq),
++			trace_rcu_grace_period(rcu_state.name, rcu_state.gp_seq,
+ 					       TPS("reqwaitsig"));
+ 		}
  
-@@ -1721,7 +1721,7 @@ of optimizations:
-      and WRITE_ONCE() are more selective:  With READ_ONCE() and
-      WRITE_ONCE(), the compiler need only forget the contents of the
-      indicated memory locations, while with barrier() the compiler must
--     discard the value of all memory locations that it has currented
-+     discard the value of all memory locations that it has currently
-      cached in any machine registers.  Of course, the compiler must also
-      respect the order in which the READ_ONCE()s and WRITE_ONCE()s occur,
-      though the CPU of course need not do so.
-@@ -1833,7 +1833,7 @@ Aside: In the case of data dependencies, the compiler would be expected
- to issue the loads in the correct order (eg. `a[b]` would have to load
- the value of b before loading a[b]), however there is no guarantee in
- the C specification that the compiler may not speculate the value of b
--(eg. is equal to 1) and load a before b (eg. tmp = a[1]; if (b != 1)
-+(eg. is equal to 1) and load a[b] before b (eg. tmp = a[1]; if (b != 1)
- tmp = a[b]; ).  There is also the problem of a compiler reloading b after
- having loaded a[b], thus having a newer copy of b than a[b].  A consensus
- has not yet been reached about these problems, however the READ_ONCE()
