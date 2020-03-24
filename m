@@ -2,34 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E7C919090C
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 10:18:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BBD6619097A
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 10:23:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727347AbgCXJRn (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 24 Mar 2020 05:17:43 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:44145 "EHLO
+        id S1727111AbgCXJXQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 24 Mar 2020 05:23:16 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:44175 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727874AbgCXJRR (ORCPT
+        with ESMTP id S1726697AbgCXJXQ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 24 Mar 2020 05:17:17 -0400
+        Tue, 24 Mar 2020 05:23:16 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jGfgR-0008KE-9r; Tue, 24 Mar 2020 10:17:15 +0100
+        id 1jGfm3-0000MU-4P; Tue, 24 Mar 2020 10:23:03 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 34C691C0805;
-        Tue, 24 Mar 2020 10:16:57 +0100 (CET)
-Date:   Tue, 24 Mar 2020 09:16:56 -0000
-From:   "tip-bot2 for Madhuparna Bhowmik" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 9C8861C0451;
+        Tue, 24 Mar 2020 10:23:02 +0100 (CET)
+Date:   Tue, 24 Mar 2020 09:23:02 -0000
+From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] nfs: Fix nfs_access_get_cached_rcu() sparse error
-Cc:     Madhuparna Bhowmik <madhuparnabhowmik04@gmail.com>,
-        "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
+Subject: [tip: perf/urgent] tools headers uapi: Update linux/in.h copy
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        Paolo Lungaroni <paolo.lungaroni@cnit.it>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Jiri Olsa <jolsa@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158504141683.28353.10903354125274508416.tip-bot2@tip-bot2>
+Message-ID: <158504178226.28353.1383999258369163681.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -43,38 +47,67 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the core/rcu branch of tip:
+The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     9f01eb5d4936f12d57da84cdfbc2a3623e23a7eb
-Gitweb:        https://git.kernel.org/tip/9f01eb5d4936f12d57da84cdfbc2a3623e23a7eb
-Author:        Madhuparna Bhowmik <madhuparnabhowmik04@gmail.com>
-AuthorDate:    Tue, 10 Dec 2019 11:16:39 +05:30
-Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Thu, 20 Feb 2020 15:58:21 -08:00
+Commit-ID:     564200ed8e71d91327d337e46bc778cee02da866
+Gitweb:        https://git.kernel.org/tip/564200ed8e71d91327d337e46bc778cee02da866
+Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
+AuthorDate:    Thu, 19 Mar 2020 11:42:56 -03:00
+Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
+CommitterDate: Thu, 19 Mar 2020 12:31:49 -03:00
 
-nfs: Fix nfs_access_get_cached_rcu() sparse error
+tools headers uapi: Update linux/in.h copy
 
-This patch fixes the following sparse error:
-fs/nfs/dir.c:2353:14: error: incompatible types in comparison expression (different address spaces):
-fs/nfs/dir.c:2353:14:    struct list_head [noderef] <asn:4> *
-fs/nfs/dir.c:2353:14:    struct list_head *
+To get the changes in:
 
-Signed-off-by: Madhuparna Bhowmik <madhuparnabhowmik04@gmail.com>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+  267762538705 ("seg6: fix SRv6 L2 tunnels to use IANA-assigned protocol number")
+
+That ends up automatically adding the new IPPROTO_ETHERNET to the socket
+args beautifiers:
+
+  $ tools/perf/trace/beauty/socket_ipproto.sh > before
+
+Apply this patch:
+
+  $ tools/perf/trace/beauty/socket_ipproto.sh > after
+  $ diff -u before after
+  --- before	2020-03-19 11:48:36.876673819 -0300
+  +++ after	2020-03-19 11:49:00.148541377 -0300
+  @@ -6,6 +6,7 @@
+   	[132] = "SCTP",
+   	[136] = "UDPLITE",
+   	[137] = "MPLS",
+  +	[143] = "ETHERNET",
+   	[17] = "UDP",
+   	[1] = "ICMP",
+   	[22] = "IDP",
+  $
+
+Addresses this tools/perf build warning:
+
+  Warning: Kernel ABI header at 'tools/include/uapi/linux/in.h' differs from latest version at 'include/uapi/linux/in.h'
+  diff -u tools/include/uapi/linux/in.h include/uapi/linux/in.h
+
+Cc: David S. Miller <davem@davemloft.net>
+Cc: Paolo Lungaroni <paolo.lungaroni@cnit.it>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- fs/nfs/dir.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/include/uapi/linux/in.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/nfs/dir.c b/fs/nfs/dir.c
-index 1320288..55a29b0 100644
---- a/fs/nfs/dir.c
-+++ b/fs/nfs/dir.c
-@@ -2383,7 +2383,7 @@ static int nfs_access_get_cached_rcu(struct inode *inode, const struct cred *cre
- 	rcu_read_lock();
- 	if (nfsi->cache_validity & NFS_INO_INVALID_ACCESS)
- 		goto out;
--	lh = rcu_dereference(nfsi->access_cache_entry_lru.prev);
-+	lh = rcu_dereference(list_tail_rcu(&nfsi->access_cache_entry_lru));
- 	cache = list_entry(lh, struct nfs_access_entry, lru);
- 	if (lh == &nfsi->access_cache_entry_lru ||
- 	    cred_fscmp(cred, cache->cred) != 0)
+diff --git a/tools/include/uapi/linux/in.h b/tools/include/uapi/linux/in.h
+index 1521073..8533bf0 100644
+--- a/tools/include/uapi/linux/in.h
++++ b/tools/include/uapi/linux/in.h
+@@ -74,6 +74,8 @@ enum {
+ #define IPPROTO_UDPLITE		IPPROTO_UDPLITE
+   IPPROTO_MPLS = 137,		/* MPLS in IP (RFC 4023)		*/
+ #define IPPROTO_MPLS		IPPROTO_MPLS
++  IPPROTO_ETHERNET = 143,	/* Ethernet-within-IPv6 Encapsulation	*/
++#define IPPROTO_ETHERNET	IPPROTO_ETHERNET
+   IPPROTO_RAW = 255,		/* Raw IP packets			*/
+ #define IPPROTO_RAW		IPPROTO_RAW
+   IPPROTO_MPTCP = 262,		/* Multipath TCP connection		*/
