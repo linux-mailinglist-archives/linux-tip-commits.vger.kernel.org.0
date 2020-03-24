@@ -2,35 +2,33 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E304190929
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 10:18:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CDD3A190916
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 10:18:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727560AbgCXJSh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 24 Mar 2020 05:18:37 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:44044 "EHLO
+        id S1727577AbgCXJSM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 24 Mar 2020 05:18:12 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:44084 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727697AbgCXJRB (ORCPT
+        with ESMTP id S1727745AbgCXJRG (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 24 Mar 2020 05:17:01 -0400
+        Tue, 24 Mar 2020 05:17:06 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jGfgA-0008As-1x; Tue, 24 Mar 2020 10:16:58 +0100
+        id 1jGfgH-0008DJ-7D; Tue, 24 Mar 2020 10:17:05 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 81AF11C04D4;
-        Tue, 24 Mar 2020 10:16:47 +0100 (CET)
-Date:   Tue, 24 Mar 2020 09:16:47 -0000
-From:   "tip-bot2 for Jules Irenge" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 2CC3A1C048C;
+        Tue, 24 Mar 2020 10:16:49 +0100 (CET)
+Date:   Tue, 24 Mar 2020 09:16:48 -0000
+From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcu/nocb: Add missing annotation for rcu_nocb_bypass_unlock()
-Cc:     Jules Irenge <jbi.octave@gmail.com>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Boqun Feng <boqun.feng@gmail.com>, x86 <x86@kernel.org>,
+Subject: [tip: core/rcu] rcu: Fix rcu_barrier_callback() race condition
+Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158504140722.28353.13599324733441017238.tip-bot2@tip-bot2>
+Message-ID: <158504140877.28353.8781282513260518428.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -46,41 +44,85 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     92c0b889f2ff6898710d49458b6eae1de50895c6
-Gitweb:        https://git.kernel.org/tip/92c0b889f2ff6898710d49458b6eae1de50895c6
-Author:        Jules Irenge <jbi.octave@gmail.com>
-AuthorDate:    Thu, 30 Jan 2020 00:30:09 
+Commit-ID:     aa24f93753e256c4b14fe46f7261f150cff2a50c
+Gitweb:        https://git.kernel.org/tip/aa24f93753e256c4b14fe46f7261f150cff2a50c
+Author:        Paul E. McKenney <paulmck@kernel.org>
+AuthorDate:    Mon, 20 Jan 2020 15:43:45 -08:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Thu, 20 Feb 2020 15:58:23 -08:00
 
-rcu/nocb: Add missing annotation for rcu_nocb_bypass_unlock()
+rcu: Fix rcu_barrier_callback() race condition
 
-Sparse reports warning at rcu_nocb_bypass_unlock()
+The rcu_barrier_callback() function does an atomic_dec_and_test(), and
+if it is the last CPU to check in, does the required wakeup.  Either way,
+it does an event trace.  Unfortunately, this is susceptible to the
+following sequence of events:
 
-warning: context imbalance in rcu_nocb_bypass_unlock() - unexpected unlock
+o	CPU 0 invokes rcu_barrier_callback(), but atomic_dec_and_test()
+	says that it is not last.  But at this point, CPU 0 is delayed,
+	perhaps due to an NMI, SMI, or vCPU preemption.
 
-The root cause is a missing annotation of rcu_nocb_bypass_unlock()
-which causes the warning.
+o	CPU 1 invokes rcu_barrier_callback(), and atomic_dec_and_test()
+	says that it is last.  So CPU 1 traces completion and does
+	the needed wakeup.
 
-This commit therefore adds the missing __releases(&rdp->nocb_bypass_lock)
-annotation.
+o	The awakened rcu_barrier() function does cleanup and releases
+	rcu_state.barrier_mutex.
 
-Signed-off-by: Jules Irenge <jbi.octave@gmail.com>
+o	Another CPU now acquires rcu_state.barrier_mutex and starts
+	another round of rcu_barrier() processing, including updating
+	rcu_state.barrier_sequence.
+
+o	CPU 0 gets its act back together and does its tracing.  Except
+	that rcu_state.barrier_sequence has already been updated, so
+	its tracing is incorrect and probably quite confusing.
+	(Wait!  Why did this CPU check in twice for one rcu_barrier()
+	invocation???)
+
+This commit therefore causes rcu_barrier_callback() to take a
+snapshot of the value of rcu_state.barrier_sequence before invoking
+atomic_dec_and_test(), thus guaranteeing that the event-trace output
+is sensible, even if the timing of the event-trace output might still
+be confusing.  (Wait!  Why did the old rcu_barrier() complete before
+all of its CPUs checked in???)  But being that this is RCU, only so much
+confusion can reasonably be eliminated.
+
+This data race was reported by KCSAN.  Not appropriate for backporting
+due to failure being unlikely and due to the mild consequences of the
+failure, namely a confusing event trace.
+
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Acked-by: Boqun Feng <boqun.feng@gmail.com>
 ---
- kernel/rcu/tree_plugin.h | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/rcu/tree.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/rcu/tree_plugin.h b/kernel/rcu/tree_plugin.h
-index 6db2cad..3846519 100644
---- a/kernel/rcu/tree_plugin.h
-+++ b/kernel/rcu/tree_plugin.h
-@@ -1530,6 +1530,7 @@ static bool rcu_nocb_bypass_trylock(struct rcu_data *rdp)
-  * Release the specified rcu_data structure's ->nocb_bypass_lock.
+diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
+index be59a5d..62383ce 100644
+--- a/kernel/rcu/tree.c
++++ b/kernel/rcu/tree.c
+@@ -3077,15 +3077,22 @@ static void rcu_barrier_trace(const char *s, int cpu, unsigned long done)
+ /*
+  * RCU callback function for rcu_barrier().  If we are last, wake
+  * up the task executing rcu_barrier().
++ *
++ * Note that the value of rcu_state.barrier_sequence must be captured
++ * before the atomic_dec_and_test().  Otherwise, if this CPU is not last,
++ * other CPUs might count the value down to zero before this CPU gets
++ * around to invoking rcu_barrier_trace(), which might result in bogus
++ * data from the next instance of rcu_barrier().
   */
- static void rcu_nocb_bypass_unlock(struct rcu_data *rdp)
-+	__releases(&rdp->nocb_bypass_lock)
+ static void rcu_barrier_callback(struct rcu_head *rhp)
  {
- 	lockdep_assert_irqs_disabled();
- 	raw_spin_unlock(&rdp->nocb_bypass_lock);
++	unsigned long __maybe_unused s = rcu_state.barrier_sequence;
++
+ 	if (atomic_dec_and_test(&rcu_state.barrier_cpu_count)) {
+-		rcu_barrier_trace(TPS("LastCB"), -1,
+-				  rcu_state.barrier_sequence);
++		rcu_barrier_trace(TPS("LastCB"), -1, s);
+ 		complete(&rcu_state.barrier_completion);
+ 	} else {
+-		rcu_barrier_trace(TPS("CB"), -1, rcu_state.barrier_sequence);
++		rcu_barrier_trace(TPS("CB"), -1, s);
+ 	}
+ }
+ 
