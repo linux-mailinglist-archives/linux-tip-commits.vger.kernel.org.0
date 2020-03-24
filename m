@@ -2,38 +2,33 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F1A41908AD
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 10:12:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 589BA190937
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 10:21:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727504AbgCXJLX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 24 Mar 2020 05:11:23 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:43831 "EHLO
+        id S1727137AbgCXJQa (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 24 Mar 2020 05:16:30 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:43851 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727466AbgCXJLW (ORCPT
+        with ESMTP id S1726697AbgCXJQ3 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 24 Mar 2020 05:11:22 -0400
+        Tue, 24 Mar 2020 05:16:29 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jGfae-0007d6-21; Tue, 24 Mar 2020 10:11:17 +0100
+        id 1jGffe-0007ty-UA; Tue, 24 Mar 2020 10:16:27 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id CB3A71C0475;
-        Tue, 24 Mar 2020 10:11:03 +0100 (CET)
-Date:   Tue, 24 Mar 2020 09:11:03 -0000
-From:   "tip-bot2 for Marco Elver" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 39AB61C0451;
+        Tue, 24 Mar 2020 10:16:26 +0100 (CET)
+Date:   Tue, 24 Mar 2020 09:16:25 -0000
+From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/kcsan] kcsan: Prefer __always_inline for fast-path
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
-        Marco Elver <elver@google.com>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <58708908-84a0-0a81-a836-ad97e33dbb62@infradead.org>
-References: <58708908-84a0-0a81-a836-ad97e33dbb62@infradead.org>
+Subject: [tip: core/rcu] rcu: Make rcu_barrier() account for offline no-CBs CPUs
+Cc:     "Paul E. McKenney" <paulmck@kernel.org>, <stable@vger.kernel.org>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158504106342.28353.7031721344502833730.tip-bot2@tip-bot2>
+Message-ID: <158504138587.28353.3587174919590819871.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,145 +42,129 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/kcsan branch of tip:
+The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     5c361425744d1e3b03d835dde659708683ca27d1
-Gitweb:        https://git.kernel.org/tip/5c361425744d1e3b03d835dde659708683ca27d1
-Author:        Marco Elver <elver@google.com>
-AuthorDate:    Tue, 07 Jan 2020 17:31:04 +01:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sat, 21 Mar 2020 09:40:19 +01:00
+Commit-ID:     127e29815b4b2206c0a97ac1d83f92ffc0e25c34
+Gitweb:        https://git.kernel.org/tip/127e29815b4b2206c0a97ac1d83f92ffc0e25c34
+Author:        Paul E. McKenney <paulmck@kernel.org>
+AuthorDate:    Tue, 11 Feb 2020 06:17:33 -08:00
+Committer:     Paul E. McKenney <paulmck@kernel.org>
+CommitterDate: Sat, 21 Mar 2020 16:14:25 -07:00
 
-kcsan: Prefer __always_inline for fast-path
+rcu: Make rcu_barrier() account for offline no-CBs CPUs
 
-Prefer __always_inline for fast-path functions that are called outside
-of user_access_save, to avoid generating UACCESS warnings when
-optimizing for size (CC_OPTIMIZE_FOR_SIZE). It will also avoid future
-surprises with compiler versions that change the inlining heuristic even
-when optimizing for performance.
+Currently, rcu_barrier() ignores offline CPUs,  However, it is possible
+for an offline no-CBs CPU to have callbacks queued, and rcu_barrier()
+must wait for those callbacks.  This commit therefore makes rcu_barrier()
+directly invoke the rcu_barrier_func() with interrupts disabled for such
+CPUs.  This requires passing the CPU number into this function so that
+it can entrain the rcu_barrier() callback onto the correct CPU's callback
+list, given that the code must instead execute on the current CPU.
 
-Reported-by: Randy Dunlap <rdunlap@infradead.org>
-Acked-by: Randy Dunlap <rdunlap@infradead.org> # build-tested
-Signed-off-by: Marco Elver <elver@google.com>
+While in the area, this commit fixes a bug where the first CPU's callback
+might have been invoked before rcu_segcblist_entrain() returned, which
+would also result in an early wakeup.
+
+Fixes: 5d6742b37727 ("rcu/nocb: Use rcu_segcblist for no-CBs CPUs")
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: http://lkml.kernel.org/r/58708908-84a0-0a81-a836-ad97e33dbb62@infradead.org
+[ paulmck: Apply optimization feedback from Boqun Feng. ]
+Cc: <stable@vger.kernel.org> # 5.5.x
 ---
- kernel/kcsan/atomic.h   |  2 +-
- kernel/kcsan/core.c     | 18 +++++++++---------
- kernel/kcsan/encoding.h | 14 +++++++-------
- 3 files changed, 17 insertions(+), 17 deletions(-)
+ include/trace/events/rcu.h |  1 +
+ kernel/rcu/tree.c          | 36 ++++++++++++++++++++++++------------
+ 2 files changed, 25 insertions(+), 12 deletions(-)
 
-diff --git a/kernel/kcsan/atomic.h b/kernel/kcsan/atomic.h
-index 576e03d..a9c1930 100644
---- a/kernel/kcsan/atomic.h
-+++ b/kernel/kcsan/atomic.h
-@@ -18,7 +18,7 @@
-  * than cast to volatile. Eventually, we hope to be able to remove this
-  * function.
-  */
--static inline bool kcsan_is_atomic(const volatile void *ptr)
-+static __always_inline bool kcsan_is_atomic(const volatile void *ptr)
- {
- 	/* only jiffies for now */
- 	return ptr == &jiffies;
-diff --git a/kernel/kcsan/core.c b/kernel/kcsan/core.c
-index 3314fc2..4d4ab5c 100644
---- a/kernel/kcsan/core.c
-+++ b/kernel/kcsan/core.c
-@@ -78,10 +78,10 @@ static atomic_long_t watchpoints[CONFIG_KCSAN_NUM_WATCHPOINTS + NUM_SLOTS-1];
-  */
- static DEFINE_PER_CPU(long, kcsan_skip);
- 
--static inline atomic_long_t *find_watchpoint(unsigned long addr,
--					     size_t size,
--					     bool expect_write,
--					     long *encoded_watchpoint)
-+static __always_inline atomic_long_t *find_watchpoint(unsigned long addr,
-+						      size_t size,
-+						      bool expect_write,
-+						      long *encoded_watchpoint)
- {
- 	const int slot = watchpoint_slot(addr);
- 	const unsigned long addr_masked = addr & WATCHPOINT_ADDR_MASK;
-@@ -146,7 +146,7 @@ insert_watchpoint(unsigned long addr, size_t size, bool is_write)
-  *	2. the thread that set up the watchpoint already removed it;
-  *	3. the watchpoint was removed and then re-used.
-  */
--static inline bool
-+static __always_inline bool
- try_consume_watchpoint(atomic_long_t *watchpoint, long encoded_watchpoint)
- {
- 	return atomic_long_try_cmpxchg_relaxed(watchpoint, &encoded_watchpoint, CONSUMED_WATCHPOINT);
-@@ -160,7 +160,7 @@ static inline bool remove_watchpoint(atomic_long_t *watchpoint)
- 	return atomic_long_xchg_relaxed(watchpoint, INVALID_WATCHPOINT) != CONSUMED_WATCHPOINT;
- }
- 
--static inline struct kcsan_ctx *get_ctx(void)
-+static __always_inline struct kcsan_ctx *get_ctx(void)
- {
- 	/*
- 	 * In interrupts, use raw_cpu_ptr to avoid unnecessary checks, that would
-@@ -169,7 +169,7 @@ static inline struct kcsan_ctx *get_ctx(void)
- 	return in_task() ? &current->kcsan_ctx : raw_cpu_ptr(&kcsan_cpu_ctx);
- }
- 
--static inline bool is_atomic(const volatile void *ptr)
-+static __always_inline bool is_atomic(const volatile void *ptr)
- {
- 	struct kcsan_ctx *ctx = get_ctx();
- 
-@@ -193,7 +193,7 @@ static inline bool is_atomic(const volatile void *ptr)
- 	return kcsan_is_atomic(ptr);
- }
- 
--static inline bool should_watch(const volatile void *ptr, int type)
-+static __always_inline bool should_watch(const volatile void *ptr, int type)
- {
- 	/*
- 	 * Never set up watchpoints when memory operations are atomic.
-@@ -226,7 +226,7 @@ static inline void reset_kcsan_skip(void)
- 	this_cpu_write(kcsan_skip, skip_count);
- }
- 
--static inline bool kcsan_is_enabled(void)
-+static __always_inline bool kcsan_is_enabled(void)
- {
- 	return READ_ONCE(kcsan_enabled) && get_ctx()->disable_count == 0;
- }
-diff --git a/kernel/kcsan/encoding.h b/kernel/kcsan/encoding.h
-index b63890e..f03562a 100644
---- a/kernel/kcsan/encoding.h
-+++ b/kernel/kcsan/encoding.h
-@@ -59,10 +59,10 @@ encode_watchpoint(unsigned long addr, size_t size, bool is_write)
- 		      (addr & WATCHPOINT_ADDR_MASK));
- }
- 
--static inline bool decode_watchpoint(long watchpoint,
--				     unsigned long *addr_masked,
--				     size_t *size,
--				     bool *is_write)
-+static __always_inline bool decode_watchpoint(long watchpoint,
-+					      unsigned long *addr_masked,
-+					      size_t *size,
-+					      bool *is_write)
- {
- 	if (watchpoint == INVALID_WATCHPOINT ||
- 	    watchpoint == CONSUMED_WATCHPOINT)
-@@ -78,13 +78,13 @@ static inline bool decode_watchpoint(long watchpoint,
+diff --git a/include/trace/events/rcu.h b/include/trace/events/rcu.h
+index 5e49b06..d56d54c 100644
+--- a/include/trace/events/rcu.h
++++ b/include/trace/events/rcu.h
+@@ -712,6 +712,7 @@ TRACE_EVENT_RCU(rcu_torture_read,
+  *	"Begin": rcu_barrier() started.
+  *	"EarlyExit": rcu_barrier() piggybacked, thus early exit.
+  *	"Inc1": rcu_barrier() piggyback check counter incremented.
++ *	"OfflineNoCBQ": rcu_barrier() found offline no-CBs CPU with callbacks.
+  *	"OnlineQ": rcu_barrier() found online CPU with callbacks.
+  *	"OnlineNQ": rcu_barrier() found online CPU, no callbacks.
+  *	"IRQ": An rcu_barrier_callback() callback posted on remote CPU.
+diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
+index 739788f..35292c8 100644
+--- a/kernel/rcu/tree.c
++++ b/kernel/rcu/tree.c
+@@ -3097,9 +3097,10 @@ static void rcu_barrier_callback(struct rcu_head *rhp)
  /*
-  * Return watchpoint slot for an address.
+  * Called with preemption disabled, and from cross-cpu IRQ context.
   */
--static inline int watchpoint_slot(unsigned long addr)
-+static __always_inline int watchpoint_slot(unsigned long addr)
+-static void rcu_barrier_func(void *unused)
++static void rcu_barrier_func(void *cpu_in)
  {
- 	return (addr / PAGE_SIZE) % CONFIG_KCSAN_NUM_WATCHPOINTS;
- }
+-	struct rcu_data *rdp = raw_cpu_ptr(&rcu_data);
++	uintptr_t cpu = (uintptr_t)cpu_in;
++	struct rcu_data *rdp = per_cpu_ptr(&rcu_data, cpu);
  
--static inline bool matching_access(unsigned long addr1, size_t size1,
--				   unsigned long addr2, size_t size2)
-+static __always_inline bool matching_access(unsigned long addr1, size_t size1,
-+					    unsigned long addr2, size_t size2)
+ 	rcu_barrier_trace(TPS("IRQ"), -1, rcu_state.barrier_sequence);
+ 	rdp->barrier_head.func = rcu_barrier_callback;
+@@ -3126,7 +3127,7 @@ static void rcu_barrier_func(void *unused)
+  */
+ void rcu_barrier(void)
  {
- 	unsigned long end_range1 = addr1 + size1 - 1;
- 	unsigned long end_range2 = addr2 + size2 - 1;
+-	int cpu;
++	uintptr_t cpu;
+ 	struct rcu_data *rdp;
+ 	unsigned long s = rcu_seq_snap(&rcu_state.barrier_sequence);
+ 
+@@ -3149,13 +3150,14 @@ void rcu_barrier(void)
+ 	rcu_barrier_trace(TPS("Inc1"), -1, rcu_state.barrier_sequence);
+ 
+ 	/*
+-	 * Initialize the count to one rather than to zero in order to
+-	 * avoid a too-soon return to zero in case of a short grace period
+-	 * (or preemption of this task).  Exclude CPU-hotplug operations
+-	 * to ensure that no offline CPU has callbacks queued.
++	 * Initialize the count to two rather than to zero in order
++	 * to avoid a too-soon return to zero in case of an immediate
++	 * invocation of the just-enqueued callback (or preemption of
++	 * this task).  Exclude CPU-hotplug operations to ensure that no
++	 * offline non-offloaded CPU has callbacks queued.
+ 	 */
+ 	init_completion(&rcu_state.barrier_completion);
+-	atomic_set(&rcu_state.barrier_cpu_count, 1);
++	atomic_set(&rcu_state.barrier_cpu_count, 2);
+ 	get_online_cpus();
+ 
+ 	/*
+@@ -3165,13 +3167,23 @@ void rcu_barrier(void)
+ 	 */
+ 	for_each_possible_cpu(cpu) {
+ 		rdp = per_cpu_ptr(&rcu_data, cpu);
+-		if (!cpu_online(cpu) &&
++		if (cpu_is_offline(cpu) &&
+ 		    !rcu_segcblist_is_offloaded(&rdp->cblist))
+ 			continue;
+-		if (rcu_segcblist_n_cbs(&rdp->cblist)) {
++		if (rcu_segcblist_n_cbs(&rdp->cblist) && cpu_online(cpu)) {
+ 			rcu_barrier_trace(TPS("OnlineQ"), cpu,
+ 					  rcu_state.barrier_sequence);
+-			smp_call_function_single(cpu, rcu_barrier_func, NULL, 1);
++			smp_call_function_single(cpu, rcu_barrier_func, (void *)cpu, 1);
++		} else if (rcu_segcblist_n_cbs(&rdp->cblist) &&
++			   cpu_is_offline(cpu)) {
++			rcu_barrier_trace(TPS("OfflineNoCBQ"), cpu,
++					  rcu_state.barrier_sequence);
++			local_irq_disable();
++			rcu_barrier_func((void *)cpu);
++			local_irq_enable();
++		} else if (cpu_is_offline(cpu)) {
++			rcu_barrier_trace(TPS("OfflineNoCBNoQ"), cpu,
++					  rcu_state.barrier_sequence);
+ 		} else {
+ 			rcu_barrier_trace(TPS("OnlineNQ"), cpu,
+ 					  rcu_state.barrier_sequence);
+@@ -3183,7 +3195,7 @@ void rcu_barrier(void)
+ 	 * Now that we have an rcu_barrier_callback() callback on each
+ 	 * CPU, and thus each counted, remove the initial count.
+ 	 */
+-	if (atomic_dec_and_test(&rcu_state.barrier_cpu_count))
++	if (atomic_sub_and_test(2, &rcu_state.barrier_cpu_count))
+ 		complete(&rcu_state.barrier_completion);
+ 
+ 	/* Wait for all rcu_barrier_callback() callbacks to be invoked. */
