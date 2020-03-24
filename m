@@ -2,36 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F275191CDF
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 23:33:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 32FE5191CAF
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 23:32:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728496AbgCXWcW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 24 Mar 2020 18:32:22 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:46383 "EHLO
+        id S1728554AbgCXWcZ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 24 Mar 2020 18:32:25 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:46381 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728445AbgCXWcU (ORCPT
+        with ESMTP id S1728348AbgCXWcU (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Tue, 24 Mar 2020 18:32:20 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jGs5p-0006uC-Jn; Tue, 24 Mar 2020 23:32:17 +0100
+        id 1jGs5p-0006tn-5p; Tue, 24 Mar 2020 23:32:17 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4650C1C0451;
-        Tue, 24 Mar 2020 23:32:17 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D058E1C0470;
+        Tue, 24 Mar 2020 23:32:16 +0100 (CET)
 Date:   Tue, 24 Mar 2020 22:32:16 -0000
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cpu] extcon: axp288: Convert to new X86 CPU match macros
+Subject: [tip: x86/cpu] intel_idle: Convert to new X86 CPU match macros
 Cc:     Thomas Gleixner <tglx@linutronix.de>, Borislav Petkov <bp@suse.de>,
         "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200320131510.075227793@linutronix.de>
-References: <20200320131510.075227793@linutronix.de>
+In-Reply-To: <20200320131510.193755545@linutronix.de>
+References: <20200320131510.193755545@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <158508913693.28353.9882426215413347296.tip-bot2@tip-bot2>
+Message-ID: <158508913648.28353.6911615335097560053.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,36 +47,119 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/cpu branch of tip:
 
-Commit-ID:     20d320c664f9bdedb4a1b0029b539aec8c0a71b1
-Gitweb:        https://git.kernel.org/tip/20d320c664f9bdedb4a1b0029b539aec8c0a71b1
+Commit-ID:     4a9f45a0533f47bcff27761821ee568875c5aee4
+Gitweb:        https://git.kernel.org/tip/4a9f45a0533f47bcff27761821ee568875c5aee4
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Fri, 20 Mar 2020 14:13:59 +01:00
+AuthorDate:    Fri, 20 Mar 2020 14:14:00 +01:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 24 Mar 2020 21:34:11 +01:00
+CommitterDate: Tue, 24 Mar 2020 21:34:32 +01:00
 
-extcon: axp288: Convert to new X86 CPU match macros
+intel_idle: Convert to new X86 CPU match macros
 
 The new macro set has a consistent namespace and uses C99 initializers
 instead of the grufty C89 ones.
 
+Get rid the of the local macro wrappers for consistency.
+
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Borislav Petkov <bp@suse.de>
 Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://lkml.kernel.org/r/20200320131510.075227793@linutronix.de
+Link: https://lkml.kernel.org/r/20200320131510.193755545@linutronix.de
 ---
- drivers/extcon/extcon-axp288.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/idle/intel_idle.c | 79 ++++++++++++++++++--------------------
+ 1 file changed, 38 insertions(+), 41 deletions(-)
 
-diff --git a/drivers/extcon/extcon-axp288.c b/drivers/extcon/extcon-axp288.c
-index a7f2161..34b7aff 100644
---- a/drivers/extcon/extcon-axp288.c
-+++ b/drivers/extcon/extcon-axp288.c
-@@ -107,7 +107,7 @@ struct axp288_extcon_info {
+diff --git a/drivers/idle/intel_idle.c b/drivers/idle/intel_idle.c
+index d556066..88f6f92 100644
+--- a/drivers/idle/intel_idle.c
++++ b/drivers/idle/intel_idle.c
+@@ -1068,51 +1068,48 @@ static const struct idle_cpu idle_cpu_dnv = {
  };
  
- static const struct x86_cpu_id cherry_trail_cpu_ids[] = {
--	{ X86_VENDOR_INTEL, 6, INTEL_FAM6_ATOM_AIRMONT, X86_FEATURE_ANY },
-+	X86_MATCH_INTEL_FAM6_MODEL(ATOM_AIRMONT,	NULL),
+ static const struct x86_cpu_id intel_idle_ids[] __initconst = {
+-	INTEL_CPU_FAM6(NEHALEM_EP,		idle_cpu_nhx),
+-	INTEL_CPU_FAM6(NEHALEM,			idle_cpu_nehalem),
+-	INTEL_CPU_FAM6(NEHALEM_G,		idle_cpu_nehalem),
+-	INTEL_CPU_FAM6(WESTMERE,		idle_cpu_nehalem),
+-	INTEL_CPU_FAM6(WESTMERE_EP,		idle_cpu_nhx),
+-	INTEL_CPU_FAM6(NEHALEM_EX,		idle_cpu_nhx),
+-	INTEL_CPU_FAM6(ATOM_BONNELL,		idle_cpu_atom),
+-	INTEL_CPU_FAM6(ATOM_BONNELL_MID,	idle_cpu_lincroft),
+-	INTEL_CPU_FAM6(WESTMERE_EX,		idle_cpu_nhx),
+-	INTEL_CPU_FAM6(SANDYBRIDGE,		idle_cpu_snb),
+-	INTEL_CPU_FAM6(SANDYBRIDGE_X,		idle_cpu_snx),
+-	INTEL_CPU_FAM6(ATOM_SALTWELL,		idle_cpu_atom),
+-	INTEL_CPU_FAM6(ATOM_SILVERMONT,		idle_cpu_byt),
+-	INTEL_CPU_FAM6(ATOM_SILVERMONT_MID,	idle_cpu_tangier),
+-	INTEL_CPU_FAM6(ATOM_AIRMONT,		idle_cpu_cht),
+-	INTEL_CPU_FAM6(IVYBRIDGE,		idle_cpu_ivb),
+-	INTEL_CPU_FAM6(IVYBRIDGE_X,		idle_cpu_ivt),
+-	INTEL_CPU_FAM6(HASWELL,			idle_cpu_hsw),
+-	INTEL_CPU_FAM6(HASWELL_X,		idle_cpu_hsx),
+-	INTEL_CPU_FAM6(HASWELL_L,		idle_cpu_hsw),
+-	INTEL_CPU_FAM6(HASWELL_G,		idle_cpu_hsw),
+-	INTEL_CPU_FAM6(ATOM_SILVERMONT_D,	idle_cpu_avn),
+-	INTEL_CPU_FAM6(BROADWELL,		idle_cpu_bdw),
+-	INTEL_CPU_FAM6(BROADWELL_G,		idle_cpu_bdw),
+-	INTEL_CPU_FAM6(BROADWELL_X,		idle_cpu_bdx),
+-	INTEL_CPU_FAM6(BROADWELL_D,		idle_cpu_bdx),
+-	INTEL_CPU_FAM6(SKYLAKE_L,		idle_cpu_skl),
+-	INTEL_CPU_FAM6(SKYLAKE,			idle_cpu_skl),
+-	INTEL_CPU_FAM6(KABYLAKE_L,		idle_cpu_skl),
+-	INTEL_CPU_FAM6(KABYLAKE,		idle_cpu_skl),
+-	INTEL_CPU_FAM6(SKYLAKE_X,		idle_cpu_skx),
+-	INTEL_CPU_FAM6(XEON_PHI_KNL,		idle_cpu_knl),
+-	INTEL_CPU_FAM6(XEON_PHI_KNM,		idle_cpu_knl),
+-	INTEL_CPU_FAM6(ATOM_GOLDMONT,		idle_cpu_bxt),
+-	INTEL_CPU_FAM6(ATOM_GOLDMONT_PLUS,	idle_cpu_bxt),
+-	INTEL_CPU_FAM6(ATOM_GOLDMONT_D,		idle_cpu_dnv),
+-	INTEL_CPU_FAM6(ATOM_TREMONT_D,		idle_cpu_dnv),
++	X86_MATCH_INTEL_FAM6_MODEL(NEHALEM_EP,		&idle_cpu_nhx),
++	X86_MATCH_INTEL_FAM6_MODEL(NEHALEM,		&idle_cpu_nehalem),
++	X86_MATCH_INTEL_FAM6_MODEL(NEHALEM_G,		&idle_cpu_nehalem),
++	X86_MATCH_INTEL_FAM6_MODEL(WESTMERE,		&idle_cpu_nehalem),
++	X86_MATCH_INTEL_FAM6_MODEL(WESTMERE_EP,		&idle_cpu_nhx),
++	X86_MATCH_INTEL_FAM6_MODEL(NEHALEM_EX,		&idle_cpu_nhx),
++	X86_MATCH_INTEL_FAM6_MODEL(ATOM_BONNELL,	&idle_cpu_atom),
++	X86_MATCH_INTEL_FAM6_MODEL(ATOM_BONNELL_MID,	&idle_cpu_lincroft),
++	X86_MATCH_INTEL_FAM6_MODEL(WESTMERE_EX,		&idle_cpu_nhx),
++	X86_MATCH_INTEL_FAM6_MODEL(SANDYBRIDGE,		&idle_cpu_snb),
++	X86_MATCH_INTEL_FAM6_MODEL(SANDYBRIDGE_X,	&idle_cpu_snx),
++	X86_MATCH_INTEL_FAM6_MODEL(ATOM_SALTWELL,	&idle_cpu_atom),
++	X86_MATCH_INTEL_FAM6_MODEL(ATOM_SILVERMONT,	&idle_cpu_byt),
++	X86_MATCH_INTEL_FAM6_MODEL(ATOM_SILVERMONT_MID,	&idle_cpu_tangier),
++	X86_MATCH_INTEL_FAM6_MODEL(ATOM_AIRMONT,	&idle_cpu_cht),
++	X86_MATCH_INTEL_FAM6_MODEL(IVYBRIDGE,		&idle_cpu_ivb),
++	X86_MATCH_INTEL_FAM6_MODEL(IVYBRIDGE_X,		&idle_cpu_ivt),
++	X86_MATCH_INTEL_FAM6_MODEL(HASWELL,		&idle_cpu_hsw),
++	X86_MATCH_INTEL_FAM6_MODEL(HASWELL_X,		&idle_cpu_hsx),
++	X86_MATCH_INTEL_FAM6_MODEL(HASWELL_L,		&idle_cpu_hsw),
++	X86_MATCH_INTEL_FAM6_MODEL(HASWELL_G,		&idle_cpu_hsw),
++	X86_MATCH_INTEL_FAM6_MODEL(ATOM_SILVERMONT_D,	&idle_cpu_avn),
++	X86_MATCH_INTEL_FAM6_MODEL(BROADWELL,		&idle_cpu_bdw),
++	X86_MATCH_INTEL_FAM6_MODEL(BROADWELL_G,		&idle_cpu_bdw),
++	X86_MATCH_INTEL_FAM6_MODEL(BROADWELL_X,		&idle_cpu_bdx),
++	X86_MATCH_INTEL_FAM6_MODEL(BROADWELL_D,		&idle_cpu_bdx),
++	X86_MATCH_INTEL_FAM6_MODEL(SKYLAKE_L,		&idle_cpu_skl),
++	X86_MATCH_INTEL_FAM6_MODEL(SKYLAKE,		&idle_cpu_skl),
++	X86_MATCH_INTEL_FAM6_MODEL(KABYLAKE_L,		&idle_cpu_skl),
++	X86_MATCH_INTEL_FAM6_MODEL(KABYLAKE,		&idle_cpu_skl),
++	X86_MATCH_INTEL_FAM6_MODEL(SKYLAKE_X,		&idle_cpu_skx),
++	X86_MATCH_INTEL_FAM6_MODEL(XEON_PHI_KNL,	&idle_cpu_knl),
++	X86_MATCH_INTEL_FAM6_MODEL(XEON_PHI_KNM,	&idle_cpu_knl),
++	X86_MATCH_INTEL_FAM6_MODEL(ATOM_GOLDMONT,	&idle_cpu_bxt),
++	X86_MATCH_INTEL_FAM6_MODEL(ATOM_GOLDMONT_PLUS,	&idle_cpu_bxt),
++	X86_MATCH_INTEL_FAM6_MODEL(ATOM_GOLDMONT_D,	&idle_cpu_dnv),
++	X86_MATCH_INTEL_FAM6_MODEL(ATOM_TREMONT_D,	&idle_cpu_dnv),
+ 	{}
+ };
+ 
+-#define INTEL_CPU_FAM6_MWAIT \
+-	{ X86_VENDOR_INTEL, 6, X86_MODEL_ANY, X86_FEATURE_MWAIT, 0 }
+-
+ static const struct x86_cpu_id intel_mwait_ids[] __initconst = {
+-	INTEL_CPU_FAM6_MWAIT,
++	X86_MATCH_VENDOR_FAM_FEATURE(INTEL, 6, X86_FEATURE_MWAIT, NULL),
  	{}
  };
  
