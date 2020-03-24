@@ -2,34 +2,33 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BEEE319092D
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 10:18:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E4CFA190932
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 10:18:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727495AbgCXJQ7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 24 Mar 2020 05:16:59 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:44025 "EHLO
+        id S1727650AbgCXJQz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 24 Mar 2020 05:16:55 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:44005 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727675AbgCXJQ6 (ORCPT
+        with ESMTP id S1727627AbgCXJQz (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 24 Mar 2020 05:16:58 -0400
+        Tue, 24 Mar 2020 05:16:55 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jGfg3-00085F-Iu; Tue, 24 Mar 2020 10:16:51 +0100
+        id 1jGfg4-00086X-5m; Tue, 24 Mar 2020 10:16:52 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 0A03D1C04D5;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 78EA61C04D6;
         Tue, 24 Mar 2020 10:16:43 +0100 (CET)
-Date:   Tue, 24 Mar 2020 09:16:42 -0000
+Date:   Tue, 24 Mar 2020 09:16:43 -0000
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcu: Clear ->core_needs_qs at GP end or self-reported QS
-Cc:     kernel test robot <rong.a.chen@intel.com>,
-        "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
+Subject: [tip: core/rcu] locktorture: Forgive apparent unfairness if CPU hotplug
+Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158504140265.28353.2212857641481536328.tip-bot2@tip-bot2>
+Message-ID: <158504140312.28353.101971154365863922.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -45,88 +44,36 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     b5ea03709d12e98fa341aecfa6940cc9f49e8817
-Gitweb:        https://git.kernel.org/tip/b5ea03709d12e98fa341aecfa6940cc9f49e8817
+Commit-ID:     28e09a2e48486ce8ff0a72e21570d59b1243b308
+Gitweb:        https://git.kernel.org/tip/28e09a2e48486ce8ff0a72e21570d59b1243b308
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Mon, 09 Dec 2019 15:19:45 -08:00
+AuthorDate:    Thu, 30 Jan 2020 20:37:04 -08:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Thu, 20 Feb 2020 16:00:20 -08:00
+CommitterDate: Thu, 20 Feb 2020 15:59:59 -08:00
 
-rcu: Clear ->core_needs_qs at GP end or self-reported QS
+locktorture: Forgive apparent unfairness if CPU hotplug
 
-The rcu_data structure's ->core_needs_qs field does not necessarily get
-cleared in a timely fashion after the corresponding CPUs' quiescent state
-has been reported.  From a functional viewpoint, no harm done, but this
-can result in excessive invocation of RCU core processing, as witnessed
-by the kernel test robot, which saw greatly increased softirq overhead.
+If CPU hotplug testing is enabled, a lock might appear to be maximally
+unfair just because one of the CPUs was offline almost all the time.
+This commit therefore forgives unfairness if CPU hotplug testing was
+enabled.
 
-This commit therefore restores the rcu_report_qs_rdp() function's
-clearing of this field, but only when running on the corresponding CPU.
-Cases where some other CPU reports the quiescent state (for example, on
-behalf of an idle CPU) are handled by setting this field appropriately
-within the __note_gp_changes() function's end-of-grace-period checks.
-This handling is carried out regardless of whether the end of a grace
-period actually happened, thus handling the case where a CPU goes non-idle
-after a quiescent state is reported on its behalf, but before the grace
-period ends.  This fix also avoids cross-CPU updates to ->core_needs_qs,
-
-While in the area, this commit changes the __note_gp_changes() need_gp
-variable's name to need_qs because it is a quiescent state that is needed
-from the CPU in question.
-
-Fixes: ed93dfc6bc00 ("rcu: Confine ->core_needs_qs accesses to the corresponding CPU")
-Reported-by: kernel test robot <rong.a.chen@intel.com>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/rcu/tree.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ kernel/locking/locktorture.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
-index d91c915..31d01f8 100644
---- a/kernel/rcu/tree.c
-+++ b/kernel/rcu/tree.c
-@@ -1386,7 +1386,7 @@ static void __maybe_unused rcu_advance_cbs_nowake(struct rcu_node *rnp,
- static bool __note_gp_changes(struct rcu_node *rnp, struct rcu_data *rdp)
- {
- 	bool ret = false;
--	bool need_gp;
-+	bool need_qs;
- 	const bool offloaded = IS_ENABLED(CONFIG_RCU_NOCB_CPU) &&
- 			       rcu_segcblist_is_offloaded(&rdp->cblist);
- 
-@@ -1400,10 +1400,13 @@ static bool __note_gp_changes(struct rcu_node *rnp, struct rcu_data *rdp)
- 	    unlikely(READ_ONCE(rdp->gpwrap))) {
- 		if (!offloaded)
- 			ret = rcu_advance_cbs(rnp, rdp); /* Advance CBs. */
-+		rdp->core_needs_qs = false;
- 		trace_rcu_grace_period(rcu_state.name, rdp->gp_seq, TPS("cpuend"));
- 	} else {
- 		if (!offloaded)
- 			ret = rcu_accelerate_cbs(rnp, rdp); /* Recent CBs. */
-+		if (rdp->core_needs_qs)
-+			rdp->core_needs_qs = !!(rnp->qsmask & rdp->grpmask);
- 	}
- 
- 	/* Now handle the beginnings of any new-to-this-CPU grace periods. */
-@@ -1415,9 +1418,9 @@ static bool __note_gp_changes(struct rcu_node *rnp, struct rcu_data *rdp)
- 		 * go looking for one.
- 		 */
- 		trace_rcu_grace_period(rcu_state.name, rnp->gp_seq, TPS("cpustart"));
--		need_gp = !!(rnp->qsmask & rdp->grpmask);
--		rdp->cpu_no_qs.b.norm = need_gp;
--		rdp->core_needs_qs = need_gp;
-+		need_qs = !!(rnp->qsmask & rdp->grpmask);
-+		rdp->cpu_no_qs.b.norm = need_qs;
-+		rdp->core_needs_qs = need_qs;
- 		zero_cpu_stall_ticks(rdp);
- 	}
- 	rdp->gp_seq = rnp->gp_seq;  /* Remember new grace-period state. */
-@@ -1987,6 +1990,8 @@ rcu_report_qs_rdp(int cpu, struct rcu_data *rdp)
- 		return;
- 	}
- 	mask = rdp->grpmask;
-+	if (rdp->cpu == smp_processor_id())
-+		rdp->core_needs_qs = false;
- 	if ((rnp->qsmask & mask) == 0) {
- 		raw_spin_unlock_irqrestore_rcu_node(rnp, flags);
- 	} else {
+diff --git a/kernel/locking/locktorture.c b/kernel/locking/locktorture.c
+index 5baf904..5efbfc6 100644
+--- a/kernel/locking/locktorture.c
++++ b/kernel/locking/locktorture.c
+@@ -704,7 +704,8 @@ static void __torture_print_stats(char *page,
+ 	page += sprintf(page,
+ 			"%s:  Total: %lld  Max/Min: %ld/%ld %s  Fail: %d %s\n",
+ 			write ? "Writes" : "Reads ",
+-			sum, max, min, max / 2 > min ? "???" : "",
++			sum, max, min,
++			!onoff_interval && max / 2 > min ? "???" : "",
+ 			fail, fail ? "!!!" : "");
+ 	if (fail)
+ 		atomic_inc(&cxt.n_lock_torture_errors);
