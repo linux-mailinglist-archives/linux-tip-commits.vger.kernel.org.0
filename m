@@ -2,35 +2,34 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DA8E19088D
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 10:11:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C48AD1908C5
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 10:13:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727267AbgCXJLE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 24 Mar 2020 05:11:04 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:43741 "EHLO
+        id S1726697AbgCXJMa (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 24 Mar 2020 05:12:30 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:43742 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726818AbgCXJLC (ORCPT
+        with ESMTP id S1726845AbgCXJLC (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Tue, 24 Mar 2020 05:11:02 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jGfaM-0007V0-FW; Tue, 24 Mar 2020 10:10:58 +0100
+        id 1jGfaM-0007VV-R5; Tue, 24 Mar 2020 10:10:59 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 82DE81C0475;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E0B0E1C0481;
         Tue, 24 Mar 2020 10:10:56 +0100 (CET)
 Date:   Tue, 24 Mar 2020 09:10:56 -0000
 From:   "tip-bot2 for Marco Elver" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/kcsan] kcsan: Add test to generate conflicts via debugfs
-Cc:     Marco Elver <elver@google.com>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
+Subject: [tip: locking/kcsan] kcsan: Introduce ASSERT_EXCLUSIVE_*() macros
+Cc:     "Paul E. McKenney" <paulmck@kernel.org>,
+        Marco Elver <elver@google.com>, Ingo Molnar <mingo@kernel.org>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158504105622.28353.4207063450407939838.tip-bot2@tip-bot2>
+Message-ID: <158504105659.28353.5875053583912976459.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -46,117 +45,103 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/kcsan branch of tip:
 
-Commit-ID:     a312013578e4775003689e31c1f487df11f362a3
-Gitweb:        https://git.kernel.org/tip/a312013578e4775003689e31c1f487df11f362a3
+Commit-ID:     f97f713dc25714ac13f3b5abdeffce2da3f6fe70
+Gitweb:        https://git.kernel.org/tip/f97f713dc25714ac13f3b5abdeffce2da3f6fe70
 Author:        Marco Elver <elver@google.com>
-AuthorDate:    Thu, 06 Feb 2020 16:46:26 +01:00
+AuthorDate:    Thu, 06 Feb 2020 16:46:25 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sat, 21 Mar 2020 09:43:30 +01:00
+CommitterDate: Sat, 21 Mar 2020 09:42:59 +01:00
 
-kcsan: Add test to generate conflicts via debugfs
+kcsan: Introduce ASSERT_EXCLUSIVE_*() macros
 
-Add 'test=<iters>' option to KCSAN's debugfs interface to invoke KCSAN
-checks on a dummy variable. By writing 'test=<iters>' to the debugfs
-file from multiple tasks, we can generate real conflicts, and trigger
-data race reports.
+Introduces ASSERT_EXCLUSIVE_WRITER() and ASSERT_EXCLUSIVE_ACCESS(), which
+may be used to assert properties of synchronization logic, where
+violation cannot be detected as a normal data race.
 
+Examples of the reports that may be generated:
+
+    ==================================================================
+    BUG: KCSAN: assert: race in test_thread / test_thread
+
+    write to 0xffffffffab3d1540 of 8 bytes by task 466 on cpu 2:
+     test_thread+0x8d/0x111
+     debugfs_write.cold+0x32/0x44
+     ...
+
+    assert no writes to 0xffffffffab3d1540 of 8 bytes by task 464 on cpu 0:
+     test_thread+0xa3/0x111
+     debugfs_write.cold+0x32/0x44
+     ...
+    ==================================================================
+
+    ==================================================================
+    BUG: KCSAN: assert: race in test_thread / test_thread
+
+    assert no accesses to 0xffffffffab3d1540 of 8 bytes by task 465 on cpu 1:
+     test_thread+0xb9/0x111
+     debugfs_write.cold+0x32/0x44
+     ...
+
+    read to 0xffffffffab3d1540 of 8 bytes by task 464 on cpu 0:
+     test_thread+0x77/0x111
+     debugfs_write.cold+0x32/0x44
+     ...
+    ==================================================================
+
+Suggested-by: Paul E. McKenney <paulmck@kernel.org>
 Signed-off-by: Marco Elver <elver@google.com>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- kernel/kcsan/debugfs.c | 51 ++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 46 insertions(+), 5 deletions(-)
+ include/linux/kcsan-checks.h | 40 +++++++++++++++++++++++++++++++++++-
+ 1 file changed, 40 insertions(+)
 
-diff --git a/kernel/kcsan/debugfs.c b/kernel/kcsan/debugfs.c
-index a9dad44..9bbba0e 100644
---- a/kernel/kcsan/debugfs.c
-+++ b/kernel/kcsan/debugfs.c
-@@ -6,6 +6,7 @@
- #include <linux/debugfs.h>
- #include <linux/init.h>
- #include <linux/kallsyms.h>
-+#include <linux/sched.h>
- #include <linux/seq_file.h>
- #include <linux/slab.h>
- #include <linux/sort.h>
-@@ -69,9 +70,9 @@ void kcsan_counter_dec(enum kcsan_counter_id id)
- /*
-  * The microbenchmark allows benchmarking KCSAN core runtime only. To run
-  * multiple threads, pipe 'microbench=<iters>' from multiple tasks into the
-- * debugfs file.
-+ * debugfs file. This will not generate any conflicts, and tests fast-path only.
-  */
--static void microbenchmark(unsigned long iters)
-+static noinline void microbenchmark(unsigned long iters)
- {
- 	cycles_t cycles;
+diff --git a/include/linux/kcsan-checks.h b/include/linux/kcsan-checks.h
+index 5dcadc2..cf69617 100644
+--- a/include/linux/kcsan-checks.h
++++ b/include/linux/kcsan-checks.h
+@@ -96,4 +96,44 @@ static inline void kcsan_check_access(const volatile void *ptr, size_t size,
+ 	kcsan_check_access(ptr, size, KCSAN_ACCESS_ATOMIC | KCSAN_ACCESS_WRITE)
+ #endif
  
-@@ -81,18 +82,52 @@ static void microbenchmark(unsigned long iters)
- 	while (iters--) {
- 		/*
- 		 * We can run this benchmark from multiple tasks; this address
--		 * calculation increases likelyhood of some accesses overlapping
--		 * (they still won't conflict because all are reads).
-+		 * calculation increases likelyhood of some accesses
-+		 * overlapping. Make the access type an atomic read, to never
-+		 * set up watchpoints and test the fast-path only.
- 		 */
- 		unsigned long addr =
- 			iters % (CONFIG_KCSAN_NUM_WATCHPOINTS * PAGE_SIZE);
--		__kcsan_check_read((void *)addr, sizeof(long));
-+		__kcsan_check_access((void *)addr, sizeof(long), KCSAN_ACCESS_ATOMIC);
- 	}
- 	cycles = get_cycles() - cycles;
- 
- 	pr_info("KCSAN: %s end   | cycles: %llu\n", __func__, cycles);
- }
- 
-+/*
-+ * Simple test to create conflicting accesses. Write 'test=<iters>' to KCSAN's
-+ * debugfs file from multiple tasks to generate real conflicts and show reports.
++/**
++ * ASSERT_EXCLUSIVE_WRITER - assert no other threads are writing @var
++ *
++ * Assert that there are no other threads writing @var; other readers are
++ * allowed. This assertion can be used to specify properties of concurrent code,
++ * where violation cannot be detected as a normal data race.
++ *
++ * For example, if a per-CPU variable is only meant to be written by a single
++ * CPU, but may be read from other CPUs; in this case, reads and writes must be
++ * marked properly, however, if an off-CPU WRITE_ONCE() races with the owning
++ * CPU's WRITE_ONCE(), would not constitute a data race but could be a harmful
++ * race condition. Using this macro allows specifying this property in the code
++ * and catch such bugs.
++ *
++ * @var variable to assert on
 + */
-+static long test_dummy;
-+static noinline void test_thread(unsigned long iters)
-+{
-+	const struct kcsan_ctx ctx_save = current->kcsan_ctx;
-+	cycles_t cycles;
++#define ASSERT_EXCLUSIVE_WRITER(var)                                           \
++	__kcsan_check_access(&(var), sizeof(var), KCSAN_ACCESS_ASSERT)
 +
-+	/* We may have been called from an atomic region; reset context. */
-+	memset(&current->kcsan_ctx, 0, sizeof(current->kcsan_ctx));
++/**
++ * ASSERT_EXCLUSIVE_ACCESS - assert no other threads are accessing @var
++ *
++ * Assert that no other thread is accessing @var (no readers nor writers). This
++ * assertion can be used to specify properties of concurrent code, where
++ * violation cannot be detected as a normal data race.
++ *
++ * For example, in a reference-counting algorithm where exclusive access is
++ * expected after the refcount reaches 0. We can check that this property
++ * actually holds as follows:
++ *
++ *	if (refcount_dec_and_test(&obj->refcnt)) {
++ *		ASSERT_EXCLUSIVE_ACCESS(*obj);
++ *		safely_dispose_of(obj);
++ *	}
++ *
++ * @var variable to assert on
++ */
++#define ASSERT_EXCLUSIVE_ACCESS(var)                                           \
++	__kcsan_check_access(&(var), sizeof(var), KCSAN_ACCESS_WRITE | KCSAN_ACCESS_ASSERT)
 +
-+	pr_info("KCSAN: %s begin | iters: %lu\n", __func__, iters);
-+
-+	cycles = get_cycles();
-+	while (iters--) {
-+		__kcsan_check_read(&test_dummy, sizeof(test_dummy));
-+		__kcsan_check_write(&test_dummy, sizeof(test_dummy));
-+		ASSERT_EXCLUSIVE_WRITER(test_dummy);
-+		ASSERT_EXCLUSIVE_ACCESS(test_dummy);
-+
-+		/* not actually instrumented */
-+		WRITE_ONCE(test_dummy, iters);  /* to observe value-change */
-+	}
-+	cycles = get_cycles() - cycles;
-+
-+	pr_info("KCSAN: %s end   | cycles: %llu\n", __func__, cycles);
-+
-+	/* restore context */
-+	current->kcsan_ctx = ctx_save;
-+}
-+
- static int cmp_filterlist_addrs(const void *rhs, const void *lhs)
- {
- 	const unsigned long a = *(const unsigned long *)rhs;
-@@ -242,6 +277,12 @@ debugfs_write(struct file *file, const char __user *buf, size_t count, loff_t *o
- 		if (kstrtoul(&arg[sizeof("microbench=") - 1], 0, &iters))
- 			return -EINVAL;
- 		microbenchmark(iters);
-+	} else if (!strncmp(arg, "test=", sizeof("test=") - 1)) {
-+		unsigned long iters;
-+
-+		if (kstrtoul(&arg[sizeof("test=") - 1], 0, &iters))
-+			return -EINVAL;
-+		test_thread(iters);
- 	} else if (!strcmp(arg, "whitelist")) {
- 		set_report_filterlist_whitelist(true);
- 	} else if (!strcmp(arg, "blacklist")) {
+ #endif /* _LINUX_KCSAN_CHECKS_H */
