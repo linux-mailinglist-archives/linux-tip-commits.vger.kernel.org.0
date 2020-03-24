@@ -2,38 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EE591912F8
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 15:25:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E25651912E7
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 15:24:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727393AbgCXOYN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 24 Mar 2020 10:24:13 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:45075 "EHLO
+        id S1727781AbgCXOYB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 24 Mar 2020 10:24:01 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:45067 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727670AbgCXOYC (ORCPT
+        with ESMTP id S1727270AbgCXOYB (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 24 Mar 2020 10:24:02 -0400
+        Tue, 24 Mar 2020 10:24:01 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jGkTE-0006z7-BF; Tue, 24 Mar 2020 15:23:56 +0100
+        id 1jGkTE-0006z6-7e; Tue, 24 Mar 2020 15:23:56 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 0085F1C0470;
-        Tue, 24 Mar 2020 15:23:56 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 8D28B1C0451;
+        Tue, 24 Mar 2020 15:23:55 +0100 (CET)
 Date:   Tue, 24 Mar 2020 14:23:55 -0000
 From:   "tip-bot2 for Alexey Makhalov" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/vmware] x86/vmware: Enable steal time accounting
+Subject: [tip: x86/vmware] x86/vmware: Use bool type for vmw_sched_clock
 Cc:     Alexey Makhalov <amakhalov@vmware.com>,
         Borislav Petkov <bp@suse.de>,
-        Thomas Hellstrom <thellstrom@vmware.com>,
         Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200323195707.31242-5-amakhalov@vmware.com>
-References: <20200323195707.31242-5-amakhalov@vmware.com>
+In-Reply-To: <20200323195707.31242-6-amakhalov@vmware.com>
+References: <20200323195707.31242-6-amakhalov@vmware.com>
 MIME-Version: 1.0
-Message-ID: <158505983568.28353.2778877006076369432.tip-bot2@tip-bot2>
+Message-ID: <158505983520.28353.190987036145128922.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,79 +48,43 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/vmware branch of tip:
 
-Commit-ID:     e73a8f38f82dd1c41b70a06556bea7dc250cc384
-Gitweb:        https://git.kernel.org/tip/e73a8f38f82dd1c41b70a06556bea7dc250cc384
+Commit-ID:     8fefe9dacdb0a1347d3dac871bb1bba3cbc32945
+Gitweb:        https://git.kernel.org/tip/8fefe9dacdb0a1347d3dac871bb1bba3cbc32945
 Author:        Alexey Makhalov <amakhalov@vmware.com>
-AuthorDate:    Mon, 23 Mar 2020 19:57:06 
+AuthorDate:    Mon, 23 Mar 2020 19:57:07 
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 24 Mar 2020 10:06:27 +01:00
+CommitterDate: Tue, 24 Mar 2020 10:29:22 +01:00
 
-x86/vmware: Enable steal time accounting
+x86/vmware: Use bool type for vmw_sched_clock
 
-Set paravirt_steal_rq_enabled if steal clock present.
-paravirt_steal_rq_enabled is used in sched/core.c to adjust task
-progress by offsetting stolen time. Use 'no-steal-acc' off switch (share
-same name with KVM) to disable steal time accounting.
+To be aligned with other bool variables.
 
 Signed-off-by: Alexey Makhalov <amakhalov@vmware.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Thomas Hellstrom <thellstrom@vmware.com>
 Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20200323195707.31242-5-amakhalov@vmware.com
+Link: https://lkml.kernel.org/r/20200323195707.31242-6-amakhalov@vmware.com
 ---
- Documentation/admin-guide/kernel-parameters.txt |  2 +-
- arch/x86/kernel/cpu/vmware.c                    | 13 ++++++++++++-
- 2 files changed, 13 insertions(+), 2 deletions(-)
+ arch/x86/kernel/cpu/vmware.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index c07815d..863b37d 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -3174,7 +3174,7 @@
- 			[X86,PV_OPS] Disable paravirtualized VMware scheduler
- 			clock and use the default one.
- 
--	no-steal-acc	[X86,KVM,ARM64] Disable paravirtualized steal time
-+	no-steal-acc	[X86,PV_OPS,ARM64] Disable paravirtualized steal time
- 			accounting. steal time is computed, but won't
- 			influence scheduler behaviour
- 
 diff --git a/arch/x86/kernel/cpu/vmware.c b/arch/x86/kernel/cpu/vmware.c
-index cc60461..e885f73 100644
+index e885f73..9b6fafa 100644
 --- a/arch/x86/kernel/cpu/vmware.c
 +++ b/arch/x86/kernel/cpu/vmware.c
-@@ -125,6 +125,7 @@ static struct cyc2ns_data vmware_cyc2ns __ro_after_init;
- static int vmw_sched_clock __initdata = 1;
+@@ -122,14 +122,14 @@ static unsigned long vmware_get_tsc_khz(void)
+ 
+ #ifdef CONFIG_PARAVIRT
+ static struct cyc2ns_data vmware_cyc2ns __ro_after_init;
+-static int vmw_sched_clock __initdata = 1;
++static bool vmw_sched_clock __initdata = true;
  static DEFINE_PER_CPU_DECRYPTED(struct vmware_steal_time, vmw_steal_time) __aligned(64);
  static bool has_steal_clock;
-+static bool steal_acc __initdata = true; /* steal time accounting */
+ static bool steal_acc __initdata = true; /* steal time accounting */
  
  static __init int setup_vmw_sched_clock(char *s)
  {
-@@ -133,6 +134,13 @@ static __init int setup_vmw_sched_clock(char *s)
- }
- early_param("no-vmw-sched-clock", setup_vmw_sched_clock);
- 
-+static __init int parse_no_stealacc(char *arg)
-+{
-+	steal_acc = false;
-+	return 0;
-+}
-+early_param("no-steal-acc", parse_no_stealacc);
-+
- static unsigned long long notrace vmware_sched_clock(void)
- {
- 	unsigned long long ns;
-@@ -306,8 +314,11 @@ static int vmware_cpu_down_prepare(unsigned int cpu)
- 
- static __init int activate_jump_labels(void)
- {
--	if (has_steal_clock)
-+	if (has_steal_clock) {
- 		static_key_slow_inc(&paravirt_steal_enabled);
-+		if (steal_acc)
-+			static_key_slow_inc(&paravirt_steal_rq_enabled);
-+	}
- 
+-	vmw_sched_clock = 0;
++	vmw_sched_clock = false;
  	return 0;
  }
+ early_param("no-vmw-sched-clock", setup_vmw_sched_clock);
