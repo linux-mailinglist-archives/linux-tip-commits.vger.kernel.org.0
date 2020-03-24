@@ -2,33 +2,33 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E8811908E6
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 10:16:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E0F8190957
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 10:21:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727605AbgCXJQw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 24 Mar 2020 05:16:52 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:43982 "EHLO
+        id S1727815AbgCXJTZ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 24 Mar 2020 05:19:25 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:43959 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727590AbgCXJQv (ORCPT
+        with ESMTP id S1727535AbgCXJQq (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 24 Mar 2020 05:16:51 -0400
+        Tue, 24 Mar 2020 05:16:46 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jGfg1-00081o-8a; Tue, 24 Mar 2020 10:16:49 +0100
+        id 1jGffx-00082l-1B; Tue, 24 Mar 2020 10:16:45 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id AE64D1C0481;
-        Tue, 24 Mar 2020 10:16:38 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 18F881C04D0;
+        Tue, 24 Mar 2020 10:16:39 +0100 (CET)
 Date:   Tue, 24 Mar 2020 09:16:38 -0000
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] srcu: Fix process_srcu()/srcu_batches_completed() datarace
+Subject: [tip: core/rcu] srcu: Fix __call_srcu()/srcu_get_delay() datarace
 Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158504139839.28353.5827172655436222384.tip-bot2@tip-bot2>
+Message-ID: <158504139878.28353.2467527074990549522.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -44,37 +44,55 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     39f91504a03a7a2abdb52205106942fa4a548d0d
-Gitweb:        https://git.kernel.org/tip/39f91504a03a7a2abdb52205106942fa4a548d0d
+Commit-ID:     8c9e0cb32315835825ea1ad725a858a2d2ce4a8e
+Gitweb:        https://git.kernel.org/tip/8c9e0cb32315835825ea1ad725a858a2d2ce4a8e
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Sun, 22 Dec 2019 19:39:35 -08:00
+AuthorDate:    Sun, 22 Dec 2019 19:36:33 -08:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Thu, 20 Feb 2020 16:01:11 -08:00
 
-srcu: Fix process_srcu()/srcu_batches_completed() datarace
+srcu: Fix __call_srcu()/srcu_get_delay() datarace
 
-The srcu_struct structure's ->srcu_idx field is accessed locklessly,
-so reads must use READ_ONCE().  This commit therefore adds the needed
-READ_ONCE() invocation where it was missed.
+The srcu_struct structure's ->srcu_gp_seq_needed_exp field is accessed
+locklessly, so updates must use WRITE_ONCE().  This commit therefore
+adds the needed WRITE_ONCE() invocations.
 
 This data race was reported by KCSAN.  Not appropriate for backporting
 due to failure being unlikely.
 
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/rcu/srcutree.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/rcu/srcutree.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/kernel/rcu/srcutree.c b/kernel/rcu/srcutree.c
-index 79848f7..119a373 100644
+index b1edac9..79848f7 100644
 --- a/kernel/rcu/srcutree.c
 +++ b/kernel/rcu/srcutree.c
-@@ -1079,7 +1079,7 @@ EXPORT_SYMBOL_GPL(srcu_barrier);
-  */
- unsigned long srcu_batches_completed(struct srcu_struct *ssp)
- {
--	return ssp->srcu_idx;
-+	return READ_ONCE(ssp->srcu_idx);
+@@ -534,7 +534,7 @@ static void srcu_gp_end(struct srcu_struct *ssp)
+ 	rcu_seq_end(&ssp->srcu_gp_seq);
+ 	gpseq = rcu_seq_current(&ssp->srcu_gp_seq);
+ 	if (ULONG_CMP_LT(ssp->srcu_gp_seq_needed_exp, gpseq))
+-		ssp->srcu_gp_seq_needed_exp = gpseq;
++		WRITE_ONCE(ssp->srcu_gp_seq_needed_exp, gpseq);
+ 	spin_unlock_irq_rcu_node(ssp);
+ 	mutex_unlock(&ssp->srcu_gp_mutex);
+ 	/* A new grace period can start at this point.  But only one. */
+@@ -614,7 +614,7 @@ static void srcu_funnel_exp_start(struct srcu_struct *ssp, struct srcu_node *snp
+ 	}
+ 	spin_lock_irqsave_rcu_node(ssp, flags);
+ 	if (ULONG_CMP_LT(ssp->srcu_gp_seq_needed_exp, s))
+-		ssp->srcu_gp_seq_needed_exp = s;
++		WRITE_ONCE(ssp->srcu_gp_seq_needed_exp, s);
+ 	spin_unlock_irqrestore_rcu_node(ssp, flags);
  }
- EXPORT_SYMBOL_GPL(srcu_batches_completed);
  
+@@ -674,7 +674,7 @@ static void srcu_funnel_gp_start(struct srcu_struct *ssp, struct srcu_data *sdp,
+ 		smp_store_release(&ssp->srcu_gp_seq_needed, s); /*^^^*/
+ 	}
+ 	if (!do_norm && ULONG_CMP_LT(ssp->srcu_gp_seq_needed_exp, s))
+-		ssp->srcu_gp_seq_needed_exp = s;
++		WRITE_ONCE(ssp->srcu_gp_seq_needed_exp, s);
+ 
+ 	/* If grace period not already done and none in progress, start it. */
+ 	if (!rcu_seq_done(&ssp->srcu_gp_seq, s) &&
