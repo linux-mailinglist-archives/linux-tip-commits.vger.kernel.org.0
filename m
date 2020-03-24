@@ -2,38 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BBD6619097A
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 10:23:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EE591912F8
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 15:25:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727111AbgCXJXQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 24 Mar 2020 05:23:16 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:44175 "EHLO
+        id S1727393AbgCXOYN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 24 Mar 2020 10:24:13 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:45075 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726697AbgCXJXQ (ORCPT
+        with ESMTP id S1727670AbgCXOYC (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 24 Mar 2020 05:23:16 -0400
+        Tue, 24 Mar 2020 10:24:02 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jGfm3-0000MU-4P; Tue, 24 Mar 2020 10:23:03 +0100
+        id 1jGkTE-0006z7-BF; Tue, 24 Mar 2020 15:23:56 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 9C8861C0451;
-        Tue, 24 Mar 2020 10:23:02 +0100 (CET)
-Date:   Tue, 24 Mar 2020 09:23:02 -0000
-From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 0085F1C0470;
+        Tue, 24 Mar 2020 15:23:56 +0100 (CET)
+Date:   Tue, 24 Mar 2020 14:23:55 -0000
+From:   "tip-bot2 for Alexey Makhalov" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] tools headers uapi: Update linux/in.h copy
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Paolo Lungaroni <paolo.lungaroni@cnit.it>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Jiri Olsa <jolsa@kernel.org>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+Subject: [tip: x86/vmware] x86/vmware: Enable steal time accounting
+Cc:     Alexey Makhalov <amakhalov@vmware.com>,
+        Borislav Petkov <bp@suse.de>,
+        Thomas Hellstrom <thellstrom@vmware.com>,
+        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200323195707.31242-5-amakhalov@vmware.com>
+References: <20200323195707.31242-5-amakhalov@vmware.com>
 MIME-Version: 1.0
-Message-ID: <158504178226.28353.1383999258369163681.tip-bot2@tip-bot2>
+Message-ID: <158505983568.28353.2778877006076369432.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,67 +47,81 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/urgent branch of tip:
+The following commit has been merged into the x86/vmware branch of tip:
 
-Commit-ID:     564200ed8e71d91327d337e46bc778cee02da866
-Gitweb:        https://git.kernel.org/tip/564200ed8e71d91327d337e46bc778cee02da866
-Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Thu, 19 Mar 2020 11:42:56 -03:00
-Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Thu, 19 Mar 2020 12:31:49 -03:00
+Commit-ID:     e73a8f38f82dd1c41b70a06556bea7dc250cc384
+Gitweb:        https://git.kernel.org/tip/e73a8f38f82dd1c41b70a06556bea7dc250cc384
+Author:        Alexey Makhalov <amakhalov@vmware.com>
+AuthorDate:    Mon, 23 Mar 2020 19:57:06 
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Tue, 24 Mar 2020 10:06:27 +01:00
 
-tools headers uapi: Update linux/in.h copy
+x86/vmware: Enable steal time accounting
 
-To get the changes in:
+Set paravirt_steal_rq_enabled if steal clock present.
+paravirt_steal_rq_enabled is used in sched/core.c to adjust task
+progress by offsetting stolen time. Use 'no-steal-acc' off switch (share
+same name with KVM) to disable steal time accounting.
 
-  267762538705 ("seg6: fix SRv6 L2 tunnels to use IANA-assigned protocol number")
-
-That ends up automatically adding the new IPPROTO_ETHERNET to the socket
-args beautifiers:
-
-  $ tools/perf/trace/beauty/socket_ipproto.sh > before
-
-Apply this patch:
-
-  $ tools/perf/trace/beauty/socket_ipproto.sh > after
-  $ diff -u before after
-  --- before	2020-03-19 11:48:36.876673819 -0300
-  +++ after	2020-03-19 11:49:00.148541377 -0300
-  @@ -6,6 +6,7 @@
-   	[132] = "SCTP",
-   	[136] = "UDPLITE",
-   	[137] = "MPLS",
-  +	[143] = "ETHERNET",
-   	[17] = "UDP",
-   	[1] = "ICMP",
-   	[22] = "IDP",
-  $
-
-Addresses this tools/perf build warning:
-
-  Warning: Kernel ABI header at 'tools/include/uapi/linux/in.h' differs from latest version at 'include/uapi/linux/in.h'
-  diff -u tools/include/uapi/linux/in.h include/uapi/linux/in.h
-
-Cc: David S. Miller <davem@davemloft.net>
-Cc: Paolo Lungaroni <paolo.lungaroni@cnit.it>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Alexey Makhalov <amakhalov@vmware.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Reviewed-by: Thomas Hellstrom <thellstrom@vmware.com>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lkml.kernel.org/r/20200323195707.31242-5-amakhalov@vmware.com
 ---
- tools/include/uapi/linux/in.h | 2 ++
- 1 file changed, 2 insertions(+)
+ Documentation/admin-guide/kernel-parameters.txt |  2 +-
+ arch/x86/kernel/cpu/vmware.c                    | 13 ++++++++++++-
+ 2 files changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/tools/include/uapi/linux/in.h b/tools/include/uapi/linux/in.h
-index 1521073..8533bf0 100644
---- a/tools/include/uapi/linux/in.h
-+++ b/tools/include/uapi/linux/in.h
-@@ -74,6 +74,8 @@ enum {
- #define IPPROTO_UDPLITE		IPPROTO_UDPLITE
-   IPPROTO_MPLS = 137,		/* MPLS in IP (RFC 4023)		*/
- #define IPPROTO_MPLS		IPPROTO_MPLS
-+  IPPROTO_ETHERNET = 143,	/* Ethernet-within-IPv6 Encapsulation	*/
-+#define IPPROTO_ETHERNET	IPPROTO_ETHERNET
-   IPPROTO_RAW = 255,		/* Raw IP packets			*/
- #define IPPROTO_RAW		IPPROTO_RAW
-   IPPROTO_MPTCP = 262,		/* Multipath TCP connection		*/
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index c07815d..863b37d 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -3174,7 +3174,7 @@
+ 			[X86,PV_OPS] Disable paravirtualized VMware scheduler
+ 			clock and use the default one.
+ 
+-	no-steal-acc	[X86,KVM,ARM64] Disable paravirtualized steal time
++	no-steal-acc	[X86,PV_OPS,ARM64] Disable paravirtualized steal time
+ 			accounting. steal time is computed, but won't
+ 			influence scheduler behaviour
+ 
+diff --git a/arch/x86/kernel/cpu/vmware.c b/arch/x86/kernel/cpu/vmware.c
+index cc60461..e885f73 100644
+--- a/arch/x86/kernel/cpu/vmware.c
++++ b/arch/x86/kernel/cpu/vmware.c
+@@ -125,6 +125,7 @@ static struct cyc2ns_data vmware_cyc2ns __ro_after_init;
+ static int vmw_sched_clock __initdata = 1;
+ static DEFINE_PER_CPU_DECRYPTED(struct vmware_steal_time, vmw_steal_time) __aligned(64);
+ static bool has_steal_clock;
++static bool steal_acc __initdata = true; /* steal time accounting */
+ 
+ static __init int setup_vmw_sched_clock(char *s)
+ {
+@@ -133,6 +134,13 @@ static __init int setup_vmw_sched_clock(char *s)
+ }
+ early_param("no-vmw-sched-clock", setup_vmw_sched_clock);
+ 
++static __init int parse_no_stealacc(char *arg)
++{
++	steal_acc = false;
++	return 0;
++}
++early_param("no-steal-acc", parse_no_stealacc);
++
+ static unsigned long long notrace vmware_sched_clock(void)
+ {
+ 	unsigned long long ns;
+@@ -306,8 +314,11 @@ static int vmware_cpu_down_prepare(unsigned int cpu)
+ 
+ static __init int activate_jump_labels(void)
+ {
+-	if (has_steal_clock)
++	if (has_steal_clock) {
+ 		static_key_slow_inc(&paravirt_steal_enabled);
++		if (steal_acc)
++			static_key_slow_inc(&paravirt_steal_rq_enabled);
++	}
+ 
+ 	return 0;
+ }
