@@ -2,33 +2,34 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 340EC19092E
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 10:18:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BD3AE190950
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 10:21:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727683AbgCXJSs (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 24 Mar 2020 05:18:48 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:44019 "EHLO
+        id S1727536AbgCXJTC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 24 Mar 2020 05:19:02 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:43984 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727653AbgCXJQ5 (ORCPT
+        with ESMTP id S1727592AbgCXJQv (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 24 Mar 2020 05:16:57 -0400
+        Tue, 24 Mar 2020 05:16:51 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jGfg6-00084W-Gl; Tue, 24 Mar 2020 10:16:54 +0100
+        id 1jGfg0-00084Q-Vc; Tue, 24 Mar 2020 10:16:49 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 23B081C0470;
-        Tue, 24 Mar 2020 10:16:42 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A82071C048C;
+        Tue, 24 Mar 2020 10:16:41 +0100 (CET)
 Date:   Tue, 24 Mar 2020 09:16:41 -0000
-From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Colin Ian King" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcu: React to callback overload by boosting RCU readers
-Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
+Subject: [tip: core/rcu] rcu: Fix spelling mistake "leval" -> "level"
+Cc:     Colin Ian King <colin.king@canonical.com>,
+        "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158504140178.28353.17369551335801939291.tip-bot2@tip-bot2>
+Message-ID: <158504140134.28353.294557610514832568.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -44,41 +45,33 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     8c14263d351b4766a040346ee917b8d81583a460
-Gitweb:        https://git.kernel.org/tip/8c14263d351b4766a040346ee917b8d81583a460
-Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Thu, 07 Nov 2019 01:10:55 -08:00
+Commit-ID:     aa96a93ba2bbad5e1b24706daffa14c4f1c50d2a
+Gitweb:        https://git.kernel.org/tip/aa96a93ba2bbad5e1b24706daffa14c4f1c50d2a
+Author:        Colin Ian King <colin.king@canonical.com>
+AuthorDate:    Thu, 12 Dec 2019 17:36:43 
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Thu, 20 Feb 2020 16:00:20 -08:00
 
-rcu: React to callback overload by boosting RCU readers
+rcu: Fix spelling mistake "leval" -> "level"
 
-RCU priority boosting currently is not applied until the grace period
-is at least 250 milliseconds old (or the number of milliseconds specified
-by the CONFIG_RCU_BOOST_DELAY Kconfig option).  Although this has worked
-well, it can result in OOM under conditions of RCU callback flooding.
-One can argue that the real-time systems using RCU priority boosting
-should carefully avoid RCU callback flooding, but one can just as well
-argue that an OOM is a rather obnoxious error message.
+This commit fixes a spelling mistake in a pr_info() message.
 
-This commit therefore disables the RCU priority boosting delay when
-there are excessive numbers of callbacks queued.
-
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
  kernel/rcu/tree_plugin.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/kernel/rcu/tree_plugin.h b/kernel/rcu/tree_plugin.h
-index 0be8fad..4d4637c 100644
+index 4d4637c..0765784 100644
 --- a/kernel/rcu/tree_plugin.h
 +++ b/kernel/rcu/tree_plugin.h
-@@ -1079,7 +1079,7 @@ static void rcu_initiate_boost(struct rcu_node *rnp, unsigned long flags)
- 	    (rnp->gp_tasks != NULL &&
- 	     rnp->boost_tasks == NULL &&
- 	     rnp->qsmask == 0 &&
--	     ULONG_CMP_GE(jiffies, rnp->boost_time))) {
-+	     (ULONG_CMP_GE(jiffies, rnp->boost_time) || rcu_state.cbovld))) {
- 		if (rnp->exp_tasks == NULL)
- 			rnp->boost_tasks = rnp->gp_tasks;
- 		raw_spin_unlock_irqrestore_rcu_node(rnp, flags);
+@@ -57,7 +57,7 @@ static void __init rcu_bootup_announce_oddness(void)
+ 	if (qlowmark != DEFAULT_RCU_QLOMARK)
+ 		pr_info("\tBoot-time adjustment of callback low-water mark to %ld.\n", qlowmark);
+ 	if (qovld != DEFAULT_RCU_QOVLD)
+-		pr_info("\tBoot-time adjustment of callback overload leval to %ld.\n", qovld);
++		pr_info("\tBoot-time adjustment of callback overload level to %ld.\n", qovld);
+ 	if (jiffies_till_first_fqs != ULONG_MAX)
+ 		pr_info("\tBoot-time adjustment of first FQS scan delay to %ld jiffies.\n", jiffies_till_first_fqs);
+ 	if (jiffies_till_next_fqs != ULONG_MAX)
