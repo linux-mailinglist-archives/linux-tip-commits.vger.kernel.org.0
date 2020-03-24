@@ -2,36 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A632A191CB0
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 23:32:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F275191CDF
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 23:33:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728555AbgCXWc0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 24 Mar 2020 18:32:26 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:46377 "EHLO
+        id S1728496AbgCXWcW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 24 Mar 2020 18:32:22 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:46383 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728294AbgCXWcU (ORCPT
+        with ESMTP id S1728445AbgCXWcU (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Tue, 24 Mar 2020 18:32:20 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jGs5o-0006tN-OE; Tue, 24 Mar 2020 23:32:16 +0100
+        id 1jGs5p-0006uC-Jn; Tue, 24 Mar 2020 23:32:17 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 61EE01C0451;
-        Tue, 24 Mar 2020 23:32:16 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4650C1C0451;
+        Tue, 24 Mar 2020 23:32:17 +0100 (CET)
 Date:   Tue, 24 Mar 2020 22:32:16 -0000
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cpu] mmc: sdhci-acpi: Convert to new X86 CPU match macros
+Subject: [tip: x86/cpu] extcon: axp288: Convert to new X86 CPU match macros
 Cc:     Thomas Gleixner <tglx@linutronix.de>, Borislav Petkov <bp@suse.de>,
         "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200320131510.285691129@linutronix.de>
-References: <20200320131510.285691129@linutronix.de>
+In-Reply-To: <20200320131510.075227793@linutronix.de>
+References: <20200320131510.075227793@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <158508913603.28353.9748836391655211522.tip-bot2@tip-bot2>
+Message-ID: <158508913693.28353.9882426215413347296.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,14 +47,14 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/cpu branch of tip:
 
-Commit-ID:     1e41eb1524798d6863169ccbcce8bf8f0a63db18
-Gitweb:        https://git.kernel.org/tip/1e41eb1524798d6863169ccbcce8bf8f0a63db18
+Commit-ID:     20d320c664f9bdedb4a1b0029b539aec8c0a71b1
+Gitweb:        https://git.kernel.org/tip/20d320c664f9bdedb4a1b0029b539aec8c0a71b1
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Fri, 20 Mar 2020 14:14:01 +01:00
+AuthorDate:    Fri, 20 Mar 2020 14:13:59 +01:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 24 Mar 2020 21:34:49 +01:00
+CommitterDate: Tue, 24 Mar 2020 21:34:11 +01:00
 
-mmc: sdhci-acpi: Convert to new X86 CPU match macros
+extcon: axp288: Convert to new X86 CPU match macros
 
 The new macro set has a consistent namespace and uses C99 initializers
 instead of the grufty C89 ones.
@@ -62,30 +62,21 @@ instead of the grufty C89 ones.
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Borislav Petkov <bp@suse.de>
 Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://lkml.kernel.org/r/20200320131510.285691129@linutronix.de
+Link: https://lkml.kernel.org/r/20200320131510.075227793@linutronix.de
 ---
- drivers/mmc/host/sdhci-acpi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/extcon/extcon-axp288.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mmc/host/sdhci-acpi.c b/drivers/mmc/host/sdhci-acpi.c
-index 9651dca..a439754 100644
---- a/drivers/mmc/host/sdhci-acpi.c
-+++ b/drivers/mmc/host/sdhci-acpi.c
-@@ -234,7 +234,7 @@ static const struct sdhci_acpi_chip sdhci_acpi_chip_int = {
- static bool sdhci_acpi_byt(void)
- {
- 	static const struct x86_cpu_id byt[] = {
--		{ X86_VENDOR_INTEL, 6, INTEL_FAM6_ATOM_SILVERMONT },
-+		X86_MATCH_INTEL_FAM6_MODEL(ATOM_SILVERMONT, NULL),
- 		{}
- 	};
+diff --git a/drivers/extcon/extcon-axp288.c b/drivers/extcon/extcon-axp288.c
+index a7f2161..34b7aff 100644
+--- a/drivers/extcon/extcon-axp288.c
++++ b/drivers/extcon/extcon-axp288.c
+@@ -107,7 +107,7 @@ struct axp288_extcon_info {
+ };
  
-@@ -244,7 +244,7 @@ static bool sdhci_acpi_byt(void)
- static bool sdhci_acpi_cht(void)
- {
- 	static const struct x86_cpu_id cht[] = {
--		{ X86_VENDOR_INTEL, 6, INTEL_FAM6_ATOM_AIRMONT },
-+		X86_MATCH_INTEL_FAM6_MODEL(ATOM_AIRMONT, NULL),
- 		{}
- 	};
+ static const struct x86_cpu_id cherry_trail_cpu_ids[] = {
+-	{ X86_VENDOR_INTEL, 6, INTEL_FAM6_ATOM_AIRMONT, X86_FEATURE_ANY },
++	X86_MATCH_INTEL_FAM6_MODEL(ATOM_AIRMONT,	NULL),
+ 	{}
+ };
  
