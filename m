@@ -2,33 +2,34 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C09EF190967
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 10:21:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D3BD19096B
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 10:21:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727238AbgCXJUJ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 24 Mar 2020 05:20:09 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:43913 "EHLO
+        id S1727066AbgCXJU2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 24 Mar 2020 05:20:28 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:43887 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727416AbgCXJQi (ORCPT
+        with ESMTP id S1727298AbgCXJQe (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 24 Mar 2020 05:16:38 -0400
+        Tue, 24 Mar 2020 05:16:34 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jGffo-0007wb-Gt; Tue, 24 Mar 2020 10:16:36 +0100
+        id 1jGffj-0007wr-TX; Tue, 24 Mar 2020 10:16:32 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 2801C1C0470;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 857B01C0481;
         Tue, 24 Mar 2020 10:16:31 +0100 (CET)
-Date:   Tue, 24 Mar 2020 09:16:30 -0000
+Date:   Tue, 24 Mar 2020 09:16:31 -0000
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcutorture: Manually clean up after rcu_barrier() failure
+Subject: [tip: core/rcu] rcutorture: Make rcu_torture_barrier_cbs() post from
+ corresponding CPU
 Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158504139074.28353.12661964318347740564.tip-bot2@tip-bot2>
+Message-ID: <158504139123.28353.17748031342974553550.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -44,57 +45,61 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     9470a18fabd056e67ee12059dab04faf6e1f253c
-Gitweb:        https://git.kernel.org/tip/9470a18fabd056e67ee12059dab04faf6e1f253c
+Commit-ID:     50d4b62970e21e9573daf0e3c1138b4d1ebcca47
+Gitweb:        https://git.kernel.org/tip/50d4b62970e21e9573daf0e3c1138b4d1ebcca47
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Wed, 05 Feb 2020 12:54:34 -08:00
+AuthorDate:    Tue, 04 Feb 2020 15:00:56 -08:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Thu, 20 Feb 2020 16:03:31 -08:00
 
-rcutorture: Manually clean up after rcu_barrier() failure
+rcutorture: Make rcu_torture_barrier_cbs() post from corresponding CPU
 
-Currently, if rcu_barrier() returns too soon, the test waits 100ms and
-then does another instance of the test.  However, if rcu_barrier() were
-to have waited for more than 100ms too short a time, this could cause
-the test's rcu_head structures to be reused while they were still on
-RCU's callback lists.  This can result in knock-on errors that obscure
-the original rcu_barrier() test failure.
+Currently, rcu_torture_barrier_cbs() posts callbacks from whatever CPU
+it is running on, which means that all these kthreads might well be
+posting from the same CPU, which would drastically reduce the effectiveness
+of this test.  This commit therefore uses IPIs to make the callbacks be
+posted from the corresponding CPU (given by local variable myid).
 
-This commit therefore adds code that attempts to wait until all of
-the test's callbacks have been invoked.  Of course, if RCU completely
-lost track of the corresponding rcu_head structures, this wait could be
-forever.  This commit therefore also complains if this attempted recovery
-takes more than one second, and it also gives up when the test ends.
+If the IPI fails (which can happen if the target CPU is offline or does
+not exist at all), the callback is posted on whatever CPU is currently
+running.
 
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/rcu/rcutorture.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ kernel/rcu/rcutorture.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
 diff --git a/kernel/rcu/rcutorture.c b/kernel/rcu/rcutorture.c
-index f82515c..5453bd5 100644
+index 7e01e9a..f82515c 100644
 --- a/kernel/rcu/rcutorture.c
 +++ b/kernel/rcu/rcutorture.c
-@@ -2124,7 +2124,21 @@ static int rcu_torture_barrier(void *arg)
- 			pr_err("barrier_cbs_invoked = %d, n_barrier_cbs = %d\n",
- 			       atomic_read(&barrier_cbs_invoked),
- 			       n_barrier_cbs);
--			WARN_ON_ONCE(1);
-+			WARN_ON(1);
-+			// Wait manually for the remaining callbacks
-+			i = 0;
-+			do {
-+				if (WARN_ON(i++ > HZ))
-+					i = INT_MIN;
-+				schedule_timeout_interruptible(1);
-+				cur_ops->cb_barrier();
-+			} while (atomic_read(&barrier_cbs_invoked) !=
-+				 n_barrier_cbs &&
-+				 !torture_must_stop());
-+			smp_mb(); // Can't trust ordering if broken.
-+			if (!torture_must_stop())
-+				pr_err("Recovered: barrier_cbs_invoked = %d\n",
-+				       atomic_read(&barrier_cbs_invoked));
- 		} else {
- 			n_barrier_successes++;
- 		}
+@@ -2053,6 +2053,14 @@ static void rcu_torture_barrier_cbf(struct rcu_head *rcu)
+ 	atomic_inc(&barrier_cbs_invoked);
+ }
+ 
++/* IPI handler to get callback posted on desired CPU, if online. */
++static void rcu_torture_barrier1cb(void *rcu_void)
++{
++	struct rcu_head *rhp = rcu_void;
++
++	cur_ops->call(rhp, rcu_torture_barrier_cbf);
++}
++
+ /* kthread function to register callbacks used to test RCU barriers. */
+ static int rcu_torture_barrier_cbs(void *arg)
+ {
+@@ -2076,9 +2084,11 @@ static int rcu_torture_barrier_cbs(void *arg)
+ 		 * The above smp_load_acquire() ensures barrier_phase load
+ 		 * is ordered before the following ->call().
+ 		 */
+-		local_irq_disable(); /* Just to test no-irq call_rcu(). */
+-		cur_ops->call(&rcu, rcu_torture_barrier_cbf);
+-		local_irq_enable();
++		if (smp_call_function_single(myid, rcu_torture_barrier1cb,
++					     &rcu, 1)) {
++			// IPI failed, so use direct call from current CPU.
++			cur_ops->call(&rcu, rcu_torture_barrier_cbf);
++		}
+ 		if (atomic_dec_and_test(&barrier_cbs_count))
+ 			wake_up(&barrier_wq);
+ 	} while (!torture_must_stop());
