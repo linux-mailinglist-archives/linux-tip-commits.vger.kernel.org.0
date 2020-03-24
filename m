@@ -2,36 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F10E1191CA9
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 23:32:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A9DE7191CAE
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 23:32:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728349AbgCXWcT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 24 Mar 2020 18:32:19 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:46362 "EHLO
+        id S1728445AbgCXWcY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 24 Mar 2020 18:32:24 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:46384 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728216AbgCXWcT (ORCPT
+        with ESMTP id S1728216AbgCXWcU (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 24 Mar 2020 18:32:19 -0400
+        Tue, 24 Mar 2020 18:32:20 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jGs5m-0006rX-BB; Tue, 24 Mar 2020 23:32:14 +0100
+        id 1jGs5m-0006rZ-Hl; Tue, 24 Mar 2020 23:32:14 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C21B91C0451;
-        Tue, 24 Mar 2020 23:32:13 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 2F9A71C0470;
+        Tue, 24 Mar 2020 23:32:14 +0100 (CET)
 Date:   Tue, 24 Mar 2020 22:32:13 -0000
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cpu] x86/cpu: Cleanup the now unused CPU match macros
+Subject: [tip: x86/cpu] hwrng: via_rng: Convert to new X86 CPU match macros
 Cc:     Thomas Gleixner <tglx@linutronix.de>, Borislav Petkov <bp@suse.de>,
         "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200320131510.900226233@linutronix.de>
-References: <20200320131510.900226233@linutronix.de>
+In-Reply-To: <20200320131510.793641638@linutronix.de>
+References: <20200320131510.793641638@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <158508913336.28353.6318318172252313940.tip-bot2@tip-bot2>
+Message-ID: <158508913387.28353.5741696862858938987.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,59 +47,51 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/cpu branch of tip:
 
-Commit-ID:     1826d56bcef9c38287f7c1a8e3b7778863e0b9d7
-Gitweb:        https://git.kernel.org/tip/1826d56bcef9c38287f7c1a8e3b7778863e0b9d7
+Commit-ID:     315d01d1ad39f940c5156d6b2653bf89182422a9
+Gitweb:        https://git.kernel.org/tip/315d01d1ad39f940c5156d6b2653bf89182422a9
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Fri, 20 Mar 2020 14:14:07 +01:00
+AuthorDate:    Fri, 20 Mar 2020 14:14:06 +01:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 24 Mar 2020 21:37:23 +01:00
+CommitterDate: Tue, 24 Mar 2020 21:36:26 +01:00
 
-x86/cpu: Cleanup the now unused CPU match macros
+hwrng: via_rng: Convert to new X86 CPU match macros
 
-No more users.
+The new macro set has a consistent namespace and uses C99 initializers
+instead of the grufty C89 ones.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Borislav Petkov <bp@suse.de>
 Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://lkml.kernel.org/r/20200320131510.900226233@linutronix.de
+Link: https://lkml.kernel.org/r/20200320131510.793641638@linutronix.de
 ---
- arch/x86/include/asm/cpu_device_id.h |  3 ---
- arch/x86/include/asm/intel-family.h  | 13 -------------
- 2 files changed, 16 deletions(-)
+ drivers/char/hw_random/via-rng.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/include/asm/cpu_device_id.h b/arch/x86/include/asm/cpu_device_id.h
-index f11770f..cf3d621 100644
---- a/arch/x86/include/asm/cpu_device_id.h
-+++ b/arch/x86/include/asm/cpu_device_id.h
-@@ -91,9 +91,6 @@
- #define X86_MATCH_FEATURE(feature, data)				\
- 	X86_MATCH_VENDOR_FEATURE(ANY, feature, data)
+diff --git a/drivers/char/hw_random/via-rng.c b/drivers/char/hw_random/via-rng.c
+index ffe9b0c..39943bc 100644
+--- a/drivers/char/hw_random/via-rng.c
++++ b/drivers/char/hw_random/via-rng.c
+@@ -209,20 +209,19 @@ static int __init mod_init(void)
+ out:
+ 	return err;
+ }
++module_init(mod_init);
  
--/* Transitional to keep the existing code working */
--#define X86_FEATURE_MATCH(feature)	X86_MATCH_FEATURE(feature, NULL)
+ static void __exit mod_exit(void)
+ {
+ 	hwrng_unregister(&via_rng);
+ }
 -
- /**
-  * X86_MATCH_VENDOR_FAM_MODEL - Match vendor, family and model
-  * @vendor:	The vendor name, e.g. INTEL, AMD, HYGON, ..., ANY
-diff --git a/arch/x86/include/asm/intel-family.h b/arch/x86/include/asm/intel-family.h
-index 236a87a..8f1e94f 100644
---- a/arch/x86/include/asm/intel-family.h
-+++ b/arch/x86/include/asm/intel-family.h
-@@ -124,17 +124,4 @@
- /* Family 5 */
- #define INTEL_FAM5_QUARK_X1000		0x09 /* Quark X1000 SoC */
+-module_init(mod_init);
+ module_exit(mod_exit);
  
--/* Useful macros */
--#define INTEL_CPU_FAM_ANY(_family, _model, _driver_data)	\
--{								\
--	.vendor		= X86_VENDOR_INTEL,			\
--	.family		= _family,				\
--	.model		= _model,				\
--	.feature	= X86_FEATURE_ANY,			\
--	.driver_data	= (kernel_ulong_t)&_driver_data		\
--}
--
--#define INTEL_CPU_FAM6(_model, _driver_data)			\
--	INTEL_CPU_FAM_ANY(6, INTEL_FAM6_##_model, _driver_data)
--
- #endif /* _ASM_X86_INTEL_FAMILY_H */
+ static struct x86_cpu_id __maybe_unused via_rng_cpu_id[] = {
+-	X86_FEATURE_MATCH(X86_FEATURE_XSTORE),
++	X86_MATCH_FEATURE(X86_FEATURE_XSTORE, NULL),
+ 	{}
+ };
++MODULE_DEVICE_TABLE(x86cpu, via_rng_cpu_id);
+ 
+ MODULE_DESCRIPTION("H/W RNG driver for VIA CPU with PadLock");
+ MODULE_LICENSE("GPL");
+-MODULE_DEVICE_TABLE(x86cpu, via_rng_cpu_id);
