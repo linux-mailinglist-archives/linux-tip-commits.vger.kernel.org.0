@@ -2,37 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FBB218FE32
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 23 Mar 2020 20:55:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C2AD19088A
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 10:11:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727054AbgCWTyk (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 23 Mar 2020 15:54:40 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:42697 "EHLO
+        id S1726962AbgCXJLB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 24 Mar 2020 05:11:01 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:43736 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727126AbgCWTyh (ORCPT
+        with ESMTP id S1726565AbgCXJLB (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 23 Mar 2020 15:54:37 -0400
+        Tue, 24 Mar 2020 05:11:01 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jGT9Y-00065X-Mb; Mon, 23 Mar 2020 20:54:28 +0100
+        id 1jGfaI-0007TN-Mv; Tue, 24 Mar 2020 10:10:55 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 2D20A1C0475;
-        Mon, 23 Mar 2020 20:54:28 +0100 (CET)
-Date:   Mon, 23 Mar 2020 19:54:27 -0000
-From:   "tip-bot2 for Vincenzo Frascino" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4B6D61C0451;
+        Tue, 24 Mar 2020 10:10:53 +0100 (CET)
+Date:   Tue, 24 Mar 2020 09:10:52 -0000
+From:   "tip-bot2 for Marco Elver" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] um: Fix header inclusion
-Cc:     kbuild test robot <lkp@intel.com>,
-        Vincenzo Frascino <vincenzo.frascino@arm.com>,
-        Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
+Subject: [tip: locking/kcsan] kcsan, trace: Make KCSAN compatible with tracing
+Cc:     Qian Cai <cai@lca.pw>,
+        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
+        Marco Elver <elver@google.com>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200323124109.7104-1-vincenzo.frascino@arm.com>
-References: <20200323124109.7104-1-vincenzo.frascino@arm.com>
 MIME-Version: 1.0
-Message-ID: <158499326782.28353.14321453432536168841.tip-bot2@tip-bot2>
+Message-ID: <158504105289.28353.4308896964049852742.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -46,69 +46,82 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/core branch of tip:
+The following commit has been merged into the locking/kcsan branch of tip:
 
-Commit-ID:     1c1a18b00d7e25d1bed3507880de2da07be704a2
-Gitweb:        https://git.kernel.org/tip/1c1a18b00d7e25d1bed3507880de2da07be704a2
-Author:        Vincenzo Frascino <vincenzo.frascino@arm.com>
-AuthorDate:    Mon, 23 Mar 2020 12:41:09 
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 23 Mar 2020 18:45:14 +01:00
+Commit-ID:     f5d2313bd3c540be405c4977a63840cd6d0167b5
+Gitweb:        https://git.kernel.org/tip/f5d2313bd3c540be405c4977a63840cd6d0167b5
+Author:        Marco Elver <elver@google.com>
+AuthorDate:    Fri, 14 Feb 2020 22:10:35 +01:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Sat, 21 Mar 2020 09:44:41 +01:00
 
-um: Fix header inclusion
+kcsan, trace: Make KCSAN compatible with tracing
 
-User Mode Linux is a flavor of x86 that from the vDSO prospective always
-falls back on system calls. This implies that it does not require any
-of the unified vDSO definitions and their inclusion causes side effects
-like this:
+Previously the system would lock up if ftrace was enabled together with
+KCSAN. This is due to recursion on reporting if the tracer code is
+instrumented with KCSAN.
 
-  In file included from include/vdso/processor.h:10:0,
-                      from include/vdso/datapage.h:17,
-                      from arch/x86/include/asm/vgtod.h:7,
-                      from arch/x86/um/../kernel/sys_ia32.c:49:
-  >> arch/x86/include/asm/vdso/processor.h:11:29: error: redefinition of 'rep_nop'
-      static __always_inline void rep_nop(void)
-                                  ^~~~~~~
-     In file included from include/linux/rcupdate.h:30:0,
-                      from include/linux/rculist.h:11,
-                      from include/linux/pid.h:5,
-                      from include/linux/sched.h:14,
-                      from arch/x86/um/../kernel/sys_ia32.c:25:
-     arch/x86/um/asm/processor.h:24:20: note: previous definition of 'rep_nop' was here
-      static inline void rep_nop(void)
+To avoid this for all types of tracing, disable KCSAN instrumentation
+for all of kernel/trace.
 
-Make sure that the unnecessary headers are not included when um is built
-to address the problem.
+Furthermore, since KCSAN relies on udelay() to introduce delay, we have
+to disable ftrace for udelay() (currently done for x86) in case KCSAN is
+used together with lockdep and ftrace. The reason is that it may corrupt
+lockdep IRQ flags tracing state due to a peculiar case of recursion
+(details in Makefile comment).
 
-Fixes: abc22418db02 ("x86/vdso: Enable x86 to use common headers")
-Reported-by: kbuild test robot <lkp@intel.com>
-Signed-off-by: Vincenzo Frascino <vincenzo.frascino@arm.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20200323124109.7104-1-vincenzo.frascino@arm.com
+Reported-by: Qian Cai <cai@lca.pw>
+Tested-by: Qian Cai <cai@lca.pw>
+Acked-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
+Signed-off-by: Marco Elver <elver@google.com>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- arch/x86/include/asm/vgtod.h | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/x86/lib/Makefile | 5 +++++
+ kernel/kcsan/Makefile | 2 ++
+ kernel/trace/Makefile | 3 +++
+ 3 files changed, 10 insertions(+)
 
-diff --git a/arch/x86/include/asm/vgtod.h b/arch/x86/include/asm/vgtod.h
-index fc8e4cd..7aa38b2 100644
---- a/arch/x86/include/asm/vgtod.h
-+++ b/arch/x86/include/asm/vgtod.h
-@@ -2,6 +2,11 @@
- #ifndef _ASM_X86_VGTOD_H
- #define _ASM_X86_VGTOD_H
+diff --git a/arch/x86/lib/Makefile b/arch/x86/lib/Makefile
+index 432a077..6110bce 100644
+--- a/arch/x86/lib/Makefile
++++ b/arch/x86/lib/Makefile
+@@ -8,6 +8,11 @@ KCOV_INSTRUMENT_delay.o	:= n
  
-+/*
-+ * This check is required to prevent ARCH=um to include
-+ * unwanted headers.
-+ */
-+#ifdef CONFIG_GENERIC_GETTIMEOFDAY
- #include <linux/compiler.h>
- #include <asm/clocksource.h>
- #include <vdso/datapage.h>
-@@ -14,5 +19,6 @@ typedef u64 gtod_long_t;
- #else
- typedef unsigned long gtod_long_t;
- #endif
-+#endif /* CONFIG_GENERIC_GETTIMEOFDAY */
+ # KCSAN uses udelay for introducing watchpoint delay; avoid recursion.
+ KCSAN_SANITIZE_delay.o := n
++ifdef CONFIG_KCSAN
++# In case KCSAN+lockdep+ftrace are enabled, disable ftrace for delay.o to avoid
++# lockdep -> [other libs] -> KCSAN -> udelay -> ftrace -> lockdep recursion.
++CFLAGS_REMOVE_delay.o = $(CC_FLAGS_FTRACE)
++endif
  
- #endif /* _ASM_X86_VGTOD_H */
+ # Early boot use of cmdline; don't instrument it
+ ifdef CONFIG_AMD_MEM_ENCRYPT
+diff --git a/kernel/kcsan/Makefile b/kernel/kcsan/Makefile
+index df6b779..d4999b3 100644
+--- a/kernel/kcsan/Makefile
++++ b/kernel/kcsan/Makefile
+@@ -4,6 +4,8 @@ KCOV_INSTRUMENT := n
+ UBSAN_SANITIZE := n
+ 
+ CFLAGS_REMOVE_core.o = $(CC_FLAGS_FTRACE)
++CFLAGS_REMOVE_debugfs.o = $(CC_FLAGS_FTRACE)
++CFLAGS_REMOVE_report.o = $(CC_FLAGS_FTRACE)
+ 
+ CFLAGS_core.o := $(call cc-option,-fno-conserve-stack,) \
+ 	$(call cc-option,-fno-stack-protector,)
+diff --git a/kernel/trace/Makefile b/kernel/trace/Makefile
+index f9dcd19..6b601d8 100644
+--- a/kernel/trace/Makefile
++++ b/kernel/trace/Makefile
+@@ -6,6 +6,9 @@ ifdef CONFIG_FUNCTION_TRACER
+ ORIG_CFLAGS := $(KBUILD_CFLAGS)
+ KBUILD_CFLAGS = $(subst $(CC_FLAGS_FTRACE),,$(ORIG_CFLAGS))
+ 
++# Avoid recursion due to instrumentation.
++KCSAN_SANITIZE := n
++
+ ifdef CONFIG_FTRACE_SELFTEST
+ # selftest needs instrumentation
+ CFLAGS_trace_selftest_dynamic.o = $(CC_FLAGS_FTRACE)
