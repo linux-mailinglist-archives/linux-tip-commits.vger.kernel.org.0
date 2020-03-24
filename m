@@ -2,37 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FBBE191CD5
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 23:33:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 762B8191CDD
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 23:33:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728587AbgCXWc0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 24 Mar 2020 18:32:26 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:46423 "EHLO
+        id S1728907AbgCXWdi (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 24 Mar 2020 18:33:38 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:46394 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728549AbgCXWc0 (ORCPT
+        with ESMTP id S1728227AbgCXWcX (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 24 Mar 2020 18:32:26 -0400
+        Tue, 24 Mar 2020 18:32:23 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jGs5r-0006vc-C5; Tue, 24 Mar 2020 23:32:19 +0100
+        id 1jGs5s-0006vp-93; Tue, 24 Mar 2020 23:32:20 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E85991C0451;
-        Tue, 24 Mar 2020 23:32:18 +0100 (CET)
-Date:   Tue, 24 Mar 2020 22:32:18 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C96001C0451;
+        Tue, 24 Mar 2020 23:32:19 +0100 (CET)
+Date:   Tue, 24 Mar 2020 22:32:19 -0000
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cpu] EDAC: Convert to new X86 CPU match macros
+Subject: [tip: x86/cpu] ACPI: Convert to new X86 CPU match macros
 Cc:     Thomas Gleixner <tglx@linutronix.de>, Borislav Petkov <bp@suse.de>,
         "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
-        Tony Luck <tony.luck@intel.com>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200320131509.673579000@linutronix.de>
-References: <20200320131509.673579000@linutronix.de>
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200320131509.467730627@linutronix.de>
+References: <20200320131509.467730627@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <158508913862.28353.8960878520716086709.tip-bot2@tip-bot2>
+Message-ID: <158508913943.28353.15124523012453063581.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,125 +47,117 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/cpu branch of tip:
 
-Commit-ID:     298426211c4b36e1e2475deb941f8fa59d6686c6
-Gitweb:        https://git.kernel.org/tip/298426211c4b36e1e2475deb941f8fa59d6686c6
+Commit-ID:     e36cf2f768467cff824e7da87aedc4e99e4c8396
+Gitweb:        https://git.kernel.org/tip/e36cf2f768467cff824e7da87aedc4e99e4c8396
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Fri, 20 Mar 2020 14:13:55 +01:00
+AuthorDate:    Fri, 20 Mar 2020 14:13:53 +01:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 24 Mar 2020 21:32:28 +01:00
+CommitterDate: Tue, 24 Mar 2020 21:30:50 +01:00
 
-EDAC: Convert to new X86 CPU match macros
+ACPI: Convert to new X86 CPU match macros
 
 The new macro set has a consistent namespace and uses C99 initializers
 instead of the grufty C89 ones.
 
+Rename the local macro wrapper to X86_MATCH for consistency. It stays for
+readability sake.
+
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Borislav Petkov <bp@suse.de>
 Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Acked-by: Tony Luck <tony.luck@intel.com>
-Link: https://lkml.kernel.org/r/20200320131509.673579000@linutronix.de
+Link: https://lkml.kernel.org/r/20200320131509.467730627@linutronix.de
 ---
- drivers/edac/amd64_edac.c | 14 +++++++-------
- drivers/edac/i10nm_base.c |  8 ++++----
- drivers/edac/pnd2_edac.c  |  4 ++--
- drivers/edac/sb_edac.c    | 14 +++++++-------
- drivers/edac/skx_base.c   |  2 +-
- 5 files changed, 21 insertions(+), 21 deletions(-)
+ drivers/acpi/acpi_lpss.c |  6 ++----
+ drivers/acpi/x86/utils.c | 20 ++++++++++----------
+ 2 files changed, 12 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/edac/amd64_edac.c b/drivers/edac/amd64_edac.c
-index 9fbad90..f91f3bc 100644
---- a/drivers/edac/amd64_edac.c
-+++ b/drivers/edac/amd64_edac.c
-@@ -3626,13 +3626,13 @@ static void setup_pci_device(void)
- }
- 
- static const struct x86_cpu_id amd64_cpuids[] = {
--	{ X86_VENDOR_AMD, 0xF,	X86_MODEL_ANY,	X86_FEATURE_ANY, 0 },
--	{ X86_VENDOR_AMD, 0x10, X86_MODEL_ANY,	X86_FEATURE_ANY, 0 },
--	{ X86_VENDOR_AMD, 0x15, X86_MODEL_ANY,	X86_FEATURE_ANY, 0 },
--	{ X86_VENDOR_AMD, 0x16, X86_MODEL_ANY,	X86_FEATURE_ANY, 0 },
--	{ X86_VENDOR_AMD, 0x17, X86_MODEL_ANY,	X86_FEATURE_ANY, 0 },
--	{ X86_VENDOR_HYGON, 0x18, X86_MODEL_ANY, X86_FEATURE_ANY, 0 },
--	{ X86_VENDOR_AMD, 0x19, X86_MODEL_ANY,	X86_FEATURE_ANY, 0 },
-+	X86_MATCH_VENDOR_FAM(AMD,	0x0F, NULL),
-+	X86_MATCH_VENDOR_FAM(AMD,	0x10, NULL),
-+	X86_MATCH_VENDOR_FAM(AMD,	0x15, NULL),
-+	X86_MATCH_VENDOR_FAM(AMD,	0x16, NULL),
-+	X86_MATCH_VENDOR_FAM(AMD,	0x17, NULL),
-+	X86_MATCH_VENDOR_FAM(HYGON,	0x18, NULL),
-+	X86_MATCH_VENDOR_FAM(AMD,	0x19, NULL),
- 	{ }
- };
- MODULE_DEVICE_TABLE(x86cpu, amd64_cpuids);
-diff --git a/drivers/edac/i10nm_base.c b/drivers/edac/i10nm_base.c
-index 059eccf..df08de9 100644
---- a/drivers/edac/i10nm_base.c
-+++ b/drivers/edac/i10nm_base.c
-@@ -123,10 +123,10 @@ static int i10nm_get_all_munits(void)
- }
- 
- static const struct x86_cpu_id i10nm_cpuids[] = {
--	{ X86_VENDOR_INTEL, 6, INTEL_FAM6_ATOM_TREMONT_D, 0, 0 },
--	{ X86_VENDOR_INTEL, 6, INTEL_FAM6_ICELAKE_X, 0, 0 },
--	{ X86_VENDOR_INTEL, 6, INTEL_FAM6_ICELAKE_D, 0, 0 },
--	{ }
-+	X86_MATCH_INTEL_FAM6_MODEL(ATOM_TREMONT_D,	NULL),
-+	X86_MATCH_INTEL_FAM6_MODEL(ICELAKE_X,		NULL),
-+	X86_MATCH_INTEL_FAM6_MODEL(ICELAKE_D,		NULL),
-+	{}
- };
- MODULE_DEVICE_TABLE(x86cpu, i10nm_cpuids);
- 
-diff --git a/drivers/edac/pnd2_edac.c b/drivers/edac/pnd2_edac.c
-index 933f772..bc47328 100644
---- a/drivers/edac/pnd2_edac.c
-+++ b/drivers/edac/pnd2_edac.c
-@@ -1537,8 +1537,8 @@ static struct dunit_ops dnv_ops = {
+diff --git a/drivers/acpi/acpi_lpss.c b/drivers/acpi/acpi_lpss.c
+index db18df6..dee9999 100644
+--- a/drivers/acpi/acpi_lpss.c
++++ b/drivers/acpi/acpi_lpss.c
+@@ -306,11 +306,9 @@ static const struct lpss_device_desc bsw_spi_dev_desc = {
+ 	.setup = lpss_deassert_reset,
  };
  
- static const struct x86_cpu_id pnd2_cpuids[] = {
--	{ X86_VENDOR_INTEL, 6, INTEL_FAM6_ATOM_GOLDMONT, 0, (kernel_ulong_t)&apl_ops },
--	{ X86_VENDOR_INTEL, 6, INTEL_FAM6_ATOM_GOLDMONT_D, 0, (kernel_ulong_t)&dnv_ops },
-+	X86_MATCH_INTEL_FAM6_MODEL(ATOM_GOLDMONT,	&apl_ops),
-+	X86_MATCH_INTEL_FAM6_MODEL(ATOM_GOLDMONT_D,	&dnv_ops),
- 	{ }
+-#define ICPU(model)	{ X86_VENDOR_INTEL, 6, model, X86_FEATURE_ANY, }
+-
+ static const struct x86_cpu_id lpss_cpu_ids[] = {
+-	ICPU(INTEL_FAM6_ATOM_SILVERMONT),	/* Valleyview, Bay Trail */
+-	ICPU(INTEL_FAM6_ATOM_AIRMONT),	/* Braswell, Cherry Trail */
++	X86_MATCH_INTEL_FAM6_MODEL(ATOM_SILVERMONT,	NULL),
++	X86_MATCH_INTEL_FAM6_MODEL(ATOM_AIRMONT,	NULL),
+ 	{}
  };
- MODULE_DEVICE_TABLE(x86cpu, pnd2_cpuids);
-diff --git a/drivers/edac/sb_edac.c b/drivers/edac/sb_edac.c
-index 4957e8e..7d51c82 100644
---- a/drivers/edac/sb_edac.c
-+++ b/drivers/edac/sb_edac.c
-@@ -3420,13 +3420,13 @@ fail0:
- }
  
- static const struct x86_cpu_id sbridge_cpuids[] = {
--	INTEL_CPU_FAM6(SANDYBRIDGE_X,	  pci_dev_descr_sbridge_table),
--	INTEL_CPU_FAM6(IVYBRIDGE_X,	  pci_dev_descr_ibridge_table),
--	INTEL_CPU_FAM6(HASWELL_X,	  pci_dev_descr_haswell_table),
--	INTEL_CPU_FAM6(BROADWELL_X,	  pci_dev_descr_broadwell_table),
--	INTEL_CPU_FAM6(BROADWELL_D,	  pci_dev_descr_broadwell_table),
--	INTEL_CPU_FAM6(XEON_PHI_KNL,	  pci_dev_descr_knl_table),
--	INTEL_CPU_FAM6(XEON_PHI_KNM,	  pci_dev_descr_knl_table),
-+	X86_MATCH_INTEL_FAM6_MODEL(SANDYBRIDGE_X, &pci_dev_descr_sbridge_table),
-+	X86_MATCH_INTEL_FAM6_MODEL(IVYBRIDGE_X,	  &pci_dev_descr_ibridge_table),
-+	X86_MATCH_INTEL_FAM6_MODEL(HASWELL_X,	  &pci_dev_descr_haswell_table),
-+	X86_MATCH_INTEL_FAM6_MODEL(BROADWELL_X,	  &pci_dev_descr_broadwell_table),
-+	X86_MATCH_INTEL_FAM6_MODEL(BROADWELL_D,	  &pci_dev_descr_broadwell_table),
-+	X86_MATCH_INTEL_FAM6_MODEL(XEON_PHI_KNL,  &pci_dev_descr_knl_table),
-+	X86_MATCH_INTEL_FAM6_MODEL(XEON_PHI_KNM,  &pci_dev_descr_knl_table),
- 	{ }
+diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
+index 697a6b1..bdc1ba0 100644
+--- a/drivers/acpi/x86/utils.c
++++ b/drivers/acpi/x86/utils.c
+@@ -37,7 +37,7 @@ struct always_present_id {
+ 	const char *uid;
  };
- MODULE_DEVICE_TABLE(x86cpu, sbridge_cpuids);
-diff --git a/drivers/edac/skx_base.c b/drivers/edac/skx_base.c
-index 83545b4..46a3a34 100644
---- a/drivers/edac/skx_base.c
-+++ b/drivers/edac/skx_base.c
-@@ -158,7 +158,7 @@ fail:
- }
  
- static const struct x86_cpu_id skx_cpuids[] = {
--	{ X86_VENDOR_INTEL, 6, INTEL_FAM6_SKYLAKE_X, 0, 0 },
-+	X86_MATCH_INTEL_FAM6_MODEL(SKYLAKE_X,	NULL),
- 	{ }
- };
- MODULE_DEVICE_TABLE(x86cpu, skx_cpuids);
+-#define ICPU(model)	{ X86_VENDOR_INTEL, 6, model, X86_FEATURE_ANY, }
++#define X86_MATCH(model)	X86_MATCH_INTEL_FAM6_MODEL(model, NULL)
+ 
+ #define ENTRY(hid, uid, cpu_models, dmi...) {				\
+ 	{ { hid, }, {} },						\
+@@ -51,29 +51,29 @@ static const struct always_present_id always_present_ids[] = {
+ 	 * Bay / Cherry Trail PWM directly poked by GPU driver in win10,
+ 	 * but Linux uses a separate PWM driver, harmless if not used.
+ 	 */
+-	ENTRY("80860F09", "1", ICPU(INTEL_FAM6_ATOM_SILVERMONT), {}),
+-	ENTRY("80862288", "1", ICPU(INTEL_FAM6_ATOM_AIRMONT), {}),
++	ENTRY("80860F09", "1", X86_MATCH(ATOM_SILVERMONT), {}),
++	ENTRY("80862288", "1", X86_MATCH(ATOM_AIRMONT), {}),
+ 
+ 	/* Lenovo Yoga Book uses PWM2 for keyboard backlight control */
+-	ENTRY("80862289", "2", ICPU(INTEL_FAM6_ATOM_AIRMONT), {
++	ENTRY("80862289", "2", X86_MATCH(ATOM_AIRMONT), {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "Lenovo YB1-X9"),
+ 		}),
+ 	/*
+ 	 * The INT0002 device is necessary to clear wakeup interrupt sources
+ 	 * on Cherry Trail devices, without it we get nobody cared IRQ msgs.
+ 	 */
+-	ENTRY("INT0002", "1", ICPU(INTEL_FAM6_ATOM_AIRMONT), {}),
++	ENTRY("INT0002", "1", X86_MATCH(ATOM_AIRMONT), {}),
+ 	/*
+ 	 * On the Dell Venue 11 Pro 7130 and 7139, the DSDT hides
+ 	 * the touchscreen ACPI device until a certain time
+ 	 * after _SB.PCI0.GFX0.LCD.LCD1._ON gets called has passed
+ 	 * *and* _STA has been called at least 3 times since.
+ 	 */
+-	ENTRY("SYNA7500", "1", ICPU(INTEL_FAM6_HASWELL_L), {
++	ENTRY("SYNA7500", "1", X86_MATCH(HASWELL_L), {
+ 		DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
+ 		DMI_MATCH(DMI_PRODUCT_NAME, "Venue 11 Pro 7130"),
+ 	      }),
+-	ENTRY("SYNA7500", "1", ICPU(INTEL_FAM6_HASWELL_L), {
++	ENTRY("SYNA7500", "1", X86_MATCH(HASWELL_L), {
+ 		DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
+ 		DMI_MATCH(DMI_PRODUCT_NAME, "Venue 11 Pro 7139"),
+ 	      }),
+@@ -89,19 +89,19 @@ static const struct always_present_id always_present_ids[] = {
+ 	 * was copy-pasted from the GPD win, so it has a disabled KIOX000A
+ 	 * node which we should not enable, thus we also check the BIOS date.
+ 	 */
+-	ENTRY("KIOX000A", "1", ICPU(INTEL_FAM6_ATOM_AIRMONT), {
++	ENTRY("KIOX000A", "1", X86_MATCH(ATOM_AIRMONT), {
+ 		DMI_MATCH(DMI_BOARD_VENDOR, "AMI Corporation"),
+ 		DMI_MATCH(DMI_BOARD_NAME, "Default string"),
+ 		DMI_MATCH(DMI_PRODUCT_NAME, "Default string"),
+ 		DMI_MATCH(DMI_BIOS_DATE, "02/21/2017")
+ 	      }),
+-	ENTRY("KIOX000A", "1", ICPU(INTEL_FAM6_ATOM_AIRMONT), {
++	ENTRY("KIOX000A", "1", X86_MATCH(ATOM_AIRMONT), {
+ 		DMI_MATCH(DMI_BOARD_VENDOR, "AMI Corporation"),
+ 		DMI_MATCH(DMI_BOARD_NAME, "Default string"),
+ 		DMI_MATCH(DMI_PRODUCT_NAME, "Default string"),
+ 		DMI_MATCH(DMI_BIOS_DATE, "03/20/2017")
+ 	      }),
+-	ENTRY("KIOX000A", "1", ICPU(INTEL_FAM6_ATOM_AIRMONT), {
++	ENTRY("KIOX000A", "1", X86_MATCH(ATOM_AIRMONT), {
+ 		DMI_MATCH(DMI_BOARD_VENDOR, "AMI Corporation"),
+ 		DMI_MATCH(DMI_BOARD_NAME, "Default string"),
+ 		DMI_MATCH(DMI_PRODUCT_NAME, "Default string"),
