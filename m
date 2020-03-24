@@ -2,34 +2,33 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A64591908F0
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 10:18:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8541E1908F4
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 10:18:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727787AbgCXJRJ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 24 Mar 2020 05:17:09 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:44094 "EHLO
+        id S1727793AbgCXJRK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 24 Mar 2020 05:17:10 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:44100 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727766AbgCXJRI (ORCPT
+        with ESMTP id S1727773AbgCXJRJ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 24 Mar 2020 05:17:08 -0400
+        Tue, 24 Mar 2020 05:17:09 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jGfgG-0008GN-Tu; Tue, 24 Mar 2020 10:17:05 +0100
+        id 1jGfgJ-0008Fz-7n; Tue, 24 Mar 2020 10:17:07 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 38D491C04D3;
-        Tue, 24 Mar 2020 10:16:52 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id BB61D1C07EC;
+        Tue, 24 Mar 2020 10:16:51 +0100 (CET)
 Date:   Tue, 24 Mar 2020 09:16:51 -0000
-From:   "tip-bot2 for SeongJae Park" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcu: Fix typos in file-header comments
-Cc:     SeongJae Park <sjpark@amazon.de>,
-        "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
+Subject: [tip: core/rcu] rcu: Add READ_ONCE() to rcu_data ->gpwrap
+Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158504141186.28353.1181944922433200767.tip-bot2@tip-bot2>
+Message-ID: <158504141140.28353.18318011019911714645.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -45,53 +44,50 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     65bb0dc437c3e57a6cde2b81170c8af4b9c90735
-Gitweb:        https://git.kernel.org/tip/65bb0dc437c3e57a6cde2b81170c8af4b9c90735
-Author:        SeongJae Park <sjpark@amazon.de>
-AuthorDate:    Mon, 06 Jan 2020 21:08:02 +01:00
+Commit-ID:     a5b8950180f8e5acb802d1672e0b4d0ceee6126e
+Gitweb:        https://git.kernel.org/tip/a5b8950180f8e5acb802d1672e0b4d0ceee6126e
+Author:        Paul E. McKenney <paulmck@kernel.org>
+AuthorDate:    Tue, 07 Jan 2020 15:48:39 -08:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Thu, 20 Feb 2020 15:58:22 -08:00
 
-rcu: Fix typos in file-header comments
+rcu: Add READ_ONCE() to rcu_data ->gpwrap
 
-Convert to plural and add a note that this is for Tree RCU.
+The rcu_data structure's ->gpwrap field is read locklessly, and so
+this commit adds the required READ_ONCE() to a pair of laods in order
+to avoid destructive compiler optimizations.
 
-Signed-off-by: SeongJae Park <sjpark@amazon.de>
+This data race was reported by KCSAN.
+
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/rcu/srcutree.c | 2 +-
- kernel/rcu/tree.c     | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ kernel/rcu/tree.c       | 2 +-
+ kernel/rcu/tree_stall.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/rcu/srcutree.c b/kernel/rcu/srcutree.c
-index 657e6a7..7ddb29c 100644
---- a/kernel/rcu/srcutree.c
-+++ b/kernel/rcu/srcutree.c
-@@ -5,7 +5,7 @@
-  * Copyright (C) IBM Corporation, 2006
-  * Copyright (C) Fujitsu, 2012
-  *
-- * Author: Paul McKenney <paulmck@linux.ibm.com>
-+ * Authors: Paul McKenney <paulmck@linux.ibm.com>
-  *	   Lai Jiangshan <laijs@cn.fujitsu.com>
-  *
-  * For detailed explanation of Read-Copy Update mechanism see -
 diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
-index 53946b1..a70f56b 100644
+index a70f56b..e851a12 100644
 --- a/kernel/rcu/tree.c
 +++ b/kernel/rcu/tree.c
-@@ -1,12 +1,12 @@
- // SPDX-License-Identifier: GPL-2.0+
- /*
-- * Read-Copy Update mechanism for mutual exclusion
-+ * Read-Copy Update mechanism for mutual exclusion (tree-based version)
-  *
-  * Copyright IBM Corporation, 2008
-  *
-  * Authors: Dipankar Sarma <dipankar@in.ibm.com>
-  *	    Manfred Spraul <manfred@colorfullife.com>
-- *	    Paul E. McKenney <paulmck@linux.ibm.com> Hierarchical version
-+ *	    Paul E. McKenney <paulmck@linux.ibm.com>
-  *
-  * Based on the original work by Paul McKenney <paulmck@linux.ibm.com>
-  * and inputs from Rusty Russell, Andrea Arcangeli and Andi Kleen.
+@@ -1322,7 +1322,7 @@ static void rcu_accelerate_cbs_unlocked(struct rcu_node *rnp,
+ 
+ 	rcu_lockdep_assert_cblist_protected(rdp);
+ 	c = rcu_seq_snap(&rcu_state.gp_seq);
+-	if (!rdp->gpwrap && ULONG_CMP_GE(rdp->gp_seq_needed, c)) {
++	if (!READ_ONCE(rdp->gpwrap) && ULONG_CMP_GE(rdp->gp_seq_needed, c)) {
+ 		/* Old request still live, so mark recent callbacks. */
+ 		(void)rcu_segcblist_accelerate(&rdp->cblist, c);
+ 		return;
+diff --git a/kernel/rcu/tree_stall.h b/kernel/rcu/tree_stall.h
+index 43dc688..bca637b 100644
+--- a/kernel/rcu/tree_stall.h
++++ b/kernel/rcu/tree_stall.h
+@@ -602,7 +602,7 @@ void show_rcu_gp_kthreads(void)
+ 			continue;
+ 		for_each_leaf_node_possible_cpu(rnp, cpu) {
+ 			rdp = per_cpu_ptr(&rcu_data, cpu);
+-			if (rdp->gpwrap ||
++			if (READ_ONCE(rdp->gpwrap) ||
+ 			    ULONG_CMP_GE(READ_ONCE(rcu_state.gp_seq),
+ 					 READ_ONCE(rdp->gp_seq_needed)))
+ 				continue;
