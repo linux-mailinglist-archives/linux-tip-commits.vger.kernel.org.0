@@ -2,34 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B05F51908B4
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 10:12:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F1A41908AD
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 10:12:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727523AbgCXJLo (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 24 Mar 2020 05:11:44 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:43825 "EHLO
+        id S1727504AbgCXJLX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 24 Mar 2020 05:11:23 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:43831 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727422AbgCXJLU (ORCPT
+        with ESMTP id S1727466AbgCXJLW (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 24 Mar 2020 05:11:20 -0400
+        Tue, 24 Mar 2020 05:11:22 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jGfac-0007ce-HO; Tue, 24 Mar 2020 10:11:16 +0100
+        id 1jGfae-0007d6-21; Tue, 24 Mar 2020 10:11:17 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4D60F1C04D0;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id CB3A71C0475;
         Tue, 24 Mar 2020 10:11:03 +0100 (CET)
-Date:   Tue, 24 Mar 2020 09:11:02 -0000
+Date:   Tue, 24 Mar 2020 09:11:03 -0000
 From:   "tip-bot2 for Marco Elver" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/kcsan] kcsan: Show full access type in report
-Cc:     "Paul E. McKenney" <paulmck@kernel.org>,
-        Marco Elver <elver@google.com>, Ingo Molnar <mingo@kernel.org>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+Subject: [tip: locking/kcsan] kcsan: Prefer __always_inline for fast-path
+Cc:     Randy Dunlap <rdunlap@infradead.org>,
+        Marco Elver <elver@google.com>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <58708908-84a0-0a81-a836-ad97e33dbb62@infradead.org>
+References: <58708908-84a0-0a81-a836-ad97e33dbb62@infradead.org>
 MIME-Version: 1.0
-Message-ID: <158504106294.28353.10440042484951862160.tip-bot2@tip-bot2>
+Message-ID: <158504106342.28353.7031721344502833730.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -45,237 +49,143 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/kcsan branch of tip:
 
-Commit-ID:     47144eca282189afcf34ef25aee8408c168765d4
-Gitweb:        https://git.kernel.org/tip/47144eca282189afcf34ef25aee8408c168765d4
+Commit-ID:     5c361425744d1e3b03d835dde659708683ca27d1
+Gitweb:        https://git.kernel.org/tip/5c361425744d1e3b03d835dde659708683ca27d1
 Author:        Marco Elver <elver@google.com>
-AuthorDate:    Fri, 10 Jan 2020 19:48:33 +01:00
+AuthorDate:    Tue, 07 Jan 2020 17:31:04 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sat, 21 Mar 2020 09:40:42 +01:00
+CommitterDate: Sat, 21 Mar 2020 09:40:19 +01:00
 
-kcsan: Show full access type in report
+kcsan: Prefer __always_inline for fast-path
 
-This commit adds access-type information to KCSAN's reports as follows:
-"read", "read (marked)", "write", and "write (marked)".
+Prefer __always_inline for fast-path functions that are called outside
+of user_access_save, to avoid generating UACCESS warnings when
+optimizing for size (CC_OPTIMIZE_FOR_SIZE). It will also avoid future
+surprises with compiler versions that change the inlining heuristic even
+when optimizing for performance.
 
-Suggested-by: Paul E. McKenney <paulmck@kernel.org>
+Reported-by: Randy Dunlap <rdunlap@infradead.org>
+Acked-by: Randy Dunlap <rdunlap@infradead.org> # build-tested
 Signed-off-by: Marco Elver <elver@google.com>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: http://lkml.kernel.org/r/58708908-84a0-0a81-a836-ad97e33dbb62@infradead.org
 ---
- kernel/kcsan/core.c   | 15 ++++++++-------
- kernel/kcsan/kcsan.h  |  2 +-
- kernel/kcsan/report.c | 43 +++++++++++++++++++++++++++---------------
- 3 files changed, 37 insertions(+), 23 deletions(-)
+ kernel/kcsan/atomic.h   |  2 +-
+ kernel/kcsan/core.c     | 18 +++++++++---------
+ kernel/kcsan/encoding.h | 14 +++++++-------
+ 3 files changed, 17 insertions(+), 17 deletions(-)
 
+diff --git a/kernel/kcsan/atomic.h b/kernel/kcsan/atomic.h
+index 576e03d..a9c1930 100644
+--- a/kernel/kcsan/atomic.h
++++ b/kernel/kcsan/atomic.h
+@@ -18,7 +18,7 @@
+  * than cast to volatile. Eventually, we hope to be able to remove this
+  * function.
+  */
+-static inline bool kcsan_is_atomic(const volatile void *ptr)
++static __always_inline bool kcsan_is_atomic(const volatile void *ptr)
+ {
+ 	/* only jiffies for now */
+ 	return ptr == &jiffies;
 diff --git a/kernel/kcsan/core.c b/kernel/kcsan/core.c
-index 4d4ab5c..87bf857 100644
+index 3314fc2..4d4ab5c 100644
 --- a/kernel/kcsan/core.c
 +++ b/kernel/kcsan/core.c
-@@ -255,7 +255,7 @@ static inline unsigned int get_delay(void)
- 
- static noinline void kcsan_found_watchpoint(const volatile void *ptr,
- 					    size_t size,
--					    bool is_write,
-+					    int type,
- 					    atomic_long_t *watchpoint,
- 					    long encoded_watchpoint)
- {
-@@ -276,7 +276,7 @@ static noinline void kcsan_found_watchpoint(const volatile void *ptr,
- 	flags = user_access_save();
- 
- 	if (consumed) {
--		kcsan_report(ptr, size, is_write, true, raw_smp_processor_id(),
-+		kcsan_report(ptr, size, type, true, raw_smp_processor_id(),
- 			     KCSAN_REPORT_CONSUMED_WATCHPOINT);
- 	} else {
- 		/*
-@@ -292,8 +292,9 @@ static noinline void kcsan_found_watchpoint(const volatile void *ptr,
- }
- 
- static noinline void
--kcsan_setup_watchpoint(const volatile void *ptr, size_t size, bool is_write)
-+kcsan_setup_watchpoint(const volatile void *ptr, size_t size, int type)
- {
-+	const bool is_write = (type & KCSAN_ACCESS_WRITE) != 0;
- 	atomic_long_t *watchpoint;
- 	union {
- 		u8 _1;
-@@ -415,13 +416,13 @@ kcsan_setup_watchpoint(const volatile void *ptr, size_t size, bool is_write)
- 		 * No need to increment 'data_races' counter, as the racing
- 		 * thread already did.
- 		 */
--		kcsan_report(ptr, size, is_write, size > 8 || value_change,
-+		kcsan_report(ptr, size, type, size > 8 || value_change,
- 			     smp_processor_id(), KCSAN_REPORT_RACE_SIGNAL);
- 	} else if (value_change) {
- 		/* Inferring a race, since the value should not have changed. */
- 		kcsan_counter_inc(KCSAN_COUNTER_RACES_UNKNOWN_ORIGIN);
- 		if (IS_ENABLED(CONFIG_KCSAN_REPORT_RACE_UNKNOWN_ORIGIN))
--			kcsan_report(ptr, size, is_write, true,
-+			kcsan_report(ptr, size, type, true,
- 				     smp_processor_id(),
- 				     KCSAN_REPORT_RACE_UNKNOWN_ORIGIN);
- 	}
-@@ -455,10 +456,10 @@ static __always_inline void check_access(const volatile void *ptr, size_t size,
- 	 */
- 
- 	if (unlikely(watchpoint != NULL))
--		kcsan_found_watchpoint(ptr, size, is_write, watchpoint,
-+		kcsan_found_watchpoint(ptr, size, type, watchpoint,
- 				       encoded_watchpoint);
- 	else if (unlikely(should_watch(ptr, type)))
--		kcsan_setup_watchpoint(ptr, size, is_write);
-+		kcsan_setup_watchpoint(ptr, size, type);
- }
- 
- /* === Public interface ===================================================== */
-diff --git a/kernel/kcsan/kcsan.h b/kernel/kcsan/kcsan.h
-index d3b9a96..8492da4 100644
---- a/kernel/kcsan/kcsan.h
-+++ b/kernel/kcsan/kcsan.h
-@@ -103,7 +103,7 @@ enum kcsan_report_type {
- /*
-  * Print a race report from thread that encountered the race.
+@@ -78,10 +78,10 @@ static atomic_long_t watchpoints[CONFIG_KCSAN_NUM_WATCHPOINTS + NUM_SLOTS-1];
   */
--extern void kcsan_report(const volatile void *ptr, size_t size, bool is_write,
-+extern void kcsan_report(const volatile void *ptr, size_t size, int access_type,
- 			 bool value_change, int cpu_id, enum kcsan_report_type type);
+ static DEFINE_PER_CPU(long, kcsan_skip);
  
- #endif /* _KERNEL_KCSAN_KCSAN_H */
-diff --git a/kernel/kcsan/report.c b/kernel/kcsan/report.c
-index 0eea05a..9f503ca 100644
---- a/kernel/kcsan/report.c
-+++ b/kernel/kcsan/report.c
-@@ -24,7 +24,7 @@
- static struct {
- 	const volatile void	*ptr;
- 	size_t			size;
--	bool			is_write;
-+	int			access_type;
- 	int			task_pid;
- 	int			cpu_id;
- 	unsigned long		stack_entries[NUM_STACK_ENTRIES];
-@@ -41,8 +41,10 @@ static DEFINE_SPINLOCK(report_lock);
-  * Special rules to skip reporting.
-  */
- static bool
--skip_report(bool is_write, bool value_change, unsigned long top_frame)
-+skip_report(int access_type, bool value_change, unsigned long top_frame)
+-static inline atomic_long_t *find_watchpoint(unsigned long addr,
+-					     size_t size,
+-					     bool expect_write,
+-					     long *encoded_watchpoint)
++static __always_inline atomic_long_t *find_watchpoint(unsigned long addr,
++						      size_t size,
++						      bool expect_write,
++						      long *encoded_watchpoint)
  {
-+	const bool is_write = (access_type & KCSAN_ACCESS_WRITE) != 0;
-+
- 	if (IS_ENABLED(CONFIG_KCSAN_REPORT_VALUE_CHANGE_ONLY) && is_write &&
- 	    !value_change) {
- 		/*
-@@ -63,9 +65,20 @@ skip_report(bool is_write, bool value_change, unsigned long top_frame)
- 	return kcsan_skip_report_debugfs(top_frame);
+ 	const int slot = watchpoint_slot(addr);
+ 	const unsigned long addr_masked = addr & WATCHPOINT_ADDR_MASK;
+@@ -146,7 +146,7 @@ insert_watchpoint(unsigned long addr, size_t size, bool is_write)
+  *	2. the thread that set up the watchpoint already removed it;
+  *	3. the watchpoint was removed and then re-used.
+  */
+-static inline bool
++static __always_inline bool
+ try_consume_watchpoint(atomic_long_t *watchpoint, long encoded_watchpoint)
+ {
+ 	return atomic_long_try_cmpxchg_relaxed(watchpoint, &encoded_watchpoint, CONSUMED_WATCHPOINT);
+@@ -160,7 +160,7 @@ static inline bool remove_watchpoint(atomic_long_t *watchpoint)
+ 	return atomic_long_xchg_relaxed(watchpoint, INVALID_WATCHPOINT) != CONSUMED_WATCHPOINT;
  }
  
--static inline const char *get_access_type(bool is_write)
-+static const char *get_access_type(int type)
+-static inline struct kcsan_ctx *get_ctx(void)
++static __always_inline struct kcsan_ctx *get_ctx(void)
  {
--	return is_write ? "write" : "read";
-+	switch (type) {
-+	case 0:
-+		return "read";
-+	case KCSAN_ACCESS_ATOMIC:
-+		return "read (marked)";
-+	case KCSAN_ACCESS_WRITE:
-+		return "write";
-+	case KCSAN_ACCESS_WRITE | KCSAN_ACCESS_ATOMIC:
-+		return "write (marked)";
-+	default:
-+		BUG();
-+	}
- }
- 
- /* Return thread description: in task or interrupt. */
-@@ -112,7 +125,7 @@ static int sym_strcmp(void *addr1, void *addr2)
- /*
-  * Returns true if a report was generated, false otherwise.
-  */
--static bool print_report(const volatile void *ptr, size_t size, bool is_write,
-+static bool print_report(const volatile void *ptr, size_t size, int access_type,
- 			 bool value_change, int cpu_id,
- 			 enum kcsan_report_type type)
- {
-@@ -124,7 +137,7 @@ static bool print_report(const volatile void *ptr, size_t size, bool is_write,
  	/*
- 	 * Must check report filter rules before starting to print.
- 	 */
--	if (skip_report(is_write, true, stack_entries[skipnr]))
-+	if (skip_report(access_type, true, stack_entries[skipnr]))
- 		return false;
- 
- 	if (type == KCSAN_REPORT_RACE_SIGNAL) {
-@@ -132,7 +145,7 @@ static bool print_report(const volatile void *ptr, size_t size, bool is_write,
- 						other_info.num_stack_entries);
- 
- 		/* @value_change is only known for the other thread */
--		if (skip_report(other_info.is_write, value_change,
-+		if (skip_report(other_info.access_type, value_change,
- 				other_info.stack_entries[other_skipnr]))
- 			return false;
- 	}
-@@ -170,7 +183,7 @@ static bool print_report(const volatile void *ptr, size_t size, bool is_write,
- 	switch (type) {
- 	case KCSAN_REPORT_RACE_SIGNAL:
- 		pr_err("%s to 0x%px of %zu bytes by %s on cpu %i:\n",
--		       get_access_type(other_info.is_write), other_info.ptr,
-+		       get_access_type(other_info.access_type), other_info.ptr,
- 		       other_info.size, get_thread_desc(other_info.task_pid),
- 		       other_info.cpu_id);
- 
-@@ -181,14 +194,14 @@ static bool print_report(const volatile void *ptr, size_t size, bool is_write,
- 
- 		pr_err("\n");
- 		pr_err("%s to 0x%px of %zu bytes by %s on cpu %i:\n",
--		       get_access_type(is_write), ptr, size,
-+		       get_access_type(access_type), ptr, size,
- 		       get_thread_desc(in_task() ? task_pid_nr(current) : -1),
- 		       cpu_id);
- 		break;
- 
- 	case KCSAN_REPORT_RACE_UNKNOWN_ORIGIN:
- 		pr_err("race at unknown origin, with %s to 0x%px of %zu bytes by %s on cpu %i:\n",
--		       get_access_type(is_write), ptr, size,
-+		       get_access_type(access_type), ptr, size,
- 		       get_thread_desc(in_task() ? task_pid_nr(current) : -1),
- 		       cpu_id);
- 		break;
-@@ -223,7 +236,7 @@ static void release_report(unsigned long *flags, enum kcsan_report_type type)
-  * required for the report type, simply acquires report_lock and returns true.
-  */
- static bool prepare_report(unsigned long *flags, const volatile void *ptr,
--			   size_t size, bool is_write, int cpu_id,
-+			   size_t size, int access_type, int cpu_id,
- 			   enum kcsan_report_type type)
- {
- 	if (type != KCSAN_REPORT_CONSUMED_WATCHPOINT &&
-@@ -243,7 +256,7 @@ retry:
- 
- 		other_info.ptr			= ptr;
- 		other_info.size			= size;
--		other_info.is_write		= is_write;
-+		other_info.access_type		= access_type;
- 		other_info.task_pid		= in_task() ? task_pid_nr(current) : -1;
- 		other_info.cpu_id		= cpu_id;
- 		other_info.num_stack_entries	= stack_trace_save(other_info.stack_entries, NUM_STACK_ENTRIES, 1);
-@@ -302,14 +315,14 @@ retry:
- 	goto retry;
+ 	 * In interrupts, use raw_cpu_ptr to avoid unnecessary checks, that would
+@@ -169,7 +169,7 @@ static inline struct kcsan_ctx *get_ctx(void)
+ 	return in_task() ? &current->kcsan_ctx : raw_cpu_ptr(&kcsan_cpu_ctx);
  }
  
--void kcsan_report(const volatile void *ptr, size_t size, bool is_write,
-+void kcsan_report(const volatile void *ptr, size_t size, int access_type,
- 		  bool value_change, int cpu_id, enum kcsan_report_type type)
+-static inline bool is_atomic(const volatile void *ptr)
++static __always_inline bool is_atomic(const volatile void *ptr)
  {
- 	unsigned long flags = 0;
+ 	struct kcsan_ctx *ctx = get_ctx();
  
- 	kcsan_disable_current();
--	if (prepare_report(&flags, ptr, size, is_write, cpu_id, type)) {
--		if (print_report(ptr, size, is_write, value_change, cpu_id, type) && panic_on_warn)
-+	if (prepare_report(&flags, ptr, size, access_type, cpu_id, type)) {
-+		if (print_report(ptr, size, access_type, value_change, cpu_id, type) && panic_on_warn)
- 			panic("panic_on_warn set ...\n");
+@@ -193,7 +193,7 @@ static inline bool is_atomic(const volatile void *ptr)
+ 	return kcsan_is_atomic(ptr);
+ }
  
- 		release_report(&flags, type);
+-static inline bool should_watch(const volatile void *ptr, int type)
++static __always_inline bool should_watch(const volatile void *ptr, int type)
+ {
+ 	/*
+ 	 * Never set up watchpoints when memory operations are atomic.
+@@ -226,7 +226,7 @@ static inline void reset_kcsan_skip(void)
+ 	this_cpu_write(kcsan_skip, skip_count);
+ }
+ 
+-static inline bool kcsan_is_enabled(void)
++static __always_inline bool kcsan_is_enabled(void)
+ {
+ 	return READ_ONCE(kcsan_enabled) && get_ctx()->disable_count == 0;
+ }
+diff --git a/kernel/kcsan/encoding.h b/kernel/kcsan/encoding.h
+index b63890e..f03562a 100644
+--- a/kernel/kcsan/encoding.h
++++ b/kernel/kcsan/encoding.h
+@@ -59,10 +59,10 @@ encode_watchpoint(unsigned long addr, size_t size, bool is_write)
+ 		      (addr & WATCHPOINT_ADDR_MASK));
+ }
+ 
+-static inline bool decode_watchpoint(long watchpoint,
+-				     unsigned long *addr_masked,
+-				     size_t *size,
+-				     bool *is_write)
++static __always_inline bool decode_watchpoint(long watchpoint,
++					      unsigned long *addr_masked,
++					      size_t *size,
++					      bool *is_write)
+ {
+ 	if (watchpoint == INVALID_WATCHPOINT ||
+ 	    watchpoint == CONSUMED_WATCHPOINT)
+@@ -78,13 +78,13 @@ static inline bool decode_watchpoint(long watchpoint,
+ /*
+  * Return watchpoint slot for an address.
+  */
+-static inline int watchpoint_slot(unsigned long addr)
++static __always_inline int watchpoint_slot(unsigned long addr)
+ {
+ 	return (addr / PAGE_SIZE) % CONFIG_KCSAN_NUM_WATCHPOINTS;
+ }
+ 
+-static inline bool matching_access(unsigned long addr1, size_t size1,
+-				   unsigned long addr2, size_t size2)
++static __always_inline bool matching_access(unsigned long addr1, size_t size1,
++					    unsigned long addr2, size_t size2)
+ {
+ 	unsigned long end_range1 = addr1 + size1 - 1;
+ 	unsigned long end_range2 = addr2 + size2 - 1;
