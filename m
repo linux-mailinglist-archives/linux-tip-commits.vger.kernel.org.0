@@ -2,36 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A4BD51908B6
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 10:12:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 42B3C1908A6
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 10:12:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727579AbgCXJLv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 24 Mar 2020 05:11:51 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:43803 "EHLO
+        id S1727440AbgCXJLS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 24 Mar 2020 05:11:18 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:43818 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727161AbgCXJLN (ORCPT
+        with ESMTP id S1727414AbgCXJLR (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 24 Mar 2020 05:11:13 -0400
+        Tue, 24 Mar 2020 05:11:17 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jGfaX-0007aU-OG; Tue, 24 Mar 2020 10:11:10 +0100
+        id 1jGfaa-0007Zy-PV; Tue, 24 Mar 2020 10:11:13 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E3C1B1C0470;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 7D41B1C04CE;
         Tue, 24 Mar 2020 10:11:01 +0100 (CET)
 Date:   Tue, 24 Mar 2020 09:11:01 -0000
 From:   "tip-bot2 for Marco Elver" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/kcsan] kcsan: Address missing case with
- KCSAN_REPORT_VALUE_CHANGE_ONLY
-Cc:     Marco Elver <elver@google.com>,
+Subject: [tip: locking/kcsan] include/linux: Add instrumented.h infrastructure
+Cc:     Arnd Bergmann <arnd@arndb.de>, Marco Elver <elver@google.com>,
+        Alexander Potapenko <glider@google.com>,
+        Dmitry Vyukov <dvyukov@google.com>,
         "Paul E. McKenney" <paulmck@kernel.org>,
         Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158504106159.28353.13419051767786521754.tip-bot2@tip-bot2>
+Message-ID: <158504106115.28353.8543434124778902822.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,77 +48,156 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/kcsan branch of tip:
 
-Commit-ID:     ad4f8eeca8eaa24afb6059c241a2f4baf86378f3
-Gitweb:        https://git.kernel.org/tip/ad4f8eeca8eaa24afb6059c241a2f4baf86378f3
+Commit-ID:     36e4d4dd4fc4f1d99e7966a460a2b12ce438abc2
+Gitweb:        https://git.kernel.org/tip/36e4d4dd4fc4f1d99e7966a460a2b12ce438abc2
 Author:        Marco Elver <elver@google.com>
-AuthorDate:    Wed, 29 Jan 2020 16:01:02 +01:00
+AuthorDate:    Tue, 21 Jan 2020 17:05:08 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sat, 21 Mar 2020 09:41:29 +01:00
+CommitterDate: Sat, 21 Mar 2020 09:41:34 +01:00
 
-kcsan: Address missing case with KCSAN_REPORT_VALUE_CHANGE_ONLY
+include/linux: Add instrumented.h infrastructure
 
-Even with KCSAN_REPORT_VALUE_CHANGE_ONLY, KCSAN still reports data
-races between reads and watchpointed writes, even if the writes wrote
-values already present.  This commit causes KCSAN to unconditionally
-skip reporting in this case.
+This adds instrumented.h, which provides generic wrappers for memory
+access instrumentation that the compiler cannot emit for various
+sanitizers. Currently this unifies KASAN and KCSAN instrumentation. In
+future this will also include KMSAN instrumentation.
 
+Note that, copy_{to,from}_user should use special instrumentation, since
+we should be able to instrument both source and destination memory
+accesses if both are kernel memory.
+
+The current patch only instruments the memory access where the address
+is always in kernel space, however, both may in fact be kernel addresses
+when a compat syscall passes an argument allocated in the kernel to a
+real syscall. In a future change, both KASAN and KCSAN should check both
+addresses in such cases, as well as KMSAN will make use of both
+addresses. [It made more sense to provide the completed function
+signature, rather than updating it and changing all locations again at a
+later time.]
+
+Suggested-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Marco Elver <elver@google.com>
+Acked-by: Alexander Potapenko <glider@google.com>
+Reviewed-by: Dmitry Vyukov <dvyukov@google.com>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- kernel/kcsan/report.c | 27 ++++++++++++++++++++-------
- 1 file changed, 20 insertions(+), 7 deletions(-)
+ include/linux/instrumented.h | 109 ++++++++++++++++++++++++++++++++++-
+ 1 file changed, 109 insertions(+)
+ create mode 100644 include/linux/instrumented.h
 
-diff --git a/kernel/kcsan/report.c b/kernel/kcsan/report.c
-index 33bdf8b..7cd3428 100644
---- a/kernel/kcsan/report.c
-+++ b/kernel/kcsan/report.c
-@@ -130,12 +130,25 @@ static bool rate_limit_report(unsigned long frame1, unsigned long frame2)
-  * Special rules to skip reporting.
-  */
- static bool
--skip_report(int access_type, bool value_change, unsigned long top_frame)
-+skip_report(bool value_change, unsigned long top_frame)
- {
--	const bool is_write = (access_type & KCSAN_ACCESS_WRITE) != 0;
--
--	if (IS_ENABLED(CONFIG_KCSAN_REPORT_VALUE_CHANGE_ONLY) && is_write &&
--	    !value_change) {
-+	/*
-+	 * The first call to skip_report always has value_change==true, since we
-+	 * cannot know the value written of an instrumented access. For the 2nd
-+	 * call there are 6 cases with CONFIG_KCSAN_REPORT_VALUE_CHANGE_ONLY:
-+	 *
-+	 * 1. read watchpoint, conflicting write (value_change==true): report;
-+	 * 2. read watchpoint, conflicting write (value_change==false): skip;
-+	 * 3. write watchpoint, conflicting write (value_change==true): report;
-+	 * 4. write watchpoint, conflicting write (value_change==false): skip;
-+	 * 5. write watchpoint, conflicting read (value_change==false): skip;
-+	 * 6. write watchpoint, conflicting read (value_change==true): impossible;
-+	 *
-+	 * Cases 1-4 are intuitive and expected; case 5 ensures we do not report
-+	 * data races where the write may have rewritten the same value; and
-+	 * case 6 is simply impossible.
-+	 */
-+	if (IS_ENABLED(CONFIG_KCSAN_REPORT_VALUE_CHANGE_ONLY) && !value_change) {
- 		/*
- 		 * The access is a write, but the data value did not change.
- 		 *
-@@ -228,7 +241,7 @@ static bool print_report(const volatile void *ptr, size_t size, int access_type,
- 	/*
- 	 * Must check report filter rules before starting to print.
- 	 */
--	if (skip_report(access_type, true, stack_entries[skipnr]))
-+	if (skip_report(true, stack_entries[skipnr]))
- 		return false;
- 
- 	if (type == KCSAN_REPORT_RACE_SIGNAL) {
-@@ -237,7 +250,7 @@ static bool print_report(const volatile void *ptr, size_t size, int access_type,
- 		other_frame = other_info.stack_entries[other_skipnr];
- 
- 		/* @value_change is only known for the other thread */
--		if (skip_report(other_info.access_type, value_change, other_frame))
-+		if (skip_report(value_change, other_frame))
- 			return false;
- 	}
- 
+diff --git a/include/linux/instrumented.h b/include/linux/instrumented.h
+new file mode 100644
+index 0000000..43e6ea5
+--- /dev/null
++++ b/include/linux/instrumented.h
+@@ -0,0 +1,109 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++
++/*
++ * This header provides generic wrappers for memory access instrumentation that
++ * the compiler cannot emit for: KASAN, KCSAN.
++ */
++#ifndef _LINUX_INSTRUMENTED_H
++#define _LINUX_INSTRUMENTED_H
++
++#include <linux/compiler.h>
++#include <linux/kasan-checks.h>
++#include <linux/kcsan-checks.h>
++#include <linux/types.h>
++
++/**
++ * instrument_read - instrument regular read access
++ *
++ * Instrument a regular read access. The instrumentation should be inserted
++ * before the actual read happens.
++ *
++ * @ptr address of access
++ * @size size of access
++ */
++static __always_inline void instrument_read(const volatile void *v, size_t size)
++{
++	kasan_check_read(v, size);
++	kcsan_check_read(v, size);
++}
++
++/**
++ * instrument_write - instrument regular write access
++ *
++ * Instrument a regular write access. The instrumentation should be inserted
++ * before the actual write happens.
++ *
++ * @ptr address of access
++ * @size size of access
++ */
++static __always_inline void instrument_write(const volatile void *v, size_t size)
++{
++	kasan_check_write(v, size);
++	kcsan_check_write(v, size);
++}
++
++/**
++ * instrument_atomic_read - instrument atomic read access
++ *
++ * Instrument an atomic read access. The instrumentation should be inserted
++ * before the actual read happens.
++ *
++ * @ptr address of access
++ * @size size of access
++ */
++static __always_inline void instrument_atomic_read(const volatile void *v, size_t size)
++{
++	kasan_check_read(v, size);
++	kcsan_check_atomic_read(v, size);
++}
++
++/**
++ * instrument_atomic_write - instrument atomic write access
++ *
++ * Instrument an atomic write access. The instrumentation should be inserted
++ * before the actual write happens.
++ *
++ * @ptr address of access
++ * @size size of access
++ */
++static __always_inline void instrument_atomic_write(const volatile void *v, size_t size)
++{
++	kasan_check_write(v, size);
++	kcsan_check_atomic_write(v, size);
++}
++
++/**
++ * instrument_copy_to_user - instrument reads of copy_to_user
++ *
++ * Instrument reads from kernel memory, that are due to copy_to_user (and
++ * variants). The instrumentation must be inserted before the accesses.
++ *
++ * @to destination address
++ * @from source address
++ * @n number of bytes to copy
++ */
++static __always_inline void
++instrument_copy_to_user(void __user *to, const void *from, unsigned long n)
++{
++	kasan_check_read(from, n);
++	kcsan_check_read(from, n);
++}
++
++/**
++ * instrument_copy_from_user - instrument writes of copy_from_user
++ *
++ * Instrument writes to kernel memory, that are due to copy_from_user (and
++ * variants). The instrumentation should be inserted before the accesses.
++ *
++ * @to destination address
++ * @from source address
++ * @n number of bytes to copy
++ */
++static __always_inline void
++instrument_copy_from_user(const void *to, const void __user *from, unsigned long n)
++{
++	kasan_check_write(to, n);
++	kcsan_check_write(to, n);
++}
++
++#endif /* _LINUX_INSTRUMENTED_H */
