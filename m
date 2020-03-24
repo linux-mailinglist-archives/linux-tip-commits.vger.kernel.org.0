@@ -2,35 +2,35 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B3391908A2
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 10:12:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E8A4D1908BF
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 10:13:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727332AbgCXJLI (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 24 Mar 2020 05:11:08 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:43774 "EHLO
+        id S1727071AbgCXJML (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 24 Mar 2020 05:12:11 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:43757 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727305AbgCXJLH (ORCPT
+        with ESMTP id S1726166AbgCXJLE (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 24 Mar 2020 05:11:07 -0400
+        Tue, 24 Mar 2020 05:11:04 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jGfaS-0007Vz-3C; Tue, 24 Mar 2020 10:11:04 +0100
+        id 1jGfaP-0007Wf-89; Tue, 24 Mar 2020 10:11:01 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id BDEB51C0451;
-        Tue, 24 Mar 2020 10:10:57 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 343651C0470;
+        Tue, 24 Mar 2020 10:10:58 +0100 (CET)
 Date:   Tue, 24 Mar 2020 09:10:57 -0000
 From:   "tip-bot2 for Marco Elver" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/kcsan] kcsan: Fix 0-sized checks
+Subject: [tip: locking/kcsan] kcsan: Clean up the main KCSAN Kconfig option
 Cc:     Marco Elver <elver@google.com>,
         "Paul E. McKenney" <paulmck@kernel.org>,
         Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158504105740.28353.3796925960754075309.tip-bot2@tip-bot2>
+Message-ID: <158504105785.28353.9595072129299439556.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -46,67 +46,51 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/kcsan branch of tip:
 
-Commit-ID:     ed95f95c86cd53621103d865d62b5e1f96e60edb
-Gitweb:        https://git.kernel.org/tip/ed95f95c86cd53621103d865d62b5e1f96e60edb
+Commit-ID:     8cfbb04fae75260eae07ab8c74c1dcd44294d739
+Gitweb:        https://git.kernel.org/tip/8cfbb04fae75260eae07ab8c74c1dcd44294d739
 Author:        Marco Elver <elver@google.com>
-AuthorDate:    Wed, 05 Feb 2020 11:14:19 +01:00
+AuthorDate:    Tue, 04 Feb 2020 18:21:12 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sat, 21 Mar 2020 09:42:42 +01:00
+CommitterDate: Sat, 21 Mar 2020 09:42:26 +01:00
 
-kcsan: Fix 0-sized checks
+kcsan: Clean up the main KCSAN Kconfig option
 
-Instrumentation of arbitrary memory-copy functions, such as user-copies,
-may be called with size of 0, which could lead to false positives.
+This patch cleans up the rules of the 'KCSAN' Kconfig option by:
 
-To avoid this, add a comparison in check_access() for size==0, which
-will be optimized out for constant sized instrumentation
-(__tsan_{read,write}N), and therefore not affect the common-case
-fast-path.
+  1. implicitly selecting 'STACKTRACE' instead of depending on it;
+  2. depending on DEBUG_KERNEL, to avoid accidentally turning KCSAN on if
+     the kernel is not meant to be a debug kernel;
+  3. updating the short and long summaries.
 
 Signed-off-by: Marco Elver <elver@google.com>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- kernel/kcsan/core.c |  7 +++++++
- kernel/kcsan/test.c | 10 ++++++++++
- 2 files changed, 17 insertions(+)
+ lib/Kconfig.kcsan | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/kernel/kcsan/core.c b/kernel/kcsan/core.c
-index e3c7d8f..82c2bef 100644
---- a/kernel/kcsan/core.c
-+++ b/kernel/kcsan/core.c
-@@ -456,6 +456,13 @@ static __always_inline void check_access(const volatile void *ptr, size_t size,
- 	long encoded_watchpoint;
+diff --git a/lib/Kconfig.kcsan b/lib/Kconfig.kcsan
+index 020ac63..9785bbf 100644
+--- a/lib/Kconfig.kcsan
++++ b/lib/Kconfig.kcsan
+@@ -4,12 +4,15 @@ config HAVE_ARCH_KCSAN
+ 	bool
  
- 	/*
-+	 * Do nothing for 0 sized check; this comparison will be optimized out
-+	 * for constant sized instrumentation (__tsan_{read,write}N).
-+	 */
-+	if (unlikely(size == 0))
-+		return;
+ menuconfig KCSAN
+-	bool "KCSAN: watchpoint-based dynamic data race detector"
+-	depends on HAVE_ARCH_KCSAN && !KASAN && STACKTRACE
++	bool "KCSAN: dynamic data race detector"
++	depends on HAVE_ARCH_KCSAN && DEBUG_KERNEL && !KASAN
++	select STACKTRACE
+ 	help
+-	  Kernel Concurrency Sanitizer is a dynamic data race detector, which
+-	  uses a watchpoint-based sampling approach to detect races. See
+-	  <file:Documentation/dev-tools/kcsan.rst> for more details.
++	  The Kernel Concurrency Sanitizer (KCSAN) is a dynamic data race
++	  detector, which relies on compile-time instrumentation, and uses a
++	  watchpoint-based sampling approach to detect data races.
 +
-+	/*
- 	 * Avoid user_access_save in fast-path: find_watchpoint is safe without
- 	 * user_access_save, as the address that ptr points to is only used to
- 	 * check if a watchpoint exists; ptr is never dereferenced.
-diff --git a/kernel/kcsan/test.c b/kernel/kcsan/test.c
-index cc60002..d26a052 100644
---- a/kernel/kcsan/test.c
-+++ b/kernel/kcsan/test.c
-@@ -92,6 +92,16 @@ static bool test_matching_access(void)
- 		return false;
- 	if (WARN_ON(matching_access(9, 1, 10, 1)))
- 		return false;
-+
-+	/*
-+	 * An access of size 0 could match another access, as demonstrated here.
-+	 * Rather than add more comparisons to 'matching_access()', which would
-+	 * end up in the fast-path for *all* checks, check_access() simply
-+	 * returns for all accesses of size 0.
-+	 */
-+	if (WARN_ON(!matching_access(8, 8, 12, 0)))
-+		return false;
-+
- 	return true;
- }
++	  See <file:Documentation/dev-tools/kcsan.rst> for more details.
+ 
+ if KCSAN
  
