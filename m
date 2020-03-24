@@ -2,33 +2,34 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E67391908DE
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 10:16:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CB7AB190965
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 10:21:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727462AbgCXJQk (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 24 Mar 2020 05:16:40 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:43917 "EHLO
+        id S1727325AbgCXJUE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 24 Mar 2020 05:20:04 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:43911 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727431AbgCXJQj (ORCPT
+        with ESMTP id S1727398AbgCXJQi (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 24 Mar 2020 05:16:39 -0400
+        Tue, 24 Mar 2020 05:16:38 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jGffo-0007yl-Uu; Tue, 24 Mar 2020 10:16:37 +0100
+        id 1jGffn-0007yI-Sv; Tue, 24 Mar 2020 10:16:36 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id F04AC1C04CC;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 8FC0F1C0494;
         Tue, 24 Mar 2020 10:16:33 +0100 (CET)
 Date:   Tue, 24 Mar 2020 09:16:33 -0000
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcutorture: Make kvm-find-errors.sh abort on bad directory
+Subject: [tip: core/rcu] rcutorture: Fix
+ rcu_torture_one_read()/rcu_torture_writer() data race
 Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158504139365.28353.989843788203325097.tip-bot2@tip-bot2>
+Message-ID: <158504139328.28353.6353053425817942706.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -44,36 +45,63 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     beabc806f5aaa158fc90a939215e8b44ee9d7acc
-Gitweb:        https://git.kernel.org/tip/beabc806f5aaa158fc90a939215e8b44ee9d7acc
+Commit-ID:     202489101f2e6cee3f6dffc087a4abd5fdfcebda
+Gitweb:        https://git.kernel.org/tip/202489101f2e6cee3f6dffc087a4abd5fdfcebda
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Mon, 16 Dec 2019 12:08:31 -08:00
+AuthorDate:    Sat, 21 Dec 2019 10:41:48 -08:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Thu, 20 Feb 2020 16:03:30 -08:00
+CommitterDate: Thu, 20 Feb 2020 16:03:31 -08:00
 
-rcutorture: Make kvm-find-errors.sh abort on bad directory
+rcutorture: Fix rcu_torture_one_read()/rcu_torture_writer() data race
 
-Currently, kvm-find-errors.sh gives a usage prompt when given a bad
-directory, but then soldiers on, giving a series of confusing error
-messages.  This commit therefore prints an error message and exits when
-given a bad directory, hopefully reducing confusion.
+The ->rtort_pipe_count field in the rcu_torture structure checks for
+too-short grace periods, and is therefore read by rcutorture's readers
+while being updated by rcutorture's writers.  This commit therefore
+adds the needed READ_ONCE() and WRITE_ONCE() invocations.
+
+This data race was reported by KCSAN.  Not appropriate for backporting
+due to failure being unlikely and due to this being rcutorture.
 
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- tools/testing/selftests/rcutorture/bin/kvm-find-errors.sh | 2 ++
- 1 file changed, 2 insertions(+)
+ kernel/rcu/rcutorture.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/tools/testing/selftests/rcutorture/bin/kvm-find-errors.sh b/tools/testing/selftests/rcutorture/bin/kvm-find-errors.sh
-index 1871d00..6f50722 100755
---- a/tools/testing/selftests/rcutorture/bin/kvm-find-errors.sh
-+++ b/tools/testing/selftests/rcutorture/bin/kvm-find-errors.sh
-@@ -20,7 +20,9 @@
- rundir="${1}"
- if test -z "$rundir" -o ! -d "$rundir"
- then
-+	echo Directory "$rundir" not found.
- 	echo Usage: $0 directory
-+	exit 1
- fi
- editor=${EDITOR-vi}
+diff --git a/kernel/rcu/rcutorture.c b/kernel/rcu/rcutorture.c
+index 5efd950..edd9746 100644
+--- a/kernel/rcu/rcutorture.c
++++ b/kernel/rcu/rcutorture.c
+@@ -375,11 +375,12 @@ rcu_torture_pipe_update_one(struct rcu_torture *rp)
+ {
+ 	int i;
  
+-	i = rp->rtort_pipe_count;
++	i = READ_ONCE(rp->rtort_pipe_count);
+ 	if (i > RCU_TORTURE_PIPE_LEN)
+ 		i = RCU_TORTURE_PIPE_LEN;
+ 	atomic_inc(&rcu_torture_wcount[i]);
+-	if (++rp->rtort_pipe_count >= RCU_TORTURE_PIPE_LEN) {
++	WRITE_ONCE(rp->rtort_pipe_count, i + 1);
++	if (rp->rtort_pipe_count >= RCU_TORTURE_PIPE_LEN) {
+ 		rp->rtort_mbtest = 0;
+ 		return true;
+ 	}
+@@ -1015,7 +1016,8 @@ rcu_torture_writer(void *arg)
+ 			if (i > RCU_TORTURE_PIPE_LEN)
+ 				i = RCU_TORTURE_PIPE_LEN;
+ 			atomic_inc(&rcu_torture_wcount[i]);
+-			old_rp->rtort_pipe_count++;
++			WRITE_ONCE(old_rp->rtort_pipe_count,
++				   old_rp->rtort_pipe_count + 1);
+ 			switch (synctype[torture_random(&rand) % nsynctypes]) {
+ 			case RTWS_DEF_FREE:
+ 				rcu_torture_writer_state = RTWS_DEF_FREE;
+@@ -1291,7 +1293,7 @@ static bool rcu_torture_one_read(struct torture_random_state *trsp)
+ 		atomic_inc(&n_rcu_torture_mberror);
+ 	rtrsp = rcutorture_loop_extend(&readstate, trsp, rtrsp);
+ 	preempt_disable();
+-	pipe_count = p->rtort_pipe_count;
++	pipe_count = READ_ONCE(p->rtort_pipe_count);
+ 	if (pipe_count > RCU_TORTURE_PIPE_LEN) {
+ 		/* Should not happen, but... */
+ 		pipe_count = RCU_TORTURE_PIPE_LEN;
