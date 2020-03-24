@@ -2,34 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 368841908A8
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 10:12:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C2BC51908A5
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 10:12:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727393AbgCXJLT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 24 Mar 2020 05:11:19 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:43826 "EHLO
+        id S1727420AbgCXJLR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 24 Mar 2020 05:11:17 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:43812 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727347AbgCXJLT (ORCPT
+        with ESMTP id S1727393AbgCXJLP (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 24 Mar 2020 05:11:19 -0400
+        Tue, 24 Mar 2020 05:11:15 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jGfac-0007cL-7n; Tue, 24 Mar 2020 10:11:15 +0100
+        id 1jGfaY-0007ar-Lu; Tue, 24 Mar 2020 10:11:11 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D175F1C04CF;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 64ECD1C0494;
         Tue, 24 Mar 2020 10:11:02 +0100 (CET)
 Date:   Tue, 24 Mar 2020 09:11:02 -0000
 From:   "tip-bot2 for Marco Elver" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/kcsan] kcsan: Rate-limit reporting per data races
-Cc:     Qian Cai <cai@lca.pw>, "Paul E. McKenney" <paulmck@kernel.org>,
-        Marco Elver <elver@google.com>, Ingo Molnar <mingo@kernel.org>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+Subject: [tip: locking/kcsan] kcsan: Make KCSAN compatible with lockdep
+Cc:     Qian Cai <cai@lca.pw>, Marco Elver <elver@google.com>,
+        Alexander Potapenko <glider@google.com>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158504106247.28353.15353252915616714303.tip-bot2@tip-bot2>
+Message-ID: <158504106206.28353.16599171054625932884.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -45,222 +47,139 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/kcsan branch of tip:
 
-Commit-ID:     05f9a4067964e3f864210271a6299f13d2eeea55
-Gitweb:        https://git.kernel.org/tip/05f9a4067964e3f864210271a6299f13d2eeea55
+Commit-ID:     f1bc96210c6a6b853b4b2eec808141956e8fbc5d
+Gitweb:        https://git.kernel.org/tip/f1bc96210c6a6b853b4b2eec808141956e8fbc5d
 Author:        Marco Elver <elver@google.com>
-AuthorDate:    Fri, 10 Jan 2020 19:48:34 +01:00
+AuthorDate:    Wed, 15 Jan 2020 17:25:12 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sat, 21 Mar 2020 09:40:52 +01:00
+CommitterDate: Sat, 21 Mar 2020 09:41:16 +01:00
 
-kcsan: Rate-limit reporting per data races
+kcsan: Make KCSAN compatible with lockdep
 
-KCSAN data-race reports can occur quite frequently, so much so as
-to render the system useless.  This commit therefore adds support for
-time-based rate-limiting KCSAN reports, with the time interval specified
-by a new KCSAN_REPORT_ONCE_IN_MS Kconfig option.  The default is 3000
-milliseconds, also known as three seconds.
+We must avoid any recursion into lockdep if KCSAN is enabled on utilities
+used by lockdep. One manifestation of this is corruption of lockdep's
+IRQ trace state (if TRACE_IRQFLAGS), resulting in spurious warnings
+(see below).  This commit fixes this by:
 
-Because KCSAN must detect data races in allocators and in other contexts
-where use of allocation is ill-advised, a fixed-size array is used to
-buffer reports during each reporting interval.  To reduce the number of
-reports lost due to array overflow, this commit stores only one instance
-of duplicate reports, which has the benefit of further reducing KCSAN's
-console output rate.
+1. Using raw_local_irq{save,restore} in kcsan_setup_watchpoint().
+2. Disabling lockdep in kcsan_report().
+
+Tested with:
+
+  CONFIG_LOCKDEP=y
+  CONFIG_DEBUG_LOCKDEP=y
+  CONFIG_TRACE_IRQFLAGS=y
+
+This fix eliminates spurious warnings such as the following one:
+
+    WARNING: CPU: 0 PID: 2 at kernel/locking/lockdep.c:4406 check_flags.part.0+0x101/0x220
+    Modules linked in:
+    CPU: 0 PID: 2 Comm: kthreadd Not tainted 5.5.0-rc1+ #11
+    Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
+    RIP: 0010:check_flags.part.0+0x101/0x220
+    <snip>
+    Call Trace:
+     lock_is_held_type+0x69/0x150
+     freezer_fork+0x20b/0x370
+     cgroup_post_fork+0x2c9/0x5c0
+     copy_process+0x2675/0x3b40
+     _do_fork+0xbe/0xa30
+     ? _raw_spin_unlock_irqrestore+0x40/0x50
+     ? match_held_lock+0x56/0x250
+     ? kthread_park+0xf0/0xf0
+     kernel_thread+0xa6/0xd0
+     ? kthread_park+0xf0/0xf0
+     kthreadd+0x321/0x3d0
+     ? kthread_create_on_cpu+0x130/0x130
+     ret_from_fork+0x3a/0x50
+    irq event stamp: 64
+    hardirqs last  enabled at (63): [<ffffffff9a7995d0>] _raw_spin_unlock_irqrestore+0x40/0x50
+    hardirqs last disabled at (64): [<ffffffff992a96d2>] kcsan_setup_watchpoint+0x92/0x460
+    softirqs last  enabled at (32): [<ffffffff990489b8>] fpu__copy+0xe8/0x470
+    softirqs last disabled at (30): [<ffffffff99048939>] fpu__copy+0x69/0x470
 
 Reported-by: Qian Cai <cai@lca.pw>
-Suggested-by: Paul E. McKenney <paulmck@kernel.org>
 Signed-off-by: Marco Elver <elver@google.com>
+Acked-by: Alexander Potapenko <glider@google.com>
+Tested-by: Qian Cai <cai@lca.pw>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- kernel/kcsan/report.c | 110 +++++++++++++++++++++++++++++++++++++----
- lib/Kconfig.kcsan     |  10 ++++-
- 2 files changed, 110 insertions(+), 10 deletions(-)
+ kernel/kcsan/core.c     |  6 ++++--
+ kernel/kcsan/report.c   | 11 +++++++++++
+ kernel/locking/Makefile |  3 +++
+ 3 files changed, 18 insertions(+), 2 deletions(-)
 
+diff --git a/kernel/kcsan/core.c b/kernel/kcsan/core.c
+index 87bf857..64b30f7 100644
+--- a/kernel/kcsan/core.c
++++ b/kernel/kcsan/core.c
+@@ -336,8 +336,10 @@ kcsan_setup_watchpoint(const volatile void *ptr, size_t size, int type)
+ 	 *      CPU-local data accesses), it makes more sense (from a data race
+ 	 *      detection point of view) to simply disable preemptions to ensure
+ 	 *      as many tasks as possible run on other CPUs.
++	 *
++	 * Use raw versions, to avoid lockdep recursion via IRQ flags tracing.
+ 	 */
+-	local_irq_save(irq_flags);
++	raw_local_irq_save(irq_flags);
+ 
+ 	watchpoint = insert_watchpoint((unsigned long)ptr, size, is_write);
+ 	if (watchpoint == NULL) {
+@@ -429,7 +431,7 @@ kcsan_setup_watchpoint(const volatile void *ptr, size_t size, int type)
+ 
+ 	kcsan_counter_dec(KCSAN_COUNTER_USED_WATCHPOINTS);
+ out_unlock:
+-	local_irq_restore(irq_flags);
++	raw_local_irq_restore(irq_flags);
+ out:
+ 	user_access_restore(ua_flags);
+ }
 diff --git a/kernel/kcsan/report.c b/kernel/kcsan/report.c
-index 9f503ca..b5b4fee 100644
+index b5b4fee..33bdf8b 100644
 --- a/kernel/kcsan/report.c
 +++ b/kernel/kcsan/report.c
-@@ -1,5 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
+@@ -2,6 +2,7 @@
  
-+#include <linux/jiffies.h>
+ #include <linux/jiffies.h>
  #include <linux/kernel.h>
++#include <linux/lockdep.h>
  #include <linux/preempt.h>
  #include <linux/printk.h>
-@@ -32,12 +33,99 @@ static struct {
- } other_info = { .ptr = NULL };
+ #include <linux/sched.h>
+@@ -410,6 +411,14 @@ void kcsan_report(const volatile void *ptr, size_t size, int access_type,
+ {
+ 	unsigned long flags = 0;
  
- /*
-+ * Information about reported data races; used to rate limit reporting.
-+ */
-+struct report_time {
 +	/*
-+	 * The last time the data race was reported.
++	 * With TRACE_IRQFLAGS, lockdep's IRQ trace state becomes corrupted if
++	 * we do not turn off lockdep here; this could happen due to recursion
++	 * into lockdep via KCSAN if we detect a data race in utilities used by
++	 * lockdep.
 +	 */
-+	unsigned long time;
++	lockdep_off();
 +
-+	/*
-+	 * The frames of the 2 threads; if only 1 thread is known, one frame
-+	 * will be 0.
-+	 */
-+	unsigned long frame1;
-+	unsigned long frame2;
-+};
-+
-+/*
-+ * Since we also want to be able to debug allocators with KCSAN, to avoid
-+ * deadlock, report_times cannot be dynamically resized with krealloc in
-+ * rate_limit_report.
-+ *
-+ * Therefore, we use a fixed-size array, which at most will occupy a page. This
-+ * still adequately rate limits reports, assuming that a) number of unique data
-+ * races is not excessive, and b) occurrence of unique data races within the
-+ * same time window is limited.
-+ */
-+#define REPORT_TIMES_MAX (PAGE_SIZE / sizeof(struct report_time))
-+#define REPORT_TIMES_SIZE                                                      \
-+	(CONFIG_KCSAN_REPORT_ONCE_IN_MS > REPORT_TIMES_MAX ?                   \
-+		 REPORT_TIMES_MAX :                                            \
-+		 CONFIG_KCSAN_REPORT_ONCE_IN_MS)
-+static struct report_time report_times[REPORT_TIMES_SIZE];
-+
-+/*
-  * This spinlock protects reporting and other_info, since other_info is usually
-  * required when reporting.
-  */
- static DEFINE_SPINLOCK(report_lock);
- 
- /*
-+ * Checks if the data race identified by thread frames frame1 and frame2 has
-+ * been reported since (now - KCSAN_REPORT_ONCE_IN_MS).
-+ */
-+static bool rate_limit_report(unsigned long frame1, unsigned long frame2)
-+{
-+	struct report_time *use_entry = &report_times[0];
-+	unsigned long invalid_before;
-+	int i;
-+
-+	BUILD_BUG_ON(CONFIG_KCSAN_REPORT_ONCE_IN_MS != 0 && REPORT_TIMES_SIZE == 0);
-+
-+	if (CONFIG_KCSAN_REPORT_ONCE_IN_MS == 0)
-+		return false;
-+
-+	invalid_before = jiffies - msecs_to_jiffies(CONFIG_KCSAN_REPORT_ONCE_IN_MS);
-+
-+	/* Check if a matching data race report exists. */
-+	for (i = 0; i < REPORT_TIMES_SIZE; ++i) {
-+		struct report_time *rt = &report_times[i];
-+
-+		/*
-+		 * Must always select an entry for use to store info as we
-+		 * cannot resize report_times; at the end of the scan, use_entry
-+		 * will be the oldest entry, which ideally also happened before
-+		 * KCSAN_REPORT_ONCE_IN_MS ago.
-+		 */
-+		if (time_before(rt->time, use_entry->time))
-+			use_entry = rt;
-+
-+		/*
-+		 * Initially, no need to check any further as this entry as well
-+		 * as following entries have never been used.
-+		 */
-+		if (rt->time == 0)
-+			break;
-+
-+		/* Check if entry expired. */
-+		if (time_before(rt->time, invalid_before))
-+			continue; /* before KCSAN_REPORT_ONCE_IN_MS ago */
-+
-+		/* Reported recently, check if data race matches. */
-+		if ((rt->frame1 == frame1 && rt->frame2 == frame2) ||
-+		    (rt->frame1 == frame2 && rt->frame2 == frame1))
-+			return true;
-+	}
-+
-+	use_entry->time = jiffies;
-+	use_entry->frame1 = frame1;
-+	use_entry->frame2 = frame2;
-+	return false;
-+}
-+
-+/*
-  * Special rules to skip reporting.
-  */
- static bool
-@@ -132,7 +220,9 @@ static bool print_report(const volatile void *ptr, size_t size, int access_type,
- 	unsigned long stack_entries[NUM_STACK_ENTRIES] = { 0 };
- 	int num_stack_entries = stack_trace_save(stack_entries, NUM_STACK_ENTRIES, 1);
- 	int skipnr = get_stack_skipnr(stack_entries, num_stack_entries);
--	int other_skipnr;
-+	unsigned long this_frame = stack_entries[skipnr];
-+	unsigned long other_frame = 0;
-+	int other_skipnr = 0; /* silence uninit warnings */
- 
- 	/*
- 	 * Must check report filter rules before starting to print.
-@@ -143,34 +233,34 @@ static bool print_report(const volatile void *ptr, size_t size, int access_type,
- 	if (type == KCSAN_REPORT_RACE_SIGNAL) {
- 		other_skipnr = get_stack_skipnr(other_info.stack_entries,
- 						other_info.num_stack_entries);
-+		other_frame = other_info.stack_entries[other_skipnr];
- 
- 		/* @value_change is only known for the other thread */
--		if (skip_report(other_info.access_type, value_change,
--				other_info.stack_entries[other_skipnr]))
-+		if (skip_report(other_info.access_type, value_change, other_frame))
- 			return false;
+ 	kcsan_disable_current();
+ 	if (prepare_report(&flags, ptr, size, access_type, cpu_id, type)) {
+ 		if (print_report(ptr, size, access_type, value_change, cpu_id, type) && panic_on_warn)
+@@ -418,4 +427,6 @@ void kcsan_report(const volatile void *ptr, size_t size, int access_type,
+ 		release_report(&flags, type);
  	}
- 
-+	if (rate_limit_report(this_frame, other_frame))
-+		return false;
+ 	kcsan_enable_current();
 +
- 	/* Print report header. */
- 	pr_err("==================================================================\n");
- 	switch (type) {
- 	case KCSAN_REPORT_RACE_SIGNAL: {
--		void *this_fn = (void *)stack_entries[skipnr];
--		void *other_fn = (void *)other_info.stack_entries[other_skipnr];
- 		int cmp;
++	lockdep_on();
+ }
+diff --git a/kernel/locking/Makefile b/kernel/locking/Makefile
+index 45452fa..6d11cfb 100644
+--- a/kernel/locking/Makefile
++++ b/kernel/locking/Makefile
+@@ -5,6 +5,9 @@ KCOV_INSTRUMENT		:= n
  
- 		/*
- 		 * Order functions lexographically for consistent bug titles.
- 		 * Do not print offset of functions to keep title short.
- 		 */
--		cmp = sym_strcmp(other_fn, this_fn);
-+		cmp = sym_strcmp((void *)other_frame, (void *)this_frame);
- 		pr_err("BUG: KCSAN: data-race in %ps / %ps\n",
--		       cmp < 0 ? other_fn : this_fn,
--		       cmp < 0 ? this_fn : other_fn);
-+		       (void *)(cmp < 0 ? other_frame : this_frame),
-+		       (void *)(cmp < 0 ? this_frame : other_frame));
- 	} break;
+ obj-y += mutex.o semaphore.o rwsem.o percpu-rwsem.o
  
- 	case KCSAN_REPORT_RACE_UNKNOWN_ORIGIN:
--		pr_err("BUG: KCSAN: data-race in %pS\n",
--		       (void *)stack_entries[skipnr]);
-+		pr_err("BUG: KCSAN: data-race in %pS\n", (void *)this_frame);
- 		break;
- 
- 	default:
-diff --git a/lib/Kconfig.kcsan b/lib/Kconfig.kcsan
-index 3f78b14..3552990 100644
---- a/lib/Kconfig.kcsan
-+++ b/lib/Kconfig.kcsan
-@@ -81,6 +81,16 @@ config KCSAN_SKIP_WATCH_RANDOMIZE
- 	  KCSAN_WATCH_SKIP. If false, the chosen value is always
- 	  KCSAN_WATCH_SKIP.
- 
-+config KCSAN_REPORT_ONCE_IN_MS
-+	int "Duration in milliseconds, in which any given data race is only reported once"
-+	default 3000
-+	help
-+	  Any given data race is only reported once in the defined time window.
-+	  Different data races may still generate reports within a duration
-+	  that is smaller than the duration defined here. This allows rate
-+	  limiting reporting to avoid flooding the console with reports.
-+	  Setting this to 0 disables rate limiting.
++# Avoid recursion lockdep -> KCSAN -> ... -> lockdep.
++KCSAN_SANITIZE_lockdep.o := n
 +
- # Note that, while some of the below options could be turned into boot
- # parameters, to optimize for the common use-case, we avoid this because: (a)
- # it would impact performance (and we want to avoid static branch for all
+ ifdef CONFIG_FUNCTION_TRACER
+ CFLAGS_REMOVE_lockdep.o = $(CC_FLAGS_FTRACE)
+ CFLAGS_REMOVE_lockdep_proc.o = $(CC_FLAGS_FTRACE)
