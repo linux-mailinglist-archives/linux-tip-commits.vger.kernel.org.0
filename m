@@ -2,36 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 78B1C191CE2
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 23:33:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2ED10191CB1
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 23:32:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728456AbgCXWcU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 24 Mar 2020 18:32:20 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:46363 "EHLO
+        id S1728563AbgCXWc0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 24 Mar 2020 18:32:26 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:46379 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728227AbgCXWcT (ORCPT
+        with ESMTP id S1728330AbgCXWcU (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 24 Mar 2020 18:32:19 -0400
+        Tue, 24 Mar 2020 18:32:20 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jGs5m-0006rc-U3; Tue, 24 Mar 2020 23:32:15 +0100
+        id 1jGs5o-0006sy-Ca; Tue, 24 Mar 2020 23:32:16 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 955F41C0451;
-        Tue, 24 Mar 2020 23:32:14 +0100 (CET)
-Date:   Tue, 24 Mar 2020 22:32:14 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id EC5011C0470;
+        Tue, 24 Mar 2020 23:32:15 +0100 (CET)
+Date:   Tue, 24 Mar 2020 22:32:15 -0000
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cpu] crypto: Convert to new CPU match macros
+Subject: [tip: x86/cpu] PCI: intel-mid: Convert to new X86 CPU match macros
 Cc:     Thomas Gleixner <tglx@linutronix.de>, Borislav Petkov <bp@suse.de>,
         "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200320131510.700250889@linutronix.de>
-References: <20200320131510.700250889@linutronix.de>
+        Bjorn Helgaas <bhelgaas@google.com>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200320131510.393113444@linutronix.de>
+References: <20200320131510.393113444@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <158508913426.28353.15383060459839740948.tip-bot2@tip-bot2>
+Message-ID: <158508913556.28353.13531639142358538278.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,120 +48,48 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/cpu branch of tip:
 
-Commit-ID:     f30cfacad1ee948c821a82e63b28958b92bf8c6c
-Gitweb:        https://git.kernel.org/tip/f30cfacad1ee948c821a82e63b28958b92bf8c6c
+Commit-ID:     91e503e6f8af97c7da71b3f1e7b2f8a07a36f2f1
+Gitweb:        https://git.kernel.org/tip/91e503e6f8af97c7da71b3f1e7b2f8a07a36f2f1
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Fri, 20 Mar 2020 14:14:05 +01:00
+AuthorDate:    Fri, 20 Mar 2020 14:14:02 +01:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 24 Mar 2020 21:36:06 +01:00
+CommitterDate: Tue, 24 Mar 2020 21:35:06 +01:00
 
-crypto: Convert to new CPU match macros
+PCI: intel-mid: Convert to new X86 CPU match macros
 
 The new macro set has a consistent namespace and uses C99 initializers
 instead of the grufty C89 ones.
 
+Get rid the of the local macro wrappers for consistency.
+
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Borislav Petkov <bp@suse.de>
 Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://lkml.kernel.org/r/20200320131510.700250889@linutronix.de
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+Link: https://lkml.kernel.org/r/20200320131510.393113444@linutronix.de
 ---
- arch/x86/crypto/aesni-intel_glue.c         | 2 +-
- arch/x86/crypto/crc32-pclmul_glue.c        | 2 +-
- arch/x86/crypto/crc32c-intel_glue.c        | 2 +-
- arch/x86/crypto/crct10dif-pclmul_glue.c    | 2 +-
- arch/x86/crypto/ghash-clmulni-intel_glue.c | 2 +-
- drivers/crypto/padlock-aes.c               | 2 +-
- drivers/crypto/padlock-sha.c               | 2 +-
- 7 files changed, 7 insertions(+), 7 deletions(-)
+ drivers/pci/pci-mid.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/crypto/aesni-intel_glue.c b/arch/x86/crypto/aesni-intel_glue.c
-index bbbebbd..75b6ea2 100644
---- a/arch/x86/crypto/aesni-intel_glue.c
-+++ b/arch/x86/crypto/aesni-intel_glue.c
-@@ -1064,7 +1064,7 @@ static struct aead_alg aesni_aeads[0];
- static struct simd_aead_alg *aesni_simd_aeads[ARRAY_SIZE(aesni_aeads)];
- 
- static const struct x86_cpu_id aesni_cpu_id[] = {
--	X86_FEATURE_MATCH(X86_FEATURE_AES),
-+	X86_MATCH_FEATURE(X86_FEATURE_AES, NULL),
- 	{}
- };
- MODULE_DEVICE_TABLE(x86cpu, aesni_cpu_id);
-diff --git a/arch/x86/crypto/crc32-pclmul_glue.c b/arch/x86/crypto/crc32-pclmul_glue.c
-index 418bd88..7c4c7b2 100644
---- a/arch/x86/crypto/crc32-pclmul_glue.c
-+++ b/arch/x86/crypto/crc32-pclmul_glue.c
-@@ -170,7 +170,7 @@ static struct shash_alg alg = {
+diff --git a/drivers/pci/pci-mid.c b/drivers/pci/pci-mid.c
+index 30fbe2e..aafd58d 100644
+--- a/drivers/pci/pci-mid.c
++++ b/drivers/pci/pci-mid.c
+@@ -55,15 +55,13 @@ static const struct pci_platform_pm_ops mid_pci_platform_pm = {
+ 	.need_resume	= mid_pci_need_resume,
  };
  
- static const struct x86_cpu_id crc32pclmul_cpu_id[] = {
--	X86_FEATURE_MATCH(X86_FEATURE_PCLMULQDQ),
-+	X86_MATCH_FEATURE(X86_FEATURE_PCLMULQDQ, NULL),
+-#define ICPU(model)	{ X86_VENDOR_INTEL, 6, model, X86_FEATURE_ANY, }
+-
+ /*
+  * This table should be in sync with the one in
+  * arch/x86/platform/intel-mid/pwr.c.
+  */
+ static const struct x86_cpu_id lpss_cpu_ids[] = {
+-	ICPU(INTEL_FAM6_ATOM_SALTWELL_MID),
+-	ICPU(INTEL_FAM6_ATOM_SILVERMONT_MID),
++	X86_MATCH_INTEL_FAM6_MODEL(ATOM_SALTWELL_MID, NULL),
++	X86_MATCH_INTEL_FAM6_MODEL(ATOM_SILVERMONT_MID, NULL),
  	{}
- };
- MODULE_DEVICE_TABLE(x86cpu, crc32pclmul_cpu_id);
-diff --git a/arch/x86/crypto/crc32c-intel_glue.c b/arch/x86/crypto/crc32c-intel_glue.c
-index c20d1b8..d2d069b 100644
---- a/arch/x86/crypto/crc32c-intel_glue.c
-+++ b/arch/x86/crypto/crc32c-intel_glue.c
-@@ -221,7 +221,7 @@ static struct shash_alg alg = {
  };
  
- static const struct x86_cpu_id crc32c_cpu_id[] = {
--	X86_FEATURE_MATCH(X86_FEATURE_XMM4_2),
-+	X86_MATCH_FEATURE(X86_FEATURE_XMM4_2, NULL),
- 	{}
- };
- MODULE_DEVICE_TABLE(x86cpu, crc32c_cpu_id);
-diff --git a/arch/x86/crypto/crct10dif-pclmul_glue.c b/arch/x86/crypto/crct10dif-pclmul_glue.c
-index 3c81e15..71291d5 100644
---- a/arch/x86/crypto/crct10dif-pclmul_glue.c
-+++ b/arch/x86/crypto/crct10dif-pclmul_glue.c
-@@ -114,7 +114,7 @@ static struct shash_alg alg = {
- };
- 
- static const struct x86_cpu_id crct10dif_cpu_id[] = {
--	X86_FEATURE_MATCH(X86_FEATURE_PCLMULQDQ),
-+	X86_MATCH_FEATURE(X86_FEATURE_PCLMULQDQ, NULL),
- 	{}
- };
- MODULE_DEVICE_TABLE(x86cpu, crct10dif_cpu_id);
-diff --git a/arch/x86/crypto/ghash-clmulni-intel_glue.c b/arch/x86/crypto/ghash-clmulni-intel_glue.c
-index a4b7285..1f1a95f 100644
---- a/arch/x86/crypto/ghash-clmulni-intel_glue.c
-+++ b/arch/x86/crypto/ghash-clmulni-intel_glue.c
-@@ -313,7 +313,7 @@ static struct ahash_alg ghash_async_alg = {
- };
- 
- static const struct x86_cpu_id pcmul_cpu_id[] = {
--	X86_FEATURE_MATCH(X86_FEATURE_PCLMULQDQ), /* Pickle-Mickle-Duck */
-+	X86_MATCH_FEATURE(X86_FEATURE_PCLMULQDQ, NULL), /* Pickle-Mickle-Duck */
- 	{}
- };
- MODULE_DEVICE_TABLE(x86cpu, pcmul_cpu_id);
-diff --git a/drivers/crypto/padlock-aes.c b/drivers/crypto/padlock-aes.c
-index 594d6b1..62c6fe8 100644
---- a/drivers/crypto/padlock-aes.c
-+++ b/drivers/crypto/padlock-aes.c
-@@ -474,7 +474,7 @@ static struct skcipher_alg cbc_aes_alg = {
- };
- 
- static const struct x86_cpu_id padlock_cpu_id[] = {
--	X86_FEATURE_MATCH(X86_FEATURE_XCRYPT),
-+	X86_MATCH_FEATURE(X86_FEATURE_XCRYPT, NULL),
- 	{}
- };
- MODULE_DEVICE_TABLE(x86cpu, padlock_cpu_id);
-diff --git a/drivers/crypto/padlock-sha.c b/drivers/crypto/padlock-sha.c
-index c826abe..a697a4a 100644
---- a/drivers/crypto/padlock-sha.c
-+++ b/drivers/crypto/padlock-sha.c
-@@ -490,7 +490,7 @@ static struct shash_alg sha256_alg_nano = {
- };
- 
- static const struct x86_cpu_id padlock_sha_ids[] = {
--	X86_FEATURE_MATCH(X86_FEATURE_PHE),
-+	X86_MATCH_FEATURE(X86_FEATURE_PHE, NULL),
- 	{}
- };
- MODULE_DEVICE_TABLE(x86cpu, padlock_sha_ids);
