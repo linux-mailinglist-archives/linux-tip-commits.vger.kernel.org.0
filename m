@@ -2,35 +2,34 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 976DB19096E
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 10:21:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D23A190971
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 10:21:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727653AbgCXJUc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 24 Mar 2020 05:20:32 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:43883 "EHLO
+        id S1727286AbgCXJUl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 24 Mar 2020 05:20:41 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:43879 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727286AbgCXJQd (ORCPT
+        with ESMTP id S1727279AbgCXJQc (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 24 Mar 2020 05:16:33 -0400
+        Tue, 24 Mar 2020 05:16:32 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jGffh-0007vU-Eg; Tue, 24 Mar 2020 10:16:29 +0100
+        id 1jGffh-0007vE-0t; Tue, 24 Mar 2020 10:16:29 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 08BA91C0451;
-        Tue, 24 Mar 2020 10:16:29 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 9AEB91C0470;
+        Tue, 24 Mar 2020 10:16:28 +0100 (CET)
 Date:   Tue, 24 Mar 2020 09:16:28 -0000
 From:   "tip-bot2 for SeongJae Park" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] doc/RCU/listRCU: Update example function name
-Cc:     Madhuparna Bhowmik <madhuparnabhowmik04@gmail.com>,
-        SeongJae Park <sjpark@amazon.de>,
+Subject: [tip: core/rcu] doc/RCU/rcu: Use ':ref:' for links to other docs
+Cc:     SeongJae Park <sjpark@amazon.de>,
         "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158504138870.28353.2904604308995759452.tip-bot2@tip-bot2>
+Message-ID: <158504138831.28353.3508857389864335454.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -46,44 +45,55 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     3282b0469248ab25b3f40b95e9a3d357c9d946d5
-Gitweb:        https://git.kernel.org/tip/3282b0469248ab25b3f40b95e9a3d357c9d946d5
+Commit-ID:     be2895681d6d8b1eb5a052d4655dea0d7cc2d84d
+Gitweb:        https://git.kernel.org/tip/be2895681d6d8b1eb5a052d4655dea0d7cc2d84d
 Author:        SeongJae Park <sjpark@amazon.de>
-AuthorDate:    Mon, 06 Jan 2020 21:07:58 +01:00
+AuthorDate:    Mon, 06 Jan 2020 21:07:59 +01:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Thu, 27 Feb 2020 07:03:13 -08:00
 
-doc/RCU/listRCU: Update example function name
+doc/RCU/rcu: Use ':ref:' for links to other docs
 
-listRCU.rst document gives an example with 'ipc_lock()', but the
-function has dropped off by commit 82061c57ce93 ("ipc: drop
-ipc_lock()").  Because the main logic of 'ipc_lock()' has melded in
-'shm_lock()' by the commit, this commit updates the document to use
-'shm_lock()' instead.
-
-Reviewed-by: Madhuparna Bhowmik <madhuparnabhowmik04@gmail.com>
 Signed-off-by: SeongJae Park <sjpark@amazon.de>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- Documentation/RCU/listRCU.rst | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ Documentation/RCU/rcu.rst | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/Documentation/RCU/listRCU.rst b/Documentation/RCU/listRCU.rst
-index e768f56..2a643e2 100644
---- a/Documentation/RCU/listRCU.rst
-+++ b/Documentation/RCU/listRCU.rst
-@@ -286,11 +286,11 @@ time the external state changes before Linux becomes aware of the change,
- additional RCU-induced staleness is generally not a problem.
+diff --git a/Documentation/RCU/rcu.rst b/Documentation/RCU/rcu.rst
+index 8dfb437..a1dd71d 100644
+--- a/Documentation/RCU/rcu.rst
++++ b/Documentation/RCU/rcu.rst
+@@ -11,8 +11,8 @@ must be long enough that any readers accessing the item being deleted have
+ since dropped their references.  For example, an RCU-protected deletion
+ from a linked list would first remove the item from the list, wait for
+ a grace period to elapse, then free the element.  See the
+-Documentation/RCU/listRCU.rst file for more information on using RCU with
+-linked lists.
++:ref:`Documentation/RCU/listRCU.rst <list_rcu_doc>` for more information on
++using RCU with linked lists.
  
- However, there are many examples where stale data cannot be tolerated.
--One example in the Linux kernel is the System V IPC (see the ipc_lock()
--function in ipc/util.c).  This code checks a *deleted* flag under a
-+One example in the Linux kernel is the System V IPC (see the shm_lock()
-+function in ipc/shm.c).  This code checks a *deleted* flag under a
- per-entry spinlock, and, if the *deleted* flag is set, pretends that the
- entry does not exist.  For this to be helpful, the search function must
--return holding the per-entry lock, as ipc_lock() does in fact do.
-+return holding the per-entry spinlock, as shm_lock() does in fact do.
+ Frequently Asked Questions
+ --------------------------
+@@ -50,7 +50,7 @@ Frequently Asked Questions
+ - If I am running on a uniprocessor kernel, which can only do one
+   thing at a time, why should I wait for a grace period?
  
- .. _quick_quiz:
+-  See the Documentation/RCU/UP.rst file for more information.
++  See :ref:`Documentation/RCU/UP.rst <up_doc>` for more information.
+ 
+ - How can I see where RCU is currently used in the Linux kernel?
+ 
+@@ -68,9 +68,9 @@ Frequently Asked Questions
+ 
+ - Why the name "RCU"?
+ 
+-  "RCU" stands for "read-copy update".  The file Documentation/RCU/listRCU.rst
+-  has more information on where this name came from, search for
+-  "read-copy update" to find it.
++  "RCU" stands for "read-copy update".
++  :ref:`Documentation/RCU/listRCU.rst <list_rcu_doc>` has more information on where
++  this name came from, search for "read-copy update" to find it.
+ 
+ - I hear that RCU is patented?  What is with that?
  
