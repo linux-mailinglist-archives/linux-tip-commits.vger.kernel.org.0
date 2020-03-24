@@ -2,36 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A9DE7191CAE
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 23:32:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B56F0191CE3
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 23:34:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728445AbgCXWcY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 24 Mar 2020 18:32:24 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:46384 "EHLO
+        id S1728227AbgCXWdt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 24 Mar 2020 18:33:49 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:46366 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728216AbgCXWcU (ORCPT
+        with ESMTP id S1728282AbgCXWcU (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Tue, 24 Mar 2020 18:32:20 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jGs5m-0006rZ-Hl; Tue, 24 Mar 2020 23:32:14 +0100
+        id 1jGs5n-0006ru-BH; Tue, 24 Mar 2020 23:32:15 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 2F9A71C0470;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id F2C291C0470;
         Tue, 24 Mar 2020 23:32:14 +0100 (CET)
-Date:   Tue, 24 Mar 2020 22:32:13 -0000
+Date:   Tue, 24 Mar 2020 22:32:14 -0000
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cpu] hwrng: via_rng: Convert to new X86 CPU match macros
+Subject: [tip: x86/cpu] ASoC: Intel: Convert to new X86 CPU match macros
 Cc:     Thomas Gleixner <tglx@linutronix.de>, Borislav Petkov <bp@suse.de>,
         "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200320131510.793641638@linutronix.de>
-References: <20200320131510.793641638@linutronix.de>
+In-Reply-To: <20200320131510.594671507@linutronix.de>
+References: <20200320131510.594671507@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <158508913387.28353.5741696862858938987.tip-bot2@tip-bot2>
+Message-ID: <158508913467.28353.3796403748809636437.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,51 +47,61 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/cpu branch of tip:
 
-Commit-ID:     315d01d1ad39f940c5156d6b2653bf89182422a9
-Gitweb:        https://git.kernel.org/tip/315d01d1ad39f940c5156d6b2653bf89182422a9
+Commit-ID:     d51ba9c6663d7171681be357f672503f4e2ccdc1
+Gitweb:        https://git.kernel.org/tip/d51ba9c6663d7171681be357f672503f4e2ccdc1
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Fri, 20 Mar 2020 14:14:06 +01:00
+AuthorDate:    Fri, 20 Mar 2020 14:14:04 +01:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 24 Mar 2020 21:36:26 +01:00
+CommitterDate: Tue, 24 Mar 2020 21:35:53 +01:00
 
-hwrng: via_rng: Convert to new X86 CPU match macros
+ASoC: Intel: Convert to new X86 CPU match macros
 
 The new macro set has a consistent namespace and uses C99 initializers
 instead of the grufty C89 ones.
 
+Get rid the of the local macro wrappers for consistency.
+
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Borislav Petkov <bp@suse.de>
 Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://lkml.kernel.org/r/20200320131510.793641638@linutronix.de
+Link: https://lkml.kernel.org/r/20200320131510.594671507@linutronix.de
 ---
- drivers/char/hw_random/via-rng.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ sound/soc/intel/common/soc-intel-quirks.h | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/char/hw_random/via-rng.c b/drivers/char/hw_random/via-rng.c
-index ffe9b0c..39943bc 100644
---- a/drivers/char/hw_random/via-rng.c
-+++ b/drivers/char/hw_random/via-rng.c
-@@ -209,20 +209,19 @@ static int __init mod_init(void)
- out:
- 	return err;
- }
-+module_init(mod_init);
+diff --git a/sound/soc/intel/common/soc-intel-quirks.h b/sound/soc/intel/common/soc-intel-quirks.h
+index 863a477..a917615 100644
+--- a/sound/soc/intel/common/soc-intel-quirks.h
++++ b/sound/soc/intel/common/soc-intel-quirks.h
+@@ -15,13 +15,11 @@
+ #include <asm/intel-family.h>
+ #include <asm/iosf_mbi.h>
  
- static void __exit mod_exit(void)
- {
- 	hwrng_unregister(&via_rng);
- }
+-#define ICPU(model)	{ X86_VENDOR_INTEL, 6, model, X86_FEATURE_ANY, }
 -
--module_init(mod_init);
- module_exit(mod_exit);
+ #define SOC_INTEL_IS_CPU(soc, type)				\
+ static inline bool soc_intel_is_##soc(void)			\
+ {								\
+ 	static const struct x86_cpu_id soc##_cpu_ids[] = {	\
+-		ICPU(type),					\
++		X86_MATCH_INTEL_FAM6_MODEL(type, NULL),		\
+ 		{}						\
+ 	};							\
+ 	const struct x86_cpu_id *id;				\
+@@ -32,11 +30,11 @@ static inline bool soc_intel_is_##soc(void)			\
+ 	return false;						\
+ }
  
- static struct x86_cpu_id __maybe_unused via_rng_cpu_id[] = {
--	X86_FEATURE_MATCH(X86_FEATURE_XSTORE),
-+	X86_MATCH_FEATURE(X86_FEATURE_XSTORE, NULL),
- 	{}
- };
-+MODULE_DEVICE_TABLE(x86cpu, via_rng_cpu_id);
+-SOC_INTEL_IS_CPU(byt, INTEL_FAM6_ATOM_SILVERMONT);
+-SOC_INTEL_IS_CPU(cht, INTEL_FAM6_ATOM_AIRMONT);
+-SOC_INTEL_IS_CPU(apl, INTEL_FAM6_ATOM_GOLDMONT);
+-SOC_INTEL_IS_CPU(glk, INTEL_FAM6_ATOM_GOLDMONT_PLUS);
+-SOC_INTEL_IS_CPU(cml, INTEL_FAM6_KABYLAKE_L);
++SOC_INTEL_IS_CPU(byt, ATOM_SILVERMONT);
++SOC_INTEL_IS_CPU(cht, ATOM_AIRMONT);
++SOC_INTEL_IS_CPU(apl, ATOM_GOLDMONT);
++SOC_INTEL_IS_CPU(glk, ATOM_GOLDMONT_PLUS);
++SOC_INTEL_IS_CPU(cml, KABYLAKE_L);
  
- MODULE_DESCRIPTION("H/W RNG driver for VIA CPU with PadLock");
- MODULE_LICENSE("GPL");
--MODULE_DEVICE_TABLE(x86cpu, via_rng_cpu_id);
+ static inline bool soc_intel_is_byt_cr(struct platform_device *pdev)
+ {
