@@ -2,34 +2,34 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 610A6190962
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 10:21:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5823519093F
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 10:21:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727474AbgCXJTz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 24 Mar 2020 05:19:55 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:43923 "EHLO
+        id S1727407AbgCXJQh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 24 Mar 2020 05:16:37 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:43898 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727455AbgCXJQk (ORCPT
+        with ESMTP id S1727366AbgCXJQh (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 24 Mar 2020 05:16:40 -0400
+        Tue, 24 Mar 2020 05:16:37 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jGffq-0007xE-9c; Tue, 24 Mar 2020 10:16:38 +0100
+        id 1jGffm-0007xf-OB; Tue, 24 Mar 2020 10:16:34 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 654A81C0481;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id CB2BB1C0493;
         Tue, 24 Mar 2020 10:16:32 +0100 (CET)
 Date:   Tue, 24 Mar 2020 09:16:32 -0000
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcutorture: Annotation lockless accesses to
- rcu_torture_current
+Subject: [tip: core/rcu] rcutorture: Add READ_ONCE() to rcu_torture_count and
+ rcu_torture_batch
 Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158504139206.28353.15957833602515900228.tip-bot2@tip-bot2>
+Message-ID: <158504139248.28353.2678997832857467483.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -45,60 +45,39 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     5396d31d3a396039502f75a128bd8064819cba61
-Gitweb:        https://git.kernel.org/tip/5396d31d3a396039502f75a128bd8064819cba61
+Commit-ID:     f042a436c8dc9f9cfe8ed1ee5de372697269657d
+Gitweb:        https://git.kernel.org/tip/f042a436c8dc9f9cfe8ed1ee5de372697269657d
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Wed, 08 Jan 2020 19:58:13 -08:00
+AuthorDate:    Fri, 03 Jan 2020 16:27:00 -08:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Thu, 20 Feb 2020 16:03:31 -08:00
 
-rcutorture: Annotation lockless accesses to rcu_torture_current
+rcutorture: Add READ_ONCE() to rcu_torture_count and rcu_torture_batch
 
-The rcutorture global variable rcu_torture_current is accessed locklessly,
-so it must use the RCU pointer load/store primitives.  This commit
-therefore adds several that were missed.
+The rcutorture rcu_torture_count and rcu_torture_batch per-CPU variables
+are read locklessly, so this commit adds the READ_ONCE() to a load in
+order to avoid various types of compiler vandalism^Woptimization.
 
-This data race was reported by KCSAN.  Not appropriate for backporting due
-to failure being unlikely and due to this being used only by rcutorture.
+This data race was reported by KCSAN. Not appropriate for backporting
+due to failure being unlikely and due to this being rcutorture.
 
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/rcu/rcutorture.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ kernel/rcu/rcutorture.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/kernel/rcu/rcutorture.c b/kernel/rcu/rcutorture.c
-index 0b9ce9a..7e01e9a 100644
+index 124160a..0b9ce9a 100644
 --- a/kernel/rcu/rcutorture.c
 +++ b/kernel/rcu/rcutorture.c
-@@ -1407,6 +1407,7 @@ rcu_torture_stats_print(void)
- 	int i;
- 	long pipesummary[RCU_TORTURE_PIPE_LEN + 1] = { 0 };
- 	long batchsummary[RCU_TORTURE_PIPE_LEN + 1] = { 0 };
-+	struct rcu_torture *rtcp;
- 	static unsigned long rtcv_snap = ULONG_MAX;
- 	static bool splatted;
- 	struct task_struct *wtp;
-@@ -1423,10 +1424,10 @@ rcu_torture_stats_print(void)
+@@ -1413,8 +1413,8 @@ rcu_torture_stats_print(void)
+ 
+ 	for_each_possible_cpu(cpu) {
+ 		for (i = 0; i < RCU_TORTURE_PIPE_LEN + 1; i++) {
+-			pipesummary[i] += per_cpu(rcu_torture_count, cpu)[i];
+-			batchsummary[i] += per_cpu(rcu_torture_batch, cpu)[i];
++			pipesummary[i] += READ_ONCE(per_cpu(rcu_torture_count, cpu)[i]);
++			batchsummary[i] += READ_ONCE(per_cpu(rcu_torture_batch, cpu)[i]);
+ 		}
  	}
- 
- 	pr_alert("%s%s ", torture_type, TORTURE_FLAG);
-+	rtcp = rcu_access_pointer(rcu_torture_current);
- 	pr_cont("rtc: %p %s: %lu tfle: %d rta: %d rtaf: %d rtf: %d ",
--		rcu_torture_current,
--		rcu_torture_current && !rcu_stall_is_suppressed_at_boot()
--			? "ver" : "VER",
-+		rtcp,
-+		rtcp && !rcu_stall_is_suppressed_at_boot() ? "ver" : "VER",
- 		rcu_torture_current_version,
- 		list_empty(&rcu_torture_freelist),
- 		atomic_read(&n_rcu_torture_alloc),
-@@ -1482,7 +1483,8 @@ rcu_torture_stats_print(void)
- 	if (cur_ops->stats)
- 		cur_ops->stats();
- 	if (rtcv_snap == rcu_torture_current_version &&
--	    rcu_torture_current != NULL && !rcu_stall_is_suppressed()) {
-+	    rcu_access_pointer(rcu_torture_current) &&
-+	    !rcu_stall_is_suppressed()) {
- 		int __maybe_unused flags = 0;
- 		unsigned long __maybe_unused gp_seq = 0;
- 
+ 	for (i = RCU_TORTURE_PIPE_LEN - 1; i >= 0; i--) {
