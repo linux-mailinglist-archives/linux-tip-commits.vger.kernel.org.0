@@ -2,35 +2,33 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B013190947
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 10:21:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 488B219094F
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Mar 2020 10:21:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727565AbgCXJQs (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 24 Mar 2020 05:16:48 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:43970 "EHLO
+        id S1727927AbgCXJTC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 24 Mar 2020 05:19:02 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:43976 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727366AbgCXJQs (ORCPT
+        with ESMTP id S1727575AbgCXJQu (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 24 Mar 2020 05:16:48 -0400
+        Tue, 24 Mar 2020 05:16:50 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jGffx-000839-M3; Tue, 24 Mar 2020 10:16:45 +0100
+        id 1jGfg0-00082x-EV; Tue, 24 Mar 2020 10:16:48 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E2D051C04D1;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 815231C0451;
         Tue, 24 Mar 2020 10:16:39 +0100 (CET)
 Date:   Tue, 24 Mar 2020 09:16:39 -0000
-From:   "tip-bot2 for Jules Irenge" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcu: Add missing annotation for exit_tasks_rcu_finish()
-Cc:     Jules Irenge <jbi.octave@gmail.com>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+Subject: [tip: core/rcu] srcu: Fix __call_srcu()/process_srcu() datarace
+Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158504139960.28353.10219398307584932917.tip-bot2@tip-bot2>
+Message-ID: <158504139916.28353.3509934736900696325.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -46,42 +44,46 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     90ba11ba99e0a4cc75302335d10a225b27a44918
-Gitweb:        https://git.kernel.org/tip/90ba11ba99e0a4cc75302335d10a225b27a44918
-Author:        Jules Irenge <jbi.octave@gmail.com>
-AuthorDate:    Mon, 20 Jan 2020 22:41:54 
+Commit-ID:     7ff8b4502bc0f576450d4ecbda97fa30e8002ed1
+Gitweb:        https://git.kernel.org/tip/7ff8b4502bc0f576450d4ecbda97fa30e8002ed1
+Author:        Paul E. McKenney <paulmck@kernel.org>
+AuthorDate:    Sun, 22 Dec 2019 19:32:54 -08:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Thu, 20 Feb 2020 16:00:45 -08:00
+CommitterDate: Thu, 20 Feb 2020 16:01:11 -08:00
 
-rcu: Add missing annotation for exit_tasks_rcu_finish()
+srcu: Fix __call_srcu()/process_srcu() datarace
 
-Sparse reports a warning at exit_tasks_rcu_finish(void)
+The srcu_node structure's ->srcu_gp_seq_needed_exp field is accessed
+locklessly, so updates must use WRITE_ONCE().  This commit therefore
+adds the needed WRITE_ONCE() invocations.
 
-|warning: context imbalance in exit_tasks_rcu_finish()
-|- wrong count at exit
+This data race was reported by KCSAN.  Not appropriate for backporting
+due to failure being unlikely.
 
-To fix this, this commit adds a __releases(&tasks_rcu_exit_srcu).
-Given that exit_tasks_rcu_finish() does actually call __srcu_read_lock(),
-this not only fixes the warning but also improves on the readability of
-the code.
-
-Signed-off-by: Jules Irenge <jbi.octave@gmail.com>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Reviewed-by: Joel Fernandes (Google) <joel@joelfernandes.org>
 ---
- kernel/rcu/update.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/rcu/srcutree.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/rcu/update.c b/kernel/rcu/update.c
-index a04fe54..ede656c 100644
---- a/kernel/rcu/update.c
-+++ b/kernel/rcu/update.c
-@@ -809,7 +809,7 @@ void exit_tasks_rcu_start(void) __acquires(&tasks_rcu_exit_srcu)
- }
+diff --git a/kernel/rcu/srcutree.c b/kernel/rcu/srcutree.c
+index 657e6a7..b1edac9 100644
+--- a/kernel/rcu/srcutree.c
++++ b/kernel/rcu/srcutree.c
+@@ -550,7 +550,7 @@ static void srcu_gp_end(struct srcu_struct *ssp)
+ 		snp->srcu_have_cbs[idx] = gpseq;
+ 		rcu_seq_set_state(&snp->srcu_have_cbs[idx], 1);
+ 		if (ULONG_CMP_LT(snp->srcu_gp_seq_needed_exp, gpseq))
+-			snp->srcu_gp_seq_needed_exp = gpseq;
++			WRITE_ONCE(snp->srcu_gp_seq_needed_exp, gpseq);
+ 		mask = snp->srcu_data_have_cbs[idx];
+ 		snp->srcu_data_have_cbs[idx] = 0;
+ 		spin_unlock_irq_rcu_node(snp);
+@@ -660,7 +660,7 @@ static void srcu_funnel_gp_start(struct srcu_struct *ssp, struct srcu_data *sdp,
+ 		if (snp == sdp->mynode)
+ 			snp->srcu_data_have_cbs[idx] |= sdp->grpmask;
+ 		if (!do_norm && ULONG_CMP_LT(snp->srcu_gp_seq_needed_exp, s))
+-			snp->srcu_gp_seq_needed_exp = s;
++			WRITE_ONCE(snp->srcu_gp_seq_needed_exp, s);
+ 		spin_unlock_irqrestore_rcu_node(snp, flags);
+ 	}
  
- /* Do the srcu_read_unlock() for the above synchronize_srcu().  */
--void exit_tasks_rcu_finish(void)
-+void exit_tasks_rcu_finish(void) __releases(&tasks_rcu_exit_srcu)
- {
- 	preempt_disable();
- 	__srcu_read_unlock(&tasks_rcu_exit_srcu, current->rcu_tasks_idx);
