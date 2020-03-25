@@ -2,36 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 64AC91927DA
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 25 Mar 2020 13:07:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 172481927BA
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 25 Mar 2020 13:06:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727547AbgCYMGK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 25 Mar 2020 08:06:10 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:47736 "EHLO
+        id S1727486AbgCYMGF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 25 Mar 2020 08:06:05 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:47720 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727501AbgCYMGJ (ORCPT
+        with ESMTP id S1727316AbgCYMGF (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 25 Mar 2020 08:06:09 -0400
+        Wed, 25 Mar 2020 08:06:05 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jH4nJ-0000hp-8M; Wed, 25 Mar 2020 13:06:01 +0100
+        id 1jH4nK-0000iV-5D; Wed, 25 Mar 2020 13:06:02 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id CF5261C0470;
-        Wed, 25 Mar 2020 13:06:00 +0100 (CET)
-Date:   Wed, 25 Mar 2020 12:06:00 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id AD8ED1C0470;
+        Wed, 25 Mar 2020 13:06:01 +0100 (CET)
+Date:   Wed, 25 Mar 2020 12:06:01 -0000
 From:   "tip-bot2 for Qais Yousef" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: smp/core] cpu/hotplug: Move bringup of secondary CPUs out of smp_init()
+Subject: [tip: smp/core] firmware: psci: Replace cpu_up/down() with add/remove_cpu()
 Cc:     Qais Yousef <qais.yousef@arm.com>,
-        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200323135110.30522-17-qais.yousef@arm.com>
-References: <20200323135110.30522-17-qais.yousef@arm.com>
+        Thomas Gleixner <tglx@linutronix.de>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200323135110.30522-15-qais.yousef@arm.com>
+References: <20200323135110.30522-15-qais.yousef@arm.com>
 MIME-Version: 1.0
-Message-ID: <158513796050.28353.7961406059999182214.tip-bot2@tip-bot2>
+Message-ID: <158513796137.28353.17348529799855169682.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,86 +48,52 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the smp/core branch of tip:
 
-Commit-ID:     b99a26593b5190fac6b5c1f81a7f8cc128a25c98
-Gitweb:        https://git.kernel.org/tip/b99a26593b5190fac6b5c1f81a7f8cc128a25c98
+Commit-ID:     20fb50295b139494754964d7d005b5a2f465ef08
+Gitweb:        https://git.kernel.org/tip/20fb50295b139494754964d7d005b5a2f465ef08
 Author:        Qais Yousef <qais.yousef@arm.com>
-AuthorDate:    Mon, 23 Mar 2020 13:51:09 
+AuthorDate:    Mon, 23 Mar 2020 13:51:07 
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Wed, 25 Mar 2020 12:59:37 +01:00
 
-cpu/hotplug: Move bringup of secondary CPUs out of smp_init()
+firmware: psci: Replace cpu_up/down() with add/remove_cpu()
 
-This is the last direct user of cpu_up() before it can become an internal
-implementation detail of the cpu subsystem.
+The core device API performs extra housekeeping bits that are missing
+from directly calling cpu_up/down().
+
+See commit a6717c01ddc2 ("powerpc/rtas: use device model APIs and
+serialization during LPM") for an example description of what might go
+wrong.
+
+This also prepares to make cpu_up/down a private interface of the CPU subsystem.
 
 Signed-off-by: Qais Yousef <qais.yousef@arm.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20200323135110.30522-17-qais.yousef@arm.com
+Cc: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+Link: https://lkml.kernel.org/r/20200323135110.30522-15-qais.yousef@arm.com
 
 ---
- include/linux/cpu.h |  1 +
- kernel/cpu.c        | 12 ++++++++++++
- kernel/smp.c        |  9 +--------
- 3 files changed, 14 insertions(+), 8 deletions(-)
+ drivers/firmware/psci/psci_checker.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/cpu.h b/include/linux/cpu.h
-index 9dc1e89..8b295f7 100644
---- a/include/linux/cpu.h
-+++ b/include/linux/cpu.h
-@@ -94,6 +94,7 @@ void notify_cpu_starting(unsigned int cpu);
- extern void cpu_maps_update_begin(void);
- extern void cpu_maps_update_done(void);
- int bringup_hibernate_cpu(unsigned int sleep_cpu);
-+void bringup_nonboot_cpus(unsigned int setup_max_cpus);
+diff --git a/drivers/firmware/psci/psci_checker.c b/drivers/firmware/psci/psci_checker.c
+index 6a44539..873841a 100644
+--- a/drivers/firmware/psci/psci_checker.c
++++ b/drivers/firmware/psci/psci_checker.c
+@@ -84,7 +84,7 @@ static unsigned int down_and_up_cpus(const struct cpumask *cpus,
  
- #else	/* CONFIG_SMP */
- #define cpuhp_tasks_frozen	0
-diff --git a/kernel/cpu.c b/kernel/cpu.c
-index f803678..4783d81 100644
---- a/kernel/cpu.c
-+++ b/kernel/cpu.c
-@@ -1298,6 +1298,18 @@ int bringup_hibernate_cpu(unsigned int sleep_cpu)
- 	return 0;
- }
+ 	/* Try to power down all CPUs in the mask. */
+ 	for_each_cpu(cpu, cpus) {
+-		int ret = cpu_down(cpu);
++		int ret = remove_cpu(cpu);
  
-+void bringup_nonboot_cpus(unsigned int setup_max_cpus)
-+{
-+	unsigned int cpu;
-+
-+	for_each_present_cpu(cpu) {
-+		if (num_online_cpus() >= setup_max_cpus)
-+			break;
-+		if (!cpu_online(cpu))
-+			cpu_up(cpu);
-+	}
-+}
-+
- #ifdef CONFIG_PM_SLEEP_SMP
- static cpumask_var_t frozen_cpus;
+ 		/*
+ 		 * cpu_down() checks the number of online CPUs before the TOS
+@@ -116,7 +116,7 @@ static unsigned int down_and_up_cpus(const struct cpumask *cpus,
  
-diff --git a/kernel/smp.c b/kernel/smp.c
-index 97f1d97..786092a 100644
---- a/kernel/smp.c
-+++ b/kernel/smp.c
-@@ -597,20 +597,13 @@ void __init setup_nr_cpu_ids(void)
- void __init smp_init(void)
- {
- 	int num_nodes, num_cpus;
--	unsigned int cpu;
+ 	/* Try to power up all the CPUs that have been offlined. */
+ 	for_each_cpu(cpu, offlined_cpus) {
+-		int ret = cpu_up(cpu);
++		int ret = add_cpu(cpu);
  
- 	idle_threads_init();
- 	cpuhp_threads_init();
- 
- 	pr_info("Bringing up secondary CPUs ...\n");
- 
--	/* FIXME: This should be done in userspace --RR */
--	for_each_present_cpu(cpu) {
--		if (num_online_cpus() >= setup_max_cpus)
--			break;
--		if (!cpu_online(cpu))
--			cpu_up(cpu);
--	}
-+	bringup_nonboot_cpus(setup_max_cpus);
- 
- 	num_nodes = num_online_nodes();
- 	num_cpus  = num_online_cpus();
+ 		if (ret != 0) {
+ 			pr_err("Error occurred (%d) while trying "
