@@ -2,85 +2,132 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A538B19289A
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 25 Mar 2020 13:41:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D891B1932A8
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 25 Mar 2020 22:30:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727316AbgCYMlg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 25 Mar 2020 08:41:36 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:47905 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727279AbgCYMlf (ORCPT
+        id S1727401AbgCYVaC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 25 Mar 2020 17:30:02 -0400
+Received: from hqnvemgate26.nvidia.com ([216.228.121.65]:9019 "EHLO
+        hqnvemgate26.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727384AbgCYVaC (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 25 Mar 2020 08:41:35 -0400
-Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tip-bot2@linutronix.de>)
-        id 1jH5Lc-0001Xv-9h; Wed, 25 Mar 2020 13:41:29 +0100
-Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id CE2911C0450;
-        Wed, 25 Mar 2020 13:41:15 +0100 (CET)
-Date:   Wed, 25 Mar 2020 12:41:15 -0000
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cpu] cpufreq/intel_pstate: Fix wrong macro conversion
-Cc:     kernel test robot <rong.a.chen@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200324060124.GC11705@shao2-debian>
-References: <20200324060124.GC11705@shao2-debian>
+        Wed, 25 Mar 2020 17:30:02 -0400
+Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by hqnvemgate26.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
+        id <B5e7bcd4c0001>; Wed, 25 Mar 2020 14:29:48 -0700
+Received: from hqmail.nvidia.com ([172.20.161.6])
+  by hqpgpgate101.nvidia.com (PGP Universal service);
+  Wed, 25 Mar 2020 14:30:01 -0700
+X-PGP-Universal: processed;
+        by hqpgpgate101.nvidia.com on Wed, 25 Mar 2020 14:30:01 -0700
+Received: from [10.26.72.231] (10.124.1.5) by HQMAIL107.nvidia.com
+ (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Wed, 25 Mar
+ 2020 21:29:59 +0000
+Subject: Re: [tip: timers/core] clocksource/drivers/timer-probe: Avoid
+ creating dead devices
+To:     Ionela Voinescu <ionela.voinescu@arm.com>,
+        <linux-kernel@vger.kernel.org>,
+        Saravana Kannan <saravanak@google.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>
+CC:     <linux-tip-commits@vger.kernel.org>, x86 <x86@kernel.org>,
+        <liviu.dudau@arm.com>, <sudeep.holla@arm.com>,
+        <lorenzo.pieralisi@arm.com>,
+        linux-tegra <linux-tegra@vger.kernel.org>
+References: <20200111052125.238212-1-saravanak@google.com>
+ <158460766637.28353.11325960928759668587.tip-bot2@tip-bot2>
+ <20200324175955.GA16972@arm.com>
+From:   Jon Hunter <jonathanh@nvidia.com>
+Message-ID: <e75ae529-264c-9aa6-f711-2afe28ceec36@nvidia.com>
+Date:   Wed, 25 Mar 2020 21:29:57 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-Message-ID: <158514007544.28353.4934308733566744386.tip-bot2@tip-bot2>
-X-Mailer: tip-git-log-daemon
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+In-Reply-To: <20200324175955.GA16972@arm.com>
+X-Originating-IP: [10.124.1.5]
+X-ClientProxiedBy: HQMAIL101.nvidia.com (172.20.187.10) To
+ HQMAIL107.nvidia.com (172.20.187.13)
 Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+        t=1585171788; bh=zwkSmPWYbRZk6Ce7Av1OcrGsQ4eYCwVvf0CQ6wsWw2k=;
+        h=X-PGP-Universal:Subject:To:CC:References:From:Message-ID:Date:
+         User-Agent:MIME-Version:In-Reply-To:X-Originating-IP:
+         X-ClientProxiedBy:Content-Type:Content-Language:
+         Content-Transfer-Encoding;
+        b=JSA1Om7wkt2BSVOehQRgF4VAja1l6ZPtUcoB5fNOP5axn37rdw8iHeqRDUeY9L/iQ
+         nk/M+2oIsXJLRXVgPxVFR5QlE6XIq/kA7lIUAlODiGazqSKNuiz9ciNW2EtMQlIiGP
+         //f2D9hZFi2VB0LS3bQbDe0Cly6aIamiwer9Jw2SinXh+zKjbkq/SUjGczSs/IQPtR
+         SCH0IGkbPh3ZA+STrjUmakR1w8aePJis960Bll5yPBt4b/VzAxArvgvjeXmzEjqzLA
+         ZkAC+GIbN284VCaEVXisMQJ4e1n3z7dkyNyIkeSfPp1V2qIOuEenydPRbYIlYxEXOk
+         X81Uxb7KVKFYw==
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cpu branch of tip:
 
-Commit-ID:     d97828072d0bcecb6655f0966efc38a2647d3dfb
-Gitweb:        https://git.kernel.org/tip/d97828072d0bcecb6655f0966efc38a2647d3dfb
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Wed, 25 Mar 2020 13:21:55 +01:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 25 Mar 2020 13:21:55 +01:00
+On 24/03/2020 17:59, Ionela Voinescu wrote:
+> Hi guys,
+> 
+> On Thursday 19 Mar 2020 at 08:47:46 (-0000), tip-bot2 for Saravana Kannan wrote:
+>> The following commit has been merged into the timers/core branch of tip:
+>>
+>> Conommit-ID:     4f41fe386a94639cd9a1831298d4f85db5662f1e
+>> Gitweb:        https://git.kernel.org/tip/4f41fe386a94639cd9a1831298d4f85db5662f1e
+>> Author:        Saravana Kannan <saravanak@google.com>
+>> AuthorDate:    Fri, 10 Jan 2020 21:21:25 -08:00
+>> Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
+>> CommitterDate: Tue, 17 Mar 2020 13:10:07 +01:00
+>>
+>> clocksource/drivers/timer-probe: Avoid creating dead devices
+>>
+>> Timer initialization is done during early boot way before the driver
+>> core starts processing devices and drivers. Timers initialized during
+>> this early boot period don't really need or use a struct device.
+>>
+>> However, for timers represented as device tree nodes, the struct devices
+>> are still created and sit around unused and wasting memory. This change
+>> avoid this by marking the device tree nodes as "populated" if the
+>> corresponding timer is successfully initialized.
+>>
+>> Signed-off-by: Saravana Kannan <saravanak@google.com>
+>> Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+>> Link: https://lore.kernel.org/r/20200111052125.238212-1-saravanak@google.com
+>> ---
+>>  drivers/clocksource/timer-probe.c | 2 ++
+>>  1 file changed, 2 insertions(+)
+>>
+>> diff --git a/drivers/clocksource/timer-probe.c b/drivers/clocksource/timer-probe.c
+>> index ee9574d..a10f28d 100644
+>> --- a/drivers/clocksource/timer-probe.c
+>> +++ b/drivers/clocksource/timer-probe.c
+>> @@ -27,8 +27,10 @@ void __init timer_probe(void)
+>>  
+>>  		init_func_ret = match->data;
+>>  
+>> +		of_node_set_flag(np, OF_POPULATED);
+>>  		ret = init_func_ret(np);
+>>  		if (ret) {
+>> +			of_node_clear_flag(np, OF_POPULATED);
+>>  			if (ret != -EPROBE_DEFER)
+>>  				pr_err("Failed to initialize '%pOF': %d\n", np,
+>>  				       ret);
+>>
+> 
+> This patch is creating problems on some vexpress platforms - ones that
+> are using CLKSRC_VERSATILE (drivers/clocksource/timer-versatile.c).
+> I noticed issues on TC2 and FVPs (fixed virtual platforms) starting with
+> next-20200318 and still reproducible with next-20200323.
 
-cpufreq/intel_pstate: Fix wrong macro conversion
+I am also seeing a regression on tegra30-cardhu-a04 when testing system
+suspend on -next. Bisect is pointing to this commit and reverting on top
+of -next fixes the problem. Unfortunately, there is no crash dump
+observed, but the device hangs somewhere when testing suspend.
 
-The feature flag hwp_support_ids are supposed to match on is
-X86_FEATURE_HWP, not X86_FEATURE_APERFMPERF. Fix it.
+I have not looked into this any further but wanted to report the problem.
 
- [ bp: Write commit message. ]
+Cheers
+Jon
 
-Fixes: b11d77fa300d ("cpufreq: Convert to new X86 CPU match macros")
-Reported-by: kernel test robot <rong.a.chen@intel.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20200324060124.GC11705@shao2-debian
----
- drivers/cpufreq/intel_pstate.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
-index 780c387..46bce09 100644
---- a/drivers/cpufreq/intel_pstate.c
-+++ b/drivers/cpufreq/intel_pstate.c
-@@ -2727,7 +2727,7 @@ static inline void intel_pstate_request_control_from_smm(void) {}
- 
- #define X86_MATCH_HWP(model, hwp_mode)					\
- 	X86_MATCH_VENDOR_FAM_MODEL_FEATURE(INTEL, 6, INTEL_FAM6_##model, \
--					   X86_FEATURE_APERFMPERF, hwp_mode)
-+					   X86_FEATURE_HWP, hwp_mode)
- 
- static const struct x86_cpu_id hwp_support_ids[] __initconst = {
- 	X86_MATCH_HWP(BROADWELL_X,	INTEL_PSTATE_HWP_BROADWELL),
+-- 
+nvpublic
