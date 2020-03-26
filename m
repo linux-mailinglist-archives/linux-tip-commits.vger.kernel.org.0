@@ -2,37 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 80215193CAD
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 26 Mar 2020 11:09:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A7353193CA7
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 26 Mar 2020 11:09:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727936AbgCZKJb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 26 Mar 2020 06:09:31 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:50178 "EHLO
+        id S1728090AbgCZKJN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 26 Mar 2020 06:09:13 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:50201 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726338AbgCZKIl (ORCPT
+        with ESMTP id S1727873AbgCZKIm (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 26 Mar 2020 06:08:41 -0400
+        Thu, 26 Mar 2020 06:08:42 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jHPRB-00045U-3H; Thu, 26 Mar 2020 11:08:33 +0100
+        id 1jHPRB-00045Y-HH; Thu, 26 Mar 2020 11:08:33 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A796F1C0470;
-        Thu, 26 Mar 2020 11:08:32 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 15E651C0440;
+        Thu, 26 Mar 2020 11:08:33 +0100 (CET)
 Date:   Thu, 26 Mar 2020 10:08:32 -0000
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/objtool] objtool: Optimize find_rela_by_dest_range()
+Subject: [tip: core/objtool] objtool: Delete cleanup()
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Miroslav Benes <mbenes@suse.cz>,
         Josh Poimboeuf <jpoimboe@redhat.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200324160924.861321325@infradead.org>
-References: <20200324160924.861321325@infradead.org>
+In-Reply-To: <20200324160924.800720170@infradead.org>
+References: <20200324160924.800720170@infradead.org>
 MIME-Version: 1.0
-Message-ID: <158521731235.28353.5096850462321225657.tip-bot2@tip-bot2>
+Message-ID: <158521731275.28353.8005439987604062029.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,94 +48,63 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/objtool branch of tip:
 
-Commit-ID:     74b873e49d92f90deb41d1a2a8fbb70328aebd67
-Gitweb:        https://git.kernel.org/tip/74b873e49d92f90deb41d1a2a8fbb70328aebd67
+Commit-ID:     8887a86eddd93ca396ca35f7b41fb14ed412f85d
+Gitweb:        https://git.kernel.org/tip/8887a86eddd93ca396ca35f7b41fb14ed412f85d
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Thu, 12 Mar 2020 11:30:50 +01:00
+AuthorDate:    Wed, 11 Mar 2020 23:07:42 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 25 Mar 2020 18:28:31 +01:00
+CommitterDate: Wed, 25 Mar 2020 18:28:30 +01:00
 
-objtool: Optimize find_rela_by_dest_range()
+objtool: Delete cleanup()
 
-Perf shows there is significant time in find_rela_by_dest(); this is
-because we have to iterate the address space per byte, looking for
-relocation entries.
+Perf shows we spend a measurable amount of time spend cleaning up
+right before we exit anyway. Avoid the needsless work and just
+terminate.
 
-Optimize this by reducing the address space granularity.
-
-This reduces objtool on vmlinux.o runtime from 4.8 to 4.4 seconds.
+This reduces objtool on vmlinux.o runtime from 5.4s to 4.8s
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Miroslav Benes <mbenes@suse.cz>
 Acked-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Link: https://lkml.kernel.org/r/20200324160924.861321325@infradead.org
+Link: https://lkml.kernel.org/r/20200324160924.800720170@infradead.org
 ---
- tools/objtool/elf.c | 15 +++++++++++----
- tools/objtool/elf.h | 16 +++++++++++++++-
- 2 files changed, 26 insertions(+), 5 deletions(-)
+ tools/objtool/check.c | 19 -------------------
+ 1 file changed, 19 deletions(-)
 
-diff --git a/tools/objtool/elf.c b/tools/objtool/elf.c
-index 8a0a1bc..09ddc8f 100644
---- a/tools/objtool/elf.c
-+++ b/tools/objtool/elf.c
-@@ -215,7 +215,7 @@ struct symbol *find_symbol_by_name(struct elf *elf, const char *name)
- struct rela *find_rela_by_dest_range(struct elf *elf, struct section *sec,
- 				     unsigned long offset, unsigned int len)
- {
--	struct rela *rela;
-+	struct rela *rela, *r = NULL;
- 	unsigned long o;
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index 54a6043..0c9c9ad 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -2458,23 +2458,6 @@ static int validate_reachable_instructions(struct objtool_file *file)
+ 	return 0;
+ }
  
- 	if (!sec->rela)
-@@ -223,12 +223,19 @@ struct rela *find_rela_by_dest_range(struct elf *elf, struct section *sec,
+-static void cleanup(struct objtool_file *file)
+-{
+-	struct instruction *insn, *tmpinsn;
+-	struct alternative *alt, *tmpalt;
+-
+-	list_for_each_entry_safe(insn, tmpinsn, &file->insn_list, list) {
+-		list_for_each_entry_safe(alt, tmpalt, &insn->alts, list) {
+-			list_del(&alt->list);
+-			free(alt);
+-		}
+-		list_del(&insn->list);
+-		hash_del(&insn->hash);
+-		free(insn);
+-	}
+-	elf_close(file->elf);
+-}
+-
+ static struct objtool_file file;
  
- 	sec = sec->rela;
- 
--	for (o = offset; o < offset + len; o++) {
-+	for_offset_range(o, offset, offset + len) {
- 		hash_for_each_possible(elf->rela_hash, rela, hash,
- 				       sec_offset_hash(sec, o)) {
--			if (rela->sec == sec && rela->offset == o)
--				return rela;
-+			if (rela->sec != sec)
-+				continue;
-+
-+			if (rela->offset >= offset && rela->offset < offset + len) {
-+				if (!r || rela->offset < r->offset)
-+					r = rela;
-+			}
- 		}
-+		if (r)
-+			return r;
+ int check(const char *_objname, bool orc)
+@@ -2542,8 +2525,6 @@ int check(const char *_objname, bool orc)
  	}
  
- 	return NULL;
-diff --git a/tools/objtool/elf.h b/tools/objtool/elf.h
-index dfd2431..ebbb10c 100644
---- a/tools/objtool/elf.h
-+++ b/tools/objtool/elf.h
-@@ -83,9 +83,23 @@ struct elf {
- 	DECLARE_HASHTABLE(rela_hash, 20);
- };
- 
-+#define OFFSET_STRIDE_BITS	4
-+#define OFFSET_STRIDE		(1UL << OFFSET_STRIDE_BITS)
-+#define OFFSET_STRIDE_MASK	(~(OFFSET_STRIDE - 1))
-+
-+#define for_offset_range(_offset, _start, _end)		\
-+	for (_offset = ((_start) & OFFSET_STRIDE_MASK);	\
-+	     _offset <= ((_end) & OFFSET_STRIDE_MASK);	\
-+	     _offset += OFFSET_STRIDE)
-+
- static inline u32 sec_offset_hash(struct section *sec, unsigned long offset)
- {
--	u32 ol = offset, oh = offset >> 32, idx = sec->idx;
-+	u32 ol, oh, idx = sec->idx;
-+
-+	offset &= OFFSET_STRIDE_MASK;
-+
-+	ol = offset;
-+	oh = offset >> 32;
- 
- 	__jhash_mix(ol, oh, idx);
- 
+ out:
+-	cleanup(&file);
+-
+ 	if (ret < 0) {
+ 		/*
+ 		 *  Fatal error.  The binary is corrupt or otherwise broken in
