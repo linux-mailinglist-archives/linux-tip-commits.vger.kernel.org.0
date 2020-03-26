@@ -2,219 +2,130 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 08677193E10
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 26 Mar 2020 12:40:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F06F7194246
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 26 Mar 2020 16:02:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727991AbgCZLkQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 26 Mar 2020 07:40:16 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:50457 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727900AbgCZLkQ (ORCPT
+        id S1726363AbgCZPCq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 26 Mar 2020 11:02:46 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59832 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726296AbgCZPCq (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 26 Mar 2020 07:40:16 -0400
-Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tip-bot2@linutronix.de>)
-        id 1jHQrp-0006UF-Vp; Thu, 26 Mar 2020 12:40:10 +0100
-Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 830511C0470;
-        Thu, 26 Mar 2020 12:40:09 +0100 (CET)
-Date:   Thu, 26 Mar 2020 11:40:09 -0000
-From:   "tip-bot2 for Yu-cheng Yu" <tip-bot2@linutronix.de>
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/misc] x86/insn: Add Control-flow Enforcement (CET)
- instructions to the opcode map
-Cc:     "Yu-cheng Yu" <yu-cheng.yu@intel.com>,
-        Borislav Petkov <bp@suse.de>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Masami Hiramatsu <mhiramat@kernel.org>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200204171425.28073-2-yu-cheng.yu@intel.com>
-References: <20200204171425.28073-2-yu-cheng.yu@intel.com>
+        Thu, 26 Mar 2020 11:02:46 -0400
+Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id E1F6620737;
+        Thu, 26 Mar 2020 15:02:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1585234965;
+        bh=aFhpJni6/CsdULCawfOYAw4NLfGaTvWSDBG0TOaDnoM=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=OHYRQTyLSsYSPoUl6SZEiyMAUR6rTUhuXiGvPh/3UoTTvgCtJnfcGU+x1sMZPRZP9
+         0v64ZGV9OGSx58uesR2IQH5ak0NVdTL4XRaf30mRrnGdv/JCXyajGMKha5zai5OlWO
+         bf+2QL9mggVeVI5hp8O0lR2susQJZAYVFNLieWRs=
+Received: by mail-qv1-f47.google.com with SMTP id m2so3047343qvu.13;
+        Thu, 26 Mar 2020 08:02:44 -0700 (PDT)
+X-Gm-Message-State: ANhLgQ20TV5JWDmEdlp9YA/0/lqQ+B/WrlY4+uaMt6QONw/ZcVIvzf0d
+        3tQ7NmpO+Dk6bCyjXZEmwBHM5fEAjCn+7BCr2w==
+X-Google-Smtp-Source: ADFU+vuqAZmLCbZGmwxWI/Q5si27yCPAGJMMn6YIKMYX8mHxHUsqX+kMnnH+O6NAtvkOEOYCpxZSs9Uojued4Yax7VI=
+X-Received: by 2002:ad4:4829:: with SMTP id h9mr8086052qvy.135.1585234963992;
+ Thu, 26 Mar 2020 08:02:43 -0700 (PDT)
 MIME-Version: 1.0
-Message-ID: <158522280919.28353.13352431577449123346.tip-bot2@tip-bot2>
-X-Mailer: tip-git-log-daemon
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+References: <20200111052125.238212-1-saravanak@google.com> <158460766637.28353.11325960928759668587.tip-bot2@tip-bot2>
+ <20200324175955.GA16972@arm.com> <CAGETcx8Qhy3y66vJyi8kRvg1+hXf-goDvyty-bsG5qFrA-CKgg@mail.gmail.com>
+ <CAGETcx80wvGnS0-MwJ9M9RR9Mny0jmmep+JfwaUJUOR2bfJYsQ@mail.gmail.com>
+ <87lfnoxg2a.fsf@nanos.tec.linutronix.de> <CAGETcx_3GSKmSveiGrM2vQp=q57iZYc0T4ELMY7Zw8UwzPEnYA@mail.gmail.com>
+ <87imirxv57.fsf@nanos.tec.linutronix.de>
+In-Reply-To: <87imirxv57.fsf@nanos.tec.linutronix.de>
+From:   Rob Herring <robh+dt@kernel.org>
+Date:   Thu, 26 Mar 2020 09:02:32 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqLas2mi-kTrEY=9vnopU57qwJNDtvui0erMghfG4-pOZw@mail.gmail.com>
+Message-ID: <CAL_JsqLas2mi-kTrEY=9vnopU57qwJNDtvui0erMghfG4-pOZw@mail.gmail.com>
+Subject: Re: [tip: timers/core] clocksource/drivers/timer-probe: Avoid
+ creating dead devices
+To:     Thomas Gleixner <tglx@linutronix.de>,
+        Saravana Kannan <saravanak@google.com>
+Cc:     Ionela Voinescu <ionela.voinescu@arm.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        linux-tip-commits@vger.kernel.org, x86 <x86@kernel.org>,
+        Liviu Dudau <liviu.dudau@arm.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Jon Hunter <jonathanh@nvidia.com>,
+        Pawel Moll <pawel.moll@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/misc branch of tip:
+On Thu, Mar 26, 2020 at 4:34 AM Thomas Gleixner <tglx@linutronix.de> wrote:
+>
+> Saravana Kannan <saravanak@google.com> writes:
+> > On Wed, Mar 25, 2020 at 2:47 PM Thomas Gleixner <tglx@linutronix.de> wrote:
+> >
+> >> Saravana Kannan <saravanak@google.com> writes:
+> >> > On Tue, Mar 24, 2020 at 11:34 AM Saravana Kannan <saravanak@google.com> wrote:
+> >> > I took a closer look. So two different drivers [1] [2] are saying they
+> >> > know how to handle "arm,vexpress-sysreg" and are expecting to run at
+> >> > the same time. That seems a bit unusual to me. I wonder if this is a
+> >> > violation of the device-driver model because this expectation would
+> >> > never be allowed if these device drivers were actual drivers
+> >> > registered with driver-core. But that's a discussion for another time.
+> >> >
+> >> > To fix this issue you are facing, this patch should work:
+> >> > https://lore.kernel.org/lkml/20200324195302.203115-1-saravanak@google.com/T/#u
+> >>
+> >> Sorry, that's not a fix. That's a crude hack.
+> >
+> > If device nodes are being handled by drivers without binding a driver
+> > to struct devices, then not setting OF_POPULATED is wrong. So the
+> > original patch sets it. There are also very valid reasons for allowing
+> > OF_POPULATED to be cleared by a driver as discussed here [1].
+> >
+> > The approach of the original patch (setting the flag and letting the
+> > driver sometimes clear it) is also followed by many other frameworks
+> > like irq, clk, i2c, etc. Even ingenic-timer.c already does it for the
+> > exact same reason.
+> >
+> > So, why is the vexpress fix a crude hack?
+>
+> If it's the right thing to do and accepted by the DT folks, then the
+> changelog should provide a proper explanation for it. The one you
+> provided just baffles me. Plus the clearing of the flag really needs a
+> big fat comment.
 
-Commit-ID:     5790921bc18b1eb5c0c61371e31114fd4c4b0154
-Gitweb:        https://git.kernel.org/tip/5790921bc18b1eb5c0c61371e31114fd4c4b0154
-Author:        Yu-cheng Yu <yu-cheng.yu@intel.com>
-AuthorDate:    Tue, 04 Feb 2020 09:14:24 -08:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Thu, 26 Mar 2020 12:21:40 +01:00
+IMO, commit 4f41fe386a946 should be reverted and be done with it.
+There's no way the timer core can know whether a specific node should
+be scanned or not. If you really want to avoid a struct device, then
+set OF_POPULATED in specific timer drivers. But I'd rather not see
+more places mucking with OF_POPULATED. It's really only bus code that
+should be touching it.
 
-x86/insn: Add Control-flow Enforcement (CET) instructions to the opcode map
+Is having a struct device really a problem? If we want to save memory
+usage, I have some ideas that would save much more than 1 or 2 struct
+devices.
 
-Add the following CET instructions to the opcode map:
+> It still does not make any sense to me.
+>
+> arm,vexpress-sysreg is a MFD device, so can the ARM people please
+> explain, why the sched clock part is not just another MFD sub-device or
+> simply has it's own DT match?
 
-INCSSP:
-    Increment Shadow Stack pointer (SSP).
+The issue is DT nodes and Linux drivers aren't necessarily 1-1. That
+would be nice, but hardware is messy and DT doesn't abstract that
+away. If we tried to always make things 1-1, then if/when the Linux
+driver structure changes we'd have to change the DT. If we decided to
+add a node now, we'd still have to support the old DT for backwards
+compatibility. We also have to consider the structure for another OS
+may be different.
 
-RDSSP:
-    Read SSP into a GPR.
+Generally, if I see a node with a compatible only it gets NAKed as
+that's a sure sign of someone just trying to bind a driver and not
+describing the h/w. We only do MFD sub-devices if those devices
+provide or consume other DT resources.
 
-SAVEPREVSSP:
-    Use "previous ssp" token at top of current Shadow Stack (SHSTK) to
-    create a "restore token" on the previous (outgoing) SHSTK.
-
-RSTORSSP:
-    Restore from a "restore token" to SSP.
-
-WRSS:
-    Write to kernel-mode SHSTK (kernel-mode instruction).
-
-WRUSS:
-    Write to user-mode SHSTK (kernel-mode instruction).
-
-SETSSBSY:
-    Verify the "supervisor token" pointed by MSR_IA32_PL0_SSP, set the
-    token busy, and set then Shadow Stack pointer(SSP) to the value of
-    MSR_IA32_PL0_SSP.
-
-CLRSSBSY:
-    Verify the "supervisor token" and clear its busy bit.
-
-ENDBR64/ENDBR32:
-    Mark a valid 64/32 bit control transfer endpoint.
-
-Detailed information of CET instructions can be found in Intel Software
-Developer's Manual.
-
-Signed-off-by: Yu-cheng Yu <yu-cheng.yu@intel.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Adrian Hunter <adrian.hunter@intel.com>
-Reviewed-by: Tony Luck <tony.luck@intel.com>
-Acked-by: Masami Hiramatsu <mhiramat@kernel.org>
-Link: https://lkml.kernel.org/r/20200204171425.28073-2-yu-cheng.yu@intel.com
----
- arch/x86/lib/x86-opcode-map.txt       | 17 +++++++++++------
- tools/arch/x86/lib/x86-opcode-map.txt | 17 +++++++++++------
- 2 files changed, 22 insertions(+), 12 deletions(-)
-
-diff --git a/arch/x86/lib/x86-opcode-map.txt b/arch/x86/lib/x86-opcode-map.txt
-index 53adc17..ec31f5b 100644
---- a/arch/x86/lib/x86-opcode-map.txt
-+++ b/arch/x86/lib/x86-opcode-map.txt
-@@ -366,7 +366,7 @@ AVXcode: 1
- 1b: BNDCN Gv,Ev (F2) | BNDMOV Ev,Gv (66) | BNDMK Gv,Ev (F3) | BNDSTX Ev,Gv
- 1c: Grp20 (1A),(1C)
- 1d:
--1e:
-+1e: Grp21 (1A)
- 1f: NOP Ev
- # 0x0f 0x20-0x2f
- 20: MOV Rd,Cd
-@@ -803,8 +803,8 @@ f0: MOVBE Gy,My | MOVBE Gw,Mw (66) | CRC32 Gd,Eb (F2) | CRC32 Gd,Eb (66&F2)
- f1: MOVBE My,Gy | MOVBE Mw,Gw (66) | CRC32 Gd,Ey (F2) | CRC32 Gd,Ew (66&F2)
- f2: ANDN Gy,By,Ey (v)
- f3: Grp17 (1A)
--f5: BZHI Gy,Ey,By (v) | PEXT Gy,By,Ey (F3),(v) | PDEP Gy,By,Ey (F2),(v)
--f6: ADCX Gy,Ey (66) | ADOX Gy,Ey (F3) | MULX By,Gy,rDX,Ey (F2),(v)
-+f5: BZHI Gy,Ey,By (v) | PEXT Gy,By,Ey (F3),(v) | PDEP Gy,By,Ey (F2),(v) | WRUSSD/Q My,Gy (66)
-+f6: ADCX Gy,Ey (66) | ADOX Gy,Ey (F3) | MULX By,Gy,rDX,Ey (F2),(v) | WRSSD/Q My,Gy
- f7: BEXTR Gy,Ey,By (v) | SHLX Gy,Ey,By (66),(v) | SARX Gy,Ey,By (F3),(v) | SHRX Gy,Ey,By (F2),(v)
- f8: MOVDIR64B Gv,Mdqq (66) | ENQCMD Gv,Mdqq (F2) | ENQCMDS Gv,Mdqq (F3)
- f9: MOVDIRI My,Gy
-@@ -970,7 +970,7 @@ GrpTable: Grp7
- 2: LGDT Ms | XGETBV (000),(11B) | XSETBV (001),(11B) | VMFUNC (100),(11B) | XEND (101)(11B) | XTEST (110)(11B) | ENCLU (111),(11B)
- 3: LIDT Ms
- 4: SMSW Mw/Rv
--5: rdpkru (110),(11B) | wrpkru (111),(11B)
-+5: rdpkru (110),(11B) | wrpkru (111),(11B) | SAVEPREVSSP (F3),(010),(11B) | RSTORSSP Mq (F3) | SETSSBSY (F3),(000),(11B)
- 6: LMSW Ew
- 7: INVLPG Mb | SWAPGS (o64),(000),(11B) | RDTSCP (001),(11B)
- EndTable
-@@ -1041,8 +1041,8 @@ GrpTable: Grp15
- 2: vldmxcsr Md (v1) | WRFSBASE Ry (F3),(11B)
- 3: vstmxcsr Md (v1) | WRGSBASE Ry (F3),(11B)
- 4: XSAVE | ptwrite Ey (F3),(11B)
--5: XRSTOR | lfence (11B)
--6: XSAVEOPT | clwb (66) | mfence (11B) | TPAUSE Rd (66),(11B) | UMONITOR Rv (F3),(11B) | UMWAIT Rd (F2),(11B)
-+5: XRSTOR | lfence (11B) | INCSSPD/Q Ry (F3),(11B)
-+6: XSAVEOPT | clwb (66) | mfence (11B) | TPAUSE Rd (66),(11B) | UMONITOR Rv (F3),(11B) | UMWAIT Rd (F2),(11B) | CLRSSBSY Mq (F3)
- 7: clflush | clflushopt (66) | sfence (11B)
- EndTable
- 
-@@ -1077,6 +1077,11 @@ GrpTable: Grp20
- 0: cldemote Mb
- EndTable
- 
-+GrpTable: Grp21
-+1: RDSSPD/Q Ry (F3),(11B)
-+7: ENDBR64 (F3),(010),(11B) | ENDBR32 (F3),(011),(11B)
-+EndTable
-+
- # AMD's Prefetch Group
- GrpTable: GrpP
- 0: PREFETCH
-diff --git a/tools/arch/x86/lib/x86-opcode-map.txt b/tools/arch/x86/lib/x86-opcode-map.txt
-index 53adc17..ec31f5b 100644
---- a/tools/arch/x86/lib/x86-opcode-map.txt
-+++ b/tools/arch/x86/lib/x86-opcode-map.txt
-@@ -366,7 +366,7 @@ AVXcode: 1
- 1b: BNDCN Gv,Ev (F2) | BNDMOV Ev,Gv (66) | BNDMK Gv,Ev (F3) | BNDSTX Ev,Gv
- 1c: Grp20 (1A),(1C)
- 1d:
--1e:
-+1e: Grp21 (1A)
- 1f: NOP Ev
- # 0x0f 0x20-0x2f
- 20: MOV Rd,Cd
-@@ -803,8 +803,8 @@ f0: MOVBE Gy,My | MOVBE Gw,Mw (66) | CRC32 Gd,Eb (F2) | CRC32 Gd,Eb (66&F2)
- f1: MOVBE My,Gy | MOVBE Mw,Gw (66) | CRC32 Gd,Ey (F2) | CRC32 Gd,Ew (66&F2)
- f2: ANDN Gy,By,Ey (v)
- f3: Grp17 (1A)
--f5: BZHI Gy,Ey,By (v) | PEXT Gy,By,Ey (F3),(v) | PDEP Gy,By,Ey (F2),(v)
--f6: ADCX Gy,Ey (66) | ADOX Gy,Ey (F3) | MULX By,Gy,rDX,Ey (F2),(v)
-+f5: BZHI Gy,Ey,By (v) | PEXT Gy,By,Ey (F3),(v) | PDEP Gy,By,Ey (F2),(v) | WRUSSD/Q My,Gy (66)
-+f6: ADCX Gy,Ey (66) | ADOX Gy,Ey (F3) | MULX By,Gy,rDX,Ey (F2),(v) | WRSSD/Q My,Gy
- f7: BEXTR Gy,Ey,By (v) | SHLX Gy,Ey,By (66),(v) | SARX Gy,Ey,By (F3),(v) | SHRX Gy,Ey,By (F2),(v)
- f8: MOVDIR64B Gv,Mdqq (66) | ENQCMD Gv,Mdqq (F2) | ENQCMDS Gv,Mdqq (F3)
- f9: MOVDIRI My,Gy
-@@ -970,7 +970,7 @@ GrpTable: Grp7
- 2: LGDT Ms | XGETBV (000),(11B) | XSETBV (001),(11B) | VMFUNC (100),(11B) | XEND (101)(11B) | XTEST (110)(11B) | ENCLU (111),(11B)
- 3: LIDT Ms
- 4: SMSW Mw/Rv
--5: rdpkru (110),(11B) | wrpkru (111),(11B)
-+5: rdpkru (110),(11B) | wrpkru (111),(11B) | SAVEPREVSSP (F3),(010),(11B) | RSTORSSP Mq (F3) | SETSSBSY (F3),(000),(11B)
- 6: LMSW Ew
- 7: INVLPG Mb | SWAPGS (o64),(000),(11B) | RDTSCP (001),(11B)
- EndTable
-@@ -1041,8 +1041,8 @@ GrpTable: Grp15
- 2: vldmxcsr Md (v1) | WRFSBASE Ry (F3),(11B)
- 3: vstmxcsr Md (v1) | WRGSBASE Ry (F3),(11B)
- 4: XSAVE | ptwrite Ey (F3),(11B)
--5: XRSTOR | lfence (11B)
--6: XSAVEOPT | clwb (66) | mfence (11B) | TPAUSE Rd (66),(11B) | UMONITOR Rv (F3),(11B) | UMWAIT Rd (F2),(11B)
-+5: XRSTOR | lfence (11B) | INCSSPD/Q Ry (F3),(11B)
-+6: XSAVEOPT | clwb (66) | mfence (11B) | TPAUSE Rd (66),(11B) | UMONITOR Rv (F3),(11B) | UMWAIT Rd (F2),(11B) | CLRSSBSY Mq (F3)
- 7: clflush | clflushopt (66) | sfence (11B)
- EndTable
- 
-@@ -1077,6 +1077,11 @@ GrpTable: Grp20
- 0: cldemote Mb
- EndTable
- 
-+GrpTable: Grp21
-+1: RDSSPD/Q Ry (F3),(11B)
-+7: ENDBR64 (F3),(010),(11B) | ENDBR32 (F3),(011),(11B)
-+EndTable
-+
- # AMD's Prefetch Group
- GrpTable: GrpP
- 0: PREFETCH
+Rob
