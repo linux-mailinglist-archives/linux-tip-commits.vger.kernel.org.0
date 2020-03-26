@@ -2,37 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 04548193C8E
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 26 Mar 2020 11:08:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 80215193CAD
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 26 Mar 2020 11:09:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727780AbgCZKIl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 26 Mar 2020 06:08:41 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:50174 "EHLO
+        id S1727936AbgCZKJb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 26 Mar 2020 06:09:31 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:50178 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726270AbgCZKIl (ORCPT
+        with ESMTP id S1726338AbgCZKIl (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Thu, 26 Mar 2020 06:08:41 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jHPRA-00045R-OJ; Thu, 26 Mar 2020 11:08:32 +0100
+        id 1jHPRB-00045U-3H; Thu, 26 Mar 2020 11:08:33 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 3FAFD1C0440;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A796F1C0470;
         Thu, 26 Mar 2020 11:08:32 +0100 (CET)
-Date:   Thu, 26 Mar 2020 10:08:31 -0000
+Date:   Thu, 26 Mar 2020 10:08:32 -0000
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/objtool] objtool: Re-arrange validate_functions()
+Subject: [tip: core/objtool] objtool: Optimize find_rela_by_dest_range()
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Miroslav Benes <mbenes@suse.cz>,
         Josh Poimboeuf <jpoimboe@redhat.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200324160924.924304616@infradead.org>
-References: <20200324160924.924304616@infradead.org>
+In-Reply-To: <20200324160924.861321325@infradead.org>
+References: <20200324160924.861321325@infradead.org>
 MIME-Version: 1.0
-Message-ID: <158521731184.28353.5517081652261174451.tip-bot2@tip-bot2>
+Message-ID: <158521731235.28353.5096850462321225657.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,104 +48,94 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/objtool branch of tip:
 
-Commit-ID:     350994bf95414d6da67a72f27d7ac3832ce3725d
-Gitweb:        https://git.kernel.org/tip/350994bf95414d6da67a72f27d7ac3832ce3725d
+Commit-ID:     74b873e49d92f90deb41d1a2a8fbb70328aebd67
+Gitweb:        https://git.kernel.org/tip/74b873e49d92f90deb41d1a2a8fbb70328aebd67
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Mon, 23 Mar 2020 20:57:13 +01:00
+AuthorDate:    Thu, 12 Mar 2020 11:30:50 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Wed, 25 Mar 2020 18:28:31 +01:00
 
-objtool: Re-arrange validate_functions()
+objtool: Optimize find_rela_by_dest_range()
 
-In preparation to adding a vmlinux.o specific pass, rearrange some
-code. No functional changes intended.
+Perf shows there is significant time in find_rela_by_dest(); this is
+because we have to iterate the address space per byte, looking for
+relocation entries.
+
+Optimize this by reducing the address space granularity.
+
+This reduces objtool on vmlinux.o runtime from 4.8 to 4.4 seconds.
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Miroslav Benes <mbenes@suse.cz>
 Acked-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Link: https://lkml.kernel.org/r/20200324160924.924304616@infradead.org
+Link: https://lkml.kernel.org/r/20200324160924.861321325@infradead.org
 ---
- tools/objtool/check.c | 52 ++++++++++++++++++++++++------------------
- 1 file changed, 30 insertions(+), 22 deletions(-)
+ tools/objtool/elf.c | 15 +++++++++++----
+ tools/objtool/elf.h | 16 +++++++++++++++-
+ 2 files changed, 26 insertions(+), 5 deletions(-)
 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 0c9c9ad..0bfcb39 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -2395,9 +2395,8 @@ static bool ignore_unreachable_insn(struct instruction *insn)
- 	return false;
- }
- 
--static int validate_functions(struct objtool_file *file)
-+static int validate_section(struct objtool_file *file, struct section *sec)
+diff --git a/tools/objtool/elf.c b/tools/objtool/elf.c
+index 8a0a1bc..09ddc8f 100644
+--- a/tools/objtool/elf.c
++++ b/tools/objtool/elf.c
+@@ -215,7 +215,7 @@ struct symbol *find_symbol_by_name(struct elf *elf, const char *name)
+ struct rela *find_rela_by_dest_range(struct elf *elf, struct section *sec,
+ 				     unsigned long offset, unsigned int len)
  {
--	struct section *sec;
- 	struct symbol *func;
- 	struct instruction *insn;
- 	struct insn_state state;
-@@ -2410,36 +2409,45 @@ static int validate_functions(struct objtool_file *file)
- 	       CFI_NUM_REGS * sizeof(struct cfi_reg));
- 	state.stack_size = initial_func_cfi.cfa.offset;
+-	struct rela *rela;
++	struct rela *rela, *r = NULL;
+ 	unsigned long o;
  
--	for_each_sec(file, sec) {
--		list_for_each_entry(func, &sec->symbol_list, list) {
--			if (func->type != STT_FUNC)
--				continue;
-+	list_for_each_entry(func, &sec->symbol_list, list) {
-+		if (func->type != STT_FUNC)
-+			continue;
+ 	if (!sec->rela)
+@@ -223,12 +223,19 @@ struct rela *find_rela_by_dest_range(struct elf *elf, struct section *sec,
  
--			if (!func->len) {
--				WARN("%s() is missing an ELF size annotation",
--				     func->name);
--				warnings++;
--			}
-+		if (!func->len) {
-+			WARN("%s() is missing an ELF size annotation",
-+			     func->name);
-+			warnings++;
-+		}
+ 	sec = sec->rela;
  
--			if (func->pfunc != func || func->alias != func)
--				continue;
-+		if (func->pfunc != func || func->alias != func)
-+			continue;
- 
--			insn = find_insn(file, sec, func->offset);
--			if (!insn || insn->ignore || insn->visited)
--				continue;
-+		insn = find_insn(file, sec, func->offset);
-+		if (!insn || insn->ignore || insn->visited)
-+			continue;
- 
--			state.uaccess = func->uaccess_safe;
-+		state.uaccess = func->uaccess_safe;
- 
--			ret = validate_branch(file, func, insn, state);
--			if (ret && backtrace)
--				BT_FUNC("<=== (func)", insn);
--			warnings += ret;
--		}
-+		ret = validate_branch(file, func, insn, state);
-+		if (ret && backtrace)
-+			BT_FUNC("<=== (func)", insn);
-+		warnings += ret;
+-	for (o = offset; o < offset + len; o++) {
++	for_offset_range(o, offset, offset + len) {
+ 		hash_for_each_possible(elf->rela_hash, rela, hash,
+ 				       sec_offset_hash(sec, o)) {
+-			if (rela->sec == sec && rela->offset == o)
+-				return rela;
++			if (rela->sec != sec)
++				continue;
++
++			if (rela->offset >= offset && rela->offset < offset + len) {
++				if (!r || rela->offset < r->offset)
++					r = rela;
++			}
+ 		}
++		if (r)
++			return r;
  	}
  
- 	return warnings;
- }
+ 	return NULL;
+diff --git a/tools/objtool/elf.h b/tools/objtool/elf.h
+index dfd2431..ebbb10c 100644
+--- a/tools/objtool/elf.h
++++ b/tools/objtool/elf.h
+@@ -83,9 +83,23 @@ struct elf {
+ 	DECLARE_HASHTABLE(rela_hash, 20);
+ };
  
-+static int validate_functions(struct objtool_file *file)
-+{
-+	struct section *sec;
-+	int warnings = 0;
++#define OFFSET_STRIDE_BITS	4
++#define OFFSET_STRIDE		(1UL << OFFSET_STRIDE_BITS)
++#define OFFSET_STRIDE_MASK	(~(OFFSET_STRIDE - 1))
 +
-+	for_each_sec(file, sec)
-+		warnings += validate_section(file, sec);
++#define for_offset_range(_offset, _start, _end)		\
++	for (_offset = ((_start) & OFFSET_STRIDE_MASK);	\
++	     _offset <= ((_end) & OFFSET_STRIDE_MASK);	\
++	     _offset += OFFSET_STRIDE)
 +
-+	return warnings;
-+}
-+
- static int validate_reachable_instructions(struct objtool_file *file)
+ static inline u32 sec_offset_hash(struct section *sec, unsigned long offset)
  {
- 	struct instruction *insn;
+-	u32 ol = offset, oh = offset >> 32, idx = sec->idx;
++	u32 ol, oh, idx = sec->idx;
++
++	offset &= OFFSET_STRIDE_MASK;
++
++	ol = offset;
++	oh = offset >> 32;
+ 
+ 	__jhash_mix(ol, oh, idx);
+ 
