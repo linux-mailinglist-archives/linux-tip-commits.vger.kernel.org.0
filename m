@@ -2,37 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C626A193CA1
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 26 Mar 2020 11:09:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B4C5E193CA5
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 26 Mar 2020 11:09:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727898AbgCZKIm (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 26 Mar 2020 06:08:42 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:50183 "EHLO
+        id S1728099AbgCZKJN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 26 Mar 2020 06:09:13 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:50189 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726590AbgCZKIl (ORCPT
+        with ESMTP id S1727729AbgCZKIm (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 26 Mar 2020 06:08:41 -0400
+        Thu, 26 Mar 2020 06:08:42 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jHPRC-00046d-Sr; Thu, 26 Mar 2020 11:08:35 +0100
+        id 1jHPRD-00046v-Uw; Thu, 26 Mar 2020 11:08:36 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 728B41C0470;
-        Thu, 26 Mar 2020 11:08:34 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 013CF1C0440;
+        Thu, 26 Mar 2020 11:08:35 +0100 (CET)
 Date:   Thu, 26 Mar 2020 10:08:34 -0000
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/objtool] objtool: Resize insn_hash
+Subject: [tip: core/objtool] objtool: Rename find_containing_func()
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Miroslav Benes <mbenes@suse.cz>,
         Josh Poimboeuf <jpoimboe@redhat.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200324160924.617882545@infradead.org>
-References: <20200324160924.617882545@infradead.org>
+In-Reply-To: <20200324160924.558470724@infradead.org>
+References: <20200324160924.558470724@infradead.org>
 MIME-Version: 1.0
-Message-ID: <158521731413.28353.1076192699779373606.tip-bot2@tip-bot2>
+Message-ID: <158521731454.28353.17616231128837111954.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,39 +48,68 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/objtool branch of tip:
 
-Commit-ID:     513b5ca6b5fbeb766999fb1a4bc9a55c9fb7c9ca
-Gitweb:        https://git.kernel.org/tip/513b5ca6b5fbeb766999fb1a4bc9a55c9fb7c9ca
+Commit-ID:     53d20720bbc8718ef86fdfe53dec0accfb593ef8
+Gitweb:        https://git.kernel.org/tip/53d20720bbc8718ef86fdfe53dec0accfb593ef8
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Thu, 12 Mar 2020 10:20:46 +01:00
+AuthorDate:    Mon, 16 Mar 2020 10:36:53 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 25 Mar 2020 18:28:30 +01:00
+CommitterDate: Wed, 25 Mar 2020 18:28:29 +01:00
 
-objtool: Resize insn_hash
+objtool: Rename find_containing_func()
 
-Perf shows we're spending a lot of time in find_insn() and the
-statistics show we have around 3.2 million instruction. Increase the
-hash table size to reduce the bucket load from around 50 to 3.
+For consistency; we have:
 
-This shaves about 2s off of objtool on vmlinux.o runtime, down to 16s.
+  find_symbol_by_offset() / find_symbol_containing()
+  find_func_by_offset()   / find_containing_func()
+
+fix that.
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Miroslav Benes <mbenes@suse.cz>
 Acked-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Link: https://lkml.kernel.org/r/20200324160924.617882545@infradead.org
+Link: https://lkml.kernel.org/r/20200324160924.558470724@infradead.org
 ---
- tools/objtool/check.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/objtool/elf.c  | 2 +-
+ tools/objtool/elf.h  | 2 +-
+ tools/objtool/warn.h | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tools/objtool/check.h b/tools/objtool/check.h
-index 6d875ca..f0ce8ff 100644
---- a/tools/objtool/check.h
-+++ b/tools/objtool/check.h
-@@ -50,7 +50,7 @@ struct instruction {
- struct objtool_file {
- 	struct elf *elf;
- 	struct list_head insn_list;
--	DECLARE_HASHTABLE(insn_hash, 16);
-+	DECLARE_HASHTABLE(insn_hash, 20);
- 	bool ignore_unreachables, c_file, hints, rodata;
- };
+diff --git a/tools/objtool/elf.c b/tools/objtool/elf.c
+index 3a8b426..07db4df 100644
+--- a/tools/objtool/elf.c
++++ b/tools/objtool/elf.c
+@@ -187,7 +187,7 @@ struct symbol *find_symbol_containing(struct section *sec, unsigned long offset)
+ 	return NULL;
+ }
  
+-struct symbol *find_containing_func(struct section *sec, unsigned long offset)
++struct symbol *find_func_containing(struct section *sec, unsigned long offset)
+ {
+ 	struct rb_node *node;
+ 
+diff --git a/tools/objtool/elf.h b/tools/objtool/elf.h
+index e4a8d68..d18f466 100644
+--- a/tools/objtool/elf.h
++++ b/tools/objtool/elf.h
+@@ -91,7 +91,7 @@ struct symbol *find_symbol_containing(struct section *sec, unsigned long offset)
+ struct rela *find_rela_by_dest(struct section *sec, unsigned long offset);
+ struct rela *find_rela_by_dest_range(struct section *sec, unsigned long offset,
+ 				     unsigned int len);
+-struct symbol *find_containing_func(struct section *sec, unsigned long offset);
++struct symbol *find_func_containing(struct section *sec, unsigned long offset);
+ struct section *elf_create_section(struct elf *elf, const char *name, size_t
+ 				   entsize, int nr);
+ struct section *elf_create_rela_section(struct elf *elf, struct section *base);
+diff --git a/tools/objtool/warn.h b/tools/objtool/warn.h
+index cbb0a02..7799f60 100644
+--- a/tools/objtool/warn.h
++++ b/tools/objtool/warn.h
+@@ -21,7 +21,7 @@ static inline char *offstr(struct section *sec, unsigned long offset)
+ 	char *name, *str;
+ 	unsigned long name_off;
+ 
+-	func = find_containing_func(sec, offset);
++	func = find_func_containing(sec, offset);
+ 	if (func) {
+ 		name = func->name;
+ 		name_off = offset - func->offset;
