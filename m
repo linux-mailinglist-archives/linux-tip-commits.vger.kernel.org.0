@@ -2,37 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B53F193C90
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 26 Mar 2020 11:08:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A61AB193C95
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 26 Mar 2020 11:09:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727953AbgCZKIo (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 26 Mar 2020 06:08:44 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:50200 "EHLO
+        id S1727999AbgCZKIs (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 26 Mar 2020 06:08:48 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:50236 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726270AbgCZKIn (ORCPT
+        with ESMTP id S1727983AbgCZKIr (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 26 Mar 2020 06:08:43 -0400
+        Thu, 26 Mar 2020 06:08:47 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jHPRE-00047r-Pu; Thu, 26 Mar 2020 11:08:36 +0100
+        id 1jHPRK-00048E-8g; Thu, 26 Mar 2020 11:08:42 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5707A1C0440;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D19F11C0470;
         Thu, 26 Mar 2020 11:08:36 +0100 (CET)
-Date:   Thu, 26 Mar 2020 10:08:35 -0000
+Date:   Thu, 26 Mar 2020 10:08:36 -0000
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/objtool] objtool: Optimize find_section_by_index()
+Subject: [tip: core/objtool] objtool: Add a statistics mode
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Miroslav Benes <mbenes@suse.cz>,
         Josh Poimboeuf <jpoimboe@redhat.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200324160924.381249993@infradead.org>
-References: <20200324160924.381249993@infradead.org>
+In-Reply-To: <20200324160924.321381240@infradead.org>
+References: <20200324160924.321381240@infradead.org>
 MIME-Version: 1.0
-Message-ID: <158521731598.28353.8097168736160020060.tip-bot2@tip-bot2>
+Message-ID: <158521731644.28353.18368440874745073752.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,106 +48,154 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/objtool branch of tip:
 
-Commit-ID:     530389968739883a61192767e1c215653ba4ba2b
-Gitweb:        https://git.kernel.org/tip/530389968739883a61192767e1c215653ba4ba2b
+Commit-ID:     1e11f3fdc326d7466e43185ea943b6156143387c
+Gitweb:        https://git.kernel.org/tip/1e11f3fdc326d7466e43185ea943b6156143387c
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Tue, 10 Mar 2020 18:43:35 +01:00
+AuthorDate:    Thu, 12 Mar 2020 09:26:29 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Wed, 25 Mar 2020 18:28:28 +01:00
 
-objtool: Optimize find_section_by_index()
+objtool: Add a statistics mode
 
-In order to avoid a linear search (over 20k entries), add an
-section_hash to the elf object.
-
-This reduces objtool on vmlinux.o from a few minutes to around 45
-seconds.
+Have it print a few numbers which can be used to size the hashtables.
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Miroslav Benes <mbenes@suse.cz>
 Acked-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Link: https://lkml.kernel.org/r/20200324160924.381249993@infradead.org
+Link: https://lkml.kernel.org/r/20200324160924.321381240@infradead.org
 ---
- tools/objtool/elf.c | 13 ++++++++-----
- tools/objtool/elf.h |  2 ++
- 2 files changed, 10 insertions(+), 5 deletions(-)
+ tools/objtool/builtin-check.c |  3 ++-
+ tools/objtool/builtin.h       |  2 +-
+ tools/objtool/check.c         |  5 +++++
+ tools/objtool/elf.c           | 18 +++++++++++++++++-
+ 4 files changed, 25 insertions(+), 3 deletions(-)
 
-diff --git a/tools/objtool/elf.c b/tools/objtool/elf.c
-index ff29306..9007713 100644
---- a/tools/objtool/elf.c
-+++ b/tools/objtool/elf.c
-@@ -38,7 +38,7 @@ static struct section *find_section_by_index(struct elf *elf,
- {
- 	struct section *sec;
+diff --git a/tools/objtool/builtin-check.c b/tools/objtool/builtin-check.c
+index c807984..10fbe75 100644
+--- a/tools/objtool/builtin-check.c
++++ b/tools/objtool/builtin-check.c
+@@ -17,7 +17,7 @@
+ #include "builtin.h"
+ #include "check.h"
  
--	list_for_each_entry(sec, &elf->sections, list)
-+	hash_for_each_possible(elf->section_hash, sec, hash, idx)
- 		if (sec->idx == idx)
- 			return sec;
+-bool no_fp, no_unreachable, retpoline, module, backtrace, uaccess;
++bool no_fp, no_unreachable, retpoline, module, backtrace, uaccess, stats;
  
-@@ -166,8 +166,6 @@ static int read_sections(struct elf *elf)
- 		INIT_LIST_HEAD(&sec->rela_list);
- 		hash_init(sec->rela_hash);
- 
--		list_add_tail(&sec->list, &elf->sections);
--
- 		s = elf_getscn(elf->elf, i);
- 		if (!s) {
- 			WARN_ELF("elf_getscn");
-@@ -201,6 +199,9 @@ static int read_sections(struct elf *elf)
- 			}
- 		}
- 		sec->len = sec->sh.sh_size;
-+
-+		list_add_tail(&sec->list, &elf->sections);
-+		hash_add(elf->section_hash, &sec->hash, sec->idx);
- 	}
- 
- 	if (stats)
-@@ -439,6 +440,7 @@ struct elf *elf_read(const char *name, int flags)
- 	memset(elf, 0, sizeof(*elf));
- 
- 	hash_init(elf->symbol_hash);
-+	hash_init(elf->section_hash);
- 	INIT_LIST_HEAD(&elf->sections);
- 
- 	elf->fd = open(name, flags);
-@@ -501,8 +503,6 @@ struct section *elf_create_section(struct elf *elf, const char *name,
- 	INIT_LIST_HEAD(&sec->rela_list);
- 	hash_init(sec->rela_hash);
- 
--	list_add_tail(&sec->list, &elf->sections);
--
- 	s = elf_newscn(elf->elf);
- 	if (!s) {
- 		WARN_ELF("elf_newscn");
-@@ -579,6 +579,9 @@ struct section *elf_create_section(struct elf *elf, const char *name,
- 	shstrtab->len += strlen(name) + 1;
- 	shstrtab->changed = true;
- 
-+	list_add_tail(&sec->list, &elf->sections);
-+	hash_add(elf->section_hash, &sec->hash, sec->idx);
-+
- 	return sec;
- }
- 
-diff --git a/tools/objtool/elf.h b/tools/objtool/elf.h
-index 1222980..8c272eb 100644
---- a/tools/objtool/elf.h
-+++ b/tools/objtool/elf.h
-@@ -25,6 +25,7 @@
- 
- struct section {
- 	struct list_head list;
-+	struct hlist_node hash;
- 	GElf_Shdr sh;
- 	struct list_head symbol_list;
- 	struct list_head rela_list;
-@@ -71,6 +72,7 @@ struct elf {
- 	char *name;
- 	struct list_head sections;
- 	DECLARE_HASHTABLE(symbol_hash, 20);
-+	DECLARE_HASHTABLE(section_hash, 16);
+ static const char * const check_usage[] = {
+ 	"objtool check [<options>] file.o",
+@@ -31,6 +31,7 @@ const struct option check_options[] = {
+ 	OPT_BOOLEAN('m', "module", &module, "Indicates the object will be part of a kernel module"),
+ 	OPT_BOOLEAN('b', "backtrace", &backtrace, "unwind on error"),
+ 	OPT_BOOLEAN('a', "uaccess", &uaccess, "enable uaccess checking"),
++	OPT_BOOLEAN('s', "stats", &stats, "print statistics"),
+ 	OPT_END(),
  };
  
+diff --git a/tools/objtool/builtin.h b/tools/objtool/builtin.h
+index a32736f..0b90790 100644
+--- a/tools/objtool/builtin.h
++++ b/tools/objtool/builtin.h
+@@ -8,7 +8,7 @@
+ #include <subcmd/parse-options.h>
  
+ extern const struct option check_options[];
+-extern bool no_fp, no_unreachable, retpoline, module, backtrace, uaccess;
++extern bool no_fp, no_unreachable, retpoline, module, backtrace, uaccess, stats;
+ 
+ extern int cmd_check(int argc, const char **argv);
+ extern int cmd_orc(int argc, const char **argv);
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index 43f7d3c..6df1bae 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -239,6 +239,7 @@ static int decode_instructions(struct objtool_file *file)
+ 	struct symbol *func;
+ 	unsigned long offset;
+ 	struct instruction *insn;
++	unsigned long nr_insns = 0;
+ 	int ret;
+ 
+ 	for_each_sec(file, sec) {
+@@ -274,6 +275,7 @@ static int decode_instructions(struct objtool_file *file)
+ 
+ 			hash_add(file->insn_hash, &insn->hash, insn->offset);
+ 			list_add_tail(&insn->list, &file->insn_list);
++			nr_insns++;
+ 		}
+ 
+ 		list_for_each_entry(func, &sec->symbol_list, list) {
+@@ -291,6 +293,9 @@ static int decode_instructions(struct objtool_file *file)
+ 		}
+ 	}
+ 
++	if (stats)
++		printf("nr_insns: %lu\n", nr_insns);
++
+ 	return 0;
+ 
+ err:
+diff --git a/tools/objtool/elf.c b/tools/objtool/elf.c
+index b188b3e..ff29306 100644
+--- a/tools/objtool/elf.c
++++ b/tools/objtool/elf.c
+@@ -15,6 +15,7 @@
+ #include <string.h>
+ #include <unistd.h>
+ #include <errno.h>
++#include "builtin.h"
+ 
+ #include "elf.h"
+ #include "warn.h"
+@@ -202,6 +203,9 @@ static int read_sections(struct elf *elf)
+ 		sec->len = sec->sh.sh_size;
+ 	}
+ 
++	if (stats)
++		printf("nr_sections: %lu\n", (unsigned long)sections_nr);
++
+ 	/* sanity check, one more call to elf_nextscn() should return NULL */
+ 	if (elf_nextscn(elf->elf, s)) {
+ 		WARN("section entry mismatch");
+@@ -299,6 +303,9 @@ static int read_symbols(struct elf *elf)
+ 		hash_add(elf->symbol_hash, &sym->hash, sym->idx);
+ 	}
+ 
++	if (stats)
++		printf("nr_symbols: %lu\n", (unsigned long)symbols_nr);
++
+ 	/* Create parent/child links for any cold subfunctions */
+ 	list_for_each_entry(sec, &elf->sections, list) {
+ 		list_for_each_entry(sym, &sec->symbol_list, list) {
+@@ -360,6 +367,7 @@ static int read_relas(struct elf *elf)
+ 	struct rela *rela;
+ 	int i;
+ 	unsigned int symndx;
++	unsigned long nr_rela, max_rela = 0, tot_rela = 0;
+ 
+ 	list_for_each_entry(sec, &elf->sections, list) {
+ 		if (sec->sh.sh_type != SHT_RELA)
+@@ -374,6 +382,7 @@ static int read_relas(struct elf *elf)
+ 
+ 		sec->base->rela = sec;
+ 
++		nr_rela = 0;
+ 		for (i = 0; i < sec->sh.sh_size / sec->sh.sh_entsize; i++) {
+ 			rela = malloc(sizeof(*rela));
+ 			if (!rela) {
+@@ -401,8 +410,15 @@ static int read_relas(struct elf *elf)
+ 
+ 			list_add_tail(&rela->list, &sec->rela_list);
+ 			hash_add(sec->rela_hash, &rela->hash, rela->offset);
+-
++			nr_rela++;
+ 		}
++		max_rela = max(max_rela, nr_rela);
++		tot_rela += nr_rela;
++	}
++
++	if (stats) {
++		printf("max_rela: %lu\n", max_rela);
++		printf("tot_rela: %lu\n", tot_rela);
+ 	}
+ 
+ 	return 0;
