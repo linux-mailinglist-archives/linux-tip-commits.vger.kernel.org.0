@@ -2,37 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EE4A5193C98
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 26 Mar 2020 11:09:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AA7D7193C9C
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 26 Mar 2020 11:09:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727983AbgCZKIu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 26 Mar 2020 06:08:50 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:50240 "EHLO
+        id S1727995AbgCZKJE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 26 Mar 2020 06:09:04 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:50222 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728001AbgCZKIu (ORCPT
+        with ESMTP id S1727943AbgCZKIp (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 26 Mar 2020 06:08:50 -0400
+        Thu, 26 Mar 2020 06:08:45 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jHPRL-00048e-7F; Thu, 26 Mar 2020 11:08:43 +0100
+        id 1jHPRI-00049A-9W; Thu, 26 Mar 2020 11:08:40 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id CE4461C0478;
-        Thu, 26 Mar 2020 11:08:37 +0100 (CET)
-Date:   Thu, 26 Mar 2020 10:08:37 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id BFAAC1C048C;
+        Thu, 26 Mar 2020 11:08:38 +0100 (CET)
+Date:   Thu, 26 Mar 2020 10:08:38 -0000
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/objtool] x86/kexec: Make relocate_kernel_64.S objtool clean
-Cc:     Josh Poimboeuf <jpoimboe@redhat.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Miroslav Benes <mbenes@suse.cz>, x86 <x86@kernel.org>,
+Subject: [tip: core/objtool] objtool: Rename func_for_each_insn_all()
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Miroslav Benes <mbenes@suse.cz>,
+        Josh Poimboeuf <jpoimboe@redhat.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200324160924.202621656@infradead.org>
-References: <20200324160924.202621656@infradead.org>
+In-Reply-To: <20200324160924.083720147@infradead.org>
+References: <20200324160924.083720147@infradead.org>
 MIME-Version: 1.0
-Message-ID: <158521731743.28353.7607166027983057055.tip-bot2@tip-bot2>
+Message-ID: <158521731844.28353.3388328240594789282.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,90 +48,84 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/objtool branch of tip:
 
-Commit-ID:     36cc552055a5f95bab479533b4ebbad6a6cea0e1
-Gitweb:        https://git.kernel.org/tip/36cc552055a5f95bab479533b4ebbad6a6cea0e1
+Commit-ID:     f0f70adb78108a0cbc321a07133cd78ea4f84699
+Gitweb:        https://git.kernel.org/tip/f0f70adb78108a0cbc321a07133cd78ea4f84699
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Tue, 24 Mar 2020 15:35:42 +01:00
+AuthorDate:    Tue, 10 Mar 2020 18:27:24 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 25 Mar 2020 18:28:28 +01:00
+CommitterDate: Wed, 25 Mar 2020 18:28:27 +01:00
 
-x86/kexec: Make relocate_kernel_64.S objtool clean
+objtool: Rename func_for_each_insn_all()
 
-Having fixed the biggest objtool issue in this file; fix up the rest
-and remove the exception.
+Now that func_for_each_insn() is available, rename
+func_for_each_insn_all(). This gets us:
 
-Suggested-by: Josh Poimboeuf <jpoimboe@redhat.com>
+  sym_for_each_insn()  - iterate on symbol offset/len
+  func_for_each_insn() - iterate on insn->func
+
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Miroslav Benes <mbenes@suse.cz>
 Acked-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Link: https://lkml.kernel.org/r/20200324160924.202621656@infradead.org
+Link: https://lkml.kernel.org/r/20200324160924.083720147@infradead.org
 ---
- arch/x86/kernel/Makefile             | 1 -
- arch/x86/kernel/relocate_kernel_64.S | 7 +++++++
- 2 files changed, 7 insertions(+), 1 deletion(-)
+ tools/objtool/check.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/kernel/Makefile b/arch/x86/kernel/Makefile
-index 9b294c1..8be5926 100644
---- a/arch/x86/kernel/Makefile
-+++ b/arch/x86/kernel/Makefile
-@@ -28,7 +28,6 @@ KASAN_SANITIZE_dumpstack_$(BITS).o			:= n
- KASAN_SANITIZE_stacktrace.o				:= n
- KASAN_SANITIZE_paravirt.o				:= n
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index 564ea1d..43f7d3c 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -72,7 +72,7 @@ static struct instruction *next_insn_same_func(struct objtool_file *file,
+ 	return find_insn(file, func->cfunc->sec, func->cfunc->offset);
+ }
  
--OBJECT_FILES_NON_STANDARD_relocate_kernel_$(BITS).o	:= y
- OBJECT_FILES_NON_STANDARD_test_nx.o			:= y
- OBJECT_FILES_NON_STANDARD_paravirt_patch.o		:= y
+-#define func_for_each_insn_all(file, func, insn)			\
++#define func_for_each_insn(file, func, insn)				\
+ 	for (insn = find_insn(file, func->sec, func->offset);		\
+ 	     insn;							\
+ 	     insn = next_insn_same_func(file, insn))
+@@ -170,7 +170,7 @@ static bool __dead_end_function(struct objtool_file *file, struct symbol *func,
+ 	if (!insn->func)
+ 		return false;
  
-diff --git a/arch/x86/kernel/relocate_kernel_64.S b/arch/x86/kernel/relocate_kernel_64.S
-index cc5c8b9..a4d9a26 100644
---- a/arch/x86/kernel/relocate_kernel_64.S
-+++ b/arch/x86/kernel/relocate_kernel_64.S
-@@ -9,6 +9,8 @@
- #include <asm/kexec.h>
- #include <asm/processor-flags.h>
- #include <asm/pgtable_types.h>
-+#include <asm/nospec-branch.h>
-+#include <asm/unwind_hints.h>
+-	func_for_each_insn_all(file, func, insn) {
++	func_for_each_insn(file, func, insn) {
+ 		empty = false;
  
- /*
-  * Must be relocatable PIC code callable as a C function
-@@ -39,6 +41,7 @@
- 	.align PAGE_SIZE
- 	.code64
- SYM_CODE_START_NOALIGN(relocate_kernel)
-+	UNWIND_HINT_EMPTY
- 	/*
- 	 * %rdi indirection_page
- 	 * %rsi page_list
-@@ -105,6 +108,7 @@ SYM_CODE_START_NOALIGN(relocate_kernel)
- SYM_CODE_END(relocate_kernel)
+ 		if (insn->type == INSN_RETURN)
+@@ -185,7 +185,7 @@ static bool __dead_end_function(struct objtool_file *file, struct symbol *func,
+ 	 * case, the function's dead-end status depends on whether the target
+ 	 * of the sibling call returns.
+ 	 */
+-	func_for_each_insn_all(file, func, insn) {
++	func_for_each_insn(file, func, insn) {
+ 		if (is_sibling_call(insn)) {
+ 			struct instruction *dest = insn->jump_dest;
  
- SYM_CODE_START_LOCAL_NOALIGN(identity_mapped)
-+	UNWIND_HINT_EMPTY
- 	/* set return address to 0 if not preserving context */
- 	pushq	$0
- 	/* store the start address on the stack */
-@@ -192,6 +196,7 @@ SYM_CODE_START_LOCAL_NOALIGN(identity_mapped)
- 1:
- 	popq	%rdx
- 	leaq	PAGE_SIZE(%r10), %rsp
-+	ANNOTATE_RETPOLINE_SAFE
- 	call	*%rdx
+@@ -430,7 +430,7 @@ static void add_ignores(struct objtool_file *file)
+ 			continue;
+ 		}
  
- 	/* get the re-entry point of the peer system */
-@@ -209,6 +214,7 @@ SYM_CODE_START_LOCAL_NOALIGN(identity_mapped)
- SYM_CODE_END(identity_mapped)
+-		func_for_each_insn_all(file, func, insn)
++		func_for_each_insn(file, func, insn)
+ 			insn->ignore = true;
+ 	}
+ }
+@@ -1122,7 +1122,7 @@ static void mark_func_jump_tables(struct objtool_file *file,
+ 	struct instruction *insn, *last = NULL;
+ 	struct rela *rela;
  
- SYM_CODE_START_LOCAL_NOALIGN(virtual_mapped)
-+	UNWIND_HINT_EMPTY
- 	movq	RSP(%r8), %rsp
- 	movq	CR4(%r8), %rax
- 	movq	%rax, %cr4
-@@ -230,6 +236,7 @@ SYM_CODE_END(virtual_mapped)
+-	func_for_each_insn_all(file, func, insn) {
++	func_for_each_insn(file, func, insn) {
+ 		if (!last)
+ 			last = insn;
  
- 	/* Do the copies */
- SYM_CODE_START_LOCAL_NOALIGN(swap_pages)
-+	UNWIND_HINT_EMPTY
- 	movq	%rdi, %rcx 	/* Put the page_list in %rcx */
- 	xorl	%edi, %edi
- 	xorl	%esi, %esi
+@@ -1157,7 +1157,7 @@ static int add_func_jump_tables(struct objtool_file *file,
+ 	struct instruction *insn;
+ 	int ret;
+ 
+-	func_for_each_insn_all(file, func, insn) {
++	func_for_each_insn(file, func, insn) {
+ 		if (!insn->jump_table)
+ 			continue;
+ 
