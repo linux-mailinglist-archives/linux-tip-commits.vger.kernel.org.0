@@ -2,37 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AA7D7193C9C
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 26 Mar 2020 11:09:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CC38B193C9A
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 26 Mar 2020 11:09:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727995AbgCZKJE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 26 Mar 2020 06:09:04 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:50222 "EHLO
+        id S1727966AbgCZKIz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 26 Mar 2020 06:08:55 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:50239 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727943AbgCZKIp (ORCPT
+        with ESMTP id S1727995AbgCZKIs (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 26 Mar 2020 06:08:45 -0400
+        Thu, 26 Mar 2020 06:08:48 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jHPRI-00049A-9W; Thu, 26 Mar 2020 11:08:40 +0100
+        id 1jHPRK-00049F-ME; Thu, 26 Mar 2020 11:08:43 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id BFAAC1C048C;
-        Thu, 26 Mar 2020 11:08:38 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 3E0041C0440;
+        Thu, 26 Mar 2020 11:08:39 +0100 (CET)
 Date:   Thu, 26 Mar 2020 10:08:38 -0000
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/objtool] objtool: Rename func_for_each_insn_all()
+Subject: [tip: core/objtool] objtool: Rename func_for_each_insn()
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Miroslav Benes <mbenes@suse.cz>,
         Josh Poimboeuf <jpoimboe@redhat.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200324160924.083720147@infradead.org>
-References: <20200324160924.083720147@infradead.org>
+In-Reply-To: <20200324160924.024341229@infradead.org>
+References: <20200324160924.024341229@infradead.org>
 MIME-Version: 1.0
-Message-ID: <158521731844.28353.3388328240594789282.tip-bot2@tip-bot2>
+Message-ID: <158521731884.28353.2586659115330507007.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,84 +48,73 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/objtool branch of tip:
 
-Commit-ID:     f0f70adb78108a0cbc321a07133cd78ea4f84699
-Gitweb:        https://git.kernel.org/tip/f0f70adb78108a0cbc321a07133cd78ea4f84699
+Commit-ID:     dbf4aeb0a494020644507459c2446e632cba1a05
+Gitweb:        https://git.kernel.org/tip/dbf4aeb0a494020644507459c2446e632cba1a05
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Tue, 10 Mar 2020 18:27:24 +01:00
+AuthorDate:    Tue, 10 Mar 2020 18:24:59 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Wed, 25 Mar 2020 18:28:27 +01:00
 
-objtool: Rename func_for_each_insn_all()
+objtool: Rename func_for_each_insn()
 
-Now that func_for_each_insn() is available, rename
-func_for_each_insn_all(). This gets us:
+There is func_for_each_insn() and func_for_each_insn_all(), the both
+iterate the instructions, but the first uses symbol offset/length
+while the second uses insn->func.
 
-  sym_for_each_insn()  - iterate on symbol offset/len
-  func_for_each_insn() - iterate on insn->func
+Rename func_for_each_insn() to sym_for_eac_insn() because it iterates
+on symbol information.
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Miroslav Benes <mbenes@suse.cz>
 Acked-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Link: https://lkml.kernel.org/r/20200324160924.083720147@infradead.org
+Link: https://lkml.kernel.org/r/20200324160924.024341229@infradead.org
 ---
- tools/objtool/check.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ tools/objtool/check.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
 diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 564ea1d..43f7d3c 100644
+index da17b5a..564ea1d 100644
 --- a/tools/objtool/check.c
 +++ b/tools/objtool/check.c
-@@ -72,7 +72,7 @@ static struct instruction *next_insn_same_func(struct objtool_file *file,
- 	return find_insn(file, func->cfunc->sec, func->cfunc->offset);
- }
- 
--#define func_for_each_insn_all(file, func, insn)			\
-+#define func_for_each_insn(file, func, insn)				\
- 	for (insn = find_insn(file, func->sec, func->offset);		\
+@@ -77,17 +77,17 @@ static struct instruction *next_insn_same_func(struct objtool_file *file,
  	     insn;							\
  	     insn = next_insn_same_func(file, insn))
-@@ -170,7 +170,7 @@ static bool __dead_end_function(struct objtool_file *file, struct symbol *func,
- 	if (!insn->func)
- 		return false;
  
--	func_for_each_insn_all(file, func, insn) {
-+	func_for_each_insn(file, func, insn) {
- 		empty = false;
+-#define func_for_each_insn(file, func, insn)				\
+-	for (insn = find_insn(file, func->sec, func->offset);		\
++#define sym_for_each_insn(file, sym, insn)				\
++	for (insn = find_insn(file, sym->sec, sym->offset);		\
+ 	     insn && &insn->list != &file->insn_list &&			\
+-		insn->sec == func->sec &&				\
+-		insn->offset < func->offset + func->len;		\
++		insn->sec == sym->sec &&				\
++		insn->offset < sym->offset + sym->len;			\
+ 	     insn = list_next_entry(insn, list))
  
- 		if (insn->type == INSN_RETURN)
-@@ -185,7 +185,7 @@ static bool __dead_end_function(struct objtool_file *file, struct symbol *func,
- 	 * case, the function's dead-end status depends on whether the target
- 	 * of the sibling call returns.
- 	 */
--	func_for_each_insn_all(file, func, insn) {
-+	func_for_each_insn(file, func, insn) {
- 		if (is_sibling_call(insn)) {
- 			struct instruction *dest = insn->jump_dest;
+-#define func_for_each_insn_continue_reverse(file, func, insn)		\
++#define sym_for_each_insn_continue_reverse(file, sym, insn)		\
+ 	for (insn = list_prev_entry(insn, list);			\
+ 	     &insn->list != &file->insn_list &&				\
+-		insn->sec == func->sec && insn->offset >= func->offset;	\
++		insn->sec == sym->sec && insn->offset >= sym->offset;	\
+ 	     insn = list_prev_entry(insn, list))
  
-@@ -430,7 +430,7 @@ static void add_ignores(struct objtool_file *file)
- 			continue;
+ #define sec_for_each_insn_from(file, insn)				\
+@@ -286,7 +286,7 @@ static int decode_instructions(struct objtool_file *file)
+ 				return -1;
+ 			}
+ 
+-			func_for_each_insn(file, func, insn)
++			sym_for_each_insn(file, func, insn)
+ 				insn->func = func;
  		}
- 
--		func_for_each_insn_all(file, func, insn)
-+		func_for_each_insn(file, func, insn)
- 			insn->ignore = true;
  	}
- }
-@@ -1122,7 +1122,7 @@ static void mark_func_jump_tables(struct objtool_file *file,
- 	struct instruction *insn, *last = NULL;
- 	struct rela *rela;
+@@ -2064,7 +2064,7 @@ static int validate_branch(struct objtool_file *file, struct symbol *func,
  
--	func_for_each_insn_all(file, func, insn) {
-+	func_for_each_insn(file, func, insn) {
- 		if (!last)
- 			last = insn;
- 
-@@ -1157,7 +1157,7 @@ static int add_func_jump_tables(struct objtool_file *file,
- 	struct instruction *insn;
- 	int ret;
- 
--	func_for_each_insn_all(file, func, insn) {
-+	func_for_each_insn(file, func, insn) {
- 		if (!insn->jump_table)
- 			continue;
- 
+ 				i = insn;
+ 				save_insn = NULL;
+-				func_for_each_insn_continue_reverse(file, func, i) {
++				sym_for_each_insn_continue_reverse(file, func, i) {
+ 					if (i->save) {
+ 						save_insn = i;
+ 						break;
