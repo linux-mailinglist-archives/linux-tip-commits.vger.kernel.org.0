@@ -2,37 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CC38B193C9A
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 26 Mar 2020 11:09:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CC9B193C94
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 26 Mar 2020 11:09:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727966AbgCZKIz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 26 Mar 2020 06:08:55 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:50239 "EHLO
+        id S1727990AbgCZKIr (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 26 Mar 2020 06:08:47 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:50232 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727995AbgCZKIs (ORCPT
+        with ESMTP id S1727967AbgCZKIq (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 26 Mar 2020 06:08:48 -0400
+        Thu, 26 Mar 2020 06:08:46 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jHPRK-00049F-ME; Thu, 26 Mar 2020 11:08:43 +0100
+        id 1jHPRI-00049r-Tp; Thu, 26 Mar 2020 11:08:41 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 3E0041C0440;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A56E31C0494;
         Thu, 26 Mar 2020 11:08:39 +0100 (CET)
-Date:   Thu, 26 Mar 2020 10:08:38 -0000
+Date:   Thu, 26 Mar 2020 10:08:39 -0000
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/objtool] objtool: Rename func_for_each_insn()
+Subject: [tip: core/objtool] objtool: Introduce validate_return()
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Miroslav Benes <mbenes@suse.cz>,
         Josh Poimboeuf <jpoimboe@redhat.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200324160924.024341229@infradead.org>
-References: <20200324160924.024341229@infradead.org>
+In-Reply-To: <20200324160923.963996225@infradead.org>
+References: <20200324160923.963996225@infradead.org>
 MIME-Version: 1.0
-Message-ID: <158521731884.28353.2586659115330507007.tip-bot2@tip-bot2>
+Message-ID: <158521731933.28353.7307768837288463941.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,73 +48,105 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/objtool branch of tip:
 
-Commit-ID:     dbf4aeb0a494020644507459c2446e632cba1a05
-Gitweb:        https://git.kernel.org/tip/dbf4aeb0a494020644507459c2446e632cba1a05
+Commit-ID:     a92e92d1a749e9bae9828f34f632d56ac2c6d2c3
+Gitweb:        https://git.kernel.org/tip/a92e92d1a749e9bae9828f34f632d56ac2c6d2c3
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Tue, 10 Mar 2020 18:24:59 +01:00
+AuthorDate:    Tue, 10 Mar 2020 18:07:44 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Wed, 25 Mar 2020 18:28:27 +01:00
 
-objtool: Rename func_for_each_insn()
+objtool: Introduce validate_return()
 
-There is func_for_each_insn() and func_for_each_insn_all(), the both
-iterate the instructions, but the first uses symbol offset/length
-while the second uses insn->func.
-
-Rename func_for_each_insn() to sym_for_eac_insn() because it iterates
-on symbol information.
+Trivial 'cleanup' to save one indentation level and match
+validate_call().
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Miroslav Benes <mbenes@suse.cz>
 Acked-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Link: https://lkml.kernel.org/r/20200324160924.024341229@infradead.org
+Link: https://lkml.kernel.org/r/20200324160923.963996225@infradead.org
 ---
- tools/objtool/check.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ tools/objtool/check.c | 64 +++++++++++++++++++++++-------------------
+ 1 file changed, 36 insertions(+), 28 deletions(-)
 
 diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index da17b5a..564ea1d 100644
+index 6b6178e..da17b5a 100644
 --- a/tools/objtool/check.c
 +++ b/tools/objtool/check.c
-@@ -77,17 +77,17 @@ static struct instruction *next_insn_same_func(struct objtool_file *file,
- 	     insn;							\
- 	     insn = next_insn_same_func(file, insn))
+@@ -1975,6 +1975,41 @@ static int validate_sibling_call(struct instruction *insn, struct insn_state *st
+ 	return validate_call(insn, state);
+ }
  
--#define func_for_each_insn(file, func, insn)				\
--	for (insn = find_insn(file, func->sec, func->offset);		\
-+#define sym_for_each_insn(file, sym, insn)				\
-+	for (insn = find_insn(file, sym->sec, sym->offset);		\
- 	     insn && &insn->list != &file->insn_list &&			\
--		insn->sec == func->sec &&				\
--		insn->offset < func->offset + func->len;		\
-+		insn->sec == sym->sec &&				\
-+		insn->offset < sym->offset + sym->len;			\
- 	     insn = list_next_entry(insn, list))
++static int validate_return(struct symbol *func, struct instruction *insn, struct insn_state *state)
++{
++	if (state->uaccess && !func_uaccess_safe(func)) {
++		WARN_FUNC("return with UACCESS enabled",
++			  insn->sec, insn->offset);
++		return 1;
++	}
++
++	if (!state->uaccess && func_uaccess_safe(func)) {
++		WARN_FUNC("return with UACCESS disabled from a UACCESS-safe function",
++			  insn->sec, insn->offset);
++		return 1;
++	}
++
++	if (state->df) {
++		WARN_FUNC("return with DF set",
++			  insn->sec, insn->offset);
++		return 1;
++	}
++
++	if (func && has_modified_stack_frame(state)) {
++		WARN_FUNC("return with modified stack frame",
++			  insn->sec, insn->offset);
++		return 1;
++	}
++
++	if (state->bp_scratch) {
++		WARN("%s uses BP as a scratch register",
++		     func->name);
++		return 1;
++	}
++
++	return 0;
++}
++
+ /*
+  * Follow the branch starting at the given instruction, and recursively follow
+  * any other branches (jumps).  Meanwhile, track the frame pointer state at
+@@ -2090,34 +2125,7 @@ static int validate_branch(struct objtool_file *file, struct symbol *func,
+ 		switch (insn->type) {
  
--#define func_for_each_insn_continue_reverse(file, func, insn)		\
-+#define sym_for_each_insn_continue_reverse(file, sym, insn)		\
- 	for (insn = list_prev_entry(insn, list);			\
- 	     &insn->list != &file->insn_list &&				\
--		insn->sec == func->sec && insn->offset >= func->offset;	\
-+		insn->sec == sym->sec && insn->offset >= sym->offset;	\
- 	     insn = list_prev_entry(insn, list))
+ 		case INSN_RETURN:
+-			if (state.uaccess && !func_uaccess_safe(func)) {
+-				WARN_FUNC("return with UACCESS enabled", sec, insn->offset);
+-				return 1;
+-			}
+-
+-			if (!state.uaccess && func_uaccess_safe(func)) {
+-				WARN_FUNC("return with UACCESS disabled from a UACCESS-safe function", sec, insn->offset);
+-				return 1;
+-			}
+-
+-			if (state.df) {
+-				WARN_FUNC("return with DF set", sec, insn->offset);
+-				return 1;
+-			}
+-
+-			if (func && has_modified_stack_frame(&state)) {
+-				WARN_FUNC("return with modified stack frame",
+-					  sec, insn->offset);
+-				return 1;
+-			}
+-
+-			if (state.bp_scratch) {
+-				WARN("%s uses BP as a scratch register",
+-				     func->name);
+-				return 1;
+-			}
+-
+-			return 0;
++			return validate_return(func, insn, &state);
  
- #define sec_for_each_insn_from(file, insn)				\
-@@ -286,7 +286,7 @@ static int decode_instructions(struct objtool_file *file)
- 				return -1;
- 			}
- 
--			func_for_each_insn(file, func, insn)
-+			sym_for_each_insn(file, func, insn)
- 				insn->func = func;
- 		}
- 	}
-@@ -2064,7 +2064,7 @@ static int validate_branch(struct objtool_file *file, struct symbol *func,
- 
- 				i = insn;
- 				save_insn = NULL;
--				func_for_each_insn_continue_reverse(file, func, i) {
-+				sym_for_each_insn_continue_reverse(file, func, i) {
- 					if (i->save) {
- 						save_insn = i;
- 						break;
+ 		case INSN_CALL:
+ 		case INSN_CALL_DYNAMIC:
