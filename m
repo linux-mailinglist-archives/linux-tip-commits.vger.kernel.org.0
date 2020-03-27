@@ -2,40 +2,42 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 48DF619594C
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 27 Mar 2020 15:54:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 22A7A195953
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 27 Mar 2020 15:54:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727612AbgC0Oyg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 27 Mar 2020 10:54:36 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:53599 "EHLO
+        id S1727702AbgC0Oyp convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 27 Mar 2020 10:54:45 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:53608 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726515AbgC0Oyf (ORCPT
+        with ESMTP id S1727606AbgC0Oyg (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 27 Mar 2020 10:54:35 -0400
+        Fri, 27 Mar 2020 10:54:36 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jHqNS-0008WL-Tz; Fri, 27 Mar 2020 15:54:31 +0100
+        id 1jHqNT-00005F-D0; Fri, 27 Mar 2020 15:54:31 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 84CB71C0475;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id EC5CB1C03AB;
         Fri, 27 Mar 2020 15:54:30 +0100 (CET)
 Date:   Fri, 27 Mar 2020 14:54:30 -0000
-From:   "tip-bot2 for Benjamin Thiel" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Randy Dunlap" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] x86/mm: Mark setup_emu2phys_nid() static
-Cc:     Benjamin Thiel <b.thiel@posteo.de>, Borislav Petkov <bp@suse.de>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200326135842.3875-1-b.thiel@posteo.de>
-References: <20200326135842.3875-1-b.thiel@posteo.de>
+Subject: [tip: x86/cleanups] x86/jump_label: Move 'inline' keyword placement
+Cc:     Zzy Wysm <zzy@zzywysm.com>, Randy Dunlap <rdunlap@infradead.org>,
+        Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <796d93d2-e73e-3447-44eb-4f89e1b636d9@infradead.org>
+References: <796d93d2-e73e-3447-44eb-4f89e1b636d9@infradead.org>
 MIME-Version: 1.0
-Message-ID: <158532087014.28353.6859659281599423620.tip-bot2@tip-bot2>
+Message-ID: <158532087061.28353.12456259967039222110.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8BIT
 X-Linutronix-Spam-Score: -1.0
 X-Linutronix-Spam-Level: -
 X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
@@ -46,34 +48,40 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/cleanups branch of tip:
 
-Commit-ID:     be98dc6e50433fdcacaf29ec682e85de0ead6748
-Gitweb:        https://git.kernel.org/tip/be98dc6e50433fdcacaf29ec682e85de0ead6748
-Author:        Benjamin Thiel <b.thiel@posteo.de>
-AuthorDate:    Thu, 26 Mar 2020 14:58:42 +01:00
+Commit-ID:     4de4952c0abcb490039cdc946e49ed7f237285a2
+Gitweb:        https://git.kernel.org/tip/4de4952c0abcb490039cdc946e49ed7f237285a2
+Author:        Randy Dunlap <rdunlap@infradead.org>
+AuthorDate:    Thu, 26 Mar 2020 14:16:58 -07:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Fri, 27 Mar 2020 11:07:30 +01:00
+CommitterDate: Fri, 27 Mar 2020 11:05:41 +01:00
 
-x86/mm: Mark setup_emu2phys_nid() static
+x86/jump_label: Move 'inline' keyword placement
 
-Make function static because it is used only in this file.
+Fix gcc warning when -Wextra is used by moving the keyword:
 
-Signed-off-by: Benjamin Thiel <b.thiel@posteo.de>
+  arch/x86/kernel/jump_label.c:61:1: warning: ‘inline’ is not at \
+	  beginning of declaration [-Wold-style-declaration]
+   static void inline __jump_label_transform(struct jump_entry *entry,
+   ^~~~~~
+
+Reported-by: Zzy Wysm <zzy@zzywysm.com>
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20200326135842.3875-1-b.thiel@posteo.de
+Link: https://lkml.kernel.org/r/796d93d2-e73e-3447-44eb-4f89e1b636d9@infradead.org
 ---
- arch/x86/mm/numa_emulation.c | 2 +-
+ arch/x86/kernel/jump_label.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/mm/numa_emulation.c b/arch/x86/mm/numa_emulation.c
-index 7f1d203..c5174b4 100644
---- a/arch/x86/mm/numa_emulation.c
-+++ b/arch/x86/mm/numa_emulation.c
-@@ -324,7 +324,7 @@ static int __init split_nodes_size_interleave(struct numa_meminfo *ei,
- 			0, NULL, NUMA_NO_NODE);
+diff --git a/arch/x86/kernel/jump_label.c b/arch/x86/kernel/jump_label.c
+index 9c4498e..5ba8477 100644
+--- a/arch/x86/kernel/jump_label.c
++++ b/arch/x86/kernel/jump_label.c
+@@ -58,7 +58,7 @@ __jump_label_set_jump_code(struct jump_entry *entry, enum jump_label_type type, 
+ 	return code;
  }
  
--int __init setup_emu2phys_nid(int *dfl_phys_nid)
-+static int __init setup_emu2phys_nid(int *dfl_phys_nid)
+-static void inline __jump_label_transform(struct jump_entry *entry,
++static inline void __jump_label_transform(struct jump_entry *entry,
+ 					  enum jump_label_type type,
+ 					  int init)
  {
- 	int i, max_emu_nid = 0;
- 
