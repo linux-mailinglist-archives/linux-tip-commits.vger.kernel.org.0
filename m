@@ -2,39 +2,35 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E89E4195662
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 27 Mar 2020 12:31:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A3747195952
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 27 Mar 2020 15:54:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727322AbgC0LbF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 27 Mar 2020 07:31:05 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:53112 "EHLO
+        id S1727754AbgC0Oyj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 27 Mar 2020 10:54:39 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:53620 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726165AbgC0LbF (ORCPT
+        with ESMTP id S1726515AbgC0Oyi (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 27 Mar 2020 07:31:05 -0400
+        Fri, 27 Mar 2020 10:54:38 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jHnCV-0004rb-Kw; Fri, 27 Mar 2020 12:30:59 +0100
+        id 1jHqNS-0008W3-9s; Fri, 27 Mar 2020 15:54:30 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4016E1C03AB;
-        Fri, 27 Mar 2020 12:30:59 +0100 (CET)
-Date:   Fri, 27 Mar 2020 11:30:58 -0000
-From:   "tip-bot2 for Yubo Xie" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 98A4F1C03AB;
+        Fri, 27 Mar 2020 15:54:29 +0100 (CET)
+Date:   Fri, 27 Mar 2020 14:54:29 -0000
+From:   "tip-bot2 for Benjamin Thiel" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/urgent] clocksource/drivers/hyper-v: Make sched clock
- return nanoseconds correctly
-Cc:     Yubo Xie <yuboxie@microsoft.com>,
-        Tianyu Lan <Tianyu.Lan@microsoft.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>, stable@vger.kernel.org,
+Subject: [tip: x86/cleanups] x86/mm/set_memory: Fix -Wmissing-prototypes warnings
+Cc:     Benjamin Thiel <b.thiel@posteo.de>, Borislav Petkov <bp@suse.de>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200327021159.31429-1-Tianyu.Lan@microsoft.com>
-References: <20200327021159.31429-1-Tianyu.Lan@microsoft.com>
+In-Reply-To: <20200320145028.6013-1-b.thiel@posteo.de>
+References: <20200320145028.6013-1-b.thiel@posteo.de>
 MIME-Version: 1.0
-Message-ID: <158530865882.28353.581776728371427215.tip-bot2@tip-bot2>
+Message-ID: <158532086917.28353.12594836247959241572.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,55 +44,93 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/urgent branch of tip:
+The following commit has been merged into the x86/cleanups branch of tip:
 
-Commit-ID:     749da8ca978f19710aba496208c480ad42d37f79
-Gitweb:        https://git.kernel.org/tip/749da8ca978f19710aba496208c480ad42d37f79
-Author:        Yubo Xie <yuboxie@microsoft.com>
-AuthorDate:    Thu, 26 Mar 2020 19:11:59 -07:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 27 Mar 2020 12:27:45 +01:00
+Commit-ID:     5bacdc0982f2b343afa5adbb80517d3392a7e357
+Gitweb:        https://git.kernel.org/tip/5bacdc0982f2b343afa5adbb80517d3392a7e357
+Author:        Benjamin Thiel <b.thiel@posteo.de>
+AuthorDate:    Fri, 27 Mar 2020 11:26:06 +01:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Fri, 27 Mar 2020 11:26:06 +01:00
 
-clocksource/drivers/hyper-v: Make sched clock return nanoseconds correctly
+x86/mm/set_memory: Fix -Wmissing-prototypes warnings
 
-The sched clock read functions return the HV clock (100ns granularity)
-without converting it to nanoseconds.
+Add missing includes and move prototypes into the header set_memory.h in
+order to fix -Wmissing-prototypes warnings.
 
-Add the missing conversion.
+ [ bp: Add ifdeffery around arch_invalidate_pmem() ]
 
-Fixes: bd00cd52d5be ("clocksource/drivers/hyperv: Add Hyper-V specific sched clock function")
-Signed-off-by: Yubo Xie <yuboxie@microsoft.com>
-Signed-off-by: Tianyu Lan <Tianyu.Lan@microsoft.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Vitaly Kuznetsov <vkuznets@redhat.com>
-Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20200327021159.31429-1-Tianyu.Lan@microsoft.com
-
+Signed-off-by: Benjamin Thiel <b.thiel@posteo.de>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lkml.kernel.org/r/20200320145028.6013-1-b.thiel@posteo.de
 ---
- drivers/clocksource/hyperv_timer.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/x86/include/asm/set_memory.h | 2 ++
+ arch/x86/mm/pat/set_memory.c      | 3 +++
+ arch/x86/mm/pti.c                 | 8 +-------
+ 3 files changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/clocksource/hyperv_timer.c b/drivers/clocksource/hyperv_timer.c
-index 9d808d5..eb0ba78 100644
---- a/drivers/clocksource/hyperv_timer.c
-+++ b/drivers/clocksource/hyperv_timer.c
-@@ -343,7 +343,8 @@ static u64 notrace read_hv_clock_tsc_cs(struct clocksource *arg)
+diff --git a/arch/x86/include/asm/set_memory.h b/arch/x86/include/asm/set_memory.h
+index 64c3dce..950532c 100644
+--- a/arch/x86/include/asm/set_memory.h
++++ b/arch/x86/include/asm/set_memory.h
+@@ -46,6 +46,8 @@ int set_memory_4k(unsigned long addr, int numpages);
+ int set_memory_encrypted(unsigned long addr, int numpages);
+ int set_memory_decrypted(unsigned long addr, int numpages);
+ int set_memory_np_noalias(unsigned long addr, int numpages);
++int set_memory_nonglobal(unsigned long addr, int numpages);
++int set_memory_global(unsigned long addr, int numpages);
  
- static u64 read_hv_sched_clock_tsc(void)
+ int set_pages_array_uc(struct page **pages, int addrinarray);
+ int set_pages_array_wc(struct page **pages, int addrinarray);
+diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
+index c4aedd0..6d54240 100644
+--- a/arch/x86/mm/pat/set_memory.c
++++ b/arch/x86/mm/pat/set_memory.c
+@@ -15,6 +15,7 @@
+ #include <linux/gfp.h>
+ #include <linux/pci.h>
+ #include <linux/vmalloc.h>
++#include <linux/libnvdimm.h>
+ 
+ #include <asm/e820/api.h>
+ #include <asm/processor.h>
+@@ -304,11 +305,13 @@ void clflush_cache_range(void *vaddr, unsigned int size)
+ }
+ EXPORT_SYMBOL_GPL(clflush_cache_range);
+ 
++#ifdef CONFIG_ARCH_HAS_PMEM_API
+ void arch_invalidate_pmem(void *addr, size_t size)
  {
--	return read_hv_clock_tsc() - hv_sched_clock_offset;
-+	return (read_hv_clock_tsc() - hv_sched_clock_offset) *
-+		(NSEC_PER_SEC / HV_CLOCK_HZ);
+ 	clflush_cache_range(addr, size);
+ }
+ EXPORT_SYMBOL_GPL(arch_invalidate_pmem);
++#endif
+ 
+ static void __cpa_flush_all(void *arg)
+ {
+diff --git a/arch/x86/mm/pti.c b/arch/x86/mm/pti.c
+index 44a9f06..843aa10 100644
+--- a/arch/x86/mm/pti.c
++++ b/arch/x86/mm/pti.c
+@@ -39,6 +39,7 @@
+ #include <asm/tlbflush.h>
+ #include <asm/desc.h>
+ #include <asm/sections.h>
++#include <asm/set_memory.h>
+ 
+ #undef pr_fmt
+ #define pr_fmt(fmt)     "Kernel/User page tables isolation: " fmt
+@@ -555,13 +556,6 @@ static inline bool pti_kernel_image_global_ok(void)
  }
  
- static void suspend_hv_clock_tsc(struct clocksource *arg)
-@@ -398,7 +399,8 @@ static u64 notrace read_hv_clock_msr_cs(struct clocksource *arg)
- 
- static u64 read_hv_sched_clock_msr(void)
- {
--	return read_hv_clock_msr() - hv_sched_clock_offset;
-+	return (read_hv_clock_msr() - hv_sched_clock_offset) *
-+		(NSEC_PER_SEC / HV_CLOCK_HZ);
- }
- 
- static struct clocksource hyperv_cs_msr = {
+ /*
+- * This is the only user for these and it is not arch-generic
+- * like the other set_memory.h functions.  Just extern them.
+- */
+-extern int set_memory_nonglobal(unsigned long addr, int numpages);
+-extern int set_memory_global(unsigned long addr, int numpages);
+-
+-/*
+  * For some configurations, map all of kernel text into the user page
+  * tables.  This reduces TLB misses, especially on non-PCID systems.
+  */
