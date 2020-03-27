@@ -2,37 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 513221955FE
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 27 Mar 2020 12:08:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E89E4195662
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 27 Mar 2020 12:31:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726333AbgC0LH7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 27 Mar 2020 07:07:59 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:53045 "EHLO
+        id S1727322AbgC0LbF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 27 Mar 2020 07:31:05 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:53112 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726275AbgC0LH7 (ORCPT
+        with ESMTP id S1726165AbgC0LbF (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 27 Mar 2020 07:07:59 -0400
+        Fri, 27 Mar 2020 07:31:05 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jHmqC-0004Xr-9v; Fri, 27 Mar 2020 12:07:56 +0100
+        id 1jHnCV-0004rb-Kw; Fri, 27 Mar 2020 12:30:59 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D73081C03AB;
-        Fri, 27 Mar 2020 12:07:55 +0100 (CET)
-Date:   Fri, 27 Mar 2020 11:07:55 -0000
-From:   "tip-bot2 for H.J. Lu" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4016E1C03AB;
+        Fri, 27 Mar 2020 12:30:59 +0100 (CET)
+Date:   Fri, 27 Mar 2020 11:30:58 -0000
+From:   "tip-bot2 for Yubo Xie" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/build] x86, vmlinux.lds: Add RUNTIME_DISCARD_EXIT to
- generic DISCARDS
-Cc:     "H.J. Lu" <hjl.tools@gmail.com>, Borislav Petkov <bp@suse.de>,
-        Kees Cook <keescook@chromium.org>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200326193021.255002-1-hjl.tools@gmail.com>
-References: <20200326193021.255002-1-hjl.tools@gmail.com>
+Subject: [tip: timers/urgent] clocksource/drivers/hyper-v: Make sched clock
+ return nanoseconds correctly
+Cc:     Yubo Xie <yuboxie@microsoft.com>,
+        Tianyu Lan <Tianyu.Lan@microsoft.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>, stable@vger.kernel.org,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200327021159.31429-1-Tianyu.Lan@microsoft.com>
+References: <20200327021159.31429-1-Tianyu.Lan@microsoft.com>
 MIME-Version: 1.0
-Message-ID: <158530727545.28353.10694097580939655357.tip-bot2@tip-bot2>
+Message-ID: <158530865882.28353.581776728371427215.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -46,70 +48,55 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/build branch of tip:
+The following commit has been merged into the timers/urgent branch of tip:
 
-Commit-ID:     84d5f77fc2ee4e010c2c037750e32f06e55224b0
-Gitweb:        https://git.kernel.org/tip/84d5f77fc2ee4e010c2c037750e32f06e55224b0
-Author:        H.J. Lu <hjl.tools@gmail.com>
-AuthorDate:    Thu, 26 Mar 2020 12:30:20 -07:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Fri, 27 Mar 2020 11:52:11 +01:00
+Commit-ID:     749da8ca978f19710aba496208c480ad42d37f79
+Gitweb:        https://git.kernel.org/tip/749da8ca978f19710aba496208c480ad42d37f79
+Author:        Yubo Xie <yuboxie@microsoft.com>
+AuthorDate:    Thu, 26 Mar 2020 19:11:59 -07:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Fri, 27 Mar 2020 12:27:45 +01:00
 
-x86, vmlinux.lds: Add RUNTIME_DISCARD_EXIT to generic DISCARDS
+clocksource/drivers/hyper-v: Make sched clock return nanoseconds correctly
 
-In the x86 kernel, .exit.text and .exit.data sections are discarded at
-runtime, not by the linker. Add RUNTIME_DISCARD_EXIT to generic DISCARDS
-and define it in the x86 kernel linker script to keep them.
+The sched clock read functions return the HV clock (100ns granularity)
+without converting it to nanoseconds.
 
-The sections are added before the DISCARD directive so document here
-only the situation explicitly as this change doesn't have any effect on
-the generated kernel. Also, other architectures like ARM64 will use it
-too so generalize the approach with the RUNTIME_DISCARD_EXIT define.
+Add the missing conversion.
 
- [ bp: Massage and extend commit message. ]
+Fixes: bd00cd52d5be ("clocksource/drivers/hyperv: Add Hyper-V specific sched clock function")
+Signed-off-by: Yubo Xie <yuboxie@microsoft.com>
+Signed-off-by: Tianyu Lan <Tianyu.Lan@microsoft.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Vitaly Kuznetsov <vkuznets@redhat.com>
+Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/20200327021159.31429-1-Tianyu.Lan@microsoft.com
 
-Signed-off-by: H.J. Lu <hjl.tools@gmail.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Link: https://lkml.kernel.org/r/20200326193021.255002-1-hjl.tools@gmail.com
 ---
- arch/x86/kernel/vmlinux.lds.S     |  1 +
- include/asm-generic/vmlinux.lds.h | 11 +++++++++--
- 2 files changed, 10 insertions(+), 2 deletions(-)
+ drivers/clocksource/hyperv_timer.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kernel/vmlinux.lds.S b/arch/x86/kernel/vmlinux.lds.S
-index e3296aa..7206e1a 100644
---- a/arch/x86/kernel/vmlinux.lds.S
-+++ b/arch/x86/kernel/vmlinux.lds.S
-@@ -21,6 +21,7 @@
- #define LOAD_OFFSET __START_KERNEL_map
- #endif
+diff --git a/drivers/clocksource/hyperv_timer.c b/drivers/clocksource/hyperv_timer.c
+index 9d808d5..eb0ba78 100644
+--- a/drivers/clocksource/hyperv_timer.c
++++ b/drivers/clocksource/hyperv_timer.c
+@@ -343,7 +343,8 @@ static u64 notrace read_hv_clock_tsc_cs(struct clocksource *arg)
  
-+#define RUNTIME_DISCARD_EXIT
- #define EMITS_PT_NOTE
- #define RO_EXCEPTION_TABLE_ALIGN	16
+ static u64 read_hv_sched_clock_tsc(void)
+ {
+-	return read_hv_clock_tsc() - hv_sched_clock_offset;
++	return (read_hv_clock_tsc() - hv_sched_clock_offset) *
++		(NSEC_PER_SEC / HV_CLOCK_HZ);
+ }
  
-diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
-index e00f41a..2444336 100644
---- a/include/asm-generic/vmlinux.lds.h
-+++ b/include/asm-generic/vmlinux.lds.h
-@@ -894,10 +894,17 @@
-  * section definitions so that such archs put those in earlier section
-  * definitions.
-  */
-+#ifdef RUNTIME_DISCARD_EXIT
-+#define EXIT_DISCARDS
-+#else
-+#define EXIT_DISCARDS							\
-+	EXIT_TEXT							\
-+	EXIT_DATA
-+#endif
-+
- #define DISCARDS							\
- 	/DISCARD/ : {							\
--	EXIT_TEXT							\
--	EXIT_DATA							\
-+	EXIT_DISCARDS							\
- 	EXIT_CALL							\
- 	*(.discard)							\
- 	*(.discard.*)							\
+ static void suspend_hv_clock_tsc(struct clocksource *arg)
+@@ -398,7 +399,8 @@ static u64 notrace read_hv_clock_msr_cs(struct clocksource *arg)
+ 
+ static u64 read_hv_sched_clock_msr(void)
+ {
+-	return read_hv_clock_msr() - hv_sched_clock_offset;
++	return (read_hv_clock_msr() - hv_sched_clock_offset) *
++		(NSEC_PER_SEC / HV_CLOCK_HZ);
+ }
+ 
+ static struct clocksource hyperv_cs_msr = {
