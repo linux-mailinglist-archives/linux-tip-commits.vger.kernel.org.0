@@ -2,184 +2,180 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D2F20194614
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 26 Mar 2020 19:09:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BF36194F43
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 27 Mar 2020 03:53:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727939AbgCZSJB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 26 Mar 2020 14:09:01 -0400
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:33290 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726422AbgCZSJB (ORCPT
+        id S1727612AbgC0CxT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 26 Mar 2020 22:53:19 -0400
+Received: from mail-qk1-f196.google.com ([209.85.222.196]:46551 "EHLO
+        mail-qk1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726363AbgC0CxT (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 26 Mar 2020 14:09:01 -0400
-Received: by mail-ot1-f67.google.com with SMTP id 22so6905316otf.0
-        for <linux-tip-commits@vger.kernel.org>; Thu, 26 Mar 2020 11:09:01 -0700 (PDT)
+        Thu, 26 Mar 2020 22:53:19 -0400
+Received: by mail-qk1-f196.google.com with SMTP id u4so9405660qkj.13;
+        Thu, 26 Mar 2020 19:53:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=U23zV80H/fWBc+iRgD1UjAaCfCC2dZVzJMDMBndseY4=;
-        b=YQHUd4g2qLXtQjXBE4UkMWhIR8nDbvEUaciILNOK1DDGTPkVwxPnjuXXEl+PQHbM/1
-         y6LDzWG05v6UkDFD+hMNUXbok89dYzFWteDm2vjHupA5u+YtneTqEU/fVPzR8E2nTUZ8
-         66uNDVPrLuINvhQ8gOBxGfgdzbAs3VvT6YKpRtj30g+Zjzz8nXk+owbQRhHorhxFTmVZ
-         JIwHb/KAKnILqy/tO+qHlvAZde4hejp45M8JGZWeHHHHfQO45fI7cyUT1Q5iH6ZbiFhu
-         pJ49aMWlxdim62oSWBo3EI1E9poJSoNy/2Z0hdT7sSaBj/1L3nU1I2G8IPtyJeA6+sqi
-         K6Rw==
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=w4++N08RVpCiGlHmC7RmsL50uQ3EATHmFpjCdBVUENY=;
+        b=hU/k2AOMFDZW0xf2BTOdavbWpT9pJTPn5Tt4E+qgd05wDRKScCPi5YUt4C2mnhe21M
+         F21+rftavAYTzxByOFilILMoJbIE175BynuHXmWruxcIPbN7DOX5lP37uLkfw03+KgwX
+         Hd6BSisFfdsCA5HA7M8BIN3ZC/NtCWP5FaZ1oxYDH4c1+/nhdFkEhy7PlRqWrzmtcwpk
+         zOXU5VqpQRmPT/hkmdV4ORqorxMdaQ5EZC0LaPwLIBCNz1DGgckKhDKITXUsjwjQvXzv
+         uc2lHt8V33efHdZYETB4LrqnYCrXVJfdrs30w1mBuqFvcqwvAPKZhSj+38hyZSz5uk73
+         KH5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=U23zV80H/fWBc+iRgD1UjAaCfCC2dZVzJMDMBndseY4=;
-        b=lboatvjUWFvyDupicRyFq+l6RLOqxS1dTgxVEX35mQTiJJQaz4YkVvX43s2XcdVe9W
-         fXV3ariO94y3FloHMXphU/jemihtouqDPpuRTpDKew0e3RzSHk2RK+S8dzE/VWysVxR3
-         PCETvVLxE3UEYj0EWeTAoVLTIMs84ZUY73fCYksF/12dUOokMonsWn/peOGwX3oigKV5
-         zd/0k/+YIAc46k2pZlVg08i/vRVfBdh6kV+b5eI/TYeh56lQX2bgjHQq/l+z3QFQPRfR
-         E0i+4VDZx4a+fuys9fD1lOlapkbMaEthR0huOO7gPTM91TDDtHNtG1nTlaHTNp+dpO1F
-         Y7nw==
-X-Gm-Message-State: ANhLgQ0wrx4uMgW4DKLMA9kp7qhE7fnk0h8UiFxsWm+aFTOtvN1A+zJv
-        u8EYxk/xsBoFJ86K0J8Pv9LMP5pG5NCgkFiogZz+Qw==
-X-Google-Smtp-Source: ADFU+vvpl+5OQEhCNCLDYCWe7itQaBuqxVZA0v7+jdNtoVBCkI1H0Pb9vRkZPwD2wnPPVM/+flWYswsezj+oPgatsOA=
-X-Received: by 2002:a4a:4190:: with SMTP id x138mr6179666ooa.35.1585246139794;
- Thu, 26 Mar 2020 11:08:59 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=w4++N08RVpCiGlHmC7RmsL50uQ3EATHmFpjCdBVUENY=;
+        b=foXecZ+4/IvhRbuUEZBHC5j8rbd+PHQYQVJyPe9vbLnD5vR11WjDrHoY6dsYW5IMlV
+         qMChK6Q+8ShAxj1rnLekcMvtUbiNo8SO8m5vZxH9pgOwowRBqFaJ7SE6EhxlDFR8Bal+
+         WT4tTWI5E714X+cEwwQ5nWUpmaKu7jmdzvK1r9NXE8EDH5EWV1hSl56QefQzAxKjdazk
+         3dUPpjVXKDkdmfoLULt9/lahaDJ8WZbQMZ4jyZnvzD25D7d0B4C4ccYUSGjXEmcX8Pvz
+         SfI/G34y1j9Be2att5FNea39Vh60D5t/LgerNKPFKKNvB3bprsSehD4VEkyVKbvzzO8J
+         vQGg==
+X-Gm-Message-State: ANhLgQ0BRzmbIHB8GqE/0emA5T3ChLUK/OqbsXx9J4y5UoSZ16PX9QWt
+        Kgs9bndYWKbodnfGyjlp+jg=
+X-Google-Smtp-Source: ADFU+vsf/uspcYVH7mYPhpWkrWzKtSPs3tfZK62tZ0tvai+h5fvS+c9Q7eIoUvlSOoguHooVlFmCEw==
+X-Received: by 2002:a37:e109:: with SMTP id c9mr12347525qkm.348.1585277596566;
+        Thu, 26 Mar 2020 19:53:16 -0700 (PDT)
+Received: from auth1-smtp.messagingengine.com (auth1-smtp.messagingengine.com. [66.111.4.227])
+        by smtp.gmail.com with ESMTPSA id 69sm2659196qki.131.2020.03.26.19.53.15
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 26 Mar 2020 19:53:15 -0700 (PDT)
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+        by mailauth.nyi.internal (Postfix) with ESMTP id DB83F27C0054;
+        Thu, 26 Mar 2020 22:53:14 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute3.internal (MEProxy); Thu, 26 Mar 2020 22:53:14 -0400
+X-ME-Sender: <xms:mWp9XsCdBgR7RtDU8pZ5DqzQDRqDRyK9oPZwjHulUVZ8OUKMVKzWqA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedugedrudehjedgudehudcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecunecujfgurhepfffhvffukfhfgggtuggjsehttd
+    ertddttddvnecuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghes
+    ghhmrghilhdrtghomheqnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucfkphephe
+    dvrdduheehrdduuddurdejudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhep
+    mhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhith
+    ihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgr
+    ihhlrdgtohhmsehfihigmhgvrdhnrghmvg
+X-ME-Proxy: <xmx:mWp9XlUdsCleGvywe-HEdp0lhcdz8ahRrAVhkMS2RNi9lp0kii6i3Q>
+    <xmx:mWp9XgzPzUq2vm3FSFBB4Eij0Wh9eL5ziWI-av4T62ScEu7919dMrg>
+    <xmx:mWp9XghLzByYNCNeaUseak4SfsK3YDjdybxKrhr7y8vKiYd4LMVMiQ>
+    <xmx:mmp9XniXl81qomo-VsCMXK2kITOVEIBnzCeBa9_mpZhkaNl1srVe7iNqNgw>
+Received: from localhost (unknown [52.155.111.71])
+        by mail.messagingengine.com (Postfix) with ESMTPA id D982F306B4EE;
+        Thu, 26 Mar 2020 22:53:12 -0400 (EDT)
+Date:   Fri, 27 Mar 2020 10:53:11 +0800
+From:   Boqun Feng <boqun.feng@gmail.com>
+To:     tglx@linutronix.de, peterz@infradead.org,
+        linux-kernel@vger.kernel.org, len.brown@intel.com,
+        pkondeti@codeaurora.org, jpoimboe@redhat.com, pavel@ucw.cz,
+        konrad.wilk@oracle.com, mojha@codeaurora.org, jkosina@suse.cz,
+        mingo@kernel.org, hpa@zytor.com, rjw@rjwysocki.net
+Cc:     linux-tip-commits@vger.kernel.org
+Subject: Re: [tip:smp/hotplug] cpu/hotplug: Abort disabling secondary CPUs if
+ wakeup is pending
+Message-ID: <20200327025311.GA58760@debian-boqun.qqnc3lrjykvubdpftowmye0fmh.lx.internal.cloudapp.net>
+References: <1559536263-16472-1-git-send-email-pkondeti@codeaurora.org>
+ <tip-a66d955e910ab0e598d7a7450cbe6139f52befe7@git.kernel.org>
 MIME-Version: 1.0
-References: <20200111052125.238212-1-saravanak@google.com> <158460766637.28353.11325960928759668587.tip-bot2@tip-bot2>
- <20200324175955.GA16972@arm.com> <CAGETcx8Qhy3y66vJyi8kRvg1+hXf-goDvyty-bsG5qFrA-CKgg@mail.gmail.com>
- <CAGETcx80wvGnS0-MwJ9M9RR9Mny0jmmep+JfwaUJUOR2bfJYsQ@mail.gmail.com>
- <87lfnoxg2a.fsf@nanos.tec.linutronix.de> <CAGETcx_3GSKmSveiGrM2vQp=q57iZYc0T4ELMY7Zw8UwzPEnYA@mail.gmail.com>
- <87imirxv57.fsf@nanos.tec.linutronix.de> <CAL_JsqLas2mi-kTrEY=9vnopU57qwJNDtvui0erMghfG4-pOZw@mail.gmail.com>
-In-Reply-To: <CAL_JsqLas2mi-kTrEY=9vnopU57qwJNDtvui0erMghfG4-pOZw@mail.gmail.com>
-From:   Saravana Kannan <saravanak@google.com>
-Date:   Thu, 26 Mar 2020 11:08:23 -0700
-Message-ID: <CAGETcx_MC7weVSYF9CpWt_5Otf3G1Hd75Z8_0LcN0SS42UDyJw@mail.gmail.com>
-Subject: Re: [tip: timers/core] clocksource/drivers/timer-probe: Avoid
- creating dead devices
-To:     Rob Herring <robh+dt@kernel.org>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Ionela Voinescu <ionela.voinescu@arm.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        linux-tip-commits@vger.kernel.org, x86 <x86@kernel.org>,
-        Liviu Dudau <liviu.dudau@arm.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Jon Hunter <jonathanh@nvidia.com>,
-        Pawel Moll <pawel.moll@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <tip-a66d955e910ab0e598d7a7450cbe6139f52befe7@git.kernel.org>
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Thu, Mar 26, 2020 at 8:02 AM Rob Herring <robh+dt@kernel.org> wrote:
->
-> On Thu, Mar 26, 2020 at 4:34 AM Thomas Gleixner <tglx@linutronix.de> wrote:
-> >
-> > Saravana Kannan <saravanak@google.com> writes:
-> > > On Wed, Mar 25, 2020 at 2:47 PM Thomas Gleixner <tglx@linutronix.de> wrote:
-> > >
-> > >> Saravana Kannan <saravanak@google.com> writes:
-> > >> > On Tue, Mar 24, 2020 at 11:34 AM Saravana Kannan <saravanak@google.com> wrote:
-> > >> > I took a closer look. So two different drivers [1] [2] are saying they
-> > >> > know how to handle "arm,vexpress-sysreg" and are expecting to run at
-> > >> > the same time. That seems a bit unusual to me. I wonder if this is a
-> > >> > violation of the device-driver model because this expectation would
-> > >> > never be allowed if these device drivers were actual drivers
-> > >> > registered with driver-core. But that's a discussion for another time.
-> > >> >
-> > >> > To fix this issue you are facing, this patch should work:
-> > >> > https://lore.kernel.org/lkml/20200324195302.203115-1-saravanak@google.com/T/#u
-> > >>
-> > >> Sorry, that's not a fix. That's a crude hack.
-> > >
-> > > If device nodes are being handled by drivers without binding a driver
-> > > to struct devices, then not setting OF_POPULATED is wrong. So the
-> > > original patch sets it. There are also very valid reasons for allowing
-> > > OF_POPULATED to be cleared by a driver as discussed here [1].
-> > >
-> > > The approach of the original patch (setting the flag and letting the
-> > > driver sometimes clear it) is also followed by many other frameworks
-> > > like irq, clk, i2c, etc. Even ingenic-timer.c already does it for the
-> > > exact same reason.
-> > >
-> > > So, why is the vexpress fix a crude hack?
-> >
-> > If it's the right thing to do and accepted by the DT folks, then the
-> > changelog should provide a proper explanation for it. The one you
-> > provided just baffles me. Plus the clearing of the flag really needs a
-> > big fat comment.
->
-> IMO, commit 4f41fe386a946 should be reverted and be done with it.
-> There's no way the timer core can know whether a specific node should
-> be scanned or not. If you really want to avoid a struct device, then
-> set OF_POPULATED in specific timer drivers. But I'd rather not see
-> more places mucking with OF_POPULATED. It's really only bus code that
-> should be touching it.
+Hi Thomas and Pavankumar,
 
-Since most drivers don't need the struct device, my patch sets the
-flag in the timer core. And for the few exception cases where the
-device is needed, we can clear the flag in the driver. That'll reduce
-the number of places mucking with OF_POPULATED.
+I have a question about this patch, please see below:
 
-Does this seem okay to you?
+On Wed, Jun 12, 2019 at 05:34:08AM -0700, tip-bot for Pavankumar Kondeti wrote:
+> Commit-ID:  a66d955e910ab0e598d7a7450cbe6139f52befe7
+> Gitweb:     https://git.kernel.org/tip/a66d955e910ab0e598d7a7450cbe6139f52befe7
+> Author:     Pavankumar Kondeti <pkondeti@codeaurora.org>
+> AuthorDate: Mon, 3 Jun 2019 10:01:03 +0530
+> Committer:  Thomas Gleixner <tglx@linutronix.de>
+> CommitDate: Wed, 12 Jun 2019 11:03:05 +0200
+> 
+> cpu/hotplug: Abort disabling secondary CPUs if wakeup is pending
+> 
+> When "deep" suspend is enabled, all CPUs except the primary CPU are frozen
+> via CPU hotplug one by one. After all secondary CPUs are unplugged the
+> wakeup pending condition is evaluated and if pending the suspend operation
+> is aborted and the secondary CPUs are brought up again.
+> 
+> CPU hotplug is a slow operation, so it makes sense to check for wakeup
+> pending in the freezer loop before bringing down the next CPU. This
+> improves the system suspend abort latency significantly.
+> 
 
-> Is having a struct device really a problem? If we want to save memory
-> usage, I have some ideas that would save much more than 1 or 2 struct
-> devices.
+From the commit message, it makes sense to add the pm_wakeup_pending()
+check if freeze_secondary_cpus() is used for system suspend. However,
+freeze_secondary_cpus() is also used in kexec path on arm64:
 
-Keep in mind that struct devices cost more than one struct device of
-memory. They also create a bunch of sysfs nodes, uevents, etc.
+	kernel_kexec():
+	  machine_shutdown():
+	    disable_nonboot_cpus():
+	      freeze_secondary_cpus()
 
-> > It still does not make any sense to me.
-> >
-> > arm,vexpress-sysreg is a MFD device, so can the ARM people please
-> > explain, why the sched clock part is not just another MFD sub-device or
-> > simply has it's own DT match?
->
-> The issue is DT nodes and Linux drivers aren't necessarily 1-1. That
-> would be nice, but hardware is messy and DT doesn't abstract that
-> away. If we tried to always make things 1-1, then if/when the Linux
-> driver structure changes we'd have to change the DT.
+, so I wonder whether the pm_wakeup_pending() makes sense in this
+situation? Because IIUC, in this case we want to reboot the system
+regardlessly, the pm_wakeup_pending() checking seems to be inappropriate
+then.
 
-I agree with this. I'm definitely not asking to create a node just
-because we want another struct device.
+I'm asking this because I'm debugging a kexec failure on ARM64 guest on
+Hyper-V, and I got the BUG_ON() triggered:
 
-> If we decided to
-> add a node now, we'd still have to support the old DT for backwards
-> compatibility.
+[  108.378016] kexec_core: Starting new kernel
+[  108.378018] Disabling non-boot CPUs ...
+[  108.378019] Wakeup pending. Abort CPU freeze
+[  108.378020] Non-boot CPUs are not disabled
+[  108.378049] ------------[ cut here ]------------
+[  108.378050] kernel BUG at arch/arm64/kernel/machine_kexec.c:154!
 
-Right, I agree it's too late to fix this DT for vexpress-sysreg now.
+Thanks!
 
-> We also have to consider the structure for another OS
-> may be different.
->
-> Generally, if I see a node with a compatible only it gets NAKed as
-> that's a sure sign of someone just trying to bind a driver and not
-> describing the h/w. We only do MFD sub-devices if those devices
-> provide or consume other DT resources.
+Regards,
+Boqun
 
-If we have a timer MFD, it'd technically consume a fixed-clock and not
-be empty. vexpress-sysreg just assumes the clock is 24 MHz right now.
-
-My point about the vexpress DT nodes being weird is not about Linux
-devices, rather it's that:
-1. It's already a MFD
-2. Most of the functions are separated clearly into their functional
-device nodes
-3. However, the timer functionality is combined with the parent MFD
-device when the parent MFD device implements a completely separate
-function (gpio?). Why?
-
-If one wants to split out the functions, do it fully. If one wants it
-all under one mega driver (ugh!) then combine it all. Going halfway
-causes these weird issues. That's my complaint about how the DT layout
-is for this device.
-
-Having said all that, I'd rather manipulate the OF_POPULATED flag than
-break DT backward compatibility at this point.
-
-But in general, I think we should try to reject two separate drivers
-claiming to be compatible with the same device and expecting to work
-at the same time. That's just weird.
-
--Saravana
+> [ tglx: Massaged changelog and improved printk message ]
+> 
+> Signed-off-by: Pavankumar Kondeti <pkondeti@codeaurora.org>
+> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+> Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+> Cc: Len Brown <len.brown@intel.com>
+> Cc: Pavel Machek <pavel@ucw.cz>
+> Cc: Josh Poimboeuf <jpoimboe@redhat.com>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Cc: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
+> Cc: iri Kosina <jkosina@suse.cz>
+> Cc: Mukesh Ojha <mojha@codeaurora.org>
+> Cc: linux-pm@vger.kernel.org
+> Link: https://lkml.kernel.org/r/1559536263-16472-1-git-send-email-pkondeti@codeaurora.org
+> 
+> ---
+>  kernel/cpu.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
+> diff --git a/kernel/cpu.c b/kernel/cpu.c
+> index be82cbc11a8a..0778249cd49d 100644
+> --- a/kernel/cpu.c
+> +++ b/kernel/cpu.c
+> @@ -1221,6 +1221,13 @@ int freeze_secondary_cpus(int primary)
+>  	for_each_online_cpu(cpu) {
+>  		if (cpu == primary)
+>  			continue;
+> +
+> +		if (pm_wakeup_pending()) {
+> +			pr_info("Wakeup pending. Abort CPU freeze\n");
+> +			error = -EBUSY;
+> +			break;
+> +		}
+> +
+>  		trace_suspend_resume(TPS("CPU_OFF"), cpu, true);
+>  		error = _cpu_down(cpu, 1, CPUHP_OFFLINE);
+>  		trace_suspend_resume(TPS("CPU_OFF"), cpu, false);
