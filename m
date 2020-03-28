@@ -2,37 +2,33 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 70776196527
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 28 Mar 2020 11:48:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 03917196540
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 28 Mar 2020 11:59:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726205AbgC1Ksp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 28 Mar 2020 06:48:45 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:55482 "EHLO
+        id S1726258AbgC1K74 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 28 Mar 2020 06:59:56 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:55492 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726156AbgC1Ksp (ORCPT
+        with ESMTP id S1726164AbgC1K74 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 28 Mar 2020 06:48:45 -0400
+        Sat, 28 Mar 2020 06:59:56 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jI913-0003U8-EG; Sat, 28 Mar 2020 11:48:37 +0100
+        id 1jI9Bx-0003Zb-OZ; Sat, 28 Mar 2020 11:59:53 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id DCEF91C03A9;
-        Sat, 28 Mar 2020 11:48:36 +0100 (CET)
-Date:   Sat, 28 Mar 2020 10:48:36 -0000
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5CA831C0470;
+        Sat, 28 Mar 2020 11:59:53 +0100 (CET)
+Date:   Sat, 28 Mar 2020 10:59:53 -0000
+From:   "tip-bot2 for Al Viro" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] m68knommu: Remove mm.h include from uaccess_no.h
-Cc:     kbuild test robot <lkp@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <87fte1qzh0.fsf@nanos.tec.linutronix.de>
-References: <87fte1qzh0.fsf@nanos.tec.linutronix.de>
+Subject: [tip: x86/cleanups] x86: unsafe_put-style macro for sigmask
+Cc:     Al Viro <viro@zeniv.linux.org.uk>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158539251645.28353.4112298508631162983.tip-bot2@tip-bot2>
+Message-ID: <158539319300.28353.9210063313605368432.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -46,53 +42,65 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/core branch of tip:
+The following commit has been merged into the x86/cleanups branch of tip:
 
-Commit-ID:     9e860351550b28901a78f122b1e2dc97f78ba369
-Gitweb:        https://git.kernel.org/tip/9e860351550b28901a78f122b1e2dc97f78ba369
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Sat, 21 Mar 2020 20:22:10 +01:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sat, 28 Mar 2020 11:45:39 +01:00
+Commit-ID:     b87df6594486626a9ae5944807307f2604cea3e2
+Gitweb:        https://git.kernel.org/tip/b87df6594486626a9ae5944807307f2604cea3e2
+Author:        Al Viro <viro@zeniv.linux.org.uk>
+AuthorDate:    Sat, 15 Feb 2020 21:36:52 -05:00
+Committer:     Al Viro <viro@zeniv.linux.org.uk>
+CommitterDate: Thu, 26 Mar 2020 15:01:04 -04:00
 
-m68knommu: Remove mm.h include from uaccess_no.h
+x86: unsafe_put-style macro for sigmask
 
-In file included
-  from include/linux/huge_mm.h:8,
-  from include/linux/mm.h:567,
-  from arch/m68k/include/asm/uaccess_no.h:8,
-  from arch/m68k/include/asm/uaccess.h:3,
-  from include/linux/uaccess.h:11,
-  from include/linux/sched/task.h:11,
-  from include/linux/sched/signal.h:9,
-  from include/linux/rcuwait.h:6,
-  from include/linux/percpu-rwsem.h:7,
-  from kernel/locking/percpu-rwsem.c:6:
- include/linux/fs.h:1422:29: error: array type has incomplete element type 'struct percpu_rw_semaphore'
-    1422 |  struct percpu_rw_semaphore rw_sem[SB_FREEZE_LEVELS];
+regularizes things a bit
 
-Removing the include of linux/mm.h from the uaccess header solves the problem
-and various build tests of nommu configurations still work.
-
-Fixes: 80fbaf1c3f29 ("rcuwait: Add @state argument to rcuwait_wait_event()")
-Reported-by: kbuild test robot <lkp@intel.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Link: https://lkml.kernel.org/r/87fte1qzh0.fsf@nanos.tec.linutronix.de
-
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 ---
- arch/m68k/include/asm/uaccess_no.h | 1 -
- 1 file changed, 1 deletion(-)
+ arch/x86/kernel/signal.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/arch/m68k/include/asm/uaccess_no.h b/arch/m68k/include/asm/uaccess_no.h
-index 6bc80c3..a24cfe4 100644
---- a/arch/m68k/include/asm/uaccess_no.h
-+++ b/arch/m68k/include/asm/uaccess_no.h
-@@ -5,7 +5,6 @@
- /*
-  * User space memory access functions
-  */
--#include <linux/mm.h>
- #include <linux/string.h>
+diff --git a/arch/x86/kernel/signal.c b/arch/x86/kernel/signal.c
+index 38b3593..1215fc7 100644
+--- a/arch/x86/kernel/signal.c
++++ b/arch/x86/kernel/signal.c
+@@ -203,6 +203,11 @@ do {									\
+ 		goto label;						\
+ } while(0);
  
- #include <asm/segment.h>
++#define unsafe_put_sigmask(set, frame, label) \
++	unsafe_put_user(*(__u64 *)(set), \
++			(__u64 __user *)&(frame)->uc.uc_sigmask, \
++			label)
++
+ /*
+  * Set up a signal frame.
+  */
+@@ -392,8 +397,7 @@ static int __setup_rt_frame(int sig, struct ksignal *ksig,
+ 	 */
+ 	unsafe_put_user(*((u64 *)&rt_retcode), (u64 *)frame->retcode, Efault);
+ 	unsafe_put_sigcontext(&frame->uc.uc_mcontext, fp, regs, set, Efault);
+-	unsafe_put_user(*(__u64 *)set,
+-			(__u64 __user *)&frame->uc.uc_sigmask, Efault);
++	unsafe_put_sigmask(set, frame, Efault);
+ 	user_access_end();
+ 	
+ 	if (copy_siginfo_to_user(&frame->info, &ksig->info))
+@@ -458,7 +462,7 @@ static int __setup_rt_frame(int sig, struct ksignal *ksig,
+ 	   already in userspace.  */
+ 	unsafe_put_user(ksig->ka.sa.sa_restorer, &frame->pretcode, Efault);
+ 	unsafe_put_sigcontext(&frame->uc.uc_mcontext, fp, regs, set, Efault);
+-	unsafe_put_user(set->sig[0], &frame->uc.uc_sigmask.sig[0], Efault);
++	unsafe_put_sigmask(set, frame, Efault);
+ 	user_access_end();
+ 
+ 	if (ksig->ka.sa.sa_flags & SA_SIGINFO) {
+@@ -537,7 +541,7 @@ static int x32_setup_rt_frame(struct ksignal *ksig,
+ 	restorer = ksig->ka.sa.sa_restorer;
+ 	unsafe_put_user(restorer, (unsigned long __user *)&frame->pretcode, Efault);
+ 	unsafe_put_sigcontext(&frame->uc.uc_mcontext, fp, regs, set, Efault);
+-	unsafe_put_user(*(__u64 *)set, (__u64 __user *)&frame->uc.uc_sigmask, Efault);
++	unsafe_put_sigmask(set, frame, Efault);
+ 	user_access_end();
+ 
+ 	if (ksig->ka.sa.sa_flags & SA_SIGINFO) {
