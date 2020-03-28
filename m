@@ -2,40 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B4FB19650F
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 28 Mar 2020 11:31:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D7FA4196525
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 28 Mar 2020 11:48:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726156AbgC1KbF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 28 Mar 2020 06:31:05 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:55466 "EHLO
+        id S1726202AbgC1KsT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 28 Mar 2020 06:48:19 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:55476 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726045AbgC1KbF (ORCPT
+        with ESMTP id S1726156AbgC1KsT (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 28 Mar 2020 06:31:05 -0400
+        Sat, 28 Mar 2020 06:48:19 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jI8jz-0003Ko-DT; Sat, 28 Mar 2020 11:30:59 +0100
+        id 1jI90g-0003T6-0F; Sat, 28 Mar 2020 11:48:14 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D665E1C03A9;
-        Sat, 28 Mar 2020 11:30:58 +0100 (CET)
-Date:   Sat, 28 Mar 2020 10:30:58 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 932E11C03A9;
+        Sat, 28 Mar 2020 11:48:13 +0100 (CET)
+Date:   Sat, 28 Mar 2020 10:48:13 -0000
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] Revert "clocksource/drivers/timer-probe: Avoid
- creating dead devices"
-Cc:     Ionela Voinescu <ionela.voinescu@arm.com>,
-        Jon Hunter <jonathanh@nvidia.com>,
+Subject: [tip: smp/core] cpu/hotplug: Ignore pm_wakeup_pending() for
+ disable_nonboot_cpus()
+Cc:     Boqun Feng <boqun.feng@gmail.com>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Saravana Kannan <saravanak@google.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200324175955.GA16972@arm.com>
-References: <20200324175955.GA16972@arm.com>
+        Pavankumar Kondeti <pkondeti@codeaurora.org>,
+        stable@vger.kernel.org, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <874kuaxdiz.fsf@nanos.tec.linutronix.de>
+References: <874kuaxdiz.fsf@nanos.tec.linutronix.de>
 MIME-Version: 1.0
-Message-ID: <158539145844.28353.14324600021087747539.tip-bot2@tip-bot2>
+Message-ID: <158539249320.28353.17099278442328307370.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,48 +48,86 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/core branch of tip:
+The following commit has been merged into the smp/core branch of tip:
 
-Commit-ID:     4479730e9263befbb9ce9563a09563db2acb8f7c
-Gitweb:        https://git.kernel.org/tip/4479730e9263befbb9ce9563a09563db2acb8f7c
+Commit-ID:     e98eac6ff1b45e4e73f2e6031b37c256ccb5d36b
+Gitweb:        https://git.kernel.org/tip/e98eac6ff1b45e4e73f2e6031b37c256ccb5d36b
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Sat, 28 Mar 2020 11:20:36 +01:00
+AuthorDate:    Fri, 27 Mar 2020 12:06:44 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sat, 28 Mar 2020 11:25:44 +01:00
+CommitterDate: Sat, 28 Mar 2020 11:42:55 +01:00
 
-Revert "clocksource/drivers/timer-probe: Avoid creating dead devices"
+cpu/hotplug: Ignore pm_wakeup_pending() for disable_nonboot_cpus()
 
-This reverts commit 4f41fe386a94639cd9a1831298d4f85db5662f1e.
+A recent change to freeze_secondary_cpus() which added an early abort if a
+wakeup is pending missed the fact that the function is also invoked for
+shutdown, reboot and kexec via disable_nonboot_cpus().
 
-The change breaks systems on which the DT node of a device is used by
-multiple drivers. The proposed workaround to clear OF_POPULATED is just a
-band aid and this needs to be cleaned up at the root of the problem.
+In case of disable_nonboot_cpus() the wakeup event needs to be ignored as
+the purpose is to terminate the currently running kernel.
 
-Revert this for now.
+Add a 'suspend' argument which is only set when the freeze is in context of
+a suspend operation. If not set then an eventually pending wakeup event is
+ignored.
 
-Reported-by: Ionela Voinescu <ionela.voinescu@arm.com>
-Reported-by: Jon Hunter <jonathanh@nvidia.com>
-Requested-by: Rob Herring <robh+dt@kernel.org>
+Fixes: a66d955e910a ("cpu/hotplug: Abort disabling secondary CPUs if wakeup is pending")
+Reported-by: Boqun Feng <boqun.feng@gmail.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: Saravana Kannan <saravanak@google.com>
-Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20200324175955.GA16972@arm.com
----
- drivers/clocksource/timer-probe.c | 2 --
- 1 file changed, 2 deletions(-)
+Cc: Pavankumar Kondeti <pkondeti@codeaurora.org>
+Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/874kuaxdiz.fsf@nanos.tec.linutronix.de
 
-diff --git a/drivers/clocksource/timer-probe.c b/drivers/clocksource/timer-probe.c
-index a10f28d..ee9574d 100644
---- a/drivers/clocksource/timer-probe.c
-+++ b/drivers/clocksource/timer-probe.c
-@@ -27,10 +27,8 @@ void __init timer_probe(void)
+
+---
+ include/linux/cpu.h | 12 +++++++++---
+ kernel/cpu.c        |  4 ++--
+ 2 files changed, 11 insertions(+), 5 deletions(-)
+
+diff --git a/include/linux/cpu.h b/include/linux/cpu.h
+index 9ead281..beaed2d 100644
+--- a/include/linux/cpu.h
++++ b/include/linux/cpu.h
+@@ -144,12 +144,18 @@ static inline void get_online_cpus(void) { cpus_read_lock(); }
+ static inline void put_online_cpus(void) { cpus_read_unlock(); }
  
- 		init_func_ret = match->data;
+ #ifdef CONFIG_PM_SLEEP_SMP
+-extern int freeze_secondary_cpus(int primary);
++int __freeze_secondary_cpus(int primary, bool suspend);
++static inline int freeze_secondary_cpus(int primary)
++{
++	return __freeze_secondary_cpus(primary, true);
++}
++
+ static inline int disable_nonboot_cpus(void)
+ {
+-	return freeze_secondary_cpus(0);
++	return __freeze_secondary_cpus(0, false);
+ }
+-extern void enable_nonboot_cpus(void);
++
++void enable_nonboot_cpus(void);
  
--		of_node_set_flag(np, OF_POPULATED);
- 		ret = init_func_ret(np);
- 		if (ret) {
--			of_node_clear_flag(np, OF_POPULATED);
- 			if (ret != -EPROBE_DEFER)
- 				pr_err("Failed to initialize '%pOF': %d\n", np,
- 				       ret);
+ static inline int suspend_disable_secondary_cpus(void)
+ {
+diff --git a/kernel/cpu.c b/kernel/cpu.c
+index 3084849..12ae636 100644
+--- a/kernel/cpu.c
++++ b/kernel/cpu.c
+@@ -1327,7 +1327,7 @@ void bringup_nonboot_cpus(unsigned int setup_max_cpus)
+ #ifdef CONFIG_PM_SLEEP_SMP
+ static cpumask_var_t frozen_cpus;
+ 
+-int freeze_secondary_cpus(int primary)
++int __freeze_secondary_cpus(int primary, bool suspend)
+ {
+ 	int cpu, error = 0;
+ 
+@@ -1352,7 +1352,7 @@ int freeze_secondary_cpus(int primary)
+ 		if (cpu == primary)
+ 			continue;
+ 
+-		if (pm_wakeup_pending()) {
++		if (suspend && pm_wakeup_pending()) {
+ 			pr_info("Wakeup pending. Abort CPU freeze\n");
+ 			error = -EBUSY;
+ 			break;
