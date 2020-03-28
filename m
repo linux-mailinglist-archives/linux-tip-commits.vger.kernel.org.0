@@ -2,33 +2,33 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7737F19655D
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 28 Mar 2020 12:04:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D555C196560
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 28 Mar 2020 12:04:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727707AbgC1LAW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 28 Mar 2020 07:00:22 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:55569 "EHLO
+        id S1727307AbgC1LA1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 28 Mar 2020 07:00:27 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:55550 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727307AbgC1LAH (ORCPT
+        with ESMTP id S1727193AbgC1LAG (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 28 Mar 2020 07:00:07 -0400
+        Sat, 28 Mar 2020 07:00:06 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jI9C9-0003cq-0p; Sat, 28 Mar 2020 12:00:05 +0100
+        id 1jI9C7-0003dp-07; Sat, 28 Mar 2020 12:00:03 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 7B2001C04CC;
-        Sat, 28 Mar 2020 11:59:59 +0100 (CET)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 6D8B21C04CD;
+        Sat, 28 Mar 2020 12:00:00 +0100 (CET)
 Date:   Sat, 28 Mar 2020 10:59:59 -0000
 From:   "tip-bot2 for Al Viro" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] x86: get rid of get_user_ex() in restore_sigcontext()
+Subject: [tip: x86/cleanups] vm86: get rid of get_user_ex() use
 Cc:     Al Viro <viro@zeniv.linux.org.uk>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158539319916.28353.17090109980614474910.tip-bot2@tip-bot2>
+Message-ID: <158539319999.28353.18405027971529483335.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -44,151 +44,106 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/cleanups branch of tip:
 
-Commit-ID:     3add42c29cebb1d5f83c6205c59466a06ccf8da1
-Gitweb:        https://git.kernel.org/tip/3add42c29cebb1d5f83c6205c59466a06ccf8da1
+Commit-ID:     c63aad695dceb08290be7845052d7d3f1d457416
+Gitweb:        https://git.kernel.org/tip/c63aad695dceb08290be7845052d7d3f1d457416
 Author:        Al Viro <viro@zeniv.linux.org.uk>
-AuthorDate:    Sat, 15 Feb 2020 12:56:57 -05:00
+AuthorDate:    Sat, 15 Feb 2020 12:09:14 -05:00
 Committer:     Al Viro <viro@zeniv.linux.org.uk>
-CommitterDate: Wed, 18 Mar 2020 20:22:40 -04:00
+CommitterDate: Wed, 18 Mar 2020 20:04:00 -04:00
 
-x86: get rid of get_user_ex() in restore_sigcontext()
+vm86: get rid of get_user_ex() use
 
-Just do copyin into a local struct and be done with that - we are
-on a shallow stack here.
+Just do a copyin of what we want into a local variable and
+be done with that.  We are guaranteed to be on shallow stack
+here...
 
-[reworked by tglx, removing the macro horrors while we are touching that]
+Note that conditional expression for range passed to access_ok()
+in mainline had been pointless all along - the only difference
+between vm86plus_struct and vm86_struct is that the former has
+one extra field in the end and when we get to copyin of that
+field (conditional upon 'plus' argument), we use copy_from_user().
+Moreover, all fields starting with ->int_revectored are copied
+that way, so we only need that check (be it done by access_ok()
+or by user_access_begin()) only on the beginning of the structure -
+the fields that used to be covered by that get_user_try() block.
 
 Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 ---
- arch/x86/kernel/signal.c | 86 ++++++++++++++++-----------------------
- 1 file changed, 36 insertions(+), 50 deletions(-)
+ arch/x86/kernel/vm86_32.c | 54 ++++++++++++++++----------------------
+ 1 file changed, 24 insertions(+), 30 deletions(-)
 
-diff --git a/arch/x86/kernel/signal.c b/arch/x86/kernel/signal.c
-index 53ac66b..83563e9 100644
---- a/arch/x86/kernel/signal.c
-+++ b/arch/x86/kernel/signal.c
-@@ -47,24 +47,6 @@
- #include <asm/sigframe.h>
- #include <asm/signal.h>
+diff --git a/arch/x86/kernel/vm86_32.c b/arch/x86/kernel/vm86_32.c
+index 91d5545..49b37eb 100644
+--- a/arch/x86/kernel/vm86_32.c
++++ b/arch/x86/kernel/vm86_32.c
+@@ -243,6 +243,7 @@ static long do_sys_vm86(struct vm86plus_struct __user *user_vm86, bool plus)
+ 	struct kernel_vm86_regs vm86regs;
+ 	struct pt_regs *regs = current_pt_regs();
+ 	unsigned long err = 0;
++	struct vm86_struct v;
  
--#define COPY(x)			do {			\
--	get_user_ex(regs->x, &sc->x);			\
--} while (0)
--
--#define GET_SEG(seg)		({			\
--	unsigned short tmp;				\
--	get_user_ex(tmp, &sc->seg);			\
--	tmp;						\
--})
--
--#define COPY_SEG(seg)		do {			\
--	regs->seg = GET_SEG(seg);			\
--} while (0)
--
--#define COPY_SEG_CPL3(seg)	do {			\
--	regs->seg = GET_SEG(seg) | 3;			\
--} while (0)
--
- #ifdef CONFIG_X86_64
- /*
-  * If regs->ss will cause an IRET fault, change it.  Otherwise leave it
-@@ -92,53 +74,58 @@ static void force_valid_ss(struct pt_regs *regs)
- 	    ar != (AR_DPL3 | AR_S | AR_P | AR_TYPE_RWDATA_EXPDOWN))
- 		regs->ss = __USER_DS;
- }
-+# define CONTEXT_COPY_SIZE	offsetof(struct sigcontext, reserved1)
-+#else
-+# define CONTEXT_COPY_SIZE	sizeof(struct sigcontext)
- #endif
+ 	err = security_mmap_addr(0);
+ 	if (err) {
+@@ -278,39 +279,32 @@ static long do_sys_vm86(struct vm86plus_struct __user *user_vm86, bool plus)
+ 	if (vm86->saved_sp0)
+ 		return -EPERM;
  
- static int restore_sigcontext(struct pt_regs *regs,
--			      struct sigcontext __user *sc,
-+			      struct sigcontext __user *usc,
- 			      unsigned long uc_flags)
- {
--	unsigned long buf_val;
--	void __user *buf;
--	unsigned int tmpflags;
--	unsigned int err = 0;
-+	struct sigcontext sc;
+-	if (!access_ok(user_vm86, plus ?
+-		       sizeof(struct vm86_struct) :
+-		       sizeof(struct vm86plus_struct)))
++	if (copy_from_user(&v, user_vm86,
++			offsetof(struct vm86_struct, int_revectored)))
+ 		return -EFAULT;
  
- 	/* Always make any pending restarted system calls return -EINTR */
- 	current->restart_block.fn = do_no_restart_syscall;
- 
+ 	memset(&vm86regs, 0, sizeof(vm86regs));
 -	get_user_try {
-+	if (copy_from_user(&sc, usc, CONTEXT_COPY_SIZE))
-+		return -EFAULT;
- 
- #ifdef CONFIG_X86_32
--		set_user_gs(regs, GET_SEG(gs));
--		COPY_SEG(fs);
--		COPY_SEG(es);
--		COPY_SEG(ds);
-+	set_user_gs(regs, sc.gs);
-+	regs->fs = sc.fs;
-+	regs->es = sc.es;
-+	regs->ds = sc.ds;
- #endif /* CONFIG_X86_32 */
- 
--		COPY(di); COPY(si); COPY(bp); COPY(sp); COPY(bx);
--		COPY(dx); COPY(cx); COPY(ip); COPY(ax);
-+	regs->bx = sc.bx;
-+	regs->cx = sc.cx;
-+	regs->dx = sc.dx;
-+	regs->si = sc.si;
-+	regs->di = sc.di;
-+	regs->bp = sc.bp;
-+	regs->ax = sc.ax;
-+	regs->sp = sc.sp;
-+	regs->ip = sc.ip;
- 
- #ifdef CONFIG_X86_64
--		COPY(r8);
--		COPY(r9);
--		COPY(r10);
--		COPY(r11);
--		COPY(r12);
--		COPY(r13);
--		COPY(r14);
--		COPY(r15);
-+	regs->r8 = sc.r8;
-+	regs->r9 = sc.r9;
-+	regs->r10 = sc.r10;
-+	regs->r11 = sc.r11;
-+	regs->r12 = sc.r12;
-+	regs->r13 = sc.r13;
-+	regs->r14 = sc.r14;
-+	regs->r15 = sc.r15;
- #endif /* CONFIG_X86_64 */
- 
--		COPY_SEG_CPL3(cs);
--		COPY_SEG_CPL3(ss);
+-		unsigned short seg;
+-		get_user_ex(vm86regs.pt.bx, &user_vm86->regs.ebx);
+-		get_user_ex(vm86regs.pt.cx, &user_vm86->regs.ecx);
+-		get_user_ex(vm86regs.pt.dx, &user_vm86->regs.edx);
+-		get_user_ex(vm86regs.pt.si, &user_vm86->regs.esi);
+-		get_user_ex(vm86regs.pt.di, &user_vm86->regs.edi);
+-		get_user_ex(vm86regs.pt.bp, &user_vm86->regs.ebp);
+-		get_user_ex(vm86regs.pt.ax, &user_vm86->regs.eax);
+-		get_user_ex(vm86regs.pt.ip, &user_vm86->regs.eip);
+-		get_user_ex(seg, &user_vm86->regs.cs);
+-		vm86regs.pt.cs = seg;
+-		get_user_ex(vm86regs.pt.flags, &user_vm86->regs.eflags);
+-		get_user_ex(vm86regs.pt.sp, &user_vm86->regs.esp);
+-		get_user_ex(seg, &user_vm86->regs.ss);
+-		vm86regs.pt.ss = seg;
+-		get_user_ex(vm86regs.es, &user_vm86->regs.es);
+-		get_user_ex(vm86regs.ds, &user_vm86->regs.ds);
+-		get_user_ex(vm86regs.fs, &user_vm86->regs.fs);
+-		get_user_ex(vm86regs.gs, &user_vm86->regs.gs);
 -
--		get_user_ex(tmpflags, &sc->flags);
--		regs->flags = (regs->flags & ~FIX_EFLAGS) | (tmpflags & FIX_EFLAGS);
--		regs->orig_ax = -1;		/* disable syscall checks */
-+	/* Get CS/SS and force CPL3 */
-+	regs->cs = sc.cs | 0x03;
-+	regs->ss = sc.ss | 0x03;
- 
--		get_user_ex(buf_val, &sc->fpstate);
--		buf = (void __user *)buf_val;
+-		get_user_ex(vm86->flags, &user_vm86->flags);
+-		get_user_ex(vm86->screen_bitmap, &user_vm86->screen_bitmap);
+-		get_user_ex(vm86->cpu_type, &user_vm86->cpu_type);
 -	} get_user_catch(err);
-+	regs->flags = (regs->flags & ~FIX_EFLAGS) | (sc.flags & FIX_EFLAGS);
-+	/* disable syscall checks */
-+	regs->orig_ax = -1;
+-	if (err)
+-		return err;
++
++	vm86regs.pt.bx = v.regs.ebx;
++	vm86regs.pt.cx = v.regs.ecx;
++	vm86regs.pt.dx = v.regs.edx;
++	vm86regs.pt.si = v.regs.esi;
++	vm86regs.pt.di = v.regs.edi;
++	vm86regs.pt.bp = v.regs.ebp;
++	vm86regs.pt.ax = v.regs.eax;
++	vm86regs.pt.ip = v.regs.eip;
++	vm86regs.pt.cs = v.regs.cs;
++	vm86regs.pt.flags = v.regs.eflags;
++	vm86regs.pt.sp = v.regs.esp;
++	vm86regs.pt.ss = v.regs.ss;
++	vm86regs.es = v.regs.es;
++	vm86regs.ds = v.regs.ds;
++	vm86regs.fs = v.regs.fs;
++	vm86regs.gs = v.regs.gs;
++
++	vm86->flags = v.flags;
++	vm86->screen_bitmap = v.screen_bitmap;
++	vm86->cpu_type = v.cpu_type;
  
- #ifdef CONFIG_X86_64
- 	/*
-@@ -149,9 +136,8 @@ static int restore_sigcontext(struct pt_regs *regs,
- 		force_valid_ss(regs);
- #endif
- 
--	err |= fpu__restore_sig(buf, IS_ENABLED(CONFIG_X86_32));
--
--	return err;
-+	return fpu__restore_sig((void __user *)sc.fpstate,
-+			       IS_ENABLED(CONFIG_X86_32));
- }
- 
- int setup_sigcontext(struct sigcontext __user *sc, void __user *fpstate,
+ 	if (copy_from_user(&vm86->int_revectored,
+ 			   &user_vm86->int_revectored,
