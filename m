@@ -2,33 +2,34 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AF089196557
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 28 Mar 2020 12:04:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CA499196553
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 28 Mar 2020 12:04:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727504AbgC1LAL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 28 Mar 2020 07:00:11 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:55584 "EHLO
+        id S1727286AbgC1LAF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 28 Mar 2020 07:00:05 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:55538 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727387AbgC1LAJ (ORCPT
+        with ESMTP id S1727149AbgC1LAE (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 28 Mar 2020 07:00:09 -0400
+        Sat, 28 Mar 2020 07:00:04 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jI9C8-0003cD-1H; Sat, 28 Mar 2020 12:00:04 +0100
+        id 1jI9C5-0003dR-E8; Sat, 28 Mar 2020 12:00:01 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 9C3241C0494;
-        Sat, 28 Mar 2020 11:59:58 +0100 (CET)
-Date:   Sat, 28 Mar 2020 10:59:58 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E2C831C0483;
+        Sat, 28 Mar 2020 11:59:59 +0100 (CET)
+Date:   Sat, 28 Mar 2020 10:59:59 -0000
 From:   "tip-bot2 for Al Viro" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] x86: switch save_v86_state() to unsafe_put_user()
+Subject: [tip: x86/cleanups] x86: get rid of get_user_ex() in
+ ia32_restore_sigcontext()
 Cc:     Al Viro <viro@zeniv.linux.org.uk>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158539319827.28353.1493443524884765428.tip-bot2@tip-bot2>
+Message-ID: <158539319958.28353.17824653160739885760.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -44,104 +45,163 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/cleanups branch of tip:
 
-Commit-ID:     a37d01ead405e3aa14d72d284721fe46422b3b63
-Gitweb:        https://git.kernel.org/tip/a37d01ead405e3aa14d72d284721fe46422b3b63
+Commit-ID:     978727ca331ebd8b479f6a7afd27bb2e6504b2e3
+Gitweb:        https://git.kernel.org/tip/978727ca331ebd8b479f6a7afd27bb2e6504b2e3
 Author:        Al Viro <viro@zeniv.linux.org.uk>
-AuthorDate:    Sat, 15 Feb 2020 13:38:18 -05:00
+AuthorDate:    Sat, 15 Feb 2020 12:23:36 -05:00
 Committer:     Al Viro <viro@zeniv.linux.org.uk>
-CommitterDate: Wed, 18 Mar 2020 20:36:01 -04:00
+CommitterDate: Wed, 18 Mar 2020 20:10:27 -04:00
 
-x86: switch save_v86_state() to unsafe_put_user()
+x86: get rid of get_user_ex() in ia32_restore_sigcontext()
+
+Just do copyin into a local struct and be done with that - we are
+on a shallow stack here.
+
+[reworked by tglx, removing the macro horrors while we are touching that]
 
 Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 ---
- arch/x86/kernel/vm86_32.c | 61 ++++++++++++++++++--------------------
- 1 file changed, 30 insertions(+), 31 deletions(-)
+ arch/x86/ia32/ia32_signal.c | 106 ++++++++++++++---------------------
+ 1 file changed, 44 insertions(+), 62 deletions(-)
 
-diff --git a/arch/x86/kernel/vm86_32.c b/arch/x86/kernel/vm86_32.c
-index 49b37eb..47a8676 100644
---- a/arch/x86/kernel/vm86_32.c
-+++ b/arch/x86/kernel/vm86_32.c
-@@ -98,7 +98,6 @@ void save_v86_state(struct kernel_vm86_regs *regs, int retval)
- 	struct task_struct *tsk = current;
- 	struct vm86plus_struct __user *user;
- 	struct vm86 *vm86 = current->thread.vm86;
--	long err = 0;
+diff --git a/arch/x86/ia32/ia32_signal.c b/arch/x86/ia32/ia32_signal.c
+index c72025d..23e2c55 100644
+--- a/arch/x86/ia32/ia32_signal.c
++++ b/arch/x86/ia32/ia32_signal.c
+@@ -36,70 +36,56 @@
+ #include <asm/sighandling.h>
+ #include <asm/smap.h>
+ 
++static inline void reload_segments(struct sigcontext_32 *sc)
++{
++	unsigned int cur;
++
++	savesegment(gs, cur);
++	if ((sc->gs | 0x03) != cur)
++		load_gs_index(sc->gs | 0x03);
++	savesegment(fs, cur);
++	if ((sc->fs | 0x03) != cur)
++		loadsegment(fs, sc->fs | 0x03);
++	savesegment(ds, cur);
++	if ((sc->ds | 0x03) != cur)
++		loadsegment(ds, sc->ds | 0x03);
++	savesegment(es, cur);
++	if ((sc->es | 0x03) != cur)
++		loadsegment(es, sc->es | 0x03);
++}
++
+ /*
+  * Do a signal return; undo the signal stack.
+  */
+-#define loadsegment_gs(v)	load_gs_index(v)
+-#define loadsegment_fs(v)	loadsegment(fs, v)
+-#define loadsegment_ds(v)	loadsegment(ds, v)
+-#define loadsegment_es(v)	loadsegment(es, v)
+-
+-#define get_user_seg(seg)	({ unsigned int v; savesegment(seg, v); v; })
+-#define set_user_seg(seg, v)	loadsegment_##seg(v)
+-
+-#define COPY(x)			{		\
+-	get_user_ex(regs->x, &sc->x);		\
+-}
+-
+-#define GET_SEG(seg)		({			\
+-	unsigned short tmp;				\
+-	get_user_ex(tmp, &sc->seg);			\
+-	tmp;						\
+-})
+-
+-#define COPY_SEG_CPL3(seg)	do {			\
+-	regs->seg = GET_SEG(seg) | 3;			\
+-} while (0)
+-
+-#define RELOAD_SEG(seg)		{		\
+-	unsigned int pre = (seg) | 3;		\
+-	unsigned int cur = get_user_seg(seg);	\
+-	if (pre != cur)				\
+-		set_user_seg(seg, pre);		\
+-}
+-
+ static int ia32_restore_sigcontext(struct pt_regs *regs,
+-				   struct sigcontext_32 __user *sc)
++				   struct sigcontext_32 __user *usc)
+ {
+-	unsigned int tmpflags, err = 0;
+-	u16 gs, fs, es, ds;
+-	void __user *buf;
+-	u32 tmp;
++	struct sigcontext_32 sc;
+ 
+ 	/* Always make any pending restarted system calls return -EINTR */
+ 	current->restart_block.fn = do_no_restart_syscall;
+ 
+-	get_user_try {
+-		gs = GET_SEG(gs);
+-		fs = GET_SEG(fs);
+-		ds = GET_SEG(ds);
+-		es = GET_SEG(es);
+-
+-		COPY(di); COPY(si); COPY(bp); COPY(sp); COPY(bx);
+-		COPY(dx); COPY(cx); COPY(ip); COPY(ax);
+-		/* Don't touch extended registers */
+-
+-		COPY_SEG_CPL3(cs);
+-		COPY_SEG_CPL3(ss);
+-
+-		get_user_ex(tmpflags, &sc->flags);
+-		regs->flags = (regs->flags & ~FIX_EFLAGS) | (tmpflags & FIX_EFLAGS);
+-		/* disable syscall checks */
+-		regs->orig_ax = -1;
++	if (unlikely(copy_from_user(&sc, usc, sizeof(sc))))
++		return -EFAULT;
+ 
+-		get_user_ex(tmp, &sc->fpstate);
+-		buf = compat_ptr(tmp);
+-	} get_user_catch(err);
++	/* Get only the ia32 registers. */
++	regs->bx = sc.bx;
++	regs->cx = sc.cx;
++	regs->dx = sc.dx;
++	regs->si = sc.si;
++	regs->di = sc.di;
++	regs->bp = sc.bp;
++	regs->ax = sc.ax;
++	regs->sp = sc.sp;
++	regs->ip = sc.ip;
++
++	/* Get CS/SS and force CPL3 */
++	regs->cs = sc.cs | 0x03;
++	regs->ss = sc.ss | 0x03;
++
++	regs->flags = (regs->flags & ~FIX_EFLAGS) | (sc.flags & FIX_EFLAGS);
++	/* disable syscall checks */
++	regs->orig_ax = -1;
  
  	/*
- 	 * This gets called from entry.S with interrupts disabled, but
-@@ -114,37 +113,30 @@ void save_v86_state(struct kernel_vm86_regs *regs, int retval)
- 	set_flags(regs->pt.flags, VEFLAGS, X86_EFLAGS_VIF | vm86->veflags_mask);
- 	user = vm86->user_vm86;
- 
--	if (!access_ok(user, vm86->vm86plus.is_vm86pus ?
-+	if (!user_access_begin(user, vm86->vm86plus.is_vm86pus ?
- 		       sizeof(struct vm86plus_struct) :
--		       sizeof(struct vm86_struct))) {
--		pr_alert("could not access userspace vm86 info\n");
--		do_exit(SIGSEGV);
--	}
+ 	 * Reload fs and gs if they have changed in the signal
+@@ -107,14 +93,8 @@ static int ia32_restore_sigcontext(struct pt_regs *regs,
+ 	 * the handler, but does not clobber them at least in the
+ 	 * normal case.
+ 	 */
+-	RELOAD_SEG(gs);
+-	RELOAD_SEG(fs);
+-	RELOAD_SEG(ds);
+-	RELOAD_SEG(es);
 -
--	put_user_try {
--		put_user_ex(regs->pt.bx, &user->regs.ebx);
--		put_user_ex(regs->pt.cx, &user->regs.ecx);
--		put_user_ex(regs->pt.dx, &user->regs.edx);
--		put_user_ex(regs->pt.si, &user->regs.esi);
--		put_user_ex(regs->pt.di, &user->regs.edi);
--		put_user_ex(regs->pt.bp, &user->regs.ebp);
--		put_user_ex(regs->pt.ax, &user->regs.eax);
--		put_user_ex(regs->pt.ip, &user->regs.eip);
--		put_user_ex(regs->pt.cs, &user->regs.cs);
--		put_user_ex(regs->pt.flags, &user->regs.eflags);
--		put_user_ex(regs->pt.sp, &user->regs.esp);
--		put_user_ex(regs->pt.ss, &user->regs.ss);
--		put_user_ex(regs->es, &user->regs.es);
--		put_user_ex(regs->ds, &user->regs.ds);
--		put_user_ex(regs->fs, &user->regs.fs);
--		put_user_ex(regs->gs, &user->regs.gs);
+-	err |= fpu__restore_sig(buf, 1);
 -
--		put_user_ex(vm86->screen_bitmap, &user->screen_bitmap);
--	} put_user_catch(err);
--	if (err) {
--		pr_alert("could not access userspace vm86 info\n");
--		do_exit(SIGSEGV);
--	}
-+		       sizeof(struct vm86_struct)))
-+		goto Efault;
-+
-+	unsafe_put_user(regs->pt.bx, &user->regs.ebx, Efault_end);
-+	unsafe_put_user(regs->pt.cx, &user->regs.ecx, Efault_end);
-+	unsafe_put_user(regs->pt.dx, &user->regs.edx, Efault_end);
-+	unsafe_put_user(regs->pt.si, &user->regs.esi, Efault_end);
-+	unsafe_put_user(regs->pt.di, &user->regs.edi, Efault_end);
-+	unsafe_put_user(regs->pt.bp, &user->regs.ebp, Efault_end);
-+	unsafe_put_user(regs->pt.ax, &user->regs.eax, Efault_end);
-+	unsafe_put_user(regs->pt.ip, &user->regs.eip, Efault_end);
-+	unsafe_put_user(regs->pt.cs, &user->regs.cs, Efault_end);
-+	unsafe_put_user(regs->pt.flags, &user->regs.eflags, Efault_end);
-+	unsafe_put_user(regs->pt.sp, &user->regs.esp, Efault_end);
-+	unsafe_put_user(regs->pt.ss, &user->regs.ss, Efault_end);
-+	unsafe_put_user(regs->es, &user->regs.es, Efault_end);
-+	unsafe_put_user(regs->ds, &user->regs.ds, Efault_end);
-+	unsafe_put_user(regs->fs, &user->regs.fs, Efault_end);
-+	unsafe_put_user(regs->gs, &user->regs.gs, Efault_end);
-+	unsafe_put_user(vm86->screen_bitmap, &user->screen_bitmap, Efault_end);
-+
-+	user_access_end();
- 
- 	preempt_disable();
- 	tsk->thread.sp0 = vm86->saved_sp0;
-@@ -159,6 +151,13 @@ void save_v86_state(struct kernel_vm86_regs *regs, int retval)
- 	lazy_load_gs(vm86->regs32.gs);
- 
- 	regs->pt.ax = retval;
-+	return;
-+
-+Efault_end:
-+	user_access_end();
-+Efault:
-+	pr_alert("could not access userspace vm86 info\n");
-+	do_exit(SIGSEGV);
+-	return err;
++	reload_segments(&sc);
++	return fpu__restore_sig(compat_ptr(sc.fpstate), 1);
  }
  
- static void mark_screen_rdonly(struct mm_struct *mm)
+ COMPAT_SYSCALL_DEFINE0(sigreturn)
+@@ -172,6 +152,8 @@ badframe:
+  * Set up a signal frame.
+  */
+ 
++#define get_user_seg(seg)	({ unsigned int v; savesegment(seg, v); v; })
++
+ static int ia32_setup_sigcontext(struct sigcontext_32 __user *sc,
+ 				 void __user *fpstate,
+ 				 struct pt_regs *regs, unsigned int mask)
