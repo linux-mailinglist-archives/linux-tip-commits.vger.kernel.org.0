@@ -2,37 +2,35 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D0ED819701E
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 29 Mar 2020 22:28:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 83FD119703E
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 29 Mar 2020 22:29:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728818AbgC2U0S (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 29 Mar 2020 16:26:18 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:56943 "EHLO
+        id S1729182AbgC2U2b (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 29 Mar 2020 16:28:31 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:56919 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728794AbgC2U0R (ORCPT
+        with ESMTP id S1727719AbgC2U0N (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 29 Mar 2020 16:26:17 -0400
+        Sun, 29 Mar 2020 16:26:13 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jIeVZ-0001Lm-Ja; Sun, 29 Mar 2020 22:26:13 +0200
+        id 1jIeVW-0001LQ-4j; Sun, 29 Mar 2020 22:26:10 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 3AF8F1C0450;
-        Sun, 29 Mar 2020 22:26:10 +0200 (CEST)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id BF6CE1C0334;
+        Sun, 29 Mar 2020 22:26:09 +0200 (CEST)
 Date:   Sun, 29 Mar 2020 20:26:09 -0000
-From:   "tip-bot2 for luanshi" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Marek Vasut" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] irqchip/gic-v3: Move irq_domain_update_bus_token to
- after checking for NULL domain
-Cc:     Liguang Zhang <zhangliguang@linux.alibaba.com>,
-        Marc Zyngier <maz@kernel.org>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <1583983255-44115-1-git-send-email-zhangliguang@linux.alibaba.com>
-References: <1583983255-44115-1-git-send-email-zhangliguang@linux.alibaba.com>
+Subject: [tip: irq/core] irqchip/stm32: Retrigger both in eoi and unmask callbacks
+Cc:     Marek Vasut <marex@denx.de>, Marc Zyngier <maz@kernel.org>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200323235132.530550-1-marex@denx.de>
+References: <20200323235132.530550-1-marex@denx.de>
 MIME-Version: 1.0
-Message-ID: <158551356984.28353.11059083385737598395.tip-bot2@tip-bot2>
+Message-ID: <158551356939.28353.3524136454839534794.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,43 +46,75 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     eeaa4b24e5032707ee4286b6a2bcc5fb85eba4a4
-Gitweb:        https://git.kernel.org/tip/eeaa4b24e5032707ee4286b6a2bcc5fb85eba4a4
-Author:        luanshi <zhangliguang@linux.alibaba.com>
-AuthorDate:    Thu, 12 Mar 2020 11:20:55 +08:00
+Commit-ID:     00760d3cd9de2ccee6b73e30b53e71704a99209e
+Gitweb:        https://git.kernel.org/tip/00760d3cd9de2ccee6b73e30b53e71704a99209e
+Author:        Marek Vasut <marex@denx.de>
+AuthorDate:    Tue, 24 Mar 2020 00:51:32 +01:00
 Committer:     Marc Zyngier <maz@kernel.org>
-CommitterDate: Sun, 22 Mar 2020 11:52:53 
+CommitterDate: Tue, 24 Mar 2020 11:12:34 
 
-irqchip/gic-v3: Move irq_domain_update_bus_token to after checking for NULL domain
+irqchip/stm32: Retrigger both in eoi and unmask callbacks
 
-irq_domain_update_bus_token should be called after checking for NULL
-domain.
+Sampling the IRQ line state in EOI and retriggering the interrupt to
+work around missing level-triggered interrupt support only works for
+non-threaded interrupts. Threaded interrupts must be retriggered the
+same way in unmask callback.
 
-Signed-off-by: Liguang Zhang <zhangliguang@linux.alibaba.com>
+Signed-off-by: Marek Vasut <marex@denx.de>
+[maz: fixed missing static attribute]
 Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/1583983255-44115-1-git-send-email-zhangliguang@linux.alibaba.com
+Link: https://lore.kernel.org/r/20200323235132.530550-1-marex@denx.de
 ---
- drivers/irqchip/irq-gic-v3.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/pinctrl/stm32/pinctrl-stm32.c | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/irqchip/irq-gic-v3.c b/drivers/irqchip/irq-gic-v3.c
-index c1f7af9..8e5dd96 100644
---- a/drivers/irqchip/irq-gic-v3.c
-+++ b/drivers/irqchip/irq-gic-v3.c
-@@ -1581,7 +1581,6 @@ static int __init gic_init_bases(void __iomem *dist_base,
+diff --git a/drivers/pinctrl/stm32/pinctrl-stm32.c b/drivers/pinctrl/stm32/pinctrl-stm32.c
+index d330b30..af3b24f 100644
+--- a/drivers/pinctrl/stm32/pinctrl-stm32.c
++++ b/drivers/pinctrl/stm32/pinctrl-stm32.c
+@@ -304,18 +304,22 @@ static const struct gpio_chip stm32_gpio_template = {
+ 	.get_direction		= stm32_gpio_get_direction,
+ };
  
- 	gic_data.domain = irq_domain_create_tree(handle, &gic_irq_domain_ops,
- 						 &gic_data);
--	irq_domain_update_bus_token(gic_data.domain, DOMAIN_BUS_WIRED);
- 	gic_data.rdists.rdist = alloc_percpu(typeof(*gic_data.rdists.rdist));
- 	gic_data.rdists.has_rvpeid = true;
- 	gic_data.rdists.has_vlpis = true;
-@@ -1592,6 +1591,8 @@ static int __init gic_init_bases(void __iomem *dist_base,
- 		goto out_free;
- 	}
+-void stm32_gpio_irq_eoi(struct irq_data *d)
++static void stm32_gpio_irq_trigger(struct irq_data *d)
+ {
+ 	struct stm32_gpio_bank *bank = d->domain->host_data;
+ 	int level;
  
-+	irq_domain_update_bus_token(gic_data.domain, DOMAIN_BUS_WIRED);
+-	irq_chip_eoi_parent(d);
+-
+ 	/* If level interrupt type then retrig */
+ 	level = stm32_gpio_get(&bank->gpio_chip, d->hwirq);
+ 	if ((level == 0 && bank->irq_type[d->hwirq] == IRQ_TYPE_LEVEL_LOW) ||
+ 	    (level == 1 && bank->irq_type[d->hwirq] == IRQ_TYPE_LEVEL_HIGH))
+ 		irq_chip_retrigger_hierarchy(d);
++}
 +
- 	gic_data.has_rss = !!(typer & GICD_TYPER_RSS);
- 	pr_info("Distributor has %sRange Selector support\n",
- 		gic_data.has_rss ? "" : "no ");
++static void stm32_gpio_irq_eoi(struct irq_data *d)
++{
++	irq_chip_eoi_parent(d);
++	stm32_gpio_irq_trigger(d);
+ };
+ 
+ static int stm32_gpio_set_type(struct irq_data *d, unsigned int type)
+@@ -371,12 +375,18 @@ static void stm32_gpio_irq_release_resources(struct irq_data *irq_data)
+ 	gpiochip_unlock_as_irq(&bank->gpio_chip, irq_data->hwirq);
+ }
+ 
++static void stm32_gpio_irq_unmask(struct irq_data *d)
++{
++	irq_chip_unmask_parent(d);
++	stm32_gpio_irq_trigger(d);
++}
++
+ static struct irq_chip stm32_gpio_irq_chip = {
+ 	.name		= "stm32gpio",
+ 	.irq_eoi	= stm32_gpio_irq_eoi,
+ 	.irq_ack	= irq_chip_ack_parent,
+ 	.irq_mask	= irq_chip_mask_parent,
+-	.irq_unmask	= irq_chip_unmask_parent,
++	.irq_unmask	= stm32_gpio_irq_unmask,
+ 	.irq_set_type	= stm32_gpio_set_type,
+ 	.irq_set_wake	= irq_chip_set_wake_parent,
+ 	.irq_request_resources = stm32_gpio_irq_request_resources,
