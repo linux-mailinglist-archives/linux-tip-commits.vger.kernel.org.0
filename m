@@ -2,37 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5AEC919700A
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 29 Mar 2020 22:27:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 24834196FFD
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 29 Mar 2020 22:27:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728913AbgC2U1H (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 29 Mar 2020 16:27:07 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:57043 "EHLO
+        id S1728931AbgC2U0f (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 29 Mar 2020 16:26:35 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:57074 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728893AbgC2U0a (ORCPT
+        with ESMTP id S1728916AbgC2U0e (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 29 Mar 2020 16:26:30 -0400
+        Sun, 29 Mar 2020 16:26:34 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jIeVn-0001Uu-Bs; Sun, 29 Mar 2020 22:26:27 +0200
+        id 1jIeVq-0001Ug-W1; Sun, 29 Mar 2020 22:26:31 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 1282C1C07F8;
-        Sun, 29 Mar 2020 22:26:22 +0200 (CEST)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 9635A1C070D;
+        Sun, 29 Mar 2020 22:26:21 +0200 (CEST)
 Date:   Sun, 29 Mar 2020 20:26:21 -0000
 From:   "tip-bot2 for Atish Patra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] irqchip/sifive-plic: Enable/Disable external
- interrupts upon cpu online/offline
+Subject: [tip: irq/core] irqchip/sifive-plic: Add support for multiple PLICs
 Cc:     Atish Patra <atish.patra@wdc.com>, Marc Zyngier <maz@kernel.org>,
         Anup Patel <anup@brainfault.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200302231146.15530-2-atish.patra@wdc.com>
-References: <20200302231146.15530-2-atish.patra@wdc.com>
+In-Reply-To: <20200302231146.15530-3-atish.patra@wdc.com>
+References: <20200302231146.15530-3-atish.patra@wdc.com>
 MIME-Version: 1.0
-Message-ID: <158551358168.28353.9864458380650988997.tip-bot2@tip-bot2>
+Message-ID: <158551358111.28353.4832719273444577850.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,145 +47,214 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     ccbe80bad571c2f967ad42b25bbb3ef7a4a24705
-Gitweb:        https://git.kernel.org/tip/ccbe80bad571c2f967ad42b25bbb3ef7a4a24705
+Commit-ID:     f1ad1133b18f2aed3f6923cdb62b63da230accfd
+Gitweb:        https://git.kernel.org/tip/f1ad1133b18f2aed3f6923cdb62b63da230accfd
 Author:        Atish Patra <atish.patra@wdc.com>
-AuthorDate:    Mon, 02 Mar 2020 15:11:45 -08:00
+AuthorDate:    Mon, 02 Mar 2020 15:11:46 -08:00
 Committer:     Marc Zyngier <maz@kernel.org>
 CommitterDate: Mon, 16 Mar 2020 15:48:54 
 
-irqchip/sifive-plic: Enable/Disable external interrupts upon cpu online/offline
+irqchip/sifive-plic: Add support for multiple PLICs
 
-Currently, PLIC threshold is only initialized once in the beginning.
-However, threshold can be set to disabled if a CPU is marked offline with
-CPU hotplug feature. This will not allow to change the irq affinity to a
-CPU that just came online.
+Current, PLIC driver can support only 1 PLIC on the board. However,
+there can be multiple PLICs present on a two socket systems in RISC-V.
 
-Add PLIC specific CPU hotplug callbacks and enable the threshold when a CPU
-comes online. Take this opportunity to move the external interrupt enable
-code from trap init to PLIC driver as well. On cpu offline path, the driver
-performs the exact opposite operations i.e. disable the interrupt and
-the threshold.
+Modify the driver so that each PLIC handler can have a information
+about individual PLIC registers and an irqdomain associated with it.
+
+Tested on two socket RISC-V system based on VCU118 FPGA connected via
+OmniXtend protocol.
 
 Signed-off-by: Atish Patra <atish.patra@wdc.com>
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 Reviewed-by: Anup Patel <anup@brainfault.org>
-Link: https://lore.kernel.org/r/20200302231146.15530-2-atish.patra@wdc.com
+Link: https://lore.kernel.org/r/20200302231146.15530-3-atish.patra@wdc.com
 ---
- arch/riscv/kernel/traps.c         |  2 +-
- drivers/irqchip/irq-sifive-plic.c | 38 ++++++++++++++++++++++++++----
- include/linux/cpuhotplug.h        |  1 +-
- 3 files changed, 36 insertions(+), 5 deletions(-)
+ drivers/irqchip/irq-sifive-plic.c | 81 ++++++++++++++++++------------
+ 1 file changed, 51 insertions(+), 30 deletions(-)
 
-diff --git a/arch/riscv/kernel/traps.c b/arch/riscv/kernel/traps.c
-index ffb3d94..55ea614 100644
---- a/arch/riscv/kernel/traps.c
-+++ b/arch/riscv/kernel/traps.c
-@@ -157,5 +157,5 @@ void __init trap_init(void)
- 	/* Set the exception vector address */
- 	csr_write(CSR_TVEC, &handle_exception);
- 	/* Enable interrupts */
--	csr_write(CSR_IE, IE_SIE | IE_EIE);
-+	csr_write(CSR_IE, IE_SIE);
- }
 diff --git a/drivers/irqchip/irq-sifive-plic.c b/drivers/irqchip/irq-sifive-plic.c
-index aa4af88..7c7f373 100644
+index 7c7f373..c34fb3a 100644
 --- a/drivers/irqchip/irq-sifive-plic.c
 +++ b/drivers/irqchip/irq-sifive-plic.c
-@@ -4,6 +4,7 @@
-  * Copyright (C) 2018 Christoph Hellwig
-  */
- #define pr_fmt(fmt) "plic: " fmt
-+#include <linux/cpu.h>
- #include <linux/interrupt.h>
- #include <linux/io.h>
- #include <linux/irq.h>
-@@ -55,6 +56,9 @@
- #define     CONTEXT_THRESHOLD		0x00
- #define     CONTEXT_CLAIM		0x04
+@@ -59,7 +59,11 @@
+ #define	PLIC_DISABLE_THRESHOLD		0xf
+ #define	PLIC_ENABLE_THRESHOLD		0
  
-+#define	PLIC_DISABLE_THRESHOLD		0xf
-+#define	PLIC_ENABLE_THRESHOLD		0
-+
- static void __iomem *plic_regs;
+-static void __iomem *plic_regs;
++struct plic_priv {
++	struct cpumask lmask;
++	struct irq_domain *irqdomain;
++	void __iomem *regs;
++};
  
  struct plic_handler {
-@@ -230,6 +234,32 @@ static int plic_find_hart_id(struct device_node *node)
- 	return -1;
+ 	bool			present;
+@@ -70,6 +74,7 @@ struct plic_handler {
+ 	 */
+ 	raw_spinlock_t		enable_lock;
+ 	void __iomem		*enable_base;
++	struct plic_priv	*priv;
+ };
+ static DEFINE_PER_CPU(struct plic_handler, plic_handlers);
+ 
+@@ -88,31 +93,40 @@ static inline void plic_toggle(struct plic_handler *handler,
  }
  
-+static void plic_set_threshold(struct plic_handler *handler, u32 threshold)
-+{
-+	/* priority must be > threshold to trigger an interrupt */
-+	writel(threshold, handler->hart_base + CONTEXT_THRESHOLD);
-+}
-+
-+static int plic_dying_cpu(unsigned int cpu)
-+{
-+	struct plic_handler *handler = this_cpu_ptr(&plic_handlers);
-+
-+	csr_clear(CSR_IE, IE_EIE);
-+	plic_set_threshold(handler, PLIC_DISABLE_THRESHOLD);
-+
-+	return 0;
-+}
-+
-+static int plic_starting_cpu(unsigned int cpu)
-+{
-+	struct plic_handler *handler = this_cpu_ptr(&plic_handlers);
-+
-+	csr_set(CSR_IE, IE_EIE);
-+	plic_set_threshold(handler, PLIC_ENABLE_THRESHOLD);
-+
-+	return 0;
-+}
-+
- static int __init plic_init(struct device_node *node,
- 		struct device_node *parent)
+ static inline void plic_irq_toggle(const struct cpumask *mask,
+-				   int hwirq, int enable)
++				   struct irq_data *d, int enable)
  {
-@@ -267,7 +297,6 @@ static int __init plic_init(struct device_node *node,
- 		struct plic_handler *handler;
- 		irq_hw_number_t hwirq;
- 		int cpu, hartid;
--		u32 threshold = 0;
+ 	int cpu;
++	struct plic_priv *priv = irq_get_chip_data(d->irq);
  
- 		if (of_irq_parse_one(node, i, &parent)) {
- 			pr_err("failed to parse parent for context %d.\n", i);
-@@ -301,7 +330,7 @@ static int __init plic_init(struct device_node *node,
- 		handler = per_cpu_ptr(&plic_handlers, cpu);
- 		if (handler->present) {
- 			pr_warn("handler already present for context %d.\n", i);
--			threshold = 0xffffffff;
-+			plic_set_threshold(handler, PLIC_DISABLE_THRESHOLD);
+-	writel(enable, plic_regs + PRIORITY_BASE + hwirq * PRIORITY_PER_ID);
++	writel(enable, priv->regs + PRIORITY_BASE + d->hwirq * PRIORITY_PER_ID);
+ 	for_each_cpu(cpu, mask) {
+ 		struct plic_handler *handler = per_cpu_ptr(&plic_handlers, cpu);
+ 
+-		if (handler->present)
+-			plic_toggle(handler, hwirq, enable);
++		if (handler->present &&
++		    cpumask_test_cpu(cpu, &handler->priv->lmask))
++			plic_toggle(handler, d->hwirq, enable);
+ 	}
+ }
+ 
+ static void plic_irq_unmask(struct irq_data *d)
+ {
+-	unsigned int cpu = cpumask_any_and(irq_data_get_affinity_mask(d),
+-					   cpu_online_mask);
++	struct cpumask amask;
++	unsigned int cpu;
++	struct plic_priv *priv = irq_get_chip_data(d->irq);
++
++	cpumask_and(&amask, &priv->lmask, cpu_online_mask);
++	cpu = cpumask_any_and(irq_data_get_affinity_mask(d),
++					   &amask);
+ 	if (WARN_ON_ONCE(cpu >= nr_cpu_ids))
+ 		return;
+-	plic_irq_toggle(cpumask_of(cpu), d->hwirq, 1);
++	plic_irq_toggle(cpumask_of(cpu), d, 1);
+ }
+ 
+ static void plic_irq_mask(struct irq_data *d)
+ {
+-	plic_irq_toggle(cpu_possible_mask, d->hwirq, 0);
++	struct plic_priv *priv = irq_get_chip_data(d->irq);
++
++	plic_irq_toggle(&priv->lmask, d, 0);
+ }
+ 
+ #ifdef CONFIG_SMP
+@@ -120,17 +134,21 @@ static int plic_set_affinity(struct irq_data *d,
+ 			     const struct cpumask *mask_val, bool force)
+ {
+ 	unsigned int cpu;
++	struct cpumask amask;
++	struct plic_priv *priv = irq_get_chip_data(d->irq);
++
++	cpumask_and(&amask, &priv->lmask, mask_val);
+ 
+ 	if (force)
+-		cpu = cpumask_first(mask_val);
++		cpu = cpumask_first(&amask);
+ 	else
+-		cpu = cpumask_any_and(mask_val, cpu_online_mask);
++		cpu = cpumask_any_and(&amask, cpu_online_mask);
+ 
+ 	if (cpu >= nr_cpu_ids)
+ 		return -EINVAL;
+ 
+-	plic_irq_toggle(cpu_possible_mask, d->hwirq, 0);
+-	plic_irq_toggle(cpumask_of(cpu), d->hwirq, 1);
++	plic_irq_toggle(&priv->lmask, d, 0);
++	plic_irq_toggle(cpumask_of(cpu), d, 1);
+ 
+ 	irq_data_update_effective_affinity(d, cpumask_of(cpu));
+ 
+@@ -191,8 +209,6 @@ static const struct irq_domain_ops plic_irqdomain_ops = {
+ 	.free		= irq_domain_free_irqs_top,
+ };
+ 
+-static struct irq_domain *plic_irqdomain;
+-
+ /*
+  * Handling an interrupt is a two-step process: first you claim the interrupt
+  * by reading the claim register, then you complete the interrupt by writing
+@@ -209,7 +225,7 @@ static void plic_handle_irq(struct pt_regs *regs)
+ 
+ 	csr_clear(CSR_IE, IE_EIE);
+ 	while ((hwirq = readl(claim))) {
+-		int irq = irq_find_mapping(plic_irqdomain, hwirq);
++		int irq = irq_find_mapping(handler->priv->irqdomain, hwirq);
+ 
+ 		if (unlikely(irq <= 0))
+ 			pr_warn_ratelimited("can't find mapping for hwirq %lu\n",
+@@ -265,15 +281,17 @@ static int __init plic_init(struct device_node *node,
+ {
+ 	int error = 0, nr_contexts, nr_handlers = 0, i;
+ 	u32 nr_irqs;
++	struct plic_priv *priv;
+ 
+-	if (plic_regs) {
+-		pr_warn("PLIC already present.\n");
+-		return -ENXIO;
+-	}
++	priv = kzalloc(sizeof(*priv), GFP_KERNEL);
++	if (!priv)
++		return -ENOMEM;
+ 
+-	plic_regs = of_iomap(node, 0);
+-	if (WARN_ON(!plic_regs))
+-		return -EIO;
++	priv->regs = of_iomap(node, 0);
++	if (WARN_ON(!priv->regs)) {
++		error = -EIO;
++		goto out_free_priv;
++	}
+ 
+ 	error = -EINVAL;
+ 	of_property_read_u32(node, "riscv,ndev", &nr_irqs);
+@@ -287,9 +305,9 @@ static int __init plic_init(struct device_node *node,
+ 		goto out_iounmap;
+ 
+ 	error = -ENOMEM;
+-	plic_irqdomain = irq_domain_add_linear(node, nr_irqs + 1,
+-			&plic_irqdomain_ops, NULL);
+-	if (WARN_ON(!plic_irqdomain))
++	priv->irqdomain = irq_domain_add_linear(node, nr_irqs + 1,
++			&plic_irqdomain_ops, priv);
++	if (WARN_ON(!priv->irqdomain))
+ 		goto out_iounmap;
+ 
+ 	for (i = 0; i < nr_contexts; i++) {
+@@ -334,13 +352,14 @@ static int __init plic_init(struct device_node *node,
  			goto done;
  		}
  
-@@ -313,13 +342,14 @@ static int __init plic_init(struct device_node *node,
- 			plic_regs + ENABLE_BASE + i * ENABLE_PER_HART;
- 
++		cpumask_set_cpu(cpu, &priv->lmask);
+ 		handler->present = true;
+ 		handler->hart_base =
+-			plic_regs + CONTEXT_BASE + i * CONTEXT_PER_HART;
++			priv->regs + CONTEXT_BASE + i * CONTEXT_PER_HART;
+ 		raw_spin_lock_init(&handler->enable_lock);
+ 		handler->enable_base =
+-			plic_regs + ENABLE_BASE + i * ENABLE_PER_HART;
+-
++			priv->regs + ENABLE_BASE + i * ENABLE_PER_HART;
++		handler->priv = priv;
  done:
--		/* priority must be > threshold to trigger an interrupt */
--		writel(threshold, handler->hart_base + CONTEXT_THRESHOLD);
  		for (hwirq = 1; hwirq <= nr_irqs; hwirq++)
  			plic_toggle(handler, hwirq, 0);
- 		nr_handlers++;
- 	}
+@@ -356,7 +375,9 @@ done:
+ 	return 0;
  
-+	cpuhp_setup_state(CPUHP_AP_IRQ_SIFIVE_PLIC_STARTING,
-+				  "irqchip/sifive/plic:starting",
-+				  plic_starting_cpu, plic_dying_cpu);
- 	pr_info("mapped %d interrupts with %d handlers for %d contexts.\n",
- 		nr_irqs, nr_handlers, nr_contexts);
- 	set_handle_irq(plic_handle_irq);
-diff --git a/include/linux/cpuhotplug.h b/include/linux/cpuhotplug.h
-index d37c17e..77d70b6 100644
---- a/include/linux/cpuhotplug.h
-+++ b/include/linux/cpuhotplug.h
-@@ -102,6 +102,7 @@ enum cpuhp_state {
- 	CPUHP_AP_IRQ_ARMADA_XP_STARTING,
- 	CPUHP_AP_IRQ_BCM2836_STARTING,
- 	CPUHP_AP_IRQ_MIPS_GIC_STARTING,
-+	CPUHP_AP_IRQ_SIFIVE_PLIC_STARTING,
- 	CPUHP_AP_ARM_MVEBU_COHERENCY,
- 	CPUHP_AP_MICROCODE_LOADER,
- 	CPUHP_AP_PERF_X86_AMD_UNCORE_STARTING,
+ out_iounmap:
+-	iounmap(plic_regs);
++	iounmap(priv->regs);
++out_free_priv:
++	kfree(priv);
+ 	return error;
+ }
+ 
