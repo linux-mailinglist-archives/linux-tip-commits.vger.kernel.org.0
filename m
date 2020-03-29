@@ -2,38 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ED34A196FA7
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 29 Mar 2020 21:06:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 55534196FA5
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 29 Mar 2020 21:06:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728688AbgC2TGu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 29 Mar 2020 15:06:50 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:56834 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727775AbgC2TGp (ORCPT
-        <rfc822;linux-tip-commits@vger.kernel.org>);
+        id S1728669AbgC2TGp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Sun, 29 Mar 2020 15:06:45 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:56831 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728688AbgC2TGm (ORCPT
+        <rfc822;linux-tip-commits@vger.kernel.org>);
+        Sun, 29 Mar 2020 15:06:42 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jIdGT-0000lz-GM; Sun, 29 Mar 2020 21:06:33 +0200
+        id 1jIdGT-0000m2-An; Sun, 29 Mar 2020 21:06:33 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D76241C0450;
-        Sun, 29 Mar 2020 21:06:31 +0200 (CEST)
-Date:   Sun, 29 Mar 2020 19:06:31 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C763E1C0470;
+        Sun, 29 Mar 2020 21:06:32 +0200 (CEST)
+Date:   Sun, 29 Mar 2020 19:06:32 -0000
 From:   "tip-bot2 for afzal mohammed" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] sh: Replace setup_irq() by request_irq()
+Subject: [tip: irq/core] c6x: Replace setup_irq() by request_irq()
 Cc:     afzal mohammed <afzal.mohd.ma@gmail.com>,
         Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: =?utf-8?q?=3Cb060312689820559121ee0a6456bbc1202fb7ee5=2E15853?=
+In-Reply-To: =?utf-8?q?=3C56e991e920ce5806771fab892574cba89a3d413f=2E15853?=
  =?utf-8?q?20721=2Egit=2Eafzal=2Emohd=2Ema=40gmail=2Ecom=3E?=
-References: =?utf-8?q?=3Cb060312689820559121ee0a6456bbc1202fb7ee5=2E158532?=
+References: =?utf-8?q?=3C56e991e920ce5806771fab892574cba89a3d413f=2E158532?=
  =?utf-8?q?0721=2Egit=2Eafzal=2Emohd=2Ema=40gmail=2Ecom=3E?=
 MIME-Version: 1.0
-Message-ID: <158550879149.28353.14112122905177250802.tip-bot2@tip-bot2>
+Message-ID: <158550879239.28353.15958424103561179531.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,14 +49,14 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     5497fce735baec58b45b790dbcfefc348ff272e2
-Gitweb:        https://git.kernel.org/tip/5497fce735baec58b45b790dbcfefc348ff272e2
+Commit-ID:     e13b99f3005829acc64287271fa6cacec6e3aeab
+Gitweb:        https://git.kernel.org/tip/e13b99f3005829acc64287271fa6cacec6e3aeab
 Author:        afzal mohammed <afzal.mohd.ma@gmail.com>
-AuthorDate:    Fri, 27 Mar 2020 21:40:24 +05:30
+AuthorDate:    Fri, 27 Mar 2020 21:39:32 +05:30
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sun, 29 Mar 2020 21:03:43 +02:00
+CommitterDate: Sun, 29 Mar 2020 21:03:42 +02:00
 
-sh: Replace setup_irq() by request_irq()
+c6x: Replace setup_irq() by request_irq()
 
 request_irq() is preferred over setup_irq(). Invocations of setup_irq()
 occur after memory allocators are ready.
@@ -68,71 +68,38 @@ Hence replace setup_irq() by request_irq().
 
 Signed-off-by: afzal mohammed <afzal.mohd.ma@gmail.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/b060312689820559121ee0a6456bbc1202fb7ee5.1585320721.git.afzal.mohd.ma@gmail.com
+Link: https://lkml.kernel.org/r/56e991e920ce5806771fab892574cba89a3d413f.1585320721.git.afzal.mohd.ma@gmail.com
 
 ---
- arch/sh/boards/mach-cayman/irq.c | 18 ++++++------------
- arch/sh/drivers/dma/dma-pvr2.c   |  9 +++------
- 2 files changed, 9 insertions(+), 18 deletions(-)
+ arch/c6x/platforms/timer64.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
-diff --git a/arch/sh/boards/mach-cayman/irq.c b/arch/sh/boards/mach-cayman/irq.c
-index 3b6ea2d..0305d0b 100644
---- a/arch/sh/boards/mach-cayman/irq.c
-+++ b/arch/sh/boards/mach-cayman/irq.c
-@@ -40,16 +40,6 @@ static irqreturn_t cayman_interrupt_pci2(int irq, void *dev_id)
- 	return IRQ_NONE;
+diff --git a/arch/c6x/platforms/timer64.c b/arch/c6x/platforms/timer64.c
+index d98d943..661f4c7 100644
+--- a/arch/c6x/platforms/timer64.c
++++ b/arch/c6x/platforms/timer64.c
+@@ -165,13 +165,6 @@ static irqreturn_t timer_interrupt(int irq, void *dev_id)
+ 	return IRQ_HANDLED;
  }
  
--static struct irqaction cayman_action_smsc = {
--	.name		= "Cayman SMSC Mux",
--	.handler	= cayman_interrupt_smsc,
+-static struct irqaction timer_iact = {
+-	.name		= "timer",
+-	.flags		= IRQF_TIMER,
+-	.handler	= timer_interrupt,
+-	.dev_id		= &t64_clockevent_device,
 -};
 -
--static struct irqaction cayman_action_pci2 = {
--	.name		= "Cayman PCI2 Mux",
--	.handler	= cayman_interrupt_pci2,
--};
--
- static void enable_cayman_irq(struct irq_data *data)
+ void __init timer64_init(void)
  {
- 	unsigned int irq = data->irq;
-@@ -149,6 +139,10 @@ void init_cayman_irq(void)
- 	}
+ 	struct clock_event_device *cd = &t64_clockevent_device;
+@@ -238,7 +231,9 @@ void __init timer64_init(void)
+ 	cd->cpumask		= cpumask_of(smp_processor_id());
  
- 	/* Setup the SMSC interrupt */
--	setup_irq(SMSC_IRQ, &cayman_action_smsc);
--	setup_irq(PCI2_IRQ, &cayman_action_pci2);
-+	if (request_irq(SMSC_IRQ, cayman_interrupt_smsc, 0, "Cayman SMSC Mux",
-+			NULL))
-+		pr_err("Failed to register Cayman SMSC Mux interrupt\n");
-+	if (request_irq(PCI2_IRQ, cayman_interrupt_pci2, 0, "Cayman PCI2 Mux",
-+			NULL))
-+		pr_err("Failed to register Cayman PCI2 Mux interrupt\n");
- }
-diff --git a/arch/sh/drivers/dma/dma-pvr2.c b/arch/sh/drivers/dma/dma-pvr2.c
-index b5dbd1f..21c3475 100644
---- a/arch/sh/drivers/dma/dma-pvr2.c
-+++ b/arch/sh/drivers/dma/dma-pvr2.c
-@@ -64,11 +64,6 @@ static int pvr2_xfer_dma(struct dma_channel *chan)
- 	return 0;
- }
+ 	clockevents_register_device(cd);
+-	setup_irq(cd->irq, &timer_iact);
++	if (request_irq(cd->irq, timer_interrupt, IRQF_TIMER, "timer",
++			&t64_clockevent_device))
++		pr_err("Failed to request irq %d (timer)\n", cd->irq);
  
--static struct irqaction pvr2_dma_irq = {
--	.name		= "pvr2 DMA handler",
--	.handler	= pvr2_dma_interrupt,
--};
--
- static struct dma_ops pvr2_dma_ops = {
- 	.request	= pvr2_request_dma,
- 	.get_residue	= pvr2_get_dma_residue,
-@@ -84,7 +79,9 @@ static struct dma_info pvr2_dma_info = {
- 
- static int __init pvr2_dma_init(void)
- {
--	setup_irq(HW_EVENT_PVR2_DMA, &pvr2_dma_irq);
-+	if (request_irq(HW_EVENT_PVR2_DMA, pvr2_dma_interrupt, 0,
-+			"pvr2 DMA handler", NULL))
-+		pr_err("Failed to register pvr2 DMA handler interrupt\n");
- 	request_dma(PVR2_CASCADE_CHAN, "pvr2 cascade");
- 
- 	return register_dmac(&pvr2_dma_info);
+ out:
+ 	of_node_put(np);
