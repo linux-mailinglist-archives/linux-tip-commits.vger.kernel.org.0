@@ -2,38 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B1494196F9E
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 29 Mar 2020 21:06:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E04C2196FA1
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 29 Mar 2020 21:06:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728637AbgC2TGg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 29 Mar 2020 15:06:36 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:56824 "EHLO
+        id S1728680AbgC2TGk (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 29 Mar 2020 15:06:40 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:56828 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727775AbgC2TGg (ORCPT
+        with ESMTP id S1727775AbgC2TGj (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 29 Mar 2020 15:06:36 -0400
+        Sun, 29 Mar 2020 15:06:39 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jIdGT-0000lw-Dw; Sun, 29 Mar 2020 21:06:33 +0200
+        id 1jIdGT-0000m0-BS; Sun, 29 Mar 2020 21:06:33 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 61B321C0334;
-        Sun, 29 Mar 2020 21:06:31 +0200 (CEST)
-Date:   Sun, 29 Mar 2020 19:06:30 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4AFAC1C0451;
+        Sun, 29 Mar 2020 21:06:32 +0200 (CEST)
+Date:   Sun, 29 Mar 2020 19:06:31 -0000
 From:   "tip-bot2 for afzal mohammed" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] unicore32: Replace setup_irq() by request_irq()
+Subject: [tip: irq/core] hexagon: Replace setup_irq() by request_irq()
 Cc:     afzal mohammed <afzal.mohd.ma@gmail.com>,
         Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: =?utf-8?q?=3C82667ae23520611b2a9d8db77e1d8aeb982f08e5=2E15853?=
+In-Reply-To: =?utf-8?q?=3Ce84ac60de8f747d49ce082659e51595f708c29d4=2E15853?=
  =?utf-8?q?20721=2Egit=2Eafzal=2Emohd=2Ema=40gmail=2Ecom=3E?=
-References: =?utf-8?q?=3C82667ae23520611b2a9d8db77e1d8aeb982f08e5=2E158532?=
+References: =?utf-8?q?=3Ce84ac60de8f747d49ce082659e51595f708c29d4=2E158532?=
  =?utf-8?q?0721=2Egit=2Eafzal=2Emohd=2Ema=40gmail=2Ecom=3E?=
 MIME-Version: 1.0
-Message-ID: <158550879084.28353.14828561956279925504.tip-bot2@tip-bot2>
+Message-ID: <158550879196.28353.14074902944041161420.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,14 +49,14 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     ba947241f125b19bb6f08a78c22827b9f6a1317a
-Gitweb:        https://git.kernel.org/tip/ba947241f125b19bb6f08a78c22827b9f6a1317a
+Commit-ID:     45b26ddee6d7d69c1ca41fdc843ac2cadaf4293c
+Gitweb:        https://git.kernel.org/tip/45b26ddee6d7d69c1ca41fdc843ac2cadaf4293c
 Author:        afzal mohammed <afzal.mohd.ma@gmail.com>
-AuthorDate:    Fri, 27 Mar 2020 21:40:44 +05:30
+AuthorDate:    Fri, 27 Mar 2020 21:39:50 +05:30
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sun, 29 Mar 2020 21:03:43 +02:00
+CommitterDate: Sun, 29 Mar 2020 21:03:42 +02:00
 
-unicore32: Replace setup_irq() by request_irq()
+hexagon: Replace setup_irq() by request_irq()
 
 request_irq() is preferred over setup_irq(). Invocations of setup_irq()
 occur after memory allocators are ready.
@@ -68,38 +68,108 @@ Hence replace setup_irq() by request_irq().
 
 Signed-off-by: afzal mohammed <afzal.mohd.ma@gmail.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/82667ae23520611b2a9d8db77e1d8aeb982f08e5.1585320721.git.afzal.mohd.ma@gmail.com
+Link: https://lkml.kernel.org/r/e84ac60de8f747d49ce082659e51595f708c29d4.1585320721.git.afzal.mohd.ma@gmail.com
 
 ---
- arch/unicore32/kernel/time.c | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ arch/hexagon/kernel/smp.c  | 22 +++++++++++-----------
+ arch/hexagon/kernel/time.c | 11 +++--------
+ 2 files changed, 14 insertions(+), 19 deletions(-)
 
-diff --git a/arch/unicore32/kernel/time.c b/arch/unicore32/kernel/time.c
-index 8b217a7..c3a37ed 100644
---- a/arch/unicore32/kernel/time.c
-+++ b/arch/unicore32/kernel/time.c
-@@ -72,13 +72,6 @@ static struct clocksource cksrc_puv3_oscr = {
- 	.flags		= CLOCK_SOURCE_IS_CONTINUOUS,
- };
+diff --git a/arch/hexagon/kernel/smp.c b/arch/hexagon/kernel/smp.c
+index 0bbbe65..619c564 100644
+--- a/arch/hexagon/kernel/smp.c
++++ b/arch/hexagon/kernel/smp.c
+@@ -114,12 +114,6 @@ void send_ipi(const struct cpumask *cpumask, enum ipi_message_type msg)
+ 	local_irq_restore(flags);
+ }
  
--static struct irqaction puv3_timer_irq = {
--	.name		= "ost0",
--	.flags		= IRQF_TIMER | IRQF_IRQPOLL,
--	.handler	= puv3_ost0_interrupt,
--	.dev_id		= &ckevt_puv3_osmr0,
+-static struct irqaction ipi_intdesc = {
+-	.handler = handle_ipi,
+-	.flags = IRQF_TRIGGER_RISING,
+-	.name = "ipi_handler"
 -};
 -
- void __init time_init(void)
+ void __init smp_prepare_boot_cpu(void)
  {
- 	writel(0, OST_OIER);		/* disable any timer interrupts */
-@@ -94,7 +87,9 @@ void __init time_init(void)
- 	ckevt_puv3_osmr0.min_delta_ticks = MIN_OSCR_DELTA * 2;
- 	ckevt_puv3_osmr0.cpumask = cpumask_of(0);
+ }
+@@ -132,8 +126,8 @@ void __init smp_prepare_boot_cpu(void)
  
--	setup_irq(IRQ_TIMER0, &puv3_timer_irq);
-+	if (request_irq(IRQ_TIMER0, puv3_ost0_interrupt,
-+			IRQF_TIMER | IRQF_IRQPOLL, "ost0", &ckevt_puv3_osmr0))
-+		pr_err("Failed to register ost0 interrupt\n");
+ void start_secondary(void)
+ {
+-	unsigned int cpu;
+ 	unsigned long thread_ptr;
++	unsigned int cpu, irq;
  
- 	clocksource_register_hz(&cksrc_puv3_oscr, CLOCK_TICK_RATE);
- 	clockevents_register_device(&ckevt_puv3_osmr0);
+ 	/*  Calculate thread_info pointer from stack pointer  */
+ 	__asm__ __volatile__(
+@@ -155,7 +149,10 @@ void start_secondary(void)
+ 
+ 	cpu = smp_processor_id();
+ 
+-	setup_irq(BASE_IPI_IRQ + cpu, &ipi_intdesc);
++	irq = BASE_IPI_IRQ + cpu;
++	if (request_irq(irq, handle_ipi, IRQF_TRIGGER_RISING, "ipi_handler",
++			NULL))
++		pr_err("Failed to request irq %u (ipi_handler)\n", irq);
+ 
+ 	/*  Register the clock_event dummy  */
+ 	setup_percpu_clockdev();
+@@ -201,7 +198,7 @@ void __init smp_cpus_done(unsigned int max_cpus)
+ 
+ void __init smp_prepare_cpus(unsigned int max_cpus)
+ {
+-	int i;
++	int i, irq = BASE_IPI_IRQ;
+ 
+ 	/*
+ 	 * should eventually have some sort of machine
+@@ -213,8 +210,11 @@ void __init smp_prepare_cpus(unsigned int max_cpus)
+ 		set_cpu_present(i, true);
+ 
+ 	/*  Also need to register the interrupts for IPI  */
+-	if (max_cpus > 1)
+-		setup_irq(BASE_IPI_IRQ, &ipi_intdesc);
++	if (max_cpus > 1) {
++		if (request_irq(irq, handle_ipi, IRQF_TRIGGER_RISING,
++				"ipi_handler", NULL))
++			pr_err("Failed to request irq %d (ipi_handler)\n", irq);
++	}
+ }
+ 
+ void smp_send_reschedule(int cpu)
+diff --git a/arch/hexagon/kernel/time.c b/arch/hexagon/kernel/time.c
+index f99e925..feffe52 100644
+--- a/arch/hexagon/kernel/time.c
++++ b/arch/hexagon/kernel/time.c
+@@ -143,13 +143,6 @@ static irqreturn_t timer_interrupt(int irq, void *devid)
+ 	return IRQ_HANDLED;
+ }
+ 
+-/*  This should also be pulled from devtree  */
+-static struct irqaction rtos_timer_intdesc = {
+-	.handler = timer_interrupt,
+-	.flags = IRQF_TIMER | IRQF_TRIGGER_RISING,
+-	.name = "rtos_timer"
+-};
+-
+ /*
+  * time_init_deferred - called by start_kernel to set up timer/clock source
+  *
+@@ -163,6 +156,7 @@ void __init time_init_deferred(void)
+ {
+ 	struct resource *resource = NULL;
+ 	struct clock_event_device *ce_dev = &hexagon_clockevent_dev;
++	unsigned long flag = IRQF_TIMER | IRQF_TRIGGER_RISING;
+ 
+ 	ce_dev->cpumask = cpu_all_mask;
+ 
+@@ -195,7 +189,8 @@ void __init time_init_deferred(void)
+ #endif
+ 
+ 	clockevents_register_device(ce_dev);
+-	setup_irq(ce_dev->irq, &rtos_timer_intdesc);
++	if (request_irq(ce_dev->irq, timer_interrupt, flag, "rtos_timer", NULL))
++		pr_err("Failed to register rtos_timer interrupt\n");
+ }
+ 
+ void __init time_init(void)
