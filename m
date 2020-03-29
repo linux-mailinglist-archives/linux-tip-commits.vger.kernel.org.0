@@ -2,37 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C6550196FF9
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 29 Mar 2020 22:26:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22833196FF4
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 29 Mar 2020 22:26:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728975AbgC2U0q (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 29 Mar 2020 16:26:46 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:57093 "EHLO
+        id S1728951AbgC2U0h (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 29 Mar 2020 16:26:37 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:57091 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728900AbgC2U0i (ORCPT
+        with ESMTP id S1728939AbgC2U0h (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 29 Mar 2020 16:26:38 -0400
+        Sun, 29 Mar 2020 16:26:37 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jIeVq-0001X9-R1; Sun, 29 Mar 2020 22:26:31 +0200
+        id 1jIeVv-0001Xo-9V; Sun, 29 Mar 2020 22:26:35 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 7928C1C07A5;
-        Sun, 29 Mar 2020 22:26:24 +0200 (CEST)
-Date:   Sun, 29 Mar 2020 20:26:24 -0000
-From:   "tip-bot2 for Alexandre Torgue" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 83AF11C04DD;
+        Sun, 29 Mar 2020 22:26:25 +0200 (CEST)
+Date:   Sun, 29 Mar 2020 20:26:25 -0000
+From:   "tip-bot2 for Linus Walleij" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] pinctrl: stm32: Add level interrupt support to gpio irq chip
-Cc:     Alexandre Torgue <alexandre.torgue@st.com>,
-        Marc Zyngier <maz@kernel.org>, Marek Vasut <marex@denx.de>,
-        Linus Walleij <linus.walleij@linaro.org>, x86 <x86@kernel.org>,
+Subject: [tip: irq/core] irqchip: vic: Support cascaded VIC in device tree
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Marc Zyngier <maz@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200219143229.18084-3-alexandre.torgue@st.com>
-References: <20200219143229.18084-3-alexandre.torgue@st.com>
+In-Reply-To: <20200219153543.137153-1-linus.walleij@linaro.org>
+References: <20200219153543.137153-1-linus.walleij@linaro.org>
 MIME-Version: 1.0
-Message-ID: <158551358409.28353.6617704278446088456.tip-bot2@tip-bot2>
+Message-ID: <158551358513.28353.16110733638970294999.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,99 +47,57 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     47beed513a85b3561e74cbb4dd7af848716fa4e0
-Gitweb:        https://git.kernel.org/tip/47beed513a85b3561e74cbb4dd7af848716fa4e0
-Author:        Alexandre Torgue <alexandre.torgue@st.com>
-AuthorDate:    Wed, 19 Feb 2020 15:32:29 +01:00
+Commit-ID:     a15111075a847432b90e1534095b195aac8d9ec2
+Gitweb:        https://git.kernel.org/tip/a15111075a847432b90e1534095b195aac8d9ec2
+Author:        Linus Walleij <linus.walleij@linaro.org>
+AuthorDate:    Wed, 19 Feb 2020 16:35:43 +01:00
 Committer:     Marc Zyngier <maz@kernel.org>
 CommitterDate: Sun, 08 Mar 2020 14:25:45 
 
-pinctrl: stm32: Add level interrupt support to gpio irq chip
+irqchip: vic: Support cascaded VIC in device tree
 
-GPIO hardware block is directly linked to EXTI block but EXTI handles
-external interrupts only on edge. To be able to handle GPIO interrupt on
-level a "hack" is done in gpio irq chip: parent interrupt (exti irq chip)
-is retriggered following interrupt type and gpio line value.
+When transitioning some elder platforms to device tree it
+becomes necessary to cascade VIC IRQ chips off another
+interrupt controller.
 
-Signed-off-by: Alexandre Torgue <alexandre.torgue@st.com>
+Tested with the cascaded VIC on the Integrator/AP attached
+logic module IM-PD1.
+
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Marc Zyngier <maz@kernel.org>
-Tested-by: Marek Vasut <marex@denx.de>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20200219143229.18084-3-alexandre.torgue@st.com
+Link: https://lore.kernel.org/r/20200219153543.137153-1-linus.walleij@linaro.org
 ---
- drivers/pinctrl/stm32/pinctrl-stm32.c | 45 ++++++++++++++++++++++++--
- 1 file changed, 43 insertions(+), 2 deletions(-)
+ drivers/irqchip/irq-vic.c |  9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pinctrl/stm32/pinctrl-stm32.c b/drivers/pinctrl/stm32/pinctrl-stm32.c
-index 2d5e043..d330b30 100644
---- a/drivers/pinctrl/stm32/pinctrl-stm32.c
-+++ b/drivers/pinctrl/stm32/pinctrl-stm32.c
-@@ -92,6 +92,7 @@ struct stm32_gpio_bank {
- 	u32 bank_nr;
- 	u32 bank_ioport_nr;
- 	u32 pin_backup[STM32_GPIO_PINS_PER_BANK];
-+	u8 irq_type[STM32_GPIO_PINS_PER_BANK];
- };
+diff --git a/drivers/irqchip/irq-vic.c b/drivers/irqchip/irq-vic.c
+index f3f20a3..3c87d92 100644
+--- a/drivers/irqchip/irq-vic.c
++++ b/drivers/irqchip/irq-vic.c
+@@ -509,9 +509,7 @@ static int __init vic_of_init(struct device_node *node,
+ 	void __iomem *regs;
+ 	u32 interrupt_mask = ~0;
+ 	u32 wakeup_mask = ~0;
+-
+-	if (WARN(parent, "non-root VICs are not supported"))
+-		return -EINVAL;
++	int parent_irq;
  
- struct stm32_pinctrl {
-@@ -303,6 +304,46 @@ static const struct gpio_chip stm32_gpio_template = {
- 	.get_direction		= stm32_gpio_get_direction,
- };
+ 	regs = of_iomap(node, 0);
+ 	if (WARN_ON(!regs))
+@@ -519,11 +517,14 @@ static int __init vic_of_init(struct device_node *node,
  
-+void stm32_gpio_irq_eoi(struct irq_data *d)
-+{
-+	struct stm32_gpio_bank *bank = d->domain->host_data;
-+	int level;
-+
-+	irq_chip_eoi_parent(d);
-+
-+	/* If level interrupt type then retrig */
-+	level = stm32_gpio_get(&bank->gpio_chip, d->hwirq);
-+	if ((level == 0 && bank->irq_type[d->hwirq] == IRQ_TYPE_LEVEL_LOW) ||
-+	    (level == 1 && bank->irq_type[d->hwirq] == IRQ_TYPE_LEVEL_HIGH))
-+		irq_chip_retrigger_hierarchy(d);
-+};
-+
-+static int stm32_gpio_set_type(struct irq_data *d, unsigned int type)
-+{
-+	struct stm32_gpio_bank *bank = d->domain->host_data;
-+	u32 parent_type;
-+
-+	switch (type) {
-+	case IRQ_TYPE_EDGE_RISING:
-+	case IRQ_TYPE_EDGE_FALLING:
-+	case IRQ_TYPE_EDGE_BOTH:
-+		parent_type = type;
-+		break;
-+	case IRQ_TYPE_LEVEL_HIGH:
-+		parent_type = IRQ_TYPE_EDGE_RISING;
-+		break;
-+	case IRQ_TYPE_LEVEL_LOW:
-+		parent_type = IRQ_TYPE_EDGE_FALLING;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	bank->irq_type[d->hwirq] = type;
-+
-+	return irq_chip_set_type_parent(d, parent_type);
-+};
-+
- static int stm32_gpio_irq_request_resources(struct irq_data *irq_data)
- {
- 	struct stm32_gpio_bank *bank = irq_data->domain->host_data;
-@@ -332,11 +373,11 @@ static void stm32_gpio_irq_release_resources(struct irq_data *irq_data)
+ 	of_property_read_u32(node, "valid-mask", &interrupt_mask);
+ 	of_property_read_u32(node, "valid-wakeup-mask", &wakeup_mask);
++	parent_irq = of_irq_get(node, 0);
++	if (parent_irq < 0)
++		parent_irq = 0;
  
- static struct irq_chip stm32_gpio_irq_chip = {
- 	.name		= "stm32gpio",
--	.irq_eoi	= irq_chip_eoi_parent,
-+	.irq_eoi	= stm32_gpio_irq_eoi,
- 	.irq_ack	= irq_chip_ack_parent,
- 	.irq_mask	= irq_chip_mask_parent,
- 	.irq_unmask	= irq_chip_unmask_parent,
--	.irq_set_type	= irq_chip_set_type_parent,
-+	.irq_set_type	= stm32_gpio_set_type,
- 	.irq_set_wake	= irq_chip_set_wake_parent,
- 	.irq_request_resources = stm32_gpio_irq_request_resources,
- 	.irq_release_resources = stm32_gpio_irq_release_resources,
+ 	/*
+ 	 * Passing 0 as first IRQ makes the simple domain allocate descriptors
+ 	 */
+-	__vic_init(regs, 0, 0, interrupt_mask, wakeup_mask, node);
++	__vic_init(regs, parent_irq, 0, interrupt_mask, wakeup_mask, node);
+ 
+ 	return 0;
+ }
