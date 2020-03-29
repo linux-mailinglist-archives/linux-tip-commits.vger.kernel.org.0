@@ -2,36 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 18E5C196FF2
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 29 Mar 2020 22:26:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 47BD3196FF8
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 29 Mar 2020 22:26:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728892AbgC2U0d (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 29 Mar 2020 16:26:33 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:57060 "EHLO
+        id S1728938AbgC2U0p (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 29 Mar 2020 16:26:45 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:57096 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728855AbgC2U0c (ORCPT
+        with ESMTP id S1728946AbgC2U0i (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 29 Mar 2020 16:26:32 -0400
+        Sun, 29 Mar 2020 16:26:38 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jIeVo-0001Vc-N7; Sun, 29 Mar 2020 22:26:28 +0200
+        id 1jIeVt-0001VF-0v; Sun, 29 Mar 2020 22:26:33 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 05D0A1C0451;
-        Sun, 29 Mar 2020 22:26:23 +0200 (CEST)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 80E0A1C0450;
+        Sun, 29 Mar 2020 22:26:22 +0200 (CEST)
 Date:   Sun, 29 Mar 2020 20:26:22 -0000
-From:   "tip-bot2 for Geert Uytterhoeven" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for afzal mohammed" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] irqchip/renesas-intc-irqpin: Restore devm_ioremap() alignment
-Cc:     Geert Uytterhoeven <geert+renesas@glider.be>,
+Subject: [tip: irq/core] irqchip: Replace setup_irq() by request_irq()
+Cc:     afzal mohammed <afzal.mohd.ma@gmail.com>,
         Marc Zyngier <maz@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200212084744.9376-1-geert+renesas@glider.be>
-References: <20200212084744.9376-1-geert+renesas@glider.be>
+In-Reply-To: <20200304004839.4729-1-afzal.mohd.ma@gmail.com>
+References: <20200304004839.4729-1-afzal.mohd.ma@gmail.com>
 MIME-Version: 1.0
-Message-ID: <158551358260.28353.10168267569059278546.tip-bot2@tip-bot2>
+Message-ID: <158551358214.28353.15463615152083988179.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,36 +47,98 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     bc714c8bd4b7f1f29f9b15d79211c5fb3aa63c4d
-Gitweb:        https://git.kernel.org/tip/bc714c8bd4b7f1f29f9b15d79211c5fb3aa63c4d
-Author:        Geert Uytterhoeven <geert+renesas@glider.be>
-AuthorDate:    Wed, 12 Feb 2020 09:47:44 +01:00
+Commit-ID:     2ef1cb763d92f3e212005fcf5dcc713eaf42b257
+Gitweb:        https://git.kernel.org/tip/2ef1cb763d92f3e212005fcf5dcc713eaf42b257
+Author:        afzal mohammed <afzal.mohd.ma@gmail.com>
+AuthorDate:    Wed, 04 Mar 2020 06:18:38 +05:30
 Committer:     Marc Zyngier <maz@kernel.org>
 CommitterDate: Sun, 08 Mar 2020 14:25:46 
 
-irqchip/renesas-intc-irqpin: Restore devm_ioremap() alignment
+irqchip: Replace setup_irq() by request_irq()
 
-Restore alignment of the continuation of the devm_ioremap() call in
-intc_irqpin_probe().
+request_irq() is preferred over setup_irq(). Invocations of setup_irq()
+occur after memory allocators are ready.
 
-Fixes: 4bdc0d676a643140 ("remove ioremap_nocache and devm_ioremap_nocache")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Per tglx[1], setup_irq() existed in olden days when allocators were not
+ready by the time early interrupts were initialized.
+
+Hence replace setup_irq() by request_irq().
+
+[1] https://lkml.kernel.org/r/alpine.DEB.2.20.1710191609480.1971@nanos
+
+Signed-off-by: afzal mohammed <afzal.mohd.ma@gmail.com>
 Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20200212084744.9376-1-geert+renesas@glider.be
+Link: https://lore.kernel.org/r/20200304004839.4729-1-afzal.mohd.ma@gmail.com
 ---
- drivers/irqchip/irq-renesas-intc-irqpin.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/irqchip/irq-i8259.c   | 16 ++++++----------
+ drivers/irqchip/irq-ingenic.c |  9 +++------
+ 2 files changed, 9 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/irqchip/irq-renesas-intc-irqpin.c b/drivers/irqchip/irq-renesas-intc-irqpin.c
-index 6e5e317..3819185 100644
---- a/drivers/irqchip/irq-renesas-intc-irqpin.c
-+++ b/drivers/irqchip/irq-renesas-intc-irqpin.c
-@@ -461,7 +461,7 @@ static int intc_irqpin_probe(struct platform_device *pdev)
- 		}
+diff --git a/drivers/irqchip/irq-i8259.c b/drivers/irqchip/irq-i8259.c
+index d000870..b6f6aa7 100644
+--- a/drivers/irqchip/irq-i8259.c
++++ b/drivers/irqchip/irq-i8259.c
+@@ -268,15 +268,6 @@ static void init_8259A(int auto_eoi)
+ 	raw_spin_unlock_irqrestore(&i8259A_lock, flags);
+ }
  
- 		i->iomem = devm_ioremap(dev, io[k]->start,
--						resource_size(io[k]));
-+					resource_size(io[k]));
- 		if (!i->iomem) {
- 			dev_err(dev, "failed to remap IOMEM\n");
- 			ret = -ENXIO;
+-/*
+- * IRQ2 is cascade interrupt to second interrupt controller
+- */
+-static struct irqaction irq2 = {
+-	.handler = no_action,
+-	.name = "cascade",
+-	.flags = IRQF_NO_THREAD,
+-};
+-
+ static struct resource pic1_io_resource = {
+ 	.name = "pic1",
+ 	.start = PIC_MASTER_CMD,
+@@ -311,6 +302,10 @@ static const struct irq_domain_ops i8259A_ops = {
+  */
+ struct irq_domain * __init __init_i8259_irqs(struct device_node *node)
+ {
++	/*
++	 * PIC_CASCADE_IR is cascade interrupt to second interrupt controller
++	 */
++	int irq = I8259A_IRQ_BASE + PIC_CASCADE_IR;
+ 	struct irq_domain *domain;
+ 
+ 	insert_resource(&ioport_resource, &pic1_io_resource);
+@@ -323,7 +318,8 @@ struct irq_domain * __init __init_i8259_irqs(struct device_node *node)
+ 	if (!domain)
+ 		panic("Failed to add i8259 IRQ domain");
+ 
+-	setup_irq(I8259A_IRQ_BASE + PIC_CASCADE_IR, &irq2);
++	if (request_irq(irq, no_action, IRQF_NO_THREAD, "cascade", NULL))
++		pr_err("Failed to register cascade interrupt\n");
+ 	register_syscore_ops(&i8259_syscore_ops);
+ 	return domain;
+ }
+diff --git a/drivers/irqchip/irq-ingenic.c b/drivers/irqchip/irq-ingenic.c
+index c5589ee..9f3da42 100644
+--- a/drivers/irqchip/irq-ingenic.c
++++ b/drivers/irqchip/irq-ingenic.c
+@@ -58,11 +58,6 @@ static irqreturn_t intc_cascade(int irq, void *data)
+ 	return IRQ_HANDLED;
+ }
+ 
+-static struct irqaction intc_cascade_action = {
+-	.handler = intc_cascade,
+-	.name = "SoC intc cascade interrupt",
+-};
+-
+ static int __init ingenic_intc_of_init(struct device_node *node,
+ 				       unsigned num_chips)
+ {
+@@ -130,7 +125,9 @@ static int __init ingenic_intc_of_init(struct device_node *node,
+ 		irq_reg_writel(gc, IRQ_MSK(32), JZ_REG_INTC_SET_MASK);
+ 	}
+ 
+-	setup_irq(parent_irq, &intc_cascade_action);
++	if (request_irq(parent_irq, intc_cascade, 0,
++			"SoC intc cascade interrupt", NULL))
++		pr_err("Failed to register SoC intc cascade interrupt\n");
+ 	return 0;
+ 
+ out_domain_remove:
