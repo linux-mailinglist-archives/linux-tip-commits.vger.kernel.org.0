@@ -2,37 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CF6C219700B
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 29 Mar 2020 22:27:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E421E19701C
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 29 Mar 2020 22:27:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728891AbgC2U1P (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 29 Mar 2020 16:27:15 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:57030 "EHLO
+        id S1728794AbgC2U0Y (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 29 Mar 2020 16:26:24 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:56983 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728882AbgC2U02 (ORCPT
+        with ESMTP id S1728855AbgC2U0X (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 29 Mar 2020 16:26:28 -0400
+        Sun, 29 Mar 2020 16:26:23 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jIeVj-0001QQ-JA; Sun, 29 Mar 2020 22:26:23 +0200
+        id 1jIeVf-0001Qi-Ds; Sun, 29 Mar 2020 22:26:19 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 2281E1C07A5;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 90A251C0334;
         Sun, 29 Mar 2020 22:26:16 +0200 (CEST)
-Date:   Sun, 29 Mar 2020 20:26:15 -0000
-From:   "tip-bot2 for Zenghui Yu" <tip-bot2@linutronix.de>
+Date:   Sun, 29 Mar 2020 20:26:16 -0000
+From:   "tip-bot2 for Marc Zyngier" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] irqchip/gic-v4.1: Wait for completion of
- redistributor's INVALL operation
-Cc:     Zenghui Yu <yuzenghui@huawei.com>, Marc Zyngier <maz@kernel.org>,
-        Eric Auger <eric.auger@redhat.com>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200302092145.899-1-yuzenghui@huawei.com>
-References: <20200302092145.899-1-yuzenghui@huawei.com>
+Subject: [tip: irq/core] irqchip/gic-v4.1: Ensure mutual exclusion between vPE
+ affinity change and RD access
+Cc:     Marc Zyngier <maz@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200304203330.4967-4-maz@kernel.org>
+References: <20200304203330.4967-4-maz@kernel.org>
 MIME-Version: 1.0
-Message-ID: <158551357577.28353.13458625309986219311.tip-bot2@tip-bot2>
+Message-ID: <158551357620.28353.9832405249088533311.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,40 +47,168 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     b978c25f6ee7d4c79cbe918eed684e53887ec001
-Gitweb:        https://git.kernel.org/tip/b978c25f6ee7d4c79cbe918eed684e53887ec001
-Author:        Zenghui Yu <yuzenghui@huawei.com>
-AuthorDate:    Wed, 04 Mar 2020 20:33:11 
+Commit-ID:     f3a059219bc718ccc3bf3ff894f089b7e9a93139
+Gitweb:        https://git.kernel.org/tip/f3a059219bc718ccc3bf3ff894f089b7e9a93139
+Author:        Marc Zyngier <maz@kernel.org>
+AuthorDate:    Wed, 04 Mar 2020 20:33:10 
 Committer:     Marc Zyngier <maz@kernel.org>
-CommitterDate: Fri, 20 Mar 2020 17:48:09 
+CommitterDate: Thu, 19 Mar 2020 11:21:58 
 
-irqchip/gic-v4.1: Wait for completion of redistributor's INVALL operation
+irqchip/gic-v4.1: Ensure mutual exclusion between vPE affinity change and RD access
 
-In GICv4.1, we emulate a guest-issued INVALL command by a direct write
-to GICR_INVALLR.  Before we finish the emulation and go back to guest,
-let's make sure the physical invalidate operation is actually completed
-and no stale data will be left in redistributor. Per the specification,
-this can be achieved by polling the GICR_SYNCR.Busy bit (to zero).
+Before GICv4.1, all operations would be serialized with the affinity
+changes by virtue of using the same ITS command queue. With v4.1, things
+change, as invalidations (and a number of other operations) are issued
+using the redistributor MMIO frame.
 
-Signed-off-by: Zenghui Yu <yuzenghui@huawei.com>
+We must thus make sure that these redistributor accesses cannot race
+against aginst the affinity change, or we may end-up talking to the
+wrong redistributor.
+
+To ensure this, we expand the irq_to_cpuid() helper to take a spinlock
+when the LPI is mapped to a vLPI (a new per-VPE lock) on each operation
+that requires mutual exclusion.
+
 Signed-off-by: Marc Zyngier <maz@kernel.org>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Link: https://lore.kernel.org/r/20200302092145.899-1-yuzenghui@huawei.com
-Link: https://lore.kernel.org/r/20200304203330.4967-5-maz@kernel.org
+Reviewed-by: Zenghui Yu <yuzenghui@huawei.com>
+Link: https://lore.kernel.org/r/20200304203330.4967-4-maz@kernel.org
 ---
- drivers/irqchip/irq-gic-v3-its.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/irqchip/irq-gic-v3-its.c   | 56 ++++++++++++++++++++++++-----
+ include/linux/irqchip/arm-gic-v4.h |  5 +++-
+ 2 files changed, 53 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
-index 1af7139..c843702 100644
+index da883a6..1af7139 100644
 --- a/drivers/irqchip/irq-gic-v3-its.c
 +++ b/drivers/irqchip/irq-gic-v3-its.c
-@@ -3827,6 +3827,8 @@ static void its_vpe_4_1_invall(struct its_vpe *vpe)
- 	/* Target the redistributor this vPE is currently known on */
- 	rdbase = per_cpu_ptr(gic_rdists->rdist, vpe->col_idx)->rd_base;
- 	gic_write_lpir(val, rdbase + GICR_INVALLR);
-+
-+	wait_for_syncr(rdbase);
+@@ -239,15 +239,41 @@ static struct its_vlpi_map *get_vlpi_map(struct irq_data *d)
+ 	return NULL;
  }
  
- static int its_vpe_4_1_set_vcpu_affinity(struct irq_data *d, void *vcpu_info)
+-static int irq_to_cpuid(struct irq_data *d)
++static int vpe_to_cpuid_lock(struct its_vpe *vpe, unsigned long *flags)
++{
++	raw_spin_lock_irqsave(&vpe->vpe_lock, *flags);
++	return vpe->col_idx;
++}
++
++static void vpe_to_cpuid_unlock(struct its_vpe *vpe, unsigned long flags)
++{
++	raw_spin_unlock_irqrestore(&vpe->vpe_lock, flags);
++}
++
++static int irq_to_cpuid_lock(struct irq_data *d, unsigned long *flags)
+ {
+-	struct its_device *its_dev = irq_data_get_irq_chip_data(d);
+ 	struct its_vlpi_map *map = get_vlpi_map(d);
++	int cpu;
+ 
+-	if (map)
+-		return map->vpe->col_idx;
++	if (map) {
++		cpu = vpe_to_cpuid_lock(map->vpe, flags);
++	} else {
++		/* Physical LPIs are already locked via the irq_desc lock */
++		struct its_device *its_dev = irq_data_get_irq_chip_data(d);
++		cpu = its_dev->event_map.col_map[its_get_event_id(d)];
++		/* Keep GCC quiet... */
++		*flags = 0;
++	}
+ 
+-	return its_dev->event_map.col_map[its_get_event_id(d)];
++	return cpu;
++}
++
++static void irq_to_cpuid_unlock(struct irq_data *d, unsigned long flags)
++{
++	struct its_vlpi_map *map = get_vlpi_map(d);
++
++	if (map)
++		vpe_to_cpuid_unlock(map->vpe, flags);
+ }
+ 
+ static struct its_collection *valid_col(struct its_collection *col)
+@@ -1329,7 +1355,9 @@ static void direct_lpi_inv(struct irq_data *d)
+ {
+ 	struct its_vlpi_map *map = get_vlpi_map(d);
+ 	void __iomem *rdbase;
++	unsigned long flags;
+ 	u64 val;
++	int cpu;
+ 
+ 	if (map) {
+ 		struct its_device *its_dev = irq_data_get_irq_chip_data(d);
+@@ -1344,10 +1372,12 @@ static void direct_lpi_inv(struct irq_data *d)
+ 	}
+ 
+ 	/* Target the redistributor this LPI is currently routed to */
+-	rdbase = per_cpu_ptr(gic_rdists->rdist, irq_to_cpuid(d))->rd_base;
++	cpu = irq_to_cpuid_lock(d, &flags);
++	rdbase = per_cpu_ptr(gic_rdists->rdist, cpu)->rd_base;
+ 	gic_write_lpir(val, rdbase + GICR_INVLPIR);
+ 
+ 	wait_for_syncr(rdbase);
++	irq_to_cpuid_unlock(d, flags);
+ }
+ 
+ static void lpi_update_config(struct irq_data *d, u8 clr, u8 set)
+@@ -3486,17 +3516,25 @@ static int its_vpe_set_affinity(struct irq_data *d,
+ {
+ 	struct its_vpe *vpe = irq_data_get_irq_chip_data(d);
+ 	int from, cpu = cpumask_first(mask_val);
++	unsigned long flags;
+ 
+ 	/*
+ 	 * Changing affinity is mega expensive, so let's be as lazy as
+ 	 * we can and only do it if we really have to. Also, if mapped
+ 	 * into the proxy device, we need to move the doorbell
+ 	 * interrupt to its new location.
++	 *
++	 * Another thing is that changing the affinity of a vPE affects
++	 * *other interrupts* such as all the vLPIs that are routed to
++	 * this vPE. This means that the irq_desc lock is not enough to
++	 * protect us, and that we must ensure nobody samples vpe->col_idx
++	 * during the update, hence the lock below which must also be
++	 * taken on any vLPI handling path that evaluates vpe->col_idx.
+ 	 */
+-	if (vpe->col_idx == cpu)
++	from = vpe_to_cpuid_lock(vpe, &flags);
++	if (from == cpu)
+ 		goto out;
+ 
+-	from = vpe->col_idx;
+ 	vpe->col_idx = cpu;
+ 
+ 	/*
+@@ -3512,6 +3550,7 @@ static int its_vpe_set_affinity(struct irq_data *d,
+ 
+ out:
+ 	irq_data_update_effective_affinity(d, cpumask_of(cpu));
++	vpe_to_cpuid_unlock(vpe, flags);
+ 
+ 	return IRQ_SET_MASK_OK_DONE;
+ }
+@@ -3855,6 +3894,7 @@ static int its_vpe_init(struct its_vpe *vpe)
+ 		return -ENOMEM;
+ 	}
+ 
++	raw_spin_lock_init(&vpe->vpe_lock);
+ 	vpe->vpe_id = vpe_id;
+ 	vpe->vpt_page = vpt_page;
+ 	if (gic_rdists->has_rvpeid)
+diff --git a/include/linux/irqchip/arm-gic-v4.h b/include/linux/irqchip/arm-gic-v4.h
+index d9c3496..439963f 100644
+--- a/include/linux/irqchip/arm-gic-v4.h
++++ b/include/linux/irqchip/arm-gic-v4.h
+@@ -54,6 +54,11 @@ struct its_vpe {
+ 	};
+ 
+ 	/*
++	 * Ensures mutual exclusion between affinity setting of the
++	 * vPE and vLPI operations using vpe->col_idx.
++	 */
++	raw_spinlock_t		vpe_lock;
++	/*
+ 	 * This collection ID is used to indirect the target
+ 	 * redistributor for this VPE. The ID itself isn't involved in
+ 	 * programming of the ITS.
