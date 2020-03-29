@@ -2,37 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DAAD9197009
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 29 Mar 2020 22:27:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 15A9C197003
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 29 Mar 2020 22:27:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729021AbgC2U1H (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 29 Mar 2020 16:27:07 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:57040 "EHLO
+        id S1728928AbgC2U1D (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 29 Mar 2020 16:27:03 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:57073 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728891AbgC2U0a (ORCPT
+        with ESMTP id S1728913AbgC2U0d (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 29 Mar 2020 16:26:30 -0400
+        Sun, 29 Mar 2020 16:26:33 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jIeVm-0001UQ-PE; Sun, 29 Mar 2020 22:26:26 +0200
+        id 1jIeVq-0001U2-20; Sun, 29 Mar 2020 22:26:30 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 0C6191C07F3;
-        Sun, 29 Mar 2020 22:26:21 +0200 (CEST)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 8BFCC1C07EC;
+        Sun, 29 Mar 2020 22:26:20 +0200 (CEST)
 Date:   Sun, 29 Mar 2020 20:26:20 -0000
-From:   "tip-bot2 for Lukas Wunner" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Marc Zyngier" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] irqchip/bcm2835: Quiesce IRQs left enabled by bootloader
-Cc:     Lukas Wunner <lukas@wunner.de>, Marc Zyngier <maz@kernel.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <f97868ba4e9b86ddad71f44ec9d8b3b7d8daa1ea.1582618537.git.lukas@wunner.de>
-References: <f97868ba4e9b86ddad71f44ec9d8b3b7d8daa1ea.1582618537.git.lukas@wunner.de>
+Subject: [tip: irq/core] irqchip/gic-v3-its: Probe ITS page size for all
+ GITS_BASERn registers
+Cc:     Marc Zyngier <maz@kernel.org>,
+        Nianyao Tang <tangnianyao@huawei.com>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <1584089195-63897-1-git-send-email-zhangshaokun@hisilicon.com>
+References: <1584089195-63897-1-git-send-email-zhangshaokun@hisilicon.com>
 MIME-Version: 1.0
-Message-ID: <158551358063.28353.14980225519315478462.tip-bot2@tip-bot2>
+Message-ID: <158551358020.28353.12068573166973176178.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,91 +48,210 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     bd59b343a9c902c522f006e6d71080f4893bbf42
-Gitweb:        https://git.kernel.org/tip/bd59b343a9c902c522f006e6d71080f4893bbf42
-Author:        Lukas Wunner <lukas@wunner.de>
-AuthorDate:    Tue, 25 Feb 2020 10:50:41 +01:00
+Commit-ID:     d5df9dc96eb7423d3f742b13d5e1e479ff795eaa
+Gitweb:        https://git.kernel.org/tip/d5df9dc96eb7423d3f742b13d5e1e479ff795eaa
+Author:        Marc Zyngier <maz@kernel.org>
+AuthorDate:    Fri, 13 Mar 2020 11:01:15 
 Committer:     Marc Zyngier <maz@kernel.org>
 CommitterDate: Mon, 16 Mar 2020 15:48:54 
 
-irqchip/bcm2835: Quiesce IRQs left enabled by bootloader
+irqchip/gic-v3-its: Probe ITS page size for all GITS_BASERn registers
 
-Per the spec, the BCM2835's IRQs are all disabled when coming out of
-power-on reset.  Its IRQ driver assumes that's still the case when the
-kernel boots and does not perform any initialization of the registers.
-However the Raspberry Pi Foundation's bootloader leaves the USB
-interrupt enabled when handing over control to the kernel.
+The GICv3 ITS driver assumes that once it has latched on a page size for
+a given BASER register, it can use the same page size as the maximum
+page size for all subsequent BASER registers.
 
-Quiesce IRQs and the FIQ if they were left enabled and log a message to
-let users know that they should update the bootloader once a fixed
-version is released.
+Although it worked so far, nothing in the architecture guarantees this,
+and Nianyao Tang hit this problem on some undisclosed implementation.
 
-If the USB interrupt is not quiesced and the USB driver later on claims
-the FIQ (as it does on the Raspberry Pi Foundation's downstream kernel),
-interrupt latency for all other peripherals increases and occasional
-lockups occur.  That's because both the FIQ and the normal USB interrupt
-fire simultaneously:
+Let's bite the bullet and probe the the supported page size on all BASER
+registers before starting to populate the tables. This simplifies the
+setup a bit, at the expense of a few additional MMIO accesses.
 
-On a multicore Raspberry Pi, if normal interrupts are routed to CPU 0
-and the FIQ to CPU 1 (hardcoded in the Foundation's kernel), then a USB
-interrupt causes CPU 0 to spin in bcm2836_chained_handle_irq() until the
-FIQ on CPU 1 has cleared it.  Other peripherals' interrupts are starved
-as long.  I've seen CPU 0 blocked for up to 2.9 msec.  eMMC throughput
-on a Compute Module 3 irregularly dips to 23.0 MB/s without this commit
-but remains relatively constant at 23.5 MB/s with this commit.
-
-The lockups occur when CPU 0 receives a USB interrupt while holding a
-lock which CPU 1 is trying to acquire while the FIQ is temporarily
-disabled on CPU 1.  At best users get RCU CPU stall warnings, but most
-of the time the system just freezes.
-
-Fixes: 89214f009c1d ("ARM: bcm2835: add interrupt controller driver")
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
 Signed-off-by: Marc Zyngier <maz@kernel.org>
-Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
-Reviewed-by: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
-Link: https://lore.kernel.org/r/f97868ba4e9b86ddad71f44ec9d8b3b7d8daa1ea.1582618537.git.lukas@wunner.de
+Reported-by: Nianyao Tang <tangnianyao@huawei.com>
+Tested-by: Nianyao Tang <tangnianyao@huawei.com>
+Link: https://lore.kernel.org/r/1584089195-63897-1-git-send-email-zhangshaokun@hisilicon.com
 ---
- drivers/irqchip/irq-bcm2835.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/irqchip/irq-gic-v3-its.c | 100 +++++++++++++++++++-----------
+ 1 file changed, 66 insertions(+), 34 deletions(-)
 
-diff --git a/drivers/irqchip/irq-bcm2835.c b/drivers/irqchip/irq-bcm2835.c
-index 418245d..a1e004a 100644
---- a/drivers/irqchip/irq-bcm2835.c
-+++ b/drivers/irqchip/irq-bcm2835.c
-@@ -61,6 +61,7 @@
- 					| SHORTCUT1_MASK | SHORTCUT2_MASK)
+diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
+index 6bb2bea..e207fbf 100644
+--- a/drivers/irqchip/irq-gic-v3-its.c
++++ b/drivers/irqchip/irq-gic-v3-its.c
+@@ -2036,18 +2036,17 @@ static void its_write_baser(struct its_node *its, struct its_baser *baser,
+ }
  
- #define REG_FIQ_CONTROL		0x0c
-+#define FIQ_CONTROL_ENABLE	BIT(7)
- 
- #define NR_BANKS		3
- #define IRQS_PER_BANK		32
-@@ -135,6 +136,7 @@ static int __init armctrl_of_init(struct device_node *node,
+ static int its_setup_baser(struct its_node *its, struct its_baser *baser,
+-			   u64 cache, u64 shr, u32 psz, u32 order,
+-			   bool indirect)
++			   u64 cache, u64 shr, u32 order, bool indirect)
  {
- 	void __iomem *base;
- 	int irq, b, i;
-+	u32 reg;
+ 	u64 val = its_read_baser(its, baser);
+ 	u64 esz = GITS_BASER_ENTRY_SIZE(val);
+ 	u64 type = GITS_BASER_TYPE(val);
+ 	u64 baser_phys, tmp;
+-	u32 alloc_pages;
++	u32 alloc_pages, psz;
+ 	struct page *page;
+ 	void *base;
  
- 	base = of_iomap(node, 0);
- 	if (!base)
-@@ -157,6 +159,19 @@ static int __init armctrl_of_init(struct device_node *node,
- 				handle_level_irq);
- 			irq_set_probe(irq);
- 		}
+-retry_alloc_baser:
++	psz = baser->psz;
+ 	alloc_pages = (PAGE_ORDER_TO_SIZE(order) / psz);
+ 	if (alloc_pages > GITS_BASER_PAGES_MAX) {
+ 		pr_warn("ITS@%pa: %s too large, reduce ITS pages %u->%u\n",
+@@ -2120,25 +2119,6 @@ retry_baser:
+ 		goto retry_baser;
+ 	}
+ 
+-	if ((val ^ tmp) & GITS_BASER_PAGE_SIZE_MASK) {
+-		/*
+-		 * Page size didn't stick. Let's try a smaller
+-		 * size and retry. If we reach 4K, then
+-		 * something is horribly wrong...
+-		 */
+-		free_pages((unsigned long)base, order);
+-		baser->base = NULL;
+-
+-		switch (psz) {
+-		case SZ_16K:
+-			psz = SZ_4K;
+-			goto retry_alloc_baser;
+-		case SZ_64K:
+-			psz = SZ_16K;
+-			goto retry_alloc_baser;
+-		}
+-	}
+-
+ 	if (val != tmp) {
+ 		pr_err("ITS@%pa: %s doesn't stick: %llx %llx\n",
+ 		       &its->phys_base, its_base_type_string[type],
+@@ -2164,13 +2144,14 @@ retry_baser:
+ 
+ static bool its_parse_indirect_baser(struct its_node *its,
+ 				     struct its_baser *baser,
+-				     u32 psz, u32 *order, u32 ids)
++				     u32 *order, u32 ids)
+ {
+ 	u64 tmp = its_read_baser(its, baser);
+ 	u64 type = GITS_BASER_TYPE(tmp);
+ 	u64 esz = GITS_BASER_ENTRY_SIZE(tmp);
+ 	u64 val = GITS_BASER_InnerShareable | GITS_BASER_RaWaWb;
+ 	u32 new_order = *order;
++	u32 psz = baser->psz;
+ 	bool indirect = false;
+ 
+ 	/* No need to enable Indirection if memory requirement < (psz*2)bytes */
+@@ -2288,11 +2269,58 @@ static void its_free_tables(struct its_node *its)
+ 	}
+ }
+ 
++static int its_probe_baser_psz(struct its_node *its, struct its_baser *baser)
++{
++	u64 psz = SZ_64K;
 +
-+		reg = readl_relaxed(intc.enable[b]);
-+		if (reg) {
-+			writel_relaxed(reg, intc.disable[b]);
-+			pr_err(FW_BUG "Bootloader left irq enabled: "
-+			       "bank %d irq %*pbl\n", b, IRQS_PER_BANK, &reg);
++	while (psz) {
++		u64 val, gpsz;
++
++		val = its_read_baser(its, baser);
++		val &= ~GITS_BASER_PAGE_SIZE_MASK;
++
++		switch (psz) {
++		case SZ_64K:
++			gpsz = GITS_BASER_PAGE_SIZE_64K;
++			break;
++		case SZ_16K:
++			gpsz = GITS_BASER_PAGE_SIZE_16K;
++			break;
++		case SZ_4K:
++		default:
++			gpsz = GITS_BASER_PAGE_SIZE_4K;
++			break;
++		}
++
++		gpsz >>= GITS_BASER_PAGE_SIZE_SHIFT;
++
++		val |= FIELD_PREP(GITS_BASER_PAGE_SIZE_MASK, gpsz);
++		its_write_baser(its, baser, val);
++
++		if (FIELD_GET(GITS_BASER_PAGE_SIZE_MASK, baser->val) == gpsz)
++			break;
++
++		switch (psz) {
++		case SZ_64K:
++			psz = SZ_16K;
++			break;
++		case SZ_16K:
++			psz = SZ_4K;
++			break;
++		case SZ_4K:
++		default:
++			return -1;
 +		}
 +	}
 +
-+	reg = readl_relaxed(base + REG_FIQ_CONTROL);
-+	if (reg & FIQ_CONTROL_ENABLE) {
-+		writel_relaxed(0, base + REG_FIQ_CONTROL);
-+		pr_err(FW_BUG "Bootloader left fiq enabled\n");
- 	}
++	baser->psz = psz;
++	return 0;
++}
++
+ static int its_alloc_tables(struct its_node *its)
+ {
+ 	u64 shr = GITS_BASER_InnerShareable;
+ 	u64 cache = GITS_BASER_RaWaWb;
+-	u32 psz = SZ_64K;
+ 	int err, i;
  
- 	if (is_2836) {
+ 	if (its->flags & ITS_FLAGS_WORKAROUND_CAVIUM_22375)
+@@ -2303,16 +2331,22 @@ static int its_alloc_tables(struct its_node *its)
+ 		struct its_baser *baser = its->tables + i;
+ 		u64 val = its_read_baser(its, baser);
+ 		u64 type = GITS_BASER_TYPE(val);
+-		u32 order = get_order(psz);
+ 		bool indirect = false;
++		u32 order;
+ 
+-		switch (type) {
+-		case GITS_BASER_TYPE_NONE:
++		if (type == GITS_BASER_TYPE_NONE)
+ 			continue;
+ 
++		if (its_probe_baser_psz(its, baser)) {
++			its_free_tables(its);
++			return -ENXIO;
++		}
++
++		order = get_order(baser->psz);
++
++		switch (type) {
+ 		case GITS_BASER_TYPE_DEVICE:
+-			indirect = its_parse_indirect_baser(its, baser,
+-							    psz, &order,
++			indirect = its_parse_indirect_baser(its, baser, &order,
+ 							    device_ids(its));
+ 			break;
+ 
+@@ -2328,20 +2362,18 @@ static int its_alloc_tables(struct its_node *its)
+ 				}
+ 			}
+ 
+-			indirect = its_parse_indirect_baser(its, baser,
+-							    psz, &order,
++			indirect = its_parse_indirect_baser(its, baser, &order,
+ 							    ITS_MAX_VPEID_BITS);
+ 			break;
+ 		}
+ 
+-		err = its_setup_baser(its, baser, cache, shr, psz, order, indirect);
++		err = its_setup_baser(its, baser, cache, shr, order, indirect);
+ 		if (err < 0) {
+ 			its_free_tables(its);
+ 			return err;
+ 		}
+ 
+ 		/* Update settings which will be used for next BASERn */
+-		psz = baser->psz;
+ 		cache = baser->val & GITS_BASER_CACHEABILITY_MASK;
+ 		shr = baser->val & GITS_BASER_SHAREABILITY_MASK;
+ 	}
