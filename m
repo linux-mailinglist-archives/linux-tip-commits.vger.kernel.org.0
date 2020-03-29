@@ -2,37 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CBA12197024
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 29 Mar 2020 22:28:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C868A197018
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 29 Mar 2020 22:27:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728501AbgC2U16 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 29 Mar 2020 16:27:58 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:56981 "EHLO
+        id S1728892AbgC2U1i (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 29 Mar 2020 16:27:38 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:57004 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728854AbgC2U0W (ORCPT
+        with ESMTP id S1728868AbgC2U00 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 29 Mar 2020 16:26:22 -0400
+        Sun, 29 Mar 2020 16:26:26 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jIeVb-0001Nh-T0; Sun, 29 Mar 2020 22:26:16 +0200
+        id 1jIeVh-0001OZ-OR; Sun, 29 Mar 2020 22:26:21 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5CA501C04DD;
-        Sun, 29 Mar 2020 22:26:13 +0200 (CEST)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 306BA1C0450;
+        Sun, 29 Mar 2020 22:26:14 +0200 (CEST)
 Date:   Sun, 29 Mar 2020 20:26:13 -0000
-From:   "tip-bot2 for Gustavo A. R. Silva" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Heyi Guo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] irqchip/irq-bcm7038-l1: Replace zero-length array
- with flexible-array member
-Cc:     "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
-        Marc Zyngier <maz@kernel.org>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200319214438.GA21123@embeddedor.com>
-References: <20200319214438.GA21123@embeddedor.com>
+Subject: [tip: irq/core] irqchip/gic-v4: Use Inner-Shareable attributes for
+ virtual pending tables
+Cc:     Heyi Guo <guoheyi@huawei.com>, Marc Zyngier <maz@kernel.org>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20191130073849.38378-1-guoheyi@huawei.com>
+References: <20191130073849.38378-1-guoheyi@huawei.com>
 MIME-Version: 1.0
-Message-ID: <158551357303.28353.13397746102071134405.tip-bot2@tip-bot2>
+Message-ID: <158551357385.28353.9119028347947412581.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,60 +47,60 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     b2e1cbfd2d4af6f0797ed259de5f48e7dde60014
-Gitweb:        https://git.kernel.org/tip/b2e1cbfd2d4af6f0797ed259de5f48e7dde60014
-Author:        Gustavo A. R. Silva <gustavo@embeddedor.com>
-AuthorDate:    Thu, 19 Mar 2020 16:44:38 -05:00
+Commit-ID:     b2cb11f4f7643255b7703c0fcabc31a8ec478f3a
+Gitweb:        https://git.kernel.org/tip/b2cb11f4f7643255b7703c0fcabc31a8ec478f3a
+Author:        Heyi Guo <guoheyi@huawei.com>
+AuthorDate:    Sat, 30 Nov 2019 15:38:49 +08:00
 Committer:     Marc Zyngier <maz@kernel.org>
-CommitterDate: Sun, 22 Mar 2020 11:52:52 
+CommitterDate: Sat, 21 Mar 2020 09:40:47 
 
-irqchip/irq-bcm7038-l1: Replace zero-length array with flexible-array member
+irqchip/gic-v4: Use Inner-Shareable attributes for virtual pending tables
 
-The current codebase makes use of the zero-length array language
-extension to the C90 standard, but the preferred mechanism to declare
-variable-length types such as these ones is a flexible array member[1][2],
-introduced in C99:
+There is no special reason to set virtual LPI pending table as
+non-shareable. If we choose to hard code the shareability without
+probing, Inner-Shareable is likely to be a better choice, as the
+VPEs can move around and benefit from having the redistributors
+snooping each other's cache, if that's something they can do.
 
-struct foo {
-        int stuff;
-        struct boo array[];
-};
+Furthermore, Hisilicon hip08 ends up with unspecified errors when
+mixing shareability attributes. So let's move to IS attributes for
+the VPT. This has also been tested on D05 and didn't show any
+regression.
 
-By making use of the mechanism above, we will get a compiler warning
-in case the flexible array does not occur last in the structure, which
-will help us prevent some kind of undefined behavior bugs from being
-inadvertently introduced[3] to the codebase from now on.
-
-Also, notice that, dynamic memory allocations won't be affected by
-this change:
-
-"Flexible array members have incomplete type, and so the sizeof operator
-may not be applied. As a quirk of the original implementation of
-zero-length arrays, sizeof evaluates to zero."[1]
-
-This issue was found with the help of Coccinelle.
-
-[1] https://gcc.gnu.org/onlinedocs/gcc/Zero-Length.html
-[2] https://github.com/KSPP/linux/issues/21
-[3] commit 76497732932f ("cxgb3/l2t: Fix undefined behaviour")
-
-Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
+Signed-off-by: Heyi Guo <guoheyi@huawei.com>
+[maz: rewrote commit message]
 Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20200319214438.GA21123@embeddedor.com
+Tested-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20191130073849.38378-1-guoheyi@huawei.com
 ---
- drivers/irqchip/irq-bcm7038-l1.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/irqchip/irq-gic-v3-its.c   | 2 +-
+ include/linux/irqchip/arm-gic-v3.h | 3 +++
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/irqchip/irq-bcm7038-l1.c b/drivers/irqchip/irq-bcm7038-l1.c
-index cbf01af..eb9bce9 100644
---- a/drivers/irqchip/irq-bcm7038-l1.c
-+++ b/drivers/irqchip/irq-bcm7038-l1.c
-@@ -50,7 +50,7 @@ struct bcm7038_l1_chip {
+diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
+index bb80285..bc5b3f6 100644
+--- a/drivers/irqchip/irq-gic-v3-its.c
++++ b/drivers/irqchip/irq-gic-v3-its.c
+@@ -3560,7 +3560,7 @@ static void its_vpe_schedule(struct its_vpe *vpe)
+ 	val  = virt_to_phys(page_address(vpe->vpt_page)) &
+ 		GENMASK_ULL(51, 16);
+ 	val |= GICR_VPENDBASER_RaWaWb;
+-	val |= GICR_VPENDBASER_NonShareable;
++	val |= GICR_VPENDBASER_InnerShareable;
+ 	/*
+ 	 * There is no good way of finding out if the pending table is
+ 	 * empty as we can race against the doorbell interrupt very
+diff --git a/include/linux/irqchip/arm-gic-v3.h b/include/linux/irqchip/arm-gic-v3.h
+index 83439bf..85b105f 100644
+--- a/include/linux/irqchip/arm-gic-v3.h
++++ b/include/linux/irqchip/arm-gic-v3.h
+@@ -320,6 +320,9 @@
+ #define GICR_VPENDBASER_NonShareable					\
+ 	GIC_BASER_SHAREABILITY(GICR_VPENDBASER, NonShareable)
  
- struct bcm7038_l1_cpu {
- 	void __iomem		*map_base;
--	u32			mask_cache[0];
-+	u32			mask_cache[];
- };
- 
- /*
++#define GICR_VPENDBASER_InnerShareable					\
++	GIC_BASER_SHAREABILITY(GICR_VPENDBASER, InnerShareable)
++
+ #define GICR_VPENDBASER_nCnB	GIC_BASER_CACHEABILITY(GICR_VPENDBASER, INNER, nCnB)
+ #define GICR_VPENDBASER_nC 	GIC_BASER_CACHEABILITY(GICR_VPENDBASER, INNER, nC)
+ #define GICR_VPENDBASER_RaWt	GIC_BASER_CACHEABILITY(GICR_VPENDBASER, INNER, RaWt)
