@@ -2,37 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BF3FB197026
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 29 Mar 2020 22:28:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D0898196FEC
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 29 Mar 2020 22:26:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728955AbgC2U17 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 29 Mar 2020 16:27:59 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:56972 "EHLO
+        id S1728860AbgC2U0W (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 29 Mar 2020 16:26:22 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:56978 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728596AbgC2U0V (ORCPT
+        with ESMTP id S1728851AbgC2U0V (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Sun, 29 Mar 2020 16:26:21 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jIeVc-0001Oa-QA; Sun, 29 Mar 2020 22:26:16 +0200
+        id 1jIeVd-0001PC-Ey; Sun, 29 Mar 2020 22:26:17 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C203F1C04DF;
-        Sun, 29 Mar 2020 22:26:13 +0200 (CEST)
-Date:   Sun, 29 Mar 2020 20:26:13 -0000
-From:   "tip-bot2 for Sungbo Eo" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 9EA7C1C0451;
+        Sun, 29 Mar 2020 22:26:14 +0200 (CEST)
+Date:   Sun, 29 Mar 2020 20:26:14 -0000
+From:   "tip-bot2 for Marc Zyngier" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] irqchip/versatile-fpga: Apply clear-mask earlier
-Cc:     Sungbo Eo <mans0n@gorani.run>, Marc Zyngier <maz@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        stable@vger.kernel.org, x86 <x86@kernel.org>,
+Subject: [tip: irq/core] irqchip/gic-v4.1: Map the ITS SGIR register page
+Cc:     Marc Zyngier <maz@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>,
+        Eric Auger <eric.auger@redhat.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200321133842.2408823-1-mans0n@gorani.run>
-References: <20200321133842.2408823-1-mans0n@gorani.run>
+In-Reply-To: <20200304203330.4967-8-maz@kernel.org>
+References: <20200304203330.4967-8-maz@kernel.org>
 MIME-Version: 1.0
-Message-ID: <158551357344.28353.6406366846018523575.tip-bot2@tip-bot2>
+Message-ID: <158551357426.28353.16186198164469455766.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,55 +47,83 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     6a214a28132f19ace3d835a6d8f6422ec80ad200
-Gitweb:        https://git.kernel.org/tip/6a214a28132f19ace3d835a6d8f6422ec80ad200
-Author:        Sungbo Eo <mans0n@gorani.run>
-AuthorDate:    Sat, 21 Mar 2020 22:38:42 +09:00
+Commit-ID:     5e46a48413a6660955de7e56f9f364f2b890381c
+Gitweb:        https://git.kernel.org/tip/5e46a48413a6660955de7e56f9f364f2b890381c
+Author:        Marc Zyngier <maz@kernel.org>
+AuthorDate:    Wed, 04 Mar 2020 20:33:14 
 Committer:     Marc Zyngier <maz@kernel.org>
-CommitterDate: Sun, 22 Mar 2020 11:52:16 
+CommitterDate: Fri, 20 Mar 2020 17:48:38 
 
-irqchip/versatile-fpga: Apply clear-mask earlier
+irqchip/gic-v4.1: Map the ITS SGIR register page
 
-Clear its own IRQs before the parent IRQ get enabled, so that the
-remaining IRQs do not accidentally interrupt the parent IRQ controller.
+One of the new features of GICv4.1 is to allow virtual SGIs to be
+directly signaled to a VPE. For that, the ITS has grown a new
+64kB page containing only a single register that is used to
+signal a SGI to a given VPE.
 
-This patch also fixes a reboot bug on OX820 SoC, where the remaining
-rps-timer IRQ raises a GIC interrupt that is left pending. After that,
-the rps-timer IRQ is cleared during driver initialization, and there's
-no IRQ left in rps-irq when local_irq_enable() is called, which evokes
-an error message "unexpected IRQ trap".
+Add a second mapping covering this new 64kB range, and take this
+opportunity to limit the original mapping to 64kB, which is enough
+to cover the span of the ITS registers.
 
-Fixes: bdd272cbb97a ("irqchip: versatile FPGA: support cascaded interrupts from DT")
-Signed-off-by: Sungbo Eo <mans0n@gorani.run>
 Signed-off-by: Marc Zyngier <maz@kernel.org>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20200321133842.2408823-1-mans0n@gorani.run
+Reviewed-by: Zenghui Yu <yuzenghui@huawei.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Link: https://lore.kernel.org/r/20200304203330.4967-8-maz@kernel.org
 ---
- drivers/irqchip/irq-versatile-fpga.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/irqchip/irq-gic-v3-its.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/irqchip/irq-versatile-fpga.c b/drivers/irqchip/irq-versatile-fpga.c
-index 70e2cff..f138673 100644
---- a/drivers/irqchip/irq-versatile-fpga.c
-+++ b/drivers/irqchip/irq-versatile-fpga.c
-@@ -212,6 +212,9 @@ int __init fpga_irq_of_init(struct device_node *node,
- 	if (of_property_read_u32(node, "valid-mask", &valid_mask))
- 		valid_mask = 0;
+diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
+index bcc1a09..54d6fdf 100644
+--- a/drivers/irqchip/irq-gic-v3-its.c
++++ b/drivers/irqchip/irq-gic-v3-its.c
+@@ -96,6 +96,7 @@ struct its_node {
+ 	struct mutex		dev_alloc_lock;
+ 	struct list_head	entry;
+ 	void __iomem		*base;
++	void __iomem		*sgir_base;
+ 	phys_addr_t		phys_base;
+ 	struct its_cmd_block	*cmd_base;
+ 	struct its_cmd_block	*cmd_write;
+@@ -4456,7 +4457,7 @@ static int __init its_probe_one(struct resource *res,
+ 	struct page *page;
+ 	int err;
  
-+	writel(clear_mask, base + IRQ_ENABLE_CLEAR);
-+	writel(clear_mask, base + FIQ_ENABLE_CLEAR);
+-	its_base = ioremap(res->start, resource_size(res));
++	its_base = ioremap(res->start, SZ_64K);
+ 	if (!its_base) {
+ 		pr_warn("ITS@%pa: Unable to map ITS registers\n", &res->start);
+ 		return -ENOMEM;
+@@ -4507,6 +4508,13 @@ static int __init its_probe_one(struct resource *res,
+ 
+ 		if (is_v4_1(its)) {
+ 			u32 svpet = FIELD_GET(GITS_TYPER_SVPET, typer);
 +
- 	/* Some chips are cascaded from a parent IRQ */
- 	parent_irq = irq_of_parse_and_map(node, 0);
- 	if (!parent_irq) {
-@@ -221,9 +224,6 @@ int __init fpga_irq_of_init(struct device_node *node,
++			its->sgir_base = ioremap(res->start + SZ_128K, SZ_64K);
++			if (!its->sgir_base) {
++				err = -ENOMEM;
++				goto out_free_its;
++			}
++
+ 			its->mpidr = readl_relaxed(its_base + GITS_MPIDR);
  
- 	fpga_irq_init(base, node->name, 0, parent_irq, valid_mask, node);
- 
--	writel(clear_mask, base + IRQ_ENABLE_CLEAR);
--	writel(clear_mask, base + FIQ_ENABLE_CLEAR);
--
- 	/*
- 	 * On Versatile AB/PB, some secondary interrupts have a direct
- 	 * pass-thru to the primary controller for IRQs 20 and 22-31 which need
+ 			pr_info("ITS@%pa: Using GICv4.1 mode %08x %08x\n",
+@@ -4520,7 +4528,7 @@ static int __init its_probe_one(struct resource *res,
+ 				get_order(ITS_CMD_QUEUE_SZ));
+ 	if (!page) {
+ 		err = -ENOMEM;
+-		goto out_free_its;
++		goto out_unmap_sgir;
+ 	}
+ 	its->cmd_base = (void *)page_address(page);
+ 	its->cmd_write = its->cmd_base;
+@@ -4587,6 +4595,9 @@ out_free_tables:
+ 	its_free_tables(its);
+ out_free_cmd:
+ 	free_pages((unsigned long)its->cmd_base, get_order(ITS_CMD_QUEUE_SZ));
++out_unmap_sgir:
++	if (its->sgir_base)
++		iounmap(its->sgir_base);
+ out_free_its:
+ 	kfree(its);
+ out_unmap:
