@@ -2,37 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 28C0119702B
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 29 Mar 2020 22:28:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CBA12197024
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 29 Mar 2020 22:28:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728836AbgC2U2J (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 29 Mar 2020 16:28:09 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:56947 "EHLO
+        id S1728501AbgC2U16 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 29 Mar 2020 16:27:58 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:56981 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728809AbgC2U0S (ORCPT
+        with ESMTP id S1728854AbgC2U0W (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 29 Mar 2020 16:26:18 -0400
+        Sun, 29 Mar 2020 16:26:22 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jIeVa-0001NJ-7Q; Sun, 29 Mar 2020 22:26:14 +0200
+        id 1jIeVb-0001Nh-T0; Sun, 29 Mar 2020 22:26:16 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id EEA511C0451;
-        Sun, 29 Mar 2020 22:26:12 +0200 (CEST)
-Date:   Sun, 29 Mar 2020 20:26:12 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5CA501C04DD;
+        Sun, 29 Mar 2020 22:26:13 +0200 (CEST)
+Date:   Sun, 29 Mar 2020 20:26:13 -0000
 From:   "tip-bot2 for Gustavo A. R. Silva" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] irqchip/qcom-irq-combiner: Replace zero-length array
+Subject: [tip: irq/core] irqchip/irq-bcm7038-l1: Replace zero-length array
  with flexible-array member
 Cc:     "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
         Marc Zyngier <maz@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200319214531.GA21326@embeddedor.com>
-References: <20200319214531.GA21326@embeddedor.com>
+In-Reply-To: <20200319214438.GA21123@embeddedor.com>
+References: <20200319214438.GA21123@embeddedor.com>
 MIME-Version: 1.0
-Message-ID: <158551357256.28353.13119952500983370550.tip-bot2@tip-bot2>
+Message-ID: <158551357303.28353.13397746102071134405.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,14 +48,14 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     33ad1e5db06c94126352f785e9f0a08e867cb94c
-Gitweb:        https://git.kernel.org/tip/33ad1e5db06c94126352f785e9f0a08e867cb94c
+Commit-ID:     b2e1cbfd2d4af6f0797ed259de5f48e7dde60014
+Gitweb:        https://git.kernel.org/tip/b2e1cbfd2d4af6f0797ed259de5f48e7dde60014
 Author:        Gustavo A. R. Silva <gustavo@embeddedor.com>
-AuthorDate:    Thu, 19 Mar 2020 16:45:31 -05:00
+AuthorDate:    Thu, 19 Mar 2020 16:44:38 -05:00
 Committer:     Marc Zyngier <maz@kernel.org>
 CommitterDate: Sun, 22 Mar 2020 11:52:52 
 
-irqchip/qcom-irq-combiner: Replace zero-length array with flexible-array member
+irqchip/irq-bcm7038-l1: Replace zero-length array with flexible-array member
 
 The current codebase makes use of the zero-length array language
 extension to the C90 standard, but the preferred mechanism to declare
@@ -87,21 +87,21 @@ This issue was found with the help of Coccinelle.
 
 Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
 Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20200319214531.GA21326@embeddedor.com
+Link: https://lore.kernel.org/r/20200319214438.GA21123@embeddedor.com
 ---
- drivers/irqchip/qcom-irq-combiner.c | 2 +-
+ drivers/irqchip/irq-bcm7038-l1.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/irqchip/qcom-irq-combiner.c b/drivers/irqchip/qcom-irq-combiner.c
-index abfe592..aa54bfc 100644
---- a/drivers/irqchip/qcom-irq-combiner.c
-+++ b/drivers/irqchip/qcom-irq-combiner.c
-@@ -33,7 +33,7 @@ struct combiner {
- 	int                 parent_irq;
- 	u32                 nirqs;
- 	u32                 nregs;
--	struct combiner_reg regs[0];
-+	struct combiner_reg regs[];
+diff --git a/drivers/irqchip/irq-bcm7038-l1.c b/drivers/irqchip/irq-bcm7038-l1.c
+index cbf01af..eb9bce9 100644
+--- a/drivers/irqchip/irq-bcm7038-l1.c
++++ b/drivers/irqchip/irq-bcm7038-l1.c
+@@ -50,7 +50,7 @@ struct bcm7038_l1_chip {
+ 
+ struct bcm7038_l1_cpu {
+ 	void __iomem		*map_base;
+-	u32			mask_cache[0];
++	u32			mask_cache[];
  };
  
- static inline int irq_nr(u32 reg, u32 bit)
+ /*
