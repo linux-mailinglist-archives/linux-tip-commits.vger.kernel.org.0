@@ -2,152 +2,286 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CE5B519786D
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 30 Mar 2020 12:12:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA9B0197A5D
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 30 Mar 2020 13:06:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728640AbgC3KMY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 30 Mar 2020 06:12:24 -0400
-Received: from mail-mw2nam10on2050.outbound.protection.outlook.com ([40.107.94.50]:21281
-        "EHLO NAM10-MW2-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728553AbgC3KMY (ORCPT
+        id S1729612AbgC3LGE convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 30 Mar 2020 07:06:04 -0400
+Received: from mail.fireflyinternet.com ([109.228.58.192]:56311 "EHLO
+        fireflyinternet.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1729448AbgC3LGD (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 30 Mar 2020 06:12:24 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=CteJkVFVWSzBMO1YGLko1EgfH7H7EQzYwM7qcmt0UzhWxpnTmUgSf9J7OR8Niyfqszkf1+x/QEP1EuItH2hFkgKKqJmoXtAW8TLZJmyzyHdYVf+qpdwVRlZxPIL59/TkmLocf27sQ0AGx7txcEVo8AX2g7Phbjlexxw9iwLZiQrqjT+8guGx4vZGp+w32Pv4ktbT2GLX5Eh0D0B/ANdojjEveevbtHOYzgRJEse5+z53j5ZWmmvYF3eN2+Foba1voycXI7Og2RdkWihgCCSgAD+I/sPHDK4C9BawT0PYRViLpKi9dL/8kXmGv9UJODx5hoHWrTP0V4iL+lprb5c2NQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ze7N2PrSNO12e4TD4hk1fUXL3iYb+7S6+fNigW9HBc0=;
- b=Jj/EaMJ2JRz/vCIkMDeKnO7FR+FR5t1EK0CNdV/U5S15TE700a/WvsuNA6EaF2vzb8KgBhge7xN/gr6ozhvKm0KWynRo1m/YX4mFHZ2hVj9n9UuBbLgI19PZ7ZN+FqACX7OQtqUrsMlyxZccjZU4QXsE2KmkAIMKuzjCSZr0SNxXzXCHNxm0Kz4Po7AgoQGYqicfb7uYG38gqas+GlFUqE9FUOkqr1a4aLiIudIg8dx+h+9H+6RPnz+s8E0Vw0m8qly+0gyFFaWl7Yfx+nz7h6rF5nyoZQNzBgbBgGmUZeyvErFlVCfUCULKuS8BQSjlqu7QFL3O3/NiYIOgzJY3Sg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 149.199.60.83) smtp.rcpttodomain=kernel.org smtp.mailfrom=xilinx.com;
- dmarc=bestguesspass action=none header.from=xilinx.com; dkim=none (message
- not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=xilinx.onmicrosoft.com; s=selector2-xilinx-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ze7N2PrSNO12e4TD4hk1fUXL3iYb+7S6+fNigW9HBc0=;
- b=a3i/dM7SHEb/9lGV8k5KX+msLeHKifNa5XfsytkOpqpdbgtFTQba5728mat4ou8XzjElRbzgySOfqFhWTUruFX5a7ckT6hmpw5dj0TWsIYhqCLtpY6+Xpf9g9bUNIm5eKDRPJdJTZu+byt6N7fefSdlWDm1juMQuTBFlOEDcMhM=
-Received: from CY4PR02CA0037.namprd02.prod.outlook.com (2603:10b6:903:117::23)
- by CH2PR02MB6678.namprd02.prod.outlook.com (2603:10b6:610:a4::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2856.20; Mon, 30 Mar
- 2020 10:12:20 +0000
-Received: from CY1NAM02FT049.eop-nam02.prod.protection.outlook.com
- (2603:10b6:903:117:cafe::d2) by CY4PR02CA0037.outlook.office365.com
- (2603:10b6:903:117::23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2856.20 via Frontend
- Transport; Mon, 30 Mar 2020 10:12:20 +0000
-Authentication-Results: spf=pass (sender IP is 149.199.60.83)
- smtp.mailfrom=xilinx.com; kernel.org; dkim=none (message not signed)
- header.d=none;kernel.org; dmarc=bestguesspass action=none
- header.from=xilinx.com;
-Received-SPF: Pass (protection.outlook.com: domain of xilinx.com designates
- 149.199.60.83 as permitted sender) receiver=protection.outlook.com;
- client-ip=149.199.60.83; helo=xsj-pvapsmtpgw01;
-Received: from xsj-pvapsmtpgw01 (149.199.60.83) by
- CY1NAM02FT049.mail.protection.outlook.com (10.152.75.83) with Microsoft SMTP
- Server (version=TLS1_0, cipher=TLS_RSA_WITH_AES_256_CBC_SHA) id 15.20.2856.17
- via Frontend Transport; Mon, 30 Mar 2020 10:12:19 +0000
-Received: from unknown-38-66.xilinx.com ([149.199.38.66] helo=xsj-pvapsmtp01)
-        by xsj-pvapsmtpgw01 with esmtp (Exim 4.63)
-        (envelope-from <michal.simek@xilinx.com>)
-        id 1jIrP1-0007ZV-Ci; Mon, 30 Mar 2020 03:12:19 -0700
-Received: from [127.0.0.1] (helo=localhost)
-        by xsj-pvapsmtp01 with smtp (Exim 4.63)
-        (envelope-from <michal.simek@xilinx.com>)
-        id 1jIrOw-0001dq-9l; Mon, 30 Mar 2020 03:12:14 -0700
-Received: from xsj-pvapsmtp01 (smtp2.xilinx.com [149.199.38.66])
-        by xsj-smtp-dlp2.xlnx.xilinx.com (8.13.8/8.13.1) with ESMTP id 02UAC5c8010225;
-        Mon, 30 Mar 2020 03:12:05 -0700
-Received: from [172.30.17.108]
-        by xsj-pvapsmtp01 with esmtp (Exim 4.63)
-        (envelope-from <michals@xilinx.com>)
-        id 1jIrOn-0001am-C7; Mon, 30 Mar 2020 03:12:05 -0700
-Subject: Re: [tip: irq/core] irqchip/xilinx: Enable generic irq multi handler
-To:     Marc Zyngier <maz@kernel.org>,
-        Michal Simek <michal.simek@xilinx.com>
-Cc:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Stefan Asserhall <stefan.asserhall@xilinx.com>,
-        x86 <x86@kernel.org>, Stephen Rothwell <sfr@canb.auug.org.au>
-References: <20200317125600.15913-4-mubin.usman.sayyed@xilinx.com>
- <158551357076.28353.1716269552245308352.tip-bot2@tip-bot2>
- <083ad708-ea4d-ed53-598e-84d911ca4177@xilinx.com>
- <085188fea81d5ddc88b488124596a4a3@kernel.org>
- <895eba40-2e77-db1b-ea82-035c05f0b77e@xilinx.com>
- <ca0f62da-1e89-4fe8-5cb4-b7a86f97c5a3@xilinx.com>
- <21f1157d885071dcfdb1de0847c19e24@kernel.org>
- <44b64be7-9240-fd52-af90-e0245220f38b@xilinx.com>
- <2ee07d59d34be09be7653cbb553f26dc@kernel.org>
-From:   Michal Simek <michal.simek@xilinx.com>
-Message-ID: <a66e394f-3cf8-c102-a810-0c6dc3388527@xilinx.com>
-Date:   Mon, 30 Mar 2020 12:12:02 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+        Mon, 30 Mar 2020 07:06:03 -0400
+X-Default-Received-SPF: pass (skip=forwardok (res=PASS)) x-ip-name=78.156.65.138;
+Received: from localhost (unverified [78.156.65.138]) 
+        by fireflyinternet.com (Firefly Internet (M1)) with ESMTP (TLS) id 20738601-1500050 
+        for multiple; Mon, 30 Mar 2020 12:05:44 +0100
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-In-Reply-To: <2ee07d59d34be09be7653cbb553f26dc@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-RCIS-Action: ALLOW
-X-TM-AS-Product-Ver: IMSS-7.1.0.1224-8.2.0.1013-23620.005
-X-TM-AS-User-Approved-Sender: Yes;Yes
-X-EOPAttributedMessage: 0
-X-MS-Office365-Filtering-HT: Tenant
-X-Forefront-Antispam-Report: CIP:149.199.60.83;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:xsj-pvapsmtpgw01;PTR:unknown-60-83.xilinx.com;CAT:NONE;SFTY:;SFS:(10009020)(4636009)(346002)(396003)(136003)(39860400002)(376002)(46966005)(54906003)(26005)(4744005)(5660300002)(186003)(110136005)(44832011)(6666004)(81166006)(31686004)(81156014)(9786002)(2906002)(8676002)(356004)(8936002)(47076004)(426003)(82740400003)(36756003)(478600001)(4326008)(31696002)(53546011)(336012)(2616005)(70586007)(70206006)(316002)(41533002);DIR:OUT;SFP:1101;
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: fa02ada7-0c8c-4a1b-bf0a-08d7d492d4f4
-X-MS-TrafficTypeDiagnostic: CH2PR02MB6678:
-X-Microsoft-Antispam-PRVS: <CH2PR02MB667818E1D034DDF96CEA41EDC6CB0@CH2PR02MB6678.namprd02.prod.outlook.com>
-X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
-X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
-X-Forefront-PRVS: 0358535363
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: w2SH/OgiQ4PQiGHhDJtXYtt3HxSorlEgjHZ7dhwmr/4jLsv3VoxaL4enJC0OyF/RZX3HEwLQ9x59kq3zphTD+z9UOaJ8hpABOzOtpziwhLXalqNkZ9hGf/7ieq8GGLrtwuTlnV7RVLvPcW639VyDjev1rMScA/rfjY5q+u/danP60ZwKf+/cAe5YZ1FNsVm80sEdlR/25qpet50EipgyggUk8XjA+pcpLpXwVUt1CHI4UNN9dTibBHkajt1wQbCQbgfBrBaF8QDzjczHcGxY8G3YQqIpMy4RpYAS3S6eVWVcS4xdff/NHG4ax5L7FmO4oWVFgqJPOeYSR5N5iD6OowsEUM4TA71vyHKqj/D/knAaajXl/k8sXYJ3RIANERhMkJC6x/f/Mbl0Ysn65w/qon/ccb3M7OzzHaZOfBfsI+coWSpZQFievSzqS7Icgd5BTCCMmjVyd+lwlmfLsgYX0NDDB8yXBu1X4UpHHmtlvtlI7O1pBz+N75Dyuj9pjswr3iEY3Buw/FugSO5bXA0dls3lLoJqDQqPJxQ5sWamomE=
-X-OriginatorOrg: xilinx.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Mar 2020 10:12:19.8038
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: fa02ada7-0c8c-4a1b-bf0a-08d7d492d4f4
-X-MS-Exchange-CrossTenant-Id: 657af505-d5df-48d0-8300-c31994686c5c
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=657af505-d5df-48d0-8300-c31994686c5c;Ip=[149.199.60.83];Helo=[xsj-pvapsmtpgw01]
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR02MB6678
+Content-Transfer-Encoding: 8BIT
+In-Reply-To: <158029757853.396.10568128383380430250.tip-bot2@tip-bot2>
+References: <20200122151617.531-2-ggherdovich@suse.cz> <158029757853.396.10568128383380430250.tip-bot2@tip-bot2>
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Giovanni Gherdovich <ggherdovich@suse.cz>,
+        Ingo Molnar <mingo@kernel.org>,
+        Doug Smythies <dsmythies@telus.net>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+To:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
+        tip-bot2 for Giovanni Gherdovich <tip-bot2@linutronix.de>
+Subject: Re: [tip: sched/core] x86, sched: Add support for frequency invariance
+From:   Chris Wilson <chris@chris-wilson.co.uk>
+Message-ID: <158556634294.3228.4889951961483021094@build.alporthouse.com>
+User-Agent: alot/0.8.1
+Date:   Mon, 30 Mar 2020 12:05:42 +0100
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On 30. 03. 20 12:04, Marc Zyngier wrote:
-> On 2020-03-30 10:27, Michal Simek wrote:
->> On 30. 03. 20 11:19, Marc Zyngier wrote:
->>> On 2020-03-30 10:12, Michal Simek wrote:
->>>> On 30. 03. 20 11:03, Michal Simek wrote:
+Quoting tip-bot2 for Giovanni Gherdovich (2020-01-29 11:32:58)
+> The following commit has been merged into the sched/core branch of tip:
 > 
-> [...]
+> Commit-ID:     1567c3e3467cddeb019a7b53ec632f834b6a9239
+> Gitweb:        https://git.kernel.org/tip/1567c3e3467cddeb019a7b53ec632f834b6a9239
+> Author:        Giovanni Gherdovich <ggherdovich@suse.cz>
+> AuthorDate:    Wed, 22 Jan 2020 16:16:12 +01:00
+> Committer:     Ingo Molnar <mingo@kernel.org>
+> CommitterDate: Tue, 28 Jan 2020 21:36:59 +01:00
 > 
->>>> One more thing. We could also get this function back and it will be
->>>> fine
->>>> too. But up2you.
->>>
->>> If you leave it up to me, I'll revert the whole series right now.
->>>
->>> What I'd expect from you is to tell me exactly what is the minimal
->>> change that keeps it working on both ARM, microblaze and PPC.
->>> If it is a revert, tell me which patches to revert. if it is a patch
->>> on top, send me the fix so that I can queue it now.
->>
->> It won't be that simple. Please revert patches
->>
->> 9c2d4f525c00 ("irqchip/xilinx: Do not call irq_set_default_host()")
->> a0789993bf82 ("irqchip/xilinx: Enable generic irq multi handler")
->>
->> And we should be fine.
-> 
-> Now reverted and pushed out. I'll send a pull request to Thomas tomorrow.
+> x86, sched: Add support for frequency invariance
+> diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
+> index 69881b2..28696bc 100644
+> --- a/arch/x86/kernel/smpboot.c
+> +++ b/arch/x86/kernel/smpboot.c
+> @@ -147,6 +147,8 @@ static inline void smpboot_restore_warm_reset_vector(void)
+>         *((volatile u32 *)phys_to_virt(TRAMPOLINE_PHYS_LOW)) = 0;
+>  }
+>  
+> +static void init_freq_invariance(void);
+> +
+>  /*
+>   * Report back to the Boot Processor during boot time or to the caller processor
+>   * during CPU online.
+> @@ -183,6 +185,8 @@ static void smp_callin(void)
+>          */
+>         set_cpu_sibling_map(raw_smp_processor_id());
+>  
+> +       init_freq_invariance();
+> +
+>         /*
+>          * Get our bogomips.
+>          * Update loops_per_jiffy in cpu_data. Previous call to
+> @@ -1337,7 +1341,7 @@ void __init native_smp_prepare_cpus(unsigned int max_cpus)
+>         set_sched_topology(x86_topology);
+>  
+>         set_cpu_sibling_map(0);
+> -
+> +       init_freq_invariance();
+>         smp_sanity_check();
+>  
+>         switch (apic_intr_mode) {
 
-Thanks,
-Michal
+Since this has become visible via linux-next [20200326?], we have been
+deluged by oops during cpu-hotplug.
 
+<6> [184.949219] [IGT] perf_pmu: starting subtest cpu-hotplug
+<4> [185.092279] IRQ 24: no longer affine to CPU0
+<4> [185.092285] IRQ 25: no longer affine to CPU0
+<6> [185.093709] smpboot: CPU 0 is now offline
+<6> [186.107062] smpboot: Booting Node 0 Processor 0 APIC 0x0
+<3> [186.107643] BUG: sleeping function called from invalid context at ./include/linux/percpu-rwsem.h:49
+<3> [186.107648] in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 0, name: swapper/0
+<4> [186.107650] no locks held by swapper/0/0.
+<4> [186.107652] irq event stamp: 6424624
+<4> [186.107658] hardirqs last  enabled at (6424623): [<ffffffff951744bf>] tick_nohz_idle_enter+0x5f/0x90
+<4> [186.107664] hardirqs last disabled at (6424624): [<ffffffff950fa1e2>] do_idle+0x82/0x260
+<4> [186.107669] softirqs last  enabled at (6424590): [<ffffffff95e00395>] __do_softirq+0x395/0x49e
+<4> [186.107674] softirqs last disabled at (6424571): [<ffffffff950c195a>] irq_exit+0xba/0xc0
+<3> [186.107677] Preemption disabled at:
+<4> [186.107681] [<ffffffff9504843b>] start_secondary+0x4b/0x1b0
+<4> [186.107685] CPU: 0 PID: 0 Comm: swapper/0 Tainted: G     U            5.6.0-rc7-next-20200327-g975f7a88c64d-next-20200327 #1
+<4> [186.107687] Hardware name: MSI MS-7924/Z97M-G43(MS-7924), BIOS V1.12 02/15/2016
+<4> [186.107688] Call Trace:
+<4> [186.107695]  dump_stack+0x71/0x9b
+<4> [186.107702]  ___might_sleep+0x178/0x260
+<4> [186.107708]  cpus_read_lock+0x13/0xd0
+<4> [186.107713]  static_key_enable+0x9/0x20
+<4> [186.107717]  init_freq_invariance+0x1f0/0x3a0
+<4> [186.107724]  start_secondary+0x71/0x1b0
+<4> [186.107729]  secondary_startup_64+0xb6/0xc0
+<3> [186.107756] BUG: scheduling while atomic: swapper/0/0/0x00000002
+<4> [186.107763] 1 lock held by swapper/0/0:
+<4> [186.107767]  #0: ffffffff9643e510 (cpu_hotplug_lock){++++}-{0:0}, at: static_key_enable+0x9/0x20
+<4> [186.107775] Modules linked in: vgem snd_hda_codec_hdmi mei_hdcp i915 x86_pkg_temp_thermal coretemp snd_hda_codec_realtek snd_hda_codec_generic crct10dif_pclmul snd_hda_intel crc32_pclmul snd_intel_dspcfg ghash_clmulni_intel snd_hda_codec snd_hwdep snd_hda_core r8169 lpc_ich snd_pcm mei_me mei realtek prime_numbers
+<3> [186.107797] Preemption disabled at:
+<4> [186.107800] [<ffffffff9504843b>] start_secondary+0x4b/0x1b0
+<4> [186.107803] CPU: 0 PID: 0 Comm: swapper/0 Tainted: G     U  W         5.6.0-rc7-next-20200327-g975f7a88c64d-next-20200327 #1
+<4> [186.107805] Hardware name: MSI MS-7924/Z97M-G43(MS-7924), BIOS V1.12 02/15/2016
+<4> [186.107807] Call Trace:
+<4> [186.107811]  dump_stack+0x71/0x9b
+<4> [186.107815]  ? start_secondary+0x4b/0x1b0
+<4> [186.107819]  __schedule_bug+0x7b/0xd0
+<4> [186.107825]  __schedule+0x776/0x810
+<4> [186.107832]  ? mark_held_locks+0x49/0x70
+<4> [186.107839]  schedule+0x37/0xe0
+<4> [186.107843]  ? percpu_rwsem_wait+0x117/0x180
+<4> [186.107846]  percpu_rwsem_wait+0x117/0x180
+<4> [186.107851]  ? percpu_down_write+0x140/0x140
+<4> [186.107859]  __percpu_down_read+0x43/0x60
+<4> [186.107864]  cpus_read_lock+0xc6/0xd0
+<4> [186.107867]  static_key_enable+0x9/0x20
+<4> [186.107871]  init_freq_invariance+0x1f0/0x3a0
+<4> [186.107878]  start_secondary+0x71/0x1b0
+<4> [186.107883]  secondary_startup_64+0xb6/0xc0
+<4> [186.107900] ------------[ cut here ]------------
+<4> [186.107901] releasing a pinned lock
+<4> [186.107908] WARNING: CPU: 0 PID: 0 at kernel/locking/lockdep.c:4640 lock_release+0x2a2/0x2c0
+<4> [186.107909] Modules linked in: vgem snd_hda_codec_hdmi mei_hdcp i915 x86_pkg_temp_thermal coretemp snd_hda_codec_realtek snd_hda_codec_generic crct10dif_pclmul snd_hda_intel crc32_pclmul snd_intel_dspcfg ghash_clmulni_intel snd_hda_codec snd_hwdep snd_hda_core r8169 lpc_ich snd_pcm mei_me mei realtek prime_numbers
+<4> [186.107924] CPU: 0 PID: 0 Comm: swapper/0 Tainted: G     U  W         5.6.0-rc7-next-20200327-g975f7a88c64d-next-20200327 #1
+<4> [186.107926] Hardware name: MSI MS-7924/Z97M-G43(MS-7924), BIOS V1.12 02/15/2016
+<4> [186.107928] RIP: 0010:lock_release+0x2a2/0x2c0
+<4> [186.107931] Code: be 3f 00 00 00 48 c7 c7 51 a7 2b 96 c6 05 68 6d 41 01 01 e8 40 8e ff ff eb ae 48 c7 c7 51 a8 2b 96 48 89 04 24 e8 be 0b f9 ff <0f> 0b 48 8b 04 24 e9 22 fe ff ff e8 4e 0e f9 ff 0f 1f 40 00 66 2e
+<4> [186.107933] RSP: 0018:ffffffff96403d88 EFLAGS: 00010086
+<4> [186.107936] RAX: 0000000000000000 RBX: ffffffff964188c0 RCX: 0000000000000003
+<4> [186.107937] RDX: 0000000080000003 RSI: ffffffff95138419 RDI: 00000000ffffffff
+<4> [186.107939] RBP: ffffa1290f83bc58 R08: 0000000000000001 R09: 0000000000000001
+<4> [186.107940] R10: ffffffff96403dc0 R11: 0000000000077cc4 R12: 0000000000000046
+<4> [186.107944] R13: ffffffff950fa029 R14: 0000000000000002 R15: 00000000d3a98c93
+<4> [186.107947] FS:  0000000000000000(0000) GS:ffffa1290f800000(0000) knlGS:0000000000000000
+<4> [186.107948] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+<4> [186.107950] CR2: 00007f307e92fb24 CR3: 0000000287410001 CR4: 00000000001606f0
+<4> [186.107951] Call Trace:
+<4> [186.107956]  _raw_spin_unlock_irq+0x12/0x40
+<4> [186.107959]  dequeue_task_idle+0x9/0x30
+<4> [186.107962]  __schedule+0x3cc/0x810
+<4> [186.107965]  schedule+0x37/0xe0
+<4> [186.107969]  ? percpu_rwsem_wait+0x117/0x180
+<4> [186.107972]  percpu_rwsem_wait+0x117/0x180
+<4> [186.107975]  ? percpu_down_write+0x140/0x140
+<4> [186.107978]  __percpu_down_read+0x43/0x60
+<4> [186.107981]  cpus_read_lock+0xc6/0xd0
+<4> [186.107984]  static_key_enable+0x9/0x20
+<4> [186.107988]  init_freq_invariance+0x1f0/0x3a0
+<4> [186.107991]  start_secondary+0x71/0x1b0
+<4> [186.107993]  secondary_startup_64+0xb6/0xc0
+<4> [186.107997] irq event stamp: 6424720
+<4> [186.108001] hardirqs last  enabled at (6424719): [<ffffffff95a5f298>] dump_stack+0x93/0x9b
+<4> [186.108004] hardirqs last disabled at (6424720): [<ffffffff95a781f4>] __schedule+0xc4/0x810
+<4> [186.108007] softirqs last  enabled at (6424590): [<ffffffff95e00395>] __do_softirq+0x395/0x49e
+<4> [186.108011] softirqs last disabled at (6424571): [<ffffffff950c195a>] irq_exit+0xba/0xc0
+<4> [186.108013] ---[ end trace 8ae0a00b9ac91c9b ]---
+<3> [186.108015] bad: scheduling from the idle thread!
+<4> [186.108018] CPU: 0 PID: 0 Comm: swapper/0 Tainted: G     U  W         5.6.0-rc7-next-20200327-g975f7a88c64d-next-20200327 #1
+<4> [186.108020] Hardware name: MSI MS-7924/Z97M-G43(MS-7924), BIOS V1.12 02/15/2016
+<4> [186.108022] Call Trace:
+<4> [186.108028]  dump_stack+0x71/0x9b
+<4> [186.108033]  dequeue_task_idle+0x1a/0x30
+<4> [186.108036]  __schedule+0x3cc/0x810
+<4> [186.108047]  schedule+0x37/0xe0
+<4> [186.108050]  ? percpu_rwsem_wait+0x117/0x180
+<4> [186.108053]  percpu_rwsem_wait+0x117/0x180
+<4> [186.108059]  ? percpu_down_write+0x140/0x140
+<4> [186.108067]  __percpu_down_read+0x43/0x60
+<4> [186.108072]  cpus_read_lock+0xc6/0xd0
+<4> [186.108077]  static_key_enable+0x9/0x20
+<4> [186.108081]  init_freq_invariance+0x1f0/0x3a0
+<4> [186.108089]  start_secondary+0x71/0x1b0
+<4> [186.108094]  secondary_startup_64+0xb6/0xc0
+<4> [186.108112] ------------[ cut here ]------------
+<4> [186.108112] unpinning an unpinned lock
+<4> [186.108117] WARNING: CPU: 0 PID: 0 at kernel/locking/lockdep.c:4768 lock_unpin_lock+0x11e/0x130
+<4> [186.108119] Modules linked in: vgem snd_hda_codec_hdmi mei_hdcp i915 x86_pkg_temp_thermal coretemp snd_hda_codec_realtek snd_hda_codec_generic crct10dif_pclmul snd_hda_intel crc32_pclmul snd_intel_dspcfg ghash_clmulni_intel snd_hda_codec snd_hwdep snd_hda_core r8169 lpc_ich snd_pcm mei_me mei realtek prime_numbers
+<4> [186.108133] CPU: 0 PID: 0 Comm: swapper/0 Tainted: G     U  W         5.6.0-rc7-next-20200327-g975f7a88c64d-next-20200327 #1
+<4> [186.108134] Hardware name: MSI MS-7924/Z97M-G43(MS-7924), BIOS V1.12 02/15/2016
+<4> [186.108136] RIP: 0010:lock_unpin_lock+0x11e/0x130
+<4> [186.108138] Code: 96 e8 86 01 f9 ff 0f 0b e9 37 ff ff ff 0f 0b c7 82 bc 08 00 00 00 00 00 00 e9 3c ff ff ff 48 c7 c7 90 a8 2b 96 e8 62 01 f9 ff <0f> 0b e9 13 ff ff ff 90 66 2e 0f 1f 84 00 00 00 00 00 44 8b 0d 4d
+<4> [186.108139] RSP: 0018:ffffffff96403db0 EFLAGS: 00010086
+<4> [186.108140] RAX: 0000000000000000 RBX: ffffffff964191a8 RCX: 0000000000000003
+<4> [186.108141] RDX: 0000000080000003 RSI: ffffffff95138419 RDI: 00000000ffffffff
+<4> [186.108142] RBP: ffffffff964188c0 R08: 0000000000000001 R09: 0000000000000001
+<4> [186.108143] R10: 00000000e6f5d832 R11: 0000000000078b54 R12: ffffa1290f83bc58
+<4> [186.108144] R13: ffffffff96419180 R14: 0000000000000046 R15: 0000000000000001
+<4> [186.108145] FS:  0000000000000000(0000) GS:ffffa1290f800000(0000) knlGS:0000000000000000
+<4> [186.108146] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+<4> [186.108147] CR2: 00007f307e92fb24 CR3: 0000000287410001 CR4: 00000000001606f0
+<4> [186.108147] Call Trace:
+<4> [186.108151]  __schedule+0x747/0x810
+<4> [186.108154]  schedule+0x37/0xe0
+<4> [186.108156]  ? percpu_rwsem_wait+0x117/0x180
+<4> [186.108157]  percpu_rwsem_wait+0x117/0x180
+<4> [186.108160]  ? percpu_down_write+0x140/0x140
+<4> [186.108162]  __percpu_down_read+0x43/0x60
+<4> [186.108165]  cpus_read_lock+0xc6/0xd0
+<4> [186.108167]  static_key_enable+0x9/0x20
+<4> [186.108171]  init_freq_invariance+0x1f0/0x3a0
+<4> [186.108173]  start_secondary+0x71/0x1b0
+<4> [186.108175]  secondary_startup_64+0xb6/0xc0
+<4> [186.108178] irq event stamp: 6424730
+<4> [186.108181] hardirqs last  enabled at (6424729): [<ffffffff95a5f298>] dump_stack+0x93/0x9b
+<4> [186.108183] hardirqs last disabled at (6424730): [<ffffffff95a7f32a>] _raw_spin_lock_irq+0xa/0x40
+<4> [186.108185] softirqs last  enabled at (6424590): [<ffffffff95e00395>] __do_softirq+0x395/0x49e
+<4> [186.108188] softirqs last disabled at (6424571): [<ffffffff950c195a>] irq_exit+0xba/0xc0
+<4> [186.108188] ---[ end trace 8ae0a00b9ac91c9c ]---
+<4> [186.108191] ------------[ cut here ]------------
+<4> [186.108191] releasing a pinned lock
+<4> [186.108196] WARNING: CPU: 0 PID: 0 at kernel/locking/lockdep.c:4640 lock_release+0x2a2/0x2c0
+<4> [186.108196] Modules linked in: vgem snd_hda_codec_hdmi mei_hdcp i915 x86_pkg_temp_thermal coretemp snd_hda_codec_realtek snd_hda_codec_generic crct10dif_pclmul snd_hda_intel crc32_pclmul snd_intel_dspcfg ghash_clmulni_intel snd_hda_codec snd_hwdep snd_hda_core r8169 lpc_ich snd_pcm mei_me mei realtek prime_numbers
+<4> [186.108204] CPU: 0 PID: 0 Comm: swapper/0 Tainted: G     U  W         5.6.0-rc7-next-20200327-g975f7a88c64d-next-20200327 #1
+<4> [186.108205] Hardware name: MSI MS-7924/Z97M-G43(MS-7924), BIOS V1.12 02/15/2016
+<4> [186.108207] RIP: 0010:lock_release+0x2a2/0x2c0
+<4> [186.108208] Code: be 3f 00 00 00 48 c7 c7 51 a7 2b 96 c6 05 68 6d 41 01 01 e8 40 8e ff ff eb ae 48 c7 c7 51 a8 2b 96 48 89 04 24 e8 be 0b f9 ff <0f> 0b 48 8b 04 24 e9 22 fe ff ff e8 4e 0e f9 ff 0f 1f 40 00 66 2e
+<4> [186.108209] RSP: 0018:ffffffff96403d88 EFLAGS: 00010086
+<4> [186.108210] RAX: 0000000000000000 RBX: ffffffff964188c0 RCX: 0000000000000003
+<4> [186.108211] RDX: 0000000080000003 RSI: ffffffff95138419 RDI: 00000000ffffffff
+<4> [186.108212] RBP: ffffa1290f83bc58 R08: 0000000000000001 R09: 0000000000000001
+<4> [186.108213] R10: ffffffff96403dc0 R11: 00000000000795ac R12: 0000000000000046
+<4> [186.108214] R13: ffffffff950fa029 R14: 0000000000000002 R15: 00000000d3a98c93
+<4> [186.108215] FS:  0000000000000000(0000) GS:ffffa1290f800000(0000) knlGS:0000000000000000
+<4> [186.108216] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+<4> [186.108217] CR2: 00007f307e92fb24 CR3: 0000000287410001 CR4: 00000000001606f0
+<4> [186.108218] Call Trace:
+<4> [186.108221]  _raw_spin_unlock_irq+0x12/0x40
+<4> [186.108225]  dequeue_task_idle+0x9/0x30
+<4> [186.108227]  __schedule+0x3cc/0x810
+<4> [186.108230]  schedule+0x37/0xe0
+<4> [186.108232]  ? percpu_rwsem_wait+0x117/0x180
+<4> [186.108233]  percpu_rwsem_wait+0x117/0x180
+<4> [186.108235]  ? percpu_down_write+0x140/0x140
+<4> [186.108238]  __percpu_down_read+0x43/0x60
+<4> [186.108240]  cpus_read_lock+0xc6/0xd0
+<4> [186.108242]  static_key_enable+0x9/0x20
+<4> [186.108245]  init_freq_invariance+0x1f0/0x3a0
+<4> [186.108247]  start_secondary+0x71/0x1b0
+<4> [186.108249]  secondary_startup_64+0xb6/0xc0
+<4> [186.108252] irq event stamp: 6424732
+<4> [186.108255] hardirqs last  enabled at (6424731): [<ffffffff95a7f57f>] _raw_spin_unlock_irq+0x1f/0x40
+<4> [186.108257] hardirqs last disabled at (6424732): [<ffffffff95a781f4>] __schedule+0xc4/0x810
+<4> [186.108258] softirqs last  enabled at (6424590): [<ffffffff95e00395>] __do_softirq+0x395/0x49e
+<4> [186.108261] softirqs last disabled at (6424571): [<ffffffff950c195a>] irq_exit+0xba/0xc0
+<4> [186.108262] ---[ end trace 8ae0a00b9ac91c9d ]---
+<3> [186.108263] bad: scheduling from the idle thread!
+<4> [186.108266] CPU: 0 PID: 0 Comm: swapper/0 Tainted: G     U  W         5.6.0-rc7-next-20200327-g975f7a88c64d-next-20200327 #1
+<4> [186.108268] Hardware name: MSI MS-7924/Z97M-G43(MS-7924), BIOS V1.12 02/15/2016
+<4> [186.108269] Call Trace:
+<4> [186.108273]  dump_stack+0x71/0x9b
+<4> [186.108278]  dequeue_task_idle+0x1a/0x30
+<4> [186.108282]  __schedule+0x3cc/0x810
+<4> [186.108292]  schedule+0x37/0xe0
+<4> [186.108296]  ? percpu_rwsem_wait+0x117/0x180
+<4> [186.108298]  percpu_rwsem_wait+0x117/0x180
+<4> [186.108303]  ? percpu_down_write+0x140/0x140
+<4> [186.108311]  __percpu_down_read+0x43/0x60
+<4> [186.108316]  cpus_read_lock+0xc6/0xd0
+<4> [186.108319]  static_key_enable+0x9/0x20
+<4> [186.108323]  init_freq_invariance+0x1f0/0x3a0
+<4> [186.108330]  start_secondary+0x71/0x1b0
+<4> [186.108335]  secondary_startup_64+0xb6/0xc0
+<4> [186.108351] ------------[ cut here ]------------
+
+repeating ad nauseam, e.g.
+https://intel-gfx-ci.01.org/tree/linux-next/next-20200327/shard-hsw4/dmesg9.txt
+
+Across all our test boxen.
+-Chris
