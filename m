@@ -2,81 +2,117 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FCB2199E17
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 31 Mar 2020 20:34:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E192419A020
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 31 Mar 2020 22:47:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727575AbgCaSeJ convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 31 Mar 2020 14:34:09 -0400
-Received: from mail.fireflyinternet.com ([109.228.58.192]:59525 "EHLO
-        fireflyinternet.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726170AbgCaSeJ (ORCPT
+        id S1731396AbgCaUr2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 31 Mar 2020 16:47:28 -0400
+Received: from bilbo.ozlabs.org ([203.11.71.1]:42673 "EHLO ozlabs.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1731335AbgCaUr2 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 31 Mar 2020 14:34:09 -0400
-X-Default-Received-SPF: pass (skip=forwardok (res=PASS)) x-ip-name=78.156.65.138;
-Received: from localhost (unverified [78.156.65.138]) 
-        by fireflyinternet.com (Firefly Internet (M1)) with ESMTP (TLS) id 20756283-1500050 
-        for multiple; Tue, 31 Mar 2020 19:33:51 +0100
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-In-Reply-To: <1585678285.30493.27.camel@suse.cz>
-References: <20200122151617.531-2-ggherdovich@suse.cz> <158029757853.396.10568128383380430250.tip-bot2@tip-bot2> <158556634294.3228.4889951961483021094@build.alporthouse.com> <1585678285.30493.27.camel@suse.cz>
-Subject: Re: [tip: sched/core] x86, sched: Add support for frequency invariance
-From:   Chris Wilson <chris@chris-wilson.co.uk>
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        Doug Smythies <dsmythies@telus.net>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        x86 <x86@kernel.org>
-To:     Giovanni Gherdovich <ggherdovich@suse.cz>,
+        Tue, 31 Mar 2020 16:47:28 -0400
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 48sLx76Mqmz9sSw;
+        Wed,  1 Apr 2020 07:47:23 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
+        s=201702; t=1585687645;
+        bh=pIS6nb9vgn/2smEo5fZq7jsxhBPw73VjqzvwUwfT2qk=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=G+VtWL52KBtfXeusCab+K4Z5aStqBgstaXPhckyN2w8qyDoQ8Fu02VCQ/QgmK4mKC
+         QwS2GQpnyl6pbKJiP/hKGZFOptHePBvks13vUWlo97t2znXkueboDbn6XaUUfd98G5
+         Nv+42WX14NOkrjjL/vEKccQMpLBYhngfcmNBrXoCApB5LfyxKxsZ5Tkck1xKgcbnwy
+         suB7sYjB6AKK8MYCoPKqfz0MYJ5o7PoiMYWDfommzHuVB3ZhrANk0RLI1Jy05ys8iH
+         LJrgDOZpHBV4TxMVXF4ObM8mueJ4fUqS+xyLvBYcECfs5faq0g7DCIT+C76qL7gn5y
+         PFRtTURRJnm7w==
+Date:   Wed, 1 Apr 2020 07:47:22 +1100
+From:   Stephen Rothwell <sfr@canb.auug.org.au>
+To:     Marc Zyngier <maz@kernel.org>
+Cc:     Michal Simek <michal.simek@xilinx.com>,
         linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-        tip-bot2 for Giovanni Gherdovich <tip-bot2@linutronix.de>
-Message-ID: <158567963079.5852.13300525696474233020@build.alporthouse.com>
-User-Agent: alot/0.8.1
-Date:   Tue, 31 Mar 2020 19:33:50 +0100
+        Thomas Gleixner <tglx@linutronix.de>,
+        Stefan Asserhall <stefan.asserhall@xilinx.com>,
+        x86 <x86@kernel.org>
+Subject: Re: [tip: irq/core] irqchip/xilinx: Enable generic irq multi
+ handler
+Message-ID: <20200401074722.4783de95@canb.auug.org.au>
+In-Reply-To: <2ee07d59d34be09be7653cbb553f26dc@kernel.org>
+References: <20200317125600.15913-4-mubin.usman.sayyed@xilinx.com>
+        <158551357076.28353.1716269552245308352.tip-bot2@tip-bot2>
+        <083ad708-ea4d-ed53-598e-84d911ca4177@xilinx.com>
+        <085188fea81d5ddc88b488124596a4a3@kernel.org>
+        <895eba40-2e77-db1b-ea82-035c05f0b77e@xilinx.com>
+        <ca0f62da-1e89-4fe8-5cb4-b7a86f97c5a3@xilinx.com>
+        <21f1157d885071dcfdb1de0847c19e24@kernel.org>
+        <44b64be7-9240-fd52-af90-e0245220f38b@xilinx.com>
+        <2ee07d59d34be09be7653cbb553f26dc@kernel.org>
+MIME-Version: 1.0
+Content-Type: multipart/signed; boundary="Sig_/1H5MB2Drzxc4D_J.vgssIZM";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-Quoting Giovanni Gherdovich (2020-03-31 19:11:25)
-> Hello Chris,
-> 
-> thank you for catching this problem and sorry for the mess.
-> 
-> Until your message I wasn't aware that CPU0 can be hotplugged, but now that I
-> check the feature is been there since v3.8 :/
-> 
-> The code assumes cpu0 is always there and I need to fix that.
-> 
-> It seems your report comes from executing an automated test suite, can you
-> give me a link to the test sources and a hint on how to run it? I'd like to
-> reproduce locally so that I make sure I correctly address this problem.
+--Sig_/1H5MB2Drzxc4D_J.vgssIZM
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-https://gitlab.freedesktop.org/drm/igt-gpu-tools/
+Hi Marc,
 
-It's an i915 test (so expects i915 running and root access to your
-machine, with the intent of breaking your machine), but the cpu
-hotplugging could be extracted
+On Mon, 30 Mar 2020 11:04:14 +0100 Marc Zyngier <maz@kernel.org> wrote:
+>
+> On 2020-03-30 10:27, Michal Simek wrote:
+> > On 30. 03. 20 11:19, Marc Zyngier wrote: =20
+> >> On 2020-03-30 10:12, Michal Simek wrote: =20
+> >>> On 30. 03. 20 11:03, Michal Simek wrote: =20
+>=20
+> [...]
+>=20
+> >>> One more thing. We could also get this function back and it will be=20
+> >>> fine
+> >>> too. But up2you. =20
+> >>=20
+> >> If you leave it up to me, I'll revert the whole series right now.
+> >>=20
+> >> What I'd expect from you is to tell me exactly what is the minimal
+> >> change that keeps it working on both ARM, microblaze and PPC.
+> >> If it is a revert, tell me which patches to revert. if it is a patch
+> >> on top, send me the fix so that I can queue it now. =20
+> >=20
+> > It won't be that simple. Please revert patches
+> >=20
+> > 9c2d4f525c00 ("irqchip/xilinx: Do not call irq_set_default_host()")
+> > a0789993bf82 ("irqchip/xilinx: Enable generic irq multi handler")
+> >=20
+> > And we should be fine. =20
+>=20
+> Now reverted and pushed out. I'll send a pull request to Thomas=20
+> tomorrow.
 
-https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/blob/master/tests/perf_pmu.c#L1153
+Unfortunately, those commits made it to Linus' tree without the reverts :-(
 
-since it's basically doing:
-	i = 0
-	while :; do
-		test -e /sys/devices/system/cpu/cpu$i/online || break
+--=20
+Cheers,
+Stephen Rothwell
 
-		echo 0 > /sys/devices/system/cpu/cpu$i/online
-		sleep .1
-		echo 1 > /sys/devices/system/cpu/cpu$i/online
+--Sig_/1H5MB2Drzxc4D_J.vgssIZM
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
 
-		i = $[[ $i + 1 ]]
-	done
-	dmesg
+-----BEGIN PGP SIGNATURE-----
 
-Possibly running that under perf stat to keep perf_event_open, or
-something else that hooks up the perf cpu hotplug callbacks.
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl6DrFoACgkQAVBC80lX
+0GydPwf/f16SxExtN814pfAzjVmhz19KKKFkJj4VWO9HtT3EwDsRz1OeVhWPBeDo
+0Cv6gywKWJBF8ZEtYPs6/CV3xU8+hed7ykk301klpy0SRAFxJOuTorITeuQ0RWOj
+A84hvaXjjcqNOj28hK7xqVlcGRDoCRxpi3h+Ki7z/x7xCvcmkYzQavHTwGzbw+5T
+aojV5z6BYPJN0Hp89tkPxJ1OGhMHo/jtC3UTAl0tB/EvRgGCt4z7ekdAoaOEDPhz
+Hj72cJgSClNM4vTxWsv2dMwH9MVDQrS1nJOT1lr1uvfLmsAXd+zTYZAUJ4ud34aa
+DdL44zrpp+a5KUG5a2fOZjhLvQ6UpA==
+=9HvH
+-----END PGP SIGNATURE-----
 
-Hope that helps,
--Chris
+--Sig_/1H5MB2Drzxc4D_J.vgssIZM--
