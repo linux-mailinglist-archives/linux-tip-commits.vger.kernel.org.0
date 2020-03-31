@@ -2,137 +2,88 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DF761984B7
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 30 Mar 2020 21:40:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A22B199DD2
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 31 Mar 2020 20:11:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728316AbgC3TkT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 30 Mar 2020 15:40:19 -0400
-Received: from foss.arm.com ([217.140.110.172]:34028 "EHLO foss.arm.com"
+        id S1726194AbgCaSLb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 31 Mar 2020 14:11:31 -0400
+Received: from mx2.suse.de ([195.135.220.15]:58604 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728165AbgC3TkT (ORCPT
+        id S1725988AbgCaSLb (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 30 Mar 2020 15:40:19 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9DCB81FB;
-        Mon, 30 Mar 2020 12:40:18 -0700 (PDT)
-Received: from e107158-lin.cambridge.arm.com (e107158-lin.cambridge.arm.com [10.1.195.21])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BE1F53F68F;
-        Mon, 30 Mar 2020 12:40:16 -0700 (PDT)
-Date:   Mon, 30 Mar 2020 20:40:14 +0100
-From:   Qais Yousef <qais.yousef@arm.com>
-To:     Thomas Gleixner <tglx@linutronix.de>
-Cc:     Boqun Feng <boqun.feng@gmail.com>, peterz@infradead.org,
-        linux-kernel@vger.kernel.org, len.brown@intel.com,
-        pkondeti@codeaurora.org, jpoimboe@redhat.com, pavel@ucw.cz,
-        konrad.wilk@oracle.com, mojha@codeaurora.org, jkosina@suse.cz,
-        mingo@kernel.org, hpa@zytor.com, rjw@rjwysocki.net,
-        linux-tip-commits@vger.kernel.org
-Subject: Re: [tip:smp/hotplug] cpu/hotplug: Abort disabling secondary CPUs if
- wakeup is pending
-Message-ID: <20200330194014.lwpmbv2zekfk6ywx@e107158-lin.cambridge.arm.com>
-References: <1559536263-16472-1-git-send-email-pkondeti@codeaurora.org>
- <tip-a66d955e910ab0e598d7a7450cbe6139f52befe7@git.kernel.org>
- <20200327025311.GA58760@debian-boqun.qqnc3lrjykvubdpftowmye0fmh.lx.internal.cloudapp.net>
- <874kuaxdiz.fsf@nanos.tec.linutronix.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <874kuaxdiz.fsf@nanos.tec.linutronix.de>
-User-Agent: NeoMutt/20171215
+        Tue, 31 Mar 2020 14:11:31 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx2.suse.de (Postfix) with ESMTP id E9855AC52;
+        Tue, 31 Mar 2020 18:11:26 +0000 (UTC)
+Message-ID: <1585678285.30493.27.camel@suse.cz>
+Subject: Re: [tip: sched/core] x86, sched: Add support for frequency
+ invariance
+From:   Giovanni Gherdovich <ggherdovich@suse.cz>
+To:     Chris Wilson <chris@chris-wilson.co.uk>,
+        linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
+        tip-bot2 for Giovanni Gherdovich <tip-bot2@linutronix.de>
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        Doug Smythies <dsmythies@telus.net>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        x86 <x86@kernel.org>
+Date:   Tue, 31 Mar 2020 20:11:25 +0200
+In-Reply-To: <158556634294.3228.4889951961483021094@build.alporthouse.com>
+References: <20200122151617.531-2-ggherdovich@suse.cz>
+         <158029757853.396.10568128383380430250.tip-bot2@tip-bot2>
+         <158556634294.3228.4889951961483021094@build.alporthouse.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.26.6 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On 03/27/20 12:06, Thomas Gleixner wrote:
-> Boqun Feng <boqun.feng@gmail.com> writes:
-> > From the commit message, it makes sense to add the pm_wakeup_pending()
-> > check if freeze_secondary_cpus() is used for system suspend. However,
-> > freeze_secondary_cpus() is also used in kexec path on arm64:
+On Mon, 2020-03-30 at 12:05 +0100, Chris Wilson wrote:
+> Quoting tip-bot2 for Giovanni Gherdovich (2020-01-29 11:32:58)
+> > The following commit has been merged into the sched/core branch of tip:
+> > 
+> > Commit-ID:     1567c3e3467cddeb019a7b53ec632f834b6a9239
+> > Gitweb:        https://git.kernel.org/tip/1567c3e3467cddeb019a7b53ec632f834b6a9239
+> > Author:        Giovanni Gherdovich <ggherdovich@suse.cz>
+> > AuthorDate:    Wed, 22 Jan 2020 16:16:12 +01:00
+> > Committer:     Ingo Molnar <mingo@kernel.org>
+> > CommitterDate: Tue, 28 Jan 2020 21:36:59 +01:00
+> > [...]
+>
+> Since this has become visible via linux-next [20200326?], we have been
+> deluged by oops during cpu-hotplug.
 > 
-> Bah!
+> <6> [184.949219] [IGT] perf_pmu: starting subtest cpu-hotplug
+> <4> [185.092279] IRQ 24: no longer affine to CPU0
+> <4> [185.092285] IRQ 25: no longer affine to CPU0
+> <6> [185.093709] smpboot: CPU 0 is now offline
+> <6> [186.107062] smpboot: Booting Node 0 Processor 0 APIC 0x0
+> <3> [186.107643] BUG: sleeping function called from invalid context at ./include/linux/percpu-rwsem.h:49
+> <3> [186.107648] in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 0, name: swapper/0
+> [...]
 > 
-> > 	kernel_kexec():
-> > 	  machine_shutdown():
-> > 	    disable_nonboot_cpus():
-> > 	      freeze_secondary_cpus()
-> >
-> > , so I wonder whether the pm_wakeup_pending() makes sense in this
-> > situation? Because IIUC, in this case we want to reboot the system
-> > regardlessly, the pm_wakeup_pending() checking seems to be inappropriate
-> > then.
+> repeating ad nauseam, e.g.
+> https://intel-gfx-ci.01.org/tree/linux-next/next-20200327/shard-hsw4/dmesg9.txt
 > 
-> Fix below.
-> 
-> Thanks,
-> 
->         tglx
-> 
-> 8<------------
-> 
-> --- a/include/linux/cpu.h
-> +++ b/include/linux/cpu.h
-> @@ -133,12 +133,18 @@ static inline void get_online_cpus(void)
->  static inline void put_online_cpus(void) { cpus_read_unlock(); }
->  
->  #ifdef CONFIG_PM_SLEEP_SMP
-> -extern int freeze_secondary_cpus(int primary);
-> +int __freeze_secondary_cpus(int primary, bool suspend);
-> +static inline int freeze_secondary_cpus(int primary)
-> +{
-> +	return __freeze_secondary_cpus(primary, true);
-> +}
-> +
->  static inline int disable_nonboot_cpus(void)
->  {
-> -	return freeze_secondary_cpus(0);
-> +	return __freeze_secondary_cpus(0, false);
->  }
+> Across all our test boxen.
+> -Chris
 
-If I read the code correctly, arch/x86/power/cpu.c is calling
-disable_nonboot_cpus() from suspend resume, which is the only user in
-tip/smp/core after my series.
+Hello Chris,
 
-This means you won't abort a suspend/hibernate if a late wakeup source happens?
-Or it might just mean that we'll wakeup slightly later than we would have done.
+thank you for catching this problem and sorry for the mess.
 
-Anyways. I think it would be better to kill off disable_nonboot_cpus() and
-directly call freeze_nonboot_cpus() in x86/power/cpu.c.
+Until your message I wasn't aware that CPU0 can be hotplugged, but now that I
+check the feature is been there since v3.8 :/
 
-I'd be happy to send a patch for this.
+The code assumes cpu0 is always there and I need to fix that.
 
-Assuming that x86 is okay with the late(r) abort, this patch could stay as-is
-for stable trees. Otherwise, maybe we need to revert this and look for another
-option for stable trees?
+It seems your report comes from executing an automated test suite, can you
+give me a link to the test sources and a hint on how to run it? I'd like to
+reproduce locally so that I make sure I correctly address this problem.
 
-Thanks
-
---
-Qais Yousef
-
-> -extern void enable_nonboot_cpus(void);
-> +
-> +void enable_nonboot_cpus(void);
->  
->  static inline int suspend_disable_secondary_cpus(void)
->  {
-> --- a/kernel/cpu.c
-> +++ b/kernel/cpu.c
-> @@ -1200,7 +1200,7 @@ EXPORT_SYMBOL_GPL(cpu_up);
->  #ifdef CONFIG_PM_SLEEP_SMP
->  static cpumask_var_t frozen_cpus;
->  
-> -int freeze_secondary_cpus(int primary)
-> +int __freeze_secondary_cpus(int primary, bool suspend)
->  {
->  	int cpu, error = 0;
->  
-> @@ -1225,7 +1225,7 @@ int freeze_secondary_cpus(int primary)
->  		if (cpu == primary)
->  			continue;
->  
-> -		if (pm_wakeup_pending()) {
-> +		if (suspend && pm_wakeup_pending()) {
->  			pr_info("Wakeup pending. Abort CPU freeze\n");
->  			error = -EBUSY;
->  			break;
+Thanks,
+Giovanni
