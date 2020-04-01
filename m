@@ -2,36 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0515E19AA47
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  1 Apr 2020 13:09:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 26E0C19B694
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  1 Apr 2020 21:50:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732618AbgDALF6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 1 Apr 2020 07:05:58 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:34827 "EHLO
+        id S1732637AbgDATu1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 1 Apr 2020 15:50:27 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:35726 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732335AbgDALF5 (ORCPT
+        with ESMTP id S1732314AbgDATu1 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 1 Apr 2020 07:05:57 -0400
+        Wed, 1 Apr 2020 15:50:27 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jJbBt-000863-Uc; Wed, 01 Apr 2020 13:05:50 +0200
+        id 1jJjNX-0000Y7-Rm; Wed, 01 Apr 2020 21:50:23 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 8AE221C047B;
-        Wed,  1 Apr 2020 13:05:49 +0200 (CEST)
-Date:   Wed, 01 Apr 2020 11:05:49 -0000
-From:   "tip-bot2 for Marc Zyngier" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 0D9601C0315;
+        Wed,  1 Apr 2020 21:50:23 +0200 (CEST)
+Date:   Wed, 01 Apr 2020 19:50:22 -0000
+From:   "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/urgent] Revert "irqchip/xilinx: Do not call irq_set_default_host()"
-Cc:     Stephen Rothwell <sfr@canb.auug.org.au>,
-        Marc Zyngier <maz@kernel.org>, x86 <x86@kernel.org>,
+Subject: [tip: timers/urgent] hrtimer: Don't dereference the hrtimer pointer
+ after the callback
+Cc:     syzbot+62c155c276e580cfb606@syzkaller.appspotmail.com,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <44b64be7-9240-fd52-af90-e0245220f38b@xilinx.com>
-References: <44b64be7-9240-fd52-af90-e0245220f38b@xilinx.com>
+In-Reply-To: <20200331201849.fkp2siy3vcdqvqlz@linutronix.de>
+References: <20200331201849.fkp2siy3vcdqvqlz@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <158573914921.28353.5903314598281659290.tip-bot2@tip-bot2>
+Message-ID: <158577062260.28353.4275523826758321524.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -45,36 +47,103 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the irq/urgent branch of tip:
+The following commit has been merged into the timers/urgent branch of tip:
 
-Commit-ID:     e02f6c01748df77b3fe202bbf7dde0aae6ecced7
-Gitweb:        https://git.kernel.org/tip/e02f6c01748df77b3fe202bbf7dde0aae6ecced7
-Author:        Marc Zyngier <maz@kernel.org>
-AuthorDate:    Mon, 30 Mar 2020 10:41:58 +01:00
-Committer:     Marc Zyngier <maz@kernel.org>
-CommitterDate: Wed, 01 Apr 2020 09:10:45 +01:00
+Commit-ID:     73d20564e0dcae003e0d79977f044d5e57496304
+Gitweb:        https://git.kernel.org/tip/73d20564e0dcae003e0d79977f044d5e57496304
+Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+AuthorDate:    Tue, 31 Mar 2020 22:18:49 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Wed, 01 Apr 2020 13:20:14 +02:00
 
-Revert "irqchip/xilinx: Do not call irq_set_default_host()"
+hrtimer: Don't dereference the hrtimer pointer after the callback
 
-This reverts commit 9c2d4f525c002591f4e0c14a37663663aaba1656, which
-breaks a number of PPC platforms.
+A hrtimer can be released in its callback, but lockdep_hrtimer_exit()
+dereferences the pointer after the callback returns, i.e. a potential use
+after free.
 
-Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/44b64be7-9240-fd52-af90-e0245220f38b@xilinx.com
+Retrieve the context in which the hrtimer expires before the callback is
+invoked and use it in lockdep_hrtimer_exit().
+
+Fixes: 40db173965c0 ("lockdep: Add hrtimer context tracing bits")
+Reported-by: syzbot+62c155c276e580cfb606@syzkaller.appspotmail.com
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lkml.kernel.org/r/20200331201849.fkp2siy3vcdqvqlz@linutronix.de
 ---
- drivers/irqchip/irq-xilinx-intc.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/linux/irqflags.h | 27 ++++++++++++++++-----------
+ kernel/time/hrtimer.c    |  5 +++--
+ 2 files changed, 19 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/irqchip/irq-xilinx-intc.c b/drivers/irqchip/irq-xilinx-intc.c
-index 7f811fe..ea74181 100644
---- a/drivers/irqchip/irq-xilinx-intc.c
-+++ b/drivers/irqchip/irq-xilinx-intc.c
-@@ -250,6 +250,7 @@ static int __init xilinx_intc_of_init(struct device_node *intc,
- 		}
- 	} else {
- 		primary_intc = irqc;
-+		irq_set_default_host(primary_intc->root_domain);
- 		set_handle_irq(xil_intc_handle_irq);
- 	}
+diff --git a/include/linux/irqflags.h b/include/linux/irqflags.h
+index ceca42d..61a9ced 100644
+--- a/include/linux/irqflags.h
++++ b/include/linux/irqflags.h
+@@ -58,16 +58,21 @@ do {						\
+ } while (0)
+ 
+ # define lockdep_hrtimer_enter(__hrtimer)		\
+-	  do {						\
+-		  if (!__hrtimer->is_hard)		\
+-			current->irq_config = 1;	\
+-	  } while (0)
+-
+-# define lockdep_hrtimer_exit(__hrtimer)		\
+-	  do {						\
+-		  if (!__hrtimer->is_hard)		\
++({							\
++	bool __expires_hardirq = true;			\
++							\
++	if (!__hrtimer->is_hard) {			\
++		current->irq_config = 1;		\
++		__expires_hardirq = false;		\
++	}						\
++	__expires_hardirq;				\
++})
++
++# define lockdep_hrtimer_exit(__expires_hardirq)	\
++	do {						\
++		if (!__expires_hardirq)			\
+ 			current->irq_config = 0;	\
+-	  } while (0)
++	} while (0)
+ 
+ # define lockdep_posixtimer_enter()				\
+ 	  do {							\
+@@ -102,8 +107,8 @@ do {						\
+ # define lockdep_hardirq_exit()		do { } while (0)
+ # define lockdep_softirq_enter()	do { } while (0)
+ # define lockdep_softirq_exit()		do { } while (0)
+-# define lockdep_hrtimer_enter(__hrtimer)		do { } while (0)
+-# define lockdep_hrtimer_exit(__hrtimer)		do { } while (0)
++# define lockdep_hrtimer_enter(__hrtimer)	false
++# define lockdep_hrtimer_exit(__context)	do { } while (0)
+ # define lockdep_posixtimer_enter()		do { } while (0)
+ # define lockdep_posixtimer_exit()		do { } while (0)
+ # define lockdep_irq_work_enter(__work)		do { } while (0)
+diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
+index d0a5ba3..d89da1c 100644
+--- a/kernel/time/hrtimer.c
++++ b/kernel/time/hrtimer.c
+@@ -1480,6 +1480,7 @@ static void __run_hrtimer(struct hrtimer_cpu_base *cpu_base,
+ 			  unsigned long flags) __must_hold(&cpu_base->lock)
+ {
+ 	enum hrtimer_restart (*fn)(struct hrtimer *);
++	bool expires_in_hardirq;
+ 	int restart;
+ 
+ 	lockdep_assert_held(&cpu_base->lock);
+@@ -1514,11 +1515,11 @@ static void __run_hrtimer(struct hrtimer_cpu_base *cpu_base,
+ 	 */
+ 	raw_spin_unlock_irqrestore(&cpu_base->lock, flags);
+ 	trace_hrtimer_expire_entry(timer, now);
+-	lockdep_hrtimer_enter(timer);
++	expires_in_hardirq = lockdep_hrtimer_enter(timer);
+ 
+ 	restart = fn(timer);
+ 
+-	lockdep_hrtimer_exit(timer);
++	lockdep_hrtimer_exit(expires_in_hardirq);
+ 	trace_hrtimer_expire_exit(timer);
+ 	raw_spin_lock_irq(&cpu_base->lock);
  
