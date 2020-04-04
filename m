@@ -2,45 +2,47 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 929BF19E3D6
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  4 Apr 2020 10:45:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B8A019E3BD
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  4 Apr 2020 10:45:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726477AbgDDIn4 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 4 Apr 2020 04:43:56 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:41590 "EHLO
+        id S1727073AbgDDInK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 4 Apr 2020 04:43:10 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:41743 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726444AbgDDImG (ORCPT
+        with ESMTP id S1726564AbgDDImS (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 4 Apr 2020 04:42:06 -0400
+        Sat, 4 Apr 2020 04:42:18 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jKeND-00013d-IY; Sat, 04 Apr 2020 10:41:51 +0200
+        id 1jKeNJ-00014G-6w; Sat, 04 Apr 2020 10:41:57 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 1418E1C07A5;
-        Sat,  4 Apr 2020 10:41:50 +0200 (CEST)
-Date:   Sat, 04 Apr 2020 08:41:49 -0000
-From:   "tip-bot2 for Namhyung Kim" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 0FBCB1C07F3;
+        Sat,  4 Apr 2020 10:41:51 +0200 (CEST)
+Date:   Sat, 04 Apr 2020 08:41:50 -0000
+From:   "tip-bot2 for Adrian Hunter" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf/core: Add PERF_RECORD_CGROUP event
-Cc:     kbuild test robot <lkp@intel.com>,
-        Namhyung Kim <namhyung@kernel.org>,
+Subject: [tip: perf/urgent] perf test x86: Add CET instructions to the new
+ instructions test
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Tejun Heo <tj@kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Jiri Olsa <jolsa@redhat.com>,
-        Johannes Weiner <hannes@cmpxchg.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Zefan Li <lizefan@huawei.com>, x86 <x86@kernel.org>,
+        Andi Kleen <ak@linux.intel.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Jiri Olsa <jolsa@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        "Ravi v. Shankar" <ravi.v.shankar@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tony Luck <tony.luck@intel.com>, x86@kernel.org,
+        "Yu-cheng Yu" <yu-cheng.yu@intel.com>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200325124536.2800725-2-namhyung@kernel.org>
-References: <20200325124536.2800725-2-namhyung@kernel.org>
+In-Reply-To: <20200204171425.28073-3-yu-cheng.yu@intel.com>
+References: <20200204171425.28073-3-yu-cheng.yu@intel.com>
 MIME-Version: 1.0
-Message-ID: <158598970963.28353.16137481423883163862.tip-bot2@tip-bot2>
+Message-ID: <158598971060.28353.2847667134477212170.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -56,243 +58,655 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     96aaab686505c449e24d76e76507290dcc30e008
-Gitweb:        https://git.kernel.org/tip/96aaab686505c449e24d76e76507290dcc30e008
-Author:        Namhyung Kim <namhyung@kernel.org>
-AuthorDate:    Wed, 25 Mar 2020 21:45:28 +09:00
+Commit-ID:     26cec7480e7edaa9dead4912055078b98c1d192e
+Gitweb:        https://git.kernel.org/tip/26cec7480e7edaa9dead4912055078b98c1d192e
+Author:        Adrian Hunter <adrian.hunter@intel.com>
+AuthorDate:    Tue, 04 Feb 2020 09:14:25 -08:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Fri, 27 Mar 2020 10:39:11 -03:00
+CommitterDate: Fri, 27 Mar 2020 10:38:47 -03:00
 
-perf/core: Add PERF_RECORD_CGROUP event
+perf test x86: Add CET instructions to the new instructions test
 
-To support cgroup tracking, add CGROUP event to save a link between
-cgroup path and id number.  This is needed since cgroups can go away
-when userspace tries to read the cgroup info (from the id) later.
+Add to the "x86 instruction decoder - new instructions" test the
+following instructions:
 
-The attr.cgroup bit was also added to enable cgroup tracking from
-userspace.
+	incsspd
+	incsspq
+	rdsspd
+	rdsspq
+	saveprevssp
+	rstorssp
+	wrssd
+	wrssq
+	wrussd
+	wrussq
+	setssbsy
+	clrssbsy
+	endbr32
+	endbr64
 
-This event will be generated when a new cgroup becomes active.
-Userspace might need to synthesize those events for existing cgroups.
+And the "notrack" prefix for indirect calls and jumps.
+
+For information about the instructions, refer Intel Control-flow
+Enforcement Technology Specification May 2019 (334525-003).
 
 Committer testing:
 
->From the resulting kernel, using /sys/kernel/btf/vmlinux:
-
-  $ pahole perf_event_attr | grep -w cgroup -B5 -A1
-  	__u64                      write_backward:1;     /*    40:27  8 */
-  	__u64                      namespaces:1;         /*    40:28  8 */
-  	__u64                      ksymbol:1;            /*    40:29  8 */
-  	__u64                      bpf_event:1;          /*    40:30  8 */
-  	__u64                      aux_output:1;         /*    40:31  8 */
-  	__u64                      cgroup:1;             /*    40:32  8 */
-  	__u64                      __reserved_1:31;      /*    40:33  8 */
+  $ perf test instr
+  67: x86 instruction decoder - new instructions            : Ok
   $
 
-Reported-by: kbuild test robot <lkp@intel.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Then use verbose mode and check one of those new instructions:
+
+  $ perf test -v instr |& grep saveprevssp
+  Decoded ok: f3 0f 01 ea          	saveprevssp
+  Decoded ok: f3 0f 01 ea          	saveprevssp
+  $
+
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Acked-by: Masami Hiramatsu <mhiramat@kernel.org>
 Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Tejun Heo <tj@kernel.org>
-[staticize perf_event_cgroup function]
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Andi Kleen <ak@linux.intel.com>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: H. Peter Anvin <hpa@zytor.com>
 Cc: Jiri Olsa <jolsa@redhat.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Zefan Li <lizefan@huawei.com>
-Link: http://lore.kernel.org/lkml/20200325124536.2800725-2-namhyung@kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Ravi v. Shankar <ravi.v.shankar@intel.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Tony Luck <tony.luck@intel.com>
+Cc: x86@kernel.org
+Link: http://lore.kernel.org/lkml/20200204171425.28073-3-yu-cheng.yu@intel.com
+Signed-off-by: Yu-cheng Yu <yu-cheng.yu@intel.com>
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- include/uapi/linux/perf_event.h |  13 +++-
- kernel/events/core.c            | 111 +++++++++++++++++++++++++++++++-
- 2 files changed, 123 insertions(+), 1 deletion(-)
+ tools/perf/arch/x86/tests/insn-x86-dat-32.c  | 112 +++++++++-
+ tools/perf/arch/x86/tests/insn-x86-dat-64.c  | 196 +++++++++++++++-
+ tools/perf/arch/x86/tests/insn-x86-dat-src.c | 236 ++++++++++++++++++-
+ 3 files changed, 544 insertions(+)
 
-diff --git a/include/uapi/linux/perf_event.h b/include/uapi/linux/perf_event.h
-index 397cfd6..de95f6c 100644
---- a/include/uapi/linux/perf_event.h
-+++ b/include/uapi/linux/perf_event.h
-@@ -381,7 +381,8 @@ struct perf_event_attr {
- 				ksymbol        :  1, /* include ksymbol events */
- 				bpf_event      :  1, /* include bpf events */
- 				aux_output     :  1, /* generate AUX records instead of events */
--				__reserved_1   : 32;
-+				cgroup         :  1, /* include cgroup events */
-+				__reserved_1   : 31;
+diff --git a/tools/perf/arch/x86/tests/insn-x86-dat-32.c b/tools/perf/arch/x86/tests/insn-x86-dat-32.c
+index e6461ab..9708ae8 100644
+--- a/tools/perf/arch/x86/tests/insn-x86-dat-32.c
++++ b/tools/perf/arch/x86/tests/insn-x86-dat-32.c
+@@ -2085,6 +2085,118 @@
+ "67 f3 0f 38 f8 1c    \tenqcmds (%si),%bx",},
+ {{0x67, 0xf3, 0x0f, 0x38, 0xf8, 0x8c, 0x34, 0x12, }, 8, 0, "", "",
+ "67 f3 0f 38 f8 8c 34 12 \tenqcmds 0x1234(%si),%cx",},
++{{0xf3, 0x0f, 0xae, 0xe8, }, 4, 0, "", "",
++"f3 0f ae e8          \tincsspd %eax",},
++{{0x0f, 0xae, 0x28, }, 3, 0, "", "",
++"0f ae 28             \txrstor (%eax)",},
++{{0x0f, 0xae, 0x2d, 0x78, 0x56, 0x34, 0x12, }, 7, 0, "", "",
++"0f ae 2d 78 56 34 12 \txrstor 0x12345678",},
++{{0x0f, 0xae, 0xac, 0xc8, 0x78, 0x56, 0x34, 0x12, }, 8, 0, "", "",
++"0f ae ac c8 78 56 34 12 \txrstor 0x12345678(%eax,%ecx,8)",},
++{{0x0f, 0xae, 0xe8, }, 3, 0, "", "",
++"0f ae e8             \tlfence ",},
++{{0xf3, 0x0f, 0x1e, 0xc8, }, 4, 0, "", "",
++"f3 0f 1e c8          \trdsspd %eax",},
++{{0xf3, 0x0f, 0x01, 0xea, }, 4, 0, "", "",
++"f3 0f 01 ea          \tsaveprevssp ",},
++{{0xf3, 0x0f, 0x01, 0x28, }, 4, 0, "", "",
++"f3 0f 01 28          \trstorssp (%eax)",},
++{{0xf3, 0x0f, 0x01, 0x2d, 0x78, 0x56, 0x34, 0x12, }, 8, 0, "", "",
++"f3 0f 01 2d 78 56 34 12 \trstorssp 0x12345678",},
++{{0xf3, 0x0f, 0x01, 0xac, 0xc8, 0x78, 0x56, 0x34, 0x12, }, 9, 0, "", "",
++"f3 0f 01 ac c8 78 56 34 12 \trstorssp 0x12345678(%eax,%ecx,8)",},
++{{0x0f, 0x38, 0xf6, 0x08, }, 4, 0, "", "",
++"0f 38 f6 08          \twrssd  %ecx,(%eax)",},
++{{0x0f, 0x38, 0xf6, 0x15, 0x78, 0x56, 0x34, 0x12, }, 8, 0, "", "",
++"0f 38 f6 15 78 56 34 12 \twrssd  %edx,0x12345678",},
++{{0x0f, 0x38, 0xf6, 0x94, 0xc8, 0x78, 0x56, 0x34, 0x12, }, 9, 0, "", "",
++"0f 38 f6 94 c8 78 56 34 12 \twrssd  %edx,0x12345678(%eax,%ecx,8)",},
++{{0x66, 0x0f, 0x38, 0xf5, 0x08, }, 5, 0, "", "",
++"66 0f 38 f5 08       \twrussd %ecx,(%eax)",},
++{{0x66, 0x0f, 0x38, 0xf5, 0x15, 0x78, 0x56, 0x34, 0x12, }, 9, 0, "", "",
++"66 0f 38 f5 15 78 56 34 12 \twrussd %edx,0x12345678",},
++{{0x66, 0x0f, 0x38, 0xf5, 0x94, 0xc8, 0x78, 0x56, 0x34, 0x12, }, 10, 0, "", "",
++"66 0f 38 f5 94 c8 78 56 34 12 \twrussd %edx,0x12345678(%eax,%ecx,8)",},
++{{0xf3, 0x0f, 0x01, 0xe8, }, 4, 0, "", "",
++"f3 0f 01 e8          \tsetssbsy ",},
++{{0x0f, 0x01, 0xee, }, 3, 0, "", "",
++"0f 01 ee             \trdpkru ",},
++{{0x0f, 0x01, 0xef, }, 3, 0, "", "",
++"0f 01 ef             \twrpkru ",},
++{{0xf3, 0x0f, 0xae, 0x30, }, 4, 0, "", "",
++"f3 0f ae 30          \tclrssbsy (%eax)",},
++{{0xf3, 0x0f, 0xae, 0x35, 0x78, 0x56, 0x34, 0x12, }, 8, 0, "", "",
++"f3 0f ae 35 78 56 34 12 \tclrssbsy 0x12345678",},
++{{0xf3, 0x0f, 0xae, 0xb4, 0xc8, 0x78, 0x56, 0x34, 0x12, }, 9, 0, "", "",
++"f3 0f ae b4 c8 78 56 34 12 \tclrssbsy 0x12345678(%eax,%ecx,8)",},
++{{0xf3, 0x0f, 0x1e, 0xfb, }, 4, 0, "", "",
++"f3 0f 1e fb          \tendbr32 ",},
++{{0xf3, 0x0f, 0x1e, 0xfa, }, 4, 0, "", "",
++"f3 0f 1e fa          \tendbr64 ",},
++{{0xff, 0xd0, }, 2, 0, "call", "indirect",
++"ff d0                \tcall   *%eax",},
++{{0xff, 0x10, }, 2, 0, "call", "indirect",
++"ff 10                \tcall   *(%eax)",},
++{{0xff, 0x15, 0x78, 0x56, 0x34, 0x12, }, 6, 0, "call", "indirect",
++"ff 15 78 56 34 12    \tcall   *0x12345678",},
++{{0xff, 0x94, 0xc8, 0x78, 0x56, 0x34, 0x12, }, 7, 0, "call", "indirect",
++"ff 94 c8 78 56 34 12 \tcall   *0x12345678(%eax,%ecx,8)",},
++{{0xf2, 0xff, 0xd0, }, 3, 0, "call", "indirect",
++"f2 ff d0             \tbnd call *%eax",},
++{{0xf2, 0xff, 0x10, }, 3, 0, "call", "indirect",
++"f2 ff 10             \tbnd call *(%eax)",},
++{{0xf2, 0xff, 0x15, 0x78, 0x56, 0x34, 0x12, }, 7, 0, "call", "indirect",
++"f2 ff 15 78 56 34 12 \tbnd call *0x12345678",},
++{{0xf2, 0xff, 0x94, 0xc8, 0x78, 0x56, 0x34, 0x12, }, 8, 0, "call", "indirect",
++"f2 ff 94 c8 78 56 34 12 \tbnd call *0x12345678(%eax,%ecx,8)",},
++{{0x3e, 0xff, 0xd0, }, 3, 0, "call", "indirect",
++"3e ff d0             \tnotrack call *%eax",},
++{{0x3e, 0xff, 0x10, }, 3, 0, "call", "indirect",
++"3e ff 10             \tnotrack call *(%eax)",},
++{{0x3e, 0xff, 0x15, 0x78, 0x56, 0x34, 0x12, }, 7, 0, "call", "indirect",
++"3e ff 15 78 56 34 12 \tnotrack call *0x12345678",},
++{{0x3e, 0xff, 0x94, 0xc8, 0x78, 0x56, 0x34, 0x12, }, 8, 0, "call", "indirect",
++"3e ff 94 c8 78 56 34 12 \tnotrack call *0x12345678(%eax,%ecx,8)",},
++{{0x3e, 0xf2, 0xff, 0xd0, }, 4, 0, "call", "indirect",
++"3e f2 ff d0          \tnotrack bnd call *%eax",},
++{{0x3e, 0xf2, 0xff, 0x10, }, 4, 0, "call", "indirect",
++"3e f2 ff 10          \tnotrack bnd call *(%eax)",},
++{{0x3e, 0xf2, 0xff, 0x15, 0x78, 0x56, 0x34, 0x12, }, 8, 0, "call", "indirect",
++"3e f2 ff 15 78 56 34 12 \tnotrack bnd call *0x12345678",},
++{{0x3e, 0xf2, 0xff, 0x94, 0xc8, 0x78, 0x56, 0x34, 0x12, }, 9, 0, "call", "indirect",
++"3e f2 ff 94 c8 78 56 34 12 \tnotrack bnd call *0x12345678(%eax,%ecx,8)",},
++{{0xff, 0xe0, }, 2, 0, "jmp", "indirect",
++"ff e0                \tjmp    *%eax",},
++{{0xff, 0x20, }, 2, 0, "jmp", "indirect",
++"ff 20                \tjmp    *(%eax)",},
++{{0xff, 0x25, 0x78, 0x56, 0x34, 0x12, }, 6, 0, "jmp", "indirect",
++"ff 25 78 56 34 12    \tjmp    *0x12345678",},
++{{0xff, 0xa4, 0xc8, 0x78, 0x56, 0x34, 0x12, }, 7, 0, "jmp", "indirect",
++"ff a4 c8 78 56 34 12 \tjmp    *0x12345678(%eax,%ecx,8)",},
++{{0xf2, 0xff, 0xe0, }, 3, 0, "jmp", "indirect",
++"f2 ff e0             \tbnd jmp *%eax",},
++{{0xf2, 0xff, 0x20, }, 3, 0, "jmp", "indirect",
++"f2 ff 20             \tbnd jmp *(%eax)",},
++{{0xf2, 0xff, 0x25, 0x78, 0x56, 0x34, 0x12, }, 7, 0, "jmp", "indirect",
++"f2 ff 25 78 56 34 12 \tbnd jmp *0x12345678",},
++{{0xf2, 0xff, 0xa4, 0xc8, 0x78, 0x56, 0x34, 0x12, }, 8, 0, "jmp", "indirect",
++"f2 ff a4 c8 78 56 34 12 \tbnd jmp *0x12345678(%eax,%ecx,8)",},
++{{0x3e, 0xff, 0xe0, }, 3, 0, "jmp", "indirect",
++"3e ff e0             \tnotrack jmp *%eax",},
++{{0x3e, 0xff, 0x20, }, 3, 0, "jmp", "indirect",
++"3e ff 20             \tnotrack jmp *(%eax)",},
++{{0x3e, 0xff, 0x25, 0x78, 0x56, 0x34, 0x12, }, 7, 0, "jmp", "indirect",
++"3e ff 25 78 56 34 12 \tnotrack jmp *0x12345678",},
++{{0x3e, 0xff, 0xa4, 0xc8, 0x78, 0x56, 0x34, 0x12, }, 8, 0, "jmp", "indirect",
++"3e ff a4 c8 78 56 34 12 \tnotrack jmp *0x12345678(%eax,%ecx,8)",},
++{{0x3e, 0xf2, 0xff, 0xe0, }, 4, 0, "jmp", "indirect",
++"3e f2 ff e0          \tnotrack bnd jmp *%eax",},
++{{0x3e, 0xf2, 0xff, 0x20, }, 4, 0, "jmp", "indirect",
++"3e f2 ff 20          \tnotrack bnd jmp *(%eax)",},
++{{0x3e, 0xf2, 0xff, 0x25, 0x78, 0x56, 0x34, 0x12, }, 8, 0, "jmp", "indirect",
++"3e f2 ff 25 78 56 34 12 \tnotrack bnd jmp *0x12345678",},
++{{0x3e, 0xf2, 0xff, 0xa4, 0xc8, 0x78, 0x56, 0x34, 0x12, }, 9, 0, "jmp", "indirect",
++"3e f2 ff a4 c8 78 56 34 12 \tnotrack bnd jmp *0x12345678(%eax,%ecx,8)",},
+ {{0x0f, 0x01, 0xcf, }, 3, 0, "", "",
+ "0f 01 cf             \tencls  ",},
+ {{0x0f, 0x01, 0xd7, }, 3, 0, "", "",
+diff --git a/tools/perf/arch/x86/tests/insn-x86-dat-64.c b/tools/perf/arch/x86/tests/insn-x86-dat-64.c
+index 567eccc..5da17d4 100644
+--- a/tools/perf/arch/x86/tests/insn-x86-dat-64.c
++++ b/tools/perf/arch/x86/tests/insn-x86-dat-64.c
+@@ -2263,6 +2263,202 @@
+ "67 f3 0f 38 f8 18    \tenqcmds (%eax),%ebx",},
+ {{0x67, 0xf3, 0x0f, 0x38, 0xf8, 0x88, 0x78, 0x56, 0x34, 0x12, }, 10, 0, "", "",
+ "67 f3 0f 38 f8 88 78 56 34 12 \tenqcmds 0x12345678(%eax),%ecx",},
++{{0xf3, 0x0f, 0xae, 0xe8, }, 4, 0, "", "",
++"f3 0f ae e8          \tincsspd %eax",},
++{{0xf3, 0x41, 0x0f, 0xae, 0xe8, }, 5, 0, "", "",
++"f3 41 0f ae e8       \tincsspd %r8d",},
++{{0xf3, 0x48, 0x0f, 0xae, 0xe8, }, 5, 0, "", "",
++"f3 48 0f ae e8       \tincsspq %rax",},
++{{0xf3, 0x49, 0x0f, 0xae, 0xe8, }, 5, 0, "", "",
++"f3 49 0f ae e8       \tincsspq %r8",},
++{{0x0f, 0xae, 0x28, }, 3, 0, "", "",
++"0f ae 28             \txrstor (%rax)",},
++{{0x41, 0x0f, 0xae, 0x28, }, 4, 0, "", "",
++"41 0f ae 28          \txrstor (%r8)",},
++{{0x0f, 0xae, 0x2c, 0x25, 0x78, 0x56, 0x34, 0x12, }, 8, 0, "", "",
++"0f ae 2c 25 78 56 34 12 \txrstor 0x12345678",},
++{{0x0f, 0xae, 0xac, 0xc8, 0x78, 0x56, 0x34, 0x12, }, 8, 0, "", "",
++"0f ae ac c8 78 56 34 12 \txrstor 0x12345678(%rax,%rcx,8)",},
++{{0x41, 0x0f, 0xae, 0xac, 0xc8, 0x78, 0x56, 0x34, 0x12, }, 9, 0, "", "",
++"41 0f ae ac c8 78 56 34 12 \txrstor 0x12345678(%r8,%rcx,8)",},
++{{0x0f, 0xae, 0xe8, }, 3, 0, "", "",
++"0f ae e8             \tlfence ",},
++{{0xf3, 0x0f, 0x1e, 0xc8, }, 4, 0, "", "",
++"f3 0f 1e c8          \trdsspd %eax",},
++{{0xf3, 0x41, 0x0f, 0x1e, 0xc8, }, 5, 0, "", "",
++"f3 41 0f 1e c8       \trdsspd %r8d",},
++{{0xf3, 0x48, 0x0f, 0x1e, 0xc8, }, 5, 0, "", "",
++"f3 48 0f 1e c8       \trdsspq %rax",},
++{{0xf3, 0x49, 0x0f, 0x1e, 0xc8, }, 5, 0, "", "",
++"f3 49 0f 1e c8       \trdsspq %r8",},
++{{0xf3, 0x0f, 0x01, 0xea, }, 4, 0, "", "",
++"f3 0f 01 ea          \tsaveprevssp ",},
++{{0xf3, 0x0f, 0x01, 0x28, }, 4, 0, "", "",
++"f3 0f 01 28          \trstorssp (%rax)",},
++{{0xf3, 0x41, 0x0f, 0x01, 0x28, }, 5, 0, "", "",
++"f3 41 0f 01 28       \trstorssp (%r8)",},
++{{0xf3, 0x0f, 0x01, 0x2c, 0x25, 0x78, 0x56, 0x34, 0x12, }, 9, 0, "", "",
++"f3 0f 01 2c 25 78 56 34 12 \trstorssp 0x12345678",},
++{{0xf3, 0x0f, 0x01, 0xac, 0xc8, 0x78, 0x56, 0x34, 0x12, }, 9, 0, "", "",
++"f3 0f 01 ac c8 78 56 34 12 \trstorssp 0x12345678(%rax,%rcx,8)",},
++{{0xf3, 0x41, 0x0f, 0x01, 0xac, 0xc8, 0x78, 0x56, 0x34, 0x12, }, 10, 0, "", "",
++"f3 41 0f 01 ac c8 78 56 34 12 \trstorssp 0x12345678(%r8,%rcx,8)",},
++{{0x0f, 0x38, 0xf6, 0x08, }, 4, 0, "", "",
++"0f 38 f6 08          \twrssd  %ecx,(%rax)",},
++{{0x41, 0x0f, 0x38, 0xf6, 0x10, }, 5, 0, "", "",
++"41 0f 38 f6 10       \twrssd  %edx,(%r8)",},
++{{0x0f, 0x38, 0xf6, 0x14, 0x25, 0x78, 0x56, 0x34, 0x12, }, 9, 0, "", "",
++"0f 38 f6 14 25 78 56 34 12 \twrssd  %edx,0x12345678",},
++{{0x0f, 0x38, 0xf6, 0x94, 0xc8, 0x78, 0x56, 0x34, 0x12, }, 9, 0, "", "",
++"0f 38 f6 94 c8 78 56 34 12 \twrssd  %edx,0x12345678(%rax,%rcx,8)",},
++{{0x41, 0x0f, 0x38, 0xf6, 0x94, 0xc8, 0x78, 0x56, 0x34, 0x12, }, 10, 0, "", "",
++"41 0f 38 f6 94 c8 78 56 34 12 \twrssd  %edx,0x12345678(%r8,%rcx,8)",},
++{{0x48, 0x0f, 0x38, 0xf6, 0x08, }, 5, 0, "", "",
++"48 0f 38 f6 08       \twrssq  %rcx,(%rax)",},
++{{0x49, 0x0f, 0x38, 0xf6, 0x10, }, 5, 0, "", "",
++"49 0f 38 f6 10       \twrssq  %rdx,(%r8)",},
++{{0x48, 0x0f, 0x38, 0xf6, 0x14, 0x25, 0x78, 0x56, 0x34, 0x12, }, 10, 0, "", "",
++"48 0f 38 f6 14 25 78 56 34 12 \twrssq  %rdx,0x12345678",},
++{{0x48, 0x0f, 0x38, 0xf6, 0x94, 0xc8, 0x78, 0x56, 0x34, 0x12, }, 10, 0, "", "",
++"48 0f 38 f6 94 c8 78 56 34 12 \twrssq  %rdx,0x12345678(%rax,%rcx,8)",},
++{{0x49, 0x0f, 0x38, 0xf6, 0x94, 0xc8, 0x78, 0x56, 0x34, 0x12, }, 10, 0, "", "",
++"49 0f 38 f6 94 c8 78 56 34 12 \twrssq  %rdx,0x12345678(%r8,%rcx,8)",},
++{{0x66, 0x0f, 0x38, 0xf5, 0x08, }, 5, 0, "", "",
++"66 0f 38 f5 08       \twrussd %ecx,(%rax)",},
++{{0x66, 0x41, 0x0f, 0x38, 0xf5, 0x10, }, 6, 0, "", "",
++"66 41 0f 38 f5 10    \twrussd %edx,(%r8)",},
++{{0x66, 0x0f, 0x38, 0xf5, 0x14, 0x25, 0x78, 0x56, 0x34, 0x12, }, 10, 0, "", "",
++"66 0f 38 f5 14 25 78 56 34 12 \twrussd %edx,0x12345678",},
++{{0x66, 0x0f, 0x38, 0xf5, 0x94, 0xc8, 0x78, 0x56, 0x34, 0x12, }, 10, 0, "", "",
++"66 0f 38 f5 94 c8 78 56 34 12 \twrussd %edx,0x12345678(%rax,%rcx,8)",},
++{{0x66, 0x41, 0x0f, 0x38, 0xf5, 0x94, 0xc8, 0x78, 0x56, 0x34, 0x12, }, 11, 0, "", "",
++"66 41 0f 38 f5 94 c8 78 56 34 12 \twrussd %edx,0x12345678(%r8,%rcx,8)",},
++{{0x66, 0x48, 0x0f, 0x38, 0xf5, 0x08, }, 6, 0, "", "",
++"66 48 0f 38 f5 08    \twrussq %rcx,(%rax)",},
++{{0x66, 0x49, 0x0f, 0x38, 0xf5, 0x10, }, 6, 0, "", "",
++"66 49 0f 38 f5 10    \twrussq %rdx,(%r8)",},
++{{0x66, 0x48, 0x0f, 0x38, 0xf5, 0x14, 0x25, 0x78, 0x56, 0x34, 0x12, }, 11, 0, "", "",
++"66 48 0f 38 f5 14 25 78 56 34 12 \twrussq %rdx,0x12345678",},
++{{0x66, 0x48, 0x0f, 0x38, 0xf5, 0x94, 0xc8, 0x78, 0x56, 0x34, 0x12, }, 11, 0, "", "",
++"66 48 0f 38 f5 94 c8 78 56 34 12 \twrussq %rdx,0x12345678(%rax,%rcx,8)",},
++{{0x66, 0x49, 0x0f, 0x38, 0xf5, 0x94, 0xc8, 0x78, 0x56, 0x34, 0x12, }, 11, 0, "", "",
++"66 49 0f 38 f5 94 c8 78 56 34 12 \twrussq %rdx,0x12345678(%r8,%rcx,8)",},
++{{0xf3, 0x0f, 0x01, 0xe8, }, 4, 0, "", "",
++"f3 0f 01 e8          \tsetssbsy ",},
++{{0x0f, 0x01, 0xee, }, 3, 0, "", "",
++"0f 01 ee             \trdpkru ",},
++{{0x0f, 0x01, 0xef, }, 3, 0, "", "",
++"0f 01 ef             \twrpkru ",},
++{{0xf3, 0x0f, 0xae, 0x30, }, 4, 0, "", "",
++"f3 0f ae 30          \tclrssbsy (%rax)",},
++{{0xf3, 0x41, 0x0f, 0xae, 0x30, }, 5, 0, "", "",
++"f3 41 0f ae 30       \tclrssbsy (%r8)",},
++{{0xf3, 0x0f, 0xae, 0x34, 0x25, 0x78, 0x56, 0x34, 0x12, }, 9, 0, "", "",
++"f3 0f ae 34 25 78 56 34 12 \tclrssbsy 0x12345678",},
++{{0xf3, 0x0f, 0xae, 0xb4, 0xc8, 0x78, 0x56, 0x34, 0x12, }, 9, 0, "", "",
++"f3 0f ae b4 c8 78 56 34 12 \tclrssbsy 0x12345678(%rax,%rcx,8)",},
++{{0xf3, 0x41, 0x0f, 0xae, 0xb4, 0xc8, 0x78, 0x56, 0x34, 0x12, }, 10, 0, "", "",
++"f3 41 0f ae b4 c8 78 56 34 12 \tclrssbsy 0x12345678(%r8,%rcx,8)",},
++{{0xf3, 0x0f, 0x1e, 0xfb, }, 4, 0, "", "",
++"f3 0f 1e fb          \tendbr32 ",},
++{{0xf3, 0x0f, 0x1e, 0xfa, }, 4, 0, "", "",
++"f3 0f 1e fa          \tendbr64 ",},
++{{0xff, 0xd0, }, 2, 0, "call", "indirect",
++"ff d0                \tcallq  *%rax",},
++{{0xff, 0x10, }, 2, 0, "call", "indirect",
++"ff 10                \tcallq  *(%rax)",},
++{{0x41, 0xff, 0x10, }, 3, 0, "call", "indirect",
++"41 ff 10             \tcallq  *(%r8)",},
++{{0xff, 0x14, 0x25, 0x78, 0x56, 0x34, 0x12, }, 7, 0, "call", "indirect",
++"ff 14 25 78 56 34 12 \tcallq  *0x12345678",},
++{{0xff, 0x94, 0xc8, 0x78, 0x56, 0x34, 0x12, }, 7, 0, "call", "indirect",
++"ff 94 c8 78 56 34 12 \tcallq  *0x12345678(%rax,%rcx,8)",},
++{{0x41, 0xff, 0x94, 0xc8, 0x78, 0x56, 0x34, 0x12, }, 8, 0, "call", "indirect",
++"41 ff 94 c8 78 56 34 12 \tcallq  *0x12345678(%r8,%rcx,8)",},
++{{0xf2, 0xff, 0xd0, }, 3, 0, "call", "indirect",
++"f2 ff d0             \tbnd callq *%rax",},
++{{0xf2, 0xff, 0x10, }, 3, 0, "call", "indirect",
++"f2 ff 10             \tbnd callq *(%rax)",},
++{{0xf2, 0x41, 0xff, 0x10, }, 4, 0, "call", "indirect",
++"f2 41 ff 10          \tbnd callq *(%r8)",},
++{{0xf2, 0xff, 0x14, 0x25, 0x78, 0x56, 0x34, 0x12, }, 8, 0, "call", "indirect",
++"f2 ff 14 25 78 56 34 12 \tbnd callq *0x12345678",},
++{{0xf2, 0xff, 0x94, 0xc8, 0x78, 0x56, 0x34, 0x12, }, 8, 0, "call", "indirect",
++"f2 ff 94 c8 78 56 34 12 \tbnd callq *0x12345678(%rax,%rcx,8)",},
++{{0xf2, 0x41, 0xff, 0x94, 0xc8, 0x78, 0x56, 0x34, 0x12, }, 9, 0, "call", "indirect",
++"f2 41 ff 94 c8 78 56 34 12 \tbnd callq *0x12345678(%r8,%rcx,8)",},
++{{0x3e, 0xff, 0xd0, }, 3, 0, "call", "indirect",
++"3e ff d0             \tnotrack callq *%rax",},
++{{0x3e, 0xff, 0x10, }, 3, 0, "call", "indirect",
++"3e ff 10             \tnotrack callq *(%rax)",},
++{{0x3e, 0x41, 0xff, 0x10, }, 4, 0, "call", "indirect",
++"3e 41 ff 10          \tnotrack callq *(%r8)",},
++{{0x3e, 0xff, 0x14, 0x25, 0x78, 0x56, 0x34, 0x12, }, 8, 0, "call", "indirect",
++"3e ff 14 25 78 56 34 12 \tnotrack callq *0x12345678",},
++{{0x3e, 0xff, 0x94, 0xc8, 0x78, 0x56, 0x34, 0x12, }, 8, 0, "call", "indirect",
++"3e ff 94 c8 78 56 34 12 \tnotrack callq *0x12345678(%rax,%rcx,8)",},
++{{0x3e, 0x41, 0xff, 0x94, 0xc8, 0x78, 0x56, 0x34, 0x12, }, 9, 0, "call", "indirect",
++"3e 41 ff 94 c8 78 56 34 12 \tnotrack callq *0x12345678(%r8,%rcx,8)",},
++{{0x3e, 0xf2, 0xff, 0xd0, }, 4, 0, "call", "indirect",
++"3e f2 ff d0          \tnotrack bnd callq *%rax",},
++{{0x3e, 0xf2, 0xff, 0x10, }, 4, 0, "call", "indirect",
++"3e f2 ff 10          \tnotrack bnd callq *(%rax)",},
++{{0x3e, 0xf2, 0x41, 0xff, 0x10, }, 5, 0, "call", "indirect",
++"3e f2 41 ff 10       \tnotrack bnd callq *(%r8)",},
++{{0x3e, 0xf2, 0xff, 0x14, 0x25, 0x78, 0x56, 0x34, 0x12, }, 9, 0, "call", "indirect",
++"3e f2 ff 14 25 78 56 34 12 \tnotrack bnd callq *0x12345678",},
++{{0x3e, 0xf2, 0xff, 0x94, 0xc8, 0x78, 0x56, 0x34, 0x12, }, 9, 0, "call", "indirect",
++"3e f2 ff 94 c8 78 56 34 12 \tnotrack bnd callq *0x12345678(%rax,%rcx,8)",},
++{{0x3e, 0xf2, 0x41, 0xff, 0x94, 0xc8, 0x78, 0x56, 0x34, 0x12, }, 10, 0, "call", "indirect",
++"3e f2 41 ff 94 c8 78 56 34 12 \tnotrack bnd callq *0x12345678(%r8,%rcx,8)",},
++{{0xff, 0xe0, }, 2, 0, "jmp", "indirect",
++"ff e0                \tjmpq   *%rax",},
++{{0xff, 0x20, }, 2, 0, "jmp", "indirect",
++"ff 20                \tjmpq   *(%rax)",},
++{{0x41, 0xff, 0x20, }, 3, 0, "jmp", "indirect",
++"41 ff 20             \tjmpq   *(%r8)",},
++{{0xff, 0x24, 0x25, 0x78, 0x56, 0x34, 0x12, }, 7, 0, "jmp", "indirect",
++"ff 24 25 78 56 34 12 \tjmpq   *0x12345678",},
++{{0xff, 0xa4, 0xc8, 0x78, 0x56, 0x34, 0x12, }, 7, 0, "jmp", "indirect",
++"ff a4 c8 78 56 34 12 \tjmpq   *0x12345678(%rax,%rcx,8)",},
++{{0x41, 0xff, 0xa4, 0xc8, 0x78, 0x56, 0x34, 0x12, }, 8, 0, "jmp", "indirect",
++"41 ff a4 c8 78 56 34 12 \tjmpq   *0x12345678(%r8,%rcx,8)",},
++{{0xf2, 0xff, 0xe0, }, 3, 0, "jmp", "indirect",
++"f2 ff e0             \tbnd jmpq *%rax",},
++{{0xf2, 0xff, 0x20, }, 3, 0, "jmp", "indirect",
++"f2 ff 20             \tbnd jmpq *(%rax)",},
++{{0xf2, 0x41, 0xff, 0x20, }, 4, 0, "jmp", "indirect",
++"f2 41 ff 20          \tbnd jmpq *(%r8)",},
++{{0xf2, 0xff, 0x24, 0x25, 0x78, 0x56, 0x34, 0x12, }, 8, 0, "jmp", "indirect",
++"f2 ff 24 25 78 56 34 12 \tbnd jmpq *0x12345678",},
++{{0xf2, 0xff, 0xa4, 0xc8, 0x78, 0x56, 0x34, 0x12, }, 8, 0, "jmp", "indirect",
++"f2 ff a4 c8 78 56 34 12 \tbnd jmpq *0x12345678(%rax,%rcx,8)",},
++{{0xf2, 0x41, 0xff, 0xa4, 0xc8, 0x78, 0x56, 0x34, 0x12, }, 9, 0, "jmp", "indirect",
++"f2 41 ff a4 c8 78 56 34 12 \tbnd jmpq *0x12345678(%r8,%rcx,8)",},
++{{0x3e, 0xff, 0xe0, }, 3, 0, "jmp", "indirect",
++"3e ff e0             \tnotrack jmpq *%rax",},
++{{0x3e, 0xff, 0x20, }, 3, 0, "jmp", "indirect",
++"3e ff 20             \tnotrack jmpq *(%rax)",},
++{{0x3e, 0x41, 0xff, 0x20, }, 4, 0, "jmp", "indirect",
++"3e 41 ff 20          \tnotrack jmpq *(%r8)",},
++{{0x3e, 0xff, 0x24, 0x25, 0x78, 0x56, 0x34, 0x12, }, 8, 0, "jmp", "indirect",
++"3e ff 24 25 78 56 34 12 \tnotrack jmpq *0x12345678",},
++{{0x3e, 0xff, 0xa4, 0xc8, 0x78, 0x56, 0x34, 0x12, }, 8, 0, "jmp", "indirect",
++"3e ff a4 c8 78 56 34 12 \tnotrack jmpq *0x12345678(%rax,%rcx,8)",},
++{{0x3e, 0x41, 0xff, 0xa4, 0xc8, 0x78, 0x56, 0x34, 0x12, }, 9, 0, "jmp", "indirect",
++"3e 41 ff a4 c8 78 56 34 12 \tnotrack jmpq *0x12345678(%r8,%rcx,8)",},
++{{0x3e, 0xf2, 0xff, 0xe0, }, 4, 0, "jmp", "indirect",
++"3e f2 ff e0          \tnotrack bnd jmpq *%rax",},
++{{0x3e, 0xf2, 0xff, 0x20, }, 4, 0, "jmp", "indirect",
++"3e f2 ff 20          \tnotrack bnd jmpq *(%rax)",},
++{{0x3e, 0xf2, 0x41, 0xff, 0x20, }, 5, 0, "jmp", "indirect",
++"3e f2 41 ff 20       \tnotrack bnd jmpq *(%r8)",},
++{{0x3e, 0xf2, 0xff, 0x24, 0x25, 0x78, 0x56, 0x34, 0x12, }, 9, 0, "jmp", "indirect",
++"3e f2 ff 24 25 78 56 34 12 \tnotrack bnd jmpq *0x12345678",},
++{{0x3e, 0xf2, 0xff, 0xa4, 0xc8, 0x78, 0x56, 0x34, 0x12, }, 9, 0, "jmp", "indirect",
++"3e f2 ff a4 c8 78 56 34 12 \tnotrack bnd jmpq *0x12345678(%rax,%rcx,8)",},
++{{0x3e, 0xf2, 0x41, 0xff, 0xa4, 0xc8, 0x78, 0x56, 0x34, 0x12, }, 10, 0, "jmp", "indirect",
++"3e f2 41 ff a4 c8 78 56 34 12 \tnotrack bnd jmpq *0x12345678(%r8,%rcx,8)",},
+ {{0x0f, 0x01, 0xcf, }, 3, 0, "", "",
+ "0f 01 cf             \tencls  ",},
+ {{0x0f, 0x01, 0xd7, }, 3, 0, "", "",
+diff --git a/tools/perf/arch/x86/tests/insn-x86-dat-src.c b/tools/perf/arch/x86/tests/insn-x86-dat-src.c
+index ddbf07c..c3808e9 100644
+--- a/tools/perf/arch/x86/tests/insn-x86-dat-src.c
++++ b/tools/perf/arch/x86/tests/insn-x86-dat-src.c
+@@ -1771,6 +1771,145 @@ int main(void)
+ 	asm volatile("enqcmds (%eax),%ebx");
+ 	asm volatile("enqcmds 0x12345678(%eax),%ecx");
  
- 	union {
- 		__u32		wakeup_events;	  /* wakeup every n events */
-@@ -1012,6 +1013,16 @@ enum perf_event_type {
- 	 */
- 	PERF_RECORD_BPF_EVENT			= 18,
++	/* incsspd/q */
++
++	asm volatile("incsspd %eax");
++	asm volatile("incsspd %r8d");
++	asm volatile("incsspq %rax");
++	asm volatile("incsspq %r8");
++	/* Also check instructions in the same group encoding as incsspd/q */
++	asm volatile("xrstor (%rax)");
++	asm volatile("xrstor (%r8)");
++	asm volatile("xrstor (0x12345678)");
++	asm volatile("xrstor 0x12345678(%rax,%rcx,8)");
++	asm volatile("xrstor 0x12345678(%r8,%rcx,8)");
++	asm volatile("lfence");
++
++	/* rdsspd/q */
++
++	asm volatile("rdsspd %eax");
++	asm volatile("rdsspd %r8d");
++	asm volatile("rdsspq %rax");
++	asm volatile("rdsspq %r8");
++
++	/* saveprevssp */
++
++	asm volatile("saveprevssp");
++
++	/* rstorssp */
++
++	asm volatile("rstorssp (%rax)");
++	asm volatile("rstorssp (%r8)");
++	asm volatile("rstorssp (0x12345678)");
++	asm volatile("rstorssp 0x12345678(%rax,%rcx,8)");
++	asm volatile("rstorssp 0x12345678(%r8,%rcx,8)");
++
++	/* wrssd/q */
++
++	asm volatile("wrssd %ecx,(%rax)");
++	asm volatile("wrssd %edx,(%r8)");
++	asm volatile("wrssd %edx,(0x12345678)");
++	asm volatile("wrssd %edx,0x12345678(%rax,%rcx,8)");
++	asm volatile("wrssd %edx,0x12345678(%r8,%rcx,8)");
++	asm volatile("wrssq %rcx,(%rax)");
++	asm volatile("wrssq %rdx,(%r8)");
++	asm volatile("wrssq %rdx,(0x12345678)");
++	asm volatile("wrssq %rdx,0x12345678(%rax,%rcx,8)");
++	asm volatile("wrssq %rdx,0x12345678(%r8,%rcx,8)");
++
++	/* wrussd/q */
++
++	asm volatile("wrussd %ecx,(%rax)");
++	asm volatile("wrussd %edx,(%r8)");
++	asm volatile("wrussd %edx,(0x12345678)");
++	asm volatile("wrussd %edx,0x12345678(%rax,%rcx,8)");
++	asm volatile("wrussd %edx,0x12345678(%r8,%rcx,8)");
++	asm volatile("wrussq %rcx,(%rax)");
++	asm volatile("wrussq %rdx,(%r8)");
++	asm volatile("wrussq %rdx,(0x12345678)");
++	asm volatile("wrussq %rdx,0x12345678(%rax,%rcx,8)");
++	asm volatile("wrussq %rdx,0x12345678(%r8,%rcx,8)");
++
++	/* setssbsy */
++
++	asm volatile("setssbsy");
++	/* Also check instructions in the same group encoding as setssbsy */
++	asm volatile("rdpkru");
++	asm volatile("wrpkru");
++
++	/* clrssbsy */
++
++	asm volatile("clrssbsy (%rax)");
++	asm volatile("clrssbsy (%r8)");
++	asm volatile("clrssbsy (0x12345678)");
++	asm volatile("clrssbsy 0x12345678(%rax,%rcx,8)");
++	asm volatile("clrssbsy 0x12345678(%r8,%rcx,8)");
++
++	/* endbr32/64 */
++
++	asm volatile("endbr32");
++	asm volatile("endbr64");
++
++	/* call with/without notrack prefix */
++
++	asm volatile("callq *%rax");				/* Expecting: call indirect 0 */
++	asm volatile("callq *(%rax)");				/* Expecting: call indirect 0 */
++	asm volatile("callq *(%r8)");				/* Expecting: call indirect 0 */
++	asm volatile("callq *(0x12345678)");			/* Expecting: call indirect 0 */
++	asm volatile("callq *0x12345678(%rax,%rcx,8)");		/* Expecting: call indirect 0 */
++	asm volatile("callq *0x12345678(%r8,%rcx,8)");		/* Expecting: call indirect 0 */
++
++	asm volatile("bnd callq *%rax");			/* Expecting: call indirect 0 */
++	asm volatile("bnd callq *(%rax)");			/* Expecting: call indirect 0 */
++	asm volatile("bnd callq *(%r8)");			/* Expecting: call indirect 0 */
++	asm volatile("bnd callq *(0x12345678)");		/* Expecting: call indirect 0 */
++	asm volatile("bnd callq *0x12345678(%rax,%rcx,8)");	/* Expecting: call indirect 0 */
++	asm volatile("bnd callq *0x12345678(%r8,%rcx,8)");	/* Expecting: call indirect 0 */
++
++	asm volatile("notrack callq *%rax");			/* Expecting: call indirect 0 */
++	asm volatile("notrack callq *(%rax)");			/* Expecting: call indirect 0 */
++	asm volatile("notrack callq *(%r8)");			/* Expecting: call indirect 0 */
++	asm volatile("notrack callq *(0x12345678)");		/* Expecting: call indirect 0 */
++	asm volatile("notrack callq *0x12345678(%rax,%rcx,8)");	/* Expecting: call indirect 0 */
++	asm volatile("notrack callq *0x12345678(%r8,%rcx,8)");	/* Expecting: call indirect 0 */
++
++	asm volatile("notrack bnd callq *%rax");		/* Expecting: call indirect 0 */
++	asm volatile("notrack bnd callq *(%rax)");		/* Expecting: call indirect 0 */
++	asm volatile("notrack bnd callq *(%r8)");		/* Expecting: call indirect 0 */
++	asm volatile("notrack bnd callq *(0x12345678)");	/* Expecting: call indirect 0 */
++	asm volatile("notrack bnd callq *0x12345678(%rax,%rcx,8)");	/* Expecting: call indirect 0 */
++	asm volatile("notrack bnd callq *0x12345678(%r8,%rcx,8)");	/* Expecting: call indirect 0 */
++
++	/* jmp with/without notrack prefix */
++
++	asm volatile("jmpq *%rax");				/* Expecting: jmp indirect 0 */
++	asm volatile("jmpq *(%rax)");				/* Expecting: jmp indirect 0 */
++	asm volatile("jmpq *(%r8)");				/* Expecting: jmp indirect 0 */
++	asm volatile("jmpq *(0x12345678)");			/* Expecting: jmp indirect 0 */
++	asm volatile("jmpq *0x12345678(%rax,%rcx,8)");		/* Expecting: jmp indirect 0 */
++	asm volatile("jmpq *0x12345678(%r8,%rcx,8)");		/* Expecting: jmp indirect 0 */
++
++	asm volatile("bnd jmpq *%rax");				/* Expecting: jmp indirect 0 */
++	asm volatile("bnd jmpq *(%rax)");			/* Expecting: jmp indirect 0 */
++	asm volatile("bnd jmpq *(%r8)");			/* Expecting: jmp indirect 0 */
++	asm volatile("bnd jmpq *(0x12345678)");			/* Expecting: jmp indirect 0 */
++	asm volatile("bnd jmpq *0x12345678(%rax,%rcx,8)");	/* Expecting: jmp indirect 0 */
++	asm volatile("bnd jmpq *0x12345678(%r8,%rcx,8)");	/* Expecting: jmp indirect 0 */
++
++	asm volatile("notrack jmpq *%rax");			/* Expecting: jmp indirect 0 */
++	asm volatile("notrack jmpq *(%rax)");			/* Expecting: jmp indirect 0 */
++	asm volatile("notrack jmpq *(%r8)");			/* Expecting: jmp indirect 0 */
++	asm volatile("notrack jmpq *(0x12345678)");		/* Expecting: jmp indirect 0 */
++	asm volatile("notrack jmpq *0x12345678(%rax,%rcx,8)");	/* Expecting: jmp indirect 0 */
++	asm volatile("notrack jmpq *0x12345678(%r8,%rcx,8)");	/* Expecting: jmp indirect 0 */
++
++	asm volatile("notrack bnd jmpq *%rax");			/* Expecting: jmp indirect 0 */
++	asm volatile("notrack bnd jmpq *(%rax)");		/* Expecting: jmp indirect 0 */
++	asm volatile("notrack bnd jmpq *(%r8)");		/* Expecting: jmp indirect 0 */
++	asm volatile("notrack bnd jmpq *(0x12345678)");		/* Expecting: jmp indirect 0 */
++	asm volatile("notrack bnd jmpq *0x12345678(%rax,%rcx,8)");	/* Expecting: jmp indirect 0 */
++	asm volatile("notrack bnd jmpq *0x12345678(%r8,%rcx,8)");	/* Expecting: jmp indirect 0 */
++
+ #else  /* #ifdef __x86_64__ */
  
-+	/*
-+	 * struct {
-+	 *	struct perf_event_header	header;
-+	 *	u64				id;
-+	 *	char				path[];
-+	 *	struct sample_id		sample_id;
-+	 * };
-+	 */
-+	PERF_RECORD_CGROUP			= 19,
-+
- 	PERF_RECORD_MAX,			/* non-ABI */
- };
+ 	/* bound r32, mem (same op code as EVEX prefix) */
+@@ -3434,6 +3573,103 @@ int main(void)
+ 	asm volatile("enqcmds (%si),%bx");
+ 	asm volatile("enqcmds 0x1234(%si),%cx");
  
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index d22e4ba..994932d 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -387,6 +387,7 @@ static atomic_t nr_freq_events __read_mostly;
- static atomic_t nr_switch_events __read_mostly;
- static atomic_t nr_ksymbol_events __read_mostly;
- static atomic_t nr_bpf_events __read_mostly;
-+static atomic_t nr_cgroup_events __read_mostly;
++	/* incsspd */
++
++	asm volatile("incsspd %eax");
++	/* Also check instructions in the same group encoding as incsspd */
++	asm volatile("xrstor (%eax)");
++	asm volatile("xrstor (0x12345678)");
++	asm volatile("xrstor 0x12345678(%eax,%ecx,8)");
++	asm volatile("lfence");
++
++	/* rdsspd */
++
++	asm volatile("rdsspd %eax");
++
++	/* saveprevssp */
++
++	asm volatile("saveprevssp");
++
++	/* rstorssp */
++
++	asm volatile("rstorssp (%eax)");
++	asm volatile("rstorssp (0x12345678)");
++	asm volatile("rstorssp 0x12345678(%eax,%ecx,8)");
++
++	/* wrssd */
++
++	asm volatile("wrssd %ecx,(%eax)");
++	asm volatile("wrssd %edx,(0x12345678)");
++	asm volatile("wrssd %edx,0x12345678(%eax,%ecx,8)");
++
++	/* wrussd */
++
++	asm volatile("wrussd %ecx,(%eax)");
++	asm volatile("wrussd %edx,(0x12345678)");
++	asm volatile("wrussd %edx,0x12345678(%eax,%ecx,8)");
++
++	/* setssbsy */
++
++	asm volatile("setssbsy");
++	/* Also check instructions in the same group encoding as setssbsy */
++	asm volatile("rdpkru");
++	asm volatile("wrpkru");
++
++	/* clrssbsy */
++
++	asm volatile("clrssbsy (%eax)");
++	asm volatile("clrssbsy (0x12345678)");
++	asm volatile("clrssbsy 0x12345678(%eax,%ecx,8)");
++
++	/* endbr32/64 */
++
++	asm volatile("endbr32");
++	asm volatile("endbr64");
++
++	/* call with/without notrack prefix */
++
++	asm volatile("call *%eax");				/* Expecting: call indirect 0 */
++	asm volatile("call *(%eax)");				/* Expecting: call indirect 0 */
++	asm volatile("call *(0x12345678)");			/* Expecting: call indirect 0 */
++	asm volatile("call *0x12345678(%eax,%ecx,8)");		/* Expecting: call indirect 0 */
++
++	asm volatile("bnd call *%eax");				/* Expecting: call indirect 0 */
++	asm volatile("bnd call *(%eax)");			/* Expecting: call indirect 0 */
++	asm volatile("bnd call *(0x12345678)");			/* Expecting: call indirect 0 */
++	asm volatile("bnd call *0x12345678(%eax,%ecx,8)");	/* Expecting: call indirect 0 */
++
++	asm volatile("notrack call *%eax");			/* Expecting: call indirect 0 */
++	asm volatile("notrack call *(%eax)");			/* Expecting: call indirect 0 */
++	asm volatile("notrack call *(0x12345678)");		/* Expecting: call indirect 0 */
++	asm volatile("notrack call *0x12345678(%eax,%ecx,8)");	/* Expecting: call indirect 0 */
++
++	asm volatile("notrack bnd call *%eax");			/* Expecting: call indirect 0 */
++	asm volatile("notrack bnd call *(%eax)");		/* Expecting: call indirect 0 */
++	asm volatile("notrack bnd call *(0x12345678)");		/* Expecting: call indirect 0 */
++	asm volatile("notrack bnd call *0x12345678(%eax,%ecx,8)"); /* Expecting: call indirect 0 */
++
++	/* jmp with/without notrack prefix */
++
++	asm volatile("jmp *%eax");				/* Expecting: jmp indirect 0 */
++	asm volatile("jmp *(%eax)");				/* Expecting: jmp indirect 0 */
++	asm volatile("jmp *(0x12345678)");			/* Expecting: jmp indirect 0 */
++	asm volatile("jmp *0x12345678(%eax,%ecx,8)");		/* Expecting: jmp indirect 0 */
++
++	asm volatile("bnd jmp *%eax");				/* Expecting: jmp indirect 0 */
++	asm volatile("bnd jmp *(%eax)");			/* Expecting: jmp indirect 0 */
++	asm volatile("bnd jmp *(0x12345678)");			/* Expecting: jmp indirect 0 */
++	asm volatile("bnd jmp *0x12345678(%eax,%ecx,8)");	/* Expecting: jmp indirect 0 */
++
++	asm volatile("notrack jmp *%eax");			/* Expecting: jmp indirect 0 */
++	asm volatile("notrack jmp *(%eax)");			/* Expecting: jmp indirect 0 */
++	asm volatile("notrack jmp *(0x12345678)");		/* Expecting: jmp indirect 0 */
++	asm volatile("notrack jmp *0x12345678(%eax,%ecx,8)");	/* Expecting: jmp indirect 0 */
++
++	asm volatile("notrack bnd jmp *%eax");			/* Expecting: jmp indirect 0 */
++	asm volatile("notrack bnd jmp *(%eax)");		/* Expecting: jmp indirect 0 */
++	asm volatile("notrack bnd jmp *(0x12345678)");		/* Expecting: jmp indirect 0 */
++	asm volatile("notrack bnd jmp *0x12345678(%eax,%ecx,8)"); /* Expecting: jmp indirect 0 */
++
+ #endif /* #ifndef __x86_64__ */
  
- static LIST_HEAD(pmus);
- static DEFINE_MUTEX(pmus_lock);
-@@ -4608,6 +4609,8 @@ static void unaccount_event(struct perf_event *event)
- 		atomic_dec(&nr_comm_events);
- 	if (event->attr.namespaces)
- 		atomic_dec(&nr_namespaces_events);
-+	if (event->attr.cgroup)
-+		atomic_dec(&nr_cgroup_events);
- 	if (event->attr.task)
- 		atomic_dec(&nr_task_events);
- 	if (event->attr.freq)
-@@ -7736,6 +7739,105 @@ void perf_event_namespaces(struct task_struct *task)
- }
- 
- /*
-+ * cgroup tracking
-+ */
-+#ifdef CONFIG_CGROUP_PERF
-+
-+struct perf_cgroup_event {
-+	char				*path;
-+	int				path_size;
-+	struct {
-+		struct perf_event_header	header;
-+		u64				id;
-+		char				path[];
-+	} event_id;
-+};
-+
-+static int perf_event_cgroup_match(struct perf_event *event)
-+{
-+	return event->attr.cgroup;
-+}
-+
-+static void perf_event_cgroup_output(struct perf_event *event, void *data)
-+{
-+	struct perf_cgroup_event *cgroup_event = data;
-+	struct perf_output_handle handle;
-+	struct perf_sample_data sample;
-+	u16 header_size = cgroup_event->event_id.header.size;
-+	int ret;
-+
-+	if (!perf_event_cgroup_match(event))
-+		return;
-+
-+	perf_event_header__init_id(&cgroup_event->event_id.header,
-+				   &sample, event);
-+	ret = perf_output_begin(&handle, event,
-+				cgroup_event->event_id.header.size);
-+	if (ret)
-+		goto out;
-+
-+	perf_output_put(&handle, cgroup_event->event_id);
-+	__output_copy(&handle, cgroup_event->path, cgroup_event->path_size);
-+
-+	perf_event__output_id_sample(event, &handle, &sample);
-+
-+	perf_output_end(&handle);
-+out:
-+	cgroup_event->event_id.header.size = header_size;
-+}
-+
-+static void perf_event_cgroup(struct cgroup *cgrp)
-+{
-+	struct perf_cgroup_event cgroup_event;
-+	char path_enomem[16] = "//enomem";
-+	char *pathname;
-+	size_t size;
-+
-+	if (!atomic_read(&nr_cgroup_events))
-+		return;
-+
-+	cgroup_event = (struct perf_cgroup_event){
-+		.event_id  = {
-+			.header = {
-+				.type = PERF_RECORD_CGROUP,
-+				.misc = 0,
-+				.size = sizeof(cgroup_event.event_id),
-+			},
-+			.id = cgroup_id(cgrp),
-+		},
-+	};
-+
-+	pathname = kmalloc(PATH_MAX, GFP_KERNEL);
-+	if (pathname == NULL) {
-+		cgroup_event.path = path_enomem;
-+	} else {
-+		/* just to be sure to have enough space for alignment */
-+		cgroup_path(cgrp, pathname, PATH_MAX - sizeof(u64));
-+		cgroup_event.path = pathname;
-+	}
-+
-+	/*
-+	 * Since our buffer works in 8 byte units we need to align our string
-+	 * size to a multiple of 8. However, we must guarantee the tail end is
-+	 * zero'd out to avoid leaking random bits to userspace.
-+	 */
-+	size = strlen(cgroup_event.path) + 1;
-+	while (!IS_ALIGNED(size, sizeof(u64)))
-+		cgroup_event.path[size++] = '\0';
-+
-+	cgroup_event.event_id.header.size += size;
-+	cgroup_event.path_size = size;
-+
-+	perf_iterate_sb(perf_event_cgroup_output,
-+			&cgroup_event,
-+			NULL);
-+
-+	kfree(pathname);
-+}
-+
-+#endif
-+
-+/*
-  * mmap tracking
-  */
- 
-@@ -10781,6 +10883,8 @@ static void account_event(struct perf_event *event)
- 		atomic_inc(&nr_comm_events);
- 	if (event->attr.namespaces)
- 		atomic_inc(&nr_namespaces_events);
-+	if (event->attr.cgroup)
-+		atomic_inc(&nr_cgroup_events);
- 	if (event->attr.task)
- 		atomic_inc(&nr_task_events);
- 	if (event->attr.freq)
-@@ -12757,6 +12861,12 @@ static void perf_cgroup_css_free(struct cgroup_subsys_state *css)
- 	kfree(jc);
- }
- 
-+static int perf_cgroup_css_online(struct cgroup_subsys_state *css)
-+{
-+	perf_event_cgroup(css->cgroup);
-+	return 0;
-+}
-+
- static int __perf_cgroup_move(void *info)
- {
- 	struct task_struct *task = info;
-@@ -12778,6 +12888,7 @@ static void perf_cgroup_attach(struct cgroup_taskset *tset)
- struct cgroup_subsys perf_event_cgrp_subsys = {
- 	.css_alloc	= perf_cgroup_css_alloc,
- 	.css_free	= perf_cgroup_css_free,
-+	.css_online	= perf_cgroup_css_online,
- 	.attach		= perf_cgroup_attach,
- 	/*
- 	 * Implicitly enable on dfl hierarchy so that perf events can
+ 	/* SGX */
