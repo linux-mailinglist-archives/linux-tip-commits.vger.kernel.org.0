@@ -2,43 +2,47 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 26E0C19B694
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  1 Apr 2020 21:50:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE7D919E385
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  4 Apr 2020 10:41:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732637AbgDATu1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 1 Apr 2020 15:50:27 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:35726 "EHLO
+        id S1726077AbgDDIlt convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 4 Apr 2020 04:41:49 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:41398 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732314AbgDATu1 (ORCPT
+        with ESMTP id S1725837AbgDDIlt (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 1 Apr 2020 15:50:27 -0400
+        Sat, 4 Apr 2020 04:41:49 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jJjNX-0000Y7-Rm; Wed, 01 Apr 2020 21:50:23 +0200
+        id 1jKeN1-0000uP-NH; Sat, 04 Apr 2020 10:41:39 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 0D9601C0315;
-        Wed,  1 Apr 2020 21:50:23 +0200 (CEST)
-Date:   Wed, 01 Apr 2020 19:50:22 -0000
-From:   "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 049901C0243;
+        Sat,  4 Apr 2020 10:41:39 +0200 (CEST)
+Date:   Sat, 04 Apr 2020 08:41:38 -0000
+From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/urgent] hrtimer: Don't dereference the hrtimer pointer
- after the callback
-Cc:     syzbot+62c155c276e580cfb606@syzkaller.appspotmail.com,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200331201849.fkp2siy3vcdqvqlz@linutronix.de>
-References: <20200331201849.fkp2siy3vcdqvqlz@linutronix.de>
+Subject: [tip: perf/urgent] perf python: Fix clang detection to strip out
+ options passed in $CC
+Cc:     daniel.diaz@linaro.org, Naresh Kamboju <naresh.kamboju@linaro.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ilie Halip <ilie.halip@gmail.com>,
+        Jiri Olsa <jolsa@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200401124037.GA12534@kernel.org>
+References: <20200401124037.GA12534@kernel.org>
 MIME-Version: 1.0
-Message-ID: <158577062260.28353.4275523826758321524.tip-bot2@tip-bot2>
+Message-ID: <158598969854.28353.7275617434377208248.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8BIT
 X-Linutronix-Spam-Score: -1.0
 X-Linutronix-Spam-Level: -
 X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
@@ -47,103 +51,65 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/urgent branch of tip:
+The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     73d20564e0dcae003e0d79977f044d5e57496304
-Gitweb:        https://git.kernel.org/tip/73d20564e0dcae003e0d79977f044d5e57496304
-Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-AuthorDate:    Tue, 31 Mar 2020 22:18:49 +02:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 01 Apr 2020 13:20:14 +02:00
+Commit-ID:     9ff76cea4e9e6d49a6f764ae114fc0fb8de97816
+Gitweb:        https://git.kernel.org/tip/9ff76cea4e9e6d49a6f764ae114fc0fb8de97816
+Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
+AuthorDate:    Wed, 01 Apr 2020 09:33:59 -03:00
+Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
+CommitterDate: Fri, 03 Apr 2020 10:04:59 -03:00
 
-hrtimer: Don't dereference the hrtimer pointer after the callback
+perf python: Fix clang detection to strip out options passed in $CC
 
-A hrtimer can be released in its callback, but lockdep_hrtimer_exit()
-dereferences the pointer after the callback returns, i.e. a potential use
-after free.
+The clang check in the python setup.py file expected $CC to be just the
+name of the compiler, not the compiler + options, i.e. all options were
+expected to be passed in $CFLAGS, this ends up making it fail in systems
+where CC is set to, e.g.:
 
-Retrieve the context in which the hrtimer expires before the callback is
-invoked and use it in lockdep_hrtimer_exit().
+ "aarch64-linaro-linux-gcc --sysroot=/oe/build/tmp/work/juno-linaro-linux/perf/1.0-r9/recipe-sysroot"
 
-Fixes: 40db173965c0 ("lockdep: Add hrtimer context tracing bits")
-Reported-by: syzbot+62c155c276e580cfb606@syzkaller.appspotmail.com
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20200331201849.fkp2siy3vcdqvqlz@linutronix.de
+Like this:
+
+  $ python3
+  >>> from subprocess import Popen
+  >>> a = Popen(["aarch64-linux-gnu-gcc --sysroot=/oe/build/tmp/work/juno-linaro-linux/perf/1.0-r9/recipe-sysroot", "-v"])
+  Traceback (most recent call last):
+    File "<stdin>", line 1, in <module>
+    File "/usr/lib/python3.6/subprocess.py", line 729, in __init__
+      restore_signals, start_new_session)
+    File "/usr/lib/python3.6/subprocess.py", line 1364, in _execute_child
+      raise child_exception_type(errno_num, err_msg, err_filename)
+  FileNotFoundError: [Errno 2] No such file or directory: 'aarch64-linux-gnu-gcc --sysroot=/oe/build/tmp/work/juno-linaro-linux/perf/1.0-r9/recipe-sysroot': 'aarch64-linux-gnu-gcc --sysroot=/oe/build/tmp/work/juno-linaro-linux/perf/1.0-r9/recipe-sysroot'
+  >>>
+
+Make it more robust, covering this case, by passing cc.split()[0] as the
+first arg to popen().
+
+Fixes: a7ffd416d804 ("perf python: Fix clang detection when using CC=clang-version")
+Reported-by: Daniel Díaz <daniel.diaz@linaro.org>
+Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
+Tested-by: Daniel Díaz <daniel.diaz@linaro.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Ilie Halip <ilie.halip@gmail.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Link: http://lore.kernel.org/lkml/20200401124037.GA12534@kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- include/linux/irqflags.h | 27 ++++++++++++++++-----------
- kernel/time/hrtimer.c    |  5 +++--
- 2 files changed, 19 insertions(+), 13 deletions(-)
+ tools/perf/util/setup.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/irqflags.h b/include/linux/irqflags.h
-index ceca42d..61a9ced 100644
---- a/include/linux/irqflags.h
-+++ b/include/linux/irqflags.h
-@@ -58,16 +58,21 @@ do {						\
- } while (0)
+diff --git a/tools/perf/util/setup.py b/tools/perf/util/setup.py
+index 8a065a6..347b2c0 100644
+--- a/tools/perf/util/setup.py
++++ b/tools/perf/util/setup.py
+@@ -3,7 +3,7 @@ from subprocess import Popen, PIPE
+ from re import sub
  
- # define lockdep_hrtimer_enter(__hrtimer)		\
--	  do {						\
--		  if (!__hrtimer->is_hard)		\
--			current->irq_config = 1;	\
--	  } while (0)
--
--# define lockdep_hrtimer_exit(__hrtimer)		\
--	  do {						\
--		  if (!__hrtimer->is_hard)		\
-+({							\
-+	bool __expires_hardirq = true;			\
-+							\
-+	if (!__hrtimer->is_hard) {			\
-+		current->irq_config = 1;		\
-+		__expires_hardirq = false;		\
-+	}						\
-+	__expires_hardirq;				\
-+})
-+
-+# define lockdep_hrtimer_exit(__expires_hardirq)	\
-+	do {						\
-+		if (!__expires_hardirq)			\
- 			current->irq_config = 0;	\
--	  } while (0)
-+	} while (0)
+ cc = getenv("CC")
+-cc_is_clang = b"clang version" in Popen([cc, "-v"], stderr=PIPE).stderr.readline()
++cc_is_clang = b"clang version" in Popen([cc.split()[0], "-v"], stderr=PIPE).stderr.readline()
  
- # define lockdep_posixtimer_enter()				\
- 	  do {							\
-@@ -102,8 +107,8 @@ do {						\
- # define lockdep_hardirq_exit()		do { } while (0)
- # define lockdep_softirq_enter()	do { } while (0)
- # define lockdep_softirq_exit()		do { } while (0)
--# define lockdep_hrtimer_enter(__hrtimer)		do { } while (0)
--# define lockdep_hrtimer_exit(__hrtimer)		do { } while (0)
-+# define lockdep_hrtimer_enter(__hrtimer)	false
-+# define lockdep_hrtimer_exit(__context)	do { } while (0)
- # define lockdep_posixtimer_enter()		do { } while (0)
- # define lockdep_posixtimer_exit()		do { } while (0)
- # define lockdep_irq_work_enter(__work)		do { } while (0)
-diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
-index d0a5ba3..d89da1c 100644
---- a/kernel/time/hrtimer.c
-+++ b/kernel/time/hrtimer.c
-@@ -1480,6 +1480,7 @@ static void __run_hrtimer(struct hrtimer_cpu_base *cpu_base,
- 			  unsigned long flags) __must_hold(&cpu_base->lock)
- {
- 	enum hrtimer_restart (*fn)(struct hrtimer *);
-+	bool expires_in_hardirq;
- 	int restart;
- 
- 	lockdep_assert_held(&cpu_base->lock);
-@@ -1514,11 +1515,11 @@ static void __run_hrtimer(struct hrtimer_cpu_base *cpu_base,
- 	 */
- 	raw_spin_unlock_irqrestore(&cpu_base->lock, flags);
- 	trace_hrtimer_expire_entry(timer, now);
--	lockdep_hrtimer_enter(timer);
-+	expires_in_hardirq = lockdep_hrtimer_enter(timer);
- 
- 	restart = fn(timer);
- 
--	lockdep_hrtimer_exit(timer);
-+	lockdep_hrtimer_exit(expires_in_hardirq);
- 	trace_hrtimer_expire_exit(timer);
- 	raw_spin_lock_irq(&cpu_base->lock);
- 
+ def clang_has_option(option):
+     return [o for o in Popen([cc, option], stderr=PIPE).stderr.readlines() if b"unknown argument" in o] == [ ]
