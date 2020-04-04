@@ -2,47 +2,47 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DE7D919E385
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  4 Apr 2020 10:41:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5092519E390
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  4 Apr 2020 10:45:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726077AbgDDIlt convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 4 Apr 2020 04:41:49 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:41398 "EHLO
+        id S1726373AbgDDIl6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 4 Apr 2020 04:41:58 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:41475 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725837AbgDDIlt (ORCPT
+        with ESMTP id S1726302AbgDDIl4 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 4 Apr 2020 04:41:49 -0400
+        Sat, 4 Apr 2020 04:41:56 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jKeN1-0000uP-NH; Sat, 04 Apr 2020 10:41:39 +0200
+        id 1jKeN2-0000uW-Dy; Sat, 04 Apr 2020 10:41:40 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 049901C0243;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id F38711C0243;
         Sat,  4 Apr 2020 10:41:39 +0200 (CEST)
-Date:   Sat, 04 Apr 2020 08:41:38 -0000
-From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
+Date:   Sat, 04 Apr 2020 08:41:39 -0000
+From:   "tip-bot2 for Andreas Gerstmayr" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf python: Fix clang detection to strip out
- options passed in $CC
-Cc:     daniel.diaz@linaro.org, Naresh Kamboju <naresh.kamboju@linaro.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ilie Halip <ilie.halip@gmail.com>,
-        Jiri Olsa <jolsa@kernel.org>,
+Subject: [tip: perf/urgent] perf script: Fix invalid read of directory entry
+ after closedir()
+Cc:     Andreas Gerstmayr <agerstmayr@redhat.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Mark Rutland <mark.rutland@arm.com>,
         Namhyung Kim <namhyung@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200401124037.GA12534@kernel.org>
-References: <20200401124037.GA12534@kernel.org>
+In-Reply-To: <20200402124337.419456-1-agerstmayr@redhat.com>
+References: <20200402124337.419456-1-agerstmayr@redhat.com>
 MIME-Version: 1.0
-Message-ID: <158598969854.28353.7275617434377208248.tip-bot2@tip-bot2>
+Message-ID: <158598969966.28353.9977084020476897493.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: 7bit
 X-Linutronix-Spam-Score: -1.0
 X-Linutronix-Spam-Level: -
 X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
@@ -53,63 +53,57 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     9ff76cea4e9e6d49a6f764ae114fc0fb8de97816
-Gitweb:        https://git.kernel.org/tip/9ff76cea4e9e6d49a6f764ae114fc0fb8de97816
-Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Wed, 01 Apr 2020 09:33:59 -03:00
+Commit-ID:     27486a85cb65bd258a9a213b3e95bdf8c24fd781
+Gitweb:        https://git.kernel.org/tip/27486a85cb65bd258a9a213b3e95bdf8c24fd781
+Author:        Andreas Gerstmayr <agerstmayr@redhat.com>
+AuthorDate:    Thu, 02 Apr 2020 14:43:38 +02:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Fri, 03 Apr 2020 10:04:59 -03:00
+CommitterDate: Fri, 03 Apr 2020 10:03:18 -03:00
 
-perf python: Fix clang detection to strip out options passed in $CC
+perf script: Fix invalid read of directory entry after closedir()
 
-The clang check in the python setup.py file expected $CC to be just the
-name of the compiler, not the compiler + options, i.e. all options were
-expected to be passed in $CFLAGS, this ends up making it fail in systems
-where CC is set to, e.g.:
+closedir(lang_dir) frees the memory of script_dirent->d_name, which
+gets accessed in the next line in a call to scnprintf().
 
- "aarch64-linaro-linux-gcc --sysroot=/oe/build/tmp/work/juno-linaro-linux/perf/1.0-r9/recipe-sysroot"
+Valgrind report:
 
-Like this:
+  Invalid read of size 1
+  ==413557==    at 0x483CBE6: strlen (vg_replace_strmem.c:461)
+  ==413557==    by 0x4DD45FD: __vfprintf_internal (vfprintf-internal.c:1688)
+  ==413557==    by 0x4DE6679: __vsnprintf_internal (vsnprintf.c:114)
+  ==413557==    by 0x53A037: vsnprintf (stdio2.h:80)
+  ==413557==    by 0x53A037: scnprintf (vsprintf.c:21)
+  ==413557==    by 0x435202: get_script_path (builtin-script.c:3223)
+  ==413557==  Address 0x52e7313 is 1,139 bytes inside a block of size 32,816 free'd
+  ==413557==    at 0x483AA0C: free (vg_replace_malloc.c:540)
+  ==413557==    by 0x4E303C0: closedir (closedir.c:50)
+  ==413557==    by 0x4351DC: get_script_path (builtin-script.c:3222)
 
-  $ python3
-  >>> from subprocess import Popen
-  >>> a = Popen(["aarch64-linux-gnu-gcc --sysroot=/oe/build/tmp/work/juno-linaro-linux/perf/1.0-r9/recipe-sysroot", "-v"])
-  Traceback (most recent call last):
-    File "<stdin>", line 1, in <module>
-    File "/usr/lib/python3.6/subprocess.py", line 729, in __init__
-      restore_signals, start_new_session)
-    File "/usr/lib/python3.6/subprocess.py", line 1364, in _execute_child
-      raise child_exception_type(errno_num, err_msg, err_filename)
-  FileNotFoundError: [Errno 2] No such file or directory: 'aarch64-linux-gnu-gcc --sysroot=/oe/build/tmp/work/juno-linaro-linux/perf/1.0-r9/recipe-sysroot': 'aarch64-linux-gnu-gcc --sysroot=/oe/build/tmp/work/juno-linaro-linux/perf/1.0-r9/recipe-sysroot'
-  >>>
-
-Make it more robust, covering this case, by passing cc.split()[0] as the
-first arg to popen().
-
-Fixes: a7ffd416d804 ("perf python: Fix clang detection when using CC=clang-version")
-Reported-by: Daniel Díaz <daniel.diaz@linaro.org>
-Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
-Tested-by: Daniel Díaz <daniel.diaz@linaro.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Ilie Halip <ilie.halip@gmail.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
+Signed-off-by: Andreas Gerstmayr <agerstmayr@redhat.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Jiri Olsa <jolsa@redhat.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Link: http://lore.kernel.org/lkml/20200401124037.GA12534@kernel.org
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: http://lore.kernel.org/lkml/20200402124337.419456-1-agerstmayr@redhat.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/setup.py | 2 +-
+ tools/perf/builtin-script.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/util/setup.py b/tools/perf/util/setup.py
-index 8a065a6..347b2c0 100644
---- a/tools/perf/util/setup.py
-+++ b/tools/perf/util/setup.py
-@@ -3,7 +3,7 @@ from subprocess import Popen, PIPE
- from re import sub
- 
- cc = getenv("CC")
--cc_is_clang = b"clang version" in Popen([cc, "-v"], stderr=PIPE).stderr.readline()
-+cc_is_clang = b"clang version" in Popen([cc.split()[0], "-v"], stderr=PIPE).stderr.readline()
- 
- def clang_has_option(option):
-     return [o for o in Popen([cc, option], stderr=PIPE).stderr.readlines() if b"unknown argument" in o] == [ ]
+diff --git a/tools/perf/builtin-script.c b/tools/perf/builtin-script.c
+index 186ebf8..1f57a7e 100644
+--- a/tools/perf/builtin-script.c
++++ b/tools/perf/builtin-script.c
+@@ -3265,10 +3265,10 @@ static char *get_script_path(const char *script_root, const char *suffix)
+ 			__script_root = get_script_root(script_dirent, suffix);
+ 			if (__script_root && !strcmp(script_root, __script_root)) {
+ 				free(__script_root);
+-				closedir(lang_dir);
+ 				closedir(scripts_dir);
+ 				scnprintf(script_path, MAXPATHLEN, "%s/%s",
+ 					  lang_path, script_dirent->d_name);
++				closedir(lang_dir);
+ 				return strdup(script_path);
+ 			}
+ 			free(__script_root);
