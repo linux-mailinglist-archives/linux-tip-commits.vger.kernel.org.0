@@ -2,29 +2,29 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 517FA19E39D
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  4 Apr 2020 10:45:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D5E319E3A1
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  4 Apr 2020 10:45:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726545AbgDDImN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 4 Apr 2020 04:42:13 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:41686 "EHLO
+        id S1726593AbgDDImQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 4 Apr 2020 04:42:16 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:41735 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726414AbgDDImN (ORCPT
+        with ESMTP id S1726554AbgDDImP (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 4 Apr 2020 04:42:13 -0400
+        Sat, 4 Apr 2020 04:42:15 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jKeNL-00019e-Gq; Sat, 04 Apr 2020 10:41:59 +0200
+        id 1jKeNQ-0001AG-CF; Sat, 04 Apr 2020 10:42:04 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D6C461C047B;
-        Sat,  4 Apr 2020 10:41:54 +0200 (CEST)
-Date:   Sat, 04 Apr 2020 08:41:54 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 65ADE1C04DD;
+        Sat,  4 Apr 2020 10:41:55 +0200 (CEST)
+Date:   Sat, 04 Apr 2020 08:41:55 -0000
 From:   "tip-bot2 for John Garry" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf pmu: Make pmu_uncore_alias_match() public
+Subject: [tip: perf/urgent] perf pmu: Add is_pmu_core()
 Cc:     John Garry <john.garry@huawei.com>, Jiri Olsa <jolsa@redhat.com>,
         Alexander Shishkin <alexander.shishkin@linux.intel.com>,
         Andi Kleen <ak@linux.intel.com>,
@@ -36,10 +36,10 @@ Cc:     John Garry <john.garry@huawei.com>, Jiri Olsa <jolsa@redhat.com>,
         Will Deacon <will@kernel.org>, linuxarm@huawei.com,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <1584442939-8911-7-git-send-email-john.garry@huawei.com>
-References: <1584442939-8911-7-git-send-email-john.garry@huawei.com>
+In-Reply-To: <1584442939-8911-6-git-send-email-john.garry@huawei.com>
+References: <1584442939-8911-6-git-send-email-john.garry@huawei.com>
 MIME-Version: 1.0
-Message-ID: <158598971452.28353.7605551568012483577.tip-bot2@tip-bot2>
+Message-ID: <158598971502.28353.1893341793306423695.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -55,17 +55,16 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     5b9a50001b2c23f90f2a21db4763f3a9599588c4
-Gitweb:        https://git.kernel.org/tip/5b9a50001b2c23f90f2a21db4763f3a9599588c4
+Commit-ID:     d504fae93dd61b734aefc403c7653d958aef655a
+Gitweb:        https://git.kernel.org/tip/d504fae93dd61b734aefc403c7653d958aef655a
 Author:        John Garry <john.garry@huawei.com>
-AuthorDate:    Tue, 17 Mar 2020 19:02:18 +08:00
+AuthorDate:    Tue, 17 Mar 2020 19:02:17 +08:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Tue, 24 Mar 2020 10:35:59 -03:00
 
-perf pmu: Make pmu_uncore_alias_match() public
+perf pmu: Add is_pmu_core()
 
-The perf pmu-events test will want to use pmu_uncore_alias_match(), so
-make it public.
+Add a function to decide whether a PMU is a core PMU.
 
 Signed-off-by: John Garry <john.garry@huawei.com>
 Acked-by: Jiri Olsa <jolsa@redhat.com>
@@ -78,35 +77,38 @@ Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Will Deacon <will@kernel.org>
 Cc: linuxarm@huawei.com
-Link: http://lore.kernel.org/lkml/1584442939-8911-7-git-send-email-john.garry@huawei.com
+Link: http://lore.kernel.org/lkml/1584442939-8911-6-git-send-email-john.garry@huawei.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/pmu.c | 2 +-
+ tools/perf/util/pmu.c | 5 +++++
  tools/perf/util/pmu.h | 1 +
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ 2 files changed, 6 insertions(+)
 
 diff --git a/tools/perf/util/pmu.c b/tools/perf/util/pmu.c
-index 55129d0..616fbda 100644
+index c616a06..55129d0 100644
 --- a/tools/perf/util/pmu.c
 +++ b/tools/perf/util/pmu.c
-@@ -698,7 +698,7 @@ struct pmu_events_map *perf_pmu__find_map(struct perf_pmu *pmu)
- 	return map;
+@@ -1400,6 +1400,11 @@ static void wordwrap(char *s, int start, int max, int corr)
+ 	}
  }
  
--static bool pmu_uncore_alias_match(const char *pmu_name, const char *name)
-+bool pmu_uncore_alias_match(const char *pmu_name, const char *name)
++bool is_pmu_core(const char *name)
++{
++	return !strcmp(name, "cpu") || is_arm_pmu_core(name);
++}
++
+ void print_pmu_events(const char *event_glob, bool name_only, bool quiet_flag,
+ 			bool long_desc, bool details_flag, bool deprecated)
  {
- 	char *tmp = NULL, *tok, *str;
- 	bool res;
 diff --git a/tools/perf/util/pmu.h b/tools/perf/util/pmu.h
-index b756946..5fb3f16 100644
+index 0b4a0ef..b756946 100644
 --- a/tools/perf/util/pmu.h
 +++ b/tools/perf/util/pmu.h
-@@ -103,6 +103,7 @@ void pmu_add_cpu_aliases_map(struct list_head *head, struct perf_pmu *pmu,
- 			     struct pmu_events_map *map);
+@@ -88,6 +88,7 @@ int perf_pmu__format_parse(char *dir, struct list_head *head);
  
- struct pmu_events_map *perf_pmu__find_map(struct perf_pmu *pmu);
-+bool pmu_uncore_alias_match(const char *pmu_name, const char *name);
+ struct perf_pmu *perf_pmu__scan(struct perf_pmu *pmu);
  
- int perf_pmu__convert_scale(const char *scale, char **end, double *sval);
- 
++bool is_pmu_core(const char *name);
+ void print_pmu_events(const char *event_glob, bool name_only, bool quiet,
+ 		      bool long_desc, bool details_flag,
+ 		      bool deprecated);
