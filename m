@@ -2,42 +2,46 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 36AB719E3E0
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  4 Apr 2020 10:45:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D528F19E39C
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  4 Apr 2020 10:45:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727751AbgDDIoO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 4 Apr 2020 04:44:14 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:41522 "EHLO
+        id S1726528AbgDDImN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 4 Apr 2020 04:42:13 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:41657 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726371AbgDDImA (ORCPT
+        with ESMTP id S1726490AbgDDImK (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 4 Apr 2020 04:42:00 -0400
+        Sat, 4 Apr 2020 04:42:10 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jKeN5-0000xv-TT; Sat, 04 Apr 2020 10:41:44 +0200
+        id 1jKeNB-0000yS-BG; Sat, 04 Apr 2020 10:41:49 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 819031C0243;
-        Sat,  4 Apr 2020 10:41:43 +0200 (CEST)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 051371C0483;
+        Sat,  4 Apr 2020 10:41:44 +0200 (CEST)
 Date:   Sat, 04 Apr 2020 08:41:43 -0000
-From:   "tip-bot2 for Jin Yao" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Kemeng Shi" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf top: Support --group-sort-idx to change the
- sort order
-Cc:     Jin Yao <yao.jin@linux.intel.com>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
+Subject: [tip: perf/urgent] perf symbols: Fix arm64 gap between kernel start
+ and module end
+Cc:     Kemeng Shi <shikemeng@huawei.com>,
         Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Andi Kleen <ak@linux.intel.com>, Jin Yao <yao.jin@intel.com>,
-        Jiri Olsa <jolsa@kernel.org>,
-        Kan Liang <kan.liang@linux.intel.com>,
-        Peter Zijlstra <peterz@infradead.org>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200324220711.6025-1-yao.jin@linux.intel.com>
-References: <20200324220711.6025-1-yao.jin@linux.intel.com>
+        Hewenliang <hewenliang4@huawei.com>,
+        Hu Shiyuan <hushiyuan@huawei.com>,
+        Ian Rogers <irogers@google.com>, Jiri Olsa <jolsa@redhat.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Richter <tmricht@linux.ibm.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <33fd24c4-0d5a-9d93-9b62-dffa97c992ca@huawei.com>
+References: <33fd24c4-0d5a-9d93-9b62-dffa97c992ca@huawei.com>
 MIME-Version: 1.0
-Message-ID: <158598970316.28353.17958323669353267634.tip-bot2@tip-bot2>
+Message-ID: <158598970362.28353.14113544312342122835.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -53,77 +57,148 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     df7deb2cceef0546ab2115702da3421b7c61a8c0
-Gitweb:        https://git.kernel.org/tip/df7deb2cceef0546ab2115702da3421b7c61a8c0
-Author:        Jin Yao <yao.jin@linux.intel.com>
-AuthorDate:    Wed, 25 Mar 2020 06:07:10 +08:00
+Commit-ID:     78886f3ed37e89a06c76b95be873573e27900979
+Gitweb:        https://git.kernel.org/tip/78886f3ed37e89a06c76b95be873573e27900979
+Author:        Kemeng Shi <shikemeng@huawei.com>
+AuthorDate:    Mon, 30 Mar 2020 15:41:11 +08:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Fri, 03 Apr 2020 09:37:55 -03:00
 
-perf top: Support --group-sort-idx to change the sort order
+perf symbols: Fix arm64 gap between kernel start and module end
 
-'perf report' supports the option --group-sort-idx, which sorts the
-output by the event at the index n in event group.
+During execution of command 'perf report' in my arm64 virtual machine,
+this error message is showed:
 
-For example:
+failed to process sample
 
-  perf record -e cycles,instructions,cache-misses
-  perf report --group --group-sort-idx 2 --stdio
+__symbol__inc_addr_samples(860): ENOMEM! sym->name=__this_module,
+    start=0x1477100, addr=0x147dbd8, end=0x80002000, func: 0
 
-The perf-report output is sorted by cache-misses.
+The error is caused with path:
+cmd_report
+ __cmd_report
+  perf_session__process_events
+   __perf_session__process_events
+    ordered_events__flush
+     __ordered_events__flush
+      oe->deliver (ordered_events__deliver_event)
+       perf_session__deliver_event
+        machines__deliver_event
+         perf_evlist__deliver_sample
+          tool->sample (process_sample_event)
+           hist_entry_iter__add
+            iter->add_entry_cb(hist_iter__report_callback)
+             hist_entry__inc_addr_samples
+              symbol__inc_addr_samples
+               __symbol__inc_addr_samples
+                h = annotated_source__histogram(src, evidx) (NULL)
 
-This patch supports --group-sort-idx in perf-top.
+annotated_source__histogram failed is caused with path:
+...
+ hist_entry__inc_addr_samples
+  symbol__inc_addr_samples
+   symbol__hists
+    annotated_source__alloc_histograms
+     src->histograms = calloc(nr_hists, sizeof_sym_hist) (failed)
 
-For example:
+Calloc failed as the symbol__size(sym) is too huge. As show in error
+message: start=0x1477100, end=0x80002000, size of symbol is about 2G.
 
-  perf top --group -e cycles,instructions,cache-misses --group-sort-idx 2
+This is the same problem as 'perf annotate: Fix s390 gap between kernel
+end and module start (b9c0a64901d5bd)'. Perf gets symbol information from
+/proc/kallsyms in __dso__load_kallsyms. A part of symbol in /proc/kallsyms
+from my virtual machine is as follows:
+ #cat /proc/kallsyms | sort
+ ...
+ ffff000001475080 d rpfilter_mt_reg      [ip6t_rpfilter]
+ ffff000001475100 d $d   [ip6t_rpfilter]
+ ffff000001475100 d __this_module        [ip6t_rpfilter]
+ ffff000080080000 t _head
+ ffff000080080000 T _text
+ ffff000080080040 t pe_header
+ ...
 
-The perf-top output is sorted by cache-misses.
+Take line 'ffff000001475100 d __this_module [ip6t_rpfilter]' as example.
+The start and end of symbol are both set to ffff000001475100 in
+dso__load_all_kallsyms. Then symbols__fixup_end will set the end of symbol
+to next big address to ffff000001475100 in /proc/kallsyms, ffff000080080000
+in this example. Then sizeof of symbol will be about 2G and cause the
+problem.
 
-Signed-off-by: Jin Yao <yao.jin@linux.intel.com>
-Suggested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+The start of module in my machine is
+ ffff000000a62000 t $x   [dm_mod]
+
+The start of kernel in my machine is
+ ffff000080080000 t _head
+
+There is a big gap between end of module and begin of kernel if a samll
+amount of memory is used by module. And the last symbol in module will
+have a large address range as caotaining the big gap.
+
+Give that the module and kernel text segment sequence may change in
+the future, fix this by limiting range of last symbol in module and kernel
+to 4K in arch arm64.
+
+Signed-off-by: Kemeng Shi <shikemeng@huawei.com>
 Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Jin Yao <yao.jin@intel.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Hewenliang <hewenliang4@huawei.com>
+Cc: Hu Shiyuan <hushiyuan@huawei.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Jiri Olsa <jolsa@redhat.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Nick Desaulniers <ndesaulniers@google.com>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Link: http://lore.kernel.org/lkml/20200324220711.6025-1-yao.jin@linux.intel.com
+Cc: Thomas Richter <tmricht@linux.ibm.com>
+Link: http://lore.kernel.org/lkml/33fd24c4-0d5a-9d93-9b62-dffa97c992ca@huawei.com
+[ refreshed the patch on current codebase, added string.h include as strchr() is used ]
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/Documentation/perf-top.txt | 5 +++++
- tools/perf/builtin-top.c              | 4 ++++
- 2 files changed, 9 insertions(+)
+ tools/perf/arch/arm64/util/Build     |  1 +-
+ tools/perf/arch/arm64/util/machine.c | 27 +++++++++++++++++++++++++++-
+ 2 files changed, 28 insertions(+)
+ create mode 100644 tools/perf/arch/arm64/util/machine.c
 
-diff --git a/tools/perf/Documentation/perf-top.txt b/tools/perf/Documentation/perf-top.txt
-index ddab103..487737a 100644
---- a/tools/perf/Documentation/perf-top.txt
-+++ b/tools/perf/Documentation/perf-top.txt
-@@ -53,6 +53,11 @@ Default is to monitor all CPUS.
- --group::
-         Put the counters into a counter group.
- 
-+--group-sort-idx::
-+	Sort the output by the event at the index n in group. If n is invalid,
-+	sort by the first event. It can support multiple groups with different
-+	amount of events. WARNING: This should be used on grouped events.
+diff --git a/tools/perf/arch/arm64/util/Build b/tools/perf/arch/arm64/util/Build
+index 789956f..5c13438 100644
+--- a/tools/perf/arch/arm64/util/Build
++++ b/tools/perf/arch/arm64/util/Build
+@@ -1,4 +1,5 @@
+ perf-y += header.o
++perf-y += machine.o
+ perf-y += perf_regs.o
+ perf-$(CONFIG_DWARF)     += dwarf-regs.o
+ perf-$(CONFIG_LOCAL_LIBUNWIND) += unwind-libunwind.o
+diff --git a/tools/perf/arch/arm64/util/machine.c b/tools/perf/arch/arm64/util/machine.c
+new file mode 100644
+index 0000000..d41b27e
+--- /dev/null
++++ b/tools/perf/arch/arm64/util/machine.c
+@@ -0,0 +1,27 @@
++// SPDX-License-Identifier: GPL-2.0
 +
- -F <freq>::
- --freq=<freq>::
- 	Profile at this frequency. Use 'max' to use the currently maximum
-diff --git a/tools/perf/builtin-top.c b/tools/perf/builtin-top.c
-index 02ea2cf..9ff7943 100644
---- a/tools/perf/builtin-top.c
-+++ b/tools/perf/builtin-top.c
-@@ -1560,6 +1560,10 @@ int cmd_top(int argc, const char **argv)
- 		    "Record namespaces events"),
- 	OPT_BOOLEAN(0, "all-cgroups", &opts->record_cgroup,
- 		    "Record cgroup events"),
-+	OPT_INTEGER(0, "group-sort-idx", &symbol_conf.group_sort_idx,
-+		    "Sort the output by the event at the index n in group. "
-+		    "If n is invalid, sort by the first event. "
-+		    "WARNING: should be used on grouped events."),
- 	OPTS_EVSWITCH(&top.evswitch),
- 	OPT_END()
- 	};
++#include <stdio.h>
++#include <string.h>
++#include "debug.h"
++#include "symbol.h"
++
++/* On arm64, kernel text segment start at high memory address,
++ * for example 0xffff 0000 8xxx xxxx. Modules start at a low memory
++ * address, like 0xffff 0000 00ax xxxx. When only samll amount of
++ * memory is used by modules, gap between end of module's text segment
++ * and start of kernel text segment may be reach 2G.
++ * Therefore do not fill this gap and do not assign it to the kernel dso map.
++ */
++
++#define SYMBOL_LIMIT (1 << 12) /* 4K */
++
++void arch__symbols__fixup_end(struct symbol *p, struct symbol *c)
++{
++	if ((strchr(p->name, '[') && strchr(c->name, '[') == NULL) ||
++			(strchr(p->name, '[') == NULL && strchr(c->name, '[')))
++		/* Limit range of last symbol in module and kernel */
++		p->end += SYMBOL_LIMIT;
++	else
++		p->end = c->start;
++	pr_debug4("%s sym:%s end:%#lx\n", __func__, p->name, p->end);
++}
