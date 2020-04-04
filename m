@@ -2,46 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D528F19E39C
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  4 Apr 2020 10:45:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B967619E3EE
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  4 Apr 2020 10:45:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726528AbgDDImN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 4 Apr 2020 04:42:13 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:41657 "EHLO
+        id S1726278AbgDDIoj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 4 Apr 2020 04:44:39 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:41463 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726490AbgDDImK (ORCPT
+        with ESMTP id S1726269AbgDDIly (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 4 Apr 2020 04:42:10 -0400
+        Sat, 4 Apr 2020 04:41:54 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jKeNB-0000yS-BG; Sat, 04 Apr 2020 10:41:49 +0200
+        id 1jKeN7-0000zP-N0; Sat, 04 Apr 2020 10:41:45 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 051371C0483;
-        Sat,  4 Apr 2020 10:41:44 +0200 (CEST)
-Date:   Sat, 04 Apr 2020 08:41:43 -0000
-From:   "tip-bot2 for Kemeng Shi" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4F5F61C0243;
+        Sat,  4 Apr 2020 10:41:45 +0200 (CEST)
+Date:   Sat, 04 Apr 2020 08:41:44 -0000
+From:   "tip-bot2 for Namhyung Kim" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf symbols: Fix arm64 gap between kernel start
- and module end
-Cc:     Kemeng Shi <shikemeng@huawei.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Hewenliang <hewenliang4@huawei.com>,
-        Hu Shiyuan <hushiyuan@huawei.com>,
-        Ian Rogers <irogers@google.com>, Jiri Olsa <jolsa@redhat.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Richter <tmricht@linux.ibm.com>,
+Subject: [tip: perf/urgent] perf top: Add --all-cgroups option
+Cc:     Namhyung Kim <namhyung@kernel.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <33fd24c4-0d5a-9d93-9b62-dffa97c992ca@huawei.com>
-References: <33fd24c4-0d5a-9d93-9b62-dffa97c992ca@huawei.com>
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Peter Zijlstra <peterz@infradead.org>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200325124536.2800725-9-namhyung@kernel.org>
+References: <20200325124536.2800725-9-namhyung@kernel.org>
 MIME-Version: 1.0
-Message-ID: <158598970362.28353.14113544312342122835.tip-bot2@tip-bot2>
+Message-ID: <158598970496.28353.11797794662259129281.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -57,148 +51,92 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     78886f3ed37e89a06c76b95be873573e27900979
-Gitweb:        https://git.kernel.org/tip/78886f3ed37e89a06c76b95be873573e27900979
-Author:        Kemeng Shi <shikemeng@huawei.com>
-AuthorDate:    Mon, 30 Mar 2020 15:41:11 +08:00
+Commit-ID:     f382842fa0244ae1e2c28c8377732c85ec1fe7a9
+Gitweb:        https://git.kernel.org/tip/f382842fa0244ae1e2c28c8377732c85ec1fe7a9
+Author:        Namhyung Kim <namhyung@kernel.org>
+AuthorDate:    Wed, 25 Mar 2020 21:45:35 +09:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Fri, 03 Apr 2020 09:37:55 -03:00
 
-perf symbols: Fix arm64 gap between kernel start and module end
+perf top: Add --all-cgroups option
 
-During execution of command 'perf report' in my arm64 virtual machine,
-this error message is showed:
+The --all-cgroups option is to enable cgroup profiling support.  It
+tells kernel to record CGROUP events in the ring buffer so that 'perf
+top' can identify task/cgroup association later.
 
-failed to process sample
+Committer testing:
 
-__symbol__inc_addr_samples(860): ENOMEM! sym->name=__this_module,
-    start=0x1477100, addr=0x147dbd8, end=0x80002000, func: 0
+Use:
 
-The error is caused with path:
-cmd_report
- __cmd_report
-  perf_session__process_events
-   __perf_session__process_events
-    ordered_events__flush
-     __ordered_events__flush
-      oe->deliver (ordered_events__deliver_event)
-       perf_session__deliver_event
-        machines__deliver_event
-         perf_evlist__deliver_sample
-          tool->sample (process_sample_event)
-           hist_entry_iter__add
-            iter->add_entry_cb(hist_iter__report_callback)
-             hist_entry__inc_addr_samples
-              symbol__inc_addr_samples
-               __symbol__inc_addr_samples
-                h = annotated_source__histogram(src, evidx) (NULL)
+  # perf top --all-cgroups -s cgroup_id,cgroup,pid
 
-annotated_source__histogram failed is caused with path:
-...
- hist_entry__inc_addr_samples
-  symbol__inc_addr_samples
-   symbol__hists
-    annotated_source__alloc_histograms
-     src->histograms = calloc(nr_hists, sizeof_sym_hist) (failed)
-
-Calloc failed as the symbol__size(sym) is too huge. As show in error
-message: start=0x1477100, end=0x80002000, size of symbol is about 2G.
-
-This is the same problem as 'perf annotate: Fix s390 gap between kernel
-end and module start (b9c0a64901d5bd)'. Perf gets symbol information from
-/proc/kallsyms in __dso__load_kallsyms. A part of symbol in /proc/kallsyms
-from my virtual machine is as follows:
- #cat /proc/kallsyms | sort
- ...
- ffff000001475080 d rpfilter_mt_reg      [ip6t_rpfilter]
- ffff000001475100 d $d   [ip6t_rpfilter]
- ffff000001475100 d __this_module        [ip6t_rpfilter]
- ffff000080080000 t _head
- ffff000080080000 T _text
- ffff000080080040 t pe_header
- ...
-
-Take line 'ffff000001475100 d __this_module [ip6t_rpfilter]' as example.
-The start and end of symbol are both set to ffff000001475100 in
-dso__load_all_kallsyms. Then symbols__fixup_end will set the end of symbol
-to next big address to ffff000001475100 in /proc/kallsyms, ffff000080080000
-in this example. Then sizeof of symbol will be about 2G and cause the
-problem.
-
-The start of module in my machine is
- ffff000000a62000 t $x   [dm_mod]
-
-The start of kernel in my machine is
- ffff000080080000 t _head
-
-There is a big gap between end of module and begin of kernel if a samll
-amount of memory is used by module. And the last symbol in module will
-have a large address range as caotaining the big gap.
-
-Give that the module and kernel text segment sequence may change in
-the future, fix this by limiting range of last symbol in module and kernel
-to 4K in arch arm64.
-
-Signed-off-by: Kemeng Shi <shikemeng@huawei.com>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Hewenliang <hewenliang4@huawei.com>
-Cc: Hu Shiyuan <hushiyuan@huawei.com>
-Cc: Ian Rogers <irogers@google.com>
 Cc: Jiri Olsa <jolsa@redhat.com>
 Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Nick Desaulniers <ndesaulniers@google.com>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Thomas Richter <tmricht@linux.ibm.com>
-Link: http://lore.kernel.org/lkml/33fd24c4-0d5a-9d93-9b62-dffa97c992ca@huawei.com
-[ refreshed the patch on current codebase, added string.h include as strchr() is used ]
+Link: http://lore.kernel.org/lkml/20200325124536.2800725-9-namhyung@kernel.org
+Link: http://lore.kernel.org/lkml/20200402015249.3800462-1-namhyung@kernel.org
+[ Extracted the HAVE_FILE_HANDLE from the followup patch ]
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/arch/arm64/util/Build     |  1 +-
- tools/perf/arch/arm64/util/machine.c | 27 +++++++++++++++++++++++++++-
- 2 files changed, 28 insertions(+)
- create mode 100644 tools/perf/arch/arm64/util/machine.c
+ tools/perf/Documentation/perf-top.txt |  4 ++++
+ tools/perf/builtin-top.c              | 15 +++++++++++++++
+ 2 files changed, 19 insertions(+)
 
-diff --git a/tools/perf/arch/arm64/util/Build b/tools/perf/arch/arm64/util/Build
-index 789956f..5c13438 100644
---- a/tools/perf/arch/arm64/util/Build
-+++ b/tools/perf/arch/arm64/util/Build
-@@ -1,4 +1,5 @@
- perf-y += header.o
-+perf-y += machine.o
- perf-y += perf_regs.o
- perf-$(CONFIG_DWARF)     += dwarf-regs.o
- perf-$(CONFIG_LOCAL_LIBUNWIND) += unwind-libunwind.o
-diff --git a/tools/perf/arch/arm64/util/machine.c b/tools/perf/arch/arm64/util/machine.c
-new file mode 100644
-index 0000000..d41b27e
---- /dev/null
-+++ b/tools/perf/arch/arm64/util/machine.c
-@@ -0,0 +1,27 @@
-+// SPDX-License-Identifier: GPL-2.0
+diff --git a/tools/perf/Documentation/perf-top.txt b/tools/perf/Documentation/perf-top.txt
+index 324b6b5..ddab103 100644
+--- a/tools/perf/Documentation/perf-top.txt
++++ b/tools/perf/Documentation/perf-top.txt
+@@ -272,6 +272,10 @@ Default is to monitor all CPUS.
+ 	Record events of type PERF_RECORD_NAMESPACES and display it with the
+ 	'cgroup_id' sort key.
+ 
++--all-cgroups::
++	Record events of type PERF_RECORD_CGROUP and display it with the
++	'cgroup' sort key.
 +
-+#include <stdio.h>
-+#include <string.h>
-+#include "debug.h"
-+#include "symbol.h"
+ --switch-on EVENT_NAME::
+ 	Only consider events after this event is found.
+ 
+diff --git a/tools/perf/builtin-top.c b/tools/perf/builtin-top.c
+index d2539b7..02ea2cf 100644
+--- a/tools/perf/builtin-top.c
++++ b/tools/perf/builtin-top.c
+@@ -1246,6 +1246,14 @@ static int __cmd_top(struct perf_top *top)
+ 
+ 	if (opts->record_namespaces)
+ 		top->tool.namespace_events = true;
++	if (opts->record_cgroup) {
++#ifdef HAVE_FILE_HANDLE
++		top->tool.cgroup_events = true;
++#else
++		pr_err("cgroup tracking is not supported.\n");
++		return -1;
++#endif
++	}
+ 
+ 	ret = perf_event__synthesize_bpf_events(top->session, perf_event__process,
+ 						&top->session->machines.host,
+@@ -1253,6 +1261,11 @@ static int __cmd_top(struct perf_top *top)
+ 	if (ret < 0)
+ 		pr_debug("Couldn't synthesize BPF events: Pre-existing BPF programs won't have symbols resolved.\n");
+ 
++	ret = perf_event__synthesize_cgroups(&top->tool, perf_event__process,
++					     &top->session->machines.host);
++	if (ret < 0)
++		pr_debug("Couldn't synthesize cgroup events.\n");
 +
-+/* On arm64, kernel text segment start at high memory address,
-+ * for example 0xffff 0000 8xxx xxxx. Modules start at a low memory
-+ * address, like 0xffff 0000 00ax xxxx. When only samll amount of
-+ * memory is used by modules, gap between end of module's text segment
-+ * and start of kernel text segment may be reach 2G.
-+ * Therefore do not fill this gap and do not assign it to the kernel dso map.
-+ */
-+
-+#define SYMBOL_LIMIT (1 << 12) /* 4K */
-+
-+void arch__symbols__fixup_end(struct symbol *p, struct symbol *c)
-+{
-+	if ((strchr(p->name, '[') && strchr(c->name, '[') == NULL) ||
-+			(strchr(p->name, '[') == NULL && strchr(c->name, '[')))
-+		/* Limit range of last symbol in module and kernel */
-+		p->end += SYMBOL_LIMIT;
-+	else
-+		p->end = c->start;
-+	pr_debug4("%s sym:%s end:%#lx\n", __func__, p->name, p->end);
-+}
+ 	machine__synthesize_threads(&top->session->machines.host, &opts->target,
+ 				    top->evlist->core.threads, false,
+ 				    top->nr_threads_synthesize);
+@@ -1545,6 +1558,8 @@ int cmd_top(int argc, const char **argv)
+ 			"number of thread to run event synthesize"),
+ 	OPT_BOOLEAN(0, "namespaces", &opts->record_namespaces,
+ 		    "Record namespaces events"),
++	OPT_BOOLEAN(0, "all-cgroups", &opts->record_cgroup,
++		    "Record cgroup events"),
+ 	OPTS_EVSWITCH(&top.evswitch),
+ 	OPT_END()
+ 	};
