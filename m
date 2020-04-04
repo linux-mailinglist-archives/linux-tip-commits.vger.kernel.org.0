@@ -2,45 +2,43 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 89EB919E397
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  4 Apr 2020 10:45:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 69BB319E3E9
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  4 Apr 2020 10:45:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726334AbgDDImG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 4 Apr 2020 04:42:06 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:41587 "EHLO
+        id S1726675AbgDDIo3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 4 Apr 2020 04:44:29 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:41466 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726443AbgDDImF (ORCPT
+        with ESMTP id S1726278AbgDDIlz (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 4 Apr 2020 04:42:05 -0400
+        Sat, 4 Apr 2020 04:41:55 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jKeN2-0000ua-OT; Sat, 04 Apr 2020 10:41:40 +0200
+        id 1jKeN4-0000wL-J3; Sat, 04 Apr 2020 10:41:42 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 6E1511C047B;
-        Sat,  4 Apr 2020 10:41:40 +0200 (CEST)
-Date:   Sat, 04 Apr 2020 08:41:40 -0000
-From:   "tip-bot2 for Andreas Gerstmayr" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 396451C047B;
+        Sat,  4 Apr 2020 10:41:42 +0200 (CEST)
+Date:   Sat, 04 Apr 2020 08:41:41 -0000
+From:   "tip-bot2 for Stephane Eranian" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf script report: Fix SEGFAULT when using DWARF mode
-Cc:     Andreas Gerstmayr <agerstmayr@redhat.com>,
-        Kim Phillips <kim.phillips@amd.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
+Subject: [tip: perf/urgent] perf script: Allow --symbol to accept hexadecimal
+ addresses
+Cc:     Stephane Eranian <eranian@google.com>,
+        Ian Rogers <irogers@google.com>,
         Alexander Shishkin <alexander.shishkin@linux.intel.com>,
         Jiri Olsa <jolsa@redhat.com>,
-        Kan Liang <kan.liang@linux.intel.com>,
         Mark Rutland <mark.rutland@arm.com>,
         Namhyung Kim <namhyung@kernel.org>,
         Peter Zijlstra <peterz@infradead.org>,
-        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200402125417.422232-1-agerstmayr@redhat.com>
-References: <20200402125417.422232-1-agerstmayr@redhat.com>
+In-Reply-To: <20200325220802.15039-1-irogers@google.com>
+References: <20200325220802.15039-1-irogers@google.com>
 MIME-Version: 1.0
-Message-ID: <158598970009.28353.16717946414374202141.tip-bot2@tip-bot2>
+Message-ID: <158598970187.28353.359369792033644144.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -56,48 +54,66 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     1a4025f06059eeaecb2ef24363350ea3431568df
-Gitweb:        https://git.kernel.org/tip/1a4025f06059eeaecb2ef24363350ea3431568df
-Author:        Andreas Gerstmayr <agerstmayr@redhat.com>
-AuthorDate:    Thu, 02 Apr 2020 14:54:16 +02:00
+Commit-ID:     d2bedb7863e9817f71fe2332a85ecdbd0f264b4b
+Gitweb:        https://git.kernel.org/tip/d2bedb7863e9817f71fe2332a85ecdbd0f264b4b
+Author:        Stephane Eranian <eranian@google.com>
+AuthorDate:    Wed, 25 Mar 2020 15:08:02 -07:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Fri, 03 Apr 2020 09:39:53 -03:00
+CommitterDate: Fri, 03 Apr 2020 09:37:56 -03:00
 
-perf script report: Fix SEGFAULT when using DWARF mode
+perf script: Allow --symbol to accept hexadecimal addresses
 
-When running perf script report with a Python script and a callgraph in
-DWARF mode, intr_regs->regs can be 0 and therefore crashing the regs_map
-function.
+This patch extends the perf script --symbols option to filter on
+hexadecimal addresses in addition to symbol names. This makes it easier
+to handle cases where symbols are aliased.
 
-Added a check for this condition (same check as in builtin-script.c:595).
+With this patch, it is possible to mix and match symbols and hexadecimal
+addresses using the --symbols option.
 
-Signed-off-by: Andreas Gerstmayr <agerstmayr@redhat.com>
-Tested-by: Kim Phillips <kim.phillips@amd.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
+  $ perf script --symbols=noploop,0x4007a0
+
+Signed-off-by: Stephane Eranian <eranian@google.com>
+Reviewed-by: Ian Rogers <irogers@google.com>
 Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 Cc: Jiri Olsa <jolsa@redhat.com>
-Cc: Kan Liang <kan.liang@linux.intel.com>
 Cc: Mark Rutland <mark.rutland@arm.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Steven Rostedt (VMware) <rostedt@goodmis.org>
-Link: http://lore.kernel.org/lkml/20200402125417.422232-1-agerstmayr@redhat.com
+Link: http://lore.kernel.org/lkml/20200325220802.15039-1-irogers@google.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/scripting-engines/trace-event-python.c | 3 +++
- 1 file changed, 3 insertions(+)
+ tools/perf/util/event.c | 21 +++++++++++++++++----
+ 1 file changed, 17 insertions(+), 4 deletions(-)
 
-diff --git a/tools/perf/util/scripting-engines/trace-event-python.c b/tools/perf/util/scripting-engines/trace-event-python.c
-index 8c1b27c..2c372cf 100644
---- a/tools/perf/util/scripting-engines/trace-event-python.c
-+++ b/tools/perf/util/scripting-engines/trace-event-python.c
-@@ -694,6 +694,9 @@ static int regs_map(struct regs_dump *regs, uint64_t mask, char *bf, int size)
+diff --git a/tools/perf/util/event.c b/tools/perf/util/event.c
+index 824c038..dc0e112 100644
+--- a/tools/perf/util/event.c
++++ b/tools/perf/util/event.c
+@@ -617,10 +617,23 @@ int machine__resolve(struct machine *machine, struct addr_location *al,
+ 		al->sym = map__find_symbol(al->map, al->addr);
+ 	}
  
- 	bf[0] = 0;
- 
-+	if (!regs || !regs->regs)
-+		return 0;
+-	if (symbol_conf.sym_list &&
+-		(!al->sym || !strlist__has_entry(symbol_conf.sym_list,
+-						al->sym->name))) {
+-		al->filtered |= (1 << HIST_FILTER__SYMBOL);
++	if (symbol_conf.sym_list) {
++		int ret = 0;
++		char al_addr_str[32];
++		size_t sz = sizeof(al_addr_str);
 +
- 	for_each_set_bit(r, (unsigned long *) &mask, sizeof(mask) * 8) {
- 		u64 val = regs->regs[i++];
++		if (al->sym) {
++			ret = strlist__has_entry(symbol_conf.sym_list,
++						al->sym->name);
++		}
++		if (!(ret && al->sym)) {
++			snprintf(al_addr_str, sz, "0x%"PRIx64,
++				al->map->unmap_ip(al->map, al->sym->start));
++			ret = strlist__has_entry(symbol_conf.sym_list,
++						al_addr_str);
++		}
++		if (!ret)
++			al->filtered |= (1 << HIST_FILTER__SYMBOL);
+ 	}
  
+ 	return 0;
