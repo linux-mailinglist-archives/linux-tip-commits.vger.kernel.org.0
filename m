@@ -2,29 +2,29 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5828E19E3EB
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  4 Apr 2020 10:45:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D258119E38F
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  4 Apr 2020 10:44:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725957AbgDDIo3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 4 Apr 2020 04:44:29 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:41490 "EHLO
+        id S1726380AbgDDIl6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 4 Apr 2020 04:41:58 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:41502 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726329AbgDDIl4 (ORCPT
+        with ESMTP id S1726334AbgDDIl6 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 4 Apr 2020 04:41:56 -0400
+        Sat, 4 Apr 2020 04:41:58 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jKeN9-0000zb-Bg; Sat, 04 Apr 2020 10:41:47 +0200
+        id 1jKeNA-00010Q-16; Sat, 04 Apr 2020 10:41:48 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B93501C04DD;
-        Sat,  4 Apr 2020 10:41:45 +0200 (CEST)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 392B91C0243;
+        Sat,  4 Apr 2020 10:41:46 +0200 (CEST)
 Date:   Sat, 04 Apr 2020 08:41:45 -0000
 From:   "tip-bot2 for Namhyung Kim" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf record: Add --all-cgroups option
+Subject: [tip: perf/urgent] perf record: Support synthesizing cgroup events
 Cc:     Namhyung Kim <namhyung@kernel.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Alexander Shishkin <alexander.shishkin@linux.intel.com>,
@@ -32,10 +32,10 @@ Cc:     Namhyung Kim <namhyung@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
         Peter Zijlstra <peterz@infradead.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200325124536.2800725-8-namhyung@kernel.org>
-References: <20200325124536.2800725-8-namhyung@kernel.org>
+In-Reply-To: <20200325124536.2800725-7-namhyung@kernel.org>
+References: <20200325124536.2800725-7-namhyung@kernel.org>
 MIME-Version: 1.0
-Message-ID: <158598970540.28353.3646942279181985365.tip-bot2@tip-bot2>
+Message-ID: <158598970584.28353.12408640779888059491.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,47 +51,18 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     8fb4b67939e169fca68174e9ac7be79fe9a04498
-Gitweb:        https://git.kernel.org/tip/8fb4b67939e169fca68174e9ac7be79fe9a04498
+Commit-ID:     ab64069f1a6604a43daec5fc4a4294b0b77a8b93
+Gitweb:        https://git.kernel.org/tip/ab64069f1a6604a43daec5fc4a4294b0b77a8b93
 Author:        Namhyung Kim <namhyung@kernel.org>
-AuthorDate:    Wed, 25 Mar 2020 21:45:34 +09:00
+AuthorDate:    Wed, 25 Mar 2020 21:45:33 +09:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Fri, 03 Apr 2020 09:37:55 -03:00
 
-perf record: Add --all-cgroups option
+perf record: Support synthesizing cgroup events
 
-The --all-cgroups option is to enable cgroup profiling support.  It
-tells kernel to record CGROUP events in the ring buffer so that perf
-report can identify task/cgroup association later.
-
-  [root@seventh ~]# perf record --all-cgroups --namespaces /wb/cgtest
-  [ perf record: Woken up 1 times to write data ]
-  [ perf record: Captured and wrote 0.042 MB perf.data (558 samples) ]
-  [root@seventh ~]# perf report --stdio -s cgroup_id,cgroup,pid
-  # To display the perf.data header info, please use --header/--header-only options.
-  #
-  #
-  # Total Lost Samples: 0
-  #
-  # Samples: 558  of event 'cycles'
-  # Event count (approx.): 458017341
-  #
-  # Overhead  cgroup id (dev/inode)  Cgroup          Pid:Command
-  # ........  .....................  ..........  ...............
-  #
-      33.15%  4/0xeffffffb           /sub           9615:looper0
-      32.83%  4/0xf00002f5           /sub/cgrp2     9620:looper2
-      32.79%  4/0xf00002f4           /sub/cgrp1     9619:looper1
-       0.35%  4/0xf00002f5           /sub/cgrp2     9618:cgtest
-       0.34%  4/0xf00002f4           /sub/cgrp1     9617:cgtest
-       0.32%  4/0xeffffffb           /              9615:looper0
-       0.11%  4/0xeffffffb           /sub           9617:cgtest
-       0.10%  4/0xeffffffb           /sub           9618:cgtest
-
-  #
-  # (Tip: Sample related events with: perf record -e '{cycles,instructions}:S')
-  #
-  [root@seventh ~]#
+Synthesize cgroup events by iterating cgroup filesystem directories.
+The cgroup event only saves the portion of cgroup path after the mount
+point and the cgroup id (which actually is a file handle).
 
 Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
@@ -99,113 +70,194 @@ Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 Cc: Jiri Olsa <jolsa@redhat.com>
 Cc: Mark Rutland <mark.rutland@arm.com>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Link: http://lore.kernel.org/lkml/20200325124536.2800725-8-namhyung@kernel.org
+Link: http://lore.kernel.org/lkml/20200325124536.2800725-7-namhyung@kernel.org
 Link: http://lore.kernel.org/lkml/20200402015249.3800462-1-namhyung@kernel.org
-[ Extracted the HAVE_FILE_HANDLE from the followup patch ]
+[ Extracted the HAVE_FILE_HANDLE from the followup patch, added missing __maybe_unused ]
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/Documentation/perf-record.txt |  5 ++++-
- tools/perf/builtin-record.c              | 11 +++++++++++
- tools/perf/util/evsel.c                  | 11 ++++++++++-
- tools/perf/util/evsel.h                  |  1 +
- tools/perf/util/record.h                 |  1 +
- 5 files changed, 27 insertions(+), 2 deletions(-)
+ tools/perf/builtin-record.c        |   5 +-
+ tools/perf/util/synthetic-events.c | 122 ++++++++++++++++++++++++++++-
+ tools/perf/util/synthetic-events.h |   1 +-
+ tools/perf/util/tool.h             |   1 +-
+ 4 files changed, 129 insertions(+)
 
-diff --git a/tools/perf/Documentation/perf-record.txt b/tools/perf/Documentation/perf-record.txt
-index b25e028..b3f3b3f 100644
---- a/tools/perf/Documentation/perf-record.txt
-+++ b/tools/perf/Documentation/perf-record.txt
-@@ -391,7 +391,10 @@ displayed with the weight and local_weight sort keys.  This currently works for 
- abort events and some memory events in precise mode on modern Intel CPUs.
- 
- --namespaces::
--Record events of type PERF_RECORD_NAMESPACES.
-+Record events of type PERF_RECORD_NAMESPACES.  This enables 'cgroup_id' sort key.
-+
-+--all-cgroups::
-+Record events of type PERF_RECORD_CGROUP.  This enables 'cgroup' sort key.
- 
- --transaction::
- Record transaction flags for transaction related events.
 diff --git a/tools/perf/builtin-record.c b/tools/perf/builtin-record.c
-index 2802de9..1ab349a 100644
+index 4c30146..2802de9 100644
 --- a/tools/perf/builtin-record.c
 +++ b/tools/perf/builtin-record.c
-@@ -1433,6 +1433,15 @@ static int __cmd_record(struct record *rec, int argc, const char **argv)
- 	if (rec->opts.record_namespaces)
- 		tool->namespace_events = true;
+@@ -1397,6 +1397,11 @@ static int record__synthesize(struct record *rec, bool tail)
+ 	if (err < 0)
+ 		pr_warning("Couldn't synthesize bpf events.\n");
  
-+	if (rec->opts.record_cgroup) {
++	err = perf_event__synthesize_cgroups(tool, process_synthesized_event,
++					     machine);
++	if (err < 0)
++		pr_warning("Couldn't synthesize cgroup events.\n");
++
+ 	err = __machine__synthesize_threads(machine, tool, &opts->target, rec->evlist->core.threads,
+ 					    process_synthesized_event, opts->sample_address,
+ 					    1);
+diff --git a/tools/perf/util/synthetic-events.c b/tools/perf/util/synthetic-events.c
+index f72d809..a661b12 100644
+--- a/tools/perf/util/synthetic-events.c
++++ b/tools/perf/util/synthetic-events.c
+@@ -16,6 +16,7 @@
+ #include "util/synthetic-events.h"
+ #include "util/target.h"
+ #include "util/time-utils.h"
++#include "util/cgroup.h"
+ #include <linux/bitops.h>
+ #include <linux/kernel.h>
+ #include <linux/string.h>
+@@ -414,6 +415,127 @@ out:
+ 	return rc;
+ }
+ 
 +#ifdef HAVE_FILE_HANDLE
-+		tool->cgroup_events = true;
-+#else
-+		pr_err("cgroup tracking is not supported\n");
++static int perf_event__synthesize_cgroup(struct perf_tool *tool,
++					 union perf_event *event,
++					 char *path, size_t mount_len,
++					 perf_event__handler_t process,
++					 struct machine *machine)
++{
++	size_t event_size = sizeof(event->cgroup) - sizeof(event->cgroup.path);
++	size_t path_len = strlen(path) - mount_len + 1;
++	struct {
++		struct file_handle fh;
++		uint64_t cgroup_id;
++	} handle;
++	int mount_id;
++
++	while (path_len % sizeof(u64))
++		path[mount_len + path_len++] = '\0';
++
++	memset(&event->cgroup, 0, event_size);
++
++	event->cgroup.header.type = PERF_RECORD_CGROUP;
++	event->cgroup.header.size = event_size + path_len + machine->id_hdr_size;
++
++	handle.fh.handle_bytes = sizeof(handle.cgroup_id);
++	if (name_to_handle_at(AT_FDCWD, path, &handle.fh, &mount_id, 0) < 0) {
++		pr_debug("stat failed: %s\n", path);
 +		return -1;
++	}
++
++	event->cgroup.id = handle.cgroup_id;
++	strncpy(event->cgroup.path, path + mount_len, path_len);
++	memset(event->cgroup.path + path_len, 0, machine->id_hdr_size);
++
++	if (perf_tool__process_synth_event(tool, event, machine, process) < 0) {
++		pr_debug("process synth event failed\n");
++		return -1;
++	}
++
++	return 0;
++}
++
++static int perf_event__walk_cgroup_tree(struct perf_tool *tool,
++					union perf_event *event,
++					char *path, size_t mount_len,
++					perf_event__handler_t process,
++					struct machine *machine)
++{
++	size_t pos = strlen(path);
++	DIR *d;
++	struct dirent *dent;
++	int ret = 0;
++
++	if (perf_event__synthesize_cgroup(tool, event, path, mount_len,
++					  process, machine) < 0)
++		return -1;
++
++	d = opendir(path);
++	if (d == NULL) {
++		pr_debug("failed to open directory: %s\n", path);
++		return -1;
++	}
++
++	while ((dent = readdir(d)) != NULL) {
++		if (dent->d_type != DT_DIR)
++			continue;
++		if (!strcmp(dent->d_name, ".") ||
++		    !strcmp(dent->d_name, ".."))
++			continue;
++
++		/* any sane path should be less than PATH_MAX */
++		if (strlen(path) + strlen(dent->d_name) + 1 >= PATH_MAX)
++			continue;
++
++		if (path[pos - 1] != '/')
++			strcat(path, "/");
++		strcat(path, dent->d_name);
++
++		ret = perf_event__walk_cgroup_tree(tool, event, path,
++						   mount_len, process, machine);
++		if (ret < 0)
++			break;
++
++		path[pos] = '\0';
++	}
++
++	closedir(d);
++	return ret;
++}
++
++int perf_event__synthesize_cgroups(struct perf_tool *tool,
++				   perf_event__handler_t process,
++				   struct machine *machine)
++{
++	union perf_event event;
++	char cgrp_root[PATH_MAX];
++	size_t mount_len;  /* length of mount point in the path */
++
++	if (cgroupfs_find_mountpoint(cgrp_root, PATH_MAX, "perf_event") < 0) {
++		pr_debug("cannot find cgroup mount point\n");
++		return -1;
++	}
++
++	mount_len = strlen(cgrp_root);
++	/* make sure the path starts with a slash (after mount point) */
++	strcat(cgrp_root, "/");
++
++	if (perf_event__walk_cgroup_tree(tool, &event, cgrp_root, mount_len,
++					 process, machine) < 0)
++		return -1;
++
++	return 0;
++}
++#else
++int perf_event__synthesize_cgroups(struct perf_tool *tool __maybe_unused,
++				   perf_event__handler_t process __maybe_unused,
++				   struct machine *machine __maybe_unused)
++{
++	return -1;
++}
 +#endif
-+	}
 +
- 	if (rec->opts.auxtrace_snapshot_mode || rec->switch_output.enabled) {
- 		signal(SIGUSR2, snapshot_sig_handler);
- 		if (rec->opts.auxtrace_snapshot_mode)
-@@ -2363,6 +2372,8 @@ static struct option __record_options[] = {
- 			"per thread proc mmap processing timeout in ms"),
- 	OPT_BOOLEAN(0, "namespaces", &record.opts.record_namespaces,
- 		    "Record namespaces events"),
-+	OPT_BOOLEAN(0, "all-cgroups", &record.opts.record_cgroup,
-+		    "Record cgroup events"),
- 	OPT_BOOLEAN(0, "switch-events", &record.opts.record_switch_events,
- 		    "Record context switch events"),
- 	OPT_BOOLEAN_FLAG(0, "all-kernel", &record.opts.all_kernel,
-diff --git a/tools/perf/util/evsel.c b/tools/perf/util/evsel.c
-index b766eb6..eb880ef 100644
---- a/tools/perf/util/evsel.c
-+++ b/tools/perf/util/evsel.c
-@@ -1104,6 +1104,11 @@ void perf_evsel__config(struct evsel *evsel, struct record_opts *opts,
- 	if (opts->record_namespaces)
- 		attr->namespaces  = track;
- 
-+	if (opts->record_cgroup) {
-+		attr->cgroup = track && !perf_missing_features.cgroup;
-+		perf_evsel__set_sample_bit(evsel, CGROUP);
-+	}
-+
- 	if (opts->record_switch_events)
- 		attr->context_switch = track;
- 
-@@ -1789,7 +1794,11 @@ try_fallback:
- 	 * Must probe features in the order they were added to the
- 	 * perf_event_attr interface.
- 	 */
--	if (!perf_missing_features.branch_hw_idx &&
-+        if (!perf_missing_features.cgroup && evsel->core.attr.cgroup) {
-+		perf_missing_features.cgroup = true;
-+		pr_debug2_peo("Kernel has no cgroup sampling support, bailing out\n");
-+		goto out_close;
-+        } else if (!perf_missing_features.branch_hw_idx &&
- 	    (evsel->core.attr.branch_sample_type & PERF_SAMPLE_BRANCH_HW_INDEX)) {
- 		perf_missing_features.branch_hw_idx = true;
- 		pr_debug2("switching off branch HW index support\n");
-diff --git a/tools/perf/util/evsel.h b/tools/perf/util/evsel.h
-index 3380474..53187c5 100644
---- a/tools/perf/util/evsel.h
-+++ b/tools/perf/util/evsel.h
-@@ -120,6 +120,7 @@ struct perf_missing_features {
- 	bool bpf;
- 	bool aux_output;
- 	bool branch_hw_idx;
-+	bool cgroup;
+ int perf_event__synthesize_modules(struct perf_tool *tool, perf_event__handler_t process,
+ 				   struct machine *machine)
+ {
+diff --git a/tools/perf/util/synthetic-events.h b/tools/perf/util/synthetic-events.h
+index baead0c..e7a3e95 100644
+--- a/tools/perf/util/synthetic-events.h
++++ b/tools/perf/util/synthetic-events.h
+@@ -45,6 +45,7 @@ int perf_event__synthesize_kernel_mmap(struct perf_tool *tool, perf_event__handl
+ int perf_event__synthesize_mmap_events(struct perf_tool *tool, union perf_event *event, pid_t pid, pid_t tgid, perf_event__handler_t process, struct machine *machine, bool mmap_data);
+ int perf_event__synthesize_modules(struct perf_tool *tool, perf_event__handler_t process, struct machine *machine);
+ int perf_event__synthesize_namespaces(struct perf_tool *tool, union perf_event *event, pid_t pid, pid_t tgid, perf_event__handler_t process, struct machine *machine);
++int perf_event__synthesize_cgroups(struct perf_tool *tool, perf_event__handler_t process, struct machine *machine);
+ int perf_event__synthesize_sample(union perf_event *event, u64 type, u64 read_format, const struct perf_sample *sample);
+ int perf_event__synthesize_stat_config(struct perf_tool *tool, struct perf_stat_config *config, perf_event__handler_t process, struct machine *machine);
+ int perf_event__synthesize_stat_events(struct perf_stat_config *config, struct perf_tool *tool, struct evlist *evlist, perf_event__handler_t process, bool attrs);
+diff --git a/tools/perf/util/tool.h b/tools/perf/util/tool.h
+index 472ef5e..3fb67bd 100644
+--- a/tools/perf/util/tool.h
++++ b/tools/perf/util/tool.h
+@@ -79,6 +79,7 @@ struct perf_tool {
+ 	bool		ordered_events;
+ 	bool		ordering_requires_timestamps;
+ 	bool		namespace_events;
++	bool		cgroup_events;
+ 	bool		no_warn;
+ 	enum show_feature_header show_feat_hdr;
  };
- 
- extern struct perf_missing_features perf_missing_features;
-diff --git a/tools/perf/util/record.h b/tools/perf/util/record.h
-index 5421fd2..2431645 100644
---- a/tools/perf/util/record.h
-+++ b/tools/perf/util/record.h
-@@ -34,6 +34,7 @@ struct record_opts {
- 	bool	      auxtrace_snapshot_on_exit;
- 	bool	      auxtrace_sample_mode;
- 	bool	      record_namespaces;
-+	bool	      record_cgroup;
- 	bool	      record_switch_events;
- 	bool	      all_kernel;
- 	bool	      all_user;
