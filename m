@@ -2,42 +2,41 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5092519E390
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  4 Apr 2020 10:45:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA41419E3EA
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  4 Apr 2020 10:45:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726373AbgDDIl6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 4 Apr 2020 04:41:58 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:41475 "EHLO
+        id S1726651AbgDDIo3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 4 Apr 2020 04:44:29 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:41480 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726302AbgDDIl4 (ORCPT
+        with ESMTP id S1726312AbgDDIlz (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 4 Apr 2020 04:41:56 -0400
+        Sat, 4 Apr 2020 04:41:55 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jKeN2-0000uW-Dy; Sat, 04 Apr 2020 10:41:40 +0200
+        id 1jKeN1-0000uS-Tt; Sat, 04 Apr 2020 10:41:40 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id F38711C0243;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 8FDF31C047B;
         Sat,  4 Apr 2020 10:41:39 +0200 (CEST)
 Date:   Sat, 04 Apr 2020 08:41:39 -0000
-From:   "tip-bot2 for Andreas Gerstmayr" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Sam Lunt" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf script: Fix invalid read of directory entry
- after closedir()
-Cc:     Andreas Gerstmayr <agerstmayr@redhat.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+Subject: [tip: perf/urgent] perf tools: Support Python 3.8+ in Makefile
+Cc:     Sam Lunt <samuel.j.lunt@gmail.com>, He Zhe <zhe.he@windriver.com>,
         Jiri Olsa <jolsa@redhat.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
         Mark Rutland <mark.rutland@arm.com>,
         Namhyung Kim <namhyung@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>, trivial@kernel.org,
+        stable@kernel.org, Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200402124337.419456-1-agerstmayr@redhat.com>
-References: <20200402124337.419456-1-agerstmayr@redhat.com>
+In-Reply-To: <c56be2e1-8111-9dfe-8298-f7d0f9ab7431@windriver.com>
+References: <c56be2e1-8111-9dfe-8298-f7d0f9ab7431@windriver.com>
 MIME-Version: 1.0
-Message-ID: <158598969966.28353.9977084020476897493.tip-bot2@tip-bot2>
+Message-ID: <158598969917.28353.17967432793396671093.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -53,57 +52,62 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     27486a85cb65bd258a9a213b3e95bdf8c24fd781
-Gitweb:        https://git.kernel.org/tip/27486a85cb65bd258a9a213b3e95bdf8c24fd781
-Author:        Andreas Gerstmayr <agerstmayr@redhat.com>
-AuthorDate:    Thu, 02 Apr 2020 14:43:38 +02:00
+Commit-ID:     b9c9ce4e598e012ca7c1813fae2f4d02395807de
+Gitweb:        https://git.kernel.org/tip/b9c9ce4e598e012ca7c1813fae2f4d02395807de
+Author:        Sam Lunt <samueljlunt@gmail.com>
+AuthorDate:    Fri, 31 Jan 2020 12:11:23 -06:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Fri, 03 Apr 2020 10:03:18 -03:00
+CommitterDate: Fri, 03 Apr 2020 10:03:44 -03:00
 
-perf script: Fix invalid read of directory entry after closedir()
+perf tools: Support Python 3.8+ in Makefile
 
-closedir(lang_dir) frees the memory of script_dirent->d_name, which
-gets accessed in the next line in a call to scnprintf().
+Python 3.8 changed the output of 'python-config --ldflags' to no longer
+include the '-lpythonX.Y' flag (this apparently fixed an issue loading
+modules with a statically linked Python executable).  The libpython
+feature check in linux/build/feature fails if the Python library is not
+included in FEATURE_CHECK_LDFLAGS-libpython variable.
 
-Valgrind report:
+This adds a check in the Makefile to determine if PYTHON_CONFIG accepts
+the '--embed' flag and passes that flag alongside '--ldflags' if so.
 
-  Invalid read of size 1
-  ==413557==    at 0x483CBE6: strlen (vg_replace_strmem.c:461)
-  ==413557==    by 0x4DD45FD: __vfprintf_internal (vfprintf-internal.c:1688)
-  ==413557==    by 0x4DE6679: __vsnprintf_internal (vsnprintf.c:114)
-  ==413557==    by 0x53A037: vsnprintf (stdio2.h:80)
-  ==413557==    by 0x53A037: scnprintf (vsprintf.c:21)
-  ==413557==    by 0x435202: get_script_path (builtin-script.c:3223)
-  ==413557==  Address 0x52e7313 is 1,139 bytes inside a block of size 32,816 free'd
-  ==413557==    at 0x483AA0C: free (vg_replace_malloc.c:540)
-  ==413557==    by 0x4E303C0: closedir (closedir.c:50)
-  ==413557==    by 0x4351DC: get_script_path (builtin-script.c:3222)
+tools/perf is the only place the libpython feature check is used.
 
-Signed-off-by: Andreas Gerstmayr <agerstmayr@redhat.com>
+Signed-off-by: Sam Lunt <samuel.j.lunt@gmail.com>
+Tested-by: He Zhe <zhe.he@windriver.com>
+Link: http://lore.kernel.org/lkml/c56be2e1-8111-9dfe-8298-f7d0f9ab7431@windriver.com
+Acked-by: Jiri Olsa <jolsa@redhat.com>
 Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Jiri Olsa <jolsa@redhat.com>
 Cc: Mark Rutland <mark.rutland@arm.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Link: http://lore.kernel.org/lkml/20200402124337.419456-1-agerstmayr@redhat.com
+Cc: trivial@kernel.org
+Cc: stable@kernel.org
+Link: http://lore.kernel.org/lkml/20200131181123.tmamivhq4b7uqasr@gmail.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/builtin-script.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/perf/Makefile.config | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/builtin-script.c b/tools/perf/builtin-script.c
-index 186ebf8..1f57a7e 100644
---- a/tools/perf/builtin-script.c
-+++ b/tools/perf/builtin-script.c
-@@ -3265,10 +3265,10 @@ static char *get_script_path(const char *script_root, const char *suffix)
- 			__script_root = get_script_root(script_dirent, suffix);
- 			if (__script_root && !strcmp(script_root, __script_root)) {
- 				free(__script_root);
--				closedir(lang_dir);
- 				closedir(scripts_dir);
- 				scnprintf(script_path, MAXPATHLEN, "%s/%s",
- 					  lang_path, script_dirent->d_name);
-+				closedir(lang_dir);
- 				return strdup(script_path);
- 			}
- 			free(__script_root);
+diff --git a/tools/perf/Makefile.config b/tools/perf/Makefile.config
+index eb95c0c..12a8204 100644
+--- a/tools/perf/Makefile.config
++++ b/tools/perf/Makefile.config
+@@ -228,8 +228,17 @@ strip-libs  = $(filter-out -l%,$(1))
+ 
+ PYTHON_CONFIG_SQ := $(call shell-sq,$(PYTHON_CONFIG))
+ 
++# Python 3.8 changed the output of `python-config --ldflags` to not include the
++# '-lpythonX.Y' flag unless '--embed' is also passed. The feature check for
++# libpython fails if that flag is not included in LDFLAGS
++ifeq ($(shell $(PYTHON_CONFIG_SQ) --ldflags --embed 2>&1 1>/dev/null; echo $$?), 0)
++  PYTHON_CONFIG_LDFLAGS := --ldflags --embed
++else
++  PYTHON_CONFIG_LDFLAGS := --ldflags
++endif
++
+ ifdef PYTHON_CONFIG
+-  PYTHON_EMBED_LDOPTS := $(shell $(PYTHON_CONFIG_SQ) --ldflags 2>/dev/null)
++  PYTHON_EMBED_LDOPTS := $(shell $(PYTHON_CONFIG_SQ) $(PYTHON_CONFIG_LDFLAGS) 2>/dev/null)
+   PYTHON_EMBED_LDFLAGS := $(call strip-libs,$(PYTHON_EMBED_LDOPTS))
+   PYTHON_EMBED_LIBADD := $(call grep-libs,$(PYTHON_EMBED_LDOPTS)) -lutil
+   PYTHON_EMBED_CCOPTS := $(shell $(PYTHON_CONFIG_SQ) --includes 2>/dev/null)
