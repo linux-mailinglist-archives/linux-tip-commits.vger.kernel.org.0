@@ -2,39 +2,41 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E576F19E38D
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  4 Apr 2020 10:44:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A01AB19E3E3
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  4 Apr 2020 10:45:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726303AbgDDIly (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 4 Apr 2020 04:41:54 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:41456 "EHLO
+        id S1727755AbgDDIoP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 4 Apr 2020 04:44:15 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:41508 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726248AbgDDIly (ORCPT
+        with ESMTP id S1726353AbgDDIl7 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 4 Apr 2020 04:41:54 -0400
+        Sat, 4 Apr 2020 04:41:59 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jKeN5-0000x5-19; Sat, 04 Apr 2020 10:41:43 +0200
+        id 1jKeNA-0000xY-Bj; Sat, 04 Apr 2020 10:41:48 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 9FB4F1C0243;
-        Sat,  4 Apr 2020 10:41:42 +0200 (CEST)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 101081C047B;
+        Sat,  4 Apr 2020 10:41:43 +0200 (CEST)
 Date:   Sat, 04 Apr 2020 08:41:42 -0000
-From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Jin Yao" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf report/top TUI: Fix title line formatting
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Jin Yao <yao.jin@linux.intel.com>,
-        Jiri Olsa <jolsa@kernel.org>,
-        Namhyung Kim <namhyung@kernel.org>,
+Subject: [tip: perf/urgent] perf top: Support hotkey to change sort order
+Cc:     Jin Yao <yao.jin@linux.intel.com>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200330154314.GB4576@kernel.org>
-References: <20200330154314.GB4576@kernel.org>
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Andi Kleen <ak@linux.intel.com>, Jin Yao <yao.jin@intel.com>,
+        Jiri Olsa <jolsa@kernel.org>,
+        Kan Liang <kan.liang@linux.intel.com>,
+        Peter Zijlstra <peterz@infradead.org>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200324220711.6025-2-yao.jin@linux.intel.com>
+References: <20200324220711.6025-2-yao.jin@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <158598970230.28353.15843745506805048594.tip-bot2@tip-bot2>
+Message-ID: <158598970272.28353.13117327640198031967.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,69 +52,112 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     376c3c22e2ba69d7509aa070f1a7dd88efdb0a9c
-Gitweb:        https://git.kernel.org/tip/376c3c22e2ba69d7509aa070f1a7dd88efdb0a9c
-Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Mon, 30 Mar 2020 12:35:21 -03:00
+Commit-ID:     2605af0f32d1bf434dd6819732c7851a97f5cbc0
+Gitweb:        https://git.kernel.org/tip/2605af0f32d1bf434dd6819732c7851a97f5cbc0
+Author:        Jin Yao <yao.jin@linux.intel.com>
+AuthorDate:    Wed, 25 Mar 2020 06:07:11 +08:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Fri, 03 Apr 2020 09:37:55 -03:00
 
-perf report/top TUI: Fix title line formatting
+perf top: Support hotkey to change sort order
 
-In d10ec006dcd7 ("perf hists browser: Allow passing an initial hotkey")
-the hist_entry__title() call was cut'n'pasted to a function where the
-'title' variable is a pointer, not an array, so the sizeof(title)
-continues syntactically valid but ends up reducing the real size of the
-buffer where to format the first line in the screen to 8 bytes, which
-makes the formatting at the title at each refresh to produce just the
-string "Samples ", duh, fix it by passing the size of the buffer.
+It would be nice if we can use a hotkey in perf top browser to select a
+event for sorting.
 
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Jin Yao <yao.jin@linux.intel.com>
+For example:
+
+  perf top --group -e cycles,instructions,cache-misses
+
+  Samples
+                  Overhead  Shared Object             Symbol
+    40.03%  45.71%   0.03%  div                       [.] main
+    20.46%  14.67%   0.21%  libc-2.27.so              [.] __random_r
+    20.01%  19.54%   0.02%  libc-2.27.so              [.] __random
+     9.68%  10.68%   0.00%  div                       [.] compute_flag
+     4.32%   4.70%   0.00%  libc-2.27.so              [.] rand
+     3.84%   3.43%   0.00%  div                       [.] rand@plt
+     0.05%   0.05%   2.33%  libc-2.27.so              [.] __strcmp_sse2_unaligned
+     0.04%   0.08%   2.43%  perf                      [.] perf_hpp__is_dynamic_en
+     0.04%   0.02%   6.64%  perf                      [.] rb_next
+     0.04%   0.01%   3.87%  perf                      [.] dso__find_symbol
+     0.04%   0.04%   1.77%  perf                      [.] sort__dso_cmp
+
+When user press hotkey '2' (event index, starting from 0), it indicates
+to sort output by the third event in group (cache-misses).
+
+  Samples
+                  Overhead  Shared Object               Symbol
+     4.07%   1.28%   6.68%  perf                        [.] rb_next
+     3.57%   3.98%   4.11%  perf                        [.] __hists__insert_output
+     3.67%  11.24%   3.60%  perf                        [.] perf_hpp__is_dynamic_e
+     3.67%   3.20%   3.20%  perf                        [.] hpp__sort_overhead
+     0.81%   0.06%   3.01%  perf                        [.] dso__find_symbol
+     1.62%   5.47%   2.51%  perf                        [.] hists__match
+     2.70%   1.86%   2.47%  libc-2.27.so                [.] _int_malloc
+     0.19%   0.00%   2.29%  [kernel]                    [k] copy_page
+     0.41%   0.32%   1.98%  perf                        [.] hists__decay_entries
+     1.84%   3.67%   1.68%  perf                        [.] sort__dso_cmp
+     0.16%   0.00%   1.63%  [kernel]                    [k] clear_page_erms
+
+Now the output is sorted by cache-misses.
+
+ v2:
+ ---
+ Zero the history if hotkey is pressed.
+
+Signed-off-by: Jin Yao <yao.jin@linux.intel.com>
+Suggested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Andi Kleen <ak@linux.intel.com>
+Cc: Jin Yao <yao.jin@intel.com>
 Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Fixes: d10ec006dcd7 ("perf hists browser: Allow passing an initial hotkey")
-Link: http://lore.kernel.org/lkml/20200330154314.GB4576@kernel.org
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: http://lore.kernel.org/lkml/20200324220711.6025-2-yao.jin@linux.intel.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/ui/browsers/hists.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ tools/perf/builtin-top.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/ui/browsers/hists.c b/tools/perf/ui/browsers/hists.c
-index 95ac5e2..487e54e 100644
---- a/tools/perf/ui/browsers/hists.c
-+++ b/tools/perf/ui/browsers/hists.c
-@@ -677,7 +677,7 @@ static int hist_browser__title(struct hist_browser *browser, char *bf, size_t si
- 	return browser->title ? browser->title(browser, bf, size) : 0;
+diff --git a/tools/perf/builtin-top.c b/tools/perf/builtin-top.c
+index 9ff7943..289cf83 100644
+--- a/tools/perf/builtin-top.c
++++ b/tools/perf/builtin-top.c
+@@ -616,6 +616,7 @@ static void *display_thread_tui(void *arg)
+ 		.arg		= top,
+ 		.refresh	= top->delay_secs,
+ 	};
++	int ret;
+ 
+ 	/* In order to read symbols from other namespaces perf to  needs to call
+ 	 * setns(2).  This isn't permitted if the struct_fs has multiple users.
+@@ -626,6 +627,7 @@ static void *display_thread_tui(void *arg)
+ 
+ 	prctl(PR_SET_NAME, "perf-top-UI", 0, 0, 0);
+ 
++repeat:
+ 	perf_top__sort_new_samples(top);
+ 
+ 	/*
+@@ -638,13 +640,18 @@ static void *display_thread_tui(void *arg)
+ 		hists->uid_filter_str = top->record_opts.target.uid_str;
+ 	}
+ 
+-	perf_evlist__tui_browse_hists(top->evlist, help, &hbt,
++	ret = perf_evlist__tui_browse_hists(top->evlist, help, &hbt,
+ 				      top->min_percent,
+ 				      &top->session->header.env,
+ 				      !top->record_opts.overwrite,
+ 				      &top->annotation_opts);
+ 
+-	stop_top();
++	if (ret == K_RELOAD) {
++		top->zero = true;
++		goto repeat;
++	} else
++		stop_top();
++
+ 	return NULL;
  }
  
--static int hist_browser__handle_hotkey(struct hist_browser *browser, bool warn_lost_event, char *title, int key)
-+static int hist_browser__handle_hotkey(struct hist_browser *browser, bool warn_lost_event, char *title, size_t size, int key)
- {
- 	switch (key) {
- 	case K_TIMER: {
-@@ -703,7 +703,7 @@ static int hist_browser__handle_hotkey(struct hist_browser *browser, bool warn_l
- 			ui_browser__warn_lost_events(&browser->b);
- 		}
- 
--		hist_browser__title(browser, title, sizeof(title));
-+		hist_browser__title(browser, title, size);
- 		ui_browser__show_title(&browser->b, title);
- 		break;
- 	}
-@@ -764,13 +764,13 @@ int hist_browser__run(struct hist_browser *browser, const char *help,
- 	if (ui_browser__show(&browser->b, title, "%s", help) < 0)
- 		return -1;
- 
--	if (key && hist_browser__handle_hotkey(browser, warn_lost_event, title, key))
-+	if (key && hist_browser__handle_hotkey(browser, warn_lost_event, title, sizeof(title), key))
- 		goto out;
- 
- 	while (1) {
- 		key = ui_browser__run(&browser->b, delay_secs);
- 
--		if (hist_browser__handle_hotkey(browser, warn_lost_event, title, key))
-+		if (hist_browser__handle_hotkey(browser, warn_lost_event, title, sizeof(title), key))
- 			break;
- 	}
- out:
