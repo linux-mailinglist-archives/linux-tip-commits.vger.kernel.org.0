@@ -2,43 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 69BB319E3E9
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  4 Apr 2020 10:45:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB3E919E38B
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  4 Apr 2020 10:44:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726675AbgDDIo3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 4 Apr 2020 04:44:29 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:41466 "EHLO
+        id S1726254AbgDDIlx (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 4 Apr 2020 04:41:53 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:41444 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726278AbgDDIlz (ORCPT
+        with ESMTP id S1725837AbgDDIlw (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 4 Apr 2020 04:41:55 -0400
+        Sat, 4 Apr 2020 04:41:52 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jKeN4-0000wL-J3; Sat, 04 Apr 2020 10:41:42 +0200
+        id 1jKeN4-0000vw-4i; Sat, 04 Apr 2020 10:41:42 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 396451C047B;
-        Sat,  4 Apr 2020 10:41:42 +0200 (CEST)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C32F31C0243;
+        Sat,  4 Apr 2020 10:41:41 +0200 (CEST)
 Date:   Sat, 04 Apr 2020 08:41:41 -0000
-From:   "tip-bot2 for Stephane Eranian" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Adrian Hunter" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf script: Allow --symbol to accept hexadecimal
- addresses
-Cc:     Stephane Eranian <eranian@google.com>,
-        Ian Rogers <irogers@google.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+Subject: [tip: perf/urgent] perf events parser: Add missing Intel CPU events to parser
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         Jiri Olsa <jolsa@redhat.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
+        Kan Liang <kan.liang@linux.intel.com>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200325220802.15039-1-irogers@google.com>
-References: <20200325220802.15039-1-irogers@google.com>
+In-Reply-To: <90c7ae07-c568-b6d3-f9c4-d0c1528a0610@intel.com>
+References: <90c7ae07-c568-b6d3-f9c4-d0c1528a0610@intel.com>
 MIME-Version: 1.0
-Message-ID: <158598970187.28353.359369792033644144.tip-bot2@tip-bot2>
+Message-ID: <158598970145.28353.6935701404911756450.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -54,66 +49,96 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     d2bedb7863e9817f71fe2332a85ecdbd0f264b4b
-Gitweb:        https://git.kernel.org/tip/d2bedb7863e9817f71fe2332a85ecdbd0f264b4b
-Author:        Stephane Eranian <eranian@google.com>
-AuthorDate:    Wed, 25 Mar 2020 15:08:02 -07:00
+Commit-ID:     47327f56674d69a423f7167f8d4ea537cc1762cc
+Gitweb:        https://git.kernel.org/tip/47327f56674d69a423f7167f8d4ea537cc1762cc
+Author:        Adrian Hunter <adrian.hunter@intel.com>
+AuthorDate:    Thu, 26 Mar 2020 10:01:47 +02:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Fri, 03 Apr 2020 09:37:56 -03:00
 
-perf script: Allow --symbol to accept hexadecimal addresses
+perf events parser: Add missing Intel CPU events to parser
 
-This patch extends the perf script --symbols option to filter on
-hexadecimal addresses in addition to symbol names. This makes it easier
-to handle cases where symbols are aliased.
+perf list expects CPU events to be parseable by name, e.g.
 
-With this patch, it is possible to mix and match symbols and hexadecimal
-addresses using the --symbols option.
+    # perf list | grep el-capacity-read
+      el-capacity-read OR cpu/el-capacity-read/          [Kernel PMU event]
 
-  $ perf script --symbols=noploop,0x4007a0
+But the event parser does not recognize them that way, e.g.
 
-Signed-off-by: Stephane Eranian <eranian@google.com>
-Reviewed-by: Ian Rogers <irogers@google.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Jiri Olsa <jolsa@redhat.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: http://lore.kernel.org/lkml/20200325220802.15039-1-irogers@google.com
+    # perf test -v "Parse event"
+    <SNIP>
+    running test 54 'cycles//u'
+    running test 55 'cycles:k'
+    running test 0 'cpu/config=10,config1,config2=3,period=1000/u'
+    running test 1 'cpu/config=1,name=krava/u,cpu/config=2/u'
+    running test 2 'cpu/config=1,call-graph=fp,time,period=100000/,cpu/config=2,call-graph=no,time=0,period=2000/'
+    running test 3 'cpu/name='COMPLEX_CYCLES_NAME:orig=cycles,desc=chip-clock-ticks',period=0x1,event=0x2/ukp'
+    -> cpu/event=0,umask=0x11/
+    -> cpu/event=0,umask=0x13/
+    -> cpu/event=0x54,umask=0x1/
+    failed to parse event 'el-capacity-read:u,cpu/event=el-capacity-read/u', err 1, str 'parser error'
+    event syntax error: 'el-capacity-read:u,cpu/event=el-capacity-read/u'
+                           \___ parser error test child finished with 1
+    ---- end ----
+    Parse event definition strings: FAILED!
+
+This happens because the parser splits names by '-' in order to deal
+with cache events. For example 'L1-dcache' is a token in
+parse-events.l which is matched to 'L1-dcache-load-miss' by the
+following rule:
+
+    PE_NAME_CACHE_TYPE '-' PE_NAME_CACHE_OP_RESULT '-' PE_NAME_CACHE_OP_RESULT opt_event_config
+
+And so there is special handling for 2-part PMU names i.e.
+
+    PE_PMU_EVENT_PRE '-' PE_PMU_EVENT_SUF sep_dc
+
+but no handling for 3-part names, which are instead added as tokens e.g.
+
+    topdown-[a-z-]+
+
+While it would be possible to add a rule for 3-part names, that would
+not work if the first parts were also a valid PMU name e.g.
+'el-capacity-read' would be matched to 'el-capacity' before the parser
+reached the 3rd part.
+
+The parser would need significant change to rationalize all this, so
+instead fix for now by adding missing Intel CPU events with 3-part names
+to the event parser as tokens.
+
+Missing events were found by using:
+
+    grep -r EVENT_ATTR_STR arch/x86/events/intel/core.c
+
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Acked-by: Jiri Olsa <jolsa@redhat.com>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Link: http://lore.kernel.org/lkml/90c7ae07-c568-b6d3-f9c4-d0c1528a0610@intel.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/event.c | 21 +++++++++++++++++----
- 1 file changed, 17 insertions(+), 4 deletions(-)
+ tools/perf/util/parse-events.l | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/tools/perf/util/event.c b/tools/perf/util/event.c
-index 824c038..dc0e112 100644
---- a/tools/perf/util/event.c
-+++ b/tools/perf/util/event.c
-@@ -617,10 +617,23 @@ int machine__resolve(struct machine *machine, struct addr_location *al,
- 		al->sym = map__find_symbol(al->map, al->addr);
- 	}
+diff --git a/tools/perf/util/parse-events.l b/tools/perf/util/parse-events.l
+index 7b1c8ee..baa48f2 100644
+--- a/tools/perf/util/parse-events.l
++++ b/tools/perf/util/parse-events.l
+@@ -342,11 +342,13 @@ bpf-output					{ return sym(yyscanner, PERF_TYPE_SOFTWARE, PERF_COUNT_SW_BPF_OUT
+ 	 * Because the prefix cycles is mixed up with cpu-cycles.
+ 	 * loads and stores are mixed up with cache event
+ 	 */
+-cycles-ct					{ return str(yyscanner, PE_KERNEL_PMU_EVENT); }
+-cycles-t					{ return str(yyscanner, PE_KERNEL_PMU_EVENT); }
+-mem-loads					{ return str(yyscanner, PE_KERNEL_PMU_EVENT); }
+-mem-stores					{ return str(yyscanner, PE_KERNEL_PMU_EVENT); }
+-topdown-[a-z-]+					{ return str(yyscanner, PE_KERNEL_PMU_EVENT); }
++cycles-ct				|
++cycles-t				|
++mem-loads				|
++mem-stores				|
++topdown-[a-z-]+				|
++tx-capacity-[a-z-]+			|
++el-capacity-[a-z-]+			{ return str(yyscanner, PE_KERNEL_PMU_EVENT); }
  
--	if (symbol_conf.sym_list &&
--		(!al->sym || !strlist__has_entry(symbol_conf.sym_list,
--						al->sym->name))) {
--		al->filtered |= (1 << HIST_FILTER__SYMBOL);
-+	if (symbol_conf.sym_list) {
-+		int ret = 0;
-+		char al_addr_str[32];
-+		size_t sz = sizeof(al_addr_str);
-+
-+		if (al->sym) {
-+			ret = strlist__has_entry(symbol_conf.sym_list,
-+						al->sym->name);
-+		}
-+		if (!(ret && al->sym)) {
-+			snprintf(al_addr_str, sz, "0x%"PRIx64,
-+				al->map->unmap_ip(al->map, al->sym->start));
-+			ret = strlist__has_entry(symbol_conf.sym_list,
-+						al_addr_str);
-+		}
-+		if (!ret)
-+			al->filtered |= (1 << HIST_FILTER__SYMBOL);
- 	}
- 
- 	return 0;
+ L1-dcache|l1-d|l1d|L1-data		|
+ L1-icache|l1-i|l1i|L1-instruction	|
