@@ -2,40 +2,44 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 49B0619E3DE
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  4 Apr 2020 10:45:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 517FA19E39D
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  4 Apr 2020 10:45:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726406AbgDDIoK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 4 Apr 2020 04:44:10 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:41561 "EHLO
+        id S1726545AbgDDImN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 4 Apr 2020 04:42:13 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:41686 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726410AbgDDImD (ORCPT
+        with ESMTP id S1726414AbgDDImN (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 4 Apr 2020 04:42:03 -0400
+        Sat, 4 Apr 2020 04:42:13 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jKeNJ-00018J-If; Sat, 04 Apr 2020 10:41:57 +0200
+        id 1jKeNL-00019e-Gq; Sat, 04 Apr 2020 10:41:59 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5D8DF1C0805;
-        Sat,  4 Apr 2020 10:41:53 +0200 (CEST)
-Date:   Sat, 04 Apr 2020 08:41:53 -0000
-From:   "tip-bot2 for Ravi Bangoria" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D6C461C047B;
+        Sat,  4 Apr 2020 10:41:54 +0200 (CEST)
+Date:   Sat, 04 Apr 2020 08:41:54 -0000
+From:   "tip-bot2 for John Garry" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf dso: Fix dso comparison
-Cc:     "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
-        Ravi Bangoria <ravi.bangoria@linux.ibm.com>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Jiri Olsa <jolsa@redhat.com>,
+Subject: [tip: perf/urgent] perf pmu: Make pmu_uncore_alias_match() public
+Cc:     John Garry <john.garry@huawei.com>, Jiri Olsa <jolsa@redhat.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Andi Kleen <ak@linux.intel.com>,
+        James Clark <james.clark@arm.com>,
+        Joakim Zhang <qiangqing.zhang@nxp.com>,
         Mark Rutland <mark.rutland@arm.com>,
-        Namhyung Kim <namhyung@kernel.org>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200324042424.68366-1-ravi.bangoria@linux.ibm.com>
-References: <20200324042424.68366-1-ravi.bangoria@linux.ibm.com>
+        Namhyung Kim <namhyung@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Will Deacon <will@kernel.org>, linuxarm@huawei.com,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <1584442939-8911-7-git-send-email-john.garry@huawei.com>
+References: <1584442939-8911-7-git-send-email-john.garry@huawei.com>
 MIME-Version: 1.0
-Message-ID: <158598971301.28353.13896908628058795297.tip-bot2@tip-bot2>
+Message-ID: <158598971452.28353.7605551568012483577.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,118 +55,58 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     0d33b34352531ff7029c58eda2321340c0ea3f5f
-Gitweb:        https://git.kernel.org/tip/0d33b34352531ff7029c58eda2321340c0ea3f5f
-Author:        Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-AuthorDate:    Tue, 24 Mar 2020 09:54:24 +05:30
+Commit-ID:     5b9a50001b2c23f90f2a21db4763f3a9599588c4
+Gitweb:        https://git.kernel.org/tip/5b9a50001b2c23f90f2a21db4763f3a9599588c4
+Author:        John Garry <john.garry@huawei.com>
+AuthorDate:    Tue, 17 Mar 2020 19:02:18 +08:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Tue, 24 Mar 2020 10:57:38 -03:00
+CommitterDate: Tue, 24 Mar 2020 10:35:59 -03:00
 
-perf dso: Fix dso comparison
+perf pmu: Make pmu_uncore_alias_match() public
 
-Perf gets dso details from two different sources. 1st, from builid
-headers in perf.data and 2nd from MMAP2 samples. Dso from buildid
-header does not have dso_id detail. And dso from MMAP2 samples does
-not have buildid information. If detail of the same dso is present
-at both the places, filename is common.
+The perf pmu-events test will want to use pmu_uncore_alias_match(), so
+make it public.
 
-Previously, __dsos__findnew_link_by_longname_id() used to compare only
-long or short names, but Commit 0e3149f86b99 ("perf dso: Move dso_id
-from 'struct map' to 'struct dso'") also added a dso_id comparison.
-Because of that, now perf is creating two different dso objects of the
-same file, one from buildid header (with dso_id but without buildid)
-and second from MMAP2 sample (with buildid but without dso_id).
-
-This is causing issues with archive, buildid-list etc subcommands. Fix
-this by comparing dso_id only when it's present. And incase dso is
-present in 'dsos' list without dso_id, inject dso_id detail as well.
-
-Before:
-
-  $ sudo ./perf buildid-list -H
-  0000000000000000000000000000000000000000 /usr/bin/ls
-  0000000000000000000000000000000000000000 /usr/lib64/ld-2.30.so
-  0000000000000000000000000000000000000000 /usr/lib64/libc-2.30.so
-
-  $ ./perf archive
-  perf archive: no build-ids found
-
-After:
-
-  $ ./perf buildid-list -H
-  b6b1291d0cead046ed0fa5734037fa87a579adee /usr/bin/ls
-  641f0c90cfa15779352f12c0ec3c7a2b2b6f41e8 /usr/lib64/ld-2.30.so
-  675ace3ca07a0b863df01f461a7b0984c65c8b37 /usr/lib64/libc-2.30.so
-
-  $ ./perf archive
-  Now please run:
-
-  $ tar xvf perf.data.tar.bz2 -C ~/.debug
-
-  wherever you need to run 'perf report' on.
-
-Committer notes:
-
-Renamed is_empty_dso_id() to dso_id__empty() and inject_dso_id() to
-dso__inject_id() to keep namespacing consistent.
-
-Fixes: 0e3149f86b99 ("perf dso: Move dso_id from 'struct map' to 'struct dso'")
-Reported-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
-Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Tested-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
-Cc: Jiri Olsa <jolsa@redhat.com>
+Signed-off-by: John Garry <john.garry@huawei.com>
+Acked-by: Jiri Olsa <jolsa@redhat.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Andi Kleen <ak@linux.intel.com>
+Cc: James Clark <james.clark@arm.com>
+Cc: Joakim Zhang <qiangqing.zhang@nxp.com>
 Cc: Mark Rutland <mark.rutland@arm.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Link: http://lore.kernel.org/lkml/20200324042424.68366-1-ravi.bangoria@linux.ibm.com
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Will Deacon <will@kernel.org>
+Cc: linuxarm@huawei.com
+Link: http://lore.kernel.org/lkml/1584442939-8911-7-git-send-email-john.garry@huawei.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/dsos.c | 22 +++++++++++++++++++++-
- 1 file changed, 21 insertions(+), 1 deletion(-)
+ tools/perf/util/pmu.c | 2 +-
+ tools/perf/util/pmu.h | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/util/dsos.c b/tools/perf/util/dsos.c
-index 591707c..9394717 100644
---- a/tools/perf/util/dsos.c
-+++ b/tools/perf/util/dsos.c
-@@ -26,13 +26,29 @@ static int __dso_id__cmp(struct dso_id *a, struct dso_id *b)
- 	return 0;
+diff --git a/tools/perf/util/pmu.c b/tools/perf/util/pmu.c
+index 55129d0..616fbda 100644
+--- a/tools/perf/util/pmu.c
++++ b/tools/perf/util/pmu.c
+@@ -698,7 +698,7 @@ struct pmu_events_map *perf_pmu__find_map(struct perf_pmu *pmu)
+ 	return map;
  }
  
-+static bool dso_id__empty(struct dso_id *id)
-+{
-+	if (!id)
-+		return true;
-+
-+	return !id->maj && !id->min && !id->ino && !id->ino_generation;
-+}
-+
-+static void dso__inject_id(struct dso *dso, struct dso_id *id)
-+{
-+	dso->id.maj = id->maj;
-+	dso->id.min = id->min;
-+	dso->id.ino = id->ino;
-+	dso->id.ino_generation = id->ino_generation;
-+}
-+
- static int dso_id__cmp(struct dso_id *a, struct dso_id *b)
+-static bool pmu_uncore_alias_match(const char *pmu_name, const char *name)
++bool pmu_uncore_alias_match(const char *pmu_name, const char *name)
  {
- 	/*
- 	 * The second is always dso->id, so zeroes if not set, assume passing
- 	 * NULL for a means a zeroed id
- 	 */
--	if (a == NULL)
-+	if (dso_id__empty(a) || dso_id__empty(b))
- 		return 0;
+ 	char *tmp = NULL, *tok, *str;
+ 	bool res;
+diff --git a/tools/perf/util/pmu.h b/tools/perf/util/pmu.h
+index b756946..5fb3f16 100644
+--- a/tools/perf/util/pmu.h
++++ b/tools/perf/util/pmu.h
+@@ -103,6 +103,7 @@ void pmu_add_cpu_aliases_map(struct list_head *head, struct perf_pmu *pmu,
+ 			     struct pmu_events_map *map);
  
- 	return __dso_id__cmp(a, b);
-@@ -249,6 +265,10 @@ struct dso *__dsos__addnew(struct dsos *dsos, const char *name)
- static struct dso *__dsos__findnew_id(struct dsos *dsos, const char *name, struct dso_id *id)
- {
- 	struct dso *dso = __dsos__find_id(dsos, name, id, false);
-+
-+	if (dso && dso_id__empty(&dso->id) && !dso_id__empty(id))
-+		dso__inject_id(dso, id);
-+
- 	return dso ? dso : __dsos__addnew_id(dsos, name, id);
- }
+ struct pmu_events_map *perf_pmu__find_map(struct perf_pmu *pmu);
++bool pmu_uncore_alias_match(const char *pmu_name, const char *name);
+ 
+ int perf_pmu__convert_scale(const char *scale, char **end, double *sval);
  
