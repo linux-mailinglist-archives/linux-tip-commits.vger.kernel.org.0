@@ -2,40 +2,41 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AEACA19E393
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  4 Apr 2020 10:45:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3EA4C19E3F7
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  4 Apr 2020 10:50:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726397AbgDDIl7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 4 Apr 2020 04:41:59 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:41506 "EHLO
+        id S1726121AbgDDIto (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 4 Apr 2020 04:49:44 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:41851 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726352AbgDDIl7 (ORCPT
+        with ESMTP id S1725906AbgDDIto (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 4 Apr 2020 04:41:59 -0400
+        Sat, 4 Apr 2020 04:49:44 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jKeNA-00010x-I4; Sat, 04 Apr 2020 10:41:48 +0200
+        id 1jKeUi-0001bq-If; Sat, 04 Apr 2020 10:49:36 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id BBDE71C04DF;
-        Sat,  4 Apr 2020 10:41:46 +0200 (CEST)
-Date:   Sat, 04 Apr 2020 08:41:46 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 2B87B1C070D;
+        Sat,  4 Apr 2020 10:41:48 +0200 (CEST)
+Date:   Sat, 04 Apr 2020 08:41:47 -0000
 From:   "tip-bot2 for Namhyung Kim" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf report: Add 'cgroup' sort key
-Cc:     Namhyung Kim <namhyung@kernel.org>,
+Subject: [tip: perf/urgent] perf tools: Add file-handle feature test
+Cc:     Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
         Alexander Shishkin <alexander.shishkin@linux.intel.com>,
         Jiri Olsa <jolsa@redhat.com>,
         Mark Rutland <mark.rutland@arm.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200325124536.2800725-6-namhyung@kernel.org>
-References: <20200325124536.2800725-6-namhyung@kernel.org>
+        Peter Zijlstra <peterz@infradead.org>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200402015249.3800462-1-namhyung@kernel.org>
+References: <20200402015249.3800462-1-namhyung@kernel.org>
 MIME-Version: 1.0
-Message-ID: <158598970631.28353.13027459877100023990.tip-bot2@tip-bot2>
+Message-ID: <158598970782.28353.6782627101086180811.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,215 +52,134 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     b629f3e9d01b4e4ad4e84c8f76fad514967a83da
-Gitweb:        https://git.kernel.org/tip/b629f3e9d01b4e4ad4e84c8f76fad514967a83da
+Commit-ID:     49f550ea87c73671ee4d5e08820e0976894dd610
+Gitweb:        https://git.kernel.org/tip/49f550ea87c73671ee4d5e08820e0976894dd610
 Author:        Namhyung Kim <namhyung@kernel.org>
-AuthorDate:    Wed, 25 Mar 2020 21:45:32 +09:00
+AuthorDate:    Thu, 02 Apr 2020 10:52:49 +09:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Fri, 03 Apr 2020 09:37:55 -03:00
 
-perf report: Add 'cgroup' sort key
+perf tools: Add file-handle feature test
 
-The cgroup sort key is to show cgroup membership of each task.
-Currently it shows full path in the cgroupfs (not relative to the root
-of cgroup namespace) since it'd be more intuitive IMHO.  Otherwise root
-cgroup in different namespaces will all show same name - "/".
+The file handle (FHANDLE) support is configurable so some systems might not
+have it.  So add a config feature item to check it on build time so that we
+don't add the cgroup tracking feature based on that.
 
-The cgroup sort key should come before cgroup_id otherwise
-sort_dimension__add() will match it to cgroup_id as it only matches with
-the given substring.
+Committer notes:
 
-For example it will look like following.  Note that record patch adding
---all-cgroups patch will come later.
+Had to make the test use the same construct as its later use in
+synthetic-events.c, in the next patch in this series. i.e. make it be:
 
-  $ perf record -a --namespace --all-cgroups  cgtest
-  [ perf record: Woken up 1 times to write data ]
-  [ perf record: Captured and wrote 0.208 MB perf.data (4090 samples) ]
+	struct {
+		struct file_handle fh;
+		uint64_t cgroup_id;
+	} handle;
 
-  $ perf report -s cgroup_id,cgroup,pid
-  ...
-  # Overhead  cgroup id (dev/inode)  Cgroup          Pid:Command
-  # ........  .....................  ..........  ...............
-  #
-      93.96%  0/0x0                  /                 0:swapper
-       1.25%  3/0xeffffffb           /               278:looper0
-       0.86%  3/0xf000015f           /sub/cgrp1      280:cgtest
-       0.37%  3/0xf0000160           /sub/cgrp2      281:cgtest
-       0.34%  3/0xf0000163           /sub/cgrp3      282:cgtest
-       0.22%  3/0xeffffffb           /sub            278:looper0
-       0.20%  3/0xeffffffb           /               280:cgtest
-       0.15%  3/0xf0000163           /sub/cgrp3      285:looper3
+To cope with:
 
+    CC       /tmp/build/perf/util/cloexec.o
+  util/synthetic-events.c:428:22: error: field 'fh' with   CC       /tmp/build/perf/util/call-path.o
+  variable sized type 'struct file_handle' not at the end of a struct or class is a GNU
+        extension [-Werror,-Wgnu-variable-sized-type-not-at-end]
+                  struct file_handle fh;
+                                     ^
+  1 error generated.
+
+Deal with this at some point, i.e. investigate if the right thing is to
+remove that -Wgnu-variable-sized-type-not-at-end from our CFLAGS, for
+now do the test the same way as it is used looks more sensible.
+
+Reported-by: Arnaldo Carvalho de Melo <acme@kernel.org>
 Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 Cc: Jiri Olsa <jolsa@redhat.com>
 Cc: Mark Rutland <mark.rutland@arm.com>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Link: http://lore.kernel.org/lkml/20200325124536.2800725-6-namhyung@kernel.org
+Link: http://lore.kernel.org/lkml/20200402015249.3800462-1-namhyung@kernel.org
+[ split from a larger patch, removed blank line at EOF ]
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/Documentation/perf-report.txt |  1 +-
- tools/perf/util/hist.c                   | 13 ++++++++-
- tools/perf/util/hist.h                   |  1 +-
- tools/perf/util/sort.c                   | 37 +++++++++++++++++++++++-
- tools/perf/util/sort.h                   |  2 +-
- 5 files changed, 54 insertions(+)
+ tools/build/Makefile.feature           |  3 ++-
+ tools/build/feature/Makefile           |  6 +++++-
+ tools/build/feature/test-file-handle.c | 17 +++++++++++++++++
+ tools/perf/Makefile.config             |  4 ++++
+ 4 files changed, 28 insertions(+), 2 deletions(-)
+ create mode 100644 tools/build/feature/test-file-handle.c
 
-diff --git a/tools/perf/Documentation/perf-report.txt b/tools/perf/Documentation/perf-report.txt
-index e56e3f1..f569b9e 100644
---- a/tools/perf/Documentation/perf-report.txt
-+++ b/tools/perf/Documentation/perf-report.txt
-@@ -95,6 +95,7 @@ OPTIONS
- 	abort cost. This is the global weight.
- 	- local_weight: Local weight version of the weight above.
- 	- cgroup_id: ID derived from cgroup namespace device and inode numbers.
-+	- cgroup: cgroup pathname in the cgroupfs.
- 	- transaction: Transaction abort flags.
- 	- overhead: Overhead percentage of sample
- 	- overhead_sys: Overhead percentage of sample running in system mode
-diff --git a/tools/perf/util/hist.c b/tools/perf/util/hist.c
-index e74a5ac..283a69f 100644
---- a/tools/perf/util/hist.c
-+++ b/tools/perf/util/hist.c
-@@ -10,6 +10,7 @@
- #include "mem-events.h"
- #include "session.h"
- #include "namespaces.h"
-+#include "cgroup.h"
- #include "sort.h"
- #include "units.h"
- #include "evlist.h"
-@@ -194,6 +195,7 @@ void hists__calc_col_len(struct hists *hists, struct hist_entry *h)
- 		hists__set_unres_dso_col_len(hists, HISTC_MEM_DADDR_DSO);
- 	}
+diff --git a/tools/build/Makefile.feature b/tools/build/Makefile.feature
+index 574c2e0..3e0c019 100644
+--- a/tools/build/Makefile.feature
++++ b/tools/build/Makefile.feature
+@@ -72,7 +72,8 @@ FEATURE_TESTS_BASIC :=                  \
+         setns				\
+         libaio				\
+         libzstd				\
+-        disassembler-four-args
++        disassembler-four-args		\
++        file-handle
  
-+	hists__new_col_len(hists, HISTC_CGROUP, 6);
- 	hists__new_col_len(hists, HISTC_CGROUP_ID, 20);
- 	hists__new_col_len(hists, HISTC_CPU, 3);
- 	hists__new_col_len(hists, HISTC_SOCKET, 6);
-@@ -222,6 +224,16 @@ void hists__calc_col_len(struct hists *hists, struct hist_entry *h)
+ # FEATURE_TESTS_BASIC + FEATURE_TESTS_EXTRA is the complete list
+ # of all feature tests
+diff --git a/tools/build/feature/Makefile b/tools/build/feature/Makefile
+index 7ac0d80..621f528 100644
+--- a/tools/build/feature/Makefile
++++ b/tools/build/feature/Makefile
+@@ -67,7 +67,8 @@ FILES=                                          \
+          test-llvm.bin				\
+          test-llvm-version.bin			\
+          test-libaio.bin			\
+-         test-libzstd.bin
++         test-libzstd.bin			\
++         test-file-handle.bin
  
- 	if (h->trace_output)
- 		hists__new_col_len(hists, HISTC_TRACE, strlen(h->trace_output));
+ FILES := $(addprefix $(OUTPUT),$(FILES))
+ 
+@@ -321,6 +322,9 @@ $(OUTPUT)test-libaio.bin:
+ $(OUTPUT)test-libzstd.bin:
+ 	$(BUILD) -lzstd
+ 
++$(OUTPUT)test-file-handle.bin:
++	$(BUILD)
 +
-+	if (h->cgroup) {
-+		const char *cgrp_name = "unknown";
-+		struct cgroup *cgrp = cgroup__find(h->ms.maps->machine->env,
-+						   h->cgroup);
-+		if (cgrp != NULL)
-+			cgrp_name = cgrp->name;
+ ###############################
+ 
+ clean:
+diff --git a/tools/build/feature/test-file-handle.c b/tools/build/feature/test-file-handle.c
+new file mode 100644
+index 0000000..4d3b03b
+--- /dev/null
++++ b/tools/build/feature/test-file-handle.c
+@@ -0,0 +1,17 @@
++#define _GNU_SOURCE
++#include <sys/types.h>
++#include <sys/stat.h>
++#include <fcntl.h>
++#include <inttypes.h>
 +
-+		hists__new_col_len(hists, HISTC_CGROUP, strlen(cgrp_name));
-+	}
- }
- 
- void hists__output_recalc_col_len(struct hists *hists, int max_rows)
-@@ -691,6 +703,7 @@ __hists__add_entry(struct hists *hists,
- 			.dev = ns ? ns->link_info[CGROUP_NS_INDEX].dev : 0,
- 			.ino = ns ? ns->link_info[CGROUP_NS_INDEX].ino : 0,
- 		},
-+		.cgroup = sample->cgroup,
- 		.ms = {
- 			.maps	= al->maps,
- 			.map	= al->map,
-diff --git a/tools/perf/util/hist.h b/tools/perf/util/hist.h
-index bb994e0..4141295 100644
---- a/tools/perf/util/hist.h
-+++ b/tools/perf/util/hist.h
-@@ -38,6 +38,7 @@ enum hist_column {
- 	HISTC_THREAD,
- 	HISTC_COMM,
- 	HISTC_CGROUP_ID,
-+	HISTC_CGROUP,
- 	HISTC_PARENT,
- 	HISTC_CPU,
- 	HISTC_SOCKET,
-diff --git a/tools/perf/util/sort.c b/tools/perf/util/sort.c
-index e860595..f14cc72 100644
---- a/tools/perf/util/sort.c
-+++ b/tools/perf/util/sort.c
-@@ -12,6 +12,7 @@
- #include "cacheline.h"
- #include "comm.h"
- #include "map.h"
-+#include "maps.h"
- #include "symbol.h"
- #include "map_symbol.h"
- #include "branch.h"
-@@ -25,6 +26,8 @@
- #include "mem-events.h"
- #include "annotate.h"
- #include "time-utils.h"
-+#include "cgroup.h"
-+#include "machine.h"
- #include <linux/kernel.h>
- #include <linux/string.h>
- 
-@@ -634,6 +637,39 @@ struct sort_entry sort_cgroup_id = {
- 	.se_width_idx	= HISTC_CGROUP_ID,
- };
- 
-+/* --sort cgroup */
-+
-+static int64_t
-+sort__cgroup_cmp(struct hist_entry *left, struct hist_entry *right)
++int main(void)
 +{
-+	return right->cgroup - left->cgroup;
++	struct {
++		struct file_handle fh;
++		uint64_t cgroup_id;
++	} handle;
++	int mount_id;
++
++	name_to_handle_at(AT_FDCWD, "/", &handle.fh, &mount_id, 0);
++	return 0;
 +}
-+
-+static int hist_entry__cgroup_snprintf(struct hist_entry *he,
-+				       char *bf, size_t size,
-+				       unsigned int width __maybe_unused)
-+{
-+	const char *cgrp_name = "N/A";
-+
-+	if (he->cgroup) {
-+		struct cgroup *cgrp = cgroup__find(he->ms.maps->machine->env,
-+						   he->cgroup);
-+		if (cgrp != NULL)
-+			cgrp_name = cgrp->name;
-+		else
-+			cgrp_name = "unknown";
-+	}
-+
-+	return repsep_snprintf(bf, size, "%s", cgrp_name);
-+}
-+
-+struct sort_entry sort_cgroup = {
-+	.se_header      = "Cgroup",
-+	.se_cmp	        = sort__cgroup_cmp,
-+	.se_snprintf    = hist_entry__cgroup_snprintf,
-+	.se_width_idx	= HISTC_CGROUP,
-+};
-+
- /* --sort socket */
+diff --git a/tools/perf/Makefile.config b/tools/perf/Makefile.config
+index 80e55e7..eb95c0c 100644
+--- a/tools/perf/Makefile.config
++++ b/tools/perf/Makefile.config
+@@ -348,6 +348,10 @@ ifeq ($(feature-gettid), 1)
+   CFLAGS += -DHAVE_GETTID
+ endif
  
- static int64_t
-@@ -1660,6 +1696,7 @@ static struct sort_dimension common_sort_dimensions[] = {
- 	DIM(SORT_TRACE, "trace", sort_trace),
- 	DIM(SORT_SYM_SIZE, "symbol_size", sort_sym_size),
- 	DIM(SORT_DSO_SIZE, "dso_size", sort_dso_size),
-+	DIM(SORT_CGROUP, "cgroup", sort_cgroup),
- 	DIM(SORT_CGROUP_ID, "cgroup_id", sort_cgroup_id),
- 	DIM(SORT_SYM_IPC_NULL, "ipc_null", sort_sym_ipc_null),
- 	DIM(SORT_TIME, "time", sort_time),
-diff --git a/tools/perf/util/sort.h b/tools/perf/util/sort.h
-index 6c862d6..cfa6ac6 100644
---- a/tools/perf/util/sort.h
-+++ b/tools/perf/util/sort.h
-@@ -101,6 +101,7 @@ struct hist_entry {
- 	struct thread		*thread;
- 	struct comm		*comm;
- 	struct namespace_id	cgroup_id;
-+	u64			cgroup;
- 	u64			ip;
- 	u64			transaction;
- 	s32			socket;
-@@ -224,6 +225,7 @@ enum sort_type {
- 	SORT_TRACE,
- 	SORT_SYM_SIZE,
- 	SORT_DSO_SIZE,
-+	SORT_CGROUP,
- 	SORT_CGROUP_ID,
- 	SORT_SYM_IPC_NULL,
- 	SORT_TIME,
++ifeq ($(feature-file-handle), 1)
++  CFLAGS += -DHAVE_FILE_HANDLE
++endif
++
+ ifdef NO_LIBELF
+   NO_DWARF := 1
+   NO_DEMANGLE := 1
