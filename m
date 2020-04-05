@@ -2,45 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 43AED19E3AC
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  4 Apr 2020 10:45:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B7C819E9C2
+	for <lists+linux-tip-commits@lfdr.de>; Sun,  5 Apr 2020 09:32:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726754AbgDDImZ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 4 Apr 2020 04:42:25 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:41795 "EHLO
+        id S1726250AbgDEHcW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 5 Apr 2020 03:32:22 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:42496 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726708AbgDDImY (ORCPT
+        with ESMTP id S1726417AbgDEHcV (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 4 Apr 2020 04:42:24 -0400
+        Sun, 5 Apr 2020 03:32:21 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jKeNZ-0001NB-2S; Sat, 04 Apr 2020 10:42:13 +0200
+        id 1jKzlP-0001xP-FA; Sun, 05 Apr 2020 09:32:15 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 833781C0821;
-        Sat,  4 Apr 2020 10:42:05 +0200 (CEST)
-Date:   Sat, 04 Apr 2020 08:42:05 -0000
-From:   "tip-bot2 for Ian Rogers" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 529E11C01BB;
+        Sun,  5 Apr 2020 09:32:14 +0200 (CEST)
+Date:   Sun, 05 Apr 2020 07:32:13 -0000
+From:   "tip-bot2 for afzal mohammed" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf parse-events: Fix 3 use after frees found
- with clang ASAN
-Cc:     Ian Rogers <irogers@google.com>, Jiri Olsa <jolsa@redhat.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Andi Kleen <ak@linux.intel.com>, Leo Yan <leo.yan@linaro.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Stephane Eranian <eranian@google.com>,
-        clang-built-linux@googlegroups.com,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200314170356.62914-1-irogers@google.com>
-References: <20200314170356.62914-1-irogers@google.com>
+Subject: [tip: timers/urgent] clocksource/drivers/timer-vf-pit: Add missing
+ parenthesis
+Cc:     kbuild test robot <lkp@intel.com>,
+        afzal mohammed <afzal.mohd.ma@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200323061130.GA6286@afzalpc>
+References: <20200323061130.GA6286@afzalpc>
 MIME-Version: 1.0
-Message-ID: <158598972511.28353.7459181864895625736.tip-bot2@tip-bot2>
+Message-ID: <158607193357.28353.3365476438962871660.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -54,78 +47,41 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/urgent branch of tip:
+The following commit has been merged into the timers/urgent branch of tip:
 
-Commit-ID:     d4953f7ef1a2e87ef732823af35361404d13fea8
-Gitweb:        https://git.kernel.org/tip/d4953f7ef1a2e87ef732823af35361404d13fea8
-Author:        Ian Rogers <irogers@google.com>
-AuthorDate:    Sat, 14 Mar 2020 10:03:56 -07:00
-Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Mon, 23 Mar 2020 11:08:29 -03:00
+Commit-ID:     760a53768610d427990192b5cfdb71310e1373db
+Gitweb:        https://git.kernel.org/tip/760a53768610d427990192b5cfdb71310e1373db
+Author:        afzal mohammed <afzal.mohd.ma@gmail.com>
+AuthorDate:    Mon, 23 Mar 2020 11:41:30 +05:30
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Sun, 05 Apr 2020 09:24:58 +02:00
 
-perf parse-events: Fix 3 use after frees found with clang ASAN
+clocksource/drivers/timer-vf-pit: Add missing parenthesis
 
-Reproducible with a clang asan build and then running perf test in
-particular 'Parse event definition strings'.
+Recently all usage of setup_irq() was replaced by request_irq(). The
+replacement in timer-vf-pit.c missed closing parentheses resulting in a build
+error (vf610m4_defconfig). Fix it.
 
-Signed-off-by: Ian Rogers <irogers@google.com>
-Acked-by: Jiri Olsa <jolsa@redhat.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Leo Yan <leo.yan@linaro.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Stephane Eranian <eranian@google.com>
-Cc: clang-built-linux@googlegroups.com
-Link: http://lore.kernel.org/lkml/20200314170356.62914-1-irogers@google.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: cc2550b421aa ("clocksource: Replace setup_irq() by request_irq()")
+Reported-by: kbuild test robot <lkp@intel.com>
+Signed-off-by: afzal mohammed <afzal.mohd.ma@gmail.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lkml.kernel.org/r/20200323061130.GA6286@afzalpc
+
 ---
- tools/perf/util/evsel.c        | 1 +
- tools/perf/util/parse-events.c | 6 +++---
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ drivers/clocksource/timer-vf-pit.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/util/evsel.c b/tools/perf/util/evsel.c
-index 816d930..15ccd19 100644
---- a/tools/perf/util/evsel.c
-+++ b/tools/perf/util/evsel.c
-@@ -1287,6 +1287,7 @@ void perf_evsel__exit(struct evsel *evsel)
- 	perf_thread_map__put(evsel->core.threads);
- 	zfree(&evsel->group_name);
- 	zfree(&evsel->name);
-+	zfree(&evsel->pmu_name);
- 	perf_evsel__object.fini(evsel);
- }
+diff --git a/drivers/clocksource/timer-vf-pit.c b/drivers/clocksource/timer-vf-pit.c
+index 7ad4a8b..1a86a4e 100644
+--- a/drivers/clocksource/timer-vf-pit.c
++++ b/drivers/clocksource/timer-vf-pit.c
+@@ -129,7 +129,7 @@ static int __init pit_clockevent_init(unsigned long rate, int irq)
+ 	__raw_writel(PITTFLG_TIF, clkevt_base + PITTFLG);
  
-diff --git a/tools/perf/util/parse-events.c b/tools/perf/util/parse-events.c
-index a7dc0b0..1010774 100644
---- a/tools/perf/util/parse-events.c
-+++ b/tools/perf/util/parse-events.c
-@@ -1449,7 +1449,7 @@ int parse_events_add_pmu(struct parse_events_state *parse_state,
- 		evsel = __add_event(list, &parse_state->idx, &attr, NULL, pmu, NULL,
- 				    auto_merge_stats, NULL);
- 		if (evsel) {
--			evsel->pmu_name = name;
-+			evsel->pmu_name = name ? strdup(name) : NULL;
- 			evsel->use_uncore_alias = use_uncore_alias;
- 			return 0;
- 		} else {
-@@ -1497,7 +1497,7 @@ int parse_events_add_pmu(struct parse_events_state *parse_state,
- 		evsel->snapshot = info.snapshot;
- 		evsel->metric_expr = info.metric_expr;
- 		evsel->metric_name = info.metric_name;
--		evsel->pmu_name = name;
-+		evsel->pmu_name = name ? strdup(name) : NULL;
- 		evsel->use_uncore_alias = use_uncore_alias;
- 		evsel->percore = config_term_percore(&evsel->config_terms);
- 	}
-@@ -1547,7 +1547,7 @@ int parse_events_multi_pmu_add(struct parse_events_state *parse_state,
- 				if (!parse_events_add_pmu(parse_state, list,
- 							  pmu->name, head,
- 							  true, true)) {
--					pr_debug("%s -> %s/%s/\n", config,
-+					pr_debug("%s -> %s/%s/\n", str,
- 						 pmu->name, alias->str);
- 					ok++;
- 				}
+ 	BUG_ON(request_irq(irq, pit_timer_interrupt, IRQF_TIMER | IRQF_IRQPOLL,
+-			   "VF pit timer", &clockevent_pit);
++			   "VF pit timer", &clockevent_pit));
+ 
+ 	clockevent_pit.cpumask = cpumask_of(0);
+ 	clockevent_pit.irq = irq;
