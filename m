@@ -2,39 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EE4671A0C23
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  7 Apr 2020 12:42:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DA7B1A163B
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  7 Apr 2020 21:54:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726399AbgDGKmE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 7 Apr 2020 06:42:04 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:47030 "EHLO
+        id S1726760AbgDGTye (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 7 Apr 2020 15:54:34 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:48493 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725883AbgDGKmE (ORCPT
+        with ESMTP id S1726712AbgDGTye (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 7 Apr 2020 06:42:04 -0400
+        Tue, 7 Apr 2020 15:54:34 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jLlg8-0004LQ-Vs; Tue, 07 Apr 2020 12:42:01 +0200
+        id 1jLuIn-0004Fa-SY; Tue, 07 Apr 2020 21:54:30 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 93F871C0481;
-        Tue,  7 Apr 2020 12:42:00 +0200 (CEST)
-Date:   Tue, 07 Apr 2020 10:42:00 -0000
-From:   "tip-bot2 for Michael Kerrisk (man-pages)" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 3E0C61C0082;
+        Tue,  7 Apr 2020 21:54:29 +0200 (CEST)
+Date:   Tue, 07 Apr 2020 19:54:28 -0000
+From:   "tip-bot2 for Jan Kara" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/urgent] time/namespace: Fix time_for_children symlink
-Cc:     Michael Kerrisk <mtk.manpages@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Dmitry Safonov <dima@arista.com>,
-        Christian Brauner <christian.brauner@ubuntu.com>,
-        Andrei Vagin <avagin@gmail.com>, stable@vger.kernel.org,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <a2418c48-ed80-3afe-116e-6611cb799557@gmail.com>
-References: <a2418c48-ed80-3afe-116e-6611cb799557@gmail.com>
+Subject: [tip: timers/urgent] ucount: Make sure ucounts in /proc/sys/user
+ don't regress again
+Cc:     Jan Kara <jack@suse.cz>, Thomas Gleixner <tglx@linutronix.de>,
+        Andrei Vagin <avagin@gmail.com>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200407154643.10102-1-jack@suse.cz>
+References: <20200407154643.10102-1-jack@suse.cz>
 MIME-Version: 1.0
-Message-ID: <158625612023.28353.17886180270911841813.tip-bot2@tip-bot2>
+Message-ID: <158628926863.28353.6820611452673308754.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,54 +48,43 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/urgent branch of tip:
 
-Commit-ID:     b801f1e22c23c259d6a2c955efddd20370de19a6
-Gitweb:        https://git.kernel.org/tip/b801f1e22c23c259d6a2c955efddd20370de19a6
-Author:        Michael Kerrisk (man-pages) <mtk.manpages@gmail.com>
-AuthorDate:    Fri, 03 Apr 2020 14:11:39 +02:00
+Commit-ID:     0f538e3e712a517bd351607de50cd298102c7c08
+Gitweb:        https://git.kernel.org/tip/0f538e3e712a517bd351607de50cd298102c7c08
+Author:        Jan Kara <jack@suse.cz>
+AuthorDate:    Tue, 07 Apr 2020 17:46:43 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 07 Apr 2020 12:37:21 +02:00
+CommitterDate: Tue, 07 Apr 2020 21:51:27 +02:00
 
-time/namespace: Fix time_for_children symlink
+ucount: Make sure ucounts in /proc/sys/user don't regress again
 
-Looking at the contents of the /proc/PID/ns/time_for_children symlink shows
-an anomaly:
+Commit 769071ac9f20 "ns: Introduce Time Namespace" broke reporting of
+inotify ucounts (max_inotify_instances, max_inotify_watches) in
+/proc/sys/user because it has added UCOUNT_TIME_NAMESPACES into enum
+ucount_type but didn't properly update reporting in
+kernel/ucount.c:setup_userns_sysctls(). This problem got fixed in commit
+eeec26d5da82 "time/namespace: Add max_time_namespaces ucount".
 
-$ ls -l /proc/self/ns/* |awk '{print $9, $10, $11}'
-...
-/proc/self/ns/pid -> pid:[4026531836]
-/proc/self/ns/pid_for_children -> pid:[4026531836]
-/proc/self/ns/time -> time:[4026531834]
-/proc/self/ns/time_for_children -> time_for_children:[4026531834]
-/proc/self/ns/user -> user:[4026531837]
-...
+Add BUILD_BUG_ON to catch a similar problem in the future.
 
-The reference for 'time_for_children' should be a 'time' namespace, just as
-the reference for 'pid_for_children' is a 'pid' namespace.  In other words,
-the above time_for_children link should read:
-
-/proc/self/ns/time_for_children -> time:[4026531834]
-
-Fixes: 769071ac9f20 ("ns: Introduce Time Namespace")
-Signed-off-by: Michael Kerrisk <mtk.manpages@gmail.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Dmitry Safonov <dima@arista.com>
-Acked-by: Christian Brauner <christian.brauner@ubuntu.com>
 Acked-by: Andrei Vagin <avagin@gmail.com>
-Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/a2418c48-ed80-3afe-116e-6611cb799557@gmail.com
----
- kernel/time/namespace.c | 1 +
- 1 file changed, 1 insertion(+)
+Link: https://lkml.kernel.org/r/20200407154643.10102-1-jack@suse.cz
 
-diff --git a/kernel/time/namespace.c b/kernel/time/namespace.c
-index e6ba064..3b30288 100644
---- a/kernel/time/namespace.c
-+++ b/kernel/time/namespace.c
-@@ -447,6 +447,7 @@ const struct proc_ns_operations timens_operations = {
- 
- const struct proc_ns_operations timens_for_children_operations = {
- 	.name		= "time_for_children",
-+	.real_ns_name	= "time",
- 	.type		= CLONE_NEWTIME,
- 	.get		= timens_for_children_get,
- 	.put		= timens_put,
+---
+ kernel/ucount.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/kernel/ucount.c b/kernel/ucount.c
+index 29c60eb..11b1596 100644
+--- a/kernel/ucount.c
++++ b/kernel/ucount.c
+@@ -82,6 +82,8 @@ bool setup_userns_sysctls(struct user_namespace *ns)
+ {
+ #ifdef CONFIG_SYSCTL
+ 	struct ctl_table *tbl;
++
++	BUILD_BUG_ON(ARRAY_SIZE(user_table) != UCOUNT_COUNTS + 1);
+ 	setup_sysctl_set(&ns->set, &set_root, set_is_seen);
+ 	tbl = kmemdup(user_table, sizeof(user_table), GFP_KERNEL);
+ 	if (tbl) {
