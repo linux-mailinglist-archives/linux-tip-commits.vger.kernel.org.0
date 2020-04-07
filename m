@@ -2,38 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B7C819E9C2
-	for <lists+linux-tip-commits@lfdr.de>; Sun,  5 Apr 2020 09:32:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C51441A0C26
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  7 Apr 2020 12:42:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726250AbgDEHcW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 5 Apr 2020 03:32:22 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:42496 "EHLO
+        id S1725883AbgDGKmI (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 7 Apr 2020 06:42:08 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:47032 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726417AbgDEHcV (ORCPT
+        with ESMTP id S1726687AbgDGKmF (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 5 Apr 2020 03:32:21 -0400
+        Tue, 7 Apr 2020 06:42:05 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jKzlP-0001xP-FA; Sun, 05 Apr 2020 09:32:15 +0200
+        id 1jLlg8-0004LN-Kj; Tue, 07 Apr 2020 12:42:01 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 529E11C01BB;
-        Sun,  5 Apr 2020 09:32:14 +0200 (CEST)
-Date:   Sun, 05 Apr 2020 07:32:13 -0000
-From:   "tip-bot2 for afzal mohammed" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 277331C0082;
+        Tue,  7 Apr 2020 12:42:00 +0200 (CEST)
+Date:   Tue, 07 Apr 2020 10:41:59 -0000
+From:   "tip-bot2 for Dmitry Safonov" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/urgent] clocksource/drivers/timer-vf-pit: Add missing
- parenthesis
-Cc:     kbuild test robot <lkp@intel.com>,
-        afzal mohammed <afzal.mohd.ma@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
+Subject: [tip: timers/urgent] time/namespace: Add max_time_namespaces ucount
+Cc:     "Michael Kerrisk (man-pages)" <mtk.manpages@gmail.com>,
+        Dmitry Safonov <dima@arista.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Andrei Vagin <avagin@gmail.com>,
+        Vincenzo Frascino <vincenzo.frascino@arm.com>,
+        stable@kernel.org, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200323061130.GA6286@afzalpc>
-References: <20200323061130.GA6286@afzalpc>
+In-Reply-To: <20200406171342.128733-1-dima@arista.com>
+References: <20200406171342.128733-1-dima@arista.com>
 MIME-Version: 1.0
-Message-ID: <158607193357.28353.3365476438962871660.tip-bot2@tip-bot2>
+Message-ID: <158625611966.28353.8687396873950102990.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,39 +51,67 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/urgent branch of tip:
 
-Commit-ID:     760a53768610d427990192b5cfdb71310e1373db
-Gitweb:        https://git.kernel.org/tip/760a53768610d427990192b5cfdb71310e1373db
-Author:        afzal mohammed <afzal.mohd.ma@gmail.com>
-AuthorDate:    Mon, 23 Mar 2020 11:41:30 +05:30
+Commit-ID:     eeec26d5da8248ea4e240b8795bb4364213d3247
+Gitweb:        https://git.kernel.org/tip/eeec26d5da8248ea4e240b8795bb4364213d3247
+Author:        Dmitry Safonov <dima@arista.com>
+AuthorDate:    Mon, 06 Apr 2020 18:13:42 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sun, 05 Apr 2020 09:24:58 +02:00
+CommitterDate: Tue, 07 Apr 2020 12:37:21 +02:00
 
-clocksource/drivers/timer-vf-pit: Add missing parenthesis
+time/namespace: Add max_time_namespaces ucount
 
-Recently all usage of setup_irq() was replaced by request_irq(). The
-replacement in timer-vf-pit.c missed closing parentheses resulting in a build
-error (vf610m4_defconfig). Fix it.
+Michael noticed that userns limit for number of time namespaces is missing.
 
-Fixes: cc2550b421aa ("clocksource: Replace setup_irq() by request_irq()")
-Reported-by: kbuild test robot <lkp@intel.com>
-Signed-off-by: afzal mohammed <afzal.mohd.ma@gmail.com>
+Furthermore, time namespace introduced UCOUNT_TIME_NAMESPACES, but didn't
+introduce an array member in user_table[]. It would make array's
+initialisation OOB write, but by luck the user_table array has an excessive
+empty member (all accesses to the array are limited with UCOUNT_COUNTS - so
+it silently reuses the last free member.
+
+Fixes user-visible regression: max_inotify_instances by reason of the
+missing UCOUNT_ENTRY() has limited max number of namespaces instead of the
+number of inotify instances.
+
+Fixes: 769071ac9f20 ("ns: Introduce Time Namespace")
+Reported-by: Michael Kerrisk (man-pages) <mtk.manpages@gmail.com>
+Signed-off-by: Dmitry Safonov <dima@arista.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20200323061130.GA6286@afzalpc
+Acked-by: Andrei Vagin <avagin@gmail.com>
+Acked-by: Vincenzo Frascino <vincenzo.frascino@arm.com>
+Cc: stable@kernel.org
+Link: https://lkml.kernel.org/r/20200406171342.128733-1-dima@arista.com
 
 ---
- drivers/clocksource/timer-vf-pit.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/admin-guide/sysctl/user.rst | 6 ++++++
+ kernel/ucount.c                           | 1 +
+ 2 files changed, 7 insertions(+)
 
-diff --git a/drivers/clocksource/timer-vf-pit.c b/drivers/clocksource/timer-vf-pit.c
-index 7ad4a8b..1a86a4e 100644
---- a/drivers/clocksource/timer-vf-pit.c
-+++ b/drivers/clocksource/timer-vf-pit.c
-@@ -129,7 +129,7 @@ static int __init pit_clockevent_init(unsigned long rate, int irq)
- 	__raw_writel(PITTFLG_TIF, clkevt_base + PITTFLG);
+diff --git a/Documentation/admin-guide/sysctl/user.rst b/Documentation/admin-guide/sysctl/user.rst
+index 650eaa0..c458245 100644
+--- a/Documentation/admin-guide/sysctl/user.rst
++++ b/Documentation/admin-guide/sysctl/user.rst
+@@ -65,6 +65,12 @@ max_pid_namespaces
+   The maximum number of pid namespaces that any user in the current
+   user namespace may create.
  
- 	BUG_ON(request_irq(irq, pit_timer_interrupt, IRQF_TIMER | IRQF_IRQPOLL,
--			   "VF pit timer", &clockevent_pit);
-+			   "VF pit timer", &clockevent_pit));
++max_time_namespaces
++===================
++
++  The maximum number of time namespaces that any user in the current
++  user namespace may create.
++
+ max_user_namespaces
+ ===================
  
- 	clockevent_pit.cpumask = cpumask_of(0);
- 	clockevent_pit.irq = irq;
+diff --git a/kernel/ucount.c b/kernel/ucount.c
+index a53cc2b..29c60eb 100644
+--- a/kernel/ucount.c
++++ b/kernel/ucount.c
+@@ -69,6 +69,7 @@ static struct ctl_table user_table[] = {
+ 	UCOUNT_ENTRY("max_net_namespaces"),
+ 	UCOUNT_ENTRY("max_mnt_namespaces"),
+ 	UCOUNT_ENTRY("max_cgroup_namespaces"),
++	UCOUNT_ENTRY("max_time_namespaces"),
+ #ifdef CONFIG_INOTIFY_USER
+ 	UCOUNT_ENTRY("max_inotify_instances"),
+ 	UCOUNT_ENTRY("max_inotify_watches"),
