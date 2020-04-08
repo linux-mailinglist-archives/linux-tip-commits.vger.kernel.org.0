@@ -2,34 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B50E11A21B5
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  8 Apr 2020 14:21:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B69C1A21B6
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  8 Apr 2020 14:21:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728644AbgDHMVB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 8 Apr 2020 08:21:01 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:49685 "EHLO
+        id S1728649AbgDHMVC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 8 Apr 2020 08:21:02 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:49688 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726780AbgDHMVB (ORCPT
+        with ESMTP id S1728562AbgDHMVB (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Wed, 8 Apr 2020 08:21:01 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jM9hR-0006BX-3V; Wed, 08 Apr 2020 14:20:57 +0200
+        id 1jM9hR-0006C4-Vk; Wed, 08 Apr 2020 14:20:58 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A9EB91C0131;
-        Wed,  8 Apr 2020 14:20:56 +0200 (CEST)
-Date:   Wed, 08 Apr 2020 12:20:56 -0000
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 9C6DB1C0131;
+        Wed,  8 Apr 2020 14:20:57 +0200 (CEST)
+Date:   Wed, 08 Apr 2020 12:20:57 -0000
+From:   "tip-bot2 for Qian Cai" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/urgent] locking/lockdep: Improve 'invalid wait context' splat
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+Subject: [tip: locking/urgent] locking/percpu-rwsem: Fix a task_struct refcount
+Cc:     Peter Zijlstra <peterz@infradead.org>, Qian Cai <cai@lca.pw>,
         Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200330213002.2374-1-cai@lca.pw>
+References: <20200330213002.2374-1-cai@lca.pw>
 MIME-Version: 1.0
-Message-ID: <158634845623.28353.3377386291983303791.tip-bot2@tip-bot2>
+Message-ID: <158634845721.28353.1181972786465191647.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -45,102 +47,61 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/urgent branch of tip:
 
-Commit-ID:     9a019db0b6bebc84d6b64636faf73ed6d64cd4bb
-Gitweb:        https://git.kernel.org/tip/9a019db0b6bebc84d6b64636faf73ed6d64cd4bb
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Tue, 31 Mar 2020 20:38:12 +02:00
+Commit-ID:     d22cc7f67d55ebf2d5be865453971c783e9fb21a
+Gitweb:        https://git.kernel.org/tip/d22cc7f67d55ebf2d5be865453971c783e9fb21a
+Author:        Qian Cai <cai@lca.pw>
+AuthorDate:    Mon, 30 Mar 2020 17:30:02 -04:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 08 Apr 2020 12:05:07 +02:00
+CommitterDate: Wed, 08 Apr 2020 12:05:06 +02:00
 
-locking/lockdep: Improve 'invalid wait context' splat
+locking/percpu-rwsem: Fix a task_struct refcount
 
-The 'invalid wait context' splat doesn't print all the information
-required to reconstruct / validate the error, specifically the
-irq-context state is missing.
+The following commit:
 
+  7f26482a872c ("locking/percpu-rwsem: Remove the embedded rwsem")
+
+introduced task_struct memory leaks due to messing up the task_struct
+refcount.
+
+At the beginning of percpu_rwsem_wake_function(), it calls get_task_struct(),
+but if the trylock failed, it will remain in the waitqueue. However, it
+will run percpu_rwsem_wake_function() again with get_task_struct() to
+increase the refcount but then only call put_task_struct() once the trylock
+succeeded.
+
+Fix it by adjusting percpu_rwsem_wake_function() a bit to guard against
+when percpu_rwsem_wait() observing !private, terminating the wait and
+doing a quick exit() while percpu_rwsem_wake_function() then doing
+wake_up_process(p) as a use-after-free.
+
+Fixes: 7f26482a872c ("locking/percpu-rwsem: Remove the embedded rwsem")
+Suggested-by: Peter Zijlstra <peterz@infradead.org>
+Signed-off-by: Qian Cai <cai@lca.pw>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lkml.kernel.org/r/20200330213002.2374-1-cai@lca.pw
 ---
- kernel/locking/lockdep.c | 51 +++++++++++++++++++++++----------------
- 1 file changed, 31 insertions(+), 20 deletions(-)
+ kernel/locking/percpu-rwsem.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
-index 1511690..ac10db6 100644
---- a/kernel/locking/lockdep.c
-+++ b/kernel/locking/lockdep.c
-@@ -3952,10 +3952,36 @@ static int mark_lock(struct task_struct *curr, struct held_lock *this,
- 	return ret;
- }
- 
-+static inline short task_wait_context(struct task_struct *curr)
-+{
-+	/*
-+	 * Set appropriate wait type for the context; for IRQs we have to take
-+	 * into account force_irqthread as that is implied by PREEMPT_RT.
-+	 */
-+	if (curr->hardirq_context) {
-+		/*
-+		 * Check if force_irqthreads will run us threaded.
-+		 */
-+		if (curr->hardirq_threaded || curr->irq_config)
-+			return LD_WAIT_CONFIG;
-+
-+		return LD_WAIT_SPIN;
-+	} else if (curr->softirq_context) {
-+		/*
-+		 * Softirqs are always threaded.
-+		 */
-+		return LD_WAIT_CONFIG;
-+	}
-+
-+	return LD_WAIT_MAX;
-+}
-+
- static int
- print_lock_invalid_wait_context(struct task_struct *curr,
- 				struct held_lock *hlock)
+diff --git a/kernel/locking/percpu-rwsem.c b/kernel/locking/percpu-rwsem.c
+index a008a1b..8bbafe3 100644
+--- a/kernel/locking/percpu-rwsem.c
++++ b/kernel/locking/percpu-rwsem.c
+@@ -118,14 +118,15 @@ static int percpu_rwsem_wake_function(struct wait_queue_entry *wq_entry,
+ 				      unsigned int mode, int wake_flags,
+ 				      void *key)
  {
-+	short curr_inner;
-+
- 	if (!debug_locks_off())
- 		return 0;
- 	if (debug_locks_silent)
-@@ -3971,6 +3997,10 @@ print_lock_invalid_wait_context(struct task_struct *curr,
- 	print_lock(hlock);
+-	struct task_struct *p = get_task_struct(wq_entry->private);
+ 	bool reader = wq_entry->flags & WQ_FLAG_CUSTOM;
+ 	struct percpu_rw_semaphore *sem = key;
++	struct task_struct *p;
  
- 	pr_warn("other info that might help us debug this:\n");
-+
-+	curr_inner = task_wait_context(curr);
-+	pr_warn("context-{%d:%d}\n", curr_inner, curr_inner);
-+
- 	lockdep_print_held_locks(curr);
+ 	/* concurrent against percpu_down_write(), can get stolen */
+ 	if (!__percpu_rwsem_trylock(sem, reader))
+ 		return 1;
  
- 	pr_warn("stack backtrace:\n");
-@@ -4017,26 +4047,7 @@ static int check_wait_context(struct task_struct *curr, struct held_lock *next)
- 	}
- 	depth++;
++	p = get_task_struct(wq_entry->private);
+ 	list_del_init(&wq_entry->entry);
+ 	smp_store_release(&wq_entry->private, NULL);
  
--	/*
--	 * Set appropriate wait type for the context; for IRQs we have to take
--	 * into account force_irqthread as that is implied by PREEMPT_RT.
--	 */
--	if (curr->hardirq_context) {
--		/*
--		 * Check if force_irqthreads will run us threaded.
--		 */
--		if (curr->hardirq_threaded || curr->irq_config)
--			curr_inner = LD_WAIT_CONFIG;
--		else
--			curr_inner = LD_WAIT_SPIN;
--	} else if (curr->softirq_context) {
--		/*
--		 * Softirqs are always threaded.
--		 */
--		curr_inner = LD_WAIT_CONFIG;
--	} else {
--		curr_inner = LD_WAIT_MAX;
--	}
-+	curr_inner = task_wait_context(curr);
- 
- 	for (; depth < curr->lockdep_depth; depth++) {
- 		struct held_lock *prev = curr->held_locks + depth;
