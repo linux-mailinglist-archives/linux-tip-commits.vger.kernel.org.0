@@ -2,38 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 79D471A219B
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  8 Apr 2020 14:20:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BE451A21B3
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  8 Apr 2020 14:21:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728320AbgDHMUa (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 8 Apr 2020 08:20:30 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:49639 "EHLO
+        id S1728255AbgDHMUb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 8 Apr 2020 08:20:31 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:49647 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728255AbgDHMUa (ORCPT
+        with ESMTP id S1728299AbgDHMUb (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 8 Apr 2020 08:20:30 -0400
+        Wed, 8 Apr 2020 08:20:31 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jM9gu-00063o-P4; Wed, 08 Apr 2020 14:20:24 +0200
+        id 1jM9gv-00064g-D0; Wed, 08 Apr 2020 14:20:25 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 67D161C047B;
-        Wed,  8 Apr 2020 14:20:24 +0200 (CEST)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 0F29C1C0131;
+        Wed,  8 Apr 2020 14:20:25 +0200 (CEST)
 Date:   Wed, 08 Apr 2020 12:20:24 -0000
-From:   "tip-bot2 for Valentin Schneider" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Vincent Donnefort" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] sched/debug: Remove redundant macro define
-Cc:     Qais Yousef <qais.yousef@arm.com>,
-        Valentin Schneider <valentin.schneider@arm.com>,
+Subject: [tip: sched/urgent] sched/core: Remove unused rq::last_load_update_tick
+Cc:     Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Vincent Donnefort <vincent.donnefort@arm.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200226124543.31986-2-valentin.schneider@arm.com>
-References: <20200226124543.31986-2-valentin.schneider@arm.com>
+In-Reply-To: <1584710495-308969-1-git-send-email-vincent.donnefort@arm.com>
+References: <1584710495-308969-1-git-send-email-vincent.donnefort@arm.com>
 MIME-Version: 1.0
-Message-ID: <158634842404.28353.12034753755409518464.tip-bot2@tip-bot2>
+Message-ID: <158634842452.28353.9568921110806315387.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,59 +50,54 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     c745a6212c9923eb2253f4229e5d7277ca3d9d8e
-Gitweb:        https://git.kernel.org/tip/c745a6212c9923eb2253f4229e5d7277ca3d9d8e
-Author:        Valentin Schneider <valentin.schneider@arm.com>
-AuthorDate:    Wed, 26 Feb 2020 12:45:41 
+Commit-ID:     275b2f6723ab9173484e1055ae138d4c2dd9d7c5
+Gitweb:        https://git.kernel.org/tip/275b2f6723ab9173484e1055ae138d4c2dd9d7c5
+Author:        Vincent Donnefort <vincent.donnefort@arm.com>
+AuthorDate:    Fri, 20 Mar 2020 13:21:35 
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 08 Apr 2020 11:35:24 +02:00
+CommitterDate: Wed, 08 Apr 2020 11:35:23 +02:00
 
-sched/debug: Remove redundant macro define
+sched/core: Remove unused rq::last_load_update_tick
 
-Most printing macros for procfs are defined globally in debug.c, and they
-are re-defined (to the exact same thing) within proc_sched_show_task().
+The following commit:
 
-Get rid of the duplicate defines.
+  5e83eafbfd3b ("sched/fair: Remove the rq->cpu_load[] update code")
 
-Reviewed-by: Qais Yousef <qais.yousef@arm.com>
-Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
+eliminated the last use case for rq->last_load_update_tick, so remove
+the field as well.
+
+Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
+Signed-off-by: Vincent Donnefort <vincent.donnefort@arm.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lkml.kernel.org/r/20200226124543.31986-2-valentin.schneider@arm.com
+Link: https://lkml.kernel.org/r/1584710495-308969-1-git-send-email-vincent.donnefort@arm.com
 ---
- kernel/sched/debug.c | 12 ------------
- 1 file changed, 12 deletions(-)
+ kernel/sched/core.c  | 1 -
+ kernel/sched/sched.h | 1 -
+ 2 files changed, 2 deletions(-)
 
-diff --git a/kernel/sched/debug.c b/kernel/sched/debug.c
-index 8331bc0..4670151 100644
---- a/kernel/sched/debug.c
-+++ b/kernel/sched/debug.c
-@@ -868,16 +868,8 @@ void proc_sched_show_task(struct task_struct *p, struct pid_namespace *ns,
- 	SEQ_printf(m,
- 		"---------------------------------------------------------"
- 		"----------\n");
--#define __P(F) \
--	SEQ_printf(m, "%-45s:%21Ld\n", #F, (long long)F)
--#define P(F) \
--	SEQ_printf(m, "%-45s:%21Ld\n", #F, (long long)p->F)
- #define P_SCHEDSTAT(F) \
- 	SEQ_printf(m, "%-45s:%21Ld\n", #F, (long long)schedstat_val(p->F))
--#define __PN(F) \
--	SEQ_printf(m, "%-45s:%14Ld.%06ld\n", #F, SPLIT_NS((long long)F))
--#define PN(F) \
--	SEQ_printf(m, "%-45s:%14Ld.%06ld\n", #F, SPLIT_NS((long long)p->F))
- #define PN_SCHEDSTAT(F) \
- 	SEQ_printf(m, "%-45s:%14Ld.%06ld\n", #F, SPLIT_NS((long long)schedstat_val(p->F)))
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index c3d12e3..3a61a3b 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -6694,7 +6694,6 @@ void __init sched_init(void)
  
-@@ -963,11 +955,7 @@ void proc_sched_show_task(struct task_struct *p, struct pid_namespace *ns,
- 		P(dl.deadline);
- 	}
- #undef PN_SCHEDSTAT
--#undef PN
--#undef __PN
- #undef P_SCHEDSTAT
--#undef P
--#undef __P
- 
- 	{
- 		unsigned int this_cpu = raw_smp_processor_id();
+ 		rq_attach_root(rq, &def_root_domain);
+ #ifdef CONFIG_NO_HZ_COMMON
+-		rq->last_load_update_tick = jiffies;
+ 		rq->last_blocked_load_update_tick = jiffies;
+ 		atomic_set(&rq->nohz_flags, 0);
+ #endif
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index cd00814..db3a576 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -888,7 +888,6 @@ struct rq {
+ #endif
+ #ifdef CONFIG_NO_HZ_COMMON
+ #ifdef CONFIG_SMP
+-	unsigned long		last_load_update_tick;
+ 	unsigned long		last_blocked_load_update_tick;
+ 	unsigned int		has_blocked_load;
+ #endif /* CONFIG_SMP */
