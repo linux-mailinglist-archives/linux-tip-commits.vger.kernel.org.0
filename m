@@ -2,40 +2,43 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 54E171A6438
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 13 Apr 2020 10:40:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5EC8D1A67B4
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 13 Apr 2020 16:16:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727849AbgDMIkX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 13 Apr 2020 04:40:23 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:39892 "EHLO
+        id S1730469AbgDMOQP convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 13 Apr 2020 10:16:15 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:40358 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727770AbgDMIkW (ORCPT
+        with ESMTP id S1730466AbgDMOQO (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 13 Apr 2020 04:40:22 -0400
+        Mon, 13 Apr 2020 10:16:14 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jNudf-0007z6-5Z; Mon, 13 Apr 2020 10:40:19 +0200
+        id 1jNzsW-00021U-Nm; Mon, 13 Apr 2020 16:16:00 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A61BB1C0092;
-        Mon, 13 Apr 2020 10:40:18 +0200 (CEST)
-Date:   Mon, 13 Apr 2020 08:40:18 -0000
-From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4B5751C0092;
+        Mon, 13 Apr 2020 16:16:00 +0200 (CEST)
+Date:   Mon, 13 Apr 2020 14:15:59 -0000
+From:   "tip-bot2 for Sergei Trofimovich" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] x86/smpboot: Remove the last ICPU() macro
-Cc:     Borislav Petkov <bp@suse.de>, Thomas Gleixner <tglx@linutronix.de>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200324185836.GI22931@zn.tnic>
-References: <20200324185836.GI22931@zn.tnic>
+Subject: [tip: x86/urgent] x86: Fix early boot crash on gcc-10
+Cc:     Sergei Trofimovich <slyfox@gentoo.org>,
+        Borislav Petkov <bp@suse.de>, Jakub Jelinek <jakub@redhat.com>,
+        Michael Matz <matz@suse.de>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200328084858.421444-1-slyfox@gentoo.org>
+References: <20200328084858.421444-1-slyfox@gentoo.org>
 MIME-Version: 1.0
-Message-ID: <158676721824.28353.7844544584535496373.tip-bot2@tip-bot2>
+Message-ID: <158678735989.28353.17058422416826993351.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8BIT
 X-Linutronix-Spam-Score: -1.0
 X-Linutronix-Spam-Level: -
 X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
@@ -44,73 +47,93 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cleanups branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     2fa9a3cf3055db07a4835eb7bd48c648cb17ac26
-Gitweb:        https://git.kernel.org/tip/2fa9a3cf3055db07a4835eb7bd48c648cb17ac26
-Author:        Borislav Petkov <bp@alien8.de>
-AuthorDate:    Tue, 24 Mar 2020 19:58:36 +01:00
+Commit-ID:     5871c72d659e5c312b9ad635034cab59f7786a98
+Gitweb:        https://git.kernel.org/tip/5871c72d659e5c312b9ad635034cab59f7786a98
+Author:        Sergei Trofimovich <slyfox@gentoo.org>
+AuthorDate:    Sat, 28 Mar 2020 08:48:58 
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 13 Apr 2020 10:34:09 +02:00
+CommitterDate: Mon, 13 Apr 2020 16:07:35 +02:00
 
-x86/smpboot: Remove the last ICPU() macro
+x86: Fix early boot crash on gcc-10
 
-Now all is using the shiny new macros.
+Fix a boot failure where the kernel is built with gcc-10 with stack
+protector enabled by default:
 
-No code changed:
+  Kernel panic — not syncing: stack-protector: Kernel stack is corrupted in: start_secondary
+  CPU: 1 PID: 0 Comm: swapper/1 Not tainted 5.6.0-rc5—00235—gfffb08b37df9 #139
+  Hardware name: Gigabyte Technology Co., Ltd. To be filled by O.E.M./H77M—D3H, BIOS F12 11/14/2013
+  Call Trace:
+    dump_stack
+    panic
+    ? start_secondary
+    __stack_chk_fail
+    start_secondary
+    secondary_startup_64
+  -—-[ end Kernel panic — not syncing: stack—protector: Kernel stack is corrupted in: start_secondary
 
-  # arch/x86/kernel/smpboot.o:
+This happens because start_secondary() is responsible for setting
+up initial stack canary value in smpboot.c but nothing prevents gcc
+from inserting stack canary into start_secondary() itself before the
+boot_init_stack_canary() call which sets up said canary value.
 
-   text    data     bss     dec     hex filename
-  16432    2649      40   19121    4ab1 smpboot.o.before
-  16432    2649      40   19121    4ab1 smpboot.o.after
+Inhibit the stack canary addition for start_secondary() only.
 
-md5:
-   a58104003b72c1de533095bc5a4c30a9  smpboot.o.before.asm
-   a58104003b72c1de533095bc5a4c30a9  smpboot.o.after.asm
+ [ bp: Massage a bit. ]
 
+Signed-off-by: Sergei Trofimovich <slyfox@gentoo.org>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20200324185836.GI22931@zn.tnic
+Cc: Jakub Jelinek <jakub@redhat.com>
+Cc: Michael Matz <matz@suse.de>
+Link: https://lkml.kernel.org/r/20200328084858.421444-1-slyfox@gentoo.org
 ---
- arch/x86/kernel/smpboot.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ arch/x86/kernel/smpboot.c      | 6 +++++-
+ include/linux/compiler-gcc.h   | 1 +
+ include/linux/compiler_types.h | 4 ++++
+ 3 files changed, 10 insertions(+), 1 deletion(-)
 
 diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
-index fe3ab96..3b9bf8c 100644
+index fe3ab96..9ea28e5 100644
 --- a/arch/x86/kernel/smpboot.c
 +++ b/arch/x86/kernel/smpboot.c
-@@ -1849,24 +1849,25 @@ static bool slv_set_max_freq_ratio(u64 *base_freq, u64 *turbo_freq)
- #include <asm/cpu_device_id.h>
- #include <asm/intel-family.h>
+@@ -209,10 +209,14 @@ static void smp_callin(void)
  
--#define ICPU(model) \
--	{X86_VENDOR_INTEL, 6, model, X86_FEATURE_APERFMPERF, 0}
-+#define X86_MATCH(model)					\
-+	X86_MATCH_VENDOR_FAM_MODEL_FEATURE(INTEL, 6,		\
-+		INTEL_FAM6_##model, X86_FEATURE_APERFMPERF, NULL)
+ static int cpu0_logical_apicid;
+ static int enable_start_cpu0;
++
+ /*
+  * Activate a secondary processor.
++ *
++ * Note: boot_init_stack_canary() sets up the canary value so omit the stack
++ * canary creation for this function only.
+  */
+-static void notrace start_secondary(void *unused)
++static void __no_stack_protector notrace start_secondary(void *unused)
+ {
+ 	/*
+ 	 * Don't put *anything* except direct CPU state initialization
+diff --git a/include/linux/compiler-gcc.h b/include/linux/compiler-gcc.h
+index d7ee4c6..fb67c74 100644
+--- a/include/linux/compiler-gcc.h
++++ b/include/linux/compiler-gcc.h
+@@ -172,3 +172,4 @@
+ #endif
  
- static const struct x86_cpu_id has_knl_turbo_ratio_limits[] = {
--	ICPU(INTEL_FAM6_XEON_PHI_KNL),
--	ICPU(INTEL_FAM6_XEON_PHI_KNM),
-+	X86_MATCH(XEON_PHI_KNL),
-+	X86_MATCH(XEON_PHI_KNM),
- 	{}
- };
+ #define __no_fgcse __attribute__((optimize("-fno-gcse")))
++#define __no_stack_protector __attribute__((optimize("-fno-stack-protector")))
+diff --git a/include/linux/compiler_types.h b/include/linux/compiler_types.h
+index e970f97..069c981 100644
+--- a/include/linux/compiler_types.h
++++ b/include/linux/compiler_types.h
+@@ -203,6 +203,10 @@ struct ftrace_likely_data {
+ #define asm_inline asm
+ #endif
  
- static const struct x86_cpu_id has_skx_turbo_ratio_limits[] = {
--	ICPU(INTEL_FAM6_SKYLAKE_X),
-+	X86_MATCH(SKYLAKE_X),
- 	{}
- };
- 
- static const struct x86_cpu_id has_glm_turbo_ratio_limits[] = {
--	ICPU(INTEL_FAM6_ATOM_GOLDMONT),
--	ICPU(INTEL_FAM6_ATOM_GOLDMONT_D),
--	ICPU(INTEL_FAM6_ATOM_GOLDMONT_PLUS),
-+	X86_MATCH(ATOM_GOLDMONT),
-+	X86_MATCH(ATOM_GOLDMONT_D),
-+	X86_MATCH(ATOM_GOLDMONT_PLUS),
- 	{}
- };
- 
++#ifndef __no_stack_protector
++# define __no_stack_protector
++#endif
++
+ #ifndef __no_fgcse
+ # define __no_fgcse
+ #endif
