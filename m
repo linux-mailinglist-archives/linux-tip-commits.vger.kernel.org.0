@@ -1,37 +1,36 @@
 Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B942D1A52B7
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 11 Apr 2020 18:04:16 +0200 (CEST)
+Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
+	by mail.lfdr.de (Postfix) with ESMTP id 54E171A6438
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 13 Apr 2020 10:40:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726560AbgDKQEP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 11 Apr 2020 12:04:15 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:55230 "EHLO
+        id S1727849AbgDMIkX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 13 Apr 2020 04:40:23 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:39892 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726070AbgDKQEP (ORCPT
+        with ESMTP id S1727770AbgDMIkW (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 11 Apr 2020 12:04:15 -0400
+        Mon, 13 Apr 2020 04:40:22 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jNIc6-0007Wc-Hq; Sat, 11 Apr 2020 18:04:10 +0200
+        id 1jNudf-0007z6-5Z; Mon, 13 Apr 2020 10:40:19 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 310751C0481;
-        Sat, 11 Apr 2020 18:04:10 +0200 (CEST)
-Date:   Sat, 11 Apr 2020 16:04:09 -0000
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A61BB1C0092;
+        Mon, 13 Apr 2020 10:40:18 +0200 (CEST)
+Date:   Mon, 13 Apr 2020 08:40:18 -0000
+From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/split_lock: Provide handle_guest_split_lock()
-Cc:     Thomas Gleixner <tglx@linutronix.de>, Borislav Petkov <bp@suse.de>,
-        Paolo Bonzini <pbonzini@redhat.com>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200410115516.978037132@linutronix.de>
-References: <20200410115516.978037132@linutronix.de>
+Subject: [tip: x86/cleanups] x86/smpboot: Remove the last ICPU() macro
+Cc:     Borislav Petkov <bp@suse.de>, Thomas Gleixner <tglx@linutronix.de>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200324185836.GI22931@zn.tnic>
+References: <20200324185836.GI22931@zn.tnic>
 MIME-Version: 1.0
-Message-ID: <158662104983.28353.13272730251943920504.tip-bot2@tip-bot2>
+Message-ID: <158676721824.28353.7844544584535496373.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -45,121 +44,73 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the x86/cleanups branch of tip:
 
-Commit-ID:     d7e94dbdac1a40924626b0efc7ff530c8baf5e4a
-Gitweb:        https://git.kernel.org/tip/d7e94dbdac1a40924626b0efc7ff530c8baf5e4a
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Fri, 10 Apr 2020 13:54:00 +02:00
+Commit-ID:     2fa9a3cf3055db07a4835eb7bd48c648cb17ac26
+Gitweb:        https://git.kernel.org/tip/2fa9a3cf3055db07a4835eb7bd48c648cb17ac26
+Author:        Borislav Petkov <bp@alien8.de>
+AuthorDate:    Tue, 24 Mar 2020 19:58:36 +01:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Sat, 11 Apr 2020 16:39:30 +02:00
+CommitterDate: Mon, 13 Apr 2020 10:34:09 +02:00
 
-x86/split_lock: Provide handle_guest_split_lock()
+x86/smpboot: Remove the last ICPU() macro
 
-Without at least minimal handling for split lock detection induced #AC,
-VMX will just run into the same problem as the VMWare hypervisor, which
-was reported by Kenneth.
+Now all is using the shiny new macros.
 
-It will inject the #AC blindly into the guest whether the guest is
-prepared or not.
+No code changed:
 
-Provide a function for guest mode which acts depending on the host
-SLD mode. If mode == sld_warn, treat it like user space, i.e. emit a
-warning, disable SLD and mark the task accordingly. Otherwise force
-SIGBUS.
+  # arch/x86/kernel/smpboot.o:
 
- [ bp: Add a !CPU_SUP_INTEL stub for handle_guest_split_lock(). ]
+   text    data     bss     dec     hex filename
+  16432    2649      40   19121    4ab1 smpboot.o.before
+  16432    2649      40   19121    4ab1 smpboot.o.after
 
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+md5:
+   a58104003b72c1de533095bc5a4c30a9  smpboot.o.before.asm
+   a58104003b72c1de533095bc5a4c30a9  smpboot.o.after.asm
+
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Acked-by: Paolo Bonzini <pbonzini@redhat.com>
-Link: https://lkml.kernel.org/r/20200410115516.978037132@linutronix.de
-Link: https://lkml.kernel.org/r/20200402123258.895628824@linutronix.de
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lkml.kernel.org/r/20200324185836.GI22931@zn.tnic
 ---
- arch/x86/include/asm/cpu.h  |  6 ++++++
- arch/x86/kernel/cpu/intel.c | 33 ++++++++++++++++++++++++++++-----
- 2 files changed, 34 insertions(+), 5 deletions(-)
+ arch/x86/kernel/smpboot.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/arch/x86/include/asm/cpu.h b/arch/x86/include/asm/cpu.h
-index ff6f3ca..dd17c2d 100644
---- a/arch/x86/include/asm/cpu.h
-+++ b/arch/x86/include/asm/cpu.h
-@@ -44,6 +44,7 @@ unsigned int x86_stepping(unsigned int sig);
- extern void __init cpu_set_core_cap_bits(struct cpuinfo_x86 *c);
- extern void switch_to_sld(unsigned long tifn);
- extern bool handle_user_split_lock(struct pt_regs *regs, long error_code);
-+extern bool handle_guest_split_lock(unsigned long ip);
- #else
- static inline void __init cpu_set_core_cap_bits(struct cpuinfo_x86 *c) {}
- static inline void switch_to_sld(unsigned long tifn) {}
-@@ -51,5 +52,10 @@ static inline bool handle_user_split_lock(struct pt_regs *regs, long error_code)
- {
- 	return false;
- }
-+
-+static inline bool handle_guest_split_lock(unsigned long ip)
-+{
-+	return false;
-+}
- #endif
- #endif /* _ASM_X86_CPU_H */
-diff --git a/arch/x86/kernel/cpu/intel.c b/arch/x86/kernel/cpu/intel.c
-index 9a26e97..bf08d45 100644
---- a/arch/x86/kernel/cpu/intel.c
-+++ b/arch/x86/kernel/cpu/intel.c
-@@ -21,6 +21,7 @@
- #include <asm/elf.h>
+diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
+index fe3ab96..3b9bf8c 100644
+--- a/arch/x86/kernel/smpboot.c
++++ b/arch/x86/kernel/smpboot.c
+@@ -1849,24 +1849,25 @@ static bool slv_set_max_freq_ratio(u64 *base_freq, u64 *turbo_freq)
  #include <asm/cpu_device_id.h>
- #include <asm/cmdline.h>
-+#include <asm/traps.h>
+ #include <asm/intel-family.h>
  
- #ifdef CONFIG_X86_64
- #include <linux/topology.h>
-@@ -1066,13 +1067,10 @@ static void split_lock_init(void)
- 	split_lock_verify_msr(sld_state != sld_off);
- }
+-#define ICPU(model) \
+-	{X86_VENDOR_INTEL, 6, model, X86_FEATURE_APERFMPERF, 0}
++#define X86_MATCH(model)					\
++	X86_MATCH_VENDOR_FAM_MODEL_FEATURE(INTEL, 6,		\
++		INTEL_FAM6_##model, X86_FEATURE_APERFMPERF, NULL)
  
--bool handle_user_split_lock(struct pt_regs *regs, long error_code)
-+static void split_lock_warn(unsigned long ip)
- {
--	if ((regs->flags & X86_EFLAGS_AC) || sld_state == sld_fatal)
--		return false;
--
- 	pr_warn_ratelimited("#AC: %s/%d took a split_lock trap at address: 0x%lx\n",
--			    current->comm, current->pid, regs->ip);
-+			    current->comm, current->pid, ip);
+ static const struct x86_cpu_id has_knl_turbo_ratio_limits[] = {
+-	ICPU(INTEL_FAM6_XEON_PHI_KNL),
+-	ICPU(INTEL_FAM6_XEON_PHI_KNM),
++	X86_MATCH(XEON_PHI_KNL),
++	X86_MATCH(XEON_PHI_KNM),
+ 	{}
+ };
  
- 	/*
- 	 * Disable the split lock detection for this task so it can make
-@@ -1081,6 +1079,31 @@ bool handle_user_split_lock(struct pt_regs *regs, long error_code)
- 	 */
- 	sld_update_msr(false);
- 	set_tsk_thread_flag(current, TIF_SLD);
-+}
-+
-+bool handle_guest_split_lock(unsigned long ip)
-+{
-+	if (sld_state == sld_warn) {
-+		split_lock_warn(ip);
-+		return true;
-+	}
-+
-+	pr_warn_once("#AC: %s/%d %s split_lock trap at address: 0x%lx\n",
-+		     current->comm, current->pid,
-+		     sld_state == sld_fatal ? "fatal" : "bogus", ip);
-+
-+	current->thread.error_code = 0;
-+	current->thread.trap_nr = X86_TRAP_AC;
-+	force_sig_fault(SIGBUS, BUS_ADRALN, NULL);
-+	return false;
-+}
-+EXPORT_SYMBOL_GPL(handle_guest_split_lock);
-+
-+bool handle_user_split_lock(struct pt_regs *regs, long error_code)
-+{
-+	if ((regs->flags & X86_EFLAGS_AC) || sld_state == sld_fatal)
-+		return false;
-+	split_lock_warn(regs->ip);
- 	return true;
- }
+ static const struct x86_cpu_id has_skx_turbo_ratio_limits[] = {
+-	ICPU(INTEL_FAM6_SKYLAKE_X),
++	X86_MATCH(SKYLAKE_X),
+ 	{}
+ };
+ 
+ static const struct x86_cpu_id has_glm_turbo_ratio_limits[] = {
+-	ICPU(INTEL_FAM6_ATOM_GOLDMONT),
+-	ICPU(INTEL_FAM6_ATOM_GOLDMONT_D),
+-	ICPU(INTEL_FAM6_ATOM_GOLDMONT_PLUS),
++	X86_MATCH(ATOM_GOLDMONT),
++	X86_MATCH(ATOM_GOLDMONT_D),
++	X86_MATCH(ATOM_GOLDMONT_PLUS),
+ 	{}
+ };
  
