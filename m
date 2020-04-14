@@ -2,44 +2,43 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D54D1A78DE
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 14 Apr 2020 12:55:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 976291A78D9
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 14 Apr 2020 12:55:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2438698AbgDNKzl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 14 Apr 2020 06:55:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58326 "EHLO
+        id S2438415AbgDNKe2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 14 Apr 2020 06:34:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58330 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2438401AbgDNKeK (ORCPT
+        by vger.kernel.org with ESMTP id S2438403AbgDNKeL (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 14 Apr 2020 06:34:10 -0400
+        Tue, 14 Apr 2020 06:34:11 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8277C061A41;
-        Tue, 14 Apr 2020 03:34:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37778C0610D6;
+        Tue, 14 Apr 2020 03:34:11 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jOItH-0008Sj-8p; Tue, 14 Apr 2020 12:34:03 +0200
+        id 1jOItI-0008Ti-9o; Tue, 14 Apr 2020 12:34:04 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id DECA71C0086;
-        Tue, 14 Apr 2020 12:34:02 +0200 (CEST)
-Date:   Tue, 14 Apr 2020 10:34:02 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E6D5D1C0086;
+        Tue, 14 Apr 2020 12:34:03 +0200 (CEST)
+Date:   Tue, 14 Apr 2020 10:34:03 -0000
 From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] objtool: Support Clang non-section symbols in ORC
- generation
-Cc:     Dmitry Golovin <dima@golovin.in>,
+Subject: [tip: x86/urgent] objtool: Fix CONFIG_UBSAN_TRAP unreachable warnings
+Cc:     Randy Dunlap <rdunlap@infradead.org>,
         Josh Poimboeuf <jpoimboe@redhat.com>,
         Borislav Petkov <bp@suse.de>,
-        Nathan Chancellor <natechancellor@gmail.com>,
+        Kees Cook <keescook@chromium.org>,
         Miroslav Benes <mbenes@suse.cz>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <9a9cae7fcf628843aabe5a086b1a3c5bf50f42e8.1585761021.git.jpoimboe@redhat.com>
-References: <9a9cae7fcf628843aabe5a086b1a3c5bf50f42e8.1585761021.git.jpoimboe@redhat.com>
+In-Reply-To: <6653ad73c6b59c049211bd7c11ed3809c20ee9f5.1585761021.git.jpoimboe@redhat.com>
+References: <6653ad73c6b59c049211bd7c11ed3809c20ee9f5.1585761021.git.jpoimboe@redhat.com>
 MIME-Version: 1.0
-Message-ID: <158686044251.28353.5727217228270138782.tip-bot2@tip-bot2>
+Message-ID: <158686044342.28353.9170954952502687843.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -55,94 +54,68 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     e81e0724432542af8d8c702c31e9d82f57b1ff31
-Gitweb:        https://git.kernel.org/tip/e81e0724432542af8d8c702c31e9d82f57b1ff31
+Commit-ID:     bd841d6154f5f41f8a32d3c1b0bc229e326e640a
+Gitweb:        https://git.kernel.org/tip/bd841d6154f5f41f8a32d3c1b0bc229e326e640a
 Author:        Josh Poimboeuf <jpoimboe@redhat.com>
-AuthorDate:    Wed, 01 Apr 2020 13:23:27 -05:00
+AuthorDate:    Wed, 01 Apr 2020 13:23:25 -05:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 14 Apr 2020 12:03:42 +02:00
+CommitterDate: Tue, 14 Apr 2020 11:55:09 +02:00
 
-objtool: Support Clang non-section symbols in ORC generation
+objtool: Fix CONFIG_UBSAN_TRAP unreachable warnings
 
-When compiling the kernel with AS=clang, objtool produces a lot of
-warnings:
+CONFIG_UBSAN_TRAP causes GCC to emit a UD2 whenever it encounters an
+unreachable code path.  This includes __builtin_unreachable().  Because
+the BUG() macro uses __builtin_unreachable() after it emits its own UD2,
+this results in a double UD2.  In this case objtool rightfully detects
+that the second UD2 is unreachable:
 
-  warning: objtool: missing symbol for section .text
-  warning: objtool: missing symbol for section .init.text
-  warning: objtool: missing symbol for section .ref.text
+  init/main.o: warning: objtool: repair_env_string()+0x1c8: unreachable instruction
 
-It then fails to generate the ORC table.
+We weren't able to figure out a way to get rid of the double UD2s, so
+just silence the warning.
 
-The problem is that objtool assumes text section symbols always exist.
-But the Clang assembler is aggressive about removing them.
-
-When generating relocations for the ORC table, objtool always tries to
-reference instructions by their section symbol offset.  If the section
-symbol doesn't exist, it bails.
-
-Do a fallback: when a section symbol isn't available, reference a
-function symbol instead.
-
-Reported-by: Dmitry Golovin <dima@golovin.in>
+Reported-by: Randy Dunlap <rdunlap@infradead.org>
 Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Tested-by: Nathan Chancellor <natechancellor@gmail.com>
+Reviewed-by: Kees Cook <keescook@chromium.org>
 Reviewed-by: Miroslav Benes <mbenes@suse.cz>
 Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://github.com/ClangBuiltLinux/linux/issues/669
-Link: https://lkml.kernel.org/r/9a9cae7fcf628843aabe5a086b1a3c5bf50f42e8.1585761021.git.jpoimboe@redhat.com
+Link: https://lkml.kernel.org/r/6653ad73c6b59c049211bd7c11ed3809c20ee9f5.1585761021.git.jpoimboe@redhat.com
 ---
- tools/objtool/orc_gen.c | 33 ++++++++++++++++++++++++++-------
- 1 file changed, 26 insertions(+), 7 deletions(-)
+ tools/objtool/check.c | 17 +++++++++++++++--
+ 1 file changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/tools/objtool/orc_gen.c b/tools/objtool/orc_gen.c
-index 41e4a27..4c0dabd 100644
---- a/tools/objtool/orc_gen.c
-+++ b/tools/objtool/orc_gen.c
-@@ -88,11 +88,6 @@ static int create_orc_entry(struct elf *elf, struct section *u_sec, struct secti
- 	struct orc_entry *orc;
- 	struct rela *rela;
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index 8dd01f9..4811325 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -2364,14 +2364,27 @@ static bool ignore_unreachable_insn(struct instruction *insn)
+ 	    !strcmp(insn->sec->name, ".altinstr_aux"))
+ 		return true;
  
--	if (!insn_sec->sym) {
--		WARN("missing symbol for section %s", insn_sec->name);
--		return -1;
--	}
--
- 	/* populate ORC data */
- 	orc = (struct orc_entry *)u_sec->data->d_buf + idx;
- 	memcpy(orc, o, sizeof(*orc));
-@@ -105,8 +100,32 @@ static int create_orc_entry(struct elf *elf, struct section *u_sec, struct secti
- 	}
- 	memset(rela, 0, sizeof(*rela));
++	if (!insn->func)
++		return false;
++
++	/*
++	 * CONFIG_UBSAN_TRAP inserts a UD2 when it sees
++	 * __builtin_unreachable().  The BUG() macro has an unreachable() after
++	 * the UD2, which causes GCC's undefined trap logic to emit another UD2
++	 * (or occasionally a JMP to UD2).
++	 */
++	if (list_prev_entry(insn, list)->dead_end &&
++	    (insn->type == INSN_BUG ||
++	     (insn->type == INSN_JUMP_UNCONDITIONAL &&
++	      insn->jump_dest && insn->jump_dest->type == INSN_BUG)))
++		return true;
++
+ 	/*
+ 	 * Check if this (or a subsequent) instruction is related to
+ 	 * CONFIG_UBSAN or CONFIG_KASAN.
+ 	 *
+ 	 * End the search at 5 instructions to avoid going into the weeds.
+ 	 */
+-	if (!insn->func)
+-		return false;
+ 	for (i = 0; i < 5; i++) {
  
--	rela->sym = insn_sec->sym;
--	rela->addend = insn_off;
-+	if (insn_sec->sym) {
-+		rela->sym = insn_sec->sym;
-+		rela->addend = insn_off;
-+	} else {
-+		/*
-+		 * The Clang assembler doesn't produce section symbols, so we
-+		 * have to reference the function symbol instead:
-+		 */
-+		rela->sym = find_symbol_containing(insn_sec, insn_off);
-+		if (!rela->sym) {
-+			/*
-+			 * Hack alert.  This happens when we need to reference
-+			 * the NOP pad insn immediately after the function.
-+			 */
-+			rela->sym = find_symbol_containing(insn_sec,
-+							   insn_off - 1);
-+		}
-+		if (!rela->sym) {
-+			WARN("missing symbol for insn at offset 0x%lx\n",
-+			     insn_off);
-+			return -1;
-+		}
-+
-+		rela->addend = insn_off - rela->sym->offset;
-+	}
-+
- 	rela->type = R_X86_64_PC32;
- 	rela->offset = idx * sizeof(int);
- 	rela->sec = ip_relasec;
+ 		if (is_kasan_insn(insn) || is_ubsan_insn(insn))
