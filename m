@@ -2,43 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 976291A78D9
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 14 Apr 2020 12:55:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A882E1A7AFD
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 14 Apr 2020 14:41:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2438415AbgDNKe2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 14 Apr 2020 06:34:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58330 "EHLO
+        id S2440125AbgDNMlj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 14 Apr 2020 08:41:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2438403AbgDNKeL (ORCPT
+        by vger.kernel.org with ESMTP id S1730819AbgDNMlh (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 14 Apr 2020 06:34:11 -0400
+        Tue, 14 Apr 2020 08:41:37 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37778C0610D6;
-        Tue, 14 Apr 2020 03:34:11 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D998C061A0F;
+        Tue, 14 Apr 2020 05:41:36 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jOItI-0008Ti-9o; Tue, 14 Apr 2020 12:34:04 +0200
+        id 1jOKse-0002do-Li; Tue, 14 Apr 2020 14:41:32 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E6D5D1C0086;
-        Tue, 14 Apr 2020 12:34:03 +0200 (CEST)
-Date:   Tue, 14 Apr 2020 10:34:03 -0000
-From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 2F5F21C0086;
+        Tue, 14 Apr 2020 14:41:32 +0200 (CEST)
+Date:   Tue, 14 Apr 2020 12:41:31 -0000
+From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] objtool: Fix CONFIG_UBSAN_TRAP unreachable warnings
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Borislav Petkov <bp@suse.de>,
-        Kees Cook <keescook@chromium.org>,
-        Miroslav Benes <mbenes@suse.cz>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+Subject: [tip: x86/asm] x86/32: Remove CONFIG_DOUBLEFAULT
+Cc:     Borislav Petkov <bp@suse.de>, Andy Lutomirski <luto@kernel.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <6653ad73c6b59c049211bd7c11ed3809c20ee9f5.1585761021.git.jpoimboe@redhat.com>
-References: <6653ad73c6b59c049211bd7c11ed3809c20ee9f5.1585761021.git.jpoimboe@redhat.com>
+In-Reply-To: <20200404083646.8897-1-bp@alien8.de>
+References: <20200404083646.8897-1-bp@alien8.de>
 MIME-Version: 1.0
-Message-ID: <158686044342.28353.9170954952502687843.tip-bot2@tip-bot2>
+Message-ID: <158686809173.28353.11453848908665322063.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -52,70 +47,198 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the x86/asm branch of tip:
 
-Commit-ID:     bd841d6154f5f41f8a32d3c1b0bc229e326e640a
-Gitweb:        https://git.kernel.org/tip/bd841d6154f5f41f8a32d3c1b0bc229e326e640a
-Author:        Josh Poimboeuf <jpoimboe@redhat.com>
-AuthorDate:    Wed, 01 Apr 2020 13:23:25 -05:00
+Commit-ID:     593309423cbad0fab659a685834416cf12d8f581
+Gitweb:        https://git.kernel.org/tip/593309423cbad0fab659a685834416cf12d8f581
+Author:        Borislav Petkov <bp@suse.de>
+AuthorDate:    Sat, 04 Apr 2020 01:33:05 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 14 Apr 2020 11:55:09 +02:00
+CommitterDate: Tue, 14 Apr 2020 14:24:05 +02:00
 
-objtool: Fix CONFIG_UBSAN_TRAP unreachable warnings
+x86/32: Remove CONFIG_DOUBLEFAULT
 
-CONFIG_UBSAN_TRAP causes GCC to emit a UD2 whenever it encounters an
-unreachable code path.  This includes __builtin_unreachable().  Because
-the BUG() macro uses __builtin_unreachable() after it emits its own UD2,
-this results in a double UD2.  In this case objtool rightfully detects
-that the second UD2 is unreachable:
+Make the doublefault exception handler unconditional on 32-bit. Yes,
+it is important to be able to catch #DF exceptions instead of silent
+reboots. Yes, the code size increase is worth every byte. And one less
+CONFIG symbol is just the cherry on top.
 
-  init/main.o: warning: objtool: repair_env_string()+0x1c8: unreachable instruction
+No functional changes.
 
-We weren't able to figure out a way to get rid of the double UD2s, so
-just silence the warning.
-
-Reported-by: Randy Dunlap <rdunlap@infradead.org>
-Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Reviewed-by: Miroslav Benes <mbenes@suse.cz>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/6653ad73c6b59c049211bd7c11ed3809c20ee9f5.1585761021.git.jpoimboe@redhat.com
+Acked-by: Andy Lutomirski <luto@kernel.org>
+Link: https://lkml.kernel.org/r/20200404083646.8897-1-bp@alien8.de
 ---
- tools/objtool/check.c | 17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
+ arch/x86/Kconfig.debug                              |  9 ---------
+ arch/x86/entry/entry_32.S                           |  2 --
+ arch/x86/include/asm/doublefault.h                  |  2 +-
+ arch/x86/include/asm/traps.h                        |  2 --
+ arch/x86/kernel/Makefile                            |  4 +---
+ arch/x86/kernel/dumpstack_32.c                      |  4 ----
+ arch/x86/kernel/traps.c                             |  2 --
+ arch/x86/mm/cpu_entry_area.c                        |  4 +---
+ tools/testing/selftests/wireguard/qemu/debug.config |  1 -
+ 9 files changed, 3 insertions(+), 27 deletions(-)
 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 8dd01f9..4811325 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -2364,14 +2364,27 @@ static bool ignore_unreachable_insn(struct instruction *insn)
- 	    !strcmp(insn->sec->name, ".altinstr_aux"))
- 		return true;
+diff --git a/arch/x86/Kconfig.debug b/arch/x86/Kconfig.debug
+index 2e74690..f909d3c 100644
+--- a/arch/x86/Kconfig.debug
++++ b/arch/x86/Kconfig.debug
+@@ -99,15 +99,6 @@ config DEBUG_WX
  
-+	if (!insn->func)
-+		return false;
-+
-+	/*
-+	 * CONFIG_UBSAN_TRAP inserts a UD2 when it sees
-+	 * __builtin_unreachable().  The BUG() macro has an unreachable() after
-+	 * the UD2, which causes GCC's undefined trap logic to emit another UD2
-+	 * (or occasionally a JMP to UD2).
-+	 */
-+	if (list_prev_entry(insn, list)->dead_end &&
-+	    (insn->type == INSN_BUG ||
-+	     (insn->type == INSN_JUMP_UNCONDITIONAL &&
-+	      insn->jump_dest && insn->jump_dest->type == INSN_BUG)))
-+		return true;
-+
+ 	  If in doubt, say "Y".
+ 
+-config DOUBLEFAULT
+-	default y
+-	bool "Enable doublefault exception handler" if EXPERT && X86_32
+-	---help---
+-	  This option allows trapping of rare doublefault exceptions that
+-	  would otherwise cause a system to silently reboot. Disabling this
+-	  option saves about 4k and might cause you much additional grey
+-	  hair.
+-
+ config DEBUG_TLBFLUSH
+ 	bool "Set upper limit of TLB entries to flush one-by-one"
+ 	depends on DEBUG_KERNEL
+diff --git a/arch/x86/entry/entry_32.S b/arch/x86/entry/entry_32.S
+index b67bae7..5c9c7ee 100644
+--- a/arch/x86/entry/entry_32.S
++++ b/arch/x86/entry/entry_32.S
+@@ -1536,7 +1536,6 @@ SYM_CODE_START(debug)
+ 	jmp	common_exception
+ SYM_CODE_END(debug)
+ 
+-#ifdef CONFIG_DOUBLEFAULT
+ SYM_CODE_START(double_fault)
+ 1:
  	/*
- 	 * Check if this (or a subsequent) instruction is related to
- 	 * CONFIG_UBSAN or CONFIG_KASAN.
- 	 *
- 	 * End the search at 5 instructions to avoid going into the weeds.
- 	 */
--	if (!insn->func)
--		return false;
- 	for (i = 0; i < 5; i++) {
+@@ -1576,7 +1575,6 @@ SYM_CODE_START(double_fault)
+ 	hlt
+ 	jmp 1b
+ SYM_CODE_END(double_fault)
+-#endif
  
- 		if (is_kasan_insn(insn) || is_ubsan_insn(insn))
+ /*
+  * NMI is doubly nasty.  It can happen on the first instruction of
+diff --git a/arch/x86/include/asm/doublefault.h b/arch/x86/include/asm/doublefault.h
+index af9a14a..54a6e4a 100644
+--- a/arch/x86/include/asm/doublefault.h
++++ b/arch/x86/include/asm/doublefault.h
+@@ -2,7 +2,7 @@
+ #ifndef _ASM_X86_DOUBLEFAULT_H
+ #define _ASM_X86_DOUBLEFAULT_H
+ 
+-#if defined(CONFIG_X86_32) && defined(CONFIG_DOUBLEFAULT)
++#ifdef CONFIG_X86_32
+ extern void doublefault_init_cpu_tss(void);
+ #else
+ static inline void doublefault_init_cpu_tss(void)
+diff --git a/arch/x86/include/asm/traps.h b/arch/x86/include/asm/traps.h
+index c26a7e1..70bd0f3 100644
+--- a/arch/x86/include/asm/traps.h
++++ b/arch/x86/include/asm/traps.h
+@@ -69,9 +69,7 @@ dotraplinkage void do_overflow(struct pt_regs *regs, long error_code);
+ dotraplinkage void do_bounds(struct pt_regs *regs, long error_code);
+ dotraplinkage void do_invalid_op(struct pt_regs *regs, long error_code);
+ dotraplinkage void do_device_not_available(struct pt_regs *regs, long error_code);
+-#if defined(CONFIG_X86_64) || defined(CONFIG_DOUBLEFAULT)
+ dotraplinkage void do_double_fault(struct pt_regs *regs, long error_code, unsigned long cr2);
+-#endif
+ dotraplinkage void do_coprocessor_segment_overrun(struct pt_regs *regs, long error_code);
+ dotraplinkage void do_invalid_TSS(struct pt_regs *regs, long error_code);
+ dotraplinkage void do_segment_not_present(struct pt_regs *regs, long error_code);
+diff --git a/arch/x86/kernel/Makefile b/arch/x86/kernel/Makefile
+index ba89cab..2a7c3af 100644
+--- a/arch/x86/kernel/Makefile
++++ b/arch/x86/kernel/Makefile
+@@ -102,9 +102,7 @@ obj-$(CONFIG_KEXEC_FILE)	+= kexec-bzimage64.o
+ obj-$(CONFIG_CRASH_DUMP)	+= crash_dump_$(BITS).o
+ obj-y				+= kprobes/
+ obj-$(CONFIG_MODULES)		+= module.o
+-ifeq ($(CONFIG_X86_32),y)
+-obj-$(CONFIG_DOUBLEFAULT)	+= doublefault_32.o
+-endif
++obj-$(CONFIG_X86_32)		+= doublefault_32.o
+ obj-$(CONFIG_KGDB)		+= kgdb.o
+ obj-$(CONFIG_VM86)		+= vm86_32.o
+ obj-$(CONFIG_EARLY_PRINTK)	+= early_printk.o
+diff --git a/arch/x86/kernel/dumpstack_32.c b/arch/x86/kernel/dumpstack_32.c
+index 8e3a8fe..722fd71 100644
+--- a/arch/x86/kernel/dumpstack_32.c
++++ b/arch/x86/kernel/dumpstack_32.c
+@@ -87,7 +87,6 @@ static bool in_softirq_stack(unsigned long *stack, struct stack_info *info)
+ 
+ static bool in_doublefault_stack(unsigned long *stack, struct stack_info *info)
+ {
+-#ifdef CONFIG_DOUBLEFAULT
+ 	struct cpu_entry_area *cea = get_cpu_entry_area(raw_smp_processor_id());
+ 	struct doublefault_stack *ss = &cea->doublefault_stack;
+ 
+@@ -103,9 +102,6 @@ static bool in_doublefault_stack(unsigned long *stack, struct stack_info *info)
+ 	info->next_sp	= (unsigned long *)this_cpu_read(cpu_tss_rw.x86_tss.sp);
+ 
+ 	return true;
+-#else
+-	return false;
+-#endif
+ }
+ 
+ 
+diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
+index d54cffd..e85561f 100644
+--- a/arch/x86/kernel/traps.c
++++ b/arch/x86/kernel/traps.c
+@@ -326,7 +326,6 @@ __visible void __noreturn handle_stack_overflow(const char *message,
+ }
+ #endif
+ 
+-#if defined(CONFIG_X86_64) || defined(CONFIG_DOUBLEFAULT)
+ /*
+  * Runs on an IST stack for x86_64 and on a special task stack for x86_32.
+  *
+@@ -450,7 +449,6 @@ dotraplinkage void do_double_fault(struct pt_regs *regs, long error_code, unsign
+ 	die("double fault", regs, error_code);
+ 	panic("Machine halted.");
+ }
+-#endif
+ 
+ dotraplinkage void do_bounds(struct pt_regs *regs, long error_code)
+ {
+diff --git a/arch/x86/mm/cpu_entry_area.c b/arch/x86/mm/cpu_entry_area.c
+index 56f9189..5199d8a 100644
+--- a/arch/x86/mm/cpu_entry_area.c
++++ b/arch/x86/mm/cpu_entry_area.c
+@@ -17,7 +17,7 @@ static DEFINE_PER_CPU_PAGE_ALIGNED(struct exception_stacks, exception_stacks);
+ DEFINE_PER_CPU(struct cea_exception_stacks*, cea_exception_stacks);
+ #endif
+ 
+-#if defined(CONFIG_X86_32) && defined(CONFIG_DOUBLEFAULT)
++#ifdef CONFIG_X86_32
+ DECLARE_PER_CPU_PAGE_ALIGNED(struct doublefault_stack, doublefault_stack);
+ #endif
+ 
+@@ -114,12 +114,10 @@ static void __init percpu_setup_exception_stacks(unsigned int cpu)
+ #else
+ static inline void percpu_setup_exception_stacks(unsigned int cpu)
+ {
+-#ifdef CONFIG_DOUBLEFAULT
+ 	struct cpu_entry_area *cea = get_cpu_entry_area(cpu);
+ 
+ 	cea_map_percpu_pages(&cea->doublefault_stack,
+ 			     &per_cpu(doublefault_stack, cpu), 1, PAGE_KERNEL);
+-#endif
+ }
+ #endif
+ 
+diff --git a/tools/testing/selftests/wireguard/qemu/debug.config b/tools/testing/selftests/wireguard/qemu/debug.config
+index 5909e7e..807fa7d 100644
+--- a/tools/testing/selftests/wireguard/qemu/debug.config
++++ b/tools/testing/selftests/wireguard/qemu/debug.config
+@@ -58,7 +58,6 @@ CONFIG_RCU_EQS_DEBUG=y
+ CONFIG_USER_STACKTRACE_SUPPORT=y
+ CONFIG_DEBUG_SG=y
+ CONFIG_DEBUG_NOTIFIERS=y
+-CONFIG_DOUBLEFAULT=y
+ CONFIG_X86_DEBUG_FPU=y
+ CONFIG_DEBUG_SECTION_MISMATCH=y
+ CONFIG_DEBUG_PAGEALLOC=y
