@@ -2,40 +2,42 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CA49E1A75C7
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 14 Apr 2020 10:22:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B94581A75CA
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 14 Apr 2020 10:22:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2436555AbgDNIWE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 14 Apr 2020 04:22:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37690 "EHLO
+        id S2436561AbgDNIWL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 14 Apr 2020 04:22:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2407131AbgDNIUz (ORCPT
+        by vger.kernel.org with ESMTP id S2436525AbgDNIVD (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 14 Apr 2020 04:20:55 -0400
+        Tue, 14 Apr 2020 04:21:03 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 015DDC00860D;
-        Tue, 14 Apr 2020 01:20:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A314C0A3BE2;
+        Tue, 14 Apr 2020 01:21:03 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jOGoP-0006JU-1g; Tue, 14 Apr 2020 10:20:53 +0200
+        id 1jOGoW-0006L4-HP; Tue, 14 Apr 2020 10:21:00 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A71091C0450;
-        Tue, 14 Apr 2020 10:20:52 +0200 (CEST)
-Date:   Tue, 14 Apr 2020 08:20:52 -0000
-From:   "tip-bot2 for Takashi Iwai" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 35F121C0086;
+        Tue, 14 Apr 2020 10:21:00 +0200 (CEST)
+Date:   Tue, 14 Apr 2020 08:20:59 -0000
+From:   "tip-bot2 for afzal mohammed" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: efi/urgent] efi/cper: Use scnprintf() for avoiding potential
- buffer overflow
-Cc:     Takashi Iwai <tiwai@suse.de>, Ard Biesheuvel <ardb@kernel.org>,
-        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
+Subject: [tip: irq/urgent] genirq: Remove setup_irq() and remove_irq()
+Cc:     afzal mohammed <afzal.mohd.ma@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Linus Walleij <linus.walleij@linaro.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200311072145.5001-1-tiwai@suse.de>
-References: <20200311072145.5001-1-tiwai@suse.de>
+In-Reply-To: =?utf-8?q?=3C0aa8771ada1ac8e1312f6882980c9c08bd023148=2E15853?=
+ =?utf-8?q?20721=2Egit=2Eafzal=2Emohd=2Ema=40gmail=2Ecom=3E?=
+References: =?utf-8?q?=3C0aa8771ada1ac8e1312f6882980c9c08bd023148=2E158532?=
+ =?utf-8?q?0721=2Egit=2Eafzal=2Emohd=2Ema=40gmail=2Ecom=3E?=
 MIME-Version: 1.0
-Message-ID: <158685245232.28353.13426564371942853685.tip-bot2@tip-bot2>
+Message-ID: <158685245979.28353.320778403882789166.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,40 +51,102 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the efi/urgent branch of tip:
+The following commit has been merged into the irq/urgent branch of tip:
 
-Commit-ID:     b450b30b97010e5c68ab522c6f6c54ef76bd0683
-Gitweb:        https://git.kernel.org/tip/b450b30b97010e5c68ab522c6f6c54ef76bd0683
-Author:        Takashi Iwai <tiwai@suse.de>
-AuthorDate:    Thu, 09 Apr 2020 15:04:26 +02:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 14 Apr 2020 08:32:11 +02:00
+Commit-ID:     07d8350ede4c4c29634b26c163a1eecdf39dfcfb
+Gitweb:        https://git.kernel.org/tip/07d8350ede4c4c29634b26c163a1eecdf39dfcfb
+Author:        afzal mohammed <afzal.mohd.ma@gmail.com>
+AuthorDate:    Fri, 27 Mar 2020 21:41:16 +05:30
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Tue, 14 Apr 2020 10:08:50 +02:00
 
-efi/cper: Use scnprintf() for avoiding potential buffer overflow
+genirq: Remove setup_irq() and remove_irq()
 
-Since snprintf() returns the would-be-output size instead of the
-actual output size, the succeeding calls may go beyond the given
-buffer limit.  Fix it by replacing with scnprintf().
+Now that all the users of setup_irq() & remove_irq() have been replaced by
+request_irq() & free_irq() respectively, delete them.
 
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20200311072145.5001-1-tiwai@suse.de
-Link: https://lore.kernel.org/r/20200409130434.6736-2-ardb@kernel.org
+Signed-off-by: afzal mohammed <afzal.mohd.ma@gmail.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lkml.kernel.org/r/0aa8771ada1ac8e1312f6882980c9c08bd023148.1585320721.git.afzal.mohd.ma@gmail.com
+
 ---
- drivers/firmware/efi/cper.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/irq.h |  2 +--
+ kernel/irq/manage.c | 44 +--------------------------------------------
+ 2 files changed, 46 deletions(-)
 
-diff --git a/drivers/firmware/efi/cper.c b/drivers/firmware/efi/cper.c
-index b1af0de..9d25129 100644
---- a/drivers/firmware/efi/cper.c
-+++ b/drivers/firmware/efi/cper.c
-@@ -101,7 +101,7 @@ void cper_print_bits(const char *pfx, unsigned int bits,
- 		if (!len)
- 			len = snprintf(buf, sizeof(buf), "%s%s", pfx, str);
- 		else
--			len += snprintf(buf+len, sizeof(buf)-len, ", %s", str);
-+			len += scnprintf(buf+len, sizeof(buf)-len, ", %s", str);
- 	}
- 	if (len)
- 		printk("%s\n", buf);
+diff --git a/include/linux/irq.h b/include/linux/irq.h
+index 9315fbb..c63c2aa 100644
+--- a/include/linux/irq.h
++++ b/include/linux/irq.h
+@@ -573,8 +573,6 @@ enum {
+ #define IRQ_DEFAULT_INIT_FLAGS	ARCH_IRQ_INIT_FLAGS
+ 
+ struct irqaction;
+-extern int setup_irq(unsigned int irq, struct irqaction *new);
+-extern void remove_irq(unsigned int irq, struct irqaction *act);
+ extern int setup_percpu_irq(unsigned int irq, struct irqaction *new);
+ extern void remove_percpu_irq(unsigned int irq, struct irqaction *act);
+ 
+diff --git a/kernel/irq/manage.c b/kernel/irq/manage.c
+index fe40c65..453a8a0 100644
+--- a/kernel/irq/manage.c
++++ b/kernel/irq/manage.c
+@@ -1690,34 +1690,6 @@ out_mput:
+ 	return ret;
+ }
+ 
+-/**
+- *	setup_irq - setup an interrupt
+- *	@irq: Interrupt line to setup
+- *	@act: irqaction for the interrupt
+- *
+- * Used to statically setup interrupts in the early boot process.
+- */
+-int setup_irq(unsigned int irq, struct irqaction *act)
+-{
+-	int retval;
+-	struct irq_desc *desc = irq_to_desc(irq);
+-
+-	if (!desc || WARN_ON(irq_settings_is_per_cpu_devid(desc)))
+-		return -EINVAL;
+-
+-	retval = irq_chip_pm_get(&desc->irq_data);
+-	if (retval < 0)
+-		return retval;
+-
+-	retval = __setup_irq(irq, desc, act);
+-
+-	if (retval)
+-		irq_chip_pm_put(&desc->irq_data);
+-
+-	return retval;
+-}
+-EXPORT_SYMBOL_GPL(setup_irq);
+-
+ /*
+  * Internal function to unregister an irqaction - used to free
+  * regular and special interrupts that are part of the architecture.
+@@ -1859,22 +1831,6 @@ static struct irqaction *__free_irq(struct irq_desc *desc, void *dev_id)
+ }
+ 
+ /**
+- *	remove_irq - free an interrupt
+- *	@irq: Interrupt line to free
+- *	@act: irqaction for the interrupt
+- *
+- * Used to remove interrupts statically setup by the early boot process.
+- */
+-void remove_irq(unsigned int irq, struct irqaction *act)
+-{
+-	struct irq_desc *desc = irq_to_desc(irq);
+-
+-	if (desc && !WARN_ON(irq_settings_is_per_cpu_devid(desc)))
+-		__free_irq(desc, act->dev_id);
+-}
+-EXPORT_SYMBOL_GPL(remove_irq);
+-
+-/**
+  *	free_irq - free an interrupt allocated with request_irq
+  *	@irq: Interrupt line to free
+  *	@dev_id: Device identity to free
