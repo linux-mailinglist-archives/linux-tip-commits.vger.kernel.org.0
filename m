@@ -2,42 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B94581A75CA
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 14 Apr 2020 10:22:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 82BC41A78DF
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 14 Apr 2020 12:56:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2436561AbgDNIWL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 14 Apr 2020 04:22:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37718 "EHLO
+        id S2438700AbgDNKzo (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 14 Apr 2020 06:55:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58318 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2436525AbgDNIVD (ORCPT
+        by vger.kernel.org with ESMTP id S2438400AbgDNKeJ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 14 Apr 2020 04:21:03 -0400
+        Tue, 14 Apr 2020 06:34:09 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A314C0A3BE2;
-        Tue, 14 Apr 2020 01:21:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4883DC061A10;
+        Tue, 14 Apr 2020 03:34:09 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jOGoW-0006L4-HP; Tue, 14 Apr 2020 10:21:00 +0200
+        id 1jOItG-0008SS-BD; Tue, 14 Apr 2020 12:34:02 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 35F121C0086;
-        Tue, 14 Apr 2020 10:21:00 +0200 (CEST)
-Date:   Tue, 14 Apr 2020 08:20:59 -0000
-From:   "tip-bot2 for afzal mohammed" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id EB3B91C0086;
+        Tue, 14 Apr 2020 12:34:01 +0200 (CEST)
+Date:   Tue, 14 Apr 2020 10:34:01 -0000
+From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/urgent] genirq: Remove setup_irq() and remove_irq()
-Cc:     afzal mohammed <afzal.mohd.ma@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Linus Walleij <linus.walleij@linaro.org>, x86 <x86@kernel.org>,
+Subject: [tip: x86/urgent] objtool: Make BP scratch register warning more robust
+Cc:     "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: =?utf-8?q?=3C0aa8771ada1ac8e1312f6882980c9c08bd023148=2E15853?=
- =?utf-8?q?20721=2Egit=2Eafzal=2Emohd=2Ema=40gmail=2Ecom=3E?=
-References: =?utf-8?q?=3C0aa8771ada1ac8e1312f6882980c9c08bd023148=2E158532?=
- =?utf-8?q?0721=2Egit=2Eafzal=2Emohd=2Ema=40gmail=2Ecom=3E?=
+In-Reply-To: <afc628693a37acd287e843bcc5c0430263d93c74.1585761021.git.jpoimboe@redhat.com>
+References: <afc628693a37acd287e843bcc5c0430263d93c74.1585761021.git.jpoimboe@redhat.com>
 MIME-Version: 1.0
-Message-ID: <158685245979.28353.320778403882789166.tip-bot2@tip-bot2>
+Message-ID: <158686044154.28353.9906241096479989820.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,102 +49,43 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the irq/urgent branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     07d8350ede4c4c29634b26c163a1eecdf39dfcfb
-Gitweb:        https://git.kernel.org/tip/07d8350ede4c4c29634b26c163a1eecdf39dfcfb
-Author:        afzal mohammed <afzal.mohd.ma@gmail.com>
-AuthorDate:    Fri, 27 Mar 2020 21:41:16 +05:30
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 14 Apr 2020 10:08:50 +02:00
+Commit-ID:     b296695298d8632d8b703ac25fe70be34a07c0d9
+Gitweb:        https://git.kernel.org/tip/b296695298d8632d8b703ac25fe70be34a07c0d9
+Author:        Josh Poimboeuf <jpoimboe@redhat.com>
+AuthorDate:    Wed, 01 Apr 2020 13:23:29 -05:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Tue, 14 Apr 2020 12:24:22 +02:00
 
-genirq: Remove setup_irq() and remove_irq()
+objtool: Make BP scratch register warning more robust
 
-Now that all the users of setup_irq() & remove_irq() have been replaced by
-request_irq() & free_irq() respectively, delete them.
+If func is NULL, a seg fault can result.
 
-Signed-off-by: afzal mohammed <afzal.mohd.ma@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lkml.kernel.org/r/0aa8771ada1ac8e1312f6882980c9c08bd023148.1585320721.git.afzal.mohd.ma@gmail.com
+This is a theoretical issue which was found by Coverity, ID: 1492002
+("Dereference after null check").
 
+Fixes: c705cecc8431 ("objtool: Track original function across branches")
+Reported-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
+Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lkml.kernel.org/r/afc628693a37acd287e843bcc5c0430263d93c74.1585761021.git.jpoimboe@redhat.com
 ---
- include/linux/irq.h |  2 +--
- kernel/irq/manage.c | 44 +--------------------------------------------
- 2 files changed, 46 deletions(-)
+ tools/objtool/check.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/irq.h b/include/linux/irq.h
-index 9315fbb..c63c2aa 100644
---- a/include/linux/irq.h
-+++ b/include/linux/irq.h
-@@ -573,8 +573,6 @@ enum {
- #define IRQ_DEFAULT_INIT_FLAGS	ARCH_IRQ_INIT_FLAGS
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index cb2d299..4b170fd 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -2005,8 +2005,8 @@ static int validate_return(struct symbol *func, struct instruction *insn, struct
+ 	}
  
- struct irqaction;
--extern int setup_irq(unsigned int irq, struct irqaction *new);
--extern void remove_irq(unsigned int irq, struct irqaction *act);
- extern int setup_percpu_irq(unsigned int irq, struct irqaction *new);
- extern void remove_percpu_irq(unsigned int irq, struct irqaction *act);
+ 	if (state->bp_scratch) {
+-		WARN("%s uses BP as a scratch register",
+-		     func->name);
++		WARN_FUNC("BP used as a scratch register",
++			  insn->sec, insn->offset);
+ 		return 1;
+ 	}
  
-diff --git a/kernel/irq/manage.c b/kernel/irq/manage.c
-index fe40c65..453a8a0 100644
---- a/kernel/irq/manage.c
-+++ b/kernel/irq/manage.c
-@@ -1690,34 +1690,6 @@ out_mput:
- 	return ret;
- }
- 
--/**
-- *	setup_irq - setup an interrupt
-- *	@irq: Interrupt line to setup
-- *	@act: irqaction for the interrupt
-- *
-- * Used to statically setup interrupts in the early boot process.
-- */
--int setup_irq(unsigned int irq, struct irqaction *act)
--{
--	int retval;
--	struct irq_desc *desc = irq_to_desc(irq);
--
--	if (!desc || WARN_ON(irq_settings_is_per_cpu_devid(desc)))
--		return -EINVAL;
--
--	retval = irq_chip_pm_get(&desc->irq_data);
--	if (retval < 0)
--		return retval;
--
--	retval = __setup_irq(irq, desc, act);
--
--	if (retval)
--		irq_chip_pm_put(&desc->irq_data);
--
--	return retval;
--}
--EXPORT_SYMBOL_GPL(setup_irq);
--
- /*
-  * Internal function to unregister an irqaction - used to free
-  * regular and special interrupts that are part of the architecture.
-@@ -1859,22 +1831,6 @@ static struct irqaction *__free_irq(struct irq_desc *desc, void *dev_id)
- }
- 
- /**
-- *	remove_irq - free an interrupt
-- *	@irq: Interrupt line to free
-- *	@act: irqaction for the interrupt
-- *
-- * Used to remove interrupts statically setup by the early boot process.
-- */
--void remove_irq(unsigned int irq, struct irqaction *act)
--{
--	struct irq_desc *desc = irq_to_desc(irq);
--
--	if (desc && !WARN_ON(irq_settings_is_per_cpu_devid(desc)))
--		__free_irq(desc, act->dev_id);
--}
--EXPORT_SYMBOL_GPL(remove_irq);
--
--/**
-  *	free_irq - free an interrupt allocated with request_irq
-  *	@irq: Interrupt line to free
-  *	@dev_id: Device identity to free
