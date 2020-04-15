@@ -2,38 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ACC281A997F
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 15 Apr 2020 11:51:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DDF641A9961
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 15 Apr 2020 11:50:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2895983AbgDOJv3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 15 Apr 2020 05:51:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51870 "EHLO
+        id S2895906AbgDOJuE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 15 Apr 2020 05:50:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51886 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2895885AbgDOJtx (ORCPT
+        by vger.kernel.org with ESMTP id S2895891AbgDOJtz (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 15 Apr 2020 05:49:53 -0400
+        Wed, 15 Apr 2020 05:49:55 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E82EC061A0E;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB2D7C0610D6;
         Wed, 15 Apr 2020 02:49:53 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jOeg1-0005sp-BK; Wed, 15 Apr 2020 11:49:49 +0200
+        id 1jOeg2-0005tL-6Y; Wed, 15 Apr 2020 11:49:50 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id CE5841C0081;
-        Wed, 15 Apr 2020 11:49:48 +0200 (CEST)
-Date:   Wed, 15 Apr 2020 09:49:48 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id CC2CB1C0081;
+        Wed, 15 Apr 2020 11:49:49 +0200 (CEST)
+Date:   Wed, 15 Apr 2020 09:49:49 -0000
 From:   "tip-bot2 for Tony Luck" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: ras/core] x86/mce: Add a struct mce.kflags field
+Subject: [tip: ras/core] x86/mce: Rename "first" function as "early"
 Cc:     Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@suse.de>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200214222720.13168-4-tony.luck@intel.com>
-References: <20200214222720.13168-4-tony.luck@intel.com>
+In-Reply-To: <20200214222720.13168-2-tony.luck@intel.com>
+References: <20200214222720.13168-2-tony.luck@intel.com>
 MIME-Version: 1.0
-Message-ID: <158694418849.28353.16699731019695420884.tip-bot2@tip-bot2>
+Message-ID: <158694418938.28353.14495297521999305514.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,65 +49,93 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the ras/core branch of tip:
 
-Commit-ID:     1de08dccd383482a3e88845d3554094d338f5ff9
-Gitweb:        https://git.kernel.org/tip/1de08dccd383482a3e88845d3554094d338f5ff9
+Commit-ID:     c9c6d216ed28be6e2c91e3651af169eca284813a
+Gitweb:        https://git.kernel.org/tip/c9c6d216ed28be6e2c91e3651af169eca284813a
 Author:        Tony Luck <tony.luck@intel.com>
-AuthorDate:    Fri, 14 Feb 2020 14:27:16 -08:00
+AuthorDate:    Fri, 14 Feb 2020 14:27:14 -08:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 14 Apr 2020 15:58:43 +02:00
+CommitterDate: Tue, 14 Apr 2020 15:55:01 +02:00
 
-x86/mce: Add a struct mce.kflags field
+x86/mce: Rename "first" function as "early"
 
-There can be many different subsystems register on the mce handler
-chain. Add a new bitmask field and define values so that handlers can
-indicate whether they took any action to log or otherwise handle an
-error.
+It isn't going to be first on the notifier chain when the CEC is moved
+to be a normal user of the notifier chain.
 
-The default handler at the end of the chain can use this information to
-decide whether to print to the console log.
+Fix the enum for the MCE_PRIO symbols to list them in reverse order so
+that the compiler can give them numbers from low to high priority. Add
+an entry for MCE_PRIO_CEC as the highest priority.
 
-Boris suggested a generic name and leaving plenty of spare bits for
-possible future use.
-
- [ bp: Move flag bits to the internal mce.h header and use BIT_ULL(). ]
+ [ bp: Use passive voice, add comments. ]
 
 Signed-off-by: Tony Luck <tony.luck@intel.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
 Tested-by: Tony Luck <tony.luck@intel.com>
-Link: https://lkml.kernel.org/r/20200214222720.13168-4-tony.luck@intel.com
+Link: https://lkml.kernel.org/r/20200214222720.13168-2-tony.luck@intel.com
 ---
- arch/x86/include/asm/mce.h      | 8 ++++++++
- arch/x86/include/uapi/asm/mce.h | 1 +
- 2 files changed, 9 insertions(+)
+ arch/x86/include/asm/mce.h     | 16 +++++++++-------
+ arch/x86/kernel/cpu/mce/core.c | 10 +++++-----
+ 2 files changed, 14 insertions(+), 12 deletions(-)
 
 diff --git a/arch/x86/include/asm/mce.h b/arch/x86/include/asm/mce.h
-index 689ac6e..5f04a24 100644
+index 83b6dda..689ac6e 100644
 --- a/arch/x86/include/asm/mce.h
 +++ b/arch/x86/include/asm/mce.h
-@@ -129,6 +129,14 @@
- 
- #define XEC(x, mask)			(((x) >> 16) & mask)
- 
-+/* mce.kflags flag bits for logging etc. */
-+#define	MCE_HANDLED_CEC		BIT_ULL(0)
-+#define	MCE_HANDLED_UC		BIT_ULL(1)
-+#define	MCE_HANDLED_EXTLOG	BIT_ULL(2)
-+#define	MCE_HANDLED_NFIT	BIT_ULL(3)
-+#define	MCE_HANDLED_EDAC	BIT_ULL(4)
-+#define	MCE_HANDLED_MCELOG	BIT_ULL(5)
-+
- /*
-  * This structure contains all data related to the MCE log.  Also
-  * carries a signature to make it easier to find from external
-diff --git a/arch/x86/include/uapi/asm/mce.h b/arch/x86/include/uapi/asm/mce.h
-index 955c2a2..5b59d80 100644
---- a/arch/x86/include/uapi/asm/mce.h
-+++ b/arch/x86/include/uapi/asm/mce.h
-@@ -35,6 +35,7 @@ struct mce {
- 	__u64 ipid;		/* MCA_IPID MSR: only valid on SMCA systems */
- 	__u64 ppin;		/* Protected Processor Inventory Number */
- 	__u32 microcode;	/* Microcode revision */
-+	__u64 kflags;		/* Internal kernel use. See below */
+@@ -144,14 +144,16 @@ struct mce_log_buffer {
+ 	struct mce entry[];
  };
  
- #define MCE_GET_RECORD_LEN   _IOR('M', 1, int)
++/* Highest last */
+ enum mce_notifier_prios {
+-	MCE_PRIO_FIRST		= INT_MAX,
+-	MCE_PRIO_UC		= INT_MAX - 1,
+-	MCE_PRIO_EXTLOG		= INT_MAX - 2,
+-	MCE_PRIO_NFIT		= INT_MAX - 3,
+-	MCE_PRIO_EDAC		= INT_MAX - 4,
+-	MCE_PRIO_MCELOG		= 1,
+-	MCE_PRIO_LOWEST		= 0,
++	MCE_PRIO_LOWEST,
++	MCE_PRIO_MCELOG,
++	MCE_PRIO_EDAC,
++	MCE_PRIO_NFIT,
++	MCE_PRIO_EXTLOG,
++	MCE_PRIO_UC,
++	MCE_PRIO_EARLY,
++	MCE_PRIO_CEC
+ };
+ 
+ struct notifier_block;
+diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
+index a6009ef..43b1519 100644
+--- a/arch/x86/kernel/cpu/mce/core.c
++++ b/arch/x86/kernel/cpu/mce/core.c
+@@ -559,7 +559,7 @@ static bool cec_add_mce(struct mce *m)
+ 	return false;
+ }
+ 
+-static int mce_first_notifier(struct notifier_block *nb, unsigned long val,
++static int mce_early_notifier(struct notifier_block *nb, unsigned long val,
+ 			      void *data)
+ {
+ 	struct mce *m = (struct mce *)data;
+@@ -580,9 +580,9 @@ static int mce_first_notifier(struct notifier_block *nb, unsigned long val,
+ 	return NOTIFY_DONE;
+ }
+ 
+-static struct notifier_block first_nb = {
+-	.notifier_call	= mce_first_notifier,
+-	.priority	= MCE_PRIO_FIRST,
++static struct notifier_block early_nb = {
++	.notifier_call	= mce_early_notifier,
++	.priority	= MCE_PRIO_EARLY,
+ };
+ 
+ static int uc_decode_notifier(struct notifier_block *nb, unsigned long val,
+@@ -2041,7 +2041,7 @@ __setup("mce", mcheck_enable);
+ int __init mcheck_init(void)
+ {
+ 	mcheck_intel_therm_init();
+-	mce_register_decode_chain(&first_nb);
++	mce_register_decode_chain(&early_nb);
+ 	mce_register_decode_chain(&mce_uc_nb);
+ 	mce_register_decode_chain(&mce_default_nb);
+ 	mcheck_vendor_init_severity();
