@@ -2,38 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CDBF1A9976
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 15 Apr 2020 11:51:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5867B1A9962
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 15 Apr 2020 11:50:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2895952AbgDOJvB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 15 Apr 2020 05:51:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51872 "EHLO
+        id S2895908AbgDOJuF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 15 Apr 2020 05:50:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51918 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2895886AbgDOJtx (ORCPT
+        by vger.kernel.org with ESMTP id S2895900AbgDOJuB (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 15 Apr 2020 05:49:53 -0400
+        Wed, 15 Apr 2020 05:50:01 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22B4FC061A0F;
-        Wed, 15 Apr 2020 02:49:53 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AAF6C061A0C;
+        Wed, 15 Apr 2020 02:50:01 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jOefz-0005rU-Bn; Wed, 15 Apr 2020 11:49:47 +0200
+        id 1jOefz-0005rO-1R; Wed, 15 Apr 2020 11:49:47 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id EDDB51C03A9;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 7ACFF1C0081;
         Wed, 15 Apr 2020 11:49:46 +0200 (CEST)
 Date:   Wed, 15 Apr 2020 09:49:46 -0000
-From:   "tip-bot2 for Tony Luck" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: ras/core] EDAC: Drop the EDAC report status checks
-Cc:     Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@suse.de>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200214222720.13168-8-tony.luck@intel.com>
-References: <20200214222720.13168-8-tony.luck@intel.com>
+Subject: [tip: ras/core] x86/mce: Fixup exception only for the correct MCEs
+Cc:     Thomas Gleixner <tglx@linutronix.de>, Borislav Petkov <bp@suse.de>,
+        Tony Luck <tony.luck@intel.com>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200407163414.18058-10-bp@alien8.de>
+References: <20200407163414.18058-10-bp@alien8.de>
 MIME-Version: 1.0
-Message-ID: <158694418661.28353.12261124197420017840.tip-bot2@tip-bot2>
+Message-ID: <158694418608.28353.4166689107383983190.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,227 +50,99 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the ras/core branch of tip:
 
-Commit-ID:     7fc0b9b995f222646ece8d5bca528060c098ee88
-Gitweb:        https://git.kernel.org/tip/7fc0b9b995f222646ece8d5bca528060c098ee88
-Author:        Tony Luck <tony.luck@intel.com>
-AuthorDate:    Fri, 14 Feb 2020 14:27:20 -08:00
+Commit-ID:     1df73b2131e3b33d518609769636b41ce00212de
+Gitweb:        https://git.kernel.org/tip/1df73b2131e3b33d518609769636b41ce00212de
+Author:        Borislav Petkov <bp@suse.de>
+AuthorDate:    Tue, 07 Apr 2020 13:49:58 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 14 Apr 2020 16:01:01 +02:00
+CommitterDate: Tue, 14 Apr 2020 16:01:49 +02:00
 
-EDAC: Drop the EDAC report status checks
+x86/mce: Fixup exception only for the correct MCEs
 
-When acpi_extlog was added, we were worried that the same error would
-be reported more than once by different subsystems. But in the ensuing
-years I've seen complaints that people could not find an error log
-(because this mechanism suppressed the log they were looking for).
+The severity grading code returns IN_KERNEL_RECOV error context for
+errors which have happened in kernel space but from which the kernel can
+recover. Whether the recovery can happen is determined by the exception
+table entry having as handler ex_handler_fault() and which has been
+declared at build time using _ASM_EXTABLE_FAULT().
 
-Rip it all out. People are smart enough to notice the same address from
-different reporting mechanisms.
+IN_KERNEL_RECOV is used in mce_severity_intel() to lookup the
+corresponding error severity in the severities table.
 
-Signed-off-by: Tony Luck <tony.luck@intel.com>
+However, the mapping back from error severity to whether the error is
+IN_KERNEL_RECOV is ambiguous and in the very paranoid case - which
+might not be possible right now - but be better safe than sorry later,
+an exception fixup could be attempted for another MCE whose address
+is in the exception table and has the proper severity. Which would be
+unfortunate, to say the least.
+
+Therefore, mark such MCEs explicitly as MCE_IN_KERNEL_RECOV so that the
+recovery attempt is done only for them.
+
+Document the whole handling, while at it, as it is not trivial.
+
+Reported-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Borislav Petkov <bp@suse.de>
 Tested-by: Tony Luck <tony.luck@intel.com>
-Link: https://lkml.kernel.org/r/20200214222720.13168-8-tony.luck@intel.com
+Link: https://lkml.kernel.org/r/20200407163414.18058-10-bp@alien8.de
 ---
- drivers/acpi/acpi_extlog.c | 14 +--------
- drivers/edac/edac_mc.c     | 61 +-------------------------------------
- drivers/edac/pnd2_edac.c   |  3 +--
- drivers/edac/sb_edac.c     |  4 +--
- drivers/edac/skx_common.c  |  3 +--
- include/linux/edac.h       |  8 +-----
- 6 files changed, 93 deletions(-)
+ arch/x86/include/asm/mce.h         |  1 +
+ arch/x86/kernel/cpu/mce/core.c     | 15 +++++++++++++--
+ arch/x86/kernel/cpu/mce/severity.c |  6 +++++-
+ 3 files changed, 19 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/acpi/acpi_extlog.c b/drivers/acpi/acpi_extlog.c
-index 9cc3c1f..f138e12 100644
---- a/drivers/acpi/acpi_extlog.c
-+++ b/drivers/acpi/acpi_extlog.c
-@@ -42,8 +42,6 @@ struct extlog_l1_head {
- 	u8  rev1[12];
- };
+diff --git a/arch/x86/include/asm/mce.h b/arch/x86/include/asm/mce.h
+index 5f04a24..c598aaa 100644
+--- a/arch/x86/include/asm/mce.h
++++ b/arch/x86/include/asm/mce.h
+@@ -136,6 +136,7 @@
+ #define	MCE_HANDLED_NFIT	BIT_ULL(3)
+ #define	MCE_HANDLED_EDAC	BIT_ULL(4)
+ #define	MCE_HANDLED_MCELOG	BIT_ULL(5)
++#define MCE_IN_KERNEL_RECOV	BIT_ULL(6)
  
--static int old_edac_report_status;
--
- static u8 extlog_dsm_uuid[] __initdata = "663E35AF-CC10-41A4-88EA-5470AF055295";
- 
- /* L1 table related physical address */
-@@ -229,11 +227,6 @@ static int __init extlog_init(void)
- 	if (!(cap & MCG_ELOG_P) || !extlog_get_l1addr())
- 		return -ENODEV;
- 
--	if (edac_get_report_status() == EDAC_REPORTING_FORCE) {
--		pr_warn("Not loading eMCA, error reporting force-enabled through EDAC.\n");
--		return -EPERM;
--	}
--
- 	rc = -EINVAL;
- 	/* get L1 header to fetch necessary information */
- 	l1_hdr_size = sizeof(struct extlog_l1_head);
-@@ -281,12 +274,6 @@ static int __init extlog_init(void)
- 	if (elog_buf == NULL)
- 		goto err_release_elog;
- 
--	/*
--	 * eMCA event report method has higher priority than EDAC method,
--	 * unless EDAC event report method is mandatory.
--	 */
--	old_edac_report_status = edac_get_report_status();
--	edac_set_report_status(EDAC_REPORTING_DISABLED);
- 	mce_register_decode_chain(&extlog_mce_dec);
- 	/* enable OS to be involved to take over management from BIOS */
- 	((struct extlog_l1_head *)extlog_l1_addr)->flags |= FLAG_OS_OPTIN;
-@@ -308,7 +295,6 @@ err:
- 
- static void __exit extlog_exit(void)
- {
--	edac_set_report_status(old_edac_report_status);
- 	mce_unregister_decode_chain(&extlog_mce_dec);
- 	((struct extlog_l1_head *)extlog_l1_addr)->flags &= ~FLAG_OS_OPTIN;
- 	if (extlog_l1_addr)
-diff --git a/drivers/edac/edac_mc.c b/drivers/edac/edac_mc.c
-index 75ede27..5813e93 100644
---- a/drivers/edac/edac_mc.c
-+++ b/drivers/edac/edac_mc.c
-@@ -43,8 +43,6 @@
- int edac_op_state = EDAC_OPSTATE_INVAL;
- EXPORT_SYMBOL_GPL(edac_op_state);
- 
--static int edac_report = EDAC_REPORTING_ENABLED;
--
- /* lock to memory controller's control array */
- static DEFINE_MUTEX(mem_ctls_mutex);
- static LIST_HEAD(mc_devices);
-@@ -60,65 +58,6 @@ static struct mem_ctl_info *error_desc_to_mci(struct edac_raw_error_desc *e)
- 	return container_of(e, struct mem_ctl_info, error_desc);
- }
- 
--int edac_get_report_status(void)
--{
--	return edac_report;
--}
--EXPORT_SYMBOL_GPL(edac_get_report_status);
--
--void edac_set_report_status(int new)
--{
--	if (new == EDAC_REPORTING_ENABLED ||
--	    new == EDAC_REPORTING_DISABLED ||
--	    new == EDAC_REPORTING_FORCE)
--		edac_report = new;
--}
--EXPORT_SYMBOL_GPL(edac_set_report_status);
--
--static int edac_report_set(const char *str, const struct kernel_param *kp)
--{
--	if (!str)
--		return -EINVAL;
--
--	if (!strncmp(str, "on", 2))
--		edac_report = EDAC_REPORTING_ENABLED;
--	else if (!strncmp(str, "off", 3))
--		edac_report = EDAC_REPORTING_DISABLED;
--	else if (!strncmp(str, "force", 5))
--		edac_report = EDAC_REPORTING_FORCE;
--
--	return 0;
--}
--
--static int edac_report_get(char *buffer, const struct kernel_param *kp)
--{
--	int ret = 0;
--
--	switch (edac_report) {
--	case EDAC_REPORTING_ENABLED:
--		ret = sprintf(buffer, "on");
--		break;
--	case EDAC_REPORTING_DISABLED:
--		ret = sprintf(buffer, "off");
--		break;
--	case EDAC_REPORTING_FORCE:
--		ret = sprintf(buffer, "force");
--		break;
--	default:
--		ret = -EINVAL;
--		break;
--	}
--
--	return ret;
--}
--
--static const struct kernel_param_ops edac_report_ops = {
--	.set = edac_report_set,
--	.get = edac_report_get,
--};
--
--module_param_cb(edac_report, &edac_report_ops, &edac_report, 0644);
--
- unsigned int edac_dimm_info_location(struct dimm_info *dimm, char *buf,
- 				     unsigned int len)
- {
-diff --git a/drivers/edac/pnd2_edac.c b/drivers/edac/pnd2_edac.c
-index 1929a5d..c1f2e6d 100644
---- a/drivers/edac/pnd2_edac.c
-+++ b/drivers/edac/pnd2_edac.c
-@@ -1396,9 +1396,6 @@ static int pnd2_mce_check_error(struct notifier_block *nb, unsigned long val, vo
- 	struct dram_addr daddr;
- 	char *type;
- 
--	if (edac_get_report_status() == EDAC_REPORTING_DISABLED)
--		return NOTIFY_DONE;
--
- 	mci = pnd2_mci;
- 	if (!mci || (mce->kflags & MCE_HANDLED_CEC))
- 		return NOTIFY_DONE;
-diff --git a/drivers/edac/sb_edac.c b/drivers/edac/sb_edac.c
-index f790f7d..d414698 100644
---- a/drivers/edac/sb_edac.c
-+++ b/drivers/edac/sb_edac.c
-@@ -3134,8 +3134,6 @@ static int sbridge_mce_check_error(struct notifier_block *nb, unsigned long val,
- 	struct mem_ctl_info *mci;
- 	char *type;
- 
--	if (edac_get_report_status() == EDAC_REPORTING_DISABLED)
--		return NOTIFY_DONE;
- 	if (mce->kflags & MCE_HANDLED_CEC)
- 		return NOTIFY_DONE;
- 
-@@ -3526,8 +3524,6 @@ static int __init sbridge_init(void)
- 
- 	if (rc >= 0) {
- 		mce_register_decode_chain(&sbridge_mce_dec);
--		if (edac_get_report_status() == EDAC_REPORTING_DISABLED)
--			sbridge_printk(KERN_WARNING, "Loading driver, error reporting disabled.\n");
- 		return 0;
+ /*
+  * This structure contains all data related to the MCE log.  Also
+diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
+index 4efe6c1..02e1f16 100644
+--- a/arch/x86/kernel/cpu/mce/core.c
++++ b/arch/x86/kernel/cpu/mce/core.c
+@@ -1331,8 +1331,19 @@ void notrace do_machine_check(struct pt_regs *regs, long error_code)
+ 		local_irq_disable();
+ 		ist_end_non_atomic();
+ 	} else {
+-		if (!fixup_exception(regs, X86_TRAP_MC, error_code, 0))
+-			mce_panic("Failed kernel mode recovery", &m, msg);
++		/*
++		 * Handle an MCE which has happened in kernel space but from
++		 * which the kernel can recover: ex_has_fault_handler() has
++		 * already verified that the rIP at which the error happened is
++		 * a rIP from which the kernel can recover (by jumping to
++		 * recovery code specified in _ASM_EXTABLE_FAULT()) and the
++		 * corresponding exception handler which would do that is the
++		 * proper one.
++		 */
++		if (m.kflags & MCE_IN_KERNEL_RECOV) {
++			if (!fixup_exception(regs, X86_TRAP_MC, error_code, 0))
++				mce_panic("Failed kernel mode recovery", &m, msg);
++		}
  	}
  
-diff --git a/drivers/edac/skx_common.c b/drivers/edac/skx_common.c
-index 6f08a12..423d33a 100644
---- a/drivers/edac/skx_common.c
-+++ b/drivers/edac/skx_common.c
-@@ -574,9 +574,6 @@ int skx_mce_check_error(struct notifier_block *nb, unsigned long val,
- 	struct mem_ctl_info *mci;
- 	char *type;
- 
--	if (edac_get_report_status() == EDAC_REPORTING_DISABLED)
--		return NOTIFY_DONE;
--
- 	if (mce->kflags & MCE_HANDLED_CEC)
- 		return NOTIFY_DONE;
- 
-diff --git a/include/linux/edac.h b/include/linux/edac.h
-index 0f20b98..6eb7d55 100644
---- a/include/linux/edac.h
-+++ b/include/linux/edac.h
-@@ -31,14 +31,6 @@ struct device;
- extern int edac_op_state;
- 
- struct bus_type *edac_get_sysfs_subsys(void);
--int edac_get_report_status(void);
--void edac_set_report_status(int new);
--
--enum {
--	EDAC_REPORTING_ENABLED,
--	EDAC_REPORTING_DISABLED,
--	EDAC_REPORTING_FORCE
--};
- 
- static inline void opstate_init(void)
+ out_ist:
+diff --git a/arch/x86/kernel/cpu/mce/severity.c b/arch/x86/kernel/cpu/mce/severity.c
+index 87bcdc6..e1da619 100644
+--- a/arch/x86/kernel/cpu/mce/severity.c
++++ b/arch/x86/kernel/cpu/mce/severity.c
+@@ -213,8 +213,12 @@ static int error_context(struct mce *m)
  {
+ 	if ((m->cs & 3) == 3)
+ 		return IN_USER;
+-	if (mc_recoverable(m->mcgstatus) && ex_has_fault_handler(m->ip))
++
++	if (mc_recoverable(m->mcgstatus) && ex_has_fault_handler(m->ip)) {
++		m->kflags |= MCE_IN_KERNEL_RECOV;
+ 		return IN_KERNEL_RECOV;
++	}
++
+ 	return IN_KERNEL;
+ }
+ 
