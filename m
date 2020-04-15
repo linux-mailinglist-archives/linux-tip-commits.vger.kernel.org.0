@@ -2,39 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 742A31A996C
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 15 Apr 2020 11:50:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B6C381A9967
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 15 Apr 2020 11:50:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2895935AbgDOJuo (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 15 Apr 2020 05:50:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51900 "EHLO
+        id S2895919AbgDOJuR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 15 Apr 2020 05:50:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51898 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2895895AbgDOJt5 (ORCPT
+        by vger.kernel.org with ESMTP id S2895894AbgDOJt5 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Wed, 15 Apr 2020 05:49:57 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 170ABC03C1A8;
-        Wed, 15 Apr 2020 02:49:55 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB125C061A0C;
+        Wed, 15 Apr 2020 02:49:56 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jOeg4-0005v6-WF; Wed, 15 Apr 2020 11:49:53 +0200
+        id 1jOeg6-0005vL-GG; Wed, 15 Apr 2020 11:49:54 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 9F3F71C0081;
-        Wed, 15 Apr 2020 11:49:52 +0200 (CEST)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 2367B1C0493;
+        Wed, 15 Apr 2020 11:49:53 +0200 (CEST)
 Date:   Wed, 15 Apr 2020 09:49:52 -0000
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: ras/core] x86/mce/amd: Protect a not-fully initialized bank
- from the thresholding interrupt
+Subject: [tip: ras/core] x86/mce/amd: Init thresholding machinery only on
+ relevant vendors
 Cc:     Thomas Gleixner <tglx@linutronix.de>, Borislav Petkov <bp@suse.de>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200403161943.1458-4-bp@alien8.de>
-References: <20200403161943.1458-4-bp@alien8.de>
+In-Reply-To: <20200403161943.1458-3-bp@alien8.de>
+References: <20200403161943.1458-3-bp@alien8.de>
 MIME-Version: 1.0
-Message-ID: <158694419219.28353.17940565183365109106.tip-bot2@tip-bot2>
+Message-ID: <158694419273.28353.5335708172984243606.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,74 +50,102 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the ras/core branch of tip:
 
-Commit-ID:     cca9cc05fe98f3eb0cfb58ec6739cfc9d0b4ccbf
-Gitweb:        https://git.kernel.org/tip/cca9cc05fe98f3eb0cfb58ec6739cfc9d0b4ccbf
+Commit-ID:     c9bf318f77b3a78483e656e609d005c52aadc86d
+Gitweb:        https://git.kernel.org/tip/c9bf318f77b3a78483e656e609d005c52aadc86d
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Thu, 12 Mar 2020 20:05:43 +01:00
+AuthorDate:    Wed, 12 Feb 2020 00:34:01 +01:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 14 Apr 2020 15:47:55 +02:00
+CommitterDate: Tue, 14 Apr 2020 15:47:11 +02:00
 
-x86/mce/amd: Protect a not-fully initialized bank from the thresholding interrupt
+x86/mce/amd: Init thresholding machinery only on relevant vendors
 
-Make sure the thresholding bank descriptor is fully initialized when the
-thresholding interrupt fires after a hotplug event.
+... and not unconditionally.
 
- [ bp: Write commit message and document long-forgotten bank_map. ]
+ [ bp: Add a new vendor_flags bit for that. ]
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20200403161943.1458-4-bp@alien8.de
+Link: https://lkml.kernel.org/r/20200403161943.1458-3-bp@alien8.de
 ---
- arch/x86/kernel/cpu/mce/amd.c | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+ arch/x86/kernel/cpu/mce/amd.c      | 12 ++++++++++--
+ arch/x86/kernel/cpu/mce/core.c     |  1 +
+ arch/x86/kernel/cpu/mce/internal.h |  9 ++++++---
+ 3 files changed, 17 insertions(+), 5 deletions(-)
 
 diff --git a/arch/x86/kernel/cpu/mce/amd.c b/arch/x86/kernel/cpu/mce/amd.c
-index c3b3326..5639421 100644
+index 477cf77..c3b3326 100644
 --- a/arch/x86/kernel/cpu/mce/amd.c
 +++ b/arch/x86/kernel/cpu/mce/amd.c
-@@ -192,7 +192,12 @@ EXPORT_SYMBOL_GPL(smca_banks);
- static char buf_mcatype[MAX_MCATYPE_NAME_LEN];
+@@ -1442,15 +1442,20 @@ free_out:
  
- static DEFINE_PER_CPU(struct threshold_bank **, threshold_banks);
--static DEFINE_PER_CPU(unsigned int, bank_map);	/* see which banks are on */
-+
-+/*
-+ * A list of the banks enabled on each logical CPU. Controls which respective
-+ * descriptors to initialize later in mce_threshold_create_device().
-+ */
-+static DEFINE_PER_CPU(unsigned int, bank_map);
- 
- /* Map of banks that have more than MCA_MISC0 available. */
- static DEFINE_PER_CPU(u32, smca_misc_banks_map);
-@@ -1016,13 +1021,22 @@ static void log_and_reset_block(struct threshold_block *block)
- static void amd_threshold_interrupt(void)
+ int mce_threshold_remove_device(unsigned int cpu)
  {
- 	struct threshold_block *first_block = NULL, *block = NULL, *tmp = NULL;
 +	struct threshold_bank **bp = this_cpu_read(threshold_banks);
- 	unsigned int bank, cpu = smp_processor_id();
+ 	unsigned int bank;
  
-+	/*
-+	 * Validate that the threshold bank has been initialized already. The
-+	 * handler is installed at boot time, but on a hotplug event the
-+	 * interrupt might fire before the data has been initialized.
-+	 */
 +	if (!bp)
-+		return;
++		return 0;
 +
- 	for (bank = 0; bank < this_cpu_read(mce_num_banks); ++bank) {
+ 	for (bank = 0; bank < per_cpu(mce_num_banks, cpu); ++bank) {
  		if (!(per_cpu(bank_map, cpu) & (1 << bank)))
  			continue;
+ 		threshold_remove_bank(cpu, bank);
+ 	}
+-	kfree(per_cpu(threshold_banks, cpu));
+-	per_cpu(threshold_banks, cpu) = NULL;
++	/* Clear the pointer before freeing the memory */
++	this_cpu_write(threshold_banks, NULL);
++	kfree(bp);
+ 	return 0;
+ }
  
--		first_block = per_cpu(threshold_banks, cpu)[bank]->blocks;
-+		first_block = bp[bank]->blocks;
- 		if (!first_block)
- 			continue;
+@@ -1461,6 +1466,9 @@ int mce_threshold_create_device(unsigned int cpu)
+ 	struct threshold_bank **bp;
+ 	int err = 0;
  
-@@ -1247,6 +1261,7 @@ static int allocate_threshold_blocks(unsigned int cpu, struct threshold_bank *tb
++	if (!mce_flags.amd_threshold)
++		return 0;
++
+ 	bp = per_cpu(threshold_banks, cpu);
+ 	if (bp)
+ 		return 0;
+diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
+index 54165f3..43ca91e 100644
+--- a/arch/x86/kernel/cpu/mce/core.c
++++ b/arch/x86/kernel/cpu/mce/core.c
+@@ -1756,6 +1756,7 @@ static void __mcheck_cpu_init_early(struct cpuinfo_x86 *c)
+ 		mce_flags.overflow_recov = !!cpu_has(c, X86_FEATURE_OVERFLOW_RECOV);
+ 		mce_flags.succor	 = !!cpu_has(c, X86_FEATURE_SUCCOR);
+ 		mce_flags.smca		 = !!cpu_has(c, X86_FEATURE_SMCA);
++		mce_flags.amd_threshold	 = 1;
  
- 	INIT_LIST_HEAD(&b->miscj);
+ 		if (mce_flags.smca) {
+ 			msr_ops.ctl	= smca_ctl_reg;
+diff --git a/arch/x86/kernel/cpu/mce/internal.h b/arch/x86/kernel/cpu/mce/internal.h
+index 3b00817..74a0182 100644
+--- a/arch/x86/kernel/cpu/mce/internal.h
++++ b/arch/x86/kernel/cpu/mce/internal.h
+@@ -148,7 +148,7 @@ struct mce_vendor_flags {
+ 	 * Recovery. It indicates support for data poisoning in HW and deferred
+ 	 * error interrupts.
+ 	 */
+-	      succor		: 1,
++	succor			: 1,
  
-+	/* This is safe as @tb is not visible yet */
- 	if (tb->blocks)
- 		list_add(&b->miscj, &tb->blocks->miscj);
- 	else
+ 	/*
+ 	 * (AMD) SMCA: This bit indicates support for Scalable MCA which expands
+@@ -156,9 +156,12 @@ struct mce_vendor_flags {
+ 	 * banks. Also, to accommodate the new banks and registers, the MCA
+ 	 * register space is moved to a new MSR range.
+ 	 */
+-	      smca		: 1,
++	smca			: 1,
+ 
+-	      __reserved_0	: 61;
++	/* AMD-style error thresholding banks present. */
++	amd_threshold		: 1,
++
++	__reserved_0		: 60;
+ };
+ 
+ extern struct mce_vendor_flags mce_flags;
