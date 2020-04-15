@@ -2,41 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EF1A71A83AC
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 14 Apr 2020 17:47:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E9711A9734
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 15 Apr 2020 10:45:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731423AbgDNPqd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 14 Apr 2020 11:46:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50516 "EHLO
+        id S2894925AbgDOIoz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 15 Apr 2020 04:44:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1731196AbgDNPq3 (ORCPT
+        by vger.kernel.org with ESMTP id S2894478AbgDOIow (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 14 Apr 2020 11:46:29 -0400
-X-Greylist: delayed 26738 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 14 Apr 2020 08:46:29 PDT
+        Wed, 15 Apr 2020 04:44:52 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 833B6C061A0C;
-        Tue, 14 Apr 2020 08:46:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1D1DC061A0C;
+        Wed, 15 Apr 2020 01:44:52 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jONlW-0006hB-QJ; Tue, 14 Apr 2020 17:46:22 +0200
+        id 1jOdf5-0004TV-5w; Wed, 15 Apr 2020 10:44:47 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 0DA7A1C0086;
-        Tue, 14 Apr 2020 17:46:22 +0200 (CEST)
-Date:   Tue, 14 Apr 2020 15:46:21 -0000
-From:   "tip-bot2 for John Allen" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id AF5341C0081;
+        Wed, 15 Apr 2020 10:44:46 +0200 (CEST)
+Date:   Wed, 15 Apr 2020 08:44:46 -0000
+From:   "tip-bot2 for Peter Xu" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/microcode/AMD: Increase microcode PATCH_MAX_SIZE
-Cc:     John Allen <john.allen@amd.com>, Borislav Petkov <bp@suse.de>,
-        stable@vger.kernel.org, #@tip-bot2.tec.linutronix.de,
-        "v4.14.."@tip-bot2.tec.linutronix.de, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200409152931.GA685273@mojo.amd.com>
-References: <20200409152931.GA685273@mojo.amd.com>
+Subject: [tip: sched/core] sched/isolation: Allow "isolcpus=" to skip unknown
+ sub-parameters
+Cc:     Thomas Gleixner <tglx@linutronix.de>, Peter Xu <peterx@redhat.com>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200403223517.406353-1-peterx@redhat.com>
+References: <20200403223517.406353-1-peterx@redhat.com>
 MIME-Version: 1.0
-Message-ID: <158687918159.28353.7726188053950798556.tip-bot2@tip-bot2>
+Message-ID: <158694028618.28353.15868701141277994151.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,38 +48,81 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     bdf89df3c54518eed879d8fac7577fcfb220c67e
-Gitweb:        https://git.kernel.org/tip/bdf89df3c54518eed879d8fac7577fcfb220c67e
-Author:        John Allen <john.allen@amd.com>
-AuthorDate:    Thu, 09 Apr 2020 10:34:29 -05:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 14 Apr 2020 17:34:46 +02:00
+Commit-ID:     3662daf023500dc084fa3b96f68a6f46179ddc73
+Gitweb:        https://git.kernel.org/tip/3662daf023500dc084fa3b96f68a6f46179ddc73
+Author:        Peter Xu <peterx@redhat.com>
+AuthorDate:    Fri, 03 Apr 2020 18:35:17 -04:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Wed, 15 Apr 2020 10:38:26 +02:00
 
-x86/microcode/AMD: Increase microcode PATCH_MAX_SIZE
+sched/isolation: Allow "isolcpus=" to skip unknown sub-parameters
 
-Future AMD CPUs will have microcode patches that exceed the default 4K
-patch size. Raise our limit.
+The "isolcpus=" parameter allows sub-parameters before the cpulist is
+specified, and if the parser detects an unknown sub-parameters the whole
+parameter will be ignored.
 
-Signed-off-by: John Allen <john.allen@amd.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Cc: stable@vger.kernel.org # v4.14..
-Link: https://lkml.kernel.org/r/20200409152931.GA685273@mojo.amd.com
+This design is incompatible with itself when new sub-parameters are added.
+An older kernel will not recognize the new sub-parameter and will
+invalidate the whole parameter so the CPU isolation will not take
+effect. It emits a warning:
+
+    isolcpus: Error, unknown flag
+
+The better and compatible way is to allow "isolcpus=" to skip unknown
+sub-parameters, so that even if new sub-parameters are added an older
+kernel will still be able to behave as usual even if with the new
+sub-parameter specified on the command line.
+
+Ideally this should have been there when the first sub-parameter for
+"isolcpus=" was introduced.
+
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Peter Xu <peterx@redhat.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lkml.kernel.org/r/20200403223517.406353-1-peterx@redhat.com
+
 ---
- arch/x86/include/asm/microcode_amd.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/sched/isolation.c | 21 +++++++++++++++++++--
+ 1 file changed, 19 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/include/asm/microcode_amd.h b/arch/x86/include/asm/microcode_amd.h
-index 6685e12..7063b5a 100644
---- a/arch/x86/include/asm/microcode_amd.h
-+++ b/arch/x86/include/asm/microcode_amd.h
-@@ -41,7 +41,7 @@ struct microcode_amd {
- 	unsigned int			mpb[0];
- };
+diff --git a/kernel/sched/isolation.c b/kernel/sched/isolation.c
+index 008d6ac..808244f 100644
+--- a/kernel/sched/isolation.c
++++ b/kernel/sched/isolation.c
+@@ -149,6 +149,9 @@ __setup("nohz_full=", housekeeping_nohz_full_setup);
+ static int __init housekeeping_isolcpus_setup(char *str)
+ {
+ 	unsigned int flags = 0;
++	bool illegal = false;
++	char *par;
++	int len;
  
--#define PATCH_MAX_SIZE PAGE_SIZE
-+#define PATCH_MAX_SIZE (3 * PAGE_SIZE)
+ 	while (isalpha(*str)) {
+ 		if (!strncmp(str, "nohz,", 5)) {
+@@ -169,8 +172,22 @@ static int __init housekeeping_isolcpus_setup(char *str)
+ 			continue;
+ 		}
  
- #ifdef CONFIG_MICROCODE_AMD
- extern void __init load_ucode_amd_bsp(unsigned int family);
+-		pr_warn("isolcpus: Error, unknown flag\n");
+-		return 0;
++		/*
++		 * Skip unknown sub-parameter and validate that it is not
++		 * containing an invalid character.
++		 */
++		for (par = str, len = 0; *str && *str != ','; str++, len++) {
++			if (!isalpha(*str) && *str != '_')
++				illegal = true;
++		}
++
++		if (illegal) {
++			pr_warn("isolcpus: Invalid flag %.*s\n", len, par);
++			return 0;
++		}
++
++		pr_info("isolcpus: Skipped unknown flag %.*s\n", len, par);
++		str++;
+ 	}
+ 
+ 	/* Default behaviour for isolcpus without flags */
