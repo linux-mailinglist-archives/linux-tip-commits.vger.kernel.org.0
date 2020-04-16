@@ -2,44 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 149931ABC56
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Apr 2020 11:13:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 432EE1ABC52
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Apr 2020 11:13:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2502394AbgDPJLn (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 16 Apr 2020 05:11:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37670 "EHLO
+        id S2501956AbgDPJLl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 16 Apr 2020 05:11:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37678 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2502363AbgDPIb6 (ORCPT
+        with ESMTP id S2502370AbgDPIb7 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 16 Apr 2020 04:31:58 -0400
+        Thu, 16 Apr 2020 04:31:59 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DADFBC025483;
-        Thu, 16 Apr 2020 01:31:38 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E04EC025487;
+        Thu, 16 Apr 2020 01:31:39 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jOzvp-0000qW-7L; Thu, 16 Apr 2020 10:31:33 +0200
+        id 1jOzvr-0000r1-OH; Thu, 16 Apr 2020 10:31:35 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id DB17A1C0481;
-        Thu, 16 Apr 2020 10:31:29 +0200 (CEST)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5195A1C03A9;
+        Thu, 16 Apr 2020 10:31:30 +0200 (CEST)
 Date:   Thu, 16 Apr 2020 08:31:29 -0000
-From:   "tip-bot2 for Jin Yao" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf stat: Fix no metric header if --per-socket
- and --metric-only set
-Cc:     Jin Yao <yao.jin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Andi Kleen <ak@linux.intel.com>,
-        Kan Liang <kan.liang@linux.intel.com>,
-        Peter Zijlstra <peterz@infradead.org>,
+Subject: [tip: perf/urgent] perf python: Check if clang supports
+ -fno-semantic-interposition
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        Jiri Olsa <jolsa@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200331180226.25915-1-yao.jin@linux.intel.com>
-References: <20200331180226.25915-1-yao.jin@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <158702588951.28353.3843175338082747310.tip-bot2@tip-bot2>
+Message-ID: <158702588996.28353.6714987613967508418.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -55,85 +51,54 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     8358f698ec9d8467ad00c045e4d83c3e4acc7db4
-Gitweb:        https://git.kernel.org/tip/8358f698ec9d8467ad00c045e4d83c3e4acc7db4
-Author:        Jin Yao <yao.jin@linux.intel.com>
-AuthorDate:    Wed, 01 Apr 2020 02:02:26 +08:00
+Commit-ID:     9a00df311b5c1dfb7284ea22070772803dd0c95e
+Gitweb:        https://git.kernel.org/tip/9a00df311b5c1dfb7284ea22070772803dd0c95e
+Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
+AuthorDate:    Mon, 06 Apr 2020 10:30:16 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Tue, 14 Apr 2020 08:49:26 -03:00
+CommitterDate: Tue, 14 Apr 2020 08:43:18 -03:00
 
-perf stat: Fix no metric header if --per-socket and --metric-only set
+perf python: Check if clang supports -fno-semantic-interposition
 
-We received a report that was no metric header displayed if --per-socket
-and --metric-only were both set.
+The set of C compiler options used by distros to build python bindings
+may include options that are unknown to clang, we check for a variety of
+such options, add -fno-semantic-interposition to that mix:
 
-It's hard for script to parse the perf-stat output. This patch fixes this
-issue.
+This fixes the build on, among others, Manjaro Linux:
 
-Before:
+    GEN      /tmp/build/perf/python/perf.so
+  clang-9: error: unknown argument: '-fno-semantic-interposition'
+  error: command 'clang' failed with exit status 1
+  make: Leaving directory '/git/perf/tools/perf'
 
-  root@kbl-ppc:~# perf stat -a -M CPI --metric-only --per-socket
-  ^C
-   Performance counter stats for 'system wide':
+  [perfbuilder@602aed1c266d ~]$ gcc -v
+  Using built-in specs.
+  COLLECT_GCC=gcc
+  COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-pc-linux-gnu/9.3.0/lto-wrapper
+  Target: x86_64-pc-linux-gnu
+  Configured with: /build/gcc/src/gcc/configure --prefix=/usr --libdir=/usr/lib --libexecdir=/usr/lib --mandir=/usr/share/man --infodir=/usr/share/info --with-pkgversion='Arch Linux 9.3.0-1' --with-bugurl=https://bugs.archlinux.org/ --enable-languages=c,c++,ada,fortran,go,lto,objc,obj-c++,d --enable-shared --enable-threads=posix --with-system-zlib --with-isl --enable-__cxa_atexit --disable-libunwind-exceptions --enable-clocale=gnu --disable-libstdcxx-pch --disable-libssp --enable-gnu-unique-object --enable-linker-build-id --enable-lto --enable-plugin --enable-install-libiberty --with-linker-hash-style=gnu --enable-gnu-indirect-function --enable-multilib --disable-werror --enable-checking=release --enable-default-pie --enable-default-ssp --enable-cet=auto gdc_include_dir=/usr/include/dlang/gdc
+  Thread model: posix
+  gcc version 9.3.0 (Arch Linux 9.3.0-1)
+  [perfbuilder@602aed1c266d ~]$
 
-  S0        8                  2.6
-
-         2.215270071 seconds time elapsed
-
-  root@kbl-ppc:~# perf stat -a -M CPI --metric-only --per-socket -I1000
-  #           time socket cpus
-       1.000411692 S0        8                  2.2
-       2.001547952 S0        8                  3.4
-       3.002446511 S0        8                  3.4
-       4.003346157 S0        8                  4.0
-       5.004245736 S0        8                  0.3
-
-After:
-
-  root@kbl-ppc:~# perf stat -a -M CPI --metric-only --per-socket
-  ^C
-   Performance counter stats for 'system wide':
-
-                               CPI
-  S0        8                  2.1
-
-         1.813579830 seconds time elapsed
-
-  root@kbl-ppc:~# perf stat -a -M CPI --metric-only --per-socket -I1000
-  #           time socket cpus                  CPI
-       1.000415122 S0        8                  3.2
-       2.001630051 S0        8                  2.9
-       3.002612278 S0        8                  4.3
-       4.003523594 S0        8                  3.0
-       5.004504256 S0        8                  3.7
-
-Signed-off-by: Jin Yao <yao.jin@linux.intel.com>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: http://lore.kernel.org/lkml/20200331180226.25915-1-yao.jin@linux.intel.com
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/stat-shadow.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ tools/perf/util/setup.py | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tools/perf/util/stat-shadow.c b/tools/perf/util/stat-shadow.c
-index 0fd713d..03ecb8c 100644
---- a/tools/perf/util/stat-shadow.c
-+++ b/tools/perf/util/stat-shadow.c
-@@ -803,8 +803,11 @@ static void generic_metric(struct perf_stat_config *config,
- 				     out->force_header ?
- 				     (metric_name ? metric_name : name) : "", 0);
- 		}
--	} else
--		print_metric(config, ctxp, NULL, NULL, "", 0);
-+	} else {
-+		print_metric(config, ctxp, NULL, NULL,
-+			     out->force_header ?
-+			     (metric_name ? metric_name : name) : "", 0);
-+	}
+diff --git a/tools/perf/util/setup.py b/tools/perf/util/setup.py
+index 347b2c0..c5e3e9a 100644
+--- a/tools/perf/util/setup.py
++++ b/tools/perf/util/setup.py
+@@ -21,6 +21,8 @@ if cc_is_clang:
+             vars[var] = sub("-fstack-clash-protection", "", vars[var])
+         if not clang_has_option("-fstack-protector-strong"):
+             vars[var] = sub("-fstack-protector-strong", "", vars[var])
++        if not clang_has_option("-fno-semantic-interposition"):
++            vars[var] = sub("-fno-semantic-interposition", "", vars[var])
  
- 	for (i = 1; i < pctx.num_ids; i++)
- 		zfree(&pctx.ids[i].name);
+ from distutils.core import setup, Extension
+ 
