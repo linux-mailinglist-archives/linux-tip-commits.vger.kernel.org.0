@@ -2,42 +2,41 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E5181ABC5F
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Apr 2020 11:13:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE9E01ABC53
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Apr 2020 11:13:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2503559AbgDPJMn (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 16 Apr 2020 05:12:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37606 "EHLO
+        id S2440855AbgDPJLl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 16 Apr 2020 05:11:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2502304AbgDPIbh (ORCPT
+        with ESMTP id S2502362AbgDPIb6 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 16 Apr 2020 04:31:37 -0400
+        Thu, 16 Apr 2020 04:31:58 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6354C08C5F2;
-        Thu, 16 Apr 2020 01:31:35 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F9D3C025482;
+        Thu, 16 Apr 2020 01:31:38 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jOzvl-0000qT-RS; Thu, 16 Apr 2020 10:31:30 +0200
+        id 1jOzvn-0000r7-Ad; Thu, 16 Apr 2020 10:31:31 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 6C99D1C03A9;
-        Thu, 16 Apr 2020 10:31:29 +0200 (CEST)
-Date:   Thu, 16 Apr 2020 08:31:29 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D6F3D1C04D1;
+        Thu, 16 Apr 2020 10:31:30 +0200 (CEST)
+Date:   Thu, 16 Apr 2020 08:31:30 -0000
 From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] tools headers: Update linux/vdso.h and grab a copy
- of vdso/const.h
+Subject: [tip: perf/urgent] tools arch x86: Sync the msr-index.h copy with the
+ kernel sources
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Jiri Olsa <jolsa@kernel.org>,
+        Borislav Petkov <bp@suse.de>, Jiri Olsa <jolsa@kernel.org>,
         Namhyung Kim <namhyung@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Vincenzo Frascino <vincenzo.frascino@arm.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158702588903.28353.2967832668276700000.tip-bot2@tip-bot2>
+Message-ID: <158702589041.28353.9795034299770830446.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -53,77 +52,107 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     ca64d84e93762f4e587e040a44ad9f6089afc777
-Gitweb:        https://git.kernel.org/tip/ca64d84e93762f4e587e040a44ad9f6089afc777
+Commit-ID:     bab1a501e6587590dda4c6cd92250cfedcd1553f
+Gitweb:        https://git.kernel.org/tip/bab1a501e6587590dda4c6cd92250cfedcd1553f
 Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Tue, 14 Apr 2020 08:52:23 -03:00
+AuthorDate:    Wed, 01 Apr 2020 12:12:19 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Tue, 14 Apr 2020 08:55:03 -03:00
+CommitterDate: Tue, 14 Apr 2020 08:42:56 -03:00
 
-tools headers: Update linux/vdso.h and grab a copy of vdso/const.h
+tools arch x86: Sync the msr-index.h copy with the kernel sources
 
-To get in line with:
+To pick up the changes in:
 
-  8165b57bca21 ("linux/const.h: Extract common header for vDSO")
+  6650cdd9a8cc ("x86/split_lock: Enable split lock detection by kernel")
 
-And silence this tools/perf/ build warning:
+  Warning: Kernel ABI header at 'tools/arch/x86/include/asm/msr-index.h' differs from latest version at 'arch/x86/include/asm/msr-index.h'
+  diff -u tools/arch/x86/include/asm/msr-index.h arch/x86/include/asm/msr-index.h
 
-  Warning: Kernel ABI header at 'tools/include/linux/const.h' differs from latest version at 'include/linux/const.h'
-  diff -u tools/include/linux/const.h include/linux/const.h
+Which causes these changes in tooling:
+
+  $ tools/perf/trace/beauty/tracepoints/x86_msr.sh > before
+  $ cp arch/x86/include/asm/msr-index.h tools/arch/x86/include/asm/msr-index.h
+  $ tools/perf/trace/beauty/tracepoints/x86_msr.sh > after
+  $ diff -u before after
+  --- before	2020-04-01 12:11:14.789344795 -0300
+  +++ after	2020-04-01 12:11:56.907798879 -0300
+  @@ -10,6 +10,7 @@
+   	[0x00000029] = "KNC_EVNTSEL1",
+   	[0x0000002a] = "IA32_EBL_CR_POWERON",
+   	[0x0000002c] = "EBC_FREQUENCY_ID",
+  +	[0x00000033] = "TEST_CTRL",
+   	[0x00000034] = "SMI_COUNT",
+   	[0x0000003a] = "IA32_FEAT_CTL",
+   	[0x0000003b] = "IA32_TSC_ADJUST",
+  @@ -27,6 +28,7 @@
+   	[0x000000c2] = "IA32_PERFCTR1",
+   	[0x000000cd] = "FSB_FREQ",
+   	[0x000000ce] = "PLATFORM_INFO",
+  +	[0x000000cf] = "IA32_CORE_CAPS",
+   	[0x000000e2] = "PKG_CST_CONFIG_CONTROL",
+   	[0x000000e7] = "IA32_MPERF",
+   	[0x000000e8] = "IA32_APERF",
+  $
+
+  $ make -C tools/perf O=/tmp/build/perf install-bin
+  <SNIP>
+    CC       /tmp/build/perf/trace/beauty/tracepoints/x86_msr.o
+    LD       /tmp/build/perf/trace/beauty/tracepoints/perf-in.o
+    LD       /tmp/build/perf/trace/beauty/perf-in.o
+    LD       /tmp/build/perf/perf-in.o
+    LINK     /tmp/build/perf/perf
+  <SNIP>
+
+Now one can do:
+
+	perf trace -e msr:* --filter=msr==IA32_CORE_CAPS
+
+or:
+
+	perf trace -e msr:* --filter='msr==IA32_CORE_CAPS || msr==TEST_CTRL'
+
+And see only those MSRs being accessed via:
+
+  # perf trace -v -e msr:* --filter='msr==IA32_CORE_CAPS || msr==TEST_CTRL'
+  New filter for msr:read_msr: (msr==0xcf || msr==0x33) && (common_pid != 8263 && common_pid != 23250)
+  New filter for msr:write_msr: (msr==0xcf || msr==0x33) && (common_pid != 8263 && common_pid != 23250)
+  New filter for msr:rdpmc: (msr==0xcf || msr==0x33) && (common_pid != 8263 && common_pid != 23250)
 
 Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Borislav Petkov <bp@suse.de>
 Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
+Cc: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/lkml/20200401153325.GC12534@kernel.org/
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/include/linux/const.h |  5 +----
- tools/include/vdso/const.h  | 10 ++++++++++
- tools/perf/check-headers.sh |  1 +
- 3 files changed, 12 insertions(+), 4 deletions(-)
- create mode 100644 tools/include/vdso/const.h
+ tools/arch/x86/include/asm/msr-index.h |  9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/tools/include/linux/const.h b/tools/include/linux/const.h
-index 7b55a55..81b8aae 100644
---- a/tools/include/linux/const.h
-+++ b/tools/include/linux/const.h
-@@ -1,9 +1,6 @@
- #ifndef _LINUX_CONST_H
- #define _LINUX_CONST_H
+diff --git a/tools/arch/x86/include/asm/msr-index.h b/tools/arch/x86/include/asm/msr-index.h
+index d5e517d..12c9684 100644
+--- a/tools/arch/x86/include/asm/msr-index.h
++++ b/tools/arch/x86/include/asm/msr-index.h
+@@ -41,6 +41,10 @@
  
--#include <uapi/linux/const.h>
--
--#define UL(x)		(_UL(x))
--#define ULL(x)		(_ULL(x))
-+#include <vdso/const.h>
+ /* Intel MSRs. Some also available on other CPUs */
  
- #endif /* _LINUX_CONST_H */
-diff --git a/tools/include/vdso/const.h b/tools/include/vdso/const.h
-new file mode 100644
-index 0000000..94b385a
---- /dev/null
-+++ b/tools/include/vdso/const.h
-@@ -0,0 +1,10 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef __VDSO_CONST_H
-+#define __VDSO_CONST_H
++#define MSR_TEST_CTRL				0x00000033
++#define MSR_TEST_CTRL_SPLIT_LOCK_DETECT_BIT	29
++#define MSR_TEST_CTRL_SPLIT_LOCK_DETECT		BIT(MSR_TEST_CTRL_SPLIT_LOCK_DETECT_BIT)
 +
-+#include <uapi/linux/const.h>
+ #define MSR_IA32_SPEC_CTRL		0x00000048 /* Speculation Control */
+ #define SPEC_CTRL_IBRS			BIT(0)	   /* Indirect Branch Restricted Speculation */
+ #define SPEC_CTRL_STIBP_SHIFT		1	   /* Single Thread Indirect Branch Predictor (STIBP) bit */
+@@ -70,6 +74,11 @@
+  */
+ #define MSR_IA32_UMWAIT_CONTROL_TIME_MASK	(~0x03U)
+ 
++/* Abbreviated from Intel SDM name IA32_CORE_CAPABILITIES */
++#define MSR_IA32_CORE_CAPS			  0x000000cf
++#define MSR_IA32_CORE_CAPS_SPLIT_LOCK_DETECT_BIT  5
++#define MSR_IA32_CORE_CAPS_SPLIT_LOCK_DETECT	  BIT(MSR_IA32_CORE_CAPS_SPLIT_LOCK_DETECT_BIT)
 +
-+#define UL(x)		(_UL(x))
-+#define ULL(x)		(_ULL(x))
-+
-+#endif /* __VDSO_CONST_H */
-diff --git a/tools/perf/check-headers.sh b/tools/perf/check-headers.sh
-index bfb21d0..c905c68 100755
---- a/tools/perf/check-headers.sh
-+++ b/tools/perf/check-headers.sh
-@@ -23,6 +23,7 @@ include/uapi/linux/vhost.h
- include/uapi/sound/asound.h
- include/linux/bits.h
- include/linux/const.h
-+include/vdso/const.h
- include/linux/hash.h
- include/uapi/linux/hw_breakpoint.h
- arch/x86/include/asm/disabled-features.h
+ #define MSR_PKG_CST_CONFIG_CONTROL	0x000000e2
+ #define NHM_C3_AUTO_DEMOTE		(1UL << 25)
+ #define NHM_C1_AUTO_DEMOTE		(1UL << 26)
