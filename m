@@ -2,40 +2,42 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 432EE1ABC52
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Apr 2020 11:13:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E5181ABC5F
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Apr 2020 11:13:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2501956AbgDPJLl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 16 Apr 2020 05:11:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37678 "EHLO
+        id S2503559AbgDPJMn (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 16 Apr 2020 05:12:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2502370AbgDPIb7 (ORCPT
+        with ESMTP id S2502304AbgDPIbh (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 16 Apr 2020 04:31:59 -0400
+        Thu, 16 Apr 2020 04:31:37 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E04EC025487;
-        Thu, 16 Apr 2020 01:31:39 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6354C08C5F2;
+        Thu, 16 Apr 2020 01:31:35 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jOzvr-0000r1-OH; Thu, 16 Apr 2020 10:31:35 +0200
+        id 1jOzvl-0000qT-RS; Thu, 16 Apr 2020 10:31:30 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5195A1C03A9;
-        Thu, 16 Apr 2020 10:31:30 +0200 (CEST)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 6C99D1C03A9;
+        Thu, 16 Apr 2020 10:31:29 +0200 (CEST)
 Date:   Thu, 16 Apr 2020 08:31:29 -0000
 From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf python: Check if clang supports
- -fno-semantic-interposition
+Subject: [tip: perf/urgent] tools headers: Update linux/vdso.h and grab a copy
+ of vdso/const.h
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         Jiri Olsa <jolsa@kernel.org>,
         Namhyung Kim <namhyung@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Vincenzo Frascino <vincenzo.frascino@arm.com>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158702588996.28353.6714987613967508418.tip-bot2@tip-bot2>
+Message-ID: <158702588903.28353.2967832668276700000.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,54 +53,77 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     9a00df311b5c1dfb7284ea22070772803dd0c95e
-Gitweb:        https://git.kernel.org/tip/9a00df311b5c1dfb7284ea22070772803dd0c95e
+Commit-ID:     ca64d84e93762f4e587e040a44ad9f6089afc777
+Gitweb:        https://git.kernel.org/tip/ca64d84e93762f4e587e040a44ad9f6089afc777
 Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Mon, 06 Apr 2020 10:30:16 -03:00
+AuthorDate:    Tue, 14 Apr 2020 08:52:23 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Tue, 14 Apr 2020 08:43:18 -03:00
+CommitterDate: Tue, 14 Apr 2020 08:55:03 -03:00
 
-perf python: Check if clang supports -fno-semantic-interposition
+tools headers: Update linux/vdso.h and grab a copy of vdso/const.h
 
-The set of C compiler options used by distros to build python bindings
-may include options that are unknown to clang, we check for a variety of
-such options, add -fno-semantic-interposition to that mix:
+To get in line with:
 
-This fixes the build on, among others, Manjaro Linux:
+  8165b57bca21 ("linux/const.h: Extract common header for vDSO")
 
-    GEN      /tmp/build/perf/python/perf.so
-  clang-9: error: unknown argument: '-fno-semantic-interposition'
-  error: command 'clang' failed with exit status 1
-  make: Leaving directory '/git/perf/tools/perf'
+And silence this tools/perf/ build warning:
 
-  [perfbuilder@602aed1c266d ~]$ gcc -v
-  Using built-in specs.
-  COLLECT_GCC=gcc
-  COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-pc-linux-gnu/9.3.0/lto-wrapper
-  Target: x86_64-pc-linux-gnu
-  Configured with: /build/gcc/src/gcc/configure --prefix=/usr --libdir=/usr/lib --libexecdir=/usr/lib --mandir=/usr/share/man --infodir=/usr/share/info --with-pkgversion='Arch Linux 9.3.0-1' --with-bugurl=https://bugs.archlinux.org/ --enable-languages=c,c++,ada,fortran,go,lto,objc,obj-c++,d --enable-shared --enable-threads=posix --with-system-zlib --with-isl --enable-__cxa_atexit --disable-libunwind-exceptions --enable-clocale=gnu --disable-libstdcxx-pch --disable-libssp --enable-gnu-unique-object --enable-linker-build-id --enable-lto --enable-plugin --enable-install-libiberty --with-linker-hash-style=gnu --enable-gnu-indirect-function --enable-multilib --disable-werror --enable-checking=release --enable-default-pie --enable-default-ssp --enable-cet=auto gdc_include_dir=/usr/include/dlang/gdc
-  Thread model: posix
-  gcc version 9.3.0 (Arch Linux 9.3.0-1)
-  [perfbuilder@602aed1c266d ~]$
+  Warning: Kernel ABI header at 'tools/include/linux/const.h' differs from latest version at 'include/linux/const.h'
+  diff -u tools/include/linux/const.h include/linux/const.h
 
 Cc: Adrian Hunter <adrian.hunter@intel.com>
 Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/setup.py | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/include/linux/const.h |  5 +----
+ tools/include/vdso/const.h  | 10 ++++++++++
+ tools/perf/check-headers.sh |  1 +
+ 3 files changed, 12 insertions(+), 4 deletions(-)
+ create mode 100644 tools/include/vdso/const.h
 
-diff --git a/tools/perf/util/setup.py b/tools/perf/util/setup.py
-index 347b2c0..c5e3e9a 100644
---- a/tools/perf/util/setup.py
-+++ b/tools/perf/util/setup.py
-@@ -21,6 +21,8 @@ if cc_is_clang:
-             vars[var] = sub("-fstack-clash-protection", "", vars[var])
-         if not clang_has_option("-fstack-protector-strong"):
-             vars[var] = sub("-fstack-protector-strong", "", vars[var])
-+        if not clang_has_option("-fno-semantic-interposition"):
-+            vars[var] = sub("-fno-semantic-interposition", "", vars[var])
+diff --git a/tools/include/linux/const.h b/tools/include/linux/const.h
+index 7b55a55..81b8aae 100644
+--- a/tools/include/linux/const.h
++++ b/tools/include/linux/const.h
+@@ -1,9 +1,6 @@
+ #ifndef _LINUX_CONST_H
+ #define _LINUX_CONST_H
  
- from distutils.core import setup, Extension
+-#include <uapi/linux/const.h>
+-
+-#define UL(x)		(_UL(x))
+-#define ULL(x)		(_ULL(x))
++#include <vdso/const.h>
  
+ #endif /* _LINUX_CONST_H */
+diff --git a/tools/include/vdso/const.h b/tools/include/vdso/const.h
+new file mode 100644
+index 0000000..94b385a
+--- /dev/null
++++ b/tools/include/vdso/const.h
+@@ -0,0 +1,10 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef __VDSO_CONST_H
++#define __VDSO_CONST_H
++
++#include <uapi/linux/const.h>
++
++#define UL(x)		(_UL(x))
++#define ULL(x)		(_ULL(x))
++
++#endif /* __VDSO_CONST_H */
+diff --git a/tools/perf/check-headers.sh b/tools/perf/check-headers.sh
+index bfb21d0..c905c68 100755
+--- a/tools/perf/check-headers.sh
++++ b/tools/perf/check-headers.sh
+@@ -23,6 +23,7 @@ include/uapi/linux/vhost.h
+ include/uapi/sound/asound.h
+ include/linux/bits.h
+ include/linux/const.h
++include/vdso/const.h
+ include/linux/hash.h
+ include/uapi/linux/hw_breakpoint.h
+ arch/x86/include/asm/disabled-features.h
