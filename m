@@ -2,42 +2,44 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B40031ABC62
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Apr 2020 11:13:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 80A111ABC57
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Apr 2020 11:13:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2503570AbgDPJMr (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 16 Apr 2020 05:12:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37600 "EHLO
+        id S2502617AbgDPJLq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 16 Apr 2020 05:11:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2502300AbgDPIbh (ORCPT
+        with ESMTP id S2502360AbgDPIb6 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 16 Apr 2020 04:31:37 -0400
+        Thu, 16 Apr 2020 04:31:58 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10559C03C1AD;
-        Thu, 16 Apr 2020 01:31:35 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99890C025481;
+        Thu, 16 Apr 2020 01:31:38 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jOzvj-0000oL-TX; Thu, 16 Apr 2020 10:31:28 +0200
+        id 1jOzvk-0000oh-F2; Thu, 16 Apr 2020 10:31:28 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 7E4571C0481;
-        Thu, 16 Apr 2020 10:31:27 +0200 (CEST)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 034091C001F;
+        Thu, 16 Apr 2020 10:31:28 +0200 (CEST)
 Date:   Thu, 16 Apr 2020 08:31:27 -0000
 From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] tools include UAPI: Sync linux/vhost.h with the
+Subject: [tip: perf/urgent] tools arch x86: Sync asm/cpufeatures.h with the
  kernel sources
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         Jiri Olsa <jolsa@kernel.org>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
         Namhyung Kim <namhyung@kernel.org>,
-        Tiwei Bie <tiwei.bie@intel.com>,
+        Borislav Petkov <bp@suse.de>,
+        Kim Phillips <kim.phillips@amd.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Wei Huang <wei.huang2@amd.com>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158702588715.28353.6580556963314135830.tip-bot2@tip-bot2>
+Message-ID: <158702588758.28353.11408739688549875929.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -53,93 +55,73 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     3df4d4bf3c6cf3b7509ff11d7b02b64603b43d24
-Gitweb:        https://git.kernel.org/tip/3df4d4bf3c6cf3b7509ff11d7b02b64603b43d24
+Commit-ID:     e00a2d907ec9bf0e8a46543857f25ce95980c341
+Gitweb:        https://git.kernel.org/tip/e00a2d907ec9bf0e8a46543857f25ce95980c341
 Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Tue, 14 Apr 2020 09:12:55 -03:00
+AuthorDate:    Tue, 14 Apr 2020 09:08:23 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Tue, 14 Apr 2020 11:02:46 -03:00
+CommitterDate: Tue, 14 Apr 2020 09:08:23 -03:00
 
-tools include UAPI: Sync linux/vhost.h with the kernel sources
+tools arch x86: Sync asm/cpufeatures.h with the kernel sources
 
-To get the changes in:
+To pick up the changes from:
 
-  4c8cf31885f6 ("vhost: introduce vDPA-based backend")
+  077168e241ec ("x86/mce/amd: Add PPIN support for AMD MCE")
+  753039ef8b2f ("x86/cpu/amd: Call init_amd_zn() om Family 19h processors too")
+  6650cdd9a8cc ("x86/split_lock: Enable split lock detection by kernel")
 
-Silencing this perf build warning:
+These don't cause any changes in tooling, just silences this perf build
+warning:
 
-  Warning: Kernel ABI header at 'tools/include/uapi/linux/vhost.h' differs from latest version at 'include/uapi/linux/vhost.h'
-  diff -u tools/include/uapi/linux/vhost.h include/uapi/linux/vhost.h
-
-This automatically picks these new ioctls, making tools such as 'perf
-trace' aware of them and possibly allowing to use the strings in
-filters, etc:
-
-  $ tools/perf/trace/beauty/vhost_virtio_ioctl.sh > before
-  $ cp include/uapi/linux/vhost.h tools/include/uapi/linux/vhost.h
-  $ tools/perf/trace/beauty/vhost_virtio_ioctl.sh > after
-  $ diff -u before after
-  --- before	2020-04-14 09:12:28.559748968 -0300
-  +++ after	2020-04-14 09:12:38.781696242 -0300
-  @@ -24,9 +24,16 @@
-   	[0x44] = "SCSI_GET_EVENTS_MISSED",
-   	[0x60] = "VSOCK_SET_GUEST_CID",
-   	[0x61] = "VSOCK_SET_RUNNING",
-  +	[0x72] = "VDPA_SET_STATUS",
-  +	[0x74] = "VDPA_SET_CONFIG",
-  +	[0x75] = "VDPA_SET_VRING_ENABLE",
-   };
-   static const char *vhost_virtio_ioctl_read_cmds[] = {
-   	[0x00] = "GET_FEATURES",
-   	[0x12] = "GET_VRING_BASE",
-   	[0x26] = "GET_BACKEND_FEATURES",
-  +	[0x70] = "VDPA_GET_DEVICE_ID",
-  +	[0x71] = "VDPA_GET_STATUS",
-  +	[0x73] = "VDPA_GET_CONFIG",
-  +	[0x76] = "VDPA_GET_VRING_NUM",
-   };
-  $
+  Warning: Kernel ABI header at 'tools/arch/x86/include/asm/cpufeatures.h' differs from latest version at 'arch/x86/include/asm/cpufeatures.h'
+  diff -u tools/arch/x86/include/asm/cpufeatures.h arch/x86/include/asm/cpufeatures.h
 
 Cc: Adrian Hunter <adrian.hunter@intel.com>
 Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Michael S. Tsirkin <mst@redhat.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Tiwei Bie <tiwei.bie@intel.com>
+Cc: Borislav Petkov <bp@suse.de>
+Cc: Kim Phillips <kim.phillips@amd.com>
+Cc: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: Wei Huang <wei.huang2@amd.com>
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/include/uapi/linux/vhost.h | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ tools/arch/x86/include/asm/cpufeatures.h | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/tools/include/uapi/linux/vhost.h b/tools/include/uapi/linux/vhost.h
-index 40d028e..9fe72e4 100644
---- a/tools/include/uapi/linux/vhost.h
-+++ b/tools/include/uapi/linux/vhost.h
-@@ -116,4 +116,28 @@
- #define VHOST_VSOCK_SET_GUEST_CID	_IOW(VHOST_VIRTIO, 0x60, __u64)
- #define VHOST_VSOCK_SET_RUNNING		_IOW(VHOST_VIRTIO, 0x61, int)
+diff --git a/tools/arch/x86/include/asm/cpufeatures.h b/tools/arch/x86/include/asm/cpufeatures.h
+index f3327cb..db18994 100644
+--- a/tools/arch/x86/include/asm/cpufeatures.h
++++ b/tools/arch/x86/include/asm/cpufeatures.h
+@@ -217,7 +217,7 @@
+ #define X86_FEATURE_IBRS		( 7*32+25) /* Indirect Branch Restricted Speculation */
+ #define X86_FEATURE_IBPB		( 7*32+26) /* Indirect Branch Prediction Barrier */
+ #define X86_FEATURE_STIBP		( 7*32+27) /* Single Thread Indirect Branch Predictors */
+-#define X86_FEATURE_ZEN			( 7*32+28) /* "" CPU is AMD family 0x17 (Zen) */
++#define X86_FEATURE_ZEN			( 7*32+28) /* "" CPU is AMD family 0x17 or above (Zen) */
+ #define X86_FEATURE_L1TF_PTEINV		( 7*32+29) /* "" L1TF workaround PTE inversion */
+ #define X86_FEATURE_IBRS_ENHANCED	( 7*32+30) /* Enhanced IBRS */
+ #define X86_FEATURE_MSR_IA32_FEAT_CTL	( 7*32+31) /* "" MSR IA32_FEAT_CTL configured */
+@@ -285,6 +285,7 @@
+ #define X86_FEATURE_CQM_MBM_LOCAL	(11*32+ 3) /* LLC Local MBM monitoring */
+ #define X86_FEATURE_FENCE_SWAPGS_USER	(11*32+ 4) /* "" LFENCE in user entry SWAPGS path */
+ #define X86_FEATURE_FENCE_SWAPGS_KERNEL	(11*32+ 5) /* "" LFENCE in kernel entry SWAPGS path */
++#define X86_FEATURE_SPLIT_LOCK_DETECT	(11*32+ 6) /* #AC for split lock */
  
-+/* VHOST_VDPA specific defines */
-+
-+/* Get the device id. The device ids follow the same definition of
-+ * the device id defined in virtio-spec.
-+ */
-+#define VHOST_VDPA_GET_DEVICE_ID	_IOR(VHOST_VIRTIO, 0x70, __u32)
-+/* Get and set the status. The status bits follow the same definition
-+ * of the device status defined in virtio-spec.
-+ */
-+#define VHOST_VDPA_GET_STATUS		_IOR(VHOST_VIRTIO, 0x71, __u8)
-+#define VHOST_VDPA_SET_STATUS		_IOW(VHOST_VIRTIO, 0x72, __u8)
-+/* Get and set the device config. The device config follows the same
-+ * definition of the device config defined in virtio-spec.
-+ */
-+#define VHOST_VDPA_GET_CONFIG		_IOR(VHOST_VIRTIO, 0x73, \
-+					     struct vhost_vdpa_config)
-+#define VHOST_VDPA_SET_CONFIG		_IOW(VHOST_VIRTIO, 0x74, \
-+					     struct vhost_vdpa_config)
-+/* Enable/disable the ring. */
-+#define VHOST_VDPA_SET_VRING_ENABLE	_IOW(VHOST_VIRTIO, 0x75, \
-+					     struct vhost_vring_state)
-+/* Get the max ring size. */
-+#define VHOST_VDPA_GET_VRING_NUM	_IOR(VHOST_VIRTIO, 0x76, __u16)
-+
- #endif
+ /* Intel-defined CPU features, CPUID level 0x00000007:1 (EAX), word 12 */
+ #define X86_FEATURE_AVX512_BF16		(12*32+ 5) /* AVX512 BFLOAT16 instructions */
+@@ -299,6 +300,7 @@
+ #define X86_FEATURE_AMD_IBRS		(13*32+14) /* "" Indirect Branch Restricted Speculation */
+ #define X86_FEATURE_AMD_STIBP		(13*32+15) /* "" Single Thread Indirect Branch Predictors */
+ #define X86_FEATURE_AMD_STIBP_ALWAYS_ON	(13*32+17) /* "" Single Thread Indirect Branch Predictors always-on preferred */
++#define X86_FEATURE_AMD_PPIN		(13*32+23) /* Protected Processor Inventory Number */
+ #define X86_FEATURE_AMD_SSBD		(13*32+24) /* "" Speculative Store Bypass Disable */
+ #define X86_FEATURE_VIRT_SSBD		(13*32+25) /* Virtualized Speculative Store Bypass Disable */
+ #define X86_FEATURE_AMD_SSB_NO		(13*32+26) /* "" Speculative Store Bypass is fixed in hardware. */
+@@ -367,6 +369,7 @@
+ #define X86_FEATURE_INTEL_STIBP		(18*32+27) /* "" Single Thread Indirect Branch Predictors */
+ #define X86_FEATURE_FLUSH_L1D		(18*32+28) /* Flush L1D cache */
+ #define X86_FEATURE_ARCH_CAPABILITIES	(18*32+29) /* IA32_ARCH_CAPABILITIES MSR (Intel) */
++#define X86_FEATURE_CORE_CAPABILITIES	(18*32+30) /* "" IA32_CORE_CAPABILITIES MSR */
+ #define X86_FEATURE_SPEC_CTRL_SSBD	(18*32+31) /* "" Speculative Store Bypass Disable */
+ 
+ /*
