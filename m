@@ -2,40 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2AB981ADA88
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 17 Apr 2020 11:57:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 08B511ADA83
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 17 Apr 2020 11:56:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728113AbgDQJ4u (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 17 Apr 2020 05:56:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49322 "EHLO
+        id S1726424AbgDQJ4r (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 17 Apr 2020 05:56:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727976AbgDQJ4t (ORCPT
+        with ESMTP id S1726224AbgDQJ4q (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 17 Apr 2020 05:56:49 -0400
+        Fri, 17 Apr 2020 05:56:46 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0470CC061A0C;
-        Fri, 17 Apr 2020 02:56:49 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC79BC061A0C;
+        Fri, 17 Apr 2020 02:56:46 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jPNjp-0005er-Dm; Fri, 17 Apr 2020 11:56:45 +0200
+        id 1jPNjo-0005eQ-UI; Fri, 17 Apr 2020 11:56:45 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 12C621C0072;
-        Fri, 17 Apr 2020 11:56:45 +0200 (CEST)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 9AE901C03A9;
+        Fri, 17 Apr 2020 11:56:44 +0200 (CEST)
 Date:   Fri, 17 Apr 2020 09:56:44 -0000
-From:   "tip-bot2 for Grygorii Strashko" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Atish Patra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/urgent] irqchip/ti-sci-inta: Fix processing of masked irqs
-Cc:     Grygorii Strashko <grygorii.strashko@ti.com>,
-        Marc Zyngier <maz@kernel.org>,
-        Lokesh Vutla <lokeshvutla@ti.com>, stable@vger.kernel.org,
+Subject: [tip: irq/urgent] irqchip/sifive-plic: Fix maximum priority threshold value
+Cc:     Atish Patra <atish.patra@wdc.com>, Marc Zyngier <maz@kernel.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200408191532.31252-1-grygorii.strashko@ti.com>
-References: <20200408191532.31252-1-grygorii.strashko@ti.com>
+In-Reply-To: <20200403014609.71831-1-atish.patra@wdc.com>
+References: <20200403014609.71831-1-atish.patra@wdc.com>
 MIME-Version: 1.0
-Message-ID: <158711740470.28353.5640568811566417444.tip-bot2@tip-bot2>
+Message-ID: <158711740426.28353.7000758061891659113.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,54 +49,38 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/urgent branch of tip:
 
-Commit-ID:     3688b0db5c331f4ec3fa5eb9f670a4b04f530700
-Gitweb:        https://git.kernel.org/tip/3688b0db5c331f4ec3fa5eb9f670a4b04f530700
-Author:        Grygorii Strashko <grygorii.strashko@ti.com>
-AuthorDate:    Wed, 08 Apr 2020 22:15:32 +03:00
+Commit-ID:     d727be7bbf7b68ccc18a3278469325d8f486d75b
+Gitweb:        https://git.kernel.org/tip/d727be7bbf7b68ccc18a3278469325d8f486d75b
+Author:        Atish Patra <atish.patra@wdc.com>
+AuthorDate:    Thu, 02 Apr 2020 18:46:09 -07:00
 Committer:     Marc Zyngier <maz@kernel.org>
 CommitterDate: Fri, 17 Apr 2020 08:59:28 +01:00
 
-irqchip/ti-sci-inta: Fix processing of masked irqs
+irqchip/sifive-plic: Fix maximum priority threshold value
 
-The ti_sci_inta_irq_handler() does not take into account INTA IRQs state
-(masked/unmasked) as it uses INTA_STATUS_CLEAR_j register to get INTA IRQs
-status, which provides raw status value.
-This causes hard IRQ handlers to be called or threaded handlers to be
-scheduled many times even if corresponding INTA IRQ is masked.
-Above, first of all, affects the LEVEL interrupts processing and causes
-unexpected behavior up the system stack or crash.
+As per the PLIC specification, maximum priority threshold value is 0x7
+not 0xF. Even though it doesn't cause any error in qemu/hifive unleashed,
+there may be some implementation which checks the upper bound resulting in
+an illegal access.
 
-Fix it by using the Interrupt Masked Status INTA_STATUSM_j register which
-provides masked INTA IRQs status.
-
-Fixes: 9f1463b86c13 ("irqchip/ti-sci-inta: Add support for Interrupt Aggregator driver")
-Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
+Fixes: ccbe80bad571 ("irqchip/sifive-plic: Enable/Disable external interrupts upon cpu online/offline")
+Signed-off-by: Atish Patra <atish.patra@wdc.com>
 Signed-off-by: Marc Zyngier <maz@kernel.org>
-Reviewed-by: Lokesh Vutla <lokeshvutla@ti.com>
-Link: https://lore.kernel.org/r/20200408191532.31252-1-grygorii.strashko@ti.com
-Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20200403014609.71831-1-atish.patra@wdc.com
 ---
- drivers/irqchip/irq-ti-sci-inta.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/irqchip/irq-sifive-plic.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/irqchip/irq-ti-sci-inta.c b/drivers/irqchip/irq-ti-sci-inta.c
-index 8f6e6b0..7e3ebf6 100644
---- a/drivers/irqchip/irq-ti-sci-inta.c
-+++ b/drivers/irqchip/irq-ti-sci-inta.c
-@@ -37,6 +37,7 @@
- #define VINT_ENABLE_SET_OFFSET	0x0
- #define VINT_ENABLE_CLR_OFFSET	0x8
- #define VINT_STATUS_OFFSET	0x18
-+#define VINT_STATUS_MASKED_OFFSET	0x20
+diff --git a/drivers/irqchip/irq-sifive-plic.c b/drivers/irqchip/irq-sifive-plic.c
+index c34fb3a..d0a71fe 100644
+--- a/drivers/irqchip/irq-sifive-plic.c
++++ b/drivers/irqchip/irq-sifive-plic.c
+@@ -56,7 +56,7 @@
+ #define     CONTEXT_THRESHOLD		0x00
+ #define     CONTEXT_CLAIM		0x04
  
- /**
-  * struct ti_sci_inta_event_desc - Description of an event coming to
-@@ -116,7 +117,7 @@ static void ti_sci_inta_irq_handler(struct irq_desc *desc)
- 	chained_irq_enter(irq_desc_get_chip(desc), desc);
+-#define	PLIC_DISABLE_THRESHOLD		0xf
++#define	PLIC_DISABLE_THRESHOLD		0x7
+ #define	PLIC_ENABLE_THRESHOLD		0
  
- 	val = readq_relaxed(inta->base + vint_desc->vint_id * 0x1000 +
--			    VINT_STATUS_OFFSET);
-+			    VINT_STATUS_MASKED_OFFSET);
- 
- 	for_each_set_bit(bit, &val, MAX_EVENTS_PER_VINT) {
- 		virq = irq_find_mapping(domain, vint_desc->events[bit].hwirq);
+ struct plic_priv {
