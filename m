@@ -2,40 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B5A8B1AEBF0
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 18 Apr 2020 12:54:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5676F1AF1C8
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 18 Apr 2020 17:49:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726011AbgDRKy6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 18 Apr 2020 06:54:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54646 "EHLO
+        id S1726069AbgDRPtt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 18 Apr 2020 11:49:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43266 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725923AbgDRKy5 (ORCPT
+        by vger.kernel.org with ESMTP id S1725879AbgDRPtt (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 18 Apr 2020 06:54:57 -0400
+        Sat, 18 Apr 2020 11:49:49 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99F4DC061A0C;
-        Sat, 18 Apr 2020 03:54:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AE18C061A0C;
+        Sat, 18 Apr 2020 08:49:49 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jPl7c-0007eh-JE; Sat, 18 Apr 2020 12:54:52 +0200
+        id 1jPpiz-0002yr-VC; Sat, 18 Apr 2020 17:49:46 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 256FE1C03A9;
-        Sat, 18 Apr 2020 12:54:51 +0200 (CEST)
-Date:   Sat, 18 Apr 2020 10:54:50 -0000
-From:   "tip-bot2 for Tony Luck" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 647A51C0330;
+        Sat, 18 Apr 2020 17:49:45 +0200 (CEST)
+Date:   Sat, 18 Apr 2020 15:49:44 -0000
+From:   "tip-bot2 for Mark Brown" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/split_lock: Bits in IA32_CORE_CAPABILITIES are
- not architectural
-Cc:     Tony Luck <tony.luck@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
+Subject: [tip: x86/asm] x86/asm: Provide a Kconfig symbol for disabling old
+ assembly annotations
+Cc:     Mark Brown <broonie@kernel.org>, Borislav Petkov <bp@suse.de>,
+        Jiri Slaby <jslaby@suse.cz>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200416205754.21177-3-tony.luck@intel.com>
-References: <20200416205754.21177-3-tony.luck@intel.com>
+In-Reply-To: <20200416182402.6206-1-broonie@kernel.org>
+References: <20200416182402.6206-1-broonie@kernel.org>
 MIME-Version: 1.0
-Message-ID: <158720729077.28353.13428455301119141580.tip-bot2@tip-bot2>
+Message-ID: <158722498497.28353.17087908645261344925.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,101 +49,91 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the x86/asm branch of tip:
 
-Commit-ID:     48fd5b5ee714714f4cf9f9e1cba3b49b1fd40ed6
-Gitweb:        https://git.kernel.org/tip/48fd5b5ee714714f4cf9f9e1cba3b49b1fd40ed6
-Author:        Tony Luck <tony.luck@intel.com>
-AuthorDate:    Thu, 16 Apr 2020 13:57:53 -07:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sat, 18 Apr 2020 12:48:44 +02:00
+Commit-ID:     2ce0d7f9766f0e49bb54f149c77bae89464932fb
+Gitweb:        https://git.kernel.org/tip/2ce0d7f9766f0e49bb54f149c77bae89464932fb
+Author:        Mark Brown <broonie@kernel.org>
+AuthorDate:    Thu, 16 Apr 2020 19:24:02 +01:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Sat, 18 Apr 2020 17:43:09 +02:00
 
-x86/split_lock: Bits in IA32_CORE_CAPABILITIES are not architectural
+x86/asm: Provide a Kconfig symbol for disabling old assembly annotations
 
-The Intel Software Developers' Manual erroneously listed bit 5 of the
-IA32_CORE_CAPABILITIES register as an architectural feature. It is not.
+As x86 was converted to use the modern SYM_ annotations for assembly,
+ifdefs were added to remove the generic definitions of the old style
+annotations on x86. Rather than collect a list of architectures in the
+ifdefs as more architectures are converted over, provide a Kconfig
+symbol for this and update x86 to use it.
 
-Features enumerated by IA32_CORE_CAPABILITIES are model specific and
-implementation details may vary in different cpu models. Thus it is only
-safe to trust features after checking the CPU model.
-
-Icelake client and server models are known to implement the split lock
-detect feature even though they don't enumerate IA32_CORE_CAPABILITIES
-
-[ tglx: Use switch() for readability and massage comments ]
-
-Fixes: 6650cdd9a8cc ("x86/split_lock: Enable split lock detection by kernel")
-Signed-off-by: Tony Luck <tony.luck@intel.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20200416205754.21177-3-tony.luck@intel.com
-
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Acked-by: Jiri Slaby <jslaby@suse.cz>
+Link: https://lkml.kernel.org/r/20200416182402.6206-1-broonie@kernel.org
 ---
- arch/x86/kernel/cpu/intel.c | 45 ++++++++++++++++++++++++------------
- 1 file changed, 31 insertions(+), 14 deletions(-)
+ arch/x86/Kconfig        | 1 +
+ include/linux/linkage.h | 8 ++++----
+ lib/Kconfig             | 3 +++
+ 3 files changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/intel.c b/arch/x86/kernel/cpu/intel.c
-index ec0d8c7..c23ad48 100644
---- a/arch/x86/kernel/cpu/intel.c
-+++ b/arch/x86/kernel/cpu/intel.c
-@@ -1120,10 +1120,17 @@ void switch_to_sld(unsigned long tifn)
- }
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 1d6104e..e3d22ed 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -91,6 +91,7 @@ config X86
+ 	select ARCH_USE_BUILTIN_BSWAP
+ 	select ARCH_USE_QUEUED_RWLOCKS
+ 	select ARCH_USE_QUEUED_SPINLOCKS
++	select ARCH_USE_SYM_ANNOTATIONS
+ 	select ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH
+ 	select ARCH_WANT_DEFAULT_BPF_JIT	if X86_64
+ 	select ARCH_WANTS_DYNAMIC_TASK_STRUCT
+diff --git a/include/linux/linkage.h b/include/linux/linkage.h
+index 9280209..d796ec2 100644
+--- a/include/linux/linkage.h
++++ b/include/linux/linkage.h
+@@ -105,7 +105,7 @@
  
- /*
-- * The following processors have the split lock detection feature. But
-- * since they don't have the IA32_CORE_CAPABILITIES MSR, the feature cannot
-- * be enumerated. Enable it by family and model matching on these
-- * processors.
-+ * Bits in the IA32_CORE_CAPABILITIES are not architectural, so they should
-+ * only be trusted if it is confirmed that a CPU model implements a
-+ * specific feature at a particular bit position.
-+ *
-+ * The possible driver data field values:
-+ *
-+ * - 0: CPU models that are known to have the per-core split-lock detection
-+ *	feature even though they do not enumerate IA32_CORE_CAPABILITIES.
-+ *
-+ * - 1: CPU models which may enumerate IA32_CORE_CAPABILITIES and if so use
-+ *      bit 5 to enumerate the per-core split-lock detection feature.
-  */
- static const struct x86_cpu_id split_lock_cpu_ids[] __initconst = {
- 	X86_MATCH_INTEL_FAM6_MODEL(ICELAKE_X,		0),
-@@ -1133,19 +1140,29 @@ static const struct x86_cpu_id split_lock_cpu_ids[] __initconst = {
+ /* === DEPRECATED annotations === */
  
- void __init cpu_set_core_cap_bits(struct cpuinfo_x86 *c)
- {
--	u64 ia32_core_caps = 0;
-+	const struct x86_cpu_id *m;
-+	u64 ia32_core_caps;
+-#ifndef CONFIG_X86
++#ifndef CONFIG_ARCH_USE_SYM_ANNOTATIONS
+ #ifndef GLOBAL
+ /* deprecated, use SYM_DATA*, SYM_ENTRY, or similar */
+ #define GLOBAL(name) \
+@@ -118,10 +118,10 @@
+ #define ENTRY(name) \
+ 	SYM_FUNC_START(name)
+ #endif
+-#endif /* CONFIG_X86 */
++#endif /* CONFIG_ARCH_USE_SYM_ANNOTATIONS */
+ #endif /* LINKER_SCRIPT */
+ 
+-#ifndef CONFIG_X86
++#ifndef CONFIG_ARCH_USE_SYM_ANNOTATIONS
+ #ifndef WEAK
+ /* deprecated, use SYM_FUNC_START_WEAK* */
+ #define WEAK(name)	   \
+@@ -143,7 +143,7 @@
+ #define ENDPROC(name) \
+ 	SYM_FUNC_END(name)
+ #endif
+-#endif /* CONFIG_X86 */
++#endif /* CONFIG_ARCH_USE_SYM_ANNOTATIONS */
+ 
+ /* === generic annotations === */
+ 
+diff --git a/lib/Kconfig b/lib/Kconfig
+index 5d53f96..e831e1f 100644
+--- a/lib/Kconfig
++++ b/lib/Kconfig
+@@ -80,6 +80,9 @@ config ARCH_USE_CMPXCHG_LOCKREF
+ config ARCH_HAS_FAST_MULTIPLIER
+ 	bool
+ 
++config ARCH_USE_SYM_ANNOTATIONS
++	bool
 +
-+	if (boot_cpu_has(X86_FEATURE_HYPERVISOR))
-+		return;
- 
--	if (c->x86_vendor != X86_VENDOR_INTEL)
-+	m = x86_match_cpu(split_lock_cpu_ids);
-+	if (!m)
- 		return;
--	if (cpu_has(c, X86_FEATURE_CORE_CAPABILITIES)) {
--		/* Enumerate features reported in IA32_CORE_CAPABILITIES MSR. */
-+
-+	switch (m->driver_data) {
-+	case 0:
-+		break;
-+	case 1:
-+		if (!cpu_has(c, X86_FEATURE_CORE_CAPABILITIES))
-+			return;
- 		rdmsrl(MSR_IA32_CORE_CAPS, ia32_core_caps);
--	} else if (!boot_cpu_has(X86_FEATURE_HYPERVISOR)) {
--		/* Enumerate split lock detection by family and model. */
--		if (x86_match_cpu(split_lock_cpu_ids))
--			ia32_core_caps |= MSR_IA32_CORE_CAPS_SPLIT_LOCK_DETECT;
-+		if (!(ia32_core_caps & MSR_IA32_CORE_CAPS_SPLIT_LOCK_DETECT))
-+			return;
-+		break;
-+	default:
-+		return;
- 	}
- 
--	if (ia32_core_caps & MSR_IA32_CORE_CAPS_SPLIT_LOCK_DETECT)
--		split_lock_setup();
-+	split_lock_setup();
- }
+ config INDIRECT_PIO
+ 	bool "Access I/O in non-MMIO mode"
+ 	depends on ARM64
