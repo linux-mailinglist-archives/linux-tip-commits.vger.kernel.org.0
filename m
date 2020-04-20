@@ -2,85 +2,74 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BB5601AFBD0
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 19 Apr 2020 17:55:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 41CAB1B03DA
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 20 Apr 2020 10:06:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726160AbgDSPz5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 19 Apr 2020 11:55:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38818 "EHLO
+        id S1725886AbgDTIGl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 20 Apr 2020 04:06:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725939AbgDSPz5 (ORCPT
+        with ESMTP id S1725865AbgDTIGk (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 19 Apr 2020 11:55:57 -0400
-Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3017AC061A0C;
-        Sun, 19 Apr 2020 08:55:57 -0700 (PDT)
-Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tip-bot2@linutronix.de>)
-        id 1jQCIU-0003qi-8r; Sun, 19 Apr 2020 17:55:54 +0200
-Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C20DE1C0325;
-        Sun, 19 Apr 2020 17:55:50 +0200 (CEST)
-Date:   Sun, 19 Apr 2020 15:55:50 -0000
-From:   "tip-bot2 for Kaitao Cheng" <tip-bot2@linutronix.de>
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: smp/core] smp: Use smp_call_func_t in on_each_cpu()
-Cc:     Kaitao Cheng <pilgrimtao@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200417162451.91969-1-pilgrimtao@gmail.com>
-References: <20200417162451.91969-1-pilgrimtao@gmail.com>
+        Mon, 20 Apr 2020 04:06:40 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC619C061A0C;
+        Mon, 20 Apr 2020 01:06:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=Vf8hYM2eZOPkLhH5fgdfAeqmsd0pBAaJVj9Hv3nUGRY=; b=iRRCcEPOCB+OYDKNIbSiFvluqm
+        h280tgLpDVrw8XD1rLIJp0cdL5BOGOrGdJBkxGvdtyIo7hjcucNZDcVRd1LMvwTj/jf3IEDEI4Rzv
+        3O/uzz68cL7AYiJ1EBTDuSowTwPyc5ZyT8hhVjFvcErdxmQ9Ww0KOL21lZ5serLSbkV8mNNmDn6S/
+        SwEmM8PyUhXeAvr/Qm9Sm0oC6oN1kxe5Z5OEHFQhX3R45rWDZplYsN3aOkPwxx7u2ZvuHILb6tm/T
+        F0JNRCrTLmstdhhe/piFnOOczqg4FlkK2fh05wasPF8/U6u2DdEtR1rm5FHPR3M1ViNQGCFnpRdwl
+        4CH2a+vg==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1jQRRw-0004Gg-FZ; Mon, 20 Apr 2020 08:06:40 +0000
+Date:   Mon, 20 Apr 2020 01:06:40 -0700
+From:   Christoph Hellwig <hch@infradead.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-tip-commits@vger.kernel.org, Tony Luck <tony.luck@intel.com>,
+        Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>
+Subject: Re: [tip: ras/core] x86/mce: Add a struct mce.kflags field
+Message-ID: <20200420080640.GB32592@infradead.org>
+References: <20200214222720.13168-4-tony.luck@intel.com>
+ <158694418849.28353.16699731019695420884.tip-bot2@tip-bot2>
 MIME-Version: 1.0
-Message-ID: <158731175026.28353.13223791220426564135.tip-bot2@tip-bot2>
-X-Mailer: tip-git-log-daemon
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <158694418849.28353.16699731019695420884.tip-bot2@tip-bot2>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the smp/core branch of tip:
+On Wed, Apr 15, 2020 at 09:49:48AM -0000, tip-bot2 for Tony Luck wrote:
+> The following commit has been merged into the ras/core branch of tip:
+> 
+> Commit-ID:     1de08dccd383482a3e88845d3554094d338f5ff9
+> Gitweb:        https://git.kernel.org/tip/1de08dccd383482a3e88845d3554094d338f5ff9
+> Author:        Tony Luck <tony.luck@intel.com>
+> AuthorDate:    Fri, 14 Feb 2020 14:27:16 -08:00
+> Committer:     Borislav Petkov <bp@suse.de>
+> CommitterDate: Tue, 14 Apr 2020 15:58:43 +02:00
+> 
+> x86/mce: Add a struct mce.kflags field
+> 
+> There can be many different subsystems register on the mce handler
+> chain. Add a new bitmask field and define values so that handlers can
+> indicate whether they took any action to log or otherwise handle an
+> error.
+> 
+> The default handler at the end of the chain can use this information to
+> decide whether to print to the console log.
+> 
+> Boris suggested a generic name and leaving plenty of spare bits for
+> possible future use.
+> 
+>  [ bp: Move flag bits to the internal mce.h header and use BIT_ULL(). ]
 
-Commit-ID:     58eb7b77ad01f058e523554cb7bae7272a7d2579
-Gitweb:        https://git.kernel.org/tip/58eb7b77ad01f058e523554cb7bae7272a7d2579
-Author:        Kaitao Cheng <pilgrimtao@gmail.com>
-AuthorDate:    Sat, 18 Apr 2020 00:24:51 +08:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sun, 19 Apr 2020 17:51:48 +02:00
-
-smp: Use smp_call_func_t in on_each_cpu()
-
-Use smp_call_func_t instead of the open coded function pointer argument.
-
-Signed-off-by: Kaitao Cheng <pilgrimtao@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Link: https://lkml.kernel.org/r/20200417162451.91969-1-pilgrimtao@gmail.com
-
----
- kernel/smp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/kernel/smp.c b/kernel/smp.c
-index 786092a..8430319 100644
---- a/kernel/smp.c
-+++ b/kernel/smp.c
-@@ -620,7 +620,7 @@ void __init smp_init(void)
-  * early_boot_irqs_disabled is set.  Use local_irq_save/restore() instead
-  * of local_irq_disable/enable().
-  */
--void on_each_cpu(void (*func) (void *info), void *info, int wait)
-+void on_each_cpu(smp_call_func_t func, void *info, int wait)
- {
- 	unsigned long flags;
- 
+Err, how can you add a new field to an uapi structure and not break
+things?
