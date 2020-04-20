@@ -2,46 +2,49 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B5C91B12EF
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 20 Apr 2020 19:27:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC68E1B168E
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 20 Apr 2020 22:03:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726758AbgDTR1I (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 20 Apr 2020 13:27:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49106 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726296AbgDTR1H (ORCPT
+        id S1726912AbgDTUDJ convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 20 Apr 2020 16:03:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46444 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725918AbgDTUDI (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 20 Apr 2020 13:27:07 -0400
+        Mon, 20 Apr 2020 16:03:08 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59727C061A0C;
-        Mon, 20 Apr 2020 10:27:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B8C8C061A0F;
+        Mon, 20 Apr 2020 13:03:08 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jQaCG-00035Q-7Y; Mon, 20 Apr 2020 19:27:04 +0200
+        id 1jQcdD-0005zY-48; Mon, 20 Apr 2020 22:03:03 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 8BBD41C007F;
-        Mon, 20 Apr 2020 19:27:03 +0200 (CEST)
-Date:   Mon, 20 Apr 2020 17:27:03 -0000
-From:   "tip-bot2 for Christian Brauner" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 88B281C007F;
+        Mon, 20 Apr 2020 22:03:02 +0200 (CEST)
+Date:   Mon, 20 Apr 2020 20:03:02 -0000
+From:   "tip-bot2 for Kees Cook" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/urgent] vdso/datapage: Use correct clock mode name in comment
-Cc:     Christian Brauner <christian.brauner@ubuntu.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Andrei Vagin <avagin@gmail.com>,
-        Vincenzo Frascino <vincenzo.frascino@arm.com>,
+Subject: [tip: core/core] arm64/elf: Disable automatic READ_IMPLIES_EXEC for
+ 64-bit address spaces
+Cc:     "Hector Marco-Gisbert" <hecmargi@upv.es>,
+        Kees Cook <keescook@chromium.org>,
+        Borislav Petkov <bp@suse.de>,
+        Jason Gunthorpe <jgg@mellanox.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200420100615.1549804-1-christian.brauner@ubuntu.com>
-References: <20200420100615.1549804-1-christian.brauner@ubuntu.com>
+In-Reply-To: <20200327064820.12602-7-keescook@chromium.org>
+References: <20200327064820.12602-7-keescook@chromium.org>
 MIME-Version: 1.0
-Message-ID: <158740362307.28353.13711119476762756523.tip-bot2@tip-bot2>
+Message-ID: <158741298213.28353.4215804588736774881.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8BIT
 X-Linutronix-Spam-Score: -1.0
 X-Linutronix-Spam-Level: -
 X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
@@ -50,54 +53,68 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/urgent branch of tip:
+The following commit has been merged into the core/core branch of tip:
 
-Commit-ID:     ac84bac4062e7fc24f5e2c61c6a414b2a00a29ad
-Gitweb:        https://git.kernel.org/tip/ac84bac4062e7fc24f5e2c61c6a414b2a00a29ad
-Author:        Christian Brauner <christian.brauner@ubuntu.com>
-AuthorDate:    Mon, 20 Apr 2020 12:06:15 +02:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 20 Apr 2020 19:19:52 +02:00
+Commit-ID:     6e0d6ac5f3d9d90271899f6d340872360fe1caee
+Gitweb:        https://git.kernel.org/tip/6e0d6ac5f3d9d90271899f6d340872360fe1caee
+Author:        Kees Cook <keescook@chromium.org>
+AuthorDate:    Thu, 26 Mar 2020 23:48:20 -07:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Mon, 20 Apr 2020 19:44:27 +02:00
 
-vdso/datapage: Use correct clock mode name in comment
+arm64/elf: Disable automatic READ_IMPLIES_EXEC for 64-bit address spaces
 
-While the explanation for time namespace <-> vdso interactions is very
-helpful it uses the wrong name in the comment when describing the clock
-mode making grepping a bit annoying.
+With arm64 64-bit environments, there should never be a need for automatic
+READ_IMPLIES_EXEC, as the architecture has always been execute-bit aware
+(as in, the default memory protection should be NX unless a region
+explicitly requests to be executable).
 
-This seems like an accidental oversight when moving from VCLOCK_TIMENS
-to VDSO_CLOCKMODE_TIMENS. It seems that
-660fd04f9317 ("lib/vdso: Prepare for time namespace support") misspelled
-VCLOCK_TIMENS as VLOCK_TIMENS which explains why it got missed when
-VCLOCK_TIMENS became VDSO_CLOCKMODE_TIMENS in
-2d6b01bd88cc ("lib/vdso: Move VCLOCK_TIMENS to vdso_clock_modes").
-
-Update the comment to use VDSO_CLOCKMODE_TIMENS.
-
-Fixes: 660fd04f9317 ("lib/vdso: Prepare for time namespace support")
-Fixes: 2d6b01bd88cc ("lib/vdso: Move VCLOCK_TIMENS to vdso_clock_modes")
-Signed-off-by: Christian Brauner <christian.brauner@ubuntu.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Andrei Vagin <avagin@gmail.com>
-Acked-by: Vincenzo Frascino <vincenzo.frascino@arm.com>
-Link: https://lkml.kernel.org/r/20200420100615.1549804-1-christian.brauner@ubuntu.com
-
+Suggested-by: Hector Marco-Gisbert <hecmargi@upv.es>
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Reviewed-by: Jason Gunthorpe <jgg@mellanox.com>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Link: https://lkml.kernel.org/r/20200327064820.12602-7-keescook@chromium.org
 ---
- include/vdso/datapage.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/include/asm/elf.h | 4 ++--
+ fs/compat_binfmt_elf.c       | 5 +++++
+ 2 files changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/include/vdso/datapage.h b/include/vdso/datapage.h
-index 5cbc9fc..7955c56 100644
---- a/include/vdso/datapage.h
-+++ b/include/vdso/datapage.h
-@@ -73,8 +73,8 @@ struct vdso_timestamp {
+diff --git a/arch/arm64/include/asm/elf.h b/arch/arm64/include/asm/elf.h
+index 0074e9f..0e7df6f 100644
+--- a/arch/arm64/include/asm/elf.h
++++ b/arch/arm64/include/asm/elf.h
+@@ -105,7 +105,7 @@
+  *                CPU*: | arm32      | arm64      |
+  * ELF:                 |            |            |
+  * ---------------------|------------|------------|
+- * missing PT_GNU_STACK | exec-all   | exec-all   |
++ * missing PT_GNU_STACK | exec-all   | exec-none  |
+  * PT_GNU_STACK == RWX  | exec-stack | exec-stack |
+  * PT_GNU_STACK == RW   | exec-none  | exec-none  |
   *
-  * @offset is used by the special time namespace VVAR pages which are
-  * installed instead of the real VVAR page. These namespace pages must set
-- * @seq to 1 and @clock_mode to VLOCK_TIMENS to force the code into the
-- * time namespace slow path. The namespace aware functions retrieve the
-+ * @seq to 1 and @clock_mode to VDSO_CLOCKMODE_TIMENS to force the code into
-+ * the time namespace slow path. The namespace aware functions retrieve the
-  * real system wide VVAR page, read host time and add the per clock offset.
-  * For clocks which are not affected by time namespace adjustment the
-  * offset must be zero.
+@@ -117,7 +117,7 @@
+  *  *all arm64 CPUs support NX, so there is no "lacks NX" column.
+  *
+  */
+-#define elf_read_implies_exec(ex, stk)	(stk == EXSTACK_DEFAULT)
++#define compat_elf_read_implies_exec(ex, stk)	(stk == EXSTACK_DEFAULT)
+ 
+ #define CORE_DUMP_USE_REGSET
+ #define ELF_EXEC_PAGESIZE	PAGE_SIZE
+diff --git a/fs/compat_binfmt_elf.c b/fs/compat_binfmt_elf.c
+index aaad4ca..3068d57 100644
+--- a/fs/compat_binfmt_elf.c
++++ b/fs/compat_binfmt_elf.c
+@@ -113,6 +113,11 @@
+ #define	arch_setup_additional_pages compat_arch_setup_additional_pages
+ #endif
+ 
++#ifdef	compat_elf_read_implies_exec
++#undef	elf_read_implies_exec
++#define	elf_read_implies_exec compat_elf_read_implies_exec
++#endif
++
+ /*
+  * Rename a few of the symbols that binfmt_elf.c will define.
+  * These are all local so the names don't really matter, but it
