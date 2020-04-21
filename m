@@ -2,40 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 42BF31B237F
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 21 Apr 2020 12:00:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 987451B2F22
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 21 Apr 2020 20:31:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728308AbgDUKAr (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 21 Apr 2020 06:00:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35254 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726018AbgDUKAn (ORCPT
+        id S1729302AbgDUSbD (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 21 Apr 2020 14:31:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57822 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725930AbgDUSbC (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 21 Apr 2020 06:00:43 -0400
+        Tue, 21 Apr 2020 14:31:02 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FA5EC061A0F;
-        Tue, 21 Apr 2020 03:00:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CA0BC0610D6;
+        Tue, 21 Apr 2020 11:31:02 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jQphk-0000PG-Ra; Tue, 21 Apr 2020 12:00:37 +0200
+        id 1jQxff-0000RR-5J; Tue, 21 Apr 2020 20:30:59 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 9F3321C0315;
-        Tue, 21 Apr 2020 12:00:29 +0200 (CEST)
-Date:   Tue, 21 Apr 2020 10:00:29 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 65F3C1C0315;
+        Tue, 21 Apr 2020 20:30:58 +0200 (CEST)
+Date:   Tue, 21 Apr 2020 18:30:58 -0000
 From:   "tip-bot2 for Masahiro Yamada" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/build] x86/boot/build: Add cpustr.h to targets and remove
- clean-files
+Subject: [tip: x86/build] x86/boot/build: Add phony targets in
+ arch/x86/boot/Makefile to PHONY
 Cc:     Masahiro Yamada <masahiroy@kernel.org>,
         Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200215063241.7437-1-masahiroy@kernel.org>
-References: <20200215063241.7437-1-masahiroy@kernel.org>
+In-Reply-To: <20200215063852.8298-2-masahiroy@kernel.org>
+References: <20200215063852.8298-2-masahiroy@kernel.org>
 MIME-Version: 1.0
-Message-ID: <158746322913.28353.10745610884854007143.tip-bot2@tip-bot2>
+Message-ID: <158749385800.28353.13640320845323735874.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,39 +51,44 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/build branch of tip:
 
-Commit-ID:     e3c7c1052271260955affbe65c4f328286fbe5fb
-Gitweb:        https://git.kernel.org/tip/e3c7c1052271260955affbe65c4f328286fbe5fb
+Commit-ID:     675a59b7dec6e03c5fb060f18fc25b2e56be3c7a
+Gitweb:        https://git.kernel.org/tip/675a59b7dec6e03c5fb060f18fc25b2e56be3c7a
 Author:        Masahiro Yamada <masahiroy@kernel.org>
-AuthorDate:    Sat, 15 Feb 2020 15:32:41 +09:00
+AuthorDate:    Sat, 15 Feb 2020 15:38:52 +09:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 21 Apr 2020 10:17:29 +02:00
+CommitterDate: Tue, 21 Apr 2020 18:30:58 +02:00
 
-x86/boot/build: Add cpustr.h to targets and remove clean-files
+x86/boot/build: Add phony targets in arch/x86/boot/Makefile to PHONY
 
-Files in $(targets) are always cleaned up. Move the 'targets' assignment
-out of the ifdef and remove 'clean-files'.
+These targets are correctly added to PHONY in arch/x86/Makefile, but
+not in arch/x86/boot/Makefile. Thus, with a file 'install' in the top
+directory, 'make install' does nothing:
+
+  $ touch install
+  $ make install
+  make[1]: 'install' is up to date.
+
+Add them to the PHONY targets in the boot Makefile too.
+
+ [ bp: Massage. ]
 
 Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20200215063241.7437-1-masahiroy@kernel.org
+Link: https://lkml.kernel.org/r/20200215063852.8298-2-masahiroy@kernel.org
 ---
- arch/x86/boot/Makefile | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/x86/boot/Makefile | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/arch/x86/boot/Makefile b/arch/x86/boot/Makefile
-index e17be90..02c8d1c 100644
+index f1bf4a7..4c53556 100644
 --- a/arch/x86/boot/Makefile
 +++ b/arch/x86/boot/Makefile
-@@ -57,11 +57,10 @@ $(obj)/cpu.o: $(obj)/cpustr.h
+@@ -128,6 +128,8 @@ quiet_cmd_genimage = GENIMAGE $3
+ cmd_genimage = sh $(srctree)/$(src)/genimage.sh $2 $3 $(obj)/bzImage \
+ 			$(obj)/mtools.conf '$(image_cmdline)' $(FDINITRD)
  
- quiet_cmd_cpustr = CPUSTR  $@
-       cmd_cpustr = $(obj)/mkcpustr > $@
--targets += cpustr.h
- $(obj)/cpustr.h: $(obj)/mkcpustr FORCE
- 	$(call if_changed,cpustr)
- endif
--clean-files += cpustr.h
-+targets += cpustr.h
- 
- # ---------------------------------------------------------------------------
- 
++PHONY += bzdisk fdimage fdimage144 fdimage288 isoimage bzlilo install
++
+ # This requires write access to /dev/fd0
+ bzdisk: $(obj)/bzImage $(obj)/mtools.conf
+ 	$(call cmd,genimage,bzdisk,/dev/fd0)
