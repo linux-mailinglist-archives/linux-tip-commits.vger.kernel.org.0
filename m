@@ -2,100 +2,91 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A01D51B2F3C
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 21 Apr 2020 20:37:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C5751B30CF
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 21 Apr 2020 21:56:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728419AbgDUSh1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 21 Apr 2020 14:37:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58828 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1729144AbgDUSh0 (ORCPT
+        id S1726323AbgDUT43 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 21 Apr 2020 15:56:29 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47754 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726364AbgDUT4U (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 21 Apr 2020 14:37:26 -0400
-Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81509C061BD3;
-        Tue, 21 Apr 2020 11:37:26 -0700 (PDT)
-Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tip-bot2@linutronix.de>)
-        id 1jQxlr-0000X2-1p; Tue, 21 Apr 2020 20:37:23 +0200
-Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 9A50A1C0315;
-        Tue, 21 Apr 2020 20:37:22 +0200 (CEST)
-Date:   Tue, 21 Apr 2020 18:37:22 -0000
-From:   "tip-bot2 for Dmitry Safonov" <tip-bot2@linutronix.de>
-Reply-to: linux-kernel@vger.kernel.org
+        Tue, 21 Apr 2020 15:56:20 -0400
+Received: from localhost (unknown [137.135.114.1])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id C22DE20767;
+        Tue, 21 Apr 2020 19:56:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1587498980;
+        bh=mASEkWPK7FWW9aU02J2lqLHb4G2iGN+jgHa8JpDIg7Y=;
+        h=Date:From:To:To:To:Cc:Cc:Cc:Subject:In-Reply-To:References:From;
+        b=LTC7OrWpQCddkDaOdRTFEouZI52fOz6gZs+DPSoEg+jMZ9c+wUyflBgiuPqFWrBFY
+         PCefbeowKqiKUY4Pwvf4te2CPFktegGKG0HMHrH4SV4o0YUrwK1MIuOzJ5zR1Kwvfo
+         FUojaiB4y9TTIJ6dSZ3XEiIbGREKPbrqdZKWbxoU=
+Date:   Tue, 21 Apr 2020 19:56:19 +0000
+From:   Sasha Levin <sashal@kernel.org>
+To:     Sasha Levin <sashal@kernel.org>
+To:     "tip-bot2 for James Morse" <tip-bot2@linutronix.de>
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/vdso] x86/vdso/vdso2c: Correct error messages on file open
-Cc:     Andrei Vagin <avagin@openvz.org>, Dmitry Safonov <dima@arista.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Andy Lutomirski <luto@kernel.org>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200420183256.660371-2-dima@arista.com>
-References: <20200420183256.660371-2-dima@arista.com>
-MIME-Version: 1.0
-Message-ID: <158749424225.28353.14361954844386828181.tip-bot2@tip-bot2>
-X-Mailer: tip-git-log-daemon
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+Cc:     Reinette Chatre <reinette.chatre@intel.com>
+Cc:     <stable@vger.kernel.org>
+Cc:     stable@vger.kernel.org
+Subject: Re: [tip: x86/urgent] x86/resctrl: Preserve CDP enable over CPU hotplug
+In-Reply-To: <158714555114.28353.8305275418595687988.tip-bot2@tip-bot2>
+References: <158714555114.28353.8305275418595687988.tip-bot2@tip-bot2>
+Message-Id: <20200421195619.C22DE20767@mail.kernel.org>
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/vdso branch of tip:
+Hi
 
-Commit-ID:     089ef5579fc1b0b748bfb1600b4392f42db6fd5f
-Gitweb:        https://git.kernel.org/tip/089ef5579fc1b0b748bfb1600b4392f42db6fd5f
-Author:        Dmitry Safonov <dima@arista.com>
-AuthorDate:    Mon, 20 Apr 2020 19:32:53 +01:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 21 Apr 2020 20:33:16 +02:00
+[This is an automated email]
 
-x86/vdso/vdso2c: Correct error messages on file open
+This commit has been processed because it contains a "Fixes:" tag
+fixing commit: 5ff193fbde20 ("x86/intel_rdt: Add basic resctrl filesystem support").
 
-err() message in main() is misleading: it should print `outfilename`,
-which is argv[3], not argv[2].
+The bot has tested the following trees: v5.6.5, v5.5.18, v5.4.33, v4.19.116, v4.14.176.
 
-Correct error messages to be more precise about what failed and for
-which file.
+v5.6.5: Build OK!
+v5.5.18: Build OK!
+v5.4.33: Build OK!
+v4.19.116: Failed to apply! Possible dependencies:
+    0f00717ecce4 ("x86/resctrl: Re-arrange the RDT init code")
+    1ad4fa41d99f ("x86/resctrl: Initialize the vendor-specific resource functions")
+    4d05bf71f157 ("x86/resctrl: Introduce AMD QOS feature")
+    a36c5ff560fb ("x86/resctrl: Bring cbm_validate() into the resource structure")
+    aa50453a448a ("x86/resctrl: Move all the macros to resctrl/internal.h")
 
-Co-developed-by: Andrei Vagin <avagin@openvz.org>
-Signed-off-by: Andrei Vagin <avagin@openvz.org>
-Signed-off-by: Dmitry Safonov <dima@arista.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Andy Lutomirski <luto@kernel.org>
-Link: https://lkml.kernel.org/r/20200420183256.660371-2-dima@arista.com
+v4.14.176: Failed to apply! Possible dependencies:
+    0af6a48da481 ("x86/intel_rdt: Ensure RDT cleanup on exit")
+    0f00717ecce4 ("x86/resctrl: Re-arrange the RDT init code")
+    19c635ab24a1 ("x86/intel_rdt/mba_sc: Enable/disable MBA software controller")
+    1ad4fa41d99f ("x86/resctrl: Initialize the vendor-specific resource functions")
+    1bd2a63b4f0d ("x86/intel_rdt/mba_sc: Add initialization support")
+    2244645ab194 ("x86/intel_rdt: Fix a silent failure when writing zero value schemata")
+    472ef09b40c5 ("x86/intel_rdt: Associate mode with each RDT resource group")
+    49f7b4efa110 ("x86/intel_rdt: Enable setting of exclusive mode")
+    4d05bf71f157 ("x86/resctrl: Introduce AMD QOS feature")
+    753694a8df31 ("x86/intel_rdt: Fix data type in parsing callbacks")
+    7604df6e16ae ("x86/intel_rdt: Support flexible data to parsing callbacks")
+    8205a078ba78 ("x86/intel_rdt/mba_sc: Add schemata support")
+    99adde9b370d ("x86/intel_rdt: Enable L2 CDP in MSR IA32_L2_QOS_CFG")
+    9ab9aa15c309 ("x86/intel_rdt: Ensure requested schemata respects mode")
+    9af4c0a6dc1a ("x86/intel_rdt: Making CBM name and type more explicit")
+    aa50453a448a ("x86/resctrl: Move all the macros to resctrl/internal.h")
+    c377dcfbee80 ("x86/intel_rdt: Add diagnostics when writing the schemata file")
+    d48d7a57f718 ("x86/intel_rdt: Introduce resource group's mode resctrl file")
+    de73f38f7680 ("x86/intel_rdt/mba_sc: Feedback loop to dynamically update mem bandwidth")
+    def10853930a ("x86/intel_rdt: Add two new resources for L2 Code and Data Prioritization (CDP)")
 
----
- arch/x86/entry/vdso/vdso2c.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/entry/vdso/vdso2c.c b/arch/x86/entry/vdso/vdso2c.c
-index 3842873..7380908 100644
---- a/arch/x86/entry/vdso/vdso2c.c
-+++ b/arch/x86/entry/vdso/vdso2c.c
-@@ -187,7 +187,7 @@ static void map_input(const char *name, void **addr, size_t *len, int prot)
- 
- 	int fd = open(name, O_RDONLY);
- 	if (fd == -1)
--		err(1, "%s", name);
-+		err(1, "open(%s)", name);
- 
- 	tmp_len = lseek(fd, 0, SEEK_END);
- 	if (tmp_len == (off_t)-1)
-@@ -240,7 +240,7 @@ int main(int argc, char **argv)
- 	outfilename = argv[3];
- 	outfile = fopen(outfilename, "w");
- 	if (!outfile)
--		err(1, "%s", argv[2]);
-+		err(1, "fopen(%s)", outfilename);
- 
- 	go(raw_addr, raw_len, stripped_addr, stripped_len, outfile, name);
- 
+NOTE: The patch will not be queued to stable trees until it is upstream.
+
+How should we proceed with this patch?
+
+-- 
+Thanks
+Sasha
