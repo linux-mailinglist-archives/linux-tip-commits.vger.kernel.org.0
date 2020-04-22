@@ -2,52 +2,45 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E4E51B446E
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Apr 2020 14:19:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2AF541B4C70
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Apr 2020 20:04:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729451AbgDVMTX convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 22 Apr 2020 08:19:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53452 "EHLO
+        id S1726154AbgDVSEJ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 22 Apr 2020 14:04:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50928 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728897AbgDVMR7 (ORCPT
+        by vger.kernel.org with ESMTP id S1726082AbgDVSEJ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 22 Apr 2020 08:17:59 -0400
+        Wed, 22 Apr 2020 14:04:09 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74496C03C1AE;
-        Wed, 22 Apr 2020 05:17:56 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12814C03C1A9;
+        Wed, 22 Apr 2020 11:04:09 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jREK4-0008D1-3F; Wed, 22 Apr 2020 14:17:48 +0200
+        id 1jRJjA-0006Gx-Hv; Wed, 22 Apr 2020 20:04:04 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 9AC801C081A;
-        Wed, 22 Apr 2020 14:17:39 +0200 (CEST)
-Date:   Wed, 22 Apr 2020 12:17:39 -0000
-From:   "tip-bot2 for Jiri Olsa" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 004C91C02FC;
+        Wed, 22 Apr 2020 20:04:03 +0200 (CEST)
+Date:   Wed, 22 Apr 2020 18:04:03 -0000
+From:   "tip-bot2 for Mihai Carabas" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf tools: Synthesize bpf_trampoline/dispatcher
- ksymbol event
-Cc:     Jiri Olsa <jolsa@kernel.org>, Song Liu <songliubraving@fb.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Andrii Nakryiko <andriin@fb.com>, bjorn.topel@intel.com,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        "David S. Miller" <davem@redhat.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
-        John Fastabend <john.fastabend@gmail.com>,
-        Martin KaFai Lau <kafai@fb.com>, Yonghong Song <yhs@fb.com>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+Subject: [tip: x86/microcode] x86/microcode: Fix return value for microcode
+ late loading
+Cc:     Mihai Carabas <mihai.carabas@oracle.com>,
+        Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <1587497318-4438-1-git-send-email-mihai.carabas@oracle.com>
+References: <1587497318-4438-1-git-send-email-mihai.carabas@oracle.com>
 MIME-Version: 1.0
-Message-ID: <158755785918.28353.10912233734711838427.tip-bot2@tip-bot2>
+Message-ID: <158757864352.28353.206205836206503586.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: 7bit
 X-Linutronix-Spam-Score: -1.0
 X-Linutronix-Spam-Level: -
 X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
@@ -56,197 +49,81 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/core branch of tip:
+The following commit has been merged into the x86/microcode branch of tip:
 
-Commit-ID:     943930e4729a64c11142a0370415663b39189996
-Gitweb:        https://git.kernel.org/tip/943930e4729a64c11142a0370415663b39189996
-Author:        Jiri Olsa <jolsa@kernel.org>
-AuthorDate:    Thu, 12 Mar 2020 20:56:08 +01:00
-Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Thu, 16 Apr 2020 12:19:06 -03:00
+Commit-ID:     9adbf3c609af92a57a73000a3cb8f4c2d307dfa3
+Gitweb:        https://git.kernel.org/tip/9adbf3c609af92a57a73000a3cb8f4c2d307dfa3
+Author:        Mihai Carabas <mihai.carabas@oracle.com>
+AuthorDate:    Tue, 21 Apr 2020 22:28:38 +03:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Wed, 22 Apr 2020 19:55:50 +02:00
 
-perf tools: Synthesize bpf_trampoline/dispatcher ksymbol event
+x86/microcode: Fix return value for microcode late loading
 
-Synthesize bpf images (trampolines/dispatchers) on start, as ksymbol
-events from /proc/kallsyms. Having this perf can recognize samples from
-those images and perf report and top shows them correctly.
+The return value from stop_machine() might not be consistent.
 
-The rest of the ksymbol handling is already in place from for the bpf
-programs monitoring, so only the initial state was needed.
+stop_machine_cpuslocked() returns:
+- zero if all functions have returned 0.
+- a non-zero value if at least one of the functions returned
+a non-zero value.
 
-perf report output:
+There is no way to know if it is negative or positive. So make
+__reload_late() return 0 on success or negative otherwise.
 
-  # Overhead  Command     Shared Object                  Symbol
+ [ bp: Unify ret val check and touch up. ]
 
-    12.37%  test_progs  [kernel.vmlinux]                 [k] entry_SYSCALL_64
-    11.80%  test_progs  [kernel.vmlinux]                 [k] syscall_return_via_sysret
-     9.63%  test_progs  bpf_prog_bcf7977d3b93787c_prog2  [k] bpf_prog_bcf7977d3b93787c_prog2
-     6.90%  test_progs  bpf_trampoline_24456             [k] bpf_trampoline_24456
-     6.36%  test_progs  [kernel.vmlinux]                 [k] memcpy_erms
-
-Committer notes:
-
-Use scnprintf() instead of strncpy() to overcome this on fedora:32,
-rawhide and OpenMandriva Cooker:
-
-    CC       /tmp/build/perf/util/bpf-event.o
-  In file included from /usr/include/string.h:495,
-                   from /git/linux/tools/lib/bpf/libbpf_common.h:12,
-                   from /git/linux/tools/lib/bpf/bpf.h:31,
-                   from util/bpf-event.c:4:
-  In function 'strncpy',
-      inlined from 'process_bpf_image' at util/bpf-event.c:323:2,
-      inlined from 'kallsyms_process_symbol' at util/bpf-event.c:358:9:
-  /usr/include/bits/string_fortified.h:106:10: error: '__builtin_strncpy' specified bound 256 equals destination size [-Werror=stringop-truncation]
-    106 |   return __builtin___strncpy_chk (__dest, __src, __len, __bos (__dest));
-        |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  cc1: all warnings being treated as errors
-
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-Acked-by: Song Liu <songliubraving@fb.com>
-Cc: Alexei Starovoitov <ast@kernel.org>
-Cc: Andrii Nakryiko <andriin@fb.com>
-Cc: Björn Töpel <bjorn.topel@intel.com>
-Cc: Daniel Borkmann <daniel@iogearbox.net>
-Cc: David S. Miller <davem@redhat.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Jesper Dangaard Brouer <hawk@kernel.org>
-Cc: John Fastabend <john.fastabend@gmail.com>
-Cc: Martin KaFai Lau <kafai@fb.com>
-Cc: Yonghong Song <yhs@fb.com>
-Link: https://lore.kernel.org/bpf/20200312195610.346362-14-jolsa@kernel.org/
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Mihai Carabas <mihai.carabas@oracle.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lkml.kernel.org/r/1587497318-4438-1-git-send-email-mihai.carabas@oracle.com
 ---
- tools/perf/util/bpf-event.c | 93 ++++++++++++++++++++++++++++++++++++-
- 1 file changed, 93 insertions(+)
+ arch/x86/kernel/cpu/microcode/core.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/tools/perf/util/bpf-event.c b/tools/perf/util/bpf-event.c
-index a3207d9..0cd41a8 100644
---- a/tools/perf/util/bpf-event.c
-+++ b/tools/perf/util/bpf-event.c
-@@ -6,6 +6,9 @@
- #include <bpf/libbpf.h>
- #include <linux/btf.h>
- #include <linux/err.h>
-+#include <linux/string.h>
-+#include <internal/lib.h>
-+#include <symbol/kallsyms.h>
- #include "bpf-event.h"
- #include "debug.h"
- #include "dso.h"
-@@ -290,11 +293,82 @@ out:
- 	return err ? -1 : 0;
- }
- 
-+struct kallsyms_parse {
-+	union perf_event	*event;
-+	perf_event__handler_t	 process;
-+	struct machine		*machine;
-+	struct perf_tool	*tool;
-+};
-+
-+static int
-+process_bpf_image(char *name, u64 addr, struct kallsyms_parse *data)
-+{
-+	struct machine *machine = data->machine;
-+	union perf_event *event = data->event;
-+	struct perf_record_ksymbol *ksymbol;
-+	int len;
-+
-+	ksymbol = &event->ksymbol;
-+
-+	*ksymbol = (struct perf_record_ksymbol) {
-+		.header = {
-+			.type = PERF_RECORD_KSYMBOL,
-+			.size = offsetof(struct perf_record_ksymbol, name),
-+		},
-+		.addr      = addr,
-+		.len       = page_size,
-+		.ksym_type = PERF_RECORD_KSYMBOL_TYPE_BPF,
-+		.flags     = 0,
-+	};
-+
-+	len = scnprintf(ksymbol->name, KSYM_NAME_LEN, "%s", name);
-+	ksymbol->header.size += PERF_ALIGN(len + 1, sizeof(u64));
-+	memset((void *) event + event->header.size, 0, machine->id_hdr_size);
-+	event->header.size += machine->id_hdr_size;
-+
-+	return perf_tool__process_synth_event(data->tool, event, machine,
-+					      data->process);
-+}
-+
-+static int
-+kallsyms_process_symbol(void *data, const char *_name,
-+			char type __maybe_unused, u64 start)
-+{
-+	char disp[KSYM_NAME_LEN];
-+	char *module, *name;
-+	unsigned long id;
-+	int err = 0;
-+
-+	module = strchr(_name, '\t');
-+	if (!module)
-+		return 0;
-+
-+	/* We are going after [bpf] module ... */
-+	if (strcmp(module + 1, "[bpf]"))
-+		return 0;
-+
-+	name = memdup(_name, (module - _name) + 1);
-+	if (!name)
-+		return -ENOMEM;
-+
-+	name[module - _name] = 0;
-+
-+	/* .. and only for trampolines and dispatchers */
-+	if ((sscanf(name, "bpf_trampoline_%lu", &id) == 1) ||
-+	    (sscanf(name, "bpf_dispatcher_%s", disp) == 1))
-+		err = process_bpf_image(name, start, data);
-+
-+	free(name);
-+	return err;
-+}
-+
- int perf_event__synthesize_bpf_events(struct perf_session *session,
- 				      perf_event__handler_t process,
- 				      struct machine *machine,
- 				      struct record_opts *opts)
+diff --git a/arch/x86/kernel/cpu/microcode/core.c b/arch/x86/kernel/cpu/microcode/core.c
+index 7019d4b..baec68b 100644
+--- a/arch/x86/kernel/cpu/microcode/core.c
++++ b/arch/x86/kernel/cpu/microcode/core.c
+@@ -545,8 +545,7 @@ static int __wait_for_cpus(atomic_t *t, long long timeout)
+ /*
+  * Returns:
+  * < 0 - on error
+- *   0 - no update done
+- *   1 - microcode was updated
++ *   0 - success (no update done or microcode was updated)
+  */
+ static int __reload_late(void *info)
  {
-+	const char *kallsyms_filename = "/proc/kallsyms";
-+	struct kallsyms_parse arg;
- 	union perf_event *event;
- 	__u32 id = 0;
- 	int err;
-@@ -303,6 +377,8 @@ int perf_event__synthesize_bpf_events(struct perf_session *session,
- 	event = malloc(sizeof(event->bpf) + KSYM_NAME_LEN + machine->id_hdr_size);
- 	if (!event)
- 		return -1;
+@@ -573,11 +572,11 @@ static int __reload_late(void *info)
+ 	else
+ 		goto wait_for_siblings;
+ 
+-	if (err > UCODE_NFOUND) {
+-		pr_warn("Error reloading microcode on CPU %d\n", cpu);
++	if (err >= UCODE_NFOUND) {
++		if (err == UCODE_ERROR)
++			pr_warn("Error reloading microcode on CPU %d\n", cpu);
 +
-+	/* Synthesize all the bpf programs in system. */
- 	while (true) {
- 		err = bpf_prog_get_next_id(id, &id);
- 		if (err) {
-@@ -335,6 +411,23 @@ int perf_event__synthesize_bpf_events(struct perf_session *session,
- 			break;
- 		}
+ 		ret = -1;
+-	} else if (err == UCODE_UPDATED || err == UCODE_OK) {
+-		ret = 1;
  	}
-+
-+	/* Synthesize all the bpf images - trampolines/dispatchers. */
-+	if (symbol_conf.kallsyms_name != NULL)
-+		kallsyms_filename = symbol_conf.kallsyms_name;
-+
-+	arg = (struct kallsyms_parse) {
-+		.event   = event,
-+		.process = process,
-+		.machine = machine,
-+		.tool    = session->tool,
-+	};
-+
-+	if (kallsyms__parse(kallsyms_filename, &arg, kallsyms_process_symbol)) {
-+		pr_err("%s: failed to synthesize bpf images: %s\n",
-+		       __func__, strerror(errno));
-+	}
-+
- 	free(event);
- 	return err;
- }
+ 
+ wait_for_siblings:
+@@ -608,7 +607,7 @@ static int microcode_reload_late(void)
+ 	atomic_set(&late_cpus_out, 0);
+ 
+ 	ret = stop_machine_cpuslocked(__reload_late, NULL, cpu_online_mask);
+-	if (ret > 0)
++	if (ret == 0)
+ 		microcode_check();
+ 
+ 	pr_info("Reload completed, microcode revision: 0x%x\n", boot_cpu_data.microcode);
+@@ -649,7 +648,7 @@ static ssize_t reload_store(struct device *dev,
+ put:
+ 	put_online_cpus();
+ 
+-	if (ret >= 0)
++	if (ret == 0)
+ 		ret = size;
+ 
+ 	return ret;
