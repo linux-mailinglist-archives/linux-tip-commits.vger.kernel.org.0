@@ -2,37 +2,41 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CF4341B502C
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 23 Apr 2020 00:27:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F7491B503A
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 23 Apr 2020 00:27:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726688AbgDVWZD (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 22 Apr 2020 18:25:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35028 "EHLO
+        id S1726831AbgDVWZY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 22 Apr 2020 18:25:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35080 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726684AbgDVWZC (ORCPT
+        by vger.kernel.org with ESMTP id S1726798AbgDVWZQ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 22 Apr 2020 18:25:02 -0400
+        Wed, 22 Apr 2020 18:25:16 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CB02C03C1AA;
-        Wed, 22 Apr 2020 15:25:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8798C03C1A9;
+        Wed, 22 Apr 2020 15:25:15 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jRNnX-0001S3-9D; Thu, 23 Apr 2020 00:24:52 +0200
+        id 1jRNnY-0001SV-Aa; Thu, 23 Apr 2020 00:24:52 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 297001C04D7;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E85FE1C0809;
         Thu, 23 Apr 2020 00:24:46 +0200 (CEST)
-Date:   Wed, 22 Apr 2020 22:24:45 -0000
-From:   "tip-bot2 for Muchun Song" <tip-bot2@linutronix.de>
+Date:   Wed, 22 Apr 2020 22:24:46 -0000
+From:   "tip-bot2 for Nick Desaulniers" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] objtool: Remove redundant .rodata section name comparison
-Cc:     Muchun Song <songmuchun@bytedance.com>,
+Subject: [tip: objtool/core] objtool: Documentation: document UACCESS warnings
+Cc:     Kamalesh Babulal <kamalesh@linux.vnet.ibm.com>,
+        Matt Helsley <mhelsley@vmware.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
         Josh Poimboeuf <jpoimboe@redhat.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158759428560.28353.8582555495693130530.tip-bot2@tip-bot2>
+Message-ID: <158759428639.28353.1773597974900820915.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,40 +52,66 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     069cdb3f72e947c7564240fa4c5468b7e514b679
-Gitweb:        https://git.kernel.org/tip/069cdb3f72e947c7564240fa4c5468b7e514b679
-Author:        Muchun Song <songmuchun@bytedance.com>
-AuthorDate:    Sun, 12 Apr 2020 22:44:05 +08:00
+Commit-ID:     dc18ab3b7b48aff9c41808af4a830636b3499578
+Gitweb:        https://git.kernel.org/tip/dc18ab3b7b48aff9c41808af4a830636b3499578
+Author:        Nick Desaulniers <ndesaulniers@google.com>
+AuthorDate:    Thu, 26 Mar 2020 11:37:06 -07:00
 Committer:     Josh Poimboeuf <jpoimboe@redhat.com>
-CommitterDate: Tue, 14 Apr 2020 17:34:07 -05:00
+CommitterDate: Tue, 14 Apr 2020 10:39:25 -05:00
 
-objtool: Remove redundant .rodata section name comparison
+objtool: Documentation: document UACCESS warnings
 
-If the prefix of section name is not '.rodata', the following
-function call can never return 0.
+Compiling with Clang and CONFIG_KASAN=y was exposing a few warnings:
 
-    strcmp(sec->name, C_JUMP_TABLE_SECTION)
+  call to memset() with UACCESS enabled
 
-So the name comparison is pointless, just remove it.
+Document how to fix these for future travelers.
 
-Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+Link: https://github.com/ClangBuiltLinux/linux/issues/876
+Suggested-by: Kamalesh Babulal <kamalesh@linux.vnet.ibm.com>
+Suggested-by: Matt Helsley <mhelsley@vmware.com>
+Suggested-by: Peter Zijlstra <peterz@infradead.org>
+Suggested-by: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
 Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
 ---
- tools/objtool/check.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/objtool/Documentation/stack-validation.txt | 26 +++++++++++++++-
+ 1 file changed, 26 insertions(+)
 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 10fbfb3..276bce3 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -1372,8 +1372,8 @@ static void mark_rodata(struct objtool_file *file)
- 	 * .rodata.str1.* sections are ignored; they don't contain jump tables.
- 	 */
- 	for_each_sec(file, sec) {
--		if ((!strncmp(sec->name, ".rodata", 7) && !strstr(sec->name, ".str1.")) ||
--		    !strcmp(sec->name, C_JUMP_TABLE_SECTION)) {
-+		if (!strncmp(sec->name, ".rodata", 7) &&
-+		    !strstr(sec->name, ".str1.")) {
- 			sec->rodata = true;
- 			found = true;
- 		}
+diff --git a/tools/objtool/Documentation/stack-validation.txt b/tools/objtool/Documentation/stack-validation.txt
+index de09467..faa47c3 100644
+--- a/tools/objtool/Documentation/stack-validation.txt
++++ b/tools/objtool/Documentation/stack-validation.txt
+@@ -289,6 +289,32 @@ they mean, and suggestions for how to fix them.
+       might be corrupt due to a gcc bug.  For more details, see:
+       https://gcc.gnu.org/bugzilla/show_bug.cgi?id=70646
+ 
++9. file.o: warning: objtool: funcA() call to funcB() with UACCESS enabled
++
++   This means that an unexpected call to a non-whitelisted function exists
++   outside of arch-specific guards.
++   X86: SMAP (stac/clac): __uaccess_begin()/__uaccess_end()
++   ARM: PAN: uaccess_enable()/uaccess_disable()
++
++   These functions should be called to denote a minimal critical section around
++   access to __user variables. See also: https://lwn.net/Articles/517475/
++
++   The intention of the warning is to prevent calls to funcB() from eventually
++   calling schedule(), potentially leaking the AC flags state, and not
++   restoring them correctly.
++
++   It also helps verify that there are no unexpected calls to funcB() which may
++   access user space pages with protections against doing so disabled.
++
++   To fix, either:
++   1) remove explicit calls to funcB() from funcA().
++   2) add the correct guards before and after calls to low level functions like
++      __get_user_size()/__put_user_size().
++   3) add funcB to uaccess_safe_builtin whitelist in tools/objtool/check.c, if
++      funcB obviously does not call schedule(), and is marked notrace (since
++      function tracing inserts additional calls, which is not obvious from the
++      sources).
++
+ 
+ If the error doesn't seem to make sense, it could be a bug in objtool.
+ Feel free to ask the objtool maintainer for help.
