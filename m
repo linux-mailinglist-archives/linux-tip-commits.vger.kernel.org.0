@@ -2,39 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C4571B4EFC
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Apr 2020 23:20:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DB021B4F09
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Apr 2020 23:21:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726116AbgDVVUw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 22 Apr 2020 17:20:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53196 "EHLO
+        id S1726154AbgDVVVH (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 22 Apr 2020 17:21:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726066AbgDVVUv (ORCPT
+        with ESMTP id S1726335AbgDVVUy (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 22 Apr 2020 17:20:51 -0400
+        Wed, 22 Apr 2020 17:20:54 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C17ABC03C1A9;
-        Wed, 22 Apr 2020 14:20:51 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40A89C03C1A9;
+        Wed, 22 Apr 2020 14:20:54 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jRMnX-0000Ni-E1; Wed, 22 Apr 2020 23:20:47 +0200
+        id 1jRMnY-0000O3-DW; Wed, 22 Apr 2020 23:20:48 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 0CA381C02FC;
-        Wed, 22 Apr 2020 23:20:47 +0200 (CEST)
-Date:   Wed, 22 Apr 2020 21:20:46 -0000
-From:   "tip-bot2 for Ian Rogers" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 11BA01C02FC;
+        Wed, 22 Apr 2020 23:20:48 +0200 (CEST)
+Date:   Wed, 22 Apr 2020 21:20:47 -0000
+From:   "tip-bot2 for Giovanni Gherdovich" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf/core: fix parent pid/tid in task exit events
-Cc:     KP Singh <kpsingh@google.com>, Ian Rogers <irogers@google.com>,
+Subject: [tip: sched/urgent] x86, sched: Move check for CPU type to caller function
+Cc:     Giovanni Gherdovich <ggherdovich@suse.cz>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200417182842.12522-1-irogers@google.com>
-References: <20200417182842.12522-1-irogers@google.com>
+In-Reply-To: <20200416054745.740-5-ggherdovich@suse.cz>
+References: <20200416054745.740-5-ggherdovich@suse.cz>
 MIME-Version: 1.0
-Message-ID: <158759044657.28353.11787754973675408420.tip-bot2@tip-bot2>
+Message-ID: <158759044762.28353.12681151703116026868.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,64 +49,49 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/urgent branch of tip:
+The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     f3bed55e850926614b9898fe982f66d2541a36a5
-Gitweb:        https://git.kernel.org/tip/f3bed55e850926614b9898fe982f66d2541a36a5
-Author:        Ian Rogers <irogers@google.com>
-AuthorDate:    Fri, 17 Apr 2020 11:28:42 -07:00
+Commit-ID:     db441bd9f630329c402d5cdd319f11bfcf509fb6
+Gitweb:        https://git.kernel.org/tip/db441bd9f630329c402d5cdd319f11bfcf509fb6
+Author:        Giovanni Gherdovich <ggherdovich@suse.cz>
+AuthorDate:    Thu, 16 Apr 2020 07:47:45 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 22 Apr 2020 23:10:14 +02:00
+CommitterDate: Wed, 22 Apr 2020 23:10:13 +02:00
 
-perf/core: fix parent pid/tid in task exit events
+x86, sched: Move check for CPU type to caller function
 
-Current logic yields the child task as the parent.
+Improve readability of the function intel_set_max_freq_ratio() by moving
+the check for KNL CPUs there, together with checks for GLM and SKX.
 
-Before:
-$ perf record bash -c "perf list > /dev/null"
-$ perf script -D |grep 'FORK\|EXIT'
-4387036190981094 0x5a70 [0x30]: PERF_RECORD_FORK(10472:10472):(10470:10470)
-4387036606207580 0xf050 [0x30]: PERF_RECORD_EXIT(10472:10472):(10472:10472)
-4387036607103839 0x17150 [0x30]: PERF_RECORD_EXIT(10470:10470):(10470:10470)
-                                                   ^
-  Note the repeated values here -------------------/
-
-After:
-383281514043 0x9d8 [0x30]: PERF_RECORD_FORK(2268:2268):(2266:2266)
-383442003996 0x2180 [0x30]: PERF_RECORD_EXIT(2268:2268):(2266:2266)
-383451297778 0xb70 [0x30]: PERF_RECORD_EXIT(2266:2266):(2265:2265)
-
-Fixes: 94d5d1b2d891 ("perf_counter: Report the cloning task as parent on perf_counter_fork()")
-Reported-by: KP Singh <kpsingh@google.com>
-Signed-off-by: Ian Rogers <irogers@google.com>
+Signed-off-by: Giovanni Gherdovich <ggherdovich@suse.cz>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20200417182842.12522-1-irogers@google.com
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://lkml.kernel.org/r/20200416054745.740-5-ggherdovich@suse.cz
 ---
- kernel/events/core.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ arch/x86/kernel/smpboot.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index bc9b98a..633b4ae 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -7491,10 +7491,17 @@ static void perf_event_task_output(struct perf_event *event,
+diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
+index dd8e15f..8c89e4d 100644
+--- a/arch/x86/kernel/smpboot.c
++++ b/arch/x86/kernel/smpboot.c
+@@ -1877,9 +1877,6 @@ static bool knl_set_max_freq_ratio(u64 *base_freq, u64 *turbo_freq,
+ 	int err, i;
+ 	u64 msr;
+ 
+-	if (!x86_match_cpu(has_knl_turbo_ratio_limits))
+-		return false;
+-
+ 	err = rdmsrl_safe(MSR_PLATFORM_INFO, base_freq);
+ 	if (err)
+ 		return false;
+@@ -1977,7 +1974,8 @@ static bool intel_set_max_freq_ratio(void)
+ 	    skx_set_max_freq_ratio(&base_freq, &turbo_freq, 1))
  		goto out;
  
- 	task_event->event_id.pid = perf_event_pid(event, task);
--	task_event->event_id.ppid = perf_event_pid(event, current);
--
- 	task_event->event_id.tid = perf_event_tid(event, task);
--	task_event->event_id.ptid = perf_event_tid(event, current);
-+
-+	if (task_event->event_id.header.type == PERF_RECORD_EXIT) {
-+		task_event->event_id.ppid = perf_event_pid(event,
-+							task->real_parent);
-+		task_event->event_id.ptid = perf_event_pid(event,
-+							task->real_parent);
-+	} else {  /* PERF_RECORD_FORK */
-+		task_event->event_id.ppid = perf_event_pid(event, current);
-+		task_event->event_id.ptid = perf_event_tid(event, current);
-+	}
+-	if (knl_set_max_freq_ratio(&base_freq, &turbo_freq, 1))
++	if (x86_match_cpu(has_knl_turbo_ratio_limits) &&
++	    knl_set_max_freq_ratio(&base_freq, &turbo_freq, 1))
+ 		goto out;
  
- 	task_event->event_id.time = perf_event_clock(event);
- 
+ 	if (x86_match_cpu(has_skx_turbo_ratio_limits) &&
