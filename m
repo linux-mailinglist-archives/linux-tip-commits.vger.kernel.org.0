@@ -2,59 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CE6A1B443F
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Apr 2020 14:18:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C058A1B444C
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Apr 2020 14:18:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729207AbgDVMSl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 22 Apr 2020 08:18:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53538 "EHLO
+        id S1728957AbgDVMSC convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 22 Apr 2020 08:18:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53454 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1729194AbgDVMS1 (ORCPT
+        by vger.kernel.org with ESMTP id S1728922AbgDVMSA (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 22 Apr 2020 08:18:27 -0400
+        Wed, 22 Apr 2020 08:18:00 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BF5CC03C1A8;
-        Wed, 22 Apr 2020 05:18:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C043CC03C1A9;
+        Wed, 22 Apr 2020 05:17:59 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jREK1-0008Bc-Ng; Wed, 22 Apr 2020 14:17:45 +0200
+        id 1jREK6-0008CE-7E; Wed, 22 Apr 2020 14:17:50 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id ECFC61C0822;
-        Wed, 22 Apr 2020 14:17:37 +0200 (CEST)
-Date:   Wed, 22 Apr 2020 12:17:37 -0000
-From:   "tip-bot2 for Alexey Budankov" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 1FB041C0823;
+        Wed, 22 Apr 2020 14:17:39 +0200 (CEST)
+Date:   Wed, 22 Apr 2020 12:17:38 -0000
+From:   "tip-bot2 for Jiri Olsa" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] capabilities: Introduce CAP_PERFMON to kernel and user space
-Cc:     Alexey Budankov <alexey.budankov@linux.intel.com>,
-        James Morris <jamorris@linux.microsoft.com>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Song Liu <songliubraving@fb.com>,
-        Stephen Smalley <sds@tycho.nsa.gov>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
+Subject: [tip: perf/core] perf machine: Set ksymbol dso as loaded on arrival
+Cc:     Jiri Olsa <jolsa@kernel.org>, Song Liu <songliubraving@fb.com>,
         Alexei Starovoitov <ast@kernel.org>,
-        Andi Kleen <ak@linux.intel.com>,
-        Igor Lubashev <ilubashe@akamai.com>,
-        Jiri Olsa <jolsa@redhat.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Stephane Eranian <eranian@google.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        intel-gfx@lists.freedesktop.org, linux-doc@vger.kernel.org,
-        linux-man@vger.kernel.org, linux-security-module@vger.kernel.org,
-        selinux@vger.kernel.org, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <5590d543-82c6-490a-6544-08e6a5517db0@linux.intel.com>
-References: <5590d543-82c6-490a-6544-08e6a5517db0@linux.intel.com>
+        Andrii Nakryiko <andriin@fb.com>, bjorn.topel@intel.com,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        "David S. Miller" <davem@redhat.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        John Fastabend <john.fastabend@gmail.com>,
+        Martin KaFai Lau <kafai@fb.com>, Yonghong Song <yhs@fb.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200312195610.346362-15-jolsa@kernel.org>
+References: <20200312195610.346362-15-jolsa@kernel.org>
 MIME-Version: 1.0
-Message-ID: <158755785749.28353.12235832076654598507.tip-bot2@tip-bot2>
+Message-ID: <158755785870.28353.7032952329134266433.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8BIT
 X-Linutronix-Spam-Score: -1.0
 X-Linutronix-Spam-Level: -
 X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
@@ -65,138 +59,49 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     980737282232b752bb14dab96d77665c15889c36
-Gitweb:        https://git.kernel.org/tip/980737282232b752bb14dab96d77665c15889c36
-Author:        Alexey Budankov <alexey.budankov@linux.intel.com>
-AuthorDate:    Thu, 02 Apr 2020 11:45:31 +03:00
+Commit-ID:     7eddf7e74e54aea3b24410b3fb8911927836632f
+Gitweb:        https://git.kernel.org/tip/7eddf7e74e54aea3b24410b3fb8911927836632f
+Author:        Jiri Olsa <jolsa@kernel.org>
+AuthorDate:    Thu, 12 Mar 2020 20:56:09 +01:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Thu, 16 Apr 2020 12:19:06 -03:00
 
-capabilities: Introduce CAP_PERFMON to kernel and user space
+perf machine: Set ksymbol dso as loaded on arrival
 
-Introduce the CAP_PERFMON capability designed to secure system
-performance monitoring and observability operations so that CAP_PERFMON
-can assist CAP_SYS_ADMIN capability in its governing role for
-performance monitoring and observability subsystems.
+There's no special load action for ksymbol data on map__load/dso__load
+action, where the kernel is getting loaded. It only gets confused with
+kernel kallsyms/vmlinux load for bpf object, which fails and could mess
+up with the map.
 
-CAP_PERFMON hardens system security and integrity during performance
-monitoring and observability operations by decreasing attack surface that
-is available to a CAP_SYS_ADMIN privileged process [2]. Providing the access
-to system performance monitoring and observability operations under CAP_PERFMON
-capability singly, without the rest of CAP_SYS_ADMIN credentials, excludes
-chances to misuse the credentials and makes the operation more secure.
+Disabling any further load of the map for ksymbol related dso/map.
 
-Thus, CAP_PERFMON implements the principle of least privilege for
-performance monitoring and observability operations (POSIX IEEE 1003.1e:
-2.2.2.39 principle of least privilege: A security design principle that
-  states that a process or program be granted only those privileges
-(e.g., capabilities) necessary to accomplish its legitimate function,
-and only for the time that such privileges are actually required)
-
-CAP_PERFMON meets the demand to secure system performance monitoring and
-observability operations for adoption in security sensitive, restricted,
-multiuser production environments (e.g. HPC clusters, cloud and virtual compute
-environments), where root or CAP_SYS_ADMIN credentials are not available to
-mass users of a system, and securely unblocks applicability and scalability
-of system performance monitoring and observability operations beyond root
-and CAP_SYS_ADMIN use cases.
-
-CAP_PERFMON takes over CAP_SYS_ADMIN credentials related to system performance
-monitoring and observability operations and balances amount of CAP_SYS_ADMIN
-credentials following the recommendations in the capabilities man page [1]
-for CAP_SYS_ADMIN: "Note: this capability is overloaded; see Notes to kernel
-developers, below." For backward compatibility reasons access to system
-performance monitoring and observability subsystems of the kernel remains
-open for CAP_SYS_ADMIN privileged processes but CAP_SYS_ADMIN capability
-usage for secure system performance monitoring and observability operations
-is discouraged with respect to the designed CAP_PERFMON capability.
-
-Although the software running under CAP_PERFMON can not ensure avoidance
-of related hardware issues, the software can still mitigate these issues
-following the official hardware issues mitigation procedure [2]. The bugs
-in the software itself can be fixed following the standard kernel development
-process [3] to maintain and harden security of system performance monitoring
-and observability operations.
-
-[1] http://man7.org/linux/man-pages/man7/capabilities.7.html
-[2] https://www.kernel.org/doc/html/latest/process/embargoed-hardware-issues.html
-[3] https://www.kernel.org/doc/html/latest/admin-guide/security-bugs.html
-
-Signed-off-by: Alexey Budankov <alexey.budankov@linux.intel.com>
-Acked-by: James Morris <jamorris@linux.microsoft.com>
-Acked-by: Serge E. Hallyn <serge@hallyn.com>
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
 Acked-by: Song Liu <songliubraving@fb.com>
-Acked-by: Stephen Smalley <sds@tycho.nsa.gov>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Cc: Alexei Starovoitov <ast@kernel.org>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Igor Lubashev <ilubashe@akamai.com>
-Cc: Jiri Olsa <jolsa@redhat.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Stephane Eranian <eranian@google.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: intel-gfx@lists.freedesktop.org
-Cc: linux-doc@vger.kernel.org
-Cc: linux-man@vger.kernel.org
-Cc: linux-security-module@vger.kernel.org
-Cc: selinux@vger.kernel.org
-Link: http://lore.kernel.org/lkml/5590d543-82c6-490a-6544-08e6a5517db0@linux.intel.com
+Cc: Andrii Nakryiko <andriin@fb.com>
+Cc: BjÃ¶rn TÃ¶pel <bjorn.topel@intel.com>
+Cc: Daniel Borkmann <daniel@iogearbox.net>
+Cc: David S. Miller <davem@redhat.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Jesper Dangaard Brouer <hawk@kernel.org>
+Cc: John Fastabend <john.fastabend@gmail.com>
+Cc: Martin KaFai Lau <kafai@fb.com>
+Cc: Yonghong Song <yhs@fb.com>
+Link: https://lore.kernel.org/bpf/20200312195610.346362-15-jolsa@kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- include/linux/capability.h          | 4 ++++
- include/uapi/linux/capability.h     | 8 +++++++-
- security/selinux/include/classmap.h | 4 ++--
- 3 files changed, 13 insertions(+), 3 deletions(-)
+ tools/perf/util/machine.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/linux/capability.h b/include/linux/capability.h
-index ecce0f4..027d7e4 100644
---- a/include/linux/capability.h
-+++ b/include/linux/capability.h
-@@ -251,6 +251,10 @@ extern bool privileged_wrt_inode_uidgid(struct user_namespace *ns, const struct 
- extern bool capable_wrt_inode_uidgid(const struct inode *inode, int cap);
- extern bool file_ns_capable(const struct file *file, struct user_namespace *ns, int cap);
- extern bool ptracer_capable(struct task_struct *tsk, struct user_namespace *ns);
-+static inline bool perfmon_capable(void)
-+{
-+	return capable(CAP_PERFMON) || capable(CAP_SYS_ADMIN);
-+}
+diff --git a/tools/perf/util/machine.c b/tools/perf/util/machine.c
+index 97142e9..06aa4e4 100644
+--- a/tools/perf/util/machine.c
++++ b/tools/perf/util/machine.c
+@@ -759,6 +759,7 @@ static int machine__process_ksymbol_register(struct machine *machine,
+ 		map->start = event->ksymbol.addr;
+ 		map->end = map->start + event->ksymbol.len;
+ 		maps__insert(&machine->kmaps, map);
++		dso__set_loaded(dso);
+ 	}
  
- /* audit system wants to get cap info from files as well */
- extern int get_vfs_caps_from_disk(const struct dentry *dentry, struct cpu_vfs_cap_data *cpu_caps);
-diff --git a/include/uapi/linux/capability.h b/include/uapi/linux/capability.h
-index 272dc69..e58c963 100644
---- a/include/uapi/linux/capability.h
-+++ b/include/uapi/linux/capability.h
-@@ -367,8 +367,14 @@ struct vfs_ns_cap_data {
- 
- #define CAP_AUDIT_READ		37
- 
-+/*
-+ * Allow system performance and observability privileged operations
-+ * using perf_events, i915_perf and other kernel subsystems
-+ */
-+
-+#define CAP_PERFMON		38
- 
--#define CAP_LAST_CAP         CAP_AUDIT_READ
-+#define CAP_LAST_CAP         CAP_PERFMON
- 
- #define cap_valid(x) ((x) >= 0 && (x) <= CAP_LAST_CAP)
- 
-diff --git a/security/selinux/include/classmap.h b/security/selinux/include/classmap.h
-index 986f3ac..d233ab3 100644
---- a/security/selinux/include/classmap.h
-+++ b/security/selinux/include/classmap.h
-@@ -27,9 +27,9 @@
- 	    "audit_control", "setfcap"
- 
- #define COMMON_CAP2_PERMS  "mac_override", "mac_admin", "syslog", \
--		"wake_alarm", "block_suspend", "audit_read"
-+		"wake_alarm", "block_suspend", "audit_read", "perfmon"
- 
--#if CAP_LAST_CAP > CAP_AUDIT_READ
-+#if CAP_LAST_CAP > CAP_PERFMON
- #error New capability defined, please update COMMON_CAP2_PERMS.
- #endif
- 
+ 	sym = symbol__new(map->map_ip(map, map->start),
