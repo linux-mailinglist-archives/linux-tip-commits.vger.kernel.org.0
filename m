@@ -2,41 +2,41 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 733831B5048
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 23 Apr 2020 00:27:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 575CE1B5029
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 23 Apr 2020 00:27:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726901AbgDVWZu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 22 Apr 2020 18:25:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35048 "EHLO
+        id S1726667AbgDVWZB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 22 Apr 2020 18:25:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35010 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726730AbgDVWZH (ORCPT
+        by vger.kernel.org with ESMTP id S1726161AbgDVWY7 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 22 Apr 2020 18:25:07 -0400
+        Wed, 22 Apr 2020 18:24:59 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 372C6C03C1A9;
-        Wed, 22 Apr 2020 15:25:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1349C03C1AA;
+        Wed, 22 Apr 2020 15:24:59 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jRNnN-0001Oh-FN; Thu, 23 Apr 2020 00:24:42 +0200
+        id 1jRNnO-0001Oq-84; Thu, 23 Apr 2020 00:24:42 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 3E92B1C04D7;
-        Thu, 23 Apr 2020 00:24:39 +0200 (CEST)
-Date:   Wed, 22 Apr 2020 22:24:38 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 1A4531C0809;
+        Thu, 23 Apr 2020 00:24:40 +0200 (CEST)
+Date:   Wed, 22 Apr 2020 22:24:39 -0000
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] objtool: Introduce HINT_RET_OFFSET
+Subject: [tip: objtool/core] objtool: Better handle IRET
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Miroslav Benes <mbenes@suse.cz>,
         Alexandre Chartre <alexandre.chartre@oracle.com>,
         Josh Poimboeuf <jpoimboe@redhat.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200416115118.690601403@infradead.org>
-References: <20200416115118.690601403@infradead.org>
+In-Reply-To: <20200416115118.631224674@infradead.org>
+References: <20200416115118.631224674@infradead.org>
 MIME-Version: 1.0
-Message-ID: <158759427864.28353.8226580518920056560.tip-bot2@tip-bot2>
+Message-ID: <158759427943.28353.7135426174372512474.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -52,163 +52,169 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     9949d38e5ee16c7ff20247b6b36cc3538c84195d
-Gitweb:        https://git.kernel.org/tip/9949d38e5ee16c7ff20247b6b36cc3538c84195d
+Commit-ID:     016db2d9c63e3ef0e7c3776efb38f352053cdd1e
+Gitweb:        https://git.kernel.org/tip/016db2d9c63e3ef0e7c3776efb38f352053cdd1e
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Wed, 01 Apr 2020 16:38:19 +02:00
+AuthorDate:    Thu, 02 Apr 2020 10:15:51 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Wed, 22 Apr 2020 23:10:05 +02:00
 
-objtool: Introduce HINT_RET_OFFSET
+objtool: Better handle IRET
 
-Normally objtool ensures a function keeps the stack layout invariant.
-But there is a useful exception, it is possible to stuff the return
-stack in order to 'inject' a 'call':
+Teach objtool a little more about IRET so that we can avoid using the
+SAVE/RESTORE annotation. In particular, make the weird corner case in
+insn->restore go away.
 
-	push $fun
-	ret
+The purpose of that corner case is to deal with the fact that
+UNWIND_HINT_RESTORE lands on the instruction after IRET, but that
+instruction can end up being outside the basic block, consider:
 
-In this case the invariant mentioned above is violated.
+	if (cond)
+		sync_core()
+	foo();
 
-Add an objtool HINT to annotate this and allow a function exit with a
-modified stack frame.
+Then the hint will land on foo(), and we'll encounter the restore
+hint without ever having seen the save hint.
+
+By teaching objtool about the arch specific exception frame size, and
+assuming that any IRET in an STT_FUNC symbol is an exception frame
+sized POP, we can remove the use of save/restore hints for this code.
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Miroslav Benes <mbenes@suse.cz>
 Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
 Acked-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Link: https://lkml.kernel.org/r/20200416115118.690601403@infradead.org
+Link: https://lkml.kernel.org/r/20200416115118.631224674@infradead.org
 ---
- arch/x86/include/asm/orc_types.h       |  1 +
- arch/x86/include/asm/unwind_hints.h    | 10 ++++++++++
- tools/arch/x86/include/asm/orc_types.h |  1 +
- tools/objtool/check.c                  | 24 ++++++++++++++++--------
- tools/objtool/check.h                  |  4 +++-
- 5 files changed, 31 insertions(+), 9 deletions(-)
+ arch/x86/include/asm/processor.h |  2 --
+ tools/objtool/arch.h             |  1 +
+ tools/objtool/arch/x86/decode.c  | 14 ++++++++++++--
+ tools/objtool/check.c            | 29 ++++++++++++++++-------------
+ 4 files changed, 29 insertions(+), 17 deletions(-)
 
-diff --git a/arch/x86/include/asm/orc_types.h b/arch/x86/include/asm/orc_types.h
-index 6e06090..5f18ca7 100644
---- a/arch/x86/include/asm/orc_types.h
-+++ b/arch/x86/include/asm/orc_types.h
-@@ -60,6 +60,7 @@
- #define ORC_TYPE_REGS_IRET		2
- #define UNWIND_HINT_TYPE_SAVE		3
- #define UNWIND_HINT_TYPE_RESTORE	4
-+#define UNWIND_HINT_TYPE_RET_OFFSET	5
+diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
+index 3bcf27c..3eeaaeb 100644
+--- a/arch/x86/include/asm/processor.h
++++ b/arch/x86/include/asm/processor.h
+@@ -727,7 +727,6 @@ static inline void sync_core(void)
+ 	unsigned int tmp;
  
- #ifndef __ASSEMBLY__
- /*
-diff --git a/arch/x86/include/asm/unwind_hints.h b/arch/x86/include/asm/unwind_hints.h
-index f5e2eb1..aabf7ac 100644
---- a/arch/x86/include/asm/unwind_hints.h
-+++ b/arch/x86/include/asm/unwind_hints.h
-@@ -94,6 +94,16 @@
- 	UNWIND_HINT type=UNWIND_HINT_TYPE_RESTORE
- .endm
+ 	asm volatile (
+-		UNWIND_HINT_SAVE
+ 		"mov %%ss, %0\n\t"
+ 		"pushq %q0\n\t"
+ 		"pushq %%rsp\n\t"
+@@ -737,7 +736,6 @@ static inline void sync_core(void)
+ 		"pushq %q0\n\t"
+ 		"pushq $1f\n\t"
+ 		"iretq\n\t"
+-		UNWIND_HINT_RESTORE
+ 		"1:"
+ 		: "=&r" (tmp), ASM_CALL_CONSTRAINT : : "cc", "memory");
+ #endif
+diff --git a/tools/objtool/arch.h b/tools/objtool/arch.h
+index f9883c4..55396df 100644
+--- a/tools/objtool/arch.h
++++ b/tools/objtool/arch.h
+@@ -19,6 +19,7 @@ enum insn_type {
+ 	INSN_CALL,
+ 	INSN_CALL_DYNAMIC,
+ 	INSN_RETURN,
++	INSN_EXCEPTION_RETURN,
+ 	INSN_CONTEXT_SWITCH,
+ 	INSN_STACK,
+ 	INSN_BUG,
+diff --git a/tools/objtool/arch/x86/decode.c b/tools/objtool/arch/x86/decode.c
+index 199b408..3273638 100644
+--- a/tools/objtool/arch/x86/decode.c
++++ b/tools/objtool/arch/x86/decode.c
+@@ -446,9 +446,19 @@ int arch_decode_instruction(struct elf *elf, struct section *sec,
+ 		*type = INSN_RETURN;
+ 		break;
  
++	case 0xcf: /* iret */
++		*type = INSN_EXCEPTION_RETURN;
 +
-+/*
-+ * RET_OFFSET: Used on instructions that terminate a function; mostly RETURN
-+ * and sibling calls. On these, sp_offset denotes the expected offset from
-+ * initial_func_cfi.
-+ */
-+.macro UNWIND_HINT_RET_OFFSET sp_offset=8
-+	UNWIND_HINT type=UNWIND_HINT_TYPE_RET_OFFSET sp_offset=\sp_offset
-+.endm
++		/* add $40, %rsp */
++		op->src.type = OP_SRC_ADD;
++		op->src.reg = CFI_SP;
++		op->src.offset = 5*8;
++		op->dest.type = OP_DEST_REG;
++		op->dest.reg = CFI_SP;
++		break;
 +
- #else /* !__ASSEMBLY__ */
+ 	case 0xca: /* retf */
+ 	case 0xcb: /* retf */
+-	case 0xcf: /* iret */
+ 		*type = INSN_CONTEXT_SWITCH;
+ 		break;
  
- #define UNWIND_HINT(sp_reg, sp_offset, type, end)		\
-diff --git a/tools/arch/x86/include/asm/orc_types.h b/tools/arch/x86/include/asm/orc_types.h
-index 6e06090..5f18ca7 100644
---- a/tools/arch/x86/include/asm/orc_types.h
-+++ b/tools/arch/x86/include/asm/orc_types.h
-@@ -60,6 +60,7 @@
- #define ORC_TYPE_REGS_IRET		2
- #define UNWIND_HINT_TYPE_SAVE		3
- #define UNWIND_HINT_TYPE_RESTORE	4
-+#define UNWIND_HINT_TYPE_RET_OFFSET	5
+@@ -494,7 +504,7 @@ int arch_decode_instruction(struct elf *elf, struct section *sec,
  
- #ifndef __ASSEMBLY__
- /*
+ 	*immediate = insn.immediate.nbytes ? insn.immediate.value : 0;
+ 
+-	if (*type == INSN_STACK)
++	if (*type == INSN_STACK || *type == INSN_EXCEPTION_RETURN)
+ 		list_add_tail(&op->list, ops_list);
+ 	else
+ 		free(op);
 diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 72bf5cc..fe6ae45 100644
+index 819de0d..72bf5cc 100644
 --- a/tools/objtool/check.c
 +++ b/tools/objtool/check.c
-@@ -1277,6 +1277,9 @@ static int read_unwind_hints(struct objtool_file *file)
- 		} else if (hint->type == UNWIND_HINT_TYPE_RESTORE) {
- 			insn->restore = true;
- 			insn->hint = true;
-+
-+		} else if (hint->type == UNWIND_HINT_TYPE_RET_OFFSET) {
-+			insn->ret_offset = hint->sp_offset;
- 			continue;
- 		}
- 
-@@ -1440,20 +1443,25 @@ static bool is_fentry_call(struct instruction *insn)
- 	return false;
- }
- 
--static bool has_modified_stack_frame(struct insn_state *state)
-+static bool has_modified_stack_frame(struct instruction *insn, struct insn_state *state)
+@@ -2081,15 +2081,14 @@ static int validate_return(struct symbol *func, struct instruction *insn, struct
+  * tools/objtool/Documentation/stack-validation.txt.
+  */
+ static int validate_branch(struct objtool_file *file, struct symbol *func,
+-			   struct instruction *first, struct insn_state state)
++			   struct instruction *insn, struct insn_state state)
  {
-+	u8 ret_offset = insn->ret_offset;
- 	int i;
- 
--	if (state->cfa.base != initial_func_cfi.cfa.base ||
--	    state->cfa.offset != initial_func_cfi.cfa.offset ||
--	    state->stack_size != initial_func_cfi.cfa.offset ||
--	    state->drap)
-+	if (state->cfa.base != initial_func_cfi.cfa.base || state->drap)
-+		return true;
-+
-+	if (state->cfa.offset != initial_func_cfi.cfa.offset + ret_offset)
- 		return true;
- 
--	for (i = 0; i < CFI_NUM_REGS; i++)
-+	if (state->stack_size != initial_func_cfi.cfa.offset + ret_offset)
-+		return true;
-+
-+	for (i = 0; i < CFI_NUM_REGS; i++) {
- 		if (state->regs[i].base != initial_func_cfi.regs[i].base ||
- 		    state->regs[i].offset != initial_func_cfi.regs[i].offset)
- 			return true;
-+	}
- 
- 	return false;
- }
-@@ -2030,7 +2038,7 @@ static int validate_call(struct instruction *insn, struct insn_state *state)
- 
- static int validate_sibling_call(struct instruction *insn, struct insn_state *state)
- {
--	if (has_modified_stack_frame(state)) {
-+	if (has_modified_stack_frame(insn, state)) {
- 		WARN_FUNC("sibling call from callable instruction with modified stack frame",
- 				insn->sec, insn->offset);
- 		return 1;
-@@ -2059,7 +2067,7 @@ static int validate_return(struct symbol *func, struct instruction *insn, struct
- 		return 1;
- 	}
- 
--	if (func && has_modified_stack_frame(state)) {
-+	if (func && has_modified_stack_frame(insn, state)) {
- 		WARN_FUNC("return with modified stack frame",
- 			  insn->sec, insn->offset);
- 		return 1;
-diff --git a/tools/objtool/check.h b/tools/objtool/check.h
-index 2c55f75..81ce27e 100644
---- a/tools/objtool/check.h
-+++ b/tools/objtool/check.h
-@@ -33,9 +33,11 @@ struct instruction {
- 	unsigned int len;
- 	enum insn_type type;
- 	unsigned long immediate;
--	bool alt_group, dead_end, ignore, hint, save, restore, ignore_alts;
-+	bool alt_group, dead_end, ignore, ignore_alts;
-+	bool hint, save, restore;
- 	bool retpoline_safe;
+ 	struct alternative *alt;
+-	struct instruction *insn, *next_insn;
++	struct instruction *next_insn;
+ 	struct section *sec;
  	u8 visited;
-+	u8 ret_offset;
- 	struct symbol *call_dest;
- 	struct instruction *jump_dest;
- 	struct instruction *first_jump_src;
+ 	int ret;
+ 
+-	insn = first;
+ 	sec = insn->sec;
+ 
+ 	if (insn->alt_group && list_empty(&insn->alts)) {
+@@ -2142,16 +2141,6 @@ static int validate_branch(struct objtool_file *file, struct symbol *func,
+ 				}
+ 
+ 				if (!save_insn->visited) {
+-					/*
+-					 * Oops, no state to copy yet.
+-					 * Hopefully we can reach this
+-					 * instruction from another branch
+-					 * after the save insn has been
+-					 * visited.
+-					 */
+-					if (insn == first)
+-						return 0;
+-
+ 					WARN_FUNC("objtool isn't smart enough to handle this CFI save/restore combo",
+ 						  sec, insn->offset);
+ 					return 1;
+@@ -2244,6 +2233,20 @@ static int validate_branch(struct objtool_file *file, struct symbol *func,
+ 
+ 			break;
+ 
++		case INSN_EXCEPTION_RETURN:
++			if (handle_insn_ops(insn, &state))
++				return 1;
++
++			/*
++			 * This handles x86's sync_core() case, where we use an
++			 * IRET to self. All 'normal' IRET instructions are in
++			 * STT_NOTYPE entry symbols.
++			 */
++			if (func)
++				break;
++
++			return 0;
++
+ 		case INSN_CONTEXT_SWITCH:
+ 			if (func && (!next_insn || !next_insn->hint)) {
+ 				WARN_FUNC("unsupported instruction in callable function",
