@@ -2,32 +2,32 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BFDD31B44F0
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Apr 2020 14:23:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C4C51B44F3
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Apr 2020 14:23:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728829AbgDVMWc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 22 Apr 2020 08:22:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53316 "EHLO
+        id S1727798AbgDVMWx (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 22 Apr 2020 08:22:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728349AbgDVMRa (ORCPT
+        by vger.kernel.org with ESMTP id S1728304AbgDVMRa (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Wed, 22 Apr 2020 08:17:30 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39FD1C03C1AB;
-        Wed, 22 Apr 2020 05:17:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6459C03C1A8;
+        Wed, 22 Apr 2020 05:17:29 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jREJW-0007dP-SF; Wed, 22 Apr 2020 14:17:15 +0200
+        id 1jREJX-0007e4-Cm; Wed, 22 Apr 2020 14:17:15 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 71CC21C0450;
-        Wed, 22 Apr 2020 14:17:14 +0200 (CEST)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 094841C02FC;
+        Wed, 22 Apr 2020 14:17:15 +0200 (CEST)
 Date:   Wed, 22 Apr 2020 12:17:14 -0000
 From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf machine: Factor out lbr_callchain_add_lbr_ip()
+Subject: [tip: perf/core] perf machine: Factor out lbr_callchain_add_kernel_ip()
 Cc:     Kan Liang <kan.liang@linux.intel.com>,
         Andi Kleen <ak@linux.intel.com>, Jiri Olsa <jolsa@redhat.com>,
         Adrian Hunter <adrian.hunter@intel.com>,
@@ -42,10 +42,10 @@ Cc:     Kan Liang <kan.liang@linux.intel.com>,
         Vitaly Slobodskoy <vitaly.slobodskoy@intel.com>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200319202517.23423-9-kan.liang@linux.intel.com>
-References: <20200319202517.23423-9-kan.liang@linux.intel.com>
+In-Reply-To: <20200319202517.23423-8-kan.liang@linux.intel.com>
+References: <20200319202517.23423-8-kan.liang@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <158755783407.28353.15360366037839486817.tip-bot2@tip-bot2>
+Message-ID: <158755783453.28353.8426037370722698037.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -61,17 +61,17 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     e2b23483eb1d851b4c48935a995f79b2de41c3ed
-Gitweb:        https://git.kernel.org/tip/e2b23483eb1d851b4c48935a995f79b2de41c3ed
+Commit-ID:     dd3e249a0c0ad88098922803b149c788bb364c23
+Gitweb:        https://git.kernel.org/tip/dd3e249a0c0ad88098922803b149c788bb364c23
 Author:        Kan Liang <kan.liang@linux.intel.com>
-AuthorDate:    Thu, 19 Mar 2020 13:25:08 -07:00
+AuthorDate:    Thu, 19 Mar 2020 13:25:07 -07:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Sat, 18 Apr 2020 09:05:01 -03:00
+CommitterDate: Sat, 18 Apr 2020 09:05:00 -03:00
 
-perf machine: Factor out lbr_callchain_add_lbr_ip()
+perf machine: Factor out lbr_callchain_add_kernel_ip()
 
-Both caller and callee needs to add ip from LBR to callchain.
-Factor out lbr_callchain_add_lbr_ip() to improve code readability.
+Both caller and callee needs to add kernel ip to callchain.  Factor out
+lbr_callchain_add_kernel_ip() to improve code readability.
 
 Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
 Reviewed-by: Andi Kleen <ak@linux.intel.com>
@@ -86,84 +86,50 @@ Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
 Cc: Stephane Eranian <eranian@google.com>
 Cc: Vitaly Slobodskoy <vitaly.slobodskoy@intel.com>
-Link: http://lore.kernel.org/lkml/20200319202517.23423-9-kan.liang@linux.intel.com
+Link: http://lore.kernel.org/lkml/20200319202517.23423-8-kan.liang@linux.intel.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/machine.c | 143 ++++++++++++++++++-------------------
- 1 file changed, 73 insertions(+), 70 deletions(-)
+ tools/perf/util/machine.c | 67 +++++++++++++++++++++++++-------------
+ 1 file changed, 45 insertions(+), 22 deletions(-)
 
 diff --git a/tools/perf/util/machine.c b/tools/perf/util/machine.c
-index a7f75fd..f9d69fc 100644
+index 0da540e..a7f75fd 100644
 --- a/tools/perf/util/machine.c
 +++ b/tools/perf/util/machine.c
-@@ -2224,6 +2224,74 @@ static int lbr_callchain_add_kernel_ip(struct thread *thread,
- 	return 0;
+@@ -2190,6 +2190,40 @@ static int remove_loops(struct branch_entry *l, int nr,
+ 	return nr;
  }
  
-+static int lbr_callchain_add_lbr_ip(struct thread *thread,
-+				    struct callchain_cursor *cursor,
-+				    struct perf_sample *sample,
-+				    struct symbol **parent,
-+				    struct addr_location *root_al,
-+				    u64 *branch_from,
-+				    bool callee)
++static int lbr_callchain_add_kernel_ip(struct thread *thread,
++				       struct callchain_cursor *cursor,
++				       struct perf_sample *sample,
++				       struct symbol **parent,
++				       struct addr_location *root_al,
++				       u64 branch_from,
++				       bool callee, int end)
 +{
-+	struct branch_stack *lbr_stack = sample->branch_stack;
-+	struct branch_entry *entries = perf_sample__branch_entries(sample);
++	struct ip_callchain *chain = sample->callchain;
 +	u8 cpumode = PERF_RECORD_MISC_USER;
-+	int lbr_nr = lbr_stack->nr;
-+	struct branch_flags *flags;
 +	int err, i;
-+	u64 ip;
 +
 +	if (callee) {
-+		/* Add LBR ip from first entries.to */
-+		ip = entries[0].to;
-+		flags = &entries[0].flags;
-+		*branch_from = entries[0].from;
-+		err = add_callchain_ip(thread, cursor, parent,
-+				       root_al, &cpumode, ip,
-+				       true, flags, NULL,
-+				       *branch_from);
-+		if (err)
-+			return err;
-+
-+		/* Add LBR ip from entries.from one by one. */
-+		for (i = 0; i < lbr_nr; i++) {
-+			ip = entries[i].from;
-+			flags = &entries[i].flags;
++		for (i = 0; i < end + 1; i++) {
 +			err = add_callchain_ip(thread, cursor, parent,
-+					       root_al, &cpumode, ip,
-+					       true, flags, NULL,
-+					       *branch_from);
++					       root_al, &cpumode, chain->ips[i],
++					       false, NULL, NULL, branch_from);
 +			if (err)
 +				return err;
 +		}
 +		return 0;
 +	}
 +
-+	/* Add LBR ip from entries.from one by one. */
-+	for (i = lbr_nr - 1; i >= 0; i--) {
-+		ip = entries[i].from;
-+		flags = &entries[i].flags;
++	for (i = end; i >= 0; i--) {
 +		err = add_callchain_ip(thread, cursor, parent,
-+				       root_al, &cpumode, ip,
-+				       true, flags, NULL,
-+				       *branch_from);
++				       root_al, &cpumode, chain->ips[i],
++				       false, NULL, NULL, branch_from);
 +		if (err)
 +			return err;
 +	}
-+
-+	/* Add LBR ip from first entries.to */
-+	ip = entries[0].to;
-+	flags = &entries[0].flags;
-+	*branch_from = entries[0].from;
-+	err = add_callchain_ip(thread, cursor, parent,
-+			       root_al, &cpumode, ip,
-+			       true, flags, NULL,
-+			       *branch_from);
-+	if (err)
-+		return err;
 +
 +	return 0;
 +}
@@ -171,69 +137,14 @@ index a7f75fd..f9d69fc 100644
  /*
   * Recolve LBR callstack chain sample
   * Return:
-@@ -2240,14 +2308,7 @@ static int resolve_lbr_callchain_sample(struct thread *thread,
- {
- 	struct ip_callchain *chain = sample->callchain;
- 	int chain_nr = min(max_stack, (int)chain->nr), i;
--	u8 cpumode = PERF_RECORD_MISC_USER;
--	u64 ip, branch_from = 0;
--	struct branch_stack *lbr_stack;
--	struct branch_entry *entries;
--	int lbr_nr, j, k;
--	bool branch;
--	struct branch_flags *flags;
--	int mix_chain_nr;
-+	u64 branch_from = 0;
- 	int err;
+@@ -2242,17 +2276,12 @@ static int resolve_lbr_callchain_sample(struct thread *thread,
  
- 	for (i = 0; i < chain_nr; i++) {
-@@ -2259,21 +2320,6 @@ static int resolve_lbr_callchain_sample(struct thread *thread,
- 	if (i == chain_nr)
- 		return 0;
- 
--	lbr_stack = sample->branch_stack;
--	entries = perf_sample__branch_entries(sample);
--	lbr_nr = lbr_stack->nr;
--	/*
--	 * LBR callstack can only get user call chain.
--	 * The mix_chain_nr is kernel call chain
--	 * number plus LBR user call chain number.
--	 * i is kernel call chain number,
--	 * 1 is PERF_CONTEXT_USER,
--	 * lbr_nr + 1 is the user call chain number.
--	 * For details, please refer to the comments
--	 * in callchain__printf
--	 */
--	mix_chain_nr = i + 1 + lbr_nr + 1;
--
  	if (callchain_param.order == ORDER_CALLEE) {
  		/* Add kernel ip */
- 		err = lbr_callchain_add_kernel_ip(thread, cursor, sample,
-@@ -2282,57 +2328,14 @@ static int resolve_lbr_callchain_sample(struct thread *thread,
- 		if (err)
- 			goto error;
- 
--		/* Add LBR ip from first entries.to */
--		ip = entries[0].to;
--		branch = true;
--		flags = &entries[0].flags;
--		branch_from = entries[0].from;
--		err = add_callchain_ip(thread, cursor, parent,
--				       root_al, &cpumode, ip,
--				       branch, flags, NULL,
--				       branch_from);
-+		err = lbr_callchain_add_lbr_ip(thread, cursor, sample, parent,
-+					       root_al, &branch_from, true);
- 		if (err)
- 			goto error;
- 
--		/* Add LBR ip from entries.from one by one. */
--		for (j = i + 2; j < mix_chain_nr; j++) {
--			k = j - i - 2;
--			ip = entries[k].from;
--			branch = true;
--			flags = &entries[k].flags;
--
+-		for (j = 0; j < i + 1; j++) {
+-			ip = chain->ips[j];
+-			branch = false;
+-			flags = NULL;
 -			err = add_callchain_ip(thread, cursor, parent,
 -					       root_al, &cpumode, ip,
 -					       branch, flags, NULL,
@@ -241,14 +152,23 @@ index a7f75fd..f9d69fc 100644
 -			if (err)
 -				goto error;
 -		}
- 	} else {
--		/* Add LBR ip from entries.from one by one. */
--		for (j = 0; j < lbr_nr; j++) {
--			k = lbr_nr - j - 1;
--			ip = entries[k].from;
--			branch = true;
--			flags = &entries[k].flags;
--
++		err = lbr_callchain_add_kernel_ip(thread, cursor, sample,
++						  parent, root_al, branch_from,
++						  true, i);
++		if (err)
++			goto error;
++
+ 		/* Add LBR ip from first entries.to */
+ 		ip = entries[0].to;
+ 		branch = true;
+@@ -2308,17 +2337,11 @@ static int resolve_lbr_callchain_sample(struct thread *thread,
+ 			goto error;
+ 
+ 		/* Add kernel ip */
+-		for (j = lbr_nr + 1; j < mix_chain_nr; j++) {
+-			ip = chain->ips[i + 1 - (j - lbr_nr)];
+-			branch = false;
+-			flags = NULL;
 -			err = add_callchain_ip(thread, cursor, parent,
 -					       root_al, &cpumode, ip,
 -					       branch, flags, NULL,
@@ -256,18 +176,11 @@ index a7f75fd..f9d69fc 100644
 -			if (err)
 -				goto error;
 -		}
--
--		/* Add LBR ip from first entries.to */
--		ip = entries[0].to;
--		branch = true;
--		flags = &entries[0].flags;
--		branch_from = entries[0].from;
--		err = add_callchain_ip(thread, cursor, parent,
--				       root_al, &cpumode, ip,
--				       branch, flags, NULL,
--				       branch_from);
-+		err = lbr_callchain_add_lbr_ip(thread, cursor, sample, parent,
-+					       root_al, &branch_from, false);
- 		if (err)
- 			goto error;
++		err = lbr_callchain_add_kernel_ip(thread, cursor, sample,
++						  parent, root_al, branch_from,
++						  false, i);
++		if (err)
++			goto error;
+ 	}
+ 	return 1;
  
