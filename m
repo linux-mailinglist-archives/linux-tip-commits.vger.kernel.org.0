@@ -2,38 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 531FD1B5021
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 23 Apr 2020 00:25:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BD301B5050
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 23 Apr 2020 00:27:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726718AbgDVWZF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 22 Apr 2020 18:25:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35036 "EHLO
+        id S1726387AbgDVW0K (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 22 Apr 2020 18:26:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35020 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726161AbgDVWZE (ORCPT
+        by vger.kernel.org with ESMTP id S1726654AbgDVWZA (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 22 Apr 2020 18:25:04 -0400
+        Wed, 22 Apr 2020 18:25:00 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DBF1C03C1A9;
-        Wed, 22 Apr 2020 15:25:04 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91685C03C1A9;
+        Wed, 22 Apr 2020 15:25:00 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jRNnV-0001RO-7L; Thu, 23 Apr 2020 00:24:50 +0200
+        id 1jRNnU-0001RI-5O; Thu, 23 Apr 2020 00:24:49 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 612751C04D1;
-        Thu, 23 Apr 2020 00:24:45 +0200 (CEST)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A7D5B1C0450;
+        Thu, 23 Apr 2020 00:24:44 +0200 (CEST)
 Date:   Wed, 22 Apr 2020 22:24:44 -0000
 From:   "tip-bot2 for Sami Tolvanen" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] objtool: Use sh_info to find the base for .rela sections
+Subject: [tip: objtool/core] objtool: Use gelf_getsymshndx() to handle >64k sections
 Cc:     Sami Tolvanen <samitolvanen@google.com>,
         Josh Poimboeuf <jpoimboe@redhat.com>,
         Kees Cook <keescook@chromium.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158759428485.28353.15005772572257518607.tip-bot2@tip-bot2>
+Message-ID: <158759428414.28353.13399607572117733113.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,40 +49,84 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     e2ccbff8f02d6b140b8ee71108264686c19b1c78
-Gitweb:        https://git.kernel.org/tip/e2ccbff8f02d6b140b8ee71108264686c19b1c78
+Commit-ID:     01a919f8e8eb9285d76024bee32e23cc125cad48
+Gitweb:        https://git.kernel.org/tip/01a919f8e8eb9285d76024bee32e23cc125cad48
 Author:        Sami Tolvanen <samitolvanen@google.com>
-AuthorDate:    Tue, 21 Apr 2020 11:25:01 -07:00
+AuthorDate:    Tue, 21 Apr 2020 15:08:42 -07:00
 Committer:     Josh Poimboeuf <jpoimboe@redhat.com>
-CommitterDate: Tue, 21 Apr 2020 18:49:15 -05:00
+CommitterDate: Tue, 21 Apr 2020 18:49:18 -05:00
 
-objtool: Use sh_info to find the base for .rela sections
+objtool: Use gelf_getsymshndx() to handle >64k sections
 
-ELF doesn't require .rela section names to match the base section. Use
-the section index in sh_info to find the section instead of looking it
-up by name.
-
-LLD, for example, generates a .rela section that doesn't match the base
-section name when we merge sections in a linker script for a binary
-compiled with -ffunction-sections.
+Currently, objtool fails to load the correct section for symbols when
+the index is greater than SHN_LORESERVE. Use gelf_getsymshndx() instead
+of gelf_getsym() to handle >64k sections.
 
 Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
 Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
 Reviewed-by: Kees Cook <keescook@chromium.org>
 ---
- tools/objtool/elf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/objtool/elf.c | 24 +++++++++++++++++-------
+ 1 file changed, 17 insertions(+), 7 deletions(-)
 
 diff --git a/tools/objtool/elf.c b/tools/objtool/elf.c
-index c4857fa..c20dfe1 100644
+index c20dfe1..43748cb 100644
 --- a/tools/objtool/elf.c
 +++ b/tools/objtool/elf.c
-@@ -468,7 +468,7 @@ static int read_relas(struct elf *elf)
- 		if (sec->sh.sh_type != SHT_RELA)
- 			continue;
+@@ -327,12 +327,14 @@ static int read_sections(struct elf *elf)
  
--		sec->base = find_section_by_name(elf, sec->name + 5);
-+		sec->base = find_section_by_index(elf, sec->sh.sh_info);
- 		if (!sec->base) {
- 			WARN("can't find base section for rela section %s",
- 			     sec->name);
+ static int read_symbols(struct elf *elf)
+ {
+-	struct section *symtab, *sec;
++	struct section *symtab, *symtab_shndx, *sec;
+ 	struct symbol *sym, *pfunc;
+ 	struct list_head *entry;
+ 	struct rb_node *pnode;
+ 	int symbols_nr, i;
+ 	char *coldstr;
++	Elf_Data *shndx_data = NULL;
++	Elf32_Word shndx;
+ 
+ 	symtab = find_section_by_name(elf, ".symtab");
+ 	if (!symtab) {
+@@ -340,6 +342,10 @@ static int read_symbols(struct elf *elf)
+ 		return -1;
+ 	}
+ 
++	symtab_shndx = find_section_by_name(elf, ".symtab_shndx");
++	if (symtab_shndx)
++		shndx_data = symtab_shndx->data;
++
+ 	symbols_nr = symtab->sh.sh_size / symtab->sh.sh_entsize;
+ 
+ 	for (i = 0; i < symbols_nr; i++) {
+@@ -353,8 +359,9 @@ static int read_symbols(struct elf *elf)
+ 
+ 		sym->idx = i;
+ 
+-		if (!gelf_getsym(symtab->data, i, &sym->sym)) {
+-			WARN_ELF("gelf_getsym");
++		if (!gelf_getsymshndx(symtab->data, shndx_data, i, &sym->sym,
++				      &shndx)) {
++			WARN_ELF("gelf_getsymshndx");
+ 			goto err;
+ 		}
+ 
+@@ -368,10 +375,13 @@ static int read_symbols(struct elf *elf)
+ 		sym->type = GELF_ST_TYPE(sym->sym.st_info);
+ 		sym->bind = GELF_ST_BIND(sym->sym.st_info);
+ 
+-		if (sym->sym.st_shndx > SHN_UNDEF &&
+-		    sym->sym.st_shndx < SHN_LORESERVE) {
+-			sym->sec = find_section_by_index(elf,
+-							 sym->sym.st_shndx);
++		if ((sym->sym.st_shndx > SHN_UNDEF &&
++		     sym->sym.st_shndx < SHN_LORESERVE) ||
++		    (shndx_data && sym->sym.st_shndx == SHN_XINDEX)) {
++			if (sym->sym.st_shndx != SHN_XINDEX)
++				shndx = sym->sym.st_shndx;
++
++			sym->sec = find_section_by_index(elf, shndx);
+ 			if (!sym->sec) {
+ 				WARN("couldn't find section for symbol %s",
+ 				     sym->name);
