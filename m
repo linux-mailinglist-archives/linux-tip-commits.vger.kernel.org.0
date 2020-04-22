@@ -2,49 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 648351B4432
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Apr 2020 14:18:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E5AB1B448A
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Apr 2020 14:20:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729066AbgDVMSN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 22 Apr 2020 08:18:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53494 "EHLO
+        id S1726629AbgDVMTt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 22 Apr 2020 08:19:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53430 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1729043AbgDVMSL (ORCPT
+        by vger.kernel.org with ESMTP id S1728867AbgDVMRy (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 22 Apr 2020 08:18:11 -0400
+        Wed, 22 Apr 2020 08:17:54 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C90B2C03C1A9;
-        Wed, 22 Apr 2020 05:18:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E7ACC03C1AA;
+        Wed, 22 Apr 2020 05:17:54 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jREJw-0007x2-W1; Wed, 22 Apr 2020 14:17:41 +0200
+        id 1jREJu-000800-QX; Wed, 22 Apr 2020 14:17:39 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 707DF1C0809;
-        Wed, 22 Apr 2020 14:17:30 +0200 (CEST)
-Date:   Wed, 22 Apr 2020 12:17:30 -0000
-From:   "tip-bot2 for Stephane Eranian" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 071D21C081A;
+        Wed, 22 Apr 2020 14:17:32 +0200 (CEST)
+Date:   Wed, 22 Apr 2020 12:17:31 -0000
+From:   "tip-bot2 for Alexey Budankov" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] tools api fs: Make xxx__mountpoint() more scalable
-Cc:     Stephane Eranian <eranian@google.com>,
-        Ian Rogers <irogers@google.com>, Jiri Olsa <jolsa@redhat.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Andrey Zhizhikin <andrey.z@gmail.com>,
-        Kan Liang <kan.liang@linux.intel.com>,
-        Kefeng Wang <wangkefeng.wang@huawei.com>,
-        Mark Rutland <mark.rutland@arm.com>,
+Subject: [tip: perf/core] doc/admin-guide: update kernel.rst with CAP_PERFMON
+ information
+Cc:     Alexey Budankov <alexey.budankov@linux.intel.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Andi Kleen <ak@linux.intel.com>,
+        Igor Lubashev <ilubashe@akamai.com>,
+        James Morris <jmorris@namei.org>, Jiri Olsa <jolsa@redhat.com>,
         Namhyung Kim <namhyung@kernel.org>,
         Peter Zijlstra <peterz@infradead.org>,
-        Petr Mladek <pmladek@suse.com>,
+        Serge Hallyn <serge@hallyn.com>,
+        Song Liu <songliubraving@fb.com>,
+        Stephane Eranian <eranian@google.com>,
         Thomas Gleixner <tglx@linutronix.de>,
+        intel-gfx@lists.freedesktop.org, linux-doc@vger.kernel.org,
+        linux-man@vger.kernel.org, linux-security-module@vger.kernel.org,
+        selinux@vger.kernel.org,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200402154357.107873-3-irogers@google.com>
-References: <20200402154357.107873-3-irogers@google.com>
+In-Reply-To: <84c32383-14a2-fa35-16b6-f9e59bd37240@linux.intel.com>
+References: <84c32383-14a2-fa35-16b6-f9e59bd37240@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <158755785003.28353.8394702081456310233.tip-bot2@tip-bot2>
+Message-ID: <158755785160.28353.3846364615857444421.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -60,181 +64,76 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     c6fddb28bad26e5472cb7acf7b04cd5126f1a4ab
-Gitweb:        https://git.kernel.org/tip/c6fddb28bad26e5472cb7acf7b04cd5126f1a4ab
-Author:        Stephane Eranian <eranian@google.com>
-AuthorDate:    Thu, 02 Apr 2020 08:43:54 -07:00
+Commit-ID:     025b16f81dd7f51f29d0109399d669438c63b6ce
+Gitweb:        https://git.kernel.org/tip/025b16f81dd7f51f29d0109399d669438c63b6ce
+Author:        Alexey Budankov <alexey.budankov@linux.intel.com>
+AuthorDate:    Thu, 02 Apr 2020 11:54:39 +03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Thu, 16 Apr 2020 12:19:12 -03:00
 
-tools api fs: Make xxx__mountpoint() more scalable
+doc/admin-guide: update kernel.rst with CAP_PERFMON information
 
-The xxx_mountpoint() interface provided by fs.c finds mount points for
-common pseudo filesystems. The first time xxx_mountpoint() is invoked,
-it scans the mount table (/proc/mounts) looking for a match. If found,
-it is cached. The price to scan /proc/mounts is paid once if the mount
-is found.
+Update the kernel.rst documentation file with the information related to
+usage of CAP_PERFMON capability to secure performance monitoring and
+observability operations in system.
 
-When the mount point is not found, subsequent calls to xxx_mountpoint()
-scan /proc/mounts over and over again.  There is no caching.
-
-This causes a scaling issue in perf record with hugeltbfs__mountpoint().
-The function is called for each process found in
-synthesize__mmap_events().  If the machine has thousands of processes
-and if the /proc/mounts has many entries this could cause major overhead
-in perf record. We have observed multi-second slowdowns on some
-configurations.
-
-As an example on a laptop:
-
-Before:
-
-  $ sudo umount /dev/hugepages
-  $ strace -e trace=openat -o /tmp/tt perf record -a ls
-  $ fgrep mounts /tmp/tt
-  285
-
-After:
-
-  $ sudo umount /dev/hugepages
-  $ strace -e trace=openat -o /tmp/tt perf record -a ls
-  $ fgrep mounts /tmp/tt
-  1
-
-One could argue that the non-caching in case the moint point is not
-found is intentional. That way subsequent calls may discover a moint
-point if the sysadmin mounts the filesystem. But the same argument could
-be made against caching the mount point. It could be unmounted causing
-errors.  It all depends on the intent of the interface. This patch
-assumes it is expected to scan /proc/mounts once. The patch documents
-the caching behavior in the fs.h header file.
-
-An alternative would be to just fix perf record. But it would solve the
-problem with hugetlbs__mountpoint() but there could be similar issues
-(possibly down the line) with other xxx_mountpoint() calls in perf or
-other tools.
-
-Signed-off-by: Stephane Eranian <eranian@google.com>
-Reviewed-by: Ian Rogers <irogers@google.com>
-Acked-by: Jiri Olsa <jolsa@redhat.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Andrey Zhizhikin <andrey.z@gmail.com>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
+Signed-off-by: Alexey Budankov <alexey.budankov@linux.intel.com>
+Cc: Alexei Starovoitov <ast@kernel.org>
+Cc: Andi Kleen <ak@linux.intel.com>
+Cc: Igor Lubashev <ilubashe@akamai.com>
+Cc: James Morris <jmorris@namei.org>
+Cc: Jiri Olsa <jolsa@redhat.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Petr Mladek <pmladek@suse.com>
+Cc: Serge Hallyn <serge@hallyn.com>
+Cc: Song Liu <songliubraving@fb.com>
+Cc: Stephane Eranian <eranian@google.com>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Link: http://lore.kernel.org/lkml/20200402154357.107873-3-irogers@google.com
-Signed-off-by: Ian Rogers <irogers@google.com>
+Cc: intel-gfx@lists.freedesktop.org
+Cc: linux-doc@vger.kernel.org
+Cc: linux-man@vger.kernel.org
+Cc: linux-security-module@vger.kernel.org
+Cc: selinux@vger.kernel.org
+Link: http://lore.kernel.org/lkml/84c32383-14a2-fa35-16b6-f9e59bd37240@linux.intel.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/lib/api/fs/fs.c | 17 +++++++++++++++++
- tools/lib/api/fs/fs.h | 12 ++++++++++++
- 2 files changed, 29 insertions(+)
+ Documentation/admin-guide/sysctl/kernel.rst | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/tools/lib/api/fs/fs.c b/tools/lib/api/fs/fs.c
-index 027b18f..82f53d8 100644
---- a/tools/lib/api/fs/fs.c
-+++ b/tools/lib/api/fs/fs.c
-@@ -90,6 +90,7 @@ struct fs {
- 	const char * const	*mounts;
- 	char			 path[PATH_MAX];
- 	bool			 found;
-+	bool			 checked;
- 	long			 magic;
- };
+diff --git a/Documentation/admin-guide/sysctl/kernel.rst b/Documentation/admin-guide/sysctl/kernel.rst
+index 39c95c0..7e4c28d 100644
+--- a/Documentation/admin-guide/sysctl/kernel.rst
++++ b/Documentation/admin-guide/sysctl/kernel.rst
+@@ -730,7 +730,13 @@ perf_event_paranoid
+ ===================
  
-@@ -111,31 +112,37 @@ static struct fs fs__entries[] = {
- 		.name	= "sysfs",
- 		.mounts	= sysfs__fs_known_mountpoints,
- 		.magic	= SYSFS_MAGIC,
-+		.checked = false,
- 	},
- 	[FS__PROCFS] = {
- 		.name	= "proc",
- 		.mounts	= procfs__known_mountpoints,
- 		.magic	= PROC_SUPER_MAGIC,
-+		.checked = false,
- 	},
- 	[FS__DEBUGFS] = {
- 		.name	= "debugfs",
- 		.mounts	= debugfs__known_mountpoints,
- 		.magic	= DEBUGFS_MAGIC,
-+		.checked = false,
- 	},
- 	[FS__TRACEFS] = {
- 		.name	= "tracefs",
- 		.mounts	= tracefs__known_mountpoints,
- 		.magic	= TRACEFS_MAGIC,
-+		.checked = false,
- 	},
- 	[FS__HUGETLBFS] = {
- 		.name	= "hugetlbfs",
- 		.mounts = hugetlbfs__known_mountpoints,
- 		.magic	= HUGETLBFS_MAGIC,
-+		.checked = false,
- 	},
- 	[FS__BPF_FS] = {
- 		.name	= "bpf",
- 		.mounts = bpf_fs__known_mountpoints,
- 		.magic	= BPF_FS_MAGIC,
-+		.checked = false,
- 	},
- };
- 
-@@ -158,6 +165,7 @@ static bool fs__read_mounts(struct fs *fs)
- 	}
- 
- 	fclose(fp);
-+	fs->checked = true;
- 	return fs->found = found;
- }
- 
-@@ -220,6 +228,7 @@ static bool fs__env_override(struct fs *fs)
- 		return false;
- 
- 	fs->found = true;
-+	fs->checked = true;
- 	strncpy(fs->path, override_path, sizeof(fs->path) - 1);
- 	fs->path[sizeof(fs->path) - 1] = '\0';
- 	return true;
-@@ -246,6 +255,14 @@ static const char *fs__mountpoint(int idx)
- 	if (fs->found)
- 		return (const char *)fs->path;
- 
-+	/* the mount point was already checked for the mount point
-+	 * but and did not exist, so return NULL to avoid scanning again.
-+	 * This makes the found and not found paths cost equivalent
-+	 * in case of multiple calls.
-+	 */
-+	if (fs->checked)
-+		return NULL;
+ Controls use of the performance events system by unprivileged
+-users (without CAP_SYS_ADMIN).  The default value is 2.
++users (without CAP_PERFMON).  The default value is 2.
 +
- 	return fs__get_mountpoint(fs);
- }
++For backward compatibility reasons access to system performance
++monitoring and observability remains open for CAP_SYS_ADMIN
++privileged processes but CAP_SYS_ADMIN usage for secure system
++performance monitoring and observability operations is discouraged
++with respect to CAP_PERFMON use cases.
  
-diff --git a/tools/lib/api/fs/fs.h b/tools/lib/api/fs/fs.h
-index 936edb9..aa222ca 100644
---- a/tools/lib/api/fs/fs.h
-+++ b/tools/lib/api/fs/fs.h
-@@ -18,6 +18,18 @@
- 	const char *name##__mount(void);	\
- 	bool name##__configured(void);		\
+ ===  ==================================================================
+  -1  Allow use of (almost) all events by all users.
+@@ -739,13 +745,13 @@ users (without CAP_SYS_ADMIN).  The default value is 2.
+      ``CAP_IPC_LOCK``.
  
-+/*
-+ * The xxxx__mountpoint() entry points find the first match mount point for each
-+ * filesystems listed below, where xxxx is the filesystem type.
-+ *
-+ * The interface is as follows:
-+ *
-+ * - If a mount point is found on first call, it is cached and used for all
-+ *   subsequent calls.
-+ *
-+ * - If a mount point is not found, NULL is returned on first call and all
-+ *   subsequent calls.
-+ */
- FS(sysfs)
- FS(procfs)
- FS(debugfs)
+ >=0  Disallow ftrace function tracepoint by users without
+-     ``CAP_SYS_ADMIN``.
++     ``CAP_PERFMON``.
+ 
+-     Disallow raw tracepoint access by users without ``CAP_SYS_ADMIN``.
++     Disallow raw tracepoint access by users without ``CAP_PERFMON``.
+ 
+->=1  Disallow CPU event access by users without ``CAP_SYS_ADMIN``.
++>=1  Disallow CPU event access by users without ``CAP_PERFMON``.
+ 
+->=2  Disallow kernel profiling by users without ``CAP_SYS_ADMIN``.
++>=2  Disallow kernel profiling by users without ``CAP_PERFMON``.
+ ===  ==================================================================
+ 
+ 
