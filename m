@@ -2,46 +2,59 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E9C851B449A
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Apr 2020 14:20:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 48F041B4434
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Apr 2020 14:18:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728770AbgDVMRn (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 22 Apr 2020 08:17:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53392 "EHLO
+        id S1729074AbgDVMSN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 22 Apr 2020 08:18:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53502 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727782AbgDVMRm (ORCPT
+        by vger.kernel.org with ESMTP id S1729055AbgDVMSL (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 22 Apr 2020 08:17:42 -0400
+        Wed, 22 Apr 2020 08:18:11 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94461C03C1A8;
-        Wed, 22 Apr 2020 05:17:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BC8CC03C1A8;
+        Wed, 22 Apr 2020 05:18:11 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jREJr-0007sr-TT; Wed, 22 Apr 2020 14:17:36 +0200
+        id 1jREJu-0007tT-3B; Wed, 22 Apr 2020 14:17:38 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id DD77C1C04CF;
-        Wed, 22 Apr 2020 14:17:27 +0200 (CEST)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 637021C0451;
+        Wed, 22 Apr 2020 14:17:28 +0200 (CEST)
 Date:   Wed, 22 Apr 2020 12:17:27 -0000
-From:   "tip-bot2 for Andreas Gerstmayr" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Kajol Jain" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf script: Add flamegraph.py script
-Cc:     Andreas Gerstmayr <agerstmayr@redhat.com>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
+Subject: [tip: perf/core] perf metrictroup: Split the metricgroup__add_metric function
+Cc:     Kajol Jain <kjain@linux.ibm.com>, Jiri Olsa <jolsa@redhat.com>,
         Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Jiri Olsa <jolsa@redhat.com>,
+        Andi Kleen <ak@linux.intel.com>,
+        Anju T Sudhakar <anju@linux.vnet.ibm.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+        Jin Yao <yao.jin@linux.intel.com>,
+        Joe Mario <jmario@redhat.com>,
+        Kan Liang <kan.liang@linux.intel.com>,
+        Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
+        Mamatha Inamdar <mamatha4@linux.vnet.ibm.com>,
         Mark Rutland <mark.rutland@arm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Michael Petlan <mpetlan@redhat.com>,
         Namhyung Kim <namhyung@kernel.org>,
+        Paul Mackerras <paulus@ozlabs.org>,
         Peter Zijlstra <peterz@infradead.org>,
-        Brendan Gregg <bgregg@netflix.com>,
-        Martin Spier <mspier@netflix.com>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200320151355.66302-1-agerstmayr@redhat.com>
-References: <20200320151355.66302-1-agerstmayr@redhat.com>
+        Ravi Bangoria <ravi.bangoria@linux.ibm.com>,
+        Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linuxppc-dev@lists.ozlabs.org,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200401203340.31402-4-kjain@linux.ibm.com>
+References: <20200401203340.31402-4-kjain@linux.ibm.com>
 MIME-Version: 1.0
-Message-ID: <158755784751.28353.7167213129774266352.tip-bot2@tip-bot2>
+Message-ID: <158755784797.28353.3422186725377296528.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -57,213 +70,125 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     5287f926920688e1151741d49da37a533ccf1960
-Gitweb:        https://git.kernel.org/tip/5287f926920688e1151741d49da37a533ccf1960
-Author:        Andreas Gerstmayr <agerstmayr@redhat.com>
-AuthorDate:    Fri, 20 Mar 2020 16:13:48 +01:00
+Commit-ID:     47352aba40035ab3fdc50dd03a94456feabed7d8
+Gitweb:        https://git.kernel.org/tip/47352aba40035ab3fdc50dd03a94456feabed7d8
+Author:        Kajol Jain <kjain@linux.ibm.com>
+AuthorDate:    Thu, 02 Apr 2020 02:03:36 +05:30
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Thu, 16 Apr 2020 12:19:14 -03:00
+CommitterDate: Thu, 16 Apr 2020 12:19:13 -03:00
 
-perf script: Add flamegraph.py script
+perf metrictroup: Split the metricgroup__add_metric function
 
-This script works in tandem with d3-flame-graph to generate flame graphs
-from perf. It supports two output formats: JSON and HTML (the default).
-The HTML format will look for a standalone d3-flame-graph template file
-in /usr/share/d3-flame-graph/d3-flamegraph-base.html and fill in the
-collected stacks.
+This patch refactors metricgroup__add_metric function where some part of
+it move to function metricgroup__add_metric_param.  No logic change.
 
-Usage:
-
-    perf record -a -g -F 99 sleep 60
-    perf script report flamegraph
-
-Combined:
-
-    perf script flamegraph -a -F 99 sleep 60
-
-Committer testing:
-
-Tested both with "PYTHON=python3" and with the default, that uses
-python2-devel:
-
-Complete set of instructions:
-
-  $ mkdir /tmp/build/perf
-  $ make PYTHON=python3 -C tools/perf O=/tmp/build/perf install-bin
-  $ export PATH=~/bin:$PATH
-  $ perf record -a -g -F 99 sleep 60
-  $ perf script report flamegraph
-
-Now go and open the generated flamegraph.html file in a browser.
-
-At first this required building with PYTHON=python3, but after I
-reported this Andreas was kind enough to send a patch making it work
-with both python and python3.
-
-Signed-off-by: Andreas Gerstmayr <agerstmayr@redhat.com>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
+Acked-by: Jiri Olsa <jolsa@redhat.com>
 Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Jiri Olsa <jolsa@redhat.com>
+Cc: Andi Kleen <ak@linux.intel.com>
+Cc: Anju T Sudhakar <anju@linux.vnet.ibm.com>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Jin Yao <yao.jin@linux.intel.com>
+Cc: Joe Mario <jmario@redhat.com>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
+Cc: Mamatha Inamdar <mamatha4@linux.vnet.ibm.com>
 Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Michael Petlan <mpetlan@redhat.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Paul Mackerras <paulus@ozlabs.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Brendan Gregg <bgregg@netflix.com>
-Cc: Martin Spier <mspier@netflix.com>
-Link: http://lore.kernel.org/lkml/20200320151355.66302-1-agerstmayr@redhat.com
+Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+Cc: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: linuxppc-dev@lists.ozlabs.org
+Link: http://lore.kernel.org/lkml/20200401203340.31402-4-kjain@linux.ibm.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/scripts/python/bin/flamegraph-record |   2 +-
- tools/perf/scripts/python/bin/flamegraph-report |   3 +-
- tools/perf/scripts/python/flamegraph.py         | 124 +++++++++++++++-
- 3 files changed, 129 insertions(+)
- create mode 100755 tools/perf/scripts/python/bin/flamegraph-record
- create mode 100755 tools/perf/scripts/python/bin/flamegraph-report
- create mode 100755 tools/perf/scripts/python/flamegraph.py
+ tools/perf/util/metricgroup.c | 60 +++++++++++++++++++---------------
+ 1 file changed, 35 insertions(+), 25 deletions(-)
 
-diff --git a/tools/perf/scripts/python/bin/flamegraph-record b/tools/perf/scripts/python/bin/flamegraph-record
-new file mode 100755
-index 0000000..725d66e
---- /dev/null
-+++ b/tools/perf/scripts/python/bin/flamegraph-record
-@@ -0,0 +1,2 @@
-+#!/usr/bin/sh
-+perf record -g "$@"
-diff --git a/tools/perf/scripts/python/bin/flamegraph-report b/tools/perf/scripts/python/bin/flamegraph-report
-new file mode 100755
-index 0000000..b1a79af
---- /dev/null
-+++ b/tools/perf/scripts/python/bin/flamegraph-report
-@@ -0,0 +1,3 @@
-+#!/usr/bin/sh
-+# description: create flame graphs
-+perf script -s "$PERF_EXEC_PATH"/scripts/python/flamegraph.py -- "$@"
-diff --git a/tools/perf/scripts/python/flamegraph.py b/tools/perf/scripts/python/flamegraph.py
-new file mode 100755
-index 0000000..61f3be9
---- /dev/null
-+++ b/tools/perf/scripts/python/flamegraph.py
-@@ -0,0 +1,124 @@
-+# flamegraph.py - create flame graphs from perf samples
-+# SPDX-License-Identifier: GPL-2.0
-+#
-+# Usage:
-+#
-+#     perf record -a -g -F 99 sleep 60
-+#     perf script report flamegraph
-+#
-+# Combined:
-+#
-+#     perf script flamegraph -a -F 99 sleep 60
-+#
-+# Written by Andreas Gerstmayr <agerstmayr@redhat.com>
-+# Flame Graphs invented by Brendan Gregg <bgregg@netflix.com>
-+# Works in tandem with d3-flame-graph by Martin Spier <mspier@netflix.com>
+diff --git a/tools/perf/util/metricgroup.c b/tools/perf/util/metricgroup.c
+index 926449a..7ad81c8 100644
+--- a/tools/perf/util/metricgroup.c
++++ b/tools/perf/util/metricgroup.c
+@@ -485,6 +485,39 @@ static bool metricgroup__has_constraint(struct pmu_event *pe)
+ 	return false;
+ }
+ 
++static int __metricgroup__add_metric(struct strbuf *events,
++			struct list_head *group_list, struct pmu_event *pe)
++{
 +
-+from __future__ import print_function
-+import sys
-+import os
-+import argparse
-+import json
++	const char **ids;
++	int idnum;
++	struct egroup *eg;
 +
++	if (expr__find_other(pe->metric_expr, NULL, &ids, &idnum) < 0)
++		return -EINVAL;
 +
-+class Node:
-+    def __init__(self, name, libtype=""):
-+        self.name = name
-+        self.libtype = libtype
-+        self.value = 0
-+        self.children = []
++	if (events->len > 0)
++		strbuf_addf(events, ",");
 +
-+    def toJSON(self):
-+        return {
-+            "n": self.name,
-+            "l": self.libtype,
-+            "v": self.value,
-+            "c": self.children
-+        }
++	if (metricgroup__has_constraint(pe))
++		metricgroup__add_metric_non_group(events, ids, idnum);
++	else
++		metricgroup__add_metric_weak_group(events, ids, idnum);
 +
++	eg = malloc(sizeof(*eg));
++	if (!eg)
++		return -ENOMEM;
 +
-+class FlameGraphCLI:
-+    def __init__(self, args):
-+        self.args = args
-+        self.stack = Node("root")
++	eg->ids = ids;
++	eg->idnum = idnum;
++	eg->metric_name = pe->metric_name;
++	eg->metric_expr = pe->metric_expr;
++	eg->metric_unit = pe->unit;
++	list_add_tail(&eg->nd, group_list);
 +
-+        if self.args.format == "html" and \
-+                not os.path.isfile(self.args.template):
-+            print("Flame Graph template {} does not exist. Please install "
-+                  "the js-d3-flame-graph (RPM) or libjs-d3-flame-graph (deb) "
-+                  "package, specify an existing flame graph template "
-+                  "(--template PATH) or another output format "
-+                  "(--format FORMAT).".format(self.args.template),
-+                  file=sys.stderr)
-+            sys.exit(1)
++	return 0;
++}
 +
-+    def find_or_create_node(self, node, name, dso):
-+        libtype = "kernel" if dso == "[kernel.kallsyms]" else ""
-+        if name is None:
-+            name = "[unknown]"
-+
-+        for child in node.children:
-+            if child.name == name and child.libtype == libtype:
-+                return child
-+
-+        child = Node(name, libtype)
-+        node.children.append(child)
-+        return child
-+
-+    def process_event(self, event):
-+        node = self.find_or_create_node(self.stack, event["comm"], None)
-+        if "callchain" in event:
-+            for entry in reversed(event['callchain']):
-+                node = self.find_or_create_node(
-+                    node, entry.get("sym", {}).get("name"), event.get("dso"))
-+        else:
-+            node = self.find_or_create_node(
-+                node, entry.get("symbol"), event.get("dso"))
-+        node.value += 1
-+
-+    def trace_end(self):
-+        json_str = json.dumps(self.stack, default=lambda x: x.toJSON())
-+
-+        if self.args.format == "html":
-+            try:
-+                with open(self.args.template) as f:
-+                    output_str = f.read().replace("/** @flamegraph_json **/",
-+                                                  json_str)
-+            except IOError as e:
-+                print("Error reading template file: {}".format(e), file=sys.stderr)
-+                sys.exit(1)
-+            output_fn = self.args.output or "flamegraph.html"
-+        else:
-+            output_str = json_str
-+            output_fn = self.args.output or "stacks.json"
-+
-+        if output_fn == "-":
-+            sys.stdout.write(output_str)
-+        else:
-+            print("dumping data to {}".format(output_fn))
-+            try:
-+                with open(output_fn, "w") as out:
-+                    out.write(output_str)
-+            except IOError as e:
-+                print("Error writing output file: {}".format(e), file=sys.stderr)
-+                sys.exit(1)
-+
-+
-+if __name__ == "__main__":
-+    parser = argparse.ArgumentParser(description="Create flame graphs.")
-+    parser.add_argument("-f", "--format",
-+                        default="html", choices=["json", "html"],
-+                        help="output file format")
-+    parser.add_argument("-o", "--output",
-+                        help="output file name")
-+    parser.add_argument("--template",
-+                        default="/usr/share/d3-flame-graph/d3-flamegraph-base.html",
-+                        help="path to flamegraph HTML template")
-+    parser.add_argument("-i", "--input",
-+                        help=argparse.SUPPRESS)
-+
-+    args = parser.parse_args()
-+    cli = FlameGraphCLI(args)
-+
-+    process_event = cli.process_event
-+    trace_end = cli.trace_end
+ static int metricgroup__add_metric(const char *metric, struct strbuf *events,
+ 				   struct list_head *group_list)
+ {
+@@ -504,35 +537,12 @@ static int metricgroup__add_metric(const char *metric, struct strbuf *events,
+ 			continue;
+ 		if (match_metric(pe->metric_group, metric) ||
+ 		    match_metric(pe->metric_name, metric)) {
+-			const char **ids;
+-			int idnum;
+-			struct egroup *eg;
+ 
+ 			pr_debug("metric expr %s for %s\n", pe->metric_expr, pe->metric_name);
+ 
+-			if (expr__find_other(pe->metric_expr,
+-					     NULL, &ids, &idnum) < 0)
+-				continue;
+-			if (events->len > 0)
+-				strbuf_addf(events, ",");
+-
+-			if (metricgroup__has_constraint(pe))
+-				metricgroup__add_metric_non_group(events, ids, idnum);
+-			else
+-				metricgroup__add_metric_weak_group(events, ids, idnum);
+-
+-			eg = malloc(sizeof(struct egroup));
+-			if (!eg) {
+-				ret = -ENOMEM;
++			ret = __metricgroup__add_metric(events,	group_list, pe);
++			if (ret == -ENOMEM)
+ 				break;
+-			}
+-			eg->ids = ids;
+-			eg->idnum = idnum;
+-			eg->metric_name = pe->metric_name;
+-			eg->metric_expr = pe->metric_expr;
+-			eg->metric_unit = pe->unit;
+-			list_add_tail(&eg->nd, group_list);
+-			ret = 0;
+ 		}
+ 	}
+ 	return ret;
