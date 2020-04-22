@@ -2,38 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B4D6B1B5039
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 23 Apr 2020 00:27:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7016D1B503F
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 23 Apr 2020 00:27:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726835AbgDVWZY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 22 Apr 2020 18:25:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35106 "EHLO
+        id S1726863AbgDVWZ2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 22 Apr 2020 18:25:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726830AbgDVWZX (ORCPT
+        by vger.kernel.org with ESMTP id S1726830AbgDVWZ1 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 22 Apr 2020 18:25:23 -0400
+        Wed, 22 Apr 2020 18:25:27 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3870C03C1AB;
-        Wed, 22 Apr 2020 15:25:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12CA7C03C1A9;
+        Wed, 22 Apr 2020 15:25:27 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jRNng-0001WR-UO; Thu, 23 Apr 2020 00:25:02 +0200
+        id 1jRNnk-0001YM-Hr; Thu, 23 Apr 2020 00:25:05 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A9D571C04D7;
-        Thu, 23 Apr 2020 00:24:54 +0200 (CEST)
-Date:   Wed, 22 Apr 2020 22:24:54 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B1FDE1C0809;
+        Thu, 23 Apr 2020 00:24:55 +0200 (CEST)
+Date:   Wed, 22 Apr 2020 22:24:55 -0000
 From:   "tip-bot2 for Julien Thierry" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] objtool: Fix off-by-one in symbol_by_offset()
+Subject: [tip: objtool/urgent] objtool: Fix off-by-one in symbol_by_offset()
 Cc:     Julien Thierry <jthierry@redhat.com>,
         Miroslav Benes <mbenes@suse.cz>,
         Josh Poimboeuf <jpoimboe@redhat.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158759429403.28353.14775391683741410940.tip-bot2@tip-bot2>
+Message-ID: <158759429500.28353.17940657734487832163.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,14 +47,14 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the objtool/core branch of tip:
+The following commit has been merged into the objtool/urgent branch of tip:
 
-Commit-ID:     943331cbc831741731a5b2d45dad018ecc80413b
-Gitweb:        https://git.kernel.org/tip/943331cbc831741731a5b2d45dad018ecc80413b
+Commit-ID:     7f9b34f36cf6b2099f19e679a9e8315c955ef2ee
+Gitweb:        https://git.kernel.org/tip/7f9b34f36cf6b2099f19e679a9e8315c955ef2ee
 Author:        Julien Thierry <jthierry@redhat.com>
 AuthorDate:    Fri, 03 Apr 2020 14:17:30 +01:00
-Committer:     Josh Poimboeuf <jpoimboe@redhat.com>
-CommitterDate: Tue, 14 Apr 2020 10:39:24 -05:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Wed, 22 Apr 2020 23:14:46 +02:00
 
 objtool: Fix off-by-one in symbol_by_offset()
 
