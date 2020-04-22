@@ -2,63 +2,50 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 62D551B449B
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Apr 2020 14:20:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 531D41B44EF
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Apr 2020 14:23:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726536AbgDVMUM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 22 Apr 2020 08:20:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53416 "EHLO
+        id S1728765AbgDVMWb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 22 Apr 2020 08:22:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53336 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728825AbgDVMRu (ORCPT
+        by vger.kernel.org with ESMTP id S1728522AbgDVMRc (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 22 Apr 2020 08:17:50 -0400
+        Wed, 22 Apr 2020 08:17:32 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8F9DC03C1A8;
-        Wed, 22 Apr 2020 05:17:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 386FEC08E859;
+        Wed, 22 Apr 2020 05:17:32 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jREJe-0007gJ-VM; Wed, 22 Apr 2020 14:17:23 +0200
+        id 1jREJa-0007gr-E1; Wed, 22 Apr 2020 14:17:18 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 8B9951C0483;
-        Wed, 22 Apr 2020 14:17:17 +0200 (CEST)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 0A9A01C02FC;
+        Wed, 22 Apr 2020 14:17:18 +0200 (CEST)
 Date:   Wed, 22 Apr 2020 12:17:17 -0000
-From:   "tip-bot2 for Ian Rogers" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf doc: allow ASCIIDOC_EXTRA to be an argument
-Cc:     Ian Rogers <irogers@google.com>,
+Subject: [tip: perf/core] perf pmu: Add support for PMU capabilities
+Cc:     Kan Liang <kan.liang@linux.intel.com>,
+        Andi Kleen <ak@linux.intel.com>, Jiri Olsa <jolsa@redhat.com>,
         Adrian Hunter <adrian.hunter@intel.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Alexei Starovoitov <ast@kernel.org>,
         Alexey Budankov <alexey.budankov@linux.intel.com>,
-        Andi Kleen <ak@linux.intel.com>,
-        Andrii Nakryiko <andriin@fb.com>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
-        Igor Lubashev <ilubashe@akamai.com>,
-        Jin Yao <yao.jin@linux.intel.com>,
-        Jiri Olsa <jolsa@redhat.com>,
-        Jiwei Sun <jiwei.sun@windriver.com>,
-        John Garry <john.garry@huawei.com>,
-        Kan Liang <kan.liang@linux.intel.com>,
-        Leo Yan <leo.yan@linaro.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Martin KaFai Lau <kafai@fb.com>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
         Namhyung Kim <namhyung@kernel.org>,
+        Pavel Gerasimov <pavel.gerasimov@intel.com>,
         Peter Zijlstra <peterz@infradead.org>,
+        Ravi Bangoria <ravi.bangoria@linux.ibm.com>,
         Stephane Eranian <eranian@google.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Yonghong Song <yhs@fb.com>, bpf@vger.kernel.org,
-        netdev@vger.kernel.org, yuzhoujian <yuzhoujian@didichuxing.com>,
+        Vitaly Slobodskoy <vitaly.slobodskoy@intel.com>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200416162058.201954-2-irogers@google.com>
-References: <20200416162058.201954-2-irogers@google.com>
+In-Reply-To: <20200319202517.23423-2-kan.liang@linux.intel.com>
+References: <20200319202517.23423-2-kan.liang@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <158755783715.28353.14013762798615075637.tip-bot2@tip-bot2>
+Message-ID: <158755783766.28353.14559613759688456419.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -74,69 +61,228 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     e9cfa47e687d77d256610b7124d736776f137ea0
-Gitweb:        https://git.kernel.org/tip/e9cfa47e687d77d256610b7124d736776f137ea0
-Author:        Ian Rogers <irogers@google.com>
-AuthorDate:    Thu, 16 Apr 2020 09:20:55 -07:00
+Commit-ID:     9fbc61f832ebf432326a90e28184dade05ee34a8
+Gitweb:        https://git.kernel.org/tip/9fbc61f832ebf432326a90e28184dade05ee34a8
+Author:        Kan Liang <kan.liang@linux.intel.com>
+AuthorDate:    Thu, 19 Mar 2020 13:25:01 -07:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Sat, 18 Apr 2020 09:05:00 -03:00
 
-perf doc: allow ASCIIDOC_EXTRA to be an argument
+perf pmu: Add support for PMU capabilities
 
-This will allow parent makefiles to pass values to asciidoc.
+The PMU capabilities information, which is located at
+/sys/bus/event_source/devices/<dev>/caps, is required by perf tool.  For
+example, the max LBR information is required to stitch LBR call stack.
 
-Signed-off-by: Ian Rogers <irogers@google.com>
+Add perf_pmu__caps_parse() to parse the PMU capabilities information.
+The information is stored in a list.
+
+The following patch will store the capabilities information in perf
+header.
+
+Committer notes:
+
+Here's an example of such directories and its files in an i5 7th gen
+machine:
+
+  [root@seventh ~]# ls -lad /sys/bus/event_source/devices/*/caps
+  drwxr-xr-x. 2 root root 0 Apr 14 13:33 /sys/bus/event_source/devices/cpu/caps
+  drwxr-xr-x. 2 root root 0 Apr 14 13:33 /sys/bus/event_source/devices/intel_pt/caps
+  [root@seventh ~]# ls -la /sys/bus/event_source/devices/intel_pt/caps
+  total 0
+  drwxr-xr-x. 2 root root    0 Apr 14 13:33 .
+  drwxr-xr-x. 5 root root    0 Apr 14 13:12 ..
+  -r--r--r--. 1 root root 4096 Apr 16 13:10 cr3_filtering
+  -r--r--r--. 1 root root 4096 Apr 16 11:42 cycle_thresholds
+  -r--r--r--. 1 root root 4096 Apr 16 13:10 ip_filtering
+  -r--r--r--. 1 root root 4096 Apr 16 13:10 max_subleaf
+  -r--r--r--. 1 root root 4096 Apr 14 13:33 mtc
+  -r--r--r--. 1 root root 4096 Apr 14 13:33 mtc_periods
+  -r--r--r--. 1 root root 4096 Apr 16 13:10 num_address_ranges
+  -r--r--r--. 1 root root 4096 Apr 16 13:10 output_subsys
+  -r--r--r--. 1 root root 4096 Apr 16 13:10 payloads_lip
+  -r--r--r--. 1 root root 4096 Apr 16 13:10 power_event_trace
+  -r--r--r--. 1 root root 4096 Apr 14 13:33 psb_cyc
+  -r--r--r--. 1 root root 4096 Apr 14 13:33 psb_periods
+  -r--r--r--. 1 root root 4096 Apr 16 13:10 ptwrite
+  -r--r--r--. 1 root root 4096 Apr 16 13:10 single_range_output
+  -r--r--r--. 1 root root 4096 Apr 16 12:03 topa_multiple_entries
+  -r--r--r--. 1 root root 4096 Apr 16 13:10 topa_output
+  [root@seventh ~]# cat /sys/bus/event_source/devices/intel_pt/caps/topa_output
+  1
+  [root@seventh ~]# cat /sys/bus/event_source/devices/intel_pt/caps/topa_multiple_entries
+  1
+  [root@seventh ~]# cat /sys/bus/event_source/devices/intel_pt/caps/mtc
+  1
+  [root@seventh ~]# cat /sys/bus/event_source/devices/intel_pt/caps/power_event_trace
+  0
+  [root@seventh ~]#
+
+  [root@seventh ~]# ls -la /sys/bus/event_source/devices/cpu/caps/
+  total 0
+  drwxr-xr-x. 2 root root    0 Apr 14 13:33 .
+  drwxr-xr-x. 6 root root    0 Apr 14 13:12 ..
+  -r--r--r--. 1 root root 4096 Apr 16 13:10 branches
+  -r--r--r--. 1 root root 4096 Apr 14 13:33 max_precise
+  -r--r--r--. 1 root root 4096 Apr 16 13:10 pmu_name
+  [root@seventh ~]# cat /sys/bus/event_source/devices/cpu/caps/max_precise
+  3
+  [root@seventh ~]# cat /sys/bus/event_source/devices/cpu/caps/branches
+  32
+  [root@seventh ~]# cat /sys/bus/event_source/devices/cpu/caps/pmu_name
+  skylake
+  [root@seventh ~]#
+
+Wow, first time I've heard about
+/sys/bus/event_source/devices/cpu/caps/max_precise, I think I'll use it!
+:-)
+
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Reviewed-by: Andi Kleen <ak@linux.intel.com>
+Acked-by: Jiri Olsa <jolsa@redhat.com>
 Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Alexei Starovoitov <ast@kernel.org>
 Cc: Alexey Budankov <alexey.budankov@linux.intel.com>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Andrii Nakryiko <andriin@fb.com>
-Cc: Daniel Borkmann <daniel@iogearbox.net>
-Cc: Florian Fainelli <f.fainelli@gmail.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Igor Lubashev <ilubashe@akamai.com>
-Cc: Jin Yao <yao.jin@linux.intel.com>
-Cc: Jiri Olsa <jolsa@redhat.com>
-Cc: Jiwei Sun <jiwei.sun@windriver.com>
-Cc: John Garry <john.garry@huawei.com>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Leo Yan <leo.yan@linaro.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Martin KaFai Lau <kafai@fb.com>
+Cc: Mathieu Poirier <mathieu.poirier@linaro.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
 Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Pavel Gerasimov <pavel.gerasimov@intel.com>
 Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
 Cc: Stephane Eranian <eranian@google.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Yonghong Song <yhs@fb.com>
-Cc: bpf@vger.kernel.org
-Cc: netdev@vger.kernel.org
-Cc: yuzhoujian <yuzhoujian@didichuxing.com>
-Link: http://lore.kernel.org/lkml/20200416162058.201954-2-irogers@google.com
+Cc: Vitaly Slobodskoy <vitaly.slobodskoy@intel.com>
+Link: http://lore.kernel.org/lkml/20200319202517.23423-2-kan.liang@linux.intel.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/Documentation/Makefile | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/perf/util/pmu.c | 82 ++++++++++++++++++++++++++++++++++++++++++-
+ tools/perf/util/pmu.h |  9 +++++-
+ 2 files changed, 91 insertions(+)
 
-diff --git a/tools/perf/Documentation/Makefile b/tools/perf/Documentation/Makefile
-index 31824d5..6e54979 100644
---- a/tools/perf/Documentation/Makefile
-+++ b/tools/perf/Documentation/Makefile
-@@ -48,7 +48,7 @@ man5dir=$(mandir)/man5
- man7dir=$(mandir)/man7
+diff --git a/tools/perf/util/pmu.c b/tools/perf/util/pmu.c
+index bc912a8..d9f89ed 100644
+--- a/tools/perf/util/pmu.c
++++ b/tools/perf/util/pmu.c
+@@ -850,6 +850,7 @@ static struct perf_pmu *pmu_lookup(const char *name)
  
- ASCIIDOC=asciidoc
--ASCIIDOC_EXTRA = --unsafe -f asciidoc.conf
-+ASCIIDOC_EXTRA += --unsafe -f asciidoc.conf
- ASCIIDOC_HTML = xhtml11
- MANPAGE_XSL = manpage-normal.xsl
- XMLTO_EXTRA =
-@@ -59,7 +59,7 @@ HTML_REF = origin/html
+ 	INIT_LIST_HEAD(&pmu->format);
+ 	INIT_LIST_HEAD(&pmu->aliases);
++	INIT_LIST_HEAD(&pmu->caps);
+ 	list_splice(&format, &pmu->format);
+ 	list_splice(&aliases, &pmu->aliases);
+ 	list_add_tail(&pmu->list, &pmus);
+@@ -1594,3 +1595,84 @@ int perf_pmu__scan_file(struct perf_pmu *pmu, const char *name, const char *fmt,
+ 	va_end(args);
+ 	return ret;
+ }
++
++static int perf_pmu__new_caps(struct list_head *list, char *name, char *value)
++{
++	struct perf_pmu_caps *caps = zalloc(sizeof(*caps));
++
++	if (!caps)
++		return -ENOMEM;
++
++	caps->name = strdup(name);
++	if (!caps->name)
++		goto free_caps;
++	caps->value = strndup(value, strlen(value) - 1);
++	if (!caps->value)
++		goto free_name;
++	list_add_tail(&caps->list, list);
++	return 0;
++
++free_name:
++	zfree(caps->name);
++free_caps:
++	free(caps);
++
++	return -ENOMEM;
++}
++
++/*
++ * Reading/parsing the given pmu capabilities, which should be located at:
++ * /sys/bus/event_source/devices/<dev>/caps as sysfs group attributes.
++ * Return the number of capabilities
++ */
++int perf_pmu__caps_parse(struct perf_pmu *pmu)
++{
++	struct stat st;
++	char caps_path[PATH_MAX];
++	const char *sysfs = sysfs__mountpoint();
++	DIR *caps_dir;
++	struct dirent *evt_ent;
++	int nr_caps = 0;
++
++	if (!sysfs)
++		return -1;
++
++	snprintf(caps_path, PATH_MAX,
++		 "%s" EVENT_SOURCE_DEVICE_PATH "%s/caps", sysfs, pmu->name);
++
++	if (stat(caps_path, &st) < 0)
++		return 0;	/* no error if caps does not exist */
++
++	caps_dir = opendir(caps_path);
++	if (!caps_dir)
++		return -EINVAL;
++
++	while ((evt_ent = readdir(caps_dir)) != NULL) {
++		char path[PATH_MAX + NAME_MAX + 1];
++		char *name = evt_ent->d_name;
++		char value[128];
++		FILE *file;
++
++		if (!strcmp(name, ".") || !strcmp(name, ".."))
++			continue;
++
++		snprintf(path, sizeof(path), "%s/%s", caps_path, name);
++
++		file = fopen(path, "r");
++		if (!file)
++			continue;
++
++		if (!fgets(value, sizeof(value), file) ||
++		    (perf_pmu__new_caps(&pmu->caps, name, value) < 0)) {
++			fclose(file);
++			continue;
++		}
++
++		nr_caps++;
++		fclose(file);
++	}
++
++	closedir(caps_dir);
++
++	return nr_caps;
++}
+diff --git a/tools/perf/util/pmu.h b/tools/perf/util/pmu.h
+index 5fb3f16..1edd214 100644
+--- a/tools/perf/util/pmu.h
++++ b/tools/perf/util/pmu.h
+@@ -22,6 +22,12 @@ enum {
  
- ifdef USE_ASCIIDOCTOR
- ASCIIDOC = asciidoctor
--ASCIIDOC_EXTRA = -a compat-mode
-+ASCIIDOC_EXTRA += -a compat-mode
- ASCIIDOC_EXTRA += -I. -rasciidoctor-extensions
- ASCIIDOC_EXTRA += -a mansource="perf" -a manmanual="perf Manual"
- ASCIIDOC_HTML = xhtml5
+ struct perf_event_attr;
+ 
++struct perf_pmu_caps {
++	char *name;
++	char *value;
++	struct list_head list;
++};
++
+ struct perf_pmu {
+ 	char *name;
+ 	__u32 type;
+@@ -33,6 +39,7 @@ struct perf_pmu {
+ 	struct perf_cpu_map *cpus;
+ 	struct list_head format;  /* HEAD struct perf_pmu_format -> list */
+ 	struct list_head aliases; /* HEAD struct perf_pmu_alias -> list */
++	struct list_head caps;    /* HEAD struct perf_pmu_caps -> list */
+ 	struct list_head list;    /* ELEM */
+ };
+ 
+@@ -107,4 +114,6 @@ bool pmu_uncore_alias_match(const char *pmu_name, const char *name);
+ 
+ int perf_pmu__convert_scale(const char *scale, char **end, double *sval);
+ 
++int perf_pmu__caps_parse(struct perf_pmu *pmu);
++
+ #endif /* __PMU_H */
