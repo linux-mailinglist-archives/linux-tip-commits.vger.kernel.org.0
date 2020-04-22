@@ -2,40 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 08C481B4D1C
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Apr 2020 21:13:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1D231B4DBA
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Apr 2020 21:54:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725935AbgDVTNe (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 22 Apr 2020 15:13:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33416 "EHLO
+        id S1726087AbgDVTyW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 22 Apr 2020 15:54:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39716 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725913AbgDVTNd (ORCPT
+        by vger.kernel.org with ESMTP id S1725779AbgDVTyW (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 22 Apr 2020 15:13:33 -0400
+        Wed, 22 Apr 2020 15:54:22 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C293BC03C1A9;
-        Wed, 22 Apr 2020 12:13:33 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0055BC03C1A9;
+        Wed, 22 Apr 2020 12:54:21 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jRKoK-00073V-6C; Wed, 22 Apr 2020 21:13:28 +0200
+        id 1jRLRm-0007aD-O3; Wed, 22 Apr 2020 21:54:14 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 87BF11C02FC;
-        Wed, 22 Apr 2020 21:13:27 +0200 (CEST)
-Date:   Wed, 22 Apr 2020 19:13:27 -0000
-From:   "tip-bot2 for Jimmy Assarsson" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 355771C02FC;
+        Wed, 22 Apr 2020 21:54:14 +0200 (CEST)
+Date:   Wed, 22 Apr 2020 19:54:13 -0000
+From:   "tip-bot2 for Harry Pan" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] mm: Remove MPX leftovers
-Cc:     Jimmy Assarsson <jimmyassarsson@gmail.com>,
-        Borislav Petkov <bp@suse.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
+Subject: [tip: perf/urgent] perf/x86/cstate: Add Jasper Lake CPU support
+Cc:     Harry Pan <harry.pan@intel.com>, Borislav Petkov <bp@suse.de>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200402172507.2786-1-jimmyassarsson@gmail.com>
-References: <20200402172507.2786-1-jimmyassarsson@gmail.com>
+In-Reply-To: <20200402190658.1.Ic02e891daac41303aed1f2fc6c64f6110edd27bd@changeid>
+References: <20200402190658.1.Ic02e891daac41303aed1f2fc6c64f6110edd27bd@changeid>
 MIME-Version: 1.0
-Message-ID: <158758280709.28353.11814672256767435249.tip-bot2@tip-bot2>
+Message-ID: <158758525378.28353.13945235876360246667.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,58 +47,37 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cleanups branch of tip:
+The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     66648766ef38d8d6c48ded2f59cf98420aec2cdb
-Gitweb:        https://git.kernel.org/tip/66648766ef38d8d6c48ded2f59cf98420aec2cdb
-Author:        Jimmy Assarsson <jimmyassarsson@gmail.com>
-AuthorDate:    Thu, 02 Apr 2020 19:25:07 +02:00
+Commit-ID:     5b16ef2e43ffa1be596652d992235b1cbb244935
+Gitweb:        https://git.kernel.org/tip/5b16ef2e43ffa1be596652d992235b1cbb244935
+Author:        Harry Pan <harry.pan@intel.com>
+AuthorDate:    Thu, 02 Apr 2020 19:07:09 +08:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 22 Apr 2020 21:02:35 +02:00
+CommitterDate: Wed, 22 Apr 2020 21:43:12 +02:00
 
-mm: Remove MPX leftovers
+perf/x86/cstate: Add Jasper Lake CPU support
 
-Remove MPX leftovers in generic code.
+The Jasper Lake processor is Tremont microarchitecture, reuse the
+glm_cstates table of Goldmont and Goldmont Plus to enable the C-states
+residency profiling.
 
-Fixes: 45fc24e89b7c ("x86/mpx: remove MPX from arch/x86")
-Signed-off-by: Jimmy Assarsson <jimmyassarsson@gmail.com>
+Signed-off-by: Harry Pan <harry.pan@intel.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lkml.kernel.org/r/20200402172507.2786-1-jimmyassarsson@gmail.com
+Link: https://lkml.kernel.org/r/20200402190658.1.Ic02e891daac41303aed1f2fc6c64f6110edd27bd@changeid
 ---
- fs/proc/task_mmu.c | 3 ---
- include/linux/mm.h | 7 -------
- 2 files changed, 10 deletions(-)
+ arch/x86/events/intel/cstate.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-index 8d382d4..e12ad2e 100644
---- a/fs/proc/task_mmu.c
-+++ b/fs/proc/task_mmu.c
-@@ -622,9 +622,6 @@ static void show_smap_vma_flags(struct seq_file *m, struct vm_area_struct *vma)
- 		[ilog2(VM_GROWSDOWN)]	= "gd",
- 		[ilog2(VM_PFNMAP)]	= "pf",
- 		[ilog2(VM_DENYWRITE)]	= "dw",
--#ifdef CONFIG_X86_INTEL_MPX
--		[ilog2(VM_MPX)]		= "mp",
--#endif
- 		[ilog2(VM_LOCKED)]	= "lo",
- 		[ilog2(VM_IO)]		= "io",
- 		[ilog2(VM_SEQ_READ)]	= "sr",
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 5a32342..e1882ee 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -329,13 +329,6 @@ extern unsigned int kobjsize(const void *objp);
- # define VM_MAPPED_COPY	VM_ARCH_1	/* T if mapped copy of data (nommu mmap) */
- #endif
+diff --git a/arch/x86/events/intel/cstate.c b/arch/x86/events/intel/cstate.c
+index e4aa20c..442e1ed 100644
+--- a/arch/x86/events/intel/cstate.c
++++ b/arch/x86/events/intel/cstate.c
+@@ -643,6 +643,7 @@ static const struct x86_cpu_id intel_cstates_match[] __initconst = {
+ 	X86_MATCH_INTEL_FAM6_MODEL(ATOM_GOLDMONT_PLUS,	&glm_cstates),
+ 	X86_MATCH_INTEL_FAM6_MODEL(ATOM_TREMONT_D,	&glm_cstates),
+ 	X86_MATCH_INTEL_FAM6_MODEL(ATOM_TREMONT,	&glm_cstates),
++	X86_MATCH_INTEL_FAM6_MODEL(ATOM_TREMONT_L,	&glm_cstates),
  
--#if defined(CONFIG_X86_INTEL_MPX)
--/* MPX specific bounds table or bounds directory */
--# define VM_MPX		VM_HIGH_ARCH_4
--#else
--# define VM_MPX		VM_NONE
--#endif
--
- #ifndef VM_GROWSUP
- # define VM_GROWSUP	VM_NONE
- #endif
+ 	X86_MATCH_INTEL_FAM6_MODEL(ICELAKE_L,		&icl_cstates),
+ 	X86_MATCH_INTEL_FAM6_MODEL(ICELAKE,		&icl_cstates),
