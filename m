@@ -2,51 +2,46 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DBD781B44B5
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Apr 2020 14:21:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1994A1B44FA
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Apr 2020 14:23:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728337AbgDVMVH (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 22 Apr 2020 08:21:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53326 "EHLO
+        id S1728046AbgDVMR3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 22 Apr 2020 08:17:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53292 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728561AbgDVMRc (ORCPT
+        by vger.kernel.org with ESMTP id S1726105AbgDVMR2 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 22 Apr 2020 08:17:32 -0400
+        Wed, 22 Apr 2020 08:17:28 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 959A5C03C1AA;
-        Wed, 22 Apr 2020 05:17:32 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82F6AC03C1A8;
+        Wed, 22 Apr 2020 05:17:28 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jREJc-0007ej-Tv; Wed, 22 Apr 2020 14:17:21 +0200
+        id 1jREJZ-0007gE-E2; Wed, 22 Apr 2020 14:17:17 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 814111C0450;
-        Wed, 22 Apr 2020 14:17:15 +0200 (CEST)
-Date:   Wed, 22 Apr 2020 12:17:15 -0000
-From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 0EBB91C02FC;
+        Wed, 22 Apr 2020 14:17:17 +0200 (CEST)
+Date:   Wed, 22 Apr 2020 12:17:16 -0000
+From:   "tip-bot2 for Jiri Olsa" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf machine: Refine the function for LBR call stack
- reconstruction
-Cc:     Kan Liang <kan.liang@linux.intel.com>,
-        Andi Kleen <ak@linux.intel.com>, Jiri Olsa <jolsa@redhat.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Alexey Budankov <alexey.budankov@linux.intel.com>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Pavel Gerasimov <pavel.gerasimov@intel.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ravi Bangoria <ravi.bangoria@linux.ibm.com>,
-        Stephane Eranian <eranian@google.com>,
-        Vitaly Slobodskoy <vitaly.slobodskoy@intel.com>,
+Subject: [tip: perf/core] perf parser: Add support to specify rXXX event with pmu
+Cc:     Jiri Olsa <jolsa@kernel.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200319202517.23423-7-kan.liang@linux.intel.com>
-References: <20200319202517.23423-7-kan.liang@linux.intel.com>
+        Thomas Richter <tmricht@linux.ibm.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Michael Petlan <mpetlan@redhat.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Sumanth Korikkar <sumanthk@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200416221405.437788-1-jolsa@kernel.org>
+References: <20200416221405.437788-1-jolsa@kernel.org>
 MIME-Version: 1.0
-Message-ID: <158755783514.28353.13696059456680339171.tip-bot2@tip-bot2>
+Message-ID: <158755783661.28353.6391984772128473787.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -62,219 +57,178 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     e48b8311ca4538ec716196a1625812b045999f21
-Gitweb:        https://git.kernel.org/tip/e48b8311ca4538ec716196a1625812b045999f21
-Author:        Kan Liang <kan.liang@linux.intel.com>
-AuthorDate:    Thu, 19 Mar 2020 13:25:06 -07:00
+Commit-ID:     3a6c51e4d66cf2fbc05583247b2d2f1179e8a74c
+Gitweb:        https://git.kernel.org/tip/3a6c51e4d66cf2fbc05583247b2d2f1179e8a74c
+Author:        Jiri Olsa <jolsa@redhat.com>
+AuthorDate:    Fri, 17 Apr 2020 00:14:05 +02:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Sat, 18 Apr 2020 09:05:00 -03:00
 
-perf machine: Refine the function for LBR call stack reconstruction
+perf parser: Add support to specify rXXX event with pmu
 
-LBR only collect the user call stack. To reconstruct a call stack, both
-kernel call stack and user call stack are required. The function
-resolve_lbr_callchain_sample() mix the kernel call stack and user call
-stack.
+The current rXXXX event specification creates event under PERF_TYPE_RAW
+pmu type. This change allows to use rXXXX within pmu syntax, so it's
+type is used via the following syntax:
 
-Now, with the help of HW idx, perf tool can reconstruct a more complete
-call stack by adding some user call stack from previous sample. However,
-current implementation is hard to be extended to support it.
+  -e 'cpu/r3c/'
+  -e 'cpum_cf/r0/'
 
-Current code path for resolve_lbr_callchain_sample()
+The XXXX number goes directly to perf_event_attr::config the same way as
+in '-e rXXXX' event. The perf_event_attr::type is filled with pmu type.
 
-  for (j = 0; j < mix_chain_nr; j++) {
-       if (ORDER_CALLEE) {
-             if (kernel callchain)
-                  Fill callchain info
-             else if (LBR callchain)
-                  Fill callchain info
-       } else {
-             if (LBR callchain)
-                  Fill callchain info
-             else if (kernel callchain)
-                  Fill callchain info
-       }
-       add_callchain_ip();
-  }
+Committer testing:
 
-With the patch,
+So, lets see what goes in perf_event_attr::config for, say, the
+'instructions' PERF_TYPE_HARDWARE (0) event, first we should look at how
+to encode this event as a PERF_TYPE_RAW event for this specific CPU, an
+AMD Ryzen 5:
 
-  if (ORDER_CALLEE) {
-       for (j = 0; j < NUM of kernel callchain) {
-             Fill callchain info
-             add_callchain_ip();
-       }
-       for (; j < mix_chain_nr) {
-             Fill callchain info
-             add_callchain_ip();
-       }
-  } else {
-       for (; j < NUM of LBR callchain) {
-             Fill callchain info
-             add_callchain_ip();
-       }
-       for (j = 0; j < mix_chain_nr) {
-             Fill callchain info
-             add_callchain_ip();
-       }
-  }
+  # cat /sys/devices/cpu/events/instructions
+  event=0xc0
+  #
 
-No functional changes.
+Then try with it _and_ the instruction, just to see that they are close
+enough:
 
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Reviewed-by: Andi Kleen <ak@linux.intel.com>
-Acked-by: Jiri Olsa <jolsa@redhat.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexey Budankov <alexey.budankov@linux.intel.com>
-Cc: Mathieu Poirier <mathieu.poirier@linaro.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
+  # perf stat -e rc0,instructions sleep 1
+
+   Performance counter stats for 'sleep 1':
+
+             919,794      rc0
+             919,898      instructions
+
+         1.000754579 seconds time elapsed
+
+         0.000715000 seconds user
+         0.000000000 seconds sys
+  #
+
+Now we should try, before this patch, the PMU event encoding:
+
+  # perf stat -e cpu/rc0/ sleep 1
+  event syntax error: 'cpu/rc0/'
+                           \___ unknown term
+
+  valid terms: event,edge,inv,umask,cmask,config,config1,config2,name,period,percore
+  #
+
+Now with this patch, the three ways of specifying the 'instructions' CPU
+counter are accepted:
+
+  # perf stat -e cpu/rc0/,rc0,instructions sleep 1
+
+   Performance counter stats for 'sleep 1':
+
+             892,948      cpu/rc0/
+             893,052      rc0
+             893,156      instructions
+
+         1.000931819 seconds time elapsed
+
+         0.000916000 seconds user
+         0.000000000 seconds sys
+
+  #
+
+Requested-by: Thomas Richter <tmricht@linux.ibm.com>
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Tested-by: Thomas Richter <tmricht@linux.ibm.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Michael Petlan <mpetlan@redhat.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Pavel Gerasimov <pavel.gerasimov@intel.com>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Cc: Stephane Eranian <eranian@google.com>
-Cc: Vitaly Slobodskoy <vitaly.slobodskoy@intel.com>
-Link: http://lore.kernel.org/lkml/20200319202517.23423-7-kan.liang@linux.intel.com
+Cc: Sumanth Korikkar <sumanthk@linux.ibm.com>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Link: http://lore.kernel.org/lkml/20200416221405.437788-1-jolsa@kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/machine.c | 111 +++++++++++++++++++++++++------------
- 1 file changed, 76 insertions(+), 35 deletions(-)
+ tools/perf/Documentation/perf-list.txt |  5 +++++
+ tools/perf/tests/parse-events.c        | 17 ++++++++++++++++-
+ tools/perf/util/parse-events.l         |  1 +
+ tools/perf/util/parse-events.y         |  9 +++++++++
+ 4 files changed, 31 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/util/machine.c b/tools/perf/util/machine.c
-index be1bd92..0da540e 100644
---- a/tools/perf/util/machine.c
-+++ b/tools/perf/util/machine.c
-@@ -2214,6 +2214,7 @@ static int resolve_lbr_callchain_sample(struct thread *thread,
- 	bool branch;
- 	struct branch_flags *flags;
- 	int mix_chain_nr;
-+	int err;
+diff --git a/tools/perf/Documentation/perf-list.txt b/tools/perf/Documentation/perf-list.txt
+index cb23667..376a50b 100644
+--- a/tools/perf/Documentation/perf-list.txt
++++ b/tools/perf/Documentation/perf-list.txt
+@@ -115,6 +115,11 @@ raw encoding of 0x1A8 can be used:
+  perf stat -e r1a8 -a sleep 1
+  perf record -e r1a8 ...
  
- 	for (i = 0; i < chain_nr; i++) {
- 		if (chain->ips[i] == PERF_CONTEXT_USER)
-@@ -2239,50 +2240,90 @@ static int resolve_lbr_callchain_sample(struct thread *thread,
- 	 */
- 	mix_chain_nr = i + 1 + lbr_nr + 1;
++It's also possible to use pmu syntax:
++
++ perf record -e r1a8 -a sleep 1
++ perf record -e cpu/r1a8/ ...
++
+ You should refer to the processor specific documentation for getting these
+ details. Some of them are referenced in the SEE ALSO section below.
  
--	for (j = 0; j < mix_chain_nr; j++) {
--		int err;
--
--		branch = false;
--		flags = NULL;
--
--		if (callchain_param.order == ORDER_CALLEE) {
--			if (j < i + 1)
--				ip = chain->ips[j];
--			else if (j > i + 1) {
--				k = j - i - 2;
--				ip = entries[k].from;
--				branch = true;
--				flags = &entries[k].flags;
--			} else {
--				ip = entries[0].to;
--				branch = true;
--				flags = &entries[0].flags;
--				branch_from = entries[0].from;
--			}
--		} else {
--			if (j < lbr_nr) {
--				k = lbr_nr - j - 1;
--				ip = entries[k].from;
--				branch = true;
--				flags = &entries[k].flags;
--			} else if (j > lbr_nr)
--				ip = chain->ips[i + 1 - (j - lbr_nr)];
--			else {
--				ip = entries[0].to;
--				branch = true;
--				flags = &entries[0].flags;
--				branch_from = entries[0].from;
--			}
-+	if (callchain_param.order == ORDER_CALLEE) {
-+		/* Add kernel ip */
-+		for (j = 0; j < i + 1; j++) {
-+			ip = chain->ips[j];
-+			branch = false;
-+			flags = NULL;
-+			err = add_callchain_ip(thread, cursor, parent,
-+					       root_al, &cpumode, ip,
-+					       branch, flags, NULL,
-+					       branch_from);
-+			if (err)
-+				goto error;
- 		}
-+		/* Add LBR ip from first entries.to */
-+		ip = entries[0].to;
-+		branch = true;
-+		flags = &entries[0].flags;
-+		branch_from = entries[0].from;
-+		err = add_callchain_ip(thread, cursor, parent,
-+				       root_al, &cpumode, ip,
-+				       branch, flags, NULL,
-+				       branch_from);
-+		if (err)
-+			goto error;
- 
-+		/* Add LBR ip from entries.from one by one. */
-+		for (j = i + 2; j < mix_chain_nr; j++) {
-+			k = j - i - 2;
-+			ip = entries[k].from;
-+			branch = true;
-+			flags = &entries[k].flags;
-+
-+			err = add_callchain_ip(thread, cursor, parent,
-+					       root_al, &cpumode, ip,
-+					       branch, flags, NULL,
-+					       branch_from);
-+			if (err)
-+				goto error;
-+		}
-+	} else {
-+		/* Add LBR ip from entries.from one by one. */
-+		for (j = 0; j < lbr_nr; j++) {
-+			k = lbr_nr - j - 1;
-+			ip = entries[k].from;
-+			branch = true;
-+			flags = &entries[k].flags;
-+
-+			err = add_callchain_ip(thread, cursor, parent,
-+					       root_al, &cpumode, ip,
-+					       branch, flags, NULL,
-+					       branch_from);
-+			if (err)
-+				goto error;
-+		}
-+
-+		/* Add LBR ip from first entries.to */
-+		ip = entries[0].to;
-+		branch = true;
-+		flags = &entries[0].flags;
-+		branch_from = entries[0].from;
- 		err = add_callchain_ip(thread, cursor, parent,
- 				       root_al, &cpumode, ip,
- 				       branch, flags, NULL,
- 				       branch_from);
- 		if (err)
--			return (err < 0) ? err : 0;
-+			goto error;
-+
-+		/* Add kernel ip */
-+		for (j = lbr_nr + 1; j < mix_chain_nr; j++) {
-+			ip = chain->ips[i + 1 - (j - lbr_nr)];
-+			branch = false;
-+			flags = NULL;
-+			err = add_callchain_ip(thread, cursor, parent,
-+					       root_al, &cpumode, ip,
-+					       branch, flags, NULL,
-+					       branch_from);
-+			if (err)
-+				goto error;
-+		}
- 	}
- 	return 1;
-+
-+error:
-+	return (err < 0) ? err : 0;
+diff --git a/tools/perf/tests/parse-events.c b/tools/perf/tests/parse-events.c
+index 091c3ae..902bd9d 100644
+--- a/tools/perf/tests/parse-events.c
++++ b/tools/perf/tests/parse-events.c
+@@ -1356,6 +1356,16 @@ static int test__checkevent_complex_name(struct evlist *evlist)
+ 	return 0;
  }
  
- static int find_prev_cpumode(struct ip_callchain *chain, struct thread *thread,
++static int test__checkevent_raw_pmu(struct evlist *evlist)
++{
++	struct evsel *evsel = evlist__first(evlist);
++
++	TEST_ASSERT_VAL("wrong number of entries", 1 == evlist->core.nr_entries);
++	TEST_ASSERT_VAL("wrong type", PERF_TYPE_SOFTWARE == evsel->core.attr.type);
++	TEST_ASSERT_VAL("wrong config", 0x1a == evsel->core.attr.config);
++	return 0;
++}
++
+ static int test__sym_event_slash(struct evlist *evlist)
+ {
+ 	struct evsel *evsel = evlist__first(evlist);
+@@ -1750,7 +1760,12 @@ static struct evlist_test test__events_pmu[] = {
+ 		.name  = "cpu/name='COMPLEX_CYCLES_NAME:orig=cycles,desc=chip-clock-ticks',period=0x1,event=0x2/ukp",
+ 		.check = test__checkevent_complex_name,
+ 		.id    = 3,
+-	}
++	},
++	{
++		.name  = "software/r1a/",
++		.check = test__checkevent_raw_pmu,
++		.id    = 4,
++	},
+ };
+ 
+ struct terms_test {
+diff --git a/tools/perf/util/parse-events.l b/tools/perf/util/parse-events.l
+index baa48f2..c589fc4 100644
+--- a/tools/perf/util/parse-events.l
++++ b/tools/perf/util/parse-events.l
+@@ -286,6 +286,7 @@ no-overwrite		{ return term(yyscanner, PARSE_EVENTS__TERM_TYPE_NOOVERWRITE); }
+ percore			{ return term(yyscanner, PARSE_EVENTS__TERM_TYPE_PERCORE); }
+ aux-output		{ return term(yyscanner, PARSE_EVENTS__TERM_TYPE_AUX_OUTPUT); }
+ aux-sample-size		{ return term(yyscanner, PARSE_EVENTS__TERM_TYPE_AUX_SAMPLE_SIZE); }
++r{num_raw_hex}		{ return raw(yyscanner); }
+ ,			{ return ','; }
+ "/"			{ BEGIN(INITIAL); return '/'; }
+ {name_minus}		{ return str(yyscanner, PE_NAME); }
+diff --git a/tools/perf/util/parse-events.y b/tools/perf/util/parse-events.y
+index 94f8bcd..e879eb2 100644
+--- a/tools/perf/util/parse-events.y
++++ b/tools/perf/util/parse-events.y
+@@ -706,6 +706,15 @@ event_term
+ }
+ 
+ event_term:
++PE_RAW
++{
++	struct parse_events_term *term;
++
++	ABORT_ON(parse_events_term__num(&term, PARSE_EVENTS__TERM_TYPE_CONFIG,
++					NULL, $1, false, &@1, NULL));
++	$$ = term;
++}
++|
+ PE_NAME '=' PE_NAME
+ {
+ 	struct parse_events_term *term;
