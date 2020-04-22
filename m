@@ -2,41 +2,41 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B7FE1B5025
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 23 Apr 2020 00:27:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 822381B5023
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 23 Apr 2020 00:27:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726473AbgDVWYt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S1726491AbgDVWYt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Wed, 22 Apr 2020 18:24:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34956 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34962 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726456AbgDVWYs (ORCPT
+        by vger.kernel.org with ESMTP id S1726458AbgDVWYs (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Wed, 22 Apr 2020 18:24:48 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32A20C03C1AB;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38B91C03C1AC;
         Wed, 22 Apr 2020 15:24:48 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jRNnF-0001L7-Lg; Thu, 23 Apr 2020 00:24:34 +0200
+        id 1jRNnG-0001Lx-0c; Thu, 23 Apr 2020 00:24:34 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id DAC941C04D1;
-        Thu, 23 Apr 2020 00:24:31 +0200 (CEST)
-Date:   Wed, 22 Apr 2020 22:24:31 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id BFCAD1C0178;
+        Thu, 23 Apr 2020 00:24:32 +0200 (CEST)
+Date:   Wed, 22 Apr 2020 22:24:32 -0000
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] objtool: Use sec_offset_hash() for insn_hash
+Subject: [tip: objtool/core] objtool: Optimize !vmlinux.o again
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Miroslav Benes <mbenes@suse.cz>,
         Alexandre Chartre <alexandre.chartre@oracle.com>,
         Josh Poimboeuf <jpoimboe@redhat.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200416115119.227240432@infradead.org>
-References: <20200416115119.227240432@infradead.org>
+In-Reply-To: <20200416115119.167588731@infradead.org>
+References: <20200416115119.167588731@infradead.org>
 MIME-Version: 1.0
-Message-ID: <158759427148.28353.5265734487162014139.tip-bot2@tip-bot2>
+Message-ID: <158759427217.28353.2894925469265699519.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -52,55 +52,247 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     e499ccee47c429be75dee8a94d8f289aa133e3a0
-Gitweb:        https://git.kernel.org/tip/e499ccee47c429be75dee8a94d8f289aa133e3a0
+Commit-ID:     6700867cb19a52db07c4e9e86d51c6c8f01dcf8e
+Gitweb:        https://git.kernel.org/tip/6700867cb19a52db07c4e9e86d51c6c8f01dcf8e
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Mon, 16 Mar 2020 15:47:27 +01:00
+AuthorDate:    Thu, 12 Mar 2020 14:29:38 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Wed, 22 Apr 2020 23:10:07 +02:00
 
-objtool: Use sec_offset_hash() for insn_hash
+objtool: Optimize !vmlinux.o again
 
-In preparation for find_insn_containing(), change insn_hash to use
-sec_offset_hash().
+When doing kbuild tests to see if the objtool changes affected those I
+found that there was a measurable regression:
 
-This actually reduces runtime; probably because mixing in the section
-index reduces the collisions due to text sections all starting their
-instructions at offset 0.
+          pre		  post
 
-Runtime on vmlinux.o from 3.1 to 2.5 seconds.
+  real    1m13.594        1m16.488s
+  user    34m58.246s      35m23.947s
+  sys     4m0.393s        4m27.312s
+
+Perf showed that for small files the increased hash-table sizes were a
+measurable difference. Since we already have -l "vmlinux" to
+distinguish between the modes, make it also use a smaller portion of
+the hash-tables.
+
+This flips it into a small win:
+
+  real    1m14.143s
+  user    34m49.292s
+  sys     3m44.746s
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Miroslav Benes <mbenes@suse.cz>
 Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
 Acked-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Link: https://lkml.kernel.org/r/20200416115119.227240432@infradead.org
+Link: https://lkml.kernel.org/r/20200416115119.167588731@infradead.org
 ---
- tools/objtool/check.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ tools/objtool/elf.c     | 62 +++++++++++++++++++++++++++-------------
+ tools/objtool/elf.h     | 13 ++++----
+ tools/objtool/orc_gen.c |  3 +--
+ 3 files changed, 52 insertions(+), 26 deletions(-)
 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 39d1d4f..584f221 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -34,9 +34,10 @@ struct instruction *find_insn(struct objtool_file *file,
- {
- 	struct instruction *insn;
- 
--	hash_for_each_possible(file->insn_hash, insn, hash, offset)
-+	hash_for_each_possible(file->insn_hash, insn, hash, sec_offset_hash(sec, offset)) {
- 		if (insn->sec == sec && insn->offset == offset)
- 			return insn;
-+	}
- 
- 	return NULL;
+diff --git a/tools/objtool/elf.c b/tools/objtool/elf.c
+index 03e542d..d384b9e 100644
+--- a/tools/objtool/elf.c
++++ b/tools/objtool/elf.c
+@@ -27,6 +27,22 @@ static inline u32 str_hash(const char *str)
+ 	return jhash(str, strlen(str), 0);
  }
-@@ -282,7 +283,7 @@ static int decode_instructions(struct objtool_file *file)
- 			if (ret)
- 				goto err;
  
--			hash_add(file->insn_hash, &insn->hash, insn->offset);
-+			hash_add(file->insn_hash, &insn->hash, sec_offset_hash(sec, insn->offset));
- 			list_add_tail(&insn->list, &file->insn_list);
- 			nr_insns++;
++static inline int elf_hash_bits(void)
++{
++	return vmlinux ? ELF_HASH_BITS : 16;
++}
++
++#define elf_hash_add(hashtable, node, key) \
++	hlist_add_head(node, &hashtable[hash_min(key, elf_hash_bits())])
++
++static void elf_hash_init(struct hlist_head *table)
++{
++	__hash_init(table, 1U << elf_hash_bits());
++}
++
++#define elf_hash_for_each_possible(name, obj, member, key)			\
++	hlist_for_each_entry(obj, &name[hash_min(key, elf_hash_bits())], member)
++
+ static void rb_add(struct rb_root *tree, struct rb_node *node,
+ 		   int (*cmp)(struct rb_node *, const struct rb_node *))
+ {
+@@ -115,7 +131,7 @@ struct section *find_section_by_name(struct elf *elf, const char *name)
+ {
+ 	struct section *sec;
+ 
+-	hash_for_each_possible(elf->section_name_hash, sec, name_hash, str_hash(name))
++	elf_hash_for_each_possible(elf->section_name_hash, sec, name_hash, str_hash(name))
+ 		if (!strcmp(sec->name, name))
+ 			return sec;
+ 
+@@ -127,7 +143,7 @@ static struct section *find_section_by_index(struct elf *elf,
+ {
+ 	struct section *sec;
+ 
+-	hash_for_each_possible(elf->section_hash, sec, hash, idx)
++	elf_hash_for_each_possible(elf->section_hash, sec, hash, idx)
+ 		if (sec->idx == idx)
+ 			return sec;
+ 
+@@ -138,7 +154,7 @@ static struct symbol *find_symbol_by_index(struct elf *elf, unsigned int idx)
+ {
+ 	struct symbol *sym;
+ 
+-	hash_for_each_possible(elf->symbol_hash, sym, hash, idx)
++	elf_hash_for_each_possible(elf->symbol_hash, sym, hash, idx)
+ 		if (sym->idx == idx)
+ 			return sym;
+ 
+@@ -205,7 +221,7 @@ struct symbol *find_symbol_by_name(struct elf *elf, const char *name)
+ {
+ 	struct symbol *sym;
+ 
+-	hash_for_each_possible(elf->symbol_name_hash, sym, name_hash, str_hash(name))
++	elf_hash_for_each_possible(elf->symbol_name_hash, sym, name_hash, str_hash(name))
+ 		if (!strcmp(sym->name, name))
+ 			return sym;
+ 
+@@ -224,7 +240,7 @@ struct rela *find_rela_by_dest_range(struct elf *elf, struct section *sec,
+ 	sec = sec->rela;
+ 
+ 	for_offset_range(o, offset, offset + len) {
+-		hash_for_each_possible(elf->rela_hash, rela, hash,
++		elf_hash_for_each_possible(elf->rela_hash, rela, hash,
+ 				       sec_offset_hash(sec, o)) {
+ 			if (rela->sec != sec)
+ 				continue;
+@@ -309,8 +325,8 @@ static int read_sections(struct elf *elf)
+ 		sec->len = sec->sh.sh_size;
+ 
+ 		list_add_tail(&sec->list, &elf->sections);
+-		hash_add(elf->section_hash, &sec->hash, sec->idx);
+-		hash_add(elf->section_name_hash, &sec->name_hash, str_hash(sec->name));
++		elf_hash_add(elf->section_hash, &sec->hash, sec->idx);
++		elf_hash_add(elf->section_name_hash, &sec->name_hash, str_hash(sec->name));
+ 	}
+ 
+ 	if (stats)
+@@ -404,8 +420,8 @@ static int read_symbols(struct elf *elf)
+ 		else
+ 			entry = &sym->sec->symbol_list;
+ 		list_add(&sym->list, entry);
+-		hash_add(elf->symbol_hash, &sym->hash, sym->idx);
+-		hash_add(elf->symbol_name_hash, &sym->name_hash, str_hash(sym->name));
++		elf_hash_add(elf->symbol_hash, &sym->hash, sym->idx);
++		elf_hash_add(elf->symbol_name_hash, &sym->name_hash, str_hash(sym->name));
+ 	}
+ 
+ 	if (stats)
+@@ -472,6 +488,14 @@ err:
+ 	return -1;
+ }
+ 
++void elf_add_rela(struct elf *elf, struct rela *rela)
++{
++	struct section *sec = rela->sec;
++
++	list_add_tail(&rela->list, &sec->rela_list);
++	elf_hash_add(elf->rela_hash, &rela->hash, rela_hash(rela));
++}
++
+ static int read_relas(struct elf *elf)
+ {
+ 	struct section *sec;
+@@ -519,8 +543,7 @@ static int read_relas(struct elf *elf)
+ 				return -1;
+ 			}
+ 
+-			list_add_tail(&rela->list, &sec->rela_list);
+-			hash_add(elf->rela_hash, &rela->hash, rela_hash(rela));
++			elf_add_rela(elf, rela);
+ 			nr_rela++;
  		}
+ 		max_rela = max(max_rela, nr_rela);
+@@ -547,15 +570,16 @@ struct elf *elf_read(const char *name, int flags)
+ 		perror("malloc");
+ 		return NULL;
+ 	}
+-	memset(elf, 0, sizeof(*elf));
++	memset(elf, 0, offsetof(struct elf, sections));
+ 
+-	hash_init(elf->symbol_hash);
+-	hash_init(elf->symbol_name_hash);
+-	hash_init(elf->section_hash);
+-	hash_init(elf->section_name_hash);
+-	hash_init(elf->rela_hash);
+ 	INIT_LIST_HEAD(&elf->sections);
+ 
++	elf_hash_init(elf->symbol_hash);
++	elf_hash_init(elf->symbol_name_hash);
++	elf_hash_init(elf->section_hash);
++	elf_hash_init(elf->section_name_hash);
++	elf_hash_init(elf->rela_hash);
++
+ 	elf->fd = open(name, flags);
+ 	if (elf->fd == -1) {
+ 		fprintf(stderr, "objtool: Can't open '%s': %s\n",
+@@ -692,8 +716,8 @@ struct section *elf_create_section(struct elf *elf, const char *name,
+ 	shstrtab->changed = true;
+ 
+ 	list_add_tail(&sec->list, &elf->sections);
+-	hash_add(elf->section_hash, &sec->hash, sec->idx);
+-	hash_add(elf->section_name_hash, &sec->name_hash, str_hash(sec->name));
++	elf_hash_add(elf->section_hash, &sec->hash, sec->idx);
++	elf_hash_add(elf->section_name_hash, &sec->name_hash, str_hash(sec->name));
+ 
+ 	return sec;
+ }
+diff --git a/tools/objtool/elf.h b/tools/objtool/elf.h
+index eb79cb9..2811d04 100644
+--- a/tools/objtool/elf.h
++++ b/tools/objtool/elf.h
+@@ -70,17 +70,19 @@ struct rela {
+ 	bool jump_table_start;
+ };
+ 
++#define ELF_HASH_BITS	20
++
+ struct elf {
+ 	Elf *elf;
+ 	GElf_Ehdr ehdr;
+ 	int fd;
+ 	char *name;
+ 	struct list_head sections;
+-	DECLARE_HASHTABLE(symbol_hash, 20);
+-	DECLARE_HASHTABLE(symbol_name_hash, 20);
+-	DECLARE_HASHTABLE(section_hash, 16);
+-	DECLARE_HASHTABLE(section_name_hash, 16);
+-	DECLARE_HASHTABLE(rela_hash, 20);
++	DECLARE_HASHTABLE(symbol_hash, ELF_HASH_BITS);
++	DECLARE_HASHTABLE(symbol_name_hash, ELF_HASH_BITS);
++	DECLARE_HASHTABLE(section_hash, ELF_HASH_BITS);
++	DECLARE_HASHTABLE(section_name_hash, ELF_HASH_BITS);
++	DECLARE_HASHTABLE(rela_hash, ELF_HASH_BITS);
+ };
+ 
+ #define OFFSET_STRIDE_BITS	4
+@@ -127,6 +129,7 @@ struct section *elf_create_rela_section(struct elf *elf, struct section *base);
+ int elf_rebuild_rela_section(struct section *sec);
+ int elf_write(struct elf *elf);
+ void elf_close(struct elf *elf);
++void elf_add_rela(struct elf *elf, struct rela *rela);
+ 
+ #define for_each_sec(file, sec)						\
+ 	list_for_each_entry(sec, &file->elf->sections, list)
+diff --git a/tools/objtool/orc_gen.c b/tools/objtool/orc_gen.c
+index 2cf640f..9d2bf2d 100644
+--- a/tools/objtool/orc_gen.c
++++ b/tools/objtool/orc_gen.c
+@@ -130,8 +130,7 @@ static int create_orc_entry(struct elf *elf, struct section *u_sec, struct secti
+ 	rela->offset = idx * sizeof(int);
+ 	rela->sec = ip_relasec;
+ 
+-	list_add_tail(&rela->list, &ip_relasec->rela_list);
+-	hash_add(elf->rela_hash, &rela->hash, rela_hash(rela));
++	elf_add_rela(elf, rela);
+ 
+ 	return 0;
+ }
