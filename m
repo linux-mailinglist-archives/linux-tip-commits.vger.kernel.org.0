@@ -2,42 +2,41 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DC7C21B4F03
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Apr 2020 23:21:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 315BC1B4F08
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Apr 2020 23:21:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726562AbgDVVU5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 22 Apr 2020 17:20:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53220 "EHLO
+        id S1726475AbgDVVU4 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 22 Apr 2020 17:20:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53214 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726066AbgDVVU5 (ORCPT
+        with ESMTP id S1726066AbgDVVUz (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 22 Apr 2020 17:20:57 -0400
+        Wed, 22 Apr 2020 17:20:55 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 456FBC03C1A9;
-        Wed, 22 Apr 2020 14:20:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8128DC03C1A9;
+        Wed, 22 Apr 2020 14:20:55 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jRMnZ-0000O6-0s; Wed, 22 Apr 2020 23:20:49 +0200
+        id 1jRMnZ-0000Ol-VY; Wed, 22 Apr 2020 23:20:50 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 8CD4F1C0450;
-        Wed, 22 Apr 2020 23:20:48 +0200 (CEST)
-Date:   Wed, 22 Apr 2020 21:20:48 -0000
-From:   "tip-bot2 for Peter Zijlstra (Intel)" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 7A1641C0450;
+        Wed, 22 Apr 2020 23:20:49 +0200 (CEST)
+Date:   Wed, 22 Apr 2020 21:20:49 -0000
+From:   "tip-bot2 for Giovanni Gherdovich" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] x86, sched: Don't enable static key when starting
- secondary CPUs
-Cc:     Chris Wilson <chris@chris-wilson.co.uk>,
+Subject: [tip: sched/urgent] x86, sched: Bail out of frequency invariance if
+ base frequency is unknown
+Cc:     Giovanni Gherdovich <ggherdovich@suse.cz>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Giovanni Gherdovich <ggherdovich@suse.cz>,
         "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200416054745.740-4-ggherdovich@suse.cz>
-References: <20200416054745.740-4-ggherdovich@suse.cz>
+In-Reply-To: <20200416054745.740-2-ggherdovich@suse.cz>
+References: <20200416054745.740-2-ggherdovich@suse.cz>
 MIME-Version: 1.0
-Message-ID: <158759044814.28353.10087364439077051099.tip-bot2@tip-bot2>
+Message-ID: <158759044911.28353.2414263048020355766.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -53,104 +52,55 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     b56e7d45e80796ca963ac10902245b244d823caf
-Gitweb:        https://git.kernel.org/tip/b56e7d45e80796ca963ac10902245b244d823caf
-Author:        Peter Zijlstra (Intel) <peterz@infradead.org>
-AuthorDate:    Thu, 16 Apr 2020 07:47:44 +02:00
+Commit-ID:     9a6c2c3c7a73ce315c57c1b002caad6fcc858d0f
+Gitweb:        https://git.kernel.org/tip/9a6c2c3c7a73ce315c57c1b002caad6fcc858d0f
+Author:        Giovanni Gherdovich <ggherdovich@suse.cz>
+AuthorDate:    Thu, 16 Apr 2020 07:47:42 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Wed, 22 Apr 2020 23:10:13 +02:00
 
-x86, sched: Don't enable static key when starting secondary CPUs
+x86, sched: Bail out of frequency invariance if base frequency is unknown
 
-The static key arch_scale_freq_key only needs to be enabled once (at
-boot). This change fixes a bug by which the key was enabled every time cpu0
-is started, even as a secondary CPU during cpu hotplug. Secondary CPUs are
-started from the idle thread: setting a static key from there means
-acquiring a lock and may result in sleeping in the idle task, causing CPU
-lockup.
+Some hypervisors such as VMWare ESXi 5.5 advertise support for
+X86_FEATURE_APERFMPERF but then fill all MSR's with zeroes. In particular,
+MSR_PLATFORM_INFO set to zero tricks the code that wants to know the base
+clock frequency of the CPU (highest non-turbo frequency), producing a
+division by zero when computing the ratio turbo_freq/base_freq necessary
+for frequency invariant accounting.
 
-Another consequence of this change is that init_counter_refs() is now
-called on each CPU correctly; previously the function on_each_cpu() was
-used, but it was called at boot when the only online cpu is cpu0.
+It is to be noted that even if MSR_PLATFORM_INFO contained the appropriate
+data, APERF and MPERF are constantly zero on ESXi 5.5, thus freq-invariance
+couldn't be done in principle (not that it would make a lot of sense in a
+VM anyway). The real problem is advertising X86_FEATURE_APERFMPERF. This
+appears to be fixed in more recent versions: ESXi 6.7 doesn't advertise
+that feature.
 
-[ggherdovich@suse.cz: Tested and wrote changelog]
 Fixes: 1567c3e3467c ("x86, sched: Add support for frequency invariance")
-Reported-by: Chris Wilson <chris@chris-wilson.co.uk>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Giovanni Gherdovich <ggherdovich@suse.cz>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://lkml.kernel.org/r/20200416054745.740-4-ggherdovich@suse.cz
+Link: https://lkml.kernel.org/r/20200416054745.740-2-ggherdovich@suse.cz
 ---
- arch/x86/kernel/smpboot.c | 21 ++++++++++++++-------
- 1 file changed, 14 insertions(+), 7 deletions(-)
+ arch/x86/kernel/smpboot.c |  9 +++++++++
+ 1 file changed, 9 insertions(+)
 
 diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
-index 5d346b7..dd8e15f 100644
+index fe3ab96..3a318ec 100644
 --- a/arch/x86/kernel/smpboot.c
 +++ b/arch/x86/kernel/smpboot.c
-@@ -147,7 +147,7 @@ static inline void smpboot_restore_warm_reset_vector(void)
- 	*((volatile u32 *)phys_to_virt(TRAMPOLINE_PHYS_LOW)) = 0;
- }
+@@ -1985,6 +1985,15 @@ static bool intel_set_max_freq_ratio(void)
+ 	return false;
  
--static void init_freq_invariance(void);
-+static void init_freq_invariance(bool secondary);
- 
- /*
-  * Report back to the Boot Processor during boot time or to the caller processor
-@@ -185,7 +185,7 @@ static void smp_callin(void)
- 	 */
- 	set_cpu_sibling_map(raw_smp_processor_id());
- 
--	init_freq_invariance();
-+	init_freq_invariance(true);
- 
- 	/*
- 	 * Get our bogomips.
-@@ -1341,7 +1341,7 @@ void __init native_smp_prepare_cpus(unsigned int max_cpus)
- 	set_sched_topology(x86_topology);
- 
- 	set_cpu_sibling_map(0);
--	init_freq_invariance();
-+	init_freq_invariance(false);
- 	smp_sanity_check();
- 
- 	switch (apic_intr_mode) {
-@@ -2005,7 +2005,7 @@ out:
- 	return true;
- }
- 
--static void init_counter_refs(void *arg)
-+static void init_counter_refs(void)
- {
- 	u64 aperf, mperf;
- 
-@@ -2016,18 +2016,25 @@ static void init_counter_refs(void *arg)
- 	this_cpu_write(arch_prev_mperf, mperf);
- }
- 
--static void init_freq_invariance(void)
-+static void init_freq_invariance(bool secondary)
- {
- 	bool ret = false;
- 
--	if (smp_processor_id() != 0 || !boot_cpu_has(X86_FEATURE_APERFMPERF))
-+	if (!boot_cpu_has(X86_FEATURE_APERFMPERF))
- 		return;
- 
-+	if (secondary) {
-+		if (static_branch_likely(&arch_scale_freq_key)) {
-+			init_counter_refs();
-+		}
-+		return;
+ out:
++	/*
++	 * Some hypervisors advertise X86_FEATURE_APERFMPERF
++	 * but then fill all MSR's with zeroes.
++	 */
++	if (!base_freq) {
++		pr_debug("Couldn't determine cpu base frequency, necessary for scale-invariant accounting.\n");
++		return false;
 +	}
 +
- 	if (boot_cpu_data.x86_vendor == X86_VENDOR_INTEL)
- 		ret = intel_set_max_freq_ratio();
- 
- 	if (ret) {
--		on_each_cpu(init_counter_refs, NULL, 1);
-+		init_counter_refs();
- 		static_branch_enable(&arch_scale_freq_key);
- 	} else {
- 		pr_debug("Couldn't determine max cpu frequency, necessary for scale-invariant accounting.\n");
+ 	arch_turbo_freq_ratio = div_u64(turbo_freq * SCHED_CAPACITY_SCALE,
+ 					base_freq);
+ 	arch_set_max_freq_ratio(turbo_disabled());
