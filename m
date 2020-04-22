@@ -2,38 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BD301B5050
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 23 Apr 2020 00:27:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF4341B502C
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 23 Apr 2020 00:27:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726387AbgDVW0K (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 22 Apr 2020 18:26:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35020 "EHLO
+        id S1726688AbgDVWZD (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 22 Apr 2020 18:25:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35028 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726654AbgDVWZA (ORCPT
+        by vger.kernel.org with ESMTP id S1726684AbgDVWZC (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 22 Apr 2020 18:25:00 -0400
+        Wed, 22 Apr 2020 18:25:02 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91685C03C1A9;
-        Wed, 22 Apr 2020 15:25:00 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CB02C03C1AA;
+        Wed, 22 Apr 2020 15:25:02 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jRNnU-0001RI-5O; Thu, 23 Apr 2020 00:24:49 +0200
+        id 1jRNnX-0001S3-9D; Thu, 23 Apr 2020 00:24:52 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A7D5B1C0450;
-        Thu, 23 Apr 2020 00:24:44 +0200 (CEST)
-Date:   Wed, 22 Apr 2020 22:24:44 -0000
-From:   "tip-bot2 for Sami Tolvanen" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 297001C04D7;
+        Thu, 23 Apr 2020 00:24:46 +0200 (CEST)
+Date:   Wed, 22 Apr 2020 22:24:45 -0000
+From:   "tip-bot2 for Muchun Song" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] objtool: Use gelf_getsymshndx() to handle >64k sections
-Cc:     Sami Tolvanen <samitolvanen@google.com>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Kees Cook <keescook@chromium.org>, x86 <x86@kernel.org>,
+Subject: [tip: objtool/core] objtool: Remove redundant .rodata section name comparison
+Cc:     Muchun Song <songmuchun@bytedance.com>,
+        Josh Poimboeuf <jpoimboe@redhat.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158759428414.28353.13399607572117733113.tip-bot2@tip-bot2>
+Message-ID: <158759428560.28353.8582555495693130530.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,84 +48,40 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     01a919f8e8eb9285d76024bee32e23cc125cad48
-Gitweb:        https://git.kernel.org/tip/01a919f8e8eb9285d76024bee32e23cc125cad48
-Author:        Sami Tolvanen <samitolvanen@google.com>
-AuthorDate:    Tue, 21 Apr 2020 15:08:42 -07:00
+Commit-ID:     069cdb3f72e947c7564240fa4c5468b7e514b679
+Gitweb:        https://git.kernel.org/tip/069cdb3f72e947c7564240fa4c5468b7e514b679
+Author:        Muchun Song <songmuchun@bytedance.com>
+AuthorDate:    Sun, 12 Apr 2020 22:44:05 +08:00
 Committer:     Josh Poimboeuf <jpoimboe@redhat.com>
-CommitterDate: Tue, 21 Apr 2020 18:49:18 -05:00
+CommitterDate: Tue, 14 Apr 2020 17:34:07 -05:00
 
-objtool: Use gelf_getsymshndx() to handle >64k sections
+objtool: Remove redundant .rodata section name comparison
 
-Currently, objtool fails to load the correct section for symbols when
-the index is greater than SHN_LORESERVE. Use gelf_getsymshndx() instead
-of gelf_getsym() to handle >64k sections.
+If the prefix of section name is not '.rodata', the following
+function call can never return 0.
 
-Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
+    strcmp(sec->name, C_JUMP_TABLE_SECTION)
+
+So the name comparison is pointless, just remove it.
+
+Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Reviewed-by: Kees Cook <keescook@chromium.org>
 ---
- tools/objtool/elf.c | 24 +++++++++++++++++-------
- 1 file changed, 17 insertions(+), 7 deletions(-)
+ tools/objtool/check.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/objtool/elf.c b/tools/objtool/elf.c
-index c20dfe1..43748cb 100644
---- a/tools/objtool/elf.c
-+++ b/tools/objtool/elf.c
-@@ -327,12 +327,14 @@ static int read_sections(struct elf *elf)
- 
- static int read_symbols(struct elf *elf)
- {
--	struct section *symtab, *sec;
-+	struct section *symtab, *symtab_shndx, *sec;
- 	struct symbol *sym, *pfunc;
- 	struct list_head *entry;
- 	struct rb_node *pnode;
- 	int symbols_nr, i;
- 	char *coldstr;
-+	Elf_Data *shndx_data = NULL;
-+	Elf32_Word shndx;
- 
- 	symtab = find_section_by_name(elf, ".symtab");
- 	if (!symtab) {
-@@ -340,6 +342,10 @@ static int read_symbols(struct elf *elf)
- 		return -1;
- 	}
- 
-+	symtab_shndx = find_section_by_name(elf, ".symtab_shndx");
-+	if (symtab_shndx)
-+		shndx_data = symtab_shndx->data;
-+
- 	symbols_nr = symtab->sh.sh_size / symtab->sh.sh_entsize;
- 
- 	for (i = 0; i < symbols_nr; i++) {
-@@ -353,8 +359,9 @@ static int read_symbols(struct elf *elf)
- 
- 		sym->idx = i;
- 
--		if (!gelf_getsym(symtab->data, i, &sym->sym)) {
--			WARN_ELF("gelf_getsym");
-+		if (!gelf_getsymshndx(symtab->data, shndx_data, i, &sym->sym,
-+				      &shndx)) {
-+			WARN_ELF("gelf_getsymshndx");
- 			goto err;
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index 10fbfb3..276bce3 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -1372,8 +1372,8 @@ static void mark_rodata(struct objtool_file *file)
+ 	 * .rodata.str1.* sections are ignored; they don't contain jump tables.
+ 	 */
+ 	for_each_sec(file, sec) {
+-		if ((!strncmp(sec->name, ".rodata", 7) && !strstr(sec->name, ".str1.")) ||
+-		    !strcmp(sec->name, C_JUMP_TABLE_SECTION)) {
++		if (!strncmp(sec->name, ".rodata", 7) &&
++		    !strstr(sec->name, ".str1.")) {
+ 			sec->rodata = true;
+ 			found = true;
  		}
- 
-@@ -368,10 +375,13 @@ static int read_symbols(struct elf *elf)
- 		sym->type = GELF_ST_TYPE(sym->sym.st_info);
- 		sym->bind = GELF_ST_BIND(sym->sym.st_info);
- 
--		if (sym->sym.st_shndx > SHN_UNDEF &&
--		    sym->sym.st_shndx < SHN_LORESERVE) {
--			sym->sec = find_section_by_index(elf,
--							 sym->sym.st_shndx);
-+		if ((sym->sym.st_shndx > SHN_UNDEF &&
-+		     sym->sym.st_shndx < SHN_LORESERVE) ||
-+		    (shndx_data && sym->sym.st_shndx == SHN_XINDEX)) {
-+			if (sym->sym.st_shndx != SHN_XINDEX)
-+				shndx = sym->sym.st_shndx;
-+
-+			sym->sec = find_section_by_index(elf, shndx);
- 			if (!sym->sec) {
- 				WARN("couldn't find section for symbol %s",
- 				     sym->name);
