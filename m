@@ -2,35 +2,34 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B7B761B44EE
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Apr 2020 14:23:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F10D1B44B1
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Apr 2020 14:21:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728825AbgDVMWb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 22 Apr 2020 08:22:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53326 "EHLO
+        id S1728070AbgDVMU6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 22 Apr 2020 08:20:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53328 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728482AbgDVMRc (ORCPT
+        by vger.kernel.org with ESMTP id S1728611AbgDVMRd (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 22 Apr 2020 08:17:32 -0400
+        Wed, 22 Apr 2020 08:17:33 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1DC8C03C1AD;
-        Wed, 22 Apr 2020 05:17:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F7AAC03C1AC;
+        Wed, 22 Apr 2020 05:17:33 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jREJT-0007YQ-Cn; Wed, 22 Apr 2020 14:17:11 +0200
+        id 1jREJS-0007YN-S1; Wed, 22 Apr 2020 14:17:11 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E6EF41C02FC;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 6498D1C0450;
         Wed, 22 Apr 2020 14:17:10 +0200 (CEST)
 Date:   Wed, 22 Apr 2020 12:17:10 -0000
 From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf top: Add option to enable the LBR stitching approach
+Subject: [tip: perf/core] perf c2c: Add option to enable the LBR stitching approach
 Cc:     Kan Liang <kan.liang@linux.intel.com>,
         Andi Kleen <ak@linux.intel.com>, Jiri Olsa <jolsa@redhat.com>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
         Adrian Hunter <adrian.hunter@intel.com>,
         Alexey Budankov <alexey.budankov@linux.intel.com>,
         Mathieu Poirier <mathieu.poirier@linaro.org>,
@@ -41,11 +40,12 @@ Cc:     Kan Liang <kan.liang@linux.intel.com>,
         Ravi Bangoria <ravi.bangoria@linux.ibm.com>,
         Stephane Eranian <eranian@google.com>,
         Vitaly Slobodskoy <vitaly.slobodskoy@intel.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200319202517.23423-16-kan.liang@linux.intel.com>
-References: <20200319202517.23423-16-kan.liang@linux.intel.com>
+In-Reply-To: <20200319202517.23423-17-kan.liang@linux.intel.com>
+References: <20200319202517.23423-17-kan.liang@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <158755783050.28353.14034885809740386409.tip-bot2@tip-bot2>
+Message-ID: <158755783003.28353.8487680378110463118.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -61,28 +61,26 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     13e0c844fa097f657bd8204fd574477c34f47a0c
-Gitweb:        https://git.kernel.org/tip/13e0c844fa097f657bd8204fd574477c34f47a0c
+Commit-ID:     d80da766d181555d0c846298b8c619c384c7d179
+Gitweb:        https://git.kernel.org/tip/d80da766d181555d0c846298b8c619c384c7d179
 Author:        Kan Liang <kan.liang@linux.intel.com>
-AuthorDate:    Thu, 19 Mar 2020 13:25:15 -07:00
+AuthorDate:    Thu, 19 Mar 2020 13:25:16 -07:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Sat, 18 Apr 2020 09:05:01 -03:00
 
-perf top: Add option to enable the LBR stitching approach
+perf c2c: Add option to enable the LBR stitching approach
 
-With the LBR stitching approach, the reconstructed LBR call stack
-can break the HW limitation. However, it may reconstruct invalid call
-stacks in some cases, e.g. exception handing such as setjmp/longjmp.
-Also, it may impact the processing time especially when the number of
-samples with stitched LBRs are huge.
+With the LBR stitching approach, the reconstructed LBR call stack can
+break the HW limitation. However, it may reconstruct invalid call stacks
+in some cases, e.g. exception handing such as setjmp/longjmp.  Also, it
+may impact the processing time especially when the number of samples
+with stitched LBRs are huge.
 
 Add an option to enable the approach.
-The option must be used with --call-graph lbr.
 
 Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
 Reviewed-by: Andi Kleen <ak@linux.intel.com>
 Acked-by: Jiri Olsa <jolsa@redhat.com>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Cc: Adrian Hunter <adrian.hunter@intel.com>
 Cc: Alexey Budankov <alexey.budankov@linux.intel.com>
 Cc: Mathieu Poirier <mathieu.poirier@linaro.org>
@@ -93,86 +91,76 @@ Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
 Cc: Stephane Eranian <eranian@google.com>
 Cc: Vitaly Slobodskoy <vitaly.slobodskoy@intel.com>
-Link: http://lore.kernel.org/lkml/20200319202517.23423-16-kan.liang@linux.intel.com
+Link: http://lore.kernel.org/lkml/20200319202517.23423-17-kan.liang@linux.intel.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/Documentation/perf-top.txt |  9 +++++++++
- tools/perf/builtin-top.c              | 11 +++++++++++
- tools/perf/util/top.h                 |  1 +
- 3 files changed, 21 insertions(+)
+ tools/perf/Documentation/perf-c2c.txt | 11 +++++++++++
+ tools/perf/builtin-c2c.c              | 12 ++++++++++++
+ 2 files changed, 23 insertions(+)
 
-diff --git a/tools/perf/Documentation/perf-top.txt b/tools/perf/Documentation/perf-top.txt
-index 487737a..20227da 100644
---- a/tools/perf/Documentation/perf-top.txt
-+++ b/tools/perf/Documentation/perf-top.txt
-@@ -319,6 +319,15 @@ Default is to monitor all CPUS.
- 	go straight to the histogram browser, just like 'perf top' with no events
- 	explicitely specified does.
+diff --git a/tools/perf/Documentation/perf-c2c.txt b/tools/perf/Documentation/perf-c2c.txt
+index e6150f2..2133eb3 100644
+--- a/tools/perf/Documentation/perf-c2c.txt
++++ b/tools/perf/Documentation/perf-c2c.txt
+@@ -111,6 +111,17 @@ REPORT OPTIONS
+ --display::
+ 	Switch to HITM type (rmt, lcl) to display and sort on. Total HITMs as default.
  
 +--stitch-lbr::
 +	Show callgraph with stitched LBRs, which may have more complete
-+	callgraph. The option must be used with --call-graph lbr recording.
++	callgraph. The perf.data file must have been obtained using
++	perf c2c record --call-graph lbr.
 +	Disabled by default. In common cases with call stack overflows,
 +	it can recreate better call stacks than the default lbr call stack
 +	output. But this approach is not full proof. There can be cases
 +	where it creates incorrect call stacks from incorrect matches.
 +	The known limitations include exception handing such as
 +	setjmp/longjmp will have calls/returns not match.
++
+ C2C RECORD
+ ----------
+ The perf c2c record command setup options related to HITM cacheline analysis
+diff --git a/tools/perf/builtin-c2c.c b/tools/perf/builtin-c2c.c
+index 246ac0b..0d544c4 100644
+--- a/tools/perf/builtin-c2c.c
++++ b/tools/perf/builtin-c2c.c
+@@ -95,6 +95,7 @@ struct perf_c2c {
+ 	bool			 use_stdio;
+ 	bool			 stats_only;
+ 	bool			 symbol_full;
++	bool			 stitch_lbr;
  
- INTERACTIVE PROMPTING KEYS
- --------------------------
-diff --git a/tools/perf/builtin-top.c b/tools/perf/builtin-top.c
-index 289cf83..6b067a5 100644
---- a/tools/perf/builtin-top.c
-+++ b/tools/perf/builtin-top.c
-@@ -33,6 +33,7 @@
- #include "util/map.h"
- #include "util/mmap.h"
- #include "util/session.h"
-+#include "util/thread.h"
- #include "util/symbol.h"
- #include "util/synthetic-events.h"
- #include "util/top.h"
-@@ -775,6 +776,9 @@ static void perf_event__process_sample(struct perf_tool *tool,
- 	if (machine__resolve(machine, &al, sample) < 0)
- 		return;
+ 	/* HITM shared clines stats */
+ 	struct c2c_stats	hitm_stats;
+@@ -273,6 +274,9 @@ static int process_sample_event(struct perf_tool *tool __maybe_unused,
+ 		return -1;
+ 	}
  
-+	if (top->stitch_lbr)
++	if (c2c.stitch_lbr)
 +		al.thread->lbr_stitch_enable = true;
 +
- 	if (!machine->kptr_restrict_warned &&
- 	    symbol_conf.kptr_restrict &&
- 	    al.cpumode == PERF_RECORD_MISC_KERNEL) {
-@@ -1571,6 +1575,8 @@ int cmd_top(int argc, const char **argv)
- 		    "Sort the output by the event at the index n in group. "
- 		    "If n is invalid, sort by the first event. "
- 		    "WARNING: should be used on grouped events."),
-+	OPT_BOOLEAN(0, "stitch-lbr", &top.stitch_lbr,
-+		    "Enable LBR callgraph stitching approach"),
- 	OPTS_EVSWITCH(&top.evswitch),
- 	OPT_END()
- 	};
-@@ -1640,6 +1646,11 @@ int cmd_top(int argc, const char **argv)
+ 	ret = sample__resolve_callchain(sample, &callchain_cursor, NULL,
+ 					evsel, &al, sysctl_perf_event_max_stack);
+ 	if (ret)
+@@ -2601,6 +2605,12 @@ static int setup_callchain(struct evlist *evlist)
  		}
  	}
  
-+	if (top.stitch_lbr && !(callchain_param.record_mode == CALLCHAIN_LBR)) {
-+		pr_err("Error: --stitch-lbr must be used with --call-graph lbr\n");
-+		goto out_delete_evlist;
++	if (c2c.stitch_lbr && (mode != CALLCHAIN_LBR)) {
++		ui__warning("Can't find LBR callchain. Switch off --stitch-lbr.\n"
++			    "Please apply --call-graph lbr when recording.\n");
++		c2c.stitch_lbr = false;
 +	}
 +
- 	if (opts->branch_stack && callchain_param.enabled)
- 		symbol_conf.show_branchflag_count = true;
- 
-diff --git a/tools/perf/util/top.h b/tools/perf/util/top.h
-index f117d4f..45dc84d 100644
---- a/tools/perf/util/top.h
-+++ b/tools/perf/util/top.h
-@@ -36,6 +36,7 @@ struct perf_top {
- 	bool		   use_tui, use_stdio;
- 	bool		   vmlinux_warned;
- 	bool		   dump_symtab;
-+	bool		   stitch_lbr;
- 	struct hist_entry  *sym_filter_entry;
- 	struct evsel 	   *sym_evsel;
- 	struct perf_session *session;
+ 	callchain_param.record_mode = mode;
+ 	callchain_param.min_percent = 0;
+ 	return 0;
+@@ -2752,6 +2762,8 @@ static int perf_c2c__report(int argc, const char **argv)
+ 	OPT_STRING('c', "coalesce", &coalesce, "coalesce fields",
+ 		   "coalesce fields: pid,tid,iaddr,dso"),
+ 	OPT_BOOLEAN('f', "force", &symbol_conf.force, "don't complain, do it"),
++	OPT_BOOLEAN(0, "stitch-lbr", &c2c.stitch_lbr,
++		    "Enable LBR callgraph stitching approach"),
+ 	OPT_PARENT(c2c_options),
+ 	OPT_END()
+ 	};
