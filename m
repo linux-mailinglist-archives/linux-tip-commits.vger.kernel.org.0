@@ -2,53 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E5AB1B448A
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Apr 2020 14:20:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BAA831B449E
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Apr 2020 14:20:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726629AbgDVMTt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 22 Apr 2020 08:19:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53430 "EHLO
+        id S1728116AbgDVMUY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 22 Apr 2020 08:20:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53390 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728867AbgDVMRy (ORCPT
+        by vger.kernel.org with ESMTP id S1728765AbgDVMRm (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 22 Apr 2020 08:17:54 -0400
+        Wed, 22 Apr 2020 08:17:42 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E7ACC03C1AA;
-        Wed, 22 Apr 2020 05:17:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 641A0C03C1AA;
+        Wed, 22 Apr 2020 05:17:42 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jREJu-000800-QX; Wed, 22 Apr 2020 14:17:39 +0200
+        id 1jREJt-0007yg-SG; Wed, 22 Apr 2020 14:17:38 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 071D21C081A;
-        Wed, 22 Apr 2020 14:17:32 +0200 (CEST)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 79DAB1C0823;
+        Wed, 22 Apr 2020 14:17:31 +0200 (CEST)
 Date:   Wed, 22 Apr 2020 12:17:31 -0000
-From:   "tip-bot2 for Alexey Budankov" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Adrian Hunter" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] doc/admin-guide: update kernel.rst with CAP_PERFMON
- information
-Cc:     Alexey Budankov <alexey.budankov@linux.intel.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Andi Kleen <ak@linux.intel.com>,
-        Igor Lubashev <ilubashe@akamai.com>,
-        James Morris <jmorris@namei.org>, Jiri Olsa <jolsa@redhat.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Serge Hallyn <serge@hallyn.com>,
-        Song Liu <songliubraving@fb.com>,
-        Stephane Eranian <eranian@google.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        intel-gfx@lists.freedesktop.org, linux-doc@vger.kernel.org,
-        linux-man@vger.kernel.org, linux-security-module@vger.kernel.org,
-        selinux@vger.kernel.org,
+Subject: [tip: perf/core] perf script: Simplify auxiliary event printing functions
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        Jiri Olsa <jolsa@redhat.com>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <84c32383-14a2-fa35-16b6-f9e59bd37240@linux.intel.com>
-References: <84c32383-14a2-fa35-16b6-f9e59bd37240@linux.intel.com>
+In-Reply-To: <20200402141548.21283-1-adrian.hunter@intel.com>
+References: <20200402141548.21283-1-adrian.hunter@intel.com>
 MIME-Version: 1.0
-Message-ID: <158755785160.28353.3846364615857444421.tip-bot2@tip-bot2>
+Message-ID: <158755785108.28353.16455054125421171925.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -64,76 +51,461 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     025b16f81dd7f51f29d0109399d669438c63b6ce
-Gitweb:        https://git.kernel.org/tip/025b16f81dd7f51f29d0109399d669438c63b6ce
-Author:        Alexey Budankov <alexey.budankov@linux.intel.com>
-AuthorDate:    Thu, 02 Apr 2020 11:54:39 +03:00
+Commit-ID:     1a2725f3ee5571cf07966f467b73a9941bcbacb8
+Gitweb:        https://git.kernel.org/tip/1a2725f3ee5571cf07966f467b73a9941bcbacb8
+Author:        Adrian Hunter <adrian.hunter@intel.com>
+AuthorDate:    Thu, 02 Apr 2020 17:15:48 +03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Thu, 16 Apr 2020 12:19:12 -03:00
 
-doc/admin-guide: update kernel.rst with CAP_PERFMON information
+perf script: Simplify auxiliary event printing functions
 
-Update the kernel.rst documentation file with the information related to
-usage of CAP_PERFMON capability to secure performance monitoring and
-observability operations in system.
+This simplifies the print functions for the following perf script
+options:
 
-Signed-off-by: Alexey Budankov <alexey.budankov@linux.intel.com>
-Cc: Alexei Starovoitov <ast@kernel.org>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Igor Lubashev <ilubashe@akamai.com>
-Cc: James Morris <jmorris@namei.org>
-Cc: Jiri Olsa <jolsa@redhat.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Serge Hallyn <serge@hallyn.com>
-Cc: Song Liu <songliubraving@fb.com>
-Cc: Stephane Eranian <eranian@google.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: intel-gfx@lists.freedesktop.org
-Cc: linux-doc@vger.kernel.org
-Cc: linux-man@vger.kernel.org
-Cc: linux-security-module@vger.kernel.org
-Cc: selinux@vger.kernel.org
-Link: http://lore.kernel.org/lkml/84c32383-14a2-fa35-16b6-f9e59bd37240@linux.intel.com
+	--show-task-events
+	--show-namespace-events
+	--show-cgroup-events
+	--show-mmap-events
+	--show-switch-events
+	--show-lost-events
+	--show-bpf-events
+
+Example:
+	# perf record --switch-events -a -e cycles -c 10000 sleep 1
+ Before:
+	# perf script --show-task-events --show-namespace-events --show-cgroup-events --show-mmap-events --show-switch-events --show-lost-events --show-bpf-events > out-before.txt
+ After:
+	# perf script --show-task-events --show-namespace-events --show-cgroup-events --show-mmap-events --show-switch-events --show-lost-events --show-bpf-events > out-after.txt
+	# diff -s out-before.txt out-after.txt
+	Files out-before.txt and out-after.tx are identical
+
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Acked-by: Jiri Olsa <jolsa@redhat.com>
+Link: http://lore.kernel.org/lkml/20200402141548.21283-1-adrian.hunter@intel.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- Documentation/admin-guide/sysctl/kernel.rst | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ tools/perf/builtin-script.c | 304 +++++++----------------------------
+ 1 file changed, 66 insertions(+), 238 deletions(-)
 
-diff --git a/Documentation/admin-guide/sysctl/kernel.rst b/Documentation/admin-guide/sysctl/kernel.rst
-index 39c95c0..7e4c28d 100644
---- a/Documentation/admin-guide/sysctl/kernel.rst
-+++ b/Documentation/admin-guide/sysctl/kernel.rst
-@@ -730,7 +730,13 @@ perf_event_paranoid
- ===================
+diff --git a/tools/perf/builtin-script.c b/tools/perf/builtin-script.c
+index 1f57a7e..8bf3ba2 100644
+--- a/tools/perf/builtin-script.c
++++ b/tools/perf/builtin-script.c
+@@ -2040,7 +2040,7 @@ static int cleanup_scripting(void)
  
- Controls use of the performance events system by unprivileged
--users (without CAP_SYS_ADMIN).  The default value is 2.
-+users (without CAP_PERFMON).  The default value is 2.
+ static bool filter_cpu(struct perf_sample *sample)
+ {
+-	if (cpu_list)
++	if (cpu_list && sample->cpu != (u32)-1)
+ 		return !test_bit(sample->cpu, cpu_bitmap);
+ 	return false;
+ }
+@@ -2138,41 +2138,59 @@ static int process_attr(struct perf_tool *tool, union perf_event *event,
+ 	return err;
+ }
+ 
+-static int process_comm_event(struct perf_tool *tool,
+-			      union perf_event *event,
+-			      struct perf_sample *sample,
+-			      struct machine *machine)
++static int print_event_with_time(struct perf_tool *tool,
++				 union perf_event *event,
++				 struct perf_sample *sample,
++				 struct machine *machine,
++				 pid_t pid, pid_t tid, u64 timestamp)
+ {
+-	struct thread *thread;
+ 	struct perf_script *script = container_of(tool, struct perf_script, tool);
+ 	struct perf_session *session = script->session;
+ 	struct evsel *evsel = perf_evlist__id2evsel(session->evlist, sample->id);
+-	int ret = -1;
++	struct thread *thread = NULL;
+ 
+-	thread = machine__findnew_thread(machine, event->comm.pid, event->comm.tid);
+-	if (thread == NULL) {
+-		pr_debug("problem processing COMM event, skipping it.\n");
+-		return -1;
++	if (evsel && !evsel->core.attr.sample_id_all) {
++		sample->cpu = 0;
++		sample->time = timestamp;
++		sample->pid = pid;
++		sample->tid = tid;
+ 	}
+ 
+-	if (perf_event__process_comm(tool, event, sample, machine) < 0)
+-		goto out;
++	if (filter_cpu(sample))
++		return 0;
+ 
+-	if (!evsel->core.attr.sample_id_all) {
+-		sample->cpu = 0;
+-		sample->time = 0;
+-		sample->tid = event->comm.tid;
+-		sample->pid = event->comm.pid;
+-	}
+-	if (!filter_cpu(sample)) {
++	if (tid != -1)
++		thread = machine__findnew_thread(machine, pid, tid);
 +
-+For backward compatibility reasons access to system performance
-+monitoring and observability remains open for CAP_SYS_ADMIN
-+privileged processes but CAP_SYS_ADMIN usage for secure system
-+performance monitoring and observability operations is discouraged
-+with respect to CAP_PERFMON use cases.
++	if (thread && evsel) {
+ 		perf_sample__fprintf_start(sample, thread, evsel,
+-				   PERF_RECORD_COMM, stdout);
+-		perf_event__fprintf(event, stdout);
++					   event->header.type, stdout);
+ 	}
+-	ret = 0;
+-out:
++
++	perf_event__fprintf(event, stdout);
++
+ 	thread__put(thread);
+-	return ret;
++
++	return 0;
++}
++
++static int print_event(struct perf_tool *tool, union perf_event *event,
++		       struct perf_sample *sample, struct machine *machine,
++		       pid_t pid, pid_t tid)
++{
++	return print_event_with_time(tool, event, sample, machine, pid, tid, 0);
++}
++
++static int process_comm_event(struct perf_tool *tool,
++			      union perf_event *event,
++			      struct perf_sample *sample,
++			      struct machine *machine)
++{
++	if (perf_event__process_comm(tool, event, sample, machine) < 0)
++		return -1;
++
++	return print_event(tool, event, sample, machine, event->comm.pid,
++			   event->comm.tid);
+ }
  
- ===  ==================================================================
-  -1  Allow use of (almost) all events by all users.
-@@ -739,13 +745,13 @@ users (without CAP_SYS_ADMIN).  The default value is 2.
-      ``CAP_IPC_LOCK``.
+ static int process_namespaces_event(struct perf_tool *tool,
+@@ -2180,37 +2198,11 @@ static int process_namespaces_event(struct perf_tool *tool,
+ 				    struct perf_sample *sample,
+ 				    struct machine *machine)
+ {
+-	struct thread *thread;
+-	struct perf_script *script = container_of(tool, struct perf_script, tool);
+-	struct perf_session *session = script->session;
+-	struct evsel *evsel = perf_evlist__id2evsel(session->evlist, sample->id);
+-	int ret = -1;
+-
+-	thread = machine__findnew_thread(machine, event->namespaces.pid,
+-					 event->namespaces.tid);
+-	if (thread == NULL) {
+-		pr_debug("problem processing NAMESPACES event, skipping it.\n");
+-		return -1;
+-	}
+-
+ 	if (perf_event__process_namespaces(tool, event, sample, machine) < 0)
+-		goto out;
++		return -1;
  
- >=0  Disallow ftrace function tracepoint by users without
--     ``CAP_SYS_ADMIN``.
-+     ``CAP_PERFMON``.
+-	if (!evsel->core.attr.sample_id_all) {
+-		sample->cpu = 0;
+-		sample->time = 0;
+-		sample->tid = event->namespaces.tid;
+-		sample->pid = event->namespaces.pid;
+-	}
+-	if (!filter_cpu(sample)) {
+-		perf_sample__fprintf_start(sample, thread, evsel,
+-					   PERF_RECORD_NAMESPACES, stdout);
+-		perf_event__fprintf(event, stdout);
+-	}
+-	ret = 0;
+-out:
+-	thread__put(thread);
+-	return ret;
++	return print_event(tool, event, sample, machine, event->namespaces.pid,
++			   event->namespaces.tid);
+ }
  
--     Disallow raw tracepoint access by users without ``CAP_SYS_ADMIN``.
-+     Disallow raw tracepoint access by users without ``CAP_PERFMON``.
+ static int process_cgroup_event(struct perf_tool *tool,
+@@ -2218,34 +2210,11 @@ static int process_cgroup_event(struct perf_tool *tool,
+ 				struct perf_sample *sample,
+ 				struct machine *machine)
+ {
+-	struct thread *thread;
+-	struct perf_script *script = container_of(tool, struct perf_script, tool);
+-	struct perf_session *session = script->session;
+-	struct evsel *evsel = perf_evlist__id2evsel(session->evlist, sample->id);
+-	int ret = -1;
+-
+-	thread = machine__findnew_thread(machine, sample->pid, sample->tid);
+-	if (thread == NULL) {
+-		pr_debug("problem processing CGROUP event, skipping it.\n");
+-		return -1;
+-	}
+-
+ 	if (perf_event__process_cgroup(tool, event, sample, machine) < 0)
+-		goto out;
++		return -1;
  
-->=1  Disallow CPU event access by users without ``CAP_SYS_ADMIN``.
-+>=1  Disallow CPU event access by users without ``CAP_PERFMON``.
+-	if (!evsel->core.attr.sample_id_all) {
+-		sample->cpu = 0;
+-		sample->time = 0;
+-	}
+-	if (!filter_cpu(sample)) {
+-		perf_sample__fprintf_start(sample, thread, evsel,
+-					   PERF_RECORD_CGROUP, stdout);
+-		perf_event__fprintf(event, stdout);
+-	}
+-	ret = 0;
+-out:
+-	thread__put(thread);
+-	return ret;
++	return print_event(tool, event, sample, machine, sample->pid,
++			    sample->tid);
+ }
  
-->=2  Disallow kernel profiling by users without ``CAP_SYS_ADMIN``.
-+>=2  Disallow kernel profiling by users without ``CAP_PERFMON``.
- ===  ==================================================================
+ static int process_fork_event(struct perf_tool *tool,
+@@ -2253,69 +2222,24 @@ static int process_fork_event(struct perf_tool *tool,
+ 			      struct perf_sample *sample,
+ 			      struct machine *machine)
+ {
+-	struct thread *thread;
+-	struct perf_script *script = container_of(tool, struct perf_script, tool);
+-	struct perf_session *session = script->session;
+-	struct evsel *evsel = perf_evlist__id2evsel(session->evlist, sample->id);
+-
+ 	if (perf_event__process_fork(tool, event, sample, machine) < 0)
+ 		return -1;
  
+-	thread = machine__findnew_thread(machine, event->fork.pid, event->fork.tid);
+-	if (thread == NULL) {
+-		pr_debug("problem processing FORK event, skipping it.\n");
+-		return -1;
+-	}
+-
+-	if (!evsel->core.attr.sample_id_all) {
+-		sample->cpu = 0;
+-		sample->time = event->fork.time;
+-		sample->tid = event->fork.tid;
+-		sample->pid = event->fork.pid;
+-	}
+-	if (!filter_cpu(sample)) {
+-		perf_sample__fprintf_start(sample, thread, evsel,
+-					   PERF_RECORD_FORK, stdout);
+-		perf_event__fprintf(event, stdout);
+-	}
+-	thread__put(thread);
+-
+-	return 0;
++	return print_event_with_time(tool, event, sample, machine,
++				     event->fork.pid, event->fork.tid,
++				     event->fork.time);
+ }
+ static int process_exit_event(struct perf_tool *tool,
+ 			      union perf_event *event,
+ 			      struct perf_sample *sample,
+ 			      struct machine *machine)
+ {
+-	int err = 0;
+-	struct thread *thread;
+-	struct perf_script *script = container_of(tool, struct perf_script, tool);
+-	struct perf_session *session = script->session;
+-	struct evsel *evsel = perf_evlist__id2evsel(session->evlist, sample->id);
+-
+-	thread = machine__findnew_thread(machine, event->fork.pid, event->fork.tid);
+-	if (thread == NULL) {
+-		pr_debug("problem processing EXIT event, skipping it.\n");
++	/* Print before 'exit' deletes anything */
++	if (print_event_with_time(tool, event, sample, machine, event->fork.pid,
++				  event->fork.tid, event->fork.time))
+ 		return -1;
+-	}
+-
+-	if (!evsel->core.attr.sample_id_all) {
+-		sample->cpu = 0;
+-		sample->time = 0;
+-		sample->tid = event->fork.tid;
+-		sample->pid = event->fork.pid;
+-	}
+-	if (!filter_cpu(sample)) {
+-		perf_sample__fprintf_start(sample, thread, evsel,
+-					   PERF_RECORD_EXIT, stdout);
+-		perf_event__fprintf(event, stdout);
+-	}
  
+-	if (perf_event__process_exit(tool, event, sample, machine) < 0)
+-		err = -1;
+-
+-	thread__put(thread);
+-	return err;
++	return perf_event__process_exit(tool, event, sample, machine);
+ }
+ 
+ static int process_mmap_event(struct perf_tool *tool,
+@@ -2323,33 +2247,11 @@ static int process_mmap_event(struct perf_tool *tool,
+ 			      struct perf_sample *sample,
+ 			      struct machine *machine)
+ {
+-	struct thread *thread;
+-	struct perf_script *script = container_of(tool, struct perf_script, tool);
+-	struct perf_session *session = script->session;
+-	struct evsel *evsel = perf_evlist__id2evsel(session->evlist, sample->id);
+-
+ 	if (perf_event__process_mmap(tool, event, sample, machine) < 0)
+ 		return -1;
+ 
+-	thread = machine__findnew_thread(machine, event->mmap.pid, event->mmap.tid);
+-	if (thread == NULL) {
+-		pr_debug("problem processing MMAP event, skipping it.\n");
+-		return -1;
+-	}
+-
+-	if (!evsel->core.attr.sample_id_all) {
+-		sample->cpu = 0;
+-		sample->time = 0;
+-		sample->tid = event->mmap.tid;
+-		sample->pid = event->mmap.pid;
+-	}
+-	if (!filter_cpu(sample)) {
+-		perf_sample__fprintf_start(sample, thread, evsel,
+-					   PERF_RECORD_MMAP, stdout);
+-		perf_event__fprintf(event, stdout);
+-	}
+-	thread__put(thread);
+-	return 0;
++	return print_event(tool, event, sample, machine, event->mmap.pid,
++			   event->mmap.tid);
+ }
+ 
+ static int process_mmap2_event(struct perf_tool *tool,
+@@ -2357,33 +2259,11 @@ static int process_mmap2_event(struct perf_tool *tool,
+ 			      struct perf_sample *sample,
+ 			      struct machine *machine)
+ {
+-	struct thread *thread;
+-	struct perf_script *script = container_of(tool, struct perf_script, tool);
+-	struct perf_session *session = script->session;
+-	struct evsel *evsel = perf_evlist__id2evsel(session->evlist, sample->id);
+-
+ 	if (perf_event__process_mmap2(tool, event, sample, machine) < 0)
+ 		return -1;
+ 
+-	thread = machine__findnew_thread(machine, event->mmap2.pid, event->mmap2.tid);
+-	if (thread == NULL) {
+-		pr_debug("problem processing MMAP2 event, skipping it.\n");
+-		return -1;
+-	}
+-
+-	if (!evsel->core.attr.sample_id_all) {
+-		sample->cpu = 0;
+-		sample->time = 0;
+-		sample->tid = event->mmap2.tid;
+-		sample->pid = event->mmap2.pid;
+-	}
+-	if (!filter_cpu(sample)) {
+-		perf_sample__fprintf_start(sample, thread, evsel,
+-					   PERF_RECORD_MMAP2, stdout);
+-		perf_event__fprintf(event, stdout);
+-	}
+-	thread__put(thread);
+-	return 0;
++	return print_event(tool, event, sample, machine, event->mmap2.pid,
++			   event->mmap2.tid);
+ }
+ 
+ static int process_switch_event(struct perf_tool *tool,
+@@ -2391,10 +2271,7 @@ static int process_switch_event(struct perf_tool *tool,
+ 				struct perf_sample *sample,
+ 				struct machine *machine)
+ {
+-	struct thread *thread;
+ 	struct perf_script *script = container_of(tool, struct perf_script, tool);
+-	struct perf_session *session = script->session;
+-	struct evsel *evsel = perf_evlist__id2evsel(session->evlist, sample->id);
+ 
+ 	if (perf_event__process_switch(tool, event, sample, machine) < 0)
+ 		return -1;
+@@ -2405,20 +2282,8 @@ static int process_switch_event(struct perf_tool *tool,
+ 	if (!script->show_switch_events)
+ 		return 0;
+ 
+-	thread = machine__findnew_thread(machine, sample->pid,
+-					 sample->tid);
+-	if (thread == NULL) {
+-		pr_debug("problem processing SWITCH event, skipping it.\n");
+-		return -1;
+-	}
+-
+-	if (!filter_cpu(sample)) {
+-		perf_sample__fprintf_start(sample, thread, evsel,
+-					   PERF_RECORD_SWITCH, stdout);
+-		perf_event__fprintf(event, stdout);
+-	}
+-	thread__put(thread);
+-	return 0;
++	return print_event(tool, event, sample, machine, sample->pid,
++			   sample->tid);
+ }
+ 
+ static int
+@@ -2427,23 +2292,8 @@ process_lost_event(struct perf_tool *tool,
+ 		   struct perf_sample *sample,
+ 		   struct machine *machine)
+ {
+-	struct perf_script *script = container_of(tool, struct perf_script, tool);
+-	struct perf_session *session = script->session;
+-	struct evsel *evsel = perf_evlist__id2evsel(session->evlist, sample->id);
+-	struct thread *thread;
+-
+-	thread = machine__findnew_thread(machine, sample->pid,
+-					 sample->tid);
+-	if (thread == NULL)
+-		return -1;
+-
+-	if (!filter_cpu(sample)) {
+-		perf_sample__fprintf_start(sample, thread, evsel,
+-					   PERF_RECORD_LOST, stdout);
+-		perf_event__fprintf(event, stdout);
+-	}
+-	thread__put(thread);
+-	return 0;
++	return print_event(tool, event, sample, machine, sample->pid,
++			   sample->tid);
+ }
+ 
+ static int
+@@ -2462,33 +2312,11 @@ process_bpf_events(struct perf_tool *tool __maybe_unused,
+ 		   struct perf_sample *sample,
+ 		   struct machine *machine)
+ {
+-	struct thread *thread;
+-	struct perf_script *script = container_of(tool, struct perf_script, tool);
+-	struct perf_session *session = script->session;
+-	struct evsel *evsel = perf_evlist__id2evsel(session->evlist, sample->id);
+-
+ 	if (machine__process_ksymbol(machine, event, sample) < 0)
+ 		return -1;
+ 
+-	if (!evsel->core.attr.sample_id_all) {
+-		perf_event__fprintf(event, stdout);
+-		return 0;
+-	}
+-
+-	thread = machine__findnew_thread(machine, sample->pid, sample->tid);
+-	if (thread == NULL) {
+-		pr_debug("problem processing MMAP event, skipping it.\n");
+-		return -1;
+-	}
+-
+-	if (!filter_cpu(sample)) {
+-		perf_sample__fprintf_start(sample, thread, evsel,
+-					   event->header.type, stdout);
+-		perf_event__fprintf(event, stdout);
+-	}
+-
+-	thread__put(thread);
+-	return 0;
++	return print_event(tool, event, sample, machine, sample->pid,
++			   sample->tid);
+ }
+ 
+ static void sig_handler(int sig __maybe_unused)
