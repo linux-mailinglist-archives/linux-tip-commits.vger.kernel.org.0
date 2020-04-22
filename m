@@ -2,38 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F1D231B4DBA
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Apr 2020 21:54:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C4571B4EFC
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Apr 2020 23:20:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726087AbgDVTyW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 22 Apr 2020 15:54:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39716 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725779AbgDVTyW (ORCPT
+        id S1726116AbgDVVUw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 22 Apr 2020 17:20:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53196 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726066AbgDVVUv (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 22 Apr 2020 15:54:22 -0400
+        Wed, 22 Apr 2020 17:20:51 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0055BC03C1A9;
-        Wed, 22 Apr 2020 12:54:21 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C17ABC03C1A9;
+        Wed, 22 Apr 2020 14:20:51 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jRLRm-0007aD-O3; Wed, 22 Apr 2020 21:54:14 +0200
+        id 1jRMnX-0000Ni-E1; Wed, 22 Apr 2020 23:20:47 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 355771C02FC;
-        Wed, 22 Apr 2020 21:54:14 +0200 (CEST)
-Date:   Wed, 22 Apr 2020 19:54:13 -0000
-From:   "tip-bot2 for Harry Pan" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 0CA381C02FC;
+        Wed, 22 Apr 2020 23:20:47 +0200 (CEST)
+Date:   Wed, 22 Apr 2020 21:20:46 -0000
+From:   "tip-bot2 for Ian Rogers" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf/x86/cstate: Add Jasper Lake CPU support
-Cc:     Harry Pan <harry.pan@intel.com>, Borislav Petkov <bp@suse.de>,
+Subject: [tip: perf/urgent] perf/core: fix parent pid/tid in task exit events
+Cc:     KP Singh <kpsingh@google.com>, Ian Rogers <irogers@google.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200402190658.1.Ic02e891daac41303aed1f2fc6c64f6110edd27bd@changeid>
-References: <20200402190658.1.Ic02e891daac41303aed1f2fc6c64f6110edd27bd@changeid>
+In-Reply-To: <20200417182842.12522-1-irogers@google.com>
+References: <20200417182842.12522-1-irogers@google.com>
 MIME-Version: 1.0
-Message-ID: <158758525378.28353.13945235876360246667.tip-bot2@tip-bot2>
+Message-ID: <158759044657.28353.11787754973675408420.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,35 +50,62 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     5b16ef2e43ffa1be596652d992235b1cbb244935
-Gitweb:        https://git.kernel.org/tip/5b16ef2e43ffa1be596652d992235b1cbb244935
-Author:        Harry Pan <harry.pan@intel.com>
-AuthorDate:    Thu, 02 Apr 2020 19:07:09 +08:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 22 Apr 2020 21:43:12 +02:00
+Commit-ID:     f3bed55e850926614b9898fe982f66d2541a36a5
+Gitweb:        https://git.kernel.org/tip/f3bed55e850926614b9898fe982f66d2541a36a5
+Author:        Ian Rogers <irogers@google.com>
+AuthorDate:    Fri, 17 Apr 2020 11:28:42 -07:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Wed, 22 Apr 2020 23:10:14 +02:00
 
-perf/x86/cstate: Add Jasper Lake CPU support
+perf/core: fix parent pid/tid in task exit events
 
-The Jasper Lake processor is Tremont microarchitecture, reuse the
-glm_cstates table of Goldmont and Goldmont Plus to enable the C-states
-residency profiling.
+Current logic yields the child task as the parent.
 
-Signed-off-by: Harry Pan <harry.pan@intel.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20200402190658.1.Ic02e891daac41303aed1f2fc6c64f6110edd27bd@changeid
+Before:
+$ perf record bash -c "perf list > /dev/null"
+$ perf script -D |grep 'FORK\|EXIT'
+4387036190981094 0x5a70 [0x30]: PERF_RECORD_FORK(10472:10472):(10470:10470)
+4387036606207580 0xf050 [0x30]: PERF_RECORD_EXIT(10472:10472):(10472:10472)
+4387036607103839 0x17150 [0x30]: PERF_RECORD_EXIT(10470:10470):(10470:10470)
+                                                   ^
+  Note the repeated values here -------------------/
+
+After:
+383281514043 0x9d8 [0x30]: PERF_RECORD_FORK(2268:2268):(2266:2266)
+383442003996 0x2180 [0x30]: PERF_RECORD_EXIT(2268:2268):(2266:2266)
+383451297778 0xb70 [0x30]: PERF_RECORD_EXIT(2266:2266):(2265:2265)
+
+Fixes: 94d5d1b2d891 ("perf_counter: Report the cloning task as parent on perf_counter_fork()")
+Reported-by: KP Singh <kpsingh@google.com>
+Signed-off-by: Ian Rogers <irogers@google.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20200417182842.12522-1-irogers@google.com
 ---
- arch/x86/events/intel/cstate.c | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/events/core.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/events/intel/cstate.c b/arch/x86/events/intel/cstate.c
-index e4aa20c..442e1ed 100644
---- a/arch/x86/events/intel/cstate.c
-+++ b/arch/x86/events/intel/cstate.c
-@@ -643,6 +643,7 @@ static const struct x86_cpu_id intel_cstates_match[] __initconst = {
- 	X86_MATCH_INTEL_FAM6_MODEL(ATOM_GOLDMONT_PLUS,	&glm_cstates),
- 	X86_MATCH_INTEL_FAM6_MODEL(ATOM_TREMONT_D,	&glm_cstates),
- 	X86_MATCH_INTEL_FAM6_MODEL(ATOM_TREMONT,	&glm_cstates),
-+	X86_MATCH_INTEL_FAM6_MODEL(ATOM_TREMONT_L,	&glm_cstates),
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index bc9b98a..633b4ae 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -7491,10 +7491,17 @@ static void perf_event_task_output(struct perf_event *event,
+ 		goto out;
  
- 	X86_MATCH_INTEL_FAM6_MODEL(ICELAKE_L,		&icl_cstates),
- 	X86_MATCH_INTEL_FAM6_MODEL(ICELAKE,		&icl_cstates),
+ 	task_event->event_id.pid = perf_event_pid(event, task);
+-	task_event->event_id.ppid = perf_event_pid(event, current);
+-
+ 	task_event->event_id.tid = perf_event_tid(event, task);
+-	task_event->event_id.ptid = perf_event_tid(event, current);
++
++	if (task_event->event_id.header.type == PERF_RECORD_EXIT) {
++		task_event->event_id.ppid = perf_event_pid(event,
++							task->real_parent);
++		task_event->event_id.ptid = perf_event_pid(event,
++							task->real_parent);
++	} else {  /* PERF_RECORD_FORK */
++		task_event->event_id.ppid = perf_event_pid(event, current);
++		task_event->event_id.ptid = perf_event_tid(event, current);
++	}
+ 
+ 	task_event->event_id.time = perf_event_clock(event);
+ 
