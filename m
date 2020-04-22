@@ -2,40 +2,42 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DB021B4F09
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Apr 2020 23:21:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B87771B4F07
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Apr 2020 23:21:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726154AbgDVVVH (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 22 Apr 2020 17:21:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53212 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726335AbgDVVUy (ORCPT
-        <rfc822;linux-tip-commits@vger.kernel.org>);
+        id S1726358AbgDVVUy (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Wed, 22 Apr 2020 17:20:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53204 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726066AbgDVVUx (ORCPT
+        <rfc822;linux-tip-commits@vger.kernel.org>);
+        Wed, 22 Apr 2020 17:20:53 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40A89C03C1A9;
-        Wed, 22 Apr 2020 14:20:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C60BEC03C1A9;
+        Wed, 22 Apr 2020 14:20:53 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jRMnY-0000O3-DW; Wed, 22 Apr 2020 23:20:48 +0200
+        id 1jRMnX-0000Nl-Tw; Wed, 22 Apr 2020 23:20:48 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 11BA01C02FC;
-        Wed, 22 Apr 2020 23:20:48 +0200 (CEST)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 88EE81C0450;
+        Wed, 22 Apr 2020 23:20:47 +0200 (CEST)
 Date:   Wed, 22 Apr 2020 21:20:47 -0000
-From:   "tip-bot2 for Giovanni Gherdovich" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Quentin Perret" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] x86, sched: Move check for CPU type to caller function
-Cc:     Giovanni Gherdovich <ggherdovich@suse.cz>,
+Subject: [tip: sched/urgent] sched/core: Fix reset-on-fork from RT with uclamp
+Cc:     Chitti Babu Theegala <ctheegal@codeaurora.org>,
+        Quentin Perret <qperret@google.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Patrick Bellasi <patrick.bellasi@matbug.net>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200416054745.740-5-ggherdovich@suse.cz>
-References: <20200416054745.740-5-ggherdovich@suse.cz>
+In-Reply-To: <20200416085956.217587-1-qperret@google.com>
+References: <20200416085956.217587-1-qperret@google.com>
 MIME-Version: 1.0
-Message-ID: <158759044762.28353.12681151703116026868.tip-bot2@tip-bot2>
+Message-ID: <158759044717.28353.7054325009828879499.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,47 +53,54 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     db441bd9f630329c402d5cdd319f11bfcf509fb6
-Gitweb:        https://git.kernel.org/tip/db441bd9f630329c402d5cdd319f11bfcf509fb6
-Author:        Giovanni Gherdovich <ggherdovich@suse.cz>
-AuthorDate:    Thu, 16 Apr 2020 07:47:45 +02:00
+Commit-ID:     eaf5a92ebde5bca3bb2565616115bd6d579486cd
+Gitweb:        https://git.kernel.org/tip/eaf5a92ebde5bca3bb2565616115bd6d579486cd
+Author:        Quentin Perret <qperret@google.com>
+AuthorDate:    Thu, 16 Apr 2020 09:59:56 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Wed, 22 Apr 2020 23:10:13 +02:00
 
-x86, sched: Move check for CPU type to caller function
+sched/core: Fix reset-on-fork from RT with uclamp
 
-Improve readability of the function intel_set_max_freq_ratio() by moving
-the check for KNL CPUs there, together with checks for GLM and SKX.
+uclamp_fork() resets the uclamp values to their default when the
+reset-on-fork flag is set. It also checks whether the task has a RT
+policy, and sets its uclamp.min to 1024 accordingly. However, during
+reset-on-fork, the task's policy is lowered to SCHED_NORMAL right after,
+hence leading to an erroneous uclamp.min setting for the new task if it
+was forked from RT.
 
-Signed-off-by: Giovanni Gherdovich <ggherdovich@suse.cz>
+Fix this by removing the unnecessary check on rt_task() in
+uclamp_fork() as this doesn't make sense if the reset-on-fork flag is
+set.
+
+Fixes: 1a00d999971c ("sched/uclamp: Set default clamps for RT tasks")
+Reported-by: Chitti Babu Theegala <ctheegal@codeaurora.org>
+Signed-off-by: Quentin Perret <qperret@google.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://lkml.kernel.org/r/20200416054745.740-5-ggherdovich@suse.cz
+Reviewed-by: Patrick Bellasi <patrick.bellasi@matbug.net>
+Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Link: https://lkml.kernel.org/r/20200416085956.217587-1-qperret@google.com
 ---
- arch/x86/kernel/smpboot.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ kernel/sched/core.c |  9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
-index dd8e15f..8c89e4d 100644
---- a/arch/x86/kernel/smpboot.c
-+++ b/arch/x86/kernel/smpboot.c
-@@ -1877,9 +1877,6 @@ static bool knl_set_max_freq_ratio(u64 *base_freq, u64 *turbo_freq,
- 	int err, i;
- 	u64 msr;
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 3a61a3b..9a2fbf9 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -1232,13 +1232,8 @@ static void uclamp_fork(struct task_struct *p)
+ 		return;
  
--	if (!x86_match_cpu(has_knl_turbo_ratio_limits))
--		return false;
+ 	for_each_clamp_id(clamp_id) {
+-		unsigned int clamp_value = uclamp_none(clamp_id);
 -
- 	err = rdmsrl_safe(MSR_PLATFORM_INFO, base_freq);
- 	if (err)
- 		return false;
-@@ -1977,7 +1974,8 @@ static bool intel_set_max_freq_ratio(void)
- 	    skx_set_max_freq_ratio(&base_freq, &turbo_freq, 1))
- 		goto out;
+-		/* By default, RT tasks always get 100% boost */
+-		if (unlikely(rt_task(p) && clamp_id == UCLAMP_MIN))
+-			clamp_value = uclamp_none(UCLAMP_MAX);
+-
+-		uclamp_se_set(&p->uclamp_req[clamp_id], clamp_value, false);
++		uclamp_se_set(&p->uclamp_req[clamp_id],
++			      uclamp_none(clamp_id), false);
+ 	}
+ }
  
--	if (knl_set_max_freq_ratio(&base_freq, &turbo_freq, 1))
-+	if (x86_match_cpu(has_knl_turbo_ratio_limits) &&
-+	    knl_set_max_freq_ratio(&base_freq, &turbo_freq, 1))
- 		goto out;
- 
- 	if (x86_match_cpu(has_skx_turbo_ratio_limits) &&
