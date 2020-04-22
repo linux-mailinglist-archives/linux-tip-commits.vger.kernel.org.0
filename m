@@ -2,47 +2,49 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C9D81B44A3
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Apr 2020 14:21:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B88991B441C
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Apr 2020 14:17:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726355AbgDVMUY convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 22 Apr 2020 08:20:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53388 "EHLO
+        id S1728324AbgDVMRa (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 22 Apr 2020 08:17:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53296 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728758AbgDVMRm (ORCPT
+        by vger.kernel.org with ESMTP id S1726403AbgDVMR2 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 22 Apr 2020 08:17:42 -0400
+        Wed, 22 Apr 2020 08:17:28 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36251C03C1A9;
-        Wed, 22 Apr 2020 05:17:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E2E4C03C1AA;
+        Wed, 22 Apr 2020 05:17:28 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jREJg-0007h7-0q; Wed, 22 Apr 2020 14:17:24 +0200
+        id 1jREJc-0007iH-MC; Wed, 22 Apr 2020 14:17:20 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 831F41C04CD;
-        Wed, 22 Apr 2020 14:17:18 +0200 (CEST)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 0542B1C02FC;
+        Wed, 22 Apr 2020 14:17:19 +0200 (CEST)
 Date:   Wed, 22 Apr 2020 12:17:18 -0000
-From:   "tip-bot2 for He Zhe" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Stephane Eranian" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] tools lib traceevent: Take care of return value of asprintf
-Cc:     He Zhe <zhe.he@windriver.com>,
-        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
-        Tzvetomir Stoyanov <tstoyanov@vmware.com>,
-        hewenliang4@huawei.com, Arnaldo Carvalho de Melo <acme@redhat.com>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <1582163930-233692-1-git-send-email-zhe.he@windriver.com>
-References: <1582163930-233692-1-git-send-email-zhe.he@windriver.com>
+Subject: [tip: perf/core] perf stat: Force error in fallback on :k events
+Cc:     Stephane Eranian <eranian@google.com>,
+        Ian Rogers <irogers@google.com>, Jiri Olsa <jolsa@redhat.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200414161550.225588-1-irogers@google.com>
+References: <20200414161550.225588-1-irogers@google.com>
 MIME-Version: 1.0
-Message-ID: <158755783812.28353.15619168475108123026.tip-bot2@tip-bot2>
+Message-ID: <158755783861.28353.11402611117303898622.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: 7bit
 X-Linutronix-Spam-Score: -1.0
 X-Linutronix-Spam-Level: -
 X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
@@ -53,124 +55,118 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     f8ff18be1f5c6ba1c2befb043bea6e7eaf9f8987
-Gitweb:        https://git.kernel.org/tip/f8ff18be1f5c6ba1c2befb043bea6e7eaf9f8987
-Author:        He Zhe <zhe.he@windriver.com>
-AuthorDate:    Thu, 20 Feb 2020 09:58:50 +08:00
+Commit-ID:     bec49a9e05db3dbdca696fa07c62c52638fb6371
+Gitweb:        https://git.kernel.org/tip/bec49a9e05db3dbdca696fa07c62c52638fb6371
+Author:        Stephane Eranian <eranian@google.com>
+AuthorDate:    Tue, 14 Apr 2020 09:15:50 -07:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Sat, 18 Apr 2020 09:05:00 -03:00
 
-tools lib traceevent: Take care of return value of asprintf
+perf stat: Force error in fallback on :k events
 
-According to the API, if memory allocation wasn't possible, or some
-other error occurs, asprintf will return -1, and the contents of strp
-below are undefined.
+When it is not possible for a non-privilege perf command to monitor at
+the kernel level (:k), the fallback code forces a :u. That works if the
+event was previously monitoring both levels.  But if the event was
+already constrained to kernel only, then it does not make sense to
+restrict it to user only.
 
-  int asprintf(char **strp, const char *fmt, ...);
+Given the code works by exclusion, a kernel only event would have:
 
-This patch takes care of return value of asprintf to make it less error
-prone and prevent the following build warning.
+  attr->exclude_user = 1
 
-  ignoring return value of ‘asprintf’, declared with attribute warn_unused_result [-Wunused-result]
+The fallback code would add:
 
-Signed-off-by: He Zhe <zhe.he@windriver.com>
-Reviewed-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
-Cc: Tzvetomir Stoyanov <tstoyanov@vmware.com>
-Cc: hewenliang4@huawei.com
-Link: http://lore.kernel.org/lkml/1582163930-233692-1-git-send-email-zhe.he@windriver.com
+  attr->exclude_kernel = 1
+
+In the end the end would not monitor in either the user level or kernel
+level. In other words, it would count nothing.
+
+An event programmed to monitor kernel only cannot be switched to user
+only without seriously warning the user.
+
+This patch forces an error in this case to make it clear the request
+cannot really be satisfied.
+
+Behavior with paranoid 1:
+
+  $ sudo bash -c "echo 1 > /proc/sys/kernel/perf_event_paranoid"
+  $ perf stat -e cycles:k sleep 1
+
+   Performance counter stats for 'sleep 1':
+
+           1,520,413      cycles:k
+
+         1.002361664 seconds time elapsed
+
+         0.002480000 seconds user
+         0.000000000 seconds sys
+
+Old behavior with paranoid 2:
+
+  $ sudo bash -c "echo 2 > /proc/sys/kernel/perf_event_paranoid"
+  $ perf stat -e cycles:k sleep 1
+   Performance counter stats for 'sleep 1':
+
+                   0      cycles:ku
+
+         1.002358127 seconds time elapsed
+
+         0.002384000 seconds user
+         0.000000000 seconds sys
+
+New behavior with paranoid 2:
+
+  $ sudo bash -c "echo 2 > /proc/sys/kernel/perf_event_paranoid"
+  $ perf stat -e cycles:k sleep 1
+  Error:
+  You may not have permission to collect stats.
+
+  Consider tweaking /proc/sys/kernel/perf_event_paranoid,
+  which controls use of the performance events system by
+  unprivileged users (without CAP_PERFMON or CAP_SYS_ADMIN).
+
+  The current value is 2:
+
+    -1: Allow use of (almost) all events by all users
+        Ignore mlock limit after perf_event_mlock_kb without CAP_IPC_LOCK
+  >= 0: Disallow ftrace function tracepoint by users without CAP_PERFMON or CAP_SYS_ADMIN
+        Disallow raw tracepoint access by users without CAP_SYS_PERFMON or CAP_SYS_ADMIN
+  >= 1: Disallow CPU event access by users without CAP_PERFMON or CAP_SYS_ADMIN
+  >= 2: Disallow kernel profiling by users without CAP_PERFMON or CAP_SYS_ADMIN
+
+  To make this setting permanent, edit /etc/sysctl.conf too, e.g.:
+
+          kernel.perf_event_paranoid = -1
+
+v2 of this patch addresses the review feedback from jolsa@redhat.com.
+
+Signed-off-by: Stephane Eranian <eranian@google.com>
+Reviewed-by: Ian Rogers <irogers@google.com>
+Acked-by: Jiri Olsa <jolsa@redhat.com>
+Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Jiri Olsa <jolsa@redhat.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: http://lore.kernel.org/lkml/20200414161550.225588-1-irogers@google.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/lib/traceevent/parse-filter.c | 29 ++++++++++++++++++----------
- 1 file changed, 19 insertions(+), 10 deletions(-)
+ tools/perf/util/evsel.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/tools/lib/traceevent/parse-filter.c b/tools/lib/traceevent/parse-filter.c
-index 20eed71..c271aee 100644
---- a/tools/lib/traceevent/parse-filter.c
-+++ b/tools/lib/traceevent/parse-filter.c
-@@ -1958,7 +1958,8 @@ static char *op_to_str(struct tep_event_filter *filter, struct tep_filter_arg *a
- 				default:
- 					break;
- 				}
--				asprintf(&str, val ? "TRUE" : "FALSE");
-+				if (asprintf(&str, val ? "TRUE" : "FALSE") < 0)
-+					str = NULL;
- 				break;
- 			}
- 		}
-@@ -1976,7 +1977,8 @@ static char *op_to_str(struct tep_event_filter *filter, struct tep_filter_arg *a
- 			break;
- 		}
+diff --git a/tools/perf/util/evsel.c b/tools/perf/util/evsel.c
+index 8300e8c..6a571d3 100644
+--- a/tools/perf/util/evsel.c
++++ b/tools/perf/util/evsel.c
+@@ -2427,6 +2427,10 @@ bool perf_evsel__fallback(struct evsel *evsel, int err,
+ 		char *new_name;
+ 		const char *sep = ":";
  
--		asprintf(&str, "(%s) %s (%s)", left, op, right);
-+		if (asprintf(&str, "(%s) %s (%s)", left, op, right) < 0)
-+			str = NULL;
- 		break;
- 
- 	case TEP_FILTER_OP_NOT:
-@@ -1992,10 +1994,12 @@ static char *op_to_str(struct tep_event_filter *filter, struct tep_filter_arg *a
- 			right_val = 0;
- 		if (right_val >= 0) {
- 			/* just return the opposite */
--			asprintf(&str, right_val ? "FALSE" : "TRUE");
-+			if (asprintf(&str, right_val ? "FALSE" : "TRUE") < 0)
-+				str = NULL;
- 			break;
- 		}
--		asprintf(&str, "%s(%s)", op, right);
-+		if (asprintf(&str, "%s(%s)", op, right) < 0)
-+			str = NULL;
- 		break;
- 
- 	default:
-@@ -2011,7 +2015,8 @@ static char *val_to_str(struct tep_event_filter *filter, struct tep_filter_arg *
- {
- 	char *str = NULL;
- 
--	asprintf(&str, "%lld", arg->value.val);
-+	if (asprintf(&str, "%lld", arg->value.val) < 0)
-+		str = NULL;
- 
- 	return str;
- }
-@@ -2069,7 +2074,8 @@ static char *exp_to_str(struct tep_event_filter *filter, struct tep_filter_arg *
- 		break;
- 	}
- 
--	asprintf(&str, "%s %s %s", lstr, op, rstr);
-+	if (asprintf(&str, "%s %s %s", lstr, op, rstr) < 0)
-+		str = NULL;
- out:
- 	free(lstr);
- 	free(rstr);
-@@ -2113,7 +2119,8 @@ static char *num_to_str(struct tep_event_filter *filter, struct tep_filter_arg *
- 		if (!op)
- 			op = "<=";
- 
--		asprintf(&str, "%s %s %s", lstr, op, rstr);
-+		if (asprintf(&str, "%s %s %s", lstr, op, rstr) < 0)
-+			str = NULL;
- 		break;
- 
- 	default:
-@@ -2148,8 +2155,9 @@ static char *str_to_str(struct tep_event_filter *filter, struct tep_filter_arg *
- 		if (!op)
- 			op = "!~";
- 
--		asprintf(&str, "%s %s \"%s\"",
--			 arg->str.field->name, op, arg->str.val);
-+		if (asprintf(&str, "%s %s \"%s\"",
-+			 arg->str.field->name, op, arg->str.val) < 0)
-+			str = NULL;
- 		break;
- 
- 	default:
-@@ -2165,7 +2173,8 @@ static char *arg_to_str(struct tep_event_filter *filter, struct tep_filter_arg *
- 
- 	switch (arg->type) {
- 	case TEP_FILTER_ARG_BOOLEAN:
--		asprintf(&str, arg->boolean.value ? "TRUE" : "FALSE");
-+		if (asprintf(&str, arg->boolean.value ? "TRUE" : "FALSE") < 0)
-+			str = NULL;
- 		return str;
- 
- 	case TEP_FILTER_ARG_OP:
++		/* If event has exclude user then don't exclude kernel. */
++		if (evsel->core.attr.exclude_user)
++			return false;
++
+ 		/* Is there already the separator in the name. */
+ 		if (strchr(name, '/') ||
+ 		    strchr(name, ':'))
