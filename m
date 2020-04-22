@@ -2,35 +2,35 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 25B8A1B44E9
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Apr 2020 14:22:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AED2B1B44F2
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Apr 2020 14:23:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726933AbgDVMWa (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 22 Apr 2020 08:22:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53330 "EHLO
+        id S1726316AbgDVMWw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 22 Apr 2020 08:22:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53314 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728498AbgDVMRc (ORCPT
+        by vger.kernel.org with ESMTP id S1728308AbgDVMRa (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 22 Apr 2020 08:17:32 -0400
+        Wed, 22 Apr 2020 08:17:30 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35797C03C1AF;
-        Wed, 22 Apr 2020 05:17:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35CE2C03C1AA;
+        Wed, 22 Apr 2020 05:17:30 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jREJU-0007YW-9r; Wed, 22 Apr 2020 14:17:12 +0200
+        id 1jREJV-0007Yc-AN; Wed, 22 Apr 2020 14:17:13 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E09A51C02FC;
-        Wed, 22 Apr 2020 14:17:11 +0200 (CEST)
-Date:   Wed, 22 Apr 2020 12:17:11 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id EAE641C02FC;
+        Wed, 22 Apr 2020 14:17:12 +0200 (CEST)
+Date:   Wed, 22 Apr 2020 12:17:12 -0000
 From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf report: Add option to enable the LBR stitching approach
+Subject: [tip: perf/core] perf callchain: Save previous cursor nodes for LBR
+ stitching approach
 Cc:     Kan Liang <kan.liang@linux.intel.com>,
         Andi Kleen <ak@linux.intel.com>, Jiri Olsa <jolsa@redhat.com>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
         Adrian Hunter <adrian.hunter@intel.com>,
         Alexey Budankov <alexey.budankov@linux.intel.com>,
         Mathieu Poirier <mathieu.poirier@linaro.org>,
@@ -41,11 +41,12 @@ Cc:     Kan Liang <kan.liang@linux.intel.com>,
         Ravi Bangoria <ravi.bangoria@linux.ibm.com>,
         Stephane Eranian <eranian@google.com>,
         Vitaly Slobodskoy <vitaly.slobodskoy@intel.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200319202517.23423-14-kan.liang@linux.intel.com>
-References: <20200319202517.23423-14-kan.liang@linux.intel.com>
+In-Reply-To: <20200319202517.23423-12-kan.liang@linux.intel.com>
+References: <20200319202517.23423-12-kan.liang@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <158755783149.28353.15798067908871951560.tip-bot2@tip-bot2>
+Message-ID: <158755783256.28353.18206041486406653383.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -61,221 +62,27 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     b1d1429b1820e1587d8588fc05b28ef9af42cfc6
-Gitweb:        https://git.kernel.org/tip/b1d1429b1820e1587d8588fc05b28ef9af42cfc6
+Commit-ID:     7f1d39317c071268b4204175df7cfbb2187acb72
+Gitweb:        https://git.kernel.org/tip/7f1d39317c071268b4204175df7cfbb2187acb72
 Author:        Kan Liang <kan.liang@linux.intel.com>
-AuthorDate:    Thu, 19 Mar 2020 13:25:13 -07:00
+AuthorDate:    Thu, 19 Mar 2020 13:25:11 -07:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Sat, 18 Apr 2020 09:05:01 -03:00
 
-perf report: Add option to enable the LBR stitching approach
+perf callchain: Save previous cursor nodes for LBR stitching approach
 
-With the LBR stitching approach, the reconstructed LBR call stack can
-break the HW limitation. However, it may reconstruct invalid call stacks
-in some cases, e.g. exception handing such as setjmp/longjmp.  Also, it
-may impact the processing time especially when the number of samples
-with stitched LBRs are huge.
+The cursor nodes which generates from sample are eventually added into
+callchain. To avoid generating cursor nodes from previous samples again,
+the previous cursor nodes are also saved for LBR stitching approach.
 
-Add an option to enable the approach.
-
-  # To display the perf.data header info, please use
-  # --header/--header-only options.
-  #
-  #
-  # Total Lost Samples: 0
-  #
-  # Samples: 6K of event 'cycles'
-  # Event count (approx.): 6492797701
-  #
-  # Children      Self  Command          Shared Object       Symbol
-  # ........  ........  ...............  ..................
-  # .................................
-  #
-    99.99%    99.99%  tchain_edit      tchain_edit        [.] f43
-            |
-            ---main
-               f1
-               f2
-               f3
-               f4
-               f5
-               f6
-               f7
-               f8
-               f9
-               f10
-               f11
-               f12
-               f13
-               f14
-               f15
-               f16
-               f17
-               f18
-               f19
-               f20
-               f21
-               f22
-               f23
-               f24
-               f25
-               f26
-               f27
-               f28
-               f29
-               f30
-               f31
-               |
-                --99.65%--f32
-                          f33
-                          f34
-                          f35
-                          f36
-                          f37
-                          f38
-                          f39
-                          f40
-                          f41
-                          f42
-                          f43
-
-Committer testing:
-
-  $ perf record --call-graph lbr /wb/tchain_edit
-  [ perf record: Woken up 23 times to write data ]
-  [ perf record: Captured and wrote 5.578 MB perf.data (6839 samples) ]
-  $ perf report --header-only | egrep 'cpu(desc|.*capabilities)'
-  # cpudesc : Intel(R) Core(TM) i5-7500 CPU @ 3.40GHz
-  # cpu pmu capabilities: branches=32, max_precise=3, pmu_name=skylake
-  $
-
-Before:
-
-  $ perf report --no-children --stdio
-  # To display the perf.data header info, please use --header/--header-only options.
-  #
-  #
-  # Total Lost Samples: 0
-  #
-  # Samples: 6K of event 'cycles:u'
-  # Event count (approx.): 6459523879
-  #
-  # Overhead  Command      Shared Object     Symbol
-  # ........  ...........  ................  .......................
-  #
-      99.95%  tchain_edit  tchain_edit       [.] f43
-              |
-               --99.92%--f43
-                         f42
-                         f41
-                         f40
-                         f39
-                         f38
-                         f37
-                         f36
-                         f35
-                         f34
-                         f33
-                         f32
-                         f31
-                         f30
-                         f29
-                         f28
-                         f27
-                         f26
-                         f25
-                         f24
-                         f23
-                         f22
-                         f21
-                         f20
-                         f19
-                         f18
-                         f17
-                         f16
-                         f15
-                         f14
-                         f13
-                         f12
-                         f11
-
-       0.03%  tchain_edit  tchain_edit       [.] f42
-       0.01%  tchain_edit  tchain_edit       [.] f41
-       0.00%  tchain_edit  tchain_edit       [.] f31
-       0.00%  tchain_edit  ld-2.29.so        [.] _dl_relocate_object
-       0.00%  tchain_edit  ld-2.29.so        [.] memmove
-       0.00%  tchain_edit  [unknown]         [k] 0xffffffff93a00b17
-
-After:
-
-  $ perf report --stitch-lbr --no-children --stdio
-  # To display the perf.data header info, please use --header/--header-only options.
-  #
-  #
-  # Total Lost Samples: 0
-  #
-  # Samples: 6K of event 'cycles:u'
-  # Event count (approx.): 6459496645
-  #
-  # Overhead  Command      Shared Object     Symbol
-  # ........  ...........  ................  ........................
-  #
-      99.97%  tchain_edit  tchain_edit       [.] f43
-              |
-               --99.93%--f43
-                         f42
-                         f41
-                         f40
-                         f39
-                         f38
-                         f37
-                         f36
-                         f35
-                         f34
-                         f33
-                         f32
-                         f31
-                         f30
-                         f29
-                         f28
-                         f27
-                         f26
-                         f25
-                         f24
-                         f23
-                         f22
-                         f21
-                         f20
-                         f19
-                         f18
-                         f17
-                         f16
-                         f15
-                         f14
-                         f13
-                         f12
-                         f11
-                         f10
-                         f9
-                         f8
-                         f7
-                         f6
-                         f5
-                         f4
-                         f3
-                         f2
-                         f1
-                         main
-                         __libc_start_main
-
-       0.02%  tchain_edit  [unknown]         [k] 0xffffffff93a00b17
-       0.01%  tchain_edit  tchain_edit       [.] f31
-       0.00%  tchain_edit  ld-2.29.so        [.] _dl_important_hwcaps
+Some option, e.g. hide-unresolved, may hide some LBRs.  Add a variable
+'valid' in struct callchain_cursor_node to indicate this case. The LBR
+stitching approach will only append the valid cursor nodes from previous
+samples later.
 
 Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
 Reviewed-by: Andi Kleen <ak@linux.intel.com>
 Acked-by: Jiri Olsa <jolsa@redhat.com>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Cc: Adrian Hunter <adrian.hunter@intel.com>
 Cc: Alexey Budankov <alexey.budankov@linux.intel.com>
 Cc: Mathieu Poirier <mathieu.poirier@linaro.org>
@@ -286,76 +93,210 @@ Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
 Cc: Stephane Eranian <eranian@google.com>
 Cc: Vitaly Slobodskoy <vitaly.slobodskoy@intel.com>
-Link: http://lore.kernel.org/lkml/20200319202517.23423-14-kan.liang@linux.intel.com
+Link: http://lore.kernel.org/lkml/20200319202517.23423-12-kan.liang@linux.intel.com
+[ Use zfree() instead of open coded equivalent, and use it when freeing members of structs ]
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/Documentation/perf-report.txt | 11 +++++++++++
- tools/perf/builtin-report.c              | 12 ++++++++++++
- 2 files changed, 23 insertions(+)
+ tools/perf/util/callchain.h |  3 +-
+ tools/perf/util/machine.c   | 76 ++++++++++++++++++++++++++++++++++--
+ tools/perf/util/thread.h    |  8 ++++-
+ 3 files changed, 83 insertions(+), 4 deletions(-)
 
-diff --git a/tools/perf/Documentation/perf-report.txt b/tools/perf/Documentation/perf-report.txt
-index f569b9e..d068103 100644
---- a/tools/perf/Documentation/perf-report.txt
-+++ b/tools/perf/Documentation/perf-report.txt
-@@ -488,6 +488,17 @@ include::itrace.txt[]
- 	This option extends the perf report to show reference callgraphs,
- 	which collected by reference event, in no callgraph event.
- 
-+--stitch-lbr::
-+	Show callgraph with stitched LBRs, which may have more complete
-+	callgraph. The perf.data file must have been obtained using
-+	perf record --call-graph lbr.
-+	Disabled by default. In common cases with call stack overflows,
-+	it can recreate better call stacks than the default lbr call stack
-+	output. But this approach is not full proof. There can be cases
-+	where it creates incorrect call stacks from incorrect matches.
-+	The known limitations include exception handing such as
-+	setjmp/longjmp will have calls/returns not match.
+diff --git a/tools/perf/util/callchain.h b/tools/perf/util/callchain.h
+index 706bb7b..cb33cd4 100644
+--- a/tools/perf/util/callchain.h
++++ b/tools/perf/util/callchain.h
+@@ -143,6 +143,9 @@ struct callchain_cursor_node {
+ 	u64				ip;
+ 	struct map_symbol		ms;
+ 	const char			*srcline;
++	/* Indicate valid cursor node for LBR stitch */
++	bool				valid;
 +
- --socket-filter::
- 	Only report the samples on the processor socket that match with this filter
+ 	bool				branch;
+ 	struct branch_flags		branch_flags;
+ 	u64				branch_from;
+diff --git a/tools/perf/util/machine.c b/tools/perf/util/machine.c
+index a54ca09..737dee7 100644
+--- a/tools/perf/util/machine.c
++++ b/tools/perf/util/machine.c
+@@ -2224,6 +2224,31 @@ static int lbr_callchain_add_kernel_ip(struct thread *thread,
+ 	return 0;
+ }
  
-diff --git a/tools/perf/builtin-report.c b/tools/perf/builtin-report.c
-index c0cebd5..0c32767 100644
---- a/tools/perf/builtin-report.c
-+++ b/tools/perf/builtin-report.c
-@@ -84,6 +84,7 @@ struct report {
- 	bool			header_only;
- 	bool			nonany_branch_mode;
- 	bool			group_set;
-+	bool			stitch_lbr;
- 	int			max_stack;
- 	struct perf_read_values	show_threads_values;
- 	struct annotation_options annotation_opts;
-@@ -267,6 +268,9 @@ static int process_sample_event(struct perf_tool *tool,
- 		return -1;
- 	}
- 
-+	if (rep->stitch_lbr)
-+		al.thread->lbr_stitch_enable = true;
++static void save_lbr_cursor_node(struct thread *thread,
++				 struct callchain_cursor *cursor,
++				 int idx)
++{
++	struct lbr_stitch *lbr_stitch = thread->lbr_stitch;
 +
- 	if (symbol_conf.hide_unresolved && al.sym == NULL)
- 		goto out_put;
- 
-@@ -408,6 +412,12 @@ static int report__setup_sample_type(struct report *rep)
- 			callchain_param.record_mode = CALLCHAIN_FP;
- 	}
- 
-+	if (rep->stitch_lbr && (callchain_param.record_mode != CALLCHAIN_LBR)) {
-+		ui__warning("Can't find LBR callchain. Switch off --stitch-lbr.\n"
-+			    "Please apply --call-graph lbr when recording.\n");
-+		rep->stitch_lbr = false;
++	if (!lbr_stitch)
++		return;
++
++	if (cursor->pos == cursor->nr) {
++		lbr_stitch->prev_lbr_cursor[idx].valid = false;
++		return;
 +	}
 +
- 	/* ??? handle more cases than just ANY? */
- 	if (!(perf_evlist__combined_branch_type(session->evlist) &
- 				PERF_SAMPLE_BRANCH_ANY))
-@@ -1258,6 +1268,8 @@ int cmd_report(int argc, const char **argv)
- 			"Show full source file name path for source lines"),
- 	OPT_BOOLEAN(0, "show-ref-call-graph", &symbol_conf.show_ref_callgraph,
- 		    "Show callgraph from reference event"),
-+	OPT_BOOLEAN(0, "stitch-lbr", &report.stitch_lbr,
-+		    "Enable LBR callgraph stitching approach"),
- 	OPT_INTEGER(0, "socket-filter", &report.socket_filter,
- 		    "only show processor socket that match with this filter"),
- 	OPT_BOOLEAN(0, "raw-trace", &symbol_conf.raw_trace,
++	if (!cursor->curr)
++		cursor->curr = cursor->first;
++	else
++		cursor->curr = cursor->curr->next;
++	memcpy(&lbr_stitch->prev_lbr_cursor[idx], cursor->curr,
++	       sizeof(struct callchain_cursor_node));
++
++	lbr_stitch->prev_lbr_cursor[idx].valid = true;
++	cursor->pos++;
++}
++
+ static int lbr_callchain_add_lbr_ip(struct thread *thread,
+ 				    struct callchain_cursor *cursor,
+ 				    struct perf_sample *sample,
+@@ -2240,6 +2265,21 @@ static int lbr_callchain_add_lbr_ip(struct thread *thread,
+ 	int err, i;
+ 	u64 ip;
+ 
++	/*
++	 * The curr and pos are not used in writing session. They are cleared
++	 * in callchain_cursor_commit() when the writing session is closed.
++	 * Using curr and pos to track the current cursor node.
++	 */
++	if (thread->lbr_stitch) {
++		cursor->curr = NULL;
++		cursor->pos = cursor->nr;
++		if (cursor->nr) {
++			cursor->curr = cursor->first;
++			for (i = 0; i < (int)(cursor->nr - 1); i++)
++				cursor->curr = cursor->curr->next;
++		}
++	}
++
+ 	if (callee) {
+ 		/* Add LBR ip from first entries.to */
+ 		ip = entries[0].to;
+@@ -2252,6 +2292,20 @@ static int lbr_callchain_add_lbr_ip(struct thread *thread,
+ 		if (err)
+ 			return err;
+ 
++		/*
++		 * The number of cursor node increases.
++		 * Move the current cursor node.
++		 * But does not need to save current cursor node for entry 0.
++		 * It's impossible to stitch the whole LBRs of previous sample.
++		 */
++		if (thread->lbr_stitch && (cursor->pos != cursor->nr)) {
++			if (!cursor->curr)
++				cursor->curr = cursor->first;
++			else
++				cursor->curr = cursor->curr->next;
++			cursor->pos++;
++		}
++
+ 		/* Add LBR ip from entries.from one by one. */
+ 		for (i = 0; i < lbr_nr; i++) {
+ 			ip = entries[i].from;
+@@ -2262,6 +2316,7 @@ static int lbr_callchain_add_lbr_ip(struct thread *thread,
+ 					       *branch_from);
+ 			if (err)
+ 				return err;
++			save_lbr_cursor_node(thread, cursor, i);
+ 		}
+ 		return 0;
+ 	}
+@@ -2276,6 +2331,7 @@ static int lbr_callchain_add_lbr_ip(struct thread *thread,
+ 				       *branch_from);
+ 		if (err)
+ 			return err;
++		save_lbr_cursor_node(thread, cursor, i);
+ 	}
+ 
+ 	/* Add LBR ip from first entries.to */
+@@ -2292,7 +2348,7 @@ static int lbr_callchain_add_lbr_ip(struct thread *thread,
+ 	return 0;
+ }
+ 
+-static bool alloc_lbr_stitch(struct thread *thread)
++static bool alloc_lbr_stitch(struct thread *thread, unsigned int max_lbr)
+ {
+ 	if (thread->lbr_stitch)
+ 		return true;
+@@ -2301,6 +2357,14 @@ static bool alloc_lbr_stitch(struct thread *thread)
+ 	if (!thread->lbr_stitch)
+ 		goto err;
+ 
++	thread->lbr_stitch->prev_lbr_cursor = calloc(max_lbr + 1, sizeof(struct callchain_cursor_node));
++	if (!thread->lbr_stitch->prev_lbr_cursor)
++		goto free_lbr_stitch;
++
++	return true;
++
++free_lbr_stitch:
++	zfree(&thread->lbr_stitch);
+ err:
+ 	pr_warning("Failed to allocate space for stitched LBRs. Disable LBR stitch\n");
+ 	thread->lbr_stitch_enable = false;
+@@ -2319,7 +2383,8 @@ static int resolve_lbr_callchain_sample(struct thread *thread,
+ 					struct perf_sample *sample,
+ 					struct symbol **parent,
+ 					struct addr_location *root_al,
+-					int max_stack)
++					int max_stack,
++					unsigned int max_lbr)
+ {
+ 	struct ip_callchain *chain = sample->callchain;
+ 	int chain_nr = min(max_stack, (int)chain->nr), i;
+@@ -2337,7 +2402,7 @@ static int resolve_lbr_callchain_sample(struct thread *thread,
+ 		return 0;
+ 
+ 	if (thread->lbr_stitch_enable && !sample->no_hw_idx &&
+-	    alloc_lbr_stitch(thread)) {
++	    (max_lbr > 0) && alloc_lbr_stitch(thread, max_lbr)) {
+ 		lbr_stitch = thread->lbr_stitch;
+ 
+ 		memcpy(&lbr_stitch->prev_sample, sample, sizeof(*sample));
+@@ -2417,8 +2482,11 @@ static int thread__resolve_callchain_sample(struct thread *thread,
+ 		chain_nr = chain->nr;
+ 
+ 	if (perf_evsel__has_branch_callstack(evsel)) {
++		struct perf_env *env = perf_evsel__env(evsel);
++
+ 		err = resolve_lbr_callchain_sample(thread, cursor, sample, parent,
+-						   root_al, max_stack);
++						   root_al, max_stack,
++						   !env ? 0 : env->max_branches);
+ 		if (err)
+ 			return (err < 0) ? err : 0;
+ 	}
+diff --git a/tools/perf/util/thread.h b/tools/perf/util/thread.h
+index 34eb61c..8456174 100644
+--- a/tools/perf/util/thread.h
++++ b/tools/perf/util/thread.h
+@@ -15,6 +15,7 @@
+ #include <intlist.h>
+ #include "rwsem.h"
+ #include "event.h"
++#include "callchain.h"
+ 
+ struct addr_location;
+ struct map;
+@@ -24,6 +25,7 @@ struct unwind_libunwind_ops;
+ 
+ struct lbr_stitch {
+ 	struct perf_sample		prev_sample;
++	struct callchain_cursor_node	*prev_lbr_cursor;
+ };
+ 
+ struct thread {
+@@ -154,6 +156,12 @@ static inline bool thread__is_filtered(struct thread *thread)
+ 
+ static inline void thread__free_stitch_list(struct thread *thread)
+ {
++	struct lbr_stitch *lbr_stitch = thread->lbr_stitch;
++
++	if (!lbr_stitch)
++		return;
++
++	zfree(&lbr_stitch->prev_lbr_cursor);
+ 	zfree(&thread->lbr_stitch);
+ }
+ 
