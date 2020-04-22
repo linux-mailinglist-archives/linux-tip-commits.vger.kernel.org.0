@@ -2,49 +2,47 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B88991B441C
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Apr 2020 14:17:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B75101B44A2
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Apr 2020 14:21:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728324AbgDVMRa (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 22 Apr 2020 08:17:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53296 "EHLO
+        id S1728665AbgDVMRg convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 22 Apr 2020 08:17:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53348 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726403AbgDVMR2 (ORCPT
+        by vger.kernel.org with ESMTP id S1728647AbgDVMRf (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 22 Apr 2020 08:17:28 -0400
+        Wed, 22 Apr 2020 08:17:35 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E2E4C03C1AA;
-        Wed, 22 Apr 2020 05:17:28 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C291C03C1A9;
+        Wed, 22 Apr 2020 05:17:35 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jREJc-0007iH-MC; Wed, 22 Apr 2020 14:17:20 +0200
+        id 1jREJi-0007ig-C5; Wed, 22 Apr 2020 14:17:26 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 0542B1C02FC;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 8D3B01C04CF;
         Wed, 22 Apr 2020 14:17:19 +0200 (CEST)
-Date:   Wed, 22 Apr 2020 12:17:18 -0000
-From:   "tip-bot2 for Stephane Eranian" <tip-bot2@linutronix.de>
+Date:   Wed, 22 Apr 2020 12:17:19 -0000
+From:   "tip-bot2 for Adrian Hunter" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf stat: Force error in fallback on :k events
-Cc:     Stephane Eranian <eranian@google.com>,
-        Ian Rogers <irogers@google.com>, Jiri Olsa <jolsa@redhat.com>,
+Subject: [tip: perf/core] perf tools: Add support for leader-sampling with AUX
+ area events
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        Andi Kleen <ak@linux.intel.com>, Jiri Olsa <jolsa@redhat.com>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200414161550.225588-1-irogers@google.com>
-References: <20200414161550.225588-1-irogers@google.com>
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200401101613.6201-17-adrian.hunter@intel.com>
+References: <20200401101613.6201-17-adrian.hunter@intel.com>
 MIME-Version: 1.0
-Message-ID: <158755783861.28353.11402611117303898622.tip-bot2@tip-bot2>
+Message-ID: <158755783910.28353.11905978108277230782.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8BIT
 X-Linutronix-Spam-Score: -1.0
 X-Linutronix-Spam-Level: -
 X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
@@ -55,118 +53,163 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     bec49a9e05db3dbdca696fa07c62c52638fb6371
-Gitweb:        https://git.kernel.org/tip/bec49a9e05db3dbdca696fa07c62c52638fb6371
-Author:        Stephane Eranian <eranian@google.com>
-AuthorDate:    Tue, 14 Apr 2020 09:15:50 -07:00
+Commit-ID:     e345997914a8af5e8362e884d2fee38bd2e9c6d8
+Gitweb:        https://git.kernel.org/tip/e345997914a8af5e8362e884d2fee38bd2e9c6d8
+Author:        Adrian Hunter <adrian.hunter@intel.com>
+AuthorDate:    Wed, 01 Apr 2020 13:16:13 +03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Sat, 18 Apr 2020 09:05:00 -03:00
 
-perf stat: Force error in fallback on :k events
+perf tools: Add support for leader-sampling with AUX area events
 
-When it is not possible for a non-privilege perf command to monitor at
-the kernel level (:k), the fallback code forces a :u. That works if the
-event was previously monitoring both levels.  But if the event was
-already constrained to kernel only, then it does not make sense to
-restrict it to user only.
+When AUX area events are used in sampling mode, they must be the group
+leader, but the group leader is also used for leader-sampling. However,
+it is not desirable to use an AUX area event as the leader for
+leader-sampling, because it doesn't have any samples of its own. To support
+leader-sampling with AUX area events, use the 2nd event of the group as the
+"leader" for the purposes of leader-sampling.
 
-Given the code works by exclusion, a kernel only event would have:
+Example:
 
-  attr->exclude_user = 1
+ # perf record --kcore --aux-sample -e '{intel_pt//,cycles,instructions}:S' -c 10000 uname
+ [ perf record: Woken up 3 times to write data ]
+ [ perf record: Captured and wrote 0.786 MB perf.data ]
+ # perf report
+ Samples: 380  of events 'anon group { cycles, instructions }', Event count (approx.): 3026164
+           Children              Self  Command  Shared Object      Symbol
+ +   38.76%  42.65%     0.00%   0.00%  uname    [kernel.kallsyms]  [k] __x86_indirect_thunk_rax
+ +   35.82%  31.33%     0.00%   0.00%  uname    ld-2.28.so         [.] _dl_start_user
+ +   34.29%  29.74%     0.55%   0.47%  uname    ld-2.28.so         [.] _dl_start
+ +   33.73%  28.62%     1.60%   0.97%  uname    ld-2.28.so         [.] dl_main
+ +   33.19%  29.04%     0.52%   0.32%  uname    ld-2.28.so         [.] _dl_sysdep_start
+ +   27.83%  33.74%     0.00%   0.00%  uname    [kernel.kallsyms]  [k] do_syscall_64
+ +   26.76%  33.29%     0.00%   0.00%  uname    [kernel.kallsyms]  [k] entry_SYSCALL_64_after_hwframe
+ +   23.78%  20.33%     5.97%   5.25%  uname    [kernel.kallsyms]  [k] page_fault
+ +   23.18%  24.60%     0.00%   0.00%  uname    libc-2.28.so       [.] __libc_start_main
+ +   22.64%  24.37%     0.00%   0.00%  uname    uname              [.] _start
+ +   21.04%  23.27%     0.00%   0.00%  uname    uname              [.] main
+ +   19.48%  18.08%     3.72%   3.64%  uname    ld-2.28.so         [.] _dl_relocate_object
+ +   19.47%  21.81%     0.00%   0.00%  uname    libc-2.28.so       [.] setlocale
+ +   19.44%  21.56%     0.52%   0.61%  uname    libc-2.28.so       [.] _nl_find_locale
+ +   17.87%  19.66%     0.00%   0.00%  uname    libc-2.28.so       [.] _nl_load_locale_from_archive
+ +   15.71%  13.73%     0.53%   0.52%  uname    [kernel.kallsyms]  [k] do_page_fault
+ +   15.18%  13.21%     1.03%   0.68%  uname    [kernel.kallsyms]  [k] handle_mm_fault
+ +   14.15%  12.53%     1.01%   1.12%  uname    [kernel.kallsyms]  [k] __handle_mm_fault
+ +   12.03%   9.67%     0.54%   0.32%  uname    ld-2.28.so         [.] _dl_map_object
+ +   10.55%   8.48%     0.00%   0.00%  uname    ld-2.28.so         [.] openaux
+ +   10.55%  20.20%     0.52%   0.61%  uname    libc-2.28.so       [.] __run_exit_handlers
 
-The fallback code would add:
+Comnmitter notes:
 
-  attr->exclude_kernel = 1
+Fixed up this problem:
 
-In the end the end would not monitor in either the user level or kernel
-level. In other words, it would count nothing.
+  util/record.c: In function ‘perf_evlist__config’:
+  util/record.c:256:3: error: too few arguments to function ‘perf_evsel__config_leader_sampling’
+    256 |   perf_evsel__config_leader_sampling(evsel);
+        |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  util/record.c:190:13: note: declared here
+    190 | static void perf_evsel__config_leader_sampling(struct evsel *evsel,
+        |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-An event programmed to monitor kernel only cannot be switched to user
-only without seriously warning the user.
-
-This patch forces an error in this case to make it clear the request
-cannot really be satisfied.
-
-Behavior with paranoid 1:
-
-  $ sudo bash -c "echo 1 > /proc/sys/kernel/perf_event_paranoid"
-  $ perf stat -e cycles:k sleep 1
-
-   Performance counter stats for 'sleep 1':
-
-           1,520,413      cycles:k
-
-         1.002361664 seconds time elapsed
-
-         0.002480000 seconds user
-         0.000000000 seconds sys
-
-Old behavior with paranoid 2:
-
-  $ sudo bash -c "echo 2 > /proc/sys/kernel/perf_event_paranoid"
-  $ perf stat -e cycles:k sleep 1
-   Performance counter stats for 'sleep 1':
-
-                   0      cycles:ku
-
-         1.002358127 seconds time elapsed
-
-         0.002384000 seconds user
-         0.000000000 seconds sys
-
-New behavior with paranoid 2:
-
-  $ sudo bash -c "echo 2 > /proc/sys/kernel/perf_event_paranoid"
-  $ perf stat -e cycles:k sleep 1
-  Error:
-  You may not have permission to collect stats.
-
-  Consider tweaking /proc/sys/kernel/perf_event_paranoid,
-  which controls use of the performance events system by
-  unprivileged users (without CAP_PERFMON or CAP_SYS_ADMIN).
-
-  The current value is 2:
-
-    -1: Allow use of (almost) all events by all users
-        Ignore mlock limit after perf_event_mlock_kb without CAP_IPC_LOCK
-  >= 0: Disallow ftrace function tracepoint by users without CAP_PERFMON or CAP_SYS_ADMIN
-        Disallow raw tracepoint access by users without CAP_SYS_PERFMON or CAP_SYS_ADMIN
-  >= 1: Disallow CPU event access by users without CAP_PERFMON or CAP_SYS_ADMIN
-  >= 2: Disallow kernel profiling by users without CAP_PERFMON or CAP_SYS_ADMIN
-
-  To make this setting permanent, edit /etc/sysctl.conf too, e.g.:
-
-          kernel.perf_event_paranoid = -1
-
-v2 of this patch addresses the review feedback from jolsa@redhat.com.
-
-Signed-off-by: Stephane Eranian <eranian@google.com>
-Reviewed-by: Ian Rogers <irogers@google.com>
-Acked-by: Jiri Olsa <jolsa@redhat.com>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Andi Kleen <ak@linux.intel.com>
 Cc: Jiri Olsa <jolsa@redhat.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: http://lore.kernel.org/lkml/20200414161550.225588-1-irogers@google.com
+Link: http://lore.kernel.org/lkml/20200401101613.6201-17-adrian.hunter@intel.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/evsel.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ tools/perf/Documentation/perf-list.txt |  3 ++-
+ tools/perf/util/record.c               | 45 +++++++++++++++++++++----
+ 2 files changed, 42 insertions(+), 6 deletions(-)
 
-diff --git a/tools/perf/util/evsel.c b/tools/perf/util/evsel.c
-index 8300e8c..6a571d3 100644
---- a/tools/perf/util/evsel.c
-+++ b/tools/perf/util/evsel.c
-@@ -2427,6 +2427,10 @@ bool perf_evsel__fallback(struct evsel *evsel, int err,
- 		char *new_name;
- 		const char *sep = ":";
+diff --git a/tools/perf/Documentation/perf-list.txt b/tools/perf/Documentation/perf-list.txt
+index 6345db3..cb23667 100644
+--- a/tools/perf/Documentation/perf-list.txt
++++ b/tools/perf/Documentation/perf-list.txt
+@@ -258,6 +258,9 @@ Normally all events in an event group sample, but with :S only
+ the first event (the leader) samples, and it only reads the values of the
+ other events in the group.
  
-+		/* If event has exclude user then don't exclude kernel. */
-+		if (evsel->core.attr.exclude_user)
-+			return false;
++However, in the case AUX area events (e.g. Intel PT or CoreSight), the AUX
++area event must be the leader, so then the second event samples, not the first.
 +
- 		/* Is there already the separator in the name. */
- 		if (strchr(name, '/') ||
- 		    strchr(name, ':'))
+ OPTIONS
+ -------
+ 
+diff --git a/tools/perf/util/record.c b/tools/perf/util/record.c
+index 32aeeb8..6d3e3df 100644
+--- a/tools/perf/util/record.c
++++ b/tools/perf/util/record.c
+@@ -167,17 +167,46 @@ bool perf_can_aux_sample(void)
+ 	return true;
+ }
+ 
+-static void perf_evsel__config_leader_sampling(struct evsel *evsel)
++/*
++ * perf_evsel__config_leader_sampling() uses special rules for leader sampling.
++ * However, if the leader is an AUX area event, then assume the event to sample
++ * is the next event.
++ */
++static struct evsel *perf_evsel__read_sampler(struct evsel *evsel,
++					      struct evlist *evlist)
++{
++	struct evsel *leader = evsel->leader;
++
++	if (perf_evsel__is_aux_event(leader)) {
++		evlist__for_each_entry(evlist, evsel) {
++			if (evsel->leader == leader && evsel != evsel->leader)
++				return evsel;
++		}
++	}
++
++	return leader;
++}
++
++static void perf_evsel__config_leader_sampling(struct evsel *evsel,
++					       struct evlist *evlist)
+ {
+ 	struct perf_event_attr *attr = &evsel->core.attr;
+ 	struct evsel *leader = evsel->leader;
++	struct evsel *read_sampler;
++
++	if (!leader->sample_read)
++		return;
++
++	read_sampler = perf_evsel__read_sampler(evsel, evlist);
+ 
+-	if (leader == evsel || !leader->sample_read)
++	if (evsel == read_sampler)
+ 		return;
+ 
+ 	/*
+-	 * Disable sampling for all group members other
+-	 * than leader in case leader 'leads' the sampling.
++	 * Disable sampling for all group members other than the leader in
++	 * case the leader 'leads' the sampling, except when the leader is an
++	 * AUX area event, in which case the 2nd event in the group is the one
++	 * that 'leads' the sampling.
+ 	 */
+ 	attr->freq           = 0;
+ 	attr->sample_freq    = 0;
+@@ -188,8 +217,12 @@ static void perf_evsel__config_leader_sampling(struct evsel *evsel)
+ 	 * We don't get a sample for slave events, we make them when delivering
+ 	 * the group leader sample. Set the slave event to follow the master
+ 	 * sample_type to ease up reporting.
++	 * An AUX area event also has sample_type requirements, so also include
++	 * the sample type bits from the leader's sample_type to cover that
++	 * case.
+ 	 */
+-	attr->sample_type = leader->core.attr.sample_type;
++	attr->sample_type = read_sampler->core.attr.sample_type |
++			    leader->core.attr.sample_type;
+ }
+ 
+ void perf_evlist__config(struct evlist *evlist, struct record_opts *opts,
+@@ -220,7 +253,7 @@ void perf_evlist__config(struct evlist *evlist, struct record_opts *opts,
+ 
+ 	/* Configure leader sampling here now that the sample type is known */
+ 	evlist__for_each_entry(evlist, evsel)
+-		perf_evsel__config_leader_sampling(evsel);
++		perf_evsel__config_leader_sampling(evsel, evlist);
+ 
+ 	if (opts->full_auxtrace) {
+ 		/*
