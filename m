@@ -2,37 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D8321B441E
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Apr 2020 14:17:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B7B761B44EE
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Apr 2020 14:23:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728603AbgDVMRd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 22 Apr 2020 08:17:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53328 "EHLO
+        id S1728825AbgDVMWb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 22 Apr 2020 08:22:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53326 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728481AbgDVMRc (ORCPT
+        by vger.kernel.org with ESMTP id S1728482AbgDVMRc (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Wed, 22 Apr 2020 08:17:32 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DA08C03C1AE;
-        Wed, 22 Apr 2020 05:17:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1DC8C03C1AD;
+        Wed, 22 Apr 2020 05:17:30 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jREJS-0007YM-Dr; Wed, 22 Apr 2020 14:17:10 +0200
+        id 1jREJT-0007YQ-Cn; Wed, 22 Apr 2020 14:17:11 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id DEC6E1C02FC;
-        Wed, 22 Apr 2020 14:17:09 +0200 (CEST)
-Date:   Wed, 22 Apr 2020 12:17:09 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E6EF41C02FC;
+        Wed, 22 Apr 2020 14:17:10 +0200 (CEST)
+Date:   Wed, 22 Apr 2020 12:17:10 -0000
 From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf hist: Add fast path for duplicate entries check
+Subject: [tip: perf/core] perf top: Add option to enable the LBR stitching approach
 Cc:     Kan Liang <kan.liang@linux.intel.com>,
-        Jiri Olsa <jolsa@redhat.com>,
+        Andi Kleen <ak@linux.intel.com>, Jiri Olsa <jolsa@redhat.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
         Adrian Hunter <adrian.hunter@intel.com>,
         Alexey Budankov <alexey.budankov@linux.intel.com>,
-        Andi Kleen <ak@linux.intel.com>,
         Mathieu Poirier <mathieu.poirier@linaro.org>,
         Michael Ellerman <mpe@ellerman.id.au>,
         Namhyung Kim <namhyung@kernel.org>,
@@ -41,12 +41,11 @@ Cc:     Kan Liang <kan.liang@linux.intel.com>,
         Ravi Bangoria <ravi.bangoria@linux.ibm.com>,
         Stephane Eranian <eranian@google.com>,
         Vitaly Slobodskoy <vitaly.slobodskoy@intel.com>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200319202517.23423-18-kan.liang@linux.intel.com>
-References: <20200319202517.23423-18-kan.liang@linux.intel.com>
+In-Reply-To: <20200319202517.23423-16-kan.liang@linux.intel.com>
+References: <20200319202517.23423-16-kan.liang@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <158755782945.28353.13339923488972169310.tip-bot2@tip-bot2>
+Message-ID: <158755783050.28353.14034885809740386409.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -62,51 +61,30 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     12e89e65f446476951f42aedeef56b6bd6f7f1e6
-Gitweb:        https://git.kernel.org/tip/12e89e65f446476951f42aedeef56b6bd6f7f1e6
+Commit-ID:     13e0c844fa097f657bd8204fd574477c34f47a0c
+Gitweb:        https://git.kernel.org/tip/13e0c844fa097f657bd8204fd574477c34f47a0c
 Author:        Kan Liang <kan.liang@linux.intel.com>
-AuthorDate:    Thu, 19 Mar 2020 13:25:17 -07:00
+AuthorDate:    Thu, 19 Mar 2020 13:25:15 -07:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Sat, 18 Apr 2020 09:05:01 -03:00
 
-perf hist: Add fast path for duplicate entries check
+perf top: Add option to enable the LBR stitching approach
 
-Perf checks the duplicate entries in a callchain before adding an entry.
-However the check is very slow especially with deeper call stack.
-Almost ~50% elapsed time of perf report is spent on the check when the
-call stack is always depth of 32.
+With the LBR stitching approach, the reconstructed LBR call stack
+can break the HW limitation. However, it may reconstruct invalid call
+stacks in some cases, e.g. exception handing such as setjmp/longjmp.
+Also, it may impact the processing time especially when the number of
+samples with stitched LBRs are huge.
 
-The hist_entry__cmp() is used to compare the new entry with the old
-entries. It will go through all the available sorts in the sort_list,
-and call the specific cmp of each sort, which is very slow.
-
-Actually, for most cases, there are no duplicate entries in callchain.
-The symbols are usually different. It's much faster to do a quick check
-for symbols first. Only do the full cmp when the symbols are exactly the
-same.
-
-The quick check is only to check symbols, not dso. Export
-_sort__sym_cmp.
-
-  $ perf record --call-graph lbr ./tchain_edit_64
-
-  Without the patch
-  $time perf report --stdio
-  real    0m21.142s
-  user    0m21.110s
-  sys     0m0.033s
-
-  With the patch
-  $time perf report --stdio
-  real    0m10.977s
-  user    0m10.948s
-  sys     0m0.027s
+Add an option to enable the approach.
+The option must be used with --call-graph lbr.
 
 Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Reviewed-by: Andi Kleen <ak@linux.intel.com>
 Acked-by: Jiri Olsa <jolsa@redhat.com>
+Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Cc: Adrian Hunter <adrian.hunter@intel.com>
 Cc: Alexey Budankov <alexey.budankov@linux.intel.com>
-Cc: Andi Kleen <ak@linux.intel.com>
 Cc: Mathieu Poirier <mathieu.poirier@linaro.org>
 Cc: Michael Ellerman <mpe@ellerman.id.au>
 Cc: Namhyung Kim <namhyung@kernel.org>
@@ -115,84 +93,86 @@ Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
 Cc: Stephane Eranian <eranian@google.com>
 Cc: Vitaly Slobodskoy <vitaly.slobodskoy@intel.com>
-Link: http://lore.kernel.org/lkml/20200319202517.23423-18-kan.liang@linux.intel.com
+Link: http://lore.kernel.org/lkml/20200319202517.23423-16-kan.liang@linux.intel.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/hist.c | 23 +++++++++++++++++++++++
- tools/perf/util/sort.c |  2 +-
- tools/perf/util/sort.h |  2 ++
- 3 files changed, 26 insertions(+), 1 deletion(-)
+ tools/perf/Documentation/perf-top.txt |  9 +++++++++
+ tools/perf/builtin-top.c              | 11 +++++++++++
+ tools/perf/util/top.h                 |  1 +
+ 3 files changed, 21 insertions(+)
 
-diff --git a/tools/perf/util/hist.c b/tools/perf/util/hist.c
-index 283a69f..c2550db 100644
---- a/tools/perf/util/hist.c
-+++ b/tools/perf/util/hist.c
-@@ -1070,6 +1070,20 @@ iter_next_cumulative_entry(struct hist_entry_iter *iter,
- 	return fill_callchain_info(al, node, iter->hide_unresolved);
- }
+diff --git a/tools/perf/Documentation/perf-top.txt b/tools/perf/Documentation/perf-top.txt
+index 487737a..20227da 100644
+--- a/tools/perf/Documentation/perf-top.txt
++++ b/tools/perf/Documentation/perf-top.txt
+@@ -319,6 +319,15 @@ Default is to monitor all CPUS.
+ 	go straight to the histogram browser, just like 'perf top' with no events
+ 	explicitely specified does.
  
-+static bool
-+hist_entry__fast__sym_diff(struct hist_entry *left,
-+			   struct hist_entry *right)
-+{
-+	struct symbol *sym_l = left->ms.sym;
-+	struct symbol *sym_r = right->ms.sym;
++--stitch-lbr::
++	Show callgraph with stitched LBRs, which may have more complete
++	callgraph. The option must be used with --call-graph lbr recording.
++	Disabled by default. In common cases with call stack overflows,
++	it can recreate better call stacks than the default lbr call stack
++	output. But this approach is not full proof. There can be cases
++	where it creates incorrect call stacks from incorrect matches.
++	The known limitations include exception handing such as
++	setjmp/longjmp will have calls/returns not match.
+ 
+ INTERACTIVE PROMPTING KEYS
+ --------------------------
+diff --git a/tools/perf/builtin-top.c b/tools/perf/builtin-top.c
+index 289cf83..6b067a5 100644
+--- a/tools/perf/builtin-top.c
++++ b/tools/perf/builtin-top.c
+@@ -33,6 +33,7 @@
+ #include "util/map.h"
+ #include "util/mmap.h"
+ #include "util/session.h"
++#include "util/thread.h"
+ #include "util/symbol.h"
+ #include "util/synthetic-events.h"
+ #include "util/top.h"
+@@ -775,6 +776,9 @@ static void perf_event__process_sample(struct perf_tool *tool,
+ 	if (machine__resolve(machine, &al, sample) < 0)
+ 		return;
+ 
++	if (top->stitch_lbr)
++		al.thread->lbr_stitch_enable = true;
 +
-+	if (!sym_l && !sym_r)
-+		return left->ip != right->ip;
-+
-+	return !!_sort__sym_cmp(sym_l, sym_r);
-+}
-+
-+
- static int
- iter_add_next_cumulative_entry(struct hist_entry_iter *iter,
- 			       struct addr_location *al)
-@@ -1096,6 +1110,7 @@ iter_add_next_cumulative_entry(struct hist_entry_iter *iter,
+ 	if (!machine->kptr_restrict_warned &&
+ 	    symbol_conf.kptr_restrict &&
+ 	    al.cpumode == PERF_RECORD_MISC_KERNEL) {
+@@ -1571,6 +1575,8 @@ int cmd_top(int argc, const char **argv)
+ 		    "Sort the output by the event at the index n in group. "
+ 		    "If n is invalid, sort by the first event. "
+ 		    "WARNING: should be used on grouped events."),
++	OPT_BOOLEAN(0, "stitch-lbr", &top.stitch_lbr,
++		    "Enable LBR callgraph stitching approach"),
+ 	OPTS_EVSWITCH(&top.evswitch),
+ 	OPT_END()
  	};
- 	int i;
- 	struct callchain_cursor cursor;
-+	bool fast = hists__has(he_tmp.hists, sym);
+@@ -1640,6 +1646,11 @@ int cmd_top(int argc, const char **argv)
+ 		}
+ 	}
  
- 	callchain_cursor_snapshot(&cursor, &callchain_cursor);
- 
-@@ -1106,6 +1121,14 @@ iter_add_next_cumulative_entry(struct hist_entry_iter *iter,
- 	 * It's possible that it has cycles or recursive calls.
- 	 */
- 	for (i = 0; i < iter->curr; i++) {
-+		/*
-+		 * For most cases, there are no duplicate entries in callchain.
-+		 * The symbols are usually different. Do a quick check for
-+		 * symbols first.
-+		 */
-+		if (fast && hist_entry__fast__sym_diff(he_cache[i], &he_tmp))
-+			continue;
++	if (top.stitch_lbr && !(callchain_param.record_mode == CALLCHAIN_LBR)) {
++		pr_err("Error: --stitch-lbr must be used with --call-graph lbr\n");
++		goto out_delete_evlist;
++	}
 +
- 		if (hist_entry__cmp(he_cache[i], &he_tmp) == 0) {
- 			/* to avoid calling callback function */
- 			iter->he = NULL;
-diff --git a/tools/perf/util/sort.c b/tools/perf/util/sort.c
-index f14cc72..dc15ddc 100644
---- a/tools/perf/util/sort.c
-+++ b/tools/perf/util/sort.c
-@@ -237,7 +237,7 @@ static int64_t _sort__addr_cmp(u64 left_ip, u64 right_ip)
- 	return (int64_t)(right_ip - left_ip);
- }
+ 	if (opts->branch_stack && callchain_param.enabled)
+ 		symbol_conf.show_branchflag_count = true;
  
--static int64_t _sort__sym_cmp(struct symbol *sym_l, struct symbol *sym_r)
-+int64_t _sort__sym_cmp(struct symbol *sym_l, struct symbol *sym_r)
- {
- 	if (!sym_l || !sym_r)
- 		return cmp_null(sym_l, sym_r);
-diff --git a/tools/perf/util/sort.h b/tools/perf/util/sort.h
-index cfa6ac6..66d39c4 100644
---- a/tools/perf/util/sort.h
-+++ b/tools/perf/util/sort.h
-@@ -311,5 +311,7 @@ int64_t
- sort__daddr_cmp(struct hist_entry *left, struct hist_entry *right);
- int64_t
- sort__dcacheline_cmp(struct hist_entry *left, struct hist_entry *right);
-+int64_t
-+_sort__sym_cmp(struct symbol *sym_l, struct symbol *sym_r);
- char *hist_entry__srcline(struct hist_entry *he);
- #endif	/* __PERF_SORT_H */
+diff --git a/tools/perf/util/top.h b/tools/perf/util/top.h
+index f117d4f..45dc84d 100644
+--- a/tools/perf/util/top.h
++++ b/tools/perf/util/top.h
+@@ -36,6 +36,7 @@ struct perf_top {
+ 	bool		   use_tui, use_stdio;
+ 	bool		   vmlinux_warned;
+ 	bool		   dump_symtab;
++	bool		   stitch_lbr;
+ 	struct hist_entry  *sym_filter_entry;
+ 	struct evsel 	   *sym_evsel;
+ 	struct perf_session *session;
