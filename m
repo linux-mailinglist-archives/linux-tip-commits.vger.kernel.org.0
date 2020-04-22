@@ -2,37 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 39B431B501F
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 23 Apr 2020 00:25:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 628851B502B
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 23 Apr 2020 00:27:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726679AbgDVWZC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S1726670AbgDVWZC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Wed, 22 Apr 2020 18:25:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35012 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35008 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726643AbgDVWY7 (ORCPT
+        by vger.kernel.org with ESMTP id S1726530AbgDVWY7 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Wed, 22 Apr 2020 18:24:59 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A13DBC03C1AB;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9EA21C03C1A9;
         Wed, 22 Apr 2020 15:24:59 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jRNnR-0001Qg-Oa; Thu, 23 Apr 2020 00:24:46 +0200
+        id 1jRNnR-0001Qf-Un; Thu, 23 Apr 2020 00:24:47 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 21FBA1C04CF;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id DD0B41C0178;
         Thu, 23 Apr 2020 00:24:43 +0200 (CEST)
-Date:   Wed, 22 Apr 2020 22:24:42 -0000
-From:   "tip-bot2 for Kristen Carlson Accardi" <tip-bot2@linutronix.de>
+Date:   Wed, 22 Apr 2020 22:24:43 -0000
+From:   "tip-bot2 for Sami Tolvanen" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] objtool: Do not assume order of parent/child functions
-Cc:     Kristen Carlson Accardi <kristen@linux.intel.com>,
-        Josh Poimboeuf <jpoimboe@redhat.com>, x86 <x86@kernel.org>,
+Subject: [tip: objtool/core] objtool: Optimize add_dead_ends for split sections
+Cc:     Josh Poimboeuf <jpoimboe@redhat.com>,
+        Sami Tolvanen <samitolvanen@google.com>,
+        Kees Cook <keescook@chromium.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158759428235.28353.10463012010844983639.tip-bot2@tip-bot2>
+Message-ID: <158759428334.28353.5687463532873634786.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,44 +49,95 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     5920038dc2aa75b7aa3f5ca767b06a71c67cf897
-Gitweb:        https://git.kernel.org/tip/5920038dc2aa75b7aa3f5ca767b06a71c67cf897
-Author:        Kristen Carlson Accardi <kristen@linux.intel.com>
-AuthorDate:    Wed, 15 Apr 2020 14:04:43 -07:00
+Commit-ID:     760da44ec676ec67d855cbdda6b3b2a3ca1f4d99
+Gitweb:        https://git.kernel.org/tip/760da44ec676ec67d855cbdda6b3b2a3ca1f4d99
+Author:        Sami Tolvanen <samitolvanen@google.com>
+AuthorDate:    Tue, 21 Apr 2020 15:08:43 -07:00
 Committer:     Josh Poimboeuf <jpoimboe@redhat.com>
-CommitterDate: Tue, 21 Apr 2020 18:50:26 -05:00
+CommitterDate: Tue, 21 Apr 2020 18:49:21 -05:00
 
-objtool: Do not assume order of parent/child functions
+objtool: Optimize add_dead_ends for split sections
 
-If a .cold function is examined prior to it's parent, the link
-to the parent/child function can be overwritten when the parent
-is examined. Only update pfunc and cfunc if they were previously
-nil to prevent this from happening.
+Instead of iterating through all instructions to find the last
+instruction each time .rela.discard.(un)reachable points beyond the
+section, use find_insn() to locate the last instruction by looking at
+the last bytes of the section instead.
 
-This fixes an -ffunction-sections issue.
+This makes processing a -ffunction-sections vmlinux.o faster.
 
-Signed-off-by: Kristen Carlson Accardi <kristen@linux.intel.com>
+Suggested-by: Josh Poimboeuf <jpoimboe@redhat.com>
+Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
 Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
+Reviewed-by: Kees Cook <keescook@chromium.org>
 ---
- tools/objtool/elf.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ tools/objtool/check.c | 36 +++++++++++++++++-------------------
+ 1 file changed, 17 insertions(+), 19 deletions(-)
 
-diff --git a/tools/objtool/elf.c b/tools/objtool/elf.c
-index 43748cb..03e542d 100644
---- a/tools/objtool/elf.c
-+++ b/tools/objtool/elf.c
-@@ -418,7 +418,13 @@ static int read_symbols(struct elf *elf)
- 			size_t pnamelen;
- 			if (sym->type != STT_FUNC)
- 				continue;
--			sym->pfunc = sym->cfunc = sym;
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index 276bce3..f4254d4 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -303,6 +303,19 @@ err:
+ 	return ret;
+ }
+ 
++static struct instruction *find_last_insn(struct objtool_file *file,
++					  struct section *sec)
++{
++	struct instruction *insn = NULL;
++	unsigned int offset;
++	unsigned int end = (sec->len > 10) ? sec->len - 10 : 0;
 +
-+			if (sym->pfunc == NULL)
-+				sym->pfunc = sym;
++	for (offset = sec->len - 1; offset >= end && !insn; offset--)
++		insn = find_insn(file, sec, offset);
 +
-+			if (sym->cfunc == NULL)
-+				sym->cfunc = sym;
++	return insn;
++}
 +
- 			coldstr = strstr(sym->name, ".cold");
- 			if (!coldstr)
- 				continue;
+ /*
+  * Mark "ud2" instructions and manually annotated dead ends.
+  */
+@@ -311,7 +324,6 @@ static int add_dead_ends(struct objtool_file *file)
+ 	struct section *sec;
+ 	struct rela *rela;
+ 	struct instruction *insn;
+-	bool found;
+ 
+ 	/*
+ 	 * By default, "ud2" is a dead end unless otherwise annotated, because
+@@ -337,15 +349,8 @@ static int add_dead_ends(struct objtool_file *file)
+ 		if (insn)
+ 			insn = list_prev_entry(insn, list);
+ 		else if (rela->addend == rela->sym->sec->len) {
+-			found = false;
+-			list_for_each_entry_reverse(insn, &file->insn_list, list) {
+-				if (insn->sec == rela->sym->sec) {
+-					found = true;
+-					break;
+-				}
+-			}
+-
+-			if (!found) {
++			insn = find_last_insn(file, rela->sym->sec);
++			if (!insn) {
+ 				WARN("can't find unreachable insn at %s+0x%x",
+ 				     rela->sym->sec->name, rela->addend);
+ 				return -1;
+@@ -379,15 +384,8 @@ reachable:
+ 		if (insn)
+ 			insn = list_prev_entry(insn, list);
+ 		else if (rela->addend == rela->sym->sec->len) {
+-			found = false;
+-			list_for_each_entry_reverse(insn, &file->insn_list, list) {
+-				if (insn->sec == rela->sym->sec) {
+-					found = true;
+-					break;
+-				}
+-			}
+-
+-			if (!found) {
++			insn = find_last_insn(file, rela->sym->sec);
++			if (!insn) {
+ 				WARN("can't find reachable insn at %s+0x%x",
+ 				     rela->sym->sec->name, rela->addend);
+ 				return -1;
