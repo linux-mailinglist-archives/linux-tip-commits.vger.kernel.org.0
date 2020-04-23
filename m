@@ -2,43 +2,43 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F25A11B5669
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 23 Apr 2020 09:49:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E03D1B56AC
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 23 Apr 2020 09:52:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726806AbgDWHtm (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 23 Apr 2020 03:49:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37832 "EHLO
+        id S1727842AbgDWHvX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 23 Apr 2020 03:51:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37846 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726650AbgDWHtm (ORCPT
+        with ESMTP id S1726998AbgDWHto (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 23 Apr 2020 03:49:42 -0400
+        Thu, 23 Apr 2020 03:49:44 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08E76C03C1AB;
-        Thu, 23 Apr 2020 00:49:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 081B9C08C5F2;
+        Thu, 23 Apr 2020 00:49:43 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jRWc1-0008JD-8W; Thu, 23 Apr 2020 09:49:33 +0200
+        id 1jRWc2-0008Jq-OI; Thu, 23 Apr 2020 09:49:34 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A2FE31C0244;
-        Thu, 23 Apr 2020 09:49:32 +0200 (CEST)
-Date:   Thu, 23 Apr 2020 07:49:32 -0000
-From:   "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 58D411C0450;
+        Thu, 23 Apr 2020 09:49:34 +0200 (CEST)
+Date:   Thu, 23 Apr 2020 07:49:33 -0000
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] objtool: Constify arch_decode_instruction()
-Cc:     Josh Poimboeuf <jpoimboe@redhat.com>,
-        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Sami Tolvanen <samitolvanen@google.com>,
-        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
+Subject: [tip: objtool/core] objtool: Also consider .entry.text as noinstr
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Miroslav Benes <mbenes@suse.cz>,
+        Alexandre Chartre <alexandre.chartre@oracle.com>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200422103205.61900-4-mingo@kernel.org>
-References: <20200422103205.61900-4-mingo@kernel.org>
+In-Reply-To: <20200416115119.525037514@infradead.org>
+References: <20200416115119.525037514@infradead.org>
 MIME-Version: 1.0
-Message-ID: <158762817210.28353.13596091994137162716.tip-bot2@tip-bot2>
+Message-ID: <158762817396.28353.10539514652564906695.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -54,73 +54,71 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     0c98be8118221a8d3de572740f29dd02ed9686a5
-Gitweb:        https://git.kernel.org/tip/0c98be8118221a8d3de572740f29dd02ed9686a5
-Author:        Ingo Molnar <mingo@kernel.org>
-AuthorDate:    Wed, 22 Apr 2020 12:32:05 +02:00
+Commit-ID:     0cc9ac8db0b447922d9af77916cd7941fc784b64
+Gitweb:        https://git.kernel.org/tip/0cc9ac8db0b447922d9af77916cd7941fc784b64
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Wed, 25 Mar 2020 17:18:17 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 23 Apr 2020 08:34:18 +02:00
+CommitterDate: Wed, 22 Apr 2020 10:53:51 +02:00
 
-objtool: Constify arch_decode_instruction()
+objtool: Also consider .entry.text as noinstr
 
-Mostly straightforward constification, except that WARN_FUNC()
-needs a writable pointer while we have read-only pointers,
-so deflect this to WARN().
+Consider all of .entry.text as noinstr. This gets us coverage across
+the PTI boundary. While we could add everything .noinstr.text into
+.entry.text that would bloat the amount of code in the user mapping.
 
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Miroslav Benes <mbenes@suse.cz>
+Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
 Acked-by: Josh Poimboeuf <jpoimboe@redhat.com>
+Link: https://lkml.kernel.org/r/20200416115119.525037514@infradead.org
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Sami Tolvanen <samitolvanen@google.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20200422103205.61900-4-mingo@kernel.org
 ---
- tools/objtool/arch.h            | 2 +-
- tools/objtool/arch/x86/decode.c | 6 +++---
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ tools/objtool/check.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/tools/objtool/arch.h b/tools/objtool/arch.h
-index 561c316..445b8fa 100644
---- a/tools/objtool/arch.h
-+++ b/tools/objtool/arch.h
-@@ -72,7 +72,7 @@ struct instruction;
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index 0d9f9cf..f2a8427 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -266,7 +266,8 @@ static int decode_instructions(struct objtool_file *file)
+ 		    strncmp(sec->name, ".discard.", 9))
+ 			sec->text = true;
  
- void arch_initial_func_cfi_state(struct cfi_init_state *state);
+-		if (!strcmp(sec->name, ".noinstr.text"))
++		if (!strcmp(sec->name, ".noinstr.text") ||
++		    !strcmp(sec->name, ".entry.text"))
+ 			sec->noinstr = true;
  
--int arch_decode_instruction(struct elf *elf, struct section *sec,
-+int arch_decode_instruction(const struct elf *elf, const struct section *sec,
- 			    unsigned long offset, unsigned int maxlen,
- 			    unsigned int *len, enum insn_type *type,
- 			    unsigned long *immediate,
-diff --git a/tools/objtool/arch/x86/decode.c b/tools/objtool/arch/x86/decode.c
-index f0d42ad..c45a0b4 100644
---- a/tools/objtool/arch/x86/decode.c
-+++ b/tools/objtool/arch/x86/decode.c
-@@ -27,7 +27,7 @@ static unsigned char op_to_cfi_reg[][2] = {
- 	{CFI_DI, CFI_R15},
- };
- 
--static int is_x86_64(struct elf *elf)
-+static int is_x86_64(const struct elf *elf)
+ 		for (offset = 0; offset < sec->len; offset += insn->len) {
+@@ -2071,7 +2072,7 @@ static inline const char *call_dest_name(struct instruction *insn)
+ static int validate_call(struct instruction *insn, struct insn_state *state)
  {
- 	switch (elf->ehdr.e_machine) {
- 	case EM_X86_64:
-@@ -77,7 +77,7 @@ unsigned long arch_jump_destination(struct instruction *insn)
- 	return insn->offset + insn->len + insn->immediate;
+ 	if (state->noinstr && state->instr <= 0 &&
+-	    (!insn->call_dest || insn->call_dest->sec != insn->sec)) {
++	    (!insn->call_dest || !insn->call_dest->sec->noinstr)) {
+ 		WARN_FUNC("call to %s() leaves .noinstr.text section",
+ 				insn->sec, insn->offset, call_dest_name(insn));
+ 		return 1;
+@@ -2558,11 +2559,16 @@ static int validate_vmlinux_functions(struct objtool_file *file)
+ 	int warnings = 0;
+ 
+ 	sec = find_section_by_name(file->elf, ".noinstr.text");
+-	if (!sec)
+-		return 0;
++	if (sec) {
++		warnings += validate_section(file, sec);
++		warnings += validate_unwind_hints(file, sec);
++	}
+ 
+-	warnings += validate_section(file, sec);
+-	warnings += validate_unwind_hints(file, sec);
++	sec = find_section_by_name(file->elf, ".entry.text");
++	if (sec) {
++		warnings += validate_section(file, sec);
++		warnings += validate_unwind_hints(file, sec);
++	}
+ 
+ 	return warnings;
  }
- 
--int arch_decode_instruction(struct elf *elf, struct section *sec,
-+int arch_decode_instruction(const struct elf *elf, const struct section *sec,
- 			    unsigned long offset, unsigned int maxlen,
- 			    unsigned int *len, enum insn_type *type,
- 			    unsigned long *immediate,
-@@ -98,7 +98,7 @@ int arch_decode_instruction(struct elf *elf, struct section *sec,
- 	insn_get_length(&insn);
- 
- 	if (!insn_complete(&insn)) {
--		WARN_FUNC("can't decode instruction", sec, offset);
-+		WARN("can't decode instruction at %s:0x%lx", sec->name, offset);
- 		return -1;
- 	}
- 
