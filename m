@@ -2,41 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D8651B568F
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 23 Apr 2020 09:51:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C11E1B5682
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 23 Apr 2020 09:51:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727124AbgDWHuc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 23 Apr 2020 03:50:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37900 "EHLO
+        id S1726453AbgDWHuL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 23 Apr 2020 03:50:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37926 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726505AbgDWHty (ORCPT
+        with ESMTP id S1727057AbgDWHt5 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 23 Apr 2020 03:49:54 -0400
+        Thu, 23 Apr 2020 03:49:57 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E62B8C03C1AF;
-        Thu, 23 Apr 2020 00:49:53 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4B00C03C1AB;
+        Thu, 23 Apr 2020 00:49:56 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jRWcF-0008Sr-1v; Thu, 23 Apr 2020 09:49:47 +0200
+        id 1jRWcJ-0008SA-1W; Thu, 23 Apr 2020 09:49:51 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 01B091C0809;
-        Thu, 23 Apr 2020 09:49:45 +0200 (CEST)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 64FAA1C047B;
+        Thu, 23 Apr 2020 09:49:44 +0200 (CEST)
 Date:   Thu, 23 Apr 2020 07:49:44 -0000
-From:   "tip-bot2 for Raphael Gault" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Julien Thierry" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] objtool: Add abstraction for destination offsets
-Cc:     Raphael Gault <raphael.gault@arm.com>,
-        Julien Thierry <jthierry@redhat.com>,
+Subject: [tip: objtool/core] objtool: Split out arch-specific CFI definitions
+Cc:     Julien Thierry <jthierry@redhat.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Miroslav Benes <mbenes@suse.cz>,
         Josh Poimboeuf <jpoimboe@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158762818453.28353.9695773857408696536.tip-bot2@tip-bot2>
+Message-ID: <158762818401.28353.4361966704110954019.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -52,139 +51,110 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     bfb08f220312a4634532114eb3e7062f17dfb707
-Gitweb:        https://git.kernel.org/tip/bfb08f220312a4634532114eb3e7062f17dfb707
-Author:        Raphael Gault <raphael.gault@arm.com>
-AuthorDate:    Fri, 27 Mar 2020 15:28:45 
+Commit-ID:     6f8ca67683962d408c7a337664212669bd3e8355
+Gitweb:        https://git.kernel.org/tip/6f8ca67683962d408c7a337664212669bd3e8355
+Author:        Julien Thierry <jthierry@redhat.com>
+AuthorDate:    Fri, 27 Mar 2020 15:28:46 
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Wed, 22 Apr 2020 10:53:49 +02:00
 
-objtool: Add abstraction for destination offsets
+objtool: Split out arch-specific CFI definitions
 
-The jump and call destination relocation offsets are x86-specific.
-Abstract them by calling arch-specific implementations.
+Some CFI definitions used by generic objtool code have no reason to vary
+from one architecture to another.  Keep those definitions in generic
+code and move the arch-specific ones to a new arch-specific header.
 
-[ jthierry: Remove superfluous comment; replace other addend offsets
-      	    with arch_dest_rela_offset() ]
-
-Signed-off-by: Raphael Gault <raphael.gault@arm.com>
 Signed-off-by: Julien Thierry <jthierry@redhat.com>
 Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Miroslav Benes <mbenes@suse.cz>
 Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- tools/objtool/arch.h            |  6 ++++++
- tools/objtool/arch/x86/decode.c | 11 +++++++++++
- tools/objtool/check.c           | 18 ++++++++++--------
- 3 files changed, 27 insertions(+), 8 deletions(-)
+ tools/objtool/Makefile                    |  3 ++-
+ tools/objtool/arch/x86/include/cfi_regs.h | 25 ++++++++++++++++++++++-
+ tools/objtool/cfi.h                       | 21 +-----------------
+ 3 files changed, 29 insertions(+), 20 deletions(-)
+ create mode 100644 tools/objtool/arch/x86/include/cfi_regs.h
 
-diff --git a/tools/objtool/arch.h b/tools/objtool/arch.h
-index ced3765..a9a50a2 100644
---- a/tools/objtool/arch.h
-+++ b/tools/objtool/arch.h
-@@ -66,6 +66,8 @@ struct stack_op {
- 	struct op_src src;
- };
+diff --git a/tools/objtool/Makefile b/tools/objtool/Makefile
+index d1ab0cc..6b91388 100644
+--- a/tools/objtool/Makefile
++++ b/tools/objtool/Makefile
+@@ -35,7 +35,8 @@ all: $(OBJTOOL)
  
-+struct instruction;
+ INCLUDES := -I$(srctree)/tools/include \
+ 	    -I$(srctree)/tools/arch/$(HOSTARCH)/include/uapi \
+-	    -I$(srctree)/tools/arch/$(SRCARCH)/include
++	    -I$(srctree)/tools/arch/$(SRCARCH)/include	\
++	    -I$(srctree)/tools/objtool/arch/$(SRCARCH)/include
+ WARNINGS := $(EXTRA_WARNINGS) -Wno-switch-default -Wno-switch-enum -Wno-packed
+ CFLAGS   := -Werror $(WARNINGS) $(KBUILD_HOSTCFLAGS) -g $(INCLUDES) $(LIBELF_FLAGS)
+ LDFLAGS  += $(LIBELF_LIBS) $(LIBSUBCMD) $(KBUILD_HOSTLDFLAGS)
+diff --git a/tools/objtool/arch/x86/include/cfi_regs.h b/tools/objtool/arch/x86/include/cfi_regs.h
+new file mode 100644
+index 0000000..79bc517
+--- /dev/null
++++ b/tools/objtool/arch/x86/include/cfi_regs.h
+@@ -0,0 +1,25 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
 +
- void arch_initial_func_cfi_state(struct cfi_state *state);
- 
- int arch_decode_instruction(struct elf *elf, struct section *sec,
-@@ -75,4 +77,8 @@ int arch_decode_instruction(struct elf *elf, struct section *sec,
- 
- bool arch_callee_saved_reg(unsigned char reg);
- 
-+unsigned long arch_jump_destination(struct instruction *insn);
++#ifndef _OBJTOOL_CFI_REGS_H
++#define _OBJTOOL_CFI_REGS_H
 +
-+unsigned long arch_dest_rela_offset(int addend);
++#define CFI_AX			0
++#define CFI_DX			1
++#define CFI_CX			2
++#define CFI_BX			3
++#define CFI_SI			4
++#define CFI_DI			5
++#define CFI_BP			6
++#define CFI_SP			7
++#define CFI_R8			8
++#define CFI_R9			9
++#define CFI_R10			10
++#define CFI_R11			11
++#define CFI_R12			12
++#define CFI_R13			13
++#define CFI_R14			14
++#define CFI_R15			15
++#define CFI_RA			16
++#define CFI_NUM_REGS		17
 +
- #endif /* _ARCH_H */
-diff --git a/tools/objtool/arch/x86/decode.c b/tools/objtool/arch/x86/decode.c
-index a62e032..7ce8650 100644
---- a/tools/objtool/arch/x86/decode.c
-+++ b/tools/objtool/arch/x86/decode.c
-@@ -11,6 +11,7 @@
- #include "../../../arch/x86/lib/inat.c"
- #include "../../../arch/x86/lib/insn.c"
++#endif /* _OBJTOOL_CFI_REGS_H */
+diff --git a/tools/objtool/cfi.h b/tools/objtool/cfi.h
+index 4427bf8..1a3e7b8 100644
+--- a/tools/objtool/cfi.h
++++ b/tools/objtool/cfi.h
+@@ -6,30 +6,13 @@
+ #ifndef _OBJTOOL_CFI_H
+ #define _OBJTOOL_CFI_H
  
-+#include "../../check.h"
- #include "../../elf.h"
- #include "../../arch.h"
- #include "../../warn.h"
-@@ -66,6 +67,16 @@ bool arch_callee_saved_reg(unsigned char reg)
- 	}
- }
- 
-+unsigned long arch_dest_rela_offset(int addend)
-+{
-+	return addend + 4;
-+}
++#include "cfi_regs.h"
 +
-+unsigned long arch_jump_destination(struct instruction *insn)
-+{
-+	return insn->offset + insn->len + insn->immediate;
-+}
-+
- int arch_decode_instruction(struct elf *elf, struct section *sec,
- 			    unsigned long offset, unsigned int maxlen,
- 			    unsigned int *len, enum insn_type *type,
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 229d61e..cffa5e3 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -574,13 +574,14 @@ static int add_jump_destinations(struct objtool_file *file)
- 					       insn->offset, insn->len);
- 		if (!rela) {
- 			dest_sec = insn->sec;
--			dest_off = insn->offset + insn->len + insn->immediate;
-+			dest_off = arch_jump_destination(insn);
- 		} else if (rela->sym->type == STT_SECTION) {
- 			dest_sec = rela->sym->sec;
--			dest_off = rela->addend + 4;
-+			dest_off = arch_dest_rela_offset(rela->addend);
- 		} else if (rela->sym->sec->idx) {
- 			dest_sec = rela->sym->sec;
--			dest_off = rela->sym->sym.st_value + rela->addend + 4;
-+			dest_off = rela->sym->sym.st_value +
-+				   arch_dest_rela_offset(rela->addend);
- 		} else if (strstr(rela->sym->name, "_indirect_thunk_")) {
- 			/*
- 			 * Retpoline jumps are really dynamic jumps in
-@@ -670,7 +671,7 @@ static int add_call_destinations(struct objtool_file *file)
- 		rela = find_rela_by_dest_range(file->elf, insn->sec,
- 					       insn->offset, insn->len);
- 		if (!rela) {
--			dest_off = insn->offset + insn->len + insn->immediate;
-+			dest_off = arch_jump_destination(insn);
- 			insn->call_dest = find_func_by_offset(insn->sec, dest_off);
- 			if (!insn->call_dest)
- 				insn->call_dest = find_symbol_by_offset(insn->sec, dest_off);
-@@ -693,13 +694,14 @@ static int add_call_destinations(struct objtool_file *file)
- 			}
+ #define CFI_UNDEFINED		-1
+ #define CFI_CFA			-2
+ #define CFI_SP_INDIRECT		-3
+ #define CFI_BP_INDIRECT		-4
  
- 		} else if (rela->sym->type == STT_SECTION) {
-+			dest_off = arch_dest_rela_offset(rela->addend);
- 			insn->call_dest = find_func_by_offset(rela->sym->sec,
--							      rela->addend+4);
-+							      dest_off);
- 			if (!insn->call_dest) {
--				WARN_FUNC("can't find call dest symbol at %s+0x%x",
-+				WARN_FUNC("can't find call dest symbol at %s+0x%lx",
- 					  insn->sec, insn->offset,
- 					  rela->sym->sec->name,
--					  rela->addend + 4);
-+					  dest_off);
- 				return -1;
- 			}
- 		} else
-@@ -810,7 +812,7 @@ static int handle_group_alt(struct objtool_file *file,
- 		if (!insn->immediate)
- 			continue;
- 
--		dest_off = insn->offset + insn->len + insn->immediate;
-+		dest_off = arch_jump_destination(insn);
- 		if (dest_off == special_alt->new_off + special_alt->new_len) {
- 			if (!fake_jump) {
- 				WARN("%s: alternative jump to end of section",
+-#define CFI_AX			0
+-#define CFI_DX			1
+-#define CFI_CX			2
+-#define CFI_BX			3
+-#define CFI_SI			4
+-#define CFI_DI			5
+-#define CFI_BP			6
+-#define CFI_SP			7
+-#define CFI_R8			8
+-#define CFI_R9			9
+-#define CFI_R10			10
+-#define CFI_R11			11
+-#define CFI_R12			12
+-#define CFI_R13			13
+-#define CFI_R14			14
+-#define CFI_R15			15
+-#define CFI_RA			16
+-#define CFI_NUM_REGS		17
+-
+ struct cfi_reg {
+ 	int base;
+ 	int offset;
