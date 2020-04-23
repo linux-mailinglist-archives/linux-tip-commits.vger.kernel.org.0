@@ -2,38 +2,43 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7016D1B503F
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 23 Apr 2020 00:27:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 819701B566C
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 23 Apr 2020 09:51:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726863AbgDVWZ2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 22 Apr 2020 18:25:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35120 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726830AbgDVWZ1 (ORCPT
+        id S1726997AbgDWHto (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 23 Apr 2020 03:49:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37840 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726650AbgDWHtn (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 22 Apr 2020 18:25:27 -0400
+        Thu, 23 Apr 2020 03:49:43 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12CA7C03C1A9;
-        Wed, 22 Apr 2020 15:25:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B320C03C1AB;
+        Thu, 23 Apr 2020 00:49:43 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jRNnk-0001YM-Hr; Thu, 23 Apr 2020 00:25:05 +0200
+        id 1jRWc1-0008JE-O1; Thu, 23 Apr 2020 09:49:33 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B1FDE1C0809;
-        Thu, 23 Apr 2020 00:24:55 +0200 (CEST)
-Date:   Wed, 22 Apr 2020 22:24:55 -0000
-From:   "tip-bot2 for Julien Thierry" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5293D1C0450;
+        Thu, 23 Apr 2020 09:49:33 +0200 (CEST)
+Date:   Thu, 23 Apr 2020 07:49:32 -0000
+From:   "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/urgent] objtool: Fix off-by-one in symbol_by_offset()
-Cc:     Julien Thierry <jthierry@redhat.com>,
-        Miroslav Benes <mbenes@suse.cz>,
-        Josh Poimboeuf <jpoimboe@redhat.com>, x86 <x86@kernel.org>,
+Subject: [tip: objtool/core] objtool: Rename elf_read() to elf_open_read()
+Cc:     Josh Poimboeuf <jpoimboe@redhat.com>,
+        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Sami Tolvanen <samitolvanen@google.com>,
+        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200422103205.61900-3-mingo@kernel.org>
+References: <20200422103205.61900-3-mingo@kernel.org>
 MIME-Version: 1.0
-Message-ID: <158759429500.28353.17940657734487832163.tip-bot2@tip-bot2>
+Message-ID: <158762817276.28353.6504307167044928918.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,40 +52,74 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the objtool/urgent branch of tip:
+The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     7f9b34f36cf6b2099f19e679a9e8315c955ef2ee
-Gitweb:        https://git.kernel.org/tip/7f9b34f36cf6b2099f19e679a9e8315c955ef2ee
-Author:        Julien Thierry <jthierry@redhat.com>
-AuthorDate:    Fri, 03 Apr 2020 14:17:30 +01:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 22 Apr 2020 23:14:46 +02:00
+Commit-ID:     bc359ff2f6f3e8a9df38c39017e269bc442357c7
+Gitweb:        https://git.kernel.org/tip/bc359ff2f6f3e8a9df38c39017e269bc442357c7
+Author:        Ingo Molnar <mingo@kernel.org>
+AuthorDate:    Wed, 22 Apr 2020 12:32:04 +02:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Thu, 23 Apr 2020 08:34:18 +02:00
 
-objtool: Fix off-by-one in symbol_by_offset()
+objtool: Rename elf_read() to elf_open_read()
 
-Sometimes, WARN_FUNC() and other users of symbol_by_offset() will
-associate the first instruction of a symbol with the symbol preceding
-it.  This is because symbol->offset + symbol->len is already outside of
-the symbol's range.
+'struct elf *' handling is an open/close paradigm, make sure the naming
+matches that:
 
-Fixes: 2a362ecc3ec9 ("objtool: Optimize find_symbol_*() and read_symbols()")
-Signed-off-by: Julien Thierry <jthierry@redhat.com>
-Reviewed-by: Miroslav Benes <mbenes@suse.cz>
-Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
+   elf_open_read()
+   elf_write()
+   elf_close()
+
+Acked-by: Josh Poimboeuf <jpoimboe@redhat.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Sami Tolvanen <samitolvanen@google.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20200422103205.61900-3-mingo@kernel.org
 ---
- tools/objtool/elf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/objtool/check.c | 2 +-
+ tools/objtool/elf.c   | 2 +-
+ tools/objtool/elf.h   | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tools/objtool/elf.c b/tools/objtool/elf.c
-index 09ddc8f..c4857fa 100644
---- a/tools/objtool/elf.c
-+++ b/tools/objtool/elf.c
-@@ -105,7 +105,7 @@ static int symbol_by_offset(const void *key, const struct rb_node *node)
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index f2a8427..12e2aea 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -2614,7 +2614,7 @@ int check(const char *_objname, bool orc)
  
- 	if (*o < s->offset)
- 		return -1;
--	if (*o > s->offset + s->len)
-+	if (*o >= s->offset + s->len)
+ 	objname = _objname;
+ 
+-	file.elf = elf_read(objname, orc ? O_RDWR : O_RDONLY);
++	file.elf = elf_open_read(objname, orc ? O_RDWR : O_RDONLY);
+ 	if (!file.elf)
  		return 1;
  
+diff --git a/tools/objtool/elf.c b/tools/objtool/elf.c
+index fab5534..453b723 100644
+--- a/tools/objtool/elf.c
++++ b/tools/objtool/elf.c
+@@ -542,7 +542,7 @@ static int read_relas(struct elf *elf)
  	return 0;
+ }
+ 
+-struct elf *elf_read(const char *name, int flags)
++struct elf *elf_open_read(const char *name, int flags)
+ {
+ 	struct elf *elf;
+ 	Elf_Cmd cmd;
+diff --git a/tools/objtool/elf.h b/tools/objtool/elf.h
+index a55bcde..5e76ac3 100644
+--- a/tools/objtool/elf.h
++++ b/tools/objtool/elf.h
+@@ -113,7 +113,7 @@ static inline u32 rela_hash(struct rela *rela)
+ 	return sec_offset_hash(rela->sec, rela->offset);
+ }
+ 
+-struct elf *elf_read(const char *name, int flags);
++struct elf *elf_open_read(const char *name, int flags);
+ struct section *elf_create_section(struct elf *elf, const char *name, size_t entsize, int nr);
+ struct section *elf_create_rela_section(struct elf *elf, struct section *base);
+ void elf_add_rela(struct elf *elf, struct rela *rela);
