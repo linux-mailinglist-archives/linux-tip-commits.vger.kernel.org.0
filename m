@@ -2,43 +2,43 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E03D1B56AC
+	by mail.lfdr.de (Postfix) with ESMTP id 10F011B56AB
 	for <lists+linux-tip-commits@lfdr.de>; Thu, 23 Apr 2020 09:52:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727842AbgDWHvX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S1726947AbgDWHvX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Thu, 23 Apr 2020 03:51:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37846 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37842 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726998AbgDWHto (ORCPT
+        with ESMTP id S1726854AbgDWHtn (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 23 Apr 2020 03:49:44 -0400
+        Thu, 23 Apr 2020 03:49:43 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 081B9C08C5F2;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A027DC03C1AF;
         Thu, 23 Apr 2020 00:49:43 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jRWc2-0008Jq-OI; Thu, 23 Apr 2020 09:49:34 +0200
+        id 1jRWc2-0008JS-8Y; Thu, 23 Apr 2020 09:49:34 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 58D411C0450;
-        Thu, 23 Apr 2020 09:49:34 +0200 (CEST)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D8AE81C0244;
+        Thu, 23 Apr 2020 09:49:33 +0200 (CEST)
 Date:   Thu, 23 Apr 2020 07:49:33 -0000
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] objtool: Also consider .entry.text as noinstr
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Miroslav Benes <mbenes@suse.cz>,
-        Alexandre Chartre <alexandre.chartre@oracle.com>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
+Subject: [tip: objtool/core] objtool: Constify 'struct elf *' parameters
+Cc:     Josh Poimboeuf <jpoimboe@redhat.com>,
+        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Sami Tolvanen <samitolvanen@google.com>,
+        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200416115119.525037514@infradead.org>
-References: <20200416115119.525037514@infradead.org>
+In-Reply-To: <20200422103205.61900-2-mingo@kernel.org>
+References: <20200422103205.61900-2-mingo@kernel.org>
 MIME-Version: 1.0
-Message-ID: <158762817396.28353.10539514652564906695.tip-bot2@tip-bot2>
+Message-ID: <158762817342.28353.2046272086047746312.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -54,71 +54,119 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     0cc9ac8db0b447922d9af77916cd7941fc784b64
-Gitweb:        https://git.kernel.org/tip/0cc9ac8db0b447922d9af77916cd7941fc784b64
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Wed, 25 Mar 2020 17:18:17 +01:00
+Commit-ID:     894e48cada64ec384873fad4fe1b0d0c7de31a29
+Gitweb:        https://git.kernel.org/tip/894e48cada64ec384873fad4fe1b0d0c7de31a29
+Author:        Ingo Molnar <mingo@kernel.org>
+AuthorDate:    Wed, 22 Apr 2020 12:32:03 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 22 Apr 2020 10:53:51 +02:00
+CommitterDate: Thu, 23 Apr 2020 08:34:18 +02:00
 
-objtool: Also consider .entry.text as noinstr
+objtool: Constify 'struct elf *' parameters
 
-Consider all of .entry.text as noinstr. This gets us coverage across
-the PTI boundary. While we could add everything .noinstr.text into
-.entry.text that would bloat the amount of code in the user mapping.
+In preparation to parallelize certain parts of objtool, map out which uses
+of various data structures are read-only vs. read-write.
 
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Miroslav Benes <mbenes@suse.cz>
-Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
+As a first step constify 'struct elf' pointer passing, most of the secondary
+uses of it in find_symbol_*() methods are read-only.
+
+Also, while at it, better group the 'struct elf' handling methods in elf.h.
+
 Acked-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Link: https://lkml.kernel.org/r/20200416115119.525037514@infradead.org
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Sami Tolvanen <samitolvanen@google.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20200422103205.61900-2-mingo@kernel.org
 ---
- tools/objtool/check.c | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ tools/objtool/elf.c | 10 +++++-----
+ tools/objtool/elf.h | 20 ++++++++++----------
+ 2 files changed, 15 insertions(+), 15 deletions(-)
 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 0d9f9cf..f2a8427 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -266,7 +266,8 @@ static int decode_instructions(struct objtool_file *file)
- 		    strncmp(sec->name, ".discard.", 9))
- 			sec->text = true;
- 
--		if (!strcmp(sec->name, ".noinstr.text"))
-+		if (!strcmp(sec->name, ".noinstr.text") ||
-+		    !strcmp(sec->name, ".entry.text"))
- 			sec->noinstr = true;
- 
- 		for (offset = 0; offset < sec->len; offset += insn->len) {
-@@ -2071,7 +2072,7 @@ static inline const char *call_dest_name(struct instruction *insn)
- static int validate_call(struct instruction *insn, struct insn_state *state)
- {
- 	if (state->noinstr && state->instr <= 0 &&
--	    (!insn->call_dest || insn->call_dest->sec != insn->sec)) {
-+	    (!insn->call_dest || !insn->call_dest->sec->noinstr)) {
- 		WARN_FUNC("call to %s() leaves .noinstr.text section",
- 				insn->sec, insn->offset, call_dest_name(insn));
- 		return 1;
-@@ -2558,11 +2559,16 @@ static int validate_vmlinux_functions(struct objtool_file *file)
- 	int warnings = 0;
- 
- 	sec = find_section_by_name(file->elf, ".noinstr.text");
--	if (!sec)
--		return 0;
-+	if (sec) {
-+		warnings += validate_section(file, sec);
-+		warnings += validate_unwind_hints(file, sec);
-+	}
- 
--	warnings += validate_section(file, sec);
--	warnings += validate_unwind_hints(file, sec);
-+	sec = find_section_by_name(file->elf, ".entry.text");
-+	if (sec) {
-+		warnings += validate_section(file, sec);
-+		warnings += validate_unwind_hints(file, sec);
-+	}
- 
- 	return warnings;
+diff --git a/tools/objtool/elf.c b/tools/objtool/elf.c
+index f26bb3e..fab5534 100644
+--- a/tools/objtool/elf.c
++++ b/tools/objtool/elf.c
+@@ -127,7 +127,7 @@ static int symbol_by_offset(const void *key, const struct rb_node *node)
+ 	return 0;
  }
+ 
+-struct section *find_section_by_name(struct elf *elf, const char *name)
++struct section *find_section_by_name(const struct elf *elf, const char *name)
+ {
+ 	struct section *sec;
+ 
+@@ -217,7 +217,7 @@ struct symbol *find_func_containing(struct section *sec, unsigned long offset)
+ 	return NULL;
+ }
+ 
+-struct symbol *find_symbol_by_name(struct elf *elf, const char *name)
++struct symbol *find_symbol_by_name(const struct elf *elf, const char *name)
+ {
+ 	struct symbol *sym;
+ 
+@@ -228,7 +228,7 @@ struct symbol *find_symbol_by_name(struct elf *elf, const char *name)
+ 	return NULL;
+ }
+ 
+-struct rela *find_rela_by_dest_range(struct elf *elf, struct section *sec,
++struct rela *find_rela_by_dest_range(const struct elf *elf, struct section *sec,
+ 				     unsigned long offset, unsigned int len)
+ {
+ 	struct rela *rela, *r = NULL;
+@@ -257,7 +257,7 @@ struct rela *find_rela_by_dest_range(struct elf *elf, struct section *sec,
+ 	return NULL;
+ }
+ 
+-struct rela *find_rela_by_dest(struct elf *elf, struct section *sec, unsigned long offset)
++struct rela *find_rela_by_dest(const struct elf *elf, struct section *sec, unsigned long offset)
+ {
+ 	return find_rela_by_dest_range(elf, sec, offset, 1);
+ }
+@@ -769,7 +769,7 @@ int elf_rebuild_rela_section(struct section *sec)
+ 	return 0;
+ }
+ 
+-int elf_write(struct elf *elf)
++int elf_write(const struct elf *elf)
+ {
+ 	struct section *sec;
+ 	Elf_Scn *s;
+diff --git a/tools/objtool/elf.h b/tools/objtool/elf.h
+index 2811d04..a55bcde 100644
+--- a/tools/objtool/elf.h
++++ b/tools/objtool/elf.h
+@@ -114,22 +114,22 @@ static inline u32 rela_hash(struct rela *rela)
+ }
+ 
+ struct elf *elf_read(const char *name, int flags);
+-struct section *find_section_by_name(struct elf *elf, const char *name);
++struct section *elf_create_section(struct elf *elf, const char *name, size_t entsize, int nr);
++struct section *elf_create_rela_section(struct elf *elf, struct section *base);
++void elf_add_rela(struct elf *elf, struct rela *rela);
++int elf_write(const struct elf *elf);
++void elf_close(struct elf *elf);
++
++struct section *find_section_by_name(const struct elf *elf, const char *name);
+ struct symbol *find_func_by_offset(struct section *sec, unsigned long offset);
+ struct symbol *find_symbol_by_offset(struct section *sec, unsigned long offset);
+-struct symbol *find_symbol_by_name(struct elf *elf, const char *name);
++struct symbol *find_symbol_by_name(const struct elf *elf, const char *name);
+ struct symbol *find_symbol_containing(struct section *sec, unsigned long offset);
+-struct rela *find_rela_by_dest(struct elf *elf, struct section *sec, unsigned long offset);
+-struct rela *find_rela_by_dest_range(struct elf *elf, struct section *sec,
++struct rela *find_rela_by_dest(const struct elf *elf, struct section *sec, unsigned long offset);
++struct rela *find_rela_by_dest_range(const struct elf *elf, struct section *sec,
+ 				     unsigned long offset, unsigned int len);
+ struct symbol *find_func_containing(struct section *sec, unsigned long offset);
+-struct section *elf_create_section(struct elf *elf, const char *name, size_t
+-				   entsize, int nr);
+-struct section *elf_create_rela_section(struct elf *elf, struct section *base);
+ int elf_rebuild_rela_section(struct section *sec);
+-int elf_write(struct elf *elf);
+-void elf_close(struct elf *elf);
+-void elf_add_rela(struct elf *elf, struct rela *rela);
+ 
+ #define for_each_sec(file, sec)						\
+ 	list_for_each_entry(sec, &file->elf->sections, list)
