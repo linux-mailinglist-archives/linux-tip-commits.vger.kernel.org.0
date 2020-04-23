@@ -2,42 +2,42 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 30BAC1B5694
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 23 Apr 2020 09:51:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE1B61B5685
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 23 Apr 2020 09:51:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726499AbgDWHul (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 23 Apr 2020 03:50:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37902 "EHLO
+        id S1726021AbgDWHuS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 23 Apr 2020 03:50:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37916 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726587AbgDWHty (ORCPT
+        with ESMTP id S1726101AbgDWHt4 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 23 Apr 2020 03:49:54 -0400
+        Thu, 23 Apr 2020 03:49:56 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87B24C08C5F2;
-        Thu, 23 Apr 2020 00:49:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06344C02C444;
+        Thu, 23 Apr 2020 00:49:56 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jRWcE-0008P4-Je; Thu, 23 Apr 2020 09:49:46 +0200
+        id 1jRWcF-0008Pv-Tk; Thu, 23 Apr 2020 09:49:48 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4AF831C0493;
-        Thu, 23 Apr 2020 09:49:41 +0200 (CEST)
-Date:   Thu, 23 Apr 2020 07:49:40 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5E9AA1C04CF;
+        Thu, 23 Apr 2020 09:49:42 +0200 (CEST)
+Date:   Thu, 23 Apr 2020 07:49:41 -0000
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] x86,ftrace: Fix ftrace_regs_caller() unwind
+Subject: [tip: objtool/core] objtool: Better handle IRET
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Miroslav Benes <mbenes@suse.cz>,
         Alexandre Chartre <alexandre.chartre@oracle.com>,
         Josh Poimboeuf <jpoimboe@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200416115118.749606694@infradead.org>
-References: <20200416115118.749606694@infradead.org>
+In-Reply-To: <20200416115118.631224674@infradead.org>
+References: <20200416115118.631224674@infradead.org>
 MIME-Version: 1.0
-Message-ID: <158762818087.28353.3866847854011199128.tip-bot2@tip-bot2>
+Message-ID: <158762818197.28353.4981047285388283765.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -53,173 +53,170 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     0298739b7983cf9bf4fcfb4bfb815c539bdb87ca
-Gitweb:        https://git.kernel.org/tip/0298739b7983cf9bf4fcfb4bfb815c539bdb87ca
+Commit-ID:     b746046238bb99b8f703c79f6d95357428fb6476
+Gitweb:        https://git.kernel.org/tip/b746046238bb99b8f703c79f6d95357428fb6476
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Wed, 01 Apr 2020 16:53:19 +02:00
+AuthorDate:    Thu, 02 Apr 2020 10:15:51 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Wed, 22 Apr 2020 10:53:50 +02:00
 
-x86,ftrace: Fix ftrace_regs_caller() unwind
+objtool: Better handle IRET
 
-The ftrace_regs_caller() trampoline does something 'funny' when there
-is a direct-caller present. In that case it stuffs the 'direct-caller'
-address on the return stack and then exits the function. This then
-results in 'returning' to the direct-caller with the exact registers
-we came in with -- an indirect tail-call without using a register.
+Teach objtool a little more about IRET so that we can avoid using the
+SAVE/RESTORE annotation. In particular, make the weird corner case in
+insn->restore go away.
 
-This however (rightfully) confuses objtool because the function shares
-a few instruction in order to have a single exit path, but the stack
-layout is different for them, depending through which path we came
-there.
+The purpose of that corner case is to deal with the fact that
+UNWIND_HINT_RESTORE lands on the instruction after IRET, but that
+instruction can end up being outside the basic block, consider:
 
-This is currently cludged by forcing the stack state to the non-direct
-case, but this generates actively wrong (ORC) unwind information for
-the direct case, leading to potential broken unwinds.
+	if (cond)
+		sync_core()
+	foo();
 
-Fix this issue by fully separating the exit paths. This results in
-having to poke a second RET into the trampoline copy, see
-ftrace_regs_caller_ret.
+Then the hint will land on foo(), and we'll encounter the restore
+hint without ever having seen the save hint.
 
-This brings us to a second objtool problem, in order for it to
-perceive the 'jmp ftrace_epilogue' as a function exit, it needs to be
-recognised as a tail call. In order to make that happen,
-ftrace_epilogue needs to be the start of an STT_FUNC, so re-arrange
-code to make this so.
-
-Finally, a third issue is that objtool requires functions to exit with
-the same stack layout they started with, which is obviously violated
-in the direct case, employ the new HINT_RET_OFFSET to tell objtool
-this is an expected exception.
-
-Together, this results in generating correct ORC unwind information
-for the ftrace_regs_caller() function and it's trampoline copies.
+By teaching objtool about the arch specific exception frame size, and
+assuming that any IRET in an STT_FUNC symbol is an exception frame
+sized POP, we can remove the use of save/restore hints for this code.
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Miroslav Benes <mbenes@suse.cz>
 Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
 Acked-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Link: https://lkml.kernel.org/r/20200416115118.749606694@infradead.org
+Link: https://lkml.kernel.org/r/20200416115118.631224674@infradead.org
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- arch/x86/kernel/ftrace.c    | 12 ++++++++++--
- arch/x86/kernel/ftrace_64.S | 32 +++++++++++++++-----------------
- 2 files changed, 25 insertions(+), 19 deletions(-)
+ arch/x86/include/asm/processor.h |  2 --
+ tools/objtool/arch.h             |  1 +
+ tools/objtool/arch/x86/decode.c  | 14 ++++++++++++--
+ tools/objtool/check.c            | 29 ++++++++++++++++-------------
+ 4 files changed, 29 insertions(+), 17 deletions(-)
 
-diff --git a/arch/x86/kernel/ftrace.c b/arch/x86/kernel/ftrace.c
-index 37a0aea..867c126 100644
---- a/arch/x86/kernel/ftrace.c
-+++ b/arch/x86/kernel/ftrace.c
-@@ -282,7 +282,8 @@ static inline void tramp_free(void *tramp) { }
+diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
+index 3bcf27c..3eeaaeb 100644
+--- a/arch/x86/include/asm/processor.h
++++ b/arch/x86/include/asm/processor.h
+@@ -727,7 +727,6 @@ static inline void sync_core(void)
+ 	unsigned int tmp;
  
- /* Defined as markers to the end of the ftrace default trampolines */
- extern void ftrace_regs_caller_end(void);
--extern void ftrace_epilogue(void);
-+extern void ftrace_regs_caller_ret(void);
-+extern void ftrace_caller_end(void);
- extern void ftrace_caller_op_ptr(void);
- extern void ftrace_regs_caller_op_ptr(void);
+ 	asm volatile (
+-		UNWIND_HINT_SAVE
+ 		"mov %%ss, %0\n\t"
+ 		"pushq %q0\n\t"
+ 		"pushq %%rsp\n\t"
+@@ -737,7 +736,6 @@ static inline void sync_core(void)
+ 		"pushq %q0\n\t"
+ 		"pushq $1f\n\t"
+ 		"iretq\n\t"
+-		UNWIND_HINT_RESTORE
+ 		"1:"
+ 		: "=&r" (tmp), ASM_CALL_CONSTRAINT : : "cc", "memory");
+ #endif
+diff --git a/tools/objtool/arch.h b/tools/objtool/arch.h
+index f9883c4..55396df 100644
+--- a/tools/objtool/arch.h
++++ b/tools/objtool/arch.h
+@@ -19,6 +19,7 @@ enum insn_type {
+ 	INSN_CALL,
+ 	INSN_CALL_DYNAMIC,
+ 	INSN_RETURN,
++	INSN_EXCEPTION_RETURN,
+ 	INSN_CONTEXT_SWITCH,
+ 	INSN_STACK,
+ 	INSN_BUG,
+diff --git a/tools/objtool/arch/x86/decode.c b/tools/objtool/arch/x86/decode.c
+index 199b408..3273638 100644
+--- a/tools/objtool/arch/x86/decode.c
++++ b/tools/objtool/arch/x86/decode.c
+@@ -446,9 +446,19 @@ int arch_decode_instruction(struct elf *elf, struct section *sec,
+ 		*type = INSN_RETURN;
+ 		break;
  
-@@ -334,7 +335,7 @@ create_trampoline(struct ftrace_ops *ops, unsigned int *tramp_size)
- 		call_offset = (unsigned long)ftrace_regs_call;
- 	} else {
- 		start_offset = (unsigned long)ftrace_caller;
--		end_offset = (unsigned long)ftrace_epilogue;
-+		end_offset = (unsigned long)ftrace_caller_end;
- 		op_offset = (unsigned long)ftrace_caller_op_ptr;
- 		call_offset = (unsigned long)ftrace_call;
- 	}
-@@ -366,6 +367,13 @@ create_trampoline(struct ftrace_ops *ops, unsigned int *tramp_size)
- 	if (WARN_ON(ret < 0))
- 		goto fail;
- 
-+	if (ops->flags & FTRACE_OPS_FL_SAVE_REGS) {
-+		ip = trampoline + (ftrace_regs_caller_ret - ftrace_regs_caller);
-+		ret = probe_kernel_read(ip, (void *)retq, RET_SIZE);
-+		if (WARN_ON(ret < 0))
-+			goto fail;
-+	}
++	case 0xcf: /* iret */
++		*type = INSN_EXCEPTION_RETURN;
 +
- 	/*
- 	 * The address of the ftrace_ops that is used for this trampoline
- 	 * is stored at the end of the trampoline. This will be used to
-diff --git a/arch/x86/kernel/ftrace_64.S b/arch/x86/kernel/ftrace_64.S
-index 369e61f..7657dc7 100644
---- a/arch/x86/kernel/ftrace_64.S
-+++ b/arch/x86/kernel/ftrace_64.S
-@@ -157,8 +157,12 @@ SYM_INNER_LABEL(ftrace_call, SYM_L_GLOBAL)
- 	 * think twice before adding any new code or changing the
- 	 * layout here.
- 	 */
--SYM_INNER_LABEL(ftrace_epilogue, SYM_L_GLOBAL)
-+SYM_INNER_LABEL(ftrace_caller_end, SYM_L_GLOBAL)
- 
-+	jmp ftrace_epilogue
-+SYM_FUNC_END(ftrace_caller);
++		/* add $40, %rsp */
++		op->src.type = OP_SRC_ADD;
++		op->src.reg = CFI_SP;
++		op->src.offset = 5*8;
++		op->dest.type = OP_DEST_REG;
++		op->dest.reg = CFI_SP;
++		break;
 +
-+SYM_FUNC_START(ftrace_epilogue)
- #ifdef CONFIG_FUNCTION_GRAPH_TRACER
- SYM_INNER_LABEL(ftrace_graph_call, SYM_L_GLOBAL)
- 	jmp ftrace_stub
-@@ -170,14 +174,12 @@ SYM_INNER_LABEL(ftrace_graph_call, SYM_L_GLOBAL)
+ 	case 0xca: /* retf */
+ 	case 0xcb: /* retf */
+-	case 0xcf: /* iret */
+ 		*type = INSN_CONTEXT_SWITCH;
+ 		break;
+ 
+@@ -494,7 +504,7 @@ int arch_decode_instruction(struct elf *elf, struct section *sec,
+ 
+ 	*immediate = insn.immediate.nbytes ? insn.immediate.value : 0;
+ 
+-	if (*type == INSN_STACK)
++	if (*type == INSN_STACK || *type == INSN_EXCEPTION_RETURN)
+ 		list_add_tail(&op->list, ops_list);
+ 	else
+ 		free(op);
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index 9e854fd..781b3a3 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -2065,15 +2065,14 @@ static int validate_return(struct symbol *func, struct instruction *insn, struct
+  * tools/objtool/Documentation/stack-validation.txt.
   */
- SYM_INNER_LABEL_ALIGN(ftrace_stub, SYM_L_WEAK)
- 	retq
--SYM_FUNC_END(ftrace_caller)
-+SYM_FUNC_END(ftrace_epilogue)
+ static int validate_branch(struct objtool_file *file, struct symbol *func,
+-			   struct instruction *first, struct insn_state state)
++			   struct instruction *insn, struct insn_state state)
+ {
+ 	struct alternative *alt;
+-	struct instruction *insn, *next_insn;
++	struct instruction *next_insn;
+ 	struct section *sec;
+ 	u8 visited;
+ 	int ret;
  
- SYM_FUNC_START(ftrace_regs_caller)
- 	/* Save the current flags before any operations that can change them */
- 	pushfq
+-	insn = first;
+ 	sec = insn->sec;
  
--	UNWIND_HINT_SAVE
+ 	if (insn->alt_group && list_empty(&insn->alts)) {
+@@ -2126,16 +2125,6 @@ static int validate_branch(struct objtool_file *file, struct symbol *func,
+ 				}
+ 
+ 				if (!save_insn->visited) {
+-					/*
+-					 * Oops, no state to copy yet.
+-					 * Hopefully we can reach this
+-					 * instruction from another branch
+-					 * after the save insn has been
+-					 * visited.
+-					 */
+-					if (insn == first)
+-						return 0;
 -
- 	/* added 8 bytes to save flags */
- 	save_mcount_regs 8
- 	/* save_mcount_regs fills in first two parameters */
-@@ -233,7 +235,10 @@ SYM_INNER_LABEL(ftrace_regs_call, SYM_L_GLOBAL)
- 	movq ORIG_RAX(%rsp), %rax
- 	movq %rax, MCOUNT_REG_SIZE-8(%rsp)
+ 					WARN_FUNC("objtool isn't smart enough to handle this CFI save/restore combo",
+ 						  sec, insn->offset);
+ 					return 1;
+@@ -2228,6 +2217,20 @@ static int validate_branch(struct objtool_file *file, struct symbol *func,
  
--	/* If ORIG_RAX is anything but zero, make this a call to that */
-+	/*
-+	 * If ORIG_RAX is anything but zero, make this a call to that.
-+	 * See arch_ftrace_set_direct_caller().
-+	 */
- 	movq ORIG_RAX(%rsp), %rax
- 	cmpq	$0, %rax
- 	je	1f
-@@ -244,20 +249,14 @@ SYM_INNER_LABEL(ftrace_regs_call, SYM_L_GLOBAL)
- 	movq %rax, MCOUNT_REG_SIZE(%rsp)
+ 			break;
  
- 	restore_mcount_regs 8
-+	/* Restore flags */
-+	popfq
- 
--	jmp	2f
-+SYM_INNER_LABEL(ftrace_regs_caller_ret, SYM_L_GLOBAL);
-+	UNWIND_HINT_RET_OFFSET
-+	jmp	ftrace_epilogue
- 
- 1:	restore_mcount_regs
--
--
--2:
--	/*
--	 * The stack layout is nondetermistic here, depending on which path was
--	 * taken.  This confuses objtool and ORC, rightfully so.  For now,
--	 * pretend the stack always looks like the non-direct case.
--	 */
--	UNWIND_HINT_RESTORE
--
- 	/* Restore flags */
- 	popfq
- 
-@@ -268,7 +267,6 @@ SYM_INNER_LABEL(ftrace_regs_call, SYM_L_GLOBAL)
- 	 * to the return.
- 	 */
- SYM_INNER_LABEL(ftrace_regs_caller_end, SYM_L_GLOBAL)
--
- 	jmp ftrace_epilogue
- 
- SYM_FUNC_END(ftrace_regs_caller)
++		case INSN_EXCEPTION_RETURN:
++			if (handle_insn_ops(insn, &state))
++				return 1;
++
++			/*
++			 * This handles x86's sync_core() case, where we use an
++			 * IRET to self. All 'normal' IRET instructions are in
++			 * STT_NOTYPE entry symbols.
++			 */
++			if (func)
++				break;
++
++			return 0;
++
+ 		case INSN_CONTEXT_SWITCH:
+ 			if (func && (!next_insn || !next_insn->hint)) {
+ 				WARN_FUNC("unsupported instruction in callable function",
