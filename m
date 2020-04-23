@@ -2,42 +2,42 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C452B1B5671
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 23 Apr 2020 09:51:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 08DFD1B5676
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 23 Apr 2020 09:51:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727029AbgDWHtr (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 23 Apr 2020 03:49:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37858 "EHLO
+        id S1726030AbgDWHtx (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 23 Apr 2020 03:49:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37896 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727023AbgDWHtp (ORCPT
+        with ESMTP id S1727057AbgDWHtw (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 23 Apr 2020 03:49:45 -0400
+        Thu, 23 Apr 2020 03:49:52 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0B04C03C1AB;
-        Thu, 23 Apr 2020 00:49:45 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F27BC03C1AB;
+        Thu, 23 Apr 2020 00:49:52 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jRWc6-0008NI-J9; Thu, 23 Apr 2020 09:49:38 +0200
+        id 1jRWcC-0008O8-IM; Thu, 23 Apr 2020 09:49:44 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 2BFEB1C0244;
-        Thu, 23 Apr 2020 09:49:38 +0200 (CEST)
-Date:   Thu, 23 Apr 2020 07:49:37 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 3E30A1C0244;
+        Thu, 23 Apr 2020 09:49:39 +0200 (CEST)
+Date:   Thu, 23 Apr 2020 07:49:38 -0000
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] objtool: Implement noinstr validation
+Subject: [tip: objtool/core] objtool: Rename struct cfi_state
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Miroslav Benes <mbenes@suse.cz>,
         Alexandre Chartre <alexandre.chartre@oracle.com>,
         Josh Poimboeuf <jpoimboe@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200416115119.106268040@infradead.org>
-References: <20200416115119.106268040@infradead.org>
+In-Reply-To: <20200416115118.986441913@infradead.org>
+References: <20200416115118.986441913@infradead.org>
 MIME-Version: 1.0
-Message-ID: <158762817766.28353.14956833448401569914.tip-bot2@tip-bot2>
+Message-ID: <158762817881.28353.11398874953240347113.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -53,301 +53,80 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     c4a33939a7eb396acbb05569e57eebe4374cc57c
-Gitweb:        https://git.kernel.org/tip/c4a33939a7eb396acbb05569e57eebe4374cc57c
+Commit-ID:     a3608f5954d07a40fb93764dc6d06195fa52eb14
+Gitweb:        https://git.kernel.org/tip/a3608f5954d07a40fb93764dc6d06195fa52eb14
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Tue, 10 Mar 2020 18:57:41 +01:00
+AuthorDate:    Wed, 25 Mar 2020 15:34:50 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Wed, 22 Apr 2020 10:53:50 +02:00
 
-objtool: Implement noinstr validation
+objtool: Rename struct cfi_state
 
-Validate that any call out of .noinstr.text is in between
-instr_begin() and instr_end() annotations.
-
-This annotation is useful to ensure correct behaviour wrt tracing
-sensitive code like entry/exit and idle code. When we run code in a
-sensitive context we want a guarantee no unknown code is ran.
-
-Since this validation relies on knowing the section of call
-destination symbols, we must run it on vmlinux.o instead of on
-individual object files.
-
-Add two options:
-
- -d/--duplicate "duplicate validation for vmlinux"
- -l/--vmlinux "vmlinux.o validation"
-
-Where the latter auto-detects when objname ends with "vmlinux.o" and
-the former will force all validations, also those already done on
-!vmlinux object files.
+There's going to be a new struct cfi_state, rename this one to make
+place.
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Miroslav Benes <mbenes@suse.cz>
 Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
 Acked-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Link: https://lkml.kernel.org/r/20200416115119.106268040@infradead.org
+Link: https://lkml.kernel.org/r/20200416115118.986441913@infradead.org
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- tools/objtool/builtin-check.c | 11 +++-
- tools/objtool/builtin.h       |  2 +-
- tools/objtool/check.c         | 98 ++++++++++++++++++++++++++++++++++-
- tools/objtool/check.h         |  3 +-
- tools/objtool/elf.h           |  2 +-
- 5 files changed, 112 insertions(+), 4 deletions(-)
+ tools/objtool/arch.h            | 2 +-
+ tools/objtool/arch/x86/decode.c | 2 +-
+ tools/objtool/cfi.h             | 2 +-
+ tools/objtool/check.c           | 2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/tools/objtool/builtin-check.c b/tools/objtool/builtin-check.c
-index 10fbe75..be42b71 100644
---- a/tools/objtool/builtin-check.c
-+++ b/tools/objtool/builtin-check.c
-@@ -14,10 +14,11 @@
-  */
+diff --git a/tools/objtool/arch.h b/tools/objtool/arch.h
+index 55396df..561c316 100644
+--- a/tools/objtool/arch.h
++++ b/tools/objtool/arch.h
+@@ -70,7 +70,7 @@ struct stack_op {
  
- #include <subcmd/parse-options.h>
-+#include <string.h>
- #include "builtin.h"
- #include "check.h"
+ struct instruction;
  
--bool no_fp, no_unreachable, retpoline, module, backtrace, uaccess, stats;
-+bool no_fp, no_unreachable, retpoline, module, backtrace, uaccess, stats, validate_dup, vmlinux;
+-void arch_initial_func_cfi_state(struct cfi_state *state);
++void arch_initial_func_cfi_state(struct cfi_init_state *state);
  
- static const char * const check_usage[] = {
- 	"objtool check [<options>] file.o",
-@@ -32,12 +33,14 @@ const struct option check_options[] = {
- 	OPT_BOOLEAN('b', "backtrace", &backtrace, "unwind on error"),
- 	OPT_BOOLEAN('a', "uaccess", &uaccess, "enable uaccess checking"),
- 	OPT_BOOLEAN('s', "stats", &stats, "print statistics"),
-+	OPT_BOOLEAN('d', "duplicate", &validate_dup, "duplicate validation for vmlinux.o"),
-+	OPT_BOOLEAN('l', "vmlinux", &vmlinux, "vmlinux.o validation"),
- 	OPT_END(),
+ int arch_decode_instruction(struct elf *elf, struct section *sec,
+ 			    unsigned long offset, unsigned int maxlen,
+diff --git a/tools/objtool/arch/x86/decode.c b/tools/objtool/arch/x86/decode.c
+index 3273638..f0d42ad 100644
+--- a/tools/objtool/arch/x86/decode.c
++++ b/tools/objtool/arch/x86/decode.c
+@@ -512,7 +512,7 @@ int arch_decode_instruction(struct elf *elf, struct section *sec,
+ 	return 0;
+ }
+ 
+-void arch_initial_func_cfi_state(struct cfi_state *state)
++void arch_initial_func_cfi_state(struct cfi_init_state *state)
+ {
+ 	int i;
+ 
+diff --git a/tools/objtool/cfi.h b/tools/objtool/cfi.h
+index 1a3e7b8..6faf976 100644
+--- a/tools/objtool/cfi.h
++++ b/tools/objtool/cfi.h
+@@ -18,7 +18,7 @@ struct cfi_reg {
+ 	int offset;
  };
  
- int cmd_check(int argc, const char **argv)
- {
--	const char *objname;
-+	const char *objname, *s;
- 
- 	argc = parse_options(argc, argv, check_options, check_usage, 0);
- 
-@@ -46,5 +49,9 @@ int cmd_check(int argc, const char **argv)
- 
- 	objname = argv[0];
- 
-+	s = strstr(objname, "vmlinux.o");
-+	if (s && !s[9])
-+		vmlinux = true;
-+
- 	return check(objname, false);
- }
-diff --git a/tools/objtool/builtin.h b/tools/objtool/builtin.h
-index 0b90790..85c979c 100644
---- a/tools/objtool/builtin.h
-+++ b/tools/objtool/builtin.h
-@@ -8,7 +8,7 @@
- #include <subcmd/parse-options.h>
- 
- extern const struct option check_options[];
--extern bool no_fp, no_unreachable, retpoline, module, backtrace, uaccess, stats;
-+extern bool no_fp, no_unreachable, retpoline, module, backtrace, uaccess, stats, validate_dup, vmlinux;
- 
- extern int cmd_check(int argc, const char **argv);
- extern int cmd_orc(int argc, const char **argv);
+-struct cfi_state {
++struct cfi_init_state {
+ 	struct cfi_reg cfa;
+ 	struct cfi_reg regs[CFI_NUM_REGS];
+ };
 diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index abf9715..87e528c 100644
+index 464f10c..538b462 100644
 --- a/tools/objtool/check.c
 +++ b/tools/objtool/check.c
-@@ -257,6 +257,9 @@ static int decode_instructions(struct objtool_file *file)
- 		    strncmp(sec->name, ".discard.", 9))
- 			sec->text = true;
- 
-+		if (!strcmp(sec->name, ".noinstr.text"))
-+			sec->noinstr = true;
-+
- 		for (offset = 0; offset < sec->len; offset += insn->len) {
- 			insn = malloc(sizeof(*insn));
- 			if (!insn) {
-@@ -1340,6 +1343,53 @@ static int read_retpoline_hints(struct objtool_file *file)
- 	return 0;
- }
- 
-+static int read_instr_hints(struct objtool_file *file)
-+{
-+	struct section *sec;
-+	struct instruction *insn;
-+	struct rela *rela;
-+
-+	sec = find_section_by_name(file->elf, ".rela.discard.instr_end");
-+	if (!sec)
-+		return 0;
-+
-+	list_for_each_entry(rela, &sec->rela_list, list) {
-+		if (rela->sym->type != STT_SECTION) {
-+			WARN("unexpected relocation symbol type in %s", sec->name);
-+			return -1;
-+		}
-+
-+		insn = find_insn(file, rela->sym->sec, rela->addend);
-+		if (!insn) {
-+			WARN("bad .discard.instr_end entry");
-+			return -1;
-+		}
-+
-+		insn->instr--;
-+	}
-+
-+	sec = find_section_by_name(file->elf, ".rela.discard.instr_begin");
-+	if (!sec)
-+		return 0;
-+
-+	list_for_each_entry(rela, &sec->rela_list, list) {
-+		if (rela->sym->type != STT_SECTION) {
-+			WARN("unexpected relocation symbol type in %s", sec->name);
-+			return -1;
-+		}
-+
-+		insn = find_insn(file, rela->sym->sec, rela->addend);
-+		if (!insn) {
-+			WARN("bad .discard.instr_begin entry");
-+			return -1;
-+		}
-+
-+		insn->instr++;
-+	}
-+
-+	return 0;
-+}
-+
- static void mark_rodata(struct objtool_file *file)
- {
- 	struct section *sec;
-@@ -1411,6 +1461,10 @@ static int decode_sections(struct objtool_file *file)
- 	if (ret)
- 		return ret;
- 
-+	ret = read_instr_hints(file);
-+	if (ret)
-+		return ret;
-+
- 	return 0;
- }
- 
-@@ -2007,6 +2061,13 @@ static inline const char *call_dest_name(struct instruction *insn)
- 
- static int validate_call(struct instruction *insn, struct insn_state *state)
- {
-+	if (state->noinstr && state->instr <= 0 &&
-+	    (!insn->call_dest || insn->call_dest->sec != insn->sec)) {
-+		WARN_FUNC("call to %s() leaves .noinstr.text section",
-+				insn->sec, insn->offset, call_dest_name(insn));
-+		return 1;
-+	}
-+
- 	if (state->uaccess && !func_uaccess_safe(insn->call_dest)) {
- 		WARN_FUNC("call to %s() with UACCESS enabled",
- 				insn->sec, insn->offset, call_dest_name(insn));
-@@ -2035,6 +2096,12 @@ static int validate_sibling_call(struct instruction *insn, struct insn_state *st
- 
- static int validate_return(struct symbol *func, struct instruction *insn, struct insn_state *state)
- {
-+	if (state->noinstr && state->instr > 0) {
-+		WARN_FUNC("return with instrumentation enabled",
-+			  insn->sec, insn->offset);
-+		return 1;
-+	}
-+
- 	if (state->uaccess && !func_uaccess_safe(func)) {
- 		WARN_FUNC("return with UACCESS enabled",
- 			  insn->sec, insn->offset);
-@@ -2115,6 +2182,9 @@ static int validate_branch(struct objtool_file *file, struct symbol *func,
- 				return 0;
- 		}
- 
-+		if (state.noinstr)
-+			state.instr += insn->instr;
-+
- 		if (insn->hint)
- 			state.cfi = insn->cfi;
- 		else
-@@ -2422,6 +2492,14 @@ static int validate_section(struct objtool_file *file, struct section *sec)
- 	struct insn_state state;
- 	int ret, warnings = 0;
- 
-+	/*
-+	 * We need the full vmlinux for noinstr validation, otherwise we can
-+	 * not correctly determine insn->call_dest->sec (external symbols do
-+	 * not have a section).
-+	 */
-+	if (vmlinux)
-+		state.noinstr = sec->noinstr;
-+
- 	list_for_each_entry(func, &sec->symbol_list, list) {
- 		if (func->type != STT_FUNC)
- 			continue;
-@@ -2456,6 +2534,17 @@ static int validate_section(struct objtool_file *file, struct section *sec)
- 	return warnings;
- }
- 
-+static int validate_vmlinux_functions(struct objtool_file *file)
-+{
-+	struct section *sec;
-+
-+	sec = find_section_by_name(file->elf, ".noinstr.text");
-+	if (!sec)
-+		return 0;
-+
-+	return validate_section(file, sec);
-+}
-+
- static int validate_functions(struct objtool_file *file)
- {
- 	struct section *sec;
-@@ -2513,6 +2602,15 @@ int check(const char *_objname, bool orc)
- 	if (list_empty(&file.insn_list))
- 		goto out;
- 
-+	if (vmlinux && !validate_dup) {
-+		ret = validate_vmlinux_functions(&file);
-+		if (ret < 0)
-+			goto out;
-+
-+		warnings += ret;
-+		goto out;
-+	}
-+
- 	if (retpoline) {
- 		ret = validate_retpoline(&file);
- 		if (ret < 0)
-diff --git a/tools/objtool/check.h b/tools/objtool/check.h
-index 99413d4..12a9660 100644
---- a/tools/objtool/check.h
-+++ b/tools/objtool/check.h
-@@ -18,6 +18,8 @@ struct insn_state {
- 	unsigned int uaccess_stack;
- 	bool uaccess;
- 	bool df;
-+	bool noinstr;
-+	s8 instr;
+@@ -27,7 +27,7 @@ struct alternative {
  };
  
- struct instruction {
-@@ -31,6 +33,7 @@ struct instruction {
- 	bool alt_group, dead_end, ignore, ignore_alts;
- 	bool hint;
- 	bool retpoline_safe;
-+	s8 instr;
- 	u8 visited;
- 	u8 ret_offset;
- 	struct symbol *call_dest;
-diff --git a/tools/objtool/elf.h b/tools/objtool/elf.h
-index 0b79c23..eb79cb9 100644
---- a/tools/objtool/elf.h
-+++ b/tools/objtool/elf.h
-@@ -39,7 +39,7 @@ struct section {
- 	char *name;
- 	int idx;
- 	unsigned int len;
--	bool changed, text, rodata;
-+	bool changed, text, rodata, noinstr;
- };
+ const char *objname;
+-struct cfi_state initial_func_cfi;
++struct cfi_init_state initial_func_cfi;
  
- struct symbol {
+ struct instruction *find_insn(struct objtool_file *file,
+ 			      struct section *sec, unsigned long offset)
