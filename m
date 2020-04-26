@@ -2,43 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D9F81B8D76
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 26 Apr 2020 09:34:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F8EC1B9316
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 26 Apr 2020 20:42:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726116AbgDZHeH (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 26 Apr 2020 03:34:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57522 "EHLO
+        id S1726369AbgDZSm6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 26 Apr 2020 14:42:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726113AbgDZHeH (ORCPT
+        by vger.kernel.org with ESMTP id S1726346AbgDZSm5 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 26 Apr 2020 03:34:07 -0400
+        Sun, 26 Apr 2020 14:42:57 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D29FC061A0C;
-        Sun, 26 Apr 2020 00:34:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B019FC061A0F;
+        Sun, 26 Apr 2020 11:42:57 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jSbnc-0000Zr-Qr; Sun, 26 Apr 2020 09:34:00 +0200
+        id 1jSmEp-00078z-QX; Sun, 26 Apr 2020 20:42:47 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 6D1781C0178;
-        Sun, 26 Apr 2020 09:34:00 +0200 (CEST)
-Date:   Sun, 26 Apr 2020 07:33:59 -0000
-From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5C3DF1C0330;
+        Sun, 26 Apr 2020 20:42:47 +0200 (CEST)
+Date:   Sun, 26 Apr 2020 18:42:46 -0000
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] objtool: Fix infinite loop in for_offset_range()
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        Julien Thierry <jthierry@redhat.com>,
-        Miroslav Benes <mbenes@suse.cz>,
-        Peter Zijlstra <peterz@infradead.org>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <02b719674b031800b61e33c30b2e823183627c19.1587842122.git.jpoimboe@redhat.com>
-References: <02b719674b031800b61e33c30b2e823183627c19.1587842122.git.jpoimboe@redhat.com>
+Subject: [tip: x86/mm] x86/tlb: Restrict access to tlbstate
+Cc:     Thomas Gleixner <tglx@linutronix.de>, Borislav Petkov <bp@suse.de>,
+        Alexandre Chartre <alexandre.chartre@oracle.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200421092600.328438734@linutronix.de>
+References: <20200421092600.328438734@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <158788643996.28353.6941709693355737939.tip-bot2@tip-bot2>
+Message-ID: <158792656698.28353.4053878306741824988.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -52,81 +49,180 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the x86/mm branch of tip:
 
-Commit-ID:     53fb6e990d782ded62d7c76d566e107c03393b74
-Gitweb:        https://git.kernel.org/tip/53fb6e990d782ded62d7c76d566e107c03393b74
-Author:        Josh Poimboeuf <jpoimboe@redhat.com>
-AuthorDate:    Sat, 25 Apr 2020 14:19:01 -05:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sun, 26 Apr 2020 09:28:14 +02:00
+Commit-ID:     bfe3d8f6313d1e10806062ba22c5f660dddecbcc
+Gitweb:        https://git.kernel.org/tip/bfe3d8f6313d1e10806062ba22c5f660dddecbcc
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Tue, 21 Apr 2020 11:20:43 +02:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Sun, 26 Apr 2020 18:52:33 +02:00
 
-objtool: Fix infinite loop in for_offset_range()
+x86/tlb: Restrict access to tlbstate
 
-Randy reported that objtool got stuck in an infinite loop when
-processing drivers/i2c/busses/i2c-parport.o.  It was caused by the
-following code:
+Hide tlbstate, flush_tlb_info and related helpers when tlbflush.h is
+included from a module. Modules have absolutely no business with these
+internals.
 
-  00000000000001fd <line_set>:
-   1fd:	48 b8 00 00 00 00 00	movabs $0x0,%rax
-   204:	00 00 00
-			1ff: R_X86_64_64	.rodata-0x8
-   207:	41 55                	push   %r13
-   209:	41 89 f5             	mov    %esi,%r13d
-   20c:	41 54                	push   %r12
-   20e:	49 89 fc             	mov    %rdi,%r12
-   211:	55                   	push   %rbp
-   212:	48 89 d5             	mov    %rdx,%rbp
-   215:	53                   	push   %rbx
-   216:	0f b6 5a 01          	movzbl 0x1(%rdx),%ebx
-   21a:	48 8d 34 dd 00 00 00 	lea    0x0(,%rbx,8),%rsi
-   221:	00
-			21e: R_X86_64_32S	.rodata
-   222:	48 89 f1             	mov    %rsi,%rcx
-   225:	48 29 c1             	sub    %rax,%rcx
-
-find_jump_table() saw the .rodata reference and tried to find a jump
-table associated with it (though there wasn't one).  The -0x8 rela
-addend is unusual.  It caused find_jump_table() to send a negative
-table_offset (unsigned 0xfffffffffffffff8) to find_rela_by_dest().
-
-The negative offset should have been harmless, but it actually threw
-for_offset_range() for a loop... literally.  When the mask value got
-incremented past the end value, it also wrapped to zero, causing the
-loop exit condition to remain true forever.
-
-Prevent this scenario from happening by ensuring the incremented value
-is always >= the starting value.
-
-Fixes: 74b873e49d92 ("objtool: Optimize find_rela_by_dest_range()")
-Reported-by: Randy Dunlap <rdunlap@infradead.org>
-Tested-by: Randy Dunlap <rdunlap@infradead.org>
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
-Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Julien Thierry <jthierry@redhat.com>
-Cc: Miroslav Benes <mbenes@suse.cz>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/02b719674b031800b61e33c30b2e823183627c19.1587842122.git.jpoimboe@redhat.com
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20200421092600.328438734@linutronix.de
 ---
- tools/objtool/elf.h | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/x86/include/asm/tlbflush.h | 96 ++++++++++++++++----------------
+ arch/x86/mm/init.c              |  1 +-
+ 2 files changed, 49 insertions(+), 48 deletions(-)
 
-diff --git a/tools/objtool/elf.h b/tools/objtool/elf.h
-index ebbb10c..c227a2e 100644
---- a/tools/objtool/elf.h
-+++ b/tools/objtool/elf.h
-@@ -87,9 +87,10 @@ struct elf {
- #define OFFSET_STRIDE		(1UL << OFFSET_STRIDE_BITS)
- #define OFFSET_STRIDE_MASK	(~(OFFSET_STRIDE - 1))
+diff --git a/arch/x86/include/asm/tlbflush.h b/arch/x86/include/asm/tlbflush.h
+index f973121..8c87a2e 100644
+--- a/arch/x86/include/asm/tlbflush.h
++++ b/arch/x86/include/asm/tlbflush.h
+@@ -13,19 +13,46 @@
+ #include <asm/pti.h>
+ #include <asm/processor-flags.h>
  
--#define for_offset_range(_offset, _start, _end)		\
--	for (_offset = ((_start) & OFFSET_STRIDE_MASK);	\
--	     _offset <= ((_end) & OFFSET_STRIDE_MASK);	\
-+#define for_offset_range(_offset, _start, _end)			\
-+	for (_offset = ((_start) & OFFSET_STRIDE_MASK);		\
-+	     _offset >= ((_start) & OFFSET_STRIDE_MASK) &&	\
-+	     _offset <= ((_end) & OFFSET_STRIDE_MASK);		\
- 	     _offset += OFFSET_STRIDE)
+-struct flush_tlb_info;
+-
+ void __flush_tlb_all(void);
+-void flush_tlb_local(void);
+-void flush_tlb_one_user(unsigned long addr);
+-void flush_tlb_one_kernel(unsigned long addr);
+-void flush_tlb_others(const struct cpumask *cpumask,
+-		      const struct flush_tlb_info *info);
  
- static inline u32 sec_offset_hash(struct section *sec, unsigned long offset)
+-#ifdef CONFIG_PARAVIRT
+-#include <asm/paravirt.h>
+-#endif
++#define TLB_FLUSH_ALL	-1UL
++
++void cr4_update_irqsoff(unsigned long set, unsigned long clear);
++unsigned long cr4_read_shadow(void);
++
++/* Set in this cpu's CR4. */
++static inline void cr4_set_bits_irqsoff(unsigned long mask)
++{
++	cr4_update_irqsoff(mask, 0);
++}
+ 
++/* Clear in this cpu's CR4. */
++static inline void cr4_clear_bits_irqsoff(unsigned long mask)
++{
++	cr4_update_irqsoff(0, mask);
++}
++
++/* Set in this cpu's CR4. */
++static inline void cr4_set_bits(unsigned long mask)
++{
++	unsigned long flags;
++
++	local_irq_save(flags);
++	cr4_set_bits_irqsoff(mask);
++	local_irq_restore(flags);
++}
++
++/* Clear in this cpu's CR4. */
++static inline void cr4_clear_bits(unsigned long mask)
++{
++	unsigned long flags;
++
++	local_irq_save(flags);
++	cr4_clear_bits_irqsoff(mask);
++	local_irq_restore(flags);
++}
++
++#ifndef MODULE
+ /*
+  * 6 because 6 should be plenty and struct tlb_state will fit in two cache
+  * lines.
+@@ -129,54 +156,17 @@ DECLARE_PER_CPU_SHARED_ALIGNED(struct tlb_state, cpu_tlbstate);
+ bool nmi_uaccess_okay(void);
+ #define nmi_uaccess_okay nmi_uaccess_okay
+ 
+-void cr4_update_irqsoff(unsigned long set, unsigned long clear);
+-unsigned long cr4_read_shadow(void);
+-
+ /* Initialize cr4 shadow for this CPU. */
+ static inline void cr4_init_shadow(void)
+ {
+ 	this_cpu_write(cpu_tlbstate.cr4, __read_cr4());
+ }
+ 
+-/* Set in this cpu's CR4. */
+-static inline void cr4_set_bits_irqsoff(unsigned long mask)
+-{
+-	cr4_update_irqsoff(mask, 0);
+-}
+-
+-/* Clear in this cpu's CR4. */
+-static inline void cr4_clear_bits_irqsoff(unsigned long mask)
+-{
+-	cr4_update_irqsoff(0, mask);
+-}
+-
+-/* Set in this cpu's CR4. */
+-static inline void cr4_set_bits(unsigned long mask)
+-{
+-	unsigned long flags;
+-
+-	local_irq_save(flags);
+-	cr4_set_bits_irqsoff(mask);
+-	local_irq_restore(flags);
+-}
+-
+-/* Clear in this cpu's CR4. */
+-static inline void cr4_clear_bits(unsigned long mask)
+-{
+-	unsigned long flags;
+-
+-	local_irq_save(flags);
+-	cr4_clear_bits_irqsoff(mask);
+-	local_irq_restore(flags);
+-}
+-
+ extern unsigned long mmu_cr4_features;
+ extern u32 *trampoline_cr4_features;
+ 
+ extern void initialize_tlbstate_and_flush(void);
+ 
+-#define TLB_FLUSH_ALL	-1UL
+-
+ /*
+  * TLB flushing:
+  *
+@@ -215,6 +205,16 @@ struct flush_tlb_info {
+ 	bool			freed_tables;
+ };
+ 
++void flush_tlb_local(void);
++void flush_tlb_one_user(unsigned long addr);
++void flush_tlb_one_kernel(unsigned long addr);
++void flush_tlb_others(const struct cpumask *cpumask,
++		      const struct flush_tlb_info *info);
++
++#ifdef CONFIG_PARAVIRT
++#include <asm/paravirt.h>
++#endif
++
+ #define flush_tlb_mm(mm)						\
+ 		flush_tlb_mm_range(mm, 0UL, TLB_FLUSH_ALL, 0UL, true)
+ 
+@@ -255,4 +255,6 @@ static inline void arch_tlbbatch_add_mm(struct arch_tlbflush_unmap_batch *batch,
+ 
+ extern void arch_tlbbatch_flush(struct arch_tlbflush_unmap_batch *batch);
+ 
++#endif /* !MODULE */
++
+ #endif /* _ASM_X86_TLBFLUSH_H */
+diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
+index d37e816..248dc8f 100644
+--- a/arch/x86/mm/init.c
++++ b/arch/x86/mm/init.c
+@@ -992,7 +992,6 @@ __visible DEFINE_PER_CPU_SHARED_ALIGNED(struct tlb_state, cpu_tlbstate) = {
+ 	.next_asid = 1,
+ 	.cr4 = ~0UL,	/* fail hard if we screw up cr4 shadow initialization */
+ };
+-EXPORT_PER_CPU_SYMBOL(cpu_tlbstate);
+ 
+ void update_cache_mode_entry(unsigned entry, enum page_cache_mode cache)
+ {
