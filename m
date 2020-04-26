@@ -2,39 +2,46 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B0B6C1B5B5D
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 23 Apr 2020 14:26:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1DC0F1B8CFE
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 26 Apr 2020 08:47:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726803AbgDWM0r (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 23 Apr 2020 08:26:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52870 "EHLO
+        id S1726340AbgDZGry (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 26 Apr 2020 02:47:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50394 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726112AbgDWM0q (ORCPT
+        by vger.kernel.org with ESMTP id S1726264AbgDZGrx (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 23 Apr 2020 08:26:46 -0400
+        Sun, 26 Apr 2020 02:47:53 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84C6BC08E859;
-        Thu, 23 Apr 2020 05:26:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29AB6C09B052;
+        Sat, 25 Apr 2020 23:47:53 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jRawD-0005GT-Pq; Thu, 23 Apr 2020 14:26:41 +0200
+        id 1jSb4m-0008Qr-5W; Sun, 26 Apr 2020 08:47:40 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 68F581C0244;
-        Thu, 23 Apr 2020 14:26:41 +0200 (CEST)
-Date:   Thu, 23 Apr 2020 12:26:41 -0000
-From:   "tip-bot2 for Christoph Hellwig" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 697091C0178;
+        Sun, 26 Apr 2020 08:47:39 +0200 (CEST)
+Date:   Sun, 26 Apr 2020 06:47:38 -0000
+From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/mm] x86/mm: Cleanup pgprot_4k_2_large() and pgprot_large_2_4k()
-Cc:     Christoph Hellwig <hch@lst.de>, Borislav Petkov <bp@suse.de>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200408152745.1565832-4-hch@lst.de>
-References: <20200408152745.1565832-4-hch@lst.de>
+Subject: [tip: x86/urgent] x86/unwind/orc: Fix premature unwind stoppage due
+ to IRET frames
+Cc:     Miroslav Benes <mbenes@suse.cz>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        Andy Lutomirski <luto@kernel.org>, Dave Jones <dsj@fb.com>,
+        Jann Horn <jannh@google.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Vince Weaver <vincent.weaver@maine.edu>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <97a408167cc09f1cfa0de31a7b70dd88868d743f.1587808742.git.jpoimboe@redhat.com>
+References: <97a408167cc09f1cfa0de31a7b70dd88868d743f.1587808742.git.jpoimboe@redhat.com>
 MIME-Version: 1.0
-Message-ID: <158764480102.28353.2171209150662834670.tip-bot2@tip-bot2>
+Message-ID: <158788365893.28353.8688775010486782294.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,118 +55,224 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/mm branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     d073569363d9f076a568ce8c31250d332ccf33ce
-Gitweb:        https://git.kernel.org/tip/d073569363d9f076a568ce8c31250d332ccf33ce
-Author:        Christoph Hellwig <hch@lst.de>
-AuthorDate:    Wed, 08 Apr 2020 17:27:44 +02:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Thu, 23 Apr 2020 11:31:52 +02:00
+Commit-ID:     81b67439d147677d844d492fcbd03712ea438f42
+Gitweb:        https://git.kernel.org/tip/81b67439d147677d844d492fcbd03712ea438f42
+Author:        Josh Poimboeuf <jpoimboe@redhat.com>
+AuthorDate:    Sat, 25 Apr 2020 05:06:14 -05:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Sat, 25 Apr 2020 12:22:29 +02:00
 
-x86/mm: Cleanup pgprot_4k_2_large() and pgprot_large_2_4k()
+x86/unwind/orc: Fix premature unwind stoppage due to IRET frames
 
-Make use of lower level helpers that operate on the raw protection
-values to make the code a little easier to understand, and to also
-avoid extra conversions in a few callers.
+The following execution path is possible:
 
-[ Qian: Fix a wrongly placed bracket in the original submission.
-  Reported and fixed by Qian Cai <cai@lca.pw>. Details in second
-  Link: below. ]
+  fsnotify()
+    [ realign the stack and store previous SP in R10 ]
+    <IRQ>
+      [ only IRET regs saved ]
+      common_interrupt()
+        interrupt_entry()
+	  <NMI>
+	    [ full pt_regs saved ]
+	    ...
+	    [ unwind stack ]
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20200408152745.1565832-4-hch@lst.de
-Link: https://lkml.kernel.org/r/1ED37D02-125F-4919-861A-371981581D9E@lca.pw
+When the unwinder goes through the NMI and the IRQ on the stack, and
+then sees fsnotify(), it doesn't have access to the value of R10,
+because it only has the five IRET registers.  So the unwind stops
+prematurely.
+
+However, because the interrupt_entry() code is careful not to clobber
+R10 before saving the full regs, the unwinder should be able to read R10
+from the previously saved full pt_regs associated with the NMI.
+
+Handle this case properly.  When encountering an IRET regs frame
+immediately after a full pt_regs frame, use the pt_regs as a backup
+which can be used to get the C register values.
+
+Also, note that a call frame resets the 'prev_regs' value, because a
+function is free to clobber the registers.  For this fix to work, the
+IRET and full regs frames must be adjacent, with no FUNC frames in
+between.  So replace the FUNC hint in interrupt_entry() with an
+IRET_REGS hint.
+
+Fixes: ee9f8fce9964 ("x86/unwind: Add the ORC unwinder")
+Reviewed-by: Miroslav Benes <mbenes@suse.cz>
+Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Dave Jones <dsj@fb.com>
+Cc: Jann Horn <jannh@google.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Vince Weaver <vincent.weaver@maine.edu>
+Link: https://lore.kernel.org/r/97a408167cc09f1cfa0de31a7b70dd88868d743f.1587808742.git.jpoimboe@redhat.com
 ---
- arch/x86/include/asm/pgtable_types.h | 26 +++++++++++++-------------
- arch/x86/mm/init_64.c                |  2 +-
- arch/x86/mm/pgtable.c                |  8 ++------
- 3 files changed, 16 insertions(+), 20 deletions(-)
+ arch/x86/entry/entry_64.S     |  4 +--
+ arch/x86/include/asm/unwind.h |  2 +-
+ arch/x86/kernel/unwind_orc.c  | 51 ++++++++++++++++++++++++++--------
+ 3 files changed, 43 insertions(+), 14 deletions(-)
 
-diff --git a/arch/x86/include/asm/pgtable_types.h b/arch/x86/include/asm/pgtable_types.h
-index 75fe903..a3b78d8 100644
---- a/arch/x86/include/asm/pgtable_types.h
-+++ b/arch/x86/include/asm/pgtable_types.h
-@@ -488,24 +488,24 @@ static inline pgprot_t cachemode2pgprot(enum page_cache_mode pcm)
- {
- 	return __pgprot(cachemode2protval(pcm));
+diff --git a/arch/x86/entry/entry_64.S b/arch/x86/entry/entry_64.S
+index 9fe0d5c..3063aa9 100644
+--- a/arch/x86/entry/entry_64.S
++++ b/arch/x86/entry/entry_64.S
+@@ -511,7 +511,7 @@ SYM_CODE_END(spurious_entries_start)
+  * +----------------------------------------------------+
+  */
+ SYM_CODE_START(interrupt_entry)
+-	UNWIND_HINT_FUNC
++	UNWIND_HINT_IRET_REGS offset=16
+ 	ASM_CLAC
+ 	cld
+ 
+@@ -543,9 +543,9 @@ SYM_CODE_START(interrupt_entry)
+ 	pushq	5*8(%rdi)		/* regs->eflags */
+ 	pushq	4*8(%rdi)		/* regs->cs */
+ 	pushq	3*8(%rdi)		/* regs->ip */
++	UNWIND_HINT_IRET_REGS
+ 	pushq	2*8(%rdi)		/* regs->orig_ax */
+ 	pushq	8(%rdi)			/* return address */
+-	UNWIND_HINT_FUNC
+ 
+ 	movq	(%rdi), %rdi
+ 	jmp	2f
+diff --git a/arch/x86/include/asm/unwind.h b/arch/x86/include/asm/unwind.h
+index 499578f..70fc159 100644
+--- a/arch/x86/include/asm/unwind.h
++++ b/arch/x86/include/asm/unwind.h
+@@ -19,7 +19,7 @@ struct unwind_state {
+ #if defined(CONFIG_UNWINDER_ORC)
+ 	bool signal, full_regs;
+ 	unsigned long sp, bp, ip;
+-	struct pt_regs *regs;
++	struct pt_regs *regs, *prev_regs;
+ #elif defined(CONFIG_UNWINDER_FRAME_POINTER)
+ 	bool got_irq;
+ 	unsigned long *bp, *orig_sp, ip;
+diff --git a/arch/x86/kernel/unwind_orc.c b/arch/x86/kernel/unwind_orc.c
+index 33b80a7..0ebc11a 100644
+--- a/arch/x86/kernel/unwind_orc.c
++++ b/arch/x86/kernel/unwind_orc.c
+@@ -384,9 +384,38 @@ static bool deref_stack_iret_regs(struct unwind_state *state, unsigned long addr
+ 	return true;
  }
--static inline pgprot_t pgprot_4k_2_large(pgprot_t pgprot)
-+static inline unsigned long protval_4k_2_large(unsigned long val)
- {
--	pgprotval_t val = pgprot_val(pgprot);
--	pgprot_t new;
--
--	pgprot_val(new) = (val & ~(_PAGE_PAT | _PAGE_PAT_LARGE)) |
-+	return (val & ~(_PAGE_PAT | _PAGE_PAT_LARGE)) |
- 		((val & _PAGE_PAT) << (_PAGE_BIT_PAT_LARGE - _PAGE_BIT_PAT));
--	return new;
-+}
-+static inline pgprot_t pgprot_4k_2_large(pgprot_t pgprot)
+ 
++/*
++ * If state->regs is non-NULL, and points to a full pt_regs, just get the reg
++ * value from state->regs.
++ *
++ * Otherwise, if state->regs just points to IRET regs, and the previous frame
++ * had full regs, it's safe to get the value from the previous regs.  This can
++ * happen when early/late IRQ entry code gets interrupted by an NMI.
++ */
++static bool get_reg(struct unwind_state *state, unsigned int reg_off,
++		    unsigned long *val)
 +{
-+	return __pgprot(protval_4k_2_large(pgprot_val(pgprot)));
++	unsigned int reg = reg_off/8;
++
++	if (!state->regs)
++		return false;
++
++	if (state->full_regs) {
++		*val = ((unsigned long *)state->regs)[reg];
++		return true;
++	}
++
++	if (state->prev_regs) {
++		*val = ((unsigned long *)state->prev_regs)[reg];
++		return true;
++	}
++
++	return false;
 +}
-+static inline unsigned long protval_large_2_4k(unsigned long val)
-+{
-+	return (val & ~(_PAGE_PAT | _PAGE_PAT_LARGE)) |
-+		((val & _PAGE_PAT_LARGE) >>
-+		 (_PAGE_BIT_PAT_LARGE - _PAGE_BIT_PAT));
- }
- static inline pgprot_t pgprot_large_2_4k(pgprot_t pgprot)
++
+ bool unwind_next_frame(struct unwind_state *state)
  {
--	pgprotval_t val = pgprot_val(pgprot);
--	pgprot_t new;
--
--	pgprot_val(new) = (val & ~(_PAGE_PAT | _PAGE_PAT_LARGE)) |
--			  ((val & _PAGE_PAT_LARGE) >>
--			   (_PAGE_BIT_PAT_LARGE - _PAGE_BIT_PAT));
--	return new;
-+	return __pgprot(protval_large_2_4k(pgprot_val(pgprot)));
- }
+-	unsigned long ip_p, sp, orig_ip = state->ip, prev_sp = state->sp;
++	unsigned long ip_p, sp, tmp, orig_ip = state->ip, prev_sp = state->sp;
+ 	enum stack_type prev_type = state->stack_info.type;
+ 	struct orc_entry *orc;
+ 	bool indirect = false;
+@@ -448,39 +477,35 @@ bool unwind_next_frame(struct unwind_state *state)
+ 		break;
  
+ 	case ORC_REG_R10:
+-		if (!state->regs || !state->full_regs) {
++		if (!get_reg(state, offsetof(struct pt_regs, r10), &sp)) {
+ 			orc_warn_current("missing R10 value at %pB\n",
+ 					 (void *)state->ip);
+ 			goto err;
+ 		}
+-		sp = state->regs->r10;
+ 		break;
  
-diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
-index 3b289c2..9a497ba 100644
---- a/arch/x86/mm/init_64.c
-+++ b/arch/x86/mm/init_64.c
-@@ -367,7 +367,7 @@ static void __init __init_extra_mapping(unsigned long phys, unsigned long size,
- 	pgprot_t prot;
+ 	case ORC_REG_R13:
+-		if (!state->regs || !state->full_regs) {
++		if (!get_reg(state, offsetof(struct pt_regs, r13), &sp)) {
+ 			orc_warn_current("missing R13 value at %pB\n",
+ 					 (void *)state->ip);
+ 			goto err;
+ 		}
+-		sp = state->regs->r13;
+ 		break;
  
- 	pgprot_val(prot) = pgprot_val(PAGE_KERNEL_LARGE) |
--		pgprot_val(pgprot_4k_2_large(cachemode2pgprot(cache)));
-+		protval_4k_2_large(cachemode2protval(cache));
- 	BUG_ON((phys & ~PMD_MASK) || (size & ~PMD_MASK));
- 	for (; size; phys += PMD_SIZE, size -= PMD_SIZE) {
- 		pgd = pgd_offset_k((unsigned long)__va(phys));
-diff --git a/arch/x86/mm/pgtable.c b/arch/x86/mm/pgtable.c
-index 7bd2c3a..c54d1d0 100644
---- a/arch/x86/mm/pgtable.c
-+++ b/arch/x86/mm/pgtable.c
-@@ -706,11 +706,9 @@ int pud_set_huge(pud_t *pud, phys_addr_t addr, pgprot_t prot)
- 	if (pud_present(*pud) && !pud_huge(*pud))
- 		return 0;
+ 	case ORC_REG_DI:
+-		if (!state->regs || !state->full_regs) {
++		if (!get_reg(state, offsetof(struct pt_regs, di), &sp)) {
+ 			orc_warn_current("missing RDI value at %pB\n",
+ 					 (void *)state->ip);
+ 			goto err;
+ 		}
+-		sp = state->regs->di;
+ 		break;
  
--	prot = pgprot_4k_2_large(prot);
--
- 	set_pte((pte_t *)pud, pfn_pte(
- 		(u64)addr >> PAGE_SHIFT,
--		__pgprot(pgprot_val(prot) | _PAGE_PSE)));
-+		__pgprot(protval_4k_2_large(pgprot_val(prot)) | _PAGE_PSE)));
+ 	case ORC_REG_DX:
+-		if (!state->regs || !state->full_regs) {
++		if (!get_reg(state, offsetof(struct pt_regs, dx), &sp)) {
+ 			orc_warn_current("missing DX value at %pB\n",
+ 					 (void *)state->ip);
+ 			goto err;
+ 		}
+-		sp = state->regs->dx;
+ 		break;
  
- 	return 1;
- }
-@@ -738,11 +736,9 @@ int pmd_set_huge(pmd_t *pmd, phys_addr_t addr, pgprot_t prot)
- 	if (pmd_present(*pmd) && !pmd_huge(*pmd))
- 		return 0;
+ 	default:
+@@ -507,6 +532,7 @@ bool unwind_next_frame(struct unwind_state *state)
  
--	prot = pgprot_4k_2_large(prot);
--
- 	set_pte((pte_t *)pmd, pfn_pte(
- 		(u64)addr >> PAGE_SHIFT,
--		__pgprot(pgprot_val(prot) | _PAGE_PSE)));
-+		__pgprot(protval_4k_2_large(pgprot_val(prot)) | _PAGE_PSE)));
+ 		state->sp = sp;
+ 		state->regs = NULL;
++		state->prev_regs = NULL;
+ 		state->signal = false;
+ 		break;
  
- 	return 1;
- }
+@@ -518,6 +544,7 @@ bool unwind_next_frame(struct unwind_state *state)
+ 		}
+ 
+ 		state->regs = (struct pt_regs *)sp;
++		state->prev_regs = NULL;
+ 		state->full_regs = true;
+ 		state->signal = true;
+ 		break;
+@@ -529,6 +556,8 @@ bool unwind_next_frame(struct unwind_state *state)
+ 			goto err;
+ 		}
+ 
++		if (state->full_regs)
++			state->prev_regs = state->regs;
+ 		state->regs = (void *)sp - IRET_FRAME_OFFSET;
+ 		state->full_regs = false;
+ 		state->signal = true;
+@@ -543,8 +572,8 @@ bool unwind_next_frame(struct unwind_state *state)
+ 	/* Find BP: */
+ 	switch (orc->bp_reg) {
+ 	case ORC_REG_UNDEFINED:
+-		if (state->regs && state->full_regs)
+-			state->bp = state->regs->bp;
++		if (get_reg(state, offsetof(struct pt_regs, bp), &tmp))
++			state->bp = tmp;
+ 		break;
+ 
+ 	case ORC_REG_PREV_SP:
