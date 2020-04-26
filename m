@@ -2,40 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B07F1B9327
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 26 Apr 2020 20:44:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 161A51B9320
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 26 Apr 2020 20:43:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726431AbgDZSnC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 26 Apr 2020 14:43:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47894 "EHLO
+        id S1726501AbgDZSnL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 26 Apr 2020 14:43:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47922 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726312AbgDZSnC (ORCPT
+        by vger.kernel.org with ESMTP id S1726491AbgDZSnK (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 26 Apr 2020 14:43:02 -0400
+        Sun, 26 Apr 2020 14:43:10 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68E57C061A0F;
-        Sun, 26 Apr 2020 11:43:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1EE9C061A0F;
+        Sun, 26 Apr 2020 11:43:10 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jSmEz-0007Dc-3K; Sun, 26 Apr 2020 20:42:57 +0200
+        id 1jSmF0-0007E9-2P; Sun, 26 Apr 2020 20:42:58 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A9D4B1C0334;
-        Sun, 26 Apr 2020 20:42:53 +0200 (CEST)
-Date:   Sun, 26 Apr 2020 18:42:53 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B1C041C03A9;
+        Sun, 26 Apr 2020 20:42:54 +0200 (CEST)
+Date:   Sun, 26 Apr 2020 18:42:54 -0000
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/mm] x86/alternatives: Move temporary_mm helpers into C
+Subject: [tip: x86/mm] x86/cpu: Uninline CR4 accessors
 Cc:     Thomas Gleixner <tglx@linutronix.de>, Borislav Petkov <bp@suse.de>,
         Alexandre Chartre <alexandre.chartre@oracle.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200421092559.139069561@linutronix.de>
-References: <20200421092559.139069561@linutronix.de>
+In-Reply-To: <20200421092558.939985695@linutronix.de>
+References: <20200421092558.939985695@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <158792657329.28353.15454847420595201595.tip-bot2@tip-bot2>
+Message-ID: <158792657431.28353.5998160034997742089.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,157 +51,163 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/mm branch of tip:
 
-Commit-ID:     9020d3956317d052cdddd43e55acdd2970344192
-Gitweb:        https://git.kernel.org/tip/9020d3956317d052cdddd43e55acdd2970344192
+Commit-ID:     d8f0b35331c4423e033f81f10eb5e0c7e4e1dcec
+Gitweb:        https://git.kernel.org/tip/d8f0b35331c4423e033f81f10eb5e0c7e4e1dcec
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Tue, 21 Apr 2020 11:20:31 +02:00
+AuthorDate:    Tue, 21 Apr 2020 11:20:29 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Fri, 24 Apr 2020 19:12:56 +02:00
+CommitterDate: Fri, 24 Apr 2020 18:46:42 +02:00
 
-x86/alternatives: Move temporary_mm helpers into C
+x86/cpu: Uninline CR4 accessors
 
-The only user of these inlines is the text poke code and this must not be
-exposed to the world.
+cpu_tlbstate is exported because various TLB-related functions need
+access to it, but cpu_tlbstate is sensitive information which should
+only be accessed by well-contained kernel functions and not be directly
+exposed to modules.
+
+The various CR4 accessors require cpu_tlbstate as the CR4 shadow cache
+is located there.
+
+In preparation for unexporting cpu_tlbstate, create a builtin function
+for manipulating CR4 and rework the various helpers to use it.
 
 No functional change.
+
+ [ bp: push the export of native_write_cr4() only when CONFIG_LKTDM=m to
+   the last patch in the series. ]
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Borislav Petkov <bp@suse.de>
 Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
 Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20200421092559.139069561@linutronix.de
+Link: https://lkml.kernel.org/r/20200421092558.939985695@linutronix.de
 ---
- arch/x86/include/asm/mmu_context.h | 55 +-----------------------------
- arch/x86/kernel/alternative.c      | 55 +++++++++++++++++++++++++++++-
- 2 files changed, 55 insertions(+), 55 deletions(-)
+ arch/x86/include/asm/tlbflush.h | 36 ++++----------------------------
+ arch/x86/kernel/cpu/common.c    | 23 +++++++++++++++++++-
+ arch/x86/kernel/process.c       | 11 ++++++++++-
+ 3 files changed, 38 insertions(+), 32 deletions(-)
 
-diff --git a/arch/x86/include/asm/mmu_context.h b/arch/x86/include/asm/mmu_context.h
-index 2985d06..4756214 100644
---- a/arch/x86/include/asm/mmu_context.h
-+++ b/arch/x86/include/asm/mmu_context.h
-@@ -215,59 +215,4 @@ static inline bool arch_vma_access_permitted(struct vm_area_struct *vma,
+diff --git a/arch/x86/include/asm/tlbflush.h b/arch/x86/include/asm/tlbflush.h
+index 6f66d84..d804030 100644
+--- a/arch/x86/include/asm/tlbflush.h
++++ b/arch/x86/include/asm/tlbflush.h
+@@ -276,37 +276,25 @@ static inline bool nmi_uaccess_okay(void)
  
- unsigned long __get_current_cr3_fast(void);
+ #define nmi_uaccess_okay nmi_uaccess_okay
  
--typedef struct {
--	struct mm_struct *mm;
--} temp_mm_state_t;
--
--/*
-- * Using a temporary mm allows to set temporary mappings that are not accessible
-- * by other CPUs. Such mappings are needed to perform sensitive memory writes
-- * that override the kernel memory protections (e.g., W^X), without exposing the
-- * temporary page-table mappings that are required for these write operations to
-- * other CPUs. Using a temporary mm also allows to avoid TLB shootdowns when the
-- * mapping is torn down.
-- *
-- * Context: The temporary mm needs to be used exclusively by a single core. To
-- *          harden security IRQs must be disabled while the temporary mm is
-- *          loaded, thereby preventing interrupt handler bugs from overriding
-- *          the kernel memory protection.
-- */
--static inline temp_mm_state_t use_temporary_mm(struct mm_struct *mm)
--{
--	temp_mm_state_t temp_state;
--
--	lockdep_assert_irqs_disabled();
--	temp_state.mm = this_cpu_read(cpu_tlbstate.loaded_mm);
--	switch_mm_irqs_off(NULL, mm, current);
--
--	/*
--	 * If breakpoints are enabled, disable them while the temporary mm is
--	 * used. Userspace might set up watchpoints on addresses that are used
--	 * in the temporary mm, which would lead to wrong signals being sent or
--	 * crashes.
--	 *
--	 * Note that breakpoints are not disabled selectively, which also causes
--	 * kernel breakpoints (e.g., perf's) to be disabled. This might be
--	 * undesirable, but still seems reasonable as the code that runs in the
--	 * temporary mm should be short.
--	 */
--	if (hw_breakpoint_active())
--		hw_breakpoint_disable();
--
--	return temp_state;
--}
--
--static inline void unuse_temporary_mm(temp_mm_state_t prev_state)
--{
--	lockdep_assert_irqs_disabled();
--	switch_mm_irqs_off(NULL, prev_state.mm, current);
--
--	/*
--	 * Restore the breakpoints if they were disabled before the temporary mm
--	 * was loaded.
--	 */
--	if (hw_breakpoint_active())
--		hw_breakpoint_restore();
--}
--
- #endif /* _ASM_X86_MMU_CONTEXT_H */
-diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
-index 7867dfb..cd61797 100644
---- a/arch/x86/kernel/alternative.c
-+++ b/arch/x86/kernel/alternative.c
-@@ -783,6 +783,61 @@ void __init_or_module text_poke_early(void *addr, const void *opcode,
- 	}
++void cr4_update_irqsoff(unsigned long set, unsigned long clear);
++unsigned long cr4_read_shadow(void);
++
+ /* Initialize cr4 shadow for this CPU. */
+ static inline void cr4_init_shadow(void)
+ {
+ 	this_cpu_write(cpu_tlbstate.cr4, __read_cr4());
  }
  
-+typedef struct {
-+	struct mm_struct *mm;
-+} temp_mm_state_t;
-+
-+/*
-+ * Using a temporary mm allows to set temporary mappings that are not accessible
-+ * by other CPUs. Such mappings are needed to perform sensitive memory writes
-+ * that override the kernel memory protections (e.g., W^X), without exposing the
-+ * temporary page-table mappings that are required for these write operations to
-+ * other CPUs. Using a temporary mm also allows to avoid TLB shootdowns when the
-+ * mapping is torn down.
-+ *
-+ * Context: The temporary mm needs to be used exclusively by a single core. To
-+ *          harden security IRQs must be disabled while the temporary mm is
-+ *          loaded, thereby preventing interrupt handler bugs from overriding
-+ *          the kernel memory protection.
-+ */
-+static inline temp_mm_state_t use_temporary_mm(struct mm_struct *mm)
-+{
-+	temp_mm_state_t temp_state;
-+
-+	lockdep_assert_irqs_disabled();
-+	temp_state.mm = this_cpu_read(cpu_tlbstate.loaded_mm);
-+	switch_mm_irqs_off(NULL, mm, current);
-+
-+	/*
-+	 * If breakpoints are enabled, disable them while the temporary mm is
-+	 * used. Userspace might set up watchpoints on addresses that are used
-+	 * in the temporary mm, which would lead to wrong signals being sent or
-+	 * crashes.
-+	 *
-+	 * Note that breakpoints are not disabled selectively, which also causes
-+	 * kernel breakpoints (e.g., perf's) to be disabled. This might be
-+	 * undesirable, but still seems reasonable as the code that runs in the
-+	 * temporary mm should be short.
-+	 */
-+	if (hw_breakpoint_active())
-+		hw_breakpoint_disable();
-+
-+	return temp_state;
-+}
-+
-+static inline void unuse_temporary_mm(temp_mm_state_t prev_state)
-+{
-+	lockdep_assert_irqs_disabled();
-+	switch_mm_irqs_off(NULL, prev_state.mm, current);
-+
-+	/*
-+	 * Restore the breakpoints if they were disabled before the temporary mm
-+	 * was loaded.
-+	 */
-+	if (hw_breakpoint_active())
-+		hw_breakpoint_restore();
-+}
-+
- __ro_after_init struct mm_struct *poking_mm;
- __ro_after_init unsigned long poking_addr;
+-static inline void __cr4_set(unsigned long cr4)
+-{
+-	lockdep_assert_irqs_disabled();
+-	this_cpu_write(cpu_tlbstate.cr4, cr4);
+-	__write_cr4(cr4);
+-}
+-
+ /* Set in this cpu's CR4. */
+ static inline void cr4_set_bits_irqsoff(unsigned long mask)
+ {
+-	unsigned long cr4;
+-
+-	cr4 = this_cpu_read(cpu_tlbstate.cr4);
+-	if ((cr4 | mask) != cr4)
+-		__cr4_set(cr4 | mask);
++	cr4_update_irqsoff(mask, 0);
+ }
  
+ /* Clear in this cpu's CR4. */
+ static inline void cr4_clear_bits_irqsoff(unsigned long mask)
+ {
+-	unsigned long cr4;
+-
+-	cr4 = this_cpu_read(cpu_tlbstate.cr4);
+-	if ((cr4 & ~mask) != cr4)
+-		__cr4_set(cr4 & ~mask);
++	cr4_update_irqsoff(0, mask);
+ }
+ 
+ /* Set in this cpu's CR4. */
+@@ -329,20 +317,6 @@ static inline void cr4_clear_bits(unsigned long mask)
+ 	local_irq_restore(flags);
+ }
+ 
+-static inline void cr4_toggle_bits_irqsoff(unsigned long mask)
+-{
+-	unsigned long cr4;
+-
+-	cr4 = this_cpu_read(cpu_tlbstate.cr4);
+-	__cr4_set(cr4 ^ mask);
+-}
+-
+-/* Read the CR4 shadow. */
+-static inline unsigned long cr4_read_shadow(void)
+-{
+-	return this_cpu_read(cpu_tlbstate.cr4);
+-}
+-
+ /*
+  * Mark all other ASIDs as invalid, preserves the current.
+  */
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index bed0cb8..82042f4 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -387,7 +387,28 @@ set_register:
+ 			  bits_missing);
+ 	}
+ }
+-EXPORT_SYMBOL(native_write_cr4);
++EXPORT_SYMBOL_GPL(native_write_cr4);
++
++void cr4_update_irqsoff(unsigned long set, unsigned long clear)
++{
++	unsigned long newval, cr4 = this_cpu_read(cpu_tlbstate.cr4);
++
++	lockdep_assert_irqs_disabled();
++
++	newval = (cr4 & ~clear) | set;
++	if (newval != cr4) {
++		this_cpu_write(cpu_tlbstate.cr4, newval);
++		__write_cr4(newval);
++	}
++}
++EXPORT_SYMBOL(cr4_update_irqsoff);
++
++/* Read the CR4 shadow. */
++unsigned long cr4_read_shadow(void)
++{
++	return this_cpu_read(cpu_tlbstate.cr4);
++}
++EXPORT_SYMBOL_GPL(cr4_read_shadow);
+ 
+ void cr4_init(void)
+ {
+diff --git a/arch/x86/kernel/process.c b/arch/x86/kernel/process.c
+index 9da70b2..f2eab49 100644
+--- a/arch/x86/kernel/process.c
++++ b/arch/x86/kernel/process.c
+@@ -612,6 +612,17 @@ void speculation_ctrl_update_current(void)
+ 	preempt_enable();
+ }
+ 
++static inline void cr4_toggle_bits_irqsoff(unsigned long mask)
++{
++	unsigned long newval, cr4 = this_cpu_read(cpu_tlbstate.cr4);
++
++	newval = cr4 ^ mask;
++	if (newval != cr4) {
++		this_cpu_write(cpu_tlbstate.cr4, newval);
++		__write_cr4(newval);
++	}
++}
++
+ void __switch_to_xtra(struct task_struct *prev_p, struct task_struct *next_p)
+ {
+ 	unsigned long tifp, tifn;
