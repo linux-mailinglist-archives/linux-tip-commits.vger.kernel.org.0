@@ -2,41 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 47A331B9319
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 26 Apr 2020 20:43:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 033D81B93D5
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 26 Apr 2020 22:04:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726420AbgDZSnC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 26 Apr 2020 14:43:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47886 "EHLO
+        id S1726179AbgDZUEV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 26 Apr 2020 16:04:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60458 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726410AbgDZSnB (ORCPT
+        by vger.kernel.org with ESMTP id S1726171AbgDZUEV (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 26 Apr 2020 14:43:01 -0400
+        Sun, 26 Apr 2020 16:04:21 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 687D6C061A41;
-        Sun, 26 Apr 2020 11:43:01 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E433C061A0F;
+        Sun, 26 Apr 2020 13:04:21 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jSmEx-0007Eb-I7; Sun, 26 Apr 2020 20:42:55 +0200
+        id 1jSnVg-0008Ho-Lt; Sun, 26 Apr 2020 22:04:16 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 33C051C0178;
-        Sun, 26 Apr 2020 20:42:55 +0200 (CEST)
-Date:   Sun, 26 Apr 2020 18:42:54 -0000
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 27AA41C0178;
+        Sun, 26 Apr 2020 22:04:16 +0200 (CEST)
+Date:   Sun, 26 Apr 2020 20:04:15 -0000
+From:   "tip-bot2 for Alex Shi" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/mm] x86/tlb: Uninline __get_current_cr3_fast()
-Cc:     Thomas Gleixner <tglx@linutronix.de>, Borislav Petkov <bp@suse.de>,
-        Alexandre Chartre <alexandre.chartre@oracle.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Andy Lutomirski <luto@kernel.org>, x86 <x86@kernel.org>,
+Subject: [tip: locking/core] locking/rtmutex: Remove unused rt_mutex_cmpxchg_relaxed()
+Cc:     Alex Shi <alex.shi@linux.alibaba.com>,
+        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200421092558.848064318@linutronix.de>
-References: <20200421092558.848064318@linutronix.de>
+In-Reply-To: <1587135032-188866-1-git-send-email-alex.shi@linux.alibaba.com>
+References: <1587135032-188866-1-git-send-email-alex.shi@linux.alibaba.com>
 MIME-Version: 1.0
-Message-ID: <158792657479.28353.17566281114631962456.tip-bot2@tip-bot2>
+Message-ID: <158793145566.28353.9444039451488831754.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,96 +48,42 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/mm branch of tip:
+The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     8c5cc19e94703182647dfccc164e4437a04539c8
-Gitweb:        https://git.kernel.org/tip/8c5cc19e94703182647dfccc164e4437a04539c8
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Tue, 21 Apr 2020 11:20:28 +02:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Fri, 24 Apr 2020 15:55:50 +02:00
+Commit-ID:     2f879e9f05f7806d0885b57532831176204e411f
+Gitweb:        https://git.kernel.org/tip/2f879e9f05f7806d0885b57532831176204e411f
+Author:        Alex Shi <alex.shi@linux.alibaba.com>
+AuthorDate:    Fri, 17 Apr 2020 22:50:31 +08:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Sun, 26 Apr 2020 21:58:42 +02:00
 
-x86/tlb: Uninline __get_current_cr3_fast()
+locking/rtmutex: Remove unused rt_mutex_cmpxchg_relaxed()
 
-cpu_tlbstate is exported because various TLB-related functions need
-access to it, but cpu_tlbstate is sensitive information which should
-only be accessed by well-contained kernel functions and not be directly
-exposed to modules.
-
-In preparation for unexporting cpu_tlbstate move __get_current_cr3_fast()
-into the x86 TLB management code.
-
-No functional change.
-
+Signed-off-by: Alex Shi <alex.shi@linux.alibaba.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Andy Lutomirski <luto@kernel.org>
-Link: https://lkml.kernel.org/r/20200421092558.848064318@linutronix.de
----
- arch/x86/include/asm/mmu_context.h | 19 +------------------
- arch/x86/mm/tlb.c                  | 20 ++++++++++++++++++++
- 2 files changed, 21 insertions(+), 18 deletions(-)
+Link: https://lkml.kernel.org/r/1587135032-188866-1-git-send-email-alex.shi@linux.alibaba.com
 
-diff --git a/arch/x86/include/asm/mmu_context.h b/arch/x86/include/asm/mmu_context.h
-index 4e55370..9608536 100644
---- a/arch/x86/include/asm/mmu_context.h
-+++ b/arch/x86/include/asm/mmu_context.h
-@@ -225,24 +225,7 @@ static inline bool arch_vma_access_permitted(struct vm_area_struct *vma,
- 	return __pkru_allows_pkey(vma_pkey(vma), write);
+---
+ kernel/locking/rtmutex.c | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/kernel/locking/rtmutex.c b/kernel/locking/rtmutex.c
+index 851bbb1..7ad22ea 100644
+--- a/kernel/locking/rtmutex.c
++++ b/kernel/locking/rtmutex.c
+@@ -141,7 +141,6 @@ static void fixup_rt_mutex_waiters(struct rt_mutex *lock)
+  * set up.
+  */
+ #ifndef CONFIG_DEBUG_RT_MUTEXES
+-# define rt_mutex_cmpxchg_relaxed(l,c,n) (cmpxchg_relaxed(&l->owner, c, n) == c)
+ # define rt_mutex_cmpxchg_acquire(l,c,n) (cmpxchg_acquire(&l->owner, c, n) == c)
+ # define rt_mutex_cmpxchg_release(l,c,n) (cmpxchg_release(&l->owner, c, n) == c)
+ 
+@@ -202,7 +201,6 @@ static inline bool unlock_rt_mutex_safe(struct rt_mutex *lock,
  }
  
--/*
-- * This can be used from process context to figure out what the value of
-- * CR3 is without needing to do a (slow) __read_cr3().
-- *
-- * It's intended to be used for code like KVM that sneakily changes CR3
-- * and needs to restore it.  It needs to be used very carefully.
-- */
--static inline unsigned long __get_current_cr3_fast(void)
--{
--	unsigned long cr3 = build_cr3(this_cpu_read(cpu_tlbstate.loaded_mm)->pgd,
--		this_cpu_read(cpu_tlbstate.loaded_mm_asid));
--
--	/* For now, be very restrictive about when this can be called. */
--	VM_WARN_ON(in_nmi() || preemptible());
--
--	VM_BUG_ON(cr3 != __read_cr3());
--	return cr3;
--}
-+unsigned long __get_current_cr3_fast(void);
+ #else
+-# define rt_mutex_cmpxchg_relaxed(l,c,n)	(0)
+ # define rt_mutex_cmpxchg_acquire(l,c,n)	(0)
+ # define rt_mutex_cmpxchg_release(l,c,n)	(0)
  
- typedef struct {
- 	struct mm_struct *mm;
-diff --git a/arch/x86/mm/tlb.c b/arch/x86/mm/tlb.c
-index 66f96f2..ea6f98a 100644
---- a/arch/x86/mm/tlb.c
-+++ b/arch/x86/mm/tlb.c
-@@ -844,6 +844,26 @@ void flush_tlb_kernel_range(unsigned long start, unsigned long end)
- }
- 
- /*
-+ * This can be used from process context to figure out what the value of
-+ * CR3 is without needing to do a (slow) __read_cr3().
-+ *
-+ * It's intended to be used for code like KVM that sneakily changes CR3
-+ * and needs to restore it.  It needs to be used very carefully.
-+ */
-+unsigned long __get_current_cr3_fast(void)
-+{
-+	unsigned long cr3 = build_cr3(this_cpu_read(cpu_tlbstate.loaded_mm)->pgd,
-+		this_cpu_read(cpu_tlbstate.loaded_mm_asid));
-+
-+	/* For now, be very restrictive about when this can be called. */
-+	VM_WARN_ON(in_nmi() || preemptible());
-+
-+	VM_BUG_ON(cr3 != __read_cr3());
-+	return cr3;
-+}
-+EXPORT_SYMBOL_GPL(__get_current_cr3_fast);
-+
-+/*
-  * arch_tlbbatch_flush() performs a full TLB flush regardless of the active mm.
-  * This means that the 'struct flush_tlb_info' that describes which mappings to
-  * flush is actually fixed. We therefore set a single fixed struct and use it in
