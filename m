@@ -2,40 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F8EC1B9316
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 26 Apr 2020 20:42:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 149BB1B9310
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 26 Apr 2020 20:42:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726369AbgDZSm6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 26 Apr 2020 14:42:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47866 "EHLO
+        id S1726179AbgDZSmv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 26 Apr 2020 14:42:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47836 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726346AbgDZSm5 (ORCPT
+        by vger.kernel.org with ESMTP id S1726177AbgDZSmv (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 26 Apr 2020 14:42:57 -0400
+        Sun, 26 Apr 2020 14:42:51 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B019FC061A0F;
-        Sun, 26 Apr 2020 11:42:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A971C061A0F;
+        Sun, 26 Apr 2020 11:42:51 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jSmEp-00078z-QX; Sun, 26 Apr 2020 20:42:47 +0200
+        id 1jSmEp-00078x-JW; Sun, 26 Apr 2020 20:42:47 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5C3DF1C0330;
-        Sun, 26 Apr 2020 20:42:47 +0200 (CEST)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D6F511C0178;
+        Sun, 26 Apr 2020 20:42:46 +0200 (CEST)
 Date:   Sun, 26 Apr 2020 18:42:46 -0000
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/mm] x86/tlb: Restrict access to tlbstate
+Subject: [tip: x86/mm] x86/cpu: Export native_write_cr4() only when CONFIG_LKTDM=m
 Cc:     Thomas Gleixner <tglx@linutronix.de>, Borislav Petkov <bp@suse.de>,
-        Alexandre Chartre <alexandre.chartre@oracle.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200421092600.328438734@linutronix.de>
-References: <20200421092600.328438734@linutronix.de>
+In-Reply-To: <20200421092558.939985695@linutronix.de>
+References: <20200421092558.939985695@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <158792656698.28353.4053878306741824988.tip-bot2@tip-bot2>
+Message-ID: <158792656642.28353.3424858438279806300.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,178 +49,37 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/mm branch of tip:
 
-Commit-ID:     bfe3d8f6313d1e10806062ba22c5f660dddecbcc
-Gitweb:        https://git.kernel.org/tip/bfe3d8f6313d1e10806062ba22c5f660dddecbcc
+Commit-ID:     21953ee5013d6632bee90ec89f2df59c69050db0
+Gitweb:        https://git.kernel.org/tip/21953ee5013d6632bee90ec89f2df59c69050db0
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Tue, 21 Apr 2020 11:20:43 +02:00
+AuthorDate:    Sun, 26 Apr 2020 18:55:15 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Sun, 26 Apr 2020 18:52:33 +02:00
+CommitterDate: Sun, 26 Apr 2020 20:16:46 +02:00
 
-x86/tlb: Restrict access to tlbstate
+x86/cpu: Export native_write_cr4() only when CONFIG_LKTDM=m
 
-Hide tlbstate, flush_tlb_info and related helpers when tlbflush.h is
-included from a module. Modules have absolutely no business with these
-internals.
+Modules have no business poking into this but fixing this is for later.
+
+ [ bp: Carve out from an earlier patch. ]
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20200421092600.328438734@linutronix.de
+Link: https://lkml.kernel.org/r/20200421092558.939985695@linutronix.de
 ---
- arch/x86/include/asm/tlbflush.h | 96 ++++++++++++++++----------------
- arch/x86/mm/init.c              |  1 +-
- 2 files changed, 49 insertions(+), 48 deletions(-)
+ arch/x86/kernel/cpu/common.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/x86/include/asm/tlbflush.h b/arch/x86/include/asm/tlbflush.h
-index f973121..8c87a2e 100644
---- a/arch/x86/include/asm/tlbflush.h
-+++ b/arch/x86/include/asm/tlbflush.h
-@@ -13,19 +13,46 @@
- #include <asm/pti.h>
- #include <asm/processor-flags.h>
- 
--struct flush_tlb_info;
--
- void __flush_tlb_all(void);
--void flush_tlb_local(void);
--void flush_tlb_one_user(unsigned long addr);
--void flush_tlb_one_kernel(unsigned long addr);
--void flush_tlb_others(const struct cpumask *cpumask,
--		      const struct flush_tlb_info *info);
- 
--#ifdef CONFIG_PARAVIRT
--#include <asm/paravirt.h>
--#endif
-+#define TLB_FLUSH_ALL	-1UL
-+
-+void cr4_update_irqsoff(unsigned long set, unsigned long clear);
-+unsigned long cr4_read_shadow(void);
-+
-+/* Set in this cpu's CR4. */
-+static inline void cr4_set_bits_irqsoff(unsigned long mask)
-+{
-+	cr4_update_irqsoff(mask, 0);
-+}
- 
-+/* Clear in this cpu's CR4. */
-+static inline void cr4_clear_bits_irqsoff(unsigned long mask)
-+{
-+	cr4_update_irqsoff(0, mask);
-+}
-+
-+/* Set in this cpu's CR4. */
-+static inline void cr4_set_bits(unsigned long mask)
-+{
-+	unsigned long flags;
-+
-+	local_irq_save(flags);
-+	cr4_set_bits_irqsoff(mask);
-+	local_irq_restore(flags);
-+}
-+
-+/* Clear in this cpu's CR4. */
-+static inline void cr4_clear_bits(unsigned long mask)
-+{
-+	unsigned long flags;
-+
-+	local_irq_save(flags);
-+	cr4_clear_bits_irqsoff(mask);
-+	local_irq_restore(flags);
-+}
-+
-+#ifndef MODULE
- /*
-  * 6 because 6 should be plenty and struct tlb_state will fit in two cache
-  * lines.
-@@ -129,54 +156,17 @@ DECLARE_PER_CPU_SHARED_ALIGNED(struct tlb_state, cpu_tlbstate);
- bool nmi_uaccess_okay(void);
- #define nmi_uaccess_okay nmi_uaccess_okay
- 
--void cr4_update_irqsoff(unsigned long set, unsigned long clear);
--unsigned long cr4_read_shadow(void);
--
- /* Initialize cr4 shadow for this CPU. */
- static inline void cr4_init_shadow(void)
- {
- 	this_cpu_write(cpu_tlbstate.cr4, __read_cr4());
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index 82042f4..eab3ebd 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -387,7 +387,9 @@ set_register:
+ 			  bits_missing);
+ 	}
  }
- 
--/* Set in this cpu's CR4. */
--static inline void cr4_set_bits_irqsoff(unsigned long mask)
--{
--	cr4_update_irqsoff(mask, 0);
--}
--
--/* Clear in this cpu's CR4. */
--static inline void cr4_clear_bits_irqsoff(unsigned long mask)
--{
--	cr4_update_irqsoff(0, mask);
--}
--
--/* Set in this cpu's CR4. */
--static inline void cr4_set_bits(unsigned long mask)
--{
--	unsigned long flags;
--
--	local_irq_save(flags);
--	cr4_set_bits_irqsoff(mask);
--	local_irq_restore(flags);
--}
--
--/* Clear in this cpu's CR4. */
--static inline void cr4_clear_bits(unsigned long mask)
--{
--	unsigned long flags;
--
--	local_irq_save(flags);
--	cr4_clear_bits_irqsoff(mask);
--	local_irq_restore(flags);
--}
--
- extern unsigned long mmu_cr4_features;
- extern u32 *trampoline_cr4_features;
- 
- extern void initialize_tlbstate_and_flush(void);
- 
--#define TLB_FLUSH_ALL	-1UL
--
- /*
-  * TLB flushing:
-  *
-@@ -215,6 +205,16 @@ struct flush_tlb_info {
- 	bool			freed_tables;
- };
- 
-+void flush_tlb_local(void);
-+void flush_tlb_one_user(unsigned long addr);
-+void flush_tlb_one_kernel(unsigned long addr);
-+void flush_tlb_others(const struct cpumask *cpumask,
-+		      const struct flush_tlb_info *info);
-+
-+#ifdef CONFIG_PARAVIRT
-+#include <asm/paravirt.h>
++#if IS_MODULE(CONFIG_LKDTM)
+ EXPORT_SYMBOL_GPL(native_write_cr4);
 +#endif
-+
- #define flush_tlb_mm(mm)						\
- 		flush_tlb_mm_range(mm, 0UL, TLB_FLUSH_ALL, 0UL, true)
  
-@@ -255,4 +255,6 @@ static inline void arch_tlbbatch_add_mm(struct arch_tlbflush_unmap_batch *batch,
- 
- extern void arch_tlbbatch_flush(struct arch_tlbflush_unmap_batch *batch);
- 
-+#endif /* !MODULE */
-+
- #endif /* _ASM_X86_TLBFLUSH_H */
-diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
-index d37e816..248dc8f 100644
---- a/arch/x86/mm/init.c
-+++ b/arch/x86/mm/init.c
-@@ -992,7 +992,6 @@ __visible DEFINE_PER_CPU_SHARED_ALIGNED(struct tlb_state, cpu_tlbstate) = {
- 	.next_asid = 1,
- 	.cr4 = ~0UL,	/* fail hard if we screw up cr4 shadow initialization */
- };
--EXPORT_PER_CPU_SYMBOL(cpu_tlbstate);
- 
- void update_cache_mode_entry(unsigned entry, enum page_cache_mode cache)
+ void cr4_update_irqsoff(unsigned long set, unsigned long clear)
  {
