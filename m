@@ -2,39 +2,41 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 66F811C1CFE
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  1 May 2020 20:26:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE1E91C1CE3
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  1 May 2020 20:22:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730699AbgEASWb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 1 May 2020 14:22:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40404 "EHLO
+        id S1730745AbgEASWe (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 1 May 2020 14:22:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1730693AbgEASWa (ORCPT
+        by vger.kernel.org with ESMTP id S1730738AbgEASWd (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 1 May 2020 14:22:30 -0400
+        Fri, 1 May 2020 14:22:33 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C4C7C061A0C;
-        Fri,  1 May 2020 11:22:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BD5EC061A0C;
+        Fri,  1 May 2020 11:22:33 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jUaIr-0003eG-08; Fri, 01 May 2020 20:22:25 +0200
+        id 1jUaIr-0003ee-IV; Fri, 01 May 2020 20:22:25 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 91C071C0085;
-        Fri,  1 May 2020 20:22:19 +0200 (CEST)
-Date:   Fri, 01 May 2020 18:22:19 -0000
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 3C3721C0450;
+        Fri,  1 May 2020 20:22:20 +0200 (CEST)
+Date:   Fri, 01 May 2020 18:22:20 -0000
+From:   "tip-bot2 for Alexandre Chartre" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] x86: Simplify retpoline declaration
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+Subject: [tip: objtool/core] objtool: Add support for intra-function calls
+Cc:     Alexandre Chartre <alexandre.chartre@oracle.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Miroslav Benes <mbenes@suse.cz>,
         Josh Poimboeuf <jpoimboe@redhat.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200428191700.091696925@infradead.org>
-References: <20200428191700.091696925@infradead.org>
+In-Reply-To: <20200414103618.12657-4-alexandre.chartre@oracle.com>
+References: <20200414103618.12657-4-alexandre.chartre@oracle.com>
 MIME-Version: 1.0
-Message-ID: <158835733956.8414.14836642152180567436.tip-bot2@tip-bot2>
+Message-ID: <158835734021.8414.5303379433420116948.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,141 +52,210 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     ca3f0d80dd57c8828bfb5bc0bc79750ea7a1ba26
-Gitweb:        https://git.kernel.org/tip/ca3f0d80dd57c8828bfb5bc0bc79750ea7a1ba26
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Wed, 22 Apr 2020 17:03:22 +02:00
+Commit-ID:     8aa8eb2a8f5b3305a95f39957dd2b715fa668e21
+Gitweb:        https://git.kernel.org/tip/8aa8eb2a8f5b3305a95f39957dd2b715fa668e21
+Author:        Alexandre Chartre <alexandre.chartre@oracle.com>
+AuthorDate:    Tue, 14 Apr 2020 12:36:12 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Thu, 30 Apr 2020 20:14:34 +02:00
+CommitterDate: Thu, 30 Apr 2020 20:14:33 +02:00
 
-x86: Simplify retpoline declaration
+objtool: Add support for intra-function calls
 
-Because of how KSYM works, we need one declaration per line. Seeing
-how we're going to be doubling the amount of retpoline symbols,
-simplify the machinery in order to avoid having to copy/paste even
-more.
+Change objtool to support intra-function calls. On x86, an intra-function
+call is represented in objtool as a push onto the stack (of the return
+address), and a jump to the destination address. That way the stack
+information is correctly updated and the call flow is still accurate.
 
+Signed-off-by: Alexandre Chartre <alexandre.chartre@oracle.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Miroslav Benes <mbenes@suse.cz>
 Acked-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Link: https://lkml.kernel.org/r/20200428191700.091696925@infradead.org
+Link: https://lkml.kernel.org/r/20200414103618.12657-4-alexandre.chartre@oracle.com
 ---
- arch/x86/include/asm/GEN-for-each-reg.h | 25 ++++++++++++++++-
- arch/x86/include/asm/asm-prototypes.h   | 28 +++++-------------
- arch/x86/lib/retpoline.S                | 37 ++++++++++--------------
- 3 files changed, 49 insertions(+), 41 deletions(-)
- create mode 100644 arch/x86/include/asm/GEN-for-each-reg.h
+ include/linux/frame.h                            | 11 ++-
+ tools/objtool/Documentation/stack-validation.txt |  8 ++-
+ tools/objtool/arch/x86/decode.c                  |  8 ++-
+ tools/objtool/check.c                            | 79 ++++++++++++++-
+ 4 files changed, 102 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/include/asm/GEN-for-each-reg.h b/arch/x86/include/asm/GEN-for-each-reg.h
-new file mode 100644
-index 0000000..1b07fb1
---- /dev/null
-+++ b/arch/x86/include/asm/GEN-for-each-reg.h
-@@ -0,0 +1,25 @@
-+#ifdef CONFIG_64BIT
-+GEN(rax)
-+GEN(rbx)
-+GEN(rcx)
-+GEN(rdx)
-+GEN(rsi)
-+GEN(rdi)
-+GEN(rbp)
-+GEN(r8)
-+GEN(r9)
-+GEN(r10)
-+GEN(r11)
-+GEN(r12)
-+GEN(r13)
-+GEN(r14)
-+GEN(r15)
-+#else
-+GEN(eax)
-+GEN(ebx)
-+GEN(ecx)
-+GEN(edx)
-+GEN(esi)
-+GEN(edi)
-+GEN(ebp)
-+#endif
-diff --git a/arch/x86/include/asm/asm-prototypes.h b/arch/x86/include/asm/asm-prototypes.h
-index ce92c4a..aa7585e 100644
---- a/arch/x86/include/asm/asm-prototypes.h
-+++ b/arch/x86/include/asm/asm-prototypes.h
-@@ -17,24 +17,12 @@ extern void cmpxchg8b_emu(void);
- #endif
+diff --git a/include/linux/frame.h b/include/linux/frame.h
+index 02d3ca2..303cda6 100644
+--- a/include/linux/frame.h
++++ b/include/linux/frame.h
+@@ -15,9 +15,20 @@
+ 	static void __used __section(.discard.func_stack_frame_non_standard) \
+ 		*__func_stack_frame_non_standard_##func = func
  
- #ifdef CONFIG_RETPOLINE
--#ifdef CONFIG_X86_32
--#define INDIRECT_THUNK(reg) extern asmlinkage void __x86_indirect_thunk_e ## reg(void);
--#else
--#define INDIRECT_THUNK(reg) extern asmlinkage void __x86_indirect_thunk_r ## reg(void);
--INDIRECT_THUNK(8)
--INDIRECT_THUNK(9)
--INDIRECT_THUNK(10)
--INDIRECT_THUNK(11)
--INDIRECT_THUNK(12)
--INDIRECT_THUNK(13)
--INDIRECT_THUNK(14)
--INDIRECT_THUNK(15)
--#endif
--INDIRECT_THUNK(ax)
--INDIRECT_THUNK(bx)
--INDIRECT_THUNK(cx)
--INDIRECT_THUNK(dx)
--INDIRECT_THUNK(si)
--INDIRECT_THUNK(di)
--INDIRECT_THUNK(bp)
++/*
++ * This macro indicates that the following intra-function call is valid.
++ * Any non-annotated intra-function call will cause objtool to issue a warning.
++ */
++#define ANNOTATE_INTRA_FUNCTION_CALL				\
++	999:							\
++	.pushsection .discard.intra_function_calls;		\
++	.long 999b;						\
++	.popsection;
 +
-+#define DECL_INDIRECT_THUNK(reg) \
-+	extern asmlinkage void __x86_indirect_thunk_ ## reg (void);
+ #else /* !CONFIG_STACK_VALIDATION */
+ 
+ #define STACK_FRAME_NON_STANDARD(func)
++#define ANNOTATE_INTRA_FUNCTION_CALL
+ 
+ #endif /* CONFIG_STACK_VALIDATION */
+ 
+diff --git a/tools/objtool/Documentation/stack-validation.txt b/tools/objtool/Documentation/stack-validation.txt
+index 0189039..0542e46 100644
+--- a/tools/objtool/Documentation/stack-validation.txt
++++ b/tools/objtool/Documentation/stack-validation.txt
+@@ -323,6 +323,14 @@ they mean, and suggestions for how to fix them.
+     The easiest way to enforce this is to ensure alternatives do not contain
+     any ORC entries, which in turn implies the above constraint.
+ 
++11. file.o: warning: unannotated intra-function call
 +
-+#undef GEN
-+#define GEN(reg) DECL_INDIRECT_THUNK(reg)
-+#include <asm/GEN-for-each-reg.h>
++   This warning means that a direct call is done to a destination which
++   is not at the beginning of a function. If this is a legit call, you
++   can remove this warning by putting the ANNOTATE_INTRA_FUNCTION_CALL
++   directive right before the call.
 +
- #endif /* CONFIG_RETPOLINE */
-diff --git a/arch/x86/lib/retpoline.S b/arch/x86/lib/retpoline.S
-index 363ec13..9cc5480 100644
---- a/arch/x86/lib/retpoline.S
-+++ b/arch/x86/lib/retpoline.S
-@@ -24,25 +24,20 @@ SYM_FUNC_END(__x86_indirect_thunk_\reg)
-  * only see one instance of "__x86_indirect_thunk_\reg" rather
-  * than one per register with the correct names. So we do it
-  * the simple and nasty way...
-+ *
-+ * Worse, you can only have a single EXPORT_SYMBOL per line,
-+ * and CPP can't insert newlines, so we have to repeat everything
-+ * at least twice.
++
+ If the error doesn't seem to make sense, it could be a bug in objtool.
+ Feel free to ask the objtool maintainer for help.
+ 
+diff --git a/tools/objtool/arch/x86/decode.c b/tools/objtool/arch/x86/decode.c
+index d7b5d10..4b504fc 100644
+--- a/tools/objtool/arch/x86/decode.c
++++ b/tools/objtool/arch/x86/decode.c
+@@ -496,6 +496,14 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
+ 
+ 	case 0xe8:
+ 		*type = INSN_CALL;
++		/*
++		 * For the impact on the stack, a CALL behaves like
++		 * a PUSH of an immediate value (the return address).
++		 */
++		ADD_OP(op) {
++			op->src.type = OP_SRC_CONST;
++			op->dest.type = OP_DEST_PUSH;
++		}
+ 		break;
+ 
+ 	case 0xfc:
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index d822858..32dea5f 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -674,6 +674,16 @@ static int add_jump_destinations(struct objtool_file *file)
+ 	return 0;
+ }
+ 
++static void remove_insn_ops(struct instruction *insn)
++{
++	struct stack_op *op, *tmp;
++
++	list_for_each_entry_safe(op, tmp, &insn->stack_ops, list) {
++		list_del(&op->list);
++		free(op);
++	}
++}
++
+ /*
+  * Find the destination instructions for all calls.
   */
--#define __EXPORT_THUNK(sym) _ASM_NOKPROBE(sym); EXPORT_SYMBOL(sym)
--#define EXPORT_THUNK(reg) __EXPORT_THUNK(__x86_indirect_thunk_ ## reg)
--#define GENERATE_THUNK(reg) THUNK reg ; EXPORT_THUNK(reg)
--
--GENERATE_THUNK(_ASM_AX)
--GENERATE_THUNK(_ASM_BX)
--GENERATE_THUNK(_ASM_CX)
--GENERATE_THUNK(_ASM_DX)
--GENERATE_THUNK(_ASM_SI)
--GENERATE_THUNK(_ASM_DI)
--GENERATE_THUNK(_ASM_BP)
--#ifdef CONFIG_64BIT
--GENERATE_THUNK(r8)
--GENERATE_THUNK(r9)
--GENERATE_THUNK(r10)
--GENERATE_THUNK(r11)
--GENERATE_THUNK(r12)
--GENERATE_THUNK(r13)
--GENERATE_THUNK(r14)
--GENERATE_THUNK(r15)
--#endif
+@@ -699,10 +709,7 @@ static int add_call_destinations(struct objtool_file *file)
+ 				continue;
+ 
+ 			if (!insn->call_dest) {
+-				WARN_FUNC("unsupported intra-function call",
+-					  insn->sec, insn->offset);
+-				if (retpoline)
+-					WARN("If this is a retpoline, please patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALTERNATIVE.");
++				WARN_FUNC("unannotated intra-function call", insn->sec, insn->offset);
+ 				return -1;
+ 			}
+ 
+@@ -725,6 +732,15 @@ static int add_call_destinations(struct objtool_file *file)
+ 			}
+ 		} else
+ 			insn->call_dest = rela->sym;
 +
-+#define __EXPORT_THUNK(sym)	_ASM_NOKPROBE(sym); EXPORT_SYMBOL(sym)
-+#define EXPORT_THUNK(reg)	__EXPORT_THUNK(__x86_indirect_thunk_ ## reg)
++		/*
++		 * Whatever stack impact regular CALLs have, should be undone
++		 * by the RETURN of the called function.
++		 *
++		 * Annotated intra-function calls retain the stack_ops but
++		 * are converted to JUMP, see read_intra_function_calls().
++		 */
++		remove_insn_ops(insn);
+ 	}
+ 
+ 	return 0;
+@@ -1404,6 +1420,57 @@ static int read_instr_hints(struct objtool_file *file)
+ 	return 0;
+ }
+ 
++static int read_intra_function_calls(struct objtool_file *file)
++{
++	struct instruction *insn;
++	struct section *sec;
++	struct rela *rela;
 +
-+#undef GEN
-+#define GEN(reg) THUNK reg
-+#include <asm/GEN-for-each-reg.h>
++	sec = find_section_by_name(file->elf, ".rela.discard.intra_function_calls");
++	if (!sec)
++		return 0;
 +
-+#undef GEN
-+#define GEN(reg) EXPORT_THUNK(reg)
-+#include <asm/GEN-for-each-reg.h>
++	list_for_each_entry(rela, &sec->rela_list, list) {
++		unsigned long dest_off;
 +
++		if (rela->sym->type != STT_SECTION) {
++			WARN("unexpected relocation symbol type in %s",
++			     sec->name);
++			return -1;
++		}
++
++		insn = find_insn(file, rela->sym->sec, rela->addend);
++		if (!insn) {
++			WARN("bad .discard.intra_function_call entry");
++			return -1;
++		}
++
++		if (insn->type != INSN_CALL) {
++			WARN_FUNC("intra_function_call not a direct call",
++				  insn->sec, insn->offset);
++			return -1;
++		}
++
++		/*
++		 * Treat intra-function CALLs as JMPs, but with a stack_op.
++		 * See add_call_destinations(), which strips stack_ops from
++		 * normal CALLs.
++		 */
++		insn->type = INSN_JUMP_UNCONDITIONAL;
++
++		dest_off = insn->offset + insn->len + insn->immediate;
++		insn->jump_dest = find_insn(file, insn->sec, dest_off);
++		if (!insn->jump_dest) {
++			WARN_FUNC("can't find call dest at %s+0x%lx",
++				  insn->sec, insn->offset,
++				  insn->sec->name, dest_off);
++			return -1;
++		}
++	}
++
++	return 0;
++}
++
+ static void mark_rodata(struct objtool_file *file)
+ {
+ 	struct section *sec;
+@@ -1459,6 +1526,10 @@ static int decode_sections(struct objtool_file *file)
+ 	if (ret)
+ 		return ret;
+ 
++	ret = read_intra_function_calls(file);
++	if (ret)
++		return ret;
++
+ 	ret = add_call_destinations(file);
+ 	if (ret)
+ 		return ret;
