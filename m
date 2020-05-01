@@ -2,42 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 91F871C1CE0
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  1 May 2020 20:22:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 99F061C1D25
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  1 May 2020 20:26:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730673AbgEASW3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 1 May 2020 14:22:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40382 "EHLO
+        id S1731022AbgEASX5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 1 May 2020 14:23:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40346 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1730656AbgEASWZ (ORCPT
+        by vger.kernel.org with ESMTP id S1730587AbgEASWT (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 1 May 2020 14:22:25 -0400
+        Fri, 1 May 2020 14:22:19 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81899C08ED7D;
-        Fri,  1 May 2020 11:22:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADBC5C061A0C;
+        Fri,  1 May 2020 11:22:19 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jUaIg-0003Y0-KS; Fri, 01 May 2020 20:22:14 +0200
+        id 1jUaIh-0003Z3-Ok; Fri, 01 May 2020 20:22:15 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 403981C0330;
-        Fri,  1 May 2020 20:22:09 +0200 (CEST)
-Date:   Fri, 01 May 2020 18:22:09 -0000
-From:   "tip-bot2 for Chen Yu" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 61D1F1C048C;
+        Fri,  1 May 2020 20:22:10 +0200 (CEST)
+Date:   Fri, 01 May 2020 18:22:10 -0000
+From:   "tip-bot2 for Valentin Schneider" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched: Extract the task putting code from pick_next_task()
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        Chen Yu <yu.c.chen@intel.com>,
-        Valentin Schneider <valentin.schneider@arm.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
+Subject: [tip: sched/core] sched: Remove checks against SD_LOAD_BALANCE
+Cc:     Valentin Schneider <valentin.schneider@arm.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <5a99860cf66293db58a397d6248bcb2eee326776.1587464698.git.yu.c.chen@intel.com>
-References: <5a99860cf66293db58a397d6248bcb2eee326776.1587464698.git.yu.c.chen@intel.com>
+In-Reply-To: <20200415210512.805-4-valentin.schneider@arm.com>
+References: <20200415210512.805-4-valentin.schneider@arm.com>
 MIME-Version: 1.0
-Message-ID: <158835732921.8414.15225436466370563890.tip-bot2@tip-bot2>
+Message-ID: <158835733033.8414.9767037933834526210.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -53,87 +50,137 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     457d1f465778ccb5f14f7d7a62245e41d12a3804
-Gitweb:        https://git.kernel.org/tip/457d1f465778ccb5f14f7d7a62245e41d12a3804
-Author:        Chen Yu <yu.c.chen@intel.com>
-AuthorDate:    Tue, 21 Apr 2020 18:50:43 +08:00
+Commit-ID:     e669ac8ab952df2f07dee1e1efbf40647d6de332
+Gitweb:        https://git.kernel.org/tip/e669ac8ab952df2f07dee1e1efbf40647d6de332
+Author:        Valentin Schneider <valentin.schneider@arm.com>
+AuthorDate:    Wed, 15 Apr 2020 22:05:06 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Thu, 30 Apr 2020 20:14:40 +02:00
+CommitterDate: Thu, 30 Apr 2020 20:14:39 +02:00
 
-sched: Extract the task putting code from pick_next_task()
+sched: Remove checks against SD_LOAD_BALANCE
 
-Introduce a new function put_prev_task_balance() to do the balance
-when necessary, and then put previous task back to the run queue.
-This function is extracted from pick_next_task() to prepare for
-future usage by other type of task picking logic.
+The SD_LOAD_BALANCE flag is set unconditionally for all domains in
+sd_init(). By making the sched_domain->flags syctl interface read-only, we
+have removed the last piece of code that could clear that flag - as such,
+it will now be always present. Rather than to keep carrying it along, we
+can work towards getting rid of it entirely.
 
-No functional change.
+cpusets don't need it because they can make CPUs be attached to the NULL
+domain (e.g. cpuset with sched_load_balance=0), or to a partitioned
+root_domain, i.e. a sched_domain hierarchy that doesn't span the entire
+system (e.g. root cpuset with sched_load_balance=0 and sibling cpusets with
+sched_load_balance=1).
 
-Suggested-by: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Chen Yu <yu.c.chen@intel.com>
+isolcpus apply the same "trick": isolated CPUs are explicitly taken out of
+the sched_domain rebuild (using housekeeping_cpumask()), so they get the
+NULL domain treatment as well.
+
+Remove the checks against SD_LOAD_BALANCE.
+
+Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Valentin Schneider <valentin.schneider@arm.com>
-Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
-Reviewed-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
-Link: https://lkml.kernel.org/r/5a99860cf66293db58a397d6248bcb2eee326776.1587464698.git.yu.c.chen@intel.com
+Link: https://lkml.kernel.org/r/20200415210512.805-4-valentin.schneider@arm.com
 ---
- kernel/sched/core.c | 39 +++++++++++++++++++++++----------------
- 1 file changed, 23 insertions(+), 16 deletions(-)
+ kernel/sched/fair.c     | 14 ++------------
+ kernel/sched/topology.c | 28 +++++++++-------------------
+ 2 files changed, 11 insertions(+), 31 deletions(-)
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 9a2fbf9..2e6ba9e 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -3899,6 +3899,28 @@ static inline void schedule_debug(struct task_struct *prev, bool preempt)
- 	schedstat_inc(this_rq()->sched_count);
- }
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 617ca44..4b959c0 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -6649,9 +6649,6 @@ select_task_rq_fair(struct task_struct *p, int prev_cpu, int sd_flag, int wake_f
  
-+static void put_prev_task_balance(struct rq *rq, struct task_struct *prev,
-+				  struct rq_flags *rf)
-+{
-+#ifdef CONFIG_SMP
-+	const struct sched_class *class;
-+	/*
-+	 * We must do the balancing pass before put_prev_task(), such
-+	 * that when we release the rq->lock the task is in the same
-+	 * state as before we took rq->lock.
-+	 *
-+	 * We can terminate the balance pass as soon as we know there is
-+	 * a runnable task of @class priority or higher.
-+	 */
-+	for_class_range(class, prev->sched_class, &idle_sched_class) {
-+		if (class->balance(rq, prev, rf))
+ 	rcu_read_lock();
+ 	for_each_domain(cpu, tmp) {
+-		if (!(tmp->flags & SD_LOAD_BALANCE))
+-			break;
+-
+ 		/*
+ 		 * If both 'cpu' and 'prev_cpu' are part of this domain,
+ 		 * cpu is a valid SD_WAKE_AFFINE target.
+@@ -9790,9 +9787,8 @@ static int active_load_balance_cpu_stop(void *data)
+ 	/* Search for an sd spanning us and the target CPU. */
+ 	rcu_read_lock();
+ 	for_each_domain(target_cpu, sd) {
+-		if ((sd->flags & SD_LOAD_BALANCE) &&
+-		    cpumask_test_cpu(busiest_cpu, sched_domain_span(sd)))
+-				break;
++		if (cpumask_test_cpu(busiest_cpu, sched_domain_span(sd)))
 +			break;
-+	}
-+#endif
-+
-+	put_prev_task(rq, prev);
-+}
-+
- /*
-  * Pick up the highest-prio task:
-  */
-@@ -3932,22 +3954,7 @@ pick_next_task(struct rq *rq, struct task_struct *prev, struct rq_flags *rf)
  	}
  
- restart:
--#ifdef CONFIG_SMP
--	/*
--	 * We must do the balancing pass before put_next_task(), such
--	 * that when we release the rq->lock the task is in the same
--	 * state as before we took rq->lock.
--	 *
--	 * We can terminate the balance pass as soon as we know there is
--	 * a runnable task of @class priority or higher.
--	 */
--	for_class_range(class, prev->sched_class, &idle_sched_class) {
--		if (class->balance(rq, prev, rf))
--			break;
--	}
--#endif
--
--	put_prev_task(rq, prev);
-+	put_prev_task_balance(rq, prev, rf);
+ 	if (likely(sd)) {
+@@ -9881,9 +9877,6 @@ static void rebalance_domains(struct rq *rq, enum cpu_idle_type idle)
+ 		}
+ 		max_cost += sd->max_newidle_lb_cost;
  
- 	for_each_class(class) {
- 		p = class->pick_next_task(rq);
+-		if (!(sd->flags & SD_LOAD_BALANCE))
+-			continue;
+-
+ 		/*
+ 		 * Stop the load balance at this level. There is another
+ 		 * CPU in our sched group which is doing load balancing more
+@@ -10472,9 +10465,6 @@ int newidle_balance(struct rq *this_rq, struct rq_flags *rf)
+ 		int continue_balancing = 1;
+ 		u64 t0, domain_cost;
+ 
+-		if (!(sd->flags & SD_LOAD_BALANCE))
+-			continue;
+-
+ 		if (this_rq->avg_idle < curr_cost + sd->max_newidle_lb_cost) {
+ 			update_next_balance(sd, &next_balance);
+ 			break;
+diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
+index 8344757..a9dc34a 100644
+--- a/kernel/sched/topology.c
++++ b/kernel/sched/topology.c
+@@ -33,14 +33,6 @@ static int sched_domain_debug_one(struct sched_domain *sd, int cpu, int level,
+ 	cpumask_clear(groupmask);
+ 
+ 	printk(KERN_DEBUG "%*s domain-%d: ", level, "", level);
+-
+-	if (!(sd->flags & SD_LOAD_BALANCE)) {
+-		printk("does not load-balance\n");
+-		if (sd->parent)
+-			printk(KERN_ERR "ERROR: !SD_LOAD_BALANCE domain has parent");
+-		return -1;
+-	}
+-
+ 	printk(KERN_CONT "span=%*pbl level=%s\n",
+ 	       cpumask_pr_args(sched_domain_span(sd)), sd->name);
+ 
+@@ -151,8 +143,7 @@ static int sd_degenerate(struct sched_domain *sd)
+ 		return 1;
+ 
+ 	/* Following flags need at least 2 groups */
+-	if (sd->flags & (SD_LOAD_BALANCE |
+-			 SD_BALANCE_NEWIDLE |
++	if (sd->flags & (SD_BALANCE_NEWIDLE |
+ 			 SD_BALANCE_FORK |
+ 			 SD_BALANCE_EXEC |
+ 			 SD_SHARE_CPUCAPACITY |
+@@ -183,15 +174,14 @@ sd_parent_degenerate(struct sched_domain *sd, struct sched_domain *parent)
+ 
+ 	/* Flags needing groups don't count if only 1 group in parent */
+ 	if (parent->groups == parent->groups->next) {
+-		pflags &= ~(SD_LOAD_BALANCE |
+-				SD_BALANCE_NEWIDLE |
+-				SD_BALANCE_FORK |
+-				SD_BALANCE_EXEC |
+-				SD_ASYM_CPUCAPACITY |
+-				SD_SHARE_CPUCAPACITY |
+-				SD_SHARE_PKG_RESOURCES |
+-				SD_PREFER_SIBLING |
+-				SD_SHARE_POWERDOMAIN);
++		pflags &= ~(SD_BALANCE_NEWIDLE |
++			    SD_BALANCE_FORK |
++			    SD_BALANCE_EXEC |
++			    SD_ASYM_CPUCAPACITY |
++			    SD_SHARE_CPUCAPACITY |
++			    SD_SHARE_PKG_RESOURCES |
++			    SD_PREFER_SIBLING |
++			    SD_SHARE_POWERDOMAIN);
+ 		if (nr_node_ids == 1)
+ 			pflags &= ~SD_SERIALIZE;
+ 	}
