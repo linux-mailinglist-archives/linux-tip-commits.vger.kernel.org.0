@@ -2,40 +2,42 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0364D1C1D15
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  1 May 2020 20:26:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D5B41C1D1D
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  1 May 2020 20:26:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730903AbgEASXX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 1 May 2020 14:23:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40392 "EHLO
+        id S1730961AbgEASXm (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 1 May 2020 14:23:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40354 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1730661AbgEASW2 (ORCPT
+        by vger.kernel.org with ESMTP id S1730611AbgEASWV (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 1 May 2020 14:22:28 -0400
+        Fri, 1 May 2020 14:22:21 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BE90C08E859;
-        Fri,  1 May 2020 11:22:28 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42EF8C061A0E;
+        Fri,  1 May 2020 11:22:21 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jUaIj-0003bA-NP; Fri, 01 May 2020 20:22:18 +0200
+        id 1jUaIh-0003bM-9g; Fri, 01 May 2020 20:22:15 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 1806D1C0813;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 73AC11C04CD;
         Fri,  1 May 2020 20:22:12 +0200 (CEST)
 Date:   Fri, 01 May 2020 18:22:12 -0000
-From:   "tip-bot2 for Josh Don" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Paul Turner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/fair: Remove distribute_running from CFS bandwidth
-Cc:     Josh Don <joshdon@google.com>,
+Subject: [tip: sched/core] sched/fair: Eliminate bandwidth race between
+ throttling and distribution
+Cc:     Paul Turner <pjt@google.com>, Ben Segall <bsegall@google.com>,
+        Josh Don <joshdon@google.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Phil Auld <pauld@redhat.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200410225208.109717-3-joshdon@google.com>
-References: <20200410225208.109717-3-joshdon@google.com>
+In-Reply-To: <20200410225208.109717-2-joshdon@google.com>
+References: <20200410225208.109717-2-joshdon@google.com>
 MIME-Version: 1.0
-Message-ID: <158835733205.8414.9136130857443620621.tip-bot2@tip-bot2>
+Message-ID: <158835733243.8414.17537878158175326698.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,105 +53,175 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     ab93a4bc955b3980c699430bc0b633f0d8b607be
-Gitweb:        https://git.kernel.org/tip/ab93a4bc955b3980c699430bc0b633f0d8b607be
-Author:        Josh Don <joshdon@google.com>
-AuthorDate:    Fri, 10 Apr 2020 15:52:08 -07:00
+Commit-ID:     e98fa02c4f2ea4991dae422ac7e34d102d2f0599
+Gitweb:        https://git.kernel.org/tip/e98fa02c4f2ea4991dae422ac7e34d102d2f0599
+Author:        Paul Turner <pjt@google.com>
+AuthorDate:    Fri, 10 Apr 2020 15:52:07 -07:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Thu, 30 Apr 2020 20:14:38 +02:00
 
-sched/fair: Remove distribute_running from CFS bandwidth
+sched/fair: Eliminate bandwidth race between throttling and distribution
 
-This is mostly a revert of commit:
+There is a race window in which an entity begins throttling before quota
+is added to the pool, but does not finish throttling until after we have
+finished with distribute_cfs_runtime(). This entity is not observed by
+distribute_cfs_runtime() because it was not on the throttled list at the
+time that distribution was running. This race manifests as rare
+period-length statlls for such entities.
 
-  baa9be4ffb55 ("sched/fair: Fix throttle_list starvation with low CFS quota")
+Rather than heavy-weight the synchronization with the progress of
+distribution, we can fix this by aborting throttling if bandwidth has
+become available. Otherwise, we immediately add the entity to the
+throttled list so that it can be observed by a subsequent distribution.
 
-The primary use of distribute_running was to determine whether to add
-throttled entities to the head or the tail of the throttled list. Now
-that we always add to the tail, we can remove this field.
+Additionally, we can remove the case of adding the throttled entity to
+the head of the throttled list, and simply always add to the tail.
+Thanks to 26a8b12747c97, distribute_cfs_runtime() no longer holds onto
+its own pool of runtime. This means that if we do hit the !assign and
+distribute_running case, we know that distribution is about to end.
 
-The other use of distribute_running is in the slack_timer, so that we
-don't start a distribution while one is already running. However, even
-in the event that this race occurs, it is fine to have two distributions
-running (especially now that distribute grabs the cfs_b->lock to
-determine remaining quota before assigning).
-
+Signed-off-by: Paul Turner <pjt@google.com>
+Signed-off-by: Ben Segall <bsegall@google.com>
 Signed-off-by: Josh Don <joshdon@google.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Phil Auld <pauld@redhat.com>
-Tested-by: Phil Auld <pauld@redhat.com>
-Link: https://lkml.kernel.org/r/20200410225208.109717-3-joshdon@google.com
+Link: https://lkml.kernel.org/r/20200410225208.109717-2-joshdon@google.com
 ---
- kernel/sched/fair.c  | 13 +------------
- kernel/sched/sched.h |  1 -
- 2 files changed, 1 insertion(+), 13 deletions(-)
+ kernel/sched/fair.c | 79 ++++++++++++++++++++++++++------------------
+ 1 file changed, 47 insertions(+), 32 deletions(-)
 
 diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 0c13a41..3d6ce75 100644
+index 02f323b..0c13a41 100644
 --- a/kernel/sched/fair.c
 +++ b/kernel/sched/fair.c
-@@ -4931,14 +4931,12 @@ static int do_sched_cfs_period_timer(struct cfs_bandwidth *cfs_b, int overrun, u
- 	/*
- 	 * This check is repeated as we release cfs_b->lock while we unthrottle.
- 	 */
--	while (throttled && cfs_b->runtime > 0 && !cfs_b->distribute_running) {
--		cfs_b->distribute_running = 1;
-+	while (throttled && cfs_b->runtime > 0) {
- 		raw_spin_unlock_irqrestore(&cfs_b->lock, flags);
- 		/* we can't nest cfs_b->lock while distributing bandwidth */
- 		distribute_cfs_runtime(cfs_b);
- 		raw_spin_lock_irqsave(&cfs_b->lock, flags);
+@@ -4588,16 +4588,16 @@ static inline struct cfs_bandwidth *tg_cfs_bandwidth(struct task_group *tg)
+ }
  
--		cfs_b->distribute_running = 0;
- 		throttled = !list_empty(&cfs_b->throttled_cfs_rq);
+ /* returns 0 on failure to allocate runtime */
+-static int assign_cfs_rq_runtime(struct cfs_rq *cfs_rq)
++static int __assign_cfs_rq_runtime(struct cfs_bandwidth *cfs_b,
++				   struct cfs_rq *cfs_rq, u64 target_runtime)
+ {
+-	struct task_group *tg = cfs_rq->tg;
+-	struct cfs_bandwidth *cfs_b = tg_cfs_bandwidth(tg);
+-	u64 amount = 0, min_amount;
++	u64 min_amount, amount = 0;
++
++	lockdep_assert_held(&cfs_b->lock);
+ 
+ 	/* note: this is a positive sum as runtime_remaining <= 0 */
+-	min_amount = sched_cfs_bandwidth_slice() - cfs_rq->runtime_remaining;
++	min_amount = target_runtime - cfs_rq->runtime_remaining;
+ 
+-	raw_spin_lock(&cfs_b->lock);
+ 	if (cfs_b->quota == RUNTIME_INF)
+ 		amount = min_amount;
+ 	else {
+@@ -4609,13 +4609,25 @@ static int assign_cfs_rq_runtime(struct cfs_rq *cfs_rq)
+ 			cfs_b->idle = 0;
+ 		}
  	}
+-	raw_spin_unlock(&cfs_b->lock);
  
-@@ -5052,10 +5050,6 @@ static void do_sched_cfs_slack_timer(struct cfs_bandwidth *cfs_b)
- 	/* confirm we're still not at a refresh boundary */
- 	raw_spin_lock_irqsave(&cfs_b->lock, flags);
- 	cfs_b->slack_started = false;
--	if (cfs_b->distribute_running) {
--		raw_spin_unlock_irqrestore(&cfs_b->lock, flags);
--		return;
--	}
+ 	cfs_rq->runtime_remaining += amount;
  
- 	if (runtime_refresh_within(cfs_b, min_bandwidth_expiration)) {
- 		raw_spin_unlock_irqrestore(&cfs_b->lock, flags);
-@@ -5065,9 +5059,6 @@ static void do_sched_cfs_slack_timer(struct cfs_bandwidth *cfs_b)
- 	if (cfs_b->quota != RUNTIME_INF && cfs_b->runtime > slice)
- 		runtime = cfs_b->runtime;
+ 	return cfs_rq->runtime_remaining > 0;
+ }
  
--	if (runtime)
--		cfs_b->distribute_running = 1;
++/* returns 0 on failure to allocate runtime */
++static int assign_cfs_rq_runtime(struct cfs_rq *cfs_rq)
++{
++	struct cfs_bandwidth *cfs_b = tg_cfs_bandwidth(cfs_rq->tg);
++	int ret;
++
++	raw_spin_lock(&cfs_b->lock);
++	ret = __assign_cfs_rq_runtime(cfs_b, cfs_rq, sched_cfs_bandwidth_slice());
++	raw_spin_unlock(&cfs_b->lock);
++
++	return ret;
++}
++
+ static void __account_cfs_rq_runtime(struct cfs_rq *cfs_rq, u64 delta_exec)
+ {
+ 	/* dock delta_exec before expiring quota (as it could span periods) */
+@@ -4704,13 +4716,33 @@ static int tg_throttle_down(struct task_group *tg, void *data)
+ 	return 0;
+ }
+ 
+-static void throttle_cfs_rq(struct cfs_rq *cfs_rq)
++static bool throttle_cfs_rq(struct cfs_rq *cfs_rq)
+ {
+ 	struct rq *rq = rq_of(cfs_rq);
+ 	struct cfs_bandwidth *cfs_b = tg_cfs_bandwidth(cfs_rq->tg);
+ 	struct sched_entity *se;
+ 	long task_delta, idle_task_delta, dequeue = 1;
+-	bool empty;
++
++	raw_spin_lock(&cfs_b->lock);
++	/* This will start the period timer if necessary */
++	if (__assign_cfs_rq_runtime(cfs_b, cfs_rq, 1)) {
++		/*
++		 * We have raced with bandwidth becoming available, and if we
++		 * actually throttled the timer might not unthrottle us for an
++		 * entire period. We additionally needed to make sure that any
++		 * subsequent check_cfs_rq_runtime calls agree not to throttle
++		 * us, as we may commit to do cfs put_prev+pick_next, so we ask
++		 * for 1ns of runtime rather than just check cfs_b.
++		 */
++		dequeue = 0;
++	} else {
++		list_add_tail_rcu(&cfs_rq->throttled_list,
++				  &cfs_b->throttled_cfs_rq);
++	}
++	raw_spin_unlock(&cfs_b->lock);
++
++	if (!dequeue)
++		return false;  /* Throttle no longer required. */
+ 
+ 	se = cfs_rq->tg->se[cpu_of(rq_of(cfs_rq))];
+ 
+@@ -4744,29 +4776,13 @@ static void throttle_cfs_rq(struct cfs_rq *cfs_rq)
+ 	if (!se)
+ 		sub_nr_running(rq, task_delta);
+ 
+-	cfs_rq->throttled = 1;
+-	cfs_rq->throttled_clock = rq_clock(rq);
+-	raw_spin_lock(&cfs_b->lock);
+-	empty = list_empty(&cfs_b->throttled_cfs_rq);
 -
- 	raw_spin_unlock_irqrestore(&cfs_b->lock, flags);
- 
- 	if (!runtime)
-@@ -5076,7 +5067,6 @@ static void do_sched_cfs_slack_timer(struct cfs_bandwidth *cfs_b)
- 	distribute_cfs_runtime(cfs_b);
- 
- 	raw_spin_lock_irqsave(&cfs_b->lock, flags);
--	cfs_b->distribute_running = 0;
- 	raw_spin_unlock_irqrestore(&cfs_b->lock, flags);
+-	/*
+-	 * Add to the _head_ of the list, so that an already-started
+-	 * distribute_cfs_runtime will not see us. If disribute_cfs_runtime is
+-	 * not running add to the tail so that later runqueues don't get starved.
+-	 */
+-	if (cfs_b->distribute_running)
+-		list_add_rcu(&cfs_rq->throttled_list, &cfs_b->throttled_cfs_rq);
+-	else
+-		list_add_tail_rcu(&cfs_rq->throttled_list, &cfs_b->throttled_cfs_rq);
+-
+ 	/*
+-	 * If we're the first throttled task, make sure the bandwidth
+-	 * timer is running.
++	 * Note: distribution will already see us throttled via the
++	 * throttled-list.  rq->lock protects completion.
+ 	 */
+-	if (empty)
+-		start_cfs_bandwidth(cfs_b);
+-
+-	raw_spin_unlock(&cfs_b->lock);
++	cfs_rq->throttled = 1;
++	cfs_rq->throttled_clock = rq_clock(rq);
++	return true;
  }
  
-@@ -5218,7 +5208,6 @@ void init_cfs_bandwidth(struct cfs_bandwidth *cfs_b)
- 	cfs_b->period_timer.function = sched_cfs_period_timer;
- 	hrtimer_init(&cfs_b->slack_timer, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
- 	cfs_b->slack_timer.function = sched_cfs_slack_timer;
--	cfs_b->distribute_running = 0;
- 	cfs_b->slack_started = false;
+ void unthrottle_cfs_rq(struct cfs_rq *cfs_rq)
+@@ -5121,8 +5137,7 @@ static bool check_cfs_rq_runtime(struct cfs_rq *cfs_rq)
+ 	if (cfs_rq_throttled(cfs_rq))
+ 		return true;
+ 
+-	throttle_cfs_rq(cfs_rq);
+-	return true;
++	return throttle_cfs_rq(cfs_rq);
  }
  
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index db3a576..7198683 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -349,7 +349,6 @@ struct cfs_bandwidth {
- 
- 	u8			idle;
- 	u8			period_active;
--	u8			distribute_running;
- 	u8			slack_started;
- 	struct hrtimer		period_timer;
- 	struct hrtimer		slack_timer;
+ static enum hrtimer_restart sched_cfs_slack_timer(struct hrtimer *timer)
