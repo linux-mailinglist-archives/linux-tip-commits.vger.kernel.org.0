@@ -2,41 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 37BF31C1D11
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  1 May 2020 20:26:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 32D971C1D02
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  1 May 2020 20:26:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730022AbgEASXX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 1 May 2020 14:23:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40394 "EHLO
+        id S1730752AbgEASWe (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 1 May 2020 14:22:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40428 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1730660AbgEASW2 (ORCPT
+        by vger.kernel.org with ESMTP id S1730746AbgEASWe (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 1 May 2020 14:22:28 -0400
+        Fri, 1 May 2020 14:22:34 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D517C08E934;
-        Fri,  1 May 2020 11:22:28 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1634CC061A0C;
+        Fri,  1 May 2020 11:22:34 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jUaIn-0003fD-VN; Fri, 01 May 2020 20:22:22 +0200
+        id 1jUaIr-0003gq-Nv; Fri, 01 May 2020 20:22:25 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 527781C04CD;
-        Fri,  1 May 2020 20:22:21 +0200 (CEST)
-Date:   Fri, 01 May 2020 18:22:21 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id BE3851C0813;
+        Fri,  1 May 2020 20:22:22 +0200 (CEST)
+Date:   Fri, 01 May 2020 18:22:22 -0000
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] objtool: Make handle_insn_ops() unconditional
-Cc:     Julien Thierry <jthierry@redhat.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+Subject: [tip: objtool/core] x86,smap: Fix smap_{save,restore}() alternatives
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Miroslav Benes <mbenes@suse.cz>,
         Josh Poimboeuf <jpoimboe@redhat.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200428191659.795115188@infradead.org>
-References: <20200428191659.795115188@infradead.org>
+In-Reply-To: <20200429101802.GI13592@hirez.programming.kicks-ass.net>
+References: <20200429101802.GI13592@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-Message-ID: <158835734130.8414.1839500420306776239.tip-bot2@tip-bot2>
+Message-ID: <158835734274.8414.9962898280238154655.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -52,60 +51,62 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     60041bcd8f5ab560dabf44dc384f58bbeb5a6a30
-Gitweb:        https://git.kernel.org/tip/60041bcd8f5ab560dabf44dc384f58bbeb5a6a30
+Commit-ID:     1ff865e343c2b59469d7e41d370a980a3f972c71
+Gitweb:        https://git.kernel.org/tip/1ff865e343c2b59469d7e41d370a980a3f972c71
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Fri, 24 Apr 2020 16:16:41 +02:00
+AuthorDate:    Tue, 28 Apr 2020 19:57:59 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Thu, 30 Apr 2020 20:14:32 +02:00
+CommitterDate: Thu, 30 Apr 2020 20:14:31 +02:00
 
-objtool: Make handle_insn_ops() unconditional
+x86,smap: Fix smap_{save,restore}() alternatives
 
-Now that every instruction has a list of stack_ops; we can trivially
-distinquish those instructions that do not have stack_ops, their list
-is empty.
+As reported by objtool:
 
-This means we can now call handle_insn_ops() unconditionally.
+  lib/ubsan.o: warning: objtool: .altinstr_replacement+0x0: alternative modifies stack
+  lib/ubsan.o: warning: objtool: .altinstr_replacement+0x7: alternative modifies stack
 
-Suggested-by: Julien Thierry <jthierry@redhat.com>
+the smap_{save,restore}() alternatives violate (the newly enforced)
+rule on stack invariance. That is, due to there only being a single
+ORC table it must be valid to any alternative. These alternatives
+violate this with the direct result that unwinds will not be correct
+when it hits between the PUSH and POP instructions.
+
+Rewrite the functions to only have a conditional jump.
+
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Miroslav Benes <mbenes@suse.cz>
 Acked-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Link: https://lkml.kernel.org/r/20200428191659.795115188@infradead.org
+Link: https://lkml.kernel.org/r/20200429101802.GI13592@hirez.programming.kicks-ass.net
 ---
- tools/objtool/check.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ arch/x86/include/asm/smap.h | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 068897d..6591c2d 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -2259,6 +2259,9 @@ static int validate_branch(struct objtool_file *file, struct symbol *func,
- 				return 0;
- 		}
+diff --git a/arch/x86/include/asm/smap.h b/arch/x86/include/asm/smap.h
+index 27c47d1..8b58d69 100644
+--- a/arch/x86/include/asm/smap.h
++++ b/arch/x86/include/asm/smap.h
+@@ -57,8 +57,10 @@ static __always_inline unsigned long smap_save(void)
+ {
+ 	unsigned long flags;
  
-+		if (handle_insn_ops(insn, &state))
-+			return 1;
-+
- 		switch (insn->type) {
+-	asm volatile (ALTERNATIVE("", "pushf; pop %0; " __ASM_CLAC,
+-				  X86_FEATURE_SMAP)
++	asm volatile ("# smap_save\n\t"
++		      ALTERNATIVE("jmp 1f", "", X86_FEATURE_SMAP)
++		      "pushf; pop %0; " __ASM_CLAC "\n\t"
++		      "1:"
+ 		      : "=rm" (flags) : : "memory", "cc");
  
- 		case INSN_RETURN:
-@@ -2318,9 +2321,6 @@ static int validate_branch(struct objtool_file *file, struct symbol *func,
- 			break;
+ 	return flags;
+@@ -66,7 +68,10 @@ static __always_inline unsigned long smap_save(void)
  
- 		case INSN_EXCEPTION_RETURN:
--			if (handle_insn_ops(insn, &state))
--				return 1;
--
- 			/*
- 			 * This handles x86's sync_core() case, where we use an
- 			 * IRET to self. All 'normal' IRET instructions are in
-@@ -2340,8 +2340,6 @@ static int validate_branch(struct objtool_file *file, struct symbol *func,
- 			return 0;
+ static __always_inline void smap_restore(unsigned long flags)
+ {
+-	asm volatile (ALTERNATIVE("", "push %0; popf", X86_FEATURE_SMAP)
++	asm volatile ("# smap_restore\n\t"
++		      ALTERNATIVE("jmp 1f", "", X86_FEATURE_SMAP)
++		      "push %0; popf\n\t"
++		      "1:"
+ 		      : : "g" (flags) : "memory", "cc");
+ }
  
- 		case INSN_STACK:
--			if (handle_insn_ops(insn, &state))
--				return 1;
- 			break;
- 
- 		case INSN_STAC:
