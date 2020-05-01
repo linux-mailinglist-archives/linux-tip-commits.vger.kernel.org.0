@@ -2,40 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 203671C1D1C
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  1 May 2020 20:26:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B0651C1D14
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  1 May 2020 20:26:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730323AbgEASXm (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 1 May 2020 14:23:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40360 "EHLO
+        id S1730911AbgEASXX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 1 May 2020 14:23:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40376 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1730566AbgEASWV (ORCPT
+        by vger.kernel.org with ESMTP id S1730655AbgEASWZ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 1 May 2020 14:22:21 -0400
+        Fri, 1 May 2020 14:22:25 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F3BBC08E859;
-        Fri,  1 May 2020 11:22:21 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22E2FC08E934;
+        Fri,  1 May 2020 11:22:25 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jUaIb-0003Xw-8j; Fri, 01 May 2020 20:22:09 +0200
+        id 1jUaIa-0003XS-P2; Fri, 01 May 2020 20:22:08 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id CCF371C0085;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 6C4B81C0450;
         Fri,  1 May 2020 20:22:08 +0200 (CEST)
 Date:   Fri, 01 May 2020 18:22:08 -0000
-From:   "tip-bot2 for Huaixin Chang" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Muchun Song" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/fair: Refill bandwidth before scaling
-Cc:     Huaixin Chang <changhuaixin@linux.alibaba.com>,
+Subject: [tip: sched/core] sched/fair: Mark sched_init_granularity __init
+Cc:     Muchun Song <songmuchun@bytedance.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Ben Segall <bsegall@google.com>, Phil Auld <pauld@redhat.com>,
+        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200420024421.22442-3-changhuaixin@linux.alibaba.com>
-References: <20200420024421.22442-3-changhuaixin@linux.alibaba.com>
+In-Reply-To: <20200406074750.56533-1-songmuchun@bytedance.com>
+References: <20200406074750.56533-1-songmuchun@bytedance.com>
 MIME-Version: 1.0
-Message-ID: <158835732876.8414.16277366835627437779.tip-bot2@tip-bot2>
+Message-ID: <158835732841.8414.7492668002654800060.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,53 +51,36 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     5a6d6a6ccb5f48ca8cf7c6d64ff83fd9c7999390
-Gitweb:        https://git.kernel.org/tip/5a6d6a6ccb5f48ca8cf7c6d64ff83fd9c7999390
-Author:        Huaixin Chang <changhuaixin@linux.alibaba.com>
-AuthorDate:    Mon, 20 Apr 2020 10:44:21 +08:00
+Commit-ID:     f38f12d1e0811c0ee59260b2bdadedf99e16c4af
+Gitweb:        https://git.kernel.org/tip/f38f12d1e0811c0ee59260b2bdadedf99e16c4af
+Author:        Muchun Song <songmuchun@bytedance.com>
+AuthorDate:    Mon, 06 Apr 2020 15:47:50 +08:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Thu, 30 Apr 2020 20:14:40 +02:00
+CommitterDate: Thu, 30 Apr 2020 20:14:41 +02:00
 
-sched/fair: Refill bandwidth before scaling
+sched/fair: Mark sched_init_granularity __init
 
-In order to prevent possible hardlockup of sched_cfs_period_timer()
-loop, loop count is introduced to denote whether to scale quota and
-period or not. However, scale is done between forwarding period timer
-and refilling cfs bandwidth runtime, which means that period timer is
-forwarded with old "period" while runtime is refilled with scaled
-"quota".
+Function sched_init_granularity() is only called from __init
+functions, so mark it __init as well.
 
-Move do_sched_cfs_period_timer() before scaling to solve this.
-
-Fixes: 2e8e19226398 ("sched/fair: Limit sched_cfs_period_timer() loop to avoid hard lockup")
-Signed-off-by: Huaixin Chang <changhuaixin@linux.alibaba.com>
+Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Ben Segall <bsegall@google.com>
-Reviewed-by: Phil Auld <pauld@redhat.com>
-Link: https://lkml.kernel.org/r/20200420024421.22442-3-changhuaixin@linux.alibaba.com
+Reviewed-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
+Link: https://lkml.kernel.org/r/20200406074750.56533-1-songmuchun@bytedance.com
 ---
- kernel/sched/fair.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/sched/fair.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index c0216ef..fac5b2f 100644
+index fac5b2f..cd7fd7e 100644
 --- a/kernel/sched/fair.c
 +++ b/kernel/sched/fair.c
-@@ -5159,6 +5159,8 @@ static enum hrtimer_restart sched_cfs_period_timer(struct hrtimer *timer)
- 		if (!overrun)
- 			break;
+@@ -191,7 +191,7 @@ static void update_sysctl(void)
+ #undef SET_SYSCTL
+ }
  
-+		idle = do_sched_cfs_period_timer(cfs_b, overrun, flags);
-+
- 		if (++count > 3) {
- 			u64 new, old = ktime_to_ns(cfs_b->period);
- 
-@@ -5188,8 +5190,6 @@ static enum hrtimer_restart sched_cfs_period_timer(struct hrtimer *timer)
- 			/* reset count so we don't come right back in here */
- 			count = 0;
- 		}
--
--		idle = do_sched_cfs_period_timer(cfs_b, overrun, flags);
- 	}
- 	if (idle)
- 		cfs_b->period_active = 0;
+-void sched_init_granularity(void)
++void __init sched_init_granularity(void)
+ {
+ 	update_sysctl();
+ }
