@@ -2,41 +2,41 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EE1E91C1CE3
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  1 May 2020 20:22:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A527E1C1D12
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  1 May 2020 20:26:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730745AbgEASWe (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 1 May 2020 14:22:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40426 "EHLO
+        id S1730908AbgEASXX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 1 May 2020 14:23:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40390 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1730738AbgEASWd (ORCPT
+        by vger.kernel.org with ESMTP id S1730657AbgEASW1 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 1 May 2020 14:22:33 -0400
+        Fri, 1 May 2020 14:22:27 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BD5EC061A0C;
-        Fri,  1 May 2020 11:22:33 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65245C061A0C;
+        Fri,  1 May 2020 11:22:27 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jUaIr-0003ee-IV; Fri, 01 May 2020 20:22:25 +0200
+        id 1jUaIn-0003ez-A5; Fri, 01 May 2020 20:22:21 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 3C3721C0450;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E8C4F1C0330;
         Fri,  1 May 2020 20:22:20 +0200 (CEST)
 Date:   Fri, 01 May 2020 18:22:20 -0000
-From:   "tip-bot2 for Alexandre Chartre" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] objtool: Add support for intra-function calls
-Cc:     Alexandre Chartre <alexandre.chartre@oracle.com>,
+Subject: [tip: objtool/core] objtool: Remove INSN_STACK
+Cc:     Julien Thierry <jthierry@redhat.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Miroslav Benes <mbenes@suse.cz>,
         Josh Poimboeuf <jpoimboe@redhat.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200414103618.12657-4-alexandre.chartre@oracle.com>
-References: <20200414103618.12657-4-alexandre.chartre@oracle.com>
+In-Reply-To: <20200428191659.854203028@infradead.org>
+References: <20200428191659.854203028@infradead.org>
 MIME-Version: 1.0
-Message-ID: <158835734021.8414.5303379433420116948.tip-bot2@tip-bot2>
+Message-ID: <158835734088.8414.16395422459790306018.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -52,210 +52,240 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     8aa8eb2a8f5b3305a95f39957dd2b715fa668e21
-Gitweb:        https://git.kernel.org/tip/8aa8eb2a8f5b3305a95f39957dd2b715fa668e21
-Author:        Alexandre Chartre <alexandre.chartre@oracle.com>
-AuthorDate:    Tue, 14 Apr 2020 12:36:12 +02:00
+Commit-ID:     b09fb65e863733e192d4825a285b4b4998969ce0
+Gitweb:        https://git.kernel.org/tip/b09fb65e863733e192d4825a285b4b4998969ce0
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Fri, 24 Apr 2020 16:18:58 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Thu, 30 Apr 2020 20:14:33 +02:00
 
-objtool: Add support for intra-function calls
+objtool: Remove INSN_STACK
 
-Change objtool to support intra-function calls. On x86, an intra-function
-call is represented in objtool as a push onto the stack (of the return
-address), and a jump to the destination address. That way the stack
-information is correctly updated and the call flow is still accurate.
+With the unconditional use of handle_insn_ops(), INSN_STACK has lost
+its purpose. Remove it.
 
-Signed-off-by: Alexandre Chartre <alexandre.chartre@oracle.com>
+Suggested-by: Julien Thierry <jthierry@redhat.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Miroslav Benes <mbenes@suse.cz>
 Acked-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Link: https://lkml.kernel.org/r/20200414103618.12657-4-alexandre.chartre@oracle.com
+Link: https://lkml.kernel.org/r/20200428191659.854203028@infradead.org
 ---
- include/linux/frame.h                            | 11 ++-
- tools/objtool/Documentation/stack-validation.txt |  8 ++-
- tools/objtool/arch/x86/decode.c                  |  8 ++-
- tools/objtool/check.c                            | 79 ++++++++++++++-
- 4 files changed, 102 insertions(+), 4 deletions(-)
+ tools/objtool/arch.h            |  1 -
+ tools/objtool/arch/x86/decode.c | 23 -----------------------
+ tools/objtool/check.c           |  3 ---
+ 3 files changed, 27 deletions(-)
 
-diff --git a/include/linux/frame.h b/include/linux/frame.h
-index 02d3ca2..303cda6 100644
---- a/include/linux/frame.h
-+++ b/include/linux/frame.h
-@@ -15,9 +15,20 @@
- 	static void __used __section(.discard.func_stack_frame_non_standard) \
- 		*__func_stack_frame_non_standard_##func = func
- 
-+/*
-+ * This macro indicates that the following intra-function call is valid.
-+ * Any non-annotated intra-function call will cause objtool to issue a warning.
-+ */
-+#define ANNOTATE_INTRA_FUNCTION_CALL				\
-+	999:							\
-+	.pushsection .discard.intra_function_calls;		\
-+	.long 999b;						\
-+	.popsection;
-+
- #else /* !CONFIG_STACK_VALIDATION */
- 
- #define STACK_FRAME_NON_STANDARD(func)
-+#define ANNOTATE_INTRA_FUNCTION_CALL
- 
- #endif /* CONFIG_STACK_VALIDATION */
- 
-diff --git a/tools/objtool/Documentation/stack-validation.txt b/tools/objtool/Documentation/stack-validation.txt
-index 0189039..0542e46 100644
---- a/tools/objtool/Documentation/stack-validation.txt
-+++ b/tools/objtool/Documentation/stack-validation.txt
-@@ -323,6 +323,14 @@ they mean, and suggestions for how to fix them.
-     The easiest way to enforce this is to ensure alternatives do not contain
-     any ORC entries, which in turn implies the above constraint.
- 
-+11. file.o: warning: unannotated intra-function call
-+
-+   This warning means that a direct call is done to a destination which
-+   is not at the beginning of a function. If this is a legit call, you
-+   can remove this warning by putting the ANNOTATE_INTRA_FUNCTION_CALL
-+   directive right before the call.
-+
-+
- If the error doesn't seem to make sense, it could be a bug in objtool.
- Feel free to ask the objtool maintainer for help.
- 
+diff --git a/tools/objtool/arch.h b/tools/objtool/arch.h
+index 445b8fa..25dd4a9 100644
+--- a/tools/objtool/arch.h
++++ b/tools/objtool/arch.h
+@@ -21,7 +21,6 @@ enum insn_type {
+ 	INSN_RETURN,
+ 	INSN_EXCEPTION_RETURN,
+ 	INSN_CONTEXT_SWITCH,
+-	INSN_STACK,
+ 	INSN_BUG,
+ 	INSN_NOP,
+ 	INSN_STAC,
 diff --git a/tools/objtool/arch/x86/decode.c b/tools/objtool/arch/x86/decode.c
-index d7b5d10..4b504fc 100644
+index 97e66c7..e26bedb 100644
 --- a/tools/objtool/arch/x86/decode.c
 +++ b/tools/objtool/arch/x86/decode.c
-@@ -496,6 +496,14 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
+@@ -141,7 +141,6 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
+ 		if (rex_w && !rex_b && modrm_mod == 3 && modrm_rm == 4) {
  
- 	case 0xe8:
- 		*type = INSN_CALL;
-+		/*
-+		 * For the impact on the stack, a CALL behaves like
-+		 * a PUSH of an immediate value (the return address).
-+		 */
-+		ADD_OP(op) {
-+			op->src.type = OP_SRC_CONST;
-+			op->dest.type = OP_DEST_PUSH;
-+		}
- 		break;
+ 			/* add/sub reg, %rsp */
+-			*type = INSN_STACK;
+ 			ADD_OP(op) {
+ 				op->src.type = OP_SRC_ADD;
+ 				op->src.reg = op_to_cfi_reg[modrm_reg][rex_r];
+@@ -154,7 +153,6 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
+ 	case 0x50 ... 0x57:
  
- 	case 0xfc:
+ 		/* push reg */
+-		*type = INSN_STACK;
+ 		ADD_OP(op) {
+ 			op->src.type = OP_SRC_REG;
+ 			op->src.reg = op_to_cfi_reg[op1 & 0x7][rex_b];
+@@ -166,7 +164,6 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
+ 	case 0x58 ... 0x5f:
+ 
+ 		/* pop reg */
+-		*type = INSN_STACK;
+ 		ADD_OP(op) {
+ 			op->src.type = OP_SRC_POP;
+ 			op->dest.type = OP_DEST_REG;
+@@ -178,7 +175,6 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
+ 	case 0x68:
+ 	case 0x6a:
+ 		/* push immediate */
+-		*type = INSN_STACK;
+ 		ADD_OP(op) {
+ 			op->src.type = OP_SRC_CONST;
+ 			op->dest.type = OP_DEST_PUSH;
+@@ -196,7 +192,6 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
+ 
+ 		if (modrm == 0xe4) {
+ 			/* and imm, %rsp */
+-			*type = INSN_STACK;
+ 			ADD_OP(op) {
+ 				op->src.type = OP_SRC_AND;
+ 				op->src.reg = CFI_SP;
+@@ -215,7 +210,6 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
+ 			break;
+ 
+ 		/* add/sub imm, %rsp */
+-		*type = INSN_STACK;
+ 		ADD_OP(op) {
+ 			op->src.type = OP_SRC_ADD;
+ 			op->src.reg = CFI_SP;
+@@ -229,7 +223,6 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
+ 		if (rex_w && !rex_r && modrm_mod == 3 && modrm_reg == 4) {
+ 
+ 			/* mov %rsp, reg */
+-			*type = INSN_STACK;
+ 			ADD_OP(op) {
+ 				op->src.type = OP_SRC_REG;
+ 				op->src.reg = CFI_SP;
+@@ -242,7 +235,6 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
+ 		if (rex_w && !rex_b && modrm_mod == 3 && modrm_rm == 4) {
+ 
+ 			/* mov reg, %rsp */
+-			*type = INSN_STACK;
+ 			ADD_OP(op) {
+ 				op->src.type = OP_SRC_REG;
+ 				op->src.reg = op_to_cfi_reg[modrm_reg][rex_r];
+@@ -258,7 +250,6 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
+ 		    (modrm_mod == 1 || modrm_mod == 2) && modrm_rm == 5) {
+ 
+ 			/* mov reg, disp(%rbp) */
+-			*type = INSN_STACK;
+ 			ADD_OP(op) {
+ 				op->src.type = OP_SRC_REG;
+ 				op->src.reg = op_to_cfi_reg[modrm_reg][rex_r];
+@@ -270,7 +261,6 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
+ 		} else if (rex_w && !rex_b && modrm_rm == 4 && sib == 0x24) {
+ 
+ 			/* mov reg, disp(%rsp) */
+-			*type = INSN_STACK;
+ 			ADD_OP(op) {
+ 				op->src.type = OP_SRC_REG;
+ 				op->src.reg = op_to_cfi_reg[modrm_reg][rex_r];
+@@ -286,7 +276,6 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
+ 		if (rex_w && !rex_b && modrm_mod == 1 && modrm_rm == 5) {
+ 
+ 			/* mov disp(%rbp), reg */
+-			*type = INSN_STACK;
+ 			ADD_OP(op) {
+ 				op->src.type = OP_SRC_REG_INDIRECT;
+ 				op->src.reg = CFI_BP;
+@@ -299,7 +288,6 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
+ 			   modrm_mod != 3 && modrm_rm == 4) {
+ 
+ 			/* mov disp(%rsp), reg */
+-			*type = INSN_STACK;
+ 			ADD_OP(op) {
+ 				op->src.type = OP_SRC_REG_INDIRECT;
+ 				op->src.reg = CFI_SP;
+@@ -314,7 +302,6 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
+ 	case 0x8d:
+ 		if (sib == 0x24 && rex_w && !rex_b && !rex_x) {
+ 
+-			*type = INSN_STACK;
+ 			ADD_OP(op) {
+ 				if (!insn.displacement.value) {
+ 					/* lea (%rsp), reg */
+@@ -332,7 +319,6 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
+ 		} else if (rex == 0x48 && modrm == 0x65) {
+ 
+ 			/* lea disp(%rbp), %rsp */
+-			*type = INSN_STACK;
+ 			ADD_OP(op) {
+ 				op->src.type = OP_SRC_ADD;
+ 				op->src.reg = CFI_BP;
+@@ -350,7 +336,6 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
+ 			 * Restoring rsp back to its original value after a
+ 			 * stack realignment.
+ 			 */
+-			*type = INSN_STACK;
+ 			ADD_OP(op) {
+ 				op->src.type = OP_SRC_ADD;
+ 				op->src.reg = CFI_R10;
+@@ -368,7 +353,6 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
+ 			 * Restoring rsp back to its original value after a
+ 			 * stack realignment.
+ 			 */
+-			*type = INSN_STACK;
+ 			ADD_OP(op) {
+ 				op->src.type = OP_SRC_ADD;
+ 				op->src.reg = CFI_R13;
+@@ -382,7 +366,6 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
+ 
+ 	case 0x8f:
+ 		/* pop to mem */
+-		*type = INSN_STACK;
+ 		ADD_OP(op) {
+ 			op->src.type = OP_SRC_POP;
+ 			op->dest.type = OP_DEST_MEM;
+@@ -395,7 +378,6 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
+ 
+ 	case 0x9c:
+ 		/* pushf */
+-		*type = INSN_STACK;
+ 		ADD_OP(op) {
+ 			op->src.type = OP_SRC_CONST;
+ 			op->dest.type = OP_DEST_PUSHF;
+@@ -404,7 +386,6 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
+ 
+ 	case 0x9d:
+ 		/* popf */
+-		*type = INSN_STACK;
+ 		ADD_OP(op) {
+ 			op->src.type = OP_SRC_POPF;
+ 			op->dest.type = OP_DEST_MEM;
+@@ -443,7 +424,6 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
+ 		} else if (op2 == 0xa0 || op2 == 0xa8) {
+ 
+ 			/* push fs/gs */
+-			*type = INSN_STACK;
+ 			ADD_OP(op) {
+ 				op->src.type = OP_SRC_CONST;
+ 				op->dest.type = OP_DEST_PUSH;
+@@ -452,7 +432,6 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
+ 		} else if (op2 == 0xa1 || op2 == 0xa9) {
+ 
+ 			/* pop fs/gs */
+-			*type = INSN_STACK;
+ 			ADD_OP(op) {
+ 				op->src.type = OP_SRC_POP;
+ 				op->dest.type = OP_DEST_MEM;
+@@ -469,7 +448,6 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
+ 		 * mov bp, sp
+ 		 * pop bp
+ 		 */
+-		*type = INSN_STACK;
+ 		ADD_OP(op)
+ 			op->dest.type = OP_DEST_LEAVE;
+ 
+@@ -537,7 +515,6 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
+ 		else if (modrm_reg == 6) {
+ 
+ 			/* push from mem */
+-			*type = INSN_STACK;
+ 			ADD_OP(op) {
+ 				op->src.type = OP_SRC_CONST;
+ 				op->dest.type = OP_DEST_PUSH;
 diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index d822858..32dea5f 100644
+index 6591c2d..4f3db2f 100644
 --- a/tools/objtool/check.c
 +++ b/tools/objtool/check.c
-@@ -674,6 +674,16 @@ static int add_jump_destinations(struct objtool_file *file)
- 	return 0;
- }
- 
-+static void remove_insn_ops(struct instruction *insn)
-+{
-+	struct stack_op *op, *tmp;
-+
-+	list_for_each_entry_safe(op, tmp, &insn->stack_ops, list) {
-+		list_del(&op->list);
-+		free(op);
-+	}
-+}
-+
- /*
-  * Find the destination instructions for all calls.
-  */
-@@ -699,10 +709,7 @@ static int add_call_destinations(struct objtool_file *file)
- 				continue;
- 
- 			if (!insn->call_dest) {
--				WARN_FUNC("unsupported intra-function call",
--					  insn->sec, insn->offset);
--				if (retpoline)
--					WARN("If this is a retpoline, please patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALTERNATIVE.");
-+				WARN_FUNC("unannotated intra-function call", insn->sec, insn->offset);
- 				return -1;
+@@ -2339,9 +2339,6 @@ static int validate_branch(struct objtool_file *file, struct symbol *func,
  			}
+ 			return 0;
  
-@@ -725,6 +732,15 @@ static int add_call_destinations(struct objtool_file *file)
- 			}
- 		} else
- 			insn->call_dest = rela->sym;
-+
-+		/*
-+		 * Whatever stack impact regular CALLs have, should be undone
-+		 * by the RETURN of the called function.
-+		 *
-+		 * Annotated intra-function calls retain the stack_ops but
-+		 * are converted to JUMP, see read_intra_function_calls().
-+		 */
-+		remove_insn_ops(insn);
- 	}
- 
- 	return 0;
-@@ -1404,6 +1420,57 @@ static int read_instr_hints(struct objtool_file *file)
- 	return 0;
- }
- 
-+static int read_intra_function_calls(struct objtool_file *file)
-+{
-+	struct instruction *insn;
-+	struct section *sec;
-+	struct rela *rela;
-+
-+	sec = find_section_by_name(file->elf, ".rela.discard.intra_function_calls");
-+	if (!sec)
-+		return 0;
-+
-+	list_for_each_entry(rela, &sec->rela_list, list) {
-+		unsigned long dest_off;
-+
-+		if (rela->sym->type != STT_SECTION) {
-+			WARN("unexpected relocation symbol type in %s",
-+			     sec->name);
-+			return -1;
-+		}
-+
-+		insn = find_insn(file, rela->sym->sec, rela->addend);
-+		if (!insn) {
-+			WARN("bad .discard.intra_function_call entry");
-+			return -1;
-+		}
-+
-+		if (insn->type != INSN_CALL) {
-+			WARN_FUNC("intra_function_call not a direct call",
-+				  insn->sec, insn->offset);
-+			return -1;
-+		}
-+
-+		/*
-+		 * Treat intra-function CALLs as JMPs, but with a stack_op.
-+		 * See add_call_destinations(), which strips stack_ops from
-+		 * normal CALLs.
-+		 */
-+		insn->type = INSN_JUMP_UNCONDITIONAL;
-+
-+		dest_off = insn->offset + insn->len + insn->immediate;
-+		insn->jump_dest = find_insn(file, insn->sec, dest_off);
-+		if (!insn->jump_dest) {
-+			WARN_FUNC("can't find call dest at %s+0x%lx",
-+				  insn->sec, insn->offset,
-+				  insn->sec->name, dest_off);
-+			return -1;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
- static void mark_rodata(struct objtool_file *file)
- {
- 	struct section *sec;
-@@ -1459,6 +1526,10 @@ static int decode_sections(struct objtool_file *file)
- 	if (ret)
- 		return ret;
- 
-+	ret = read_intra_function_calls(file);
-+	if (ret)
-+		return ret;
-+
- 	ret = add_call_destinations(file);
- 	if (ret)
- 		return ret;
+-		case INSN_STACK:
+-			break;
+-
+ 		case INSN_STAC:
+ 			if (state.uaccess) {
+ 				WARN_FUNC("recursive UACCESS enable", sec, insn->offset);
