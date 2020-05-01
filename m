@@ -2,39 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 72D7A1C1CD9
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  1 May 2020 20:22:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3AA941C1D1A
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  1 May 2020 20:26:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729599AbgEASWR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 1 May 2020 14:22:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40328 "EHLO
+        id S1730344AbgEASXh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 1 May 2020 14:23:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1730545AbgEASWQ (ORCPT
+        by vger.kernel.org with ESMTP id S1730628AbgEASWW (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 1 May 2020 14:22:16 -0400
+        Fri, 1 May 2020 14:22:22 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D037CC061A0C;
-        Fri,  1 May 2020 11:22:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C38AC061A0C;
+        Fri,  1 May 2020 11:22:22 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jUaId-0003ZG-BZ; Fri, 01 May 2020 20:22:11 +0200
+        id 1jUaIj-0003aA-O6; Fri, 01 May 2020 20:22:17 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B09481C0085;
-        Fri,  1 May 2020 20:22:10 +0200 (CEST)
-Date:   Fri, 01 May 2020 18:22:10 -0000
-From:   "tip-bot2 for Valentin Schneider" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 605E41C04DD;
+        Fri,  1 May 2020 20:22:11 +0200 (CEST)
+Date:   Fri, 01 May 2020 18:22:11 -0000
+From:   "tip-bot2 for Jann Horn" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/debug: Make sd->flags sysctl read-only
-Cc:     Valentin Schneider <valentin.schneider@arm.com>,
+Subject: [tip: sched/core] exit: Move preemption fixup up, move blocking
+ operations down
+Cc:     Jann Horn <jannh@google.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200415210512.805-3-valentin.schneider@arm.com>
-References: <20200415210512.805-3-valentin.schneider@arm.com>
+In-Reply-To: <20200305220657.46800-1-jannh@google.com>
+References: <20200305220657.46800-1-jannh@google.com>
 MIME-Version: 1.0
-Message-ID: <158835733068.8414.14497697589045052478.tip-bot2@tip-bot2>
+Message-ID: <158835733131.8414.13953310081122413619.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,47 +51,83 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     9818427c6270a9ce8c52c8621026fe9cebae0f92
-Gitweb:        https://git.kernel.org/tip/9818427c6270a9ce8c52c8621026fe9cebae0f92
-Author:        Valentin Schneider <valentin.schneider@arm.com>
-AuthorDate:    Wed, 15 Apr 2020 22:05:05 +01:00
+Commit-ID:     586b58cac8b4683eb58a1446fbc399de18974e40
+Gitweb:        https://git.kernel.org/tip/586b58cac8b4683eb58a1446fbc399de18974e40
+Author:        Jann Horn <jannh@google.com>
+AuthorDate:    Thu, 05 Mar 2020 23:06:57 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Thu, 30 Apr 2020 20:14:39 +02:00
+CommitterDate: Thu, 30 Apr 2020 20:14:38 +02:00
 
-sched/debug: Make sd->flags sysctl read-only
+exit: Move preemption fixup up, move blocking operations down
 
-Writing to the sysctl of a sched_domain->flags directly updates the value of
-the field, and goes nowhere near update_top_cache_domain(). This means that
-the cached domain pointers can end up containing stale data (e.g. the
-domain pointed to doesn't have the relevant flag set anymore).
+With CONFIG_DEBUG_ATOMIC_SLEEP=y and CONFIG_CGROUPS=y, kernel oopses in
+non-preemptible context look untidy; after the main oops, the kernel prints
+a "sleeping function called from invalid context" report because
+exit_signals() -> cgroup_threadgroup_change_begin() -> percpu_down_read()
+can sleep, and that happens before the preempt_count_set(PREEMPT_ENABLED)
+fixup.
 
-Explicit domain walks that check for flags will be affected by
-the write, but this won't be in sync with the cached pointers which will
-still point to the domains that were cached at the last sched_domain
-build.
+It looks like the same thing applies to profile_task_exit() and
+kcov_task_exit().
 
-In other words, writing to this interface is playing a dangerous game. It
-could be made to trigger an update of the cached sched_domain pointers when
-written to, but this does not seem to be worth the trouble. Make it
-read-only.
+Fix it by moving the preemption fixup up and the calls to
+profile_task_exit() and kcov_task_exit() down.
 
-Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
+Fixes: 1dc0fffc48af ("sched/core: Robustify preemption leak checks")
+Signed-off-by: Jann Horn <jannh@google.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20200415210512.805-3-valentin.schneider@arm.com
+Link: https://lkml.kernel.org/r/20200305220657.46800-1-jannh@google.com
 ---
- kernel/sched/debug.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/exit.c | 25 ++++++++++++++++---------
+ 1 file changed, 16 insertions(+), 9 deletions(-)
 
-diff --git a/kernel/sched/debug.c b/kernel/sched/debug.c
-index b3ac1c1..c6cc02a 100644
---- a/kernel/sched/debug.c
-+++ b/kernel/sched/debug.c
-@@ -258,7 +258,7 @@ sd_alloc_ctl_domain_table(struct sched_domain *sd)
- 	set_table_entry(&table[2], "busy_factor",	  &sd->busy_factor,	    sizeof(int),  0644, proc_dointvec_minmax);
- 	set_table_entry(&table[3], "imbalance_pct",	  &sd->imbalance_pct,	    sizeof(int),  0644, proc_dointvec_minmax);
- 	set_table_entry(&table[4], "cache_nice_tries",	  &sd->cache_nice_tries,    sizeof(int),  0644, proc_dointvec_minmax);
--	set_table_entry(&table[5], "flags",		  &sd->flags,		    sizeof(int),  0644, proc_dointvec_minmax);
-+	set_table_entry(&table[5], "flags",		  &sd->flags,		    sizeof(int),  0444, proc_dointvec_minmax);
- 	set_table_entry(&table[6], "max_newidle_lb_cost", &sd->max_newidle_lb_cost, sizeof(long), 0644, proc_doulongvec_minmax);
- 	set_table_entry(&table[7], "name",		  sd->name,	       CORENAME_MAX_SIZE, 0444, proc_dostring);
- 	/* &table[8] is terminator */
+diff --git a/kernel/exit.c b/kernel/exit.c
+index ce2a75b..d56fe51 100644
+--- a/kernel/exit.c
++++ b/kernel/exit.c
+@@ -708,8 +708,12 @@ void __noreturn do_exit(long code)
+ 	struct task_struct *tsk = current;
+ 	int group_dead;
+ 
+-	profile_task_exit(tsk);
+-	kcov_task_exit(tsk);
++	/*
++	 * We can get here from a kernel oops, sometimes with preemption off.
++	 * Start by checking for critical errors.
++	 * Then fix up important state like USER_DS and preemption.
++	 * Then do everything else.
++	 */
+ 
+ 	WARN_ON(blk_needs_flush_plug(tsk));
+ 
+@@ -727,6 +731,16 @@ void __noreturn do_exit(long code)
+ 	 */
+ 	set_fs(USER_DS);
+ 
++	if (unlikely(in_atomic())) {
++		pr_info("note: %s[%d] exited with preempt_count %d\n",
++			current->comm, task_pid_nr(current),
++			preempt_count());
++		preempt_count_set(PREEMPT_ENABLED);
++	}
++
++	profile_task_exit(tsk);
++	kcov_task_exit(tsk);
++
+ 	ptrace_event(PTRACE_EVENT_EXIT, code);
+ 
+ 	validate_creds_for_do_exit(tsk);
+@@ -744,13 +758,6 @@ void __noreturn do_exit(long code)
+ 
+ 	exit_signals(tsk);  /* sets PF_EXITING */
+ 
+-	if (unlikely(in_atomic())) {
+-		pr_info("note: %s[%d] exited with preempt_count %d\n",
+-			current->comm, task_pid_nr(current),
+-			preempt_count());
+-		preempt_count_set(PREEMPT_ENABLED);
+-	}
+-
+ 	/* sync mm's RSS info before statistics gathering */
+ 	if (tsk->mm)
+ 		sync_mm_rss(tsk->mm);
