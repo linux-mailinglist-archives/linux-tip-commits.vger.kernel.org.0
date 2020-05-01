@@ -2,41 +2,41 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5AC811C1D09
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  1 May 2020 20:26:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 37BF31C1D11
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  1 May 2020 20:26:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730019AbgEASXG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 1 May 2020 14:23:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40416 "EHLO
+        id S1730022AbgEASXX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 1 May 2020 14:23:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40394 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1730706AbgEASWb (ORCPT
+        by vger.kernel.org with ESMTP id S1730660AbgEASW2 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 1 May 2020 14:22:31 -0400
+        Fri, 1 May 2020 14:22:28 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 753EFC08E859;
-        Fri,  1 May 2020 11:22:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D517C08E934;
+        Fri,  1 May 2020 11:22:28 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jUaIp-0003fh-L6; Fri, 01 May 2020 20:22:23 +0200
+        id 1jUaIn-0003fD-VN; Fri, 01 May 2020 20:22:22 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B89461C0330;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 527781C04CD;
         Fri,  1 May 2020 20:22:21 +0200 (CEST)
 Date:   Fri, 01 May 2020 18:22:21 -0000
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] objtool: Rework allocating stack_ops on decode
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Alexandre Chartre <alexandre.chartre@oracle.com>,
+Subject: [tip: objtool/core] objtool: Make handle_insn_ops() unconditional
+Cc:     Julien Thierry <jthierry@redhat.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Miroslav Benes <mbenes@suse.cz>,
         Josh Poimboeuf <jpoimboe@redhat.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200428191659.736151601@infradead.org>
-References: <20200428191659.736151601@infradead.org>
+In-Reply-To: <20200428191659.795115188@infradead.org>
+References: <20200428191659.795115188@infradead.org>
 MIME-Version: 1.0
-Message-ID: <158835734169.8414.14694139621609463708.tip-bot2@tip-bot2>
+Message-ID: <158835734130.8414.1839500420306776239.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -52,468 +52,60 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     7d989fcadd6e225a61d6490dd15bdbdfc8a53d5c
-Gitweb:        https://git.kernel.org/tip/7d989fcadd6e225a61d6490dd15bdbdfc8a53d5c
+Commit-ID:     60041bcd8f5ab560dabf44dc384f58bbeb5a6a30
+Gitweb:        https://git.kernel.org/tip/60041bcd8f5ab560dabf44dc384f58bbeb5a6a30
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Thu, 23 Apr 2020 13:22:10 +02:00
+AuthorDate:    Fri, 24 Apr 2020 16:16:41 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Thu, 30 Apr 2020 20:14:32 +02:00
 
-objtool: Rework allocating stack_ops on decode
+objtool: Make handle_insn_ops() unconditional
 
-Wrap each stack_op in a macro that allocates and adds it to the list.
-This simplifies trying to figure out what to do with the pre-allocated
-stack_op at the end.
+Now that every instruction has a list of stack_ops; we can trivially
+distinquish those instructions that do not have stack_ops, their list
+is empty.
 
+This means we can now call handle_insn_ops() unconditionally.
+
+Suggested-by: Julien Thierry <jthierry@redhat.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
 Reviewed-by: Miroslav Benes <mbenes@suse.cz>
 Acked-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Link: https://lkml.kernel.org/r/20200428191659.736151601@infradead.org
+Link: https://lkml.kernel.org/r/20200428191659.795115188@infradead.org
 ---
- tools/objtool/arch/x86/decode.c | 251 ++++++++++++++++++-------------
- 1 file changed, 147 insertions(+), 104 deletions(-)
+ tools/objtool/check.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/tools/objtool/arch/x86/decode.c b/tools/objtool/arch/x86/decode.c
-index c45a0b4..97e66c7 100644
---- a/tools/objtool/arch/x86/decode.c
-+++ b/tools/objtool/arch/x86/decode.c
-@@ -77,6 +77,11 @@ unsigned long arch_jump_destination(struct instruction *insn)
- 	return insn->offset + insn->len + insn->immediate;
- }
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index 068897d..6591c2d 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -2259,6 +2259,9 @@ static int validate_branch(struct objtool_file *file, struct symbol *func,
+ 				return 0;
+ 		}
  
-+#define ADD_OP(op) \
-+	if (!(op = calloc(1, sizeof(*op)))) \
-+		return -1; \
-+	else for (list_add_tail(&op->list, ops_list); op; op = NULL)
++		if (handle_insn_ops(insn, &state))
++			return 1;
 +
- int arch_decode_instruction(const struct elf *elf, const struct section *sec,
- 			    unsigned long offset, unsigned int maxlen,
- 			    unsigned int *len, enum insn_type *type,
-@@ -88,7 +93,7 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
- 	unsigned char op1, op2, rex = 0, rex_b = 0, rex_r = 0, rex_w = 0,
- 		      rex_x = 0, modrm = 0, modrm_mod = 0, modrm_rm = 0,
- 		      modrm_reg = 0, sib = 0;
--	struct stack_op *op;
-+	struct stack_op *op = NULL;
+ 		switch (insn->type) {
  
- 	x86_64 = is_x86_64(elf);
- 	if (x86_64 == -1)
-@@ -129,10 +134,6 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
- 	if (insn.sib.nbytes)
- 		sib = insn.sib.bytes[0];
+ 		case INSN_RETURN:
+@@ -2318,9 +2321,6 @@ static int validate_branch(struct objtool_file *file, struct symbol *func,
+ 			break;
  
--	op = calloc(1, sizeof(*op));
--	if (!op)
--		return -1;
+ 		case INSN_EXCEPTION_RETURN:
+-			if (handle_insn_ops(insn, &state))
+-				return 1;
 -
- 	switch (op1) {
+ 			/*
+ 			 * This handles x86's sync_core() case, where we use an
+ 			 * IRET to self. All 'normal' IRET instructions are in
+@@ -2340,8 +2340,6 @@ static int validate_branch(struct objtool_file *file, struct symbol *func,
+ 			return 0;
  
- 	case 0x1:
-@@ -141,10 +142,12 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
- 
- 			/* add/sub reg, %rsp */
- 			*type = INSN_STACK;
--			op->src.type = OP_SRC_ADD;
--			op->src.reg = op_to_cfi_reg[modrm_reg][rex_r];
--			op->dest.type = OP_DEST_REG;
--			op->dest.reg = CFI_SP;
-+			ADD_OP(op) {
-+				op->src.type = OP_SRC_ADD;
-+				op->src.reg = op_to_cfi_reg[modrm_reg][rex_r];
-+				op->dest.type = OP_DEST_REG;
-+				op->dest.reg = CFI_SP;
-+			}
- 		}
- 		break;
- 
-@@ -152,9 +155,11 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
- 
- 		/* push reg */
- 		*type = INSN_STACK;
--		op->src.type = OP_SRC_REG;
--		op->src.reg = op_to_cfi_reg[op1 & 0x7][rex_b];
--		op->dest.type = OP_DEST_PUSH;
-+		ADD_OP(op) {
-+			op->src.type = OP_SRC_REG;
-+			op->src.reg = op_to_cfi_reg[op1 & 0x7][rex_b];
-+			op->dest.type = OP_DEST_PUSH;
-+		}
- 
- 		break;
- 
-@@ -162,9 +167,11 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
- 
- 		/* pop reg */
- 		*type = INSN_STACK;
--		op->src.type = OP_SRC_POP;
--		op->dest.type = OP_DEST_REG;
--		op->dest.reg = op_to_cfi_reg[op1 & 0x7][rex_b];
-+		ADD_OP(op) {
-+			op->src.type = OP_SRC_POP;
-+			op->dest.type = OP_DEST_REG;
-+			op->dest.reg = op_to_cfi_reg[op1 & 0x7][rex_b];
-+		}
- 
- 		break;
- 
-@@ -172,8 +179,10 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
- 	case 0x6a:
- 		/* push immediate */
- 		*type = INSN_STACK;
--		op->src.type = OP_SRC_CONST;
--		op->dest.type = OP_DEST_PUSH;
-+		ADD_OP(op) {
-+			op->src.type = OP_SRC_CONST;
-+			op->dest.type = OP_DEST_PUSH;
-+		}
- 		break;
- 
- 	case 0x70 ... 0x7f:
-@@ -188,11 +197,13 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
- 		if (modrm == 0xe4) {
- 			/* and imm, %rsp */
- 			*type = INSN_STACK;
--			op->src.type = OP_SRC_AND;
--			op->src.reg = CFI_SP;
--			op->src.offset = insn.immediate.value;
--			op->dest.type = OP_DEST_REG;
--			op->dest.reg = CFI_SP;
-+			ADD_OP(op) {
-+				op->src.type = OP_SRC_AND;
-+				op->src.reg = CFI_SP;
-+				op->src.offset = insn.immediate.value;
-+				op->dest.type = OP_DEST_REG;
-+				op->dest.reg = CFI_SP;
-+			}
+ 		case INSN_STACK:
+-			if (handle_insn_ops(insn, &state))
+-				return 1;
  			break;
- 		}
  
-@@ -205,11 +216,13 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
- 
- 		/* add/sub imm, %rsp */
- 		*type = INSN_STACK;
--		op->src.type = OP_SRC_ADD;
--		op->src.reg = CFI_SP;
--		op->src.offset = insn.immediate.value * sign;
--		op->dest.type = OP_DEST_REG;
--		op->dest.reg = CFI_SP;
-+		ADD_OP(op) {
-+			op->src.type = OP_SRC_ADD;
-+			op->src.reg = CFI_SP;
-+			op->src.offset = insn.immediate.value * sign;
-+			op->dest.type = OP_DEST_REG;
-+			op->dest.reg = CFI_SP;
-+		}
- 		break;
- 
- 	case 0x89:
-@@ -217,10 +230,12 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
- 
- 			/* mov %rsp, reg */
- 			*type = INSN_STACK;
--			op->src.type = OP_SRC_REG;
--			op->src.reg = CFI_SP;
--			op->dest.type = OP_DEST_REG;
--			op->dest.reg = op_to_cfi_reg[modrm_rm][rex_b];
-+			ADD_OP(op) {
-+				op->src.type = OP_SRC_REG;
-+				op->src.reg = CFI_SP;
-+				op->dest.type = OP_DEST_REG;
-+				op->dest.reg = op_to_cfi_reg[modrm_rm][rex_b];
-+			}
- 			break;
- 		}
- 
-@@ -228,10 +243,12 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
- 
- 			/* mov reg, %rsp */
- 			*type = INSN_STACK;
--			op->src.type = OP_SRC_REG;
--			op->src.reg = op_to_cfi_reg[modrm_reg][rex_r];
--			op->dest.type = OP_DEST_REG;
--			op->dest.reg = CFI_SP;
-+			ADD_OP(op) {
-+				op->src.type = OP_SRC_REG;
-+				op->src.reg = op_to_cfi_reg[modrm_reg][rex_r];
-+				op->dest.type = OP_DEST_REG;
-+				op->dest.reg = CFI_SP;
-+			}
- 			break;
- 		}
- 
-@@ -242,21 +259,25 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
- 
- 			/* mov reg, disp(%rbp) */
- 			*type = INSN_STACK;
--			op->src.type = OP_SRC_REG;
--			op->src.reg = op_to_cfi_reg[modrm_reg][rex_r];
--			op->dest.type = OP_DEST_REG_INDIRECT;
--			op->dest.reg = CFI_BP;
--			op->dest.offset = insn.displacement.value;
-+			ADD_OP(op) {
-+				op->src.type = OP_SRC_REG;
-+				op->src.reg = op_to_cfi_reg[modrm_reg][rex_r];
-+				op->dest.type = OP_DEST_REG_INDIRECT;
-+				op->dest.reg = CFI_BP;
-+				op->dest.offset = insn.displacement.value;
-+			}
- 
- 		} else if (rex_w && !rex_b && modrm_rm == 4 && sib == 0x24) {
- 
- 			/* mov reg, disp(%rsp) */
- 			*type = INSN_STACK;
--			op->src.type = OP_SRC_REG;
--			op->src.reg = op_to_cfi_reg[modrm_reg][rex_r];
--			op->dest.type = OP_DEST_REG_INDIRECT;
--			op->dest.reg = CFI_SP;
--			op->dest.offset = insn.displacement.value;
-+			ADD_OP(op) {
-+				op->src.type = OP_SRC_REG;
-+				op->src.reg = op_to_cfi_reg[modrm_reg][rex_r];
-+				op->dest.type = OP_DEST_REG_INDIRECT;
-+				op->dest.reg = CFI_SP;
-+				op->dest.offset = insn.displacement.value;
-+			}
- 		}
- 
- 		break;
-@@ -266,22 +287,26 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
- 
- 			/* mov disp(%rbp), reg */
- 			*type = INSN_STACK;
--			op->src.type = OP_SRC_REG_INDIRECT;
--			op->src.reg = CFI_BP;
--			op->src.offset = insn.displacement.value;
--			op->dest.type = OP_DEST_REG;
--			op->dest.reg = op_to_cfi_reg[modrm_reg][rex_r];
-+			ADD_OP(op) {
-+				op->src.type = OP_SRC_REG_INDIRECT;
-+				op->src.reg = CFI_BP;
-+				op->src.offset = insn.displacement.value;
-+				op->dest.type = OP_DEST_REG;
-+				op->dest.reg = op_to_cfi_reg[modrm_reg][rex_r];
-+			}
- 
- 		} else if (rex_w && !rex_b && sib == 0x24 &&
- 			   modrm_mod != 3 && modrm_rm == 4) {
- 
- 			/* mov disp(%rsp), reg */
- 			*type = INSN_STACK;
--			op->src.type = OP_SRC_REG_INDIRECT;
--			op->src.reg = CFI_SP;
--			op->src.offset = insn.displacement.value;
--			op->dest.type = OP_DEST_REG;
--			op->dest.reg = op_to_cfi_reg[modrm_reg][rex_r];
-+			ADD_OP(op) {
-+				op->src.type = OP_SRC_REG_INDIRECT;
-+				op->src.reg = CFI_SP;
-+				op->src.offset = insn.displacement.value;
-+				op->dest.type = OP_DEST_REG;
-+				op->dest.reg = op_to_cfi_reg[modrm_reg][rex_r];
-+			}
- 		}
- 
- 		break;
-@@ -290,27 +315,31 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
- 		if (sib == 0x24 && rex_w && !rex_b && !rex_x) {
- 
- 			*type = INSN_STACK;
--			if (!insn.displacement.value) {
--				/* lea (%rsp), reg */
--				op->src.type = OP_SRC_REG;
--			} else {
--				/* lea disp(%rsp), reg */
--				op->src.type = OP_SRC_ADD;
--				op->src.offset = insn.displacement.value;
-+			ADD_OP(op) {
-+				if (!insn.displacement.value) {
-+					/* lea (%rsp), reg */
-+					op->src.type = OP_SRC_REG;
-+				} else {
-+					/* lea disp(%rsp), reg */
-+					op->src.type = OP_SRC_ADD;
-+					op->src.offset = insn.displacement.value;
-+				}
-+				op->src.reg = CFI_SP;
-+				op->dest.type = OP_DEST_REG;
-+				op->dest.reg = op_to_cfi_reg[modrm_reg][rex_r];
- 			}
--			op->src.reg = CFI_SP;
--			op->dest.type = OP_DEST_REG;
--			op->dest.reg = op_to_cfi_reg[modrm_reg][rex_r];
- 
- 		} else if (rex == 0x48 && modrm == 0x65) {
- 
- 			/* lea disp(%rbp), %rsp */
- 			*type = INSN_STACK;
--			op->src.type = OP_SRC_ADD;
--			op->src.reg = CFI_BP;
--			op->src.offset = insn.displacement.value;
--			op->dest.type = OP_DEST_REG;
--			op->dest.reg = CFI_SP;
-+			ADD_OP(op) {
-+				op->src.type = OP_SRC_ADD;
-+				op->src.reg = CFI_BP;
-+				op->src.offset = insn.displacement.value;
-+				op->dest.type = OP_DEST_REG;
-+				op->dest.reg = CFI_SP;
-+			}
- 
- 		} else if (rex == 0x49 && modrm == 0x62 &&
- 			   insn.displacement.value == -8) {
-@@ -322,11 +351,13 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
- 			 * stack realignment.
- 			 */
- 			*type = INSN_STACK;
--			op->src.type = OP_SRC_ADD;
--			op->src.reg = CFI_R10;
--			op->src.offset = -8;
--			op->dest.type = OP_DEST_REG;
--			op->dest.reg = CFI_SP;
-+			ADD_OP(op) {
-+				op->src.type = OP_SRC_ADD;
-+				op->src.reg = CFI_R10;
-+				op->src.offset = -8;
-+				op->dest.type = OP_DEST_REG;
-+				op->dest.reg = CFI_SP;
-+			}
- 
- 		} else if (rex == 0x49 && modrm == 0x65 &&
- 			   insn.displacement.value == -16) {
-@@ -338,11 +369,13 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
- 			 * stack realignment.
- 			 */
- 			*type = INSN_STACK;
--			op->src.type = OP_SRC_ADD;
--			op->src.reg = CFI_R13;
--			op->src.offset = -16;
--			op->dest.type = OP_DEST_REG;
--			op->dest.reg = CFI_SP;
-+			ADD_OP(op) {
-+				op->src.type = OP_SRC_ADD;
-+				op->src.reg = CFI_R13;
-+				op->src.offset = -16;
-+				op->dest.type = OP_DEST_REG;
-+				op->dest.reg = CFI_SP;
-+			}
- 		}
- 
- 		break;
-@@ -350,8 +383,10 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
- 	case 0x8f:
- 		/* pop to mem */
- 		*type = INSN_STACK;
--		op->src.type = OP_SRC_POP;
--		op->dest.type = OP_DEST_MEM;
-+		ADD_OP(op) {
-+			op->src.type = OP_SRC_POP;
-+			op->dest.type = OP_DEST_MEM;
-+		}
- 		break;
- 
- 	case 0x90:
-@@ -361,15 +396,19 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
- 	case 0x9c:
- 		/* pushf */
- 		*type = INSN_STACK;
--		op->src.type = OP_SRC_CONST;
--		op->dest.type = OP_DEST_PUSHF;
-+		ADD_OP(op) {
-+			op->src.type = OP_SRC_CONST;
-+			op->dest.type = OP_DEST_PUSHF;
-+		}
- 		break;
- 
- 	case 0x9d:
- 		/* popf */
- 		*type = INSN_STACK;
--		op->src.type = OP_SRC_POPF;
--		op->dest.type = OP_DEST_MEM;
-+		ADD_OP(op) {
-+			op->src.type = OP_SRC_POPF;
-+			op->dest.type = OP_DEST_MEM;
-+		}
- 		break;
- 
- 	case 0x0f:
-@@ -405,15 +444,19 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
- 
- 			/* push fs/gs */
- 			*type = INSN_STACK;
--			op->src.type = OP_SRC_CONST;
--			op->dest.type = OP_DEST_PUSH;
-+			ADD_OP(op) {
-+				op->src.type = OP_SRC_CONST;
-+				op->dest.type = OP_DEST_PUSH;
-+			}
- 
- 		} else if (op2 == 0xa1 || op2 == 0xa9) {
- 
- 			/* pop fs/gs */
- 			*type = INSN_STACK;
--			op->src.type = OP_SRC_POP;
--			op->dest.type = OP_DEST_MEM;
-+			ADD_OP(op) {
-+				op->src.type = OP_SRC_POP;
-+				op->dest.type = OP_DEST_MEM;
-+			}
- 		}
- 
- 		break;
-@@ -427,7 +470,8 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
- 		 * pop bp
- 		 */
- 		*type = INSN_STACK;
--		op->dest.type = OP_DEST_LEAVE;
-+		ADD_OP(op)
-+			op->dest.type = OP_DEST_LEAVE;
- 
- 		break;
- 
-@@ -449,12 +493,14 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
- 	case 0xcf: /* iret */
- 		*type = INSN_EXCEPTION_RETURN;
- 
--		/* add $40, %rsp */
--		op->src.type = OP_SRC_ADD;
--		op->src.reg = CFI_SP;
--		op->src.offset = 5*8;
--		op->dest.type = OP_DEST_REG;
--		op->dest.reg = CFI_SP;
-+		ADD_OP(op) {
-+			/* add $40, %rsp */
-+			op->src.type = OP_SRC_ADD;
-+			op->src.reg = CFI_SP;
-+			op->src.offset = 5*8;
-+			op->dest.type = OP_DEST_REG;
-+			op->dest.reg = CFI_SP;
-+		}
- 		break;
- 
- 	case 0xca: /* retf */
-@@ -492,8 +538,10 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
- 
- 			/* push from mem */
- 			*type = INSN_STACK;
--			op->src.type = OP_SRC_CONST;
--			op->dest.type = OP_DEST_PUSH;
-+			ADD_OP(op) {
-+				op->src.type = OP_SRC_CONST;
-+				op->dest.type = OP_DEST_PUSH;
-+			}
- 		}
- 
- 		break;
-@@ -504,11 +552,6 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
- 
- 	*immediate = insn.immediate.nbytes ? insn.immediate.value : 0;
- 
--	if (*type == INSN_STACK || *type == INSN_EXCEPTION_RETURN)
--		list_add_tail(&op->list, ops_list);
--	else
--		free(op);
--
- 	return 0;
- }
- 
+ 		case INSN_STAC:
