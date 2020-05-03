@@ -2,39 +2,45 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E211D1C1D08
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  1 May 2020 20:26:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B81741C2BB0
+	for <lists+linux-tip-commits@lfdr.de>; Sun,  3 May 2020 13:29:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730120AbgEASW7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 1 May 2020 14:22:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40430 "EHLO
+        id S1727769AbgECL3y (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 3 May 2020 07:29:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55642 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1730748AbgEASWe (ORCPT
+        by vger.kernel.org with ESMTP id S1726948AbgECL3x (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 1 May 2020 14:22:34 -0400
+        Sun, 3 May 2020 07:29:53 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F269C08E859;
-        Fri,  1 May 2020 11:22:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1B0FC061A0C;
+        Sun,  3 May 2020 04:29:53 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jUaIv-0003jY-Od; Fri, 01 May 2020 20:22:29 +0200
+        id 1jVCoT-0002eh-My; Sun, 03 May 2020 13:29:37 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 29E8B1C0822;
-        Fri,  1 May 2020 20:22:25 +0200 (CEST)
-Date:   Fri, 01 May 2020 18:22:25 -0000
-From:   "tip-bot2 for Rick Edgecombe" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D976A1C0051;
+        Sun,  3 May 2020 13:29:36 +0200 (CEST)
+Date:   Sun, 03 May 2020 11:29:36 -0000
+From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/mm/cpa: Flush direct map alias during cpa
-Cc:     Rick Edgecombe <rick.p.edgecombe@intel.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200424105343.GA20730@hirez.programming.kicks-ass.net>
-References: <20200424105343.GA20730@hirez.programming.kicks-ass.net>
+Subject: [tip: x86/urgent] x86/unwind/orc: Move ORC sorting variables under
+ !CONFIG_MODULES
+Cc:     Stephen Rothwell <sfr@canb.auug.org.au>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Linux Next Mailing List <linux-next@vger.kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200428071640.psn5m7eh3zt2in4v@treble>
+References: <20200428071640.psn5m7eh3zt2in4v@treble>
 MIME-Version: 1.0
-Message-ID: <158835734513.8414.3180412857061455686.tip-bot2@tip-bot2>
+Message-ID: <158850537679.8414.4225325348852609624.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,79 +56,60 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     ab5130186d7476dcee0d4e787d19a521ca552ce9
-Gitweb:        https://git.kernel.org/tip/ab5130186d7476dcee0d4e787d19a521ca552ce9
-Author:        Rick Edgecombe <rick.p.edgecombe@intel.com>
-AuthorDate:    Wed, 22 Apr 2020 20:13:55 -07:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Thu, 30 Apr 2020 20:14:30 +02:00
+Commit-ID:     fb9cbbc895eb6e986dc90c928a35c793d75f435a
+Gitweb:        https://git.kernel.org/tip/fb9cbbc895eb6e986dc90c928a35c793d75f435a
+Author:        Josh Poimboeuf <jpoimboe@redhat.com>
+AuthorDate:    Tue, 28 Apr 2020 02:16:40 -05:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Sun, 03 May 2020 13:23:28 +02:00
 
-x86/mm/cpa: Flush direct map alias during cpa
+x86/unwind/orc: Move ORC sorting variables under !CONFIG_MODULES
 
-As an optimization, cpa_flush() was changed to optionally only flush
-the range in @cpa if it was small enough.  However, this range does
-not include any direct map aliases changed in cpa_process_alias(). So
-small set_memory_() calls that touch that alias don't get the direct
-map changes flushed. This situation can happen when the virtual
-address taking variants are passed an address in vmalloc or modules
-space.
+Fix the following warnings seen with !CONFIG_MODULES:
 
-In these cases, force a full TLB flush.
+  arch/x86/kernel/unwind_orc.c:29:26: warning: 'cur_orc_table' defined but not used [-Wunused-variable]
+     29 | static struct orc_entry *cur_orc_table = __start_orc_unwind;
+        |                          ^~~~~~~~~~~~~
+  arch/x86/kernel/unwind_orc.c:28:13: warning: 'cur_orc_ip_table' defined but not used [-Wunused-variable]
+     28 | static int *cur_orc_ip_table = __start_orc_unwind_ip;
+        |             ^~~~~~~~~~~~~~~~
 
-Note this issue does not extend to cases where the set_memory_() calls are
-passed a direct map address, or page array, etc, as the primary target. In
-those cases the direct map would be flushed.
-
-Fixes: 935f5839827e ("x86/mm/cpa: Optimize cpa_flush_array() TLB invalidation")
-Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20200424105343.GA20730@hirez.programming.kicks-ass.net
+Fixes: 153eb2223c79 ("x86/unwind/orc: Convert global variables to static")
+Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: H. Peter Anvin <hpa@zytor.com>
+Cc: Linux Next Mailing List <linux-next@vger.kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20200428071640.psn5m7eh3zt2in4v@treble
 ---
- arch/x86/mm/pat/set_memory.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ arch/x86/kernel/unwind_orc.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-index 59eca6a..b8c55a2 100644
---- a/arch/x86/mm/pat/set_memory.c
-+++ b/arch/x86/mm/pat/set_memory.c
-@@ -43,7 +43,8 @@ struct cpa_data {
- 	unsigned long	pfn;
- 	unsigned int	flags;
- 	unsigned int	force_split		: 1,
--			force_static_prot	: 1;
-+			force_static_prot	: 1,
-+			force_flush_all		: 1;
- 	struct page	**pages;
- };
+diff --git a/arch/x86/kernel/unwind_orc.c b/arch/x86/kernel/unwind_orc.c
+index 0ebc11a..5b0bd85 100644
+--- a/arch/x86/kernel/unwind_orc.c
++++ b/arch/x86/kernel/unwind_orc.c
+@@ -24,10 +24,6 @@ extern struct orc_entry __stop_orc_unwind[];
+ static bool orc_init __ro_after_init;
+ static unsigned int lookup_num_blocks __ro_after_init;
  
-@@ -355,10 +356,10 @@ static void cpa_flush(struct cpa_data *data, int cache)
- 		return;
- 	}
+-static DEFINE_MUTEX(sort_mutex);
+-static int *cur_orc_ip_table = __start_orc_unwind_ip;
+-static struct orc_entry *cur_orc_table = __start_orc_unwind;
+-
+ static inline unsigned long orc_ip(const int *ip)
+ {
+ 	return (unsigned long)ip + *ip;
+@@ -192,6 +188,10 @@ static struct orc_entry *orc_find(unsigned long ip)
  
--	if (cpa->numpages <= tlb_single_page_flush_ceiling)
--		on_each_cpu(__cpa_flush_tlb, cpa, 1);
--	else
-+	if (cpa->force_flush_all || cpa->numpages > tlb_single_page_flush_ceiling)
- 		flush_tlb_all();
-+	else
-+		on_each_cpu(__cpa_flush_tlb, cpa, 1);
+ #ifdef CONFIG_MODULES
  
- 	if (!cache)
- 		return;
-@@ -1598,6 +1599,8 @@ static int cpa_process_alias(struct cpa_data *cpa)
- 		alias_cpa.flags &= ~(CPA_PAGES_ARRAY | CPA_ARRAY);
- 		alias_cpa.curpage = 0;
- 
-+		cpa->force_flush_all = 1;
++static DEFINE_MUTEX(sort_mutex);
++static int *cur_orc_ip_table = __start_orc_unwind_ip;
++static struct orc_entry *cur_orc_table = __start_orc_unwind;
 +
- 		ret = __change_page_attr_set_clr(&alias_cpa, 0);
- 		if (ret)
- 			return ret;
-@@ -1618,6 +1621,7 @@ static int cpa_process_alias(struct cpa_data *cpa)
- 		alias_cpa.flags &= ~(CPA_PAGES_ARRAY | CPA_ARRAY);
- 		alias_cpa.curpage = 0;
- 
-+		cpa->force_flush_all = 1;
- 		/*
- 		 * The high mapping range is imprecise, so ignore the
- 		 * return value.
+ static void orc_sort_swap(void *_a, void *_b, int size)
+ {
+ 	struct orc_entry *orc_a, *orc_b;
