@@ -2,39 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4AEAB1C407A
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  4 May 2020 18:52:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A8B9A1C45EC
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  4 May 2020 20:30:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729743AbgEDQwI (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 4 May 2020 12:52:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46228 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729604AbgEDQwI (ORCPT
+        id S1730206AbgEDSaT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 4 May 2020 14:30:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33474 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1729937AbgEDSaT (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 4 May 2020 12:52:08 -0400
+        Mon, 4 May 2020 14:30:19 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1584BC061A0F;
-        Mon,  4 May 2020 09:52:08 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FABDC061A0E;
+        Mon,  4 May 2020 11:30:19 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jVeK4-0001aX-Nv; Mon, 04 May 2020 18:52:04 +0200
+        id 1jVfr6-0005N9-DG; Mon, 04 May 2020 20:30:16 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 47E8D1C047D;
-        Mon,  4 May 2020 18:52:04 +0200 (CEST)
-Date:   Mon, 04 May 2020 16:52:04 -0000
-From:   "tip-bot2 for Vamshi K Sthambamkadi" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D90DD1C0084;
+        Mon,  4 May 2020 20:30:15 +0200 (CEST)
+Date:   Mon, 04 May 2020 18:30:15 -0000
+From:   "tip-bot2 for Joerg Roedel" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/boot] x86/boot: Add kstrtoul() from lib/
-Cc:     Vamshi K Sthambamkadi <vamshi.k.sthambamkadi@gmail.com>,
-        Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <1587645588-7130-2-git-send-email-vamshi.k.sthambamkadi@gmail.com>
-References: <1587645588-7130-2-git-send-email-vamshi.k.sthambamkadi@gmail.com>
+Subject: [tip: x86/boot] x86/boot/compressed/64: Switch to __KERNEL_CS after
+ GDT is loaded
+Cc:     Joerg Roedel <jroedel@suse.de>, Borislav Petkov <bp@suse.de>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200428151725.31091-13-joro@8bytes.org>
+References: <20200428151725.31091-13-joro@8bytes.org>
 MIME-Version: 1.0
-Message-ID: <158861112423.8414.159944326230563590.tip-bot2@tip-bot2>
+Message-ID: <158861701576.8414.8257104010943662350.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,102 +50,50 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/boot branch of tip:
 
-Commit-ID:     5fafbebc86a0043ca5bbd8d3ce4f63dc5a02ad8e
-Gitweb:        https://git.kernel.org/tip/5fafbebc86a0043ca5bbd8d3ce4f63dc5a02ad8e
-Author:        Vamshi K Sthambamkadi <vamshi.k.sthambamkadi@gmail.com>
-AuthorDate:    Thu, 23 Apr 2020 18:09:47 +05:30
+Commit-ID:     34bb49229f19399a5b45c323afb5749f31f7876c
+Gitweb:        https://git.kernel.org/tip/34bb49229f19399a5b45c323afb5749f31f7876c
+Author:        Joerg Roedel <jroedel@suse.de>
+AuthorDate:    Tue, 28 Apr 2020 17:16:22 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 04 May 2020 15:19:07 +02:00
+CommitterDate: Mon, 04 May 2020 19:53:08 +02:00
 
-x86/boot: Add kstrtoul() from lib/
+x86/boot/compressed/64: Switch to __KERNEL_CS after GDT is loaded
 
-Add kstrtoul() to ../boot/ to be used by facilities there too.
+When the pre-decompression code loads its first GDT in startup_64(), it
+is still running on the CS value of the previous GDT. In the case of
+SEV-ES, this is the EFI GDT but it can be anything depending on what has
+loaded the kernel (boot loader, container runtime, etc.)
 
- [
-   bp: Massage, make _kstrtoul() static. Prepend function names with
-   "boot_". This is a temporary workaround for build errors like:
+To make exception handling work (especially IRET) the CPU needs to
+switch to a CS value in the current GDT, so jump to __KERNEL_CS after
+the first GDT is loaded. This is prudent also as a general sanitization
+of CS to a known good value.
 
-   ld: arch/x86/boot/compressed/acpi.o: in function `count_immovable_mem_regions':
-   acpi.c:(.text+0x463): undefined reference to `_kstrtoul'
-   make[2]: *** [arch/x86/boot/compressed/Makefile:117: arch/x86/boot/compressed/vmlinux] Error 1
+ [ bp: Massage commit message. ]
 
-   due to the namespace clash between x86/boot/ and kernel proper.
-   Future reorg will get rid of the linux/linux/ namespace as much as
-   possible so that x86/boot/ can be independent from kernel proper. ]
-
-Signed-off-by: Vamshi K Sthambamkadi <vamshi.k.sthambamkadi@gmail.com>
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/1587645588-7130-2-git-send-email-vamshi.k.sthambamkadi@gmail.com
+Link: https://lkml.kernel.org/r/20200428151725.31091-13-joro@8bytes.org
 ---
- arch/x86/boot/string.c | 43 ++++++++++++++++++++++++++++++++++++++++-
- arch/x86/boot/string.h |  1 +-
- 2 files changed, 43 insertions(+), 1 deletion(-)
+ arch/x86/boot/compressed/head_64.S | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/arch/x86/boot/string.c b/arch/x86/boot/string.c
-index 8272a44..8a3fff9 100644
---- a/arch/x86/boot/string.c
-+++ b/arch/x86/boot/string.c
-@@ -117,7 +117,6 @@ static unsigned int simple_guess_base(const char *cp)
-  * @endp: A pointer to the end of the parsed string will be placed here
-  * @base: The number base to use
-  */
--
- unsigned long long simple_strtoull(const char *cp, char **endp, unsigned int base)
- {
- 	unsigned long long result = 0;
-@@ -335,3 +334,45 @@ int kstrtoull(const char *s, unsigned int base, unsigned long long *res)
- 		s++;
- 	return _kstrtoull(s, base, res);
- }
-+
-+static int _kstrtoul(const char *s, unsigned int base, unsigned long *res)
-+{
-+	unsigned long long tmp;
-+	int rv;
-+
-+	rv = kstrtoull(s, base, &tmp);
-+	if (rv < 0)
-+		return rv;
-+	if (tmp != (unsigned long)tmp)
-+		return -ERANGE;
-+	*res = tmp;
-+	return 0;
-+}
-+
-+/**
-+ * kstrtoul - convert a string to an unsigned long
-+ * @s: The start of the string. The string must be null-terminated, and may also
-+ *  include a single newline before its terminating null. The first character
-+ *  may also be a plus sign, but not a minus sign.
-+ * @base: The number base to use. The maximum supported base is 16. If base is
-+ *  given as 0, then the base of the string is automatically detected with the
-+ *  conventional semantics - If it begins with 0x the number will be parsed as a
-+ *  hexadecimal (case insensitive), if it otherwise begins with 0, it will be
-+ *  parsed as an octal number. Otherwise it will be parsed as a decimal.
-+ * @res: Where to write the result of the conversion on success.
-+ *
-+ * Returns 0 on success, -ERANGE on overflow and -EINVAL on parsing error.
-+ * Used as a replacement for the simple_strtoull.
-+ */
-+int boot_kstrtoul(const char *s, unsigned int base, unsigned long *res)
-+{
-+	/*
-+	 * We want to shortcut function call, but
-+	 * __builtin_types_compatible_p(unsigned long, unsigned long long) = 0.
-+	 */
-+	if (sizeof(unsigned long) == sizeof(unsigned long long) &&
-+	    __alignof__(unsigned long) == __alignof__(unsigned long long))
-+		return kstrtoull(s, base, (unsigned long long *)res);
-+	else
-+		return _kstrtoul(s, base, res);
-+}
-diff --git a/arch/x86/boot/string.h b/arch/x86/boot/string.h
-index 38d8f2f..995f7b7 100644
---- a/arch/x86/boot/string.h
-+++ b/arch/x86/boot/string.h
-@@ -30,4 +30,5 @@ extern unsigned long long simple_strtoull(const char *cp, char **endp,
- 					  unsigned int base);
+diff --git a/arch/x86/boot/compressed/head_64.S b/arch/x86/boot/compressed/head_64.S
+index 4f7e6b8..6b11060 100644
+--- a/arch/x86/boot/compressed/head_64.S
++++ b/arch/x86/boot/compressed/head_64.S
+@@ -393,6 +393,14 @@ SYM_CODE_START(startup_64)
+ 	addq	%rax, 2(%rax)
+ 	lgdt	(%rax)
  
- int kstrtoull(const char *s, unsigned int base, unsigned long long *res);
-+int boot_kstrtoul(const char *s, unsigned int base, unsigned long *res);
- #endif /* BOOT_STRING_H */
++	/* Reload CS so IRET returns to a CS actually in the GDT */
++	pushq	$__KERNEL_CS
++	leaq	.Lon_kernel_cs(%rip), %rax
++	pushq	%rax
++	lretq
++
++.Lon_kernel_cs:
++
+ 	/*
+ 	 * paging_prepare() sets up the trampoline and checks if we need to
+ 	 * enable 5-level paging.
