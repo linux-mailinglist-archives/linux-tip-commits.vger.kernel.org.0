@@ -2,41 +2,41 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F3E01C78FC
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  6 May 2020 20:09:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DDF501C78EB
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  6 May 2020 20:08:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728619AbgEFSJA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 6 May 2020 14:09:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56390 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729882AbgEFSIe (ORCPT
-        <rfc822;linux-tip-commits@vger.kernel.org>);
+        id S1729460AbgEFSIe (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Wed, 6 May 2020 14:08:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56386 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729249AbgEFSId (ORCPT
+        <rfc822;linux-tip-commits@vger.kernel.org>);
+        Wed, 6 May 2020 14:08:33 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12C86C061A0F;
-        Wed,  6 May 2020 11:08:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72CD1C061A10;
+        Wed,  6 May 2020 11:08:33 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jWOT8-0001G8-4m; Wed, 06 May 2020 20:08:30 +0200
+        id 1jWOT7-0001FA-OT; Wed, 06 May 2020 20:08:29 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B53A41C0092;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 54F031C03AB;
         Wed,  6 May 2020 20:08:29 +0200 (CEST)
 Date:   Wed, 06 May 2020 18:08:29 -0000
 From:   "tip-bot2 for Reinette Chatre" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cache] x86/resctrl: Rename asm/resctrl_sched.h to asm/resctrl.h
+Subject: [tip: x86/cache] x86/cpu: Move resctrl CPUID code to resctrl/
 Cc:     Borislav Petkov <bp@suse.de>,
         Reinette Chatre <reinette.chatre@intel.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: =?utf-8?q?=3C6914e0ef880b539a82a6d889f9423496d471ad1d=2E15887?=
+In-Reply-To: =?utf-8?q?=3C38433b99f9d16c8f4ee796f8cc42b871531fa203=2E15887?=
  =?utf-8?q?15690=2Egit=2Ereinette=2Echatre=40intel=2Ecom=3E?=
-References: =?utf-8?q?=3C6914e0ef880b539a82a6d889f9423496d471ad1d=2E158871?=
+References: =?utf-8?q?=3C38433b99f9d16c8f4ee796f8cc42b871531fa203=2E158871?=
  =?utf-8?q?5690=2Egit=2Ereinette=2Echatre=40intel=2Ecom=3E?=
 MIME-Version: 1.0
-Message-ID: <158878850970.8414.4772744677162806934.tip-bot2@tip-bot2>
+Message-ID: <158878850931.8414.15200106172893818208.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -52,313 +52,140 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/cache branch of tip:
 
-Commit-ID:     8dd97c65185c5a63c668e5bd8a861c04f47a35ed
-Gitweb:        https://git.kernel.org/tip/8dd97c65185c5a63c668e5bd8a861c04f47a35ed
+Commit-ID:     0118ad82c2a64ebcf15d7565ed35361407efadfa
+Gitweb:        https://git.kernel.org/tip/0118ad82c2a64ebcf15d7565ed35361407efadfa
 Author:        Reinette Chatre <reinette.chatre@intel.com>
-AuthorDate:    Tue, 05 May 2020 15:36:12 -07:00
+AuthorDate:    Tue, 05 May 2020 15:36:13 -07:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 06 May 2020 17:45:22 +02:00
+CommitterDate: Wed, 06 May 2020 17:51:21 +02:00
 
-x86/resctrl: Rename asm/resctrl_sched.h to asm/resctrl.h
+x86/cpu: Move resctrl CPUID code to resctrl/
 
-asm/resctrl_sched.h is dedicated to the code used for configuration
-of the CPU resource control state when a task is scheduled.
+The function determining a platform's support and properties of cache
+occupancy and memory bandwidth monitoring (properties of
+X86_FEATURE_CQM_LLC) can be found among the common CPU code. After
+the feature's properties is populated in the per-CPU data the resctrl
+subsystem is the only consumer (via boot_cpu_data).
 
-Rename resctrl_sched.h to resctrl.h in preparation of additions that
-will no longer make this file dedicated to work done during scheduling.
+Move the function that obtains the CPU information used by resctrl to
+the resctrl subsystem and rename it from init_cqm() to
+resctrl_cpu_detect(). The function continues to be called from the
+common CPU code. This move is done in preparation of the addition of some
+vendor specific code.
 
 No functional change.
 
 Suggested-by: Borislav Petkov <bp@suse.de>
 Signed-off-by: Reinette Chatre <reinette.chatre@intel.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/6914e0ef880b539a82a6d889f9423496d471ad1d.1588715690.git.reinette.chatre@intel.com
+Link: https://lkml.kernel.org/r/38433b99f9d16c8f4ee796f8cc42b871531fa203.1588715690.git.reinette.chatre@intel.com
 ---
- MAINTAINERS                               |  2 +-
- arch/x86/include/asm/resctrl.h            | 93 ++++++++++++++++++++++-
- arch/x86/include/asm/resctrl_sched.h      | 93 +----------------------
- arch/x86/kernel/cpu/resctrl/core.c        |  2 +-
- arch/x86/kernel/cpu/resctrl/pseudo_lock.c |  2 +-
- arch/x86/kernel/cpu/resctrl/rdtgroup.c    |  2 +-
- arch/x86/kernel/process_32.c              |  2 +-
- arch/x86/kernel/process_64.c              |  2 +-
- 8 files changed, 99 insertions(+), 99 deletions(-)
- create mode 100644 arch/x86/include/asm/resctrl.h
- delete mode 100644 arch/x86/include/asm/resctrl_sched.h
+ arch/x86/include/asm/resctrl.h     |  3 +++
+ arch/x86/kernel/cpu/common.c       | 27 ++-------------------------
+ arch/x86/kernel/cpu/resctrl/core.c | 24 ++++++++++++++++++++++++
+ 3 files changed, 29 insertions(+), 25 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 2926327..ecfb07a 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -14227,7 +14227,7 @@ M:	Reinette Chatre <reinette.chatre@intel.com>
- L:	linux-kernel@vger.kernel.org
- S:	Supported
- F:	Documentation/x86/resctrl*
--F:	arch/x86/include/asm/resctrl_sched.h
-+F:	arch/x86/include/asm/resctrl.h
- F:	arch/x86/kernel/cpu/resctrl/
- F:	tools/testing/selftests/resctrl/
- 
 diff --git a/arch/x86/include/asm/resctrl.h b/arch/x86/include/asm/resctrl.h
-new file mode 100644
-index 0000000..99b5728
---- /dev/null
+index 99b5728..0760306 100644
+--- a/arch/x86/include/asm/resctrl.h
 +++ b/arch/x86/include/asm/resctrl.h
-@@ -0,0 +1,93 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _ASM_X86_RESCTRL_H
-+#define _ASM_X86_RESCTRL_H
+@@ -84,9 +84,12 @@ static inline void resctrl_sched_in(void)
+ 		__resctrl_sched_in();
+ }
+ 
++void resctrl_cpu_detect(struct cpuinfo_x86 *c);
 +
-+#ifdef CONFIG_X86_CPU_RESCTRL
-+
-+#include <linux/sched.h>
-+#include <linux/jump_label.h>
-+
-+#define IA32_PQR_ASSOC	0x0c8f
-+
-+/**
-+ * struct resctrl_pqr_state - State cache for the PQR MSR
-+ * @cur_rmid:		The cached Resource Monitoring ID
-+ * @cur_closid:	The cached Class Of Service ID
-+ * @default_rmid:	The user assigned Resource Monitoring ID
-+ * @default_closid:	The user assigned cached Class Of Service ID
-+ *
-+ * The upper 32 bits of IA32_PQR_ASSOC contain closid and the
-+ * lower 10 bits rmid. The update to IA32_PQR_ASSOC always
-+ * contains both parts, so we need to cache them. This also
-+ * stores the user configured per cpu CLOSID and RMID.
-+ *
-+ * The cache also helps to avoid pointless updates if the value does
-+ * not change.
-+ */
-+struct resctrl_pqr_state {
-+	u32			cur_rmid;
-+	u32			cur_closid;
-+	u32			default_rmid;
-+	u32			default_closid;
-+};
-+
-+DECLARE_PER_CPU(struct resctrl_pqr_state, pqr_state);
-+
-+DECLARE_STATIC_KEY_FALSE(rdt_enable_key);
-+DECLARE_STATIC_KEY_FALSE(rdt_alloc_enable_key);
-+DECLARE_STATIC_KEY_FALSE(rdt_mon_enable_key);
-+
-+/*
-+ * __resctrl_sched_in() - Writes the task's CLOSid/RMID to IA32_PQR_MSR
-+ *
-+ * Following considerations are made so that this has minimal impact
-+ * on scheduler hot path:
-+ * - This will stay as no-op unless we are running on an Intel SKU
-+ *   which supports resource control or monitoring and we enable by
-+ *   mounting the resctrl file system.
-+ * - Caches the per cpu CLOSid/RMID values and does the MSR write only
-+ *   when a task with a different CLOSid/RMID is scheduled in.
-+ * - We allocate RMIDs/CLOSids globally in order to keep this as
-+ *   simple as possible.
-+ * Must be called with preemption disabled.
-+ */
-+static void __resctrl_sched_in(void)
-+{
-+	struct resctrl_pqr_state *state = this_cpu_ptr(&pqr_state);
-+	u32 closid = state->default_closid;
-+	u32 rmid = state->default_rmid;
-+
-+	/*
-+	 * If this task has a closid/rmid assigned, use it.
-+	 * Else use the closid/rmid assigned to this cpu.
-+	 */
-+	if (static_branch_likely(&rdt_alloc_enable_key)) {
-+		if (current->closid)
-+			closid = current->closid;
-+	}
-+
-+	if (static_branch_likely(&rdt_mon_enable_key)) {
-+		if (current->rmid)
-+			rmid = current->rmid;
-+	}
-+
-+	if (closid != state->cur_closid || rmid != state->cur_rmid) {
-+		state->cur_closid = closid;
-+		state->cur_rmid = rmid;
-+		wrmsr(IA32_PQR_ASSOC, rmid, closid);
-+	}
-+}
-+
-+static inline void resctrl_sched_in(void)
-+{
-+	if (static_branch_likely(&rdt_enable_key))
-+		__resctrl_sched_in();
-+}
-+
-+#else
-+
-+static inline void resctrl_sched_in(void) {}
-+
-+#endif /* CONFIG_X86_CPU_RESCTRL */
-+
-+#endif /* _ASM_X86_RESCTRL_H */
-diff --git a/arch/x86/include/asm/resctrl_sched.h b/arch/x86/include/asm/resctrl_sched.h
-deleted file mode 100644
-index f6b7fe2..0000000
---- a/arch/x86/include/asm/resctrl_sched.h
-+++ /dev/null
-@@ -1,93 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0 */
--#ifndef _ASM_X86_RESCTRL_SCHED_H
--#define _ASM_X86_RESCTRL_SCHED_H
--
--#ifdef CONFIG_X86_CPU_RESCTRL
--
--#include <linux/sched.h>
--#include <linux/jump_label.h>
--
--#define IA32_PQR_ASSOC	0x0c8f
--
--/**
-- * struct resctrl_pqr_state - State cache for the PQR MSR
-- * @cur_rmid:		The cached Resource Monitoring ID
-- * @cur_closid:	The cached Class Of Service ID
-- * @default_rmid:	The user assigned Resource Monitoring ID
-- * @default_closid:	The user assigned cached Class Of Service ID
-- *
-- * The upper 32 bits of IA32_PQR_ASSOC contain closid and the
-- * lower 10 bits rmid. The update to IA32_PQR_ASSOC always
-- * contains both parts, so we need to cache them. This also
-- * stores the user configured per cpu CLOSID and RMID.
-- *
-- * The cache also helps to avoid pointless updates if the value does
-- * not change.
-- */
--struct resctrl_pqr_state {
--	u32			cur_rmid;
--	u32			cur_closid;
--	u32			default_rmid;
--	u32			default_closid;
--};
--
--DECLARE_PER_CPU(struct resctrl_pqr_state, pqr_state);
--
--DECLARE_STATIC_KEY_FALSE(rdt_enable_key);
--DECLARE_STATIC_KEY_FALSE(rdt_alloc_enable_key);
--DECLARE_STATIC_KEY_FALSE(rdt_mon_enable_key);
--
--/*
-- * __resctrl_sched_in() - Writes the task's CLOSid/RMID to IA32_PQR_MSR
-- *
-- * Following considerations are made so that this has minimal impact
-- * on scheduler hot path:
-- * - This will stay as no-op unless we are running on an Intel SKU
-- *   which supports resource control or monitoring and we enable by
-- *   mounting the resctrl file system.
-- * - Caches the per cpu CLOSid/RMID values and does the MSR write only
-- *   when a task with a different CLOSid/RMID is scheduled in.
-- * - We allocate RMIDs/CLOSids globally in order to keep this as
-- *   simple as possible.
-- * Must be called with preemption disabled.
-- */
--static void __resctrl_sched_in(void)
+ #else
+ 
+ static inline void resctrl_sched_in(void) {}
++static inline void resctrl_cpu_detect(struct cpuinfo_x86 *c) {}
+ 
+ #endif /* CONFIG_X86_CPU_RESCTRL */
+ 
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index bed0cb8..a8f0f22 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -56,6 +56,7 @@
+ #include <asm/intel-family.h>
+ #include <asm/cpu_device_id.h>
+ #include <asm/uv/uv.h>
++#include <asm/resctrl.h>
+ 
+ #include "cpu.h"
+ 
+@@ -854,30 +855,6 @@ static void init_speculation_control(struct cpuinfo_x86 *c)
+ 	}
+ }
+ 
+-static void init_cqm(struct cpuinfo_x86 *c)
 -{
--	struct resctrl_pqr_state *state = this_cpu_ptr(&pqr_state);
--	u32 closid = state->default_closid;
--	u32 rmid = state->default_rmid;
--
--	/*
--	 * If this task has a closid/rmid assigned, use it.
--	 * Else use the closid/rmid assigned to this cpu.
--	 */
--	if (static_branch_likely(&rdt_alloc_enable_key)) {
--		if (current->closid)
--			closid = current->closid;
+-	if (!cpu_has(c, X86_FEATURE_CQM_LLC)) {
+-		c->x86_cache_max_rmid  = -1;
+-		c->x86_cache_occ_scale = -1;
+-		return;
 -	}
 -
--	if (static_branch_likely(&rdt_mon_enable_key)) {
--		if (current->rmid)
--			rmid = current->rmid;
--	}
+-	/* will be overridden if occupancy monitoring exists */
+-	c->x86_cache_max_rmid = cpuid_ebx(0xf);
 -
--	if (closid != state->cur_closid || rmid != state->cur_rmid) {
--		state->cur_closid = closid;
--		state->cur_rmid = rmid;
--		wrmsr(IA32_PQR_ASSOC, rmid, closid);
+-	if (cpu_has(c, X86_FEATURE_CQM_OCCUP_LLC) ||
+-	    cpu_has(c, X86_FEATURE_CQM_MBM_TOTAL) ||
+-	    cpu_has(c, X86_FEATURE_CQM_MBM_LOCAL)) {
+-		u32 eax, ebx, ecx, edx;
+-
+-		/* QoS sub-leaf, EAX=0Fh, ECX=1 */
+-		cpuid_count(0xf, 1, &eax, &ebx, &ecx, &edx);
+-
+-		c->x86_cache_max_rmid  = ecx;
+-		c->x86_cache_occ_scale = ebx;
 -	}
 -}
 -
--static inline void resctrl_sched_in(void)
--{
--	if (static_branch_likely(&rdt_enable_key))
--		__resctrl_sched_in();
--}
--
--#else
--
--static inline void resctrl_sched_in(void) {}
--
--#endif /* CONFIG_X86_CPU_RESCTRL */
--
--#endif /* _ASM_X86_RESCTRL_SCHED_H */
+ void get_cpu_cap(struct cpuinfo_x86 *c)
+ {
+ 	u32 eax, ebx, ecx, edx;
+@@ -945,7 +922,7 @@ void get_cpu_cap(struct cpuinfo_x86 *c)
+ 
+ 	init_scattered_cpuid_features(c);
+ 	init_speculation_control(c);
+-	init_cqm(c);
++	resctrl_cpu_detect(c);
+ 
+ 	/*
+ 	 * Clear/Set all flags overridden by options, after probe.
 diff --git a/arch/x86/kernel/cpu/resctrl/core.c b/arch/x86/kernel/cpu/resctrl/core.c
-index d8cc522..6f38c88 100644
+index 6f38c88..861c6d1 100644
 --- a/arch/x86/kernel/cpu/resctrl/core.c
 +++ b/arch/x86/kernel/cpu/resctrl/core.c
-@@ -22,7 +22,7 @@
- #include <linux/cpuhotplug.h>
+@@ -958,6 +958,30 @@ static __init void rdt_init_res_defs(void)
  
- #include <asm/intel-family.h>
--#include <asm/resctrl_sched.h>
-+#include <asm/resctrl.h>
- #include "internal.h"
+ static enum cpuhp_state rdt_online;
  
- /* Mutex to protect rdtgroup access. */
-diff --git a/arch/x86/kernel/cpu/resctrl/pseudo_lock.c b/arch/x86/kernel/cpu/resctrl/pseudo_lock.c
-index d7623e1..4bd28b3 100644
---- a/arch/x86/kernel/cpu/resctrl/pseudo_lock.c
-+++ b/arch/x86/kernel/cpu/resctrl/pseudo_lock.c
-@@ -24,7 +24,7 @@
- 
- #include <asm/cacheflush.h>
- #include <asm/intel-family.h>
--#include <asm/resctrl_sched.h>
-+#include <asm/resctrl.h>
- #include <asm/perf_event.h>
- 
- #include "../../events/perf_event.h" /* For X86_CONFIG() */
-diff --git a/arch/x86/kernel/cpu/resctrl/rdtgroup.c b/arch/x86/kernel/cpu/resctrl/rdtgroup.c
-index 5a359d9..6276ae0 100644
---- a/arch/x86/kernel/cpu/resctrl/rdtgroup.c
-+++ b/arch/x86/kernel/cpu/resctrl/rdtgroup.c
-@@ -29,7 +29,7 @@
- 
- #include <uapi/linux/magic.h>
- 
--#include <asm/resctrl_sched.h>
-+#include <asm/resctrl.h>
- #include "internal.h"
- 
- DEFINE_STATIC_KEY_FALSE(rdt_enable_key);
-diff --git a/arch/x86/kernel/process_32.c b/arch/x86/kernel/process_32.c
-index 954b013..538d4e8 100644
---- a/arch/x86/kernel/process_32.c
-+++ b/arch/x86/kernel/process_32.c
-@@ -52,7 +52,7 @@
- #include <asm/debugreg.h>
- #include <asm/switch_to.h>
- #include <asm/vm86.h>
--#include <asm/resctrl_sched.h>
-+#include <asm/resctrl.h>
- #include <asm/proto.h>
- 
- #include "process.h"
-diff --git a/arch/x86/kernel/process_64.c b/arch/x86/kernel/process_64.c
-index 5ef9d8f..0c169a5 100644
---- a/arch/x86/kernel/process_64.c
-+++ b/arch/x86/kernel/process_64.c
-@@ -52,7 +52,7 @@
- #include <asm/switch_to.h>
- #include <asm/xen/hypervisor.h>
- #include <asm/vdso.h>
--#include <asm/resctrl_sched.h>
-+#include <asm/resctrl.h>
- #include <asm/unistd.h>
- #include <asm/fsgsbase.h>
- #ifdef CONFIG_IA32_EMULATION
++void resctrl_cpu_detect(struct cpuinfo_x86 *c)
++{
++	if (!cpu_has(c, X86_FEATURE_CQM_LLC)) {
++		c->x86_cache_max_rmid  = -1;
++		c->x86_cache_occ_scale = -1;
++		return;
++	}
++
++	/* will be overridden if occupancy monitoring exists */
++	c->x86_cache_max_rmid = cpuid_ebx(0xf);
++
++	if (cpu_has(c, X86_FEATURE_CQM_OCCUP_LLC) ||
++	    cpu_has(c, X86_FEATURE_CQM_MBM_TOTAL) ||
++	    cpu_has(c, X86_FEATURE_CQM_MBM_LOCAL)) {
++		u32 eax, ebx, ecx, edx;
++
++		/* QoS sub-leaf, EAX=0Fh, ECX=1 */
++		cpuid_count(0xf, 1, &eax, &ebx, &ecx, &edx);
++
++		c->x86_cache_max_rmid  = ecx;
++		c->x86_cache_occ_scale = ebx;
++	}
++}
++
+ static int __init resctrl_late_init(void)
+ {
+ 	struct rdt_resource *r;
