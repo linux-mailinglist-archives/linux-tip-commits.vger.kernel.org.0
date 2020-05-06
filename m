@@ -2,39 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A8B9A1C45EC
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  4 May 2020 20:30:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B7581C6A95
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  6 May 2020 09:56:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730206AbgEDSaT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 4 May 2020 14:30:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33474 "EHLO
+        id S1728377AbgEFH4z (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 6 May 2020 03:56:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45086 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1729937AbgEDSaT (ORCPT
+        by vger.kernel.org with ESMTP id S1728280AbgEFH4y (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 4 May 2020 14:30:19 -0400
+        Wed, 6 May 2020 03:56:54 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FABDC061A0E;
-        Mon,  4 May 2020 11:30:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAB27C061A0F;
+        Wed,  6 May 2020 00:56:52 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jVfr6-0005N9-DG; Mon, 04 May 2020 20:30:16 +0200
+        id 1jWEvB-0006V5-Kt; Wed, 06 May 2020 09:56:49 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D90DD1C0084;
-        Mon,  4 May 2020 20:30:15 +0200 (CEST)
-Date:   Mon, 04 May 2020 18:30:15 -0000
-From:   "tip-bot2 for Joerg Roedel" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E41081C0092;
+        Wed,  6 May 2020 09:56:48 +0200 (CEST)
+Date:   Wed, 06 May 2020 07:56:48 -0000
+From:   "tip-bot2 for Andrew Morton" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/boot] x86/boot/compressed/64: Switch to __KERNEL_CS after
- GDT is loaded
-Cc:     Joerg Roedel <jroedel@suse.de>, Borislav Petkov <bp@suse.de>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200428151725.31091-13-joro@8bytes.org>
-References: <20200428151725.31091-13-joro@8bytes.org>
+Subject: [tip: x86/build] x86/build: Use $(CONFIG_SHELL)
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200505211932.GE6880@zn.tnic>
+References: <20200505211932.GE6880@zn.tnic>
 MIME-Version: 1.0
-Message-ID: <158861701576.8414.8257104010943662350.tip-bot2@tip-bot2>
+Message-ID: <158875180875.8414.10395271850388166773.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,52 +48,45 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/boot branch of tip:
+The following commit has been merged into the x86/build branch of tip:
 
-Commit-ID:     34bb49229f19399a5b45c323afb5749f31f7876c
-Gitweb:        https://git.kernel.org/tip/34bb49229f19399a5b45c323afb5749f31f7876c
-Author:        Joerg Roedel <jroedel@suse.de>
-AuthorDate:    Tue, 28 Apr 2020 17:16:22 +02:00
+Commit-ID:     950a37078aa0ab63a57673e7027e8735e73d4bc6
+Gitweb:        https://git.kernel.org/tip/950a37078aa0ab63a57673e7027e8735e73d4bc6
+Author:        Andrew Morton <akpm@linux-foundation.org>
+AuthorDate:    Tue, 05 May 2020 14:26:51 -07:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 04 May 2020 19:53:08 +02:00
+CommitterDate: Wed, 06 May 2020 09:46:26 +02:00
 
-x86/boot/compressed/64: Switch to __KERNEL_CS after GDT is loaded
+x86/build: Use $(CONFIG_SHELL)
 
-When the pre-decompression code loads its first GDT in startup_64(), it
-is still running on the CS value of the previous GDT. In the case of
-SEV-ES, this is the EFI GDT but it can be anything depending on what has
-loaded the kernel (boot loader, container runtime, etc.)
+When scripts/x86-check-compiler.sh doesn't have the executable bit set:
 
-To make exception handling work (especially IRET) the CPU needs to
-switch to a CS value in the current GDT, so jump to __KERNEL_CS after
-the first GDT is loaded. This is prudent also as a general sanitization
-of CS to a known good value.
+  q:/usr/src/25> make clean
+  make: execvp: ./scripts/x86-check-compiler.sh: Permission denied
 
- [ bp: Massage commit message. ]
+Fix this by using $(CONFIG_SHELL).
 
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+This will happen if the user downloads and applies patch-5.7.tar.gz, since
+patch(1) doesn't preserve the x bit.
+
+Fixes: 73da86741e7f7 ("x86/build: Check whether the compiler is sane")
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20200428151725.31091-13-joro@8bytes.org
+Link: https://lkml.kernel.org/r/20200505211932.GE6880@zn.tnic
 ---
- arch/x86/boot/compressed/head_64.S | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ arch/x86/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/boot/compressed/head_64.S b/arch/x86/boot/compressed/head_64.S
-index 4f7e6b8..6b11060 100644
---- a/arch/x86/boot/compressed/head_64.S
-+++ b/arch/x86/boot/compressed/head_64.S
-@@ -393,6 +393,14 @@ SYM_CODE_START(startup_64)
- 	addq	%rax, 2(%rax)
- 	lgdt	(%rax)
+diff --git a/arch/x86/Makefile b/arch/x86/Makefile
+index 38d3eec..9e22791 100644
+--- a/arch/x86/Makefile
++++ b/arch/x86/Makefile
+@@ -2,7 +2,7 @@
+ # Unified Makefile for i386 and x86_64
  
-+	/* Reload CS so IRET returns to a CS actually in the GDT */
-+	pushq	$__KERNEL_CS
-+	leaq	.Lon_kernel_cs(%rip), %rax
-+	pushq	%rax
-+	lretq
-+
-+.Lon_kernel_cs:
-+
- 	/*
- 	 * paging_prepare() sets up the trampoline and checks if we need to
- 	 * enable 5-level paging.
+ #  Check the compiler
+-sane_compiler := $(shell $(srctree)/scripts/x86-check-compiler.sh $(CC))
++sane_compiler := $($(CONFIG_SHELL) $(srctree)/scripts/x86-check-compiler.sh $(CC))
+ $(if $(sane_compiler),$(error $(CC) check failed. Aborting),)
+ 
+ # select defconfig based on actual architecture
