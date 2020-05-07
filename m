@@ -2,41 +2,41 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E7B0F1C8DA4
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  7 May 2020 16:08:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 76A6C1C8D92
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  7 May 2020 16:08:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728031AbgEGOIA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 7 May 2020 10:08:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45780 "EHLO
+        id S1726218AbgEGOH2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 7 May 2020 10:07:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45786 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726884AbgEGOH1 (ORCPT
+        with ESMTP id S1727032AbgEGOH2 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 7 May 2020 10:07:27 -0400
+        Thu, 7 May 2020 10:07:28 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F1D6C05BD09;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8031C05BD43;
         Thu,  7 May 2020 07:07:27 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jWhBL-00028f-PW; Thu, 07 May 2020 16:07:23 +0200
+        id 1jWhBM-00029T-Fz; Thu, 07 May 2020 16:07:24 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 6B9BA1C03AB;
-        Thu,  7 May 2020 16:07:23 +0200 (CEST)
-Date:   Thu, 07 May 2020 14:07:23 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 1C5511C001A;
+        Thu,  7 May 2020 16:07:24 +0200 (CEST)
+Date:   Thu, 07 May 2020 14:07:24 -0000
 From:   "tip-bot2 for Christoph Hellwig" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/platform] x86/platform/uv: Unexport symbols only used by
- x2apic_uv_x.c
+Subject: [tip: x86/platform] x86/platform/uv: Remove the
+ uv_partition_coherence_id() macro
 Cc:     Christoph Hellwig <hch@lst.de>,
         Thomas Gleixner <tglx@linutronix.de>,
         Russ Anderson <rja@hpe.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200504171527.2845224-5-hch@lst.de>
-References: <20200504171527.2845224-5-hch@lst.de>
+In-Reply-To: <20200504171527.2845224-3-hch@lst.de>
+References: <20200504171527.2845224-3-hch@lst.de>
 MIME-Version: 1.0
-Message-ID: <158886044339.8414.8479291364368978114.tip-bot2@tip-bot2>
+Message-ID: <158886044406.8414.6326875486008539337.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -52,65 +52,50 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/platform branch of tip:
 
-Commit-ID:     2bd04b6fe4fc46f3a358b62deac4912e778f36a4
-Gitweb:        https://git.kernel.org/tip/2bd04b6fe4fc46f3a358b62deac4912e778f36a4
+Commit-ID:     32988cfd579f7912aeb9a66bf44ca4ce0fa860f1
+Gitweb:        https://git.kernel.org/tip/32988cfd579f7912aeb9a66bf44ca4ce0fa860f1
 Author:        Christoph Hellwig <hch@lst.de>
-AuthorDate:    Mon, 04 May 2020 19:15:20 +02:00
+AuthorDate:    Mon, 04 May 2020 19:15:18 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 07 May 2020 15:32:20 +02:00
+CommitterDate: Thu, 07 May 2020 15:32:19 +02:00
 
-x86/platform/uv: Unexport symbols only used by x2apic_uv_x.c
+x86/platform/uv: Remove the uv_partition_coherence_id() macro
 
-uv_bios_set_legacy_vga_target, uv_bios_freq_base, uv_bios_get_sn_info,
-uv_type, system_serial_number and sn_region_size are only used in
-x2apic_uv_x.c, which can't be modular.
+uv_partition_coherence_id() is only used once.  Just open code it in the
+only user.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Not-acked-by:  Dimitri Sivanich <sivanich@hpe.com>
 Cc: Russ Anderson <rja@hpe.com>
-Link: https://lkml.kernel.org/r/20200504171527.2845224-5-hch@lst.de
-
+Link: https://lkml.kernel.org/r/20200504171527.2845224-3-hch@lst.de
 ---
- arch/x86/platform/uv/bios_uv.c | 6 ------
- 1 file changed, 6 deletions(-)
+ arch/x86/include/asm/uv/bios.h  | 1 -
+ arch/x86/platform/uv/uv_sysfs.c | 2 +-
+ 2 files changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/x86/platform/uv/bios_uv.c b/arch/x86/platform/uv/bios_uv.c
-index 5d675c4..4494589 100644
---- a/arch/x86/platform/uv/bios_uv.c
-+++ b/arch/x86/platform/uv/bios_uv.c
-@@ -83,10 +83,7 @@ long sn_coherency_id;
- long sn_region_size;
- EXPORT_SYMBOL_GPL(sn_region_size);
- long system_serial_number;
--EXPORT_SYMBOL_GPL(system_serial_number);
- int uv_type;
--EXPORT_SYMBOL_GPL(uv_type);
--
+diff --git a/arch/x86/include/asm/uv/bios.h b/arch/x86/include/asm/uv/bios.h
+index fc85daf..2fcc3ac 100644
+--- a/arch/x86/include/asm/uv/bios.h
++++ b/arch/x86/include/asm/uv/bios.h
+@@ -140,7 +140,6 @@ extern long sn_partition_id;
+ extern long sn_coherency_id;
+ extern long sn_region_size;
+ extern long system_serial_number;
+-#define uv_partition_coherence_id()	(sn_coherency_id)
  
- s64 uv_bios_get_sn_info(int fc, int *uvtype, long *partid, long *coher,
- 		long *region, long *ssn)
-@@ -113,7 +110,6 @@ s64 uv_bios_get_sn_info(int fc, int *uvtype, long *partid, long *coher,
- 		*ssn = v1;
- 	return ret;
- }
--EXPORT_SYMBOL_GPL(uv_bios_get_sn_info);
+ extern struct kobject *sgi_uv_kobj;	/* /sys/firmware/sgi_uv */
  
- int
- uv_bios_mq_watchlist_alloc(unsigned long addr, unsigned int mq_size,
-@@ -164,7 +160,6 @@ s64 uv_bios_freq_base(u64 clock_type, u64 *ticks_per_second)
- 	return uv_bios_call(UV_BIOS_FREQ_BASE, clock_type,
- 			   (u64)ticks_per_second, 0, 0, 0);
- }
--EXPORT_SYMBOL_GPL(uv_bios_freq_base);
- 
- /*
-  * uv_bios_set_legacy_vga_target - Set Legacy VGA I/O Target
-@@ -183,7 +178,6 @@ int uv_bios_set_legacy_vga_target(bool decode, int domain, int bus)
- 	return uv_bios_call(UV_BIOS_SET_LEGACY_VGA_TARGET,
- 				(u64)decode, (u64)domain, (u64)bus, 0, 0);
- }
--EXPORT_SYMBOL_GPL(uv_bios_set_legacy_vga_target);
- 
- int uv_bios_init(void)
+diff --git a/arch/x86/platform/uv/uv_sysfs.c b/arch/x86/platform/uv/uv_sysfs.c
+index 6221473..266773e 100644
+--- a/arch/x86/platform/uv/uv_sysfs.c
++++ b/arch/x86/platform/uv/uv_sysfs.c
+@@ -21,7 +21,7 @@ static ssize_t partition_id_show(struct kobject *kobj,
+ static ssize_t coherence_id_show(struct kobject *kobj,
+ 			struct kobj_attribute *attr, char *buf)
  {
+-	return snprintf(buf, PAGE_SIZE, "%ld\n", uv_partition_coherence_id());
++	return snprintf(buf, PAGE_SIZE, "%ld\n", sn_coherency_id);
+ }
+ 
+ static struct kobj_attribute partition_id_attr =
