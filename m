@@ -2,118 +2,75 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 35C5B1C7D92
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  7 May 2020 00:45:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C50681C8B22
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  7 May 2020 14:38:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729347AbgEFWpl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 6 May 2020 18:45:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43256 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728888AbgEFWpl (ORCPT
+        id S1725914AbgEGMi7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 7 May 2020 08:38:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60152 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725857AbgEGMi7 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 6 May 2020 18:45:41 -0400
-Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32121C061A0F;
-        Wed,  6 May 2020 15:45:41 -0700 (PDT)
-Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tip-bot2@linutronix.de>)
-        id 1jWSnH-0005W9-22; Thu, 07 May 2020 00:45:35 +0200
-Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E002D1C0081;
-        Thu,  7 May 2020 00:45:33 +0200 (CEST)
-Date:   Wed, 06 May 2020 22:45:33 -0000
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/urgent] ARM: futex: Address build warning
-Cc:     Stephen Rothwell <sfr@canb.auug.org.au>,
-        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <87pncao2ph.fsf@nanos.tec.linutronix.de>
-References: <87pncao2ph.fsf@nanos.tec.linutronix.de>
+        Thu, 7 May 2020 08:38:59 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53CE4C05BD43;
+        Thu,  7 May 2020 05:38:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=x7a5h9WTqM4yCISP3EIHuRz1Lfgk3lAikosybsy34bY=; b=KCXMH0XmVUixlNhtZMZxdwknCs
+        ML6pWmj7ff8v0hRpx8nT+Cb1Tvu/mo14l44obO31K1Nl3zqMHdLGz/K2DNmIzkZLMO7o9rGtQ/naq
+        R+IGa3V8jLe2OPthTdKVtf/qv/cU67vk9MoQqtAxjfLF/dkdXYdMf/3sLEjzp2JYwPhqdC95d+JP9
+        tsSnP2ucjFM4N/+UmVmR9NPlI5P3tSKDd5hzkolU6Tnj0WhoRnBJBfVvaTDstQOIpkRBFIYK34H8A
+        V6ZWE+fBG0fjbNZvbnqlrqWpoW2RFYWLWgotJShKI5wQFj9qCQDJagxxpP2qv4JGS7CqXueYe8I2J
+        0QRAAmYw==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
+        by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1jWfnj-0004CD-Uu; Thu, 07 May 2020 12:38:56 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id E57C53012DC;
+        Thu,  7 May 2020 14:38:52 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id C7C982013428F; Thu,  7 May 2020 14:38:52 +0200 (CEST)
+Date:   Thu, 7 May 2020 14:38:52 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-tip-commits@vger.kernel.org,
+        Julien Thierry <jthierry@redhat.com>,
+        Miroslav Benes <mbenes@suse.cz>,
+        Josh Poimboeuf <jpoimboe@redhat.com>, x86 <x86@kernel.org>
+Subject: Re: [tip: objtool/core] objtool: Make handle_insn_ops() unconditional
+Message-ID: <20200507123852.GB3762@hirez.programming.kicks-ass.net>
+References: <20200428191659.795115188@infradead.org>
+ <158835734130.8414.1839500420306776239.tip-bot2@tip-bot2>
 MIME-Version: 1.0
-Message-ID: <158880513375.8414.17944066222342801665.tip-bot2@tip-bot2>
-X-Mailer: tip-git-log-daemon
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <158835734130.8414.1839500420306776239.tip-bot2@tip-bot2>
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/urgent branch of tip:
+On Fri, May 01, 2020 at 06:22:21PM -0000, tip-bot2 for Peter Zijlstra wrote:
+> diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+> index 068897d..6591c2d 100644
+> --- a/tools/objtool/check.c
+> +++ b/tools/objtool/check.c
+> @@ -2259,6 +2259,9 @@ static int validate_branch(struct objtool_file *file, struct symbol *func,
+>  				return 0;
+>  		}
+>  
+> +		if (handle_insn_ops(insn, &state))
+> +			return 1;
+> +
+>  		switch (insn->type) {
+>  
+>  		case INSN_RETURN:
 
-Commit-ID:     8101b5a1531f3390b3a69fa7934c70a8fd6566ad
-Gitweb:        https://git.kernel.org/tip/8101b5a1531f3390b3a69fa7934c70a8fd6566ad
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Tue, 14 Apr 2020 11:07:22 +02:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 07 May 2020 00:41:47 +02:00
-
-ARM: futex: Address build warning
-
-Stephen reported the following build warning on a ARM multi_v7_defconfig
-build with GCC 9.2.1:
-
-kernel/futex.c: In function 'do_futex':
-kernel/futex.c:1676:17: warning: 'oldval' may be used uninitialized in this function [-Wmaybe-uninitialized]
- 1676 |   return oldval == cmparg;
-      |          ~~~~~~~^~~~~~~~~
-kernel/futex.c:1652:6: note: 'oldval' was declared here
- 1652 |  int oldval, ret;
-      |      ^~~~~~
-
-introduced by commit a08971e9488d ("futex: arch_futex_atomic_op_inuser()
-calling conventions change").
-
-While that change should not make any difference it confuses GCC which
-fails to work out that oldval is not referenced when the return value is
-not zero.
-
-GCC fails to properly analyze arch_futex_atomic_op_inuser(). It's not the
-early return, the issue is with the assembly macros. GCC fails to detect
-that those either set 'ret' to 0 and set oldval or set 'ret' to -EFAULT
-which makes oldval uninteresting. The store to the callsite supplied oldval
-pointer is conditional on ret == 0.
-
-The straight forward way to solve this is to make the store unconditional.
-
-Aside of addressing the build warning this makes sense anyway because it
-removes the conditional from the fastpath. In the error case the stored
-value is uninteresting and the extra store does not matter at all.
-
-Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/87pncao2ph.fsf@nanos.tec.linutronix.de
-
----
- arch/arm/include/asm/futex.h |  9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
-
-diff --git a/arch/arm/include/asm/futex.h b/arch/arm/include/asm/futex.h
-index e133da3..a915188 100644
---- a/arch/arm/include/asm/futex.h
-+++ b/arch/arm/include/asm/futex.h
-@@ -165,8 +165,13 @@ arch_futex_atomic_op_inuser(int op, int oparg, int *oval, u32 __user *uaddr)
- 	preempt_enable();
- #endif
- 
--	if (!ret)
--		*oval = oldval;
-+	/*
-+	 * Store unconditionally. If ret != 0 the extra store is the least
-+	 * of the worries but GCC cannot figure out that __futex_atomic_op()
-+	 * is either setting ret to -EFAULT or storing the old value in
-+	 * oldval which results in a uninitialized warning at the call site.
-+	 */
-+	*oval = oldval;
- 
- 	return ret;
- }
+Fun question; when an instruction has both a hint and ops, who should
+win? I'm currently in that situation and I'd like the hint to win, but
+is that 'right' ?
