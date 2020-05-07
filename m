@@ -2,75 +2,114 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C50681C8B22
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  7 May 2020 14:38:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 367771C8C1F
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  7 May 2020 15:26:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725914AbgEGMi7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 7 May 2020 08:38:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60152 "EHLO
+        id S1725964AbgEGN0Z (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 7 May 2020 09:26:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39306 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725857AbgEGMi7 (ORCPT
+        by vger.kernel.org with ESMTP id S1725914AbgEGN0Z (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 7 May 2020 08:38:59 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53CE4C05BD43;
-        Thu,  7 May 2020 05:38:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=x7a5h9WTqM4yCISP3EIHuRz1Lfgk3lAikosybsy34bY=; b=KCXMH0XmVUixlNhtZMZxdwknCs
-        ML6pWmj7ff8v0hRpx8nT+Cb1Tvu/mo14l44obO31K1Nl3zqMHdLGz/K2DNmIzkZLMO7o9rGtQ/naq
-        R+IGa3V8jLe2OPthTdKVtf/qv/cU67vk9MoQqtAxjfLF/dkdXYdMf/3sLEjzp2JYwPhqdC95d+JP9
-        tsSnP2ucjFM4N/+UmVmR9NPlI5P3tSKDd5hzkolU6Tnj0WhoRnBJBfVvaTDstQOIpkRBFIYK34H8A
-        V6ZWE+fBG0fjbNZvbnqlrqWpoW2RFYWLWgotJShKI5wQFj9qCQDJagxxpP2qv4JGS7CqXueYe8I2J
-        0QRAAmYw==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
-        by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1jWfnj-0004CD-Uu; Thu, 07 May 2020 12:38:56 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id E57C53012DC;
-        Thu,  7 May 2020 14:38:52 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id C7C982013428F; Thu,  7 May 2020 14:38:52 +0200 (CEST)
-Date:   Thu, 7 May 2020 14:38:52 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     linux-tip-commits@vger.kernel.org,
-        Julien Thierry <jthierry@redhat.com>,
-        Miroslav Benes <mbenes@suse.cz>,
-        Josh Poimboeuf <jpoimboe@redhat.com>, x86 <x86@kernel.org>
-Subject: Re: [tip: objtool/core] objtool: Make handle_insn_ops() unconditional
-Message-ID: <20200507123852.GB3762@hirez.programming.kicks-ass.net>
-References: <20200428191659.795115188@infradead.org>
- <158835734130.8414.1839500420306776239.tip-bot2@tip-bot2>
+        Thu, 7 May 2020 09:26:25 -0400
+Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDA95C05BD43;
+        Thu,  7 May 2020 06:26:24 -0700 (PDT)
+Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tip-bot2@linutronix.de>)
+        id 1jWgXc-0001F7-Qb; Thu, 07 May 2020 15:26:20 +0200
+Received: from [127.0.1.1] (localhost [IPv6:::1])
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id DF7C31C001A;
+        Thu,  7 May 2020 15:26:19 +0200 (CEST)
+Date:   Thu, 07 May 2020 13:26:19 -0000
+From:   "tip-bot2 for Qais Yousef" <tip-bot2@linutronix.de>
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: smp/core] cpu/hotplug: Remove __freeze_secondary_cpus()
+Cc:     Qais Yousef <qais.yousef@arm.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200430114004.17477-2-qais.yousef@arm.com>
+References: <20200430114004.17477-2-qais.yousef@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <158835734130.8414.1839500420306776239.tip-bot2@tip-bot2>
+Message-ID: <158885797977.8414.5020896178410312608.tip-bot2@tip-bot2>
+X-Mailer: tip-git-log-daemon
+Robot-ID: <tip-bot2.linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Fri, May 01, 2020 at 06:22:21PM -0000, tip-bot2 for Peter Zijlstra wrote:
-> diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-> index 068897d..6591c2d 100644
-> --- a/tools/objtool/check.c
-> +++ b/tools/objtool/check.c
-> @@ -2259,6 +2259,9 @@ static int validate_branch(struct objtool_file *file, struct symbol *func,
->  				return 0;
->  		}
->  
-> +		if (handle_insn_ops(insn, &state))
-> +			return 1;
-> +
->  		switch (insn->type) {
->  
->  		case INSN_RETURN:
+The following commit has been merged into the smp/core branch of tip:
 
-Fun question; when an instruction has both a hint and ops, who should
-win? I'm currently in that situation and I'd like the hint to win, but
-is that 'right' ?
+Commit-ID:     fb7fb84a0c4e8021ddecb157802d58241a3f1a40
+Gitweb:        https://git.kernel.org/tip/fb7fb84a0c4e8021ddecb157802d58241a3f1a40
+Author:        Qais Yousef <qais.yousef@arm.com>
+AuthorDate:    Thu, 30 Apr 2020 12:40:04 +01:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Thu, 07 May 2020 15:18:41 +02:00
+
+cpu/hotplug: Remove __freeze_secondary_cpus()
+
+The refactored function is no longer required as the codepaths that call
+freeze_secondary_cpus() are all suspend/resume related now.
+
+Signed-off-by: Qais Yousef <qais.yousef@arm.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Link: https://lkml.kernel.org/r/20200430114004.17477-2-qais.yousef@arm.com
+
+---
+ include/linux/cpu.h | 7 +------
+ kernel/cpu.c        | 4 ++--
+ 2 files changed, 3 insertions(+), 8 deletions(-)
+
+diff --git a/include/linux/cpu.h b/include/linux/cpu.h
+index 9d34dc3..5269258 100644
+--- a/include/linux/cpu.h
++++ b/include/linux/cpu.h
+@@ -144,12 +144,7 @@ static inline void get_online_cpus(void) { cpus_read_lock(); }
+ static inline void put_online_cpus(void) { cpus_read_unlock(); }
+ 
+ #ifdef CONFIG_PM_SLEEP_SMP
+-int __freeze_secondary_cpus(int primary, bool suspend);
+-static inline int freeze_secondary_cpus(int primary)
+-{
+-	return __freeze_secondary_cpus(primary, true);
+-}
+-
++extern int freeze_secondary_cpus(int primary);
+ extern void thaw_secondary_cpus(void);
+ 
+ static inline int suspend_disable_secondary_cpus(void)
+diff --git a/kernel/cpu.c b/kernel/cpu.c
+index d766929..9f89214 100644
+--- a/kernel/cpu.c
++++ b/kernel/cpu.c
+@@ -1327,7 +1327,7 @@ void bringup_nonboot_cpus(unsigned int setup_max_cpus)
+ #ifdef CONFIG_PM_SLEEP_SMP
+ static cpumask_var_t frozen_cpus;
+ 
+-int __freeze_secondary_cpus(int primary, bool suspend)
++int freeze_secondary_cpus(int primary)
+ {
+ 	int cpu, error = 0;
+ 
+@@ -1352,7 +1352,7 @@ int __freeze_secondary_cpus(int primary, bool suspend)
+ 		if (cpu == primary)
+ 			continue;
+ 
+-		if (suspend && pm_wakeup_pending()) {
++		if (pm_wakeup_pending()) {
+ 			pr_info("Wakeup pending. Abort CPU freeze\n");
+ 			error = -EBUSY;
+ 			break;
