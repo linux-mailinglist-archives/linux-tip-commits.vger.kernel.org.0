@@ -2,39 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E7AA31C94A9
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  7 May 2020 17:17:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D46D51C94A7
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  7 May 2020 17:16:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727816AbgEGPQ6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S1726519AbgEGPQ6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Thu, 7 May 2020 11:16:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56814 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56812 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726029AbgEGPQ5 (ORCPT
+        by vger.kernel.org with ESMTP id S1725914AbgEGPQ5 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Thu, 7 May 2020 11:16:57 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1613C05BD09;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99EC1C05BD43;
         Thu,  7 May 2020 08:16:57 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jWiGb-0004pZ-Ci; Thu, 07 May 2020 17:16:53 +0200
+        id 1jWiGc-0004pd-3Q; Thu, 07 May 2020 17:16:54 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id ED5A81C001A;
-        Thu,  7 May 2020 17:16:52 +0200 (CEST)
-Date:   Thu, 07 May 2020 15:16:52 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A764F1C001A;
+        Thu,  7 May 2020 17:16:53 +0200 (CEST)
+Date:   Thu, 07 May 2020 15:16:53 -0000
 From:   "tip-bot2 for Lai Jiangshan" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/entry] x86/idt: Remove address operator on function machine_check()
+Subject: [tip: x86/entry] x86/entry/64: Remove an unused label
 Cc:     Lai Jiangshan <laijs@linux.alibaba.com>,
         Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200419144049.1906-3-laijs@linux.alibaba.com>
-References: <20200419144049.1906-3-laijs@linux.alibaba.com>
+In-Reply-To: <20200419144049.1906-4-laijs@linux.alibaba.com>
+References: <20200419144049.1906-4-laijs@linux.alibaba.com>
 MIME-Version: 1.0
-Message-ID: <158886461280.8414.11339623726235449124.tip-bot2@tip-bot2>
+Message-ID: <158886461364.8414.3100271154858505569.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,47 +50,37 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/entry branch of tip:
 
-Commit-ID:     3dcdb8e0c83b9502f669106e17bfa795f19f8d9b
-Gitweb:        https://git.kernel.org/tip/3dcdb8e0c83b9502f669106e17bfa795f19f8d9b
+Commit-ID:     4446d96d7ba7eaac54f9ef968bbe858097441d50
+Gitweb:        https://git.kernel.org/tip/4446d96d7ba7eaac54f9ef968bbe858097441d50
 Author:        Lai Jiangshan <laijs@linux.alibaba.com>
-AuthorDate:    Sun, 19 Apr 2020 14:40:48 
+AuthorDate:    Sun, 19 Apr 2020 14:40:49 
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 07 May 2020 17:12:40 +02:00
+CommitterDate: Thu, 07 May 2020 17:12:39 +02:00
 
-x86/idt: Remove address operator on function machine_check()
+x86/entry/64: Remove an unused label
 
-machine_check is function address, the address operator on it is nop for
-compiler.
-
-Make it consistent with the other function addresses in the same file.
+The label .Lcommon_\sym was introduced by 39e9543344fa.
+(x86-64: Reduce amount of redundant code generated for invalidate_interruptNN)
+And all the other relevant information was removed by 52aec3308db8
+(x86/tlb: replace INVALIDATE_TLB_VECTOR by CALL_FUNCTION_VECTOR)
 
 Signed-off-by: Lai Jiangshan <laijs@linux.alibaba.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20200419144049.1906-3-laijs@linux.alibaba.com
+Link: https://lkml.kernel.org/r/20200419144049.1906-4-laijs@linux.alibaba.com
 
 ---
- arch/x86/kernel/idt.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/entry/entry_64.S | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/x86/kernel/idt.c b/arch/x86/kernel/idt.c
-index 87ef69a..98bcb50 100644
---- a/arch/x86/kernel/idt.c
-+++ b/arch/x86/kernel/idt.c
-@@ -93,7 +93,7 @@ static const __initconst struct idt_data def_idts[] = {
- 	INTG(X86_TRAP_DB,		debug),
- 
- #ifdef CONFIG_X86_MCE
--	INTG(X86_TRAP_MC,		&machine_check),
-+	INTG(X86_TRAP_MC,		machine_check),
- #endif
- 
- 	SYSG(X86_TRAP_OF,		overflow),
-@@ -186,7 +186,7 @@ static const __initconst struct idt_data ist_idts[] = {
- 	ISTG(X86_TRAP_NMI,	nmi,		IST_INDEX_NMI),
- 	ISTG(X86_TRAP_DF,	double_fault,	IST_INDEX_DF),
- #ifdef CONFIG_X86_MCE
--	ISTG(X86_TRAP_MC,	&machine_check,	IST_INDEX_MCE),
-+	ISTG(X86_TRAP_MC,	machine_check,	IST_INDEX_MCE),
- #endif
- };
- 
+diff --git a/arch/x86/entry/entry_64.S b/arch/x86/entry/entry_64.S
+index 0e9504f..3d747da 100644
+--- a/arch/x86/entry/entry_64.S
++++ b/arch/x86/entry/entry_64.S
+@@ -798,7 +798,6 @@ _ASM_NOKPROBE(common_interrupt)
+ SYM_CODE_START(\sym)
+ 	UNWIND_HINT_IRET_REGS
+ 	pushq	$~(\num)
+-.Lcommon_\sym:
+ 	call	interrupt_entry
+ 	UNWIND_HINT_REGS indirect=1
+ 	call	\do_sym	/* rdi points to pt_regs */
