@@ -2,39 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B7DBC1C8DAB
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  7 May 2020 16:08:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E2F231C8D95
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  7 May 2020 16:08:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726491AbgEGOH0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 7 May 2020 10:07:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45766 "EHLO
+        id S1727111AbgEGOH3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 7 May 2020 10:07:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45790 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726218AbgEGOH0 (ORCPT
+        with ESMTP id S1727097AbgEGOH2 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 7 May 2020 10:07:26 -0400
+        Thu, 7 May 2020 10:07:28 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C630CC05BD43;
-        Thu,  7 May 2020 07:07:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7563EC05BD43;
+        Thu,  7 May 2020 07:07:28 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jWhBJ-00026X-R1; Thu, 07 May 2020 16:07:21 +0200
+        id 1jWhBK-00026b-5k; Thu, 07 May 2020 16:07:22 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 764511C03AB;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C78C81C001A;
         Thu,  7 May 2020 16:07:21 +0200 (CEST)
 Date:   Thu, 07 May 2020 14:07:21 -0000
 From:   "tip-bot2 for Christoph Hellwig" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/platform] x86/platform/uv: Unexport uv_apicid_hibits
+Subject: [tip: x86/platform] x86/platform/uv: Remove _uv_hub_info_check()
 Cc:     Christoph Hellwig <hch@lst.de>,
-        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Russ Anderson <rja@hpe.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200504171527.2845224-11-hch@lst.de>
-References: <20200504171527.2845224-11-hch@lst.de>
+In-Reply-To: <20200504171527.2845224-10-hch@lst.de>
+References: <20200504171527.2845224-10-hch@lst.de>
 MIME-Version: 1.0
-Message-ID: <158886044143.8414.12676672940407019124.tip-bot2@tip-bot2>
+Message-ID: <158886044178.8414.125576865550721705.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,34 +51,68 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/platform branch of tip:
 
-Commit-ID:     479d6d904557b774c1bd5b0338d8111dd2b322ee
-Gitweb:        https://git.kernel.org/tip/479d6d904557b774c1bd5b0338d8111dd2b322ee
+Commit-ID:     fbe1d37866d249b6936cf526592957725a941f95
+Gitweb:        https://git.kernel.org/tip/fbe1d37866d249b6936cf526592957725a941f95
 Author:        Christoph Hellwig <hch@lst.de>
-AuthorDate:    Mon, 04 May 2020 19:15:26 +02:00
+AuthorDate:    Mon, 04 May 2020 19:15:25 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Thu, 07 May 2020 15:32:23 +02:00
 
-x86/platform/uv: Unexport uv_apicid_hibits
+x86/platform/uv: Remove _uv_hub_info_check()
 
-This variable is not used by modular code.
+Neither this functions nor the helpers used to implement it are used
+anywhere in the kernel tree.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20200504171527.2845224-11-hch@lst.de
+Not-acked-by:  Dimitri Sivanich <sivanich@hpe.com>
+Cc: Russ Anderson <rja@hpe.com>
+Link: https://lkml.kernel.org/r/20200504171527.2845224-10-hch@lst.de
 
 ---
- arch/x86/kernel/apic/x2apic_uv_x.c | 1 -
- 1 file changed, 1 deletion(-)
+ arch/x86/include/asm/uv/uv_hub.h   | 14 --------------
+ arch/x86/kernel/apic/x2apic_uv_x.c |  6 ------
+ 2 files changed, 20 deletions(-)
 
+diff --git a/arch/x86/include/asm/uv/uv_hub.h b/arch/x86/include/asm/uv/uv_hub.h
+index 8a25d95..9eabd7e 100644
+--- a/arch/x86/include/asm/uv/uv_hub.h
++++ b/arch/x86/include/asm/uv/uv_hub.h
+@@ -219,20 +219,6 @@ static inline struct uv_hub_info_s *uv_cpu_hub_info(int cpu)
+ 	return (struct uv_hub_info_s *)uv_cpu_info_per(cpu)->p_uv_hub_info;
+ }
+ 
+-#define	UV_HUB_INFO_VERSION	0x7150
+-extern int uv_hub_info_version(void);
+-static inline int uv_hub_info_check(int version)
+-{
+-	if (uv_hub_info_version() == version)
+-		return 0;
+-
+-	pr_crit("UV: uv_hub_info version(%x) mismatch, expecting(%x)\n",
+-		uv_hub_info_version(), version);
+-
+-	BUG();	/* Catastrophic - cannot continue on unknown UV system */
+-}
+-#define	_uv_hub_info_check()	uv_hub_info_check(UV_HUB_INFO_VERSION)
+-
+ /*
+  * HUB revision ranges for each UV HUB architecture.
+  * This is a software convention - NOT the hardware revision numbers in
 diff --git a/arch/x86/kernel/apic/x2apic_uv_x.c b/arch/x86/kernel/apic/x2apic_uv_x.c
-index 8cf0e24..10339ad 100644
+index 3830538..8cf0e24 100644
 --- a/arch/x86/kernel/apic/x2apic_uv_x.c
 +++ b/arch/x86/kernel/apic/x2apic_uv_x.c
-@@ -51,7 +51,6 @@ static struct {
- static int uv_min_hub_revision_id;
+@@ -415,12 +415,6 @@ static __initdata struct uv_gam_range_s		*_gr_table;
  
- unsigned int uv_apicid_hibits;
--EXPORT_SYMBOL_GPL(uv_apicid_hibits);
+ #define	SOCK_EMPTY	((unsigned short)~0)
  
- static struct apic apic_x2apic_uv_x;
- static struct uv_hub_info_s uv_hub_info_node0;
+-extern int uv_hub_info_version(void)
+-{
+-	return UV_HUB_INFO_VERSION;
+-}
+-EXPORT_SYMBOL(uv_hub_info_version);
+-
+ /* Default UV memory block size is 2GB */
+ static unsigned long mem_block_size __initdata = (2UL << 30);
+ 
