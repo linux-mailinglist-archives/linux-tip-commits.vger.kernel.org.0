@@ -2,40 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3614D1C8DAC
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  7 May 2020 16:08:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D3BE71C8D97
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  7 May 2020 16:08:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727933AbgEGOIN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 7 May 2020 10:08:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45776 "EHLO
+        id S1727805AbgEGOHc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 7 May 2020 10:07:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726742AbgEGOH0 (ORCPT
+        with ESMTP id S1727799AbgEGOHb (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 7 May 2020 10:07:26 -0400
+        Thu, 7 May 2020 10:07:31 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BFD4C05BD43;
-        Thu,  7 May 2020 07:07:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A379C05BD43;
+        Thu,  7 May 2020 07:07:31 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jWhBK-00026u-H6; Thu, 07 May 2020 16:07:22 +0200
+        id 1jWhBP-000292-7E; Thu, 07 May 2020 16:07:27 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 20F311C03AB;
-        Thu,  7 May 2020 16:07:22 +0200 (CEST)
-Date:   Thu, 07 May 2020 14:07:22 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id BEF3D1C0451;
+        Thu,  7 May 2020 16:07:23 +0200 (CEST)
+Date:   Thu, 07 May 2020 14:07:23 -0000
 From:   "tip-bot2 for Christoph Hellwig" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/platform] x86/platform/uv: Simplify uv_send_IPI_one()
+Subject: [tip: x86/platform] x86/platform/uv: Unexport sn_coherency_id
 Cc:     Christoph Hellwig <hch@lst.de>,
         Thomas Gleixner <tglx@linutronix.de>,
         Russ Anderson <rja@hpe.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200504171527.2845224-9-hch@lst.de>
-References: <20200504171527.2845224-9-hch@lst.de>
+In-Reply-To: <20200504171527.2845224-4-hch@lst.de>
+References: <20200504171527.2845224-4-hch@lst.de>
 MIME-Version: 1.0
-Message-ID: <158886044210.8414.17434284090917646663.tip-bot2@tip-bot2>
+Message-ID: <158886044373.8414.16319810631413962306.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,87 +51,37 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/platform branch of tip:
 
-Commit-ID:     8e77554580250f1185cffd8d3ac6a9b01de05d60
-Gitweb:        https://git.kernel.org/tip/8e77554580250f1185cffd8d3ac6a9b01de05d60
+Commit-ID:     23e1a65f3c7eb7f3c3f6f6c26b89cdf3bcb128f6
+Gitweb:        https://git.kernel.org/tip/23e1a65f3c7eb7f3c3f6f6c26b89cdf3bcb128f6
 Author:        Christoph Hellwig <hch@lst.de>
-AuthorDate:    Mon, 04 May 2020 19:15:24 +02:00
+AuthorDate:    Mon, 04 May 2020 19:15:19 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 07 May 2020 15:32:22 +02:00
+CommitterDate: Thu, 07 May 2020 15:32:20 +02:00
 
-x86/platform/uv: Simplify uv_send_IPI_one()
+x86/platform/uv: Unexport sn_coherency_id
 
-Merge two helpers only used by uv_send_IPI_one() into the main function.
+sn_coherency_id is only used by x2apic_uv_x.c, and uv_sysfs.c, both
+of which can't be modular.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Not-acked-by:  Dimitri Sivanich <sivanich@hpe.com>
 Cc: Russ Anderson <rja@hpe.com>
-Link: https://lkml.kernel.org/r/20200504171527.2845224-9-hch@lst.de
+Link: https://lkml.kernel.org/r/20200504171527.2845224-4-hch@lst.de
 
 ---
- arch/x86/include/asm/uv/uv_hub.h   | 20 --------------------
- arch/x86/kernel/apic/x2apic_uv_x.c | 19 ++++++++++++++-----
- 2 files changed, 14 insertions(+), 25 deletions(-)
+ arch/x86/platform/uv/bios_uv.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/uv/uv_hub.h b/arch/x86/include/asm/uv/uv_hub.h
-index a998e65..8a25d95 100644
---- a/arch/x86/include/asm/uv/uv_hub.h
-+++ b/arch/x86/include/asm/uv/uv_hub.h
-@@ -837,26 +837,6 @@ static inline void uv_set_cpu_scir_bits(int cpu, unsigned char value)
- }
- 
- extern unsigned int uv_apicid_hibits;
--static unsigned long uv_hub_ipi_value(int apicid, int vector, int mode)
--{
--	apicid |= uv_apicid_hibits;
--	return (1UL << UVH_IPI_INT_SEND_SHFT) |
--			((apicid) << UVH_IPI_INT_APIC_ID_SHFT) |
--			(mode << UVH_IPI_INT_DELIVERY_MODE_SHFT) |
--			(vector << UVH_IPI_INT_VECTOR_SHFT);
--}
--
--static inline void uv_hub_send_ipi(int pnode, int apicid, int vector)
--{
--	unsigned long val;
--	unsigned long dmode = dest_Fixed;
--
--	if (vector == NMI_VECTOR)
--		dmode = dest_NMI;
--
--	val = uv_hub_ipi_value(apicid, vector, dmode);
--	uv_write_global_mmr64(pnode, UVH_IPI_INT, val);
--}
- 
- /*
-  * Get the minimum revision number of the hub chips within the partition.
-diff --git a/arch/x86/kernel/apic/x2apic_uv_x.c b/arch/x86/kernel/apic/x2apic_uv_x.c
-index f1a0142..3830538 100644
---- a/arch/x86/kernel/apic/x2apic_uv_x.c
-+++ b/arch/x86/kernel/apic/x2apic_uv_x.c
-@@ -588,12 +588,21 @@ static int uv_wakeup_secondary(int phys_apicid, unsigned long start_rip)
- 
- static void uv_send_IPI_one(int cpu, int vector)
- {
--	unsigned long apicid;
--	int pnode;
-+	unsigned long apicid = per_cpu(x86_cpu_to_apicid, cpu);
-+	int pnode = uv_apicid_to_pnode(apicid);
-+	unsigned long dmode, val;
-+
-+	if (vector == NMI_VECTOR)
-+		dmode = dest_NMI;
-+	else
-+		dmode = dest_Fixed;
- 
--	apicid = per_cpu(x86_cpu_to_apicid, cpu);
--	pnode = uv_apicid_to_pnode(apicid);
--	uv_hub_send_ipi(pnode, apicid, vector);
-+	val = (1UL << UVH_IPI_INT_SEND_SHFT) |
-+		((apicid | uv_apicid_hibits) << UVH_IPI_INT_APIC_ID_SHFT) |
-+		(dmode << UVH_IPI_INT_DELIVERY_MODE_SHFT) |
-+		(vector << UVH_IPI_INT_VECTOR_SHFT);
-+
-+	uv_write_global_mmr64(pnode, UVH_IPI_INT, val);
- }
- 
- static void uv_send_IPI_mask(const struct cpumask *mask, int vector)
+diff --git a/arch/x86/platform/uv/bios_uv.c b/arch/x86/platform/uv/bios_uv.c
+index ca28755..5d675c4 100644
+--- a/arch/x86/platform/uv/bios_uv.c
++++ b/arch/x86/platform/uv/bios_uv.c
+@@ -80,7 +80,6 @@ static s64 uv_bios_call_irqsave(enum uv_bios_cmd which, u64 a1, u64 a2, u64 a3,
+ long sn_partition_id;
+ EXPORT_SYMBOL_GPL(sn_partition_id);
+ long sn_coherency_id;
+-EXPORT_SYMBOL_GPL(sn_coherency_id);
+ long sn_region_size;
+ EXPORT_SYMBOL_GPL(sn_region_size);
+ long system_serial_number;
