@@ -2,37 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CA541CB0CC
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 May 2020 15:48:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E59CA1CB0EA
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 May 2020 15:48:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728135AbgEHNqg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 8 May 2020 09:46:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41160 "EHLO
+        id S1727851AbgEHNrl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 8 May 2020 09:47:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41158 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728111AbgEHNqf (ORCPT
+        by vger.kernel.org with ESMTP id S1728110AbgEHNqf (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Fri, 8 May 2020 09:46:35 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AC75C05BD09;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4575CC05BD43;
         Fri,  8 May 2020 06:46:35 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jX3Ki-0001lO-MA; Fri, 08 May 2020 15:46:32 +0200
+        id 1jX3Kj-0001lr-2m; Fri, 08 May 2020 15:46:33 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 558E61C0080;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B7E991C03AB;
         Fri,  8 May 2020 15:46:32 +0200 (CEST)
 Date:   Fri, 08 May 2020 13:46:32 -0000
 From:   "tip-bot2 for Marco Elver" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/kcsan] kcsan: Make reporting aware of KCSAN tests
+Subject: [tip: locking/kcsan] kcsan: Fix function matching in report
 Cc:     Marco Elver <elver@google.com>,
         "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158894559229.8414.5641397103785083859.tip-bot2@tip-bot2>
+Message-ID: <158894559268.8414.10759675966256934757.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,70 +48,63 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/kcsan branch of tip:
 
-Commit-ID:     cdb9b07d8c78be63d72aba9a2686ff161ddd2099
-Gitweb:        https://git.kernel.org/tip/cdb9b07d8c78be63d72aba9a2686ff161ddd2099
+Commit-ID:     f770ed10a9ee65529f3ec8d90eb374bbd8b7c238
+Gitweb:        https://git.kernel.org/tip/f770ed10a9ee65529f3ec8d90eb374bbd8b7c238
 Author:        Marco Elver <elver@google.com>
-AuthorDate:    Fri, 10 Apr 2020 18:44:18 +02:00
+AuthorDate:    Fri, 10 Apr 2020 18:44:17 +02:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Mon, 13 Apr 2020 17:18:16 -07:00
+CommitterDate: Mon, 13 Apr 2020 17:18:15 -07:00
 
-kcsan: Make reporting aware of KCSAN tests
+kcsan: Fix function matching in report
 
-Reporting hides KCSAN runtime functions in the stack trace, with
-filtering done based on function names. Currently this included all
-functions (or modules) that would match "kcsan_". Make the filter aware
-of KCSAN tests, which contain "kcsan_test", and are no longer skipped in
-the report.
-
-This is in preparation for adding a KCSAN test module.
+Pass string length as returned by scnprintf() to strnstr(), since
+strnstr() searches exactly len bytes in haystack, even if it contains a
+NUL-terminator before haystack+len.
 
 Signed-off-by: Marco Elver <elver@google.com>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/kcsan/report.c | 30 +++++++++++++++++++++++-------
- 1 file changed, 23 insertions(+), 7 deletions(-)
+ kernel/kcsan/report.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
 diff --git a/kernel/kcsan/report.c b/kernel/kcsan/report.c
-index cf41d63..ac5f834 100644
+index ddc18f1..cf41d63 100644
 --- a/kernel/kcsan/report.c
 +++ b/kernel/kcsan/report.c
-@@ -262,16 +262,32 @@ static const char *get_thread_desc(int task_id)
+@@ -192,11 +192,11 @@ skip_report(enum kcsan_value_change value_change, unsigned long top_frame)
+ 		 * maintainers.
+ 		 */
+ 		char buf[64];
++		int len = scnprintf(buf, sizeof(buf), "%ps", (void *)top_frame);
+ 
+-		snprintf(buf, sizeof(buf), "%ps", (void *)top_frame);
+-		if (!strnstr(buf, "rcu_", sizeof(buf)) &&
+-		    !strnstr(buf, "_rcu", sizeof(buf)) &&
+-		    !strnstr(buf, "_srcu", sizeof(buf)))
++		if (!strnstr(buf, "rcu_", len) &&
++		    !strnstr(buf, "_rcu", len) &&
++		    !strnstr(buf, "_srcu", len))
+ 			return true;
+ 	}
+ 
+@@ -262,15 +262,15 @@ static const char *get_thread_desc(int task_id)
  static int get_stack_skipnr(const unsigned long stack_entries[], int num_entries)
  {
  	char buf[64];
--	int len;
--	int skip = 0;
-+	char *cur;
-+	int len, skip;
++	int len;
+ 	int skip = 0;
  
--	for (; skip < num_entries; ++skip) {
-+	for (skip = 0; skip < num_entries; ++skip) {
- 		len = scnprintf(buf, sizeof(buf), "%ps", (void *)stack_entries[skip]);
--		if (!strnstr(buf, "csan_", len) &&
--		    !strnstr(buf, "tsan_", len) &&
--		    !strnstr(buf, "_once_size", len))
--			break;
-+
-+		/* Never show tsan_* or {read,write}_once_size. */
-+		if (strnstr(buf, "tsan_", len) ||
-+		    strnstr(buf, "_once_size", len))
-+			continue;
-+
-+		cur = strnstr(buf, "kcsan_", len);
-+		if (cur) {
-+			cur += sizeof("kcsan_") - 1;
-+			if (strncmp(cur, "test", sizeof("test") - 1))
-+				continue; /* KCSAN runtime function. */
-+			/* KCSAN related test. */
-+		}
-+
-+		/*
-+		 * No match for runtime functions -- @skip entries to skip to
-+		 * get to first frame of interest.
-+		 */
-+		break;
+ 	for (; skip < num_entries; ++skip) {
+-		snprintf(buf, sizeof(buf), "%ps", (void *)stack_entries[skip]);
+-		if (!strnstr(buf, "csan_", sizeof(buf)) &&
+-		    !strnstr(buf, "tsan_", sizeof(buf)) &&
+-		    !strnstr(buf, "_once_size", sizeof(buf))) {
++		len = scnprintf(buf, sizeof(buf), "%ps", (void *)stack_entries[skip]);
++		if (!strnstr(buf, "csan_", len) &&
++		    !strnstr(buf, "tsan_", len) &&
++		    !strnstr(buf, "_once_size", len))
+ 			break;
+-		}
  	}
-+
  	return skip;
  }
- 
