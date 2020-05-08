@@ -2,50 +2,49 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F18C91CADFB
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 May 2020 15:07:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1F121CADE9
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 May 2020 15:06:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728756AbgEHNGr (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 8 May 2020 09:06:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34890 "EHLO
+        id S1730593AbgEHNFv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 8 May 2020 09:05:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34842 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1730636AbgEHNGI (ORCPT
+        by vger.kernel.org with ESMTP id S1730502AbgEHNFu (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 8 May 2020 09:06:08 -0400
+        Fri, 8 May 2020 09:05:50 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5B98C05BD43;
-        Fri,  8 May 2020 06:06:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E10F6C05BD43;
+        Fri,  8 May 2020 06:05:49 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jX2h6-0007sp-3w; Fri, 08 May 2020 15:05:36 +0200
+        id 1jX2h4-0007tn-Ed; Fri, 08 May 2020 15:05:34 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 723BF1C0870;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id CC9251C0857;
         Fri,  8 May 2020 15:05:12 +0200 (CEST)
 Date:   Fri, 08 May 2020 13:05:12 -0000
-From:   "tip-bot2 for Ian Rogers" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Stephane Eranian" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf bench: Add a multi-threaded synthesize benchmark
-Cc:     Ian Rogers <irogers@google.com>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Jiri Olsa <jolsa@redhat.com>,
-        Namhyung Kim <namhyung@kernel.org>,
+Subject: [tip: perf/core] perf record: Add num-synthesize-threads option
+Cc:     Stephane Eranian <eranian@google.com>,
+        Ian Rogers <irogers@google.com>, Jiri Olsa <jolsa@redhat.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
         Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Andrey Zhizhikin <andrey.z@gmail.com>,
+        Alexey Budankov <alexey.budankov@linux.intel.com>,
         Kan Liang <kan.liang@linux.intel.com>,
-        Kefeng Wang <wangkefeng.wang@huawei.com>,
         Mark Rutland <mark.rutland@arm.com>,
+        Namhyung Kim <namhyung@kernel.org>,
         Peter Zijlstra <peterz@infradead.org>,
-        Petr Mladek <pmladek@suse.com>,
-        Stephane Eranian <eranian@google.com>,
-        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200415054050.31645-2-irogers@google.com>
-References: <20200415054050.31645-2-irogers@google.com>
+        Tony Jones <tonyj@suse.de>,
+        yuzhoujian <yuzhoujian@didichuxing.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200422155038.9380-1-irogers@google.com>
+References: <20200422155038.9380-1-irogers@google.com>
 MIME-Version: 1.0
-Message-ID: <158894311235.8414.16349025595253837395.tip-bot2@tip-bot2>
+Message-ID: <158894311277.8414.1121482637436259181.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -61,375 +60,218 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     13edc237200c75425ab0e3fe4b4c75dafb468c2e
-Gitweb:        https://git.kernel.org/tip/13edc237200c75425ab0e3fe4b4c75dafb468c2e
-Author:        Ian Rogers <irogers@google.com>
-AuthorDate:    Tue, 14 Apr 2020 22:40:48 -07:00
+Commit-ID:     d99c22eabee45f40ca44b877a1adde028f14b6b4
+Gitweb:        https://git.kernel.org/tip/d99c22eabee45f40ca44b877a1adde028f14b6b4
+Author:        Stephane Eranian <eranian@google.com>
+AuthorDate:    Wed, 22 Apr 2020 08:50:38 -07:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Thu, 30 Apr 2020 10:48:25 -03:00
+CommitterDate: Thu, 23 Apr 2020 11:10:41 -03:00
 
-perf bench: Add a multi-threaded synthesize benchmark
+perf record: Add num-synthesize-threads option
 
-By default this isn't run as it reads /proc and may not have access.
-For consistency, modify the single threaded benchmark to compute an
-average time per event.
+To control degree of parallelism of the synthesize_mmap() code which
+is scanning /proc/PID/task/PID/maps and can be time consuming.
+Mimic perf top way of handling the option.
+If not specified will default to 1 thread, i.e. default behavior before
+this option.
 
-Committer testing:
+On a desktop computer the processing of /proc/PID/task/PID/maps isn't
+slow enough to warrant parallel processing and the thread creation has
+some cost - hence the default of 1. On a loaded server with
+>100 cores it is possible to see synthesis times in the order of
+seconds and in this case having the option is desirable.
 
-  $ grep -m1 "model name" /proc/cpuinfo
-  model name	: Intel(R) Core(TM) i7-8650U CPU @ 1.90GHz
-  $ grep "model name" /proc/cpuinfo  | wc -l
-  8
-  $
-  $ perf bench internals synthesize -h
-  # Running 'internals/synthesize' benchmark:
+As the processing is a synchronization point, it is legitimate to worry if
+Amdahl's law will apply to this patch. Profiling with this patch in
+place:
+https://lore.kernel.org/lkml/20200415054050.31645-4-irogers@google.com/
+shows:
+...
+      - 32.59% __perf_event__synthesize_threads
+         - 32.54% __event__synthesize_thread
+            + 22.13% perf_event__synthesize_mmap_events
+            + 6.68% perf_event__get_comm_ids.constprop.0
+            + 1.49% process_synthesized_event
+            + 1.29% __GI___readdir64
+            + 0.60% __opendir
+...
+That is the processing is 1.49% of execution time and there is plenty to
+make parallel. This is shown in the benchmark in this patch:
 
-   Usage: perf bench internals synthesize <options>
+https://lore.kernel.org/lkml/20200415054050.31645-2-irogers@google.com/
 
-      -I, --multi-iterations <n>
-                            Number of iterations used to compute multi-threaded average
-      -i, --single-iterations <n>
-                            Number of iterations used to compute single-threaded average
-      -M, --max-threads <n>
-                            Maximum number of threads in multithreaded bench
-      -m, --min-threads <n>
-                            Minimum number of threads in multithreaded bench
-      -s, --st              Run single threaded benchmark
-      -t, --mt              Run multi-threaded benchmark
-
-  $
-  $ perf bench internals synthesize -t
-  # Running 'internals/synthesize' benchmark:
   Computing performance of multi threaded perf event synthesis by
   synthesizing events on CPU 0:
-    Number of synthesis threads: 1
-      Average synthesis took: 65449.000 usec (+- 586.442 usec)
-      Average num. events: 9405.400 (+- 0.306)
-      Average time per event 6.959 usec
-    Number of synthesis threads: 2
-      Average synthesis took: 37838.300 usec (+- 130.259 usec)
-      Average num. events: 9501.800 (+- 20.469)
-      Average time per event 3.982 usec
-    Number of synthesis threads: 3
-      Average synthesis took: 48551.400 usec (+- 225.686 usec)
-      Average num. events: 9544.000 (+- 0.000)
-      Average time per event 5.087 usec
-    Number of synthesis threads: 4
-      Average synthesis took: 29632.500 usec (+- 50.808 usec)
-      Average num. events: 9544.000 (+- 0.000)
-      Average time per event 3.105 usec
-    Number of synthesis threads: 5
-      Average synthesis took: 33920.400 usec (+- 284.509 usec)
-      Average num. events: 9544.000 (+- 0.000)
-      Average time per event 3.554 usec
-    Number of synthesis threads: 6
-      Average synthesis took: 27604.100 usec (+- 72.344 usec)
-      Average num. events: 9548.000 (+- 0.000)
-      Average time per event 2.891 usec
-    Number of synthesis threads: 7
-      Average synthesis took: 25406.300 usec (+- 933.371 usec)
-      Average num. events: 9545.500 (+- 0.167)
-      Average time per event 2.662 usec
-    Number of synthesis threads: 8
-      Average synthesis took: 24110.400 usec (+- 73.229 usec)
-      Average num. events: 9551.000 (+- 0.000)
-      Average time per event 2.524 usec
-  $
+   Number of synthesis threads: 1
+     Average synthesis took: 127729.000 usec (+- 3372.880 usec)
+     Average num. events: 21548.600 (+- 0.306)
+     Average time per event 5.927 usec
+   Number of synthesis threads: 2
+     Average synthesis took: 88863.500 usec (+- 385.168 usec)
+     Average num. events: 21552.800 (+- 0.327)
+     Average time per event 4.123 usec
+   Number of synthesis threads: 3
+     Average synthesis took: 83257.400 usec (+- 348.617 usec)
+     Average num. events: 21553.200 (+- 0.327)
+     Average time per event 3.863 usec
+   Number of synthesis threads: 4
+     Average synthesis took: 75093.000 usec (+- 422.978 usec)
+     Average num. events: 21554.200 (+- 0.200)
+     Average time per event 3.484 usec
+   Number of synthesis threads: 5
+     Average synthesis took: 64896.600 usec (+- 353.348 usec)
+     Average num. events: 21558.000 (+- 0.000)
+     Average time per event 3.010 usec
+   Number of synthesis threads: 6
+     Average synthesis took: 59210.200 usec (+- 342.890 usec)
+     Average num. events: 21560.000 (+- 0.000)
+     Average time per event 2.746 usec
+   Number of synthesis threads: 7
+     Average synthesis took: 54093.900 usec (+- 306.247 usec)
+     Average num. events: 21562.000 (+- 0.000)
+     Average time per event 2.509 usec
+   Number of synthesis threads: 8
+     Average synthesis took: 48938.700 usec (+- 341.732 usec)
+     Average num. events: 21564.000 (+- 0.000)
+     Average time per event 2.269 usec
 
-Signed-off-by: Ian Rogers <irogers@google.com>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Where average time per synthesized event goes from 5.927 usec with 1
+thread to 2.269 usec with 8. This isn't a linear speed up as not all of
+synthesize code has been made parallel. If the synthesis time was about
+10 seconds then using 8 threads may bring this down to less than 4.
+
+Signed-off-by: Stephane Eranian <eranian@google.com>
+Reviewed-by: Ian Rogers <irogers@google.com>
 Acked-by: Jiri Olsa <jolsa@redhat.com>
-Acked-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
 Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Andrey Zhizhikin <andrey.z@gmail.com>
+Cc: Alexey Budankov <alexey.budankov@linux.intel.com>
 Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
 Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Petr Mladek <pmladek@suse.com>
-Cc: Stephane Eranian <eranian@google.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Link: http://lore.kernel.org/lkml/20200415054050.31645-2-irogers@google.com
+Cc: Tony Jones <tonyj@suse.de>
+Cc: yuzhoujian <yuzhoujian@didichuxing.com>
+Link: http://lore.kernel.org/lkml/20200422155038.9380-1-irogers@google.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/bench/synthesize.c | 211 +++++++++++++++++++++++++++++----
- 1 file changed, 186 insertions(+), 25 deletions(-)
+ tools/perf/Documentation/perf-record.txt |  4 +++-
+ tools/perf/builtin-record.c              | 34 +++++++++++++++++++++--
+ tools/perf/util/record.h                 |  1 +-
+ 3 files changed, 37 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/bench/synthesize.c b/tools/perf/bench/synthesize.c
-index 6291257..8d624ae 100644
---- a/tools/perf/bench/synthesize.c
-+++ b/tools/perf/bench/synthesize.c
-@@ -10,60 +10,105 @@
- #include "bench.h"
- #include "../util/debug.h"
- #include "../util/session.h"
-+#include "../util/stat.h"
- #include "../util/synthetic-events.h"
- #include "../util/target.h"
- #include "../util/thread_map.h"
- #include "../util/tool.h"
-+#include "../util/util.h"
-+#include <linux/atomic.h>
- #include <linux/err.h>
- #include <linux/time64.h>
- #include <subcmd/parse-options.h>
+diff --git a/tools/perf/Documentation/perf-record.txt b/tools/perf/Documentation/perf-record.txt
+index b3f3b3f..6e8b464 100644
+--- a/tools/perf/Documentation/perf-record.txt
++++ b/tools/perf/Documentation/perf-record.txt
+@@ -596,6 +596,10 @@ Make a copy of /proc/kcore and place it into a directory with the perf data file
+ Limit the sample data max size, <size> is expected to be a number with
+ appended unit character - B/K/M/G
  
--static unsigned int iterations = 10000;
-+static unsigned int min_threads = 1;
-+static unsigned int max_threads = UINT_MAX;
-+static unsigned int single_iterations = 10000;
-+static unsigned int multi_iterations = 10;
-+static bool run_st;
-+static bool run_mt;
++--num-thread-synthesize::
++	The number of threads to run when synthesizing events for existing processes.
++	By default, the number of threads equals 1.
++
+ SEE ALSO
+ --------
+ linkperf:perf-stat[1], linkperf:perf-list[1], linkperf:perf-intel-pt[1]
+diff --git a/tools/perf/builtin-record.c b/tools/perf/builtin-record.c
+index 1ab349a..2e8011f 100644
+--- a/tools/perf/builtin-record.c
++++ b/tools/perf/builtin-record.c
+@@ -43,6 +43,7 @@
+ #include "util/time-utils.h"
+ #include "util/units.h"
+ #include "util/bpf-event.h"
++#include "util/util.h"
+ #include "asm/bug.h"
+ #include "perf.h"
  
- static const struct option options[] = {
--	OPT_UINTEGER('i', "iterations", &iterations,
--		"Number of iterations used to compute average"),
-+	OPT_BOOLEAN('s', "st", &run_st, "Run single threaded benchmark"),
-+	OPT_BOOLEAN('t', "mt", &run_mt, "Run multi-threaded benchmark"),
-+	OPT_UINTEGER('m', "min-threads", &min_threads,
-+		"Minimum number of threads in multithreaded bench"),
-+	OPT_UINTEGER('M', "max-threads", &max_threads,
-+		"Maximum number of threads in multithreaded bench"),
-+	OPT_UINTEGER('i', "single-iterations", &single_iterations,
-+		"Number of iterations used to compute single-threaded average"),
-+	OPT_UINTEGER('I', "multi-iterations", &multi_iterations,
-+		"Number of iterations used to compute multi-threaded average"),
- 	OPT_END()
- };
+@@ -50,6 +51,7 @@
+ #include <inttypes.h>
+ #include <locale.h>
+ #include <poll.h>
++#include <pthread.h>
+ #include <unistd.h>
+ #include <sched.h>
+ #include <signal.h>
+@@ -503,6 +505,20 @@ static int process_synthesized_event(struct perf_tool *tool,
+ 	return record__write(rec, NULL, event, event->header.size);
+ }
  
--static const char *const usage[] = {
-+static const char *const bench_usage[] = {
- 	"perf bench internals synthesize <options>",
- 	NULL
- };
- 
-+static atomic_t event_count;
- 
--static int do_synthesize(struct perf_session *session,
--			struct perf_thread_map *threads,
--			struct target *target, bool data_mmap)
-+static int process_synthesized_event(struct perf_tool *tool __maybe_unused,
-+				     union perf_event *event __maybe_unused,
++static int process_locked_synthesized_event(struct perf_tool *tool,
++				     union perf_event *event,
 +				     struct perf_sample *sample __maybe_unused,
 +				     struct machine *machine __maybe_unused)
 +{
-+	atomic_inc(&event_count);
-+	return 0;
++	static pthread_mutex_t synth_lock = PTHREAD_MUTEX_INITIALIZER;
++	int ret;
++
++	pthread_mutex_lock(&synth_lock);
++	ret = process_synthesized_event(tool, event, sample, machine);
++	pthread_mutex_unlock(&synth_lock);
++	return ret;
 +}
 +
-+static int do_run_single_threaded(struct perf_session *session,
-+				struct perf_thread_map *threads,
-+				struct target *target, bool data_mmap)
+ static int record__pushfn(struct mmap *map, void *to, void *bf, size_t size)
  {
- 	const unsigned int nr_threads_synthesize = 1;
- 	struct timeval start, end, diff;
- 	u64 runtime_us;
- 	unsigned int i;
--	double average;
-+	double time_average, time_stddev, event_average, event_stddev;
- 	int err;
-+	struct stats time_stats, event_stats;
+ 	struct record *rec = to;
+@@ -1288,6 +1304,7 @@ static int record__synthesize(struct record *rec, bool tail)
+ 	struct perf_tool *tool = &rec->tool;
+ 	int fd = perf_data__fd(data);
+ 	int err = 0;
++	event_op f = process_synthesized_event;
  
--	gettimeofday(&start, NULL);
--	for (i = 0; i < iterations; i++) {
--		err = machine__synthesize_threads(&session->machines.host,
--						target, threads, data_mmap,
-+	init_stats(&time_stats);
-+	init_stats(&event_stats);
+ 	if (rec->opts.tail_synthesize != tail)
+ 		return 0;
+@@ -1402,9 +1419,18 @@ static int record__synthesize(struct record *rec, bool tail)
+ 	if (err < 0)
+ 		pr_warning("Couldn't synthesize cgroup events.\n");
+ 
++	if (rec->opts.nr_threads_synthesize > 1) {
++		perf_set_multithreaded();
++		f = process_locked_synthesized_event;
++	}
 +
-+	for (i = 0; i < single_iterations; i++) {
-+		atomic_set(&event_count, 0);
-+		gettimeofday(&start, NULL);
-+		err = __machine__synthesize_threads(&session->machines.host,
-+						NULL,
-+						target, threads,
-+						process_synthesized_event,
-+						data_mmap,
- 						nr_threads_synthesize);
- 		if (err)
- 			return err;
+ 	err = __machine__synthesize_threads(machine, tool, &opts->target, rec->evlist->core.threads,
+-					    process_synthesized_event, opts->sample_address,
+-					    1);
++					    f, opts->sample_address,
++					    rec->opts.nr_threads_synthesize);
 +
-+		gettimeofday(&end, NULL);
-+		timersub(&end, &start, &diff);
-+		runtime_us = diff.tv_sec * USEC_PER_SEC + diff.tv_usec;
-+		update_stats(&time_stats, runtime_us);
-+		update_stats(&event_stats, atomic_read(&event_count));
- 	}
- 
--	gettimeofday(&end, NULL);
--	timersub(&end, &start, &diff);
--	runtime_us = diff.tv_sec * USEC_PER_SEC + diff.tv_usec;
--	average = (double)runtime_us/(double)iterations;
--	printf("Average %ssynthesis took: %f usec\n",
--		data_mmap ? "data " : "", average);
-+	time_average = avg_stats(&time_stats);
-+	time_stddev = stddev_stats(&time_stats);
-+	printf("  Average %ssynthesis took: %.3f usec (+- %.3f usec)\n",
-+		data_mmap ? "data " : "", time_average, time_stddev);
++	if (rec->opts.nr_threads_synthesize > 1)
++		perf_set_singlethreaded();
 +
-+	event_average = avg_stats(&event_stats);
-+	event_stddev = stddev_stats(&event_stats);
-+	printf("  Average num. events: %.3f (+- %.3f)\n",
-+		event_average, event_stddev);
-+
-+	printf("  Average time per event %.3f usec\n",
-+		time_average / event_average);
- 	return 0;
- }
- 
--int bench_synthesize(int argc, const char **argv)
-+static int run_single_threaded(void)
- {
--	struct perf_tool tool;
- 	struct perf_session *session;
- 	struct target target = {
- 		.pid = "self",
-@@ -71,8 +116,7 @@ int bench_synthesize(int argc, const char **argv)
- 	struct perf_thread_map *threads;
- 	int err;
- 
--	argc = parse_options(argc, argv, options, usage, 0);
--
-+	perf_set_singlethreaded();
- 	session = perf_session__new(NULL, false, NULL);
- 	if (IS_ERR(session)) {
- 		pr_err("Session creation failed.\n");
-@@ -84,13 +128,16 @@ int bench_synthesize(int argc, const char **argv)
- 		err = -ENOMEM;
- 		goto err_out;
- 	}
--	perf_tool__fill_defaults(&tool);
- 
--	err = do_synthesize(session, threads, &target, false);
-+	puts(
-+"Computing performance of single threaded perf event synthesis by\n"
-+"synthesizing events on the perf process itself:");
-+
-+	err = do_run_single_threaded(session, threads, &target, false);
- 	if (err)
- 		goto err_out;
- 
--	err = do_synthesize(session, threads, &target, true);
-+	err = do_run_single_threaded(session, threads, &target, true);
- 
- err_out:
- 	if (threads)
-@@ -99,3 +146,117 @@ err_out:
- 	perf_session__delete(session);
+ out:
  	return err;
  }
-+
-+static int do_run_multi_threaded(struct target *target,
-+				unsigned int nr_threads_synthesize)
-+{
-+	struct timeval start, end, diff;
-+	u64 runtime_us;
-+	unsigned int i;
-+	double time_average, time_stddev, event_average, event_stddev;
-+	int err;
-+	struct stats time_stats, event_stats;
-+	struct perf_session *session;
-+
-+	init_stats(&time_stats);
-+	init_stats(&event_stats);
-+	for (i = 0; i < multi_iterations; i++) {
-+		session = perf_session__new(NULL, false, NULL);
-+		if (!session)
-+			return -ENOMEM;
-+
-+		atomic_set(&event_count, 0);
-+		gettimeofday(&start, NULL);
-+		err = __machine__synthesize_threads(&session->machines.host,
-+						NULL,
-+						target, NULL,
-+						process_synthesized_event,
-+						false,
-+						nr_threads_synthesize);
-+		if (err) {
-+			perf_session__delete(session);
-+			return err;
-+		}
-+
-+		gettimeofday(&end, NULL);
-+		timersub(&end, &start, &diff);
-+		runtime_us = diff.tv_sec * USEC_PER_SEC + diff.tv_usec;
-+		update_stats(&time_stats, runtime_us);
-+		update_stats(&event_stats, atomic_read(&event_count));
-+		perf_session__delete(session);
-+	}
-+
-+	time_average = avg_stats(&time_stats);
-+	time_stddev = stddev_stats(&time_stats);
-+	printf("    Average synthesis took: %.3f usec (+- %.3f usec)\n",
-+		time_average, time_stddev);
-+
-+	event_average = avg_stats(&event_stats);
-+	event_stddev = stddev_stats(&event_stats);
-+	printf("    Average num. events: %.3f (+- %.3f)\n",
-+		event_average, event_stddev);
-+
-+	printf("    Average time per event %.3f usec\n",
-+		time_average / event_average);
-+	return 0;
-+}
-+
-+static int run_multi_threaded(void)
-+{
-+	struct target target = {
-+		.cpu_list = "0"
-+	};
-+	unsigned int nr_threads_synthesize;
-+	int err;
-+
-+	if (max_threads == UINT_MAX)
-+		max_threads = sysconf(_SC_NPROCESSORS_ONLN);
-+
-+	puts(
-+"Computing performance of multi threaded perf event synthesis by\n"
-+"synthesizing events on CPU 0:");
-+
-+	for (nr_threads_synthesize = min_threads;
-+	     nr_threads_synthesize <= max_threads;
-+	     nr_threads_synthesize++) {
-+		if (nr_threads_synthesize == 1)
-+			perf_set_singlethreaded();
-+		else
-+			perf_set_multithreaded();
-+
-+		printf("  Number of synthesis threads: %u\n",
-+			nr_threads_synthesize);
-+
-+		err = do_run_multi_threaded(&target, nr_threads_synthesize);
-+		if (err)
-+			return err;
-+	}
-+	perf_set_singlethreaded();
-+	return 0;
-+}
-+
-+int bench_synthesize(int argc, const char **argv)
-+{
-+	int err = 0;
-+
-+	argc = parse_options(argc, argv, options, bench_usage, 0);
-+	if (argc) {
-+		usage_with_options(bench_usage, options);
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	/*
-+	 * If neither single threaded or multi-threaded are specified, default
-+	 * to running just single threaded.
-+	 */
-+	if (!run_st && !run_mt)
-+		run_st = true;
-+
-+	if (run_st)
-+		err = run_single_threaded();
-+
-+	if (!err && run_mt)
-+		err = run_multi_threaded();
-+
-+	return err;
-+}
+@@ -2232,6 +2258,7 @@ static struct record record = {
+ 			.default_per_cpu = true,
+ 		},
+ 		.mmap_flush          = MMAP_FLUSH_DEFAULT,
++		.nr_threads_synthesize = 1,
+ 	},
+ 	.tool = {
+ 		.sample		= process_sample_event,
+@@ -2421,6 +2448,9 @@ static struct option __record_options[] = {
+ #endif
+ 	OPT_CALLBACK(0, "max-size", &record.output_max_size,
+ 		     "size", "Limit the maximum size of the output file", parse_output_max_size),
++	OPT_UINTEGER(0, "num-thread-synthesize",
++		     &record.opts.nr_threads_synthesize,
++		     "number of threads to run for event synthesis"),
+ 	OPT_END()
+ };
+ 
+diff --git a/tools/perf/util/record.h b/tools/perf/util/record.h
+index 2431645..923565c 100644
+--- a/tools/perf/util/record.h
++++ b/tools/perf/util/record.h
+@@ -68,6 +68,7 @@ struct record_opts {
+ 	int	      affinity;
+ 	int	      mmap_flush;
+ 	unsigned int  comp_level;
++	unsigned int  nr_threads_synthesize;
+ };
+ 
+ extern const char * const *record_usage;
