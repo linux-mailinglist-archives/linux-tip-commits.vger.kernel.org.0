@@ -2,40 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F1001CADD5
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 May 2020 15:06:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 507FC1CADD7
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 May 2020 15:06:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730425AbgEHNFH (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 8 May 2020 09:05:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34618 "EHLO
+        id S1730465AbgEHNFP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 8 May 2020 09:05:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1730420AbgEHNFG (ORCPT
+        by vger.kernel.org with ESMTP id S1730460AbgEHNFO (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 8 May 2020 09:05:06 -0400
+        Fri, 8 May 2020 09:05:14 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B203C05BD43;
-        Fri,  8 May 2020 06:05:06 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38A2BC05BD0C;
+        Fri,  8 May 2020 06:05:14 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jX2gW-0007PG-Dq; Fri, 08 May 2020 15:05:00 +0200
+        id 1jX2gc-0007Qe-4j; Fri, 08 May 2020 15:05:06 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 15D8D1C0837;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 721B71C0080;
         Fri,  8 May 2020 15:04:53 +0200 (CEST)
 Date:   Fri, 08 May 2020 13:04:53 -0000
 From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf evsel: Rename __perf_evsel__sample_size() to
- __evsel__sample_size()
+Subject: [tip: perf/core] perf evsel: Rename perf_evsel__calc_id_pos() to
+ evsel__calc_id_pos()
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         Jiri Olsa <jolsa@kernel.org>,
         Namhyung Kim <namhyung@kernel.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158894309303.8414.13325653212889492516.tip-bot2@tip-bot2>
+Message-ID: <158894309339.8414.10851705335701633027.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,91 +51,91 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     2aaefde4d98baf73ef5a6c7c09941fe5e16f5b51
-Gitweb:        https://git.kernel.org/tip/2aaefde4d98baf73ef5a6c7c09941fe5e16f5b51
+Commit-ID:     4b5e87b741f63a9e988236bc1a1050402f2c27a3
+Gitweb:        https://git.kernel.org/tip/4b5e87b741f63a9e988236bc1a1050402f2c27a3
 Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Wed, 29 Apr 2020 16:00:27 -03:00
+AuthorDate:    Wed, 29 Apr 2020 15:58:40 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Tue, 05 May 2020 16:35:30 -03:00
 
-perf evsel: Rename __perf_evsel__sample_size() to __evsel__sample_size()
+perf evsel: Rename perf_evsel__calc_id_pos() to evsel__calc_id_pos()
 
-As it is a 'struct evsel' related method, not part of tools/lib/perf/,
-aka libperf, to whom the perf_ prefix belongs.
+As it is a 'struct evsel' method, not part of tools/lib/perf/, aka
+libperf, to whom the perf_ prefix belongs.
 
 Cc: Adrian Hunter <adrian.hunter@intel.com>
 Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/tests/sample-parsing.c | 2 +-
- tools/perf/util/evsel.c           | 4 ++--
- tools/perf/util/evsel.h           | 2 +-
- tools/perf/util/intel-bts.c       | 4 ++--
- 4 files changed, 6 insertions(+), 6 deletions(-)
+ tools/perf/util/evlist.c | 2 +-
+ tools/perf/util/evsel.c  | 8 ++++----
+ tools/perf/util/evsel.h  | 2 +-
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/tools/perf/tests/sample-parsing.c b/tools/perf/tests/sample-parsing.c
-index 6186569..ab964db 100644
---- a/tools/perf/tests/sample-parsing.c
-+++ b/tools/perf/tests/sample-parsing.c
-@@ -296,7 +296,7 @@ static int do_test(u64 sample_type, u64 sample_regs, u64 read_format)
- 		goto out_free;
- 	}
+diff --git a/tools/perf/util/evlist.c b/tools/perf/util/evlist.c
+index 6d902c0..8b69115 100644
+--- a/tools/perf/util/evlist.c
++++ b/tools/perf/util/evlist.c
+@@ -119,7 +119,7 @@ static void perf_evlist__update_id_pos(struct evlist *evlist)
+ 	struct evsel *evsel;
  
--	evsel.sample_size = __perf_evsel__sample_size(sample_type);
-+	evsel.sample_size = __evsel__sample_size(sample_type);
+ 	evlist__for_each_entry(evlist, evsel)
+-		perf_evsel__calc_id_pos(evsel);
++		evsel__calc_id_pos(evsel);
  
- 	err = perf_evsel__parse_sample(&evsel, event, &sample_out);
- 	if (err) {
+ 	perf_evlist__set_id_pos(evlist);
+ }
 diff --git a/tools/perf/util/evsel.c b/tools/perf/util/evsel.c
-index 896b0b9..3a16728 100644
+index f88cf79..896b0b9 100644
 --- a/tools/perf/util/evsel.c
 +++ b/tools/perf/util/evsel.c
-@@ -102,7 +102,7 @@ set_methods:
+@@ -178,7 +178,7 @@ static int __perf_evsel__calc_is_pos(u64 sample_type)
+ 	return idx;
+ }
  
- #define FD(e, x, y) (*(int *)xyarray__entry(e->core.fd, x, y))
- 
--int __perf_evsel__sample_size(u64 sample_type)
-+int __evsel__sample_size(u64 sample_type)
+-void perf_evsel__calc_id_pos(struct evsel *evsel)
++void evsel__calc_id_pos(struct evsel *evsel)
  {
- 	u64 mask = sample_type & PERF_SAMPLE_MASK;
- 	int size = 0;
-@@ -249,7 +249,7 @@ void evsel__init(struct evsel *evsel,
- 	evsel->bpf_fd	   = -1;
+ 	evsel->id_pos = __perf_evsel__calc_id_pos(evsel->core.attr.sample_type);
+ 	evsel->is_pos = __perf_evsel__calc_is_pos(evsel->core.attr.sample_type);
+@@ -190,7 +190,7 @@ void __perf_evsel__set_sample_bit(struct evsel *evsel,
+ 	if (!(evsel->core.attr.sample_type & bit)) {
+ 		evsel->core.attr.sample_type |= bit;
+ 		evsel->sample_size += sizeof(u64);
+-		perf_evsel__calc_id_pos(evsel);
++		evsel__calc_id_pos(evsel);
+ 	}
+ }
+ 
+@@ -200,7 +200,7 @@ void __perf_evsel__reset_sample_bit(struct evsel *evsel,
+ 	if (evsel->core.attr.sample_type & bit) {
+ 		evsel->core.attr.sample_type &= ~bit;
+ 		evsel->sample_size -= sizeof(u64);
+-		perf_evsel__calc_id_pos(evsel);
++		evsel__calc_id_pos(evsel);
+ 	}
+ }
+ 
+@@ -250,7 +250,7 @@ void evsel__init(struct evsel *evsel,
  	INIT_LIST_HEAD(&evsel->config_terms);
  	perf_evsel__object.init(evsel);
--	evsel->sample_size = __perf_evsel__sample_size(attr->sample_type);
-+	evsel->sample_size = __evsel__sample_size(attr->sample_type);
- 	evsel__calc_id_pos(evsel);
+ 	evsel->sample_size = __perf_evsel__sample_size(attr->sample_type);
+-	perf_evsel__calc_id_pos(evsel);
++	evsel__calc_id_pos(evsel);
  	evsel->cmdline_group_boundary = false;
  	evsel->metric_expr   = NULL;
+ 	evsel->metric_name   = NULL;
 diff --git a/tools/perf/util/evsel.h b/tools/perf/util/evsel.h
-index 35ad628..580975c 100644
+index 617cb3f..35ad628 100644
 --- a/tools/perf/util/evsel.h
 +++ b/tools/perf/util/evsel.h
-@@ -193,7 +193,7 @@ void evsel__config(struct evsel *evsel, struct record_opts *opts,
- void evsel__config_callchain(struct evsel *evsel, struct record_opts *opts,
+@@ -194,7 +194,7 @@ void evsel__config_callchain(struct evsel *evsel, struct record_opts *opts,
  			     struct callchain_param *callchain);
  
--int __perf_evsel__sample_size(u64 sample_type);
-+int __evsel__sample_size(u64 sample_type);
- void evsel__calc_id_pos(struct evsel *evsel);
+ int __perf_evsel__sample_size(u64 sample_type);
+-void perf_evsel__calc_id_pos(struct evsel *evsel);
++void evsel__calc_id_pos(struct evsel *evsel);
  
  bool perf_evsel__is_cache_op_valid(u8 type, u8 op);
-diff --git a/tools/perf/util/intel-bts.c b/tools/perf/util/intel-bts.c
-index 506112f..af1e78d 100644
---- a/tools/perf/util/intel-bts.c
-+++ b/tools/perf/util/intel-bts.c
-@@ -825,10 +825,10 @@ static int intel_bts_synth_events(struct intel_bts *bts,
- 		bts->branches_id = id;
- 		/*
- 		 * We only use sample types from PERF_SAMPLE_MASK so we can use
--		 * __perf_evsel__sample_size() here.
-+		 * __evsel__sample_size() here.
- 		 */
- 		bts->branches_event_size = sizeof(struct perf_record_sample) +
--				__perf_evsel__sample_size(attr.sample_type);
-+					   __evsel__sample_size(attr.sample_type);
- 	}
  
- 	return 0;
