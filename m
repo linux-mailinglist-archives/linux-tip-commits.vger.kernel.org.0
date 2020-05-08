@@ -2,35 +2,35 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7894A1CADE0
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 May 2020 15:06:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C5211CAE59
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 May 2020 15:11:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730531AbgEHNFd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 8 May 2020 09:05:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34758 "EHLO
+        id S1730025AbgEHNJB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 8 May 2020 09:09:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34720 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1730104AbgEHNFb (ORCPT
+        by vger.kernel.org with ESMTP id S1730500AbgEHNFZ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 8 May 2020 09:05:31 -0400
+        Fri, 8 May 2020 09:05:25 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7F2DC05BD43;
-        Fri,  8 May 2020 06:05:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3F3DC05BD11;
+        Fri,  8 May 2020 06:05:24 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jX2go-0007bA-Tm; Fri, 08 May 2020 15:05:19 +0200
+        id 1jX2gk-0007bY-KZ; Fri, 08 May 2020 15:05:14 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id F41EB1C03AB;
-        Fri,  8 May 2020 15:05:01 +0200 (CEST)
-Date:   Fri, 08 May 2020 13:05:01 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 6CB2E1C0837;
+        Fri,  8 May 2020 15:05:02 +0200 (CEST)
+Date:   Fri, 08 May 2020 13:05:02 -0000
 From:   "tip-bot2 for Ian Rogers" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf parse-events: Fix another memory leaks found on
- parse_events()
-Cc:     Ian Rogers <irogers@google.com>, Jiri Olsa <jolsa@redhat.com>,
+Subject: [tip: perf/core] perf parse-events: Fix memory leaks found on parse_events
+Cc:     Ian Rogers <irogers@google.com>,
         Adrian Hunter <adrian.hunter@intel.com>,
+        Jiri Olsa <jolsa@redhat.com>,
         Alexander Shishkin <alexander.shishkin@linux.intel.com>,
         Andi Kleen <ak@linux.intel.com>, Leo Yan <leo.yan@linaro.org>,
         Mark Rutland <mark.rutland@arm.com>,
@@ -43,7 +43,7 @@ Cc:     Ian Rogers <irogers@google.com>, Jiri Olsa <jolsa@redhat.com>,
 In-Reply-To: <20200319023101.82458-1-irogers@google.com>
 References: <20200319023101.82458-1-irogers@google.com>
 MIME-Version: 1.0
-Message-ID: <158894310185.8414.8576705956895517030.tip-bot2@tip-bot2>
+Message-ID: <158894310232.8414.17325608370571338632.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -59,20 +59,23 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     ba08829aace99b23da31b9b71d8ed5d40a44ed49
-Gitweb:        https://git.kernel.org/tip/ba08829aace99b23da31b9b71d8ed5d40a44ed49
+Commit-ID:     672f707ef55f0a56b9bb67c3cfbdcab85c233796
+Gitweb:        https://git.kernel.org/tip/672f707ef55f0a56b9bb67c3cfbdcab85c233796
 Author:        Ian Rogers <irogers@google.com>
 AuthorDate:    Wed, 18 Mar 2020 19:31:00 -07:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Tue, 05 May 2020 16:35:29 -03:00
 
-perf parse-events: Fix another memory leaks found on parse_events()
+perf parse-events: Fix memory leaks found on parse_events
 
-Fix another memory leak found by applying LLVM's libfuzzer on parse_events().
+free_list_evsel() deals with tools/perf/ evsels, not with libperf
+perf_evsels, use the right destructor and avoid a leak, as
+evsel__delete() will delete something perf_evsel__delete() doesn't.
 
 Signed-off-by: Ian Rogers <irogers@google.com>
-Acked-by: Jiri Olsa <jolsa@redhat.com>
+
 Cc: Adrian Hunter <adrian.hunter@intel.com>
+Acked-by: Jiri Olsa <jolsa@redhat.com>
 Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 Cc: Andi Kleen <ak@linux.intel.com>
 Cc: Leo Yan <leo.yan@linaro.org>
@@ -85,18 +88,19 @@ Link: http://lore.kernel.org/lkml/20200319023101.82458-1-irogers@google.com
 [ split from a larger patch ]
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/parse-events.y | 1 +
- 1 file changed, 1 insertion(+)
+ tools/perf/util/parse-events.y | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/tools/perf/util/parse-events.y b/tools/perf/util/parse-events.y
-index 6ece67e..c4ca932 100644
+index e879eb2..6ece67e 100644
 --- a/tools/perf/util/parse-events.y
 +++ b/tools/perf/util/parse-events.y
-@@ -326,6 +326,7 @@ PE_NAME opt_pmu_config
+@@ -44,7 +44,7 @@ static void free_list_evsel(struct list_head* list_evsel)
+ 
+ 	list_for_each_entry_safe(evsel, tmp, list_evsel, core.node) {
+ 		list_del_init(&evsel->core.node);
+-		perf_evsel__delete(evsel);
++		evsel__delete(evsel);
  	}
- 	parse_events_terms__delete($2);
- 	parse_events_terms__delete(orig_terms);
-+	free(pattern);
- 	free($1);
- 	$$ = list;
- #undef CLEANUP_YYABORT
+ 	free(list_evsel);
+ }
