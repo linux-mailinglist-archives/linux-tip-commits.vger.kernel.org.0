@@ -2,50 +2,46 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A316F1CADCC
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 May 2020 15:06:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30CAA1CAED3
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 May 2020 15:16:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730361AbgEHNE5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 8 May 2020 09:04:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34566 "EHLO
+        id S1730043AbgEHNEt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 8 May 2020 09:04:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34522 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1730357AbgEHNE4 (ORCPT
+        by vger.kernel.org with ESMTP id S1729951AbgEHNEs (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 8 May 2020 09:04:56 -0400
+        Fri, 8 May 2020 09:04:48 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EA08C05BD0E;
-        Fri,  8 May 2020 06:04:55 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83290C05BD09;
+        Fri,  8 May 2020 06:04:48 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jX2gB-00073r-On; Fri, 08 May 2020 15:04:39 +0200
+        id 1jX2gC-000746-4z; Fri, 08 May 2020 15:04:40 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5A9991C03AB;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C11731C0080;
         Fri,  8 May 2020 15:04:39 +0200 (CEST)
 Date:   Fri, 08 May 2020 13:04:39 -0000
-From:   "tip-bot2 for Leo Yan" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Ian Rogers" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf cs-etm: Move definition of 'traceid_list'
- global variable from header file
-Cc:     Thomas Backlund <tmb@mageia.org>, Leo Yan <leo.yan@linaro.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Mike Leach <mike.leach@linaro.org>,
+Subject: [tip: perf/core] libsymbols kallsyms: Move hex2u64 out of header
+Cc:     Ian Rogers <irogers@google.com>,
         Alexander Shishkin <alexander.shishkin@linux.intel.com>,
         Jiri Olsa <jolsa@redhat.com>,
         Mark Rutland <mark.rutland@arm.com>,
         Namhyung Kim <namhyung@kernel.org>,
         Peter Zijlstra <peterz@infradead.org>,
-        Suzuki Poulouse <suzuki.poulose@arm.com>,
-        Tor Jeremiassen <tor@ti.com>,
-        linux-arm-kernel@lists.infradead.org,
+        Stephane Eranian <eranian@google.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200505133642.4756-1-leo.yan@linaro.org>
-References: <20200505133642.4756-1-leo.yan@linaro.org>
+In-Reply-To: <20200501221315.54715-4-irogers@google.com>
+References: <20200501221315.54715-4-irogers@google.com>
 MIME-Version: 1.0
-Message-ID: <158894307932.8414.9902120023400744910.tip-bot2@tip-bot2>
+Message-ID: <158894307971.8414.1458046703138557117.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -61,69 +57,98 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     168200b6d6ea0cb5765943ec5da5b8149701f36a
-Gitweb:        https://git.kernel.org/tip/168200b6d6ea0cb5765943ec5da5b8149701f36a
-Author:        Leo Yan <leo.yan@linaro.org>
-AuthorDate:    Tue, 05 May 2020 21:36:42 +08:00
+Commit-ID:     32add10f9597f2e4e46fa8342a83ae7bdfefd1ae
+Gitweb:        https://git.kernel.org/tip/32add10f9597f2e4e46fa8342a83ae7bdfefd1ae
+Author:        Ian Rogers <irogers@google.com>
+AuthorDate:    Fri, 01 May 2020 15:13:15 -07:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Tue, 05 May 2020 16:35:32 -03:00
 
-perf cs-etm: Move definition of 'traceid_list' global variable from header file
+libsymbols kallsyms: Move hex2u64 out of header
 
-The variable 'traceid_list' is defined in the header file cs-etm.h,
-if multiple C files include cs-etm.h the compiler might complaint for
-multiple definition of 'traceid_list'.
+hex2u64 is a helper that's out of place in kallsyms.h as not being
+kallsyms related. Move from kallsyms.h to the only user.
 
-To fix multiple definition error, move the definition of 'traceid_list'
-into cs-etm.c.
+Committer notes:
 
-Fixes: cd8bfd8c973e ("perf tools: Add processing of coresight metadata")
-Reported-by: Thomas Backlund <tmb@mageia.org>
-Signed-off-by: Leo Yan <leo.yan@linaro.org>
-Reviewed-by: Mathieu Poirier <mathieu.poirier@linaro.org>
-Reviewed-by: Mike Leach <mike.leach@linaro.org>
-Tested-by: Mike Leach <mike.leach@linaro.org>
-Tested-by: Thomas Backlund <tmb@mageia.org>
+Move it out of tools/lib/symbol/kallsyms.c as well, as we had to leave
+it there in the previous patch lest we break the build.
+
+Signed-off-by: Ian Rogers <irogers@google.com>
 Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 Cc: Jiri Olsa <jolsa@redhat.com>
 Cc: Mark Rutland <mark.rutland@arm.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Suzuki Poulouse <suzuki.poulose@arm.com>
-Cc: Tor Jeremiassen <tor@ti.com>
-Cc: linux-arm-kernel@lists.infradead.org
-Link: http://lore.kernel.org/lkml/20200505133642.4756-1-leo.yan@linaro.org
+Cc: Stephane Eranian <eranian@google.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Link: http://lore.kernel.org/lkml/20200501221315.54715-4-irogers@google.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/cs-etm.c | 3 +++
- tools/perf/util/cs-etm.h | 3 ---
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ tools/lib/symbol/kallsyms.c | 13 -------------
+ tools/lib/symbol/kallsyms.h |  2 --
+ tools/perf/util/symbol.c    | 14 ++++++++++++++
+ 3 files changed, 14 insertions(+), 15 deletions(-)
 
-diff --git a/tools/perf/util/cs-etm.c b/tools/perf/util/cs-etm.c
-index 3c802fd..c283223 100644
---- a/tools/perf/util/cs-etm.c
-+++ b/tools/perf/util/cs-etm.c
-@@ -94,6 +94,9 @@ struct cs_etm_queue {
- 	struct cs_etm_traceid_queue **traceid_queues;
- };
+diff --git a/tools/lib/symbol/kallsyms.c b/tools/lib/symbol/kallsyms.c
+index a5edc75..e335ac2 100644
+--- a/tools/lib/symbol/kallsyms.c
++++ b/tools/lib/symbol/kallsyms.c
+@@ -11,19 +11,6 @@ u8 kallsyms2elf_type(char type)
+ 	return (type == 't' || type == 'w') ? STT_FUNC : STT_OBJECT;
+ }
  
-+/* RB tree for quick conversion between traceID and metadata pointers */
-+static struct intlist *traceid_list;
-+
- static int cs_etm__update_queues(struct cs_etm_auxtrace *etm);
- static int cs_etm__process_queues(struct cs_etm_auxtrace *etm);
- static int cs_etm__process_timeless_queues(struct cs_etm_auxtrace *etm,
-diff --git a/tools/perf/util/cs-etm.h b/tools/perf/util/cs-etm.h
-index 650ecc2..4ad925d 100644
---- a/tools/perf/util/cs-etm.h
-+++ b/tools/perf/util/cs-etm.h
-@@ -114,9 +114,6 @@ enum cs_etm_isa {
- 	CS_ETM_ISA_T32,
- };
- 
--/* RB tree for quick conversion between traceID and metadata pointers */
--struct intlist *traceid_list;
+-/*
+- * While we find nice hex chars, build a long_val.
+- * Return number of chars processed.
+- */
+-int hex2u64(const char *ptr, u64 *long_val)
+-{
+-	char *p;
 -
- struct cs_etm_queue;
+-	*long_val = strtoull(ptr, &p, 16);
+-
+-	return p - ptr;
+-}
+-
+ bool kallsyms__is_function(char symbol_type)
+ {
+ 	symbol_type = toupper(symbol_type);
+diff --git a/tools/lib/symbol/kallsyms.h b/tools/lib/symbol/kallsyms.h
+index bd988f7..72ab987 100644
+--- a/tools/lib/symbol/kallsyms.h
++++ b/tools/lib/symbol/kallsyms.h
+@@ -18,8 +18,6 @@ static inline u8 kallsyms2elf_binding(char type)
+ 	return isupper(type) ? STB_GLOBAL : STB_LOCAL;
+ }
  
- struct cs_etm_packet {
+-int hex2u64(const char *ptr, u64 *long_val);
+-
+ u8 kallsyms2elf_type(char type);
+ 
+ bool kallsyms__is_function(char symbol_type);
+diff --git a/tools/perf/util/symbol.c b/tools/perf/util/symbol.c
+index 8f43004..381da6b 100644
+--- a/tools/perf/util/symbol.c
++++ b/tools/perf/util/symbol.c
+@@ -566,6 +566,20 @@ void dso__sort_by_name(struct dso *dso)
+ 	return symbols__sort_by_name(&dso->symbol_names, &dso->symbols);
+ }
+ 
++/*
++ * While we find nice hex chars, build a long_val.
++ * Return number of chars processed.
++ */
++static int hex2u64(const char *ptr, u64 *long_val)
++{
++	char *p;
++
++	*long_val = strtoull(ptr, &p, 16);
++
++	return p - ptr;
++}
++
++
+ int modules__parse(const char *filename, void *arg,
+ 		   int (*process_module)(void *arg, const char *name,
+ 					 u64 start, u64 size))
