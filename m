@@ -2,46 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E2C8B1CAE36
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 May 2020 15:10:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B32451CB0C8
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 May 2020 15:48:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729551AbgEHNHo (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 8 May 2020 09:07:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34820 "EHLO
+        id S1728005AbgEHNqf (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 8 May 2020 09:46:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1730563AbgEHNFp (ORCPT
+        by vger.kernel.org with ESMTP id S1727852AbgEHNqe (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 8 May 2020 09:05:45 -0400
+        Fri, 8 May 2020 09:46:34 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8D5AC05BD43;
-        Fri,  8 May 2020 06:05:44 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A480C05BD0A;
+        Fri,  8 May 2020 06:46:34 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jX2h6-0007y7-Fv; Fri, 08 May 2020 15:05:36 +0200
+        id 1jX3Kh-0001kV-AB; Fri, 08 May 2020 15:46:31 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 53C911C0837;
-        Fri,  8 May 2020 15:05:15 +0200 (CEST)
-Date:   Fri, 08 May 2020 13:05:15 -0000
-From:   "tip-bot2 for Tommi Rantala" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B60111C03AB;
+        Fri,  8 May 2020 15:46:30 +0200 (CEST)
+Date:   Fri, 08 May 2020 13:46:30 -0000
+From:   "tip-bot2 for Marco Elver" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf bench: Fix div-by-zero if runtime is zero
-Cc:     Tommi Rantala <tommi.t.rantala@nokia.com>,
-        Jiri Olsa <jolsa@redhat.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Darren Hart <dvhart@infradead.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200417132330.119407-4-tommi.t.rantala@nokia.com>
-References: <20200417132330.119407-4-tommi.t.rantala@nokia.com>
+Subject: [tip: locking/kcsan] kcsan: Add __kcsan_{enable,disable}_current() variants
+Cc:     Marco Elver <elver@google.com>,
+        "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158894311528.8414.2068521452579137661.tip-bot2@tip-bot2>
+Message-ID: <158894559066.8414.13269261025969395346.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -55,79 +46,96 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/core branch of tip:
+The following commit has been merged into the locking/kcsan branch of tip:
 
-Commit-ID:     41e7c32b978974adaadd4808ba42f9026634dca3
-Gitweb:        https://git.kernel.org/tip/41e7c32b978974adaadd4808ba42f9026634dca3
-Author:        Tommi Rantala <tommi.t.rantala@nokia.com>
-AuthorDate:    Fri, 17 Apr 2020 16:23:29 +03:00
-Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Wed, 22 Apr 2020 10:01:33 -03:00
+Commit-ID:     19acd03d95dad1f50d06f28179a1866fca431fed
+Gitweb:        https://git.kernel.org/tip/19acd03d95dad1f50d06f28179a1866fca431fed
+Author:        Marco Elver <elver@google.com>
+AuthorDate:    Fri, 24 Apr 2020 17:47:29 +02:00
+Committer:     Paul E. McKenney <paulmck@kernel.org>
+CommitterDate: Wed, 06 May 2020 10:58:46 -07:00
 
-perf bench: Fix div-by-zero if runtime is zero
+kcsan: Add __kcsan_{enable,disable}_current() variants
 
-Fix div-by-zero if runtime is zero:
+The __kcsan_{enable,disable}_current() variants only call into KCSAN if
+KCSAN is enabled for the current compilation unit. Note: This is
+typically not what we want, as we usually want to ensure that even calls
+into other functions still have KCSAN disabled.
 
-  $ perf bench futex hash --runtime=0
-  # Running 'futex/hash' benchmark:
-  Run summary [PID 12090]: 4 threads, each operating on 1024 [private] futexes for 0 secs.
-  Floating point exception (core dumped)
+These variants may safely be used in header files that are shared
+between regular kernel code and code that does not link the KCSAN
+runtime.
 
-Signed-off-by: Tommi Rantala <tommi.t.rantala@nokia.com>
-Acked-by: Jiri Olsa <jolsa@redhat.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Darren Hart <dvhart@infradead.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Link: http://lore.kernel.org/lkml/20200417132330.119407-4-tommi.t.rantala@nokia.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Marco Elver <elver@google.com>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- tools/perf/bench/epoll-wait.c    | 3 ++-
- tools/perf/bench/futex-hash.c    | 3 ++-
- tools/perf/bench/futex-lock-pi.c | 3 ++-
- 3 files changed, 6 insertions(+), 3 deletions(-)
+ include/linux/kcsan-checks.h | 17 ++++++++++++++---
+ kernel/kcsan/core.c          |  7 +++++++
+ 2 files changed, 21 insertions(+), 3 deletions(-)
 
-diff --git a/tools/perf/bench/epoll-wait.c b/tools/perf/bench/epoll-wait.c
-index f938c58..cf79736 100644
---- a/tools/perf/bench/epoll-wait.c
-+++ b/tools/perf/bench/epoll-wait.c
-@@ -519,7 +519,8 @@ int bench_epoll_wait(int argc, const char **argv)
- 		qsort(worker, nthreads, sizeof(struct worker), cmpworker);
+diff --git a/include/linux/kcsan-checks.h b/include/linux/kcsan-checks.h
+index ef95ddc..7b0b9c4 100644
+--- a/include/linux/kcsan-checks.h
++++ b/include/linux/kcsan-checks.h
+@@ -49,6 +49,7 @@ void kcsan_disable_current(void);
+  * Supports nesting.
+  */
+ void kcsan_enable_current(void);
++void kcsan_enable_current_nowarn(void); /* Safe in uaccess regions. */
  
- 	for (i = 0; i < nthreads; i++) {
--		unsigned long t = worker[i].ops / bench__runtime.tv_sec;
-+		unsigned long t = bench__runtime.tv_sec > 0 ?
-+			worker[i].ops / bench__runtime.tv_sec : 0;
+ /**
+  * kcsan_nestable_atomic_begin - begin nestable atomic region
+@@ -149,6 +150,7 @@ static inline void __kcsan_check_access(const volatile void *ptr, size_t size,
  
- 		update_stats(&throughput_stats, t);
+ static inline void kcsan_disable_current(void)		{ }
+ static inline void kcsan_enable_current(void)		{ }
++static inline void kcsan_enable_current_nowarn(void)	{ }
+ static inline void kcsan_nestable_atomic_begin(void)	{ }
+ static inline void kcsan_nestable_atomic_end(void)	{ }
+ static inline void kcsan_flat_atomic_begin(void)	{ }
+@@ -165,15 +167,24 @@ static inline void kcsan_end_scoped_access(struct kcsan_scoped_access *sa) { }
  
-diff --git a/tools/perf/bench/futex-hash.c b/tools/perf/bench/futex-hash.c
-index 65eebe0..915bf3d 100644
---- a/tools/perf/bench/futex-hash.c
-+++ b/tools/perf/bench/futex-hash.c
-@@ -205,7 +205,8 @@ int bench_futex_hash(int argc, const char **argv)
- 	pthread_mutex_destroy(&thread_lock);
+ #endif /* CONFIG_KCSAN */
  
- 	for (i = 0; i < nthreads; i++) {
--		unsigned long t = worker[i].ops / bench__runtime.tv_sec;
-+		unsigned long t = bench__runtime.tv_sec > 0 ?
-+			worker[i].ops / bench__runtime.tv_sec : 0;
- 		update_stats(&throughput_stats, t);
- 		if (!silent) {
- 			if (nfutexes == 1)
-diff --git a/tools/perf/bench/futex-lock-pi.c b/tools/perf/bench/futex-lock-pi.c
-index 89fd8f3..bb25d8b 100644
---- a/tools/perf/bench/futex-lock-pi.c
-+++ b/tools/perf/bench/futex-lock-pi.c
-@@ -211,7 +211,8 @@ int bench_futex_lock_pi(int argc, const char **argv)
- 	pthread_mutex_destroy(&thread_lock);
++#ifdef __SANITIZE_THREAD__
+ /*
+- * kcsan_*: Only calls into the runtime when the particular compilation unit has
+- * KCSAN instrumentation enabled. May be used in header files.
++ * Only calls into the runtime when the particular compilation unit has KCSAN
++ * instrumentation enabled. May be used in header files.
+  */
+-#ifdef __SANITIZE_THREAD__
+ #define kcsan_check_access __kcsan_check_access
++
++/*
++ * Only use these to disable KCSAN for accesses in the current compilation unit;
++ * calls into libraries may still perform KCSAN checks.
++ */
++#define __kcsan_disable_current kcsan_disable_current
++#define __kcsan_enable_current kcsan_enable_current_nowarn
+ #else
+ static inline void kcsan_check_access(const volatile void *ptr, size_t size,
+ 				      int type) { }
++static inline void __kcsan_enable_current(void)  { }
++static inline void __kcsan_disable_current(void) { }
+ #endif
  
- 	for (i = 0; i < nthreads; i++) {
--		unsigned long t = worker[i].ops / bench__runtime.tv_sec;
-+		unsigned long t = bench__runtime.tv_sec > 0 ?
-+			worker[i].ops / bench__runtime.tv_sec : 0;
+ /**
+diff --git a/kernel/kcsan/core.c b/kernel/kcsan/core.c
+index a572aae..a73a66c 100644
+--- a/kernel/kcsan/core.c
++++ b/kernel/kcsan/core.c
+@@ -625,6 +625,13 @@ void kcsan_enable_current(void)
+ }
+ EXPORT_SYMBOL(kcsan_enable_current);
  
- 		update_stats(&throughput_stats, t);
- 		if (!silent)
++void kcsan_enable_current_nowarn(void)
++{
++	if (get_ctx()->disable_count-- == 0)
++		kcsan_disable_current();
++}
++EXPORT_SYMBOL(kcsan_enable_current_nowarn);
++
+ void kcsan_nestable_atomic_begin(void)
+ {
+ 	/*
