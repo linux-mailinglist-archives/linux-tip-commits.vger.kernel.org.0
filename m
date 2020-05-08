@@ -2,40 +2,41 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B104A1CAE7B
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 May 2020 15:11:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B010A1CAE13
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 May 2020 15:10:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729547AbgEHNKL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 8 May 2020 09:10:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34650 "EHLO
+        id S1729662AbgEHNFT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 8 May 2020 09:05:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34684 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728463AbgEHNFN (ORCPT
+        by vger.kernel.org with ESMTP id S1730480AbgEHNFS (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 8 May 2020 09:05:13 -0400
+        Fri, 8 May 2020 09:05:18 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5270AC05BD0A;
-        Fri,  8 May 2020 06:05:13 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7847AC05BD43;
+        Fri,  8 May 2020 06:05:18 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jX2gd-0007WI-Bs; Fri, 08 May 2020 15:05:07 +0200
+        id 1jX2gf-0007Xm-Pn; Fri, 08 May 2020 15:05:09 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id CFA9F1C0852;
-        Fri,  8 May 2020 15:04:57 +0200 (CEST)
-Date:   Fri, 08 May 2020 13:04:57 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id BE5511C0853;
+        Fri,  8 May 2020 15:04:58 +0200 (CEST)
+Date:   Fri, 08 May 2020 13:04:58 -0000
 From:   "tip-bot2 for Adrian Hunter" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf thread-stack: Add thread_stack__br_sample_late()
+Subject: [tip: perf/core] perf auxtrace: Add option to synthesize branch stack
+ for regular events
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         Andi Kleen <ak@linux.intel.com>, Jiri Olsa <jolsa@redhat.com>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200429150751.12570-7-adrian.hunter@intel.com>
-References: <20200429150751.12570-7-adrian.hunter@intel.com>
+In-Reply-To: <20200429150751.12570-5-adrian.hunter@intel.com>
+References: <20200429150751.12570-5-adrian.hunter@intel.com>
 MIME-Version: 1.0
-Message-ID: <158894309779.8414.7778487024910558473.tip-bot2@tip-bot2>
+Message-ID: <158894309864.8414.18276494350093192357.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,154 +52,130 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     3749e0bbdef24efbf1698bf0dbd9575fddb9ed22
-Gitweb:        https://git.kernel.org/tip/3749e0bbdef24efbf1698bf0dbd9575fddb9ed22
+Commit-ID:     ec90e42ce5142c4ed2a0061fe23bd4495428c52b
+Gitweb:        https://git.kernel.org/tip/ec90e42ce5142c4ed2a0061fe23bd4495428c52b
 Author:        Adrian Hunter <adrian.hunter@intel.com>
-AuthorDate:    Wed, 29 Apr 2020 18:07:48 +03:00
+AuthorDate:    Wed, 29 Apr 2020 18:07:46 +03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Tue, 05 May 2020 16:35:29 -03:00
 
-perf thread-stack: Add thread_stack__br_sample_late()
+perf auxtrace: Add option to synthesize branch stack for regular events
 
-Add a thread stack function to create a branch stack for hardware events
-where the sample records get created some time after the event occurred.
+There is an existing option to synthesize branch stacks for synthesized
+events. Add a new option to synthesize branch stacks for regular events.
 
 Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
 Cc: Andi Kleen <ak@linux.intel.com>
 Cc: Jiri Olsa <jolsa@redhat.com>
-Link: http://lore.kernel.org/lkml/20200429150751.12570-7-adrian.hunter@intel.com
+Link: http://lore.kernel.org/lkml/20200429150751.12570-5-adrian.hunter@intel.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/thread-stack.c | 104 ++++++++++++++++++++++++++++++++-
- tools/perf/util/thread-stack.h |   3 +-
- 2 files changed, 107 insertions(+)
+ tools/perf/Documentation/itrace.txt | 1 +
+ tools/perf/builtin-inject.c         | 3 ++-
+ tools/perf/builtin-report.c         | 5 +++--
+ tools/perf/util/auxtrace.c          | 6 +++++-
+ tools/perf/util/auxtrace.h          | 2 ++
+ tools/perf/util/s390-cpumsf.c       | 3 ++-
+ 6 files changed, 15 insertions(+), 5 deletions(-)
 
-diff --git a/tools/perf/util/thread-stack.c b/tools/perf/util/thread-stack.c
-index 7969883..1b992bb 100644
---- a/tools/perf/util/thread-stack.c
-+++ b/tools/perf/util/thread-stack.c
-@@ -645,6 +645,110 @@ void thread_stack__br_sample(struct thread *thread, int cpu,
- 	}
- }
+diff --git a/tools/perf/Documentation/itrace.txt b/tools/perf/Documentation/itrace.txt
+index 671e154..0326050 100644
+--- a/tools/perf/Documentation/itrace.txt
++++ b/tools/perf/Documentation/itrace.txt
+@@ -12,6 +12,7 @@
+ 		g	synthesize a call chain (use with i or x)
+ 		G	synthesize a call chain on existing event records
+ 		l	synthesize last branch entries (use with i or x)
++		L	synthesize last branch entries on existing event records
+ 		s       skip initial number of events
  
-+/* Start of user space branch entries */
-+static bool us_start(struct branch_entry *be, u64 kernel_start, bool *start)
-+{
-+	if (!*start)
-+		*start = be->to && be->to < kernel_start;
-+
-+	return *start;
-+}
-+
-+/*
-+ * Start of branch entries after the ip fell in between 2 branches, or user
-+ * space branch entries.
-+ */
-+static bool ks_start(struct branch_entry *be, u64 sample_ip, u64 kernel_start,
-+		     bool *start, struct branch_entry *nb)
-+{
-+	if (!*start) {
-+		*start = (nb && sample_ip >= be->to && sample_ip <= nb->from) ||
-+			 be->from < kernel_start ||
-+			 (be->to && be->to < kernel_start);
-+	}
-+
-+	return *start;
-+}
-+
-+/*
-+ * Hardware sample records, created some time after the event occurred, need to
-+ * have subsequent addresses removed from the branch stack.
-+ */
-+void thread_stack__br_sample_late(struct thread *thread, int cpu,
-+				  struct branch_stack *dst, unsigned int sz,
-+				  u64 ip, u64 kernel_start)
-+{
-+	struct thread_stack *ts = thread__stack(thread, cpu);
-+	struct branch_entry *d, *s, *spos, *ssz;
-+	struct branch_stack *src;
-+	unsigned int nr = 0;
-+	bool start = false;
-+
-+	dst->nr = 0;
-+
-+	if (!ts)
-+		return;
-+
-+	src = ts->br_stack_rb;
-+	if (!src->nr)
-+		return;
-+
-+	spos = &src->entries[ts->br_stack_pos];
-+	ssz  = &src->entries[ts->br_stack_sz];
-+
-+	d = &dst->entries[0];
-+	s = spos;
-+
-+	if (ip < kernel_start) {
-+		/*
-+		 * User space sample: start copying branch entries when the
-+		 * branch is in user space.
-+		 */
-+		for (s = spos; s < ssz && nr < sz; s++) {
-+			if (us_start(s, kernel_start, &start)) {
-+				*d++ = *s;
-+				nr += 1;
-+			}
-+		}
-+
-+		if (src->nr >= ts->br_stack_sz) {
-+			for (s = &src->entries[0]; s < spos && nr < sz; s++) {
-+				if (us_start(s, kernel_start, &start)) {
-+					*d++ = *s;
-+					nr += 1;
-+				}
-+			}
-+		}
-+	} else {
-+		struct branch_entry *nb = NULL;
-+
-+		/*
-+		 * Kernel space sample: start copying branch entries when the ip
-+		 * falls in between 2 branches (or the branch is in user space
-+		 * because then the start must have been missed).
-+		 */
-+		for (s = spos; s < ssz && nr < sz; s++) {
-+			if (ks_start(s, ip, kernel_start, &start, nb)) {
-+				*d++ = *s;
-+				nr += 1;
-+			}
-+			nb = s;
-+		}
-+
-+		if (src->nr >= ts->br_stack_sz) {
-+			for (s = &src->entries[0]; s < spos && nr < sz; s++) {
-+				if (ks_start(s, ip, kernel_start, &start, nb)) {
-+					*d++ = *s;
-+					nr += 1;
-+				}
-+				nb = s;
-+			}
-+		}
-+	}
-+
-+	dst->nr = nr;
-+}
-+
- struct call_return_processor *
- call_return_processor__new(int (*process)(struct call_return *cr, u64 *parent_db_id, void *data),
- 			   void *data)
-diff --git a/tools/perf/util/thread-stack.h b/tools/perf/util/thread-stack.h
-index c279a0c..3bc47a4 100644
---- a/tools/perf/util/thread-stack.h
-+++ b/tools/perf/util/thread-stack.h
-@@ -91,6 +91,9 @@ void thread_stack__sample_late(struct thread *thread, int cpu,
- 			       u64 kernel_start);
- void thread_stack__br_sample(struct thread *thread, int cpu,
- 			     struct branch_stack *dst, unsigned int sz);
-+void thread_stack__br_sample_late(struct thread *thread, int cpu,
-+				  struct branch_stack *dst, unsigned int sz,
-+				  u64 sample_ip, u64 kernel_start);
- int thread_stack__flush(struct thread *thread);
- void thread_stack__free(struct thread *thread);
- size_t thread_stack__depth(struct thread *thread, int cpu);
+ 	The default is all events i.e. the same as --itrace=ibxwpe,
+diff --git a/tools/perf/builtin-inject.c b/tools/perf/builtin-inject.c
+index 7e124a7..7c4403c 100644
+--- a/tools/perf/builtin-inject.c
++++ b/tools/perf/builtin-inject.c
+@@ -684,7 +684,8 @@ static int __cmd_inject(struct perf_inject *inject)
+ 
+ 			perf_header__clear_feat(&session->header,
+ 						HEADER_AUXTRACE);
+-			if (inject->itrace_synth_opts.last_branch)
++			if (inject->itrace_synth_opts.last_branch ||
++			    inject->itrace_synth_opts.add_last_branch)
+ 				perf_header__set_feat(&session->header,
+ 						      HEADER_BRANCH_STACK);
+ 			evsel = perf_evlist__id2evsel_strict(session->evlist,
+diff --git a/tools/perf/builtin-report.c b/tools/perf/builtin-report.c
+index 7da1342..0eea667 100644
+--- a/tools/perf/builtin-report.c
++++ b/tools/perf/builtin-report.c
+@@ -349,7 +349,8 @@ static int report__setup_sample_type(struct report *rep)
+ 	     !session->itrace_synth_opts->set))
+ 		sample_type |= PERF_SAMPLE_CALLCHAIN;
+ 
+-	if (session->itrace_synth_opts->last_branch)
++	if (session->itrace_synth_opts->last_branch ||
++	    session->itrace_synth_opts->add_last_branch)
+ 		sample_type |= PERF_SAMPLE_BRANCH_STACK;
+ 
+ 	if (!is_pipe && !(sample_type & PERF_SAMPLE_CALLCHAIN)) {
+@@ -1393,7 +1394,7 @@ repeat:
+ 		goto error;
+ 	}
+ 
+-	if (itrace_synth_opts.last_branch)
++	if (itrace_synth_opts.last_branch || itrace_synth_opts.add_last_branch)
+ 		has_br_stack = true;
+ 
+ 	if (has_br_stack && branch_call_mode)
+diff --git a/tools/perf/util/auxtrace.c b/tools/perf/util/auxtrace.c
+index ac6e099..83ea7ca 100644
+--- a/tools/perf/util/auxtrace.c
++++ b/tools/perf/util/auxtrace.c
+@@ -1464,8 +1464,12 @@ int itrace_parse_synth_opts(const struct option *opt, const char *str,
+ 				synth_opts->callchain_sz = val;
+ 			}
+ 			break;
++		case 'L':
+ 		case 'l':
+-			synth_opts->last_branch = true;
++			if (p[-1] == 'L')
++				synth_opts->add_last_branch = true;
++			else
++				synth_opts->last_branch = true;
+ 			synth_opts->last_branch_sz =
+ 					PERF_ITRACE_DEFAULT_LAST_BRANCH_SZ;
+ 			while (*p == ' ' || *p == ',')
+diff --git a/tools/perf/util/auxtrace.h b/tools/perf/util/auxtrace.h
+index dd8a4ff..0220a2e 100644
+--- a/tools/perf/util/auxtrace.h
++++ b/tools/perf/util/auxtrace.h
+@@ -77,6 +77,7 @@ enum itrace_period_type {
+  * @add_callchain: add callchain to existing event records
+  * @thread_stack: feed branches to the thread_stack
+  * @last_branch: add branch context to 'instruction' events
++ * @add_last_branch: add branch context to existing event records
+  * @callchain_sz: maximum callchain size
+  * @last_branch_sz: branch context size
+  * @period: 'instructions' events period
+@@ -105,6 +106,7 @@ struct itrace_synth_opts {
+ 	bool			add_callchain;
+ 	bool			thread_stack;
+ 	bool			last_branch;
++	bool			add_last_branch;
+ 	unsigned int		callchain_sz;
+ 	unsigned int		last_branch_sz;
+ 	unsigned long long	period;
+diff --git a/tools/perf/util/s390-cpumsf.c b/tools/perf/util/s390-cpumsf.c
+index 38a9428..f886199 100644
+--- a/tools/perf/util/s390-cpumsf.c
++++ b/tools/perf/util/s390-cpumsf.c
+@@ -1079,7 +1079,8 @@ static bool check_auxtrace_itrace(struct itrace_synth_opts *itops)
+ 		itops->pwr_events || itops->errors ||
+ 		itops->dont_decode || itops->calls || itops->returns ||
+ 		itops->callchain || itops->thread_stack ||
+-		itops->last_branch || itops->add_callchain;
++		itops->last_branch || itops->add_callchain ||
++		itops->add_last_branch;
+ 	if (!ison)
+ 		return true;
+ 	pr_err("Unsupported --itrace options specified\n");
