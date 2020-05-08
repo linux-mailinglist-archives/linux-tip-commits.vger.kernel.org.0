@@ -2,45 +2,44 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D63A1CAE1B
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 May 2020 15:10:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B69501CAE1E
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 May 2020 15:10:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729609AbgEHNFm (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 8 May 2020 09:05:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34800 "EHLO
+        id S1730580AbgEHNFs (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 8 May 2020 09:05:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34834 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1729714AbgEHNFl (ORCPT
+        by vger.kernel.org with ESMTP id S1730575AbgEHNFr (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 8 May 2020 09:05:41 -0400
+        Fri, 8 May 2020 09:05:47 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CCA6C05BD0A;
-        Fri,  8 May 2020 06:05:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB575C05BD09;
+        Fri,  8 May 2020 06:05:46 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jX2h3-0007wP-Cb; Fri, 08 May 2020 15:05:33 +0200
+        id 1jX2h7-0007zA-TL; Fri, 08 May 2020 15:05:38 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 20AAA1C0823;
-        Fri,  8 May 2020 15:05:14 +0200 (CEST)
-Date:   Fri, 08 May 2020 13:05:14 -0000
-From:   "tip-bot2 for Jin Yao" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id CE5581C0833;
+        Fri,  8 May 2020 15:05:15 +0200 (CEST)
+Date:   Fri, 08 May 2020 13:05:15 -0000
+From:   "tip-bot2 for Tommi Rantala" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf stat: Zero all the 'ena' and 'run' array slot
- stats for interval mode
-Cc:     Jin Yao <yao.jin@linux.intel.com>,
+Subject: [tip: perf/core] perf cgroup: Avoid needless closing of unopened fd
+Cc:     Tommi Rantala <tommi.t.rantala@nokia.com>,
+        Jiri Olsa <jolsa@redhat.com>,
         Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Andi Kleen <ak@linux.intel.com>, Jin Yao <yao.jin@intel.com>,
-        Jiri Olsa <jolsa@kernel.org>,
-        Kan Liang <kan.liang@linux.intel.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Namhyung Kim <namhyung@kernel.org>,
         Peter Zijlstra <peterz@infradead.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200409070755.17261-1-yao.jin@linux.intel.com>
-References: <20200409070755.17261-1-yao.jin@linux.intel.com>
+In-Reply-To: <20200417132330.119407-1-tommi.t.rantala@nokia.com>
+References: <20200417132330.119407-1-tommi.t.rantala@nokia.com>
 MIME-Version: 1.0
-Message-ID: <158894311407.8414.15193131154587476786.tip-bot2@tip-bot2>
+Message-ID: <158894311574.8414.11952909768749094860.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -56,52 +55,55 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     0e0bf1ea1147fcf74eab19c2d3c853cc3740a72f
-Gitweb:        https://git.kernel.org/tip/0e0bf1ea1147fcf74eab19c2d3c853cc3740a72f
-Author:        Jin Yao <yao.jin@linux.intel.com>
-AuthorDate:    Thu, 09 Apr 2020 15:07:55 +08:00
+Commit-ID:     d2e7d8636fb7d3e30aa8f894003f9e293ea62eea
+Gitweb:        https://git.kernel.org/tip/d2e7d8636fb7d3e30aa8f894003f9e293ea62eea
+Author:        Tommi Rantala <tommi.t.rantala@nokia.com>
+AuthorDate:    Fri, 17 Apr 2020 16:23:26 +03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Wed, 22 Apr 2020 15:51:01 -03:00
+CommitterDate: Wed, 22 Apr 2020 10:01:33 -03:00
 
-perf stat: Zero all the 'ena' and 'run' array slot stats for interval mode
+perf cgroup: Avoid needless closing of unopened fd
 
-As the code comments in perf_stat_process_counter() say, we calculate
-counter's data every interval, and the display code shows ps->res_stats
-avg value. We need to zero the stats for interval mode.
+Do not bother with close() if fd is not valid, just to silence valgrind:
 
-But the current code only zeros the res_stats[0], it doesn't zero the
-res_stats[1] and res_stats[2], which are for ena and run of counter.
+    $ valgrind ./perf script
+    ==59169== Memcheck, a memory error detector
+    ==59169== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+    ==59169== Using Valgrind-3.14.0 and LibVEX; rerun with -h for copyright info
+    ==59169== Command: ./perf script
+    ==59169==
+    ==59169== Warning: invalid file descriptor -1 in syscall close()
+    ==59169== Warning: invalid file descriptor -1 in syscall close()
+    ==59169== Warning: invalid file descriptor -1 in syscall close()
+    ==59169== Warning: invalid file descriptor -1 in syscall close()
+    ==59169== Warning: invalid file descriptor -1 in syscall close()
+    ==59169== Warning: invalid file descriptor -1 in syscall close()
+    ==59169== Warning: invalid file descriptor -1 in syscall close()
+    ==59169== Warning: invalid file descriptor -1 in syscall close()
 
-This patch zeros the whole res_stats[] for interval mode.
-
-Fixes: 51fd2df1e882 ("perf stat: Fix interval output values")
-Signed-off-by: Jin Yao <yao.jin@linux.intel.com>
+Signed-off-by: Tommi Rantala <tommi.t.rantala@nokia.com>
+Acked-by: Jiri Olsa <jolsa@redhat.com>
 Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Jin Yao <yao.jin@intel.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Link: http://lore.kernel.org/lkml/20200409070755.17261-1-yao.jin@linux.intel.com
+Link: http://lore.kernel.org/lkml/20200417132330.119407-1-tommi.t.rantala@nokia.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/stat.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ tools/perf/util/cgroup.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/util/stat.c b/tools/perf/util/stat.c
-index 5f26137..242476e 100644
---- a/tools/perf/util/stat.c
-+++ b/tools/perf/util/stat.c
-@@ -368,8 +368,10 @@ int perf_stat_process_counter(struct perf_stat_config *config,
- 	 * interval mode, otherwise overall avg running
- 	 * averages will be shown for each interval.
- 	 */
--	if (config->interval)
--		init_stats(ps->res_stats);
-+	if (config->interval) {
-+		for (i = 0; i < 3; i++)
-+			init_stats(&ps->res_stats[i]);
-+	}
+diff --git a/tools/perf/util/cgroup.c b/tools/perf/util/cgroup.c
+index b73fb78..050dea9 100644
+--- a/tools/perf/util/cgroup.c
++++ b/tools/perf/util/cgroup.c
+@@ -107,7 +107,8 @@ found:
  
- 	if (counter->per_pkg)
- 		zero_per_pkg(counter);
+ static void cgroup__delete(struct cgroup *cgroup)
+ {
+-	close(cgroup->fd);
++	if (cgroup->fd >= 0)
++		close(cgroup->fd);
+ 	zfree(&cgroup->name);
+ 	free(cgroup);
+ }
