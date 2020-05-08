@@ -2,43 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 98ADF1CADDC
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 May 2020 15:06:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 56F411CAE57
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 May 2020 15:11:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730420AbgEHNF1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 8 May 2020 09:05:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34732 "EHLO
+        id S1730443AbgEHNJB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 8 May 2020 09:09:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1730510AbgEHNF0 (ORCPT
+        by vger.kernel.org with ESMTP id S1730497AbgEHNFZ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 8 May 2020 09:05:26 -0400
+        Fri, 8 May 2020 09:05:25 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 575F8C05BD09;
-        Fri,  8 May 2020 06:05:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A43C2C05BD0F;
+        Fri,  8 May 2020 06:05:23 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jX2go-0007gF-SR; Fri, 08 May 2020 15:05:18 +0200
+        id 1jX2gp-0007h9-Mb; Fri, 08 May 2020 15:05:19 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B0D2B1C0845;
-        Fri,  8 May 2020 15:05:04 +0200 (CEST)
-Date:   Fri, 08 May 2020 13:05:04 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 3241C1C04D3;
+        Fri,  8 May 2020 15:05:05 +0200 (CEST)
+Date:   Fri, 08 May 2020 13:05:05 -0000
 From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf evlist: Allow reusing the side band thread for
- more purposes
-Cc:     Jiri Olsa <jolsa@redhat.com>,
+Subject: [tip: perf/core] perf evlist: Move the sideband thread routines to
+ separate object
+Cc:     Jiri Olsa <jolsa@kernel.org>,
         Adrian Hunter <adrian.hunter@intel.com>,
         Namhyung Kim <namhyung@kernel.org>,
-        Song Liu <songliubraving@fb.com>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200429131106.27974-6-acme@kernel.org>
-References: <20200429131106.27974-6-acme@kernel.org>
 MIME-Version: 1.0
-Message-ID: <158894310460.8414.16136724605045953143.tip-bot2@tip-bot2>
+Message-ID: <158894310511.8414.8812865769346391673.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -54,90 +51,294 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     976be84504b8285d43dc890b02ceff432cd0dd4b
-Gitweb:        https://git.kernel.org/tip/976be84504b8285d43dc890b02ceff432cd0dd4b
+Commit-ID:     9a39994467d493eba38d8f69e42fd9c31cb1da9a
+Gitweb:        https://git.kernel.org/tip/9a39994467d493eba38d8f69e42fd9c31cb1da9a
 Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Mon, 27 Apr 2020 17:54:27 -03:00
+AuthorDate:    Tue, 05 May 2020 12:18:21 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Tue, 05 May 2020 16:35:29 -03:00
 
-perf evlist: Allow reusing the side band thread for more purposes
+perf evlist: Move the sideband thread routines to separate object
 
-I.e. so far we had just one event in that side band thread, a dummy one
-with attr.bpf_event set, so that 'perf record' can go ahead and ask the
-kernel for further information about BPF programs being loaded.
+To avoid dragging more stuff into the perf python binding in the
+following csets.
 
-Allow for more than one event to be there, so that we can use it as
-well for the upcoming --switch-output-event feature.
-
-Acked-by: Jiri Olsa <jolsa@redhat.com>
+Reported-by: Jiri Olsa <jolsa@kernel.org>
 Cc: Adrian Hunter <adrian.hunter@intel.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Song Liu <songliubraving@fb.com>
-Link: http://lore.kernel.org/lkml/20200429131106.27974-6-acme@kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/evlist.h          |  1 +
- tools/perf/util/sideband_evlist.c | 23 +++++++++++++++++++++++
- 2 files changed, 24 insertions(+)
+ tools/perf/util/Build             |   1 +-
+ tools/perf/util/evlist.c          | 117 +---------------------------
+ tools/perf/util/sideband_evlist.c | 125 +++++++++++++++++++++++++++++-
+ 3 files changed, 126 insertions(+), 117 deletions(-)
+ create mode 100644 tools/perf/util/sideband_evlist.c
 
-diff --git a/tools/perf/util/evlist.h b/tools/perf/util/evlist.h
-index a9d01a1..93de63e 100644
---- a/tools/perf/util/evlist.h
-+++ b/tools/perf/util/evlist.h
-@@ -111,6 +111,7 @@ int perf_evlist__add_sb_event(struct evlist *evlist,
- 			      struct perf_event_attr *attr,
- 			      perf_evsel__sb_cb_t cb,
- 			      void *data);
-+void evlist__set_cb(struct evlist *evlist, perf_evsel__sb_cb_t cb, void *data);
- int perf_evlist__start_sb_thread(struct evlist *evlist,
- 				 struct target *target);
- void perf_evlist__stop_sb_thread(struct evlist *evlist);
-diff --git a/tools/perf/util/sideband_evlist.c b/tools/perf/util/sideband_evlist.c
-index 073d201..1d6f470 100644
---- a/tools/perf/util/sideband_evlist.c
-+++ b/tools/perf/util/sideband_evlist.c
-@@ -4,6 +4,7 @@
- #include "util/evlist.h"
- #include "util/evsel.h"
- #include "util/mmap.h"
-+#include "util/perf_api_probe.h"
- #include <perf/mmap.h>
- #include <linux/perf_event.h>
- #include <limits.h>
-@@ -80,6 +81,19 @@ static void *perf_evlist__poll_thread(void *arg)
- 	return NULL;
+diff --git a/tools/perf/util/Build b/tools/perf/util/Build
+index 229abef..ca07a16 100644
+--- a/tools/perf/util/Build
++++ b/tools/perf/util/Build
+@@ -10,6 +10,7 @@ perf-y += db-export.o
+ perf-y += env.o
+ perf-y += event.o
+ perf-y += evlist.o
++perf-y += sideband_evlist.o
+ perf-y += evsel.o
+ perf-y += evsel_fprintf.o
+ perf-y += perf_event_attr_fprintf.o
+diff --git a/tools/perf/util/evlist.c b/tools/perf/util/evlist.c
+index 6fe11f4..6d902c0 100644
+--- a/tools/perf/util/evlist.c
++++ b/tools/perf/util/evlist.c
+@@ -1704,120 +1704,3 @@ struct evsel *perf_evlist__reset_weak_group(struct evlist *evsel_list,
+ 	}
+ 	return leader;
  }
- 
-+void evlist__set_cb(struct evlist *evlist, perf_evsel__sb_cb_t cb, void *data)
+-
+-int perf_evlist__add_sb_event(struct evlist *evlist,
+-			      struct perf_event_attr *attr,
+-			      perf_evsel__sb_cb_t cb,
+-			      void *data)
+-{
+-	struct evsel *evsel;
+-
+-	if (!attr->sample_id_all) {
+-		pr_warning("enabling sample_id_all for all side band events\n");
+-		attr->sample_id_all = 1;
+-	}
+-
+-	evsel = perf_evsel__new_idx(attr, evlist->core.nr_entries);
+-	if (!evsel)
+-		return -1;
+-
+-	evsel->side_band.cb = cb;
+-	evsel->side_band.data = data;
+-	evlist__add(evlist, evsel);
+-	return 0;
+-}
+-
+-static void *perf_evlist__poll_thread(void *arg)
+-{
+-	struct evlist *evlist = arg;
+-	bool draining = false;
+-	int i, done = 0;
+-	/*
+-	 * In order to read symbols from other namespaces perf to needs to call
+-	 * setns(2).  This isn't permitted if the struct_fs has multiple users.
+-	 * unshare(2) the fs so that we may continue to setns into namespaces
+-	 * that we're observing when, for instance, reading the build-ids at
+-	 * the end of a 'perf record' session.
+-	 */
+-	unshare(CLONE_FS);
+-
+-	while (!done) {
+-		bool got_data = false;
+-
+-		if (evlist->thread.done)
+-			draining = true;
+-
+-		if (!draining)
+-			evlist__poll(evlist, 1000);
+-
+-		for (i = 0; i < evlist->core.nr_mmaps; i++) {
+-			struct mmap *map = &evlist->mmap[i];
+-			union perf_event *event;
+-
+-			if (perf_mmap__read_init(&map->core))
+-				continue;
+-			while ((event = perf_mmap__read_event(&map->core)) != NULL) {
+-				struct evsel *evsel = perf_evlist__event2evsel(evlist, event);
+-
+-				if (evsel && evsel->side_band.cb)
+-					evsel->side_band.cb(event, evsel->side_band.data);
+-				else
+-					pr_warning("cannot locate proper evsel for the side band event\n");
+-
+-				perf_mmap__consume(&map->core);
+-				got_data = true;
+-			}
+-			perf_mmap__read_done(&map->core);
+-		}
+-
+-		if (draining && !got_data)
+-			break;
+-	}
+-	return NULL;
+-}
+-
+-int perf_evlist__start_sb_thread(struct evlist *evlist,
+-				 struct target *target)
+-{
+-	struct evsel *counter;
+-
+-	if (!evlist)
+-		return 0;
+-
+-	if (perf_evlist__create_maps(evlist, target))
+-		goto out_delete_evlist;
+-
+-	evlist__for_each_entry(evlist, counter) {
+-		if (evsel__open(counter, evlist->core.cpus,
+-				     evlist->core.threads) < 0)
+-			goto out_delete_evlist;
+-	}
+-
+-	if (evlist__mmap(evlist, UINT_MAX))
+-		goto out_delete_evlist;
+-
+-	evlist__for_each_entry(evlist, counter) {
+-		if (evsel__enable(counter))
+-			goto out_delete_evlist;
+-	}
+-
+-	evlist->thread.done = 0;
+-	if (pthread_create(&evlist->thread.th, NULL, perf_evlist__poll_thread, evlist))
+-		goto out_delete_evlist;
+-
+-	return 0;
+-
+-out_delete_evlist:
+-	evlist__delete(evlist);
+-	evlist = NULL;
+-	return -1;
+-}
+-
+-void perf_evlist__stop_sb_thread(struct evlist *evlist)
+-{
+-	if (!evlist)
+-		return;
+-	evlist->thread.done = 1;
+-	pthread_join(evlist->thread.th, NULL);
+-	evlist__delete(evlist);
+-}
+diff --git a/tools/perf/util/sideband_evlist.c b/tools/perf/util/sideband_evlist.c
+new file mode 100644
+index 0000000..073d201
+--- /dev/null
++++ b/tools/perf/util/sideband_evlist.c
+@@ -0,0 +1,125 @@
++// SPDX-License-Identifier: GPL-2.0-only
++
++#include "util/debug.h"
++#include "util/evlist.h"
++#include "util/evsel.h"
++#include "util/mmap.h"
++#include <perf/mmap.h>
++#include <linux/perf_event.h>
++#include <limits.h>
++#include <pthread.h>
++#include <sched.h>
++#include <stdbool.h>
++
++int perf_evlist__add_sb_event(struct evlist *evlist, struct perf_event_attr *attr,
++			      perf_evsel__sb_cb_t cb, void *data)
 +{
 +	struct evsel *evsel;
 +
-+	evlist__for_each_entry(evlist, evsel) {
-+		evsel->core.attr.sample_id_all    = 1;
-+		evsel->core.attr.watermark        = 1;
-+		evsel->core.attr.wakeup_watermark = 1;
-+		evsel->side_band.cb   = cb;
-+		evsel->side_band.data = data;
-+      }
-+}
-+
- int perf_evlist__start_sb_thread(struct evlist *evlist, struct target *target)
- {
- 	struct evsel *counter;
-@@ -90,6 +104,15 @@ int perf_evlist__start_sb_thread(struct evlist *evlist, struct target *target)
- 	if (perf_evlist__create_maps(evlist, target))
- 		goto out_delete_evlist;
- 
-+	if (evlist->core.nr_entries > 1) {
-+		bool can_sample_identifier = perf_can_sample_identifier();
-+
-+		evlist__for_each_entry(evlist, counter)
-+			perf_evsel__set_sample_id(counter, can_sample_identifier);
-+
-+		perf_evlist__set_id_pos(evlist);
++	if (!attr->sample_id_all) {
++		pr_warning("enabling sample_id_all for all side band events\n");
++		attr->sample_id_all = 1;
 +	}
 +
- 	evlist__for_each_entry(evlist, counter) {
- 		if (evsel__open(counter, evlist->core.cpus, evlist->core.threads) < 0)
- 			goto out_delete_evlist;
++	evsel = perf_evsel__new_idx(attr, evlist->core.nr_entries);
++	if (!evsel)
++		return -1;
++
++	evsel->side_band.cb = cb;
++	evsel->side_band.data = data;
++	evlist__add(evlist, evsel);
++	return 0;
++}
++
++static void *perf_evlist__poll_thread(void *arg)
++{
++	struct evlist *evlist = arg;
++	bool draining = false;
++	int i, done = 0;
++	/*
++	 * In order to read symbols from other namespaces perf to needs to call
++	 * setns(2).  This isn't permitted if the struct_fs has multiple users.
++	 * unshare(2) the fs so that we may continue to setns into namespaces
++	 * that we're observing when, for instance, reading the build-ids at
++	 * the end of a 'perf record' session.
++	 */
++	unshare(CLONE_FS);
++
++	while (!done) {
++		bool got_data = false;
++
++		if (evlist->thread.done)
++			draining = true;
++
++		if (!draining)
++			evlist__poll(evlist, 1000);
++
++		for (i = 0; i < evlist->core.nr_mmaps; i++) {
++			struct mmap *map = &evlist->mmap[i];
++			union perf_event *event;
++
++			if (perf_mmap__read_init(&map->core))
++				continue;
++			while ((event = perf_mmap__read_event(&map->core)) != NULL) {
++				struct evsel *evsel = perf_evlist__event2evsel(evlist, event);
++
++				if (evsel && evsel->side_band.cb)
++					evsel->side_band.cb(event, evsel->side_band.data);
++				else
++					pr_warning("cannot locate proper evsel for the side band event\n");
++
++				perf_mmap__consume(&map->core);
++				got_data = true;
++			}
++			perf_mmap__read_done(&map->core);
++		}
++
++		if (draining && !got_data)
++			break;
++	}
++	return NULL;
++}
++
++int perf_evlist__start_sb_thread(struct evlist *evlist, struct target *target)
++{
++	struct evsel *counter;
++
++	if (!evlist)
++		return 0;
++
++	if (perf_evlist__create_maps(evlist, target))
++		goto out_delete_evlist;
++
++	evlist__for_each_entry(evlist, counter) {
++		if (evsel__open(counter, evlist->core.cpus, evlist->core.threads) < 0)
++			goto out_delete_evlist;
++	}
++
++	if (evlist__mmap(evlist, UINT_MAX))
++		goto out_delete_evlist;
++
++	evlist__for_each_entry(evlist, counter) {
++		if (evsel__enable(counter))
++			goto out_delete_evlist;
++	}
++
++	evlist->thread.done = 0;
++	if (pthread_create(&evlist->thread.th, NULL, perf_evlist__poll_thread, evlist))
++		goto out_delete_evlist;
++
++	return 0;
++
++out_delete_evlist:
++	evlist__delete(evlist);
++	evlist = NULL;
++	return -1;
++}
++
++void perf_evlist__stop_sb_thread(struct evlist *evlist)
++{
++	if (!evlist)
++		return;
++	evlist->thread.done = 1;
++	pthread_join(evlist->thread.th, NULL);
++	evlist__delete(evlist);
++}
