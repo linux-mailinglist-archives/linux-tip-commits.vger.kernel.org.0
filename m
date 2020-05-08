@@ -2,37 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D26A11CB0BC
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 May 2020 15:46:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CA541CB0CC
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 May 2020 15:48:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728116AbgEHNqf (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 8 May 2020 09:46:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41156 "EHLO
+        id S1728135AbgEHNqg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 8 May 2020 09:46:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41160 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727882AbgEHNqe (ORCPT
+        by vger.kernel.org with ESMTP id S1728111AbgEHNqf (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 8 May 2020 09:46:34 -0400
+        Fri, 8 May 2020 09:46:35 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99653C05BD0B;
-        Fri,  8 May 2020 06:46:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AC75C05BD09;
+        Fri,  8 May 2020 06:46:35 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jX3Kh-0001kY-Fp; Fri, 08 May 2020 15:46:31 +0200
+        id 1jX3Ki-0001lO-MA; Fri, 08 May 2020 15:46:32 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 21E331C0475;
-        Fri,  8 May 2020 15:46:31 +0200 (CEST)
-Date:   Fri, 08 May 2020 13:46:31 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 558E61C0080;
+        Fri,  8 May 2020 15:46:32 +0200 (CEST)
+Date:   Fri, 08 May 2020 13:46:32 -0000
 From:   "tip-bot2 for Marco Elver" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/kcsan] checkpatch: Warn about data_race() without comment
-Cc:     Will Deacon <will@kernel.org>, Marco Elver <elver@google.com>,
+Subject: [tip: locking/kcsan] kcsan: Make reporting aware of KCSAN tests
+Cc:     Marco Elver <elver@google.com>,
         "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158894559107.8414.10179815229224016471.tip-bot2@tip-bot2>
+Message-ID: <158894559229.8414.5641397103785083859.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,41 +48,70 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/kcsan branch of tip:
 
-Commit-ID:     5099a722e9727fe9a93fac51e961735f40e5b6c8
-Gitweb:        https://git.kernel.org/tip/5099a722e9727fe9a93fac51e961735f40e5b6c8
+Commit-ID:     cdb9b07d8c78be63d72aba9a2686ff161ddd2099
+Gitweb:        https://git.kernel.org/tip/cdb9b07d8c78be63d72aba9a2686ff161ddd2099
 Author:        Marco Elver <elver@google.com>
-AuthorDate:    Wed, 01 Apr 2020 12:17:14 +02:00
+AuthorDate:    Fri, 10 Apr 2020 18:44:18 +02:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Wed, 06 May 2020 10:54:58 -07:00
+CommitterDate: Mon, 13 Apr 2020 17:18:16 -07:00
 
-checkpatch: Warn about data_race() without comment
+kcsan: Make reporting aware of KCSAN tests
 
-Warn about applications of data_race() without a comment, to encourage
-documenting the reasoning behind why it was deemed safe.
+Reporting hides KCSAN runtime functions in the stack trace, with
+filtering done based on function names. Currently this included all
+functions (or modules) that would match "kcsan_". Make the filter aware
+of KCSAN tests, which contain "kcsan_test", and are no longer skipped in
+the report.
 
-Suggested-by: Will Deacon <will@kernel.org>
+This is in preparation for adding a KCSAN test module.
+
 Signed-off-by: Marco Elver <elver@google.com>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- scripts/checkpatch.pl | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ kernel/kcsan/report.c | 30 +++++++++++++++++++++++-------
+ 1 file changed, 23 insertions(+), 7 deletions(-)
 
-diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-index a63380c..48bb950 100755
---- a/scripts/checkpatch.pl
-+++ b/scripts/checkpatch.pl
-@@ -5833,6 +5833,14 @@ sub process {
- 			}
- 		}
+diff --git a/kernel/kcsan/report.c b/kernel/kcsan/report.c
+index cf41d63..ac5f834 100644
+--- a/kernel/kcsan/report.c
++++ b/kernel/kcsan/report.c
+@@ -262,16 +262,32 @@ static const char *get_thread_desc(int task_id)
+ static int get_stack_skipnr(const unsigned long stack_entries[], int num_entries)
+ {
+ 	char buf[64];
+-	int len;
+-	int skip = 0;
++	char *cur;
++	int len, skip;
  
-+# check for data_race without a comment.
-+		if ($line =~ /\bdata_race\s*\(/) {
-+			if (!ctx_has_comment($first_line, $linenr)) {
-+				WARN("DATA_RACE",
-+				     "data_race without comment\n" . $herecurr);
-+			}
+-	for (; skip < num_entries; ++skip) {
++	for (skip = 0; skip < num_entries; ++skip) {
+ 		len = scnprintf(buf, sizeof(buf), "%ps", (void *)stack_entries[skip]);
+-		if (!strnstr(buf, "csan_", len) &&
+-		    !strnstr(buf, "tsan_", len) &&
+-		    !strnstr(buf, "_once_size", len))
+-			break;
++
++		/* Never show tsan_* or {read,write}_once_size. */
++		if (strnstr(buf, "tsan_", len) ||
++		    strnstr(buf, "_once_size", len))
++			continue;
++
++		cur = strnstr(buf, "kcsan_", len);
++		if (cur) {
++			cur += sizeof("kcsan_") - 1;
++			if (strncmp(cur, "test", sizeof("test") - 1))
++				continue; /* KCSAN runtime function. */
++			/* KCSAN related test. */
 +		}
 +
- # check for smp_read_barrier_depends and read_barrier_depends
- 		if (!$file && $line =~ /\b(smp_|)read_barrier_depends\s*\(/) {
- 			WARN("READ_BARRIER_DEPENDS",
++		/*
++		 * No match for runtime functions -- @skip entries to skip to
++		 * get to first frame of interest.
++		 */
++		break;
+ 	}
++
+ 	return skip;
+ }
+ 
