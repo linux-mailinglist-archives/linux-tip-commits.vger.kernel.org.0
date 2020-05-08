@@ -2,41 +2,42 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B7A71CAE55
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 May 2020 15:11:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 16CDB1CAE16
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 May 2020 15:10:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728556AbgEHNI4 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 8 May 2020 09:08:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34734 "EHLO
+        id S1730515AbgEHNF0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 8 May 2020 09:05:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34728 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1730513AbgEHNF0 (ORCPT
+        by vger.kernel.org with ESMTP id S1730507AbgEHNF0 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Fri, 8 May 2020 09:05:26 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94918C05BD43;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CEA5C05BD43;
         Fri,  8 May 2020 06:05:26 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jX2gm-0007da-Uq; Fri, 08 May 2020 15:05:17 +0200
+        id 1jX2gr-0007e1-34; Fri, 08 May 2020 15:05:21 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 2EE5E1C0859;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 7E6671C085A;
         Fri,  8 May 2020 15:05:03 +0200 (CEST)
 Date:   Fri, 08 May 2020 13:05:03 -0000
-From:   "tip-bot2 for He Zhe" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] libperf: Add NULL pointer check for cpu_map
- iteration and NULL assignment for all_cpus.
-Cc:     He Zhe <zhe.he@windriver.com>, Jiri Olsa <jolsa@kernel.org>,
-        Andi Kleen <ak@linux.intel.com>, Kyle Meyer <meyerk@hpe.com>,
+Subject: [tip: perf/core] perf record: Move side band evlist setup to separate routine
+Cc:     Jiri Olsa <jolsa@redhat.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Song Liu <songliubraving@fb.com>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <1583665157-349023-1-git-send-email-zhe.he@windriver.com>
-References: <1583665157-349023-1-git-send-email-zhe.he@windriver.com>
+In-Reply-To: <20200429131106.27974-9-acme@kernel.org>
+References: <20200429131106.27974-9-acme@kernel.org>
 MIME-Version: 1.0
-Message-ID: <158894310315.8414.14232504007074036765.tip-bot2@tip-bot2>
+Message-ID: <158894310346.8414.8485365390466335042.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -52,52 +53,115 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     44d041b7b2c11b6739501fd3763cc6fed62cf0ed
-Gitweb:        https://git.kernel.org/tip/44d041b7b2c11b6739501fd3763cc6fed62cf0ed
-Author:        He Zhe <zhe.he@windriver.com>
-AuthorDate:    Sun, 08 Mar 2020 18:59:17 +08:00
+Commit-ID:     23cbb41c939a09a4b51eabacdb1f68af210c084d
+Gitweb:        https://git.kernel.org/tip/23cbb41c939a09a4b51eabacdb1f68af210c084d
+Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
+AuthorDate:    Tue, 28 Apr 2020 14:58:29 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Tue, 05 May 2020 16:35:29 -03:00
 
-libperf: Add NULL pointer check for cpu_map iteration and NULL assignment for all_cpus.
+perf record: Move side band evlist setup to separate routine
 
-A NULL pointer may be passed to perf_cpu_map__cpu and then cause a
-crash, such as the one commit cb71f7d43ece ("libperf: Setup initial
-evlist::all_cpus value") fix.
+It is quite big by now, move that code to a separate
+record__setup_sb_evlist() routine.
 
-Signed-off-by: He Zhe <zhe.he@windriver.com>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Kyle Meyer <meyerk@hpe.com>
-Link: http://lore.kernel.org/lkml/1583665157-349023-1-git-send-email-zhe.he@windriver.com
+Suggested-by: Jiri Olsa <jolsa@redhat.com>
+Acked-by: Jiri Olsa <jolsa@redhat.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Song Liu <songliubraving@fb.com>
+Link: http://lore.kernel.org/lkml/20200429131106.27974-9-acme@kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/lib/perf/cpumap.c | 2 +-
- tools/lib/perf/evlist.c | 1 +
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ tools/perf/builtin-record.c | 71 ++++++++++++++++++++----------------
+ 1 file changed, 41 insertions(+), 30 deletions(-)
 
-diff --git a/tools/lib/perf/cpumap.c b/tools/lib/perf/cpumap.c
-index f93f4e7..ca02150 100644
---- a/tools/lib/perf/cpumap.c
-+++ b/tools/lib/perf/cpumap.c
-@@ -247,7 +247,7 @@ out:
- 
- int perf_cpu_map__cpu(const struct perf_cpu_map *cpus, int idx)
- {
--	if (idx < cpus->nr)
-+	if (cpus && idx < cpus->nr)
- 		return cpus->map[idx];
- 
- 	return -1;
-diff --git a/tools/lib/perf/evlist.c b/tools/lib/perf/evlist.c
-index def5505..c481b62 100644
---- a/tools/lib/perf/evlist.c
-+++ b/tools/lib/perf/evlist.c
-@@ -125,6 +125,7 @@ void perf_evlist__exit(struct perf_evlist *evlist)
- 	perf_cpu_map__put(evlist->cpus);
- 	perf_thread_map__put(evlist->threads);
- 	evlist->cpus = NULL;
-+	evlist->all_cpus = NULL;
- 	evlist->threads = NULL;
- 	fdarray__exit(&evlist->pollfd);
+diff --git a/tools/perf/builtin-record.c b/tools/perf/builtin-record.c
+index bb5b4d2..cfb9a69 100644
+--- a/tools/perf/builtin-record.c
++++ b/tools/perf/builtin-record.c
+@@ -1446,6 +1446,44 @@ static int record__process_signal_event(union perf_event *event __maybe_unused, 
+ 	return 0;
  }
+ 
++static int record__setup_sb_evlist(struct record *rec)
++{
++	struct record_opts *opts = &rec->opts;
++
++	if (rec->sb_evlist != NULL) {
++		/*
++		 * We get here if --switch-output-event populated the
++		 * sb_evlist, so associate a callback that will send a SIGUSR2
++		 * to the main thread.
++		 */
++		evlist__set_cb(rec->sb_evlist, record__process_signal_event, rec);
++		rec->thread_id = pthread_self();
++	}
++
++	if (!opts->no_bpf_event) {
++		if (rec->sb_evlist == NULL) {
++			rec->sb_evlist = evlist__new();
++
++			if (rec->sb_evlist == NULL) {
++				pr_err("Couldn't create side band evlist.\n.");
++				return -1;
++			}
++		}
++
++		if (evlist__add_bpf_sb_event(rec->sb_evlist, &rec->session->header.env)) {
++			pr_err("Couldn't ask for PERF_RECORD_BPF_EVENT side band events.\n.");
++			return -1;
++		}
++	}
++
++	if (perf_evlist__start_sb_thread(rec->sb_evlist, &rec->opts.target)) {
++		pr_debug("Couldn't start the BPF side band thread:\nBPF programs starting from now on won't be annotatable\n");
++		opts->no_bpf_event = true;
++	}
++
++	return 0;
++}
++
+ static int __cmd_record(struct record *rec, int argc, const char **argv)
+ {
+ 	int err;
+@@ -1590,36 +1628,9 @@ static int __cmd_record(struct record *rec, int argc, const char **argv)
+ 		goto out_child;
+ 	}
+ 
+-	if (rec->sb_evlist != NULL) {
+-		/*
+-		 * We get here if --switch-output-event populated the
+-		 * sb_evlist, so associate a callback that will send a SIGUSR2
+-		 * to the main thread.
+-		 */
+-		evlist__set_cb(rec->sb_evlist, record__process_signal_event, rec);
+-		rec->thread_id = pthread_self();
+-	}
+-
+-	if (!opts->no_bpf_event) {
+-		if (rec->sb_evlist == NULL) {
+-			rec->sb_evlist = evlist__new();
+-
+-			if (rec->sb_evlist == NULL) {
+-				pr_err("Couldn't create side band evlist.\n.");
+-				goto out_child;
+-			}
+-		}
+-
+-		if (evlist__add_bpf_sb_event(rec->sb_evlist, &session->header.env)) {
+-			pr_err("Couldn't ask for PERF_RECORD_BPF_EVENT side band events.\n.");
+-			goto out_child;
+-		}
+-	}
+-
+-	if (perf_evlist__start_sb_thread(rec->sb_evlist, &rec->opts.target)) {
+-		pr_debug("Couldn't start the BPF side band thread:\nBPF programs starting from now on won't be annotatable\n");
+-		opts->no_bpf_event = true;
+-	}
++	err = record__setup_sb_evlist(rec);
++	if (err)
++		goto out_child;
+ 
+ 	err = record__synthesize(rec, false);
+ 	if (err < 0)
