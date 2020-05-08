@@ -2,49 +2,44 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4850F1CADE6
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 May 2020 15:06:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F23041CAE47
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 May 2020 15:10:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730571AbgEHNFq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 8 May 2020 09:05:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34822 "EHLO
+        id S1726792AbgEHNI0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 8 May 2020 09:08:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1730565AbgEHNFp (ORCPT
+        by vger.kernel.org with ESMTP id S1730542AbgEHNFh (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 8 May 2020 09:05:45 -0400
+        Fri, 8 May 2020 09:05:37 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECD6EC05BD09;
-        Fri,  8 May 2020 06:05:44 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04825C05BD43;
+        Fri,  8 May 2020 06:05:37 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jX2h2-0007sh-1F; Fri, 08 May 2020 15:05:32 +0200
+        id 1jX2gz-0007rE-Qx; Fri, 08 May 2020 15:05:30 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 0D3541C086F;
-        Fri,  8 May 2020 15:05:12 +0200 (CEST)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 3BC8C1C0854;
+        Fri,  8 May 2020 15:05:11 +0200 (CEST)
 Date:   Fri, 08 May 2020 13:05:11 -0000
-From:   "tip-bot2 for Ian Rogers" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Stephane Eranian" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] tools api: Add a lightweight buffered reading api
-Cc:     Ian Rogers <irogers@google.com>, Jiri Olsa <jolsa@redhat.com>,
-        Namhyung Kim <namhyung@kernel.org>,
+Subject: [tip: perf/core] perf script: Remove extraneous newline in
+ perf_sample__fprintf_regs()
+Cc:     Stephane Eranian <eranian@google.com>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Andrey Zhizhikin <andrey.z@gmail.com>,
+        Andi Kleen <ak@linux.intel.com>,
+        Ian Rogers <irogers@google.com>, Jiri Olsa <jolsa@redhat.com>,
         Kan Liang <kan.liang@linux.intel.com>,
-        Kefeng Wang <wangkefeng.wang@huawei.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Petr Mladek <pmladek@suse.com>,
-        Stephane Eranian <eranian@google.com>,
-        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200415054050.31645-3-irogers@google.com>
-References: <20200415054050.31645-3-irogers@google.com>
+In-Reply-To: <20200418231908.152212-1-eranian@google.com>
+References: <20200418231908.152212-1-eranian@google.com>
 MIME-Version: 1.0
-Message-ID: <158894311194.8414.5944838962130126295.tip-bot2@tip-bot2>
+Message-ID: <158894311118.8414.2827793086792791049.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -60,516 +55,147 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     e95770af4c4a280fab2080529d30452a7628d45d
-Gitweb:        https://git.kernel.org/tip/e95770af4c4a280fab2080529d30452a7628d45d
-Author:        Ian Rogers <irogers@google.com>
-AuthorDate:    Tue, 14 Apr 2020 22:40:49 -07:00
+Commit-ID:     fad1f1e7dedcd97593e8af36786b6bbdd093990d
+Gitweb:        https://git.kernel.org/tip/fad1f1e7dedcd97593e8af36786b6bbdd093990d
+Author:        Stephane Eranian <eranian@google.com>
+AuthorDate:    Sat, 18 Apr 2020 16:19:08 -07:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Thu, 30 Apr 2020 10:48:28 -03:00
+CommitterDate: Thu, 30 Apr 2020 10:48:32 -03:00
 
-tools api: Add a lightweight buffered reading api
+perf script: Remove extraneous newline in perf_sample__fprintf_regs()
 
-The synthesize benchmark shows the majority of execution time going to
-fgets and sscanf, necessary to parse /proc/pid/maps. Add a new buffered
-reading library that will be used to replace these calls in a follow-up
-CL. Add tests for the library to perf test.
+When printing iregs, there was a double newline printed because
+perf_sample__fprintf_regs() was printing its own and then at the end of
+all fields, perf script was adding one.  This was causing blank line in
+the output:
 
-Committer tests:
+Before:
 
-  $ perf test api
-  63: Test api io                                           : Ok
-  $
+  $ perf script -Fip,iregs
+             401b8d ABI:2    DX:0x100    SI:0x4a8340    DI:0x4a9340
 
-Signed-off-by: Ian Rogers <irogers@google.com>
-Acked-by: Jiri Olsa <jolsa@redhat.com>
-Acked-by: Namhyung Kim <namhyung@kernel.org>
+             401b8d ABI:2    DX:0x100    SI:0x4a9340    DI:0x4a8340
+
+             401b8d ABI:2    DX:0x100    SI:0x4a8340    DI:0x4a9340
+
+             401b8d ABI:2    DX:0x100    SI:0x4a9340    DI:0x4a8340
+
+After:
+
+  $ perf script -Fip,iregs
+             401b8d ABI:2    DX:0x100    SI:0x4a8340    DI:0x4a9340
+             401b8d ABI:2    DX:0x100    SI:0x4a9340    DI:0x4a8340
+             401b8d ABI:2    DX:0x100    SI:0x4a8340    DI:0x4a9340
+
+Committer testing:
+
+First we need to figure out how to request that registers be recorded,
+so we use:
+
+  # perf record -h reg
+
+   Usage: perf record [<options>] [<command>]
+      or: perf record [<options>] -- <command> [<options>]
+
+      -I, --intr-regs[=<any register>]
+                            sample selected machine registers on interrupt, use '-I?' to list register names
+          --buildid-all     Record build-id of all DSOs regardless of hits
+          --user-regs[=<any register>]
+                            sample selected machine registers on interrupt, use '--user-regs=?' to list register names
+
+  #
+
+Ok, now lets ask for them all:
+
+  # perf record -a --intr-regs --user-regs sleep 1
+  [ perf record: Woken up 1 times to write data ]
+  [ perf record: Captured and wrote 4.105 MB perf.data (2760 samples) ]
+  #
+
+Lets look at the first 6 output lines:
+
+  # perf script -Fip,iregs | head -6
+   ffffffff8a06f2f4 ABI:2    AX:0xffffd168fee0a980    BX:0xffff8a23b087f000    CX:0xfffeb69aaeb25d73    DX:0xffff8a253e8310f0    SI:0xfffffff9bafe7359    DI:0xffffb1690204fb10    BP:0xffffd168fee0a950    SP:0xffffb1690204fb88    IP:0xffffffff8a06f2f4 FLAGS:0x4e    CS:0x10    SS:0x18    R8:0x1495f0a91129a    R9:0xffff8a23b087f000   R10:0x1   R11:0xffffffff   R12:0x0   R13:0xffff8a253e827e00   R14:0xffffd168fee0aa5c   R15:0xffffd168fee0a980
+
+   ffffffff8a06f2f4 ABI:2    AX:0x0    BX:0xffffd168fee0a950    CX:0x5684cc1118491900    DX:0x0    SI:0xffffd168fee0a9d0    DI:0x202    BP:0xffffb1690204fd70    SP:0xffffb1690204fd20    IP:0xffffffff8a06f2f4 FLAGS:0x24e    CS:0x10    SS:0x18    R8:0x0    R9:0xffffd168fee0a9d0   R10:0x1   R11:0xffffffff   R12:0xffffffff8a23e480   R13:0xffff8a23b087f240   R14:0xffff8a23b087f000   R15:0xffffd168fee0a950
+
+   ffffffff8a06f2f4 ABI:2    AX:0x0    BX:0x0    CX:0x7f25f334335b    DX:0x0    SI:0x2400    DI:0x4    BP:0x7fff5f264570    SP:0x7fff5f264538    IP:0xffffffff8a06f2f4 FLAGS:0x24e    CS:0x10    SS:0x2b    R8:0x0    R9:0x2312d20   R10:0x0   R11:0x246   R12:0x22cc0e0   R13:0x0   R14:0x0   R15:0x22d0780
+
+  #
+
+Reproduced, apply the patch and:
+
+[root@five ~]# perf script -Fip,iregs | head -6
+ ffffffff8a06f2f4 ABI:2    AX:0xffffd168fee0a980    BX:0xffff8a23b087f000    CX:0xfffeb69aaeb25d73    DX:0xffff8a253e8310f0    SI:0xfffffff9bafe7359    DI:0xffffb1690204fb10    BP:0xffffd168fee0a950    SP:0xffffb1690204fb88    IP:0xffffffff8a06f2f4 FLAGS:0x4e    CS:0x10    SS:0x18    R8:0x1495f0a91129a    R9:0xffff8a23b087f000   R10:0x1   R11:0xffffffff   R12:0x0   R13:0xffff8a253e827e00   R14:0xffffd168fee0aa5c   R15:0xffffd168fee0a980
+ ffffffff8a06f2f4 ABI:2    AX:0x0    BX:0xffffd168fee0a950    CX:0x5684cc1118491900    DX:0x0    SI:0xffffd168fee0a9d0    DI:0x202    BP:0xffffb1690204fd70    SP:0xffffb1690204fd20    IP:0xffffffff8a06f2f4 FLAGS:0x24e    CS:0x10    SS:0x18    R8:0x0    R9:0xffffd168fee0a9d0   R10:0x1   R11:0xffffffff   R12:0xffffffff8a23e480   R13:0xffff8a23b087f240   R14:0xffff8a23b087f000   R15:0xffffd168fee0a950
+ ffffffff8a06f2f4 ABI:2    AX:0x0    BX:0x0    CX:0x7f25f334335b    DX:0x0    SI:0x2400    DI:0x4    BP:0x7fff5f264570    SP:0x7fff5f264538    IP:0xffffffff8a06f2f4 FLAGS:0x24e    CS:0x10    SS:0x2b    R8:0x0    R9:0x2312d20   R10:0x0   R11:0x246   R12:0x22cc0e0   R13:0x0   R14:0x0   R15:0x22d0780
+ ffffffff8a24074b ABI:2    AX:0xcb    BX:0xcb    CX:0x0    DX:0x0    SI:0xffffb1690204ff58    DI:0xcb    BP:0xffffb1690204ff58    SP:0xffffb1690204ff40    IP:0xffffffff8a24074b FLAGS:0x24e    CS:0x10    SS:0x18    R8:0x0    R9:0x0   R10:0x0   R11:0x0   R12:0x0   R13:0x0   R14:0x0   R15:0x0
+ ffffffff8a310600 ABI:2    AX:0x0    BX:0xffffffff8b8c39a0    CX:0x0    DX:0xffff8a2503890300    SI:0xffffb1690204ff20    DI:0xffff8a23e4080000    BP:0xffff8a23e4080000    SP:0xffffb1690204fec0    IP:0xffffffff8a310600 FLAGS:0x28e    CS:0x10    SS:0x18    R8:0x0    R9:0x0   R10:0x0   R11:0x0   R12:0xffffffffffffffea   R13:0xffff8a23e4080020   R14:0x0   R15:0x0
+ ffffffff8a11b688 ABI:2    AX:0x0    BX:0xffff8a237b7c8800    CX:0xffffb1690204fae0    DX:0x78    SI:0xffff8a237b7c8800    DI:0xffffb1690204fa10    BP:0xffffb1690204fb00    SP:0xffffb1690204fa00    IP:0xffffffff8a11b688 FLAGS:0x8a    CS:0x10    SS:0x18    R8:0x1495f0a917eba    R9:0xffffd168fde19a48   R10:0xffffb1690204fd98   R11:0xffff8a253e82afb0   R12:0xffff8a237b7c8800   R13:0xffffb1690204fb00   R14:0x0   R15:0xffff8a237b7c8800
+[root@five ~]#
+
+To see it more clearly, lets get just two of those registers by sample:
+
+  # perf record -a --intr-regs=ax,bx --user-regs=cx,dx sleep 1
+  [ perf record: Woken up 1 times to write data ]
+  [ perf record: Captured and wrote 3.502 MB perf.data (1653 samples) ]
+  #
+
+Extra info, lets see what gets setup in that 'struct perf_event_attr':
+
+  # perf evlist -v
+  cycles: size: 120, { sample_period, sample_freq }: 4000, sample_type: IP|TID|TIME|CPU|PERIOD|REGS_USER|REGS_INTR, read_format: ID, disabled: 1, inherit: 1, mmap: 1, comm: 1, freq: 1, task: 1, precise_ip: 2, sample_id_all: 1, exclude_guest: 1, mmap2: 1, comm_exec: 1, ksymbol: 1, bpf_event: 1, sample_regs_user: 0xc, sample_regs_intr: 0x3
+  #
+
+Cook, some PERF_SAMPLE_REGS_USER|PERF_SAMPLE_REGS_INTR +
+attr.sample_regs_user and attr.sample_regs_intr register masks, now lets
+see if those newlines are gone in a more compact fashion:
+
+  # perf script -Fip,iregs,uregs
+   ffffffff8a56df78 ABI:2    AX:0xffff8a25137b6028    BX:0xffff8a2502f18000  ABI:2    CX:0x7f204460e49b    DX:0xf42920
+   ffffffff8a56df78 ABI:2    AX:0xffff8a25137b6028    BX:0xffff8a2502f18000  ABI:2    CX:0x7f204460e49b    DX:0xf42920
+   ffffffff8a56df78 ABI:2    AX:0xffff8a25137b6028    BX:0xffff8a2502f18000  ABI:2    CX:0x7f204460e49b    DX:0xf42920
+   ffffffff8a56df78 ABI:2    AX:0xffff8a25137b6028    BX:0xffff8a2502f18000  ABI:2    CX:0x7f204460e49b    DX:0xf42920
+   ffffffff8a56df78 ABI:2    AX:0xffff8a25137b6028    BX:0xffff8a2502f18000  ABI:2    CX:0x7f204460e49b    DX:0xf42920
+   ffffffff8a56df78 ABI:2    AX:0xffff8a25137b6028    BX:0xffff8a2502f18000  ABI:2    CX:0x7f204460e49b    DX:0xf42920
+   ffffffff8a29b78d ABI:2    AX:0x2a20ffcd6000    BX:0x2ec7d9000  ABI:2    CX:0x7f204460e49b    DX:0xf42920
+  #
+
+And where was that?
+
+  # perf script -Fip,iregs,uregs,sym,dso
+   ffffffff8a56df78 strrchr (/lib/modules/5.7.0-rc2/build/vmlinux) ABI:2    AX:0xffff8a25137b6028    BX:0xffff8a2502f18000  ABI:2    CX:0x7f204460e49b    DX:0xf42920
+   ffffffff8a56df78 strrchr (/lib/modules/5.7.0-rc2/build/vmlinux) ABI:2    AX:0xffff8a25137b6028    BX:0xffff8a2502f18000  ABI:2    CX:0x7f204460e49b    DX:0xf42920
+   ffffffff8a56df78 strrchr (/lib/modules/5.7.0-rc2/build/vmlinux) ABI:2    AX:0xffff8a25137b6028    BX:0xffff8a2502f18000  ABI:2    CX:0x7f204460e49b    DX:0xf42920
+   ffffffff8a56df78 strrchr (/lib/modules/5.7.0-rc2/build/vmlinux) ABI:2    AX:0xffff8a25137b6028    BX:0xffff8a2502f18000  ABI:2    CX:0x7f204460e49b    DX:0xf42920
+   ffffffff8a56df78 strrchr (/lib/modules/5.7.0-rc2/build/vmlinux) ABI:2    AX:0xffff8a25137b6028    BX:0xffff8a2502f18000  ABI:2    CX:0x7f204460e49b    DX:0xf42920
+   ffffffff8a56df78 strrchr (/lib/modules/5.7.0-rc2/build/vmlinux) ABI:2    AX:0xffff8a25137b6028    BX:0xffff8a2502f18000  ABI:2    CX:0x7f204460e49b    DX:0xf42920
+   ffffffff8a29b78d __vma_link_rb (/lib/modules/5.7.0-rc2/build/vmlinux) ABI:2    AX:0x2a20ffcd6000    BX:0x2ec7d9000  ABI:2    CX:0x7f204460e49b    DX:0xf42920
+  #
+
+Signed-off-by: Stephane Eranian <eranian@google.com>
 Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Andrey Zhizhikin <andrey.z@gmail.com>
+Cc: Andi Kleen <ak@linux.intel.com>
+Cc: Ian Rogers <irogers@google.com>
 Cc: Jiri Olsa <jolsa@redhat.com>
 Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Petr Mladek <pmladek@suse.com>
-Cc: Stephane Eranian <eranian@google.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Link: http://lore.kernel.org/lkml/20200415054050.31645-3-irogers@google.com
+Link: http://lore.kernel.org/lkml/20200418231908.152212-1-eranian@google.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/lib/api/io.h              | 112 +++++++++++-
- tools/perf/tests/Build          |   1 +-
- tools/perf/tests/api-io.c       | 304 +++++++++++++++++++++++++++++++-
- tools/perf/tests/builtin-test.c |   4 +-
- tools/perf/tests/tests.h        |   1 +-
- 5 files changed, 422 insertions(+)
- create mode 100644 tools/lib/api/io.h
- create mode 100644 tools/perf/tests/api-io.c
+ tools/perf/builtin-script.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/tools/lib/api/io.h b/tools/lib/api/io.h
-new file mode 100644
-index 0000000..b7e55b5
---- /dev/null
-+++ b/tools/lib/api/io.h
-@@ -0,0 +1,112 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Lightweight buffered reading library.
-+ *
-+ * Copyright 2019 Google LLC.
-+ */
-+#ifndef __API_IO__
-+#define __API_IO__
-+
-+struct io {
-+	/* File descriptor being read/ */
-+	int fd;
-+	/* Size of the read buffer. */
-+	unsigned int buf_len;
-+	/* Pointer to storage for buffering read. */
-+	char *buf;
-+	/* End of the storage. */
-+	char *end;
-+	/* Currently accessed data pointer. */
-+	char *data;
-+	/* Set true on when the end of file on read error. */
-+	bool eof;
-+};
-+
-+static inline void io__init(struct io *io, int fd,
-+			    char *buf, unsigned int buf_len)
-+{
-+	io->fd = fd;
-+	io->buf_len = buf_len;
-+	io->buf = buf;
-+	io->end = buf;
-+	io->data = buf;
-+	io->eof = false;
-+}
-+
-+/* Reads one character from the "io" file with similar semantics to fgetc. */
-+static inline int io__get_char(struct io *io)
-+{
-+	char *ptr = io->data;
-+
-+	if (io->eof)
-+		return -1;
-+
-+	if (ptr == io->end) {
-+		ssize_t n = read(io->fd, io->buf, io->buf_len);
-+
-+		if (n <= 0) {
-+			io->eof = true;
-+			return -1;
-+		}
-+		ptr = &io->buf[0];
-+		io->end = &io->buf[n];
-+	}
-+	io->data = ptr + 1;
-+	return *ptr;
-+}
-+
-+/* Read a hexadecimal value with no 0x prefix into the out argument hex. If the
-+ * first character isn't hexadecimal returns -2, io->eof returns -1, otherwise
-+ * returns the character after the hexadecimal value which may be -1 for eof.
-+ * If the read value is larger than a u64 the high-order bits will be dropped.
-+ */
-+static inline int io__get_hex(struct io *io, __u64 *hex)
-+{
-+	bool first_read = true;
-+
-+	*hex = 0;
-+	while (true) {
-+		int ch = io__get_char(io);
-+
-+		if (ch < 0)
-+			return ch;
-+		if (ch >= '0' && ch <= '9')
-+			*hex = (*hex << 4) | (ch - '0');
-+		else if (ch >= 'a' && ch <= 'f')
-+			*hex = (*hex << 4) | (ch - 'a' + 10);
-+		else if (ch >= 'A' && ch <= 'F')
-+			*hex = (*hex << 4) | (ch - 'A' + 10);
-+		else if (first_read)
-+			return -2;
-+		else
-+			return ch;
-+		first_read = false;
-+	}
-+}
-+
-+/* Read a positive decimal value with out argument dec. If the first character
-+ * isn't a decimal returns -2, io->eof returns -1, otherwise returns the
-+ * character after the decimal value which may be -1 for eof. If the read value
-+ * is larger than a u64 the high-order bits will be dropped.
-+ */
-+static inline int io__get_dec(struct io *io, __u64 *dec)
-+{
-+	bool first_read = true;
-+
-+	*dec = 0;
-+	while (true) {
-+		int ch = io__get_char(io);
-+
-+		if (ch < 0)
-+			return ch;
-+		if (ch >= '0' && ch <= '9')
-+			*dec = (*dec * 10) + ch - '0';
-+		else if (first_read)
-+			return -2;
-+		else
-+			return ch;
-+		first_read = false;
-+	}
-+}
-+
-+#endif /* __API_IO__ */
-diff --git a/tools/perf/tests/Build b/tools/perf/tests/Build
-index b3d1bf1..c75557a 100644
---- a/tools/perf/tests/Build
-+++ b/tools/perf/tests/Build
-@@ -56,6 +56,7 @@ perf-y += mem2node.o
- perf-y += maps.o
- perf-y += time-utils-test.o
- perf-y += genelf.o
-+perf-y += api-io.o
+diff --git a/tools/perf/builtin-script.c b/tools/perf/builtin-script.c
+index a223654..3aadefd 100644
+--- a/tools/perf/builtin-script.c
++++ b/tools/perf/builtin-script.c
+@@ -604,8 +604,6 @@ static int perf_sample__fprintf_regs(struct regs_dump *regs, uint64_t mask,
+ 		printed += fprintf(fp, "%5s:0x%"PRIx64" ", perf_reg_name(r), val);
+ 	}
  
- $(OUTPUT)tests/llvm-src-base.c: tests/bpf-script-example.c tests/Build
- 	$(call rule_mkdir)
-diff --git a/tools/perf/tests/api-io.c b/tools/perf/tests/api-io.c
-new file mode 100644
-index 0000000..2ada86a
---- /dev/null
-+++ b/tools/perf/tests/api-io.c
-@@ -0,0 +1,304 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+#include <sys/types.h>
-+#include <sys/stat.h>
-+#include <fcntl.h>
-+#include <limits.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <unistd.h>
-+
-+#include "debug.h"
-+#include "tests.h"
-+#include <api/io.h>
-+#include <linux/kernel.h>
-+
-+#define TEMPL "/tmp/perf-test-XXXXXX"
-+
-+#define EXPECT_EQUAL(val, expected)                             \
-+do {								\
-+	if (val != expected) {					\
-+		pr_debug("%s:%d: %d != %d\n",			\
-+			__FILE__, __LINE__, val, expected);	\
-+		ret = -1;					\
-+	}							\
-+} while (0)
-+
-+#define EXPECT_EQUAL64(val, expected)                           \
-+do {								\
-+	if (val != expected) {					\
-+		pr_debug("%s:%d: %lld != %lld\n",		\
-+			__FILE__, __LINE__, val, expected);	\
-+		ret = -1;					\
-+	}							\
-+} while (0)
-+
-+static int make_test_file(char path[PATH_MAX], const char *contents)
-+{
-+	ssize_t contents_len = strlen(contents);
-+	int fd;
-+
-+	strcpy(path, TEMPL);
-+	fd = mkstemp(path);
-+	if (fd < 0) {
-+		pr_debug("mkstemp failed");
-+		return -1;
-+	}
-+	if (write(fd, contents, contents_len) < contents_len) {
-+		pr_debug("short write");
-+		close(fd);
-+		unlink(path);
-+		return -1;
-+	}
-+	close(fd);
-+	return 0;
-+}
-+
-+static int setup_test(char path[PATH_MAX], const char *contents,
-+		      size_t buf_size, struct io *io)
-+{
-+	if (make_test_file(path, contents))
-+		return -1;
-+
-+	io->fd = open(path, O_RDONLY);
-+	if (io->fd < 0) {
-+		pr_debug("Failed to open '%s'\n", path);
-+		unlink(path);
-+		return -1;
-+	}
-+	io->buf = malloc(buf_size);
-+	if (io->buf == NULL) {
-+		pr_debug("Failed to allocate memory");
-+		close(io->fd);
-+		unlink(path);
-+		return -1;
-+	}
-+	io__init(io, io->fd, io->buf, buf_size);
-+	return 0;
-+}
-+
-+static void cleanup_test(char path[PATH_MAX], struct io *io)
-+{
-+	free(io->buf);
-+	close(io->fd);
-+	unlink(path);
-+}
-+
-+static int do_test_get_char(const char *test_string, size_t buf_size)
-+{
-+	char path[PATH_MAX];
-+	struct io io;
-+	int ch, ret = 0;
-+	size_t i;
-+
-+	if (setup_test(path, test_string, buf_size, &io))
-+		return -1;
-+
-+	for (i = 0; i < strlen(test_string); i++) {
-+		ch = io__get_char(&io);
-+
-+		EXPECT_EQUAL(ch, test_string[i]);
-+		EXPECT_EQUAL(io.eof, false);
-+	}
-+	ch = io__get_char(&io);
-+	EXPECT_EQUAL(ch, -1);
-+	EXPECT_EQUAL(io.eof, true);
-+
-+	cleanup_test(path, &io);
-+	return ret;
-+}
-+
-+static int test_get_char(void)
-+{
-+	int i, ret = 0;
-+	size_t j;
-+
-+	static const char *const test_strings[] = {
-+		"12345678abcdef90",
-+		"a\nb\nc\nd\n",
-+		"\a\b\t\v\f\r",
-+	};
-+	for (i = 0; i <= 10; i++) {
-+		for (j = 0; j < ARRAY_SIZE(test_strings); j++) {
-+			if (do_test_get_char(test_strings[j], 1 << i))
-+				ret = -1;
-+		}
-+	}
-+	return ret;
-+}
-+
-+static int do_test_get_hex(const char *test_string,
-+			__u64 val1, int ch1,
-+			__u64 val2, int ch2,
-+			__u64 val3, int ch3,
-+			bool end_eof)
-+{
-+	char path[PATH_MAX];
-+	struct io io;
-+	int ch, ret = 0;
-+	__u64 hex;
-+
-+	if (setup_test(path, test_string, 4, &io))
-+		return -1;
-+
-+	ch = io__get_hex(&io, &hex);
-+	EXPECT_EQUAL64(hex, val1);
-+	EXPECT_EQUAL(ch, ch1);
-+
-+	ch = io__get_hex(&io, &hex);
-+	EXPECT_EQUAL64(hex, val2);
-+	EXPECT_EQUAL(ch, ch2);
-+
-+	ch = io__get_hex(&io, &hex);
-+	EXPECT_EQUAL64(hex, val3);
-+	EXPECT_EQUAL(ch, ch3);
-+
-+	EXPECT_EQUAL(io.eof, end_eof);
-+
-+	cleanup_test(path, &io);
-+	return ret;
-+}
-+
-+static int test_get_hex(void)
-+{
-+	int ret = 0;
-+
-+	if (do_test_get_hex("12345678abcdef90",
-+				0x12345678abcdef90, -1,
-+				0, -1,
-+				0, -1,
-+				true))
-+		ret = -1;
-+
-+	if (do_test_get_hex("1\n2\n3\n",
-+				1, '\n',
-+				2, '\n',
-+				3, '\n',
-+				false))
-+		ret = -1;
-+
-+	if (do_test_get_hex("12345678ABCDEF90;a;b",
-+				0x12345678abcdef90, ';',
-+				0xa, ';',
-+				0xb, -1,
-+				true))
-+		ret = -1;
-+
-+	if (do_test_get_hex("0x1x2x",
-+				0, 'x',
-+				1, 'x',
-+				2, 'x',
-+				false))
-+		ret = -1;
-+
-+	if (do_test_get_hex("x1x",
-+				0, -2,
-+				1, 'x',
-+				0, -1,
-+				true))
-+		ret = -1;
-+
-+	if (do_test_get_hex("10000000000000000000000000000abcdefgh99i",
-+				0xabcdef, 'g',
-+				0, -2,
-+				0x99, 'i',
-+				false))
-+		ret = -1;
-+
-+	return ret;
-+}
-+
-+static int do_test_get_dec(const char *test_string,
-+			__u64 val1, int ch1,
-+			__u64 val2, int ch2,
-+			__u64 val3, int ch3,
-+			bool end_eof)
-+{
-+	char path[PATH_MAX];
-+	struct io io;
-+	int ch, ret = 0;
-+	__u64 dec;
-+
-+	if (setup_test(path, test_string, 4, &io))
-+		return -1;
-+
-+	ch = io__get_dec(&io, &dec);
-+	EXPECT_EQUAL64(dec, val1);
-+	EXPECT_EQUAL(ch, ch1);
-+
-+	ch = io__get_dec(&io, &dec);
-+	EXPECT_EQUAL64(dec, val2);
-+	EXPECT_EQUAL(ch, ch2);
-+
-+	ch = io__get_dec(&io, &dec);
-+	EXPECT_EQUAL64(dec, val3);
-+	EXPECT_EQUAL(ch, ch3);
-+
-+	EXPECT_EQUAL(io.eof, end_eof);
-+
-+	cleanup_test(path, &io);
-+	return ret;
-+}
-+
-+static int test_get_dec(void)
-+{
-+	int ret = 0;
-+
-+	if (do_test_get_dec("12345678abcdef90",
-+				12345678, 'a',
-+				0, -2,
-+				0, -2,
-+				false))
-+		ret = -1;
-+
-+	if (do_test_get_dec("1\n2\n3\n",
-+				1, '\n',
-+				2, '\n',
-+				3, '\n',
-+				false))
-+		ret = -1;
-+
-+	if (do_test_get_dec("12345678;1;2",
-+				12345678, ';',
-+				1, ';',
-+				2, -1,
-+				true))
-+		ret = -1;
-+
-+	if (do_test_get_dec("0x1x2x",
-+				0, 'x',
-+				1, 'x',
-+				2, 'x',
-+				false))
-+		ret = -1;
-+
-+	if (do_test_get_dec("x1x",
-+				0, -2,
-+				1, 'x',
-+				0, -1,
-+				true))
-+		ret = -1;
-+
-+	if (do_test_get_dec("10000000000000000000000000000000000000000000000000000000000123456789ab99c",
-+				123456789, 'a',
-+				0, -2,
-+				99, 'c',
-+				false))
-+		ret = -1;
-+
-+	return ret;
-+}
-+
-+int test__api_io(struct test *test __maybe_unused,
-+		int subtest __maybe_unused)
-+{
-+	int ret = 0;
-+
-+	if (test_get_char())
-+		ret = TEST_FAIL;
-+	if (test_get_hex())
-+		ret = TEST_FAIL;
-+	if (test_get_dec())
-+		ret = TEST_FAIL;
-+	return ret;
-+}
-diff --git a/tools/perf/tests/builtin-test.c b/tools/perf/tests/builtin-test.c
-index b6322eb..3471ec5 100644
---- a/tools/perf/tests/builtin-test.c
-+++ b/tools/perf/tests/builtin-test.c
-@@ -310,6 +310,10 @@ static struct test generic_tests[] = {
- 		.func = test__jit_write_elf,
- 	},
- 	{
-+		.desc = "Test api io",
-+		.func = test__api_io,
-+	},
-+	{
- 		.desc = "maps__merge_in",
- 		.func = test__maps__merge_in,
- 	},
-diff --git a/tools/perf/tests/tests.h b/tools/perf/tests/tests.h
-index 61a1ab0..d6d4ac3 100644
---- a/tools/perf/tests/tests.h
-+++ b/tools/perf/tests/tests.h
-@@ -112,6 +112,7 @@ int test__mem2node(struct test *t, int subtest);
- int test__maps__merge_in(struct test *t, int subtest);
- int test__time_utils(struct test *t, int subtest);
- int test__jit_write_elf(struct test *test, int subtest);
-+int test__api_io(struct test *test, int subtest);
+-	fprintf(fp, "\n");
+-
+ 	return printed;
+ }
  
- bool test__bp_signal_is_supported(void);
- bool test__bp_account_is_supported(void);
