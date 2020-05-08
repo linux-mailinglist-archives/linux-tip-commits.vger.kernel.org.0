@@ -2,41 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AD3FD1CAE72
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 May 2020 15:11:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 39D441CADD9
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 May 2020 15:06:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729710AbgEHNJv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 8 May 2020 09:09:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34686 "EHLO
+        id S1729152AbgEHNFQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 8 May 2020 09:05:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34672 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1730483AbgEHNFT (ORCPT
+        by vger.kernel.org with ESMTP id S1730475AbgEHNFQ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 8 May 2020 09:05:19 -0400
+        Fri, 8 May 2020 09:05:16 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FBB8C05BD43;
-        Fri,  8 May 2020 06:05:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F07B5C05BD43;
+        Fri,  8 May 2020 06:05:15 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jX2gj-0007XI-AU; Fri, 08 May 2020 15:05:13 +0200
+        id 1jX2gg-0007YK-MP; Fri, 08 May 2020 15:05:10 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 37D5C1C0823;
-        Fri,  8 May 2020 15:04:58 +0200 (CEST)
-Date:   Fri, 08 May 2020 13:04:58 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 9140D1C0854;
+        Fri,  8 May 2020 15:04:59 +0200 (CEST)
+Date:   Fri, 08 May 2020 13:04:59 -0000
 From:   "tip-bot2 for Adrian Hunter" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf evsel: Add support for synthesized branch stack
- sample type
+Subject: [tip: perf/core] perf intel-pt: Consolidate thread-stack use condition
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         Andi Kleen <ak@linux.intel.com>, Jiri Olsa <jolsa@redhat.com>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200429150751.12570-6-adrian.hunter@intel.com>
-References: <20200429150751.12570-6-adrian.hunter@intel.com>
+In-Reply-To: <20200429150751.12570-3-adrian.hunter@intel.com>
+References: <20200429150751.12570-3-adrian.hunter@intel.com>
 MIME-Version: 1.0
-Message-ID: <158894309814.8414.14429126818171355994.tip-bot2@tip-bot2>
+Message-ID: <158894309950.8414.290875277373762895.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -52,62 +51,57 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     6cd2cbfc6865589c64ac37ec48937e93725622f1
-Gitweb:        https://git.kernel.org/tip/6cd2cbfc6865589c64ac37ec48937e93725622f1
+Commit-ID:     1ef998ff1823c8b5b3f7d103ec3971d7baaf677b
+Gitweb:        https://git.kernel.org/tip/1ef998ff1823c8b5b3f7d103ec3971d7baaf677b
 Author:        Adrian Hunter <adrian.hunter@intel.com>
-AuthorDate:    Wed, 29 Apr 2020 18:07:47 +03:00
+AuthorDate:    Wed, 29 Apr 2020 18:07:44 +03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Tue, 05 May 2020 16:35:29 -03:00
 
-perf evsel: Add support for synthesized branch stack sample type
+perf intel-pt: Consolidate thread-stack use condition
 
-Allow for a synthesized branch stack to be added to samples. As with
-synthesized call chains, the sample type cannot be changed because it is
-needed to continue to parse events. So add and use helper function
-evsel__has_br_stack() to indicate a branch stack, whether original or
-synthesized.
+The components of the condition do not change, so consolidate them in
+one variable.
 
 Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
 Cc: Andi Kleen <ak@linux.intel.com>
 Cc: Jiri Olsa <jolsa@redhat.com>
-Link: http://lore.kernel.org/lkml/20200429150751.12570-6-adrian.hunter@intel.com
+Link: http://lore.kernel.org/lkml/20200429150751.12570-3-adrian.hunter@intel.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/evsel.h   | 10 ++++++++++
- tools/perf/util/session.c |  2 +-
- 2 files changed, 11 insertions(+), 1 deletion(-)
+ tools/perf/util/intel-pt.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/util/evsel.h b/tools/perf/util/evsel.h
-index a463bc6..bf999e3 100644
---- a/tools/perf/util/evsel.h
-+++ b/tools/perf/util/evsel.h
-@@ -417,6 +417,16 @@ static inline bool evsel__has_callchain(const struct evsel *evsel)
- 	       evsel->synth_sample_type & PERF_SAMPLE_CALLCHAIN;
- }
+diff --git a/tools/perf/util/intel-pt.c b/tools/perf/util/intel-pt.c
+index bdb8447..b3c4527 100644
+--- a/tools/perf/util/intel-pt.c
++++ b/tools/perf/util/intel-pt.c
+@@ -69,6 +69,7 @@ struct intel_pt {
+ 	bool est_tsc;
+ 	bool sync_switch;
+ 	bool mispred_all;
++	bool use_thread_stack;
+ 	int have_sched_switch;
+ 	u32 pmu_type;
+ 	u64 kernel_start;
+@@ -2029,8 +2030,7 @@ static int intel_pt_sample(struct intel_pt_queue *ptq)
+ 	if (!(state->type & INTEL_PT_BRANCH))
+ 		return 0;
  
-+static inline bool evsel__has_br_stack(const struct evsel *evsel)
-+{
-+	/*
-+	 * For reporting purposes, an evsel sample can have a recorded branch
-+	 * stack or a branch stack synthesized from AUX area data.
-+	 */
-+	return evsel->core.attr.sample_type & PERF_SAMPLE_BRANCH_STACK ||
-+	       evsel->synth_sample_type & PERF_SAMPLE_BRANCH_STACK;
-+}
+-	if (pt->synth_opts.callchain || pt->synth_opts.add_callchain ||
+-	    pt->synth_opts.thread_stack)
++	if (pt->use_thread_stack)
+ 		thread_stack__event(ptq->thread, ptq->cpu, ptq->flags, state->from_ip,
+ 				    state->to_ip, ptq->insn_len,
+ 				    state->trace_nr, true, 0, 0);
+@@ -3441,6 +3441,10 @@ int intel_pt_process_auxtrace_info(union perf_event *event,
+ 			goto err_delete_thread;
+ 	}
+ 
++	pt->use_thread_stack = pt->synth_opts.callchain ||
++			       pt->synth_opts.add_callchain ||
++			       pt->synth_opts.thread_stack;
 +
- struct perf_env *perf_evsel__env(struct evsel *evsel);
- 
- int perf_evsel__store_ids(struct evsel *evsel, struct evlist *evlist);
-diff --git a/tools/perf/util/session.c b/tools/perf/util/session.c
-index 0b0bfe5..2b5a08a 100644
---- a/tools/perf/util/session.c
-+++ b/tools/perf/util/session.c
-@@ -1243,7 +1243,7 @@ static void dump_sample(struct evsel *evsel, union perf_event *event,
- 	if (evsel__has_callchain(evsel))
- 		callchain__printf(evsel, sample);
- 
--	if (sample_type & PERF_SAMPLE_BRANCH_STACK)
-+	if (evsel__has_br_stack(evsel))
- 		branch_stack__printf(sample, perf_evsel__has_branch_callstack(evsel));
- 
- 	if (sample_type & PERF_SAMPLE_REGS_USER)
+ 	err = intel_pt_synth_events(pt, session);
+ 	if (err)
+ 		goto err_delete_thread;
