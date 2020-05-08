@@ -2,40 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F30A11CAE7F
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 May 2020 15:11:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6978F1CAE79
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 May 2020 15:11:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728463AbgEHNKY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 8 May 2020 09:10:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34628 "EHLO
+        id S1728709AbgEHNKK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 8 May 2020 09:10:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34658 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1730429AbgEHNFI (ORCPT
+        by vger.kernel.org with ESMTP id S1730112AbgEHNFN (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 8 May 2020 09:05:08 -0400
+        Fri, 8 May 2020 09:05:13 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 127F1C05BD0A;
-        Fri,  8 May 2020 06:05:08 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5FC2C05BD0B;
+        Fri,  8 May 2020 06:05:13 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jX2ga-0007Sg-0d; Fri, 08 May 2020 15:05:04 +0200
+        id 1jX2gg-0007Te-1X; Fri, 08 May 2020 15:05:10 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 295D71C0845;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D12881C04D0;
         Fri,  8 May 2020 15:04:55 +0200 (CEST)
 Date:   Fri, 08 May 2020 13:04:55 -0000
 From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf evsel: Rename perf_evsel__find_pmu() to
- evsel__find_pmu()
+Subject: [tip: perf/core] perf evsel: Rename perf_evsel__nr_cpus() to evsel__nr_cpus()
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         Jiri Olsa <jolsa@kernel.org>,
         Namhyung Kim <namhyung@kernel.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158894309510.8414.6441501861170338478.tip-bot2@tip-bot2>
+Message-ID: <158894309579.8414.501622483910338341.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,14 +50,14 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     e76026bdd51bcd4a0b9793c655891cde45367f5f
-Gitweb:        https://git.kernel.org/tip/e76026bdd51bcd4a0b9793c655891cde45367f5f
+Commit-ID:     5eb88f0476aba76fd6aa48e34b328ff864e84651
+Gitweb:        https://git.kernel.org/tip/5eb88f0476aba76fd6aa48e34b328ff864e84651
 Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Wed, 29 Apr 2020 15:50:10 -03:00
+AuthorDate:    Wed, 29 Apr 2020 15:45:09 -03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Tue, 05 May 2020 16:35:30 -03:00
 
-perf evsel: Rename perf_evsel__find_pmu() to evsel__find_pmu()
+perf evsel: Rename perf_evsel__nr_cpus() to evsel__nr_cpus()
 
 As it is a 'struct evsel' method, not part of tools/lib/perf/, aka
 libperf, to whom the perf_ prefix belongs.
@@ -68,56 +67,106 @@ Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/auxtrace.c | 2 +-
- tools/perf/util/evsel.h    | 2 +-
- tools/perf/util/pmu.c      | 4 ++--
- 3 files changed, 4 insertions(+), 4 deletions(-)
+ tools/perf/builtin-script.c    |  2 +-
+ tools/perf/util/evsel.h        |  2 +-
+ tools/perf/util/stat-display.c | 10 +++++-----
+ tools/perf/util/stat.c         |  4 ++--
+ 4 files changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/tools/perf/util/auxtrace.c b/tools/perf/util/auxtrace.c
-index 83ea7ca..cddd1d3 100644
---- a/tools/perf/util/auxtrace.c
-+++ b/tools/perf/util/auxtrace.c
-@@ -2542,7 +2542,7 @@ out_exit:
- 
- static int perf_evsel__nr_addr_filter(struct evsel *evsel)
+diff --git a/tools/perf/builtin-script.c b/tools/perf/builtin-script.c
+index 3aadefd..907b5c9 100644
+--- a/tools/perf/builtin-script.c
++++ b/tools/perf/builtin-script.c
+@@ -1977,7 +1977,7 @@ static struct scripting_ops	*scripting_ops;
+ static void __process_stat(struct evsel *counter, u64 tstamp)
  {
--	struct perf_pmu *pmu = perf_evsel__find_pmu(evsel);
-+	struct perf_pmu *pmu = evsel__find_pmu(evsel);
- 	int nr_addr_filters = 0;
+ 	int nthreads = perf_thread_map__nr(counter->core.threads);
+-	int ncpus = perf_evsel__nr_cpus(counter);
++	int ncpus = evsel__nr_cpus(counter);
+ 	int cpu, thread;
+ 	static int header_printed;
  
- 	if (!pmu)
 diff --git a/tools/perf/util/evsel.h b/tools/perf/util/evsel.h
-index 3201505..868e2be 100644
+index 7ff37c4..e2a0ebe 100644
 --- a/tools/perf/util/evsel.h
 +++ b/tools/perf/util/evsel.h
-@@ -158,7 +158,7 @@ int perf_evsel__object_config(size_t object_size,
- 			      int (*init)(struct evsel *evsel),
- 			      void (*fini)(struct evsel *evsel));
- 
--struct perf_pmu *perf_evsel__find_pmu(struct evsel *evsel);
-+struct perf_pmu *evsel__find_pmu(struct evsel *evsel);
- bool perf_evsel__is_aux_event(struct evsel *evsel);
- 
- struct evsel *perf_evsel__new_idx(struct perf_event_attr *attr, int idx);
-diff --git a/tools/perf/util/pmu.c b/tools/perf/util/pmu.c
-index d9f89ed..2dd3d6b 100644
---- a/tools/perf/util/pmu.c
-+++ b/tools/perf/util/pmu.c
-@@ -886,7 +886,7 @@ struct perf_pmu *perf_pmu__scan(struct perf_pmu *pmu)
- 	return NULL;
+@@ -143,7 +143,7 @@ static inline struct perf_cpu_map *evsel__cpus(struct evsel *evsel)
+ 	return perf_evsel__cpus(&evsel->core);
  }
  
--struct perf_pmu *perf_evsel__find_pmu(struct evsel *evsel)
-+struct perf_pmu *evsel__find_pmu(struct evsel *evsel)
+-static inline int perf_evsel__nr_cpus(struct evsel *evsel)
++static inline int evsel__nr_cpus(struct evsel *evsel)
  {
- 	struct perf_pmu *pmu = NULL;
- 
-@@ -900,7 +900,7 @@ struct perf_pmu *perf_evsel__find_pmu(struct evsel *evsel)
- 
- bool perf_evsel__is_aux_event(struct evsel *evsel)
- {
--	struct perf_pmu *pmu = perf_evsel__find_pmu(evsel);
-+	struct perf_pmu *pmu = evsel__find_pmu(evsel);
- 
- 	return pmu && pmu->auxtrace;
+ 	return evsel__cpus(evsel)->nr;
  }
+diff --git a/tools/perf/util/stat-display.c b/tools/perf/util/stat-display.c
+index 679aaa6..b0e5d85 100644
+--- a/tools/perf/util/stat-display.c
++++ b/tools/perf/util/stat-display.c
+@@ -333,7 +333,7 @@ static int first_shadow_cpu(struct perf_stat_config *config,
+ 	if (config->aggr_mode == AGGR_GLOBAL)
+ 		return 0;
+ 
+-	for (i = 0; i < perf_evsel__nr_cpus(evsel); i++) {
++	for (i = 0; i < evsel__nr_cpus(evsel); i++) {
+ 		int cpu2 = evsel__cpus(evsel)->map[i];
+ 
+ 		if (config->aggr_get_id(config, evlist->core.cpus, cpu2) == id)
+@@ -508,7 +508,7 @@ static void aggr_update_shadow(struct perf_stat_config *config,
+ 		id = config->aggr_map->map[s];
+ 		evlist__for_each_entry(evlist, counter) {
+ 			val = 0;
+-			for (cpu = 0; cpu < perf_evsel__nr_cpus(counter); cpu++) {
++			for (cpu = 0; cpu < evsel__nr_cpus(counter); cpu++) {
+ 				s2 = config->aggr_get_id(config, evlist->core.cpus, cpu);
+ 				if (s2 != id)
+ 					continue;
+@@ -599,7 +599,7 @@ static void aggr_cb(struct perf_stat_config *config,
+ 	struct aggr_data *ad = data;
+ 	int cpu, s2;
+ 
+-	for (cpu = 0; cpu < perf_evsel__nr_cpus(counter); cpu++) {
++	for (cpu = 0; cpu < evsel__nr_cpus(counter); cpu++) {
+ 		struct perf_counts_values *counts;
+ 
+ 		s2 = config->aggr_get_id(config, evsel__cpus(counter), cpu);
+@@ -847,7 +847,7 @@ static void print_counter(struct perf_stat_config *config,
+ 	double uval;
+ 	int cpu;
+ 
+-	for (cpu = 0; cpu < perf_evsel__nr_cpus(counter); cpu++) {
++	for (cpu = 0; cpu < evsel__nr_cpus(counter); cpu++) {
+ 		struct aggr_data ad = { .cpu = cpu };
+ 
+ 		if (!collect_data(config, counter, counter_cb, &ad))
+@@ -1148,7 +1148,7 @@ static void print_percore_thread(struct perf_stat_config *config,
+ 	int s, s2, id;
+ 	bool first = true;
+ 
+-	for (int i = 0; i < perf_evsel__nr_cpus(counter); i++) {
++	for (int i = 0; i < evsel__nr_cpus(counter); i++) {
+ 		s2 = config->aggr_get_id(config, evsel__cpus(counter), i);
+ 		for (s = 0; s < config->aggr_map->nr; s++) {
+ 			id = config->aggr_map->map[s];
+diff --git a/tools/perf/util/stat.c b/tools/perf/util/stat.c
+index 242476e..da3a206 100644
+--- a/tools/perf/util/stat.c
++++ b/tools/perf/util/stat.c
+@@ -173,7 +173,7 @@ static void perf_evsel__reset_prev_raw_counts(struct evsel *evsel)
+ 
+ static int perf_evsel__alloc_stats(struct evsel *evsel, bool alloc_raw)
+ {
+-	int ncpus = perf_evsel__nr_cpus(evsel);
++	int ncpus = evsel__nr_cpus(evsel);
+ 	int nthreads = perf_thread_map__nr(evsel->core.threads);
+ 
+ 	if (perf_evsel__alloc_stat_priv(evsel) < 0 ||
+@@ -334,7 +334,7 @@ static int process_counter_maps(struct perf_stat_config *config,
+ 				struct evsel *counter)
+ {
+ 	int nthreads = perf_thread_map__nr(counter->core.threads);
+-	int ncpus = perf_evsel__nr_cpus(counter);
++	int ncpus = evsel__nr_cpus(counter);
+ 	int cpu, thread;
+ 
+ 	if (counter->core.system_wide)
