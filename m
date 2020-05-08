@@ -2,41 +2,41 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B010A1CAE13
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 May 2020 15:10:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD3FD1CAE72
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 May 2020 15:11:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729662AbgEHNFT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 8 May 2020 09:05:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34684 "EHLO
+        id S1729710AbgEHNJv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 8 May 2020 09:09:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34686 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1730480AbgEHNFS (ORCPT
+        by vger.kernel.org with ESMTP id S1730483AbgEHNFT (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 8 May 2020 09:05:18 -0400
+        Fri, 8 May 2020 09:05:19 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7847AC05BD43;
-        Fri,  8 May 2020 06:05:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FBB8C05BD43;
+        Fri,  8 May 2020 06:05:19 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jX2gf-0007Xm-Pn; Fri, 08 May 2020 15:05:09 +0200
+        id 1jX2gj-0007XI-AU; Fri, 08 May 2020 15:05:13 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id BE5511C0853;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 37D5C1C0823;
         Fri,  8 May 2020 15:04:58 +0200 (CEST)
 Date:   Fri, 08 May 2020 13:04:58 -0000
 From:   "tip-bot2 for Adrian Hunter" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf auxtrace: Add option to synthesize branch stack
- for regular events
+Subject: [tip: perf/core] perf evsel: Add support for synthesized branch stack
+ sample type
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         Andi Kleen <ak@linux.intel.com>, Jiri Olsa <jolsa@redhat.com>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200429150751.12570-5-adrian.hunter@intel.com>
-References: <20200429150751.12570-5-adrian.hunter@intel.com>
+In-Reply-To: <20200429150751.12570-6-adrian.hunter@intel.com>
+References: <20200429150751.12570-6-adrian.hunter@intel.com>
 MIME-Version: 1.0
-Message-ID: <158894309864.8414.18276494350093192357.tip-bot2@tip-bot2>
+Message-ID: <158894309814.8414.14429126818171355994.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -52,130 +52,62 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     ec90e42ce5142c4ed2a0061fe23bd4495428c52b
-Gitweb:        https://git.kernel.org/tip/ec90e42ce5142c4ed2a0061fe23bd4495428c52b
+Commit-ID:     6cd2cbfc6865589c64ac37ec48937e93725622f1
+Gitweb:        https://git.kernel.org/tip/6cd2cbfc6865589c64ac37ec48937e93725622f1
 Author:        Adrian Hunter <adrian.hunter@intel.com>
-AuthorDate:    Wed, 29 Apr 2020 18:07:46 +03:00
+AuthorDate:    Wed, 29 Apr 2020 18:07:47 +03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Tue, 05 May 2020 16:35:29 -03:00
 
-perf auxtrace: Add option to synthesize branch stack for regular events
+perf evsel: Add support for synthesized branch stack sample type
 
-There is an existing option to synthesize branch stacks for synthesized
-events. Add a new option to synthesize branch stacks for regular events.
+Allow for a synthesized branch stack to be added to samples. As with
+synthesized call chains, the sample type cannot be changed because it is
+needed to continue to parse events. So add and use helper function
+evsel__has_br_stack() to indicate a branch stack, whether original or
+synthesized.
 
 Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
 Cc: Andi Kleen <ak@linux.intel.com>
 Cc: Jiri Olsa <jolsa@redhat.com>
-Link: http://lore.kernel.org/lkml/20200429150751.12570-5-adrian.hunter@intel.com
+Link: http://lore.kernel.org/lkml/20200429150751.12570-6-adrian.hunter@intel.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/Documentation/itrace.txt | 1 +
- tools/perf/builtin-inject.c         | 3 ++-
- tools/perf/builtin-report.c         | 5 +++--
- tools/perf/util/auxtrace.c          | 6 +++++-
- tools/perf/util/auxtrace.h          | 2 ++
- tools/perf/util/s390-cpumsf.c       | 3 ++-
- 6 files changed, 15 insertions(+), 5 deletions(-)
+ tools/perf/util/evsel.h   | 10 ++++++++++
+ tools/perf/util/session.c |  2 +-
+ 2 files changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/Documentation/itrace.txt b/tools/perf/Documentation/itrace.txt
-index 671e154..0326050 100644
---- a/tools/perf/Documentation/itrace.txt
-+++ b/tools/perf/Documentation/itrace.txt
-@@ -12,6 +12,7 @@
- 		g	synthesize a call chain (use with i or x)
- 		G	synthesize a call chain on existing event records
- 		l	synthesize last branch entries (use with i or x)
-+		L	synthesize last branch entries on existing event records
- 		s       skip initial number of events
+diff --git a/tools/perf/util/evsel.h b/tools/perf/util/evsel.h
+index a463bc6..bf999e3 100644
+--- a/tools/perf/util/evsel.h
++++ b/tools/perf/util/evsel.h
+@@ -417,6 +417,16 @@ static inline bool evsel__has_callchain(const struct evsel *evsel)
+ 	       evsel->synth_sample_type & PERF_SAMPLE_CALLCHAIN;
+ }
  
- 	The default is all events i.e. the same as --itrace=ibxwpe,
-diff --git a/tools/perf/builtin-inject.c b/tools/perf/builtin-inject.c
-index 7e124a7..7c4403c 100644
---- a/tools/perf/builtin-inject.c
-+++ b/tools/perf/builtin-inject.c
-@@ -684,7 +684,8 @@ static int __cmd_inject(struct perf_inject *inject)
++static inline bool evsel__has_br_stack(const struct evsel *evsel)
++{
++	/*
++	 * For reporting purposes, an evsel sample can have a recorded branch
++	 * stack or a branch stack synthesized from AUX area data.
++	 */
++	return evsel->core.attr.sample_type & PERF_SAMPLE_BRANCH_STACK ||
++	       evsel->synth_sample_type & PERF_SAMPLE_BRANCH_STACK;
++}
++
+ struct perf_env *perf_evsel__env(struct evsel *evsel);
  
- 			perf_header__clear_feat(&session->header,
- 						HEADER_AUXTRACE);
--			if (inject->itrace_synth_opts.last_branch)
-+			if (inject->itrace_synth_opts.last_branch ||
-+			    inject->itrace_synth_opts.add_last_branch)
- 				perf_header__set_feat(&session->header,
- 						      HEADER_BRANCH_STACK);
- 			evsel = perf_evlist__id2evsel_strict(session->evlist,
-diff --git a/tools/perf/builtin-report.c b/tools/perf/builtin-report.c
-index 7da1342..0eea667 100644
---- a/tools/perf/builtin-report.c
-+++ b/tools/perf/builtin-report.c
-@@ -349,7 +349,8 @@ static int report__setup_sample_type(struct report *rep)
- 	     !session->itrace_synth_opts->set))
- 		sample_type |= PERF_SAMPLE_CALLCHAIN;
+ int perf_evsel__store_ids(struct evsel *evsel, struct evlist *evlist);
+diff --git a/tools/perf/util/session.c b/tools/perf/util/session.c
+index 0b0bfe5..2b5a08a 100644
+--- a/tools/perf/util/session.c
++++ b/tools/perf/util/session.c
+@@ -1243,7 +1243,7 @@ static void dump_sample(struct evsel *evsel, union perf_event *event,
+ 	if (evsel__has_callchain(evsel))
+ 		callchain__printf(evsel, sample);
  
--	if (session->itrace_synth_opts->last_branch)
-+	if (session->itrace_synth_opts->last_branch ||
-+	    session->itrace_synth_opts->add_last_branch)
- 		sample_type |= PERF_SAMPLE_BRANCH_STACK;
+-	if (sample_type & PERF_SAMPLE_BRANCH_STACK)
++	if (evsel__has_br_stack(evsel))
+ 		branch_stack__printf(sample, perf_evsel__has_branch_callstack(evsel));
  
- 	if (!is_pipe && !(sample_type & PERF_SAMPLE_CALLCHAIN)) {
-@@ -1393,7 +1394,7 @@ repeat:
- 		goto error;
- 	}
- 
--	if (itrace_synth_opts.last_branch)
-+	if (itrace_synth_opts.last_branch || itrace_synth_opts.add_last_branch)
- 		has_br_stack = true;
- 
- 	if (has_br_stack && branch_call_mode)
-diff --git a/tools/perf/util/auxtrace.c b/tools/perf/util/auxtrace.c
-index ac6e099..83ea7ca 100644
---- a/tools/perf/util/auxtrace.c
-+++ b/tools/perf/util/auxtrace.c
-@@ -1464,8 +1464,12 @@ int itrace_parse_synth_opts(const struct option *opt, const char *str,
- 				synth_opts->callchain_sz = val;
- 			}
- 			break;
-+		case 'L':
- 		case 'l':
--			synth_opts->last_branch = true;
-+			if (p[-1] == 'L')
-+				synth_opts->add_last_branch = true;
-+			else
-+				synth_opts->last_branch = true;
- 			synth_opts->last_branch_sz =
- 					PERF_ITRACE_DEFAULT_LAST_BRANCH_SZ;
- 			while (*p == ' ' || *p == ',')
-diff --git a/tools/perf/util/auxtrace.h b/tools/perf/util/auxtrace.h
-index dd8a4ff..0220a2e 100644
---- a/tools/perf/util/auxtrace.h
-+++ b/tools/perf/util/auxtrace.h
-@@ -77,6 +77,7 @@ enum itrace_period_type {
-  * @add_callchain: add callchain to existing event records
-  * @thread_stack: feed branches to the thread_stack
-  * @last_branch: add branch context to 'instruction' events
-+ * @add_last_branch: add branch context to existing event records
-  * @callchain_sz: maximum callchain size
-  * @last_branch_sz: branch context size
-  * @period: 'instructions' events period
-@@ -105,6 +106,7 @@ struct itrace_synth_opts {
- 	bool			add_callchain;
- 	bool			thread_stack;
- 	bool			last_branch;
-+	bool			add_last_branch;
- 	unsigned int		callchain_sz;
- 	unsigned int		last_branch_sz;
- 	unsigned long long	period;
-diff --git a/tools/perf/util/s390-cpumsf.c b/tools/perf/util/s390-cpumsf.c
-index 38a9428..f886199 100644
---- a/tools/perf/util/s390-cpumsf.c
-+++ b/tools/perf/util/s390-cpumsf.c
-@@ -1079,7 +1079,8 @@ static bool check_auxtrace_itrace(struct itrace_synth_opts *itops)
- 		itops->pwr_events || itops->errors ||
- 		itops->dont_decode || itops->calls || itops->returns ||
- 		itops->callchain || itops->thread_stack ||
--		itops->last_branch || itops->add_callchain;
-+		itops->last_branch || itops->add_callchain ||
-+		itops->add_last_branch;
- 	if (!ison)
- 		return true;
- 	pr_err("Unsupported --itrace options specified\n");
+ 	if (sample_type & PERF_SAMPLE_REGS_USER)
