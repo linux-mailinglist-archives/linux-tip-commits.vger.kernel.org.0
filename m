@@ -2,41 +2,41 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 24EE31CAE0E
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 May 2020 15:10:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46D0F1CAE6F
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 May 2020 15:11:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729977AbgEHNFL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 8 May 2020 09:05:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34640 "EHLO
+        id S1728445AbgEHNJu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 8 May 2020 09:09:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34688 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728787AbgEHNFL (ORCPT
+        by vger.kernel.org with ESMTP id S1730484AbgEHNFU (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 8 May 2020 09:05:11 -0400
+        Fri, 8 May 2020 09:05:20 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0EB4C05BD43;
-        Fri,  8 May 2020 06:05:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE47DC05BD09;
+        Fri,  8 May 2020 06:05:19 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jX2gb-0007U4-Jl; Fri, 08 May 2020 15:05:05 +0200
+        id 1jX2gj-0007XG-AD; Fri, 08 May 2020 15:05:13 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 3152F1C0821;
-        Fri,  8 May 2020 15:04:56 +0200 (CEST)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 14A1A1C04CD;
+        Fri,  8 May 2020 15:04:57 +0200 (CEST)
 Date:   Fri, 08 May 2020 13:04:56 -0000
-From:   "tip-bot2 for Arnaldo Carvalho de Melo" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Adrian Hunter" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf evsel: Rename 'struct perf_evsel__sb_cb_t' to
- 'struct evsel__sb_cb_t'
+Subject: [tip: perf/core] perf intel-pt: Update documentation about itrace G
+ and L options
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Jiri Olsa <jolsa@kernel.org>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Song Liu <songliubraving@fb.com>,
+        Andi Kleen <ak@linux.intel.com>, Jiri Olsa <jolsa@redhat.com>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200429150751.12570-9-adrian.hunter@intel.com>
+References: <20200429150751.12570-9-adrian.hunter@intel.com>
 MIME-Version: 1.0
-Message-ID: <158894309615.8414.4044327569453519346.tip-bot2@tip-bot2>
+Message-ID: <158894309698.8414.1804138023783833053.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -52,90 +52,94 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     65ddce3fd87a822d25c8632afb347b8ece607746
-Gitweb:        https://git.kernel.org/tip/65ddce3fd87a822d25c8632afb347b8ece607746
-Author:        Arnaldo Carvalho de Melo <acme@redhat.com>
-AuthorDate:    Wed, 29 Apr 2020 15:42:16 -03:00
+Commit-ID:     43358d9dfb250842383cddad816a7538548a5070
+Gitweb:        https://git.kernel.org/tip/43358d9dfb250842383cddad816a7538548a5070
+Author:        Adrian Hunter <adrian.hunter@intel.com>
+AuthorDate:    Wed, 29 Apr 2020 18:07:50 +03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Tue, 05 May 2020 16:35:30 -03:00
 
-perf evsel: Rename 'struct perf_evsel__sb_cb_t' to 'struct evsel__sb_cb_t'
+perf intel-pt: Update documentation about itrace G and L options
 
-As the "perf_" prefix should be restricted to functions and types in
-tools/lib/perf/, aka libperf, this way we reduce a bit the confusion for
-types only in libperf or the ones in the more contained tools/perf/
-project.
+Provide a little more information about the new G and L options,
+particularly the issue with large PEBs.
 
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Song Liu <songliubraving@fb.com>
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Andi Kleen <ak@linux.intel.com>
+Cc: Jiri Olsa <jolsa@redhat.com>
+Link: http://lore.kernel.org/lkml/20200429150751.12570-9-adrian.hunter@intel.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/evlist.h          | 4 ++--
- tools/perf/util/evsel.h           | 6 +++---
- tools/perf/util/sideband_evlist.c | 4 ++--
- 3 files changed, 7 insertions(+), 7 deletions(-)
+ tools/perf/Documentation/itrace.txt        |  4 ++-
+ tools/perf/Documentation/perf-intel-pt.txt | 35 +++++++++++++++++++++-
+ 2 files changed, 39 insertions(+)
 
-diff --git a/tools/perf/util/evlist.h b/tools/perf/util/evlist.h
-index 93de63e..b6f325d 100644
---- a/tools/perf/util/evlist.h
-+++ b/tools/perf/util/evlist.h
-@@ -109,9 +109,9 @@ int perf_evlist__add_dummy(struct evlist *evlist);
+diff --git a/tools/perf/Documentation/itrace.txt b/tools/perf/Documentation/itrace.txt
+index 0326050..2714847 100644
+--- a/tools/perf/Documentation/itrace.txt
++++ b/tools/perf/Documentation/itrace.txt
+@@ -33,6 +33,10 @@
+ 	Also the number of last branch entries (default 64, max. 1024) for
+ 	instructions or transactions events can be specified.
  
- int perf_evlist__add_sb_event(struct evlist *evlist,
- 			      struct perf_event_attr *attr,
--			      perf_evsel__sb_cb_t cb,
-+			      evsel__sb_cb_t cb,
- 			      void *data);
--void evlist__set_cb(struct evlist *evlist, perf_evsel__sb_cb_t cb, void *data);
-+void evlist__set_cb(struct evlist *evlist, evsel__sb_cb_t cb, void *data);
- int perf_evlist__start_sb_thread(struct evlist *evlist,
- 				 struct target *target);
- void perf_evlist__stop_sb_thread(struct evlist *evlist);
-diff --git a/tools/perf/util/evsel.h b/tools/perf/util/evsel.h
-index bf999e3..7ff37c4 100644
---- a/tools/perf/util/evsel.h
-+++ b/tools/perf/util/evsel.h
-@@ -18,7 +18,7 @@ struct perf_counts;
- struct perf_stat_evsel;
- union perf_event;
++	Similar to options g and l, size may also be specified for options G and L.
++	On x86, note that G and L work poorly when data has been recorded with
++	large PEBS. Refer linkperf:perf-intel-pt[1] man page for details.
++
+ 	It is also possible to skip events generated (instructions, branches, transactions,
+ 	ptwrite, power) at the beginning. This is useful to ignore initialization code.
  
--typedef int (perf_evsel__sb_cb_t)(union perf_event *event, void *data);
-+typedef int (evsel__sb_cb_t)(union perf_event *event, void *data);
+diff --git a/tools/perf/Documentation/perf-intel-pt.txt b/tools/perf/Documentation/perf-intel-pt.txt
+index 456fdcb..782eb8a 100644
+--- a/tools/perf/Documentation/perf-intel-pt.txt
++++ b/tools/perf/Documentation/perf-intel-pt.txt
+@@ -821,7 +821,9 @@ The letters are:
+ 	e	synthesize tracing error events
+ 	d	create a debug log
+ 	g	synthesize a call chain (use with i or x)
++	G	synthesize a call chain on existing event records
+ 	l	synthesize last branch entries (use with i or x)
++	L	synthesize last branch entries on existing event records
+ 	s	skip initial number of events
  
- enum perf_tool_event {
- 	PERF_TOOL_NONE		= 0,
-@@ -101,8 +101,8 @@ struct evsel {
- 	int			cpu_iter;
- 	const char		*pmu_name;
- 	struct {
--		perf_evsel__sb_cb_t	*cb;
--		void			*data;
-+		evsel__sb_cb_t	*cb;
-+		void		*data;
- 	} side_band;
- 	/*
- 	 * For reporting purposes, an evsel sample can have a callchain
-diff --git a/tools/perf/util/sideband_evlist.c b/tools/perf/util/sideband_evlist.c
-index 1d6f470..bb3706f 100644
---- a/tools/perf/util/sideband_evlist.c
-+++ b/tools/perf/util/sideband_evlist.c
-@@ -13,7 +13,7 @@
- #include <stdbool.h>
+ "Instructions" events look like they were recorded by "perf record -e
+@@ -912,6 +914,39 @@ transactions events can be specified. e.g.
+ Note that last branch entries are cleared for each sample, so there is no overlap
+ from one sample to the next.
  
- int perf_evlist__add_sb_event(struct evlist *evlist, struct perf_event_attr *attr,
--			      perf_evsel__sb_cb_t cb, void *data)
-+			      evsel__sb_cb_t cb, void *data)
- {
- 	struct evsel *evsel;
++The G and L options are designed in particular for sample mode, and work much
++like g and l but add call chain and branch stack to the other selected events
++instead of synthesized events. For example, to record branch-misses events for
++'ls' and then add a call chain derived from the Intel PT trace:
++
++	perf record --aux-sample -e '{intel_pt//u,branch-misses:u}' -- ls
++	perf report --itrace=Ge
++
++Although in fact G is a default for perf report, so that is the same as just:
++
++	perf report
++
++One caveat with the G and L options is that they work poorly with "Large PEBS".
++Large PEBS means PEBS records will be accumulated by hardware and the written
++into the event buffer in one go.  That reduces interrupts, but can give very
++late timestamps.  Because the Intel PT trace is synchronized by timestamps,
++the PEBS events do not match the trace.  Currently, Large PEBS is used only in
++certain circumstances:
++	- hardware supports it
++	- PEBS is used
++	- event period is specified, instead of frequency
++	- the sample type is limited to the following flags:
++		PERF_SAMPLE_IP | PERF_SAMPLE_TID | PERF_SAMPLE_ADDR |
++		PERF_SAMPLE_ID | PERF_SAMPLE_CPU | PERF_SAMPLE_STREAM_ID |
++		PERF_SAMPLE_DATA_SRC | PERF_SAMPLE_IDENTIFIER |
++		PERF_SAMPLE_TRANSACTION | PERF_SAMPLE_PHYS_ADDR |
++		PERF_SAMPLE_REGS_INTR | PERF_SAMPLE_REGS_USER |
++		PERF_SAMPLE_PERIOD (and sometimes) | PERF_SAMPLE_TIME
++Because Intel PT sample mode uses a different sample type to the list above,
++Large PEBS is not used with Intel PT sample mode. To avoid Large PEBS in other
++cases, avoid specifying the event period i.e. avoid the 'perf record' -c option,
++--count option, or 'period' config term.
++
+ To disable trace decoding entirely, use the option --no-itrace.
  
-@@ -81,7 +81,7 @@ static void *perf_evlist__poll_thread(void *arg)
- 	return NULL;
- }
- 
--void evlist__set_cb(struct evlist *evlist, perf_evsel__sb_cb_t cb, void *data)
-+void evlist__set_cb(struct evlist *evlist, evsel__sb_cb_t cb, void *data)
- {
- 	struct evsel *evsel;
- 
+ It is also possible to skip events generated (instructions, branches, transactions)
