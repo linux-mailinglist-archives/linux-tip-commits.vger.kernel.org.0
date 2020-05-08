@@ -2,46 +2,43 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 30CAA1CAED3
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 May 2020 15:16:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79E471CAED8
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 May 2020 15:16:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730043AbgEHNEt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 8 May 2020 09:04:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34522 "EHLO
+        id S1728518AbgEHNLp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 8 May 2020 09:11:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34554 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1729951AbgEHNEs (ORCPT
+        by vger.kernel.org with ESMTP id S1730333AbgEHNEx (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 8 May 2020 09:04:48 -0400
+        Fri, 8 May 2020 09:04:53 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83290C05BD09;
-        Fri,  8 May 2020 06:04:48 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 312BBC05BD0A;
+        Fri,  8 May 2020 06:04:53 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jX2gC-000746-4z; Fri, 08 May 2020 15:04:40 +0200
+        id 1jX2gD-00074Z-6y; Fri, 08 May 2020 15:04:41 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C11731C0080;
-        Fri,  8 May 2020 15:04:39 +0200 (CEST)
-Date:   Fri, 08 May 2020 13:04:39 -0000
-From:   "tip-bot2 for Ian Rogers" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E040C1C03AB;
+        Fri,  8 May 2020 15:04:40 +0200 (CEST)
+Date:   Fri, 08 May 2020 13:04:40 -0000
+From:   "tip-bot2 for Mike Leach" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] libsymbols kallsyms: Move hex2u64 out of header
-Cc:     Ian Rogers <irogers@google.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Jiri Olsa <jolsa@redhat.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Namhyung Kim <namhyung@kernel.org>,
+Subject: [tip: perf/core] perf: cs-etm: Update to build with latest opencsd version.
+Cc:     Mike Leach <mike.leach@linaro.org>, Leo Yan <leo.yan@linaro.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
         Peter Zijlstra <peterz@infradead.org>,
-        Stephane Eranian <eranian@google.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
+        Suzuki Poulouse <suzuki.poulose@arm.com>,
+        coresight@lists.linaro.org, linux-arm-kernel@lists.infradead.org,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200501221315.54715-4-irogers@google.com>
-References: <20200501221315.54715-4-irogers@google.com>
+In-Reply-To: <20200501143615.1180-1-mike.leach@linaro.org>
+References: <20200501143615.1180-1-mike.leach@linaro.org>
 MIME-Version: 1.0
-Message-ID: <158894307971.8414.1458046703138557117.tip-bot2@tip-bot2>
+Message-ID: <158894308086.8414.11285755843467307275.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -57,98 +54,66 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     32add10f9597f2e4e46fa8342a83ae7bdfefd1ae
-Gitweb:        https://git.kernel.org/tip/32add10f9597f2e4e46fa8342a83ae7bdfefd1ae
-Author:        Ian Rogers <irogers@google.com>
-AuthorDate:    Fri, 01 May 2020 15:13:15 -07:00
+Commit-ID:     29e2eb2a9e1fac8b320bf2b4c628c336afbdd84f
+Gitweb:        https://git.kernel.org/tip/29e2eb2a9e1fac8b320bf2b4c628c336afbdd84f
+Author:        Mike Leach <mike.leach@linaro.org>
+AuthorDate:    Fri, 01 May 2020 15:36:15 +01:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Tue, 05 May 2020 16:35:32 -03:00
 
-libsymbols kallsyms: Move hex2u64 out of header
+perf: cs-etm: Update to build with latest opencsd version.
 
-hex2u64 is a helper that's out of place in kallsyms.h as not being
-kallsyms related. Move from kallsyms.h to the only user.
+OpenCSD version v0.14.0 adds in a new output element. This is represented
+by a new value in the generic element type enum, which must be added to
+the handling code in perf cs-etm-decoder to prevent build errors due to
+build options on the perf project.
 
-Committer notes:
+This element is not currently used by the perf decoder.
 
-Move it out of tools/lib/symbol/kallsyms.c as well, as we had to leave
-it there in the previous patch lest we break the build.
+Perf build feature test updated to require a minimum of 0.14.0
 
-Signed-off-by: Ian Rogers <irogers@google.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Jiri Olsa <jolsa@redhat.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
+Tested on Linux 5.7-rc3.
+
+Signed-off-by: Mike Leach <mike.leach@linaro.org>
+Reviewed-by: Leo Yan <leo.yan@linaro.org>
+Reviewed-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Stephane Eranian <eranian@google.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Link: http://lore.kernel.org/lkml/20200501221315.54715-4-irogers@google.com
+Cc: Suzuki Poulouse <suzuki.poulose@arm.com>
+Cc: coresight@lists.linaro.org
+Cc: linux-arm-kernel@lists.infradead.org
+Link: http://lore.kernel.org/lkml/20200501143615.1180-1-mike.leach@linaro.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/lib/symbol/kallsyms.c | 13 -------------
- tools/lib/symbol/kallsyms.h |  2 --
- tools/perf/util/symbol.c    | 14 ++++++++++++++
- 3 files changed, 14 insertions(+), 15 deletions(-)
+ tools/build/feature/test-libopencsd.c           | 4 ++--
+ tools/perf/util/cs-etm-decoder/cs-etm-decoder.c | 2 ++
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/tools/lib/symbol/kallsyms.c b/tools/lib/symbol/kallsyms.c
-index a5edc75..e335ac2 100644
---- a/tools/lib/symbol/kallsyms.c
-+++ b/tools/lib/symbol/kallsyms.c
-@@ -11,19 +11,6 @@ u8 kallsyms2elf_type(char type)
- 	return (type == 't' || type == 'w') ? STT_FUNC : STT_OBJECT;
- }
+diff --git a/tools/build/feature/test-libopencsd.c b/tools/build/feature/test-libopencsd.c
+index 2b0e02c..1547bc2 100644
+--- a/tools/build/feature/test-libopencsd.c
++++ b/tools/build/feature/test-libopencsd.c
+@@ -4,9 +4,9 @@
+ /*
+  * Check OpenCSD library version is sufficient to provide required features
+  */
+-#define OCSD_MIN_VER ((0 << 16) | (11 << 8) | (0))
++#define OCSD_MIN_VER ((0 << 16) | (14 << 8) | (0))
+ #if !defined(OCSD_VER_NUM) || (OCSD_VER_NUM < OCSD_MIN_VER)
+-#error "OpenCSD >= 0.11.0 is required"
++#error "OpenCSD >= 0.14.0 is required"
+ #endif
  
--/*
-- * While we find nice hex chars, build a long_val.
-- * Return number of chars processed.
-- */
--int hex2u64(const char *ptr, u64 *long_val)
--{
--	char *p;
--
--	*long_val = strtoull(ptr, &p, 16);
--
--	return p - ptr;
--}
--
- bool kallsyms__is_function(char symbol_type)
- {
- 	symbol_type = toupper(symbol_type);
-diff --git a/tools/lib/symbol/kallsyms.h b/tools/lib/symbol/kallsyms.h
-index bd988f7..72ab987 100644
---- a/tools/lib/symbol/kallsyms.h
-+++ b/tools/lib/symbol/kallsyms.h
-@@ -18,8 +18,6 @@ static inline u8 kallsyms2elf_binding(char type)
- 	return isupper(type) ? STB_GLOBAL : STB_LOCAL;
- }
- 
--int hex2u64(const char *ptr, u64 *long_val);
--
- u8 kallsyms2elf_type(char type);
- 
- bool kallsyms__is_function(char symbol_type);
-diff --git a/tools/perf/util/symbol.c b/tools/perf/util/symbol.c
-index 8f43004..381da6b 100644
---- a/tools/perf/util/symbol.c
-+++ b/tools/perf/util/symbol.c
-@@ -566,6 +566,20 @@ void dso__sort_by_name(struct dso *dso)
- 	return symbols__sort_by_name(&dso->symbol_names, &dso->symbols);
- }
- 
-+/*
-+ * While we find nice hex chars, build a long_val.
-+ * Return number of chars processed.
-+ */
-+static int hex2u64(const char *ptr, u64 *long_val)
-+{
-+	char *p;
-+
-+	*long_val = strtoull(ptr, &p, 16);
-+
-+	return p - ptr;
-+}
-+
-+
- int modules__parse(const char *filename, void *arg,
- 		   int (*process_module)(void *arg, const char *name,
- 					 u64 start, u64 size))
+ int main(void)
+diff --git a/tools/perf/util/cs-etm-decoder/cs-etm-decoder.c b/tools/perf/util/cs-etm-decoder/cs-etm-decoder.c
+index cd92a99..cd007cc 100644
+--- a/tools/perf/util/cs-etm-decoder/cs-etm-decoder.c
++++ b/tools/perf/util/cs-etm-decoder/cs-etm-decoder.c
+@@ -564,6 +564,8 @@ static ocsd_datapath_resp_t cs_etm_decoder__gen_trace_elem_printer(
+ 		resp = cs_etm_decoder__set_tid(etmq, packet_queue,
+ 					       elem, trace_chan_id);
+ 		break;
++	/* Unused packet types */
++	case OCSD_GEN_TRC_ELEM_I_RANGE_NOPATH:
+ 	case OCSD_GEN_TRC_ELEM_ADDR_NACC:
+ 	case OCSD_GEN_TRC_ELEM_CYCLE_COUNT:
+ 	case OCSD_GEN_TRC_ELEM_ADDR_UNKNOWN:
