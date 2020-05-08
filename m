@@ -2,38 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A19D21CB0CA
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 May 2020 15:48:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 59D9C1CB0E2
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 May 2020 15:48:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727917AbgEHNqf (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 8 May 2020 09:46:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41150 "EHLO
+        id S1727051AbgEHNrY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 8 May 2020 09:47:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41172 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726736AbgEHNqe (ORCPT
+        by vger.kernel.org with ESMTP id S1728196AbgEHNqh (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 8 May 2020 09:46:34 -0400
+        Fri, 8 May 2020 09:46:37 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33397C05BD43;
-        Fri,  8 May 2020 06:46:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63DFAC05BD0B;
+        Fri,  8 May 2020 06:46:37 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jX3Kg-0001kT-TG; Fri, 08 May 2020 15:46:31 +0200
+        id 1jX3Kh-0001kz-UQ; Fri, 08 May 2020 15:46:32 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4B8B91C0080;
-        Fri,  8 May 2020 15:46:30 +0200 (CEST)
-Date:   Fri, 08 May 2020 13:46:30 -0000
-From:   "tip-bot2 for Marco Elver" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 882FC1C0080;
+        Fri,  8 May 2020 15:46:31 +0200 (CEST)
+Date:   Fri, 08 May 2020 13:46:31 -0000
+From:   "tip-bot2 for Wei Yongjun" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/kcsan] objtool, kcsan: Add kcsan_disable_current() and
- kcsan_enable_current_nowarn()
+Subject: [tip: locking/kcsan] kcsan: Use GFP_ATOMIC under spin lock
 Cc:     Marco Elver <elver@google.com>,
+        Wei Yongjun <weiyongjun1@huawei.com>,
         "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158894559016.8414.6140936071049006343.tip-bot2@tip-bot2>
+Message-ID: <158894559149.8414.10630539336535979408.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,33 +49,44 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/kcsan branch of tip:
 
-Commit-ID:     50a19ad4b1ec531eb550183cb5d4ab9f25a56bf8
-Gitweb:        https://git.kernel.org/tip/50a19ad4b1ec531eb550183cb5d4ab9f25a56bf8
-Author:        Marco Elver <elver@google.com>
-AuthorDate:    Fri, 24 Apr 2020 17:47:30 +02:00
+Commit-ID:     52785b6ae8eded7ac99d65c92d989b702e5b4376
+Gitweb:        https://git.kernel.org/tip/52785b6ae8eded7ac99d65c92d989b702e5b4376
+Author:        Wei Yongjun <weiyongjun1@huawei.com>
+AuthorDate:    Fri, 17 Apr 2020 02:58:37 
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Wed, 06 May 2020 13:47:06 -07:00
+CommitterDate: Mon, 27 Apr 2020 11:10:10 -07:00
 
-objtool, kcsan: Add kcsan_disable_current() and kcsan_enable_current_nowarn()
+kcsan: Use GFP_ATOMIC under spin lock
 
-Both are safe to be called from uaccess contexts.
+A spin lock is held in insert_report_filterlist(), so the krealloc()
+should use GFP_ATOMIC.  This commit therefore makes this change.
 
-Signed-off-by: Marco Elver <elver@google.com>
+Reviewed-by: Marco Elver <elver@google.com>
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- tools/objtool/check.c | 2 ++
- 1 file changed, 2 insertions(+)
+ kernel/kcsan/debugfs.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index b6a573d..9122c20 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -472,6 +472,8 @@ static const char *uaccess_safe_builtin[] = {
- 	"kcsan_found_watchpoint",
- 	"kcsan_setup_watchpoint",
- 	"kcsan_check_scoped_accesses",
-+	"kcsan_disable_current",
-+	"kcsan_enable_current_nowarn",
- 	/* KCSAN/TSAN */
- 	"__tsan_func_entry",
- 	"__tsan_func_exit",
+diff --git a/kernel/kcsan/debugfs.c b/kernel/kcsan/debugfs.c
+index 1a08664..023e49c 100644
+--- a/kernel/kcsan/debugfs.c
++++ b/kernel/kcsan/debugfs.c
+@@ -230,7 +230,7 @@ static ssize_t insert_report_filterlist(const char *func)
+ 		/* initial allocation */
+ 		report_filterlist.addrs =
+ 			kmalloc_array(report_filterlist.size,
+-				      sizeof(unsigned long), GFP_KERNEL);
++				      sizeof(unsigned long), GFP_ATOMIC);
+ 		if (report_filterlist.addrs == NULL) {
+ 			ret = -ENOMEM;
+ 			goto out;
+@@ -240,7 +240,7 @@ static ssize_t insert_report_filterlist(const char *func)
+ 		size_t new_size = report_filterlist.size * 2;
+ 		unsigned long *new_addrs =
+ 			krealloc(report_filterlist.addrs,
+-				 new_size * sizeof(unsigned long), GFP_KERNEL);
++				 new_size * sizeof(unsigned long), GFP_ATOMIC);
+ 
+ 		if (new_addrs == NULL) {
+ 			/* leave filterlist itself untouched */
