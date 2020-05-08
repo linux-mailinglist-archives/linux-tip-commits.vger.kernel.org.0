@@ -2,32 +2,32 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 285251CADDB
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 May 2020 15:06:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D2E871CAE6A
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 May 2020 15:11:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730506AbgEHNF0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 8 May 2020 09:05:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34716 "EHLO
+        id S1729803AbgEHNJi (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 8 May 2020 09:09:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34698 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1730419AbgEHNFZ (ORCPT
+        by vger.kernel.org with ESMTP id S1730489AbgEHNFV (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 8 May 2020 09:05:25 -0400
+        Fri, 8 May 2020 09:05:21 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0737C05BD10;
-        Fri,  8 May 2020 06:05:23 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B9A6C05BD0B;
+        Fri,  8 May 2020 06:05:21 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jX2go-0007a1-AV; Fri, 08 May 2020 15:05:18 +0200
+        id 1jX2gi-0007Zc-P4; Fri, 08 May 2020 15:05:12 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id DDF701C0826;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 7B3DB1C0493;
         Fri,  8 May 2020 15:05:00 +0200 (CEST)
 Date:   Fri, 08 May 2020 13:05:00 -0000
 From:   "tip-bot2 for Konstantin Khlebnikov" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf tools: Fix reading new topology attribute "core_cpus"
+Subject: [tip: perf/core] perf tools: Simplify checking if SMT is active.
 Cc:     Konstantin Khlebnikov <khlebnikov@yandex-team.ru>,
         Andi Kleen <ak@linux.intel.com>,
         Dmitry Monakhov <dmtrmonakhov@yandex-team.ru>,
@@ -36,10 +36,10 @@ Cc:     Konstantin Khlebnikov <khlebnikov@yandex-team.ru>,
         Peter Zijlstra <peterz@infradead.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <158817718710.747528.11009278875028211991.stgit@buzz>
-References: <158817718710.747528.11009278875028211991.stgit@buzz>
+In-Reply-To: <158817741394.748034.9273604089138009552.stgit@buzz>
+References: <158817741394.748034.9273604089138009552.stgit@buzz>
 MIME-Version: 1.0
-Message-ID: <158894310080.8414.7942977053863010593.tip-bot2@tip-bot2>
+Message-ID: <158894310042.8414.3876806843338881034.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -55,51 +55,52 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     846de4371fdfddfa49481e3d04884539870dc127
-Gitweb:        https://git.kernel.org/tip/846de4371fdfddfa49481e3d04884539870dc127
+Commit-ID:     bb629484d924118e3b1d8652177040115adcba01
+Gitweb:        https://git.kernel.org/tip/bb629484d924118e3b1d8652177040115adcba01
 Author:        Konstantin Khlebnikov <khlebnikov@yandex-team.ru>
-AuthorDate:    Wed, 29 Apr 2020 19:19:47 +03:00
+AuthorDate:    Wed, 29 Apr 2020 19:23:41 +03:00
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Tue, 05 May 2020 16:35:29 -03:00
 
-perf tools: Fix reading new topology attribute "core_cpus"
+perf tools: Simplify checking if SMT is active.
 
-Check if access("devices/system/cpu/cpu%d/topology/core_cpus", F_OK)
-fails, which will happen unless the current directory is "/sys".
+SMT now could be disabled via "/sys/devices/system/cpu/smt/control".
 
-Simply try to read this file first.
+Status is shown in "/sys/devices/system/cpu/smt/active" simply as "0" / "1".
 
-Fixes: 0ccdb8407a46 ("perf tools: Apply new CPU topology sysfs attributes")
+If this knob isn't here then fallback to checking topology as before.
+
 Signed-off-by: Konstantin Khlebnikov <khlebnikov@yandex-team.ru>
 Cc: Andi Kleen <ak@linux.intel.com>
 Cc: Dmitry Monakhov <dmtrmonakhov@yandex-team.ru>
 Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Kan Liang <kan.liang@linux.intel.com>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Link: http://lore.kernel.org/lkml/158817718710.747528.11009278875028211991.stgit@buzz
+Link: http://lore.kernel.org/lkml/158817741394.748034.9273604089138009552.stgit@buzz
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/smt.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ tools/perf/util/smt.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
 diff --git a/tools/perf/util/smt.c b/tools/perf/util/smt.c
-index 3b791ef..8481842 100644
+index 8481842..20bacd5 100644
 --- a/tools/perf/util/smt.c
 +++ b/tools/perf/util/smt.c
-@@ -24,13 +24,13 @@ int smt_on(void)
+@@ -15,6 +15,9 @@ int smt_on(void)
+ 	if (cached)
+ 		return cached_result;
  
- 		snprintf(fn, sizeof fn,
- 			"devices/system/cpu/cpu%d/topology/core_cpus", cpu);
--		if (access(fn, F_OK) == -1) {
-+		if (sysfs__read_str(fn, &str, &strlen) < 0) {
- 			snprintf(fn, sizeof fn,
- 				"devices/system/cpu/cpu%d/topology/thread_siblings",
- 				cpu);
-+			if (sysfs__read_str(fn, &str, &strlen) < 0)
-+				continue;
- 		}
--		if (sysfs__read_str(fn, &str, &strlen) < 0)
--			continue;
- 		/* Entry is hex, but does not have 0x, so need custom parser */
- 		siblings = strtoull(str, NULL, 16);
- 		free(str);
++	if (sysfs__read_int("devices/system/cpu/smt/active", &cached_result) > 0)
++		goto done;
++
+ 	ncpu = sysconf(_SC_NPROCESSORS_CONF);
+ 	for (cpu = 0; cpu < ncpu; cpu++) {
+ 		unsigned long long siblings;
+@@ -42,6 +45,7 @@ int smt_on(void)
+ 	}
+ 	if (!cached) {
+ 		cached_result = 0;
++done:
+ 		cached = true;
+ 	}
+ 	return cached_result;
