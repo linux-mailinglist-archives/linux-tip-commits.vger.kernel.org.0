@@ -2,36 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B1B151CE61F
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 May 2020 22:59:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 75EB31CE6E0
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 May 2020 23:05:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731824AbgEKU7g (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 11 May 2020 16:59:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43986 "EHLO
+        id S1732082AbgEKVEh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 11 May 2020 17:04:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43972 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1731898AbgEKU7f (ORCPT
+        by vger.kernel.org with ESMTP id S1731878AbgEKU7c (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 11 May 2020 16:59:35 -0400
+        Mon, 11 May 2020 16:59:32 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1E42C061A0C;
-        Mon, 11 May 2020 13:59:35 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A90CC05BD0B;
+        Mon, 11 May 2020 13:59:32 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jYFWQ-0005lR-6G; Mon, 11 May 2020 22:59:34 +0200
+        id 1jYFWM-0005lk-TU; Mon, 11 May 2020 22:59:31 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 319381C06E5;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id F0C691C04D6;
         Mon, 11 May 2020 22:59:24 +0200 (CEST)
 Date:   Mon, 11 May 2020 20:59:24 -0000
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcu-tasks: Make RCU tasks trace also wait for idle tasks
+Subject: [tip: core/rcu] rcu-tasks: Disable CPU hotplug across RCU tasks trace scans
 Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158923076411.390.4440439643536264638.tip-bot2@tip-bot2>
+Message-ID: <158923076484.390.9211273599973610096.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,71 +47,77 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     9796e1ae7386ecf66eb234f7db7753845ebb2139
-Gitweb:        https://git.kernel.org/tip/9796e1ae7386ecf66eb234f7db7753845ebb2139
+Commit-ID:     81b4a7bc3b54b0b839dbf3d2b8c9a353ae910688
+Gitweb:        https://git.kernel.org/tip/81b4a7bc3b54b0b839dbf3d2b8c9a353ae910688
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Sun, 22 Mar 2020 13:18:54 -07:00
+AuthorDate:    Sun, 22 Mar 2020 10:10:07 -07:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Mon, 27 Apr 2020 11:03:52 -07:00
 
-rcu-tasks: Make RCU tasks trace also wait for idle tasks
+rcu-tasks: Disable CPU hotplug across RCU tasks trace scans
 
-This commit scans the CPUs, adding each CPU's idle task to the list of
-tasks that need quiescent states.
+This commit disables CPU hotplug across RCU tasks trace scans, which
+is a first step towards correctly recognizing idle tasks "running" on
+offline CPUs.
 
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/rcu/tasks.h | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ kernel/rcu/tasks.h | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
 diff --git a/kernel/rcu/tasks.h b/kernel/rcu/tasks.h
-index e3a42d8..f272e8f 100644
+index dd311e9..361e17d 100644
 --- a/kernel/rcu/tasks.h
 +++ b/kernel/rcu/tasks.h
-@@ -15,7 +15,7 @@ struct rcu_tasks;
- typedef void (*rcu_tasks_gp_func_t)(struct rcu_tasks *rtp);
- typedef void (*pregp_func_t)(void);
- typedef void (*pertask_func_t)(struct task_struct *t, struct list_head *hop);
--typedef void (*postscan_func_t)(void);
-+typedef void (*postscan_func_t)(struct list_head *hop);
- typedef void (*holdouts_func_t)(struct list_head *hop, bool ndrpt, bool *frptp);
- typedef void (*postgp_func_t)(struct rcu_tasks *rtp);
+@@ -910,16 +910,16 @@ static void rcu_tasks_trace_pregp_step(void)
+ {
+ 	int cpu;
  
-@@ -331,7 +331,7 @@ static void rcu_tasks_wait_gp(struct rcu_tasks *rtp)
- 	rcu_read_unlock();
+-	// Wait for CPU-hotplug paths to complete.
+-	cpus_read_lock();
+-	cpus_read_unlock();
+-
+ 	// Allow for fast-acting IPIs.
+ 	atomic_set(&trc_n_readers_need_end, 1);
  
- 	set_tasks_gp_state(rtp, RTGS_POST_SCAN_TASKLIST);
--	rtp->postscan_func();
-+	rtp->postscan_func(&holdouts);
- 
- 	/*
- 	 * Each pass through the following loop scans the list of holdout
-@@ -415,7 +415,7 @@ static void rcu_tasks_pertask(struct task_struct *t, struct list_head *hop)
+ 	// There shouldn't be any old IPIs, but...
+ 	for_each_possible_cpu(cpu)
+ 		WARN_ON_ONCE(per_cpu(trc_ipi_to_cpu, cpu));
++
++	// Disable CPU hotplug across the tasklist scan.
++	// This also waits for all readers in CPU-hotplug code paths.
++	cpus_read_lock();
  }
  
- /* Processing between scanning taskslist and draining the holdout list. */
--void rcu_tasks_postscan(void)
-+void rcu_tasks_postscan(struct list_head *hop)
+ /* Do first-round processing for the specified task. */
+@@ -935,6 +935,9 @@ static void rcu_tasks_trace_pertask(struct task_struct *t,
+ /* Do intermediate processing between task and holdout scans. */
+ static void rcu_tasks_trace_postscan(void)
  {
- 	/*
- 	 * Wait for tasks that are in the process of exiting.  This
-@@ -936,9 +936,17 @@ static void rcu_tasks_trace_pertask(struct task_struct *t,
- 	trc_wait_for_one_reader(t, hop);
- }
- 
--/* Do intermediate processing between task and holdout scans. */
--static void rcu_tasks_trace_postscan(void)
-+/*
-+ * Do intermediate processing between task and holdout scans and
-+ * pick up the idle tasks.
-+ */
-+static void rcu_tasks_trace_postscan(struct list_head *hop)
++	// Re-enable CPU hotplug now that the tasklist scan has completed.
++	cpus_read_unlock();
++
+ 	// Wait for late-stage exiting tasks to finish exiting.
+ 	// These might have passed the call to exit_tasks_rcu_finish().
+ 	synchronize_rcu();
+@@ -979,6 +982,9 @@ static void check_all_holdout_tasks_trace(struct list_head *hop,
  {
-+	int cpu;
-+
-+	for_each_possible_cpu(cpu)
-+		rcu_tasks_trace_pertask(idle_task(cpu), hop);
-+
- 	// Re-enable CPU hotplug now that the tasklist scan has completed.
- 	cpus_read_unlock();
+ 	struct task_struct *g, *t;
  
++	// Disable CPU hotplug across the holdout list scan.
++	cpus_read_lock();
++
+ 	list_for_each_entry_safe(t, g, hop, trc_holdout_list) {
+ 		// If safe and needed, try to check the current task.
+ 		if (READ_ONCE(t->trc_ipi_to_cpu) == -1 &&
+@@ -991,6 +997,10 @@ static void check_all_holdout_tasks_trace(struct list_head *hop,
+ 		else if (needreport)
+ 			show_stalled_task_trace(t, firstreport);
+ 	}
++
++	// Re-enable CPU hotplug now that the holdout list scan has completed.
++	cpus_read_unlock();
++
+ 	if (needreport) {
+ 		if (firstreport)
+ 			pr_err("INFO: rcu_tasks_trace detected stalls? (Late IPI?)\n");
