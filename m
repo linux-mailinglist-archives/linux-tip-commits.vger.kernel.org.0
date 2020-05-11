@@ -2,36 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E655E1CE6AD
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 May 2020 23:05:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CBB3C1CE61D
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 May 2020 22:59:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731861AbgEKU73 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 11 May 2020 16:59:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43938 "EHLO
+        id S1730090AbgEKU7e (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 11 May 2020 16:59:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43974 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1731850AbgEKU72 (ORCPT
+        by vger.kernel.org with ESMTP id S1731885AbgEKU7e (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 11 May 2020 16:59:28 -0400
+        Mon, 11 May 2020 16:59:34 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00AF2C061A0C;
-        Mon, 11 May 2020 13:59:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0F4DC05BD0A;
+        Mon, 11 May 2020 13:59:33 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jYFWI-0005kG-Ef; Mon, 11 May 2020 22:59:26 +0200
+        id 1jYFWO-0005ke-07; Mon, 11 May 2020 22:59:32 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 9C1231C07EB;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id EFD9F1C07F8;
         Mon, 11 May 2020 22:59:22 +0200 (CEST)
 Date:   Mon, 11 May 2020 20:59:22 -0000
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcu-tasks: Add IPI failure count to statistics
+Subject: [tip: core/rcu] rcutorture: Add TRACE02 scenario enabling RCU Tasks
+ Trace IPIs
 Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158923076254.390.1974673313422754363.tip-bot2@tip-bot2>
+Message-ID: <158923076292.390.13705656012616834525.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,66 +48,68 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     7e0669c3e9dec367ecb63062898c70c1c596b749
-Gitweb:        https://git.kernel.org/tip/7e0669c3e9dec367ecb63062898c70c1c596b749
+Commit-ID:     039f3cc93aa07a90ad5df95d7820b67b0689126d
+Gitweb:        https://git.kernel.org/tip/039f3cc93aa07a90ad5df95d7820b67b0689126d
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Wed, 25 Mar 2020 14:36:05 -07:00
+AuthorDate:    Tue, 24 Mar 2020 08:00:04 -07:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Mon, 27 Apr 2020 11:03:53 -07:00
 
-rcu-tasks: Add IPI failure count to statistics
+rcutorture: Add TRACE02 scenario enabling RCU Tasks Trace IPIs
 
-This commit adds a failure-return count for smp_call_function_single(),
-and adds this to the console messages for rcutorture writer stalls and at
-the end of rcutorture testing.
+This commit adds a TRACE02 scenario which enables preemption and RCU
+Tasks Trace IPIs, more specifically, disabling heavyweight readers.
 
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/rcu/tasks.h | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ tools/testing/selftests/rcutorture/configs/rcu/CFLIST       |  1 +-
+ tools/testing/selftests/rcutorture/configs/rcu/TRACE01      |  1 +-
+ tools/testing/selftests/rcutorture/configs/rcu/TRACE02      | 11 +++++++-
+ tools/testing/selftests/rcutorture/configs/rcu/TRACE02.boot |  1 +-
+ 4 files changed, 14 insertions(+)
+ create mode 100644 tools/testing/selftests/rcutorture/configs/rcu/TRACE02
+ create mode 100644 tools/testing/selftests/rcutorture/configs/rcu/TRACE02.boot
 
-diff --git a/kernel/rcu/tasks.h b/kernel/rcu/tasks.h
-index 0d1b5bf..0a580ef 100644
---- a/kernel/rcu/tasks.h
-+++ b/kernel/rcu/tasks.h
-@@ -32,6 +32,7 @@ typedef void (*postgp_func_t)(struct rcu_tasks *rtp);
-  * @gp_start: Most recent grace-period start in jiffies.
-  * @n_gps: Number of grace periods completed since boot.
-  * @n_ipis: Number of IPIs sent to encourage grace periods to end.
-+ * @n_ipis_fails: Number of IPI-send failures.
-  * @pregp_func: This flavor's pre-grace-period function (optional).
-  * @pertask_func: This flavor's per-task scan function (optional).
-  * @postscan_func: This flavor's post-task scan function (optional).
-@@ -51,6 +52,7 @@ struct rcu_tasks {
- 	unsigned long gp_start;
- 	unsigned long n_gps;
- 	unsigned long n_ipis;
-+	unsigned long n_ipis_fails;
- 	struct task_struct *kthread_ptr;
- 	rcu_tasks_gp_func_t gp_func;
- 	pregp_func_t pregp_func;
-@@ -290,12 +292,12 @@ static void __init rcu_tasks_bootup_oddness(void)
- /* Dump out rcutorture-relevant state common to all RCU-tasks flavors. */
- static void show_rcu_tasks_generic_gp_kthread(struct rcu_tasks *rtp, char *s)
- {
--	pr_info("%s: %s(%d) since %lu g:%lu i:%lu %c%c %s\n",
-+	pr_info("%s: %s(%d) since %lu g:%lu i:%lu/%lu %c%c %s\n",
- 		rtp->kname,
--		tasks_gp_state_getname(rtp),
--		data_race(rtp->gp_state),
-+		tasks_gp_state_getname(rtp), data_race(rtp->gp_state),
- 		jiffies - data_race(rtp->gp_jiffies),
--		data_race(rtp->n_gps), data_race(rtp->n_ipis),
-+		data_race(rtp->n_gps),
-+		data_race(rtp->n_ipis_fails), data_race(rtp->n_ipis),
- 		".k"[!!data_race(rtp->kthread_ptr)],
- 		".C"[!!data_race(rtp->cbs_head)],
- 		s);
-@@ -909,6 +911,7 @@ static void trc_wait_for_one_reader(struct task_struct *t,
- 					     trc_read_check_handler, t, 0)) {
- 			// Just in case there is some other reason for
- 			// failure than the target CPU being offline.
-+			rcu_tasks_trace.n_ipis_fails++;
- 			per_cpu(trc_ipi_to_cpu, cpu) = false;
- 			t->trc_ipi_to_cpu = cpu;
- 			if (atomic_dec_and_test(&trc_n_readers_need_end)) {
+diff --git a/tools/testing/selftests/rcutorture/configs/rcu/CFLIST b/tools/testing/selftests/rcutorture/configs/rcu/CFLIST
+index dfb1817..f2b20db 100644
+--- a/tools/testing/selftests/rcutorture/configs/rcu/CFLIST
++++ b/tools/testing/selftests/rcutorture/configs/rcu/CFLIST
+@@ -16,3 +16,4 @@ TASKS02
+ TASKS03
+ RUDE01
+ TRACE01
++TRACE02
+diff --git a/tools/testing/selftests/rcutorture/configs/rcu/TRACE01 b/tools/testing/selftests/rcutorture/configs/rcu/TRACE01
+index 078e2c1..12e7661 100644
+--- a/tools/testing/selftests/rcutorture/configs/rcu/TRACE01
++++ b/tools/testing/selftests/rcutorture/configs/rcu/TRACE01
+@@ -7,4 +7,5 @@ CONFIG_PREEMPT=n
+ CONFIG_DEBUG_LOCK_ALLOC=y
+ CONFIG_PROVE_LOCKING=y
+ #CHECK#CONFIG_PROVE_RCU=y
++CONFIG_TASKS_TRACE_RCU_READ_MB=y
+ CONFIG_RCU_EXPERT=y
+diff --git a/tools/testing/selftests/rcutorture/configs/rcu/TRACE02 b/tools/testing/selftests/rcutorture/configs/rcu/TRACE02
+new file mode 100644
+index 0000000..b69ed66
+--- /dev/null
++++ b/tools/testing/selftests/rcutorture/configs/rcu/TRACE02
+@@ -0,0 +1,11 @@
++CONFIG_SMP=y
++CONFIG_NR_CPUS=4
++CONFIG_HOTPLUG_CPU=y
++CONFIG_PREEMPT_NONE=n
++CONFIG_PREEMPT_VOLUNTARY=n
++CONFIG_PREEMPT=y
++CONFIG_DEBUG_LOCK_ALLOC=n
++CONFIG_PROVE_LOCKING=n
++#CHECK#CONFIG_PROVE_RCU=n
++CONFIG_TASKS_TRACE_RCU_READ_MB=n
++CONFIG_RCU_EXPERT=y
+diff --git a/tools/testing/selftests/rcutorture/configs/rcu/TRACE02.boot b/tools/testing/selftests/rcutorture/configs/rcu/TRACE02.boot
+new file mode 100644
+index 0000000..9675ad6
+--- /dev/null
++++ b/tools/testing/selftests/rcutorture/configs/rcu/TRACE02.boot
+@@ -0,0 +1 @@
++rcutorture.torture_type=tasks-tracing
