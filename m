@@ -2,36 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C23811CE612
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 May 2020 22:59:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8CB61CE705
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 May 2020 23:06:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728544AbgEKU7Q (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 11 May 2020 16:59:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43880 "EHLO
+        id S1729517AbgEKU7R (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 11 May 2020 16:59:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43884 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726661AbgEKU7Q (ORCPT
+        by vger.kernel.org with ESMTP id S1728046AbgEKU7Q (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Mon, 11 May 2020 16:59:16 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3440AC061A0C;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADB0EC05BD09;
         Mon, 11 May 2020 13:59:16 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jYFW6-0005eP-Jv; Mon, 11 May 2020 22:59:14 +0200
+        id 1jYFW7-0005ed-6t; Mon, 11 May 2020 22:59:15 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E68D01C001F;
-        Mon, 11 May 2020 22:59:13 +0200 (CEST)
-Date:   Mon, 11 May 2020 20:59:13 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id CB1411C001F;
+        Mon, 11 May 2020 22:59:14 +0200 (CEST)
+Date:   Mon, 11 May 2020 20:59:14 -0000
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcutorture: Convert ULONG_CMP_LT() to time_before()
+Subject: [tip: core/rcu] torture: Save a few lines by using
+ config_override_param initially
 Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158923075330.390.2075042483179383674.tip-bot2@tip-bot2>
+Message-ID: <158923075476.390.8042140654477523357.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,52 +48,87 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     3c80b4024579150ddb8ddd6fd7b110ba192aca3b
-Gitweb:        https://git.kernel.org/tip/3c80b4024579150ddb8ddd6fd7b110ba192aca3b
+Commit-ID:     409670aa26b6a8c9c0fb34eb7a887b9fedc6952b
+Gitweb:        https://git.kernel.org/tip/409670aa26b6a8c9c0fb34eb7a887b9fedc6952b
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Fri, 10 Apr 2020 15:37:12 -07:00
+AuthorDate:    Thu, 09 Apr 2020 16:58:00 -07:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Thu, 07 May 2020 10:15:29 -07:00
 
-rcutorture: Convert ULONG_CMP_LT() to time_before()
+torture: Save a few lines by using config_override_param initially
 
-This commit converts three ULONG_CMP_LT() invocations in rcutorture to
-time_before() to reflect the fact that they are comparing timestamps to
-the jiffies counter.
+This commit saves a few lines of code by also using the bash
+config_override_param() to set the initial list of Kconfig options from
+the CFcommon file.  While in the area, it makes this function capable of
+update-in-place on the file containing the cumulative Kconfig options,
+thus avoiding annoying changes when adding another source of options.
 
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/rcu/rcutorture.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh | 38 ++-----
+ 1 file changed, 16 insertions(+), 22 deletions(-)
 
-diff --git a/kernel/rcu/rcutorture.c b/kernel/rcu/rcutorture.c
-index c7b7594..fc96147 100644
---- a/kernel/rcu/rcutorture.c
-+++ b/kernel/rcu/rcutorture.c
-@@ -848,7 +848,7 @@ static int rcu_torture_boost(void *arg)
+diff --git a/tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh b/tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh
+index c7534fd..52f8966 100755
+--- a/tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh
++++ b/tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh
+@@ -46,35 +46,29 @@ echo ' ---' `date`: Starting build
+ echo ' ---' Kconfig fragment at: $config_template >> $resdir/log
+ touch $resdir/ConfigFragment.input
  
- 		/* Wait for the next test interval. */
- 		oldstarttime = boost_starttime;
--		while (ULONG_CMP_LT(jiffies, oldstarttime)) {
-+		while (time_before(jiffies, oldstarttime)) {
- 			schedule_timeout_interruptible(oldstarttime - jiffies);
- 			stutter_wait("rcu_torture_boost");
- 			if (torture_must_stop())
-@@ -858,7 +858,7 @@ static int rcu_torture_boost(void *arg)
- 		/* Do one boost-test interval. */
- 		endtime = oldstarttime + test_boost_duration * HZ;
- 		call_rcu_time = jiffies;
--		while (ULONG_CMP_LT(jiffies, endtime)) {
-+		while (time_before(jiffies, endtime)) {
- 			/* If we don't have a callback in flight, post one. */
- 			if (!smp_load_acquire(&rbi.inflight)) {
- 				/* RCU core before ->inflight = 1. */
-@@ -929,7 +929,7 @@ rcu_torture_fqs(void *arg)
- 	VERBOSE_TOROUT_STRING("rcu_torture_fqs task started");
- 	do {
- 		fqs_resume_time = jiffies + fqs_stutter * HZ;
--		while (ULONG_CMP_LT(jiffies, fqs_resume_time) &&
-+		while (time_before(jiffies, fqs_resume_time) &&
- 		       !kthread_should_stop()) {
- 			schedule_timeout_interruptible(1);
- 		}
+-# Combine additional Kconfig options into an existing set such that newer
+-# options win.  The first argument is the Kconfig source ID, the second
+-# the source file within $T, the third the destination file within $T,
+-# and the fourth and final the list of additional Kconfig options.
++# Combine additional Kconfig options into an existing set such that
++# newer options win.  The first argument is the Kconfig source ID, the
++# second the to-be-updated file within $T, and the third and final the
++# list of additional Kconfig options.  Note that a $2.tmp file is
++# created when doing the update.
+ config_override_param () {
+-	if test -n "$4"
++	if test -n "$3"
+ 	then
+-		echo $4 | sed -e 's/^ *//' -e 's/ *$//' | tr -s " " "\012" > $T/Kconfig_args
++		echo $3 | sed -e 's/^ *//' -e 's/ *$//' | tr -s " " "\012" > $T/Kconfig_args
+ 		echo " --- $1" >> $resdir/ConfigFragment.input
+ 		cat $T/Kconfig_args >> $resdir/ConfigFragment.input
+-		config_override.sh $T/$2 $T/Kconfig_args > $T/$3
++		config_override.sh $T/$2 $T/Kconfig_args > $T/$2.tmp
++		mv $T/$2.tmp $T/$2
+ 		# Note that "#CHECK#" is not permitted on commandline.
+-	else
+-		cp $T/$2 $T/$3
+ 	fi
+ }
+ 
+-if test -r "$config_dir/CFcommon"
+-then
+-	echo " --- $config_dir/CFcommon" >> $resdir/ConfigFragment.input
+-	cat < $config_dir/CFcommon >> $resdir/ConfigFragment.input
+-	cp $config_dir/CFcommon $T/Kc0
+-else
+-	echo > $T/Kc0
+-fi
+-config_override_param "$config_template" Kc0 Kc1 "`cat $config_template 2> /dev/null`"
+-config_override_param "--kcsan options" Kc1 Kc2 "$TORTURE_KCONFIG_KCSAN_ARG"
+-config_override_param "--kconfig argument" Kc2 Kc3 "$TORTURE_KCONFIG_ARG"
+-cp $T/Kc3 $resdir/ConfigFragment
++echo > $T/KcList
++config_override_param "$config_dir/CFcommon" KcList "`cat $config_dir/CFcommon 2> /dev/null`"
++config_override_param "$config_template" KcList "`cat $config_template 2> /dev/null`"
++config_override_param "--kcsan options" KcList "$TORTURE_KCONFIG_KCSAN_ARG"
++config_override_param "--kconfig argument" KcList "$TORTURE_KCONFIG_ARG"
++cp $T/KcList $resdir/ConfigFragment
+ 
+ base_resdir=`echo $resdir | sed -e 's/\.[0-9]\+$//'`
+ if test "$base_resdir" != "$resdir" -a -f $base_resdir/bzImage -a -f $base_resdir/vmlinux
+@@ -87,7 +81,7 @@ then
+ 	ln -s $base_resdir/.config $resdir  # for kvm-recheck.sh
+ 	# Arch-independent indicator
+ 	touch $resdir/builtkernel
+-elif kvm-build.sh $T/Kc3 $resdir
++elif kvm-build.sh $T/KcList $resdir
+ then
+ 	# Had to build a kernel for this test.
+ 	QEMU="`identify_qemu vmlinux`"
