@@ -2,36 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A52EE1CE700
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 May 2020 23:06:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8101C1CE6AA
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 May 2020 23:05:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730285AbgEKU7T (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 11 May 2020 16:59:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43896 "EHLO
+        id S1731637AbgEKU7W (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 11 May 2020 16:59:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43908 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728046AbgEKU7S (ORCPT
+        by vger.kernel.org with ESMTP id S1731375AbgEKU7V (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 11 May 2020 16:59:18 -0400
+        Mon, 11 May 2020 16:59:21 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84349C061A0C;
-        Mon, 11 May 2020 13:59:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C939C05BD09;
+        Mon, 11 May 2020 13:59:21 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jYFW8-0005fZ-Ta; Mon, 11 May 2020 22:59:17 +0200
+        id 1jYFW9-0005fo-7g; Mon, 11 May 2020 22:59:17 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 7906B1C001F;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id DD2111C0494;
         Mon, 11 May 2020 22:59:16 +0200 (CEST)
 Date:   Mon, 11 May 2020 20:59:16 -0000
-From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Jason Yan" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] torture: Eliminate duplicate #CHECK# from ConfigFragment
-Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
+Subject: [tip: core/rcu] rcutorture: Make rcu_fwds and rcu_fwd_emergency_stop static
+Cc:     Hulk Robot <hulkci@huawei.com>, Jason Yan <yanaijie@huawei.com>,
+        "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158923075643.390.8270731853350752134.tip-bot2@tip-bot2>
+Message-ID: <158923075682.390.12246694601760269827.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,57 +48,39 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     b5744d3c6c38a44e14894bc3ee17b98885e4852f
-Gitweb:        https://git.kernel.org/tip/b5744d3c6c38a44e14894bc3ee17b98885e4852f
-Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Thu, 09 Apr 2020 15:32:56 -07:00
+Commit-ID:     afbc1574f1da13d2fd2b30a96090b37c5933f957
+Gitweb:        https://git.kernel.org/tip/afbc1574f1da13d2fd2b30a96090b37c5933f957
+Author:        Jason Yan <yanaijie@huawei.com>
+AuthorDate:    Thu, 09 Apr 2020 19:42:38 +08:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Thu, 07 May 2020 10:15:29 -07:00
 
-torture: Eliminate duplicate #CHECK# from ConfigFragment
+rcutorture: Make rcu_fwds and rcu_fwd_emergency_stop static
 
-The #CHECK# directives that can be present in CFcommon and in the
-rcutorture scenario Kconfig files are both copied to ConfigFragment
-and grepped out of the two directive files and added to ConfigFragment.
-This commit therefore removes the redundant "grep" commands and takes
-advantage of the consequent opportunity to simplify redirection.
+This commit fixes the following sparse warning:
 
+kernel/rcu/rcutorture.c:1695:16: warning: symbol 'rcu_fwds' was not declared. Should it be static?
+kernel/rcu/rcutorture.c:1696:6: warning: symbol 'rcu_fwd_emergency_stop' was not declared. Should it be static?
+
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Jason Yan <yanaijie@huawei.com>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ kernel/rcu/rcutorture.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh b/tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh
-index e035230..74da059 100755
---- a/tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh
-+++ b/tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh
-@@ -44,19 +44,17 @@ then
- fi
- echo ' ---' `date`: Starting build
- echo ' ---' Kconfig fragment at: $config_template >> $resdir/log
--touch $resdir/ConfigFragment.input $resdir/ConfigFragment
-+touch $resdir/ConfigFragment.input
- if test -r "$config_dir/CFcommon"
- then
- 	echo " --- $config_dir/CFcommon" >> $resdir/ConfigFragment.input
- 	cat < $config_dir/CFcommon >> $resdir/ConfigFragment.input
- 	config_override.sh $config_dir/CFcommon $config_template > $T/Kc1
--	grep '#CHECK#' $config_dir/CFcommon >> $resdir/ConfigFragment
- else
- 	cp $config_template $T/Kc1
- fi
- echo " --- $config_template" >> $resdir/ConfigFragment.input
- cat $config_template >> $resdir/ConfigFragment.input
--grep '#CHECK#' $config_template >> $resdir/ConfigFragment
- if test -n "$TORTURE_KCONFIG_ARG"
- then
- 	echo $TORTURE_KCONFIG_ARG | tr -s " " "\012" > $T/cmdline
-@@ -67,7 +65,7 @@ then
- else
- 	cp $T/Kc1 $T/Kc2
- fi
--cat $T/Kc2 >> $resdir/ConfigFragment
-+cat $T/Kc2 > $resdir/ConfigFragment
+diff --git a/kernel/rcu/rcutorture.c b/kernel/rcu/rcutorture.c
+index 3d47dca..c7b7594 100644
+--- a/kernel/rcu/rcutorture.c
++++ b/kernel/rcu/rcutorture.c
+@@ -1721,8 +1721,8 @@ struct rcu_fwd {
+ 	unsigned long rcu_launder_gp_seq_start;
+ };
  
- base_resdir=`echo $resdir | sed -e 's/\.[0-9]\+$//'`
- if test "$base_resdir" != "$resdir" -a -f $base_resdir/bzImage -a -f $base_resdir/vmlinux
+-struct rcu_fwd *rcu_fwds;
+-bool rcu_fwd_emergency_stop;
++static struct rcu_fwd *rcu_fwds;
++static bool rcu_fwd_emergency_stop;
+ 
+ static void rcu_torture_fwd_cb_hist(struct rcu_fwd *rfp)
+ {
