@@ -2,36 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B13E1CE6EB
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 May 2020 23:05:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F9341CE6AE
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 May 2020 23:05:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732029AbgEKVEw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 11 May 2020 17:04:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43950 "EHLO
+        id S1731320AbgEKU7b (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 11 May 2020 16:59:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43952 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1731862AbgEKU73 (ORCPT
+        by vger.kernel.org with ESMTP id S1731867AbgEKU7a (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 11 May 2020 16:59:29 -0400
+        Mon, 11 May 2020 16:59:30 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88476C061A0C;
-        Mon, 11 May 2020 13:59:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12AFAC061A0E;
+        Mon, 11 May 2020 13:59:30 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jYFWJ-0005ky-RU; Mon, 11 May 2020 22:59:28 +0200
+        id 1jYFWK-0005l8-L6; Mon, 11 May 2020 22:59:28 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 565071C04E3;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id CA0921C001F;
         Mon, 11 May 2020 22:59:23 +0200 (CEST)
 Date:   Mon, 11 May 2020 20:59:23 -0000
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcu-tasks: Add count for idle tasks on offline CPUs
+Subject: [tip: core/rcu] rcu-tasks: Add rcu_dynticks_zero_in_eqs()
+ effectiveness statistics
 Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158923076328.390.18423169439389986790.tip-bot2@tip-bot2>
+Message-ID: <158923076371.390.8559975619271578475.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,52 +48,64 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     edf3775f0ad66879796f594983163f672c4bf1a2
-Gitweb:        https://git.kernel.org/tip/edf3775f0ad66879796f594983163f672c4bf1a2
+Commit-ID:     40471509be3cb8c9c02aec1c316614cb96e6fe85
+Gitweb:        https://git.kernel.org/tip/40471509be3cb8c9c02aec1c316614cb96e6fe85
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Sun, 22 Mar 2020 14:09:45 -07:00
+AuthorDate:    Sun, 22 Mar 2020 13:34:34 -07:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Mon, 27 Apr 2020 11:03:53 -07:00
+CommitterDate: Mon, 27 Apr 2020 11:03:52 -07:00
 
-rcu-tasks: Add count for idle tasks on offline CPUs
+rcu-tasks: Add rcu_dynticks_zero_in_eqs() effectiveness statistics
 
-This commit adds a counter for the number of times the quiescent state
-was an idle task associated with an offline CPU, and prints this count
-at the end of rcutorture runs and at stall time.
+This commit adds counts of the number of calls and number of successful
+calls to rcu_dynticks_zero_in_eqs(), which are printed at the end
+of rcutorture runs and at stall time.  This allows evaluation of the
+effectiveness of rcu_dynticks_zero_in_eqs().
 
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/rcu/tasks.h | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ kernel/rcu/tasks.h | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
 diff --git a/kernel/rcu/tasks.h b/kernel/rcu/tasks.h
-index ce65883..0d1b5bf 100644
+index f272e8f..ce65883 100644
 --- a/kernel/rcu/tasks.h
 +++ b/kernel/rcu/tasks.h
-@@ -729,6 +729,7 @@ static DEFINE_PER_CPU(bool, trc_ipi_to_cpu);
- // heavyweight readers executing explicit memory barriers.
- unsigned long n_heavy_reader_attempts;
- unsigned long n_heavy_reader_updates;
-+unsigned long n_heavy_reader_ofl_updates;
+@@ -725,6 +725,11 @@ DECLARE_WAIT_QUEUE_HEAD(trc_wait);	// List of holdout tasks.
+ // Record outstanding IPIs to each CPU.  No point in sending two...
+ static DEFINE_PER_CPU(bool, trc_ipi_to_cpu);
  
++// The number of detections of task quiescent state relying on
++// heavyweight readers executing explicit memory barriers.
++unsigned long n_heavy_reader_attempts;
++unsigned long n_heavy_reader_updates;
++
  void call_rcu_tasks_trace(struct rcu_head *rhp, rcu_callback_t func);
  DEFINE_RCU_TASKS(rcu_tasks_trace, rcu_tasks_wait_gp, call_rcu_tasks_trace,
-@@ -840,6 +841,8 @@ static bool trc_inspect_reader(struct task_struct *t, void *arg)
+ 		 "RCU Tasks Trace");
+@@ -830,9 +835,11 @@ static bool trc_inspect_reader(struct task_struct *t, void *arg)
+ 		// If heavyweight readers are enabled on the remote task,
+ 		// we can inspect its state despite its currently running.
+ 		// However, we cannot safely change its state.
++		n_heavy_reader_attempts++;
+ 		if (!ofl && // Check for "running" idle tasks on offline CPUs.
  		    !rcu_dynticks_zero_in_eqs(cpu, &t->trc_reader_nesting))
  			return false; // No quiescent state, do it the hard way.
- 		n_heavy_reader_updates++;
-+		if (ofl)
-+			n_heavy_reader_ofl_updates++;
++		n_heavy_reader_updates++;
  		in_qs = true;
  	} else {
  		in_qs = likely(!t->trc_reader_nesting);
-@@ -1156,7 +1159,8 @@ static void show_rcu_tasks_trace_gp_kthread(void)
- {
- 	char buf[64];
+@@ -1147,9 +1154,11 @@ core_initcall(rcu_spawn_tasks_trace_kthread);
  
--	sprintf(buf, "N%d h:%lu/%lu", atomic_read(&trc_n_readers_need_end),
-+	sprintf(buf, "N%d h:%lu/%lu/%lu", atomic_read(&trc_n_readers_need_end),
-+		data_race(n_heavy_reader_ofl_updates),
- 		data_race(n_heavy_reader_updates),
- 		data_race(n_heavy_reader_attempts));
+ static void show_rcu_tasks_trace_gp_kthread(void)
+ {
+-	char buf[32];
++	char buf[64];
+ 
+-	sprintf(buf, "N%d", atomic_read(&trc_n_readers_need_end));
++	sprintf(buf, "N%d h:%lu/%lu", atomic_read(&trc_n_readers_need_end),
++		data_race(n_heavy_reader_updates),
++		data_race(n_heavy_reader_attempts));
  	show_rcu_tasks_generic_gp_kthread(&rcu_tasks_trace, buf);
+ }
+ 
