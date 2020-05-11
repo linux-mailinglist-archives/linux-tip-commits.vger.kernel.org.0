@@ -2,36 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CF24A1CE6D5
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 May 2020 23:05:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 319151CE625
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 May 2020 23:00:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731938AbgEKVEN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 11 May 2020 17:04:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44008 "EHLO
+        id S1731973AbgEKU7p (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 11 May 2020 16:59:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44030 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1731852AbgEKU7j (ORCPT
+        by vger.kernel.org with ESMTP id S1731956AbgEKU7n (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 11 May 2020 16:59:39 -0400
+        Mon, 11 May 2020 16:59:43 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36D6EC061A0C;
-        Mon, 11 May 2020 13:59:39 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9A76C061A0C;
+        Mon, 11 May 2020 13:59:43 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jYFWT-0005pW-Pb; Mon, 11 May 2020 22:59:37 +0200
+        id 1jYFWY-0005pF-2V; Mon, 11 May 2020 22:59:42 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E30B61C0494;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 6B6E21C074B;
         Mon, 11 May 2020 22:59:29 +0200 (CEST)
 Date:   Mon, 11 May 2020 20:59:29 -0000
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcu-tasks: Add stall warnings for RCU Tasks Trace
+Subject: [tip: core/rcu] rcu-tasks: Move #ifdef into tasks.h
 Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158923076982.390.17964288214382278812.tip-bot2@tip-bot2>
+Message-ID: <158923076935.390.12470805183953700639.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,125 +47,58 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     4593e772b5020e714e18f6e212d70b24fbe88b79
-Gitweb:        https://git.kernel.org/tip/4593e772b5020e714e18f6e212d70b24fbe88b79
+Commit-ID:     8fd8ca388ccf233b8ae0b6b42ddc7caa5034ae85
+Gitweb:        https://git.kernel.org/tip/8fd8ca388ccf233b8ae0b6b42ddc7caa5034ae85
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Tue, 10 Mar 2020 12:13:53 -07:00
+AuthorDate:    Sun, 15 Mar 2020 14:51:20 -07:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Mon, 27 Apr 2020 11:03:51 -07:00
 
-rcu-tasks: Add stall warnings for RCU Tasks Trace
+rcu-tasks: Move #ifdef into tasks.h
 
-This commit adds RCU CPU stall warnings for RCU Tasks Trace.  These
-dump out any tasks blocking the current grace period, as well as any
-CPUs that have not responded to an IPI request.  This happens in two
-phases, when initially extracting state from the tasks and later when
-waiting for any holdout tasks to check in.
+This commit pushes the #ifdef CONFIG_TASKS_RCU_GENERIC from
+kernel/rcu/update.c to kernel/rcu/tasks.h in order to improve
+readability as more APIs are added.
 
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/rcu/tasks.h | 70 ++++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 66 insertions(+), 4 deletions(-)
+ kernel/rcu/tasks.h  | 5 +++++
+ kernel/rcu/update.c | 4 ----
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
 diff --git a/kernel/rcu/tasks.h b/kernel/rcu/tasks.h
-index fd34fd6..4237881 100644
+index 4237881..b7e3e1d 100644
 --- a/kernel/rcu/tasks.h
 +++ b/kernel/rcu/tasks.h
-@@ -798,9 +798,41 @@ static void rcu_tasks_trace_postscan(void)
- 	// Any tasks that exit after this point will set ->trc_reader_checked.
- }
+@@ -5,6 +5,7 @@
+  * Copyright (C) 2020 Paul E. McKenney
+  */
  
-+/* Show the state of a task stalling the current RCU tasks trace GP. */
-+static void show_stalled_task_trace(struct task_struct *t, bool *firstreport)
-+{
-+	int cpu;
-+
-+	if (*firstreport) {
-+		pr_err("INFO: rcu_tasks_trace detected stalls on tasks:\n");
-+		*firstreport = false;
-+	}
-+	// FIXME: This should attempt to use try_invoke_on_nonrunning_task().
-+	cpu = task_cpu(t);
-+	pr_alert("P%d: %c%c%c nesting: %d%c cpu: %d\n",
-+		 t->pid,
-+		 ".I"[READ_ONCE(t->trc_ipi_to_cpu) > 0],
-+		 ".i"[is_idle_task(t)],
-+		 ".N"[cpu > 0 && tick_nohz_full_cpu(cpu)],
-+		 t->trc_reader_nesting,
-+		 " N"[!!t->trc_reader_need_end],
-+		 cpu);
-+	sched_show_task(t);
-+}
-+
-+/* List stalled IPIs for RCU tasks trace. */
-+static void show_stalled_ipi_trace(void)
-+{
-+	int cpu;
-+
-+	for_each_possible_cpu(cpu)
-+		if (per_cpu(trc_ipi_to_cpu, cpu))
-+			pr_alert("\tIPI outstanding to CPU %d\n", cpu);
-+}
-+
- /* Do one scan of the holdout list. */
- static void check_all_holdout_tasks_trace(struct list_head *hop,
--					  bool ndrpt, bool *frptp)
-+					  bool needreport, bool *firstreport)
- {
- 	struct task_struct *g, *t;
++#ifdef CONFIG_TASKS_RCU_GENERIC
  
-@@ -813,21 +845,51 @@ static void check_all_holdout_tasks_trace(struct list_head *hop,
- 		// If check succeeded, remove this task from the list.
- 		if (READ_ONCE(t->trc_reader_checked))
- 			trc_del_holdout(t);
-+		else if (needreport)
-+			show_stalled_task_trace(t, firstreport);
-+	}
-+	if (needreport) {
-+		if (firstreport)
-+			pr_err("INFO: rcu_tasks_trace detected stalls? (Late IPI?)\n");
-+		show_stalled_ipi_trace();
- 	}
- }
- 
- /* Wait for grace period to complete and provide ordering. */
- static void rcu_tasks_trace_postgp(void)
- {
-+	bool firstreport;
-+	struct task_struct *g, *t;
-+	LIST_HEAD(holdouts);
-+	long ret;
+ ////////////////////////////////////////////////////////////////////////
+ //
+@@ -984,3 +985,7 @@ core_initcall(rcu_spawn_tasks_trace_kthread);
+ #else /* #ifdef CONFIG_TASKS_TRACE_RCU */
+ void exit_tasks_rcu_finish_trace(struct task_struct *t) { }
+ #endif /* #else #ifdef CONFIG_TASKS_TRACE_RCU */
 +
- 	// Remove the safety count.
- 	smp_mb__before_atomic();  // Order vs. earlier atomics
- 	atomic_dec(&trc_n_readers_need_end);
- 	smp_mb__after_atomic();  // Order vs. later atomics
++#else /* #ifdef CONFIG_TASKS_RCU_GENERIC */
++static inline void rcu_tasks_bootup_oddness(void) {}
++#endif /* #else #ifdef CONFIG_TASKS_RCU_GENERIC */
+diff --git a/kernel/rcu/update.c b/kernel/rcu/update.c
+index 30dce20..c579934 100644
+--- a/kernel/rcu/update.c
++++ b/kernel/rcu/update.c
+@@ -584,11 +584,7 @@ late_initcall(rcu_verify_early_boot_tests);
+ void rcu_early_boot_tests(void) {}
+ #endif /* CONFIG_PROVE_RCU */
  
- 	// Wait for readers.
--	wait_event_idle_exclusive(trc_wait,
--				  atomic_read(&trc_n_readers_need_end) == 0);
--
-+	for (;;) {
-+		ret = wait_event_idle_exclusive_timeout(
-+				trc_wait,
-+				atomic_read(&trc_n_readers_need_end) == 0,
-+				READ_ONCE(rcu_task_stall_timeout));
-+		if (ret)
-+			break;  // Count reached zero.
-+		for_each_process_thread(g, t)
-+			if (READ_ONCE(t->trc_reader_need_end))
-+				trc_add_holdout(t, &holdouts);
-+		firstreport = true;
-+		list_for_each_entry_safe(t, g, &holdouts, trc_holdout_list)
-+			if (READ_ONCE(t->trc_reader_need_end)) {
-+				show_stalled_task_trace(t, &firstreport);
-+				trc_del_holdout(t);
-+			}
-+		if (firstreport)
-+			pr_err("INFO: rcu_tasks_trace detected stalls? (Counter/taskslist mismatch?)\n");
-+		show_stalled_ipi_trace();
-+		pr_err("\t%d holdouts\n", atomic_read(&trc_n_readers_need_end));
-+	}
- 	smp_mb(); // Caller's code must be ordered after wakeup.
- }
+-#ifdef CONFIG_TASKS_RCU_GENERIC
+ #include "tasks.h"
+-#else /* #ifdef CONFIG_TASKS_RCU_GENERIC */
+-static inline void rcu_tasks_bootup_oddness(void) {}
+-#endif /* #else #ifdef CONFIG_TASKS_RCU_GENERIC */
+ 
+ #ifndef CONFIG_TINY_RCU
  
