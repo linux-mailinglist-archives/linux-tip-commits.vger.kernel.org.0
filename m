@@ -2,36 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E111A1CE6E1
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 May 2020 23:05:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98AF61CE621
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 May 2020 22:59:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732256AbgEKVEh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 11 May 2020 17:04:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43980 "EHLO
+        id S1731926AbgEKU7j (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 11 May 2020 16:59:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44006 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1731832AbgEKU7e (ORCPT
+        by vger.kernel.org with ESMTP id S1731921AbgEKU7i (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 11 May 2020 16:59:34 -0400
+        Mon, 11 May 2020 16:59:38 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55D60C05BD0C;
-        Mon, 11 May 2020 13:59:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF68BC061A0E;
+        Mon, 11 May 2020 13:59:38 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jYFWO-0005ne-Rr; Mon, 11 May 2020 22:59:32 +0200
+        id 1jYFWT-0005mm-8p; Mon, 11 May 2020 22:59:37 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 9B3C71C0845;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 3D4E61C04CC;
         Mon, 11 May 2020 22:59:26 +0200 (CEST)
 Date:   Mon, 11 May 2020 20:59:26 -0000
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcu-tasks: Add grace-period and IPI counts to statistics
+Subject: [tip: core/rcu] rcu-tasks: Add Kconfig option to mediate smp_mb() vs. IPI
 Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158923076653.390.13131087964801807103.tip-bot2@tip-bot2>
+Message-ID: <158923076608.390.17677066133129942133.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,82 +47,80 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     238dbce39ea467577ce7e41ee3e98748c436ed0f
-Gitweb:        https://git.kernel.org/tip/238dbce39ea467577ce7e41ee3e98748c436ed0f
+Commit-ID:     9ae58d7bd11f1fc4c96389df11751f8593d8bd33
+Gitweb:        https://git.kernel.org/tip/9ae58d7bd11f1fc4c96389df11751f8593d8bd33
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Wed, 18 Mar 2020 10:54:05 -07:00
+AuthorDate:    Wed, 18 Mar 2020 17:16:37 -07:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Mon, 27 Apr 2020 11:03:52 -07:00
 
-rcu-tasks: Add grace-period and IPI counts to statistics
+rcu-tasks: Add Kconfig option to mediate smp_mb() vs. IPI
 
-This commit adds a grace-period count and a count of IPIs sent since
-boot, which is printed in response to rcutorture writer stalls and at
-the end of rcutorture testing.  These counts will be used to evaluate
-various schemes to reduce the number of IPIs sent.
+This commit provides a new TASKS_TRACE_RCU_READ_MB Kconfig option that
+enables use of read-side memory barriers by both rcu_read_lock_trace()
+and rcu_read_unlock_trace() when the are executed with the
+current->trc_reader_special.b.need_mb flag set.  This flag is currently
+never set.  Doing that is the subject of a later commit.
 
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/rcu/tasks.h | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ include/linux/rcupdate_trace.h |  3 ++-
+ kernel/rcu/Kconfig             | 18 ++++++++++++++++++
+ kernel/rcu/tasks.h             |  3 ++-
+ 3 files changed, 22 insertions(+), 2 deletions(-)
 
+diff --git a/include/linux/rcupdate_trace.h b/include/linux/rcupdate_trace.h
+index c42b365..4c25a41 100644
+--- a/include/linux/rcupdate_trace.h
++++ b/include/linux/rcupdate_trace.h
+@@ -50,7 +50,8 @@ static inline void rcu_read_lock_trace(void)
+ 	struct task_struct *t = current;
+ 
+ 	WRITE_ONCE(t->trc_reader_nesting, READ_ONCE(t->trc_reader_nesting) + 1);
+-	if (t->trc_reader_special.b.need_mb)
++	if (IS_ENABLED(CONFIG_TASKS_TRACE_RCU_READ_MB) &&
++	    t->trc_reader_special.b.need_mb)
+ 		smp_mb(); // Pairs with update-side barriers
+ 	rcu_lock_acquire(&rcu_trace_lock_map);
+ }
+diff --git a/kernel/rcu/Kconfig b/kernel/rcu/Kconfig
+index cb1d18e..0ebe15a 100644
+--- a/kernel/rcu/Kconfig
++++ b/kernel/rcu/Kconfig
+@@ -234,4 +234,22 @@ config RCU_NOCB_CPU
+ 	  Say Y here if you want to help to debug reduced OS jitter.
+ 	  Say N here if you are unsure.
+ 
++config TASKS_TRACE_RCU_READ_MB
++	bool "Tasks Trace RCU readers use memory barriers in user and idle"
++	depends on RCU_EXPERT
++	default PREEMPT_RT || NR_CPUS < 8
++	help
++	  Use this option to further reduce the number of IPIs sent
++	  to CPUs executing in userspace or idle during tasks trace
++	  RCU grace periods.  Given that a reasonable setting of
++	  the rcupdate.rcu_task_ipi_delay kernel boot parameter
++	  eliminates such IPIs for many workloads, proper setting
++	  of this Kconfig option is important mostly for aggressive
++	  real-time installations and for battery-powered devices,
++	  hence the default chosen above.
++
++	  Say Y here if you hate IPIs.
++	  Say N here if you hate read-side memory barriers.
++	  Take the default if you are unsure.
++
+ endmenu # "RCU Subsystem"
 diff --git a/kernel/rcu/tasks.h b/kernel/rcu/tasks.h
-index 17b1b9a..4857450 100644
+index 4857450..4147857 100644
 --- a/kernel/rcu/tasks.h
 +++ b/kernel/rcu/tasks.h
-@@ -30,6 +30,8 @@ typedef void (*postgp_func_t)(struct rcu_tasks *rtp);
-  * @gp_state: Grace period's most recent state transition (debugging).
-  * @gp_jiffies: Time of last @gp_state transition.
-  * @gp_start: Most recent grace-period start in jiffies.
-+ * @n_gps: Number of grace periods completed since boot.
-+ * @n_ipis: Number of IPIs sent to encourage grace periods to end.
-  * @pregp_func: This flavor's pre-grace-period function (optional).
-  * @pertask_func: This flavor's per-task scan function (optional).
-  * @postscan_func: This flavor's post-task scan function (optional).
-@@ -47,6 +49,8 @@ struct rcu_tasks {
- 	int gp_state;
- 	unsigned long gp_jiffies;
- 	unsigned long gp_start;
-+	unsigned long n_gps;
-+	unsigned long n_ipis;
- 	struct task_struct *kthread_ptr;
- 	rcu_tasks_gp_func_t gp_func;
- 	pregp_func_t pregp_func;
-@@ -208,6 +212,7 @@ static int __noreturn rcu_tasks_kthread(void *arg)
- 		set_tasks_gp_state(rtp, RTGS_WAIT_GP);
- 		rtp->gp_start = jiffies;
- 		rtp->gp_func(rtp);
-+		rtp->n_gps++;
- 
- 		/* Invoke the callbacks. */
- 		set_tasks_gp_state(rtp, RTGS_INVOKE_CBS);
-@@ -285,11 +290,12 @@ static void __init rcu_tasks_bootup_oddness(void)
- /* Dump out rcutorture-relevant state common to all RCU-tasks flavors. */
- static void show_rcu_tasks_generic_gp_kthread(struct rcu_tasks *rtp, char *s)
+@@ -734,7 +734,8 @@ void rcu_read_unlock_trace_special(struct task_struct *t, int nesting)
  {
--	pr_info("%s: %s(%d) since %lu %c%c %s\n",
-+	pr_info("%s: %s(%d) since %lu g:%lu i:%lu %c%c %s\n",
- 		rtp->kname,
- 		tasks_gp_state_getname(rtp),
- 		data_race(rtp->gp_state),
- 		jiffies - data_race(rtp->gp_jiffies),
-+		data_race(rtp->n_gps), data_race(rtp->n_ipis),
- 		".k"[!!data_race(rtp->kthread_ptr)],
- 		".C"[!!data_race(rtp->cbs_head)],
- 		s);
-@@ -592,6 +598,7 @@ static void rcu_tasks_be_rude(struct work_struct *work)
- // Wait for one rude RCU-tasks grace period.
- static void rcu_tasks_rude_wait_gp(struct rcu_tasks *rtp)
- {
-+	rtp->n_ipis += cpumask_weight(cpu_online_mask);
- 	schedule_on_each_cpu(rcu_tasks_be_rude);
- }
+ 	int nq = t->trc_reader_special.b.need_qs;
  
-@@ -856,6 +863,7 @@ static void trc_wait_for_one_reader(struct task_struct *t,
- 		atomic_inc(&trc_n_readers_need_end);
- 		per_cpu(trc_ipi_to_cpu, cpu) = true;
- 		t->trc_ipi_to_cpu = cpu;
-+		rcu_tasks_trace.n_ipis++;
- 		if (smp_call_function_single(cpu,
- 					     trc_read_check_handler, t, 0)) {
- 			// Just in case there is some other reason for
+-	if (t->trc_reader_special.b.need_mb)
++	if (IS_ENABLED(CONFIG_TASKS_TRACE_RCU_READ_MB) &&
++	    t->trc_reader_special.b.need_mb)
+ 		smp_mb(); // Pairs with update-side barriers.
+ 	// Update .need_qs before ->trc_reader_nesting for irq/NMI handlers.
+ 	if (nq)
