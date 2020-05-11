@@ -2,38 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5199E1CE6F4
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 May 2020 23:06:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 700FB1CE6AC
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 May 2020 23:05:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731850AbgEKVFL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 11 May 2020 17:05:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43926 "EHLO
+        id S1731774AbgEKU7X (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 11 May 2020 16:59:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1731826AbgEKU7Z (ORCPT
+        by vger.kernel.org with ESMTP id S1730938AbgEKU7X (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 11 May 2020 16:59:25 -0400
+        Mon, 11 May 2020 16:59:23 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43970C061A0E;
-        Mon, 11 May 2020 13:59:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01861C061A0C;
+        Mon, 11 May 2020 13:59:23 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jYFWF-0005gy-0k; Mon, 11 May 2020 22:59:23 +0200
+        id 1jYFWD-0005hJ-IV; Mon, 11 May 2020 22:59:21 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 76B8A1C04E3;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id CFCD31C04CC;
         Mon, 11 May 2020 22:59:19 +0200 (CEST)
 Date:   Mon, 11 May 2020 20:59:19 -0000
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcutorture: Mark data-race potential for
- rcu_barrier() test statistics
-Cc:     "Paul E. McKenney" <paulmck@kernel.org>,
-        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+Subject: [tip: core/rcu] rcutorture: Make kvm-recheck-rcu.sh handle truncated lines
+Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158923075942.390.10031929584805507102.tip-bot2@tip-bot2>
+Message-ID: <158923075976.390.10325972666334241466.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,51 +47,49 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     c9527bebb017b891d1a2bbb96217bd5225488a0e
-Gitweb:        https://git.kernel.org/tip/c9527bebb017b891d1a2bbb96217bd5225488a0e
+Commit-ID:     b3578186b28da4ed5d0852ec69c13a7bce15b5fd
+Gitweb:        https://git.kernel.org/tip/b3578186b28da4ed5d0852ec69c13a7bce15b5fd
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Tue, 18 Feb 2020 13:41:02 -08:00
+AuthorDate:    Fri, 14 Feb 2020 14:43:44 -08:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Mon, 27 Apr 2020 11:05:13 -07:00
 
-rcutorture: Mark data-race potential for rcu_barrier() test statistics
+rcutorture: Make kvm-recheck-rcu.sh handle truncated lines
 
-The n_barrier_successes, n_barrier_attempts, and
-n_rcu_torture_barrier_error variables are updated (without access
-markings) by the main rcu_barrier() test kthread, and accessed (also
-without access markings) by the rcu_torture_stats() kthread.  This of
-course can result in KCSAN complaints.
-
-Because the accesses are in diagnostic prints, this commit uses
-data_race() to excuse the diagnostic prints from the data race.  If this
-were to ever cause bogus statistics prints (for example, due to store
-tearing), any misleading information would be disambiguated by the
-presence or absence of an rcutorture splat.
-
-This data race was reported by KCSAN.  Not appropriate for backporting
-due to failure being unlikely and due to the mild consequences of the
-failure, namely a confusing rcutorture console message.
+System hangs or killed rcutorture guest OSes can result in truncated
+"Reader Pipe:" lines, which can in turn result in false-positive
+reader-batch near-miss warnings.  This commit therefore adjusts the
+reader-batch checks to account for possible line truncation.
 
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Reviewed-by: Joel Fernandes (Google) <joel@joelfernandes.org>
 ---
- kernel/rcu/rcutorture.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ tools/testing/selftests/rcutorture/bin/kvm-recheck-rcu.sh | 16 ++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/rcu/rcutorture.c b/kernel/rcu/rcutorture.c
-index 7e2ea0c..d0345d1 100644
---- a/kernel/rcu/rcutorture.c
-+++ b/kernel/rcu/rcutorture.c
-@@ -1456,9 +1456,9 @@ rcu_torture_stats_print(void)
- 		atomic_long_read(&n_rcu_torture_timers));
- 	torture_onoff_stats();
- 	pr_cont("barrier: %ld/%ld:%ld\n",
--		n_barrier_successes,
--		n_barrier_attempts,
--		n_rcu_torture_barrier_error);
-+		data_race(n_barrier_successes),
-+		data_race(n_barrier_attempts),
-+		data_race(n_rcu_torture_barrier_error));
- 
- 	pr_alert("%s%s ", torture_type, TORTURE_FLAG);
- 	if (atomic_read(&n_rcu_torture_mberror) ||
+diff --git a/tools/testing/selftests/rcutorture/bin/kvm-recheck-rcu.sh b/tools/testing/selftests/rcutorture/bin/kvm-recheck-rcu.sh
+index 9d9a416..1706cd4 100755
+--- a/tools/testing/selftests/rcutorture/bin/kvm-recheck-rcu.sh
++++ b/tools/testing/selftests/rcutorture/bin/kvm-recheck-rcu.sh
+@@ -41,7 +41,21 @@ else
+ 		title="$title ($ngpsps/s)"
+ 	fi
+ 	echo $title $stopstate $fwdprog
+-	nclosecalls=`grep --binary-files=text 'torture: Reader Batch' $i/console.log | tail -1 | awk '{for (i=NF-8;i<=NF;i++) sum+=$i; } END {print sum}'`
++	nclosecalls=`grep --binary-files=text 'torture: Reader Batch' $i/console.log | tail -1 | \
++		awk -v sum=0 '
++		{
++			for (i = 0; i <= NF; i++) {
++				sum += $i;
++				if ($i ~ /Batch:/) {
++					sum = 0;
++					i = i + 2;
++				}
++			}
++		}
++
++		END {
++			print sum
++		}'`
+ 	if test -z "$nclosecalls"
+ 	then
+ 		exit 0
