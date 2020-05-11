@@ -2,39 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 590B21CE6E2
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 May 2020 23:05:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A71551CE6E5
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 May 2020 23:05:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732288AbgEKVEh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 11 May 2020 17:04:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43964 "EHLO
+        id S1731928AbgEKVEp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 11 May 2020 17:04:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43960 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1731875AbgEKU7b (ORCPT
+        by vger.kernel.org with ESMTP id S1731871AbgEKU7b (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Mon, 11 May 2020 16:59:31 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7877C05BD09;
-        Mon, 11 May 2020 13:59:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5800C061A0C;
+        Mon, 11 May 2020 13:59:30 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jYFWH-0005ji-4H; Mon, 11 May 2020 22:59:25 +0200
+        id 1jYFWL-0005iz-CH; Mon, 11 May 2020 22:59:29 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id BB80E1C07B4;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 52CCF1C0494;
         Mon, 11 May 2020 22:59:21 +0200 (CEST)
 Date:   Mon, 11 May 2020 20:59:21 -0000
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] ftrace: Use synchronize_rcu_tasks_rude() instead of
- ftrace_sync()
-Cc:     Steven Rostedt <rostedt@goodmis.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
+Subject: [tip: core/rcu] rcu: Use data_race() for RCU expedited CPU
+ stall-warning prints
+Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158923076164.390.8535049254984522740.tip-bot2@tip-bot2>
+Message-ID: <158923076125.390.1656849191203394981.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,85 +48,51 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     e5a971d76d701dbff9e5dbaa84dc9e8c3081a867
-Gitweb:        https://git.kernel.org/tip/e5a971d76d701dbff9e5dbaa84dc9e8c3081a867
+Commit-ID:     654db05cee8186cf9438d94ef32a4f9ffe964e57
+Gitweb:        https://git.kernel.org/tip/654db05cee8186cf9438d94ef32a4f9ffe964e57
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Fri, 03 Apr 2020 12:10:28 -07:00
+AuthorDate:    Sun, 09 Feb 2020 02:35:22 -08:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Mon, 27 Apr 2020 11:03:53 -07:00
+CommitterDate: Mon, 27 Apr 2020 11:04:37 -07:00
 
-ftrace: Use synchronize_rcu_tasks_rude() instead of ftrace_sync()
+rcu: Use data_race() for RCU expedited CPU stall-warning prints
 
-This commit replaces the schedule_on_each_cpu(ftrace_sync) instances
-with synchronize_rcu_tasks_rude().
+Although the accesses used to determine whether or not an expedited
+stall should be printed are an integral part of the concurrency algorithm
+governing use of the corresponding variables, the values that are simply
+printed are ancillary.  As such, it is best to use data_race() for these
+accesses in order to provide the greatest latitude in the use of KCSAN
+for the other accesses that are an integral part of the algorithm.  This
+commit therefore changes the relevant uses of READ_ONCE() to data_race().
 
-Suggested-by: Steven Rostedt <rostedt@goodmis.org>
-Cc: Ingo Molnar <mingo@redhat.com>
-[ paulmck: Make Kconfig adjustments noted by kbuild test robot. ]
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/trace/Kconfig  |  1 +
- kernel/trace/ftrace.c | 17 +++--------------
- 2 files changed, 4 insertions(+), 14 deletions(-)
+ kernel/rcu/tree_exp.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/trace/Kconfig b/kernel/trace/Kconfig
-index 402eef8..ae69010 100644
---- a/kernel/trace/Kconfig
-+++ b/kernel/trace/Kconfig
-@@ -158,6 +158,7 @@ config FUNCTION_TRACER
- 	select CONTEXT_SWITCH_TRACER
- 	select GLOB
- 	select TASKS_RCU if PREEMPTION
-+	select TASKS_RUDE_RCU
- 	help
- 	  Enable the kernel to trace every kernel function. This is done
- 	  by using a compiler feature to insert a small, 5-byte No-Operation
-diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
-index 041694a..771eace 100644
---- a/kernel/trace/ftrace.c
-+++ b/kernel/trace/ftrace.c
-@@ -160,17 +160,6 @@ static void ftrace_pid_func(unsigned long ip, unsigned long parent_ip,
- 	op->saved_func(ip, parent_ip, op, regs);
- }
- 
--static void ftrace_sync(struct work_struct *work)
--{
--	/*
--	 * This function is just a stub to implement a hard force
--	 * of synchronize_rcu(). This requires synchronizing
--	 * tasks even in userspace and idle.
--	 *
--	 * Yes, function tracing is rude.
--	 */
--}
--
- static void ftrace_sync_ipi(void *data)
- {
- 	/* Probably not needed, but do it anyway */
-@@ -256,7 +245,7 @@ static void update_ftrace_function(void)
- 	 * Make sure all CPUs see this. Yes this is slow, but static
- 	 * tracing is slow and nasty to have enabled.
- 	 */
--	schedule_on_each_cpu(ftrace_sync);
-+	synchronize_rcu_tasks_rude();
- 	/* Now all cpus are using the list ops. */
- 	function_trace_op = set_function_trace_op;
- 	/* Make sure the function_trace_op is visible on all CPUs */
-@@ -2932,7 +2921,7 @@ int ftrace_shutdown(struct ftrace_ops *ops, int command)
- 		 * infrastructure to do the synchronization, thus we must do it
- 		 * ourselves.
- 		 */
--		schedule_on_each_cpu(ftrace_sync);
-+		synchronize_rcu_tasks_rude();
- 
- 		/*
- 		 * When the kernel is preeptive, tasks can be preempted
-@@ -5887,7 +5876,7 @@ ftrace_graph_release(struct inode *inode, struct file *file)
- 		 * infrastructure to do the synchronization, thus we must do it
- 		 * ourselves.
- 		 */
--		schedule_on_each_cpu(ftrace_sync);
-+		synchronize_rcu_tasks_rude();
- 
- 		free_ftrace_hash(old_hash);
- 	}
+diff --git a/kernel/rcu/tree_exp.h b/kernel/rcu/tree_exp.h
+index 1a617b9..e1a7986 100644
+--- a/kernel/rcu/tree_exp.h
++++ b/kernel/rcu/tree_exp.h
+@@ -542,8 +542,8 @@ static void synchronize_rcu_expedited_wait(void)
+ 		}
+ 		pr_cont(" } %lu jiffies s: %lu root: %#lx/%c\n",
+ 			jiffies - jiffies_start, rcu_state.expedited_sequence,
+-			READ_ONCE(rnp_root->expmask),
+-			".T"[!!rnp_root->exp_tasks]);
++			data_race(rnp_root->expmask),
++			".T"[!!data_race(rnp_root->exp_tasks)]);
+ 		if (ndetected) {
+ 			pr_err("blocking rcu_node structures:");
+ 			rcu_for_each_node_breadth_first(rnp) {
+@@ -553,8 +553,8 @@ static void synchronize_rcu_expedited_wait(void)
+ 					continue;
+ 				pr_cont(" l=%u:%d-%d:%#lx/%c",
+ 					rnp->level, rnp->grplo, rnp->grphi,
+-					READ_ONCE(rnp->expmask),
+-					".T"[!!rnp->exp_tasks]);
++					data_race(rnp->expmask),
++					".T"[!!data_race(rnp->exp_tasks)]);
+ 			}
+ 			pr_cont("\n");
+ 		}
