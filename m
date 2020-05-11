@@ -2,37 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C1CC1CE6CA
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 May 2020 23:05:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 17EEA1CE627
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 May 2020 23:00:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731964AbgEKVDt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 11 May 2020 17:03:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44048 "EHLO
+        id S1731988AbgEKU7s (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 11 May 2020 16:59:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44050 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1731981AbgEKU7q (ORCPT
+        by vger.kernel.org with ESMTP id S1731983AbgEKU7r (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 11 May 2020 16:59:46 -0400
+        Mon, 11 May 2020 16:59:47 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1A0BC061A0C;
-        Mon, 11 May 2020 13:59:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E851C061A0E;
+        Mon, 11 May 2020 13:59:47 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jYFWY-0005rc-3Z; Mon, 11 May 2020 22:59:42 +0200
+        id 1jYFWb-0005r2-AB; Mon, 11 May 2020 22:59:45 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D47641C0857;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 271E61C0854;
         Mon, 11 May 2020 22:59:31 +0200 (CEST)
 Date:   Mon, 11 May 2020 20:59:31 -0000
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcu-tasks: Use unique names for RCU-Tasks kthreads
- and messages
+Subject: [tip: core/rcu] rcu-tasks: Code movement to allow more Tasks RCU variants
 Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158923077179.390.10203434020604120221.tip-bot2@tip-bot2>
+Message-ID: <158923077107.390.1601597834253295542.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,89 +47,160 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     c97d12a63c26fc4521d0904f073f9997ae796cba
-Gitweb:        https://git.kernel.org/tip/c97d12a63c26fc4521d0904f073f9997ae796cba
+Commit-ID:     d01aa2633b5d5ebc16fa47ad7a5e8e9f00482554
+Gitweb:        https://git.kernel.org/tip/d01aa2633b5d5ebc16fa47ad7a5e8e9f00482554
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Tue, 03 Mar 2020 15:50:31 -08:00
+AuthorDate:    Thu, 05 Mar 2020 17:07:07 -08:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Mon, 27 Apr 2020 11:03:51 -07:00
 
-rcu-tasks: Use unique names for RCU-Tasks kthreads and messages
+rcu-tasks: Code movement to allow more Tasks RCU variants
 
-This commit causes the flavors of RCU Tasks to use different names
-for their kthreads and in their console messages.
+This commit does nothing but move rcu_tasks_wait_gp() up to a new section
+for common code.
 
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/rcu/tasks.h | 25 ++++++++++++++++---------
- 1 file changed, 16 insertions(+), 9 deletions(-)
+ kernel/rcu/tasks.h | 122 ++++++++++++++++++++++----------------------
+ 1 file changed, 63 insertions(+), 59 deletions(-)
 
 diff --git a/kernel/rcu/tasks.h b/kernel/rcu/tasks.h
-index 7f9ed20..9ca83c6 100644
+index 344426e..d8b09d5 100644
 --- a/kernel/rcu/tasks.h
 +++ b/kernel/rcu/tasks.h
-@@ -22,6 +22,8 @@ typedef void (*rcu_tasks_gp_func_t)(struct rcu_tasks *rtp);
-  * @kthread_ptr: This flavor's grace-period/callback-invocation kthread.
-  * @gp_func: This flavor's grace-period-wait function.
-  * @call_func: This flavor's call_rcu()-equivalent function.
-+ * @name: This flavor's textual name.
-+ * @kname: This flavor's kthread name.
-  */
- struct rcu_tasks {
- 	struct rcu_head *cbs_head;
-@@ -31,16 +33,20 @@ struct rcu_tasks {
- 	struct task_struct *kthread_ptr;
- 	rcu_tasks_gp_func_t gp_func;
- 	call_rcu_func_t call_func;
-+	char *name;
-+	char *kname;
- };
+@@ -213,6 +213,69 @@ static void __init rcu_tasks_bootup_oddness(void)
  
--#define DEFINE_RCU_TASKS(name, gp, call)				\
--static struct rcu_tasks name =						\
-+#define DEFINE_RCU_TASKS(rt_name, gp, call, n)				\
-+static struct rcu_tasks rt_name =					\
- {									\
--	.cbs_tail = &name.cbs_head,					\
--	.cbs_wq = __WAIT_QUEUE_HEAD_INITIALIZER(name.cbs_wq),		\
--	.cbs_lock = __RAW_SPIN_LOCK_UNLOCKED(name.cbs_lock),		\
-+	.cbs_tail = &rt_name.cbs_head,					\
-+	.cbs_wq = __WAIT_QUEUE_HEAD_INITIALIZER(rt_name.cbs_wq),	\
-+	.cbs_lock = __RAW_SPIN_LOCK_UNLOCKED(rt_name.cbs_lock),		\
- 	.gp_func = gp,							\
- 	.call_func = call,						\
-+	.name = n,							\
-+	.kname = #rt_name,						\
+ ////////////////////////////////////////////////////////////////////////
+ //
++// Shared code between task-list-scanning variants of Tasks RCU.
++
++/* Wait for one RCU-tasks grace period. */
++static void rcu_tasks_wait_gp(struct rcu_tasks *rtp)
++{
++	struct task_struct *g, *t;
++	unsigned long lastreport;
++	LIST_HEAD(holdouts);
++	int fract;
++
++	rtp->pregp_func();
++
++	/*
++	 * There were callbacks, so we need to wait for an RCU-tasks
++	 * grace period.  Start off by scanning the task list for tasks
++	 * that are not already voluntarily blocked.  Mark these tasks
++	 * and make a list of them in holdouts.
++	 */
++	rcu_read_lock();
++	for_each_process_thread(g, t)
++		rtp->pertask_func(t, &holdouts);
++	rcu_read_unlock();
++
++	rtp->postscan_func();
++
++	/*
++	 * Each pass through the following loop scans the list of holdout
++	 * tasks, removing any that are no longer holdouts.  When the list
++	 * is empty, we are done.
++	 */
++	lastreport = jiffies;
++
++	/* Start off with HZ/10 wait and slowly back off to 1 HZ wait. */
++	fract = 10;
++
++	for (;;) {
++		bool firstreport;
++		bool needreport;
++		int rtst;
++
++		if (list_empty(&holdouts))
++			break;
++
++		/* Slowly back off waiting for holdouts */
++		schedule_timeout_interruptible(HZ/fract);
++
++		if (fract > 1)
++			fract--;
++
++		rtst = READ_ONCE(rcu_task_stall_timeout);
++		needreport = rtst > 0 && time_after(jiffies, lastreport + rtst);
++		if (needreport)
++			lastreport = jiffies;
++		firstreport = true;
++		WARN_ON(signal_pending(current));
++		rtp->holdouts_func(&holdouts, needreport, &firstreport);
++	}
++
++	rtp->postgp_func();
++}
++
++////////////////////////////////////////////////////////////////////////
++//
+ // Simple variant of RCU whose quiescent states are voluntary context
+ // switch, cond_resched_rcu_qs(), user-space execution, and idle.
+ // As such, grace periods can take one good long time.  There are no
+@@ -333,65 +396,6 @@ static void rcu_tasks_postgp(void)
+ 	synchronize_rcu();
  }
  
- /* Track exiting tasks in order to allow them to be waited for. */
-@@ -145,8 +151,8 @@ static void __init rcu_spawn_tasks_kthread_generic(struct rcu_tasks *rtp)
- {
- 	struct task_struct *t;
- 
--	t = kthread_run(rcu_tasks_kthread, rtp, "rcu_tasks_kthread");
--	if (WARN_ONCE(IS_ERR(t), "%s: Could not start Tasks-RCU grace-period kthread, OOM is now expected behavior\n", __func__))
-+	t = kthread_run(rcu_tasks_kthread, rtp, "%s_kthread", rtp->kname);
-+	if (WARN_ONCE(IS_ERR(t), "%s: Could not start %s grace-period kthread, OOM is now expected behavior\n", __func__, rtp->name))
- 		return;
- 	smp_mb(); /* Ensure others see full kthread. */
- }
-@@ -342,7 +348,7 @@ static void rcu_tasks_wait_gp(struct rcu_tasks *rtp)
- }
- 
+-/* Wait for one RCU-tasks grace period. */
+-static void rcu_tasks_wait_gp(struct rcu_tasks *rtp)
+-{
+-	struct task_struct *g, *t;
+-	unsigned long lastreport;
+-	LIST_HEAD(holdouts);
+-	int fract;
+-
+-	rtp->pregp_func();
+-
+-	/*
+-	 * There were callbacks, so we need to wait for an RCU-tasks
+-	 * grace period.  Start off by scanning the task list for tasks
+-	 * that are not already voluntarily blocked.  Mark these tasks
+-	 * and make a list of them in holdouts.
+-	 */
+-	rcu_read_lock();
+-	for_each_process_thread(g, t)
+-		rtp->pertask_func(t, &holdouts);
+-	rcu_read_unlock();
+-
+-	rtp->postscan_func();
+-
+-	/*
+-	 * Each pass through the following loop scans the list of holdout
+-	 * tasks, removing any that are no longer holdouts.  When the list
+-	 * is empty, we are done.
+-	 */
+-	lastreport = jiffies;
+-
+-	/* Start off with HZ/10 wait and slowly back off to 1 HZ wait. */
+-	fract = 10;
+-
+-	for (;;) {
+-		bool firstreport;
+-		bool needreport;
+-		int rtst;
+-
+-		if (list_empty(&holdouts))
+-			break;
+-
+-		/* Slowly back off waiting for holdouts */
+-		schedule_timeout_interruptible(HZ/fract);
+-
+-		if (fract > 1)
+-			fract--;
+-
+-		rtst = READ_ONCE(rcu_task_stall_timeout);
+-		needreport = rtst > 0 && time_after(jiffies, lastreport + rtst);
+-		if (needreport)
+-			lastreport = jiffies;
+-		firstreport = true;
+-		WARN_ON(signal_pending(current));
+-		rtp->holdouts_func(&holdouts, needreport, &firstreport);
+-	}
+-
+-	rtp->postgp_func();
+-}
+-
  void call_rcu_tasks(struct rcu_head *rhp, rcu_callback_t func);
--DEFINE_RCU_TASKS(rcu_tasks, rcu_tasks_wait_gp, call_rcu_tasks);
-+DEFINE_RCU_TASKS(rcu_tasks, rcu_tasks_wait_gp, call_rcu_tasks, "RCU Tasks");
+ DEFINE_RCU_TASKS(rcu_tasks, rcu_tasks_wait_gp, call_rcu_tasks, "RCU Tasks");
  
- /**
-  * call_rcu_tasks() - Queue an RCU for invocation task-based grace period
-@@ -437,7 +443,8 @@ static void rcu_tasks_rude_wait_gp(struct rcu_tasks *rtp)
- }
- 
- void call_rcu_tasks_rude(struct rcu_head *rhp, rcu_callback_t func);
--DEFINE_RCU_TASKS(rcu_tasks_rude, rcu_tasks_rude_wait_gp, call_rcu_tasks_rude);
-+DEFINE_RCU_TASKS(rcu_tasks_rude, rcu_tasks_rude_wait_gp, call_rcu_tasks_rude,
-+		 "RCU Tasks Rude");
- 
- /**
-  * call_rcu_tasks_rude() - Queue a callback rude task-based grace period
