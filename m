@@ -2,44 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4827A1CE656
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 May 2020 23:02:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D9C71CE6B8
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 May 2020 23:05:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731885AbgEKVBU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 11 May 2020 17:01:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44152 "EHLO
+        id S1732004AbgEKU7v (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 11 May 2020 16:59:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44064 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1732090AbgEKVAG (ORCPT
+        by vger.kernel.org with ESMTP id S1732001AbgEKU7u (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 11 May 2020 17:00:06 -0400
+        Mon, 11 May 2020 16:59:50 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5C79C05BD09;
-        Mon, 11 May 2020 14:00:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6306BC061A0E;
+        Mon, 11 May 2020 13:59:50 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jYFWi-0005uC-Db; Mon, 11 May 2020 22:59:52 +0200
+        id 1jYFWe-0005v0-Km; Mon, 11 May 2020 22:59:48 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 8A01F1C0838;
-        Mon, 11 May 2020 22:59:35 +0200 (CEST)
-Date:   Mon, 11 May 2020 20:59:35 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 608821C04E3;
+        Mon, 11 May 2020 22:59:36 +0200 (CEST)
+Date:   Mon, 11 May 2020 20:59:36 -0000
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] sched/core: Add function to sample state of locked-down task
-Cc:     Ingo Molnar <mingo@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
-        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
+Subject: [tip: core/rcu] rcu: Add comments marking transitions between RCU
+ watching and not
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
         "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158923077541.390.2895607985565941744.tip-bot2@tip-bot2>
+Message-ID: <158923077632.390.8026861063383116954.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -55,142 +49,135 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     2beaf3280e57bb891f8012dca49c87ed0f01e2f3
-Gitweb:        https://git.kernel.org/tip/2beaf3280e57bb891f8012dca49c87ed0f01e2f3
+Commit-ID:     ac3caf827488d3bc4d4101ff34931abbfa33839d
+Gitweb:        https://git.kernel.org/tip/ac3caf827488d3bc4d4101ff34931abbfa33839d
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Wed, 11 Mar 2020 14:23:21 -07:00
+AuthorDate:    Thu, 12 Mar 2020 17:01:57 -07:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Mon, 27 Apr 2020 11:03:50 -07:00
 
-sched/core: Add function to sample state of locked-down task
+rcu: Add comments marking transitions between RCU watching and not
 
-A running task's state can be sampled in a consistent manner (for example,
-for diagnostic purposes) simply by invoking smp_call_function_single()
-on its CPU, which may be obtained using task_cpu(), then having the
-IPI handler verify that the desired task is in fact still running.
-However, if the task is not running, this sampling can in theory be done
-immediately and directly.  In practice, the task might start running at
-any time, including during the sampling period.  Gaining a consistent
-sample of a not-running task therefore requires that something be done
-to lock down the target task's state.
+It is not as clear as it might be just where in RCU's idle entry/exit
+code RCU stops and starts watching the current CPU.  This commit therefore
+adds comments calling out the transitions.
 
-This commit therefore adds a try_invoke_on_locked_down_task() function
-that invokes a specified function if the specified task can be locked
-down, returning true if successful and if the specified function returns
-true.  Otherwise this function simply returns false.  Given that the
-function passed to try_invoke_on_nonrunning_task() might be invoked with
-a runqueue lock held, that function had better be quite lightweight.
-
-The function is passed the target task's task_struct pointer and the
-argument passed to try_invoke_on_locked_down_task(), allowing easy access
-to task state and to a location for further variables to be passed in
-and out.
-
-Note that the specified function will be called even if the specified
-task is currently running.  The function can use ->on_rq and task_curr()
-to quickly and easily determine the task's state, and can return false
-if this state is not to the function's liking.  The caller of the
-try_invoke_on_locked_down_task() would then see the false return value,
-and could take appropriate action, for example, trying again later or
-sending an IPI if matters are more urgent.
-
-It is expected that use cases such as the RCU CPU stall warning code will
-simply return false if the task is currently running.  However, there are
-use cases involving nohz_full CPUs where the specified function might
-instead fall back to an alternative sampling scheme that relies on heavier
-synchronization (such as memory barriers) in the target task.
-
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Juri Lelli <juri.lelli@redhat.com>
-Cc: Vincent Guittot <vincent.guittot@linaro.org>
-Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Cc: Ben Segall <bsegall@google.com>
-Cc: Mel Gorman <mgorman@suse.de>
-[ paulmck: Apply feedback from Peter Zijlstra and Steven Rostedt. ]
-[ paulmck: Invoke if running to handle feedback from Mathieu Desnoyers. ]
-Reviewed-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
-Reviewed-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+Reported-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- include/linux/wait.h |  2 ++-
- kernel/sched/core.c  | 48 +++++++++++++++++++++++++++++++++++++++++++-
- 2 files changed, 50 insertions(+)
+ kernel/rcu/tree.c | 29 +++++++++++++++++++++++++----
+ 1 file changed, 25 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/wait.h b/include/linux/wait.h
-index feeb6be..898c890 100644
---- a/include/linux/wait.h
-+++ b/include/linux/wait.h
-@@ -1149,4 +1149,6 @@ int autoremove_wake_function(struct wait_queue_entry *wq_entry, unsigned mode, i
- 		(wait)->flags = 0;						\
- 	} while (0)
+diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
+index 156ac8d..0bbcbf3 100644
+--- a/kernel/rcu/tree.c
++++ b/kernel/rcu/tree.c
+@@ -238,7 +238,9 @@ void rcu_softirq_qs(void)
  
-+bool try_invoke_on_locked_down_task(struct task_struct *p, bool (*func)(struct task_struct *t, void *arg), void *arg);
-+
- #endif /* _LINUX_WAIT_H */
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 3a61a3b..5ca567a 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -2566,6 +2566,8 @@ try_to_wake_up(struct task_struct *p, unsigned int state, int wake_flags)
- 	 *
- 	 * Pairs with the LOCK+smp_mb__after_spinlock() on rq->lock in
- 	 * __schedule().  See the comment for smp_mb__after_spinlock().
-+	 *
-+	 * A similar smb_rmb() lives in try_invoke_on_locked_down_task().
+ /*
+  * Record entry into an extended quiescent state.  This is only to be
+- * called when not already in an extended quiescent state.
++ * called when not already in an extended quiescent state, that is,
++ * RCU is watching prior to the call to this function and is no longer
++ * watching upon return.
+  */
+ static void rcu_dynticks_eqs_enter(void)
+ {
+@@ -251,7 +253,7 @@ static void rcu_dynticks_eqs_enter(void)
+ 	 * next idle sojourn.
  	 */
- 	smp_rmb();
- 	if (p->on_rq && ttwu_remote(p, wake_flags))
-@@ -2640,6 +2642,52 @@ out:
+ 	seq = atomic_add_return(RCU_DYNTICK_CTRL_CTR, &rdp->dynticks);
+-	/* Better be in an extended quiescent state! */
++	// RCU is no longer watching.  Better be in extended quiescent state!
+ 	WARN_ON_ONCE(IS_ENABLED(CONFIG_RCU_EQS_DEBUG) &&
+ 		     (seq & RCU_DYNTICK_CTRL_CTR));
+ 	/* Better not have special action (TLB flush) pending! */
+@@ -261,7 +263,8 @@ static void rcu_dynticks_eqs_enter(void)
+ 
+ /*
+  * Record exit from an extended quiescent state.  This is only to be
+- * called from an extended quiescent state.
++ * called from an extended quiescent state, that is, RCU is not watching
++ * prior to the call to this function and is watching upon return.
+  */
+ static void rcu_dynticks_eqs_exit(void)
+ {
+@@ -274,6 +277,7 @@ static void rcu_dynticks_eqs_exit(void)
+ 	 * critical section.
+ 	 */
+ 	seq = atomic_add_return(RCU_DYNTICK_CTRL_CTR, &rdp->dynticks);
++	// RCU is now watching.  Better not be in an extended quiescent state!
+ 	WARN_ON_ONCE(IS_ENABLED(CONFIG_RCU_EQS_DEBUG) &&
+ 		     !(seq & RCU_DYNTICK_CTRL_CTR));
+ 	if (seq & RCU_DYNTICK_CTRL_MASK) {
+@@ -584,6 +588,7 @@ static void rcu_eqs_enter(bool user)
+ 	WARN_ON_ONCE(IS_ENABLED(CONFIG_RCU_EQS_DEBUG) &&
+ 		     rdp->dynticks_nesting == 0);
+ 	if (rdp->dynticks_nesting != 1) {
++		// RCU will still be watching, so just do accounting and leave.
+ 		rdp->dynticks_nesting--;
+ 		return;
+ 	}
+@@ -596,7 +601,9 @@ static void rcu_eqs_enter(bool user)
+ 	rcu_prepare_for_idle();
+ 	rcu_preempt_deferred_qs(current);
+ 	WRITE_ONCE(rdp->dynticks_nesting, 0); /* Avoid irq-access tearing. */
++	// RCU is watching here ...
+ 	rcu_dynticks_eqs_enter();
++	// ... but is no longer watching here.
+ 	rcu_dynticks_task_enter();
  }
  
- /**
-+ * try_invoke_on_locked_down_task - Invoke a function on task in fixed state
-+ * @p: Process for which the function is to be invoked.
-+ * @func: Function to invoke.
-+ * @arg: Argument to function.
-+ *
-+ * If the specified task can be quickly locked into a definite state
-+ * (either sleeping or on a given runqueue), arrange to keep it in that
-+ * state while invoking @func(@arg).  This function can use ->on_rq and
-+ * task_curr() to work out what the state is, if required.  Given that
-+ * @func can be invoked with a runqueue lock held, it had better be quite
-+ * lightweight.
-+ *
-+ * Returns:
-+ *	@false if the task slipped out from under the locks.
-+ *	@true if the task was locked onto a runqueue or is sleeping.
-+ *		However, @func can override this by returning @false.
-+ */
-+bool try_invoke_on_locked_down_task(struct task_struct *p, bool (*func)(struct task_struct *t, void *arg), void *arg)
-+{
-+	bool ret = false;
-+	struct rq_flags rf;
-+	struct rq *rq;
-+
-+	lockdep_assert_irqs_enabled();
-+	raw_spin_lock_irq(&p->pi_lock);
-+	if (p->on_rq) {
-+		rq = __task_rq_lock(p, &rf);
-+		if (task_rq(p) == rq)
-+			ret = func(p, arg);
-+		rq_unlock(rq, &rf);
-+	} else {
-+		switch (p->state) {
-+		case TASK_RUNNING:
-+		case TASK_WAKING:
-+			break;
-+		default:
-+			smp_rmb(); // See smp_rmb() comment in try_to_wake_up().
-+			if (!p->on_rq)
-+				ret = func(p, arg);
-+		}
-+	}
-+	raw_spin_unlock_irq(&p->pi_lock);
-+	return ret;
-+}
-+
-+/**
-  * wake_up_process - Wake up a specific process
-  * @p: The process to be woken up.
-  *
+@@ -676,7 +683,9 @@ static __always_inline void rcu_nmi_exit_common(bool irq)
+ 	if (irq)
+ 		rcu_prepare_for_idle();
+ 
++	// RCU is watching here ...
+ 	rcu_dynticks_eqs_enter();
++	// ... but is no longer watching here.
+ 
+ 	if (irq)
+ 		rcu_dynticks_task_enter();
+@@ -751,11 +760,14 @@ static void rcu_eqs_exit(bool user)
+ 	oldval = rdp->dynticks_nesting;
+ 	WARN_ON_ONCE(IS_ENABLED(CONFIG_RCU_EQS_DEBUG) && oldval < 0);
+ 	if (oldval) {
++		// RCU was already watching, so just do accounting and leave.
+ 		rdp->dynticks_nesting++;
+ 		return;
+ 	}
+ 	rcu_dynticks_task_exit();
++	// RCU is not watching here ...
+ 	rcu_dynticks_eqs_exit();
++	// ... but is watching here.
+ 	rcu_cleanup_after_idle();
+ 	trace_rcu_dyntick(TPS("End"), rdp->dynticks_nesting, 1, atomic_read(&rdp->dynticks));
+ 	WARN_ON_ONCE(IS_ENABLED(CONFIG_RCU_EQS_DEBUG) && !user && !is_idle_task(current));
+@@ -832,7 +844,9 @@ static __always_inline void rcu_nmi_enter_common(bool irq)
+ 		if (irq)
+ 			rcu_dynticks_task_exit();
+ 
++		// RCU is not watching here ...
+ 		rcu_dynticks_eqs_exit();
++		// ... but is watching here.
+ 
+ 		if (irq)
+ 			rcu_cleanup_after_idle();
+@@ -842,9 +856,16 @@ static __always_inline void rcu_nmi_enter_common(bool irq)
+ 		   rdp->dynticks_nmi_nesting == DYNTICK_IRQ_NONIDLE &&
+ 		   READ_ONCE(rdp->rcu_urgent_qs) &&
+ 		   !READ_ONCE(rdp->rcu_forced_tick)) {
++		// We get here only if we had already exited the extended
++		// quiescent state and this was an interrupt (not an NMI).
++		// Therefore, (1) RCU is already watching and (2) The fact
++		// that we are in an interrupt handler and that the rcu_node
++		// lock is an irq-disabled lock prevents self-deadlock.
++		// So we can safely recheck under the lock.
+ 		raw_spin_lock_rcu_node(rdp->mynode);
+-		// Recheck under lock.
+ 		if (rdp->rcu_urgent_qs && !rdp->rcu_forced_tick) {
++			// A nohz_full CPU is in the kernel and RCU
++			// needs a quiescent state.  Turn on the tick!
+ 			WRITE_ONCE(rdp->rcu_forced_tick, true);
+ 			tick_dep_set_cpu(rdp->cpu, TICK_DEP_BIT_RCU);
+ 		}
