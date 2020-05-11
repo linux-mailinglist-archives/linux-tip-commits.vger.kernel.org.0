@@ -2,37 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F0AF51CB0C0
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 May 2020 15:46:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C23811CE612
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 May 2020 22:59:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728347AbgEHNqo (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 8 May 2020 09:46:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41204 "EHLO
+        id S1728544AbgEKU7Q (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 11 May 2020 16:59:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728338AbgEHNqn (ORCPT
+        by vger.kernel.org with ESMTP id S1726661AbgEKU7Q (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 8 May 2020 09:46:43 -0400
+        Mon, 11 May 2020 16:59:16 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A00E3C05BD0C;
-        Fri,  8 May 2020 06:46:43 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3440AC061A0C;
+        Mon, 11 May 2020 13:59:16 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jX3Kq-0001pD-VC; Fri, 08 May 2020 15:46:41 +0200
+        id 1jYFW6-0005eP-Jv; Mon, 11 May 2020 22:59:14 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 3FA171C0493;
-        Fri,  8 May 2020 15:46:38 +0200 (CEST)
-Date:   Fri, 08 May 2020 13:46:38 -0000
-From:   "tip-bot2 for Marco Elver" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E68D01C001F;
+        Mon, 11 May 2020 22:59:13 +0200 (CEST)
+Date:   Mon, 11 May 2020 20:59:13 -0000
+From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/kcsan] kcsan: Add option to allow watcher interruptions
-Cc:     Marco Elver <elver@google.com>,
-        "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
+Subject: [tip: core/rcu] rcutorture: Convert ULONG_CMP_LT() to time_before()
+Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158894559820.8414.15492171858904937630.tip-bot2@tip-bot2>
+Message-ID: <158923075330.390.2075042483179383674.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -46,146 +45,54 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/kcsan branch of tip:
+The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     48b1fc190a180d971fb69217c88c7247f4f2ca19
-Gitweb:        https://git.kernel.org/tip/48b1fc190a180d971fb69217c88c7247f4f2ca19
-Author:        Marco Elver <elver@google.com>
-AuthorDate:    Fri, 21 Feb 2020 23:02:09 +01:00
+Commit-ID:     3c80b4024579150ddb8ddd6fd7b110ba192aca3b
+Gitweb:        https://git.kernel.org/tip/3c80b4024579150ddb8ddd6fd7b110ba192aca3b
+Author:        Paul E. McKenney <paulmck@kernel.org>
+AuthorDate:    Fri, 10 Apr 2020 15:37:12 -07:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Wed, 25 Mar 2020 09:55:59 -07:00
+CommitterDate: Thu, 07 May 2020 10:15:29 -07:00
 
-kcsan: Add option to allow watcher interruptions
+rcutorture: Convert ULONG_CMP_LT() to time_before()
 
-Add option to allow interrupts while a watchpoint is set up. This can be
-enabled either via CONFIG_KCSAN_INTERRUPT_WATCHER or via the boot
-parameter 'kcsan.interrupt_watcher=1'.
+This commit converts three ULONG_CMP_LT() invocations in rcutorture to
+time_before() to reflect the fact that they are comparing timestamps to
+the jiffies counter.
 
-Note that, currently not all safe per-CPU access primitives and patterns
-are accounted for, which could result in false positives. For example,
-asm-generic/percpu.h uses plain operations, which by default are
-instrumented. On interrupts and subsequent accesses to the same
-variable, KCSAN would currently report a data race with this option.
-
-Therefore, this option should currently remain disabled by default, but
-may be enabled for specific test scenarios.
-
-To avoid new warnings, changes all uses of smp_processor_id() to use the
-raw version (as already done in kcsan_found_watchpoint()). The exact SMP
-processor id is for informational purposes in the report, and
-correctness is not affected.
-
-Signed-off-by: Marco Elver <elver@google.com>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/kcsan/core.c | 34 ++++++++++------------------------
- lib/Kconfig.kcsan   | 11 +++++++++++
- 2 files changed, 21 insertions(+), 24 deletions(-)
+ kernel/rcu/rcutorture.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/kcsan/core.c b/kernel/kcsan/core.c
-index 589b1e7..e7387fe 100644
---- a/kernel/kcsan/core.c
-+++ b/kernel/kcsan/core.c
-@@ -21,6 +21,7 @@ static bool kcsan_early_enable = IS_ENABLED(CONFIG_KCSAN_EARLY_ENABLE);
- static unsigned int kcsan_udelay_task = CONFIG_KCSAN_UDELAY_TASK;
- static unsigned int kcsan_udelay_interrupt = CONFIG_KCSAN_UDELAY_INTERRUPT;
- static long kcsan_skip_watch = CONFIG_KCSAN_SKIP_WATCH;
-+static bool kcsan_interrupt_watcher = IS_ENABLED(CONFIG_KCSAN_INTERRUPT_WATCHER);
+diff --git a/kernel/rcu/rcutorture.c b/kernel/rcu/rcutorture.c
+index c7b7594..fc96147 100644
+--- a/kernel/rcu/rcutorture.c
++++ b/kernel/rcu/rcutorture.c
+@@ -848,7 +848,7 @@ static int rcu_torture_boost(void *arg)
  
- #ifdef MODULE_PARAM_PREFIX
- #undef MODULE_PARAM_PREFIX
-@@ -30,6 +31,7 @@ module_param_named(early_enable, kcsan_early_enable, bool, 0);
- module_param_named(udelay_task, kcsan_udelay_task, uint, 0644);
- module_param_named(udelay_interrupt, kcsan_udelay_interrupt, uint, 0644);
- module_param_named(skip_watch, kcsan_skip_watch, long, 0644);
-+module_param_named(interrupt_watcher, kcsan_interrupt_watcher, bool, 0444);
- 
- bool kcsan_enabled;
- 
-@@ -354,7 +356,7 @@ kcsan_setup_watchpoint(const volatile void *ptr, size_t size, int type)
- 	unsigned long access_mask;
- 	enum kcsan_value_change value_change = KCSAN_VALUE_CHANGE_MAYBE;
- 	unsigned long ua_flags = user_access_save();
--	unsigned long irq_flags;
-+	unsigned long irq_flags = 0;
- 
- 	/*
- 	 * Always reset kcsan_skip counter in slow-path to avoid underflow; see
-@@ -370,26 +372,9 @@ kcsan_setup_watchpoint(const volatile void *ptr, size_t size, int type)
- 		goto out;
- 	}
- 
--	/*
--	 * Disable interrupts & preemptions to avoid another thread on the same
--	 * CPU accessing memory locations for the set up watchpoint; this is to
--	 * avoid reporting races to e.g. CPU-local data.
--	 *
--	 * An alternative would be adding the source CPU to the watchpoint
--	 * encoding, and checking that watchpoint-CPU != this-CPU. There are
--	 * several problems with this:
--	 *   1. we should avoid stealing more bits from the watchpoint encoding
--	 *      as it would affect accuracy, as well as increase performance
--	 *      overhead in the fast-path;
--	 *   2. if we are preempted, but there *is* a genuine data race, we
--	 *      would *not* report it -- since this is the common case (vs.
--	 *      CPU-local data accesses), it makes more sense (from a data race
--	 *      detection point of view) to simply disable preemptions to ensure
--	 *      as many tasks as possible run on other CPUs.
--	 *
--	 * Use raw versions, to avoid lockdep recursion via IRQ flags tracing.
--	 */
--	raw_local_irq_save(irq_flags);
-+	if (!kcsan_interrupt_watcher)
-+		/* Use raw to avoid lockdep recursion via IRQ flags tracing. */
-+		raw_local_irq_save(irq_flags);
- 
- 	watchpoint = insert_watchpoint((unsigned long)ptr, size, is_write);
- 	if (watchpoint == NULL) {
-@@ -507,7 +492,7 @@ kcsan_setup_watchpoint(const volatile void *ptr, size_t size, int type)
- 		if (is_assert && value_change == KCSAN_VALUE_CHANGE_TRUE)
- 			kcsan_counter_inc(KCSAN_COUNTER_ASSERT_FAILURES);
- 
--		kcsan_report(ptr, size, type, value_change, smp_processor_id(),
-+		kcsan_report(ptr, size, type, value_change, raw_smp_processor_id(),
- 			     KCSAN_REPORT_RACE_SIGNAL);
- 	} else if (value_change == KCSAN_VALUE_CHANGE_TRUE) {
- 		/* Inferring a race, since the value should not have changed. */
-@@ -518,13 +503,14 @@ kcsan_setup_watchpoint(const volatile void *ptr, size_t size, int type)
- 
- 		if (IS_ENABLED(CONFIG_KCSAN_REPORT_RACE_UNKNOWN_ORIGIN) || is_assert)
- 			kcsan_report(ptr, size, type, KCSAN_VALUE_CHANGE_TRUE,
--				     smp_processor_id(),
-+				     raw_smp_processor_id(),
- 				     KCSAN_REPORT_RACE_UNKNOWN_ORIGIN);
- 	}
- 
- 	kcsan_counter_dec(KCSAN_COUNTER_USED_WATCHPOINTS);
- out_unlock:
--	raw_local_irq_restore(irq_flags);
-+	if (!kcsan_interrupt_watcher)
-+		raw_local_irq_restore(irq_flags);
- out:
- 	user_access_restore(ua_flags);
- }
-diff --git a/lib/Kconfig.kcsan b/lib/Kconfig.kcsan
-index f0b7911..081ed2e 100644
---- a/lib/Kconfig.kcsan
-+++ b/lib/Kconfig.kcsan
-@@ -88,6 +88,17 @@ config KCSAN_SKIP_WATCH_RANDOMIZE
- 	  KCSAN_WATCH_SKIP. If false, the chosen value is always
- 	  KCSAN_WATCH_SKIP.
- 
-+config KCSAN_INTERRUPT_WATCHER
-+	bool "Interruptible watchers"
-+	help
-+	  If enabled, a task that set up a watchpoint may be interrupted while
-+	  delayed. This option will allow KCSAN to detect races between
-+	  interrupted tasks and other threads of execution on the same CPU.
-+
-+	  Currently disabled by default, because not all safe per-CPU access
-+	  primitives and patterns may be accounted for, and therefore could
-+	  result in false positives.
-+
- config KCSAN_REPORT_ONCE_IN_MS
- 	int "Duration in milliseconds, in which any given race is only reported once"
- 	default 3000
+ 		/* Wait for the next test interval. */
+ 		oldstarttime = boost_starttime;
+-		while (ULONG_CMP_LT(jiffies, oldstarttime)) {
++		while (time_before(jiffies, oldstarttime)) {
+ 			schedule_timeout_interruptible(oldstarttime - jiffies);
+ 			stutter_wait("rcu_torture_boost");
+ 			if (torture_must_stop())
+@@ -858,7 +858,7 @@ static int rcu_torture_boost(void *arg)
+ 		/* Do one boost-test interval. */
+ 		endtime = oldstarttime + test_boost_duration * HZ;
+ 		call_rcu_time = jiffies;
+-		while (ULONG_CMP_LT(jiffies, endtime)) {
++		while (time_before(jiffies, endtime)) {
+ 			/* If we don't have a callback in flight, post one. */
+ 			if (!smp_load_acquire(&rbi.inflight)) {
+ 				/* RCU core before ->inflight = 1. */
+@@ -929,7 +929,7 @@ rcu_torture_fqs(void *arg)
+ 	VERBOSE_TOROUT_STRING("rcu_torture_fqs task started");
+ 	do {
+ 		fqs_resume_time = jiffies + fqs_stutter * HZ;
+-		while (ULONG_CMP_LT(jiffies, fqs_resume_time) &&
++		while (time_before(jiffies, fqs_resume_time) &&
+ 		       !kthread_should_stop()) {
+ 			schedule_timeout_interruptible(1);
+ 		}
