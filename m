@@ -2,37 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 125351CE6D1
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 May 2020 23:05:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EA201CE6C9
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 May 2020 23:05:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731391AbgEKVEE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 11 May 2020 17:04:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44026 "EHLO
+        id S1729736AbgEKVDp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 11 May 2020 17:03:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44058 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1731941AbgEKU7m (ORCPT
+        by vger.kernel.org with ESMTP id S1731989AbgEKU7s (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 11 May 2020 16:59:42 -0400
+        Mon, 11 May 2020 16:59:48 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33CCEC061A0E;
-        Mon, 11 May 2020 13:59:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D453C061A0C;
+        Mon, 11 May 2020 13:59:48 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jYFWW-0005rB-JB; Mon, 11 May 2020 22:59:40 +0200
+        id 1jYFWc-0005rl-8v; Mon, 11 May 2020 22:59:46 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 7CDD71C04D6;
-        Mon, 11 May 2020 22:59:31 +0200 (CEST)
-Date:   Mon, 11 May 2020 20:59:31 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4BDBB1C07B4;
+        Mon, 11 May 2020 22:59:32 +0200 (CEST)
+Date:   Mon, 11 May 2020 20:59:32 -0000
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcu-tasks: Further refactor RCU-tasks to allow adding
- more variants
+Subject: [tip: core/rcu] rcutorture: Add torture tests for RCU Tasks Rude
 Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158923077144.390.5976766857276176042.tip-bot2@tip-bot2>
+Message-ID: <158923077218.390.1491218566333354232.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,273 +47,147 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     e4fe5dd6f26f74233e217d9dd351adc3e5165bb9
-Gitweb:        https://git.kernel.org/tip/e4fe5dd6f26f74233e217d9dd351adc3e5165bb9
+Commit-ID:     3d6e43c75d6bab212e8bc142585ee36eb8e2e5d9
+Gitweb:        https://git.kernel.org/tip/3d6e43c75d6bab212e8bc142585ee36eb8e2e5d9
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Wed, 04 Mar 2020 17:31:43 -08:00
+AuthorDate:    Tue, 03 Mar 2020 15:02:50 -08:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Mon, 27 Apr 2020 11:03:51 -07:00
 
-rcu-tasks: Further refactor RCU-tasks to allow adding more variants
+rcutorture: Add torture tests for RCU Tasks Rude
 
-This commit refactors RCU tasks to allow variants to be added.  These
-variants will share the current Tasks-RCU tasklist scan and the holdout
-list processing.
+This commit adds the definitions required to torture the rude flavor of
+RCU tasks.
 
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/rcu/tasks.h | 166 ++++++++++++++++++++++++++++----------------
- 1 file changed, 108 insertions(+), 58 deletions(-)
+ kernel/rcu/Kconfig.debug                                   |  2 +-
+ kernel/rcu/rcu.h                                           |  1 +-
+ kernel/rcu/rcutorture.c                                    | 31 ++++++-
+ tools/testing/selftests/rcutorture/configs/rcu/CFLIST      |  1 +-
+ tools/testing/selftests/rcutorture/configs/rcu/RUDE01      | 10 ++-
+ tools/testing/selftests/rcutorture/configs/rcu/RUDE01.boot |  1 +-
+ 6 files changed, 44 insertions(+), 2 deletions(-)
+ create mode 100644 tools/testing/selftests/rcutorture/configs/rcu/RUDE01
+ create mode 100644 tools/testing/selftests/rcutorture/configs/rcu/RUDE01.boot
 
-diff --git a/kernel/rcu/tasks.h b/kernel/rcu/tasks.h
-index 9ca83c6..344426e 100644
---- a/kernel/rcu/tasks.h
-+++ b/kernel/rcu/tasks.h
-@@ -12,6 +12,11 @@
+diff --git a/kernel/rcu/Kconfig.debug b/kernel/rcu/Kconfig.debug
+index 4aa02ee..b5f3545 100644
+--- a/kernel/rcu/Kconfig.debug
++++ b/kernel/rcu/Kconfig.debug
+@@ -29,6 +29,7 @@ config RCU_PERF_TEST
+ 	select TORTURE_TEST
+ 	select SRCU
+ 	select TASKS_RCU
++	select TASKS_RUDE_RCU
+ 	default n
+ 	help
+ 	  This option provides a kernel module that runs performance
+@@ -46,6 +47,7 @@ config RCU_TORTURE_TEST
+ 	select TORTURE_TEST
+ 	select SRCU
+ 	select TASKS_RCU
++	select TASKS_RUDE_RCU
+ 	default n
+ 	help
+ 	  This option provides a kernel module that runs torture tests
+diff --git a/kernel/rcu/rcu.h b/kernel/rcu/rcu.h
+index 00ddc92..c574620 100644
+--- a/kernel/rcu/rcu.h
++++ b/kernel/rcu/rcu.h
+@@ -441,6 +441,7 @@ void rcu_request_urgent_qs_task(struct task_struct *t);
+ enum rcutorture_type {
+ 	RCU_FLAVOR,
+ 	RCU_TASKS_FLAVOR,
++	RCU_TASKS_RUDE_FLAVOR,
+ 	RCU_TRIVIAL_FLAVOR,
+ 	SRCU_FLAVOR,
+ 	INVALID_RCU_FLAVOR
+diff --git a/kernel/rcu/rcutorture.c b/kernel/rcu/rcutorture.c
+index fbb3e62..6b06638 100644
+--- a/kernel/rcu/rcutorture.c
++++ b/kernel/rcu/rcutorture.c
+@@ -730,6 +730,33 @@ static struct rcu_torture_ops trivial_ops = {
+ 	.name		= "trivial"
+ };
  
- struct rcu_tasks;
- typedef void (*rcu_tasks_gp_func_t)(struct rcu_tasks *rtp);
-+typedef void (*pregp_func_t)(void);
-+typedef void (*pertask_func_t)(struct task_struct *t, struct list_head *hop);
-+typedef void (*postscan_func_t)(void);
-+typedef void (*holdouts_func_t)(struct list_head *hop, bool ndrpt, bool *frptp);
-+typedef void (*postgp_func_t)(void);
- 
- /**
-  * Definition for a Tasks-RCU-like mechanism.
-@@ -21,6 +26,11 @@ typedef void (*rcu_tasks_gp_func_t)(struct rcu_tasks *rtp);
-  * @cbs_lock: Lock protecting callback list.
-  * @kthread_ptr: This flavor's grace-period/callback-invocation kthread.
-  * @gp_func: This flavor's grace-period-wait function.
-+ * @pregp_func: This flavor's pre-grace-period function (optional).
-+ * @pertask_func: This flavor's per-task scan function (optional).
-+ * @postscan_func: This flavor's post-task scan function (optional).
-+ * @holdout_func: This flavor's holdout-list scan function (optional).
-+ * @postgp_func: This flavor's post-grace-period function (optional).
-  * @call_func: This flavor's call_rcu()-equivalent function.
-  * @name: This flavor's textual name.
-  * @kname: This flavor's kthread name.
-@@ -32,6 +42,11 @@ struct rcu_tasks {
- 	raw_spinlock_t cbs_lock;
- 	struct task_struct *kthread_ptr;
- 	rcu_tasks_gp_func_t gp_func;
-+	pregp_func_t pregp_func;
-+	pertask_func_t pertask_func;
-+	postscan_func_t postscan_func;
-+	holdouts_func_t holdouts_func;
-+	postgp_func_t postgp_func;
- 	call_rcu_func_t call_func;
- 	char *name;
- 	char *kname;
-@@ -113,6 +128,7 @@ static int __noreturn rcu_tasks_kthread(void *arg)
- 
- 		/* Pick up any new callbacks. */
- 		raw_spin_lock_irqsave(&rtp->cbs_lock, flags);
-+		smp_mb__after_unlock_lock(); // Order updates vs. GP.
- 		list = rtp->cbs_head;
- 		rtp->cbs_head = NULL;
- 		rtp->cbs_tail = &rtp->cbs_head;
-@@ -207,6 +223,49 @@ static void __init rcu_tasks_bootup_oddness(void)
- // rates from multiple CPUs.  If this is required, per-CPU callback lists
- // will be needed.
- 
-+/* Pre-grace-period preparation. */
-+static void rcu_tasks_pregp_step(void)
++/*
++ * Definitions for rude RCU-tasks torture testing.
++ */
++
++static void rcu_tasks_rude_torture_deferred_free(struct rcu_torture *p)
 +{
-+	/*
-+	 * Wait for all pre-existing t->on_rq and t->nvcsw transitions
-+	 * to complete.  Invoking synchronize_rcu() suffices because all
-+	 * these transitions occur with interrupts disabled.  Without this
-+	 * synchronize_rcu(), a read-side critical section that started
-+	 * before the grace period might be incorrectly seen as having
-+	 * started after the grace period.
-+	 *
-+	 * This synchronize_rcu() also dispenses with the need for a
-+	 * memory barrier on the first store to t->rcu_tasks_holdout,
-+	 * as it forces the store to happen after the beginning of the
-+	 * grace period.
-+	 */
-+	synchronize_rcu();
++	call_rcu_tasks_rude(&p->rtort_rcu, rcu_torture_cb);
 +}
 +
-+/* Per-task initial processing. */
-+static void rcu_tasks_pertask(struct task_struct *t, struct list_head *hop)
-+{
-+	if (t != current && READ_ONCE(t->on_rq) && !is_idle_task(t)) {
-+		get_task_struct(t);
-+		t->rcu_tasks_nvcsw = READ_ONCE(t->nvcsw);
-+		WRITE_ONCE(t->rcu_tasks_holdout, true);
-+		list_add(&t->rcu_tasks_holdout_list, hop);
-+	}
-+}
++static struct rcu_torture_ops tasks_rude_ops = {
++	.ttype		= RCU_TASKS_RUDE_FLAVOR,
++	.init		= rcu_sync_torture_init,
++	.readlock	= rcu_torture_read_lock_trivial,
++	.read_delay	= rcu_read_delay,  /* just reuse rcu's version. */
++	.readunlock	= rcu_torture_read_unlock_trivial,
++	.get_gp_seq	= rcu_no_completed,
++	.deferred_free	= rcu_tasks_rude_torture_deferred_free,
++	.sync		= synchronize_rcu_tasks_rude,
++	.exp_sync	= synchronize_rcu_tasks_rude,
++	.call		= call_rcu_tasks_rude,
++	.cb_barrier	= rcu_barrier_tasks_rude,
++	.fqs		= NULL,
++	.stats		= NULL,
++	.irq_capable	= 1,
++	.name		= "tasks-rude"
++};
 +
-+/* Processing between scanning taskslist and draining the holdout list. */
-+void rcu_tasks_postscan(void)
-+{
-+	/*
-+	 * Wait for tasks that are in the process of exiting.  This
-+	 * does only part of the job, ensuring that all tasks that were
-+	 * previously exiting reach the point where they have disabled
-+	 * preemption, allowing the later synchronize_rcu() to finish
-+	 * the job.
-+	 */
-+	synchronize_srcu(&tasks_rcu_exit_srcu);
-+}
-+
- /* See if tasks are still holding out, complain if so. */
- static void check_holdout_task(struct task_struct *t,
- 			       bool needreport, bool *firstreport)
-@@ -239,55 +298,63 @@ static void check_holdout_task(struct task_struct *t,
- 	sched_show_task(t);
- }
- 
-+/* Scan the holdout lists for tasks no longer holding out. */
-+static void check_all_holdout_tasks(struct list_head *hop,
-+				    bool needreport, bool *firstreport)
-+{
-+	struct task_struct *t, *t1;
-+
-+	list_for_each_entry_safe(t, t1, hop, rcu_tasks_holdout_list) {
-+		check_holdout_task(t, needreport, firstreport);
-+		cond_resched();
-+	}
-+}
-+
-+/* Finish off the Tasks-RCU grace period. */
-+static void rcu_tasks_postgp(void)
-+{
-+	/*
-+	 * Because ->on_rq and ->nvcsw are not guaranteed to have a full
-+	 * memory barriers prior to them in the schedule() path, memory
-+	 * reordering on other CPUs could cause their RCU-tasks read-side
-+	 * critical sections to extend past the end of the grace period.
-+	 * However, because these ->nvcsw updates are carried out with
-+	 * interrupts disabled, we can use synchronize_rcu() to force the
-+	 * needed ordering on all such CPUs.
-+	 *
-+	 * This synchronize_rcu() also confines all ->rcu_tasks_holdout
-+	 * accesses to be within the grace period, avoiding the need for
-+	 * memory barriers for ->rcu_tasks_holdout accesses.
-+	 *
-+	 * In addition, this synchronize_rcu() waits for exiting tasks
-+	 * to complete their final preempt_disable() region of execution,
-+	 * cleaning up after the synchronize_srcu() above.
-+	 */
-+	synchronize_rcu();
-+}
-+
- /* Wait for one RCU-tasks grace period. */
- static void rcu_tasks_wait_gp(struct rcu_tasks *rtp)
+ static unsigned long rcutorture_seq_diff(unsigned long new, unsigned long old)
  {
- 	struct task_struct *g, *t;
- 	unsigned long lastreport;
--	LIST_HEAD(rcu_tasks_holdouts);
-+	LIST_HEAD(holdouts);
- 	int fract;
+ 	if (!cur_ops->gp_diff)
+@@ -739,7 +766,7 @@ static unsigned long rcutorture_seq_diff(unsigned long new, unsigned long old)
  
--	/*
--	 * Wait for all pre-existing t->on_rq and t->nvcsw transitions
--	 * to complete.  Invoking synchronize_rcu() suffices because all
--	 * these transitions occur with interrupts disabled.  Without this
--	 * synchronize_rcu(), a read-side critical section that started
--	 * before the grace period might be incorrectly seen as having
--	 * started after the grace period.
--	 *
--	 * This synchronize_rcu() also dispenses with the need for a
--	 * memory barrier on the first store to t->rcu_tasks_holdout,
--	 * as it forces the store to happen after the beginning of the
--	 * grace period.
--	 */
--	synchronize_rcu();
-+	rtp->pregp_func();
- 
- 	/*
- 	 * There were callbacks, so we need to wait for an RCU-tasks
- 	 * grace period.  Start off by scanning the task list for tasks
- 	 * that are not already voluntarily blocked.  Mark these tasks
--	 * and make a list of them in rcu_tasks_holdouts.
-+	 * and make a list of them in holdouts.
- 	 */
- 	rcu_read_lock();
--	for_each_process_thread(g, t) {
--		if (t != current && READ_ONCE(t->on_rq) && !is_idle_task(t)) {
--			get_task_struct(t);
--			t->rcu_tasks_nvcsw = READ_ONCE(t->nvcsw);
--			WRITE_ONCE(t->rcu_tasks_holdout, true);
--			list_add(&t->rcu_tasks_holdout_list,
--				 &rcu_tasks_holdouts);
--		}
--	}
-+	for_each_process_thread(g, t)
-+		rtp->pertask_func(t, &holdouts);
- 	rcu_read_unlock();
- 
--	/*
--	 * Wait for tasks that are in the process of exiting.  This
--	 * does only part of the job, ensuring that all tasks that were
--	 * previously exiting reach the point where they have disabled
--	 * preemption, allowing the later synchronize_rcu() to finish
--	 * the job.
--	 */
--	synchronize_srcu(&tasks_rcu_exit_srcu);
-+	rtp->postscan_func();
- 
- 	/*
- 	 * Each pass through the following loop scans the list of holdout
-@@ -303,9 +370,8 @@ static void rcu_tasks_wait_gp(struct rcu_tasks *rtp)
- 		bool firstreport;
- 		bool needreport;
- 		int rtst;
--		struct task_struct *t1;
- 
--		if (list_empty(&rcu_tasks_holdouts))
-+		if (list_empty(&holdouts))
- 			break;
- 
- 		/* Slowly back off waiting for holdouts */
-@@ -320,31 +386,10 @@ static void rcu_tasks_wait_gp(struct rcu_tasks *rtp)
- 			lastreport = jiffies;
- 		firstreport = true;
- 		WARN_ON(signal_pending(current));
--		list_for_each_entry_safe(t, t1, &rcu_tasks_holdouts,
--					 rcu_tasks_holdout_list) {
--			check_holdout_task(t, needreport, &firstreport);
--			cond_resched();
--		}
-+		rtp->holdouts_func(&holdouts, needreport, &firstreport);
- 	}
- 
--	/*
--	 * Because ->on_rq and ->nvcsw are not guaranteed to have a full
--	 * memory barriers prior to them in the schedule() path, memory
--	 * reordering on other CPUs could cause their RCU-tasks read-side
--	 * critical sections to extend past the end of the grace period.
--	 * However, because these ->nvcsw updates are carried out with
--	 * interrupts disabled, we can use synchronize_rcu() to force the
--	 * needed ordering on all such CPUs.
--	 *
--	 * This synchronize_rcu() also confines all ->rcu_tasks_holdout
--	 * accesses to be within the grace period, avoiding the need for
--	 * memory barriers for ->rcu_tasks_holdout accesses.
--	 *
--	 * In addition, this synchronize_rcu() waits for exiting tasks
--	 * to complete their final preempt_disable() region of execution,
--	 * cleaning up after the synchronize_srcu() above.
--	 */
--	synchronize_rcu();
-+	rtp->postgp_func();
- }
- 
- void call_rcu_tasks(struct rcu_head *rhp, rcu_callback_t func);
-@@ -413,6 +458,11 @@ EXPORT_SYMBOL_GPL(rcu_barrier_tasks);
- 
- static int __init rcu_spawn_tasks_kthread(void)
+ static bool __maybe_unused torturing_tasks(void)
  {
-+	rcu_tasks.pregp_func = rcu_tasks_pregp_step;
-+	rcu_tasks.pertask_func = rcu_tasks_pertask;
-+	rcu_tasks.postscan_func = rcu_tasks_postscan;
-+	rcu_tasks.holdouts_func = check_all_holdout_tasks;
-+	rcu_tasks.postgp_func = rcu_tasks_postgp;
- 	rcu_spawn_tasks_kthread_generic(&rcu_tasks);
- 	return 0;
+-	return cur_ops == &tasks_ops;
++	return cur_ops == &tasks_ops || cur_ops == &tasks_rude_ops;
  }
+ 
+ /*
+@@ -2413,7 +2440,7 @@ rcu_torture_init(void)
+ 	int firsterr = 0;
+ 	static struct rcu_torture_ops *torture_ops[] = {
+ 		&rcu_ops, &rcu_busted_ops, &srcu_ops, &srcud_ops,
+-		&busted_srcud_ops, &tasks_ops, &trivial_ops,
++		&busted_srcud_ops, &tasks_ops, &tasks_rude_ops, &trivial_ops,
+ 	};
+ 
+ 	if (!torture_init_begin(torture_type, verbose))
+diff --git a/tools/testing/selftests/rcutorture/configs/rcu/CFLIST b/tools/testing/selftests/rcutorture/configs/rcu/CFLIST
+index c3c1fb5..ec0c72f 100644
+--- a/tools/testing/selftests/rcutorture/configs/rcu/CFLIST
++++ b/tools/testing/selftests/rcutorture/configs/rcu/CFLIST
+@@ -14,3 +14,4 @@ TINY02
+ TASKS01
+ TASKS02
+ TASKS03
++RUDE01
+diff --git a/tools/testing/selftests/rcutorture/configs/rcu/RUDE01 b/tools/testing/selftests/rcutorture/configs/rcu/RUDE01
+new file mode 100644
+index 0000000..bafe94c
+--- /dev/null
++++ b/tools/testing/selftests/rcutorture/configs/rcu/RUDE01
+@@ -0,0 +1,10 @@
++CONFIG_SMP=y
++CONFIG_NR_CPUS=2
++CONFIG_HOTPLUG_CPU=y
++CONFIG_PREEMPT_NONE=n
++CONFIG_PREEMPT_VOLUNTARY=n
++CONFIG_PREEMPT=y
++CONFIG_DEBUG_LOCK_ALLOC=y
++CONFIG_PROVE_LOCKING=y
++#CHECK#CONFIG_PROVE_RCU=y
++CONFIG_RCU_EXPERT=y
+diff --git a/tools/testing/selftests/rcutorture/configs/rcu/RUDE01.boot b/tools/testing/selftests/rcutorture/configs/rcu/RUDE01.boot
+new file mode 100644
+index 0000000..9363708
+--- /dev/null
++++ b/tools/testing/selftests/rcutorture/configs/rcu/RUDE01.boot
+@@ -0,0 +1 @@
++rcutorture.torture_type=tasks-rude
