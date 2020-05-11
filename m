@@ -2,37 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 550951CE62C
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 May 2020 23:00:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02AED1CE6A7
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 May 2020 23:03:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731833AbgEKU76 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 11 May 2020 16:59:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44106 "EHLO
+        id S1732120AbgEKVDD (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 11 May 2020 17:03:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1732045AbgEKU76 (ORCPT
+        by vger.kernel.org with ESMTP id S1732032AbgEKU74 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 11 May 2020 16:59:58 -0400
+        Mon, 11 May 2020 16:59:56 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33DABC061A0C;
-        Mon, 11 May 2020 13:59:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61BF2C061A0E;
+        Mon, 11 May 2020 13:59:56 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jYFWk-0005vV-Bv; Mon, 11 May 2020 22:59:54 +0200
+        id 1jYFWj-0005wV-0Z; Mon, 11 May 2020 22:59:53 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 300FD1C085B;
-        Mon, 11 May 2020 22:59:37 +0200 (CEST)
-Date:   Mon, 11 May 2020 20:59:37 -0000
-From:   "tip-bot2 for Lai Jiangshan" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 54C411C0494;
+        Mon, 11 May 2020 22:59:38 +0200 (CEST)
+Date:   Mon, 11 May 2020 20:59:38 -0000
+From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcu: Don't use negative nesting depth in __rcu_read_unlock()
+Subject: [tip: core/rcu] rcu: Make rcu_read_unlock_special() safe for rq/pi locks
 Cc:     Lai Jiangshan <laijs@linux.alibaba.com>,
         "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158923077713.390.2338442580919915831.tip-bot2@tip-bot2>
+Message-ID: <158923077826.390.5439916886562177953.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,165 +48,148 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     5f5fa7ea89dc82d34ed458f4d7a8634e8e9eefce
-Gitweb:        https://git.kernel.org/tip/5f5fa7ea89dc82d34ed458f4d7a8634e8e9eefce
-Author:        Lai Jiangshan <laijs@linux.alibaba.com>
-AuthorDate:    Sat, 15 Feb 2020 15:23:26 -08:00
+Commit-ID:     e4453d8a1c56050df320ef54f339ffa4a9513d0a
+Gitweb:        https://git.kernel.org/tip/e4453d8a1c56050df320ef54f339ffa4a9513d0a
+Author:        Paul E. McKenney <paulmck@kernel.org>
+AuthorDate:    Sat, 15 Feb 2020 14:18:09 -08:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Mon, 27 Apr 2020 11:03:50 -07:00
 
-rcu: Don't use negative nesting depth in __rcu_read_unlock()
+rcu: Make rcu_read_unlock_special() safe for rq/pi locks
 
-Now that RCU flavors have been consolidated, an RCU-preempt
-rcu_read_unlock() in an interrupt or softirq handler cannot possibly
-end the RCU read-side critical section.  Consider the old vulnerability
-involving rcu_read_unlock() being invoked within such a handler that
-interrupted an __rcu_read_unlock_special(), in which a wakeup might be
-invoked with a scheduler lock held.  Because rcu_read_unlock_special()
-no longer does wakeups in such situations, it is no longer necessary
-for __rcu_read_unlock() to set the nesting level negative.
+The scheduler is currently required to hold rq/pi locks across the entire
+RCU read-side critical section or not at all.  This is inconvenient and
+leaves traps for the unwary, including the author of this commit.
 
-This commit therefore removes this recursion-protection code from
-__rcu_read_unlock().
+But now that excessively long grace periods enable scheduling-clock
+interrupts for holdout nohz_full CPUs, the nohz_full rescue logic in
+rcu_read_unlock_special() can be dispensed with.  In other words, the
+rcu_read_unlock_special() function can refrain from doing wakeups unless
+such wakeups are guaranteed safe.
 
-[ paulmck: Let rcu_exp_handler() continue to call rcu_report_exp_rdp(). ]
-[ paulmck: Adjust other checks given no more negative nesting. ]
-Signed-off-by: Lai Jiangshan <laijs@linux.alibaba.com>
+This commit therefore avoids unsafe wakeups, freeing the scheduler to
+hold rq/pi locks across rcu_read_unlock() even if the corresponding RCU
+read-side critical section might have been preempted.  This commit also
+updates RCU's requirements documentation.
+
+This commit is inspired by a patch from Lai Jiangshan:
+https://lore.kernel.org/lkml/20191102124559.1135-2-laijs@linux.alibaba.com
+This commit is further intended to be a step towards his goal of permitting
+the inlining of RCU-preempt's rcu_read_lock() and rcu_read_unlock().
+
+Cc: Lai Jiangshan <laijs@linux.alibaba.com>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/rcu/tree_exp.h    | 31 +++++--------------------------
- kernel/rcu/tree_plugin.h | 22 +++++++---------------
- 2 files changed, 12 insertions(+), 41 deletions(-)
+ Documentation/RCU/Design/Requirements/Requirements.rst | 61 ++-------
+ kernel/rcu/tree_plugin.h                               | 17 +--
+ 2 files changed, 24 insertions(+), 54 deletions(-)
 
-diff --git a/kernel/rcu/tree_exp.h b/kernel/rcu/tree_exp.h
-index 1a617b9..0e5ccb3 100644
---- a/kernel/rcu/tree_exp.h
-+++ b/kernel/rcu/tree_exp.h
-@@ -639,6 +639,7 @@ static void wait_rcu_exp_gp(struct work_struct *wp)
-  */
- static void rcu_exp_handler(void *unused)
- {
-+	int depth = rcu_preempt_depth();
- 	unsigned long flags;
- 	struct rcu_data *rdp = this_cpu_ptr(&rcu_data);
- 	struct rcu_node *rnp = rdp->mynode;
-@@ -649,7 +650,7 @@ static void rcu_exp_handler(void *unused)
- 	 * critical section.  If also enabled or idle, immediately
- 	 * report the quiescent state, otherwise defer.
- 	 */
--	if (!rcu_preempt_depth()) {
-+	if (!depth) {
- 		if (!(preempt_count() & (PREEMPT_MASK | SOFTIRQ_MASK)) ||
- 		    rcu_dynticks_curr_cpu_in_eqs()) {
- 			rcu_report_exp_rdp(rdp);
-@@ -673,7 +674,7 @@ static void rcu_exp_handler(void *unused)
- 	 * can have caused this quiescent state to already have been
- 	 * reported, so we really do need to check ->expmask.
- 	 */
--	if (rcu_preempt_depth() > 0) {
-+	if (depth > 0) {
- 		raw_spin_lock_irqsave_rcu_node(rnp, flags);
- 		if (rnp->expmask & rdp->grpmask) {
- 			rdp->exp_deferred_qs = true;
-@@ -683,30 +684,8 @@ static void rcu_exp_handler(void *unused)
- 		return;
- 	}
+diff --git a/Documentation/RCU/Design/Requirements/Requirements.rst b/Documentation/RCU/Design/Requirements/Requirements.rst
+index fd5e2cb..75b8ca0 100644
+--- a/Documentation/RCU/Design/Requirements/Requirements.rst
++++ b/Documentation/RCU/Design/Requirements/Requirements.rst
+@@ -1943,56 +1943,27 @@ invoked from a CPU-hotplug notifier.
+ Scheduler and RCU
+ ~~~~~~~~~~~~~~~~~
  
--	/*
--	 * The final and least likely case is where the interrupted
--	 * code was just about to or just finished exiting the RCU-preempt
--	 * read-side critical section, and no, we can't tell which.
--	 * So either way, set ->deferred_qs to flag later code that
--	 * a quiescent state is required.
--	 *
--	 * If the CPU is fully enabled (or if some buggy RCU-preempt
--	 * read-side critical section is being used from idle), just
--	 * invoke rcu_preempt_deferred_qs() to immediately report the
--	 * quiescent state.  We cannot use rcu_read_unlock_special()
--	 * because we are in an interrupt handler, which will cause that
--	 * function to take an early exit without doing anything.
--	 *
--	 * Otherwise, force a context switch after the CPU enables everything.
--	 */
--	rdp->exp_deferred_qs = true;
--	if (!(preempt_count() & (PREEMPT_MASK | SOFTIRQ_MASK)) ||
--	    WARN_ON_ONCE(rcu_dynticks_curr_cpu_in_eqs())) {
--		rcu_preempt_deferred_qs(t);
--	} else {
--		set_tsk_need_resched(t);
--		set_preempt_need_resched();
--	}
-+	// Finally, negative nesting depth should not happen.
-+	WARN_ON_ONCE(1);
- }
+-RCU depends on the scheduler, and the scheduler uses RCU to protect some
+-of its data structures. The preemptible-RCU ``rcu_read_unlock()``
+-implementation must therefore be written carefully to avoid deadlocks
+-involving the scheduler's runqueue and priority-inheritance locks. In
+-particular, ``rcu_read_unlock()`` must tolerate an interrupt where the
+-interrupt handler invokes both ``rcu_read_lock()`` and
+-``rcu_read_unlock()``. This possibility requires ``rcu_read_unlock()``
+-to use negative nesting levels to avoid destructive recursion via
+-interrupt handler's use of RCU.
+-
+-This scheduler-RCU requirement came as a `complete
+-surprise <https://lwn.net/Articles/453002/>`__.
+-
+-As noted above, RCU makes use of kthreads, and it is necessary to avoid
+-excessive CPU-time accumulation by these kthreads. This requirement was
+-no surprise, but RCU's violation of it when running context-switch-heavy
+-workloads when built with ``CONFIG_NO_HZ_FULL=y`` `did come as a
+-surprise
++RCU makes use of kthreads, and it is necessary to avoid excessive CPU-time
++accumulation by these kthreads. This requirement was no surprise, but
++RCU's violation of it when running context-switch-heavy workloads when
++built with ``CONFIG_NO_HZ_FULL=y`` `did come as a surprise
+ [PDF] <http://www.rdrop.com/users/paulmck/scalability/paper/BareMetal.2015.01.15b.pdf>`__.
+ RCU has made good progress towards meeting this requirement, even for
+ context-switch-heavy ``CONFIG_NO_HZ_FULL=y`` workloads, but there is
+ room for further improvement.
  
- /* PREEMPTION=y, so no PREEMPTION=n expedited grace period to clean up after. */
+-It is forbidden to hold any of scheduler's runqueue or
+-priority-inheritance spinlocks across an ``rcu_read_unlock()`` unless
+-interrupts have been disabled across the entire RCU read-side critical
+-section, that is, up to and including the matching ``rcu_read_lock()``.
+-Violating this restriction can result in deadlocks involving these
+-scheduler spinlocks. There was hope that this restriction might be
+-lifted when interrupt-disabled calls to ``rcu_read_unlock()`` started
+-deferring the reporting of the resulting RCU-preempt quiescent state
+-until the end of the corresponding interrupts-disabled region.
+-Unfortunately, timely reporting of the corresponding quiescent state to
+-expedited grace periods requires a call to ``raise_softirq()``, which
+-can acquire these scheduler spinlocks. In addition, real-time systems
+-using RCU priority boosting need this restriction to remain in effect
+-because deferred quiescent-state reporting would also defer deboosting,
+-which in turn would degrade real-time latencies.
+-
+-In theory, if a given RCU read-side critical section could be guaranteed
+-to be less than one second in duration, holding a scheduler spinlock
+-across that critical section's ``rcu_read_unlock()`` would require only
+-that preemption be disabled across the entire RCU read-side critical
+-section, not interrupts. Unfortunately, given the possibility of vCPU
+-preemption, long-running interrupts, and so on, it is not possible in
+-practice to guarantee that a given RCU read-side critical section will
+-complete in less than one second. Therefore, as noted above, if
+-scheduler spinlocks are held across a given call to
+-``rcu_read_unlock()``, interrupts must be disabled across the entire RCU
+-read-side critical section.
++There is no longer any prohibition against holding any of
++scheduler's runqueue or priority-inheritance spinlocks across an
++``rcu_read_unlock()``, even if interrupts and preemption were enabled
++somewhere within the corresponding RCU read-side critical section.
++Therefore, it is now perfectly legal to execute ``rcu_read_lock()``
++with preemption enabled, acquire one of the scheduler locks, and hold
++that lock across the matching ``rcu_read_unlock()``.
++
++Similarly, the RCU flavor consolidation has removed the need for negative
++nesting.  The fact that interrupt-disabled regions of code act as RCU
++read-side critical sections implicitly avoids earlier issues that used
++to result in destructive recursion via interrupt handler's use of RCU.
+ 
+ Tracing and RCU
+ ~~~~~~~~~~~~~~~
 diff --git a/kernel/rcu/tree_plugin.h b/kernel/rcu/tree_plugin.h
-index f31c599..088e84e 100644
+index 097635c..ccad776 100644
 --- a/kernel/rcu/tree_plugin.h
 +++ b/kernel/rcu/tree_plugin.h
-@@ -345,9 +345,7 @@ static int rcu_preempt_blocked_readers_cgp(struct rcu_node *rnp)
- 	return READ_ONCE(rnp->gp_tasks) != NULL;
- }
+@@ -615,19 +615,18 @@ static void rcu_read_unlock_special(struct task_struct *t)
+ 		struct rcu_data *rdp = this_cpu_ptr(&rcu_data);
+ 		struct rcu_node *rnp = rdp->mynode;
  
--/* Bias and limit values for ->rcu_read_lock_nesting. */
--#define RCU_NEST_BIAS INT_MAX
--#define RCU_NEST_NMAX (-INT_MAX / 2)
-+/* limit value for ->rcu_read_lock_nesting. */
- #define RCU_NEST_PMAX (INT_MAX / 2)
- 
- static void rcu_preempt_read_enter(void)
-@@ -355,9 +353,9 @@ static void rcu_preempt_read_enter(void)
- 	current->rcu_read_lock_nesting++;
- }
- 
--static void rcu_preempt_read_exit(void)
-+static int rcu_preempt_read_exit(void)
- {
--	current->rcu_read_lock_nesting--;
-+	return --current->rcu_read_lock_nesting;
- }
- 
- static void rcu_preempt_depth_set(int val)
-@@ -390,21 +388,15 @@ void __rcu_read_unlock(void)
- {
- 	struct task_struct *t = current;
- 
--	if (rcu_preempt_depth() != 1) {
--		rcu_preempt_read_exit();
--	} else {
-+	if (rcu_preempt_read_exit() == 0) {
- 		barrier();  /* critical section before exit code. */
--		rcu_preempt_depth_set(-RCU_NEST_BIAS);
--		barrier();  /* assign before ->rcu_read_unlock_special load */
- 		if (unlikely(READ_ONCE(t->rcu_read_unlock_special.s)))
- 			rcu_read_unlock_special(t);
--		barrier();  /* ->rcu_read_unlock_special load before assign */
--		rcu_preempt_depth_set(0);
- 	}
- 	if (IS_ENABLED(CONFIG_PROVE_LOCKING)) {
- 		int rrln = rcu_preempt_depth();
- 
--		WARN_ON_ONCE(rrln < 0 && rrln > RCU_NEST_NMAX);
-+		WARN_ON_ONCE(rrln < 0 || rrln > RCU_NEST_PMAX);
- 	}
- }
- EXPORT_SYMBOL_GPL(__rcu_read_unlock);
-@@ -556,7 +548,7 @@ static bool rcu_preempt_need_deferred_qs(struct task_struct *t)
- {
- 	return (__this_cpu_read(rcu_data.exp_deferred_qs) ||
- 		READ_ONCE(t->rcu_read_unlock_special.s)) &&
--	       rcu_preempt_depth() <= 0;
-+	       rcu_preempt_depth() == 0;
- }
- 
- /*
-@@ -692,7 +684,7 @@ static void rcu_flavor_sched_clock_irq(int user)
- 	} else if (rcu_preempt_need_deferred_qs(t)) {
- 		rcu_preempt_deferred_qs(t); /* Report deferred QS. */
- 		return;
--	} else if (!rcu_preempt_depth()) {
-+	} else if (!WARN_ON_ONCE(rcu_preempt_depth())) {
- 		rcu_qs(); /* Report immediate QS. */
- 		return;
- 	}
+-		exp = (t->rcu_blocked_node && t->rcu_blocked_node->exp_tasks) ||
+-		      (rdp->grpmask & READ_ONCE(rnp->expmask)) ||
+-		      tick_nohz_full_cpu(rdp->cpu);
++		exp = (t->rcu_blocked_node &&
++		       READ_ONCE(t->rcu_blocked_node->exp_tasks)) ||
++		      (rdp->grpmask & READ_ONCE(rnp->expmask));
+ 		// Need to defer quiescent state until everything is enabled.
+-		if (irqs_were_disabled && use_softirq &&
+-		    (in_interrupt() ||
+-		     (exp && !t->rcu_read_unlock_special.b.deferred_qs))) {
+-			// Using softirq, safe to awaken, and we get
+-			// no help from enabling irqs, unlike bh/preempt.
++		if (use_softirq && (in_irq() || (exp && !irqs_were_disabled))) {
++			// Using softirq, safe to awaken, and either the
++			// wakeup is free or there is an expedited GP.
+ 			raise_softirq_irqoff(RCU_SOFTIRQ);
+ 		} else {
+ 			// Enabling BH or preempt does reschedule, so...
+-			// Also if no expediting or NO_HZ_FULL, slow is OK.
++			// Also if no expediting, slow is OK.
++			// Plus nohz_full CPUs eventually get tick enabled.
+ 			set_tsk_need_resched(current);
+ 			set_preempt_need_resched();
+ 			if (IS_ENABLED(CONFIG_IRQ_WORK) && irqs_were_disabled &&
