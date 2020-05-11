@@ -2,37 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A71551CE6E5
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 May 2020 23:05:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EF2B1CE6F2
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 May 2020 23:06:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731928AbgEKVEp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 11 May 2020 17:04:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43960 "EHLO
+        id S1731855AbgEKVFG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 11 May 2020 17:05:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1731871AbgEKU7b (ORCPT
+        by vger.kernel.org with ESMTP id S1731843AbgEKU71 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 11 May 2020 16:59:31 -0400
+        Mon, 11 May 2020 16:59:27 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5800C061A0C;
-        Mon, 11 May 2020 13:59:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 650DBC061A0C;
+        Mon, 11 May 2020 13:59:27 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jYFWL-0005iz-CH; Mon, 11 May 2020 22:59:29 +0200
+        id 1jYFWH-0005jw-SU; Mon, 11 May 2020 22:59:25 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 52CCF1C0494;
-        Mon, 11 May 2020 22:59:21 +0200 (CEST)
-Date:   Mon, 11 May 2020 20:59:21 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 3AD671C04CC;
+        Mon, 11 May 2020 22:59:22 +0200 (CEST)
+Date:   Mon, 11 May 2020 20:59:22 -0000
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcu: Use data_race() for RCU expedited CPU
- stall-warning prints
+Subject: [tip: core/rcu] rcu-tasks: Allow standalone use of TASKS_{TRACE_,}RCU
 Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158923076125.390.1656849191203394981.tip-bot2@tip-bot2>
+Message-ID: <158923076214.390.16365922587319898600.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,51 +47,123 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     654db05cee8186cf9438d94ef32a4f9ffe964e57
-Gitweb:        https://git.kernel.org/tip/654db05cee8186cf9438d94ef32a4f9ffe964e57
+Commit-ID:     25246fc83155b254534ce579fb713828fb5e621a
+Gitweb:        https://git.kernel.org/tip/25246fc83155b254534ce579fb713828fb5e621a
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Sun, 09 Feb 2020 02:35:22 -08:00
+AuthorDate:    Sun, 05 Apr 2020 20:49:13 -07:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Mon, 27 Apr 2020 11:04:37 -07:00
+CommitterDate: Mon, 27 Apr 2020 11:03:53 -07:00
 
-rcu: Use data_race() for RCU expedited CPU stall-warning prints
+rcu-tasks: Allow standalone use of TASKS_{TRACE_,}RCU
 
-Although the accesses used to determine whether or not an expedited
-stall should be printed are an integral part of the concurrency algorithm
-governing use of the corresponding variables, the values that are simply
-printed are ancillary.  As such, it is best to use data_race() for these
-accesses in order to provide the greatest latitude in the use of KCSAN
-for the other accesses that are an integral part of the algorithm.  This
-commit therefore changes the relevant uses of READ_ONCE() to data_race().
+This commit allows TASKS_TRACE_RCU to be used independently of TASKS_RCU
+and vice versa.
 
+[ paulmck: Fix conditional compilation per kbuild test robot feedback. ]
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/rcu/tree_exp.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ kernel/rcu/tasks.h | 54 +++++++++++++++++++++++++--------------------
+ 1 file changed, 30 insertions(+), 24 deletions(-)
 
-diff --git a/kernel/rcu/tree_exp.h b/kernel/rcu/tree_exp.h
-index 1a617b9..e1a7986 100644
---- a/kernel/rcu/tree_exp.h
-+++ b/kernel/rcu/tree_exp.h
-@@ -542,8 +542,8 @@ static void synchronize_rcu_expedited_wait(void)
- 		}
- 		pr_cont(" } %lu jiffies s: %lu root: %#lx/%c\n",
- 			jiffies - jiffies_start, rcu_state.expedited_sequence,
--			READ_ONCE(rnp_root->expmask),
--			".T"[!!rnp_root->exp_tasks]);
-+			data_race(rnp_root->expmask),
-+			".T"[!!data_race(rnp_root->exp_tasks)]);
- 		if (ndetected) {
- 			pr_err("blocking rcu_node structures:");
- 			rcu_for_each_node_breadth_first(rnp) {
-@@ -553,8 +553,8 @@ static void synchronize_rcu_expedited_wait(void)
- 					continue;
- 				pr_cont(" l=%u:%d-%d:%#lx/%c",
- 					rnp->level, rnp->grplo, rnp->grphi,
--					READ_ONCE(rnp->expmask),
--					".T"[!!rnp->exp_tasks]);
-+					data_race(rnp->expmask),
-+					".T"[!!data_race(rnp->exp_tasks)]);
- 			}
- 			pr_cont("\n");
- 		}
+diff --git a/kernel/rcu/tasks.h b/kernel/rcu/tasks.h
+index 0a580ef..ce23f6c 100644
+--- a/kernel/rcu/tasks.h
++++ b/kernel/rcu/tasks.h
+@@ -244,27 +244,6 @@ static void __init rcu_spawn_tasks_kthread_generic(struct rcu_tasks *rtp)
+ 	smp_mb(); /* Ensure others see full kthread. */
+ }
+ 
+-/* Do the srcu_read_lock() for the above synchronize_srcu().  */
+-void exit_tasks_rcu_start(void) __acquires(&tasks_rcu_exit_srcu)
+-{
+-	preempt_disable();
+-	current->rcu_tasks_idx = __srcu_read_lock(&tasks_rcu_exit_srcu);
+-	preempt_enable();
+-}
+-
+-static void exit_tasks_rcu_finish_trace(struct task_struct *t);
+-
+-/* Do the srcu_read_unlock() for the above synchronize_srcu().  */
+-void exit_tasks_rcu_finish(void) __releases(&tasks_rcu_exit_srcu)
+-{
+-	struct task_struct *t = current;
+-
+-	preempt_disable();
+-	__srcu_read_unlock(&tasks_rcu_exit_srcu, t->rcu_tasks_idx);
+-	preempt_enable();
+-	exit_tasks_rcu_finish_trace(t);
+-}
+-
+ #ifndef CONFIG_TINY_RCU
+ 
+ /*
+@@ -303,7 +282,9 @@ static void show_rcu_tasks_generic_gp_kthread(struct rcu_tasks *rtp, char *s)
+ 		s);
+ }
+ 
+-#ifdef CONFIG_TASKS_RCU
++static void exit_tasks_rcu_finish_trace(struct task_struct *t);
++
++#if defined(CONFIG_TASKS_RCU) || defined(CONFIG_TASKS_TRACE_RCU)
+ 
+ ////////////////////////////////////////////////////////////////////////
+ //
+@@ -374,6 +355,10 @@ static void rcu_tasks_wait_gp(struct rcu_tasks *rtp)
+ 	rtp->postgp_func(rtp);
+ }
+ 
++#endif /* #if defined(CONFIG_TASKS_RCU) || defined(CONFIG_TASKS_TRACE_RCU) */
++
++#ifdef CONFIG_TASKS_RCU
++
+ ////////////////////////////////////////////////////////////////////////
+ //
+ // Simple variant of RCU whose quiescent states are voluntary context
+@@ -577,8 +562,29 @@ static void show_rcu_tasks_classic_gp_kthread(void)
+ 	show_rcu_tasks_generic_gp_kthread(&rcu_tasks, "");
+ }
+ 
++/* Do the srcu_read_lock() for the above synchronize_srcu().  */
++void exit_tasks_rcu_start(void) __acquires(&tasks_rcu_exit_srcu)
++{
++	preempt_disable();
++	current->rcu_tasks_idx = __srcu_read_lock(&tasks_rcu_exit_srcu);
++	preempt_enable();
++}
++
++/* Do the srcu_read_unlock() for the above synchronize_srcu().  */
++void exit_tasks_rcu_finish(void) __releases(&tasks_rcu_exit_srcu)
++{
++	struct task_struct *t = current;
++
++	preempt_disable();
++	__srcu_read_unlock(&tasks_rcu_exit_srcu, t->rcu_tasks_idx);
++	preempt_enable();
++	exit_tasks_rcu_finish_trace(t);
++}
++
+ #else /* #ifdef CONFIG_TASKS_RCU */
+ static void show_rcu_tasks_classic_gp_kthread(void) { }
++void exit_tasks_rcu_start(void) { }
++void exit_tasks_rcu_finish(void) { exit_tasks_rcu_finish_trace(current); }
+ #endif /* #else #ifdef CONFIG_TASKS_RCU */
+ 
+ #ifdef CONFIG_TASKS_RUDE_RCU
+@@ -1075,7 +1081,7 @@ static void rcu_tasks_trace_postgp(struct rcu_tasks *rtp)
+ }
+ 
+ /* Report any needed quiescent state for this exiting task. */
+-void exit_tasks_rcu_finish_trace(struct task_struct *t)
++static void exit_tasks_rcu_finish_trace(struct task_struct *t)
+ {
+ 	WRITE_ONCE(t->trc_reader_checked, true);
+ 	WARN_ON_ONCE(t->trc_reader_nesting);
+@@ -1170,7 +1176,7 @@ static void show_rcu_tasks_trace_gp_kthread(void)
+ }
+ 
+ #else /* #ifdef CONFIG_TASKS_TRACE_RCU */
+-void exit_tasks_rcu_finish_trace(struct task_struct *t) { }
++static void exit_tasks_rcu_finish_trace(struct task_struct *t) { }
+ static inline void show_rcu_tasks_trace_gp_kthread(void) {}
+ #endif /* #else #ifdef CONFIG_TASKS_TRACE_RCU */
+ 
