@@ -2,36 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B61441CE657
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 May 2020 23:02:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 498ED1CE62E
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 May 2020 23:00:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732269AbgEKVBU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 11 May 2020 17:01:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44150 "EHLO
+        id S1732072AbgEKVAC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 11 May 2020 17:00:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44124 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1732089AbgEKVAF (ORCPT
+        by vger.kernel.org with ESMTP id S1732066AbgEKVAB (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 11 May 2020 17:00:05 -0400
+        Mon, 11 May 2020 17:00:01 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98D27C061A0E;
-        Mon, 11 May 2020 14:00:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6403C061A0C;
+        Mon, 11 May 2020 14:00:00 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jYFWt-00060V-Tl; Mon, 11 May 2020 23:00:04 +0200
+        id 1jYFWo-00060D-UV; Mon, 11 May 2020 22:59:59 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id BC35A1C0857;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5B7B31C074B;
         Mon, 11 May 2020 22:59:42 +0200 (CEST)
 Date:   Mon, 11 May 2020 20:59:42 -0000
-From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Jules Irenge" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcu: Mark rcu_state.gp_seq to detect more concurrent writes
-Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
+Subject: [tip: core/rcu] rcu: Replace assigned pointer ret value by
+ corresponding boolean value
+Cc:     Jules Irenge <jbi.octave@gmail.com>,
+        "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158923078266.390.7799718018876713808.tip-bot2@tip-bot2>
+Message-ID: <158923078227.390.16875132364939168186.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,51 +49,49 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     62ae19511f1efbe9f57346ca1f45e13b061a56ff
-Gitweb:        https://git.kernel.org/tip/62ae19511f1efbe9f57346ca1f45e13b061a56ff
-Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Sat, 21 Mar 2020 19:52:20 -07:00
+Commit-ID:     a66dbda7893f48b97d7406ae42fa29190aa672a0
+Gitweb:        https://git.kernel.org/tip/a66dbda7893f48b97d7406ae42fa29190aa672a0
+Author:        Jules Irenge <jbi.octave@gmail.com>
+AuthorDate:    Fri, 27 Mar 2020 21:23:53 
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Mon, 27 Apr 2020 11:01:16 -07:00
 
-rcu: Mark rcu_state.gp_seq to detect more concurrent writes
+rcu: Replace assigned pointer ret value by corresponding boolean value
 
-The rcu_state structure's gp_seq field is only to be modified by the RCU
-grace-period kthread, which is single-threaded.  This commit therefore
-enlists KCSAN's help in enforcing this restriction.  This commit applies
-KCSAN-specific primitives, so cannot go upstream until KCSAN does.
+Coccinelle reports warnings at rcu_read_lock_held_common()
 
+WARNING: Assignment of 0/1 to bool variable
+
+To fix this,
+the assigned  pointer ret values are replaced by corresponding boolean value.
+Given that ret is a pointer of bool type
+
+Signed-off-by: Jules Irenge <jbi.octave@gmail.com>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/rcu/tree.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ kernel/rcu/update.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
-index 0132bc6..183b9cf 100644
---- a/kernel/rcu/tree.c
-+++ b/kernel/rcu/tree.c
-@@ -1230,7 +1230,7 @@ static bool rcu_start_this_gp(struct rcu_node *rnp_start, struct rcu_data *rdp,
- 		trace_rcu_this_gp(rnp, rdp, gp_seq_req, TPS("NoGPkthread"));
- 		goto unlock_out;
+diff --git a/kernel/rcu/update.c b/kernel/rcu/update.c
+index 72461dd..17f2356 100644
+--- a/kernel/rcu/update.c
++++ b/kernel/rcu/update.c
+@@ -98,15 +98,15 @@ module_param(rcu_normal_after_boot, int, 0);
+ static bool rcu_read_lock_held_common(bool *ret)
+ {
+ 	if (!debug_lockdep_rcu_enabled()) {
+-		*ret = 1;
++		*ret = true;
+ 		return true;
  	}
--	trace_rcu_grace_period(rcu_state.name, rcu_state.gp_seq, TPS("newreq"));
-+	trace_rcu_grace_period(rcu_state.name, data_race(rcu_state.gp_seq), TPS("newreq"));
- 	ret = true;  /* Caller must wake GP kthread. */
- unlock_out:
- 	/* Push furthest requested GP to leaf node and rcu_data structure. */
-@@ -1519,6 +1519,7 @@ static bool rcu_gp_init(void)
- 	record_gp_stall_check_time();
- 	/* Record GP times before starting GP, hence rcu_seq_start(). */
- 	rcu_seq_start(&rcu_state.gp_seq);
-+	ASSERT_EXCLUSIVE_WRITER(rcu_state.gp_seq);
- 	trace_rcu_grace_period(rcu_state.name, rcu_state.gp_seq, TPS("start"));
- 	raw_spin_unlock_irq_rcu_node(rnp);
- 
-@@ -1805,6 +1806,7 @@ static void rcu_gp_cleanup(void)
- 	/* Declare grace period done, trace first to use old GP number. */
- 	trace_rcu_grace_period(rcu_state.name, rcu_state.gp_seq, TPS("end"));
- 	rcu_seq_end(&rcu_state.gp_seq);
-+	ASSERT_EXCLUSIVE_WRITER(rcu_state.gp_seq);
- 	rcu_state.gp_state = RCU_GP_IDLE;
- 	/* Check for GP requests since above loop. */
- 	rdp = this_cpu_ptr(&rcu_data);
+ 	if (!rcu_is_watching()) {
+-		*ret = 0;
++		*ret = false;
+ 		return true;
+ 	}
+ 	if (!rcu_lockdep_current_cpu_online()) {
+-		*ret = 0;
++		*ret = false;
+ 		return true;
+ 	}
+ 	return false;
