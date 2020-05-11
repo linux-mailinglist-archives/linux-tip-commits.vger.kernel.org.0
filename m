@@ -2,42 +2,44 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AA0A31CE69C
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 May 2020 23:03:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C129F1CE64C
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 May 2020 23:02:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732038AbgEKVCy (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 11 May 2020 17:02:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44126 "EHLO
+        id S1732232AbgEKVBC convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 11 May 2020 17:01:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44164 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1732068AbgEKVAB (ORCPT
+        by vger.kernel.org with ESMTP id S1732001AbgEKVAH (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 11 May 2020 17:00:01 -0400
+        Mon, 11 May 2020 17:00:07 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EE38C061A0E;
-        Mon, 11 May 2020 14:00:01 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6400CC061A0C;
+        Mon, 11 May 2020 14:00:07 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jYFWp-00060s-Iy; Mon, 11 May 2020 22:59:59 +0200
+        id 1jYFWv-000613-7h; Mon, 11 May 2020 23:00:05 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 2E2991C07F8;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 842841C086D;
         Mon, 11 May 2020 22:59:43 +0200 (CEST)
 Date:   Mon, 11 May 2020 20:59:43 -0000
-From:   "tip-bot2 for Mauro Carvalho Chehab" <tip-bot2@linutronix.de>
+From:   tip-bot2 for Jonathan =?utf-8?q?Neusch=C3=A4fer?= 
+        <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcu: Get rid of some doc warnings in update.c
-Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
+Subject: [tip: core/rcu] Revert "rculist: Describe variadic macro argument in
+ a Sphinx-compatible way"
+Cc:     j.neuschaefer@gmx.net, "Paul E. McKenney" <paulmck@kernel.org>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <158923078309.390.2071709326416344298.tip-bot2@tip-bot2>
+Message-ID: <158923078346.390.5687192511992244193.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8BIT
 X-Linutronix-Spam-Score: -1.0
 X-Linutronix-Spam-Level: -
 X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
@@ -48,55 +50,45 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     c28d5c09d09f86374a00b70a57d3cb75e3fc7fa9
-Gitweb:        https://git.kernel.org/tip/c28d5c09d09f86374a00b70a57d3cb75e3fc7fa9
-Author:        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-AuthorDate:    Tue, 17 Mar 2020 15:54:18 +01:00
+Commit-ID:     ddc465936643108d5ba61f88594a2868d6a156ab
+Gitweb:        https://git.kernel.org/tip/ddc465936643108d5ba61f88594a2868d6a156ab
+Author:        Jonathan Neuschäfer <j.neuschaefer@gmx.net>
+AuthorDate:    Thu, 05 Mar 2020 23:22:55 +01:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Mon, 27 Apr 2020 11:01:16 -07:00
 
-rcu: Get rid of some doc warnings in update.c
+Revert "rculist: Describe variadic macro argument in a Sphinx-compatible way"
 
-This commit escapes *ret, because otherwise the documentation system
-thinks that this is an incomplete emphasis block:
+This reverts commit f452ee096d95482892b101bde4fd037fa025d3cc.
 
-	./kernel/rcu/update.c:65: WARNING: Inline emphasis start-string without end-string.
-	./kernel/rcu/update.c:65: WARNING: Inline emphasis start-string without end-string.
-	./kernel/rcu/update.c:70: WARNING: Inline emphasis start-string without end-string.
-	./kernel/rcu/update.c:82: WARNING: Inline emphasis start-string without end-string.
+The workaround became unnecessary with commit 43756e347f21
+("scripts/kernel-doc: Add support for named variable macro arguments").
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Jonathan Neuschäfer <j.neuschaefer@gmx.net>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/rcu/update.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ include/linux/rculist.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/rcu/update.c b/kernel/rcu/update.c
-index 28a8bdc..72461dd 100644
---- a/kernel/rcu/update.c
-+++ b/kernel/rcu/update.c
-@@ -63,12 +63,12 @@ module_param(rcu_normal_after_boot, int, 0);
-  * rcu_read_lock_held_common() - might we be in RCU-sched read-side critical section?
-  * @ret:	Best guess answer if lockdep cannot be relied on
+diff --git a/include/linux/rculist.h b/include/linux/rculist.h
+index 8214cdc..7375bb3 100644
+--- a/include/linux/rculist.h
++++ b/include/linux/rculist.h
+@@ -371,7 +371,7 @@ static inline void list_splice_tail_init_rcu(struct list_head *list,
+  * @pos:	the type * to use as a loop cursor.
+  * @head:	the head for your list.
+  * @member:	the name of the list_head within the struct.
+- * @cond...:	optional lockdep expression if called from non-RCU protection.
++ * @cond:	optional lockdep expression if called from non-RCU protection.
   *
-- * Returns true if lockdep must be ignored, in which case *ret contains
-+ * Returns true if lockdep must be ignored, in which case ``*ret`` contains
-  * the best guess described below.  Otherwise returns false, in which
-- * case *ret tells the caller nothing and the caller should instead
-+ * case ``*ret`` tells the caller nothing and the caller should instead
-  * consult lockdep.
+  * This list-traversal primitive may safely run concurrently with
+  * the _rcu list-mutation primitives such as list_add_rcu()
+@@ -646,7 +646,7 @@ static inline void hlist_add_behind_rcu(struct hlist_node *n,
+  * @pos:	the type * to use as a loop cursor.
+  * @head:	the head for your list.
+  * @member:	the name of the hlist_node within the struct.
+- * @cond...:	optional lockdep expression if called from non-RCU protection.
++ * @cond:	optional lockdep expression if called from non-RCU protection.
   *
-- * If CONFIG_DEBUG_LOCK_ALLOC is selected, set *ret to nonzero iff in an
-+ * If CONFIG_DEBUG_LOCK_ALLOC is selected, set ``*ret`` to nonzero iff in an
-  * RCU-sched read-side critical section.  In absence of
-  * CONFIG_DEBUG_LOCK_ALLOC, this assumes we are in an RCU-sched read-side
-  * critical section unless it can prove otherwise.  Note that disabling
-@@ -82,7 +82,7 @@ module_param(rcu_normal_after_boot, int, 0);
-  *
-  * Note that if the CPU is in the idle loop from an RCU point of view (ie:
-  * that we are in the section between rcu_idle_enter() and rcu_idle_exit())
-- * then rcu_read_lock_held() sets *ret to false even if the CPU did an
-+ * then rcu_read_lock_held() sets ``*ret`` to false even if the CPU did an
-  * rcu_read_lock().  The reason for this is that RCU ignores CPUs that are
-  * in such a section, considering these as in extended quiescent state,
-  * so such a CPU is effectively never in an RCU read-side critical section
+  * This list-traversal primitive may safely run concurrently with
+  * the _rcu list-mutation primitives such as hlist_add_head_rcu()
