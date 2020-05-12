@@ -2,148 +2,87 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 458091CF9E0
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 May 2020 17:55:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CEA451CFAAA
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 May 2020 18:29:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730307AbgELPzC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 12 May 2020 11:55:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51610 "EHLO
+        id S1725554AbgELQ2z (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 12 May 2020 12:28:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56824 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726055AbgELPzC (ORCPT
+        with ESMTP id S1725851AbgELQ2w (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 12 May 2020 11:55:02 -0400
-Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com [IPv6:2607:f8b0:4864:20::d43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16588C061A0C;
-        Tue, 12 May 2020 08:55:02 -0700 (PDT)
-Received: by mail-io1-xd43.google.com with SMTP id 79so5317865iou.2;
-        Tue, 12 May 2020 08:55:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=10/vEoe7VBVk5KEfSmgUPG75Mc6zuT9zb1kXjVA8dKs=;
-        b=pFpBECoqEZGZuJmgrImz99Ao2hqlZMHq4Hlqed66WIrR13zPXHciKlFM2dPbemLcov
-         yEPHRrojVStub+Ciu68iHgksvz0yeoYP5RtYapE4G341MC9fgx+T/iyA3Hj/j3oj+M2d
-         RqDT32ttmrwxaDtFfsliwUU1wxEoeVuC1Frql7PMtMz5MHxy2Ajm3bF1JQc9TluIhuEB
-         7jmjN2W6WCW3dLnly2ZvApT7aiPX6o08xZSmEzeK8oSE3UYxwueb5RPMitjiL9UJqnah
-         4PXAZytMJbKhj+XK1WnqOK1U43/YAvtd6za3N3LLYmQaRX7s1D+KqkEVe35dcUnH7QBx
-         WSPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=10/vEoe7VBVk5KEfSmgUPG75Mc6zuT9zb1kXjVA8dKs=;
-        b=G5KHet6CbEdboqiS/XtOOtEqooclNdA8bSPGyOOHDjLN+lMzDgIJfMlOfrbR4Gd8U+
-         an3pDHqSAubMH7aKHwf+HdVtRvE159GW8ZPpRszTMN/u2poKBWac2FPjsZ8iOjFhGUKQ
-         2LvAxecpY/xH7ct5FvHz6ldvhW3F368FnAT+94oU8t9xh5bfSxEsymaM9dXIgnej0AJ1
-         6CqklZFKXUbZYkJew9KiHiM5nSa63mKbu44Tb+e5G4m9Urt/yHYvGxKGJVBFGPK7DmL/
-         mWl/YOuKE7m25SuaczpZwrNP2Don+RCjVucqKLdwJ0tSBStHWDr1Xj0XRuiNEhT9rpD9
-         lvAw==
-X-Gm-Message-State: AGi0PuajkYiDXK76wVOlPybCVIVGCtDuNlNzbk3MXtKo4bOm0zPju9Pg
-        BDlgzQO7i3rPG2I2e3Ja8pomBaQmm/Cg0Hw41O8=
-X-Google-Smtp-Source: APiQypL4tTqanNPS6ku8FraQwgqCby47RTEW4wymxDqadJUYILPr9cb5jt1UJ3GerTcj7eRrgLbPrGP870RtDGs3ocI=
-X-Received: by 2002:a5d:88d3:: with SMTP id i19mr21645852iol.194.1589298901363;
- Tue, 12 May 2020 08:55:01 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200508092247.132147-1-ubizjak@gmail.com> <158929264101.390.18239205970315804831.tip-bot2@tip-bot2>
- <CAFULd4bZLkME4kn9bmbOBMtd+ZpNnsH-w8a6tPdtmpV57WSHtw@mail.gmail.com> <20200512151522.GB6859@zn.tnic>
-In-Reply-To: <20200512151522.GB6859@zn.tnic>
-From:   Uros Bizjak <ubizjak@gmail.com>
-Date:   Tue, 12 May 2020 17:54:49 +0200
-Message-ID: <CAFULd4bP4SPZDafsp-sqH2GP1mWxfBiBRA9wp8UrmkPZnfManQ@mail.gmail.com>
-Subject: Re: [tip: x86/cpu] x86/cpu: Use INVPCID mnemonic in invpcid.h
-To:     Borislav Petkov <bp@alien8.de>
+        Tue, 12 May 2020 12:28:52 -0400
+X-Greylist: delayed 4402 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 12 May 2020 09:28:52 PDT
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14D0DC061A0C;
+        Tue, 12 May 2020 09:28:52 -0700 (PDT)
+Received: from zn.tnic (p200300EC2F0A9D0059BB7FCAE11E2EA0.dip0.t-ipconnect.de [IPv6:2003:ec:2f0a:9d00:59bb:7fca:e11e:2ea0])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 935741EC0299;
+        Tue, 12 May 2020 18:28:50 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1589300930;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=jfdRhXHPFSXx8Q5aS323J6F+OYj8FS8BGUJyQM6iM68=;
+        b=DhAhB8v+Voi3PoHmOwXGeE9dEEdWM7Lppt80ZWH3Ep59LXOlnXJB9f63UvLzLtZLrO5lCd
+        EnTSzz72STpeA4rwayxZeH8F23977zQW0UELu1jtXrdF1PBWsR/jXJhSOXVx0RWcZDNOIM
+        pxsMg496T/+kff6wgORL9Wu4foBdJ7M=
+Date:   Tue, 12 May 2020 18:28:45 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     Uros Bizjak <ubizjak@gmail.com>
 Cc:     LKML <linux-kernel@vger.kernel.org>,
         linux-tip-commits@vger.kernel.org,
         "H. Peter Anvin (Intel)" <hpa@zytor.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         x86 <x86@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [tip: x86/cpu] x86/cpu: Use INVPCID mnemonic in invpcid.h
+Message-ID: <20200512162845.GC6859@zn.tnic>
+References: <20200508092247.132147-1-ubizjak@gmail.com>
+ <158929264101.390.18239205970315804831.tip-bot2@tip-bot2>
+ <CAFULd4bZLkME4kn9bmbOBMtd+ZpNnsH-w8a6tPdtmpV57WSHtw@mail.gmail.com>
+ <20200512151522.GB6859@zn.tnic>
+ <CAFULd4bP4SPZDafsp-sqH2GP1mWxfBiBRA9wp8UrmkPZnfManQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAFULd4bP4SPZDafsp-sqH2GP1mWxfBiBRA9wp8UrmkPZnfManQ@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Tue, May 12, 2020 at 5:15 PM Borislav Petkov <bp@alien8.de> wrote:
->
-> On Tue, May 12, 2020 at 04:26:37PM +0200, Uros Bizjak wrote:
-> > Actually, the order was correct for AT&T syntax in the original patch.
-> >
-> > The insn template for AT&T syntax goes:
-> >
-> > insn arg2, arg1, arg0
-> >
-> > where rightmost arguments are output operands.
-> >
-> > The operands in asm template go
-> >
-> > asm ("insn template" : output0, output1 : input0, input1 : clobbers)
-> >
-> > so, in effect:
-> >
-> > asm ("insn template" : arg0, arg1 : arg2, arg3: clobbers)
-> >
-> > As you can see, the operand order in insn tempate is reversed for AT&T
-> > syntax. I didn't notice the reversal of operands in your improvement.
->
-> Your version had:
->
-> +       asm volatile ("invpcid %1, %0"
-> +                     : : "r" (type), "m" (desc) : "memory");
->
-> with "type" being the 0th operand and "desc" being the 1st operand in
-> the input operands list.
+On Tue, May 12, 2020 at 05:54:49PM +0200, Uros Bizjak wrote:
+> Symbolic operands are agnostic to the position in the asm clause, so
+> it really doesn't matter much. It just doesn't feel right, when other
+> cases follow different order.
+> 
+> > $ diff -suprN /tmp/before /tmp/after
+> > Files /tmp/before and /tmp/after are identical
+> 
+> Sure, otherwise assembler would complain.
+> 
+> > Makes sense?
+> 
+> Well, I don't want to bikeshed around this anymore, so any way is good.
 
-Correct.
+Look at it this way: the symbolic operand names feature has made inline
+assembly *orders* of magnitude more readable than what it was before.
+Kernel folks, including myself, have stumbled upon the question which
+operand is which, on a regular basis and having the operand names there
+makes reading the inline asm almost trivial.
 
-> The order of the operands after the "invpcid" mnemonic are the other way
-> around though: you first have %1 which is "desc" and then %0 which is
-> the type.
+So while we should not convert wholesale, I think we should aim to
+gradually convert those other cases to the a-lot-more readable variant
+with symbolic operand names.
 
-Also correct. Because AT&T has right-to-left operand order, while asm
-statement has left-to-right operand order.
+Thx.
 
-> I simply swapped the arguments order in the input operands list, after
-> the second ':'
->
-> +       asm volatile("invpcid %[desc], %[type]"
-> +                    :: [desc] "m" (desc), [type] "r" (type) : "memory");
->
-> so that "desc" comes first and "type" second when reading from
-> left-to-right in both
+-- 
+Regards/Gruss,
+    Boris.
 
-But this is not correct, AT&T insn template should have right-to-left order.
-
-> 1. *after* the "invpcid" mnemonic and
-> 2. in the input operands list, after the second ':'.
-
-This is not the case throughout the kernel source. Please see for
-example sync_bitops, where:
-
-    asm volatile("lock; " __ASM_SIZE(bts) " %1,%0"
-             : "+m" (ADDR)
-             : "Ir" (nr)
-             : "memory");
-
-(to support my claim, I tried to find instruction with two input
-operands; there are some in KVM, but these were also written by
-myself).
-
-> And since I'm using the symbolic operand names, then the order just
-> works because looking at a before-and-after thing doesn't show any
-> opcode differences:
-
-Symbolic operands are agnostic to the position in the asm clause, so
-it really doesn't matter much. It just doesn't feel right, when other
-cases follow different order.
-
-> $ diff -suprN /tmp/before /tmp/after
-> Files /tmp/before and /tmp/after are identical
-
-Sure, otherwise assembler would complain.
-
-> Makes sense?
-
-Well, I don't want to bikeshed around this anymore, so any way is good.
-
-Uros.
+https://people.kernel.org/tglx/notes-about-netiquette
