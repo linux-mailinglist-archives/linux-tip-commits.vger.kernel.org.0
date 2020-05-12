@@ -2,42 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E5E51CF748
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 May 2020 16:37:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 054491CF8B9
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 May 2020 17:14:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730426AbgELOhP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 12 May 2020 10:37:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39426 "EHLO
+        id S1730548AbgELPNe (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 12 May 2020 11:13:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45094 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730421AbgELOhN (ORCPT
+        with ESMTP id S1730224AbgELPNd (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 12 May 2020 10:37:13 -0400
+        Tue, 12 May 2020 11:13:33 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40DD0C061A0C;
-        Tue, 12 May 2020 07:37:13 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2F1FC061A0C;
+        Tue, 12 May 2020 08:13:33 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jYW1o-0005rt-BD; Tue, 12 May 2020 16:37:04 +0200
+        id 1jYWb1-00074F-9G; Tue, 12 May 2020 17:13:27 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D826A1C06E5;
-        Tue, 12 May 2020 16:37:00 +0200 (CEST)
-Date:   Tue, 12 May 2020 14:37:00 -0000
-From:   "tip-bot2 for Will Deacon" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C0B721C02FC;
+        Tue, 12 May 2020 17:13:26 +0200 (CEST)
+Date:   Tue, 12 May 2020 15:13:26 -0000
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/kcsan] sparc32: mm: Fix argument checking in
- __srmmu_get_nocache()
-Cc:     Will Deacon <will@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        "David S. Miller" <davem@davemloft.net>, x86 <x86@kernel.org>,
+Subject: [tip: sched/core] sched: Make scheduler_ipi inline
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Alexandre Chartre <alexandre.chartre@oracle.com>,
+        Peter Zijlstra <peterz@infradead.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200511204150.27858-2-will@kernel.org>
-References: <20200511204150.27858-2-will@kernel.org>
+In-Reply-To: <20200505134058.453581595@linutronix.de>
+References: <20200505134058.453581595@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <158929422079.390.2344803808606534510.tip-bot2@tip-bot2>
+Message-ID: <158929640661.390.13262559099538803651.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,56 +49,69 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/kcsan branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     f790d0205fd5bd646bbc219211903a2aa164da97
-Gitweb:        https://git.kernel.org/tip/f790d0205fd5bd646bbc219211903a2aa164da97
-Author:        Will Deacon <will@kernel.org>
-AuthorDate:    Mon, 11 May 2020 21:41:33 +01:00
+Commit-ID:     2a0a24ebb499c9d499eea948d3fc108f936e36d4
+Gitweb:        https://git.kernel.org/tip/2a0a24ebb499c9d499eea948d3fc108f936e36d4
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Fri, 27 Mar 2020 12:42:00 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 12 May 2020 11:04:08 +02:00
+CommitterDate: Tue, 12 May 2020 17:10:49 +02:00
 
-sparc32: mm: Fix argument checking in __srmmu_get_nocache()
+sched: Make scheduler_ipi inline
 
-The 'size' argument to __srmmu_get_nocache() is a number of bytes not
-a shift value, so fix up the sanity checking to treat it properly.
+Now that the scheduler IPI is trivial and simple again there is no point to
+have the little function out of line. This simplifies the effort of
+constraining the instrumentation nicely.
 
-Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: "David S. Miller" <davem@davemloft.net>
-Link: https://lkml.kernel.org/r/20200511204150.27858-2-will@kernel.org
-
+Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
+Acked-by: Peter Zijlstra <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20200505134058.453581595@linutronix.de
 ---
- arch/sparc/mm/srmmu.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ include/linux/sched.h | 10 +++++++++-
+ kernel/sched/core.c   | 10 ----------
+ 2 files changed, 9 insertions(+), 11 deletions(-)
 
-diff --git a/arch/sparc/mm/srmmu.c b/arch/sparc/mm/srmmu.c
-index b7c94de..cb9ded8 100644
---- a/arch/sparc/mm/srmmu.c
-+++ b/arch/sparc/mm/srmmu.c
-@@ -175,18 +175,18 @@ pte_t *pte_offset_kernel(pmd_t *dir, unsigned long address)
-  */
- static void *__srmmu_get_nocache(int size, int align)
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index 4418f5c..d4ea440 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -1715,7 +1715,15 @@ extern char *__get_task_comm(char *to, size_t len, struct task_struct *tsk);
+ })
+ 
+ #ifdef CONFIG_SMP
+-void scheduler_ipi(void);
++static __always_inline void scheduler_ipi(void)
++{
++	/*
++	 * Fold TIF_NEED_RESCHED into the preempt_count; anybody setting
++	 * TIF_NEED_RESCHED remotely (for the first time) will also send
++	 * this IPI.
++	 */
++	preempt_fold_need_resched();
++}
+ extern unsigned long wait_task_inactive(struct task_struct *, long match_state);
+ #else
+ static inline void scheduler_ipi(void) { }
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index cd2070d..74fb89b 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -2312,16 +2312,6 @@ static void wake_csd_func(void *info)
+ 	sched_ttwu_pending();
+ }
+ 
+-void scheduler_ipi(void)
+-{
+-	/*
+-	 * Fold TIF_NEED_RESCHED into the preempt_count; anybody setting
+-	 * TIF_NEED_RESCHED remotely (for the first time) will also send
+-	 * this IPI.
+-	 */
+-	preempt_fold_need_resched();
+-}
+-
+ static void ttwu_queue_remote(struct task_struct *p, int cpu, int wake_flags)
  {
--	int offset;
-+	int offset, minsz = 1 << SRMMU_NOCACHE_BITMAP_SHIFT;
- 	unsigned long addr;
- 
--	if (size < SRMMU_NOCACHE_BITMAP_SHIFT) {
-+	if (size < minsz) {
- 		printk(KERN_ERR "Size 0x%x too small for nocache request\n",
- 		       size);
--		size = SRMMU_NOCACHE_BITMAP_SHIFT;
-+		size = minsz;
- 	}
--	if (size & (SRMMU_NOCACHE_BITMAP_SHIFT - 1)) {
--		printk(KERN_ERR "Size 0x%x unaligned int nocache request\n",
-+	if (size & (minsz - 1)) {
-+		printk(KERN_ERR "Size 0x%x unaligned in nocache request\n",
- 		       size);
--		size += SRMMU_NOCACHE_BITMAP_SHIFT - 1;
-+		size += minsz - 1;
- 	}
- 	BUG_ON(align > SRMMU_NOCACHE_ALIGN_MAX);
- 
+ 	struct rq *rq = cpu_rq(cpu);
