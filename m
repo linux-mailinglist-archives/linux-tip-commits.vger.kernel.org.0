@@ -2,104 +2,148 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FC0C1CF8D6
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 May 2020 17:19:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 458091CF9E0
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 May 2020 17:55:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730388AbgELPTG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 12 May 2020 11:19:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45986 "EHLO
+        id S1730307AbgELPzC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 12 May 2020 11:55:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51610 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726055AbgELPTD (ORCPT
+        with ESMTP id S1726055AbgELPzC (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 12 May 2020 11:19:03 -0400
-Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A0F4C061A0E;
-        Tue, 12 May 2020 08:19:03 -0700 (PDT)
-Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tip-bot2@linutronix.de>)
-        id 1jYWgN-0007EM-Og; Tue, 12 May 2020 17:18:59 +0200
-Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 57A471C0475;
-        Tue, 12 May 2020 17:18:59 +0200 (CEST)
-Date:   Tue, 12 May 2020 15:18:59 -0000
-From:   "tip-bot2 for Masami Hiramatsu" <tip-bot2@linutronix.de>
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/kprobes] kprobes: Lock kprobe_mutex while showing kprobe_blacklist
-Cc:     Masami Hiramatsu <mhiramat@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Alexandre Chartre <alexandre.chartre@oracle.com>,
-        Peter Zijlstra <peterz@infradead.org>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200505134059.571125195@linutronix.de>
-References: <20200505134059.571125195@linutronix.de>
+        Tue, 12 May 2020 11:55:02 -0400
+Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com [IPv6:2607:f8b0:4864:20::d43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16588C061A0C;
+        Tue, 12 May 2020 08:55:02 -0700 (PDT)
+Received: by mail-io1-xd43.google.com with SMTP id 79so5317865iou.2;
+        Tue, 12 May 2020 08:55:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=10/vEoe7VBVk5KEfSmgUPG75Mc6zuT9zb1kXjVA8dKs=;
+        b=pFpBECoqEZGZuJmgrImz99Ao2hqlZMHq4Hlqed66WIrR13zPXHciKlFM2dPbemLcov
+         yEPHRrojVStub+Ciu68iHgksvz0yeoYP5RtYapE4G341MC9fgx+T/iyA3Hj/j3oj+M2d
+         RqDT32ttmrwxaDtFfsliwUU1wxEoeVuC1Frql7PMtMz5MHxy2Ajm3bF1JQc9TluIhuEB
+         7jmjN2W6WCW3dLnly2ZvApT7aiPX6o08xZSmEzeK8oSE3UYxwueb5RPMitjiL9UJqnah
+         4PXAZytMJbKhj+XK1WnqOK1U43/YAvtd6za3N3LLYmQaRX7s1D+KqkEVe35dcUnH7QBx
+         WSPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=10/vEoe7VBVk5KEfSmgUPG75Mc6zuT9zb1kXjVA8dKs=;
+        b=G5KHet6CbEdboqiS/XtOOtEqooclNdA8bSPGyOOHDjLN+lMzDgIJfMlOfrbR4Gd8U+
+         an3pDHqSAubMH7aKHwf+HdVtRvE159GW8ZPpRszTMN/u2poKBWac2FPjsZ8iOjFhGUKQ
+         2LvAxecpY/xH7ct5FvHz6ldvhW3F368FnAT+94oU8t9xh5bfSxEsymaM9dXIgnej0AJ1
+         6CqklZFKXUbZYkJew9KiHiM5nSa63mKbu44Tb+e5G4m9Urt/yHYvGxKGJVBFGPK7DmL/
+         mWl/YOuKE7m25SuaczpZwrNP2Don+RCjVucqKLdwJ0tSBStHWDr1Xj0XRuiNEhT9rpD9
+         lvAw==
+X-Gm-Message-State: AGi0PuajkYiDXK76wVOlPybCVIVGCtDuNlNzbk3MXtKo4bOm0zPju9Pg
+        BDlgzQO7i3rPG2I2e3Ja8pomBaQmm/Cg0Hw41O8=
+X-Google-Smtp-Source: APiQypL4tTqanNPS6ku8FraQwgqCby47RTEW4wymxDqadJUYILPr9cb5jt1UJ3GerTcj7eRrgLbPrGP870RtDGs3ocI=
+X-Received: by 2002:a5d:88d3:: with SMTP id i19mr21645852iol.194.1589298901363;
+ Tue, 12 May 2020 08:55:01 -0700 (PDT)
 MIME-Version: 1.0
-Message-ID: <158929673928.390.10899451832905837154.tip-bot2@tip-bot2>
-X-Mailer: tip-git-log-daemon
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+References: <20200508092247.132147-1-ubizjak@gmail.com> <158929264101.390.18239205970315804831.tip-bot2@tip-bot2>
+ <CAFULd4bZLkME4kn9bmbOBMtd+ZpNnsH-w8a6tPdtmpV57WSHtw@mail.gmail.com> <20200512151522.GB6859@zn.tnic>
+In-Reply-To: <20200512151522.GB6859@zn.tnic>
+From:   Uros Bizjak <ubizjak@gmail.com>
+Date:   Tue, 12 May 2020 17:54:49 +0200
+Message-ID: <CAFULd4bP4SPZDafsp-sqH2GP1mWxfBiBRA9wp8UrmkPZnfManQ@mail.gmail.com>
+Subject: Re: [tip: x86/cpu] x86/cpu: Use INVPCID mnemonic in invpcid.h
+To:     Borislav Petkov <bp@alien8.de>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        linux-tip-commits@vger.kernel.org,
+        "H. Peter Anvin (Intel)" <hpa@zytor.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        x86 <x86@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the core/kprobes branch of tip:
+On Tue, May 12, 2020 at 5:15 PM Borislav Petkov <bp@alien8.de> wrote:
+>
+> On Tue, May 12, 2020 at 04:26:37PM +0200, Uros Bizjak wrote:
+> > Actually, the order was correct for AT&T syntax in the original patch.
+> >
+> > The insn template for AT&T syntax goes:
+> >
+> > insn arg2, arg1, arg0
+> >
+> > where rightmost arguments are output operands.
+> >
+> > The operands in asm template go
+> >
+> > asm ("insn template" : output0, output1 : input0, input1 : clobbers)
+> >
+> > so, in effect:
+> >
+> > asm ("insn template" : arg0, arg1 : arg2, arg3: clobbers)
+> >
+> > As you can see, the operand order in insn tempate is reversed for AT&T
+> > syntax. I didn't notice the reversal of operands in your improvement.
+>
+> Your version had:
+>
+> +       asm volatile ("invpcid %1, %0"
+> +                     : : "r" (type), "m" (desc) : "memory");
+>
+> with "type" being the 0th operand and "desc" being the 1st operand in
+> the input operands list.
 
-Commit-ID:     4fdd88877e5259dcc5e504dca449acc0324d71b9
-Gitweb:        https://git.kernel.org/tip/4fdd88877e5259dcc5e504dca449acc0324d71b9
-Author:        Masami Hiramatsu <mhiramat@kernel.org>
-AuthorDate:    Thu, 26 Mar 2020 23:49:36 +09:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 12 May 2020 17:15:31 +02:00
+Correct.
 
-kprobes: Lock kprobe_mutex while showing kprobe_blacklist
+> The order of the operands after the "invpcid" mnemonic are the other way
+> around though: you first have %1 which is "desc" and then %0 which is
+> the type.
 
-Lock kprobe_mutex while showing kprobe_blacklist to prevent updating the
-kprobe_blacklist.
+Also correct. Because AT&T has right-to-left operand order, while asm
+statement has left-to-right operand order.
 
-Signed-off-by: Masami Hiramatsu <mhiramat@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
-Acked-by: Peter Zijlstra <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20200505134059.571125195@linutronix.de
+> I simply swapped the arguments order in the input operands list, after
+> the second ':'
+>
+> +       asm volatile("invpcid %[desc], %[type]"
+> +                    :: [desc] "m" (desc), [type] "r" (type) : "memory");
+>
+> so that "desc" comes first and "type" second when reading from
+> left-to-right in both
 
----
- kernel/kprobes.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+But this is not correct, AT&T insn template should have right-to-left order.
 
-diff --git a/kernel/kprobes.c b/kernel/kprobes.c
-index 2625c24..570d608 100644
---- a/kernel/kprobes.c
-+++ b/kernel/kprobes.c
-@@ -2420,6 +2420,7 @@ static const struct file_operations debugfs_kprobes_operations = {
- /* kprobes/blacklist -- shows which functions can not be probed */
- static void *kprobe_blacklist_seq_start(struct seq_file *m, loff_t *pos)
- {
-+	mutex_lock(&kprobe_mutex);
- 	return seq_list_start(&kprobe_blacklist, *pos);
- }
- 
-@@ -2446,10 +2447,15 @@ static int kprobe_blacklist_seq_show(struct seq_file *m, void *v)
- 	return 0;
- }
- 
-+static void kprobe_blacklist_seq_stop(struct seq_file *f, void *v)
-+{
-+	mutex_unlock(&kprobe_mutex);
-+}
-+
- static const struct seq_operations kprobe_blacklist_seq_ops = {
- 	.start = kprobe_blacklist_seq_start,
- 	.next  = kprobe_blacklist_seq_next,
--	.stop  = kprobe_seq_stop,	/* Reuse void function */
-+	.stop  = kprobe_blacklist_seq_stop,
- 	.show  = kprobe_blacklist_seq_show,
- };
- 
+> 1. *after* the "invpcid" mnemonic and
+> 2. in the input operands list, after the second ':'.
+
+This is not the case throughout the kernel source. Please see for
+example sync_bitops, where:
+
+    asm volatile("lock; " __ASM_SIZE(bts) " %1,%0"
+             : "+m" (ADDR)
+             : "Ir" (nr)
+             : "memory");
+
+(to support my claim, I tried to find instruction with two input
+operands; there are some in KVM, but these were also written by
+myself).
+
+> And since I'm using the symbolic operand names, then the order just
+> works because looking at a before-and-after thing doesn't show any
+> opcode differences:
+
+Symbolic operands are agnostic to the position in the asm clause, so
+it really doesn't matter much. It just doesn't feel right, when other
+cases follow different order.
+
+> $ diff -suprN /tmp/before /tmp/after
+> Files /tmp/before and /tmp/after are identical
+
+Sure, otherwise assembler would complain.
+
+> Makes sense?
+
+Well, I don't want to bikeshed around this anymore, so any way is good.
+
+Uros.
