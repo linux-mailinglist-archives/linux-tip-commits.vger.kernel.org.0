@@ -2,42 +2,42 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 591DC1CF76A
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 May 2020 16:40:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F2D71CF766
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 May 2020 16:40:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730375AbgELOiC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 12 May 2020 10:38:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39376 "EHLO
+        id S1730401AbgELOhq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 12 May 2020 10:37:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39396 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730310AbgELOhC (ORCPT
+        with ESMTP id S1730390AbgELOhH (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 12 May 2020 10:37:02 -0400
+        Tue, 12 May 2020 10:37:07 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 658C8C061A0E;
-        Tue, 12 May 2020 07:37:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7BADC061A0C;
+        Tue, 12 May 2020 07:37:06 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jYW1i-0005oe-1B; Tue, 12 May 2020 16:36:58 +0200
+        id 1jYW1m-0005oT-Hm; Tue, 12 May 2020 16:37:02 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 9D5561C0475;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 28DED1C02FC;
         Tue, 12 May 2020 16:36:57 +0200 (CEST)
 Date:   Tue, 12 May 2020 14:36:57 -0000
 From:   "tip-bot2 for Will Deacon" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/kcsan] fault_inject: Don't rely on "return value" from
- WRITE_ONCE()
+Subject: [tip: locking/kcsan] arm64: csum: Disable KASAN for do_csum()
 Cc:     Will Deacon <will@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Akinobu Mita <akinobu.mita@gmail.com>, x86 <x86@kernel.org>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200511204150.27858-9-will@kernel.org>
-References: <20200511204150.27858-9-will@kernel.org>
+In-Reply-To: <20200511204150.27858-10-will@kernel.org>
+References: <20200511204150.27858-10-will@kernel.org>
 MIME-Version: 1.0
-Message-ID: <158929421751.390.2633100555064287266.tip-bot2@tip-bot2>
+Message-ID: <158929421706.390.7180347611312601499.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -53,44 +53,88 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/kcsan branch of tip:
 
-Commit-ID:     9a7cb2d8d6b959fc11a34668b1523f745ae5f714
-Gitweb:        https://git.kernel.org/tip/9a7cb2d8d6b959fc11a34668b1523f745ae5f714
+Commit-ID:     5a7d7f5d57f61d650619b89c1b7d4adcf4fdecfe
+Gitweb:        https://git.kernel.org/tip/5a7d7f5d57f61d650619b89c1b7d4adcf4fdecfe
 Author:        Will Deacon <will@kernel.org>
-AuthorDate:    Mon, 11 May 2020 21:41:40 +01:00
+AuthorDate:    Mon, 11 May 2020 21:41:41 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 12 May 2020 11:04:12 +02:00
+CommitterDate: Tue, 12 May 2020 11:04:13 +02:00
 
-fault_inject: Don't rely on "return value" from WRITE_ONCE()
+arm64: csum: Disable KASAN for do_csum()
 
-It's a bit weird that WRITE_ONCE() evaluates to the value it stores and
-it's also different to smp_store_release(), which can't be used this
-way.
-
-In preparation for preventing this in WRITE_ONCE(), change the fault
-injection code to use a local variable instead.
+do_csum() over-reads the source buffer and therefore abuses
+READ_ONCE_NOCHECK() on a 128-bit type to avoid tripping up KASAN. In
+preparation for READ_ONCE_NOCHECK() requiring an atomic access, and
+therefore failing to build when fed a '__uint128_t', annotate do_csum()
+explicitly with '__no_sanitize_address' and fall back to normal loads.
 
 Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: Akinobu Mita <akinobu.mita@gmail.com>
-Link: https://lkml.kernel.org/r/20200511204150.27858-9-will@kernel.org
+Acked-by: Robin Murphy <robin.murphy@arm.com>
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Link: https://lkml.kernel.org/r/20200511204150.27858-10-will@kernel.org
 
 ---
- lib/fault-inject.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/arm64/lib/csum.c | 20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
-diff --git a/lib/fault-inject.c b/lib/fault-inject.c
-index 8186ca8..ce12621 100644
---- a/lib/fault-inject.c
-+++ b/lib/fault-inject.c
-@@ -106,7 +106,9 @@ bool should_fail(struct fault_attr *attr, ssize_t size)
- 		unsigned int fail_nth = READ_ONCE(current->fail_nth);
+diff --git a/arch/arm64/lib/csum.c b/arch/arm64/lib/csum.c
+index 60eccae..78b87a6 100644
+--- a/arch/arm64/lib/csum.c
++++ b/arch/arm64/lib/csum.c
+@@ -14,7 +14,11 @@ static u64 accumulate(u64 sum, u64 data)
+ 	return tmp + (tmp >> 64);
+ }
  
- 		if (fail_nth) {
--			if (!WRITE_ONCE(current->fail_nth, fail_nth - 1))
-+			fail_nth--;
-+			WRITE_ONCE(current->fail_nth, fail_nth);
-+			if (!fail_nth)
- 				goto fail;
+-unsigned int do_csum(const unsigned char *buff, int len)
++/*
++ * We over-read the buffer and this makes KASAN unhappy. Instead, disable
++ * instrumentation and call kasan explicitly.
++ */
++unsigned int __no_sanitize_address do_csum(const unsigned char *buff, int len)
+ {
+ 	unsigned int offset, shift, sum;
+ 	const u64 *ptr;
+@@ -42,7 +46,7 @@ unsigned int do_csum(const unsigned char *buff, int len)
+ 	 * odd/even alignment, and means we can ignore it until the very end.
+ 	 */
+ 	shift = offset * 8;
+-	data = READ_ONCE_NOCHECK(*ptr++);
++	data = *ptr++;
+ #ifdef __LITTLE_ENDIAN
+ 	data = (data >> shift) << shift;
+ #else
+@@ -58,10 +62,10 @@ unsigned int do_csum(const unsigned char *buff, int len)
+ 	while (unlikely(len > 64)) {
+ 		__uint128_t tmp1, tmp2, tmp3, tmp4;
  
- 			return false;
+-		tmp1 = READ_ONCE_NOCHECK(*(__uint128_t *)ptr);
+-		tmp2 = READ_ONCE_NOCHECK(*(__uint128_t *)(ptr + 2));
+-		tmp3 = READ_ONCE_NOCHECK(*(__uint128_t *)(ptr + 4));
+-		tmp4 = READ_ONCE_NOCHECK(*(__uint128_t *)(ptr + 6));
++		tmp1 = *(__uint128_t *)ptr;
++		tmp2 = *(__uint128_t *)(ptr + 2);
++		tmp3 = *(__uint128_t *)(ptr + 4);
++		tmp4 = *(__uint128_t *)(ptr + 6);
+ 
+ 		len -= 64;
+ 		ptr += 8;
+@@ -85,7 +89,7 @@ unsigned int do_csum(const unsigned char *buff, int len)
+ 		__uint128_t tmp;
+ 
+ 		sum64 = accumulate(sum64, data);
+-		tmp = READ_ONCE_NOCHECK(*(__uint128_t *)ptr);
++		tmp = *(__uint128_t *)ptr;
+ 
+ 		len -= 16;
+ 		ptr += 2;
+@@ -100,7 +104,7 @@ unsigned int do_csum(const unsigned char *buff, int len)
+ 	}
+ 	if (len > 0) {
+ 		sum64 = accumulate(sum64, data);
+-		data = READ_ONCE_NOCHECK(*ptr);
++		data = *ptr;
+ 		len -= 8;
+ 	}
+ 	/*
