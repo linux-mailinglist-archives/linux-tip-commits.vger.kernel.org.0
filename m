@@ -2,142 +2,181 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CC9F1CF8C0
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 May 2020 17:15:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C57D21CF8D2
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 May 2020 17:19:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726891AbgELPPc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 12 May 2020 11:15:32 -0400
-Received: from mail.skyhub.de ([5.9.137.197]:51912 "EHLO mail.skyhub.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727082AbgELPPb (ORCPT
+        id S1730243AbgELPTD (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 12 May 2020 11:19:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45984 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730236AbgELPTD (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 12 May 2020 11:15:31 -0400
-Received: from zn.tnic (p200300EC2F0A9D0059BB7FCAE11E2EA0.dip0.t-ipconnect.de [IPv6:2003:ec:2f0a:9d00:59bb:7fca:e11e:2ea0])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id C563C1EC0114;
-        Tue, 12 May 2020 17:15:26 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1589296526;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=bPeAtc/ouqJ2VEXlhLFvfKjqV47RCLeXOikuieDXBWA=;
-        b=Z8UG5e/bHeGvTITOd8GxXo0hvpM0PRuSa0dwMrUivg+DvSc0DCTHw2JC6Y8CE5I+T5MKC9
-        gZcrlQ6qnMcj9R+8L5FgBBtL44Eh/fpQgkMteRIgkSkWz4Vcxgxfqspk07o+TqggSWoJwK
-        kMepWsQGFmHDoZkJUk64qGn+BD53s60=
-Date:   Tue, 12 May 2020 17:15:22 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     Uros Bizjak <ubizjak@gmail.com>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        linux-tip-commits@vger.kernel.org,
-        "H. Peter Anvin (Intel)" <hpa@zytor.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        x86 <x86@kernel.org>
-Subject: Re: [tip: x86/cpu] x86/cpu: Use INVPCID mnemonic in invpcid.h
-Message-ID: <20200512151522.GB6859@zn.tnic>
-References: <20200508092247.132147-1-ubizjak@gmail.com>
- <158929264101.390.18239205970315804831.tip-bot2@tip-bot2>
- <CAFULd4bZLkME4kn9bmbOBMtd+ZpNnsH-w8a6tPdtmpV57WSHtw@mail.gmail.com>
+        Tue, 12 May 2020 11:19:03 -0400
+Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 154F6C061A0C;
+        Tue, 12 May 2020 08:19:03 -0700 (PDT)
+Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tip-bot2@linutronix.de>)
+        id 1jYWgN-0007Dx-Es; Tue, 12 May 2020 17:18:59 +0200
+Received: from [127.0.1.1] (localhost [IPv6:::1])
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id EE15D1C02FC;
+        Tue, 12 May 2020 17:18:58 +0200 (CEST)
+Date:   Tue, 12 May 2020 15:18:58 -0000
+From:   "tip-bot2 for Masami Hiramatsu" <tip-bot2@linutronix.de>
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: core/kprobes] kprobes: Support __kprobes blacklist in modules
+Cc:     Masami Hiramatsu <mhiramat@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Alexandre Chartre <alexandre.chartre@oracle.com>,
+        Peter Zijlstra <peterz@infradead.org>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200505134059.678201813@linutronix.de>
+References: <20200505134059.678201813@linutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAFULd4bZLkME4kn9bmbOBMtd+ZpNnsH-w8a6tPdtmpV57WSHtw@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Message-ID: <158929673889.390.13328702877624565278.tip-bot2@tip-bot2>
+X-Mailer: tip-git-log-daemon
+Robot-ID: <tip-bot2.linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Tue, May 12, 2020 at 04:26:37PM +0200, Uros Bizjak wrote:
-> Actually, the order was correct for AT&T syntax in the original patch.
-> 
-> The insn template for AT&T syntax goes:
-> 
-> insn arg2, arg1, arg0
-> 
-> where rightmost arguments are output operands.
-> 
-> The operands in asm template go
-> 
-> asm ("insn template" : output0, output1 : input0, input1 : clobbers)
-> 
-> so, in effect:
-> 
-> asm ("insn template" : arg0, arg1 : arg2, arg3: clobbers)
-> 
-> As you can see, the operand order in insn tempate is reversed for AT&T
-> syntax. I didn't notice the reversal of operands in your improvement.
+The following commit has been merged into the core/kprobes branch of tip:
 
-Your version had:
+Commit-ID:     1e6769b0aece51ea7a3dc3117c37d4a5669e4a21
+Gitweb:        https://git.kernel.org/tip/1e6769b0aece51ea7a3dc3117c37d4a5669e4a21
+Author:        Masami Hiramatsu <mhiramat@kernel.org>
+AuthorDate:    Thu, 26 Mar 2020 23:49:48 +09:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Tue, 12 May 2020 17:15:32 +02:00
 
-+       asm volatile ("invpcid %1, %0"
-+                     : : "r" (type), "m" (desc) : "memory");
+kprobes: Support __kprobes blacklist in modules
 
-with "type" being the 0th operand and "desc" being the 1st operand in
-the input operands list.
+Support __kprobes attribute for blacklist functions in modules.  The
+__kprobes attribute functions are stored in .kprobes.text section.
 
-The order of the operands after the "invpcid" mnemonic are the other way
-around though: you first have %1 which is "desc" and then %0 which is
-the type.
+Signed-off-by: Masami Hiramatsu <mhiramat@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
+Acked-by: Peter Zijlstra <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20200505134059.678201813@linutronix.de
 
-I simply swapped the arguments order in the input operands list, after
-the second ':'
+---
+ include/linux/module.h |  4 ++++-
+ kernel/kprobes.c       | 42 +++++++++++++++++++++++++++++++++++++++++-
+ kernel/module.c        |  4 ++++-
+ 3 files changed, 50 insertions(+)
 
-+       asm volatile("invpcid %[desc], %[type]"
-+                    :: [desc] "m" (desc), [type] "r" (type) : "memory");
-
-so that "desc" comes first and "type" second when reading from
-left-to-right in both
-
-1. *after* the "invpcid" mnemonic and
-2. in the input operands list, after the second ':'.
-
-And since I'm using the symbolic operand names, then the order just
-works because looking at a before-and-after thing doesn't show any
-opcode differences:
-
-$ diff -suprN /tmp/before /tmp/after
-Files /tmp/before and /tmp/after are identical
-
-$ cat /tmp/before
-ffffffff81058392:	66 0f 38 82 04 24    	invpcid (%rsp),%rax
-ffffffff8105c542:	66 44 0f 38 82 04 24 	invpcid (%rsp),%r8
-ffffffff8105c5b4:	66 0f 38 82 04 24    	invpcid (%rsp),%rax
-ffffffff8105ccd2:	66 44 0f 38 82 14 24 	invpcid (%rsp),%r10
-ffffffff8105d6cf:	66 0f 38 82 04 24    	invpcid (%rsp),%rax
-ffffffff8105d7ef:	66 0f 38 82 1c 24    	invpcid (%rsp),%rbx
-ffffffff8105e4db:	66 0f 38 82 04 24    	invpcid (%rsp),%rax
-ffffffff8106067b:	66 0f 38 82 04 24    	invpcid (%rsp),%rax
-ffffffff8169547d:	66 0f 38 82 04 24    	invpcid (%rsp),%rax
-ffffffff82406698 <x86_noinvpcid_setup>:
-ffffffff824066a3:	75 27                	jne    ffffffff824066cc <x86_noinvpcid_setup+0x34>
-ffffffff824066b4:	73 16                	jae    ffffffff824066cc <x86_noinvpcid_setup+0x34>
-ffffffff824124db:	66 0f 38 82 04 24    	invpcid (%rsp),%rax
-ffffffff82412e34:	66 0f 38 82 04 24    	invpcid (%rsp),%rax
-ffffffff82415158:	66 0f 38 82 44 24 10 	invpcid 0x10(%rsp),%rax
-
-$ cat /tmp/after
-ffffffff81058392:	66 0f 38 82 04 24    	invpcid (%rsp),%rax
-ffffffff8105c542:	66 44 0f 38 82 04 24 	invpcid (%rsp),%r8
-ffffffff8105c5b4:	66 0f 38 82 04 24    	invpcid (%rsp),%rax
-ffffffff8105ccd2:	66 44 0f 38 82 14 24 	invpcid (%rsp),%r10
-ffffffff8105d6cf:	66 0f 38 82 04 24    	invpcid (%rsp),%rax
-ffffffff8105d7ef:	66 0f 38 82 1c 24    	invpcid (%rsp),%rbx
-ffffffff8105e4db:	66 0f 38 82 04 24    	invpcid (%rsp),%rax
-ffffffff8106067b:	66 0f 38 82 04 24    	invpcid (%rsp),%rax
-ffffffff8169547d:	66 0f 38 82 04 24    	invpcid (%rsp),%rax
-ffffffff82406698 <x86_noinvpcid_setup>:
-ffffffff824066a3:	75 27                	jne    ffffffff824066cc <x86_noinvpcid_setup+0x34>
-ffffffff824066b4:	73 16                	jae    ffffffff824066cc <x86_noinvpcid_setup+0x34>
-ffffffff824124db:	66 0f 38 82 04 24    	invpcid (%rsp),%rax
-ffffffff82412e34:	66 0f 38 82 04 24    	invpcid (%rsp),%rax
-ffffffff82415158:	66 0f 38 82 44 24 10 	invpcid 0x10(%rsp),%rax
-
-Makes sense?
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+diff --git a/include/linux/module.h b/include/linux/module.h
+index 1ad393e..369c354 100644
+--- a/include/linux/module.h
++++ b/include/linux/module.h
+@@ -489,6 +489,10 @@ struct module {
+ 	unsigned int num_ftrace_callsites;
+ 	unsigned long *ftrace_callsites;
+ #endif
++#ifdef CONFIG_KPROBES
++	void *kprobes_text_start;
++	unsigned int kprobes_text_size;
++#endif
+ 
+ #ifdef CONFIG_LIVEPATCH
+ 	bool klp; /* Is this a livepatch module? */
+diff --git a/kernel/kprobes.c b/kernel/kprobes.c
+index 570d608..b754999 100644
+--- a/kernel/kprobes.c
++++ b/kernel/kprobes.c
+@@ -2179,6 +2179,19 @@ int kprobe_add_area_blacklist(unsigned long start, unsigned long end)
+ 	return 0;
+ }
+ 
++/* Remove all symbols in given area from kprobe blacklist */
++static void kprobe_remove_area_blacklist(unsigned long start, unsigned long end)
++{
++	struct kprobe_blacklist_entry *ent, *n;
++
++	list_for_each_entry_safe(ent, n, &kprobe_blacklist, list) {
++		if (ent->start_addr < start || ent->start_addr >= end)
++			continue;
++		list_del(&ent->list);
++		kfree(ent);
++	}
++}
++
+ int __init __weak arch_populate_kprobe_blacklist(void)
+ {
+ 	return 0;
+@@ -2215,6 +2228,28 @@ static int __init populate_kprobe_blacklist(unsigned long *start,
+ 	return ret ? : arch_populate_kprobe_blacklist();
+ }
+ 
++static void add_module_kprobe_blacklist(struct module *mod)
++{
++	unsigned long start, end;
++
++	start = (unsigned long)mod->kprobes_text_start;
++	if (start) {
++		end = start + mod->kprobes_text_size;
++		kprobe_add_area_blacklist(start, end);
++	}
++}
++
++static void remove_module_kprobe_blacklist(struct module *mod)
++{
++	unsigned long start, end;
++
++	start = (unsigned long)mod->kprobes_text_start;
++	if (start) {
++		end = start + mod->kprobes_text_size;
++		kprobe_remove_area_blacklist(start, end);
++	}
++}
++
+ /* Module notifier call back, checking kprobes on the module */
+ static int kprobes_module_callback(struct notifier_block *nb,
+ 				   unsigned long val, void *data)
+@@ -2225,6 +2260,11 @@ static int kprobes_module_callback(struct notifier_block *nb,
+ 	unsigned int i;
+ 	int checkcore = (val == MODULE_STATE_GOING);
+ 
++	if (val == MODULE_STATE_COMING) {
++		mutex_lock(&kprobe_mutex);
++		add_module_kprobe_blacklist(mod);
++		mutex_unlock(&kprobe_mutex);
++	}
+ 	if (val != MODULE_STATE_GOING && val != MODULE_STATE_LIVE)
+ 		return NOTIFY_DONE;
+ 
+@@ -2255,6 +2295,8 @@ static int kprobes_module_callback(struct notifier_block *nb,
+ 				kill_kprobe(p);
+ 			}
+ 	}
++	if (val == MODULE_STATE_GOING)
++		remove_module_kprobe_blacklist(mod);
+ 	mutex_unlock(&kprobe_mutex);
+ 	return NOTIFY_DONE;
+ }
+diff --git a/kernel/module.c b/kernel/module.c
+index 646f1e2..978f3fa 100644
+--- a/kernel/module.c
++++ b/kernel/module.c
+@@ -3194,6 +3194,10 @@ static int find_module_sections(struct module *mod, struct load_info *info)
+ 					    sizeof(*mod->ei_funcs),
+ 					    &mod->num_ei_funcs);
+ #endif
++#ifdef CONFIG_KPROBES
++	mod->kprobes_text_start = section_objs(info, ".kprobes.text", 1,
++						&mod->kprobes_text_size);
++#endif
+ 	mod->extable = section_objs(info, "__ex_table",
+ 				    sizeof(*mod->extable), &mod->num_exentries);
+ 
