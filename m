@@ -2,39 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 05EC11D1EDE
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 13 May 2020 21:17:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A6471D1ED9
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 13 May 2020 21:17:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390635AbgEMTQ2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 13 May 2020 15:16:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53164 "EHLO
+        id S2390617AbgEMTQZ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 13 May 2020 15:16:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2390443AbgEMTQ1 (ORCPT
+        by vger.kernel.org with ESMTP id S2390336AbgEMTQZ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 13 May 2020 15:16:27 -0400
+        Wed, 13 May 2020 15:16:25 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B38F0C061A0C;
-        Wed, 13 May 2020 12:16:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A27A3C061A0E;
+        Wed, 13 May 2020 12:16:24 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jYwrc-0002zE-Hi; Wed, 13 May 2020 21:16:20 +0200
+        id 1jYwrc-0002zJ-Rn; Wed, 13 May 2020 21:16:20 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 247F11C0440;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 802CD1C0475;
         Wed, 13 May 2020 21:16:20 +0200 (CEST)
 Date:   Wed, 13 May 2020 19:16:20 -0000
 From:   "tip-bot2 for Vitaly Kuznetsov" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/entry] x86/idt: Annotate alloc_intr_gate() with __init
+Subject: [tip: x86/entry] x86/xen: Split HVM vector callback setup and
+ interrupt gate allocation
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Vitaly Kuznetsov <vkuznets@redhat.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200428093824.1451532-3-vkuznets@redhat.com>
-References: <20200428093824.1451532-3-vkuznets@redhat.com>
+In-Reply-To: <20200428093824.1451532-2-vkuznets@redhat.com>
+References: <20200428093824.1451532-2-vkuznets@redhat.com>
 MIME-Version: 1.0
-Message-ID: <158939738006.390.4250769933552969485.tip-bot2@tip-bot2>
+Message-ID: <158939738043.390.5652613957262652373.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,74 +51,114 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/entry branch of tip:
 
-Commit-ID:     4c74d51dab3dd655062a4740af150c1835e19cff
-Gitweb:        https://git.kernel.org/tip/4c74d51dab3dd655062a4740af150c1835e19cff
+Commit-ID:     fad1940a6a856f59b073e8650e02052ce531154c
+Gitweb:        https://git.kernel.org/tip/fad1940a6a856f59b073e8650e02052ce531154c
 Author:        Vitaly Kuznetsov <vkuznets@redhat.com>
-AuthorDate:    Tue, 28 Apr 2020 11:38:23 +02:00
+AuthorDate:    Tue, 28 Apr 2020 11:38:22 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Wed, 13 May 2020 21:13:54 +02:00
 
-x86/idt: Annotate alloc_intr_gate() with __init
+x86/xen: Split HVM vector callback setup and interrupt gate allocation
 
-There seems to be no reason to allocate interrupt gates after init. Mark
-alloc_intr_gate() as __init and add WARN_ON() checks making sure it is
-only used before idt_setup_apic_and_irq_gates() finalizes IDT setup and
-maps all un-allocated entries to spurious entries.
+As a preparatory change for making alloc_intr_gate() __init split
+xen_callback_vector() into callback vector setup via hypercall
+(xen_setup_callback_vector()) and interrupt gate allocation
+(xen_alloc_callback_vector()).
+
+xen_setup_callback_vector() is being called twice: on init and upon
+system resume from xen_hvm_post_suspend(). alloc_intr_gate() only
+needs to be called once.
 
 Suggested-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Vitaly Kuznetsov <vkuznets@redhat.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20200428093824.1451532-3-vkuznets@redhat.com
+Link: https://lkml.kernel.org/r/20200428093824.1451532-2-vkuznets@redhat.com
 
 ---
- arch/x86/kernel/idt.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ arch/x86/xen/suspend_hvm.c       |  2 +-
+ arch/x86/xen/xen-ops.h           |  2 +-
+ drivers/xen/events/events_base.c | 28 +++++++++++++++++-----------
+ 3 files changed, 19 insertions(+), 13 deletions(-)
 
-diff --git a/arch/x86/kernel/idt.c b/arch/x86/kernel/idt.c
-index 98bcb50..0e92051 100644
---- a/arch/x86/kernel/idt.c
-+++ b/arch/x86/kernel/idt.c
-@@ -51,6 +51,9 @@ struct idt_data {
- #define TSKG(_vector, _gdt)				\
- 	G(_vector, NULL, DEFAULT_STACK, GATE_TASK, DPL0, _gdt << 3)
- 
-+
-+static bool idt_setup_done __initdata;
-+
- /*
-  * Early traps running on the DEFAULT_STACK because the other interrupt
-  * stacks work only after cpu_init().
-@@ -323,6 +326,7 @@ void __init idt_setup_apic_and_irq_gates(void)
- 		set_intr_gate(i, entry);
+diff --git a/arch/x86/xen/suspend_hvm.c b/arch/x86/xen/suspend_hvm.c
+index e666b61..5152afe 100644
+--- a/arch/x86/xen/suspend_hvm.c
++++ b/arch/x86/xen/suspend_hvm.c
+@@ -13,6 +13,6 @@ void xen_hvm_post_suspend(int suspend_cancelled)
+ 		xen_hvm_init_shared_info();
+ 		xen_vcpu_restore();
  	}
+-	xen_callback_vector();
++	xen_setup_callback_vector();
+ 	xen_unplug_emulated_devices();
+ }
+diff --git a/arch/x86/xen/xen-ops.h b/arch/x86/xen/xen-ops.h
+index 45a441c..1cc1568 100644
+--- a/arch/x86/xen/xen-ops.h
++++ b/arch/x86/xen/xen-ops.h
+@@ -55,7 +55,7 @@ void xen_enable_sysenter(void);
+ void xen_enable_syscall(void);
+ void xen_vcpu_restore(void);
+ 
+-void xen_callback_vector(void);
++void xen_setup_callback_vector(void);
+ void xen_hvm_init_shared_info(void);
+ void xen_unplug_emulated_devices(void);
+ 
+diff --git a/drivers/xen/events/events_base.c b/drivers/xen/events/events_base.c
+index 3a791c8..eb35c3c 100644
+--- a/drivers/xen/events/events_base.c
++++ b/drivers/xen/events/events_base.c
+@@ -1639,26 +1639,30 @@ EXPORT_SYMBOL_GPL(xen_set_callback_via);
+ /* Vector callbacks are better than PCI interrupts to receive event
+  * channel notifications because we can receive vector callbacks on any
+  * vcpu and we don't need PCI support or APIC interactions. */
+-void xen_callback_vector(void)
++void xen_setup_callback_vector(void)
+ {
+-	int rc;
+ 	uint64_t callback_via;
+ 
+ 	if (xen_have_vector_callback) {
+ 		callback_via = HVM_CALLBACK_VECTOR(HYPERVISOR_CALLBACK_VECTOR);
+-		rc = xen_set_callback_via(callback_via);
+-		if (rc) {
++		if (xen_set_callback_via(callback_via)) {
+ 			pr_err("Request for Xen HVM callback vector failed\n");
+ 			xen_have_vector_callback = 0;
+-			return;
+ 		}
+-		pr_info_once("Xen HVM callback vector for event delivery is enabled\n");
+-		alloc_intr_gate(HYPERVISOR_CALLBACK_VECTOR,
+-				xen_hvm_callback_vector);
+ 	}
+ }
++
++static __init void xen_alloc_callback_vector(void)
++{
++	if (!xen_have_vector_callback)
++		return;
++
++	pr_info("Xen HVM callback vector for event delivery is enabled\n");
++	alloc_intr_gate(HYPERVISOR_CALLBACK_VECTOR, xen_hvm_callback_vector);
++}
+ #else
+-void xen_callback_vector(void) {}
++void xen_setup_callback_vector(void) {}
++static inline void xen_alloc_callback_vector(void) {}
  #endif
-+	idt_setup_done = true;
- }
  
- /**
-@@ -352,6 +356,7 @@ void idt_invalidate(void *addr)
- 	load_idt(&idt);
- }
+ #undef MODULE_PARAM_PREFIX
+@@ -1692,8 +1696,10 @@ void __init xen_init_IRQ(void)
+ 		if (xen_initial_domain())
+ 			pci_xen_initial_domain();
+ 	}
+-	if (xen_feature(XENFEAT_hvm_callback_vector))
+-		xen_callback_vector();
++	if (xen_feature(XENFEAT_hvm_callback_vector)) {
++		xen_setup_callback_vector();
++		xen_alloc_callback_vector();
++	}
  
-+/* This goes away once ASYNC_PF is sanitized */
- void __init update_intr_gate(unsigned int n, const void *addr)
- {
- 	if (WARN_ON_ONCE(!test_bit(n, system_vectors)))
-@@ -359,9 +364,14 @@ void __init update_intr_gate(unsigned int n, const void *addr)
- 	set_intr_gate(n, addr);
- }
- 
--void alloc_intr_gate(unsigned int n, const void *addr)
-+void __init alloc_intr_gate(unsigned int n, const void *addr)
- {
--	BUG_ON(n < FIRST_SYSTEM_VECTOR);
--	if (!test_and_set_bit(n, system_vectors))
-+	if (WARN_ON(n < FIRST_SYSTEM_VECTOR))
-+		return;
-+
-+	if (WARN_ON(idt_setup_done))
-+		return;
-+
-+	if (!WARN_ON(test_and_set_bit(n, system_vectors)))
- 		set_intr_gate(n, addr);
- }
+ 	if (xen_hvm_domain()) {
+ 		native_init_IRQ();
