@@ -2,40 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A6471D1ED9
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 13 May 2020 21:17:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B11121D392C
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 14 May 2020 20:35:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390617AbgEMTQZ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 13 May 2020 15:16:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53152 "EHLO
+        id S1726374AbgENSfe (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 14 May 2020 14:35:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45720 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2390336AbgEMTQZ (ORCPT
+        by vger.kernel.org with ESMTP id S1726165AbgENSfe (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 13 May 2020 15:16:25 -0400
+        Thu, 14 May 2020 14:35:34 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A27A3C061A0E;
-        Wed, 13 May 2020 12:16:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1406DC061A0C;
+        Thu, 14 May 2020 11:35:34 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jYwrc-0002zJ-Rn; Wed, 13 May 2020 21:16:20 +0200
+        id 1jZIha-0005aR-Fv; Thu, 14 May 2020 20:35:26 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 802CD1C0475;
-        Wed, 13 May 2020 21:16:20 +0200 (CEST)
-Date:   Wed, 13 May 2020 19:16:20 -0000
-From:   "tip-bot2 for Vitaly Kuznetsov" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 08AAA1C0243;
+        Thu, 14 May 2020 20:35:26 +0200 (CEST)
+Date:   Thu, 14 May 2020 18:35:25 -0000
+From:   "tip-bot2 for Fenghua Yu" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/entry] x86/xen: Split HVM vector callback setup and
- interrupt gate allocation
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>, x86 <x86@kernel.org>,
+Subject: [tip: x86/splitlock] x86/split_lock: Add Icelake microserver CPU model
+Cc:     Fenghua Yu <fenghua.yu@intel.com>, Borislav Petkov <bp@suse.de>,
+        Tony Luck <tony.luck@intel.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200428093824.1451532-2-vkuznets@redhat.com>
-References: <20200428093824.1451532-2-vkuznets@redhat.com>
+In-Reply-To: <1588290395-2677-1-git-send-email-fenghua.yu@intel.com>
+References: <1588290395-2677-1-git-send-email-fenghua.yu@intel.com>
 MIME-Version: 1.0
-Message-ID: <158939738043.390.5652613957262652373.tip-bot2@tip-bot2>
+Message-ID: <158948132586.17726.4500141435426378376.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,116 +48,39 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/entry branch of tip:
+The following commit has been merged into the x86/splitlock branch of tip:
 
-Commit-ID:     fad1940a6a856f59b073e8650e02052ce531154c
-Gitweb:        https://git.kernel.org/tip/fad1940a6a856f59b073e8650e02052ce531154c
-Author:        Vitaly Kuznetsov <vkuznets@redhat.com>
-AuthorDate:    Tue, 28 Apr 2020 11:38:22 +02:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 13 May 2020 21:13:54 +02:00
+Commit-ID:     0ed7bf1d92eafc37bb9eb7c8692a8e44d24f9b99
+Gitweb:        https://git.kernel.org/tip/0ed7bf1d92eafc37bb9eb7c8692a8e44d24f9b99
+Author:        Fenghua Yu <fenghua.yu@intel.com>
+AuthorDate:    Thu, 30 Apr 2020 16:46:35 -07:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Thu, 14 May 2020 19:25:10 +02:00
 
-x86/xen: Split HVM vector callback setup and interrupt gate allocation
+x86/split_lock: Add Icelake microserver CPU model
 
-As a preparatory change for making alloc_intr_gate() __init split
-xen_callback_vector() into callback vector setup via hypercall
-(xen_setup_callback_vector()) and interrupt gate allocation
-(xen_alloc_callback_vector()).
+Icelake microserver CPU supports split lock detection while it doesn't
+have the split lock enumeration bit in IA32_CORE_CAPABILITIES.
 
-xen_setup_callback_vector() is being called twice: on init and upon
-system resume from xen_hvm_post_suspend(). alloc_intr_gate() only
-needs to be called once.
+Enumerate the feature by model number.
 
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Vitaly Kuznetsov <vkuznets@redhat.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20200428093824.1451532-2-vkuznets@redhat.com
-
+Signed-off-by: Fenghua Yu <fenghua.yu@intel.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Reviewed-by: Tony Luck <tony.luck@intel.com>
+Link: https://lkml.kernel.org/r/1588290395-2677-1-git-send-email-fenghua.yu@intel.com
 ---
- arch/x86/xen/suspend_hvm.c       |  2 +-
- arch/x86/xen/xen-ops.h           |  2 +-
- drivers/xen/events/events_base.c | 28 +++++++++++++++++-----------
- 3 files changed, 19 insertions(+), 13 deletions(-)
+ arch/x86/kernel/cpu/intel.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/xen/suspend_hvm.c b/arch/x86/xen/suspend_hvm.c
-index e666b61..5152afe 100644
---- a/arch/x86/xen/suspend_hvm.c
-+++ b/arch/x86/xen/suspend_hvm.c
-@@ -13,6 +13,6 @@ void xen_hvm_post_suspend(int suspend_cancelled)
- 		xen_hvm_init_shared_info();
- 		xen_vcpu_restore();
- 	}
--	xen_callback_vector();
-+	xen_setup_callback_vector();
- 	xen_unplug_emulated_devices();
- }
-diff --git a/arch/x86/xen/xen-ops.h b/arch/x86/xen/xen-ops.h
-index 45a441c..1cc1568 100644
---- a/arch/x86/xen/xen-ops.h
-+++ b/arch/x86/xen/xen-ops.h
-@@ -55,7 +55,7 @@ void xen_enable_sysenter(void);
- void xen_enable_syscall(void);
- void xen_vcpu_restore(void);
- 
--void xen_callback_vector(void);
-+void xen_setup_callback_vector(void);
- void xen_hvm_init_shared_info(void);
- void xen_unplug_emulated_devices(void);
- 
-diff --git a/drivers/xen/events/events_base.c b/drivers/xen/events/events_base.c
-index 3a791c8..eb35c3c 100644
---- a/drivers/xen/events/events_base.c
-+++ b/drivers/xen/events/events_base.c
-@@ -1639,26 +1639,30 @@ EXPORT_SYMBOL_GPL(xen_set_callback_via);
- /* Vector callbacks are better than PCI interrupts to receive event
-  * channel notifications because we can receive vector callbacks on any
-  * vcpu and we don't need PCI support or APIC interactions. */
--void xen_callback_vector(void)
-+void xen_setup_callback_vector(void)
- {
--	int rc;
- 	uint64_t callback_via;
- 
- 	if (xen_have_vector_callback) {
- 		callback_via = HVM_CALLBACK_VECTOR(HYPERVISOR_CALLBACK_VECTOR);
--		rc = xen_set_callback_via(callback_via);
--		if (rc) {
-+		if (xen_set_callback_via(callback_via)) {
- 			pr_err("Request for Xen HVM callback vector failed\n");
- 			xen_have_vector_callback = 0;
--			return;
- 		}
--		pr_info_once("Xen HVM callback vector for event delivery is enabled\n");
--		alloc_intr_gate(HYPERVISOR_CALLBACK_VECTOR,
--				xen_hvm_callback_vector);
- 	}
- }
-+
-+static __init void xen_alloc_callback_vector(void)
-+{
-+	if (!xen_have_vector_callback)
-+		return;
-+
-+	pr_info("Xen HVM callback vector for event delivery is enabled\n");
-+	alloc_intr_gate(HYPERVISOR_CALLBACK_VECTOR, xen_hvm_callback_vector);
-+}
- #else
--void xen_callback_vector(void) {}
-+void xen_setup_callback_vector(void) {}
-+static inline void xen_alloc_callback_vector(void) {}
- #endif
- 
- #undef MODULE_PARAM_PREFIX
-@@ -1692,8 +1696,10 @@ void __init xen_init_IRQ(void)
- 		if (xen_initial_domain())
- 			pci_xen_initial_domain();
- 	}
--	if (xen_feature(XENFEAT_hvm_callback_vector))
--		xen_callback_vector();
-+	if (xen_feature(XENFEAT_hvm_callback_vector)) {
-+		xen_setup_callback_vector();
-+		xen_alloc_callback_vector();
-+	}
- 
- 	if (xen_hvm_domain()) {
- 		native_init_IRQ();
+diff --git a/arch/x86/kernel/cpu/intel.c b/arch/x86/kernel/cpu/intel.c
+index a19a680..b59bc4a 100644
+--- a/arch/x86/kernel/cpu/intel.c
++++ b/arch/x86/kernel/cpu/intel.c
+@@ -1135,6 +1135,7 @@ void switch_to_sld(unsigned long tifn)
+ static const struct x86_cpu_id split_lock_cpu_ids[] __initconst = {
+ 	X86_MATCH_INTEL_FAM6_MODEL(ICELAKE_X,		0),
+ 	X86_MATCH_INTEL_FAM6_MODEL(ICELAKE_L,		0),
++	X86_MATCH_INTEL_FAM6_MODEL(ICELAKE_D,		0),
+ 	X86_MATCH_INTEL_FAM6_MODEL(ATOM_TREMONT,	1),
+ 	X86_MATCH_INTEL_FAM6_MODEL(ATOM_TREMONT_D,	1),
+ 	X86_MATCH_INTEL_FAM6_MODEL(ATOM_TREMONT_L,	1),
