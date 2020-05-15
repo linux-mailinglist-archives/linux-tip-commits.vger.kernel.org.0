@@ -2,39 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 508251D575B
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 May 2020 19:17:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 86B3F1D5797
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 May 2020 19:22:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726263AbgEORRe (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 15 May 2020 13:17:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32964 "EHLO
+        id S1726665AbgEORW6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 15 May 2020 13:22:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726234AbgEORRe (ORCPT
+        by vger.kernel.org with ESMTP id S1726660AbgEORW6 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 15 May 2020 13:17:34 -0400
+        Fri, 15 May 2020 13:22:58 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DDD9C061A0C;
-        Fri, 15 May 2020 10:17:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21447C05BD09;
+        Fri, 15 May 2020 10:22:58 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jZdxe-0005OG-40; Fri, 15 May 2020 19:17:26 +0200
+        id 1jZe2v-0005Tg-Bm; Fri, 15 May 2020 19:22:53 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 77A2B1C007F;
-        Fri, 15 May 2020 19:17:25 +0200 (CEST)
-Date:   Fri, 15 May 2020 17:17:25 -0000
-From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 04E3E1C0440;
+        Fri, 15 May 2020 19:22:53 +0200 (CEST)
+Date:   Fri, 15 May 2020 17:22:52 -0000
+From:   "tip-bot2 for Sami Tolvanen" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/urgent] x86/unwind/orc: Fix error handling in __unwind_start()
-Cc:     Pavel Machek <pavel@denx.de>, Josh Poimboeuf <jpoimboe@redhat.com>,
+Subject: [tip: objtool/core] objtool: use gelf_getsymshndx to handle >64k sections
+Cc:     Sami Tolvanen <samitolvanen@google.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <d6ac7215a84ca92b895fdd2e1aa546729417e6e6.1589487277.git.jpoimboe@redhat.com>
-References: <d6ac7215a84ca92b895fdd2e1aa546729417e6e6.1589487277.git.jpoimboe@redhat.com>
+        Kees Cook <keescook@chromium.org>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200421220843.188260-2-samitolvanen@google.com>
+References: <20200421220843.188260-2-samitolvanen@google.com>
 MIME-Version: 1.0
-Message-ID: <158956304535.17951.17376884758306410761.tip-bot2@tip-bot2>
+Message-ID: <158956337293.17951.13387427724649167304.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,86 +49,87 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the objtool/urgent branch of tip:
+The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     71c95825289f585014fe9741b051d32a7a916680
-Gitweb:        https://git.kernel.org/tip/71c95825289f585014fe9741b051d32a7a916680
-Author:        Josh Poimboeuf <jpoimboe@redhat.com>
-AuthorDate:    Thu, 14 May 2020 15:31:10 -05:00
+Commit-ID:     28fe1d7bf89f8ed5be70b98a33932dbaf99345dd
+Gitweb:        https://git.kernel.org/tip/28fe1d7bf89f8ed5be70b98a33932dbaf99345dd
+Author:        Sami Tolvanen <samitolvanen@google.com>
+AuthorDate:    Tue, 21 Apr 2020 15:08:42 -07:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 15 May 2020 10:35:08 +02:00
+CommitterDate: Fri, 15 May 2020 10:35:13 +02:00
 
-x86/unwind/orc: Fix error handling in __unwind_start()
+objtool: use gelf_getsymshndx to handle >64k sections
 
-The unwind_state 'error' field is used to inform the reliable unwinding
-code that the stack trace can't be trusted.  Set this field for all
-errors in __unwind_start().
+Currently, objtool fails to load the correct section for symbols when
+the index is greater than SHN_LORESERVE. Use gelf_getsymshndx instead
+of gelf_getsym to handle >64k sections.
 
-Also, move the zeroing out of the unwind_state struct to before the ORC
-table initialization check, to prevent the caller from reading
-uninitialized data if the ORC table is corrupted.
-
-Fixes: af085d9084b4 ("stacktrace/x86: add function for detecting reliable stack traces")
-Fixes: d3a09104018c ("x86/unwinder/orc: Dont bail on stack overflow")
-Fixes: 98d0c8ebf77e ("x86/unwind/orc: Prevent unwinding before ORC initialization")
-Reported-by: Pavel Machek <pavel@denx.de>
-Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
+Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/d6ac7215a84ca92b895fdd2e1aa546729417e6e6.1589487277.git.jpoimboe@redhat.com
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Link: https://lkml.kernel.org/r/20200421220843.188260-2-samitolvanen@google.com
 ---
- arch/x86/kernel/unwind_orc.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ tools/objtool/elf.c | 24 +++++++++++++++++-------
+ 1 file changed, 17 insertions(+), 7 deletions(-)
 
-diff --git a/arch/x86/kernel/unwind_orc.c b/arch/x86/kernel/unwind_orc.c
-index 5b0bd85..fa79e42 100644
---- a/arch/x86/kernel/unwind_orc.c
-+++ b/arch/x86/kernel/unwind_orc.c
-@@ -617,23 +617,23 @@ EXPORT_SYMBOL_GPL(unwind_next_frame);
- void __unwind_start(struct unwind_state *state, struct task_struct *task,
- 		    struct pt_regs *regs, unsigned long *first_frame)
+diff --git a/tools/objtool/elf.c b/tools/objtool/elf.c
+index b6349ca..8422567 100644
+--- a/tools/objtool/elf.c
++++ b/tools/objtool/elf.c
+@@ -343,12 +343,14 @@ static int read_sections(struct elf *elf)
+ 
+ static int read_symbols(struct elf *elf)
  {
--	if (!orc_init)
--		goto done;
--
- 	memset(state, 0, sizeof(*state));
- 	state->task = task;
+-	struct section *symtab, *sec;
++	struct section *symtab, *symtab_shndx, *sec;
+ 	struct symbol *sym, *pfunc;
+ 	struct list_head *entry;
+ 	struct rb_node *pnode;
+ 	int symbols_nr, i;
+ 	char *coldstr;
++	Elf_Data *shndx_data = NULL;
++	Elf32_Word shndx;
  
-+	if (!orc_init)
-+		goto err;
+ 	symtab = find_section_by_name(elf, ".symtab");
+ 	if (!symtab) {
+@@ -356,6 +358,10 @@ static int read_symbols(struct elf *elf)
+ 		return -1;
+ 	}
+ 
++	symtab_shndx = find_section_by_name(elf, ".symtab_shndx");
++	if (symtab_shndx)
++		shndx_data = symtab_shndx->data;
 +
- 	/*
- 	 * Refuse to unwind the stack of a task while it's executing on another
- 	 * CPU.  This check is racy, but that's ok: the unwinder has other
- 	 * checks to prevent it from going off the rails.
- 	 */
- 	if (task_on_another_cpu(task))
--		goto done;
-+		goto err;
+ 	symbols_nr = symtab->sh.sh_size / symtab->sh.sh_entsize;
  
- 	if (regs) {
- 		if (user_mode(regs))
--			goto done;
-+			goto the_end;
+ 	for (i = 0; i < symbols_nr; i++) {
+@@ -369,8 +375,9 @@ static int read_symbols(struct elf *elf)
  
- 		state->ip = regs->ip;
- 		state->sp = regs->sp;
-@@ -666,6 +666,7 @@ void __unwind_start(struct unwind_state *state, struct task_struct *task,
- 		 * generate some kind of backtrace if this happens.
- 		 */
- 		void *next_page = (void *)PAGE_ALIGN((unsigned long)state->sp);
-+		state->error = true;
- 		if (get_stack_info(next_page, state->task, &state->stack_info,
- 				   &state->stack_mask))
- 			return;
-@@ -691,8 +692,9 @@ void __unwind_start(struct unwind_state *state, struct task_struct *task,
+ 		sym->idx = i;
  
- 	return;
+-		if (!gelf_getsym(symtab->data, i, &sym->sym)) {
+-			WARN_ELF("gelf_getsym");
++		if (!gelf_getsymshndx(symtab->data, shndx_data, i, &sym->sym,
++				      &shndx)) {
++			WARN_ELF("gelf_getsymshndx");
+ 			goto err;
+ 		}
  
--done:
-+err:
-+	state->error = true;
-+the_end:
- 	state->stack_info.type = STACK_TYPE_UNKNOWN;
--	return;
- }
- EXPORT_SYMBOL_GPL(__unwind_start);
+@@ -384,10 +391,13 @@ static int read_symbols(struct elf *elf)
+ 		sym->type = GELF_ST_TYPE(sym->sym.st_info);
+ 		sym->bind = GELF_ST_BIND(sym->sym.st_info);
+ 
+-		if (sym->sym.st_shndx > SHN_UNDEF &&
+-		    sym->sym.st_shndx < SHN_LORESERVE) {
+-			sym->sec = find_section_by_index(elf,
+-							 sym->sym.st_shndx);
++		if ((sym->sym.st_shndx > SHN_UNDEF &&
++		     sym->sym.st_shndx < SHN_LORESERVE) ||
++		    (shndx_data && sym->sym.st_shndx == SHN_XINDEX)) {
++			if (sym->sym.st_shndx != SHN_XINDEX)
++				shndx = sym->sym.st_shndx;
++
++			sym->sec = find_section_by_index(elf, shndx);
+ 			if (!sym->sec) {
+ 				WARN("couldn't find section for symbol %s",
+ 				     sym->name);
