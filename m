@@ -2,42 +2,43 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DE271D61C3
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 16 May 2020 17:11:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 883ED1D61C0
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 16 May 2020 17:10:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726977AbgEPPKb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 16 May 2020 11:10:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41084 "EHLO
+        id S1726912AbgEPPK3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 16 May 2020 11:10:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726944AbgEPPKa (ORCPT
+        with ESMTP id S1726715AbgEPPK3 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 16 May 2020 11:10:30 -0400
+        Sat, 16 May 2020 11:10:29 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25EC7C061A0C;
-        Sat, 16 May 2020 08:10:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 204FAC061A0C;
+        Sat, 16 May 2020 08:10:29 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jZySA-0000rZ-QM; Sat, 16 May 2020 17:10:18 +0200
+        id 1jZySB-0000ri-LK; Sat, 16 May 2020 17:10:19 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 666D51C01BB;
-        Sat, 16 May 2020 17:10:18 +0200 (CEST)
-Date:   Sat, 16 May 2020 15:10:18 -0000
-From:   "tip-bot2 for Yu-cheng Yu" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4503E1C01BB;
+        Sat, 16 May 2020 17:10:19 +0200 (CEST)
+Date:   Sat, 16 May 2020 15:10:19 -0000
+From:   "tip-bot2 for Fenghua Yu" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/fpu] x86/fpu/xstate: Introduce XSAVES supervisor states
+Subject: [tip: x86/fpu] x86/fpu/xstate: Define new macros for supervisor and
+ user xstates
 Cc:     Fenghua Yu <fenghua.yu@intel.com>,
         "Yu-cheng Yu" <yu-cheng.yu@intel.com>,
         Borislav Petkov <bp@suse.de>,
         Dave Hansen <dave.hansen@linux.intel.com>,
         Tony Luck <tony.luck@intel.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200512145444.15483-5-yu-cheng.yu@intel.com>
-References: <20200512145444.15483-5-yu-cheng.yu@intel.com>
+In-Reply-To: <20200512145444.15483-3-yu-cheng.yu@intel.com>
+References: <20200512145444.15483-3-yu-cheng.yu@intel.com>
 MIME-Version: 1.0
-Message-ID: <158964181832.17951.11076856900652493332.tip-bot2@tip-bot2>
+Message-ID: <158964181919.17951.3520607466636429869.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -53,88 +54,185 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/fpu branch of tip:
 
-Commit-ID:     71581eefd7a0a81b1af7d7c93641925a01d70a9a
-Gitweb:        https://git.kernel.org/tip/71581eefd7a0a81b1af7d7c93641925a01d70a9a
-Author:        Yu-cheng Yu <yu-cheng.yu@intel.com>
-AuthorDate:    Tue, 12 May 2020 07:54:38 -07:00
+Commit-ID:     8ab22804efefea9ecf3c68aa00f1fa69c70fcfad
+Gitweb:        https://git.kernel.org/tip/8ab22804efefea9ecf3c68aa00f1fa69c70fcfad
+Author:        Fenghua Yu <fenghua.yu@intel.com>
+AuthorDate:    Tue, 12 May 2020 07:54:36 -07:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 13 May 2020 12:16:47 +02:00
+CommitterDate: Tue, 12 May 2020 20:34:38 +02:00
 
-x86/fpu/xstate: Introduce XSAVES supervisor states
+x86/fpu/xstate: Define new macros for supervisor and user xstates
 
-Enable XSAVES supervisor states by setting MSR_IA32_XSS bits according
-to CPUID enumeration results. Also revise comments at various places.
+XCNTXT_MASK is 'all supported xfeatures' before introducing supervisor
+xstates.  Rename it to XFEATURE_MASK_USER_SUPPORTED to make clear that
+these are user xstates.
 
-Co-developed-by: Fenghua Yu <fenghua.yu@intel.com>
+Replace XFEATURE_MASK_SUPERVISOR with the following:
+- XFEATURE_MASK_SUPERVISOR_SUPPORTED: Currently nothing.  ENQCMD and
+  Control-flow Enforcement Technology (CET) will be introduced in separate
+  series.
+- XFEATURE_MASK_SUPERVISOR_UNSUPPORTED: Currently only Processor Trace.
+- XFEATURE_MASK_SUPERVISOR_ALL: the combination of above.
+
+Co-developed-by: Yu-cheng Yu <yu-cheng.yu@intel.com>
 Signed-off-by: Fenghua Yu <fenghua.yu@intel.com>
 Signed-off-by: Yu-cheng Yu <yu-cheng.yu@intel.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
 Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
 Reviewed-by: Tony Luck <tony.luck@intel.com>
-Link: https://lkml.kernel.org/r/20200512145444.15483-5-yu-cheng.yu@intel.com
+Link: https://lkml.kernel.org/r/20200512145444.15483-3-yu-cheng.yu@intel.com
 ---
- arch/x86/kernel/fpu/xstate.c | 28 +++++++++++++++++++---------
- 1 file changed, 19 insertions(+), 9 deletions(-)
+ arch/x86/include/asm/fpu/xstate.h | 36 +++++++++++++++++++-----------
+ arch/x86/kernel/fpu/init.c        |  3 ++-
+ arch/x86/kernel/fpu/xstate.c      | 26 +++++++++++-----------
+ 3 files changed, 38 insertions(+), 27 deletions(-)
 
+diff --git a/arch/x86/include/asm/fpu/xstate.h b/arch/x86/include/asm/fpu/xstate.h
+index fc4db51..b08fa82 100644
+--- a/arch/x86/include/asm/fpu/xstate.h
++++ b/arch/x86/include/asm/fpu/xstate.h
+@@ -21,19 +21,29 @@
+ #define XSAVE_YMM_SIZE	    256
+ #define XSAVE_YMM_OFFSET    (XSAVE_HDR_SIZE + XSAVE_HDR_OFFSET)
+ 
+-/* Supervisor features */
+-#define XFEATURE_MASK_SUPERVISOR (XFEATURE_MASK_PT)
+-
+-/* All currently supported features */
+-#define XCNTXT_MASK		(XFEATURE_MASK_FP | \
+-				 XFEATURE_MASK_SSE | \
+-				 XFEATURE_MASK_YMM | \
+-				 XFEATURE_MASK_OPMASK | \
+-				 XFEATURE_MASK_ZMM_Hi256 | \
+-				 XFEATURE_MASK_Hi16_ZMM	 | \
+-				 XFEATURE_MASK_PKRU | \
+-				 XFEATURE_MASK_BNDREGS | \
+-				 XFEATURE_MASK_BNDCSR)
++/* All currently supported user features */
++#define XFEATURE_MASK_USER_SUPPORTED (XFEATURE_MASK_FP | \
++				      XFEATURE_MASK_SSE | \
++				      XFEATURE_MASK_YMM | \
++				      XFEATURE_MASK_OPMASK | \
++				      XFEATURE_MASK_ZMM_Hi256 | \
++				      XFEATURE_MASK_Hi16_ZMM	 | \
++				      XFEATURE_MASK_PKRU | \
++				      XFEATURE_MASK_BNDREGS | \
++				      XFEATURE_MASK_BNDCSR)
++
++/* All currently supported supervisor features */
++#define XFEATURE_MASK_SUPERVISOR_SUPPORTED (0)
++
++/*
++ * Unsupported supervisor features. When a supervisor feature in this mask is
++ * supported in the future, move it to the supported supervisor feature mask.
++ */
++#define XFEATURE_MASK_SUPERVISOR_UNSUPPORTED (XFEATURE_MASK_PT)
++
++/* All supervisor states including supported and unsupported states. */
++#define XFEATURE_MASK_SUPERVISOR_ALL (XFEATURE_MASK_SUPERVISOR_SUPPORTED | \
++				      XFEATURE_MASK_SUPERVISOR_UNSUPPORTED)
+ 
+ #ifdef CONFIG_X86_64
+ #define REX_PREFIX	"0x48, "
+diff --git a/arch/x86/kernel/fpu/init.c b/arch/x86/kernel/fpu/init.c
+index 6ce7e0a..61ddc3a 100644
+--- a/arch/x86/kernel/fpu/init.c
++++ b/arch/x86/kernel/fpu/init.c
+@@ -224,7 +224,8 @@ static void __init fpu__init_system_xstate_size_legacy(void)
+  */
+ u64 __init fpu__get_supported_xfeatures_mask(void)
+ {
+-	return XCNTXT_MASK;
++	return XFEATURE_MASK_USER_SUPPORTED |
++	       XFEATURE_MASK_SUPERVISOR_SUPPORTED;
+ }
+ 
+ /* Legacy code to initialize eager fpu mode. */
 diff --git a/arch/x86/kernel/fpu/xstate.c b/arch/x86/kernel/fpu/xstate.c
-index fa71af6..a68213e 100644
+index 8ed6439..9997df7 100644
 --- a/arch/x86/kernel/fpu/xstate.c
 +++ b/arch/x86/kernel/fpu/xstate.c
-@@ -228,13 +228,14 @@ void fpu__init_cpu_xstate(void)
- 	 * states can be set here.
+@@ -208,14 +208,13 @@ void fpu__init_cpu_xstate(void)
+ 	if (!boot_cpu_has(X86_FEATURE_XSAVE) || !xfeatures_mask)
+ 		return;
+ 	/*
+-	 * Make it clear that XSAVES supervisor states are not yet
+-	 * implemented should anyone expect it to work by changing
+-	 * bits in XFEATURE_MASK_* macros and XCR0.
++	 * Unsupported supervisor xstates should not be found in
++	 * the xfeatures mask.
  	 */
- 	xsetbv(XCR_XFEATURE_ENABLED_MASK, xfeatures_mask_user());
-+
-+	/*
-+	 * MSR_IA32_XSS sets supervisor states managed by XSAVES.
-+	 */
-+	if (boot_cpu_has(X86_FEATURE_XSAVES))
-+		wrmsrl(MSR_IA32_XSS, xfeatures_mask_supervisor());
- }
+-	WARN_ONCE((xfeatures_mask & XFEATURE_MASK_SUPERVISOR),
+-		"x86/fpu: XSAVES supervisor states are not yet implemented.\n");
++	WARN_ONCE((xfeatures_mask & XFEATURE_MASK_SUPERVISOR_UNSUPPORTED),
++		  "x86/fpu: Found unsupported supervisor xstates.\n");
  
--/*
-- * Note that in the future we will likely need a pair of
-- * functions here: one for user xstates and the other for
-- * system xstates.  For now, they are the same.
-- */
- static bool xfeature_enabled(enum xfeature xfeature)
- {
- 	return xfeatures_mask_all & BIT_ULL(xfeature);
-@@ -625,9 +626,6 @@ static void do_extra_xstate_size_checks(void)
-  * the size of the *user* states.  If we use it to size a buffer
-  * that we use 'XSAVES' on, we could potentially overflow the
-  * buffer because 'XSAVES' saves system states too.
-- *
-- * Note that we do not currently set any bits on IA32_XSS so
-- * 'XCR0 | IA32_XSS == XCR0' for now.
-  */
- static unsigned int __init get_xsaves_size(void)
- {
-@@ -750,7 +748,12 @@ void __init fpu__init_system_xstate(void)
- 	cpuid_count(XSTATE_CPUID, 0, &eax, &ebx, &ecx, &edx);
- 	xfeatures_mask_all = eax + ((u64)edx << 32);
+-	xfeatures_mask &= ~XFEATURE_MASK_SUPERVISOR;
++	xfeatures_mask &= ~XFEATURE_MASK_SUPERVISOR_UNSUPPORTED;
  
--	/* Place supervisor features in xfeatures_mask_all here */
-+	/*
-+	 * Find supervisor xstates supported by the processor.
-+	 */
-+	cpuid_count(XSTATE_CPUID, 1, &eax, &ebx, &ecx, &edx);
-+	xfeatures_mask_all |= ecx + ((u64)edx << 32);
-+
- 	if ((xfeatures_mask_user() & XFEATURE_MASK_FPSSE) != XFEATURE_MASK_FPSSE) {
- 		/*
- 		 * This indicates that something really unexpected happened
-@@ -810,6 +813,13 @@ void fpu__resume_cpu(void)
+ 	cr4_set_bits(X86_CR4_OSXSAVE);
+ 	xsetbv(XCR_XFEATURE_ENABLED_MASK, xfeatures_mask);
+@@ -438,7 +437,7 @@ static int xfeature_uncompacted_offset(int xfeature_nr)
+ 	 * format. Checking a supervisor state's uncompacted offset is
+ 	 * an error.
  	 */
- 	if (boot_cpu_has(X86_FEATURE_XSAVE))
- 		xsetbv(XCR_XFEATURE_ENABLED_MASK, xfeatures_mask_user());
-+
-+	/*
-+	 * Restore IA32_XSS. The same CPUID bit enumerates support
-+	 * of XSAVES and MSR_IA32_XSS.
-+	 */
-+	if (boot_cpu_has(X86_FEATURE_XSAVES))
-+		wrmsrl(MSR_IA32_XSS, xfeatures_mask_supervisor());
- }
+-	if (XFEATURE_MASK_SUPERVISOR & BIT_ULL(xfeature_nr)) {
++	if (XFEATURE_MASK_SUPERVISOR_ALL & BIT_ULL(xfeature_nr)) {
+ 		WARN_ONCE(1, "No fixed offset for xstate %d\n", xfeature_nr);
+ 		return -1;
+ 	}
+@@ -475,7 +474,7 @@ int using_compacted_format(void)
+ int validate_user_xstate_header(const struct xstate_header *hdr)
+ {
+ 	/* No unknown or supervisor features may be set */
+-	if (hdr->xfeatures & (~xfeatures_mask | XFEATURE_MASK_SUPERVISOR))
++	if (hdr->xfeatures & ~(xfeatures_mask & XFEATURE_MASK_USER_SUPPORTED))
+ 		return -EINVAL;
  
- /*
+ 	/* Userspace must use the uncompacted format */
+@@ -768,7 +767,8 @@ void __init fpu__init_system_xstate(void)
+ 	 * Update info used for ptrace frames; use standard-format size and no
+ 	 * supervisor xstates:
+ 	 */
+-	update_regset_xstate_info(fpu_user_xstate_size,	xfeatures_mask & ~XFEATURE_MASK_SUPERVISOR);
++	update_regset_xstate_info(fpu_user_xstate_size,
++				  xfeatures_mask & XFEATURE_MASK_USER_SUPPORTED);
+ 
+ 	fpu__init_prepare_fx_sw_frame();
+ 	setup_init_fpu_buf();
+@@ -996,7 +996,7 @@ int copy_xstate_to_kernel(void *kbuf, struct xregs_state *xsave, unsigned int of
+ 	 */
+ 	memset(&header, 0, sizeof(header));
+ 	header.xfeatures = xsave->header.xfeatures;
+-	header.xfeatures &= ~XFEATURE_MASK_SUPERVISOR;
++	header.xfeatures &= XFEATURE_MASK_USER_SUPPORTED;
+ 
+ 	/*
+ 	 * Copy xregs_state->header:
+@@ -1080,7 +1080,7 @@ int copy_xstate_to_user(void __user *ubuf, struct xregs_state *xsave, unsigned i
+ 	 */
+ 	memset(&header, 0, sizeof(header));
+ 	header.xfeatures = xsave->header.xfeatures;
+-	header.xfeatures &= ~XFEATURE_MASK_SUPERVISOR;
++	header.xfeatures &= XFEATURE_MASK_USER_SUPPORTED;
+ 
+ 	/*
+ 	 * Copy xregs_state->header:
+@@ -1173,7 +1173,7 @@ int copy_kernel_to_xstate(struct xregs_state *xsave, const void *kbuf)
+ 	 * The state that came in from userspace was user-state only.
+ 	 * Mask all the user states out of 'xfeatures':
+ 	 */
+-	xsave->header.xfeatures &= XFEATURE_MASK_SUPERVISOR;
++	xsave->header.xfeatures &= XFEATURE_MASK_SUPERVISOR_ALL;
+ 
+ 	/*
+ 	 * Add back in the features that came in from userspace:
+@@ -1229,7 +1229,7 @@ int copy_user_to_xstate(struct xregs_state *xsave, const void __user *ubuf)
+ 	 * The state that came in from userspace was user-state only.
+ 	 * Mask all the user states out of 'xfeatures':
+ 	 */
+-	xsave->header.xfeatures &= XFEATURE_MASK_SUPERVISOR;
++	xsave->header.xfeatures &= XFEATURE_MASK_SUPERVISOR_ALL;
+ 
+ 	/*
+ 	 * Add back in the features that came in from userspace:
