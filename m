@@ -2,39 +2,43 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 927EE1D61B8
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 16 May 2020 17:10:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F8941D61C6
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 16 May 2020 17:11:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726718AbgEPPK2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 16 May 2020 11:10:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41070 "EHLO
+        id S1726982AbgEPPKs (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 16 May 2020 11:10:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41088 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726715AbgEPPK2 (ORCPT
+        with ESMTP id S1726959AbgEPPKa (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 16 May 2020 11:10:28 -0400
+        Sat, 16 May 2020 11:10:30 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFA89C061A0C;
-        Sat, 16 May 2020 08:10:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6084FC05BD09;
+        Sat, 16 May 2020 08:10:30 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jZySA-0000rO-23; Sat, 16 May 2020 17:10:18 +0200
+        id 1jZySA-0000rW-Ih; Sat, 16 May 2020 17:10:18 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id CAA201C0475;
-        Sat, 16 May 2020 17:10:16 +0200 (CEST)
-Date:   Sat, 16 May 2020 15:10:16 -0000
-From:   "tip-bot2 for Yu-cheng Yu" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 083291C06E5;
+        Sat, 16 May 2020 17:10:18 +0200 (CEST)
+Date:   Sat, 16 May 2020 15:10:17 -0000
+From:   "tip-bot2 for Fenghua Yu" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/fpu] x86/fpu: Introduce copy_supervisor_to_kernel()
-Cc:     "Yu-cheng Yu" <yu-cheng.yu@intel.com>,
-        Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
+Subject: [tip: x86/fpu] x86/fpu/xstate: Define new functions for clearing
+ fpregs and xstates
+Cc:     Fenghua Yu <fenghua.yu@intel.com>,
+        "Yu-cheng Yu" <yu-cheng.yu@intel.com>,
+        Borislav Petkov <bp@suse.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Tony Luck <tony.luck@intel.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200512145444.15483-9-yu-cheng.yu@intel.com>
-References: <20200512145444.15483-9-yu-cheng.yu@intel.com>
+In-Reply-To: <20200512145444.15483-6-yu-cheng.yu@intel.com>
+References: <20200512145444.15483-6-yu-cheng.yu@intel.com>
 MIME-Version: 1.0
-Message-ID: <158964181672.17951.9851247776841845334.tip-bot2@tip-bot2>
+Message-ID: <158964181793.17951.15480349640697746223.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,160 +54,190 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/fpu branch of tip:
 
-Commit-ID:     eeedf1533687b8e81865fdbde79eddf7c4b76c9a
-Gitweb:        https://git.kernel.org/tip/eeedf1533687b8e81865fdbde79eddf7c4b76c9a
-Author:        Yu-cheng Yu <yu-cheng.yu@intel.com>
-AuthorDate:    Tue, 12 May 2020 07:54:42 -07:00
+Commit-ID:     b860eb8dce5906b14e3a7f3c771e0b3d6ef61b94
+Gitweb:        https://git.kernel.org/tip/b860eb8dce5906b14e3a7f3c771e0b3d6ef61b94
+Author:        Fenghua Yu <fenghua.yu@intel.com>
+AuthorDate:    Tue, 12 May 2020 07:54:39 -07:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Sat, 16 May 2020 11:24:14 +02:00
+CommitterDate: Wed, 13 May 2020 13:41:50 +02:00
 
-x86/fpu: Introduce copy_supervisor_to_kernel()
+x86/fpu/xstate: Define new functions for clearing fpregs and xstates
 
-The XSAVES instruction takes a mask and saves only the features specified
-in that mask.  The kernel normally specifies that all features be saved.
+Currently, fpu__clear() clears all fpregs and xstates.  Once XSAVES
+supervisor states are introduced, supervisor settings (e.g. CET xstates)
+must remain active for signals; It is necessary to have separate functions:
 
-XSAVES also unconditionally uses the "compacted format" which means that
-all specified features are saved next to each other in memory.  If a
-feature is removed from the mask, all the features after it will "move
-up" into earlier locations in the buffer.
+- Create fpu__clear_user_states(): clear only user settings for signals;
+- Create fpu__clear_all(): clear both user and supervisor settings in
+   flush_thread().
 
-Introduce copy_supervisor_to_kernel(), which saves only supervisor states
-and then moves those states into the standard location where they are
-normally found.
+Also modify copy_init_fpstate_to_fpregs() to take a mask from above two
+functions.
 
+Remove obvious side-comment in fpu__clear(), while at it.
+
+ [ bp: Make the second argument of fpu__clear() bool after requesting it
+   a bunch of times during review.
+  - Add a comment about copy_init_fpstate_to_fpregs() locking needs. ]
+
+Co-developed-by: Yu-cheng Yu <yu-cheng.yu@intel.com>
+Signed-off-by: Fenghua Yu <fenghua.yu@intel.com>
 Signed-off-by: Yu-cheng Yu <yu-cheng.yu@intel.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20200512145444.15483-9-yu-cheng.yu@intel.com
+Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Tony Luck <tony.luck@intel.com>
+Link: https://lkml.kernel.org/r/20200512145444.15483-6-yu-cheng.yu@intel.com
 ---
- arch/x86/include/asm/fpu/xstate.h |  1 +-
- arch/x86/kernel/fpu/xstate.c      | 84 ++++++++++++++++++++++++++++++-
- 2 files changed, 85 insertions(+)
+ arch/x86/include/asm/fpu/internal.h |  3 +-
+ arch/x86/kernel/fpu/core.c          | 53 ++++++++++++++++++----------
+ arch/x86/kernel/fpu/signal.c        |  4 +-
+ arch/x86/kernel/process.c           |  2 +-
+ arch/x86/kernel/signal.c            |  2 +-
+ 5 files changed, 41 insertions(+), 23 deletions(-)
 
-diff --git a/arch/x86/include/asm/fpu/xstate.h b/arch/x86/include/asm/fpu/xstate.h
-index 92104b2..422d836 100644
---- a/arch/x86/include/asm/fpu/xstate.h
-+++ b/arch/x86/include/asm/fpu/xstate.h
-@@ -75,6 +75,7 @@ int copy_xstate_to_kernel(void *kbuf, struct xregs_state *xsave, unsigned int of
- int copy_xstate_to_user(void __user *ubuf, struct xregs_state *xsave, unsigned int offset, unsigned int size);
- int copy_kernel_to_xstate(struct xregs_state *xsave, const void *kbuf);
- int copy_user_to_xstate(struct xregs_state *xsave, const void __user *ubuf);
-+void copy_supervisor_to_kernel(struct xregs_state *xsave);
+diff --git a/arch/x86/include/asm/fpu/internal.h b/arch/x86/include/asm/fpu/internal.h
+index ccb1bb3..a42fcb4 100644
+--- a/arch/x86/include/asm/fpu/internal.h
++++ b/arch/x86/include/asm/fpu/internal.h
+@@ -31,7 +31,8 @@ extern void fpu__save(struct fpu *fpu);
+ extern int  fpu__restore_sig(void __user *buf, int ia32_frame);
+ extern void fpu__drop(struct fpu *fpu);
+ extern int  fpu__copy(struct task_struct *dst, struct task_struct *src);
+-extern void fpu__clear(struct fpu *fpu);
++extern void fpu__clear_user_states(struct fpu *fpu);
++extern void fpu__clear_all(struct fpu *fpu);
+ extern int  fpu__exception_code(struct fpu *fpu, int trap_nr);
+ extern int  dump_fpu(struct pt_regs *ptregs, struct user_i387_struct *fpstate);
  
- /* Validate an xstate header supplied by userspace (ptrace or sigreturn) */
- int validate_user_xstate_header(const struct xstate_header *hdr);
-diff --git a/arch/x86/kernel/fpu/xstate.c b/arch/x86/kernel/fpu/xstate.c
-index a68213e..587e03f 100644
---- a/arch/x86/kernel/fpu/xstate.c
-+++ b/arch/x86/kernel/fpu/xstate.c
-@@ -62,6 +62,7 @@ u64 xfeatures_mask_all __read_mostly;
- static unsigned int xstate_offsets[XFEATURE_MAX] = { [ 0 ... XFEATURE_MAX - 1] = -1};
- static unsigned int xstate_sizes[XFEATURE_MAX]   = { [ 0 ... XFEATURE_MAX - 1] = -1};
- static unsigned int xstate_comp_offsets[XFEATURE_MAX] = { [ 0 ... XFEATURE_MAX - 1] = -1};
-+static unsigned int xstate_supervisor_only_offsets[XFEATURE_MAX] = { [ 0 ... XFEATURE_MAX - 1] = -1};
- 
- /*
-  * The XSAVE area of kernel can be in standard or compacted format;
-@@ -393,6 +394,33 @@ static void __init setup_xstate_comp_offsets(void)
+diff --git a/arch/x86/kernel/fpu/core.c b/arch/x86/kernel/fpu/core.c
+index 12c7084..06c8189 100644
+--- a/arch/x86/kernel/fpu/core.c
++++ b/arch/x86/kernel/fpu/core.c
+@@ -291,15 +291,13 @@ void fpu__drop(struct fpu *fpu)
  }
  
  /*
-+ * Setup offsets of a supervisor-state-only XSAVES buffer:
-+ *
-+ * The offsets stored in xstate_comp_offsets[] only work for one specific
-+ * value of the Requested Feature BitMap (RFBM).  In cases where a different
-+ * RFBM value is used, a different set of offsets is required.  This set of
-+ * offsets is for when RFBM=xfeatures_mask_supervisor().
-+ */
-+static void __init setup_supervisor_only_offsets(void)
-+{
-+	unsigned int next_offset;
-+	int i;
-+
-+	next_offset = FXSAVE_SIZE + XSAVE_HDR_SIZE;
-+
-+	for (i = FIRST_EXTENDED_XFEATURE; i < XFEATURE_MAX; i++) {
-+		if (!xfeature_enabled(i) || !xfeature_is_supervisor(i))
-+			continue;
-+
-+		if (xfeature_is_aligned(i))
-+			next_offset = ALIGN(next_offset, 64);
-+
-+		xstate_supervisor_only_offsets[i] = next_offset;
-+		next_offset += xstate_sizes[i];
-+	}
-+}
-+
-+/*
-  * Print out xstate component offsets and sizes
+- * Clear FPU registers by setting them up from
+- * the init fpstate:
++ * Clear FPU registers by setting them up from the init fpstate.
++ * Caller must do fpregs_[un]lock() around it.
   */
- static void __init print_xstate_offset_size(void)
-@@ -790,6 +818,7 @@ void __init fpu__init_system_xstate(void)
- 	fpu__init_prepare_fx_sw_frame();
- 	setup_init_fpu_buf();
- 	setup_xstate_comp_offsets();
-+	setup_supervisor_only_offsets();
- 	print_xstate_offset_size();
+-static inline void copy_init_fpstate_to_fpregs(void)
++static inline void copy_init_fpstate_to_fpregs(u64 features_mask)
+ {
+-	fpregs_lock();
+-
+ 	if (use_xsave())
+-		copy_kernel_to_xregs(&init_fpstate.xsave, -1);
++		copy_kernel_to_xregs(&init_fpstate.xsave, features_mask);
+ 	else if (static_cpu_has(X86_FEATURE_FXSR))
+ 		copy_kernel_to_fxregs(&init_fpstate.fxsave);
+ 	else
+@@ -307,9 +305,6 @@ static inline void copy_init_fpstate_to_fpregs(void)
  
- 	pr_info("x86/fpu: Enabled xstate features 0x%llx, context size is %d bytes, using '%s' format.\n",
-@@ -1262,6 +1291,61 @@ int copy_user_to_xstate(struct xregs_state *xsave, const void __user *ubuf)
- 	return 0;
+ 	if (boot_cpu_has(X86_FEATURE_OSPKE))
+ 		copy_init_pkru_to_fpregs();
+-
+-	fpregs_mark_activate();
+-	fpregs_unlock();
  }
  
-+/*
-+ * Save only supervisor states to the kernel buffer.  This blows away all
-+ * old states, and is intended to be used only in __fpu__restore_sig(), where
-+ * user states are restored from the user buffer.
-+ */
-+void copy_supervisor_to_kernel(struct xregs_state *xstate)
-+{
-+	struct xstate_header *header;
-+	u64 max_bit, min_bit;
-+	u32 lmask, hmask;
-+	int err, i;
-+
-+	if (WARN_ON(!boot_cpu_has(X86_FEATURE_XSAVES)))
+ /*
+@@ -318,18 +313,40 @@ static inline void copy_init_fpstate_to_fpregs(void)
+  * Called by sys_execve(), by the signal handler code and by various
+  * error paths.
+  */
+-void fpu__clear(struct fpu *fpu)
++static void fpu__clear(struct fpu *fpu, bool user_only)
+ {
+-	WARN_ON_FPU(fpu != &current->thread.fpu); /* Almost certainly an anomaly */
++	WARN_ON_FPU(fpu != &current->thread.fpu);
+ 
+-	fpu__drop(fpu);
++	if (!static_cpu_has(X86_FEATURE_FPU)) {
++		fpu__drop(fpu);
++		fpu__initialize(fpu);
 +		return;
-+
-+	if (!xfeatures_mask_supervisor())
-+		return;
-+
-+	max_bit = __fls(xfeatures_mask_supervisor());
-+	min_bit = __ffs(xfeatures_mask_supervisor());
-+
-+	lmask = xfeatures_mask_supervisor();
-+	hmask = xfeatures_mask_supervisor() >> 32;
-+	XSTATE_OP(XSAVES, xstate, lmask, hmask, err);
-+
-+	/* We should never fault when copying to a kernel buffer: */
-+	if (WARN_ON_FPU(err))
-+		return;
-+
-+	/*
-+	 * At this point, the buffer has only supervisor states and must be
-+	 * converted back to normal kernel format.
-+	 */
-+	header = &xstate->header;
-+	header->xcomp_bv |= xfeatures_mask_all;
-+
-+	/*
-+	 * This only moves states up in the buffer.  Start with
-+	 * the last state and move backwards so that states are
-+	 * not overwritten until after they are moved.  Note:
-+	 * memmove() allows overlapping src/dst buffers.
-+	 */
-+	for (i = max_bit; i >= min_bit; i--) {
-+		u8 *xbuf = (u8 *)xstate;
-+
-+		if (!((header->xfeatures >> i) & 1))
-+			continue;
-+
-+		/* Move xfeature 'i' into its normal location */
-+		memmove(xbuf + xstate_comp_offsets[i],
-+			xbuf + xstate_supervisor_only_offsets[i],
-+			xstate_sizes[i]);
 +	}
+ 
+-	/*
+-	 * Make sure fpstate is cleared and initialized.
+-	 */
+-	fpu__initialize(fpu);
+-	if (static_cpu_has(X86_FEATURE_FPU))
+-		copy_init_fpstate_to_fpregs();
++	fpregs_lock();
++
++	if (user_only) {
++		if (!fpregs_state_valid(fpu, smp_processor_id()) &&
++		    xfeatures_mask_supervisor())
++			copy_kernel_to_xregs(&fpu->state.xsave,
++					     xfeatures_mask_supervisor());
++		copy_init_fpstate_to_fpregs(xfeatures_mask_user());
++	} else {
++		copy_init_fpstate_to_fpregs(xfeatures_mask_all);
++	}
++
++	fpregs_mark_activate();
++	fpregs_unlock();
 +}
 +
- #ifdef CONFIG_PROC_PID_ARCH_STATUS
++void fpu__clear_user_states(struct fpu *fpu)
++{
++	fpu__clear(fpu, true);
++}
++
++void fpu__clear_all(struct fpu *fpu)
++{
++	fpu__clear(fpu, false);
+ }
+ 
  /*
-  * Report the amount of time elapsed in millisecond since last AVX512
+diff --git a/arch/x86/kernel/fpu/signal.c b/arch/x86/kernel/fpu/signal.c
+index 3df0cfa..cd6eafb 100644
+--- a/arch/x86/kernel/fpu/signal.c
++++ b/arch/x86/kernel/fpu/signal.c
+@@ -289,7 +289,7 @@ static int __fpu__restore_sig(void __user *buf, void __user *buf_fx, int size)
+ 			 IS_ENABLED(CONFIG_IA32_EMULATION));
+ 
+ 	if (!buf) {
+-		fpu__clear(fpu);
++		fpu__clear_user_states(fpu);
+ 		return 0;
+ 	}
+ 
+@@ -416,7 +416,7 @@ static int __fpu__restore_sig(void __user *buf, void __user *buf_fx, int size)
+ 
+ err_out:
+ 	if (ret)
+-		fpu__clear(fpu);
++		fpu__clear_user_states(fpu);
+ 	return ret;
+ }
+ 
+diff --git a/arch/x86/kernel/process.c b/arch/x86/kernel/process.c
+index 9da70b2..de182b8 100644
+--- a/arch/x86/kernel/process.c
++++ b/arch/x86/kernel/process.c
+@@ -191,7 +191,7 @@ void flush_thread(void)
+ 	flush_ptrace_hw_breakpoint(tsk);
+ 	memset(tsk->thread.tls_array, 0, sizeof(tsk->thread.tls_array));
+ 
+-	fpu__clear(&tsk->thread.fpu);
++	fpu__clear_all(&tsk->thread.fpu);
+ }
+ 
+ void disable_TSC(void)
+diff --git a/arch/x86/kernel/signal.c b/arch/x86/kernel/signal.c
+index 83b74fb..0052bbe 100644
+--- a/arch/x86/kernel/signal.c
++++ b/arch/x86/kernel/signal.c
+@@ -732,7 +732,7 @@ handle_signal(struct ksignal *ksig, struct pt_regs *regs)
+ 		/*
+ 		 * Ensure the signal handler starts with the new fpu state.
+ 		 */
+-		fpu__clear(fpu);
++		fpu__clear_user_states(fpu);
+ 	}
+ 	signal_setup_done(failed, ksig, stepping);
+ }
