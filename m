@@ -2,44 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 26EE41D61C1
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 16 May 2020 17:10:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B5721D6827
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 17 May 2020 15:08:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726970AbgEPPKa (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 16 May 2020 11:10:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41080 "EHLO
+        id S1727896AbgEQNIb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 17 May 2020 09:08:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47288 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726920AbgEPPKa (ORCPT
+        with ESMTP id S1727893AbgEQNIb (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 16 May 2020 11:10:30 -0400
+        Sun, 17 May 2020 09:08:31 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7747C05BD09;
-        Sat, 16 May 2020 08:10:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADFFDC061A0C;
+        Sun, 17 May 2020 06:08:30 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jZySD-0000sF-6V; Sat, 16 May 2020 17:10:21 +0200
+        id 1jaJ1n-0002k2-19; Sun, 17 May 2020 15:08:27 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A78281C0440;
-        Sat, 16 May 2020 17:10:19 +0200 (CEST)
-Date:   Sat, 16 May 2020 15:10:19 -0000
-From:   "tip-bot2 for Fenghua Yu" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 7739C1C009F;
+        Sun, 17 May 2020 15:08:26 +0200 (CEST)
+Date:   Sun, 17 May 2020 13:08:26 -0000
+From:   "tip-bot2 for Andrew Morton" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/fpu] x86/fpu/xstate: Rename validate_xstate_header() to
- validate_user_xstate_header()
-Cc:     Dave Hansen <dave.hansen@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        "Yu-cheng Yu" <yu-cheng.yu@intel.com>,
-        Borislav Petkov <bp@suse.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Tony Luck <tony.luck@intel.com>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200512145444.15483-2-yu-cheng.yu@intel.com>
-References: <20200512145444.15483-2-yu-cheng.yu@intel.com>
+Subject: [tip: x86/build] x86/build: Use $(CONFIG_SHELL)
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Borislav Petkov <bp@suse.de>, Ingo Molnar <mingo@kernel.org>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200505211932.GE6880@zn.tnic>
+References: <20200505211932.GE6880@zn.tnic>
 MIME-Version: 1.0
-Message-ID: <158964181958.17951.3167904104306469285.tip-bot2@tip-bot2>
+Message-ID: <158972090630.17951.4281123342624645094.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -53,102 +48,46 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/fpu branch of tip:
+The following commit has been merged into the x86/build branch of tip:
 
-Commit-ID:     5274e6c172c47241534e970df26a522497086624
-Gitweb:        https://git.kernel.org/tip/5274e6c172c47241534e970df26a522497086624
-Author:        Fenghua Yu <fenghua.yu@intel.com>
-AuthorDate:    Tue, 12 May 2020 07:54:35 -07:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 12 May 2020 20:20:32 +02:00
+Commit-ID:     0be11088b848774ae1f693169fdb9575e0ff06ba
+Gitweb:        https://git.kernel.org/tip/0be11088b848774ae1f693169fdb9575e0ff06ba
+Author:        Andrew Morton <akpm@linux-foundation.org>
+AuthorDate:    Tue, 05 May 2020 14:26:51 -07:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Sun, 17 May 2020 16:01:33 +03:00
 
-x86/fpu/xstate: Rename validate_xstate_header() to validate_user_xstate_header()
+x86/build: Use $(CONFIG_SHELL)
 
-The function validate_xstate_header() validates an xstate header coming
-from userspace (PTRACE or sigreturn). To make it clear, rename it to
-validate_user_xstate_header().
+When scripts/x86-check-compiler.sh doesn't have the executable bit set:
 
-Suggested-by: Dave Hansen <dave.hansen@intel.com>
-Signed-off-by: Fenghua Yu <fenghua.yu@intel.com>
-Signed-off-by: Yu-cheng Yu <yu-cheng.yu@intel.com>
+  q:/usr/src/25> make clean
+  make: execvp: ./scripts/x86-check-compiler.sh: Permission denied
+
+Fix this by using $(CONFIG_SHELL).
+
+This will happen if the user downloads and applies patch-5.7.tar.gz, since
+patch(1) doesn't preserve the x bit.
+
+Fixes: 73da86741e7f7 ("x86/build: Check whether the compiler is sane")
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Tony Luck <tony.luck@intel.com>
-Reviewed-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20200512145444.15483-2-yu-cheng.yu@intel.com
+Link: https://lkml.kernel.org/r/20200505211932.GE6880@zn.tnic
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- arch/x86/include/asm/fpu/xstate.h | 2 +-
- arch/x86/kernel/fpu/regset.c      | 2 +-
- arch/x86/kernel/fpu/signal.c      | 2 +-
- arch/x86/kernel/fpu/xstate.c      | 6 +++---
- 4 files changed, 6 insertions(+), 6 deletions(-)
+ arch/x86/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/fpu/xstate.h b/arch/x86/include/asm/fpu/xstate.h
-index c6136d7..fc4db51 100644
---- a/arch/x86/include/asm/fpu/xstate.h
-+++ b/arch/x86/include/asm/fpu/xstate.h
-@@ -56,6 +56,6 @@ int copy_kernel_to_xstate(struct xregs_state *xsave, const void *kbuf);
- int copy_user_to_xstate(struct xregs_state *xsave, const void __user *ubuf);
+diff --git a/arch/x86/Makefile b/arch/x86/Makefile
+index 38d3eec..9e22791 100644
+--- a/arch/x86/Makefile
++++ b/arch/x86/Makefile
+@@ -2,7 +2,7 @@
+ # Unified Makefile for i386 and x86_64
  
- /* Validate an xstate header supplied by userspace (ptrace or sigreturn) */
--extern int validate_xstate_header(const struct xstate_header *hdr);
-+int validate_user_xstate_header(const struct xstate_header *hdr);
+ #  Check the compiler
+-sane_compiler := $(shell $(srctree)/scripts/x86-check-compiler.sh $(CC))
++sane_compiler := $($(CONFIG_SHELL) $(srctree)/scripts/x86-check-compiler.sh $(CC))
+ $(if $(sane_compiler),$(error $(CC) check failed. Aborting),)
  
- #endif
-diff --git a/arch/x86/kernel/fpu/regset.c b/arch/x86/kernel/fpu/regset.c
-index d652b93..bd1d064 100644
---- a/arch/x86/kernel/fpu/regset.c
-+++ b/arch/x86/kernel/fpu/regset.c
-@@ -139,7 +139,7 @@ int xstateregs_set(struct task_struct *target, const struct user_regset *regset,
- 	} else {
- 		ret = user_regset_copyin(&pos, &count, &kbuf, &ubuf, xsave, 0, -1);
- 		if (!ret)
--			ret = validate_xstate_header(&xsave->header);
-+			ret = validate_user_xstate_header(&xsave->header);
- 	}
- 
- 	/*
-diff --git a/arch/x86/kernel/fpu/signal.c b/arch/x86/kernel/fpu/signal.c
-index 400a05e..585e365 100644
---- a/arch/x86/kernel/fpu/signal.c
-+++ b/arch/x86/kernel/fpu/signal.c
-@@ -366,7 +366,7 @@ static int __fpu__restore_sig(void __user *buf, void __user *buf_fx, int size)
- 			ret = __copy_from_user(&fpu->state.xsave, buf_fx, state_size);
- 
- 			if (!ret && state_size > offsetof(struct xregs_state, header))
--				ret = validate_xstate_header(&fpu->state.xsave.header);
-+				ret = validate_user_xstate_header(&fpu->state.xsave.header);
- 		}
- 		if (ret)
- 			goto err_out;
-diff --git a/arch/x86/kernel/fpu/xstate.c b/arch/x86/kernel/fpu/xstate.c
-index 32b153d..8ed6439 100644
---- a/arch/x86/kernel/fpu/xstate.c
-+++ b/arch/x86/kernel/fpu/xstate.c
-@@ -472,7 +472,7 @@ int using_compacted_format(void)
- }
- 
- /* Validate an xstate header supplied by userspace (ptrace or sigreturn) */
--int validate_xstate_header(const struct xstate_header *hdr)
-+int validate_user_xstate_header(const struct xstate_header *hdr)
- {
- 	/* No unknown or supervisor features may be set */
- 	if (hdr->xfeatures & (~xfeatures_mask | XFEATURE_MASK_SUPERVISOR))
-@@ -1147,7 +1147,7 @@ int copy_kernel_to_xstate(struct xregs_state *xsave, const void *kbuf)
- 
- 	memcpy(&hdr, kbuf + offset, size);
- 
--	if (validate_xstate_header(&hdr))
-+	if (validate_user_xstate_header(&hdr))
- 		return -EINVAL;
- 
- 	for (i = 0; i < XFEATURE_MAX; i++) {
-@@ -1201,7 +1201,7 @@ int copy_user_to_xstate(struct xregs_state *xsave, const void __user *ubuf)
- 	if (__copy_from_user(&hdr, ubuf + offset, size))
- 		return -EFAULT;
- 
--	if (validate_xstate_header(&hdr))
-+	if (validate_user_xstate_header(&hdr))
- 		return -EINVAL;
- 
- 	for (i = 0; i < XFEATURE_MAX; i++) {
+ # select defconfig based on actual architecture
