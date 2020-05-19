@@ -2,40 +2,42 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A87141DA1A6
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 May 2020 21:59:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 51DD11DA1B1
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 May 2020 21:59:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728374AbgEST7J (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 19 May 2020 15:59:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52132 "EHLO
+        id S1728458AbgEST7Y (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 19 May 2020 15:59:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727070AbgEST7J (ORCPT
+        with ESMTP id S1728451AbgEST7X (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 19 May 2020 15:59:09 -0400
+        Tue, 19 May 2020 15:59:23 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 249C6C08C5C0;
-        Tue, 19 May 2020 12:59:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 082F1C08C5C0;
+        Tue, 19 May 2020 12:59:23 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jb8OG-0000Gf-Gm; Tue, 19 May 2020 21:59:04 +0200
+        id 1jb8OJ-0000Gu-Hd; Tue, 19 May 2020 21:59:07 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5A8F81C0868;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id CBC781C0820;
         Tue, 19 May 2020 21:58:49 +0200 (CEST)
 Date:   Tue, 19 May 2020 19:58:49 -0000
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/entry] x86/entry: Remove the unused LOCKDEP_SYSEXIT cruft
+Subject: [tip: x86/entry] x86/entry/64: Avoid pointless code when CONTEXT_TRACKING=n
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Alexandre Chartre <alexandre.chartre@oracle.com>,
+        Frederic Weisbecker <frederic@kernel.org>,
+        Andy Lutomirski <luto@kernel.org>,
         Peter Zijlstra <peterz@infradead.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200505134059.061301403@linutronix.de>
-References: <20200505134059.061301403@linutronix.de>
+In-Reply-To: <20200505134058.955968069@linutronix.de>
+References: <20200505134058.955968069@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <158991832921.17951.14149459042864825104.tip-bot2@tip-bot2>
+Message-ID: <158991832973.17951.2686231000611165316.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,84 +53,48 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/entry branch of tip:
 
-Commit-ID:     235f96a65b3be1ff5cea6e51c597fa7876f0efdd
-Gitweb:        https://git.kernel.org/tip/235f96a65b3be1ff5cea6e51c597fa7876f0efdd
+Commit-ID:     cd19bff6935f29ad06513562b59ebdfe2d34eae4
+Gitweb:        https://git.kernel.org/tip/cd19bff6935f29ad06513562b59ebdfe2d34eae4
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Thu, 05 Mar 2020 11:16:49 +01:00
+AuthorDate:    Tue, 25 Feb 2020 23:16:08 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 15 May 2020 20:03:05 +02:00
+CommitterDate: Fri, 15 May 2020 20:03:04 +02:00
 
-x86/entry: Remove the unused LOCKDEP_SYSEXIT cruft
+x86/entry/64: Avoid pointless code when CONTEXT_TRACKING=n
 
-No users left since two years due to commit 21d375b6b34f ("x86/entry/64:
-Remove the SYSCALL64 fast path")
+GAS cannot optimize out the test and conditional jump when context tracking
+is disabled and CALL_enter_from_user_mode is an empty macro.
+
+Wrap it in #ifdeffery. Will go away once all this is moved to C.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
+Acked-by: Frederic Weisbecker <frederic@kernel.org>
+Acked-by: Andy Lutomirski <luto@kernel.org>
 Acked-by: Peter Zijlstra <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20200505134059.061301403@linutronix.de
+Link: https://lkml.kernel.org/r/20200505134058.955968069@linutronix.de
 
 
 ---
- arch/x86/entry/thunk_64.S       |  5 -----
- arch/x86/include/asm/irqflags.h | 24 ------------------------
- 2 files changed, 29 deletions(-)
+ arch/x86/entry/entry_64.S | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/x86/entry/thunk_64.S b/arch/x86/entry/thunk_64.S
-index dbe4493..34f980c 100644
---- a/arch/x86/entry/thunk_64.S
-+++ b/arch/x86/entry/thunk_64.S
-@@ -42,10 +42,6 @@ SYM_FUNC_END(\name)
- 	THUNK trace_hardirqs_off_thunk,trace_hardirqs_off_caller,1
- #endif
+diff --git a/arch/x86/entry/entry_64.S b/arch/x86/entry/entry_64.S
+index 7d40d10..f84b0f6 100644
+--- a/arch/x86/entry/entry_64.S
++++ b/arch/x86/entry/entry_64.S
+@@ -889,12 +889,14 @@ apicinterrupt IRQ_WORK_VECTOR			irq_work_interrupt		smp_irq_work_interrupt
+ 	TRACE_IRQS_OFF
+ 	.endif
  
--#ifdef CONFIG_DEBUG_LOCK_ALLOC
--	THUNK lockdep_sys_exit_thunk,lockdep_sys_exit
--#endif
--
- #ifdef CONFIG_PREEMPTION
- 	THUNK preempt_schedule_thunk, preempt_schedule
- 	THUNK preempt_schedule_notrace_thunk, preempt_schedule_notrace
-@@ -54,7 +50,6 @@ SYM_FUNC_END(\name)
- #endif
++#ifdef CONFIG_CONTEXT_TRACKING
+ 	.if \paranoid == 0
+ 	testb	$3, CS(%rsp)
+ 	jz	.Lfrom_kernel_no_context_tracking_\@
+ 	CALL_enter_from_user_mode
+ .Lfrom_kernel_no_context_tracking_\@:
+ 	.endif
++#endif
  
- #if defined(CONFIG_TRACE_IRQFLAGS) \
-- || defined(CONFIG_DEBUG_LOCK_ALLOC) \
-  || defined(CONFIG_PREEMPTION)
- SYM_CODE_START_LOCAL_NOALIGN(.L_restore)
- 	popq %r11
-diff --git a/arch/x86/include/asm/irqflags.h b/arch/x86/include/asm/irqflags.h
-index 8a0e56e..e00f064 100644
---- a/arch/x86/include/asm/irqflags.h
-+++ b/arch/x86/include/asm/irqflags.h
-@@ -180,30 +180,6 @@ static inline int arch_irqs_disabled(void)
- #  define TRACE_IRQS_ON
- #  define TRACE_IRQS_OFF
- #endif
--#ifdef CONFIG_DEBUG_LOCK_ALLOC
--#  ifdef CONFIG_X86_64
--#    define LOCKDEP_SYS_EXIT		call lockdep_sys_exit_thunk
--#    define LOCKDEP_SYS_EXIT_IRQ \
--	TRACE_IRQS_ON; \
--	sti; \
--	call lockdep_sys_exit_thunk; \
--	cli; \
--	TRACE_IRQS_OFF;
--#  else
--#    define LOCKDEP_SYS_EXIT \
--	pushl %eax;				\
--	pushl %ecx;				\
--	pushl %edx;				\
--	call lockdep_sys_exit;			\
--	popl %edx;				\
--	popl %ecx;				\
--	popl %eax;
--#    define LOCKDEP_SYS_EXIT_IRQ
--#  endif
--#else
--#  define LOCKDEP_SYS_EXIT
--#  define LOCKDEP_SYS_EXIT_IRQ
--#endif
- #endif /* __ASSEMBLY__ */
+ 	movq	%rsp, %rdi			/* pt_regs pointer */
  
- #endif
