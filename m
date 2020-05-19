@@ -2,41 +2,41 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 622B01DA170
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 May 2020 21:53:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 426071DA222
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 May 2020 22:03:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727835AbgESTwr (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 19 May 2020 15:52:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51002 "EHLO
+        id S1726937AbgEST6X (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 19 May 2020 15:58:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727788AbgESTwp (ORCPT
+        with ESMTP id S1726348AbgEST6X (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 19 May 2020 15:52:45 -0400
+        Tue, 19 May 2020 15:58:23 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 547E0C08C5C0;
-        Tue, 19 May 2020 12:52:45 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D9C4C08C5C1;
+        Tue, 19 May 2020 12:58:23 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jb8I3-0007uH-HA; Tue, 19 May 2020 21:52:39 +0200
+        id 1jb8NW-00087w-Bm; Tue, 19 May 2020 21:58:18 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 0ED4B1C047E;
-        Tue, 19 May 2020 21:52:39 +0200 (CEST)
-Date:   Tue, 19 May 2020 19:52:38 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E78941C047E;
+        Tue, 19 May 2020 21:58:17 +0200 (CEST)
+Date:   Tue, 19 May 2020 19:58:17 -0000
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/kprobes] kprobes: Prevent probes in .noinstr.text section
+Subject: [tip: x86/entry] x86/idtentry: Provide IDTENTRY_DF
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Alexandre Chartre <alexandre.chartre@oracle.com>,
         Peter Zijlstra <peterz@infradead.org>,
-        Masami Hiramatsu <mhiramat@kernel.org>, x86 <x86@kernel.org>,
+        Andy Lutomirski <luto@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200505134100.179862032@linutronix.de>
-References: <20200505134100.179862032@linutronix.de>
+In-Reply-To: <20200505135315.583415264@linutronix.de>
+References: <20200505135315.583415264@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <158991795892.17951.11098194135392988351.tip-bot2@tip-bot2>
+Message-ID: <158991829784.17951.5084767126120807951.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,99 +50,158 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the core/kprobes branch of tip:
+The following commit has been merged into the x86/entry branch of tip:
 
-Commit-ID:     66e9b0717102507e64f638790eaece88765cc9e5
-Gitweb:        https://git.kernel.org/tip/66e9b0717102507e64f638790eaece88765cc9e5
+Commit-ID:     9bf779984c19883354f55a54283292b927939b6a
+Gitweb:        https://git.kernel.org/tip/9bf779984c19883354f55a54283292b927939b6a
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Tue, 10 Mar 2020 14:04:34 +01:00
+AuthorDate:    Tue, 25 Feb 2020 23:33:30 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 19 May 2020 15:56:20 +02:00
+CommitterDate: Tue, 19 May 2020 16:04:14 +02:00
 
-kprobes: Prevent probes in .noinstr.text section
+x86/idtentry: Provide IDTENTRY_DF
 
-Instrumentation is forbidden in the .noinstr.text section. Make kprobes
-respect this.
+Provide a separate macro for #DF as this needs to emit paranoid only code
+and has also a special ASM stub in 32bit.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
 Acked-by: Peter Zijlstra <peterz@infradead.org>
-Acked-by: Masami Hiramatsu <mhiramat@kernel.org>
-Link: https://lkml.kernel.org/r/20200505134100.179862032@linutronix.de
+Acked-by: Andy Lutomirski <luto@kernel.org>
+Link: https://lkml.kernel.org/r/20200505135315.583415264@linutronix.de
+
+
 
 ---
- include/linux/module.h |  2 ++
- kernel/kprobes.c       | 18 ++++++++++++++++++
- kernel/module.c        |  3 +++
- 3 files changed, 23 insertions(+)
+ arch/x86/include/asm/idtentry.h | 87 ++++++++++++++++++++++++++++++++-
+ 1 file changed, 87 insertions(+)
 
-diff --git a/include/linux/module.h b/include/linux/module.h
-index 1192097..d849d06 100644
---- a/include/linux/module.h
-+++ b/include/linux/module.h
-@@ -458,6 +458,8 @@ struct module {
- 	void __percpu *percpu;
- 	unsigned int percpu_size;
+diff --git a/arch/x86/include/asm/idtentry.h b/arch/x86/include/asm/idtentry.h
+index 060f9e3..9521f32 100644
+--- a/arch/x86/include/asm/idtentry.h
++++ b/arch/x86/include/asm/idtentry.h
+@@ -132,6 +132,35 @@ static __always_inline void __##func(struct pt_regs *regs,		\
+ #define DEFINE_IDTENTRY_RAW(func)					\
+ __visible noinstr void func(struct pt_regs *regs)
+ 
++/**
++ * DECLARE_IDTENTRY_RAW_ERRORCODE - Declare functions for raw IDT entry points
++ *				    Error code pushed by hardware
++ * @vector:	Vector number (ignored for C)
++ * @func:	Function name of the entry point
++ *
++ * Maps to DECLARE_IDTENTRY_ERRORCODE()
++ */
++#define DECLARE_IDTENTRY_RAW_ERRORCODE(vector, func)			\
++	DECLARE_IDTENTRY_ERRORCODE(vector, func)
++
++/**
++ * DEFINE_IDTENTRY_RAW_ERRORCODE - Emit code for raw IDT entry points
++ * @func:	Function name of the entry point
++ *
++ * @func is called from ASM entry code with interrupts disabled.
++ *
++ * The macro is written so it acts as function definition. Append the
++ * body with a pair of curly brackets.
++ *
++ * Contrary to DEFINE_IDTENTRY_ERRORCODE() this does not invoke the
++ * idtentry_enter/exit() helpers before and after the body invocation. This
++ * needs to be done in the body itself if applicable. Use if extra work
++ * is required before the enter/exit() helpers are invoked.
++ */
++#define DEFINE_IDTENTRY_RAW_ERRORCODE(func)				\
++__visible noinstr void func(struct pt_regs *regs, unsigned long error_code)
++
++
+ #ifdef CONFIG_X86_64
+ /**
+  * DECLARE_IDTENTRY_IST - Declare functions for IST handling IDT entry points
+@@ -165,10 +194,58 @@ __visible noinstr void func(struct pt_regs *regs)
+ #define DEFINE_IDTENTRY_NOIST(func)					\
+ 	DEFINE_IDTENTRY_RAW(noist_##func)
+ 
++/**
++ * DECLARE_IDTENTRY_DF - Declare functions for double fault
++ * @vector:	Vector number (ignored for C)
++ * @func:	Function name of the entry point
++ *
++ * Maps to DECLARE_IDTENTRY_RAW_ERRORCODE
++ */
++#define DECLARE_IDTENTRY_DF(vector, func)				\
++	DECLARE_IDTENTRY_RAW_ERRORCODE(vector, func)
++
++/**
++ * DEFINE_IDTENTRY_DF - Emit code for double fault
++ * @func:	Function name of the entry point
++ *
++ * Maps to DEFINE_IDTENTRY_RAW_ERRORCODE
++ */
++#define DEFINE_IDTENTRY_DF(func)					\
++	DEFINE_IDTENTRY_RAW_ERRORCODE(func)
++
+ #else	/* CONFIG_X86_64 */
++
+ /* Maps to a regular IDTENTRY on 32bit for now */
+ # define DECLARE_IDTENTRY_IST		DECLARE_IDTENTRY
+ # define DEFINE_IDTENTRY_IST		DEFINE_IDTENTRY
++
++/**
++ * DECLARE_IDTENTRY_DF - Declare functions for double fault 32bit variant
++ * @vector:	Vector number (ignored for C)
++ * @func:	Function name of the entry point
++ *
++ * Declares two functions:
++ * - The ASM entry point: asm_##func
++ * - The C handler called from the C shim
++ */
++#define DECLARE_IDTENTRY_DF(vector, func)				\
++	asmlinkage void asm_##func(void);				\
++	__visible void func(struct pt_regs *regs,			\
++			    unsigned long error_code,			\
++			    unsigned long address)
++
++/**
++ * DEFINE_IDTENTRY_DF - Emit code for double fault on 32bit
++ * @func:	Function name of the entry point
++ *
++ * This is called through the doublefault shim which already provides
++ * cr2 in the address argument.
++ */
++#define DEFINE_IDTENTRY_DF(func)					\
++__visible noinstr void func(struct pt_regs *regs,			\
++			    unsigned long error_code,			\
++			    unsigned long address)
++
+ #endif	/* !CONFIG_X86_64 */
+ 
+ /* C-Code mapping */
+@@ -212,6 +289,9 @@ __visible noinstr void func(struct pt_regs *regs)
+ #define DECLARE_IDTENTRY_RAW(vector, func)				\
+ 	DECLARE_IDTENTRY(vector, func)
+ 
++#define DECLARE_IDTENTRY_RAW_ERRORCODE(vector, func)			\
++	DECLARE_IDTENTRY_ERRORCODE(vector, func)
++
+ #ifdef CONFIG_X86_64
+ # define DECLARE_IDTENTRY_MCE(vector, func)				\
+ 	idtentry_mce_db vector asm_##func func
+@@ -219,12 +299,19 @@ __visible noinstr void func(struct pt_regs *regs)
+ # define DECLARE_IDTENTRY_DEBUG(vector, func)				\
+ 	idtentry_mce_db vector asm_##func func
+ 
++# define DECLARE_IDTENTRY_DF(vector, func)				\
++	idtentry_df vector asm_##func func
++
+ #else
+ # define DECLARE_IDTENTRY_MCE(vector, func)				\
+ 	DECLARE_IDTENTRY(vector, func)
+ 
+ # define DECLARE_IDTENTRY_DEBUG(vector, func)				\
+ 	DECLARE_IDTENTRY(vector, func)
++
++/* No ASM emitted for DF as this goes through a C shim */
++# define DECLARE_IDTENTRY_DF(vector, func)
++
  #endif
-+	void *noinstr_text_start;
-+	unsigned int noinstr_text_size;
  
- #ifdef CONFIG_TRACEPOINTS
- 	unsigned int num_tracepoints;
-diff --git a/kernel/kprobes.c b/kernel/kprobes.c
-index 9eb5acf..3f310df 100644
---- a/kernel/kprobes.c
-+++ b/kernel/kprobes.c
-@@ -2229,6 +2229,12 @@ static int __init populate_kprobe_blacklist(unsigned long *start,
- 	/* Symbols in __kprobes_text are blacklisted */
- 	ret = kprobe_add_area_blacklist((unsigned long)__kprobes_text_start,
- 					(unsigned long)__kprobes_text_end);
-+	if (ret)
-+		return ret;
-+
-+	/* Symbols in noinstr section are blacklisted */
-+	ret = kprobe_add_area_blacklist((unsigned long)__noinstr_text_start,
-+					(unsigned long)__noinstr_text_end);
- 
- 	return ret ? : arch_populate_kprobe_blacklist();
- }
-@@ -2248,6 +2254,12 @@ static void add_module_kprobe_blacklist(struct module *mod)
- 		end = start + mod->kprobes_text_size;
- 		kprobe_add_area_blacklist(start, end);
- 	}
-+
-+	start = (unsigned long)mod->noinstr_text_start;
-+	if (start) {
-+		end = start + mod->noinstr_text_size;
-+		kprobe_add_area_blacklist(start, end);
-+	}
- }
- 
- static void remove_module_kprobe_blacklist(struct module *mod)
-@@ -2265,6 +2277,12 @@ static void remove_module_kprobe_blacklist(struct module *mod)
- 		end = start + mod->kprobes_text_size;
- 		kprobe_remove_area_blacklist(start, end);
- 	}
-+
-+	start = (unsigned long)mod->noinstr_text_start;
-+	if (start) {
-+		end = start + mod->noinstr_text_size;
-+		kprobe_remove_area_blacklist(start, end);
-+	}
- }
- 
- /* Module notifier call back, checking kprobes on the module */
-diff --git a/kernel/module.c b/kernel/module.c
-index faf7337..72ed2b3 100644
---- a/kernel/module.c
-+++ b/kernel/module.c
-@@ -3150,6 +3150,9 @@ static int find_module_sections(struct module *mod, struct load_info *info)
- 	}
- #endif
- 
-+	mod->noinstr_text_start = section_objs(info, ".noinstr.text", 1,
-+						&mod->noinstr_text_size);
-+
- #ifdef CONFIG_TRACEPOINTS
- 	mod->tracepoints_ptrs = section_objs(info, "__tracepoints_ptrs",
- 					     sizeof(*mod->tracepoints_ptrs),
+ /* No ASM code emitted for NMI */
