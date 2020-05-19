@@ -2,40 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 025F71DA1DA
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 May 2020 22:00:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D13D91DA1EE
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 May 2020 22:01:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728334AbgEST7D (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 19 May 2020 15:59:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52100 "EHLO
+        id S1728739AbgESUBO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 19 May 2020 16:01:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52068 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728331AbgEST7C (ORCPT
+        with ESMTP id S1728287AbgEST65 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 19 May 2020 15:59:02 -0400
+        Tue, 19 May 2020 15:58:57 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEA2BC08C5C0;
-        Tue, 19 May 2020 12:59:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2AEFC08C5C0;
+        Tue, 19 May 2020 12:58:57 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jb8O9-0000AA-Rm; Tue, 19 May 2020 21:58:58 +0200
+        id 1jb8O8-0000Ax-6V; Tue, 19 May 2020 21:58:56 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id CA77C1C0178;
-        Tue, 19 May 2020 21:58:43 +0200 (CEST)
-Date:   Tue, 19 May 2020 19:58:43 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B32591C0852;
+        Tue, 19 May 2020 21:58:44 +0200 (CEST)
+Date:   Tue, 19 May 2020 19:58:44 -0000
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/entry] x86/entry/32: Move non entry code into .text section
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Alexandre Chartre <alexandre.chartre@oracle.com>,
-        Peter Zijlstra <peterz@infradead.org>, x86 <x86@kernel.org>,
+Subject: [tip: x86/entry] x86/idt: Remove update_intr_gate()
+Cc:     Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200505134340.320164650@linutronix.de>
-References: <20200505134340.320164650@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <158991832371.17951.6250394079949069799.tip-bot2@tip-bot2>
+Message-ID: <158991832459.17951.14798835986906194460.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,92 +47,52 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/entry branch of tip:
 
-Commit-ID:     cd809a7a917164820bdb20a7d41f3d1ce98ddc83
-Gitweb:        https://git.kernel.org/tip/cd809a7a917164820bdb20a7d41f3d1ce98ddc83
+Commit-ID:     8175cfbbbfcba992ed0dd5868d83733c4f38bbb9
+Gitweb:        https://git.kernel.org/tip/8175cfbbbfcba992ed0dd5868d83733c4f38bbb9
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Wed, 25 Mar 2020 19:47:40 +01:00
+AuthorDate:    Fri, 15 May 2020 17:39:05 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Tue, 19 May 2020 16:03:49 +02:00
 
-x86/entry/32: Move non entry code into .text section
+x86/idt: Remove update_intr_gate()
 
-All ASM code which is not part of the entry functionality can move out into
-the .text section. No reason to keep it in the non-instrumentable entry
-section.
+No more users.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
-Acked-by: Peter Zijlstra <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20200505134340.320164650@linutronix.de
-
 
 ---
- arch/x86/entry/entry_32.S |  9 +++++++++
- 1 file changed, 9 insertions(+)
+ arch/x86/include/asm/desc.h | 1 -
+ arch/x86/kernel/idt.c       | 8 --------
+ 2 files changed, 9 deletions(-)
 
-diff --git a/arch/x86/entry/entry_32.S b/arch/x86/entry/entry_32.S
-index a5eed84..bf0082b 100644
---- a/arch/x86/entry/entry_32.S
-+++ b/arch/x86/entry/entry_32.S
-@@ -730,6 +730,7 @@
-  * %eax: prev task
-  * %edx: next task
-  */
-+.pushsection .text, "ax"
- SYM_CODE_START(__switch_to_asm)
- 	/*
- 	 * Save callee-saved registers
-@@ -776,6 +777,7 @@ SYM_CODE_START(__switch_to_asm)
+diff --git a/arch/x86/include/asm/desc.h b/arch/x86/include/asm/desc.h
+index 68a99d2..085a2dd 100644
+--- a/arch/x86/include/asm/desc.h
++++ b/arch/x86/include/asm/desc.h
+@@ -386,7 +386,6 @@ static inline void set_desc_limit(struct desc_struct *desc, unsigned long limit)
+ 	desc->limit1 = (limit >> 16) & 0xf;
+ }
  
- 	jmp	__switch_to
- SYM_CODE_END(__switch_to_asm)
-+.popsection
+-void update_intr_gate(unsigned int n, const void *addr);
+ void alloc_intr_gate(unsigned int n, const void *addr);
  
- /*
-  * The unwinder expects the last frame on the stack to always be at the same
-@@ -784,6 +786,7 @@ SYM_CODE_END(__switch_to_asm)
-  * asmlinkage function so its argument has to be pushed on the stack.  This
-  * wrapper creates a proper "end of stack" frame header before the call.
-  */
-+.pushsection .text, "ax"
- SYM_FUNC_START(schedule_tail_wrapper)
- 	FRAME_BEGIN
+ extern unsigned long system_vectors[];
+diff --git a/arch/x86/kernel/idt.c b/arch/x86/kernel/idt.c
+index 36fef90..95609ee 100644
+--- a/arch/x86/kernel/idt.c
++++ b/arch/x86/kernel/idt.c
+@@ -360,14 +360,6 @@ void idt_invalidate(void *addr)
+ 	load_idt(&idt);
+ }
  
-@@ -794,6 +797,8 @@ SYM_FUNC_START(schedule_tail_wrapper)
- 	FRAME_END
- 	ret
- SYM_FUNC_END(schedule_tail_wrapper)
-+.popsection
-+
- /*
-  * A newly forked process directly context switches into this address.
-  *
-@@ -801,6 +806,7 @@ SYM_FUNC_END(schedule_tail_wrapper)
-  * ebx: kernel thread func (NULL for user thread)
-  * edi: kernel thread arg
-  */
-+.pushsection .text, "ax"
- SYM_CODE_START(ret_from_fork)
- 	call	schedule_tail_wrapper
- 
-@@ -825,6 +831,7 @@ SYM_CODE_START(ret_from_fork)
- 	movl	$0, PT_EAX(%esp)
- 	jmp	2b
- SYM_CODE_END(ret_from_fork)
-+.popsection
- 
- /*
-  * Return to user mode is not as complex as all this looks,
-@@ -1691,6 +1698,7 @@ SYM_CODE_START(general_protection)
- 	jmp	common_exception
- SYM_CODE_END(general_protection)
- 
-+.pushsection .text, "ax"
- SYM_CODE_START(rewind_stack_do_exit)
- 	/* Prevent any naive code from trying to unwind to our caller. */
- 	xorl	%ebp, %ebp
-@@ -1701,3 +1709,4 @@ SYM_CODE_START(rewind_stack_do_exit)
- 	call	do_exit
- 1:	jmp 1b
- SYM_CODE_END(rewind_stack_do_exit)
-+.popsection
+-/* This goes away once ASYNC_PF is sanitized */
+-void __init update_intr_gate(unsigned int n, const void *addr)
+-{
+-	if (WARN_ON_ONCE(!test_bit(n, system_vectors)))
+-		return;
+-	set_intr_gate(n, addr);
+-}
+-
+ void __init alloc_intr_gate(unsigned int n, const void *addr)
+ {
+ 	if (WARN_ON(n < FIRST_SYSTEM_VECTOR))
