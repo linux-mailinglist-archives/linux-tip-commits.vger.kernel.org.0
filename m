@@ -2,40 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CF1B1DA1A3
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 May 2020 21:59:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3465E1DA1D6
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 May 2020 22:00:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728345AbgEST7E (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 19 May 2020 15:59:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52104 "EHLO
+        id S1728673AbgESUAk (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 19 May 2020 16:00:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728338AbgEST7E (ORCPT
+        with ESMTP id S1728353AbgEST7H (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 19 May 2020 15:59:04 -0400
+        Tue, 19 May 2020 15:59:07 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C793C08C5C0;
-        Tue, 19 May 2020 12:59:04 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FF15C08C5C3;
+        Tue, 19 May 2020 12:59:07 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jb8OB-0000Da-H8; Tue, 19 May 2020 21:58:59 +0200
+        id 1jb8OE-0000Ee-BH; Tue, 19 May 2020 21:59:02 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 695D11C04D6;
-        Tue, 19 May 2020 21:58:46 +0200 (CEST)
-Date:   Tue, 19 May 2020 19:58:46 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A33961C0837;
+        Tue, 19 May 2020 21:58:47 +0200 (CEST)
+Date:   Tue, 19 May 2020 19:58:47 -0000
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/entry] bug: Annotate WARN/BUG/stackfail as noinstr safe
+Subject: [tip: x86/entry] context_tracking: Make guest_enter/exit() .noinstr ready
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Alexandre Chartre <alexandre.chartre@oracle.com>,
         Peter Zijlstra <peterz@infradead.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200505134100.376598577@linutronix.de>
-References: <20200505134100.376598577@linutronix.de>
+In-Reply-To: <20200505134341.672545766@linutronix.de>
+References: <20200505134341.672545766@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <158991832633.17951.16329253492440093410.tip-bot2@tip-bot2>
+Message-ID: <158991832753.17951.748859244105491427.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,96 +51,98 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/entry branch of tip:
 
-Commit-ID:     4b162e41d8bb552516cd8fa5efaca5cd8160d5c8
-Gitweb:        https://git.kernel.org/tip/4b162e41d8bb552516cd8fa5efaca5cd8160d5c8
+Commit-ID:     af1e56b78534c38bb0e0c712ca70e59f816b74e9
+Gitweb:        https://git.kernel.org/tip/af1e56b78534c38bb0e0c712ca70e59f816b74e9
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Fri, 13 Mar 2020 13:49:51 +01:00
+AuthorDate:    Thu, 19 Mar 2020 14:53:56 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 19 May 2020 15:47:23 +02:00
+CommitterDate: Tue, 19 May 2020 15:47:21 +02:00
 
-bug: Annotate WARN/BUG/stackfail as noinstr safe
+context_tracking: Make guest_enter/exit() .noinstr ready
 
-Warnings, bugs and stack protection fails from noinstr sections, e.g. low
-level and early entry code, are likely to be fatal.
-
-Mark them as "safe" to be invoked from noinstr protected code to avoid
-annotating all usage sites. Getting the information out is important.
+Force inlining of the helpers and mark the instrumentable parts
+accordingly.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
 Acked-by: Peter Zijlstra <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20200505134100.376598577@linutronix.de
+Link: https://lkml.kernel.org/r/20200505134341.672545766@linutronix.de
 
 
 ---
- arch/x86/include/asm/bug.h |  3 +++
- include/asm-generic/bug.h  |  9 +++++++--
- kernel/panic.c             |  4 +++-
- 3 files changed, 13 insertions(+), 3 deletions(-)
+ include/linux/context_tracking.h | 21 ++++++++++++++++-----
+ 1 file changed, 16 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/include/asm/bug.h b/arch/x86/include/asm/bug.h
-index facba9b..fb34ff6 100644
---- a/arch/x86/include/asm/bug.h
-+++ b/arch/x86/include/asm/bug.h
-@@ -70,14 +70,17 @@ do {									\
- #define HAVE_ARCH_BUG
- #define BUG()							\
- do {								\
-+	instrumentation_begin();				\
- 	_BUG_FLAGS(ASM_UD2, 0);					\
- 	unreachable();						\
- } while (0)
+diff --git a/include/linux/context_tracking.h b/include/linux/context_tracking.h
+index 8150f5a..8cac62e 100644
+--- a/include/linux/context_tracking.h
++++ b/include/linux/context_tracking.h
+@@ -101,12 +101,14 @@ static inline void context_tracking_init(void) { }
  
- #define __WARN_FLAGS(flags)					\
- do {								\
-+	instrumentation_begin();				\
- 	_BUG_FLAGS(ASM_UD2, BUGFLAG_WARNING|(flags));		\
- 	annotate_reachable();					\
-+	instrumentation_end();					\
- } while (0)
- 
- #include <asm-generic/bug.h>
-diff --git a/include/asm-generic/bug.h b/include/asm-generic/bug.h
-index 384b5c8..c94e33a 100644
---- a/include/asm-generic/bug.h
-+++ b/include/asm-generic/bug.h
-@@ -83,14 +83,19 @@ extern __printf(4, 5)
- void warn_slowpath_fmt(const char *file, const int line, unsigned taint,
- 		       const char *fmt, ...);
- #define __WARN()		__WARN_printf(TAINT_WARN, NULL)
--#define __WARN_printf(taint, arg...)					\
--	warn_slowpath_fmt(__FILE__, __LINE__, taint, arg)
-+#define __WARN_printf(taint, arg...) do {				\
-+		instrumentation_begin();				\
-+		warn_slowpath_fmt(__FILE__, __LINE__, taint, arg);	\
-+		instrumentation_end();					\
-+	} while (0)
- #else
- extern __printf(1, 2) void __warn_printk(const char *fmt, ...);
- #define __WARN()		__WARN_FLAGS(BUGFLAG_TAINT(TAINT_WARN))
- #define __WARN_printf(taint, arg...) do {				\
-+		instrumentation_begin();				\
- 		__warn_printk(arg);					\
- 		__WARN_FLAGS(BUGFLAG_NO_CUT_HERE | BUGFLAG_TAINT(taint));\
-+		instrumentation_end();					\
- 	} while (0)
- #define WARN_ON_ONCE(condition) ({				\
- 	int __ret_warn_on = !!(condition);			\
-diff --git a/kernel/panic.c b/kernel/panic.c
-index b69ee9e..1cfb47d 100644
---- a/kernel/panic.c
-+++ b/kernel/panic.c
-@@ -662,10 +662,12 @@ device_initcall(register_warn_debugfs);
-  * Called when gcc's -fstack-protector feature is used, and
-  * gcc detects corruption of the on-stack canary value
-  */
--__visible void __stack_chk_fail(void)
-+__visible noinstr void __stack_chk_fail(void)
+ #ifdef CONFIG_VIRT_CPU_ACCOUNTING_GEN
+ /* must be called with irqs disabled */
+-static inline void guest_enter_irqoff(void)
++static __always_inline void guest_enter_irqoff(void)
  {
 +	instrumentation_begin();
- 	panic("stack-protector: Kernel stack is corrupted in: %pB",
- 		__builtin_return_address(0));
+ 	if (vtime_accounting_enabled_this_cpu())
+ 		vtime_guest_enter(current);
+ 	else
+ 		current->flags |= PF_VCPU;
++	instrumentation_end();
+ 
+ 	if (context_tracking_enabled())
+ 		__context_tracking_enter(CONTEXT_GUEST);
+@@ -118,39 +120,48 @@ static inline void guest_enter_irqoff(void)
+ 	 * one time slice). Lets treat guest mode as quiescent state, just like
+ 	 * we do with user-mode execution.
+ 	 */
+-	if (!context_tracking_enabled_this_cpu())
++	if (!context_tracking_enabled_this_cpu()) {
++		instrumentation_begin();
+ 		rcu_virt_note_context_switch(smp_processor_id());
++		instrumentation_end();
++	}
+ }
+ 
+-static inline void guest_exit_irqoff(void)
++static __always_inline void guest_exit_irqoff(void)
+ {
+ 	if (context_tracking_enabled())
+ 		__context_tracking_exit(CONTEXT_GUEST);
+ 
++	instrumentation_begin();
+ 	if (vtime_accounting_enabled_this_cpu())
+ 		vtime_guest_exit(current);
+ 	else
+ 		current->flags &= ~PF_VCPU;
 +	instrumentation_end();
  }
- EXPORT_SYMBOL(__stack_chk_fail);
+ 
+ #else
+-static inline void guest_enter_irqoff(void)
++static __always_inline void guest_enter_irqoff(void)
+ {
+ 	/*
+ 	 * This is running in ioctl context so its safe
+ 	 * to assume that it's the stime pending cputime
+ 	 * to flush.
+ 	 */
++	instrumentation_begin();
+ 	vtime_account_kernel(current);
+ 	current->flags |= PF_VCPU;
+ 	rcu_virt_note_context_switch(smp_processor_id());
++	instrumentation_end();
+ }
+ 
+-static inline void guest_exit_irqoff(void)
++static __always_inline void guest_exit_irqoff(void)
+ {
++	instrumentation_begin();
+ 	/* Flush the guest cputime we spent on the guest */
+ 	vtime_account_kernel(current);
+ 	current->flags &= ~PF_VCPU;
++	instrumentation_end();
+ }
+ #endif /* CONFIG_VIRT_CPU_ACCOUNTING_GEN */
  
