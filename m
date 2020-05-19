@@ -2,43 +2,41 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A8E351DA15F
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 May 2020 21:53:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A859E1DA176
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 May 2020 21:53:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727885AbgESTwv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 19 May 2020 15:52:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51014 "EHLO
+        id S1726999AbgESTx0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 19 May 2020 15:53:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727854AbgESTws (ORCPT
+        with ESMTP id S1726348AbgESTwo (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 19 May 2020 15:52:48 -0400
+        Tue, 19 May 2020 15:52:44 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB26BC08C5C2;
-        Tue, 19 May 2020 12:52:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 767A8C08C5C0;
+        Tue, 19 May 2020 12:52:44 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jb8I5-0007sR-Nx; Tue, 19 May 2020 21:52:41 +0200
+        id 1jb8I2-0007tT-B0; Tue, 19 May 2020 21:52:38 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4E6671C0480;
-        Tue, 19 May 2020 21:52:36 +0200 (CEST)
-Date:   Tue, 19 May 2020 19:52:36 -0000
-From:   "tip-bot2 for Frederic Weisbecker" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 94AA11C04D6;
+        Tue, 19 May 2020 21:52:37 +0200 (CEST)
+Date:   Tue, 19 May 2020 19:52:37 -0000
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] arm64: Prepare arch_nmi_enter() for recursion
-Cc:     Frederic Weisbecker <frederic@kernel.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
+Subject: [tip: core/rcu] vmlinux.lds.h: Create section for protection against
+ instrumentation
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Alexandre Chartre <alexandre.chartre@oracle.com>,
-        Will Deacon <will@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200505134100.771491291@linutronix.de>
-References: <20200505134100.771491291@linutronix.de>
+        Peter Zijlstra <peterz@infradead.org>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200505134100.075416272@linutronix.de>
+References: <20200505134100.075416272@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <158991795623.17951.5424104075328395169.tip-bot2@tip-bot2>
+Message-ID: <158991795749.17951.18190372549185535613.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -54,129 +52,201 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     28f6bf9e247fe23d177cfdbf7e709270e8cc7fa6
-Gitweb:        https://git.kernel.org/tip/28f6bf9e247fe23d177cfdbf7e709270e8cc7fa6
-Author:        Frederic Weisbecker <frederic@kernel.org>
-AuthorDate:    Thu, 27 Feb 2020 09:51:40 +01:00
+Commit-ID:     6553896666433e7efec589838b400a2a652b3ffa
+Gitweb:        https://git.kernel.org/tip/6553896666433e7efec589838b400a2a652b3ffa
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Mon, 09 Mar 2020 22:47:17 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 19 May 2020 15:51:17 +02:00
+CommitterDate: Tue, 19 May 2020 15:47:20 +02:00
 
-arm64: Prepare arch_nmi_enter() for recursion
+vmlinux.lds.h: Create section for protection against instrumentation
 
-When using nmi_enter() recursively, arch_nmi_enter() must also be recursion
-safe. In particular, it must be ensured that HCR_TGE is always set while in
-NMI context when in HYP mode, and be restored to it's former state when
-done.
+Some code pathes, especially the low level entry code, must be protected
+against instrumentation for various reasons:
 
-The current code fails this when interleaved wrong. Notably it overwrites
-the original hcr state on nesting.
+ - Low level entry code can be a fragile beast, especially on x86.
 
-Introduce a nesting counter to make sure to store the original value.
+ - With NO_HZ_FULL RCU state needs to be established before using it.
 
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Having a dedicated section for such code allows to validate with tooling
+that no unsafe functions are invoked.
+
+Add the .noinstr.text section and the noinstr attribute to mark
+functions. noinstr implies notrace. Kprobes will gain a section check
+later.
+
+Provide also a set of markers: instrumentation_begin()/end()
+
+These are used to mark code inside a noinstr function which calls
+into regular instrumentable text section as safe.
+
+The instrumentation markers are only active when CONFIG_DEBUG_ENTRY is
+enabled as the end marker emits a NOP to prevent the compiler from merging
+the annotation points. This means the objtool verification requires a
+kernel compiled with this option.
+
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Link: https://lkml.kernel.org/r/20200505134100.771491291@linutronix.de
-
-
+Acked-by: Peter Zijlstra <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20200505134100.075416272@linutronix.de
 ---
- arch/arm64/include/asm/hardirq.h | 78 +++++++++++++++++++++++--------
- 1 file changed, 59 insertions(+), 19 deletions(-)
+ arch/powerpc/kernel/vmlinux.lds.S |  1 +-
+ include/asm-generic/sections.h    |  3 ++-
+ include/asm-generic/vmlinux.lds.h | 10 ++++++-
+ include/linux/compiler.h          | 53 ++++++++++++++++++++++++++++++-
+ include/linux/compiler_types.h    |  4 ++-
+ scripts/mod/modpost.c             |  2 +-
+ 6 files changed, 72 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/include/asm/hardirq.h b/arch/arm64/include/asm/hardirq.h
-index 87ad961..985493a 100644
---- a/arch/arm64/include/asm/hardirq.h
-+++ b/arch/arm64/include/asm/hardirq.h
-@@ -32,30 +32,70 @@ u64 smp_irq_stat_cpu(unsigned int cpu);
+diff --git a/arch/powerpc/kernel/vmlinux.lds.S b/arch/powerpc/kernel/vmlinux.lds.S
+index 31a0f20..a1706b6 100644
+--- a/arch/powerpc/kernel/vmlinux.lds.S
++++ b/arch/powerpc/kernel/vmlinux.lds.S
+@@ -90,6 +90,7 @@ SECTIONS
+ #ifdef CONFIG_PPC64
+ 		*(.tramp.ftrace.text);
+ #endif
++		NOINSTR_TEXT
+ 		SCHED_TEXT
+ 		CPUIDLE_TEXT
+ 		LOCK_TEXT
+diff --git a/include/asm-generic/sections.h b/include/asm-generic/sections.h
+index d1779d4..66397ed 100644
+--- a/include/asm-generic/sections.h
++++ b/include/asm-generic/sections.h
+@@ -53,6 +53,9 @@ extern char __ctors_start[], __ctors_end[];
+ /* Start and end of .opd section - used for function descriptors. */
+ extern char __start_opd[], __end_opd[];
  
- struct nmi_ctx {
- 	u64 hcr;
-+	unsigned int cnt;
- };
++/* Start and end of instrumentation protected text section */
++extern char __noinstr_text_start[], __noinstr_text_end[];
++
+ extern __visible const void __nosave_begin, __nosave_end;
  
- DECLARE_PER_CPU(struct nmi_ctx, nmi_contexts);
+ /* Function descriptor handling (if any).  Override in asm/sections.h */
+diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
+index 71e387a..db600ef 100644
+--- a/include/asm-generic/vmlinux.lds.h
++++ b/include/asm-generic/vmlinux.lds.h
+@@ -541,6 +541,15 @@
+ 	__end_rodata = .;
  
--#define arch_nmi_enter()							\
--	do {									\
--		if (is_kernel_in_hyp_mode()) {					\
--			struct nmi_ctx *nmi_ctx = this_cpu_ptr(&nmi_contexts);	\
--			nmi_ctx->hcr = read_sysreg(hcr_el2);			\
--			if (!(nmi_ctx->hcr & HCR_TGE)) {			\
--				write_sysreg(nmi_ctx->hcr | HCR_TGE, hcr_el2);	\
--				isb();						\
--			}							\
--		}								\
--	} while (0)
-+#define arch_nmi_enter()						\
-+do {									\
-+	struct nmi_ctx *___ctx;						\
-+	u64 ___hcr;							\
-+									\
-+	if (!is_kernel_in_hyp_mode())					\
-+		break;							\
-+									\
-+	___ctx = this_cpu_ptr(&nmi_contexts);				\
-+	if (___ctx->cnt) {						\
-+		___ctx->cnt++;						\
-+		break;							\
-+	}								\
-+									\
-+	___hcr = read_sysreg(hcr_el2);					\
-+	if (!(___hcr & HCR_TGE)) {					\
-+		write_sysreg(___hcr | HCR_TGE, hcr_el2);		\
-+		isb();							\
-+	}								\
-+	/*								\
-+	 * Make sure the sysreg write is performed before ___ctx->cnt	\
-+	 * is set to 1. NMIs that see cnt == 1 will rely on us.		\
-+	 */								\
-+	barrier();							\
-+	___ctx->cnt = 1;                                                \
-+	/*								\
-+	 * Make sure ___ctx->cnt is set before we save ___hcr. We	\
-+	 * don't want ___ctx->hcr to be overwritten.			\
-+	 */								\
-+	barrier();							\
-+	___ctx->hcr = ___hcr;						\
-+} while (0)
+ /*
++ * Non-instrumentable text section
++ */
++#define NOINSTR_TEXT							\
++		ALIGN_FUNCTION();					\
++		__noinstr_text_start = .;				\
++		*(.noinstr.text)					\
++		__noinstr_text_end = .;
++
++/*
+  * .text section. Map to function alignment to avoid address changes
+  * during second ld run in second ld pass when generating System.map
+  *
+@@ -551,6 +560,7 @@
+ #define TEXT_TEXT							\
+ 		ALIGN_FUNCTION();					\
+ 		*(.text.hot TEXT_MAIN .text.fixup .text.unlikely)	\
++		NOINSTR_TEXT						\
+ 		*(.text..refcount)					\
+ 		*(.ref.text)						\
+ 	MEM_KEEP(init.text*)						\
+diff --git a/include/linux/compiler.h b/include/linux/compiler.h
+index 034b0a6..e9ead05 100644
+--- a/include/linux/compiler.h
++++ b/include/linux/compiler.h
+@@ -120,12 +120,65 @@ void ftrace_likely_update(struct ftrace_likely_data *f, int val,
+ /* Annotate a C jump table to allow objtool to follow the code flow */
+ #define __annotate_jump_table __section(.rodata..c_jump_table)
  
--#define arch_nmi_exit()								\
--	do {									\
--		if (is_kernel_in_hyp_mode()) {					\
--			struct nmi_ctx *nmi_ctx = this_cpu_ptr(&nmi_contexts);	\
--			if (!(nmi_ctx->hcr & HCR_TGE))				\
--				write_sysreg(nmi_ctx->hcr, hcr_el2);		\
--		}								\
--	} while (0)
-+#define arch_nmi_exit()							\
-+do {									\
-+	struct nmi_ctx *___ctx;						\
-+	u64 ___hcr;							\
-+									\
-+	if (!is_kernel_in_hyp_mode())					\
-+		break;							\
-+									\
-+	___ctx = this_cpu_ptr(&nmi_contexts);				\
-+	___hcr = ___ctx->hcr;						\
-+	/*								\
-+	 * Make sure we read ___ctx->hcr before we release		\
-+	 * ___ctx->cnt as it makes ___ctx->hcr updatable again.		\
-+	 */								\
-+	barrier();							\
-+	___ctx->cnt--;							\
-+	/*								\
-+	 * Make sure ___ctx->cnt release is visible before we		\
-+	 * restore the sysreg. Otherwise a new NMI occurring		\
-+	 * right after write_sysreg() can be fooled and think		\
-+	 * we secured things for it.					\
-+	 */								\
-+	barrier();							\
-+	if (!___ctx->cnt && !(___hcr & HCR_TGE))			\
-+		write_sysreg(___hcr, hcr_el2);				\
-+} while (0)
++#ifdef CONFIG_DEBUG_ENTRY
++/* Begin/end of an instrumentation safe region */
++#define instrumentation_begin() ({					\
++	asm volatile("%c0:\n\t"						\
++		     ".pushsection .discard.instr_begin\n\t"		\
++		     ".long %c0b - .\n\t"				\
++		     ".popsection\n\t" : : "i" (__COUNTER__));		\
++})
++
++/*
++ * Because instrumentation_{begin,end}() can nest, objtool validation considers
++ * _begin() a +1 and _end() a -1 and computes a sum over the instructions.
++ * When the value is greater than 0, we consider instrumentation allowed.
++ *
++ * There is a problem with code like:
++ *
++ * noinstr void foo()
++ * {
++ *	instrumentation_begin();
++ *	...
++ *	if (cond) {
++ *		instrumentation_begin();
++ *		...
++ *		instrumentation_end();
++ *	}
++ *	bar();
++ *	instrumentation_end();
++ * }
++ *
++ * If instrumentation_end() would be an empty label, like all the other
++ * annotations, the inner _end(), which is at the end of a conditional block,
++ * would land on the instruction after the block.
++ *
++ * If we then consider the sum of the !cond path, we'll see that the call to
++ * bar() is with a 0-value, even though, we meant it to happen with a positive
++ * value.
++ *
++ * To avoid this, have _end() be a NOP instruction, this ensures it will be
++ * part of the condition block and does not escape.
++ */
++#define instrumentation_end() ({					\
++	asm volatile("%c0: nop\n\t"					\
++		     ".pushsection .discard.instr_end\n\t"		\
++		     ".long %c0b - .\n\t"				\
++		     ".popsection\n\t" : : "i" (__COUNTER__));		\
++})
++#endif /* CONFIG_DEBUG_ENTRY */
++
+ #else
+ #define annotate_reachable()
+ #define annotate_unreachable()
+ #define __annotate_jump_table
+ #endif
  
- static inline void ack_bad_irq(unsigned int irq)
- {
++#ifndef instrumentation_begin
++#define instrumentation_begin()		do { } while(0)
++#define instrumentation_end()		do { } while(0)
++#endif
++
+ #ifndef ASM_UNREACHABLE
+ # define ASM_UNREACHABLE
+ #endif
+diff --git a/include/linux/compiler_types.h b/include/linux/compiler_types.h
+index e970f97..5da257c 100644
+--- a/include/linux/compiler_types.h
++++ b/include/linux/compiler_types.h
+@@ -118,6 +118,10 @@ struct ftrace_likely_data {
+ #define notrace			__attribute__((__no_instrument_function__))
+ #endif
+ 
++/* Section for code which can't be instrumented at all */
++#define noinstr								\
++	noinline notrace __attribute((__section__(".noinstr.text")))
++
+ /*
+  * it doesn't make sense on ARM (currently the only user of __naked)
+  * to trace naked functions because then mcount is called without
+diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
+index 5c3c50c..0053d4f 100644
+--- a/scripts/mod/modpost.c
++++ b/scripts/mod/modpost.c
+@@ -948,7 +948,7 @@ static void check_section(const char *modname, struct elf_info *elf,
+ 
+ #define DATA_SECTIONS ".data", ".data.rel"
+ #define TEXT_SECTIONS ".text", ".text.unlikely", ".sched.text", \
+-		".kprobes.text", ".cpuidle.text"
++		".kprobes.text", ".cpuidle.text", ".noinstr.text"
+ #define OTHER_TEXT_SECTIONS ".ref.text", ".head.text", ".spinlock.text", \
+ 		".fixup", ".entry.text", ".exception.text", ".text.*", \
+ 		".coldtext"
