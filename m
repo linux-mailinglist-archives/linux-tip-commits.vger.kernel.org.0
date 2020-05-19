@@ -2,42 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B4DE1DA162
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 May 2020 21:53:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F7251DA177
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 May 2020 21:53:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727951AbgESTw6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 19 May 2020 15:52:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51044 "EHLO
+        id S1726783AbgESTxd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 19 May 2020 15:53:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50984 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727854AbgESTw5 (ORCPT
+        with ESMTP id S1726959AbgESTwk (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 19 May 2020 15:52:57 -0400
+        Tue, 19 May 2020 15:52:40 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EECFDC08C5C0;
-        Tue, 19 May 2020 12:52:56 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D55BC08C5C4;
+        Tue, 19 May 2020 12:52:40 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jb8Hz-0007qz-2J; Tue, 19 May 2020 21:52:35 +0200
+        id 1jb8Hy-0007qD-Nv; Tue, 19 May 2020 21:52:34 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A41BF1C0178;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4625F1C0480;
         Tue, 19 May 2020 21:52:34 +0200 (CEST)
 Date:   Tue, 19 May 2020 19:52:34 -0000
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] sched,rcu,tracing: Avoid tracing before in_nmi() is correct
-Cc:     "Steven Rostedt (VMware)" <rosted@goodmis.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
+Subject: [tip: core/rcu] x86/entry: Get rid of ist_begin/end_non_atomic()
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Alexandre Chartre <alexandre.chartre@oracle.com>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200505134101.434193525@linutronix.de>
-References: <20200505134101.434193525@linutronix.de>
+        Peter Zijlstra <peterz@infradead.org>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200505134059.462640294@linutronix.de>
+References: <20200505134059.462640294@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <158991795458.17951.16867777710377461415.tip-bot2@tip-bot2>
+Message-ID: <158991795420.17951.1071064271217628063.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -53,73 +51,110 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     f93524eb9c54f49be150167918f6546b0a2e09b1
-Gitweb:        https://git.kernel.org/tip/f93524eb9c54f49be150167918f6546b0a2e09b1
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Wed, 12 Feb 2020 21:01:16 +01:00
+Commit-ID:     b052df3da821adfd6be26a6eb16624fb50e90e56
+Gitweb:        https://git.kernel.org/tip/b052df3da821adfd6be26a6eb16624fb50e90e56
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Thu, 05 Mar 2020 00:52:41 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 19 May 2020 15:51:18 +02:00
+CommitterDate: Tue, 19 May 2020 15:51:19 +02:00
 
-sched,rcu,tracing: Avoid tracing before in_nmi() is correct
+x86/entry: Get rid of ist_begin/end_non_atomic()
 
-If a tracer is invoked before in_nmi() becomes true, the tracer can no
-longer detect it is called from NMI context and behave correctly.
+This is completely overengineered and definitely not an interface which
+should be made available to anything else than this particular MCE case.
 
-Therefore change nmi_{enter,exit}() to use __preempt_count_{add,sub}()
-as the normal preempt_count_{add,sub}() have a (desired) function
-trace entry.
-
-This fixes a potential issue with the current code; when the function-tracer
-has stack-tracing enabled __trace_stack() will malfunction when it hits the
-preempt_count_add() function entry from NMI context.
-
-Suggested-by: Steven Rostedt (VMware) <rosted@goodmis.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
 Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
-Link: https://lkml.kernel.org/r/20200505134101.434193525@linutronix.de
+Acked-by: Peter Zijlstra <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20200505134059.462640294@linutronix.de
 
 
 ---
- include/linux/hardirq.h | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ arch/x86/include/asm/traps.h   |  2 +--
+ arch/x86/kernel/cpu/mce/core.c |  6 +++--
+ arch/x86/kernel/traps.c        | 37 +---------------------------------
+ 3 files changed, 4 insertions(+), 41 deletions(-)
 
-diff --git a/include/linux/hardirq.h b/include/linux/hardirq.h
-index a043ad8..621556e 100644
---- a/include/linux/hardirq.h
-+++ b/include/linux/hardirq.h
-@@ -66,6 +66,15 @@ extern void irq_exit(void);
- #endif
+diff --git a/arch/x86/include/asm/traps.h b/arch/x86/include/asm/traps.h
+index c26a7e1..fe109fc 100644
+--- a/arch/x86/include/asm/traps.h
++++ b/arch/x86/include/asm/traps.h
+@@ -120,8 +120,6 @@ asmlinkage void smp_irq_move_cleanup_interrupt(void);
  
- /*
-+ * NMI vs Tracing
-+ * --------------
-+ *
-+ * We must not land in a tracer until (or after) we've changed preempt_count
-+ * such that in_nmi() becomes true. To that effect all NMI C entry points must
-+ * be marked 'notrace' and call nmi_enter() as soon as possible.
-+ */
-+
-+/*
-  * nmi_enter() can nest up to 15 times; see NMI_BITS.
-  */
- #define nmi_enter()						\
-@@ -75,7 +84,7 @@ extern void irq_exit(void);
- 		lockdep_off();					\
- 		ftrace_nmi_enter();				\
- 		BUG_ON(in_nmi() == NMI_MASK);			\
--		preempt_count_add(NMI_OFFSET + HARDIRQ_OFFSET);	\
-+		__preempt_count_add(NMI_OFFSET + HARDIRQ_OFFSET);	\
- 		rcu_nmi_enter();				\
- 		lockdep_hardirq_enter();			\
- 	} while (0)
-@@ -85,7 +94,7 @@ extern void irq_exit(void);
- 		lockdep_hardirq_exit();				\
- 		rcu_nmi_exit();					\
- 		BUG_ON(!in_nmi());				\
--		preempt_count_sub(NMI_OFFSET + HARDIRQ_OFFSET);	\
-+		__preempt_count_sub(NMI_OFFSET + HARDIRQ_OFFSET);	\
- 		ftrace_nmi_exit();				\
- 		lockdep_on();					\
- 		printk_nmi_exit();				\
+ extern void ist_enter(struct pt_regs *regs);
+ extern void ist_exit(struct pt_regs *regs);
+-extern void ist_begin_non_atomic(struct pt_regs *regs);
+-extern void ist_end_non_atomic(void);
+ 
+ #ifdef CONFIG_VMAP_STACK
+ void __noreturn handle_stack_overflow(const char *message,
+diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
+index 54165f3..98bf91c 100644
+--- a/arch/x86/kernel/cpu/mce/core.c
++++ b/arch/x86/kernel/cpu/mce/core.c
+@@ -1352,13 +1352,15 @@ void notrace do_machine_check(struct pt_regs *regs, long error_code)
+ 
+ 	/* Fault was in user mode and we need to take some action */
+ 	if ((m.cs & 3) == 3) {
+-		ist_begin_non_atomic(regs);
++		/* If this triggers there is no way to recover. Die hard. */
++		BUG_ON(!on_thread_stack() || !user_mode(regs));
+ 		local_irq_enable();
++		preempt_enable();
+ 
+ 		if (kill_it || do_memory_failure(&m))
+ 			force_sig(SIGBUS);
++		preempt_disable();
+ 		local_irq_disable();
+-		ist_end_non_atomic();
+ 	} else {
+ 		if (!fixup_exception(regs, X86_TRAP_MC, error_code, 0))
+ 			mce_panic("Failed kernel mode recovery", &m, msg);
+diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
+index d54cffd..6740e83 100644
+--- a/arch/x86/kernel/traps.c
++++ b/arch/x86/kernel/traps.c
+@@ -117,43 +117,6 @@ void ist_exit(struct pt_regs *regs)
+ 		rcu_nmi_exit();
+ }
+ 
+-/**
+- * ist_begin_non_atomic() - begin a non-atomic section in an IST exception
+- * @regs:	regs passed to the IST exception handler
+- *
+- * IST exception handlers normally cannot schedule.  As a special
+- * exception, if the exception interrupted userspace code (i.e.
+- * user_mode(regs) would return true) and the exception was not
+- * a double fault, it can be safe to schedule.  ist_begin_non_atomic()
+- * begins a non-atomic section within an ist_enter()/ist_exit() region.
+- * Callers are responsible for enabling interrupts themselves inside
+- * the non-atomic section, and callers must call ist_end_non_atomic()
+- * before ist_exit().
+- */
+-void ist_begin_non_atomic(struct pt_regs *regs)
+-{
+-	BUG_ON(!user_mode(regs));
+-
+-	/*
+-	 * Sanity check: we need to be on the normal thread stack.  This
+-	 * will catch asm bugs and any attempt to use ist_preempt_enable
+-	 * from double_fault.
+-	 */
+-	BUG_ON(!on_thread_stack());
+-
+-	preempt_enable_no_resched();
+-}
+-
+-/**
+- * ist_end_non_atomic() - begin a non-atomic section in an IST exception
+- *
+- * Ends a non-atomic section started with ist_begin_non_atomic().
+- */
+-void ist_end_non_atomic(void)
+-{
+-	preempt_disable();
+-}
+-
+ int is_valid_bugaddr(unsigned long addr)
+ {
+ 	unsigned short ud;
