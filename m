@@ -2,40 +2,41 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C08B71D9FD8
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 May 2020 20:45:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CD201D9FE2
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 May 2020 20:45:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726528AbgESSo3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 19 May 2020 14:44:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40214 "EHLO
+        id S1727917AbgESSoz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 19 May 2020 14:44:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40182 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727939AbgESSo1 (ORCPT
+        with ESMTP id S1727034AbgESSoU (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 19 May 2020 14:44:27 -0400
+        Tue, 19 May 2020 14:44:20 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FC15C08C5C1;
-        Tue, 19 May 2020 11:44:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 377AFC08C5C1;
+        Tue, 19 May 2020 11:44:20 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jb7Do-0006bB-JY; Tue, 19 May 2020 20:44:12 +0200
+        id 1jb7Dp-0006bl-Pq; Tue, 19 May 2020 20:44:13 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 38D0B1C047E;
-        Tue, 19 May 2020 20:44:12 +0200 (CEST)
-Date:   Tue, 19 May 2020 18:44:12 -0000
-From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 64D541C047E;
+        Tue, 19 May 2020 20:44:13 +0200 (CEST)
+Date:   Tue, 19 May 2020 18:44:13 -0000
+From:   "tip-bot2 for Pavankumar Kondeti" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/x86/rapl: Add Ice Lake RAPL support
-Cc:     Stephane Eranian <eranian@google.com>,
-        Kan Liang <kan.liang@linux.intel.com>,
+Subject: [tip: sched/urgent] sched/debug: Fix requested task uclamp values
+ shown in procfs
+Cc:     Pavankumar Kondeti <pkondeti@codeaurora.org>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Valentin Schneider <valentin.schneider@arm.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <1588857258-38213-1-git-send-email-kan.liang@linux.intel.com>
-References: <1588857258-38213-1-git-send-email-kan.liang@linux.intel.com>
+In-Reply-To: <1589115401-26391-1-git-send-email-pkondeti@codeaurora.org>
+References: <1589115401-26391-1-git-send-email-pkondeti@codeaurora.org>
 MIME-Version: 1.0
-Message-ID: <158991385214.17951.16120378125524104856.tip-bot2@tip-bot2>
+Message-ID: <158991385330.17951.2679225516047950446.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,39 +50,45 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/core branch of tip:
+The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     f649fc2eefdef7a67698a3c584222c5c8c5a6785
-Gitweb:        https://git.kernel.org/tip/f649fc2eefdef7a67698a3c584222c5c8c5a6785
-Author:        Kan Liang <kan.liang@linux.intel.com>
-AuthorDate:    Thu, 07 May 2020 06:14:18 -07:00
+Commit-ID:     ad32bb41fca67936c0c1d6d0bdd6d3e2e9c5432f
+Gitweb:        https://git.kernel.org/tip/ad32bb41fca67936c0c1d6d0bdd6d3e2e9c5432f
+Author:        Pavankumar Kondeti <pkondeti@codeaurora.org>
+AuthorDate:    Sun, 10 May 2020 18:26:41 +05:30
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 19 May 2020 20:34:16 +02:00
+CommitterDate: Tue, 19 May 2020 20:34:10 +02:00
 
-perf/x86/rapl: Add Ice Lake RAPL support
+sched/debug: Fix requested task uclamp values shown in procfs
 
-Enable RAPL support for Intel Ice Lake X and Ice Lake D.
+The intention of commit 96e74ebf8d59 ("sched/debug: Add task uclamp
+values to SCHED_DEBUG procfs") was to print requested and effective
+task uclamp values. The requested values printed are read from p->uclamp,
+which holds the last effective values. Fix this by printing the values
+from p->uclamp_req.
 
-For RAPL support, it is identical to Sky Lake X.
-
-Reported-by: Stephane Eranian <eranian@google.com>
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Fixes: 96e74ebf8d59 ("sched/debug: Add task uclamp values to SCHED_DEBUG procfs")
+Signed-off-by: Pavankumar Kondeti <pkondeti@codeaurora.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/1588857258-38213-1-git-send-email-kan.liang@linux.intel.com
+Reviewed-by: Valentin Schneider <valentin.schneider@arm.com>
+Tested-by: Valentin Schneider <valentin.schneider@arm.com>
+Link: https://lkml.kernel.org/r/1589115401-26391-1-git-send-email-pkondeti@codeaurora.org
 ---
- arch/x86/events/intel/rapl.c | 2 ++
- 1 file changed, 2 insertions(+)
+ kernel/sched/debug.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/events/intel/rapl.c b/arch/x86/events/intel/rapl.c
-index a5dbd25..9e1e141 100644
---- a/arch/x86/events/intel/rapl.c
-+++ b/arch/x86/events/intel/rapl.c
-@@ -738,6 +738,8 @@ static const struct x86_cpu_id rapl_model_match[] __initconst = {
- 	X86_MATCH_INTEL_FAM6_MODEL(ATOM_GOLDMONT_PLUS,	&model_hsw),
- 	X86_MATCH_INTEL_FAM6_MODEL(ICELAKE_L,		&model_skl),
- 	X86_MATCH_INTEL_FAM6_MODEL(ICELAKE,		&model_skl),
-+	X86_MATCH_INTEL_FAM6_MODEL(ICELAKE_D,		&model_hsx),
-+	X86_MATCH_INTEL_FAM6_MODEL(ICELAKE_X,		&model_hsx),
- 	X86_MATCH_INTEL_FAM6_MODEL(COMETLAKE_L,		&model_skl),
- 	X86_MATCH_INTEL_FAM6_MODEL(COMETLAKE,		&model_skl),
- 	{},
+diff --git a/kernel/sched/debug.c b/kernel/sched/debug.c
+index a562df5..239970b 100644
+--- a/kernel/sched/debug.c
++++ b/kernel/sched/debug.c
+@@ -948,8 +948,8 @@ void proc_sched_show_task(struct task_struct *p, struct pid_namespace *ns,
+ 	P(se.avg.util_est.enqueued);
+ #endif
+ #ifdef CONFIG_UCLAMP_TASK
+-	__PS("uclamp.min", p->uclamp[UCLAMP_MIN].value);
+-	__PS("uclamp.max", p->uclamp[UCLAMP_MAX].value);
++	__PS("uclamp.min", p->uclamp_req[UCLAMP_MIN].value);
++	__PS("uclamp.max", p->uclamp_req[UCLAMP_MAX].value);
+ 	__PS("effective uclamp.min", uclamp_eff_value(p, UCLAMP_MIN));
+ 	__PS("effective uclamp.max", uclamp_eff_value(p, UCLAMP_MAX));
+ #endif
