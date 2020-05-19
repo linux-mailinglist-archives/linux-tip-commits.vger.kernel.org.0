@@ -2,41 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 65F751DA1D0
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 May 2020 22:00:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A87141DA1A6
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 May 2020 21:59:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728638AbgESUA2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 19 May 2020 16:00:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52126 "EHLO
+        id S1728374AbgEST7J (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 19 May 2020 15:59:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52132 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728359AbgEST7H (ORCPT
+        with ESMTP id S1727070AbgEST7J (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 19 May 2020 15:59:07 -0400
+        Tue, 19 May 2020 15:59:09 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FAC0C08C5C0;
-        Tue, 19 May 2020 12:59:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 249C6C08C5C0;
+        Tue, 19 May 2020 12:59:09 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jb8OF-0000FW-1m; Tue, 19 May 2020 21:59:03 +0200
+        id 1jb8OG-0000Gf-Gm; Tue, 19 May 2020 21:59:04 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 7CD5B1C04E3;
-        Tue, 19 May 2020 21:58:48 +0200 (CEST)
-Date:   Tue, 19 May 2020 19:58:48 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5A8F81C0868;
+        Tue, 19 May 2020 21:58:49 +0200 (CEST)
+Date:   Tue, 19 May 2020 19:58:49 -0000
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/entry] tracing: Provide lockdep less
- trace_hardirqs_on/off() variants
+Subject: [tip: x86/entry] x86/entry: Remove the unused LOCKDEP_SYSEXIT cruft
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Alexandre Chartre <alexandre.chartre@oracle.com>,
         Peter Zijlstra <peterz@infradead.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200505134100.270771162@linutronix.de>
-References: <20200505134100.270771162@linutronix.de>
+In-Reply-To: <20200505134059.061301403@linutronix.de>
+References: <20200505134059.061301403@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <158991832840.17951.9965229788112577467.tip-bot2@tip-bot2>
+Message-ID: <158991832921.17951.14149459042864825104.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -52,117 +51,84 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/entry branch of tip:
 
-Commit-ID:     0995a5dfbe49badff78e78761fb66f46579f2f9a
-Gitweb:        https://git.kernel.org/tip/0995a5dfbe49badff78e78761fb66f46579f2f9a
+Commit-ID:     235f96a65b3be1ff5cea6e51c597fa7876f0efdd
+Gitweb:        https://git.kernel.org/tip/235f96a65b3be1ff5cea6e51c597fa7876f0efdd
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Wed, 04 Mar 2020 13:09:50 +01:00
+AuthorDate:    Thu, 05 Mar 2020 11:16:49 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 19 May 2020 15:47:21 +02:00
+CommitterDate: Fri, 15 May 2020 20:03:05 +02:00
 
-tracing: Provide lockdep less trace_hardirqs_on/off() variants
+x86/entry: Remove the unused LOCKDEP_SYSEXIT cruft
 
-trace_hardirqs_on/off() is only partially safe vs. RCU idle. The tracer
-core itself is safe, but the resulting tracepoints can be utilized by
-e.g. BPF which is unsafe.
-
-Provide variants which do not contain the lockdep invocation so the lockdep
-and tracer invocations can be split at the call site and placed
-properly. This is required because lockdep needs to be aware of the state
-before switching away from RCU idle and after switching to RCU idle because
-these transitions can take locks.
-
-As these code pathes are going to be non-instrumentable the tracer can be
-invoked after RCU is turned on and before the switch to RCU idle. So for
-these new variants there is no need to invoke the rcuidle aware tracer
-functions.
-
-Name them so they match the lockdep counterparts.
+No users left since two years due to commit 21d375b6b34f ("x86/entry/64:
+Remove the SYSCALL64 fast path")
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
 Acked-by: Peter Zijlstra <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20200505134100.270771162@linutronix.de
+Link: https://lkml.kernel.org/r/20200505134059.061301403@linutronix.de
 
 
 ---
- include/linux/irqflags.h        |  4 +++-
- kernel/trace/trace_preemptirq.c | 37 ++++++++++++++++++++++++++++++++-
- 2 files changed, 41 insertions(+)
+ arch/x86/entry/thunk_64.S       |  5 -----
+ arch/x86/include/asm/irqflags.h | 24 ------------------------
+ 2 files changed, 29 deletions(-)
 
-diff --git a/include/linux/irqflags.h b/include/linux/irqflags.h
-index 61a9ced..f150e69 100644
---- a/include/linux/irqflags.h
-+++ b/include/linux/irqflags.h
-@@ -29,6 +29,8 @@
+diff --git a/arch/x86/entry/thunk_64.S b/arch/x86/entry/thunk_64.S
+index dbe4493..34f980c 100644
+--- a/arch/x86/entry/thunk_64.S
++++ b/arch/x86/entry/thunk_64.S
+@@ -42,10 +42,6 @@ SYM_FUNC_END(\name)
+ 	THUNK trace_hardirqs_off_thunk,trace_hardirqs_off_caller,1
  #endif
  
- #ifdef CONFIG_TRACE_IRQFLAGS
-+  extern void trace_hardirqs_on_prepare(void);
-+  extern void trace_hardirqs_off_prepare(void);
-   extern void trace_hardirqs_on(void);
-   extern void trace_hardirqs_off(void);
- # define lockdep_hardirq_context(p)	((p)->hardirq_context)
-@@ -96,6 +98,8 @@ do {						\
- 	  } while (0)
+-#ifdef CONFIG_DEBUG_LOCK_ALLOC
+-	THUNK lockdep_sys_exit_thunk,lockdep_sys_exit
+-#endif
+-
+ #ifdef CONFIG_PREEMPTION
+ 	THUNK preempt_schedule_thunk, preempt_schedule
+ 	THUNK preempt_schedule_notrace_thunk, preempt_schedule_notrace
+@@ -54,7 +50,6 @@ SYM_FUNC_END(\name)
+ #endif
  
- #else
-+# define trace_hardirqs_on_prepare()		do { } while (0)
-+# define trace_hardirqs_off_prepare()		do { } while (0)
- # define trace_hardirqs_on()		do { } while (0)
- # define trace_hardirqs_off()		do { } while (0)
- # define lockdep_hardirq_context(p)	0
-diff --git a/kernel/trace/trace_preemptirq.c b/kernel/trace/trace_preemptirq.c
-index 4d8e99f..c008801 100644
---- a/kernel/trace/trace_preemptirq.c
-+++ b/kernel/trace/trace_preemptirq.c
-@@ -19,6 +19,24 @@
- /* Per-cpu variable to prevent redundant calls when IRQs already off */
- static DEFINE_PER_CPU(int, tracing_irq_cpu);
+ #if defined(CONFIG_TRACE_IRQFLAGS) \
+- || defined(CONFIG_DEBUG_LOCK_ALLOC) \
+  || defined(CONFIG_PREEMPTION)
+ SYM_CODE_START_LOCAL_NOALIGN(.L_restore)
+ 	popq %r11
+diff --git a/arch/x86/include/asm/irqflags.h b/arch/x86/include/asm/irqflags.h
+index 8a0e56e..e00f064 100644
+--- a/arch/x86/include/asm/irqflags.h
++++ b/arch/x86/include/asm/irqflags.h
+@@ -180,30 +180,6 @@ static inline int arch_irqs_disabled(void)
+ #  define TRACE_IRQS_ON
+ #  define TRACE_IRQS_OFF
+ #endif
+-#ifdef CONFIG_DEBUG_LOCK_ALLOC
+-#  ifdef CONFIG_X86_64
+-#    define LOCKDEP_SYS_EXIT		call lockdep_sys_exit_thunk
+-#    define LOCKDEP_SYS_EXIT_IRQ \
+-	TRACE_IRQS_ON; \
+-	sti; \
+-	call lockdep_sys_exit_thunk; \
+-	cli; \
+-	TRACE_IRQS_OFF;
+-#  else
+-#    define LOCKDEP_SYS_EXIT \
+-	pushl %eax;				\
+-	pushl %ecx;				\
+-	pushl %edx;				\
+-	call lockdep_sys_exit;			\
+-	popl %edx;				\
+-	popl %ecx;				\
+-	popl %eax;
+-#    define LOCKDEP_SYS_EXIT_IRQ
+-#  endif
+-#else
+-#  define LOCKDEP_SYS_EXIT
+-#  define LOCKDEP_SYS_EXIT_IRQ
+-#endif
+ #endif /* __ASSEMBLY__ */
  
-+/*
-+ * Like trace_hardirqs_on() but without the lockdep invocation. This is
-+ * used in the low level entry code where the ordering vs. RCU is important
-+ * and lockdep uses a staged approach which splits the lockdep hardirq
-+ * tracking into a RCU on and a RCU off section.
-+ */
-+void trace_hardirqs_on_prepare(void)
-+{
-+	if (this_cpu_read(tracing_irq_cpu)) {
-+		if (!in_nmi())
-+			trace_irq_enable(CALLER_ADDR0, CALLER_ADDR1);
-+		tracer_hardirqs_on(CALLER_ADDR0, CALLER_ADDR1);
-+		this_cpu_write(tracing_irq_cpu, 0);
-+	}
-+}
-+EXPORT_SYMBOL(trace_hardirqs_on_prepare);
-+NOKPROBE_SYMBOL(trace_hardirqs_on_prepare);
-+
- void trace_hardirqs_on(void)
- {
- 	if (this_cpu_read(tracing_irq_cpu)) {
-@@ -33,6 +51,25 @@ void trace_hardirqs_on(void)
- EXPORT_SYMBOL(trace_hardirqs_on);
- NOKPROBE_SYMBOL(trace_hardirqs_on);
- 
-+/*
-+ * Like trace_hardirqs_off() but without the lockdep invocation. This is
-+ * used in the low level entry code where the ordering vs. RCU is important
-+ * and lockdep uses a staged approach which splits the lockdep hardirq
-+ * tracking into a RCU on and a RCU off section.
-+ */
-+void trace_hardirqs_off_prepare(void)
-+{
-+	if (!this_cpu_read(tracing_irq_cpu)) {
-+		this_cpu_write(tracing_irq_cpu, 1);
-+		tracer_hardirqs_off(CALLER_ADDR0, CALLER_ADDR1);
-+		if (!in_nmi())
-+			trace_irq_disable(CALLER_ADDR0, CALLER_ADDR1);
-+	}
-+
-+}
-+EXPORT_SYMBOL(trace_hardirqs_off_prepare);
-+NOKPROBE_SYMBOL(trace_hardirqs_off_prepare);
-+
- void trace_hardirqs_off(void)
- {
- 	if (!this_cpu_read(tracing_irq_cpu)) {
+ #endif
