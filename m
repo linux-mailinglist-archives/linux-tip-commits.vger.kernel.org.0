@@ -2,39 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C9AB71DA11A
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 May 2020 21:42:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA7321DA174
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 May 2020 21:53:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726747AbgESTmE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 19 May 2020 15:42:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49284 "EHLO
+        id S1726985AbgESTwk (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 19 May 2020 15:52:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50974 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726059AbgESTmD (ORCPT
+        with ESMTP id S1726348AbgESTwk (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 19 May 2020 15:42:03 -0400
+        Tue, 19 May 2020 15:52:40 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C865C08C5C0;
-        Tue, 19 May 2020 12:42:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D212C08C5C1;
+        Tue, 19 May 2020 12:52:40 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jb87j-0007dB-EL; Tue, 19 May 2020 21:41:59 +0200
+        id 1jb8Hw-0007p6-8j; Tue, 19 May 2020 21:52:32 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C095A1C0178;
-        Tue, 19 May 2020 21:41:58 +0200 (CEST)
-Date:   Tue, 19 May 2020 19:41:58 -0000
-From:   "tip-bot2 for Benjamin Thiel" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id BEB811C0178;
+        Tue, 19 May 2020 21:52:31 +0200 (CEST)
+Date:   Tue, 19 May 2020 19:52:31 -0000
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] x86/audit: Fix a -Wmissing-prototypes warning for
- ia32_classify_syscall()
-Cc:     Benjamin Thiel <b.thiel@posteo.de>, Borislav Petkov <bp@suse.de>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200516123816.2680-1-b.thiel@posteo.de>
-References: <20200516123816.2680-1-b.thiel@posteo.de>
+Subject: [tip: core/rcu] rcu: Provide __rcu_is_watching()
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Peter Zijlstra <peterz@infradead.org>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200512213810.518709291@linutronix.de>
+References: <20200512213810.518709291@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <158991731859.17951.14834257660085300527.tip-bot2@tip-bot2>
+Message-ID: <158991795162.17951.17450818248144000977.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,70 +48,73 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cleanups branch of tip:
+The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     0e5e3d4461a22d739fb2284a6e313fb6cecf2871
-Gitweb:        https://git.kernel.org/tip/0e5e3d4461a22d739fb2284a6e313fb6cecf2871
-Author:        Benjamin Thiel <b.thiel@posteo.de>
-AuthorDate:    Sat, 16 May 2020 14:38:16 +02:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 19 May 2020 18:03:07 +02:00
+Commit-ID:     b1fcf9b83c4149c63d1e0c699e85f93cbe28e211
+Gitweb:        https://git.kernel.org/tip/b1fcf9b83c4149c63d1e0c699e85f93cbe28e211
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Tue, 12 May 2020 09:44:43 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Tue, 19 May 2020 15:51:21 +02:00
 
-x86/audit: Fix a -Wmissing-prototypes warning for ia32_classify_syscall()
+rcu: Provide __rcu_is_watching()
 
-Lift the prototype of ia32_classify_syscall() into its own header.
+Same as rcu_is_watching() but without the preempt_disable/enable() pair
+inside the function. It is merked noinstr so it ends up in the
+non-instrumentable text section.
 
-Signed-off-by: Benjamin Thiel <b.thiel@posteo.de>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20200516123816.2680-1-b.thiel@posteo.de
+This is useful for non-preemptible code especially in the low level entry
+section. Using rcu_is_watching() there results in a call to the
+preempt_schedule_notrace() thunk which triggers noinstr section warnings in
+objtool.
+
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Acked-by: Peter Zijlstra <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20200512213810.518709291@linutronix.de
+
 ---
- arch/x86/ia32/audit.c        | 1 +
- arch/x86/include/asm/audit.h | 7 +++++++
- arch/x86/kernel/audit_64.c   | 2 +-
- 3 files changed, 9 insertions(+), 1 deletion(-)
- create mode 100644 arch/x86/include/asm/audit.h
+ include/linux/rcutiny.h | 1 +
+ include/linux/rcutree.h | 1 +
+ kernel/rcu/tree.c       | 5 +++++
+ 3 files changed, 7 insertions(+)
 
-diff --git a/arch/x86/ia32/audit.c b/arch/x86/ia32/audit.c
-index 3d21eab..6efe6cb 100644
---- a/arch/x86/ia32/audit.c
-+++ b/arch/x86/ia32/audit.c
-@@ -1,5 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
- #include <asm/unistd_32.h>
-+#include <asm/audit.h>
- 
- unsigned ia32_dir_class[] = {
- #include <asm-generic/audit_dir_write.h>
-diff --git a/arch/x86/include/asm/audit.h b/arch/x86/include/asm/audit.h
-new file mode 100644
-index 0000000..36aec57
---- /dev/null
-+++ b/arch/x86/include/asm/audit.h
-@@ -0,0 +1,7 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _ASM_X86_AUDIT_H
-+#define _ASM_X86_AUDIT_H
-+
-+int ia32_classify_syscall(unsigned int syscall);
-+
-+#endif /* _ASM_X86_AUDIT_H */
-diff --git a/arch/x86/kernel/audit_64.c b/arch/x86/kernel/audit_64.c
-index e1efe44..83d9cad 100644
---- a/arch/x86/kernel/audit_64.c
-+++ b/arch/x86/kernel/audit_64.c
-@@ -3,6 +3,7 @@
- #include <linux/types.h>
- #include <linux/audit.h>
- #include <asm/unistd.h>
-+#include <asm/audit.h>
- 
- static unsigned dir_class[] = {
- #include <asm-generic/audit_dir_write.h>
-@@ -41,7 +42,6 @@ int audit_classify_arch(int arch)
- int audit_classify_syscall(int abi, unsigned syscall)
- {
- #ifdef CONFIG_IA32_EMULATION
--	extern int ia32_classify_syscall(unsigned);
- 	if (abi == AUDIT_ARCH_I386)
- 		return ia32_classify_syscall(syscall);
+diff --git a/include/linux/rcutiny.h b/include/linux/rcutiny.h
+index 980eb78..c869fb2 100644
+--- a/include/linux/rcutiny.h
++++ b/include/linux/rcutiny.h
+@@ -86,6 +86,7 @@ static inline void rcu_scheduler_starting(void) { }
+ static inline void rcu_end_inkernel_boot(void) { }
+ static inline bool rcu_inkernel_boot_has_ended(void) { return true; }
+ static inline bool rcu_is_watching(void) { return true; }
++static inline bool __rcu_is_watching(void) { return true; }
+ static inline void rcu_momentary_dyntick_idle(void) { }
+ static inline void kfree_rcu_scheduler_running(void) { }
+ static inline bool rcu_gp_might_be_stalled(void) { return false; }
+diff --git a/include/linux/rcutree.h b/include/linux/rcutree.h
+index 02016e0..9366fa4 100644
+--- a/include/linux/rcutree.h
++++ b/include/linux/rcutree.h
+@@ -58,6 +58,7 @@ extern int rcu_scheduler_active __read_mostly;
+ void rcu_end_inkernel_boot(void);
+ bool rcu_inkernel_boot_has_ended(void);
+ bool rcu_is_watching(void);
++bool __rcu_is_watching(void);
+ #ifndef CONFIG_PREEMPTION
+ void rcu_all_qs(void);
  #endif
+diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
+index 62ee012..90c8be2 100644
+--- a/kernel/rcu/tree.c
++++ b/kernel/rcu/tree.c
+@@ -985,6 +985,11 @@ static void rcu_disable_urgency_upon_qs(struct rcu_data *rdp)
+ 	}
+ }
+ 
++noinstr bool __rcu_is_watching(void)
++{
++	return !rcu_dynticks_curr_cpu_in_eqs();
++}
++
+ /**
+  * rcu_is_watching - see if RCU thinks that the current CPU is not idle
+  *
