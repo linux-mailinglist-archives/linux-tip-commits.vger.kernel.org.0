@@ -2,40 +2,44 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F7251DA177
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 May 2020 21:53:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD9D91DA16A
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 May 2020 21:53:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726783AbgESTxd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 19 May 2020 15:53:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50984 "EHLO
+        id S1726388AbgESTxL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 19 May 2020 15:53:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51066 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726959AbgESTwk (ORCPT
+        with ESMTP id S1727978AbgESTxE (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 19 May 2020 15:52:40 -0400
+        Tue, 19 May 2020 15:53:04 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D55BC08C5C4;
-        Tue, 19 May 2020 12:52:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61D8CC08C5C0;
+        Tue, 19 May 2020 12:53:04 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jb8Hy-0007qD-Nv; Tue, 19 May 2020 21:52:34 +0200
+        id 1jb8Hz-0007rb-GG; Tue, 19 May 2020 21:52:35 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4625F1C0480;
-        Tue, 19 May 2020 21:52:34 +0200 (CEST)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 160791C047E;
+        Tue, 19 May 2020 21:52:35 +0200 (CEST)
 Date:   Tue, 19 May 2020 19:52:34 -0000
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] x86/entry: Get rid of ist_begin/end_non_atomic()
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
+Subject: [tip: core/rcu] sh/ftrace: Move arch_ftrace_nmi_{enter,exit} into nmi
+ exception
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
         Alexandre Chartre <alexandre.chartre@oracle.com>,
-        Peter Zijlstra <peterz@infradead.org>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200505134059.462640294@linutronix.de>
-References: <20200505134059.462640294@linutronix.de>
+        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
+        Rich Felker <dalias@libc.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200505134101.248881738@linutronix.de>
+References: <20200505134101.248881738@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <158991795420.17951.1071064271217628063.tip-bot2@tip-bot2>
+Message-ID: <158991795499.17951.5925531045899996305.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,110 +55,157 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     b052df3da821adfd6be26a6eb16624fb50e90e56
-Gitweb:        https://git.kernel.org/tip/b052df3da821adfd6be26a6eb16624fb50e90e56
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Thu, 05 Mar 2020 00:52:41 +01:00
+Commit-ID:     178ba00c354eb15cec6806a812771e60a5ae3ea1
+Gitweb:        https://git.kernel.org/tip/178ba00c354eb15cec6806a812771e60a5ae3ea1
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Mon, 24 Feb 2020 22:26:21 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 19 May 2020 15:51:19 +02:00
+CommitterDate: Tue, 19 May 2020 15:51:18 +02:00
 
-x86/entry: Get rid of ist_begin/end_non_atomic()
+sh/ftrace: Move arch_ftrace_nmi_{enter,exit} into nmi exception
 
-This is completely overengineered and definitely not an interface which
-should be made available to anything else than this particular MCE case.
+SuperH is the last remaining user of arch_ftrace_nmi_{enter,exit}(),
+remove it from the generic code and into the SuperH code.
 
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
-Acked-by: Peter Zijlstra <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20200505134059.462640294@linutronix.de
+Acked-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
+Cc: Rich Felker <dalias@libc.org>
+Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+Link: https://lkml.kernel.org/r/20200505134101.248881738@linutronix.de
 
 
 ---
- arch/x86/include/asm/traps.h   |  2 +--
- arch/x86/kernel/cpu/mce/core.c |  6 +++--
- arch/x86/kernel/traps.c        | 37 +---------------------------------
- 3 files changed, 4 insertions(+), 41 deletions(-)
+ Documentation/trace/ftrace-design.rst |  8 --------
+ arch/sh/Kconfig                       |  1 -
+ arch/sh/kernel/traps.c                | 12 ++++++++++++
+ include/linux/ftrace_irq.h            | 11 -----------
+ kernel/trace/Kconfig                  | 10 ----------
+ 5 files changed, 12 insertions(+), 30 deletions(-)
 
-diff --git a/arch/x86/include/asm/traps.h b/arch/x86/include/asm/traps.h
-index c26a7e1..fe109fc 100644
---- a/arch/x86/include/asm/traps.h
-+++ b/arch/x86/include/asm/traps.h
-@@ -120,8 +120,6 @@ asmlinkage void smp_irq_move_cleanup_interrupt(void);
+diff --git a/Documentation/trace/ftrace-design.rst b/Documentation/trace/ftrace-design.rst
+index a8e22e0..6893399 100644
+--- a/Documentation/trace/ftrace-design.rst
++++ b/Documentation/trace/ftrace-design.rst
+@@ -229,14 +229,6 @@ Adding support for it is easy: just define the macro in asm/ftrace.h and
+ pass the return address pointer as the 'retp' argument to
+ ftrace_push_return_trace().
  
- extern void ist_enter(struct pt_regs *regs);
- extern void ist_exit(struct pt_regs *regs);
--extern void ist_begin_non_atomic(struct pt_regs *regs);
--extern void ist_end_non_atomic(void);
+-HAVE_FTRACE_NMI_ENTER
+----------------------
+-
+-If you can't trace NMI functions, then skip this option.
+-
+-<details to be filled>
+-
+-
+ HAVE_SYSCALL_TRACEPOINTS
+ ------------------------
  
- #ifdef CONFIG_VMAP_STACK
- void __noreturn handle_stack_overflow(const char *message,
-diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
-index 54165f3..98bf91c 100644
---- a/arch/x86/kernel/cpu/mce/core.c
-+++ b/arch/x86/kernel/cpu/mce/core.c
-@@ -1352,13 +1352,15 @@ void notrace do_machine_check(struct pt_regs *regs, long error_code)
- 
- 	/* Fault was in user mode and we need to take some action */
- 	if ((m.cs & 3) == 3) {
--		ist_begin_non_atomic(regs);
-+		/* If this triggers there is no way to recover. Die hard. */
-+		BUG_ON(!on_thread_stack() || !user_mode(regs));
- 		local_irq_enable();
-+		preempt_enable();
- 
- 		if (kill_it || do_memory_failure(&m))
- 			force_sig(SIGBUS);
-+		preempt_disable();
- 		local_irq_disable();
--		ist_end_non_atomic();
- 	} else {
- 		if (!fixup_exception(regs, X86_TRAP_MC, error_code, 0))
- 			mce_panic("Failed kernel mode recovery", &m, msg);
-diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
-index d54cffd..6740e83 100644
---- a/arch/x86/kernel/traps.c
-+++ b/arch/x86/kernel/traps.c
-@@ -117,43 +117,6 @@ void ist_exit(struct pt_regs *regs)
- 		rcu_nmi_exit();
+diff --git a/arch/sh/Kconfig b/arch/sh/Kconfig
+index b4f0e37..97656d2 100644
+--- a/arch/sh/Kconfig
++++ b/arch/sh/Kconfig
+@@ -71,7 +71,6 @@ config SUPERH32
+ 	select HAVE_FUNCTION_TRACER
+ 	select HAVE_FTRACE_MCOUNT_RECORD
+ 	select HAVE_DYNAMIC_FTRACE
+-	select HAVE_FTRACE_NMI_ENTER if DYNAMIC_FTRACE
+ 	select ARCH_WANT_IPC_PARSE_VERSION
+ 	select HAVE_FUNCTION_GRAPH_TRACER
+ 	select HAVE_ARCH_KGDB
+diff --git a/arch/sh/kernel/traps.c b/arch/sh/kernel/traps.c
+index 63cf17b..2130381 100644
+--- a/arch/sh/kernel/traps.c
++++ b/arch/sh/kernel/traps.c
+@@ -170,11 +170,21 @@ BUILD_TRAP_HANDLER(bug)
+ 	force_sig(SIGTRAP);
  }
  
--/**
-- * ist_begin_non_atomic() - begin a non-atomic section in an IST exception
-- * @regs:	regs passed to the IST exception handler
-- *
-- * IST exception handlers normally cannot schedule.  As a special
-- * exception, if the exception interrupted userspace code (i.e.
-- * user_mode(regs) would return true) and the exception was not
-- * a double fault, it can be safe to schedule.  ist_begin_non_atomic()
-- * begins a non-atomic section within an ist_enter()/ist_exit() region.
-- * Callers are responsible for enabling interrupts themselves inside
-- * the non-atomic section, and callers must call ist_end_non_atomic()
-- * before ist_exit().
-- */
--void ist_begin_non_atomic(struct pt_regs *regs)
--{
--	BUG_ON(!user_mode(regs));
--
--	/*
--	 * Sanity check: we need to be on the normal thread stack.  This
--	 * will catch asm bugs and any attempt to use ist_preempt_enable
--	 * from double_fault.
--	 */
--	BUG_ON(!on_thread_stack());
--
--	preempt_enable_no_resched();
--}
--
--/**
-- * ist_end_non_atomic() - begin a non-atomic section in an IST exception
-- *
-- * Ends a non-atomic section started with ist_begin_non_atomic().
-- */
--void ist_end_non_atomic(void)
--{
--	preempt_disable();
--}
--
- int is_valid_bugaddr(unsigned long addr)
++#ifdef CONFIG_DYNAMIC_FTRACE
++extern void arch_ftrace_nmi_enter(void);
++extern void arch_ftrace_nmi_exit(void);
++#else
++static inline void arch_ftrace_nmi_enter(void) { }
++static inline void arch_ftrace_nmi_exit(void) { }
++#endif
++
+ BUILD_TRAP_HANDLER(nmi)
  {
- 	unsigned short ud;
+ 	unsigned int cpu = smp_processor_id();
+ 	TRAP_HANDLER_DECL;
+ 
++	arch_ftrace_nmi_enter();
++
+ 	nmi_enter();
+ 	nmi_count(cpu)++;
+ 
+@@ -190,4 +200,6 @@ BUILD_TRAP_HANDLER(nmi)
+ 	}
+ 
+ 	nmi_exit();
++
++	arch_ftrace_nmi_exit();
+ }
+diff --git a/include/linux/ftrace_irq.h b/include/linux/ftrace_irq.h
+index ccda97d..0abd9a1 100644
+--- a/include/linux/ftrace_irq.h
++++ b/include/linux/ftrace_irq.h
+@@ -2,15 +2,6 @@
+ #ifndef _LINUX_FTRACE_IRQ_H
+ #define _LINUX_FTRACE_IRQ_H
+ 
+-
+-#ifdef CONFIG_FTRACE_NMI_ENTER
+-extern void arch_ftrace_nmi_enter(void);
+-extern void arch_ftrace_nmi_exit(void);
+-#else
+-static inline void arch_ftrace_nmi_enter(void) { }
+-static inline void arch_ftrace_nmi_exit(void) { }
+-#endif
+-
+ #ifdef CONFIG_HWLAT_TRACER
+ extern bool trace_hwlat_callback_enabled;
+ extern void trace_hwlat_callback(bool enter);
+@@ -22,12 +13,10 @@ static inline void ftrace_nmi_enter(void)
+ 	if (trace_hwlat_callback_enabled)
+ 		trace_hwlat_callback(true);
+ #endif
+-	arch_ftrace_nmi_enter();
+ }
+ 
+ static inline void ftrace_nmi_exit(void)
+ {
+-	arch_ftrace_nmi_exit();
+ #ifdef CONFIG_HWLAT_TRACER
+ 	if (trace_hwlat_callback_enabled)
+ 		trace_hwlat_callback(false);
+diff --git a/kernel/trace/Kconfig b/kernel/trace/Kconfig
+index 1e9a8f9..24876fa 100644
+--- a/kernel/trace/Kconfig
++++ b/kernel/trace/Kconfig
+@@ -10,11 +10,6 @@ config USER_STACKTRACE_SUPPORT
+ config NOP_TRACER
+ 	bool
+ 
+-config HAVE_FTRACE_NMI_ENTER
+-	bool
+-	help
+-	  See Documentation/trace/ftrace-design.rst
+-
+ config HAVE_FUNCTION_TRACER
+ 	bool
+ 	help
+@@ -72,11 +67,6 @@ config RING_BUFFER
+ 	select TRACE_CLOCK
+ 	select IRQ_WORK
+ 
+-config FTRACE_NMI_ENTER
+-       bool
+-       depends on HAVE_FTRACE_NMI_ENTER
+-       default y
+-
+ config EVENT_TRACING
+ 	select CONTEXT_SWITCH_TRACER
+ 	select GLOB
