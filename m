@@ -2,41 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 760A71DA165
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 May 2020 21:53:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91A2F1DA16C
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 May 2020 21:53:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727989AbgESTxE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 19 May 2020 15:53:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51028 "EHLO
+        id S1728045AbgESTxP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 19 May 2020 15:53:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51008 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727882AbgESTwu (ORCPT
+        with ESMTP id S1727831AbgESTwr (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 19 May 2020 15:52:50 -0400
+        Tue, 19 May 2020 15:52:47 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B84FAC08C5C0;
-        Tue, 19 May 2020 12:52:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20103C08C5C0;
+        Tue, 19 May 2020 12:52:47 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jb8I4-0007rj-Tz; Tue, 19 May 2020 21:52:41 +0200
+        id 1jb8I6-0007sk-3P; Tue, 19 May 2020 21:52:42 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 7A1D71C0178;
-        Tue, 19 May 2020 21:52:35 +0200 (CEST)
-Date:   Tue, 19 May 2020 19:52:35 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id BF15F1C04D1;
+        Tue, 19 May 2020 21:52:36 +0200 (CEST)
+Date:   Tue, 19 May 2020 19:52:36 -0000
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] lockdep: Always inline lockdep_{off,on}()
-Cc:     Steven Rostedt <rostedt@goodmis.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+Subject: [tip: core/rcu] printk: Disallow instrumenting print_nmi_enter()
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Alexandre Chartre <alexandre.chartre@oracle.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200505134101.048523500@linutronix.de>
-References: <20200505134101.048523500@linutronix.de>
+In-Reply-To: <20200505134101.139720912@linutronix.de>
+References: <20200505134101.139720912@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <158991795538.17951.10475786862594383063.tip-bot2@tip-bot2>
+Message-ID: <158991795665.17951.2179685164369351471.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -52,91 +51,53 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     e616cb8daadf637175af4fe53138a94c190c4816
-Gitweb:        https://git.kernel.org/tip/e616cb8daadf637175af4fe53138a94c190c4816
+Commit-ID:     b0f51883f551b900a04a80f49fb0886caf7e9a12
+Gitweb:        https://git.kernel.org/tip/b0f51883f551b900a04a80f49fb0886caf7e9a12
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Mon, 24 Feb 2020 22:14:51 +01:00
+AuthorDate:    Mon, 24 Feb 2020 22:25:03 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 19 May 2020 15:51:18 +02:00
+CommitterDate: Tue, 19 May 2020 15:51:16 +02:00
 
-lockdep: Always inline lockdep_{off,on}()
+printk: Disallow instrumenting print_nmi_enter()
 
-These functions are called {early,late} in nmi_{enter,exit} and should
-not be traced or probed. They are also puny, so 'inline' them.
+It happens early in nmi_enter(), no tracing, probing or other funnies
+allowed. Specifically as nmi_enter() will be used in do_debug(), which
+would cause recursive exceptions when kprobed.
 
-Reported-by: Steven Rostedt <rostedt@goodmis.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
-Link: https://lkml.kernel.org/r/20200505134101.048523500@linutronix.de
+Link: https://lkml.kernel.org/r/20200505134101.139720912@linutronix.de
 
 
 ---
- include/linux/lockdep.h  | 23 +++++++++++++++++++++--
- kernel/locking/lockdep.c | 19 -------------------
- 2 files changed, 21 insertions(+), 21 deletions(-)
+ kernel/printk/printk_safe.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/lockdep.h b/include/linux/lockdep.h
-index 206774a..8fce5c9 100644
---- a/include/linux/lockdep.h
-+++ b/include/linux/lockdep.h
-@@ -308,8 +308,27 @@ extern void lockdep_set_selftest_task(struct task_struct *task);
+diff --git a/kernel/printk/printk_safe.c b/kernel/printk/printk_safe.c
+index e8791f2..4242403 100644
+--- a/kernel/printk/printk_safe.c
++++ b/kernel/printk/printk_safe.c
+@@ -10,6 +10,7 @@
+ #include <linux/cpumask.h>
+ #include <linux/irq_work.h>
+ #include <linux/printk.h>
++#include <linux/kprobes.h>
  
- extern void lockdep_init_task(struct task_struct *task);
+ #include "internal.h"
  
--extern void lockdep_off(void);
--extern void lockdep_on(void);
-+/*
-+ * Split the recrursion counter in two to readily detect 'off' vs recursion.
-+ */
-+#define LOCKDEP_RECURSION_BITS	16
-+#define LOCKDEP_OFF		(1U << LOCKDEP_RECURSION_BITS)
-+#define LOCKDEP_RECURSION_MASK	(LOCKDEP_OFF - 1)
-+
-+/*
-+ * lockdep_{off,on}() are macros to avoid tracing and kprobes; not inlines due
-+ * to header dependencies.
-+ */
-+
-+#define lockdep_off()					\
-+do {							\
-+	current->lockdep_recursion += LOCKDEP_OFF;	\
-+} while (0)
-+
-+#define lockdep_on()					\
-+do {							\
-+	current->lockdep_recursion -= LOCKDEP_OFF;	\
-+} while (0)
- 
- extern void lockdep_register_key(struct lock_class_key *key);
- extern void lockdep_unregister_key(struct lock_class_key *key);
-diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
-index ac10db6..6f1c8cb 100644
---- a/kernel/locking/lockdep.c
-+++ b/kernel/locking/lockdep.c
-@@ -393,25 +393,6 @@ void lockdep_init_task(struct task_struct *task)
- 	task->lockdep_recursion = 0;
+@@ -293,12 +294,12 @@ static __printf(1, 0) int vprintk_nmi(const char *fmt, va_list args)
+ 	return printk_safe_log_store(s, fmt, args);
  }
  
--/*
-- * Split the recrursion counter in two to readily detect 'off' vs recursion.
-- */
--#define LOCKDEP_RECURSION_BITS	16
--#define LOCKDEP_OFF		(1U << LOCKDEP_RECURSION_BITS)
--#define LOCKDEP_RECURSION_MASK	(LOCKDEP_OFF - 1)
--
--void lockdep_off(void)
--{
--	current->lockdep_recursion += LOCKDEP_OFF;
--}
--EXPORT_SYMBOL(lockdep_off);
--
--void lockdep_on(void)
--{
--	current->lockdep_recursion -= LOCKDEP_OFF;
--}
--EXPORT_SYMBOL(lockdep_on);
--
- static inline void lockdep_recursion_finish(void)
+-void notrace printk_nmi_enter(void)
++void noinstr printk_nmi_enter(void)
  {
- 	if (WARN_ON_ONCE(--current->lockdep_recursion))
+ 	this_cpu_add(printk_context, PRINTK_NMI_CONTEXT_OFFSET);
+ }
+ 
+-void notrace printk_nmi_exit(void)
++void noinstr printk_nmi_exit(void)
+ {
+ 	this_cpu_sub(printk_context, PRINTK_NMI_CONTEXT_OFFSET);
+ }
