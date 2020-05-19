@@ -2,39 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 970021D9FCD
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 May 2020 20:45:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD2DE1D9FF0
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 May 2020 20:47:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727008AbgESSoU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 19 May 2020 14:44:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40174 "EHLO
+        id S1727835AbgESSra (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 19 May 2020 14:47:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40690 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726966AbgESSoT (ORCPT
+        with ESMTP id S1726290AbgESSra (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 19 May 2020 14:44:19 -0400
+        Tue, 19 May 2020 14:47:30 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17AF5C08C5C1;
-        Tue, 19 May 2020 11:44:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C74BAC08C5C0;
+        Tue, 19 May 2020 11:47:29 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jb7Dr-0006cn-2Q; Tue, 19 May 2020 20:44:15 +0200
+        id 1jb7Dq-0006cE-MY; Tue, 19 May 2020 20:44:14 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id AC86C1C0178;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 50DA11C047E;
         Tue, 19 May 2020 20:44:14 +0200 (CEST)
 Date:   Tue, 19 May 2020 18:44:14 -0000
-From:   "tip-bot2 for Muchun Song" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Huaixin Chang" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/cpuacct: Fix charge cpuacct.usage_sys
-Cc:     Muchun Song <songmuchun@bytedance.com>,
+Subject: [tip: sched/core] sched: Defend cfs and rt bandwidth quota against overflow
+Cc:     Huaixin Chang <changhuaixin@linux.alibaba.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200420070453.76815-1-songmuchun@bytedance.com>
-References: <20200420070453.76815-1-songmuchun@bytedance.com>
+        Ben Segall <bsegall@google.com>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200425105248.60093-1-changhuaixin@linux.alibaba.com>
+References: <20200425105248.60093-1-changhuaixin@linux.alibaba.com>
 MIME-Version: 1.0
-Message-ID: <158991385462.17951.12607883978950306262.tip-bot2@tip-bot2>
+Message-ID: <158991385425.17951.13987676828295873063.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,47 +51,107 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     dbe9337109c2705f08e6a00392f991eb2d2570a5
-Gitweb:        https://git.kernel.org/tip/dbe9337109c2705f08e6a00392f991eb2d2570a5
-Author:        Muchun Song <songmuchun@bytedance.com>
-AuthorDate:    Mon, 20 Apr 2020 15:04:53 +08:00
+Commit-ID:     d505b8af58912ae1e1a211fabc9995b19bd40828
+Gitweb:        https://git.kernel.org/tip/d505b8af58912ae1e1a211fabc9995b19bd40828
+Author:        Huaixin Chang <changhuaixin@linux.alibaba.com>
+AuthorDate:    Sat, 25 Apr 2020 18:52:48 +08:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Tue, 19 May 2020 20:34:14 +02:00
 
-sched/cpuacct: Fix charge cpuacct.usage_sys
+sched: Defend cfs and rt bandwidth quota against overflow
 
-The user_mode(task_pt_regs(tsk)) always return true for
-user thread, and false for kernel thread. So it means that
-the cpuacct.usage_sys is the time that kernel thread uses
-not the time that thread uses in the kernel mode. We can
-try get_irq_regs() first, if it is NULL, then we can fall
-back to task_pt_regs().
+When users write some huge number into cpu.cfs_quota_us or
+cpu.rt_runtime_us, overflow might happen during to_ratio() shifts of
+schedulable checks.
 
-Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+to_ratio() could be altered to avoid unnecessary internal overflow, but
+min_cfs_quota_period is less than 1 << BW_SHIFT, so a cutoff would still
+be needed. Set a cap MAX_BW for cfs_quota_us and rt_runtime_us to
+prevent overflow.
+
+Signed-off-by: Huaixin Chang <changhuaixin@linux.alibaba.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20200420070453.76815-1-songmuchun@bytedance.com
+Reviewed-by: Ben Segall <bsegall@google.com>
+Link: https://lkml.kernel.org/r/20200425105248.60093-1-changhuaixin@linux.alibaba.com
 ---
- kernel/sched/cpuacct.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/sched/core.c  |  8 ++++++++
+ kernel/sched/rt.c    | 12 +++++++++++-
+ kernel/sched/sched.h |  2 ++
+ 3 files changed, 21 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/sched/cpuacct.c b/kernel/sched/cpuacct.c
-index 6448b04..941c28c 100644
---- a/kernel/sched/cpuacct.c
-+++ b/kernel/sched/cpuacct.c
-@@ -5,6 +5,7 @@
-  * Based on the work by Paul Menage (menage@google.com) and Balbir Singh
-  * (balbir@in.ibm.com).
-  */
-+#include <asm/irq_regs.h>
- #include "sched.h"
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 74fb89b..fa905b6 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -7379,6 +7379,8 @@ static DEFINE_MUTEX(cfs_constraints_mutex);
  
- /* Time spent by the tasks of the CPU accounting group executing in ... */
-@@ -339,7 +340,7 @@ void cpuacct_charge(struct task_struct *tsk, u64 cputime)
- {
- 	struct cpuacct *ca;
- 	int index = CPUACCT_STAT_SYSTEM;
--	struct pt_regs *regs = task_pt_regs(tsk);
-+	struct pt_regs *regs = get_irq_regs() ? : task_pt_regs(tsk);
+ const u64 max_cfs_quota_period = 1 * NSEC_PER_SEC; /* 1s */
+ static const u64 min_cfs_quota_period = 1 * NSEC_PER_MSEC; /* 1ms */
++/* More than 203 days if BW_SHIFT equals 20. */
++static const u64 max_cfs_runtime = MAX_BW * NSEC_PER_USEC;
  
- 	if (regs && user_mode(regs))
- 		index = CPUACCT_STAT_USER;
+ static int __cfs_schedulable(struct task_group *tg, u64 period, u64 runtime);
+ 
+@@ -7407,6 +7409,12 @@ static int tg_set_cfs_bandwidth(struct task_group *tg, u64 period, u64 quota)
+ 		return -EINVAL;
+ 
+ 	/*
++	 * Bound quota to defend quota against overflow during bandwidth shift.
++	 */
++	if (quota != RUNTIME_INF && quota > max_cfs_runtime)
++		return -EINVAL;
++
++	/*
+ 	 * Prevent race between setting of cfs_rq->runtime_enabled and
+ 	 * unthrottle_offline_cfs_rqs().
+ 	 */
+diff --git a/kernel/sched/rt.c b/kernel/sched/rt.c
+index df11d88..6d60ba2 100644
+--- a/kernel/sched/rt.c
++++ b/kernel/sched/rt.c
+@@ -9,6 +9,8 @@
+ 
+ int sched_rr_timeslice = RR_TIMESLICE;
+ int sysctl_sched_rr_timeslice = (MSEC_PER_SEC / HZ) * RR_TIMESLICE;
++/* More than 4 hours if BW_SHIFT equals 20. */
++static const u64 max_rt_runtime = MAX_BW;
+ 
+ static int do_sched_rt_period_timer(struct rt_bandwidth *rt_b, int overrun);
+ 
+@@ -2585,6 +2587,12 @@ static int tg_set_rt_bandwidth(struct task_group *tg,
+ 	if (rt_period == 0)
+ 		return -EINVAL;
+ 
++	/*
++	 * Bound quota to defend quota against overflow during bandwidth shift.
++	 */
++	if (rt_runtime != RUNTIME_INF && rt_runtime > max_rt_runtime)
++		return -EINVAL;
++
+ 	mutex_lock(&rt_constraints_mutex);
+ 	err = __rt_schedulable(tg, rt_period, rt_runtime);
+ 	if (err)
+@@ -2702,7 +2710,9 @@ static int sched_rt_global_validate(void)
+ 		return -EINVAL;
+ 
+ 	if ((sysctl_sched_rt_runtime != RUNTIME_INF) &&
+-		(sysctl_sched_rt_runtime > sysctl_sched_rt_period))
++		((sysctl_sched_rt_runtime > sysctl_sched_rt_period) ||
++		 ((u64)sysctl_sched_rt_runtime *
++			NSEC_PER_USEC > max_rt_runtime)))
+ 		return -EINVAL;
+ 
+ 	return 0;
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index 2bd2a22..f7ab633 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -1915,6 +1915,8 @@ extern void init_dl_inactive_task_timer(struct sched_dl_entity *dl_se);
+ #define BW_SHIFT		20
+ #define BW_UNIT			(1 << BW_SHIFT)
+ #define RATIO_SHIFT		8
++#define MAX_BW_BITS		(64 - BW_SHIFT)
++#define MAX_BW			((1ULL << MAX_BW_BITS) - 1)
+ unsigned long to_ratio(u64 period, u64 runtime);
+ 
+ extern void init_entity_runnable_average(struct sched_entity *se);
