@@ -2,41 +2,41 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E90851DA226
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 May 2020 22:03:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A8CFC1DA18C
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 May 2020 21:58:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727779AbgEST60 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 19 May 2020 15:58:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51894 "EHLO
+        id S1727819AbgEST61 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 19 May 2020 15:58:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51898 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726348AbgEST6Y (ORCPT
+        with ESMTP id S1727047AbgEST6Y (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Tue, 19 May 2020 15:58:24 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 600DEC08C5C0;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79FA3C08C5C2;
         Tue, 19 May 2020 12:58:24 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jb8NX-00088i-8Q; Tue, 19 May 2020 21:58:19 +0200
+        id 1jb8NW-00088L-OW; Tue, 19 May 2020 21:58:18 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C86141C047E;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5F0B11C0178;
         Tue, 19 May 2020 21:58:18 +0200 (CEST)
 Date:   Tue, 19 May 2020 19:58:18 -0000
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/entry] x86/traps: Address objtool noinstr complaints in #DB
+Subject: [tip: x86/entry] x86/mce: Address objtools noinstr complaints
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Alexandre Chartre <alexandre.chartre@oracle.com>,
         Peter Zijlstra <peterz@infradead.org>,
         Andy Lutomirski <luto@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200505135315.380927730@linutronix.de>
-References: <20200505135315.380927730@linutronix.de>
+In-Reply-To: <20200505135315.476734898@linutronix.de>
+References: <20200505135315.476734898@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <158991829872.17951.14197480828804200628.tip-bot2@tip-bot2>
+Message-ID: <158991829826.17951.7641601849300262770.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -52,60 +52,156 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/entry branch of tip:
 
-Commit-ID:     467a8425d10508886eb5bcc0b80e0c73da4751c4
-Gitweb:        https://git.kernel.org/tip/467a8425d10508886eb5bcc0b80e0c73da4751c4
+Commit-ID:     260ba6c939f6ac42c8a96d2b50750b18706f1663
+Gitweb:        https://git.kernel.org/tip/260ba6c939f6ac42c8a96d2b50750b18706f1663
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Thu, 30 Apr 2020 11:07:20 +02:00
+AuthorDate:    Tue, 21 Apr 2020 21:22:36 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 19 May 2020 16:04:13 +02:00
+CommitterDate: Tue, 19 May 2020 16:04:14 +02:00
 
-x86/traps: Address objtool noinstr complaints in #DB
+x86/mce: Address objtools noinstr complaints
 
-The functions invoked from handle_debug() can be instrumented. Tell objtool
-about it.
+Mark the relevant functions noinstr, use the plain non-instrumented MSR
+accessors. The only odd part is the instrumentation_begin()/end() pair around the
+indirect machine_check_vector() call as objtool can't figure that out. The
+possible invoked functions are annotated correctly.
+
+Also use notrace variant of nmi_enter/exit(). If MCEs happen then hardware
+latency tracing is the least of the worries.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
 Acked-by: Peter Zijlstra <peterz@infradead.org>
 Acked-by: Andy Lutomirski <luto@kernel.org>
-Link: https://lkml.kernel.org/r/20200505135315.380927730@linutronix.de
+Link: https://lkml.kernel.org/r/20200505135315.476734898@linutronix.de
 
 
 ---
- arch/x86/kernel/traps.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ arch/x86/kernel/cpu/mce/core.c    | 20 +++++++++++++++-----
+ arch/x86/kernel/cpu/mce/p5.c      |  4 +++-
+ arch/x86/kernel/cpu/mce/winchip.c |  4 +++-
+ kernel/time/timekeeping.c         |  2 +-
+ 4 files changed, 22 insertions(+), 8 deletions(-)
 
-diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
-index b62e962..41bb0cb 100644
---- a/arch/x86/kernel/traps.c
-+++ b/arch/x86/kernel/traps.c
-@@ -784,14 +784,19 @@ static void noinstr handle_debug(struct pt_regs *regs, unsigned long dr6,
- 	/* Store the virtualized DR6 value */
- 	tsk->thread.debugreg6 = dr6;
+diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
+index a72c013..a32a7e2 100644
+--- a/arch/x86/kernel/cpu/mce/core.c
++++ b/arch/x86/kernel/cpu/mce/core.c
+@@ -130,7 +130,7 @@ static void (*quirk_no_way_out)(int bank, struct mce *m, struct pt_regs *regs);
+ BLOCKING_NOTIFIER_HEAD(x86_mce_decoder_chain);
  
+ /* Do initial initialization of a struct mce */
+-void mce_setup(struct mce *m)
++noinstr void mce_setup(struct mce *m)
+ {
+ 	memset(m, 0, sizeof(struct mce));
+ 	m->cpu = m->extcpu = smp_processor_id();
+@@ -140,12 +140,12 @@ void mce_setup(struct mce *m)
+ 	m->cpuid = cpuid_eax(1);
+ 	m->socketid = cpu_data(m->extcpu).phys_proc_id;
+ 	m->apicid = cpu_data(m->extcpu).initial_apicid;
+-	rdmsrl(MSR_IA32_MCG_CAP, m->mcgcap);
++	m->mcgcap = __rdmsr(MSR_IA32_MCG_CAP);
+ 
+ 	if (this_cpu_has(X86_FEATURE_INTEL_PPIN))
+-		rdmsrl(MSR_PPIN, m->ppin);
++		m->ppin = __rdmsr(MSR_PPIN);
+ 	else if (this_cpu_has(X86_FEATURE_AMD_PPIN))
+-		rdmsrl(MSR_AMD_PPIN, m->ppin);
++		m->ppin = __rdmsr(MSR_AMD_PPIN);
+ 
+ 	m->microcode = boot_cpu_data.microcode;
+ }
+@@ -1895,10 +1895,12 @@ bool filter_mce(struct mce *m)
+ }
+ 
+ /* Handle unconfigured int18 (should never happen) */
+-static void unexpected_machine_check(struct pt_regs *regs)
++static noinstr void unexpected_machine_check(struct pt_regs *regs)
+ {
 +	instrumentation_begin();
- #ifdef CONFIG_KPROBES
--	if (kprobe_debug_handler(regs))
-+	if (kprobe_debug_handler(regs)) {
-+		instrumentation_end();
- 		return;
-+	}
- #endif
- 
- 	if (notify_die(DIE_DEBUG, "debug", regs, (long)&dr6, 0,
--		       SIGTRAP) == NOTIFY_STOP)
-+		       SIGTRAP) == NOTIFY_STOP) {
-+		instrumentation_end();
- 		return;
-+	}
- 
- 	/*
- 	 * Let others (NMI) know that the debug stack is in use
-@@ -827,6 +832,7 @@ static void noinstr handle_debug(struct pt_regs *regs, unsigned long dr6,
- out:
- 	cond_local_irq_disable(regs);
- 	debug_stack_usage_dec();
+ 	pr_err("CPU#%d: Unexpected int18 (Machine Check)\n",
+ 	       smp_processor_id());
 +	instrumentation_end();
  }
  
- static __always_inline void exc_debug_kernel(struct pt_regs *regs,
+ /* Call the installed machine check handler for this CPU setup. */
+@@ -1915,14 +1917,22 @@ static __always_inline void exc_machine_check_kernel(struct pt_regs *regs)
+ 		return;
+ 
+ 	nmi_enter();
++	/*
++	 * The call targets are marked noinstr, but objtool can't figure
++	 * that out because it's an indirect call. Annotate it.
++	 */
++	instrumentation_begin();
+ 	machine_check_vector(regs);
++	instrumentation_end();
+ 	nmi_exit();
+ }
+ 
+ static __always_inline void exc_machine_check_user(struct pt_regs *regs)
+ {
+ 	idtentry_enter(regs);
++	instrumentation_begin();
+ 	machine_check_vector(regs);
++	instrumentation_end();
+ 	idtentry_exit(regs);
+ }
+ 
+diff --git a/arch/x86/kernel/cpu/mce/p5.c b/arch/x86/kernel/cpu/mce/p5.c
+index eaebc4c..19e90ca 100644
+--- a/arch/x86/kernel/cpu/mce/p5.c
++++ b/arch/x86/kernel/cpu/mce/p5.c
+@@ -21,10 +21,11 @@
+ int mce_p5_enabled __read_mostly;
+ 
+ /* Machine check handler for Pentium class Intel CPUs: */
+-static void pentium_machine_check(struct pt_regs *regs)
++static noinstr void pentium_machine_check(struct pt_regs *regs)
+ {
+ 	u32 loaddr, hi, lotype;
+ 
++	instrumentation_begin();
+ 	rdmsr(MSR_IA32_P5_MC_ADDR, loaddr, hi);
+ 	rdmsr(MSR_IA32_P5_MC_TYPE, lotype, hi);
+ 
+@@ -37,6 +38,7 @@ static void pentium_machine_check(struct pt_regs *regs)
+ 	}
+ 
+ 	add_taint(TAINT_MACHINE_CHECK, LOCKDEP_NOW_UNRELIABLE);
++	instrumentation_end();
+ }
+ 
+ /* Set up machine check reporting for processors with Intel style MCE: */
+diff --git a/arch/x86/kernel/cpu/mce/winchip.c b/arch/x86/kernel/cpu/mce/winchip.c
+index 90e3d60..9c9f0ab 100644
+--- a/arch/x86/kernel/cpu/mce/winchip.c
++++ b/arch/x86/kernel/cpu/mce/winchip.c
+@@ -17,10 +17,12 @@
+ #include "internal.h"
+ 
+ /* Machine check handler for WinChip C6: */
+-static void winchip_machine_check(struct pt_regs *regs)
++static noinstr void winchip_machine_check(struct pt_regs *regs)
+ {
++	instrumentation_begin();
+ 	pr_emerg("CPU0: Machine Check Exception.\n");
+ 	add_taint(TAINT_MACHINE_CHECK, LOCKDEP_NOW_UNRELIABLE);
++	instrumentation_end();
+ }
+ 
+ /* Set up machine check reporting on the Winchip C6 series */
+diff --git a/kernel/time/timekeeping.c b/kernel/time/timekeeping.c
+index 9ebaab1..d20d489 100644
+--- a/kernel/time/timekeeping.c
++++ b/kernel/time/timekeeping.c
+@@ -953,7 +953,7 @@ EXPORT_SYMBOL_GPL(ktime_get_real_seconds);
+  * but without the sequence counter protect. This internal function
+  * is called just when timekeeping lock is already held.
+  */
+-time64_t __ktime_get_real_seconds(void)
++noinstr time64_t __ktime_get_real_seconds(void)
+ {
+ 	struct timekeeper *tk = &tk_core.timekeeper;
+ 
