@@ -2,40 +2,43 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 91A2F1DA16C
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 May 2020 21:53:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A8E351DA15F
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 May 2020 21:53:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728045AbgESTxP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 19 May 2020 15:53:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51008 "EHLO
+        id S1727885AbgESTwv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 19 May 2020 15:52:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51014 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727831AbgESTwr (ORCPT
+        with ESMTP id S1727854AbgESTws (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 19 May 2020 15:52:47 -0400
+        Tue, 19 May 2020 15:52:48 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20103C08C5C0;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB26BC08C5C2;
         Tue, 19 May 2020 12:52:47 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jb8I6-0007sk-3P; Tue, 19 May 2020 21:52:42 +0200
+        id 1jb8I5-0007sR-Nx; Tue, 19 May 2020 21:52:41 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id BF15F1C04D1;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4E6671C0480;
         Tue, 19 May 2020 21:52:36 +0200 (CEST)
 Date:   Tue, 19 May 2020 19:52:36 -0000
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Frederic Weisbecker" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] printk: Disallow instrumenting print_nmi_enter()
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+Subject: [tip: core/rcu] arm64: Prepare arch_nmi_enter() for recursion
+Cc:     Frederic Weisbecker <frederic@kernel.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Alexandre Chartre <alexandre.chartre@oracle.com>,
+        Will Deacon <will@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200505134101.139720912@linutronix.de>
-References: <20200505134101.139720912@linutronix.de>
+In-Reply-To: <20200505134100.771491291@linutronix.de>
+References: <20200505134100.771491291@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <158991795665.17951.2179685164369351471.tip-bot2@tip-bot2>
+Message-ID: <158991795623.17951.5424104075328395169.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,53 +54,129 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     b0f51883f551b900a04a80f49fb0886caf7e9a12
-Gitweb:        https://git.kernel.org/tip/b0f51883f551b900a04a80f49fb0886caf7e9a12
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Mon, 24 Feb 2020 22:25:03 +01:00
+Commit-ID:     28f6bf9e247fe23d177cfdbf7e709270e8cc7fa6
+Gitweb:        https://git.kernel.org/tip/28f6bf9e247fe23d177cfdbf7e709270e8cc7fa6
+Author:        Frederic Weisbecker <frederic@kernel.org>
+AuthorDate:    Thu, 27 Feb 2020 09:51:40 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 19 May 2020 15:51:16 +02:00
+CommitterDate: Tue, 19 May 2020 15:51:17 +02:00
 
-printk: Disallow instrumenting print_nmi_enter()
+arm64: Prepare arch_nmi_enter() for recursion
 
-It happens early in nmi_enter(), no tracing, probing or other funnies
-allowed. Specifically as nmi_enter() will be used in do_debug(), which
-would cause recursive exceptions when kprobed.
+When using nmi_enter() recursively, arch_nmi_enter() must also be recursion
+safe. In particular, it must be ensured that HCR_TGE is always set while in
+NMI context when in HYP mode, and be restored to it's former state when
+done.
 
+The current code fails this when interleaved wrong. Notably it overwrites
+the original hcr state on nesting.
+
+Introduce a nesting counter to make sure to store the original value.
+
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
-Link: https://lkml.kernel.org/r/20200505134101.139720912@linutronix.de
+Cc: Will Deacon <will@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Link: https://lkml.kernel.org/r/20200505134100.771491291@linutronix.de
 
 
 ---
- kernel/printk/printk_safe.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/arm64/include/asm/hardirq.h | 78 +++++++++++++++++++++++--------
+ 1 file changed, 59 insertions(+), 19 deletions(-)
 
-diff --git a/kernel/printk/printk_safe.c b/kernel/printk/printk_safe.c
-index e8791f2..4242403 100644
---- a/kernel/printk/printk_safe.c
-+++ b/kernel/printk/printk_safe.c
-@@ -10,6 +10,7 @@
- #include <linux/cpumask.h>
- #include <linux/irq_work.h>
- #include <linux/printk.h>
-+#include <linux/kprobes.h>
+diff --git a/arch/arm64/include/asm/hardirq.h b/arch/arm64/include/asm/hardirq.h
+index 87ad961..985493a 100644
+--- a/arch/arm64/include/asm/hardirq.h
++++ b/arch/arm64/include/asm/hardirq.h
+@@ -32,30 +32,70 @@ u64 smp_irq_stat_cpu(unsigned int cpu);
  
- #include "internal.h"
+ struct nmi_ctx {
+ 	u64 hcr;
++	unsigned int cnt;
+ };
  
-@@ -293,12 +294,12 @@ static __printf(1, 0) int vprintk_nmi(const char *fmt, va_list args)
- 	return printk_safe_log_store(s, fmt, args);
- }
+ DECLARE_PER_CPU(struct nmi_ctx, nmi_contexts);
  
--void notrace printk_nmi_enter(void)
-+void noinstr printk_nmi_enter(void)
+-#define arch_nmi_enter()							\
+-	do {									\
+-		if (is_kernel_in_hyp_mode()) {					\
+-			struct nmi_ctx *nmi_ctx = this_cpu_ptr(&nmi_contexts);	\
+-			nmi_ctx->hcr = read_sysreg(hcr_el2);			\
+-			if (!(nmi_ctx->hcr & HCR_TGE)) {			\
+-				write_sysreg(nmi_ctx->hcr | HCR_TGE, hcr_el2);	\
+-				isb();						\
+-			}							\
+-		}								\
+-	} while (0)
++#define arch_nmi_enter()						\
++do {									\
++	struct nmi_ctx *___ctx;						\
++	u64 ___hcr;							\
++									\
++	if (!is_kernel_in_hyp_mode())					\
++		break;							\
++									\
++	___ctx = this_cpu_ptr(&nmi_contexts);				\
++	if (___ctx->cnt) {						\
++		___ctx->cnt++;						\
++		break;							\
++	}								\
++									\
++	___hcr = read_sysreg(hcr_el2);					\
++	if (!(___hcr & HCR_TGE)) {					\
++		write_sysreg(___hcr | HCR_TGE, hcr_el2);		\
++		isb();							\
++	}								\
++	/*								\
++	 * Make sure the sysreg write is performed before ___ctx->cnt	\
++	 * is set to 1. NMIs that see cnt == 1 will rely on us.		\
++	 */								\
++	barrier();							\
++	___ctx->cnt = 1;                                                \
++	/*								\
++	 * Make sure ___ctx->cnt is set before we save ___hcr. We	\
++	 * don't want ___ctx->hcr to be overwritten.			\
++	 */								\
++	barrier();							\
++	___ctx->hcr = ___hcr;						\
++} while (0)
+ 
+-#define arch_nmi_exit()								\
+-	do {									\
+-		if (is_kernel_in_hyp_mode()) {					\
+-			struct nmi_ctx *nmi_ctx = this_cpu_ptr(&nmi_contexts);	\
+-			if (!(nmi_ctx->hcr & HCR_TGE))				\
+-				write_sysreg(nmi_ctx->hcr, hcr_el2);		\
+-		}								\
+-	} while (0)
++#define arch_nmi_exit()							\
++do {									\
++	struct nmi_ctx *___ctx;						\
++	u64 ___hcr;							\
++									\
++	if (!is_kernel_in_hyp_mode())					\
++		break;							\
++									\
++	___ctx = this_cpu_ptr(&nmi_contexts);				\
++	___hcr = ___ctx->hcr;						\
++	/*								\
++	 * Make sure we read ___ctx->hcr before we release		\
++	 * ___ctx->cnt as it makes ___ctx->hcr updatable again.		\
++	 */								\
++	barrier();							\
++	___ctx->cnt--;							\
++	/*								\
++	 * Make sure ___ctx->cnt release is visible before we		\
++	 * restore the sysreg. Otherwise a new NMI occurring		\
++	 * right after write_sysreg() can be fooled and think		\
++	 * we secured things for it.					\
++	 */								\
++	barrier();							\
++	if (!___ctx->cnt && !(___hcr & HCR_TGE))			\
++		write_sysreg(___hcr, hcr_el2);				\
++} while (0)
+ 
+ static inline void ack_bad_irq(unsigned int irq)
  {
- 	this_cpu_add(printk_context, PRINTK_NMI_CONTEXT_OFFSET);
- }
- 
--void notrace printk_nmi_exit(void)
-+void noinstr printk_nmi_exit(void)
- {
- 	this_cpu_sub(printk_context, PRINTK_NMI_CONTEXT_OFFSET);
- }
