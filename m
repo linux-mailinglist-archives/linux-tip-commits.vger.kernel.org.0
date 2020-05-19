@@ -2,42 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 63C011D9FD5
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 May 2020 20:45:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AAE951D9FCB
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 May 2020 20:45:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727976AbgESSo0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 19 May 2020 14:44:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40202 "EHLO
+        id S1726725AbgESSoP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 19 May 2020 14:44:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727927AbgESSoY (ORCPT
+        with ESMTP id S1726528AbgESSoP (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 19 May 2020 14:44:24 -0400
+        Tue, 19 May 2020 14:44:15 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50301C08C5C0;
-        Tue, 19 May 2020 11:44:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 139DEC08C5C1;
+        Tue, 19 May 2020 11:44:15 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jb7Do-0006am-9M; Tue, 19 May 2020 20:44:12 +0200
+        id 1jb7Dn-0006af-SZ; Tue, 19 May 2020 20:44:12 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id CE2001C0178;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 6C11B1C047E;
         Tue, 19 May 2020 20:44:11 +0200 (CEST)
 Date:   Tue, 19 May 2020 18:44:11 -0000
-From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Gustavo A. R. Silva" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/x86/intel: Add more available bits for
- OFFCORE_RESPONSE of Intel Tremont
-Cc:     Stephane Eranian <eranian@google.com>,
-        Kan Liang <kan.liang@linux.intel.com>,
+Subject: [tip: perf/core] perf/x86: Replace zero-length array with flexible-array
+Cc:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        stable@vger.kernel.org, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200501125442.7030-1-kan.liang@linux.intel.com>
-References: <20200501125442.7030-1-kan.liang@linux.intel.com>
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200511200911.GA13149@embeddedor>
+References: <20200511200911.GA13149@embeddedor>
 MIME-Version: 1.0
-Message-ID: <158991385175.17951.3596220331125126731.tip-bot2@tip-bot2>
+Message-ID: <158991385134.17951.17648363671247069672.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -53,42 +50,81 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     0813c40556fce1eeefb996e020cc5339e0b84137
-Gitweb:        https://git.kernel.org/tip/0813c40556fce1eeefb996e020cc5339e0b84137
-Author:        Kan Liang <kan.liang@linux.intel.com>
-AuthorDate:    Fri, 01 May 2020 05:54:42 -07:00
+Commit-ID:     8ac7571a8cd3c11da24c3c3555f6e40e33049609
+Gitweb:        https://git.kernel.org/tip/8ac7571a8cd3c11da24c3c3555f6e40e33049609
+Author:        Gustavo A. R. Silva <gustavoars@kernel.org>
+AuthorDate:    Mon, 11 May 2020 15:09:11 -05:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Tue, 19 May 2020 20:34:16 +02:00
 
-perf/x86/intel: Add more available bits for OFFCORE_RESPONSE of Intel Tremont
+perf/x86: Replace zero-length array with flexible-array
 
-The mask in the extra_regs for Intel Tremont need to be extended to
-allow more defined bits.
+The current codebase makes use of the zero-length array language
+extension to the C90 standard, but the preferred mechanism to declare
+variable-length types such as these ones is a flexible array member[1][2],
+introduced in C99:
 
-"Outstanding Requests" (bit 63) is only available on MSR_OFFCORE_RSP0;
+struct foo {
+        int stuff;
+        struct boo array[];
+};
 
-Fixes: 6daeb8737f8a ("perf/x86/intel: Add Tremont core PMU support")
-Reported-by: Stephane Eranian <eranian@google.com>
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+By making use of the mechanism above, we will get a compiler warning
+in case the flexible array does not occur last in the structure, which
+will help us prevent some kind of undefined behavior bugs from being
+inadvertently introduced[3] to the codebase from now on.
+
+Also, notice that, dynamic memory allocations won't be affected by
+this change:
+
+"Flexible array members have incomplete type, and so the sizeof operator
+may not be applied. As a quirk of the original implementation of
+zero-length arrays, sizeof evaluates to zero."[1]
+
+sizeof(flexible-array-member) triggers a warning because flexible array
+members have incomplete type[1]. There are some instances of code in
+which the sizeof operator is being incorrectly/erroneously applied to
+zero-length arrays and the result is zero. Such instances may be hiding
+some bugs. So, this work (flexible-array member conversions) will also
+help to get completely rid of those sorts of issues.
+
+This issue was found with the help of Coccinelle.
+
+[1] https://gcc.gnu.org/onlinedocs/gcc/Zero-Length.html
+[2] https://github.com/KSPP/linux/issues/21
+[3] commit 76497732932f ("cxgb3/l2t: Fix undefined behaviour")
+
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20200501125442.7030-1-kan.liang@linux.intel.com
+Link: https://lkml.kernel.org/r/20200511200911.GA13149@embeddedor
 ---
- arch/x86/events/intel/core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/events/intel/bts.c    | 2 +-
+ arch/x86/events/intel/uncore.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-index 332954c..ca35c8b 100644
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -1892,8 +1892,8 @@ static __initconst const u64 tnt_hw_cache_extra_regs
- 
- static struct extra_reg intel_tnt_extra_regs[] __read_mostly = {
- 	/* must define OFFCORE_RSP_X first, see intel_fixup_er() */
--	INTEL_UEVENT_EXTRA_REG(0x01b7, MSR_OFFCORE_RSP_0, 0xffffff9fffull, RSP_0),
--	INTEL_UEVENT_EXTRA_REG(0x02b7, MSR_OFFCORE_RSP_1, 0xffffff9fffull, RSP_1),
-+	INTEL_UEVENT_EXTRA_REG(0x01b7, MSR_OFFCORE_RSP_0, 0x800ff0ffffff9fffull, RSP_0),
-+	INTEL_UEVENT_EXTRA_REG(0x02b7, MSR_OFFCORE_RSP_1, 0xff0ffffff9fffull, RSP_1),
- 	EVENT_EXTRA_END
+diff --git a/arch/x86/events/intel/bts.c b/arch/x86/events/intel/bts.c
+index 6a3b599..731dd8d 100644
+--- a/arch/x86/events/intel/bts.c
++++ b/arch/x86/events/intel/bts.c
+@@ -58,7 +58,7 @@ struct bts_buffer {
+ 	local_t		head;
+ 	unsigned long	end;
+ 	void		**data_pages;
+-	struct bts_phys	buf[0];
++	struct bts_phys	buf[];
  };
  
+ static struct pmu bts_pmu;
+diff --git a/arch/x86/events/intel/uncore.h b/arch/x86/events/intel/uncore.h
+index 0da4a46..b469ddd 100644
+--- a/arch/x86/events/intel/uncore.h
++++ b/arch/x86/events/intel/uncore.h
+@@ -130,7 +130,7 @@ struct intel_uncore_box {
+ 	struct list_head list;
+ 	struct list_head active_list;
+ 	void __iomem *io_addr;
+-	struct intel_uncore_extra_reg shared_regs[0];
++	struct intel_uncore_extra_reg shared_regs[];
+ };
+ 
+ /* CFL uncore 8th cbox MSRs */
