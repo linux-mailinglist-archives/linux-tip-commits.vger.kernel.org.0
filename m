@@ -2,36 +2,41 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D13D91DA1EE
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 May 2020 22:01:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EEF41DA1D2
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 May 2020 22:00:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728739AbgESUBO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 19 May 2020 16:01:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52068 "EHLO
+        id S1728640AbgESUA3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 19 May 2020 16:00:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52122 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728287AbgEST65 (ORCPT
+        with ESMTP id S1728356AbgEST7H (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 19 May 2020 15:58:57 -0400
+        Tue, 19 May 2020 15:59:07 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2AEFC08C5C0;
-        Tue, 19 May 2020 12:58:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 865C7C08C5C2;
+        Tue, 19 May 2020 12:59:07 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jb8O8-0000Ax-6V; Tue, 19 May 2020 21:58:56 +0200
+        id 1jb8OA-0000Ag-IJ; Tue, 19 May 2020 21:58:58 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B32591C0852;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 435741C0480;
         Tue, 19 May 2020 21:58:44 +0200 (CEST)
 Date:   Tue, 19 May 2020 19:58:44 -0000
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/entry] x86/idt: Remove update_intr_gate()
-Cc:     Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
+Subject: [tip: x86/entry] x86/entry/64: Move non entry code into .text section
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
+        Alexandre Chartre <alexandre.chartre@oracle.com>,
+        Peter Zijlstra <peterz@infradead.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200505134340.227579223@linutronix.de>
+References: <20200505134340.227579223@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <158991832459.17951.14798835986906194460.tip-bot2@tip-bot2>
+Message-ID: <158991832414.17951.16868122316293261767.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,52 +52,123 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/entry branch of tip:
 
-Commit-ID:     8175cfbbbfcba992ed0dd5868d83733c4f38bbb9
-Gitweb:        https://git.kernel.org/tip/8175cfbbbfcba992ed0dd5868d83733c4f38bbb9
+Commit-ID:     be06832a9a628bca72b0c6ceb447e5f5f529cd30
+Gitweb:        https://git.kernel.org/tip/be06832a9a628bca72b0c6ceb447e5f5f529cd30
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Fri, 15 May 2020 17:39:05 +02:00
+AuthorDate:    Wed, 25 Mar 2020 19:45:26 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Tue, 19 May 2020 16:03:49 +02:00
 
-x86/idt: Remove update_intr_gate()
+x86/entry/64: Move non entry code into .text section
 
-No more users.
+All ASM code which is not part of the entry functionality can move out into
+the .text section. No reason to keep it in the non-instrumentable entry
+section.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
+Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
+Acked-by: Peter Zijlstra <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20200505134340.227579223@linutronix.de
+
 
 ---
- arch/x86/include/asm/desc.h | 1 -
- arch/x86/kernel/idt.c       | 8 --------
- 2 files changed, 9 deletions(-)
+ arch/x86/entry/entry_64.S   | 18 ++++++++++++++----
+ arch/x86/kernel/ftrace_64.S |  2 +-
+ 2 files changed, 15 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/include/asm/desc.h b/arch/x86/include/asm/desc.h
-index 68a99d2..085a2dd 100644
---- a/arch/x86/include/asm/desc.h
-+++ b/arch/x86/include/asm/desc.h
-@@ -386,7 +386,6 @@ static inline void set_desc_limit(struct desc_struct *desc, unsigned long limit)
- 	desc->limit1 = (limit >> 16) & 0xf;
- }
+diff --git a/arch/x86/entry/entry_64.S b/arch/x86/entry/entry_64.S
+index a15b70a..b199f43 100644
+--- a/arch/x86/entry/entry_64.S
++++ b/arch/x86/entry/entry_64.S
+@@ -279,6 +279,7 @@ SYM_CODE_END(entry_SYSCALL_64)
+  * %rdi: prev task
+  * %rsi: next task
+  */
++.pushsection .text, "ax"
+ SYM_FUNC_START(__switch_to_asm)
+ 	/*
+ 	 * Save callee-saved registers
+@@ -321,6 +322,7 @@ SYM_FUNC_START(__switch_to_asm)
  
--void update_intr_gate(unsigned int n, const void *addr);
- void alloc_intr_gate(unsigned int n, const void *addr);
+ 	jmp	__switch_to
+ SYM_FUNC_END(__switch_to_asm)
++.popsection
  
- extern unsigned long system_vectors[];
-diff --git a/arch/x86/kernel/idt.c b/arch/x86/kernel/idt.c
-index 36fef90..95609ee 100644
---- a/arch/x86/kernel/idt.c
-+++ b/arch/x86/kernel/idt.c
-@@ -360,14 +360,6 @@ void idt_invalidate(void *addr)
- 	load_idt(&idt);
- }
+ /*
+  * A newly forked process directly context switches into this address.
+@@ -329,6 +331,7 @@ SYM_FUNC_END(__switch_to_asm)
+  * rbx: kernel thread func (NULL for user thread)
+  * r12: kernel thread arg
+  */
++.pushsection .text, "ax"
+ SYM_CODE_START(ret_from_fork)
+ 	UNWIND_HINT_EMPTY
+ 	movq	%rax, %rdi
+@@ -357,6 +360,7 @@ SYM_CODE_START(ret_from_fork)
+ 	movq	$0, RAX(%rsp)
+ 	jmp	2b
+ SYM_CODE_END(ret_from_fork)
++.popsection
  
--/* This goes away once ASYNC_PF is sanitized */
--void __init update_intr_gate(unsigned int n, const void *addr)
--{
--	if (WARN_ON_ONCE(!test_bit(n, system_vectors)))
--		return;
--	set_intr_gate(n, addr);
--}
--
- void __init alloc_intr_gate(unsigned int n, const void *addr)
- {
- 	if (WARN_ON(n < FIRST_SYSTEM_VECTOR))
+ /*
+  * Build the entry stubs with some assembler magic.
+@@ -1037,10 +1041,12 @@ idtentry alignment_check		do_alignment_check		has_error_code=1
+ idtentry simd_coprocessor_error		do_simd_coprocessor_error	has_error_code=0
+ 
+ 
+-	/*
+-	 * Reload gs selector with exception handling
+-	 * edi:  new selector
+-	 */
++/*
++ * Reload gs selector with exception handling
++ * edi:  new selector
++ *
++ * Is in entry.text as it shouldn't be instrumented.
++ */
+ SYM_FUNC_START(native_load_gs_index)
+ 	FRAME_BEGIN
+ 	pushfq
+@@ -1076,6 +1082,7 @@ SYM_CODE_END(.Lbad_gs)
+ 	.previous
+ 
+ /* Call softirq on interrupt stack. Interrupts are off. */
++.pushsection .text, "ax"
+ SYM_FUNC_START(do_softirq_own_stack)
+ 	pushq	%rbp
+ 	mov	%rsp, %rbp
+@@ -1085,6 +1092,7 @@ SYM_FUNC_START(do_softirq_own_stack)
+ 	leaveq
+ 	ret
+ SYM_FUNC_END(do_softirq_own_stack)
++.popsection
+ 
+ #ifdef CONFIG_XEN_PV
+ idtentry hypervisor_callback xen_do_hypervisor_callback has_error_code=0
+@@ -1728,6 +1736,7 @@ SYM_CODE_START(ignore_sysret)
+ SYM_CODE_END(ignore_sysret)
+ #endif
+ 
++.pushsection .text, "ax"
+ SYM_CODE_START(rewind_stack_do_exit)
+ 	UNWIND_HINT_FUNC
+ 	/* Prevent any naive code from trying to unwind to our caller. */
+@@ -1739,3 +1748,4 @@ SYM_CODE_START(rewind_stack_do_exit)
+ 
+ 	call	do_exit
+ SYM_CODE_END(rewind_stack_do_exit)
++.popsection
+diff --git a/arch/x86/kernel/ftrace_64.S b/arch/x86/kernel/ftrace_64.S
+index aa5d28a..083a3da 100644
+--- a/arch/x86/kernel/ftrace_64.S
++++ b/arch/x86/kernel/ftrace_64.S
+@@ -12,7 +12,7 @@
+ #include <asm/frame.h>
+ 
+ 	.code64
+-	.section .entry.text, "ax"
++	.section .text, "ax"
+ 
+ #ifdef CONFIG_FRAME_POINTER
+ /* Save parent and function stack frames (rip and rbp) */
