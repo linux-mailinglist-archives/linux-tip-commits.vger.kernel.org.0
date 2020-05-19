@@ -2,40 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 02AFE1D9FDF
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 May 2020 20:45:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 756831D9FD1
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 May 2020 20:45:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727995AbgESSot (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 19 May 2020 14:44:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40198 "EHLO
+        id S1727924AbgESSoY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 19 May 2020 14:44:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40196 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727917AbgESSoX (ORCPT
+        with ESMTP id S1727851AbgESSoX (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Tue, 19 May 2020 14:44:23 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0030C08C5C2;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67EFBC08C5C1;
         Tue, 19 May 2020 11:44:23 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jb7Du-0006dL-Vb; Tue, 19 May 2020 20:44:19 +0200
+        id 1jb7Dv-0006de-DD; Tue, 19 May 2020 20:44:19 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 8848D1C0178;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id F07CC1C047E;
         Tue, 19 May 2020 20:44:15 +0200 (CEST)
 Date:   Tue, 19 May 2020 18:44:15 -0000
-From:   "tip-bot2 for Vincent Guittot" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Muchun Song" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/pelt: Sync util/runnable_sum with PELT window
- when propagating
-Cc:     Vincent Guittot <vincent.guittot@linaro.org>,
+Subject: [tip: sched/core] sched/cpuacct: Use __this_cpu_add() instead of
+ this_cpu_ptr()
+Cc:     Muchun Song <songmuchun@bytedance.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200506155301.14288-1-vincent.guittot@linaro.org>
-References: <20200506155301.14288-1-vincent.guittot@linaro.org>
+In-Reply-To: <20200507031039.32615-1-songmuchun@bytedance.com>
+References: <20200507031039.32615-1-songmuchun@bytedance.com>
 MIME-Version: 1.0
-Message-ID: <158991385546.17951.8920600891914020926.tip-bot2@tip-bot2>
+Message-ID: <158991385587.17951.10383414133329155280.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,183 +51,46 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     95d685935a2edf209fc68f52494ede4a382a6c2b
-Gitweb:        https://git.kernel.org/tip/95d685935a2edf209fc68f52494ede4a382a6c2b
-Author:        Vincent Guittot <vincent.guittot@linaro.org>
-AuthorDate:    Wed, 06 May 2020 17:53:01 +02:00
+Commit-ID:     12aa2587388de6697fd2e585ae6a90f70249540b
+Gitweb:        https://git.kernel.org/tip/12aa2587388de6697fd2e585ae6a90f70249540b
+Author:        Muchun Song <songmuchun@bytedance.com>
+AuthorDate:    Thu, 07 May 2020 11:10:39 +08:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 19 May 2020 20:34:14 +02:00
+CommitterDate: Tue, 19 May 2020 20:34:13 +02:00
 
-sched/pelt: Sync util/runnable_sum with PELT window when propagating
+sched/cpuacct: Use __this_cpu_add() instead of this_cpu_ptr()
 
-update_tg_cfs_*() propagate the impact of the attach/detach of an entity
-down into the cfs_rq hierarchy and must keep the sync with the current pelt
-window.
+The cpuacct_charge() and cpuacct_account_field() are called with
+rq->lock held, and this means preemption(and IRQs) are indeed
+disabled, so it is safe to use __this_cpu_*() to allow for better
+code-generation.
 
-Even if we can't sync child cfs_rq and its group se, we can sync the group
-se and its parent cfs_rq with current position in the PELT window. In fact,
-we must keep them sync in order to stay also synced with others entities
-and group entities that are already attached to the cfs_rq.
-
-Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
+Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20200506155301.14288-1-vincent.guittot@linaro.org
+Link: https://lkml.kernel.org/r/20200507031039.32615-1-songmuchun@bytedance.com
 ---
- kernel/sched/fair.c | 49 ++++++++++++++++++++++++--------------------
- kernel/sched/pelt.c | 24 ++++++++++++++++++++++-
- 2 files changed, 51 insertions(+), 22 deletions(-)
+ kernel/sched/cpuacct.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 4e58686..44b0c8e 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -3441,52 +3441,46 @@ static inline void
- update_tg_cfs_util(struct cfs_rq *cfs_rq, struct sched_entity *se, struct cfs_rq *gcfs_rq)
- {
- 	long delta = gcfs_rq->avg.util_avg - se->avg.util_avg;
-+	/*
-+	 * cfs_rq->avg.period_contrib can be used for both cfs_rq and se.
-+	 * See ___update_load_avg() for details.
-+	 */
-+	u32 divider = LOAD_AVG_MAX - 1024 + cfs_rq->avg.period_contrib;
+diff --git a/kernel/sched/cpuacct.c b/kernel/sched/cpuacct.c
+index 9fbb103..6448b04 100644
+--- a/kernel/sched/cpuacct.c
++++ b/kernel/sched/cpuacct.c
+@@ -347,7 +347,7 @@ void cpuacct_charge(struct task_struct *tsk, u64 cputime)
+ 	rcu_read_lock();
  
- 	/* Nothing to update */
- 	if (!delta)
- 		return;
+ 	for (ca = task_ca(tsk); ca; ca = parent_ca(ca))
+-		this_cpu_ptr(ca->cpuusage)->usages[index] += cputime;
++		__this_cpu_add(ca->cpuusage->usages[index], cputime);
  
--	/*
--	 * The relation between sum and avg is:
--	 *
--	 *   LOAD_AVG_MAX - 1024 + sa->period_contrib
--	 *
--	 * however, the PELT windows are not aligned between grq and gse.
--	 */
--
- 	/* Set new sched_entity's utilization */
- 	se->avg.util_avg = gcfs_rq->avg.util_avg;
--	se->avg.util_sum = se->avg.util_avg * LOAD_AVG_MAX;
-+	se->avg.util_sum = se->avg.util_avg * divider;
+ 	rcu_read_unlock();
+ }
+@@ -363,7 +363,7 @@ void cpuacct_account_field(struct task_struct *tsk, int index, u64 val)
  
- 	/* Update parent cfs_rq utilization */
- 	add_positive(&cfs_rq->avg.util_avg, delta);
--	cfs_rq->avg.util_sum = cfs_rq->avg.util_avg * LOAD_AVG_MAX;
-+	cfs_rq->avg.util_sum = cfs_rq->avg.util_avg * divider;
+ 	rcu_read_lock();
+ 	for (ca = task_ca(tsk); ca != &root_cpuacct; ca = parent_ca(ca))
+-		this_cpu_ptr(ca->cpustat)->cpustat[index] += val;
++		__this_cpu_add(ca->cpustat->cpustat[index], val);
+ 	rcu_read_unlock();
  }
  
- static inline void
- update_tg_cfs_runnable(struct cfs_rq *cfs_rq, struct sched_entity *se, struct cfs_rq *gcfs_rq)
- {
- 	long delta = gcfs_rq->avg.runnable_avg - se->avg.runnable_avg;
-+	/*
-+	 * cfs_rq->avg.period_contrib can be used for both cfs_rq and se.
-+	 * See ___update_load_avg() for details.
-+	 */
-+	u32 divider = LOAD_AVG_MAX - 1024 + cfs_rq->avg.period_contrib;
- 
- 	/* Nothing to update */
- 	if (!delta)
- 		return;
- 
--	/*
--	 * The relation between sum and avg is:
--	 *
--	 *   LOAD_AVG_MAX - 1024 + sa->period_contrib
--	 *
--	 * however, the PELT windows are not aligned between grq and gse.
--	 */
--
- 	/* Set new sched_entity's runnable */
- 	se->avg.runnable_avg = gcfs_rq->avg.runnable_avg;
--	se->avg.runnable_sum = se->avg.runnable_avg * LOAD_AVG_MAX;
-+	se->avg.runnable_sum = se->avg.runnable_avg * divider;
- 
- 	/* Update parent cfs_rq runnable */
- 	add_positive(&cfs_rq->avg.runnable_avg, delta);
--	cfs_rq->avg.runnable_sum = cfs_rq->avg.runnable_avg * LOAD_AVG_MAX;
-+	cfs_rq->avg.runnable_sum = cfs_rq->avg.runnable_avg * divider;
- }
- 
- static inline void
-@@ -3496,19 +3490,26 @@ update_tg_cfs_load(struct cfs_rq *cfs_rq, struct sched_entity *se, struct cfs_rq
- 	unsigned long load_avg;
- 	u64 load_sum = 0;
- 	s64 delta_sum;
-+	u32 divider;
- 
- 	if (!runnable_sum)
- 		return;
- 
- 	gcfs_rq->prop_runnable_sum = 0;
- 
-+	/*
-+	 * cfs_rq->avg.period_contrib can be used for both cfs_rq and se.
-+	 * See ___update_load_avg() for details.
-+	 */
-+	divider = LOAD_AVG_MAX - 1024 + cfs_rq->avg.period_contrib;
-+
- 	if (runnable_sum >= 0) {
- 		/*
- 		 * Add runnable; clip at LOAD_AVG_MAX. Reflects that until
- 		 * the CPU is saturated running == runnable.
- 		 */
- 		runnable_sum += se->avg.load_sum;
--		runnable_sum = min(runnable_sum, (long)LOAD_AVG_MAX);
-+		runnable_sum = min_t(long, runnable_sum, divider);
- 	} else {
- 		/*
- 		 * Estimate the new unweighted runnable_sum of the gcfs_rq by
-@@ -3533,7 +3534,7 @@ update_tg_cfs_load(struct cfs_rq *cfs_rq, struct sched_entity *se, struct cfs_rq
- 	runnable_sum = max(runnable_sum, running_sum);
- 
- 	load_sum = (s64)se_weight(se) * runnable_sum;
--	load_avg = div_s64(load_sum, LOAD_AVG_MAX);
-+	load_avg = div_s64(load_sum, divider);
- 
- 	delta_sum = load_sum - (s64)se_weight(se) * se->avg.load_sum;
- 	delta_avg = load_avg - se->avg.load_avg;
-@@ -3697,6 +3698,10 @@ update_cfs_rq_load_avg(u64 now, struct cfs_rq *cfs_rq)
-  */
- static void attach_entity_load_avg(struct cfs_rq *cfs_rq, struct sched_entity *se)
- {
-+	/*
-+	 * cfs_rq->avg.period_contrib can be used for both cfs_rq and se.
-+	 * See ___update_load_avg() for details.
-+	 */
- 	u32 divider = LOAD_AVG_MAX - 1024 + cfs_rq->avg.period_contrib;
- 
- 	/*
-diff --git a/kernel/sched/pelt.c b/kernel/sched/pelt.c
-index b647d04..b4b1ff9 100644
---- a/kernel/sched/pelt.c
-+++ b/kernel/sched/pelt.c
-@@ -237,6 +237,30 @@ ___update_load_sum(u64 now, struct sched_avg *sa,
- 	return 1;
- }
- 
-+/*
-+ * When syncing *_avg with *_sum, we must take into account the current
-+ * position in the PELT segment otherwise the remaining part of the segment
-+ * will be considered as idle time whereas it's not yet elapsed and this will
-+ * generate unwanted oscillation in the range [1002..1024[.
-+ *
-+ * The max value of *_sum varies with the position in the time segment and is
-+ * equals to :
-+ *
-+ *   LOAD_AVG_MAX*y + sa->period_contrib
-+ *
-+ * which can be simplified into:
-+ *
-+ *   LOAD_AVG_MAX - 1024 + sa->period_contrib
-+ *
-+ * because LOAD_AVG_MAX*y == LOAD_AVG_MAX-1024
-+ *
-+ * The same care must be taken when a sched entity is added, updated or
-+ * removed from a cfs_rq and we need to update sched_avg. Scheduler entities
-+ * and the cfs rq, to which they are attached, have the same position in the
-+ * time segment because they use the same clock. This means that we can use
-+ * the period_contrib of cfs_rq when updating the sched_avg of a sched_entity
-+ * if it's more convenient.
-+ */
- static __always_inline void
- ___update_load_avg(struct sched_avg *sa, unsigned long load)
- {
