@@ -2,41 +2,42 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D16B31DA1E3
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 May 2020 22:01:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 135231DA1C2
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 May 2020 22:00:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728290AbgEST66 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 19 May 2020 15:58:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52062 "EHLO
+        id S1728368AbgEST7J (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 19 May 2020 15:59:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52112 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728283AbgEST64 (ORCPT
+        with ESMTP id S1728351AbgEST7G (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 19 May 2020 15:58:56 -0400
+        Tue, 19 May 2020 15:59:06 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90B41C08C5C1;
-        Tue, 19 May 2020 12:58:56 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8D9CC08C5C2;
+        Tue, 19 May 2020 12:59:05 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jb8O3-000075-FL; Tue, 19 May 2020 21:58:51 +0200
+        id 1jb8O9-00008K-Sz; Tue, 19 May 2020 21:58:58 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 13C7F1C0857;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id F162E1C0858;
         Tue, 19 May 2020 21:58:41 +0200 (CEST)
-Date:   Tue, 19 May 2020 19:58:40 -0000
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+Date:   Tue, 19 May 2020 19:58:41 -0000
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/entry] x86/entry: Make entry_64_compat.S objtool clean
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
+Subject: [tip: x86/entry] x86/entry: Move irq flags tracing to
+ prepare_exit_to_usermode()
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Alexandre Chartre <alexandre.chartre@oracle.com>,
+        Peter Zijlstra <peterz@infradead.org>,
         Andy Lutomirski <luto@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200505134341.272248024@linutronix.de>
-References: <20200505134341.272248024@linutronix.de>
+In-Reply-To: <20200505134340.703783926@linutronix.de>
+References: <20200505134340.703783926@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <158991832097.17951.17826399641705845911.tip-bot2@tip-bot2>
+Message-ID: <158991832186.17951.17623933474637833032.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -52,141 +53,186 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/entry branch of tip:
 
-Commit-ID:     b5f7e5db3839c5e67af6544872f35e2d70359518
-Gitweb:        https://git.kernel.org/tip/b5f7e5db3839c5e67af6544872f35e2d70359518
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Tue, 12 May 2020 18:17:12 +02:00
+Commit-ID:     59a42be78098ad1e212abb6eea5d05ed429b5a64
+Gitweb:        https://git.kernel.org/tip/59a42be78098ad1e212abb6eea5d05ed429b5a64
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Wed, 04 Mar 2020 12:51:59 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 19 May 2020 16:03:52 +02:00
+CommitterDate: Tue, 19 May 2020 16:03:51 +02:00
 
-x86/entry: Make entry_64_compat.S objtool clean
+x86/entry: Move irq flags tracing to prepare_exit_to_usermode()
 
-Currently entry_64_compat is exempt from objtool, but with vmlinux
-mode there is no hiding it.
+This is another step towards more C-code and less convoluted ASM.
 
-Make the following changes to make it pass:
+Similar to the entry path, invoke the tracer before context tracking which
+might turn off RCU and invoke lockdep as the last step before going back to
+user space. Annotate the code sections in exit_to_user_mode() accordingly
+so objtool won't complain about the tracer invocation.
 
- - change entry_SYSENTER_compat to STT_NOTYPE; it's not a function
-   and doesn't have function type stack setup.
-
- - mark all STT_NOTYPE symbols with UNWIND_HINT_EMPTY; so we do
-   validate them and don't treat them as unreachable.
-
- - don't abuse RSP as a temp register, this confuses objtool
-   mightily as it (rightfully) thinks we're doing unspeakable
-   things to the stack.
-
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
+Acked-by: Peter Zijlstra <peterz@infradead.org>
 Acked-by: Andy Lutomirski <luto@kernel.org>
-Link: https://lkml.kernel.org/r/20200505134341.272248024@linutronix.de
+Link: https://lkml.kernel.org/r/20200505134340.703783926@linutronix.de
 
 
 ---
- arch/x86/entry/Makefile          |  2 --
- arch/x86/entry/entry_64_compat.S | 25 ++++++++++++++++++++-----
- 2 files changed, 20 insertions(+), 7 deletions(-)
+ arch/x86/entry/common.c          | 19 ++++++++++++++++++-
+ arch/x86/entry/entry_32.S        | 12 ++++--------
+ arch/x86/entry/entry_64.S        |  4 ----
+ arch/x86/entry/entry_64_compat.S | 14 +++++---------
+ 4 files changed, 27 insertions(+), 22 deletions(-)
 
-diff --git a/arch/x86/entry/Makefile b/arch/x86/entry/Makefile
-index cdf45ff..b7a5790 100644
---- a/arch/x86/entry/Makefile
-+++ b/arch/x86/entry/Makefile
-@@ -11,8 +11,6 @@ CFLAGS_REMOVE_common.o = $(CC_FLAGS_FTRACE) -fstack-protector -fstack-protector-
- CFLAGS_REMOVE_syscall_32.o = $(CC_FLAGS_FTRACE) -fstack-protector -fstack-protector-strong
- CFLAGS_REMOVE_syscall_64.o = $(CC_FLAGS_FTRACE) -fstack-protector -fstack-protector-strong
+diff --git a/arch/x86/entry/common.c b/arch/x86/entry/common.c
+index 7473c12..e4f9f5f 100644
+--- a/arch/x86/entry/common.c
++++ b/arch/x86/entry/common.c
+@@ -72,10 +72,27 @@ static __always_inline void enter_from_user_mode(void)
+ }
+ #endif
  
--OBJECT_FILES_NON_STANDARD_entry_64_compat.o := y
--
- CFLAGS_syscall_64.o		+= $(call cc-option,-Wno-override-init,)
- CFLAGS_syscall_32.o		+= $(call cc-option,-Wno-override-init,)
- obj-y				:= entry_$(BITS).o thunk_$(BITS).o syscall_$(BITS).o
-diff --git a/arch/x86/entry/entry_64_compat.S b/arch/x86/entry/entry_64_compat.S
-index 7c29ed8..0f974ae 100644
---- a/arch/x86/entry/entry_64_compat.S
-+++ b/arch/x86/entry/entry_64_compat.S
-@@ -46,12 +46,14 @@
-  * ebp  user stack
-  * 0(%ebp) arg6
-  */
--SYM_FUNC_START(entry_SYSENTER_compat)
-+SYM_CODE_START(entry_SYSENTER_compat)
-+	UNWIND_HINT_EMPTY
- 	/* Interrupts are off on entry. */
- 	SWAPGS
- 
--	/* We are about to clobber %rsp anyway, clobbering here is OK */
--	SWITCH_TO_KERNEL_CR3 scratch_reg=%rsp
-+	pushq	%rax
-+	SWITCH_TO_KERNEL_CR3 scratch_reg=%rax
-+	popq	%rax
- 
- 	movq	PER_CPU_VAR(cpu_current_top_of_stack), %rsp
- 
-@@ -104,6 +106,9 @@ SYM_FUNC_START(entry_SYSENTER_compat)
- 	xorl	%r14d, %r14d		/* nospec   r14 */
- 	pushq   $0			/* pt_regs->r15 = 0 */
- 	xorl	%r15d, %r15d		/* nospec   r15 */
+-static noinstr void exit_to_user_mode(void)
++/**
++ * exit_to_user_mode - Fixup state when exiting to user mode
++ *
++ * Syscall exit enables interrupts, but the kernel state is interrupts
++ * disabled when this is invoked. Also tell RCU about it.
++ *
++ * 1) Trace interrupts on state
++ * 2) Invoke context tracking if enabled to adjust RCU state
++ * 3) Clear CPU buffers if CPU is affected by MDS and the migitation is on.
++ * 4) Tell lockdep that interrupts are enabled
++ */
++static __always_inline void exit_to_user_mode(void)
+ {
++	instrumentation_begin();
++	trace_hardirqs_on_prepare();
++	lockdep_hardirqs_on_prepare(CALLER_ADDR0);
++	instrumentation_end();
 +
-+	UNWIND_HINT_REGS
-+
- 	cld
+ 	user_enter_irqoff();
+ 	mds_user_clear_cpu_buffers();
++	lockdep_hardirqs_on(CALLER_ADDR0);
+ }
+ 
+ static void do_audit_syscall_entry(struct pt_regs *regs, u32 arch)
+diff --git a/arch/x86/entry/entry_32.S b/arch/x86/entry/entry_32.S
+index 65704e0..d9da0b7 100644
+--- a/arch/x86/entry/entry_32.S
++++ b/arch/x86/entry/entry_32.S
+@@ -817,8 +817,7 @@ SYM_CODE_START(ret_from_fork)
+ 	/* When we fork, we trace the syscall return in the child, too. */
+ 	movl    %esp, %eax
+ 	call    syscall_return_slowpath
+-	STACKLEAK_ERASE
+-	jmp     restore_all
++	jmp     .Lsyscall_32_done
+ 
+ 	/* kernel thread */
+ 1:	movl	%edi, %eax
+@@ -862,7 +861,7 @@ ret_from_intr:
+ 	TRACE_IRQS_OFF
+ 	movl	%esp, %eax
+ 	call	prepare_exit_to_usermode
+-	jmp	restore_all
++	jmp	restore_all_switch_stack
+ SYM_CODE_END(ret_from_exception)
+ 
+ SYM_ENTRY(__begin_SYSENTER_singlestep_region, SYM_L_GLOBAL, SYM_A_NONE)
+@@ -975,8 +974,7 @@ SYM_FUNC_START(entry_SYSENTER_32)
+ 
+ 	STACKLEAK_ERASE
+ 
+-/* Opportunistic SYSEXIT */
+-	TRACE_IRQS_ON			/* User mode traces as IRQs on. */
++	/* Opportunistic SYSEXIT */
  
  	/*
-@@ -141,7 +146,7 @@ SYM_FUNC_START(entry_SYSENTER_compat)
- 	popfq
- 	jmp	.Lsysenter_flags_fixed
- SYM_INNER_LABEL(__end_entry_SYSENTER_compat, SYM_L_GLOBAL)
--SYM_FUNC_END(entry_SYSENTER_compat)
-+SYM_CODE_END(entry_SYSENTER_compat)
+ 	 * Setup entry stack - we keep the pointer in %eax and do the
+@@ -1079,11 +1077,9 @@ SYM_FUNC_START(entry_INT80_32)
+ 	movl	%esp, %eax
+ 	call	do_int80_syscall_32
+ .Lsyscall_32_done:
+-
+ 	STACKLEAK_ERASE
  
- /*
-  * 32-bit SYSCALL entry.
-@@ -191,6 +196,7 @@ SYM_FUNC_END(entry_SYSENTER_compat)
-  * 0(%esp) arg6
-  */
- SYM_CODE_START(entry_SYSCALL_compat)
-+	UNWIND_HINT_EMPTY
- 	/* Interrupts are off on entry. */
- 	swapgs
+-restore_all:
+-	TRACE_IRQS_ON
++restore_all_switch_stack:
+ 	SWITCH_TO_ENTRY_STACK
+ 	CHECK_AND_APPLY_ESPFIX
  
-@@ -241,6 +247,8 @@ SYM_INNER_LABEL(entry_SYSCALL_compat_after_hwframe, SYM_L_GLOBAL)
- 	pushq   $0			/* pt_regs->r15 = 0 */
- 	xorl	%r15d, %r15d		/* nospec   r15 */
+diff --git a/arch/x86/entry/entry_64.S b/arch/x86/entry/entry_64.S
+index 9e34fe8..9866b54 100644
+--- a/arch/x86/entry/entry_64.S
++++ b/arch/x86/entry/entry_64.S
+@@ -172,8 +172,6 @@ SYM_INNER_LABEL(entry_SYSCALL_64_after_hwframe, SYM_L_GLOBAL)
+ 	movq	%rsp, %rsi
+ 	call	do_syscall_64		/* returns with IRQs disabled */
  
-+	UNWIND_HINT_REGS
-+
+-	TRACE_IRQS_ON			/* return enables interrupts */
+-
+ 	/*
+ 	 * Try to use SYSRET instead of IRET if we're returning to
+ 	 * a completely clean 64-bit userspace context.  If we're not,
+@@ -342,7 +340,6 @@ SYM_CODE_START(ret_from_fork)
+ 	UNWIND_HINT_REGS
+ 	movq	%rsp, %rdi
+ 	call	syscall_return_slowpath	/* returns with IRQs disabled */
+-	TRACE_IRQS_ON			/* user mode is traced as IRQS on */
+ 	jmp	swapgs_restore_regs_and_return_to_usermode
+ 
+ 1:
+@@ -620,7 +617,6 @@ ret_from_intr:
+ .Lretint_user:
+ 	mov	%rsp,%rdi
+ 	call	prepare_exit_to_usermode
+-	TRACE_IRQS_ON
+ 
+ SYM_INNER_LABEL(swapgs_restore_regs_and_return_to_usermode, SYM_L_GLOBAL)
+ #ifdef CONFIG_DEBUG_ENTRY
+diff --git a/arch/x86/entry/entry_64_compat.S b/arch/x86/entry/entry_64_compat.S
+index e2e8bd7..7c29ed8 100644
+--- a/arch/x86/entry/entry_64_compat.S
++++ b/arch/x86/entry/entry_64_compat.S
+@@ -132,8 +132,8 @@ SYM_FUNC_START(entry_SYSENTER_compat)
  	movq	%rsp, %rdi
  	call	do_fast_syscall_32
  	/* XEN PV guests always use IRET path */
-@@ -328,6 +336,7 @@ SYM_CODE_END(entry_SYSCALL_compat)
-  * ebp  arg6
-  */
- SYM_CODE_START(entry_INT80_compat)
-+	UNWIND_HINT_EMPTY
- 	/*
- 	 * Interrupts are off on entry.
+-	ALTERNATIVE "testl %eax, %eax; jz .Lsyscall_32_done", \
+-		    "jmp .Lsyscall_32_done", X86_FEATURE_XENPV
++	ALTERNATIVE "testl %eax, %eax; jz swapgs_restore_regs_and_return_to_usermode", \
++		    "jmp swapgs_restore_regs_and_return_to_usermode", X86_FEATURE_XENPV
+ 	jmp	sysret32_from_system_call
+ 
+ .Lsysenter_fix_flags:
+@@ -244,8 +244,8 @@ SYM_INNER_LABEL(entry_SYSCALL_compat_after_hwframe, SYM_L_GLOBAL)
+ 	movq	%rsp, %rdi
+ 	call	do_fast_syscall_32
+ 	/* XEN PV guests always use IRET path */
+-	ALTERNATIVE "testl %eax, %eax; jz .Lsyscall_32_done", \
+-		    "jmp .Lsyscall_32_done", X86_FEATURE_XENPV
++	ALTERNATIVE "testl %eax, %eax; jz swapgs_restore_regs_and_return_to_usermode", \
++		    "jmp swapgs_restore_regs_and_return_to_usermode", X86_FEATURE_XENPV
+ 
+ 	/* Opportunistic SYSRET */
+ sysret32_from_system_call:
+@@ -254,7 +254,7 @@ sysret32_from_system_call:
+ 	 * stack. So let's erase the thread stack right now.
  	 */
-@@ -349,8 +358,11 @@ SYM_CODE_START(entry_INT80_compat)
- 
- 	/* Need to switch before accessing the thread stack. */
- 	SWITCH_TO_KERNEL_CR3 scratch_reg=%rdi
+ 	STACKLEAK_ERASE
+-	TRACE_IRQS_ON			/* User mode traces as IRQs on. */
 +
- 	/* In the Xen PV case we already run on the thread stack. */
--	ALTERNATIVE "movq %rsp, %rdi", "jmp .Lint80_keep_stack", X86_FEATURE_XENPV
-+	ALTERNATIVE "", "jmp .Lint80_keep_stack", X86_FEATURE_XENPV
-+
-+	movq	%rsp, %rdi
- 	movq	PER_CPU_VAR(cpu_current_top_of_stack), %rsp
- 
- 	pushq	6*8(%rdi)		/* regs->ss */
-@@ -389,6 +401,9 @@ SYM_CODE_START(entry_INT80_compat)
- 	xorl	%r14d, %r14d		/* nospec   r14 */
- 	pushq   %r15                    /* pt_regs->r15 */
- 	xorl	%r15d, %r15d		/* nospec   r15 */
-+
-+	UNWIND_HINT_REGS
-+
- 	cld
+ 	movq	RBX(%rsp), %rbx		/* pt_regs->rbx */
+ 	movq	RBP(%rsp), %rbp		/* pt_regs->rbp */
+ 	movq	EFLAGS(%rsp), %r11	/* pt_regs->flags (in r11) */
+@@ -393,9 +393,5 @@ SYM_CODE_START(entry_INT80_compat)
  
  	movq	%rsp, %rdi
+ 	call	do_int80_syscall_32
+-.Lsyscall_32_done:
+-
+-	/* Go back to user mode. */
+-	TRACE_IRQS_ON
+ 	jmp	swapgs_restore_regs_and_return_to_usermode
+ SYM_CODE_END(entry_INT80_compat)
