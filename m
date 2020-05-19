@@ -2,39 +2,43 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 146541D966D
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 May 2020 14:35:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C086E1D9E3A
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 May 2020 19:52:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726471AbgESMfs (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 19 May 2020 08:35:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38842 "EHLO
+        id S1729053AbgESRwR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 19 May 2020 13:52:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60124 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726196AbgESMfs (ORCPT
+        with ESMTP id S1726059AbgESRwQ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 19 May 2020 08:35:48 -0400
+        Tue, 19 May 2020 13:52:16 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8746C08C5C0;
-        Tue, 19 May 2020 05:35:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAFFAC08C5C0;
+        Tue, 19 May 2020 10:52:16 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jb1TC-000059-FP; Tue, 19 May 2020 14:35:42 +0200
+        id 1jb6PS-0005qm-5c; Tue, 19 May 2020 19:52:10 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 117451C0178;
-        Tue, 19 May 2020 14:35:42 +0200 (CEST)
-Date:   Tue, 19 May 2020 12:35:41 -0000
-From:   "tip-bot2 for Arvind Sankar" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id AD86D1C0178;
+        Tue, 19 May 2020 19:52:09 +0200 (CEST)
+Date:   Tue, 19 May 2020 17:52:09 -0000
+From:   "tip-bot2 for Nathan Chancellor" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/boot] x86/boot: Correct relocation destination on old linkers
-Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
-        Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200207214926.3564079-1-nivedita@alum.mit.edu>
-References: <20200207214926.3564079-1-nivedita@alum.mit.edu>
+Subject: [tip: x86/urgent] x86/mmiotrace: Use cpumask_available() for
+ cpumask_var_t variables
+Cc:     Sedat Dilek <sedat.dilek@gmail.com>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Borislav Petkov <bp@suse.de>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200408205323.44490-1-natechancellor@gmail.com>
+References: <20200408205323.44490-1-natechancellor@gmail.com>
 MIME-Version: 1.0
-Message-ID: <158989174193.17951.2884071095602421323.tip-bot2@tip-bot2>
+Message-ID: <158991072954.17951.8482066251475445212.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,115 +52,68 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/boot branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     5214028dd89e49ba27007c3ee475279e584261f0
-Gitweb:        https://git.kernel.org/tip/5214028dd89e49ba27007c3ee475279e584261f0
-Author:        Arvind Sankar <nivedita@alum.mit.edu>
-AuthorDate:    Fri, 07 Feb 2020 16:49:26 -05:00
+Commit-ID:     d7110a26e5905ec2fe3fc88bc6a538901accb72b
+Gitweb:        https://git.kernel.org/tip/d7110a26e5905ec2fe3fc88bc6a538901accb72b
+Author:        Nathan Chancellor <natechancellor@gmail.com>
+AuthorDate:    Wed, 08 Apr 2020 13:53:23 -07:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 19 May 2020 14:11:22 +02:00
+CommitterDate: Tue, 19 May 2020 19:30:28 +02:00
 
-x86/boot: Correct relocation destination on old linkers
+x86/mmiotrace: Use cpumask_available() for cpumask_var_t variables
 
-For the 32-bit kernel, as described in
+When building with Clang + -Wtautological-compare and
+CONFIG_CPUMASK_OFFSTACK unset:
 
-  6d92bc9d483a ("x86/build: Build compressed x86 kernels as PIE"),
-
-pre-2.26 binutils generates R_386_32 relocations in PIE mode. Since the
-startup code does not perform relocation, any reloc entry with R_386_32
-will remain as 0 in the executing code.
+  arch/x86/mm/mmio-mod.c:375:6: warning: comparison of array 'downed_cpus'
+  equal to a null pointer is always false [-Wtautological-pointer-compare]
+          if (downed_cpus == NULL &&
+              ^~~~~~~~~~~    ~~~~
+  arch/x86/mm/mmio-mod.c:405:6: warning: comparison of array 'downed_cpus'
+  equal to a null pointer is always false [-Wtautological-pointer-compare]
+          if (downed_cpus == NULL || cpumask_weight(downed_cpus) == 0)
+              ^~~~~~~~~~~    ~~~~
+  2 warnings generated.
 
 Commit
 
-  974f221c84b0 ("x86/boot: Move compressed kernel to the end of the
-                 decompression buffer")
+  f7e30f01a9e2 ("cpumask: Add helper cpumask_available()")
 
-added a new symbol _end but did not mark it hidden, which doesn't give
-the correct offset on older linkers. This causes the compressed kernel
-to be copied beyond the end of the decompression buffer, rather than
-flush against it. This region of memory may be reserved or already
-allocated for other purposes by the bootloader.
+added cpumask_available() to fix warnings of this nature. Use that here
+so that clang does not warn regardless of CONFIG_CPUMASK_OFFSTACK's
+value.
 
-Mark _end as hidden to fix. This changes the relocation from R_386_32 to
-R_386_RELATIVE even on the pre-2.26 binutils.
-
-For 64-bit, this is not strictly necessary, as the 64-bit kernel is only
-built as PIE if the linker supports -z noreloc-overflow, which implies
-binutils-2.27+, but for consistency, mark _end as hidden here too.
-
-The below illustrates the before/after impact of the patch using
-binutils-2.25 and gcc-4.6.4 (locally compiled from source) and QEMU.
-
-  Disassembly before patch:
-    48:   8b 86 60 02 00 00       mov    0x260(%esi),%eax
-    4e:   2d 00 00 00 00          sub    $0x0,%eax
-                          4f: R_386_32    _end
-  Disassembly after patch:
-    48:   8b 86 60 02 00 00       mov    0x260(%esi),%eax
-    4e:   2d 00 f0 76 00          sub    $0x76f000,%eax
-                          4f: R_386_RELATIVE      *ABS*
-
-Dump from extract_kernel before patch:
-	early console in extract_kernel
-	input_data: 0x0207c098 <--- this is at output + init_size
-	input_len: 0x0074fef1
-	output: 0x01000000
-	output_len: 0x00fa63d0
-	kernel_total_size: 0x0107c000
-	needed_size: 0x0107c000
-
-Dump from extract_kernel after patch:
-	early console in extract_kernel
-	input_data: 0x0190d098 <--- this is at output + init_size - _end
-	input_len: 0x0074fef1
-	output: 0x01000000
-	output_len: 0x00fa63d0
-	kernel_total_size: 0x0107c000
-	needed_size: 0x0107c000
-
-Fixes: 974f221c84b0 ("x86/boot: Move compressed kernel to the end of the decompression buffer")
-Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
+Reported-by: Sedat Dilek <sedat.dilek@gmail.com>
+Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20200207214926.3564079-1-nivedita@alum.mit.edu
+Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+Acked-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
+Link: https://github.com/ClangBuiltLinux/linux/issues/982
+Link: https://lkml.kernel.org/r/20200408205323.44490-1-natechancellor@gmail.com
 ---
- arch/x86/boot/compressed/head_32.S | 5 +++--
- arch/x86/boot/compressed/head_64.S | 1 +
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ arch/x86/mm/mmio-mod.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/boot/compressed/head_32.S b/arch/x86/boot/compressed/head_32.S
-index ab33070..03557f2 100644
---- a/arch/x86/boot/compressed/head_32.S
-+++ b/arch/x86/boot/compressed/head_32.S
-@@ -49,16 +49,17 @@
-  * Position Independent Executable (PIE) so that linker won't optimize
-  * R_386_GOT32X relocation to its fixed symbol address.  Older
-  * linkers generate R_386_32 relocations against locally defined symbols,
-- * _bss, _ebss, _got and _egot, in PIE.  It isn't wrong, just less
-+ * _bss, _ebss, _got, _egot and _end, in PIE.  It isn't wrong, just less
-  * optimal than R_386_RELATIVE.  But the x86 kernel fails to properly handle
-  * R_386_32 relocations when relocating the kernel.  To generate
-- * R_386_RELATIVE relocations, we mark _bss, _ebss, _got and _egot as
-+ * R_386_RELATIVE relocations, we mark _bss, _ebss, _got, _egot and _end as
-  * hidden:
-  */
- 	.hidden _bss
- 	.hidden _ebss
- 	.hidden _got
- 	.hidden _egot
-+	.hidden _end
+diff --git a/arch/x86/mm/mmio-mod.c b/arch/x86/mm/mmio-mod.c
+index 109325d..43fd19b 100644
+--- a/arch/x86/mm/mmio-mod.c
++++ b/arch/x86/mm/mmio-mod.c
+@@ -372,7 +372,7 @@ static void enter_uniprocessor(void)
+ 	int cpu;
+ 	int err;
  
- 	__HEAD
- SYM_FUNC_START(startup_32)
-diff --git a/arch/x86/boot/compressed/head_64.S b/arch/x86/boot/compressed/head_64.S
-index 6b11060..e821a7d 100644
---- a/arch/x86/boot/compressed/head_64.S
-+++ b/arch/x86/boot/compressed/head_64.S
-@@ -42,6 +42,7 @@
- 	.hidden _ebss
- 	.hidden _got
- 	.hidden _egot
-+	.hidden _end
+-	if (downed_cpus == NULL &&
++	if (!cpumask_available(downed_cpus) &&
+ 	    !alloc_cpumask_var(&downed_cpus, GFP_KERNEL)) {
+ 		pr_notice("Failed to allocate mask\n");
+ 		goto out;
+@@ -402,7 +402,7 @@ static void leave_uniprocessor(void)
+ 	int cpu;
+ 	int err;
  
- 	__HEAD
- 	.code32
+-	if (downed_cpus == NULL || cpumask_weight(downed_cpus) == 0)
++	if (!cpumask_available(downed_cpus) || cpumask_weight(downed_cpus) == 0)
+ 		return;
+ 	pr_notice("Re-enabling CPUs...\n");
+ 	for_each_cpu(cpu, downed_cpus) {
