@@ -2,100 +2,161 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 403641D9596
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 May 2020 13:49:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 146541D966D
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 May 2020 14:35:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728652AbgESLtJ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 19 May 2020 07:49:09 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57576 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728626AbgESLtJ (ORCPT
+        id S1726471AbgESMfs (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 19 May 2020 08:35:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38842 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726196AbgESMfs (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 19 May 2020 07:49:09 -0400
-Received: from localhost (unknown [137.135.114.1])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1574B20709;
-        Tue, 19 May 2020 11:49:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1589888948;
-        bh=Q9HfJy6VdawZJlpU6m18c2Kc27q9zWaPvUZXoLjBWZU=;
-        h=Date:From:To:To:To:Cc:Cc:Cc:Subject:In-Reply-To:References:From;
-        b=LXbImAaUG/gxP2sv1kmRsdu1I7dAYnpXmvFiBIGtwgn7uCRK8GzguaScc3Gu1L2Lr
-         8Xzy0LGSqqaj6/Ecwt5G/OIjoXs7lPrivgy8Gr4awNmeajFSDJu8P+U8A3GnSVjEXu
-         V42GQcd+4wiVoDYOdfQDo4RjPhXXEcZfrVXUaXTs=
-Date:   Tue, 19 May 2020 11:49:06 +0000
-From:   Sasha Levin <sashal@kernel.org>
-To:     Sasha Levin <sashal@kernel.org>
-To:     "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
+        Tue, 19 May 2020 08:35:48 -0400
+Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8746C08C5C0;
+        Tue, 19 May 2020 05:35:47 -0700 (PDT)
+Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tip-bot2@linutronix.de>)
+        id 1jb1TC-000059-FP; Tue, 19 May 2020 14:35:42 +0200
+Received: from [127.0.1.1] (localhost [IPv6:::1])
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 117451C0178;
+        Tue, 19 May 2020 14:35:42 +0200 (CEST)
+Date:   Tue, 19 May 2020 12:35:41 -0000
+From:   "tip-bot2 for Arvind Sankar" <tip-bot2@linutronix.de>
+Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Cc:     Sergei Trofimovich <slyfox@gentoo.org>
-Cc:     <stable@vger.kernel.org>
-Cc:     stable@vger.kernel.org
-Subject: Re: [tip: x86/urgent] x86: Fix early boot crash on gcc-10, third try
-In-Reply-To: <158954160454.17951.15828011095215471629.tip-bot2@tip-bot2>
-References: <158954160454.17951.15828011095215471629.tip-bot2@tip-bot2>
-Message-Id: <20200519114908.1574B20709@mail.kernel.org>
+Subject: [tip: x86/boot] x86/boot: Correct relocation destination on old linkers
+Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
+        Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200207214926.3564079-1-nivedita@alum.mit.edu>
+References: <20200207214926.3564079-1-nivedita@alum.mit.edu>
+MIME-Version: 1.0
+Message-ID: <158989174193.17951.2884071095602421323.tip-bot2@tip-bot2>
+X-Mailer: tip-git-log-daemon
+Robot-ID: <tip-bot2.linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-Hi
+The following commit has been merged into the x86/boot branch of tip:
 
-[This is an automated email]
+Commit-ID:     5214028dd89e49ba27007c3ee475279e584261f0
+Gitweb:        https://git.kernel.org/tip/5214028dd89e49ba27007c3ee475279e584261f0
+Author:        Arvind Sankar <nivedita@alum.mit.edu>
+AuthorDate:    Fri, 07 Feb 2020 16:49:26 -05:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Tue, 19 May 2020 14:11:22 +02:00
 
-This commit has been processed because it contains a -stable tag.
-The stable tag indicates that it's relevant for the following trees: all
+x86/boot: Correct relocation destination on old linkers
 
-The bot has tested the following trees: v5.6.13, v5.4.41, v4.19.123, v4.14.180, v4.9.223, v4.4.223.
+For the 32-bit kernel, as described in
 
-v5.6.13: Build OK!
-v5.4.41: Build OK!
-v4.19.123: Failed to apply! Possible dependencies:
-    53c99bd665a2 ("init: add arch_call_rest_init to allow stack switching")
-    ec0bbef66f86 ("Compiler Attributes: homogenize __must_be_array")
+  6d92bc9d483a ("x86/build: Build compressed x86 kernels as PIE"),
 
-v4.14.180: Failed to apply! Possible dependencies:
-    53c99bd665a2 ("init: add arch_call_rest_init to allow stack switching")
-    771c035372a0 ("deprecate the '__deprecated' attribute warnings entirely and for good")
-    815f0ddb346c ("include/linux/compiler*.h: make compiler-*.h mutually exclusive")
-    8793bb7f4a9d ("kbuild: add macro for controlling warnings to linux/compiler.h")
-    cafa0010cd51 ("Raise the minimum required gcc version to 4.6")
-    ec0bbef66f86 ("Compiler Attributes: homogenize __must_be_array")
+pre-2.26 binutils generates R_386_32 relocations in PIE mode. Since the
+startup code does not perform relocation, any reloc entry with R_386_32
+will remain as 0 in the executing code.
 
-v4.9.223: Failed to apply! Possible dependencies:
-    1cec20f0ea0e ("dma-buf: Restart reservation_object_wait_timeout_rcu() after writes")
-    38b8d208a454 ("sched/headers: Prepare for new header dependencies before moving code to <linux/sched/nmi.h>")
-    555570d744f8 ("sched/clock: Update static_key usage")
-    78010cd9736e ("dma-buf/fence: add an lockdep_assert_held()")
-    83b96794e0ea ("x86/xen: split off smp_pv.c")
-    983de5f97169 ("firmware: tegra: Add BPMP support")
-    9881b024b7d7 ("sched/clock: Delay switching sched_clock to stable")
-    a52482d9355e ("x86/xen: split off smp_hvm.c")
-    aa1c84e8ca7f ("x86/xen: split xen_cpu_die()")
-    acb04058de49 ("sched/clock: Fix hotplug crash")
-    b52992c06c90 ("drm/i915: Support asynchronous waits on struct fence from i915_gem_request")
-    ca791d7f4256 ("firmware: tegra: Add IVC library")
-    e601757102cf ("sched/headers: Prepare for new header dependencies before moving code to <linux/sched/clock.h>")
-    f54d1867005c ("dma-buf: Rename struct fence to dma_fence")
-    fedf54132d24 ("dma-buf: Restart reservation_object_get_fences_rcu() after writes")
+Commit
 
-v4.4.223: Failed to apply! Possible dependencies:
-    090e77c391dd ("cpu/hotplug: Restructure FROZEN state handling")
-    1cf4f629d9d2 ("cpu/hotplug: Move online calls to hotplugged cpu")
-    4baa0afc6719 ("cpu/hotplug: Convert the hotplugged cpu work to a state machine")
-    949338e35131 ("cpu/hotplug: Move scheduler cpu_online notifier to hotplug core")
-    984581728eb4 ("cpu/hotplug: Split out cpu down functions")
-    ba997462435f ("cpu/hotplug: Restructure cpu_up code")
-    cff7d378d3fd ("cpu/hotplug: Convert to a state machine for the control processor")
-    fc6d73d67436 ("arch/hotplug: Call into idle with a proper state")
+  974f221c84b0 ("x86/boot: Move compressed kernel to the end of the
+                 decompression buffer")
 
+added a new symbol _end but did not mark it hidden, which doesn't give
+the correct offset on older linkers. This causes the compressed kernel
+to be copied beyond the end of the decompression buffer, rather than
+flush against it. This region of memory may be reserved or already
+allocated for other purposes by the bootloader.
 
-NOTE: The patch will not be queued to stable trees until it is upstream.
+Mark _end as hidden to fix. This changes the relocation from R_386_32 to
+R_386_RELATIVE even on the pre-2.26 binutils.
 
-How should we proceed with this patch?
+For 64-bit, this is not strictly necessary, as the 64-bit kernel is only
+built as PIE if the linker supports -z noreloc-overflow, which implies
+binutils-2.27+, but for consistency, mark _end as hidden here too.
 
--- 
-Thanks
-Sasha
+The below illustrates the before/after impact of the patch using
+binutils-2.25 and gcc-4.6.4 (locally compiled from source) and QEMU.
+
+  Disassembly before patch:
+    48:   8b 86 60 02 00 00       mov    0x260(%esi),%eax
+    4e:   2d 00 00 00 00          sub    $0x0,%eax
+                          4f: R_386_32    _end
+  Disassembly after patch:
+    48:   8b 86 60 02 00 00       mov    0x260(%esi),%eax
+    4e:   2d 00 f0 76 00          sub    $0x76f000,%eax
+                          4f: R_386_RELATIVE      *ABS*
+
+Dump from extract_kernel before patch:
+	early console in extract_kernel
+	input_data: 0x0207c098 <--- this is at output + init_size
+	input_len: 0x0074fef1
+	output: 0x01000000
+	output_len: 0x00fa63d0
+	kernel_total_size: 0x0107c000
+	needed_size: 0x0107c000
+
+Dump from extract_kernel after patch:
+	early console in extract_kernel
+	input_data: 0x0190d098 <--- this is at output + init_size - _end
+	input_len: 0x0074fef1
+	output: 0x01000000
+	output_len: 0x00fa63d0
+	kernel_total_size: 0x0107c000
+	needed_size: 0x0107c000
+
+Fixes: 974f221c84b0 ("x86/boot: Move compressed kernel to the end of the decompression buffer")
+Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lkml.kernel.org/r/20200207214926.3564079-1-nivedita@alum.mit.edu
+---
+ arch/x86/boot/compressed/head_32.S | 5 +++--
+ arch/x86/boot/compressed/head_64.S | 1 +
+ 2 files changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/arch/x86/boot/compressed/head_32.S b/arch/x86/boot/compressed/head_32.S
+index ab33070..03557f2 100644
+--- a/arch/x86/boot/compressed/head_32.S
++++ b/arch/x86/boot/compressed/head_32.S
+@@ -49,16 +49,17 @@
+  * Position Independent Executable (PIE) so that linker won't optimize
+  * R_386_GOT32X relocation to its fixed symbol address.  Older
+  * linkers generate R_386_32 relocations against locally defined symbols,
+- * _bss, _ebss, _got and _egot, in PIE.  It isn't wrong, just less
++ * _bss, _ebss, _got, _egot and _end, in PIE.  It isn't wrong, just less
+  * optimal than R_386_RELATIVE.  But the x86 kernel fails to properly handle
+  * R_386_32 relocations when relocating the kernel.  To generate
+- * R_386_RELATIVE relocations, we mark _bss, _ebss, _got and _egot as
++ * R_386_RELATIVE relocations, we mark _bss, _ebss, _got, _egot and _end as
+  * hidden:
+  */
+ 	.hidden _bss
+ 	.hidden _ebss
+ 	.hidden _got
+ 	.hidden _egot
++	.hidden _end
+ 
+ 	__HEAD
+ SYM_FUNC_START(startup_32)
+diff --git a/arch/x86/boot/compressed/head_64.S b/arch/x86/boot/compressed/head_64.S
+index 6b11060..e821a7d 100644
+--- a/arch/x86/boot/compressed/head_64.S
++++ b/arch/x86/boot/compressed/head_64.S
+@@ -42,6 +42,7 @@
+ 	.hidden _ebss
+ 	.hidden _got
+ 	.hidden _egot
++	.hidden _end
+ 
+ 	__HEAD
+ 	.code32
