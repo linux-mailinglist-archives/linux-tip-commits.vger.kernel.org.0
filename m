@@ -2,40 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DD2DE1D9FF0
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 May 2020 20:47:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C3BFD1D9FC7
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 May 2020 20:44:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727835AbgESSra (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 19 May 2020 14:47:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40690 "EHLO
+        id S1726990AbgESSoT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 19 May 2020 14:44:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40172 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726290AbgESSra (ORCPT
+        with ESMTP id S1726903AbgESSoT (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 19 May 2020 14:47:30 -0400
+        Tue, 19 May 2020 14:44:19 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C74BAC08C5C0;
-        Tue, 19 May 2020 11:47:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCDFCC08C5C0;
+        Tue, 19 May 2020 11:44:18 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jb7Dq-0006cE-MY; Tue, 19 May 2020 20:44:14 +0200
+        id 1jb7Dr-0006cq-FS; Tue, 19 May 2020 20:44:15 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 50DA11C047E;
-        Tue, 19 May 2020 20:44:14 +0200 (CEST)
-Date:   Tue, 19 May 2020 18:44:14 -0000
-From:   "tip-bot2 for Huaixin Chang" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 1C3F31C047E;
+        Tue, 19 May 2020 20:44:15 +0200 (CEST)
+Date:   Tue, 19 May 2020 18:44:15 -0000
+From:   "tip-bot2 for Gustavo A. R. Silva" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched: Defend cfs and rt bandwidth quota against overflow
-Cc:     Huaixin Chang <changhuaixin@linux.alibaba.com>,
+Subject: [tip: sched/core] sched/fair: Replace zero-length array with flexible-array
+Cc:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Ben Segall <bsegall@google.com>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200425105248.60093-1-changhuaixin@linux.alibaba.com>
-References: <20200425105248.60093-1-changhuaixin@linux.alibaba.com>
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200507192141.GA16183@embeddedor>
+References: <20200507192141.GA16183@embeddedor>
 MIME-Version: 1.0
-Message-ID: <158991385425.17951.13987676828295873063.tip-bot2@tip-bot2>
+Message-ID: <158991385502.17951.1325330133750697343.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,107 +50,81 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     d505b8af58912ae1e1a211fabc9995b19bd40828
-Gitweb:        https://git.kernel.org/tip/d505b8af58912ae1e1a211fabc9995b19bd40828
-Author:        Huaixin Chang <changhuaixin@linux.alibaba.com>
-AuthorDate:    Sat, 25 Apr 2020 18:52:48 +08:00
+Commit-ID:     04f5c362ec6d3ff0e14f1c05230b550da7f528a4
+Gitweb:        https://git.kernel.org/tip/04f5c362ec6d3ff0e14f1c05230b550da7f528a4
+Author:        Gustavo A. R. Silva <gustavoars@kernel.org>
+AuthorDate:    Thu, 07 May 2020 14:21:41 -05:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Tue, 19 May 2020 20:34:14 +02:00
 
-sched: Defend cfs and rt bandwidth quota against overflow
+sched/fair: Replace zero-length array with flexible-array
 
-When users write some huge number into cpu.cfs_quota_us or
-cpu.rt_runtime_us, overflow might happen during to_ratio() shifts of
-schedulable checks.
+The current codebase makes use of the zero-length array language
+extension to the C90 standard, but the preferred mechanism to declare
+variable-length types such as these ones is a flexible array member[1][2],
+introduced in C99:
 
-to_ratio() could be altered to avoid unnecessary internal overflow, but
-min_cfs_quota_period is less than 1 << BW_SHIFT, so a cutoff would still
-be needed. Set a cap MAX_BW for cfs_quota_us and rt_runtime_us to
-prevent overflow.
+struct foo {
+        int stuff;
+        struct boo array[];
+};
 
-Signed-off-by: Huaixin Chang <changhuaixin@linux.alibaba.com>
+By making use of the mechanism above, we will get a compiler warning
+in case the flexible array does not occur last in the structure, which
+will help us prevent some kind of undefined behavior bugs from being
+inadvertently introduced[3] to the codebase from now on.
+
+Also, notice that, dynamic memory allocations won't be affected by
+this change:
+
+"Flexible array members have incomplete type, and so the sizeof operator
+may not be applied. As a quirk of the original implementation of
+zero-length arrays, sizeof evaluates to zero."[1]
+
+sizeof(flexible-array-member) triggers a warning because flexible array
+members have incomplete type[1]. There are some instances of code in
+which the sizeof operator is being incorrectly/erroneously applied to
+zero-length arrays and the result is zero. Such instances may be hiding
+some bugs. So, this work (flexible-array member conversions) will also
+help to get completely rid of those sorts of issues.
+
+This issue was found with the help of Coccinelle.
+
+[1] https://gcc.gnu.org/onlinedocs/gcc/Zero-Length.html
+[2] https://github.com/KSPP/linux/issues/21
+[3] commit 76497732932f ("cxgb3/l2t: Fix undefined behaviour")
+
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Ben Segall <bsegall@google.com>
-Link: https://lkml.kernel.org/r/20200425105248.60093-1-changhuaixin@linux.alibaba.com
+Link: https://lkml.kernel.org/r/20200507192141.GA16183@embeddedor
 ---
- kernel/sched/core.c  |  8 ++++++++
- kernel/sched/rt.c    | 12 +++++++++++-
- kernel/sched/sched.h |  2 ++
- 3 files changed, 21 insertions(+), 1 deletion(-)
+ kernel/sched/fair.c  | 2 +-
+ kernel/sched/sched.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 74fb89b..fa905b6 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -7379,6 +7379,8 @@ static DEFINE_MUTEX(cfs_constraints_mutex);
- 
- const u64 max_cfs_quota_period = 1 * NSEC_PER_SEC; /* 1s */
- static const u64 min_cfs_quota_period = 1 * NSEC_PER_MSEC; /* 1ms */
-+/* More than 203 days if BW_SHIFT equals 20. */
-+static const u64 max_cfs_runtime = MAX_BW * NSEC_PER_USEC;
- 
- static int __cfs_schedulable(struct task_group *tg, u64 period, u64 runtime);
- 
-@@ -7407,6 +7409,12 @@ static int tg_set_cfs_bandwidth(struct task_group *tg, u64 period, u64 quota)
- 		return -EINVAL;
- 
- 	/*
-+	 * Bound quota to defend quota against overflow during bandwidth shift.
-+	 */
-+	if (quota != RUNTIME_INF && quota > max_cfs_runtime)
-+		return -EINVAL;
-+
-+	/*
- 	 * Prevent race between setting of cfs_rq->runtime_enabled and
- 	 * unthrottle_offline_cfs_rqs().
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 44b0c8e..01f94cf 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -1094,7 +1094,7 @@ struct numa_group {
+ 	 * more by CPU use than by memory faults.
  	 */
-diff --git a/kernel/sched/rt.c b/kernel/sched/rt.c
-index df11d88..6d60ba2 100644
---- a/kernel/sched/rt.c
-+++ b/kernel/sched/rt.c
-@@ -9,6 +9,8 @@
+ 	unsigned long *faults_cpu;
+-	unsigned long faults[0];
++	unsigned long faults[];
+ };
  
- int sched_rr_timeslice = RR_TIMESLICE;
- int sysctl_sched_rr_timeslice = (MSEC_PER_SEC / HZ) * RR_TIMESLICE;
-+/* More than 4 hours if BW_SHIFT equals 20. */
-+static const u64 max_rt_runtime = MAX_BW;
- 
- static int do_sched_rt_period_timer(struct rt_bandwidth *rt_b, int overrun);
- 
-@@ -2585,6 +2587,12 @@ static int tg_set_rt_bandwidth(struct task_group *tg,
- 	if (rt_period == 0)
- 		return -EINVAL;
- 
-+	/*
-+	 * Bound quota to defend quota against overflow during bandwidth shift.
-+	 */
-+	if (rt_runtime != RUNTIME_INF && rt_runtime > max_rt_runtime)
-+		return -EINVAL;
-+
- 	mutex_lock(&rt_constraints_mutex);
- 	err = __rt_schedulable(tg, rt_period, rt_runtime);
- 	if (err)
-@@ -2702,7 +2710,9 @@ static int sched_rt_global_validate(void)
- 		return -EINVAL;
- 
- 	if ((sysctl_sched_rt_runtime != RUNTIME_INF) &&
--		(sysctl_sched_rt_runtime > sysctl_sched_rt_period))
-+		((sysctl_sched_rt_runtime > sysctl_sched_rt_period) ||
-+		 ((u64)sysctl_sched_rt_runtime *
-+			NSEC_PER_USEC > max_rt_runtime)))
- 		return -EINVAL;
- 
- 	return 0;
+ /*
 diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index 2bd2a22..f7ab633 100644
+index 21416b3..2bd2a22 100644
 --- a/kernel/sched/sched.h
 +++ b/kernel/sched/sched.h
-@@ -1915,6 +1915,8 @@ extern void init_dl_inactive_task_timer(struct sched_dl_entity *dl_se);
- #define BW_SHIFT		20
- #define BW_UNIT			(1 << BW_SHIFT)
- #define RATIO_SHIFT		8
-+#define MAX_BW_BITS		(64 - BW_SHIFT)
-+#define MAX_BW			((1ULL << MAX_BW_BITS) - 1)
- unsigned long to_ratio(u64 period, u64 runtime);
+@@ -1462,7 +1462,7 @@ struct sched_group {
+ 	 * by attaching extra space to the end of the structure,
+ 	 * depending on how many CPUs the kernel has booted up with)
+ 	 */
+-	unsigned long		cpumask[0];
++	unsigned long		cpumask[];
+ };
  
- extern void init_entity_runnable_average(struct sched_entity *se);
+ static inline struct cpumask *sched_group_span(struct sched_group *sg)
