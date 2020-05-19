@@ -2,42 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 892291DA1D9
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 May 2020 22:00:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 746841DA1C5
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 May 2020 22:00:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728301AbgESUAj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 19 May 2020 16:00:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52118 "EHLO
+        id S1728437AbgESUAH (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 19 May 2020 16:00:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728354AbgEST7H (ORCPT
+        with ESMTP id S1728396AbgEST7M (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 19 May 2020 15:59:07 -0400
+        Tue, 19 May 2020 15:59:12 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12006C08C5C1;
-        Tue, 19 May 2020 12:59:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92B8DC08C5C2;
+        Tue, 19 May 2020 12:59:12 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jb8OD-0000EP-CN; Tue, 19 May 2020 21:59:01 +0200
+        id 1jb8OJ-0000FG-Gf; Tue, 19 May 2020 21:59:07 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 392F81C081A;
-        Tue, 19 May 2020 21:58:47 +0200 (CEST)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 1B4091C0853;
+        Tue, 19 May 2020 21:58:48 +0200 (CEST)
 Date:   Tue, 19 May 2020 19:58:47 -0000
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/entry] context_tracking: Ensure that the critical path
- cannot be instrumented
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
+Subject: [tip: x86/entry] lockdep: Prepare for noinstr sections
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
         Alexandre Chartre <alexandre.chartre@oracle.com>,
-        Peter Zijlstra <peterz@infradead.org>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200505134340.811520478@linutronix.de>
-References: <20200505134340.811520478@linutronix.de>
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200505134100.484532537@linutronix.de>
+References: <20200505134100.484532537@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <158991832711.17951.17680486990525808112.tip-bot2@tip-bot2>
+Message-ID: <158991832797.17951.6526047446168762670.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -53,188 +51,252 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/entry branch of tip:
 
-Commit-ID:     fcb10ef4544407ecdb536f9563fe63afcad44209
-Gitweb:        https://git.kernel.org/tip/fcb10ef4544407ecdb536f9563fe63afcad44209
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Wed, 04 Mar 2020 11:05:22 +01:00
+Commit-ID:     c86e9b987cea3dd0209203e714553a47f5d7c6dd
+Gitweb:        https://git.kernel.org/tip/c86e9b987cea3dd0209203e714553a47f5d7c6dd
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Wed, 18 Mar 2020 14:22:03 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 19 May 2020 15:47:22 +02:00
+CommitterDate: Tue, 19 May 2020 15:47:21 +02:00
 
-context_tracking: Ensure that the critical path cannot be instrumented
+lockdep: Prepare for noinstr sections
 
-context tracking lacks a few protection mechanisms against instrumentation:
+Force inlining and prevent instrumentation of all sorts by marking the
+functions which are invoked from low level entry code with 'noinstr'.
 
- - While the core functions are marked NOKPROBE they lack protection
-   against function tracing which is required as the function entry/exit
-   points can be utilized by BPF.
+Split the irqflags tracking into two parts. One which does the heavy
+lifting while RCU is watching and the final one which can be invoked after
+RCU is turned off.
 
- - static functions invoked from the protected functions need to be marked
-   as well as they can be instrumented otherwise.
-
- - using plain inline allows the compiler to emit traceable and probable
-   functions.
-
-Fix this by marking the functions noinstr and converting the plain inlines
-to __always_inline.
-
-The NOKPROBE_SYMBOL() annotations are removed as the .noinstr.text section
-is already excluded from being probed.
-
-Cures the following objtool warnings:
-
- vmlinux.o: warning: objtool: enter_from_user_mode()+0x34: call to __context_tracking_exit() leaves .noinstr.text section
- vmlinux.o: warning: objtool: prepare_exit_to_usermode()+0x29: call to __context_tracking_enter() leaves .noinstr.text section
- vmlinux.o: warning: objtool: syscall_return_slowpath()+0x29: call to __context_tracking_enter() leaves .noinstr.text section
- vmlinux.o: warning: objtool: do_syscall_64()+0x7f: call to __context_tracking_enter() leaves .noinstr.text section
- vmlinux.o: warning: objtool: do_int80_syscall_32()+0x3d: call to __context_tracking_enter() leaves .noinstr.text section
- vmlinux.o: warning: objtool: do_fast_syscall_32()+0x9c: call to __context_tracking_enter() leaves .noinstr.text section
-
-and generates new ones...
-
+Signed-off-by: Peter Zijlstra <peterz@infradead.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Masami Hiramatsu <mhiramat@kernel.org>
 Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
-Acked-by: Peter Zijlstra <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20200505134340.811520478@linutronix.de
+Link: https://lkml.kernel.org/r/20200505134100.484532537@linutronix.de
 
 
 ---
- include/linux/context_tracking.h       |  6 +++---
- include/linux/context_tracking_state.h |  6 +++---
- kernel/context_tracking.c              | 14 ++++++++------
- 3 files changed, 14 insertions(+), 12 deletions(-)
+ include/linux/irqflags.h        |  2 +-
+ include/linux/sched.h           |  1 +-
+ kernel/locking/lockdep.c        | 86 ++++++++++++++++++++++++--------
+ kernel/trace/trace_preemptirq.c |  2 +-
+ lib/debug_locks.c               |  2 +-
+ 5 files changed, 71 insertions(+), 22 deletions(-)
 
-diff --git a/include/linux/context_tracking.h b/include/linux/context_tracking.h
-index 8cac62e..981b880 100644
---- a/include/linux/context_tracking.h
-+++ b/include/linux/context_tracking.h
-@@ -33,13 +33,13 @@ static inline void user_exit(void)
- }
- 
- /* Called with interrupts disabled.  */
--static inline void user_enter_irqoff(void)
-+static __always_inline void user_enter_irqoff(void)
- {
- 	if (context_tracking_enabled())
- 		__context_tracking_enter(CONTEXT_USER);
- 
- }
--static inline void user_exit_irqoff(void)
-+static __always_inline void user_exit_irqoff(void)
- {
- 	if (context_tracking_enabled())
- 		__context_tracking_exit(CONTEXT_USER);
-@@ -75,7 +75,7 @@ static inline void exception_exit(enum ctx_state prev_ctx)
-  * is enabled.  If context tracking is disabled, returns
-  * CONTEXT_DISABLED.  This should be used primarily for debugging.
+diff --git a/include/linux/irqflags.h b/include/linux/irqflags.h
+index f150e69..d7f7e43 100644
+--- a/include/linux/irqflags.h
++++ b/include/linux/irqflags.h
+@@ -19,11 +19,13 @@
+ #ifdef CONFIG_PROVE_LOCKING
+   extern void lockdep_softirqs_on(unsigned long ip);
+   extern void lockdep_softirqs_off(unsigned long ip);
++  extern void lockdep_hardirqs_on_prepare(unsigned long ip);
+   extern void lockdep_hardirqs_on(unsigned long ip);
+   extern void lockdep_hardirqs_off(unsigned long ip);
+ #else
+   static inline void lockdep_softirqs_on(unsigned long ip) { }
+   static inline void lockdep_softirqs_off(unsigned long ip) { }
++  static inline void lockdep_hardirqs_on_prepare(unsigned long ip) { }
+   static inline void lockdep_hardirqs_on(unsigned long ip) { }
+   static inline void lockdep_hardirqs_off(unsigned long ip) { }
+ #endif
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index 4418f5c..658de61 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -983,6 +983,7 @@ struct task_struct {
+ 	unsigned int			hardirq_disable_event;
+ 	int				hardirqs_enabled;
+ 	int				hardirq_context;
++	u64				hardirq_chain_key;
+ 	unsigned long			softirq_disable_ip;
+ 	unsigned long			softirq_enable_ip;
+ 	unsigned int			softirq_disable_event;
+diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
+index ac10db6..9ccd675 100644
+--- a/kernel/locking/lockdep.c
++++ b/kernel/locking/lockdep.c
+@@ -3635,13 +3635,10 @@ mark_held_locks(struct task_struct *curr, enum lock_usage_bit base_bit)
+ /*
+  * Hardirqs will be enabled:
   */
--static inline enum ctx_state ct_state(void)
-+static __always_inline enum ctx_state ct_state(void)
+-static void __trace_hardirqs_on_caller(unsigned long ip)
++static void __trace_hardirqs_on_caller(void)
  {
- 	return context_tracking_enabled() ?
- 		this_cpu_read(context_tracking.state) : CONTEXT_DISABLED;
-diff --git a/include/linux/context_tracking_state.h b/include/linux/context_tracking_state.h
-index e7fe667..65a60d3 100644
---- a/include/linux/context_tracking_state.h
-+++ b/include/linux/context_tracking_state.h
-@@ -26,12 +26,12 @@ struct context_tracking {
- extern struct static_key_false context_tracking_key;
- DECLARE_PER_CPU(struct context_tracking, context_tracking);
+ 	struct task_struct *curr = current;
  
--static inline bool context_tracking_enabled(void)
-+static __always_inline bool context_tracking_enabled(void)
- {
- 	return static_branch_unlikely(&context_tracking_key);
+-	/* we'll do an OFF -> ON transition: */
+-	curr->hardirqs_enabled = 1;
+-
+ 	/*
+ 	 * We are going to turn hardirqs on, so set the
+ 	 * usage bit for all held locks:
+@@ -3654,15 +3651,19 @@ static void __trace_hardirqs_on_caller(unsigned long ip)
+ 	 * this bit from being set before)
+ 	 */
+ 	if (curr->softirqs_enabled)
+-		if (!mark_held_locks(curr, LOCK_ENABLED_SOFTIRQ))
+-			return;
+-
+-	curr->hardirq_enable_ip = ip;
+-	curr->hardirq_enable_event = ++curr->irq_events;
+-	debug_atomic_inc(hardirqs_on_events);
++		mark_held_locks(curr, LOCK_ENABLED_SOFTIRQ);
  }
  
--static inline bool context_tracking_enabled_cpu(int cpu)
-+static __always_inline bool context_tracking_enabled_cpu(int cpu)
+-void lockdep_hardirqs_on(unsigned long ip)
++/**
++ * lockdep_hardirqs_on_prepare - Prepare for enabling interrupts
++ * @ip:		Caller address
++ *
++ * Invoked before a possible transition to RCU idle from exit to user or
++ * guest mode. This ensures that all RCU operations are done before RCU
++ * stops watching. After the RCU transition lockdep_hardirqs_on() has to be
++ * invoked to set the final state.
++ */
++void lockdep_hardirqs_on_prepare(unsigned long ip)
  {
- 	return context_tracking_enabled() && per_cpu(context_tracking.active, cpu);
- }
-@@ -41,7 +41,7 @@ static inline bool context_tracking_enabled_this_cpu(void)
- 	return context_tracking_enabled() && __this_cpu_read(context_tracking.active);
- }
- 
--static inline bool context_tracking_in_user(void)
-+static __always_inline bool context_tracking_in_user(void)
- {
- 	return __this_cpu_read(context_tracking.state) == CONTEXT_USER;
- }
-diff --git a/kernel/context_tracking.c b/kernel/context_tracking.c
-index ce43088..36a98c4 100644
---- a/kernel/context_tracking.c
-+++ b/kernel/context_tracking.c
-@@ -31,7 +31,7 @@ EXPORT_SYMBOL_GPL(context_tracking_key);
- DEFINE_PER_CPU(struct context_tracking, context_tracking);
- EXPORT_SYMBOL_GPL(context_tracking);
- 
--static bool context_tracking_recursion_enter(void)
-+static noinstr bool context_tracking_recursion_enter(void)
- {
- 	int recursion;
- 
-@@ -45,7 +45,7 @@ static bool context_tracking_recursion_enter(void)
- 	return false;
- }
- 
--static void context_tracking_recursion_exit(void)
-+static __always_inline void context_tracking_recursion_exit(void)
- {
- 	__this_cpu_dec(context_tracking.recursion);
- }
-@@ -59,7 +59,7 @@ static void context_tracking_recursion_exit(void)
-  * instructions to execute won't use any RCU read side critical section
-  * because this function sets RCU in extended quiescent state.
-  */
--void __context_tracking_enter(enum ctx_state state)
-+void noinstr __context_tracking_enter(enum ctx_state state)
- {
- 	/* Kernel threads aren't supposed to go to userspace */
- 	WARN_ON_ONCE(!current->mm);
-@@ -77,8 +77,10 @@ void __context_tracking_enter(enum ctx_state state)
- 			 * on the tick.
- 			 */
- 			if (state == CONTEXT_USER) {
-+				instrumentation_begin();
- 				trace_user_enter(0);
- 				vtime_user_enter(current);
-+				instrumentation_end();
- 			}
- 			rcu_user_enter();
- 		}
-@@ -99,7 +101,6 @@ void __context_tracking_enter(enum ctx_state state)
- 	}
- 	context_tracking_recursion_exit();
- }
--NOKPROBE_SYMBOL(__context_tracking_enter);
- EXPORT_SYMBOL_GPL(__context_tracking_enter);
- 
- void context_tracking_enter(enum ctx_state state)
-@@ -142,7 +143,7 @@ NOKPROBE_SYMBOL(context_tracking_user_enter);
-  * This call supports re-entrancy. This way it can be called from any exception
-  * handler without needing to know if we came from userspace or not.
-  */
--void __context_tracking_exit(enum ctx_state state)
-+void noinstr __context_tracking_exit(enum ctx_state state)
- {
- 	if (!context_tracking_recursion_enter())
+ 	if (unlikely(!debug_locks || current->lockdep_recursion))
  		return;
-@@ -155,15 +156,16 @@ void __context_tracking_exit(enum ctx_state state)
- 			 */
- 			rcu_user_exit();
- 			if (state == CONTEXT_USER) {
-+				instrumentation_begin();
- 				vtime_user_exit(current);
- 				trace_user_exit(0);
-+				instrumentation_end();
- 			}
- 		}
- 		__this_cpu_write(context_tracking.state, CONTEXT_KERNEL);
- 	}
- 	context_tracking_recursion_exit();
- }
--NOKPROBE_SYMBOL(__context_tracking_exit);
- EXPORT_SYMBOL_GPL(__context_tracking_exit);
+@@ -3698,20 +3699,62 @@ void lockdep_hardirqs_on(unsigned long ip)
+ 	if (DEBUG_LOCKS_WARN_ON(current->hardirq_context))
+ 		return;
  
- void context_tracking_exit(enum ctx_state state)
++	current->hardirq_chain_key = current->curr_chain_key;
++
+ 	current->lockdep_recursion++;
+-	__trace_hardirqs_on_caller(ip);
++	__trace_hardirqs_on_caller();
+ 	lockdep_recursion_finish();
+ }
+-NOKPROBE_SYMBOL(lockdep_hardirqs_on);
++EXPORT_SYMBOL_GPL(lockdep_hardirqs_on_prepare);
++
++void noinstr lockdep_hardirqs_on(unsigned long ip)
++{
++	struct task_struct *curr = current;
++
++	if (unlikely(!debug_locks || curr->lockdep_recursion))
++		return;
++
++	if (curr->hardirqs_enabled) {
++		/*
++		 * Neither irq nor preemption are disabled here
++		 * so this is racy by nature but losing one hit
++		 * in a stat is not a big deal.
++		 */
++		__debug_atomic_inc(redundant_hardirqs_on);
++		return;
++	}
++
++	/*
++	 * We're enabling irqs and according to our state above irqs weren't
++	 * already enabled, yet we find the hardware thinks they are in fact
++	 * enabled.. someone messed up their IRQ state tracing.
++	 */
++	if (DEBUG_LOCKS_WARN_ON(!irqs_disabled()))
++		return;
++
++	/*
++	 * Ensure the lock stack remained unchanged between
++	 * lockdep_hardirqs_on_prepare() and lockdep_hardirqs_on().
++	 */
++	DEBUG_LOCKS_WARN_ON(current->hardirq_chain_key !=
++			    current->curr_chain_key);
++
++	/* we'll do an OFF -> ON transition: */
++	curr->hardirqs_enabled = 1;
++	curr->hardirq_enable_ip = ip;
++	curr->hardirq_enable_event = ++curr->irq_events;
++	debug_atomic_inc(hardirqs_on_events);
++}
++EXPORT_SYMBOL_GPL(lockdep_hardirqs_on);
+ 
+ /*
+  * Hardirqs were disabled:
+  */
+-void lockdep_hardirqs_off(unsigned long ip)
++void noinstr lockdep_hardirqs_off(unsigned long ip)
+ {
+ 	struct task_struct *curr = current;
+ 
+-	if (unlikely(!debug_locks || current->lockdep_recursion))
++	if (unlikely(!debug_locks || curr->lockdep_recursion))
+ 		return;
+ 
+ 	/*
+@@ -3729,10 +3772,11 @@ void lockdep_hardirqs_off(unsigned long ip)
+ 		curr->hardirq_disable_ip = ip;
+ 		curr->hardirq_disable_event = ++curr->irq_events;
+ 		debug_atomic_inc(hardirqs_off_events);
+-	} else
++	} else {
+ 		debug_atomic_inc(redundant_hardirqs_off);
++	}
+ }
+-NOKPROBE_SYMBOL(lockdep_hardirqs_off);
++EXPORT_SYMBOL_GPL(lockdep_hardirqs_off);
+ 
+ /*
+  * Softirqs will be enabled:
+@@ -4408,8 +4452,8 @@ static void print_unlock_imbalance_bug(struct task_struct *curr,
+ 	dump_stack();
+ }
+ 
+-static int match_held_lock(const struct held_lock *hlock,
+-					const struct lockdep_map *lock)
++static noinstr int match_held_lock(const struct held_lock *hlock,
++				   const struct lockdep_map *lock)
+ {
+ 	if (hlock->instance == lock)
+ 		return 1;
+@@ -4696,7 +4740,7 @@ __lock_release(struct lockdep_map *lock, unsigned long ip)
+ 	return 0;
+ }
+ 
+-static nokprobe_inline
++static __always_inline
+ int __lock_is_held(const struct lockdep_map *lock, int read)
+ {
+ 	struct task_struct *curr = current;
+@@ -4956,7 +5000,7 @@ void lock_release(struct lockdep_map *lock, unsigned long ip)
+ }
+ EXPORT_SYMBOL_GPL(lock_release);
+ 
+-int lock_is_held_type(const struct lockdep_map *lock, int read)
++noinstr int lock_is_held_type(const struct lockdep_map *lock, int read)
+ {
+ 	unsigned long flags;
+ 	int ret = 0;
+diff --git a/kernel/trace/trace_preemptirq.c b/kernel/trace/trace_preemptirq.c
+index c008801..fb0691b 100644
+--- a/kernel/trace/trace_preemptirq.c
++++ b/kernel/trace/trace_preemptirq.c
+@@ -46,6 +46,7 @@ void trace_hardirqs_on(void)
+ 		this_cpu_write(tracing_irq_cpu, 0);
+ 	}
+ 
++	lockdep_hardirqs_on_prepare(CALLER_ADDR0);
+ 	lockdep_hardirqs_on(CALLER_ADDR0);
+ }
+ EXPORT_SYMBOL(trace_hardirqs_on);
+@@ -93,6 +94,7 @@ __visible void trace_hardirqs_on_caller(unsigned long caller_addr)
+ 		this_cpu_write(tracing_irq_cpu, 0);
+ 	}
+ 
++	lockdep_hardirqs_on_prepare(CALLER_ADDR0);
+ 	lockdep_hardirqs_on(CALLER_ADDR0);
+ }
+ EXPORT_SYMBOL(trace_hardirqs_on_caller);
+diff --git a/lib/debug_locks.c b/lib/debug_locks.c
+index a75ee30..06d3135 100644
+--- a/lib/debug_locks.c
++++ b/lib/debug_locks.c
+@@ -36,7 +36,7 @@ EXPORT_SYMBOL_GPL(debug_locks_silent);
+ /*
+  * Generic 'turn off all lock debugging' function:
+  */
+-int debug_locks_off(void)
++noinstr int debug_locks_off(void)
+ {
+ 	if (debug_locks && __debug_locks_off()) {
+ 		if (!debug_locks_silent) {
