@@ -2,42 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 531011DA18F
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 May 2020 21:58:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 955021DA21B
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 May 2020 22:02:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727885AbgEST63 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 19 May 2020 15:58:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51924 "EHLO
+        id S1728439AbgESUCW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 19 May 2020 16:02:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51942 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727882AbgEST63 (ORCPT
+        with ESMTP id S1727973AbgEST6d (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 19 May 2020 15:58:29 -0400
+        Tue, 19 May 2020 15:58:33 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EC40C08C5C0;
-        Tue, 19 May 2020 12:58:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E59F1C08C5C1;
+        Tue, 19 May 2020 12:58:32 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jb8Nc-0008CN-IQ; Tue, 19 May 2020 21:58:24 +0200
+        id 1jb8Nf-0008E8-D8; Tue, 19 May 2020 21:58:27 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 1D2E81C04D1;
-        Tue, 19 May 2020 21:58:23 +0200 (CEST)
-Date:   Tue, 19 May 2020 19:58:23 -0000
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id CB4121C06DA;
+        Tue, 19 May 2020 21:58:24 +0200 (CEST)
+Date:   Tue, 19 May 2020 19:58:24 -0000
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/entry] x86/mce: Use untraced rd/wrmsr in the MCE
- offline/crash check
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
+Subject: [tip: x86/entry] x86/traps: Split int3 handler up
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
         Alexandre Chartre <alexandre.chartre@oracle.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Andy Lutomirski <luto@kernel.org>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200505135314.426347351@linutronix.de>
-References: <20200505135314.426347351@linutronix.de>
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200505135314.045220765@linutronix.de>
+References: <20200505135314.045220765@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <158991830302.17951.9379512980023231811.tip-bot2@tip-bot2>
+Message-ID: <158991830471.17951.13148640036237320422.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -53,55 +51,114 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/entry branch of tip:
 
-Commit-ID:     89cee5d63761ee0e9ca00631793eb16c8931421b
-Gitweb:        https://git.kernel.org/tip/89cee5d63761ee0e9ca00631793eb16c8931421b
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Sat, 04 Apr 2020 15:39:13 +02:00
+Commit-ID:     f4f6b66fd8011eb5f24dec936faaa4cab2ca7ebc
+Gitweb:        https://git.kernel.org/tip/f4f6b66fd8011eb5f24dec936faaa4cab2ca7ebc
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Thu, 05 Mar 2020 16:09:52 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 19 May 2020 16:04:08 +02:00
+CommitterDate: Tue, 19 May 2020 16:04:07 +02:00
 
-x86/mce: Use untraced rd/wrmsr in the MCE offline/crash check
+x86/traps: Split int3 handler up
 
-mce_check_crashing_cpu() is called right at the entry of the MCE
-handler. It uses mce_rdmsr() and mce_wrmsr() which are wrappers around
-rdmsr() and wrmsr() to handle the MCE error injection mechanism, which is
-pointless in this context, i.e. when the MCE hits an offline CPU or the
-system is already marked crashing.
+For code simplicity split up the int3 handler into a kernel and user part
+which makes the code flow simpler to understand.
 
-The MSR access can also be traced, so use the untraceable variants. This
-is also safe vs. XEN paravirt as these MSRs are not affected by XEN PV
-modifications.
-
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
-Acked-by: Peter Zijlstra <peterz@infradead.org>
-Acked-by: Andy Lutomirski <luto@kernel.org>
-Link: https://lkml.kernel.org/r/20200505135314.426347351@linutronix.de
+Link: https://lkml.kernel.org/r/20200505135314.045220765@linutronix.de
 
 
 ---
- arch/x86/kernel/cpu/mce/core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/kernel/traps.c | 68 +++++++++++++++++++++++-----------------
+ 1 file changed, 40 insertions(+), 28 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
-index 842dd03..3177652 100644
---- a/arch/x86/kernel/cpu/mce/core.c
-+++ b/arch/x86/kernel/cpu/mce/core.c
-@@ -1108,7 +1108,7 @@ static noinstr bool mce_check_crashing_cpu(void)
- 	    (crashing_cpu != -1 && crashing_cpu != cpu)) {
- 		u64 mcgstatus;
+diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
+index 0ad12df..21c8cfc 100644
+--- a/arch/x86/kernel/traps.c
++++ b/arch/x86/kernel/traps.c
+@@ -568,6 +568,35 @@ exit:
+ 	cond_local_irq_disable(regs);
+ }
  
--		mcgstatus = mce_rdmsrl(MSR_IA32_MCG_STATUS);
-+		mcgstatus = __rdmsr(MSR_IA32_MCG_STATUS);
++static bool do_int3(struct pt_regs *regs)
++{
++	int res;
++
++#ifdef CONFIG_KGDB_LOW_LEVEL_TRAP
++	if (kgdb_ll_trap(DIE_INT3, "int3", regs, 0, X86_TRAP_BP,
++			 SIGTRAP) == NOTIFY_STOP)
++		return true;
++#endif /* CONFIG_KGDB_LOW_LEVEL_TRAP */
++
++#ifdef CONFIG_KPROBES
++	if (kprobe_int3_handler(regs))
++		return true;
++#endif
++	res = notify_die(DIE_INT3, "int3", regs, 0, X86_TRAP_BP, SIGTRAP);
++
++	return res == NOTIFY_STOP;
++}
++
++static void do_int3_user(struct pt_regs *regs)
++{
++	if (do_int3(regs))
++		return;
++
++	cond_local_irq_enable(regs);
++	do_trap(X86_TRAP_BP, SIGTRAP, "int3", regs, 0, 0, NULL);
++	cond_local_irq_disable(regs);
++}
++
+ DEFINE_IDTENTRY_RAW(exc_int3)
+ {
+ 	/*
+@@ -585,37 +614,20 @@ DEFINE_IDTENTRY_RAW(exc_int3)
+ 	 * because the INT3 could have been hit in any context including
+ 	 * NMI.
+ 	 */
+-	if (user_mode(regs))
++	if (user_mode(regs)) {
+ 		idtentry_enter(regs);
+-	else
+-		nmi_enter();
+-
+-	instrumentation_begin();
+-#ifdef CONFIG_KGDB_LOW_LEVEL_TRAP
+-	if (kgdb_ll_trap(DIE_INT3, "int3", regs, 0, X86_TRAP_BP,
+-				SIGTRAP) == NOTIFY_STOP)
+-		goto exit;
+-#endif /* CONFIG_KGDB_LOW_LEVEL_TRAP */
+-
+-#ifdef CONFIG_KPROBES
+-	if (kprobe_int3_handler(regs))
+-		goto exit;
+-#endif
+-
+-	if (notify_die(DIE_INT3, "int3", regs, 0, X86_TRAP_BP,
+-			SIGTRAP) == NOTIFY_STOP)
+-		goto exit;
+-
+-	cond_local_irq_enable(regs);
+-	do_trap(X86_TRAP_BP, SIGTRAP, "int3", regs, 0, 0, NULL);
+-	cond_local_irq_disable(regs);
+-
+-exit:
+-	instrumentation_end();
+-	if (user_mode(regs))
++		instrumentation_begin();
++		do_int3_user(regs);
++		instrumentation_end();
+ 		idtentry_exit(regs);
+-	else
++	} else {
++		nmi_enter();
++		instrumentation_begin();
++		if (!do_int3(regs))
++			die("int3", regs, 0);
++		instrumentation_end();
+ 		nmi_exit();
++	}
+ }
  
- 		if (boot_cpu_data.x86_vendor == X86_VENDOR_ZHAOXIN) {
- 			if (mcgstatus & MCG_STATUS_LMCES)
-@@ -1116,7 +1116,7 @@ static noinstr bool mce_check_crashing_cpu(void)
- 		}
- 
- 		if (mcgstatus & MCG_STATUS_RIPV) {
--			mce_wrmsrl(MSR_IA32_MCG_STATUS, 0);
-+			__wrmsr(MSR_IA32_MCG_STATUS, 0, 0);
- 			return true;
- 		}
- 	}
+ #ifdef CONFIG_X86_64
