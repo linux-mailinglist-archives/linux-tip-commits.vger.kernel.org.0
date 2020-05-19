@@ -2,42 +2,41 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F0E91DA19F
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 May 2020 21:59:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF6861DA1E1
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 May 2020 22:01:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728301AbgEST67 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 19 May 2020 15:58:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52072 "EHLO
+        id S1728270AbgEST6y (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 19 May 2020 15:58:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52046 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728292AbgEST66 (ORCPT
+        with ESMTP id S1728250AbgEST6w (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 19 May 2020 15:58:58 -0400
+        Tue, 19 May 2020 15:58:52 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C873C08C5C2;
-        Tue, 19 May 2020 12:58:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E8EEC08C5C2;
+        Tue, 19 May 2020 12:58:52 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jb8O0-0008Sf-TM; Tue, 19 May 2020 21:58:49 +0200
+        id 1jb8Ny-0008V6-Ho; Tue, 19 May 2020 21:58:46 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 3EB1E1C0820;
-        Tue, 19 May 2020 21:58:36 +0200 (CEST)
-Date:   Tue, 19 May 2020 19:58:36 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 8AEDB1C0837;
+        Tue, 19 May 2020 21:58:37 +0200 (CEST)
+Date:   Tue, 19 May 2020 19:58:37 -0000
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/entry] x86/idtentry: Provide macros to define/declare IDT
- entry points
+Subject: [tip: x86/entry] x86/entry: Distangle idtentry
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Alexandre Chartre <alexandre.chartre@oracle.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>, x86 <x86@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Andy Lutomirski <luto@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200505134904.273363275@linutronix.de>
-References: <20200505134904.273363275@linutronix.de>
+In-Reply-To: <20200505134903.949227617@linutronix.de>
+References: <20200505134903.949227617@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <158991831609.17951.16740794273202663663.tip-bot2@tip-bot2>
+Message-ID: <158991831742.17951.6945291686466516773.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -53,170 +52,467 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/entry branch of tip:
 
-Commit-ID:     c5c3c71d132f6480c71bc91723d3d987abfdfaa3
-Gitweb:        https://git.kernel.org/tip/c5c3c71d132f6480c71bc91723d3d987abfdfaa3
+Commit-ID:     696ab9143a5fc25eaaedd589bc9939c58d626030
+Gitweb:        https://git.kernel.org/tip/696ab9143a5fc25eaaedd589bc9939c58d626030
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Tue, 25 Feb 2020 23:16:12 +01:00
+AuthorDate:    Tue, 25 Feb 2020 23:16:10 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 19 May 2020 16:03:56 +02:00
+CommitterDate: Tue, 19 May 2020 16:03:55 +02:00
 
-x86/idtentry: Provide macros to define/declare IDT entry points
+x86/entry: Distangle idtentry
 
-Provide DECLARE/DEFINE_IDTENTRY() macros.
+idtentry is a completely unreadable maze. Split it into distinct idtentry
+variants which only contain the minimal code:
 
-DEFINE_IDTENTRY() provides a wrapper which acts as the function
-definition. The exception handler body is just appended to it with curly
-brackets. The entry point is marked noinstr so that irq tracing and the
-enter_from_user_mode() can be moved into the C-entry point. As all
-C-entries use the same macro (or a later variant) the necessary entry
-handling can be implemented at one central place.
+  - idtentry for regular exceptions
+  - idtentry_mce_debug for #MCE and #DB
+  - idtentry_df for #DF
 
-DECLARE_IDTENTRY() provides the function prototypes:
-  - The C entry point 	    	cfunc
-  - The ASM entry point		asm_cfunc
-  - The XEN/PV entry point	xen_asm_cfunc
-
-They all follow the same naming convention.
-
-When included from ASM code DECLARE_IDTENTRY() is a macro which emits the
-low level entry point in assembly by instantiating idtentry.
-
-IDTENTRY is the simplest variant which just has a pt_regs argument. It's
-going to be used for all exceptions which have no error code.
+The generated binary code is equivalent.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
-Acked-by: Andy Lutomirski <luto@kernel.org>
 Acked-by: Peter Zijlstra <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20200505134904.273363275@linutronix.de
+Acked-by: Andy Lutomirski <luto@kernel.org>
+Link: https://lkml.kernel.org/r/20200505134903.949227617@linutronix.de
+
 
 
 ---
- arch/x86/entry/entry_32.S       |  6 +++-
- arch/x86/entry/entry_64.S       |  6 +++-
- arch/x86/include/asm/idtentry.h | 67 ++++++++++++++++++++++++++++++++-
- arch/x86/include/asm/traps.h    |  2 +-
- 4 files changed, 80 insertions(+), 1 deletion(-)
- create mode 100644 arch/x86/include/asm/idtentry.h
+ arch/x86/entry/entry_64.S | 403 ++++++++++++++++++++-----------------
+ 1 file changed, 220 insertions(+), 183 deletions(-)
 
-diff --git a/arch/x86/entry/entry_32.S b/arch/x86/entry/entry_32.S
-index eb64e78..8c0e07e 100644
---- a/arch/x86/entry/entry_32.S
-+++ b/arch/x86/entry/entry_32.S
-@@ -753,6 +753,12 @@ SYM_CODE_END(\asmsym)
- .endm
- 
- /*
-+ * Include the defines which emit the idt entries which are shared
-+ * shared between 32 and 64 bit.
-+ */
-+#include <asm/idtentry.h>
-+
-+/*
-  * %eax: prev task
-  * %edx: next task
-  */
 diff --git a/arch/x86/entry/entry_64.S b/arch/x86/entry/entry_64.S
-index 96ad26f..ee07162 100644
+index e62061e..01bfe7f 100644
 --- a/arch/x86/entry/entry_64.S
 +++ b/arch/x86/entry/entry_64.S
-@@ -699,6 +699,12 @@ SYM_CODE_END(\asmsym)
+@@ -37,6 +37,7 @@
+ #include <asm/pgtable_types.h>
+ #include <asm/export.h>
+ #include <asm/frame.h>
++#include <asm/trapnr.h>
+ #include <asm/nospec-branch.h>
+ #include <linux/err.h>
+ 
+@@ -493,6 +494,202 @@ SYM_CODE_END(spurious_entries_start)
+ 	decl	PER_CPU_VAR(irq_count)
  .endm
  
- /*
-+ * Include the defines which emit the idt entries which are shared
-+ * shared between 32 and 64 bit.
++/**
++ * idtentry_body - Macro to emit code calling the C function
++ * @vector:		Vector number
++ * @cfunc:		C function to be called
++ * @has_error_code:	Hardware pushed error code on stack
 + */
-+#include <asm/idtentry.h>
++.macro idtentry_body vector cfunc has_error_code:req
++
++	call	error_entry
++	UNWIND_HINT_REGS
++
++	.if \vector == X86_TRAP_PF
++		/*
++		 * Store CR2 early so subsequent faults cannot clobber it. Use R12 as
++		 * intermediate storage as RDX can be clobbered in enter_from_user_mode().
++		 * GET_CR2_INTO can clobber RAX.
++		 */
++		GET_CR2_INTO(%r12);
++	.endif
++
++	TRACE_IRQS_OFF
++
++#ifdef CONFIG_CONTEXT_TRACKING
++	testb	$3, CS(%rsp)
++	jz	.Lfrom_kernel_no_ctxt_tracking_\@
++	CALL_enter_from_user_mode
++.Lfrom_kernel_no_ctxt_tracking_\@:
++#endif
++
++	movq	%rsp, %rdi			/* pt_regs pointer into 1st argument*/
++
++	.if \has_error_code == 1
++		movq	ORIG_RAX(%rsp), %rsi	/* get error code into 2nd argument*/
++		movq	$-1, ORIG_RAX(%rsp)	/* no syscall to restart */
++	.else
++		xorl	%esi, %esi		/* Clear the error code */
++	.endif
++
++	.if \vector == X86_TRAP_PF
++		movq	%r12, %rdx		/* Move CR2 into 3rd argument */
++	.endif
++
++	call	\cfunc
++
++	jmp	error_exit
++.endm
++
++/**
++ * idtentry - Macro to generate entry stubs for simple IDT entries
++ * @vector:		Vector number
++ * @asmsym:		ASM symbol for the entry point
++ * @cfunc:		C function to be called
++ * @has_error_code:	Hardware pushed error code on stack
++ *
++ * The macro emits code to set up the kernel context for straight forward
++ * and simple IDT entries. No IST stack, no paranoid entry checks.
++ */
++.macro idtentry vector asmsym cfunc has_error_code:req
++SYM_CODE_START(\asmsym)
++	UNWIND_HINT_IRET_REGS offset=\has_error_code*8
++	ASM_CLAC
++
++	.if \has_error_code == 0
++		pushq	$-1			/* ORIG_RAX: no syscall to restart */
++	.endif
++
++	.if \vector == X86_TRAP_BP
++		/*
++		 * If coming from kernel space, create a 6-word gap to allow the
++		 * int3 handler to emulate a call instruction.
++		 */
++		testb	$3, CS-ORIG_RAX(%rsp)
++		jnz	.Lfrom_usermode_no_gap_\@
++		.rept	6
++		pushq	5*8(%rsp)
++		.endr
++		UNWIND_HINT_IRET_REGS offset=8
++.Lfrom_usermode_no_gap_\@:
++	.endif
++
++	idtentry_body \vector \cfunc \has_error_code
++
++_ASM_NOKPROBE(\asmsym)
++SYM_CODE_END(\asmsym)
++.endm
 +
 +/*
++ * MCE and DB exceptions
++ */
++#define CPU_TSS_IST(x) PER_CPU_VAR(cpu_tss_rw) + (TSS_ist + (x) * 8)
++
++/**
++ * idtentry_mce_db - Macro to generate entry stubs for #MC and #DB
++ * @vector:		Vector number
++ * @asmsym:		ASM symbol for the entry point
++ * @cfunc:		C function to be called
++ *
++ * The macro emits code to set up the kernel context for #MC and #DB
++ *
++ * If the entry comes from user space it uses the normal entry path
++ * including the return to user space work and preemption checks on
++ * exit.
++ *
++ * If hits in kernel mode then it needs to go through the paranoid
++ * entry as the exception can hit any random state. No preemption
++ * check on exit to keep the paranoid path simple.
++ *
++ * If the trap is #DB then the interrupt stack entry in the IST is
++ * moved to the second stack, so a potential recursion will have a
++ * fresh IST.
++ */
++.macro idtentry_mce_db vector asmsym cfunc
++SYM_CODE_START(\asmsym)
++	UNWIND_HINT_IRET_REGS
++	ASM_CLAC
++
++	pushq	$-1			/* ORIG_RAX: no syscall to restart */
++
++	/*
++	 * If the entry is from userspace, switch stacks and treat it as
++	 * a normal entry.
++	 */
++	testb	$3, CS-ORIG_RAX(%rsp)
++	jnz	.Lfrom_usermode_switch_stack_\@
++
++	/*
++	 * paranoid_entry returns SWAPGS flag for paranoid_exit in EBX.
++	 * EBX == 0 -> SWAPGS, EBX == 1 -> no SWAPGS
++	 */
++	call	paranoid_entry
++
++	UNWIND_HINT_REGS
++
++	.if \vector == X86_TRAP_DB
++		TRACE_IRQS_OFF_DEBUG
++	.else
++		TRACE_IRQS_OFF
++	.endif
++
++	movq	%rsp, %rdi		/* pt_regs pointer */
++	xorl	%esi, %esi		/* Clear the error code */
++
++	.if \vector == X86_TRAP_DB
++		subq	$DB_STACK_OFFSET, CPU_TSS_IST(IST_INDEX_DB)
++	.endif
++
++	call	\cfunc
++
++	.if \vector == X86_TRAP_DB
++		addq	$DB_STACK_OFFSET, CPU_TSS_IST(IST_INDEX_DB)
++	.endif
++
++	jmp	paranoid_exit
++
++	/* Switch to the regular task stack and use the noist entry point */
++.Lfrom_usermode_switch_stack_\@:
++	idtentry_body vector \cfunc, has_error_code=0
++
++_ASM_NOKPROBE(\asmsym)
++SYM_CODE_END(\asmsym)
++.endm
++
++/*
++ * Double fault entry. Straight paranoid. No checks from which context
++ * this comes because for the espfix induced #DF this would do the wrong
++ * thing.
++ */
++.macro idtentry_df vector asmsym cfunc
++SYM_CODE_START(\asmsym)
++	UNWIND_HINT_IRET_REGS offset=8
++	ASM_CLAC
++
++	/*
++	 * paranoid_entry returns SWAPGS flag for paranoid_exit in EBX.
++	 * EBX == 0 -> SWAPGS, EBX == 1 -> no SWAPGS
++	 */
++	call	paranoid_entry
++	UNWIND_HINT_REGS
++
++	/* Read CR2 early */
++	GET_CR2_INTO(%r12);
++
++	TRACE_IRQS_OFF
++
++	movq	%rsp, %rdi		/* pt_regs pointer into first argument */
++	movq	ORIG_RAX(%rsp), %rsi	/* get error code into 2nd argument*/
++	movq	$-1, ORIG_RAX(%rsp)	/* no syscall to restart */
++	movq	%r12, %rdx		/* Move CR2 into 3rd argument */
++	call	\cfunc
++
++	jmp	paranoid_exit
++
++_ASM_NOKPROBE(\asmsym)
++SYM_CODE_END(\asmsym)
++.endm
++
+ /*
   * Interrupt entry helper function.
   *
-  * Entry runs with interrupts off. Stack layout at entry:
-diff --git a/arch/x86/include/asm/idtentry.h b/arch/x86/include/asm/idtentry.h
-new file mode 100644
-index 0000000..bbd81e2
---- /dev/null
-+++ b/arch/x86/include/asm/idtentry.h
-@@ -0,0 +1,67 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _ASM_X86_IDTENTRY_H
-+#define _ASM_X86_IDTENTRY_H
-+
-+/* Interrupts/Exceptions */
-+#include <asm/trapnr.h>
-+
-+#ifndef __ASSEMBLY__
-+
-+/**
-+ * DECLARE_IDTENTRY - Declare functions for simple IDT entry points
-+ *		      No error code pushed by hardware
-+ * @vector:	Vector number (ignored for C)
-+ * @func:	Function name of the entry point
-+ *
-+ * Declares three functions:
-+ * - The ASM entry point: asm_##func
-+ * - The XEN PV trap entry point: xen_##func (maybe unused)
-+ * - The C handler called from the ASM entry point
-+ *
-+ * Note: This is the C variant of DECLARE_IDTENTRY(). As the name says it
-+ * declares the entry points for usage in C code. There is an ASM variant
-+ * as well which is used to emit the entry stubs in entry_32/64.S.
-+ */
-+#define DECLARE_IDTENTRY(vector, func)					\
-+	asmlinkage void asm_##func(void);				\
-+	asmlinkage void xen_asm_##func(void);				\
-+	__visible void func(struct pt_regs *regs)
-+
-+/**
-+ * DEFINE_IDTENTRY - Emit code for simple IDT entry points
-+ * @func:	Function name of the entry point
-+ *
-+ * @func is called from ASM entry code with interrupts disabled.
-+ *
-+ * The macro is written so it acts as function definition. Append the
-+ * body with a pair of curly brackets.
-+ *
-+ * idtentry_enter() contains common code which has to be invoked before
-+ * arbitrary code in the body. idtentry_exit() contains common code
-+ * which has to run before returning to the low level assembly code.
-+ */
-+#define DEFINE_IDTENTRY(func)						\
-+static __always_inline void __##func(struct pt_regs *regs);		\
-+									\
-+__visible noinstr void func(struct pt_regs *regs)			\
-+{									\
-+	idtentry_enter(regs);						\
-+	instrumentation_begin();					\
-+	__##func (regs);						\
-+	instrumentation_end();						\
-+	idtentry_exit(regs);						\
-+}									\
-+									\
-+static __always_inline void __##func(struct pt_regs *regs)
-+
-+#else /* !__ASSEMBLY__ */
-+
-+/*
-+ * The ASM variants for DECLARE_IDTENTRY*() which emit the ASM entry stubs.
-+ */
-+#define DECLARE_IDTENTRY(vector, func)					\
-+	idtentry vector asm_##func func has_error_code=0 sane=1
-+
-+#endif /* __ASSEMBLY__ */
-+
-+#endif
-diff --git a/arch/x86/include/asm/traps.h b/arch/x86/include/asm/traps.h
-index 2376620..814273f 100644
---- a/arch/x86/include/asm/traps.h
-+++ b/arch/x86/include/asm/traps.h
-@@ -6,8 +6,8 @@
- #include <linux/kprobes.h>
+@@ -860,195 +1057,35 @@ apicinterrupt IRQ_WORK_VECTOR			irq_work_interrupt		smp_irq_work_interrupt
+ /*
+  * Exception entry points.
+  */
+-#define CPU_TSS_IST(x) PER_CPU_VAR(cpu_tss_rw) + (TSS_ist + (x) * 8)
+-
+-.macro idtentry_part do_sym, has_error_code:req, read_cr2:req, paranoid:req, shift_ist=-1, ist_offset=0
+-
+-	.if \paranoid
+-	call	paranoid_entry
+-	/* returned flag: ebx=0: need swapgs on exit, ebx=1: don't need it */
+-	.else
+-	call	error_entry
+-	.endif
+-	UNWIND_HINT_REGS
+-
+-	.if \read_cr2
+-	/*
+-	 * Store CR2 early so subsequent faults cannot clobber it. Use R12 as
+-	 * intermediate storage as RDX can be clobbered in enter_from_user_mode().
+-	 * GET_CR2_INTO can clobber RAX.
+-	 */
+-	GET_CR2_INTO(%r12);
+-	.endif
+-
+-	.if \shift_ist != -1
+-	TRACE_IRQS_OFF_DEBUG			/* reload IDT in case of recursion */
+-	.else
+-	TRACE_IRQS_OFF
+-	.endif
+-
+-#ifdef CONFIG_CONTEXT_TRACKING
+-	.if \paranoid == 0
+-	testb	$3, CS(%rsp)
+-	jz	.Lfrom_kernel_no_context_tracking_\@
+-	CALL_enter_from_user_mode
+-.Lfrom_kernel_no_context_tracking_\@:
+-	.endif
+-#endif
+-
+-	movq	%rsp, %rdi			/* pt_regs pointer */
+-
+-	.if \has_error_code
+-	movq	ORIG_RAX(%rsp), %rsi		/* get error code */
+-	movq	$-1, ORIG_RAX(%rsp)		/* no syscall to restart */
+-	.else
+-	xorl	%esi, %esi			/* no error code */
+-	.endif
+-
+-	.if \shift_ist != -1
+-	subq	$\ist_offset, CPU_TSS_IST(\shift_ist)
+-	.endif
+-
+-	.if \read_cr2
+-	movq	%r12, %rdx			/* Move CR2 into 3rd argument */
+-	.endif
+-
+-	call	\do_sym
+-
+-	.if \shift_ist != -1
+-	addq	$\ist_offset, CPU_TSS_IST(\shift_ist)
+-	.endif
+-
+-	.if \paranoid
+-	/* this procedure expect "no swapgs" flag in ebx */
+-	jmp	paranoid_exit
+-	.else
+-	jmp	error_exit
+-	.endif
+-
+-.endm
+-
+-/**
+- * idtentry - Generate an IDT entry stub
+- * @sym:		Name of the generated entry point
+- * @do_sym:		C function to be called
+- * @has_error_code:	True if this IDT vector has an error code on the stack
+- * @paranoid:		non-zero means that this vector may be invoked from
+- *			kernel mode with user GSBASE and/or user CR3.
+- *			2 is special -- see below.
+- * @shift_ist:		Set to an IST index if entries from kernel mode should
+- *			decrement the IST stack so that nested entries get a
+- *			fresh stack.  (This is for #DB, which has a nasty habit
+- *			of recursing.)
+- * @create_gap:		create a 6-word stack gap when coming from kernel mode.
+- * @read_cr2:		load CR2 into the 3rd argument; done before calling any C code
+- *
+- * idtentry generates an IDT stub that sets up a usable kernel context,
+- * creates struct pt_regs, and calls @do_sym.  The stub has the following
+- * special behaviors:
+- *
+- * On an entry from user mode, the stub switches from the trampoline or
+- * IST stack to the normal thread stack.  On an exit to user mode, the
+- * normal exit-to-usermode path is invoked.
+- *
+- * On an exit to kernel mode, if @paranoid == 0, we check for preemption,
+- * whereas we omit the preemption check if @paranoid != 0.  This is purely
+- * because the implementation is simpler this way.  The kernel only needs
+- * to check for asynchronous kernel preemption when IRQ handlers return.
+- *
+- * If @paranoid == 0, then the stub will handle IRET faults by pretending
+- * that the fault came from user mode.  It will handle gs_change faults by
+- * pretending that the fault happened with kernel GSBASE.  Since this handling
+- * is omitted for @paranoid != 0, the #GP, #SS, and #NP stubs must have
+- * @paranoid == 0.  This special handling will do the wrong thing for
+- * espfix-induced #DF on IRET, so #DF must not use @paranoid == 0.
+- *
+- * @paranoid == 2 is special: the stub will never switch stacks.  This is for
+- * #DF: if the thread stack is somehow unusable, we'll still get a useful OOPS.
+- */
+-.macro idtentry sym do_sym has_error_code:req paranoid=0 shift_ist=-1 ist_offset=0 create_gap=0 read_cr2=0
+-SYM_CODE_START(\sym)
+-	UNWIND_HINT_IRET_REGS offset=\has_error_code*8
+-
+-	/* Sanity check */
+-	.if \shift_ist != -1 && \paranoid != 1
+-	.error "using shift_ist requires paranoid=1"
+-	.endif
+-
+-	.if \create_gap && \paranoid
+-	.error "using create_gap requires paranoid=0"
+-	.endif
+-
+-	ASM_CLAC
+-
+-	.if \has_error_code == 0
+-	pushq	$-1				/* ORIG_RAX: no syscall to restart */
+-	.endif
+-
+-	.if \paranoid == 1
+-	testb	$3, CS-ORIG_RAX(%rsp)		/* If coming from userspace, switch stacks */
+-	jnz	.Lfrom_usermode_switch_stack_\@
+-	.endif
+-
+-	.if \create_gap == 1
+-	/*
+-	 * If coming from kernel space, create a 6-word gap to allow the
+-	 * int3 handler to emulate a call instruction.
+-	 */
+-	testb	$3, CS-ORIG_RAX(%rsp)
+-	jnz	.Lfrom_usermode_no_gap_\@
+-	.rept	6
+-	pushq	5*8(%rsp)
+-	.endr
+-	UNWIND_HINT_IRET_REGS offset=8
+-.Lfrom_usermode_no_gap_\@:
+-	.endif
+-
+-	idtentry_part \do_sym, \has_error_code, \read_cr2, \paranoid, \shift_ist, \ist_offset
+-
+-	.if \paranoid == 1
+-	/*
+-	 * Entry from userspace.  Switch stacks and treat it
+-	 * as a normal entry.  This means that paranoid handlers
+-	 * run in real process context if user_mode(regs).
+-	 */
+-.Lfrom_usermode_switch_stack_\@:
+-	idtentry_part \do_sym, \has_error_code, \read_cr2, paranoid=0
+-	.endif
+-
+-_ASM_NOKPROBE(\sym)
+-SYM_CODE_END(\sym)
+-.endm
+-
  
- #include <asm/debugreg.h>
-+#include <asm/idtentry.h>
- #include <asm/siginfo.h>			/* TRAP_TRACE, ... */
--#include <asm/trapnr.h>
+-idtentry divide_error			do_divide_error			has_error_code=0
+-idtentry overflow			do_overflow			has_error_code=0
+-idtentry int3				do_int3				has_error_code=0	create_gap=1
+-idtentry bounds				do_bounds			has_error_code=0
+-idtentry invalid_op			do_invalid_op			has_error_code=0
+-idtentry device_not_available		do_device_not_available		has_error_code=0
+-idtentry coprocessor_segment_overrun	do_coprocessor_segment_overrun	has_error_code=0
+-idtentry invalid_TSS			do_invalid_TSS			has_error_code=1
+-idtentry segment_not_present		do_segment_not_present		has_error_code=1
+-idtentry stack_segment			do_stack_segment		has_error_code=1
+-idtentry general_protection		do_general_protection		has_error_code=1
+-idtentry spurious_interrupt_bug		do_spurious_interrupt_bug	has_error_code=0
+-idtentry coprocessor_error		do_coprocessor_error		has_error_code=0
+-idtentry alignment_check		do_alignment_check		has_error_code=1
+-idtentry simd_coprocessor_error		do_simd_coprocessor_error	has_error_code=0
+-
+-idtentry page_fault		do_page_fault		has_error_code=1	read_cr2=1
++idtentry	X86_TRAP_DE		divide_error		do_divide_error			has_error_code=0
++idtentry	X86_TRAP_OF		overflow		do_overflow			has_error_code=0
++idtentry	X86_TRAP_BP		int3			do_int3				has_error_code=0
++idtentry	X86_TRAP_BR		bounds			do_bounds			has_error_code=0
++idtentry	X86_TRAP_UD		invalid_op		do_invalid_op			has_error_code=0
++idtentry	X86_TRAP_NM		device_not_available	do_device_not_available		has_error_code=0
++idtentry	X86_TRAP_OLD_MF		coprocessor_segment_overrun	do_coprocessor_segment_overrun	has_error_code=0
++idtentry	X86_TRAP_TS		invalid_TSS		do_invalid_TSS			has_error_code=1
++idtentry	X86_TRAP_NP		segment_not_present	do_segment_not_present		has_error_code=1
++idtentry	X86_TRAP_SS		stack_segment		do_stack_segment		has_error_code=1
++idtentry	X86_TRAP_GP		general_protection	do_general_protection		has_error_code=1
++idtentry	X86_TRAP_SPURIOUS	spurious_interrupt_bug	do_spurious_interrupt_bug	has_error_code=0
++idtentry	X86_TRAP_MF		coprocessor_error	do_coprocessor_error		has_error_code=0
++idtentry	X86_TRAP_AC		alignment_check		do_alignment_check		has_error_code=1
++idtentry	X86_TRAP_XF		simd_coprocessor_error	do_simd_coprocessor_error	has_error_code=0
++
++idtentry	X86_TRAP_PF		page_fault		do_page_fault			has_error_code=1
  
- #define dotraplinkage __visible
+ #ifdef CONFIG_X86_MCE
+-idtentry machine_check		do_mce			has_error_code=0 paranoid=1
++idtentry_mce_db	X86_TRAP_MCE	 	machine_check		do_mce
+ #endif
+-idtentry debug			do_debug		has_error_code=0 paranoid=1 shift_ist=IST_INDEX_DB ist_offset=DB_STACK_OFFSET
+-idtentry double_fault		do_double_fault		has_error_code=1 paranoid=2 read_cr2=1
++idtentry_mce_db	X86_TRAP_DB		debug			do_debug
++idtentry_df	X86_TRAP_DF		double_fault		do_double_fault
  
+ #ifdef CONFIG_XEN_PV
+-idtentry hypervisor_callback	xen_do_hypervisor_callback	has_error_code=0
+-idtentry xennmi			do_nmi				has_error_code=0
+-idtentry xendebug		do_debug			has_error_code=0
++idtentry	512 /* dummy */		hypervisor_callback	xen_do_hypervisor_callback	has_error_code=0
++idtentry	X86_TRAP_NMI		xennmi			do_nmi				has_error_code=0
++idtentry	X86_TRAP_DB		xendebug		do_debug			has_error_code=0
+ #endif
+ 
+ /*
