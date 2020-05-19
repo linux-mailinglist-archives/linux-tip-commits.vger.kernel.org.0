@@ -2,41 +2,41 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5887C1DA1E2
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 May 2020 22:01:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3CEC1DA19E
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 May 2020 21:59:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728280AbgEST6z (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 19 May 2020 15:58:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52056 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728276AbgEST6y (ORCPT
-        <rfc822;linux-tip-commits@vger.kernel.org>);
+        id S1728273AbgEST6y (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Tue, 19 May 2020 15:58:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52042 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728248AbgEST6w (ORCPT
+        <rfc822;linux-tip-commits@vger.kernel.org>);
+        Tue, 19 May 2020 15:58:52 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2C7AC08C5C1;
-        Tue, 19 May 2020 12:58:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B58DC08C5C1;
+        Tue, 19 May 2020 12:58:52 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jb8O1-0008V7-Jx; Tue, 19 May 2020 21:58:49 +0200
+        id 1jb8Nz-0008Vn-Cd; Tue, 19 May 2020 21:58:47 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 021951C047E;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 67F071C0853;
         Tue, 19 May 2020 21:58:38 +0200 (CEST)
-Date:   Tue, 19 May 2020 19:58:37 -0000
+Date:   Tue, 19 May 2020 19:58:38 -0000
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/entry] x86/entry/64: Reorder idtentries
+Subject: [tip: x86/entry] x86/traps: Split trap numbers out in a separate header
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Alexandre Chartre <alexandre.chartre@oracle.com>,
         Andy Lutomirski <luto@kernel.org>,
+        Alexandre Chartre <alexandre.chartre@oracle.com>,
         Peter Zijlstra <peterz@infradead.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200505134903.841853522@linutronix.de>
-References: <20200505134903.841853522@linutronix.de>
+In-Reply-To: <20200505134903.731004084@linutronix.de>
+References: <20200505134903.731004084@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <158991831789.17951.4143955942714459133.tip-bot2@tip-bot2>
+Message-ID: <158991831831.17951.6614757473936152416.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -52,101 +52,110 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/entry branch of tip:
 
-Commit-ID:     8996fcd630d11ff3fe6f3fbaee7b39b4a9dde4d0
-Gitweb:        https://git.kernel.org/tip/8996fcd630d11ff3fe6f3fbaee7b39b4a9dde4d0
+Commit-ID:     9201e511e0f7184bebbd58e98d3d08fa13a34cac
+Gitweb:        https://git.kernel.org/tip/9201e511e0f7184bebbd58e98d3d08fa13a34cac
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Tue, 25 Feb 2020 23:16:09 +01:00
+AuthorDate:    Tue, 25 Feb 2020 23:16:07 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 19 May 2020 16:03:55 +02:00
+CommitterDate: Tue, 19 May 2020 16:03:54 +02:00
 
-x86/entry/64: Reorder idtentries
+x86/traps: Split trap numbers out in a separate header
 
-Move them all together so verifying the cleanup patches for binary
-equivalence will be easier.
+So they can be used in ASM code. For this it is also necessary to convert
+them to defines. Will be used for the rework of the entry code.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Andy Lutomirski <luto@kernel.org>
 Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
-Acked-by: Andy Lutomirski <luto@kernel.org>
 Acked-by: Peter Zijlstra <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20200505134903.841853522@linutronix.de
+Link: https://lkml.kernel.org/r/20200505134903.731004084@linutronix.de
 
 
 
 ---
- arch/x86/entry/entry_64.S | 36 +++++++++++++++++-------------------
- 1 file changed, 17 insertions(+), 19 deletions(-)
+ arch/x86/include/asm/trapnr.h | 31 +++++++++++++++++++++++++++++++
+ arch/x86/include/asm/traps.h  | 26 +-------------------------
+ 2 files changed, 32 insertions(+), 25 deletions(-)
+ create mode 100644 arch/x86/include/asm/trapnr.h
 
-diff --git a/arch/x86/entry/entry_64.S b/arch/x86/entry/entry_64.S
-index 9747b42..e62061e 100644
---- a/arch/x86/entry/entry_64.S
-+++ b/arch/x86/entry/entry_64.S
-@@ -1020,20 +1020,36 @@ _ASM_NOKPROBE(\sym)
- SYM_CODE_END(\sym)
- .endm
- 
+diff --git a/arch/x86/include/asm/trapnr.h b/arch/x86/include/asm/trapnr.h
+new file mode 100644
+index 0000000..082f456
+--- /dev/null
++++ b/arch/x86/include/asm/trapnr.h
+@@ -0,0 +1,31 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _ASM_X86_TRAPNR_H
++#define _ASM_X86_TRAPNR_H
 +
- idtentry divide_error			do_divide_error			has_error_code=0
- idtentry overflow			do_overflow			has_error_code=0
-+idtentry int3				do_int3				has_error_code=0	create_gap=1
- idtentry bounds				do_bounds			has_error_code=0
- idtentry invalid_op			do_invalid_op			has_error_code=0
- idtentry device_not_available		do_device_not_available		has_error_code=0
--idtentry double_fault			do_double_fault			has_error_code=1 paranoid=2 read_cr2=1
- idtentry coprocessor_segment_overrun	do_coprocessor_segment_overrun	has_error_code=0
- idtentry invalid_TSS			do_invalid_TSS			has_error_code=1
- idtentry segment_not_present		do_segment_not_present		has_error_code=1
-+idtentry stack_segment			do_stack_segment		has_error_code=1
-+idtentry general_protection		do_general_protection		has_error_code=1
- idtentry spurious_interrupt_bug		do_spurious_interrupt_bug	has_error_code=0
- idtentry coprocessor_error		do_coprocessor_error		has_error_code=0
- idtentry alignment_check		do_alignment_check		has_error_code=1
- idtentry simd_coprocessor_error		do_simd_coprocessor_error	has_error_code=0
- 
-+idtentry page_fault		do_page_fault		has_error_code=1	read_cr2=1
++/* Interrupts/Exceptions */
 +
-+#ifdef CONFIG_X86_MCE
-+idtentry machine_check		do_mce			has_error_code=0 paranoid=1
++#define X86_TRAP_DE		 0	/* Divide-by-zero */
++#define X86_TRAP_DB		 1	/* Debug */
++#define X86_TRAP_NMI		 2	/* Non-maskable Interrupt */
++#define X86_TRAP_BP		 3	/* Breakpoint */
++#define X86_TRAP_OF		 4	/* Overflow */
++#define X86_TRAP_BR		 5	/* Bound Range Exceeded */
++#define X86_TRAP_UD		 6	/* Invalid Opcode */
++#define X86_TRAP_NM		 7	/* Device Not Available */
++#define X86_TRAP_DF		 8	/* Double Fault */
++#define X86_TRAP_OLD_MF		 9	/* Coprocessor Segment Overrun */
++#define X86_TRAP_TS		10	/* Invalid TSS */
++#define X86_TRAP_NP		11	/* Segment Not Present */
++#define X86_TRAP_SS		12	/* Stack Segment Fault */
++#define X86_TRAP_GP		13	/* General Protection Fault */
++#define X86_TRAP_PF		14	/* Page Fault */
++#define X86_TRAP_SPURIOUS	15	/* Spurious Interrupt */
++#define X86_TRAP_MF		16	/* x87 Floating-Point Exception */
++#define X86_TRAP_AC		17	/* Alignment Check */
++#define X86_TRAP_MC		18	/* Machine Check */
++#define X86_TRAP_XF		19	/* SIMD Floating-Point Exception */
++#define X86_TRAP_VE		20	/* Virtualization Exception */
++#define X86_TRAP_CP		21	/* Control Protection Exception */
++#define X86_TRAP_IRET		32	/* IRET Exception */
++
 +#endif
-+idtentry debug			do_debug		has_error_code=0 paranoid=1 shift_ist=IST_INDEX_DB ist_offset=DB_STACK_OFFSET
-+idtentry double_fault		do_double_fault		has_error_code=1 paranoid=2 read_cr2=1
-+
-+#ifdef CONFIG_XEN_PV
-+idtentry hypervisor_callback	xen_do_hypervisor_callback	has_error_code=0
-+idtentry xennmi			do_nmi				has_error_code=0
-+idtentry xendebug		do_debug			has_error_code=0
-+#endif
+diff --git a/arch/x86/include/asm/traps.h b/arch/x86/include/asm/traps.h
+index 2ae904b..2376620 100644
+--- a/arch/x86/include/asm/traps.h
++++ b/arch/x86/include/asm/traps.h
+@@ -7,6 +7,7 @@
  
- /*
-  * Reload gs selector with exception handling
-@@ -1084,8 +1100,6 @@ SYM_FUNC_END(do_softirq_own_stack)
- .popsection
+ #include <asm/debugreg.h>
+ #include <asm/siginfo.h>			/* TRAP_TRACE, ... */
++#include <asm/trapnr.h>
  
- #ifdef CONFIG_XEN_PV
--idtentry hypervisor_callback xen_do_hypervisor_callback has_error_code=0
--
- /*
-  * A note on the "critical region" in our callback handler.
-  * We want to avoid stacking callback handlers due to events occurring
-@@ -1188,22 +1202,6 @@ apicinterrupt3 HYPERVISOR_CALLBACK_VECTOR \
- 	acrn_hv_callback_vector acrn_hv_vector_handler
+ #define dotraplinkage __visible
+ 
+@@ -122,31 +123,6 @@ void __noreturn handle_stack_overflow(const char *message,
+ 				      unsigned long fault_address);
  #endif
  
--idtentry debug			do_debug		has_error_code=0	paranoid=1 shift_ist=IST_INDEX_DB ist_offset=DB_STACK_OFFSET
--idtentry int3			do_int3			has_error_code=0	create_gap=1
--idtentry stack_segment		do_stack_segment	has_error_code=1
--
--#ifdef CONFIG_XEN_PV
--idtentry xennmi			do_nmi			has_error_code=0
--idtentry xendebug		do_debug		has_error_code=0
--#endif
--
--idtentry general_protection	do_general_protection	has_error_code=1
--idtentry page_fault		do_page_fault		has_error_code=1	read_cr2=1
--
--#ifdef CONFIG_X86_MCE
--idtentry machine_check		do_mce			has_error_code=0	paranoid=1
--#endif
+-/* Interrupts/Exceptions */
+-enum {
+-	X86_TRAP_DE = 0,	/*  0, Divide-by-zero */
+-	X86_TRAP_DB,		/*  1, Debug */
+-	X86_TRAP_NMI,		/*  2, Non-maskable Interrupt */
+-	X86_TRAP_BP,		/*  3, Breakpoint */
+-	X86_TRAP_OF,		/*  4, Overflow */
+-	X86_TRAP_BR,		/*  5, Bound Range Exceeded */
+-	X86_TRAP_UD,		/*  6, Invalid Opcode */
+-	X86_TRAP_NM,		/*  7, Device Not Available */
+-	X86_TRAP_DF,		/*  8, Double Fault */
+-	X86_TRAP_OLD_MF,	/*  9, Coprocessor Segment Overrun */
+-	X86_TRAP_TS,		/* 10, Invalid TSS */
+-	X86_TRAP_NP,		/* 11, Segment Not Present */
+-	X86_TRAP_SS,		/* 12, Stack Segment Fault */
+-	X86_TRAP_GP,		/* 13, General Protection Fault */
+-	X86_TRAP_PF,		/* 14, Page Fault */
+-	X86_TRAP_SPURIOUS,	/* 15, Spurious Interrupt */
+-	X86_TRAP_MF,		/* 16, x87 Floating-Point Exception */
+-	X86_TRAP_AC,		/* 17, Alignment Check */
+-	X86_TRAP_MC,		/* 18, Machine Check */
+-	X86_TRAP_XF,		/* 19, SIMD Floating-Point Exception */
+-	X86_TRAP_IRET = 32,	/* 32, IRET Exception */
+-};
 -
  /*
-  * Save all registers in pt_regs, and switch gs if needed.
-  * Use slow, but surefire "are we in kernel?" check.
+  * Page fault error code bits:
+  *
