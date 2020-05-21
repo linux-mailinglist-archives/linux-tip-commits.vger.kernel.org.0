@@ -2,133 +2,68 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A86B1DC5A2
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 21 May 2020 05:30:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25DA71DC78C
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 21 May 2020 09:26:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727007AbgEUDaf (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 20 May 2020 23:30:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37212 "EHLO
+        id S1728053AbgEUH0H (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 21 May 2020 03:26:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45474 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726954AbgEUDaf (ORCPT
+        with ESMTP id S1727003AbgEUH0H (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 20 May 2020 23:30:35 -0400
-Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com [IPv6:2607:f8b0:4864:20::1041])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1216BC061A0E;
-        Wed, 20 May 2020 20:30:35 -0700 (PDT)
-Received: by mail-pj1-x1041.google.com with SMTP id cx22so2296078pjb.1;
-        Wed, 20 May 2020 20:30:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=uDIiEcjy80gA4ps38HoROvYan2sQOUFT82jQPB/2UNw=;
-        b=AyO6SeGGAm0QIBIThN81SGP22D8KEcinoULbuJpMuGLPj+TBB6w56rPuJ9bZMI6GrB
-         hVb1JWW98n8iq9Sqt2fp50aL/UE0K1AOInfCQixIRLFkRuApEB38udFtXFHd1Xhg7/yu
-         l/jjyWMByv7QV5YKUQuKuZQRdMAh55VjbXu0SLBUUpaXGb6niSP4D7Np6gWczQKTHsZZ
-         EPdpvwyjYf89fiVm+Wj+KR7VLdi1ltKrNHrWCKXy7rjC3n9hFL8G4T7fSOKXswi2fNe5
-         omGddWl1GckaZextAfUHv8dw0In36MAiMUO066IOHAbov9lR2L+pzStSVIdQFeMFmrSE
-         PDLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=uDIiEcjy80gA4ps38HoROvYan2sQOUFT82jQPB/2UNw=;
-        b=GaVHztKhiHHwLFsiVtr9P8BF2AuEkJwZzDg9ukhmJKjBS4ZYZ6TWOeqie6CGzQpjFn
-         9zVvfrdRdvhQDOEXlmWldaOKEzEd5TNIXuv7dvl6N0mjcSq+Acea+vFu+LEjpqoqPJHT
-         ZWf8y6toJuvTIJJSKQSBoDj8mwfmCFKAJfInEcqewHSoT2PeNpliQp2CY2lhn2HQMh4k
-         GV2aZaJDoHFa3yPbyUlErhUTTdqpbqF791yF+xlfj1cDVrlF2a9mD0ZR2KQxrGiSlsRL
-         UXtn1IokbHr7MwVg/URtLdiS5x0/P9x0kx7zSumTEVyuItXzFlZTKXODKEm91weFp/ok
-         VpPA==
-X-Gm-Message-State: AOAM531uQJXN0AuOCmKacFqe7Lf95Ry/JxsvX6FoPrtTZmzem6lgjyku
-        tOCeHJSWYPmNcmMkgtsAiQ3NlwQe
-X-Google-Smtp-Source: ABdhPJxt68R1ahsIg4uKpfQccsG8TdtMaNTHJ8jB2pvqkrfcdE9mBwAkuBCixiCN0HO4yEW90bMc3Q==
-X-Received: by 2002:a17:90b:8d1:: with SMTP id ds17mr8432440pjb.76.1590031834534;
-        Wed, 20 May 2020 20:30:34 -0700 (PDT)
-Received: from ubuntu-s3-xlarge-x86 ([2604:1380:4111:8b00::1])
-        by smtp.gmail.com with ESMTPSA id w21sm3479771pfu.47.2020.05.20.20.30.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 May 2020 20:30:33 -0700 (PDT)
-Date:   Wed, 20 May 2020 20:30:31 -0700
-From:   Nathan Chancellor <natechancellor@gmail.com>
-To:     Borislav Petkov <bp@alien8.de>
+        Thu, 21 May 2020 03:26:07 -0400
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D8DAC061A0E;
+        Thu, 21 May 2020 00:26:07 -0700 (PDT)
+Received: from zn.tnic (p200300ec2f0c82002db258470e3f635c.dip0.t-ipconnect.de [IPv6:2003:ec:2f0c:8200:2db2:5847:e3f:635c])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id A7B311EC02B1;
+        Thu, 21 May 2020 09:26:04 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1590045964;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=Jljlzrbe6Cwi8pmzDsl0C5++jb9+/KEj29n629dTZKI=;
+        b=VSxbzCRmWCEe1ed3hI2g/V77fa5/yViTapiMajoyKHz39l8IWQw56zWCkidnqoTcGYjdrP
+        Mz0jukKM9Glxyvn2aQwfdliWFDnCd6MOm13YoIuqo2P00V35xyKDMVh/Ocdadm7RTtUz+f
+        wokIuL8M8j7JPVoNK+6KBkgDxRjRICw=
+Date:   Thu, 21 May 2020 09:25:58 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     Marco Elver <elver@google.com>
 Cc:     Will Deacon <will@kernel.org>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Marco Elver <elver@google.com>, x86 <x86@kernel.org>,
-        clang-built-linux@googlegroups.com
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-tip-commits@vger.kernel.org,
+        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>
 Subject: Re: [tip: locking/kcsan] READ_ONCE: Use data_race() to avoid KCSAN
  instrumentation
-Message-ID: <20200521033031.GA3590594@ubuntu-s3-xlarge-x86>
+Message-ID: <20200521072557.GA10099@zn.tnic>
 References: <20200511204150.27858-18-will@kernel.org>
  <158929421358.390.2138794300247844367.tip-bot2@tip-bot2>
  <20200520221712.GA21166@zn.tnic>
+ <CANpmjNPsEMF8qq4qHoJEDb8mi211QzXODvnakh2fj3BOw+56MQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20200520221712.GA21166@zn.tnic>
+In-Reply-To: <CANpmjNPsEMF8qq4qHoJEDb8mi211QzXODvnakh2fj3BOw+56MQ@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Thu, May 21, 2020 at 12:17:12AM +0200, Borislav Petkov wrote:
-> Hi,
-> 
-> On Tue, May 12, 2020 at 02:36:53PM -0000, tip-bot2 for Will Deacon wrote:
-> > The following commit has been merged into the locking/kcsan branch of tip:
-> > 
-> > Commit-ID:     cdd28ad2d8110099e43527e96d059c5639809680
-> > Gitweb:        https://git.kernel.org/tip/cdd28ad2d8110099e43527e96d059c5639809680
-> > Author:        Will Deacon <will@kernel.org>
-> > AuthorDate:    Mon, 11 May 2020 21:41:49 +01:00
-> > Committer:     Thomas Gleixner <tglx@linutronix.de>
-> > CommitterDate: Tue, 12 May 2020 11:04:17 +02:00
-> > 
-> > READ_ONCE: Use data_race() to avoid KCSAN instrumentation
-> > 
-> > Rather then open-code the disabling/enabling of KCSAN across the guts of
-> > {READ,WRITE}_ONCE(), defer to the data_race() macro instead.
-> > 
-> > Signed-off-by: Will Deacon <will@kernel.org>
-> > Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-> > Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> > Cc: Marco Elver <elver@google.com>
-> > Link: https://lkml.kernel.org/r/20200511204150.27858-18-will@kernel.org
-> 
-> so this commit causes a kernel build slowdown depending on the .config
-> of between 50% and over 100%. I just bisected locking/kcsan and got
-> 
-> NOT_OK:	cdd28ad2d811 READ_ONCE: Use data_race() to avoid KCSAN instrumentation
-> OK:	88f1be32068d kcsan: Rework data_race() so that it can be used by READ_ONCE()
-> 
-> with a simple:
-> 
-> $ git clean -dqfx && mk defconfig
-> $ time make -j<NUM_CORES+1>
-> 
-> I'm not even booting the kernels - simply checking out the above commits
-> and building the target kernels. I.e., something in that commit is
-> making gcc go nuts in the compilation phases.
-> 
-> -- 
-> Regards/Gruss,
->     Boris.
-> 
-> https://people.kernel.org/tglx/notes-about-netiquette
+On Thu, May 21, 2020 at 12:30:39AM +0200, Marco Elver wrote:
+> This should be fixed when the series that includes this commit is applied:
+> https://lore.kernel.org/lkml/20200515150338.190344-9-elver@google.com/
 
-For what it's worth, I also noticed the same thing with clang. I only
-verified the issue in one of my first build targets, an arm defconfig
-build, which regressed from 2.5 minutes to 10+ minutes.
+Yap, that fixes it.
 
-More details available on our issue tracker (Nick did some more
-profiling on other configs with both clang and gcc):
+Thx.
 
-https://github.com/ClangBuiltLinux/linux/issues/1032
+-- 
+Regards/Gruss,
+    Boris.
 
-More than happy to do further triage as time permits. I do note Marco's
-message about the upcoming series to eliminate this but it would be nice
-if this did not regress in the meantime.
-
-Cheers,
-Nathan
+https://people.kernel.org/tglx/notes-about-netiquette
