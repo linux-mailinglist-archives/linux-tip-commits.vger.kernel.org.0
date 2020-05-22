@@ -2,48 +2,45 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D2B951DEF3A
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 22 May 2020 20:30:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 810651DEF37
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 22 May 2020 20:30:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730875AbgEVSaV convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S1730806AbgEVSaV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Fri, 22 May 2020 14:30:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35022 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35024 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730809AbgEVSaU (ORCPT
+        with ESMTP id S1730824AbgEVSaU (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Fri, 22 May 2020 14:30:20 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C812C05BD43;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A08D5C061A0E;
         Fri, 22 May 2020 11:30:20 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jcCQy-0002kn-1L; Fri, 22 May 2020 20:30:16 +0200
+        id 1jcCQy-0002kr-Kl; Fri, 22 May 2020 20:30:16 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 535801C0095;
-        Fri, 22 May 2020 20:30:15 +0200 (CEST)
-Date:   Fri, 22 May 2020 18:30:15 -0000
-From:   tip-bot2 for =?utf-8?q?Lo=C3=AFc?= Yhuel <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 3E7FD1C0095;
+        Fri, 22 May 2020 20:30:16 +0200 (CEST)
+Date:   Fri, 22 May 2020 18:30:16 -0000
+From:   "tip-bot2 for Arvind Sankar" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: efi/urgent] tpm: check event log version before reading final events
-Cc:     loic.yhuel@gmail.com,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Jerry Snitselaar <jsnitsel@redhat.com>,
-        Matthew Garrett <mjg59@google.com>,
+Subject: [tip: efi/urgent] x86/boot: Mark global variables as static
+Cc:     Mike Lothian <mike@fireburn.co.uk>,
+        Arvind Sankar <nivedita@alum.mit.edu>,
         Ard Biesheuvel <ardb@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200512040113.277768-1-loic.yhuel@gmail.com>
-References: <20200512040113.277768-1-loic.yhuel@gmail.com>
+In-Reply-To: <20200511225849.1311869-1-nivedita@alum.mit.edu>
+References: <20200511225849.1311869-1-nivedita@alum.mit.edu>
 MIME-Version: 1.0
-Message-ID: <159017221514.17951.2596829896883867713.tip-bot2@tip-bot2>
+Message-ID: <159017221614.17951.9790248963724097639.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: 7bit
 X-Linutronix-Spam-Score: -1.0
 X-Linutronix-Spam-Level: -
 X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
@@ -54,81 +51,74 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the efi/urgent branch of tip:
 
-Commit-ID:     b4f1874c62168159fdb419ced4afc77c1b51c475
-Gitweb:        https://git.kernel.org/tip/b4f1874c62168159fdb419ced4afc77c1b51c475
-Author:        Loïc Yhuel <loic.yhuel@gmail.com>
-AuthorDate:    Tue, 12 May 2020 06:01:13 +02:00
+Commit-ID:     e78d334a5470ead861590ec83158f3b17bd6c807
+Gitweb:        https://git.kernel.org/tip/e78d334a5470ead861590ec83158f3b17bd6c807
+Author:        Arvind Sankar <nivedita@alum.mit.edu>
+AuthorDate:    Mon, 11 May 2020 18:58:49 -04:00
 Committer:     Ard Biesheuvel <ardb@kernel.org>
-CommitterDate: Sun, 17 May 2020 11:46:50 +02:00
+CommitterDate: Thu, 14 May 2020 11:11:20 +02:00
 
-tpm: check event log version before reading final events
+x86/boot: Mark global variables as static
 
-This fixes the boot issues since 5.3 on several Dell models when the TPM
-is enabled. Depending on the exact grub binary, booting the kernel would
-freeze early, or just report an error parsing the final events log.
+Mike Lothian reports that after commit
+  964124a97b97 ("efi/x86: Remove extra headroom for setup block")
+gcc 10.1.0 fails with
 
-We get an event log in the SHA-1 format, which doesn't have a
-tcg_efi_specid_event_head in the first event, and there is a final events
-table which doesn't match the crypto agile format.
-__calc_tpm2_event_size reads bad "count" and "efispecid->num_algs", and
-either fails, or loops long enough for the machine to be appear frozen.
+  HOSTCC  arch/x86/boot/tools/build
+  /usr/lib/gcc/x86_64-pc-linux-gnu/10.1.0/../../../../x86_64-pc-linux-gnu/bin/ld:
+  error: linker defined: multiple definition of '_end'
+  /usr/lib/gcc/x86_64-pc-linux-gnu/10.1.0/../../../../x86_64-pc-linux-gnu/bin/ld:
+  /tmp/ccEkW0jM.o: previous definition here
+  collect2: error: ld returned 1 exit status
+  make[1]: *** [scripts/Makefile.host:103: arch/x86/boot/tools/build] Error 1
+  make: *** [arch/x86/Makefile:303: bzImage] Error 2
 
-So we now only parse the final events table, which is per the spec always
-supposed to be in the crypto agile format, when we got a event log in this
-format.
+The issue is with the _end variable that was added, to hold the end of
+the compressed kernel from zoffsets.h (ZO__end). The name clashes with
+the linker-defined _end symbol that indicates the end of the build
+program itself.
 
-Fixes: c46f3405692de ("tpm: Reserve the TPM final events table")
-Fixes: 166a2809d65b2 ("tpm: Don't duplicate events from the final event log in the TCG2 log")
-Bugzilla: https://bugzilla.redhat.com/show_bug.cgi?id=1779611
-Signed-off-by: Loïc Yhuel <loic.yhuel@gmail.com>
-Link: https://lore.kernel.org/r/20200512040113.277768-1-loic.yhuel@gmail.com
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com>
-Reviewed-by: Matthew Garrett <mjg59@google.com>
-[ardb: warn when final events table is missing or in the wrong format]
+Even when there is no compile-time error, this causes build to use
+memory past the end of its .bss section.
+
+To solve this, mark _end as static, and for symmetry, mark the rest of
+the variables that keep track of symbols from the compressed kernel as
+static as well.
+
+Fixes: 964124a97b97 ("efi/x86: Remove extra headroom for setup block")
+Reported-by: Mike Lothian <mike@fireburn.co.uk>
+Tested-by: Mike Lothian <mike@fireburn.co.uk>
+Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
+Link: https://lore.kernel.org/r/20200511225849.1311869-1-nivedita@alum.mit.edu
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- drivers/firmware/efi/libstub/tpm.c | 5 +++--
- drivers/firmware/efi/tpm.c         | 5 ++++-
- 2 files changed, 7 insertions(+), 3 deletions(-)
+ arch/x86/boot/tools/build.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/firmware/efi/libstub/tpm.c b/drivers/firmware/efi/libstub/tpm.c
-index 1d59e10..e9a6846 100644
---- a/drivers/firmware/efi/libstub/tpm.c
-+++ b/drivers/firmware/efi/libstub/tpm.c
-@@ -54,7 +54,7 @@ void efi_retrieve_tpm2_eventlog(void)
- 	efi_status_t status;
- 	efi_physical_addr_t log_location = 0, log_last_entry = 0;
- 	struct linux_efi_tpm_eventlog *log_tbl = NULL;
--	struct efi_tcg2_final_events_table *final_events_table;
-+	struct efi_tcg2_final_events_table *final_events_table = NULL;
- 	unsigned long first_entry_addr, last_entry_addr;
- 	size_t log_size, last_entry_size;
- 	efi_bool_t truncated;
-@@ -127,7 +127,8 @@ void efi_retrieve_tpm2_eventlog(void)
- 	 * Figure out whether any events have already been logged to the
- 	 * final events structure, and if so how much space they take up
- 	 */
--	final_events_table = get_efi_config_table(LINUX_EFI_TPM_FINAL_LOG_GUID);
-+	if (version == EFI_TCG2_EVENT_LOG_FORMAT_TCG_2)
-+		final_events_table = get_efi_config_table(LINUX_EFI_TPM_FINAL_LOG_GUID);
- 	if (final_events_table && final_events_table->nr_events) {
- 		struct tcg_pcr_event2_head *header;
- 		int offset;
-diff --git a/drivers/firmware/efi/tpm.c b/drivers/firmware/efi/tpm.c
-index 31f9f0e..0543fbf 100644
---- a/drivers/firmware/efi/tpm.c
-+++ b/drivers/firmware/efi/tpm.c
-@@ -62,8 +62,11 @@ int __init efi_tpm_eventlog_init(void)
- 	tbl_size = sizeof(*log_tbl) + log_tbl->size;
- 	memblock_reserve(efi.tpm_log, tbl_size);
+diff --git a/arch/x86/boot/tools/build.c b/arch/x86/boot/tools/build.c
+index 8f8c8e3..c8b8c1a 100644
+--- a/arch/x86/boot/tools/build.c
++++ b/arch/x86/boot/tools/build.c
+@@ -59,14 +59,14 @@ u8 buf[SETUP_SECT_MAX*512];
+ #define PECOFF_COMPAT_RESERVE 0x0
+ #endif
  
--	if (efi.tpm_final_log == EFI_INVALID_TABLE_ADDR)
-+	if (efi.tpm_final_log == EFI_INVALID_TABLE_ADDR ||
-+	    log_tbl->version != EFI_TCG2_EVENT_LOG_FORMAT_TCG_2) {
-+		pr_warn(FW_BUG "TPM Final Events table missing or invalid\n");
- 		goto out;
-+	}
+-unsigned long efi32_stub_entry;
+-unsigned long efi64_stub_entry;
+-unsigned long efi_pe_entry;
+-unsigned long efi32_pe_entry;
+-unsigned long kernel_info;
+-unsigned long startup_64;
+-unsigned long _ehead;
+-unsigned long _end;
++static unsigned long efi32_stub_entry;
++static unsigned long efi64_stub_entry;
++static unsigned long efi_pe_entry;
++static unsigned long efi32_pe_entry;
++static unsigned long kernel_info;
++static unsigned long startup_64;
++static unsigned long _ehead;
++static unsigned long _end;
  
- 	final_tbl = early_memremap(efi.tpm_final_log, sizeof(*final_tbl));
+ /*----------------------------------------------------------------------*/
  
