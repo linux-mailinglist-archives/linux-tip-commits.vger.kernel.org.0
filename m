@@ -2,43 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C4991DD917
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 21 May 2020 23:09:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FC061DE324
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 22 May 2020 11:33:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730559AbgEUVI5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 21 May 2020 17:08:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33014 "EHLO
+        id S1729805AbgEVJdM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 22 May 2020 05:33:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729803AbgEUVI5 (ORCPT
+        with ESMTP id S1729521AbgEVJc7 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 21 May 2020 17:08:57 -0400
+        Fri, 22 May 2020 05:32:59 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65728C061A0E;
-        Thu, 21 May 2020 14:08:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55AA4C08C5C0;
+        Fri, 22 May 2020 02:32:59 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jbsQv-0001kN-O1; Thu, 21 May 2020 23:08:53 +0200
+        id 1jc42x-0001OM-1M; Fri, 22 May 2020 11:32:55 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 2ECFA1C010B;
-        Thu, 21 May 2020 23:08:53 +0200 (CEST)
-Date:   Thu, 21 May 2020 21:08:53 -0000
-From:   "tip-bot2 for Krzysztof Piecuch" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 8D1681C0095;
+        Fri, 22 May 2020 11:32:54 +0200 (CEST)
+Date:   Fri, 22 May 2020 09:32:54 -0000
+From:   "tip-bot2 for Balbir Singh" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/timers] x86/tsc: Add tsc_early_khz command line parameter
-Cc:     Krzysztof Piecuch <piecuch@protonmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
+Subject: [tip: x86/mm] Documentation: Add L1D flushing Documentation
+Cc:     Balbir Singh <sblbir@amazon.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Kees Cook <keescook@chromium.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: =?utf-8?q?=3CO2CpIOrqLZHgNRkfjRpz=5FLGqnc1ix=5FseNIiOCvHY4RHoul?=
- =?utf-8?q?OVRo6kMXKuLOfBVTi0SMMevg6Go1uZ=5FcL9fLYtYdTRNH78ChaFaZyG3VAyY?=
- =?utf-8?q?z8=3D=40protonmail=2Ecom=3E?=
-References: =?utf-8?q?=3CO2CpIOrqLZHgNRkfjRpz=5FLGqnc1ix=5FseNIiOCvHY4RHoulO?=
- =?utf-8?q?VRo6kMXKuLOfBVTi0SMMevg6Go1uZ=5FcL9fLYtYdTRNH78ChaFaZyG3VAyYz?=
- =?utf-8?q?8=3D=40protonmail=2Ecom=3E?=
+In-Reply-To: <20200516103430.26527-4-sblbir@amazon.com>
+References: <20200516103430.26527-4-sblbir@amazon.com>
 MIME-Version: 1.0
-Message-ID: <159009533302.17951.12414541965465458126.tip-bot2@tip-bot2>
+Message-ID: <159013997442.17951.16582260930766939987.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -52,96 +49,111 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/timers branch of tip:
+The following commit has been merged into the x86/mm branch of tip:
 
-Commit-ID:     bd35c77e32e4359580207891c0f7a438ad4b42df
-Gitweb:        https://git.kernel.org/tip/bd35c77e32e4359580207891c0f7a438ad4b42df
-Author:        Krzysztof Piecuch <piecuch@protonmail.com>
-AuthorDate:    Thu, 23 Jan 2020 16:09:26 
+Commit-ID:     0fcfdf55db9e1ecf85edd6aa8d0bc78a448cb96a
+Gitweb:        https://git.kernel.org/tip/0fcfdf55db9e1ecf85edd6aa8d0bc78a448cb96a
+Author:        Balbir Singh <sblbir@amazon.com>
+AuthorDate:    Sat, 16 May 2020 20:34:30 +10:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 21 May 2020 23:07:00 +02:00
+CommitterDate: Fri, 22 May 2020 11:30:08 +02:00
 
-x86/tsc: Add tsc_early_khz command line parameter
+Documentation: Add L1D flushing Documentation
 
-Changing base clock frequency directly impacts TSC Hz but not CPUID.16h
-value. An overclocked CPU supporting CPUID.16h and with partial CPUID.15h
-support will set TSC KHZ according to "best guess" given by CPUID.16h
-relying on tsc_refine_calibration_work to give better numbers later.
-tsc_refine_calibration_work will refuse to do its work when the outcome is
-off the early TSC KHZ value by more than 1% which is certain to happen on
-an overclocked system.
+Add documentation of l1d flushing, explain the need for the
+feature and how it can be used.
 
-Fix this by adding a tsc_early_khz command line parameter that makes the
-kernel skip early TSC calibration and use the given value instead.
+[tglx: Reword the documentation]
 
-This allows the user to provide the expected TSC frequency that is closer
-to reality than the one reported by the hardware, enabling
-tsc_refine_calibration_work to do meaningful error checking.
-
-[ tglx: Made the variable __initdata as it's only used on init and
-        removed the error checking in the argument parser because
-	kstrto*() only stores to the variable if the string is valid ]
-
-Signed-off-by: Krzysztof Piecuch <piecuch@protonmail.com>
+Signed-off-by: Balbir Singh <sblbir@amazon.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/O2CpIOrqLZHgNRkfjRpz_LGqnc1ix_seNIiOCvHY4RHoulOVRo6kMXKuLOfBVTi0SMMevg6Go1uZ_cL9fLYtYdTRNH78ChaFaZyG3VAyYz8=@protonmail.com
-
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Link: https://lkml.kernel.org/r/20200516103430.26527-4-sblbir@amazon.com
 ---
- Documentation/admin-guide/kernel-parameters.txt |  6 ++++++
- arch/x86/kernel/tsc.c                           | 12 +++++++++++-
- 2 files changed, 17 insertions(+), 1 deletion(-)
+ Documentation/admin-guide/hw-vuln/index.rst     |  1 +-
+ Documentation/admin-guide/hw-vuln/l1d_flush.rst | 51 ++++++++++++++++-
+ Documentation/userspace-api/spec_ctrl.rst       |  7 ++-
+ 3 files changed, 59 insertions(+)
+ create mode 100644 Documentation/admin-guide/hw-vuln/l1d_flush.rst
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 7bc83f3..409ee4a 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -5067,6 +5067,12 @@
- 			interruptions from clocksource watchdog are not
- 			acceptable).
- 
-+	tsc_early_khz=  [X86] Skip early TSC calibration and use the given
-+			value instead. Useful when the early TSC frequency discovery
-+			procedure is not reliable, such as on overclocked systems
-+			with CPUID.16h support and partial CPUID.15h support.
-+			Format: <unsigned int>
+diff --git a/Documentation/admin-guide/hw-vuln/index.rst b/Documentation/admin-guide/hw-vuln/index.rst
+index 0795e3c..35633b2 100644
+--- a/Documentation/admin-guide/hw-vuln/index.rst
++++ b/Documentation/admin-guide/hw-vuln/index.rst
+@@ -14,3 +14,4 @@ are configurable at compile, boot or run time.
+    mds
+    tsx_async_abort
+    multihit.rst
++   l1d_flush
+diff --git a/Documentation/admin-guide/hw-vuln/l1d_flush.rst b/Documentation/admin-guide/hw-vuln/l1d_flush.rst
+new file mode 100644
+index 0000000..530a1e0
+--- /dev/null
++++ b/Documentation/admin-guide/hw-vuln/l1d_flush.rst
+@@ -0,0 +1,51 @@
++L1D Flushing for the paranoid
++=============================
 +
- 	tsx=		[X86] Control Transactional Synchronization
- 			Extensions (TSX) feature in Intel processors that
- 			support TSX control.
-diff --git a/arch/x86/kernel/tsc.c b/arch/x86/kernel/tsc.c
-index fdd4c10..49d9250 100644
---- a/arch/x86/kernel/tsc.c
-+++ b/arch/x86/kernel/tsc.c
-@@ -41,6 +41,7 @@ EXPORT_SYMBOL(tsc_khz);
-  * TSC can be unstable due to cpufreq or due to unsynced TSCs
-  */
- static int __read_mostly tsc_unstable;
-+static unsigned int __initdata tsc_early_khz;
- 
- static DEFINE_STATIC_KEY_FALSE(__use_tsc);
- 
-@@ -59,6 +60,12 @@ struct cyc2ns {
- 
- static DEFINE_PER_CPU_ALIGNED(struct cyc2ns, cyc2ns);
- 
-+static int __init tsc_early_khz_setup(char *buf)
-+{
-+	return kstrtouint(buf, 0, &tsc_early_khz);
-+}
-+early_param("tsc_early_khz", tsc_early_khz_setup);
++With an increasing number of vulnerabilities being reported around data
++leaks from the Level 1 Data cache (L1D) the kernel provides an opt-in
++mechanism to flush the L1D cache on context switch.
 +
- __always_inline void cyc2ns_read_begin(struct cyc2ns_data *data)
- {
- 	int seq, idx;
-@@ -1412,7 +1419,10 @@ static bool __init determine_cpu_tsc_frequencies(bool early)
- 
- 	if (early) {
- 		cpu_khz = x86_platform.calibrate_cpu();
--		tsc_khz = x86_platform.calibrate_tsc();
-+		if (tsc_early_khz)
-+			tsc_khz = tsc_early_khz;
-+		else
-+			tsc_khz = x86_platform.calibrate_tsc();
- 	} else {
- 		/* We should not be here with non-native cpu calibration */
- 		WARN_ON(x86_platform.calibrate_cpu != native_calibrate_cpu);
++This mechanism can be used to address e.g. CVE-2020-0550. For paranoid
++applications the mechanism keeps them safe from any yet to be discovered
++vulnerabilities, related to leaks from the L1D cache.
++
++
++Related CVEs
++------------
++At the present moment, the following CVEs can be addressed by this
++mechanism
++
++    =============       ========================     ==================
++    CVE-2020-0550       Improper Data Forwarding     OS related aspects
++    =============       ========================     ==================
++
++Usage Guidelines
++----------------
++
++Please see document: :ref:`Documentation/userspace-api/spec_ctrl.rst` for
++details.
++
++**NOTE**: The feature is disabled by default, applications need to
++specifically opt into the feature to enable it.
++
++Mitigation
++----------
++
++When PR_SET_L1D_FLUSH is enabled for a task a flush of the L1D cache is
++performed when the task is scheduled out and the incoming task belongs to a
++different process and therefore to a different address space.
++
++If the underlying CPU supports L1D flushing in hardware, the hardware
++mechanism is used, otherwise a software fallback, similar to the L1TF
++mitigation, is invoked.
++
++Limitations
++-----------
++
++The mechanism does not mitigate L1D data leaks between tasks belonging to
++different processes which are concurrently executing on sibling threads of
++a physical CPU core when SMT is enabled on the system.
++
++This can be addressed by controlled placement of processes on physical CPU
++cores or by disabling SMT. See the relevant chapter in the L1TF mitigation
++document: :ref:`Documentation/admin-guide/hw-vuln/l1tf.rst <smt_control>`.
+diff --git a/Documentation/userspace-api/spec_ctrl.rst b/Documentation/userspace-api/spec_ctrl.rst
+index 7ddd8f6..b40afe9 100644
+--- a/Documentation/userspace-api/spec_ctrl.rst
++++ b/Documentation/userspace-api/spec_ctrl.rst
+@@ -106,3 +106,10 @@ Speculation misfeature controls
+    * prctl(PR_SET_SPECULATION_CTRL, PR_SPEC_INDIRECT_BRANCH, PR_SPEC_ENABLE, 0, 0);
+    * prctl(PR_SET_SPECULATION_CTRL, PR_SPEC_INDIRECT_BRANCH, PR_SPEC_DISABLE, 0, 0);
+    * prctl(PR_SET_SPECULATION_CTRL, PR_SPEC_INDIRECT_BRANCH, PR_SPEC_FORCE_DISABLE, 0, 0);
++
++- PR_SPEC_L1D_FLUSH_OUT: Flush L1D Cache on context switch out of the task
++
++  Invocations:
++   * prctl(PR_GET_SPECULATION_CTRL, PR_SPEC_L1D_FLUSH_OUT, 0, 0, 0);
++   * prctl(PR_SET_SPECULATION_CTRL, PR_SPEC_L1D_FLUSH_OUT, PR_SPEC_ENABLE, 0, 0);
++   * prctl(PR_SET_SPECULATION_CTRL, PR_SPEC_L1D_FLUSH_OUT, PR_SPEC_DISABLE, 0, 0);
