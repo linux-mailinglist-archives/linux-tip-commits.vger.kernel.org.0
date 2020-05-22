@@ -2,39 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A2B71DE31F
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 22 May 2020 11:33:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC2B21DE325
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 22 May 2020 11:33:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729589AbgEVJdB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 22 May 2020 05:33:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35912 "EHLO
+        id S1729789AbgEVJdM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 22 May 2020 05:33:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35920 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729517AbgEVJc7 (ORCPT
+        with ESMTP id S1729561AbgEVJdA (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 22 May 2020 05:32:59 -0400
+        Fri, 22 May 2020 05:33:00 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D13FC05BD43;
-        Fri, 22 May 2020 02:32:59 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34613C08C5C1;
+        Fri, 22 May 2020 02:33:00 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jc42x-0001OT-S0; Fri, 22 May 2020 11:32:56 +0200
+        id 1jc42y-0001PS-MI; Fri, 22 May 2020 11:32:56 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 6F2051C0095;
-        Fri, 22 May 2020 11:32:55 +0200 (CEST)
-Date:   Fri, 22 May 2020 09:32:55 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5D68F1C0095;
+        Fri, 22 May 2020 11:32:56 +0200 (CEST)
+Date:   Fri, 22 May 2020 09:32:56 -0000
 From:   "tip-bot2 for Balbir Singh" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/mm] x86/mm: Optionally flush L1D on context switch
+Subject: [tip: x86/mm] x86/mm: Refactor cond_ibpb() to support other use cases
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Balbir Singh <sblbir@amazon.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200516103430.26527-2-sblbir@amazon.com>
-References: <20200516103430.26527-2-sblbir@amazon.com>
+In-Reply-To: <20200510014803.12190-4-sblbir@amazon.com>
+References: <20200510014803.12190-4-sblbir@amazon.com>
 MIME-Version: 1.0
-Message-ID: <159013997534.17951.18218280416222743933.tip-bot2@tip-bot2>
+Message-ID: <159013997625.17951.11700977214065015650.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,171 +50,168 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/mm branch of tip:
 
-Commit-ID:     20fc9f6f9f2fefefb694c9e447f80b4772021e0a
-Gitweb:        https://git.kernel.org/tip/20fc9f6f9f2fefefb694c9e447f80b4772021e0a
+Commit-ID:     83ce56f712af79eac5f761e6b058359336803500
+Gitweb:        https://git.kernel.org/tip/83ce56f712af79eac5f761e6b058359336803500
 Author:        Balbir Singh <sblbir@amazon.com>
-AuthorDate:    Sat, 16 May 2020 20:34:28 +10:00
+AuthorDate:    Sun, 10 May 2020 11:48:00 +10:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 22 May 2020 10:36:48 +02:00
+CommitterDate: Wed, 13 May 2020 18:12:20 +02:00
 
-x86/mm: Optionally flush L1D on context switch
+x86/mm: Refactor cond_ibpb() to support other use cases
 
-Implement a mechanism to selectively flush the L1D cache. The goal is to
-allow tasks that are paranoid due to the recent snoop assisted data sampling
-vulnerabilites, to flush their L1D on being switched out.  This protects
-their data from being snooped or leaked via side channels after the task
-has context switched out.
+cond_ibpb() has the necessary bits required to track the previous mm in
+switch_mm_irqs_off(). This can be reused for other use cases like L1D
+flushing on context switch.
 
-There are two scenarios we might want to protect against, a task leaving
-the CPU with data still in L1D (which is the main concern of this patch),
-the second scenario is a malicious task coming in (not so well trusted)
-for which we want to clean up the cache before it starts. Only the case
-for the former is addressed.
-
-A new thread_info flag TIF_SPEC_L1D_FLUSH is added to track tasks which
-opt-into L1D flushing. cpu_tlbstate.last_user_mm_spec is used to convert
-the TIF flags into mm state (per cpu via last_user_mm_spec) in
-cond_mitigation(), which then used to do decide when to flush the
-L1D cache.
+[ tglx: Moved comment, added a separate define for state (re)initialization ]
 
 Suggested-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Balbir Singh <sblbir@amazon.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20200516103430.26527-2-sblbir@amazon.com
+Link: https://lkml.kernel.org/r/20200510014803.12190-4-sblbir@amazon.com
 
 ---
- arch/x86/include/asm/thread_info.h |  9 +++++--
- arch/x86/mm/tlb.c                  | 40 ++++++++++++++++++++++++++---
- 2 files changed, 44 insertions(+), 5 deletions(-)
+ arch/x86/include/asm/tlbflush.h |  2 +-
+ arch/x86/mm/tlb.c               | 53 +++++++++++++++++---------------
+ 2 files changed, 30 insertions(+), 25 deletions(-)
 
-diff --git a/arch/x86/include/asm/thread_info.h b/arch/x86/include/asm/thread_info.h
-index 8de8cec..1655347 100644
---- a/arch/x86/include/asm/thread_info.h
-+++ b/arch/x86/include/asm/thread_info.h
-@@ -84,7 +84,7 @@ struct thread_info {
- #define TIF_SYSCALL_AUDIT	7	/* syscall auditing active */
- #define TIF_SECCOMP		8	/* secure computing */
- #define TIF_SPEC_IB		9	/* Indirect branch speculation mitigation */
--#define TIF_SPEC_FORCE_UPDATE	10	/* Force speculation MSR update in context switch */
-+#define TIF_SPEC_L1D_FLUSH	10	/* Flush L1D on mm switches (processes) */
- #define TIF_USER_RETURN_NOTIFY	11	/* notify kernel of userspace return */
- #define TIF_UPROBE		12	/* breakpointed or singlestepping */
- #define TIF_PATCH_PENDING	13	/* pending live patching update */
-@@ -96,6 +96,7 @@ struct thread_info {
- #define TIF_MEMDIE		20	/* is terminating due to OOM killer */
- #define TIF_POLLING_NRFLAG	21	/* idle is polling for TIF_NEED_RESCHED */
- #define TIF_IO_BITMAP		22	/* uses I/O bitmap */
-+#define TIF_SPEC_FORCE_UPDATE	23	/* Force speculation MSR update in context switch */
- #define TIF_FORCED_TF		24	/* true if TF in eflags artificially */
- #define TIF_BLOCKSTEP		25	/* set when we want DEBUGCTLMSR_BTF */
- #define TIF_LAZY_MMU_UPDATES	27	/* task is updating the mmu lazily */
-@@ -114,7 +115,7 @@ struct thread_info {
- #define _TIF_SYSCALL_AUDIT	(1 << TIF_SYSCALL_AUDIT)
- #define _TIF_SECCOMP		(1 << TIF_SECCOMP)
- #define _TIF_SPEC_IB		(1 << TIF_SPEC_IB)
--#define _TIF_SPEC_FORCE_UPDATE	(1 << TIF_SPEC_FORCE_UPDATE)
-+#define _TIF_SPEC_L1D_FLUSH	(1 << TIF_SPEC_L1D_FLUSH)
- #define _TIF_USER_RETURN_NOTIFY	(1 << TIF_USER_RETURN_NOTIFY)
- #define _TIF_UPROBE		(1 << TIF_UPROBE)
- #define _TIF_PATCH_PENDING	(1 << TIF_PATCH_PENDING)
-@@ -125,6 +126,7 @@ struct thread_info {
- #define _TIF_SLD		(1 << TIF_SLD)
- #define _TIF_POLLING_NRFLAG	(1 << TIF_POLLING_NRFLAG)
- #define _TIF_IO_BITMAP		(1 << TIF_IO_BITMAP)
-+#define _TIF_SPEC_FORCE_UPDATE	(1 << TIF_SPEC_FORCE_UPDATE)
- #define _TIF_FORCED_TF		(1 << TIF_FORCED_TF)
- #define _TIF_BLOCKSTEP		(1 << TIF_BLOCKSTEP)
- #define _TIF_LAZY_MMU_UPDATES	(1 << TIF_LAZY_MMU_UPDATES)
-@@ -235,6 +237,9 @@ static inline int arch_within_stack_frames(const void * const stack,
- 			   current_thread_info()->status & TS_COMPAT)
- #endif
+diff --git a/arch/x86/include/asm/tlbflush.h b/arch/x86/include/asm/tlbflush.h
+index 8c87a2e..a927d40 100644
+--- a/arch/x86/include/asm/tlbflush.h
++++ b/arch/x86/include/asm/tlbflush.h
+@@ -83,7 +83,7 @@ struct tlb_state {
+ 	/* Last user mm for optimizing IBPB */
+ 	union {
+ 		struct mm_struct	*last_user_mm;
+-		unsigned long		last_user_mm_ibpb;
++		unsigned long		last_user_mm_spec;
+ 	};
  
-+extern int enable_l1d_flush_for_task(struct task_struct *tsk);
-+extern int disable_l1d_flush_for_task(struct task_struct *tsk);
-+
- extern void arch_task_cache_init(void);
- extern int arch_dup_task_struct(struct task_struct *dst, struct task_struct *src);
- extern void arch_release_task_struct(struct task_struct *tsk);
+ 	u16 loaded_mm_asid;
 diff --git a/arch/x86/mm/tlb.c b/arch/x86/mm/tlb.c
-index 35017a0..c8524c5 100644
+index cf81902..35017a0 100644
 --- a/arch/x86/mm/tlb.c
 +++ b/arch/x86/mm/tlb.c
-@@ -13,6 +13,7 @@
- #include <asm/mmu_context.h>
- #include <asm/nospec-branch.h>
- #include <asm/cache.h>
-+#include <asm/cacheflush.h>
- #include <asm/apic.h>
- #include <asm/uv/uv.h>
- 
-@@ -43,13 +44,19 @@
+@@ -43,10 +43,14 @@
   */
  
  /*
-- * Bits to mangle the TIF_SPEC_IB state into the mm pointer which is
-+ * Bits to mangle the TIF_SPEC_* state into the mm pointer which is
-  * stored in cpu_tlb_state.last_user_mm_spec.
+- * Use bit 0 to mangle the TIF_SPEC_IB state into the mm pointer which is
+- * stored in cpu_tlb_state.last_user_mm_ibpb.
++ * Bits to mangle the TIF_SPEC_IB state into the mm pointer which is
++ * stored in cpu_tlb_state.last_user_mm_spec.
   */
  #define LAST_USER_MM_IBPB	0x1UL
--#define LAST_USER_MM_SPEC_MASK	(LAST_USER_MM_IBPB)
-+#define LAST_USER_MM_L1D_FLUSH	0x2UL
-+#define LAST_USER_MM_SPEC_MASK	(LAST_USER_MM_IBPB | LAST_USER_MM_L1D_FLUSH)
- 
--/* Bits to set when tlbstate and flush is (re)initialized */
-+/*
-+ * Bits to set when tlbstate and flush is (re)initialized
-+ *
-+ * Don't add LAST_USER_MM_L1D_FLUSH to the init bits as the initializaion
-+ * is done during early boot and l1d_flush_pages are not yet allocated.
-+ */
- #define LAST_USER_MM_INIT	LAST_USER_MM_IBPB
++#define LAST_USER_MM_SPEC_MASK	(LAST_USER_MM_IBPB)
++
++/* Bits to set when tlbstate and flush is (re)initialized */
++#define LAST_USER_MM_INIT	LAST_USER_MM_IBPB
  
  /*
-@@ -311,6 +318,23 @@ void leave_mm(int cpu)
+  * The x86 feature is called PCID (Process Context IDentifier). It is similar
+@@ -345,20 +349,29 @@ static void sync_current_stack_to_mm(struct mm_struct *mm)
+ 	}
  }
- EXPORT_SYMBOL_GPL(leave_mm);
  
-+int enable_l1d_flush_for_task(struct task_struct *tsk)
-+{
-+	int ret = l1d_flush_init_once();
-+
-+	if (ret < 0)
-+		return ret;
-+
-+	set_ti_thread_flag(&tsk->thread_info, TIF_SPEC_L1D_FLUSH);
-+	return ret;
-+}
-+
-+int disable_l1d_flush_for_task(struct task_struct *tsk)
-+{
-+	clear_ti_thread_flag(&tsk->thread_info, TIF_SPEC_L1D_FLUSH);
-+	return 0;
-+}
-+
- void switch_mm(struct mm_struct *prev, struct mm_struct *next,
- 	       struct task_struct *tsk)
+-static inline unsigned long mm_mangle_tif_spec_ib(struct task_struct *next)
++static inline unsigned long mm_mangle_tif_spec_bits(struct task_struct *next)
  {
-@@ -354,6 +378,8 @@ static inline unsigned long mm_mangle_tif_spec_bits(struct task_struct *next)
  	unsigned long next_tif = task_thread_info(next)->flags;
- 	unsigned long spec_bits = (next_tif >> TIF_SPEC_IB) & LAST_USER_MM_SPEC_MASK;
+-	unsigned long ibpb = (next_tif >> TIF_SPEC_IB) & LAST_USER_MM_IBPB;
++	unsigned long spec_bits = (next_tif >> TIF_SPEC_IB) & LAST_USER_MM_SPEC_MASK;
  
-+	BUILD_BUG_ON(TIF_SPEC_L1D_FLUSH != TIF_SPEC_IB + 1);
-+
- 	return (unsigned long)next->mm | spec_bits;
+-	return (unsigned long)next->mm | ibpb;
++	return (unsigned long)next->mm | spec_bits;
  }
  
-@@ -431,6 +457,14 @@ static void cond_mitigation(struct task_struct *next)
+-static void cond_ibpb(struct task_struct *next)
++static void cond_mitigation(struct task_struct *next)
+ {
++	unsigned long prev_mm, next_mm;
++
+ 	if (!next || !next->mm)
+ 		return;
+ 
++	next_mm = mm_mangle_tif_spec_bits(next);
++	prev_mm = this_cpu_read(cpu_tlbstate.last_user_mm_spec);
++
+ 	/*
++	 * Avoid user/user BTB poisoning by flushing the branch predictor
++	 * when switching between processes. This stops one process from
++	 * doing Spectre-v2 attacks on another.
++	 *
+ 	 * Both, the conditional and the always IBPB mode use the mm
+ 	 * pointer to avoid the IBPB when switching between tasks of the
+ 	 * same process. Using the mm pointer instead of mm->context.ctx_id
+@@ -368,8 +381,6 @@ static void cond_ibpb(struct task_struct *next)
+ 	 * exposed data is not really interesting.
+ 	 */
+ 	if (static_branch_likely(&switch_mm_cond_ibpb)) {
+-		unsigned long prev_mm, next_mm;
+-
+ 		/*
+ 		 * This is a bit more complex than the always mode because
+ 		 * it has to handle two cases:
+@@ -399,20 +410,14 @@ static void cond_ibpb(struct task_struct *next)
+ 		 * Optimize this with reasonably small overhead for the
+ 		 * above cases. Mangle the TIF_SPEC_IB bit into the mm
+ 		 * pointer of the incoming task which is stored in
+-		 * cpu_tlbstate.last_user_mm_ibpb for comparison.
+-		 */
+-		next_mm = mm_mangle_tif_spec_ib(next);
+-		prev_mm = this_cpu_read(cpu_tlbstate.last_user_mm_ibpb);
+-
+-		/*
++		 * cpu_tlbstate.last_user_mm_spec for comparison.
++		 *
+ 		 * Issue IBPB only if the mm's are different and one or
+ 		 * both have the IBPB bit set.
+ 		 */
+ 		if (next_mm != prev_mm &&
+ 		    (next_mm | prev_mm) & LAST_USER_MM_IBPB)
  			indirect_branch_prediction_barrier();
+-
+-		this_cpu_write(cpu_tlbstate.last_user_mm_ibpb, next_mm);
  	}
  
-+	if (prev_mm & LAST_USER_MM_L1D_FLUSH) {
-+		/*
-+		 * Don't populate the TLB for the software fallback flush.
-+		 * Populate TLB is not needed for this use case.
-+		 */
-+		arch_l1d_flush(0);
-+	}
+ 	if (static_branch_unlikely(&switch_mm_always_ibpb)) {
+@@ -421,11 +426,12 @@ static void cond_ibpb(struct task_struct *next)
+ 		 * different context than the user space task which ran
+ 		 * last on this CPU.
+ 		 */
+-		if (this_cpu_read(cpu_tlbstate.last_user_mm) != next->mm) {
++		if ((prev_mm & ~LAST_USER_MM_SPEC_MASK) !=
++					(unsigned long)next->mm)
+ 			indirect_branch_prediction_barrier();
+-			this_cpu_write(cpu_tlbstate.last_user_mm, next->mm);
+-		}
+ 	}
 +
- 	this_cpu_write(cpu_tlbstate.last_user_mm_spec, next_mm);
++	this_cpu_write(cpu_tlbstate.last_user_mm_spec, next_mm);
  }
  
+ #ifdef CONFIG_PERF_EVENTS
+@@ -547,11 +553,10 @@ void switch_mm_irqs_off(struct mm_struct *prev, struct mm_struct *next,
+ 		need_flush = true;
+ 	} else {
+ 		/*
+-		 * Avoid user/user BTB poisoning by flushing the branch
+-		 * predictor when switching between processes. This stops
+-		 * one process from doing Spectre-v2 attacks on another.
++		 * Apply process to process speculation vulnerability
++		 * mitigations if applicable.
+ 		 */
+-		cond_ibpb(tsk);
++		cond_mitigation(tsk);
+ 
+ 		if (IS_ENABLED(CONFIG_VMAP_STACK)) {
+ 			/*
+@@ -677,7 +682,7 @@ void initialize_tlbstate_and_flush(void)
+ 	write_cr3(build_cr3(mm->pgd, 0));
+ 
+ 	/* Reinitialize tlbstate. */
+-	this_cpu_write(cpu_tlbstate.last_user_mm_ibpb, LAST_USER_MM_IBPB);
++	this_cpu_write(cpu_tlbstate.last_user_mm_spec, LAST_USER_MM_INIT);
+ 	this_cpu_write(cpu_tlbstate.loaded_mm_asid, 0);
+ 	this_cpu_write(cpu_tlbstate.next_asid, 1);
+ 	this_cpu_write(cpu_tlbstate.ctxs[0].ctx_id, mm->context.ctx_id);
