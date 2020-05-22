@@ -2,40 +2,41 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 744191DECCB
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 22 May 2020 18:08:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DDB671DECDD
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 22 May 2020 18:09:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730195AbgEVQIv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S1730447AbgEVQIv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Fri, 22 May 2020 12:08:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41086 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41084 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730025AbgEVQIu (ORCPT
+        with ESMTP id S1729040AbgEVQIu (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Fri, 22 May 2020 12:08:50 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B45A1C05BD43;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B453FC061A0E;
         Fri, 22 May 2020 09:08:50 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jcAE2-00008p-29; Fri, 22 May 2020 18:08:46 +0200
+        id 1jcAE1-00008l-LM; Fri, 22 May 2020 18:08:45 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A690B1C0475;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 30E491C0095;
         Fri, 22 May 2020 18:08:45 +0200 (CEST)
 Date:   Fri, 22 May 2020 16:08:45 -0000
 From:   "tip-bot2 for Marco Elver" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/kcsan] compiler.h: Move function attributes to compiler_types.h
+Subject: [tip: locking/kcsan] compiler_types.h, kasan: Use
+ __SANITIZE_ADDRESS__ instead of CONFIG_KASAN to decide inlining
 Cc:     Marco Elver <elver@google.com>, Borislav Petkov <bp@suse.de>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Will Deacon <will@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200521142047.169334-11-elver@google.com>
-References: <20200521142047.169334-11-elver@google.com>
+In-Reply-To: <20200521142047.169334-12-elver@google.com>
+References: <20200521142047.169334-12-elver@google.com>
 MIME-Version: 1.0
-Message-ID: <159016372557.17951.5764184811583862261.tip-bot2@tip-bot2>
+Message-ID: <159016372500.17951.1297918218901756437.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,107 +52,61 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/kcsan branch of tip:
 
-Commit-ID:     9a4e6db6161cc3b31c6202f8d7a9495e0c2ecda7
-Gitweb:        https://git.kernel.org/tip/9a4e6db6161cc3b31c6202f8d7a9495e0c2ecda7
+Commit-ID:     b91caf58f6fb88738f444cf40d247475c367de47
+Gitweb:        https://git.kernel.org/tip/b91caf58f6fb88738f444cf40d247475c367de47
 Author:        Marco Elver <elver@google.com>
-AuthorDate:    Thu, 21 May 2020 16:20:46 +02:00
+AuthorDate:    Thu, 21 May 2020 16:20:47 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Fri, 22 May 2020 15:27:32 +02:00
+CommitterDate: Fri, 22 May 2020 15:31:04 +02:00
 
-compiler.h: Move function attributes to compiler_types.h
+compiler_types.h, kasan: Use __SANITIZE_ADDRESS__ instead of CONFIG_KASAN to decide inlining
 
-Cleanup and move the KASAN and KCSAN related function attributes to
-compiler_types.h, where the rest of the same kind live.
+Use __always_inline in compilation units that have instrumentation
+disabled (KASAN_SANITIZE_foo.o := n) for KASAN, like it is done for
+KCSAN.
 
-No functional change intended.
+Also, add common documentation for KASAN and KCSAN explaining the
+attribute.
+
+ [ bp: Massage commit message. ]
 
 Signed-off-by: Marco Elver <elver@google.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
 Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Acked-by: Will Deacon <will@kernel.org>
-Link: https://lkml.kernel.org/r/20200521142047.169334-11-elver@google.com
+Link: https://lkml.kernel.org/r/20200521142047.169334-12-elver@google.com
 ---
- include/linux/compiler.h       | 29 -----------------------------
- include/linux/compiler_types.h | 29 +++++++++++++++++++++++++++++
- 2 files changed, 29 insertions(+), 29 deletions(-)
+ include/linux/compiler_types.h | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/compiler.h b/include/linux/compiler.h
-index 379a507..652aee0 100644
---- a/include/linux/compiler.h
-+++ b/include/linux/compiler.h
-@@ -250,35 +250,6 @@ do {									\
- 	__WRITE_ONCE(x, val);						\
- } while (0)
+diff --git a/include/linux/compiler_types.h b/include/linux/compiler_types.h
+index b190a12..5faf68e 100644
+--- a/include/linux/compiler_types.h
++++ b/include/linux/compiler_types.h
+@@ -167,7 +167,14 @@ struct ftrace_likely_data {
+  */
+ #define noinline_for_stack noinline
  
 -#ifdef CONFIG_KASAN
--/*
-- * We can't declare function 'inline' because __no_sanitize_address conflicts
-- * with inlining. Attempt to inline it may cause a build failure.
-- *     https://gcc.gnu.org/bugzilla/show_bug.cgi?id=67368
-- * '__maybe_unused' allows us to avoid defined-but-not-used warnings.
-- */
--# define __no_kasan_or_inline __no_sanitize_address notrace __maybe_unused
--# define __no_sanitize_or_inline __no_kasan_or_inline
--#else
--# define __no_kasan_or_inline __always_inline
--#endif
--
--#define __no_kcsan __no_sanitize_thread
--#ifdef __SANITIZE_THREAD__
++/*
++ * Sanitizer helper attributes: Because using __always_inline and
++ * __no_sanitize_* conflict, provide helper attributes that will either expand
++ * to __no_sanitize_* in compilation units where instrumentation is enabled
++ * (__SANITIZE_*__), or __always_inline in compilation units without
++ * instrumentation (__SANITIZE_*__ undefined).
++ */
++#ifdef __SANITIZE_ADDRESS__
+ /*
+  * We can't declare function 'inline' because __no_sanitize_address conflicts
+  * with inlining. Attempt to inline it may cause a build failure.
+@@ -182,10 +189,6 @@ struct ftrace_likely_data {
+ 
+ #define __no_kcsan __no_sanitize_thread
+ #ifdef __SANITIZE_THREAD__
 -/*
 - * Rely on __SANITIZE_THREAD__ instead of CONFIG_KCSAN, to avoid not inlining in
 - * compilation units where instrumentation is disabled.
 - */
--# define __no_kcsan_or_inline __no_kcsan notrace __maybe_unused
--# define __no_sanitize_or_inline __no_kcsan_or_inline
--#else
--# define __no_kcsan_or_inline __always_inline
--#endif
--
--#ifndef __no_sanitize_or_inline
--#define __no_sanitize_or_inline __always_inline
--#endif
--
- static __no_sanitize_or_inline
- unsigned long __read_once_word_nocheck(const void *addr)
- {
-diff --git a/include/linux/compiler_types.h b/include/linux/compiler_types.h
-index 6ed0612..b190a12 100644
---- a/include/linux/compiler_types.h
-+++ b/include/linux/compiler_types.h
-@@ -167,6 +167,35 @@ struct ftrace_likely_data {
-  */
- #define noinline_for_stack noinline
- 
-+#ifdef CONFIG_KASAN
-+/*
-+ * We can't declare function 'inline' because __no_sanitize_address conflicts
-+ * with inlining. Attempt to inline it may cause a build failure.
-+ *     https://gcc.gnu.org/bugzilla/show_bug.cgi?id=67368
-+ * '__maybe_unused' allows us to avoid defined-but-not-used warnings.
-+ */
-+# define __no_kasan_or_inline __no_sanitize_address notrace __maybe_unused
-+# define __no_sanitize_or_inline __no_kasan_or_inline
-+#else
-+# define __no_kasan_or_inline __always_inline
-+#endif
-+
-+#define __no_kcsan __no_sanitize_thread
-+#ifdef __SANITIZE_THREAD__
-+/*
-+ * Rely on __SANITIZE_THREAD__ instead of CONFIG_KCSAN, to avoid not inlining in
-+ * compilation units where instrumentation is disabled.
-+ */
-+# define __no_kcsan_or_inline __no_kcsan notrace __maybe_unused
-+# define __no_sanitize_or_inline __no_kcsan_or_inline
-+#else
-+# define __no_kcsan_or_inline __always_inline
-+#endif
-+
-+#ifndef __no_sanitize_or_inline
-+#define __no_sanitize_or_inline __always_inline
-+#endif
-+
- #endif /* __KERNEL__ */
- 
- #endif /* __ASSEMBLY__ */
+ # define __no_kcsan_or_inline __no_kcsan notrace __maybe_unused
+ # define __no_sanitize_or_inline __no_kcsan_or_inline
+ #else
