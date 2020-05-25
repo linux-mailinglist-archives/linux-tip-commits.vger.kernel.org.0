@@ -2,39 +2,46 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 973621DFAC7
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 23 May 2020 21:50:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C41791E0666
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 25 May 2020 07:27:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728319AbgEWTun (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 23 May 2020 15:50:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44802 "EHLO
+        id S2388399AbgEYF07 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 25 May 2020 01:26:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45690 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727962AbgEWTun (ORCPT
+        with ESMTP id S1729588AbgEYF06 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 23 May 2020 15:50:43 -0400
+        Mon, 25 May 2020 01:26:58 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07B94C061A0E;
-        Sat, 23 May 2020 12:50:43 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81DD1C05BD43;
+        Sun, 24 May 2020 22:26:58 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jcaAI-0004Ui-0K; Sat, 23 May 2020 21:50:38 +0200
+        id 1jd5dH-0002kl-7t; Mon, 25 May 2020 07:26:39 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 89C1D1C0082;
-        Sat, 23 May 2020 21:50:37 +0200 (CEST)
-Date:   Sat, 23 May 2020 19:50:37 -0000
-From:   "tip-bot2 for Steve Wahl" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 91FD81C0087;
+        Mon, 25 May 2020 07:26:36 +0200 (CEST)
+Date:   Mon, 25 May 2020 05:26:36 -0000
+From:   "tip-bot2 for Mel Gorman" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/platform] x86/apic/uv: Remove code for unused distributed GRU mode
-Cc:     Steve Wahl <steve.wahl@hpe.com>, Borislav Petkov <bp@suse.de>,
-        Dimitri Sivanich <sivanich@hpe.com>, x86 <x86@kernel.org>,
+Subject: [tip: sched/core] sched/core: Offload wakee task activation if it the
+ wakee is descheduling
+Cc:     Mel Gorman <mgorman@techsingularity.net>,
+        Ingo Molnar <mingo@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Jirka Hladky <jhladky@redhat.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        valentin.schneider@arm.com, Hillf Danton <hdanton@sina.com>,
+        Rik van Riel <riel@surriel.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200513221123.GJ3240@raspberrypi>
-References: <20200513221123.GJ3240@raspberrypi>
+In-Reply-To: <20200524202956.27665-3-mgorman@techsingularity.net>
+References: <20200524202956.27665-3-mgorman@techsingularity.net>
 MIME-Version: 1.0
-Message-ID: <159026343739.17951.3625174887155578318.tip-bot2@tip-bot2>
+Message-ID: <159038439642.17951.918928602866557514.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,118 +55,181 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/platform branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     33649bf4494c1feaf1956a84895fcc0621aafd90
-Gitweb:        https://git.kernel.org/tip/33649bf4494c1feaf1956a84895fcc0621aafd90
-Author:        Steve Wahl <steve.wahl@hpe.com>
-AuthorDate:    Wed, 13 May 2020 17:11:23 -05:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Sat, 23 May 2020 16:19:57 +02:00
+Commit-ID:     2ebb17717550607bcd85fb8cf7d24ac870e9d762
+Gitweb:        https://git.kernel.org/tip/2ebb17717550607bcd85fb8cf7d24ac870e9d762
+Author:        Mel Gorman <mgorman@techsingularity.net>
+AuthorDate:    Sun, 24 May 2020 21:29:56 +01:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Mon, 25 May 2020 07:04:10 +02:00
 
-x86/apic/uv: Remove code for unused distributed GRU mode
+sched/core: Offload wakee task activation if it the wakee is descheduling
 
-Distributed GRU mode appeared in only one generation of UV hardware,
-and no version of the BIOS has shipped with this feature enabled, and
-we have no plans to ever change that.  The gru.s3.mode check has
-always been and will continue to be false.  So remove this dead code.
+The previous commit:
 
-Signed-off-by: Steve Wahl <steve.wahl@hpe.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Acked-by: Dimitri Sivanich <sivanich@hpe.com>
-Link: https://lkml.kernel.org/r/20200513221123.GJ3240@raspberrypi
+  c6e7bd7afaeb: ("sched/core: Optimize ttwu() spinning on p->on_cpu")
+
+avoids spinning on p->on_rq when the task is descheduling, but only if the
+wakee is on a CPU that does not share cache with the waker.
+
+This patch offloads the activation of the wakee to the CPU that is about to
+go idle if the task is the only one on the runqueue. This potentially allows
+the waker task to continue making progress when the wakeup is not strictly
+synchronous.
+
+This is very obvious with netperf UDP_STREAM running on localhost. The
+waker is sending packets as quickly as possible without waiting for any
+reply. It frequently wakes the server for the processing of packets and
+when netserver is using local memory, it quickly completes the processing
+and goes back to idle. The waker often observes that netserver is on_rq
+and spins excessively leading to a drop in throughput.
+
+This is a comparison of 5.7-rc6 against "sched: Optimize ttwu() spinning
+on p->on_cpu" and against this patch labeled vanilla, optttwu-v1r1 and
+localwakelist-v1r2 respectively.
+
+                                  5.7.0-rc6              5.7.0-rc6              5.7.0-rc6
+                                    vanilla           optttwu-v1r1     localwakelist-v1r2
+Hmean     send-64         251.49 (   0.00%)      258.05 *   2.61%*      305.59 *  21.51%*
+Hmean     send-128        497.86 (   0.00%)      519.89 *   4.43%*      600.25 *  20.57%*
+Hmean     send-256        944.90 (   0.00%)      997.45 *   5.56%*     1140.19 *  20.67%*
+Hmean     send-1024      3779.03 (   0.00%)     3859.18 *   2.12%*     4518.19 *  19.56%*
+Hmean     send-2048      7030.81 (   0.00%)     7315.99 *   4.06%*     8683.01 *  23.50%*
+Hmean     send-3312     10847.44 (   0.00%)    11149.43 *   2.78%*    12896.71 *  18.89%*
+Hmean     send-4096     13436.19 (   0.00%)    13614.09 (   1.32%)    15041.09 *  11.94%*
+Hmean     send-8192     22624.49 (   0.00%)    23265.32 *   2.83%*    24534.96 *   8.44%*
+Hmean     send-16384    34441.87 (   0.00%)    36457.15 *   5.85%*    35986.21 *   4.48%*
+
+Note that this benefit is not universal to all wakeups, it only applies
+to the case where the waker often spins on p->on_rq.
+
+The impact can be seen from a "perf sched latency" report generated from
+a single iteration of one packet size:
+
+   -----------------------------------------------------------------------------------------------------------------
+    Task                  |   Runtime ms  | Switches | Average delay ms | Maximum delay ms | Maximum delay at       |
+   -----------------------------------------------------------------------------------------------------------------
+
+  vanilla
+    netperf:4337          |  21709.193 ms |     2932 | avg:    0.002 ms | max:    0.041 ms | max at:    112.154512 s
+    netserver:4338        |  14629.459 ms |  5146990 | avg:    0.001 ms | max: 1615.864 ms | max at:    140.134496 s
+
+  localwakelist-v1r2
+    netperf:4339          |  29789.717 ms |     2460 | avg:    0.002 ms | max:    0.059 ms | max at:    138.205389 s
+    netserver:4340        |  18858.767 ms |  7279005 | avg:    0.001 ms | max:    0.362 ms | max at:    135.709683 s
+   -----------------------------------------------------------------------------------------------------------------
+
+Note that the average wakeup delay is quite small on both the vanilla
+kernel and with the two patches applied. However, there are significant
+outliers with the vanilla kernel with the maximum one measured as 1615
+milliseconds with a vanilla kernel but never worse than 0.362 ms with
+both patches applied and a much higher rate of context switching.
+
+Similarly a separate profile of cycles showed that 2.83% of all cycles
+were spent in try_to_wake_up() with almost half of the cycles spent
+on spinning on p->on_rq. With the two patches, the percentage of cycles
+spent in try_to_wake_up() drops to 1.13%
+
+Signed-off-by: Mel Gorman <mgorman@techsingularity.net>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Jirka Hladky <jhladky@redhat.com>
+Cc: Vincent Guittot <vincent.guittot@linaro.org>
+Cc: valentin.schneider@arm.com
+Cc: Hillf Danton <hdanton@sina.com>
+Cc: Rik van Riel <riel@surriel.com>
+Link: https://lore.kernel.org/r/20200524202956.27665-3-mgorman@techsingularity.net
 ---
- arch/x86/kernel/apic/x2apic_uv_x.c | 59 +-----------------------------
- 1 file changed, 1 insertion(+), 58 deletions(-)
+ kernel/sched/core.c  | 39 +++++++++++++++++++++++++++++++++------
+ kernel/sched/sched.h |  3 ++-
+ 2 files changed, 35 insertions(+), 7 deletions(-)
 
-diff --git a/arch/x86/kernel/apic/x2apic_uv_x.c b/arch/x86/kernel/apic/x2apic_uv_x.c
-index 10339ad..69e70ed 100644
---- a/arch/x86/kernel/apic/x2apic_uv_x.c
-+++ b/arch/x86/kernel/apic/x2apic_uv_x.c
-@@ -30,8 +30,6 @@ static enum uv_system_type	uv_system_type;
- static int			uv_hubbed_system;
- static int			uv_hubless_system;
- static u64			gru_start_paddr, gru_end_paddr;
--static u64			gru_dist_base, gru_first_node_paddr = -1LL, gru_last_node_paddr;
--static u64			gru_dist_lmask, gru_dist_umask;
- static union uvh_apicid		uvh_apicid;
- 
- /* Unpack OEM/TABLE ID's to be NULL terminated strings */
-@@ -83,20 +81,7 @@ static unsigned long __init uv_early_read_mmr(unsigned long addr)
- 
- static inline bool is_GRU_range(u64 start, u64 end)
- {
--	if (gru_dist_base) {
--		u64 su = start & gru_dist_umask; /* Upper (incl pnode) bits */
--		u64 sl = start & gru_dist_lmask; /* Base offset bits */
--		u64 eu = end & gru_dist_umask;
--		u64 el = end & gru_dist_lmask;
--
--		/* Must reside completely within a single GRU range: */
--		return (sl == gru_dist_base && el == gru_dist_base &&
--			su >= gru_first_node_paddr &&
--			su <= gru_last_node_paddr &&
--			eu == su);
--	} else {
--		return start >= gru_start_paddr && end <= gru_end_paddr;
--	}
-+	return start >= gru_start_paddr && end <= gru_end_paddr;
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 903c9ee..6130ab1 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -2312,7 +2312,13 @@ static void wake_csd_func(void *info)
+ 	sched_ttwu_pending();
  }
  
- static bool uv_is_untracked_pat_range(u64 start, u64 end)
-@@ -797,42 +782,6 @@ static __init void map_high(char *id, unsigned long base, int pshift, int bshift
- 		init_extra_mapping_wb(paddr, bytes);
+-static void __ttwu_queue_remote(struct task_struct *p, int cpu, int wake_flags)
++/*
++ * Queue a task on the target CPUs wake_list and wake the CPU via IPI if
++ * necessary. The wakee CPU on receipt of the IPI will queue the task
++ * via sched_ttwu_wakeup() for activation so the wakee incurs the cost
++ * of the wakeup instead of the waker.
++ */
++static void __ttwu_queue_wakelist(struct task_struct *p, int cpu, int wake_flags)
+ {
+ 	struct rq *rq = cpu_rq(cpu);
+ 
+@@ -2355,11 +2361,32 @@ bool cpus_share_cache(int this_cpu, int that_cpu)
+ 	return per_cpu(sd_llc_id, this_cpu) == per_cpu(sd_llc_id, that_cpu);
  }
  
--static __init void map_gru_distributed(unsigned long c)
--{
--	union uvh_rh_gam_gru_overlay_config_mmr_u gru;
--	u64 paddr;
--	unsigned long bytes;
--	int nid;
--
--	gru.v = c;
--
--	/* Only base bits 42:28 relevant in dist mode */
--	gru_dist_base = gru.v & 0x000007fff0000000UL;
--	if (!gru_dist_base) {
--		pr_info("UV: Map GRU_DIST base address NULL\n");
--		return;
--	}
--
--	bytes = 1UL << UVH_RH_GAM_GRU_OVERLAY_CONFIG_MMR_BASE_SHFT;
--	gru_dist_lmask = ((1UL << uv_hub_info->m_val) - 1) & ~(bytes - 1);
--	gru_dist_umask = ~((1UL << uv_hub_info->m_val) - 1);
--	gru_dist_base &= gru_dist_lmask; /* Clear bits above M */
--
--	for_each_online_node(nid) {
--		paddr = ((u64)uv_node_to_pnode(nid) << uv_hub_info->m_val) |
--				gru_dist_base;
--		init_extra_mapping_wb(paddr, bytes);
--		gru_first_node_paddr = min(paddr, gru_first_node_paddr);
--		gru_last_node_paddr = max(paddr, gru_last_node_paddr);
--	}
--
--	/* Save upper (63:M) bits of address only for is_GRU_range */
--	gru_first_node_paddr &= gru_dist_umask;
--	gru_last_node_paddr &= gru_dist_umask;
--
--	pr_debug("UV: Map GRU_DIST base 0x%016llx  0x%016llx - 0x%016llx\n", gru_dist_base, gru_first_node_paddr, gru_last_node_paddr);
--}
--
- static __init void map_gru_high(int max_pnode)
+-static bool ttwu_queue_remote(struct task_struct *p, int cpu, int wake_flags)
++static inline bool ttwu_queue_cond(int cpu, int wake_flags)
++{
++	/*
++	 * If the CPU does not share cache, then queue the task on the
++	 * remote rqs wakelist to avoid accessing remote data.
++	 */
++	if (!cpus_share_cache(smp_processor_id(), cpu))
++		return true;
++
++	/*
++	 * If the task is descheduling and the only running task on the
++	 * CPU then use the wakelist to offload the task activation to
++	 * the soon-to-be-idle CPU as the current CPU is likely busy.
++	 * nr_running is checked to avoid unnecessary task stacking.
++	 */
++	if ((wake_flags & WF_ON_RQ) && cpu_rq(cpu)->nr_running <= 1)
++		return true;
++
++	return false;
++}
++
++static bool ttwu_queue_wakelist(struct task_struct *p, int cpu, int wake_flags)
  {
- 	union uvh_rh_gam_gru_overlay_config_mmr_u gru;
-@@ -846,12 +795,6 @@ static __init void map_gru_high(int max_pnode)
- 		return;
+-	if (sched_feat(TTWU_QUEUE) && !cpus_share_cache(smp_processor_id(), cpu)) {
++	if (sched_feat(TTWU_QUEUE) && ttwu_queue_cond(cpu, wake_flags)) {
+ 		sched_clock_cpu(cpu); /* Sync clocks across CPUs */
+-		__ttwu_queue_remote(p, cpu, wake_flags);
++		__ttwu_queue_wakelist(p, cpu, wake_flags);
+ 		return true;
  	}
  
--	/* Only UV3 has distributed GRU mode */
--	if (is_uv3_hub() && gru.s3.mode) {
--		map_gru_distributed(gru.v);
--		return;
--	}
--
- 	base = (gru.v & mask) >> shift;
- 	map_high("GRU", base, shift, shift, max_pnode, map_wb);
- 	gru_start_paddr = ((u64)base << shift);
+@@ -2373,7 +2400,7 @@ static void ttwu_queue(struct task_struct *p, int cpu, int wake_flags)
+ 	struct rq_flags rf;
+ 
+ #if defined(CONFIG_SMP)
+-	if (ttwu_queue_remote(p, cpu, wake_flags))
++	if (ttwu_queue_wakelist(p, cpu, wake_flags))
+ 		return;
+ #endif
+ 
+@@ -2593,7 +2620,7 @@ try_to_wake_up(struct task_struct *p, unsigned int state, int wake_flags)
+ 	 * let the waker make forward progress. This is safe because IRQs are
+ 	 * disabled and the IPI will deliver after on_cpu is cleared.
+ 	 */
+-	if (READ_ONCE(p->on_cpu) && ttwu_queue_remote(p, cpu, wake_flags))
++	if (READ_ONCE(p->on_cpu) && ttwu_queue_wakelist(p, cpu, wake_flags | WF_ON_RQ))
+ 		goto unlock;
+ 
+ 	/*
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index f7ab633..4b32cff 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -1685,7 +1685,8 @@ static inline int task_on_rq_migrating(struct task_struct *p)
+  */
+ #define WF_SYNC			0x01		/* Waker goes to sleep after wakeup */
+ #define WF_FORK			0x02		/* Child wakeup after fork */
+-#define WF_MIGRATED		0x4		/* Internal use, task got migrated */
++#define WF_MIGRATED		0x04		/* Internal use, task got migrated */
++#define WF_ON_RQ		0x08		/* Wakee is on_rq */
+ 
+ /*
+  * To aid in avoiding the subversion of "niceness" due to uneven distribution
