@@ -2,103 +2,74 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 271CD1E2732
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 26 May 2020 18:37:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD4BD1E292C
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 26 May 2020 19:38:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728339AbgEZQhi (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 26 May 2020 12:37:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38426 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726930AbgEZQhi (ORCPT
+        id S2389069AbgEZRhF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 26 May 2020 13:37:05 -0400
+Received: from mga02.intel.com ([134.134.136.20]:33528 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2388767AbgEZRhF (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 26 May 2020 12:37:38 -0400
-Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81DACC03E96D;
-        Tue, 26 May 2020 09:37:38 -0700 (PDT)
-Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tip-bot2@linutronix.de>)
-        id 1jdca4-0006ac-9Y; Tue, 26 May 2020 18:37:32 +0200
-Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id DAEC51C00FA;
-        Tue, 26 May 2020 18:37:31 +0200 (CEST)
-Date:   Tue, 26 May 2020 16:37:31 -0000
-From:   "tip-bot2 for Jens Axboe" <tip-bot2@linutronix.de>
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] sched/fair: Don't NUMA balance for kthreads
-Cc:     Stefano Garzarella <sgarzare@redhat.com>,
-        Jens Axboe <axboe@kernel.dk>, Ingo Molnar <mingo@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <865de121-8190-5d30-ece5-3b097dc74431@kernel.dk>
-References: <865de121-8190-5d30-ece5-3b097dc74431@kernel.dk>
-MIME-Version: 1.0
-Message-ID: <159051105169.17951.7766343551502727932.tip-bot2@tip-bot2>
-X-Mailer: tip-git-log-daemon
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+        Tue, 26 May 2020 13:37:05 -0400
+IronPort-SDR: aEyHuJtU+0wVsMuLnuFCMOrIvwuLUozA0q5lh1s8cRjBkCQckG6EpcQ8CvfRcMcqefNw0DLlPh
+ BWcOFYv2up7g==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2020 10:37:04 -0700
+IronPort-SDR: MJKhGcrATuF0i0KihAqALeT6vQzlCUKnj4irifv+c5R2fkiG4jSSSvt3WU07w6sFGOrz0/LpiV
+ +H1hu/8moy9w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,437,1583222400"; 
+   d="scan'208";a="310319561"
+Received: from orsmsx106.amr.corp.intel.com ([10.22.225.133])
+  by FMSMGA003.fm.intel.com with ESMTP; 26 May 2020 10:37:04 -0700
+Received: from orsmsx114.amr.corp.intel.com (10.22.240.10) by
+ ORSMSX106.amr.corp.intel.com (10.22.225.133) with Microsoft SMTP Server (TLS)
+ id 14.3.439.0; Tue, 26 May 2020 10:37:03 -0700
+Received: from orsmsx115.amr.corp.intel.com ([169.254.4.3]) by
+ ORSMSX114.amr.corp.intel.com ([169.254.8.205]) with mapi id 14.03.0439.000;
+ Tue, 26 May 2020 10:37:03 -0700
+From:   "Luck, Tony" <tony.luck@intel.com>
+To:     Borislav Petkov <bp@alien8.de>, Jue Wang <juew@google.com>
+CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-tip-commits@vger.kernel.org" 
+        <linux-tip-commits@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        x86 <x86@kernel.org>
+Subject: RE: [tip: ras/core] x86/{mce,mm}: Change so poison pages are either
+ unmapped or marked uncacheable
+Thread-Topic: [tip: ras/core] x86/{mce,mm}: Change so poison pages are
+ either unmapped or marked uncacheable
+Thread-Index: AQHWMoOxAO03JBXooEyMNcBj14jCyqi5ua4AgADovGA=
+Date:   Tue, 26 May 2020 17:37:03 +0000
+Message-ID: <3908561D78D1C84285E8C5FCA982C28F7F64615F@ORSMSX115.amr.corp.intel.com>
+References: <159040440370.17951.17560303737298768113.tip-bot2@tip-bot2>
+ <20200525204010.GB25598@zn.tnic>
+In-Reply-To: <20200525204010.GB25598@zn.tnic>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+dlp-product: dlpe-windows
+dlp-version: 11.2.0.6
+dlp-reaction: no-action
+x-originating-ip: [10.22.254.138]
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/urgent branch of tip:
-
-Commit-ID:     18f855e574d9799a0e7489f8ae6fd8447d0dd74a
-Gitweb:        https://git.kernel.org/tip/18f855e574d9799a0e7489f8ae6fd8447d0dd74a
-Author:        Jens Axboe <axboe@kernel.dk>
-AuthorDate:    Tue, 26 May 2020 09:38:31 -06:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 26 May 2020 18:34:58 +02:00
-
-sched/fair: Don't NUMA balance for kthreads
-
-Stefano reported a crash with using SQPOLL with io_uring:
-
-  BUG: kernel NULL pointer dereference, address: 00000000000003b0
-  CPU: 2 PID: 1307 Comm: io_uring-sq Not tainted 5.7.0-rc7 #11
-  RIP: 0010:task_numa_work+0x4f/0x2c0
-  Call Trace:
-   task_work_run+0x68/0xa0
-   io_sq_thread+0x252/0x3d0
-   kthread+0xf9/0x130
-   ret_from_fork+0x35/0x40
-
-which is task_numa_work() oopsing on current->mm being NULL.
-
-The task work is queued by task_tick_numa(), which checks if current->mm is
-NULL at the time of the call. But this state isn't necessarily persistent,
-if the kthread is using use_mm() to temporarily adopt the mm of a task.
-
-Change the task_tick_numa() check to exclude kernel threads in general,
-as it doesn't make sense to attempt ot balance for kthreads anyway.
-
-Reported-by: Stefano Garzarella <sgarzare@redhat.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/865de121-8190-5d30-ece5-3b097dc74431@kernel.dk
----
- kernel/sched/fair.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 538ba5d..da3e5b5 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -2908,7 +2908,7 @@ static void task_tick_numa(struct rq *rq, struct task_struct *curr)
- 	/*
- 	 * We don't care about NUMA placement if we don't have memory.
- 	 */
--	if (!curr->mm || (curr->flags & PF_EXITING) || work->next != work)
-+	if ((curr->flags & (PF_EXITING | PF_KTHREAD)) || work->next != work)
- 		return;
- 
- 	/*
+PiBPaywgSSBoYWQgdG8gY2hhbmdlIHRoaXMgb25lIGR1ZSB0byBvdGhlciBwZW5kaW5nIGNoYW5n
+ZXMgaW4NCj4gdGlwOng4Ni9lbnRyeS4gVGhlIG5ldyB2ZXJzaW9uIGJlbG93Lg0KPg0KPiBDYW4g
+eW91IGd1eXMgcnVuIHRoaXMgYnJhbmNoIHRvIG1ha2Ugc3VyZSBpdCBzdGlsbCB3b3JrcyBhcyBl
+eHBlY3RlZD8NCj4NCj4gaHR0cHM6Ly9naXQua2VybmVsLm9yZy9wdWIvc2NtL2xpbnV4L2tlcm5l
+bC9naXQvYnAvYnAuZ2l0L2xvZy8/aD10aXAtcmFzLWNvcmUNCg0KVGVzdGVkIHRoZSBuYXRpdmUg
+Y2FzZS4gV2UgY29ycmVjdGx5IHRyeSB0byBzZXQgdGhlIHBhZ2UgdW5jYWNoZWFibGUgYmVjYXVz
+ZQ0KdGhlIHNjb3BlIG9mIHRoZSBlcnJvciBpcyBhIGNhY2hlIGxpbmUuDQoNCkkgZG9uJ3QgaGF2
+ZSB0aGUgcmlnaHQgc2V0dXAgdG8gdGVzdCB0aGUgdmlydHVhbGl6YXRpb24gY2FzZS4gTWF5YmUg
+SnVlIGNhbiB0ZXN0IGFnYWluPw0KDQotVG9ueQ0K
