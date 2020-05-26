@@ -2,184 +2,75 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D2C4B1E2C56
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 26 May 2020 21:14:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C3E721E2F40
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 26 May 2020 21:46:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392026AbgEZTOK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 26 May 2020 15:14:10 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44804 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2392143AbgEZTOJ (ORCPT
+        id S2389808AbgEZTqd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 26 May 2020 15:46:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39688 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389798AbgEZTqd (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 26 May 2020 15:14:09 -0400
-Received: from paulmck-ThinkPad-P72.home (50-39-105-78.bvtn.or.frontiernet.net [50.39.105.78])
+        Tue, 26 May 2020 15:46:33 -0400
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6A9AC03E96D;
+        Tue, 26 May 2020 12:46:32 -0700 (PDT)
+Received: from zn.tnic (p200300ec2f0f9100c45766fca55d94fe.dip0.t-ipconnect.de [IPv6:2003:ec:2f0f:9100:c457:66fc:a55d:94fe])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 96B9A20776;
-        Tue, 26 May 2020 19:14:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1590520448;
-        bh=nEsdctgoBHpl4HUz6UKxnPRnw8aRpNQAiRd1il2EC4k=;
-        h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-        b=bIqbO9Tqwv9fc7v819nhEw6MWuw6lBcXUbnnkH5hG4VAln3xQsmaek5sA6M7oAYPO
-         btNX5BN4JFnyU6u2kjO24WL67YH5LtZ8s4J1OPwAxsqz9p+UNT84K3LxktL2JkO7jn
-         VKW0n5H2DZoX6JPSA1Fl5ePDSMeAghhb5DcsGxn8=
-Received: by paulmck-ThinkPad-P72.home (Postfix, from userid 1000)
-        id 7ACC23522A8B; Tue, 26 May 2020 12:14:08 -0700 (PDT)
-Date:   Tue, 26 May 2020 12:14:08 -0700
-From:   "Paul E. McKenney" <paulmck@kernel.org>
-To:     Ingo Molnar <mingo@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 2E2FC1EC0300;
+        Tue, 26 May 2020 21:46:31 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1590522391;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=UwvATQ6Di/6WhS3s7DR0p6YEsaemqMGEuZEXjR9YHqY=;
+        b=B1BB2ASrXS7lkgOCqmceLfGIj7A6UX84rUjvPGTBq+TqA+asHph26yRdF97LOjIO8mlvF+
+        bbys0sk/9zitA+DMuhKC3Yx+u40czSS56uabln/dxffytiuJqkqusv9Lov4wsVFPumgCW8
+        PjEXorTr+ILNIP7ysTrqhyQHlbhdkdQ=
+Date:   Tue, 26 May 2020 21:46:25 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     Jue Wang <juew@google.com>
+Cc:     "Luck, Tony" <tony.luck@intel.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-tip-commits@vger.kernel.org" 
+        <linux-tip-commits@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
         x86 <x86@kernel.org>
-Subject: Re: [PATCH] rcu/performance: Fix kfree_perf_init() build warning on
- 32-bit kernels
-Message-ID: <20200526191408.GN2869@paulmck-ThinkPad-P72>
-Reply-To: paulmck@kernel.org
-References: <158923078019.390.12609597570329519463.tip-bot2@tip-bot2>
- <20200526182744.GA3722128@gmail.com>
+Subject: Re: [tip: ras/core] x86/{mce,mm}: Change so poison pages are either
+ unmapped or marked uncacheable
+Message-ID: <20200526194624.GG28228@zn.tnic>
+References: <159040440370.17951.17560303737298768113.tip-bot2@tip-bot2>
+ <20200525204010.GB25598@zn.tnic>
+ <3908561D78D1C84285E8C5FCA982C28F7F64615F@ORSMSX115.amr.corp.intel.com>
+ <CAPcxDJ5arJojbY4pzOvYh=waSPd3X_JJb1_PSuzd+jQ0qbvFsA@mail.gmail.com>
+ <CAPcxDJ54EgX-SaDV=Lm+a2-43O68LhomyYfYdCDz38HGJCkh7g@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200526182744.GA3722128@gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <CAPcxDJ54EgX-SaDV=Lm+a2-43O68LhomyYfYdCDz38HGJCkh7g@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Tue, May 26, 2020 at 08:27:44PM +0200, Ingo Molnar wrote:
+On Tue, May 26, 2020 at 11:44:18AM -0700, Jue Wang wrote:
+> On Tue, May 26, 2020 at 11:03 AM Jue Wang <juew@google.com> wrote:
 > 
-> * tip-bot2 for Joel Fernandes (Google) <tip-bot2@linutronix.de> wrote:
-> 
-> > The following commit has been merged into the core/rcu branch of tip:
-> > 
-> > Commit-ID:     f87dc808009ac86c790031627698ef1a34c31e25
-> > Gitweb:        https://git.kernel.org/tip/f87dc808009ac86c790031627698ef1a34c31e25
-> > Author:        Joel Fernandes (Google) <joel@joelfernandes.org>
-> > AuthorDate:    Mon, 16 Mar 2020 12:32:26 -04:00
-> > Committer:     Paul E. McKenney <paulmck@kernel.org>
-> > CommitterDate: Mon, 27 Apr 2020 11:02:50 -07:00
-> > 
-> > rcuperf: Add ability to increase object allocation size
-> > 
-> > This allows us to increase memory pressure dynamically using a new
-> > rcuperf boot command line parameter called 'rcumult'.
-> > 
-> > Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
-> > Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-> > ---
-> >  kernel/rcu/rcuperf.c | 5 ++++-
-> >  1 file changed, 4 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/kernel/rcu/rcuperf.c b/kernel/rcu/rcuperf.c
-> > index a4a8d09..16dd1e6 100644
-> > --- a/kernel/rcu/rcuperf.c
-> > +++ b/kernel/rcu/rcuperf.c
-> > @@ -88,6 +88,7 @@ torture_param(bool, shutdown, RCUPERF_SHUTDOWN,
-> >  torture_param(int, verbose, 1, "Enable verbose debugging printk()s");
-> >  torture_param(int, writer_holdoff, 0, "Holdoff (us) between GPs, zero to disable");
-> >  torture_param(int, kfree_rcu_test, 0, "Do we run a kfree_rcu() perf test?");
-> > +torture_param(int, kfree_mult, 1, "Multiple of kfree_obj size to allocate.");
-> >  
-> >  static char *perf_type = "rcu";
-> >  module_param(perf_type, charp, 0444);
-> > @@ -635,7 +636,7 @@ kfree_perf_thread(void *arg)
-> >  		}
-> >  
-> >  		for (i = 0; i < kfree_alloc_num; i++) {
-> > -			alloc_ptr = kmalloc(sizeof(struct kfree_obj), GFP_KERNEL);
-> > +			alloc_ptr = kmalloc(kfree_mult * sizeof(struct kfree_obj), GFP_KERNEL);
-> >  			if (!alloc_ptr)
-> >  				return -ENOMEM;
-> >  
-> > @@ -722,6 +723,8 @@ kfree_perf_init(void)
-> >  		schedule_timeout_uninterruptible(1);
-> >  	}
-> >  
-> > +	pr_alert("kfree object size=%lu\n", kfree_mult * sizeof(struct kfree_obj));
-> 
-> There's a new build warning on certain 32-bit kernel builds due to 
-> this commit:
-> 
-> In file included from ./include/linux/printk.h:7,
->                  from ./include/linux/kernel.h:15,
->                  from kernel/rcu/rcuperf.c:13:
-> kernel/rcu/rcuperf.c: In function ‘kfree_perf_init’:
-> ./include/linux/kern_levels.h:5:18: warning: format ‘%lu’ expects argument of type ‘long unsigned int’, but argument 2 has type ‘unsigned int’ [-Wformat=]
->     5 | #define KERN_SOH "\001"  /* ASCII Start Of Header */
->       |                  ^~~~~~
-> ./include/linux/kern_levels.h:9:20: note: in expansion of macro ‘KERN_SOH’
->     9 | #define KERN_ALERT KERN_SOH "1" /* action must be taken immediately */
->       |                    ^~~~~~~~
-> ./include/linux/printk.h:295:9: note: in expansion of macro ‘KERN_ALERT’
->   295 |  printk(KERN_ALERT pr_fmt(fmt), ##__VA_ARGS__)
->       |         ^~~~~~~~~~
-> kernel/rcu/rcuperf.c:726:2: note: in expansion of macro ‘pr_alert’
->   726 |  pr_alert("kfree object size=%lu\n", kfree_mult * sizeof(struct kfree_obj));
->       |  ^~~~~~~~
-> kernel/rcu/rcuperf.c:726:32: note: format string is defined here
->   726 |  pr_alert("kfree object size=%lu\n", kfree_mult * sizeof(struct kfree_obj));
->       |                              ~~^
->       |                                |
->       |                                long unsigned int
->       |                              %u
-> 
-> 
-> The reason for the warning is that both kfree_mult and sizeof() are 
-> 'int' types on 32-bit kernels, while the format string expects a long.
-> 
-> Instead of casting the type to long or tweaking the format string, the 
-> most straightforward solution is to upgrade kfree_mult to a long. 
-> Since this depends on CONFIG_RCU_PERF_TEST
+> > I tried to test this but my guest image build setup was not able to build
+> > from kernel/git/bp/bp.git tip-ras-core branch. It appeared there was some
+> > bindeb-pkg issue.
+> >
+> The bindeb-pkg issue is resolved and I tested the following branch in KVM
+> guest and the injected MCE is recovered.
+> https://git.kernel.org/pub/scm/linux/kernel/git/bp/bp.git/log/?h=tip-ras-core
 
-Makes sense, and I have queued the patch below, which I am assuming
-that you want in the upcoming merge window.  If you don't tell me
-otherwise, I will send you an urgent pull request later today.
-Or, if you just put it directly into -tip yourself:
+Thanks to both of you!
 
-Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
+-- 
+Regards/Gruss,
+    Boris.
 
-Either way, please let me know.
-
-> BTW., could we please also rename this code from 'PERF_TEST'/'perf test'
-> to 'PERFORMANCE_TEST'/'performance test'? At first glance I always
-> mistakenly believe that it's somehow related to perf, while it isn't. =B-)
-
-Fair enough, especially given that perf was there first and is also way
-more heavily used.  ;-)
-
-But I am guessing that this one is OK for the v5.9 merge window.
-Either way, I will update as you say.
-
-							Thanx, Paul
-
-------------------------------------------------------------------------
-
-commit 2fbc7d67a2ed108e3ac63296670fecb3a42fddd0
-Author: Ingo Molnar <mingo@kernel.org>
-Date:   Tue May 26 12:10:01 2020 -0700
-
-    rcuperf: Fix kfree_mult to match printk() format
-    
-    This commit changes the type of kfree_mult from int to long in order
-    to match the printk() format on 32-bit systems.
-    
-    Reported-by: kbuild test robot <lkp@intel.com>
-    Signed-off-by: Ingo Molnar <mingo@kernel.org>
-    Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-
-diff --git a/kernel/rcu/rcuperf.c b/kernel/rcu/rcuperf.c
-index d906ca9..fb3a1f0 100644
---- a/kernel/rcu/rcuperf.c
-+++ b/kernel/rcu/rcuperf.c
-@@ -93,7 +93,7 @@ torture_param(bool, shutdown, RCUPERF_SHUTDOWN,
- torture_param(int, verbose, 1, "Enable verbose debugging printk()s");
- torture_param(int, writer_holdoff, 0, "Holdoff (us) between GPs, zero to disable");
- torture_param(int, kfree_rcu_test, 0, "Do we run a kfree_rcu() perf test?");
--torture_param(int, kfree_mult, 1, "Multiple of kfree_obj size to allocate.");
-+torture_param(long, kfree_mult, 1, "Multiple of kfree_obj size to allocate.");
- 
- static char *perf_type = "rcu";
- module_param(perf_type, charp, 0444);
+https://people.kernel.org/tglx/notes-about-netiquette
