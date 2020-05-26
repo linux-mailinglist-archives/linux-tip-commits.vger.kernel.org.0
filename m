@@ -2,74 +2,181 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AD4BD1E292C
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 26 May 2020 19:38:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D3551E2A07
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 26 May 2020 20:27:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389069AbgEZRhF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 26 May 2020 13:37:05 -0400
-Received: from mga02.intel.com ([134.134.136.20]:33528 "EHLO mga02.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388767AbgEZRhF (ORCPT
+        id S1729867AbgEZS1x (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 26 May 2020 14:27:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55716 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728223AbgEZS1w (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 26 May 2020 13:37:05 -0400
-IronPort-SDR: aEyHuJtU+0wVsMuLnuFCMOrIvwuLUozA0q5lh1s8cRjBkCQckG6EpcQ8CvfRcMcqefNw0DLlPh
- BWcOFYv2up7g==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2020 10:37:04 -0700
-IronPort-SDR: MJKhGcrATuF0i0KihAqALeT6vQzlCUKnj4irifv+c5R2fkiG4jSSSvt3WU07w6sFGOrz0/LpiV
- +H1hu/8moy9w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,437,1583222400"; 
-   d="scan'208";a="310319561"
-Received: from orsmsx106.amr.corp.intel.com ([10.22.225.133])
-  by FMSMGA003.fm.intel.com with ESMTP; 26 May 2020 10:37:04 -0700
-Received: from orsmsx114.amr.corp.intel.com (10.22.240.10) by
- ORSMSX106.amr.corp.intel.com (10.22.225.133) with Microsoft SMTP Server (TLS)
- id 14.3.439.0; Tue, 26 May 2020 10:37:03 -0700
-Received: from orsmsx115.amr.corp.intel.com ([169.254.4.3]) by
- ORSMSX114.amr.corp.intel.com ([169.254.8.205]) with mapi id 14.03.0439.000;
- Tue, 26 May 2020 10:37:03 -0700
-From:   "Luck, Tony" <tony.luck@intel.com>
-To:     Borislav Petkov <bp@alien8.de>, Jue Wang <juew@google.com>
-CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-tip-commits@vger.kernel.org" 
-        <linux-tip-commits@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        x86 <x86@kernel.org>
-Subject: RE: [tip: ras/core] x86/{mce,mm}: Change so poison pages are either
- unmapped or marked uncacheable
-Thread-Topic: [tip: ras/core] x86/{mce,mm}: Change so poison pages are
- either unmapped or marked uncacheable
-Thread-Index: AQHWMoOxAO03JBXooEyMNcBj14jCyqi5ua4AgADovGA=
-Date:   Tue, 26 May 2020 17:37:03 +0000
-Message-ID: <3908561D78D1C84285E8C5FCA982C28F7F64615F@ORSMSX115.amr.corp.intel.com>
-References: <159040440370.17951.17560303737298768113.tip-bot2@tip-bot2>
- <20200525204010.GB25598@zn.tnic>
-In-Reply-To: <20200525204010.GB25598@zn.tnic>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-dlp-product: dlpe-windows
-dlp-version: 11.2.0.6
-dlp-reaction: no-action
-x-originating-ip: [10.22.254.138]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        Tue, 26 May 2020 14:27:52 -0400
+Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52081C03E96D;
+        Tue, 26 May 2020 11:27:48 -0700 (PDT)
+Received: by mail-wm1-x341.google.com with SMTP id h4so523430wmb.4;
+        Tue, 26 May 2020 11:27:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=//ycJC/8SpwdLfYq3Nycql5/Hbahas9UZRlYhXfm7+I=;
+        b=FmMvMXFZ9hCNgIHrEYeddrdJW4YW6VbsqWyMQYttoQmKFWJ8SCeBhME+VooCIBsQr2
+         +g9pyMvOVHsQEB9OiB3Api4N0qlnauYSJb/6r3U/DzuLO9ffz5dZ/thZaFo6hL+cOSCL
+         IEnD8F5LPg/nzoFp7B/+N0gIXNCNRbg5+LRm6RyEtsCP4m96TlCpeQOHQSazY5bE3xfg
+         sHRIhz9CWMpztqjaNnN9q8NvCzeAv5zT+HepIhPmHX8NNpq8/csOr3Ag57Vns2oY9OCC
+         VuGk1Ukp/v3qFWyWqxSHug5xdqH/nn5DpZrOZGhl3GuK0ANQJ11jx40SVaQtGELvvtwc
+         kxLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition
+         :content-transfer-encoding:in-reply-to;
+        bh=//ycJC/8SpwdLfYq3Nycql5/Hbahas9UZRlYhXfm7+I=;
+        b=TjOi3MnfqeuEbsB7qSRNDr5HGiOGhTZ91+ScATCKn0+t9DhWtJc3RCvDbZ3mbKDHqS
+         ZGmbTIpscsBehURHZ7uawuke+KS57ON5X2vlm7r6pjoAxoS24FdlpSTVakJufc1Dz+gx
+         B5gLR+SqL/rw9VeuSgDqL/E8/I5ZPNg6nxa/I1ey1Z8hD1tl3uZz5sK4d3R126OzOv0i
+         yWI/8DuSFKsgwp4GVmTj1k12YmwVBm2PBCSttz/wmSBJ3qqVuZZBlG3HsBgUAWdrLhGt
+         cEcPDDGKTR+V/CRmYTOAVVe2mH/5JUPGbgCjuNqQrN7ZatXxJD7zE+NWYjWkdhkJLCu6
+         Yz8Q==
+X-Gm-Message-State: AOAM531Dpo3mzGRWVX4D1phG7ojjVlckDqOkcxL/povxei+odw93C1/k
+        33SQQVTNsUV+dGuOtQBJquzH+VCV
+X-Google-Smtp-Source: ABdhPJysQ9RQd+E56OjTReQIQ7hDeBXSTipHByGD5ZQ9wUJsdjPfti02+7IWEAHJZ/3/NZ+UtM/bsg==
+X-Received: by 2002:a1c:7c0e:: with SMTP id x14mr451742wmc.1.1590517666702;
+        Tue, 26 May 2020 11:27:46 -0700 (PDT)
+Received: from gmail.com (54033286.catv.pool.telekom.hu. [84.3.50.134])
+        by smtp.gmail.com with ESMTPSA id o20sm594010wra.29.2020.05.26.11.27.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 26 May 2020 11:27:46 -0700 (PDT)
+Date:   Tue, 26 May 2020 20:27:44 +0200
+From:   Ingo Molnar <mingo@kernel.org>
+To:     linux-kernel@vger.kernel.org,
+        "Paul E. McKenney" <paulmck@kernel.org>
+Cc:     linux-tip-commits@vger.kernel.org,
+        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
+        "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>
+Subject: [PATCH] rcu/performance: Fix kfree_perf_init() build warning on
+ 32-bit kernels
+Message-ID: <20200526182744.GA3722128@gmail.com>
+References: <158923078019.390.12609597570329519463.tip-bot2@tip-bot2>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <158923078019.390.12609597570329519463.tip-bot2@tip-bot2>
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-PiBPaywgSSBoYWQgdG8gY2hhbmdlIHRoaXMgb25lIGR1ZSB0byBvdGhlciBwZW5kaW5nIGNoYW5n
-ZXMgaW4NCj4gdGlwOng4Ni9lbnRyeS4gVGhlIG5ldyB2ZXJzaW9uIGJlbG93Lg0KPg0KPiBDYW4g
-eW91IGd1eXMgcnVuIHRoaXMgYnJhbmNoIHRvIG1ha2Ugc3VyZSBpdCBzdGlsbCB3b3JrcyBhcyBl
-eHBlY3RlZD8NCj4NCj4gaHR0cHM6Ly9naXQua2VybmVsLm9yZy9wdWIvc2NtL2xpbnV4L2tlcm5l
-bC9naXQvYnAvYnAuZ2l0L2xvZy8/aD10aXAtcmFzLWNvcmUNCg0KVGVzdGVkIHRoZSBuYXRpdmUg
-Y2FzZS4gV2UgY29ycmVjdGx5IHRyeSB0byBzZXQgdGhlIHBhZ2UgdW5jYWNoZWFibGUgYmVjYXVz
-ZQ0KdGhlIHNjb3BlIG9mIHRoZSBlcnJvciBpcyBhIGNhY2hlIGxpbmUuDQoNCkkgZG9uJ3QgaGF2
-ZSB0aGUgcmlnaHQgc2V0dXAgdG8gdGVzdCB0aGUgdmlydHVhbGl6YXRpb24gY2FzZS4gTWF5YmUg
-SnVlIGNhbiB0ZXN0IGFnYWluPw0KDQotVG9ueQ0K
+
+* tip-bot2 for Joel Fernandes (Google) <tip-bot2@linutronix.de> wrote:
+
+> The following commit has been merged into the core/rcu branch of tip:
+> 
+> Commit-ID:     f87dc808009ac86c790031627698ef1a34c31e25
+> Gitweb:        https://git.kernel.org/tip/f87dc808009ac86c790031627698ef1a34c31e25
+> Author:        Joel Fernandes (Google) <joel@joelfernandes.org>
+> AuthorDate:    Mon, 16 Mar 2020 12:32:26 -04:00
+> Committer:     Paul E. McKenney <paulmck@kernel.org>
+> CommitterDate: Mon, 27 Apr 2020 11:02:50 -07:00
+> 
+> rcuperf: Add ability to increase object allocation size
+> 
+> This allows us to increase memory pressure dynamically using a new
+> rcuperf boot command line parameter called 'rcumult'.
+> 
+> Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+> Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+> ---
+>  kernel/rcu/rcuperf.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/kernel/rcu/rcuperf.c b/kernel/rcu/rcuperf.c
+> index a4a8d09..16dd1e6 100644
+> --- a/kernel/rcu/rcuperf.c
+> +++ b/kernel/rcu/rcuperf.c
+> @@ -88,6 +88,7 @@ torture_param(bool, shutdown, RCUPERF_SHUTDOWN,
+>  torture_param(int, verbose, 1, "Enable verbose debugging printk()s");
+>  torture_param(int, writer_holdoff, 0, "Holdoff (us) between GPs, zero to disable");
+>  torture_param(int, kfree_rcu_test, 0, "Do we run a kfree_rcu() perf test?");
+> +torture_param(int, kfree_mult, 1, "Multiple of kfree_obj size to allocate.");
+>  
+>  static char *perf_type = "rcu";
+>  module_param(perf_type, charp, 0444);
+> @@ -635,7 +636,7 @@ kfree_perf_thread(void *arg)
+>  		}
+>  
+>  		for (i = 0; i < kfree_alloc_num; i++) {
+> -			alloc_ptr = kmalloc(sizeof(struct kfree_obj), GFP_KERNEL);
+> +			alloc_ptr = kmalloc(kfree_mult * sizeof(struct kfree_obj), GFP_KERNEL);
+>  			if (!alloc_ptr)
+>  				return -ENOMEM;
+>  
+> @@ -722,6 +723,8 @@ kfree_perf_init(void)
+>  		schedule_timeout_uninterruptible(1);
+>  	}
+>  
+> +	pr_alert("kfree object size=%lu\n", kfree_mult * sizeof(struct kfree_obj));
+
+There's a new build warning on certain 32-bit kernel builds due to 
+this commit:
+
+In file included from ./include/linux/printk.h:7,
+                 from ./include/linux/kernel.h:15,
+                 from kernel/rcu/rcuperf.c:13:
+kernel/rcu/rcuperf.c: In function ‘kfree_perf_init’:
+./include/linux/kern_levels.h:5:18: warning: format ‘%lu’ expects argument of type ‘long unsigned int’, but argument 2 has type ‘unsigned int’ [-Wformat=]
+    5 | #define KERN_SOH "\001"  /* ASCII Start Of Header */
+      |                  ^~~~~~
+./include/linux/kern_levels.h:9:20: note: in expansion of macro ‘KERN_SOH’
+    9 | #define KERN_ALERT KERN_SOH "1" /* action must be taken immediately */
+      |                    ^~~~~~~~
+./include/linux/printk.h:295:9: note: in expansion of macro ‘KERN_ALERT’
+  295 |  printk(KERN_ALERT pr_fmt(fmt), ##__VA_ARGS__)
+      |         ^~~~~~~~~~
+kernel/rcu/rcuperf.c:726:2: note: in expansion of macro ‘pr_alert’
+  726 |  pr_alert("kfree object size=%lu\n", kfree_mult * sizeof(struct kfree_obj));
+      |  ^~~~~~~~
+kernel/rcu/rcuperf.c:726:32: note: format string is defined here
+  726 |  pr_alert("kfree object size=%lu\n", kfree_mult * sizeof(struct kfree_obj));
+      |                              ~~^
+      |                                |
+      |                                long unsigned int
+      |                              %u
+
+
+The reason for the warning is that both kfree_mult and sizeof() are 
+'int' types on 32-bit kernels, while the format string expects a long.
+
+Instead of casting the type to long or tweaking the format string, the 
+most straightforward solution is to upgrade kfree_mult to a long. 
+Since this depends on CONFIG_RCU_PERF_TEST
+
+BTW., could we please also rename this code from 'PERF_TEST'/'perf test'
+to 'PERFORMANCE_TEST'/'performance test'? At first glance I always
+mistakenly believe that it's somehow related to perf, while it isn't. =B-)
+
+Thanks,
+
+	Ingo
+
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+
+ kernel/rcu/rcuperf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/kernel/rcu/rcuperf.c b/kernel/rcu/rcuperf.c
+index 16dd1e6b7c09..221a0a3810e4 100644
+--- a/kernel/rcu/rcuperf.c
++++ b/kernel/rcu/rcuperf.c
+@@ -88,7 +88,7 @@ torture_param(bool, shutdown, RCUPERF_SHUTDOWN,
+ torture_param(int, verbose, 1, "Enable verbose debugging printk()s");
+ torture_param(int, writer_holdoff, 0, "Holdoff (us) between GPs, zero to disable");
+ torture_param(int, kfree_rcu_test, 0, "Do we run a kfree_rcu() perf test?");
+-torture_param(int, kfree_mult, 1, "Multiple of kfree_obj size to allocate.");
++torture_param(long, kfree_mult, 1, "Multiple of kfree_obj size to allocate.");
+ 
+ static char *perf_type = "rcu";
+ module_param(perf_type, charp, 0444);
