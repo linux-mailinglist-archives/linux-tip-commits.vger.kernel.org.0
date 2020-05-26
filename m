@@ -2,38 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F34FA1E2526
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 26 May 2020 17:14:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 271CD1E2732
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 26 May 2020 18:37:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728803AbgEZPOE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 26 May 2020 11:14:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53494 "EHLO
+        id S1728339AbgEZQhi (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 26 May 2020 12:37:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728205AbgEZPOE (ORCPT
+        with ESMTP id S1726930AbgEZQhi (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 26 May 2020 11:14:04 -0400
+        Tue, 26 May 2020 12:37:38 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E823C03E96D;
-        Tue, 26 May 2020 08:14:04 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81DACC03E96D;
+        Tue, 26 May 2020 09:37:38 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jdbHD-0004uA-PJ; Tue, 26 May 2020 17:13:59 +0200
+        id 1jdca4-0006ac-9Y; Tue, 26 May 2020 18:37:32 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4491B1C00FA;
-        Tue, 26 May 2020 17:13:59 +0200 (CEST)
-Date:   Tue, 26 May 2020 15:13:59 -0000
-From:   "tip-bot2 for YueHaibing" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id DAEC51C00FA;
+        Tue, 26 May 2020 18:37:31 +0200 (CEST)
+Date:   Tue, 26 May 2020 16:37:31 -0000
+From:   "tip-bot2 for Jens Axboe" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] x86/io_apic: Remove unused function mp_init_irq_at_boot()
-Cc:     YueHaibing <yuehaibing@huawei.com>, Borislav Petkov <bp@suse.de>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200508140808.49428-1-yuehaibing@huawei.com>
-References: <20200508140808.49428-1-yuehaibing@huawei.com>
+Subject: [tip: sched/urgent] sched/fair: Don't NUMA balance for kthreads
+Cc:     Stefano Garzarella <sgarzare@redhat.com>,
+        Jens Axboe <axboe@kernel.dk>, Ingo Molnar <mingo@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <865de121-8190-5d30-ece5-3b097dc74431@kernel.dk>
+References: <865de121-8190-5d30-ece5-3b097dc74431@kernel.dk>
 MIME-Version: 1.0
-Message-ID: <159050603911.17951.11028887642635728430.tip-bot2@tip-bot2>
+Message-ID: <159051105169.17951.7766343551502727932.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,51 +49,56 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cleanups branch of tip:
+The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     fd52a75ca3545c965ff58a78b6ff0b0dc7d8d228
-Gitweb:        https://git.kernel.org/tip/fd52a75ca3545c965ff58a78b6ff0b0dc7d8d228
-Author:        YueHaibing <yuehaibing@huawei.com>
-AuthorDate:    Fri, 08 May 2020 22:08:08 +08:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 26 May 2020 17:01:20 +02:00
+Commit-ID:     18f855e574d9799a0e7489f8ae6fd8447d0dd74a
+Gitweb:        https://git.kernel.org/tip/18f855e574d9799a0e7489f8ae6fd8447d0dd74a
+Author:        Jens Axboe <axboe@kernel.dk>
+AuthorDate:    Tue, 26 May 2020 09:38:31 -06:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Tue, 26 May 2020 18:34:58 +02:00
 
-x86/io_apic: Remove unused function mp_init_irq_at_boot()
+sched/fair: Don't NUMA balance for kthreads
 
-There are no callers in-tree anymore since
+Stefano reported a crash with using SQPOLL with io_uring:
 
-  ef9e56d894ea ("x86/ioapic: Remove obsolete post hotplug update")
+  BUG: kernel NULL pointer dereference, address: 00000000000003b0
+  CPU: 2 PID: 1307 Comm: io_uring-sq Not tainted 5.7.0-rc7 #11
+  RIP: 0010:task_numa_work+0x4f/0x2c0
+  Call Trace:
+   task_work_run+0x68/0xa0
+   io_sq_thread+0x252/0x3d0
+   kthread+0xf9/0x130
+   ret_from_fork+0x35/0x40
 
-so remove it.
+which is task_numa_work() oopsing on current->mm being NULL.
 
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20200508140808.49428-1-yuehaibing@huawei.com
+The task work is queued by task_tick_numa(), which checks if current->mm is
+NULL at the time of the call. But this state isn't necessarily persistent,
+if the kthread is using use_mm() to temporarily adopt the mm of a task.
+
+Change the task_tick_numa() check to exclude kernel threads in general,
+as it doesn't make sense to attempt ot balance for kthreads anyway.
+
+Reported-by: Stefano Garzarella <sgarzare@redhat.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/865de121-8190-5d30-ece5-3b097dc74431@kernel.dk
 ---
- arch/x86/kernel/apic/io_apic.c | 13 -------------
- 1 file changed, 13 deletions(-)
+ kernel/sched/fair.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/apic/io_apic.c b/arch/x86/kernel/apic/io_apic.c
-index 913c886..ce61e3e 100644
---- a/arch/x86/kernel/apic/io_apic.c
-+++ b/arch/x86/kernel/apic/io_apic.c
-@@ -154,19 +154,6 @@ static inline bool mp_is_legacy_irq(int irq)
- 	return irq >= 0 && irq < nr_legacy_irqs();
- }
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 538ba5d..da3e5b5 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -2908,7 +2908,7 @@ static void task_tick_numa(struct rq *rq, struct task_struct *curr)
+ 	/*
+ 	 * We don't care about NUMA placement if we don't have memory.
+ 	 */
+-	if (!curr->mm || (curr->flags & PF_EXITING) || work->next != work)
++	if ((curr->flags & (PF_EXITING | PF_KTHREAD)) || work->next != work)
+ 		return;
  
--/*
-- * Initialize all legacy IRQs and all pins on the first IOAPIC
-- * if we have legacy interrupt controller. Kernel boot option "pirq="
-- * may rely on non-legacy pins on the first IOAPIC.
-- */
--static inline int mp_init_irq_at_boot(int ioapic, int irq)
--{
--	if (!nr_legacy_irqs())
--		return 0;
--
--	return ioapic == 0 || mp_is_legacy_irq(irq);
--}
--
- static inline struct irq_domain *mp_ioapic_irqdomain(int ioapic)
- {
- 	return ioapics[ioapic].irqdomain;
+ 	/*
