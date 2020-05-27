@@ -2,40 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 504CC1E3B7A
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 27 May 2020 10:14:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E8ED1E3B84
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 27 May 2020 10:14:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729515AbgE0IL7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 27 May 2020 04:11:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42224 "EHLO
+        id S2387934AbgE0INj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 27 May 2020 04:13:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729511AbgE0IL6 (ORCPT
+        with ESMTP id S1729482AbgE0ILz (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 27 May 2020 04:11:58 -0400
+        Wed, 27 May 2020 04:11:55 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A30BCC03E97A;
-        Wed, 27 May 2020 01:11:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55BCEC061A0F;
+        Wed, 27 May 2020 01:11:55 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jdrAK-0002Xv-UI; Wed, 27 May 2020 10:11:57 +0200
+        id 1jdrAH-0002YT-Ga; Wed, 27 May 2020 10:11:53 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 6AA971C04D6;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D91231C03A9;
         Wed, 27 May 2020 10:11:51 +0200 (CEST)
 Date:   Wed, 27 May 2020 08:11:51 -0000
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/entry] x86/entry: Add IRQENTRY_IRQ macro
+Subject: [tip: x86/entry] x86/irq: Rework handle_irq() for 64-bit
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@kernel.org>,
         Andy Lutomirski <luto@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200521202118.984573165@linutronix.de>
-References: <20200521202118.984573165@linutronix.de>
+In-Reply-To: <20200521202118.889972748@linutronix.de>
+References: <20200521202118.889972748@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <159056711131.17951.5568268752047363963.tip-bot2@tip-bot2>
+Message-ID: <159056711175.17951.6360504740403837337.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,143 +51,91 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/entry branch of tip:
 
-Commit-ID:     f7376b1a72bb4bcfe2212150e3cf79f21cf88912
-Gitweb:        https://git.kernel.org/tip/f7376b1a72bb4bcfe2212150e3cf79f21cf88912
+Commit-ID:     9fe3411558d31f9489cd58400b2f508a98dc13a5
+Gitweb:        https://git.kernel.org/tip/9fe3411558d31f9489cd58400b2f508a98dc13a5
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Thu, 21 May 2020 22:05:36 +02:00
+AuthorDate:    Thu, 21 May 2020 22:05:35 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Tue, 26 May 2020 19:06:28 +02:00
 
-x86/entry: Add IRQENTRY_IRQ macro
+x86/irq: Rework handle_irq() for 64-bit
 
-Provide a seperate IDTENTRY macro for device interrupts. Similar to
-IDTENTRY_ERRORCODE with the addition of invoking irq_enter/exit_rcu() and
-providing the errorcode as a 'u8' argument to the C function, which
-truncates the sign extended vector number.
+To consolidate the interrupt entry/exit code vs. the other exceptions
+make handle_irq() and inline and handle both 64-bit and 32-bit mode.
+
+Preparatory change to move irq stack switching for 64-bit to C which allows
+to consolidate the entry exit handling by reusing the idtentry machinery
+both in ASM and C.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Acked-by: Andy Lutomirski <luto@kernel.org>
-Link: https://lore.kernel.org/r/20200521202118.984573165@linutronix.de
+Link: https://lore.kernel.org/r/20200521202118.889972748@linutronix.de
 ---
- arch/x86/entry/entry_32.S       | 14 +++++++++-
- arch/x86/entry/entry_64.S       | 14 +++++++++-
- arch/x86/include/asm/idtentry.h | 48 ++++++++++++++++++++++++++++++++-
- 3 files changed, 76 insertions(+)
+ arch/x86/include/asm/irq.h |  2 +-
+ arch/x86/kernel/irq.c      | 11 ++++++++++-
+ arch/x86/kernel/irq_32.c   |  2 +-
+ 3 files changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/entry/entry_32.S b/arch/x86/entry/entry_32.S
-index 53a6447..6930ec1 100644
---- a/arch/x86/entry/entry_32.S
-+++ b/arch/x86/entry/entry_32.S
-@@ -751,6 +751,20 @@ SYM_CODE_START(\asmsym)
- SYM_CODE_END(\asmsym)
- .endm
+diff --git a/arch/x86/include/asm/irq.h b/arch/x86/include/asm/irq.h
+index 74690a3..67aa1e2 100644
+--- a/arch/x86/include/asm/irq.h
++++ b/arch/x86/include/asm/irq.h
+@@ -34,7 +34,7 @@ extern __visible void smp_kvm_posted_intr_nested_ipi(struct pt_regs *regs);
+ extern void (*x86_platform_ipi_callback)(void);
+ extern void native_init_IRQ(void);
  
-+.macro idtentry_irq vector cfunc
-+	.p2align CONFIG_X86_L1_CACHE_SHIFT
-+SYM_CODE_START_LOCAL(asm_\cfunc)
-+	ASM_CLAC
-+	SAVE_ALL switch_stacks=1
-+	ENCODE_FRAME_POINTER
-+	movl	%esp, %eax
-+	movl	PT_ORIG_EAX(%esp), %edx		/* get the vector from stack */
-+	movl	$-1, PT_ORIG_EAX(%esp)		/* no syscall to restart */
-+	call	\cfunc
-+	jmp	handle_exception_return
-+SYM_CODE_END(asm_\cfunc)
-+.endm
-+
+-extern void handle_irq(struct irq_desc *desc, struct pt_regs *regs);
++extern void __handle_irq(struct irq_desc *desc, struct pt_regs *regs);
+ 
+ extern __visible void do_IRQ(struct pt_regs *regs, unsigned long vector);
+ 
+diff --git a/arch/x86/kernel/irq.c b/arch/x86/kernel/irq.c
+index c766936..5495ea4 100644
+--- a/arch/x86/kernel/irq.c
++++ b/arch/x86/kernel/irq.c
+@@ -13,6 +13,7 @@
+ #include <linux/export.h>
+ #include <linux/irq.h>
+ 
++#include <asm/irq_stack.h>
+ #include <asm/apic.h>
+ #include <asm/io_apic.h>
+ #include <asm/irq.h>
+@@ -221,6 +222,14 @@ u64 arch_irq_stat(void)
+ 	return sum;
+ }
+ 
++static __always_inline void handle_irq(struct irq_desc *desc,
++				       struct pt_regs *regs)
++{
++	if (IS_ENABLED(CONFIG_X86_64))
++		run_on_irqstack_cond(desc->handle_irq, desc, regs);
++	else
++		__handle_irq(desc, regs);
++}
+ 
  /*
-  * Include the defines which emit the idt entries which are shared
-  * shared between 32 and 64 bit.
-diff --git a/arch/x86/entry/entry_64.S b/arch/x86/entry/entry_64.S
-index e7434cd..9162a07 100644
---- a/arch/x86/entry/entry_64.S
-+++ b/arch/x86/entry/entry_64.S
-@@ -528,6 +528,20 @@ SYM_CODE_END(\asmsym)
- .endm
+  * do_IRQ handles all normal device IRQ's (the special
+@@ -246,7 +255,7 @@ __visible void __irq_entry do_IRQ(struct pt_regs *regs, unsigned long vector)
+ 	desc = __this_cpu_read(vector_irq[vector]);
+ 	if (likely(!IS_ERR_OR_NULL(desc))) {
+ 		if (IS_ENABLED(CONFIG_X86_32))
+-			handle_irq(desc, regs);
++			__handle_irq(desc, regs);
+ 		else
+ 			generic_handle_irq_desc(desc);
+ 	} else {
+diff --git a/arch/x86/kernel/irq_32.c b/arch/x86/kernel/irq_32.c
+index a759ca9..0b79efc 100644
+--- a/arch/x86/kernel/irq_32.c
++++ b/arch/x86/kernel/irq_32.c
+@@ -148,7 +148,7 @@ void do_softirq_own_stack(void)
+ 	call_on_stack(__do_softirq, isp);
+ }
  
- /*
-+ * Interrupt entry/exit.
-+ *
-+ + The interrupt stubs push (vector) onto the stack, which is the error_code
-+ * position of idtentry exceptions, and jump to one of the two idtentry points
-+ * (common/spurious).
-+ *
-+ * common_interrupt is a hotpath, align it to a cache line
-+ */
-+.macro idtentry_irq vector cfunc
-+	.p2align CONFIG_X86_L1_CACHE_SHIFT
-+	idtentry \vector asm_\cfunc \cfunc has_error_code=1
-+.endm
-+
-+/*
-  * MCE and DB exceptions
-  */
- #define CPU_TSS_IST(x) PER_CPU_VAR(cpu_tss_rw) + (TSS_ist + (x) * 8)
-diff --git a/arch/x86/include/asm/idtentry.h b/arch/x86/include/asm/idtentry.h
-index b089997..6e00055 100644
---- a/arch/x86/include/asm/idtentry.h
-+++ b/arch/x86/include/asm/idtentry.h
-@@ -165,6 +165,50 @@ __visible noinstr void func(struct pt_regs *regs)
- #define DEFINE_IDTENTRY_RAW_ERRORCODE(func)				\
- __visible noinstr void func(struct pt_regs *regs, unsigned long error_code)
+-void handle_irq(struct irq_desc *desc, struct pt_regs *regs)
++void __handle_irq(struct irq_desc *desc, struct pt_regs *regs)
+ {
+ 	int overflow = check_stack_overflow();
  
-+/**
-+ * DECLARE_IDTENTRY_IRQ - Declare functions for device interrupt IDT entry
-+ *			  points (common/spurious)
-+ * @vector:	Vector number (ignored for C)
-+ * @func:	Function name of the entry point
-+ *
-+ * Maps to DECLARE_IDTENTRY_ERRORCODE()
-+ */
-+#define DECLARE_IDTENTRY_IRQ(vector, func)				\
-+	DECLARE_IDTENTRY_ERRORCODE(vector, func)
-+
-+/**
-+ * DEFINE_IDTENTRY_IRQ - Emit code for device interrupt IDT entry points
-+ * @func:	Function name of the entry point
-+ *
-+ * The vector number is pushed by the low level entry stub and handed
-+ * to the function as error_code argument which needs to be truncated
-+ * to an u8 because the push is sign extending.
-+ *
-+ * On 64-bit idtentry_enter/exit() are invoked in the ASM entry code before
-+ * and after switching to the interrupt stack. On 32-bit this happens in C.
-+ *
-+ * irq_enter/exit_rcu() are invoked before the function body and the
-+ * KVM L1D flush request is set.
-+ */
-+#define DEFINE_IDTENTRY_IRQ(func)					\
-+static __always_inline void __##func(struct pt_regs *regs, u8 vector);	\
-+									\
-+__visible noinstr void func(struct pt_regs *regs,			\
-+			    unsigned long error_code)			\
-+{									\
-+	bool rcu_exit = idtentry_enter_cond_rcu(regs);			\
-+									\
-+	instrumentation_begin();					\
-+	irq_enter_rcu();						\
-+	kvm_set_cpu_l1tf_flush_l1d();					\
-+	__##func (regs, (u8)error_code);				\
-+	irq_exit_rcu();							\
-+	lockdep_hardirq_exit();						\
-+	instrumentation_end();						\
-+	idtentry_exit_cond_rcu(regs, rcu_exit);				\
-+}									\
-+									\
-+static __always_inline void __##func(struct pt_regs *regs, u8 vector)
- 
- #ifdef CONFIG_X86_64
- /**
-@@ -297,6 +341,10 @@ __visible noinstr void func(struct pt_regs *regs,			\
- #define DECLARE_IDTENTRY_RAW_ERRORCODE(vector, func)			\
- 	DECLARE_IDTENTRY_ERRORCODE(vector, func)
- 
-+/* Entries for common/spurious (device) interrupts */
-+#define DECLARE_IDTENTRY_IRQ(vector, func)				\
-+	idtentry_irq vector func
-+
- #ifdef CONFIG_X86_64
- # define DECLARE_IDTENTRY_MCE(vector, func)				\
- 	idtentry_mce_db vector asm_##func func
