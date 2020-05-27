@@ -2,40 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 98A531E3B9D
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 27 May 2020 10:14:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EAA341E3BA0
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 27 May 2020 10:14:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729417AbgE0ILs (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 27 May 2020 04:11:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42164 "EHLO
+        id S2388019AbgE0IOQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 27 May 2020 04:14:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42172 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729300AbgE0ILr (ORCPT
+        with ESMTP id S1729416AbgE0ILs (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 27 May 2020 04:11:47 -0400
+        Wed, 27 May 2020 04:11:48 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FD97C061A0F;
-        Wed, 27 May 2020 01:11:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44B78C061A0F;
+        Wed, 27 May 2020 01:11:48 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jdrA9-0002Tn-Mk; Wed, 27 May 2020 10:11:45 +0200
+        id 1jdrAA-0002UG-Im; Wed, 27 May 2020 10:11:46 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 3EE6E1C03A9;
-        Wed, 27 May 2020 10:11:45 +0200 (CEST)
-Date:   Wed, 27 May 2020 08:11:45 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 2C7D51C03A9;
+        Wed, 27 May 2020 10:11:46 +0200 (CEST)
+Date:   Wed, 27 May 2020 08:11:46 -0000
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/entry] x86/entry/32: Remove redundant irq disable code
+Subject: [tip: x86/entry] x86/entry/64: Remove IRQ stack switching ASM
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@kernel.org>,
         Andy Lutomirski <luto@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200521202120.221223450@linutronix.de>
-References: <20200521202120.221223450@linutronix.de>
+In-Reply-To: <20200521202120.021462159@linutronix.de>
+References: <20200521202120.021462159@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <159056710513.17951.13586647821555500992.tip-bot2@tip-bot2>
+Message-ID: <159056710606.17951.9824050639615238342.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,124 +51,129 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/entry branch of tip:
 
-Commit-ID:     3728dd935c76646515e91e109067659200eb3a1b
-Gitweb:        https://git.kernel.org/tip/3728dd935c76646515e91e109067659200eb3a1b
+Commit-ID:     300e5654198501a8cde5ad843ebad7dfbee147e4
+Gitweb:        https://git.kernel.org/tip/300e5654198501a8cde5ad843ebad7dfbee147e4
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Thu, 21 May 2020 22:05:49 +02:00
+AuthorDate:    Thu, 21 May 2020 22:05:47 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Tue, 26 May 2020 19:06:29 +02:00
 
-x86/entry/32: Remove redundant irq disable code
+x86/entry/64: Remove IRQ stack switching ASM
 
-All exceptions/interrupts return with interrupts disabled now. No point in
-doing this in ASM again.
+No more users.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Acked-by: Andy Lutomirski <luto@kernel.org>
-Link: https://lore.kernel.org/r/20200521202120.221223450@linutronix.de
+Link: https://lore.kernel.org/r/20200521202120.021462159@linutronix.de
 ---
- arch/x86/entry/entry_32.S | 76 +--------------------------------------
- 1 file changed, 76 deletions(-)
+ arch/x86/entry/entry_64.S | 96 +--------------------------------------
+ 1 file changed, 96 deletions(-)
 
-diff --git a/arch/x86/entry/entry_32.S b/arch/x86/entry/entry_32.S
-index 4a4f34b..96fa462 100644
---- a/arch/x86/entry/entry_32.S
-+++ b/arch/x86/entry/entry_32.S
-@@ -51,34 +51,6 @@
- 
- 	.section .entry.text, "ax"
+diff --git a/arch/x86/entry/entry_64.S b/arch/x86/entry/entry_64.S
+index 389f97f..29a8a83 100644
+--- a/arch/x86/entry/entry_64.S
++++ b/arch/x86/entry/entry_64.S
+@@ -370,102 +370,6 @@ SYM_CODE_END(ret_from_fork)
+ #endif
+ .endm
  
 -/*
-- * We use macros for low-level operations which need to be overridden
-- * for paravirtualization.  The following will never clobber any registers:
-- *   INTERRUPT_RETURN (aka. "iret")
-- *   GET_CR0_INTO_EAX (aka. "movl %cr0, %eax")
-- *   ENABLE_INTERRUPTS_SYSEXIT (aka "sti; sysexit").
+- * Enters the IRQ stack if we're not already using it.  NMI-safe.  Clobbers
+- * flags and puts old RSP into old_rsp, and leaves all other GPRs alone.
+- * Requires kernel GSBASE.
 - *
-- * For DISABLE_INTERRUPTS/ENABLE_INTERRUPTS (aka "cli"/"sti"), you must
-- * specify what registers can be overwritten (CLBR_NONE, CLBR_EAX/EDX/ECX/ANY).
-- * Allowing a register to be clobbered can shrink the paravirt replacement
-- * enough to patch inline, increasing performance.
+- * The invariant is that, if irq_count != -1, then the IRQ stack is in use.
 - */
+-.macro ENTER_IRQ_STACK regs=1 old_rsp save_ret=0
+-	DEBUG_ENTRY_ASSERT_IRQS_OFF
 -
--#ifdef CONFIG_PREEMPTION
--# define preempt_stop(clobbers)	DISABLE_INTERRUPTS(clobbers); TRACE_IRQS_OFF
--#else
--# define preempt_stop(clobbers)
+-	.if \save_ret
+-	/*
+-	 * If save_ret is set, the original stack contains one additional
+-	 * entry -- the return address. Therefore, move the address one
+-	 * entry below %rsp to \old_rsp.
+-	 */
+-	leaq	8(%rsp), \old_rsp
+-	.else
+-	movq	%rsp, \old_rsp
+-	.endif
+-
+-	.if \regs
+-	UNWIND_HINT_REGS base=\old_rsp
+-	.endif
+-
+-	incl	PER_CPU_VAR(irq_count)
+-	jnz	.Lirq_stack_push_old_rsp_\@
+-
+-	/*
+-	 * Right now, if we just incremented irq_count to zero, we've
+-	 * claimed the IRQ stack but we haven't switched to it yet.
+-	 *
+-	 * If anything is added that can interrupt us here without using IST,
+-	 * it must be *extremely* careful to limit its stack usage.  This
+-	 * could include kprobes and a hypothetical future IST-less #DB
+-	 * handler.
+-	 *
+-	 * The OOPS unwinder relies on the word at the top of the IRQ
+-	 * stack linking back to the previous RSP for the entire time we're
+-	 * on the IRQ stack.  For this to work reliably, we need to write
+-	 * it before we actually move ourselves to the IRQ stack.
+-	 */
+-
+-	movq	\old_rsp, PER_CPU_VAR(irq_stack_backing_store + IRQ_STACK_SIZE - 8)
+-	movq	PER_CPU_VAR(hardirq_stack_ptr), %rsp
+-
+-#ifdef CONFIG_DEBUG_ENTRY
+-	/*
+-	 * If the first movq above becomes wrong due to IRQ stack layout
+-	 * changes, the only way we'll notice is if we try to unwind right
+-	 * here.  Assert that we set up the stack right to catch this type
+-	 * of bug quickly.
+-	 */
+-	cmpq	-8(%rsp), \old_rsp
+-	je	.Lirq_stack_okay\@
+-	ud2
+-	.Lirq_stack_okay\@:
 -#endif
 -
--.macro TRACE_IRQS_IRET
--#ifdef CONFIG_TRACE_IRQFLAGS
--	testl	$X86_EFLAGS_IF, PT_EFLAGS(%esp)     # interrupts off?
--	jz	1f
--	TRACE_IRQS_ON
--1:
--#endif
+-.Lirq_stack_push_old_rsp_\@:
+-	pushq	\old_rsp
+-
+-	.if \regs
+-	UNWIND_HINT_REGS indirect=1
+-	.endif
+-
+-	.if \save_ret
+-	/*
+-	 * Push the return address to the stack. This return address can
+-	 * be found at the "real" original RSP, which was offset by 8 at
+-	 * the beginning of this macro.
+-	 */
+-	pushq	-8(\old_rsp)
+-	.endif
 -.endm
 -
- #define PTI_SWITCH_MASK         (1 << PAGE_SHIFT)
- 
- /*
-@@ -881,38 +853,6 @@ SYM_CODE_START(ret_from_fork)
- SYM_CODE_END(ret_from_fork)
- .popsection
- 
 -/*
-- * Return to user mode is not as complex as all this looks,
-- * but we want the default path for a system call return to
-- * go as quickly as possible which is why some of this is
-- * less clear than it otherwise should be.
+- * Undoes ENTER_IRQ_STACK.
 - */
+-.macro LEAVE_IRQ_STACK regs=1
+-	DEBUG_ENTRY_ASSERT_IRQS_OFF
+-	/* We need to be off the IRQ stack before decrementing irq_count. */
+-	popq	%rsp
 -
--	# userspace resumption stub bypassing syscall exit tracing
--SYM_CODE_START_LOCAL(ret_from_exception)
--	preempt_stop(CLBR_ANY)
--ret_from_intr:
--#ifdef CONFIG_VM86
--	movl	PT_EFLAGS(%esp), %eax		# mix EFLAGS and CS
--	movb	PT_CS(%esp), %al
--	andl	$(X86_EFLAGS_VM | SEGMENT_RPL_MASK), %eax
--#else
+-	.if \regs
+-	UNWIND_HINT_REGS
+-	.endif
+-
 -	/*
--	 * We can be coming here from child spawned by kernel_thread().
+-	 * As in ENTER_IRQ_STACK, irq_count == 0, we are still claiming
+-	 * the irq stack but we're not on it.
 -	 */
--	movl	PT_CS(%esp), %eax
--	andl	$SEGMENT_RPL_MASK, %eax
--#endif
--	cmpl	$USER_RPL, %eax
--	jb	restore_all_kernel		# not returning to v8086 or userspace
 -
--	DISABLE_INTERRUPTS(CLBR_ANY)
--	TRACE_IRQS_OFF
--	movl	%esp, %eax
--	call	prepare_exit_to_usermode
--	jmp	restore_all_switch_stack
--SYM_CODE_END(ret_from_exception)
+-	decl	PER_CPU_VAR(irq_count)
+-.endm
 -
- SYM_ENTRY(__begin_SYSENTER_singlestep_region, SYM_L_GLOBAL, SYM_A_NONE)
- /*
-  * All code from here through __end_SYSENTER_singlestep_region is subject
-@@ -1147,22 +1087,6 @@ restore_all_switch_stack:
- 	 */
- 	INTERRUPT_RETURN
- 
--restore_all_kernel:
--#ifdef CONFIG_PREEMPTION
--	DISABLE_INTERRUPTS(CLBR_ANY)
--	cmpl	$0, PER_CPU_VAR(__preempt_count)
--	jnz	.Lno_preempt
--	testl	$X86_EFLAGS_IF, PT_EFLAGS(%esp)	# interrupts off (exception path) ?
--	jz	.Lno_preempt
--	call	preempt_schedule_irq
--.Lno_preempt:
--#endif
--	TRACE_IRQS_IRET
--	PARANOID_EXIT_TO_KERNEL_MODE
--	BUG_IF_WRONG_CR3
--	RESTORE_REGS 4
--	jmp	.Lirq_return
--
- .section .fixup, "ax"
- SYM_CODE_START(asm_iret_error)
- 	pushl	$0				# no error code
+ /**
+  * idtentry_body - Macro to emit code calling the C function
+  * @cfunc:		C function to be called
