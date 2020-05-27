@@ -2,40 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 362191E3B7C
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 27 May 2020 10:14:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A8ED1E3B61
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 27 May 2020 10:13:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729533AbgE0IMC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 27 May 2020 04:12:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42238 "EHLO
+        id S2387814AbgE0IMs (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 27 May 2020 04:12:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42272 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729526AbgE0IMB (ORCPT
+        with ESMTP id S1729570AbgE0IMH (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 27 May 2020 04:12:01 -0400
+        Wed, 27 May 2020 04:12:07 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF4D6C03E97C;
-        Wed, 27 May 2020 01:12:00 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE6F8C03E97C;
+        Wed, 27 May 2020 01:12:06 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jdrAN-0002ad-1o; Wed, 27 May 2020 10:11:59 +0200
+        id 1jdrAQ-0002bV-47; Wed, 27 May 2020 10:12:02 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B17CA1C0805;
-        Wed, 27 May 2020 10:11:53 +0200 (CEST)
-Date:   Wed, 27 May 2020 08:11:53 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id AC3831C00ED;
+        Wed, 27 May 2020 10:11:54 +0200 (CEST)
+Date:   Wed, 27 May 2020 08:11:54 -0000
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/entry] x86/entry/64: Remove error_exit()
+Subject: [tip: x86/entry] x86/entry: Remove the transition leftovers
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@kernel.org>,
         Andy Lutomirski <luto@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200521202118.516757524@linutronix.de>
-References: <20200521202118.516757524@linutronix.de>
+In-Reply-To: <20200521202118.331115895@linutronix.de>
+References: <20200521202118.331115895@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <159056711361.17951.3757544314054219679.tip-bot2@tip-bot2>
+Message-ID: <159056711458.17951.16458122101554477080.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,42 +51,144 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/entry branch of tip:
 
-Commit-ID:     88d41f530736bdbed258df357e97956e8f97856d
-Gitweb:        https://git.kernel.org/tip/88d41f530736bdbed258df357e97956e8f97856d
+Commit-ID:     ae8f8f2116d86618cf43be142c495906a17811ef
+Gitweb:        https://git.kernel.org/tip/ae8f8f2116d86618cf43be142c495906a17811ef
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Thu, 21 May 2020 22:05:31 +02:00
+AuthorDate:    Thu, 21 May 2020 22:05:29 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Tue, 26 May 2020 19:06:28 +02:00
 
-x86/entry/64: Remove error_exit()
+x86/entry: Remove the transition leftovers
 
-No more users.
+Now that all exceptions are converted over the sane flag is not longer
+needed. Also the vector argument of idtentry_body on 64-bit is pointless
+now.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Acked-by: Andy Lutomirski <luto@kernel.org>
-Link: https://lore.kernel.org/r/20200521202118.516757524@linutronix.de
+Link: https://lore.kernel.org/r/20200521202118.331115895@linutronix.de
 ---
- arch/x86/entry/entry_64.S |  9 ---------
- 1 file changed, 9 deletions(-)
+ arch/x86/entry/entry_32.S       |  3 +--
+ arch/x86/entry/entry_64.S       | 26 ++++----------------------
+ arch/x86/include/asm/idtentry.h |  6 +++---
+ 3 files changed, 8 insertions(+), 27 deletions(-)
 
+diff --git a/arch/x86/entry/entry_32.S b/arch/x86/entry/entry_32.S
+index 1674deb..8b29330 100644
+--- a/arch/x86/entry/entry_32.S
++++ b/arch/x86/entry/entry_32.S
+@@ -734,9 +734,8 @@
+  * @asmsym:		ASM symbol for the entry point
+  * @cfunc:		C function to be called
+  * @has_error_code:	Hardware pushed error code on stack
+- * @sane:		Compatibility flag with 64bit
+  */
+-.macro idtentry vector asmsym cfunc has_error_code:req sane=0
++.macro idtentry vector asmsym cfunc has_error_code:req
+ SYM_CODE_START(\asmsym)
+ 	ASM_CLAC
+ 	cld
 diff --git a/arch/x86/entry/entry_64.S b/arch/x86/entry/entry_64.S
-index a526fb5..7699359 100644
+index 5789f76..2e476f4 100644
 --- a/arch/x86/entry/entry_64.S
 +++ b/arch/x86/entry/entry_64.S
-@@ -1356,15 +1356,6 @@ SYM_CODE_START_LOCAL(error_entry)
- 	jmp	.Lerror_entry_from_usermode_after_swapgs
- SYM_CODE_END(error_entry)
+@@ -496,27 +496,14 @@ SYM_CODE_END(spurious_entries_start)
  
--SYM_CODE_START_LOCAL(error_exit)
--	UNWIND_HINT_REGS
--	DISABLE_INTERRUPTS(CLBR_ANY)
--	TRACE_IRQS_OFF
--	testb	$3, CS(%rsp)
--	jz	retint_kernel
--	jmp	.Lretint_user
--SYM_CODE_END(error_exit)
--
- SYM_CODE_START_LOCAL(error_return)
+ /**
+  * idtentry_body - Macro to emit code calling the C function
+- * @vector:		Vector number
+  * @cfunc:		C function to be called
+  * @has_error_code:	Hardware pushed error code on stack
+- * @sane:		Sane variant which handles irq tracing, context tracking in C
+  */
+-.macro idtentry_body vector cfunc has_error_code:req sane=0
++.macro idtentry_body cfunc has_error_code:req
+ 
+ 	call	error_entry
  	UNWIND_HINT_REGS
- 	DEBUG_ENTRY_ASSERT_IRQS_OFF
+ 
+-	.if \sane == 0
+-	TRACE_IRQS_OFF
+-
+-#ifdef CONFIG_CONTEXT_TRACKING
+-	testb	$3, CS(%rsp)
+-	jz	.Lfrom_kernel_no_ctxt_tracking_\@
+-	CALL_enter_from_user_mode
+-.Lfrom_kernel_no_ctxt_tracking_\@:
+-#endif
+-	.endif
+-
+ 	movq	%rsp, %rdi			/* pt_regs pointer into 1st argument*/
+ 
+ 	.if \has_error_code == 1
+@@ -526,11 +513,7 @@ SYM_CODE_END(spurious_entries_start)
+ 
+ 	call	\cfunc
+ 
+-	.if \sane == 0
+-	jmp	error_exit
+-	.else
+ 	jmp	error_return
+-	.endif
+ .endm
+ 
+ /**
+@@ -539,12 +522,11 @@ SYM_CODE_END(spurious_entries_start)
+  * @asmsym:		ASM symbol for the entry point
+  * @cfunc:		C function to be called
+  * @has_error_code:	Hardware pushed error code on stack
+- * @sane:		Sane variant which handles irq tracing, context tracking in C
+  *
+  * The macro emits code to set up the kernel context for straight forward
+  * and simple IDT entries. No IST stack, no paranoid entry checks.
+  */
+-.macro idtentry vector asmsym cfunc has_error_code:req sane=0
++.macro idtentry vector asmsym cfunc has_error_code:req
+ SYM_CODE_START(\asmsym)
+ 	UNWIND_HINT_IRET_REGS offset=\has_error_code*8
+ 	ASM_CLAC
+@@ -567,7 +549,7 @@ SYM_CODE_START(\asmsym)
+ .Lfrom_usermode_no_gap_\@:
+ 	.endif
+ 
+-	idtentry_body \vector \cfunc \has_error_code \sane
++	idtentry_body \cfunc \has_error_code
+ 
+ _ASM_NOKPROBE(\asmsym)
+ SYM_CODE_END(\asmsym)
+@@ -642,7 +624,7 @@ SYM_CODE_START(\asmsym)
+ 
+ 	/* Switch to the regular task stack and use the noist entry point */
+ .Lfrom_usermode_switch_stack_\@:
+-	idtentry_body vector noist_\cfunc, has_error_code=0 sane=1
++	idtentry_body noist_\cfunc, has_error_code=0
+ 
+ _ASM_NOKPROBE(\asmsym)
+ SYM_CODE_END(\asmsym)
+diff --git a/arch/x86/include/asm/idtentry.h b/arch/x86/include/asm/idtentry.h
+index 92054ff..53e7f14 100644
+--- a/arch/x86/include/asm/idtentry.h
++++ b/arch/x86/include/asm/idtentry.h
+@@ -283,10 +283,10 @@ __visible noinstr void func(struct pt_regs *regs,			\
+  * The ASM variants for DECLARE_IDTENTRY*() which emit the ASM entry stubs.
+  */
+ #define DECLARE_IDTENTRY(vector, func)					\
+-	idtentry vector asm_##func func has_error_code=0 sane=1
++	idtentry vector asm_##func func has_error_code=0
+ 
+ #define DECLARE_IDTENTRY_ERRORCODE(vector, func)			\
+-	idtentry vector asm_##func func has_error_code=1 sane=1
++	idtentry vector asm_##func func has_error_code=1
+ 
+ /* Special case for 32bit IRET 'trap'. Do not emit ASM code */
+ #define DECLARE_IDTENTRY_SW(vector, func)
+@@ -324,7 +324,7 @@ __visible noinstr void func(struct pt_regs *regs,			\
+ 
+ /* XEN NMI and DB wrapper */
+ #define DECLARE_IDTENTRY_XEN(vector, func)				\
+-	idtentry vector asm_exc_xen##func exc_##func has_error_code=0 sane=1
++	idtentry vector asm_exc_xen##func exc_##func has_error_code=0
+ 
+ #endif /* __ASSEMBLY__ */
+ 
