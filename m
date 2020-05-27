@@ -2,42 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F1B71E3B54
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 27 May 2020 10:13:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DA5F1E3B9C
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 27 May 2020 10:14:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387756AbgE0IMU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 27 May 2020 04:12:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42318 "EHLO
+        id S1729422AbgE0ILs (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 27 May 2020 04:11:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42160 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387754AbgE0IMU (ORCPT
+        with ESMTP id S1729404AbgE0ILq (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 27 May 2020 04:12:20 -0400
+        Wed, 27 May 2020 04:11:46 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 150E0C061A0F;
-        Wed, 27 May 2020 01:12:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85567C061A0F;
+        Wed, 27 May 2020 01:11:46 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jdrA9-0002TQ-7e; Wed, 27 May 2020 10:11:45 +0200
+        id 1jdrA8-0002T3-Oa; Wed, 27 May 2020 10:11:44 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C71351C00ED;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 54A861C03A9;
         Wed, 27 May 2020 10:11:44 +0200 (CEST)
 Date:   Wed, 27 May 2020 08:11:44 -0000
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/entry] x86/entry/64: Remove TRACE_IRQS_*_DEBUG
+Subject: [tip: x86/entry] x86/entry: Move paranoid irq tracing out of ASM code
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Ingo Molnar <mingo@kernel.org>,
-        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
         Andy Lutomirski <luto@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200521202120.319418546@linutronix.de>
-References: <20200521202120.319418546@linutronix.de>
+In-Reply-To: <20200521202120.414043330@linutronix.de>
+References: <20200521202120.414043330@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <159056710470.17951.1780506698789197760.tip-bot2@tip-bot2>
+Message-ID: <159056710421.17951.5346461925222955953.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -53,110 +51,159 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/entry branch of tip:
 
-Commit-ID:     c15984f06ca917411a4d8dc66d03edcb029fd0ea
-Gitweb:        https://git.kernel.org/tip/c15984f06ca917411a4d8dc66d03edcb029fd0ea
+Commit-ID:     290e14a71d0fab4dad25ad2fee2e78e3bd6aef79
+Gitweb:        https://git.kernel.org/tip/290e14a71d0fab4dad25ad2fee2e78e3bd6aef79
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Thu, 21 May 2020 22:05:50 +02:00
+AuthorDate:    Thu, 21 May 2020 22:05:51 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Tue, 26 May 2020 19:06:29 +02:00
 
-x86/entry/64: Remove TRACE_IRQS_*_DEBUG
+x86/entry: Move paranoid irq tracing out of ASM code
 
-Since INT3/#BP no longer runs on an IST, this workaround is no longer
-required.
+The last step to remove the irq tracing cruft from ASM. Ignore #DF as the
+maschine is going to die anyway.
 
-Tested by running lockdep+ftrace as described in the initial commit:
-
-  5963e317b1e9 ("ftrace/x86: Do not change stacks in DEBUG when calling lockdep")
-
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
 Acked-by: Andy Lutomirski <luto@kernel.org>
-Link: https://lore.kernel.org/r/20200521202120.319418546@linutronix.de
+Link: https://lore.kernel.org/r/20200521202120.414043330@linutronix.de
 ---
- arch/x86/entry/entry_64.S | 48 ++------------------------------------
- 1 file changed, 3 insertions(+), 45 deletions(-)
+ arch/x86/entry/entry_64.S      | 13 -------------
+ arch/x86/kernel/cpu/mce/core.c |  3 +++
+ arch/x86/kernel/nmi.c          |  3 +++
+ arch/x86/kernel/traps.c        | 11 +++++++++++
+ 4 files changed, 17 insertions(+), 13 deletions(-)
 
 diff --git a/arch/x86/entry/entry_64.S b/arch/x86/entry/entry_64.S
-index 29a8a83..fb7f126 100644
+index fb7f126..2566554 100644
 --- a/arch/x86/entry/entry_64.S
 +++ b/arch/x86/entry/entry_64.S
-@@ -68,44 +68,6 @@ SYM_CODE_END(native_usergs_sysret64)
- .endm
- 
- /*
-- * When dynamic function tracer is enabled it will add a breakpoint
-- * to all locations that it is about to modify, sync CPUs, update
-- * all the code, sync CPUs, then remove the breakpoints. In this time
-- * if lockdep is enabled, it might jump back into the debug handler
-- * outside the updating of the IST protection. (TRACE_IRQS_ON/OFF).
-- *
-- * We need to change the IDT table before calling TRACE_IRQS_ON/OFF to
-- * make sure the stack pointer does not get reset back to the top
-- * of the debug stack, and instead just reuses the current stack.
-- */
--#if defined(CONFIG_DYNAMIC_FTRACE) && defined(CONFIG_TRACE_IRQFLAGS)
--
--.macro TRACE_IRQS_OFF_DEBUG
--	call	debug_stack_set_zero
--	TRACE_IRQS_OFF
--	call	debug_stack_reset
--.endm
--
--.macro TRACE_IRQS_ON_DEBUG
--	call	debug_stack_set_zero
--	TRACE_IRQS_ON
--	call	debug_stack_reset
--.endm
--
--.macro TRACE_IRQS_IRETQ_DEBUG
--	btl	$9, EFLAGS(%rsp)		/* interrupts off? */
--	jnc	1f
--	TRACE_IRQS_ON_DEBUG
--1:
--.endm
--
--#else
--# define TRACE_IRQS_OFF_DEBUG			TRACE_IRQS_OFF
--# define TRACE_IRQS_ON_DEBUG			TRACE_IRQS_ON
--# define TRACE_IRQS_IRETQ_DEBUG			TRACE_IRQS_IRETQ
--#endif
--
--/*
-  * 64-bit SYSCALL instruction entry. Up to 6 arguments in registers.
+@@ -16,7 +16,6 @@
   *
-  * This is the only entry point used for 64-bit system calls.  The
-@@ -500,11 +462,7 @@ SYM_CODE_START(\asmsym)
+  * Some macro usage:
+  * - SYM_FUNC_START/END:Define functions in the symbol table.
+- * - TRACE_IRQ_*:	Trace hardirq state for lock debugging.
+  * - idtentry:		Define exception entry points.
+  */
+ #include <linux/linkage.h>
+@@ -107,11 +106,6 @@ SYM_CODE_END(native_usergs_sysret64)
+ 
+ SYM_CODE_START(entry_SYSCALL_64)
+ 	UNWIND_HINT_EMPTY
+-	/*
+-	 * Interrupts are off on entry.
+-	 * We do not frame this tiny irq-off block with TRACE_IRQS_OFF/ON,
+-	 * it is too small to ever cause noticeable irq latency.
+-	 */
+ 
+ 	swapgs
+ 	/* tss.sp2 is scratch space. */
+@@ -462,8 +456,6 @@ SYM_CODE_START(\asmsym)
  
  	UNWIND_HINT_REGS
  
--	.if \vector == X86_TRAP_DB
--		TRACE_IRQS_OFF_DEBUG
--	.else
--		TRACE_IRQS_OFF
--	.endif
-+	TRACE_IRQS_OFF
- 
+-	TRACE_IRQS_OFF
+-
  	movq	%rsp, %rdi		/* pt_regs pointer */
  
-@@ -924,7 +882,7 @@ SYM_CODE_END(paranoid_entry)
+ 	.if \vector == X86_TRAP_DB
+@@ -881,17 +873,13 @@ SYM_CODE_END(paranoid_entry)
+  */
  SYM_CODE_START_LOCAL(paranoid_exit)
  	UNWIND_HINT_REGS
- 	DISABLE_INTERRUPTS(CLBR_ANY)
--	TRACE_IRQS_OFF_DEBUG
-+	TRACE_IRQS_OFF
+-	DISABLE_INTERRUPTS(CLBR_ANY)
+-	TRACE_IRQS_OFF
  	testl	%ebx, %ebx			/* swapgs needed? */
  	jnz	.Lparanoid_exit_no_swapgs
- 	TRACE_IRQS_IRETQ
-@@ -933,7 +891,7 @@ SYM_CODE_START_LOCAL(paranoid_exit)
+-	TRACE_IRQS_IRETQ
+ 	/* Always restore stashed CR3 value (see paranoid_entry) */
+ 	RESTORE_CR3	scratch_reg=%rbx save_reg=%r14
  	SWAPGS_UNSAFE_STACK
  	jmp	restore_regs_and_return_to_kernel
  .Lparanoid_exit_no_swapgs:
--	TRACE_IRQS_IRETQ_DEBUG
-+	TRACE_IRQS_IRETQ
+-	TRACE_IRQS_IRETQ
  	/* Always restore stashed CR3 value (see paranoid_entry) */
  	RESTORE_CR3	scratch_reg=%rbx save_reg=%r14
  	jmp restore_regs_and_return_to_kernel
+@@ -1292,7 +1280,6 @@ end_repeat_nmi:
+ 	call	paranoid_entry
+ 	UNWIND_HINT_REGS
+ 
+-	/* paranoidentry exc_nmi(), 0; without TRACE_IRQS_OFF */
+ 	movq	%rsp, %rdi
+ 	movq	$-1, %rsi
+ 	call	exc_nmi
+diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
+index c47f004..068e6ca 100644
+--- a/arch/x86/kernel/cpu/mce/core.c
++++ b/arch/x86/kernel/cpu/mce/core.c
+@@ -1922,7 +1922,10 @@ static __always_inline void exc_machine_check_kernel(struct pt_regs *regs)
+ 	 * that out because it's an indirect call. Annotate it.
+ 	 */
+ 	instrumentation_begin();
++	trace_hardirqs_off_prepare();
+ 	machine_check_vector(regs);
++	if (regs->flags & X86_EFLAGS_IF)
++		trace_hardirqs_on_prepare();
+ 	instrumentation_end();
+ 	nmi_exit();
+ }
+diff --git a/arch/x86/kernel/nmi.c b/arch/x86/kernel/nmi.c
+index d18ec18..1c58454 100644
+--- a/arch/x86/kernel/nmi.c
++++ b/arch/x86/kernel/nmi.c
+@@ -334,6 +334,7 @@ static noinstr void default_do_nmi(struct pt_regs *regs)
+ 	__this_cpu_write(last_nmi_rip, regs->ip);
+ 
+ 	instrumentation_begin();
++	trace_hardirqs_off_prepare();
+ 
+ 	handled = nmi_handle(NMI_LOCAL, regs);
+ 	__this_cpu_add(nmi_stats.normal, handled);
+@@ -420,6 +421,8 @@ static noinstr void default_do_nmi(struct pt_regs *regs)
+ 		unknown_nmi_error(reason, regs);
+ 
+ out:
++	if (regs->flags & X86_EFLAGS_IF)
++		trace_hardirqs_on_prepare();
+ 	instrumentation_end();
+ }
+ 
+diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
+index f28be3e..50fb9cd 100644
+--- a/arch/x86/kernel/traps.c
++++ b/arch/x86/kernel/traps.c
+@@ -634,8 +634,11 @@ DEFINE_IDTENTRY_RAW(exc_int3)
+ 	} else {
+ 		nmi_enter();
+ 		instrumentation_begin();
++		trace_hardirqs_off_prepare();
+ 		if (!do_int3(regs))
+ 			die("int3", regs, 0);
++		if (regs->flags & X86_EFLAGS_IF)
++			trace_hardirqs_on_prepare();
+ 		instrumentation_end();
+ 		nmi_exit();
+ 	}
+@@ -850,6 +853,10 @@ static __always_inline void exc_debug_kernel(struct pt_regs *regs,
+ 					     unsigned long dr6)
+ {
+ 	nmi_enter();
++	instrumentation_begin();
++	trace_hardirqs_off_prepare();
++	instrumentation_end();
++
+ 	/*
+ 	 * The SDM says "The processor clears the BTF flag when it
+ 	 * generates a debug exception."  Clear TIF_BLOCKSTEP to keep
+@@ -871,6 +878,10 @@ static __always_inline void exc_debug_kernel(struct pt_regs *regs,
+ 	if (dr6)
+ 		handle_debug(regs, dr6, false);
+ 
++	instrumentation_begin();
++	if (regs->flags & X86_EFLAGS_IF)
++		trace_hardirqs_on_prepare();
++	instrumentation_end();
+ 	nmi_exit();
+ }
+ 
