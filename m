@@ -2,141 +2,150 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CB671E3483
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 27 May 2020 03:14:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C77571E3B41
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 27 May 2020 10:13:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728203AbgE0BOR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 26 May 2020 21:14:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34510 "EHLO
+        id S1729393AbgE0ILq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 27 May 2020 04:11:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42158 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728192AbgE0BOP (ORCPT
+        with ESMTP id S1729300AbgE0ILq (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 26 May 2020 21:14:15 -0400
-Received: from mail-qt1-x843.google.com (mail-qt1-x843.google.com [IPv6:2607:f8b0:4864:20::843])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC8E9C061A0F
-        for <linux-tip-commits@vger.kernel.org>; Tue, 26 May 2020 18:14:14 -0700 (PDT)
-Received: by mail-qt1-x843.google.com with SMTP id h9so7722518qtj.7
-        for <linux-tip-commits@vger.kernel.org>; Tue, 26 May 2020 18:14:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=joelfernandes.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=NHzMNH28y/GXSoFOf1/NF/R2VMPDvKZxUdmkO5KBgxY=;
-        b=jJTXjPkgJLHrf2hO4j4PKGAsQ+OKm/7kMeoo0TXPZvOfXHeldzfY1lXSh+NwiaxTOw
-         ZKnc3V5UK9RskJaNiNhRroqXlInFVKOAbJ9njNeGK1woyD/fhwy2Lh2BzGuO3QqBKS49
-         Y6UzSbGFQwu17utdr39lsGrhkGKF4xP4O6twY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=NHzMNH28y/GXSoFOf1/NF/R2VMPDvKZxUdmkO5KBgxY=;
-        b=YDVle2n/Ki0aSDRG58k/R7XgHKi3lV6TEvP+SrIbvwQQ7zcZYD6SNAG/2iqdL5I4Pk
-         kQ0lS9zDx20c453cU+Jp0ffGgNg6d844g7SePOxnUwBczHFstmAlXNk4VYUr3kkU1fmB
-         3270hRPtE1autOseTCW7R2fo0ETanWepIpG+GrxvMZd3p8s9Y5E6FMcoTJQFYl6DwLzi
-         2GT4NOa+iWc0Gi4IyIqkZe6lmgzs6rs+BNC4QLE4MG+HvskHZoLjMWys5DQ2Ke/FGYn3
-         v6MSXJUO9/n8z1KlHALEHQfXy/xy2X5ya9/MjaSe/yc6EonKdcVmjaxsLLvjzQ5A/ASg
-         nmVw==
-X-Gm-Message-State: AOAM532AkbX5UHAKDH71KiHIGiNrbT1idq4dsukzJ/pYQPynqiyvUETh
-        KblqWTo0Q/+8abrubNJAjQ593Q==
-X-Google-Smtp-Source: ABdhPJzpw4hOd5QOy5LX+F5XNYCN3BpbdALQEeniFIPQEU07Dr5VpM/Wwp+pQNuQicgRtYfXDVz0Tw==
-X-Received: by 2002:ac8:7b4c:: with SMTP id m12mr1627606qtu.97.1590542054136;
-        Tue, 26 May 2020 18:14:14 -0700 (PDT)
-Received: from localhost ([2620:15c:6:12:9c46:e0da:efbf:69cc])
-        by smtp.gmail.com with ESMTPSA id o144sm1075774qke.126.2020.05.26.18.14.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 May 2020 18:14:13 -0700 (PDT)
-Date:   Tue, 26 May 2020 21:14:13 -0400
-From:   Joel Fernandes <joel@joelfernandes.org>
-To:     Ingo Molnar <mingo@kernel.org>
-Cc:     linux-kernel@vger.kernel.org,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        linux-tip-commits@vger.kernel.org, x86 <x86@kernel.org>
-Subject: Re: [PATCH] rcu/performance: Fix kfree_perf_init() build warning on
- 32-bit kernels
-Message-ID: <20200527011413.GD149611@google.com>
-References: <158923078019.390.12609597570329519463.tip-bot2@tip-bot2>
- <20200526182744.GA3722128@gmail.com>
+        Wed, 27 May 2020 04:11:46 -0400
+Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EA0AC061A0F;
+        Wed, 27 May 2020 01:11:46 -0700 (PDT)
+Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tip-bot2@linutronix.de>)
+        id 1jdrA8-0002T1-ER; Wed, 27 May 2020 10:11:44 +0200
+Received: from [127.0.1.1] (localhost [IPv6:::1])
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id CBDAC1C00ED;
+        Wed, 27 May 2020 10:11:43 +0200 (CEST)
+Date:   Wed, 27 May 2020 08:11:43 -0000
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/entry] x86/entry: Remove the TRACE_IRQS cruft
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@kernel.org>,
+        Andy Lutomirski <luto@kernel.org>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200521202120.523289762@linutronix.de>
+References: <20200521202120.523289762@linutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200526182744.GA3722128@gmail.com>
+Message-ID: <159056710364.17951.5337501176365228480.tip-bot2@tip-bot2>
+X-Mailer: tip-git-log-daemon
+Robot-ID: <tip-bot2.linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Tue, May 26, 2020 at 08:27:44PM +0200, Ingo Molnar wrote:
-[...]
-> ./include/linux/kern_levels.h:5:18: warning: format ‘%lu’ expects argument
-> of type ‘long unsigned int’, but argument 2 has type ‘unsigned int’
-> [-Wformat=] 5 | #define KERN_SOH "\001"  /* ASCII Start Of Header */ |
-> ^~~~~~
-> ./include/linux/kern_levels.h:9:20: note: in expansion of macro ‘KERN_SOH’
->     9 | #define KERN_ALERT KERN_SOH "1" /* action must be taken immediately */
->       |                    ^~~~~~~~
-> ./include/linux/printk.h:295:9: note: in expansion of macro ‘KERN_ALERT’
->   295 |  printk(KERN_ALERT pr_fmt(fmt), ##__VA_ARGS__)
->       |         ^~~~~~~~~~
-> kernel/rcu/rcuperf.c:726:2: note: in expansion of macro ‘pr_alert’
->   726 |  pr_alert("kfree object size=%lu\n", kfree_mult * sizeof(struct kfree_obj));
->       |  ^~~~~~~~
-> kernel/rcu/rcuperf.c:726:32: note: format string is defined here
->   726 |  pr_alert("kfree object size=%lu\n", kfree_mult * sizeof(struct kfree_obj));
->       |                              ~~^
->       |                                |
->       |                                long unsigned int
->       |                              %u
-> 
-> 
-> The reason for the warning is that both kfree_mult and sizeof() are 
-> 'int' types on 32-bit kernels, while the format string expects a long.
-> 
-> Instead of casting the type to long or tweaking the format string, the 
-> most straightforward solution is to upgrade kfree_mult to a long. 
-> Since this depends on CONFIG_RCU_PERF_TEST
+The following commit has been merged into the x86/entry branch of tip:
 
-Thanks for fixing it.
+Commit-ID:     5a7462b1f9c19312da0e489b859184cc88229bad
+Gitweb:        https://git.kernel.org/tip/5a7462b1f9c19312da0e489b859184cc88229bad
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Thu, 21 May 2020 22:05:52 +02:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Tue, 26 May 2020 19:06:29 +02:00
 
-> BTW., could we please also rename this code from 'PERF_TEST'/'perf test'
-> to 'PERFORMANCE_TEST'/'performance test'? At first glance I always
-> mistakenly believe that it's somehow related to perf, while it isn't. =B-)
+x86/entry: Remove the TRACE_IRQS cruft
 
-Would it be better to call it 'RCUPERF_TEST' instead of the
-'RCU_PERFORMANCE_TEST' you are proposing? I feel the word 'PERFORMANCE' is
-too long.  Also, 'rcuperf test' instead of the 'rcu performance test' you are
-proposing.  I am Ok with doing it however you and Paul want it though, let me
-know.
+No more users.
 
-Paul, should I send you a renaming patch for the new performance tests as
-well (which I believe should be in the -dev branch).
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Andy Lutomirski <luto@kernel.org>
+Link: https://lore.kernel.org/r/20200521202120.523289762@linutronix.de
+---
+ arch/x86/entry/entry_64.S       | 13 -------------
+ arch/x86/entry/thunk_64.S       |  9 +--------
+ arch/x86/include/asm/irqflags.h | 10 ----------
+ 3 files changed, 1 insertion(+), 31 deletions(-)
 
-thanks,
-
- - Joel
-
-
-> 
-> Thanks,
-> 
-> 	Ingo
-> 
-> Signed-off-by: Ingo Molnar <mingo@kernel.org>
-> 
->  kernel/rcu/rcuperf.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/kernel/rcu/rcuperf.c b/kernel/rcu/rcuperf.c
-> index 16dd1e6b7c09..221a0a3810e4 100644
-> --- a/kernel/rcu/rcuperf.c
-> +++ b/kernel/rcu/rcuperf.c
-> @@ -88,7 +88,7 @@ torture_param(bool, shutdown, RCUPERF_SHUTDOWN,
->  torture_param(int, verbose, 1, "Enable verbose debugging printk()s");
->  torture_param(int, writer_holdoff, 0, "Holdoff (us) between GPs, zero to disable");
->  torture_param(int, kfree_rcu_test, 0, "Do we run a kfree_rcu() perf test?");
-> -torture_param(int, kfree_mult, 1, "Multiple of kfree_obj size to allocate.");
-> +torture_param(long, kfree_mult, 1, "Multiple of kfree_obj size to allocate.");
->  
->  static char *perf_type = "rcu";
->  module_param(perf_type, charp, 0444);
+diff --git a/arch/x86/entry/entry_64.S b/arch/x86/entry/entry_64.S
+index 2566554..265ff97 100644
+--- a/arch/x86/entry/entry_64.S
++++ b/arch/x86/entry/entry_64.S
+@@ -53,19 +53,6 @@ SYM_CODE_START(native_usergs_sysret64)
+ SYM_CODE_END(native_usergs_sysret64)
+ #endif /* CONFIG_PARAVIRT */
+ 
+-.macro TRACE_IRQS_FLAGS flags:req
+-#ifdef CONFIG_TRACE_IRQFLAGS
+-	btl	$9, \flags		/* interrupts off? */
+-	jnc	1f
+-	TRACE_IRQS_ON
+-1:
+-#endif
+-.endm
+-
+-.macro TRACE_IRQS_IRETQ
+-	TRACE_IRQS_FLAGS EFLAGS(%rsp)
+-.endm
+-
+ /*
+  * 64-bit SYSCALL instruction entry. Up to 6 arguments in registers.
+  *
+diff --git a/arch/x86/entry/thunk_64.S b/arch/x86/entry/thunk_64.S
+index 34f980c..ccd3287 100644
+--- a/arch/x86/entry/thunk_64.S
++++ b/arch/x86/entry/thunk_64.S
+@@ -3,7 +3,6 @@
+  * Save registers before calling assembly functions. This avoids
+  * disturbance of register allocation in some inline assembly constructs.
+  * Copyright 2001,2002 by Andi Kleen, SuSE Labs.
+- * Added trace_hardirqs callers - Copyright 2007 Steven Rostedt, Red Hat, Inc.
+  */
+ #include <linux/linkage.h>
+ #include "calling.h"
+@@ -37,11 +36,6 @@ SYM_FUNC_END(\name)
+ 	_ASM_NOKPROBE(\name)
+ 	.endm
+ 
+-#ifdef CONFIG_TRACE_IRQFLAGS
+-	THUNK trace_hardirqs_on_thunk,trace_hardirqs_on_caller,1
+-	THUNK trace_hardirqs_off_thunk,trace_hardirqs_off_caller,1
+-#endif
+-
+ #ifdef CONFIG_PREEMPTION
+ 	THUNK preempt_schedule_thunk, preempt_schedule
+ 	THUNK preempt_schedule_notrace_thunk, preempt_schedule_notrace
+@@ -49,8 +43,7 @@ SYM_FUNC_END(\name)
+ 	EXPORT_SYMBOL(preempt_schedule_notrace_thunk)
+ #endif
+ 
+-#if defined(CONFIG_TRACE_IRQFLAGS) \
+- || defined(CONFIG_PREEMPTION)
++#ifdef CONFIG_PREEMPTION
+ SYM_CODE_START_LOCAL_NOALIGN(.L_restore)
+ 	popq %r11
+ 	popq %r10
+diff --git a/arch/x86/include/asm/irqflags.h b/arch/x86/include/asm/irqflags.h
+index e00f064..8ddff8d 100644
+--- a/arch/x86/include/asm/irqflags.h
++++ b/arch/x86/include/asm/irqflags.h
+@@ -172,14 +172,4 @@ static inline int arch_irqs_disabled(void)
+ }
+ #endif /* !__ASSEMBLY__ */
+ 
+-#ifdef __ASSEMBLY__
+-#ifdef CONFIG_TRACE_IRQFLAGS
+-#  define TRACE_IRQS_ON		call trace_hardirqs_on_thunk;
+-#  define TRACE_IRQS_OFF	call trace_hardirqs_off_thunk;
+-#else
+-#  define TRACE_IRQS_ON
+-#  define TRACE_IRQS_OFF
+-#endif
+-#endif /* __ASSEMBLY__ */
+-
+ #endif
