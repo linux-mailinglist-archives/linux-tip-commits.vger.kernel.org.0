@@ -2,233 +2,141 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 07F2E1E2F95
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 26 May 2020 21:57:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CB671E3483
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 27 May 2020 03:14:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390410AbgEZT46 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 26 May 2020 15:56:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41358 "EHLO
+        id S1728203AbgE0BOR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 26 May 2020 21:14:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34510 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390336AbgEZT45 (ORCPT
+        with ESMTP id S1728192AbgE0BOP (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 26 May 2020 15:56:57 -0400
-Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F6D0C03E96D;
-        Tue, 26 May 2020 12:56:57 -0700 (PDT)
-Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tip-bot2@linutronix.de>)
-        id 1jdfgv-0004E3-Rv; Tue, 26 May 2020 21:56:49 +0200
-Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 3BD2B1C00FA;
-        Tue, 26 May 2020 21:56:49 +0200 (CEST)
-Date:   Tue, 26 May 2020 19:56:49 -0000
-From:   "tip-bot2 for Tony Luck" <tip-bot2@linutronix.de>
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: ras/core] x86/{mce,mm}: Unmap the entire page if the whole page
- is affected and poisoned
-Cc:     Jue Wang <juew@google.com>, Tony Luck <tony.luck@intel.com>,
-        Borislav Petkov <bp@suse.de>, <stable@vger.kernel.org>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200520163546.GA7977@agluck-desk2.amr.corp.intel.com>
-References: <20200520163546.GA7977@agluck-desk2.amr.corp.intel.com>
+        Tue, 26 May 2020 21:14:15 -0400
+Received: from mail-qt1-x843.google.com (mail-qt1-x843.google.com [IPv6:2607:f8b0:4864:20::843])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC8E9C061A0F
+        for <linux-tip-commits@vger.kernel.org>; Tue, 26 May 2020 18:14:14 -0700 (PDT)
+Received: by mail-qt1-x843.google.com with SMTP id h9so7722518qtj.7
+        for <linux-tip-commits@vger.kernel.org>; Tue, 26 May 2020 18:14:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=joelfernandes.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=NHzMNH28y/GXSoFOf1/NF/R2VMPDvKZxUdmkO5KBgxY=;
+        b=jJTXjPkgJLHrf2hO4j4PKGAsQ+OKm/7kMeoo0TXPZvOfXHeldzfY1lXSh+NwiaxTOw
+         ZKnc3V5UK9RskJaNiNhRroqXlInFVKOAbJ9njNeGK1woyD/fhwy2Lh2BzGuO3QqBKS49
+         Y6UzSbGFQwu17utdr39lsGrhkGKF4xP4O6twY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=NHzMNH28y/GXSoFOf1/NF/R2VMPDvKZxUdmkO5KBgxY=;
+        b=YDVle2n/Ki0aSDRG58k/R7XgHKi3lV6TEvP+SrIbvwQQ7zcZYD6SNAG/2iqdL5I4Pk
+         kQ0lS9zDx20c453cU+Jp0ffGgNg6d844g7SePOxnUwBczHFstmAlXNk4VYUr3kkU1fmB
+         3270hRPtE1autOseTCW7R2fo0ETanWepIpG+GrxvMZd3p8s9Y5E6FMcoTJQFYl6DwLzi
+         2GT4NOa+iWc0Gi4IyIqkZe6lmgzs6rs+BNC4QLE4MG+HvskHZoLjMWys5DQ2Ke/FGYn3
+         v6MSXJUO9/n8z1KlHALEHQfXy/xy2X5ya9/MjaSe/yc6EonKdcVmjaxsLLvjzQ5A/ASg
+         nmVw==
+X-Gm-Message-State: AOAM532AkbX5UHAKDH71KiHIGiNrbT1idq4dsukzJ/pYQPynqiyvUETh
+        KblqWTo0Q/+8abrubNJAjQ593Q==
+X-Google-Smtp-Source: ABdhPJzpw4hOd5QOy5LX+F5XNYCN3BpbdALQEeniFIPQEU07Dr5VpM/Wwp+pQNuQicgRtYfXDVz0Tw==
+X-Received: by 2002:ac8:7b4c:: with SMTP id m12mr1627606qtu.97.1590542054136;
+        Tue, 26 May 2020 18:14:14 -0700 (PDT)
+Received: from localhost ([2620:15c:6:12:9c46:e0da:efbf:69cc])
+        by smtp.gmail.com with ESMTPSA id o144sm1075774qke.126.2020.05.26.18.14.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 26 May 2020 18:14:13 -0700 (PDT)
+Date:   Tue, 26 May 2020 21:14:13 -0400
+From:   Joel Fernandes <joel@joelfernandes.org>
+To:     Ingo Molnar <mingo@kernel.org>
+Cc:     linux-kernel@vger.kernel.org,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        linux-tip-commits@vger.kernel.org, x86 <x86@kernel.org>
+Subject: Re: [PATCH] rcu/performance: Fix kfree_perf_init() build warning on
+ 32-bit kernels
+Message-ID: <20200527011413.GD149611@google.com>
+References: <158923078019.390.12609597570329519463.tip-bot2@tip-bot2>
+ <20200526182744.GA3722128@gmail.com>
 MIME-Version: 1.0
-Message-ID: <159052300906.17951.14977486527069637505.tip-bot2@tip-bot2>
-X-Mailer: tip-git-log-daemon
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200526182744.GA3722128@gmail.com>
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the ras/core branch of tip:
+On Tue, May 26, 2020 at 08:27:44PM +0200, Ingo Molnar wrote:
+[...]
+> ./include/linux/kern_levels.h:5:18: warning: format ‘%lu’ expects argument
+> of type ‘long unsigned int’, but argument 2 has type ‘unsigned int’
+> [-Wformat=] 5 | #define KERN_SOH "\001"  /* ASCII Start Of Header */ |
+> ^~~~~~
+> ./include/linux/kern_levels.h:9:20: note: in expansion of macro ‘KERN_SOH’
+>     9 | #define KERN_ALERT KERN_SOH "1" /* action must be taken immediately */
+>       |                    ^~~~~~~~
+> ./include/linux/printk.h:295:9: note: in expansion of macro ‘KERN_ALERT’
+>   295 |  printk(KERN_ALERT pr_fmt(fmt), ##__VA_ARGS__)
+>       |         ^~~~~~~~~~
+> kernel/rcu/rcuperf.c:726:2: note: in expansion of macro ‘pr_alert’
+>   726 |  pr_alert("kfree object size=%lu\n", kfree_mult * sizeof(struct kfree_obj));
+>       |  ^~~~~~~~
+> kernel/rcu/rcuperf.c:726:32: note: format string is defined here
+>   726 |  pr_alert("kfree object size=%lu\n", kfree_mult * sizeof(struct kfree_obj));
+>       |                              ~~^
+>       |                                |
+>       |                                long unsigned int
+>       |                              %u
+> 
+> 
+> The reason for the warning is that both kfree_mult and sizeof() are 
+> 'int' types on 32-bit kernels, while the format string expects a long.
+> 
+> Instead of casting the type to long or tweaking the format string, the 
+> most straightforward solution is to upgrade kfree_mult to a long. 
+> Since this depends on CONFIG_RCU_PERF_TEST
 
-Commit-ID:     be69f6c5cd38c457c22f6e718077f6524437369d
-Gitweb:        https://git.kernel.org/tip/be69f6c5cd38c457c22f6e718077f6524437369d
-Author:        Tony Luck <tony.luck@intel.com>
-AuthorDate:    Wed, 20 May 2020 09:35:46 -07:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 25 May 2020 22:37:41 +02:00
+Thanks for fixing it.
 
-x86/{mce,mm}: Unmap the entire page if the whole page is affected and poisoned
+> BTW., could we please also rename this code from 'PERF_TEST'/'perf test'
+> to 'PERFORMANCE_TEST'/'performance test'? At first glance I always
+> mistakenly believe that it's somehow related to perf, while it isn't. =B-)
 
-An interesting thing happened when a guest Linux instance took a machine
-check. The VMM unmapped the bad page from guest physical space and
-passed the machine check to the guest.
+Would it be better to call it 'RCUPERF_TEST' instead of the
+'RCU_PERFORMANCE_TEST' you are proposing? I feel the word 'PERFORMANCE' is
+too long.  Also, 'rcuperf test' instead of the 'rcu performance test' you are
+proposing.  I am Ok with doing it however you and Paul want it though, let me
+know.
 
-Linux took all the normal actions to offline the page from the process
-that was using it. But then guest Linux crashed because it said there
-was a second machine check inside the kernel with this stack trace:
+Paul, should I send you a renaming patch for the new performance tests as
+well (which I believe should be in the -dev branch).
 
-do_memory_failure
-    set_mce_nospec
-         set_memory_uc
-              _set_memory_uc
-                   change_page_attr_set_clr
-                        cpa_flush
-                             clflush_cache_range_opt
+thanks,
 
-This was odd, because a CLFLUSH instruction shouldn't raise a machine
-check (it isn't consuming the data). Further investigation showed that
-the VMM had passed in another machine check because is appeared that the
-guest was accessing the bad page.
+ - Joel
 
-Fix is to check the scope of the poison by checking the MCi_MISC register.
-If the entire page is affected, then unmap the page. If only part of the
-page is affected, then mark the page as uncacheable.
 
-This assumes that VMMs will do the logical thing and pass in the "whole
-page scope" via the MCi_MISC register (since they unmapped the entire
-page).
-
-  [ bp: Adjust to x86/entry changes. ]
-
-Fixes: 284ce4011ba6 ("x86/memory_failure: Introduce {set, clear}_mce_nospec()")
-Reported-by: Jue Wang <juew@google.com>
-Signed-off-by: Tony Luck <tony.luck@intel.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Tested-by: Jue Wang <juew@google.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lkml.kernel.org/r/20200520163546.GA7977@agluck-desk2.amr.corp.intel.com
----
- arch/x86/include/asm/set_memory.h | 19 +++++++++++++------
- arch/x86/kernel/cpu/mce/core.c    | 18 ++++++++++++++----
- include/linux/sched.h             |  4 +++-
- include/linux/set_memory.h        |  2 +-
- 4 files changed, 31 insertions(+), 12 deletions(-)
-
-diff --git a/arch/x86/include/asm/set_memory.h b/arch/x86/include/asm/set_memory.h
-index ec2c0a0..5948218 100644
---- a/arch/x86/include/asm/set_memory.h
-+++ b/arch/x86/include/asm/set_memory.h
-@@ -86,28 +86,35 @@ int set_direct_map_default_noflush(struct page *page);
- extern int kernel_set_to_readonly;
- 
- #ifdef CONFIG_X86_64
--static inline int set_mce_nospec(unsigned long pfn)
-+/*
-+ * Prevent speculative access to the page by either unmapping
-+ * it (if we do not require access to any part of the page) or
-+ * marking it uncacheable (if we want to try to retrieve data
-+ * from non-poisoned lines in the page).
-+ */
-+static inline int set_mce_nospec(unsigned long pfn, bool unmap)
- {
- 	unsigned long decoy_addr;
- 	int rc;
- 
- 	/*
--	 * Mark the linear address as UC to make sure we don't log more
--	 * errors because of speculative access to the page.
- 	 * We would like to just call:
--	 *      set_memory_uc((unsigned long)pfn_to_kaddr(pfn), 1);
-+	 *      set_memory_XX((unsigned long)pfn_to_kaddr(pfn), 1);
- 	 * but doing that would radically increase the odds of a
- 	 * speculative access to the poison page because we'd have
- 	 * the virtual address of the kernel 1:1 mapping sitting
- 	 * around in registers.
- 	 * Instead we get tricky.  We create a non-canonical address
- 	 * that looks just like the one we want, but has bit 63 flipped.
--	 * This relies on set_memory_uc() properly sanitizing any __pa()
-+	 * This relies on set_memory_XX() properly sanitizing any __pa()
- 	 * results with __PHYSICAL_MASK or PTE_PFN_MASK.
- 	 */
- 	decoy_addr = (pfn << PAGE_SHIFT) + (PAGE_OFFSET ^ BIT(63));
- 
--	rc = set_memory_uc(decoy_addr, 1);
-+	if (unmap)
-+		rc = set_memory_np(decoy_addr, 1);
-+	else
-+		rc = set_memory_uc(decoy_addr, 1);
- 	if (rc)
- 		pr_warn("Could not invalidate pfn=0x%lx from 1:1 map\n", pfn);
- 	return rc;
-diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
-index ffee8a2..753bc77 100644
---- a/arch/x86/kernel/cpu/mce/core.c
-+++ b/arch/x86/kernel/cpu/mce/core.c
-@@ -520,6 +520,14 @@ bool mce_is_memory_error(struct mce *m)
- }
- EXPORT_SYMBOL_GPL(mce_is_memory_error);
- 
-+static bool whole_page(struct mce *m)
-+{
-+	if (!mca_cfg.ser || !(m->status & MCI_STATUS_MISCV))
-+		return true;
-+
-+	return MCI_MISC_ADDR_LSB(m->misc) >= PAGE_SHIFT;
-+}
-+
- bool mce_is_correctable(struct mce *m)
- {
- 	if (m->cpuvendor == X86_VENDOR_AMD && m->status & MCI_STATUS_DEFERRED)
-@@ -573,7 +581,7 @@ static int uc_decode_notifier(struct notifier_block *nb, unsigned long val,
- 
- 	pfn = mce->addr >> PAGE_SHIFT;
- 	if (!memory_failure(pfn, 0)) {
--		set_mce_nospec(pfn);
-+		set_mce_nospec(pfn, whole_page(mce));
- 		mce->kflags |= MCE_HANDLED_UC;
- 	}
- 
-@@ -1173,11 +1181,12 @@ static void kill_me_maybe(struct callback_head *cb)
- 	int flags = MF_ACTION_REQUIRED;
- 
- 	pr_err("Uncorrected hardware memory error in user-access at %llx", p->mce_addr);
--	if (!(p->mce_status & MCG_STATUS_RIPV))
-+
-+	if (!p->mce_ripv)
- 		flags |= MF_MUST_KILL;
- 
- 	if (!memory_failure(p->mce_addr >> PAGE_SHIFT, flags)) {
--		set_mce_nospec(p->mce_addr >> PAGE_SHIFT);
-+		set_mce_nospec(p->mce_addr >> PAGE_SHIFT, p->mce_whole_page);
- 		return;
- 	}
- 
-@@ -1331,7 +1340,8 @@ void noinstr do_machine_check(struct pt_regs *regs)
- 		BUG_ON(!on_thread_stack() || !user_mode(regs));
- 
- 		current->mce_addr = m.addr;
--		current->mce_status = m.mcgstatus;
-+		current->mce_ripv = !!(m.mcgstatus & MCG_STATUS_RIPV);
-+		current->mce_whole_page = whole_page(&m);
- 		current->mce_kill_me.func = kill_me_maybe;
- 		if (kill_it)
- 			current->mce_kill_me.func = kill_me_now;
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index 1d68ee3..6293fc2 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -1304,7 +1304,9 @@ struct task_struct {
- 
- #ifdef CONFIG_X86_MCE
- 	u64				mce_addr;
--	u64				mce_status;
-+	__u64				mce_ripv : 1,
-+					mce_whole_page : 1,
-+					__mce_reserved : 62;
- 	struct callback_head		mce_kill_me;
- #endif
- 
-diff --git a/include/linux/set_memory.h b/include/linux/set_memory.h
-index 86281ac..860e0f8 100644
---- a/include/linux/set_memory.h
-+++ b/include/linux/set_memory.h
-@@ -26,7 +26,7 @@ static inline int set_direct_map_default_noflush(struct page *page)
- #endif
- 
- #ifndef set_mce_nospec
--static inline int set_mce_nospec(unsigned long pfn)
-+static inline int set_mce_nospec(unsigned long pfn, bool unmap)
- {
- 	return 0;
- }
+> 
+> Thanks,
+> 
+> 	Ingo
+> 
+> Signed-off-by: Ingo Molnar <mingo@kernel.org>
+> 
+>  kernel/rcu/rcuperf.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/kernel/rcu/rcuperf.c b/kernel/rcu/rcuperf.c
+> index 16dd1e6b7c09..221a0a3810e4 100644
+> --- a/kernel/rcu/rcuperf.c
+> +++ b/kernel/rcu/rcuperf.c
+> @@ -88,7 +88,7 @@ torture_param(bool, shutdown, RCUPERF_SHUTDOWN,
+>  torture_param(int, verbose, 1, "Enable verbose debugging printk()s");
+>  torture_param(int, writer_holdoff, 0, "Holdoff (us) between GPs, zero to disable");
+>  torture_param(int, kfree_rcu_test, 0, "Do we run a kfree_rcu() perf test?");
+> -torture_param(int, kfree_mult, 1, "Multiple of kfree_obj size to allocate.");
+> +torture_param(long, kfree_mult, 1, "Multiple of kfree_obj size to allocate.");
+>  
+>  static char *perf_type = "rcu";
+>  module_param(perf_type, charp, 0444);
