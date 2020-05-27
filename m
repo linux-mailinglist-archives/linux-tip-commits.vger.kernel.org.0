@@ -2,37 +2,41 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A3E451E46E6
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 27 May 2020 17:04:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4E851E4746
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 27 May 2020 17:25:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389573AbgE0PEj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 27 May 2020 11:04:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49960 "EHLO
+        id S1728653AbgE0PZo (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 27 May 2020 11:25:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389559AbgE0PEd (ORCPT
+        with ESMTP id S1725971AbgE0PZo (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 27 May 2020 11:04:33 -0400
+        Wed, 27 May 2020 11:25:44 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6D12C03E97D;
-        Wed, 27 May 2020 08:04:32 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07F98C05BD1E;
+        Wed, 27 May 2020 08:25:44 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jdxbX-0006Lv-FE; Wed, 27 May 2020 17:04:27 +0200
+        id 1jdxw3-0006uM-OZ; Wed, 27 May 2020 17:25:39 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 22F2C1C00ED;
-        Wed, 27 May 2020 17:04:27 +0200 (CEST)
-Date:   Wed, 27 May 2020 15:04:27 -0000
-From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 30C291C00ED;
+        Wed, 27 May 2020 17:25:39 +0200 (CEST)
+Date:   Wed, 27 May 2020 15:25:39 -0000
+From:   "tip-bot2 for Marco Elver" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] samples/ftrace: Fix asm function ELF annotations
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
-        Josh Poimboeuf <jpoimboe@redhat.com>, x86 <x86@kernel.org>,
+Subject: [tip: locking/kcsan] compiler_types.h: Optimize
+ __unqual_scalar_typeof compilation time
+Cc:     Arnd Bergmann <arnd@arndb.de>, Marco Elver <elver@google.com>,
+        Borislav Petkov <bp@suse.de>,
+        Peter Zijlstra <peterz@infradead.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200527103236.148700-1-elver@google.com>
+References: <20200527103236.148700-1-elver@google.com>
 MIME-Version: 1.0
-Message-ID: <159059186703.17951.17698663929899663001.tip-bot2@tip-bot2>
+Message-ID: <159059313900.17951.16258985921157909524.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -46,96 +50,89 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the objtool/core branch of tip:
+The following commit has been merged into the locking/kcsan branch of tip:
 
-Commit-ID:     9d907f1ae80b8a67d5397e26912b9d56d0b70a02
-Gitweb:        https://git.kernel.org/tip/9d907f1ae80b8a67d5397e26912b9d56d0b70a02
-Author:        Josh Poimboeuf <jpoimboe@redhat.com>
-AuthorDate:    Fri, 24 Apr 2020 15:40:43 -05:00
-Committer:     Josh Poimboeuf <jpoimboe@redhat.com>
-CommitterDate: Wed, 20 May 2020 08:30:43 -05:00
+Commit-ID:     a5dead405f6be1fb80555bdcb77c406bf133fdc8
+Gitweb:        https://git.kernel.org/tip/a5dead405f6be1fb80555bdcb77c406bf133fdc8
+Author:        Marco Elver <elver@google.com>
+AuthorDate:    Wed, 27 May 2020 12:32:36 +02:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Wed, 27 May 2020 14:03:26 +02:00
 
-samples/ftrace: Fix asm function ELF annotations
+compiler_types.h: Optimize __unqual_scalar_typeof compilation time
 
-Enable objtool coverage for the sample ftrace modules by adding ELF
-annotations to the asm trampoline functions.
+If the compiler supports C11's _Generic, use it to speed up compilation
+times of __unqual_scalar_typeof(). GCC version 4.9 or later and
+all supported versions of Clang support the feature (the oldest
+supported compiler that doesn't support _Generic is GCC 4.8, for which
+we use the slower alternative).
 
-  samples/ftrace/ftrace-direct.o: warning: objtool: .text+0x0: unreachable instruction
-  samples/ftrace/ftrace-direct-modify.o: warning: objtool: .text+0x0: unreachable instruction
-  samples/ftrace/ftrace-direct-too.o: warning: objtool: .text+0x0: unreachable instruction
+The non-_Generic variant relies on multiple expansions of
+__pick_integer_type -> __pick_scalar_type -> __builtin_choose_expr,
+which increases pre-processed code size, and can cause compile times to
+increase in files with numerous expansions of READ_ONCE(), or other
+users of __unqual_scalar_typeof().
 
-Reported-by: Randy Dunlap <rdunlap@infradead.org>
-Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
+Summary of compile-time benchmarking done by Arnd Bergmann:
+
+  <baseline normalized time>  clang-11   gcc-9
+  this patch                      0.78    0.91
+  ideal                           0.76    0.86
+
+See https://lkml.kernel.org/r/CAK8P3a3UYQeXhiufUevz=rwe09WM_vSTCd9W+KvJHJcOeQyWVA@mail.gmail.com
+
+Further compile-testing done with:
+  gcc 4.8, 4.9, 5.5, 6.4, 7.5, 8.4;
+  clang 9, 10.
+
+Reported-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Marco Elver <elver@google.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Acked-by: Peter Zijlstra <peterz@infradead.org>
+Tested-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lkml.kernel.org/r/20200527103236.148700-1-elver@google.com
+Link: https://lkml.kernel.org/r/CAK8P3a0RJtbVi1JMsfik=jkHCNFv+DJn_FeDg-YLW+ueQW3tNg@mail.gmail.com
 ---
- samples/ftrace/ftrace-direct-modify.c | 4 ++++
- samples/ftrace/ftrace-direct-too.c    | 2 ++
- samples/ftrace/ftrace-direct.c        | 2 ++
- 3 files changed, 8 insertions(+)
+ include/linux/compiler_types.h | 22 +++++++++++++++++++++-
+ 1 file changed, 21 insertions(+), 1 deletion(-)
 
-diff --git a/samples/ftrace/ftrace-direct-modify.c b/samples/ftrace/ftrace-direct-modify.c
-index e04229d..c13a5bc 100644
---- a/samples/ftrace/ftrace-direct-modify.c
-+++ b/samples/ftrace/ftrace-direct-modify.c
-@@ -20,18 +20,22 @@ static unsigned long my_ip = (unsigned long)schedule;
+diff --git a/include/linux/compiler_types.h b/include/linux/compiler_types.h
+index 5faf68e..a529fa2 100644
+--- a/include/linux/compiler_types.h
++++ b/include/linux/compiler_types.h
+@@ -245,7 +245,9 @@ struct ftrace_likely_data {
+ /*
+  * __unqual_scalar_typeof(x) - Declare an unqualified scalar type, leaving
+  *			       non-scalar types unchanged.
+- *
++ */
++#if defined(CONFIG_CC_IS_GCC) && CONFIG_GCC_VERSION < 40900
++/*
+  * We build this out of a couple of helper macros in a vain attempt to
+  * help you keep your lunch down while reading it.
+  */
+@@ -267,6 +269,24 @@ struct ftrace_likely_data {
+ 			__pick_integer_type(x, int,				\
+ 				__pick_integer_type(x, long,			\
+ 					__pick_integer_type(x, long long, x))))))
++#else
++/*
++ * If supported, prefer C11 _Generic for better compile-times. As above, 'char'
++ * is not type-compatible with 'signed char', and we define a separate case.
++ */
++#define __scalar_type_to_expr_cases(type)				\
++		type: (type)0, unsigned type: (unsigned type)0
++
++#define __unqual_scalar_typeof(x) typeof(				\
++		_Generic((x),						\
++			 __scalar_type_to_expr_cases(char),		\
++			 signed char: (signed char)0,			\
++			 __scalar_type_to_expr_cases(short),		\
++			 __scalar_type_to_expr_cases(int),		\
++			 __scalar_type_to_expr_cases(long),		\
++			 __scalar_type_to_expr_cases(long long),	\
++			 default: (x)))
++#endif
  
- asm (
- "	.pushsection    .text, \"ax\", @progbits\n"
-+"	.type		my_tramp1, @function\n"
- "   my_tramp1:"
- "	pushq %rbp\n"
- "	movq %rsp, %rbp\n"
- "	call my_direct_func1\n"
- "	leave\n"
-+"	.size		my_tramp1, .-my_tramp1\n"
- "	ret\n"
-+"	.type		my_tramp2, @function\n"
- "   my_tramp2:"
- "	pushq %rbp\n"
- "	movq %rsp, %rbp\n"
- "	call my_direct_func2\n"
- "	leave\n"
- "	ret\n"
-+"	.size		my_tramp2, .-my_tramp2\n"
- "	.popsection\n"
- );
- 
-diff --git a/samples/ftrace/ftrace-direct-too.c b/samples/ftrace/ftrace-direct-too.c
-index 27efa5f..d5c5022 100644
---- a/samples/ftrace/ftrace-direct-too.c
-+++ b/samples/ftrace/ftrace-direct-too.c
-@@ -15,6 +15,7 @@ extern void my_tramp(void *);
- 
- asm (
- "	.pushsection    .text, \"ax\", @progbits\n"
-+"	.type		my_tramp, @function\n"
- "   my_tramp:"
- "	pushq %rbp\n"
- "	movq %rsp, %rbp\n"
-@@ -27,6 +28,7 @@ asm (
- "	popq %rdi\n"
- "	leave\n"
- "	ret\n"
-+"	.size		my_tramp, .-my_tramp\n"
- "	.popsection\n"
- );
- 
-diff --git a/samples/ftrace/ftrace-direct.c b/samples/ftrace/ftrace-direct.c
-index a2e3063..63ca06d 100644
---- a/samples/ftrace/ftrace-direct.c
-+++ b/samples/ftrace/ftrace-direct.c
-@@ -13,6 +13,7 @@ extern void my_tramp(void *);
- 
- asm (
- "	.pushsection    .text, \"ax\", @progbits\n"
-+"	.type		my_tramp, @function\n"
- "   my_tramp:"
- "	pushq %rbp\n"
- "	movq %rsp, %rbp\n"
-@@ -21,6 +22,7 @@ asm (
- "	popq %rdi\n"
- "	leave\n"
- "	ret\n"
-+"	.size		my_tramp, .-my_tramp\n"
- "	.popsection\n"
- );
- 
+ /* Is this type a native word size -- useful for atomic operations */
+ #define __native_word(t) \
