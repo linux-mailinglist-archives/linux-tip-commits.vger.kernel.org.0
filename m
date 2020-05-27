@@ -2,40 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A22291E3B7D
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 27 May 2020 10:14:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F01D31E3B70
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 27 May 2020 10:13:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387901AbgE0INX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 27 May 2020 04:13:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42244 "EHLO
+        id S2387859AbgE0ING (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 27 May 2020 04:13:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729531AbgE0IMC (ORCPT
+        with ESMTP id S1729541AbgE0IME (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 27 May 2020 04:12:02 -0400
+        Wed, 27 May 2020 04:12:04 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC13DC03E97D;
-        Wed, 27 May 2020 01:12:01 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBE94C03E97A;
+        Wed, 27 May 2020 01:12:03 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jdrAO-0002d5-B5; Wed, 27 May 2020 10:12:00 +0200
+        id 1jdrAP-0002dU-UY; Wed, 27 May 2020 10:12:02 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4ED311C03A9;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D52E41C04D6;
         Wed, 27 May 2020 10:11:57 +0200 (CEST)
-Date:   Wed, 27 May 2020 08:11:56 -0000
+Date:   Wed, 27 May 2020 08:11:57 -0000
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/entry] x86/entry/64: Move do_softirq_own_stack() to C
+Subject: [tip: x86/entry] x86/entry: Provide helpers for executing on the irqstack
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@kernel.org>,
         Andy Lutomirski <luto@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200521202117.870911120@linutronix.de>
-References: <20200521202117.870911120@linutronix.de>
+In-Reply-To: <20200521202117.763775313@linutronix.de>
+References: <20200521202117.763775313@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <159056711699.17951.2241474367551072856.tip-bot2@tip-bot2>
+Message-ID: <159056711769.17951.7240676234405001898.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,69 +51,159 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/entry branch of tip:
 
-Commit-ID:     4f41db23ef2593aec26e23e7f4bacc620e82f545
-Gitweb:        https://git.kernel.org/tip/4f41db23ef2593aec26e23e7f4bacc620e82f545
+Commit-ID:     0aa4dbb2808991f53396df8d2deb390d4f880abb
+Gitweb:        https://git.kernel.org/tip/0aa4dbb2808991f53396df8d2deb390d4f880abb
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Thu, 21 May 2020 22:05:24 +02:00
+AuthorDate:    Thu, 21 May 2020 22:05:23 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Tue, 26 May 2020 19:06:27 +02:00
 
-x86/entry/64: Move do_softirq_own_stack() to C
+x86/entry: Provide helpers for executing on the irqstack
 
-The first step to get rid of the ENTER/LEAVE_IRQ_STACK ASM macro maze.  Use
-the new C code helpers to move do_softirq_own_stack() out of ASM code.
+Device interrupt handlers and system vector handlers are executed on the
+interrupt stack. The stack switch happens in the low level assembly entry
+code. This conflicts with the efforts to consolidate the exit code in C to
+ensure correctness vs. RCU and tracing.
+
+As there is no way to move #DB away from IST due to the MOV SS issue, the
+requirements vs. #DB and NMI for switching to the interrupt stack do not
+exist anymore. The only requirement is that interrupts are disabled.
+
+That allows the moving of the stack switching to C code, which simplifies the
+entry/exit handling further, because it allows the switching of stacks after
+handling the entry and on exit before handling RCU, returning to usermode and
+kernel preemption in the same way as for regular exceptions.
+
+The initial attempt of having the stack switching in inline ASM caused too
+much headache vs. objtool and the unwinder. After analysing the use cases
+it was agreed on that having the stack switch in ASM for the price of an
+indirect call is acceptable, as the main users are indirect call heavy
+anyway and the few system vectors which are empty shells (scheduler IPI and
+KVM posted interrupt vectors) can run from the regular stack.
+
+Provide helper functions to check whether the interrupt stack is already
+active and whether stack switching is required.
+
+64-bit only for now, as 32-bit has a variant of that already. Once this is
+cleaned up, the two implementations might be consolidated as an additional
+cleanup on top.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Acked-by: Andy Lutomirski <luto@kernel.org>
-Link: https://lore.kernel.org/r/20200521202117.870911120@linutronix.de
+Link: https://lore.kernel.org/r/20200521202117.763775313@linutronix.de
 ---
- arch/x86/entry/entry_64.S | 13 -------------
- arch/x86/kernel/irq_64.c  |  6 ++++++
- 2 files changed, 6 insertions(+), 13 deletions(-)
+ arch/x86/entry/entry_64.S        | 39 +++++++++++++++++++++++-
+ arch/x86/include/asm/irq_stack.h | 53 +++++++++++++++++++++++++++++++-
+ 2 files changed, 92 insertions(+)
+ create mode 100644 arch/x86/include/asm/irq_stack.h
 
 diff --git a/arch/x86/entry/entry_64.S b/arch/x86/entry/entry_64.S
-index 1597370..6b518be 100644
+index d983a0d..1597370 100644
 --- a/arch/x86/entry/entry_64.S
 +++ b/arch/x86/entry/entry_64.S
-@@ -1145,19 +1145,6 @@ SYM_FUNC_START(asm_call_on_stack)
- 	ret
- SYM_FUNC_END(asm_call_on_stack)
+@@ -1106,6 +1106,45 @@ SYM_CODE_START_LOCAL_NOALIGN(.Lbad_gs)
+ SYM_CODE_END(.Lbad_gs)
+ 	.previous
  
--/* Call softirq on interrupt stack. Interrupts are off. */
--.pushsection .text, "ax"
--SYM_FUNC_START(do_softirq_own_stack)
--	pushq	%rbp
--	mov	%rsp, %rbp
--	ENTER_IRQ_STACK regs=0 old_rsp=%r11
--	call	__do_softirq
--	LEAVE_IRQ_STACK regs=0
--	leaveq
--	ret
--SYM_FUNC_END(do_softirq_own_stack)
--.popsection
--
- #ifdef CONFIG_XEN_PV
- /*
-  * A note on the "critical region" in our callback handler.
-diff --git a/arch/x86/kernel/irq_64.c b/arch/x86/kernel/irq_64.c
-index 12df3a4..d5f9df4 100644
---- a/arch/x86/kernel/irq_64.c
-+++ b/arch/x86/kernel/irq_64.c
-@@ -20,6 +20,7 @@
- #include <linux/sched/task_stack.h>
- 
- #include <asm/cpu_entry_area.h>
-+#include <asm/irq_stack.h>
- #include <asm/io_apic.h>
- #include <asm/apic.h>
- 
-@@ -70,3 +71,8 @@ int irq_init_percpu_irqstack(unsigned int cpu)
- 		return 0;
- 	return map_irq_stack(cpu);
- }
++/*
++ * rdi: New stack pointer points to the top word of the stack
++ * rsi: Function pointer
++ * rdx: Function argument (can be NULL if none)
++ */
++SYM_FUNC_START(asm_call_on_stack)
++	/*
++	 * Save the frame pointer unconditionally. This allows the ORC
++	 * unwinder to handle the stack switch.
++	 */
++	pushq		%rbp
++	mov		%rsp, %rbp
 +
-+void do_softirq_own_stack(void)
++	/*
++	 * The unwinder relies on the word at the top of the new stack
++	 * page linking back to the previous RSP.
++	 */
++	mov		%rsp, (%rdi)
++	mov		%rdi, %rsp
++	/* Move the argument to the right place */
++	mov		%rdx, %rdi
++
++1:
++	.pushsection .discard.instr_begin
++	.long 1b - .
++	.popsection
++
++	CALL_NOSPEC	rsi
++
++2:
++	.pushsection .discard.instr_end
++	.long 2b - .
++	.popsection
++
++	/* Restore the previous stack pointer from RBP. */
++	leaveq
++	ret
++SYM_FUNC_END(asm_call_on_stack)
++
+ /* Call softirq on interrupt stack. Interrupts are off. */
+ .pushsection .text, "ax"
+ SYM_FUNC_START(do_softirq_own_stack)
+diff --git a/arch/x86/include/asm/irq_stack.h b/arch/x86/include/asm/irq_stack.h
+new file mode 100644
+index 0000000..4ae66f0
+--- /dev/null
++++ b/arch/x86/include/asm/irq_stack.h
+@@ -0,0 +1,53 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _ASM_X86_IRQ_STACK_H
++#define _ASM_X86_IRQ_STACK_H
++
++#include <linux/ptrace.h>
++
++#include <asm/processor.h>
++
++#ifdef CONFIG_X86_64
++static __always_inline bool irqstack_active(void)
 +{
-+	run_on_irqstack_cond(__do_softirq, NULL, NULL);
++	return __this_cpu_read(irq_count) != -1;
 +}
++
++void asm_call_on_stack(void *sp, void *func, void *arg);
++
++static __always_inline void __run_on_irqstack(void *func, void *arg)
++{
++	void *tos = __this_cpu_read(hardirq_stack_ptr);
++
++	__this_cpu_add(irq_count, 1);
++	asm_call_on_stack(tos - 8, func, arg);
++	__this_cpu_sub(irq_count, 1);
++}
++
++#else /* CONFIG_X86_64 */
++static inline bool irqstack_active(void) { return false; }
++static inline void __run_on_irqstack(void *func, void *arg) { }
++#endif /* !CONFIG_X86_64 */
++
++static __always_inline bool irq_needs_irq_stack(struct pt_regs *regs)
++{
++	if (IS_ENABLED(CONFIG_X86_32))
++		return false;
++	if (!regs)
++		return !irqstack_active();
++	return !user_mode(regs) && !irqstack_active();
++}
++
++static __always_inline void run_on_irqstack_cond(void *func, void *arg,
++						 struct pt_regs *regs)
++{
++	void (*__func)(void *arg) = func;
++
++	lockdep_assert_irqs_disabled();
++
++	if (irq_needs_irq_stack(regs))
++		__run_on_irqstack(__func, arg);
++	else
++		__func(arg);
++}
++
++#endif
