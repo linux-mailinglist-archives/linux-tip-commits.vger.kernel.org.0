@@ -2,40 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 806E01E3B66
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 27 May 2020 10:13:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A25EF1E3B59
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 27 May 2020 10:13:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729567AbgE0IMG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 27 May 2020 04:12:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42266 "EHLO
+        id S2387782AbgE0IMd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 27 May 2020 04:12:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42294 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729387AbgE0IMG (ORCPT
+        with ESMTP id S1729592AbgE0IML (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 27 May 2020 04:12:06 -0400
+        Wed, 27 May 2020 04:12:11 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED66AC061A0F;
-        Wed, 27 May 2020 01:12:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51BFBC061A0F;
+        Wed, 27 May 2020 01:12:11 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jdrAS-0002gJ-Cs; Wed, 27 May 2020 10:12:04 +0200
+        id 1jdrAX-0002hY-3G; Wed, 27 May 2020 10:12:09 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 87C481C03A9;
-        Wed, 27 May 2020 10:12:00 +0200 (CEST)
-Date:   Wed, 27 May 2020 08:12:00 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E7A2E1C0837;
+        Wed, 27 May 2020 10:12:01 +0200 (CEST)
+Date:   Wed, 27 May 2020 08:12:01 -0000
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/entry] x86/entry: Provide idtentry_enter/exit_user()
+Subject: [tip: x86/entry] rcu: Provide rcu_irq_exit_check_preempt()
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@kernel.org>,
-        Andy Lutomirski <luto@kernel.org>, x86 <x86@kernel.org>,
+        "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200521202117.289548561@linutronix.de>
-References: <20200521202117.289548561@linutronix.de>
+In-Reply-To: <20200521202117.089709607@linutronix.de>
+References: <20200521202117.089709607@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <159056712040.17951.6873299758021366290.tip-bot2@tip-bot2>
+Message-ID: <159056712180.17951.11617155731989917506.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,78 +51,84 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/entry branch of tip:
 
-Commit-ID:     d4b1f51731fd10a836e46f54c96a8913d945735b
-Gitweb:        https://git.kernel.org/tip/d4b1f51731fd10a836e46f54c96a8913d945735b
+Commit-ID:     07325d4a90d2d84de45cc07b134fd0f023dbb971
+Gitweb:        https://git.kernel.org/tip/07325d4a90d2d84de45cc07b134fd0f023dbb971
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Thu, 21 May 2020 22:05:18 +02:00
+AuthorDate:    Thu, 21 May 2020 22:05:16 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 26 May 2020 19:06:27 +02:00
+CommitterDate: Tue, 26 May 2020 19:05:11 +02:00
 
-x86/entry: Provide idtentry_enter/exit_user()
+rcu: Provide rcu_irq_exit_check_preempt()
 
-As there are exceptions which already handle entry from user mode and from
-kernel mode separately, providing explicit user entry/exit handling callbacks
-makes sense and makes the code easier to understand.
+Provide a debug check which can be invoked from exception return to kernel
+mode before an attempt is made to schedule. Warn if RCU is not ready for
+this.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Andy Lutomirski <luto@kernel.org>
-Link: https://lore.kernel.org/r/20200521202117.289548561@linutronix.de
+Cc: Paul E. McKenney <paulmck@kernel.org>
+Link: https://lore.kernel.org/r/20200521202117.089709607@linutronix.de
 ---
- arch/x86/entry/common.c         | 31 +++++++++++++++++++++++++++++++
- arch/x86/include/asm/idtentry.h |  3 +++
- 2 files changed, 34 insertions(+)
+ include/linux/rcutiny.h |  1 +
+ include/linux/rcutree.h |  6 ++++++
+ kernel/rcu/tree.c       | 18 ++++++++++++++++++
+ 3 files changed, 25 insertions(+)
 
-diff --git a/arch/x86/entry/common.c b/arch/x86/entry/common.c
-index a7f5846..b7fcb13 100644
---- a/arch/x86/entry/common.c
-+++ b/arch/x86/entry/common.c
-@@ -658,3 +658,34 @@ void noinstr idtentry_exit_cond_rcu(struct pt_regs *regs, bool rcu_exit)
- 			rcu_irq_exit();
- 	}
+diff --git a/include/linux/rcutiny.h b/include/linux/rcutiny.h
+index c869fb2..8512cae 100644
+--- a/include/linux/rcutiny.h
++++ b/include/linux/rcutiny.h
+@@ -72,6 +72,7 @@ static inline void rcu_irq_exit_irqson(void) { }
+ static inline void rcu_irq_enter_irqson(void) { }
+ static inline void rcu_irq_exit(void) { }
+ static inline void rcu_irq_exit_preempt(void) { }
++static inline void rcu_irq_exit_check_preempt(void) { }
+ static inline void exit_rcu(void) { }
+ static inline bool rcu_preempt_need_deferred_qs(struct task_struct *t)
+ {
+diff --git a/include/linux/rcutree.h b/include/linux/rcutree.h
+index 9366fa4..d5cc9d6 100644
+--- a/include/linux/rcutree.h
++++ b/include/linux/rcutree.h
+@@ -51,6 +51,12 @@ void rcu_irq_exit_preempt(void);
+ void rcu_irq_enter_irqson(void);
+ void rcu_irq_exit_irqson(void);
+ 
++#ifdef CONFIG_PROVE_RCU
++void rcu_irq_exit_check_preempt(void);
++#else
++static inline void rcu_irq_exit_check_preempt(void) { }
++#endif
++
+ void exit_rcu(void);
+ 
+ void rcu_scheduler_starting(void);
+diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
+index b7f8c49..d8e9dbb 100644
+--- a/kernel/rcu/tree.c
++++ b/kernel/rcu/tree.c
+@@ -765,6 +765,24 @@ void rcu_irq_exit_preempt(void)
+ 			 "RCU in extended quiescent state!");
  }
-+
+ 
++#ifdef CONFIG_PROVE_RCU
 +/**
-+ * idtentry_enter_user - Handle state tracking on idtentry from user mode
-+ * @regs:	Pointer to pt_regs of interrupted context
-+ *
-+ * Invokes enter_from_user_mode() to establish the proper context for
-+ * NOHZ_FULL. Otherwise scheduling on exit would not be possible.
++ * rcu_irq_exit_check_preempt - Validate that scheduling is possible
 + */
-+void noinstr idtentry_enter_user(struct pt_regs *regs)
-+{
-+	enter_from_user_mode();
-+}
-+
-+/**
-+ * idtentry_exit_user - Handle return from exception to user mode
-+ * @regs:	Pointer to pt_regs (exception entry regs)
-+ *
-+ * Runs the necessary preemption and work checks and returns to the caller
-+ * with interrupts disabled and no further work pending.
-+ *
-+ * This is the last action before returning to the low level ASM code which
-+ * just needs to return to the appropriate context.
-+ *
-+ * Counterpart to idtentry_enter_user().
-+ */
-+void noinstr idtentry_exit_user(struct pt_regs *regs)
++void rcu_irq_exit_check_preempt(void)
 +{
 +	lockdep_assert_irqs_disabled();
 +
-+	prepare_exit_to_usermode(regs);
++	RCU_LOCKDEP_WARN(__this_cpu_read(rcu_data.dynticks_nesting) <= 0,
++			 "RCU dynticks_nesting counter underflow/zero!");
++	RCU_LOCKDEP_WARN(__this_cpu_read(rcu_data.dynticks_nmi_nesting) !=
++			 DYNTICK_IRQ_NONIDLE,
++			 "Bad RCU  dynticks_nmi_nesting counter\n");
++	RCU_LOCKDEP_WARN(rcu_dynticks_curr_cpu_in_eqs(),
++			 "RCU in extended quiescent state!");
 +}
-diff --git a/arch/x86/include/asm/idtentry.h b/arch/x86/include/asm/idtentry.h
-index a116b80..b3aca72 100644
---- a/arch/x86/include/asm/idtentry.h
-+++ b/arch/x86/include/asm/idtentry.h
-@@ -7,6 +7,9 @@
- 
- #ifndef __ASSEMBLY__
- 
-+void idtentry_enter_user(struct pt_regs *regs);
-+void idtentry_exit_user(struct pt_regs *regs);
++#endif /* #ifdef CONFIG_PROVE_RCU */
 +
- bool idtentry_enter_cond_rcu(struct pt_regs *regs, bool cond_rcu);
- void idtentry_exit_cond_rcu(struct pt_regs *regs, bool rcu_exit);
- 
+ /*
+  * Wrapper for rcu_irq_exit() where interrupts are enabled.
+  *
