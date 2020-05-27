@@ -2,40 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E1CD91E3B82
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 27 May 2020 10:14:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 362191E3B7C
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 27 May 2020 10:14:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387924AbgE0INe (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 27 May 2020 04:13:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42214 "EHLO
+        id S1729533AbgE0IMC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 27 May 2020 04:12:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42238 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729496AbgE0IL5 (ORCPT
+        with ESMTP id S1729526AbgE0IMB (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 27 May 2020 04:11:57 -0400
+        Wed, 27 May 2020 04:12:01 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03842C03E97A;
-        Wed, 27 May 2020 01:11:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF4D6C03E97C;
+        Wed, 27 May 2020 01:12:00 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jdrAJ-0002Zu-DI; Wed, 27 May 2020 10:11:55 +0200
+        id 1jdrAN-0002ad-1o; Wed, 27 May 2020 10:11:59 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 456FD1C0481;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B17CA1C0805;
         Wed, 27 May 2020 10:11:53 +0200 (CEST)
 Date:   Wed, 27 May 2020 08:11:53 -0000
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/entry] x86/entry/32: Remove common_exception()
+Subject: [tip: x86/entry] x86/entry/64: Remove error_exit()
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@kernel.org>,
         Andy Lutomirski <luto@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200521202118.611906966@linutronix.de>
-References: <20200521202118.611906966@linutronix.de>
+In-Reply-To: <20200521202118.516757524@linutronix.de>
+References: <20200521202118.516757524@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <159056711317.17951.2258805491360872926.tip-bot2@tip-bot2>
+Message-ID: <159056711361.17951.3757544314054219679.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,54 +51,42 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/entry branch of tip:
 
-Commit-ID:     b890361ba0f4a8eb565f2d8c6e045a70abc365eb
-Gitweb:        https://git.kernel.org/tip/b890361ba0f4a8eb565f2d8c6e045a70abc365eb
+Commit-ID:     88d41f530736bdbed258df357e97956e8f97856d
+Gitweb:        https://git.kernel.org/tip/88d41f530736bdbed258df357e97956e8f97856d
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Thu, 21 May 2020 22:05:32 +02:00
+AuthorDate:    Thu, 21 May 2020 22:05:31 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Tue, 26 May 2020 19:06:28 +02:00
 
-x86/entry/32: Remove common_exception()
+x86/entry/64: Remove error_exit()
 
 No more users.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Acked-by: Andy Lutomirski <luto@kernel.org>
-Link: https://lore.kernel.org/r/20200521202118.611906966@linutronix.de
+Link: https://lore.kernel.org/r/20200521202118.516757524@linutronix.de
 ---
- arch/x86/entry/entry_32.S | 21 ---------------------
- 1 file changed, 21 deletions(-)
+ arch/x86/entry/entry_64.S |  9 ---------
+ 1 file changed, 9 deletions(-)
 
-diff --git a/arch/x86/entry/entry_32.S b/arch/x86/entry/entry_32.S
-index bd25706..1bf2dcb 100644
---- a/arch/x86/entry/entry_32.S
-+++ b/arch/x86/entry/entry_32.S
-@@ -1394,27 +1394,6 @@ BUILD_INTERRUPT3(hv_stimer0_callback_vector, HYPERV_STIMER0_VECTOR,
+diff --git a/arch/x86/entry/entry_64.S b/arch/x86/entry/entry_64.S
+index a526fb5..7699359 100644
+--- a/arch/x86/entry/entry_64.S
++++ b/arch/x86/entry/entry_64.S
+@@ -1356,15 +1356,6 @@ SYM_CODE_START_LOCAL(error_entry)
+ 	jmp	.Lerror_entry_from_usermode_after_swapgs
+ SYM_CODE_END(error_entry)
  
- #endif /* CONFIG_HYPERV */
- 
--SYM_CODE_START_LOCAL_NOALIGN(common_exception)
--	/* the function address is in %gs's slot on the stack */
--	SAVE_ALL switch_stacks=1 skip_gs=1 unwind_espfix=1
--	ENCODE_FRAME_POINTER
--
--	/* fixup %gs */
--	GS_TO_REG %ecx
--	movl	PT_GS(%esp), %edi		# get the function address
--	REG_TO_PTGS %ecx
--	SET_KERNEL_GS %ecx
--
--	/* fixup orig %eax */
--	movl	PT_ORIG_EAX(%esp), %edx		# get the error code
--	movl	$-1, PT_ORIG_EAX(%esp)		# no syscall to restart
--
+-SYM_CODE_START_LOCAL(error_exit)
+-	UNWIND_HINT_REGS
+-	DISABLE_INTERRUPTS(CLBR_ANY)
 -	TRACE_IRQS_OFF
--	movl	%esp, %eax			# pt_regs pointer
--	CALL_NOSPEC edi
--	jmp	ret_from_exception
--SYM_CODE_END(common_exception)
+-	testb	$3, CS(%rsp)
+-	jz	retint_kernel
+-	jmp	.Lretint_user
+-SYM_CODE_END(error_exit)
 -
- SYM_CODE_START_LOCAL_NOALIGN(handle_exception)
- 	/* the function address is in %gs's slot on the stack */
- 	SAVE_ALL switch_stacks=1 skip_gs=1 unwind_espfix=1
+ SYM_CODE_START_LOCAL(error_return)
+ 	UNWIND_HINT_REGS
+ 	DEBUG_ENTRY_ASSERT_IRQS_OFF
