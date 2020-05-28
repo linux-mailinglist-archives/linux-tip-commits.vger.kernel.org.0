@@ -2,39 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 14DBD1E6AEF
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 28 May 2020 21:28:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8134C1E6B41
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 28 May 2020 21:39:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406363AbgE1T2Y (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 28 May 2020 15:28:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60506 "EHLO
+        id S2406693AbgE1Ti7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 28 May 2020 15:38:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33962 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2406311AbgE1T2X (ORCPT
+        with ESMTP id S2406540AbgE1Ti5 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 28 May 2020 15:28:23 -0400
+        Thu, 28 May 2020 15:38:57 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E58BFC08C5C6;
-        Thu, 28 May 2020 12:28:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7409CC08C5C6;
+        Thu, 28 May 2020 12:38:57 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jeOCL-0007H2-5Y; Thu, 28 May 2020 21:28:13 +0200
+        id 1jeOMf-0007VO-Kh; Thu, 28 May 2020 21:38:53 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id BC42F1C032F;
-        Thu, 28 May 2020 21:28:12 +0200 (CEST)
-Date:   Thu, 28 May 2020 19:28:12 -0000
-From:   "tip-bot2 for Mike Rapoport" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 270F11C0051;
+        Thu, 28 May 2020 21:38:53 +0200 (CEST)
+Date:   Thu, 28 May 2020 19:38:52 -0000
+From:   "tip-bot2 for Jay Lang" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] x86/mm: Drop deprecated DISCONTIGMEM support for 32-bit
-Cc:     Mike Rapoport <rppt@linux.ibm.com>, Borislav Petkov <bp@suse.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200223094322.15206-1-rppt@kernel.org>
-References: <20200223094322.15206-1-rppt@kernel.org>
+Subject: [tip: x86/urgent] x86/ioperm: Prevent a memory leak when fork fails
+Cc:     Jay Lang <jaytlang@mit.edu>, Thomas Gleixner <tglx@linutronix.de>,
+        stable#@vger.kernel.org, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200524162742.253727-1-jaytlang@mit.edu>
+References: <20200524162742.253727-1-jaytlang@mit.edu>
 MIME-Version: 1.0
-Message-ID: <159069409265.17951.5705837690464074589.tip-bot2@tip-bot2>
+Message-ID: <159069473297.17951.5698539330024737587.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,160 +48,162 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cleanups branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     431732651cc16caebcd334b7b7476bfe0c4a2903
-Gitweb:        https://git.kernel.org/tip/431732651cc16caebcd334b7b7476bfe0c4a2903
-Author:        Mike Rapoport <rppt@linux.ibm.com>
-AuthorDate:    Sun, 23 Feb 2020 11:43:22 +02:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Thu, 28 May 2020 18:34:30 +02:00
+Commit-ID:     4bfe6cce133cad82cea04490c308795275857782
+Gitweb:        https://git.kernel.org/tip/4bfe6cce133cad82cea04490c308795275857782
+Author:        Jay Lang <jaytlang@mit.edu>
+AuthorDate:    Sun, 24 May 2020 12:27:39 -04:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Thu, 28 May 2020 21:36:20 +02:00
 
-x86/mm: Drop deprecated DISCONTIGMEM support for 32-bit
+x86/ioperm: Prevent a memory leak when fork fails
 
-The DISCONTIGMEM support was marked as deprecated in v5.2 and since there
-were no complaints about it for almost 5 releases it can be completely
-removed.
+In the copy_process() routine called by _do_fork(), failure to allocate
+a PID (or further along in the function) will trigger an invocation to
+exit_thread(). This is done to clean up from an earlier call to
+copy_thread_tls(). Naturally, the child task is passed into exit_thread(),
+however during the process, io_bitmap_exit() nullifies the parent's
+io_bitmap rather than the child's.
 
-Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lkml.kernel.org/r/20200223094322.15206-1-rppt@kernel.org
+As copy_thread_tls() has been called ahead of the failure, the reference
+count on the calling thread's io_bitmap is incremented as we would expect.
+However, io_bitmap_exit() doesn't accept any arguments, and thus assumes
+it should trash the current thread's io_bitmap reference rather than the
+child's. This is pretty sneaky in practice, because in all instances but
+this one, exit_thread() is called with respect to the current task and
+everything works out.
+
+A determined attacker can issue an appropriate ioctl (i.e. KDENABIO) to
+get a bitmap allocated, and force a clone3() syscall to fail by passing
+in a zeroed clone_args structure. The kernel handles the erroneous struct
+and the buggy code path is followed, and even though the parent's reference
+to the io_bitmap is trashed, the child still holds a reference and thus
+the structure will never be freed.
+
+Fix this by tweaking io_bitmap_exit() and its subroutines to accept a
+task_struct argument which to operate on.
+
+Fixes: ea5f1cd7ab49 ("x86/ioperm: Remove bitmap if all permissions dropped")
+Signed-off-by: Jay Lang <jaytlang@mit.edu>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable#@vger.kernel.org
+Link: https://lkml.kernel.org/r/20200524162742.253727-1-jaytlang@mit.edu
 ---
- arch/x86/Kconfig                  |  9 +-------
- arch/x86/include/asm/mmzone_32.h  | 39 +------------------------------
- arch/x86/include/asm/pgtable_32.h |  3 +--
- arch/x86/mm/numa_32.c             | 34 +--------------------------
- 4 files changed, 1 insertion(+), 84 deletions(-)
+ arch/x86/include/asm/io_bitmap.h |  4 ++--
+ arch/x86/kernel/ioport.c         | 22 +++++++++++-----------
+ arch/x86/kernel/process.c        |  4 ++--
+ 3 files changed, 15 insertions(+), 15 deletions(-)
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 1d6104e..f0aa194 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -1610,19 +1610,10 @@ config NODES_SHIFT
- 	  Specify the maximum number of NUMA Nodes available on the target
- 	  system.  Increases memory reserved to accommodate various tables.
+diff --git a/arch/x86/include/asm/io_bitmap.h b/arch/x86/include/asm/io_bitmap.h
+index 07344d8..ac1a99f 100644
+--- a/arch/x86/include/asm/io_bitmap.h
++++ b/arch/x86/include/asm/io_bitmap.h
+@@ -17,7 +17,7 @@ struct task_struct;
  
--config ARCH_HAVE_MEMORY_PRESENT
--	def_bool y
--	depends on X86_32 && DISCONTIGMEM
--
- config ARCH_FLATMEM_ENABLE
- 	def_bool y
- 	depends on X86_32 && !NUMA
+ #ifdef CONFIG_X86_IOPL_IOPERM
+ void io_bitmap_share(struct task_struct *tsk);
+-void io_bitmap_exit(void);
++void io_bitmap_exit(struct task_struct *tsk);
  
--config ARCH_DISCONTIGMEM_ENABLE
--	def_bool n
--	depends on NUMA && X86_32
--	depends on BROKEN
--
- config ARCH_SPARSEMEM_ENABLE
- 	def_bool y
- 	depends on X86_64 || NUMA || X86_32 || X86_32_NON_STANDARD
-diff --git a/arch/x86/include/asm/mmzone_32.h b/arch/x86/include/asm/mmzone_32.h
-index 73d8dd1..2d4515e 100644
---- a/arch/x86/include/asm/mmzone_32.h
-+++ b/arch/x86/include/asm/mmzone_32.h
-@@ -14,43 +14,4 @@ extern struct pglist_data *node_data[];
- #define NODE_DATA(nid)	(node_data[nid])
- #endif /* CONFIG_NUMA */
+ void native_tss_update_io_bitmap(void);
  
--#ifdef CONFIG_DISCONTIGMEM
--
--/*
-- * generic node memory support, the following assumptions apply:
-- *
-- * 1) memory comes in 64Mb contiguous chunks which are either present or not
-- * 2) we will not have more than 64Gb in total
-- *
-- * for now assume that 64Gb is max amount of RAM for whole system
-- *    64Gb / 4096bytes/page = 16777216 pages
-- */
--#define MAX_NR_PAGES 16777216
--#define MAX_SECTIONS 1024
--#define PAGES_PER_SECTION (MAX_NR_PAGES/MAX_SECTIONS)
--
--extern s8 physnode_map[];
--
--static inline int pfn_to_nid(unsigned long pfn)
--{
--#ifdef CONFIG_NUMA
--	return((int) physnode_map[(pfn) / PAGES_PER_SECTION]);
--#else
--	return 0;
--#endif
--}
--
--static inline int pfn_valid(int pfn)
--{
--	int nid = pfn_to_nid(pfn);
--
--	if (nid >= 0)
--		return (pfn < node_end_pfn(nid));
--	return 0;
--}
--
--#define early_pfn_valid(pfn)	pfn_valid((pfn))
--
--#endif /* CONFIG_DISCONTIGMEM */
--
- #endif /* _ASM_X86_MMZONE_32_H */
-diff --git a/arch/x86/include/asm/pgtable_32.h b/arch/x86/include/asm/pgtable_32.h
-index 0dca7f7..be7b196 100644
---- a/arch/x86/include/asm/pgtable_32.h
-+++ b/arch/x86/include/asm/pgtable_32.h
-@@ -66,8 +66,7 @@ do {						\
- #endif /* !__ASSEMBLY__ */
+@@ -29,7 +29,7 @@ void native_tss_update_io_bitmap(void);
+ 
+ #else
+ static inline void io_bitmap_share(struct task_struct *tsk) { }
+-static inline void io_bitmap_exit(void) { }
++static inline void io_bitmap_exit(struct task_struct *tsk) { }
+ static inline void tss_update_io_bitmap(void) { }
+ #endif
+ 
+diff --git a/arch/x86/kernel/ioport.c b/arch/x86/kernel/ioport.c
+index a53e7b4..e2fab3c 100644
+--- a/arch/x86/kernel/ioport.c
++++ b/arch/x86/kernel/ioport.c
+@@ -33,15 +33,15 @@ void io_bitmap_share(struct task_struct *tsk)
+ 	set_tsk_thread_flag(tsk, TIF_IO_BITMAP);
+ }
+ 
+-static void task_update_io_bitmap(void)
++static void task_update_io_bitmap(struct task_struct *tsk)
+ {
+-	struct thread_struct *t = &current->thread;
++	struct thread_struct *t = &tsk->thread;
+ 
+ 	if (t->iopl_emul == 3 || t->io_bitmap) {
+ 		/* TSS update is handled on exit to user space */
+-		set_thread_flag(TIF_IO_BITMAP);
++		set_tsk_thread_flag(tsk, TIF_IO_BITMAP);
+ 	} else {
+-		clear_thread_flag(TIF_IO_BITMAP);
++		clear_tsk_thread_flag(tsk, TIF_IO_BITMAP);
+ 		/* Invalidate TSS */
+ 		preempt_disable();
+ 		tss_update_io_bitmap();
+@@ -49,12 +49,12 @@ static void task_update_io_bitmap(void)
+ 	}
+ }
+ 
+-void io_bitmap_exit(void)
++void io_bitmap_exit(struct task_struct *tsk)
+ {
+-	struct io_bitmap *iobm = current->thread.io_bitmap;
++	struct io_bitmap *iobm = tsk->thread.io_bitmap;
+ 
+-	current->thread.io_bitmap = NULL;
+-	task_update_io_bitmap();
++	tsk->thread.io_bitmap = NULL;
++	task_update_io_bitmap(tsk);
+ 	if (iobm && refcount_dec_and_test(&iobm->refcnt))
+ 		kfree(iobm);
+ }
+@@ -102,7 +102,7 @@ long ksys_ioperm(unsigned long from, unsigned long num, int turn_on)
+ 		if (!iobm)
+ 			return -ENOMEM;
+ 		refcount_set(&iobm->refcnt, 1);
+-		io_bitmap_exit();
++		io_bitmap_exit(current);
+ 	}
+ 
+ 	/*
+@@ -134,7 +134,7 @@ long ksys_ioperm(unsigned long from, unsigned long num, int turn_on)
+ 	}
+ 	/* All permissions dropped? */
+ 	if (max_long == UINT_MAX) {
+-		io_bitmap_exit();
++		io_bitmap_exit(current);
+ 		return 0;
+ 	}
+ 
+@@ -192,7 +192,7 @@ SYSCALL_DEFINE1(iopl, unsigned int, level)
+ 	}
+ 
+ 	t->iopl_emul = level;
+-	task_update_io_bitmap();
++	task_update_io_bitmap(current);
+ 
+ 	return 0;
+ }
+diff --git a/arch/x86/kernel/process.c b/arch/x86/kernel/process.c
+index 9da70b2..35638f1 100644
+--- a/arch/x86/kernel/process.c
++++ b/arch/x86/kernel/process.c
+@@ -96,7 +96,7 @@ int arch_dup_task_struct(struct task_struct *dst, struct task_struct *src)
+ }
  
  /*
-- * kern_addr_valid() is (1) for FLATMEM and (0) for
-- * SPARSEMEM and DISCONTIGMEM
-+ * kern_addr_valid() is (1) for FLATMEM and (0) for SPARSEMEM
+- * Free current thread data structures etc..
++ * Free thread data structures etc..
   */
- #ifdef CONFIG_FLATMEM
- #define kern_addr_valid(addr)	(1)
-diff --git a/arch/x86/mm/numa_32.c b/arch/x86/mm/numa_32.c
-index f2bd3d6..1045443 100644
---- a/arch/x86/mm/numa_32.c
-+++ b/arch/x86/mm/numa_32.c
-@@ -27,40 +27,6 @@
+ void exit_thread(struct task_struct *tsk)
+ {
+@@ -104,7 +104,7 @@ void exit_thread(struct task_struct *tsk)
+ 	struct fpu *fpu = &t->fpu;
  
- #include "numa_internal.h"
+ 	if (test_thread_flag(TIF_IO_BITMAP))
+-		io_bitmap_exit();
++		io_bitmap_exit(tsk);
  
--#ifdef CONFIG_DISCONTIGMEM
--/*
-- * 4) physnode_map     - the mapping between a pfn and owning node
-- * physnode_map keeps track of the physical memory layout of a generic
-- * numa node on a 64Mb break (each element of the array will
-- * represent 64Mb of memory and will be marked by the node id.  so,
-- * if the first gig is on node 0, and the second gig is on node 1
-- * physnode_map will contain:
-- *
-- *     physnode_map[0-15] = 0;
-- *     physnode_map[16-31] = 1;
-- *     physnode_map[32- ] = -1;
-- */
--s8 physnode_map[MAX_SECTIONS] __read_mostly = { [0 ... (MAX_SECTIONS - 1)] = -1};
--EXPORT_SYMBOL(physnode_map);
--
--void memory_present(int nid, unsigned long start, unsigned long end)
--{
--	unsigned long pfn;
--
--	printk(KERN_INFO "Node: %d, start_pfn: %lx, end_pfn: %lx\n",
--			nid, start, end);
--	printk(KERN_DEBUG "  Setting physnode_map array to node %d for pfns:\n", nid);
--	printk(KERN_DEBUG "  ");
--	start = round_down(start, PAGES_PER_SECTION);
--	end = round_up(end, PAGES_PER_SECTION);
--	for (pfn = start; pfn < end; pfn += PAGES_PER_SECTION) {
--		physnode_map[pfn / PAGES_PER_SECTION] = nid;
--		printk(KERN_CONT "%lx ", pfn);
--	}
--	printk(KERN_CONT "\n");
--}
--#endif
--
- extern unsigned long highend_pfn, highstart_pfn;
+ 	free_vm86(t);
  
- void __init initmem_init(void)
