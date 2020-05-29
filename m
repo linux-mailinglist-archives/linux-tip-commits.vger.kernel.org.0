@@ -2,39 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8134C1E6B41
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 28 May 2020 21:39:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EEDE1E79A2
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 29 May 2020 11:43:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406693AbgE1Ti7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 28 May 2020 15:38:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33962 "EHLO
+        id S1725808AbgE2JnL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 29 May 2020 05:43:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2406540AbgE1Ti5 (ORCPT
+        with ESMTP id S1725710AbgE2JnK (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 28 May 2020 15:38:57 -0400
+        Fri, 29 May 2020 05:43:10 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7409CC08C5C6;
-        Thu, 28 May 2020 12:38:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62613C03E969;
+        Fri, 29 May 2020 02:43:10 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jeOMf-0007VO-Kh; Thu, 28 May 2020 21:38:53 +0200
+        id 1jebXe-0000OK-6G; Fri, 29 May 2020 11:43:06 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 270F11C0051;
-        Thu, 28 May 2020 21:38:53 +0200 (CEST)
-Date:   Thu, 28 May 2020 19:38:52 -0000
-From:   "tip-bot2 for Jay Lang" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B5FBA1C0084;
+        Fri, 29 May 2020 11:43:05 +0200 (CEST)
+Date:   Fri, 29 May 2020 09:43:05 -0000
+From:   "tip-bot2 for Al Viro" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/ioperm: Prevent a memory leak when fork fails
-Cc:     Jay Lang <jaytlang@mit.edu>, Thomas Gleixner <tglx@linutronix.de>,
-        stable#@vger.kernel.org, x86 <x86@kernel.org>,
+Subject: [tip: x86/urgent] copy_xstate_to_kernel(): don't leave parts of
+ destination uninitialized
+Cc:     stable@kernel.org, Alexander Potapenko <glider@google.com>,
+        Borislav Petkov <bp@suse.de>,
+        Al Viro <viro@zeniv.linux.org.uk>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200524162742.253727-1-jaytlang@mit.edu>
-References: <20200524162742.253727-1-jaytlang@mit.edu>
 MIME-Version: 1.0
-Message-ID: <159069473297.17951.5698539330024737587.tip-bot2@tip-bot2>
+Message-ID: <159074538552.17951.8439883662849608914.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,160 +50,149 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     4bfe6cce133cad82cea04490c308795275857782
-Gitweb:        https://git.kernel.org/tip/4bfe6cce133cad82cea04490c308795275857782
-Author:        Jay Lang <jaytlang@mit.edu>
-AuthorDate:    Sun, 24 May 2020 12:27:39 -04:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 28 May 2020 21:36:20 +02:00
+Commit-ID:     9e4636545933131de15e1ecd06733538ae939b2f
+Gitweb:        https://git.kernel.org/tip/9e4636545933131de15e1ecd06733538ae939b2f
+Author:        Al Viro <viro@zeniv.linux.org.uk>
+AuthorDate:    Tue, 26 May 2020 18:39:49 -04:00
+Committer:     Al Viro <viro@zeniv.linux.org.uk>
+CommitterDate: Wed, 27 May 2020 17:06:31 -04:00
 
-x86/ioperm: Prevent a memory leak when fork fails
+copy_xstate_to_kernel(): don't leave parts of destination uninitialized
 
-In the copy_process() routine called by _do_fork(), failure to allocate
-a PID (or further along in the function) will trigger an invocation to
-exit_thread(). This is done to clean up from an earlier call to
-copy_thread_tls(). Naturally, the child task is passed into exit_thread(),
-however during the process, io_bitmap_exit() nullifies the parent's
-io_bitmap rather than the child's.
+copy the corresponding pieces of init_fpstate into the gaps instead.
 
-As copy_thread_tls() has been called ahead of the failure, the reference
-count on the calling thread's io_bitmap is incremented as we would expect.
-However, io_bitmap_exit() doesn't accept any arguments, and thus assumes
-it should trash the current thread's io_bitmap reference rather than the
-child's. This is pretty sneaky in practice, because in all instances but
-this one, exit_thread() is called with respect to the current task and
-everything works out.
-
-A determined attacker can issue an appropriate ioctl (i.e. KDENABIO) to
-get a bitmap allocated, and force a clone3() syscall to fail by passing
-in a zeroed clone_args structure. The kernel handles the erroneous struct
-and the buggy code path is followed, and even though the parent's reference
-to the io_bitmap is trashed, the child still holds a reference and thus
-the structure will never be freed.
-
-Fix this by tweaking io_bitmap_exit() and its subroutines to accept a
-task_struct argument which to operate on.
-
-Fixes: ea5f1cd7ab49 ("x86/ioperm: Remove bitmap if all permissions dropped")
-Signed-off-by: Jay Lang <jaytlang@mit.edu>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable#@vger.kernel.org
-Link: https://lkml.kernel.org/r/20200524162742.253727-1-jaytlang@mit.edu
+Cc: stable@kernel.org
+Tested-by: Alexander Potapenko <glider@google.com>
+Acked-by: Borislav Petkov <bp@suse.de>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 ---
- arch/x86/include/asm/io_bitmap.h |  4 ++--
- arch/x86/kernel/ioport.c         | 22 +++++++++++-----------
- arch/x86/kernel/process.c        |  4 ++--
- 3 files changed, 15 insertions(+), 15 deletions(-)
+ arch/x86/kernel/fpu/xstate.c | 86 +++++++++++++++++++----------------
+ 1 file changed, 48 insertions(+), 38 deletions(-)
 
-diff --git a/arch/x86/include/asm/io_bitmap.h b/arch/x86/include/asm/io_bitmap.h
-index 07344d8..ac1a99f 100644
---- a/arch/x86/include/asm/io_bitmap.h
-+++ b/arch/x86/include/asm/io_bitmap.h
-@@ -17,7 +17,7 @@ struct task_struct;
- 
- #ifdef CONFIG_X86_IOPL_IOPERM
- void io_bitmap_share(struct task_struct *tsk);
--void io_bitmap_exit(void);
-+void io_bitmap_exit(struct task_struct *tsk);
- 
- void native_tss_update_io_bitmap(void);
- 
-@@ -29,7 +29,7 @@ void native_tss_update_io_bitmap(void);
- 
- #else
- static inline void io_bitmap_share(struct task_struct *tsk) { }
--static inline void io_bitmap_exit(void) { }
-+static inline void io_bitmap_exit(struct task_struct *tsk) { }
- static inline void tss_update_io_bitmap(void) { }
- #endif
- 
-diff --git a/arch/x86/kernel/ioport.c b/arch/x86/kernel/ioport.c
-index a53e7b4..e2fab3c 100644
---- a/arch/x86/kernel/ioport.c
-+++ b/arch/x86/kernel/ioport.c
-@@ -33,15 +33,15 @@ void io_bitmap_share(struct task_struct *tsk)
- 	set_tsk_thread_flag(tsk, TIF_IO_BITMAP);
+diff --git a/arch/x86/kernel/fpu/xstate.c b/arch/x86/kernel/fpu/xstate.c
+index 32b153d..6a54e83 100644
+--- a/arch/x86/kernel/fpu/xstate.c
++++ b/arch/x86/kernel/fpu/xstate.c
+@@ -957,18 +957,31 @@ static inline bool xfeatures_mxcsr_quirk(u64 xfeatures)
+ 	return true;
  }
  
--static void task_update_io_bitmap(void)
-+static void task_update_io_bitmap(struct task_struct *tsk)
+-/*
+- * This is similar to user_regset_copyout(), but will not add offset to
+- * the source data pointer or increment pos, count, kbuf, and ubuf.
+- */
+-static inline void
+-__copy_xstate_to_kernel(void *kbuf, const void *data,
+-			unsigned int offset, unsigned int size, unsigned int size_total)
++static void fill_gap(unsigned to, void **kbuf, unsigned *pos, unsigned *count)
  {
--	struct thread_struct *t = &current->thread;
-+	struct thread_struct *t = &tsk->thread;
+-	if (offset < size_total) {
+-		unsigned int copy = min(size, size_total - offset);
++	if (*pos < to) {
++		unsigned size = to - *pos;
++
++		if (size > *count)
++			size = *count;
++		memcpy(*kbuf, (void *)&init_fpstate.xsave + *pos, size);
++		*kbuf += size;
++		*pos += size;
++		*count -= size;
++	}
++}
  
- 	if (t->iopl_emul == 3 || t->io_bitmap) {
- 		/* TSS update is handled on exit to user space */
--		set_thread_flag(TIF_IO_BITMAP);
-+		set_tsk_thread_flag(tsk, TIF_IO_BITMAP);
- 	} else {
--		clear_thread_flag(TIF_IO_BITMAP);
-+		clear_tsk_thread_flag(tsk, TIF_IO_BITMAP);
- 		/* Invalidate TSS */
- 		preempt_disable();
- 		tss_update_io_bitmap();
-@@ -49,12 +49,12 @@ static void task_update_io_bitmap(void)
+-		memcpy(kbuf + offset, data, copy);
++static void copy_part(unsigned offset, unsigned size, void *from,
++			void **kbuf, unsigned *pos, unsigned *count)
++{
++	fill_gap(offset, kbuf, pos, count);
++	if (size > *count)
++		size = *count;
++	if (size) {
++		memcpy(*kbuf, from, size);
++		*kbuf += size;
++		*pos += size;
++		*count -= size;
  	}
  }
  
--void io_bitmap_exit(void)
-+void io_bitmap_exit(struct task_struct *tsk)
+@@ -981,8 +994,9 @@ __copy_xstate_to_kernel(void *kbuf, const void *data,
+  */
+ int copy_xstate_to_kernel(void *kbuf, struct xregs_state *xsave, unsigned int offset_start, unsigned int size_total)
  {
--	struct io_bitmap *iobm = current->thread.io_bitmap;
-+	struct io_bitmap *iobm = tsk->thread.io_bitmap;
- 
--	current->thread.io_bitmap = NULL;
--	task_update_io_bitmap();
-+	tsk->thread.io_bitmap = NULL;
-+	task_update_io_bitmap(tsk);
- 	if (iobm && refcount_dec_and_test(&iobm->refcnt))
- 		kfree(iobm);
- }
-@@ -102,7 +102,7 @@ long ksys_ioperm(unsigned long from, unsigned long num, int turn_on)
- 		if (!iobm)
- 			return -ENOMEM;
- 		refcount_set(&iobm->refcnt, 1);
--		io_bitmap_exit();
-+		io_bitmap_exit(current);
- 	}
+-	unsigned int offset, size;
+ 	struct xstate_header header;
++	const unsigned off_mxcsr = offsetof(struct fxregs_state, mxcsr);
++	unsigned count = size_total;
+ 	int i;
  
  	/*
-@@ -134,7 +134,7 @@ long ksys_ioperm(unsigned long from, unsigned long num, int turn_on)
- 	}
- 	/* All permissions dropped? */
- 	if (max_long == UINT_MAX) {
--		io_bitmap_exit();
-+		io_bitmap_exit(current);
- 		return 0;
- 	}
+@@ -998,46 +1012,42 @@ int copy_xstate_to_kernel(void *kbuf, struct xregs_state *xsave, unsigned int of
+ 	header.xfeatures = xsave->header.xfeatures;
+ 	header.xfeatures &= ~XFEATURE_MASK_SUPERVISOR;
  
-@@ -192,7 +192,7 @@ SYSCALL_DEFINE1(iopl, unsigned int, level)
- 	}
++	if (header.xfeatures & XFEATURE_MASK_FP)
++		copy_part(0, off_mxcsr,
++			  &xsave->i387, &kbuf, &offset_start, &count);
++	if (header.xfeatures & (XFEATURE_MASK_SSE | XFEATURE_MASK_YMM))
++		copy_part(off_mxcsr, MXCSR_AND_FLAGS_SIZE,
++			  &xsave->i387.mxcsr, &kbuf, &offset_start, &count);
++	if (header.xfeatures & XFEATURE_MASK_FP)
++		copy_part(offsetof(struct fxregs_state, st_space), 128,
++			  &xsave->i387.st_space, &kbuf, &offset_start, &count);
++	if (header.xfeatures & XFEATURE_MASK_SSE)
++		copy_part(xstate_offsets[XFEATURE_MASK_SSE], 256,
++			  &xsave->i387.xmm_space, &kbuf, &offset_start, &count);
++	/*
++	 * Fill xsave->i387.sw_reserved value for ptrace frame:
++	 */
++	copy_part(offsetof(struct fxregs_state, sw_reserved), 48,
++		  xstate_fx_sw_bytes, &kbuf, &offset_start, &count);
+ 	/*
+ 	 * Copy xregs_state->header:
+ 	 */
+-	offset = offsetof(struct xregs_state, header);
+-	size = sizeof(header);
+-
+-	__copy_xstate_to_kernel(kbuf, &header, offset, size, size_total);
++	copy_part(offsetof(struct xregs_state, header), sizeof(header),
++		  &header, &kbuf, &offset_start, &count);
  
- 	t->iopl_emul = level;
--	task_update_io_bitmap();
-+	task_update_io_bitmap(current);
+-	for (i = 0; i < XFEATURE_MAX; i++) {
++	for (i = FIRST_EXTENDED_XFEATURE; i < XFEATURE_MAX; i++) {
+ 		/*
+ 		 * Copy only in-use xstates:
+ 		 */
+ 		if ((header.xfeatures >> i) & 1) {
+ 			void *src = __raw_xsave_addr(xsave, i);
+ 
+-			offset = xstate_offsets[i];
+-			size = xstate_sizes[i];
+-
+-			/* The next component has to fit fully into the output buffer: */
+-			if (offset + size > size_total)
+-				break;
+-
+-			__copy_xstate_to_kernel(kbuf, src, offset, size, size_total);
++			copy_part(xstate_offsets[i], xstate_sizes[i],
++				  src, &kbuf, &offset_start, &count);
+ 		}
+ 
+ 	}
+-
+-	if (xfeatures_mxcsr_quirk(header.xfeatures)) {
+-		offset = offsetof(struct fxregs_state, mxcsr);
+-		size = MXCSR_AND_FLAGS_SIZE;
+-		__copy_xstate_to_kernel(kbuf, &xsave->i387.mxcsr, offset, size, size_total);
+-	}
+-
+-	/*
+-	 * Fill xsave->i387.sw_reserved value for ptrace frame:
+-	 */
+-	offset = offsetof(struct fxregs_state, sw_reserved);
+-	size = sizeof(xstate_fx_sw_bytes);
+-
+-	__copy_xstate_to_kernel(kbuf, xstate_fx_sw_bytes, offset, size, size_total);
++	fill_gap(size_total, &kbuf, &offset_start, &count);
  
  	return 0;
  }
-diff --git a/arch/x86/kernel/process.c b/arch/x86/kernel/process.c
-index 9da70b2..35638f1 100644
---- a/arch/x86/kernel/process.c
-+++ b/arch/x86/kernel/process.c
-@@ -96,7 +96,7 @@ int arch_dup_task_struct(struct task_struct *dst, struct task_struct *src)
- }
- 
- /*
-- * Free current thread data structures etc..
-+ * Free thread data structures etc..
-  */
- void exit_thread(struct task_struct *tsk)
- {
-@@ -104,7 +104,7 @@ void exit_thread(struct task_struct *tsk)
- 	struct fpu *fpu = &t->fpu;
- 
- 	if (test_thread_flag(TIF_IO_BITMAP))
--		io_bitmap_exit();
-+		io_bitmap_exit(tsk);
- 
- 	free_vm86(t);
- 
