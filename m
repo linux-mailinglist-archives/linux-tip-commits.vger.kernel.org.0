@@ -2,40 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C1FFB1E8F40
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 30 May 2020 09:48:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F2B311E8F34
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 30 May 2020 09:48:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728968AbgE3Hr3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 30 May 2020 03:47:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60828 "EHLO
+        id S1729044AbgE3HrB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 30 May 2020 03:47:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728929AbgE3Hqi (ORCPT
+        with ESMTP id S1728968AbgE3Hqo (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 30 May 2020 03:46:38 -0400
+        Sat, 30 May 2020 03:46:44 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CEEB1C03E969;
-        Sat, 30 May 2020 00:46:38 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1DE3C03E969;
+        Sat, 30 May 2020 00:46:44 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jewCR-0001rS-BT; Sat, 30 May 2020 09:46:35 +0200
+        id 1jewCX-0001rr-78; Sat, 30 May 2020 09:46:41 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 07CE71C032F;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E057F1C032F;
         Sat, 30 May 2020 09:46:35 +0200 (CEST)
-Date:   Sat, 30 May 2020 07:46:34 -0000
-From:   "tip-bot2 for Valentin Schneider" <tip-bot2@linutronix.de>
+Date:   Sat, 30 May 2020 07:46:35 -0000
+From:   "tip-bot2 for Andy Shevchenko" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] irqchip/gic-v2, v3: Drop extra IRQ_NOAUTOEN setting
- for (E)PPIs
-Cc:     Valentin Schneider <valentin.schneider@arm.com>,
+Subject: [tip: irq/core] irqdomain: Get rid of special treatment for ACPI in
+ __irq_domain_add()
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Marc Zyngier <maz@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200521223500.834-1-valentin.schneider@arm.com>
-References: <20200521223500.834-1-valentin.schneider@arm.com>
+In-Reply-To: <20200520164927.39090-2-andriy.shevchenko@linux.intel.com>
+References: <20200520164927.39090-2-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <159082479487.17951.7616935515233095878.tip-bot2@tip-bot2>
+Message-ID: <159082479578.17951.14349375342830434794.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,54 +51,52 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     cc86432aa8cc5a81f99d79eea2a29099da694df3
-Gitweb:        https://git.kernel.org/tip/cc86432aa8cc5a81f99d79eea2a29099da694df3
-Author:        Valentin Schneider <valentin.schneider@arm.com>
-AuthorDate:    Thu, 21 May 2020 23:35:00 +01:00
+Commit-ID:     87526603c89256e18ad2c23821fdaf376b072fc8
+Gitweb:        https://git.kernel.org/tip/87526603c89256e18ad2c23821fdaf376b072fc8
+Author:        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+AuthorDate:    Wed, 20 May 2020 19:49:26 +03:00
 Committer:     Marc Zyngier <maz@kernel.org>
-CommitterDate: Mon, 25 May 2020 10:32:51 +01:00
+CommitterDate: Thu, 21 May 2020 10:51:50 +01:00
 
-irqchip/gic-v2, v3: Drop extra IRQ_NOAUTOEN setting for (E)PPIs
+irqdomain: Get rid of special treatment for ACPI in __irq_domain_add()
 
-(E)PPIs are per-CPU interrupts, so we want each CPU to go and enable them
-via enable_percpu_irq(); this also means we want IRQ_NOAUTOEN for them as
-the autoenable would lead to calling irq_enable() instead of the more
-appropriate irq_percpu_enable().
+Now that __irq_domain_add() is able to better deals with generic
+fwnodes, there is no need to special-case ACPI anymore.
 
-Calling irq_set_percpu_devid() is enough to get just that since it trickles
-down to irq_set_percpu_devid_flags(), which gives us IRQ_NOAUTOEN (and a
-few others). Setting IRQ_NOAUTOEN *again* right after this call is just
-redundant, so don't do it.
+Get rid of the special treatment for ACPI.
 
-Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20200521223500.834-1-valentin.schneider@arm.com
+Link: https://lore.kernel.org/r/20200520164927.39090-2-andriy.shevchenko@linux.intel.com
 ---
- drivers/irqchip/irq-gic-v3.c | 1 -
- drivers/irqchip/irq-gic.c    | 1 -
- 2 files changed, 2 deletions(-)
+ kernel/irq/irqdomain.c | 17 +----------------
+ 1 file changed, 1 insertion(+), 16 deletions(-)
 
-diff --git a/drivers/irqchip/irq-gic-v3.c b/drivers/irqchip/irq-gic-v3.c
-index 98c886d..cc46bc2 100644
---- a/drivers/irqchip/irq-gic-v3.c
-+++ b/drivers/irqchip/irq-gic-v3.c
-@@ -1282,7 +1282,6 @@ static int gic_irq_domain_map(struct irq_domain *d, unsigned int irq,
- 		irq_set_percpu_devid(irq);
- 		irq_domain_set_info(d, irq, hw, chip, d->host_data,
- 				    handle_percpu_devid_irq, NULL, NULL);
--		irq_set_status_flags(irq, IRQ_NOAUTOEN);
- 		break;
+diff --git a/kernel/irq/irqdomain.c b/kernel/irq/irqdomain.c
+index 7649f38..5d14d91 100644
+--- a/kernel/irq/irqdomain.c
++++ b/kernel/irq/irqdomain.c
+@@ -161,22 +161,7 @@ struct irq_domain *__irq_domain_add(struct fwnode_handle *fwnode, int size,
+ 			domain->name = fwid->name;
+ 			break;
+ 		}
+-#ifdef CONFIG_ACPI
+-	} else if (is_acpi_device_node(fwnode)) {
+-		struct acpi_buffer buf = {
+-			.length = ACPI_ALLOCATE_BUFFER,
+-		};
+-		acpi_handle handle;
+-
+-		handle = acpi_device_handle(to_acpi_device_node(fwnode));
+-		if (acpi_get_name(handle, ACPI_FULL_PATHNAME, &buf) == AE_OK) {
+-			domain->name = buf.pointer;
+-			domain->flags |= IRQ_DOMAIN_NAME_ALLOCATED;
+-		}
+-
+-		domain->fwnode = fwnode;
+-#endif
+-	} else if (is_of_node(fwnode)) {
++	} else if (is_of_node(fwnode) || is_acpi_device_node(fwnode)) {
+ 		char *name;
  
- 	case SPI_RANGE:
-diff --git a/drivers/irqchip/irq-gic.c b/drivers/irqchip/irq-gic.c
-index 30ab623..00de05a 100644
---- a/drivers/irqchip/irq-gic.c
-+++ b/drivers/irqchip/irq-gic.c
-@@ -982,7 +982,6 @@ static int gic_irq_domain_map(struct irq_domain *d, unsigned int irq,
- 		irq_set_percpu_devid(irq);
- 		irq_domain_set_info(d, irq, hw, &gic->chip, d->host_data,
- 				    handle_percpu_devid_irq, NULL, NULL);
--		irq_set_status_flags(irq, IRQ_NOAUTOEN);
- 	} else {
- 		irq_domain_set_info(d, irq, hw, &gic->chip, d->host_data,
- 				    handle_fasteoi_irq, NULL, NULL);
+ 		/*
