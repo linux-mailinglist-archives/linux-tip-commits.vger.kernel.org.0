@@ -2,39 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EEDE1E79A2
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 29 May 2020 11:43:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1BF91E8F1C
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 30 May 2020 09:46:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725808AbgE2JnL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 29 May 2020 05:43:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52494 "EHLO
+        id S1728797AbgE3Hqf (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 30 May 2020 03:46:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725710AbgE2JnK (ORCPT
+        with ESMTP id S1728599AbgE3Hqf (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 29 May 2020 05:43:10 -0400
+        Sat, 30 May 2020 03:46:35 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62613C03E969;
-        Fri, 29 May 2020 02:43:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D212C03E969;
+        Sat, 30 May 2020 00:46:35 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jebXe-0000OK-6G; Fri, 29 May 2020 11:43:06 +0200
+        id 1jewCN-0001p0-Ba; Sat, 30 May 2020 09:46:31 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B5FBA1C0084;
-        Fri, 29 May 2020 11:43:05 +0200 (CEST)
-Date:   Fri, 29 May 2020 09:43:05 -0000
-From:   "tip-bot2 for Al Viro" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id EE6391C0093;
+        Sat, 30 May 2020 09:46:30 +0200 (CEST)
+Date:   Sat, 30 May 2020 07:46:30 -0000
+From:   "tip-bot2 for Jiaxun Yang" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] copy_xstate_to_kernel(): don't leave parts of
- destination uninitialized
-Cc:     stable@kernel.org, Alexander Potapenko <glider@google.com>,
-        Borislav Petkov <bp@suse.de>,
-        Al Viro <viro@zeniv.linux.org.uk>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
+Subject: [tip: irq/core] dt-bindings: interrupt-controller: Add Loongson PCH MSI
+Cc:     Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        Rob Herring <robh@kernel.org>, Marc Zyngier <maz@kernel.org>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200528152757.1028711-7-jiaxun.yang@flygoat.com>
+References: <20200528152757.1028711-7-jiaxun.yang@flygoat.com>
 MIME-Version: 1.0
-Message-ID: <159074538552.17951.8439883662849608914.tip-bot2@tip-bot2>
+Message-ID: <159082479072.17951.7141736298495200150.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,151 +48,93 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     9e4636545933131de15e1ecd06733538ae939b2f
-Gitweb:        https://git.kernel.org/tip/9e4636545933131de15e1ecd06733538ae939b2f
-Author:        Al Viro <viro@zeniv.linux.org.uk>
-AuthorDate:    Tue, 26 May 2020 18:39:49 -04:00
-Committer:     Al Viro <viro@zeniv.linux.org.uk>
-CommitterDate: Wed, 27 May 2020 17:06:31 -04:00
+Commit-ID:     da10a4b626657387845f32d37141fc7d48ebbdb3
+Gitweb:        https://git.kernel.org/tip/da10a4b626657387845f32d37141fc7d48ebbdb3
+Author:        Jiaxun Yang <jiaxun.yang@flygoat.com>
+AuthorDate:    Thu, 28 May 2020 23:27:54 +08:00
+Committer:     Marc Zyngier <maz@kernel.org>
+CommitterDate: Fri, 29 May 2020 09:42:19 +01:00
 
-copy_xstate_to_kernel(): don't leave parts of destination uninitialized
+dt-bindings: interrupt-controller: Add Loongson PCH MSI
 
-copy the corresponding pieces of init_fpstate into the gaps instead.
+Add binding for Loongson PCH MSI controller.
 
-Cc: stable@kernel.org
-Tested-by: Alexander Potapenko <glider@google.com>
-Acked-by: Borislav Petkov <bp@suse.de>
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Reviewed-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20200528152757.1028711-7-jiaxun.yang@flygoat.com
 ---
- arch/x86/kernel/fpu/xstate.c | 86 +++++++++++++++++++----------------
- 1 file changed, 48 insertions(+), 38 deletions(-)
+ Documentation/devicetree/bindings/interrupt-controller/loongson,pch-msi.yaml | 62 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 62 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/interrupt-controller/loongson,pch-msi.yaml
 
-diff --git a/arch/x86/kernel/fpu/xstate.c b/arch/x86/kernel/fpu/xstate.c
-index 32b153d..6a54e83 100644
---- a/arch/x86/kernel/fpu/xstate.c
-+++ b/arch/x86/kernel/fpu/xstate.c
-@@ -957,18 +957,31 @@ static inline bool xfeatures_mxcsr_quirk(u64 xfeatures)
- 	return true;
- }
- 
--/*
-- * This is similar to user_regset_copyout(), but will not add offset to
-- * the source data pointer or increment pos, count, kbuf, and ubuf.
-- */
--static inline void
--__copy_xstate_to_kernel(void *kbuf, const void *data,
--			unsigned int offset, unsigned int size, unsigned int size_total)
-+static void fill_gap(unsigned to, void **kbuf, unsigned *pos, unsigned *count)
- {
--	if (offset < size_total) {
--		unsigned int copy = min(size, size_total - offset);
-+	if (*pos < to) {
-+		unsigned size = to - *pos;
+diff --git a/Documentation/devicetree/bindings/interrupt-controller/loongson,pch-msi.yaml b/Documentation/devicetree/bindings/interrupt-controller/loongson,pch-msi.yaml
+new file mode 100644
+index 0000000..1a5ebbd
+--- /dev/null
++++ b/Documentation/devicetree/bindings/interrupt-controller/loongson,pch-msi.yaml
+@@ -0,0 +1,62 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: "http://devicetree.org/schemas/interrupt-controller/loongson,pch-msi.yaml#"
++$schema: "http://devicetree.org/meta-schemas/core.yaml#"
 +
-+		if (size > *count)
-+			size = *count;
-+		memcpy(*kbuf, (void *)&init_fpstate.xsave + *pos, size);
-+		*kbuf += size;
-+		*pos += size;
-+		*count -= size;
-+	}
-+}
- 
--		memcpy(kbuf + offset, data, copy);
-+static void copy_part(unsigned offset, unsigned size, void *from,
-+			void **kbuf, unsigned *pos, unsigned *count)
-+{
-+	fill_gap(offset, kbuf, pos, count);
-+	if (size > *count)
-+		size = *count;
-+	if (size) {
-+		memcpy(*kbuf, from, size);
-+		*kbuf += size;
-+		*pos += size;
-+		*count -= size;
- 	}
- }
- 
-@@ -981,8 +994,9 @@ __copy_xstate_to_kernel(void *kbuf, const void *data,
-  */
- int copy_xstate_to_kernel(void *kbuf, struct xregs_state *xsave, unsigned int offset_start, unsigned int size_total)
- {
--	unsigned int offset, size;
- 	struct xstate_header header;
-+	const unsigned off_mxcsr = offsetof(struct fxregs_state, mxcsr);
-+	unsigned count = size_total;
- 	int i;
- 
- 	/*
-@@ -998,46 +1012,42 @@ int copy_xstate_to_kernel(void *kbuf, struct xregs_state *xsave, unsigned int of
- 	header.xfeatures = xsave->header.xfeatures;
- 	header.xfeatures &= ~XFEATURE_MASK_SUPERVISOR;
- 
-+	if (header.xfeatures & XFEATURE_MASK_FP)
-+		copy_part(0, off_mxcsr,
-+			  &xsave->i387, &kbuf, &offset_start, &count);
-+	if (header.xfeatures & (XFEATURE_MASK_SSE | XFEATURE_MASK_YMM))
-+		copy_part(off_mxcsr, MXCSR_AND_FLAGS_SIZE,
-+			  &xsave->i387.mxcsr, &kbuf, &offset_start, &count);
-+	if (header.xfeatures & XFEATURE_MASK_FP)
-+		copy_part(offsetof(struct fxregs_state, st_space), 128,
-+			  &xsave->i387.st_space, &kbuf, &offset_start, &count);
-+	if (header.xfeatures & XFEATURE_MASK_SSE)
-+		copy_part(xstate_offsets[XFEATURE_MASK_SSE], 256,
-+			  &xsave->i387.xmm_space, &kbuf, &offset_start, &count);
-+	/*
-+	 * Fill xsave->i387.sw_reserved value for ptrace frame:
-+	 */
-+	copy_part(offsetof(struct fxregs_state, sw_reserved), 48,
-+		  xstate_fx_sw_bytes, &kbuf, &offset_start, &count);
- 	/*
- 	 * Copy xregs_state->header:
- 	 */
--	offset = offsetof(struct xregs_state, header);
--	size = sizeof(header);
--
--	__copy_xstate_to_kernel(kbuf, &header, offset, size, size_total);
-+	copy_part(offsetof(struct xregs_state, header), sizeof(header),
-+		  &header, &kbuf, &offset_start, &count);
- 
--	for (i = 0; i < XFEATURE_MAX; i++) {
-+	for (i = FIRST_EXTENDED_XFEATURE; i < XFEATURE_MAX; i++) {
- 		/*
- 		 * Copy only in-use xstates:
- 		 */
- 		if ((header.xfeatures >> i) & 1) {
- 			void *src = __raw_xsave_addr(xsave, i);
- 
--			offset = xstate_offsets[i];
--			size = xstate_sizes[i];
--
--			/* The next component has to fit fully into the output buffer: */
--			if (offset + size > size_total)
--				break;
--
--			__copy_xstate_to_kernel(kbuf, src, offset, size, size_total);
-+			copy_part(xstate_offsets[i], xstate_sizes[i],
-+				  src, &kbuf, &offset_start, &count);
- 		}
- 
- 	}
--
--	if (xfeatures_mxcsr_quirk(header.xfeatures)) {
--		offset = offsetof(struct fxregs_state, mxcsr);
--		size = MXCSR_AND_FLAGS_SIZE;
--		__copy_xstate_to_kernel(kbuf, &xsave->i387.mxcsr, offset, size, size_total);
--	}
--
--	/*
--	 * Fill xsave->i387.sw_reserved value for ptrace frame:
--	 */
--	offset = offsetof(struct fxregs_state, sw_reserved);
--	size = sizeof(xstate_fx_sw_bytes);
--
--	__copy_xstate_to_kernel(kbuf, xstate_fx_sw_bytes, offset, size, size_total);
-+	fill_gap(size_total, &kbuf, &offset_start, &count);
- 
- 	return 0;
- }
++title: Loongson PCH MSI Controller
++
++maintainers:
++  - Jiaxun Yang <jiaxun.yang@flygoat.com>
++
++description:
++  This interrupt controller is found in the Loongson LS7A family of PCH for
++  transforming interrupts from PCIe MSI into HyperTransport vectorized
++  interrupts.
++
++properties:
++  compatible:
++    const: loongson,pch-msi-1.0
++
++  reg:
++    maxItems: 1
++
++  loongson,msi-base-vec:
++    description:
++      u32 value of the base of parent HyperTransport vector allocated
++      to PCH MSI.
++    allOf:
++      - $ref: "/schemas/types.yaml#/definitions/uint32"
++      - minimum: 0
++        maximum: 255
++
++  loongson,msi-num-vecs:
++    description:
++      u32 value of the number of parent HyperTransport vectors allocated
++      to PCH MSI.
++    allOf:
++      - $ref: "/schemas/types.yaml#/definitions/uint32"
++      - minimum: 1
++        maximum: 256
++
++  msi-controller: true
++
++required:
++  - compatible
++  - reg
++  - msi-controller
++  - loongson,msi-base-vec
++  - loongson,msi-num-vecs
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/irq.h>
++    msi: msi-controller@2ff00000 {
++      compatible = "loongson,pch-msi-1.0";
++      reg = <0x2ff00000 0x4>;
++      msi-controller;
++      loongson,msi-base-vec = <64>;
++      loongson,msi-num-vecs = <64>;
++      interrupt-parent = <&htvec>;
++    };
++...
