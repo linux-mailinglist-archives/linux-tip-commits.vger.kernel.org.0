@@ -2,38 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4499E1E9041
+	by mail.lfdr.de (Postfix) with ESMTP id B3A3A1E9042
 	for <lists+linux-tip-commits@lfdr.de>; Sat, 30 May 2020 11:57:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728724AbgE3J5T (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 30 May 2020 05:57:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52880 "EHLO
+        id S1727964AbgE3J5U (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 30 May 2020 05:57:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727964AbgE3J5S (ORCPT
+        with ESMTP id S1728714AbgE3J5T (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 30 May 2020 05:57:18 -0400
+        Sat, 30 May 2020 05:57:19 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97827C03E969;
-        Sat, 30 May 2020 02:57:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AE02C03E969;
+        Sat, 30 May 2020 02:57:19 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jeyEu-0002oK-HS; Sat, 30 May 2020 11:57:16 +0200
+        id 1jeyEv-0002ou-F6; Sat, 30 May 2020 11:57:17 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 225C41C032F;
-        Sat, 30 May 2020 11:57:16 +0200 (CEST)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 138D11C032F;
+        Sat, 30 May 2020 11:57:17 +0200 (CEST)
 Date:   Sat, 30 May 2020 09:57:16 -0000
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/entry] x86/idt: Cleanup trap_init()
+Subject: [tip: x86/entry] x86/idt: Add comments about early #PF handling
 Cc:     Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200528145522.992376498@linutronix.de>
-References: <20200528145522.992376498@linutronix.de>
+In-Reply-To: <20200528145522.807135882@linutronix.de>
+References: <20200528145522.807135882@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <159083263601.17951.6137387139288210222.tip-bot2@tip-bot2>
+Message-ID: <159083263692.17951.2671790138858000362.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,86 +49,51 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/entry branch of tip:
 
-Commit-ID:     88dbb6cfb9be0eaaa95c15a4b6d7f49044a2e1b7
-Gitweb:        https://git.kernel.org/tip/88dbb6cfb9be0eaaa95c15a4b6d7f49044a2e1b7
+Commit-ID:     66d2e706c0cecd09b1f3de4844574d30e5469c28
+Gitweb:        https://git.kernel.org/tip/66d2e706c0cecd09b1f3de4844574d30e5469c28
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Thu, 28 May 2020 16:53:19 +02:00
+AuthorDate:    Thu, 28 May 2020 16:53:17 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sat, 30 May 2020 11:50:12 +02:00
+CommitterDate: Sat, 30 May 2020 11:50:11 +02:00
 
-x86/idt: Cleanup trap_init()
+x86/idt: Add comments about early #PF handling
 
-No point in having all the IDT cruft in trap_init(). Move it into the IDT
-code and fixup the comments.
+The difference between 32 and 64 bit vs. early #PF handling is not
+documented. Replace the FIXME at idt_setup_early_pf() with proper comments.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20200528145522.992376498@linutronix.de
+Link: https://lkml.kernel.org/r/20200528145522.807135882@linutronix.de
 
 ---
- arch/x86/kernel/idt.c   | 18 ++++++++++++++++++
- arch/x86/kernel/traps.c |  9 ---------
- 2 files changed, 18 insertions(+), 9 deletions(-)
+ arch/x86/kernel/idt.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
 diff --git a/arch/x86/kernel/idt.c b/arch/x86/kernel/idt.c
-index b6e1a87..902cdd0 100644
+index 4b99f7b..5ef82fc 100644
 --- a/arch/x86/kernel/idt.c
 +++ b/arch/x86/kernel/idt.c
-@@ -4,6 +4,7 @@
-  */
- #include <linux/interrupt.h>
- 
-+#include <asm/cpu_entry_area.h>
- #include <asm/traps.h>
- #include <asm/proto.h>
- #include <asm/desc.h>
-@@ -281,6 +282,19 @@ void __init idt_setup_ist_traps(void)
- }
- #endif
- 
-+static void __init idt_map_in_cea(void)
-+{
+@@ -61,7 +61,11 @@ static bool idt_setup_done __initdata;
+ static const __initconst struct idt_data early_idts[] = {
+ 	INTG(X86_TRAP_DB,		asm_exc_debug),
+ 	SYSG(X86_TRAP_BP,		asm_exc_int3),
++
+ #ifdef CONFIG_X86_32
 +	/*
-+	 * Set the IDT descriptor to a fixed read-only location in the cpu
-+	 * entry area, so that the "sidt" instruction will not leak the
-+	 * location of the kernel, and to defend the IDT against arbitrary
-+	 * memory write vulnerabilities.
++	 * Not possible on 64-bit. See idt_setup_early_pf() for details.
 +	 */
-+	cea_set_pte(CPU_ENTRY_AREA_RO_IDT_VADDR, __pa_symbol(idt_table),
-+		    PAGE_KERNEL_RO);
-+	idt_descr.address = CPU_ENTRY_AREA_RO_IDT;
-+}
-+
- /**
-  * idt_setup_apic_and_irq_gates - Setup APIC/SMP and normal interrupt gates
-  */
-@@ -307,6 +321,10 @@ void __init idt_setup_apic_and_irq_gates(void)
- 		set_intr_gate(i, entry);
- 	}
+ 	INTG(X86_TRAP_PF,		asm_exc_page_fault),
  #endif
-+	/* Map IDT into CPU entry area and reload it. */
-+	idt_map_in_cea();
-+	load_idt(&idt_descr);
-+
- 	idt_setup_done = true;
- }
- 
-diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
-index 79af913..5566fe5 100644
---- a/arch/x86/kernel/traps.c
-+++ b/arch/x86/kernel/traps.c
-@@ -1056,15 +1056,6 @@ void __init trap_init(void)
- 	idt_setup_traps();
- 
- 	/*
--	 * Set the IDT descriptor to a fixed read-only location, so that the
--	 * "sidt" instruction will not leak the location of the kernel, and
--	 * to defend the IDT against arbitrary memory write vulnerabilities.
--	 * It will be reloaded in cpu_init() */
--	cea_set_pte(CPU_ENTRY_AREA_RO_IDT_VADDR, __pa_symbol(idt_table),
--		    PAGE_KERNEL_RO);
--	idt_descr.address = CPU_ENTRY_AREA_RO_IDT;
--
--	/*
- 	 * Should be a barrier for any external CPU state:
- 	 */
- 	cpu_init();
+ };
+@@ -256,8 +260,10 @@ void __init idt_setup_traps(void)
+  * cpu_init() is invoked and sets up TSS. The IST variant is installed
+  * after that.
+  *
+- * FIXME: Why is 32bit and 64bit installing the PF handler at different
+- * places in the early setup code?
++ * Note, that X86_64 cannot install the real #PF handler in
++ * idt_setup_early_traps() because the memory intialization needs the #PF
++ * handler from the early_idt_handler_array to initialize the early page
++ * tables.
+  */
+ void __init idt_setup_early_pf(void)
+ {
