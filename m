@@ -2,38 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 886F41E8F29
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 30 May 2020 09:48:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 868961E8F33
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 30 May 2020 09:48:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728955AbgE3Hqo (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 30 May 2020 03:46:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60844 "EHLO
+        id S1729037AbgE3HrA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 30 May 2020 03:47:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60864 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728957AbgE3Hqm (ORCPT
+        with ESMTP id S1728975AbgE3Hqp (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 30 May 2020 03:46:42 -0400
+        Sat, 30 May 2020 03:46:45 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD189C08C5C9;
-        Sat, 30 May 2020 00:46:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CA1AC08C5D1;
+        Sat, 30 May 2020 00:46:45 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jewCT-0001sK-OM; Sat, 30 May 2020 09:46:37 +0200
+        id 1jewCU-0001sc-FD; Sat, 30 May 2020 09:46:38 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 63C451C0481;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E7D761C04D6;
         Sat, 30 May 2020 09:46:37 +0200 (CEST)
 Date:   Sat, 30 May 2020 07:46:37 -0000
 From:   "tip-bot2 for Marc Zyngier" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] irqchip/gic-v3-its: Balance initial LPI affinity across CPUs
-Cc:     John Garry <john.garry@huawei.com>, Marc Zyngier <maz@kernel.org>,
+Subject: [tip: irq/core] irqchip/gic-v3-its: Track LPI distribution on a per CPU basis
+Cc:     Marc Zyngier <maz@kernel.org>, John Garry <john.garry@huawei.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <1575642904-58295-1-git-send-email-john.garry@huawei.com>
-References: <1575642904-58295-1-git-send-email-john.garry@huawei.com>
+In-Reply-To: <20200515165752.121296-2-maz@kernel.org>
+References: <20200515165752.121296-2-maz@kernel.org>
 MIME-Version: 1.0
-Message-ID: <159082479727.17951.12803360401899580245.tip-bot2@tip-bot2>
+Message-ID: <159082479780.17951.14474657424111397931.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,195 +49,136 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     c5d6082d35e0bcc20a26a067ffcfddcb5257e580
-Gitweb:        https://git.kernel.org/tip/c5d6082d35e0bcc20a26a067ffcfddcb5257e580
+Commit-ID:     2f13ff1d1d5c0257c97ea76b86a2d9c99c44a4b9
+Gitweb:        https://git.kernel.org/tip/2f13ff1d1d5c0257c97ea76b86a2d9c99c44a4b9
 Author:        Marc Zyngier <maz@kernel.org>
-AuthorDate:    Fri, 15 May 2020 17:57:52 +01:00
+AuthorDate:    Fri, 15 May 2020 17:57:51 +01:00
 Committer:     Marc Zyngier <maz@kernel.org>
-CommitterDate: Wed, 20 May 2020 11:00:00 +01:00
+CommitterDate: Mon, 18 May 2020 10:30:42 +01:00
 
-irqchip/gic-v3-its: Balance initial LPI affinity across CPUs
+irqchip/gic-v3-its: Track LPI distribution on a per CPU basis
 
-When mapping a LPI, the ITS driver picks the first possible
-affinity, which is in most cases CPU0, assuming that if
-that's not suitable, someone will come and set the affinity
-to something more interesting.
+In order to improve the distribution of LPIs among CPUs, let start by
+tracking the number of LPIs assigned to CPUs, both for managed and
+non-managed interrupts (as separate counters).
 
-It apparently isn't the case, and people complain of poor
-performance when many interrupts are glued to the same CPU.
-So let's place the interrupts by finding the "least loaded"
-CPU (that is, the one that has the fewer LPIs mapped to it).
-So called 'managed' interrupts are an interesting case where
-the affinity is actually dictated by the kernel itself, and
-we should honor this.
-
-Reported-by: John Garry <john.garry@huawei.com>
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 Tested-by: John Garry <john.garry@huawei.com>
-Link: https://lore.kernel.org/r/1575642904-58295-1-git-send-email-john.garry@huawei.com
-Link: https://lore.kernel.org/r/20200515165752.121296-3-maz@kernel.org
+Link: https://lore.kernel.org/r/20200515165752.121296-2-maz@kernel.org
 ---
- drivers/irqchip/irq-gic-v3-its.c | 127 +++++++++++++++++++++++-------
- 1 file changed, 100 insertions(+), 27 deletions(-)
+ drivers/irqchip/irq-gic-v3-its.c | 49 +++++++++++++++++++++++++++++--
+ 1 file changed, 46 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
-index 4eb8441..cd685f5 100644
+index 124251b..4eb8441 100644
 --- a/drivers/irqchip/irq-gic-v3-its.c
 +++ b/drivers/irqchip/irq-gic-v3-its.c
-@@ -1541,15 +1541,104 @@ static void its_dec_lpi_count(struct irq_data *d, int cpu)
- 		atomic_dec(&per_cpu_ptr(&cpu_lpi_count, cpu)->unmanaged);
+@@ -174,6 +174,13 @@ static struct {
+ 	int			next_victim;
+ } vpe_proxy;
+ 
++struct cpu_lpi_count {
++	atomic_t	managed;
++	atomic_t	unmanaged;
++};
++
++static DEFINE_PER_CPU(struct cpu_lpi_count, cpu_lpi_count);
++
+ static LIST_HEAD(its_nodes);
+ static DEFINE_RAW_SPINLOCK(its_lock);
+ static struct rdists *gic_rdists;
+@@ -1510,6 +1517,30 @@ static void its_unmask_irq(struct irq_data *d)
+ 	lpi_update_config(d, 0, LPI_PROP_ENABLED);
  }
  
-+static unsigned int cpumask_pick_least_loaded(struct irq_data *d,
-+					      const struct cpumask *cpu_mask)
++static __maybe_unused u32 its_read_lpi_count(struct irq_data *d, int cpu)
 +{
-+	unsigned int cpu = nr_cpu_ids, tmp;
-+	int count = S32_MAX;
++	if (irqd_affinity_is_managed(d))
++		return atomic_read(&per_cpu_ptr(&cpu_lpi_count, cpu)->managed);
 +
-+	for_each_cpu(tmp, cpu_mask) {
-+		int this_count = its_read_lpi_count(d, tmp);
-+		if (this_count < count) {
-+			cpu = tmp;
-+		        count = this_count;
-+		}
-+	}
-+
-+	return cpu;
++	return atomic_read(&per_cpu_ptr(&cpu_lpi_count, cpu)->unmanaged);
 +}
 +
-+/*
-+ * As suggested by Thomas Gleixner in:
-+ * https://lore.kernel.org/r/87h80q2aoc.fsf@nanos.tec.linutronix.de
-+ */
-+static int its_select_cpu(struct irq_data *d,
-+			  const struct cpumask *aff_mask)
++static void its_inc_lpi_count(struct irq_data *d, int cpu)
 +{
-+	struct its_device *its_dev = irq_data_get_irq_chip_data(d);
-+	cpumask_var_t tmpmask;
-+	int cpu, node;
++	if (irqd_affinity_is_managed(d))
++		atomic_inc(&per_cpu_ptr(&cpu_lpi_count, cpu)->managed);
++	else
++		atomic_inc(&per_cpu_ptr(&cpu_lpi_count, cpu)->unmanaged);
++}
 +
-+	if (!alloc_cpumask_var(&tmpmask, GFP_ATOMIC))
-+		return -ENOMEM;
-+
-+	node = its_dev->its->numa_node;
-+
-+	if (!irqd_affinity_is_managed(d)) {
-+		/* First try the NUMA node */
-+		if (node != NUMA_NO_NODE) {
-+			/*
-+			 * Try the intersection of the affinity mask and the
-+			 * node mask (and the online mask, just to be safe).
-+			 */
-+			cpumask_and(tmpmask, cpumask_of_node(node), aff_mask);
-+			cpumask_and(tmpmask, tmpmask, cpu_online_mask);
-+
-+			/*
-+			 * Ideally, we would check if the mask is empty, and
-+			 * try again on the full node here.
-+			 *
-+			 * But it turns out that the way ACPI describes the
-+			 * affinity for ITSs only deals about memory, and
-+			 * not target CPUs, so it cannot describe a single
-+			 * ITS placed next to two NUMA nodes.
-+			 *
-+			 * Instead, just fallback on the online mask. This
-+			 * diverges from Thomas' suggestion above.
-+			 */
-+			cpu = cpumask_pick_least_loaded(d, tmpmask);
-+			if (cpu < nr_cpu_ids)
-+				goto out;
-+
-+			/* If we can't cross sockets, give up */
-+			if ((its_dev->its->flags & ITS_FLAGS_WORKAROUND_CAVIUM_23144))
-+				goto out;
-+
-+			/* If the above failed, expand the search */
-+		}
-+
-+		/* Try the intersection of the affinity and online masks */
-+		cpumask_and(tmpmask, aff_mask, cpu_online_mask);
-+
-+		/* If that doesn't fly, the online mask is the last resort */
-+		if (cpumask_empty(tmpmask))
-+			cpumask_copy(tmpmask, cpu_online_mask);
-+
-+		cpu = cpumask_pick_least_loaded(d, tmpmask);
-+	} else {
-+		cpumask_and(tmpmask, irq_data_get_affinity_mask(d), cpu_online_mask);
-+
-+		/* If we cannot cross sockets, limit the search to that node */
-+		if ((its_dev->its->flags & ITS_FLAGS_WORKAROUND_CAVIUM_23144) &&
-+		    node != NUMA_NO_NODE)
-+			cpumask_and(tmpmask, tmpmask, cpumask_of_node(node));
-+
-+		cpu = cpumask_pick_least_loaded(d, tmpmask);
-+	}
-+out:
-+	free_cpumask_var(tmpmask);
-+
-+	pr_debug("IRQ%d -> %*pbl CPU%d\n", d->irq, cpumask_pr_args(aff_mask), cpu);
-+	return cpu;
++static void its_dec_lpi_count(struct irq_data *d, int cpu)
++{
++	if (irqd_affinity_is_managed(d))
++		atomic_dec(&per_cpu_ptr(&cpu_lpi_count, cpu)->managed);
++	else
++		atomic_dec(&per_cpu_ptr(&cpu_lpi_count, cpu)->unmanaged);
 +}
 +
  static int its_set_affinity(struct irq_data *d, const struct cpumask *mask_val,
  			    bool force)
  {
--	unsigned int cpu;
--	const struct cpumask *cpu_mask = cpu_online_mask;
+@@ -1518,34 +1549,44 @@ static int its_set_affinity(struct irq_data *d, const struct cpumask *mask_val,
  	struct its_device *its_dev = irq_data_get_irq_chip_data(d);
  	struct its_collection *target_col;
  	u32 id = its_get_event_id(d);
--	int prev_cpu;
-+	int cpu, prev_cpu;
++	int prev_cpu;
  
  	/* A forwarded interrupt should use irq_set_vcpu_affinity */
  	if (irqd_is_forwarded_to_vcpu(d))
-@@ -1558,18 +1647,12 @@ static int its_set_affinity(struct irq_data *d, const struct cpumask *mask_val,
- 	prev_cpu = its_dev->event_map.col_map[id];
- 	its_dec_lpi_count(d, prev_cpu);
+ 		return -EINVAL;
  
--       /* lpi cannot be routed to a redistributor that is on a foreign node */
--	if (its_dev->its->flags & ITS_FLAGS_WORKAROUND_CAVIUM_23144) {
--		if (its_dev->its->numa_node >= 0) {
--			cpu_mask = cpumask_of_node(its_dev->its->numa_node);
--			if (!cpumask_intersects(mask_val, cpu_mask))
--				goto err;
--		}
--	}
--
--	cpu = cpumask_any_and(mask_val, cpu_mask);
-+	if (!force)
-+		cpu = its_select_cpu(d, mask_val);
-+	else
-+		cpu = cpumask_pick_least_loaded(d, mask_val);
++	prev_cpu = its_dev->event_map.col_map[id];
++	its_dec_lpi_count(d, prev_cpu);
++
+        /* lpi cannot be routed to a redistributor that is on a foreign node */
+ 	if (its_dev->its->flags & ITS_FLAGS_WORKAROUND_CAVIUM_23144) {
+ 		if (its_dev->its->numa_node >= 0) {
+ 			cpu_mask = cpumask_of_node(its_dev->its->numa_node);
+ 			if (!cpumask_intersects(mask_val, cpu_mask))
+-				return -EINVAL;
++				goto err;
+ 		}
+ 	}
  
--	if (cpu >= nr_cpu_ids)
-+	if (cpu < 0 || cpu >= nr_cpu_ids)
- 		goto err;
+ 	cpu = cpumask_any_and(mask_val, cpu_mask);
+ 
+ 	if (cpu >= nr_cpu_ids)
+-		return -EINVAL;
++		goto err;
  
  	/* don't set the affinity when the target cpu is same as current one */
-@@ -3473,21 +3556,11 @@ static int its_irq_domain_activate(struct irq_domain *domain,
- {
+-	if (cpu != its_dev->event_map.col_map[id]) {
++	if (cpu != prev_cpu) {
+ 		target_col = &its_dev->its->collections[cpu];
+ 		its_send_movi(its_dev, target_col, id);
+ 		its_dev->event_map.col_map[id] = cpu;
+ 		irq_data_update_effective_affinity(d, cpumask_of(cpu));
+ 	}
+ 
++	its_inc_lpi_count(d, cpu);
++
+ 	return IRQ_SET_MASK_OK_DONE;
++
++err:
++	its_inc_lpi_count(d, prev_cpu);
++	return -EINVAL;
+ }
+ 
+ static u64 its_irq_get_msi_base(struct its_device *its_dev)
+@@ -3448,6 +3489,7 @@ static int its_irq_domain_activate(struct irq_domain *domain,
+ 		cpu = cpumask_first(cpu_online_mask);
+ 	}
+ 
++	its_inc_lpi_count(d, cpu);
+ 	its_dev->event_map.col_map[event] = cpu;
+ 	irq_data_update_effective_affinity(d, cpumask_of(cpu));
+ 
+@@ -3462,6 +3504,7 @@ static void its_irq_domain_deactivate(struct irq_domain *domain,
  	struct its_device *its_dev = irq_data_get_irq_chip_data(d);
  	u32 event = its_get_event_id(d);
--	const struct cpumask *cpu_mask = cpu_online_mask;
- 	int cpu;
  
--	/* get the cpu_mask of local node */
--	if (its_dev->its->numa_node >= 0)
--		cpu_mask = cpumask_of_node(its_dev->its->numa_node);
--
--	/* Bind the LPI to the first possible CPU */
--	cpu = cpumask_first_and(cpu_mask, cpu_online_mask);
--	if (cpu >= nr_cpu_ids) {
--		if (its_dev->its->flags & ITS_FLAGS_WORKAROUND_CAVIUM_23144)
--			return -EINVAL;
--
--		cpu = cpumask_first(cpu_online_mask);
--	}
-+	cpu = its_select_cpu(d, cpu_online_mask);
-+	if (cpu < 0 || cpu >= nr_cpu_ids)
-+		return -EINVAL;
- 
- 	its_inc_lpi_count(d, cpu);
- 	its_dev->event_map.col_map[event] = cpu;
++	its_dec_lpi_count(d, its_dev->event_map.col_map[event]);
+ 	/* Stop the delivery of interrupts */
+ 	its_send_discard(its_dev, event);
+ }
