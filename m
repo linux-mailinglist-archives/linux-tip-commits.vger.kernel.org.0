@@ -2,40 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 601C01EA47E
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  1 Jun 2020 15:12:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EAAA31EB0FD
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  1 Jun 2020 23:36:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727998AbgFANL7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 1 Jun 2020 09:11:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48276 "EHLO
+        id S1728336AbgFAVgs (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 1 Jun 2020 17:36:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43276 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727983AbgFANL5 (ORCPT
+        with ESMTP id S1728182AbgFAVgr (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 1 Jun 2020 09:11:57 -0400
+        Mon, 1 Jun 2020 17:36:47 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46F8AC061A0E;
-        Mon,  1 Jun 2020 06:11:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1721C061A0E;
+        Mon,  1 Jun 2020 14:36:47 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jfkEN-0007B8-Hb; Mon, 01 Jun 2020 15:11:55 +0200
+        id 1jfs6o-0007x4-G4; Mon, 01 Jun 2020 23:36:38 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D72D11C0494;
-        Mon,  1 Jun 2020 15:11:50 +0200 (CEST)
-Date:   Mon, 01 Jun 2020 13:11:50 -0000
-From:   "tip-bot2 for Christophe JAILLET" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 082BF1C0244;
+        Mon,  1 Jun 2020 23:36:38 +0200 (CEST)
+Date:   Mon, 01 Jun 2020 21:36:37 -0000
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] clocksource/drivers/davinci: Avoid trailing '\n'
- hidden in pr_fmt()
-Cc:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200409092543.14727-1-christophe.jaillet@wanadoo.fr>
-References: <20200409092543.14727-1-christophe.jaillet@wanadoo.fr>
+Subject: [tip: x86/entry] x86/xen: Unbreak hypervisor callback on 32bit
+Cc:     kbuild test robot <lkp@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Juergen Gross <jgross@suse.com>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <159101711070.17951.1604091400808299360.tip-bot2@tip-bot2>
+Message-ID: <159104739784.17951.17560941713289773893.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,122 +47,153 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/core branch of tip:
+The following commit has been merged into the x86/entry branch of tip:
 
-Commit-ID:     bdf8783c0dae9d3d8fc1c4078fe849ab8aa8b583
-Gitweb:        https://git.kernel.org/tip/bdf8783c0dae9d3d8fc1c4078fe849ab8aa8b583
-Author:        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-AuthorDate:    Thu, 09 Apr 2020 11:25:43 +02:00
-Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
-CommitterDate: Thu, 09 Apr 2020 11:41:20 +02:00
+Commit-ID:     4b1f63084d3ebd14c3ef2cd4e8732c25bcd8381d
+Gitweb:        https://git.kernel.org/tip/4b1f63084d3ebd14c3ef2cd4e8732c25bcd8381d
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Mon, 01 Jun 2020 21:33:56 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Mon, 01 Jun 2020 23:31:48 +02:00
 
-clocksource/drivers/davinci: Avoid trailing '\n' hidden in pr_fmt()
+x86/xen: Unbreak hypervisor callback on 32bit
 
-pr_xxx() functions usually have '\n' at the end of the logging message.
-Here, this '\n' is added via the 'pr_fmt' macro.
+The IDTENTRY conversion broke XEN on 32bit:
 
-In order to be more consistent with other files, use a more standard
-convention and put these '\n' back in the messages themselves and remove it
-from the pr_fmt macro.
+ld: arch/x86/xen/setup.o: in function `register_callback':                                                                                                                                                                                                                     
+>> arch/x86/xen/setup.c:940: undefined reference to `xen_asm_exc_xen_hypervisor_callback'
 
-While at it, remove a useless message in case of 'kzalloc' failure,
-especially with a __GFP_NOFAIL flag.
+The reason is that 32bit does not have the extra indirection of 64bit via
+the XEN trampolines and 32bit never emitted an actual IDT entry function
+for this.
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20200409092543.14727-1-christophe.jaillet@wanadoo.fr
+ - Add and use IDTENTRY_XENCB so the ASM variant emits an entry point only
+   for 64 bit.
+
+ - Rename the 32bit ASM function to match the 64bit trampoline function name.
+
+Fixup a few comments as well.
+
+Fixes: 66a07b44e765 ("x86/entry: Switch XEN/PV hypercall entry to IDTENTRY")
+Reported-by: kbuild test robot <lkp@intel.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: Juergen Gross <jgross@suse.com>
 ---
- drivers/clocksource/timer-davinci.c | 22 ++++++++++------------
- 1 file changed, 10 insertions(+), 12 deletions(-)
+ arch/x86/entry/entry_32.S       |  7 +++++--
+ arch/x86/include/asm/idtentry.h | 24 +++++++++++++++++++++++-
+ arch/x86/xen/xen-asm_32.S       |  6 +++---
+ 3 files changed, 31 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/clocksource/timer-davinci.c b/drivers/clocksource/timer-davinci.c
-index e421946..aae9383 100644
---- a/drivers/clocksource/timer-davinci.c
-+++ b/drivers/clocksource/timer-davinci.c
-@@ -18,7 +18,7 @@
- #include <clocksource/timer-davinci.h>
+diff --git a/arch/x86/entry/entry_32.S b/arch/x86/entry/entry_32.S
+index 96fa462..2d29f77 100644
+--- a/arch/x86/entry/entry_32.S
++++ b/arch/x86/entry/entry_32.S
+@@ -1167,8 +1167,11 @@ SYM_CODE_END(native_iret)
+ #ifdef CONFIG_XEN_PV
+ /*
+  * See comment in entry_64.S for further explanation
++ *
++ * Note: This is not an actual IDT entry point. It's a XEN specific entry
++ * point and therefore named to match the 64-bit trampoline counterpart.
+  */
+-SYM_FUNC_START(exc_xen_hypervisor_callback)
++SYM_FUNC_START(xen_asm_exc_xen_hypervisor_callback)
+ 	/*
+ 	 * Check to see if we got the event in the critical
+ 	 * region in xen_iret_direct, after we've reenabled
+@@ -1189,7 +1192,7 @@ SYM_FUNC_START(exc_xen_hypervisor_callback)
+ 	mov	%esp, %eax
+ 	call	xen_pv_evtchn_do_upcall
+ 	jmp	handle_exception_return
+-SYM_FUNC_END(exc_xen_hypervisor_callback)
++SYM_FUNC_END(xen_asm_exc_xen_hypervisor_callback)
  
- #undef pr_fmt
--#define pr_fmt(fmt) "%s: " fmt "\n", __func__
-+#define pr_fmt(fmt) "%s: " fmt, __func__
+ /*
+  * Hypervisor uses this for application faults while it executes.
+diff --git a/arch/x86/include/asm/idtentry.h b/arch/x86/include/asm/idtentry.h
+index f8e2737..d203c54 100644
+--- a/arch/x86/include/asm/idtentry.h
++++ b/arch/x86/include/asm/idtentry.h
+@@ -283,6 +283,22 @@ __visible noinstr void func(struct pt_regs *regs)			\
+ 									\
+ static __always_inline void __##func(struct pt_regs *regs)
  
- #define DAVINCI_TIMER_REG_TIM12			0x10
- #define DAVINCI_TIMER_REG_TIM34			0x14
-@@ -250,20 +250,20 @@ int __init davinci_timer_register(struct clk *clk,
++/**
++ * DECLARE_IDTENTRY_XENCB - Declare functions for XEN HV callback entry point
++ * @vector:	Vector number (ignored for C)
++ * @func:	Function name of the entry point
++ *
++ * Declares three functions:
++ * - The ASM entry point: asm_##func
++ * - The XEN PV trap entry point: xen_##func (maybe unused)
++ * - The C handler called from the ASM entry point
++ *
++ * Maps to DECLARE_IDTENTRY(). Distinct entry point to handle the 32/64-bit
++ * difference
++ */
++#define DECLARE_IDTENTRY_XENCB(vector, func)				\
++	DECLARE_IDTENTRY(vector, func)
++
+ #ifdef CONFIG_X86_64
+ /**
+  * DECLARE_IDTENTRY_IST - Declare functions for IST handling IDT entry points
+@@ -432,6 +448,9 @@ __visible noinstr void func(struct pt_regs *regs,			\
+ # define DECLARE_IDTENTRY_DF(vector, func)				\
+ 	idtentry_df vector asm_##func func
  
- 	rv = clk_prepare_enable(clk);
- 	if (rv) {
--		pr_err("Unable to prepare and enable the timer clock");
-+		pr_err("Unable to prepare and enable the timer clock\n");
- 		return rv;
- 	}
++# define DECLARE_IDTENTRY_XENCB(vector, func)				\
++	DECLARE_IDTENTRY(vector, func)
++
+ #else
+ # define DECLARE_IDTENTRY_MCE(vector, func)				\
+ 	DECLARE_IDTENTRY(vector, func)
+@@ -442,6 +461,9 @@ __visible noinstr void func(struct pt_regs *regs,			\
+ /* No ASM emitted for DF as this goes through a C shim */
+ # define DECLARE_IDTENTRY_DF(vector, func)
  
- 	if (!request_mem_region(timer_cfg->reg.start,
- 				resource_size(&timer_cfg->reg),
- 				"davinci-timer")) {
--		pr_err("Unable to request memory region");
-+		pr_err("Unable to request memory region\n");
- 		return -EBUSY;
- 	}
++/* No ASM emitted for XEN hypervisor callback */
++# define DECLARE_IDTENTRY_XENCB(vector, func)
++
+ #endif
  
- 	base = ioremap(timer_cfg->reg.start, resource_size(&timer_cfg->reg));
- 	if (!base) {
--		pr_err("Unable to map the register range");
-+		pr_err("Unable to map the register range\n");
- 		return -ENOMEM;
- 	}
+ /* No ASM code emitted for NMI */
+@@ -558,7 +580,7 @@ DECLARE_IDTENTRY_XEN(X86_TRAP_DB,	debug);
+ DECLARE_IDTENTRY_DF(X86_TRAP_DF,	exc_double_fault);
  
-@@ -271,10 +271,8 @@ int __init davinci_timer_register(struct clk *clk,
- 	tick_rate = clk_get_rate(clk);
+ #ifdef CONFIG_XEN_PV
+-DECLARE_IDTENTRY(X86_TRAP_OTHER,	exc_xen_hypervisor_callback);
++DECLARE_IDTENTRY_XENCB(X86_TRAP_OTHER,	exc_xen_hypervisor_callback);
+ #endif
  
- 	clockevent = kzalloc(sizeof(*clockevent), GFP_KERNEL | __GFP_NOFAIL);
--	if (!clockevent) {
--		pr_err("Error allocating memory for clockevent data");
-+	if (!clockevent)
- 		return -ENOMEM;
--	}
+ /* Device interrupts common/spurious */
+diff --git a/arch/x86/xen/xen-asm_32.S b/arch/x86/xen/xen-asm_32.S
+index d0ff2dc..4757cec 100644
+--- a/arch/x86/xen/xen-asm_32.S
++++ b/arch/x86/xen/xen-asm_32.S
+@@ -113,7 +113,7 @@ iret_restore_end:
+ 	 * Events are masked, so jumping out of the critical region is
+ 	 * OK.
+ 	 */
+-	je asm_exc_xen_hypervisor_callback
++	je xen_asm_exc_xen_hypervisor_callback
  
- 	clockevent->dev.name = "tim12";
- 	clockevent->dev.features = CLOCK_EVT_FEAT_ONESHOT;
-@@ -298,7 +296,7 @@ int __init davinci_timer_register(struct clk *clk,
- 			 davinci_timer_irq_timer, IRQF_TIMER,
- 			 "clockevent/tim12", clockevent);
- 	if (rv) {
--		pr_err("Unable to request the clockevent interrupt");
-+		pr_err("Unable to request the clockevent interrupt\n");
- 		return rv;
- 	}
+ 1:	iret
+ xen_iret_end_crit:
+@@ -127,7 +127,7 @@ SYM_CODE_END(xen_iret)
+ 	.globl xen_iret_start_crit, xen_iret_end_crit
  
-@@ -325,7 +323,7 @@ int __init davinci_timer_register(struct clk *clk,
- 
- 	rv = clocksource_register_hz(&davinci_clocksource.dev, tick_rate);
- 	if (rv) {
--		pr_err("Unable to register clocksource");
-+		pr_err("Unable to register clocksource\n");
- 		return rv;
- 	}
- 
-@@ -343,20 +341,20 @@ static int __init of_davinci_timer_register(struct device_node *np)
- 
- 	rv = of_address_to_resource(np, 0, &timer_cfg.reg);
- 	if (rv) {
--		pr_err("Unable to get the register range for timer");
-+		pr_err("Unable to get the register range for timer\n");
- 		return rv;
- 	}
- 
- 	rv = of_irq_to_resource_table(np, timer_cfg.irq,
- 				      DAVINCI_TIMER_NUM_IRQS);
- 	if (rv != DAVINCI_TIMER_NUM_IRQS) {
--		pr_err("Unable to get the interrupts for timer");
-+		pr_err("Unable to get the interrupts for timer\n");
- 		return rv;
- 	}
- 
- 	clk = of_clk_get(np, 0);
- 	if (IS_ERR(clk)) {
--		pr_err("Unable to get the timer clock");
-+		pr_err("Unable to get the timer clock\n");
- 		return PTR_ERR(clk);
- 	}
- 
+ /*
+- * This is called by exc_xen_hypervisor_callback in entry_32.S when it sees
++ * This is called by xen_asm_exc_xen_hypervisor_callback in entry_32.S when it sees
+  * that the EIP at the time of interrupt was between
+  * xen_iret_start_crit and xen_iret_end_crit.
+  *
+@@ -144,7 +144,7 @@ SYM_CODE_END(xen_iret)
+  *	 eflags		}
+  *	 cs		}  nested exception info
+  *	 eip		}
+- *	 return address	: (into asm_exc_xen_hypervisor_callback)
++ *	 return address	: (into xen_asm_exc_xen_hypervisor_callback)
+  *
+  * In order to deliver the nested exception properly, we need to discard the
+  * nested exception frame such that when we handle the exception, we do it
