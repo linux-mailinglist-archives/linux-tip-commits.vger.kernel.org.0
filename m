@@ -2,40 +2,41 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EBB051EA4A4
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  1 Jun 2020 15:13:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E314B1EA48F
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  1 Jun 2020 15:12:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727124AbgFANNP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 1 Jun 2020 09:13:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48206 "EHLO
+        id S1727000AbgFANMu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 1 Jun 2020 09:12:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48244 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726962AbgFANLo (ORCPT
+        with ESMTP id S1727869AbgFANLw (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 1 Jun 2020 09:11:44 -0400
+        Mon, 1 Jun 2020 09:11:52 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7976C08C5C0;
-        Mon,  1 Jun 2020 06:11:43 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DAC7C08C5C0;
+        Mon,  1 Jun 2020 06:11:51 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jfkE9-00073s-FE; Mon, 01 Jun 2020 15:11:41 +0200
+        id 1jfkEB-000751-50; Mon, 01 Jun 2020 15:11:43 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 1B5C01C0244;
-        Mon,  1 Jun 2020 15:11:40 +0200 (CEST)
-Date:   Mon, 01 Jun 2020 13:11:39 -0000
-From:   "tip-bot2 for Colin Ian King" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C68931C0244;
+        Mon,  1 Jun 2020 15:11:42 +0200 (CEST)
+Date:   Mon, 01 Jun 2020 13:11:42 -0000
+From:   "tip-bot2 for Tony Lindgren" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] clocksource/drivers/timer-ti-dm: Fix spelling
- mistake "detectt" -> "detect"
-Cc:     Colin Ian King <colin.king@canonical.com>,
+Subject: [tip: timers/core] clocksource/drivers/timer-ti-dm: Fix warning for
+ set but not used
+Cc:     kbuild test robot <lkp@intel.com>,
+        Tony Lindgren <tony@atomide.com>,
         Daniel Lezcano <daniel.lezcano@linaro.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200519224428.6195-1-colin.king@canonical.com>
-References: <20200519224428.6195-1-colin.king@canonical.com>
+In-Reply-To: <20200519155157.12804-1-tony@atomide.com>
+References: <20200519155157.12804-1-tony@atomide.com>
 MIME-Version: 1.0
-Message-ID: <159101709996.17951.15342270315612882437.tip-bot2@tip-bot2>
+Message-ID: <159101710255.17951.4636349672483050545.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,34 +52,61 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     ac593e62b0cfcbc53502be8b6c7e40fed8baff8c
-Gitweb:        https://git.kernel.org/tip/ac593e62b0cfcbc53502be8b6c7e40fed8baff8c
-Author:        Colin Ian King <colin.king@canonical.com>
-AuthorDate:    Tue, 19 May 2020 23:44:28 +01:00
+Commit-ID:     c177e2975430cec296aa52a0d413e447417d6cf9
+Gitweb:        https://git.kernel.org/tip/c177e2975430cec296aa52a0d413e447417d6cf9
+Author:        Tony Lindgren <tony@atomide.com>
+AuthorDate:    Tue, 19 May 2020 08:51:57 -07:00
 Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
-CommitterDate: Sat, 23 May 2020 00:01:35 +02:00
+CommitterDate: Sat, 23 May 2020 00:01:05 +02:00
 
-clocksource/drivers/timer-ti-dm: Fix spelling mistake "detectt" -> "detect"
+clocksource/drivers/timer-ti-dm: Fix warning for set but not used
 
-There is a spelling mistake in a pr_err message. Fix it.
+We can get a warning for dmtimer_clocksource_init() with 'pa' set but
+not used. This was used in the earlier revisions of the code but no
+longer needed, so let's remove the unused pa and of_translate_address().
+Let's also do it for dmtimer_clockevent_init() that has a similar issue.
 
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Reported-by: kbuild test robot <lkp@intel.com>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
 Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20200519224428.6195-1-colin.king@canonical.com
+Link: https://lore.kernel.org/r/20200519155157.12804-1-tony@atomide.com
 ---
- drivers/clocksource/timer-ti-dm-systimer.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clocksource/timer-ti-dm-systimer.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
 diff --git a/drivers/clocksource/timer-ti-dm-systimer.c b/drivers/clocksource/timer-ti-dm-systimer.c
-index 7da998d..6fd1f21 100644
+index 1495618..7da998d 100644
 --- a/drivers/clocksource/timer-ti-dm-systimer.c
 +++ b/drivers/clocksource/timer-ti-dm-systimer.c
-@@ -697,7 +697,7 @@ static int __init dmtimer_systimer_init(struct device_node *np)
- 		dmtimer_systimer_select_best();
+@@ -514,7 +514,6 @@ static int __init dmtimer_clockevent_init(struct device_node *np)
+ 	struct clock_event_device *dev;
+ 	struct dmtimer_systimer *t;
+ 	int error;
+-	u32 pa;
  
- 	if (!clocksource && !clockevent) {
--		pr_err("%s: unable to detectt system timers, update dtb?\n",
-+		pr_err("%s: unable to detect system timers, update dtb?\n",
- 		       __func__);
+ 	clkevt = kzalloc(sizeof(*clkevt), GFP_KERNEL);
+ 	if (!clkevt)
+@@ -563,7 +562,6 @@ static int __init dmtimer_clockevent_init(struct device_node *np)
+ 	writel_relaxed(OMAP_TIMER_INT_OVERFLOW, t->base + t->irq_ena);
+ 	writel_relaxed(OMAP_TIMER_INT_OVERFLOW, t->base + t->wakeup);
  
- 		return -EINVAL;
+-	pa = of_translate_address(np, of_get_address(np, 0, NULL, NULL));
+ 	pr_info("TI gptimer clockevent: %s%lu Hz at %pOF\n",
+ 		of_find_property(np, "ti,timer-alwon", NULL) ?
+ 		"always-on " : "", t->rate, np->parent);
+@@ -637,7 +635,6 @@ static int __init dmtimer_clocksource_init(struct device_node *np)
+ 	struct dmtimer_systimer *t;
+ 	struct clocksource *dev;
+ 	int error;
+-	u32 pa;
+ 
+ 	clksrc = kzalloc(sizeof(*clksrc), GFP_KERNEL);
+ 	if (!clksrc)
+@@ -666,7 +663,6 @@ static int __init dmtimer_clocksource_init(struct device_node *np)
+ 	writel_relaxed(OMAP_TIMER_CTRL_ST | OMAP_TIMER_CTRL_AR,
+ 		       t->base + t->ctrl);
+ 
+-	pa = of_translate_address(np, of_get_address(np, 0, NULL, NULL));
+ 	pr_info("TI gptimer clocksource: %s%pOF\n",
+ 		of_find_property(np, "ti,timer-alwon", NULL) ?
+ 		"always-on " : "", np->parent);
