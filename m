@@ -2,40 +2,49 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EA6201EA4A5
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  1 Jun 2020 15:13:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0029C1EA46C
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  1 Jun 2020 15:11:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725847AbgFANLl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 1 Jun 2020 09:11:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48186 "EHLO
+        id S1727013AbgFANLo (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 1 Jun 2020 09:11:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48198 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725935AbgFANLj (ORCPT
+        with ESMTP id S1726232AbgFANLm (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 1 Jun 2020 09:11:39 -0400
+        Mon, 1 Jun 2020 09:11:42 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42594C08C5C0;
-        Mon,  1 Jun 2020 06:11:39 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DDEBC08C5C9;
+        Mon,  1 Jun 2020 06:11:41 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jfkE3-0006ya-VM; Mon, 01 Jun 2020 15:11:36 +0200
+        id 1jfkE5-0006zl-Fz; Mon, 01 Jun 2020 15:11:37 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 8EF1A1C0481;
-        Mon,  1 Jun 2020 15:11:35 +0200 (CEST)
-Date:   Mon, 01 Jun 2020 13:11:35 -0000
-From:   "tip-bot2 for Saravana Kannan" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 1777D1C0244;
+        Mon,  1 Jun 2020 15:11:37 +0200 (CEST)
+Date:   Mon, 01 Jun 2020 13:11:36 -0000
+From:   "tip-bot2 for Serge Semin" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] clocksource/drivers/timer-versatile: Clear
- OF_POPULATED flag
-Cc:     Saravana Kannan <saravanak@google.com>,
+Subject: [tip: timers/core] clocksource: dw_apb_timer_of: Fix missing
+ clockevent timers
+Cc:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
+        Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Paul Burton <paulburton@kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Alessandro Zummo <a.zummo@towertech.it>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Rob Herring <robh+dt@kernel.org>, linux-mips@vger.kernel.org,
+        linux-rtc@vger.kernel.org, devicetree@vger.kernel.org,
         Daniel Lezcano <daniel.lezcano@linaro.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200324195302.203115-1-saravanak@google.com>
-References: <20200324195302.203115-1-saravanak@google.com>
+In-Reply-To: <20200521204818.25436-7-Sergey.Semin@baikalelectronics.ru>
+References: <20200521204818.25436-7-Sergey.Semin@baikalelectronics.ru>
 MIME-Version: 1.0
-Message-ID: <159101709544.17951.7062819245168956277.tip-bot2@tip-bot2>
+Message-ID: <159101709692.17951.17644672319168275333.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,53 +60,73 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     7a3768c206a006525afc090f92d4d618d8356b92
-Gitweb:        https://git.kernel.org/tip/7a3768c206a006525afc090f92d4d618d8356b92
-Author:        Saravana Kannan <saravanak@google.com>
-AuthorDate:    Tue, 24 Mar 2020 12:53:02 -07:00
+Commit-ID:     6d2e16a3181bafb77b535095c39ad1c8b9558c8c
+Gitweb:        https://git.kernel.org/tip/6d2e16a3181bafb77b535095c39ad1c8b9558c8c
+Author:        Serge Semin <Sergey.Semin@baikalelectronics.ru>
+AuthorDate:    Thu, 21 May 2020 23:48:15 +03:00
 Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
-CommitterDate: Sat, 23 May 2020 00:03:25 +02:00
+CommitterDate: Sat, 23 May 2020 00:02:59 +02:00
 
-clocksource/drivers/timer-versatile: Clear OF_POPULATED flag
+clocksource: dw_apb_timer_of: Fix missing clockevent timers
 
-The commit 4f41fe386a94 ("clocksource/drivers/timer-probe: Avoid
-creating dead devices") broke the handling of arm,vexpress-sysreg [1].
+Commit 100214889973 ("clocksource: dw_apb_timer_of: use
+clocksource_of_init") replaced a publicly available driver
+initialization method with one called by the timer_probe() method
+available after CLKSRC_OF. In current implementation it traverses
+all the timers available in the system and calls their initialization
+methods if corresponding devices were either in dtb or in acpi. But
+if before the commit any number of available timers would be installed
+as clockevent and clocksource devices, after that there would be at most
+two. The rest are just ignored since default case branch doesn't do
+anything. I don't see a reason of such behaviour, neither the commit
+message explains it. Moreover this might be wrong if on some platforms
+these timers might be used for different purpose, as virtually CPU-local
+clockevent timers and as an independent broadcast timer. So in order
+to keep the compatibility with the platforms where the order of the
+timers detection has some meaning, lets add the secondly discovered
+timer to be of clocksource/sched_clock type, while the very first and
+the others would provide the clockevents service.
 
-The arm,vexpress-sysreg device is handled by both timer-versatile.c and
-drivers/mfd/vexpress-sysreg.c. While the timer driver doesn't use the
-device, the mfd driver still needs a device to probe.
-
-So, this patch clears the OF_POPULATED flag to continue creating the
-device.
-
-[1] - https://lore.kernel.org/lkml/20200324175955.GA16972@arm.com/
-
-Fixes: 4f41fe386a94 ("clocksource/drivers/timer-probe: Avoid creating dead devices")
-Signed-off-by: Saravana Kannan <saravanak@google.com>
+Fixes: 100214889973 ("clocksource: dw_apb_timer_of: use clocksource_of_init")
+Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
+Cc: Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>
+Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc: Paul Burton <paulburton@kernel.org>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Alessandro Zummo <a.zummo@towertech.it>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Rob Herring <robh+dt@kernel.org>
+Cc: linux-mips@vger.kernel.org
+Cc: linux-rtc@vger.kernel.org
+Cc: devicetree@vger.kernel.org
 Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20200324195302.203115-1-saravanak@google.com
+Link: https://lore.kernel.org/r/20200521204818.25436-7-Sergey.Semin@baikalelectronics.ru
 ---
- drivers/clocksource/timer-versatile.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/clocksource/dw_apb_timer_of.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/clocksource/timer-versatile.c b/drivers/clocksource/timer-versatile.c
-index e4ebb65..f5d017b 100644
---- a/drivers/clocksource/timer-versatile.c
-+++ b/drivers/clocksource/timer-versatile.c
-@@ -6,6 +6,7 @@
- 
- #include <linux/clocksource.h>
- #include <linux/io.h>
-+#include <linux/of.h>
- #include <linux/of_address.h>
- #include <linux/sched_clock.h>
- 
-@@ -22,6 +23,8 @@ static int __init versatile_sched_clock_init(struct device_node *node)
+diff --git a/drivers/clocksource/dw_apb_timer_of.c b/drivers/clocksource/dw_apb_timer_of.c
+index 2db490f..ab3ddeb 100644
+--- a/drivers/clocksource/dw_apb_timer_of.c
++++ b/drivers/clocksource/dw_apb_timer_of.c
+@@ -147,10 +147,6 @@ static int num_called;
+ static int __init dw_apb_timer_init(struct device_node *timer)
  {
- 	void __iomem *base = of_iomap(node, 0);
- 
-+	of_node_clear_flag(node, OF_POPULATED);
-+
- 	if (!base)
- 		return -ENXIO;
+ 	switch (num_called) {
+-	case 0:
+-		pr_debug("%s: found clockevent timer\n", __func__);
+-		add_clockevent(timer);
+-		break;
+ 	case 1:
+ 		pr_debug("%s: found clocksource timer\n", __func__);
+ 		add_clocksource(timer);
+@@ -161,6 +157,8 @@ static int __init dw_apb_timer_init(struct device_node *timer)
+ #endif
+ 		break;
+ 	default:
++		pr_debug("%s: found clockevent timer\n", __func__);
++		add_clockevent(timer);
+ 		break;
+ 	}
  
