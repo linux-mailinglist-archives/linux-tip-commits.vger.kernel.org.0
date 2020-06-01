@@ -2,41 +2,43 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 92B131EA152
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  1 Jun 2020 11:54:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 53CF91EA14D
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  1 Jun 2020 11:54:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726936AbgFAJxC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 1 Jun 2020 05:53:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44438 "EHLO
+        id S1725925AbgFAJwx (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 1 Jun 2020 05:52:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44454 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726751AbgFAJwf (ORCPT
+        with ESMTP id S1727068AbgFAJwi (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 1 Jun 2020 05:52:35 -0400
+        Mon, 1 Jun 2020 05:52:38 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7C81C08C5C0;
-        Mon,  1 Jun 2020 02:52:35 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87F1CC03E96F;
+        Mon,  1 Jun 2020 02:52:38 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jfh7Q-0003i6-2L; Mon, 01 Jun 2020 11:52:32 +0200
+        id 1jfh7Q-0003iS-KH; Mon, 01 Jun 2020 11:52:32 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B09FD1C0244;
-        Mon,  1 Jun 2020 11:52:31 +0200 (CEST)
-Date:   Mon, 01 Jun 2020 09:52:31 -0000
-From:   "tip-bot2 for Mike Galbraith" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 44FFF1C0481;
+        Mon,  1 Jun 2020 11:52:32 +0200 (CEST)
+Date:   Mon, 01 Jun 2020 09:52:32 -0000
+From:   "tip-bot2 for Julia Cartwright" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] connector/cn_proc: Protect send_msg() with a local lock
-Cc:     Mike Galbraith <umgwanakikbuti@gmail.com>,
+Subject: [tip: locking/core] squashfs: Make use of local lock in multi_cpu
+ decompressor
+Cc:     Alexander Stein <alexander.stein@systec-electronic.com>,
+        Julia Cartwright <julia@ni.com>,
         Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
         Ingo Molnar <mingo@kernel.org>,
         Peter Zijlstra <peterz@infradead.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200527201119.1692513-6-bigeasy@linutronix.de>
-References: <20200527201119.1692513-6-bigeasy@linutronix.de>
+In-Reply-To: <20200527201119.1692513-5-bigeasy@linutronix.de>
+References: <20200527201119.1692513-5-bigeasy@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <159100515158.17951.5876738878274408032.tip-bot2@tip-bot2>
+Message-ID: <159100515208.17951.8993424688184541941.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -52,84 +54,93 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     3e92fd7bd2b8418b53cb7304855b8b69bedbe2b4
-Gitweb:        https://git.kernel.org/tip/3e92fd7bd2b8418b53cb7304855b8b69bedbe2b4
-Author:        Mike Galbraith <umgwanakikbuti@gmail.com>
-AuthorDate:    Wed, 27 May 2020 22:11:17 +02:00
+Commit-ID:     fd56200a16c72c7c3ec3e54e06160dfaa5b8dee8
+Gitweb:        https://git.kernel.org/tip/fd56200a16c72c7c3ec3e54e06160dfaa5b8dee8
+Author:        Julia Cartwright <julia@ni.com>
+AuthorDate:    Wed, 27 May 2020 22:11:16 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Thu, 28 May 2020 10:31:10 +02:00
 
-connector/cn_proc: Protect send_msg() with a local lock
+squashfs: Make use of local lock in multi_cpu decompressor
 
-send_msg() disables preemption to avoid out-of-order messages. As the
-code inside the preempt disabled section acquires regular spinlocks,
-which are converted to 'sleeping' spinlocks on a PREEMPT_RT kernel and
-eventually calls into a memory allocator, this conflicts with the RT
-semantics.
+The squashfs multi CPU decompressor makes use of get_cpu_ptr() to
+acquire a pointer to per-CPU data. get_cpu_ptr() implicitly disables
+preemption which serializes the access to the per-CPU data.
 
-Convert it to a local_lock which allows RT kernels to substitute them with
-a real per CPU lock. On non RT kernels this maps to preempt_disable() as
-before. No functional change.
+But decompression can take quite some time depending on the size. The
+observed preempt disabled times in real world scenarios went up to 8ms,
+causing massive wakeup latencies. This happens on all CPUs as the
+decompression is fully parallelized.
 
-[bigeasy: Patch description]
+Replace the implicit preemption control with an explicit local lock.
+This allows RT kernels to substitute it with a real per CPU lock, which
+serializes the access but keeps the code section preemptible. On non RT
+kernels this maps to preempt_disable() as before, i.e. no functional
+change.
 
-Signed-off-by: Mike Galbraith <umgwanakikbuti@gmail.com>
+[ bigeasy: Use local_lock(), patch description]
+
+Reported-by: Alexander Stein <alexander.stein@systec-electronic.com>
+Signed-off-by: Julia Cartwright <julia@ni.com>
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Tested-by: Alexander Stein <alexander.stein@systec-electronic.com>
 Acked-by: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20200527201119.1692513-6-bigeasy@linutronix.de
+Link: https://lore.kernel.org/r/20200527201119.1692513-5-bigeasy@linutronix.de
 ---
- drivers/connector/cn_proc.c | 21 ++++++++++++++-------
+ fs/squashfs/decompressor_multi_percpu.c | 21 ++++++++++++++-------
  1 file changed, 14 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/connector/cn_proc.c b/drivers/connector/cn_proc.c
-index d58ce66..646ad38 100644
---- a/drivers/connector/cn_proc.c
-+++ b/drivers/connector/cn_proc.c
-@@ -18,6 +18,7 @@
- #include <linux/pid_namespace.h>
- 
- #include <linux/cn_proc.h>
+diff --git a/fs/squashfs/decompressor_multi_percpu.c b/fs/squashfs/decompressor_multi_percpu.c
+index 2a2a2d1..e206ebf 100644
+--- a/fs/squashfs/decompressor_multi_percpu.c
++++ b/fs/squashfs/decompressor_multi_percpu.c
+@@ -8,6 +8,7 @@
+ #include <linux/slab.h>
+ #include <linux/percpu.h>
+ #include <linux/buffer_head.h>
 +#include <linux/local_lock.h>
  
- /*
-  * Size of a cn_msg followed by a proc_event structure.  Since the
-@@ -38,25 +39,31 @@ static inline struct cn_msg *buffer_to_cn_msg(__u8 *buffer)
- static atomic_t proc_event_num_listeners = ATOMIC_INIT(0);
- static struct cb_id cn_proc_event_id = { CN_IDX_PROC, CN_VAL_PROC };
+ #include "squashfs_fs.h"
+ #include "squashfs_fs_sb.h"
+@@ -20,7 +21,8 @@
+  */
  
--/* proc_event_counts is used as the sequence number of the netlink message */
--static DEFINE_PER_CPU(__u32, proc_event_counts) = { 0 };
-+/* local_event.count is used as the sequence number of the netlink message */
-+struct local_event {
-+	local_lock_t lock;
-+	__u32 count;
-+};
-+static DEFINE_PER_CPU(struct local_event, local_event) = {
-+	.lock = INIT_LOCAL_LOCK(lock),
-+};
+ struct squashfs_stream {
+-	void		*stream;
++	void			*stream;
++	local_lock_t	lock;
+ };
  
- static inline void send_msg(struct cn_msg *msg)
+ void *squashfs_decompressor_create(struct squashfs_sb_info *msblk,
+@@ -41,6 +43,7 @@ void *squashfs_decompressor_create(struct squashfs_sb_info *msblk,
+ 			err = PTR_ERR(stream->stream);
+ 			goto out;
+ 		}
++		local_lock_init(&stream->lock);
+ 	}
+ 
+ 	kfree(comp_opts);
+@@ -75,12 +78,16 @@ void squashfs_decompressor_destroy(struct squashfs_sb_info *msblk)
+ int squashfs_decompress(struct squashfs_sb_info *msblk, struct buffer_head **bh,
+ 	int b, int offset, int length, struct squashfs_page_actor *output)
  {
--	preempt_disable();
-+	local_lock(&local_event.lock);
+-	struct squashfs_stream __percpu *percpu =
+-			(struct squashfs_stream __percpu *) msblk->stream;
+-	struct squashfs_stream *stream = get_cpu_ptr(percpu);
+-	int res = msblk->decompressor->decompress(msblk, stream->stream, bh, b,
+-		offset, length, output);
+-	put_cpu_ptr(stream);
++	struct squashfs_stream *stream;
++	int res;
++
++	local_lock(&msblk->stream->lock);
++	stream = this_cpu_ptr(msblk->stream);
++
++	res = msblk->decompressor->decompress(msblk, stream->stream, bh, b,
++			offset, length, output);
++
++	local_unlock(&msblk->stream->lock);
  
--	msg->seq = __this_cpu_inc_return(proc_event_counts) - 1;
-+	msg->seq = __this_cpu_inc_return(local_event.count) - 1;
- 	((struct proc_event *)msg->data)->cpu = smp_processor_id();
- 
- 	/*
--	 * Preemption remains disabled during send to ensure the messages are
--	 * ordered according to their sequence numbers.
-+	 * local_lock() disables preemption during send to ensure the messages
-+	 * are ordered according to their sequence numbers.
- 	 *
- 	 * If cn_netlink_send() fails, the data is not sent.
- 	 */
- 	cn_netlink_send(msg, 0, CN_IDX_PROC, GFP_NOWAIT);
- 
--	preempt_enable();
-+	local_unlock(&local_event.lock);
- }
- 
- void proc_fork_connector(struct task_struct *task)
+ 	if (res < 0)
+ 		ERROR("%s decompression failed, data probably corrupt\n",
