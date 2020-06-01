@@ -2,49 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 89F001EA4B3
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  1 Jun 2020 15:13:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA6201EA4A5
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  1 Jun 2020 15:13:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728390AbgFANNb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 1 Jun 2020 09:13:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48196 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726201AbgFANLl (ORCPT
-        <rfc822;linux-tip-commits@vger.kernel.org>);
+        id S1725847AbgFANLl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Mon, 1 Jun 2020 09:11:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48186 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725935AbgFANLj (ORCPT
+        <rfc822;linux-tip-commits@vger.kernel.org>);
+        Mon, 1 Jun 2020 09:11:39 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BFF8C08C5C0;
-        Mon,  1 Jun 2020 06:11:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42594C08C5C0;
+        Mon,  1 Jun 2020 06:11:39 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jfkE4-0006yq-FJ; Mon, 01 Jun 2020 15:11:36 +0200
+        id 1jfkE3-0006ya-VM; Mon, 01 Jun 2020 15:11:36 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 0BA3F1C0244;
-        Mon,  1 Jun 2020 15:11:36 +0200 (CEST)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 8EF1A1C0481;
+        Mon,  1 Jun 2020 15:11:35 +0200 (CEST)
 Date:   Mon, 01 Jun 2020 13:11:35 -0000
-From:   "tip-bot2 for Serge Semin" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Saravana Kannan" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] clocksource: mips-gic-timer: Mark GIC timer as
- unstable if ref clock changes
-Cc:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
-        Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Paul Burton <paulburton@kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Rob Herring <robh+dt@kernel.org>, linux-mips@vger.kernel.org,
-        linux-rtc@vger.kernel.org, devicetree@vger.kernel.org,
+Subject: [tip: timers/core] clocksource/drivers/timer-versatile: Clear
+ OF_POPULATED flag
+Cc:     Saravana Kannan <saravanak@google.com>,
         Daniel Lezcano <daniel.lezcano@linaro.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200521204818.25436-9-Sergey.Semin@baikalelectronics.ru>
-References: <20200521204818.25436-9-Sergey.Semin@baikalelectronics.ru>
+In-Reply-To: <20200324195302.203115-1-saravanak@google.com>
+References: <20200324195302.203115-1-saravanak@google.com>
 MIME-Version: 1.0
-Message-ID: <159101709590.17951.10382391604771292137.tip-bot2@tip-bot2>
+Message-ID: <159101709544.17951.7062819245168956277.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -60,105 +51,53 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     7d7de1a65349811b24971c5e8e040e6aac192dd4
-Gitweb:        https://git.kernel.org/tip/7d7de1a65349811b24971c5e8e040e6aac192dd4
-Author:        Serge Semin <Sergey.Semin@baikalelectronics.ru>
-AuthorDate:    Thu, 21 May 2020 23:48:17 +03:00
+Commit-ID:     7a3768c206a006525afc090f92d4d618d8356b92
+Gitweb:        https://git.kernel.org/tip/7a3768c206a006525afc090f92d4d618d8356b92
+Author:        Saravana Kannan <saravanak@google.com>
+AuthorDate:    Tue, 24 Mar 2020 12:53:02 -07:00
 Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
-CommitterDate: Sat, 23 May 2020 00:03:16 +02:00
+CommitterDate: Sat, 23 May 2020 00:03:25 +02:00
 
-clocksource: mips-gic-timer: Mark GIC timer as unstable if ref clock changes
+clocksource/drivers/timer-versatile: Clear OF_POPULATED flag
 
-Currently clocksource framework doesn't support the clocks with variable
-frequency. Since MIPS GIC timer ticks rate might be unstable on some
-platforms, we must make sure that it justifies the clocksource
-requirements. MIPS GIC timer is incremented with the CPU cluster reference
-clocks rate. So in case if CPU frequency changes, the MIPS GIC tick rate
-changes synchronously. Due to this the clocksource subsystem can't rely on
-the timer to measure system clocks anymore. This commit marks the MIPS GIC
-based clocksource as unstable if reference clock (normally it's a CPU
-reference clocks) rate changes. The clocksource will execute a watchdog
-thread, which lowers the MIPS GIC timer rating to zero and fallbacks to a
-new stable one.
+The commit 4f41fe386a94 ("clocksource/drivers/timer-probe: Avoid
+creating dead devices") broke the handling of arm,vexpress-sysreg [1].
 
-Note we don't need to set the CLOCK_SOURCE_MUST_VERIFY flag to the MIPS
-GIC clocksource since normally the timer is stable. The only reason why
-it gets unstable is due to the ref clock rate change, which event we
-detect here in the driver by means of the clocks event notifier.
+The arm,vexpress-sysreg device is handled by both timer-versatile.c and
+drivers/mfd/vexpress-sysreg.c. While the timer driver doesn't use the
+device, the mfd driver still needs a device to probe.
 
-Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
-Cc: Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>
-Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc: Paul Burton <paulburton@kernel.org>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Alessandro Zummo <a.zummo@towertech.it>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Rob Herring <robh+dt@kernel.org>
-Cc: linux-mips@vger.kernel.org
-Cc: linux-rtc@vger.kernel.org
-Cc: devicetree@vger.kernel.org
+So, this patch clears the OF_POPULATED flag to continue creating the
+device.
+
+[1] - https://lore.kernel.org/lkml/20200324175955.GA16972@arm.com/
+
+Fixes: 4f41fe386a94 ("clocksource/drivers/timer-probe: Avoid creating dead devices")
+Signed-off-by: Saravana Kannan <saravanak@google.com>
 Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20200521204818.25436-9-Sergey.Semin@baikalelectronics.ru
+Link: https://lore.kernel.org/r/20200324195302.203115-1-saravanak@google.com
 ---
- drivers/clocksource/Kconfig          |  1 +
- drivers/clocksource/mips-gic-timer.c | 19 ++++++++++++++++++-
- 2 files changed, 19 insertions(+), 1 deletion(-)
+ drivers/clocksource/timer-versatile.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
-index c824002..9141838 100644
---- a/drivers/clocksource/Kconfig
-+++ b/drivers/clocksource/Kconfig
-@@ -570,6 +570,7 @@ config CLKSRC_VERSATILE
- config CLKSRC_MIPS_GIC
- 	bool
- 	depends on MIPS_GIC
-+	select CLOCKSOURCE_WATCHDOG
- 	select TIMER_OF
+diff --git a/drivers/clocksource/timer-versatile.c b/drivers/clocksource/timer-versatile.c
+index e4ebb65..f5d017b 100644
+--- a/drivers/clocksource/timer-versatile.c
++++ b/drivers/clocksource/timer-versatile.c
+@@ -6,6 +6,7 @@
  
- config CLKSRC_TANGO_XTAL
-diff --git a/drivers/clocksource/mips-gic-timer.c b/drivers/clocksource/mips-gic-timer.c
-index ef12c12..be4175f 100644
---- a/drivers/clocksource/mips-gic-timer.c
-+++ b/drivers/clocksource/mips-gic-timer.c
-@@ -24,6 +24,9 @@
- static DEFINE_PER_CPU(struct clock_event_device, gic_clockevent_device);
- static int gic_timer_irq;
- static unsigned int gic_frequency;
-+static bool __read_mostly gic_clock_unstable;
-+
-+static void gic_clocksource_unstable(char *reason);
+ #include <linux/clocksource.h>
+ #include <linux/io.h>
++#include <linux/of.h>
+ #include <linux/of_address.h>
+ #include <linux/sched_clock.h>
  
- static u64 notrace gic_read_count_2x32(void)
+@@ -22,6 +23,8 @@ static int __init versatile_sched_clock_init(struct device_node *node)
  {
-@@ -125,8 +128,10 @@ static int gic_clk_notifier(struct notifier_block *nb, unsigned long action,
- {
- 	struct clk_notifier_data *cnd = data;
+ 	void __iomem *base = of_iomap(node, 0);
  
--	if (action == POST_RATE_CHANGE)
-+	if (action == POST_RATE_CHANGE) {
-+		gic_clocksource_unstable("ref clock rate change");
- 		on_each_cpu(gic_update_frequency, (void *)cnd->new_rate, 1);
-+	}
++	of_node_clear_flag(node, OF_POPULATED);
++
+ 	if (!base)
+ 		return -ENXIO;
  
- 	return NOTIFY_OK;
- }
-@@ -172,6 +177,18 @@ static struct clocksource gic_clocksource = {
- 	.vdso_clock_mode	= VDSO_CLOCKMODE_GIC,
- };
- 
-+static void gic_clocksource_unstable(char *reason)
-+{
-+	if (gic_clock_unstable)
-+		return;
-+
-+	gic_clock_unstable = true;
-+
-+	pr_info("GIC timer is unstable due to %s\n", reason);
-+
-+	clocksource_mark_unstable(&gic_clocksource);
-+}
-+
- static int __init __gic_clocksource_init(void)
- {
- 	unsigned int count_width;
