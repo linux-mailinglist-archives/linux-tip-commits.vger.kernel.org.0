@@ -2,42 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 527AB1EA145
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  1 Jun 2020 11:54:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BED1B1EA13D
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  1 Jun 2020 11:52:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726132AbgFAJw2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S1726125AbgFAJw2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Mon, 1 Jun 2020 05:52:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44412 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44402 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726094AbgFAJw1 (ORCPT
+        with ESMTP id S1726022AbgFAJwZ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 1 Jun 2020 05:52:27 -0400
+        Mon, 1 Jun 2020 05:52:25 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E11EC08C5D1;
-        Mon,  1 Jun 2020 02:52:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D48F0C08C5CA;
+        Mon,  1 Jun 2020 02:52:24 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jfh7G-0003fr-7x; Mon, 01 Jun 2020 11:52:22 +0200
+        id 1jfh7F-0003fb-KJ; Mon, 01 Jun 2020 11:52:21 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id DB9C61C0244;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5343C1C0481;
         Mon,  1 Jun 2020 11:52:21 +0200 (CEST)
 Date:   Mon, 01 Jun 2020 09:52:21 -0000
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched: Fix smp_call_function_single_async() usage for ILB
-Cc:     Qian Cai <cai@lca.pw>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        Frederic Weisbecker <frederic@kernel.org>,
-        mgorman@techsingularity.net, x86 <x86@kernel.org>,
+Subject: [tip: sched/core] smp: Optimize flush_smp_call_function_queue()
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200526161907.778543557@infradead.org>
-References: <20200526161907.778543557@infradead.org>
+In-Reply-To: <20200526161907.836818381@infradead.org>
+References: <20200526161907.836818381@infradead.org>
 MIME-Version: 1.0
-Message-ID: <159100514169.17951.11938781317668210343.tip-bot2@tip-bot2>
+Message-ID: <159100514119.17951.4934899720059285189.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -53,148 +50,85 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     19a1f5ec699954d21be10f74ff71c2a7079e99ad
-Gitweb:        https://git.kernel.org/tip/19a1f5ec699954d21be10f74ff71c2a7079e99ad
+Commit-ID:     52103be07d8b08311955f8c30e535c2dda290cf4
+Gitweb:        https://git.kernel.org/tip/52103be07d8b08311955f8c30e535c2dda290cf4
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Tue, 26 May 2020 18:10:58 +02:00
+AuthorDate:    Tue, 26 May 2020 18:10:59 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Thu, 28 May 2020 10:54:15 +02:00
 
-sched: Fix smp_call_function_single_async() usage for ILB
+smp: Optimize flush_smp_call_function_queue()
 
-The recent commit: 90b5363acd47 ("sched: Clean up scheduler_ipi()")
-got smp_call_function_single_async() subtly wrong. Even though it will
-return -EBUSY when trying to re-use a csd, that condition is not
-atomic and still requires external serialization.
+The call_single_queue can contain (two) different callbacks,
+synchronous and asynchronous. The current interrupt handler runs them
+in-order, which means that remote CPUs that are waiting for their
+synchronous call can be delayed by running asynchronous callbacks.
 
-The change in kick_ilb() got this wrong.
+Rework the interrupt handler to first run the synchonous callbacks.
 
-While on first reading kick_ilb() has an atomic test-and-set that
-appears to serialize the use, the matching 'release' is not in the
-right place to actually guarantee this serialization.
-
-Rework the nohz_idle_balance() trigger so that the release is in the
-IPI callback and thus guarantees the required serialization for the
-CSD.
-
-Fixes: 90b5363acd47 ("sched: Clean up scheduler_ipi()")
-Reported-by: Qian Cai <cai@lca.pw>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Cc: mgorman@techsingularity.net
-Link: https://lore.kernel.org/r/20200526161907.778543557@infradead.org
+Link: https://lore.kernel.org/r/20200526161907.836818381@infradead.org
 ---
- kernel/sched/core.c  | 36 ++++++++++--------------------------
- kernel/sched/fair.c  | 18 ++++++++----------
- kernel/sched/sched.h |  1 +
- 3 files changed, 19 insertions(+), 36 deletions(-)
+ kernel/smp.c | 27 +++++++++++++++++++++++----
+ 1 file changed, 23 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 95e457d..2cacc1e 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -637,41 +637,25 @@ void wake_up_nohz_cpu(int cpu)
- 		wake_up_idle_cpu(cpu);
- }
- 
--static inline bool got_nohz_idle_kick(void)
-+static void nohz_csd_func(void *info)
+diff --git a/kernel/smp.c b/kernel/smp.c
+index 786092a..db2f738 100644
+--- a/kernel/smp.c
++++ b/kernel/smp.c
+@@ -209,9 +209,9 @@ void generic_smp_call_function_single_interrupt(void)
+  */
+ static void flush_smp_call_function_queue(bool warn_cpu_offline)
  {
--	int cpu = smp_processor_id();
--
--	if (!(atomic_read(nohz_flags(cpu)) & NOHZ_KICK_MASK))
--		return false;
--
--	if (idle_cpu(cpu) && !need_resched())
--		return true;
-+	struct rq *rq = info;
-+	int cpu = cpu_of(rq);
-+	unsigned int flags;
+-	struct llist_head *head;
+-	struct llist_node *entry;
+ 	call_single_data_t *csd, *csd_next;
++	struct llist_node *entry, *prev;
++	struct llist_head *head;
+ 	static bool warned;
  
- 	/*
--	 * We can't run Idle Load Balance on this CPU for this time so we
--	 * cancel it and clear NOHZ_BALANCE_KICK
-+	 * Release the rq::nohz_csd.
- 	 */
--	atomic_andnot(NOHZ_KICK_MASK, nohz_flags(cpu));
--	return false;
--}
-+	flags = atomic_fetch_andnot(NOHZ_KICK_MASK, nohz_flags(cpu));
-+	WARN_ON(!(flags & NOHZ_KICK_MASK));
- 
--static void nohz_csd_func(void *info)
--{
--	struct rq *rq = info;
--
--	if (got_nohz_idle_kick()) {
--		rq->idle_balance = 1;
-+	rq->idle_balance = idle_cpu(cpu);
-+	if (rq->idle_balance && !need_resched()) {
-+		rq->nohz_idle_balance = flags;
- 		raise_softirq_irqoff(SCHED_SOFTIRQ);
+ 	lockdep_assert_irqs_disabled();
+@@ -235,21 +235,40 @@ static void flush_smp_call_function_queue(bool warn_cpu_offline)
+ 				csd->func);
  	}
- }
- 
--#else /* CONFIG_NO_HZ_COMMON */
--
--static inline bool got_nohz_idle_kick(void)
--{
--	return false;
--}
--
- #endif /* CONFIG_NO_HZ_COMMON */
- 
- #ifdef CONFIG_NO_HZ_FULL
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index dda9b19..2890bd5 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -10024,6 +10024,10 @@ static void kick_ilb(unsigned int flags)
- 	if (ilb_cpu >= nr_cpu_ids)
- 		return;
  
 +	/*
-+	 * Access to rq::nohz_csd is serialized by NOHZ_KICK_MASK; he who sets
-+	 * the first flag owns it; cleared by nohz_csd_func().
++	 * First; run all SYNC callbacks, people are waiting for us.
 +	 */
- 	flags = atomic_fetch_or(flags, nohz_flags(ilb_cpu));
- 	if (flags & NOHZ_KICK_MASK)
- 		return;
-@@ -10371,20 +10375,14 @@ abort:
-  */
- static bool nohz_idle_balance(struct rq *this_rq, enum cpu_idle_type idle)
- {
--	int this_cpu = this_rq->cpu;
--	unsigned int flags;
-+	unsigned int flags = this_rq->nohz_idle_balance;
++	prev = NULL;
+ 	llist_for_each_entry_safe(csd, csd_next, entry, llist) {
+ 		smp_call_func_t func = csd->func;
+ 		void *info = csd->info;
  
--	if (!(atomic_read(nohz_flags(this_cpu)) & NOHZ_KICK_MASK))
-+	if (!flags)
- 		return false;
+ 		/* Do we wait until *after* callback? */
+ 		if (csd->flags & CSD_FLAG_SYNCHRONOUS) {
++			if (prev) {
++				prev->next = &csd_next->llist;
++			} else {
++				entry = &csd_next->llist;
++			}
+ 			func(info);
+ 			csd_unlock(csd);
+ 		} else {
+-			csd_unlock(csd);
+-			func(info);
++			prev = &csd->llist;
+ 		}
+ 	}
  
--	if (idle != CPU_IDLE) {
--		atomic_andnot(NOHZ_KICK_MASK, nohz_flags(this_cpu));
--		return false;
--	}
-+	this_rq->nohz_idle_balance = 0;
- 
--	/* could be _relaxed() */
--	flags = atomic_fetch_andnot(NOHZ_KICK_MASK, nohz_flags(this_cpu));
--	if (!(flags & NOHZ_KICK_MASK))
-+	if (idle != CPU_IDLE)
- 		return false;
- 
- 	_nohz_idle_balance(this_rq, flags, idle);
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index 4b32cff..3c163cb 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -951,6 +951,7 @@ struct rq {
- 
- 	struct callback_head	*balance_callback;
- 
-+	unsigned char		nohz_idle_balance;
- 	unsigned char		idle_balance;
- 
- 	unsigned long		misfit_task_load;
+ 	/*
++	 * Second; run all !SYNC callbacks.
++	 */
++	llist_for_each_entry_safe(csd, csd_next, entry, llist) {
++		smp_call_func_t func = csd->func;
++		void *info = csd->info;
++
++		csd_unlock(csd);
++		func(info);
++	}
++
++	/*
+ 	 * Handle irq works queued remotely by irq_work_queue_on().
+ 	 * Smp functions above are typically synchronous so they
+ 	 * better run first since some other CPUs may be busy waiting
