@@ -2,41 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2476A1EA151
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  1 Jun 2020 11:54:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D52E1EA141
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  1 Jun 2020 11:52:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727935AbgFAJxC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 1 Jun 2020 05:53:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44432 "EHLO
+        id S1726860AbgFAJwg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 1 Jun 2020 05:52:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44436 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726389AbgFAJwf (ORCPT
+        with ESMTP id S1726667AbgFAJwf (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Mon, 1 Jun 2020 05:52:35 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15ADEC061A0E;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A487C03E96F;
         Mon,  1 Jun 2020 02:52:35 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jfh7P-0003hh-4G; Mon, 01 Jun 2020 11:52:31 +0200
+        id 1jfh7P-0003hk-I6; Mon, 01 Jun 2020 11:52:31 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C637B1C0244;
-        Mon,  1 Jun 2020 11:52:30 +0200 (CEST)
-Date:   Mon, 01 Jun 2020 09:52:30 -0000
-From:   "tip-bot2 for Mike Galbraith" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 407221C0481;
+        Mon,  1 Jun 2020 11:52:31 +0200 (CEST)
+Date:   Mon, 01 Jun 2020 09:52:31 -0000
+From:   "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] zram: Use local lock to protect per-CPU data
-Cc:     Mike Galbraith <umgwanakikbuti@gmail.com>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+Subject: [tip: locking/core] zram: Allocate struct zcomp_strm as per-CPU memory
+Cc:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
         Ingo Molnar <mingo@kernel.org>,
         Peter Zijlstra <peterz@infradead.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200527201119.1692513-8-bigeasy@linutronix.de>
-References: <20200527201119.1692513-8-bigeasy@linutronix.de>
+In-Reply-To: <20200527201119.1692513-7-bigeasy@linutronix.de>
+References: <20200527201119.1692513-7-bigeasy@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <159100515059.17951.4923007968333025082.tip-bot2@tip-bot2>
+Message-ID: <159100515114.17951.12481304789071396073.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -52,80 +51,137 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     19f545b6e07f753c4dc639c2f0ab52345733b6a8
-Gitweb:        https://git.kernel.org/tip/19f545b6e07f753c4dc639c2f0ab52345733b6a8
-Author:        Mike Galbraith <umgwanakikbuti@gmail.com>
-AuthorDate:    Wed, 27 May 2020 22:11:19 +02:00
+Commit-ID:     ed19f19256be2949af1ab5634e62178d30a355c2
+Gitweb:        https://git.kernel.org/tip/ed19f19256be2949af1ab5634e62178d30a355c2
+Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+AuthorDate:    Wed, 27 May 2020 22:11:18 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Thu, 28 May 2020 10:31:10 +02:00
 
-zram: Use local lock to protect per-CPU data
+zram: Allocate struct zcomp_strm as per-CPU memory
 
-The zcomp driver uses per-CPU compression. The per-CPU data pointer is
-acquired with get_cpu_ptr() which implicitly disables preemption.
-It allocates memory inside the preempt disabled region which conflicts
-with the PREEMPT_RT semantics.
+zcomp::stream is a per-CPU pointer, pointing to struct zcomp_strm
+which contains two pointers. Having struct zcomp_strm allocated
+directly as per-CPU memory would avoid one additional memory
+allocation and a pointer dereference. This also simplifies the
+addition of a local_lock to struct zcomp_strm.
 
-Replace the implicit preemption control with an explicit local lock.
-This allows RT kernels to substitute it with a real per CPU lock, which
-serializes the access but keeps the code section preemptible. On non RT
-kernels this maps to preempt_disable() as before, i.e. no functional
-change.
+Allocate zcomp::stream directly as per-CPU memory.
 
-[bigeasy: Use local_lock(), description, drop reordering]
-
-Signed-off-by: Mike Galbraith <umgwanakikbuti@gmail.com>
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Acked-by: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20200527201119.1692513-8-bigeasy@linutronix.de
+Link: https://lore.kernel.org/r/20200527201119.1692513-7-bigeasy@linutronix.de
 ---
- drivers/block/zram/zcomp.c | 7 +++++--
- drivers/block/zram/zcomp.h | 3 +++
- 2 files changed, 8 insertions(+), 2 deletions(-)
+ drivers/block/zram/zcomp.c | 41 ++++++++++++++-----------------------
+ drivers/block/zram/zcomp.h |  2 +-
+ 2 files changed, 17 insertions(+), 26 deletions(-)
 
 diff --git a/drivers/block/zram/zcomp.c b/drivers/block/zram/zcomp.c
-index 912e3e6..5ee8e3f 100644
+index 1a8564a..912e3e6 100644
 --- a/drivers/block/zram/zcomp.c
 +++ b/drivers/block/zram/zcomp.c
-@@ -110,12 +110,13 @@ ssize_t zcomp_available_show(const char *comp, char *buf)
+@@ -37,19 +37,16 @@ static void zcomp_strm_free(struct zcomp_strm *zstrm)
+ 	if (!IS_ERR_OR_NULL(zstrm->tfm))
+ 		crypto_free_comp(zstrm->tfm);
+ 	free_pages((unsigned long)zstrm->buffer, 1);
+-	kfree(zstrm);
++	zstrm->tfm = NULL;
++	zstrm->buffer = NULL;
+ }
+ 
+ /*
+- * allocate new zcomp_strm structure with ->tfm initialized by
+- * backend, return NULL on error
++ * Initialize zcomp_strm structure with ->tfm initialized by backend, and
++ * ->buffer. Return a negative value on error.
+  */
+-static struct zcomp_strm *zcomp_strm_alloc(struct zcomp *comp)
++static int zcomp_strm_init(struct zcomp_strm *zstrm, struct zcomp *comp)
+ {
+-	struct zcomp_strm *zstrm = kmalloc(sizeof(*zstrm), GFP_KERNEL);
+-	if (!zstrm)
+-		return NULL;
+-
+ 	zstrm->tfm = crypto_alloc_comp(comp->name, 0, 0);
+ 	/*
+ 	 * allocate 2 pages. 1 for compressed data, plus 1 extra for the
+@@ -58,9 +55,9 @@ static struct zcomp_strm *zcomp_strm_alloc(struct zcomp *comp)
+ 	zstrm->buffer = (void *)__get_free_pages(GFP_KERNEL | __GFP_ZERO, 1);
+ 	if (IS_ERR_OR_NULL(zstrm->tfm) || !zstrm->buffer) {
+ 		zcomp_strm_free(zstrm);
+-		zstrm = NULL;
++		return -ENOMEM;
+ 	}
+-	return zstrm;
++	return 0;
+ }
+ 
+ bool zcomp_available_algorithm(const char *comp)
+@@ -113,7 +110,7 @@ ssize_t zcomp_available_show(const char *comp, char *buf)
  
  struct zcomp_strm *zcomp_stream_get(struct zcomp *comp)
  {
--	return get_cpu_ptr(comp->stream);
-+	local_lock(&comp->stream->lock);
-+	return this_cpu_ptr(comp->stream);
+-	return *get_cpu_ptr(comp->stream);
++	return get_cpu_ptr(comp->stream);
  }
  
  void zcomp_stream_put(struct zcomp *comp)
+@@ -159,17 +156,13 @@ int zcomp_cpu_up_prepare(unsigned int cpu, struct hlist_node *node)
  {
--	put_cpu_ptr(comp->stream);
-+	local_unlock(&comp->stream->lock);
+ 	struct zcomp *comp = hlist_entry(node, struct zcomp, node);
+ 	struct zcomp_strm *zstrm;
++	int ret;
+ 
+-	if (WARN_ON(*per_cpu_ptr(comp->stream, cpu)))
+-		return 0;
+-
+-	zstrm = zcomp_strm_alloc(comp);
+-	if (IS_ERR_OR_NULL(zstrm)) {
++	zstrm = per_cpu_ptr(comp->stream, cpu);
++	ret = zcomp_strm_init(zstrm, comp);
++	if (ret)
+ 		pr_err("Can't allocate a compression stream\n");
+-		return -ENOMEM;
+-	}
+-	*per_cpu_ptr(comp->stream, cpu) = zstrm;
+-	return 0;
++	return ret;
  }
  
- int zcomp_compress(struct zcomp_strm *zstrm,
-@@ -159,6 +160,8 @@ int zcomp_cpu_up_prepare(unsigned int cpu, struct hlist_node *node)
+ int zcomp_cpu_dead(unsigned int cpu, struct hlist_node *node)
+@@ -177,10 +170,8 @@ int zcomp_cpu_dead(unsigned int cpu, struct hlist_node *node)
+ 	struct zcomp *comp = hlist_entry(node, struct zcomp, node);
+ 	struct zcomp_strm *zstrm;
+ 
+-	zstrm = *per_cpu_ptr(comp->stream, cpu);
+-	if (!IS_ERR_OR_NULL(zstrm))
+-		zcomp_strm_free(zstrm);
+-	*per_cpu_ptr(comp->stream, cpu) = NULL;
++	zstrm = per_cpu_ptr(comp->stream, cpu);
++	zcomp_strm_free(zstrm);
+ 	return 0;
+ }
+ 
+@@ -188,7 +179,7 @@ static int zcomp_init(struct zcomp *comp)
+ {
  	int ret;
  
- 	zstrm = per_cpu_ptr(comp->stream, cpu);
-+	local_lock_init(&zstrm->lock);
-+
- 	ret = zcomp_strm_init(zstrm, comp);
- 	if (ret)
- 		pr_err("Can't allocate a compression stream\n");
+-	comp->stream = alloc_percpu(struct zcomp_strm *);
++	comp->stream = alloc_percpu(struct zcomp_strm);
+ 	if (!comp->stream)
+ 		return -ENOMEM;
+ 
 diff --git a/drivers/block/zram/zcomp.h b/drivers/block/zram/zcomp.h
-index 72c2ee4..40f6420 100644
+index 1806475..72c2ee4 100644
 --- a/drivers/block/zram/zcomp.h
 +++ b/drivers/block/zram/zcomp.h
-@@ -5,8 +5,11 @@
+@@ -14,7 +14,7 @@ struct zcomp_strm {
  
- #ifndef _ZCOMP_H_
- #define _ZCOMP_H_
-+#include <linux/local_lock.h>
- 
- struct zcomp_strm {
-+	/* The members ->buffer and ->tfm are protected by ->lock. */
-+	local_lock_t lock;
- 	/* compression/decompression buffer */
- 	void *buffer;
- 	struct crypto_comp *tfm;
+ /* dynamic per-device compression frontend */
+ struct zcomp {
+-	struct zcomp_strm * __percpu *stream;
++	struct zcomp_strm __percpu *stream;
+ 	const char *name;
+ 	struct hlist_node node;
+ };
