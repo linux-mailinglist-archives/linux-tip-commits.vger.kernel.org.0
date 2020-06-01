@@ -2,44 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C9F431EA491
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  1 Jun 2020 15:12:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A15E1EA477
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  1 Jun 2020 15:12:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728251AbgFANMv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 1 Jun 2020 09:12:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48250 "EHLO
+        id S1728019AbgFANL7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 1 Jun 2020 09:11:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48272 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727879AbgFANLw (ORCPT
+        with ESMTP id S1727959AbgFANL5 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 1 Jun 2020 09:11:52 -0400
+        Mon, 1 Jun 2020 09:11:57 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F199C061A0E;
-        Mon,  1 Jun 2020 06:11:52 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D84B7C08C5CA;
+        Mon,  1 Jun 2020 06:11:56 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jfkEF-00077k-K0; Mon, 01 Jun 2020 15:11:47 +0200
+        id 1jfkEL-00078J-1e; Mon, 01 Jun 2020 15:11:53 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 3E25C1C04CE;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B440C1C0481;
         Mon,  1 Jun 2020 15:11:47 +0200 (CEST)
 Date:   Mon, 01 Jun 2020 13:11:47 -0000
-From:   "tip-bot2 for Tony Lindgren" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Lokesh Vutla" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] clocksource/drivers/timer-ti-32k: Add support for
- initializing directly
-Cc:     linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Keerthy <j-keerthy@ti.com>, Lokesh Vutla <lokeshvutla@ti.com>,
-        Rob Herring <robh@kernel.org>, Tero Kristo <t-kristo@ti.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tony Lindgren <tony@atomide.com>, x86 <x86@kernel.org>
-In-Reply-To: <20200507172330.18679-2-tony@atomide.com>
-References: <20200507172330.18679-2-tony@atomide.com>
+Subject: [tip: timers/core] ARM: dts: Add 32KHz clock as default clock source
+Cc:     Lokesh Vutla <lokeshvutla@ti.com>, Suman Anna <s-anna@ti.com>,
+        Tony Lindgren <tony@atomide.com>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <159101710704.17951.8363727578897055242.tip-bot2@tip-bot2>
+Message-ID: <159101710759.17951.10094833069617639382.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -55,124 +48,76 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     d15483bb49bae0f9cbb67c54becec252545752d3
-Gitweb:        https://git.kernel.org/tip/d15483bb49bae0f9cbb67c54becec252545752d3
-Author:        Tony Lindgren <tony@atomide.com>
-AuthorDate:    Thu, 07 May 2020 10:23:17 -07:00
-Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
-CommitterDate: Mon, 18 May 2020 18:56:35 +02:00
+Commit-ID:     ac819eda7cc96656df50897848ffe5dfe9a3cb7c
+Gitweb:        https://git.kernel.org/tip/ac819eda7cc96656df50897848ffe5dfe9a3cb7c
+Author:        Lokesh Vutla <lokeshvutla@ti.com>
+AuthorDate:    Mon, 27 Apr 2020 22:56:04 +05:30
+Committer:     Tony Lindgren <tony@atomide.com>
+CommitterDate: Tue, 05 May 2020 10:56:42 -07:00
 
-clocksource/drivers/timer-ti-32k: Add support for initializing directly
+ARM: dts: Add 32KHz clock as default clock source
 
-Let's allow probing the 32k counter directly based on devicetree data to
-prepare for dropping the related legacy platform code. Let's only do this
-if the parent node is compatible with ti-sysc to make sure we have the
-related devicetree data available.
+Clocksource to timer configured in pwm mode can be selected using the DT
+property ti,clock-source. There are few pwm timers which are not
+selecting the clock source and relying on default value in hardware or
+selected by driver. Instead of relying on default value, always select
+the clock source from DT.
 
-Let's also show the 32k counter information before registering the
-clocksource, now we see it after the clocksource information which is a
-bit confusing.
-
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-omap@vger.kernel.org
-Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc: Grygorii Strashko <grygorii.strashko@ti.com>
-Cc: Keerthy <j-keerthy@ti.com>
-Cc: Lokesh Vutla <lokeshvutla@ti.com>
-Cc: Rob Herring <robh@kernel.org>
-Cc: Tero Kristo <t-kristo@ti.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Lokesh Vutla <lokeshvutla@ti.com>
+Reviewed-by: Suman Anna <s-anna@ti.com>
 Signed-off-by: Tony Lindgren <tony@atomide.com>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20200507172330.18679-2-tony@atomide.com
 ---
- drivers/clocksource/timer-ti-32k.c | 48 ++++++++++++++++++++++++++++-
- 1 file changed, 47 insertions(+), 1 deletion(-)
+ arch/arm/boot/dts/am335x-guardian.dts            | 1 +
+ arch/arm/boot/dts/am3517-evm.dts                 | 1 +
+ arch/arm/boot/dts/logicpd-torpedo-baseboard.dtsi | 1 +
+ arch/arm/boot/dts/omap3-gta04.dtsi               | 1 +
+ 4 files changed, 4 insertions(+)
 
-diff --git a/drivers/clocksource/timer-ti-32k.c b/drivers/clocksource/timer-ti-32k.c
-index abd5f15..ae12bbf 100644
---- a/drivers/clocksource/timer-ti-32k.c
-+++ b/drivers/clocksource/timer-ti-32k.c
-@@ -24,6 +24,7 @@
-  * Copyright (C) 2015 Texas Instruments Incorporated - http://www.ti.com
-  */
+diff --git a/arch/arm/boot/dts/am335x-guardian.dts b/arch/arm/boot/dts/am335x-guardian.dts
+index 81e0f63..0ebe9e2 100644
+--- a/arch/arm/boot/dts/am335x-guardian.dts
++++ b/arch/arm/boot/dts/am335x-guardian.dts
+@@ -105,6 +105,7 @@
+ 		ti,timers = <&timer7>;
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&dmtimer7_pins>;
++		ti,clock-source = <0x01>;
+ 	};
  
-+#include <linux/clk.h>
- #include <linux/init.h>
- #include <linux/time.h>
- #include <linux/sched_clock.h>
-@@ -76,6 +77,49 @@ static u64 notrace omap_32k_read_sched_clock(void)
- 	return ti_32k_read_cycles(&ti_32k_timer.cs);
- }
+ 	vmmcsd_fixed: regulator-3v3 {
+diff --git a/arch/arm/boot/dts/am3517-evm.dts b/arch/arm/boot/dts/am3517-evm.dts
+index a1fd3e6..92466b9 100644
+--- a/arch/arm/boot/dts/am3517-evm.dts
++++ b/arch/arm/boot/dts/am3517-evm.dts
+@@ -156,6 +156,7 @@
+ 		pinctrl-0 = <&pwm_pins>;
+ 		ti,timers = <&timer11>;
+ 		#pwm-cells = <3>;
++		ti,clock-source = <0x01>;
+ 	};
  
-+static void __init ti_32k_timer_enable_clock(struct device_node *np,
-+					     const char *name)
-+{
-+	struct clk *clock;
-+	int error;
-+
-+	clock = of_clk_get_by_name(np->parent, name);
-+	if (IS_ERR(clock)) {
-+		/* Only some SoCs have a separate interface clock */
-+		if (PTR_ERR(clock) == -EINVAL && !strncmp("ick", name, 3))
-+			return;
-+
-+		pr_warn("%s: could not get clock %s %li\n",
-+			__func__, name, PTR_ERR(clock));
-+		return;
-+	}
-+
-+	error = clk_prepare_enable(clock);
-+	if (error) {
-+		pr_warn("%s: could not enable %s: %i\n",
-+			__func__, name, error);
-+		return;
-+	}
-+}
-+
-+static void __init ti_32k_timer_module_init(struct device_node *np,
-+					    void __iomem *base)
-+{
-+	void __iomem *sysc = base + 4;
-+
-+	if (!of_device_is_compatible(np->parent, "ti,sysc"))
-+		return;
-+
-+	ti_32k_timer_enable_clock(np, "fck");
-+	ti_32k_timer_enable_clock(np, "ick");
-+
-+	/*
-+	 * Force idle module as wkup domain is active with MPU.
-+	 * No need to tag the module disabled for ti-sysc probe.
-+	 */
-+	writel_relaxed(0, sysc);
-+}
-+
- static int __init ti_32k_timer_init(struct device_node *np)
- {
- 	int ret;
-@@ -90,6 +134,7 @@ static int __init ti_32k_timer_init(struct device_node *np)
- 		ti_32k_timer.cs.flags |= CLOCK_SOURCE_SUSPEND_NONSTOP;
+ 	/* HS USB Host PHY on PORT 1 */
+diff --git a/arch/arm/boot/dts/logicpd-torpedo-baseboard.dtsi b/arch/arm/boot/dts/logicpd-torpedo-baseboard.dtsi
+index f7b82ce..381f0e8 100644
+--- a/arch/arm/boot/dts/logicpd-torpedo-baseboard.dtsi
++++ b/arch/arm/boot/dts/logicpd-torpedo-baseboard.dtsi
+@@ -65,6 +65,7 @@
+ 		pinctrl-0 = <&pwm_pins>;
+ 		ti,timers = <&timer10>;
+ 		#pwm-cells = <3>;
++		ti,clock-source = <0x01>;
+ 	};
  
- 	ti_32k_timer.counter = ti_32k_timer.base;
-+	ti_32k_timer_module_init(np, ti_32k_timer.base);
+ };
+diff --git a/arch/arm/boot/dts/omap3-gta04.dtsi b/arch/arm/boot/dts/omap3-gta04.dtsi
+index 409a758..ecc4586 100644
+--- a/arch/arm/boot/dts/omap3-gta04.dtsi
++++ b/arch/arm/boot/dts/omap3-gta04.dtsi
+@@ -150,6 +150,7 @@
+ 		compatible = "ti,omap-dmtimer-pwm";
+ 		ti,timers = <&timer11>;
+ 		#pwm-cells = <3>;
++		ti,clock-source = <0x01>;
+ 	};
  
- 	/*
- 	 * 32k sync Counter IP register offsets vary between the highlander
-@@ -104,6 +149,8 @@ static int __init ti_32k_timer_init(struct device_node *np)
- 	else
- 		ti_32k_timer.counter += OMAP2_32KSYNCNT_CR_OFF_LOW;
- 
-+	pr_info("OMAP clocksource: 32k_counter at 32768 Hz\n");
-+
- 	ret = clocksource_register_hz(&ti_32k_timer.cs, 32768);
- 	if (ret) {
- 		pr_err("32k_counter: can't register clocksource\n");
-@@ -111,7 +158,6 @@ static int __init ti_32k_timer_init(struct device_node *np)
- 	}
- 
- 	sched_clock_register(omap_32k_read_sched_clock, 32, 32768);
--	pr_info("OMAP clocksource: 32k_counter at 32768 Hz\n");
- 
- 	return 0;
- }
+ 	hsusb2_phy: hsusb2_phy {
