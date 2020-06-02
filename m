@@ -2,196 +2,88 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B9541EB8FC
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  2 Jun 2020 11:58:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC22E1EBA93
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  2 Jun 2020 13:41:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726110AbgFBJ6F convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 2 Jun 2020 05:58:05 -0400
-Received: from mail-oi1-f196.google.com ([209.85.167.196]:44165 "EHLO
-        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725811AbgFBJ6E (ORCPT
+        id S1725940AbgFBLlD (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 2 Jun 2020 07:41:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32992 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725919AbgFBLlC (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 2 Jun 2020 05:58:04 -0400
-Received: by mail-oi1-f196.google.com with SMTP id x202so11039804oix.11;
-        Tue, 02 Jun 2020 02:58:02 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=iyewGMkXuJg3DmH4dw7+D04mCzZJepxSb898orAzqYE=;
-        b=WqC7ap9kSJWq9edwz1WCwhEyaNVw6XWb63nI9Qb533drLQUp//cO3O3JWDyiBGCiLo
-         HX6s8Fav5SoxNaOF5Cy5gqf1p1qCT9vo3QXmdGtG0AS1Yq519pnqQd9O+CSxpi4njx1O
-         i8OTFau0hprYj5FLjf+An65WJsIQ3xB51jWOhBLEcUpT/ar1phLilcQ9K+vHNcqb6BO+
-         2LnrwuKxeBablFahh5zNt1/OXog3lf2Pz6QI7cexyyxEbptTIjawqx5LYt+JHxUKxJX2
-         uh0+UQ6KgeKNV7qRy/OBSPKmAfr7YeFMD0yZof2xzQm1wNumEGami4rcABgGbVcgawS6
-         i2Ow==
-X-Gm-Message-State: AOAM530SLwhAiEqvmtrvEjgzG0s9t20ddx4cFando6W7Uuad2rAq3dmG
-        awoRBgrsioX1Lg5BXFJsOu6ApeZYkJ+u1EBdp34=
-X-Google-Smtp-Source: ABdhPJyvmRip82nf1YTS55HK8PTzXOrpeX0lgVwXjy8zq0flE3jPmfLBFLzpm3mGBvRwgejHWjZu3JNklv6lc9+XOPY=
-X-Received: by 2002:aca:210a:: with SMTP id 10mr2284816oiz.153.1591091882187;
- Tue, 02 Jun 2020 02:58:02 -0700 (PDT)
-MIME-Version: 1.0
-References: <158923078019.390.12609597570329519463.tip-bot2@tip-bot2>
- <20200526182744.GA3722128@gmail.com> <20200526191408.GN2869@paulmck-ThinkPad-P72>
-In-Reply-To: <20200526191408.GN2869@paulmck-ThinkPad-P72>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Tue, 2 Jun 2020 11:57:51 +0200
-Message-ID: <CAMuHMdUfsGSWco5rEidmPmZBH+PbUVq3tyXu=cc67x-X5LyXpA@mail.gmail.com>
-Subject: Re: [PATCH] rcu/performance: Fix kfree_perf_init() build warning on
- 32-bit kernels
-To:     "Paul E . McKenney" <paulmck@kernel.org>
+        Tue, 2 Jun 2020 07:41:02 -0400
+Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C11E1C061A0E;
+        Tue,  2 Jun 2020 04:41:02 -0700 (PDT)
+Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tip-bot2@linutronix.de>)
+        id 1jg5Hr-000499-3z; Tue, 02 Jun 2020 13:40:55 +0200
+Received: from [127.0.1.1] (localhost [IPv6:::1])
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 8CB2B1C01BB;
+        Tue,  2 Jun 2020 13:40:54 +0200 (CEST)
+Date:   Tue, 02 Jun 2020 11:40:54 -0000
+From:   "tip-bot2 for Stephane Eranian" <tip-bot2@linutronix.de>
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: perf/urgent] perf/x86/rapl: Fix RAPL config variable bug
 Cc:     Ingo Molnar <mingo@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-tip-commits@vger.kernel.org,
-        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
-        x86 <x86@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
+        Kim Phillips <kim.phillips@amd.com>,
+        Peter Zijlstra <peterz@infradead.org>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200528201614.250182-1-eranian@google.com>
+References: <20200528201614.250182-1-eranian@google.com>
+MIME-Version: 1.0
+Message-ID: <159109805436.17951.2430178152420855778.tip-bot2@tip-bot2>
+X-Mailer: tip-git-log-daemon
+Robot-ID: <tip-bot2.linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-Hi Paul,
+The following commit has been merged into the perf/urgent branch of tip:
 
-On Tue, May 26, 2020 at 9:17 PM Paul E. McKenney <paulmck@kernel.org> wrote:
-> On Tue, May 26, 2020 at 08:27:44PM +0200, Ingo Molnar wrote:
-> > * tip-bot2 for Joel Fernandes (Google) <tip-bot2@linutronix.de> wrote:
-> >
-> > > The following commit has been merged into the core/rcu branch of tip:
-> > >
-> > > Commit-ID:     f87dc808009ac86c790031627698ef1a34c31e25
-> > > Gitweb:        https://git.kernel.org/tip/f87dc808009ac86c790031627698ef1a34c31e25
-> > > Author:        Joel Fernandes (Google) <joel@joelfernandes.org>
-> > > AuthorDate:    Mon, 16 Mar 2020 12:32:26 -04:00
-> > > Committer:     Paul E. McKenney <paulmck@kernel.org>
-> > > CommitterDate: Mon, 27 Apr 2020 11:02:50 -07:00
-> > >
-> > > rcuperf: Add ability to increase object allocation size
-> > >
-> > > This allows us to increase memory pressure dynamically using a new
-> > > rcuperf boot command line parameter called 'rcumult'.
-> > >
-> > > Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
-> > > Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-> > > ---
-> > >  kernel/rcu/rcuperf.c | 5 ++++-
-> > >  1 file changed, 4 insertions(+), 1 deletion(-)
-> > >
-> > > diff --git a/kernel/rcu/rcuperf.c b/kernel/rcu/rcuperf.c
-> > > index a4a8d09..16dd1e6 100644
-> > > --- a/kernel/rcu/rcuperf.c
-> > > +++ b/kernel/rcu/rcuperf.c
+Commit-ID:     16accae3d97f97d7f61c4ee5d0002bccdef59088
+Gitweb:        https://git.kernel.org/tip/16accae3d97f97d7f61c4ee5d0002bccdef59088
+Author:        Stephane Eranian <eranian@google.com>
+AuthorDate:    Thu, 28 May 2020 13:16:14 -07:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Tue, 02 Jun 2020 11:52:56 +02:00
 
-> > > @@ -722,6 +723,8 @@ kfree_perf_init(void)
-> > >             schedule_timeout_uninterruptible(1);
-> > >     }
-> > >
-> > > +   pr_alert("kfree object size=%lu\n", kfree_mult * sizeof(struct kfree_obj));
-> >
-> > There's a new build warning on certain 32-bit kernel builds due to
-> > this commit:
-> >
-> > In file included from ./include/linux/printk.h:7,
-> >                  from ./include/linux/kernel.h:15,
-> >                  from kernel/rcu/rcuperf.c:13:
-> > kernel/rcu/rcuperf.c: In function ‘kfree_perf_init’:
-> > ./include/linux/kern_levels.h:5:18: warning: format ‘%lu’ expects argument of type ‘long unsigned int’, but argument 2 has type ‘unsigned int’ [-Wformat=]
-> >     5 | #define KERN_SOH "\001"  /* ASCII Start Of Header */
-> >       |                  ^~~~~~
-> > ./include/linux/kern_levels.h:9:20: note: in expansion of macro ‘KERN_SOH’
-> >     9 | #define KERN_ALERT KERN_SOH "1" /* action must be taken immediately */
-> >       |                    ^~~~~~~~
-> > ./include/linux/printk.h:295:9: note: in expansion of macro ‘KERN_ALERT’
-> >   295 |  printk(KERN_ALERT pr_fmt(fmt), ##__VA_ARGS__)
-> >       |         ^~~~~~~~~~
-> > kernel/rcu/rcuperf.c:726:2: note: in expansion of macro ‘pr_alert’
-> >   726 |  pr_alert("kfree object size=%lu\n", kfree_mult * sizeof(struct kfree_obj));
-> >       |  ^~~~~~~~
-> > kernel/rcu/rcuperf.c:726:32: note: format string is defined here
-> >   726 |  pr_alert("kfree object size=%lu\n", kfree_mult * sizeof(struct kfree_obj));
-> >       |                              ~~^
-> >       |                                |
-> >       |                                long unsigned int
-> >       |                              %u
+perf/x86/rapl: Fix RAPL config variable bug
 
-This issue is now upstream.
+This patch fixes a bug introduced by:
 
-> > The reason for the warning is that both kfree_mult and sizeof() are
-> > 'int' types on 32-bit kernels, while the format string expects a long.
+  fd3ae1e1587d6 ("perf/x86/rapl: Move RAPL support to common x86 code")
 
-sizeof() is of type size_t, which is either unsigned int (32-bit) or
-unsigned long (64-bit).
-Hence the result of the multiplication is also of type size_t.
+The Kconfig variable name was wrong. It was missing the CONFIG_ prefix.
 
-> >
-> > Instead of casting the type to long or tweaking the format string, the
-> > most straightforward solution is to upgrade kfree_mult to a long.
-> > Since this depends on CONFIG_RCU_PERF_TEST
+Signed-off-by: Stephane Eranian <eraniangoogle.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Tested-by: Kim Phillips <kim.phillips@amd.com>
+Acked-by: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20200528201614.250182-1-eranian@google.com
+---
+ arch/x86/events/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-So the proper fix is Kefeng's patch from April:
-"[PATCH -next] rcuperf: Fix printk format warning"
-https://lore.kernel.org/r/20200417040245.66382-1-wangkefeng.wang@huawei.com
-
-":"--
-> Makes sense, and I have queued the patch below, which I am assuming
-> that you want in the upcoming merge window.  If you don't tell me
-> otherwise, I will send you an urgent pull request later today.
-> Or, if you just put it directly into -tip yourself:
->
-> Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
->
-> Either way, please let me know.
->
-> > BTW., could we please also rename this code from 'PERF_TEST'/'perf test'
-> > to 'PERFORMANCE_TEST'/'performance test'? At first glance I always
-> > mistakenly believe that it's somehow related to perf, while it isn't. =B-)
->
-> Fair enough, especially given that perf was there first and is also way
-> more heavily used.  ;-)
->
-> But I am guessing that this one is OK for the v5.9 merge window.
-> Either way, I will update as you say.
->
->                                                         Thanx, Paul
->
-> ------------------------------------------------------------------------
->
-> commit 2fbc7d67a2ed108e3ac63296670fecb3a42fddd0
-> Author: Ingo Molnar <mingo@kernel.org>
-> Date:   Tue May 26 12:10:01 2020 -0700
->
->     rcuperf: Fix kfree_mult to match printk() format
->
->     This commit changes the type of kfree_mult from int to long in order
->     to match the printk() format on 32-bit systems.
->
->     Reported-by: kbuild test robot <lkp@intel.com>
->     Signed-off-by: Ingo Molnar <mingo@kernel.org>
->     Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
->
-> diff --git a/kernel/rcu/rcuperf.c b/kernel/rcu/rcuperf.c
-> index d906ca9..fb3a1f0 100644
-> --- a/kernel/rcu/rcuperf.c
-> +++ b/kernel/rcu/rcuperf.c
-> @@ -93,7 +93,7 @@ torture_param(bool, shutdown, RCUPERF_SHUTDOWN,
->  torture_param(int, verbose, 1, "Enable verbose debugging printk()s");
->  torture_param(int, writer_holdoff, 0, "Holdoff (us) between GPs, zero to disable");
->  torture_param(int, kfree_rcu_test, 0, "Do we run a kfree_rcu() perf test?");
-> -torture_param(int, kfree_mult, 1, "Multiple of kfree_obj size to allocate.");
-> +torture_param(long, kfree_mult, 1, "Multiple of kfree_obj size to allocate.");
->
->  static char *perf_type = "rcu";
->  module_param(perf_type, charp, 0444);
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+diff --git a/arch/x86/events/Makefile b/arch/x86/events/Makefile
+index 12c42eb..9933c0e 100644
+--- a/arch/x86/events/Makefile
++++ b/arch/x86/events/Makefile
+@@ -1,6 +1,6 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ obj-y					+= core.o probe.o
+-obj-$(PERF_EVENTS_INTEL_RAPL)		+= rapl.o
++obj-$(CONFIG_PERF_EVENTS_INTEL_RAPL)	+= rapl.o
+ obj-y					+= amd/
+ obj-$(CONFIG_X86_LOCAL_APIC)            += msr.o
+ obj-$(CONFIG_CPU_SUP_INTEL)		+= intel/
