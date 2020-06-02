@@ -2,198 +2,196 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EAAA31EB0FD
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  1 Jun 2020 23:36:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B9541EB8FC
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  2 Jun 2020 11:58:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728336AbgFAVgs (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 1 Jun 2020 17:36:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43276 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728182AbgFAVgr (ORCPT
+        id S1726110AbgFBJ6F convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 2 Jun 2020 05:58:05 -0400
+Received: from mail-oi1-f196.google.com ([209.85.167.196]:44165 "EHLO
+        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725811AbgFBJ6E (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 1 Jun 2020 17:36:47 -0400
-Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1721C061A0E;
-        Mon,  1 Jun 2020 14:36:47 -0700 (PDT)
-Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tip-bot2@linutronix.de>)
-        id 1jfs6o-0007x4-G4; Mon, 01 Jun 2020 23:36:38 +0200
-Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 082BF1C0244;
-        Mon,  1 Jun 2020 23:36:38 +0200 (CEST)
-Date:   Mon, 01 Jun 2020 21:36:37 -0000
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/entry] x86/xen: Unbreak hypervisor callback on 32bit
-Cc:     kbuild test robot <lkp@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Juergen Gross <jgross@suse.com>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
+        Tue, 2 Jun 2020 05:58:04 -0400
+Received: by mail-oi1-f196.google.com with SMTP id x202so11039804oix.11;
+        Tue, 02 Jun 2020 02:58:02 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=iyewGMkXuJg3DmH4dw7+D04mCzZJepxSb898orAzqYE=;
+        b=WqC7ap9kSJWq9edwz1WCwhEyaNVw6XWb63nI9Qb533drLQUp//cO3O3JWDyiBGCiLo
+         HX6s8Fav5SoxNaOF5Cy5gqf1p1qCT9vo3QXmdGtG0AS1Yq519pnqQd9O+CSxpi4njx1O
+         i8OTFau0hprYj5FLjf+An65WJsIQ3xB51jWOhBLEcUpT/ar1phLilcQ9K+vHNcqb6BO+
+         2LnrwuKxeBablFahh5zNt1/OXog3lf2Pz6QI7cexyyxEbptTIjawqx5LYt+JHxUKxJX2
+         uh0+UQ6KgeKNV7qRy/OBSPKmAfr7YeFMD0yZof2xzQm1wNumEGami4rcABgGbVcgawS6
+         i2Ow==
+X-Gm-Message-State: AOAM530SLwhAiEqvmtrvEjgzG0s9t20ddx4cFando6W7Uuad2rAq3dmG
+        awoRBgrsioX1Lg5BXFJsOu6ApeZYkJ+u1EBdp34=
+X-Google-Smtp-Source: ABdhPJyvmRip82nf1YTS55HK8PTzXOrpeX0lgVwXjy8zq0flE3jPmfLBFLzpm3mGBvRwgejHWjZu3JNklv6lc9+XOPY=
+X-Received: by 2002:aca:210a:: with SMTP id 10mr2284816oiz.153.1591091882187;
+ Tue, 02 Jun 2020 02:58:02 -0700 (PDT)
 MIME-Version: 1.0
-Message-ID: <159104739784.17951.17560941713289773893.tip-bot2@tip-bot2>
-X-Mailer: tip-git-log-daemon
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+References: <158923078019.390.12609597570329519463.tip-bot2@tip-bot2>
+ <20200526182744.GA3722128@gmail.com> <20200526191408.GN2869@paulmck-ThinkPad-P72>
+In-Reply-To: <20200526191408.GN2869@paulmck-ThinkPad-P72>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Tue, 2 Jun 2020 11:57:51 +0200
+Message-ID: <CAMuHMdUfsGSWco5rEidmPmZBH+PbUVq3tyXu=cc67x-X5LyXpA@mail.gmail.com>
+Subject: Re: [PATCH] rcu/performance: Fix kfree_perf_init() build warning on
+ 32-bit kernels
+To:     "Paul E . McKenney" <paulmck@kernel.org>
+Cc:     Ingo Molnar <mingo@kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-tip-commits@vger.kernel.org,
+        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
+        x86 <x86@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/entry branch of tip:
+Hi Paul,
 
-Commit-ID:     4b1f63084d3ebd14c3ef2cd4e8732c25bcd8381d
-Gitweb:        https://git.kernel.org/tip/4b1f63084d3ebd14c3ef2cd4e8732c25bcd8381d
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Mon, 01 Jun 2020 21:33:56 +02:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 01 Jun 2020 23:31:48 +02:00
+On Tue, May 26, 2020 at 9:17 PM Paul E. McKenney <paulmck@kernel.org> wrote:
+> On Tue, May 26, 2020 at 08:27:44PM +0200, Ingo Molnar wrote:
+> > * tip-bot2 for Joel Fernandes (Google) <tip-bot2@linutronix.de> wrote:
+> >
+> > > The following commit has been merged into the core/rcu branch of tip:
+> > >
+> > > Commit-ID:     f87dc808009ac86c790031627698ef1a34c31e25
+> > > Gitweb:        https://git.kernel.org/tip/f87dc808009ac86c790031627698ef1a34c31e25
+> > > Author:        Joel Fernandes (Google) <joel@joelfernandes.org>
+> > > AuthorDate:    Mon, 16 Mar 2020 12:32:26 -04:00
+> > > Committer:     Paul E. McKenney <paulmck@kernel.org>
+> > > CommitterDate: Mon, 27 Apr 2020 11:02:50 -07:00
+> > >
+> > > rcuperf: Add ability to increase object allocation size
+> > >
+> > > This allows us to increase memory pressure dynamically using a new
+> > > rcuperf boot command line parameter called 'rcumult'.
+> > >
+> > > Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+> > > Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+> > > ---
+> > >  kernel/rcu/rcuperf.c | 5 ++++-
+> > >  1 file changed, 4 insertions(+), 1 deletion(-)
+> > >
+> > > diff --git a/kernel/rcu/rcuperf.c b/kernel/rcu/rcuperf.c
+> > > index a4a8d09..16dd1e6 100644
+> > > --- a/kernel/rcu/rcuperf.c
+> > > +++ b/kernel/rcu/rcuperf.c
 
-x86/xen: Unbreak hypervisor callback on 32bit
+> > > @@ -722,6 +723,8 @@ kfree_perf_init(void)
+> > >             schedule_timeout_uninterruptible(1);
+> > >     }
+> > >
+> > > +   pr_alert("kfree object size=%lu\n", kfree_mult * sizeof(struct kfree_obj));
+> >
+> > There's a new build warning on certain 32-bit kernel builds due to
+> > this commit:
+> >
+> > In file included from ./include/linux/printk.h:7,
+> >                  from ./include/linux/kernel.h:15,
+> >                  from kernel/rcu/rcuperf.c:13:
+> > kernel/rcu/rcuperf.c: In function ‘kfree_perf_init’:
+> > ./include/linux/kern_levels.h:5:18: warning: format ‘%lu’ expects argument of type ‘long unsigned int’, but argument 2 has type ‘unsigned int’ [-Wformat=]
+> >     5 | #define KERN_SOH "\001"  /* ASCII Start Of Header */
+> >       |                  ^~~~~~
+> > ./include/linux/kern_levels.h:9:20: note: in expansion of macro ‘KERN_SOH’
+> >     9 | #define KERN_ALERT KERN_SOH "1" /* action must be taken immediately */
+> >       |                    ^~~~~~~~
+> > ./include/linux/printk.h:295:9: note: in expansion of macro ‘KERN_ALERT’
+> >   295 |  printk(KERN_ALERT pr_fmt(fmt), ##__VA_ARGS__)
+> >       |         ^~~~~~~~~~
+> > kernel/rcu/rcuperf.c:726:2: note: in expansion of macro ‘pr_alert’
+> >   726 |  pr_alert("kfree object size=%lu\n", kfree_mult * sizeof(struct kfree_obj));
+> >       |  ^~~~~~~~
+> > kernel/rcu/rcuperf.c:726:32: note: format string is defined here
+> >   726 |  pr_alert("kfree object size=%lu\n", kfree_mult * sizeof(struct kfree_obj));
+> >       |                              ~~^
+> >       |                                |
+> >       |                                long unsigned int
+> >       |                              %u
 
-The IDTENTRY conversion broke XEN on 32bit:
+This issue is now upstream.
 
-ld: arch/x86/xen/setup.o: in function `register_callback':                                                                                                                                                                                                                     
->> arch/x86/xen/setup.c:940: undefined reference to `xen_asm_exc_xen_hypervisor_callback'
+> > The reason for the warning is that both kfree_mult and sizeof() are
+> > 'int' types on 32-bit kernels, while the format string expects a long.
 
-The reason is that 32bit does not have the extra indirection of 64bit via
-the XEN trampolines and 32bit never emitted an actual IDT entry function
-for this.
+sizeof() is of type size_t, which is either unsigned int (32-bit) or
+unsigned long (64-bit).
+Hence the result of the multiplication is also of type size_t.
 
- - Add and use IDTENTRY_XENCB so the ASM variant emits an entry point only
-   for 64 bit.
+> >
+> > Instead of casting the type to long or tweaking the format string, the
+> > most straightforward solution is to upgrade kfree_mult to a long.
+> > Since this depends on CONFIG_RCU_PERF_TEST
 
- - Rename the 32bit ASM function to match the 64bit trampoline function name.
+So the proper fix is Kefeng's patch from April:
+"[PATCH -next] rcuperf: Fix printk format warning"
+https://lore.kernel.org/r/20200417040245.66382-1-wangkefeng.wang@huawei.com
 
-Fixup a few comments as well.
+":"--
+> Makes sense, and I have queued the patch below, which I am assuming
+> that you want in the upcoming merge window.  If you don't tell me
+> otherwise, I will send you an urgent pull request later today.
+> Or, if you just put it directly into -tip yourself:
+>
+> Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
+>
+> Either way, please let me know.
+>
+> > BTW., could we please also rename this code from 'PERF_TEST'/'perf test'
+> > to 'PERFORMANCE_TEST'/'performance test'? At first glance I always
+> > mistakenly believe that it's somehow related to perf, while it isn't. =B-)
+>
+> Fair enough, especially given that perf was there first and is also way
+> more heavily used.  ;-)
+>
+> But I am guessing that this one is OK for the v5.9 merge window.
+> Either way, I will update as you say.
+>
+>                                                         Thanx, Paul
+>
+> ------------------------------------------------------------------------
+>
+> commit 2fbc7d67a2ed108e3ac63296670fecb3a42fddd0
+> Author: Ingo Molnar <mingo@kernel.org>
+> Date:   Tue May 26 12:10:01 2020 -0700
+>
+>     rcuperf: Fix kfree_mult to match printk() format
+>
+>     This commit changes the type of kfree_mult from int to long in order
+>     to match the printk() format on 32-bit systems.
+>
+>     Reported-by: kbuild test robot <lkp@intel.com>
+>     Signed-off-by: Ingo Molnar <mingo@kernel.org>
+>     Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+>
+> diff --git a/kernel/rcu/rcuperf.c b/kernel/rcu/rcuperf.c
+> index d906ca9..fb3a1f0 100644
+> --- a/kernel/rcu/rcuperf.c
+> +++ b/kernel/rcu/rcuperf.c
+> @@ -93,7 +93,7 @@ torture_param(bool, shutdown, RCUPERF_SHUTDOWN,
+>  torture_param(int, verbose, 1, "Enable verbose debugging printk()s");
+>  torture_param(int, writer_holdoff, 0, "Holdoff (us) between GPs, zero to disable");
+>  torture_param(int, kfree_rcu_test, 0, "Do we run a kfree_rcu() perf test?");
+> -torture_param(int, kfree_mult, 1, "Multiple of kfree_obj size to allocate.");
+> +torture_param(long, kfree_mult, 1, "Multiple of kfree_obj size to allocate.");
+>
+>  static char *perf_type = "rcu";
+>  module_param(perf_type, charp, 0444);
 
-Fixes: 66a07b44e765 ("x86/entry: Switch XEN/PV hypercall entry to IDTENTRY")
-Reported-by: kbuild test robot <lkp@intel.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: Juergen Gross <jgross@suse.com>
----
- arch/x86/entry/entry_32.S       |  7 +++++--
- arch/x86/include/asm/idtentry.h | 24 +++++++++++++++++++++++-
- arch/x86/xen/xen-asm_32.S       |  6 +++---
- 3 files changed, 31 insertions(+), 6 deletions(-)
+Gr{oetje,eeting}s,
 
-diff --git a/arch/x86/entry/entry_32.S b/arch/x86/entry/entry_32.S
-index 96fa462..2d29f77 100644
---- a/arch/x86/entry/entry_32.S
-+++ b/arch/x86/entry/entry_32.S
-@@ -1167,8 +1167,11 @@ SYM_CODE_END(native_iret)
- #ifdef CONFIG_XEN_PV
- /*
-  * See comment in entry_64.S for further explanation
-+ *
-+ * Note: This is not an actual IDT entry point. It's a XEN specific entry
-+ * point and therefore named to match the 64-bit trampoline counterpart.
-  */
--SYM_FUNC_START(exc_xen_hypervisor_callback)
-+SYM_FUNC_START(xen_asm_exc_xen_hypervisor_callback)
- 	/*
- 	 * Check to see if we got the event in the critical
- 	 * region in xen_iret_direct, after we've reenabled
-@@ -1189,7 +1192,7 @@ SYM_FUNC_START(exc_xen_hypervisor_callback)
- 	mov	%esp, %eax
- 	call	xen_pv_evtchn_do_upcall
- 	jmp	handle_exception_return
--SYM_FUNC_END(exc_xen_hypervisor_callback)
-+SYM_FUNC_END(xen_asm_exc_xen_hypervisor_callback)
- 
- /*
-  * Hypervisor uses this for application faults while it executes.
-diff --git a/arch/x86/include/asm/idtentry.h b/arch/x86/include/asm/idtentry.h
-index f8e2737..d203c54 100644
---- a/arch/x86/include/asm/idtentry.h
-+++ b/arch/x86/include/asm/idtentry.h
-@@ -283,6 +283,22 @@ __visible noinstr void func(struct pt_regs *regs)			\
- 									\
- static __always_inline void __##func(struct pt_regs *regs)
- 
-+/**
-+ * DECLARE_IDTENTRY_XENCB - Declare functions for XEN HV callback entry point
-+ * @vector:	Vector number (ignored for C)
-+ * @func:	Function name of the entry point
-+ *
-+ * Declares three functions:
-+ * - The ASM entry point: asm_##func
-+ * - The XEN PV trap entry point: xen_##func (maybe unused)
-+ * - The C handler called from the ASM entry point
-+ *
-+ * Maps to DECLARE_IDTENTRY(). Distinct entry point to handle the 32/64-bit
-+ * difference
-+ */
-+#define DECLARE_IDTENTRY_XENCB(vector, func)				\
-+	DECLARE_IDTENTRY(vector, func)
-+
- #ifdef CONFIG_X86_64
- /**
-  * DECLARE_IDTENTRY_IST - Declare functions for IST handling IDT entry points
-@@ -432,6 +448,9 @@ __visible noinstr void func(struct pt_regs *regs,			\
- # define DECLARE_IDTENTRY_DF(vector, func)				\
- 	idtentry_df vector asm_##func func
- 
-+# define DECLARE_IDTENTRY_XENCB(vector, func)				\
-+	DECLARE_IDTENTRY(vector, func)
-+
- #else
- # define DECLARE_IDTENTRY_MCE(vector, func)				\
- 	DECLARE_IDTENTRY(vector, func)
-@@ -442,6 +461,9 @@ __visible noinstr void func(struct pt_regs *regs,			\
- /* No ASM emitted for DF as this goes through a C shim */
- # define DECLARE_IDTENTRY_DF(vector, func)
- 
-+/* No ASM emitted for XEN hypervisor callback */
-+# define DECLARE_IDTENTRY_XENCB(vector, func)
-+
- #endif
- 
- /* No ASM code emitted for NMI */
-@@ -558,7 +580,7 @@ DECLARE_IDTENTRY_XEN(X86_TRAP_DB,	debug);
- DECLARE_IDTENTRY_DF(X86_TRAP_DF,	exc_double_fault);
- 
- #ifdef CONFIG_XEN_PV
--DECLARE_IDTENTRY(X86_TRAP_OTHER,	exc_xen_hypervisor_callback);
-+DECLARE_IDTENTRY_XENCB(X86_TRAP_OTHER,	exc_xen_hypervisor_callback);
- #endif
- 
- /* Device interrupts common/spurious */
-diff --git a/arch/x86/xen/xen-asm_32.S b/arch/x86/xen/xen-asm_32.S
-index d0ff2dc..4757cec 100644
---- a/arch/x86/xen/xen-asm_32.S
-+++ b/arch/x86/xen/xen-asm_32.S
-@@ -113,7 +113,7 @@ iret_restore_end:
- 	 * Events are masked, so jumping out of the critical region is
- 	 * OK.
- 	 */
--	je asm_exc_xen_hypervisor_callback
-+	je xen_asm_exc_xen_hypervisor_callback
- 
- 1:	iret
- xen_iret_end_crit:
-@@ -127,7 +127,7 @@ SYM_CODE_END(xen_iret)
- 	.globl xen_iret_start_crit, xen_iret_end_crit
- 
- /*
-- * This is called by exc_xen_hypervisor_callback in entry_32.S when it sees
-+ * This is called by xen_asm_exc_xen_hypervisor_callback in entry_32.S when it sees
-  * that the EIP at the time of interrupt was between
-  * xen_iret_start_crit and xen_iret_end_crit.
-  *
-@@ -144,7 +144,7 @@ SYM_CODE_END(xen_iret)
-  *	 eflags		}
-  *	 cs		}  nested exception info
-  *	 eip		}
-- *	 return address	: (into asm_exc_xen_hypervisor_callback)
-+ *	 return address	: (into xen_asm_exc_xen_hypervisor_callback)
-  *
-  * In order to deliver the nested exception properly, we need to discard the
-  * nested exception frame such that when we handle the exception, we do it
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
