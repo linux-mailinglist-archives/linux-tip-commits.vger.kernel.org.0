@@ -2,105 +2,111 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D710F1ED5E3
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  3 Jun 2020 20:11:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 37D691ED66B
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  3 Jun 2020 20:53:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726445AbgFCSLL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 3 Jun 2020 14:11:11 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34532 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726422AbgFCSLK (ORCPT
+        id S1725959AbgFCSxt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 3 Jun 2020 14:53:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40964 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725922AbgFCSxt (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 3 Jun 2020 14:11:10 -0400
-Received: from paulmck-ThinkPad-P72.home (50-39-105-78.bvtn.or.frontiernet.net [50.39.105.78])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C8827207D3;
-        Wed,  3 Jun 2020 18:11:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1591207869;
-        bh=dbdZ2Zri2MRs+RtGvh5/n56tv50ACELvzX6ycBRjknM=;
-        h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-        b=F7CUJv/UYkI0d5tmTC5kszJufUeac232ZpexEXJ5S5wW5RwSa2s/BliRunX8tXXT9
-         rsHSFY/F785waDH+jrn++C+auqsfpbMIW8pgJGU0lwAIkwV2O9fYp0iZx5k/WgX8c7
-         lnDZZOU8pgTPuedsblLadu0vA5SU2GczCrcFODgA=
-Received: by paulmck-ThinkPad-P72.home (Postfix, from userid 1000)
-        id AB01935209C5; Wed,  3 Jun 2020 11:11:09 -0700 (PDT)
-Date:   Wed, 3 Jun 2020 11:11:09 -0700
-From:   "Paul E. McKenney" <paulmck@kernel.org>
-To:     Joel Fernandes <joel@joelfernandes.org>
-Cc:     Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org,
-        linux-tip-commits@vger.kernel.org, x86 <x86@kernel.org>
-Subject: Re: [PATCH] rcu/performance: Fix kfree_perf_init() build warning on
- 32-bit kernels
-Message-ID: <20200603181109.GA5438@paulmck-ThinkPad-P72>
-Reply-To: paulmck@kernel.org
-References: <158923078019.390.12609597570329519463.tip-bot2@tip-bot2>
- <20200526182744.GA3722128@gmail.com>
- <20200527011413.GD149611@google.com>
+        Wed, 3 Jun 2020 14:53:49 -0400
+Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E209C08C5C0;
+        Wed,  3 Jun 2020 11:53:49 -0700 (PDT)
+Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tip-bot2@linutronix.de>)
+        id 1jgYWI-0006iC-4o; Wed, 03 Jun 2020 20:53:46 +0200
+Received: from [127.0.1.1] (localhost [IPv6:::1])
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 6B3FA1C0081;
+        Wed,  3 Jun 2020 20:53:45 +0200 (CEST)
+Date:   Wed, 03 Jun 2020 18:53:45 -0000
+From:   "tip-bot2 for Christophe Leroy" <tip-bot2@linutronix.de>
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: timers/urgent] lib/vdso: Force inlining of
+ __cvdso_clock_gettime_common()
+Cc:     Christophe Leroy <christophe.leroy@c-s.fr>,
+        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: =?utf-8?q?=3C1ab6a62c356c3bec35d1623563ef9c636205bcda=2E15880?=
+ =?utf-8?q?79622=2Egit=2Echristophe=2Eleroy=40c-s=2Efr=3E?=
+References: =?utf-8?q?=3C1ab6a62c356c3bec35d1623563ef9c636205bcda=2E158807?=
+ =?utf-8?q?9622=2Egit=2Echristophe=2Eleroy=40c-s=2Efr=3E?=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200527011413.GD149611@google.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Message-ID: <159121042519.17951.1602387180058090601.tip-bot2@tip-bot2>
+X-Mailer: tip-git-log-daemon
+Robot-ID: <tip-bot2.linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Tue, May 26, 2020 at 09:14:13PM -0400, Joel Fernandes wrote:
-> On Tue, May 26, 2020 at 08:27:44PM +0200, Ingo Molnar wrote:
-> [...]
-> > ./include/linux/kern_levels.h:5:18: warning: format ‘%lu’ expects argument
-> > of type ‘long unsigned int’, but argument 2 has type ‘unsigned int’
-> > [-Wformat=] 5 | #define KERN_SOH "\001"  /* ASCII Start Of Header */ |
-> > ^~~~~~
-> > ./include/linux/kern_levels.h:9:20: note: in expansion of macro ‘KERN_SOH’
-> >     9 | #define KERN_ALERT KERN_SOH "1" /* action must be taken immediately */
-> >       |                    ^~~~~~~~
-> > ./include/linux/printk.h:295:9: note: in expansion of macro ‘KERN_ALERT’
-> >   295 |  printk(KERN_ALERT pr_fmt(fmt), ##__VA_ARGS__)
-> >       |         ^~~~~~~~~~
-> > kernel/rcu/rcuperf.c:726:2: note: in expansion of macro ‘pr_alert’
-> >   726 |  pr_alert("kfree object size=%lu\n", kfree_mult * sizeof(struct kfree_obj));
-> >       |  ^~~~~~~~
-> > kernel/rcu/rcuperf.c:726:32: note: format string is defined here
-> >   726 |  pr_alert("kfree object size=%lu\n", kfree_mult * sizeof(struct kfree_obj));
-> >       |                              ~~^
-> >       |                                |
-> >       |                                long unsigned int
-> >       |                              %u
-> > 
-> > 
-> > The reason for the warning is that both kfree_mult and sizeof() are 
-> > 'int' types on 32-bit kernels, while the format string expects a long.
-> > 
-> > Instead of casting the type to long or tweaking the format string, the 
-> > most straightforward solution is to upgrade kfree_mult to a long. 
-> > Since this depends on CONFIG_RCU_PERF_TEST
-> 
-> Thanks for fixing it.
-> 
-> > BTW., could we please also rename this code from 'PERF_TEST'/'perf test'
-> > to 'PERFORMANCE_TEST'/'performance test'? At first glance I always
-> > mistakenly believe that it's somehow related to perf, while it isn't. =B-)
-> 
-> Would it be better to call it 'RCUPERF_TEST' instead of the
-> 'RCU_PERFORMANCE_TEST' you are proposing? I feel the word 'PERFORMANCE' is
-> too long.  Also, 'rcuperf test' instead of the 'rcu performance test' you are
-> proposing.  I am Ok with doing it however you and Paul want it though, let me
-> know.
+The following commit has been merged into the timers/urgent branch of tip:
 
-As long as we are bikeshedding the name...  How about refscale.c and
-RCU_REF_SCALE_TEST on the one hand and rcuscale.c and RCU_SCALE_TEST on
-the other?  That keeps the names reasonably short and does not allude
-to perf at all.
+Commit-ID:     b91c8c42ffdd5c983923edb38b3c3e112bfe6263
+Gitweb:        https://git.kernel.org/tip/b91c8c42ffdd5c983923edb38b3c3e112bfe6263
+Author:        Christophe Leroy <christophe.leroy@c-s.fr>
+AuthorDate:    Tue, 28 Apr 2020 13:16:53 
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Wed, 03 Jun 2020 20:50:57 +02:00
 
-> Paul, should I send you a renaming patch for the new performance tests as
-> well (which I believe should be in the -dev branch).
+lib/vdso: Force inlining of __cvdso_clock_gettime_common()
 
-I am still modifying refperf/refscale/refwhatever, so I will update
-that one.
+When adding gettime64() to a 32 bit architecture (namely powerpc/32)
+it has been noticed that GCC doesn't inline anymore
+__cvdso_clock_gettime_common() because it is called twice
+(Once by __cvdso_clock_gettime() and once by
+__cvdso_clock_gettime32).
 
-						Thanx, Paul
+This has the effect of seriously degrading the performance:
+
+Before the implementation of gettime64(), gettime() runs in:
+
+  clock-gettime-monotonic-raw:	    vdso: 1003 nsec/call
+  clock-gettime-monotonic-coarse:   vdso:  592 nsec/call
+  clock-gettime-monotonic:          vdso:  942 nsec/call
+
+When adding a gettime64() entry point, the standard gettime()
+performance is degraded by 30% to 50%:
+
+  clock-gettime-monotonic-raw:      vdso: 1300 nsec/call
+  clock-gettime-monotonic-coarse:   vdso:  900 nsec/call
+  clock-gettime-monotonic:          vdso: 1232 nsec/call
+
+Adding __always_inline() to __cvdso_clock_gettime_common() regains the
+original performance.
+
+In terms of code size, the inlining increases the code size by only 176
+bytes. This is in the noise for a kernel image.
+
+Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lkml.kernel.org/r/1ab6a62c356c3bec35d1623563ef9c636205bcda.1588079622.git.christophe.leroy@c-s.fr
+
+---
+ lib/vdso/gettimeofday.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/lib/vdso/gettimeofday.c b/lib/vdso/gettimeofday.c
+index a2909af..7938d3c 100644
+--- a/lib/vdso/gettimeofday.c
++++ b/lib/vdso/gettimeofday.c
+@@ -210,7 +210,7 @@ static __always_inline int do_coarse(const struct vdso_data *vd, clockid_t clk,
+ 	return 0;
+ }
+ 
+-static __maybe_unused int
++static __always_inline int
+ __cvdso_clock_gettime_common(const struct vdso_data *vd, clockid_t clock,
+ 			     struct __kernel_timespec *ts)
+ {
