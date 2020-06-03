@@ -2,40 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 343841ED554
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  3 Jun 2020 19:50:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 232631ED55F
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  3 Jun 2020 19:51:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726377AbgFCRuh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 3 Jun 2020 13:50:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59442 "EHLO
+        id S1726584AbgFCRvB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 3 Jun 2020 13:51:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59458 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725601AbgFCRue (ORCPT
+        with ESMTP id S1726363AbgFCRug (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 3 Jun 2020 13:50:34 -0400
+        Wed, 3 Jun 2020 13:50:36 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01B6DC08C5C0;
-        Wed,  3 Jun 2020 10:50:33 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A68ECC08C5C0;
+        Wed,  3 Jun 2020 10:50:36 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jgXX4-0005xJ-46; Wed, 03 Jun 2020 19:50:30 +0200
+        id 1jgXX4-0005xK-D0; Wed, 03 Jun 2020 19:50:30 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 31E841C0081;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id AB3D71C032F;
         Wed,  3 Jun 2020 19:50:29 +0200 (CEST)
-Date:   Wed, 03 Jun 2020 17:50:28 -0000
+Date:   Wed, 03 Jun 2020 17:50:29 -0000
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/entry] x86/entry, cpumask: Provide non-instrumented variant
- of cpu_is_offline()
+Subject: [tip: x86/entry] x86/entry: __always_inline CR2 for noinstr
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200603114052.300804240@infradead.org>
-References: <20200603114052.300804240@infradead.org>
+In-Reply-To: <20200603114052.243227806@infradead.org>
+References: <20200603114052.243227806@infradead.org>
 MIME-Version: 1.0
-Message-ID: <159120662899.17951.13235553717544258833.tip-bot2@tip-bot2>
+Message-ID: <159120662955.17951.16471094480467341445.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,82 +50,89 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/entry branch of tip:
 
-Commit-ID:     02da62886d81c6683fbd6a09aec02b2c050d5827
-Gitweb:        https://git.kernel.org/tip/02da62886d81c6683fbd6a09aec02b2c050d5827
+Commit-ID:     8c4d7f8109431652f469b116f2f4fd6526b01a14
+Gitweb:        https://git.kernel.org/tip/8c4d7f8109431652f469b116f2f4fd6526b01a14
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Wed, 03 Jun 2020 13:40:23 +02:00
+AuthorDate:    Wed, 03 Jun 2020 13:40:22 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 03 Jun 2020 16:35:39 +02:00
+CommitterDate: Wed, 03 Jun 2020 16:35:38 +02:00
 
-x86/entry, cpumask: Provide non-instrumented variant of cpu_is_offline()
+x86/entry: __always_inline CR2 for noinstr
 
-vmlinux.o: warning: objtool: exc_nmi()+0x12: call to cpumask_test_cpu.constprop.0() leaves .noinstr.text section
-vmlinux.o: warning: objtool: mce_check_crashing_cpu()+0x12: call to cpumask_test_cpu.constprop.0()leaves .noinstr.text section
-
-  cpumask_test_cpu()
-    test_bit()
-      instrument_atomic_read()
-      arch_test_bit()
+vmlinux.o: warning: objtool: exc_page_fault()+0x9: call to read_cr2() leaves .noinstr.text section
+vmlinux.o: warning: objtool: exc_page_fault()+0x24: call to prefetchw() leaves .noinstr.text section
+vmlinux.o: warning: objtool: exc_page_fault()+0x21: call to kvm_handle_async_pf.isra.0() leaves .noinstr.text section
+vmlinux.o: warning: objtool: exc_nmi()+0x1cc: call to write_cr2() leaves .noinstr.text section
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20200603114052.300804240@infradead.org
+Link: https://lkml.kernel.org/r/20200603114052.243227806@infradead.org
 
 ---
- arch/x86/kernel/cpu/mce/core.c |  2 +-
- arch/x86/kernel/nmi.c          |  2 +-
- include/linux/cpumask.h        | 15 ++++++++++++++-
- 3 files changed, 16 insertions(+), 3 deletions(-)
+ arch/x86/include/asm/kvm_para.h      | 2 +-
+ arch/x86/include/asm/processor.h     | 2 +-
+ arch/x86/include/asm/special_insns.h | 8 ++++----
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
-index b9cb381..310c2b3 100644
---- a/arch/x86/kernel/cpu/mce/core.c
-+++ b/arch/x86/kernel/cpu/mce/core.c
-@@ -1104,7 +1104,7 @@ static noinstr bool mce_check_crashing_cpu(void)
- {
- 	unsigned int cpu = smp_processor_id();
- 
--	if (cpu_is_offline(cpu) ||
-+	if (arch_cpu_is_offline(cpu) ||
- 	    (crashing_cpu != -1 && crashing_cpu != cpu)) {
- 		u64 mcgstatus;
- 
-diff --git a/arch/x86/kernel/nmi.c b/arch/x86/kernel/nmi.c
-index 4a43934..8bd5dfd 100644
---- a/arch/x86/kernel/nmi.c
-+++ b/arch/x86/kernel/nmi.c
-@@ -482,7 +482,7 @@ static DEFINE_PER_CPU(unsigned long, nmi_dr7);
- 
- DEFINE_IDTENTRY_NMI(exc_nmi)
- {
--	if (IS_ENABLED(CONFIG_SMP) && cpu_is_offline(smp_processor_id()))
-+	if (IS_ENABLED(CONFIG_SMP) && arch_cpu_is_offline(smp_processor_id()))
- 		return;
- 
- 	if (this_cpu_read(nmi_state) != NMI_NOT_RUNNING) {
-diff --git a/include/linux/cpumask.h b/include/linux/cpumask.h
-index f0d895d..d0f0e34 100644
---- a/include/linux/cpumask.h
-+++ b/include/linux/cpumask.h
-@@ -888,7 +888,20 @@ static inline const struct cpumask *get_cpu_mask(unsigned int cpu)
- 	return to_cpumask(p);
+diff --git a/arch/x86/include/asm/kvm_para.h b/arch/x86/include/asm/kvm_para.h
+index 118e5c2..f53306d 100644
+--- a/arch/x86/include/asm/kvm_para.h
++++ b/arch/x86/include/asm/kvm_para.h
+@@ -141,7 +141,7 @@ static inline void kvm_disable_steal_time(void)
+ 	return;
  }
  
--#define cpu_is_offline(cpu)	unlikely(!cpu_online(cpu))
-+#if NR_CPUS > 1
-+static __always_inline bool arch_cpu_online(int cpu)
-+{
-+	return arch_test_bit(cpu, cpumask_bits(cpu_online_mask));
-+}
-+#else
-+static __always_inline bool arch_cpu_online(int cpu)
-+{
-+	return cpu == 0;
-+}
-+#endif
-+
-+#define arch_cpu_is_offline(cpu)	unlikely(!arch_cpu_online(cpu))
-+#define cpu_is_offline(cpu)		unlikely(!cpu_online(cpu))
+-static inline bool kvm_handle_async_pf(struct pt_regs *regs, u32 token)
++static __always_inline bool kvm_handle_async_pf(struct pt_regs *regs, u32 token)
+ {
+ 	return false;
+ }
+diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
+index 3eeaaeb..6945b5c 100644
+--- a/arch/x86/include/asm/processor.h
++++ b/arch/x86/include/asm/processor.h
+@@ -822,7 +822,7 @@ static inline void prefetch(const void *x)
+  * Useful for spinlocks to avoid one state transition in the
+  * cache coherency protocol:
+  */
+-static inline void prefetchw(const void *x)
++static __always_inline void prefetchw(const void *x)
+ {
+ 	alternative_input(BASE_PREFETCH, "prefetchw %P1",
+ 			  X86_FEATURE_3DNOWPREFETCH,
+diff --git a/arch/x86/include/asm/special_insns.h b/arch/x86/include/asm/special_insns.h
+index 82436cb..eb8e781 100644
+--- a/arch/x86/include/asm/special_insns.h
++++ b/arch/x86/include/asm/special_insns.h
+@@ -28,14 +28,14 @@ static inline unsigned long native_read_cr0(void)
+ 	return val;
+ }
  
- #if NR_CPUS <= BITS_PER_LONG
- #define CPU_BITS_ALL						\
+-static inline unsigned long native_read_cr2(void)
++static __always_inline unsigned long native_read_cr2(void)
+ {
+ 	unsigned long val;
+ 	asm volatile("mov %%cr2,%0\n\t" : "=r" (val), "=m" (__force_order));
+ 	return val;
+ }
+ 
+-static inline void native_write_cr2(unsigned long val)
++static __always_inline void native_write_cr2(unsigned long val)
+ {
+ 	asm volatile("mov %0,%%cr2": : "r" (val), "m" (__force_order));
+ }
+@@ -160,12 +160,12 @@ static inline void write_cr0(unsigned long x)
+ 	native_write_cr0(x);
+ }
+ 
+-static inline unsigned long read_cr2(void)
++static __always_inline unsigned long read_cr2(void)
+ {
+ 	return native_read_cr2();
+ }
+ 
+-static inline void write_cr2(unsigned long x)
++static __always_inline void write_cr2(unsigned long x)
+ {
+ 	native_write_cr2(x);
+ }
