@@ -2,39 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0716E1ED55D
+	by mail.lfdr.de (Postfix) with ESMTP id 023D61ED55C
 	for <lists+linux-tip-commits@lfdr.de>; Wed,  3 Jun 2020 19:51:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726330AbgFCRug (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S1726350AbgFCRug (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Wed, 3 Jun 2020 13:50:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59452 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59454 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726294AbgFCRuf (ORCPT
+        with ESMTP id S1726239AbgFCRuf (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Wed, 3 Jun 2020 13:50:35 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CD30C08C5C3;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65FCCC08C5C0;
         Wed,  3 Jun 2020 10:50:35 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jgXX5-0005yZ-VW; Wed, 03 Jun 2020 19:50:32 +0200
+        id 1jgXX6-0005yu-EX; Wed, 03 Jun 2020 19:50:32 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 92EF91C0081;
-        Wed,  3 Jun 2020 19:50:31 +0200 (CEST)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 0FF051C032F;
+        Wed,  3 Jun 2020 19:50:32 +0200 (CEST)
 Date:   Wed, 03 Jun 2020 17:50:31 -0000
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/entry] x86/entry: __always_inline irqflags for noinstr
+Subject: [tip: x86/entry] x86/entry: __always_inline debugreg for noinstr
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200603114052.012171668@infradead.org>
-References: <20200603114052.012171668@infradead.org>
+In-Reply-To: <20200603114051.954401211@infradead.org>
+References: <20200603114051.954401211@infradead.org>
 MIME-Version: 1.0
-Message-ID: <159120663146.17951.5262493946903596119.tip-bot2@tip-bot2>
+Message-ID: <159120663193.17951.12809803627029707086.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,106 +50,53 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/entry branch of tip:
 
-Commit-ID:     43cea329af80b327cf0981df87fc26ce35d858f8
-Gitweb:        https://git.kernel.org/tip/43cea329af80b327cf0981df87fc26ce35d858f8
+Commit-ID:     c227bf005a079ad7af47f8df3cbb7c39cdbabc37
+Gitweb:        https://git.kernel.org/tip/c227bf005a079ad7af47f8df3cbb7c39cdbabc37
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Wed, 03 Jun 2020 13:40:18 +02:00
+AuthorDate:    Wed, 03 Jun 2020 13:40:17 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Wed, 03 Jun 2020 16:35:36 +02:00
 
-x86/entry: __always_inline irqflags for noinstr
+x86/entry: __always_inline debugreg for noinstr
 
-vmlinux.o: warning: objtool: lockdep_hardirqs_on()+0x65: call to arch_local_save_flags() leaves .noinstr.text section
-vmlinux.o: warning: objtool: lockdep_hardirqs_off()+0x5d: call to arch_local_save_flags() leaves .noinstr.text section
-vmlinux.o: warning: objtool: lock_is_held_type()+0x35: call to arch_local_irq_save() leaves .noinstr.text section
-vmlinux.o: warning: objtool: check_preemption_disabled()+0x31: call to arch_local_save_flags() leaves .noinstr.text section
-vmlinux.o: warning: objtool: check_preemption_disabled()+0x33: call to arch_irqs_disabled_flags() leaves .noinstr.text section
-vmlinux.o: warning: objtool: lock_is_held_type()+0x2f: call to native_irq_disable() leaves .noinstr.text section
+vmlinux.o: warning: objtool: exc_debug()+0x21: call to native_get_debugreg() leaves .noinstr.text section
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20200603114052.012171668@infradead.org
+Link: https://lkml.kernel.org/r/20200603114051.954401211@infradead.org
 
 ---
- arch/x86/include/asm/irqflags.h | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ arch/x86/include/asm/debugreg.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/include/asm/irqflags.h b/arch/x86/include/asm/irqflags.h
-index 8ddff8d..02a0cf5 100644
---- a/arch/x86/include/asm/irqflags.h
-+++ b/arch/x86/include/asm/irqflags.h
-@@ -17,7 +17,7 @@
+diff --git a/arch/x86/include/asm/debugreg.h b/arch/x86/include/asm/debugreg.h
+index 42fc35d..e89558a 100644
+--- a/arch/x86/include/asm/debugreg.h
++++ b/arch/x86/include/asm/debugreg.h
+@@ -18,7 +18,7 @@ DECLARE_PER_CPU(unsigned long, cpu_dr7);
+ 	native_set_debugreg(register, value)
+ #endif
  
- /* Declaration required for gcc < 4.9 to prevent -Werror=missing-prototypes */
- extern inline unsigned long native_save_fl(void);
--extern inline unsigned long native_save_fl(void)
-+extern __always_inline unsigned long native_save_fl(void)
+-static inline unsigned long native_get_debugreg(int regno)
++static __always_inline unsigned long native_get_debugreg(int regno)
  {
- 	unsigned long flags;
+ 	unsigned long val = 0;	/* Damn you, gcc! */
  
-@@ -44,12 +44,12 @@ extern inline void native_restore_fl(unsigned long flags)
- 		     :"memory", "cc");
+@@ -47,7 +47,7 @@ static inline unsigned long native_get_debugreg(int regno)
+ 	return val;
  }
  
--static inline void native_irq_disable(void)
-+static __always_inline void native_irq_disable(void)
+-static inline void native_set_debugreg(int regno, unsigned long value)
++static __always_inline void native_set_debugreg(int regno, unsigned long value)
  {
- 	asm volatile("cli": : :"memory");
+ 	switch (regno) {
+ 	case 0:
+@@ -85,7 +85,7 @@ static inline void hw_breakpoint_disable(void)
+ 	set_debugreg(0UL, 3);
  }
  
--static inline void native_irq_enable(void)
-+static __always_inline void native_irq_enable(void)
+-static inline bool hw_breakpoint_active(void)
++static __always_inline bool hw_breakpoint_active(void)
  {
- 	asm volatile("sti": : :"memory");
+ 	return __this_cpu_read(cpu_dr7) & DR_GLOBAL_ENABLE_MASK;
  }
-@@ -74,22 +74,22 @@ static inline __cpuidle void native_halt(void)
- #ifndef __ASSEMBLY__
- #include <linux/types.h>
- 
--static inline notrace unsigned long arch_local_save_flags(void)
-+static __always_inline unsigned long arch_local_save_flags(void)
- {
- 	return native_save_fl();
- }
- 
--static inline notrace void arch_local_irq_restore(unsigned long flags)
-+static __always_inline void arch_local_irq_restore(unsigned long flags)
- {
- 	native_restore_fl(flags);
- }
- 
--static inline notrace void arch_local_irq_disable(void)
-+static __always_inline void arch_local_irq_disable(void)
- {
- 	native_irq_disable();
- }
- 
--static inline notrace void arch_local_irq_enable(void)
-+static __always_inline void arch_local_irq_enable(void)
- {
- 	native_irq_enable();
- }
-@@ -115,7 +115,7 @@ static inline __cpuidle void halt(void)
- /*
-  * For spinlocks, etc:
-  */
--static inline notrace unsigned long arch_local_irq_save(void)
-+static __always_inline unsigned long arch_local_irq_save(void)
- {
- 	unsigned long flags = arch_local_save_flags();
- 	arch_local_irq_disable();
-@@ -159,12 +159,12 @@ static inline notrace unsigned long arch_local_irq_save(void)
- #endif /* CONFIG_PARAVIRT_XXL */
- 
- #ifndef __ASSEMBLY__
--static inline int arch_irqs_disabled_flags(unsigned long flags)
-+static __always_inline int arch_irqs_disabled_flags(unsigned long flags)
- {
- 	return !(flags & X86_EFLAGS_IF);
- }
- 
--static inline int arch_irqs_disabled(void)
-+static __always_inline int arch_irqs_disabled(void)
- {
- 	unsigned long flags = arch_local_save_flags();
- 
