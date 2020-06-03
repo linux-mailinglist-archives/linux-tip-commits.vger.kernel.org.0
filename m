@@ -2,39 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 232631ED55F
+	by mail.lfdr.de (Postfix) with ESMTP id 1CA511ED55E
 	for <lists+linux-tip-commits@lfdr.de>; Wed,  3 Jun 2020 19:51:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726584AbgFCRvB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 3 Jun 2020 13:51:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59458 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726363AbgFCRug (ORCPT
-        <rfc822;linux-tip-commits@vger.kernel.org>);
+        id S1726314AbgFCRug (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Wed, 3 Jun 2020 13:50:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59446 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726277AbgFCRuf (ORCPT
+        <rfc822;linux-tip-commits@vger.kernel.org>);
+        Wed, 3 Jun 2020 13:50:35 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A68ECC08C5C0;
-        Wed,  3 Jun 2020 10:50:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7C16C08C5C2;
+        Wed,  3 Jun 2020 10:50:34 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jgXX4-0005xK-D0; Wed, 03 Jun 2020 19:50:30 +0200
+        id 1jgXX5-0005yE-HD; Wed, 03 Jun 2020 19:50:31 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id AB3D71C032F;
-        Wed,  3 Jun 2020 19:50:29 +0200 (CEST)
-Date:   Wed, 03 Jun 2020 17:50:29 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 23D671C032F;
+        Wed,  3 Jun 2020 19:50:31 +0200 (CEST)
+Date:   Wed, 03 Jun 2020 17:50:30 -0000
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/entry] x86/entry: __always_inline CR2 for noinstr
+Subject: [tip: x86/entry] x86/entry: __always_inline arch_atomic_* for noinstr
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200603114052.243227806@infradead.org>
-References: <20200603114052.243227806@infradead.org>
+In-Reply-To: <20200603114052.070166551@infradead.org>
+References: <20200603114052.070166551@infradead.org>
 MIME-Version: 1.0
-Message-ID: <159120662955.17951.16471094480467341445.tip-bot2@tip-bot2>
+Message-ID: <159120663098.17951.4504058893590117947.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,89 +50,87 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/entry branch of tip:
 
-Commit-ID:     8c4d7f8109431652f469b116f2f4fd6526b01a14
-Gitweb:        https://git.kernel.org/tip/8c4d7f8109431652f469b116f2f4fd6526b01a14
+Commit-ID:     c74809a9760f0d0c80ebe4e6ddcc9aebba9d90bc
+Gitweb:        https://git.kernel.org/tip/c74809a9760f0d0c80ebe4e6ddcc9aebba9d90bc
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Wed, 03 Jun 2020 13:40:22 +02:00
+AuthorDate:    Wed, 03 Jun 2020 13:40:19 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 03 Jun 2020 16:35:38 +02:00
+CommitterDate: Wed, 03 Jun 2020 16:35:37 +02:00
 
-x86/entry: __always_inline CR2 for noinstr
+x86/entry: __always_inline arch_atomic_* for noinstr
 
-vmlinux.o: warning: objtool: exc_page_fault()+0x9: call to read_cr2() leaves .noinstr.text section
-vmlinux.o: warning: objtool: exc_page_fault()+0x24: call to prefetchw() leaves .noinstr.text section
-vmlinux.o: warning: objtool: exc_page_fault()+0x21: call to kvm_handle_async_pf.isra.0() leaves .noinstr.text section
-vmlinux.o: warning: objtool: exc_nmi()+0x1cc: call to write_cr2() leaves .noinstr.text section
+vmlinux.o: warning: objtool: rcu_dynticks_eqs_exit()+0x33: call to arch_atomic_and.constprop.0() leaves .noinstr.text section
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20200603114052.243227806@infradead.org
+Link: https://lkml.kernel.org/r/20200603114052.070166551@infradead.org
 
 ---
- arch/x86/include/asm/kvm_para.h      | 2 +-
- arch/x86/include/asm/processor.h     | 2 +-
- arch/x86/include/asm/special_insns.h | 8 ++++----
- 3 files changed, 6 insertions(+), 6 deletions(-)
+ arch/x86/include/asm/atomic.h | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/arch/x86/include/asm/kvm_para.h b/arch/x86/include/asm/kvm_para.h
-index 118e5c2..f53306d 100644
---- a/arch/x86/include/asm/kvm_para.h
-+++ b/arch/x86/include/asm/kvm_para.h
-@@ -141,7 +141,7 @@ static inline void kvm_disable_steal_time(void)
- 	return;
+diff --git a/arch/x86/include/asm/atomic.h b/arch/x86/include/asm/atomic.h
+index a9ae588..bf35e47 100644
+--- a/arch/x86/include/asm/atomic.h
++++ b/arch/x86/include/asm/atomic.h
+@@ -205,13 +205,13 @@ static __always_inline bool arch_atomic_try_cmpxchg(atomic_t *v, int *old, int n
+ }
+ #define arch_atomic_try_cmpxchg arch_atomic_try_cmpxchg
+ 
+-static inline int arch_atomic_xchg(atomic_t *v, int new)
++static __always_inline int arch_atomic_xchg(atomic_t *v, int new)
+ {
+ 	return arch_xchg(&v->counter, new);
+ }
+ #define arch_atomic_xchg arch_atomic_xchg
+ 
+-static inline void arch_atomic_and(int i, atomic_t *v)
++static __always_inline void arch_atomic_and(int i, atomic_t *v)
+ {
+ 	asm volatile(LOCK_PREFIX "andl %1,%0"
+ 			: "+m" (v->counter)
+@@ -219,7 +219,7 @@ static inline void arch_atomic_and(int i, atomic_t *v)
+ 			: "memory");
  }
  
--static inline bool kvm_handle_async_pf(struct pt_regs *regs, u32 token)
-+static __always_inline bool kvm_handle_async_pf(struct pt_regs *regs, u32 token)
+-static inline int arch_atomic_fetch_and(int i, atomic_t *v)
++static __always_inline int arch_atomic_fetch_and(int i, atomic_t *v)
  {
- 	return false;
+ 	int val = arch_atomic_read(v);
+ 
+@@ -229,7 +229,7 @@ static inline int arch_atomic_fetch_and(int i, atomic_t *v)
  }
-diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
-index 3eeaaeb..6945b5c 100644
---- a/arch/x86/include/asm/processor.h
-+++ b/arch/x86/include/asm/processor.h
-@@ -822,7 +822,7 @@ static inline void prefetch(const void *x)
-  * Useful for spinlocks to avoid one state transition in the
-  * cache coherency protocol:
-  */
--static inline void prefetchw(const void *x)
-+static __always_inline void prefetchw(const void *x)
+ #define arch_atomic_fetch_and arch_atomic_fetch_and
+ 
+-static inline void arch_atomic_or(int i, atomic_t *v)
++static __always_inline void arch_atomic_or(int i, atomic_t *v)
  {
- 	alternative_input(BASE_PREFETCH, "prefetchw %P1",
- 			  X86_FEATURE_3DNOWPREFETCH,
-diff --git a/arch/x86/include/asm/special_insns.h b/arch/x86/include/asm/special_insns.h
-index 82436cb..eb8e781 100644
---- a/arch/x86/include/asm/special_insns.h
-+++ b/arch/x86/include/asm/special_insns.h
-@@ -28,14 +28,14 @@ static inline unsigned long native_read_cr0(void)
- 	return val;
+ 	asm volatile(LOCK_PREFIX "orl %1,%0"
+ 			: "+m" (v->counter)
+@@ -237,7 +237,7 @@ static inline void arch_atomic_or(int i, atomic_t *v)
+ 			: "memory");
  }
  
--static inline unsigned long native_read_cr2(void)
-+static __always_inline unsigned long native_read_cr2(void)
+-static inline int arch_atomic_fetch_or(int i, atomic_t *v)
++static __always_inline int arch_atomic_fetch_or(int i, atomic_t *v)
  {
- 	unsigned long val;
- 	asm volatile("mov %%cr2,%0\n\t" : "=r" (val), "=m" (__force_order));
- 	return val;
+ 	int val = arch_atomic_read(v);
+ 
+@@ -247,7 +247,7 @@ static inline int arch_atomic_fetch_or(int i, atomic_t *v)
+ }
+ #define arch_atomic_fetch_or arch_atomic_fetch_or
+ 
+-static inline void arch_atomic_xor(int i, atomic_t *v)
++static __always_inline void arch_atomic_xor(int i, atomic_t *v)
+ {
+ 	asm volatile(LOCK_PREFIX "xorl %1,%0"
+ 			: "+m" (v->counter)
+@@ -255,7 +255,7 @@ static inline void arch_atomic_xor(int i, atomic_t *v)
+ 			: "memory");
  }
  
--static inline void native_write_cr2(unsigned long val)
-+static __always_inline void native_write_cr2(unsigned long val)
+-static inline int arch_atomic_fetch_xor(int i, atomic_t *v)
++static __always_inline int arch_atomic_fetch_xor(int i, atomic_t *v)
  {
- 	asm volatile("mov %0,%%cr2": : "r" (val), "m" (__force_order));
- }
-@@ -160,12 +160,12 @@ static inline void write_cr0(unsigned long x)
- 	native_write_cr0(x);
- }
+ 	int val = arch_atomic_read(v);
  
--static inline unsigned long read_cr2(void)
-+static __always_inline unsigned long read_cr2(void)
- {
- 	return native_read_cr2();
- }
- 
--static inline void write_cr2(unsigned long x)
-+static __always_inline void write_cr2(unsigned long x)
- {
- 	native_write_cr2(x);
- }
