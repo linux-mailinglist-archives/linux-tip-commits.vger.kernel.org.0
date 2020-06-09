@@ -2,37 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 873CF1F367A
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  9 Jun 2020 10:54:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C648B1F3E76
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  9 Jun 2020 16:40:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728223AbgFIIxx (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 9 Jun 2020 04:53:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43260 "EHLO
+        id S1730593AbgFIOkj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 9 Jun 2020 10:40:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40326 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727858AbgFIIxw (ORCPT
+        with ESMTP id S1730569AbgFIOke (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 9 Jun 2020 04:53:52 -0400
+        Tue, 9 Jun 2020 10:40:34 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 549F3C03E97C;
-        Tue,  9 Jun 2020 01:53:52 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 414B0C05BD1E;
+        Tue,  9 Jun 2020 07:40:31 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jia0z-0005cA-M9; Tue, 09 Jun 2020 10:53:49 +0200
+        id 1jifQO-0002o6-Dq; Tue, 09 Jun 2020 16:40:24 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 32A6D1C007F;
-        Tue,  9 Jun 2020 10:53:49 +0200 (CEST)
-Date:   Tue, 09 Jun 2020 08:53:49 -0000
-From:   "tip-bot2 for Anthony Steinhauser" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D80CD1C007F;
+        Tue,  9 Jun 2020 16:40:23 +0200 (CEST)
+Date:   Tue, 09 Jun 2020 14:40:23 -0000
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/speculation: Prevent rogue cross-process SSBD shutdown
-Cc:     Anthony Steinhauser <asteinhauser@google.com>,
-        Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org,
+Subject: [tip: x86/urgent] x86/vdso: Unbreak paravirt VDSO clocks
+Cc:     Miklos Szeredi <miklos@szeredi.hu>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Miklos Szeredi <mszeredi@redhat.com>, stable@vger.kernel.org,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200606221532.080560273@linutronix.de>
+References: <20200606221532.080560273@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <159169282906.17951.4114513671319540773.tip-bot2@tip-bot2>
+Message-ID: <159171362368.17951.5578339673051850079.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,100 +51,81 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     dbbe2ad02e9df26e372f38cc3e70dab9222c832e
-Gitweb:        https://git.kernel.org/tip/dbbe2ad02e9df26e372f38cc3e70dab9222c832e
-Author:        Anthony Steinhauser <asteinhauser@google.com>
-AuthorDate:    Sun, 05 Jan 2020 12:19:43 -08:00
+Commit-ID:     7778d8417b74aded842eeb372961cfc460417fa0
+Gitweb:        https://git.kernel.org/tip/7778d8417b74aded842eeb372961cfc460417fa0
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Sat, 06 Jun 2020 23:51:17 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 09 Jun 2020 10:50:55 +02:00
+CommitterDate: Tue, 09 Jun 2020 16:36:49 +02:00
 
-x86/speculation: Prevent rogue cross-process SSBD shutdown
+x86/vdso: Unbreak paravirt VDSO clocks
 
-On context switch the change of TIF_SSBD and TIF_SPEC_IB are evaluated
-to adjust the mitigations accordingly. This is optimized to avoid the
-expensive MSR write if not needed.
+The conversion of x86 VDSO to the generic clock mode storage broke the
+paravirt and hyperv clocksource logic. These clock sources have their own
+internal sequence counter to validate the clocksource at the point of
+reading it. This is necessary because the hypervisor can invalidate the
+clocksource asynchronously so a check during the VDSO data update is not
+sufficient. If the internal check during read invalidates the clocksource
+the read return U64_MAX. The original code checked this efficiently by
+testing whether the result (casted to signed) is negative, i.e. bit 63 is
+set. This was done that way because an extra indicator for the validity had
+more overhead.
 
-This optimization is buggy and allows an attacker to shutdown the SSBD
-protection of a victim process.
+The conversion broke this check because the check was replaced by a check
+for a valid VDSO clock mode.
 
-The update logic reads the cached base value for the speculation control
-MSR which has neither the SSBD nor the STIBP bit set. It then OR's the
-SSBD bit only when TIF_SSBD is different and requests the MSR update.
+The wreckage manifests itself when the paravirt clock is installed as a
+valid VDSO clock and during runtime invalidated by the hypervisor,
+e.g. after a host suspend/resume cycle. After the invalidation the read
+function returns U64_MAX which is used as cycles and makes the clock jump
+by ~2200 seconds, and become stale until the 2200 seconds have elapsed
+where it starts to jump again. The period of this effect depends on the
+shift/mult pair of the clocksource and the jumps and staleness are an
+artifact of undefined but reproducible behaviour of math overflow.
 
-That means if TIF_SSBD of the previous and next task are the same, then
-the base value is not updated, even if TIF_SSBD is set. The MSR write is
-not requested.
+Implement an x86 version of the new vdso_cycles_ok() inline which adds this
+check back and a variant of vdso_clocksource_ok() which lets the compiler
+optimize it out to avoid the extra conditional. That's suboptimal when the
+system does not have a VDSO capable clocksource, but that's not the case
+which is optimized for.
 
-Subsequently if the TIF_STIBP bit differs then the STIBP bit is updated
-in the base value and the MSR is written with a wrong SSBD value.
-
-This was introduced when the per task/process conditional STIPB
-switching was added on top of the existing SSBD switching.
-
-It is exploitable if the attacker creates a process which enforces SSBD
-and has the contrary value of STIBP than the victim process (i.e. if the
-victim process enforces STIBP, the attacker process must not enforce it;
-if the victim process does not enforce STIBP, the attacker process must
-enforce it) and schedule it on the same core as the victim process. If
-the victim runs after the attacker the victim becomes vulnerable to
-Spectre V4.
-
-To fix this, update the MSR value independent of the TIF_SSBD difference
-and dependent on the SSBD mitigation method available. This ensures that
-a subsequent STIPB initiated MSR write has the correct state of SSBD.
-
-[ tglx: Handle X86_FEATURE_VIRT_SSBD & X86_FEATURE_VIRT_SSBD correctly
-        and massaged changelog ]
-
-Fixes: 5bfbe3ad5840 ("x86/speculation: Prepare for per task indirect branch speculation control")
-Signed-off-by: Anthony Steinhauser <asteinhauser@google.com>
+Fixes: 5d51bee725cc ("clocksource: Add common vdso clock mode storage")
+Reported-by: Miklos Szeredi <miklos@szeredi.hu>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Miklos Szeredi <mszeredi@redhat.com>
 Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/20200606221532.080560273@linutronix.de
 
 ---
- arch/x86/kernel/process.c | 28 ++++++++++------------------
- 1 file changed, 10 insertions(+), 18 deletions(-)
+ arch/x86/include/asm/vdso/gettimeofday.h | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/arch/x86/kernel/process.c b/arch/x86/kernel/process.c
-index 35638f1..8f4533c 100644
---- a/arch/x86/kernel/process.c
-+++ b/arch/x86/kernel/process.c
-@@ -545,28 +545,20 @@ static __always_inline void __speculation_ctrl_update(unsigned long tifp,
+diff --git a/arch/x86/include/asm/vdso/gettimeofday.h b/arch/x86/include/asm/vdso/gettimeofday.h
+index 9a6dc9b..fb81fea 100644
+--- a/arch/x86/include/asm/vdso/gettimeofday.h
++++ b/arch/x86/include/asm/vdso/gettimeofday.h
+@@ -271,6 +271,24 @@ static __always_inline const struct vdso_data *__arch_get_vdso_data(void)
+ 	return __vdso_data;
+ }
  
- 	lockdep_assert_irqs_disabled();
- 
--	/*
--	 * If TIF_SSBD is different, select the proper mitigation
--	 * method. Note that if SSBD mitigation is disabled or permanentely
--	 * enabled this branch can't be taken because nothing can set
--	 * TIF_SSBD.
--	 */
--	if (tif_diff & _TIF_SSBD) {
--		if (static_cpu_has(X86_FEATURE_VIRT_SSBD)) {
-+	/* Handle change of TIF_SSBD depending on the mitigation method. */
-+	if (static_cpu_has(X86_FEATURE_VIRT_SSBD)) {
-+		if (tif_diff & _TIF_SSBD)
- 			amd_set_ssb_virt_state(tifn);
--		} else if (static_cpu_has(X86_FEATURE_LS_CFG_SSBD)) {
-+	} else if (static_cpu_has(X86_FEATURE_LS_CFG_SSBD)) {
-+		if (tif_diff & _TIF_SSBD)
- 			amd_set_core_ssb_state(tifn);
--		} else if (static_cpu_has(X86_FEATURE_SPEC_CTRL_SSBD) ||
--			   static_cpu_has(X86_FEATURE_AMD_SSBD)) {
--			msr |= ssbd_tif_to_spec_ctrl(tifn);
--			updmsr  = true;
--		}
-+	} else if (static_cpu_has(X86_FEATURE_SPEC_CTRL_SSBD) ||
-+		   static_cpu_has(X86_FEATURE_AMD_SSBD)) {
-+		updmsr |= !!(tif_diff & _TIF_SSBD);
-+		msr |= ssbd_tif_to_spec_ctrl(tifn);
- 	}
- 
--	/*
--	 * Only evaluate TIF_SPEC_IB if conditional STIBP is enabled,
--	 * otherwise avoid the MSR write.
--	 */
-+	/* Only evaluate TIF_SPEC_IB if conditional STIBP is enabled. */
- 	if (IS_ENABLED(CONFIG_SMP) &&
- 	    static_branch_unlikely(&switch_to_cond_stibp)) {
- 		updmsr |= !!(tif_diff & _TIF_SPEC_IB);
++static inline bool arch_vdso_clocksource_ok(const struct vdso_data *vd)
++{
++	return true;
++}
++#define vdso_clocksource_ok arch_vdso_clocksource_ok
++
++/*
++ * Clocksource read value validation to handle PV and HyperV clocksources
++ * which can be invalidated asynchronously and indicate invalidation by
++ * returning U64_MAX, which can be effectively tested by checking for a
++ * negative value after casting it to s64.
++ */
++static inline bool arch_vdso_cycles_ok(u64 cycles)
++{
++	return (s64)cycles >= 0;
++}
++#define vdso_cycles_ok arch_vdso_cycles_ok
++
+ /*
+  * x86 specific delta calculation.
+  *
