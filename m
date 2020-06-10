@@ -2,22 +2,23 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E91701F5331
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 Jun 2020 13:29:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE8591F53AC
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 Jun 2020 13:42:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728527AbgFJL3g (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 10 Jun 2020 07:29:36 -0400
-Received: from mx2.suse.de ([195.135.220.15]:47636 "EHLO mx2.suse.de"
+        id S1728468AbgFJLm4 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 10 Jun 2020 07:42:56 -0400
+Received: from mx2.suse.de ([195.135.220.15]:58326 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728458AbgFJL3f (ORCPT
+        id S1728471AbgFJLm4 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 10 Jun 2020 07:29:35 -0400
+        Wed, 10 Jun 2020 07:42:56 -0400
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id B5C74AE63;
-        Wed, 10 Jun 2020 11:29:35 +0000 (UTC)
+        by mx2.suse.de (Postfix) with ESMTP id 369C2B001;
+        Wed, 10 Jun 2020 11:42:56 +0000 (UTC)
 Subject: Re: [tip: x86/entry] x86/entry/32: Use IA32-specific wrappers for
  syscalls taking 64-bit arguments
+From:   Jiri Slaby <jslaby@suse.cz>
 To:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org
 Cc:     Brian Gerst <brgerst@gmail.com>,
         Thomas Gleixner <tglx@linutronix.de>,
@@ -25,7 +26,7 @@ Cc:     Brian Gerst <brgerst@gmail.com>,
         x86 <x86@kernel.org>
 References: <20200313195144.164260-16-brgerst@gmail.com>
  <158480463257.28353.7220752053626182323.tip-bot2@tip-bot2>
-From:   Jiri Slaby <jslaby@suse.cz>
+ <07d39c26-ff51-1d34-616d-e1d525bda04f@suse.cz>
 Autocrypt: addr=jslaby@suse.cz; prefer-encrypt=mutual; keydata=
  mQINBE6S54YBEACzzjLwDUbU5elY4GTg/NdotjA0jyyJtYI86wdKraekbNE0bC4zV+ryvH4j
  rrcDwGs6tFVrAHvdHeIdI07s1iIx5R/ndcHwt4fvI8CL5PzPmn5J+h0WERR5rFprRh6axhOk
@@ -68,12 +69,12 @@ Autocrypt: addr=jslaby@suse.cz; prefer-encrypt=mutual; keydata=
  9HKkJqkN9xYEYaxtfl5pelF8idoxMZpTvCZY7jhnl2IemZCBMs6s338wS12Qro5WEAxV6cjD
  VSdmcD5l9plhKGLmgVNCTe8DPv81oDn9s0cIRLg9wNnDtj8aIiH8lBHwfUkpn32iv0uMV6Ae
  sLxhDWfOR4N+wu1gzXWgLel4drkCJcuYK5IL1qaZDcuGR8RPo3jbFO7Y
-Message-ID: <07d39c26-ff51-1d34-616d-e1d525bda04f@suse.cz>
-Date:   Wed, 10 Jun 2020 13:29:30 +0200
+Message-ID: <a5b51084-f289-3363-a77b-ca3bf55d78b6@suse.cz>
+Date:   Wed, 10 Jun 2020 13:42:51 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.8.1
 MIME-Version: 1.0
-In-Reply-To: <158480463257.28353.7220752053626182323.tip-bot2@tip-bot2>
+In-Reply-To: <07d39c26-ff51-1d34-616d-e1d525bda04f@suse.cz>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -82,73 +83,78 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On 21. 03. 20, 16:30, tip-bot2 for Brian Gerst wrote:
-> The following commit has been merged into the x86/entry branch of tip:
+On 10. 06. 20, 13:29, Jiri Slaby wrote:
+> On 21. 03. 20, 16:30, tip-bot2 for Brian Gerst wrote:
+>> The following commit has been merged into the x86/entry branch of tip:
+>>
+>> Commit-ID:     121b32a58a3af89a780cf194ce3769fc4120e574
+>> Gitweb:        https://git.kernel.org/tip/121b32a58a3af89a780cf194ce3769fc4120e574
+>> Author:        Brian Gerst <brgerst@gmail.com>
+>> AuthorDate:    Fri, 13 Mar 2020 15:51:41 -04:00
+>> Committer:     Thomas Gleixner <tglx@linutronix.de>
+>> CommitterDate: Sat, 21 Mar 2020 16:03:24 +01:00
+>>
+>> x86/entry/32: Use IA32-specific wrappers for syscalls taking 64-bit arguments
+>>
 > 
-> Commit-ID:     121b32a58a3af89a780cf194ce3769fc4120e574
-> Gitweb:        https://git.kernel.org/tip/121b32a58a3af89a780cf194ce3769fc4120e574
-> Author:        Brian Gerst <brgerst@gmail.com>
-> AuthorDate:    Fri, 13 Mar 2020 15:51:41 -04:00
-> Committer:     Thomas Gleixner <tglx@linutronix.de>
-> CommitterDate: Sat, 21 Mar 2020 16:03:24 +01:00
+> Hi,
 > 
-> x86/entry/32: Use IA32-specific wrappers for syscalls taking 64-bit arguments
+> this breaks creation of sparse files (e.g. by tar) on i586 (in 5.7).
 > 
-
-Hi,
-
-this breaks creation of sparse files (e.g. by tar) on i586 (in 5.7).
-
-tar does this:
-> openat(4, "sparsefile", O_WRONLY|O_CREAT|O_EXCL|O_NOCTTY|O_NONBLOCK|O_LARGEFILE|O_CLOEXEC, 0600) = 5
-> _llseek(5, 0, [0], SEEK_SET)      = 0
-> _llseek(5, 8589934592, [8589934592], SEEK_SET) = 0
-> write(5, "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"..., 512) = 512
-> _llseek(5, 8589935104, [8589935104], SEEK_SET) = 0
-> _llseek(5, 0, [8589935104], SEEK_CUR) = 0
-> ftruncate64(5, 8589935104)        = 0
-> utimensat_time64(5, NULL, [UTIME_OMIT, {tv_sec=1591782127, tv_nsec=400000000} /* 2020-06-10T11:42:07.400000000+0200 */], 0) = 0
-> fchown32(5, 0, 0)                 = 0
-> fchmod(5, 0644)                   = 0
-> close(5)                          = 0
-
-It should result in a sparsefile of size 8589935104, but after this
-commit, it's only 512 bytes.
-
-The archive is this:
-XQAAgAD//////////wAXC8aHklo7p4/HJQ64D7SVnhAZOByg5PlRjaTJjmKhpQbF1loXWBYREoWY
-DagQFjCR/jUwLV7mWbgHwcINuoi1bu/eDQHOp5mXL9bq/twuolv5Y2krdqZEztWCBydhsNFwBxHi
-U47whwTByiH4Ot16JcEkr4BFWXHXMTRs1lfVmIOE13bldiM6MzQUC7212b81Rn13fw06uk+aoP74
-OvatxDoW95Y7/xeMyDQ7uk8L1OfFGVRfU+PFycrb1gDZc6hLY2kDY15PGxCMSzHHGDE3nTr9Imdw
-UoUYqYNhi3tztLuue2rvzngAsMvHIEJaE6i2E5+X7lwlHZhg9Wp2T9ow9DyaJYLr/N+Jln7P1C97
-2hT9YzrPNupujamDoBv0kIA3zgAw/xHvZX/I3tfa5Z8+TjrhfgJ8poGKK1S1e8LR+657FbBH3B46
-HZFclvO0bUvL1xyRx0OPM1Dzzd+lH8VgF6RYHj1vDJCcR8nbtEfgN5W+cN44xdPO1VN/6Ffnj5Af
-84sDSaBSn7HTnaaJRX0KPa3zfdUzTv/ykgihysjhxAV9CW02ZiVffVgrK5UHVuoWzqQ76+83fYsM
-rSWRtoL0a3eo/hbqPvHg1Q8dRvbjwLs610lu3QIkvQ0DOK7zUHx44ODHfLBS2LJcw5TCiU25xGCm
-NXS1oRaVdqnCV6Rl5KZHPiHF7ZRxQFQxLgreu8z0INZ41T74pGbfGvNRqyLy9wxiO4/uCICO0om/
-oHlgowb9RWX9/0Z2
-
-Feed it through (on i586):
-mkdir directory; base64 -d | tar JxvC directory/
-
-and check the size of directory/sparsefile.
-
-Reverting the commit on the top of 5.7 doesn't help. I suppose it
-doesn't take the original path in the code there...
-
-Any ideas?
-
-> For the 32-bit syscall interface, 64-bit arguments (loff_t) are passed via
-> a pair of 32-bit registers.  These register pairs end up in consecutive stack
-> slots, which matches the C ABI for 64-bit arguments.  But when accessing the
-> registers directly from pt_regs, the wrapper needs to manually reassemble the
-> 64-bit value.  These wrappers already exist for 32-bit compat, so make them
-> available to 32-bit native in preparation for enabling pt_regs-based syscalls.
+> tar does this:
+>> openat(4, "sparsefile", O_WRONLY|O_CREAT|O_EXCL|O_NOCTTY|O_NONBLOCK|O_LARGEFILE|O_CLOEXEC, 0600) = 5
+>> _llseek(5, 0, [0], SEEK_SET)      = 0
+>> _llseek(5, 8589934592, [8589934592], SEEK_SET) = 0
+>> write(5, "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"..., 512) = 512
+>> _llseek(5, 8589935104, [8589935104], SEEK_SET) = 0
+>> _llseek(5, 0, [8589935104], SEEK_CUR) = 0
+>> ftruncate64(5, 8589935104)        = 0
+>> utimensat_time64(5, NULL, [UTIME_OMIT, {tv_sec=1591782127, tv_nsec=400000000} /* 2020-06-10T11:42:07.400000000+0200 */], 0) = 0
+>> fchown32(5, 0, 0)                 = 0
+>> fchmod(5, 0644)                   = 0
+>> close(5)                          = 0
 > 
-> Signed-off-by: Brian Gerst <brgerst@gmail.com>
-> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-> Reviewed-by: Dominik Brodowski <linux@dominikbrodowski.net>
-> Link: https://lkml.kernel.org/r/20200313195144.164260-16-brgerst@gmail.com
+> It should result in a sparsefile of size 8589935104, but after this
+> commit, it's only 512 bytes.
+> 
+> The archive is this:
+> XQAAgAD//////////wAXC8aHklo7p4/HJQ64D7SVnhAZOByg5PlRjaTJjmKhpQbF1loXWBYREoWY
+> DagQFjCR/jUwLV7mWbgHwcINuoi1bu/eDQHOp5mXL9bq/twuolv5Y2krdqZEztWCBydhsNFwBxHi
+> U47whwTByiH4Ot16JcEkr4BFWXHXMTRs1lfVmIOE13bldiM6MzQUC7212b81Rn13fw06uk+aoP74
+> OvatxDoW95Y7/xeMyDQ7uk8L1OfFGVRfU+PFycrb1gDZc6hLY2kDY15PGxCMSzHHGDE3nTr9Imdw
+> UoUYqYNhi3tztLuue2rvzngAsMvHIEJaE6i2E5+X7lwlHZhg9Wp2T9ow9DyaJYLr/N+Jln7P1C97
+> 2hT9YzrPNupujamDoBv0kIA3zgAw/xHvZX/I3tfa5Z8+TjrhfgJ8poGKK1S1e8LR+657FbBH3B46
+> HZFclvO0bUvL1xyRx0OPM1Dzzd+lH8VgF6RYHj1vDJCcR8nbtEfgN5W+cN44xdPO1VN/6Ffnj5Af
+> 84sDSaBSn7HTnaaJRX0KPa3zfdUzTv/ykgihysjhxAV9CW02ZiVffVgrK5UHVuoWzqQ76+83fYsM
+> rSWRtoL0a3eo/hbqPvHg1Q8dRvbjwLs610lu3QIkvQ0DOK7zUHx44ODHfLBS2LJcw5TCiU25xGCm
+> NXS1oRaVdqnCV6Rl5KZHPiHF7ZRxQFQxLgreu8z0INZ41T74pGbfGvNRqyLy9wxiO4/uCICO0om/
+> oHlgowb9RWX9/0Z2
+> 
+> Feed it through (on i586):
+> mkdir directory; base64 -d | tar JxvC directory/
+> 
+> and check the size of directory/sparsefile.
+> 
+> Reverting the commit on the top of 5.7 doesn't help. I suppose it
+> doesn't take the original path in the code there...
+> 
+> Any ideas?
+
+Got it:
+--- a/include/linux/syscalls.h
++++ b/include/linux/syscalls.h
+@@ -1358,7 +1358,7 @@ static inline long ksys_lchown(const char __user
+*filename, uid_t user,
+
+ extern long do_sys_ftruncate(unsigned int fd, loff_t length, int small);
+
+-static inline long ksys_ftruncate(unsigned int fd, unsigned long length)
++static inline long ksys_ftruncate(unsigned int fd, loff_t length)
+ {
+        return do_sys_ftruncate(fd, length, 1);
+ }
+
+Will send a patch in few minutes.
 
 thanks,
 -- 
