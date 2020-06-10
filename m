@@ -2,39 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F3831F3E75
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  9 Jun 2020 16:40:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E58A81F5264
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 Jun 2020 12:34:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729997AbgFIOka (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 9 Jun 2020 10:40:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40312 "EHLO
+        id S1728223AbgFJKeZ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 10 Jun 2020 06:34:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55372 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726395AbgFIOk3 (ORCPT
+        with ESMTP id S1728083AbgFJKeY (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 9 Jun 2020 10:40:29 -0400
+        Wed, 10 Jun 2020 06:34:24 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE79DC05BD1E;
-        Tue,  9 Jun 2020 07:40:28 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8408BC03E96F;
+        Wed, 10 Jun 2020 03:34:24 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jifQP-0002oA-AB; Tue, 09 Jun 2020 16:40:25 +0200
+        id 1jiy3l-0001gw-HJ; Wed, 10 Jun 2020 12:34:17 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id DD4BB1C007F;
-        Tue,  9 Jun 2020 16:40:24 +0200 (CEST)
-Date:   Tue, 09 Jun 2020 14:40:24 -0000
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 14FFA1C0105;
+        Wed, 10 Jun 2020 12:34:17 +0200 (CEST)
+Date:   Wed, 10 Jun 2020 10:34:16 -0000
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] clocksource: Remove obsolete ifdef
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Miklos Szeredi <mszeredi@redhat.com>, stable@vger.kernel.org,
+Subject: [tip: sched/urgent] sched: Fix RANDSTRUCT build fail
+Cc:     Guenter Roeck <linux@roeck-us.net>,
+        Eric Biggers <ebiggers@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200606221531.845475036@linutronix.de>
-References: <20200606221531.845475036@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <159171362475.17951.5175349331927727185.tip-bot2@tip-bot2>
+Message-ID: <159178525684.17951.17825196124597318263.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,51 +48,43 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     c7f3d43b629b598a2bb9ec3524e844eae7492e7e
-Gitweb:        https://git.kernel.org/tip/c7f3d43b629b598a2bb9ec3524e844eae7492e7e
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Sat, 06 Jun 2020 23:51:15 +02:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 09 Jun 2020 16:36:47 +02:00
+Commit-ID:     bfb9fbe0f7e70ec5c8e51ee55b6968d4dff14456
+Gitweb:        https://git.kernel.org/tip/bfb9fbe0f7e70ec5c8e51ee55b6968d4dff14456
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Wed, 10 Jun 2020 12:14:09 +02:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Wed, 10 Jun 2020 12:30:19 +02:00
 
-clocksource: Remove obsolete ifdef
+sched: Fix RANDSTRUCT build fail
 
-CONFIG_GENERIC_VDSO_CLOCK_MODE was a transitional config switch which got
-removed after all architectures got converted to the new storage model.
+As a temporary build fix, the proper cleanup needs more work.
 
-But the removal forgot to remove the #ifdef which guards the
-vdso_clock_mode sanity check, which effectively disables the sanity check.
-
-Remove it now.
-
-Fixes: f86fd32db706 ("lib/vdso: Cleanup clock mode storage leftovers")
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Miklos Szeredi <mszeredi@redhat.com>
-Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20200606221531.845475036@linutronix.de
-
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Reported-by: Eric Biggers <ebiggers@kernel.org>
+Suggested-by: Eric Biggers <ebiggers@kernel.org>
+Suggested-by: Kees Cook <keescook@chromium.org>
+Fixes: a148866489fb ("sched: Replace rq::wake_list")
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 ---
- kernel/time/clocksource.c | 2 --
- 1 file changed, 2 deletions(-)
+ include/linux/sched.h | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/time/clocksource.c b/kernel/time/clocksource.c
-index 7cb09c4..02441ea 100644
---- a/kernel/time/clocksource.c
-+++ b/kernel/time/clocksource.c
-@@ -928,14 +928,12 @@ int __clocksource_register_scale(struct clocksource *cs, u32 scale, u32 freq)
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index 57a5ce9..59caeb9 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -653,8 +653,10 @@ struct task_struct {
+ 	unsigned int			ptrace;
  
- 	clocksource_arch_init(cs);
- 
--#ifdef CONFIG_GENERIC_VDSO_CLOCK_MODE
- 	if (cs->vdso_clock_mode < 0 ||
- 	    cs->vdso_clock_mode >= VDSO_CLOCKMODE_MAX) {
- 		pr_warn("clocksource %s registered with invalid VDSO mode %d. Disabling VDSO support.\n",
- 			cs->name, cs->vdso_clock_mode);
- 		cs->vdso_clock_mode = VDSO_CLOCKMODE_NONE;
- 	}
--#endif
- 
- 	/* Initialize mult/shift and max_idle_ns */
- 	__clocksource_update_freq_scale(cs, scale, freq);
+ #ifdef CONFIG_SMP
+-	struct llist_node		wake_entry;
+-	unsigned int			wake_entry_type;
++	struct {
++		struct llist_node		wake_entry;
++		unsigned int			wake_entry_type;
++	};
+ 	int				on_cpu;
+ #ifdef CONFIG_THREAD_INFO_IN_TASK
+ 	/* Current CPU: */
