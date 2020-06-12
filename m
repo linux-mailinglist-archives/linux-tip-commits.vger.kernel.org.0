@@ -2,41 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E289D1F7DCB
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 12 Jun 2020 21:50:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 01B551F7DC7
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 12 Jun 2020 21:50:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726343AbgFLTuV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 12 Jun 2020 15:50:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48950 "EHLO
+        id S1726403AbgFLTuM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 12 Jun 2020 15:50:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48952 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726283AbgFLTuL (ORCPT
+        with ESMTP id S1726397AbgFLTuM (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 12 Jun 2020 15:50:11 -0400
+        Fri, 12 Jun 2020 15:50:12 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93923C08C5C1;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDFF6C03E96F;
         Fri, 12 Jun 2020 12:50:11 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jjpgn-0003Pe-KY; Fri, 12 Jun 2020 21:50:09 +0200
+        id 1jjpgn-0003Pg-A2; Fri, 12 Jun 2020 21:50:09 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 303291C009C;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 762901C032F;
         Fri, 12 Jun 2020 21:50:08 +0200 (CEST)
-Date:   Fri, 12 Jun 2020 19:50:07 -0000
+Date:   Fri, 12 Jun 2020 19:50:08 -0000
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/entry] x86/entry: Force rcu_irq_enter() when in idle task
-Cc:     "Paul E. McKenney" <paulmck@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Andy Lutomirski <luto@kernel.org>,
-        Frederic Weisbecker <frederic@kernel.org>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <87wo4cxubv.fsf@nanos.tec.linutronix.de>
-References: <87wo4cxubv.fsf@nanos.tec.linutronix.de>
+Subject: [tip: x86/entry] x86/entry: Make NMI use IDTENTRY_RAW
+Cc:     Naresh Kamboju <naresh.kamboju@linaro.org>,
+        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <CA+G9fYvF3cyrY+-iw_SZtpN-i2qA2BruHg4M=QYECU2-dNdsMw@mail.gmail.com>
+References: <CA+G9fYvF3cyrY+-iw_SZtpN-i2qA2BruHg4M=QYECU2-dNdsMw@mail.gmail.com>
 MIME-Version: 1.0
-Message-ID: <159199140796.16989.8322013716817906984.tip-bot2@tip-bot2>
+Message-ID: <159199140829.16989.15278153096023573456.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -52,112 +50,64 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/entry branch of tip:
 
-Commit-ID:     0bf3924bfabd13ba21aa702344fc00b3b3263e5a
-Gitweb:        https://git.kernel.org/tip/0bf3924bfabd13ba21aa702344fc00b3b3263e5a
+Commit-ID:     71ed49d8fb33023f242419a77ecb1141c029cac4
+Gitweb:        https://git.kernel.org/tip/71ed49d8fb33023f242419a77ecb1141c029cac4
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Fri, 12 Jun 2020 15:55:00 +02:00
+AuthorDate:    Fri, 12 Jun 2020 14:02:27 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 12 Jun 2020 21:36:33 +02:00
+CommitterDate: Fri, 12 Jun 2020 14:15:48 +02:00
 
-x86/entry: Force rcu_irq_enter() when in idle task
+x86/entry: Make NMI use IDTENTRY_RAW
 
-The idea of conditionally calling into rcu_irq_enter() only when RCU is
-not watching turned out to be not completely thought through.
+For no reason other than beginning brainmelt, IDTENTRY_NMI was mapped to
+IDTENTRY_IST.
 
-Paul noticed occasional premature end of grace periods in RCU torture
-testing. Bisection led to the commit which made the invocation of
-rcu_irq_enter() conditional on !rcu_is_watching().
+This is not a problem on 64bit because the IST default entry point maps to
+IDTENTRY_RAW which does not any entry handling. The surplus function
+declaration for the noist C entry point is unused and as there is no ASM
+code emitted for NMI this went unnoticed.
 
-It turned out that this conditional breaks RCU assumptions about the idle
-task when the scheduler tick happens to be a nested interrupt. Nested
-interrupts can happen when the first interrupt invokes softirq processing
-on return which enables interrupts.
+On 32bit IDTENTRY_IST maps to a regular IDTENTRY which does the normal
+entry handling. That is clearly the wrong thing to do for NMI.
 
-If that nested tick interrupt does not invoke rcu_irq_enter() then the
-RCU's irq-nesting checks will believe that this interrupt came directly
-from idle, which will cause RCU to report a quiescent state.  Because this
-interrupt instead came from a softirq handler which might have been
-executing an RCU read-side critical section, this can cause the grace
-period to end prematurely.
+Map it to IDTENTRY_RAW to unbreak it. The IDTENTRY_NMI mapping needs to
+stay to avoid emitting ASM code.
 
-Change the condition from !rcu_is_watching() to is_idle_task(current) which
-enforces that interrupts in the idle task unconditionally invoke
-rcu_irq_enter() independent of the RCU state.
-
-This is also correct vs. user mode entries in NOHZ full scenarios because
-user mode entries bring RCU out of EQS and force the RCU irq nesting state
-accounting to nested. As only the first interrupt can enter from user mode
-a nested tick interrupt will enter from kernel mode and as the nesting
-state accounting is forced to nesting it will not do anything stupid even
-if rcu_irq_enter() has not been invoked.
-
-Fixes: 3eeec3858488 ("x86/entry: Provide idtentry_entry/exit_cond_rcu()")
-Reported-by: "Paul E. McKenney" <paulmck@kernel.org>
+Fixes: 6271fef00b34 ("x86/entry: Convert NMI to IDTENTRY_NMI")
+Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
+Debugged-by: Andy Lutomirski <luto@kernel.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: "Paul E. McKenney" <paulmck@kernel.org>
-Reviewed-by: "Paul E. McKenney" <paulmck@kernel.org>
-Acked-by: Andy Lutomirski <luto@kernel.org>
-Acked-by: Frederic Weisbecker <frederic@kernel.org>
-Link: https://lkml.kernel.org/r/87wo4cxubv.fsf@nanos.tec.linutronix.de
-
+Link: https://lkml.kernel.org/r/CA+G9fYvF3cyrY+-iw_SZtpN-i2qA2BruHg4M=QYECU2-dNdsMw@mail.gmail.com
 ---
- arch/x86/entry/common.c | 35 ++++++++++++++++++++++++++++-------
- 1 file changed, 28 insertions(+), 7 deletions(-)
+ arch/x86/include/asm/idtentry.h | 4 ++--
+ arch/x86/kernel/nmi.c           | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/entry/common.c b/arch/x86/entry/common.c
-index f4d5778..bd3f141 100644
---- a/arch/x86/entry/common.c
-+++ b/arch/x86/entry/common.c
-@@ -557,14 +557,34 @@ bool noinstr idtentry_enter_cond_rcu(struct pt_regs *regs)
- 		return false;
- 	}
+diff --git a/arch/x86/include/asm/idtentry.h b/arch/x86/include/asm/idtentry.h
+index 2fc6b0c..cf51c50 100644
+--- a/arch/x86/include/asm/idtentry.h
++++ b/arch/x86/include/asm/idtentry.h
+@@ -391,8 +391,8 @@ __visible noinstr void func(struct pt_regs *regs,			\
+ #define DEFINE_IDTENTRY_MCE		DEFINE_IDTENTRY_IST
+ #define DEFINE_IDTENTRY_MCE_USER	DEFINE_IDTENTRY_NOIST
  
--	if (!__rcu_is_watching()) {
-+	/*
-+	 * If this entry hit the idle task invoke rcu_irq_enter() whether
-+	 * RCU is watching or not.
-+	 *
-+	 * Interupts can nest when the first interrupt invokes softirq
-+	 * processing on return which enables interrupts.
-+	 *
-+	 * Scheduler ticks in the idle task can mark quiescent state and
-+	 * terminate a grace period, if and only if the timer interrupt is
-+	 * not nested into another interrupt.
-+	 *
-+	 * Checking for __rcu_is_watching() here would prevent the nesting
-+	 * interrupt to invoke rcu_irq_enter(). If that nested interrupt is
-+	 * the tick then rcu_flavor_sched_clock_irq() would wrongfully
-+	 * assume that it is the first interupt and eventually claim
-+	 * quiescient state and end grace periods prematurely.
-+	 *
-+	 * Unconditionally invoke rcu_irq_enter() so RCU state stays
-+	 * consistent.
-+	 *
-+	 * TINY_RCU does not support EQS, so let the compiler eliminate
-+	 * this part when enabled.
-+	 */
-+	if (!IS_ENABLED(CONFIG_TINY_RCU) && is_idle_task(current)) {
- 		/*
- 		 * If RCU is not watching then the same careful
- 		 * sequence vs. lockdep and tracing is required
- 		 * as in enter_from_user_mode().
--		 *
--		 * This only happens for IRQs that hit the idle
--		 * loop, i.e. if idle is not using MWAIT.
- 		 */
- 		lockdep_hardirqs_off(CALLER_ADDR0);
- 		rcu_irq_enter();
-@@ -576,9 +596,10 @@ bool noinstr idtentry_enter_cond_rcu(struct pt_regs *regs)
- 	}
+-#define DECLARE_IDTENTRY_NMI		DECLARE_IDTENTRY_IST
+-#define DEFINE_IDTENTRY_NMI		DEFINE_IDTENTRY_IST
++#define DECLARE_IDTENTRY_NMI		DECLARE_IDTENTRY_RAW
++#define DEFINE_IDTENTRY_NMI		DEFINE_IDTENTRY_RAW
  
- 	/*
--	 * If RCU is watching then RCU only wants to check
--	 * whether it needs to restart the tick in NOHZ
--	 * mode.
-+	 * If RCU is watching then RCU only wants to check whether it needs
-+	 * to restart the tick in NOHZ mode. rcu_irq_enter_check_tick()
-+	 * already contains a warning when RCU is not watching, so no point
-+	 * in having another one here.
- 	 */
- 	instrumentation_begin();
- 	rcu_irq_enter_check_tick();
+ #define DECLARE_IDTENTRY_DEBUG		DECLARE_IDTENTRY_IST
+ #define DEFINE_IDTENTRY_DEBUG		DEFINE_IDTENTRY_IST
+diff --git a/arch/x86/kernel/nmi.c b/arch/x86/kernel/nmi.c
+index 3a98ff3..2de365f 100644
+--- a/arch/x86/kernel/nmi.c
++++ b/arch/x86/kernel/nmi.c
+@@ -476,7 +476,7 @@ static DEFINE_PER_CPU(enum nmi_states, nmi_state);
+ static DEFINE_PER_CPU(unsigned long, nmi_cr2);
+ static DEFINE_PER_CPU(unsigned long, nmi_dr7);
+ 
+-DEFINE_IDTENTRY_NMI(exc_nmi)
++DEFINE_IDTENTRY_RAW(exc_nmi)
+ {
+ 	if (IS_ENABLED(CONFIG_SMP) && cpu_is_offline(smp_processor_id()))
+ 		return;
