@@ -2,170 +2,177 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E68BA1F987F
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 15 Jun 2020 15:28:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 234791F9AD0
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 15 Jun 2020 16:50:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730396AbgFON2I (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 15 Jun 2020 09:28:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56676 "EHLO
+        id S1730214AbgFOOui (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 15 Jun 2020 10:50:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41252 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730494AbgFON2H (ORCPT
+        with ESMTP id S1728304AbgFOOui (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 15 Jun 2020 09:28:07 -0400
-Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DC1FC05BD1E;
-        Mon, 15 Jun 2020 06:28:07 -0700 (PDT)
-Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tip-bot2@linutronix.de>)
-        id 1jkp9I-0002KJ-AK; Mon, 15 Jun 2020 15:27:40 +0200
-Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B24891C00ED;
-        Mon, 15 Jun 2020 15:27:39 +0200 (CEST)
-Date:   Mon, 15 Jun 2020 13:27:39 -0000
-From:   "tip-bot2 for Sean Christopherson" <tip-bot2@linutronix.de>
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/cpu: Reinitialize IA32_FEAT_CTL MSR on BSP
- during wakeup
-Cc:     Brad Campbell <lists2009@fnarfbargle.com>,
-        Sean Christopherson <sean.j.christopherson@intel.com>,
-        Borislav Petkov <bp@suse.de>,
-        Liam Merwick <liam.merwick@oracle.com>,
-        Maxim Levitsky <mlevitsk@redhat.com>, stable@vger.kernel.org,
-        #@tip-bot2.tec.linutronix.de, v5.6@tip-bot2.tec.linutronix.de,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200608174134.11157-1-sean.j.christopherson@intel.com>
-References: <20200608174134.11157-1-sean.j.christopherson@intel.com>
+        Mon, 15 Jun 2020 10:50:38 -0400
+Received: from merlin.infradead.org (unknown [IPv6:2001:8b0:10b:1231::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0BB4C061A0E;
+        Mon, 15 Jun 2020 07:50:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=F/uU9124WJoifhY4Z3glA8wwsDguMo5Cs74nr5r2OjQ=; b=Xy2S1HP53FrZsAIYTmdcWPuTkU
+        OUWmp0MzkvZbEbMZEVcLa+s7ukh3INOD8DDdNPNuYEFHMrSMmOxY22yZntiL8dZJzhweWcD5hv5yB
+        Y8FP8+vbiVE2JWfyOhZD4XJmjkBZyB+0Ce+yr+YLz2jZY1OGfUyjiZpVPHKD0ckOXRgUfhQ+qjW6T
+        8t7o3Nk03//hCmB5KgUUmAQvh73g+M2d/BieZZ8O/AlZENpEkbPKbkZDGPw8OE1FiWoReiKQUofmi
+        qCsa4t/1rDBnd3MLEb5vtVy6SFdmQvooLDGk2Zz3K9v5u7gsNX3wvHI65Joxu1cqp1oJGQvNp4Sn/
+        z0he5udA==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
+        by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1jkqRH-0006rj-N7; Mon, 15 Jun 2020 14:50:20 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 8747D3010C8;
+        Mon, 15 Jun 2020 16:50:18 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 6E317203D48BF; Mon, 15 Jun 2020 16:50:18 +0200 (CEST)
+Date:   Mon, 15 Jun 2020 16:50:18 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-tip-commits@vger.kernel.org,
+        Andy Lutomirski <luto@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>
+Subject: Re: [tip: x86/entry] x86/entry: Treat BUG/WARN as NMI-like entries
+Message-ID: <20200615145018.GU2531@hirez.programming.kicks-ass.net>
+References: <f8fe40e0088749734b4435b554f73eee53dcf7a8.1591932307.git.luto@kernel.org>
+ <159199140855.16989.18012912492179715507.tip-bot2@tip-bot2>
 MIME-Version: 1.0
-Message-ID: <159222765946.16989.1225221254196496903.tip-bot2@tip-bot2>
-X-Mailer: tip-git-log-daemon
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <159199140855.16989.18012912492179715507.tip-bot2@tip-bot2>
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+On Fri, Jun 12, 2020 at 07:50:08PM -0000, tip-bot2 for Andy Lutomirski wrote:
+> +DEFINE_IDTENTRY_RAW(exc_invalid_op)
+>  {
+> +	bool rcu_exit;
+> +
+> +	/*
+> +	 * Handle BUG/WARN like NMIs instead of like normal idtentries:
+> +	 * if we bugged/warned in a bad RCU context, for example, the last
+> +	 * thing we want is to BUG/WARN again in the idtentry code, ad
+> +	 * infinitum.
+> +	 */
+> +	if (!user_mode(regs) && is_valid_bugaddr(regs->ip)) {
 
-Commit-ID:     5d5103595e9e53048bb7e70ee2673c897ab38300
-Gitweb:        https://git.kernel.org/tip/5d5103595e9e53048bb7e70ee2673c897ab38300
-Author:        Sean Christopherson <sean.j.christopherson@intel.com>
-AuthorDate:    Mon, 08 Jun 2020 10:41:34 -07:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 15 Jun 2020 14:18:37 +02:00
+vmlinux.o: warning: objtool: exc_invalid_op()+0x47: call to probe_kernel_read() leaves .noinstr.text section
 
-x86/cpu: Reinitialize IA32_FEAT_CTL MSR on BSP during wakeup
+> +		enum bug_trap_type type;
+> +
+> +		nmi_enter();
+> +		instrumentation_begin();
+> +		trace_hardirqs_off_finish();
+> +		type = report_bug(regs->ip, regs);
+> +		if (regs->flags & X86_EFLAGS_IF)
+> +			trace_hardirqs_on_prepare();
+> +		instrumentation_end();
+> +		nmi_exit();
+> +
+> +		if (type == BUG_TRAP_TYPE_WARN) {
+> +			/* Skip the ud2. */
+> +			regs->ip += LEN_UD2;
+> +			return;
+> +		}
+> +
+> +		/*
+> +		 * Else, if this was a BUG and report_bug returns or if this
+> +		 * was just a normal #UD, we want to continue onward and
+> +		 * crash.
+> +		 */
+> +	}
+> +
+> +	rcu_exit = idtentry_enter_cond_rcu(regs);
+> +	instrumentation_begin();
+>  	handle_invalid_op(regs);
+> +	instrumentation_end();
+> +	idtentry_exit_cond_rcu(regs, rcu_exit);
+>  }
 
-Reinitialize IA32_FEAT_CTL on the BSP during wakeup to handle the case
-where firmware doesn't initialize or save/restore across S3.  This fixes
-a bug where IA32_FEAT_CTL is left uninitialized and results in VMXON
-taking a #GP due to VMX not being fully enabled, i.e. breaks KVM.
 
-Use init_ia32_feat_ctl() to "restore" IA32_FEAT_CTL as it already deals
-with the case where the MSR is locked, and because APs already redo
-init_ia32_feat_ctl() during suspend by virtue of the SMP boot flow being
-used to reinitialize APs upon wakeup.  Do the call in the early wakeup
-flow to avoid dependencies in the syscore_ops chain, e.g. simply adding
-a resume hook is not guaranteed to work, as KVM does VMXON in its own
-resume hook, kvm_resume(), when KVM has active guests.
+For now something like so will do, but we need a DEFINE_IDTENTRY_foo()
+for the whole:
 
-Fixes: 21bd3467a58e ("KVM: VMX: Drop initialization of IA32_FEAT_CTL MSR")
-Reported-by: Brad Campbell <lists2009@fnarfbargle.com>
-Signed-off-by: Sean Christopherson <sean.j.christopherson@intel.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Liam Merwick <liam.merwick@oracle.com>
-Reviewed-by: Maxim Levitsky <mlevitsk@redhat.com>
-Tested-by: Brad Campbell <lists2009@fnarfbargle.com>
-Cc: stable@vger.kernel.org # v5.6
-Link: https://lkml.kernel.org/r/20200608174134.11157-1-sean.j.christopherson@intel.com
+	if (user_mode()) {
+		rcu = idtentry_enter_cond_rcu()
+		foo_user()
+		idtentry_exit_cond_rcu(rcu);
+	} else {
+		nmi_enter();
+		foo_kernel()
+		nmi_exit()
+	}
+
+thing, we're repeating that far too often.
+
+
 ---
- arch/x86/include/asm/cpu.h    | 5 +++++
- arch/x86/kernel/cpu/centaur.c | 1 +
- arch/x86/kernel/cpu/cpu.h     | 4 ----
- arch/x86/kernel/cpu/zhaoxin.c | 1 +
- arch/x86/power/cpu.c          | 6 ++++++
- 5 files changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/include/asm/cpu.h b/arch/x86/include/asm/cpu.h
-index dd17c2d..da78ccb 100644
---- a/arch/x86/include/asm/cpu.h
-+++ b/arch/x86/include/asm/cpu.h
-@@ -58,4 +58,9 @@ static inline bool handle_guest_split_lock(unsigned long ip)
- 	return false;
- }
- #endif
-+#ifdef CONFIG_IA32_FEAT_CTL
-+void init_ia32_feat_ctl(struct cpuinfo_x86 *c);
-+#else
-+static inline void init_ia32_feat_ctl(struct cpuinfo_x86 *c) {}
-+#endif
- #endif /* _ASM_X86_CPU_H */
-diff --git a/arch/x86/kernel/cpu/centaur.c b/arch/x86/kernel/cpu/centaur.c
-index 4267925..c5cf336 100644
---- a/arch/x86/kernel/cpu/centaur.c
-+++ b/arch/x86/kernel/cpu/centaur.c
-@@ -3,6 +3,7 @@
- #include <linux/sched.h>
- #include <linux/sched/clock.h>
+diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
+index af75109485c26..a47e74923c4c8 100644
+--- a/arch/x86/kernel/traps.c
++++ b/arch/x86/kernel/traps.c
+@@ -218,21 +218,22 @@ static inline void handle_invalid_op(struct pt_regs *regs)
  
-+#include <asm/cpu.h>
- #include <asm/cpufeature.h>
- #include <asm/e820/api.h>
- #include <asm/mtrr.h>
-diff --git a/arch/x86/kernel/cpu/cpu.h b/arch/x86/kernel/cpu/cpu.h
-index fb538fc..9d03369 100644
---- a/arch/x86/kernel/cpu/cpu.h
-+++ b/arch/x86/kernel/cpu/cpu.h
-@@ -81,8 +81,4 @@ extern void update_srbds_msr(void);
- 
- extern u64 x86_read_arch_cap_msr(void);
- 
--#ifdef CONFIG_IA32_FEAT_CTL
--void init_ia32_feat_ctl(struct cpuinfo_x86 *c);
--#endif
--
- #endif /* ARCH_X86_CPU_H */
-diff --git a/arch/x86/kernel/cpu/zhaoxin.c b/arch/x86/kernel/cpu/zhaoxin.c
-index df1358b..05fa4ef 100644
---- a/arch/x86/kernel/cpu/zhaoxin.c
-+++ b/arch/x86/kernel/cpu/zhaoxin.c
-@@ -2,6 +2,7 @@
- #include <linux/sched.h>
- #include <linux/sched/clock.h>
- 
-+#include <asm/cpu.h>
- #include <asm/cpufeature.h>
- 
- #include "cpu.h"
-diff --git a/arch/x86/power/cpu.c b/arch/x86/power/cpu.c
-index 7c65102..db1378c 100644
---- a/arch/x86/power/cpu.c
-+++ b/arch/x86/power/cpu.c
-@@ -193,6 +193,8 @@ static void fix_processor_context(void)
-  */
- static void notrace __restore_processor_state(struct saved_context *ctxt)
+ DEFINE_IDTENTRY_RAW(exc_invalid_op)
  {
-+	struct cpuinfo_x86 *c;
-+
- 	if (ctxt->misc_enable_saved)
- 		wrmsrl(MSR_IA32_MISC_ENABLE, ctxt->misc_enable);
+-	bool rcu_exit;
+-
  	/*
-@@ -263,6 +265,10 @@ static void notrace __restore_processor_state(struct saved_context *ctxt)
- 	mtrr_bp_restore();
- 	perf_restore_debug_store();
- 	msr_restore_context(ctxt);
+ 	 * Handle BUG/WARN like NMIs instead of like normal idtentries:
+ 	 * if we bugged/warned in a bad RCU context, for example, the last
+ 	 * thing we want is to BUG/WARN again in the idtentry code, ad
+ 	 * infinitum.
+ 	 */
+-	if (!user_mode(regs) && is_valid_bugaddr(regs->ip)) {
+-		enum bug_trap_type type;
++	if (!user_mode(regs)) {
++		enum bug_trap_type type = BUG_TRAP_TYPE_NONE;
+ 
+ 		nmi_enter();
+ 		instrumentation_begin();
+ 		trace_hardirqs_off_finish();
+-		type = report_bug(regs->ip, regs);
 +
-+	c = &cpu_data(smp_processor_id());
-+	if (cpu_has(c, X86_FEATURE_MSR_IA32_FEAT_CTL))
-+		init_ia32_feat_ctl(c);
++		if (is_valid_bugaddr(regs->ip))
++			type = report_bug(regs->ip, regs);
++
+ 		if (regs->flags & X86_EFLAGS_IF)
+ 			trace_hardirqs_on_prepare();
+ 		instrumentation_end();
+@@ -249,13 +250,16 @@ DEFINE_IDTENTRY_RAW(exc_invalid_op)
+ 		 * was just a normal #UD, we want to continue onward and
+ 		 * crash.
+ 		 */
+-	}
++		handle_invalid_op(regs);
++	} else {
++		bool rcu_exit;
+ 
+-	rcu_exit = idtentry_enter_cond_rcu(regs);
+-	instrumentation_begin();
+-	handle_invalid_op(regs);
+-	instrumentation_end();
+-	idtentry_exit_cond_rcu(regs, rcu_exit);
++		rcu_exit = idtentry_enter_cond_rcu(regs);
++		instrumentation_begin();
++		handle_invalid_op(regs);
++		instrumentation_end();
++		idtentry_exit_cond_rcu(regs, rcu_exit);
++	}
  }
  
- /* Needed by apm.c */
+ DEFINE_IDTENTRY(exc_coproc_segment_overrun)
+
+
