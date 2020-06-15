@@ -2,37 +2,37 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C2C711FA38C
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 16 Jun 2020 00:31:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5201E1FA38F
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 16 Jun 2020 00:32:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725960AbgFOWbv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 15 Jun 2020 18:31:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56224 "EHLO
+        id S1726557AbgFOWby (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 15 Jun 2020 18:31:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56236 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725843AbgFOWbu (ORCPT
+        with ESMTP id S1726540AbgFOWbx (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 15 Jun 2020 18:31:50 -0400
+        Mon, 15 Jun 2020 18:31:53 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93FD8C061A0E;
-        Mon, 15 Jun 2020 15:31:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 798F1C08C5C3;
+        Mon, 15 Jun 2020 15:31:53 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jkxdn-0006xU-Qh; Tue, 16 Jun 2020 00:31:44 +0200
+        id 1jkxdo-0006xW-0X; Tue, 16 Jun 2020 00:31:45 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C4A161C0085;
-        Tue, 16 Jun 2020 00:31:42 +0200 (CEST)
-Date:   Mon, 15 Jun 2020 22:31:42 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 72D761C0475;
+        Tue, 16 Jun 2020 00:31:43 +0200 (CEST)
+Date:   Mon, 15 Jun 2020 22:31:43 -0000
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/entry] x86/entry, bug: Comment the instrumentation_begin()
- usage for WARN()
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+Subject: [tip: x86/entry] x86/entry, ubsan, objtool: Whitelist __ubsan_handle_*()
+Cc:     Marco Elver <elver@google.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <159226030243.16989.1181108519578141239.tip-bot2@tip-bot2>
+Message-ID: <159226030305.16989.1552244615151602334.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,38 +48,80 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/entry branch of tip:
 
-Commit-ID:     8e8bb06d199a5aa7a534aa3b3fc0abbbc11ca438
-Gitweb:        https://git.kernel.org/tip/8e8bb06d199a5aa7a534aa3b3fc0abbbc11ca438
+Commit-ID:     6b643a07a7e41f9e11cfbb9bba4c5c9791ac2997
+Gitweb:        https://git.kernel.org/tip/6b643a07a7e41f9e11cfbb9bba4c5c9791ac2997
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Thu, 04 Jun 2020 11:17:40 +02:00
+AuthorDate:    Wed, 03 Jun 2020 20:09:06 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Mon, 15 Jun 2020 14:10:10 +02:00
+CommitterDate: Mon, 15 Jun 2020 14:10:09 +02:00
 
-x86/entry, bug: Comment the instrumentation_begin() usage for WARN()
+x86/entry, ubsan, objtool: Whitelist __ubsan_handle_*()
 
-Explain the rationale for annotating WARN(), even though, strictly
-speaking printk() and friends are very much not safe in many of the
-places we put them.
+The UBSAN instrumentation only inserts external CALLs when things go
+'BAD', much like WARN(). So treat them similar to WARN()s for noinstr,
+that is: allow them, at the risk of taking the machine down, to get
+their message out.
 
+Suggested-by: Marco Elver <elver@google.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Marco Elver <elver@google.com>
 ---
- arch/x86/include/asm/bug.h | 6 ++++++
- 1 file changed, 6 insertions(+)
+ include/linux/compiler_types.h |  2 +-
+ tools/objtool/check.c          | 28 +++++++++++++++++++++++++++-
+ 2 files changed, 28 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/include/asm/bug.h b/arch/x86/include/asm/bug.h
-index fb34ff6..0281895 100644
---- a/arch/x86/include/asm/bug.h
-+++ b/arch/x86/include/asm/bug.h
-@@ -75,6 +75,12 @@ do {								\
- 	unreachable();						\
- } while (0)
+diff --git a/include/linux/compiler_types.h b/include/linux/compiler_types.h
+index 85b8d23..14513e8 100644
+--- a/include/linux/compiler_types.h
++++ b/include/linux/compiler_types.h
+@@ -199,7 +199,7 @@ struct ftrace_likely_data {
+ /* Section for code which can't be instrumented at all */
+ #define noinstr								\
+ 	noinline notrace __attribute((__section__(".noinstr.text")))	\
+-	__no_kcsan __no_sanitize_address __no_sanitize_undefined
++	__no_kcsan __no_sanitize_address
  
-+/*
-+ * This instrumentation_begin() is strictly speaking incorrect; but it
-+ * suppresses the complaints from WARN()s in noinstr code. If such a WARN()
-+ * were to trigger, we'd rather wreck the machine in an attempt to get the
-+ * message out than not know about it.
-+ */
- #define __WARN_FLAGS(flags)					\
- do {								\
- 	instrumentation_begin();				\
+ #endif /* __KERNEL__ */
+ 
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index 5fbb90a..3e214f8 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -2190,10 +2190,36 @@ static inline const char *call_dest_name(struct instruction *insn)
+ 	return "{dynamic}";
+ }
+ 
++static inline bool noinstr_call_dest(struct symbol *func)
++{
++	/*
++	 * We can't deal with indirect function calls at present;
++	 * assume they're instrumented.
++	 */
++	if (!func)
++		return false;
++
++	/*
++	 * If the symbol is from a noinstr section; we good.
++	 */
++	if (func->sec->noinstr)
++		return true;
++
++	/*
++	 * The __ubsan_handle_*() calls are like WARN(), they only happen when
++	 * something 'BAD' happened. At the risk of taking the machine down,
++	 * let them proceed to get the message out.
++	 */
++	if (!strncmp(func->name, "__ubsan_handle_", 15))
++		return true;
++
++	return false;
++}
++
+ static int validate_call(struct instruction *insn, struct insn_state *state)
+ {
+ 	if (state->noinstr && state->instr <= 0 &&
+-	    (!insn->call_dest || !insn->call_dest->sec->noinstr)) {
++	    !noinstr_call_dest(insn->call_dest)) {
+ 		WARN_FUNC("call to %s() leaves .noinstr.text section",
+ 				insn->sec, insn->offset, call_dest_name(insn));
+ 		return 1;
