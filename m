@@ -2,153 +2,123 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CD251FA034
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 15 Jun 2020 21:28:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 38A0A1FA0B4
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 15 Jun 2020 21:45:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729647AbgFOT2T (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 15 Jun 2020 15:28:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56004 "EHLO
+        id S1728782AbgFOTpE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 15 Jun 2020 15:45:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730301AbgFOT2S (ORCPT
+        with ESMTP id S1728773AbgFOTpE (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 15 Jun 2020 15:28:18 -0400
-Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCE82C061A0E;
-        Mon, 15 Jun 2020 12:28:17 -0700 (PDT)
-Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tip-bot2@linutronix.de>)
-        id 1jkumE-0002wn-5E; Mon, 15 Jun 2020 21:28:14 +0200
-Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B3DA31C0489;
-        Mon, 15 Jun 2020 21:28:13 +0200 (CEST)
-Date:   Mon, 15 Jun 2020 19:28:13 -0000
-From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] x86/msr: Lift AMD family 0x15 power-specific MSRs
-Cc:     Borislav Petkov <bp@suse.de>, Guenter Roeck <linux@roeck-us.net>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200608164847.14232-1-bp@alien8.de>
-References: <20200608164847.14232-1-bp@alien8.de>
+        Mon, 15 Jun 2020 15:45:04 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 732BCC061A0E;
+        Mon, 15 Jun 2020 12:45:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=xBOByS3E0Zys2CPBDIgxUeZbWA4Bggf7qnRRJFZDgbg=; b=ccJZoZAJS7S+exDFb7nwytDFaz
+        jMY9z+wNIHCwcVBo5f6lLYxF4r+7koFDk5eaZG5VVHJhTUPaIlTz6Rox/3u3g8adfDUPxollIE9bk
+        6aKS/j5V2d6yQQAw4RIWYR0kFAGpg2LQmTQwBJp+zg2wj2IqNE3JeYBnzum+14hiJbpkaMw5YVAgO
+        I/oXCCZtVNxEqIanK3xz5UJijXZy4KvEPQTWx4Z139hHwvDrYhpbiQHxNImlMbUKxvQe7wa3pF3Lp
+        VsaDeRDWqTg5m2uDjj2bwMDN10SSt0YG6tSBMjtH2u10GpD4ukK1VZd4Oa+ZT4Be0tPhIIeL2qtmd
+        YutHTJhg==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
+        by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1jkv2S-0008J0-KF; Mon, 15 Jun 2020 19:45:00 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 7C9CB3028C8;
+        Mon, 15 Jun 2020 21:44:58 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 6724E203D5DB2; Mon, 15 Jun 2020 21:44:58 +0200 (CEST)
+Date:   Mon, 15 Jun 2020 21:44:58 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Andy Lutomirski <luto@kernel.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        linux-tip-commits@vger.kernel.org,
+        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>
+Subject: Re: [tip: x86/entry] x86/entry: Treat BUG/WARN as NMI-like entries
+Message-ID: <20200615194458.GL2531@hirez.programming.kicks-ass.net>
+References: <f8fe40e0088749734b4435b554f73eee53dcf7a8.1591932307.git.luto@kernel.org>
+ <159199140855.16989.18012912492179715507.tip-bot2@tip-bot2>
+ <20200615145018.GU2531@hirez.programming.kicks-ass.net>
+ <CALCETrWhbg_61CTo9_T6s1NDFvOgUx7ebSzhXj7O_m8htePwKA@mail.gmail.com>
 MIME-Version: 1.0
-Message-ID: <159224929351.16989.14840440854541788845.tip-bot2@tip-bot2>
-X-Mailer: tip-git-log-daemon
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CALCETrWhbg_61CTo9_T6s1NDFvOgUx7ebSzhXj7O_m8htePwKA@mail.gmail.com>
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cleanups branch of tip:
+On Mon, Jun 15, 2020 at 10:06:20AM -0700, Andy Lutomirski wrote:
+> On Mon, Jun 15, 2020 at 7:50 AM Peter Zijlstra <peterz@infradead.org> wrote:
 
-Commit-ID:     1068ed4547adf6123504d9623ebd1ffcdd616101
-Gitweb:        https://git.kernel.org/tip/1068ed4547adf6123504d9623ebd1ffcdd616101
-Author:        Borislav Petkov <bp@suse.de>
-AuthorDate:    Mon, 08 Jun 2020 16:19:49 +02:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 15 Jun 2020 19:25:53 +02:00
+> Hmm.  IMO you're making two changes here, and this is fiddly enough
+> that it might be worth separating them for bisection purposes.
 
-x86/msr: Lift AMD family 0x15 power-specific MSRs
+Sure, can do.
 
-... into the global msr-index.h header because they're used in multiple
-compilation units. Sort the MSR list a bit. Update the msr-index.h copy
-in tools.
+> > ---
+> >
+> > diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
+> > index af75109485c26..a47e74923c4c8 100644
+> > --- a/arch/x86/kernel/traps.c
+> > +++ b/arch/x86/kernel/traps.c
+> > @@ -218,21 +218,22 @@ static inline void handle_invalid_op(struct pt_regs *regs)
+> >
+> >  DEFINE_IDTENTRY_RAW(exc_invalid_op)
+> >  {
+> > -       bool rcu_exit;
+> > -
+> >         /*
+> >          * Handle BUG/WARN like NMIs instead of like normal idtentries:
+> >          * if we bugged/warned in a bad RCU context, for example, the last
+> >          * thing we want is to BUG/WARN again in the idtentry code, ad
+> >          * infinitum.
+> >          */
+> > -       if (!user_mode(regs) && is_valid_bugaddr(regs->ip)) {
+> > -               enum bug_trap_type type;
+> > +       if (!user_mode(regs)) {
+> > +               enum bug_trap_type type = BUG_TRAP_TYPE_NONE;
+> >
+> >                 nmi_enter();
+> >                 instrumentation_begin();
+> >                 trace_hardirqs_off_finish();
+> > -               type = report_bug(regs->ip, regs);
+> > +
+> > +               if (is_valid_bugaddr(regs->ip))
+> > +                       type = report_bug(regs->ip, regs);
+> > +
+> 
+> Sigh, this is indeed necessary.
 
-No functional changes.
+:-)
 
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Acked-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lkml.kernel.org/r/20200608164847.14232-1-bp@alien8.de
----
- arch/x86/events/amd/power.c            | 4 ----
- arch/x86/include/asm/msr-index.h       | 5 ++++-
- drivers/hwmon/fam15h_power.c           | 4 ----
- tools/arch/x86/include/asm/msr-index.h | 5 ++++-
- 4 files changed, 8 insertions(+), 10 deletions(-)
+> >                 if (regs->flags & X86_EFLAGS_IF)
+> >                         trace_hardirqs_on_prepare();
+> >                 instrumentation_end();
+> > @@ -249,13 +250,16 @@ DEFINE_IDTENTRY_RAW(exc_invalid_op)
+> >                  * was just a normal #UD, we want to continue onward and
+> >                  * crash.
+> >                  */
+> > -       }
+> > +               handle_invalid_op(regs);
+> 
+> But this is really a separate change.  This makes handle_invalid_op()
+> be NMI-like even for non-BUG/WARN kernel #UD entries.  One might argue
+> that this doesn't matter, and that's probably right, but I think it
+> should be its own change with its own justification.  With just my
+> patch, I intentionally call handle_invalid_op() via the normal
+> idtentry_enter_cond_rcu() path.
 
-diff --git a/arch/x86/events/amd/power.c b/arch/x86/events/amd/power.c
-index 43b09e9..16a2369 100644
---- a/arch/x86/events/amd/power.c
-+++ b/arch/x86/events/amd/power.c
-@@ -13,10 +13,6 @@
- #include <asm/cpu_device_id.h>
- #include "../perf_event.h"
- 
--#define MSR_F15H_CU_PWR_ACCUMULATOR     0xc001007a
--#define MSR_F15H_CU_MAX_PWR_ACCUMULATOR 0xc001007b
--#define MSR_F15H_PTSC			0xc0010280
--
- /* Event code: LSB 8 bits, passed in attr->config any other bit is reserved. */
- #define AMD_POWER_EVENT_MASK		0xFFULL
- 
-diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
-index e8370e6..eb95372 100644
---- a/arch/x86/include/asm/msr-index.h
-+++ b/arch/x86/include/asm/msr-index.h
-@@ -418,15 +418,18 @@
- #define MSR_AMD64_PATCH_LEVEL		0x0000008b
- #define MSR_AMD64_TSC_RATIO		0xc0000104
- #define MSR_AMD64_NB_CFG		0xc001001f
--#define MSR_AMD64_CPUID_FN_1		0xc0011004
- #define MSR_AMD64_PATCH_LOADER		0xc0010020
- #define MSR_AMD_PERF_CTL		0xc0010062
- #define MSR_AMD_PERF_STATUS		0xc0010063
- #define MSR_AMD_PSTATE_DEF_BASE		0xc0010064
-+#define MSR_F15H_CU_PWR_ACCUMULATOR     0xc001007a
-+#define MSR_F15H_CU_MAX_PWR_ACCUMULATOR 0xc001007b
- #define MSR_AMD64_OSVW_ID_LENGTH	0xc0010140
- #define MSR_AMD64_OSVW_STATUS		0xc0010141
-+#define MSR_F15H_PTSC			0xc0010280
- #define MSR_AMD_PPIN_CTL		0xc00102f0
- #define MSR_AMD_PPIN			0xc00102f1
-+#define MSR_AMD64_CPUID_FN_1		0xc0011004
- #define MSR_AMD64_LS_CFG		0xc0011020
- #define MSR_AMD64_DC_CFG		0xc0011022
- #define MSR_AMD64_BU_CFG2		0xc001102a
-diff --git a/drivers/hwmon/fam15h_power.c b/drivers/hwmon/fam15h_power.c
-index 267eac0..29f5fed 100644
---- a/drivers/hwmon/fam15h_power.c
-+++ b/drivers/hwmon/fam15h_power.c
-@@ -41,10 +41,6 @@ MODULE_LICENSE("GPL");
- /* set maximum interval as 1 second */
- #define MAX_INTERVAL			1000
- 
--#define MSR_F15H_CU_PWR_ACCUMULATOR	0xc001007a
--#define MSR_F15H_CU_MAX_PWR_ACCUMULATOR	0xc001007b
--#define MSR_F15H_PTSC			0xc0010280
--
- #define PCI_DEVICE_ID_AMD_15H_M70H_NB_F4 0x15b4
- 
- struct fam15h_power_data {
-diff --git a/tools/arch/x86/include/asm/msr-index.h b/tools/arch/x86/include/asm/msr-index.h
-index ef452b8..7dfd45b 100644
---- a/tools/arch/x86/include/asm/msr-index.h
-+++ b/tools/arch/x86/include/asm/msr-index.h
-@@ -414,15 +414,18 @@
- #define MSR_AMD64_PATCH_LEVEL		0x0000008b
- #define MSR_AMD64_TSC_RATIO		0xc0000104
- #define MSR_AMD64_NB_CFG		0xc001001f
--#define MSR_AMD64_CPUID_FN_1		0xc0011004
- #define MSR_AMD64_PATCH_LOADER		0xc0010020
- #define MSR_AMD_PERF_CTL		0xc0010062
- #define MSR_AMD_PERF_STATUS		0xc0010063
- #define MSR_AMD_PSTATE_DEF_BASE		0xc0010064
-+#define MSR_F15H_CU_PWR_ACCUMULATOR     0xc001007a
-+#define MSR_F15H_CU_MAX_PWR_ACCUMULATOR 0xc001007b
- #define MSR_AMD64_OSVW_ID_LENGTH	0xc0010140
- #define MSR_AMD64_OSVW_STATUS		0xc0010141
-+#define MSR_F15H_PTSC			0xc0010280
- #define MSR_AMD_PPIN_CTL		0xc00102f0
- #define MSR_AMD_PPIN			0xc00102f1
-+#define MSR_AMD64_CPUID_FN_1		0xc0011004
- #define MSR_AMD64_LS_CFG		0xc0011020
- #define MSR_AMD64_DC_CFG		0xc0011022
- #define MSR_AMD64_BU_CFG2		0xc001102a
+All !user exceptions really should be NMI-like. If you want to go
+overboard, I suppose you can look at IF and have them behave interrupt
+like when set, but why make things complicated.
+
+Anyway, let me to smaller and proper patches for this.
