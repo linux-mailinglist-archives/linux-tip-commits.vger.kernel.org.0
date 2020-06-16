@@ -2,39 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D7EF01FB090
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 16 Jun 2020 14:24:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B8C3C1FB052
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 16 Jun 2020 14:22:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728570AbgFPMYF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 16 Jun 2020 08:24:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42666 "EHLO
+        id S1728822AbgFPMV7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 16 Jun 2020 08:21:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728780AbgFPMV5 (ORCPT
+        with ESMTP id S1728782AbgFPMV5 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Tue, 16 Jun 2020 08:21:57 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E61EC08C5C5;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA794C08C5C6;
         Tue, 16 Jun 2020 05:21:56 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jlAb9-0004da-BH; Tue, 16 Jun 2020 14:21:51 +0200
+        id 1jlAbB-0004dC-04; Tue, 16 Jun 2020 14:21:53 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E06121C04CC;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 8917A1C06DA;
         Tue, 16 Jun 2020 14:21:49 +0200 (CEST)
 Date:   Tue, 16 Jun 2020 12:21:49 -0000
 From:   "tip-bot2 for Adrian Hunter" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf: Add perf text poke event
+Subject: [tip: perf/core] perf/x86: Add support for perf text poke event for
+ text_poke_bp_batch() callers
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200512121922.8997-2-adrian.hunter@intel.com>
-References: <20200512121922.8997-2-adrian.hunter@intel.com>
+In-Reply-To: <20200512121922.8997-3-adrian.hunter@intel.com>
+References: <20200512121922.8997-3-adrian.hunter@intel.com>
 MIME-Version: 1.0
-Message-ID: <159231010966.16989.222590734437390694.tip-bot2@tip-bot2>
+Message-ID: <159231010932.16989.7697312095382772284.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,262 +51,101 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     e17d43b93e544f5016c0251d2074c15568d5d963
-Gitweb:        https://git.kernel.org/tip/e17d43b93e544f5016c0251d2074c15568d5d963
+Commit-ID:     d769811ca93303deb1d8729d20cceaca7051a6f1
+Gitweb:        https://git.kernel.org/tip/d769811ca93303deb1d8729d20cceaca7051a6f1
 Author:        Adrian Hunter <adrian.hunter@intel.com>
-AuthorDate:    Tue, 12 May 2020 15:19:08 +03:00
+AuthorDate:    Tue, 12 May 2020 15:19:09 +03:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Mon, 15 Jun 2020 14:09:48 +02:00
 
-perf: Add perf text poke event
+perf/x86: Add support for perf text poke event for text_poke_bp_batch() callers
 
-Record (single instruction) changes to the kernel text (i.e.
-self-modifying code) in order to support tracers like Intel PT and
-ARM CoreSight.
-
-A copy of the running kernel code is needed as a reference point (e.g.
-from /proc/kcore). The text poke event records the old bytes and the
-new bytes so that the event can be processed forwards or backwards.
-
-The basic problem is recording the modified instruction in an
-unambiguous manner given SMP instruction cache (in)coherence. That is,
-when modifying an instruction concurrently any solution with one or
-multiple timestamps is not sufficient:
-
-	CPU0				CPU1
- 0
- 1	write insn A
- 2					execute insn A
- 3	sync-I$
- 4
-
-Due to I$, CPU1 might execute either the old or new A. No matter where
-we record tracepoints on CPU0, one simply cannot tell what CPU1 will
-have observed, except that at 0 it must be the old one and at 4 it
-must be the new one.
-
-To solve this, take inspiration from x86 text poking, which has to
-solve this exact problem due to variable length instruction encoding
-and I-fetch windows.
-
- 1) overwrite the instruction with a breakpoint and sync I$
-
-This guarantees that that code flow will never hit the target
-instruction anymore, on any CPU (or rather, it will cause an
-exception).
-
- 2) issue the TEXT_POKE event
-
- 3) overwrite the breakpoint with the new instruction and sync I$
-
-Now we know that any execution after the TEXT_POKE event will either
-observe the breakpoint (and hit the exception) or the new instruction.
-
-So by guarding the TEXT_POKE event with an exception on either side;
-we can now tell, without doubt, which instruction another CPU will
-have observed.
+Add support for perf text poke event for text_poke_bp_batch() callers. That
+includes jump labels. See comments for more details.
 
 Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20200512121922.8997-2-adrian.hunter@intel.com
+Link: https://lkml.kernel.org/r/20200512121922.8997-3-adrian.hunter@intel.com
 ---
- include/linux/perf_event.h      |  8 +++-
- include/uapi/linux/perf_event.h | 21 ++++++-
- kernel/events/core.c            | 90 +++++++++++++++++++++++++++++++-
- 3 files changed, 117 insertions(+), 2 deletions(-)
+ arch/x86/kernel/alternative.c | 37 +++++++++++++++++++++++++++++++++-
+ 1 file changed, 36 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
-index b4bb320..46fe5cf 100644
---- a/include/linux/perf_event.h
-+++ b/include/linux/perf_event.h
-@@ -1232,6 +1232,9 @@ extern void perf_event_exec(void);
- extern void perf_event_comm(struct task_struct *tsk, bool exec);
- extern void perf_event_namespaces(struct task_struct *tsk);
- extern void perf_event_fork(struct task_struct *tsk);
-+extern void perf_event_text_poke(const void *addr,
-+				 const void *old_bytes, size_t old_len,
-+				 const void *new_bytes, size_t new_len);
+diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
+index 8fd39ff..f94c9f3 100644
+--- a/arch/x86/kernel/alternative.c
++++ b/arch/x86/kernel/alternative.c
+@@ -3,6 +3,7 @@
  
- /* Callchains */
- DECLARE_PER_CPU(struct perf_callchain_entry, perf_callchain_entry);
-@@ -1479,6 +1482,11 @@ static inline void perf_event_exec(void)				{ }
- static inline void perf_event_comm(struct task_struct *tsk, bool exec)	{ }
- static inline void perf_event_namespaces(struct task_struct *tsk)	{ }
- static inline void perf_event_fork(struct task_struct *tsk)		{ }
-+static inline void perf_event_text_poke(const void *addr,
-+					const void *old_bytes,
-+					size_t old_len,
-+					const void *new_bytes,
-+					size_t new_len)			{ }
- static inline void perf_event_init(void)				{ }
- static inline int  perf_swevent_get_recursion_context(void)		{ return -1; }
- static inline void perf_swevent_put_recursion_context(int rctx)		{ }
-diff --git a/include/uapi/linux/perf_event.h b/include/uapi/linux/perf_event.h
-index 7b2d6fc..e5bee6c 100644
---- a/include/uapi/linux/perf_event.h
-+++ b/include/uapi/linux/perf_event.h
-@@ -383,7 +383,8 @@ struct perf_event_attr {
- 				bpf_event      :  1, /* include bpf events */
- 				aux_output     :  1, /* generate AUX records instead of events */
- 				cgroup         :  1, /* include cgroup events */
--				__reserved_1   : 31;
-+				text_poke      :  1, /* include text poke events */
-+				__reserved_1   : 30;
- 
- 	union {
- 		__u32		wakeup_events;	  /* wakeup every n events */
-@@ -1024,6 +1025,24 @@ enum perf_event_type {
- 	 */
- 	PERF_RECORD_CGROUP			= 19,
- 
-+	/*
-+	 * Records changes to kernel text i.e. self-modified code. 'old_len' is
-+	 * the number of old bytes, 'new_len' is the number of new bytes. Either
-+	 * 'old_len' or 'new_len' may be zero to indicate, for example, the
-+	 * addition or removal of a trampoline. 'bytes' contains the old bytes
-+	 * followed immediately by the new bytes.
-+	 *
-+	 * struct {
-+	 *	struct perf_event_header	header;
-+	 *	u64				addr;
-+	 *	u16				old_len;
-+	 *	u16				new_len;
-+	 *	u8				bytes[];
-+	 *	struct sample_id		sample_id;
-+	 * };
-+	 */
-+	PERF_RECORD_TEXT_POKE			= 20,
-+
- 	PERF_RECORD_MAX,			/* non-ABI */
+ #include <linux/module.h>
+ #include <linux/sched.h>
++#include <linux/perf_event.h>
+ #include <linux/mutex.h>
+ #include <linux/list.h>
+ #include <linux/stringify.h>
+@@ -1001,6 +1002,7 @@ struct text_poke_loc {
+ 	s32 rel32;
+ 	u8 opcode;
+ 	const u8 text[POKE_MAX_OPCODE_SIZE];
++	u8 old;
  };
  
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 856d98c..9b8f925 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -394,6 +394,7 @@ static atomic_t nr_switch_events __read_mostly;
- static atomic_t nr_ksymbol_events __read_mostly;
- static atomic_t nr_bpf_events __read_mostly;
- static atomic_t nr_cgroup_events __read_mostly;
-+static atomic_t nr_text_poke_events __read_mostly;
+ struct bp_patching_desc {
+@@ -1168,8 +1170,10 @@ static void text_poke_bp_batch(struct text_poke_loc *tp, unsigned int nr_entries
+ 	/*
+ 	 * First step: add a int3 trap to the address that will be patched.
+ 	 */
+-	for (i = 0; i < nr_entries; i++)
++	for (i = 0; i < nr_entries; i++) {
++		tp[i].old = *(u8 *)text_poke_addr(&tp[i]);
+ 		text_poke(text_poke_addr(&tp[i]), &int3, INT3_INSN_SIZE);
++	}
  
- static LIST_HEAD(pmus);
- static DEFINE_MUTEX(pmus_lock);
-@@ -4575,7 +4576,7 @@ static bool is_sb_event(struct perf_event *event)
- 	if (attr->mmap || attr->mmap_data || attr->mmap2 ||
- 	    attr->comm || attr->comm_exec ||
- 	    attr->task || attr->ksymbol ||
--	    attr->context_switch ||
-+	    attr->context_switch || attr->text_poke ||
- 	    attr->bpf_event)
- 		return true;
- 	return false;
-@@ -4651,6 +4652,8 @@ static void unaccount_event(struct perf_event *event)
- 		atomic_dec(&nr_ksymbol_events);
- 	if (event->attr.bpf_event)
- 		atomic_dec(&nr_bpf_events);
-+	if (event->attr.text_poke)
-+		atomic_dec(&nr_text_poke_events);
+ 	text_poke_sync();
  
- 	if (dec) {
- 		if (!atomic_add_unless(&perf_sched_count, -1, 1))
-@@ -8628,6 +8631,89 @@ void perf_event_bpf_event(struct bpf_prog *prog,
- 	perf_iterate_sb(perf_event_bpf_output, &bpf_event, NULL);
- }
+@@ -1177,14 +1181,45 @@ static void text_poke_bp_batch(struct text_poke_loc *tp, unsigned int nr_entries
+ 	 * Second step: update all but the first byte of the patched range.
+ 	 */
+ 	for (do_sync = 0, i = 0; i < nr_entries; i++) {
++		u8 old[POKE_MAX_OPCODE_SIZE] = { tp[i].old, };
+ 		int len = text_opcode_size(tp[i].opcode);
  
-+struct perf_text_poke_event {
-+	const void		*old_bytes;
-+	const void		*new_bytes;
-+	size_t			pad;
-+	u16			old_len;
-+	u16			new_len;
+ 		if (len - INT3_INSN_SIZE > 0) {
++			memcpy(old + INT3_INSN_SIZE,
++			       text_poke_addr(&tp[i]) + INT3_INSN_SIZE,
++			       len - INT3_INSN_SIZE);
+ 			text_poke(text_poke_addr(&tp[i]) + INT3_INSN_SIZE,
+ 				  (const char *)tp[i].text + INT3_INSN_SIZE,
+ 				  len - INT3_INSN_SIZE);
+ 			do_sync++;
+ 		}
 +
-+	struct {
-+		struct perf_event_header	header;
-+
-+		u64				addr;
-+	} event_id;
-+};
-+
-+static int perf_event_text_poke_match(struct perf_event *event)
-+{
-+	return event->attr.text_poke;
-+}
-+
-+static void perf_event_text_poke_output(struct perf_event *event, void *data)
-+{
-+	struct perf_text_poke_event *text_poke_event = data;
-+	struct perf_output_handle handle;
-+	struct perf_sample_data sample;
-+	u64 padding = 0;
-+	int ret;
-+
-+	if (!perf_event_text_poke_match(event))
-+		return;
-+
-+	perf_event_header__init_id(&text_poke_event->event_id.header, &sample, event);
-+
-+	ret = perf_output_begin(&handle, event, text_poke_event->event_id.header.size);
-+	if (ret)
-+		return;
-+
-+	perf_output_put(&handle, text_poke_event->event_id);
-+	perf_output_put(&handle, text_poke_event->old_len);
-+	perf_output_put(&handle, text_poke_event->new_len);
-+
-+	__output_copy(&handle, text_poke_event->old_bytes, text_poke_event->old_len);
-+	__output_copy(&handle, text_poke_event->new_bytes, text_poke_event->new_len);
-+
-+	if (text_poke_event->pad)
-+		__output_copy(&handle, &padding, text_poke_event->pad);
-+
-+	perf_event__output_id_sample(event, &handle, &sample);
-+
-+	perf_output_end(&handle);
-+}
-+
-+void perf_event_text_poke(const void *addr, const void *old_bytes,
-+			  size_t old_len, const void *new_bytes, size_t new_len)
-+{
-+	struct perf_text_poke_event text_poke_event;
-+	size_t tot, pad;
-+
-+	if (!atomic_read(&nr_text_poke_events))
-+		return;
-+
-+	tot  = sizeof(text_poke_event.old_len) + old_len;
-+	tot += sizeof(text_poke_event.new_len) + new_len;
-+	pad  = ALIGN(tot, sizeof(u64)) - tot;
-+
-+	text_poke_event = (struct perf_text_poke_event){
-+		.old_bytes    = old_bytes,
-+		.new_bytes    = new_bytes,
-+		.pad          = pad,
-+		.old_len      = old_len,
-+		.new_len      = new_len,
-+		.event_id  = {
-+			.header = {
-+				.type = PERF_RECORD_TEXT_POKE,
-+				.misc = PERF_RECORD_MISC_KERNEL,
-+				.size = sizeof(text_poke_event.event_id) + tot + pad,
-+			},
-+			.addr = (unsigned long)addr,
-+		},
-+	};
-+
-+	perf_iterate_sb(perf_event_text_poke_output, &text_poke_event, NULL);
-+}
-+
- void perf_event_itrace_started(struct perf_event *event)
- {
- 	event->attach_state |= PERF_ATTACH_ITRACE;
-@@ -10945,6 +11031,8 @@ static void account_event(struct perf_event *event)
- 		atomic_inc(&nr_ksymbol_events);
- 	if (event->attr.bpf_event)
- 		atomic_inc(&nr_bpf_events);
-+	if (event->attr.text_poke)
-+		atomic_inc(&nr_text_poke_events);
++		/*
++		 * Emit a perf event to record the text poke, primarily to
++		 * support Intel PT decoding which must walk the executable code
++		 * to reconstruct the trace. The flow up to here is:
++		 *   - write INT3 byte
++		 *   - IPI-SYNC
++		 *   - write instruction tail
++		 * At this point the actual control flow will be through the
++		 * INT3 and handler and not hit the old or new instruction.
++		 * Intel PT outputs FUP/TIP packets for the INT3, so the flow
++		 * can still be decoded. Subsequently:
++		 *   - emit RECORD_TEXT_POKE with the new instruction
++		 *   - IPI-SYNC
++		 *   - write first byte
++		 *   - IPI-SYNC
++		 * So before the text poke event timestamp, the decoder will see
++		 * either the old instruction flow or FUP/TIP of INT3. After the
++		 * text poke event timestamp, the decoder will see either the
++		 * new instruction flow or FUP/TIP of INT3. Thus decoders can
++		 * use the timestamp as the point at which to modify the
++		 * executable code.
++		 * The old instruction is recorded so that the event can be
++		 * processed forwards or backwards.
++		 */
++		perf_event_text_poke(text_poke_addr(&tp[i]), old, len,
++				     tp[i].text, len);
+ 	}
  
- 	if (inc) {
- 		/*
+ 	if (do_sync) {
