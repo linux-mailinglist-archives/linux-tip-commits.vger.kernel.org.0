@@ -2,40 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 36C8A1FB084
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 16 Jun 2020 14:24:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 513661FB065
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 16 Jun 2020 14:24:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728481AbgFPMXo (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 16 Jun 2020 08:23:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42714 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728909AbgFPMWF (ORCPT
-        <rfc822;linux-tip-commits@vger.kernel.org>);
+        id S1728928AbgFPMWF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Tue, 16 Jun 2020 08:22:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42706 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728895AbgFPMWE (ORCPT
+        <rfc822;linux-tip-commits@vger.kernel.org>);
+        Tue, 16 Jun 2020 08:22:04 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EA3AC08C5C5;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 092ACC08C5C3;
         Tue, 16 Jun 2020 05:22:04 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jlAbJ-0004iW-8a; Tue, 16 Jun 2020 14:22:01 +0200
+        id 1jlAbI-0004hw-QZ; Tue, 16 Jun 2020 14:22:01 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 13F5C1C06FE;
-        Tue, 16 Jun 2020 14:21:54 +0200 (CEST)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 8102F1C0838;
+        Tue, 16 Jun 2020 14:21:53 +0200 (CEST)
 Date:   Tue, 16 Jun 2020 12:21:53 -0000
-From:   "tip-bot2 for Marcelo Tosatti" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] kthread: Switch to cpu_possible_mask
-Cc:     Frederic Weisbecker <frederic@kernel.org>,
-        Marcelo Tosatti <mtosatti@redhat.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+Subject: [tip: sched/core] sched/deadline: Impose global limits on
+ sched_attr::sched_period
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200527142909.23372-2-frederic@kernel.org>
-References: <20200527142909.23372-2-frederic@kernel.org>
+In-Reply-To: <20190726161357.397880775@infradead.org>
+References: <20190726161357.397880775@infradead.org>
 MIME-Version: 1.0
-Message-ID: <159231011385.16989.15305912016989181408.tip-bot2@tip-bot2>
+Message-ID: <159231011330.16989.6804741545941906806.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,51 +50,111 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     043eb8e1051143a24811e6f35c276e35ae8247b6
-Gitweb:        https://git.kernel.org/tip/043eb8e1051143a24811e6f35c276e35ae8247b6
-Author:        Marcelo Tosatti <mtosatti@redhat.com>
-AuthorDate:    Wed, 27 May 2020 16:29:08 +02:00
+Commit-ID:     b4098bfc5efb1fd7ecf40165132a1283aeea3500
+Gitweb:        https://git.kernel.org/tip/b4098bfc5efb1fd7ecf40165132a1283aeea3500
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Fri, 26 Jul 2019 16:54:10 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Mon, 15 Jun 2020 14:10:03 +02:00
+CommitterDate: Mon, 15 Jun 2020 14:10:04 +02:00
 
-kthread: Switch to cpu_possible_mask
+sched/deadline: Impose global limits on sched_attr::sched_period
 
-Next patch will switch unbound kernel threads mask to
-housekeeping_cpumask(), a subset of cpu_possible_mask. So in order to
-ease bisection, lets first switch kthreads default affinity from
-cpu_all_mask to cpu_possible_mask.
-
-It looks safe to do so as cpu_possible_mask seem to be initialized
-at setup_arch() time, way before kthreadd is created.
-
-Suggested-by: Frederic Weisbecker <frederic@kernel.org>
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-Signed-off-by: Marcelo Tosatti <mtosatti@redhat.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20200527142909.23372-2-frederic@kernel.org
+Link: https://lkml.kernel.org/r/20190726161357.397880775@infradead.org
 ---
- kernel/kthread.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/linux/sched/sysctl.h |  3 +++
+ kernel/sched/deadline.c      | 23 +++++++++++++++++++++--
+ kernel/sysctl.c              | 14 ++++++++++++++
+ 3 files changed, 38 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/kthread.c b/kernel/kthread.c
-index 8e3d2d7..b86d37c 100644
---- a/kernel/kthread.c
-+++ b/kernel/kthread.c
-@@ -383,7 +383,7 @@ struct task_struct *__kthread_create_on_node(int (*threadfn)(void *data),
- 		 * The kernel thread should not inherit these properties.
- 		 */
- 		sched_setscheduler_nocheck(task, SCHED_NORMAL, &param);
--		set_cpus_allowed_ptr(task, cpu_all_mask);
-+		set_cpus_allowed_ptr(task, cpu_possible_mask);
- 	}
- 	kfree(create);
- 	return task;
-@@ -608,7 +608,7 @@ int kthreadd(void *unused)
- 	/* Setup a clean context for our children to inherit. */
- 	set_task_comm(tsk, "kthreadd");
- 	ignore_signals(tsk);
--	set_cpus_allowed_ptr(tsk, cpu_all_mask);
-+	set_cpus_allowed_ptr(tsk, cpu_possible_mask);
- 	set_mems_allowed(node_states[N_MEMORY]);
+diff --git a/include/linux/sched/sysctl.h b/include/linux/sched/sysctl.h
+index 660ac49..24be30a 100644
+--- a/include/linux/sched/sysctl.h
++++ b/include/linux/sched/sysctl.h
+@@ -61,6 +61,9 @@ int sched_proc_update_handler(struct ctl_table *table, int write,
+ extern unsigned int sysctl_sched_rt_period;
+ extern int sysctl_sched_rt_runtime;
  
- 	current->flags |= PF_NOFREEZE;
++extern unsigned int sysctl_sched_dl_period_max;
++extern unsigned int sysctl_sched_dl_period_min;
++
+ #ifdef CONFIG_UCLAMP_TASK
+ extern unsigned int sysctl_sched_uclamp_util_min;
+ extern unsigned int sysctl_sched_uclamp_util_max;
+diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
+index 504d2f5..f31964a 100644
+--- a/kernel/sched/deadline.c
++++ b/kernel/sched/deadline.c
+@@ -2635,6 +2635,14 @@ void __getparam_dl(struct task_struct *p, struct sched_attr *attr)
+ }
+ 
+ /*
++ * Default limits for DL period; on the top end we guard against small util
++ * tasks still getting rediculous long effective runtimes, on the bottom end we
++ * guard against timer DoS.
++ */
++unsigned int sysctl_sched_dl_period_max = 1 << 22; /* ~4 seconds */
++unsigned int sysctl_sched_dl_period_min = 100;     /* 100 us */
++
++/*
+  * This function validates the new parameters of a -deadline task.
+  * We ask for the deadline not being zero, and greater or equal
+  * than the runtime, as well as the period of being zero or
+@@ -2646,6 +2654,8 @@ void __getparam_dl(struct task_struct *p, struct sched_attr *attr)
+  */
+ bool __checkparam_dl(const struct sched_attr *attr)
+ {
++	u64 period, max, min;
++
+ 	/* special dl tasks don't actually use any parameter */
+ 	if (attr->sched_flags & SCHED_FLAG_SUGOV)
+ 		return true;
+@@ -2669,12 +2679,21 @@ bool __checkparam_dl(const struct sched_attr *attr)
+ 	    attr->sched_period & (1ULL << 63))
+ 		return false;
+ 
++	period = attr->sched_period;
++	if (!period)
++		period = attr->sched_deadline;
++
+ 	/* runtime <= deadline <= period (if period != 0) */
+-	if ((attr->sched_period != 0 &&
+-	     attr->sched_period < attr->sched_deadline) ||
++	if (period < attr->sched_deadline ||
+ 	    attr->sched_deadline < attr->sched_runtime)
+ 		return false;
+ 
++	max = (u64)READ_ONCE(sysctl_sched_dl_period_max) * NSEC_PER_USEC;
++	min = (u64)READ_ONCE(sysctl_sched_dl_period_min) * NSEC_PER_USEC;
++
++	if (period < min || period > max)
++		return false;
++
+ 	return true;
+ }
+ 
+diff --git a/kernel/sysctl.c b/kernel/sysctl.c
+index db1ce7a..4aea67d 100644
+--- a/kernel/sysctl.c
++++ b/kernel/sysctl.c
+@@ -1780,6 +1780,20 @@ static struct ctl_table kern_table[] = {
+ 		.proc_handler	= sched_rt_handler,
+ 	},
+ 	{
++		.procname	= "sched_deadline_period_max_us",
++		.data		= &sysctl_sched_dl_period_max,
++		.maxlen		= sizeof(unsigned int),
++		.mode		= 0644,
++		.proc_handler	= proc_dointvec,
++	},
++	{
++		.procname	= "sched_deadline_period_min_us",
++		.data		= &sysctl_sched_dl_period_min,
++		.maxlen		= sizeof(unsigned int),
++		.mode		= 0644,
++		.proc_handler	= proc_dointvec,
++	},
++	{
+ 		.procname	= "sched_rr_timeslice_ms",
+ 		.data		= &sysctl_sched_rr_timeslice,
+ 		.maxlen		= sizeof(int),
