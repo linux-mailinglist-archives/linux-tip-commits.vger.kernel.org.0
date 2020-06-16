@@ -2,42 +2,41 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EF9AC1FB07F
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 16 Jun 2020 14:24:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A40241FB085
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 16 Jun 2020 14:24:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728608AbgFPMXa (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 16 Jun 2020 08:23:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42726 "EHLO
+        id S1729311AbgFPMXp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 16 Jun 2020 08:23:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42690 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728952AbgFPMWI (ORCPT
+        with ESMTP id S1728875AbgFPMWC (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 16 Jun 2020 08:22:08 -0400
+        Tue, 16 Jun 2020 08:22:02 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1149AC08C5C4;
-        Tue, 16 Jun 2020 05:22:08 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C02FC08C5C2;
+        Tue, 16 Jun 2020 05:22:01 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jlAbH-0004fM-Vf; Tue, 16 Jun 2020 14:22:00 +0200
+        id 1jlAbD-0004ez-OP; Tue, 16 Jun 2020 14:21:55 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 04D7E1C0821;
-        Tue, 16 Jun 2020 14:21:52 +0200 (CEST)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 616581C07B4;
+        Tue, 16 Jun 2020 14:21:51 +0200 (CEST)
 Date:   Tue, 16 Jun 2020 12:21:51 -0000
 From:   "tip-bot2 for Luca Abeni" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/deadline: Improve admission control for
- asymmetric CPU capacities
+Subject: [tip: sched/core] sched/deadline: Implement fallback mechanism for !fit case
 Cc:     Luca Abeni <luca.abeni@santannapisa.it>,
         Dietmar Eggemann <dietmar.eggemann@arm.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Juri Lelli <juri.lelli@redhat.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200520134243.19352-4-dietmar.eggemann@arm.com>
-References: <20200520134243.19352-4-dietmar.eggemann@arm.com>
+In-Reply-To: <20200520134243.19352-6-dietmar.eggemann@arm.com>
+References: <20200520134243.19352-6-dietmar.eggemann@arm.com>
 MIME-Version: 1.0
-Message-ID: <159231011178.16989.2586072790400652946.tip-bot2@tip-bot2>
+Message-ID: <159231011120.16989.2193698782650296357.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -53,156 +52,74 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     60ffd5edc5e4fa69622c125c54ef8e7d5d894af8
-Gitweb:        https://git.kernel.org/tip/60ffd5edc5e4fa69622c125c54ef8e7d5d894af8
+Commit-ID:     23e71d8ba42933bff12e453858fd68c073bc5258
+Gitweb:        https://git.kernel.org/tip/23e71d8ba42933bff12e453858fd68c073bc5258
 Author:        Luca Abeni <luca.abeni@santannapisa.it>
-AuthorDate:    Wed, 20 May 2020 15:42:41 +02:00
+AuthorDate:    Wed, 20 May 2020 15:42:43 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Mon, 15 Jun 2020 14:10:05 +02:00
 
-sched/deadline: Improve admission control for asymmetric CPU capacities
+sched/deadline: Implement fallback mechanism for !fit case
 
-The current SCHED_DEADLINE (DL) admission control ensures that
+When a task has a runtime that cannot be served within the scheduling
+deadline by any of the idle CPU (later_mask) the task is doomed to miss
+its deadline.
 
-    sum of reserved CPU bandwidth < x * M
+This can happen since the SCHED_DEADLINE admission control guarantees
+only bounded tardiness and not the hard respect of all deadlines.
+In this case try to select the idle CPU with the largest CPU capacity
+to minimize tardiness.
 
-where
-
-    x = /proc/sys/kernel/sched_rt_{runtime,period}_us
-    M = # CPUs in root domain.
-
-DL admission control works well for homogeneous systems where the
-capacity of all CPUs are equal (1024). I.e. bounded tardiness for DL
-and non-starvation of non-DL tasks is guaranteed.
-
-But on heterogeneous systems where capacity of CPUs are different it
-could fail by over-allocating CPU time on smaller capacity CPUs.
-
-On an Arm big.LITTLE/DynamIQ system DL tasks can easily starve other
-tasks making it unusable.
-
-Fix this by explicitly considering the CPU capacity in the DL admission
-test by replacing M with the root domain CPU capacity sum.
+Favor task_cpu(p) if it has max capacity of !fitting CPUs so that
+find_later_rq() can potentially still return it (most likely cache-hot)
+early.
 
 Signed-off-by: Luca Abeni <luca.abeni@santannapisa.it>
 Signed-off-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Acked-by: Juri Lelli <juri.lelli@redhat.com>
-Link: https://lkml.kernel.org/r/20200520134243.19352-4-dietmar.eggemann@arm.com
+Link: https://lkml.kernel.org/r/20200520134243.19352-6-dietmar.eggemann@arm.com
 ---
- kernel/sched/deadline.c | 30 +++++++++++++++++-------------
- kernel/sched/sched.h    |  6 +++---
- 2 files changed, 20 insertions(+), 16 deletions(-)
+ kernel/sched/cpudeadline.c | 20 ++++++++++++++++----
+ 1 file changed, 16 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
-index 01f474a..9ebd0a9 100644
---- a/kernel/sched/deadline.c
-+++ b/kernel/sched/deadline.c
-@@ -2590,11 +2590,12 @@ void sched_dl_do_global(void)
- int sched_dl_overflow(struct task_struct *p, int policy,
- 		      const struct sched_attr *attr)
- {
--	struct dl_bw *dl_b = dl_bw_of(task_cpu(p));
- 	u64 period = attr->sched_period ?: attr->sched_deadline;
- 	u64 runtime = attr->sched_runtime;
- 	u64 new_bw = dl_policy(policy) ? to_ratio(period, runtime) : 0;
--	int cpus, err = -1;
-+	int cpus, err = -1, cpu = task_cpu(p);
-+	struct dl_bw *dl_b = dl_bw_of(cpu);
-+	unsigned long cap;
+diff --git a/kernel/sched/cpudeadline.c b/kernel/sched/cpudeadline.c
+index 8630f2a..8cb06c8 100644
+--- a/kernel/sched/cpudeadline.c
++++ b/kernel/sched/cpudeadline.c
+@@ -121,19 +121,31 @@ int cpudl_find(struct cpudl *cp, struct task_struct *p,
  
- 	if (attr->sched_flags & SCHED_FLAG_SUGOV)
- 		return 0;
-@@ -2609,15 +2610,17 @@ int sched_dl_overflow(struct task_struct *p, int policy,
- 	 * allocated bandwidth of the container.
- 	 */
- 	raw_spin_lock(&dl_b->lock);
--	cpus = dl_bw_cpus(task_cpu(p));
-+	cpus = dl_bw_cpus(cpu);
-+	cap = dl_bw_capacity(cpu);
+ 	if (later_mask &&
+ 	    cpumask_and(later_mask, cp->free_cpus, p->cpus_ptr)) {
+-		int cpu;
++		unsigned long cap, max_cap = 0;
++		int cpu, max_cpu = -1;
+ 
+ 		if (!static_branch_unlikely(&sched_asym_cpucapacity))
+ 			return 1;
+ 
+ 		/* Ensure the capacity of the CPUs fits the task. */
+ 		for_each_cpu(cpu, later_mask) {
+-			if (!dl_task_fits_capacity(p, cpu))
++			if (!dl_task_fits_capacity(p, cpu)) {
+ 				cpumask_clear_cpu(cpu, later_mask);
 +
- 	if (dl_policy(policy) && !task_has_dl_policy(p) &&
--	    !__dl_overflow(dl_b, cpus, 0, new_bw)) {
-+	    !__dl_overflow(dl_b, cap, 0, new_bw)) {
- 		if (hrtimer_active(&p->dl.inactive_timer))
- 			__dl_sub(dl_b, p->dl.dl_bw, cpus);
- 		__dl_add(dl_b, new_bw, cpus);
- 		err = 0;
- 	} else if (dl_policy(policy) && task_has_dl_policy(p) &&
--		   !__dl_overflow(dl_b, cpus, p->dl.dl_bw, new_bw)) {
-+		   !__dl_overflow(dl_b, cap, p->dl.dl_bw, new_bw)) {
- 		/*
- 		 * XXX this is slightly incorrect: when the task
- 		 * utilization decreases, we should delay the total
-@@ -2772,19 +2775,19 @@ bool dl_param_changed(struct task_struct *p, const struct sched_attr *attr)
- #ifdef CONFIG_SMP
- int dl_task_can_attach(struct task_struct *p, const struct cpumask *cs_cpus_allowed)
- {
-+	unsigned long flags, cap;
- 	unsigned int dest_cpu;
- 	struct dl_bw *dl_b;
- 	bool overflow;
--	int cpus, ret;
--	unsigned long flags;
-+	int ret;
++				cap = capacity_orig_of(cpu);
++
++				if (cap > max_cap ||
++				    (cpu == task_cpu(p) && cap == max_cap)) {
++					max_cap = cap;
++					max_cpu = cpu;
++				}
++			}
+ 		}
  
- 	dest_cpu = cpumask_any_and(cpu_active_mask, cs_cpus_allowed);
- 
- 	rcu_read_lock_sched();
- 	dl_b = dl_bw_of(dest_cpu);
- 	raw_spin_lock_irqsave(&dl_b->lock, flags);
--	cpus = dl_bw_cpus(dest_cpu);
--	overflow = __dl_overflow(dl_b, cpus, 0, p->dl.dl_bw);
-+	cap = dl_bw_capacity(dest_cpu);
-+	overflow = __dl_overflow(dl_b, cap, 0, p->dl.dl_bw);
- 	if (overflow) {
- 		ret = -EBUSY;
+-		if (!cpumask_empty(later_mask))
+-			return 1;
++		if (cpumask_empty(later_mask))
++			cpumask_set_cpu(max_cpu, later_mask);
++
++		return 1;
  	} else {
-@@ -2794,6 +2797,8 @@ int dl_task_can_attach(struct task_struct *p, const struct cpumask *cs_cpus_allo
- 		 * We will free resources in the source root_domain
- 		 * later on (see set_cpus_allowed_dl()).
- 		 */
-+		int cpus = dl_bw_cpus(dest_cpu);
-+
- 		__dl_add(dl_b, p->dl.dl_bw, cpus);
- 		ret = 0;
- 	}
-@@ -2826,16 +2831,15 @@ int dl_cpuset_cpumask_can_shrink(const struct cpumask *cur,
+ 		int best_cpu = cpudl_maximum(cp);
  
- bool dl_cpu_busy(unsigned int cpu)
- {
--	unsigned long flags;
-+	unsigned long flags, cap;
- 	struct dl_bw *dl_b;
- 	bool overflow;
--	int cpus;
- 
- 	rcu_read_lock_sched();
- 	dl_b = dl_bw_of(cpu);
- 	raw_spin_lock_irqsave(&dl_b->lock, flags);
--	cpus = dl_bw_cpus(cpu);
--	overflow = __dl_overflow(dl_b, cpus, 0, 0);
-+	cap = dl_bw_capacity(cpu);
-+	overflow = __dl_overflow(dl_b, cap, 0, 0);
- 	raw_spin_unlock_irqrestore(&dl_b->lock, flags);
- 	rcu_read_unlock_sched();
- 
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index 8d5d068..91b250f 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -310,11 +310,11 @@ void __dl_add(struct dl_bw *dl_b, u64 tsk_bw, int cpus)
- 	__dl_update(dl_b, -((s32)tsk_bw / cpus));
- }
- 
--static inline
--bool __dl_overflow(struct dl_bw *dl_b, int cpus, u64 old_bw, u64 new_bw)
-+static inline bool __dl_overflow(struct dl_bw *dl_b, unsigned long cap,
-+				 u64 old_bw, u64 new_bw)
- {
- 	return dl_b->bw != -1 &&
--	       dl_b->bw * cpus < dl_b->total_bw - old_bw + new_bw;
-+	       cap_scale(dl_b->bw, cap) < dl_b->total_bw - old_bw + new_bw;
- }
- 
- extern void init_dl_bw(struct dl_bw *dl_b);
