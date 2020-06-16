@@ -2,40 +2,42 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1EEBB1FB086
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 16 Jun 2020 14:24:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D4CC1FB06E
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 16 Jun 2020 14:24:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729318AbgFPMXq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 16 Jun 2020 08:23:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42692 "EHLO
+        id S1729045AbgFPMWM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 16 Jun 2020 08:22:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42742 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728876AbgFPMWC (ORCPT
+        with ESMTP id S1728997AbgFPMWL (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 16 Jun 2020 08:22:02 -0400
+        Tue, 16 Jun 2020 08:22:11 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E983C08C5C3;
-        Tue, 16 Jun 2020 05:22:01 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9AE34C08C5C7;
+        Tue, 16 Jun 2020 05:22:10 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jlAbE-0004fs-Iy; Tue, 16 Jun 2020 14:21:56 +0200
+        id 1jlAbK-0004h5-UN; Tue, 16 Jun 2020 14:22:03 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 59C711C0823;
-        Tue, 16 Jun 2020 14:21:52 +0200 (CEST)
-Date:   Tue, 16 Jun 2020 12:21:52 -0000
-From:   "tip-bot2 for Dietmar Eggemann" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 393641C06DA;
+        Tue, 16 Jun 2020 14:21:53 +0200 (CEST)
+Date:   Tue, 16 Jun 2020 12:21:53 -0000
+From:   "tip-bot2 for Vincent Guittot" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/deadline: Add dl_bw_capacity()
-Cc:     Dietmar Eggemann <dietmar.eggemann@arm.com>,
+Subject: [tip: sched/core] sched/fair: Fix NOHZ next idle balance
+Cc:     Peng Liu <iwtbavbm@gmail.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Juri Lelli <juri.lelli@redhat.com>, x86 <x86@kernel.org>,
+        Valentin Schneider <valentin.schneider@arm.com>,
+        Mel Gorman <mgorman@suse.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200520134243.19352-3-dietmar.eggemann@arm.com>
-References: <20200520134243.19352-3-dietmar.eggemann@arm.com>
+In-Reply-To: <20200609123748.18636-1-vincent.guittot@linaro.org>
+References: <20200609123748.18636-1-vincent.guittot@linaro.org>
 MIME-Version: 1.0
-Message-ID: <159231011211.16989.3507232109054333136.tip-bot2@tip-bot2>
+Message-ID: <159231011304.16989.993234782302888825.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,86 +53,85 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     fc9dc698472aa460a8b3b036d9b1d0b751f12f58
-Gitweb:        https://git.kernel.org/tip/fc9dc698472aa460a8b3b036d9b1d0b751f12f58
-Author:        Dietmar Eggemann <dietmar.eggemann@arm.com>
-AuthorDate:    Wed, 20 May 2020 15:42:40 +02:00
+Commit-ID:     3ea2f097b17e13a8280f1f9386c331b326a3dbef
+Gitweb:        https://git.kernel.org/tip/3ea2f097b17e13a8280f1f9386c331b326a3dbef
+Author:        Vincent Guittot <vincent.guittot@linaro.org>
+AuthorDate:    Tue, 09 Jun 2020 14:37:48 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Mon, 15 Jun 2020 14:10:05 +02:00
+CommitterDate: Mon, 15 Jun 2020 14:10:04 +02:00
 
-sched/deadline: Add dl_bw_capacity()
+sched/fair: Fix NOHZ next idle balance
 
-Capacity-aware SCHED_DEADLINE Admission Control (AC) needs root domain
-(rd) CPU capacity sum.
+With commit:
+  'b7031a02ec75 ("sched/fair: Add NOHZ_STATS_KICK")'
+rebalance_domains of the local cfs_rq happens before others idle cpus have
+updated nohz.next_balance and its value is overwritten.
 
-Introduce dl_bw_capacity() which for a symmetric rd w/ a CPU capacity
-of SCHED_CAPACITY_SCALE simply relies on dl_bw_cpus() to return #CPUs
-multiplied by SCHED_CAPACITY_SCALE.
+Move the update of nohz.next_balance for other idles cpus before balancing
+and updating the next_balance of local cfs_rq.
 
-For an asymmetric rd or a CPU capacity < SCHED_CAPACITY_SCALE it
-computes the CPU capacity sum over rd span and cpu_active_mask.
+Also, the nohz.next_balance is now updated only if all idle cpus got a
+chance to rebalance their domains and the idle balance has not been aborted
+because of new activities on the CPU. In case of need_resched, the idle
+load balance will be kick the next jiffie in order to address remaining
+ilb.
 
-A 'XXX Fix:' comment was added to highlight that if 'rq->rd ==
-def_root_domain' AC should be performed against the capacity of the
-CPU the task is running on rather the rd CPU capacity sum. This
-issue already exists w/o capacity awareness.
-
-Signed-off-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Fixes: b7031a02ec75 ("sched/fair: Add NOHZ_STATS_KICK")
+Reported-by: Peng Liu <iwtbavbm@gmail.com>
+Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Juri Lelli <juri.lelli@redhat.com>
-Link: https://lkml.kernel.org/r/20200520134243.19352-3-dietmar.eggemann@arm.com
+Reviewed-by: Valentin Schneider <valentin.schneider@arm.com>
+Acked-by: Mel Gorman <mgorman@suse.de>
+Link: https://lkml.kernel.org/r/20200609123748.18636-1-vincent.guittot@linaro.org
 ---
- kernel/sched/deadline.c | 33 +++++++++++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
+ kernel/sched/fair.c | 23 ++++++++++++++---------
+ 1 file changed, 14 insertions(+), 9 deletions(-)
 
-diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
-index ec90265..01f474a 100644
---- a/kernel/sched/deadline.c
-+++ b/kernel/sched/deadline.c
-@@ -69,6 +69,34 @@ static inline int dl_bw_cpus(int i)
- 
- 	return cpus;
- }
-+
-+static inline unsigned long __dl_bw_capacity(int i)
-+{
-+	struct root_domain *rd = cpu_rq(i)->rd;
-+	unsigned long cap = 0;
-+
-+	RCU_LOCKDEP_WARN(!rcu_read_lock_sched_held(),
-+			 "sched RCU must be held");
-+
-+	for_each_cpu_and(i, rd->span, cpu_active_mask)
-+		cap += capacity_orig_of(i);
-+
-+	return cap;
-+}
-+
-+/*
-+ * XXX Fix: If 'rq->rd == def_root_domain' perform AC against capacity
-+ * of the CPU the task is running on rather rd's \Sum CPU capacity.
-+ */
-+static inline unsigned long dl_bw_capacity(int i)
-+{
-+	if (!static_branch_unlikely(&sched_asym_cpucapacity) &&
-+	    capacity_orig_of(i) == SCHED_CAPACITY_SCALE) {
-+		return dl_bw_cpus(i) << SCHED_CAPACITY_SHIFT;
-+	} else {
-+		return __dl_bw_capacity(i);
-+	}
-+}
- #else
- static inline struct dl_bw *dl_bw_of(int i)
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index a785a9b..295c9ff 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -10022,7 +10022,12 @@ static void kick_ilb(unsigned int flags)
  {
-@@ -79,6 +107,11 @@ static inline int dl_bw_cpus(int i)
- {
- 	return 1;
- }
-+
-+static inline unsigned long dl_bw_capacity(int i)
-+{
-+	return SCHED_CAPACITY_SCALE;
-+}
- #endif
+ 	int ilb_cpu;
  
- static inline
+-	nohz.next_balance++;
++	/*
++	 * Increase nohz.next_balance only when if full ilb is triggered but
++	 * not if we only update stats.
++	 */
++	if (flags & NOHZ_BALANCE_KICK)
++		nohz.next_balance = jiffies+1;
+ 
+ 	ilb_cpu = find_new_ilb();
+ 
+@@ -10343,6 +10348,14 @@ static bool _nohz_idle_balance(struct rq *this_rq, unsigned int flags,
+ 		}
+ 	}
+ 
++	/*
++	 * next_balance will be updated only when there is a need.
++	 * When the CPU is attached to null domain for ex, it will not be
++	 * updated.
++	 */
++	if (likely(update_next_balance))
++		nohz.next_balance = next_balance;
++
+ 	/* Newly idle CPU doesn't need an update */
+ 	if (idle != CPU_NEWLY_IDLE) {
+ 		update_blocked_averages(this_cpu);
+@@ -10363,14 +10376,6 @@ abort:
+ 	if (has_blocked_load)
+ 		WRITE_ONCE(nohz.has_blocked, 1);
+ 
+-	/*
+-	 * next_balance will be updated only when there is a need.
+-	 * When the CPU is attached to null domain for ex, it will not be
+-	 * updated.
+-	 */
+-	if (likely(update_next_balance))
+-		nohz.next_balance = next_balance;
+-
+ 	return ret;
+ }
+ 
