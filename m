@@ -2,42 +2,41 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D4CC1FB06E
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 16 Jun 2020 14:24:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 80FAC1FB070
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 16 Jun 2020 14:24:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729045AbgFPMWM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S1729024AbgFPMWM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Tue, 16 Jun 2020 08:22:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42742 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42738 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728997AbgFPMWL (ORCPT
+        with ESMTP id S1728993AbgFPMWK (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 16 Jun 2020 08:22:11 -0400
+        Tue, 16 Jun 2020 08:22:10 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9AE34C08C5C7;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07625C08C5C4;
         Tue, 16 Jun 2020 05:22:10 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jlAbK-0004h5-UN; Tue, 16 Jun 2020 14:22:03 +0200
+        id 1jlAbN-0004i4-RM; Tue, 16 Jun 2020 14:22:05 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 393641C06DA;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id BEAAE1C0845;
         Tue, 16 Jun 2020 14:21:53 +0200 (CEST)
 Date:   Tue, 16 Jun 2020 12:21:53 -0000
-From:   "tip-bot2 for Vincent Guittot" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Marcelo Tosatti" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/fair: Fix NOHZ next idle balance
-Cc:     Peng Liu <iwtbavbm@gmail.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
+Subject: [tip: sched/core] isolcpus: Affine unbound kernel threads to
+ housekeeping cpus
+Cc:     Frederic Weisbecker <frederic@kernel.org>,
+        Marcelo Tosatti <mtosatti@redhat.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Valentin Schneider <valentin.schneider@arm.com>,
-        Mel Gorman <mgorman@suse.de>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200609123748.18636-1-vincent.guittot@linaro.org>
-References: <20200609123748.18636-1-vincent.guittot@linaro.org>
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200527142909.23372-3-frederic@kernel.org>
+References: <20200527142909.23372-3-frederic@kernel.org>
 MIME-Version: 1.0
-Message-ID: <159231011304.16989.993234782302888825.tip-bot2@tip-bot2>
+Message-ID: <159231011359.16989.9937469140076463872.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -53,85 +52,102 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     3ea2f097b17e13a8280f1f9386c331b326a3dbef
-Gitweb:        https://git.kernel.org/tip/3ea2f097b17e13a8280f1f9386c331b326a3dbef
-Author:        Vincent Guittot <vincent.guittot@linaro.org>
-AuthorDate:    Tue, 09 Jun 2020 14:37:48 +02:00
+Commit-ID:     9cc5b8656892a72438ee7deb5e80f5be47643b8b
+Gitweb:        https://git.kernel.org/tip/9cc5b8656892a72438ee7deb5e80f5be47643b8b
+Author:        Marcelo Tosatti <mtosatti@redhat.com>
+AuthorDate:    Wed, 27 May 2020 16:29:09 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Mon, 15 Jun 2020 14:10:04 +02:00
+CommitterDate: Mon, 15 Jun 2020 14:10:03 +02:00
 
-sched/fair: Fix NOHZ next idle balance
+isolcpus: Affine unbound kernel threads to housekeeping cpus
 
-With commit:
-  'b7031a02ec75 ("sched/fair: Add NOHZ_STATS_KICK")'
-rebalance_domains of the local cfs_rq happens before others idle cpus have
-updated nohz.next_balance and its value is overwritten.
+This is a kernel enhancement that configures the cpu affinity of kernel
+threads via kernel boot option nohz_full=.
 
-Move the update of nohz.next_balance for other idles cpus before balancing
-and updating the next_balance of local cfs_rq.
+When this option is specified, the cpumask is immediately applied upon
+kthread launch. This does not affect kernel threads that specify cpu
+and node.
 
-Also, the nohz.next_balance is now updated only if all idle cpus got a
-chance to rebalance their domains and the idle balance has not been aborted
-because of new activities on the CPU. In case of need_resched, the idle
-load balance will be kick the next jiffie in order to address remaining
-ilb.
+This allows CPU isolation (that is not allowing certain threads
+to execute on certain CPUs) without using the isolcpus=domain parameter,
+making it possible to enable load balancing on such CPUs
+during runtime (see kernel-parameters.txt).
 
-Fixes: b7031a02ec75 ("sched/fair: Add NOHZ_STATS_KICK")
-Reported-by: Peng Liu <iwtbavbm@gmail.com>
-Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
+Note-1: this is based off on Wind River's patch at
+https://github.com/starlingx-staging/stx-integ/blob/master/kernel/kernel-std/centos/patches/affine-compute-kernel-threads.patch
+
+Difference being that this patch is limited to modifying kernel thread
+cpumask. Behaviour of other threads can be controlled via cgroups or
+sched_setaffinity.
+
+Note-2: Wind River's patch was based off Christoph Lameter's patch at
+https://lwn.net/Articles/565932/ with the only difference being
+the kernel parameter changed from kthread to kthread_cpus.
+
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: Marcelo Tosatti <mtosatti@redhat.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Valentin Schneider <valentin.schneider@arm.com>
-Acked-by: Mel Gorman <mgorman@suse.de>
-Link: https://lkml.kernel.org/r/20200609123748.18636-1-vincent.guittot@linaro.org
+Link: https://lkml.kernel.org/r/20200527142909.23372-3-frederic@kernel.org
 ---
- kernel/sched/fair.c | 23 ++++++++++++++---------
- 1 file changed, 14 insertions(+), 9 deletions(-)
+ include/linux/sched/isolation.h | 1 +
+ kernel/kthread.c                | 6 ++++--
+ kernel/sched/isolation.c        | 3 ++-
+ 3 files changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index a785a9b..295c9ff 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -10022,7 +10022,12 @@ static void kick_ilb(unsigned int flags)
- {
- 	int ilb_cpu;
+diff --git a/include/linux/sched/isolation.h b/include/linux/sched/isolation.h
+index 0fbcbac..cc9f393 100644
+--- a/include/linux/sched/isolation.h
++++ b/include/linux/sched/isolation.h
+@@ -14,6 +14,7 @@ enum hk_flags {
+ 	HK_FLAG_DOMAIN		= (1 << 5),
+ 	HK_FLAG_WQ		= (1 << 6),
+ 	HK_FLAG_MANAGED_IRQ	= (1 << 7),
++	HK_FLAG_KTHREAD		= (1 << 8),
+ };
  
--	nohz.next_balance++;
-+	/*
-+	 * Increase nohz.next_balance only when if full ilb is triggered but
-+	 * not if we only update stats.
-+	 */
-+	if (flags & NOHZ_BALANCE_KICK)
-+		nohz.next_balance = jiffies+1;
+ #ifdef CONFIG_CPU_ISOLATION
+diff --git a/kernel/kthread.c b/kernel/kthread.c
+index b86d37c..032b610 100644
+--- a/kernel/kthread.c
++++ b/kernel/kthread.c
+@@ -27,6 +27,7 @@
+ #include <linux/ptrace.h>
+ #include <linux/uaccess.h>
+ #include <linux/numa.h>
++#include <linux/sched/isolation.h>
+ #include <trace/events/sched.h>
  
- 	ilb_cpu = find_new_ilb();
  
-@@ -10343,6 +10348,14 @@ static bool _nohz_idle_balance(struct rq *this_rq, unsigned int flags,
- 		}
+@@ -383,7 +384,8 @@ struct task_struct *__kthread_create_on_node(int (*threadfn)(void *data),
+ 		 * The kernel thread should not inherit these properties.
+ 		 */
+ 		sched_setscheduler_nocheck(task, SCHED_NORMAL, &param);
+-		set_cpus_allowed_ptr(task, cpu_possible_mask);
++		set_cpus_allowed_ptr(task,
++				     housekeeping_cpumask(HK_FLAG_KTHREAD));
  	}
+ 	kfree(create);
+ 	return task;
+@@ -608,7 +610,7 @@ int kthreadd(void *unused)
+ 	/* Setup a clean context for our children to inherit. */
+ 	set_task_comm(tsk, "kthreadd");
+ 	ignore_signals(tsk);
+-	set_cpus_allowed_ptr(tsk, cpu_possible_mask);
++	set_cpus_allowed_ptr(tsk, housekeeping_cpumask(HK_FLAG_KTHREAD));
+ 	set_mems_allowed(node_states[N_MEMORY]);
  
-+	/*
-+	 * next_balance will be updated only when there is a need.
-+	 * When the CPU is attached to null domain for ex, it will not be
-+	 * updated.
-+	 */
-+	if (likely(update_next_balance))
-+		nohz.next_balance = next_balance;
-+
- 	/* Newly idle CPU doesn't need an update */
- 	if (idle != CPU_NEWLY_IDLE) {
- 		update_blocked_averages(this_cpu);
-@@ -10363,14 +10376,6 @@ abort:
- 	if (has_blocked_load)
- 		WRITE_ONCE(nohz.has_blocked, 1);
+ 	current->flags |= PF_NOFREEZE;
+diff --git a/kernel/sched/isolation.c b/kernel/sched/isolation.c
+index 808244f..5a6ea03 100644
+--- a/kernel/sched/isolation.c
++++ b/kernel/sched/isolation.c
+@@ -140,7 +140,8 @@ static int __init housekeeping_nohz_full_setup(char *str)
+ {
+ 	unsigned int flags;
  
--	/*
--	 * next_balance will be updated only when there is a need.
--	 * When the CPU is attached to null domain for ex, it will not be
--	 * updated.
--	 */
--	if (likely(update_next_balance))
--		nohz.next_balance = next_balance;
--
- 	return ret;
+-	flags = HK_FLAG_TICK | HK_FLAG_WQ | HK_FLAG_TIMER | HK_FLAG_RCU | HK_FLAG_MISC;
++	flags = HK_FLAG_TICK | HK_FLAG_WQ | HK_FLAG_TIMER | HK_FLAG_RCU |
++		HK_FLAG_MISC | HK_FLAG_KTHREAD;
+ 
+ 	return housekeeping_setup(str, flags);
  }
- 
