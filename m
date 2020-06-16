@@ -2,40 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CCE11FB08D
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 16 Jun 2020 14:24:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 86EC21FB056
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 16 Jun 2020 14:22:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729380AbgFPMYF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 16 Jun 2020 08:24:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42664 "EHLO
+        id S1728893AbgFPMWD (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 16 Jun 2020 08:22:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42696 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728779AbgFPMV4 (ORCPT
+        with ESMTP id S1728885AbgFPMWC (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 16 Jun 2020 08:21:56 -0400
+        Tue, 16 Jun 2020 08:22:02 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C041C08C5C4;
-        Tue, 16 Jun 2020 05:21:56 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E9DDC08C5C5;
+        Tue, 16 Jun 2020 05:22:01 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jlAb8-0004cw-MU; Tue, 16 Jun 2020 14:21:50 +0200
+        id 1jlAbE-0004dq-TI; Tue, 16 Jun 2020 14:21:57 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 39C281C0095;
-        Tue, 16 Jun 2020 14:21:49 +0200 (CEST)
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 302FD1C06E5;
+        Tue, 16 Jun 2020 14:21:50 +0200 (CEST)
 Date:   Tue, 16 Jun 2020 12:21:49 -0000
-From:   "tip-bot2 for Adrian Hunter" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] kprobes: Add symbols for kprobe insn pages
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+Subject: [tip: perf/core] perf/x86/intel/uncore: Add Comet Lake support
+Cc:     Kan Liang <kan.liang@linux.intel.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Masami Hiramatsu <mhiramat@kernel.org>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200528080058.20230-1-adrian.hunter@intel.com>
-References: <20200528080058.20230-1-adrian.hunter@intel.com>
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <1589915905-55870-1-git-send-email-kan.liang@linux.intel.com>
+References: <1589915905-55870-1-git-send-email-kan.liang@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <159231010903.16989.11238689768998623451.tip-bot2@tip-bot2>
+Message-ID: <159231010998.16989.16172004869901710895.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,250 +50,130 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     d002b8bc6dbc20e9043e279196cff8795dba05fe
-Gitweb:        https://git.kernel.org/tip/d002b8bc6dbc20e9043e279196cff8795dba05fe
-Author:        Adrian Hunter <adrian.hunter@intel.com>
-AuthorDate:    Thu, 28 May 2020 11:00:58 +03:00
+Commit-ID:     bb85429a9bf2e7d370b8e1afd72f933a88f0629f
+Gitweb:        https://git.kernel.org/tip/bb85429a9bf2e7d370b8e1afd72f933a88f0629f
+Author:        Kan Liang <kan.liang@linux.intel.com>
+AuthorDate:    Tue, 19 May 2020 12:18:25 -07:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Mon, 15 Jun 2020 14:09:48 +02:00
+CommitterDate: Mon, 15 Jun 2020 14:09:47 +02:00
 
-kprobes: Add symbols for kprobe insn pages
+perf/x86/intel/uncore: Add Comet Lake support
 
-Symbols are needed for tools to describe instruction addresses. Pages
-allocated for kprobe's purposes need symbols to be created for them.
-Add such symbols to be visible via /proc/kallsyms.
+The uncore subsystem on Comet Lake is similar to Sky Lake.
+The only difference is the new PCI IDs for IMC.
 
-Note: kprobe insn pages are not used if ftrace is configured. To see the
-effect of this patch, the kernel must be configured with:
+Share the perf code with Sky Lake.
+Add new PCI IDs in the table.
 
-	# CONFIG_FUNCTION_TRACER is not set
-	CONFIG_KPROBES=y
-
-and for optimised kprobes:
-
-	CONFIG_OPTPROBES=y
-
-Example on x86:
-
-	# perf probe __schedule
-	Added new event:
-	  probe:__schedule     (on __schedule)
-	# cat /proc/kallsyms | grep '\[__builtin__kprobes\]'
-	ffffffffc00d4000 t kprobe_insn_page     [__builtin__kprobes]
-	ffffffffc00d6000 t kprobe_optinsn_page  [__builtin__kprobes]
-
-Note: This patch adds "__builtin__kprobes" as a module name in
-/proc/kallsyms for symbols for pages allocated for kprobes' purposes, even
-though "__builtin__kprobes" is not a module.
-
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Masami Hiramatsu <mhiramat@kernel.org>
-Link: https://lkml.kernel.org/r/20200528080058.20230-1-adrian.hunter@intel.com
+Link: https://lkml.kernel.org/r/1589915905-55870-1-git-send-email-kan.liang@linux.intel.com
 ---
- include/linux/kprobes.h | 15 +++++++++++++-
- kernel/kallsyms.c       | 37 +++++++++++++++++++++++++++++----
- kernel/kprobes.c        | 45 ++++++++++++++++++++++++++++++++++++++++-
- 3 files changed, 93 insertions(+), 4 deletions(-)
+ arch/x86/events/intel/uncore.c     |  2 +-
+ arch/x86/events/intel/uncore_snb.c | 66 +++++++++++++++++++++++++++++-
+ 2 files changed, 68 insertions(+)
 
-diff --git a/include/linux/kprobes.h b/include/linux/kprobes.h
-index 594265b..13fc58a 100644
---- a/include/linux/kprobes.h
-+++ b/include/linux/kprobes.h
-@@ -242,6 +242,7 @@ struct kprobe_insn_cache {
- 	struct mutex mutex;
- 	void *(*alloc)(void);	/* allocate insn page */
- 	void (*free)(void *);	/* free insn page */
-+	const char *sym;	/* symbol for insn pages */
- 	struct list_head pages; /* list of kprobe_insn_page */
- 	size_t insn_size;	/* size of instruction slot */
- 	int nr_garbage;
-@@ -272,6 +273,10 @@ static inline bool is_kprobe_##__name##_slot(unsigned long addr)	\
- {									\
- 	return __is_insn_slot_addr(&kprobe_##__name##_slots, addr);	\
- }
-+#define KPROBE_INSN_PAGE_SYM		"kprobe_insn_page"
-+#define KPROBE_OPTINSN_PAGE_SYM		"kprobe_optinsn_page"
-+int kprobe_cache_get_kallsym(struct kprobe_insn_cache *c, unsigned int *symnum,
-+			     unsigned long *value, char *type, char *sym);
- #else /* __ARCH_WANT_KPROBES_INSN_SLOT */
- #define DEFINE_INSN_CACHE_OPS(__name)					\
- static inline bool is_kprobe_##__name##_slot(unsigned long addr)	\
-@@ -373,6 +378,11 @@ void dump_kprobe(struct kprobe *kp);
- void *alloc_insn_page(void);
- void free_insn_page(void *page);
+diff --git a/arch/x86/events/intel/uncore.c b/arch/x86/events/intel/uncore.c
+index cf76d66..b9c2876 100644
+--- a/arch/x86/events/intel/uncore.c
++++ b/arch/x86/events/intel/uncore.c
+@@ -1514,6 +1514,8 @@ static const struct x86_cpu_id intel_uncore_match[] __initconst = {
+ 	X86_MATCH_INTEL_FAM6_MODEL(SKYLAKE_X,		&skx_uncore_init),
+ 	X86_MATCH_INTEL_FAM6_MODEL(KABYLAKE_L,		&skl_uncore_init),
+ 	X86_MATCH_INTEL_FAM6_MODEL(KABYLAKE,		&skl_uncore_init),
++	X86_MATCH_INTEL_FAM6_MODEL(COMETLAKE_L,		&skl_uncore_init),
++	X86_MATCH_INTEL_FAM6_MODEL(COMETLAKE,		&skl_uncore_init),
+ 	X86_MATCH_INTEL_FAM6_MODEL(ICELAKE_L,		&icl_uncore_init),
+ 	X86_MATCH_INTEL_FAM6_MODEL(ICELAKE_NNPI,	&icl_uncore_init),
+ 	X86_MATCH_INTEL_FAM6_MODEL(ICELAKE,		&icl_uncore_init),
+diff --git a/arch/x86/events/intel/uncore_snb.c b/arch/x86/events/intel/uncore_snb.c
+index 3de1065..5c40367 100644
+--- a/arch/x86/events/intel/uncore_snb.c
++++ b/arch/x86/events/intel/uncore_snb.c
+@@ -42,6 +42,17 @@
+ #define PCI_DEVICE_ID_INTEL_WHL_UQ_IMC		0x3ed0
+ #define PCI_DEVICE_ID_INTEL_WHL_4_UQ_IMC	0x3e34
+ #define PCI_DEVICE_ID_INTEL_WHL_UD_IMC		0x3e35
++#define PCI_DEVICE_ID_INTEL_CML_H1_IMC		0x9b44
++#define PCI_DEVICE_ID_INTEL_CML_H2_IMC		0x9b54
++#define PCI_DEVICE_ID_INTEL_CML_H3_IMC		0x9b64
++#define PCI_DEVICE_ID_INTEL_CML_U1_IMC		0x9b51
++#define PCI_DEVICE_ID_INTEL_CML_U2_IMC		0x9b61
++#define PCI_DEVICE_ID_INTEL_CML_U3_IMC		0x9b71
++#define PCI_DEVICE_ID_INTEL_CML_S1_IMC		0x9b33
++#define PCI_DEVICE_ID_INTEL_CML_S2_IMC		0x9b43
++#define PCI_DEVICE_ID_INTEL_CML_S3_IMC		0x9b53
++#define PCI_DEVICE_ID_INTEL_CML_S4_IMC		0x9b63
++#define PCI_DEVICE_ID_INTEL_CML_S5_IMC		0x9b73
+ #define PCI_DEVICE_ID_INTEL_ICL_U_IMC		0x8a02
+ #define PCI_DEVICE_ID_INTEL_ICL_U2_IMC		0x8a12
+ #define PCI_DEVICE_ID_INTEL_TGL_U1_IMC		0x9a02
+@@ -771,6 +782,50 @@ static const struct pci_device_id skl_uncore_pci_ids[] = {
+ 		PCI_DEVICE(PCI_VENDOR_ID_INTEL, PCI_DEVICE_ID_INTEL_WHL_UD_IMC),
+ 		.driver_data = UNCORE_PCI_DEV_DATA(SNB_PCI_UNCORE_IMC, 0),
+ 	},
++	{ /* IMC */
++		PCI_DEVICE(PCI_VENDOR_ID_INTEL, PCI_DEVICE_ID_INTEL_CML_H1_IMC),
++		.driver_data = UNCORE_PCI_DEV_DATA(SNB_PCI_UNCORE_IMC, 0),
++	},
++	{ /* IMC */
++		PCI_DEVICE(PCI_VENDOR_ID_INTEL, PCI_DEVICE_ID_INTEL_CML_H2_IMC),
++		.driver_data = UNCORE_PCI_DEV_DATA(SNB_PCI_UNCORE_IMC, 0),
++	},
++	{ /* IMC */
++		PCI_DEVICE(PCI_VENDOR_ID_INTEL, PCI_DEVICE_ID_INTEL_CML_H3_IMC),
++		.driver_data = UNCORE_PCI_DEV_DATA(SNB_PCI_UNCORE_IMC, 0),
++	},
++	{ /* IMC */
++		PCI_DEVICE(PCI_VENDOR_ID_INTEL, PCI_DEVICE_ID_INTEL_CML_U1_IMC),
++		.driver_data = UNCORE_PCI_DEV_DATA(SNB_PCI_UNCORE_IMC, 0),
++	},
++	{ /* IMC */
++		PCI_DEVICE(PCI_VENDOR_ID_INTEL, PCI_DEVICE_ID_INTEL_CML_U2_IMC),
++		.driver_data = UNCORE_PCI_DEV_DATA(SNB_PCI_UNCORE_IMC, 0),
++	},
++	{ /* IMC */
++		PCI_DEVICE(PCI_VENDOR_ID_INTEL, PCI_DEVICE_ID_INTEL_CML_U3_IMC),
++		.driver_data = UNCORE_PCI_DEV_DATA(SNB_PCI_UNCORE_IMC, 0),
++	},
++	{ /* IMC */
++		PCI_DEVICE(PCI_VENDOR_ID_INTEL, PCI_DEVICE_ID_INTEL_CML_S1_IMC),
++		.driver_data = UNCORE_PCI_DEV_DATA(SNB_PCI_UNCORE_IMC, 0),
++	},
++	{ /* IMC */
++		PCI_DEVICE(PCI_VENDOR_ID_INTEL, PCI_DEVICE_ID_INTEL_CML_S2_IMC),
++		.driver_data = UNCORE_PCI_DEV_DATA(SNB_PCI_UNCORE_IMC, 0),
++	},
++	{ /* IMC */
++		PCI_DEVICE(PCI_VENDOR_ID_INTEL, PCI_DEVICE_ID_INTEL_CML_S3_IMC),
++		.driver_data = UNCORE_PCI_DEV_DATA(SNB_PCI_UNCORE_IMC, 0),
++	},
++	{ /* IMC */
++		PCI_DEVICE(PCI_VENDOR_ID_INTEL, PCI_DEVICE_ID_INTEL_CML_S4_IMC),
++		.driver_data = UNCORE_PCI_DEV_DATA(SNB_PCI_UNCORE_IMC, 0),
++	},
++	{ /* IMC */
++		PCI_DEVICE(PCI_VENDOR_ID_INTEL, PCI_DEVICE_ID_INTEL_CML_S5_IMC),
++		.driver_data = UNCORE_PCI_DEV_DATA(SNB_PCI_UNCORE_IMC, 0),
++	},
+ 	{ /* end: all zeroes */ },
+ };
  
-+int kprobe_get_kallsym(unsigned int symnum, unsigned long *value, char *type,
-+		       char *sym);
-+
-+int arch_kprobe_get_kallsym(unsigned int *symnum, unsigned long *value,
-+			    char *type, char *sym);
- #else /* !CONFIG_KPROBES: */
- 
- static inline int kprobes_built_in(void)
-@@ -435,6 +445,11 @@ static inline bool within_kprobe_blacklist(unsigned long addr)
- {
- 	return true;
- }
-+static inline int kprobe_get_kallsym(unsigned int symnum, unsigned long *value,
-+				     char *type, char *sym)
-+{
-+	return -ERANGE;
-+}
- #endif /* CONFIG_KPROBES */
- static inline int disable_kretprobe(struct kretprobe *rp)
- {
-diff --git a/kernel/kallsyms.c b/kernel/kallsyms.c
-index 16c8c60..c6cc293 100644
---- a/kernel/kallsyms.c
-+++ b/kernel/kallsyms.c
-@@ -24,6 +24,7 @@
- #include <linux/slab.h>
- #include <linux/filter.h>
- #include <linux/ftrace.h>
-+#include <linux/kprobes.h>
- #include <linux/compiler.h>
- 
- /*
-@@ -437,6 +438,7 @@ struct kallsym_iter {
- 	loff_t pos_arch_end;
- 	loff_t pos_mod_end;
- 	loff_t pos_ftrace_mod_end;
-+	loff_t pos_bpf_end;
- 	unsigned long value;
- 	unsigned int nameoff; /* If iterating in core kernel symbols. */
- 	char type;
-@@ -496,11 +498,33 @@ static int get_ksymbol_ftrace_mod(struct kallsym_iter *iter)
- 
- static int get_ksymbol_bpf(struct kallsym_iter *iter)
- {
-+	int ret;
-+
- 	strlcpy(iter->module_name, "bpf", MODULE_NAME_LEN);
- 	iter->exported = 0;
--	return bpf_get_kallsym(iter->pos - iter->pos_ftrace_mod_end,
--			       &iter->value, &iter->type,
--			       iter->name) < 0 ? 0 : 1;
-+	ret = bpf_get_kallsym(iter->pos - iter->pos_ftrace_mod_end,
-+			      &iter->value, &iter->type,
-+			      iter->name);
-+	if (ret < 0) {
-+		iter->pos_bpf_end = iter->pos;
-+		return 0;
-+	}
-+
-+	return 1;
-+}
-+
-+/*
-+ * This uses "__builtin__kprobes" as a module name for symbols for pages
-+ * allocated for kprobes' purposes, even though "__builtin__kprobes" is not a
-+ * module.
-+ */
-+static int get_ksymbol_kprobe(struct kallsym_iter *iter)
-+{
-+	strlcpy(iter->module_name, "__builtin__kprobes", MODULE_NAME_LEN);
-+	iter->exported = 0;
-+	return kprobe_get_kallsym(iter->pos - iter->pos_bpf_end,
-+				  &iter->value, &iter->type,
-+				  iter->name) < 0 ? 0 : 1;
- }
- 
- /* Returns space to next name. */
-@@ -527,6 +551,7 @@ static void reset_iter(struct kallsym_iter *iter, loff_t new_pos)
- 		iter->pos_arch_end = 0;
- 		iter->pos_mod_end = 0;
- 		iter->pos_ftrace_mod_end = 0;
-+		iter->pos_bpf_end = 0;
- 	}
- }
- 
-@@ -551,7 +576,11 @@ static int update_iter_mod(struct kallsym_iter *iter, loff_t pos)
- 	    get_ksymbol_ftrace_mod(iter))
- 		return 1;
- 
--	return get_ksymbol_bpf(iter);
-+	if ((!iter->pos_bpf_end || iter->pos_bpf_end > pos) &&
-+	    get_ksymbol_bpf(iter))
-+		return 1;
-+
-+	return get_ksymbol_kprobe(iter);
- }
- 
- /* Returns false if pos at or past end of file. */
-diff --git a/kernel/kprobes.c b/kernel/kprobes.c
-index 50cd84f..058c0be 100644
---- a/kernel/kprobes.c
-+++ b/kernel/kprobes.c
-@@ -118,6 +118,7 @@ struct kprobe_insn_cache kprobe_insn_slots = {
- 	.mutex = __MUTEX_INITIALIZER(kprobe_insn_slots.mutex),
- 	.alloc = alloc_insn_page,
- 	.free = free_insn_page,
-+	.sym = KPROBE_INSN_PAGE_SYM,
- 	.pages = LIST_HEAD_INIT(kprobe_insn_slots.pages),
- 	.insn_size = MAX_INSN_SIZE,
- 	.nr_garbage = 0,
-@@ -290,12 +291,34 @@ bool __is_insn_slot_addr(struct kprobe_insn_cache *c, unsigned long addr)
- 	return ret;
- }
- 
-+int kprobe_cache_get_kallsym(struct kprobe_insn_cache *c, unsigned int *symnum,
-+			     unsigned long *value, char *type, char *sym)
-+{
-+	struct kprobe_insn_page *kip;
-+	int ret = -ERANGE;
-+
-+	rcu_read_lock();
-+	list_for_each_entry_rcu(kip, &c->pages, list) {
-+		if ((*symnum)--)
-+			continue;
-+		strlcpy(sym, c->sym, KSYM_NAME_LEN);
-+		*type = 't';
-+		*value = (unsigned long)kip->insns;
-+		ret = 0;
-+		break;
-+	}
-+	rcu_read_unlock();
-+
-+	return ret;
-+}
-+
- #ifdef CONFIG_OPTPROBES
- /* For optimized_kprobe buffer */
- struct kprobe_insn_cache kprobe_optinsn_slots = {
- 	.mutex = __MUTEX_INITIALIZER(kprobe_optinsn_slots.mutex),
- 	.alloc = alloc_insn_page,
- 	.free = free_insn_page,
-+	.sym = KPROBE_OPTINSN_PAGE_SYM,
- 	.pages = LIST_HEAD_INIT(kprobe_optinsn_slots.pages),
- 	/* .insn_size is initialized later */
- 	.nr_garbage = 0,
-@@ -2197,6 +2220,28 @@ static void kprobe_remove_ksym_blacklist(unsigned long entry)
- 	kprobe_remove_area_blacklist(entry, entry + 1);
- }
- 
-+int __weak arch_kprobe_get_kallsym(unsigned int *symnum, unsigned long *value,
-+				   char *type, char *sym)
-+{
-+	return -ERANGE;
-+}
-+
-+int kprobe_get_kallsym(unsigned int symnum, unsigned long *value, char *type,
-+		       char *sym)
-+{
-+#ifdef __ARCH_WANT_KPROBES_INSN_SLOT
-+	if (!kprobe_cache_get_kallsym(&kprobe_insn_slots, &symnum, value, type, sym))
-+		return 0;
-+#ifdef CONFIG_OPTPROBES
-+	if (!kprobe_cache_get_kallsym(&kprobe_optinsn_slots, &symnum, value, type, sym))
-+		return 0;
-+#endif
-+#endif
-+	if (!arch_kprobe_get_kallsym(&symnum, value, type, sym))
-+		return 0;
-+	return -ERANGE;
-+}
-+
- int __init __weak arch_populate_kprobe_blacklist(void)
- {
- 	return 0;
+@@ -863,6 +918,17 @@ static const struct imc_uncore_pci_dev desktop_imc_pci_ids[] = {
+ 	IMC_DEV(WHL_UQ_IMC, &skl_uncore_pci_driver),	/* 8th Gen Core U Mobile Quad Core */
+ 	IMC_DEV(WHL_4_UQ_IMC, &skl_uncore_pci_driver),	/* 8th Gen Core U Mobile Quad Core */
+ 	IMC_DEV(WHL_UD_IMC, &skl_uncore_pci_driver),	/* 8th Gen Core U Mobile Dual Core */
++	IMC_DEV(CML_H1_IMC, &skl_uncore_pci_driver),
++	IMC_DEV(CML_H2_IMC, &skl_uncore_pci_driver),
++	IMC_DEV(CML_H3_IMC, &skl_uncore_pci_driver),
++	IMC_DEV(CML_U1_IMC, &skl_uncore_pci_driver),
++	IMC_DEV(CML_U2_IMC, &skl_uncore_pci_driver),
++	IMC_DEV(CML_U3_IMC, &skl_uncore_pci_driver),
++	IMC_DEV(CML_S1_IMC, &skl_uncore_pci_driver),
++	IMC_DEV(CML_S2_IMC, &skl_uncore_pci_driver),
++	IMC_DEV(CML_S3_IMC, &skl_uncore_pci_driver),
++	IMC_DEV(CML_S4_IMC, &skl_uncore_pci_driver),
++	IMC_DEV(CML_S5_IMC, &skl_uncore_pci_driver),
+ 	IMC_DEV(ICL_U_IMC, &icl_uncore_pci_driver),	/* 10th Gen Core Mobile */
+ 	IMC_DEV(ICL_U2_IMC, &icl_uncore_pci_driver),	/* 10th Gen Core Mobile */
+ 	{  /* end marker */ }
