@@ -2,39 +2,41 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AAB001FB094
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 16 Jun 2020 14:24:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 906011FB08B
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 16 Jun 2020 14:24:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729439AbgFPMYU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 16 Jun 2020 08:24:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42648 "EHLO
+        id S1728809AbgFPMV6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 16 Jun 2020 08:21:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728517AbgFPMVy (ORCPT
+        with ESMTP id S1728778AbgFPMV4 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 16 Jun 2020 08:21:54 -0400
+        Tue, 16 Jun 2020 08:21:56 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 920DCC08C5C3;
-        Tue, 16 Jun 2020 05:21:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 407C0C08C5C2;
+        Tue, 16 Jun 2020 05:21:56 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jlAb6-0004bd-1S; Tue, 16 Jun 2020 14:21:48 +0200
+        id 1jlAb5-0004bA-MM; Tue, 16 Jun 2020 14:21:47 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A34081C0475;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4856C1C0095;
         Tue, 16 Jun 2020 14:21:47 +0200 (CEST)
 Date:   Tue, 16 Jun 2020 12:21:47 -0000
-From:   "tip-bot2 for Adrian Hunter" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] ftrace: Add perf text poke events for ftrace trampolines
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+Subject: [tip: perf/core] perf/x86/intel/uncore: Fix oops when counting IMC
+ uncore events on some TGL
+Cc:     Ammy Yi <ammy.yi@intel.com>, Kan Liang <kan.liang@linux.intel.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200512121922.8997-9-adrian.hunter@intel.com>
-References: <20200512121922.8997-9-adrian.hunter@intel.com>
+        Chao Qin <chao.qin@intel.com>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <1590679169-61823-1-git-send-email-kan.liang@linux.intel.com>
+References: <1590679169-61823-1-git-send-email-kan.liang@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <159231010740.16989.5134348688413119974.tip-bot2@tip-bot2>
+Message-ID: <159231010702.16989.16517537495111095749.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,72 +52,58 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     548e1f6c76e1eb80ba29edd4286b9b9f2c37f5bf
-Gitweb:        https://git.kernel.org/tip/548e1f6c76e1eb80ba29edd4286b9b9f2c37f5bf
-Author:        Adrian Hunter <adrian.hunter@intel.com>
-AuthorDate:    Tue, 12 May 2020 15:19:15 +03:00
+Commit-ID:     2af834f1faab3f1e218fcbcab70a399121620d62
+Gitweb:        https://git.kernel.org/tip/2af834f1faab3f1e218fcbcab70a399121620d62
+Author:        Kan Liang <kan.liang@linux.intel.com>
+AuthorDate:    Thu, 28 May 2020 08:19:27 -07:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Mon, 15 Jun 2020 14:09:50 +02:00
 
-ftrace: Add perf text poke events for ftrace trampolines
+perf/x86/intel/uncore: Fix oops when counting IMC uncore events on some TGL
 
-Add perf text poke events for ftrace trampolines when created and when
-freed.
+When counting IMC uncore events on some TGL machines, an oops will be
+triggered.
+  [ 393.101262] BUG: unable to handle page fault for address:
+  ffffb45200e15858
+  [ 393.101269] #PF: supervisor read access in kernel mode
+  [ 393.101271] #PF: error_code(0x0000) - not-present page
 
-There can be 3 text_poke events for ftrace trampolines:
+Current perf uncore driver still use the IMC MAP SIZE inherited from
+SNB, which is 0x6000.
+However, the offset of IMC uncore counters is larger than 0x6000,
+e.g. 0xd8a0.
 
-1. NULL -> trampoline
-   By ftrace_update_trampoline() when !ops->trampoline
-   Trampoline created
+Enlarge the IMC MAP SIZE for TGL to 0xe000.
 
-2. [e.g. on x86] CALL rel32 -> CALL rel32
-   By arch_ftrace_update_trampoline() when ops->trampoline and
-                        ops->flags & FTRACE_OPS_FL_ALLOC_TRAMP
-   [e.g. on x86] via text_poke_bp() which generates text poke events
-   Trampoline-called function target updated
-
-3. trampoline -> NULL
-   By ftrace_trampoline_free() when ops->trampoline and
-                 ops->flags & FTRACE_OPS_FL_ALLOC_TRAMP
-   Trampoline freed
-
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Fixes: fdb64822443e ("perf/x86: Add Intel Tiger Lake uncore support")
+Reported-by: Ammy Yi <ammy.yi@intel.com>
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20200512121922.8997-9-adrian.hunter@intel.com
+Tested-by: Ammy Yi <ammy.yi@intel.com>
+Tested-by: Chao Qin <chao.qin@intel.com>
+Link: https://lkml.kernel.org/r/1590679169-61823-1-git-send-email-kan.liang@linux.intel.com
 ---
- kernel/trace/ftrace.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ arch/x86/events/intel/uncore_snb.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
-index 2baaf77..d6bba73 100644
---- a/kernel/trace/ftrace.c
-+++ b/kernel/trace/ftrace.c
-@@ -2791,6 +2791,13 @@ static void ftrace_trampoline_free(struct ftrace_ops *ops)
- {
- 	if (ops && (ops->flags & FTRACE_OPS_FL_ALLOC_TRAMP) &&
- 	    ops->trampoline) {
-+		/*
-+		 * Record the text poke event before the ksymbol unregister
-+		 * event.
-+		 */
-+		perf_event_text_poke((void *)ops->trampoline,
-+				     (void *)ops->trampoline,
-+				     ops->trampoline_size, NULL, 0);
- 		perf_event_ksymbol(PERF_RECORD_KSYMBOL_TYPE_OOL,
- 				   ops->trampoline, ops->trampoline_size,
- 				   true, FTRACE_TRAMPOLINE_SYM);
-@@ -6816,6 +6823,13 @@ static void ftrace_update_trampoline(struct ftrace_ops *ops)
- 		perf_event_ksymbol(PERF_RECORD_KSYMBOL_TYPE_OOL,
- 				   ops->trampoline, ops->trampoline_size, false,
- 				   FTRACE_TRAMPOLINE_SYM);
-+		/*
-+		 * Record the perf text poke event after the ksymbol register
-+		 * event.
-+		 */
-+		perf_event_text_poke((void *)ops->trampoline, NULL, 0,
-+				     (void *)ops->trampoline,
-+				     ops->trampoline_size);
- 	}
+diff --git a/arch/x86/events/intel/uncore_snb.c b/arch/x86/events/intel/uncore_snb.c
+index 5c40367..d5ae3a8 100644
+--- a/arch/x86/events/intel/uncore_snb.c
++++ b/arch/x86/events/intel/uncore_snb.c
+@@ -1151,6 +1151,7 @@ static struct pci_dev *tgl_uncore_get_mc_dev(void)
  }
  
+ #define TGL_UNCORE_MMIO_IMC_MEM_OFFSET		0x10000
++#define TGL_UNCORE_PCI_IMC_MAP_SIZE		0xe000
+ 
+ static void tgl_uncore_imc_freerunning_init_box(struct intel_uncore_box *box)
+ {
+@@ -1178,7 +1179,7 @@ static void tgl_uncore_imc_freerunning_init_box(struct intel_uncore_box *box)
+ 	addr |= ((resource_size_t)mch_bar << 32);
+ #endif
+ 
+-	box->io_addr = ioremap(addr, SNB_UNCORE_PCI_IMC_MAP_SIZE);
++	box->io_addr = ioremap(addr, TGL_UNCORE_PCI_IMC_MAP_SIZE);
+ }
+ 
+ static struct intel_uncore_ops tgl_uncore_imc_freerunning_ops = {
