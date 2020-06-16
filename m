@@ -2,97 +2,98 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F9C91FBEFD
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 16 Jun 2020 21:28:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C08621FBF1D
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 16 Jun 2020 21:40:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730621AbgFPT15 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 16 Jun 2020 15:27:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52620 "EHLO
+        id S1731054AbgFPTkv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 16 Jun 2020 15:40:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54614 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730269AbgFPT15 (ORCPT
+        with ESMTP id S1730301AbgFPTku (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 16 Jun 2020 15:27:57 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3EF5C061573;
-        Tue, 16 Jun 2020 12:27:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=1/p6M4udphfZorluJv8PAtxh9mkG4Cd1rD6oV0dK7MY=; b=bU5YqNKQASuxGfFaC2YHt0Kk6o
-        P4KjjAF4sgy1oQqQzcHyV6Pw88GWxBsSn6BdsJPXK2ciDyVslB33Zw0vgz61iS6OXwuBmrFg2aL2u
-        L7+pTuOctqwSpXiZ8kj8UHA6H99XHzmy8g9hipIcsQLChh0/6X1AcqRZCsDBWudn2CAOB4Biu5sKG
-        SRadq65iloF9GEk4GD/6Ge7eEQbkHxlH9DNktC++xVHZeV23+rFuvTJR/D7Kl07LpP7eoC9u2cfiW
-        754l6A5XFvnAHgUoyMcsH3RzZZXtCguKJ70MkCCCpnnHV0qmrHLYPJUhp/EbXRmExmx1uEb8n00Ih
-        xuT0trJA==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
-        by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1jlHFP-00006X-O2; Tue, 16 Jun 2020 19:27:51 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 691323017B7;
-        Tue, 16 Jun 2020 21:27:49 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 542182B6DCDEA; Tue, 16 Jun 2020 21:27:49 +0200 (CEST)
-Date:   Tue, 16 Jun 2020 21:27:49 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Kees Cook <keescook@chromium.org>
-Cc:     Josh Poimboeuf <jpoimboe@redhat.com>, x86 <x86@kernel.org>,
-        linux-tip-commits@vger.kernel.org,
-        Sami Tolvanen <samitolvanen@google.com>,
-        Kristen Carlson Accardi <kristen@linux.intel.com>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [tip: objtool/core] objtool: Use sh_info to find the base for
- .rela sections
-Message-ID: <20200616192749.GB2531@hirez.programming.kicks-ass.net>
-References: <158759428485.28353.15005772572257518607.tip-bot2@tip-bot2>
- <202006161057.E6D5D84@keescook>
+        Tue, 16 Jun 2020 15:40:50 -0400
+Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D360CC061573;
+        Tue, 16 Jun 2020 12:40:50 -0700 (PDT)
+Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tip-bot2@linutronix.de>)
+        id 1jlHRw-0007o7-3Z; Tue, 16 Jun 2020 21:40:48 +0200
+Received: from [127.0.1.1] (localhost [IPv6:::1])
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 619811C0095;
+        Tue, 16 Jun 2020 21:40:47 +0200 (CEST)
+Date:   Tue, 16 Jun 2020 19:40:47 -0000
+From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/alternatives] x86/alternatives: Add pr_fmt() to debug macros
+Cc:     Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200615175315.17301-1-bp@alien8.de>
+References: <20200615175315.17301-1-bp@alien8.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <202006161057.E6D5D84@keescook>
+Message-ID: <159233644713.16989.15410679000166153913.tip-bot2@tip-bot2>
+X-Mailer: tip-git-log-daemon
+Robot-ID: <tip-bot2.linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Tue, Jun 16, 2020 at 11:00:59AM -0700, Kees Cook wrote:
-> On Wed, Apr 22, 2020 at 10:24:44PM -0000, tip-bot2 for Sami Tolvanen wrote:
-> > The following commit has been merged into the objtool/core branch of tip:
-> > 
-> > Commit-ID:     e2ccbff8f02d6b140b8ee71108264686c19b1c78
-> > Gitweb:        https://git.kernel.org/tip/e2ccbff8f02d6b140b8ee71108264686c19b1c78
-> > Author:        Sami Tolvanen <samitolvanen@google.com>
-> > AuthorDate:    Tue, 21 Apr 2020 11:25:01 -07:00
-> > Committer:     Josh Poimboeuf <jpoimboe@redhat.com>
-> > CommitterDate: Tue, 21 Apr 2020 18:49:15 -05:00
-> > 
-> > objtool: Use sh_info to find the base for .rela sections
-> > 
-> > ELF doesn't require .rela section names to match the base section. Use
-> > the section index in sh_info to find the section instead of looking it
-> > up by name.
-> > 
-> > LLD, for example, generates a .rela section that doesn't match the base
-> > section name when we merge sections in a linker script for a binary
-> > compiled with -ffunction-sections.
-> > 
-> > Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
-> > Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
-> > Reviewed-by: Kees Cook <keescook@chromium.org>
-> 
-> Hi!
-> 
-> Where did this commit end up? It seems to have vanished (404 on the
-> Gitweb link) and isn't in -next nor Linus's tree.
-> 
-> This is needed for LTO, FGKASLR, and link speed improvements[1]. Is it
-> possible to get this landed in -rc2 so all the things depending on it
-> can rebase happily?
+The following commit has been merged into the x86/alternatives branch of tip:
 
-I can't remember why this happened, however I think this patch is in
-josh's objtool tree that I was going to stick in objtool/core
-tomorrow-ish.
+Commit-ID:     1b2e335ebfa2243517e09f99653c78d1936cb6d2
+Gitweb:        https://git.kernel.org/tip/1b2e335ebfa2243517e09f99653c78d1936cb6d2
+Author:        Borislav Petkov <bp@suse.de>
+AuthorDate:    Mon, 15 Jun 2020 19:49:46 +02:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Tue, 16 Jun 2020 20:34:16 +02:00
 
-Are those things you mentioned still slated for this release?
+x86/alternatives: Add pr_fmt() to debug macros
+
+... in order to have debug output prefixed with the pr_fmt text "SMP
+alternatives:" which allows easy grepping:
+
+  $ dmesg | grep "SMP alternatives"
+  [    0.167783] SMP alternatives: alt table ffffffff8272c780, -> ffffffff8272fd6e
+  [    0.168620] SMP alternatives: feat: 3*32+16, old: (x86_64_start_kernel+0x37/0x73 \
+		  (ffffffff826093f7) len: 5), repl: (ffffffff8272fd6e, len: 5), pad: 0
+  [    0.170103] SMP alternatives: ffffffff826093f7: old_insn: e8 54 a8 da fe
+  [    0.171184] SMP alternatives: ffffffff8272fd6e: rpl_insn: e8 cd 3e c8 fe
+  ...
+
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lkml.kernel.org/r/20200615175315.17301-1-bp@alien8.de
+---
+ arch/x86/kernel/alternative.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
+index 8fd39ff..9e7dc37 100644
+--- a/arch/x86/kernel/alternative.c
++++ b/arch/x86/kernel/alternative.c
+@@ -53,7 +53,7 @@ __setup("noreplace-smp", setup_noreplace_smp);
+ #define DPRINTK(fmt, args...)						\
+ do {									\
+ 	if (debug_alternative)						\
+-		printk(KERN_DEBUG "%s: " fmt "\n", __func__, ##args);	\
++		printk(KERN_DEBUG pr_fmt(fmt) "\n", ##args);		\
+ } while (0)
+ 
+ #define DUMP_BYTES(buf, len, fmt, args...)				\
+@@ -64,7 +64,7 @@ do {									\
+ 		if (!(len))						\
+ 			break;						\
+ 									\
+-		printk(KERN_DEBUG fmt, ##args);				\
++		printk(KERN_DEBUG pr_fmt(fmt), ##args);			\
+ 		for (j = 0; j < (len) - 1; j++)				\
+ 			printk(KERN_CONT "%02hhx ", buf[j]);		\
+ 		printk(KERN_CONT "%02hhx\n", buf[j]);			\
