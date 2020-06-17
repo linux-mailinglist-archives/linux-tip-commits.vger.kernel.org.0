@@ -2,114 +2,122 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 468B11FC0E3
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 16 Jun 2020 23:20:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C88E01FC29D
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 Jun 2020 02:11:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726253AbgFPVTu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 16 Jun 2020 17:19:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41722 "EHLO
+        id S1726494AbgFQALd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 16 Jun 2020 20:11:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39928 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726207AbgFPVTu (ORCPT
+        with ESMTP id S1725894AbgFQALd (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 16 Jun 2020 17:19:50 -0400
-Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EC88C061573;
-        Tue, 16 Jun 2020 14:19:50 -0700 (PDT)
-Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tip-bot2@linutronix.de>)
-        id 1jlIzi-0001iA-Fm; Tue, 16 Jun 2020 23:19:46 +0200
-Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D506A1C0095;
-        Tue, 16 Jun 2020 23:19:45 +0200 (CEST)
-Date:   Tue, 16 Jun 2020 21:19:45 -0000
-From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cpu] x86/speculation: Merge one test in
- spectre_v2_user_select_mitigation()
-Cc:     Borislav Petkov <bp@suse.de>,
-        Anthony Steinhauser <asteinhauser@google.com>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200615065806.GB14668@zn.tnic>
-References: <20200615065806.GB14668@zn.tnic>
+        Tue, 16 Jun 2020 20:11:33 -0400
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com [IPv6:2607:f8b0:4864:20::642])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 947C7C061573
+        for <linux-tip-commits@vger.kernel.org>; Tue, 16 Jun 2020 17:11:31 -0700 (PDT)
+Received: by mail-pl1-x642.google.com with SMTP id x11so93797plo.7
+        for <linux-tip-commits@vger.kernel.org>; Tue, 16 Jun 2020 17:11:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=7kmhNDfQNJXO7hJjKTrMFRtUAQoboP57XjXJsRdtwLc=;
+        b=KVjdG0xGsNAP+iBrZQFtPpU2KZSHZCCjm3KBV/jssT/5iobGKg3jpwP8jT6qN/sBoO
+         gZIoEPF4VR/E6AqWPrkzP5L8RRdbEtNB2B4BgOj9qcksqrirQzCXaa5jcWoHZImWv+S9
+         gkyg7/BC0+6Wpg0zIphK4G2PD3XKJAbpJycMY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=7kmhNDfQNJXO7hJjKTrMFRtUAQoboP57XjXJsRdtwLc=;
+        b=qF+nYXCZdbDD6yl8SNhQ/U7rcV8FxEszcU1Nn1pCqrP8S6csVlZ6bWh87BsiGqlIbS
+         rX+ZPYW15hM57lph8EWTW/BaCmEIJ55dqm3JvdGmufG8DxFhN+aBFjYBCSlsxOAlt0T1
+         JM2OATspNuLuYT60BYuDqUABx4/yM6BiMGP42drQNakerIC+eKqrT6NhtzTsSh7BqMb5
+         JfderbbwrrKMoSXvuqdj1N39pP87bmBl/vWCzNxhnb45BZMOd1LHX1g8XnCw2MrstmTA
+         Nj9dBc6wPpl91A7vEfD/5YF49MMm1cHbrxTgWj35OZAatF5annElKTF3h92YW5S9xrOv
+         mxDw==
+X-Gm-Message-State: AOAM530PBWCjbywFeUlQJVQOSvpJ2Ztm3lYPRxcVp8Sd0Ax1TrurTYlM
+        7c2YoputBs0hCmwLtS+yXBsicA==
+X-Google-Smtp-Source: ABdhPJxNcrIoyau+3OONR7kGcda1pQTKvdJb7jjXMH3fna2AEp/BvXQRIc+lCG/st65ey5B4ks8M3Q==
+X-Received: by 2002:a17:902:9a88:: with SMTP id w8mr4077107plp.50.1592352691138;
+        Tue, 16 Jun 2020 17:11:31 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id oc6sm3816845pjb.43.2020.06.16.17.11.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 Jun 2020 17:11:29 -0700 (PDT)
+Date:   Tue, 16 Jun 2020 17:11:28 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     Josh Poimboeuf <jpoimboe@redhat.com>, x86 <x86@kernel.org>,
+        linux-tip-commits@vger.kernel.org,
+        Sami Tolvanen <samitolvanen@google.com>,
+        Kristen Carlson Accardi <kristen@linux.intel.com>,
+        linux-kernel@vger.kernel.org
+Subject: Re: [tip: objtool/core] objtool: Use sh_info to find the base for
+ .rela sections
+Message-ID: <202006161708.8CC6F4974@keescook>
+References: <158759428485.28353.15005772572257518607.tip-bot2@tip-bot2>
+ <202006161057.E6D5D84@keescook>
+ <20200616192749.GB2531@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-Message-ID: <159234238559.16989.14154672782950729079.tip-bot2@tip-bot2>
-X-Mailer: tip-git-log-daemon
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200616192749.GB2531@hirez.programming.kicks-ass.net>
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cpu branch of tip:
+On Tue, Jun 16, 2020 at 09:27:49PM +0200, Peter Zijlstra wrote:
+> On Tue, Jun 16, 2020 at 11:00:59AM -0700, Kees Cook wrote:
+> > On Wed, Apr 22, 2020 at 10:24:44PM -0000, tip-bot2 for Sami Tolvanen wrote:
+> > > The following commit has been merged into the objtool/core branch of tip:
+> > > 
+> > > Commit-ID:     e2ccbff8f02d6b140b8ee71108264686c19b1c78
+> > > Gitweb:        https://git.kernel.org/tip/e2ccbff8f02d6b140b8ee71108264686c19b1c78
+> > > Author:        Sami Tolvanen <samitolvanen@google.com>
+> > > AuthorDate:    Tue, 21 Apr 2020 11:25:01 -07:00
+> > > Committer:     Josh Poimboeuf <jpoimboe@redhat.com>
+> > > CommitterDate: Tue, 21 Apr 2020 18:49:15 -05:00
+> > > 
+> > > objtool: Use sh_info to find the base for .rela sections
+> > > 
+> > > ELF doesn't require .rela section names to match the base section. Use
+> > > the section index in sh_info to find the section instead of looking it
+> > > up by name.
+> > > 
+> > > LLD, for example, generates a .rela section that doesn't match the base
+> > > section name when we merge sections in a linker script for a binary
+> > > compiled with -ffunction-sections.
+> > > 
+> > > Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
+> > > Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
+> > > Reviewed-by: Kees Cook <keescook@chromium.org>
+> > 
+> > Hi!
+> > 
+> > Where did this commit end up? It seems to have vanished (404 on the
+> > Gitweb link) and isn't in -next nor Linus's tree.
+> > 
+> > This is needed for LTO, FGKASLR, and link speed improvements[1]. Is it
+> > possible to get this landed in -rc2 so all the things depending on it
+> > can rebase happily?
+> 
+> I can't remember why this happened, however I think this patch is in
+> josh's objtool tree that I was going to stick in objtool/core
+> tomorrow-ish.
 
-Commit-ID:     a5ce9f2bb665d1d2b31f139a02dbaa2dfbb62fa6
-Gitweb:        https://git.kernel.org/tip/a5ce9f2bb665d1d2b31f139a02dbaa2dfbb62fa6
-Author:        Borislav Petkov <bp@suse.de>
-AuthorDate:    Mon, 15 Jun 2020 08:51:25 +02:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 16 Jun 2020 23:14:47 +02:00
+Okay, thanks!
 
-x86/speculation: Merge one test in spectre_v2_user_select_mitigation()
+> Are those things you mentioned still slated for this release?
 
-Merge the test whether the CPU supports STIBP into the test which
-determines whether STIBP is required. Thus try to simplify what is
-already an insane logic.
+No, the three things I mentioned aren't for v5.8 (they're still under
+development), but sending their respective series without the -tip
+patches in -rc2 will result in redundant patches. (So, it's hardly the
+end of the world, but it's just a confusing state to be in since they
+appeared in -tip and then never ended up in the merge window. It'd be
+helpful to have them in place for things that will base their latest
+tree on v5.8-rc2.)
 
-Remove a superfluous newline in a comment, while at it.
-
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Cc: Anthony Steinhauser <asteinhauser@google.com>
-Link: https://lkml.kernel.org/r/20200615065806.GB14668@zn.tnic
----
- arch/x86/kernel/cpu/bugs.c | 13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
-
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index 0b71970..7beaefa 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -763,10 +763,12 @@ spectre_v2_user_select_mitigation(enum spectre_v2_mitigation_cmd v2_cmd)
- 	}
- 
- 	/*
--	 * If enhanced IBRS is enabled or SMT impossible, STIBP is not
-+	 * If no STIBP, enhanced IBRS is enabled or SMT impossible, STIBP is not
- 	 * required.
- 	 */
--	if (!smt_possible || spectre_v2_enabled == SPECTRE_V2_IBRS_ENHANCED)
-+	if (!boot_cpu_has(X86_FEATURE_STIBP) ||
-+	    !smt_possible ||
-+	    spectre_v2_enabled == SPECTRE_V2_IBRS_ENHANCED)
- 		return;
- 
- 	/*
-@@ -778,12 +780,6 @@ spectre_v2_user_select_mitigation(enum spectre_v2_mitigation_cmd v2_cmd)
- 	    boot_cpu_has(X86_FEATURE_AMD_STIBP_ALWAYS_ON))
- 		mode = SPECTRE_V2_USER_STRICT_PREFERRED;
- 
--	/*
--	 * If STIBP is not available, clear the STIBP mode.
--	 */
--	if (!boot_cpu_has(X86_FEATURE_STIBP))
--		mode = SPECTRE_V2_USER_NONE;
--
- 	spectre_v2_user_stibp = mode;
- 
- set_mode:
-@@ -1270,7 +1266,6 @@ static int ib_prctl_set(struct task_struct *task, unsigned long ctrl)
- 		 * Indirect branch speculation is always disabled in strict
- 		 * mode. It can neither be enabled if it was force-disabled
- 		 * by a  previous prctl call.
--
- 		 */
- 		if (spectre_v2_user_ibpb == SPECTRE_V2_USER_STRICT ||
- 		    spectre_v2_user_stibp == SPECTRE_V2_USER_STRICT ||
+-- 
+Kees Cook
