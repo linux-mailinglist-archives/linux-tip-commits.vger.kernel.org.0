@@ -2,37 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EF9A81FCA75
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 Jun 2020 12:05:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 603DC1FCA70
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 Jun 2020 12:05:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726745AbgFQKEz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 17 Jun 2020 06:04:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46258 "EHLO
+        id S1726597AbgFQKEu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 17 Jun 2020 06:04:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46240 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725894AbgFQKEz (ORCPT
+        with ESMTP id S1725894AbgFQKEt (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 17 Jun 2020 06:04:55 -0400
+        Wed, 17 Jun 2020 06:04:49 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F074DC061573;
-        Wed, 17 Jun 2020 03:04:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50428C06174E;
+        Wed, 17 Jun 2020 03:04:49 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jlUw2-0006NA-63; Wed, 17 Jun 2020 12:04:46 +0200
+        id 1jlUw1-0006Mu-RL; Wed, 17 Jun 2020 12:04:45 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id ADEF11C0089;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 6A5F31C0475;
         Wed, 17 Jun 2020 12:04:45 +0200 (CEST)
 Date:   Wed, 17 Jun 2020 10:04:45 -0000
-From:   "tip-bot2 for Kristen Carlson Accardi" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Sami Tolvanen" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] objtool: Do not assume order of parent/child functions
-Cc:     Kristen Carlson Accardi <kristen@linux.intel.com>,
-        Josh Poimboeuf <jpoimboe@redhat.com>, x86 <x86@kernel.org>,
+Subject: [tip: objtool/core] objtool: Use sh_info to find the base for .rela sections
+Cc:     Sami Tolvanen <samitolvanen@google.com>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Kees Cook <keescook@chromium.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <159238828549.16989.16329662986111463202.tip-bot2@tip-bot2>
+Message-ID: <159238828519.16989.11881936312654733691.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,44 +49,40 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     e000acc145928693833f09152244242a678d3cd5
-Gitweb:        https://git.kernel.org/tip/e000acc145928693833f09152244242a678d3cd5
-Author:        Kristen Carlson Accardi <kristen@linux.intel.com>
-AuthorDate:    Wed, 15 Apr 2020 14:04:43 -07:00
+Commit-ID:     1e968bf5caf65eff3f080102879aaa5440c261b6
+Gitweb:        https://git.kernel.org/tip/1e968bf5caf65eff3f080102879aaa5440c261b6
+Author:        Sami Tolvanen <samitolvanen@google.com>
+AuthorDate:    Tue, 21 Apr 2020 11:25:01 -07:00
 Committer:     Josh Poimboeuf <jpoimboe@redhat.com>
 CommitterDate: Thu, 28 May 2020 11:06:05 -05:00
 
-objtool: Do not assume order of parent/child functions
+objtool: Use sh_info to find the base for .rela sections
 
-If a .cold function is examined prior to it's parent, the link
-to the parent/child function can be overwritten when the parent
-is examined. Only update pfunc and cfunc if they were previously
-nil to prevent this from happening.
+ELF doesn't require .rela section names to match the base section. Use
+the section index in sh_info to find the section instead of looking it
+up by name.
 
-This fixes an issue seen when compiling with -ffunction-sections.
+LLD, for example, generates a .rela section that doesn't match the base
+section name when we merge sections in a linker script for a binary
+compiled with -ffunction-sections.
 
-Signed-off-by: Kristen Carlson Accardi <kristen@linux.intel.com>
+Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
 Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
+Reviewed-by: Kees Cook <keescook@chromium.org>
 ---
- tools/objtool/elf.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ tools/objtool/elf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/tools/objtool/elf.c b/tools/objtool/elf.c
-index 8422567..f953d3a 100644
+index f953d3a..5bc259c 100644
 --- a/tools/objtool/elf.c
 +++ b/tools/objtool/elf.c
-@@ -434,7 +434,13 @@ static int read_symbols(struct elf *elf)
- 			size_t pnamelen;
- 			if (sym->type != STT_FUNC)
- 				continue;
--			sym->pfunc = sym->cfunc = sym;
-+
-+			if (sym->pfunc == NULL)
-+				sym->pfunc = sym;
-+
-+			if (sym->cfunc == NULL)
-+				sym->cfunc = sym;
-+
- 			coldstr = strstr(sym->name, ".cold");
- 			if (!coldstr)
- 				continue;
+@@ -508,7 +508,7 @@ static int read_relas(struct elf *elf)
+ 		if (sec->sh.sh_type != SHT_RELA)
+ 			continue;
+ 
+-		sec->base = find_section_by_name(elf, sec->name + 5);
++		sec->base = find_section_by_index(elf, sec->sh.sh_info);
+ 		if (!sec->base) {
+ 			WARN("can't find base section for rela section %s",
+ 			     sec->name);
