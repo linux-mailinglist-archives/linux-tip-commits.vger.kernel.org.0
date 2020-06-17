@@ -2,38 +2,42 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 603DC1FCA70
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 Jun 2020 12:05:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36F411FCAC5
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 Jun 2020 12:25:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726597AbgFQKEu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 17 Jun 2020 06:04:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46240 "EHLO
+        id S1726271AbgFQKZ6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 17 Jun 2020 06:25:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49512 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725894AbgFQKEt (ORCPT
+        with ESMTP id S1725964AbgFQKZ5 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 17 Jun 2020 06:04:49 -0400
+        Wed, 17 Jun 2020 06:25:57 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50428C06174E;
-        Wed, 17 Jun 2020 03:04:49 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2CA3C061573;
+        Wed, 17 Jun 2020 03:25:57 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jlUw1-0006Mu-RL; Wed, 17 Jun 2020 12:04:45 +0200
+        id 1jlVGP-0006kb-Q9; Wed, 17 Jun 2020 12:25:49 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 6A5F31C0475;
-        Wed, 17 Jun 2020 12:04:45 +0200 (CEST)
-Date:   Wed, 17 Jun 2020 10:04:45 -0000
-From:   "tip-bot2 for Sami Tolvanen" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 65D6F1C0089;
+        Wed, 17 Jun 2020 12:25:49 +0200 (CEST)
+Date:   Wed, 17 Jun 2020 10:25:49 -0000
+From:   "tip-bot2 for Dan Carpenter" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] objtool: Use sh_info to find the base for .rela sections
-Cc:     Sami Tolvanen <samitolvanen@google.com>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Kees Cook <keescook@chromium.org>, x86 <x86@kernel.org>,
+Subject: [tip: x86/urgent] x86/resctrl: Fix a NULL vs IS_ERR() static checker
+ warning in rdt_cdp_peer_get()
+Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Borislav Petkov <bp@suse.de>,
+        Reinette Chatre <reinette.chatre@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200602193611.GA190851@mwanda>
+References: <20200602193611.GA190851@mwanda>
 MIME-Version: 1.0
-Message-ID: <159238828519.16989.11881936312654733691.tip-bot2@tip-bot2>
+Message-ID: <159238954915.16989.17873846610570577082.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,42 +51,53 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the objtool/core branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     1e968bf5caf65eff3f080102879aaa5440c261b6
-Gitweb:        https://git.kernel.org/tip/1e968bf5caf65eff3f080102879aaa5440c261b6
-Author:        Sami Tolvanen <samitolvanen@google.com>
-AuthorDate:    Tue, 21 Apr 2020 11:25:01 -07:00
-Committer:     Josh Poimboeuf <jpoimboe@redhat.com>
-CommitterDate: Thu, 28 May 2020 11:06:05 -05:00
+Commit-ID:     cc5277fe66cf3ad68f41f1c539b2ef0d5e432974
+Gitweb:        https://git.kernel.org/tip/cc5277fe66cf3ad68f41f1c539b2ef0d5e432974
+Author:        Dan Carpenter <dan.carpenter@oracle.com>
+AuthorDate:    Tue, 02 Jun 2020 22:36:11 +03:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Wed, 17 Jun 2020 12:18:34 +02:00
 
-objtool: Use sh_info to find the base for .rela sections
+x86/resctrl: Fix a NULL vs IS_ERR() static checker warning in rdt_cdp_peer_get()
 
-ELF doesn't require .rela section names to match the base section. Use
-the section index in sh_info to find the section instead of looking it
-up by name.
+The callers don't expect *d_cdp to be set to an error pointer, they only
+check for NULL.  This leads to a static checker warning:
 
-LLD, for example, generates a .rela section that doesn't match the base
-section name when we merge sections in a linker script for a binary
-compiled with -ffunction-sections.
+  arch/x86/kernel/cpu/resctrl/rdtgroup.c:2648 __init_one_rdt_domain()
+  warn: 'd_cdp' could be an error pointer
 
-Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
-Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Reviewed-by: Kees Cook <keescook@chromium.org>
+This would not trigger a bug in this specific case because
+__init_one_rdt_domain() calls it with a valid domain that would not have
+a negative id and thus not trigger the return of the ERR_PTR(). If this
+was a negative domain id then the call to rdt_find_domain() in
+domain_add_cpu() would have returned the ERR_PTR() much earlier and the
+creation of the domain with an invalid id would have been prevented.
+
+Even though a bug is not triggered currently the right and safe thing to
+do is to set the pointer to NULL because that is what can be checked for
+when the caller is handling the CDP and non-CDP cases.
+
+Fixes: 52eb74339a62 ("x86/resctrl: Fix rdt_find_domain() return value and checks")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Acked-by: Reinette Chatre <reinette.chatre@intel.com>
+Acked-by: Fenghua Yu <fenghua.yu@intel.com>
+Link: https://lkml.kernel.org/r/20200602193611.GA190851@mwanda
 ---
- tools/objtool/elf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/cpu/resctrl/rdtgroup.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/objtool/elf.c b/tools/objtool/elf.c
-index f953d3a..5bc259c 100644
---- a/tools/objtool/elf.c
-+++ b/tools/objtool/elf.c
-@@ -508,7 +508,7 @@ static int read_relas(struct elf *elf)
- 		if (sec->sh.sh_type != SHT_RELA)
- 			continue;
+diff --git a/arch/x86/kernel/cpu/resctrl/rdtgroup.c b/arch/x86/kernel/cpu/resctrl/rdtgroup.c
+index 23b4b61..3f844f1 100644
+--- a/arch/x86/kernel/cpu/resctrl/rdtgroup.c
++++ b/arch/x86/kernel/cpu/resctrl/rdtgroup.c
+@@ -1117,6 +1117,7 @@ static int rdt_cdp_peer_get(struct rdt_resource *r, struct rdt_domain *d,
+ 	_d_cdp = rdt_find_domain(_r_cdp, d->id, NULL);
+ 	if (WARN_ON(IS_ERR_OR_NULL(_d_cdp))) {
+ 		_r_cdp = NULL;
++		_d_cdp = NULL;
+ 		ret = -EINVAL;
+ 	}
  
--		sec->base = find_section_by_name(elf, sec->name + 5);
-+		sec->base = find_section_by_index(elf, sec->sh.sh_info);
- 		if (!sec->base) {
- 			WARN("can't find base section for rela section %s",
- 			     sec->name);
