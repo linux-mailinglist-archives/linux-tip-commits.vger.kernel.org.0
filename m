@@ -2,40 +2,41 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E7E21FF3C8
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 18 Jun 2020 15:53:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DBEBC1FF3D9
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 18 Jun 2020 15:53:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730552AbgFRNvF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 18 Jun 2020 09:51:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49166 "EHLO
+        id S1730570AbgFRNvu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 18 Jun 2020 09:51:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49178 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730240AbgFRNvC (ORCPT
+        with ESMTP id S1730564AbgFRNvG (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 18 Jun 2020 09:51:02 -0400
+        Thu, 18 Jun 2020 09:51:06 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00698C0613EE;
-        Thu, 18 Jun 2020 06:51:01 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51464C06174E;
+        Thu, 18 Jun 2020 06:51:06 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jluwV-0002lZ-DV; Thu, 18 Jun 2020 15:50:59 +0200
+        id 1jluwZ-0002lz-43; Thu, 18 Jun 2020 15:51:03 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 644751C074B;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id AE0401C032F;
         Thu, 18 Jun 2020 15:50:58 +0200 (CEST)
 Date:   Thu, 18 Jun 2020 13:50:58 -0000
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Chang S. Bae" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/fsgsbase] x86/process/64: Make save_fsgs_for_kvm() ready
- for FSGSBASE
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
+Subject: [tip: x86/fsgsbase] x86/fsgsbase/64: Enable FSGSBASE instructions in
+ helper functions
+Cc:     "Chang S. Bae" <chang.seok.bae@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
         Sasha Levin <sashal@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200528201402.1708239-7-sashal@kernel.org>
-References: <20200528201402.1708239-7-sashal@kernel.org>
+In-Reply-To: <1557309753-24073-7-git-send-email-chang.seok.bae@intel.com>
+References: <1557309753-24073-7-git-send-email-chang.seok.bae@intel.com>
 MIME-Version: 1.0
-Message-ID: <159248825819.16989.14274005498297309528.tip-bot2@tip-bot2>
+Message-ID: <159248825847.16989.12376221390897516192.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -51,99 +52,195 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/fsgsbase branch of tip:
 
-Commit-ID:     6758034e4d6a7f0e26b748789ab1f83f3116d1b9
-Gitweb:        https://git.kernel.org/tip/6758034e4d6a7f0e26b748789ab1f83f3116d1b9
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Thu, 28 May 2020 16:13:52 -04:00
+Commit-ID:     58edfd2e0a93c9adc2f29902a0335af0584041a0
+Gitweb:        https://git.kernel.org/tip/58edfd2e0a93c9adc2f29902a0335af0584041a0
+Author:        Chang S. Bae <chang.seok.bae@intel.com>
+AuthorDate:    Thu, 28 May 2020 16:13:50 -04:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 18 Jun 2020 15:47:01 +02:00
+CommitterDate: Thu, 18 Jun 2020 15:47:00 +02:00
 
-x86/process/64: Make save_fsgs_for_kvm() ready for FSGSBASE
+x86/fsgsbase/64: Enable FSGSBASE instructions in helper functions
 
-save_fsgs_for_kvm() is invoked via
+Add cpu feature conditional FSGSBASE access to the relevant helper
+functions. That allows to accelerate certain FS/GS base operations in
+subsequent changes.
 
-  vcpu_enter_guest()
-    kvm_x86_ops.prepare_guest_switch(vcpu)
-      vmx_prepare_switch_to_guest()
-        save_fsgs_for_kvm()
+Note, that while possible, the user space entry/exit GSBASE operations are
+not going to use the new FSGSBASE instructions. The reason is that it would
+require additional storage for the user space value which adds more
+complexity to the low level code and experiments have shown marginal
+benefit. This may be revisited later but for now the SWAPGS based handling
+in the entry code is preserved except for the paranoid entry/exit code.
 
-with preemption disabled, but interrupts enabled.
+To preserve the SWAPGS entry mechanism introduce __[rd|wr]gsbase_inactive()
+helpers. Note, for Xen PV, paravirt hooks can be added later as they might
+allow a very efficient but different implementation.
 
-The upcoming FSGSBASE based GS safe needs interrupts to be disabled. This
-could be done in the helper function, but that function is also called from
-switch_to() which has interrupts disabled already.
+[ tglx: Massaged changelog, convert it to noinstr and force inline
+  	native_swapgs() ]
 
-Disable interrupts inside save_fsgs_for_kvm() and rename the function to
-current_save_fsgs() so it can be invoked from other places.
-
+Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20200528201402.1708239-7-sashal@kernel.org
----
- arch/x86/include/asm/processor.h |  4 +---
- arch/x86/kernel/process_64.c     | 15 +++++++++------
- arch/x86/kvm/vmx/vmx.c           |  2 +-
- 3 files changed, 11 insertions(+), 10 deletions(-)
+Link: https://lkml.kernel.org/r/1557309753-24073-7-git-send-email-chang.seok.bae@intel.com
+Link: https://lkml.kernel.org/r/20200528201402.1708239-5-sashal@kernel.org
 
+
+---
+ arch/x86/include/asm/fsgsbase.h  | 27 +++++-------
+ arch/x86/include/asm/processor.h |  2 +-
+ arch/x86/kernel/process_64.c     | 68 +++++++++++++++++++++++++++++++-
+ 3 files changed, 81 insertions(+), 16 deletions(-)
+
+diff --git a/arch/x86/include/asm/fsgsbase.h b/arch/x86/include/asm/fsgsbase.h
+index fdd1177..aefd537 100644
+--- a/arch/x86/include/asm/fsgsbase.h
++++ b/arch/x86/include/asm/fsgsbase.h
+@@ -49,35 +49,32 @@ static __always_inline void wrgsbase(unsigned long gsbase)
+ 	asm volatile("wrgsbase %0" :: "r" (gsbase) : "memory");
+ }
+ 
++#include <asm/cpufeature.h>
++
+ /* Helper functions for reading/writing FS/GS base */
+ 
+ static inline unsigned long x86_fsbase_read_cpu(void)
+ {
+ 	unsigned long fsbase;
+ 
+-	rdmsrl(MSR_FS_BASE, fsbase);
++	if (static_cpu_has(X86_FEATURE_FSGSBASE))
++		fsbase = rdfsbase();
++	else
++		rdmsrl(MSR_FS_BASE, fsbase);
+ 
+ 	return fsbase;
+ }
+ 
+-static inline unsigned long x86_gsbase_read_cpu_inactive(void)
+-{
+-	unsigned long gsbase;
+-
+-	rdmsrl(MSR_KERNEL_GS_BASE, gsbase);
+-
+-	return gsbase;
+-}
+-
+ static inline void x86_fsbase_write_cpu(unsigned long fsbase)
+ {
+-	wrmsrl(MSR_FS_BASE, fsbase);
++	if (static_cpu_has(X86_FEATURE_FSGSBASE))
++		wrfsbase(fsbase);
++	else
++		wrmsrl(MSR_FS_BASE, fsbase);
+ }
+ 
+-static inline void x86_gsbase_write_cpu_inactive(unsigned long gsbase)
+-{
+-	wrmsrl(MSR_KERNEL_GS_BASE, gsbase);
+-}
++extern unsigned long x86_gsbase_read_cpu_inactive(void);
++extern void x86_gsbase_write_cpu_inactive(unsigned long gsbase);
+ 
+ #endif /* CONFIG_X86_64 */
+ 
 diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
-index f66202d..7c2ecdf 100644
+index 42cd333..f66202d 100644
 --- a/arch/x86/include/asm/processor.h
 +++ b/arch/x86/include/asm/processor.h
-@@ -457,10 +457,8 @@ static inline unsigned long cpu_kernelmode_gs_base(int cpu)
- DECLARE_PER_CPU(unsigned int, irq_count);
- extern asmlinkage void ignore_sysret(void);
+@@ -575,7 +575,7 @@ native_load_sp0(unsigned long sp0)
+ 	this_cpu_write(cpu_tss_rw.x86_tss.sp0, sp0);
+ }
  
--#if IS_ENABLED(CONFIG_KVM)
- /* Save actual FS/GS selectors and bases to current->thread */
--void save_fsgs_for_kvm(void);
--#endif
-+void current_save_fsgs(void);
- #else	/* X86_64 */
- #ifdef CONFIG_STACKPROTECTOR
- /*
+-static inline void native_swapgs(void)
++static __always_inline void native_swapgs(void)
+ {
+ #ifdef CONFIG_X86_64
+ 	asm volatile("swapgs" ::: "memory");
 diff --git a/arch/x86/kernel/process_64.c b/arch/x86/kernel/process_64.c
-index c41e0aa..ef2f755 100644
+index 9a97415..c41e0aa 100644
 --- a/arch/x86/kernel/process_64.c
 +++ b/arch/x86/kernel/process_64.c
-@@ -240,18 +240,21 @@ static __always_inline void save_fsgs(struct task_struct *task)
- 	save_base_legacy(task, task->thread.gsindex, GS);
- }
+@@ -150,6 +150,44 @@ enum which_selector {
+ };
  
--#if IS_ENABLED(CONFIG_KVM)
  /*
-  * While a process is running,current->thread.fsbase and current->thread.gsbase
-- * may not match the corresponding CPU registers (see save_base_legacy()). KVM
-- * wants an efficient way to save and restore FSBASE and GSBASE.
-- * When FSGSBASE extensions are enabled, this will have to use RD{FS,GS}BASE.
-+ * may not match the corresponding CPU registers (see save_base_legacy()).
-  */
--void save_fsgs_for_kvm(void)
-+void current_save_fsgs(void)
- {
-+	unsigned long flags;
++ * Out of line to be protected from kprobes and tracing. If this would be
++ * traced or probed than any access to a per CPU variable happens with
++ * the wrong GS.
++ *
++ * It is not used on Xen paravirt. When paravirt support is needed, it
++ * needs to be renamed with native_ prefix.
++ */
++static noinstr unsigned long __rdgsbase_inactive(void)
++{
++	unsigned long gsbase;
 +
-+	/* Interrupts need to be off for FSGSBASE */
-+	local_irq_save(flags);
- 	save_fsgs(current);
-+	local_irq_restore(flags);
++	lockdep_assert_irqs_disabled();
++
++	native_swapgs();
++	gsbase = rdgsbase();
++	native_swapgs();
++
++	return gsbase;
++}
++
++/*
++ * Out of line to be protected from kprobes and tracing. If this would be
++ * traced or probed than any access to a per CPU variable happens with
++ * the wrong GS.
++ *
++ * It is not used on Xen paravirt. When paravirt support is needed, it
++ * needs to be renamed with native_ prefix.
++ */
++static noinstr void __wrgsbase_inactive(unsigned long gsbase)
++{
++	lockdep_assert_irqs_disabled();
++
++	native_swapgs();
++	wrgsbase(gsbase);
++	native_swapgs();
++}
++
++/*
+  * Saves the FS or GS base for an outgoing thread if FSGSBASE extensions are
+  * not available.  The goal is to be reasonably fast on non-FSGSBASE systems.
+  * It's forcibly inlined because it'll generate better code and this function
+@@ -327,6 +365,36 @@ static unsigned long x86_fsgsbase_read_task(struct task_struct *task,
+ 	return base;
  }
--EXPORT_SYMBOL_GPL(save_fsgs_for_kvm);
-+#if IS_ENABLED(CONFIG_KVM)
-+EXPORT_SYMBOL_GPL(current_save_fsgs);
- #endif
  
- static __always_inline void loadseg(enum which_selector which,
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 36c7717..ccd5b7b 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -1172,7 +1172,7 @@ void vmx_prepare_switch_to_guest(struct kvm_vcpu *vcpu)
- 
- 	gs_base = cpu_kernelmode_gs_base(cpu);
- 	if (likely(is_64bit_mm(current->mm))) {
--		save_fsgs_for_kvm();
-+		current_save_fsgs();
- 		fs_sel = current->thread.fsindex;
- 		gs_sel = current->thread.gsindex;
- 		fs_base = current->thread.fsbase;
++unsigned long x86_gsbase_read_cpu_inactive(void)
++{
++	unsigned long gsbase;
++
++	if (static_cpu_has(X86_FEATURE_FSGSBASE)) {
++		unsigned long flags;
++
++		local_irq_save(flags);
++		gsbase = __rdgsbase_inactive();
++		local_irq_restore(flags);
++	} else {
++		rdmsrl(MSR_KERNEL_GS_BASE, gsbase);
++	}
++
++	return gsbase;
++}
++
++void x86_gsbase_write_cpu_inactive(unsigned long gsbase)
++{
++	if (static_cpu_has(X86_FEATURE_FSGSBASE)) {
++		unsigned long flags;
++
++		local_irq_save(flags);
++		__wrgsbase_inactive(gsbase);
++		local_irq_restore(flags);
++	} else {
++		wrmsrl(MSR_KERNEL_GS_BASE, gsbase);
++	}
++}
++
+ unsigned long x86_fsbase_read_task(struct task_struct *task)
+ {
+ 	unsigned long fsbase;
