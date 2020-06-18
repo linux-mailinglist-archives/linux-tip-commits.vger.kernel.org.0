@@ -2,39 +2,43 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CF7E81FF0B8
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 18 Jun 2020 13:36:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AEDAF1FF3CB
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 18 Jun 2020 15:53:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729522AbgFRLfb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 18 Jun 2020 07:35:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56406 "EHLO
+        id S1730576AbgFRNvK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 18 Jun 2020 09:51:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49180 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729583AbgFRLfa (ORCPT
+        with ESMTP id S1730566AbgFRNvG (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 18 Jun 2020 07:35:30 -0400
+        Thu, 18 Jun 2020 09:51:06 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75534C06174E;
-        Thu, 18 Jun 2020 04:35:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 726F5C0613ED;
+        Thu, 18 Jun 2020 06:51:06 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jlspF-0007a1-1m; Thu, 18 Jun 2020 13:35:21 +0200
+        id 1jluwR-0002iZ-Up; Thu, 18 Jun 2020 15:50:56 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 9A0141C0087;
-        Thu, 18 Jun 2020 13:35:20 +0200 (CEST)
-Date:   Thu, 18 Jun 2020 11:35:20 -0000
-From:   "tip-bot2 for Gustavo A. R. Silva" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 3C11D1C0087;
+        Thu, 18 Jun 2020 15:50:55 +0200 (CEST)
+Date:   Thu, 18 Jun 2020 13:50:54 -0000
+From:   "tip-bot2 for Chang S. Bae" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: ras/core] x86/mce/dev-mcelog: Use struct_size() helper in kzalloc()
-Cc:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Borislav Petkov <bp@suse.de>, Tony Luck <tony.luck@intel.com>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200617211734.GA9636@embeddedor>
-References: <20200617211734.GA9636@embeddedor>
+Subject: [tip: x86/fsgsbase] selftests/x86/fsgsbase: Test ptracer-induced GS
+ base write with FSGSBASE
+Cc:     Andy Lutomirski <luto@kernel.org>,
+        "Chang S. Bae" <chang.seok.bae@intel.com>,
+        Sasha Levin <sashal@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tony Luck <tony.luck@intel.com>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200528201402.1708239-17-sashal@kernel.org>
+References: <20200528201402.1708239-17-sashal@kernel.org>
 MIME-Version: 1.0
-Message-ID: <159248012037.16989.10138999836466692320.tip-bot2@tip-bot2>
+Message-ID: <159248825497.16989.5412219618320805456.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,41 +52,66 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the ras/core branch of tip:
+The following commit has been merged into the x86/fsgsbase branch of tip:
 
-Commit-ID:     5ba7821bcf7d82e35582fce8fe65cd160a6954b4
-Gitweb:        https://git.kernel.org/tip/5ba7821bcf7d82e35582fce8fe65cd160a6954b4
-Author:        Gustavo A. R. Silva <gustavoars@kernel.org>
-AuthorDate:    Wed, 17 Jun 2020 16:17:34 -05:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Thu, 18 Jun 2020 13:24:23 +02:00
+Commit-ID:     5e7ec8578fa3dada50c50f5b234fa8d154b76349
+Gitweb:        https://git.kernel.org/tip/5e7ec8578fa3dada50c50f5b234fa8d154b76349
+Author:        Chang S. Bae <chang.seok.bae@intel.com>
+AuthorDate:    Thu, 28 May 2020 16:14:02 -04:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Thu, 18 Jun 2020 15:47:07 +02:00
 
-x86/mce/dev-mcelog: Use struct_size() helper in kzalloc()
+selftests/x86/fsgsbase: Test ptracer-induced GS base write with FSGSBASE
 
-Make use of the struct_size() helper instead of an open-coded version
-in order to avoid any potential type mistakes.
+This validates that GS selector and base are independently preserved in
+ptrace commands.
 
-This code was detected with the help of Coccinelle and, audited and
-fixed manually.
+Suggested-by: Andy Lutomirski <luto@kernel.org>
+Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Tony Luck <tony.luck@intel.com>
+Link: https://lkml.kernel.org/r/20200528201402.1708239-17-sashal@kernel.org
 
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Acked-by: Tony Luck <tony.luck@intel.com>
-Link: https://lkml.kernel.org/r/20200617211734.GA9636@embeddedor
+
 ---
- arch/x86/kernel/cpu/mce/dev-mcelog.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/x86/fsgsbase.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/mce/dev-mcelog.c b/arch/x86/kernel/cpu/mce/dev-mcelog.c
-index 43c4660..03e5105 100644
---- a/arch/x86/kernel/cpu/mce/dev-mcelog.c
-+++ b/arch/x86/kernel/cpu/mce/dev-mcelog.c
-@@ -345,7 +345,7 @@ static __init int dev_mcelog_init_device(void)
- 	int err;
+diff --git a/tools/testing/selftests/x86/fsgsbase.c b/tools/testing/selftests/x86/fsgsbase.c
+index 950a48b..9a43498 100644
+--- a/tools/testing/selftests/x86/fsgsbase.c
++++ b/tools/testing/selftests/x86/fsgsbase.c
+@@ -465,7 +465,7 @@ static void test_ptrace_write_gsbase(void)
+ 	wait(&status);
  
- 	mce_log_len = max(MCE_LOG_MIN_LEN, num_online_cpus());
--	mcelog = kzalloc(sizeof(*mcelog) + mce_log_len * sizeof(struct mce), GFP_KERNEL);
-+	mcelog = kzalloc(struct_size(mcelog, entry, mce_log_len), GFP_KERNEL);
- 	if (!mcelog)
- 		return -ENOMEM;
+ 	if (WSTOPSIG(status) == SIGTRAP) {
+-		unsigned long gs;
++		unsigned long gs, base;
+ 		unsigned long gs_offset = USER_REGS_OFFSET(gs);
+ 		unsigned long base_offset = USER_REGS_OFFSET(gs_base);
+ 
+@@ -481,6 +481,7 @@ static void test_ptrace_write_gsbase(void)
+ 			err(1, "PTRACE_POKEUSER");
+ 
+ 		gs = ptrace(PTRACE_PEEKUSER, child, gs_offset, NULL);
++		base = ptrace(PTRACE_PEEKUSER, child, base_offset, NULL);
+ 
+ 		/*
+ 		 * In a non-FSGSBASE system, the nonzero selector will load
+@@ -501,8 +502,14 @@ static void test_ptrace_write_gsbase(void)
+ 			 */
+ 			if (gs == 0)
+ 				printf("\tNote: this is expected behavior on older kernels.\n");
++		} else if (have_fsgsbase && (base != 0xFF)) {
++			nerrs++;
++			printf("[FAIL]\tGSBASE changed to %lx\n", base);
+ 		} else {
+-			printf("[OK]\tGS remained 0x%hx\n", *shared_scratch);
++			printf("[OK]\tGS remained 0x%hx", *shared_scratch);
++			if (have_fsgsbase)
++				printf(" and GSBASE changed to 0xFF");
++			printf("\n");
+ 		}
+ 	}
  
