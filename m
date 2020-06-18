@@ -2,42 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 930DA1FF3CD
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 18 Jun 2020 15:53:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C75F91FF3C7
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 18 Jun 2020 15:53:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730580AbgFRNvL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 18 Jun 2020 09:51:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49182 "EHLO
+        id S1730513AbgFRNvE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 18 Jun 2020 09:51:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49164 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730565AbgFRNvG (ORCPT
+        with ESMTP id S1730228AbgFRNvC (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 18 Jun 2020 09:51:06 -0400
+        Thu, 18 Jun 2020 09:51:02 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DA79C0613F0;
-        Thu, 18 Jun 2020 06:51:06 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A42CCC0613ED;
+        Thu, 18 Jun 2020 06:51:01 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jluwZ-0002kT-Ek; Thu, 18 Jun 2020 15:51:03 +0200
+        id 1jluwU-0002k1-2n; Thu, 18 Jun 2020 15:50:58 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 87E2E1C06FE;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 39A5D1C06E5;
         Thu, 18 Jun 2020 15:50:57 +0200 (CEST)
 Date:   Thu, 18 Jun 2020 13:50:57 -0000
-From:   "tip-bot2 for Tony Luck" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Chang S. Bae" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/fsgsbase] x86/speculation/swapgs: Check FSGSBASE in
- enabling SWAPGS mitigation
-Cc:     Tony Luck <tony.luck@intel.com>,
-        "Chang S. Bae" <chang.seok.bae@intel.com>,
-        Sasha Levin <sashal@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
+Subject: [tip: x86/fsgsbase] x86/entry/64: Switch CR3 before SWAPGS in paranoid entry
+Cc:     "Chang S. Bae" <chang.seok.bae@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Sasha Levin <sashal@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200528201402.1708239-9-sashal@kernel.org>
-References: <20200528201402.1708239-9-sashal@kernel.org>
+In-Reply-To: <1557309753-24073-11-git-send-email-chang.seok.bae@intel.com>
+References: <1557309753-24073-11-git-send-email-chang.seok.bae@intel.com>
 MIME-Version: 1.0
-Message-ID: <159248825731.16989.10228192989851794615.tip-bot2@tip-bot2>
+Message-ID: <159248825700.16989.16902415408601692499.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -53,57 +51,104 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/fsgsbase branch of tip:
 
-Commit-ID:     978e1342c3c4d7b20808fd5875d9ac0d57db22ee
-Gitweb:        https://git.kernel.org/tip/978e1342c3c4d7b20808fd5875d9ac0d57db22ee
-Author:        Tony Luck <tony.luck@intel.com>
-AuthorDate:    Thu, 28 May 2020 16:13:54 -04:00
+Commit-ID:     96b2371413e8f636a5f25c42a933af21c35a2a41
+Gitweb:        https://git.kernel.org/tip/96b2371413e8f636a5f25c42a933af21c35a2a41
+Author:        Chang S. Bae <chang.seok.bae@intel.com>
+AuthorDate:    Thu, 28 May 2020 16:13:55 -04:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 18 Jun 2020 15:47:02 +02:00
+CommitterDate: Thu, 18 Jun 2020 15:47:03 +02:00
 
-x86/speculation/swapgs: Check FSGSBASE in enabling SWAPGS mitigation
+x86/entry/64: Switch CR3 before SWAPGS in paranoid entry
 
-Before enabling FSGSBASE the kernel could safely assume that the content
-of GS base was a user address. Thus any speculative access as the result
-of a mispredicted branch controlling the execution of SWAPGS would be to
-a user address. So systems with speculation-proof SMAP did not need to
-add additional LFENCE instructions to mitigate.
+When FSGSBASE is enabled, the GSBASE handling in paranoid entry will need
+to retrieve the kernel GSBASE which requires that the kernel page table is
+active.
 
-With FSGSBASE enabled a hostile user can set GS base to a kernel address.
-So they can make the kernel speculatively access data they wish to leak
-via a side channel. This means that SMAP provides no protection.
+As the CR3 switch to the kernel page tables (PTI is active) does not depend
+on kernel GSBASE, move the CR3 switch in front of the GSBASE handling.
 
-Add FSGSBASE as an additional condition to enable the fence-based SWAPGS
-mitigation.
+Comment the EBX content while at it.
 
-Signed-off-by: Tony Luck <tony.luck@intel.com>
+No functional change.
+
+[ tglx: Rewrote changelog and comments ]
+
 Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20200528201402.1708239-9-sashal@kernel.org
+Link: https://lkml.kernel.org/r/1557309753-24073-11-git-send-email-chang.seok.bae@intel.com
+Link: https://lkml.kernel.org/r/20200528201402.1708239-10-sashal@kernel.org
 
 
 ---
- arch/x86/kernel/cpu/bugs.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ arch/x86/entry/entry_64.S | 32 ++++++++++++++++++++++++--------
+ 1 file changed, 24 insertions(+), 8 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index 0b71970..5ea5fbd 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -543,14 +543,12 @@ static void __init spectre_v1_select_mitigation(void)
- 		 * If FSGSBASE is enabled, the user can put a kernel address in
- 		 * GS, in which case SMAP provides no protection.
- 		 *
--		 * [ NOTE: Don't check for X86_FEATURE_FSGSBASE until the
--		 *	   FSGSBASE enablement patches have been merged. ]
--		 *
- 		 * If FSGSBASE is disabled, the user can only put a user space
- 		 * address in GS.  That makes an attack harder, but still
- 		 * possible if there's no SMAP protection.
- 		 */
--		if (!smap_works_speculatively()) {
-+		if (boot_cpu_has(X86_FEATURE_FSGSBASE) ||
-+		    !smap_works_speculatively()) {
- 			/*
- 			 * Mitigation can be provided from SWAPGS itself or
- 			 * PTI as the CR3 write in the Meltdown mitigation
+diff --git a/arch/x86/entry/entry_64.S b/arch/x86/entry/entry_64.S
+index d2a00c9..04d1eea 100644
+--- a/arch/x86/entry/entry_64.S
++++ b/arch/x86/entry/entry_64.S
+@@ -807,13 +807,6 @@ SYM_CODE_START_LOCAL(paranoid_entry)
+ 	cld
+ 	PUSH_AND_CLEAR_REGS save_ret=1
+ 	ENCODE_FRAME_POINTER 8
+-	movl	$1, %ebx
+-	movl	$MSR_GS_BASE, %ecx
+-	rdmsr
+-	testl	%edx, %edx
+-	js	1f				/* negative -> in kernel */
+-	SWAPGS
+-	xorl	%ebx, %ebx
+ 
+ 1:
+ 	/*
+@@ -825,9 +818,29 @@ SYM_CODE_START_LOCAL(paranoid_entry)
+ 	 * This is also why CS (stashed in the "iret frame" by the
+ 	 * hardware at entry) can not be used: this may be a return
+ 	 * to kernel code, but with a user CR3 value.
++	 *
++	 * Switching CR3 does not depend on kernel GSBASE so it can
++	 * be done before switching to the kernel GSBASE. This is
++	 * required for FSGSBASE because the kernel GSBASE has to
++	 * be retrieved from a kernel internal table.
+ 	 */
+ 	SAVE_AND_SWITCH_TO_KERNEL_CR3 scratch_reg=%rax save_reg=%r14
+ 
++	/* EBX = 1 -> kernel GSBASE active, no restore required */
++	movl	$1, %ebx
++	/*
++	 * The kernel-enforced convention is a negative GSBASE indicates
++	 * a kernel value. No SWAPGS needed on entry and exit.
++	 */
++	movl	$MSR_GS_BASE, %ecx
++	rdmsr
++	testl	%edx, %edx
++	jns	.Lparanoid_entry_swapgs
++	ret
++
++.Lparanoid_entry_swapgs:
++	SWAPGS
++
+ 	/*
+ 	 * The above SAVE_AND_SWITCH_TO_KERNEL_CR3 macro doesn't do an
+ 	 * unconditional CR3 write, even in the PTI case.  So do an lfence
+@@ -835,6 +848,8 @@ SYM_CODE_START_LOCAL(paranoid_entry)
+ 	 */
+ 	FENCE_SWAPGS_KERNEL_ENTRY
+ 
++	/* EBX = 0 -> SWAPGS required on exit */
++	xorl	%ebx, %ebx
+ 	ret
+ SYM_CODE_END(paranoid_entry)
+ 
+@@ -852,7 +867,8 @@ SYM_CODE_END(paranoid_entry)
+  */
+ SYM_CODE_START_LOCAL(paranoid_exit)
+ 	UNWIND_HINT_REGS
+-	testl	%ebx, %ebx			/* swapgs needed? */
++	/* If EBX is 0, SWAPGS is required */
++	testl	%ebx, %ebx
+ 	jnz	.Lparanoid_exit_no_swapgs
+ 	/* Always restore stashed CR3 value (see paranoid_entry) */
+ 	RESTORE_CR3	scratch_reg=%rbx save_reg=%r14
