@@ -2,37 +2,36 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B5F69200362
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 19 Jun 2020 10:16:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21649200361
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 19 Jun 2020 10:16:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731271AbgFSIQN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 19 Jun 2020 04:16:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49772 "EHLO
+        id S1731288AbgFSIQG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 19 Jun 2020 04:16:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49758 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731290AbgFSIQH (ORCPT
+        with ESMTP id S1731022AbgFSIQD (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 19 Jun 2020 04:16:07 -0400
+        Fri, 19 Jun 2020 04:16:03 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7B1DC06174E;
-        Fri, 19 Jun 2020 01:16:06 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8FCCC06174E;
+        Fri, 19 Jun 2020 01:16:02 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jmCBr-0003oh-UA; Fri, 19 Jun 2020 10:16:00 +0200
+        id 1jmCBr-0003oi-CT; Fri, 19 Jun 2020 10:15:59 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 67AA51C0085;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id CD4D91C032F;
         Fri, 19 Jun 2020 10:15:58 +0200 (CEST)
 Date:   Fri, 19 Jun 2020 08:15:58 -0000
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] objtool: Fix noinstr vs KCOV
+Subject: [tip: objtool/core] objtool: Provide elf_write_{insn,reloc}()
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Dmitry Vyukov <dvyukov@google.com>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <159255455812.16989.2009345164870958211.tip-bot2@tip-bot2>
+Message-ID: <159255455853.16989.2223578033878947648.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,138 +47,109 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     0f1441b44e823a74f3f3780902a113e07c73fbf6
-Gitweb:        https://git.kernel.org/tip/0f1441b44e823a74f3f3780902a113e07c73fbf6
+Commit-ID:     fdabdd0b05e0bdf232340d5da86563ed142a99a7
+Gitweb:        https://git.kernel.org/tip/fdabdd0b05e0bdf232340d5da86563ed142a99a7
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Fri, 12 Jun 2020 16:05:26 +02:00
+AuthorDate:    Fri, 12 Jun 2020 15:43:00 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Thu, 18 Jun 2020 17:36:33 +02:00
 
-objtool: Fix noinstr vs KCOV
+objtool: Provide elf_write_{insn,reloc}()
 
-Since many compilers cannot disable KCOV with a function attribute,
-help it to NOP out any __sanitizer_cov_*() calls injected in noinstr
-code.
-
-This turns:
-
-12:   e8 00 00 00 00          callq  17 <lockdep_hardirqs_on+0x17>
-		13: R_X86_64_PLT32      __sanitizer_cov_trace_pc-0x4
-
-into:
-
-12:   0f 1f 44 00 00          nopl   0x0(%rax,%rax,1)
-		13: R_X86_64_NONE      __sanitizer_cov_trace_pc-0x4
-
-Just like recordmcount does.
+This provides infrastructure to rewrite instructions; this is
+immediately useful for helping out with KCOV-vs-noinstr, but will
+also come in handy for a bunch of variable sized jump-label patches
+that are still on ice.
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Dmitry Vyukov <dvyukov@google.com>
 ---
- arch/x86/Kconfig                          |  2 +-
- tools/objtool/arch.h                      |  2 ++
- tools/objtool/arch/x86/decode.c           | 18 ++++++++++++++++++
- tools/objtool/arch/x86/include/arch_elf.h |  6 ++++++
- tools/objtool/check.c                     | 19 +++++++++++++++++++
- 5 files changed, 46 insertions(+), 1 deletion(-)
- create mode 100644 tools/objtool/arch/x86/include/arch_elf.h
+ tools/objtool/elf.c | 40 +++++++++++++++++++++++++++++++++++++++-
+ tools/objtool/elf.h |  7 ++++++-
+ 2 files changed, 45 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 6a0cc52..883da0a 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -67,7 +67,7 @@ config X86
- 	select ARCH_HAS_FILTER_PGPROT
- 	select ARCH_HAS_FORTIFY_SOURCE
- 	select ARCH_HAS_GCOV_PROFILE_ALL
--	select ARCH_HAS_KCOV			if X86_64
-+	select ARCH_HAS_KCOV			if X86_64 && STACK_VALIDATION
- 	select ARCH_HAS_MEM_ENCRYPT
- 	select ARCH_HAS_MEMBARRIER_SYNC_CORE
- 	select ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE
-diff --git a/tools/objtool/arch.h b/tools/objtool/arch.h
-index eda15a5..3c59677 100644
---- a/tools/objtool/arch.h
-+++ b/tools/objtool/arch.h
-@@ -84,4 +84,6 @@ unsigned long arch_jump_destination(struct instruction *insn);
- 
- unsigned long arch_dest_rela_offset(int addend);
- 
-+const char *arch_nop_insn(int len);
-+
- #endif /* _ARCH_H */
-diff --git a/tools/objtool/arch/x86/decode.c b/tools/objtool/arch/x86/decode.c
-index 4b504fc..9872195 100644
---- a/tools/objtool/arch/x86/decode.c
-+++ b/tools/objtool/arch/x86/decode.c
-@@ -565,3 +565,21 @@ void arch_initial_func_cfi_state(struct cfi_init_state *state)
- 	state->regs[16].base = CFI_CFA;
- 	state->regs[16].offset = -8;
+diff --git a/tools/objtool/elf.c b/tools/objtool/elf.c
+index bc6723a..26d11d8 100644
+--- a/tools/objtool/elf.c
++++ b/tools/objtool/elf.c
+@@ -529,8 +529,9 @@ static int read_relas(struct elf *elf)
+ 			rela->addend = rela->rela.r_addend;
+ 			rela->offset = rela->rela.r_offset;
+ 			symndx = GELF_R_SYM(rela->rela.r_info);
+-			rela->sym = find_symbol_by_index(elf, symndx);
+ 			rela->sec = sec;
++			rela->idx = i;
++			rela->sym = find_symbol_by_index(elf, symndx);
+ 			if (!rela->sym) {
+ 				WARN("can't find rela entry symbol %d for %s",
+ 				     symndx, sec->name);
+@@ -784,6 +785,43 @@ int elf_rebuild_rela_section(struct elf *elf, struct section *sec)
+ 	return 0;
  }
-+
-+const char *arch_nop_insn(int len)
+ 
++int elf_write_insn(struct elf *elf, struct section *sec,
++		   unsigned long offset, unsigned int len,
++		   const char *insn)
 +{
-+	static const char nops[5][5] = {
-+		/* 1 */ { 0x90 },
-+		/* 2 */ { 0x66, 0x90 },
-+		/* 3 */ { 0x0f, 0x1f, 0x00 },
-+		/* 4 */ { 0x0f, 0x1f, 0x40, 0x00 },
-+		/* 5 */ { 0x0f, 0x1f, 0x44, 0x00, 0x00 },
-+	};
++	Elf_Data *data = sec->data;
 +
-+	if (len < 1 || len > 5) {
-+		WARN("invalid NOP size: %d\n", len);
-+		return NULL;
++	if (data->d_type != ELF_T_BYTE || data->d_off) {
++		WARN("write to unexpected data for section: %s", sec->name);
++		return -1;
 +	}
 +
-+	return nops[len-1];
++	memcpy(data->d_buf + offset, insn, len);
++	elf_flagdata(data, ELF_C_SET, ELF_F_DIRTY);
++
++	elf->changed = true;
++
++	return 0;
 +}
-diff --git a/tools/objtool/arch/x86/include/arch_elf.h b/tools/objtool/arch/x86/include/arch_elf.h
-new file mode 100644
-index 0000000..69cc426
---- /dev/null
-+++ b/tools/objtool/arch/x86/include/arch_elf.h
-@@ -0,0 +1,6 @@
-+#ifndef _OBJTOOL_ARCH_ELF
-+#define _OBJTOOL_ARCH_ELF
 +
-+#define R_NONE R_X86_64_NONE
++int elf_write_rela(struct elf *elf, struct rela *rela)
++{
++	struct section *sec = rela->sec;
 +
-+#endif /* _OBJTOOL_ARCH_ELF */
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 91a67db..478267a 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -12,6 +12,7 @@
- #include "check.h"
- #include "special.h"
- #include "warn.h"
-+#include "arch_elf.h"
++	rela->rela.r_info = GELF_R_INFO(rela->sym->idx, rela->type);
++	rela->rela.r_addend = rela->addend;
++	rela->rela.r_offset = rela->offset;
++
++	if (!gelf_update_rela(sec->data, rela->idx, &rela->rela)) {
++		WARN_ELF("gelf_update_rela");
++		return -1;
++	}
++
++	elf->changed = true;
++
++	return 0;
++}
++
+ int elf_write(struct elf *elf)
+ {
+ 	struct section *sec;
+diff --git a/tools/objtool/elf.h b/tools/objtool/elf.h
+index aa9c64d..7324e77 100644
+--- a/tools/objtool/elf.h
++++ b/tools/objtool/elf.h
+@@ -64,9 +64,10 @@ struct rela {
+ 	GElf_Rela rela;
+ 	struct section *sec;
+ 	struct symbol *sym;
+-	unsigned int type;
+ 	unsigned long offset;
++	unsigned int type;
+ 	int addend;
++	int idx;
+ 	bool jump_table_start;
+ };
  
- #include <linux/hashtable.h>
- #include <linux/kernel.h>
-@@ -766,6 +767,24 @@ static int add_call_destinations(struct objtool_file *file)
- 			insn->call_dest = rela->sym;
+@@ -119,6 +120,10 @@ struct elf *elf_open_read(const char *name, int flags);
+ struct section *elf_create_section(struct elf *elf, const char *name, size_t entsize, int nr);
+ struct section *elf_create_rela_section(struct elf *elf, struct section *base);
+ void elf_add_rela(struct elf *elf, struct rela *rela);
++int elf_write_insn(struct elf *elf, struct section *sec,
++		   unsigned long offset, unsigned int len,
++		   const char *insn);
++int elf_write_rela(struct elf *elf, struct rela *rela);
+ int elf_write(struct elf *elf);
+ void elf_close(struct elf *elf);
  
- 		/*
-+		 * Many compilers cannot disable KCOV with a function attribute
-+		 * so they need a little help, NOP out any KCOV calls from noinstr
-+		 * text.
-+		 */
-+		if (insn->sec->noinstr &&
-+		    !strncmp(insn->call_dest->name, "__sanitizer_cov_", 16)) {
-+			if (rela) {
-+				rela->type = R_NONE;
-+				elf_write_rela(file->elf, rela);
-+			}
-+
-+			elf_write_insn(file->elf, insn->sec,
-+				       insn->offset, insn->len,
-+				       arch_nop_insn(insn->len));
-+			insn->type = INSN_NOP;
-+		}
-+
-+		/*
- 		 * Whatever stack impact regular CALLs have, should be undone
- 		 * by the RETURN of the called function.
- 		 *
