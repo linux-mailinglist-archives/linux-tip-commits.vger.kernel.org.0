@@ -2,39 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9362A20181C
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 19 Jun 2020 18:48:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C40CF20180D
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 19 Jun 2020 18:48:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388545AbgFSQqy (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 19 Jun 2020 12:46:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43782 "EHLO
+        id S2405363AbgFSQqe (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 19 Jun 2020 12:46:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2405039AbgFSQqD (ORCPT
+        with ESMTP id S1733248AbgFSQqI (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 19 Jun 2020 12:46:03 -0400
+        Fri, 19 Jun 2020 12:46:08 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CFB0C061794;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8642C061795;
         Fri, 19 Jun 2020 09:46:02 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jmK9P-000431-5p; Fri, 19 Jun 2020 18:45:59 +0200
+        id 1jmK9Q-00043p-0f; Fri, 19 Jun 2020 18:46:00 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id AB8551C0478;
-        Fri, 19 Jun 2020 18:45:58 +0200 (CEST)
-Date:   Fri, 19 Jun 2020 16:45:58 -0000
-From:   "tip-bot2 for Arvind Sankar" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id AA0FC1C0085;
+        Fri, 19 Jun 2020 18:45:59 +0200 (CEST)
+Date:   Fri, 19 Jun 2020 16:45:59 -0000
+From:   "tip-bot2 for Philipp Fent" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: efi/urgent] efi/x86: Setup stack correctly for efi_pe_entry
-Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
-        Ard Biesheuvel <ardb@kernel.org>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200617131957.2507632-1-nivedita@alum.mit.edu>
-References: <20200617131957.2507632-1-nivedita@alum.mit.edu>
+Subject: [tip: efi/urgent] efi/libstub: Fix path separator regression
+Cc:     Philipp Fent <fent@in.tum.de>, Ard Biesheuvel <ardb@kernel.org>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200615115109.7823-1-fent@in.tum.de>
+References: <20200615115109.7823-1-fent@in.tum.de>
 MIME-Version: 1.0
-Message-ID: <159258515849.16989.14516745013371848128.tip-bot2@tip-bot2>
+Message-ID: <159258515942.16989.6902120610711926134.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,82 +49,58 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the efi/urgent branch of tip:
 
-Commit-ID:     41d90b0c1108d1e46c48cf79964636c553844f4c
-Gitweb:        https://git.kernel.org/tip/41d90b0c1108d1e46c48cf79964636c553844f4c
-Author:        Arvind Sankar <nivedita@alum.mit.edu>
-AuthorDate:    Wed, 17 Jun 2020 09:19:57 -04:00
+Commit-ID:     7a88a6227dc7f2e723bba11ece05e57bd8dce8e4
+Gitweb:        https://git.kernel.org/tip/7a88a6227dc7f2e723bba11ece05e57bd8dce8e4
+Author:        Philipp Fent <fent@in.tum.de>
+AuthorDate:    Mon, 15 Jun 2020 13:51:09 +02:00
 Committer:     Ard Biesheuvel <ardb@kernel.org>
-CommitterDate: Wed, 17 Jun 2020 15:28:58 +02:00
+CommitterDate: Mon, 15 Jun 2020 19:43:59 +02:00
 
-efi/x86: Setup stack correctly for efi_pe_entry
+efi/libstub: Fix path separator regression
 
-Commit
+Commit 9302c1bb8e47 ("efi/libstub: Rewrite file I/O routine") introduced a
+regression that made a couple of (badly configured) systems fail to
+boot [1]: Until 5.6, we silently accepted Unix-style file separators in
+EFI paths, which might violate the EFI standard, but are an easy to make
+mistake. This fix restores the pre-5.7 behaviour.
 
-  17054f492dfd ("efi/x86: Implement mixed mode boot without the handover protocol")
+[1] https://bbs.archlinux.org/viewtopic.php?id=256273
 
-introduced a new entry point for the EFI stub to be booted in mixed mode
-on 32-bit firmware.
-
-When entered via efi32_pe_entry, control is first transferred to
-startup_32 to setup for the switch to long mode, and then the EFI stub
-proper is entered via efi_pe_entry. efi_pe_entry is an MS ABI function,
-and the ABI requires 32 bytes of shadow stack space to be allocated by
-the caller, as well as the stack being aligned to 8 mod 16 on entry.
-
-Allocate 40 bytes on the stack before switching to 64-bit mode when
-calling efi_pe_entry to account for this.
-
-For robustness, explicitly align boot_stack_end to 16 bytes. It is
-currently implicitly aligned since .bss is cacheline-size aligned,
-head_64.o is the first object file with a .bss section, and the heap and
-boot sizes are aligned.
-
-Fixes: 17054f492dfd ("efi/x86: Implement mixed mode boot without the handover protocol")
-Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
-Link: https://lore.kernel.org/r/20200617131957.2507632-1-nivedita@alum.mit.edu
+Fixes: 9302c1bb8e47 ("efi/libstub: Rewrite file I/O routine")
+Signed-off-by: Philipp Fent <fent@in.tum.de>
+Link: https://lore.kernel.org/r/20200615115109.7823-1-fent@in.tum.de
+[ardb: rewrite as chained if/else statements]
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/x86/boot/compressed/head_64.S | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/firmware/efi/libstub/file.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/boot/compressed/head_64.S b/arch/x86/boot/compressed/head_64.S
-index e821a7d..97d37f0 100644
---- a/arch/x86/boot/compressed/head_64.S
-+++ b/arch/x86/boot/compressed/head_64.S
-@@ -213,7 +213,6 @@ SYM_FUNC_START(startup_32)
- 	 * We place all of the values on our mini stack so lret can
- 	 * used to perform that far jump.
- 	 */
--	pushl	$__KERNEL_CS
- 	leal	startup_64(%ebp), %eax
- #ifdef CONFIG_EFI_MIXED
- 	movl	efi32_boot_args(%ebp), %edi
-@@ -224,11 +223,20 @@ SYM_FUNC_START(startup_32)
- 	movl	efi32_boot_args+8(%ebp), %edx	// saved bootparams pointer
- 	cmpl	$0, %edx
- 	jnz	1f
-+	/*
-+	 * efi_pe_entry uses MS calling convention, which requires 32 bytes of
-+	 * shadow space on the stack even if all arguments are passed in
-+	 * registers. We also need an additional 8 bytes for the space that
-+	 * would be occupied by the return address, and this also results in
-+	 * the correct stack alignment for entry.
-+	 */
-+	subl	$40, %esp
- 	leal	efi_pe_entry(%ebp), %eax
- 	movl	%edi, %ecx			// MS calling convention
- 	movl	%esi, %edx
- 1:
- #endif
-+	pushl	$__KERNEL_CS
- 	pushl	%eax
+diff --git a/drivers/firmware/efi/libstub/file.c b/drivers/firmware/efi/libstub/file.c
+index 2005e33..630caa6 100644
+--- a/drivers/firmware/efi/libstub/file.c
++++ b/drivers/firmware/efi/libstub/file.c
+@@ -102,12 +102,20 @@ static int find_file_option(const efi_char16_t *cmdline, int cmdline_len,
+ 	if (!found)
+ 		return 0;
  
- 	/* Enter paged protected Mode, activating Long Mode */
-@@ -784,6 +792,7 @@ SYM_DATA_LOCAL(boot_heap,	.fill BOOT_HEAP_SIZE, 1, 0)
- 
- SYM_DATA_START_LOCAL(boot_stack)
- 	.fill BOOT_STACK_SIZE, 1, 0
-+	.balign 16
- SYM_DATA_END_LABEL(boot_stack, SYM_L_LOCAL, boot_stack_end)
- 
- /*
++	/* Skip any leading slashes */
++	while (cmdline[i] == L'/' || cmdline[i] == L'\\')
++		i++;
++
+ 	while (--result_len > 0 && i < cmdline_len) {
+-		if (cmdline[i] == L'\0' ||
+-		    cmdline[i] == L'\n' ||
+-		    cmdline[i] == L' ')
++		efi_char16_t c = cmdline[i++];
++
++		if (c == L'\0' || c == L'\n' || c == L' ')
+ 			break;
+-		*result++ = cmdline[i++];
++		else if (c == L'/')
++			/* Replace UNIX dir separators with EFI standard ones */
++			*result++ = L'\\';
++		else
++			*result++ = c;
+ 	}
+ 	*result = L'\0';
+ 	return i;
