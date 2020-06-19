@@ -2,38 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F1A652018E1
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 19 Jun 2020 19:02:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 76CA52019C1
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 19 Jun 2020 19:51:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2436547AbgFSQxt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 19 Jun 2020 12:53:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44978 "EHLO
+        id S1730721AbgFSRtH (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 19 Jun 2020 13:49:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53458 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387568AbgFSQxr (ORCPT
+        with ESMTP id S1729676AbgFSRtH (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 19 Jun 2020 12:53:47 -0400
+        Fri, 19 Jun 2020 13:49:07 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A38BC0613EE;
-        Fri, 19 Jun 2020 09:53:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9572C06174E;
+        Fri, 19 Jun 2020 10:49:06 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jmKGs-0004iM-Io; Fri, 19 Jun 2020 18:53:42 +0200
+        id 1jmL8R-0006PS-A6; Fri, 19 Jun 2020 19:49:03 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A424C1C06E5;
-        Fri, 19 Jun 2020 18:46:01 +0200 (CEST)
-Date:   Fri, 19 Jun 2020 16:46:01 -0000
-From:   "tip-bot2 for Fabian Vogt" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id CF5441C0085;
+        Fri, 19 Jun 2020 19:49:02 +0200 (CEST)
+Date:   Fri, 19 Jun 2020 17:49:02 -0000
+From:   "tip-bot2 for Tom Rini" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: efi/urgent] efi/tpm: Verify event log header before parsing
-Cc:     Fabian Vogt <fvogt@suse.de>, Ard Biesheuvel <ardb@kernel.org>,
+Subject: [tip: x86/cleanups] initrd: Remove erroneous comment
+Cc:     Tom Rini <trini@konsulko.com>, Borislav Petkov <bp@suse.de>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <1927248.evlx2EsYKh@linux-e202.suse.de>
-References: <1927248.evlx2EsYKh@linux-e202.suse.de>
+In-Reply-To: <20200619143056.24538-1-trini@konsulko.com>
+References: <20200619143056.24538-1-trini@konsulko.com>
 MIME-Version: 1.0
-Message-ID: <159258516144.16989.5059538848068469375.tip-bot2@tip-bot2>
+Message-ID: <159258894258.16989.15930098471806969630.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,84 +47,52 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the efi/urgent branch of tip:
+The following commit has been merged into the x86/cleanups branch of tip:
 
-Commit-ID:     7dfc06a0f25b593a9f51992f540c0f80a57f3629
-Gitweb:        https://git.kernel.org/tip/7dfc06a0f25b593a9f51992f540c0f80a57f3629
-Author:        Fabian Vogt <fvogt@suse.de>
-AuthorDate:    Mon, 15 Jun 2020 09:16:36 +02:00
-Committer:     Ard Biesheuvel <ardb@kernel.org>
-CommitterDate: Mon, 15 Jun 2020 14:37:02 +02:00
+Commit-ID:     eacb0c101a0bdf14de77cc9d107493e2d8d6389c
+Gitweb:        https://git.kernel.org/tip/eacb0c101a0bdf14de77cc9d107493e2d8d6389c
+Author:        Tom Rini <trini@konsulko.com>
+AuthorDate:    Fri, 19 Jun 2020 10:30:56 -04:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Fri, 19 Jun 2020 19:23:54 +02:00
 
-efi/tpm: Verify event log header before parsing
+initrd: Remove erroneous comment
 
-It is possible that the first event in the event log is not actually a
-log header at all, but rather a normal event. This leads to the cast in
-__calc_tpm2_event_size being an invalid conversion, which means that
-the values read are effectively garbage. Depending on the first event's
-contents, this leads either to apparently normal behaviour, a crash or
-a freeze.
+Most architectures have been passing the location of an initrd via the
+initrd= option since their inception.  Remove the comment as it's both
+wrong and unrelated to the commit that introduced it.
 
-While this behaviour of the firmware is not in accordance with the
-TCG Client EFI Specification, this happens on a Dell Precision 5510
-with the TPM enabled but hidden from the OS ("TPM On" disabled, state
-otherwise untouched). The EFI firmware claims that the TPM is present
-and active and that it supports the TCG 2.0 event log format.
+For a bit more context, I assume there's been some confusion between
+"initrd" being a keyword in things like extlinux.conf and also that for
+quite a long time now initrd information is passed via device tree and
+not the command line on relevant architectures. But it's still true that
+it's been a valid command line option to the kernel since the 90s. It's
+just the case that in 2018 the code was consolidated from under arch/
+and in to this file.
 
-Fortunately, this can be worked around by simply checking the header
-of the first event and the event log header signature itself.
+ [ bp: Move the context clarification up into the commit message proper. ]
 
-Commit b4f1874c6216 ("tpm: check event log version before reading final
-events") addressed a similar issue also found on Dell models.
-
-Fixes: 6b0326190205 ("efi: Attempt to get the TCG2 event log in the boot stub")
-Signed-off-by: Fabian Vogt <fvogt@suse.de>
-Link: https://lore.kernel.org/r/1927248.evlx2EsYKh@linux-e202.suse.de
-Bugzilla: https://bugzilla.suse.com/show_bug.cgi?id=1165773
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Fixes: 694cfd87b0c8 ("x86/setup: Add an initrdmem= option to specify initrd physical address")
+Signed-off-by: Tom Rini <trini@konsulko.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lkml.kernel.org/r/20200619143056.24538-1-trini@konsulko.com
 ---
- include/linux/tpm_eventlog.h | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ init/do_mounts_initrd.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/include/linux/tpm_eventlog.h b/include/linux/tpm_eventlog.h
-index 4f8c90c..64356b1 100644
---- a/include/linux/tpm_eventlog.h
-+++ b/include/linux/tpm_eventlog.h
-@@ -81,6 +81,8 @@ struct tcg_efi_specid_event_algs {
- 	u16 digest_size;
- } __packed;
+diff --git a/init/do_mounts_initrd.c b/init/do_mounts_initrd.c
+index d72beda..53314d7 100644
+--- a/init/do_mounts_initrd.c
++++ b/init/do_mounts_initrd.c
+@@ -45,11 +45,6 @@ static int __init early_initrdmem(char *p)
+ }
+ early_param("initrdmem", early_initrdmem);
  
-+#define TCG_SPECID_SIG "Spec ID Event03"
-+
- struct tcg_efi_specid_event_head {
- 	u8 signature[16];
- 	u32 platform_class;
-@@ -171,6 +173,7 @@ static inline int __calc_tpm2_event_size(struct tcg_pcr_event2_head *event,
- 	int i;
- 	int j;
- 	u32 count, event_type;
-+	const u8 zero_digest[sizeof(event_header->digest)] = {0};
- 
- 	marker = event;
- 	marker_start = marker;
-@@ -198,10 +201,19 @@ static inline int __calc_tpm2_event_size(struct tcg_pcr_event2_head *event,
- 	count = READ_ONCE(event->count);
- 	event_type = READ_ONCE(event->event_type);
- 
-+	/* Verify that it's the log header */
-+	if (event_header->pcr_idx != 0 ||
-+	    event_header->event_type != NO_ACTION ||
-+	    memcmp(event_header->digest, zero_digest, sizeof(zero_digest))) {
-+		size = 0;
-+		goto out;
-+	}
-+
- 	efispecid = (struct tcg_efi_specid_event_head *)event_header->event;
- 
- 	/* Check if event is malformed. */
--	if (count > efispecid->num_algs) {
-+	if (memcmp(efispecid->signature, TCG_SPECID_SIG,
-+		   sizeof(TCG_SPECID_SIG)) || count > efispecid->num_algs) {
- 		size = 0;
- 		goto out;
- 	}
+-/*
+- * This is here as the initrd keyword has been in use since 11/2018
+- * on ARM, PowerPC, and MIPS.
+- * It should not be; it is reserved for bootloaders.
+- */
+ static int __init early_initrd(char *p)
+ {
+ 	return early_initrdmem(p);
