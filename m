@@ -2,38 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 76CA52019C1
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 19 Jun 2020 19:51:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C561920230D
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 20 Jun 2020 11:56:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730721AbgFSRtH (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 19 Jun 2020 13:49:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53458 "EHLO
+        id S1727916AbgFTJ4v (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 20 Jun 2020 05:56:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60696 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729676AbgFSRtH (ORCPT
+        with ESMTP id S1727861AbgFTJ4v (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 19 Jun 2020 13:49:07 -0400
+        Sat, 20 Jun 2020 05:56:51 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9572C06174E;
-        Fri, 19 Jun 2020 10:49:06 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87F13C06174E;
+        Sat, 20 Jun 2020 02:56:51 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jmL8R-0006PS-A6; Fri, 19 Jun 2020 19:49:03 +0200
+        id 1jmaEx-0001eb-My; Sat, 20 Jun 2020 11:56:47 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id CF5441C0085;
-        Fri, 19 Jun 2020 19:49:02 +0200 (CEST)
-Date:   Fri, 19 Jun 2020 17:49:02 -0000
-From:   "tip-bot2 for Tom Rini" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A620D1C0093;
+        Sat, 20 Jun 2020 11:56:44 +0200 (CEST)
+Date:   Sat, 20 Jun 2020 09:56:44 -0000
+From:   "tip-bot2 for Jason Andryuk" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] initrd: Remove erroneous comment
-Cc:     Tom Rini <trini@konsulko.com>, Borislav Petkov <bp@suse.de>,
+Subject: [tip: x86/cleanups] x86/idt: Make idt_descr static
+Cc:     Jason Andryuk <jandryuk@gmail.com>, Borislav Petkov <bp@suse.de>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200619143056.24538-1-trini@konsulko.com>
-References: <20200619143056.24538-1-trini@konsulko.com>
+In-Reply-To: <20200619205103.30873-1-jandryuk@gmail.com>
+References: <20200619205103.30873-1-jandryuk@gmail.com>
 MIME-Version: 1.0
-Message-ID: <159258894258.16989.15930098471806969630.tip-bot2@tip-bot2>
+Message-ID: <159264700439.16989.3787803162777068826.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,50 +49,40 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/cleanups branch of tip:
 
-Commit-ID:     eacb0c101a0bdf14de77cc9d107493e2d8d6389c
-Gitweb:        https://git.kernel.org/tip/eacb0c101a0bdf14de77cc9d107493e2d8d6389c
-Author:        Tom Rini <trini@konsulko.com>
-AuthorDate:    Fri, 19 Jun 2020 10:30:56 -04:00
+Commit-ID:     286d966b21587b6303081b902f5c5e30b691baf5
+Gitweb:        https://git.kernel.org/tip/286d966b21587b6303081b902f5c5e30b691baf5
+Author:        Jason Andryuk <jandryuk@gmail.com>
+AuthorDate:    Fri, 19 Jun 2020 16:51:02 -04:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Fri, 19 Jun 2020 19:23:54 +02:00
+CommitterDate: Sat, 20 Jun 2020 11:47:35 +02:00
 
-initrd: Remove erroneous comment
+x86/idt: Make idt_descr static
 
-Most architectures have been passing the location of an initrd via the
-initrd= option since their inception.  Remove the comment as it's both
-wrong and unrelated to the commit that introduced it.
+Commit
 
-For a bit more context, I assume there's been some confusion between
-"initrd" being a keyword in things like extlinux.conf and also that for
-quite a long time now initrd information is passed via device tree and
-not the command line on relevant architectures. But it's still true that
-it's been a valid command line option to the kernel since the 90s. It's
-just the case that in 2018 the code was consolidated from under arch/
-and in to this file.
+  3e77abda65b1 ("x86/idt: Consolidate idt functionality")
 
- [ bp: Move the context clarification up into the commit message proper. ]
+states that idt_descr could be made static, but it did not actually make
+the change. Make it static now.
 
-Fixes: 694cfd87b0c8 ("x86/setup: Add an initrdmem= option to specify initrd physical address")
-Signed-off-by: Tom Rini <trini@konsulko.com>
+Fixes: 3e77abda65b1 ("x86/idt: Consolidate idt functionality")
+Signed-off-by: Jason Andryuk <jandryuk@gmail.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20200619143056.24538-1-trini@konsulko.com
+Link: https://lkml.kernel.org/r/20200619205103.30873-1-jandryuk@gmail.com
 ---
- init/do_mounts_initrd.c | 5 -----
- 1 file changed, 5 deletions(-)
+ arch/x86/kernel/idt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/init/do_mounts_initrd.c b/init/do_mounts_initrd.c
-index d72beda..53314d7 100644
---- a/init/do_mounts_initrd.c
-+++ b/init/do_mounts_initrd.c
-@@ -45,11 +45,6 @@ static int __init early_initrdmem(char *p)
- }
- early_param("initrdmem", early_initrdmem);
+diff --git a/arch/x86/kernel/idt.c b/arch/x86/kernel/idt.c
+index 0db2120..7ecf9ba 100644
+--- a/arch/x86/kernel/idt.c
++++ b/arch/x86/kernel/idt.c
+@@ -160,7 +160,7 @@ static const __initconst struct idt_data apic_idts[] = {
+ /* Must be page-aligned because the real IDT is used in the cpu entry area */
+ static gate_desc idt_table[IDT_ENTRIES] __page_aligned_bss;
  
--/*
-- * This is here as the initrd keyword has been in use since 11/2018
-- * on ARM, PowerPC, and MIPS.
-- * It should not be; it is reserved for bootloaders.
-- */
- static int __init early_initrd(char *p)
- {
- 	return early_initrdmem(p);
+-struct desc_ptr idt_descr __ro_after_init = {
++static struct desc_ptr idt_descr __ro_after_init = {
+ 	.size		= IDT_TABLE_SIZE - 1,
+ 	.address	= (unsigned long) idt_table,
+ };
