@@ -2,38 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C561920230D
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 20 Jun 2020 11:56:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E877203AAC
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 22 Jun 2020 17:22:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727916AbgFTJ4v (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 20 Jun 2020 05:56:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60696 "EHLO
+        id S1729150AbgFVPWO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 22 Jun 2020 11:22:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36980 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727861AbgFTJ4v (ORCPT
+        with ESMTP id S1729049AbgFVPWO (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 20 Jun 2020 05:56:51 -0400
+        Mon, 22 Jun 2020 11:22:14 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87F13C06174E;
-        Sat, 20 Jun 2020 02:56:51 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE424C061795;
+        Mon, 22 Jun 2020 08:22:13 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jmaEx-0001eb-My; Sat, 20 Jun 2020 11:56:47 +0200
+        id 1jnOGn-0003qn-MF; Mon, 22 Jun 2020 17:22:01 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id A620D1C0093;
-        Sat, 20 Jun 2020 11:56:44 +0200 (CEST)
-Date:   Sat, 20 Jun 2020 09:56:44 -0000
-From:   "tip-bot2 for Jason Andryuk" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 25C361C0051;
+        Mon, 22 Jun 2020 17:22:01 +0200 (CEST)
+Date:   Mon, 22 Jun 2020 15:22:00 -0000
+From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] x86/idt: Make idt_descr static
-Cc:     Jason Andryuk <jandryuk@gmail.com>, Borislav Petkov <bp@suse.de>,
+Subject: [tip: x86/cleanups] x86/msr: Move the F15h MSRs where they belong
+Cc:     Stephen Rothwell <sfr@canb.auug.org.au>,
+        Borislav Petkov <bp@suse.de>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200619205103.30873-1-jandryuk@gmail.com>
-References: <20200619205103.30873-1-jandryuk@gmail.com>
+In-Reply-To: <20200621163323.14e8533f@canb.auug.org.au>
+References: <20200621163323.14e8533f@canb.auug.org.au>
 MIME-Version: 1.0
-Message-ID: <159264700439.16989.3787803162777068826.tip-bot2@tip-bot2>
+Message-ID: <159283932089.16989.16947739862636103746.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,40 +51,90 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/cleanups branch of tip:
 
-Commit-ID:     286d966b21587b6303081b902f5c5e30b691baf5
-Gitweb:        https://git.kernel.org/tip/286d966b21587b6303081b902f5c5e30b691baf5
-Author:        Jason Andryuk <jandryuk@gmail.com>
-AuthorDate:    Fri, 19 Jun 2020 16:51:02 -04:00
+Commit-ID:     99e40204e014e06644072c39001a269d9689e0d1
+Gitweb:        https://git.kernel.org/tip/99e40204e014e06644072c39001a269d9689e0d1
+Author:        Borislav Petkov <bp@suse.de>
+AuthorDate:    Sun, 21 Jun 2020 12:41:53 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Sat, 20 Jun 2020 11:47:35 +02:00
+CommitterDate: Mon, 22 Jun 2020 17:15:53 +02:00
 
-x86/idt: Make idt_descr static
+x86/msr: Move the F15h MSRs where they belong
 
-Commit
+1068ed4547ad ("x86/msr: Lift AMD family 0x15 power-specific MSRs")
 
-  3e77abda65b1 ("x86/idt: Consolidate idt functionality")
+moved the three F15h power MSRs to the architectural list but that was
+wrong as they belong in the family 0x15 list. That also caused:
 
-states that idt_descr could be made static, but it did not actually make
-the change. Make it static now.
+  In file included from trace/beauty/tracepoints/x86_msr.c:10:
+  perf/trace/beauty/generated/x86_arch_MSRs_array.c:292:45: error: initialized field overwritten [-Werror=override-init]
+    292 |  [0xc0010280 - x86_AMD_V_KVM_MSRs_offset] = "F15H_PTSC",
+        |                                             ^~~~~~~~~~~
+  perf/trace/beauty/generated/x86_arch_MSRs_array.c:292:45: note: (near initialization for 'x86_AMD_V_KVM_MSRs[640]')
 
-Fixes: 3e77abda65b1 ("x86/idt: Consolidate idt functionality")
-Signed-off-by: Jason Andryuk <jandryuk@gmail.com>
+due to MSR_F15H_PTSC ending up being defined twice. Move them where they
+belong and drop the duplicate.
+
+Also, drop the respective tools/ changes of the msr-index.h copy the
+above commit added because perf tool developers prefer to go through
+those changes themselves in order to figure out whether changes to the
+kernel headers would need additional handling in perf.
+
+Fixes: 1068ed4547ad ("x86/msr: Lift AMD family 0x15 power-specific MSRs")
+Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20200619205103.30873-1-jandryuk@gmail.com
+Acked-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Link: https://lkml.kernel.org/r/20200621163323.14e8533f@canb.auug.org.au
 ---
- arch/x86/kernel/idt.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/include/asm/msr-index.h       | 5 ++---
+ tools/arch/x86/include/asm/msr-index.h | 5 +----
+ 2 files changed, 3 insertions(+), 7 deletions(-)
 
-diff --git a/arch/x86/kernel/idt.c b/arch/x86/kernel/idt.c
-index 0db2120..7ecf9ba 100644
---- a/arch/x86/kernel/idt.c
-+++ b/arch/x86/kernel/idt.c
-@@ -160,7 +160,7 @@ static const __initconst struct idt_data apic_idts[] = {
- /* Must be page-aligned because the real IDT is used in the cpu entry area */
- static gate_desc idt_table[IDT_ENTRIES] __page_aligned_bss;
+diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
+index eb95372..63ed8fe 100644
+--- a/arch/x86/include/asm/msr-index.h
++++ b/arch/x86/include/asm/msr-index.h
+@@ -422,11 +422,8 @@
+ #define MSR_AMD_PERF_CTL		0xc0010062
+ #define MSR_AMD_PERF_STATUS		0xc0010063
+ #define MSR_AMD_PSTATE_DEF_BASE		0xc0010064
+-#define MSR_F15H_CU_PWR_ACCUMULATOR     0xc001007a
+-#define MSR_F15H_CU_MAX_PWR_ACCUMULATOR 0xc001007b
+ #define MSR_AMD64_OSVW_ID_LENGTH	0xc0010140
+ #define MSR_AMD64_OSVW_STATUS		0xc0010141
+-#define MSR_F15H_PTSC			0xc0010280
+ #define MSR_AMD_PPIN_CTL		0xc00102f0
+ #define MSR_AMD_PPIN			0xc00102f1
+ #define MSR_AMD64_CPUID_FN_1		0xc0011004
+@@ -469,6 +466,8 @@
+ #define MSR_F16H_DR0_ADDR_MASK		0xc0011027
  
--struct desc_ptr idt_descr __ro_after_init = {
-+static struct desc_ptr idt_descr __ro_after_init = {
- 	.size		= IDT_TABLE_SIZE - 1,
- 	.address	= (unsigned long) idt_table,
- };
+ /* Fam 15h MSRs */
++#define MSR_F15H_CU_PWR_ACCUMULATOR     0xc001007a
++#define MSR_F15H_CU_MAX_PWR_ACCUMULATOR 0xc001007b
+ #define MSR_F15H_PERF_CTL		0xc0010200
+ #define MSR_F15H_PERF_CTL0		MSR_F15H_PERF_CTL
+ #define MSR_F15H_PERF_CTL1		(MSR_F15H_PERF_CTL + 2)
+diff --git a/tools/arch/x86/include/asm/msr-index.h b/tools/arch/x86/include/asm/msr-index.h
+index 7dfd45b..ef452b8 100644
+--- a/tools/arch/x86/include/asm/msr-index.h
++++ b/tools/arch/x86/include/asm/msr-index.h
+@@ -414,18 +414,15 @@
+ #define MSR_AMD64_PATCH_LEVEL		0x0000008b
+ #define MSR_AMD64_TSC_RATIO		0xc0000104
+ #define MSR_AMD64_NB_CFG		0xc001001f
++#define MSR_AMD64_CPUID_FN_1		0xc0011004
+ #define MSR_AMD64_PATCH_LOADER		0xc0010020
+ #define MSR_AMD_PERF_CTL		0xc0010062
+ #define MSR_AMD_PERF_STATUS		0xc0010063
+ #define MSR_AMD_PSTATE_DEF_BASE		0xc0010064
+-#define MSR_F15H_CU_PWR_ACCUMULATOR     0xc001007a
+-#define MSR_F15H_CU_MAX_PWR_ACCUMULATOR 0xc001007b
+ #define MSR_AMD64_OSVW_ID_LENGTH	0xc0010140
+ #define MSR_AMD64_OSVW_STATUS		0xc0010141
+-#define MSR_F15H_PTSC			0xc0010280
+ #define MSR_AMD_PPIN_CTL		0xc00102f0
+ #define MSR_AMD_PPIN			0xc00102f1
+-#define MSR_AMD64_CPUID_FN_1		0xc0011004
+ #define MSR_AMD64_LS_CFG		0xc0011020
+ #define MSR_AMD64_DC_CFG		0xc0011022
+ #define MSR_AMD64_BU_CFG2		0xc001102a
