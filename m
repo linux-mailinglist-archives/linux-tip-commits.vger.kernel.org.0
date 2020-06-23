@@ -2,42 +2,42 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1EF7F204CED
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 23 Jun 2020 10:49:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B888204CE5
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 23 Jun 2020 10:49:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731735AbgFWIsr (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 23 Jun 2020 04:48:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57902 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731909AbgFWIsc (ORCPT
-        <rfc822;linux-tip-commits@vger.kernel.org>);
+        id S1731904AbgFWIsc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Tue, 23 Jun 2020 04:48:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57898 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731735AbgFWIsb (ORCPT
+        <rfc822;linux-tip-commits@vger.kernel.org>);
+        Tue, 23 Jun 2020 04:48:31 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33D8FC061573;
-        Tue, 23 Jun 2020 01:48:32 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6039CC061573;
+        Tue, 23 Jun 2020 01:48:31 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jnebS-0005Ry-3J; Tue, 23 Jun 2020 10:48:26 +0200
+        id 1jnebS-0005SE-Cp; Tue, 23 Jun 2020 10:48:26 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B0DD91C0470;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id F420A1C0475;
         Tue, 23 Jun 2020 10:48:25 +0200 (CEST)
 Date:   Tue, 23 Jun 2020 08:48:25 -0000
-From:   "tip-bot2 for Juri Lelli" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Scott Wood" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] sched/deadline: Initialize ->dl_boosted
-Cc:     syzbot+5ac8bac25f95e8b221e7@syzkaller.appspotmail.com,
-        Juri Lelli <juri.lelli@redhat.com>,
+Subject: [tip: sched/urgent] sched/core: Check cpus_mask, not cpus_ptr in
+ __set_cpus_allowed_ptr(), to fix mask corruption
+Cc:     Scott Wood <swood@redhat.com>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        Daniel Wagner <dwagner@suse.de>, x86 <x86@kernel.org>,
+        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200617072919.818409-1-juri.lelli@redhat.com>
-References: <20200617072919.818409-1-juri.lelli@redhat.com>
+In-Reply-To: <20200617121742.cpxppyi7twxmpin7@linutronix.de>
+References: <20200617121742.cpxppyi7twxmpin7@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <159290210552.16989.700196687000578235.tip-bot2@tip-bot2>
+Message-ID: <159290210579.16989.15942398303650124692.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -53,47 +53,41 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     1863cc11225e3ea2cd005473f9addc52513ab1bc
-Gitweb:        https://git.kernel.org/tip/1863cc11225e3ea2cd005473f9addc52513ab1bc
-Author:        Juri Lelli <juri.lelli@redhat.com>
-AuthorDate:    Wed, 17 Jun 2020 09:29:19 +02:00
+Commit-ID:     16568f1f4fd4decee6935751d5ada1f963e5bd5f
+Gitweb:        https://git.kernel.org/tip/16568f1f4fd4decee6935751d5ada1f963e5bd5f
+Author:        Scott Wood <swood@redhat.com>
+AuthorDate:    Wed, 17 Jun 2020 14:17:42 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 23 Jun 2020 10:42:39 +02:00
+CommitterDate: Tue, 23 Jun 2020 10:42:30 +02:00
 
-sched/deadline: Initialize ->dl_boosted
+sched/core: Check cpus_mask, not cpus_ptr in __set_cpus_allowed_ptr(), to fix mask corruption
 
-syzbot reported the following warning triggered via SYSC_sched_setattr():
+This function is concerned with the long-term CPU mask, not the
+transitory mask the task might have while migrate disabled.  Before
+this patch, if a task was migrate-disabled at the time
+__set_cpus_allowed_ptr() was called, and the new mask happened to be
+equal to the CPU that the task was running on, then the mask update
+would be lost.
 
-  WARNING: CPU: 0 PID: 6973 at kernel/sched/deadline.c:593 setup_new_dl_entity /kernel/sched/deadline.c:594 [inline]
-  WARNING: CPU: 0 PID: 6973 at kernel/sched/deadline.c:593 enqueue_dl_entity /kernel/sched/deadline.c:1370 [inline]
-  WARNING: CPU: 0 PID: 6973 at kernel/sched/deadline.c:593 enqueue_task_dl+0x1c17/0x2ba0 /kernel/sched/deadline.c:1441
-
-This happens because the ->dl_boosted flag is currently not initialized by
-__dl_clear_params() (unlike the other flags) and setup_new_dl_entity()
-rightfully complains about it.
-
-Initialize dl_boosted to 0.
-
-Fixes: 2d3d891d3344 ("sched/deadline: Add SCHED_DEADLINE inheritance logic")
-Reported-by: syzbot+5ac8bac25f95e8b221e7@syzkaller.appspotmail.com
-Signed-off-by: Juri Lelli <juri.lelli@redhat.com>
+Signed-off-by: Scott Wood <swood@redhat.com>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: Daniel Wagner <dwagner@suse.de>
-Link: https://lkml.kernel.org/r/20200617072919.818409-1-juri.lelli@redhat.com
+Link: https://lkml.kernel.org/r/20200617121742.cpxppyi7twxmpin7@linutronix.de
 ---
- kernel/sched/deadline.c | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/sched/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
-index 504d2f5..f63f337 100644
---- a/kernel/sched/deadline.c
-+++ b/kernel/sched/deadline.c
-@@ -2692,6 +2692,7 @@ void __dl_clear_params(struct task_struct *p)
- 	dl_se->dl_bw			= 0;
- 	dl_se->dl_density		= 0;
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 8f36032..9eeac94 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -1637,7 +1637,7 @@ static int __set_cpus_allowed_ptr(struct task_struct *p,
+ 		goto out;
+ 	}
  
-+	dl_se->dl_boosted		= 0;
- 	dl_se->dl_throttled		= 0;
- 	dl_se->dl_yielded		= 0;
- 	dl_se->dl_non_contending	= 0;
+-	if (cpumask_equal(p->cpus_ptr, new_mask))
++	if (cpumask_equal(&p->cpus_mask, new_mask))
+ 		goto out;
+ 
+ 	/*
