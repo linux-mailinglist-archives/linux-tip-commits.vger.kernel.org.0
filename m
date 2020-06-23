@@ -2,40 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 87D6C204CE6
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 23 Jun 2020 10:49:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E64F5205600
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 23 Jun 2020 17:34:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731932AbgFWIsf (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 23 Jun 2020 04:48:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57912 "EHLO
+        id S1732910AbgFWPeN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 23 Jun 2020 11:34:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731923AbgFWIsd (ORCPT
+        with ESMTP id S1732738AbgFWPeN (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 23 Jun 2020 04:48:33 -0400
+        Tue, 23 Jun 2020 11:34:13 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C076C061573;
-        Tue, 23 Jun 2020 01:48:33 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F17E4C061573;
+        Tue, 23 Jun 2020 08:34:12 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jnebS-0005Sc-P3; Tue, 23 Jun 2020 10:48:26 +0200
+        id 1jnkw5-0004ii-3F; Tue, 23 Jun 2020 17:34:09 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 427671C0244;
-        Tue, 23 Jun 2020 10:48:26 +0200 (CEST)
-Date:   Tue, 23 Jun 2020 08:48:26 -0000
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 99A671C0244;
+        Tue, 23 Jun 2020 17:34:08 +0200 (CEST)
+Date:   Tue, 23 Jun 2020 15:34:08 -0000
+From:   "tip-bot2 for Smita Koralahalli" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] sched/core: Fix CONFIG_GCC_PLUGIN_RANDSTRUCT build fail
-Cc:     Guenter Roeck <linux@roeck-us.net>,
-        Eric Biggers <ebiggers@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
+Subject: [tip: ras/core] x86/mce, EDAC/mce_amd: Print PPIN in machine check records
+Cc:     Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>,
+        Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200623130059.8870-1-Smita.KoralahalliChannabasappa@amd.com>
+References: <20200623130059.8870-1-Smita.KoralahalliChannabasappa@amd.com>
 MIME-Version: 1.0
-Message-ID: <159290210605.16989.8416808471996833605.tip-bot2@tip-bot2>
+Message-ID: <159292644833.16989.6633406941442474349.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -49,44 +48,54 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/urgent branch of tip:
+The following commit has been merged into the ras/core branch of tip:
 
-Commit-ID:     bc2d9d93ad336edce50ee4a52229076addb8fcdc
-Gitweb:        https://git.kernel.org/tip/bc2d9d93ad336edce50ee4a52229076addb8fcdc
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Wed, 10 Jun 2020 12:14:09 +02:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 23 Jun 2020 10:30:57 +02:00
+Commit-ID:     bb2de0adca217a114ce023489426e24152e4bfcf
+Gitweb:        https://git.kernel.org/tip/bb2de0adca217a114ce023489426e24152e4bfcf
+Author:        Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
+AuthorDate:    Tue, 23 Jun 2020 08:00:59 -05:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Tue, 23 Jun 2020 17:27:53 +02:00
 
-sched/core: Fix CONFIG_GCC_PLUGIN_RANDSTRUCT build fail
+x86/mce, EDAC/mce_amd: Print PPIN in machine check records
 
-As a temporary build fix, the proper cleanup needs more work.
+Print the Protected Processor Identification Number (PPIN) on processors
+which support it.
 
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Reported-by: Eric Biggers <ebiggers@kernel.org>
-Suggested-by: Eric Biggers <ebiggers@kernel.org>
-Suggested-by: Kees Cook <keescook@chromium.org>
-Fixes: a148866489fb ("sched: Replace rq::wake_list")
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
+ [ bp: Massage. ]
+
+Signed-off-by: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lkml.kernel.org/r/20200623130059.8870-1-Smita.KoralahalliChannabasappa@amd.com
 ---
- include/linux/sched.h | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/x86/kernel/cpu/mce/core.c | 2 ++
+ drivers/edac/mce_amd.c         | 3 +++
+ 2 files changed, 5 insertions(+)
 
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index b62e6aa..224b5de 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -654,8 +654,10 @@ struct task_struct {
- 	unsigned int			ptrace;
+diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
+index ce9120c..0865349 100644
+--- a/arch/x86/kernel/cpu/mce/core.c
++++ b/arch/x86/kernel/cpu/mce/core.c
+@@ -244,6 +244,8 @@ static void __print_mce(struct mce *m)
+ 		pr_cont("ADDR %llx ", m->addr);
+ 	if (m->misc)
+ 		pr_cont("MISC %llx ", m->misc);
++	if (m->ppin)
++		pr_cont("PPIN %llx ", m->ppin);
  
- #ifdef CONFIG_SMP
--	struct llist_node		wake_entry;
--	unsigned int			wake_entry_type;
-+	struct {
-+		struct llist_node		wake_entry;
-+		unsigned int			wake_entry_type;
-+	};
- 	int				on_cpu;
- #ifdef CONFIG_THREAD_INFO_IN_TASK
- 	/* Current CPU: */
+ 	if (mce_flags.smca) {
+ 		if (m->synd)
+diff --git a/drivers/edac/mce_amd.c b/drivers/edac/mce_amd.c
+index 2b5401d..325aedf 100644
+--- a/drivers/edac/mce_amd.c
++++ b/drivers/edac/mce_amd.c
+@@ -1094,6 +1094,9 @@ amd_decode_mce(struct notifier_block *nb, unsigned long val, void *data)
+ 	if (m->status & MCI_STATUS_ADDRV)
+ 		pr_emerg(HW_ERR "Error Addr: 0x%016llx\n", m->addr);
+ 
++	if (m->ppin)
++		pr_emerg(HW_ERR "PPIN: 0x%016llx\n", m->ppin);
++
+ 	if (boot_cpu_has(X86_FEATURE_SMCA)) {
+ 		pr_emerg(HW_ERR "IPID: 0x%016llx", m->ipid);
+ 
