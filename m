@@ -2,39 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 75A61203D5A
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 22 Jun 2020 19:01:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F0C12204AD9
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 23 Jun 2020 09:20:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729689AbgFVRB0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 22 Jun 2020 13:01:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52398 "EHLO
+        id S1731311AbgFWHTt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 23 Jun 2020 03:19:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44184 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729603AbgFVRBZ (ORCPT
+        with ESMTP id S1730992AbgFWHTs (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 22 Jun 2020 13:01:25 -0400
+        Tue, 23 Jun 2020 03:19:48 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D95C4C061573;
-        Mon, 22 Jun 2020 10:01:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68AAAC061573;
+        Tue, 23 Jun 2020 00:19:48 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jnPox-0005ms-Mb; Mon, 22 Jun 2020 19:01:23 +0200
+        id 1jndDb-0003Bn-56; Tue, 23 Jun 2020 09:19:43 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 0652D1C0051;
-        Mon, 22 Jun 2020 19:01:23 +0200 (CEST)
-Date:   Mon, 22 Jun 2020 17:01:22 -0000
-From:   "tip-bot2 for Andy Lutomirski" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D64161C0470;
+        Tue, 23 Jun 2020 09:19:41 +0200 (CEST)
+Date:   Tue, 23 Jun 2020 07:19:41 -0000
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/fsgsbase] selftests/x86: Add a syscall_arg_fault_64 test
- for negative GSBASE
-Cc:     Andy Lutomirski <luto@kernel.org>, Borislav Petkov <bp@suse.de>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <f4f71efc91b9eae5e3dae21c9aee1c70cf5f370e.1590620529.git.luto@kernel.org>
-References: <f4f71efc91b9eae5e3dae21c9aee1c70cf5f370e.1590620529.git.luto@kernel.org>
+Subject: [tip: sched/urgent] sched: s/WF_ON_RQ/WQ_ON_CPU/
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Mel Gorman <mgorman@suse.de>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200622100825.785115830@infradead.org>
+References: <20200622100825.785115830@infradead.org>
 MIME-Version: 1.0
-Message-ID: <159284528271.16989.5534524906632422674.tip-bot2@tip-bot2>
+Message-ID: <159289678161.16989.18175975273999269504.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,77 +48,59 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/fsgsbase branch of tip:
+The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     a5d25e01c8146ad8846da4760422e12242fceafe
-Gitweb:        https://git.kernel.org/tip/a5d25e01c8146ad8846da4760422e12242fceafe
-Author:        Andy Lutomirski <luto@kernel.org>
-AuthorDate:    Wed, 27 May 2020 16:02:36 -07:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 22 Jun 2020 18:56:36 +02:00
+Commit-ID:     38d8705bb63d19747eb6259c22c54d18cc47e4f7
+Gitweb:        https://git.kernel.org/tip/38d8705bb63d19747eb6259c22c54d18cc47e4f7
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Mon, 22 Jun 2020 12:01:24 +02:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Mon, 22 Jun 2020 20:51:06 +02:00
 
-selftests/x86: Add a syscall_arg_fault_64 test for negative GSBASE
+sched: s/WF_ON_RQ/WQ_ON_CPU/
 
-If the kernel erroneously allows WRGSBASE and user code writes a
-negative value, paranoid_entry will get confused. Check for this by
-writing a negative value to GSBASE and doing SYSENTER with TF set. A
-successful run looks like:
+Avoids confusion...
 
-    [RUN]	SYSENTER with TF, invalid state, and GSBASE < 0
-    [SKIP]	Illegal instruction
-
-A failed run causes a kernel hang, and I believe it's because we
-double-fault and then get a never ending series of page faults and,
-when we exhaust the double fault stack we double fault again,
-starting the process over.
-
-Signed-off-by: Andy Lutomirski <luto@kernel.org>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/f4f71efc91b9eae5e3dae21c9aee1c70cf5f370e.1590620529.git.luto@kernel.org
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Mel Gorman <mgorman@suse.de>
+Link: https://lkml.kernel.org/r/20200622100825.785115830@infradead.org
 ---
- tools/testing/selftests/x86/syscall_arg_fault.c | 26 ++++++++++++++++-
- 1 file changed, 26 insertions(+)
+ kernel/sched/core.c  | 4 ++--
+ kernel/sched/sched.h | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/x86/syscall_arg_fault.c b/tools/testing/selftests/x86/syscall_arg_fault.c
-index bc0ecc2..62fba40 100644
---- a/tools/testing/selftests/x86/syscall_arg_fault.c
-+++ b/tools/testing/selftests/x86/syscall_arg_fault.c
-@@ -72,6 +72,7 @@ static void sigsegv_or_sigbus(int sig, siginfo_t *info, void *ctx_void)
- 	if (ax != -EFAULT && ax != -ENOSYS) {
- 		printf("[FAIL]\tAX had the wrong value: 0x%lx\n",
- 		       (unsigned long)ax);
-+		printf("\tIP = 0x%lx\n", (unsigned long)ctx->uc_mcontext.gregs[REG_IP]);
- 		n_errs++;
- 	} else {
- 		printf("[OK]\tSeems okay\n");
-@@ -226,5 +227,30 @@ int main()
- 	}
- 	set_eflags(get_eflags() & ~X86_EFLAGS_TF);
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 3328c29..019db7a 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -2376,7 +2376,7 @@ static inline bool ttwu_queue_cond(int cpu, int wake_flags)
+ 	 * the soon-to-be-idle CPU as the current CPU is likely busy.
+ 	 * nr_running is checked to avoid unnecessary task stacking.
+ 	 */
+-	if ((wake_flags & WF_ON_RQ) && cpu_rq(cpu)->nr_running <= 1)
++	if ((wake_flags & WF_ON_CPU) && cpu_rq(cpu)->nr_running <= 1)
+ 		return true;
  
-+#ifdef __x86_64__
-+	printf("[RUN]\tSYSENTER with TF, invalid state, and GSBASE < 0\n");
-+
-+	if (sigsetjmp(jmpbuf, 1) == 0) {
-+		sigtrap_consecutive_syscalls = 0;
-+
-+		asm volatile ("wrgsbase %%rax\n\t"
-+			      :: "a" (0xffffffffffff0000UL));
-+
-+		set_eflags(get_eflags() | X86_EFLAGS_TF);
-+		asm volatile (
-+			"movl $-1, %%eax\n\t"
-+			"movl $-1, %%ebx\n\t"
-+			"movl $-1, %%ecx\n\t"
-+			"movl $-1, %%edx\n\t"
-+			"movl $-1, %%esi\n\t"
-+			"movl $-1, %%edi\n\t"
-+			"movl $-1, %%ebp\n\t"
-+			"movl $-1, %%esp\n\t"
-+			"sysenter"
-+			: : : "memory", "flags");
-+	}
-+	set_eflags(get_eflags() & ~X86_EFLAGS_TF);
-+#endif
-+
- 	return 0;
- }
+ 	return false;
+@@ -2636,7 +2636,7 @@ try_to_wake_up(struct task_struct *p, unsigned int state, int wake_flags)
+ 	 * scheduling.
+ 	 */
+ 	if (smp_load_acquire(&p->on_cpu) &&
+-	    ttwu_queue_wakelist(p, task_cpu(p), wake_flags | WF_ON_RQ))
++	    ttwu_queue_wakelist(p, task_cpu(p), wake_flags | WF_ON_CPU))
+ 		goto unlock;
+ 
+ 	/*
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index 1d4e94c..877fb08 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -1682,7 +1682,7 @@ static inline int task_on_rq_migrating(struct task_struct *p)
+ #define WF_SYNC			0x01		/* Waker goes to sleep after wakeup */
+ #define WF_FORK			0x02		/* Child wakeup after fork */
+ #define WF_MIGRATED		0x04		/* Internal use, task got migrated */
+-#define WF_ON_RQ		0x08		/* Wakee is on_rq */
++#define WF_ON_CPU		0x08		/* Wakee is on_cpu */
+ 
+ /*
+  * To aid in avoiding the subversion of "niceness" due to uneven distribution
