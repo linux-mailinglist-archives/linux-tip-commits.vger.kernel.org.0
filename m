@@ -2,39 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E64F5205600
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 23 Jun 2020 17:34:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 81B25209B7B
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 25 Jun 2020 10:45:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732910AbgFWPeN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 23 Jun 2020 11:34:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36344 "EHLO
+        id S2390179AbgFYIpo (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 25 Jun 2020 04:45:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50140 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732738AbgFWPeN (ORCPT
+        with ESMTP id S2390025AbgFYIpo (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 23 Jun 2020 11:34:13 -0400
+        Thu, 25 Jun 2020 04:45:44 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F17E4C061573;
-        Tue, 23 Jun 2020 08:34:12 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73913C061573;
+        Thu, 25 Jun 2020 01:45:44 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1jnkw5-0004ii-3F; Tue, 23 Jun 2020 17:34:09 +0200
+        id 1joNVr-0002of-OW; Thu, 25 Jun 2020 10:45:39 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 99A671C0244;
-        Tue, 23 Jun 2020 17:34:08 +0200 (CEST)
-Date:   Tue, 23 Jun 2020 15:34:08 -0000
-From:   "tip-bot2 for Smita Koralahalli" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 360551C0092;
+        Thu, 25 Jun 2020 10:45:39 +0200 (CEST)
+Date:   Thu, 25 Jun 2020 08:45:38 -0000
+From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: ras/core] x86/mce, EDAC/mce_amd: Print PPIN in machine check records
-Cc:     Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>,
-        Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200623130059.8870-1-Smita.KoralahalliChannabasappa@amd.com>
-References: <20200623130059.8870-1-Smita.KoralahalliChannabasappa@amd.com>
+Subject: [tip: x86/misc] x86/msr: Filter MSR writes
+Cc:     kernel test robot <lkp@intel.com>, Borislav Petkov <bp@suse.de>,
+        Sean Christopherson <sean.j.christopherson@intel.com>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200612105026.GA22660@zn.tnic>
+References: <20200612105026.GA22660@zn.tnic>
 MIME-Version: 1.0
-Message-ID: <159292644833.16989.6633406941442474349.tip-bot2@tip-bot2>
+Message-ID: <159307473887.16989.17345471306220440079.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -48,54 +48,159 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the ras/core branch of tip:
+The following commit has been merged into the x86/misc branch of tip:
 
-Commit-ID:     bb2de0adca217a114ce023489426e24152e4bfcf
-Gitweb:        https://git.kernel.org/tip/bb2de0adca217a114ce023489426e24152e4bfcf
-Author:        Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
-AuthorDate:    Tue, 23 Jun 2020 08:00:59 -05:00
+Commit-ID:     a7e1f67ed29f0c339e2aa7483d13b085127566ab
+Gitweb:        https://git.kernel.org/tip/a7e1f67ed29f0c339e2aa7483d13b085127566ab
+Author:        Borislav Petkov <bp@suse.de>
+AuthorDate:    Wed, 10 Jun 2020 21:37:49 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 23 Jun 2020 17:27:53 +02:00
+CommitterDate: Thu, 25 Jun 2020 10:39:02 +02:00
 
-x86/mce, EDAC/mce_amd: Print PPIN in machine check records
+x86/msr: Filter MSR writes
 
-Print the Protected Processor Identification Number (PPIN) on processors
-which support it.
+Add functionality to disable writing to MSRs from userspace. Writes can
+still be allowed by supplying the allow_writes=on module parameter. The
+kernel will be tainted so that it shows in oopses.
 
- [ bp: Massage. ]
+Having unfettered access to all MSRs on a system is and has always been
+a disaster waiting to happen. Think performance counter MSRs, MSRs with
+sticky or locked bits, MSRs making major system changes like loading
+microcode, MTRRs, PAT configuration, TSC counter, security mitigations
+MSRs, you name it.
 
-Signed-off-by: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
+This also destroys all the kernel's caching of MSR values for
+performance, as the recent case with MSR_AMD64_LS_CFG showed.
+
+Another example is writing MSRs by mistake by simply typing the wrong
+MSR address. System freezes have been experienced that way.
+
+In general, poking at MSRs under the kernel's feet is a bad bad idea.
+
+So log writing to MSRs by default. Longer term, such writes will be
+disabled by default.
+
+If userspace still wants to do that, then proper interfaces should be
+defined which are under the kernel's control and accesses to those MSRs
+can be synchronized and sanitized properly.
+
+[ Fix sparse warnings. ]
+Reported-by: kernel test robot <lkp@intel.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20200623130059.8870-1-Smita.KoralahalliChannabasappa@amd.com
+Tested-by: Sean Christopherson <sean.j.christopherson@intel.com>
+Link: https://lkml.kernel.org/r/20200612105026.GA22660@zn.tnic
 ---
- arch/x86/kernel/cpu/mce/core.c | 2 ++
- drivers/edac/mce_amd.c         | 3 +++
- 2 files changed, 5 insertions(+)
+ arch/x86/kernel/msr.c | 69 ++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 69 insertions(+)
 
-diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
-index ce9120c..0865349 100644
---- a/arch/x86/kernel/cpu/mce/core.c
-+++ b/arch/x86/kernel/cpu/mce/core.c
-@@ -244,6 +244,8 @@ static void __print_mce(struct mce *m)
- 		pr_cont("ADDR %llx ", m->addr);
- 	if (m->misc)
- 		pr_cont("MISC %llx ", m->misc);
-+	if (m->ppin)
-+		pr_cont("PPIN %llx ", m->ppin);
+diff --git a/arch/x86/kernel/msr.c b/arch/x86/kernel/msr.c
+index 1547be3..49dcfb8 100644
+--- a/arch/x86/kernel/msr.c
++++ b/arch/x86/kernel/msr.c
+@@ -42,6 +42,14 @@
+ static struct class *msr_class;
+ static enum cpuhp_state cpuhp_msr_state;
  
- 	if (mce_flags.smca) {
- 		if (m->synd)
-diff --git a/drivers/edac/mce_amd.c b/drivers/edac/mce_amd.c
-index 2b5401d..325aedf 100644
---- a/drivers/edac/mce_amd.c
-+++ b/drivers/edac/mce_amd.c
-@@ -1094,6 +1094,9 @@ amd_decode_mce(struct notifier_block *nb, unsigned long val, void *data)
- 	if (m->status & MCI_STATUS_ADDRV)
- 		pr_emerg(HW_ERR "Error Addr: 0x%016llx\n", m->addr);
- 
-+	if (m->ppin)
-+		pr_emerg(HW_ERR "PPIN: 0x%016llx\n", m->ppin);
++enum allow_write_msrs {
++	MSR_WRITES_ON,
++	MSR_WRITES_OFF,
++	MSR_WRITES_DEFAULT,
++};
 +
- 	if (boot_cpu_has(X86_FEATURE_SMCA)) {
- 		pr_emerg(HW_ERR "IPID: 0x%016llx", m->ipid);
++static enum allow_write_msrs allow_writes = MSR_WRITES_DEFAULT;
++
+ static ssize_t msr_read(struct file *file, char __user *buf,
+ 			size_t count, loff_t *ppos)
+ {
+@@ -70,6 +78,24 @@ static ssize_t msr_read(struct file *file, char __user *buf,
+ 	return bytes ? bytes : err;
+ }
  
++static int filter_write(u32 reg)
++{
++	switch (allow_writes) {
++	case MSR_WRITES_ON:  return 0;
++	case MSR_WRITES_OFF: return -EPERM;
++	default: break;
++	}
++
++	if (reg == MSR_IA32_ENERGY_PERF_BIAS)
++		return 0;
++
++	pr_err_ratelimited("Write to unrecognized MSR 0x%x by %s\n"
++			   "Please report to x86@kernel.org\n",
++			   reg, current->comm);
++
++	return 0;
++}
++
+ static ssize_t msr_write(struct file *file, const char __user *buf,
+ 			 size_t count, loff_t *ppos)
+ {
+@@ -84,6 +110,10 @@ static ssize_t msr_write(struct file *file, const char __user *buf,
+ 	if (err)
+ 		return err;
+ 
++	err = filter_write(reg);
++	if (err)
++		return err;
++
+ 	if (count % 8)
+ 		return -EINVAL;	/* Invalid chunk size */
+ 
+@@ -92,9 +122,13 @@ static ssize_t msr_write(struct file *file, const char __user *buf,
+ 			err = -EFAULT;
+ 			break;
+ 		}
++
++		add_taint(TAINT_CPU_OUT_OF_SPEC, LOCKDEP_STILL_OK);
++
+ 		err = wrmsr_safe_on_cpu(cpu, reg, data[0], data[1]);
+ 		if (err)
+ 			break;
++
+ 		tmp += 2;
+ 		bytes += 8;
+ 	}
+@@ -242,6 +276,41 @@ static void __exit msr_exit(void)
+ }
+ module_exit(msr_exit)
+ 
++static int set_allow_writes(const char *val, const struct kernel_param *cp)
++{
++	/* val is NUL-terminated, see kernfs_fop_write() */
++	char *s = strstrip((char *)val);
++
++	if (!strcmp(s, "on"))
++		allow_writes = MSR_WRITES_ON;
++	else if (!strcmp(s, "off"))
++		allow_writes = MSR_WRITES_OFF;
++	else
++		allow_writes = MSR_WRITES_DEFAULT;
++
++	return 0;
++}
++
++static int get_allow_writes(char *buf, const struct kernel_param *kp)
++{
++	const char *res;
++
++	switch (allow_writes) {
++	case MSR_WRITES_ON:  res = "on"; break;
++	case MSR_WRITES_OFF: res = "off"; break;
++	default: res = "default"; break;
++	}
++
++	return sprintf(buf, "%s\n", res);
++}
++
++static const struct kernel_param_ops allow_writes_ops = {
++	.set = set_allow_writes,
++	.get = get_allow_writes
++};
++
++module_param_cb(allow_writes, &allow_writes_ops, NULL, 0600);
++
+ MODULE_AUTHOR("H. Peter Anvin <hpa@zytor.com>");
+ MODULE_DESCRIPTION("x86 generic MSR driver");
+ MODULE_LICENSE("GPL");
