@@ -2,41 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A055A209DDB
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 25 Jun 2020 13:54:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B482209DC5
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 25 Jun 2020 13:53:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404397AbgFYLxj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 25 Jun 2020 07:53:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50778 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404378AbgFYLxi (ORCPT
-        <rfc822;linux-tip-commits@vger.kernel.org>);
+        id S2404387AbgFYLxi (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Thu, 25 Jun 2020 07:53:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50776 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2404374AbgFYLxh (ORCPT
+        <rfc822;linux-tip-commits@vger.kernel.org>);
+        Thu, 25 Jun 2020 07:53:37 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE4E8C061795;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 323C3C061573;
         Thu, 25 Jun 2020 04:53:37 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1joQRh-0005sI-8O; Thu, 25 Jun 2020 13:53:33 +0200
+        id 1joQRh-0005sf-Qz; Thu, 25 Jun 2020 13:53:33 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D39AB1C0470;
-        Thu, 25 Jun 2020 13:53:32 +0200 (CEST)
-Date:   Thu, 25 Jun 2020 11:53:32 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 69F5D1C0092;
+        Thu, 25 Jun 2020 13:53:33 +0200 (CEST)
+Date:   Thu, 25 Jun 2020 11:53:33 -0000
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/entry] x86/entry: Increase entry_stack size to a full page
-Cc:     Andy Lutomirski <luto@amacapital.net>,
-        Marco Elver <elver@google.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Lai Jiangshan <jiangshanlai@gmail.com>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200618144801.819246178@infradead.org>
-References: <20200618144801.819246178@infradead.org>
+Subject: [tip: x86/entry] objtool: Don't consider vmlinux a C-file
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200618144801.701257527@infradead.org>
+References: <20200618144801.701257527@infradead.org>
 MIME-Version: 1.0
-Message-ID: <159308601261.16989.8417394079734931145.tip-bot2@tip-bot2>
+Message-ID: <159308601322.16989.8335361589316062237.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -52,39 +49,33 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/entry branch of tip:
 
-Commit-ID:     c7aadc09321d8f9a1d3bd1e6d8a47222ecddf6c5
-Gitweb:        https://git.kernel.org/tip/c7aadc09321d8f9a1d3bd1e6d8a47222ecddf6c5
+Commit-ID:     734d099ba644f5a92c70efa3d54d0ba2500ce162
+Gitweb:        https://git.kernel.org/tip/734d099ba644f5a92c70efa3d54d0ba2500ce162
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Wed, 17 Jun 2020 18:25:57 +02:00
+AuthorDate:    Wed, 17 Jun 2020 18:22:31 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Thu, 25 Jun 2020 13:45:40 +02:00
+CommitterDate: Thu, 25 Jun 2020 13:45:39 +02:00
 
-x86/entry: Increase entry_stack size to a full page
+objtool: Don't consider vmlinux a C-file
 
-Marco crashed in bad_iret with a Clang11/KCSAN build due to
-overflowing the stack. Now that we run C code on it, expand it to a
-full page.
+Avoids issuing C-file warnings for vmlinux.
 
-Suggested-by: Andy Lutomirski <luto@amacapital.net>
-Reported-by: Marco Elver <elver@google.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Lai Jiangshan <jiangshanlai@gmail.com>
-Tested-by: Marco Elver <elver@google.com>
-Link: https://lkml.kernel.org/r/20200618144801.819246178@infradead.org
+Link: https://lkml.kernel.org/r/20200618144801.701257527@infradead.org
 ---
- arch/x86/include/asm/processor.h | 2 +-
+ tools/objtool/check.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
-index 42cd333..03b7c4c 100644
---- a/arch/x86/include/asm/processor.h
-+++ b/arch/x86/include/asm/processor.h
-@@ -370,7 +370,7 @@ struct x86_hw_tss {
- #define IO_BITMAP_OFFSET_INVALID	(__KERNEL_TSS_LIMIT + 1)
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index 3e214f8..d8eaa7d 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -2772,7 +2772,7 @@ int check(const char *_objname, bool orc)
  
- struct entry_stack {
--	unsigned long		words[64];
-+	char	stack[PAGE_SIZE];
- };
+ 	INIT_LIST_HEAD(&file.insn_list);
+ 	hash_init(file.insn_hash);
+-	file.c_file = find_section_by_name(file.elf, ".comment");
++	file.c_file = !vmlinux && find_section_by_name(file.elf, ".comment");
+ 	file.ignore_unreachables = no_unreachable;
+ 	file.hints = false;
  
- struct entry_stack_page {
