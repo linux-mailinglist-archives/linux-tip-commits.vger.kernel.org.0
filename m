@@ -2,39 +2,41 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B255209DDE
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 25 Jun 2020 13:55:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A055A209DDB
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 25 Jun 2020 13:54:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404572AbgFYLye (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 25 Jun 2020 07:54:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50770 "EHLO
+        id S2404397AbgFYLxj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 25 Jun 2020 07:53:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728063AbgFYLxg (ORCPT
+        with ESMTP id S2404378AbgFYLxi (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 25 Jun 2020 07:53:36 -0400
+        Thu, 25 Jun 2020 07:53:38 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CA04C061573;
-        Thu, 25 Jun 2020 04:53:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE4E8C061795;
+        Thu, 25 Jun 2020 04:53:37 -0700 (PDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1joQRg-0005sB-UR; Thu, 25 Jun 2020 13:53:33 +0200
+        id 1joQRh-0005sI-8O; Thu, 25 Jun 2020 13:53:33 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 7C5551C0092;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id D39AB1C0470;
         Thu, 25 Jun 2020 13:53:32 +0200 (CEST)
 Date:   Thu, 25 Jun 2020 11:53:32 -0000
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/entry] x86/entry: Fix #UD vs WARN more
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Andy Lutomirski <luto@kernel.org>, x86 <x86@kernel.org>,
+Subject: [tip: x86/entry] x86/entry: Increase entry_stack size to a full page
+Cc:     Andy Lutomirski <luto@amacapital.net>,
+        Marco Elver <elver@google.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Lai Jiangshan <jiangshanlai@gmail.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200622114713.GE577403@hirez.programming.kicks-ass.net>
-References: <20200622114713.GE577403@hirez.programming.kicks-ass.net>
+In-Reply-To: <20200618144801.819246178@infradead.org>
+References: <20200618144801.819246178@infradead.org>
 MIME-Version: 1.0
-Message-ID: <159308601215.16989.11684885436197238827.tip-bot2@tip-bot2>
+Message-ID: <159308601261.16989.8417394079734931145.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,126 +52,39 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/entry branch of tip:
 
-Commit-ID:     145a773aef83181d47ebab21bb33c89233aadb1e
-Gitweb:        https://git.kernel.org/tip/145a773aef83181d47ebab21bb33c89233aadb1e
+Commit-ID:     c7aadc09321d8f9a1d3bd1e6d8a47222ecddf6c5
+Gitweb:        https://git.kernel.org/tip/c7aadc09321d8f9a1d3bd1e6d8a47222ecddf6c5
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Tue, 16 Jun 2020 13:28:36 +02:00
+AuthorDate:    Wed, 17 Jun 2020 18:25:57 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Thu, 25 Jun 2020 13:45:40 +02:00
 
-x86/entry: Fix #UD vs WARN more
+x86/entry: Increase entry_stack size to a full page
 
-vmlinux.o: warning: objtool: exc_invalid_op()+0x47: call to probe_kernel_read() leaves .noinstr.text section
+Marco crashed in bad_iret with a Clang11/KCSAN build due to
+overflowing the stack. Now that we run C code on it, expand it to a
+full page.
 
-Since we use UD2 as a short-cut for 'CALL __WARN', treat it as such.
-Have the bare exception handler do the report_bug() thing.
-
-Fixes: 15a416e8aaa7 ("x86/entry: Treat BUG/WARN as NMI-like entries")
+Suggested-by: Andy Lutomirski <luto@amacapital.net>
+Reported-by: Marco Elver <elver@google.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Andy Lutomirski <luto@kernel.org>
-Link: https://lkml.kernel.org/r/20200622114713.GE577403@hirez.programming.kicks-ass.net
+Reviewed-by: Lai Jiangshan <jiangshanlai@gmail.com>
+Tested-by: Marco Elver <elver@google.com>
+Link: https://lkml.kernel.org/r/20200618144801.819246178@infradead.org
 ---
- arch/x86/kernel/traps.c | 72 +++++++++++++++++++++-------------------
- 1 file changed, 38 insertions(+), 34 deletions(-)
+ arch/x86/include/asm/processor.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
-index a7d1570..1d9ea21 100644
---- a/arch/x86/kernel/traps.c
-+++ b/arch/x86/kernel/traps.c
-@@ -84,17 +84,16 @@ static inline void cond_local_irq_disable(struct pt_regs *regs)
- 		local_irq_disable();
- }
+diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
+index 42cd333..03b7c4c 100644
+--- a/arch/x86/include/asm/processor.h
++++ b/arch/x86/include/asm/processor.h
+@@ -370,7 +370,7 @@ struct x86_hw_tss {
+ #define IO_BITMAP_OFFSET_INVALID	(__KERNEL_TSS_LIMIT + 1)
  
--int is_valid_bugaddr(unsigned long addr)
-+__always_inline int is_valid_bugaddr(unsigned long addr)
- {
--	unsigned short ud;
--
- 	if (addr < TASK_SIZE_MAX)
- 		return 0;
+ struct entry_stack {
+-	unsigned long		words[64];
++	char	stack[PAGE_SIZE];
+ };
  
--	if (probe_kernel_address((unsigned short *)addr, ud))
--		return 0;
--
--	return ud == INSN_UD0 || ud == INSN_UD2;
-+	/*
-+	 * We got #UD, if the text isn't readable we'd have gotten
-+	 * a different exception.
-+	 */
-+	return *(unsigned short *)addr == INSN_UD2;
- }
- 
- static nokprobe_inline int
-@@ -216,40 +215,45 @@ static inline void handle_invalid_op(struct pt_regs *regs)
- 		      ILL_ILLOPN, error_get_trap_addr(regs));
- }
- 
--DEFINE_IDTENTRY_RAW(exc_invalid_op)
-+static noinstr bool handle_bug(struct pt_regs *regs)
- {
--	bool rcu_exit;
-+	bool handled = false;
-+
-+	if (!is_valid_bugaddr(regs->ip))
-+		return handled;
- 
- 	/*
--	 * Handle BUG/WARN like NMIs instead of like normal idtentries:
--	 * if we bugged/warned in a bad RCU context, for example, the last
--	 * thing we want is to BUG/WARN again in the idtentry code, ad
--	 * infinitum.
-+	 * All lies, just get the WARN/BUG out.
- 	 */
--	if (!user_mode(regs) && is_valid_bugaddr(regs->ip)) {
--		enum bug_trap_type type;
-+	instrumentation_begin();
-+	/*
-+	 * Since we're emulating a CALL with exceptions, restore the interrupt
-+	 * state to what it was at the exception site.
-+	 */
-+	if (regs->flags & X86_EFLAGS_IF)
-+		raw_local_irq_enable();
-+	if (report_bug(regs->ip, regs) == BUG_TRAP_TYPE_WARN) {
-+		regs->ip += LEN_UD2;
-+		handled = true;
-+	}
-+	if (regs->flags & X86_EFLAGS_IF)
-+		raw_local_irq_disable();
-+	instrumentation_end();
- 
--		nmi_enter();
--		instrumentation_begin();
--		trace_hardirqs_off_finish();
--		type = report_bug(regs->ip, regs);
--		if (regs->flags & X86_EFLAGS_IF)
--			trace_hardirqs_on_prepare();
--		instrumentation_end();
--		nmi_exit();
-+	return handled;
-+}
- 
--		if (type == BUG_TRAP_TYPE_WARN) {
--			/* Skip the ud2. */
--			regs->ip += LEN_UD2;
--			return;
--		}
-+DEFINE_IDTENTRY_RAW(exc_invalid_op)
-+{
-+	bool rcu_exit;
- 
--		/*
--		 * Else, if this was a BUG and report_bug returns or if this
--		 * was just a normal #UD, we want to continue onward and
--		 * crash.
--		 */
--	}
-+	/*
-+	 * We use UD2 as a short encoding for 'CALL __WARN', as such
-+	 * handle it before exception entry to avoid recursive WARN
-+	 * in case exception entry is the one triggering WARNs.
-+	 */
-+	if (!user_mode(regs) && handle_bug(regs))
-+		return;
- 
- 	rcu_exit = idtentry_enter_cond_rcu(regs);
- 	instrumentation_begin();
+ struct entry_stack_page {
