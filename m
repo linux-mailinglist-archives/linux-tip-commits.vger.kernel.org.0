@@ -2,54 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6535E20F25F
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 30 Jun 2020 12:12:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF74C20F430
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 30 Jun 2020 14:12:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732361AbgF3KMD (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 30 Jun 2020 06:12:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42126 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732261AbgF3KLx (ORCPT
+        id S2387462AbgF3MMG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 30 Jun 2020 08:12:06 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:55114 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387461AbgF3MMF (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 30 Jun 2020 06:11:53 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC944C03E979;
-        Tue, 30 Jun 2020 03:11:52 -0700 (PDT)
-Date:   Tue, 30 Jun 2020 10:11:50 -0000
+        Tue, 30 Jun 2020 08:12:05 -0400
+X-Greylist: delayed 7211 seconds by postgrey-1.27 at vger.kernel.org; Tue, 30 Jun 2020 08:12:03 EDT
+Date:   Tue, 30 Jun 2020 12:12:00 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1593511911;
+        s=2020; t=1593519121;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=EoujhNZEUXnfVLu7O8Ad2WynRdcdYfgaBs6bK4tDNIc=;
-        b=HPGbQ8sIDpmJTG2t76BTTXj28h6D8oblKZIxMx5DRj5VERqSUIOC3+mfwIwN2mVyiBTRqp
-        yAQjsYteRwqoiIgVFxE2HzkDolNe6uYtSMLtdS43TAb1HbtGz87W4WY+Y3Kuh2TIrGKYHU
-        uhZcK+l9VSVP2KsuAHXV/b3xf4zKCezSFqtJiphUdgRXE1/M2COtlIt/yZe3P8Y5fX5MwI
-        sQPb3grucmx5KnFJLi3OQ9ii4MbkL5WXzRj28pkivqXqAEFVZHihDKj+prGkHabzeweE3S
-        R9Oi809pNcLRAfob7M8Z3aS0Lr54Df+AJhhJBRJlTCvw08t/OuzQS8NUPiotsQ==
+        bh=QQofTU652nzi7btAijaCF/NR0FRitK1IWHgv5m5mego=;
+        b=VesSUYvpG+xeiFU+CjPj2iqz+cvPvN7MLRhZriIa9gXmuuqbkufLcFaApkIKns4IwO1MDF
+        Ry+u/qDyQR21WCid7ilj4paRTHUkp8REeNlpKYwy6g/bPwtL6LHKU38qnZxOhQhp1EipCl
+        zSlGh0TUtmn4EAXe1f11aaLNTmy/d9bhL9flO8DRK4MMsjp3lMlrGxgyLKRkNfaZ2u+R6D
+        JhiesgXgF6xLrPVoMMTcskLPpJ+OoH7E+tToVqlfShi7Q5W/eWauw9v7kAg2Uxwj7zd7Ui
+        /c56DvagosBVNb+AVmPeWDgG7BeILPrvavLXC1tlMM9tQiZbDT3vpAL1HdHSKw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1593511911;
+        s=2020e; t=1593519121;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=EoujhNZEUXnfVLu7O8Ad2WynRdcdYfgaBs6bK4tDNIc=;
-        b=G3epm60UnWNDsOQX+9zDNdo0vMQpBEgxgqroWQ/NhYTt1eRocYTOfEkkUmiqOIW2PDQGQD
-        FCULZX065I5ZBuCg==
-From:   "tip-bot2 for Zenghui Yu" <tip-bot2@linutronix.de>
+        bh=QQofTU652nzi7btAijaCF/NR0FRitK1IWHgv5m5mego=;
+        b=Uj5+au7XvfZKfsjTst8iYX5redM5PeOmIL4CsqeNPXW0UNQCN4BlPHT8bGO8azFpcKx4ni
+        LZ91jf4vEZplUHCg==
+From:   "tip-bot2 for Sean Christopherson" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/urgent] irqchip/gic-v4.1: Use readx_poll_timeout_atomic()
- to fix sleep in atomic
-Cc:     Zenghui Yu <yuzenghui@huawei.com>, Marc Zyngier <maz@kernel.org>,
+Subject: [tip: x86/urgent] x86/split_lock: Don't write MSR_TEST_CTRL on CPUs
+ that aren't whitelisted
+Cc:     Sean Christopherson <sean.j.christopherson@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200605052345.1494-1-yuzenghui@huawei.com>
-References: <20200605052345.1494-1-yuzenghui@huawei.com>
+In-Reply-To: <20200605192605.7439-1-sean.j.christopherson@intel.com>
+References: <20200605192605.7439-1-sean.j.christopherson@intel.com>
 MIME-Version: 1.0
-Message-ID: <159351191045.4006.6389349419327393336.tip-bot2@tip-bot2>
+Message-ID: <159351912091.4006.8957636138691015363.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,49 +58,118 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the irq/urgent branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     31dbb6b1d025506b3b8b8b74e9b697df47b9f696
-Gitweb:        https://git.kernel.org/tip/31dbb6b1d025506b3b8b8b74e9b697df47b9f696
-Author:        Zenghui Yu <yuzenghui@huawei.com>
-AuthorDate:    Fri, 05 Jun 2020 13:23:45 +08:00
-Committer:     Marc Zyngier <maz@kernel.org>
-CommitterDate: Sun, 21 Jun 2020 15:13:11 +01:00
+Commit-ID:     009bce1df0bb5eb970b9eb98d963861f7fe353c7
+Gitweb:        https://git.kernel.org/tip/009bce1df0bb5eb970b9eb98d963861f7fe353c7
+Author:        Sean Christopherson <sean.j.christopherson@intel.com>
+AuthorDate:    Fri, 05 Jun 2020 12:26:05 -07:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Tue, 30 Jun 2020 14:09:31 +02:00
 
-irqchip/gic-v4.1: Use readx_poll_timeout_atomic() to fix sleep in atomic
+x86/split_lock: Don't write MSR_TEST_CTRL on CPUs that aren't whitelisted
 
-readx_poll_timeout() can sleep if @sleep_us is specified by the caller,
-and is therefore unsafe to be used inside the atomic context, which is
-this case when we use it to poll the GICR_VPENDBASER.Dirty bit in
-irq_set_vcpu_affinity() callback.
+Choo! Choo!  All aboard the Split Lock Express, with direct service to
+Wreckage!
 
-Let's convert to its atomic version instead which helps to get the v4.1
-board back to life!
+Skip split_lock_verify_msr() if the CPU isn't whitelisted as a possible
+SLD-enabled CPU model to avoid writing MSR_TEST_CTRL.  MSR_TEST_CTRL
+exists, and is writable, on many generations of CPUs.  Writing the MSR,
+even with '0', can result in bizarre, undocumented behavior.
 
-Fixes: 96806229ca03 ("irqchip/gic-v4.1: Add support for VPENDBASER's Dirty+Valid signaling")
-Signed-off-by: Zenghui Yu <yuzenghui@huawei.com>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20200605052345.1494-1-yuzenghui@huawei.com
+This fixes a crash on Haswell when resuming from suspend with a live KVM
+guest.  Because APs use the standard SMP boot flow for resume, they will
+go through split_lock_init() and the subsequent RDMSR/WRMSR sequence,
+which runs even when sld_state==sld_off to ensure SLD is disabled.  On
+Haswell (at least, my Haswell), writing MSR_TEST_CTRL with '0' will
+succeed and _may_ take the SMT _sibling_ out of VMX root mode.
+
+When KVM has an active guest, KVM performs VMXON as part of CPU onlining
+(see kvm_starting_cpu()).  Because SMP boot is serialized, the resulting
+flow is effectively:
+
+  on_each_ap_cpu() {
+     WRMSR(MSR_TEST_CTRL, 0)
+     VMXON
+  }
+
+As a result, the WRMSR can disable VMX on a different CPU that has
+already done VMXON.  This ultimately results in a #UD on VMPTRLD when
+KVM regains control and attempt run its vCPUs.
+
+The above voodoo was confirmed by reworking KVM's VMXON flow to write
+MSR_TEST_CTRL prior to VMXON, and to serialize the sequence as above.
+Further verification of the insanity was done by redoing VMXON on all
+APs after the initial WRMSR->VMXON sequence.  The additional VMXON,
+which should VM-Fail, occasionally succeeded, and also eliminated the
+unexpected #UD on VMPTRLD.
+
+The damage done by writing MSR_TEST_CTRL doesn't appear to be limited
+to VMX, e.g. after suspend with an active KVM guest, subsequent reboots
+almost always hang (even when fudging VMXON), a #UD on a random Jcc was
+observed, suspend/resume stability is qualitatively poor, and so on and
+so forth.
+
+  kernel BUG at arch/x86/kvm/x86.c:386!
+  CPU: 1 PID: 2592 Comm: CPU 6/KVM Tainted: G      D
+  Hardware name: ASUS Q87M-E/Q87M-E, BIOS 1102 03/03/2014
+  RIP: 0010:kvm_spurious_fault+0xf/0x20
+  Call Trace:
+   vmx_vcpu_load_vmcs+0x1fb/0x2b0
+   vmx_vcpu_load+0x3e/0x160
+   kvm_arch_vcpu_load+0x48/0x260
+   finish_task_switch+0x140/0x260
+   __schedule+0x460/0x720
+   _cond_resched+0x2d/0x40
+   kvm_arch_vcpu_ioctl_run+0x82e/0x1ca0
+   kvm_vcpu_ioctl+0x363/0x5c0
+   ksys_ioctl+0x88/0xa0
+   __x64_sys_ioctl+0x16/0x20
+   do_syscall_64+0x4c/0x170
+   entry_SYSCALL_64_after_hwframe+0x44/0xa9
+
+Fixes: dbaba47085b0c ("x86/split_lock: Rework the initialization flow of split lock detection")
+Signed-off-by: Sean Christopherson <sean.j.christopherson@intel.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/20200605192605.7439-1-sean.j.christopherson@intel.com
+
 ---
- drivers/irqchip/irq-gic-v3-its.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/x86/kernel/cpu/intel.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
-index cd685f5..6a5a87f 100644
---- a/drivers/irqchip/irq-gic-v3-its.c
-+++ b/drivers/irqchip/irq-gic-v3-its.c
-@@ -3797,10 +3797,10 @@ static void its_wait_vpt_parse_complete(void)
- 	if (!gic_rdists->has_vpend_valid_dirty)
- 		return;
+diff --git a/arch/x86/kernel/cpu/intel.c b/arch/x86/kernel/cpu/intel.c
+index c25a67a..0ab48f1 100644
+--- a/arch/x86/kernel/cpu/intel.c
++++ b/arch/x86/kernel/cpu/intel.c
+@@ -50,6 +50,13 @@ static enum split_lock_detect_state sld_state __ro_after_init = sld_off;
+ static u64 msr_test_ctrl_cache __ro_after_init;
  
--	WARN_ON_ONCE(readq_relaxed_poll_timeout(vlpi_base + GICR_VPENDBASER,
--						val,
--						!(val & GICR_VPENDBASER_Dirty),
--						10, 500));
-+	WARN_ON_ONCE(readq_relaxed_poll_timeout_atomic(vlpi_base + GICR_VPENDBASER,
-+						       val,
-+						       !(val & GICR_VPENDBASER_Dirty),
-+						       10, 500));
+ /*
++ * With a name like MSR_TEST_CTL it should go without saying, but don't touch
++ * MSR_TEST_CTL unless the CPU is one of the whitelisted models.  Writing it
++ * on CPUs that do not support SLD can cause fireworks, even when writing '0'.
++ */
++static bool cpu_model_supports_sld __ro_after_init;
++
++/*
+  * Processors which have self-snooping capability can handle conflicting
+  * memory type across CPUs by snooping its own cache. However, there exists
+  * CPU models in which having conflicting memory types still leads to
+@@ -1071,7 +1078,8 @@ static void sld_update_msr(bool on)
+ 
+ static void split_lock_init(void)
+ {
+-	split_lock_verify_msr(sld_state != sld_off);
++	if (cpu_model_supports_sld)
++		split_lock_verify_msr(sld_state != sld_off);
  }
  
- static void its_vpe_schedule(struct its_vpe *vpe)
+ static void split_lock_warn(unsigned long ip)
+@@ -1177,5 +1185,6 @@ void __init cpu_set_core_cap_bits(struct cpuinfo_x86 *c)
+ 		return;
+ 	}
+ 
++	cpu_model_supports_sld = true;
+ 	split_lock_setup();
+ }
