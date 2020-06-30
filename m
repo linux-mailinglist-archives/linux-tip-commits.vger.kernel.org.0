@@ -2,19 +2,19 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9AEB020F25B
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 30 Jun 2020 12:12:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6535E20F25F
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 30 Jun 2020 12:12:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732209AbgF3KLz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 30 Jun 2020 06:11:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42136 "EHLO
+        id S1732361AbgF3KMD (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 30 Jun 2020 06:12:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42126 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732340AbgF3KLy (ORCPT
+        with ESMTP id S1732261AbgF3KLx (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 30 Jun 2020 06:11:54 -0400
+        Tue, 30 Jun 2020 06:11:53 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32E93C061755;
-        Tue, 30 Jun 2020 03:11:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC944C03E979;
+        Tue, 30 Jun 2020 03:11:52 -0700 (PDT)
 Date:   Tue, 30 Jun 2020 10:11:50 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1593511911;
@@ -23,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=HzC5ybQu8kVGHWLGBhWSXXbonkpooFQmrjPK+FrJ/08=;
-        b=k+wUmVLb56qLBIu4uuNZ9DR6jOJisojB5fzPjAoPOqdWFplL2Wgc//LJ6Bq6FOLmCkRABC
-        TXx/U96lX8Y9TeqEeFCIOo0nhUSUtpd++YQ5V+GiYarpH9Vs6H++vSLCkYBlKfXdAzS/Kb
-        J3LY4tLC746gAlP6tkusdy5N/temxWHybLvpc9n8H6+Edo0a9k8P3O5fxCZ4pLGtYQgk5g
-        +DAsgGR2rljFy3L5RiVksKBOvjorwp8809MqBpVZXq9H1ed/tHAAH8ZdimvIb36pYVmqoT
-        yqwRh4nRWoOo95zRJ3NeLPAGKVNFLEmbc5mEqrM+urdV7cKLogPT7iosYogMZg==
+        bh=EoujhNZEUXnfVLu7O8Ad2WynRdcdYfgaBs6bK4tDNIc=;
+        b=HPGbQ8sIDpmJTG2t76BTTXj28h6D8oblKZIxMx5DRj5VERqSUIOC3+mfwIwN2mVyiBTRqp
+        yAQjsYteRwqoiIgVFxE2HzkDolNe6uYtSMLtdS43TAb1HbtGz87W4WY+Y3Kuh2TIrGKYHU
+        uhZcK+l9VSVP2KsuAHXV/b3xf4zKCezSFqtJiphUdgRXE1/M2COtlIt/yZe3P8Y5fX5MwI
+        sQPb3grucmx5KnFJLi3OQ9ii4MbkL5WXzRj28pkivqXqAEFVZHihDKj+prGkHabzeweE3S
+        R9Oi809pNcLRAfob7M8Z3aS0Lr54Df+AJhhJBRJlTCvw08t/OuzQS8NUPiotsQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1593511911;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,20 +36,20 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=HzC5ybQu8kVGHWLGBhWSXXbonkpooFQmrjPK+FrJ/08=;
-        b=lufC/IuRKE58yrb9Jtxaz50eWLh+e1PSwB0ZD8Wfi/2pyv4Sb14zEUezQRmRGig/LeKiPG
-        rUcTUMYpzGXTGVAg==
-From:   "tip-bot2 for Jiaxun Yang" <tip-bot2@linutronix.de>
+        bh=EoujhNZEUXnfVLu7O8Ad2WynRdcdYfgaBs6bK4tDNIc=;
+        b=G3epm60UnWNDsOQX+9zDNdo0vMQpBEgxgqroWQ/NhYTt1eRocYTOfEkkUmiqOIW2PDQGQD
+        FCULZX065I5ZBuCg==
+From:   "tip-bot2 for Zenghui Yu" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/urgent] irqchip/loongson-pci-msi: Fix a typo in Kconfig
-Cc:     Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        Marc Zyngier <maz@kernel.org>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200530121113.1797678-2-jiaxun.yang@flygoat.com>
-References: <20200530121113.1797678-2-jiaxun.yang@flygoat.com>
+Subject: [tip: irq/urgent] irqchip/gic-v4.1: Use readx_poll_timeout_atomic()
+ to fix sleep in atomic
+Cc:     Zenghui Yu <yuzenghui@huawei.com>, Marc Zyngier <maz@kernel.org>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200605052345.1494-1-yuzenghui@huawei.com>
+References: <20200605052345.1494-1-yuzenghui@huawei.com>
 MIME-Version: 1.0
-Message-ID: <159351191099.4006.18157932896470485452.tip-bot2@tip-bot2>
+Message-ID: <159351191045.4006.6389349419327393336.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,35 +61,47 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/urgent branch of tip:
 
-Commit-ID:     a23df9a4bd326fb4c7f160b72b0e0560b989ac29
-Gitweb:        https://git.kernel.org/tip/a23df9a4bd326fb4c7f160b72b0e0560b989ac29
-Author:        Jiaxun Yang <jiaxun.yang@flygoat.com>
-AuthorDate:    Sat, 30 May 2020 20:11:12 +08:00
+Commit-ID:     31dbb6b1d025506b3b8b8b74e9b697df47b9f696
+Gitweb:        https://git.kernel.org/tip/31dbb6b1d025506b3b8b8b74e9b697df47b9f696
+Author:        Zenghui Yu <yuzenghui@huawei.com>
+AuthorDate:    Fri, 05 Jun 2020 13:23:45 +08:00
 Committer:     Marc Zyngier <maz@kernel.org>
 CommitterDate: Sun, 21 Jun 2020 15:13:11 +01:00
 
-irqchip/loongson-pci-msi: Fix a typo in Kconfig
+irqchip/gic-v4.1: Use readx_poll_timeout_atomic() to fix sleep in atomic
 
-PCH MSI driver's menuconfig entry was wrong. Fix it.
+readx_poll_timeout() can sleep if @sleep_us is specified by the caller,
+and is therefore unsafe to be used inside the atomic context, which is
+this case when we use it to poll the GICR_VPENDBASER.Dirty bit in
+irq_set_vcpu_affinity() callback.
 
-Fixes: 632dcc2c75ef ("irqchip: Add Loongson PCH MSI controller")
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Let's convert to its atomic version instead which helps to get the v4.1
+board back to life!
+
+Fixes: 96806229ca03 ("irqchip/gic-v4.1: Add support for VPENDBASER's Dirty+Valid signaling")
+Signed-off-by: Zenghui Yu <yuzenghui@huawei.com>
 Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20200530121113.1797678-2-jiaxun.yang@flygoat.com
+Link: https://lore.kernel.org/r/20200605052345.1494-1-yuzenghui@huawei.com
 ---
- drivers/irqchip/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/irqchip/irq-gic-v3-its.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/irqchip/Kconfig b/drivers/irqchip/Kconfig
-index 29fead2..216b3b8 100644
---- a/drivers/irqchip/Kconfig
-+++ b/drivers/irqchip/Kconfig
-@@ -563,7 +563,7 @@ config LOONGSON_PCH_PIC
- 	  Support for the Loongson PCH PIC Controller.
+diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
+index cd685f5..6a5a87f 100644
+--- a/drivers/irqchip/irq-gic-v3-its.c
++++ b/drivers/irqchip/irq-gic-v3-its.c
+@@ -3797,10 +3797,10 @@ static void its_wait_vpt_parse_complete(void)
+ 	if (!gic_rdists->has_vpend_valid_dirty)
+ 		return;
  
- config LOONGSON_PCH_MSI
--	bool "Loongson PCH PIC Controller"
-+	bool "Loongson PCH MSI Controller"
- 	depends on MACH_LOONGSON64 || COMPILE_TEST
- 	depends on PCI
- 	default MACH_LOONGSON64
+-	WARN_ON_ONCE(readq_relaxed_poll_timeout(vlpi_base + GICR_VPENDBASER,
+-						val,
+-						!(val & GICR_VPENDBASER_Dirty),
+-						10, 500));
++	WARN_ON_ONCE(readq_relaxed_poll_timeout_atomic(vlpi_base + GICR_VPENDBASER,
++						       val,
++						       !(val & GICR_VPENDBASER_Dirty),
++						       10, 500));
+ }
+ 
+ static void its_vpe_schedule(struct its_vpe *vpe)
