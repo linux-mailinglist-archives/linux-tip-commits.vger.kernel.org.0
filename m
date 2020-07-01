@@ -2,53 +2,51 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BF74C20F430
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 30 Jun 2020 14:12:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 615472105BA
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  1 Jul 2020 10:05:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387462AbgF3MMG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 30 Jun 2020 08:12:06 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:55114 "EHLO
+        id S1728630AbgGAIFQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 1 Jul 2020 04:05:16 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:36276 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387461AbgF3MMF (ORCPT
+        with ESMTP id S1728655AbgGAIEy (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 30 Jun 2020 08:12:05 -0400
-X-Greylist: delayed 7211 seconds by postgrey-1.27 at vger.kernel.org; Tue, 30 Jun 2020 08:12:03 EDT
-Date:   Tue, 30 Jun 2020 12:12:00 -0000
+        Wed, 1 Jul 2020 04:04:54 -0400
+Date:   Wed, 01 Jul 2020 08:04:50 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1593519121;
+        s=2020; t=1593590691;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=QQofTU652nzi7btAijaCF/NR0FRitK1IWHgv5m5mego=;
-        b=VesSUYvpG+xeiFU+CjPj2iqz+cvPvN7MLRhZriIa9gXmuuqbkufLcFaApkIKns4IwO1MDF
-        Ry+u/qDyQR21WCid7ilj4paRTHUkp8REeNlpKYwy6g/bPwtL6LHKU38qnZxOhQhp1EipCl
-        zSlGh0TUtmn4EAXe1f11aaLNTmy/d9bhL9flO8DRK4MMsjp3lMlrGxgyLKRkNfaZ2u+R6D
-        JhiesgXgF6xLrPVoMMTcskLPpJ+OoH7E+tToVqlfShi7Q5W/eWauw9v7kAg2Uxwj7zd7Ui
-        /c56DvagosBVNb+AVmPeWDgG7BeILPrvavLXC1tlMM9tQiZbDT3vpAL1HdHSKw==
+        bh=946tX4iKOUwH3H3vx3y7VvtSZZroSTJ3cWIecPuGdKw=;
+        b=otdxNU23eJUWqZbX0GYnYJQfmQFZvP6+vKspoul9XhiuUEkSyIexVxQohshi/+CgWRjFwx
+        GjABkd7DWYBbfxAcLsd7hSUPjODu7l9ZiNpoGEyEuYjcjyiYkRJigZ2w7KoFJMYsoKG5kq
+        /DDYC+t/ixQI8MMU6VaJ4PY+CBMJpe5hbfA7O06YNDNAFDMfMWVXz4SHpsddB/HS24tkhr
+        VPcmxXyEpg+hVhBcd+cSD5T7514UhZG8ghMgwSgXk5U7PWM4sPwA2Gck87/N50PqSAtwur
+        eRv4ZkwloiMc7XgiyjBZ9R7uj4jISs+gCqMUrshAzIb7+OYwMSHIGbLIr+VN9A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1593519121;
+        s=2020e; t=1593590691;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=QQofTU652nzi7btAijaCF/NR0FRitK1IWHgv5m5mego=;
-        b=Uj5+au7XvfZKfsjTst8iYX5redM5PeOmIL4CsqeNPXW0UNQCN4BlPHT8bGO8azFpcKx4ni
-        LZ91jf4vEZplUHCg==
-From:   "tip-bot2 for Sean Christopherson" <tip-bot2@linutronix.de>
+        bh=946tX4iKOUwH3H3vx3y7VvtSZZroSTJ3cWIecPuGdKw=;
+        b=Dwvr+6xC7zhrFRPZrXCxTJwKnWFKO/JDe0NZCv/2TXSJWUgywD/6I6EGviKo2pE2PEL0R3
+        +5Luq15ZPm5toMBA==
+From:   "tip-bot2 for Andy Lutomirski" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/split_lock: Don't write MSR_TEST_CTRL on CPUs
- that aren't whitelisted
-Cc:     Sean Christopherson <sean.j.christopherson@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200605192605.7439-1-sean.j.christopherson@intel.com>
-References: <20200605192605.7439-1-sean.j.christopherson@intel.com>
+Subject: [tip: x86/urgent] selftests/x86: Consolidate and fix get/set_eflags() helpers
+Cc:     Andy Lutomirski <luto@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <982ce58ae8dea2f1e57093ee894760e35267e751.1593191971.git.luto@kernel.org>
+References: <982ce58ae8dea2f1e57093ee894760e35267e751.1593191971.git.luto@kernel.org>
 MIME-Version: 1.0
-Message-ID: <159351912091.4006.8957636138691015363.tip-bot2@tip-bot2>
+Message-ID: <159359069000.4006.14382531019906533863.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,116 +58,283 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     009bce1df0bb5eb970b9eb98d963861f7fe353c7
-Gitweb:        https://git.kernel.org/tip/009bce1df0bb5eb970b9eb98d963861f7fe353c7
-Author:        Sean Christopherson <sean.j.christopherson@intel.com>
-AuthorDate:    Fri, 05 Jun 2020 12:26:05 -07:00
+Commit-ID:     cced0b24bb545bfe74fea96de84adc23c0146b05
+Gitweb:        https://git.kernel.org/tip/cced0b24bb545bfe74fea96de84adc23c0146b05
+Author:        Andy Lutomirski <luto@kernel.org>
+AuthorDate:    Fri, 26 Jun 2020 10:21:16 -07:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 30 Jun 2020 14:09:31 +02:00
+CommitterDate: Wed, 01 Jul 2020 10:00:27 +02:00
 
-x86/split_lock: Don't write MSR_TEST_CTRL on CPUs that aren't whitelisted
+selftests/x86: Consolidate and fix get/set_eflags() helpers
 
-Choo! Choo!  All aboard the Split Lock Express, with direct service to
-Wreckage!
+There are several copies of get_eflags() and set_eflags() and they all are
+buggy.  Consolidate them and fix them.  The fixes are:
 
-Skip split_lock_verify_msr() if the CPU isn't whitelisted as a possible
-SLD-enabled CPU model to avoid writing MSR_TEST_CTRL.  MSR_TEST_CTRL
-exists, and is writable, on many generations of CPUs.  Writing the MSR,
-even with '0', can result in bizarre, undocumented behavior.
+Add memory clobbers.  These are probably unnecessary but they make sure
+that the compiler doesn't move something past one of these calls when it
+shouldn't.
 
-This fixes a crash on Haswell when resuming from suspend with a live KVM
-guest.  Because APs use the standard SMP boot flow for resume, they will
-go through split_lock_init() and the subsequent RDMSR/WRMSR sequence,
-which runs even when sld_state==sld_off to ensure SLD is disabled.  On
-Haswell (at least, my Haswell), writing MSR_TEST_CTRL with '0' will
-succeed and _may_ take the SMT _sibling_ out of VMX root mode.
+Respect the redzone on x86_64.  There has no failure been observed related
+to this, but it's definitely a bug.
 
-When KVM has an active guest, KVM performs VMXON as part of CPU onlining
-(see kvm_starting_cpu()).  Because SMP boot is serialized, the resulting
-flow is effectively:
-
-  on_each_ap_cpu() {
-     WRMSR(MSR_TEST_CTRL, 0)
-     VMXON
-  }
-
-As a result, the WRMSR can disable VMX on a different CPU that has
-already done VMXON.  This ultimately results in a #UD on VMPTRLD when
-KVM regains control and attempt run its vCPUs.
-
-The above voodoo was confirmed by reworking KVM's VMXON flow to write
-MSR_TEST_CTRL prior to VMXON, and to serialize the sequence as above.
-Further verification of the insanity was done by redoing VMXON on all
-APs after the initial WRMSR->VMXON sequence.  The additional VMXON,
-which should VM-Fail, occasionally succeeded, and also eliminated the
-unexpected #UD on VMPTRLD.
-
-The damage done by writing MSR_TEST_CTRL doesn't appear to be limited
-to VMX, e.g. after suspend with an active KVM guest, subsequent reboots
-almost always hang (even when fudging VMXON), a #UD on a random Jcc was
-observed, suspend/resume stability is qualitatively poor, and so on and
-so forth.
-
-  kernel BUG at arch/x86/kvm/x86.c:386!
-  CPU: 1 PID: 2592 Comm: CPU 6/KVM Tainted: G      D
-  Hardware name: ASUS Q87M-E/Q87M-E, BIOS 1102 03/03/2014
-  RIP: 0010:kvm_spurious_fault+0xf/0x20
-  Call Trace:
-   vmx_vcpu_load_vmcs+0x1fb/0x2b0
-   vmx_vcpu_load+0x3e/0x160
-   kvm_arch_vcpu_load+0x48/0x260
-   finish_task_switch+0x140/0x260
-   __schedule+0x460/0x720
-   _cond_resched+0x2d/0x40
-   kvm_arch_vcpu_ioctl_run+0x82e/0x1ca0
-   kvm_vcpu_ioctl+0x363/0x5c0
-   ksys_ioctl+0x88/0xa0
-   __x64_sys_ioctl+0x16/0x20
-   do_syscall_64+0x4c/0x170
-   entry_SYSCALL_64_after_hwframe+0x44/0xa9
-
-Fixes: dbaba47085b0c ("x86/split_lock: Rework the initialization flow of split lock detection")
-Signed-off-by: Sean Christopherson <sean.j.christopherson@intel.com>
+Signed-off-by: Andy Lutomirski <luto@kernel.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20200605192605.7439-1-sean.j.christopherson@intel.com
+Link: https://lkml.kernel.org/r/982ce58ae8dea2f1e57093ee894760e35267e751.1593191971.git.luto@kernel.org
 
 ---
- arch/x86/kernel/cpu/intel.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ tools/testing/selftests/x86/Makefile              |  4 +-
+ tools/testing/selftests/x86/helpers.h             | 41 ++++++++++++++-
+ tools/testing/selftests/x86/single_step_syscall.c | 17 +------
+ tools/testing/selftests/x86/syscall_arg_fault.c   | 21 +-------
+ tools/testing/selftests/x86/syscall_nt.c          | 20 +-------
+ tools/testing/selftests/x86/test_vsyscall.c       | 15 +-----
+ tools/testing/selftests/x86/unwind_vdso.c         | 23 +--------
+ 7 files changed, 51 insertions(+), 90 deletions(-)
+ create mode 100644 tools/testing/selftests/x86/helpers.h
 
-diff --git a/arch/x86/kernel/cpu/intel.c b/arch/x86/kernel/cpu/intel.c
-index c25a67a..0ab48f1 100644
---- a/arch/x86/kernel/cpu/intel.c
-+++ b/arch/x86/kernel/cpu/intel.c
-@@ -50,6 +50,13 @@ static enum split_lock_detect_state sld_state __ro_after_init = sld_off;
- static u64 msr_test_ctrl_cache __ro_after_init;
+diff --git a/tools/testing/selftests/x86/Makefile b/tools/testing/selftests/x86/Makefile
+index 5f16821..d2796ea 100644
+--- a/tools/testing/selftests/x86/Makefile
++++ b/tools/testing/selftests/x86/Makefile
+@@ -70,10 +70,10 @@ all_64: $(BINARIES_64)
  
- /*
-+ * With a name like MSR_TEST_CTL it should go without saying, but don't touch
-+ * MSR_TEST_CTL unless the CPU is one of the whitelisted models.  Writing it
-+ * on CPUs that do not support SLD can cause fireworks, even when writing '0'.
-+ */
-+static bool cpu_model_supports_sld __ro_after_init;
+ EXTRA_CLEAN := $(BINARIES_32) $(BINARIES_64)
+ 
+-$(BINARIES_32): $(OUTPUT)/%_32: %.c
++$(BINARIES_32): $(OUTPUT)/%_32: %.c helpers.h
+ 	$(CC) -m32 -o $@ $(CFLAGS) $(EXTRA_CFLAGS) $^ -lrt -ldl -lm
+ 
+-$(BINARIES_64): $(OUTPUT)/%_64: %.c
++$(BINARIES_64): $(OUTPUT)/%_64: %.c helpers.h
+ 	$(CC) -m64 -o $@ $(CFLAGS) $(EXTRA_CFLAGS) $^ -lrt -ldl
+ 
+ # x86_64 users should be encouraged to install 32-bit libraries
+diff --git a/tools/testing/selftests/x86/helpers.h b/tools/testing/selftests/x86/helpers.h
+new file mode 100644
+index 0000000..f5ff2a2
+--- /dev/null
++++ b/tools/testing/selftests/x86/helpers.h
+@@ -0,0 +1,41 @@
++// SPDX-License-Identifier: GPL-2.0-only
++#ifndef __SELFTESTS_X86_HELPERS_H
++#define __SELFTESTS_X86_HELPERS_H
 +
-+/*
-  * Processors which have self-snooping capability can handle conflicting
-  * memory type across CPUs by snooping its own cache. However, there exists
-  * CPU models in which having conflicting memory types still leads to
-@@ -1071,7 +1078,8 @@ static void sld_update_msr(bool on)
++#include <asm/processor-flags.h>
++
++static inline unsigned long get_eflags(void)
++{
++	unsigned long eflags;
++
++	asm volatile (
++#ifdef __x86_64__
++		"subq $128, %%rsp\n\t"
++		"pushfq\n\t"
++		"popq %0\n\t"
++		"addq $128, %%rsp"
++#else
++		"pushfl\n\t"
++		"popl %0"
++#endif
++		: "=r" (eflags) :: "memory");
++
++	return eflags;
++}
++
++static inline void set_eflags(unsigned long eflags)
++{
++	asm volatile (
++#ifdef __x86_64__
++		"subq $128, %%rsp\n\t"
++		"pushq %0\n\t"
++		"popfq\n\t"
++		"addq $128, %%rsp"
++#else
++		"pushl %0\n\t"
++		"popfl"
++#endif
++		:: "r" (eflags) : "flags", "memory");
++}
++
++#endif /* __SELFTESTS_X86_HELPERS_H */
+diff --git a/tools/testing/selftests/x86/single_step_syscall.c b/tools/testing/selftests/x86/single_step_syscall.c
+index 1063328..120ac74 100644
+--- a/tools/testing/selftests/x86/single_step_syscall.c
++++ b/tools/testing/selftests/x86/single_step_syscall.c
+@@ -31,6 +31,8 @@
+ #include <sys/ptrace.h>
+ #include <sys/user.h>
  
- static void split_lock_init(void)
++#include "helpers.h"
++
+ static void sethandler(int sig, void (*handler)(int, siginfo_t *, void *),
+ 		       int flags)
  {
--	split_lock_verify_msr(sld_state != sld_off);
-+	if (cpu_model_supports_sld)
-+		split_lock_verify_msr(sld_state != sld_off);
+@@ -67,21 +69,6 @@ static unsigned char altstack_data[SIGSTKSZ];
+ # define INT80_CLOBBERS
+ #endif
+ 
+-static unsigned long get_eflags(void)
+-{
+-	unsigned long eflags;
+-	asm volatile ("pushf" WIDTH "\n\tpop" WIDTH " %0" : "=rm" (eflags));
+-	return eflags;
+-}
+-
+-static void set_eflags(unsigned long eflags)
+-{
+-	asm volatile ("push" WIDTH " %0\n\tpopf" WIDTH
+-		      : : "rm" (eflags) : "flags");
+-}
+-
+-#define X86_EFLAGS_TF (1UL << 8)
+-
+ static void sigtrap(int sig, siginfo_t *info, void *ctx_void)
+ {
+ 	ucontext_t *ctx = (ucontext_t*)ctx_void;
+diff --git a/tools/testing/selftests/x86/syscall_arg_fault.c b/tools/testing/selftests/x86/syscall_arg_fault.c
+index bc0ecc2..5b7abeb 100644
+--- a/tools/testing/selftests/x86/syscall_arg_fault.c
++++ b/tools/testing/selftests/x86/syscall_arg_fault.c
+@@ -15,30 +15,11 @@
+ #include <setjmp.h>
+ #include <errno.h>
+ 
+-#ifdef __x86_64__
+-# define WIDTH "q"
+-#else
+-# define WIDTH "l"
+-#endif
++#include "helpers.h"
+ 
+ /* Our sigaltstack scratch space. */
+ static unsigned char altstack_data[SIGSTKSZ];
+ 
+-static unsigned long get_eflags(void)
+-{
+-	unsigned long eflags;
+-	asm volatile ("pushf" WIDTH "\n\tpop" WIDTH " %0" : "=rm" (eflags));
+-	return eflags;
+-}
+-
+-static void set_eflags(unsigned long eflags)
+-{
+-	asm volatile ("push" WIDTH " %0\n\tpopf" WIDTH
+-		      : : "rm" (eflags) : "flags");
+-}
+-
+-#define X86_EFLAGS_TF (1UL << 8)
+-
+ static void sethandler(int sig, void (*handler)(int, siginfo_t *, void *),
+ 		       int flags)
+ {
+diff --git a/tools/testing/selftests/x86/syscall_nt.c b/tools/testing/selftests/x86/syscall_nt.c
+index 5fc82b9..970e5e1 100644
+--- a/tools/testing/selftests/x86/syscall_nt.c
++++ b/tools/testing/selftests/x86/syscall_nt.c
+@@ -13,29 +13,11 @@
+ #include <signal.h>
+ #include <err.h>
+ #include <sys/syscall.h>
+-#include <asm/processor-flags.h>
+ 
+-#ifdef __x86_64__
+-# define WIDTH "q"
+-#else
+-# define WIDTH "l"
+-#endif
++#include "helpers.h"
+ 
+ static unsigned int nerrs;
+ 
+-static unsigned long get_eflags(void)
+-{
+-	unsigned long eflags;
+-	asm volatile ("pushf" WIDTH "\n\tpop" WIDTH " %0" : "=rm" (eflags));
+-	return eflags;
+-}
+-
+-static void set_eflags(unsigned long eflags)
+-{
+-	asm volatile ("push" WIDTH " %0\n\tpopf" WIDTH
+-		      : : "rm" (eflags) : "flags");
+-}
+-
+ static void sethandler(int sig, void (*handler)(int, siginfo_t *, void *),
+ 		       int flags)
+ {
+diff --git a/tools/testing/selftests/x86/test_vsyscall.c b/tools/testing/selftests/x86/test_vsyscall.c
+index a4f4d4c..c41f24b 100644
+--- a/tools/testing/selftests/x86/test_vsyscall.c
++++ b/tools/testing/selftests/x86/test_vsyscall.c
+@@ -20,6 +20,8 @@
+ #include <setjmp.h>
+ #include <sys/uio.h>
+ 
++#include "helpers.h"
++
+ #ifdef __x86_64__
+ # define VSYS(x) (x)
+ #else
+@@ -493,21 +495,8 @@ static int test_process_vm_readv(void)
  }
  
- static void split_lock_warn(unsigned long ip)
-@@ -1177,5 +1185,6 @@ void __init cpu_set_core_cap_bits(struct cpuinfo_x86 *c)
- 		return;
- 	}
+ #ifdef __x86_64__
+-#define X86_EFLAGS_TF (1UL << 8)
+ static volatile sig_atomic_t num_vsyscall_traps;
  
-+	cpu_model_supports_sld = true;
- 	split_lock_setup();
+-static unsigned long get_eflags(void)
+-{
+-	unsigned long eflags;
+-	asm volatile ("pushfq\n\tpopq %0" : "=rm" (eflags));
+-	return eflags;
+-}
+-
+-static void set_eflags(unsigned long eflags)
+-{
+-	asm volatile ("pushq %0\n\tpopfq" : : "rm" (eflags) : "flags");
+-}
+-
+ static void sigtrap(int sig, siginfo_t *info, void *ctx_void)
+ {
+ 	ucontext_t *ctx = (ucontext_t *)ctx_void;
+diff --git a/tools/testing/selftests/x86/unwind_vdso.c b/tools/testing/selftests/x86/unwind_vdso.c
+index 0075ccd..4c311e1 100644
+--- a/tools/testing/selftests/x86/unwind_vdso.c
++++ b/tools/testing/selftests/x86/unwind_vdso.c
+@@ -11,6 +11,8 @@
+ #include <features.h>
+ #include <stdio.h>
+ 
++#include "helpers.h"
++
+ #if defined(__GLIBC__) && __GLIBC__ == 2 && __GLIBC_MINOR__ < 16
+ 
+ int main()
+@@ -53,27 +55,6 @@ static void sethandler(int sig, void (*handler)(int, siginfo_t *, void *),
+ 		err(1, "sigaction");
  }
+ 
+-#ifdef __x86_64__
+-# define WIDTH "q"
+-#else
+-# define WIDTH "l"
+-#endif
+-
+-static unsigned long get_eflags(void)
+-{
+-	unsigned long eflags;
+-	asm volatile ("pushf" WIDTH "\n\tpop" WIDTH " %0" : "=rm" (eflags));
+-	return eflags;
+-}
+-
+-static void set_eflags(unsigned long eflags)
+-{
+-	asm volatile ("push" WIDTH " %0\n\tpopf" WIDTH
+-		      : : "rm" (eflags) : "flags");
+-}
+-
+-#define X86_EFLAGS_TF (1UL << 8)
+-
+ static volatile sig_atomic_t nerrs;
+ static unsigned long sysinfo;
+ static bool got_sysinfo = false;
