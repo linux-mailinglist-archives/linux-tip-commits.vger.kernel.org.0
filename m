@@ -2,51 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A0F32105B3
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  1 Jul 2020 10:05:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4293D210C49
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  1 Jul 2020 15:33:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728703AbgGAIE6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 1 Jul 2020 04:04:58 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:36298 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728630AbgGAIE5 (ORCPT
+        id S1731052AbgGANdV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 1 Jul 2020 09:33:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42054 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730771AbgGANdU (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 1 Jul 2020 04:04:57 -0400
-Date:   Wed, 01 Jul 2020 08:04:52 -0000
+        Wed, 1 Jul 2020 09:33:20 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A880C08C5DC;
+        Wed,  1 Jul 2020 06:33:18 -0700 (PDT)
+Date:   Wed, 01 Jul 2020 13:33:15 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1593590693;
+        s=2020; t=1593610395;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=rP5Wpc2uSz2OcJ40AqJH5dzlA82IPYkFcHfCicFcDRA=;
-        b=U7vhJS9Q3pgCFZ8aLCbZK7JHjHNYJEhRKT3R37/DMZmtr/HppTXq5c/3UwcPbxSar9ILh+
-        Z5Px3WD8o16Cm9NbIbez5BYBGJtfHTCaZ2n9x0YGUQe3uIa+mjF4uuUOBHMmaSxWa7uhjF
-        rwX6EZGKhASCzvLIef5nCjC2hER9giXNEvtFdmmb1+ZWtZkTMtkEu0AiZq+ELEd0Y5Ziwa
-        nG00aAnIrcoKvdaUQicD2ReQWdFd8LRnnB34kJqQndWxiwzqH0ixzLHqKvBcqFNzq7bB+l
-        QooH3POG+jP21SFEvvhOKbjWVPLu7lFdSpYFlZLpF31etqWq3Mr3Kti6TV6Grw==
+        bh=yYp0fsYwx46bcChLn02U2uuM+hLz6G0PqagZOiJL7Vs=;
+        b=rPWSSTXQcMLR+EeUu6ltNt96ItLDtLcuS22nzXuGPA2Tmgq06Vaqt7rLTS8StUpCx6kf1R
+        gknZf1RHwwrCyIXu7bGjbvKy7qmJEgKsg3BYV26/IOYRPACW3w1G436Gj9tqMvAXqCHq/W
+        DUs2dBesGppMb8uyUdT3PiLcIpprW6Key1Et5Qk4bvbvChSTRj49aB1DtJ7fURLRZDSrh3
+        Pvzcb6CiKHRhW/s47k24/urK3Kwvk06uMw+XQLm/0I6hpkppcmmK1AhI+eqd3X0pjYdC9N
+        JVffgCykrc9b8oBy8BtkARTtlTOrWq63UxzqQUu93mJnybp5xhAxb/hP4YCGvA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1593590693;
+        s=2020e; t=1593610395;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=rP5Wpc2uSz2OcJ40AqJH5dzlA82IPYkFcHfCicFcDRA=;
-        b=HANPVTNOXzcRpyKcWCsdiWQDWgEuGMbRbGRdt1uSsiDfDpGcapPf4i0a91usuBnHFd0+Nz
-        fbaINFp5tI+4XgAw==
+        bh=yYp0fsYwx46bcChLn02U2uuM+hLz6G0PqagZOiJL7Vs=;
+        b=7ui2A5+Jbqz/+0IXeFMWQ7aAuMTbV2a/NJQtRcnVSzBPoFsm+/u1Dj+C9p6w2cOfMlLNxq
+        5YB9B4fdyQjWkQDA==
 From:   "tip-bot2 for Andy Lutomirski" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/entry: Assert that syscalls are on the right stack
+Subject: [tip: x86/fsgsbase] x86/fsgsbase: Fix Xen PV support
 Cc:     Andy Lutomirski <luto@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <52059e42bb0ab8551153d012d68f7be18d72ff8e.1593191971.git.luto@kernel.org>
-References: <52059e42bb0ab8551153d012d68f7be18d72ff8e.1593191971.git.luto@kernel.org>
+In-Reply-To: <f07c08f178fe9711915862b656722a207cd52c28.1593192140.git.luto@kernel.org>
+References: <f07c08f178fe9711915862b656722a207cd52c28.1593192140.git.luto@kernel.org>
 MIME-Version: 1.0
-Message-ID: <159359069277.4006.7142366313823999075.tip-bot2@tip-bot2>
+Message-ID: <159361039503.4006.17824211510339513520.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -56,84 +59,68 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the x86/fsgsbase branch of tip:
 
-Commit-ID:     c9c26150e61de441ab58b25c1f64afc049ee0fee
-Gitweb:        https://git.kernel.org/tip/c9c26150e61de441ab58b25c1f64afc049ee0fee
+Commit-ID:     d029bff60aa6c7eab281d52602b6a7a971615324
+Gitweb:        https://git.kernel.org/tip/d029bff60aa6c7eab281d52602b6a7a971615324
 Author:        Andy Lutomirski <luto@kernel.org>
-AuthorDate:    Fri, 26 Jun 2020 10:21:11 -07:00
+AuthorDate:    Fri, 26 Jun 2020 10:24:30 -07:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 01 Jul 2020 10:00:25 +02:00
+CommitterDate: Wed, 01 Jul 2020 15:27:20 +02:00
 
-x86/entry: Assert that syscalls are on the right stack
+x86/fsgsbase: Fix Xen PV support
 
-Now that the entry stack is a full page, it's too easy to regress the
-system call entry code and end up on the wrong stack without noticing.
-Assert that all system calls (SYSCALL64, SYSCALL32, SYSENTER, and INT80)
-are on the right stack and have pt_regs in the right place.
+On Xen PV, SWAPGS doesn't work.  Teach __rdfsbase_inactive() and
+__wrgsbase_inactive() to use rdmsrl()/wrmsrl() on Xen PV.  The Xen
+pvop code will understand this and issue the correct hypercalls.
 
 Signed-off-by: Andy Lutomirski <luto@kernel.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/52059e42bb0ab8551153d012d68f7be18d72ff8e.1593191971.git.luto@kernel.org
+Link: https://lkml.kernel.org/r/f07c08f178fe9711915862b656722a207cd52c28.1593192140.git.luto@kernel.org
 
 ---
- arch/x86/entry/common.c | 18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ arch/x86/kernel/process_64.c | 24 ++++++++++++++++++------
+ 1 file changed, 18 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/entry/common.c b/arch/x86/entry/common.c
-index bd3f141..ed8ccc8 100644
---- a/arch/x86/entry/common.c
-+++ b/arch/x86/entry/common.c
-@@ -45,6 +45,15 @@
- #define CREATE_TRACE_POINTS
- #include <trace/events/syscalls.h>
+diff --git a/arch/x86/kernel/process_64.c b/arch/x86/kernel/process_64.c
+index cb8e37d..e14476f 100644
+--- a/arch/x86/kernel/process_64.c
++++ b/arch/x86/kernel/process_64.c
+@@ -163,9 +163,15 @@ static noinstr unsigned long __rdgsbase_inactive(void)
  
-+/* Check that the stack and regs on entry from user mode are sane. */
-+static void check_user_regs(struct pt_regs *regs)
-+{
-+	if (IS_ENABLED(CONFIG_DEBUG_ENTRY)) {
-+		WARN_ON_ONCE(!on_thread_stack());
-+		WARN_ON_ONCE(regs != task_pt_regs(current));
+ 	lockdep_assert_irqs_disabled();
+ 
+-	native_swapgs();
+-	gsbase = rdgsbase();
+-	native_swapgs();
++	if (!static_cpu_has(X86_FEATURE_XENPV)) {
++		native_swapgs();
++		gsbase = rdgsbase();
++		native_swapgs();
++	} else {
++		instrumentation_begin();
++		rdmsrl(MSR_KERNEL_GS_BASE, gsbase);
++		instrumentation_end();
 +	}
-+}
-+
- #ifdef CONFIG_CONTEXT_TRACKING
- /**
-  * enter_from_user_mode - Establish state when coming from user mode
-@@ -127,9 +136,6 @@ static long syscall_trace_enter(struct pt_regs *regs)
- 	unsigned long ret = 0;
- 	u32 work;
  
--	if (IS_ENABLED(CONFIG_DEBUG_ENTRY))
--		BUG_ON(regs != task_pt_regs(current));
--
- 	work = READ_ONCE(ti->flags);
- 
- 	if (work & (_TIF_SYSCALL_TRACE | _TIF_SYSCALL_EMU)) {
-@@ -346,6 +352,8 @@ __visible noinstr void do_syscall_64(unsigned long nr, struct pt_regs *regs)
+ 	return gsbase;
+ }
+@@ -182,9 +188,15 @@ static noinstr void __wrgsbase_inactive(unsigned long gsbase)
  {
- 	struct thread_info *ti;
+ 	lockdep_assert_irqs_disabled();
  
-+	check_user_regs(regs);
-+
- 	enter_from_user_mode();
- 	instrumentation_begin();
+-	native_swapgs();
+-	wrgsbase(gsbase);
+-	native_swapgs();
++	if (!static_cpu_has(X86_FEATURE_XENPV)) {
++		native_swapgs();
++		wrgsbase(gsbase);
++		native_swapgs();
++	} else {
++		instrumentation_begin();
++		wrmsrl(MSR_KERNEL_GS_BASE, gsbase);
++		instrumentation_end();
++	}
+ }
  
-@@ -409,6 +417,8 @@ static void do_syscall_32_irqs_on(struct pt_regs *regs)
- /* Handles int $0x80 */
- __visible noinstr void do_int80_syscall_32(struct pt_regs *regs)
- {
-+	check_user_regs(regs);
-+
- 	enter_from_user_mode();
- 	instrumentation_begin();
- 
-@@ -460,6 +470,8 @@ __visible noinstr long do_fast_syscall_32(struct pt_regs *regs)
- 					vdso_image_32.sym_int80_landing_pad;
- 	bool success;
- 
-+	check_user_regs(regs);
-+
- 	/*
- 	 * SYSENTER loses EIP, and even SYSCALL32 needs us to skip forward
- 	 * so that 'regs->ip -= 2' lands back on an int $0x80 instruction.
+ /*
