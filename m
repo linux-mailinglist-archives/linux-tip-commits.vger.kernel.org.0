@@ -2,17 +2,20 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A926A2135A7
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  3 Jul 2020 10:01:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C3CB521359F
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  3 Jul 2020 10:01:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726258AbgGCIBb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 3 Jul 2020 04:01:31 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:57378 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725949AbgGCIBa (ORCPT
+        id S1726108AbgGCIB3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 3 Jul 2020 04:01:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39960 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726098AbgGCIB3 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 3 Jul 2020 04:01:30 -0400
-Date:   Fri, 03 Jul 2020 08:01:26 -0000
+        Fri, 3 Jul 2020 04:01:29 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73724C08C5C1;
+        Fri,  3 Jul 2020 01:01:29 -0700 (PDT)
+Date:   Fri, 03 Jul 2020 08:01:27 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1593763287;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -20,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=oy4WReyZBoVmzASbvO7rtP53h0E1pKoAmkXDqRED9lA=;
-        b=R55UeEchtpQOBCcV8s6UaKXeF3DBEW+0N/QdF1JYwrbDEQKs2dXJ5oTlQswy8YmmXntZFU
-        nEzm/vUz4/BiPaTo3UwhArQlHX48cT+h3JP+e8LHWGAlklN37sfIaj42gaW+dLFdDDkQMJ
-        BS0dF45XlpIyAsWUzeb+8lqzn+8ywx4WaGeL/nK/h9f9kDQ1O2yp5hw4WfSGyIujuN5klp
-        B1Z129bQBANM7tt0tahY3rKR1dKkmd0XdIXgSyKaV833ypuoUvEzZnNOgCleARbPgSx/OO
-        ssVdRtdnvkcmC1ScO8v0dN9LiOK1YhXqUgAGOcmJPoLU2U9q0TVwAbeOYvpS3Q==
+        bh=a8pw0IbKBUe0Gbiq3Fv9829Ab+q94MCW4jAVj94+2YY=;
+        b=HFVUp8aZSDDRAVazdPSSMJr0HCXRTbIkts/+YnOAy+H/xDhEoK+rgZBGpuI886P+miZS4J
+        cgddHP1GK9MBlINRdgROW6uCGT+Jh09EFINhxdTUT2yVeoEzehQK45jpqpZ2WqKpZnBv6x
+        kB3xAxqFis7+KTCU05SpKE6hqkaR69ft89EKZwhJxv5H5iudydKJprzUOopEevcDG4LIEK
+        UWsjAt2U401yNIgnmzatgd5auhfOm2kpd4An2qrmGqw0DI+InoSuUd204AtDwj485wabpj
+        iutSzRwGFKhvqd8bkEHQuSl0MiQoejFo1mQwFBfM1vsBuP4ezZFy/+E9eVEnkw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1593763287;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,21 +36,20 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=oy4WReyZBoVmzASbvO7rtP53h0E1pKoAmkXDqRED9lA=;
-        b=sIkFaEVzORdGBcVg+snmvJx50H8YEdsSg3bmWyJ3Jtp2uKp6TVvNXOWYBMUav6F6a6KKSm
-        reN8apMA2LLhY0Ag==
+        bh=a8pw0IbKBUe0Gbiq3Fv9829Ab+q94MCW4jAVj94+2YY=;
+        b=UaTMrLSv+vI37ovCaOCj1z8YKpd3/K8i622KuNIgHkT8DoA6nW7RegCZZNuapuHLQQFERw
+        hvV5sASxRDxqDZAQ==
 From:   "tip-bot2 for Like Xu" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/x86: Add constraint to create guest LBR event
- without hw counter
-Cc:     Like Xu <like.xu@linux.intel.com>,
+Subject: [tip: perf/core] perf/x86/lbr: Add interface to get LBR information
+Cc:     Like Xu <like.xu@linux.intel.com>, Wei Wang <wei.w.wang@intel.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200514083054.62538-5-like.xu@linux.intel.com>
-References: <20200514083054.62538-5-like.xu@linux.intel.com>
+In-Reply-To: <20200613080958.132489-4-like.xu@linux.intel.com>
+References: <20200613080958.132489-4-like.xu@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <159376328664.4006.3096246262316423436.tip-bot2@tip-bot2>
+Message-ID: <159376328720.4006.9030530624812063190.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,141 +61,92 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     097e4311cda952dfb047f2a49d35aa5de500d474
-Gitweb:        https://git.kernel.org/tip/097e4311cda952dfb047f2a49d35aa5de500d474
+Commit-ID:     b2d6504761a50b9493eb4b20f6e188b673f20c32
+Gitweb:        https://git.kernel.org/tip/b2d6504761a50b9493eb4b20f6e188b673f20c32
 Author:        Like Xu <like.xu@linux.intel.com>
-AuthorDate:    Sat, 13 Jun 2020 16:09:49 +08:00
+AuthorDate:    Sat, 13 Jun 2020 16:09:48 +08:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Thu, 02 Jul 2020 15:51:46 +02:00
 
-perf/x86: Add constraint to create guest LBR event without hw counter
+perf/x86/lbr: Add interface to get LBR information
 
-The hypervisor may request the perf subsystem to schedule a time window
-to directly access the LBR records msrs for its own use. Normally, it would
-create a guest LBR event with callstack mode enabled, which is scheduled
-along with other ordinary LBR events on the host but in an exclusive way.
+The LBR records msrs are model specific. The perf subsystem has already
+obtained the base addresses of LBR records based on the cpu model.
 
-To avoid wasting a counter for the guest LBR event, the perf tracks its
-hw->idx via INTEL_PMC_IDX_FIXED_VLBR and assigns it with a fake VLBR
-counter with the help of new vlbr_constraint. As with the BTS event,
-there is actually no hardware counter assigned for the guest LBR event.
+Therefore, an interface is added to allow callers outside the perf
+subsystem to obtain these LBR information. It's useful for hypervisors
+to emulate the LBR feature for guests with less code.
 
 Signed-off-by: Like Xu <like.xu@linux.intel.com>
+Signed-off-by: Wei Wang <wei.w.wang@intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20200514083054.62538-5-like.xu@linux.intel.com
+Link: https://lkml.kernel.org/r/20200613080958.132489-4-like.xu@linux.intel.com
 ---
- arch/x86/events/core.c            |  1 +
- arch/x86/events/intel/core.c      | 18 ++++++++++++++++++
- arch/x86/events/intel/lbr.c       |  4 ++++
- arch/x86/events/perf_event.h      |  1 +
- arch/x86/include/asm/perf_event.h | 22 +++++++++++++++++++++-
- 5 files changed, 45 insertions(+), 1 deletion(-)
+ arch/x86/events/intel/lbr.c       | 20 ++++++++++++++++++++
+ arch/x86/include/asm/perf_event.h | 12 ++++++++++++
+ 2 files changed, 32 insertions(+)
 
-diff --git a/arch/x86/events/core.c b/arch/x86/events/core.c
-index 15cb7af..d740c86 100644
---- a/arch/x86/events/core.c
-+++ b/arch/x86/events/core.c
-@@ -1104,6 +1104,7 @@ static inline void x86_assign_hw_event(struct perf_event *event,
- 
- 	switch (hwc->idx) {
- 	case INTEL_PMC_IDX_FIXED_BTS:
-+	case INTEL_PMC_IDX_FIXED_VLBR:
- 		hwc->config_base = 0;
- 		hwc->event_base	= 0;
- 		break;
-diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-index 8dac4c6..51e1fba 100644
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -2621,6 +2621,20 @@ intel_bts_constraints(struct perf_event *event)
- 	return NULL;
- }
- 
-+/*
-+ * Note: matches a fake event, like Fixed2.
-+ */
-+static struct event_constraint *
-+intel_vlbr_constraints(struct perf_event *event)
-+{
-+	struct event_constraint *c = &vlbr_constraint;
-+
-+	if (unlikely(constraint_match(c, event->hw.config)))
-+		return c;
-+
-+	return NULL;
-+}
-+
- static int intel_alt_er(int idx, u64 config)
- {
- 	int alt_idx = idx;
-@@ -2811,6 +2825,10 @@ __intel_get_event_constraints(struct cpu_hw_events *cpuc, int idx,
- {
- 	struct event_constraint *c;
- 
-+	c = intel_vlbr_constraints(event);
-+	if (c)
-+		return c;
-+
- 	c = intel_bts_constraints(event);
- 	if (c)
- 		return c;
 diff --git a/arch/x86/events/intel/lbr.c b/arch/x86/events/intel/lbr.c
-index 2ed3f2a..d285d26 100644
+index 65113b1..2ed3f2a 100644
 --- a/arch/x86/events/intel/lbr.c
 +++ b/arch/x86/events/intel/lbr.c
-@@ -1363,3 +1363,7 @@ int x86_perf_get_lbr(struct x86_pmu_lbr *lbr)
- 	return 0;
+@@ -1343,3 +1343,23 @@ void intel_pmu_lbr_init_knl(void)
+ 	if (x86_pmu.intel_cap.lbr_format == LBR_FORMAT_LIP)
+ 		x86_pmu.intel_cap.lbr_format = LBR_FORMAT_EIP_FLAGS;
  }
- EXPORT_SYMBOL_GPL(x86_perf_get_lbr);
 +
-+struct event_constraint vlbr_constraint =
-+	FIXED_EVENT_CONSTRAINT(INTEL_FIXED_VLBR_EVENT,
-+			       (INTEL_PMC_IDX_FIXED_VLBR - INTEL_PMC_IDX_FIXED));
-diff --git a/arch/x86/events/perf_event.h b/arch/x86/events/perf_event.h
-index eb37f6c..77a6dd6 100644
---- a/arch/x86/events/perf_event.h
-+++ b/arch/x86/events/perf_event.h
-@@ -990,6 +990,7 @@ void release_ds_buffers(void);
- void reserve_ds_buffers(void);
- 
- extern struct event_constraint bts_constraint;
-+extern struct event_constraint vlbr_constraint;
- 
- void intel_pmu_enable_bts(u64 config);
- 
++/**
++ * x86_perf_get_lbr - get the LBR records information
++ *
++ * @lbr: the caller's memory to store the LBR records information
++ *
++ * Returns: 0 indicates the LBR info has been successfully obtained
++ */
++int x86_perf_get_lbr(struct x86_pmu_lbr *lbr)
++{
++	int lbr_fmt = x86_pmu.intel_cap.lbr_format;
++
++	lbr->nr = x86_pmu.lbr_nr;
++	lbr->from = x86_pmu.lbr_from;
++	lbr->to = x86_pmu.lbr_to;
++	lbr->info = (lbr_fmt == LBR_FORMAT_INFO) ? MSR_LBR_INFO_0 : 0;
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(x86_perf_get_lbr);
 diff --git a/arch/x86/include/asm/perf_event.h b/arch/x86/include/asm/perf_event.h
-index 5d2c30f..2df7073 100644
+index e855e9c..5d2c30f 100644
 --- a/arch/x86/include/asm/perf_event.h
 +++ b/arch/x86/include/asm/perf_event.h
-@@ -192,10 +192,30 @@ struct x86_pmu_capability {
- #define GLOBAL_STATUS_UNC_OVF				BIT_ULL(61)
- #define GLOBAL_STATUS_ASIF				BIT_ULL(60)
- #define GLOBAL_STATUS_COUNTERS_FROZEN			BIT_ULL(59)
--#define GLOBAL_STATUS_LBRS_FROZEN			BIT_ULL(58)
-+#define GLOBAL_STATUS_LBRS_FROZEN_BIT			58
-+#define GLOBAL_STATUS_LBRS_FROZEN			BIT_ULL(GLOBAL_STATUS_LBRS_FROZEN_BIT)
- #define GLOBAL_STATUS_TRACE_TOPAPMI			BIT_ULL(55)
+@@ -333,6 +333,13 @@ struct perf_guest_switch_msr {
+ 	u64 host, guest;
+ };
  
- /*
-+ * We model guest LBR event tracing as another fixed-mode PMC like BTS.
-+ *
-+ * We choose bit 58 because it's used to indicate LBR stack frozen state
-+ * for architectural perfmon v4, also we unconditionally mask that bit in
-+ * the handle_pmi_common(), so it'll never be set in the overflow handling.
-+ *
-+ * With this fake counter assigned, the guest LBR event user (such as KVM),
-+ * can program the LBR registers on its own, and we don't actually do anything
-+ * with then in the host context.
-+ */
-+#define INTEL_PMC_IDX_FIXED_VLBR	(GLOBAL_STATUS_LBRS_FROZEN_BIT)
++struct x86_pmu_lbr {
++	unsigned int	nr;
++	unsigned int	from;
++	unsigned int	to;
++	unsigned int	info;
++};
 +
-+/*
-+ * Pseudo-encoding the guest LBR event as event=0x00,umask=0x1b,
-+ * since it would claim bit 58 which is effectively Fixed26.
-+ */
-+#define INTEL_FIXED_VLBR_EVENT	0x1b00
-+
-+/*
-  * Adaptive PEBS v4
-  */
+ extern void perf_get_x86_pmu_capability(struct x86_pmu_capability *cap);
+ extern void perf_check_microcode(void);
+ extern int x86_perf_rdpmc_index(struct perf_event *event);
+@@ -348,12 +355,17 @@ static inline void perf_check_microcode(void) { }
  
+ #if defined(CONFIG_PERF_EVENTS) && defined(CONFIG_CPU_SUP_INTEL)
+ extern struct perf_guest_switch_msr *perf_guest_get_msrs(int *nr);
++extern int x86_perf_get_lbr(struct x86_pmu_lbr *lbr);
+ #else
+ static inline struct perf_guest_switch_msr *perf_guest_get_msrs(int *nr)
+ {
+ 	*nr = 0;
+ 	return NULL;
+ }
++static inline int x86_perf_get_lbr(struct x86_pmu_lbr *lbr)
++{
++	return -1;
++}
+ #endif
+ 
+ #ifdef CONFIG_CPU_SUP_INTEL
