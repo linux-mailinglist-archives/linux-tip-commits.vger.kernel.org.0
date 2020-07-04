@@ -2,19 +2,16 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F223A2147CA
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  4 Jul 2020 19:49:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B8C92147CD
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  4 Jul 2020 19:49:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726953AbgGDRtN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 4 Jul 2020 13:49:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40764 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726791AbgGDRtM (ORCPT
+        id S1727816AbgGDRtO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 4 Jul 2020 13:49:14 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:40548 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726739AbgGDRtN (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 4 Jul 2020 13:49:12 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A84BC061794;
-        Sat,  4 Jul 2020 10:49:12 -0700 (PDT)
+        Sat, 4 Jul 2020 13:49:13 -0400
 Date:   Sat, 04 Jul 2020 17:49:09 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1593884950;
@@ -23,12 +20,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=//RojqTwiSgmeKHD3EOtUWV61Y/AD1KW+xSNsDKYw/Q=;
-        b=OJQvG2FYXf+V0pYwa70fYkOfJMfTdnW5+8eA/5CUHsrDAMbjL/GGAnZq7xyTrlAUwIogm5
-        EX1f/fBiTtEd6WykCDsU96KB9RzDTF7aUyaA94zlIBecndyylUheCLrnPfuuxkim8aspfP
-        mk+JFOpOabK2ESstabr/bTQpohcjEbyRLWAf71/UPkEPr9DinpsLO9yWa9E99asxvOK8BP
-        R5U+ZPY0KE8g0n1bC73xZxlNFhTvwv68QmTFM4gBRtIsLHUbQVrFW1+1IauznZx49VJXj/
-        8w5SKFaKPAVk2bbxuwERuZ2gA0OcHTaVsF/Hy9zUYbYRjbssRg+AY2u74raXlQ==
+        bh=TpLP0mh+Au9bFNc6nKf4AsXTb4Yu473K/TjbX/v+joM=;
+        b=PumsAjBR+KBvLfpvTX4prg6D2YAwbZDt53dcN8cVasdwkzJ1sEKR1AVT2fdogrIddcy8YH
+        +rDHI5MB0icbUW7dNgTcH4BMuimkXgshkJH4DD3Q3P7yYKmDbPKyo0Lgb1ZPHmtMW60z+6
+        qiI/WB44rYLiDwTrWI15BaydnUPVDsGBnzHmq98Q+29mGhkW4CMHJndrYS5TcL1e6VVWmx
+        qIRHseoNOIExe1DgYll605H/coTZSrQyL3AEO7pt5sgVEj+6Pq2i/JjJOKLHrnqRZ9mUrM
+        OGWpJI3mWJEtmQBOsI25iQ80pGV/+o0s3ui8seCgHdgGGPZaEs6EV4BphVnFfw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1593884950;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,22 +33,21 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=//RojqTwiSgmeKHD3EOtUWV61Y/AD1KW+xSNsDKYw/Q=;
-        b=q5mfyl5I2/I1gutf3lcN7p366xyGsc5k4uc9HCgB5yXd/mwGcC7E2IW+OQdZCIoNPE/iiB
-        6ZviztEacrLRZ7Bg==
+        bh=TpLP0mh+Au9bFNc6nKf4AsXTb4Yu473K/TjbX/v+joM=;
+        b=yb2LA+YBz5v0a+AGNqAo0+RWP1UE8ysH6G+FWH3kNSsXnXczWAPH2uvaI/r0NOn6InaSpq
+        +/1SLZwKwczedhBA==
 From:   "tip-bot2 for Andy Lutomirski" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/entry/32: Fix #MC and #DB wiring on x86_32
-Cc:     Naresh Kamboju <naresh.kamboju@linaro.org>,
-        Andy Lutomirski <luto@kernel.org>,
+Subject: [tip: x86/urgent] x86/entry/xen: Route #DB correctly on Xen PV
+Cc:     Andy Lutomirski <luto@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <9e90a7ee8e72fd757db6d92e1e5ff16339c1ecf9.1593795633.git.luto@kernel.org>
-References: <9e90a7ee8e72fd757db6d92e1e5ff16339c1ecf9.1593795633.git.luto@kernel.org>
+In-Reply-To: <4163e733cce0b41658e252c6c6b3464f33fdff17.1593795633.git.luto@kernel.org>
+References: <4163e733cce0b41658e252c6c6b3464f33fdff17.1593795633.git.luto@kernel.org>
 MIME-Version: 1.0
-Message-ID: <159388494913.4006.14717567384455629762.tip-bot2@tip-bot2>
+Message-ID: <159388494977.4006.13168066916301921485.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -63,139 +59,189 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     13cbc0cd4a30c815984ad88e3a2e5976493516a3
-Gitweb:        https://git.kernel.org/tip/13cbc0cd4a30c815984ad88e3a2e5976493516a3
+Commit-ID:     f41f0824224eb12ad84de8972962dd54be5abe3b
+Gitweb:        https://git.kernel.org/tip/f41f0824224eb12ad84de8972962dd54be5abe3b
 Author:        Andy Lutomirski <luto@kernel.org>
-AuthorDate:    Fri, 03 Jul 2020 10:02:56 -07:00
+AuthorDate:    Fri, 03 Jul 2020 10:02:55 -07:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sat, 04 Jul 2020 19:47:26 +02:00
+CommitterDate: Sat, 04 Jul 2020 19:47:25 +02:00
 
-x86/entry/32: Fix #MC and #DB wiring on x86_32
+x86/entry/xen: Route #DB correctly on Xen PV
 
-DEFINE_IDTENTRY_MCE and DEFINE_IDTENTRY_DEBUG were wired up as non-RAW
-on x86_32, but the code expected them to be RAW.
+On Xen PV, #DB doesn't use IST. It still needs to be correctly routed
+depending on whether it came from user or kernel mode.
 
-Get rid of all the macro indirection for them on 32-bit and just use
-DECLARE_IDTENTRY_RAW and DEFINE_IDTENTRY_RAW directly.
+Get rid of DECLARE/DEFINE_IDTENTRY_XEN -- it was too hard to follow the
+logic.  Instead, route #DB and NMI through DECLARE/DEFINE_IDTENTRY_RAW on
+Xen, and do the right thing for #DB.  Also add more warnings to the
+exc_debug* handlers to make this type of failure more obvious.
 
-Also add a warning to make sure that we only hit the _kernel paths
-in kernel mode.
+This fixes various forms of corruption that happen when usermode
+triggers #DB on Xen PV.
 
-Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
+Fixes: 4c0dcd8350a0 ("x86/entry: Implement user mode C entry points for #DB and #MCE")
 Signed-off-by: Andy Lutomirski <luto@kernel.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/9e90a7ee8e72fd757db6d92e1e5ff16339c1ecf9.1593795633.git.luto@kernel.org
+Link: https://lkml.kernel.org/r/4163e733cce0b41658e252c6c6b3464f33fdff17.1593795633.git.luto@kernel.org
 
 ---
- arch/x86/include/asm/idtentry.h | 23 +++++++++++++----------
- arch/x86/kernel/cpu/mce/core.c  |  4 +++-
- arch/x86/kernel/traps.c         |  2 +-
- 3 files changed, 17 insertions(+), 12 deletions(-)
+ arch/x86/include/asm/idtentry.h | 24 ++++++------------------
+ arch/x86/kernel/traps.c         | 12 ++++++++++++
+ arch/x86/xen/enlighten_pv.c     | 28 ++++++++++++++++++++++++----
+ arch/x86/xen/xen-asm_64.S       |  5 ++---
+ 4 files changed, 44 insertions(+), 25 deletions(-)
 
 diff --git a/arch/x86/include/asm/idtentry.h b/arch/x86/include/asm/idtentry.h
-index 94333ac..eeac6dc 100644
+index cf51c50..94333ac 100644
 --- a/arch/x86/include/asm/idtentry.h
 +++ b/arch/x86/include/asm/idtentry.h
-@@ -353,10 +353,6 @@ static __always_inline void __##func(struct pt_regs *regs)
- 
- #else	/* CONFIG_X86_64 */
- 
--/* Maps to a regular IDTENTRY on 32bit for now */
--# define DECLARE_IDTENTRY_IST		DECLARE_IDTENTRY
--# define DEFINE_IDTENTRY_IST		DEFINE_IDTENTRY
--
- /**
-  * DECLARE_IDTENTRY_DF - Declare functions for double fault 32bit variant
-  * @vector:	Vector number (ignored for C)
-@@ -387,16 +383,18 @@ __visible noinstr void func(struct pt_regs *regs,			\
- #endif	/* !CONFIG_X86_64 */
- 
- /* C-Code mapping */
-+#define DECLARE_IDTENTRY_NMI		DECLARE_IDTENTRY_RAW
-+#define DEFINE_IDTENTRY_NMI		DEFINE_IDTENTRY_RAW
-+
-+#ifdef CONFIG_X86_64
- #define DECLARE_IDTENTRY_MCE		DECLARE_IDTENTRY_IST
- #define DEFINE_IDTENTRY_MCE		DEFINE_IDTENTRY_IST
- #define DEFINE_IDTENTRY_MCE_USER	DEFINE_IDTENTRY_NOIST
- 
--#define DECLARE_IDTENTRY_NMI		DECLARE_IDTENTRY_RAW
--#define DEFINE_IDTENTRY_NMI		DEFINE_IDTENTRY_RAW
--
- #define DECLARE_IDTENTRY_DEBUG		DECLARE_IDTENTRY_IST
+@@ -398,18 +398,6 @@ __visible noinstr void func(struct pt_regs *regs,			\
  #define DEFINE_IDTENTRY_DEBUG		DEFINE_IDTENTRY_IST
  #define DEFINE_IDTENTRY_DEBUG_USER	DEFINE_IDTENTRY_NOIST
-+#endif
  
+-/**
+- * DECLARE_IDTENTRY_XEN - Declare functions for XEN redirect IDT entry points
+- * @vector:	Vector number (ignored for C)
+- * @func:	Function name of the entry point
+- *
+- * Used for xennmi and xendebug redirections. No DEFINE as this is all ASM
+- * indirection magic.
+- */
+-#define DECLARE_IDTENTRY_XEN(vector, func)				\
+-	asmlinkage void xen_asm_exc_xen##func(void);			\
+-	asmlinkage void asm_exc_xen##func(void)
+-
  #else /* !__ASSEMBLY__ */
  
-@@ -443,9 +441,6 @@ __visible noinstr void func(struct pt_regs *regs,			\
- # define DECLARE_IDTENTRY_MCE(vector, func)				\
- 	DECLARE_IDTENTRY(vector, func)
+ /*
+@@ -469,10 +457,6 @@ __visible noinstr void func(struct pt_regs *regs,			\
+ /* No ASM code emitted for NMI */
+ #define DECLARE_IDTENTRY_NMI(vector, func)
  
--# define DECLARE_IDTENTRY_DEBUG(vector, func)				\
--	DECLARE_IDTENTRY(vector, func)
+-/* XEN NMI and DB wrapper */
+-#define DECLARE_IDTENTRY_XEN(vector, func)				\
+-	idtentry vector asm_exc_xen##func exc_##func has_error_code=0
 -
- /* No ASM emitted for DF as this goes through a C shim */
- # define DECLARE_IDTENTRY_DF(vector, func)
- 
-@@ -549,7 +544,11 @@ DECLARE_IDTENTRY_RAW(X86_TRAP_BP,		exc_int3);
- DECLARE_IDTENTRY_RAW_ERRORCODE(X86_TRAP_PF,	exc_page_fault);
- 
- #ifdef CONFIG_X86_MCE
-+#ifdef CONFIG_X86_64
- DECLARE_IDTENTRY_MCE(X86_TRAP_MC,	exc_machine_check);
-+#else
-+DECLARE_IDTENTRY_RAW(X86_TRAP_MC,	exc_machine_check);
-+#endif
- #endif
+ /*
+  * ASM code to emit the common vector entry stubs where each stub is
+  * packed into 8 bytes.
+@@ -570,11 +554,15 @@ DECLARE_IDTENTRY_MCE(X86_TRAP_MC,	exc_machine_check);
  
  /* NMI */
-@@ -559,7 +558,11 @@ DECLARE_IDTENTRY_RAW(X86_TRAP_NMI,	xenpv_exc_nmi);
- #endif
+ DECLARE_IDTENTRY_NMI(X86_TRAP_NMI,	exc_nmi);
+-DECLARE_IDTENTRY_XEN(X86_TRAP_NMI,	nmi);
++#ifdef CONFIG_XEN_PV
++DECLARE_IDTENTRY_RAW(X86_TRAP_NMI,	xenpv_exc_nmi);
++#endif
  
  /* #DB */
-+#ifdef CONFIG_X86_64
  DECLARE_IDTENTRY_DEBUG(X86_TRAP_DB,	exc_debug);
-+#else
-+DECLARE_IDTENTRY_RAW(X86_TRAP_DB,	exc_debug);
+-DECLARE_IDTENTRY_XEN(X86_TRAP_DB,	debug);
++#ifdef CONFIG_XEN_PV
++DECLARE_IDTENTRY_RAW(X86_TRAP_DB,	xenpv_exc_debug);
 +#endif
- #ifdef CONFIG_XEN_PV
- DECLARE_IDTENTRY_RAW(X86_TRAP_DB,	xenpv_exc_debug);
- #endif
-diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
-index ce9120c..a6a90b5 100644
---- a/arch/x86/kernel/cpu/mce/core.c
-+++ b/arch/x86/kernel/cpu/mce/core.c
-@@ -1901,6 +1901,8 @@ void (*machine_check_vector)(struct pt_regs *) = unexpected_machine_check;
  
- static __always_inline void exc_machine_check_kernel(struct pt_regs *regs)
- {
-+	WARN_ON_ONCE(user_mode(regs));
-+
- 	/*
- 	 * Only required when from kernel mode. See
- 	 * mce_check_crashing_cpu() for details.
-@@ -1954,7 +1956,7 @@ DEFINE_IDTENTRY_MCE_USER(exc_machine_check)
- }
- #else
- /* 32bit unified entry point */
--DEFINE_IDTENTRY_MCE(exc_machine_check)
-+DEFINE_IDTENTRY_RAW(exc_machine_check)
- {
- 	unsigned long dr7;
- 
+ /* #DF */
+ DECLARE_IDTENTRY_DF(X86_TRAP_DF,	exc_double_fault);
 diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
-index c17f9b5..6ed8cc5 100644
+index f9727b9..c17f9b5 100644
 --- a/arch/x86/kernel/traps.c
 +++ b/arch/x86/kernel/traps.c
-@@ -925,7 +925,7 @@ DEFINE_IDTENTRY_DEBUG_USER(exc_debug)
- }
- #else
- /* 32 bit does not have separate entry points. */
--DEFINE_IDTENTRY_DEBUG(exc_debug)
-+DEFINE_IDTENTRY_RAW(exc_debug)
- {
- 	unsigned long dr6, dr7;
+@@ -866,6 +866,12 @@ static __always_inline void exc_debug_kernel(struct pt_regs *regs,
+ 	trace_hardirqs_off_finish();
  
+ 	/*
++	 * If something gets miswired and we end up here for a user mode
++	 * #DB, we will malfunction.
++	 */
++	WARN_ON_ONCE(user_mode(regs));
++
++	/*
+ 	 * Catch SYSENTER with TF set and clear DR_STEP. If this hit a
+ 	 * watchpoint at the same time then that will still be handled.
+ 	 */
+@@ -883,6 +889,12 @@ static __always_inline void exc_debug_kernel(struct pt_regs *regs,
+ static __always_inline void exc_debug_user(struct pt_regs *regs,
+ 					   unsigned long dr6)
+ {
++	/*
++	 * If something gets miswired and we end up here for a kernel mode
++	 * #DB, we will malfunction.
++	 */
++	WARN_ON_ONCE(!user_mode(regs));
++
+ 	idtentry_enter_user(regs);
+ 	instrumentation_begin();
+ 
+diff --git a/arch/x86/xen/enlighten_pv.c b/arch/x86/xen/enlighten_pv.c
+index acc49fa..0d68948 100644
+--- a/arch/x86/xen/enlighten_pv.c
++++ b/arch/x86/xen/enlighten_pv.c
+@@ -598,6 +598,26 @@ static void xen_write_ldt_entry(struct desc_struct *dt, int entrynum,
+ }
+ 
+ #ifdef CONFIG_X86_64
++void noist_exc_debug(struct pt_regs *regs);
++
++DEFINE_IDTENTRY_RAW(xenpv_exc_nmi)
++{
++	/* On Xen PV, NMI doesn't use IST.  The C part is the sane as native. */
++	exc_nmi(regs);
++}
++
++DEFINE_IDTENTRY_RAW(xenpv_exc_debug)
++{
++	/*
++	 * There's no IST on Xen PV, but we still need to dispatch
++	 * to the correct handler.
++	 */
++	if (user_mode(regs))
++		noist_exc_debug(regs);
++	else
++		exc_debug(regs);
++}
++
+ struct trap_array_entry {
+ 	void (*orig)(void);
+ 	void (*xen)(void);
+@@ -609,18 +629,18 @@ struct trap_array_entry {
+ 	.xen		= xen_asm_##func,		\
+ 	.ist_okay	= ist_ok }
+ 
+-#define TRAP_ENTRY_REDIR(func, xenfunc, ist_ok) {	\
++#define TRAP_ENTRY_REDIR(func, ist_ok) {		\
+ 	.orig		= asm_##func,			\
+-	.xen		= xen_asm_##xenfunc,		\
++	.xen		= xen_asm_xenpv_##func,		\
+ 	.ist_okay	= ist_ok }
+ 
+ static struct trap_array_entry trap_array[] = {
+-	TRAP_ENTRY_REDIR(exc_debug, exc_xendebug,	true  ),
++	TRAP_ENTRY_REDIR(exc_debug,			true  ),
+ 	TRAP_ENTRY(exc_double_fault,			true  ),
+ #ifdef CONFIG_X86_MCE
+ 	TRAP_ENTRY(exc_machine_check,			true  ),
+ #endif
+-	TRAP_ENTRY_REDIR(exc_nmi, exc_xennmi,		true  ),
++	TRAP_ENTRY_REDIR(exc_nmi,			true  ),
+ 	TRAP_ENTRY(exc_int3,				false ),
+ 	TRAP_ENTRY(exc_overflow,			false ),
+ #ifdef CONFIG_IA32_EMULATION
+diff --git a/arch/x86/xen/xen-asm_64.S b/arch/x86/xen/xen-asm_64.S
+index e1e1c7e..aab1d99 100644
+--- a/arch/x86/xen/xen-asm_64.S
++++ b/arch/x86/xen/xen-asm_64.S
+@@ -29,10 +29,9 @@ _ASM_NOKPROBE(xen_\name)
+ .endm
+ 
+ xen_pv_trap asm_exc_divide_error
+-xen_pv_trap asm_exc_debug
+-xen_pv_trap asm_exc_xendebug
++xen_pv_trap asm_xenpv_exc_debug
+ xen_pv_trap asm_exc_int3
+-xen_pv_trap asm_exc_xennmi
++xen_pv_trap asm_xenpv_exc_nmi
+ xen_pv_trap asm_exc_overflow
+ xen_pv_trap asm_exc_bounds
+ xen_pv_trap asm_exc_invalid_op
