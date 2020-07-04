@@ -2,55 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CEF221448C
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  4 Jul 2020 10:05:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A03332147CF
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  4 Jul 2020 19:49:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726304AbgGDIFd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 4 Jul 2020 04:05:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35784 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726157AbgGDIFd (ORCPT
+        id S1727106AbgGDRtN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 4 Jul 2020 13:49:13 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:40540 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726643AbgGDRtM (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 4 Jul 2020 04:05:33 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F960C08C5DE;
-        Sat,  4 Jul 2020 01:05:33 -0700 (PDT)
-Date:   Sat, 04 Jul 2020 08:05:29 -0000
+        Sat, 4 Jul 2020 13:49:12 -0400
+Date:   Sat, 04 Jul 2020 17:49:08 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1593849930;
+        s=2020; t=1593884950;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=6SDcqZbL1aXVwUBb6p8aR2xFjdXXCLwQeF08PTwRTIs=;
-        b=KylZAFNqUsfqnVCz3mXsz9vLEdbIa0X1keajzWKiCK62nxQP6zTDGsGYkxmC58ekqRby6r
-        eUBl0sWXDMPlGdtTHFci+C6Si1nmfAPx3zB7uB0ygVLRxw017IDNNB6pYUdc6XumxEWDOE
-        CGJlMf8iefRCLlAsFmrQm1DZ269cvp3SP6ef4iGn2+8NoP9OZqoOj5fhQspmGH7NHQ+yoN
-        aLjQjGdXD7SveMS5ceNUHq2G4j4EjqqDNrufNZKrHyYwa5RmD2x5XRRmiOxOItqgrx/z4v
-        xFmDKl4TeOoW3rlTPurW8IK29djmkYfUENdnqoJxecoD3yDRhCTWNtP71Vnc5Q==
+        bh=TyT8hkQlhVSj6KK8bDYHft0bbGZKUG7cdvK5Ql2oBEk=;
+        b=Cp+/esIZ1NBLvhXGIhXL4XCo8lg4r4WZ/Iuk9PfZJJaXLvIlX57JQY+OvexePMrOvbPgXm
+        ABK9ssFB8b7V9JZMH7j3xR1KANRm/VDNvEOARor5ZrBLlcxKpkLgFEclQT6wazKyyrKm8L
+        d5zoTWbjf5cXVUGqDBiGt1xtHb4IdY+sajxx7b7PqpdxW2nGm75Imnrch8uZf0JeIfvKqv
+        dgpQgLLrMw8HiGNw1aokf0/nanM/2TEbNttq1MiwC8lQFt7OZjV3VcOz22PQmf0LKRRnQf
+        b31VsjZWprpL3IVegbgW/uvyYyym2hB4LlpYt+OYYbfG+gEWv1c1sGwKVLWEmw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1593849930;
+        s=2020e; t=1593884950;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=6SDcqZbL1aXVwUBb6p8aR2xFjdXXCLwQeF08PTwRTIs=;
-        b=/Xljf3JYhndpr+4c00Mis0HEAMImngFNGxW62LVTeqJImdv7B5XIor1KRTOPMArK1m29yM
-        2vrIIyI2T1xWneAw==
-From:   "tip-bot2 for Valentin Schneider" <tip-bot2@linutronix.de>
+        bh=TyT8hkQlhVSj6KK8bDYHft0bbGZKUG7cdvK5Ql2oBEk=;
+        b=JPxhG4RxpDTkhyU805vAlyGjka1batxkqxegjWicD+YbpRYZgvTwWQ3PRi6HHd34uEFqAP
+        rkn1kaUjN8lle1CQ==
+From:   "tip-bot2 for Andy Lutomirski" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] sparc64: Deselect IRQ_PREFLOW_FASTEOI
-Cc:     Valentin Schneider <valentin.schneider@arm.com>,
+Subject: [tip: x86/urgent] x86/ldt: Disable 16-bit segments on Xen PV
+Cc:     Andy Lutomirski <luto@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Anatoly Pugachev <matorola@gmail.com>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200703155645.29703-2-valentin.schneider@arm.com>
-References: <20200703155645.29703-2-valentin.schneider@arm.com>
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <92b2975459dfe5929ecf34c3896ad920bd9e3f2d.1593795633.git.luto@kernel.org>
+References: <92b2975459dfe5929ecf34c3896ad920bd9e3f2d.1593795633.git.luto@kernel.org>
 MIME-Version: 1.0
-Message-ID: <159384992977.4006.749304579733572105.tip-bot2@tip-bot2>
+Message-ID: <159388494850.4006.16547568050354289956.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,46 +57,90 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the irq/core branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     959f53bd90c3ac70e5481199c6159f6314f9f910
-Gitweb:        https://git.kernel.org/tip/959f53bd90c3ac70e5481199c6159f6314f9f910
-Author:        Valentin Schneider <valentin.schneider@arm.com>
-AuthorDate:    Fri, 03 Jul 2020 16:56:44 +01:00
+Commit-ID:     cc801833a171163edb6385425349ba8903bd1b20
+Gitweb:        https://git.kernel.org/tip/cc801833a171163edb6385425349ba8903bd1b20
+Author:        Andy Lutomirski <luto@kernel.org>
+AuthorDate:    Fri, 03 Jul 2020 10:02:57 -07:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sat, 04 Jul 2020 10:02:06 +02:00
+CommitterDate: Sat, 04 Jul 2020 19:47:26 +02:00
 
-sparc64: Deselect IRQ_PREFLOW_FASTEOI
+x86/ldt: Disable 16-bit segments on Xen PV
 
-sparc64 hasn't needed to select this since commit:
+Xen PV doesn't implement ESPFIX64, so they don't work right.  Disable
+them.  Also print a warning the first time anyone tries to use a
+16-bit segment on a Xen PV guest that would otherwise allow it
+to help people diagnose this change in behavior.
 
-  ee6a9333fa58 ("sparc64: sparse irq")
+This gets us closer to having all x86 selftests pass on Xen PV.
 
-which got rid of the calls to __irq_set_preflow_handler() first installed
-by commit:
-
-  fcd8d4f49869 ("sparc: Use the new genirq functionality")
-
-Deselect this option.
-
-Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
+Signed-off-by: Andy Lutomirski <luto@kernel.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Anatoly Pugachev <matorola@gmail.com> 
-Link: https://lkml.kernel.org/r/20200703155645.29703-2-valentin.schneider@arm.com
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/92b2975459dfe5929ecf34c3896ad920bd9e3f2d.1593795633.git.luto@kernel.org
 
 ---
- arch/sparc/Kconfig | 1 -
- 1 file changed, 1 deletion(-)
+ arch/x86/kernel/ldt.c | 35 ++++++++++++++++++++++++++++++++++-
+ 1 file changed, 34 insertions(+), 1 deletion(-)
 
-diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
-index 5bf2dc1..76f4078 100644
---- a/arch/sparc/Kconfig
-+++ b/arch/sparc/Kconfig
-@@ -80,7 +80,6 @@ config SPARC64
- 	select RTC_DRV_STARFIRE
- 	select HAVE_PERF_EVENTS
- 	select PERF_USE_VMALLOC
--	select IRQ_PREFLOW_FASTEOI
- 	select ARCH_HAVE_NMI_SAFE_CMPXCHG
- 	select HAVE_C_RECORDMCOUNT
- 	select HAVE_ARCH_AUDITSYSCALL
+diff --git a/arch/x86/kernel/ldt.c b/arch/x86/kernel/ldt.c
+index 8748321..34e918a 100644
+--- a/arch/x86/kernel/ldt.c
++++ b/arch/x86/kernel/ldt.c
+@@ -29,6 +29,8 @@
+ #include <asm/mmu_context.h>
+ #include <asm/pgtable_areas.h>
+ 
++#include <xen/xen.h>
++
+ /* This is a multiple of PAGE_SIZE. */
+ #define LDT_SLOT_STRIDE (LDT_ENTRIES * LDT_ENTRY_SIZE)
+ 
+@@ -543,6 +545,37 @@ static int read_default_ldt(void __user *ptr, unsigned long bytecount)
+ 	return bytecount;
+ }
+ 
++static bool allow_16bit_segments(void)
++{
++	if (!IS_ENABLED(CONFIG_X86_16BIT))
++		return false;
++
++#ifdef CONFIG_XEN_PV
++	/*
++	 * Xen PV does not implement ESPFIX64, which means that 16-bit
++	 * segments will not work correctly.  Until either Xen PV implements
++	 * ESPFIX64 and can signal this fact to the guest or unless someone
++	 * provides compelling evidence that allowing broken 16-bit segments
++	 * is worthwhile, disallow 16-bit segments under Xen PV.
++	 */
++	if (xen_pv_domain()) {
++		static DEFINE_MUTEX(xen_warning);
++		static bool warned;
++
++		mutex_lock(&xen_warning);
++		if (!warned) {
++			pr_info("Warning: 16-bit segments do not work correctly in a Xen PV guest\n");
++			warned = true;
++		}
++		mutex_unlock(&xen_warning);
++
++		return false;
++	}
++#endif
++
++	return true;
++}
++
+ static int write_ldt(void __user *ptr, unsigned long bytecount, int oldmode)
+ {
+ 	struct mm_struct *mm = current->mm;
+@@ -574,7 +607,7 @@ static int write_ldt(void __user *ptr, unsigned long bytecount, int oldmode)
+ 		/* The user wants to clear the entry. */
+ 		memset(&ldt, 0, sizeof(ldt));
+ 	} else {
+-		if (!IS_ENABLED(CONFIG_X86_16BIT) && !ldt_info.seg_32bit) {
++		if (!ldt_info.seg_32bit && !allow_16bit_segments()) {
+ 			error = -EINVAL;
+ 			goto out;
+ 		}
