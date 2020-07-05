@@ -2,55 +2,47 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 94A6E2147CB
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  4 Jul 2020 19:49:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A7A08214EF4
+	for <lists+linux-tip-commits@lfdr.de>; Sun,  5 Jul 2020 21:44:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726791AbgGDRtO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 4 Jul 2020 13:49:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40772 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726909AbgGDRtN (ORCPT
+        id S1727942AbgGEToI (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 5 Jul 2020 15:44:08 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:47004 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727936AbgGEToI (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 4 Jul 2020 13:49:13 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1293FC061794;
-        Sat,  4 Jul 2020 10:49:13 -0700 (PDT)
-Date:   Sat, 04 Jul 2020 17:49:11 -0000
+        Sun, 5 Jul 2020 15:44:08 -0400
+Date:   Sun, 05 Jul 2020 19:44:04 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1593884951;
+        s=2020; t=1593978245;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=YiJkfElGbiktGfP9nsOuXtJinSzKctc1/SFc3OqpmmE=;
-        b=t1tVFuSB0XzeV7+7cUfLokRVNCWvV36s5YK8MftKQz9fnZAg5qYFKHrncEBBa+EBLv1w4G
-        mZppMP0SmVpFkyq/CocZ+fSrcPhq4QWT+gM2JB6FCd8ldz//PgrS9vNkgXLFsEekgvtHwF
-        eHTeSy+xnwvHc67PvHhvtBWaTHZWky6ezLJyvsMhVhdCfv/2+aDuYNQJj0gPDzoUQtqCpa
-        51PgZqggCjQ+zdASl7LlPoTeRig/7avpmlWfcRy9i7TB58W2Lg838RmLzYhF12izYPpkxJ
-        p8uEDDDzRqs1NwhflqgdNEDEGnibt+c05NnG3++Huh98j09tDD7pgFy7oSnHLg==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=kJjqNi98jZ2gWU0Juh5kKC1w6QkusqiMwIY+neDalHo=;
+        b=yhKH9OTMlmK9YL5b4llaQDuWUmt4ctnOrCo/9MjQXIH1yjSciFJh8WfavirpU2BjD9ak4D
+        JBTpQFtY74vj9BADO+6/Kx7IEUtIIvSaUai+I2g0dZZihbBsNTJQsUXq510mBYKbVLU/nW
+        izjniF5UFz75ddqDHi/FSYTKTfWrvsu5FQ/6XfqnPycvSmJB/iQ5Vs2xKLmplN7IsjKBKd
+        7f39Rpank/n9GKmkbyxR/mNzou+6UPrFUlOT6lb84qDXuA/1sIgNK+t1zaYfXtfHHmlhXP
+        VEEN19eiGgHaV0q9GqbFTjJhblBOJeJG5n0aBoea0MMq4sLc3/wF7iE3uOkldw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1593884951;
+        s=2020e; t=1593978245;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=YiJkfElGbiktGfP9nsOuXtJinSzKctc1/SFc3OqpmmE=;
-        b=rOIvm74oFJTdARBjkRkzD7j5N0hQbKeDrpS2CHhtKPdeaX1+JZo/62NJ5YsJOlhkso4fDe
-        HrXnthzpT1+2JvCg==
-From:   "tip-bot2 for Andy Lutomirski" <tip-bot2@linutronix.de>
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=kJjqNi98jZ2gWU0Juh5kKC1w6QkusqiMwIY+neDalHo=;
+        b=d5ATdZkrosSwyZ5dvTeP7VMw0hRmSamY+6VmVU2iz5OkZwdAfE66wjOYLeAJcrPADzM5Mm
+        Z0YWa0EDjiUCLqAQ==
+From:   "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/entry/compat: Clear RAX high bits on Xen PV SYSENTER
+Subject: [tip: x86/urgent] x86/entry/32: Fix XEN_PV build dependency
 Cc:     Andy Lutomirski <luto@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <9d33b3f3216dcab008070f1c28b6091ae7199969.1593795633.git.luto@kernel.org>
-References: <9d33b3f3216dcab008070f1c28b6091ae7199969.1593795633.git.luto@kernel.org>
+        linux-kernel@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
+        x86 <x86@kernel.org>
 MIME-Version: 1.0
-Message-ID: <159388495100.4006.13667292237270136663.tip-bot2@tip-bot2>
+Message-ID: <159397824429.4006.6604251447325788449.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -62,65 +54,56 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     db5b2c5a90a111618f071d231a8b945cf522313e
-Gitweb:        https://git.kernel.org/tip/db5b2c5a90a111618f071d231a8b945cf522313e
-Author:        Andy Lutomirski <luto@kernel.org>
-AuthorDate:    Fri, 03 Jul 2020 10:02:53 -07:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sat, 04 Jul 2020 19:47:25 +02:00
+Commit-ID:     a4c0e91d1d65bc58f928b80ed824e10e165da22c
+Gitweb:        https://git.kernel.org/tip/a4c0e91d1d65bc58f928b80ed824e10e165da22c
+Author:        Ingo Molnar <mingo@kernel.org>
+AuthorDate:    Sun, 05 Jul 2020 21:33:11 +02:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Sun, 05 Jul 2020 21:39:23 +02:00
 
-x86/entry/compat: Clear RAX high bits on Xen PV SYSENTER
+x86/entry/32: Fix XEN_PV build dependency
 
-Move the clearing of the high bits of RAX after Xen PV joins the SYSENTER
-path so that Xen PV doesn't skip it.
+xenpv_exc_nmi() and xenpv_exc_debug() are only defined on 64-bit kernels,
+but they snuck into the 32-bit build via <asm/identry.h>, causing the link
+to fail:
 
-Arguably this code should be deleted instead, but that would belong in the
-merge window.
+  ld: arch/x86/entry/entry_32.o: in function `asm_xenpv_exc_nmi':
+  (.entry.text+0x817): undefined reference to `xenpv_exc_nmi'
 
-Fixes: ffae641f5747 ("x86/entry/64/compat: Fix Xen PV SYSENTER frame setup")
-Signed-off-by: Andy Lutomirski <luto@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/9d33b3f3216dcab008070f1c28b6091ae7199969.1593795633.git.luto@kernel.org
+  ld: arch/x86/entry/entry_32.o: in function `asm_xenpv_exc_debug':
+  (.entry.text+0x827): undefined reference to `xenpv_exc_debug'
 
+Only use them on 64-bit kernels.
+
+Fixes: f41f0824224e: ("x86/entry/xen: Route #DB correctly on Xen PV")
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- arch/x86/entry/entry_64_compat.S | 19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
+ arch/x86/include/asm/idtentry.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/entry/entry_64_compat.S b/arch/x86/entry/entry_64_compat.S
-index 381a6de..541fdaf 100644
---- a/arch/x86/entry/entry_64_compat.S
-+++ b/arch/x86/entry/entry_64_compat.S
-@@ -57,15 +57,6 @@ SYM_CODE_START(entry_SYSENTER_compat)
+diff --git a/arch/x86/include/asm/idtentry.h b/arch/x86/include/asm/idtentry.h
+index eeac6dc..f3d7083 100644
+--- a/arch/x86/include/asm/idtentry.h
++++ b/arch/x86/include/asm/idtentry.h
+@@ -553,7 +553,7 @@ DECLARE_IDTENTRY_RAW(X86_TRAP_MC,	exc_machine_check);
  
- 	movq	PER_CPU_VAR(cpu_current_top_of_stack), %rsp
+ /* NMI */
+ DECLARE_IDTENTRY_NMI(X86_TRAP_NMI,	exc_nmi);
+-#ifdef CONFIG_XEN_PV
++#if defined(CONFIG_XEN_PV) && defined(CONFIG_X86_64)
+ DECLARE_IDTENTRY_RAW(X86_TRAP_NMI,	xenpv_exc_nmi);
+ #endif
  
--	/*
--	 * User tracing code (ptrace or signal handlers) might assume that
--	 * the saved RAX contains a 32-bit number when we're invoking a 32-bit
--	 * syscall.  Just in case the high bits are nonzero, zero-extend
--	 * the syscall number.  (This could almost certainly be deleted
--	 * with no ill effects.)
--	 */
--	movl	%eax, %eax
--
- 	/* Construct struct pt_regs on stack */
- 	pushq	$__USER32_DS		/* pt_regs->ss */
- 	pushq	$0			/* pt_regs->sp = 0 (placeholder) */
-@@ -80,6 +71,16 @@ SYM_CODE_START(entry_SYSENTER_compat)
- 	pushq	$__USER32_CS		/* pt_regs->cs */
- 	pushq	$0			/* pt_regs->ip = 0 (placeholder) */
- SYM_INNER_LABEL(entry_SYSENTER_compat_after_hwframe, SYM_L_GLOBAL)
-+
-+	/*
-+	 * User tracing code (ptrace or signal handlers) might assume that
-+	 * the saved RAX contains a 32-bit number when we're invoking a 32-bit
-+	 * syscall.  Just in case the high bits are nonzero, zero-extend
-+	 * the syscall number.  (This could almost certainly be deleted
-+	 * with no ill effects.)
-+	 */
-+	movl	%eax, %eax
-+
- 	pushq	%rax			/* pt_regs->orig_ax */
- 	pushq	%rdi			/* pt_regs->di */
- 	pushq	%rsi			/* pt_regs->si */
+@@ -563,7 +563,7 @@ DECLARE_IDTENTRY_DEBUG(X86_TRAP_DB,	exc_debug);
+ #else
+ DECLARE_IDTENTRY_RAW(X86_TRAP_DB,	exc_debug);
+ #endif
+-#ifdef CONFIG_XEN_PV
++#if defined(CONFIG_XEN_PV) && defined(CONFIG_X86_64)
+ DECLARE_IDTENTRY_RAW(X86_TRAP_DB,	xenpv_exc_debug);
+ #endif
+ 
