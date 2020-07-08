@@ -2,54 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2574F21845A
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  8 Jul 2020 11:52:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25E8A21845E
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  8 Jul 2020 11:53:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726900AbgGHJvt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 8 Jul 2020 05:51:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34946 "EHLO
+        id S1728782AbgGHJwt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 8 Jul 2020 05:52:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34956 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728591AbgGHJvt (ORCPT
+        with ESMTP id S1728637AbgGHJvv (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 8 Jul 2020 05:51:49 -0400
+        Wed, 8 Jul 2020 05:51:51 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C7CBC08C5DC;
-        Wed,  8 Jul 2020 02:51:49 -0700 (PDT)
-Date:   Wed, 08 Jul 2020 09:51:47 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFB9BC08C5DC;
+        Wed,  8 Jul 2020 02:51:50 -0700 (PDT)
+Date:   Wed, 08 Jul 2020 09:51:48 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1594201907;
+        s=2020; t=1594201909;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=6Zy3ybiBNjr/H0af95SIF94cU72PMtPmzrkLbDmx8gs=;
-        b=aF99qXFLMZOq+W9GUTnMcVCQy1SOCq4AjzrDGIkQh+npLo7W1OqO3uXVoWTuF5IUbCY8p7
-        N/umC0XK9Neh5/ZtmFFJigMWxX9fcBLrer2TEJHY+N7JpjoKb0Frp2y1tHzU1j103kElts
-        93pcrFCD+aT7OgiIjeHcAEbLuSNP9V11zsCiQoVcLMuKVHxi/v2FNemM6fxkbZuGn2kwtK
-        iepGH4w3gTHx7oJhWmctVFnD+pQ5PiBoP30y/yA0eBeNRKPnIie+hdywvsWpsRU5TXGtok
-        Xm+TwPMvPJ2vH6fPOdC599/692Z84y7wtgerdrQanmeSTCQ9s7O2HZxUlRl/ug==
+        bh=60Mezd46ktMquRB4XcWSZqZMrYevV8VbBsgfhyo6skg=;
+        b=PzTSEm55UIYZE1pb4vqWLsBpZ3XoFIBKq5AaXB2AJdTvttJSMkZpjl8QshS5SWXHIVcGTz
+        /j4VKeR3N2m1k1jLGUDCbe/fXC2xQFmwLs5JouyxuuNQeiaosuJbp6znkB2QltpSlTJ0uc
+        A/k8RofLaVHcoCzyZzBXvPeA92U6rHuVJjUfx+zoIJWnd2RWXxaRHSuzEUxxCQibOplji+
+        UNwfF9/HCMfL3xqOMczCpzbSZv25hwN0QdN4P49aBY31MBKUTrV8WsvlEgJhdGh2KrqnVy
+        YkpK4ZUqJhYTZ2yunk48rzustQP1D5BsoWaTZBc7QWM0KFKQhm+uExviK8UXaA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1594201907;
+        s=2020e; t=1594201909;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=6Zy3ybiBNjr/H0af95SIF94cU72PMtPmzrkLbDmx8gs=;
-        b=ISo+kVYaTxQoiZnUcpWjfJ9ViyP5CSHsbxqc35UCBk/y8noDZELX/ccNkfrYO8J9kJBiun
-        /9CtUlC5xVip1IAA==
+        bh=60Mezd46ktMquRB4XcWSZqZMrYevV8VbBsgfhyo6skg=;
+        b=65dEmwFYU0ULU43XXf/lceT3wOeOngqvHdWpQ0JDAkEFo14EvJeqQN1wKnl2VOjINlK70w
+        RBME2thJwHDTWrAQ==
 From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/core: Use kmem_cache to allocate the PMU specific data
+Subject: [tip: perf/core] perf/x86/intel/lbr: Factor out intel_pmu_store_lbr
 Cc:     Kan Liang <kan.liang@linux.intel.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <1593780569-62993-17-git-send-email-kan.liang@linux.intel.com>
-References: <1593780569-62993-17-git-send-email-kan.liang@linux.intel.com>
+In-Reply-To: <1593780569-62993-14-git-send-email-kan.liang@linux.intel.com>
+References: <1593780569-62993-14-git-send-email-kan.liang@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <159420190705.4006.11190540790919295173.tip-bot2@tip-bot2>
+Message-ID: <159420190885.4006.7883134629976777716.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,105 +61,205 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     217c2a633ebb36f1cc6d249f4ef2e4a809d46818
-Gitweb:        https://git.kernel.org/tip/217c2a633ebb36f1cc6d249f4ef2e4a809d46818
+Commit-ID:     631618a0dca31dc23dcce38cf345c6139bd8a1e9
+Gitweb:        https://git.kernel.org/tip/631618a0dca31dc23dcce38cf345c6139bd8a1e9
 Author:        Kan Liang <kan.liang@linux.intel.com>
-AuthorDate:    Fri, 03 Jul 2020 05:49:22 -07:00
+AuthorDate:    Fri, 03 Jul 2020 05:49:19 -07:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 08 Jul 2020 11:38:55 +02:00
+CommitterDate: Wed, 08 Jul 2020 11:38:54 +02:00
 
-perf/core: Use kmem_cache to allocate the PMU specific data
+perf/x86/intel/lbr: Factor out intel_pmu_store_lbr
 
-Currently, the PMU specific data task_ctx_data is allocated by the
-function kzalloc() in the perf generic code. When there is no specific
-alignment requirement for the task_ctx_data, the method works well for
-now. However, there will be a problem once a specific alignment
-requirement is introduced in future features, e.g., the Architecture LBR
-XSAVE feature requires 64-byte alignment. If the specific alignment
-requirement is not fulfilled, the XSAVE family of instructions will fail
-to save/restore the xstate to/from the task_ctx_data.
+The way to store the LBR information from a PEBS LBR record can be
+reused in Architecture LBR, because
+- The LBR information is stored like a stack. Entry 0 is always the
+  youngest branch.
+- The layout of the LBR INFO MSR is similar.
 
-The function kzalloc() itself only guarantees a natural alignment. A
-new method to allocate the task_ctx_data has to be introduced, which
-has to meet the requirements as below:
-- must be a generic method can be used by different architectures,
-  because the allocation of the task_ctx_data is implemented in the
-  perf generic code;
-- must be an alignment-guarantee method (The alignment requirement is
-  not changed after the boot);
-- must be able to allocate/free a buffer (smaller than a page size)
-  dynamically;
-- should not cause extra CPU overhead or space overhead.
+The LBR information may be retrieved from either the LBR registers
+(non-PEBS event) or a buffer (PEBS event). Extend rdlbr_*() to support
+both methods.
 
-Several options were considered as below:
-- One option is to allocate a larger buffer for task_ctx_data. E.g.,
-    ptr = kmalloc(size + alignment, GFP_KERNEL);
-    ptr &= ~(alignment - 1);
-  This option causes space overhead.
-- Another option is to allocate the task_ctx_data in the PMU specific
-  code. To do so, several function pointers have to be added. As a
-  result, both the generic structure and the PMU specific structure
-  will become bigger. Besides, extra function calls are added when
-  allocating/freeing the buffer. This option will increase both the
-  space overhead and CPU overhead.
-- The third option is to use a kmem_cache to allocate a buffer for the
-  task_ctx_data. The kmem_cache can be created with a specific alignment
-  requirement by the PMU at boot time. A new pointer for kmem_cache has
-  to be added in the generic struct pmu, which would be used to
-  dynamically allocate a buffer for the task_ctx_data at run time.
-  Although the new pointer is added to the struct pmu, the existing
-  variable task_ctx_size is not required anymore. The size of the
-  generic structure is kept the same.
+Explicitly check the invalid entry (0s), which can avoid unnecessary MSR
+access if using a non-PEBS event. For a PEBS event, the check should
+slightly improve the performance as well. The invalid entries are cut.
+The intel_pmu_lbr_filter() doesn't need to check and filter them out.
 
-The third option which meets all the aforementioned requirements is used
-to replace kzalloc() for the PMU specific data allocation. A later patch
-will remove the kzalloc() method and the related variables.
+Cannot share the function with current model-specific LBR read, because
+the direction of the LBR growth is opposite.
 
 Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/1593780569-62993-17-git-send-email-kan.liang@linux.intel.com
+Link: https://lkml.kernel.org/r/1593780569-62993-14-git-send-email-kan.liang@linux.intel.com
 ---
- include/linux/perf_event.h | 5 +++++
- kernel/events/core.c       | 8 +++++++-
- 2 files changed, 12 insertions(+), 1 deletion(-)
+ arch/x86/events/intel/lbr.c | 82 ++++++++++++++++++++++++------------
+ 1 file changed, 56 insertions(+), 26 deletions(-)
 
-diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
-index 46fe5cf..09915ae 100644
---- a/include/linux/perf_event.h
-+++ b/include/linux/perf_event.h
-@@ -425,6 +425,11 @@ struct pmu {
- 	size_t				task_ctx_size;
- 
- 	/*
-+	 * Kmem cache of PMU specific data
-+	 */
-+	struct kmem_cache		*task_ctx_cache;
-+
-+	/*
- 	 * PMU specific parts of task perf event context (i.e. ctx->task_ctx_data)
- 	 * can be synchronized using this function. See Intel LBR callstack support
- 	 * implementation and Perf core context switch handling callbacks for usage
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 7509040..30d9b31 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -1240,12 +1240,18 @@ static void get_ctx(struct perf_event_context *ctx)
- 
- static void *alloc_task_ctx_data(struct pmu *pmu)
- {
-+	if (pmu->task_ctx_cache)
-+		return kmem_cache_zalloc(pmu->task_ctx_cache, GFP_KERNEL);
-+
- 	return kzalloc(pmu->task_ctx_size, GFP_KERNEL);
+diff --git a/arch/x86/events/intel/lbr.c b/arch/x86/events/intel/lbr.c
+index d3d129c..0d7a859 100644
+--- a/arch/x86/events/intel/lbr.c
++++ b/arch/x86/events/intel/lbr.c
+@@ -348,28 +348,37 @@ static __always_inline void wrlbr_info(unsigned int idx, u64 val)
+ 	wrmsrl(x86_pmu.lbr_info + idx, val);
  }
  
- static void free_task_ctx_data(struct pmu *pmu, void *task_ctx_data)
+-static __always_inline u64 rdlbr_from(unsigned int idx)
++static __always_inline u64 rdlbr_from(unsigned int idx, struct lbr_entry *lbr)
  {
--	kfree(task_ctx_data);
-+	if (pmu->task_ctx_cache && task_ctx_data)
-+		kmem_cache_free(pmu->task_ctx_cache, task_ctx_data);
-+	else
-+		kfree(task_ctx_data);
+ 	u64 val;
+ 
++	if (lbr)
++		return lbr->from;
++
+ 	rdmsrl(x86_pmu.lbr_from + idx, val);
+ 
+ 	return lbr_from_signext_quirk_rd(val);
  }
  
- static void free_ctx(struct rcu_head *head)
+-static __always_inline u64 rdlbr_to(unsigned int idx)
++static __always_inline u64 rdlbr_to(unsigned int idx, struct lbr_entry *lbr)
+ {
+ 	u64 val;
+ 
++	if (lbr)
++		return lbr->to;
++
+ 	rdmsrl(x86_pmu.lbr_to + idx, val);
+ 
+ 	return val;
+ }
+ 
+-static __always_inline u64 rdlbr_info(unsigned int idx)
++static __always_inline u64 rdlbr_info(unsigned int idx, struct lbr_entry *lbr)
+ {
+ 	u64 val;
+ 
++	if (lbr)
++		return lbr->info;
++
+ 	rdmsrl(x86_pmu.lbr_info + idx, val);
+ 
+ 	return val;
+@@ -387,16 +396,16 @@ wrlbr_all(struct lbr_entry *lbr, unsigned int idx, bool need_info)
+ static inline bool
+ rdlbr_all(struct lbr_entry *lbr, unsigned int idx, bool need_info)
+ {
+-	u64 from = rdlbr_from(idx);
++	u64 from = rdlbr_from(idx, NULL);
+ 
+ 	/* Don't read invalid entry */
+ 	if (!from)
+ 		return false;
+ 
+ 	lbr->from = from;
+-	lbr->to = rdlbr_to(idx);
++	lbr->to = rdlbr_to(idx, NULL);
+ 	if (need_info)
+-		lbr->info = rdlbr_info(idx);
++		lbr->info = rdlbr_info(idx, NULL);
+ 
+ 	return true;
+ }
+@@ -432,7 +441,7 @@ void intel_pmu_lbr_restore(void *ctx)
+ 
+ static __always_inline bool lbr_is_reset_in_cstate(void *ctx)
+ {
+-	return !rdlbr_from(((struct x86_perf_task_context *)ctx)->tos);
++	return !rdlbr_from(((struct x86_perf_task_context *)ctx)->tos, NULL);
+ }
+ 
+ static void __intel_pmu_lbr_restore(void *ctx)
+@@ -709,8 +718,8 @@ void intel_pmu_lbr_read_64(struct cpu_hw_events *cpuc)
+ 		u16 cycles = 0;
+ 		int lbr_flags = lbr_desc[lbr_format];
+ 
+-		from = rdlbr_from(lbr_idx);
+-		to   = rdlbr_to(lbr_idx);
++		from = rdlbr_from(lbr_idx, NULL);
++		to   = rdlbr_to(lbr_idx, NULL);
+ 
+ 		/*
+ 		 * Read LBR call stack entries
+@@ -722,7 +731,7 @@ void intel_pmu_lbr_read_64(struct cpu_hw_events *cpuc)
+ 		if (lbr_format == LBR_FORMAT_INFO && need_info) {
+ 			u64 info;
+ 
+-			info = rdlbr_info(lbr_idx);
++			info = rdlbr_info(lbr_idx, NULL);
+ 			mis = !!(info & LBR_INFO_MISPRED);
+ 			pred = !mis;
+ 			in_tx = !!(info & LBR_INFO_IN_TX);
+@@ -777,6 +786,42 @@ void intel_pmu_lbr_read_64(struct cpu_hw_events *cpuc)
+ 	cpuc->lbr_stack.hw_idx = tos;
+ }
+ 
++static void intel_pmu_store_lbr(struct cpu_hw_events *cpuc,
++				struct lbr_entry *entries)
++{
++	struct perf_branch_entry *e;
++	struct lbr_entry *lbr;
++	u64 from, to, info;
++	int i;
++
++	for (i = 0; i < x86_pmu.lbr_nr; i++) {
++		lbr = entries ? &entries[i] : NULL;
++		e = &cpuc->lbr_entries[i];
++
++		from = rdlbr_from(i, lbr);
++		/*
++		 * Read LBR entries until invalid entry (0s) is detected.
++		 */
++		if (!from)
++			break;
++
++		to = rdlbr_to(i, lbr);
++		info = rdlbr_info(i, lbr);
++
++		e->from		= from;
++		e->to		= to;
++		e->mispred	= !!(info & LBR_INFO_MISPRED);
++		e->predicted	= !(info & LBR_INFO_MISPRED);
++		e->in_tx	= !!(info & LBR_INFO_IN_TX);
++		e->abort	= !!(info & LBR_INFO_ABORT);
++		e->cycles	= info & LBR_INFO_CYCLES;
++		e->type		= 0;
++		e->reserved	= 0;
++	}
++
++	cpuc->lbr_stack.nr = i;
++}
++
+ void intel_pmu_lbr_read(void)
+ {
+ 	struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
+@@ -1215,9 +1260,6 @@ intel_pmu_lbr_filter(struct cpu_hw_events *cpuc)
+ void intel_pmu_store_pebs_lbrs(struct lbr_entry *lbr)
+ {
+ 	struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
+-	int i;
+-
+-	cpuc->lbr_stack.nr = x86_pmu.lbr_nr;
+ 
+ 	/* Cannot get TOS for large PEBS */
+ 	if (cpuc->n_pebs == cpuc->n_large_pebs)
+@@ -1225,19 +1267,7 @@ void intel_pmu_store_pebs_lbrs(struct lbr_entry *lbr)
+ 	else
+ 		cpuc->lbr_stack.hw_idx = intel_pmu_lbr_tos();
+ 
+-	for (i = 0; i < x86_pmu.lbr_nr; i++) {
+-		u64 info = lbr[i].info;
+-		struct perf_branch_entry *e = &cpuc->lbr_entries[i];
+-
+-		e->from		= lbr[i].from;
+-		e->to		= lbr[i].to;
+-		e->mispred	= !!(info & LBR_INFO_MISPRED);
+-		e->predicted	= !(info & LBR_INFO_MISPRED);
+-		e->in_tx	= !!(info & LBR_INFO_IN_TX);
+-		e->abort	= !!(info & LBR_INFO_ABORT);
+-		e->cycles	= info & LBR_INFO_CYCLES;
+-		e->reserved	= 0;
+-	}
++	intel_pmu_store_lbr(cpuc, lbr);
+ 	intel_pmu_lbr_filter(cpuc);
+ }
+ 
