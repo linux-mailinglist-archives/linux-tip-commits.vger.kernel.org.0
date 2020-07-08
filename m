@@ -2,51 +2,51 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E059A21843D
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  8 Jul 2020 11:52:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4AF9218454
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  8 Jul 2020 11:52:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728668AbgGHJvz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 8 Jul 2020 05:51:55 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:48054 "EHLO
+        id S1728673AbgGHJwg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 8 Jul 2020 05:52:36 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:48070 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728645AbgGHJvy (ORCPT
+        with ESMTP id S1728648AbgGHJvy (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Wed, 8 Jul 2020 05:51:54 -0400
 Date:   Wed, 08 Jul 2020 09:51:51 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1594201911;
+        s=2020; t=1594201912;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=6SNQKgtYeN3ILXa5tMtzSYLdxzXoALKzjaJMGXnrzvk=;
-        b=Dzgr6QCKfboMWagin7pXkhNJy42ZPWpW+T2fAKKVLsqUqDrGSJ40rVWOMJvP465nF4PjWx
-        gdk3NZuwdSyq8aY6+W4Q2V8nr2aC2mmeL+J/jFzGqldVCws0Vosz92U0wNtwU+t8TZk+FI
-        N0OJfMRVs9X1jui369pqnQWJ0wL2BRPbDjkwlmeR0hffwQehhSMKV4uAmZ85GYG/E7Cuss
-        KOoxJk7I/2z5NsmBgSMyK0eQ95NfP8gWKE12xjGevueVPsuqoW1WSwPwOy9mzXuGCo+6bV
-        S3zUCKAtBBBGqFrbGnqpPS7Z+e5Ilwyxip/33my0Su0DEYKe7PvMTO1Kvm4YWA==
+        bh=8M2w+Ln973lNCrRueRCpHitdbIOU97JvYA9rTVOP6dU=;
+        b=d9ySLTx9owbVnoZ/frJU/p39PHkFXnRTiJlv+ijOBO+nkakTcU+zelX4lE9FRTnVl5jNuA
+        dEK7d81awT/UCAc1mQV3IJDkuHi2phl3QdsQAhC4XLdhmkb8KeC7lmluI9/vlfoGPPFkUF
+        dcaurdEAKmV+aZiulnVrkxYPR7F6SlHG+rLy2Dh43DOWNEjYfBZVBqF+1uiwsab+SYZvuR
+        DyTfVSQ8MMM/prj8pZ88Ml7E5lNYcFswMo+7Dfw7SWMGWaMzZSL1Mg78yPfBPz2Jh5B6MU
+        zsHua2KAvhdUXYvqIik/9Kwe+ZJVL3u3W7sHMy/87RsHu6GeIT2s6A34RkKXAA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1594201911;
+        s=2020e; t=1594201912;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=6SNQKgtYeN3ILXa5tMtzSYLdxzXoALKzjaJMGXnrzvk=;
-        b=44JN/bKCXQG9KcrLC4rvGbBeMe0B4JOaHB+5kI1AmuC4pB9w/HB56gOD73iwxyOoCLRo4N
-        8yO2b6mb6zkTDJAw==
+        bh=8M2w+Ln973lNCrRueRCpHitdbIOU97JvYA9rTVOP6dU=;
+        b=1RzMBbBVc/sTQ+ldQBc3vZmxJb/3WG0WHJoaSO44st/E3mFhBFIVJW6nfFxxVBK5dihpru
+        WI9ydJBBc7d7zHBA==
 From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/x86/intel/lbr: Support LBR_CTL
+Subject: [tip: perf/core] perf/x86: Expose CPUID enumeration bits for arch LBR
 Cc:     Kan Liang <kan.liang@linux.intel.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <1593780569-62993-10-git-send-email-kan.liang@linux.intel.com>
-References: <1593780569-62993-10-git-send-email-kan.liang@linux.intel.com>
+In-Reply-To: <1593780569-62993-9-git-send-email-kan.liang@linux.intel.com>
+References: <1593780569-62993-9-git-send-email-kan.liang@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <159420191116.4006.12606247942831487185.tip-bot2@tip-bot2>
+Message-ID: <159420191172.4006.7150584896673059399.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,140 +58,102 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     49d8184f2036ff5b8d1eea3d61bac8b23420eca7
-Gitweb:        https://git.kernel.org/tip/49d8184f2036ff5b8d1eea3d61bac8b23420eca7
+Commit-ID:     af6cf129706b2f79e12f97e62d977e7f653cdfd1
+Gitweb:        https://git.kernel.org/tip/af6cf129706b2f79e12f97e62d977e7f653cdfd1
 Author:        Kan Liang <kan.liang@linux.intel.com>
-AuthorDate:    Fri, 03 Jul 2020 05:49:15 -07:00
+AuthorDate:    Fri, 03 Jul 2020 05:49:14 -07:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Wed, 08 Jul 2020 11:38:53 +02:00
 
-perf/x86/intel/lbr: Support LBR_CTL
+perf/x86: Expose CPUID enumeration bits for arch LBR
 
-An IA32_LBR_CTL is introduced for Architecture LBR to enable and config
-LBR registers to replace the previous LBR_SELECT.
+The LBR capabilities of Architecture LBR are retrieved from the CPUID
+enumeration once at boot time. The capabilities have to be saved for
+future usage.
 
-All the related members in struct cpu_hw_events and struct x86_pmu
-have to be renamed.
-
-Some new macros are added to reflect the layout of LBR_CTL.
-
-The mapping from PERF_SAMPLE_BRANCH_* to the corresponding bits in
-LBR_CTL MSR is saved in lbr_ctl_map now, which is not a const value.
-The value relies on the CPUID enumeration.
-
-For the previous model-specific LBR, most of the bits in LBR_SELECT
-operate in the suppressed mode. For the bits in LBR_CTL, the polarity is
-inverted.
-
-For the previous model-specific LBR format 5 (LBR_FORMAT_INFO), if the
-NO_CYCLES and NO_FLAGS type are set, the flag LBR_NO_INFO will be set to
-avoid the unnecessary LBR_INFO MSR read. Although Architecture LBR also
-has a dedicated LBR_INFO MSR, perf doesn't need to check and set the
-flag LBR_NO_INFO. For Architecture LBR, XSAVES instruction will be used
-as the default way to read the LBR MSRs all together. The overhead which
-the flag tries to avoid doesn't exist anymore. Dropping the flag can
-save the extra check for the flag in the lbr_read() later, and make the
-code cleaner.
+Several new fields are added into structure x86_pmu to indicate the
+capabilities. The fields will be used in the following patches.
 
 Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/1593780569-62993-10-git-send-email-kan.liang@linux.intel.com
+Link: https://lkml.kernel.org/r/1593780569-62993-9-git-send-email-kan.liang@linux.intel.com
 ---
- arch/x86/events/intel/lbr.c  | 43 +++++++++++++++++++++++++++++++++++-
- arch/x86/events/perf_event.h | 15 +++++++++---
- 2 files changed, 55 insertions(+), 3 deletions(-)
+ arch/x86/events/perf_event.h      | 13 ++++++++++-
+ arch/x86/include/asm/perf_event.h | 40 ++++++++++++++++++++++++++++++-
+ 2 files changed, 53 insertions(+)
 
-diff --git a/arch/x86/events/intel/lbr.c b/arch/x86/events/intel/lbr.c
-index e62baa9..7742562 100644
---- a/arch/x86/events/intel/lbr.c
-+++ b/arch/x86/events/intel/lbr.c
-@@ -132,6 +132,44 @@ enum {
- 	 X86_BR_IRQ		|\
- 	 X86_BR_INT)
- 
-+/*
-+ * Intel LBR_CTL bits
-+ *
-+ * Hardware branch filter for Arch LBR
-+ */
-+#define ARCH_LBR_KERNEL_BIT		1  /* capture at ring0 */
-+#define ARCH_LBR_USER_BIT		2  /* capture at ring > 0 */
-+#define ARCH_LBR_CALL_STACK_BIT		3  /* enable call stack */
-+#define ARCH_LBR_JCC_BIT		16 /* capture conditional branches */
-+#define ARCH_LBR_REL_JMP_BIT		17 /* capture relative jumps */
-+#define ARCH_LBR_IND_JMP_BIT		18 /* capture indirect jumps */
-+#define ARCH_LBR_REL_CALL_BIT		19 /* capture relative calls */
-+#define ARCH_LBR_IND_CALL_BIT		20 /* capture indirect calls */
-+#define ARCH_LBR_RETURN_BIT		21 /* capture near returns */
-+#define ARCH_LBR_OTHER_BRANCH_BIT	22 /* capture other branches */
-+
-+#define ARCH_LBR_KERNEL			(1ULL << ARCH_LBR_KERNEL_BIT)
-+#define ARCH_LBR_USER			(1ULL << ARCH_LBR_USER_BIT)
-+#define ARCH_LBR_CALL_STACK		(1ULL << ARCH_LBR_CALL_STACK_BIT)
-+#define ARCH_LBR_JCC			(1ULL << ARCH_LBR_JCC_BIT)
-+#define ARCH_LBR_REL_JMP		(1ULL << ARCH_LBR_REL_JMP_BIT)
-+#define ARCH_LBR_IND_JMP		(1ULL << ARCH_LBR_IND_JMP_BIT)
-+#define ARCH_LBR_REL_CALL		(1ULL << ARCH_LBR_REL_CALL_BIT)
-+#define ARCH_LBR_IND_CALL		(1ULL << ARCH_LBR_IND_CALL_BIT)
-+#define ARCH_LBR_RETURN			(1ULL << ARCH_LBR_RETURN_BIT)
-+#define ARCH_LBR_OTHER_BRANCH		(1ULL << ARCH_LBR_OTHER_BRANCH_BIT)
-+
-+#define ARCH_LBR_ANY			 \
-+	(ARCH_LBR_JCC			|\
-+	 ARCH_LBR_REL_JMP		|\
-+	 ARCH_LBR_IND_JMP		|\
-+	 ARCH_LBR_REL_CALL		|\
-+	 ARCH_LBR_IND_CALL		|\
-+	 ARCH_LBR_RETURN		|\
-+	 ARCH_LBR_OTHER_BRANCH)
-+
-+#define ARCH_LBR_CTL_MASK			0x7f000e
-+
- static void intel_pmu_lbr_filter(struct cpu_hw_events *cpuc);
- 
- /*
-@@ -820,6 +858,11 @@ static int intel_pmu_setup_hw_lbr_filter(struct perf_event *event)
- 	reg = &event->hw.branch_reg;
- 	reg->idx = EXTRA_REG_LBR;
- 
-+	if (static_cpu_has(X86_FEATURE_ARCH_LBR)) {
-+		reg->config = mask;
-+		return 0;
-+	}
-+
- 	/*
- 	 * The first 9 bits (LBR_SEL_MASK) in LBR_SELECT operate
- 	 * in suppress mode. So LBR_SELECT should be set to
 diff --git a/arch/x86/events/perf_event.h b/arch/x86/events/perf_event.h
-index cc81177..ba89e56 100644
+index 7dbf148..cc81177 100644
 --- a/arch/x86/events/perf_event.h
 +++ b/arch/x86/events/perf_event.h
-@@ -245,7 +245,10 @@ struct cpu_hw_events {
- 	int				lbr_pebs_users;
- 	struct perf_branch_stack	lbr_stack;
- 	struct perf_branch_entry	lbr_entries[MAX_LBR_ENTRIES];
--	struct er_account		*lbr_sel;
-+	union {
-+		struct er_account		*lbr_sel;
-+		struct er_account		*lbr_ctl;
-+	};
- 	u64				br_sel;
- 	void				*last_task_ctx;
- 	int				last_log_id;
-@@ -688,8 +691,14 @@ struct x86_pmu {
- 	 */
- 	unsigned int	lbr_tos, lbr_from, lbr_to,
- 			lbr_nr;			   /* LBR base regs and size */
--	u64		lbr_sel_mask;		   /* LBR_SELECT valid bits */
--	const int	*lbr_sel_map;		   /* lbr_select mappings */
-+	union {
-+		u64	lbr_sel_mask;		   /* LBR_SELECT valid bits */
-+		u64	lbr_ctl_mask;		   /* LBR_CTL valid bits */
-+	};
-+	union {
-+		const int	*lbr_sel_map;	   /* lbr_select mappings */
-+		int		*lbr_ctl_map;	   /* LBR_CTL mappings */
-+	};
+@@ -693,6 +693,19 @@ struct x86_pmu {
  	bool		lbr_double_abort;	   /* duplicated lbr aborts */
  	bool		lbr_pt_coexist;		   /* (LBR|BTS) may coexist with PT */
  
++	/*
++	 * Intel Architectural LBR CPUID Enumeration
++	 */
++	unsigned int	lbr_depth_mask:8;
++	unsigned int	lbr_deep_c_reset:1;
++	unsigned int	lbr_lip:1;
++	unsigned int	lbr_cpl:1;
++	unsigned int	lbr_filter:1;
++	unsigned int	lbr_call_stack:1;
++	unsigned int	lbr_mispred:1;
++	unsigned int	lbr_timed_lbr:1;
++	unsigned int	lbr_br_type:1;
++
+ 	void		(*lbr_reset)(void);
+ 	void		(*lbr_read)(struct cpu_hw_events *cpuc);
+ 	void		(*lbr_save)(void *ctx);
+diff --git a/arch/x86/include/asm/perf_event.h b/arch/x86/include/asm/perf_event.h
+index 2df7073..9ffce7d 100644
+--- a/arch/x86/include/asm/perf_event.h
++++ b/arch/x86/include/asm/perf_event.h
+@@ -142,6 +142,46 @@ union cpuid10_edx {
+ 	unsigned int full;
+ };
+ 
++/*
++ * Intel Architectural LBR CPUID detection/enumeration details:
++ */
++union cpuid28_eax {
++	struct {
++		/* Supported LBR depth values */
++		unsigned int	lbr_depth_mask:8;
++		unsigned int	reserved:22;
++		/* Deep C-state Reset */
++		unsigned int	lbr_deep_c_reset:1;
++		/* IP values contain LIP */
++		unsigned int	lbr_lip:1;
++	} split;
++	unsigned int		full;
++};
++
++union cpuid28_ebx {
++	struct {
++		/* CPL Filtering Supported */
++		unsigned int    lbr_cpl:1;
++		/* Branch Filtering Supported */
++		unsigned int    lbr_filter:1;
++		/* Call-stack Mode Supported */
++		unsigned int    lbr_call_stack:1;
++	} split;
++	unsigned int            full;
++};
++
++union cpuid28_ecx {
++	struct {
++		/* Mispredict Bit Supported */
++		unsigned int    lbr_mispred:1;
++		/* Timed LBRs Supported */
++		unsigned int    lbr_timed_lbr:1;
++		/* Branch Type Field Supported */
++		unsigned int    lbr_br_type:1;
++	} split;
++	unsigned int            full;
++};
++
+ struct x86_pmu_capability {
+ 	int		version;
+ 	int		num_counters_gp;
