@@ -2,20 +2,20 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 98C18218465
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  8 Jul 2020 11:53:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 838AE218461
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  8 Jul 2020 11:53:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728448AbgGHJxF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 8 Jul 2020 05:53:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34932 "EHLO
+        id S1728637AbgGHJw7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 8 Jul 2020 05:52:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728417AbgGHJvr (ORCPT
+        with ESMTP id S1728559AbgGHJvr (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Wed, 8 Jul 2020 05:51:47 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAFFFC08C5DC;
-        Wed,  8 Jul 2020 02:51:46 -0700 (PDT)
-Date:   Wed, 08 Jul 2020 09:51:44 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65265C08C5DC;
+        Wed,  8 Jul 2020 02:51:47 -0700 (PDT)
+Date:   Wed, 08 Jul 2020 09:51:45 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1594201905;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -23,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=0xRxhoIISOsXo5EDfpHSwunRSW7UnZ3b1yseLqEmnsY=;
-        b=t+ed3B7/KoEIQs+xU0xfxrbuKgfhNwZE/gol2Gh7VslBzfyEkuGNCcPp0kSSmeMC9QLshf
-        gi6UdEE9spnfcNTuxNoAFsEdKKDRxyi8tmltKKnh8eh6lAwbm6OeXcZCHAE2MCojWnB3Rm
-        sSfiZNVPcsID2vb1Mh9+0iMuR9roGqA5APxoE8/CZeb9LSqXpmSxJ+JOV7JlKFdEcAw6jF
-        T7WrTR/y1P5ix7w/76KW7ABmVnQoQjFrxk63wOOa8pgJF96QsAMS79Tn3CrgwrzBv+EMXt
-        o1w5uqzDfrKoA3dP2WC3rW7zcBwKeemCwyaFZp/Zu1uTo7+iTPMg0EZCX/4Z+Q==
+        bh=S8clFBUT48Zg4Jbc2veI/f5Sqo7XOO1HQtb3xkQSOIs=;
+        b=KR6HYwqrPgY7cejgJQjzfl1ZzasTHmxM8tYJF2Pozz/CvMP+1WQoK0v9wXjgvlD/tr2h1C
+        1kHMxaO5V4jTh74kDG0uP4lsC73wtNwQLgpH8Q7NKQrACYxGVXyngQUIlR/8fezkXZhMKa
+        jWnqJy1Jqo0d3ZCSPdyAn3gX73HuhEQ/kFcrPzKF2yAjjVBKQsyQFdWW9ILqhuibBMMu5H
+        SXDkDuhX6etuzWF03UDqom4S8eQXGIB9eMBASZWYpnlU6slj811H8pNjsxv9tFOnwJ6bNl
+        rhvYv/AJthOQfQExAKl378C+b2pIMSxykzLuZFtFR+TtpQvHNK5/KZAJL1HD1Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1594201905;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,21 +36,21 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=0xRxhoIISOsXo5EDfpHSwunRSW7UnZ3b1yseLqEmnsY=;
-        b=ANBTZU4rOA5VnH8Lij8eCtRpjavW081vDRBWVWDkSGfU+1H+e/Vw54wCvANYstwYzhjGR5
-        sUvU5pedY/NgCwCA==
+        bh=S8clFBUT48Zg4Jbc2veI/f5Sqo7XOO1HQtb3xkQSOIs=;
+        b=fKRaoMNy2AC9K5o846cbq8gsE1V8VIZ2fID4bkOXOaMBQRO8cnnEPaC1RqCiImKnT6ZfFu
+        IFZBvIs40YjtZvBA==
 From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] x86/fpu/xstate: Support dynamic supervisor feature for LBR
+Subject: [tip: perf/core] x86/fpu: Use proper mask to replace full instruction mask
 Cc:     Kan Liang <kan.liang@linux.intel.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Dave Hansen <dave.hansen@intel.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <1593780569-62993-21-git-send-email-kan.liang@linux.intel.com>
-References: <1593780569-62993-21-git-send-email-kan.liang@linux.intel.com>
+In-Reply-To: <1593780569-62993-20-git-send-email-kan.liang@linux.intel.com>
+References: <1593780569-62993-20-git-send-email-kan.liang@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <159420190464.4006.9196645532990660696.tip-bot2@tip-bot2>
+Message-ID: <159420190524.4006.281131920134798684.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -62,201 +62,201 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     f0dccc9da4c0fda049e99326f85db8c242fd781f
-Gitweb:        https://git.kernel.org/tip/f0dccc9da4c0fda049e99326f85db8c242fd781f
+Commit-ID:     a063bf249b9f8d8004f282031781322c1b527d13
+Gitweb:        https://git.kernel.org/tip/a063bf249b9f8d8004f282031781322c1b527d13
 Author:        Kan Liang <kan.liang@linux.intel.com>
-AuthorDate:    Fri, 03 Jul 2020 05:49:26 -07:00
+AuthorDate:    Fri, 03 Jul 2020 05:49:25 -07:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Wed, 08 Jul 2020 11:38:56 +02:00
 
-x86/fpu/xstate: Support dynamic supervisor feature for LBR
+x86/fpu: Use proper mask to replace full instruction mask
 
-Last Branch Records (LBR) registers are used to log taken branches and
-other control flows. In perf with call stack mode, LBR information is
-used to reconstruct a call stack. To get the complete call stack, perf
-has to save/restore all LBR registers during a context switch. Due to
-the large number of the LBR registers, e.g., the current platform has
-96 LBR registers, this process causes a high CPU overhead. To reduce
-the CPU overhead during a context switch, an LBR state component that
-contains all the LBR related registers is introduced in hardware. All
-LBR registers can be saved/restored together using one XSAVES/XRSTORS
-instruction.
+When saving xstate to a kernel/user XSAVE area with the XSAVE family of
+instructions, the current code applies the 'full' instruction mask (-1),
+which tries to XSAVE all possible features. This method relies on
+hardware to trim 'all possible' down to what is enabled in the
+hardware. The code works well for now. However, there will be a
+problem, if some features are enabled in hardware, but are not suitable
+to be saved into all kernel XSAVE buffers, like task->fpu, due to
+performance consideration.
 
-However, the kernel should not save/restore the LBR state component at
-each context switch, like other state components, because of the
-following unique features of LBR:
-- The LBR state component only contains valuable information when LBR
-  is enabled in the perf subsystem, but for most of the time, LBR is
-  disabled.
-- The size of the LBR state component is huge. For the current
-  platform, it's 808 bytes.
-If the kernel saves/restores the LBR state at each context switch, for
-most of the time, it is just a waste of space and cycles.
+One such example is the Last Branch Records (LBR) state. The LBR state
+only contains valuable information when LBR is explicitly enabled by
+the perf subsystem, and the size of an LBR state is large (808 bytes
+for now). To avoid both CPU overhead and space overhead at each context
+switch, the LBR state should not be saved into task->fpu like other
+state components. It should be saved/restored on demand when LBR is
+enabled in the perf subsystem. Current copy_xregs_to_* will trigger a
+buffer overflow for such cases.
 
-To efficiently support the LBR state component, it is desired to have:
-- only context-switch the LBR when the LBR feature is enabled in perf.
-- only allocate an LBR-specific XSAVE buffer on demand.
-  (Besides the LBR state, a legacy region and an XSAVE header have to be
-   included in the buffer as well. There is a total of (808+576) byte
-   overhead for the LBR-specific XSAVE buffer. The overhead only happens
-   when the perf is actively using LBRs. There is still a space-saving,
-   on average, when it replaces the constant 808 bytes of overhead for
-   every task, all the time on the systems that support architectural
-   LBR.)
-- be able to use XSAVES/XRSTORS for accessing LBR at run time.
-  However, the IA32_XSS should not be adjusted at run time.
-  (The XCR0 | IA32_XSS are used to determine the requested-feature
-  bitmap (RFBM) of XSAVES.)
+Three sites use the '-1' instruction mask which must be updated.
 
-A solution, called dynamic supervisor feature, is introduced to address
-this issue, which
-- does not allocate a buffer in each task->fpu;
-- does not save/restore a state component at each context switch;
-- sets the bit corresponding to the dynamic supervisor feature in
-  IA32_XSS at boot time, and avoids setting it at run time.
-- dynamically allocates a specific buffer for a state component
-  on demand, e.g. only allocates LBR-specific XSAVE buffer when LBR is
-  enabled in perf. (Note: The buffer has to include the LBR state
-  component, a legacy region and a XSAVE header space.)
-  (Implemented in a later patch)
-- saves/restores a state component on demand, e.g. manually invokes
-  the XSAVES/XRSTORS instruction to save/restore the LBR state
-  to/from the buffer when perf is active and a call stack is required.
-  (Implemented in a later patch)
+Two are saving/restoring the xstate to/from a kernel-allocated XSAVE
+buffer and can use 'xfeatures_mask_all', which will save/restore all of
+the features present in a normal task FPU buffer.
 
-A new mask XFEATURE_MASK_DYNAMIC and a helper xfeatures_mask_dynamic()
-are introduced to indicate the dynamic supervisor feature. For the
-systems which support the Architecture LBR, LBR is the only dynamic
-supervisor feature for now. For the previous systems, there is no
-dynamic supervisor feature available.
+The last one saves the register state directly to a user buffer. It
+could
+also use 'xfeatures_mask_all'. Just as it was with the '-1' argument,
+any supervisor states in the mask will be filtered out by the hardware
+and not saved to the buffer.  But, to be more explicit about what is
+expected to be saved, use xfeatures_mask_user() for the instruction
+mask.
+
+KVM includes the header file fpu/internal.h. To avoid 'undefined
+xfeatures_mask_all' compiling issue, move copy_fpregs_to_fpstate() to
+fpu/core.c and export it, because:
+- The xfeatures_mask_all is indirectly used via copy_fpregs_to_fpstate()
+  by KVM. The function which is directly used by other modules should be
+  exported.
+- The copy_fpregs_to_fpstate() is a function, while xfeatures_mask_all
+  is a variable for the "internal" FPU state. It's safer to export a
+  function than a variable, which may be implicitly changed by others.
+- The copy_fpregs_to_fpstate() is a big function with many checks. The
+  removal of the inline keyword should not impact the performance.
 
 Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Dave Hansen <dave.hansen@intel.com>
-Link: https://lkml.kernel.org/r/1593780569-62993-21-git-send-email-kan.liang@linux.intel.com
+Link: https://lkml.kernel.org/r/1593780569-62993-20-git-send-email-kan.liang@linux.intel.com
 ---
- arch/x86/include/asm/fpu/types.h  |  7 +++++++-
- arch/x86/include/asm/fpu/xstate.h | 30 ++++++++++++++++++++++++++++++-
- arch/x86/kernel/fpu/xstate.c      | 15 ++++++++++-----
- 3 files changed, 47 insertions(+), 5 deletions(-)
+ arch/x86/include/asm/fpu/internal.h | 47 ++++------------------------
+ arch/x86/kernel/fpu/core.c          | 39 +++++++++++++++++++++++-
+ 2 files changed, 46 insertions(+), 40 deletions(-)
 
-diff --git a/arch/x86/include/asm/fpu/types.h b/arch/x86/include/asm/fpu/types.h
-index f098f6c..132e9cc 100644
---- a/arch/x86/include/asm/fpu/types.h
-+++ b/arch/x86/include/asm/fpu/types.h
-@@ -114,6 +114,12 @@ enum xfeature {
- 	XFEATURE_Hi16_ZMM,
- 	XFEATURE_PT_UNIMPLEMENTED_SO_FAR,
- 	XFEATURE_PKRU,
-+	XFEATURE_RSRVD_COMP_10,
-+	XFEATURE_RSRVD_COMP_11,
-+	XFEATURE_RSRVD_COMP_12,
-+	XFEATURE_RSRVD_COMP_13,
-+	XFEATURE_RSRVD_COMP_14,
-+	XFEATURE_LBR,
- 
- 	XFEATURE_MAX,
- };
-@@ -128,6 +134,7 @@ enum xfeature {
- #define XFEATURE_MASK_Hi16_ZMM		(1 << XFEATURE_Hi16_ZMM)
- #define XFEATURE_MASK_PT		(1 << XFEATURE_PT_UNIMPLEMENTED_SO_FAR)
- #define XFEATURE_MASK_PKRU		(1 << XFEATURE_PKRU)
-+#define XFEATURE_MASK_LBR		(1 << XFEATURE_LBR)
- 
- #define XFEATURE_MASK_FPSSE		(XFEATURE_MASK_FP | XFEATURE_MASK_SSE)
- #define XFEATURE_MASK_AVX512		(XFEATURE_MASK_OPMASK \
-diff --git a/arch/x86/include/asm/fpu/xstate.h b/arch/x86/include/asm/fpu/xstate.h
-index 422d836..040c4d4 100644
---- a/arch/x86/include/asm/fpu/xstate.h
-+++ b/arch/x86/include/asm/fpu/xstate.h
-@@ -36,6 +36,27 @@
- #define XFEATURE_MASK_SUPERVISOR_SUPPORTED (0)
- 
- /*
-+ * A supervisor state component may not always contain valuable information,
-+ * and its size may be huge. Saving/restoring such supervisor state components
-+ * at each context switch can cause high CPU and space overhead, which should
-+ * be avoided. Such supervisor state components should only be saved/restored
-+ * on demand. The on-demand dynamic supervisor features are set in this mask.
-+ *
-+ * Unlike the existing supported supervisor features, a dynamic supervisor
-+ * feature does not allocate a buffer in task->fpu, and the corresponding
-+ * supervisor state component cannot be saved/restored at each context switch.
-+ *
-+ * To support a dynamic supervisor feature, a developer should follow the
-+ * dos and don'ts as below:
-+ * - Do dynamically allocate a buffer for the supervisor state component.
-+ * - Do manually invoke the XSAVES/XRSTORS instruction to save/restore the
-+ *   state component to/from the buffer.
-+ * - Don't set the bit corresponding to the dynamic supervisor feature in
-+ *   IA32_XSS at run time, since it has been set at boot time.
-+ */
-+#define XFEATURE_MASK_DYNAMIC (XFEATURE_MASK_LBR)
-+
-+/*
-  * Unsupported supervisor features. When a supervisor feature in this mask is
-  * supported in the future, move it to the supported supervisor feature mask.
+diff --git a/arch/x86/include/asm/fpu/internal.h b/arch/x86/include/asm/fpu/internal.h
+index 42159f4..d3724dc 100644
+--- a/arch/x86/include/asm/fpu/internal.h
++++ b/arch/x86/include/asm/fpu/internal.h
+@@ -274,7 +274,7 @@ static inline void copy_fxregs_to_kernel(struct fpu *fpu)
   */
-@@ -43,6 +64,7 @@
+ static inline void copy_xregs_to_kernel_booting(struct xregs_state *xstate)
+ {
+-	u64 mask = -1;
++	u64 mask = xfeatures_mask_all;
+ 	u32 lmask = mask;
+ 	u32 hmask = mask >> 32;
+ 	int err;
+@@ -320,7 +320,7 @@ static inline void copy_kernel_to_xregs_booting(struct xregs_state *xstate)
+  */
+ static inline void copy_xregs_to_kernel(struct xregs_state *xstate)
+ {
+-	u64 mask = -1;
++	u64 mask = xfeatures_mask_all;
+ 	u32 lmask = mask;
+ 	u32 hmask = mask >> 32;
+ 	int err;
+@@ -356,6 +356,9 @@ static inline void copy_kernel_to_xregs(struct xregs_state *xstate, u64 mask)
+  */
+ static inline int copy_xregs_to_user(struct xregs_state __user *buf)
+ {
++	u64 mask = xfeatures_mask_user();
++	u32 lmask = mask;
++	u32 hmask = mask >> 32;
+ 	int err;
  
- /* All supervisor states including supported and unsupported states. */
- #define XFEATURE_MASK_SUPERVISOR_ALL (XFEATURE_MASK_SUPERVISOR_SUPPORTED | \
-+				      XFEATURE_MASK_DYNAMIC | \
- 				      XFEATURE_MASK_SUPERVISOR_UNSUPPORTED)
- 
- #ifdef CONFIG_X86_64
-@@ -63,6 +85,14 @@ static inline u64 xfeatures_mask_user(void)
- 	return xfeatures_mask_all & XFEATURE_MASK_USER_SUPPORTED;
- }
- 
-+static inline u64 xfeatures_mask_dynamic(void)
-+{
-+	if (!boot_cpu_has(X86_FEATURE_ARCH_LBR))
-+		return XFEATURE_MASK_DYNAMIC & ~XFEATURE_MASK_LBR;
-+
-+	return XFEATURE_MASK_DYNAMIC;
-+}
-+
- extern u64 xstate_fx_sw_bytes[USER_XSTATE_FX_SW_WORDS];
- 
- extern void __init update_regset_xstate_info(unsigned int size,
-diff --git a/arch/x86/kernel/fpu/xstate.c b/arch/x86/kernel/fpu/xstate.c
-index bda2e5e..dcf0624 100644
---- a/arch/x86/kernel/fpu/xstate.c
-+++ b/arch/x86/kernel/fpu/xstate.c
-@@ -233,8 +233,10 @@ void fpu__init_cpu_xstate(void)
  	/*
- 	 * MSR_IA32_XSS sets supervisor states managed by XSAVES.
- 	 */
--	if (boot_cpu_has(X86_FEATURE_XSAVES))
--		wrmsrl(MSR_IA32_XSS, xfeatures_mask_supervisor());
-+	if (boot_cpu_has(X86_FEATURE_XSAVES)) {
-+		wrmsrl(MSR_IA32_XSS, xfeatures_mask_supervisor() |
-+				     xfeatures_mask_dynamic());
-+	}
+@@ -367,7 +370,7 @@ static inline int copy_xregs_to_user(struct xregs_state __user *buf)
+ 		return -EFAULT;
+ 
+ 	stac();
+-	XSTATE_OP(XSAVE, buf, -1, -1, err);
++	XSTATE_OP(XSAVE, buf, lmask, hmask, err);
+ 	clac();
+ 
+ 	return err;
+@@ -408,43 +411,7 @@ static inline int copy_kernel_to_xregs_err(struct xregs_state *xstate, u64 mask)
+ 	return err;
  }
  
- static bool xfeature_enabled(enum xfeature xfeature)
-@@ -598,7 +600,8 @@ static void check_xstate_against_struct(int nr)
- 	 */
- 	if ((nr < XFEATURE_YMM) ||
- 	    (nr >= XFEATURE_MAX) ||
--	    (nr == XFEATURE_PT_UNIMPLEMENTED_SO_FAR)) {
-+	    (nr == XFEATURE_PT_UNIMPLEMENTED_SO_FAR) ||
-+	    ((nr >= XFEATURE_RSRVD_COMP_10) && (nr <= XFEATURE_LBR))) {
- 		WARN_ONCE(1, "no structure for xstate: %d\n", nr);
- 		XSTATE_WARN_ON(1);
- 	}
-@@ -847,8 +850,10 @@ void fpu__resume_cpu(void)
- 	 * Restore IA32_XSS. The same CPUID bit enumerates support
- 	 * of XSAVES and MSR_IA32_XSS.
- 	 */
--	if (boot_cpu_has(X86_FEATURE_XSAVES))
--		wrmsrl(MSR_IA32_XSS, xfeatures_mask_supervisor());
-+	if (boot_cpu_has(X86_FEATURE_XSAVES)) {
-+		wrmsrl(MSR_IA32_XSS, xfeatures_mask_supervisor()  |
-+				     xfeatures_mask_dynamic());
-+	}
- }
+-/*
+- * These must be called with preempt disabled. Returns
+- * 'true' if the FPU state is still intact and we can
+- * keep registers active.
+- *
+- * The legacy FNSAVE instruction cleared all FPU state
+- * unconditionally, so registers are essentially destroyed.
+- * Modern FPU state can be kept in registers, if there are
+- * no pending FP exceptions.
+- */
+-static inline int copy_fpregs_to_fpstate(struct fpu *fpu)
+-{
+-	if (likely(use_xsave())) {
+-		copy_xregs_to_kernel(&fpu->state.xsave);
+-
+-		/*
+-		 * AVX512 state is tracked here because its use is
+-		 * known to slow the max clock speed of the core.
+-		 */
+-		if (fpu->state.xsave.header.xfeatures & XFEATURE_MASK_AVX512)
+-			fpu->avx512_timestamp = jiffies;
+-		return 1;
+-	}
+-
+-	if (likely(use_fxsr())) {
+-		copy_fxregs_to_kernel(fpu);
+-		return 1;
+-	}
+-
+-	/*
+-	 * Legacy FPU register saving, FNSAVE always clears FPU registers,
+-	 * so we have to mark them inactive:
+-	 */
+-	asm volatile("fnsave %[fp]; fwait" : [fp] "=m" (fpu->state.fsave));
+-
+-	return 0;
+-}
++extern int copy_fpregs_to_fpstate(struct fpu *fpu);
  
- /*
+ static inline void __copy_kernel_to_fpregs(union fpregs_state *fpstate, u64 mask)
+ {
+diff --git a/arch/x86/kernel/fpu/core.c b/arch/x86/kernel/fpu/core.c
+index 06c8189..1bb7532 100644
+--- a/arch/x86/kernel/fpu/core.c
++++ b/arch/x86/kernel/fpu/core.c
+@@ -82,6 +82,45 @@ bool irq_fpu_usable(void)
+ }
+ EXPORT_SYMBOL(irq_fpu_usable);
+ 
++/*
++ * These must be called with preempt disabled. Returns
++ * 'true' if the FPU state is still intact and we can
++ * keep registers active.
++ *
++ * The legacy FNSAVE instruction cleared all FPU state
++ * unconditionally, so registers are essentially destroyed.
++ * Modern FPU state can be kept in registers, if there are
++ * no pending FP exceptions.
++ */
++int copy_fpregs_to_fpstate(struct fpu *fpu)
++{
++	if (likely(use_xsave())) {
++		copy_xregs_to_kernel(&fpu->state.xsave);
++
++		/*
++		 * AVX512 state is tracked here because its use is
++		 * known to slow the max clock speed of the core.
++		 */
++		if (fpu->state.xsave.header.xfeatures & XFEATURE_MASK_AVX512)
++			fpu->avx512_timestamp = jiffies;
++		return 1;
++	}
++
++	if (likely(use_fxsr())) {
++		copy_fxregs_to_kernel(fpu);
++		return 1;
++	}
++
++	/*
++	 * Legacy FPU register saving, FNSAVE always clears FPU registers,
++	 * so we have to mark them inactive:
++	 */
++	asm volatile("fnsave %[fp]; fwait" : [fp] "=m" (fpu->state.fsave));
++
++	return 0;
++}
++EXPORT_SYMBOL(copy_fpregs_to_fpstate);
++
+ void kernel_fpu_begin(void)
+ {
+ 	preempt_disable();
