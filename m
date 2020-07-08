@@ -2,52 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D2A6218464
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  8 Jul 2020 11:53:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B8FE218467
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  8 Jul 2020 11:53:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728445AbgGHJvr (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 8 Jul 2020 05:51:47 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:47886 "EHLO
+        id S1728417AbgGHJxJ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 8 Jul 2020 05:53:09 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:47894 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726900AbgGHJvq (ORCPT
+        with ESMTP id S1726973AbgGHJvq (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Wed, 8 Jul 2020 05:51:46 -0400
-Date:   Wed, 08 Jul 2020 09:51:42 -0000
+Date:   Wed, 08 Jul 2020 09:51:43 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1594201903;
+        s=2020; t=1594201904;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ZHgMxlkSbEJSf97I5bf8z7K7NgvXEo7/zO2vDV9W4i8=;
-        b=fhfH5PNJBzuJ80LikHX7laYP6LD3TaCrbVZBw8jP3c5gOg0N1Xu2wZLQm5CjuQ3fShXpiy
-        eaQ6fB9+PL8+++gDcf0Z/um1kUgIpPbF0wAcDpp/ZGo1mZPl8ZY9NxlU+dj18264PHDdDT
-        lFDnYkqMO5lEuzVHie023WwHw3bK7EPvLBNzJKD8WYR8rXExt0zP3aoN6xGpBfO4i+MWW6
-        uWxxOozQdIIg8cbImHkpBzAH1xZwaypaDUOFzSkHuBpyf9uan4JuNqFL8lfoijKUgrbLju
-        mFhFuTehL3aLeSIcrHtoK14IzE2vnrixW9H1ac4fNHKwDK7dU/a43nW/WGxacQ==
+        bh=ygtNzLnD5LjWcWilXLWq4JeWvpcjfmt3Zcht7irbpi8=;
+        b=3FEiX/2qBP96bqBJeNgbXbOAZFa/YaQQj5r4V17vbNoc914KsoE/n0bl9OYBOf8/PC4oIS
+        ovndUC+z9MhnYlMNNxZIQmB+Od6hOohnrJ1BH0lPebLyqmYBE28A1P2YA32Qypdn0pax6h
+        HQrM86LbMjw8wGEfvyy+L8KzhriuX3bvIlEXBP2u3XMtanziI48viCJ1HWjMk19shsEMTr
+        cIw3PxcmMWMbtQAtD/HfDA2UI0PXQ5mTNDzG6t5bgM8OoEDHMf6jV17nLrIrXf6oZdElFv
+        eKm2o8YltfOIYKl4ulMI9ovMeFFaHM4TMbuqA8l3UbErQKE2VBpZAQxvrgpUtA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1594201903;
+        s=2020e; t=1594201904;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ZHgMxlkSbEJSf97I5bf8z7K7NgvXEo7/zO2vDV9W4i8=;
-        b=GdfD9K69M+8vhiPsoCaylfZy4GPu9+w245CorBVx6721wGLunQSOKpFtQ6PllcRPEqbuzy
-        eZOrYl7sqFuwVICw==
+        bh=ygtNzLnD5LjWcWilXLWq4JeWvpcjfmt3Zcht7irbpi8=;
+        b=pA6itRop8YP3U16iFxhi0Zp9OZtjzWI1fZpuRZr6ucQcgnfEHcTUEbqDXsSsdDuRQSXa4L
+        vjTT7u1p3brkOOCQ==
 From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/x86/intel/lbr: Support XSAVES for arch LBR read
+Subject: [tip: perf/core] perf/x86/intel/lbr: Support XSAVES/XRSTORS for LBR
+ context switch
 Cc:     Kan Liang <kan.liang@linux.intel.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Dave Hansen <dave.hansen@intel.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <1593780569-62993-24-git-send-email-kan.liang@linux.intel.com>
-References: <1593780569-62993-24-git-send-email-kan.liang@linux.intel.com>
+In-Reply-To: <1593780569-62993-23-git-send-email-kan.liang@linux.intel.com>
+References: <1593780569-62993-23-git-send-email-kan.liang@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <159420190283.4006.10798804933769478660.tip-bot2@tip-bot2>
+Message-ID: <159420190348.4006.16845864223850282964.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,169 +60,305 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     c085fb8774671e83f6199a8e838fbc0e57094029
-Gitweb:        https://git.kernel.org/tip/c085fb8774671e83f6199a8e838fbc0e57094029
+Commit-ID:     ce711ea3cab9ad325d849792d442848e553095b8
+Gitweb:        https://git.kernel.org/tip/ce711ea3cab9ad325d849792d442848e553095b8
 Author:        Kan Liang <kan.liang@linux.intel.com>
-AuthorDate:    Fri, 03 Jul 2020 05:49:29 -07:00
+AuthorDate:    Fri, 03 Jul 2020 05:49:28 -07:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 08 Jul 2020 11:38:57 +02:00
+CommitterDate: Wed, 08 Jul 2020 11:38:56 +02:00
 
-perf/x86/intel/lbr: Support XSAVES for arch LBR read
+perf/x86/intel/lbr: Support XSAVES/XRSTORS for LBR context switch
 
-Reading LBR registers in a perf NMI handler for a non-PEBS event
-causes a high overhead because the number of LBR registers is huge.
-To reduce the overhead, the XSAVES instruction should be used to replace
-the LBR registers' reading method.
+In the LBR call stack mode, LBR information is used to reconstruct a
+call stack. To get the complete call stack, perf has to save/restore
+all LBR registers during a context switch. Due to a large number of the
+LBR registers, this process causes a high CPU overhead. To reduce the
+CPU overhead during a context switch, use the XSAVES/XRSTORS
+instructions.
 
-The XSAVES buffer used for LBR read has to be per-CPU because the NMI
-handler invoked the lbr_read(). The existing task_ctx_data buffer
-cannot be used which is per-task and only be allocated for the LBR call
-stack mode. A new lbr_xsave pointer is introduced in the cpu_hw_events
-as an XSAVES buffer for LBR read.
+Every XSAVE area must follow a canonical format: the legacy region, an
+XSAVE header and the extended region. Although the LBR information is
+only kept in the extended region, a space for the legacy region and
+XSAVE header is still required. Add a new dedicated structure for LBR
+XSAVES support.
 
-The XSAVES buffer should be allocated only when LBR is used by a
-non-PEBS event on the CPU because the total size of the lbr_xsave is
-not small (~1.4KB).
+Before enabling XSAVES support, the size of the LBR state has to be
+sanity checked, because:
+- the size of the software structure is calculated from the max number
+of the LBR depth, which is enumerated by the CPUID leaf for Arch LBR.
+The size of the LBR state is enumerated by the CPUID leaf for XSAVE
+support of Arch LBR. If the values from the two CPUID leaves are not
+consistent, it may trigger a buffer overflow. For example, a hypervisor
+may unconsciously set inconsistent values for the two emulated CPUID.
+- unlike other state components, the size of an LBR state depends on the
+max number of LBRs, which may vary from generation to generation.
 
-The XSAVES buffer is allocated when a non-PEBS event is added, but it
-is lazily released in x86_release_hardware() when perf releases the
-entire PMU hardware resource, because perf may frequently schedule the
-event, e.g. high context switch. The lazy release method reduces the
-overhead of frequently allocate/free the buffer.
+Expose the function xfeature_size() for the sanity check.
+The LBR XSAVES support will be disabled if the size of the LBR state
+enumerated by CPUID doesn't match with the size of the software
+structure.
 
-If the lbr_xsave fails to be allocated, roll back to normal Arch LBR
-lbr_read().
+The XSAVE instruction requires 64-byte alignment for state buffers. A
+new macro is added to reflect the alignment requirement. A 64-byte
+aligned kmem_cache is created for architecture LBR.
+
+Currently, the structure for each state component is maintained in
+fpu/types.h. The structure for the new LBR state component should be
+maintained in the same place. Move structure lbr_entry to fpu/types.h as
+well for broader sharing.
+
+Add dedicated lbr_save/lbr_restore functions for LBR XSAVES support,
+which invokes the corresponding xstate helpers to XSAVES/XRSTORS LBR
+information at the context switch when the call stack mode is enabled.
+Since the XSAVES/XRSTORS instructions will be eventually invoked, the
+dedicated functions is named with '_xsaves'/'_xrstors' postfix.
 
 Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Dave Hansen <dave.hansen@intel.com>
-Link: https://lkml.kernel.org/r/1593780569-62993-24-git-send-email-kan.liang@linux.intel.com
+Link: https://lkml.kernel.org/r/1593780569-62993-23-git-send-email-kan.liang@linux.intel.com
 ---
- arch/x86/events/core.c       |  1 +-
- arch/x86/events/intel/lbr.c  | 40 ++++++++++++++++++++++++++++++++++-
- arch/x86/events/perf_event.h |  7 ++++++-
- 3 files changed, 47 insertions(+), 1 deletion(-)
+ arch/x86/events/intel/lbr.c       | 79 ++++++++++++++++++++++++++++--
+ arch/x86/events/perf_event.h      | 21 ++++++++-
+ arch/x86/include/asm/fpu/types.h  | 20 ++++++++-
+ arch/x86/include/asm/fpu/xstate.h |  3 +-
+ arch/x86/include/asm/perf_event.h |  4 +--
+ arch/x86/kernel/fpu/xstate.c      |  2 +-
+ 6 files changed, 119 insertions(+), 10 deletions(-)
 
-diff --git a/arch/x86/events/core.c b/arch/x86/events/core.c
-index 6b1228a..1cbf57d 100644
---- a/arch/x86/events/core.c
-+++ b/arch/x86/events/core.c
-@@ -358,6 +358,7 @@ void x86_release_hardware(void)
- 	if (atomic_dec_and_mutex_lock(&pmc_refcount, &pmc_reserve_mutex)) {
- 		release_pmc_hardware();
- 		release_ds_buffers();
-+		release_lbr_buffers();
- 		mutex_unlock(&pmc_reserve_mutex);
- 	}
- }
 diff --git a/arch/x86/events/intel/lbr.c b/arch/x86/events/intel/lbr.c
-index cb1a049..63f58bd 100644
+index 3ad5289..cb1a049 100644
 --- a/arch/x86/events/intel/lbr.c
 +++ b/arch/x86/events/intel/lbr.c
-@@ -658,6 +658,7 @@ static inline bool branch_user_callstack(unsigned br_sel)
- 
- void intel_pmu_lbr_add(struct perf_event *event)
- {
-+	struct kmem_cache *kmem_cache = event->pmu->task_ctx_cache;
- 	struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
- 
- 	if (!x86_pmu.lbr_nr)
-@@ -695,6 +696,29 @@ void intel_pmu_lbr_add(struct perf_event *event)
- 	perf_sched_cb_inc(event->ctx->pmu);
- 	if (!cpuc->lbr_users++ && !event->total_time_running)
- 		intel_pmu_lbr_reset();
-+
-+	if (static_cpu_has(X86_FEATURE_ARCH_LBR) &&
-+	    kmem_cache && !cpuc->lbr_xsave &&
-+	    (cpuc->lbr_users != cpuc->lbr_pebs_users))
-+		cpuc->lbr_xsave = kmem_cache_alloc(kmem_cache, GFP_KERNEL);
-+}
-+
-+void release_lbr_buffers(void)
-+{
-+	struct kmem_cache *kmem_cache = x86_get_pmu()->task_ctx_cache;
-+	struct cpu_hw_events *cpuc;
-+	int cpu;
-+
-+	if (!static_cpu_has(X86_FEATURE_ARCH_LBR))
-+		return;
-+
-+	for_each_possible_cpu(cpu) {
-+		cpuc = per_cpu_ptr(&cpu_hw_events, cpu);
-+		if (kmem_cache && cpuc->lbr_xsave) {
-+			kmem_cache_free(kmem_cache, cpuc->lbr_xsave);
-+			cpuc->lbr_xsave = NULL;
-+		}
-+	}
+@@ -483,6 +483,17 @@ static void intel_pmu_arch_lbr_restore(void *ctx)
+ 	}
  }
  
- void intel_pmu_lbr_del(struct perf_event *event)
-@@ -945,6 +969,19 @@ static void intel_pmu_arch_lbr_read(struct cpu_hw_events *cpuc)
- 	intel_pmu_store_lbr(cpuc, NULL);
- }
- 
-+static void intel_pmu_arch_lbr_read_xsave(struct cpu_hw_events *cpuc)
++/*
++ * Restore the Architecture LBR state from the xsave area in the perf
++ * context data for the task via the XRSTORS instruction.
++ */
++static void intel_pmu_arch_lbr_xrstors(void *ctx)
 +{
-+	struct x86_perf_task_context_arch_lbr_xsave *xsave = cpuc->lbr_xsave;
++	struct x86_perf_task_context_arch_lbr_xsave *task_ctx = ctx;
 +
-+	if (!xsave) {
-+		intel_pmu_store_lbr(cpuc, NULL);
-+		return;
-+	}
-+	copy_dynamic_supervisor_to_kernel(&xsave->xsave, XFEATURE_MASK_LBR);
-+
-+	intel_pmu_store_lbr(cpuc, xsave->lbr.entries);
++	copy_kernel_to_dynamic_supervisor(&task_ctx->xsave, XFEATURE_MASK_LBR);
 +}
 +
- void intel_pmu_lbr_read(void)
+ static __always_inline bool lbr_is_reset_in_cstate(void *ctx)
+ {
+ 	if (static_cpu_has(X86_FEATURE_ARCH_LBR))
+@@ -557,6 +568,17 @@ static void intel_pmu_arch_lbr_save(void *ctx)
+ 		entries[x86_pmu.lbr_nr - 1].from = 0;
+ }
+ 
++/*
++ * Save the Architecture LBR state to the xsave area in the perf
++ * context data for the task via the XSAVES instruction.
++ */
++static void intel_pmu_arch_lbr_xsaves(void *ctx)
++{
++	struct x86_perf_task_context_arch_lbr_xsave *task_ctx = ctx;
++
++	copy_dynamic_supervisor_to_kernel(&task_ctx->xsave, XFEATURE_MASK_LBR);
++}
++
+ static void __intel_pmu_lbr_save(void *ctx)
  {
  	struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
-@@ -1767,14 +1804,15 @@ void __init intel_pmu_arch_lbr_init(void)
- 		x86_pmu.lbr_ctl_map = NULL;
+@@ -1639,12 +1661,40 @@ void intel_pmu_lbr_init_knl(void)
+ 		x86_pmu.intel_cap.lbr_format = LBR_FORMAT_EIP_FLAGS;
+ }
+ 
++/*
++ * LBR state size is variable based on the max number of registers.
++ * This calculates the expected state size, which should match
++ * what the hardware enumerates for the size of XFEATURE_LBR.
++ */
++static inline unsigned int get_lbr_state_size(void)
++{
++	return sizeof(struct arch_lbr_state) +
++	       x86_pmu.lbr_nr * sizeof(struct lbr_entry);
++}
++
++static bool is_arch_lbr_xsave_available(void)
++{
++	if (!boot_cpu_has(X86_FEATURE_XSAVES))
++		return false;
++
++	/*
++	 * Check the LBR state with the corresponding software structure.
++	 * Disable LBR XSAVES support if the size doesn't match.
++	 */
++	if (WARN_ON(xfeature_size(XFEATURE_LBR) != get_lbr_state_size()))
++		return false;
++
++	return true;
++}
++
+ void __init intel_pmu_arch_lbr_init(void)
+ {
++	struct pmu *pmu = x86_get_pmu();
+ 	union cpuid28_eax eax;
+ 	union cpuid28_ebx ebx;
+ 	union cpuid28_ecx ecx;
+ 	unsigned int unused_edx;
++	bool arch_lbr_xsave;
+ 	size_t size;
+ 	u64 lbr_nr;
+ 
+@@ -1670,9 +1720,22 @@ void __init intel_pmu_arch_lbr_init(void)
+ 	x86_pmu.lbr_br_type = ecx.split.lbr_br_type;
+ 	x86_pmu.lbr_nr = lbr_nr;
+ 
+-	size = sizeof(struct x86_perf_task_context_arch_lbr) +
+-	       lbr_nr * sizeof(struct lbr_entry);
+-	x86_get_pmu()->task_ctx_cache = create_lbr_kmem_cache(size, 0);
++
++	arch_lbr_xsave = is_arch_lbr_xsave_available();
++	if (arch_lbr_xsave) {
++		size = sizeof(struct x86_perf_task_context_arch_lbr_xsave) +
++		       get_lbr_state_size();
++		pmu->task_ctx_cache = create_lbr_kmem_cache(size,
++							    XSAVE_ALIGNMENT);
++	}
++
++	if (!pmu->task_ctx_cache) {
++		arch_lbr_xsave = false;
++
++		size = sizeof(struct x86_perf_task_context_arch_lbr) +
++		       lbr_nr * sizeof(struct lbr_entry);
++		pmu->task_ctx_cache = create_lbr_kmem_cache(size, 0);
++	}
+ 
+ 	x86_pmu.lbr_from = MSR_ARCH_LBR_FROM_0;
+ 	x86_pmu.lbr_to = MSR_ARCH_LBR_TO_0;
+@@ -1705,8 +1768,14 @@ void __init intel_pmu_arch_lbr_init(void)
  
  	x86_pmu.lbr_reset = intel_pmu_arch_lbr_reset;
--	x86_pmu.lbr_read = intel_pmu_arch_lbr_read;
- 	if (arch_lbr_xsave) {
- 		x86_pmu.lbr_save = intel_pmu_arch_lbr_xsaves;
- 		x86_pmu.lbr_restore = intel_pmu_arch_lbr_xrstors;
-+		x86_pmu.lbr_read = intel_pmu_arch_lbr_read_xsave;
- 		pr_cont("XSAVE ");
- 	} else {
- 		x86_pmu.lbr_save = intel_pmu_arch_lbr_save;
- 		x86_pmu.lbr_restore = intel_pmu_arch_lbr_restore;
-+		x86_pmu.lbr_read = intel_pmu_arch_lbr_read;
- 	}
+ 	x86_pmu.lbr_read = intel_pmu_arch_lbr_read;
+-	x86_pmu.lbr_save = intel_pmu_arch_lbr_save;
+-	x86_pmu.lbr_restore = intel_pmu_arch_lbr_restore;
++	if (arch_lbr_xsave) {
++		x86_pmu.lbr_save = intel_pmu_arch_lbr_xsaves;
++		x86_pmu.lbr_restore = intel_pmu_arch_lbr_xrstors;
++		pr_cont("XSAVE ");
++	} else {
++		x86_pmu.lbr_save = intel_pmu_arch_lbr_save;
++		x86_pmu.lbr_restore = intel_pmu_arch_lbr_restore;
++	}
  
  	pr_cont("Architectural LBR, ");
+ 
 diff --git a/arch/x86/events/perf_event.h b/arch/x86/events/perf_event.h
-index d5e351c..7b68ab5 100644
+index 3f7c329..d5e351c 100644
 --- a/arch/x86/events/perf_event.h
 +++ b/arch/x86/events/perf_event.h
-@@ -253,6 +253,7 @@ struct cpu_hw_events {
- 	void				*last_task_ctx;
- 	int				last_log_id;
- 	int				lbr_select;
-+	void				*lbr_xsave;
+@@ -777,6 +777,27 @@ struct x86_perf_task_context_arch_lbr {
+ 	struct lbr_entry entries[];
+ };
  
- 	/*
- 	 * Intel host/guest exclude bits
-@@ -1066,6 +1067,8 @@ void release_ds_buffers(void);
- 
- void reserve_ds_buffers(void);
- 
-+void release_lbr_buffers(void);
++/*
++ * Add padding to guarantee the 64-byte alignment of the state buffer.
++ *
++ * The structure is dynamically allocated. The size of the LBR state may vary
++ * based on the number of LBR registers.
++ *
++ * Do not put anything after the LBR state.
++ */
++struct x86_perf_task_context_arch_lbr_xsave {
++	struct x86_perf_task_context_opt		opt;
 +
- extern struct event_constraint bts_constraint;
- extern struct event_constraint vlbr_constraint;
++	union {
++		struct xregs_state			xsave;
++		struct {
++			struct fxregs_state		i387;
++			struct xstate_header		header;
++			struct arch_lbr_state		lbr;
++		} __attribute__ ((packed, aligned (XSAVE_ALIGNMENT)));
++	};
++};
++
+ #define x86_add_quirk(func_)						\
+ do {									\
+ 	static struct x86_pmu_quirk __quirk __initdata = {		\
+diff --git a/arch/x86/include/asm/fpu/types.h b/arch/x86/include/asm/fpu/types.h
+index 132e9cc..c87364e 100644
+--- a/arch/x86/include/asm/fpu/types.h
++++ b/arch/x86/include/asm/fpu/types.h
+@@ -236,6 +236,26 @@ struct pkru_state {
+ 	u32				pad;
+ } __packed;
  
-@@ -1207,6 +1210,10 @@ static inline void release_ds_buffers(void)
- {
++/*
++ * State component 15: Architectural LBR configuration state.
++ * The size of Arch LBR state depends on the number of LBRs (lbr_depth).
++ */
++
++struct lbr_entry {
++	u64 from;
++	u64 to;
++	u64 info;
++};
++
++struct arch_lbr_state {
++	u64 lbr_ctl;
++	u64 lbr_depth;
++	u64 ler_from;
++	u64 ler_to;
++	u64 ler_info;
++	struct lbr_entry		entries[];
++} __packed;
++
+ struct xstate_header {
+ 	u64				xfeatures;
+ 	u64				xcomp_bv;
+diff --git a/arch/x86/include/asm/fpu/xstate.h b/arch/x86/include/asm/fpu/xstate.h
+index c029fce..1559554 100644
+--- a/arch/x86/include/asm/fpu/xstate.h
++++ b/arch/x86/include/asm/fpu/xstate.h
+@@ -21,6 +21,8 @@
+ #define XSAVE_YMM_SIZE	    256
+ #define XSAVE_YMM_OFFSET    (XSAVE_HDR_SIZE + XSAVE_HDR_OFFSET)
+ 
++#define XSAVE_ALIGNMENT     64
++
+ /* All currently supported user features */
+ #define XFEATURE_MASK_USER_SUPPORTED (XFEATURE_MASK_FP | \
+ 				      XFEATURE_MASK_SSE | \
+@@ -101,6 +103,7 @@ extern void __init update_regset_xstate_info(unsigned int size,
+ void *get_xsave_addr(struct xregs_state *xsave, int xfeature_nr);
+ const void *get_xsave_field_ptr(int xfeature_nr);
+ int using_compacted_format(void);
++int xfeature_size(int xfeature_nr);
+ int copy_xstate_to_kernel(void *kbuf, struct xregs_state *xsave, unsigned int offset, unsigned int size);
+ int copy_xstate_to_user(void __user *ubuf, struct xregs_state *xsave, unsigned int offset, unsigned int size);
+ int copy_kernel_to_xstate(struct xregs_state *xsave, const void *kbuf);
+diff --git a/arch/x86/include/asm/perf_event.h b/arch/x86/include/asm/perf_event.h
+index 2e29558..0c1b137 100644
+--- a/arch/x86/include/asm/perf_event.h
++++ b/arch/x86/include/asm/perf_event.h
+@@ -282,10 +282,6 @@ struct pebs_xmm {
+ 	u64 xmm[16*2];	/* two entries for each register */
+ };
+ 
+-struct lbr_entry {
+-	u64 from, to, info;
+-};
+-
+ /*
+  * IBS cpuid feature detection
+  */
+diff --git a/arch/x86/kernel/fpu/xstate.c b/arch/x86/kernel/fpu/xstate.c
+index b0c22b7..10cf878 100644
+--- a/arch/x86/kernel/fpu/xstate.c
++++ b/arch/x86/kernel/fpu/xstate.c
+@@ -488,7 +488,7 @@ static int xfeature_uncompacted_offset(int xfeature_nr)
+ 	return ebx;
  }
  
-+static inline void release_lbr_buffers(void)
-+{
-+}
-+
- static inline int intel_pmu_init(void)
+-static int xfeature_size(int xfeature_nr)
++int xfeature_size(int xfeature_nr)
  {
- 	return 0;
+ 	u32 eax, ebx, ecx, edx;
+ 
