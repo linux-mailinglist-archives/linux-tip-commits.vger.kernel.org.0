@@ -2,55 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ABB7421841A
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  8 Jul 2020 11:46:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D2A6218464
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  8 Jul 2020 11:53:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728444AbgGHJqP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 8 Jul 2020 05:46:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34020 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728440AbgGHJqP (ORCPT
+        id S1728445AbgGHJvr (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 8 Jul 2020 05:51:47 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:47886 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726900AbgGHJvq (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 8 Jul 2020 05:46:15 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9E5DC08C5DC;
-        Wed,  8 Jul 2020 02:46:14 -0700 (PDT)
-Date:   Wed, 08 Jul 2020 09:46:12 -0000
+        Wed, 8 Jul 2020 05:51:46 -0400
+Date:   Wed, 08 Jul 2020 09:51:42 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1594201572;
+        s=2020; t=1594201903;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=TaBmz5T0gTeKsycZ4iDh9C9kbwRhpKjXaMiaaTz7aMo=;
-        b=2cUH3K4lelhxHTgxALkLotqvSl2FiM8TwUfgRZDxE90MaHpJxbN31hNhs/+0gTHPyDqtqn
-        AFLBvTsrlCY23bK175cxSrACttFWNwixziJbeJMWhT+4eMWsaOUUsrzSguhR9ULDc9L9PO
-        HX4V9Vqp8dOfXcTUovAWHvT5kO1vwgzg5ElZtsdCtXjnGm0A5pMETEBuBGJQ0WOCognoTH
-        42FYuzQ4k1CjEpz/Q7oEnLfjxKA1x3bm0zyfDe32NIfXgpQFq4EZ3ITV1FhIfX/QAG1PS2
-        XNcjXYX2OUF9XmFEgT5/M4RgbZDz5kgXuXLwpU0MIpEnCIluJxaXfU2tTzEGsw==
+        bh=ZHgMxlkSbEJSf97I5bf8z7K7NgvXEo7/zO2vDV9W4i8=;
+        b=fhfH5PNJBzuJ80LikHX7laYP6LD3TaCrbVZBw8jP3c5gOg0N1Xu2wZLQm5CjuQ3fShXpiy
+        eaQ6fB9+PL8+++gDcf0Z/um1kUgIpPbF0wAcDpp/ZGo1mZPl8ZY9NxlU+dj18264PHDdDT
+        lFDnYkqMO5lEuzVHie023WwHw3bK7EPvLBNzJKD8WYR8rXExt0zP3aoN6xGpBfO4i+MWW6
+        uWxxOozQdIIg8cbImHkpBzAH1xZwaypaDUOFzSkHuBpyf9uan4JuNqFL8lfoijKUgrbLju
+        mFhFuTehL3aLeSIcrHtoK14IzE2vnrixW9H1ac4fNHKwDK7dU/a43nW/WGxacQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1594201572;
+        s=2020e; t=1594201903;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=TaBmz5T0gTeKsycZ4iDh9C9kbwRhpKjXaMiaaTz7aMo=;
-        b=DS+K+d6eHDxkt4bT+WRyPV36hcegxkfSoXLV7I/jlY+aJmvhJLwWOLe5CqgnnG8MLv6bgM
-        E+C9ur43/jtiykCQ==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+        bh=ZHgMxlkSbEJSf97I5bf8z7K7NgvXEo7/zO2vDV9W4i8=;
+        b=GdfD9K69M+8vhiPsoCaylfZy4GPu9+w245CorBVx6721wGLunQSOKpFtQ6PllcRPEqbuzy
+        eZOrYl7sqFuwVICw==
+From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] sched: Fix loadavg accounting race
-Cc:     Dave Jones <davej@codemonkey.org.uk>,
-        Paul Gortmaker <paul.gortmaker@windriver.com>,
+Subject: [tip: perf/core] perf/x86/intel/lbr: Support XSAVES for arch LBR read
+Cc:     Kan Liang <kan.liang@linux.intel.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200707102957.GN117543@hirez.programming.kicks-ass.net>
-References: <20200707102957.GN117543@hirez.programming.kicks-ass.net>
+        Dave Hansen <dave.hansen@intel.com>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <1593780569-62993-24-git-send-email-kan.liang@linux.intel.com>
+References: <1593780569-62993-24-git-send-email-kan.liang@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <159420157209.4006.10732608050891501703.tip-bot2@tip-bot2>
+Message-ID: <159420190283.4006.10798804933769478660.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,236 +57,171 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/urgent branch of tip:
+The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     dbfb089d360b1cc623c51a2c7cf9b99eff78e0e7
-Gitweb:        https://git.kernel.org/tip/dbfb089d360b1cc623c51a2c7cf9b99eff78e0e7
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Fri, 03 Jul 2020 12:40:33 +02:00
+Commit-ID:     c085fb8774671e83f6199a8e838fbc0e57094029
+Gitweb:        https://git.kernel.org/tip/c085fb8774671e83f6199a8e838fbc0e57094029
+Author:        Kan Liang <kan.liang@linux.intel.com>
+AuthorDate:    Fri, 03 Jul 2020 05:49:29 -07:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 08 Jul 2020 11:38:49 +02:00
+CommitterDate: Wed, 08 Jul 2020 11:38:57 +02:00
 
-sched: Fix loadavg accounting race
+perf/x86/intel/lbr: Support XSAVES for arch LBR read
 
-The recent commit:
+Reading LBR registers in a perf NMI handler for a non-PEBS event
+causes a high overhead because the number of LBR registers is huge.
+To reduce the overhead, the XSAVES instruction should be used to replace
+the LBR registers' reading method.
 
-  c6e7bd7afaeb ("sched/core: Optimize ttwu() spinning on p->on_cpu")
+The XSAVES buffer used for LBR read has to be per-CPU because the NMI
+handler invoked the lbr_read(). The existing task_ctx_data buffer
+cannot be used which is per-task and only be allocated for the LBR call
+stack mode. A new lbr_xsave pointer is introduced in the cpu_hw_events
+as an XSAVES buffer for LBR read.
 
-moved these lines in ttwu():
+The XSAVES buffer should be allocated only when LBR is used by a
+non-PEBS event on the CPU because the total size of the lbr_xsave is
+not small (~1.4KB).
 
-	p->sched_contributes_to_load = !!task_contributes_to_load(p);
-	p->state = TASK_WAKING;
+The XSAVES buffer is allocated when a non-PEBS event is added, but it
+is lazily released in x86_release_hardware() when perf releases the
+entire PMU hardware resource, because perf may frequently schedule the
+event, e.g. high context switch. The lazy release method reduces the
+overhead of frequently allocate/free the buffer.
 
-up before:
+If the lbr_xsave fails to be allocated, roll back to normal Arch LBR
+lbr_read().
 
-	smp_cond_load_acquire(&p->on_cpu, !VAL);
-
-into the 'p->on_rq == 0' block, with the thinking that once we hit
-schedule() the current task cannot change it's ->state anymore. And
-while this is true, it is both incorrect and flawed.
-
-It is incorrect in that we need at least an ACQUIRE on 'p->on_rq == 0'
-to avoid weak hardware from re-ordering things for us. This can fairly
-easily be achieved by relying on the control-dependency already in
-place.
-
-The second problem, which makes the flaw in the original argument, is
-that while schedule() will not change prev->state, it will read it a
-number of times (arguably too many times since it's marked volatile).
-The previous condition 'p->on_cpu == 0' was sufficient because that
-indicates schedule() has completed, and will no longer read
-prev->state. So now the trick is to make this same true for the (much)
-earlier 'prev->on_rq == 0' case.
-
-Furthermore, in order to make the ordering stick, the 'prev->on_rq = 0'
-assignment needs to he a RELEASE, but adding additional ordering to
-schedule() is an unwelcome proposition at the best of times, doubly so
-for mere accounting.
-
-Luckily we can push the prev->state load up before rq->lock, with the
-only caveat that we then have to re-read the state after. However, we
-know that if it changed, we no longer have to worry about the blocking
-path. This gives us the required ordering, if we block, we did the
-prev->state load before an (effective) smp_mb() and the p->on_rq store
-needs not change.
-
-With this we end up with the effective ordering:
-
-	LOAD p->state           LOAD-ACQUIRE p->on_rq == 0
-	MB
-	STORE p->on_rq, 0       STORE p->state, TASK_WAKING
-
-which ensures the TASK_WAKING store happens after the prev->state
-load, and all is well again.
-
-Fixes: c6e7bd7afaeb ("sched/core: Optimize ttwu() spinning on p->on_cpu")
-Reported-by: Dave Jones <davej@codemonkey.org.uk>
-Reported-by: Paul Gortmaker <paul.gortmaker@windriver.com>
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Dave Jones <davej@codemonkey.org.uk>
-Tested-by: Paul Gortmaker <paul.gortmaker@windriver.com>
-Link: https://lkml.kernel.org/r/20200707102957.GN117543@hirez.programming.kicks-ass.net
+Reviewed-by: Dave Hansen <dave.hansen@intel.com>
+Link: https://lkml.kernel.org/r/1593780569-62993-24-git-send-email-kan.liang@linux.intel.com
 ---
- include/linux/sched.h |  4 +---
- kernel/sched/core.c   | 67 +++++++++++++++++++++++++++++++-----------
- 2 files changed, 51 insertions(+), 20 deletions(-)
+ arch/x86/events/core.c       |  1 +-
+ arch/x86/events/intel/lbr.c  | 40 ++++++++++++++++++++++++++++++++++-
+ arch/x86/events/perf_event.h |  7 ++++++-
+ 3 files changed, 47 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index 692e327..6833729 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -114,10 +114,6 @@ struct task_group;
+diff --git a/arch/x86/events/core.c b/arch/x86/events/core.c
+index 6b1228a..1cbf57d 100644
+--- a/arch/x86/events/core.c
++++ b/arch/x86/events/core.c
+@@ -358,6 +358,7 @@ void x86_release_hardware(void)
+ 	if (atomic_dec_and_mutex_lock(&pmc_refcount, &pmc_reserve_mutex)) {
+ 		release_pmc_hardware();
+ 		release_ds_buffers();
++		release_lbr_buffers();
+ 		mutex_unlock(&pmc_reserve_mutex);
+ 	}
+ }
+diff --git a/arch/x86/events/intel/lbr.c b/arch/x86/events/intel/lbr.c
+index cb1a049..63f58bd 100644
+--- a/arch/x86/events/intel/lbr.c
++++ b/arch/x86/events/intel/lbr.c
+@@ -658,6 +658,7 @@ static inline bool branch_user_callstack(unsigned br_sel)
  
- #define task_is_stopped_or_traced(task)	((task->state & (__TASK_STOPPED | __TASK_TRACED)) != 0)
- 
--#define task_contributes_to_load(task)	((task->state & TASK_UNINTERRUPTIBLE) != 0 && \
--					 (task->flags & PF_FROZEN) == 0 && \
--					 (task->state & TASK_NOLOAD) == 0)
--
- #ifdef CONFIG_DEBUG_ATOMIC_SLEEP
- 
- /*
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index ca5db40..950ac45 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -1311,9 +1311,6 @@ static inline void dequeue_task(struct rq *rq, struct task_struct *p, int flags)
- 
- void activate_task(struct rq *rq, struct task_struct *p, int flags)
+ void intel_pmu_lbr_add(struct perf_event *event)
  {
--	if (task_contributes_to_load(p))
--		rq->nr_uninterruptible--;
--
- 	enqueue_task(rq, p, flags);
++	struct kmem_cache *kmem_cache = event->pmu->task_ctx_cache;
+ 	struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
  
- 	p->on_rq = TASK_ON_RQ_QUEUED;
-@@ -1323,9 +1320,6 @@ void deactivate_task(struct rq *rq, struct task_struct *p, int flags)
- {
- 	p->on_rq = (flags & DEQUEUE_SLEEP) ? 0 : TASK_ON_RQ_MIGRATING;
- 
--	if (task_contributes_to_load(p))
--		rq->nr_uninterruptible++;
--
- 	dequeue_task(rq, p, flags);
+ 	if (!x86_pmu.lbr_nr)
+@@ -695,6 +696,29 @@ void intel_pmu_lbr_add(struct perf_event *event)
+ 	perf_sched_cb_inc(event->ctx->pmu);
+ 	if (!cpuc->lbr_users++ && !event->total_time_running)
+ 		intel_pmu_lbr_reset();
++
++	if (static_cpu_has(X86_FEATURE_ARCH_LBR) &&
++	    kmem_cache && !cpuc->lbr_xsave &&
++	    (cpuc->lbr_users != cpuc->lbr_pebs_users))
++		cpuc->lbr_xsave = kmem_cache_alloc(kmem_cache, GFP_KERNEL);
++}
++
++void release_lbr_buffers(void)
++{
++	struct kmem_cache *kmem_cache = x86_get_pmu()->task_ctx_cache;
++	struct cpu_hw_events *cpuc;
++	int cpu;
++
++	if (!static_cpu_has(X86_FEATURE_ARCH_LBR))
++		return;
++
++	for_each_possible_cpu(cpu) {
++		cpuc = per_cpu_ptr(&cpu_hw_events, cpu);
++		if (kmem_cache && cpuc->lbr_xsave) {
++			kmem_cache_free(kmem_cache, cpuc->lbr_xsave);
++			cpuc->lbr_xsave = NULL;
++		}
++	}
  }
  
-@@ -2236,10 +2230,10 @@ ttwu_do_activate(struct rq *rq, struct task_struct *p, int wake_flags,
+ void intel_pmu_lbr_del(struct perf_event *event)
+@@ -945,6 +969,19 @@ static void intel_pmu_arch_lbr_read(struct cpu_hw_events *cpuc)
+ 	intel_pmu_store_lbr(cpuc, NULL);
+ }
  
- 	lockdep_assert_held(&rq->lock);
++static void intel_pmu_arch_lbr_read_xsave(struct cpu_hw_events *cpuc)
++{
++	struct x86_perf_task_context_arch_lbr_xsave *xsave = cpuc->lbr_xsave;
++
++	if (!xsave) {
++		intel_pmu_store_lbr(cpuc, NULL);
++		return;
++	}
++	copy_dynamic_supervisor_to_kernel(&xsave->xsave, XFEATURE_MASK_LBR);
++
++	intel_pmu_store_lbr(cpuc, xsave->lbr.entries);
++}
++
+ void intel_pmu_lbr_read(void)
+ {
+ 	struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
+@@ -1767,14 +1804,15 @@ void __init intel_pmu_arch_lbr_init(void)
+ 		x86_pmu.lbr_ctl_map = NULL;
  
--#ifdef CONFIG_SMP
- 	if (p->sched_contributes_to_load)
- 		rq->nr_uninterruptible--;
- 
-+#ifdef CONFIG_SMP
- 	if (wake_flags & WF_MIGRATED)
- 		en_flags |= ENQUEUE_MIGRATED;
- #endif
-@@ -2583,7 +2577,7 @@ try_to_wake_up(struct task_struct *p, unsigned int state, int wake_flags)
- 	 * A similar smb_rmb() lives in try_invoke_on_locked_down_task().
- 	 */
- 	smp_rmb();
--	if (p->on_rq && ttwu_remote(p, wake_flags))
-+	if (READ_ONCE(p->on_rq) && ttwu_remote(p, wake_flags))
- 		goto unlock;
- 
- 	if (p->in_iowait) {
-@@ -2592,9 +2586,6 @@ try_to_wake_up(struct task_struct *p, unsigned int state, int wake_flags)
+ 	x86_pmu.lbr_reset = intel_pmu_arch_lbr_reset;
+-	x86_pmu.lbr_read = intel_pmu_arch_lbr_read;
+ 	if (arch_lbr_xsave) {
+ 		x86_pmu.lbr_save = intel_pmu_arch_lbr_xsaves;
+ 		x86_pmu.lbr_restore = intel_pmu_arch_lbr_xrstors;
++		x86_pmu.lbr_read = intel_pmu_arch_lbr_read_xsave;
+ 		pr_cont("XSAVE ");
+ 	} else {
+ 		x86_pmu.lbr_save = intel_pmu_arch_lbr_save;
+ 		x86_pmu.lbr_restore = intel_pmu_arch_lbr_restore;
++		x86_pmu.lbr_read = intel_pmu_arch_lbr_read;
  	}
  
- #ifdef CONFIG_SMP
--	p->sched_contributes_to_load = !!task_contributes_to_load(p);
--	p->state = TASK_WAKING;
--
- 	/*
- 	 * Ensure we load p->on_cpu _after_ p->on_rq, otherwise it would be
- 	 * possible to, falsely, observe p->on_cpu == 0.
-@@ -2613,8 +2604,20 @@ try_to_wake_up(struct task_struct *p, unsigned int state, int wake_flags)
- 	 *
- 	 * Pairs with the LOCK+smp_mb__after_spinlock() on rq->lock in
- 	 * __schedule().  See the comment for smp_mb__after_spinlock().
-+	 *
-+	 * Form a control-dep-acquire with p->on_rq == 0 above, to ensure
-+	 * schedule()'s deactivate_task() has 'happened' and p will no longer
-+	 * care about it's own p->state. See the comment in __schedule().
- 	 */
--	smp_rmb();
-+	smp_acquire__after_ctrl_dep();
-+
-+	/*
-+	 * We're doing the wakeup (@success == 1), they did a dequeue (p->on_rq
-+	 * == 0), which means we need to do an enqueue, change p->state to
-+	 * TASK_WAKING such that we can unlock p->pi_lock before doing the
-+	 * enqueue, such as ttwu_queue_wakelist().
-+	 */
-+	p->state = TASK_WAKING;
+ 	pr_cont("Architectural LBR, ");
+diff --git a/arch/x86/events/perf_event.h b/arch/x86/events/perf_event.h
+index d5e351c..7b68ab5 100644
+--- a/arch/x86/events/perf_event.h
++++ b/arch/x86/events/perf_event.h
+@@ -253,6 +253,7 @@ struct cpu_hw_events {
+ 	void				*last_task_ctx;
+ 	int				last_log_id;
+ 	int				lbr_select;
++	void				*lbr_xsave;
  
  	/*
- 	 * If the owning (remote) CPU is still in the middle of schedule() with
-@@ -4097,6 +4100,7 @@ static void __sched notrace __schedule(bool preempt)
+ 	 * Intel host/guest exclude bits
+@@ -1066,6 +1067,8 @@ void release_ds_buffers(void);
+ 
+ void reserve_ds_buffers(void);
+ 
++void release_lbr_buffers(void);
++
+ extern struct event_constraint bts_constraint;
+ extern struct event_constraint vlbr_constraint;
+ 
+@@ -1207,6 +1210,10 @@ static inline void release_ds_buffers(void)
  {
- 	struct task_struct *prev, *next;
- 	unsigned long *switch_count;
-+	unsigned long prev_state;
- 	struct rq_flags rf;
- 	struct rq *rq;
- 	int cpu;
-@@ -4113,12 +4117,22 @@ static void __sched notrace __schedule(bool preempt)
- 	local_irq_disable();
- 	rcu_note_context_switch(preempt);
+ }
  
-+	/* See deactivate_task() below. */
-+	prev_state = prev->state;
++static inline void release_lbr_buffers(void)
++{
++}
 +
- 	/*
- 	 * Make sure that signal_pending_state()->signal_pending() below
- 	 * can't be reordered with __set_current_state(TASK_INTERRUPTIBLE)
--	 * done by the caller to avoid the race with signal_wake_up().
-+	 * done by the caller to avoid the race with signal_wake_up():
-+	 *
-+	 * __set_current_state(@state)		signal_wake_up()
-+	 * schedule()				  set_tsk_thread_flag(p, TIF_SIGPENDING)
-+	 *					  wake_up_state(p, state)
-+	 *   LOCK rq->lock			    LOCK p->pi_state
-+	 *   smp_mb__after_spinlock()		    smp_mb__after_spinlock()
-+	 *     if (signal_pending_state())	    if (p->state & @state)
- 	 *
--	 * The membarrier system call requires a full memory barrier
-+	 * Also, the membarrier system call requires a full memory barrier
- 	 * after coming from user-space, before storing to rq->curr.
- 	 */
- 	rq_lock(rq, &rf);
-@@ -4129,10 +4143,31 @@ static void __sched notrace __schedule(bool preempt)
- 	update_rq_clock(rq);
- 
- 	switch_count = &prev->nivcsw;
--	if (!preempt && prev->state) {
--		if (signal_pending_state(prev->state, prev)) {
-+	/*
-+	 * We must re-load prev->state in case ttwu_remote() changed it
-+	 * before we acquired rq->lock.
-+	 */
-+	if (!preempt && prev_state && prev_state == prev->state) {
-+		if (signal_pending_state(prev_state, prev)) {
- 			prev->state = TASK_RUNNING;
- 		} else {
-+			prev->sched_contributes_to_load =
-+				(prev_state & TASK_UNINTERRUPTIBLE) &&
-+				!(prev_state & TASK_NOLOAD) &&
-+				!(prev->flags & PF_FROZEN);
-+
-+			if (prev->sched_contributes_to_load)
-+				rq->nr_uninterruptible++;
-+
-+			/*
-+			 * __schedule()			ttwu()
-+			 *   prev_state = prev->state;	  if (READ_ONCE(p->on_rq) && ...)
-+			 *   LOCK rq->lock		    goto out;
-+			 *   smp_mb__after_spinlock();	  smp_acquire__after_ctrl_dep();
-+			 *   p->on_rq = 0;		  p->state = TASK_WAKING;
-+			 *
-+			 * After this, schedule() must not care about p->state any more.
-+			 */
- 			deactivate_task(rq, prev, DEQUEUE_SLEEP | DEQUEUE_NOCLOCK);
- 
- 			if (prev->in_iowait) {
+ static inline int intel_pmu_init(void)
+ {
+ 	return 0;
