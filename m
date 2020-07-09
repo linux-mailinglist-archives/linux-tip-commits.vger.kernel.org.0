@@ -2,52 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E812C218447
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  8 Jul 2020 11:52:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC2B3219B59
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  9 Jul 2020 10:45:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728379AbgGHJwR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 8 Jul 2020 05:52:17 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:48176 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728678AbgGHJv6 (ORCPT
+        id S1726261AbgGIIp5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 9 Jul 2020 04:45:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49880 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726193AbgGIIp5 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 8 Jul 2020 05:51:58 -0400
-Date:   Wed, 08 Jul 2020 09:51:55 -0000
+        Thu, 9 Jul 2020 04:45:57 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07430C061A0B;
+        Thu,  9 Jul 2020 01:45:56 -0700 (PDT)
+Date:   Thu, 09 Jul 2020 08:45:54 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1594201916;
+        s=2020; t=1594284355;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ZYBwRaqcxgn+XMoGe3mL1BKkwzTwL8McDCTncXMpY4Y=;
-        b=tI22gLbF2Jb8QflLTiD78wkFexT+0SwmX6jQ9PzKK7q+GS8lS6FOYbh0BaazAXZkFjQkmZ
-        EW9vVZd4u+6sbTeT12a7DuCRLrmBChxnhTM2IgofxB5WIZdlGDNJAwWc99vmKRgqupzvP5
-        o+82zoxem68ck5uFisou5dfnZ9nw+0PwIBSZDepV0+Omtwq3sHYLIUbN8qIQT5Pjwy7Ofc
-        h01zh3Y1fmGkxQ61oKbvopwxIjCqJ0qmsWOVfR1DlymSJA7AAiE6rmQfmTSMAqd6ERjm3t
-        uAJb5wKfty9svsRVeVWq8E+s4f4gJE5jlmIIFfb055znmq1Vd0P5k0Zs340fjA==
+        bh=I+4xw1FSYGQyoZLx5QjbtHpvgVDoCI4Cv4NTYFd7k8g=;
+        b=tETY/41W2ET4kly+IcMGpZJasqrMcSpb81BFcLB4+nMFwA9orjRfd5uzFwQ/9dtbfuTx0D
+        BbiSwiu8VlILvqYkhRL1ebHS4NkDPkKhD4VZBys0+s/SD4M5dAbMJTW2Z2Sw2vzI2dzz1u
+        6WSY6DxbkAWU425z1rITE1ZBLo7udpeke/y705/FE5LDAKFLor3E7RYbuSUKkP/til6AEe
+        BMazKUulkdNYa8aMW1mMhJXy8W0o5GNEMZWcVQqkaNIM9gpH+3jwg+kPcUHPDVrjWTYS9r
+        ycWVNvKUMPAfhMrk7gKb4X+WDdCArKtEErgnwtaEWA3GUXaB+gbD+6qhlXGbjg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1594201916;
+        s=2020e; t=1594284355;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ZYBwRaqcxgn+XMoGe3mL1BKkwzTwL8McDCTncXMpY4Y=;
-        b=sovHU6CWDTn3adq0atjjPoIgNyQrQtf6cZcrzhfpH8HqKlVh1LNW6YEElg5cyHXKkdK29e
-        ctaZ1VVCI79PRHCw==
-From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
+        bh=I+4xw1FSYGQyoZLx5QjbtHpvgVDoCI4Cv4NTYFd7k8g=;
+        b=1uc8lLRsIcUoGYraaIwoyuUk19dsM/NBHkabzvzN5Ekd75ZnagWVQZ2fLObD0roVmHcdn6
+        Gf9Tv4gXxNSoY9Bg==
+From:   "tip-bot2 for Phil Auld" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] x86/cpufeatures: Add Architectural LBRs feature bit
-Cc:     Kan Liang <kan.liang@linux.intel.com>,
+Subject: [tip: sched/core] sched: Add a tracepoint to track rq->nr_running
+Cc:     Phil Auld <pauld@redhat.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Dave Hansen <dave.hansen@intel.com>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <1593780569-62993-2-git-send-email-kan.liang@linux.intel.com>
-References: <1593780569-62993-2-git-send-email-kan.liang@linux.intel.com>
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200629192303.GC120228@lorien.usersys.redhat.com>
+References: <20200629192303.GC120228@lorien.usersys.redhat.com>
 MIME-Version: 1.0
-Message-ID: <159420191583.4006.10876391642907607745.tip-bot2@tip-bot2>
+Message-ID: <159428435423.4006.2008200578767650522.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -57,47 +59,192 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/core branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     bd657aa3dd8514e62486ce7f90b5e484c18d684d
-Gitweb:        https://git.kernel.org/tip/bd657aa3dd8514e62486ce7f90b5e484c18d684d
-Author:        Kan Liang <kan.liang@linux.intel.com>
-AuthorDate:    Fri, 03 Jul 2020 05:49:07 -07:00
+Commit-ID:     9d246053a69196c7c27068870e9b4b66ac536f68
+Gitweb:        https://git.kernel.org/tip/9d246053a69196c7c27068870e9b4b66ac536f68
+Author:        Phil Auld <pauld@redhat.com>
+AuthorDate:    Mon, 29 Jun 2020 15:23:03 -04:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 08 Jul 2020 11:38:51 +02:00
+CommitterDate: Wed, 08 Jul 2020 11:39:02 +02:00
 
-x86/cpufeatures: Add Architectural LBRs feature bit
+sched: Add a tracepoint to track rq->nr_running
 
-CPUID.(EAX=07H, ECX=0):EDX[19] indicates whether an Intel CPU supports
-Architectural LBRs.
+Add a bare tracepoint trace_sched_update_nr_running_tp which tracks
+->nr_running CPU's rq. This is used to accurately trace this data and
+provide a visualization of scheduler imbalances in, for example, the
+form of a heat map.  The tracepoint is accessed by loading an external
+kernel module. An example module (forked from Qais' module and including
+the pelt related tracepoints) can be found at:
 
-The "X86_FEATURE_..., word 18" is already mirrored from CPUID
-"0x00000007:0 (EDX)". Add X86_FEATURE_ARCH_LBR under the "word 18"
-section.
+  https://github.com/auldp/tracepoints-helpers.git
 
-The feature will appear as "arch_lbr" in /proc/cpuinfo.
+A script to turn the trace-cmd report output into a heatmap plot can be
+found at:
 
-The Architectural Last Branch Records (LBR) feature enables recording
-of software path history by logging taken branches and other control
-flows. The feature will be supported in the perf_events subsystem.
+  https://github.com/jirvoz/plot-nr-running
 
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+The tracepoints are added to add_nr_running() and sub_nr_running() which
+are in kernel/sched/sched.h. In order to avoid CREATE_TRACE_POINTS in
+the header a wrapper call is used and the trace/events/sched.h include
+is moved before sched.h in kernel/sched/core.
+
+Signed-off-by: Phil Auld <pauld@redhat.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Dave Hansen <dave.hansen@intel.com>
-Link: https://lkml.kernel.org/r/1593780569-62993-2-git-send-email-kan.liang@linux.intel.com
+Link: https://lkml.kernel.org/r/20200629192303.GC120228@lorien.usersys.redhat.com
 ---
- arch/x86/include/asm/cpufeatures.h | 1 +
- 1 file changed, 1 insertion(+)
+ include/linux/sched.h        |  1 +
+ include/trace/events/sched.h |  4 ++++
+ kernel/sched/core.c          | 13 +++++++++----
+ kernel/sched/fair.c          |  8 ++++++--
+ kernel/sched/pelt.c          |  2 --
+ kernel/sched/sched.h         | 10 ++++++++++
+ 6 files changed, 30 insertions(+), 8 deletions(-)
 
-diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
-index 02dabc9..72ba4c5 100644
---- a/arch/x86/include/asm/cpufeatures.h
-+++ b/arch/x86/include/asm/cpufeatures.h
-@@ -366,6 +366,7 @@
- #define X86_FEATURE_MD_CLEAR		(18*32+10) /* VERW clears CPU buffers */
- #define X86_FEATURE_TSX_FORCE_ABORT	(18*32+13) /* "" TSX_FORCE_ABORT */
- #define X86_FEATURE_PCONFIG		(18*32+18) /* Intel PCONFIG */
-+#define X86_FEATURE_ARCH_LBR		(18*32+19) /* Intel ARCH LBR */
- #define X86_FEATURE_SPEC_CTRL		(18*32+26) /* "" Speculation Control (IBRS + IBPB) */
- #define X86_FEATURE_INTEL_STIBP		(18*32+27) /* "" Single Thread Indirect Branch Predictors */
- #define X86_FEATURE_FLUSH_L1D		(18*32+28) /* Flush L1D cache */
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index 6833729..12b10ce 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -2044,6 +2044,7 @@ const struct sched_avg *sched_trace_rq_avg_dl(struct rq *rq);
+ const struct sched_avg *sched_trace_rq_avg_irq(struct rq *rq);
+ 
+ int sched_trace_rq_cpu(struct rq *rq);
++int sched_trace_rq_nr_running(struct rq *rq);
+ 
+ const struct cpumask *sched_trace_rd_span(struct root_domain *rd);
+ 
+diff --git a/include/trace/events/sched.h b/include/trace/events/sched.h
+index 04f9a4c..0d5ff09 100644
+--- a/include/trace/events/sched.h
++++ b/include/trace/events/sched.h
+@@ -642,6 +642,10 @@ DECLARE_TRACE(sched_util_est_se_tp,
+ 	TP_PROTO(struct sched_entity *se),
+ 	TP_ARGS(se));
+ 
++DECLARE_TRACE(sched_update_nr_running_tp,
++	TP_PROTO(struct rq *rq, int change),
++	TP_ARGS(rq, change));
++
+ #endif /* _TRACE_SCHED_H */
+ 
+ /* This part must be outside protection */
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 4cf30e4..ff05195 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -6,6 +6,10 @@
+  *
+  *  Copyright (C) 1991-2002  Linus Torvalds
+  */
++#define CREATE_TRACE_POINTS
++#include <trace/events/sched.h>
++#undef CREATE_TRACE_POINTS
++
+ #include "sched.h"
+ 
+ #include <linux/nospec.h>
+@@ -23,9 +27,6 @@
+ #include "pelt.h"
+ #include "smp.h"
+ 
+-#define CREATE_TRACE_POINTS
+-#include <trace/events/sched.h>
+-
+ /*
+  * Export tracepoints that act as a bare tracehook (ie: have no trace event
+  * associated with them) to allow external modules to probe them.
+@@ -38,6 +39,7 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(pelt_se_tp);
+ EXPORT_TRACEPOINT_SYMBOL_GPL(sched_overutilized_tp);
+ EXPORT_TRACEPOINT_SYMBOL_GPL(sched_util_est_cfs_tp);
+ EXPORT_TRACEPOINT_SYMBOL_GPL(sched_util_est_se_tp);
++EXPORT_TRACEPOINT_SYMBOL_GPL(sched_update_nr_running_tp);
+ 
+ DEFINE_PER_CPU_SHARED_ALIGNED(struct rq, runqueues);
+ 
+@@ -8195,4 +8197,7 @@ const u32 sched_prio_to_wmult[40] = {
+  /*  15 */ 119304647, 148102320, 186737708, 238609294, 286331153,
+ };
+ 
+-#undef CREATE_TRACE_POINTS
++void call_trace_sched_update_nr_running(struct rq *rq, int count)
++{
++        trace_sched_update_nr_running_tp(rq, count);
++}
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 6fab1d1..3213cb2 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -22,8 +22,6 @@
+  */
+ #include "sched.h"
+ 
+-#include <trace/events/sched.h>
+-
+ /*
+  * Targeted preemption latency for CPU-bound tasks:
+  *
+@@ -11296,3 +11294,9 @@ const struct cpumask *sched_trace_rd_span(struct root_domain *rd)
+ #endif
+ }
+ EXPORT_SYMBOL_GPL(sched_trace_rd_span);
++
++int sched_trace_rq_nr_running(struct rq *rq)
++{
++        return rq ? rq->nr_running : -1;
++}
++EXPORT_SYMBOL_GPL(sched_trace_rq_nr_running);
+diff --git a/kernel/sched/pelt.c b/kernel/sched/pelt.c
+index 11bea3b..2c613e1 100644
+--- a/kernel/sched/pelt.c
++++ b/kernel/sched/pelt.c
+@@ -28,8 +28,6 @@
+ #include "sched.h"
+ #include "pelt.h"
+ 
+-#include <trace/events/sched.h>
+-
+ /*
+  * Approximate:
+  *   val * y^n,    where y^32 ~= 0.5 (~1 scheduling period)
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index b1432f6..65b72e0 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -76,6 +76,8 @@
+ #include "cpupri.h"
+ #include "cpudeadline.h"
+ 
++#include <trace/events/sched.h>
++
+ #ifdef CONFIG_SCHED_DEBUG
+ # define SCHED_WARN_ON(x)	WARN_ONCE(x, #x)
+ #else
+@@ -97,6 +99,7 @@ extern atomic_long_t calc_load_tasks;
+ extern void calc_global_load_tick(struct rq *this_rq);
+ extern long calc_load_fold_active(struct rq *this_rq, long adjust);
+ 
++extern void call_trace_sched_update_nr_running(struct rq *rq, int count);
+ /*
+  * Helpers for converting nanosecond timing to jiffy resolution
+  */
+@@ -1973,6 +1976,9 @@ static inline void add_nr_running(struct rq *rq, unsigned count)
+ 	unsigned prev_nr = rq->nr_running;
+ 
+ 	rq->nr_running = prev_nr + count;
++	if (trace_sched_update_nr_running_tp_enabled()) {
++		call_trace_sched_update_nr_running(rq, count);
++	}
+ 
+ #ifdef CONFIG_SMP
+ 	if (prev_nr < 2 && rq->nr_running >= 2) {
+@@ -1987,6 +1993,10 @@ static inline void add_nr_running(struct rq *rq, unsigned count)
+ static inline void sub_nr_running(struct rq *rq, unsigned count)
+ {
+ 	rq->nr_running -= count;
++	if (trace_sched_update_nr_running_tp_enabled()) {
++		call_trace_sched_update_nr_running(rq, count);
++	}
++
+ 	/* Check if we still need preemption */
+ 	sched_update_tick_dependency(rq);
+ }
