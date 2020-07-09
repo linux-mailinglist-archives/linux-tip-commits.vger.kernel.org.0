@@ -2,55 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DEF30219C05
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  9 Jul 2020 11:23:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 08968219CEF
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  9 Jul 2020 12:04:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726281AbgGIJXA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 9 Jul 2020 05:23:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55588 "EHLO
+        id S1726313AbgGIKEv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 9 Jul 2020 06:04:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726321AbgGIJWx (ORCPT
+        with ESMTP id S1726298AbgGIKEu (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 9 Jul 2020 05:22:53 -0400
+        Thu, 9 Jul 2020 06:04:50 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78B4FC061A0B;
-        Thu,  9 Jul 2020 02:22:53 -0700 (PDT)
-Date:   Thu, 09 Jul 2020 09:22:51 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C16BC061A0B;
+        Thu,  9 Jul 2020 03:04:50 -0700 (PDT)
+Date:   Thu, 09 Jul 2020 10:04:46 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1594286571;
+        s=2020; t=1594289087;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=IuqTEWMSDcN/t0XlTdAwoMKu5iKlhhspWjdSYJms6ec=;
-        b=dbnoOVoCXyqn5FE7wRSixDhDhdDCErcARGmYERRJfRyfSMlO8kLtIsWQzSwNydB5ok+1/h
-        mScZoJlG9vuD9V+EQao4HF4t+H76BVfuE1MPCjyHWIjb4bh3J4MU50AZ+NcMkMf6jdemo5
-        qeejYK27AI42kP4jc1Dq/dt+eWRIsjxHY0LefrExNTKPaO6Aiai2PQ9TLE9bIZTI5VnH3y
-        ghPbnpVLElni6C4yIvipOR2YPZ0EDr8VxxffEpFlZBr8sPZMbICIo9mzgmEZ6hlTcqmYUj
-        5hk5G9puEzf11spAgTgExae4K7G0IloZlJX+lCko1/CdJDybPmtzgi9aKVhshg==
+        bh=dXH1fpBV4Oym4GLTgCmE/nJ8fXIAKGGs5Wg9KfiTMVk=;
+        b=lc+omKDZ4zjK5eskqG6yJ7++eY6og70sCWynTb2dploUg1L2EU2aV6jDRFyXNO4zxuoHbT
+        Szz0rze4DsLEEwdAVfDc8gJGUbECLo/XKIHYrWzkt/84sggzncVRqXWLJf1J+9NTicKIVK
+        WbJYxzDJApGmVe9uE7QPmeBZ1rp/rsZjzbWHnQL7TrY+o8C+ynCC+pw6s7ga4nikf/RUCn
+        mJtQW4KYPaoH5pUNa4YKh+VPeVLqNVnyjwdUOrDOpGjjNJOaJHCQf8z04fMvxw4rfwoP1Y
+        KrCm+yQiKsub3lacJelNtwYLVeec3nDPAVpGYb1gWhz0oXdwRkWZbXUIEfRLnQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1594286571;
+        s=2020e; t=1594289087;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=IuqTEWMSDcN/t0XlTdAwoMKu5iKlhhspWjdSYJms6ec=;
-        b=oEJ74UurMoubeHa3sRGozYPQJCk7fgxnKKpTJ63PFs49pmDQq65eA5a+2GTYVsBZGvDBmZ
-        AhQDSu3DlsQ5mBCQ==
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        bh=dXH1fpBV4Oym4GLTgCmE/nJ8fXIAKGGs5Wg9KfiTMVk=;
+        b=HSlub6Mu1R87O+XAiuX7CRftkum5LYWi0UVO/uVAWEYCN0A4+eH8BZIrUZxwY7JLYM7iRd
+        tClPfZ7NpEt8n/Ag==
+From:   "tip-bot2 for Frederic Weisbecker" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/traps: Disable interrupts in exc_aligment_check()
-Cc:     syzbot+0889df9502bc0f112b31@syzkaller.appspotmail.com,
+Subject: [tip: timers/urgent] timer: Prevent base->clk from moving backward
+Cc:     Frederic Weisbecker <frederic@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Andy Lutomirski <luto@kernel.org>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200708192934.076519438@linutronix.de>
-References: <20200708192934.076519438@linutronix.de>
+        "Anna-Maria Behnsen" <anna-maria@linutronix.de>,
+        Juri Lelli <juri.lelli@redhat.com>, stable@vger.kernel.org,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200703010657.2302-1-frederic@kernel.org>
+References: <20200703010657.2302-1-frederic@kernel.org>
 MIME-Version: 1.0
-Message-ID: <159428657103.4006.18418761196662576494.tip-bot2@tip-bot2>
+Message-ID: <159428908623.4006.8962643860352985536.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,40 +61,79 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the timers/urgent branch of tip:
 
-Commit-ID:     bce9b042ec73e8662b8119d4ca47e7c78b20d0bf
-Gitweb:        https://git.kernel.org/tip/bce9b042ec73e8662b8119d4ca47e7c78b20d0bf
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Wed, 08 Jul 2020 21:28:05 +02:00
+Commit-ID:     30c66fc30ee7a98c4f3adf5fb7e213b61884474f
+Gitweb:        https://git.kernel.org/tip/30c66fc30ee7a98c4f3adf5fb7e213b61884474f
+Author:        Frederic Weisbecker <frederic@kernel.org>
+AuthorDate:    Fri, 03 Jul 2020 03:06:57 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 09 Jul 2020 11:18:29 +02:00
+CommitterDate: Thu, 09 Jul 2020 11:56:57 +02:00
 
-x86/traps: Disable interrupts in exc_aligment_check()
+timer: Prevent base->clk from moving backward
 
-exc_alignment_check() fails to disable interrupts before returning to the
-entry code.
+When a timer is enqueued with a negative delta (ie: expiry is below
+base->clk), it gets added to the wheel as expiring now (base->clk).
 
-Fixes: ca4c6a9858c2 ("x86/traps: Make interrupt enable/disable symmetric in C code")
-Reported-by: syzbot+0889df9502bc0f112b31@syzkaller.appspotmail.com
+Yet the value that gets stored in base->next_expiry, while calling
+trigger_dyntick_cpu(), is the initial timer->expires value. The
+resulting state becomes:
+
+	base->next_expiry < base->clk
+
+On the next timer enqueue, forward_timer_base() may accidentally
+rewind base->clk. As a possible outcome, timers may expire way too
+early, the worst case being that the highest wheel levels get spuriously
+processed again.
+
+To prevent from that, make sure that base->next_expiry doesn't get below
+base->clk.
+
+Fixes: a683f390b93f ("timers: Forward the wheel clock whenever possible")
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Andy Lutomirski <luto@kernel.org>
-Link: https://lkml.kernel.org/r/20200708192934.076519438@linutronix.de
-
+Reviewed-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
+Tested-by: Juri Lelli <juri.lelli@redhat.com>
+Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/20200703010657.2302-1-frederic@kernel.org
 ---
- arch/x86/kernel/traps.c | 2 ++
- 1 file changed, 2 insertions(+)
+ kernel/time/timer.c | 17 ++++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
-index 6ed8cc5..4f3a509 100644
---- a/arch/x86/kernel/traps.c
-+++ b/arch/x86/kernel/traps.c
-@@ -299,6 +299,8 @@ DEFINE_IDTENTRY_ERRORCODE(exc_alignment_check)
- 
- 	do_trap(X86_TRAP_AC, SIGBUS, "alignment check", regs,
- 		error_code, BUS_ADRALN, NULL);
-+
-+	local_irq_disable();
+diff --git a/kernel/time/timer.c b/kernel/time/timer.c
+index 398e6ea..9a838d3 100644
+--- a/kernel/time/timer.c
++++ b/kernel/time/timer.c
+@@ -584,7 +584,15 @@ trigger_dyntick_cpu(struct timer_base *base, struct timer_list *timer)
+ 	 * Set the next expiry time and kick the CPU so it can reevaluate the
+ 	 * wheel:
+ 	 */
+-	base->next_expiry = timer->expires;
++	if (time_before(timer->expires, base->clk)) {
++		/*
++		 * Prevent from forward_timer_base() moving the base->clk
++		 * backward
++		 */
++		base->next_expiry = base->clk;
++	} else {
++		base->next_expiry = timer->expires;
++	}
+ 	wake_up_nohz_cpu(base->cpu);
  }
  
- #ifdef CONFIG_VMAP_STACK
+@@ -896,10 +904,13 @@ static inline void forward_timer_base(struct timer_base *base)
+ 	 * If the next expiry value is > jiffies, then we fast forward to
+ 	 * jiffies otherwise we forward to the next expiry value.
+ 	 */
+-	if (time_after(base->next_expiry, jnow))
++	if (time_after(base->next_expiry, jnow)) {
+ 		base->clk = jnow;
+-	else
++	} else {
++		if (WARN_ON_ONCE(time_before(base->next_expiry, base->clk)))
++			return;
+ 		base->clk = base->next_expiry;
++	}
+ #endif
+ }
+ 
