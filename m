@@ -2,54 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3106C21C393
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 11 Jul 2020 12:10:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C27B021C38C
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 11 Jul 2020 12:10:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726818AbgGKKKT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 11 Jul 2020 06:10:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56024 "EHLO
+        id S1726275AbgGKKKB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 11 Jul 2020 06:10:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56026 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726794AbgGKKJ7 (ORCPT
+        with ESMTP id S1726829AbgGKKKA (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 11 Jul 2020 06:09:59 -0400
+        Sat, 11 Jul 2020 06:10:00 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D031C08C5DD;
-        Sat, 11 Jul 2020 03:09:59 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D8C8C08C5DD;
+        Sat, 11 Jul 2020 03:10:00 -0700 (PDT)
 Date:   Sat, 11 Jul 2020 10:09:57 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1594462197;
+        s=2020; t=1594462198;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=2kPzi+ITbTYCZPJtdRhWJHTeT+swtWgwzHPf8pU3rAI=;
-        b=RC1iUyU2viz8sS9QneN+p+XqDm1RJayI1i+7CtQrL6Km88qge5rs7ByibK+opX22Se86HC
-        n76IbZtt1UVkrFqD4HAN3hoaEYVD4/0ufzqiX1B7D/v/JKiGxtbaC5tP7Vh90ssnGHUL+v
-        JrEfQfkMR3OQzK0UJaR7aRKEA//jTIHaN2Do9WpklNnQbM/7PJ6a/ysgSQ25SZvjbfxwQX
-        IXsv0/HLQidSbigpIsMghyTBCv/Zx9M3iQ4M5bBsYyh7s9RxU4q4s9ehGFf/bdBHv2tHed
-        jxo1yevFHUYTMxyEtw5Z9SRErf7ksX3AvAO0zuwqOFGEeCGpU6GyDS5fifQb2w==
+        bh=XJhx+S97F1+veS6j8aEiNWX/YWDZ0ndlNss5kMBbCi4=;
+        b=rIGCq9FE88ToE9FL5iinp17I+dfNBLyP8qEcgTQfLtuXXPG0YsCXlf25mnShd77e08A5bP
+        kOJgq2rntLfjOAeRuM0IMWFS17W4mAaur85fBGZ4pDsSD2W6M+G6eThejGlrxqifebm+qd
+        ph7JN22KLVpaZfw+FLANJQATbYgSj6SYCH7ye0ykD1MUZGRLYKu8atd+xScb23ingm6Jf/
+        99sxHGyHMJ6I0e3bZCQpvStOVTqrglk/Qs5Mw9Ibhwlb3WjJP3gpmeWx+8OpaPVrYccLIx
+        QcK9jvbzpkNegIDgS/WDIwxJCpD+sjNWRSKl1ycZtJldCt6wHnISvSP8b7VckQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1594462197;
+        s=2020e; t=1594462198;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=2kPzi+ITbTYCZPJtdRhWJHTeT+swtWgwzHPf8pU3rAI=;
-        b=kR7WuRsIkfh/tCvR3hkrkgs+5RqRyXft6HvOV2k/nrNRK1l3QMNXH/T1j4oZ9mmBsUfWyX
-        Jmv1bH1Hdp1yVZDQ==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+        bh=XJhx+S97F1+veS6j8aEiNWX/YWDZ0ndlNss5kMBbCi4=;
+        b=UUOy9kadE1/+txeRoTsHZyFwXF0G+Gcif6H/jspygOkeUBqnDM3TMcswPjaW66LHfw1zTv
+        zotSCzwESlQnn2Dw==
+From:   "tip-bot2 for Marco Elver" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] lockdep: Prepare for NMI IRQ state tracking
+Subject: [tip: locking/core] kcsan: Make KCSAN compatible with new IRQ state tracking
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200623083721.155449112@infradead.org>
-References: <20200623083721.155449112@infradead.org>
+        Marco Elver <elver@google.com>, Ingo Molnar <mingo@kernel.org>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200624113246.GA170324@elver.google.com>
+References: <20200624113246.GA170324@elver.google.com>
 MIME-Version: 1.0
-Message-ID: <159446219720.4006.9282048000882212758.tip-bot2@tip-bot2>
+Message-ID: <159446219784.4006.13350341271966090231.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,108 +61,71 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     859d069ee1ddd87862e1d6a356a82ed417dbeb67
-Gitweb:        https://git.kernel.org/tip/859d069ee1ddd87862e1d6a356a82ed417dbeb67
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Wed, 27 May 2020 15:00:57 +02:00
+Commit-ID:     248591f5d257a19c1cba9ab9da3536bfbc2f0149
+Gitweb:        https://git.kernel.org/tip/248591f5d257a19c1cba9ab9da3536bfbc2f0149
+Author:        Marco Elver <elver@google.com>
+AuthorDate:    Wed, 24 Jun 2020 13:32:46 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 10 Jul 2020 12:00:01 +02:00
+CommitterDate: Fri, 10 Jul 2020 12:00:00 +02:00
 
-lockdep: Prepare for NMI IRQ state tracking
+kcsan: Make KCSAN compatible with new IRQ state tracking
 
-There is no reason not to always, accurately, track IRQ state.
+The new IRQ state tracking code does not honor lockdep_off(), and as
+such we should again permit tracing by using non-raw functions in
+core.c. Update the lockdep_off() comment in report.c, to reflect the
+fact there is still a potential risk of deadlock due to using printk()
+from scheduler code.
 
-This change also makes IRQ state tracking ignore lockdep_off().
-
+Suggested-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Marco Elver <elver@google.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lkml.kernel.org/r/20200623083721.155449112@infradead.org
+Link: https://lkml.kernel.org/r/20200624113246.GA170324@elver.google.com
 ---
- kernel/locking/lockdep.c | 46 +++++++++++++++++++++++++++++++++++----
- 1 file changed, 42 insertions(+), 4 deletions(-)
+ kernel/kcsan/core.c   |  5 ++---
+ kernel/kcsan/report.c |  9 +++++----
+ 2 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
-index 29a8de4..d595623 100644
---- a/kernel/locking/lockdep.c
-+++ b/kernel/locking/lockdep.c
-@@ -395,7 +395,7 @@ void lockdep_init_task(struct task_struct *task)
+diff --git a/kernel/kcsan/core.c b/kernel/kcsan/core.c
+index 15f6794..732623c 100644
+--- a/kernel/kcsan/core.c
++++ b/kernel/kcsan/core.c
+@@ -397,8 +397,7 @@ kcsan_setup_watchpoint(const volatile void *ptr, size_t size, int type)
+ 	}
  
- static __always_inline void lockdep_recursion_finish(void)
- {
--	if (WARN_ON_ONCE(--current->lockdep_recursion))
-+	if (WARN_ON_ONCE((--current->lockdep_recursion) & LOCKDEP_RECURSION_MASK))
- 		current->lockdep_recursion = 0;
+ 	if (!kcsan_interrupt_watcher)
+-		/* Use raw to avoid lockdep recursion via IRQ flags tracing. */
+-		raw_local_irq_save(irq_flags);
++		local_irq_save(irq_flags);
+ 
+ 	watchpoint = insert_watchpoint((unsigned long)ptr, size, is_write);
+ 	if (watchpoint == NULL) {
+@@ -539,7 +538,7 @@ kcsan_setup_watchpoint(const volatile void *ptr, size_t size, int type)
+ 	kcsan_counter_dec(KCSAN_COUNTER_USED_WATCHPOINTS);
+ out_unlock:
+ 	if (!kcsan_interrupt_watcher)
+-		raw_local_irq_restore(irq_flags);
++		local_irq_restore(irq_flags);
+ out:
+ 	user_access_restore(ua_flags);
  }
- 
-@@ -3646,7 +3646,16 @@ static void __trace_hardirqs_on_caller(void)
-  */
- void lockdep_hardirqs_on_prepare(unsigned long ip)
- {
--	if (unlikely(!debug_locks || current->lockdep_recursion))
-+	if (unlikely(!debug_locks))
-+		return;
-+
-+	/*
-+	 * NMIs do not (and cannot) track lock dependencies, nothing to do.
-+	 */
-+	if (unlikely(in_nmi()))
-+		return;
-+
-+	if (unlikely(current->lockdep_recursion & LOCKDEP_RECURSION_MASK))
- 		return;
- 
- 	if (unlikely(current->hardirqs_enabled)) {
-@@ -3692,7 +3701,27 @@ void noinstr lockdep_hardirqs_on(unsigned long ip)
- {
- 	struct task_struct *curr = current;
- 
--	if (unlikely(!debug_locks || curr->lockdep_recursion))
-+	if (unlikely(!debug_locks))
-+		return;
-+
-+	/*
-+	 * NMIs can happen in the middle of local_irq_{en,dis}able() where the
-+	 * tracking state and hardware state are out of sync.
-+	 *
-+	 * NMIs must save lockdep_hardirqs_enabled() to restore IRQ state from,
-+	 * and not rely on hardware state like normal interrupts.
-+	 */
-+	if (unlikely(in_nmi())) {
-+		/*
-+		 * Skip:
-+		 *  - recursion check, because NMI can hit lockdep;
-+		 *  - hardware state check, because above;
-+		 *  - chain_key check, see lockdep_hardirqs_on_prepare().
-+		 */
-+		goto skip_checks;
-+	}
-+
-+	if (unlikely(current->lockdep_recursion & LOCKDEP_RECURSION_MASK))
- 		return;
- 
- 	if (curr->hardirqs_enabled) {
-@@ -3720,6 +3749,7 @@ void noinstr lockdep_hardirqs_on(unsigned long ip)
- 	DEBUG_LOCKS_WARN_ON(current->hardirq_chain_key !=
- 			    current->curr_chain_key);
- 
-+skip_checks:
- 	/* we'll do an OFF -> ON transition: */
- 	curr->hardirqs_enabled = 1;
- 	curr->hardirq_enable_ip = ip;
-@@ -3735,7 +3765,15 @@ void noinstr lockdep_hardirqs_off(unsigned long ip)
- {
- 	struct task_struct *curr = current;
- 
--	if (unlikely(!debug_locks || curr->lockdep_recursion))
-+	if (unlikely(!debug_locks))
-+		return;
-+
-+	/*
-+	 * Matching lockdep_hardirqs_on(), allow NMIs in the middle of lockdep;
-+	 * they will restore the software state. This ensures the software
-+	 * state is consistent inside NMIs as well.
-+	 */
-+	if (unlikely(!in_nmi() && (current->lockdep_recursion & LOCKDEP_RECURSION_MASK)))
- 		return;
+diff --git a/kernel/kcsan/report.c b/kernel/kcsan/report.c
+index ac5f834..6b2fb1a 100644
+--- a/kernel/kcsan/report.c
++++ b/kernel/kcsan/report.c
+@@ -606,10 +606,11 @@ void kcsan_report(const volatile void *ptr, size_t size, int access_type,
+ 		goto out;
  
  	/*
+-	 * With TRACE_IRQFLAGS, lockdep's IRQ trace state becomes corrupted if
+-	 * we do not turn off lockdep here; this could happen due to recursion
+-	 * into lockdep via KCSAN if we detect a race in utilities used by
+-	 * lockdep.
++	 * Because we may generate reports when we're in scheduler code, the use
++	 * of printk() could deadlock. Until such time that all printing code
++	 * called in print_report() is scheduler-safe, accept the risk, and just
++	 * get our message out. As such, also disable lockdep to hide the
++	 * warning, and avoid disabling lockdep for the rest of the kernel.
+ 	 */
+ 	lockdep_off();
+ 
