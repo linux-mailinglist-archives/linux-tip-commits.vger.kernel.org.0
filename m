@@ -2,20 +2,20 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CF9021C38B
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 11 Jul 2020 12:10:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3106C21C393
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 11 Jul 2020 12:10:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726809AbgGKKJ7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 11 Jul 2020 06:09:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56022 "EHLO
+        id S1726818AbgGKKKT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 11 Jul 2020 06:10:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56024 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726661AbgGKKJ7 (ORCPT
+        with ESMTP id S1726794AbgGKKJ7 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Sat, 11 Jul 2020 06:09:59 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A80B4C08C5DE;
-        Sat, 11 Jul 2020 03:09:58 -0700 (PDT)
-Date:   Sat, 11 Jul 2020 10:09:56 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D031C08C5DD;
+        Sat, 11 Jul 2020 03:09:59 -0700 (PDT)
+Date:   Sat, 11 Jul 2020 10:09:57 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1594462197;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -23,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=UwOF32rRkR2JfqLVlVnNRUU0zt16NU7UYSNiAGrb6nQ=;
-        b=muEx5Ja6kL/iJwQUAdNCvADccwBZYuU0hVjwJ90RY1/gOpVsXCcCL/slrJtRW9MHLIJQ1T
-        x8rno9NEPgdK3iAjv6Vpi+d6Mx3gHuYxBh+1BDpDKNTXpCxfrE5FiQ/1CQhGLJuHwY8+kZ
-        2pSfqeUlghe44AZ7g3rXDW/31Bx8jcihipa3d11ZC6hpDSZs/sMsWK6ExJuA8SzRHUvbKw
-        kv2qIrYF0N5lVRROfD8+CMrysZmKXwhb48+imJwCqRU+BkEENDolMmfHfi434bGBgUV8Zf
-        rVVI1pQncAYiEVXU7G5s9cuIFmoFqw6SOQO37JCUrf+kkkpRdkhEsLTCI29q+w==
+        bh=2kPzi+ITbTYCZPJtdRhWJHTeT+swtWgwzHPf8pU3rAI=;
+        b=RC1iUyU2viz8sS9QneN+p+XqDm1RJayI1i+7CtQrL6Km88qge5rs7ByibK+opX22Se86HC
+        n76IbZtt1UVkrFqD4HAN3hoaEYVD4/0ufzqiX1B7D/v/JKiGxtbaC5tP7Vh90ssnGHUL+v
+        JrEfQfkMR3OQzK0UJaR7aRKEA//jTIHaN2Do9WpklNnQbM/7PJ6a/ysgSQ25SZvjbfxwQX
+        IXsv0/HLQidSbigpIsMghyTBCv/Zx9M3iQ4M5bBsYyh7s9RxU4q4s9ehGFf/bdBHv2tHed
+        jxo1yevFHUYTMxyEtw5Z9SRErf7ksX3AvAO0zuwqOFGEeCGpU6GyDS5fifQb2w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1594462197;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,20 +36,20 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=UwOF32rRkR2JfqLVlVnNRUU0zt16NU7UYSNiAGrb6nQ=;
-        b=oW1CsFUJudCCzXqU0P93z8R/f/F0quj7WzkhHow+B+YhgapxaiDCAZWW1Oly0LV+oOCj75
-        /XaOEHPIYFvjIXAQ==
+        bh=2kPzi+ITbTYCZPJtdRhWJHTeT+swtWgwzHPf8pU3rAI=;
+        b=kR7WuRsIkfh/tCvR3hkrkgs+5RqRyXft6HvOV2k/nrNRK1l3QMNXH/T1j4oZ9mmBsUfWyX
+        Jmv1bH1Hdp1yVZDQ==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] x86/entry: Fix NMI vs IRQ state tracking
+Subject: [tip: locking/core] lockdep: Prepare for NMI IRQ state tracking
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200623083721.216740948@infradead.org>
-References: <20200623083721.216740948@infradead.org>
+In-Reply-To: <20200623083721.155449112@infradead.org>
+References: <20200623083721.155449112@infradead.org>
 MIME-Version: 1.0
-Message-ID: <159446219664.4006.7079542709989198544.tip-bot2@tip-bot2>
+Message-ID: <159446219720.4006.9282048000882212758.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,289 +61,108 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     ba1f2b2eaa2a529dba722507c55ff3d761d325dd
-Gitweb:        https://git.kernel.org/tip/ba1f2b2eaa2a529dba722507c55ff3d761d325dd
+Commit-ID:     859d069ee1ddd87862e1d6a356a82ed417dbeb67
+Gitweb:        https://git.kernel.org/tip/859d069ee1ddd87862e1d6a356a82ed417dbeb67
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Wed, 27 May 2020 15:50:29 +02:00
+AuthorDate:    Wed, 27 May 2020 15:00:57 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Fri, 10 Jul 2020 12:00:01 +02:00
 
-x86/entry: Fix NMI vs IRQ state tracking
+lockdep: Prepare for NMI IRQ state tracking
 
-While the nmi_enter() users did
-trace_hardirqs_{off_prepare,on_finish}() there was no matching
-lockdep_hardirqs_*() calls to complete the picture.
+There is no reason not to always, accurately, track IRQ state.
 
-Introduce idtentry_{enter,exit}_nmi() to enable proper IRQ state
-tracking across the NMIs.
+This change also makes IRQ state tracking ignore lockdep_off().
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lkml.kernel.org/r/20200623083721.216740948@infradead.org
+Link: https://lkml.kernel.org/r/20200623083721.155449112@infradead.org
 ---
- arch/x86/entry/common.c         | 42 ++++++++++++++++++++++++++++----
- arch/x86/include/asm/idtentry.h |  3 ++-
- arch/x86/kernel/nmi.c           |  9 +++----
- arch/x86/kernel/traps.c         | 17 ++++---------
- include/linux/hardirq.h         | 28 ++++++++++++++-------
- 5 files changed, 70 insertions(+), 29 deletions(-)
+ kernel/locking/lockdep.c | 46 +++++++++++++++++++++++++++++++++++----
+ 1 file changed, 42 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/entry/common.c b/arch/x86/entry/common.c
-index 0521546..63c607d 100644
---- a/arch/x86/entry/common.c
-+++ b/arch/x86/entry/common.c
-@@ -592,7 +592,7 @@ SYSCALL_DEFINE0(ni_syscall)
-  * The return value must be fed into the state argument of
-  * idtentry_exit().
-  */
--idtentry_state_t noinstr idtentry_enter(struct pt_regs *regs)
-+noinstr idtentry_state_t idtentry_enter(struct pt_regs *regs)
- {
- 	idtentry_state_t ret = {
- 		.exit_rcu = false,
-@@ -687,7 +687,7 @@ static void idtentry_exit_cond_resched(struct pt_regs *regs, bool may_sched)
-  * Counterpart to idtentry_enter(). The return value of the entry
-  * function must be fed into the @state argument.
-  */
--void noinstr idtentry_exit(struct pt_regs *regs, idtentry_state_t state)
-+noinstr void idtentry_exit(struct pt_regs *regs, idtentry_state_t state)
- {
- 	lockdep_assert_irqs_disabled();
+diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
+index 29a8de4..d595623 100644
+--- a/kernel/locking/lockdep.c
++++ b/kernel/locking/lockdep.c
+@@ -395,7 +395,7 @@ void lockdep_init_task(struct task_struct *task)
  
-@@ -731,7 +731,7 @@ void noinstr idtentry_exit(struct pt_regs *regs, idtentry_state_t state)
-  * Invokes enter_from_user_mode() to establish the proper context for
-  * NOHZ_FULL. Otherwise scheduling on exit would not be possible.
-  */
--void noinstr idtentry_enter_user(struct pt_regs *regs)
-+noinstr void idtentry_enter_user(struct pt_regs *regs)
+ static __always_inline void lockdep_recursion_finish(void)
  {
- 	check_user_regs(regs);
- 	enter_from_user_mode();
-@@ -749,13 +749,47 @@ void noinstr idtentry_enter_user(struct pt_regs *regs)
-  *
-  * Counterpart to idtentry_enter_user().
-  */
--void noinstr idtentry_exit_user(struct pt_regs *regs)
-+noinstr void idtentry_exit_user(struct pt_regs *regs)
- {
- 	lockdep_assert_irqs_disabled();
- 
- 	prepare_exit_to_usermode(regs);
+-	if (WARN_ON_ONCE(--current->lockdep_recursion))
++	if (WARN_ON_ONCE((--current->lockdep_recursion) & LOCKDEP_RECURSION_MASK))
+ 		current->lockdep_recursion = 0;
  }
  
-+noinstr bool idtentry_enter_nmi(struct pt_regs *regs)
-+{
-+	bool irq_state = lockdep_hardirqs_enabled(current);
-+
-+	__nmi_enter();
-+	lockdep_hardirqs_off(CALLER_ADDR0);
-+	lockdep_hardirq_enter();
-+	rcu_nmi_enter();
-+
-+	instrumentation_begin();
-+	trace_hardirqs_off_finish();
-+	ftrace_nmi_enter();
-+	instrumentation_end();
-+
-+	return irq_state;
-+}
-+
-+noinstr void idtentry_exit_nmi(struct pt_regs *regs, bool restore)
-+{
-+	instrumentation_begin();
-+	ftrace_nmi_exit();
-+	if (restore) {
-+		trace_hardirqs_on_prepare();
-+		lockdep_hardirqs_on_prepare(CALLER_ADDR0);
-+	}
-+	instrumentation_end();
-+
-+	rcu_nmi_exit();
-+	lockdep_hardirq_exit();
-+	if (restore)
-+		lockdep_hardirqs_on(CALLER_ADDR0);
-+	__nmi_exit();
-+}
-+
- #ifdef CONFIG_XEN_PV
- #ifndef CONFIG_PREEMPTION
- /*
-diff --git a/arch/x86/include/asm/idtentry.h b/arch/x86/include/asm/idtentry.h
-index 7227225..2b04974 100644
---- a/arch/x86/include/asm/idtentry.h
-+++ b/arch/x86/include/asm/idtentry.h
-@@ -20,6 +20,9 @@ typedef struct idtentry_state {
- idtentry_state_t idtentry_enter(struct pt_regs *regs);
- void idtentry_exit(struct pt_regs *regs, idtentry_state_t state);
- 
-+bool idtentry_enter_nmi(struct pt_regs *regs);
-+void idtentry_exit_nmi(struct pt_regs *regs, bool irq_state);
-+
- /**
-  * DECLARE_IDTENTRY - Declare functions for simple IDT entry points
-  *		      No error code pushed by hardware
-diff --git a/arch/x86/kernel/nmi.c b/arch/x86/kernel/nmi.c
-index d7c5e44..4fc9954 100644
---- a/arch/x86/kernel/nmi.c
-+++ b/arch/x86/kernel/nmi.c
-@@ -330,7 +330,6 @@ static noinstr void default_do_nmi(struct pt_regs *regs)
- 	__this_cpu_write(last_nmi_rip, regs->ip);
- 
- 	instrumentation_begin();
--	trace_hardirqs_off_finish();
- 
- 	handled = nmi_handle(NMI_LOCAL, regs);
- 	__this_cpu_add(nmi_stats.normal, handled);
-@@ -417,8 +416,6 @@ static noinstr void default_do_nmi(struct pt_regs *regs)
- 		unknown_nmi_error(reason, regs);
- 
- out:
--	if (regs->flags & X86_EFLAGS_IF)
--		trace_hardirqs_on_prepare();
- 	instrumentation_end();
- }
- 
-@@ -478,6 +475,8 @@ static DEFINE_PER_CPU(unsigned long, nmi_dr7);
- 
- DEFINE_IDTENTRY_RAW(exc_nmi)
+@@ -3646,7 +3646,16 @@ static void __trace_hardirqs_on_caller(void)
+  */
+ void lockdep_hardirqs_on_prepare(unsigned long ip)
  {
-+	bool irq_state;
+-	if (unlikely(!debug_locks || current->lockdep_recursion))
++	if (unlikely(!debug_locks))
++		return;
 +
- 	if (IS_ENABLED(CONFIG_SMP) && arch_cpu_is_offline(smp_processor_id()))
++	/*
++	 * NMIs do not (and cannot) track lock dependencies, nothing to do.
++	 */
++	if (unlikely(in_nmi()))
++		return;
++
++	if (unlikely(current->lockdep_recursion & LOCKDEP_RECURSION_MASK))
  		return;
  
-@@ -491,14 +490,14 @@ nmi_restart:
- 
- 	this_cpu_write(nmi_dr7, local_db_save());
- 
--	nmi_enter();
-+	irq_state = idtentry_enter_nmi(regs);
- 
- 	inc_irq_stat(__nmi_count);
- 
- 	if (!ignore_nmis)
- 		default_do_nmi(regs);
- 
--	nmi_exit();
-+	idtentry_exit_nmi(regs, irq_state);
- 
- 	local_db_restore(this_cpu_read(nmi_dr7));
- 
-diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
-index 4627f82..cdd7382 100644
---- a/arch/x86/kernel/traps.c
-+++ b/arch/x86/kernel/traps.c
-@@ -403,7 +403,7 @@ DEFINE_IDTENTRY_DF(exc_double_fault)
- 	}
- #endif
- 
--	nmi_enter();
-+	idtentry_enter_nmi(regs);
- 	instrumentation_begin();
- 	notify_die(DIE_TRAP, str, regs, error_code, X86_TRAP_DF, SIGSEGV);
- 
-@@ -649,15 +649,12 @@ DEFINE_IDTENTRY_RAW(exc_int3)
- 		instrumentation_end();
- 		idtentry_exit_user(regs);
- 	} else {
--		nmi_enter();
-+		bool irq_state = idtentry_enter_nmi(regs);
- 		instrumentation_begin();
--		trace_hardirqs_off_finish();
- 		if (!do_int3(regs))
- 			die("int3", regs, 0);
--		if (regs->flags & X86_EFLAGS_IF)
--			trace_hardirqs_on_prepare();
- 		instrumentation_end();
--		nmi_exit();
-+		idtentry_exit_nmi(regs, irq_state);
- 	}
- }
- 
-@@ -865,9 +862,8 @@ out:
- static __always_inline void exc_debug_kernel(struct pt_regs *regs,
- 					     unsigned long dr6)
+ 	if (unlikely(current->hardirqs_enabled)) {
+@@ -3692,7 +3701,27 @@ void noinstr lockdep_hardirqs_on(unsigned long ip)
  {
--	nmi_enter();
-+	bool irq_state = idtentry_enter_nmi(regs);
- 	instrumentation_begin();
--	trace_hardirqs_off_finish();
+ 	struct task_struct *curr = current;
+ 
+-	if (unlikely(!debug_locks || curr->lockdep_recursion))
++	if (unlikely(!debug_locks))
++		return;
++
++	/*
++	 * NMIs can happen in the middle of local_irq_{en,dis}able() where the
++	 * tracking state and hardware state are out of sync.
++	 *
++	 * NMIs must save lockdep_hardirqs_enabled() to restore IRQ state from,
++	 * and not rely on hardware state like normal interrupts.
++	 */
++	if (unlikely(in_nmi())) {
++		/*
++		 * Skip:
++		 *  - recursion check, because NMI can hit lockdep;
++		 *  - hardware state check, because above;
++		 *  - chain_key check, see lockdep_hardirqs_on_prepare().
++		 */
++		goto skip_checks;
++	}
++
++	if (unlikely(current->lockdep_recursion & LOCKDEP_RECURSION_MASK))
+ 		return;
+ 
+ 	if (curr->hardirqs_enabled) {
+@@ -3720,6 +3749,7 @@ void noinstr lockdep_hardirqs_on(unsigned long ip)
+ 	DEBUG_LOCKS_WARN_ON(current->hardirq_chain_key !=
+ 			    current->curr_chain_key);
+ 
++skip_checks:
+ 	/* we'll do an OFF -> ON transition: */
+ 	curr->hardirqs_enabled = 1;
+ 	curr->hardirq_enable_ip = ip;
+@@ -3735,7 +3765,15 @@ void noinstr lockdep_hardirqs_off(unsigned long ip)
+ {
+ 	struct task_struct *curr = current;
+ 
+-	if (unlikely(!debug_locks || curr->lockdep_recursion))
++	if (unlikely(!debug_locks))
++		return;
++
++	/*
++	 * Matching lockdep_hardirqs_on(), allow NMIs in the middle of lockdep;
++	 * they will restore the software state. This ensures the software
++	 * state is consistent inside NMIs as well.
++	 */
++	if (unlikely(!in_nmi() && (current->lockdep_recursion & LOCKDEP_RECURSION_MASK)))
+ 		return;
  
  	/*
- 	 * If something gets miswired and we end up here for a user mode
-@@ -884,10 +880,8 @@ static __always_inline void exc_debug_kernel(struct pt_regs *regs,
- 
- 	handle_debug(regs, dr6, false);
- 
--	if (regs->flags & X86_EFLAGS_IF)
--		trace_hardirqs_on_prepare();
- 	instrumentation_end();
--	nmi_exit();
-+	idtentry_exit_nmi(regs, irq_state);
- }
- 
- static __always_inline void exc_debug_user(struct pt_regs *regs,
-@@ -903,6 +897,7 @@ static __always_inline void exc_debug_user(struct pt_regs *regs,
- 	instrumentation_begin();
- 
- 	handle_debug(regs, dr6, true);
-+
- 	instrumentation_end();
- 	idtentry_exit_user(regs);
- }
-diff --git a/include/linux/hardirq.h b/include/linux/hardirq.h
-index 03c9fec..754f67a 100644
---- a/include/linux/hardirq.h
-+++ b/include/linux/hardirq.h
-@@ -111,32 +111,42 @@ extern void rcu_nmi_exit(void);
- /*
-  * nmi_enter() can nest up to 15 times; see NMI_BITS.
-  */
--#define nmi_enter()						\
-+#define __nmi_enter()						\
- 	do {							\
-+		lockdep_off();					\
- 		arch_nmi_enter();				\
- 		printk_nmi_enter();				\
--		lockdep_off();					\
- 		BUG_ON(in_nmi() == NMI_MASK);			\
- 		__preempt_count_add(NMI_OFFSET + HARDIRQ_OFFSET);	\
--		rcu_nmi_enter();				\
-+	} while (0)
-+
-+#define nmi_enter()						\
-+	do {							\
-+		__nmi_enter();					\
- 		lockdep_hardirq_enter();			\
-+		rcu_nmi_enter();				\
- 		instrumentation_begin();			\
- 		ftrace_nmi_enter();				\
- 		instrumentation_end();				\
- 	} while (0)
- 
-+#define __nmi_exit()						\
-+	do {							\
-+		BUG_ON(!in_nmi());				\
-+		__preempt_count_sub(NMI_OFFSET + HARDIRQ_OFFSET);	\
-+		printk_nmi_exit();				\
-+		arch_nmi_exit();				\
-+		lockdep_on();					\
-+	} while (0)
-+
- #define nmi_exit()						\
- 	do {							\
- 		instrumentation_begin();			\
- 		ftrace_nmi_exit();				\
- 		instrumentation_end();				\
--		lockdep_hardirq_exit();				\
- 		rcu_nmi_exit();					\
--		BUG_ON(!in_nmi());				\
--		__preempt_count_sub(NMI_OFFSET + HARDIRQ_OFFSET);	\
--		lockdep_on();					\
--		printk_nmi_exit();				\
--		arch_nmi_exit();				\
-+		lockdep_hardirq_exit();				\
-+		__nmi_exit();					\
- 	} while (0)
- 
- #endif /* LINUX_HARDIRQ_H */
