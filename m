@@ -2,68 +2,87 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C82B52218DD
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Jul 2020 02:27:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91F602220E3
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Jul 2020 12:48:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727930AbgGPA1p (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 15 Jul 2020 20:27:45 -0400
-Received: from mail.kernel.org ([198.145.29.99]:55108 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727915AbgGPA1o (ORCPT
+        id S1726383AbgGPKsR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 16 Jul 2020 06:48:17 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:60016 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726239AbgGPKsR (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 15 Jul 2020 20:27:44 -0400
-Received: from localhost (unknown [137.135.114.1])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A0E8C207CB;
-        Thu, 16 Jul 2020 00:27:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1594859263;
-        bh=IsjXNncpCmOZxn1tiAp8sUEXyJpV2KJnumjDXnmqtGo=;
-        h=Date:From:To:To:To:Cc:Cc:Cc:Subject:In-Reply-To:References:From;
-        b=Tw3SlP66GNyX0XahdpspfhLpuGCoHL0bgZmWwRDQcdlbDBSaUTlPfCms51vJ6ncUV
-         3rzXQ9BIwRHOoKPoZGlGy87lGzSw7wMsnjpum2cYVsJYYH/RCLKFQeByLugEY0dC9p
-         t5svy4G0IwVCLzf+y6CpCLCmI3C+SFMHLJd9VFNU=
-Date:   Thu, 16 Jul 2020 00:27:43 +0000
-From:   Sasha Levin <sashal@kernel.org>
-To:     Sasha Levin <sashal@kernel.org>
-To:     "tip-bot2 for Frederic Weisbecker" <tip-bot2@linutronix.de>
+        Thu, 16 Jul 2020 06:48:17 -0400
+Date:   Thu, 16 Jul 2020 10:48:14 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1594896495;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=JCtqpSMiY3xUJef3DDkPQi7kzGOHIVyC/0EPni/LeRc=;
+        b=B3nro80TcMgA+TJAXC9NvypjjcexrZBFoQGp7P8SLoNTZn0ZaAQxK8Bv/5g8c2Uwh7/w3w
+        72N0t2Q1xUisSRF9VOtZUySgeczicsOSctIoWnBVOG2kCLXAYfMGGQQCMNo8AvpWjKkJS2
+        ezhMeXrwp3A6cj/FuGdUcmvnC3JsXftqsoiXA8eEpHslWgLrLO0+rDk/TbRLywETQM7u9H
+        /shGusxqozd145MIRbpUTrjpdCJwniOnIc3pc3Ad88miRCBLddrKmwyCG35hIsI1dfIFKr
+        2EmVxMsL9Yo6EbIlJrsmp2jV/Uvlzh8cK5NYgtgdCem2asNdRevooQAE16kuKw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1594896495;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=JCtqpSMiY3xUJef3DDkPQi7kzGOHIVyC/0EPni/LeRc=;
+        b=02SbIAcSB6RrEYTrzkshN8lzt1tEnDbtSH3Ik/ytOrFW8lTRcbfudWk082ovcAmqvlale0
+        R1EaQV+GyAkudmBw==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Cc:     Frederic Weisbecker <frederic@kernel.org>
-Cc:     stable@vger.kernel.org
-Cc:     stable@vger.kernel.org
-Subject: Re: [tip: timers/urgent] timer: Prevent base->clk from moving backward
-In-Reply-To: <159428908623.4006.8962643860352985536.tip-bot2@tip-bot2>
-References: <159428908623.4006.8962643860352985536.tip-bot2@tip-bot2>
-Message-Id: <20200716002743.A0E8C207CB@mail.kernel.org>
+Subject: [tip: x86/entry] x86/idtentry: Remove stale comment
+Cc:     Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+MIME-Version: 1.0
+Message-ID: <159489649426.4006.4244079083466119309.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2.linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-Hi
+The following commit has been merged into the x86/entry branch of tip:
 
-[This is an automated email]
+Commit-ID:     790ce3b40017bbd759a3d81e23c05d42b3d34b90
+Gitweb:        https://git.kernel.org/tip/790ce3b40017bbd759a3d81e23c05d42b3d34b90
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Tue, 14 Jul 2020 16:01:52 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Thu, 16 Jul 2020 12:44:26 +02:00
 
-This commit has been processed because it contains a "Fixes:" tag
-fixing commit: a683f390b93f ("timers: Forward the wheel clock whenever possible").
+x86/idtentry: Remove stale comment
 
-The bot has tested the following trees: v5.7.8, v5.4.51, v4.19.132, v4.14.188, v4.9.230.
+Stack switching for interrupt handlers happens in C now for both 64 and
+32bit. Remove the stale comment which claims the contrary.
 
-v5.7.8: Build OK!
-v5.4.51: Build OK!
-v4.19.132: Build OK!
-v4.14.188: Failed to apply! Possible dependencies:
-    30587589251a0 ("timer: Fix coding style")
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+---
+ arch/x86/include/asm/idtentry.h | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-v4.9.230: Failed to apply! Possible dependencies:
-    30587589251a0 ("timer: Fix coding style")
-
-
-NOTE: The patch will not be queued to stable trees until it is upstream.
-
-How should we proceed with this patch?
-
--- 
-Thanks
-Sasha
+diff --git a/arch/x86/include/asm/idtentry.h b/arch/x86/include/asm/idtentry.h
+index 2293b44..50ea186 100644
+--- a/arch/x86/include/asm/idtentry.h
++++ b/arch/x86/include/asm/idtentry.h
+@@ -191,11 +191,9 @@ __visible noinstr void func(struct pt_regs *regs, unsigned long error_code)
+  * to the function as error_code argument which needs to be truncated
+  * to an u8 because the push is sign extending.
+  *
+- * On 64-bit idtentry_enter/exit() are invoked in the ASM entry code before
+- * and after switching to the interrupt stack. On 32-bit this happens in C.
+- *
+  * irq_enter/exit_rcu() are invoked before the function body and the
+- * KVM L1D flush request is set.
++ * KVM L1D flush request is set. Stack switching to the interrupt stack
++ * has to be done in the function body if necessary.
+  */
+ #define DEFINE_IDTENTRY_IRQ(func)					\
+ static __always_inline void __##func(struct pt_regs *regs, u8 vector);	\
