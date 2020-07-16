@@ -2,20 +2,17 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D764222704
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Jul 2020 17:31:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F5CE222708
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Jul 2020 17:31:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729169AbgGPPah (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 16 Jul 2020 11:30:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57180 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729167AbgGPPag (ORCPT
+        id S1729052AbgGPPan (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 16 Jul 2020 11:30:43 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:33988 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728630AbgGPPag (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Thu, 16 Jul 2020 11:30:36 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C67BC061755;
-        Thu, 16 Jul 2020 08:30:36 -0700 (PDT)
-Date:   Thu, 16 Jul 2020 15:30:33 -0000
+Date:   Thu, 16 Jul 2020 15:30:34 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1594913434;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -23,12 +20,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=JQ/sBhBjSgAmz+Xpp5cNpgbzQiTMNd29YJCKR9OgmVs=;
-        b=p6KFpuckZMD5b+WIILEkjN03SzhwaqOn1N2rXaz6coUuda/sv636v1HHPEVmrxFP0iFqkn
-        cmzfjX+2N/qikppSu5CYi0qtxoe2auEmb6z7WPP0JDDTrVmL6I9YndVyVjV3/ANar5r/NH
-        /sxdepCZy8XV4xQ1YajUVH5YqqZHu8U8E3lgHlQ2i5Yjb40EMAhFJZcEiBKhdq+Yknn1Di
-        3CSF/5jX6YIIchHSCE7AVPtIigLrIP19AIs+6r/POOScEdZWtOhB/o1hq7o7v334qH7T6y
-        kmEyrPpEHKhA6Afo3Wf+tGl4o/BxB+rYqnrvbMB3A2EMLZa7gjArKxXyn0XOcw==
+        bh=kBVGjRPpGZHRaqdX1zko42An6S3IYk96HvtOlF5TMy0=;
+        b=rdXMMs/uu+SNJRgx46YM7REw4nN+f7sjOLI7TInWlzqBie5WTUOmzQz7s8Wqaqz1yc9Qci
+        4YdE3WYdVVVUh15Smig6GoecbFbamCP2VePKIriPTabW2NtyD0KUSJgqGr6NZvCtQHj0lM
+        Gj6mEDdlYxD1JFXCelqr0Wob+IAi0//bIWzv7+UcUlka40Dj0XAkTrZ7jyGOoSpVSNnXrU
+        zsh3aVxaIU9sALrYa27+GphHJb73h4qyt48IdiIKXN4o2586anGqVv6G7zRcTcLH2ZCA/C
+        82QcJnh/fq9npj3YEDje9oRAGyuTbpft3p5NsjkLEaC1SrPaeVXpaBhR1sn+vg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1594913434;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,21 +33,23 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=JQ/sBhBjSgAmz+Xpp5cNpgbzQiTMNd29YJCKR9OgmVs=;
-        b=hQpABB1fvOGRoo0aqgsicnldEgjApxYc4E2J92P3z2CrjGsoywqC0K9DQIqOcptViCkHq6
-        DlOLYgK9LwYZ/MDw==
-From:   "tip-bot2 for Arnd Bergmann" <tip-bot2@linutronix.de>
+        bh=kBVGjRPpGZHRaqdX1zko42An6S3IYk96HvtOlF5TMy0=;
+        b=ilxDs9ElUyiFNbWF4vK44Lr6DiIlFixuGgOpYeIiI+7zgF3WazXBW0mdjNdLlHBE7UZuKf
+        C2m8YoclaTheEADg==
+From:   "tip-bot2 for Sedat Dilek" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86: math-emu: Fix up 'cmp' insn for clang ias
-Cc:     Arnd Bergmann <arnd@arndb.de>,
+Subject: [tip: x86/urgent] x86/entry: Fix vectors to IDTENTRY_SYSVEC for CONFIG_HYPERV
+Cc:     Nick Desaulniers <ndesaulniers@google.com>,
+        Sedat Dilek <sedat.dilek@gmail.com>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200527135352.1198078-1-arnd@arndb.de>
-References: <20200527135352.1198078-1-arnd@arndb.de>
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Wei Liu <wei.liu@kernel.org>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200714194740.4548-1-sedat.dilek@gmail.com>
+References: <20200714194740.4548-1-sedat.dilek@gmail.com>
 MIME-Version: 1.0
-Message-ID: <159491343346.4006.6445776713545348721.tip-bot2@tip-bot2>
+Message-ID: <159491343409.4006.12274516170496995947.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -62,43 +61,71 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     81e96851ea32deb2c921c870eecabf335f598aeb
-Gitweb:        https://git.kernel.org/tip/81e96851ea32deb2c921c870eecabf335f598aeb
-Author:        Arnd Bergmann <arnd@arndb.de>
-AuthorDate:    Wed, 27 May 2020 15:53:46 +02:00
+Commit-ID:     5769fe26f389b0002ed48fd16d642a1d86edaf79
+Gitweb:        https://git.kernel.org/tip/5769fe26f389b0002ed48fd16d642a1d86edaf79
+Author:        Sedat Dilek <sedat.dilek@gmail.com>
+AuthorDate:    Tue, 14 Jul 2020 21:47:40 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 16 Jul 2020 17:26:42 +02:00
+CommitterDate: Thu, 16 Jul 2020 17:25:10 +02:00
 
-x86: math-emu: Fix up 'cmp' insn for clang ias
+x86/entry: Fix vectors to IDTENTRY_SYSVEC for CONFIG_HYPERV
 
-The clang integrated assembler requires the 'cmp' instruction to
-have a length prefix here:
+When assembling with Clang via `make LLVM_IAS=1` and CONFIG_HYPERV enabled,
+we observe the following error:
 
-arch/x86/math-emu/wm_sqrt.S:212:2: error: ambiguous instructions require an explicit suffix (could be 'cmpb', 'cmpw', or 'cmpl')
- cmp $0xffffffff,-24(%ebp)
- ^
+<instantiation>:9:6: error: expected absolute expression
+ .if HYPERVISOR_REENLIGHTENMENT_VECTOR == 3
+     ^
+<instantiation>:1:1: note: while in macro instantiation
+idtentry HYPERVISOR_REENLIGHTENMENT_VECTOR asm_sysvec_hyperv_reenlightenment sysvec_hyperv_reenlightenment has_error_code=0
+^
+./arch/x86/include/asm/idtentry.h:627:1: note: while in macro instantiation
+idtentry_sysvec HYPERVISOR_REENLIGHTENMENT_VECTOR sysvec_hyperv_reenlightenment;
+^
+<instantiation>:9:6: error: expected absolute expression
+ .if HYPERVISOR_STIMER0_VECTOR == 3
+     ^
+<instantiation>:1:1: note: while in macro instantiation
+idtentry HYPERVISOR_STIMER0_VECTOR asm_sysvec_hyperv_stimer0 sysvec_hyperv_stimer0 has_error_code=0
+^
+./arch/x86/include/asm/idtentry.h:628:1: note: while in macro instantiation
+idtentry_sysvec HYPERVISOR_STIMER0_VECTOR sysvec_hyperv_stimer0;
 
-Make this a 32-bit comparison, which it was clearly meant to be.
+This is caused by typos in arch/x86/include/asm/idtentry.h:
 
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+HYPERVISOR_REENLIGHTENMENT_VECTOR -> HYPERV_REENLIGHTENMENT_VECTOR
+HYPERVISOR_STIMER0_VECTOR         -> HYPERV_STIMER0_VECTOR
+
+For more details see ClangBuiltLinux issue #1088.
+
+Fixes: a16be368dd3f ("x86/entry: Convert various hypervisor vectors to IDTENTRY_SYSVEC")
+Suggested-by: Nick Desaulniers <ndesaulniers@google.com>
+Signed-off-by: Sedat Dilek <sedat.dilek@gmail.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Nathan Chancellor <natechancellor@gmail.com>
+Reviewed-by: Wei Liu <wei.liu@kernel.org>
 Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
-Link: https://lkml.kernel.org/r/20200527135352.1198078-1-arnd@arndb.de
+Link: https://github.com/ClangBuiltLinux/linux/issues/1088
+Link: https://github.com/ClangBuiltLinux/linux/issues/1043
+Link: https://lore.kernel.org/patchwork/patch/1272115/
+Link: https://lkml.kernel.org/r/20200714194740.4548-1-sedat.dilek@gmail.com
 
 ---
- arch/x86/math-emu/wm_sqrt.S | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/include/asm/idtentry.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/math-emu/wm_sqrt.S b/arch/x86/math-emu/wm_sqrt.S
-index 3b2b581..40526dd 100644
---- a/arch/x86/math-emu/wm_sqrt.S
-+++ b/arch/x86/math-emu/wm_sqrt.S
-@@ -209,7 +209,7 @@ sqrt_stage_2_finish:
+diff --git a/arch/x86/include/asm/idtentry.h b/arch/x86/include/asm/idtentry.h
+index 5efaaed..80d3b30 100644
+--- a/arch/x86/include/asm/idtentry.h
++++ b/arch/x86/include/asm/idtentry.h
+@@ -624,8 +624,8 @@ DECLARE_IDTENTRY_SYSVEC(POSTED_INTR_NESTED_VECTOR,	sysvec_kvm_posted_intr_nested
  
- #ifdef PARANOID
- /* It should be possible to get here only if the arg is ffff....ffff */
--	cmp	$0xffffffff,FPU_fsqrt_arg_1
-+	cmpl	$0xffffffff,FPU_fsqrt_arg_1
- 	jnz	sqrt_stage_2_error
- #endif /* PARANOID */
+ #if IS_ENABLED(CONFIG_HYPERV)
+ DECLARE_IDTENTRY_SYSVEC(HYPERVISOR_CALLBACK_VECTOR,	sysvec_hyperv_callback);
+-DECLARE_IDTENTRY_SYSVEC(HYPERVISOR_REENLIGHTENMENT_VECTOR,	sysvec_hyperv_reenlightenment);
+-DECLARE_IDTENTRY_SYSVEC(HYPERVISOR_STIMER0_VECTOR,	sysvec_hyperv_stimer0);
++DECLARE_IDTENTRY_SYSVEC(HYPERV_REENLIGHTENMENT_VECTOR,	sysvec_hyperv_reenlightenment);
++DECLARE_IDTENTRY_SYSVEC(HYPERV_STIMER0_VECTOR,	sysvec_hyperv_stimer0);
+ #endif
  
+ #if IS_ENABLED(CONFIG_ACRN_GUEST)
