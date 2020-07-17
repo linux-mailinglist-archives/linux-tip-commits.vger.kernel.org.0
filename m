@@ -2,55 +2,51 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A60DA2244CA
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 17 Jul 2020 22:00:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 814852245D5
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 17 Jul 2020 23:29:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728757AbgGQUAY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 17 Jul 2020 16:00:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38996 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728728AbgGQUAX (ORCPT
+        id S1726817AbgGQV3U (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 17 Jul 2020 17:29:20 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:43288 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726784AbgGQV3T (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 17 Jul 2020 16:00:23 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3390BC0619D5;
-        Fri, 17 Jul 2020 13:00:23 -0700 (PDT)
-Date:   Fri, 17 Jul 2020 20:00:21 -0000
+        Fri, 17 Jul 2020 17:29:19 -0400
+Date:   Fri, 17 Jul 2020 21:29:16 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1595016021;
+        s=2020; t=1595021357;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=cjtzIlht2e8cifhJtagb58N1MpRwjVqYl6gzVBnQQxw=;
-        b=OiofMFDeW2teAk3bAHXbY88yBnfYzwj3W25CN0zBoF1819i/OngFXD15pkebj4q9jk7u4W
-        GCbGJ0os4bJ6G08lusryMKBRykc3rsQDqZisQZ5dvwGI9jBWsojRhQotJgAso2n/hfHn1C
-        cT19qlurrtKwIpCSXpkNnxWHjktpmLhty7z+y5fNU6Y/gv9rpzjhVpcKaMoOTCGk78DAbo
-        ZaZ7GEIk5nFwbTt2sHmMhk/vy3u9/ZeQKVaK53pGtlRkVCBdfvq2EBw0Tx7JdP1T62vXWV
-        AktOY8XsN1a4vJBEImSkXMvAIQfHQ3ZQcuAPWpWBn3Ig5Obx542SL7dFibuOYA==
+        bh=tC+yA+yq9E1bqmjYAvSSbLlbvzwfvVgnFftexhEoBEw=;
+        b=xjRBs7kQ31CQGW5BE6TwEjEYgIbmq1xX4QQLoqng8NXpn1NSHWus0H2LfOkR1kxpwhoqFK
+        qMlnT6iaUiif31sbkyaOfkN8vW98XCnQXUz1+Cga2L3XM9o38+XtfssAe2q63sBJSp1tK+
+        Q93Pdy/1j2ni5ZxT1kWep/rMUYzpiGDOW6NmElefr67+FYE68jvMAGc6UYmzVAq/Mp1Owx
+        g2N8/Kw1iQQWF5qcJzVvy9idpRCZa3nnMsJRvcxW2gkWi8a0hiW5EtqK8he+Hk8x9eW50r
+        /vNomnHsubsOyhNRKWlgj1k0pVZ+hHu2FBlhygryLBAVWfWP1BdPoGuKni8Bag==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1595016021;
+        s=2020e; t=1595021357;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=cjtzIlht2e8cifhJtagb58N1MpRwjVqYl6gzVBnQQxw=;
-        b=twwaAXMYYN1UOAvje7oeRMmA+BIeRh1sk+wlTl3tmJmJ89sMYsJ5l30HHwQhbu4hSuJHju
-        vqtvnMkPpk7yZjDA==
-From:   "tip-bot2 for Frederic Weisbecker" <tip-bot2@linutronix.de>
+        bh=tC+yA+yq9E1bqmjYAvSSbLlbvzwfvVgnFftexhEoBEw=;
+        b=wz8x4Mgv6YNLBtWMpJtH3fF6GQqhpycaFFG7L8VJfsurVuqE1V0IaytvahaekW08vXjDev
+        z9pg8oc97TGOm6BA==
+From:   "tip-bot2 for Qinglang Miao" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] timers: Preserve higher bits of expiration on
- index calculation
-Cc:     Frederic Weisbecker <frederic@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200717140551.29076-3-frederic@kernel.org>
-References: <20200717140551.29076-3-frederic@kernel.org>
+Subject: [tip: core/debugobjects] debugobjects: Convert to DEFINE_SHOW_ATTRIBUTE
+Cc:     Qinglang Miao <miaoqinglang@huawei.com>,
+        Thomas Gleixner <tglx@linutronix.de>, hch@lst.de,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200716084747.8034-1-miaoqinglang@huawei.com>
+References: <20200716084747.8034-1-miaoqinglang@huawei.com>
 MIME-Version: 1.0
-Message-ID: <159501602116.4006.6815042885951437361.tip-bot2@tip-bot2>
+Message-ID: <159502135671.4006.15025741825906317468.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,45 +56,51 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/core branch of tip:
+The following commit has been merged into the core/debugobjects branch of tip:
 
-Commit-ID:     3d2e83a2a6a0657c1cf145fa6ba23620715d6c36
-Gitweb:        https://git.kernel.org/tip/3d2e83a2a6a0657c1cf145fa6ba23620715d6c36
-Author:        Frederic Weisbecker <frederic@kernel.org>
-AuthorDate:    Fri, 17 Jul 2020 16:05:41 +02:00
+Commit-ID:     0f85c4805184765ff35e0079b3241ee8f25d1b2b
+Gitweb:        https://git.kernel.org/tip/0f85c4805184765ff35e0079b3241ee8f25d1b2b
+Author:        Qinglang Miao <miaoqinglang@huawei.com>
+AuthorDate:    Thu, 16 Jul 2020 16:47:47 +08:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 17 Jul 2020 21:55:21 +02:00
+CommitterDate: Fri, 17 Jul 2020 23:25:46 +02:00
 
-timers: Preserve higher bits of expiration on index calculation
+debugobjects: Convert to DEFINE_SHOW_ATTRIBUTE
 
-The higher bits of the timer expiration are cropped while calling
-calc_index() due to the implicit cast from unsigned long to unsigned int.
+Use DEFINE_SHOW_ATTRIBUTE macro to simplify the code.
 
-This loss shouldn't have consequences on the current code since all the
-computation to calculate the index is done on the lower 32 bits.
+[ tglx: Distangled it from the mess in -next ]
 
-However to prepare for returning the actual bucket expiration from
-calc_index() in order to properly fix base->next_expiry updates, the higher
-bits need to be preserved.
-
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: Qinglang Miao <miaoqinglang@huawei.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20200717140551.29076-3-frederic@kernel.org
+Cc: hch@lst.de
+Link: https://lkml.kernel.org/r/20200716084747.8034-1-miaoqinglang@huawei.com
 
 ---
- kernel/time/timer.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ lib/debugobjects.c | 13 +------------
+ 1 file changed, 1 insertion(+), 12 deletions(-)
 
-diff --git a/kernel/time/timer.c b/kernel/time/timer.c
-index df1ff80..bcdc304 100644
---- a/kernel/time/timer.c
-+++ b/kernel/time/timer.c
-@@ -487,7 +487,7 @@ static inline void timer_set_idx(struct timer_list *timer, unsigned int idx)
-  * Helper function to calculate the array index for a given expiry
-  * time.
-  */
--static inline unsigned calc_index(unsigned expires, unsigned lvl)
-+static inline unsigned calc_index(unsigned long expires, unsigned lvl)
+diff --git a/lib/debugobjects.c b/lib/debugobjects.c
+index 48054db..fe45579 100644
+--- a/lib/debugobjects.c
++++ b/lib/debugobjects.c
+@@ -1022,18 +1022,7 @@ static int debug_stats_show(struct seq_file *m, void *v)
+ 	seq_printf(m, "objs_freed    :%d\n", debug_objects_freed);
+ 	return 0;
+ }
+-
+-static int debug_stats_open(struct inode *inode, struct file *filp)
+-{
+-	return single_open(filp, debug_stats_show, NULL);
+-}
+-
+-static const struct file_operations debug_stats_fops = {
+-	.open		= debug_stats_open,
+-	.read		= seq_read,
+-	.llseek		= seq_lseek,
+-	.release	= single_release,
+-};
++DEFINE_SHOW_ATTRIBUTE(debug_stats);
+ 
+ static int __init debug_objects_init_debugfs(void)
  {
- 	expires = (expires + LVL_GRAN(lvl)) >> LVL_SHIFT(lvl);
- 	return LVL_OFFS(lvl) + (expires & LVL_MASK);
