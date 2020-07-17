@@ -2,55 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 63EF12244D6
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 17 Jul 2020 22:01:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 973D12244CC
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 17 Jul 2020 22:00:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728831AbgGQUAh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 17 Jul 2020 16:00:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38984 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728706AbgGQUAU (ORCPT
+        id S1728728AbgGQUAd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 17 Jul 2020 16:00:33 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:42896 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728712AbgGQUAW (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 17 Jul 2020 16:00:20 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A461C0619D3;
-        Fri, 17 Jul 2020 13:00:20 -0700 (PDT)
-Date:   Fri, 17 Jul 2020 20:00:18 -0000
+        Fri, 17 Jul 2020 16:00:22 -0400
+Date:   Fri, 17 Jul 2020 20:00:19 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1595016018;
+        s=2020; t=1595016020;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=e8QqEG+PWyeIGUj5BJtNnFr39d87l3yaNX9PcbAJX6Q=;
-        b=nLge1KFxpVMwY/jQWfdAq4OnC4Bdb66oj2PGJEinzE1eA26VCxzgJs02U+7/hFH4xX44c1
-        szFE0akDGJ1q/52B+Y6GTn8/D1qnfPGwavNCjBV7CwWzX9HIyKMv2x+p6qgZ6MF9K1Xp1H
-        +1u+bMFpNV3jOYEt6vwDa8H8UeWIN5i+Th+myK9UTzKCvz3ZIavlC/KII+92wy1EK5NLD2
-        yg+9iETsjZhxR9hPN6OpTwCBkJBO5xvoPVNBDizEUajE6I6s5PepOk7wrNrNSCompL80jX
-        +CooLHQEN75I68ySnUiIBR6LERJcyCA1MJ6r2xuKZdR3ptryrvOeA9vavKFZXA==
+        bh=qQLNjIY5e8XB1h6Sghuav04ARn5JWckIJAUY2rWB7Ro=;
+        b=glDD2lPM5faD1+OVwxyNUtC4hysh5vKOARDXpMKEgIC1Bmj+D8SGLEndRh3Mf1jjB1Z8Lq
+        Sc+Wm6iiTcn/Tr5YYgmt9kIbWqbh9mX1xyu2vwhq1gE4tpw3ijDAtKQwCp0yJGKuWoch73
+        A6P46R88wIUmblQx3w8IxWi5WsfLkFjG1SMHGlx4ihtZHEf28ZD8Xc8ueLetKLIAGbg+OT
+        x/Qa29/97Hu9H1VEtmPZKXi4JqMjPp2YP+Ek8/MfZCEtoJXhggDgABhdFcYC6LwaIcz1ym
+        mI0dvJuUBFSuoxpa3EwN7zC35Un1k/VJ92wBONqqG+LyLBHz3PnSvQwgw5wVEQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1595016018;
+        s=2020e; t=1595016020;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=e8QqEG+PWyeIGUj5BJtNnFr39d87l3yaNX9PcbAJX6Q=;
-        b=I+vrNoGXfNKWZ6NZNLtpHjiCDGpdCigFBznssAXsHdzBOaugbdhqZC6/afLjTAUuj+SmLp
-        Eqz8v8z8bZdiUWBg==
+        bh=qQLNjIY5e8XB1h6Sghuav04ARn5JWckIJAUY2rWB7Ro=;
+        b=lPjIp4wXxA/zlWydVLV7pOct5VM2owA35yoeDwKbH5IsfA7FbTAiSkRroIEoAovKLW82AS
+        B3xqABQFxeB+dpDA==
 From:   "tip-bot2 for Frederic Weisbecker" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] timers: Always keep track of next expiry
+Subject: [tip: timers/core] timers: Move trigger_dyntick_cpu() to enqueue_timer()
 Cc:     Frederic Weisbecker <frederic@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Juri Lelli <juri.lelli@redhat.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200717140551.29076-8-frederic@kernel.org>
-References: <20200717140551.29076-8-frederic@kernel.org>
+In-Reply-To: <20200717140551.29076-5-frederic@kernel.org>
+References: <20200717140551.29076-5-frederic@kernel.org>
 MIME-Version: 1.0
-Message-ID: <159501601807.4006.17647187108834721042.tip-bot2@tip-bot2>
+Message-ID: <159501601989.4006.16440988766480303346.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -62,128 +59,117 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     dc2a0f1fb2a06df09f5094f29aea56b763aa7cca
-Gitweb:        https://git.kernel.org/tip/dc2a0f1fb2a06df09f5094f29aea56b763aa7cca
+Commit-ID:     9a2b764b06c880678416d803d027f575ae40ec99
+Gitweb:        https://git.kernel.org/tip/9a2b764b06c880678416d803d027f575ae40ec99
 Author:        Frederic Weisbecker <frederic@kernel.org>
-AuthorDate:    Fri, 17 Jul 2020 16:05:46 +02:00
+AuthorDate:    Fri, 17 Jul 2020 16:05:43 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 17 Jul 2020 21:55:23 +02:00
+CommitterDate: Fri, 17 Jul 2020 21:55:22 +02:00
 
-timers: Always keep track of next expiry
+timers: Move trigger_dyntick_cpu() to enqueue_timer()
 
-So far next expiry was only tracked while the CPU was in nohz_idle mode
-in order to cope with missing ticks that can't increment the base->clk
-periodically anymore.
-
-This logic is going to be expanded beyond nohz in order to spare timer
-softirqs so do it unconditionally.
+Consolidate the code by calling trigger_dyntick_cpu() from
+enqueue_timer() instead of calling it from all its callers.
 
 Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Tested-by: Juri Lelli <juri.lelli@redhat.com>
-Link: https://lkml.kernel.org/r/20200717140551.29076-8-frederic@kernel.org
+Link: https://lkml.kernel.org/r/20200717140551.29076-5-frederic@kernel.org
 
 ---
- kernel/time/timer.c | 42 +++++++++++++++++++++---------------------
- 1 file changed, 21 insertions(+), 21 deletions(-)
+ kernel/time/timer.c | 61 ++++++++++++++++++--------------------------
+ 1 file changed, 25 insertions(+), 36 deletions(-)
 
 diff --git a/kernel/time/timer.c b/kernel/time/timer.c
-index 9abc417..76fd964 100644
+index a7a3cf7..2af08a1 100644
 --- a/kernel/time/timer.c
 +++ b/kernel/time/timer.c
-@@ -544,8 +544,7 @@ static int calc_wheel_index(unsigned long expires, unsigned long clk,
+@@ -533,30 +533,6 @@ static int calc_wheel_index(unsigned long expires, unsigned long clk,
+ 	return idx;
  }
  
+-/*
+- * Enqueue the timer into the hash bucket, mark it pending in
+- * the bitmap and store the index in the timer flags.
+- */
+-static void enqueue_timer(struct timer_base *base, struct timer_list *timer,
+-			  unsigned int idx)
+-{
+-	hlist_add_head(&timer->entry, base->vectors + idx);
+-	__set_bit(idx, base->pending_map);
+-	timer_set_idx(timer, idx);
+-
+-	trace_timer_start(timer, timer->expires, timer->flags);
+-}
+-
+-static void
+-__internal_add_timer(struct timer_base *base, struct timer_list *timer,
+-		     unsigned long *bucket_expiry)
+-{
+-	unsigned int idx;
+-
+-	idx = calc_wheel_index(timer->expires, base->clk, bucket_expiry);
+-	enqueue_timer(base, timer, idx);
+-}
+-
  static void
--trigger_dyntick_cpu(struct timer_base *base, struct timer_list *timer,
--		    unsigned long bucket_expiry)
-+trigger_dyntick_cpu(struct timer_base *base, struct timer_list *timer)
+ trigger_dyntick_cpu(struct timer_base *base, struct timer_list *timer,
+ 		    unsigned long bucket_expiry)
+@@ -598,15 +574,31 @@ trigger_dyntick_cpu(struct timer_base *base, struct timer_list *timer,
+ 	wake_up_nohz_cpu(base->cpu);
+ }
+ 
+-static void
+-internal_add_timer(struct timer_base *base, struct timer_list *timer)
++/*
++ * Enqueue the timer into the hash bucket, mark it pending in
++ * the bitmap, store the index in the timer flags then wake up
++ * the target CPU if needed.
++ */
++static void enqueue_timer(struct timer_base *base, struct timer_list *timer,
++			  unsigned int idx, unsigned long bucket_expiry)
  {
- 	if (!is_timers_nohz_active())
- 		return;
-@@ -565,23 +564,8 @@ trigger_dyntick_cpu(struct timer_base *base, struct timer_list *timer,
- 	 * timer is not deferrable. If the other CPU is on the way to idle
- 	 * then it can't set base->is_idle as we hold the base lock:
+-	unsigned long bucket_expiry;
++	hlist_add_head(&timer->entry, base->vectors + idx);
++	__set_bit(idx, base->pending_map);
++	timer_set_idx(timer, idx);
+ 
+-	__internal_add_timer(base, timer, &bucket_expiry);
++	trace_timer_start(timer, timer->expires, timer->flags);
+ 	trigger_dyntick_cpu(base, timer, bucket_expiry);
+ }
+ 
++static void internal_add_timer(struct timer_base *base, struct timer_list *timer)
++{
++	unsigned long bucket_expiry;
++	unsigned int idx;
++
++	idx = calc_wheel_index(timer->expires, base->clk, &bucket_expiry);
++	enqueue_timer(base, timer, idx, bucket_expiry);
++}
++
+ #ifdef CONFIG_DEBUG_OBJECTS_TIMERS
+ 
+ static struct debug_obj_descr timer_debug_descr;
+@@ -1057,16 +1049,13 @@ __mod_timer(struct timer_list *timer, unsigned long expires, unsigned int option
+ 	/*
+ 	 * If 'idx' was calculated above and the base time did not advance
+ 	 * between calculating 'idx' and possibly switching the base, only
+-	 * enqueue_timer() and trigger_dyntick_cpu() is required. Otherwise
+-	 * we need to (re)calculate the wheel index via
+-	 * internal_add_timer().
++	 * enqueue_timer() is required. Otherwise we need to (re)calculate
++	 * the wheel index via internal_add_timer().
  	 */
--	if (!base->is_idle)
--		return;
--
--	/*
--	 * Check whether this is the new first expiring timer. The
--	 * effective expiry time of the timer is required here
--	 * (bucket_expiry) instead of timer->expires.
--	 */
--	if (time_after_eq(bucket_expiry, base->next_expiry))
--		return;
--
--	/*
--	 * Set the next expiry time and kick the CPU so it can reevaluate the
--	 * wheel:
--	 */
--	base->next_expiry = bucket_expiry;
--	wake_up_nohz_cpu(base->cpu);
-+	if (base->is_idle)
-+		wake_up_nohz_cpu(base->cpu);
- }
+-	if (idx != UINT_MAX && clk == base->clk) {
+-		enqueue_timer(base, timer, idx);
+-		trigger_dyntick_cpu(base, timer, bucket_expiry);
+-	} else {
++	if (idx != UINT_MAX && clk == base->clk)
++		enqueue_timer(base, timer, idx, bucket_expiry);
++	else
+ 		internal_add_timer(base, timer);
+-	}
  
- /*
-@@ -592,12 +576,26 @@ trigger_dyntick_cpu(struct timer_base *base, struct timer_list *timer,
- static void enqueue_timer(struct timer_base *base, struct timer_list *timer,
- 			  unsigned int idx, unsigned long bucket_expiry)
- {
-+
- 	hlist_add_head(&timer->entry, base->vectors + idx);
- 	__set_bit(idx, base->pending_map);
- 	timer_set_idx(timer, idx);
- 
- 	trace_timer_start(timer, timer->expires, timer->flags);
--	trigger_dyntick_cpu(base, timer, bucket_expiry);
-+
-+	/*
-+	 * Check whether this is the new first expiring timer. The
-+	 * effective expiry time of the timer is required here
-+	 * (bucket_expiry) instead of timer->expires.
-+	 */
-+	if (time_before(bucket_expiry, base->next_expiry)) {
-+		/*
-+		 * Set the next expiry time and kick the CPU so it
-+		 * can reevaluate the wheel:
-+		 */
-+		base->next_expiry = bucket_expiry;
-+		trigger_dyntick_cpu(base, timer);
-+	}
- }
- 
- static void internal_add_timer(struct timer_base *base, struct timer_list *timer)
-@@ -1493,7 +1491,6 @@ static int __collect_expired_timers(struct timer_base *base,
- 	return levels;
- }
- 
--#ifdef CONFIG_NO_HZ_COMMON
- /*
-  * Find the next pending bucket of a level. Search from level start (@offset)
-  * + @clk upwards and if nothing there, search from start of the level
-@@ -1585,6 +1582,7 @@ static unsigned long __next_timer_interrupt(struct timer_base *base)
- 	return next;
- }
- 
-+#ifdef CONFIG_NO_HZ_COMMON
- /*
-  * Check, if the next hrtimer event is before the next timer wheel
-  * event:
-@@ -1790,6 +1788,7 @@ static inline void __run_timers(struct timer_base *base)
- 
- 		levels = collect_expired_timers(base, heads);
- 		base->clk++;
-+		base->next_expiry = __next_timer_interrupt(base);
- 
- 		while (levels--)
- 			expire_timers(base, heads + levels);
-@@ -2042,6 +2041,7 @@ static void __init init_timer_cpu(int cpu)
- 		base->cpu = cpu;
- 		raw_spin_lock_init(&base->lock);
- 		base->clk = jiffies;
-+		base->next_expiry = base->clk + NEXT_TIMER_MAX_DELTA;
- 		timer_base_init_expiry_lock(base);
- 	}
- }
+ out_unlock:
+ 	raw_spin_unlock_irqrestore(&base->lock, flags);
