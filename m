@@ -2,55 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 28296222706
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Jul 2020 17:31:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 220CB223A45
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 17 Jul 2020 13:22:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729029AbgGPPaj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 16 Jul 2020 11:30:39 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:33998 "EHLO
+        id S1726040AbgGQLV6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 17 Jul 2020 07:21:58 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:40062 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729052AbgGPPah (ORCPT
+        with ESMTP id S1725912AbgGQLV6 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 16 Jul 2020 11:30:37 -0400
-Date:   Thu, 16 Jul 2020 15:30:34 -0000
+        Fri, 17 Jul 2020 07:21:58 -0400
+Date:   Fri, 17 Jul 2020 11:21:54 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1594913435;
+        s=2020; t=1594984915;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=4DCCK8mVk+HskFG6V++QI8sTSi5CIGdPTT0aJ5kjZzI=;
-        b=U8EiHjVunrtFn4bSMXFeAfEdJjJqVWRAXNOOpsEOvRKdOGsy2ELmV9GuB7v2b3frf7DKbF
-        wBDTj7Y1PgvQ7o3WS2cO0BJFZvmpvHkWHTgJcvHXJE93ydlzQr558lc6ZBxY04S67IUrgM
-        zLt01RsWpYHxtFpxncFv6A3UNJdZVjI9RkFAahdd7DGEX4LwI02x7Re9JwHr9d0m0RoM/C
-        HU8tbJftza4l4KIYoAUEFQ/Etsj1dSFbeeGiboff9dUEa693z8AoOSIgFT+2dIKwZcukt8
-        I60D0dq7UzXriL5jYzbfLiA5UO71UiQp/ApEwarIoDpicMR+R5m/+kX3KDQ+ug==
+        bh=2N7cl9Uv5C2BfTmcs6AcgRYir7yXNppoUxiGa6sKO0s=;
+        b=pHFLMjCZfl8dEb9NJli+wvKsWOyJCm4uv+kwgNehGo494JrWm7LkJaMxkUnkSUcxRmGIIB
+        JFntO7z87LrNyfSAAx8PgSVrOv48yyZPg6ppZfnLm/4CJcvgn6fkBsyzHbd2NfeVC5U+rx
+        zyBCn0jK7Yao+8CfaPF0+0sQtNEFzFpw0gam9UkEkwmEbFbR56JmT0Zc9tc+yJZZ3S00Ou
+        fSmzhH30Yg1TW8xccuf/mFopvSGDpVX5mQHI7mxYzZsW71sk3DTNxuSOQygPNjvkOrmLkB
+        e6j3JQIo7ICRPonWYMYurHcA0CCIwA2Loh8wywrcusMQEhA0dZ3WzaUgOn0QtA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1594913435;
+        s=2020e; t=1594984915;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=4DCCK8mVk+HskFG6V++QI8sTSi5CIGdPTT0aJ5kjZzI=;
-        b=Erfd0bv8OYtUWHksHjKmTDlXcTSD53S33rx0mOTAhILEgHrXaA4eaD2nM076WzKCV2dusM
-        mvcvs/Sgm37zO0CA==
-From:   "tip-bot2 for Jian Cai" <tip-bot2@linutronix.de>
+        bh=2N7cl9Uv5C2BfTmcs6AcgRYir7yXNppoUxiGa6sKO0s=;
+        b=9SuBPK/vnOVHz/2gDXbIDl6CQbKZN0lMQ2VhrQHRA7+m65L5VQJolm6Ok2iM6aV88RZSN/
+        8ui1Oa/N0rtU8sDA==
+From:   "tip-bot2 for Vincent Guittot" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/entry: Add compatibility with IAS
-Cc:     Nick Desaulniers <ndesaulniers@google.com>,
-        Sedat Dilek <sedat.dilek@gmail.com>,
-        Brian Gerst <brgerst@gmail.com>,
-        Arvind Sankar <nivedita@alum.mit.edu>,
-        Jian Cai <caij2003@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
+Subject: [tip: sched/urgent] sched/fair: handle case of task_h_load() returning 0
+Cc:     Vincent Guittot <vincent.guittot@linaro.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Valentin Schneider <valentin.schneider@arm.com>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        <stable@vger.kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200714233024.1789985-1-caij2003@gmail.com>
-References: <20200714233024.1789985-1-caij2003@gmail.com>
+In-Reply-To: <20200710152426.16981-1-vincent.guittot@linaro.org>
+References: <20200710152426.16981-1-vincent.guittot@linaro.org>
 MIME-Version: 1.0
-Message-ID: <159491343466.4006.9823116110789109364.tip-bot2@tip-bot2>
+Message-ID: <159498491467.4006.8575391976004781075.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,76 +59,73 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     6ee93f8df09c470da1a4af11e394c52d7b62418c
-Gitweb:        https://git.kernel.org/tip/6ee93f8df09c470da1a4af11e394c52d7b62418c
-Author:        Jian Cai <caij2003@gmail.com>
-AuthorDate:    Tue, 14 Jul 2020 16:30:21 -07:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 16 Jul 2020 17:25:09 +02:00
+Commit-ID:     01cfcde9c26d8555f0e6e9aea9d6049f87683998
+Gitweb:        https://git.kernel.org/tip/01cfcde9c26d8555f0e6e9aea9d6049f87683998
+Author:        Vincent Guittot <vincent.guittot@linaro.org>
+AuthorDate:    Fri, 10 Jul 2020 17:24:26 +02:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Thu, 16 Jul 2020 23:19:48 +02:00
 
-x86/entry: Add compatibility with IAS
+sched/fair: handle case of task_h_load() returning 0
 
-Clang's integrated assembler does not allow symbols with non-absolute
-values to be reassigned. Modify the interrupt entry loop macro to be
-compatible with IAS by using a label and an offset.
+task_h_load() can return 0 in some situations like running stress-ng
+mmapfork, which forks thousands of threads, in a sched group on a 224 cores
+system. The load balance doesn't handle this correctly because
+env->imbalance never decreases and it will stop pulling tasks only after
+reaching loop_max, which can be equal to the number of running tasks of
+the cfs. Make sure that imbalance will be decreased by at least 1.
 
-Reported-by: Nick Desaulniers <ndesaulniers@google.com>
-Reported-by: Sedat Dilek <sedat.dilek@gmail.com>
-Suggested-by: Nick Desaulniers <ndesaulniers@google.com>
-Suggested-by: Brian Gerst <brgerst@gmail.com>
-Suggested-by: Arvind Sankar <nivedita@alum.mit.edu>
-Signed-off-by: Jian Cai <caij2003@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Sedat Dilek <sedat.dilek@gmail.com> #
-Link: https://github.com/ClangBuiltLinux/linux/issues/1043
-Link: https://lkml.kernel.org/r/20200714233024.1789985-1-caij2003@gmail.com
+misfit task is the other feature that doesn't handle correctly such
+situation although it's probably more difficult to face the problem
+because of the smaller number of CPUs and running tasks on heterogenous
+system.
+
+We can't simply ensure that task_h_load() returns at least one because it
+would imply to handle underflow in other places.
+
+Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Valentin Schneider <valentin.schneider@arm.com>
+Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Tested-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Cc: <stable@vger.kernel.org> # v4.4+
+Link: https://lkml.kernel.org/r/20200710152426.16981-1-vincent.guittot@linaro.org
 ---
- arch/x86/include/asm/idtentry.h | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ kernel/sched/fair.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/include/asm/idtentry.h b/arch/x86/include/asm/idtentry.h
-index f3d7083..5efaaed 100644
---- a/arch/x86/include/asm/idtentry.h
-+++ b/arch/x86/include/asm/idtentry.h
-@@ -469,16 +469,15 @@ __visible noinstr void func(struct pt_regs *regs,			\
- 	.align 8
- SYM_CODE_START(irq_entries_start)
-     vector=FIRST_EXTERNAL_VECTOR
--    pos = .
-     .rept (FIRST_SYSTEM_VECTOR - FIRST_EXTERNAL_VECTOR)
- 	UNWIND_HINT_IRET_REGS
-+0 :
- 	.byte	0x6a, vector
- 	jmp	asm_common_interrupt
- 	nop
- 	/* Ensure that the above is 8 bytes max */
--	. = pos + 8
--    pos=pos+8
--    vector=vector+1
-+	. = 0b + 8
-+	vector = vector+1
-     .endr
- SYM_CODE_END(irq_entries_start)
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 658aa7a..04fa8db 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -4039,7 +4039,11 @@ static inline void update_misfit_status(struct task_struct *p, struct rq *rq)
+ 		return;
+ 	}
  
-@@ -486,16 +485,15 @@ SYM_CODE_END(irq_entries_start)
- 	.align 8
- SYM_CODE_START(spurious_entries_start)
-     vector=FIRST_SYSTEM_VECTOR
--    pos = .
-     .rept (NR_VECTORS - FIRST_SYSTEM_VECTOR)
- 	UNWIND_HINT_IRET_REGS
-+0 :
- 	.byte	0x6a, vector
- 	jmp	asm_spurious_interrupt
- 	nop
- 	/* Ensure that the above is 8 bytes max */
--	. = pos + 8
--    pos=pos+8
--    vector=vector+1
-+	. = 0b + 8
-+	vector = vector+1
-     .endr
- SYM_CODE_END(spurious_entries_start)
- #endif
+-	rq->misfit_task_load = task_h_load(p);
++	/*
++	 * Make sure that misfit_task_load will not be null even if
++	 * task_h_load() returns 0.
++	 */
++	rq->misfit_task_load = max_t(unsigned long, task_h_load(p), 1);
+ }
+ 
+ #else /* CONFIG_SMP */
+@@ -7638,7 +7642,14 @@ static int detach_tasks(struct lb_env *env)
+ 
+ 		switch (env->migration_type) {
+ 		case migrate_load:
+-			load = task_h_load(p);
++			/*
++			 * Depending of the number of CPUs and tasks and the
++			 * cgroup hierarchy, task_h_load() can return a null
++			 * value. Make sure that env->imbalance decreases
++			 * otherwise detach_tasks() will stop only after
++			 * detaching up to loop_max tasks.
++			 */
++			load = max_t(unsigned long, task_h_load(p), 1);
+ 
+ 			if (sched_feat(LB_MIN) &&
+ 			    load < 16 && !env->sd->nr_balance_failed)
