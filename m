@@ -2,52 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CE2832244C4
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 17 Jul 2020 22:00:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46C432244C5
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 17 Jul 2020 22:00:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728708AbgGQUAU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S1728703AbgGQUAU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Fri, 17 Jul 2020 16:00:20 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:42858 "EHLO
+Received: from Galois.linutronix.de ([193.142.43.55]:42876 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728316AbgGQUAT (ORCPT
+        with ESMTP id S1728455AbgGQUAT (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Fri, 17 Jul 2020 16:00:19 -0400
-Date:   Fri, 17 Jul 2020 20:00:15 -0000
+Date:   Fri, 17 Jul 2020 20:00:17 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1595016016;
+        s=2020; t=1595016018;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=j0H4Km+DI3u2+gfmwd37RZxyPdsmOzVkyKEYDnNutJU=;
-        b=nB2b3//5t2qxNcM0SN38GyqpfF2DI/uBY3lnsKnO8Zlp2s+7VFRR9S60WENFecqdak4wKd
-        CuCHmE0jbSSm5R+c1hC6wj4Or3g7V0SzfncsAlNHV0tmUkrrMl7WLsk3UhPQ0552m+cA3V
-        RDeWnUOtbxMe07oTAM+tu+xvOvWCv6tz6MJcm/Es111Q2+KQX/xMqPDdbwscvwNgdy2tYh
-        +1INYrKPVQy3nDO2MleVzDRb+/PB/LyPfO8PpRkQ3T0RCtt/Kk0x3vT96hIulY0LQuTrCJ
-        7mx4nh7COiy34T5vpc/fzNsDzEGFos3PyOG0pe3L7afw/RCHa5kLQFUSp9FP8Q==
+        bh=iiCwFg3+N6w7BgpdTC3q2ig2n6Ttjqwxdvx7BMmCOTI=;
+        b=mWMyhw3irWKrJQMcsJ17rI7OffZMX6rHm+NpCUknrBQ8qlyDl9t4HOkeJnj9k2wSmdpjtp
+        9YuAb000ENiV/Sd/AVPRtMBUvdsE3rGzKej3DWHyBK/K5UVoUJTveF/12b91qT2dsnkiub
+        BAlwSyS4NZuKEx3GwypSmkRcCV4/ojJe5UXxYh+vWjYPyae8fGdxBfZKRTWd+9IS2EeoMz
+        ED9SfL9z0IZRnO5YpJQN96ccp1MwLtSvOpmQU6MoFsmvmJBCd9Y5+75i287ntAFUdwDl3r
+        h8oLO4ow5PbCoC1In9QhKPCo9GxWL5LP6hYo54wQe7erl5kHTHTuwRHz84vY2g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1595016016;
+        s=2020e; t=1595016018;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=j0H4Km+DI3u2+gfmwd37RZxyPdsmOzVkyKEYDnNutJU=;
-        b=tLN2V/jCr6PrPhzUJbwGOY3o3oXbTDQ6V6kp66RobOVX4WGlW2VBtrMHUAe1F55g2blaXP
-        8Fb/6LTu7Ll7zpBQ==
+        bh=iiCwFg3+N6w7BgpdTC3q2ig2n6Ttjqwxdvx7BMmCOTI=;
+        b=MbZM+uXcW+VogFrsLD+6jSpBS2HFSzALwL7bZ8YzCso2dAdpdR55TeoxlImhYMfqxCuaIH
+        HhAPV8uH+yUm1ZDw==
 From:   "tip-bot2 for Frederic Weisbecker" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] timers: Remove must_forward_clk
+Subject: [tip: timers/core] timers: Reuse next expiry cache after nohz exit
 Cc:     Frederic Weisbecker <frederic@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Juri Lelli <juri.lelli@redhat.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200717140551.29076-12-frederic@kernel.org>
-References: <20200717140551.29076-12-frederic@kernel.org>
+In-Reply-To: <20200717140551.29076-9-frederic@kernel.org>
+References: <20200717140551.29076-9-frederic@kernel.org>
 MIME-Version: 1.0
-Message-ID: <159501601563.4006.11517295879429949452.tip-bot2@tip-bot2>
+Message-ID: <159501601744.4006.18407986100047143357.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,89 +59,52 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     0975fb565b8b8f9e0c96d0de39fcb954833ea5e0
-Gitweb:        https://git.kernel.org/tip/0975fb565b8b8f9e0c96d0de39fcb954833ea5e0
+Commit-ID:     90d52f65f303091be17b5f4ffab7090b2064b4a1
+Gitweb:        https://git.kernel.org/tip/90d52f65f303091be17b5f4ffab7090b2064b4a1
 Author:        Frederic Weisbecker <frederic@kernel.org>
-AuthorDate:    Fri, 17 Jul 2020 16:05:50 +02:00
+AuthorDate:    Fri, 17 Jul 2020 16:05:47 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 17 Jul 2020 21:55:25 +02:00
+CommitterDate: Fri, 17 Jul 2020 21:55:23 +02:00
 
-timers: Remove must_forward_clk
+timers: Reuse next expiry cache after nohz exit
 
-There is no reason to keep this guard around. The code makes sure that
-base->clk remains sane and won't be forwarded beyond jiffies nor set
-backward.
+Now that the next expiry it tracked unconditionally when a timer is added,
+this information can be reused on a tick firing after exiting nohz.
 
 Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Tested-by: Juri Lelli <juri.lelli@redhat.com>
-Link: https://lkml.kernel.org/r/20200717140551.29076-12-frederic@kernel.org
+Link: https://lkml.kernel.org/r/20200717140551.29076-9-frederic@kernel.org
 
 ---
- kernel/time/timer.c | 22 ++++++----------------
- 1 file changed, 6 insertions(+), 16 deletions(-)
+ kernel/time/timer.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
 diff --git a/kernel/time/timer.c b/kernel/time/timer.c
-index 4f78a7b..8b3fb52 100644
+index 76fd964..13f48ee 100644
 --- a/kernel/time/timer.c
 +++ b/kernel/time/timer.c
-@@ -205,7 +205,6 @@ struct timer_base {
- 	unsigned long		next_expiry;
- 	unsigned int		cpu;
- 	bool			is_idle;
--	bool			must_forward_clk;
- 	DECLARE_BITMAP(pending_map, WHEEL_SIZE);
- 	struct hlist_head	vectors[WHEEL_SIZE];
- } ____cacheline_aligned;
-@@ -888,12 +887,13 @@ get_target_base(struct timer_base *base, unsigned tflags)
- 
- static inline void forward_timer_base(struct timer_base *base)
- {
--	unsigned long jnow;
-+	unsigned long jnow = READ_ONCE(jiffies);
- 
--	if (!base->must_forward_clk)
--		return;
+@@ -1706,13 +1706,11 @@ static int collect_expired_timers(struct timer_base *base,
+ 	 * the next expiring timer.
+ 	 */
+ 	if ((long)(now - base->clk) > 2) {
+-		unsigned long next = __next_timer_interrupt(base);
 -
--	jnow = READ_ONCE(jiffies);
-+	/*
-+	 * No need to forward if we are close enough below jiffies.
-+	 * Also while executing timers, base->clk is 1 offset ahead
-+	 * of jiffies to avoid endless requeuing to current jffies.
-+	 */
- 	if ((long)(jnow - base->clk) < 2)
- 		return;
- 
-@@ -1722,16 +1722,8 @@ static inline void __run_timers(struct timer_base *base)
- 	timer_base_lock_expiry(base);
- 	raw_spin_lock_irq(&base->lock);
- 
--	/*
--	 * timer_base::must_forward_clk must be cleared before running
--	 * timers so that any timer functions that call mod_timer() will
--	 * not try to forward the base.
--	 */
--	base->must_forward_clk = false;
--
- 	while (time_after_eq(jiffies, base->clk) &&
- 	       time_after_eq(jiffies, base->next_expiry)) {
--
- 		levels = collect_expired_timers(base, heads);
- 		base->clk++;
- 		base->next_expiry = __next_timer_interrupt(base);
-@@ -1739,7 +1731,6 @@ static inline void __run_timers(struct timer_base *base)
- 		while (levels--)
- 			expire_timers(base, heads + levels);
+ 		/*
+ 		 * If the next timer is ahead of time forward to current
+ 		 * jiffies, otherwise forward to the next expiry time:
+ 		 */
+-		if (time_after(next, now)) {
++		if (time_after(base->next_expiry, now)) {
+ 			/*
+ 			 * The call site will increment base->clk and then
+ 			 * terminate the expiry loop immediately.
+@@ -1720,7 +1718,7 @@ static int collect_expired_timers(struct timer_base *base,
+ 			base->clk = now;
+ 			return 0;
+ 		}
+-		base->clk = next;
++		base->clk = base->next_expiry;
  	}
--	base->must_forward_clk = true;
- 	raw_spin_unlock_irq(&base->lock);
- 	timer_base_unlock_expiry(base);
- }
-@@ -1935,7 +1926,6 @@ int timers_prepare_cpu(unsigned int cpu)
- 		base->clk = jiffies;
- 		base->next_expiry = base->clk + NEXT_TIMER_MAX_DELTA;
- 		base->is_idle = false;
--		base->must_forward_clk = true;
- 	}
- 	return 0;
+ 	return __collect_expired_timers(base, heads);
  }
