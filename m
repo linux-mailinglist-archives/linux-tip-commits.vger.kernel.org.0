@@ -2,51 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 40AA7224491
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 17 Jul 2020 21:50:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E35C32244C2
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 17 Jul 2020 22:00:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728280AbgGQTtf (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 17 Jul 2020 15:49:35 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:42782 "EHLO
+        id S1728466AbgGQUAT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 17 Jul 2020 16:00:19 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:42850 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728022AbgGQTte (ORCPT
+        with ESMTP id S1726771AbgGQUAS (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 17 Jul 2020 15:49:34 -0400
-Date:   Fri, 17 Jul 2020 19:49:30 -0000
+        Fri, 17 Jul 2020 16:00:18 -0400
+Date:   Fri, 17 Jul 2020 20:00:14 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1595015372;
+        s=2020; t=1595016015;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ArSLmInG26ymDEujZq9Witdg6jO9R+3pS4sirlxlKjk=;
-        b=jBrFuyLN4VhUIxGQnuzCaCkDqiQiKB2ZE/hahXzK6CxelNm3ftcgeOMAFkhqcu204909Nk
-        ZsBrzR+tqLsbVIT8gzdHERo+TaEMXGfqtwsAPbAPN2noEU5ag25XpJ5tlMz3W0XzjPS0Km
-        9KXGPOmgjYaQlv2j4YkNDTmFgFy7YM+DDRYajv9EiflP+hOSyJiqCDjOGxcnHJF0uMK/Nx
-        h3wBYVQgGT+MyzZw9VBCiZt6o0/kj+rHjKCQPovipyVxwj4N3I3VKj7s11xWGQW0k4AaTU
-        igQ0xgjVyiUnXP8KONK0MZJLda8U+EDWpc67RfO/VSHvtuqkBj5JRS/rT2vX+A==
+        bh=iqGNrlxmh8sBy0JeDfvSgrqAbY3l+xwBTcymVKXFe3k=;
+        b=OBpaSjti4KgaE6RTX/l2WEWSB+CeYRutjon2tk7rxptZ5hDZG7ihZh8jEnB+70neNFqq+j
+        Wx9RzTyGD12CwfPewfgElYYFZDoCYxprYXc5FGSkR1PGpFPqDIzd4HmXEwLrF3TK07G1jc
+        Zo+s+C1PGDeAxc6RQuAA3gDa2l8qqvWfC/KKS/yVMCw9PjtOcgV1gaj9+LQKKcCqQxAAQr
+        kGuOzD+zsbQtamc2UihJ9oQ5aORBO4Po3xJQ3+jdljwR+ffKiuFekuyAF3X2om6VZTj/5m
+        v9mWfyFCB9ULkpGfO38D/vCywf6/nIvSTvViXwuRhS9f+c9UkamDhlnJjKNeDA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1595015372;
+        s=2020e; t=1595016015;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ArSLmInG26ymDEujZq9Witdg6jO9R+3pS4sirlxlKjk=;
-        b=LeunsxNdNep+yWBKbEGuxsc4IcbpBh03R02dJoWQzKvnMnMd7CXZk9WvUVnzLZWuAELASa
-        C8leRBk46OpUSvBQ==
+        bh=iqGNrlxmh8sBy0JeDfvSgrqAbY3l+xwBTcymVKXFe3k=;
+        b=JMB6S83+4SOJRsxZqT183hL7f1m305Gua2FudV/ikzeEiB4li3YF435ajJPhNcVJONbWE4
+        ifTgzz8XNFHijfDw==
 From:   "tip-bot2 for Frederic Weisbecker" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/urgent] timer: Fix wheel index calculation on last level
+Subject: [tip: timers/core] timers: Lower base clock forwarding threshold
 Cc:     Frederic Weisbecker <frederic@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200717140551.29076-2-frederic@kernel.org>
-References: <20200717140551.29076-2-frederic@kernel.org>
+        Thomas Gleixner <tglx@linutronix.de>,
+        Juri Lelli <juri.lelli@redhat.com>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200717140551.29076-13-frederic@kernel.org>
+References: <20200717140551.29076-13-frederic@kernel.org>
 MIME-Version: 1.0
-Message-ID: <159501537091.4006.13327108405728570679.tip-bot2@tip-bot2>
+Message-ID: <159501601496.4006.3364928188883956885.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -56,50 +57,40 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/urgent branch of tip:
+The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     e2a71bdea81690b6ef11f4368261ec6f5b6891aa
-Gitweb:        https://git.kernel.org/tip/e2a71bdea81690b6ef11f4368261ec6f5b6891aa
+Commit-ID:     36cd28a4cdd05d47ccb62a2d86e8f37839cc879a
+Gitweb:        https://git.kernel.org/tip/36cd28a4cdd05d47ccb62a2d86e8f37839cc879a
 Author:        Frederic Weisbecker <frederic@kernel.org>
-AuthorDate:    Fri, 17 Jul 2020 16:05:40 +02:00
+AuthorDate:    Fri, 17 Jul 2020 16:05:51 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 17 Jul 2020 21:44:05 +02:00
+CommitterDate: Fri, 17 Jul 2020 21:55:25 +02:00
 
-timer: Fix wheel index calculation on last level
+timers: Lower base clock forwarding threshold
 
-When an expiration delta falls into the last level of the wheel, that delta
-has be compared against the maximum possible delay and reduced to fit in if
-necessary.
+There is nothing that prevents from forwarding the base clock if it's one
+jiffy off. The reason for this arbitrary limit of two jiffies is historical
+and does not longer exist.
 
-However instead of comparing the delta against the maximum, the code
-compares the actual expiry against the maximum. Then instead of fixing the
-delta to fit in, it sets the maximum delta as the expiry value.
-
-This can result in various undesired outcomes, the worst possible one
-being a timer expiring 15 days ahead to fire immediately.
-
-Fixes: 500462a9de65 ("timers: Switch to a non-cascading wheel")
 Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20200717140551.29076-2-frederic@kernel.org
+Tested-by: Juri Lelli <juri.lelli@redhat.com>
+Link: https://lkml.kernel.org/r/20200717140551.29076-13-frederic@kernel.org
 
 ---
- kernel/time/timer.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/time/timer.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/kernel/time/timer.c b/kernel/time/timer.c
-index 9a838d3..df1ff80 100644
+index 8b3fb52..77e21e9 100644
 --- a/kernel/time/timer.c
 +++ b/kernel/time/timer.c
-@@ -521,8 +521,8 @@ static int calc_wheel_index(unsigned long expires, unsigned long clk)
- 		 * Force expire obscene large timeouts to expire at the
- 		 * capacity limit of the wheel.
- 		 */
--		if (expires >= WHEEL_TIMEOUT_CUTOFF)
--			expires = WHEEL_TIMEOUT_MAX;
-+		if (delta >= WHEEL_TIMEOUT_CUTOFF)
-+			expires = clk + WHEEL_TIMEOUT_MAX;
+@@ -894,7 +894,7 @@ static inline void forward_timer_base(struct timer_base *base)
+ 	 * Also while executing timers, base->clk is 1 offset ahead
+ 	 * of jiffies to avoid endless requeuing to current jffies.
+ 	 */
+-	if ((long)(jnow - base->clk) < 2)
++	if ((long)(jnow - base->clk) < 1)
+ 		return;
  
- 		idx = calc_index(expires, LVL_DEPTH - 1);
- 	}
+ 	/*
