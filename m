@@ -2,51 +2,51 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E613223A46
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 17 Jul 2020 13:22:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 57E53223A4A
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 17 Jul 2020 13:22:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726381AbgGQLWI (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 17 Jul 2020 07:22:08 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:40072 "EHLO
+        id S1726530AbgGQLWN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 17 Jul 2020 07:22:13 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:40090 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725912AbgGQLWH (ORCPT
+        with ESMTP id S1725932AbgGQLWI (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 17 Jul 2020 07:22:07 -0400
-Date:   Fri, 17 Jul 2020 11:22:04 -0000
+        Fri, 17 Jul 2020 07:22:08 -0400
+Date:   Fri, 17 Jul 2020 11:22:05 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1594984925;
+        s=2020; t=1594984926;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=e8s6cNM7MtRlSok9GImSXnEBbHubXILx7M8AacRQ5vs=;
-        b=HPh7MrXw4k+Uo1fnmMy+2X+kRt3R6iC3VROmeHGvq3vniTn98CYphHK99ZTLd+meJRg5CL
-        HxV3of6r8pbnrDw9SWSzruuRvG3wrqzZsxEfQx78/xFKMBO29zjXwLkuqIhlBU2/11/K2E
-        hKQvHn5bM3nBF6oWPJ4TvZJptRbR3E6dy3A92tkCsUcGT7wwDNoe0a02BNc+57xOJgwiy0
-        kzz6XmHnPwegh+vQ2adi9bdyBgs04zINjYjEnd5xAw3FbqqD0KKWzVRnlVfPj35rmSYYQq
-        kr/g/qtRr7gldg42JwRafDjwUsDjODtgYPHJSSBdPHrj/399HY1raA5LkqWc/A==
+        bh=idHQYFdvpTfN+lfpXHJSjMEYHdLgakbFkGuD1k5Q+4Y=;
+        b=UdIeY/UD2fyo7vgR15iVMYJHo21y+tjA2y/QLaqCalEsmdy5ZtIW7de9pwUNvhtVmj3qFh
+        Bc2xA99yEmuFRhcrwFBvN4W5UXIVeAfl09WLzVNl6AFTGIx6w4rmyJ2bgyV4nKKzZiN7Tk
+        KUwE97tExwKHyExhxX+peqX3bge/Qsi8OXaoZ9KO+tXMRW5fHMFK4uaE2PGURmu2KqSmbC
+        VO8jclcqVNZE9SsDYjgh3PLshE5EzpZSE3rDNp7cW865mRwLpE+CEycxGl04JuOYnZnQM9
+        rh1cv//6xsRhw4rrV3UfIOUY1yXOQV4iBVR9jIQdCHXnEusIhF5pMAU/7OAaMw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1594984925;
+        s=2020e; t=1594984926;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=e8s6cNM7MtRlSok9GImSXnEBbHubXILx7M8AacRQ5vs=;
-        b=9SYZJUm4Svq6Yc8bDnv7qA4RvuEbj05n5oU38P8SppoIzWwvkAKlQpZsONgmL0FuSheFyS
-        aI78NEQHAieLvABg==
-From:   "tip-bot2 for Alexey Dobriyan" <tip-bot2@linutronix.de>
+        bh=idHQYFdvpTfN+lfpXHJSjMEYHdLgakbFkGuD1k5Q+4Y=;
+        b=3ScILym6/1YlTZ2h9kDhm5zUcqcaF6/R6c04q7cwQlCIDPsZCHJLF/NTRq3+Ks0EXy9g1f
+        dGqD8ZU/8AOv1EBQ==
+From:   "tip-bot2 for Alexander A. Klimov" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] rwsem: fix commas in initialisation
-Cc:     Alexey Dobriyan <adobriyan@gmail.com>,
+Subject: [tip: locking/core] docs: locking: Replace HTTP links with HTTPS ones
+Cc:     "Alexander A. Klimov" <grandmaster@al2klimov.de>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200711145954.GA1178171@localhost.localdomain>
-References: <20200711145954.GA1178171@localhost.localdomain>
+In-Reply-To: <20200713115728.33905-1-grandmaster@al2klimov.de>
+References: <20200713115728.33905-1-grandmaster@al2klimov.de>
 MIME-Version: 1.0
-Message-ID: <159498492487.4006.3074738466487716575.tip-bot2@tip-bot2>
+Message-ID: <159498492557.4006.1686830928434874554.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,76 +58,47 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     a9232dc5607dbada801f2fe83ea307cda762969a
-Gitweb:        https://git.kernel.org/tip/a9232dc5607dbada801f2fe83ea307cda762969a
-Author:        Alexey Dobriyan <adobriyan@gmail.com>
-AuthorDate:    Sat, 11 Jul 2020 17:59:54 +03:00
+Commit-ID:     482cbb6cc33dca60091048631cd0a8dde72c3da7
+Gitweb:        https://git.kernel.org/tip/482cbb6cc33dca60091048631cd0a8dde72c3da7
+Author:        Alexander A. Klimov <grandmaster@al2klimov.de>
+AuthorDate:    Mon, 13 Jul 2020 13:57:28 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Thu, 16 Jul 2020 23:19:51 +02:00
 
-rwsem: fix commas in initialisation
+docs: locking: Replace HTTP links with HTTPS ones
 
-Leading comma prevents arbitrary reordering of initialisation clauses.
-The whole point of C99 initialisation is to allow any such reordering.
+Rationale:
+Reduces attack surface on kernel devs opening the links for MITM
+as HTTPS traffic is much harder to manipulate.
 
-Signed-off-by: Alexey Dobriyan <adobriyan@gmail.com>
+Deterministic algorithm:
+For each file:
+  If not .svg:
+    For each line:
+      If doesn't contain `\bxmlns\b`:
+        For each link, `\bhttp://[^# \t\r\n]*(?:\w|/)`:
+	  If neither `\bgnu\.org/license`, nor `\bmozilla\.org/MPL\b`:
+            If both the HTTP and HTTPS versions
+            return 200 OK and serve the same content:
+              Replace HTTP with HTTPS.
+
+Signed-off-by: Alexander A. Klimov <grandmaster@al2klimov.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20200711145954.GA1178171@localhost.localdomain
+Link: https://lkml.kernel.org/r/20200713115728.33905-1-grandmaster@al2klimov.de
 ---
- include/linux/rwsem.h | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ Documentation/locking/mutex-design.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/rwsem.h b/include/linux/rwsem.h
-index 7e5b2a4..25e3fde 100644
---- a/include/linux/rwsem.h
-+++ b/include/linux/rwsem.h
-@@ -60,39 +60,39 @@ static inline int rwsem_is_locked(struct rw_semaphore *sem)
- }
+diff --git a/Documentation/locking/mutex-design.rst b/Documentation/locking/mutex-design.rst
+index 4d8236b..8f3e9a5 100644
+--- a/Documentation/locking/mutex-design.rst
++++ b/Documentation/locking/mutex-design.rst
+@@ -18,7 +18,7 @@ as an alternative to these. This new data structure provided a number
+ of advantages, including simpler interfaces, and at that time smaller
+ code (see Disadvantages).
  
- #define RWSEM_UNLOCKED_VALUE		0L
--#define __RWSEM_INIT_COUNT(name)	.count = ATOMIC_LONG_INIT(RWSEM_UNLOCKED_VALUE)
-+#define __RWSEM_COUNT_INIT(name)	.count = ATOMIC_LONG_INIT(RWSEM_UNLOCKED_VALUE)
+-[1] http://lwn.net/Articles/164802/
++[1] https://lwn.net/Articles/164802/
  
- /* Common initializer macros and functions */
- 
- #ifdef CONFIG_DEBUG_LOCK_ALLOC
- # define __RWSEM_DEP_MAP_INIT(lockname)			\
--	, .dep_map = {					\
-+	.dep_map = {					\
- 		.name = #lockname,			\
- 		.wait_type_inner = LD_WAIT_SLEEP,	\
--	}
-+	},
- #else
- # define __RWSEM_DEP_MAP_INIT(lockname)
- #endif
- 
- #ifdef CONFIG_DEBUG_RWSEMS
--# define __DEBUG_RWSEM_INITIALIZER(lockname) , .magic = &lockname
-+# define __RWSEM_DEBUG_INIT(lockname) .magic = &lockname,
- #else
--# define __DEBUG_RWSEM_INITIALIZER(lockname)
-+# define __RWSEM_DEBUG_INIT(lockname)
- #endif
- 
- #ifdef CONFIG_RWSEM_SPIN_ON_OWNER
--#define __RWSEM_OPT_INIT(lockname) , .osq = OSQ_LOCK_UNLOCKED
-+#define __RWSEM_OPT_INIT(lockname) .osq = OSQ_LOCK_UNLOCKED,
- #else
- #define __RWSEM_OPT_INIT(lockname)
- #endif
- 
- #define __RWSEM_INITIALIZER(name)				\
--	{ __RWSEM_INIT_COUNT(name),				\
-+	{ __RWSEM_COUNT_INIT(name),				\
- 	  .owner = ATOMIC_LONG_INIT(0),				\
--	  .wait_list = LIST_HEAD_INIT((name).wait_list),	\
--	  .wait_lock = __RAW_SPIN_LOCK_UNLOCKED(name.wait_lock)	\
- 	  __RWSEM_OPT_INIT(name)				\
--	  __DEBUG_RWSEM_INITIALIZER(name)			\
-+	  .wait_lock = __RAW_SPIN_LOCK_UNLOCKED(name.wait_lock),\
-+	  .wait_list = LIST_HEAD_INIT((name).wait_list),	\
-+	  __RWSEM_DEBUG_INIT(name)				\
- 	  __RWSEM_DEP_MAP_INIT(name) }
- 
- #define DECLARE_RWSEM(name) \
+ Implementation
+ --------------
