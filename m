@@ -2,52 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 973D12244CC
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 17 Jul 2020 22:00:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B95F2244D8
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 17 Jul 2020 22:01:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728728AbgGQUAd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 17 Jul 2020 16:00:33 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:42896 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728712AbgGQUAW (ORCPT
+        id S1728623AbgGQUAh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 17 Jul 2020 16:00:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38988 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728238AbgGQUAV (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 17 Jul 2020 16:00:22 -0400
+        Fri, 17 Jul 2020 16:00:21 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 459ACC0619D2;
+        Fri, 17 Jul 2020 13:00:21 -0700 (PDT)
 Date:   Fri, 17 Jul 2020 20:00:19 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1595016020;
+        s=2020; t=1595016019;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=qQLNjIY5e8XB1h6Sghuav04ARn5JWckIJAUY2rWB7Ro=;
-        b=glDD2lPM5faD1+OVwxyNUtC4hysh5vKOARDXpMKEgIC1Bmj+D8SGLEndRh3Mf1jjB1Z8Lq
-        Sc+Wm6iiTcn/Tr5YYgmt9kIbWqbh9mX1xyu2vwhq1gE4tpw3ijDAtKQwCp0yJGKuWoch73
-        A6P46R88wIUmblQx3w8IxWi5WsfLkFjG1SMHGlx4ihtZHEf28ZD8Xc8ueLetKLIAGbg+OT
-        x/Qa29/97Hu9H1VEtmPZKXi4JqMjPp2YP+Ek8/MfZCEtoJXhggDgABhdFcYC6LwaIcz1ym
-        mI0dvJuUBFSuoxpa3EwN7zC35Un1k/VJ92wBONqqG+LyLBHz3PnSvQwgw5wVEQ==
+        bh=EhaBDAjPzAdD3mW8nMjPK4h7oSqD1yFlTs2c2SKwV9s=;
+        b=R8Rs0UoDdN1xfDktaxrkb52BOQkW4lR5/V+yXEYIYoP5LRX/wW7Nn8bLDNUJobOZC+Qu5n
+        D0Nvbe9WIlmHvAV0mNftdIE4EZRwQ6pJwsZBNffhAwEqGebRm/NBkWZ/cudFrIR+w0FmqD
+        T0F8iaYieN8jxrngAJJMiqfOZv/FH4fK6uUHzFcLfLWSB1c6gNH42TN5wUzFe3cTlIwOjV
+        Nzuxg754+SamdChjy/Sj179nVZ1qwbOx4fu+rUvoS76tk0GmmuQP4zhEduFlHWPqhpl/za
+        0k7gV3NmKCAoMFuII1WyQXVEvH00vva+L2vVUI2AAoZ8PvyFy/CEADVD04ubeg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1595016020;
+        s=2020e; t=1595016019;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=qQLNjIY5e8XB1h6Sghuav04ARn5JWckIJAUY2rWB7Ro=;
-        b=lPjIp4wXxA/zlWydVLV7pOct5VM2owA35yoeDwKbH5IsfA7FbTAiSkRroIEoAovKLW82AS
-        B3xqABQFxeB+dpDA==
+        bh=EhaBDAjPzAdD3mW8nMjPK4h7oSqD1yFlTs2c2SKwV9s=;
+        b=GfFHJjk1347nBa7LfeXJaPsLeLAK52//sTM3lVKOJRnRWVmJdv9ofKcIk7J/joKzli4n4H
+        jI7idDZu8KQG+JDQ==
 From:   "tip-bot2 for Frederic Weisbecker" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] timers: Move trigger_dyntick_cpu() to enqueue_timer()
-Cc:     Frederic Weisbecker <frederic@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
+Subject: [tip: timers/core] timers: Add comments about calc_index() ceiling work
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Frederic Weisbecker <frederic@kernel.org>,
         Juri Lelli <juri.lelli@redhat.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200717140551.29076-5-frederic@kernel.org>
-References: <20200717140551.29076-5-frederic@kernel.org>
+In-Reply-To: <20200717140551.29076-6-frederic@kernel.org>
+References: <20200717140551.29076-6-frederic@kernel.org>
 MIME-Version: 1.0
-Message-ID: <159501601989.4006.16440988766480303346.tip-bot2@tip-bot2>
+Message-ID: <159501601930.4006.7549756767804002018.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,117 +62,56 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     9a2b764b06c880678416d803d027f575ae40ec99
-Gitweb:        https://git.kernel.org/tip/9a2b764b06c880678416d803d027f575ae40ec99
+Commit-ID:     4468897211628865ee2392acb5ad281f74176f63
+Gitweb:        https://git.kernel.org/tip/4468897211628865ee2392acb5ad281f74176f63
 Author:        Frederic Weisbecker <frederic@kernel.org>
-AuthorDate:    Fri, 17 Jul 2020 16:05:43 +02:00
+AuthorDate:    Fri, 17 Jul 2020 16:05:44 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Fri, 17 Jul 2020 21:55:22 +02:00
 
-timers: Move trigger_dyntick_cpu() to enqueue_timer()
+timers: Add comments about calc_index() ceiling work
 
-Consolidate the code by calling trigger_dyntick_cpu() from
-enqueue_timer() instead of calling it from all its callers.
+calc_index() adds 1 unit of the level granularity to the expiry passed
+in parameter to ensure that the timer doesn't expire too early. Add a
+comment to explain that and the resulting layout in the wheel.
 
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Tested-by: Juri Lelli <juri.lelli@redhat.com>
-Link: https://lkml.kernel.org/r/20200717140551.29076-5-frederic@kernel.org
+Link: https://lkml.kernel.org/r/20200717140551.29076-6-frederic@kernel.org
 
 ---
- kernel/time/timer.c | 61 ++++++++++++++++++--------------------------
- 1 file changed, 25 insertions(+), 36 deletions(-)
+ kernel/time/timer.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
 diff --git a/kernel/time/timer.c b/kernel/time/timer.c
-index a7a3cf7..2af08a1 100644
+index 2af08a1..af1c08b 100644
 --- a/kernel/time/timer.c
 +++ b/kernel/time/timer.c
-@@ -533,30 +533,6 @@ static int calc_wheel_index(unsigned long expires, unsigned long clk,
- 	return idx;
- }
+@@ -156,7 +156,8 @@ EXPORT_SYMBOL(jiffies_64);
  
--/*
-- * Enqueue the timer into the hash bucket, mark it pending in
-- * the bitmap and store the index in the timer flags.
-- */
--static void enqueue_timer(struct timer_base *base, struct timer_list *timer,
--			  unsigned int idx)
--{
--	hlist_add_head(&timer->entry, base->vectors + idx);
--	__set_bit(idx, base->pending_map);
--	timer_set_idx(timer, idx);
--
--	trace_timer_start(timer, timer->expires, timer->flags);
--}
--
--static void
--__internal_add_timer(struct timer_base *base, struct timer_list *timer,
--		     unsigned long *bucket_expiry)
--{
--	unsigned int idx;
--
--	idx = calc_wheel_index(timer->expires, base->clk, bucket_expiry);
--	enqueue_timer(base, timer, idx);
--}
--
- static void
- trigger_dyntick_cpu(struct timer_base *base, struct timer_list *timer,
- 		    unsigned long bucket_expiry)
-@@ -598,15 +574,31 @@ trigger_dyntick_cpu(struct timer_base *base, struct timer_list *timer,
- 	wake_up_nohz_cpu(base->cpu);
- }
+ /*
+  * The time start value for each level to select the bucket at enqueue
+- * time.
++ * time. We start from the last possible delta of the previous level
++ * so that we can later add an extra LVL_GRAN(n) to n (see calc_index()).
+  */
+ #define LVL_START(n)	((LVL_SIZE - 1) << (((n) - 1) * LVL_CLK_SHIFT))
  
--static void
--internal_add_timer(struct timer_base *base, struct timer_list *timer)
-+/*
-+ * Enqueue the timer into the hash bucket, mark it pending in
-+ * the bitmap, store the index in the timer flags then wake up
-+ * the target CPU if needed.
-+ */
-+static void enqueue_timer(struct timer_base *base, struct timer_list *timer,
-+			  unsigned int idx, unsigned long bucket_expiry)
+@@ -490,6 +491,15 @@ static inline void timer_set_idx(struct timer_list *timer, unsigned int idx)
+ static inline unsigned calc_index(unsigned long expires, unsigned lvl,
+ 				  unsigned long *bucket_expiry)
  {
--	unsigned long bucket_expiry;
-+	hlist_add_head(&timer->entry, base->vectors + idx);
-+	__set_bit(idx, base->pending_map);
-+	timer_set_idx(timer, idx);
- 
--	__internal_add_timer(base, timer, &bucket_expiry);
-+	trace_timer_start(timer, timer->expires, timer->flags);
- 	trigger_dyntick_cpu(base, timer, bucket_expiry);
- }
- 
-+static void internal_add_timer(struct timer_base *base, struct timer_list *timer)
-+{
-+	unsigned long bucket_expiry;
-+	unsigned int idx;
 +
-+	idx = calc_wheel_index(timer->expires, base->clk, &bucket_expiry);
-+	enqueue_timer(base, timer, idx, bucket_expiry);
-+}
-+
- #ifdef CONFIG_DEBUG_OBJECTS_TIMERS
- 
- static struct debug_obj_descr timer_debug_descr;
-@@ -1057,16 +1049,13 @@ __mod_timer(struct timer_list *timer, unsigned long expires, unsigned int option
- 	/*
- 	 * If 'idx' was calculated above and the base time did not advance
- 	 * between calculating 'idx' and possibly switching the base, only
--	 * enqueue_timer() and trigger_dyntick_cpu() is required. Otherwise
--	 * we need to (re)calculate the wheel index via
--	 * internal_add_timer().
-+	 * enqueue_timer() is required. Otherwise we need to (re)calculate
-+	 * the wheel index via internal_add_timer().
- 	 */
--	if (idx != UINT_MAX && clk == base->clk) {
--		enqueue_timer(base, timer, idx);
--		trigger_dyntick_cpu(base, timer, bucket_expiry);
--	} else {
-+	if (idx != UINT_MAX && clk == base->clk)
-+		enqueue_timer(base, timer, idx, bucket_expiry);
-+	else
- 		internal_add_timer(base, timer);
--	}
- 
- out_unlock:
- 	raw_spin_unlock_irqrestore(&base->lock, flags);
++	/*
++	 * The timer wheel has to guarantee that a timer does not fire
++	 * early. Early expiry can happen due to:
++	 * - Timer is armed at the edge of a tick
++	 * - Truncation of the expiry time in the outer wheel levels
++	 *
++	 * Round up with level granularity to prevent this.
++	 */
+ 	expires = (expires + LVL_GRAN(lvl)) >> LVL_SHIFT(lvl);
+ 	*bucket_expiry = expires << LVL_SHIFT(lvl);
+ 	return LVL_OFFS(lvl) + (expires & LVL_MASK);
