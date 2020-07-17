@@ -2,17 +2,17 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 38974223EC4
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 17 Jul 2020 16:54:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AB5D223EBF
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 17 Jul 2020 16:54:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727043AbgGQOvj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 17 Jul 2020 10:51:39 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:41178 "EHLO
+        id S1727906AbgGQOv0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 17 Jul 2020 10:51:26 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:41184 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727010AbgGQOvO (ORCPT
+        with ESMTP id S1727019AbgGQOvP (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 17 Jul 2020 10:51:14 -0400
-Date:   Fri, 17 Jul 2020 14:51:10 -0000
+        Fri, 17 Jul 2020 10:51:15 -0400
+Date:   Fri, 17 Jul 2020 14:51:11 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1594997471;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -20,12 +20,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=lS+t5jPVtW4ya5DQ0VX0TYnYWANSmMy0vRoq8kEGljk=;
-        b=tD6nlKwPQWGQGWrIDXiPrkSWlmXqM3IyOoUjUqWg3u5+ZU1WBXXxqTKTMNtW3HQ93gkjZy
-        bYE2MkQEOBxVi4x33efNvlPtXmURj0YIu0/76h9gWlUBD2OHCzp1Cvy26IZky8B+4UC4KA
-        YAz3MJEggZH+RYkf8Ggv2pBvWWQLZlCJxJ+F25WsMUVimsi03E0k61tGJ/tEufuRydKGmg
-        HXYFUF/TXcfwUTra59pov+qhEpZMNkjibDqCojkLcBvnMt73xi1CIe2X5K9y4x6hwFIjsc
-        o2TFlOags2LAhn6yo0ArlKwSHIdd1viECR74/kdTQWUkwNuS3tFBKKK+0BjTsQ==
+        bh=Yr/ArMpWvm0dDDNKC3p0jopudAskrVmCtE9kA48NBn0=;
+        b=pyok3V3XUtgW0vO8SUAqxciYxvhV7bvFCRJOmoeMUzeUAfyL5DJ88lpz8Hm/+BPI4uMe/k
+        aY8AVV8JExfymflVNpH9d+NR4FVYB4VSFBl9T81KyS72Fc0z0I6Wt0+FlPwyAqQ3e+13Ww
+        +J+26EhWjWu00p9i+k2MO3YCuRsyrO9jzQVxEVbOYHPQXjEH1/5nCBvii5M4PrmGtf0WnO
+        FvMuH63pePXuJD6ZSDH0i0vNdsdi7CgSqfEtEfrB3kRD4aqqzBJP0gRKI+L1w669bO7/ql
+        EI17/ix4VHDtE5ZWuU6YEgOExYt7jeTpxoevC4PS9onRe72qLzGuKUOZ4qK0fg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1594997471;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,21 +33,21 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=lS+t5jPVtW4ya5DQ0VX0TYnYWANSmMy0vRoq8kEGljk=;
-        b=bnJvwgaL4yEPgGwDYTyJAckXGgNwprVVj/RaxTuOPYQcmWFloTYIq81n1eKhYBG4FqxYaF
-        bH2pahc7EdanWGAg==
+        bh=Yr/ArMpWvm0dDDNKC3p0jopudAskrVmCtE9kA48NBn0=;
+        b=tVUHKEFCbpRtVqfZ/hvT8MTWKOzLfkZAL0HAn/ZSzMa2AiViUhyQhKlprx2xTkx2KEVpLf
+        qH5kCSGBH6wohjBQ==
 From:   "tip-bot2 for steve.wahl@hpe.com" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/platform] x86/platform/uv: Remove support for uv1 platform
- from uv_hub
+Subject: [tip: x86/platform] x86/platform/uv: Remove support for UV1 platform
+ from uv_bau
 Cc:     Steve Wahl <steve.wahl@hpe.com>,
         Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200713212955.203480177@hpe.com>
-References: <20200713212955.203480177@hpe.com>
+In-Reply-To: <20200713212955.083309377@hpe.com>
+References: <20200713212955.083309377@hpe.com>
 MIME-Version: 1.0
-Message-ID: <159499747063.4006.10455442521413710528.tip-bot2@tip-bot2>
+Message-ID: <159499747120.4006.835579346373365906.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,143 +60,221 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/platform branch of tip:
 
-Commit-ID:     9b9ee172410d839ca55ad2e25e96f7398fb66f4f
-Gitweb:        https://git.kernel.org/tip/9b9ee172410d839ca55ad2e25e96f7398fb66f4f
+Commit-ID:     711621a098f4d62a9cdbcfc105e804fe8c22f8bb
+Gitweb:        https://git.kernel.org/tip/711621a098f4d62a9cdbcfc105e804fe8c22f8bb
 Author:        steve.wahl@hpe.com <steve.wahl@hpe.com>
-AuthorDate:    Mon, 13 Jul 2020 16:30:00 -05:00
+AuthorDate:    Mon, 13 Jul 2020 16:29:59 -05:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Fri, 17 Jul 2020 16:47:45 +02:00
 
-x86/platform/uv: Remove support for uv1 platform from uv_hub
+x86/platform/uv: Remove support for UV1 platform from uv_bau
 
-UV1 is not longer supported by HPE.
+UV1 is not longer supported.
 
 Signed-off-by: Steve Wahl <steve.wahl@hpe.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20200713212955.203480177@hpe.com
+Link: https://lkml.kernel.org/r/20200713212955.083309377@hpe.com
 
 ---
- arch/x86/include/asm/uv/uv_hub.h | 34 ++-----------------------------
- 1 file changed, 3 insertions(+), 31 deletions(-)
+ arch/x86/include/asm/uv/uv_bau.h | 118 +-----------------------------
+ arch/x86/platform/uv/tlb_uv.c    |   4 +-
+ 2 files changed, 9 insertions(+), 113 deletions(-)
 
-diff --git a/arch/x86/include/asm/uv/uv_hub.h b/arch/x86/include/asm/uv/uv_hub.h
-index 60ca0af..c0bcadf 100644
---- a/arch/x86/include/asm/uv/uv_hub.h
-+++ b/arch/x86/include/asm/uv/uv_hub.h
-@@ -224,17 +224,11 @@ static inline struct uv_hub_info_s *uv_cpu_hub_info(int cpu)
-  * This is a software convention - NOT the hardware revision numbers in
-  * the hub chip.
+diff --git a/arch/x86/include/asm/uv/uv_bau.h b/arch/x86/include/asm/uv/uv_bau.h
+index f1188bd..cd24804 100644
+--- a/arch/x86/include/asm/uv/uv_bau.h
++++ b/arch/x86/include/asm/uv/uv_bau.h
+@@ -46,10 +46,7 @@
+ #define UV_ACT_STATUS_SIZE		2
+ #define UV_DISTRIBUTION_SIZE		256
+ #define UV_SW_ACK_NPENDING		8
+-#define UV1_NET_ENDPOINT_INTD		0x38
+-#define UV2_NET_ENDPOINT_INTD		0x28
+-#define UV_NET_ENDPOINT_INTD		(is_uv1_hub() ?			\
+-			UV1_NET_ENDPOINT_INTD : UV2_NET_ENDPOINT_INTD)
++#define UV_NET_ENDPOINT_INTD		0x28
+ #define UV_PAYLOADQ_GNODE_SHIFT		49
+ #define UV_PTC_BASENAME			"sgi_uv/ptc_statistics"
+ #define UV_BAU_BASENAME			"sgi_uv/bau_tunables"
+@@ -64,14 +61,9 @@
+  * UV2: Bit 19 selects between
+  *  (0): 10 microsecond timebase and
+  *  (1): 80 microseconds
+- *  we're using 560us, similar to UV1: 65 units of 10us
++ *  we're using 560us
   */
--#define UV1_HUB_REVISION_BASE		1
- #define UV2_HUB_REVISION_BASE		3
- #define UV3_HUB_REVISION_BASE		5
- #define UV4_HUB_REVISION_BASE		7
- #define UV4A_HUB_REVISION_BASE		8	/* UV4 (fixed) rev 2 */
- 
--static inline int is_uv1_hub(void)
--{
--	return is_uv_hubbed(uv(1));
--}
+-#define UV1_INTD_SOFT_ACK_TIMEOUT_PERIOD (9UL)
+-#define UV2_INTD_SOFT_ACK_TIMEOUT_PERIOD (15UL)
 -
- static inline int is_uv2_hub(void)
- {
- 	return is_uv_hubbed(uv(2));
-@@ -265,7 +259,7 @@ static inline int is_uvx_hub(void)
+-#define UV_INTD_SOFT_ACK_TIMEOUT_PERIOD	(is_uv1_hub() ?			\
+-		UV1_INTD_SOFT_ACK_TIMEOUT_PERIOD :			\
+-		UV2_INTD_SOFT_ACK_TIMEOUT_PERIOD)
++#define UV_INTD_SOFT_ACK_TIMEOUT_PERIOD	(15UL)
+ /* assuming UV3 is the same */
  
- static inline int is_uv_hub(void)
- {
--	return is_uv1_hub() || is_uvx_hub();
-+	return is_uvx_hub();
- }
+ #define BAU_MISC_CONTROL_MULT_MASK	3
+@@ -148,7 +140,6 @@
  
- union uvh_apicid {
-@@ -292,11 +286,6 @@ union uvh_apicid {
- #define UV_PNODE_TO_GNODE(p)		((p) |uv_hub_info->gnode_extra)
- #define UV_PNODE_TO_NASID(p)		(UV_PNODE_TO_GNODE(p) << 1)
+ #define UV_LB_SUBNODEID			0x10
  
--#define UV1_LOCAL_MMR_BASE		0xf4000000UL
--#define UV1_GLOBAL_MMR32_BASE		0xf8000000UL
--#define UV1_LOCAL_MMR_SIZE		(64UL * 1024 * 1024)
--#define UV1_GLOBAL_MMR32_SIZE		(64UL * 1024 * 1024)
--
- #define UV2_LOCAL_MMR_BASE		0xfa000000UL
- #define UV2_GLOBAL_MMR32_BASE		0xfc000000UL
- #define UV2_LOCAL_MMR_SIZE		(32UL * 1024 * 1024)
-@@ -313,25 +302,21 @@ union uvh_apicid {
- #define UV4_GLOBAL_MMR32_SIZE		(16UL * 1024 * 1024)
+-/* these two are the same for UV1 and UV2: */
+ #define UV_SA_SHFT UVH_LB_BAU_MISC_CONTROL_INTD_SOFT_ACK_TIMEOUT_PERIOD_SHFT
+ #define UV_SA_MASK UVH_LB_BAU_MISC_CONTROL_INTD_SOFT_ACK_TIMEOUT_PERIOD_MASK
+ /* 4 bits of software ack period */
+@@ -189,8 +180,7 @@
+ #define BAU_DESC_QUALIFIER		0x534749
  
- #define UV_LOCAL_MMR_BASE		(				\
--					is_uv1_hub() ? UV1_LOCAL_MMR_BASE : \
- 					is_uv2_hub() ? UV2_LOCAL_MMR_BASE : \
- 					is_uv3_hub() ? UV3_LOCAL_MMR_BASE : \
- 					/*is_uv4_hub*/ UV4_LOCAL_MMR_BASE)
- 
- #define UV_GLOBAL_MMR32_BASE		(				\
--					is_uv1_hub() ? UV1_GLOBAL_MMR32_BASE : \
- 					is_uv2_hub() ? UV2_GLOBAL_MMR32_BASE : \
- 					is_uv3_hub() ? UV3_GLOBAL_MMR32_BASE : \
- 					/*is_uv4_hub*/ UV4_GLOBAL_MMR32_BASE)
- 
- #define UV_LOCAL_MMR_SIZE		(				\
--					is_uv1_hub() ? UV1_LOCAL_MMR_SIZE : \
- 					is_uv2_hub() ? UV2_LOCAL_MMR_SIZE : \
- 					is_uv3_hub() ? UV3_LOCAL_MMR_SIZE : \
- 					/*is_uv4_hub*/ UV4_LOCAL_MMR_SIZE)
- 
- #define UV_GLOBAL_MMR32_SIZE		(				\
--					is_uv1_hub() ? UV1_GLOBAL_MMR32_SIZE : \
- 					is_uv2_hub() ? UV2_GLOBAL_MMR32_SIZE : \
- 					is_uv3_hub() ? UV3_GLOBAL_MMR32_SIZE : \
- 					/*is_uv4_hub*/ UV4_GLOBAL_MMR32_SIZE)
-@@ -352,8 +337,6 @@ union uvh_apicid {
- #define UVH_APICID		0x002D0E00L
- #define UV_APIC_PNODE_SHIFT	6
- 
--#define UV_APICID_HIBIT_MASK	0xffff0000
--
- /* Local Bus from cpu's perspective */
- #define LOCAL_BUS_BASE		0x1c00000
- #define LOCAL_BUS_SIZE		(4 * 1024 * 1024)
-@@ -560,15 +543,6 @@ static inline int uv_apicid_to_pnode(int apicid)
- 	return s2pn ? s2pn[pnode - uv_hub_info->min_socket] : pnode;
- }
- 
--/* Convert an apicid to the socket number on the blade */
--static inline int uv_apicid_to_socket(int apicid)
--{
--	if (is_uv1_hub())
--		return (apicid >> (uv_hub_info->apic_pnode_shift - 1)) & 1;
--	else
--		return 0;
--}
--
- /*
-  * Access global MMRs using the low memory MMR32 space. This region supports
-  * faster MMR access but not all MMRs are accessible in this space.
-@@ -660,7 +634,7 @@ static inline int uv_cpu_blade_processor_id(int cpu)
- 	return uv_cpu_info_per(cpu)->blade_cpu_id;
- }
- 
--/* Blade number to Node number (UV1..UV4 is 1:1) */
-+/* Blade number to Node number (UV2..UV4 is 1:1) */
- static inline int uv_blade_to_node(int blade)
- {
- 	return blade;
-@@ -674,7 +648,7 @@ static inline int uv_numa_blade_id(void)
- 
- /*
-  * Convert linux node number to the UV blade number.
-- * .. Currently for UV1 thru UV4 the node and the blade are identical.
-+ * .. Currently for UV2 thru UV4 the node and the blade are identical.
-  * .. If this changes then you MUST check references to this function!
+ enum uv_bau_version {
+-	UV_BAU_V1 = 1,
+-	UV_BAU_V2,
++	UV_BAU_V2 = 2,
+ 	UV_BAU_V3,
+ 	UV_BAU_V4,
+ };
+@@ -233,12 +223,12 @@ struct bau_local_cpumask {
   */
- static inline int uv_node_to_blade_id(int nid)
-@@ -821,8 +795,6 @@ static inline void uv_set_cpu_scir_bits(int cpu, unsigned char value)
- 	}
- }
  
--extern unsigned int uv_apicid_hibits;
--
+ /**
+- * struct uv1_2_3_bau_msg_payload - defines payload for INTD transactions
++ * struct uv2_3_bau_msg_payload - defines payload for INTD transactions
+  * @address:		Signifies a page or all TLB's of the cpu
+  * @sending_cpu:	CPU from which the message originates
+  * @acknowledge_count:	CPUs on the destination Hub that received the interrupt
+  */
+-struct uv1_2_3_bau_msg_payload {
++struct uv2_3_bau_msg_payload {
+ 	u64 address;
+ 	u16 sending_cpu;
+ 	u16 acknowledge_count;
+@@ -260,89 +250,6 @@ struct uv4_bau_msg_payload {
+ };
+ 
  /*
-  * Get the minimum revision number of the hub chips within the partition.
-  * (See UVx_HUB_REVISION_BASE above for specific values.)
+- * UV1 Message header:  16 bytes (128 bits) (bytes 0x30-0x3f of descriptor)
+- * see table 4.2.3.0.1 in broacast_assist spec.
+- */
+-struct uv1_bau_msg_header {
+-	unsigned int	dest_subnodeid:6;	/* must be 0x10, for the LB */
+-	/* bits 5:0 */
+-	unsigned int	base_dest_nasid:15;	/* nasid of the first bit */
+-	/* bits 20:6 */				/* in uvhub map */
+-	unsigned int	command:8;		/* message type */
+-	/* bits 28:21 */
+-	/* 0x38: SN3net EndPoint Message */
+-	unsigned int	rsvd_1:3;		/* must be zero */
+-	/* bits 31:29 */
+-	/* int will align on 32 bits */
+-	unsigned int	rsvd_2:9;		/* must be zero */
+-	/* bits 40:32 */
+-	/* Suppl_A is 56-41 */
+-	unsigned int	sequence:16;		/* message sequence number */
+-	/* bits 56:41 */			/* becomes bytes 16-17 of msg */
+-						/* Address field (96:57) is
+-						   never used as an address
+-						   (these are address bits
+-						   42:3) */
+-
+-	unsigned int	rsvd_3:1;		/* must be zero */
+-	/* bit 57 */
+-	/* address bits 27:4 are payload */
+-	/* these next 24  (58-81) bits become bytes 12-14 of msg */
+-	/* bits 65:58 land in byte 12 */
+-	unsigned int	replied_to:1;		/* sent as 0 by the source to
+-						   byte 12 */
+-	/* bit 58 */
+-	unsigned int	msg_type:3;		/* software type of the
+-						   message */
+-	/* bits 61:59 */
+-	unsigned int	canceled:1;		/* message canceled, resource
+-						   is to be freed*/
+-	/* bit 62 */
+-	unsigned int	payload_1a:1;		/* not currently used */
+-	/* bit 63 */
+-	unsigned int	payload_1b:2;		/* not currently used */
+-	/* bits 65:64 */
+-
+-	/* bits 73:66 land in byte 13 */
+-	unsigned int	payload_1ca:6;		/* not currently used */
+-	/* bits 71:66 */
+-	unsigned int	payload_1c:2;		/* not currently used */
+-	/* bits 73:72 */
+-
+-	/* bits 81:74 land in byte 14 */
+-	unsigned int	payload_1d:6;		/* not currently used */
+-	/* bits 79:74 */
+-	unsigned int	payload_1e:2;		/* not currently used */
+-	/* bits 81:80 */
+-
+-	unsigned int	rsvd_4:7;		/* must be zero */
+-	/* bits 88:82 */
+-	unsigned int	swack_flag:1;		/* software acknowledge flag */
+-	/* bit 89 */
+-						/* INTD trasactions at
+-						   destination are to wait for
+-						   software acknowledge */
+-	unsigned int	rsvd_5:6;		/* must be zero */
+-	/* bits 95:90 */
+-	unsigned int	rsvd_6:5;		/* must be zero */
+-	/* bits 100:96 */
+-	unsigned int	int_both:1;		/* if 1, interrupt both sockets
+-						   on the uvhub */
+-	/* bit 101*/
+-	unsigned int	fairness:3;		/* usually zero */
+-	/* bits 104:102 */
+-	unsigned int	multilevel:1;		/* multi-level multicast
+-						   format */
+-	/* bit 105 */
+-	/* 0 for TLB: endpoint multi-unicast messages */
+-	unsigned int	chaining:1;		/* next descriptor is part of
+-						   this activation*/
+-	/* bit 106 */
+-	unsigned int	rsvd_7:21;		/* must be zero */
+-	/* bits 127:107 */
+-};
+-
+-/*
+  * UV2 Message header:  16 bytes (128 bits) (bytes 0x30-0x3f of descriptor)
+  * see figure 9-2 of harp_sys.pdf
+  * assuming UV3 is the same
+@@ -418,25 +325,14 @@ struct bau_desc {
+ 	 * message template, consisting of header and payload:
+ 	 */
+ 	union bau_msg_header {
+-		struct uv1_bau_msg_header	uv1_hdr;
+ 		struct uv2_3_bau_msg_header	uv2_3_hdr;
+ 	} header;
+ 
+ 	union bau_payload_header {
+-		struct uv1_2_3_bau_msg_payload	uv1_2_3;
++		struct uv2_3_bau_msg_payload	uv2_3;
+ 		struct uv4_bau_msg_payload	uv4;
+ 	} payload;
+ };
+-/* UV1:
+- *   -payload--    ---------header------
+- *   bytes 0-11    bits 41-56  bits 58-81
+- *       A           B  (2)      C (3)
+- *
+- *            A/B/C are moved to:
+- *       A            C          B
+- *   bytes 0-11  bytes 12-14  bytes 16-17  (byte 15 filled in by hw as vector)
+- *   ------------payload queue-----------
+- */
+ /* UV2:
+  *   -payload--    ---------header------
+  *   bytes 0-11    bits 70-78  bits 21-44
+diff --git a/arch/x86/platform/uv/tlb_uv.c b/arch/x86/platform/uv/tlb_uv.c
+index 395073d..62ea907 100644
+--- a/arch/x86/platform/uv/tlb_uv.c
++++ b/arch/x86/platform/uv/tlb_uv.c
+@@ -1050,8 +1050,8 @@ const struct cpumask *uv_flush_tlb_others(const struct cpumask *cpumask,
+ 	switch (bcp->uvhub_version) {
+ 	case UV_BAU_V2:
+ 	case UV_BAU_V3:
+-		bau_desc->payload.uv1_2_3.address = address;
+-		bau_desc->payload.uv1_2_3.sending_cpu = cpu;
++		bau_desc->payload.uv2_3.address = address;
++		bau_desc->payload.uv2_3.sending_cpu = cpu;
+ 		break;
+ 	case UV_BAU_V4:
+ 		bau_desc->payload.uv4.address = address;
