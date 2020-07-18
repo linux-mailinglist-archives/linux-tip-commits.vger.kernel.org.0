@@ -2,20 +2,17 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 89C6B224745
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 18 Jul 2020 02:01:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F36C224747
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 18 Jul 2020 02:02:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727946AbgGRAB5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 17 Jul 2020 20:01:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47828 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727040AbgGRAB5 (ORCPT
+        id S1728410AbgGRAB6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 17 Jul 2020 20:01:58 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:44216 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726851AbgGRAB6 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 17 Jul 2020 20:01:57 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72D05C0619D2;
-        Fri, 17 Jul 2020 17:01:57 -0700 (PDT)
-Date:   Sat, 18 Jul 2020 00:01:54 -0000
+        Fri, 17 Jul 2020 20:01:58 -0400
+Date:   Sat, 18 Jul 2020 00:01:55 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1595030515;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -23,12 +20,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=MukbcjmBrDg2Lx48HStzUZb1PPE5amUzAQIMc8hjWBI=;
-        b=h/w0vVMgtmmf+mnnyAyHYRHoNGEXU8gkXXfZ5eqks2VQClDWbpPZXDkFQA2TTVz0GCQ4PL
-        CaGnsxt2Il4HtsV0Hbw08iWw094Aoigrh/4IqjFGPRKzj1Aj8adurNKmDjTuqKnzxz5/Vm
-        wjv1uZ5DesioNBrNX6x6NCsvH5uCFTONDRLuU3xmblYjK0YHI18TpqP6B0XtBGaU8wpSsm
-        tVPOgFGsWgii7ZfVKVIxpMOdp/eimGt+KMNNIzP6JIiHr7St6nCysZMwu4Vk05mrsycI5B
-        h2y4CUt8xWGsdYmLg/mHRgQwxXGCAcVzE8FlVrHW9OO2oEx3DJzRxBJLZUtlSA==
+        bh=8XpgUWIGgeUWH6liOxP7uwaShsbMbEpbQlEspkHv2+s=;
+        b=Wu25cVGPUIA0Le25qGbhqBsnhXRht5KcmaACd/8LWsm73vrsc6Q9kYdNul31fcN5jgtNYA
+        tIxtIcFcPpyOA+qxd8VvQQY/nCLNTnL8SnjoO+G2azcUlZLMDoqeBDdF7sATnGymoH5/um
+        0IQ/cL3qhpABDIgsLSNFoT5LKhmZLsMzudIMXPxydkXF5Ah2LjNOaggB02bNBwnRb6FmYn
+        PlcihFE1/epIvk1CNmJrrmjiTE99dnTXBmuNAIRi0oqpqpCuqe49hoEZvvFajrmydgdPZB
+        VNwxQ/BitjUyikAniwXDxcEnqHjqH5GM5hvVUbWqQtV5HfiPbvEVrjYc3nF2cg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1595030515;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,20 +33,20 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=MukbcjmBrDg2Lx48HStzUZb1PPE5amUzAQIMc8hjWBI=;
-        b=JBx9dv+eKaLd1kYbMTAIfw19HtzvS4mD+RRSLuvfBTcoQe9lYWzHiTUPtkzJAlL6GZX0gv
-        aDqOEC4baraqc1Aw==
+        bh=8XpgUWIGgeUWH6liOxP7uwaShsbMbEpbQlEspkHv2+s=;
+        b=Qz1YMA79CaC9glnKsxPfVOkM508HDBVnDpYUCA22s02nZfHOvJ3ea3YPuLsn6ScWd8R4vF
+        LfqX0ia9DsqocMBQ==
 From:   tip-bot2 for =?utf-8?q?Andr=C3=A9?= Almeida 
         <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] futex: Remove unused or redundant includes
+Subject: [tip: locking/core] futex: Consistently use fshared as boolean
 Cc:     andrealmeid@collabora.com, Thomas Gleixner <tglx@linutronix.de>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200702202843.520764-4-andrealmeid@collabora.com>
-References: <20200702202843.520764-4-andrealmeid@collabora.com>
+In-Reply-To: <20200702202843.520764-5-andrealmeid@collabora.com>
+References: <20200702202843.520764-5-andrealmeid@collabora.com>
 MIME-Version: 1.0
-Message-ID: <159503051436.4006.10659426956008198981.tip-bot2@tip-bot2>
+Message-ID: <159503051506.4006.14566660709766514564.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,63 +58,73 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     9a71df495c3d29dab596bb590e73fd8b20106e2d
-Gitweb:        https://git.kernel.org/tip/9a71df495c3d29dab596bb590e73fd8b201=
-06e2d
+Commit-ID:     9261308598ad28b9a8a2237d881833e9f217244e
+Gitweb:        https://git.kernel.org/tip/9261308598ad28b9a8a2237d881833e9f21=
+7244e
 Author:        Andr=C3=A9 Almeida <andrealmeid@collabora.com>
-AuthorDate:    Thu, 02 Jul 2020 17:28:42 -03:00
+AuthorDate:    Thu, 02 Jul 2020 17:28:43 -03:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sat, 18 Jul 2020 01:56:09 +02:00
+CommitterDate: Sat, 18 Jul 2020 01:56:08 +02:00
 
-futex: Remove unused or redundant includes
+futex: Consistently use fshared as boolean
 
-Since 82af7aca ("Removal of FUTEX_FD"), some includes related to file
-operations aren't needed anymore. More investigation around the includes
-showed that a lot of includes aren't required for compilation, possible
-due to redundant includes. Simplify the code by removing unused
-includes.
+Since fshared is only conveying true/false values, declare it as bool.
+
+In get_futex_key() the usage of fshared can be restricted to the first part
+of the function. If fshared is false the function is terminated early and
+the subsequent code can use a constant 'true' instead of the variable.
 
 Signed-off-by: Andr=C3=A9 Almeida <andrealmeid@collabora.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20200702202843.520764-4-andrealmeid@collabora=
+Link: https://lkml.kernel.org/r/20200702202843.520764-5-andrealmeid@collabora=
 .com
 
 ---
- kernel/futex.c | 17 -----------------
- 1 file changed, 17 deletions(-)
+ kernel/futex.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/kernel/futex.c b/kernel/futex.c
-index cda9175..4616d4a 100644
+index 362fbca..cda9175 100644
 --- a/kernel/futex.c
 +++ b/kernel/futex.c
-@@ -32,30 +32,13 @@
-  *  "But they come in a choice of three flavours!"
+@@ -476,7 +476,7 @@ static u64 get_inode_sequence_number(struct inode *inode)
+ /**
+  * get_futex_key() - Get parameters which are the keys for a futex
+  * @uaddr:	virtual address of the futex
+- * @fshared:	0 for a PROCESS_PRIVATE futex, 1 for PROCESS_SHARED
++ * @fshared:	false for a PROCESS_PRIVATE futex, true for PROCESS_SHARED
+  * @key:	address where result is stored.
+  * @rw:		mapping needs to be read/write (values: FUTEX_READ,
+  *              FUTEX_WRITE)
+@@ -500,8 +500,8 @@ static u64 get_inode_sequence_number(struct inode *inode)
+  *
+  * lock_page() might sleep, the caller should not hold a spinlock.
   */
- #include <linux/compat.h>
--#include <linux/slab.h>
--#include <linux/poll.h>
--#include <linux/fs.h>
--#include <linux/file.h>
- #include <linux/jhash.h>
--#include <linux/init.h>
--#include <linux/futex.h>
--#include <linux/mount.h>
- #include <linux/pagemap.h>
- #include <linux/syscalls.h>
--#include <linux/signal.h>
--#include <linux/export.h>
--#include <linux/magic.h>
--#include <linux/pid.h>
--#include <linux/nsproxy.h>
--#include <linux/ptrace.h>
--#include <linux/sched/rt.h>
--#include <linux/sched/wake_q.h>
--#include <linux/sched/mm.h>
- #include <linux/hugetlb.h>
- #include <linux/freezer.h>
- #include <linux/memblock.h>
- #include <linux/fault-inject.h>
--#include <linux/refcount.h>
+-static int
+-get_futex_key(u32 __user *uaddr, int fshared, union futex_key *key, enum fut=
+ex_access rw)
++static int get_futex_key(u32 __user *uaddr, bool fshared, union futex_key *k=
+ey,
++			 enum futex_access rw)
+ {
+ 	unsigned long address =3D (unsigned long)uaddr;
+ 	struct mm_struct *mm =3D current->mm;
+@@ -538,7 +538,7 @@ get_futex_key(u32 __user *uaddr, int fshared, union futex=
+_key *key, enum futex_a
 =20
- #include <asm/futex.h>
+ again:
+ 	/* Ignore any VERIFY_READ mapping (futex common case) */
+-	if (unlikely(should_fail_futex(fshared)))
++	if (unlikely(should_fail_futex(true)))
+ 		return -EFAULT;
 =20
+ 	err =3D get_user_pages_fast(address, 1, FOLL_WRITE, &page);
+@@ -626,7 +626,7 @@ again:
+ 		 * A RO anonymous page will never change and thus doesn't make
+ 		 * sense for futex operations.
+ 		 */
+-		if (unlikely(should_fail_futex(fshared)) || ro) {
++		if (unlikely(should_fail_futex(true)) || ro) {
+ 			err =3D -EFAULT;
+ 			goto out;
+ 		}
