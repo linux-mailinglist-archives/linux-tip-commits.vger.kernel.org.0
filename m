@@ -2,51 +2,118 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9ACA4225105
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 19 Jul 2020 12:05:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CC5B9225185
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 19 Jul 2020 13:09:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726543AbgGSKFA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 19 Jul 2020 06:05:00 -0400
-Received: from sonic314-13.consmr.mail.bf2.yahoo.com ([74.6.132.123]:35194
-        "EHLO sonic314-13.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726520AbgGSKFA (ORCPT
+        id S1726255AbgGSLIx (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 19 Jul 2020 07:08:53 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:51114 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726330AbgGSLIu (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 19 Jul 2020 06:05:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1595153099; bh=qXBWf2EoWT9gmJgm/3NiogFnv3V/rxlq5ApKE+Dow4k=; h=Date:From:Reply-To:Subject:References:From:Subject; b=K/YcAjYk4TvQWaBwnMLFJcDqfvvcXv59nP2+IWEntIwmoRgRsNO05gCxGp2/nbbTXQR6jROAL75Tq5qivY9fixjfkBJQ0mA/paykAHzEz/pBnAhLctBdRl45sHJIdU8Ec2YlSgd5/s0Wjp3Pv0Ohjq92JImdnIVTc4RbGlaj0In2PQOBgp52faRBTCePGlh26rWsnAoaKmUGTOSI267MyNO9P8QiVVBkQUi6nVeUXRciu0XS6QLqP1h0s4R+/5KQ3bDSBCFWlasB/m1qWH4wvZuuP27d6FZ4r4FAL5pS8pNnsLbjDsvWJfDAJpQ9khYVDu3x+mVbqfTUvLSM44tdrw==
-X-YMail-OSG: vx0zszsVM1kxDqbotIPx00qKNUpRdDbVKPw829FURANzMC5wJ2Q.hCx9.sAsMH7
- ndt_U_oUrZpLJgOgOqb6zWHGyqBQ2Podqr0IZS8ieTq5Afodz_xGTy1n1IvY9Q5h6tMO9mgHQzXm
- ZKcoDux8V429JyaJgqBiVT7oeWVwYowd1rFb7IxWoDAZY5fbTUIC.6avrH9Hiy1CN7fCYPwnuFJX
- tpYVEnQCYAfAvBNhhfoCAwHgF4joz6IXEwmAB4Pwdf0FzWJBsndWqoLW9WwxrNg2e1ymQ3c9BFwk
- kjCR89dXTt_M18sqT7psAdbi.NQU4N7jIsnesNtyLSerIHxwC32jLupCOZ8kDWQBXuSbBPuJcFXE
- 1qXyX3shjKCYP6w.1sy.YtXVFmwIgq7iPwKkV96ukIpxr.vvTgsp1VRhDT4mPhAXS.zsQkYUXg7q
- 3u3SXEftVmsgiFm63j0gm_tBSVddwOVqQwfy2hXLgo0R2vSgUZg0BfYr_WerHujq4NeUAqPhQSSf
- 3O..9RnaXYCyaD5A8TQluqnSwvg3Yc5mRU3_Wc3i2.PFe3OcxGaiZySIhDp.esbSrr6fFnmgdWRE
- .ekHQCsywXOtOGHtxlHl1aFZDyPqHlkwD6C54zwOs.0Bf4uJEkhbhkyR5zAR0q9aH8x68y2ArAdS
- k9N.tBbA7mUw1wlnydG_q2732hCggZd61WskD3gxsgIDrWqlG3jzD5p3_kYIx.h7Ca1EqzCd7KrX
- ryBDHySKhU_KesH0W8DQ.2.SqLlGTwiis51qLbiT2OugjnUxa.tgsKL9bRbZDIlaBWSvUuQRB2Mw
- gA78HAyQx2kg3pXtFXtusayjTjz5gCkuS5ie.VX8g7TZ1mtIFkGM7Xeq8S.HhKtQ7xg1duT_pUB2
- rxq3XtMWCrZhWGImqMRZfLNylVyMekDtmSi4U8GiTnAJjE1t0HEd0Y3f47jwRS25DsOgKjijIbl4
- 6qLaMpLWLZ3lTIpPgUgm7CXCAKliauKy6N6BDoMNlF8vmIcwK4jlMXZ7RAIEf3hQMF8_9IuMj.Og
- 5rFaDiKFBRHGXGv1jgf9kjw761efEX59Pyy0uV8sYzmr8x_d49OVlXQ_SaobFmcRfedH17inpuLk
- QrkoubvyL7W23zgPQIl6jG1t3L6Lu1mj0ww5CYk4TCYm2oiRxoi6oPqLTAHmACU3H_60e5UQ6_0n
- X5358RL3vFIWv5oUMrmRthDt3u4RDRtcMxqsX7_jd6cBWx.pbpjSWqMM7Z812sJKqE8gDEoDaQU7
- 0d8zEpsSzXIPPW.5kPPSAzba_ixdCPI2kC9yQavVd_7llPLpkJ13I0BtKGOGHWqUx4qc9BnkVDA-
- -
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic314.consmr.mail.bf2.yahoo.com with HTTP; Sun, 19 Jul 2020 10:04:59 +0000
-Date:   Sun, 19 Jul 2020 10:04:55 +0000 (UTC)
-From:   Monica Render <prender1226@gmx.com>
-Reply-To: mrender377@gmail.com
-Message-ID: <1955651903.2694416.1595153095326@mail.yahoo.com>
-Subject: Nice to meet you!
+        Sun, 19 Jul 2020 07:08:50 -0400
+Date:   Sun, 19 Jul 2020 11:08:46 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1595156927;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=zDqW2b2XMZ5wAfg7sHuZmu/331vudy3InpUCbJNlWrM=;
+        b=aR1gXZAFaI1Q39Drw77XkX4Q8wvHew5oB9eXK6JaGK9m7/DfgGOFfhaw+tM1GbgcejdrLs
+        7+MqznXKrD+n1kEztcGVIxOHxvqDlpyJ1rOoj7ijemTU7qoJg8TTzUzbh5yjw8Xuji1hEk
+        m5EPSjWCP0qF3DIQyxuSL5d9jmX40Ir9Rrp6qk3ksWJISuI9/V7v3L4pPerR3Sre4eDx/S
+        lwJYGoYnBKgmVbwjn6WXB/H3c5faI7PFkfnpz2RC9nogrt4Zo3oP0Eomwq9zTaas9lZB15
+        M0E9sucVeEfrceRqgYO4Xo4vG+UWFuDT315JUjKfuMJ2iK0W7vNfjG1lXCerAg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1595156927;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=zDqW2b2XMZ5wAfg7sHuZmu/331vudy3InpUCbJNlWrM=;
+        b=ObeCLGfw56kpNeC70VXK280Blxlc3PkyyI0XWrA7BRQk7UK8WMqd/GwkAd8barjNIz1lVn
+        wSMJN27fqVqobmAQ==
+From:   "tip-bot2 for Arvind Sankar" <tip-bot2@linutronix.de>
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/urgent] x86/boot: Don't add the EFI stub to targets
+Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Ard Biesheuvel <ardb@kernel.org>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200715032631.1562882-1-nivedita@alum.mit.edu>
+References: <20200715032631.1562882-1-nivedita@alum.mit.edu>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Message-ID: <159515692603.4006.6720081328208221414.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2.linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-References: <1955651903.2694416.1595153095326.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.16271 YMailNodin Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:77.0) Gecko/20100101 Firefox/77.0
-To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-Please do you speak english?
+The following commit has been merged into the x86/urgent branch of tip:
+
+Commit-ID:     da05b143a308bd6a7a444401f9732678ae63fc70
+Gitweb:        https://git.kernel.org/tip/da05b143a308bd6a7a444401f9732678ae63fc70
+Author:        Arvind Sankar <nivedita@alum.mit.edu>
+AuthorDate:    Tue, 14 Jul 2020 23:26:31 -04:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Sun, 19 Jul 2020 13:07:11 +02:00
+
+x86/boot: Don't add the EFI stub to targets
+
+vmlinux-objs-y is added to targets, which currently means that the EFI
+stub gets added to the targets as well. It shouldn't be added since it
+is built elsewhere.
+
+This confuses Makefile.build which interprets the EFI stub as a target
+	$(obj)/$(objtree)/drivers/firmware/efi/libstub/lib.a
+and will create drivers/firmware/efi/libstub/ underneath
+arch/x86/boot/compressed, to hold this supposed target, if building
+out-of-tree. [0]
+
+Fix this by pulling the stub out of vmlinux-objs-y into efi-obj-y.
+
+[0] See scripts/Makefile.build near the end:
+    # Create directories for object files if they do not exist
+
+Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Masahiro Yamada <masahiroy@kernel.org>
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Link: https://lkml.kernel.org/r/20200715032631.1562882-1-nivedita@alum.mit.edu
+
+---
+ arch/x86/boot/compressed/Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
+index 7619742..5a828fd 100644
+--- a/arch/x86/boot/compressed/Makefile
++++ b/arch/x86/boot/compressed/Makefile
+@@ -90,8 +90,8 @@ endif
+ 
+ vmlinux-objs-$(CONFIG_ACPI) += $(obj)/acpi.o
+ 
+-vmlinux-objs-$(CONFIG_EFI_STUB) += $(objtree)/drivers/firmware/efi/libstub/lib.a
+ vmlinux-objs-$(CONFIG_EFI_MIXED) += $(obj)/efi_thunk_$(BITS).o
++efi-obj-$(CONFIG_EFI_STUB) = $(objtree)/drivers/firmware/efi/libstub/lib.a
+ 
+ # The compressed kernel is built with -fPIC/-fPIE so that a boot loader
+ # can place it anywhere in memory and it will still run. However, since
+@@ -115,7 +115,7 @@ endef
+ quiet_cmd_check-and-link-vmlinux = LD      $@
+       cmd_check-and-link-vmlinux = $(cmd_check_data_rel); $(cmd_ld)
+ 
+-$(obj)/vmlinux: $(vmlinux-objs-y) FORCE
++$(obj)/vmlinux: $(vmlinux-objs-y) $(efi-obj-y) FORCE
+ 	$(call if_changed,check-and-link-vmlinux)
+ 
+ OBJCOPYFLAGS_vmlinux.bin :=  -R .comment -S
