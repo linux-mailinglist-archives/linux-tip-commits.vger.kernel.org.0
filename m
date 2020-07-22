@@ -2,52 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CEB9B22A1B1
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 23 Jul 2020 00:01:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DCE5F22A1E7
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 23 Jul 2020 00:12:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732944AbgGVWBN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 22 Jul 2020 18:01:13 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:52416 "EHLO
+        id S1733227AbgGVWLw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 22 Jul 2020 18:11:52 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:52734 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730258AbgGVWBM (ORCPT
+        with ESMTP id S1733217AbgGVWLv (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 22 Jul 2020 18:01:12 -0400
-Date:   Wed, 22 Jul 2020 22:01:09 -0000
+        Wed, 22 Jul 2020 18:11:51 -0400
+Date:   Wed, 22 Jul 2020 22:11:47 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1595455270;
+        s=2020; t=1595455908;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=8ZqBD0H1LWlJxsQ61ALlfHIsDMsog0tR1YbzLAy24MU=;
-        b=tMUtattnLiy/f81y1b9WlqyqgmeJCvL+wuy/O2YPg3jOSStlP6SzqdNXSGMqgPu3ik1jhI
-        34k/04qha7opJcq0LWQHZAz9HmjzCHC39BGJnZ9UThwXzEODvaqWSDwjowkn2Kp3y+3L/M
-        tprMQFhiXKlom/VI543UznhKGDLKm48yh/TXRHoQ/9wkONZIhPVHkK2gVNStexkEId+qEK
-        i+zrNj6/JSr+SCMDoEojhSYC6vrRcDmKRwcupTPbI3CU4PuLsmuPI0efYHSF0RE6up1U+8
-        LGU5JJrJjmNMXlzm/TDy+mWuDr/94vcn3z+t16naQ53JqlkBu84txBGpPJ1znw==
+        bh=dP8HeqyLz7VDtF0UFEdHeulQGqLfYt9frO8l1BcFuYc=;
+        b=ZSqcsNX2FkwnS7GVdwjhHAWv+ols6orXfZ+RrELVFdDuciBRMOH71rFuuUK0c2WmvEgOIW
+        uujGdDhcQ7Rzo3kBJU7d82bvJkmLKMQrVnfhXUcKhbNIyhmuwowvrV6yZPIEwMlxucIqNj
+        N/GQ+QHAXoMFrHHyHL5CqR/aReE2Ng6DGYc5fF3cYBlOqnghKOV+PNka7PY3pGpuj6ZbGk
+        rEB7ac69VZ/P0zeBuOpvK0PbiK0/t1JygekL6bDqwGhQAs4duda1JDqhlJQcO8TxJju9YS
+        4/yXPvvNP2vpqdJB7wGN31CVaQeyM4dbEQbT8SO64WepYTKkZyecaeWDgcrhPg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1595455270;
+        s=2020e; t=1595455908;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=8ZqBD0H1LWlJxsQ61ALlfHIsDMsog0tR1YbzLAy24MU=;
-        b=ZCpyLTN2StsvsyvGJKpOHRg8gPsy1ExlMOWZnldTaXWI1YGAepurM6UpN+JoJQoITe/2iF
-        5Lq4Uz/Wq3g7RJBw==
-From:   "tip-bot2 for Dmitry Safonov" <tip-bot2@linutronix.de>
+        bh=dP8HeqyLz7VDtF0UFEdHeulQGqLfYt9frO8l1BcFuYc=;
+        b=G7vctGfisL5uVJEhl1+HlGJ2o3IcctplHVbRjfoYBYz1UwUSJrfv3sfkDvvktA7Pa98A54
+        LIwQm8i4JzZaflAw==
+From:   "tip-bot2 for Jon Derrick" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/core] x86/dumpstack: Add log_lvl to show_iret_regs()
-Cc:     Dmitry Safonov <dima@arista.com>,
+Subject: [tip: irq/urgent] irqdomain/treewide: Free firmware node after domain removal
+Cc:     Jon Derrick <jonathan.derrick@intel.com>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Petr Mladek <pmladek@suse.com>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200629144847.492794-2-dima@arista.com>
-References: <20200629144847.492794-2-dima@arista.com>
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Bjorn Helgaas <bhelgaas@google.com>, stable@vger.kernel.org,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <1595363169-7157-1-git-send-email-jonathan.derrick@intel.com>
+References: <1595363169-7157-1-git-send-email-jonathan.derrick@intel.com>
 MIME-Version: 1.0
-Message-ID: <159545526999.4006.11438373366826140681.tip-bot2@tip-bot2>
+Message-ID: <159545590775.4006.12810097087701475191.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -57,102 +58,164 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/core branch of tip:
+The following commit has been merged into the irq/urgent branch of tip:
 
-Commit-ID:     fd07f802a70935fbbfb9cc2d11e1d8ac95f28e44
-Gitweb:        https://git.kernel.org/tip/fd07f802a70935fbbfb9cc2d11e1d8ac95f28e44
-Author:        Dmitry Safonov <dima@arista.com>
-AuthorDate:    Mon, 29 Jun 2020 15:48:45 +01:00
+Commit-ID:     ec0160891e387f4771f953b888b1fe951398e5d9
+Gitweb:        https://git.kernel.org/tip/ec0160891e387f4771f953b888b1fe951398e5d9
+Author:        Jon Derrick <jonathan.derrick@intel.com>
+AuthorDate:    Tue, 21 Jul 2020 14:26:09 -06:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 22 Jul 2020 23:56:53 +02:00
+CommitterDate: Thu, 23 Jul 2020 00:08:52 +02:00
 
-x86/dumpstack: Add log_lvl to show_iret_regs()
+irqdomain/treewide: Free firmware node after domain removal
 
-show_trace_log_lvl() provides x86 platform-specific way to unwind
-backtrace with a given log level. Unfortunately, registers dump(s) are
-not printed with the same log level - instead, KERN_DEFAULT is always
-used.
+Commit 711419e504eb ("irqdomain: Add the missing assignment of
+domain->fwnode for named fwnode") unintentionally caused a dangling pointer
+page fault issue on firmware nodes that were freed after IRQ domain
+allocation. Commit e3beca48a45b fixed that dangling pointer issue by only
+freeing the firmware node after an IRQ domain allocation failure. That fix
+no longer frees the firmware node immediately, but leaves the firmware node
+allocated after the domain is removed.
 
-Arista's switches uses quite common setup with rsyslog, where only
-urgent messages goes to console (console_log_level=KERN_ERR), everything
-else goes into /var/log/ as the console baud-rate often is indecently
-slow (9600 bps).
+The firmware node must be kept around through irq_domain_remove, but should be
+freed it afterwards.
 
-Backtrace dumps without registers printed have proven to be as useful as
-morning standups. Furthermore, in order to introduce KERN_UNSUPPRESSED
-(which I believe is still the most elegant way to fix raciness of sysrq[1])
-the log level should be passed down the stack to register dumping
-functions. Besides, there is a potential use-case for printing traces
-with KERN_DEBUG level [2] (where registers dump shouldn't appear with
-higher log level).
+Add the missing free operations after domain removal where where appropriate.
 
-Add log_lvl parameter to show_iret_regs() as a preparation to add it
-to __show_regs() and show_regs_if_on_stack().
-
-[1]: https://lore.kernel.org/lkml/20190528002412.1625-1-dima@arista.com/
-[2]: https://lore.kernel.org/linux-doc/20190724170249.9644-1-dima@arista.com/
-
-Signed-off-by: Dmitry Safonov <dima@arista.com>
+Fixes: e3beca48a45b ("irqdomain/treewide: Keep firmware node unconditionally allocated")
+Signed-off-by: Jon Derrick <jonathan.derrick@intel.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Petr Mladek <pmladek@suse.com>
-Link: https://lkml.kernel.org/r/20200629144847.492794-2-dima@arista.com
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>	# drivers/pci
+Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/1595363169-7157-1-git-send-email-jonathan.derrick@intel.com
 
 ---
- arch/x86/include/asm/kdebug.h | 2 +-
- arch/x86/kernel/dumpstack.c   | 8 ++++----
- arch/x86/kernel/process_64.c  | 2 +-
- 3 files changed, 6 insertions(+), 6 deletions(-)
+ arch/mips/pci/pci-xtalk-bridge.c    | 3 +++
+ arch/x86/kernel/apic/io_apic.c      | 5 +++++
+ drivers/iommu/intel/irq_remapping.c | 8 ++++++++
+ drivers/mfd/ioc3.c                  | 6 ++++++
+ drivers/pci/controller/vmd.c        | 3 +++
+ 5 files changed, 25 insertions(+)
 
-diff --git a/arch/x86/include/asm/kdebug.h b/arch/x86/include/asm/kdebug.h
-index 247ab14..da024bb 100644
---- a/arch/x86/include/asm/kdebug.h
-+++ b/arch/x86/include/asm/kdebug.h
-@@ -37,7 +37,7 @@ void die_addr(const char *str, struct pt_regs *regs, long err, long gp_addr);
- extern int __must_check __die(const char *, struct pt_regs *, long);
- extern void show_stack_regs(struct pt_regs *regs);
- extern void __show_regs(struct pt_regs *regs, enum show_regs_mode);
--extern void show_iret_regs(struct pt_regs *regs);
-+extern void show_iret_regs(struct pt_regs *regs, const char *log_lvl);
- extern unsigned long oops_begin(void);
- extern void oops_end(unsigned long, struct pt_regs *, int signr);
- 
-diff --git a/arch/x86/kernel/dumpstack.c b/arch/x86/kernel/dumpstack.c
-index b037cfa..c36d629 100644
---- a/arch/x86/kernel/dumpstack.c
-+++ b/arch/x86/kernel/dumpstack.c
-@@ -126,10 +126,10 @@ void show_ip(struct pt_regs *regs, const char *loglvl)
- 	show_opcodes(regs, loglvl);
+diff --git a/arch/mips/pci/pci-xtalk-bridge.c b/arch/mips/pci/pci-xtalk-bridge.c
+index 5958217..9b3cc77 100644
+--- a/arch/mips/pci/pci-xtalk-bridge.c
++++ b/arch/mips/pci/pci-xtalk-bridge.c
+@@ -728,6 +728,7 @@ err_free_resource:
+ 	pci_free_resource_list(&host->windows);
+ err_remove_domain:
+ 	irq_domain_remove(domain);
++	irq_domain_free_fwnode(fn);
+ 	return err;
  }
  
--void show_iret_regs(struct pt_regs *regs)
-+void show_iret_regs(struct pt_regs *regs, const char *log_lvl)
+@@ -735,8 +736,10 @@ static int bridge_remove(struct platform_device *pdev)
  {
--	show_ip(regs, KERN_DEFAULT);
--	printk(KERN_DEFAULT "RSP: %04x:%016lx EFLAGS: %08lx", (int)regs->ss,
-+	show_ip(regs, log_lvl);
-+	printk("%sRSP: %04x:%016lx EFLAGS: %08lx", log_lvl, (int)regs->ss,
- 		regs->sp, regs->flags);
- }
+ 	struct pci_bus *bus = platform_get_drvdata(pdev);
+ 	struct bridge_controller *bc = BRIDGE_CONTROLLER(bus);
++	struct fwnode_handle *fn = bc->domain->fwnode;
  
-@@ -155,7 +155,7 @@ static void show_regs_if_on_stack(struct stack_info *info, struct pt_regs *regs,
- 		 * full pt_regs might not have been saved yet.  In that case
- 		 * just print the iret frame.
- 		 */
--		show_iret_regs(regs);
-+		show_iret_regs(regs, KERN_DEFAULT);
+ 	irq_domain_remove(bc->domain);
++	irq_domain_free_fwnode(fn);
+ 	pci_lock_rescan_remove();
+ 	pci_stop_root_bus(bus);
+ 	pci_remove_root_bus(bus);
+diff --git a/arch/x86/kernel/apic/io_apic.c b/arch/x86/kernel/apic/io_apic.c
+index 81ffcfb..21325a4 100644
+--- a/arch/x86/kernel/apic/io_apic.c
++++ b/arch/x86/kernel/apic/io_apic.c
+@@ -2335,8 +2335,13 @@ static int mp_irqdomain_create(int ioapic)
+ 
+ static void ioapic_destroy_irqdomain(int idx)
+ {
++	struct ioapic_domain_cfg *cfg = &ioapics[idx].irqdomain_cfg;
++	struct fwnode_handle *fn = ioapics[idx].irqdomain->fwnode;
++
+ 	if (ioapics[idx].irqdomain) {
+ 		irq_domain_remove(ioapics[idx].irqdomain);
++		if (!cfg->dev)
++			irq_domain_free_fwnode(fn);
+ 		ioapics[idx].irqdomain = NULL;
  	}
  }
+diff --git a/drivers/iommu/intel/irq_remapping.c b/drivers/iommu/intel/irq_remapping.c
+index 9564d23..aa096b3 100644
+--- a/drivers/iommu/intel/irq_remapping.c
++++ b/drivers/iommu/intel/irq_remapping.c
+@@ -628,13 +628,21 @@ out_free_table:
  
-diff --git a/arch/x86/kernel/process_64.c b/arch/x86/kernel/process_64.c
-index 9a97415..09bcb29 100644
---- a/arch/x86/kernel/process_64.c
-+++ b/arch/x86/kernel/process_64.c
-@@ -69,7 +69,7 @@ void __show_regs(struct pt_regs *regs, enum show_regs_mode mode)
- 	unsigned int fsindex, gsindex;
- 	unsigned int ds, es;
+ static void intel_teardown_irq_remapping(struct intel_iommu *iommu)
+ {
++	struct fwnode_handle *fn;
++
+ 	if (iommu && iommu->ir_table) {
+ 		if (iommu->ir_msi_domain) {
++			fn = iommu->ir_msi_domain->fwnode;
++
+ 			irq_domain_remove(iommu->ir_msi_domain);
++			irq_domain_free_fwnode(fn);
+ 			iommu->ir_msi_domain = NULL;
+ 		}
+ 		if (iommu->ir_domain) {
++			fn = iommu->ir_domain->fwnode;
++
+ 			irq_domain_remove(iommu->ir_domain);
++			irq_domain_free_fwnode(fn);
+ 			iommu->ir_domain = NULL;
+ 		}
+ 		free_pages((unsigned long)iommu->ir_table->base,
+diff --git a/drivers/mfd/ioc3.c b/drivers/mfd/ioc3.c
+index 74cee7c..d939ccc 100644
+--- a/drivers/mfd/ioc3.c
++++ b/drivers/mfd/ioc3.c
+@@ -616,7 +616,10 @@ static int ioc3_mfd_probe(struct pci_dev *pdev,
+ 		/* Remove all already added MFD devices */
+ 		mfd_remove_devices(&ipd->pdev->dev);
+ 		if (ipd->domain) {
++			struct fwnode_handle *fn = ipd->domain->fwnode;
++
+ 			irq_domain_remove(ipd->domain);
++			irq_domain_free_fwnode(fn);
+ 			free_irq(ipd->domain_irq, (void *)ipd);
+ 		}
+ 		pci_iounmap(pdev, regs);
+@@ -643,7 +646,10 @@ static void ioc3_mfd_remove(struct pci_dev *pdev)
+ 	/* Release resources */
+ 	mfd_remove_devices(&ipd->pdev->dev);
+ 	if (ipd->domain) {
++		struct fwnode_handle *fn = ipd->domain->fwnode;
++
+ 		irq_domain_remove(ipd->domain);
++		irq_domain_free_fwnode(fn);
+ 		free_irq(ipd->domain_irq, (void *)ipd);
+ 	}
+ 	pci_iounmap(pdev, ipd->regs);
+diff --git a/drivers/pci/controller/vmd.c b/drivers/pci/controller/vmd.c
+index 9a64cf9..ebec0a6 100644
+--- a/drivers/pci/controller/vmd.c
++++ b/drivers/pci/controller/vmd.c
+@@ -560,6 +560,7 @@ static int vmd_enable_domain(struct vmd_dev *vmd, unsigned long features)
+ 	if (!vmd->bus) {
+ 		pci_free_resource_list(&resources);
+ 		irq_domain_remove(vmd->irq_domain);
++		irq_domain_free_fwnode(fn);
+ 		return -ENODEV;
+ 	}
  
--	show_iret_regs(regs);
-+	show_iret_regs(regs, KERN_DEFAULT);
+@@ -673,6 +674,7 @@ static void vmd_cleanup_srcu(struct vmd_dev *vmd)
+ static void vmd_remove(struct pci_dev *dev)
+ {
+ 	struct vmd_dev *vmd = pci_get_drvdata(dev);
++	struct fwnode_handle *fn = vmd->irq_domain->fwnode;
  
- 	if (regs->orig_ax != -1)
- 		pr_cont(" ORIG_RAX: %016lx\n", regs->orig_ax);
+ 	sysfs_remove_link(&vmd->dev->dev.kobj, "domain");
+ 	pci_stop_root_bus(vmd->bus);
+@@ -680,6 +682,7 @@ static void vmd_remove(struct pci_dev *dev)
+ 	vmd_cleanup_srcu(vmd);
+ 	vmd_detach_resources(vmd);
+ 	irq_domain_remove(vmd->irq_domain);
++	irq_domain_free_fwnode(fn);
+ }
+ 
+ #ifdef CONFIG_PM_SLEEP
