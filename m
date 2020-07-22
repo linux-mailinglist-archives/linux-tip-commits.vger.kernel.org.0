@@ -2,54 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EB228229497
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Jul 2020 11:13:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9857F22948B
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Jul 2020 11:12:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731319AbgGVJMr (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 22 Jul 2020 05:12:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58996 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731067AbgGVJM3 (ORCPT
+        id S1729864AbgGVJMg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 22 Jul 2020 05:12:36 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:46976 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728911AbgGVJMf (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 22 Jul 2020 05:12:29 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7877C0619DE;
-        Wed, 22 Jul 2020 02:12:28 -0700 (PDT)
-Date:   Wed, 22 Jul 2020 09:12:26 -0000
+        Wed, 22 Jul 2020 05:12:35 -0400
+Date:   Wed, 22 Jul 2020 09:12:27 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1595409147;
+        s=2020; t=1595409152;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=omHB0IzWPPjMngZlXCyyJLHrhx3ZzshX+RzXI2T3C2Q=;
-        b=1Kc+aZvhbfHATS4qa6EH7R6sGPiTbOfjQh6QL3rg1ehawkmZYOElrfVbnLneA5FjgsL0Ww
-        X56HwjFn5TrN6dbcVt4G6w3n/ySIAAXXpSR5JbHuuJot9V/oEL8zV6LmXr3ic/dLXfEigf
-        AzXZbVin09daw4VXefBf3D23Fbz7xRc0BMGn78RpZNYAx/FM2WxgYGf1LrK7RCNc6/C458
-        1hNh8q/LQuOiYE5KfLxrY35PRu2kTCfHI2rclOdZ81KdEeSUzUOyHx+ZINlHqgVQoV8dKZ
-        0szi5jcaMGF4yd9JwhgZ/vgBXVYdB+qWMgVAHDh2RHAhFAHTMUUpsTjKSDcvIQ==
+        bh=WHacWLIcDurmhW0FpN0Glp+owoWiXqtADVgC0S49uas=;
+        b=yBnRFIXCaKrROj2E/Ri5sFh2mOuyn/Yd4LkE9maRcWD8UvZWfenMpRFwcHwoVB7ZWk7fmY
+        +kmUsnfk8EdezplTz6pv4ekoiKPuRzgmy3Ai9zsnBhecIrLX0Ql1V6zapa/WbMK1NVIQX0
+        q+QoBgKvbHr8yfjosYuiaOh3+jK/oN69UNjYHJSZaCsL5J1nSzwJKavECXAHetZQfNRsbp
+        jC8Kdat8PEz/z8H87GR7YRnBrVpcSlksvMosxFaJ3aIfSGQxFEKzZ0F/ZzmU81GF85B642
+        qefUgjGVcZTMYi+d5G2mnnUeUYx5oOusgYkRdWUQ7ys11RFzIYt9uI0QJB14iA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1595409147;
+        s=2020e; t=1595409152;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=omHB0IzWPPjMngZlXCyyJLHrhx3ZzshX+RzXI2T3C2Q=;
-        b=6FfKB5+rWBb9db7GVFArZ8IvC/Gy5roTTGjsM4RtyHnDg0KH4x8R5ToplxKpH5KxzKPByd
-        4FeEWBAqBrX3nhDA==
-From:   "tip-bot2 for Muchun Song" <tip-bot2@linutronix.de>
+        bh=WHacWLIcDurmhW0FpN0Glp+owoWiXqtADVgC0S49uas=;
+        b=odpwU/DCOIStcbkkx18/2Lrvc7LSRA/XNcYGyzlhvLmm9QdiKZOM20ERPi7hUvDl/6K6xI
+        5Db76kXsWH3B3dAw==
+From:   "tip-bot2 for Peter Puhov" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] smp: Fix a potential usage of stale nr_cpus
-Cc:     Muchun Song <songmuchun@bytedance.com>,
+Subject: [tip: sched/core] sched/fair: update_pick_idlest() Select group with
+ lowest group_util when idle_cpus are equal
+Cc:     Peter Puhov <peter.puhov@linaro.org>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200716070457.53255-1-songmuchun@bytedance.com>
-References: <20200716070457.53255-1-songmuchun@bytedance.com>
+In-Reply-To: <20200714125941.4174-1-peter.puhov@linaro.org>
+References: <20200714125941.4174-1-peter.puhov@linaro.org>
 MIME-Version: 1.0
-Message-ID: <159540914653.4006.6322052574571138388.tip-bot2@tip-bot2>
+Message-ID: <159540914714.4006.8932700488407491684.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,37 +59,120 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     589343569d7b58a64ec2446e6686c8e79aea7fcf
-Gitweb:        https://git.kernel.org/tip/589343569d7b58a64ec2446e6686c8e79aea7fcf
-Author:        Muchun Song <songmuchun@bytedance.com>
-AuthorDate:    Thu, 16 Jul 2020 15:04:57 +08:00
+Commit-ID:     3edecfef028536cb19a120ec8788bd8a11f93b9e
+Gitweb:        https://git.kernel.org/tip/3edecfef028536cb19a120ec8788bd8a11f93b9e
+Author:        Peter Puhov <peter.puhov@linaro.org>
+AuthorDate:    Tue, 14 Jul 2020 08:59:41 -04:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Wed, 22 Jul 2020 10:22:04 +02:00
 
-smp: Fix a potential usage of stale nr_cpus
+sched/fair: update_pick_idlest() Select group with lowest group_util when idle_cpus are equal
 
-The get_option() maybe return 0, it means that the nr_cpus is
-not initialized. Then we will use the stale nr_cpus to initialize
-the nr_cpu_ids. So fix it.
+In slow path, when selecting idlest group, if both groups have type
+group_has_spare, only idle_cpus count gets compared.
+As a result, if multiple tasks are created in a tight loop,
+and go back to sleep immediately
+(while waiting for all tasks to be created),
+they may be scheduled on the same core, because CPU is back to idle
+when the new fork happen.
 
-Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+For example:
+sudo perf record -e sched:sched_wakeup_new -- \
+                                  sysbench threads --threads=4 run
+...
+    total number of events:              61582
+...
+sudo perf script
+sysbench 129378 [006] 74586.633466: sched:sched_wakeup_new:
+                            sysbench:129380 [120] success=1 CPU:007
+sysbench 129378 [006] 74586.634718: sched:sched_wakeup_new:
+                            sysbench:129381 [120] success=1 CPU:007
+sysbench 129378 [006] 74586.635957: sched:sched_wakeup_new:
+                            sysbench:129382 [120] success=1 CPU:007
+sysbench 129378 [006] 74586.637183: sched:sched_wakeup_new:
+                            sysbench:129383 [120] success=1 CPU:007
+
+This may have negative impact on performance for workloads with frequent
+creation of multiple threads.
+
+In this patch we are using group_util to select idlest group if both groups
+have equal number of idle_cpus. Comparing the number of idle cpu is
+not enough in this case, because the newly forked thread sleeps
+immediately and before we select the cpu for the next one.
+This is shown in the trace where the same CPU7 is selected for
+all wakeup_new events.
+That's why, looking at utilization when there is the same number of
+CPU is a good way to see where the previous task was placed. Using
+nr_running doesn't solve the problem because the newly forked task is not
+running and the cpu would not have been idle in this case and an idle
+CPU would have been selected instead.
+
+With this patch newly created tasks would be better distributed.
+
+With this patch:
+sudo perf record -e sched:sched_wakeup_new -- \
+                                    sysbench threads --threads=4 run
+...
+    total number of events:              74401
+...
+sudo perf script
+sysbench 129455 [006] 75232.853257: sched:sched_wakeup_new:
+                            sysbench:129457 [120] success=1 CPU:008
+sysbench 129455 [006] 75232.854489: sched:sched_wakeup_new:
+                            sysbench:129458 [120] success=1 CPU:009
+sysbench 129455 [006] 75232.855732: sched:sched_wakeup_new:
+                            sysbench:129459 [120] success=1 CPU:010
+sysbench 129455 [006] 75232.856980: sched:sched_wakeup_new:
+                            sysbench:129460 [120] success=1 CPU:011
+
+We tested this patch with following benchmarks:
+master: 'commit b3a9e3b9622a ("Linux 5.8-rc1")'
+
+100 iterations of: perf bench -f simple futex wake -s -t 128 -w 1
+Lower result is better
+|         |   BASELINE |   +PATCH |   DELTA (%) |
+|---------|------------|----------|-------------|
+| mean    |      0.33  |    0.313 |      +5.152 |
+| std (%) |     10.433 |    7.563 |             |
+
+100 iterations of: sysbench threads --threads=8 run
+Higher result is better
+|         |   BASELINE |   +PATCH |   DELTA (%) |
+|---------|------------|----------|-------------|
+| mean    |   5235.02  | 5863.73  |      +12.01 |
+| std (%) |      8.166 |   10.265 |             |
+
+100 iterations of: sysbench mutex --mutex-num=1 --threads=8 run
+Lower result is better
+|         |   BASELINE |   +PATCH |   DELTA (%) |
+|---------|------------|----------|-------------|
+| mean    |      0.413 |    0.404 |      +2.179 |
+| std (%) |      3.791 |    1.816 |             |
+
+Signed-off-by: Peter Puhov <peter.puhov@linaro.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20200716070457.53255-1-songmuchun@bytedance.com
+Link: https://lkml.kernel.org/r/20200714125941.4174-1-peter.puhov@linaro.org
 ---
- kernel/smp.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ kernel/sched/fair.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/smp.c b/kernel/smp.c
-index aa17eed..d0ae8eb 100644
---- a/kernel/smp.c
-+++ b/kernel/smp.c
-@@ -634,8 +634,7 @@ static int __init nrcpus(char *str)
- {
- 	int nr_cpus;
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 98a53a2..2ba8f23 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -8711,8 +8711,14 @@ static bool update_pick_idlest(struct sched_group *idlest,
  
--	get_option(&str, &nr_cpus);
--	if (nr_cpus > 0 && nr_cpus < nr_cpu_ids)
-+	if (get_option(&str, &nr_cpus) && nr_cpus > 0 && nr_cpus < nr_cpu_ids)
- 		nr_cpu_ids = nr_cpus;
+ 	case group_has_spare:
+ 		/* Select group with most idle CPUs */
+-		if (idlest_sgs->idle_cpus >= sgs->idle_cpus)
++		if (idlest_sgs->idle_cpus > sgs->idle_cpus)
+ 			return false;
++
++		/* Select group with lowest group_util */
++		if (idlest_sgs->idle_cpus == sgs->idle_cpus &&
++			idlest_sgs->group_util <= sgs->group_util)
++			return false;
++
+ 		break;
+ 	}
  
- 	return 0;
