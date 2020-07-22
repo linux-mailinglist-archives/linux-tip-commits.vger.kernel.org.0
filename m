@@ -2,56 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6222B22A1A1
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Jul 2020 23:56:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C4FF722A1B0
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 23 Jul 2020 00:01:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732711AbgGVVzk (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 22 Jul 2020 17:55:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36668 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730837AbgGVVzi (ORCPT
+        id S1731110AbgGVWBN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 22 Jul 2020 18:01:13 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:52396 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729684AbgGVWBM (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 22 Jul 2020 17:55:38 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79671C0619E1;
-        Wed, 22 Jul 2020 14:55:38 -0700 (PDT)
-Date:   Wed, 22 Jul 2020 21:55:36 -0000
+        Wed, 22 Jul 2020 18:01:12 -0400
+Date:   Wed, 22 Jul 2020 22:01:08 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1595454936;
+        s=2020; t=1595455269;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=onB23TV72snXsM4Kk96d5u93DsT0lvJ0OrxNxUiy8sE=;
-        b=p0o6P5s5BhdLlp7pKo4s6PmgWr+C9miZGU0gCo8LtmjeDMKEON1TUpaN/IcnRCjZLc22TD
-        nfYe1D1ykPnGi2WFB9/J8a1BfqxGqQQhEUXIQJ4eOG8X5JNxHbNONJ8/ow/Vs0GzYelEZf
-        p85qxdTPsDnLv5wsbHQ/15wKwyrUCHZ0idXQUKKiPcSbhxSuzFexCWo3GeJy9u6dMyGCdX
-        4x5nQjubva1HfG20SziXeDB4kCgTf8kDWFr4rVAIAlrWzxek5o59WtBa3ICaPAmmJ6PSqb
-        Ji2P+BzNucC43+MLBJyV5J9glJFyJ800lMP0QM6csi/fqRrejNeXoqYwDcpPmw==
+        bh=8vC2rczS7cb9x0lBYxBobwszS5essgctZGSYg+Cq6lk=;
+        b=Z2hVIImCXZxMoQFAOaUseQzEhTF1zrhgqrducwKBnstQ+uwgiUfdOjVKJdqAUrl/ON6B0T
+        XS9vk9z2LC75g0OJZWpkGcJuhKiVeVyja+7R/NBtrAKEcVQumrR9pbHtcKxlmFOEepCFXA
+        VDx3+wKLAr8mezggsAB59PCWTAf0X9z9URFSXnzxXJq/r1jb9F8tel+Q3pfMk7na2yskxL
+        MbzYr6dTlSscSo3ljdcG6zE7td9XFTlp/NYuQZaazn5DZk2icbtzoq369AFVW7BG1VjEgV
+        TVKCpGvXtRKz31oIqHJCDb5oTLpKqogpqdVe0gUjdD+kEhOqIQhd9hGvltnHeQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1595454936;
+        s=2020e; t=1595455269;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=onB23TV72snXsM4Kk96d5u93DsT0lvJ0OrxNxUiy8sE=;
-        b=ThnfCRmojj4756uQOXu4tU+8xR4DYwcdu9i8JkV7KolVSHgqd7Tyrb/gh6K/8uYYw1tBK1
-        GaPUy/amx7HMn2Ag==
-From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
+        bh=8vC2rczS7cb9x0lBYxBobwszS5essgctZGSYg+Cq6lk=;
+        b=KXLOtstEKWVj9ozYSjDx+mB28HwgJpBg7vB98xY3uJoacbvUlyZtkKGXDh5oU2iHxwf4ex
+        Yq8y/G/72edzH+Cg==
+From:   "tip-bot2 for Dmitry Safonov" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/stacktrace: Fix reliable check for empty user
- task stacks
-Cc:     Wang ShaoBo <bobo.shaobowang@huawei.com>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
+Subject: [tip: x86/core] x86/dumpstack: Show registers dump with trace's log level
+Cc:     Dmitry Safonov <dima@arista.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Petr Mladek <pmladek@suse.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <f136a4e5f019219cbc4f4da33b30c2f44fa65b84.1594994374.git.jpoimboe@redhat.com>
-References: <f136a4e5f019219cbc4f4da33b30c2f44fa65b84.1594994374.git.jpoimboe@redhat.com>
+In-Reply-To: <20200629144847.492794-4-dima@arista.com>
+References: <20200629144847.492794-4-dima@arista.com>
 MIME-Version: 1.0
-Message-ID: <159545493605.4006.17560256116826409394.tip-bot2@tip-bot2>
+Message-ID: <159545526866.4006.11068497413049659542.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,63 +57,97 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the x86/core branch of tip:
 
-Commit-ID:     039a7a30ec102ec866d382a66f87f6f7654f8140
-Gitweb:        https://git.kernel.org/tip/039a7a30ec102ec866d382a66f87f6f7654f8140
-Author:        Josh Poimboeuf <jpoimboe@redhat.com>
-AuthorDate:    Fri, 17 Jul 2020 09:04:26 -05:00
+Commit-ID:     ef2ff0f5d6008d325c9a068e20981c0d0acc4d6b
+Gitweb:        https://git.kernel.org/tip/ef2ff0f5d6008d325c9a068e20981c0d0acc4d6b
+Author:        Dmitry Safonov <dima@arista.com>
+AuthorDate:    Mon, 29 Jun 2020 15:48:47 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 22 Jul 2020 23:47:47 +02:00
+CommitterDate: Wed, 22 Jul 2020 23:56:54 +02:00
 
-x86/stacktrace: Fix reliable check for empty user task stacks
+x86/dumpstack: Show registers dump with trace's log level
 
-If a user task's stack is empty, or if it only has user regs, ORC
-reports it as a reliable empty stack.  But arch_stack_walk_reliable()
-incorrectly treats it as unreliable.
+show_trace_log_lvl() provides x86 platform-specific way to unwind
+backtrace with a given log level. Unfortunately, registers dump(s) are
+not printed with the same log level - instead, KERN_DEFAULT is always
+used.
 
-That happens because the only success path for user tasks is inside the
-loop, which only iterates on non-empty stacks.  Generally, a user task
-must end in a user regs frame, but an empty stack is an exception to
-that rule.
+Arista's switches uses quite common setup with rsyslog, where only
+urgent messages goes to console (console_log_level=KERN_ERR), everything
+else goes into /var/log/ as the console baud-rate often is indecently
+slow (9600 bps).
 
-Thanks to commit 71c95825289f ("x86/unwind/orc: Fix error handling in
-__unwind_start()"), unwind_start() now sets state->error appropriately.
-So now for both ORC and FP unwinders, unwind_done() and !unwind_error()
-always means the end of the stack was successfully reached.  So the
-success path for kthreads is no longer needed -- it can also be used for
-empty user tasks.
+Backtrace dumps without registers printed have proven to be as useful as
+morning standups. Furthermore, in order to introduce KERN_UNSUPPRESSED
+(which I believe is still the most elegant way to fix raciness of sysrq[1])
+the log level should be passed down the stack to register dumping
+functions. Besides, there is a potential use-case for printing traces
+with KERN_DEBUG level [2] (where registers dump shouldn't appear with
+higher log level).
 
-Reported-by: Wang ShaoBo <bobo.shaobowang@huawei.com>
-Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
+After all preparations are done, provide log_lvl parameter for
+show_regs_if_on_stack() and wire up to actual log level used as
+an argument for show_trace_log_lvl().
+
+[1]: https://lore.kernel.org/lkml/20190528002412.1625-1-dima@arista.com/
+[2]: https://lore.kernel.org/linux-doc/20190724170249.9644-1-dima@arista.com/
+
+Signed-off-by: Dmitry Safonov <dima@arista.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Wang ShaoBo <bobo.shaobowang@huawei.com>
-Link: https://lkml.kernel.org/r/f136a4e5f019219cbc4f4da33b30c2f44fa65b84.1594994374.git.jpoimboe@redhat.com
+Acked-by: Petr Mladek <pmladek@suse.com>
+Link: https://lkml.kernel.org/r/20200629144847.492794-4-dima@arista.com
 
 ---
- arch/x86/kernel/stacktrace.c | 5 -----
- 1 file changed, 5 deletions(-)
+ arch/x86/kernel/dumpstack.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/kernel/stacktrace.c b/arch/x86/kernel/stacktrace.c
-index 6ad43fc..2fd698e 100644
---- a/arch/x86/kernel/stacktrace.c
-+++ b/arch/x86/kernel/stacktrace.c
-@@ -58,7 +58,6 @@ int arch_stack_walk_reliable(stack_trace_consume_fn consume_entry,
- 			 * or a page fault), which can make frame pointers
- 			 * unreliable.
- 			 */
--
- 			if (IS_ENABLED(CONFIG_FRAME_POINTER))
- 				return -EINVAL;
- 		}
-@@ -81,10 +80,6 @@ int arch_stack_walk_reliable(stack_trace_consume_fn consume_entry,
- 	if (unwind_error(&state))
- 		return -EINVAL;
- 
--	/* Success path for non-user tasks, i.e. kthreads and idle tasks */
--	if (!(task->flags & (PF_KTHREAD | PF_IDLE)))
--		return -EINVAL;
--
- 	return 0;
+diff --git a/arch/x86/kernel/dumpstack.c b/arch/x86/kernel/dumpstack.c
+index 4954d66..f9a3526 100644
+--- a/arch/x86/kernel/dumpstack.c
++++ b/arch/x86/kernel/dumpstack.c
+@@ -134,7 +134,7 @@ void show_iret_regs(struct pt_regs *regs, const char *log_lvl)
  }
  
+ static void show_regs_if_on_stack(struct stack_info *info, struct pt_regs *regs,
+-				  bool partial)
++				  bool partial, const char *log_lvl)
+ {
+ 	/*
+ 	 * These on_stack() checks aren't strictly necessary: the unwind code
+@@ -146,7 +146,7 @@ static void show_regs_if_on_stack(struct stack_info *info, struct pt_regs *regs,
+ 	 * they can be printed in the right context.
+ 	 */
+ 	if (!partial && on_stack(info, regs, sizeof(*regs))) {
+-		__show_regs(regs, SHOW_REGS_SHORT, KERN_DEFAULT);
++		__show_regs(regs, SHOW_REGS_SHORT, log_lvl);
+ 
+ 	} else if (partial && on_stack(info, (void *)regs + IRET_FRAME_OFFSET,
+ 				       IRET_FRAME_SIZE)) {
+@@ -155,7 +155,7 @@ static void show_regs_if_on_stack(struct stack_info *info, struct pt_regs *regs,
+ 		 * full pt_regs might not have been saved yet.  In that case
+ 		 * just print the iret frame.
+ 		 */
+-		show_iret_regs(regs, KERN_DEFAULT);
++		show_iret_regs(regs, log_lvl);
+ 	}
+ }
+ 
+@@ -210,7 +210,7 @@ void show_trace_log_lvl(struct task_struct *task, struct pt_regs *regs,
+ 			printk("%s <%s>\n", log_lvl, stack_name);
+ 
+ 		if (regs)
+-			show_regs_if_on_stack(&stack_info, regs, partial);
++			show_regs_if_on_stack(&stack_info, regs, partial, log_lvl);
+ 
+ 		/*
+ 		 * Scan the stack, printing any text addresses we find.  At the
+@@ -271,7 +271,7 @@ next:
+ 			/* if the frame has entry regs, print them */
+ 			regs = unwind_get_entry_regs(&state, &partial);
+ 			if (regs)
+-				show_regs_if_on_stack(&stack_info, regs, partial);
++				show_regs_if_on_stack(&stack_info, regs, partial, log_lvl);
+ 		}
+ 
+ 		if (stack_name)
