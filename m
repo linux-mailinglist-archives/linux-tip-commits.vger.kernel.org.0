@@ -2,47 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 98FB222A2A4
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 23 Jul 2020 00:49:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4385622A2A1
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 23 Jul 2020 00:49:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733114AbgGVWsp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 22 Jul 2020 18:48:45 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:52888 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726447AbgGVWsn (ORCPT
+        id S1733111AbgGVWso (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 22 Jul 2020 18:48:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44978 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1733094AbgGVWsn (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Wed, 22 Jul 2020 18:48:43 -0400
-Date:   Wed, 22 Jul 2020 22:48:39 -0000
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28C67C0619DC;
+        Wed, 22 Jul 2020 15:48:43 -0700 (PDT)
+Date:   Wed, 22 Jul 2020 22:48:40 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1595458120;
+        s=2020; t=1595458121;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=t2l/L4GhLeSrLGygotuLLBQFdMatIcVBkwwJ3F40Si0=;
-        b=0egeaGBLVPeyAJkpRH1O5ct5bPcjoL5nYsOOeFPWe4J1V3UZtLVd1mr7bbcP5fVUQm3PPA
-        q4V6DS2qtnK+qibNeJ8WgN5bXyyRiSGbojUYA7tSo77JkHiftOVqpKMl9ZUTNTrbkbRMTN
-        H+uyy8buer0uZYlcNS08uzlZ6pf6FJ02AAt41WnR0r7h21QRCYM/pScyuVQT6ZwoUM/wNp
-        WonxCJLTFGG/BTqC4fSCuM6YBtljBrW5FHRD8fef/wS3opNBirl/8ARIXlmw2kfdNEy8eg
-        rnpcE7mHqgMDF3ohMkjiUtyv/HmwXOhbpsDrY/ETYdA3tZ3i42bb8APl5ZKKkw==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=/xpMZpBxbBet0ZoY7blrq6C94naUdx3GQ0fWXWmo1sc=;
+        b=q7I/QwncAMTUPU+KfuWWLcKSVOLHghqphvan08h/dgTigsj0yIBtN1GVvjzjkCfjTgVugj
+        gG8cGfwSKWW/5k477E2DY+WNVkMrCdbIWSQMf5DIORnTTm9bUFOytHHQqXvY8pd8/6hgiI
+        4chn7mVQym4Ws2XQJ+Ti1j4RWs3HHIl5DkMniuvdbKGfvGo3lj6LNqhQwRSMJWzs5M55Rk
+        oWbUzwzcI7ILJJs5ecmm7Dd+AxyziYaR8yMjs5IV7YgN7Oqe4Y1dmjXt5AHG/hyuyd6t36
+        KSNCKm9g2FvZPlk4PuTu4s+4PpRV1Bx3Dx567OkJ23WLub0F3gPNu9SjgPA+lw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1595458120;
+        s=2020e; t=1595458121;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=t2l/L4GhLeSrLGygotuLLBQFdMatIcVBkwwJ3F40Si0=;
-        b=8AwDzGp1KUpgS5C4ZnTH1U60XRP/4tPe1h9QTGxf6fXMoN5+uOMiEB4Z89bbWLv9NbH1FS
-        Q8ZX0/7ebNdrCiAQ==
-From:   "tip-bot2 for Ard Biesheuvel" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=/xpMZpBxbBet0ZoY7blrq6C94naUdx3GQ0fWXWmo1sc=;
+        b=zCIz3n0weRPscq4MlnN3HwBH5YhPYFLws0Jhs4bv4ZuaQk8OT4ZzrpLlQ1UZ0GKcSIiVrO
+        U5KikGK2Cq57HmDQ==
+From:   "tip-bot2 for Atish Patra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: efi/urgent] efi/efivars: Expose RT service availability via
- efivars abstraction
-Cc:     Heinrich Schuchardt <xypron.glpk@gmx.de>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+Subject: [tip: efi/urgent] efi/libstub: Move the function prototypes to header file
+Cc:     Atish Patra <atish.patra@wdc.com>,
         Ard Biesheuvel <ardb@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200706172609.25965-2-atish.patra@wdc.com>
+References: <20200706172609.25965-2-atish.patra@wdc.com>
 MIME-Version: 1.0
-Message-ID: <159545811944.4006.1233251520166773134.tip-bot2@tip-bot2>
+Message-ID: <159545812026.4006.13783475782559608479.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -54,172 +61,81 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the efi/urgent branch of tip:
 
-Commit-ID:     f88814cc2578c121e6edef686365036db72af0ed
-Gitweb:        https://git.kernel.org/tip/f88814cc2578c121e6edef686365036db72af0ed
-Author:        Ard Biesheuvel <ardb@kernel.org>
-AuthorDate:    Wed, 08 Jul 2020 13:01:57 +03:00
+Commit-ID:     3230d95cea0515a6acf3f5ff360663de4c40fd07
+Gitweb:        https://git.kernel.org/tip/3230d95cea0515a6acf3f5ff360663de4c40fd07
+Author:        Atish Patra <atish.patra@wdc.com>
+AuthorDate:    Mon, 06 Jul 2020 10:25:59 -07:00
 Committer:     Ard Biesheuvel <ardb@kernel.org>
-CommitterDate: Thu, 09 Jul 2020 10:14:29 +03:00
+CommitterDate: Thu, 09 Jul 2020 09:45:09 +03:00
 
-efi/efivars: Expose RT service availability via efivars abstraction
+efi/libstub: Move the function prototypes to header file
 
-Commit
+The prototype of the functions handle_kernel_image & efi_enter_kernel
+are defined in efi-stub.c which may result in a compiler warnings if
+-Wmissing-prototypes is set in gcc compiler.
 
-  bf67fad19e493b ("efi: Use more granular check for availability for variable services")
+Move the prototype to efistub.h to make the compiler happy.
 
-introduced a check into the efivarfs, efi-pstore and other drivers that
-aborts loading of the module if not all three variable runtime services
-(GetVariable, SetVariable and GetNextVariable) are supported. However, this
-results in efivarfs being unavailable entirely if only SetVariable support
-is missing, which is only needed if you want to make any modifications.
-Also, efi-pstore and the sysfs EFI variable interface could be backed by
-another implementation of the 'efivars' abstraction, in which case it is
-completely irrelevant which services are supported by the EFI firmware.
-
-So make the generic 'efivars' abstraction dependent on the availibility of
-the GetVariable and GetNextVariable EFI runtime services, and add a helper
-'efivar_supports_writes()' to find out whether the currently active efivars
-abstraction supports writes (and wire it up to the availability of
-SetVariable for the generic one).
-
-Then, use the efivar_supports_writes() helper to decide whether to permit
-efivarfs to be mounted read-write, and whether to enable efi-pstore or the
-sysfs EFI variable interface altogether.
-
-Fixes: bf67fad19e493b ("efi: Use more granular check for availability for variable services")
-Reported-by: Heinrich Schuchardt <xypron.glpk@gmx.de>
-Acked-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Tested-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Signed-off-by: Atish Patra <atish.patra@wdc.com>
+Link: https://lore.kernel.org/r/20200706172609.25965-2-atish.patra@wdc.com
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- drivers/firmware/efi/efi-pstore.c |  5 +----
- drivers/firmware/efi/efi.c        | 12 ++++++++----
- drivers/firmware/efi/efivars.c    |  5 +----
- drivers/firmware/efi/vars.c       |  6 ++++++
- fs/efivarfs/super.c               |  6 +++---
- include/linux/efi.h               |  1 +
- 6 files changed, 20 insertions(+), 15 deletions(-)
+ drivers/firmware/efi/libstub/efi-stub.c | 17 -----------------
+ drivers/firmware/efi/libstub/efistub.h  | 16 ++++++++++++++++
+ 2 files changed, 16 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/firmware/efi/efi-pstore.c b/drivers/firmware/efi/efi-pstore.c
-index c2f1d4e..feb7fe6 100644
---- a/drivers/firmware/efi/efi-pstore.c
-+++ b/drivers/firmware/efi/efi-pstore.c
-@@ -356,10 +356,7 @@ static struct pstore_info efi_pstore_info = {
- 
- static __init int efivars_pstore_init(void)
- {
--	if (!efi_rt_services_supported(EFI_RT_SUPPORTED_VARIABLE_SERVICES))
--		return 0;
--
--	if (!efivars_kobject())
-+	if (!efivars_kobject() || !efivar_supports_writes())
- 		return 0;
- 
- 	if (efivars_pstore_disable)
-diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-index 5114cae..fdd1db0 100644
---- a/drivers/firmware/efi/efi.c
-+++ b/drivers/firmware/efi/efi.c
-@@ -176,11 +176,13 @@ static struct efivar_operations generic_ops;
- static int generic_ops_register(void)
- {
- 	generic_ops.get_variable = efi.get_variable;
--	generic_ops.set_variable = efi.set_variable;
--	generic_ops.set_variable_nonblocking = efi.set_variable_nonblocking;
- 	generic_ops.get_next_variable = efi.get_next_variable;
- 	generic_ops.query_variable_store = efi_query_variable_store;
- 
-+	if (efi_rt_services_supported(EFI_RT_SUPPORTED_SET_VARIABLE)) {
-+		generic_ops.set_variable = efi.set_variable;
-+		generic_ops.set_variable_nonblocking = efi.set_variable_nonblocking;
-+	}
- 	return efivars_register(&generic_efivars, &generic_ops, efi_kobj);
+diff --git a/drivers/firmware/efi/libstub/efi-stub.c b/drivers/firmware/efi/libstub/efi-stub.c
+index 3318ec3..a5a405d 100644
+--- a/drivers/firmware/efi/libstub/efi-stub.c
++++ b/drivers/firmware/efi/libstub/efi-stub.c
+@@ -122,23 +122,6 @@ static unsigned long get_dram_base(void)
  }
  
-@@ -382,7 +384,8 @@ static int __init efisubsys_init(void)
- 		return -ENOMEM;
- 	}
- 
--	if (efi_rt_services_supported(EFI_RT_SUPPORTED_VARIABLE_SERVICES)) {
-+	if (efi_rt_services_supported(EFI_RT_SUPPORTED_GET_VARIABLE |
-+				      EFI_RT_SUPPORTED_GET_NEXT_VARIABLE_NAME)) {
- 		efivar_ssdt_load();
- 		error = generic_ops_register();
- 		if (error)
-@@ -416,7 +419,8 @@ static int __init efisubsys_init(void)
- err_remove_group:
- 	sysfs_remove_group(efi_kobj, &efi_subsys_attr_group);
- err_unregister:
--	if (efi_rt_services_supported(EFI_RT_SUPPORTED_VARIABLE_SERVICES))
-+	if (efi_rt_services_supported(EFI_RT_SUPPORTED_GET_VARIABLE |
-+				      EFI_RT_SUPPORTED_GET_NEXT_VARIABLE_NAME))
- 		generic_ops_unregister();
- err_put:
- 	kobject_put(efi_kobj);
-diff --git a/drivers/firmware/efi/efivars.c b/drivers/firmware/efi/efivars.c
-index 26528a4..dcea137 100644
---- a/drivers/firmware/efi/efivars.c
-+++ b/drivers/firmware/efi/efivars.c
-@@ -680,11 +680,8 @@ int efivars_sysfs_init(void)
- 	struct kobject *parent_kobj = efivars_kobject();
- 	int error = 0;
- 
--	if (!efi_rt_services_supported(EFI_RT_SUPPORTED_VARIABLE_SERVICES))
--		return -ENODEV;
+ /*
+- * This function handles the architcture specific differences between arm and
+- * arm64 regarding where the kernel image must be loaded and any memory that
+- * must be reserved. On failure it is required to free all
+- * all allocations it has made.
+- */
+-efi_status_t handle_kernel_image(unsigned long *image_addr,
+-				 unsigned long *image_size,
+-				 unsigned long *reserve_addr,
+-				 unsigned long *reserve_size,
+-				 unsigned long dram_base,
+-				 efi_loaded_image_t *image);
 -
- 	/* No efivars has been registered yet */
--	if (!parent_kobj)
-+	if (!parent_kobj || !efivar_supports_writes())
- 		return 0;
- 
- 	printk(KERN_INFO "EFI Variables Facility v%s %s\n", EFIVARS_VERSION,
-diff --git a/drivers/firmware/efi/vars.c b/drivers/firmware/efi/vars.c
-index 5f2a4d1..973eef2 100644
---- a/drivers/firmware/efi/vars.c
-+++ b/drivers/firmware/efi/vars.c
-@@ -1229,3 +1229,9 @@ out:
- 	return rv;
- }
- EXPORT_SYMBOL_GPL(efivars_unregister);
-+
-+int efivar_supports_writes(void)
-+{
-+	return __efivars && __efivars->ops->set_variable;
-+}
-+EXPORT_SYMBOL_GPL(efivar_supports_writes);
-diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
-index 12c66f5..28bb568 100644
---- a/fs/efivarfs/super.c
-+++ b/fs/efivarfs/super.c
-@@ -201,6 +201,9 @@ static int efivarfs_fill_super(struct super_block *sb, struct fs_context *fc)
- 	sb->s_d_op		= &efivarfs_d_ops;
- 	sb->s_time_gran         = 1;
- 
-+	if (!efivar_supports_writes())
-+		sb->s_flags |= SB_RDONLY;
-+
- 	inode = efivarfs_get_inode(sb, NULL, S_IFDIR | 0755, 0, true);
- 	if (!inode)
- 		return -ENOMEM;
-@@ -252,9 +255,6 @@ static struct file_system_type efivarfs_type = {
- 
- static __init int efivarfs_init(void)
- {
--	if (!efi_rt_services_supported(EFI_RT_SUPPORTED_VARIABLE_SERVICES))
--		return -ENODEV;
+-asmlinkage void __noreturn efi_enter_kernel(unsigned long entrypoint,
+-					    unsigned long fdt_addr,
+-					    unsigned long fdt_size);
 -
- 	if (!efivars_kobject())
- 		return -ENODEV;
+-/*
+  * EFI entry point for the arm/arm64 EFI stubs.  This is the entrypoint
+  * that is described in the PE/COFF header.  Most of the code is the same
+  * for both archictectures, with the arch-specific code provided in the
+diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
+index 2c9d422..85050f5 100644
+--- a/drivers/firmware/efi/libstub/efistub.h
++++ b/drivers/firmware/efi/libstub/efistub.h
+@@ -776,6 +776,22 @@ efi_status_t efi_load_initrd(efi_loaded_image_t *image,
+ 			     unsigned long *load_size,
+ 			     unsigned long soft_limit,
+ 			     unsigned long hard_limit);
++/*
++ * This function handles the architcture specific differences between arm and
++ * arm64 regarding where the kernel image must be loaded and any memory that
++ * must be reserved. On failure it is required to free all
++ * all allocations it has made.
++ */
++efi_status_t handle_kernel_image(unsigned long *image_addr,
++				 unsigned long *image_size,
++				 unsigned long *reserve_addr,
++				 unsigned long *reserve_size,
++				 unsigned long dram_base,
++				 efi_loaded_image_t *image);
++
++asmlinkage void __noreturn efi_enter_kernel(unsigned long entrypoint,
++					    unsigned long fdt_addr,
++					    unsigned long fdt_size);
  
-diff --git a/include/linux/efi.h b/include/linux/efi.h
-index bb35f33..05c47f8 100644
---- a/include/linux/efi.h
-+++ b/include/linux/efi.h
-@@ -994,6 +994,7 @@ int efivars_register(struct efivars *efivars,
- int efivars_unregister(struct efivars *efivars);
- struct kobject *efivars_kobject(void);
- 
-+int efivar_supports_writes(void);
- int efivar_init(int (*func)(efi_char16_t *, efi_guid_t, unsigned long, void *),
- 		void *data, bool duplicates, struct list_head *head);
+ void efi_handle_post_ebs_state(void);
  
