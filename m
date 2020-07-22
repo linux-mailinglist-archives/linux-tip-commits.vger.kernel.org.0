@@ -2,52 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9857F22948B
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Jul 2020 11:12:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 51B62229490
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Jul 2020 11:12:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729864AbgGVJMg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 22 Jul 2020 05:12:36 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:46976 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728911AbgGVJMf (ORCPT
+        id S1731315AbgGVJMq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 22 Jul 2020 05:12:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59000 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731085AbgGVJMa (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 22 Jul 2020 05:12:35 -0400
+        Wed, 22 Jul 2020 05:12:30 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDBFDC0619DF;
+        Wed, 22 Jul 2020 02:12:29 -0700 (PDT)
 Date:   Wed, 22 Jul 2020 09:12:27 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1595409152;
+        s=2020; t=1595409148;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=WHacWLIcDurmhW0FpN0Glp+owoWiXqtADVgC0S49uas=;
-        b=yBnRFIXCaKrROj2E/Ri5sFh2mOuyn/Yd4LkE9maRcWD8UvZWfenMpRFwcHwoVB7ZWk7fmY
-        +kmUsnfk8EdezplTz6pv4ekoiKPuRzgmy3Ai9zsnBhecIrLX0Ql1V6zapa/WbMK1NVIQX0
-        q+QoBgKvbHr8yfjosYuiaOh3+jK/oN69UNjYHJSZaCsL5J1nSzwJKavECXAHetZQfNRsbp
-        jC8Kdat8PEz/z8H87GR7YRnBrVpcSlksvMosxFaJ3aIfSGQxFEKzZ0F/ZzmU81GF85B642
-        qefUgjGVcZTMYi+d5G2mnnUeUYx5oOusgYkRdWUQ7ys11RFzIYt9uI0QJB14iA==
+        bh=ZV1rLN+O7Y/mLtD/iGbro95tGb6D0qCC29gSnRZcQxQ=;
+        b=B7mEH2Sb+U4rR7WNbgWDBrX9/HTbGgmzxhcQ9csyjfU/eb5ddMfTXCc6sn5Cr5aavR852I
+        p/cpEaREDKhFxOr1MDRy7nleIPcF84hpi/xQoPVAaDFf3zrfAPAaHVaUo/NvSSM3/E3e4D
+        8AX5McUZJDhIgQZaKsonWkqYoJAgu2gGENgVyahs+ZvkQWSHqsq6YX2iP8wp/JK/NH26TS
+        XoBO8/oYEq3jIk51YoMKCJ7c8jHM+OzAJ59RszcOlJiDpnqHhalrH423HGR04QXAYI67na
+        WwDHfQy20qNEYxrK8TKEdxpm4jfKFjLKA+GV1sgaVtHeD4YCdL0pT1egD3mT5Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1595409152;
+        s=2020e; t=1595409148;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=WHacWLIcDurmhW0FpN0Glp+owoWiXqtADVgC0S49uas=;
-        b=odpwU/DCOIStcbkkx18/2Lrvc7LSRA/XNcYGyzlhvLmm9QdiKZOM20ERPi7hUvDl/6K6xI
-        5Db76kXsWH3B3dAw==
-From:   "tip-bot2 for Peter Puhov" <tip-bot2@linutronix.de>
+        bh=ZV1rLN+O7Y/mLtD/iGbro95tGb6D0qCC29gSnRZcQxQ=;
+        b=6erkw19oroGszJ0QMkBlqmpaRylUI9jd/MthON80I8lh8LmABpzjbI/o+CdlQsVEizNsFx
+        5C6TJus3IAktgcAw==
+From:   "tip-bot2 for Paul Gortmaker" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/fair: update_pick_idlest() Select group with
- lowest group_util when idle_cpus are equal
-Cc:     Peter Puhov <peter.puhov@linaro.org>,
+Subject: [tip: sched/core] sched: nohz: stop passing around unused "ticks" parameter.
+Cc:     Paul Gortmaker <paul.gortmaker@windriver.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200714125941.4174-1-peter.puhov@linaro.org>
-References: <20200714125941.4174-1-peter.puhov@linaro.org>
+In-Reply-To: <1593628458-32290-1-git-send-email-paul.gortmaker@windriver.com>
+References: <1593628458-32290-1-git-send-email-paul.gortmaker@windriver.com>
 MIME-Version: 1.0
-Message-ID: <159540914714.4006.8932700488407491684.tip-bot2@tip-bot2>
+Message-ID: <159540914778.4006.10624376544623196907.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,120 +61,67 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     3edecfef028536cb19a120ec8788bd8a11f93b9e
-Gitweb:        https://git.kernel.org/tip/3edecfef028536cb19a120ec8788bd8a11f93b9e
-Author:        Peter Puhov <peter.puhov@linaro.org>
-AuthorDate:    Tue, 14 Jul 2020 08:59:41 -04:00
+Commit-ID:     46132e3ac58cb2ee48051ed80bffc0070ad59b2e
+Gitweb:        https://git.kernel.org/tip/46132e3ac58cb2ee48051ed80bffc0070ad59b2e
+Author:        Paul Gortmaker <paul.gortmaker@windriver.com>
+AuthorDate:    Wed, 01 Jul 2020 14:34:18 -04:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Wed, 22 Jul 2020 10:22:04 +02:00
 
-sched/fair: update_pick_idlest() Select group with lowest group_util when idle_cpus are equal
+sched: nohz: stop passing around unused "ticks" parameter.
 
-In slow path, when selecting idlest group, if both groups have type
-group_has_spare, only idle_cpus count gets compared.
-As a result, if multiple tasks are created in a tight loop,
-and go back to sleep immediately
-(while waiting for all tasks to be created),
-they may be scheduled on the same core, because CPU is back to idle
-when the new fork happen.
+The "ticks" parameter was added in commit 0f004f5a696a ("sched: Cure more
+NO_HZ load average woes") since calc_global_nohz() was called and needed
+the "ticks" argument.
 
-For example:
-sudo perf record -e sched:sched_wakeup_new -- \
-                                  sysbench threads --threads=4 run
-...
-    total number of events:              61582
-...
-sudo perf script
-sysbench 129378 [006] 74586.633466: sched:sched_wakeup_new:
-                            sysbench:129380 [120] success=1 CPU:007
-sysbench 129378 [006] 74586.634718: sched:sched_wakeup_new:
-                            sysbench:129381 [120] success=1 CPU:007
-sysbench 129378 [006] 74586.635957: sched:sched_wakeup_new:
-                            sysbench:129382 [120] success=1 CPU:007
-sysbench 129378 [006] 74586.637183: sched:sched_wakeup_new:
-                            sysbench:129383 [120] success=1 CPU:007
+But in commit c308b56b5398 ("sched: Fix nohz load accounting -- again!")
+it became unused as the function calc_global_nohz() dropped using "ticks".
 
-This may have negative impact on performance for workloads with frequent
-creation of multiple threads.
-
-In this patch we are using group_util to select idlest group if both groups
-have equal number of idle_cpus. Comparing the number of idle cpu is
-not enough in this case, because the newly forked thread sleeps
-immediately and before we select the cpu for the next one.
-This is shown in the trace where the same CPU7 is selected for
-all wakeup_new events.
-That's why, looking at utilization when there is the same number of
-CPU is a good way to see where the previous task was placed. Using
-nr_running doesn't solve the problem because the newly forked task is not
-running and the cpu would not have been idle in this case and an idle
-CPU would have been selected instead.
-
-With this patch newly created tasks would be better distributed.
-
-With this patch:
-sudo perf record -e sched:sched_wakeup_new -- \
-                                    sysbench threads --threads=4 run
-...
-    total number of events:              74401
-...
-sudo perf script
-sysbench 129455 [006] 75232.853257: sched:sched_wakeup_new:
-                            sysbench:129457 [120] success=1 CPU:008
-sysbench 129455 [006] 75232.854489: sched:sched_wakeup_new:
-                            sysbench:129458 [120] success=1 CPU:009
-sysbench 129455 [006] 75232.855732: sched:sched_wakeup_new:
-                            sysbench:129459 [120] success=1 CPU:010
-sysbench 129455 [006] 75232.856980: sched:sched_wakeup_new:
-                            sysbench:129460 [120] success=1 CPU:011
-
-We tested this patch with following benchmarks:
-master: 'commit b3a9e3b9622a ("Linux 5.8-rc1")'
-
-100 iterations of: perf bench -f simple futex wake -s -t 128 -w 1
-Lower result is better
-|         |   BASELINE |   +PATCH |   DELTA (%) |
-|---------|------------|----------|-------------|
-| mean    |      0.33  |    0.313 |      +5.152 |
-| std (%) |     10.433 |    7.563 |             |
-
-100 iterations of: sysbench threads --threads=8 run
-Higher result is better
-|         |   BASELINE |   +PATCH |   DELTA (%) |
-|---------|------------|----------|-------------|
-| mean    |   5235.02  | 5863.73  |      +12.01 |
-| std (%) |      8.166 |   10.265 |             |
-
-100 iterations of: sysbench mutex --mutex-num=1 --threads=8 run
-Lower result is better
-|         |   BASELINE |   +PATCH |   DELTA (%) |
-|---------|------------|----------|-------------|
-| mean    |      0.413 |    0.404 |      +2.179 |
-| std (%) |      3.791 |    1.816 |             |
-
-Signed-off-by: Peter Puhov <peter.puhov@linaro.org>
+Fixes: c308b56b5398 ("sched: Fix nohz load accounting -- again!")
+Signed-off-by: Paul Gortmaker <paul.gortmaker@windriver.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20200714125941.4174-1-peter.puhov@linaro.org
+Link: https://lkml.kernel.org/r/1593628458-32290-1-git-send-email-paul.gortmaker@windriver.com
 ---
- kernel/sched/fair.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ include/linux/sched/loadavg.h | 2 +-
+ kernel/sched/loadavg.c        | 2 +-
+ kernel/time/timekeeping.c     | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 98a53a2..2ba8f23 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -8711,8 +8711,14 @@ static bool update_pick_idlest(struct sched_group *idlest,
+diff --git a/include/linux/sched/loadavg.h b/include/linux/sched/loadavg.h
+index 4859bea..83ec54b 100644
+--- a/include/linux/sched/loadavg.h
++++ b/include/linux/sched/loadavg.h
+@@ -43,6 +43,6 @@ extern unsigned long calc_load_n(unsigned long load, unsigned long exp,
+ #define LOAD_INT(x) ((x) >> FSHIFT)
+ #define LOAD_FRAC(x) LOAD_INT(((x) & (FIXED_1-1)) * 100)
  
- 	case group_has_spare:
- 		/* Select group with most idle CPUs */
--		if (idlest_sgs->idle_cpus >= sgs->idle_cpus)
-+		if (idlest_sgs->idle_cpus > sgs->idle_cpus)
- 			return false;
-+
-+		/* Select group with lowest group_util */
-+		if (idlest_sgs->idle_cpus == sgs->idle_cpus &&
-+			idlest_sgs->group_util <= sgs->group_util)
-+			return false;
-+
- 		break;
- 	}
+-extern void calc_global_load(unsigned long ticks);
++extern void calc_global_load(void);
  
+ #endif /* _LINUX_SCHED_LOADAVG_H */
+diff --git a/kernel/sched/loadavg.c b/kernel/sched/loadavg.c
+index de22da6..d2a6556 100644
+--- a/kernel/sched/loadavg.c
++++ b/kernel/sched/loadavg.c
+@@ -347,7 +347,7 @@ static inline void calc_global_nohz(void) { }
+  *
+  * Called from the global timer code.
+  */
+-void calc_global_load(unsigned long ticks)
++void calc_global_load(void)
+ {
+ 	unsigned long sample_window;
+ 	long active, delta;
+diff --git a/kernel/time/timekeeping.c b/kernel/time/timekeeping.c
+index d20d489..63a632f 100644
+--- a/kernel/time/timekeeping.c
++++ b/kernel/time/timekeeping.c
+@@ -2193,7 +2193,7 @@ EXPORT_SYMBOL(ktime_get_coarse_ts64);
+ void do_timer(unsigned long ticks)
+ {
+ 	jiffies_64 += ticks;
+-	calc_global_load(ticks);
++	calc_global_load();
+ }
+ 
+ /**
