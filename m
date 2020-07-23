@@ -2,52 +2,51 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A53F22B673
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 23 Jul 2020 21:09:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C21A22B67C
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 23 Jul 2020 21:10:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728417AbgGWTJr (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 23 Jul 2020 15:09:47 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:60504 "EHLO
+        id S1728445AbgGWTJu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 23 Jul 2020 15:09:50 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:60562 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728375AbgGWTJq (ORCPT
+        with ESMTP id S1728410AbgGWTJs (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 23 Jul 2020 15:09:46 -0400
-Date:   Thu, 23 Jul 2020 19:09:44 -0000
+        Thu, 23 Jul 2020 15:09:48 -0400
+Date:   Thu, 23 Jul 2020 19:09:45 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1595531385;
+        s=2020; t=1595531386;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=6Mwt9NZqiGCWc/y/PwDNXa+V9bdnR9Bcgv963eoI4WQ=;
-        b=oldN3uSz3oj86BmkOiqqgH+4+fPiI1S9w3U6lpfNrAPEmMRdNkbQa6t3ANY5a6Nd51yRoc
-        KIcPKN5MEtDZNh5vBVd6SWdlomCCL6SEE06hezcob3pIfON134Hw7iU4067Q4WngtdjzV2
-        AXX05vpPhQ3XzUN4QJMUDdW2nvJbqIlUTsxerr0Owb7GuJP/wsHYikzALobdAYNdZ2FyUh
-        B2TjuN3HI4iCSlVq6wNYx2hRlVXbgZ/lTHlGQiksV2mKLTnQWbcQZ1TYKVJ/WF30UaVwkm
-        iLg0ZfLtvz1/tiBqga6Od833CR2cec0LzIl2/cz2giWZO0m0Sxm2U22fijzpWQ==
+        bh=Uyibh09fRIvhTZEslxtKva5uwEaRdPpSGaETrJl/6PA=;
+        b=vcywJcgWB45NV484NvQPuJoY6yYHZmQOh1OSYRlzvT8tTOZ7OgplWuXO7kTqujvSITfSJw
+        8AvcprE5Hu49CKlKtZLTuhTmOpY7Jm1SGI31wK7JsnGRjeDKEhweYnx/OMa0Zc0GJZwUf2
+        3KC7x7O1HTm/fw8fJc22eoGEU9bJJ9LcZ7X5p2HWo7TQfuoPr1+vMPiAOqFchf9sGx8qDG
+        lx4y/z/G5pnjxNF2jhXf0l7Pm8+QPHAQOgNy3L3QrdZ5Tx+i92h8Rsl+sKuBdtRe3L+zq7
+        U0RpwuyfDWSki+dHZN+mggR385HcAeig76pzwrkUtliN8FrjYFR8I7aFqcJ2+Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1595531385;
+        s=2020e; t=1595531386;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=6Mwt9NZqiGCWc/y/PwDNXa+V9bdnR9Bcgv963eoI4WQ=;
-        b=mMVGCP0qIpIlSZ66jkfUoHKJ+wQ+eKQ3S0cZgeg7/xiYfR+H9fDxOszIwIVPYrWwkWSBX7
-        GrDXyuLuka+wZ/Dg==
+        bh=Uyibh09fRIvhTZEslxtKva5uwEaRdPpSGaETrJl/6PA=;
+        b=VPyAZSzOGZ5HESTfGZd4fNOMt/KL3FkFJcFd2FEb0cyD87Q000gSZ4V/+oGrsJh75RFZ8k
+        bfHCVPQPLhNAFCDw==
 From:   "tip-bot2 for Alexandre Belloni" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] clocksource/drivers/timer-atmel-tcb: Rework 32khz
- clock selection
+Subject: [tip: timers/core] ARM: dts: at91: sama5d2: add TCB GCLK
 Cc:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
         Daniel Lezcano <daniel.lezcano@linaro.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200710230813.1005150-6-alexandre.belloni@bootlin.com>
-References: <20200710230813.1005150-6-alexandre.belloni@bootlin.com>
+In-Reply-To: <20200710230813.1005150-4-alexandre.belloni@bootlin.com>
+References: <20200710230813.1005150-4-alexandre.belloni@bootlin.com>
 MIME-Version: 1.0
-Message-ID: <159553138460.4006.12847358392559063922.tip-bot2@tip-bot2>
+Message-ID: <159553138590.4006.3759668982230902432.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,65 +58,55 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     228e21848623e0ce54a1a3d7857b444813e49b2e
-Gitweb:        https://git.kernel.org/tip/228e21848623e0ce54a1a3d7857b444813e49b2e
+Commit-ID:     44f6fa431bbd087083fca437d0348edd4b09e3c2
+Gitweb:        https://git.kernel.org/tip/44f6fa431bbd087083fca437d0348edd4b09e3c2
 Author:        Alexandre Belloni <alexandre.belloni@bootlin.com>
-AuthorDate:    Sat, 11 Jul 2020 01:08:09 +02:00
+AuthorDate:    Sat, 11 Jul 2020 01:08:07 +02:00
 Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
-CommitterDate: Sat, 11 Jul 2020 18:57:58 +02:00
+CommitterDate: Sat, 11 Jul 2020 18:57:03 +02:00
 
-clocksource/drivers/timer-atmel-tcb: Rework 32khz clock selection
+ARM: dts: at91: sama5d2: add TCB GCLK
 
-On all the supported SoCs, the slow clock is always ATMEL_TC_TIMER_CLOCK5,
-avoid looking it up and pass it directly to setup_clkevents.
+The sama5d2 tcbs take an extra input clock, their gclk.
 
 Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20200710230813.1005150-6-alexandre.belloni@bootlin.com
+Link: https://lore.kernel.org/r/20200710230813.1005150-4-alexandre.belloni@bootlin.com
 ---
- drivers/clocksource/timer-atmel-tcb.c | 11 ++---------
- 1 file changed, 2 insertions(+), 9 deletions(-)
+ arch/arm/boot/dts/sama5d2.dtsi | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/clocksource/timer-atmel-tcb.c b/drivers/clocksource/timer-atmel-tcb.c
-index 7427b07..b255a4a 100644
---- a/drivers/clocksource/timer-atmel-tcb.c
-+++ b/drivers/clocksource/timer-atmel-tcb.c
-@@ -346,7 +346,7 @@ static void __init tcb_setup_single_chan(struct atmel_tc *tc, int mck_divisor_id
- 	writel(ATMEL_TC_SYNC, tcaddr + ATMEL_TC_BCR);
- }
+diff --git a/arch/arm/boot/dts/sama5d2.dtsi b/arch/arm/boot/dts/sama5d2.dtsi
+index ab550d6..996143e 100644
+--- a/arch/arm/boot/dts/sama5d2.dtsi
++++ b/arch/arm/boot/dts/sama5d2.dtsi
+@@ -499,23 +499,23 @@
+ 			};
  
--static const u8 atmel_tcb_divisors[5] = { 2, 8, 32, 128, 0, };
-+static const u8 atmel_tcb_divisors[] = { 2, 8, 32, 128 };
+ 			tcb0: timer@f800c000 {
+-				compatible = "atmel,at91sam9x5-tcb", "simple-mfd", "syscon";
++				compatible = "atmel,sama5d2-tcb", "simple-mfd", "syscon";
+ 				#address-cells = <1>;
+ 				#size-cells = <0>;
+ 				reg = <0xf800c000 0x100>;
+ 				interrupts = <35 IRQ_TYPE_LEVEL_HIGH 0>;
+-				clocks = <&pmc PMC_TYPE_PERIPHERAL 35>, <&clk32k>;
+-				clock-names = "t0_clk", "slow_clk";
++				clocks = <&pmc PMC_TYPE_PERIPHERAL 35>, <&pmc PMC_TYPE_GCK 35>, <&clk32k>;
++				clock-names = "t0_clk", "gclk", "slow_clk";
+ 			};
  
- static const struct of_device_id atmel_tcb_of_match[] = {
- 	{ .compatible = "atmel,at91rm9200-tcb", .data = (void *)16, },
-@@ -362,7 +362,6 @@ static int __init tcb_clksrc_init(struct device_node *node)
- 	u64 (*tc_sched_clock)(void);
- 	u32 rate, divided_rate = 0;
- 	int best_divisor_idx = -1;
--	int clk32k_divisor_idx = -1;
- 	int bits;
- 	int i;
- 	int ret;
-@@ -416,12 +415,6 @@ static int __init tcb_clksrc_init(struct device_node *node)
- 		unsigned divisor = atmel_tcb_divisors[i];
- 		unsigned tmp;
+ 			tcb1: timer@f8010000 {
+-				compatible = "atmel,at91sam9x5-tcb", "simple-mfd", "syscon";
++				compatible = "atmel,sama5d2-tcb", "simple-mfd", "syscon";
+ 				#address-cells = <1>;
+ 				#size-cells = <0>;
+ 				reg = <0xf8010000 0x100>;
+ 				interrupts = <36 IRQ_TYPE_LEVEL_HIGH 0>;
+-				clocks = <&pmc PMC_TYPE_PERIPHERAL 36>, <&clk32k>;
+-				clock-names = "t0_clk", "slow_clk";
++				clocks = <&pmc PMC_TYPE_PERIPHERAL 36>, <&pmc PMC_TYPE_GCK 36>, <&clk32k>;
++				clock-names = "t0_clk", "gclk", "slow_clk";
+ 			};
  
--		/* remember 32 KiHz clock for later */
--		if (!divisor) {
--			clk32k_divisor_idx = i;
--			continue;
--		}
--
- 		tmp = rate / divisor;
- 		pr_debug("TC: %u / %-3u [%d] --> %u\n", rate, divisor, i, tmp);
- 		if (best_divisor_idx > 0) {
-@@ -467,7 +460,7 @@ static int __init tcb_clksrc_init(struct device_node *node)
- 		goto err_disable_t1;
- 
- 	/* channel 2:  periodic and oneshot timer support */
--	ret = setup_clkevents(&tc, clk32k_divisor_idx);
-+	ret = setup_clkevents(&tc, ATMEL_TC_TIMER_CLOCK5);
- 	if (ret)
- 		goto err_unregister_clksrc;
- 
+ 			hsmc: hsmc@f8014000 {
