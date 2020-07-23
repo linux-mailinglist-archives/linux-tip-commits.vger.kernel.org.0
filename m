@@ -2,20 +2,20 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0638E22B68E
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 23 Jul 2020 21:10:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9662422B674
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 23 Jul 2020 21:10:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726666AbgGWTK1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 23 Jul 2020 15:10:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36358 "EHLO
+        id S1728287AbgGWTJn (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 23 Jul 2020 15:09:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36360 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727850AbgGWTJk (ORCPT
+        with ESMTP id S1726758AbgGWTJl (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 23 Jul 2020 15:09:40 -0400
+        Thu, 23 Jul 2020 15:09:41 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1382C0619DC;
-        Thu, 23 Jul 2020 12:09:40 -0700 (PDT)
-Date:   Thu, 23 Jul 2020 19:09:38 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3637CC0619DC;
+        Thu, 23 Jul 2020 12:09:41 -0700 (PDT)
+Date:   Thu, 23 Jul 2020 19:09:39 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1595531379;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -23,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=G+nKSOIrfkErF+Y+zhgHRjQA/DXzOar1/zZiB2UybB0=;
-        b=ZcY5GtozpTclmspBKu0f2IQ8pVeQxbBP+guSjy0tAJJh4CZ33YVMc01NgUzgTdNUSKbu5h
-        xstwJa97j1ivvRaIiV2Ul26kw+heQzpOg9eRWfXRu2W4gCauVujxqyvL/ERuXaLDsxA59X
-        ifYVIdGKZUCMmC2JAEyVhXEXsl/smPmdbnJjZTVKPtrwyY+Y1+sGBBuOYvhXyipDhAXRp5
-        ITsbQmlKs39wwmvfDAonU5LUaBJR2U0Ln08JDJOBkI1orX+eNBmrGTydEomNqKlHN2ZIvs
-        9o0svhb+5lOhRQx/Vy0tBmC81BVgA93yGEabKqpKHUTYEFanxZ2FAXGrybMTAg==
+        bh=jHAEzeXiywKr0hwihLh1/TPPBoNTspu1YlA6nyxknew=;
+        b=eFMeajpCGibecWAOvzzkVzm7y+R6ye6Vrza+PpJd+MPINwcrSguLrY9s/1PZthJFUMFJ0F
+        Q7/iyGvk7kBQAgODwn1xJrA4MMsy2Ts8AqqI7fOyuBUhYZSH5gy9tyGLmDIfMhGXuhRDL2
+        cZM0jXhOS3Q9YiXSXm7S8bRn0GoNCgIonOBWHqL/18RGG8jCkYDD7eeN7lk3dkxqDRLiZ3
+        ndd5FXbNkS2r6ohd82HUm6nvWUoWQjsaEz2vw+ohsJAMpO12o6+4cEKLIMCR8RQAKHrCSc
+        56pS7eToh/OQvXDDvYi5aVL9QBfUQ2pji9UEudTYF6im6kq/3ejXkARFyRJUwA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1595531379;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,21 +36,20 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=G+nKSOIrfkErF+Y+zhgHRjQA/DXzOar1/zZiB2UybB0=;
-        b=9dj1K5EySfhIQ05i/KtV+vTC037yJi7jYWFwSZhoi7WH8l5+lkBPe0nuxQtKRup5e+XJrk
-        QIk+Sat1HFyTOuDw==
-From:   "tip-bot2 for Alexander A. Klimov" <tip-bot2@linutronix.de>
+        bh=jHAEzeXiywKr0hwihLh1/TPPBoNTspu1YlA6nyxknew=;
+        b=Z9wT+dzhSDoisJ8J+5esyP/2M28kz3mVifY+U/0n7QfVkAelJeF/zZvGmvWes/MzOrzz5S
+        8md9Qb1M8HqkNmBg==
+From:   "tip-bot2 for Linus Walleij" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] clocksource/drivers: Replace HTTP links with HTTPS ones
-Cc:     "Alexander A. Klimov" <grandmaster@al2klimov.de>,
-        Rob Herring <robh@kernel.org>,
+Subject: [tip: timers/core] clocksource/drivers/nomadik-mtu: Handle 32kHz clock
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
         Daniel Lezcano <daniel.lezcano@linaro.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200708165856.15322-1-grandmaster@al2klimov.de>
-References: <20200708165856.15322-1-grandmaster@al2klimov.de>
+In-Reply-To: <20200628220153.67011-1-linus.walleij@linaro.org>
+References: <20200628220153.67011-1-linus.walleij@linaro.org>
 MIME-Version: 1.0
-Message-ID: <159553137839.4006.9381655365973041428.tip-bot2@tip-bot2>
+Message-ID: <159553137912.4006.8159842673078944988.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -62,76 +61,63 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     dcf30fc0ca9e2df2f5f9daddd1a0ab8f1ccbc9e4
-Gitweb:        https://git.kernel.org/tip/dcf30fc0ca9e2df2f5f9daddd1a0ab8f1ccbc9e4
-Author:        Alexander A. Klimov <grandmaster@al2klimov.de>
-AuthorDate:    Wed, 08 Jul 2020 18:58:56 +02:00
+Commit-ID:     aaea0b83458cdb3467e27deb7403b4403152dbd6
+Gitweb:        https://git.kernel.org/tip/aaea0b83458cdb3467e27deb7403b4403152dbd6
+Author:        Linus Walleij <linus.walleij@linaro.org>
+AuthorDate:    Mon, 29 Jun 2020 00:01:53 +02:00
 Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
 CommitterDate: Thu, 23 Jul 2020 16:57:43 +02:00
 
-clocksource/drivers: Replace HTTP links with HTTPS ones
+clocksource/drivers/nomadik-mtu: Handle 32kHz clock
 
-Rationale:
-Reduces attack surface on kernel devs opening the links for MITM
-as HTTPS traffic is much harder to manipulate.
+It happens on the U8420-sysclk Ux500 PRCMU firmware
+variant that the MTU clock is just 32768 Hz, and in this
+mode the minimum ticks is 5 rather than two.
 
-Deterministic algorithm:
-For each file:
-  If not .svg:
-    For each line:
-      If doesn't contain `\bxmlns\b`:
-        For each link, `\bhttp://[^# \t\r\n]*(?:\w|/)`:
-	  If neither `\bgnu\.org/license`, nor `\bmozilla\.org/MPL\b`:
-            If both the HTTP and HTTPS versions
-            return 200 OK and serve the same content:
-              Replace HTTP with HTTPS.
+I think this is simply so that there is enough time
+for the register write to propagate through the
+interconnect to the registers.
 
-Signed-off-by: Alexander A. Klimov <grandmaster@al2klimov.de>
-Acked-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20200708165856.15322-1-grandmaster@al2klimov.de
+Link: https://lore.kernel.org/r/20200628220153.67011-1-linus.walleij@linaro.org
 ---
- Documentation/devicetree/bindings/timer/ti,keystone-timer.txt | 2 +-
- drivers/clocksource/timer-ti-32k.c                            | 2 +-
- drivers/clocksource/timer-ti-dm.c                             | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/clocksource/nomadik-mtu.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/timer/ti,keystone-timer.txt b/Documentation/devicetree/bindings/timer/ti,keystone-timer.txt
-index 5fbe361..d3905a5 100644
---- a/Documentation/devicetree/bindings/timer/ti,keystone-timer.txt
-+++ b/Documentation/devicetree/bindings/timer/ti,keystone-timer.txt
-@@ -10,7 +10,7 @@ It is global timer is a free running up-counter and can generate interrupt
- when the counter reaches preset counter values.
+diff --git a/drivers/clocksource/nomadik-mtu.c b/drivers/clocksource/nomadik-mtu.c
+index f49a631..1cf3304 100644
+--- a/drivers/clocksource/nomadik-mtu.c
++++ b/drivers/clocksource/nomadik-mtu.c
+@@ -186,6 +186,7 @@ static int __init nmdk_timer_init(void __iomem *base, int irq,
+ {
+ 	unsigned long rate;
+ 	int ret;
++	int min_ticks;
  
- Documentation:
--http://www.ti.com/lit/ug/sprugv5a/sprugv5a.pdf
-+https://www.ti.com/lit/ug/sprugv5a/sprugv5a.pdf
+ 	mtu_base = base;
  
- Required properties:
+@@ -194,7 +195,8 @@ static int __init nmdk_timer_init(void __iomem *base, int irq,
  
-diff --git a/drivers/clocksource/timer-ti-32k.c b/drivers/clocksource/timer-ti-32k.c
-index ae12bbf..59b0be4 100644
---- a/drivers/clocksource/timer-ti-32k.c
-+++ b/drivers/clocksource/timer-ti-32k.c
-@@ -21,7 +21,7 @@
-  * Roughly modelled after the OMAP1 MPU timer code.
-  * Added OMAP4 support - Santosh Shilimkar <santosh.shilimkar@ti.com>
-  *
-- * Copyright (C) 2015 Texas Instruments Incorporated - http://www.ti.com
-+ * Copyright (C) 2015 Texas Instruments Incorporated - https://www.ti.com
-  */
+ 	/*
+ 	 * Tick rate is 2.4MHz for Nomadik and 2.4Mhz, 100MHz or 133 MHz
+-	 * for ux500.
++	 * for ux500, and in one specific Ux500 case 32768 Hz.
++	 *
+ 	 * Use a divide-by-16 counter if the tick rate is more than 32MHz.
+ 	 * At 32 MHz, the timer (with 32 bit counter) can be programmed
+ 	 * to wake-up at a max 127s a head in time. Dividing a 2.4 MHz timer
+@@ -230,7 +232,12 @@ static int __init nmdk_timer_init(void __iomem *base, int irq,
+ 		pr_err("%s: request_irq() failed\n", "Nomadik Timer Tick");
+ 	nmdk_clkevt.cpumask = cpumask_of(0);
+ 	nmdk_clkevt.irq = irq;
+-	clockevents_config_and_register(&nmdk_clkevt, rate, 2, 0xffffffffU);
++	if (rate < 100000)
++		min_ticks = 5;
++	else
++		min_ticks = 2;
++	clockevents_config_and_register(&nmdk_clkevt, rate, min_ticks,
++					0xffffffffU);
  
- #include <linux/clk.h>
-diff --git a/drivers/clocksource/timer-ti-dm.c b/drivers/clocksource/timer-ti-dm.c
-index 60aff08..33eeabf 100644
---- a/drivers/clocksource/timer-ti-dm.c
-+++ b/drivers/clocksource/timer-ti-dm.c
-@@ -4,7 +4,7 @@
-  *
-  * OMAP Dual-Mode Timers
-  *
-- * Copyright (C) 2010 Texas Instruments Incorporated - http://www.ti.com/
-+ * Copyright (C) 2010 Texas Instruments Incorporated - https://www.ti.com/
-  * Tarun Kanti DebBarma <tarun.kanti@ti.com>
-  * Thara Gopinath <thara@ti.com>
-  *
+ 	mtu_delay_timer.read_current_timer = &nmdk_timer_read_current_timer;
+ 	mtu_delay_timer.freq = rate;
