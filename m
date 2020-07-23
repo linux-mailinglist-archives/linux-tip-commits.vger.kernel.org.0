@@ -2,63 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F98422B68C
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 23 Jul 2020 21:10:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E177422B672
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 23 Jul 2020 21:09:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728560AbgGWTKQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 23 Jul 2020 15:10:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36368 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728289AbgGWTJn (ORCPT
+        id S1726758AbgGWTJp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 23 Jul 2020 15:09:45 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:60504 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728281AbgGWTJp (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 23 Jul 2020 15:09:43 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D78BC0619DC;
-        Thu, 23 Jul 2020 12:09:43 -0700 (PDT)
+        Thu, 23 Jul 2020 15:09:45 -0400
 Date:   Thu, 23 Jul 2020 19:09:41 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1595531381;
+        s=2020; t=1595531382;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=+b5r8C8OA+wELxVBiLJsNuUQpQ2AlGxYKcEwqg6dH3s=;
-        b=h1cZNJwryqs/xiW6lriwZfcyqrX5uDwmqtEaBBSD+jZvKnAAAxPz0wyetI6malvgMvIUxT
-        UZT35tJqJPlVJzwGBvnGQ6Sb4ZBUSLuMdWr6KtzrfFV90rm8WxfDF6WniPFj4w60gi4Rib
-        KiNmaLQeWmvBm8r+xVgOMRdggtC1auVNK4CxM6sE77SRFRb3oz0IiNIbssJX3ILE4Bpfcb
-        J6niY7skVN3fpL1STmIODvcF4z5JmOewA1O7MND86Yc4OkJETzqDHi55DKsLFLLSPSM/Zf
-        wpbgaV0XfhQqAdolgHgeuZ5cTNP668CriFvoD5JXAC+TWRH9ShNAs4PuySeRBg==
+        bh=XURIiBZeIQf48fZ8D2yW/iOUxTKm4roGT/PfgyGv4Mw=;
+        b=2+pWO0M6958CbLDUfICCEdPL3oJE746/vFpp52jcY91hLbeWAnxTaSOuY9XpRMQwGIemmG
+        lrSJ9WJ0Wv5a30oIPVrcxRNA30xrK+nMORTXCN51zzELTwjEquZMr6W5DIrWlrGru5Yc48
+        /oD/cUeRBTp3bLEJq4OQol1u6lN8j4zyaHNZUAO+anr57wJ2JlLtpxkKcsH2eW0NqGXgzI
+        jI98TkpPztGXyBdXnsWjXxE4zbS9AAPYj8eg5s0rUaIOmfTH647vR+L/VbnAO0ZfSCVSOp
+        A/HQw7mFUGFVsgMxNU1wgmOAaushmAo/hOlJ4j4mbxnoYBhb4mCcS70MsHw77g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1595531381;
+        s=2020e; t=1595531382;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=+b5r8C8OA+wELxVBiLJsNuUQpQ2AlGxYKcEwqg6dH3s=;
-        b=mBsyb73pM9lwgRtjo/BnDoXogj95q81WyXps0F4f2hsKhnT9aUAKPODqSuOIdPFn0ghsCg
-        y2Ev8RSjClbuvUBw==
-From:   tip-bot2 for =?utf-8?b?5ZGo55Cw5p2w?= (Zhou Yanjie) 
-        <tip-bot2@linutronix.de>
+        bh=XURIiBZeIQf48fZ8D2yW/iOUxTKm4roGT/PfgyGv4Mw=;
+        b=Vmiy3wfSBD4+e+wXFPaSlMUZdV7GHBviG5eugFPL+CiZzW5XDCPfFFL7ppydyH5JnkTMSr
+        Mi8+RNnpQq8GWdAA==
+From:   "tip-bot2 for Alexandre Belloni" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] clocksource/drivers/ingenic: Add high resolution
- timer support for SMP/SMT.
-Cc:     "H. Nikolaus Schaller" <hns@goldelico.com>,
-        Paul Boddie <paul@boddie.org.uk>,
-        Paul Cercueil <paul@crapouillou.net>,
-        zhouyanjie@wanyeetech.com,
+Subject: [tip: timers/core] clocksource/drivers/timer-atmel-tcb: Add sama5d2 support
+Cc:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
         Daniel Lezcano <daniel.lezcano@linaro.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200624170749.31762-2-zhouyanjie@wanyeetech.com>
-References: <20200624170749.31762-2-zhouyanjie@wanyeetech.com>
+In-Reply-To: <20200710230813.1005150-10-alexandre.belloni@bootlin.com>
+References: <20200710230813.1005150-10-alexandre.belloni@bootlin.com>
 MIME-Version: 1.0
-Message-ID: <159553138109.4006.17640169514706530461.tip-bot2@tip-bot2>
+Message-ID: <159553138186.4006.16943754175654889381.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
@@ -66,396 +58,55 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     f19d838d08fc1cde742dedafa776a865e1682e63
-Gitweb:        https://git.kernel.org/tip/f19d838d08fc1cde742dedafa776a865e16=
-82e63
-Author:        =E5=91=A8=E7=90=B0=E6=9D=B0 (Zhou Yanjie) <zhouyanjie@wanyeete=
-ch.com>
-AuthorDate:    Thu, 25 Jun 2020 01:07:49 +08:00
+Commit-ID:     467ae18aa057c44417afc92896879c2fb37a8b65
+Gitweb:        https://git.kernel.org/tip/467ae18aa057c44417afc92896879c2fb37a8b65
+Author:        Alexandre Belloni <alexandre.belloni@bootlin.com>
+AuthorDate:    Sat, 11 Jul 2020 01:08:13 +02:00
 Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
-CommitterDate: Thu, 23 Jul 2020 16:57:19 +02:00
+CommitterDate: Sat, 11 Jul 2020 18:58:24 +02:00
 
-clocksource/drivers/ingenic: Add high resolution timer support for SMP/SMT.
+clocksource/drivers/timer-atmel-tcb: Add sama5d2 support
 
-Enable clock event handling on per CPU core basis. Make sure that
-interrupts raised on the first core execute event handlers on the
-correct CPU core. This driver is required by Ingenic processors
-that support SMP/SMT, such as JZ4780 and X2000.
+The first divisor for the sama5d2 is actually the gclk selector. Because
+the currently remaining divisors are fitting the use case, currently ensure
+it is skipped.
 
-Tested-by: H. Nikolaus Schaller <hns@goldelico.com>
-Tested-by: Paul Boddie <paul@boddie.org.uk>
-Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-Signed-off-by: =E5=91=A8=E7=90=B0=E6=9D=B0 (Zhou Yanjie) <zhouyanjie@wanyeete=
-ch.com>
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20200624170749.31762-2-zhouyanjie@wanyeetech.=
-com
+Link: https://lore.kernel.org/r/20200710230813.1005150-10-alexandre.belloni@bootlin.com
 ---
- drivers/clocksource/ingenic-timer.c | 182 ++++++++++++++++++---------
- 1 file changed, 124 insertions(+), 58 deletions(-)
+ drivers/clocksource/timer-atmel-tcb.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clocksource/ingenic-timer.c b/drivers/clocksource/ingeni=
-c-timer.c
-index 4963336..58fd918 100644
---- a/drivers/clocksource/ingenic-timer.c
-+++ b/drivers/clocksource/ingenic-timer.c
-@@ -1,7 +1,8 @@
- // SPDX-License-Identifier: GPL-2.0
- /*
-- * JZ47xx SoCs TCU IRQ driver
-+ * Ingenic SoCs TCU IRQ driver
-  * Copyright (C) 2019 Paul Cercueil <paul@crapouillou.net>
-+ * Copyright (C) 2020 =E5=91=A8=E7=90=B0=E6=9D=B0 (Zhou Yanjie) <zhouyanjie@=
-wanyeetech.com>
-  */
-=20
- #include <linux/bitops.h>
-@@ -15,24 +16,35 @@
- #include <linux/of_address.h>
- #include <linux/of_irq.h>
- #include <linux/of_platform.h>
-+#include <linux/overflow.h>
- #include <linux/platform_device.h>
- #include <linux/regmap.h>
- #include <linux/sched_clock.h>
-=20
- #include <dt-bindings/clock/ingenic,tcu.h>
-=20
-+static DEFINE_PER_CPU(call_single_data_t, ingenic_cevt_csd);
-+
- struct ingenic_soc_info {
- 	unsigned int num_channels;
+diff --git a/drivers/clocksource/timer-atmel-tcb.c b/drivers/clocksource/timer-atmel-tcb.c
+index 7fea134..787dbeb 100644
+--- a/drivers/clocksource/timer-atmel-tcb.c
++++ b/drivers/clocksource/timer-atmel-tcb.c
+@@ -359,9 +359,15 @@ static struct atmel_tcb_config tcb_sam9x5_config = {
+ 	.counter_width = 32,
  };
-=20
-+struct ingenic_tcu_timer {
-+	unsigned int cpu;
-+	unsigned int channel;
-+	struct clock_event_device cevt;
-+	struct clk *clk;
-+	char name[8];
+ 
++static struct atmel_tcb_config tcb_sama5d2_config = {
++	.counter_width = 32,
++	.has_gclk = 1,
 +};
 +
- struct ingenic_tcu {
- 	struct regmap *map;
--	struct clk *timer_clk, *cs_clk;
--	unsigned int timer_channel, cs_channel;
--	struct clock_event_device cevt;
-+	struct device_node *np;
-+	struct clk *cs_clk;
-+	unsigned int cs_channel;
- 	struct clocksource cs;
--	char name[4];
- 	unsigned long pwm_channels_mask;
-+	struct ingenic_tcu_timer timers[];
+ static const struct of_device_id atmel_tcb_of_match[] = {
+ 	{ .compatible = "atmel,at91rm9200-tcb", .data = &tcb_rm9200_config, },
+ 	{ .compatible = "atmel,at91sam9x5-tcb", .data = &tcb_sam9x5_config, },
++	{ .compatible = "atmel,sama5d2-tcb", .data = &tcb_sama5d2_config, },
+ 	{ /* sentinel */ }
  };
-=20
- static struct ingenic_tcu *ingenic_tcu;
-@@ -52,16 +64,24 @@ static u64 notrace ingenic_tcu_timer_cs_read(struct clock=
-source *cs)
- 	return ingenic_tcu_timer_read();
- }
-=20
--static inline struct ingenic_tcu *to_ingenic_tcu(struct clock_event_device *=
-evt)
-+static inline struct ingenic_tcu *
-+to_ingenic_tcu(struct ingenic_tcu_timer *timer)
-+{
-+	return container_of(timer, struct ingenic_tcu, timers[timer->cpu]);
-+}
-+
-+static inline struct ingenic_tcu_timer *
-+to_ingenic_tcu_timer(struct clock_event_device *evt)
- {
--	return container_of(evt, struct ingenic_tcu, cevt);
-+	return container_of(evt, struct ingenic_tcu_timer, cevt);
- }
-=20
- static int ingenic_tcu_cevt_set_state_shutdown(struct clock_event_device *ev=
-t)
- {
--	struct ingenic_tcu *tcu =3D to_ingenic_tcu(evt);
-+	struct ingenic_tcu_timer *timer =3D to_ingenic_tcu_timer(evt);
-+	struct ingenic_tcu *tcu =3D to_ingenic_tcu(timer);
-=20
--	regmap_write(tcu->map, TCU_REG_TECR, BIT(tcu->timer_channel));
-+	regmap_write(tcu->map, TCU_REG_TECR, BIT(timer->channel));
-=20
- 	return 0;
- }
-@@ -69,27 +89,40 @@ static int ingenic_tcu_cevt_set_state_shutdown(struct clo=
-ck_event_device *evt)
- static int ingenic_tcu_cevt_set_next(unsigned long next,
- 				     struct clock_event_device *evt)
- {
--	struct ingenic_tcu *tcu =3D to_ingenic_tcu(evt);
-+	struct ingenic_tcu_timer *timer =3D to_ingenic_tcu_timer(evt);
-+	struct ingenic_tcu *tcu =3D to_ingenic_tcu(timer);
-=20
- 	if (next > 0xffff)
- 		return -EINVAL;
-=20
--	regmap_write(tcu->map, TCU_REG_TDFRc(tcu->timer_channel), next);
--	regmap_write(tcu->map, TCU_REG_TCNTc(tcu->timer_channel), 0);
--	regmap_write(tcu->map, TCU_REG_TESR, BIT(tcu->timer_channel));
-+	regmap_write(tcu->map, TCU_REG_TDFRc(timer->channel), next);
-+	regmap_write(tcu->map, TCU_REG_TCNTc(timer->channel), 0);
-+	regmap_write(tcu->map, TCU_REG_TESR, BIT(timer->channel));
-=20
- 	return 0;
- }
-=20
-+static void ingenic_per_cpu_event_handler(void *info)
-+{
-+	struct clock_event_device *cevt =3D (struct clock_event_device *) info;
-+
-+	cevt->event_handler(cevt);
-+}
-+
- static irqreturn_t ingenic_tcu_cevt_cb(int irq, void *dev_id)
- {
--	struct clock_event_device *evt =3D dev_id;
--	struct ingenic_tcu *tcu =3D to_ingenic_tcu(evt);
-+	struct ingenic_tcu_timer *timer =3D dev_id;
-+	struct ingenic_tcu *tcu =3D to_ingenic_tcu(timer);
-+	call_single_data_t *csd;
-=20
--	regmap_write(tcu->map, TCU_REG_TECR, BIT(tcu->timer_channel));
-+	regmap_write(tcu->map, TCU_REG_TECR, BIT(timer->channel));
-=20
--	if (evt->event_handler)
--		evt->event_handler(evt);
-+	if (timer->cevt.event_handler) {
-+		csd =3D &per_cpu(ingenic_cevt_csd, timer->cpu);
-+		csd->info =3D (void *) &timer->cevt;
-+		csd->func =3D ingenic_per_cpu_event_handler;
-+		smp_call_function_single_async(timer->cpu, csd);
-+	}
-=20
- 	return IRQ_HANDLED;
- }
-@@ -105,64 +138,66 @@ static struct clk * __init ingenic_tcu_get_clock(struct=
- device_node *np, int id)
- 	return of_clk_get_from_provider(&args);
- }
-=20
--static int __init ingenic_tcu_timer_init(struct device_node *np,
--					 struct ingenic_tcu *tcu)
-+static int ingenic_tcu_setup_cevt(unsigned int cpu)
- {
--	unsigned int timer_virq, channel =3D tcu->timer_channel;
-+	struct ingenic_tcu *tcu =3D ingenic_tcu;
-+	struct ingenic_tcu_timer *timer =3D &tcu->timers[cpu];
-+	unsigned int timer_virq;
- 	struct irq_domain *domain;
- 	unsigned long rate;
- 	int err;
-=20
--	tcu->timer_clk =3D ingenic_tcu_get_clock(np, channel);
--	if (IS_ERR(tcu->timer_clk))
--		return PTR_ERR(tcu->timer_clk);
-+	timer->clk =3D ingenic_tcu_get_clock(tcu->np, timer->channel);
-+	if (IS_ERR(timer->clk))
-+		return PTR_ERR(timer->clk);
-=20
--	err =3D clk_prepare_enable(tcu->timer_clk);
-+	err =3D clk_prepare_enable(timer->clk);
- 	if (err)
- 		goto err_clk_put;
-=20
--	rate =3D clk_get_rate(tcu->timer_clk);
-+	rate =3D clk_get_rate(timer->clk);
- 	if (!rate) {
- 		err =3D -EINVAL;
- 		goto err_clk_disable;
- 	}
-=20
--	domain =3D irq_find_host(np);
-+	domain =3D irq_find_host(tcu->np);
- 	if (!domain) {
- 		err =3D -ENODEV;
- 		goto err_clk_disable;
- 	}
-=20
--	timer_virq =3D irq_create_mapping(domain, channel);
-+	timer_virq =3D irq_create_mapping(domain, timer->channel);
- 	if (!timer_virq) {
- 		err =3D -EINVAL;
- 		goto err_clk_disable;
- 	}
-=20
--	snprintf(tcu->name, sizeof(tcu->name), "TCU");
-+	snprintf(timer->name, sizeof(timer->name), "TCU%u", timer->channel);
-=20
- 	err =3D request_irq(timer_virq, ingenic_tcu_cevt_cb, IRQF_TIMER,
--			  tcu->name, &tcu->cevt);
-+			  timer->name, timer);
- 	if (err)
- 		goto err_irq_dispose_mapping;
-=20
--	tcu->cevt.cpumask =3D cpumask_of(smp_processor_id());
--	tcu->cevt.features =3D CLOCK_EVT_FEAT_ONESHOT;
--	tcu->cevt.name =3D tcu->name;
--	tcu->cevt.rating =3D 200;
--	tcu->cevt.set_state_shutdown =3D ingenic_tcu_cevt_set_state_shutdown;
--	tcu->cevt.set_next_event =3D ingenic_tcu_cevt_set_next;
-+	timer->cpu =3D smp_processor_id();
-+	timer->cevt.cpumask =3D cpumask_of(smp_processor_id());
-+	timer->cevt.features =3D CLOCK_EVT_FEAT_ONESHOT;
-+	timer->cevt.name =3D timer->name;
-+	timer->cevt.rating =3D 200;
-+	timer->cevt.set_state_shutdown =3D ingenic_tcu_cevt_set_state_shutdown;
-+	timer->cevt.set_next_event =3D ingenic_tcu_cevt_set_next;
-=20
--	clockevents_config_and_register(&tcu->cevt, rate, 10, 0xffff);
-+	clockevents_config_and_register(&timer->cevt, rate, 10, 0xffff);
-=20
- 	return 0;
-=20
- err_irq_dispose_mapping:
- 	irq_dispose_mapping(timer_virq);
- err_clk_disable:
--	clk_disable_unprepare(tcu->timer_clk);
-+	clk_disable_unprepare(timer->clk);
- err_clk_put:
--	clk_put(tcu->timer_clk);
-+	clk_put(timer->clk);
- 	return err;
- }
-=20
-@@ -238,10 +273,12 @@ static int __init ingenic_tcu_init(struct device_node *=
-np)
- {
- 	const struct of_device_id *id =3D of_match_node(ingenic_tcu_of_match, np);
- 	const struct ingenic_soc_info *soc_info =3D id->data;
-+	struct ingenic_tcu_timer *timer;
- 	struct ingenic_tcu *tcu;
- 	struct regmap *map;
-+	unsigned int cpu;
-+	int ret, last_bit =3D -1;
- 	long rate;
--	int ret;
-=20
- 	of_node_clear_flag(np, OF_POPULATED);
-=20
-@@ -249,17 +286,23 @@ static int __init ingenic_tcu_init(struct device_node *=
-np)
- 	if (IS_ERR(map))
- 		return PTR_ERR(map);
-=20
--	tcu =3D kzalloc(sizeof(*tcu), GFP_KERNEL);
-+	tcu =3D kzalloc(struct_size(tcu, timers, num_possible_cpus()),
-+		      GFP_KERNEL);
- 	if (!tcu)
- 		return -ENOMEM;
-=20
--	/* Enable all TCU channels for PWM use by default except channels 0/1 */
--	tcu->pwm_channels_mask =3D GENMASK(soc_info->num_channels - 1, 2);
-+	/*
-+	 * Enable all TCU channels for PWM use by default except channels 0/1,
-+	 * and channel 2 if target CPU is JZ4780/X2000 and SMP is selected.
-+	 */
-+	tcu->pwm_channels_mask =3D GENMASK(soc_info->num_channels - 1,
-+					 num_possible_cpus() + 1);
- 	of_property_read_u32(np, "ingenic,pwm-channels-mask",
- 			     (u32 *)&tcu->pwm_channels_mask);
-=20
--	/* Verify that we have at least two free channels */
--	if (hweight8(tcu->pwm_channels_mask) > soc_info->num_channels - 2) {
-+	/* Verify that we have at least num_possible_cpus() + 1 free channels */
-+	if (hweight8(tcu->pwm_channels_mask) >
-+			soc_info->num_channels - num_possible_cpus() + 1) {
- 		pr_crit("%s: Invalid PWM channel mask: 0x%02lx\n", __func__,
- 			tcu->pwm_channels_mask);
- 		ret =3D -EINVAL;
-@@ -267,13 +310,22 @@ static int __init ingenic_tcu_init(struct device_node *=
-np)
- 	}
-=20
- 	tcu->map =3D map;
-+	tcu->np =3D np;
- 	ingenic_tcu =3D tcu;
-=20
--	tcu->timer_channel =3D find_first_zero_bit(&tcu->pwm_channels_mask,
--						 soc_info->num_channels);
-+	for (cpu =3D 0; cpu < num_possible_cpus(); cpu++) {
-+		timer =3D &tcu->timers[cpu];
-+
-+		timer->cpu =3D cpu;
-+		timer->channel =3D find_next_zero_bit(&tcu->pwm_channels_mask,
-+						  soc_info->num_channels,
-+						  last_bit + 1);
-+		last_bit =3D timer->channel;
-+	}
-+
- 	tcu->cs_channel =3D find_next_zero_bit(&tcu->pwm_channels_mask,
- 					     soc_info->num_channels,
--					     tcu->timer_channel + 1);
-+					     last_bit + 1);
-=20
- 	ret =3D ingenic_tcu_clocksource_init(np, tcu);
- 	if (ret) {
-@@ -281,9 +333,13 @@ static int __init ingenic_tcu_init(struct device_node *n=
-p)
- 		goto err_free_ingenic_tcu;
- 	}
-=20
--	ret =3D ingenic_tcu_timer_init(np, tcu);
--	if (ret)
-+	/* Setup clock events on each CPU core */
-+	ret =3D cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "Ingenic XBurst: online",
-+				ingenic_tcu_setup_cevt, NULL);
-+	if (ret < 0) {
-+		pr_crit("%s: Unable to start CPU timers: %d\n", __func__, ret);
- 		goto err_tcu_clocksource_cleanup;
-+	}
-=20
- 	/* Register the sched_clock at the end as there's no way to undo it */
- 	rate =3D clk_get_rate(tcu->cs_clk);
-@@ -315,28 +371,38 @@ static int __init ingenic_tcu_probe(struct platform_dev=
-ice *pdev)
- static int __maybe_unused ingenic_tcu_suspend(struct device *dev)
- {
- 	struct ingenic_tcu *tcu =3D dev_get_drvdata(dev);
-+	unsigned int cpu;
-=20
- 	clk_disable(tcu->cs_clk);
--	clk_disable(tcu->timer_clk);
-+
-+	for (cpu =3D 0; cpu < num_online_cpus(); cpu++)
-+		clk_disable(tcu->timers[cpu].clk);
-+
- 	return 0;
- }
-=20
- static int __maybe_unused ingenic_tcu_resume(struct device *dev)
- {
- 	struct ingenic_tcu *tcu =3D dev_get_drvdata(dev);
-+	unsigned int cpu;
- 	int ret;
-=20
--	ret =3D clk_enable(tcu->timer_clk);
--	if (ret)
--		return ret;
-+	for (cpu =3D 0; cpu < num_online_cpus(); cpu++) {
-+		ret =3D clk_enable(tcu->timers[cpu].clk);
-+		if (ret)
-+			goto err_timer_clk_disable;
-+	}
-=20
- 	ret =3D clk_enable(tcu->cs_clk);
--	if (ret) {
--		clk_disable(tcu->timer_clk);
--		return ret;
--	}
-+	if (ret)
-+		goto err_timer_clk_disable;
-=20
- 	return 0;
-+
-+err_timer_clk_disable:
-+	for (; cpu > 0; cpu--)
-+		clk_disable(tcu->timers[cpu - 1].clk);
-+	return ret;
- }
-=20
- static const struct dev_pm_ops __maybe_unused ingenic_tcu_pm_ops =3D {
+ 
+@@ -426,7 +432,10 @@ static int __init tcb_clksrc_init(struct device_node *node)
+ 
+ 	/* How fast will we be counting?  Pick something over 5 MHz.  */
+ 	rate = (u32) clk_get_rate(t0_clk);
+-	for (i = 0; i < ARRAY_SIZE(atmel_tcb_divisors); i++) {
++	i = 0;
++	if (tc.tcb_config->has_gclk)
++		i = 1;
++	for (; i < ARRAY_SIZE(atmel_tcb_divisors); i++) {
+ 		unsigned divisor = atmel_tcb_divisors[i];
+ 		unsigned tmp;
+ 
