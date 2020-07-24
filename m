@@ -2,44 +2,45 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7702722C4AC
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 24 Jul 2020 14:02:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B39322C57E
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 24 Jul 2020 14:44:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726617AbgGXMC2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 24 Jul 2020 08:02:28 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:37730 "EHLO
+        id S1726984AbgGXMoN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 24 Jul 2020 08:44:13 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:37932 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726493AbgGXMC0 (ORCPT
+        with ESMTP id S1726326AbgGXMoN (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 24 Jul 2020 08:02:26 -0400
-Date:   Fri, 24 Jul 2020 12:02:23 -0000
+        Fri, 24 Jul 2020 08:44:13 -0400
+Date:   Fri, 24 Jul 2020 12:44:09 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1595592144;
+        s=2020; t=1595594650;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=G9/bQiuMXBJXcb9ufzaf/3ECaiQiQB1+J3WjwdA+kc4=;
-        b=STiQQZ5lIZpAYf1MN7mjjVUBKq7nC9vgR9kzICLa0hGT38Fs3FocksmL40/fAn/QOMRvTk
-        C+ud/F8L4WAhDUzQxpaMDBYWdk8gp4E9CWeLxdIwXPQwsl/A78LEl4ocpyMN0HLupMh61n
-        62piRlqZ2VR03uXmUyZ+igQ7hUbxDTmkXdGtZrxO6te1HN6btTLsRxW74r+lpFRwwNHekX
-        U7yHLsVizk1xCE+m2VgmbzVo1wLBU5nuyMQs+a8YaDE9s1dYKHaroklgiVWkTSRqZa2PhP
-        wqKfCeSl74hew9aY4iPAAsBcYMttL5pBZThauqcZk2DOwfb7gRl6MCjuQlXMMw==
+        bh=C8tcvUPdzu/dpvnVRJ/BNJQURDdRaa7DX0HCJ1EuwlQ=;
+        b=O/LQKHVSil0JMFhrSDpMbv/bl0effPMah2m0N5nZJagkn9lCwFzSVGi/0s9JAv6POdci3V
+        t2GWTlkqWzd0NIEu9V7BsGImGSzlh8e5Q84R38cuz/PbEVJw0PfQsP6j7ANlYY33nCmSq+
+        3DM3sW3vvQ/4t+m92mBV44MUNtcqqpt4zipOZamEwbwwhl9qMJnF5br56an1HuEi5/60zV
+        uwU8PGks4YES1AJSEf5uytRCwQU0Bk5wKFidAjfWVbKYmcy9q0VnqncG+aha/GyHItHQXE
+        hjDT6sQ5j6JcHxtYCQT/G5LVhC76Mg9sk0me9XgNu7K+0f0cMZ8K1bgGUO8Zkw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1595592144;
+        s=2020e; t=1595594650;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=G9/bQiuMXBJXcb9ufzaf/3ECaiQiQB1+J3WjwdA+kc4=;
-        b=vog9Butn+GaeAVwwU7DXySjWclWrM2qkO6z/GKHcwNy8AES8OA4VLHaFdjYrBvYQKUJVIK
-        /h4bODmvpgyeXlBQ==
+        bh=C8tcvUPdzu/dpvnVRJ/BNJQURDdRaa7DX0HCJ1EuwlQ=;
+        b=KcT4s2eZBJpEi4d8u1Iv1f76sGNsbtvEgQaD02sItjwOb6GwT19MihOA9u+Ao+y80/wDAu
+        TFhXKybAKHCNrUCQ==
 From:   "tip-bot2 for Chris Wilson" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched: Warn if garbage is passed to default_wake_function()
+Subject: [tip: sched/urgent] sched: Warn if garbage is passed to
+ default_wake_function()
 Cc:     Chris Wilson <chris@chris-wilson.co.uk>,
         Ingo Molnar <mingo@kernel.org>,
         Peter Zijlstra <a.p.zijlstra@chello.nl>, x86 <x86@kernel.org>,
@@ -47,7 +48,7 @@ Cc:     Chris Wilson <chris@chris-wilson.co.uk>,
 In-Reply-To: <20200723201042.18861-1-chris@chris-wilson.co.uk>
 References: <20200723201042.18861-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Message-ID: <159559214399.4006.3614094592571422254.tip-bot2@tip-bot2>
+Message-ID: <159559464976.4006.16898442338271144341.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -57,14 +58,14 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     da3520d750e36051ecd5847ef712659b9c68ce20
-Gitweb:        https://git.kernel.org/tip/da3520d750e36051ecd5847ef712659b9c68ce20
+Commit-ID:     062d3f95b630113e1156a31f376ad36e25da29a7
+Gitweb:        https://git.kernel.org/tip/062d3f95b630113e1156a31f376ad36e25da29a7
 Author:        Chris Wilson <chris@chris-wilson.co.uk>
 AuthorDate:    Thu, 23 Jul 2020 21:10:42 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 24 Jul 2020 13:47:12 +02:00
+CommitterDate: Fri, 24 Jul 2020 14:40:25 +02:00
 
 sched: Warn if garbage is passed to default_wake_function()
 
@@ -86,10 +87,10 @@ Link: https://lore.kernel.org/r/20200723201042.18861-1-chris@chris-wilson.co.uk
  1 file changed, 1 insertion(+)
 
 diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index bd8e521..637365e 100644
+index 5dece9b..2142c67 100644
 --- a/kernel/sched/core.c
 +++ b/kernel/sched/core.c
-@@ -4686,6 +4686,7 @@ asmlinkage __visible void __sched preempt_schedule_irq(void)
+@@ -4485,6 +4485,7 @@ asmlinkage __visible void __sched preempt_schedule_irq(void)
  int default_wake_function(wait_queue_entry_t *curr, unsigned mode, int wake_flags,
  			  void *key)
  {
