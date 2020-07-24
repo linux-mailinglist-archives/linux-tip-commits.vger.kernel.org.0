@@ -2,51 +2,45 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FBA322C0C8
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 24 Jul 2020 10:34:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B912D22C0C2
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 24 Jul 2020 10:34:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726573AbgGXIeR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 24 Jul 2020 04:34:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47926 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727096AbgGXIdv (ORCPT
+        id S1727125AbgGXIdx (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 24 Jul 2020 04:33:53 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:36554 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727093AbgGXIdw (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 24 Jul 2020 04:33:51 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E191C0619D3;
-        Fri, 24 Jul 2020 01:33:51 -0700 (PDT)
-Date:   Fri, 24 Jul 2020 08:33:48 -0000
+        Fri, 24 Jul 2020 04:33:52 -0400
+Date:   Fri, 24 Jul 2020 08:33:49 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1595579629;
+        s=2020; t=1595579630;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=7XfIjk8Dl3H3UaWoRDdbFiFRYm+8kTqLogSOIqH9kd8=;
-        b=BOsiQMdCcXQaiKu1yreoRq5iDVClmFjfw6dbr1Syyv5ie5uhOlCVi1SlEoXnWNsMByKgYM
-        3P99lAExJGWdWBqXZ0QpA/Ecu/jxdQivkZLArfCBen60NLFFjCltT+Zz3wWPO1f5sBF7bp
-        qs5llVEizzkqvI1jwm7O0mcyCkg7JKEySv7TZR2zpiqbU+3dTR4TV9aYxVcEj4i5m6lP0T
-        kXA5j9cteOlkFXrIyDPgElFlMdmb12CLJTfi6p+/syRePM0+MKJPHPv0fOcbkZ7qPiT4bZ
-        qHHNDn+v7ddzYpJ36utQNMw56G8oFNXqZ4uc417YHB+xwGOa9cWEQUAN/3m9Ww==
+        bh=c8p4GjBW7Fkt78FU5GWacsoompexg5NkhQJgtVvLSkA=;
+        b=O1Wl+S12zRIRSPPeD+dKsdiO6QcQvCCLE8I+wMHmDtHAkeo4lXJIqhQwbOq57NHNVf1nSs
+        1WyyxHmXDbX4wVKkfFqzlfRJvSv3LesnYPs8QwL7DCccjUkC/7AbTtFaMGaAf3HGNI4A6i
+        NNDChhCIjcGNcbdztZypZoROLpXFCetGw4nShB51DyfIkLnzsx+6Y0A+S4YuygBhD1oaRX
+        kiiFcwJ1HT1Q5AVk0y3RchIcGyXvyU2SyRDlm4ClJXvdNPcb02x/ARBlwjktFMQdbt6NYE
+        xlRa/6c82YO8bnfNEI5rROvGn9dukYxs7G1lp3bgLREfleE6OZIlm/9t5dN0PQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1595579629;
+        s=2020e; t=1595579630;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=7XfIjk8Dl3H3UaWoRDdbFiFRYm+8kTqLogSOIqH9kd8=;
-        b=7GbzfdL7vQ2ub0mOgCsTV6qIPsicwslx4oxsx6KzRhwkKdVpwGOoSTLQmBWWkzE1/MGLvf
-        vAU+moNxj+Mg/FAA==
+        bh=c8p4GjBW7Fkt78FU5GWacsoompexg5NkhQJgtVvLSkA=;
+        b=Md/dsqTIrbirsAECPZpe7okGYtNuKogUEBdFDtI0QHXtna4tBjmkPFaYp7cOh4i9BnuSJ5
+        1WxyWfVLMh+YaPCg==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/fifo] sched,psci: Convert to sched_set_fifo*()
-Cc:     daniel.lezcano@linaro.org,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        Valentin Schneider <valentin.schneider@arm.com>,
-        Sudeep Holla <sudeep.holla@arm.com>, x86 <x86@kernel.org>,
+Subject: [tip: sched/fifo] sched,drbd: Convert to sched_set_fifo*()
+Cc:     axboe@kernel.dk, "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <159557962899.4006.12154012216510604486.tip-bot2@tip-bot2>
+Message-ID: <159557962968.4006.2581859841411241688.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,66 +52,41 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/fifo branch of tip:
 
-Commit-ID:     6e6d6efabd2567337f7d97791f7a60aa5fdbcfc2
-Gitweb:        https://git.kernel.org/tip/6e6d6efabd2567337f7d97791f7a60aa5fdbcfc2
+Commit-ID:     c9ec0524706e580c78c61e38ef5e7761ed2f8485
+Gitweb:        https://git.kernel.org/tip/c9ec0524706e580c78c61e38ef5e7761ed2f8485
 Author:        Peter Zijlstra <peterz@infradead.org>
 AuthorDate:    Tue, 21 Apr 2020 12:09:13 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Mon, 15 Jun 2020 14:10:21 +02:00
 
-sched,psci: Convert to sched_set_fifo*()
+sched,drbd: Convert to sched_set_fifo*()
 
 Because SCHED_FIFO is a broken scheduler model (see previous patches)
 take away the priority field, the kernel can't possibly make an
 informed decision.
 
-Effectively changes prio from 99 to 50.
+In this case, use fifo_low, because it only cares about being above
+SCHED_NORMAL. Effectively changes prio from 2 to 1.
 
-XXX this thing is horrific, it basically open-codes a stop-machine and
-idle.
-
-Cc: daniel.lezcano@linaro.org
+Cc: axboe@kernel.dk
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Valentin Schneider <valentin.schneider@arm.com>
-Tested-by: Sudeep Holla <sudeep.holla@arm.com>
 ---
- drivers/firmware/psci/psci_checker.c | 11 ++---------
- 1 file changed, 2 insertions(+), 9 deletions(-)
+ drivers/block/drbd/drbd_receiver.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/firmware/psci/psci_checker.c b/drivers/firmware/psci/psci_checker.c
-index 873841a..a5279a4 100644
---- a/drivers/firmware/psci/psci_checker.c
-+++ b/drivers/firmware/psci/psci_checker.c
-@@ -272,7 +272,6 @@ static int suspend_test_thread(void *arg)
- {
- 	int cpu = (long)arg;
- 	int i, nb_suspend = 0, nb_shallow_sleep = 0, nb_err = 0;
--	struct sched_param sched_priority = { .sched_priority = MAX_RT_PRIO-1 };
- 	struct cpuidle_device *dev;
- 	struct cpuidle_driver *drv;
- 	/* No need for an actual callback, we just want to wake up the CPU. */
-@@ -282,9 +281,8 @@ static int suspend_test_thread(void *arg)
- 	wait_for_completion(&suspend_threads_started);
+diff --git a/drivers/block/drbd/drbd_receiver.c b/drivers/block/drbd/drbd_receiver.c
+index 3a3f2b6..140fd98 100644
+--- a/drivers/block/drbd/drbd_receiver.c
++++ b/drivers/block/drbd/drbd_receiver.c
+@@ -6019,9 +6019,8 @@ int drbd_ack_receiver(struct drbd_thread *thi)
+ 	unsigned int header_size = drbd_header_size(connection);
+ 	int expect   = header_size;
+ 	bool ping_timeout_active = false;
+-	struct sched_param param = { .sched_priority = 2 };
  
- 	/* Set maximum priority to preempt all other threads on this CPU. */
--	if (sched_setscheduler_nocheck(current, SCHED_FIFO, &sched_priority))
--		pr_warn("Failed to set suspend thread scheduler on CPU %d\n",
--			cpu);
-+	if (sched_set_fifo(current))
-+		pr_warn("Failed to set suspend thread scheduler on CPU %d\n", cpu);
+-	rv = sched_setscheduler(current, SCHED_RR, &param);
++	rv = sched_set_fifo_low(current);
+ 	if (rv < 0)
+ 		drbd_err(connection, "drbd_ack_receiver: ERROR set priority, ret=%d\n", rv);
  
- 	dev = this_cpu_read(cpuidle_devices);
- 	drv = cpuidle_get_cpu_driver(dev);
-@@ -349,11 +347,6 @@ static int suspend_test_thread(void *arg)
- 	if (atomic_dec_return_relaxed(&nb_active_threads) == 0)
- 		complete(&suspend_threads_done);
- 
--	/* Give up on RT scheduling and wait for termination. */
--	sched_priority.sched_priority = 0;
--	if (sched_setscheduler_nocheck(current, SCHED_NORMAL, &sched_priority))
--		pr_warn("Failed to set suspend thread scheduler on CPU %d\n",
--			cpu);
- 	for (;;) {
- 		/* Needs to be set first to avoid missing a wakeup. */
- 		set_current_state(TASK_INTERRUPTIBLE);
