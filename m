@@ -2,54 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B02122C74F
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 24 Jul 2020 16:07:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FE6422C85D
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 24 Jul 2020 16:49:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726506AbgGXOHp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 24 Jul 2020 10:07:45 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:38424 "EHLO
+        id S1726567AbgGXOtf (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 24 Jul 2020 10:49:35 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:38630 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726424AbgGXOHp (ORCPT
+        with ESMTP id S1726366AbgGXOtf (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 24 Jul 2020 10:07:45 -0400
-Date:   Fri, 24 Jul 2020 14:07:41 -0000
+        Fri, 24 Jul 2020 10:49:35 -0400
+Date:   Fri, 24 Jul 2020 14:49:31 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1595599662;
+        s=2020; t=1595602172;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=opVcxPUv963ARJfix0eZv2oOhV48P3svftrMOGDWqj8=;
-        b=Kxppuj5TTDpiFKF4ZHBMFJpK6Pht52wYRbKRufDNKLNiwZ7r9X09Hy2Nms2jmnG4UilrIw
-        MJq8Vwyv7Ojf06h0fhaySfRJYKs7SPe5ahjvaqKIZ4VpBYPKoPBtv7Gek09iWraa81TX5E
-        AEBpJnOfGjJ6tqBf+p4jPQLKdhgOJSeJ3kk4BUOIMF6rGX94Z3R3RN0xvzBUDh+IKnBoBh
-        bFsE7zr8Zq7cxfCDJK3TT2lIqlVlk+XhiMvJREADmkoAMgMGTRwMx0gMpHXSUdVWwIhnqe
-        997+gLSNXBuHS6CW5clMJg+Czq7SoXhvBwAV8jVovMxnNI3PTEiP0hkeQ0mThQ==
+        bh=ATbl/u2dQd6EcdjMgMGONSkJ4CS692XiOwgztKaON3M=;
+        b=clbtUx0hlCrQdk2PKdbJClsolg1tHf/VXG1GdlIUgSQAx7UdiiFmcnDRklCBd5uTQSJNQn
+        HsiggVHuxqg+nc/iUJDVER5fMS1kJKCJP73rddogUxYZdo+imIRo0ZHaWREGu14/yUfcde
+        qTFlDacWnEQ/rf74NrWF2veBvopWkF9QTIcl+MDOhu01Xk4UcTahVTPCWsUWF0AVcJbMW4
+        Py1zfH7TEZqTvJW9UxS9HozJMozXC6P3naDNIXgpuJcwHiFadlPrUqwo/xU9wJoHJXnMFO
+        WH/+7MEeNwSKukSjBB45y3uGwAptxwwiwydwXXDXFdclPKDpifr9a9LD/Pah/w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1595599662;
+        s=2020e; t=1595602172;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=opVcxPUv963ARJfix0eZv2oOhV48P3svftrMOGDWqj8=;
-        b=CiLn/DBxHVCGgEFJq5bIqH0ItFramz0pFzYOWslczfSpDaiSliGK2AXrZkvbex8SFDUs22
-        7urxxbNSkRLvSwDw==
-From:   "tip-bot2 for Oleg Nesterov" <tip-bot2@linutronix.de>
+        bh=ATbl/u2dQd6EcdjMgMGONSkJ4CS692XiOwgztKaON3M=;
+        b=WajytSjcaoah4Enu+w4hrunUlJay7XOAHGhMBcn8OR3Ou4sYABUgLYcUUhTPLYOurt0Z3J
+        DAFMaTKxc7IharAg==
+From:   "tip-bot2 for Arvind Sankar" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] uprobes: Change handle_swbp() to send SIGTRAP with
- si_code=SI_KERNEL, to fix GDB regression
-Cc:     Aaron Merey <amerey@redhat.com>, Oleg Nesterov <oleg@redhat.com>,
+Subject: [tip: x86/build] x86/build: Move max-page-size option to LDFLAGS_vmlinux
+Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
         Ingo Molnar <mingo@kernel.org>,
-        Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
-        stable@vger.kernel.org, x86 <x86@kernel.org>,
+        Sedat Dilek <sedat.dilek@gmail.com>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Michal Marek <michal.lkml@markovi.net>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200723154420.GA32043@redhat.com>
-References: <20200723154420.GA32043@redhat.com>
+In-Reply-To: <20200722184334.3785418-1-nivedita@alum.mit.edu>
+References: <20200722184334.3785418-1-nivedita@alum.mit.edu>
 MIME-Version: 1.0
-Message-ID: <159559966135.4006.10705285395851102706.tip-bot2@tip-bot2>
+Message-ID: <159560217177.4006.6819251464761042205.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,70 +59,93 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/urgent branch of tip:
+The following commit has been merged into the x86/build branch of tip:
 
-Commit-ID:     fe5ed7ab99c656bd2f5b79b49df0e9ebf2cead8a
-Gitweb:        https://git.kernel.org/tip/fe5ed7ab99c656bd2f5b79b49df0e9ebf2cead8a
-Author:        Oleg Nesterov <oleg@redhat.com>
-AuthorDate:    Thu, 23 Jul 2020 17:44:20 +02:00
+Commit-ID:     587af649bcc04eb016822f209a975005c0092151
+Gitweb:        https://git.kernel.org/tip/587af649bcc04eb016822f209a975005c0092151
+Author:        Arvind Sankar <nivedita@alum.mit.edu>
+AuthorDate:    Wed, 22 Jul 2020 14:43:34 -04:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 24 Jul 2020 15:38:37 +02:00
+CommitterDate: Fri, 24 Jul 2020 16:39:27 +02:00
 
-uprobes: Change handle_swbp() to send SIGTRAP with si_code=SI_KERNEL, to fix GDB regression
+x86/build: Move max-page-size option to LDFLAGS_vmlinux
 
-If a tracee is uprobed and it hits int3 inserted by debugger, handle_swbp()
-does send_sig(SIGTRAP, current, 0) which means si_code == SI_USER. This used
-to work when this code was written, but then GDB started to validate si_code
-and now it simply can't use breakpoints if the tracee has an active uprobe:
+This option is only required for vmlinux on 64-bit, to enforce 2MiB
+alignment, so set it in LDFLAGS_vmlinux instead of KBUILD_LDFLAGS. Also
+drop the ld-option check: this option was added in binutils-2.18 and all
+the other places that use it already don't have the check.
 
-	# cat test.c
-	void unused_func(void)
-	{
-	}
-	int main(void)
-	{
-		return 0;
-	}
+This reduces the size of the intermediate ELF files
+arch/x86/boot/setup.elf and arch/x86/realmode/rm/realmode.elf by about
+2MiB each. The binary versions are unchanged.
 
-	# gcc -g test.c -o test
-	# perf probe -x ./test -a unused_func
-	# perf record -e probe_test:unused_func gdb ./test -ex run
-	GNU gdb (GDB) 10.0.50.20200714-git
-	...
-	Program received signal SIGTRAP, Trace/breakpoint trap.
-	0x00007ffff7ddf909 in dl_main () from /lib64/ld-linux-x86-64.so.2
-	(gdb)
+Move the LDFLAGS settings to all be together and just after CFLAGS
+settings are done.
 
-The tracee hits the internal breakpoint inserted by GDB to monitor shared
-library events but GDB misinterprets this SIGTRAP and reports a signal.
-
-Change handle_swbp() to use force_sig(SIGTRAP), this matches do_int3_user()
-and fixes the problem.
-
-This is the minimal fix for -stable, arch/x86/kernel/uprobes.c is equally
-wrong; it should use send_sigtrap(TRAP_TRACE) instead of send_sig(SIGTRAP),
-but this doesn't confuse GDB and needs another x86-specific patch.
-
-Reported-by: Aaron Merey <amerey@redhat.com>
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20200723154420.GA32043@redhat.com
+Tested-by: Sedat Dilek <sedat.dilek@gmail.com>
+Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
+Cc: Michal Marek <michal.lkml@markovi.net>
+Link: https://lore.kernel.org/r/20200722184334.3785418-1-nivedita@alum.mit.edu
 ---
- kernel/events/uprobes.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/Makefile | 32 +++++++++++++++++---------------
+ 1 file changed, 17 insertions(+), 15 deletions(-)
 
-diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
-index bb08628..5f8b0c5 100644
---- a/kernel/events/uprobes.c
-+++ b/kernel/events/uprobes.c
-@@ -2199,7 +2199,7 @@ static void handle_swbp(struct pt_regs *regs)
- 	if (!uprobe) {
- 		if (is_swbp > 0) {
- 			/* No matching uprobe; signal SIGTRAP. */
--			send_sig(SIGTRAP, current, 0);
-+			force_sig(SIGTRAP);
- 		} else {
- 			/*
- 			 * Either we raced with uprobe_unregister() or we can't
+diff --git a/arch/x86/Makefile b/arch/x86/Makefile
+index 00e378d..1e634d7 100644
+--- a/arch/x86/Makefile
++++ b/arch/x86/Makefile
+@@ -47,10 +47,6 @@ export REALMODE_CFLAGS
+ # e.g.: obj-y += foo_$(BITS).o
+ export BITS
+ 
+-ifdef CONFIG_X86_NEED_RELOCS
+-        LDFLAGS_vmlinux := --emit-relocs --discard-none
+-endif
+-
+ #
+ # Prevent GCC from generating any FP code by mistake.
+ #
+@@ -177,17 +173,6 @@ ifeq ($(ACCUMULATE_OUTGOING_ARGS), 1)
+ 	KBUILD_CFLAGS += $(call cc-option,-maccumulate-outgoing-args,)
+ endif
+ 
+-KBUILD_LDFLAGS := -m elf_$(UTS_MACHINE)
+-
+-#
+-# The 64-bit kernel must be aligned to 2MB.  Pass -z max-page-size=0x200000 to
+-# the linker to force 2MB page size regardless of the default page size used
+-# by the linker.
+-#
+-ifdef CONFIG_X86_64
+-KBUILD_LDFLAGS += $(call ld-option, -z max-page-size=0x200000)
+-endif
+-
+ # Workaround for a gcc prelease that unfortunately was shipped in a suse release
+ KBUILD_CFLAGS += -Wno-sign-compare
+ #
+@@ -207,6 +192,23 @@ ifdef CONFIG_RETPOLINE
+   endif
+ endif
+ 
++KBUILD_LDFLAGS := -m elf_$(UTS_MACHINE)
++
++ifdef CONFIG_X86_NEED_RELOCS
++LDFLAGS_vmlinux := --emit-relocs --discard-none
++else
++LDFLAGS_vmlinux :=
++endif
++
++#
++# The 64-bit kernel must be aligned to 2MB.  Pass -z max-page-size=0x200000 to
++# the linker to force 2MB page size regardless of the default page size used
++# by the linker.
++#
++ifdef CONFIG_X86_64
++LDFLAGS_vmlinux += -z max-page-size=0x200000
++endif
++
+ archscripts: scripts_basic
+ 	$(Q)$(MAKE) $(build)=arch/x86/tools relocs
+ 
